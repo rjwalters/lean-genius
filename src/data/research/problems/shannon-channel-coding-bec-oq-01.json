@@ -1,0 +1,56 @@
+{
+  "slug": "shannon-channel-coding-bec-oq-01",
+  "title": "Capacity of the q-ary Erasure Channel",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "C_{\\mathrm{BEC}}(p) = 1 - p \\quad \\text{(bits)}.",
+    "plain": "A $q$-ary erasure channel transmits one of $q$ symbols, and with probability $p$ the receiver is",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-18T21:42:27.143Z",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": []
+  },
+  "tags": [
+    "information-theory",
+    "entropy",
+    "channel-capacity"
+  ],
+  "relatedProofs": [
+    "shannon-channel-coding",
+    "shannon-channel-coding-bec",
+    "shannon-channel-coding-bec-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T21:42:27.143Z",
+  "lastUpdate": "2026-06-19T22:27:52.648Z",
+  "completed": "2026-06-19T22:27:52.648Z"
+}

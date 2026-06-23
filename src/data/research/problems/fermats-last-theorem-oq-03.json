@@ -87,7 +87,8 @@
     "wiedijk-100"
   ],
   "relatedProofs": [
-    "fermats-last-theorem"
+    "fermats-last-theorem",
+    "fermats-last-theorem-oq-03"
   ],
   "references": {
     "papers": [
@@ -150,15 +151,24 @@
     {
       "path": "Proofs/FermatsLastTheorem.lean",
       "filename": "FermatsLastTheorem.lean",
-      "lineCount": 201,
-      "theoremCount": 6,
+      "lineCount": 202,
+      "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "proofStatus": "axiomatized",
-      "notes": "Local file has Mathlib-backed n = 3 and n = 4 wrappers plus a proved flt_multiple reduction; FLT_for_odd_primes and fermatLastTheorem are axioms, so this does not prove the number-field OQ.",
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatsLastTheorem.lean"
+    },
+    {
+      "path": "Proofs/FermatsLastTheoremOQ03.lean",
+      "filename": "FermatsLastTheoremOQ03.lean",
+      "lineCount": 121,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FermatsLastTheoremOQ03.lean"
     }
   ]
 }

@@ -52,7 +52,10 @@
     "erdos-1177",
     "erdos-1178",
     "erdos-1179",
-    "erdos-1179-oq-01"
+    "erdos-1179-oq-01",
+    "erdos-1179-oq-02",
+    "erdos-1179-oq-02-rigidity",
+    "erdos-1179-oq-02-witness"
   ],
   "references": {
     "papers": [],
@@ -176,9 +179,64 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ01.lean"
     },
     {
+      "path": "Proofs/Erdos1179OQ02.lean",
+      "filename": "Erdos1179OQ02.lean",
+      "lineCount": 152,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos1179OQ02Extremal.lean",
+      "filename": "Erdos1179OQ02Extremal.lean",
+      "lineCount": 191,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ02Extremal.lean"
+    },
+    {
+      "path": "Proofs/Erdos1179OQ02Rigidity.lean",
+      "filename": "Erdos1179OQ02Rigidity.lean",
+      "lineCount": 107,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ02Rigidity.lean"
+    },
+    {
+      "path": "Proofs/Erdos1179OQ02Upper.lean",
+      "filename": "Erdos1179OQ02Upper.lean",
+      "lineCount": 80,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ02Upper.lean"
+    },
+    {
+      "path": "Proofs/Erdos1179OQ02Witness.lean",
+      "filename": "Erdos1179OQ02Witness.lean",
+      "lineCount": 171,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1179OQ02Witness.lean"
+    },
+    {
       "path": "Proofs/Erdos1179Problem.lean",
       "filename": "Erdos1179Problem.lean",
-      "lineCount": 317,
+      "lineCount": 319,
       "theoremCount": 10,
       "axiomCount": 3,
       "defCount": 3,

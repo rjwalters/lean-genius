@@ -36,5 +36,46 @@
       "Tighten the S3 upper constant; replace the Lean countLineCompatible placeholder (=2^n-1, Docker-gated)."
     ]
   },
-  "lastUpdate": "2026-06-15T14:25:00Z"
+  "lastUpdate": "2026-06-15T14:25:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos733LimitBounds.lean",
+      "filename": "Erdos733LimitBounds.lean",
+      "lineCount": 106,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733LimitBounds.lean"
+    },
+    {
+      "path": "Proofs/Erdos733Problem.lean",
+      "filename": "Erdos733Problem.lean",
+      "lineCount": 287,
+      "theoremCount": 6,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos733RichLines.lean",
+      "filename": "Erdos733RichLines.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos733RichLines.lean"
+    }
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-73",
+    "erdos-733",
+    "erdos-733-oq-02"
+  ]
 }

@@ -42,7 +42,8 @@
   "tags": [],
   "relatedProofs": [
     "sqrt2-from-axioms",
-    "sqrt2-irrational"
+    "sqrt2-irrational",
+    "sqrt2-irrational-oq-02"
   ],
   "references": {
     "papers": [],
@@ -55,7 +56,7 @@
     {
       "path": "Proofs/Sqrt2Irrational.lean",
       "filename": "Sqrt2Irrational.lean",
-      "lineCount": 223,
+      "lineCount": 234,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
@@ -73,6 +74,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2IrrationalFromAxioms.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2IrrationalOQ02.lean",
+      "filename": "Sqrt2IrrationalOQ02.lean",
+      "lineCount": 62,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2IrrationalOQ02.lean"
     }
   ]
 }

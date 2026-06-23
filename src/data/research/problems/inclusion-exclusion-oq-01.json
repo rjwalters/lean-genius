@@ -59,7 +59,13 @@
   "relatedProofs": [
     "inclusion-exclusion",
     "inclusion-exclusion-oq-01",
-    "inclusion-exclusion-oq-01-oq-01"
+    "inclusion-exclusion-oq-01-oq-01",
+    "inclusion-exclusion-oq-01-oq-03",
+    "inclusion-exclusion-oq-03",
+    "inclusion-exclusion-oq-04",
+    "inclusion-exclusion-oq-04-oq-01",
+    "inclusion-exclusion-oq-04-oq-01-oq-01",
+    "inclusion-exclusion-oq-04-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -106,6 +112,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ01.lean"
     },
     {
+      "path": "Proofs/InclusionExclusionOQ01OQ03.lean",
+      "filename": "InclusionExclusionOQ01OQ03.lean",
+      "lineCount": 114,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/InclusionExclusionOQ03.lean",
       "filename": "InclusionExclusionOQ03.lean",
       "lineCount": 338,
@@ -115,6 +132,50 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ03.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionSieve.lean",
+      "filename": "InclusionExclusionSieve.lean",
+      "lineCount": 188,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionSieve.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionSieveDerangements.lean",
+      "filename": "InclusionExclusionSieveDerangements.lean",
+      "lineCount": 223,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionSieveDerangements.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionSieveDerangementsBonferroni.lean",
+      "filename": "InclusionExclusionSieveDerangementsBonferroni.lean",
+      "lineCount": 358,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionSieveDerangementsBonferroni.lean"
+    },
+    {
+      "path": "Proofs/InclusionExclusionSieveSurjections.lean",
+      "filename": "InclusionExclusionSieveSurjections.lean",
+      "lineCount": 184,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionSieveSurjections.lean"
     }
   ]
 }

@@ -1,0 +1,58 @@
+{
+  "slug": "sperner-ndim-mathlib-oq-03",
+  "title": "Generalize to the Borsuk-Ulam theorem: does the abstract cell complex framewo...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Extracted as a `generalization` follow-up to the gallery proof `sperner-ndim-mathlib` and classified as `challenging` based on the gallery extractor heuristics. The full prose statement above describes what the Researcher should explore.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-09",
+    "iteration": 1,
+    "focus": "Reading the source gallery proof `sperner-ndim-mathlib` and translating the open question into a precise Lean statement.",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: sperner-ndim-mathlib-oq-03\n\n## Established Facts\n\n(None yet — populated during OBSERVE.)\n\n## Open Questions Within This Problem\n\n- The main open question (see `problem.md`).\n\n## Failed Approaches\n\n(None yet.)\n\n## Promising Leads\n\n(None yet.)\n"
+  },
+  "tags": [
+    "combinatorics",
+    "topology",
+    "sperner",
+    "parity",
+    "abstract-cell-complex",
+    "mathlib-contribution"
+  ],
+  "relatedProofs": [
+    "sperner-ndim",
+    "sperner-ndim-mathlib"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-13T12:52:51.881Z",
+  "lastUpdate": "2026-06-13T12:52:52.113Z"
+}

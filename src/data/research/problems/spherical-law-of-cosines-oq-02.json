@@ -63,6 +63,7 @@
   "relatedProofs": [
     "law-of-cosines-oq-01",
     "spherical-law-of-cosines",
+    "spherical-law-of-cosines-oq-03",
     "spherical-law-of-cosines-oq-05"
   ],
   "references": {
@@ -82,6 +83,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ03.lean",
+      "filename": "SphericalLawOfCosinesOQ03.lean",
+      "lineCount": 425,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ03Bidual.lean",
+      "filename": "SphericalLawOfCosinesOQ03Bidual.lean",
+      "lineCount": 97,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ03Bidual.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ03Primal.lean",
+      "filename": "SphericalLawOfCosinesOQ03Primal.lean",
+      "lineCount": 104,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ03Primal.lean"
     },
     {
       "path": "Proofs/SphericalLawOfCosinesOQ05.lean",

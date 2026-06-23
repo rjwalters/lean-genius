@@ -77,8 +77,11 @@
     "erdos-105",
     "erdos-1054",
     "erdos-1054-construction-d",
+    "erdos-1054-construction-d-oq-01",
+    "erdos-1054-construction-d-oq-02",
     "erdos-1054-oq-01",
     "erdos-1054-oq-01-fnorm",
+    "erdos-1054-oq-01-oq-03",
     "erdos-1054-oq-02"
   ],
   "references": {
@@ -103,6 +106,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1054AlmostAllOQ01.lean"
     },
     {
+      "path": "Proofs/Erdos1054AlmostAllOQ0103.lean",
+      "filename": "Erdos1054AlmostAllOQ0103.lean",
+      "lineCount": 153,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1054AlmostAllOQ0103.lean"
+    },
+    {
       "path": "Proofs/Erdos1054ConstructionD.lean",
       "filename": "Erdos1054ConstructionD.lean",
       "lineCount": 251,
@@ -112,6 +126,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1054ConstructionD.lean"
+    },
+    {
+      "path": "Proofs/Erdos1054ConstructionDOQ01.lean",
+      "filename": "Erdos1054ConstructionDOQ01.lean",
+      "lineCount": 169,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1054ConstructionDOQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1054ConstructionDOQ02.lean",
+      "filename": "Erdos1054ConstructionDOQ02.lean",
+      "lineCount": 244,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1054ConstructionDOQ02.lean"
     },
     {
       "path": "Proofs/Erdos1054OQ01.lean",

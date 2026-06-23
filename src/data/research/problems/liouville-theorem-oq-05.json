@@ -18,7 +18,39 @@
   "lastUpdate": "2026-06-20",
   "path": "Proofs/LiouvilleTheoremOQ05.lean",
   "leanFiles": [
-    "Proofs/LiouvilleTheoremOQ05.lean"
+    {
+      "path": "Proofs/LiouvilleTheorem.lean",
+      "filename": "LiouvilleTheorem.lean",
+      "lineCount": 529,
+      "theoremCount": 17,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheorem.lean"
+    },
+    {
+      "path": "Proofs/LiouvilleTheoremOQ04.lean",
+      "filename": "LiouvilleTheoremOQ04.lean",
+      "lineCount": 1345,
+      "theoremCount": 33,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/LiouvilleTheoremOQ05.lean",
+      "filename": "LiouvilleTheoremOQ05.lean",
+      "lineCount": 101,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LiouvilleTheoremOQ05.lean"
+    }
   ],
   "problemStatement": "Formalize that the set of Liouville numbers has Lebesgue measure zero (the parent family states this only as prose, 'Borel 1909'), and combine it with the known residuality to state the measure-category duality: a residual set of measure zero exists, dually a meagre set of full measure, and the filters residual ℝ and ae volume are disjoint.",
   "currentState": "SOLVED. Six 0-axiom, 0-sorry theorems compiled against pinned Mathlib 4.26.0 via `lake env lean`: volume_liouville_eq_zero, ae_not_liouville', liouville_residual_and_null, exists_residual_null, exists_meagre_conull, residual_ae_disjoint.",
@@ -59,7 +91,8 @@
   ],
   "relatedProofs": [
     "liouville-theorem",
-    "liouville-theorem-oq-04"
+    "liouville-theorem-oq-04",
+    "liouville-theorem-oq-05"
   ],
   "significanceNote": "Supplies the measure-theoretic half of the Liouville story (previously prose only) and the standard witness separating Baire category from Lebesgue measure.",
   "tractabilityNote": "Assembly of existing Mathlib lemmas; the only non-trivial step is the compl_compl manipulation for the meagre-conull dual."

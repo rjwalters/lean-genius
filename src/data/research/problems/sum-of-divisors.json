@@ -61,7 +61,12 @@
     "fully-verified"
   ],
   "relatedProofs": [
-    "sum-of-divisors"
+    "sum-of-divisors",
+    "sum-of-divisors-oq-04",
+    "sum-of-divisors-oq-04-oq-01",
+    "sum-of-divisors-oq-05",
+    "sum-of-divisors-oq-06",
+    "sum-of-divisors-oq-07"
   ],
   "references": {
     "papers": [],
@@ -84,6 +89,72 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisors.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ02.lean",
+      "filename": "SumOfDivisorsOQ02.lean",
+      "lineCount": 162,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ02.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ04.lean",
+      "filename": "SumOfDivisorsOQ04.lean",
+      "lineCount": 70,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ04.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ04OQ01.lean",
+      "filename": "SumOfDivisorsOQ04OQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ05.lean",
+      "filename": "SumOfDivisorsOQ05.lean",
+      "lineCount": 91,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ05.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ06.lean",
+      "filename": "SumOfDivisorsOQ06.lean",
+      "lineCount": 101,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ06.lean"
+    },
+    {
+      "path": "Proofs/SumOfDivisorsOQ07.lean",
+      "filename": "SumOfDivisorsOQ07.lean",
+      "lineCount": 96,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SumOfDivisorsOQ07.lean"
     }
   ]
 }

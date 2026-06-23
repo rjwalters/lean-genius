@@ -65,6 +65,7 @@
     "sylow-theorem",
     "sylow-theorem-oq-01",
     "sylow-theorem-oq-02",
+    "sylow-theorem-oq-03",
     "sylow-theorem-oq-04",
     "sylow-theorems",
     "sylow-theorems-oq-01",
@@ -106,9 +107,9 @@
     {
       "path": "Proofs/SylowTheoremOQ02.lean",
       "filename": "SylowTheoremOQ02.lean",
-      "lineCount": 394,
+      "lineCount": 373,
       "theoremCount": 9,
-      "axiomCount": 5,
+      "axiomCount": 3,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
@@ -126,6 +127,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ02Orbit.lean"
     },
     {
+      "path": "Proofs/SylowTheoremOQ03.lean",
+      "filename": "SylowTheoremOQ03.lean",
+      "lineCount": 165,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremOQ03B.lean",
+      "filename": "SylowTheoremOQ03B.lean",
+      "lineCount": 161,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ03B.lean"
+    },
+    {
       "path": "Proofs/SylowTheoremOQ04.lean",
       "filename": "SylowTheoremOQ04.lean",
       "lineCount": 277,
@@ -135,6 +158,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/SylowTheoremSchurZassenhausOQ03.lean",
+      "filename": "SylowTheoremSchurZassenhausOQ03.lean",
+      "lineCount": 122,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SylowTheoremSchurZassenhausOQ03.lean"
     }
   ]
 }

@@ -1,0 +1,106 @@
+{
+  "slug": "herons-formula-oq-05",
+  "title": "Cayley–Menger Determinant — Heron's Formula in Higher Dimensions",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "288\\, V(T)^2 \\;=\\; \\det\n\\begin{pmatrix}\n0 & 1 & 1 & 1 & 1\\\\\n1 & 0 & d_{01}^2 & d_{02}^2 & d_{03}^2\\\\\n1 & d_{01}^2 & 0 & d_{12}^2 & d_{13}^2\\\\\n1 & d_{02}^2 & d_{12}^2 & 0 & d_{23}^2\\\\\n1 & d_{03}^2 & d_{13}^2 & d_{23}^2 & 0\n\\end{pmatrix},",
+    "plain": "Heron's formula computes the area of a triangle from its three side lengths alone. The Cayley–Menger determinant is the exact higher-dimensional generalization: it expresses the volume of an n-dimensional simplex purely in terms of its pairwise squared edge lengths, with no coordinates. For a tetrahedron (n = 3), 288 times the square of the volume equals the 5×5 Cayley–Menger determinant of the six squared edge lengths. Specializing to n = 2 recovers Heron's formula, and the sign/non-negativity of the determinant encodes whether a given list of distances is realizable as a genuine simplex.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-16T04:23:11-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: herons-formula-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "linear-algebra",
+    "determinants",
+    "simplex-volume"
+  ],
+  "relatedProofs": [
+    "herons-formula",
+    "herons-formula-oq-01",
+    "herons-formula-oq-03",
+    "herons-formula-oq-04",
+    "herons-formula-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T04:23:11-07:00",
+  "lastUpdate": "2026-06-20T20:34:38.851Z",
+  "completed": "2026-06-16T18:50:58.827Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/HeronsFormula.lean",
+      "filename": "HeronsFormula.lean",
+      "lineCount": 269,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormula.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ01.lean",
+      "filename": "HeronsFormulaOQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ03.lean",
+      "filename": "HeronsFormulaOQ03.lean",
+      "lineCount": 301,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ03.lean"
+    },
+    {
+      "path": "Proofs/HeronsFormulaOQ04.lean",
+      "filename": "HeronsFormulaOQ04.lean",
+      "lineCount": 363,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HeronsFormulaOQ04.lean"
+    }
+  ]
+}

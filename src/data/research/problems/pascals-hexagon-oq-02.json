@@ -1,0 +1,111 @@
+{
+  "slug": "pascals-hexagon-oq-02",
+  "title": "Pascal's Hexagon: Brianchon Dual via Projective Duality Formalization",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Pascal's hexagon theorem states: if six points lie on a conic, the three intersection",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-04-23T13:50:28+02:00",
+    "iteration": 7,
+    "focus": "The open question — derive Brianchon's theorem (diagonals of a hexagon",
+    "activeApproach": "None active — slug is at its natural axiomatized stopping point. The only way to",
+    "blockers": [
+      "`sylvester_stdConic_of_isotropic` is a prime Aristotle `prove_file` target"
+    ],
+    "nextAction": "When Aristotle is non-404: submit `sylvester_stdConic_of_isotropic` to",
+    "attemptCounts": {
+      "total": 7,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: pascals-hexagon-oq-02\n\nOpen question of the parent gallery entry `pascals-hexagon`:\n\n> Derive **Brianchon's theorem** — the three main diagonals of a hexagon\n> *circumscribed* about a conic are concurrent — as the projective dual of the\n> already-formalized Pascal hexagon theorem.\n\n---\n\n## Status: RESOLVED (2026-06-15)\n\nFully answered by **PR #24657** (merged): `proofs/Proofs/PascalsHexagonOQ02.lean`\n(199 lines, 7 theorems, 7 definitions, **0 axioms, 0 sorries**), registered in\n`proofs/Proofs.lean`. Gallery `meta.json` + `annotations.json` present under\n`src/data/proofs/pascals-hexagon-oq-02/`. Main result `brianchon_theorem`\n(file line 177), packaged as `brianchon_circumscribed` (line 189).\n\nDo **not** re-survey or re-derive — this OQ is complete. Future claims of this\nslug should either verify the build in a quiet window or move to the adjacent\nopen directions below.\n\n---\n\n## Insights — why the duality proof is clean (no symmetry argument needed)\n\nThe parent `PascalsHexagon.lean` models ℝP² by nonzero vectors in ℝ³, in which\n**projective duality is built into the representation**:\n\n- the **join** of two points and the **meet** of two lines are the *same*\n  operation (`crossProduct`), so `lineThrough = lineIntersection`;\n- `collinear` and `concurrent` are the *same* determinant predicate\n  `det(·,·,·) = 0`.\n\nConsequently the configuration is **self-dual** and Brianchon needs no separate\nsymmetry lemma. The derivation:\n\n1. A line is tangent to a point-conic `C` iff (as a vector) it lies on the dual\n   conic `dualConic C = adj C` (`side_tangent_iff_on_dualConic`, line 196;\n   `dualConic_symmetric`, line 72).\n2. The six tangent sides of a circumscribed hexagon are therefore six points\n   *inscribed* in the dual conic (`toInscribed`, line 131).\n3. `pascal_hexagon_theorem` applied to that inscribed hexagon makes its three\n   opposite-side intersection points collinear; those points are\n   **definitionally** the three main diagonals of the circumscribed hexagon —\n   `pascalP/Q/R_toInscribed` (lines 154–160) close by `rfl`.\n4. Collinearity of three lines = concurrency, giving Brianchon.\n\nKey takeaway for any dual-conic work in this model: opposite-side/diagonal\ncorrespondences collapse to `rfl` because join≡meet and collinear≡concurrent,\nso the \"dual\" theorem is the *same* theorem read on `adj C`.\n\n---\n\n## Adjacent open directions (genuinely deeper — not cosmetic variants)\n\nThese would be new work, not duplication of the resolved OQ-02:\n\n1. **Braikenridge–Maclaurin converse.** If the three opposite-side intersection\n   points of a hexagon are collinear, the six vertices lie on a conic — the\n   converse of Pascal. A genuine strengthening (constructive/converse), not a\n   dual restatement.\n2. **Hexagrammum Mysticum / 60-line configuration.** The full combinatorial\n   structure of the 60 Pascal lines (Steiner points, Plücker lines, Kirkman\n   points). Active under the sibling `pascals-hexagon-oq-03` line of work\n   (`PascalsHexagonOQ03.lean`, `DihedralGroup 6 ≃* hexagonalGroup`).\n3. **Degenerate conics (pairs of lines).** Pappus's theorem as the line-pair\n   degeneration of Pascal — check whether the ℝ³ model specializes cleanly.\n\n## Dead Ends / Non-starters\n\n- Re-proving Brianchon by an independent symmetry/transpose argument:\n  unnecessary in this model (join≡meet makes it the same determinant identity).\n"
+  },
+  "tags": [
+    "geometry",
+    "projective",
+    "conic",
+    "collinearity",
+    "wiedijk-100",
+    "classic",
+    "duality"
+  ],
+  "relatedProofs": [
+    "pascals-hexagon",
+    "pascals-hexagon-incomplete-01",
+    "pascals-hexagon-oq-02",
+    "pascals-hexagon-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T04:40:01.685Z",
+  "lastUpdate": "2026-06-20T20:34:38.915Z",
+  "completed": "2026-06-16T18:50:58.746Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/PascalsHexagon.lean",
+      "filename": "PascalsHexagon.lean",
+      "lineCount": 1282,
+      "theoremCount": 26,
+      "axiomCount": 1,
+      "defCount": 24,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagon.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonIncomplete01.lean",
+      "filename": "PascalsHexagonIncomplete01.lean",
+      "lineCount": 153,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonIncomplete01.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonOQ02.lean",
+      "filename": "PascalsHexagonOQ02.lean",
+      "lineCount": 200,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonOQ02.lean"
+    },
+    {
+      "path": "Proofs/PascalsHexagonOQ03.lean",
+      "filename": "PascalsHexagonOQ03.lean",
+      "lineCount": 719,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PascalsHexagonOQ03.lean"
+    }
+  ]
+}

@@ -100,9 +100,10 @@
     "fixed-point-search"
   ],
   "relatedProofs": [
-    "sperner-simplicial-instance",
+    "brouwer-fixed-point-oq-04-oq-04",
     "sperner-mathlib4",
-    "brouwer-fixed-point-oq-04-oq-04"
+    "sperner-simplicial-instance",
+    "sperner-simplicial-instance-oq-05"
   ],
   "references": {
     "papers": [
@@ -132,24 +133,79 @@
     {
       "path": "Proofs/SpernerSimplicialInstance.lean",
       "filename": "SpernerSimplicialInstance.lean",
-      "lineCount": 995,
-      "theoremCount": 25,
+      "lineCount": 1040,
+      "theoremCount": 26,
       "axiomCount": 0,
-      "defCount": 9,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstance.lean"
     },
     {
+      "path": "Proofs/SpernerSimplicialInstanceOQ01.lean",
+      "filename": "SpernerSimplicialInstanceOQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03.lean",
+      "filename": "SpernerSimplicialInstanceOQ03.lean",
+      "lineCount": 109,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ03Tower.lean",
+      "filename": "SpernerSimplicialInstanceOQ03Tower.lean",
+      "lineCount": 88,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ03Tower.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ04.lean",
+      "filename": "SpernerSimplicialInstanceOQ04.lean",
+      "lineCount": 108,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ04.lean"
+    },
+    {
       "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
       "filename": "SpernerSimplicialInstanceOQ05.lean",
-      "lineCount": 168,
+      "lineCount": 186,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05.lean"
+    },
+    {
+      "path": "Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "filename": "SpernerSimplicialInstanceOQ05Scarf1d.lean",
+      "lineCount": 299,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstanceOQ05Scarf1d.lean"
     }
   ]
 }

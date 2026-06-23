@@ -1,0 +1,73 @@
+{
+  "slug": "van-aubel-theorem-oq-01",
+  "title": "van Aubel's theorem: equal perpendicular diagonals of square centers",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Formalize van Aubel's theorem: given an arbitrary planar quadrilateral, erect a square externally on each side and let P,Q,R,S be the four square centers; then the segments PR and QS are equal in length and perpendicular. Recommended route: model the four vertices as complex numbers a,b,c,d in C, write each square center via the 90-degree rotation i (center of square on edge from u to v is (u+v)/2 + i*(v-u)/2), and prove (R - P) = i*(S - Q) by a direct ring computation over C; this single identity yields both |PR| = |QS| and PR perpendicular to QS. Not a named Mathlib result.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-16T12:40:00.000Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: van-aubel-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "euclidean-geometry",
+    "complex-numbers",
+    "quadrilateral",
+    "research"
+  ],
+  "relatedProofs": [
+    "van-aubel-theorem-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T18:50:58.853Z",
+  "lastUpdate": "2026-06-16T18:50:58.935Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/VanAubelTheoremOQ01.lean",
+      "filename": "VanAubelTheoremOQ01.lean",
+      "lineCount": 66,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanAubelTheoremOQ01.lean"
+    }
+  ]
+}

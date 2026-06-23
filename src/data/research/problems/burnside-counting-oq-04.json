@@ -42,7 +42,10 @@
   ],
   "relatedProofs": [
     "burnside-counting",
-    "burnside-counting-oq-03"
+    "burnside-counting-oq-03",
+    "burnside-counting-oq-04",
+    "burnside-counting-oq-04-oq-01",
+    "burnside-counting-oq-05"
   ],
   "references": {
     "papers": [],
@@ -57,10 +60,10 @@
     {
       "path": "Proofs/BurnsideCounting.lean",
       "filename": "BurnsideCounting.lean",
-      "lineCount": 256,
-      "theoremCount": 6,
-      "axiomCount": 5,
-      "defCount": 6,
+      "lineCount": 405,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCounting.lean"
@@ -90,13 +93,46 @@
     {
       "path": "Proofs/BurnsideCountingOQ03OQ03.lean",
       "filename": "BurnsideCountingOQ03OQ03.lean",
-      "lineCount": 150,
+      "lineCount": 153,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ04.lean",
+      "filename": "BurnsideCountingOQ04.lean",
+      "lineCount": 158,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ04.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ04OQ01.lean",
+      "filename": "BurnsideCountingOQ04OQ01.lean",
+      "lineCount": 181,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BurnsideCountingOQ05.lean",
+      "filename": "BurnsideCountingOQ05.lean",
+      "lineCount": 138,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BurnsideCountingOQ05.lean"
     }
   ]
 }

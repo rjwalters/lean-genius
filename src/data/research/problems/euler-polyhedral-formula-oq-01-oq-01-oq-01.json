@@ -24,15 +24,26 @@
   ],
   "leanFiles": [
     {
-      "path": "Proofs/PlanarGraphDischarging.lean",
-      "filename": "PlanarGraphDischarging.lean",
-      "lineCount": 206,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 0,
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PlanarGraphDischarging.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralFormulaOQ01OQ02.lean",
+      "filename": "EulerPolyhedralFormulaOQ01OQ02.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean"
     }
   ],
   "knowledge": {
@@ -56,5 +67,12 @@
     ],
     "progressSummary": "COMPLETE: discharging base ∑(6 − deg v) ≥ 12 proved axiom-free with sharpened consequences; 8 theorems, 0 axioms, 0 sorries."
   },
-  "references": []
+  "references": [],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-01-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-02"
+  ]
 }

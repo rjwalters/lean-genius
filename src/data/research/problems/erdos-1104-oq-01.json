@@ -54,6 +54,35 @@
     "https://erdosproblems.com/1104"
   ],
   "relatedProofs": [
-    "erdos-1104 (parent: posits the mycielski_construction axiom this entry discharges)"
+    "erdos-1",
+    "erdos-11",
+    "erdos-110",
+    "erdos-1104",
+    "erdos-1104 (parent: posits the mycielski_construction axiom this entry discharges)",
+    "erdos-1104-oq-01"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos1104OQ01.lean",
+      "filename": "Erdos1104OQ01.lean",
+      "lineCount": 421,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1104OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos1104Problem.lean",
+      "filename": "Erdos1104Problem.lean",
+      "lineCount": 197,
+      "theoremCount": 10,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1104Problem.lean"
+    }
   ]
 }

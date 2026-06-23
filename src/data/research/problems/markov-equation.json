@@ -12,9 +12,23 @@
   "significance": "high",
   "significanceNote": "The Markov tree is the classical foundation (Markov 1879, Frobenius) of Markov theory: its coordinates are the Markov numbers, which form the discrete part of the Lagrange spectrum below 3 and are the subject of the open Markov uniqueness conjecture. This is the first Markov-equation entry in the gallery and is fully verified (0 axioms, 0 sorries, no native_decide).",
   "leanFiles": [
-    "proofs/Proofs/MarkovEquation.lean"
+    {
+      "path": "Proofs/MarkovEquation.lean",
+      "filename": "MarkovEquation.lean",
+      "lineCount": 238,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MarkovEquation.lean"
+    }
   ],
   "relatedProofs": [
+    "markov-equation",
+    "markov-equation-oq-03",
+    "markov-equation-oq-03-oq-01",
+    "markov-equation-oq-04",
     "pell-equation",
     "vietas-formulas"
   ],

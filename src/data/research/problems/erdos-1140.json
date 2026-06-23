@@ -6,12 +6,12 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-      "formal": "Are there infinitely many $n$ such that $n-2x^2$ is prime for every natural number $x$ with $2x^2<n$?",
-      "plain": "Are there infinitely many natural numbers whose allowed quadratic shifts $n-2x^2$ are all prime?",
-      "whyMatters": [
-        "The problem links prime-producing quadratic forms with finite classification results.",
-        "The Lean file verifies many concrete cases and derives finiteness from two explicit Epure-Gica classification axioms."
-      ]
+    "formal": "Are there infinitely many $n$ such that $n-2x^2$ is prime for every natural number $x$ with $2x^2<n$?",
+    "plain": "Are there infinitely many natural numbers whose allowed quadratic shifts $n-2x^2$ are all prime?",
+    "whyMatters": [
+      "The problem links prime-producing quadratic forms with finite classification results.",
+      "The Lean file verifies many concrete cases and derives finiteness from two explicit Epure-Gica classification axioms."
+    ]
   },
   "knownResults": {
     "proven": [
@@ -80,7 +80,7 @@
     {
       "path": "Proofs/Erdos1140Problem.lean",
       "filename": "Erdos1140Problem.lean",
-      "lineCount": 227,
+      "lineCount": 228,
       "theoremCount": 19,
       "axiomCount": 2,
       "defCount": 2,

@@ -31,9 +31,9 @@
   "knowledge": {
     "progressSummary": "COMPLETED: 3D Fubini bridge proved (0 sorries, 1 axiom for n-D general case). triple_fubini_of_continuous and triple_fubini_yxz_eq_xyz proved using integral_integral_swap + Integrable.integral_prod_right.",
     "builtItems": [
-      "integrable_3d_zx_y: Integrable G((z,x),y)=f(x,y,z) on Ioc\u00b3 product",
-      "integrable_3d_xy_z: Integrable G((x,y),z)=f(x,y,z) on Ioc\u00b3 product",
-      "triple_fubini_of_continuous: \u222bz\u222by\u222bx f = \u222bx\u222by\u222bz f for continuous f",
+      "integrable_3d_zx_y: Integrable G((z,x),y)=f(x,y,z) on Ioc³ product",
+      "integrable_3d_xy_z: Integrable G((x,y),z)=f(x,y,z) on Ioc³ product",
+      "triple_fubini_of_continuous: ∫z∫y∫x f = ∫x∫y∫z f for continuous f",
       "triple_fubini_yxz_eq_xyz: (y,x,z) = (x,y,z) ordering",
       "triple_fubini_all_equal: 3 key orderings all equal",
       "iteratedIntervalIntegral: n-fold iterated integral definition over Fin n"
@@ -41,7 +41,7 @@
     "insights": [
       "Integrable.integral_prod_right derives parameterized integral integrability from 3D compactness without separate measurability lemmas",
       "Two applications of restrict_prod_eq_prod_restrict needed for 3D (vs one for 2D)",
-      "Ioc measures from integral_of_le rewrite - use mono_measure Ioc\u2286Icc to transfer integrability",
+      "Ioc measures from integral_of_le rewrite - use mono_measure Ioc⊆Icc to transfer integrability",
       "general n-D case reduces to adjacent transpositions (generating set of Sn) - axiomatized",
       "Step-1 and Step-3 use 2D fubini_of_continuous for fixed outer variable"
     ],
@@ -57,8 +57,15 @@
     "greens-theorem",
     "greens-theorem-oq-01",
     "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-02",
+    "greens-theorem-oq-01-oq-01-oq-02-oq-03",
     "greens-theorem-oq-01-oq-01-oq-03",
+    "greens-theorem-oq-01-oq-02",
     "greens-theorem-oq-02",
+    "greens-theorem-oq-02-oq-02",
+    "greens-theorem-oq-02-oq-04",
     "greens-theorem-oq-03",
     "greens-theorem-oq-03-oq-04",
     "greens-theorem-oq-04"
@@ -98,7 +105,7 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01.lean",
-      "lineCount": 150,
+      "lineCount": 155,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -107,10 +114,76 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 261,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ01OQ01.lean",
+      "lineCount": 539,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 233,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 105,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 217,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
       "filename": "GreensTheoremOQ01OQ01OQ03.lean",
-      "lineCount": 229,
-      "theoremCount": 6,
+      "lineCount": 293,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -118,15 +191,70 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ03.lean"
     },
     {
+      "path": "Proofs/GreensTheoremOQ01OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ02.lean",
+      "lineCount": 248,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/GreensTheoremOQ02.lean",
       "filename": "GreensTheoremOQ02.lean",
-      "lineCount": 508,
+      "lineCount": 534,
       "theoremCount": 21,
       "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02Corrected.lean",
+      "filename": "GreensTheoremOQ02Corrected.lean",
+      "lineCount": 59,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02Corrected.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02Counterexample.lean",
+      "filename": "GreensTheoremOQ02Counterexample.lean",
+      "lineCount": 122,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02Counterexample.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02FubiniBridge.lean",
+      "filename": "GreensTheoremOQ02FubiniBridge.lean",
+      "lineCount": 95,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02FubiniBridge.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02OQ04.lean",
+      "filename": "GreensTheoremOQ02OQ04.lean",
+      "lineCount": 268,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02OQ04.lean"
     },
     {
       "path": "Proofs/GreensTheoremOQ03.lean",

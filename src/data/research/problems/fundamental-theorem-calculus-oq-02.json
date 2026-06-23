@@ -82,6 +82,8 @@
   "relatedProofs": [
     "fundamental-theorem-calculus",
     "fundamental-theorem-calculus-oq-01",
+    "fundamental-theorem-calculus-oq-01-oq-01",
+    "fundamental-theorem-calculus-oq-01-oq-04",
     "fundamental-theorem-calculus-oq-02",
     "greens-theorem",
     "greens-theorem-oq-01"
@@ -119,13 +121,35 @@
     {
       "path": "Proofs/FundamentalTheoremCalculusLebesgue.lean",
       "filename": "FundamentalTheoremCalculusLebesgue.lean",
-      "lineCount": 275,
-      "theoremCount": 5,
-      "axiomCount": 2,
+      "lineCount": 310,
+      "theoremCount": 7,
+      "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgue.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean",
+      "filename": "FundamentalTheoremCalculusLebesgueOQ01.lean",
+      "lineCount": 234,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgueOQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean",
+      "filename": "FundamentalTheoremCalculusLebesgueOQ04.lean",
+      "lineCount": 312,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusLebesgueOQ04.lean"
     },
     {
       "path": "Proofs/FundamentalTheoremCalculusOQ04.lean",

@@ -91,7 +91,9 @@
     "cayley-hamilton-cyclic-vector-all-fields",
     "cayley-hamilton-cyclic-vector-all-fields-oq-01",
     "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-01",
-    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02"
+    "cayley-hamilton-cyclic-vector-all-fields-oq-01-oq-02",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-02",
+    "cayley-hamilton-cyclic-vector-all-fields-oq-03"
   ],
   "references": {
     "mathlib": [
@@ -115,11 +117,11 @@
     {
       "path": "Proofs/CayleyHamiltonCyclicVectorAllFields.lean",
       "filename": "CayleyHamiltonCyclicVectorAllFields.lean",
-      "lineCount": 269,
+      "lineCount": 267,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 8,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFields.lean"
     },
@@ -157,26 +159,59 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ01OQ02.lean"
     },
     {
-      "path": "Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean",
-      "filename": "CayleyHamiltonCyclicVectorCommRingOQ01.lean",
-      "lineCount": 96,
-      "theoremCount": 1,
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03.lean",
+      "lineCount": 313,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03.lean"
     },
     {
-      "path": "Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean",
-      "filename": "CayleyHamiltonCyclicVectorZMod4Counterexample.lean",
-      "lineCount": 136,
-      "theoremCount": 6,
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean",
+      "lineCount": 134,
+      "theoremCount": 4,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Bridge.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean",
+      "lineCount": 111,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
       "sorryCount": 1,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03Converse.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean",
+      "filename": "CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean",
+      "lineCount": 166,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ03PID.lean"
     }
   ]
 }

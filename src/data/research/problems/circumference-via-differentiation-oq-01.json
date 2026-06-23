@@ -45,7 +45,9 @@
   ],
   "relatedProofs": [
     "circumference-via-differentiation",
-    "circumference-via-differentiation-oq-01"
+    "circumference-via-differentiation-oq-01",
+    "circumference-via-differentiation-oq-01-oq-02",
+    "circumference-via-differentiation-oq-03"
   ],
   "references": {
     "papers": [],
@@ -81,10 +83,32 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01.lean"
     },
     {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean",
+      "filename": "CircumferenceViaDifferentiationOQ01OQ02.lean",
+      "lineCount": 149,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CircumferenceViaDifferentiationOQ02.lean",
+      "filename": "CircumferenceViaDifferentiationOQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ02.lean"
+    },
+    {
       "path": "Proofs/CircumferenceViaDifferentiationOQ03.lean",
       "filename": "CircumferenceViaDifferentiationOQ03.lean",
-      "lineCount": 94,
-      "theoremCount": 4,
+      "lineCount": 195,
+      "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

@@ -177,5 +177,66 @@
     "mathlib-gap",
     "scaffold"
   ],
-  "lastUpdate": "2026-06-12"
+  "lastUpdate": "2026-06-12",
+  "leanFiles": [
+    {
+      "path": "Proofs/SzemerediCore.lean",
+      "filename": "SzemerediCore.lean",
+      "lineCount": 111,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCore.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ01.lean",
+      "filename": "SzemerediCoreOQ01.lean",
+      "lineCount": 844,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ01.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ01Aristotle.lean",
+      "filename": "SzemerediCoreOQ01Aristotle.lean",
+      "lineCount": 380,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ03.lean",
+      "filename": "SzemerediCoreOQ03.lean",
+      "lineCount": 186,
+      "theoremCount": 0,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ03.lean"
+    },
+    {
+      "path": "Proofs/SzemerediCoreOQ04.lean",
+      "filename": "SzemerediCoreOQ04.lean",
+      "lineCount": 1124,
+      "theoremCount": 62,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 24,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCoreOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "szemeredi-core",
+    "szemeredi-core-oq-01"
+  ]
 }

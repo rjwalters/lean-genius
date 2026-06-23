@@ -89,9 +89,10 @@
   ],
   "relatedProofs": [
     "sperner-mathlib",
+    "sperner-mathlib4",
+    "sperner-ndim-mathlib-oq-01",
     "sperner-simplicial-bridge-oq-01",
-    "sperner-simplicial-instance-oq-05",
-    "sperner-ndim-mathlib-oq-01"
+    "sperner-simplicial-instance-oq-05"
   ],
   "references": {
     "papers": [
@@ -124,5 +125,50 @@
   "lastUpdate": "2026-06-04T07:30:00.000Z",
   "significance": 6,
   "tractability": 5,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerMathlib.lean",
+      "filename": "SpernerMathlib.lean",
+      "lineCount": 898,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlib.lean"
+    },
+    {
+      "path": "Proofs/SpernerMathlib4.lean",
+      "filename": "SpernerMathlib4.lean",
+      "lineCount": 733,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlib4.lean"
+    },
+    {
+      "path": "Proofs/SpernerMathlibHyper.lean",
+      "filename": "SpernerMathlibHyper.lean",
+      "lineCount": 564,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlibHyper.lean"
+    },
+    {
+      "path": "Proofs/SpernerMathlibOQ02.lean",
+      "filename": "SpernerMathlibOQ02.lean",
+      "lineCount": 214,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlibOQ02.lean"
+    }
+  ]
 }

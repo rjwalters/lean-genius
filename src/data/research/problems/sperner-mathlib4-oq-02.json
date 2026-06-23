@@ -1,0 +1,72 @@
+{
+  "slug": "sperner-mathlib4-oq-02",
+  "title": "Tucker's Lemma (and Borsuk–Ulam) from Abstract Door-Counting",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Sperner's lemma is proved by counting \"doors\" and using a parity (odd/even) argument to force a",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-14T21:34:31-07:00",
+    "iteration": 2,
+    "focus": "Assessed whether the parent's abstract `CellComplex` door-counting engine",
+    "activeApproach": "1. **n=1 (immediate, build-gated)**: Tucker on B^1 IS a direct corollary of a",
+    "blockers": [
+      "- Docker DOWN this session -> no `lake build`; no Lean written (avoid shipping"
+    ],
+    "nextAction": "- When Docker is up: attempt the n=1 Tucker port as a `CellComplex`-style",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: sperner-mathlib4-oq-02\n\nTucker's lemma (and Borsuk–Ulam) from the parent's abstract door-counting engine.\n\n---\n\n## Problem Understanding\n\nParent `sperner-mathlib4` (`proofs/Proofs/SpernerMathlib4.lean`, 732 LOC, GREEN)\nproves Sperner's lemma abstractly:\n\n- `CellComplex V d`: `Cell` type, `vertex : Cell → Fin (d+1) → V`,\n  `adj : Cell → Fin (d+1) → Option (Cell × Fin (d+1))` with symmetry /\n  shared-face / distinctness axioms.\n- `IsPanchromatic c K s`  := `c ∘ vertex s` surjective onto `Fin (d+1)`.\n- `IsDoor c K s k`        := dropping vertex `k`, the other `d` vertices realize\n  all colors `{0,…,d-1}`.\n- `door_count_parity`: a coloring `f : Fin (d+1) → Fin (d+1)` has door count ≡ 1\n  (mod 2) iff `f` is surjective, else 0.\n- `sperner_parity`: `#panchromatic ≡ #boundary-doors (mod 2)`.\n- `sperner`: odd boundary doors ⟹ a panchromatic cell exists.\n\nThe OQ asks: does this engine extend to **Tucker's lemma** — antipodally\nsymmetric triangulation of `Bⁿ`, labelling `λ : V → {±1,…,±n}` antipodal on the\nboundary (`λ(-v) = -λ(v)`), conclusion: some edge is **complementary**\n(`λ(u) = -λ(v)`)? Tucker ⟹ Borsuk–Ulam.\n\n---\n\n## Insights\n\n### Insight 1 — the parent engine is hard-wired to the Sperner target\n`door_count_parity`, `IsPanchromatic`, `IsDoor` are all stated over an *unsigned*\ncolor alphabet `Fin (d+1)` with the conclusion \"a `d`-cell sees all `d+1` colors\".\nTucker's alphabet is *signed* with `2n` labels `{±1,…,±n}` and its conclusion is a\n**1-dimensional** object (a complementary edge), not a full-dimensional\npanchromatic cell. There is no black-box specialization of `CellComplex.sperner`\nthat yields Tucker — the *target object has the wrong arity and the wrong\nalgebraic structure*. (Engine-divergence probe, n=2 hexagon: 40 antipodal\nlabellings have a complementary edge but no \"rainbow-signed\" triangle — the two\nconclusions are not interchangeable.)\n\n### Insight 2 — n=1 Tucker IS a direct door-count corollary (PORTABLE)\nExhaustive check of `B¹ = [-m,m]` (3,5,7 vertices; labels `{+1,-1}`; antipodal\nendpoints `λ(m) = -λ(-m)`, interior free): the **complementary-edge count is\nALWAYS ODD** (distributions `{1:4}`, `{1:8,3:8}`, `{1:12,3:40,5:12}`). This is\nexactly a door-counting parity over a 2-label alphabet: complementary edges are\nthe \"doors\", antipodal boundary forces an odd boundary contribution, interior\npairing gives the rest. So **n=1 Tucker (= 1-D Borsuk–Ulam) is a near-mechanical\nport of the parent engine** restricted to `d=1` with a signed 2-symbol alphabet.\n\n### Insight 3 — n≥2 Tucker is NOT a one-step parity (needs path-following)\nExhaustive check of `B²` (hexagon + center, antipodally symmetric, 6 triangles,\nlabels `{±1,±2}`, 256 antipodal labellings): Tucker holds (0 labellings without a\ncomplementary edge) BUT the complementary-edge count is **not** a parity invariant\n— distribution `{1:48, 2:72, 3:48, 4:48, 5:24, 6:8, 9:8}`, only 128/256 odd.\nHence the parent's \"count the target object, show it's odd\" strategy does NOT lift\nto `n≥2`. The standard remedy is **Freund–Todd (1981) / Prescott–Su\npath-following on *almost-complementary* simplices**: paths run between\ncomplementary simplices and the boundary; the antipodal boundary condition pairs\nboundary path-endpoints, forcing an interior complementary simplex. This is a\ngenuinely different parity engine (parity of path endpoints, not of the target\nset itself).\n\n### Insight 4 — buildability split\n- **n=1 milestone**: small, self-contained `CellComplex`-style parity over\n  `{+1,-1}`. Estimated < 200 LOC. BUILD when Docker is up.\n- **General Tucker**: the Freund–Todd path-following engine + antipodal pairing of\n  boundary endpoints is substantial (≈ 500–1000+ LOC) and is the real content;\n  alternatively a Tucker-via-Sperner \"doubling/quotient\" reduction (problem.md\n  approach 2) trades the path-following for orientation bookkeeping on `ℝPⁿ`.\n- **Tucker ⟹ Borsuk–Ulam** (continuous, mesh→0 + compactness) is a separate\n  analytic phase, out of scope for the combinatorial engine.\n\n---\n\n## Dead Ends\n\n- **\"Adapt `door_count_parity` to complementary edges and show the boundary count\n  is odd\"** — fails for `n≥2`: the complementary-edge count is not odd in general\n  (verified, B² distribution above). Only works for `n=1`.\n\n---\n\n## Verification Artifact\n\n`verify_tucker.py` (this dir) — Docker-free, exhaustive. Confirms Tucker on\n`B¹` (3/5/7 vtx) and `B²` (hexagon+center), prints the complementary-edge-count\ndistributions (the parity evidence), and runs the engine-divergence probe. All\nassertions pass: every antipodal labelling on every enumerated triangulation has\na complementary edge.\n\n---\n\n## Session Log\n\n## Session 2026-06-14 (Session 2) — ORIENT: engine reusability assessment\n\n**Mode**: FRESH\n**Outcome**: progress (ORIENT) — Docker DOWN, no Lean written\n\n### What I Did\n- Read the full parent engine `SpernerMathlib4.lean` (abstract `CellComplex`\n  door-counting; `sperner_parity`, `sperner`).\n- Built `verify_tucker.py`: exhaustive Tucker check on `B¹`/`B²` + parity probe +\n  engine-divergence probe. All assertions pass.\n\n### Key Findings\n- Parent engine is specialized to the unsigned `Fin (d+1)` panchromatic target;\n  no black-box reduction yields Tucker (Insight 1).\n- n=1 Tucker = direct door-count parity (complementary edges always ODD) →\n  portable first milestone (Insight 2).\n- n≥2 Tucker complementary-edge count is NOT a parity invariant → needs\n  Freund–Todd path-following, a different engine (Insight 3).\n\n### Files Modified\n- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}\n- research/problems/sperner-mathlib4-oq-02/verify_tucker.py (new)\n\n### Next Steps\n- Docker up → port n=1 Tucker as a `CellComplex`-style parity lemma over `{±1}`.\n- Scope Freund–Todd path-following engine for n≥2 (BUILD vs Sperner-doubling).\n"
+  },
+  "tags": [
+    "combinatorics",
+    "topology",
+    "tucker-lemma",
+    "borsuk-ulam"
+  ],
+  "relatedProofs": [
+    "sperner-mathlib",
+    "sperner-mathlib4"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T02:22:23.646Z",
+  "lastUpdate": "2026-06-15T02:22:23.820Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerMathlib4.lean",
+      "filename": "SpernerMathlib4.lean",
+      "lineCount": 733,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerMathlib4.lean"
+    }
+  ]
+}

@@ -59,8 +59,12 @@
     "cantors-theorem",
     "cantors-theorem-oq-01",
     "cantors-theorem-oq-01-oq-01",
+    "cantors-theorem-oq-01-oq-02",
+    "cantors-theorem-oq-01-oq-03",
+    "cantors-theorem-oq-01-oq-03-oq-04",
     "cantors-theorem-oq-02",
-    "cantors-theorem-oq-03"
+    "cantors-theorem-oq-03",
+    "cantors-theorem-oq-05"
   ],
   "references": {
     "papers": [
@@ -92,7 +96,7 @@
     {
       "path": "Proofs/CantorsTheoremOQ01.lean",
       "filename": "CantorsTheoremOQ01.lean",
-      "lineCount": 295,
+      "lineCount": 296,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 2,
@@ -110,6 +114,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ02.lean",
+      "filename": "CantorsTheoremOQ01OQ02.lean",
+      "lineCount": 257,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ03.lean",
+      "filename": "CantorsTheoremOQ01OQ03.lean",
+      "lineCount": 228,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ01OQ03OQ04.lean",
+      "filename": "CantorsTheoremOQ01OQ03OQ04.lean",
+      "lineCount": 249,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ01OQ03OQ04.lean"
     },
     {
       "path": "Proofs/CantorsTheoremOQ02.lean",
@@ -132,6 +169,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorsTheoremOQ05.lean",
+      "filename": "CantorsTheoremOQ05.lean",
+      "lineCount": 78,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorsTheoremOQ05.lean"
     }
   ]
 }

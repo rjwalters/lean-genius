@@ -75,6 +75,7 @@
   "relatedProofs": [
     "erdos-3",
     "erdos-31",
+    "erdos-31-primes-density",
     "erdos-310",
     "erdos-311",
     "erdos-312",
@@ -110,9 +111,9 @@
     {
       "path": "Proofs/Erdos311Problem.lean",
       "filename": "Erdos311Problem.lean",
-      "lineCount": 104,
-      "theoremCount": 3,
-      "axiomCount": 0,
+      "lineCount": 131,
+      "theoremCount": 4,
+      "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
@@ -154,10 +155,10 @@
     {
       "path": "Proofs/Erdos315Problem.lean",
       "filename": "Erdos315Problem.lean",
-      "lineCount": 259,
+      "lineCount": 253,
       "theoremCount": 13,
       "axiomCount": 4,
-      "defCount": 11,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos315Problem.lean"
@@ -187,22 +188,22 @@
     {
       "path": "Proofs/Erdos318Aristotle.lean",
       "filename": "Erdos318Aristotle.lean",
-      "lineCount": 77,
+      "lineCount": 199,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 5,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos318Aristotle.lean"
     },
     {
       "path": "Proofs/Erdos318Problem.lean",
       "filename": "Erdos318Problem.lean",
-      "lineCount": 322,
+      "lineCount": 410,
       "theoremCount": 6,
       "axiomCount": 5,
       "defCount": 14,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos318Problem.lean"
     },
@@ -231,7 +232,7 @@
     {
       "path": "Proofs/Erdos31Problem.lean",
       "filename": "Erdos31Problem.lean",
-      "lineCount": 820,
+      "lineCount": 821,
       "theoremCount": 24,
       "axiomCount": 1,
       "defCount": 12,

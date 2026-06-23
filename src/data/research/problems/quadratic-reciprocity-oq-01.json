@@ -41,7 +41,11 @@
     "quadratic-reciprocity",
     "quadratic-reciprocity-algorithm",
     "quadratic-reciprocity-algorithm-oq-01",
-    "quadratic-reciprocity-oq-03"
+    "quadratic-reciprocity-algorithm-oq-02",
+    "quadratic-reciprocity-algorithm-oq-02-oq-01",
+    "quadratic-reciprocity-algorithm-oq-03",
+    "quadratic-reciprocity-oq-03",
+    "quadratic-reciprocity-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -74,6 +78,61 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ01.lean"
     },
     {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ02.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ02.lean",
+      "lineCount": 195,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ02.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ02OQ01.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ02OQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ03.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ03.lean",
+      "lineCount": 293,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ03FieldBridge.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ03FieldBridge.lean",
+      "lineCount": 133,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03FieldBridge.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ03M2.lean",
+      "lineCount": 107,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean"
+    },
+    {
       "path": "Proofs/QuadraticReciprocityOQ03.lean",
       "filename": "QuadraticReciprocityOQ03.lean",
       "lineCount": 119,
@@ -83,6 +142,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityOQ03.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityOQ03OQ01.lean",
+      "filename": "QuadraticReciprocityOQ03OQ01.lean",
+      "lineCount": 144,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityOQ03OQ01Exp.lean",
+      "filename": "QuadraticReciprocityOQ03OQ01Exp.lean",
+      "lineCount": 110,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityOQ03OQ01Exp.lean"
     }
   ]
 }

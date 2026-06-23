@@ -45,5 +45,44 @@
       "Submit sqrt_prime_not_mem_multiquadratic to Aristotle (HARD known result) once the scaffold builds",
       "Choose encoding of the heart: squares-characterization (r²·∏ subset primes) vs (ℤ/2)ⁿ Galois/sign-flip — pick by Mathlib support"
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ02.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean",
+      "filename": "Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean",
+      "lineCount": 193,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ04.lean"
+    }
+  ],
+  "relatedProofs": [
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+    "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-04"
+  ]
 }

@@ -1,0 +1,143 @@
+{
+  "slug": "inverse-galois-a5-oq-03",
+  "title": "Hilbert Irreducibility for Uniform Sₙ / Aₙ Realizations",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "f(t,X) \\in \\mathbb{Q}(t)[X] \\text{ with } \\mathrm{Gal}(f/\\mathbb{Q}(t)) = G\n\\;\\Longrightarrow\\;\n\\exists^{\\infty}\\, t_0 \\in \\mathbb{Q}:\\ \\mathrm{Gal}(f(t_0,X)/\\mathbb{Q}) = G.",
+    "plain": "The parent gallery proof realizes $A_5$ as a Galois group over $\\mathbb{Q}$ by",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-19T17:05:55-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Discharge `symmetricGroup_realizableOverRat`",
+      "Formalize the square-disc ↔ Aₙ criterion at the `Polynomial.Gal` level",
+      "State a restricted single-variable HIT"
+    ],
+    "markdown": "# Knowledge Base: inverse-galois-a5-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nGoal: formalize the \"easy half\" of the Inverse Galois Problem — every symmetric\ngroup `Sₙ` and alternating group `Aₙ` is a Galois group over `ℚ` — via the classical\nHilbert route (generic polynomial realizing `Sₙ`/`Aₙ` over `ℚ(t)`, then specialize\npreserving the group by Hilbert's Irreducibility Theorem). Difficulty: HIGH —\nHIT and function-field generic-polynomial Galois computations are absent from Mathlib.\n\n---\n\n## Insights\n\n### Session 2026-06-19 (Session 1) — FRESH, interface-first (Approach A)\n\n**Mode**: FRESH. **Outcome**: progress (staged `axiomatized` entry, builds, 0 sorries).\n\n**Mathlib survey (confirmed gaps):**\n- `Polynomial.Gal`, `Polynomial.Gal.galActionHom : p.Gal →* Equiv.Perm (rootSet p E)`,\n  `galActionHom_injective` — present.\n- `alternatingGroup`, `Equiv.Perm.sign`, `mem_alternatingGroup`, `alternatingGroup.index_eq_two`,\n  `two_mul_card_alternatingGroup`, `card_alternatingGroup`, `eq_alternatingGroup_of_index_eq_two`,\n  `alternatingGroup.normal` (instance) — present.\n- **Fundamental theorem of Galois theory (finite), quotient form**: `IsGalois.normalAutEquivQuotient`\n  (`Mathlib/FieldTheory/Galois/Basic.lean:432`): for normal `H ≤ Gal(L/K)`,\n  `Gal(L/K) ⧸ H ≃* Gal(fixedField H / K)`, plus the instance\n  `IsGalois.of_fixedField_normal_subgroup` giving `IsGalois K (fixedField H)`. **PRESENT and usable.**\n- `Polynomial.discr` present (`RingTheory/Polynomial/Resultant/Basic.lean:937`), but the\n  **\"disc is a square ↔ Gal ⊆ Aₙ\" correspondence at the `Polynomial.Gal` level is a Mathlib gap.**\n- **Hilbert Irreducibility Theorem: entirely absent.** No `RatFunc` Galois-specialization,\n  no thin sets. (`RatFunc ℚ` exists; no specialization API.)\n\n**Key mathematical insight (the reason for two axioms):**\n`Aₙ ◁ Sₙ` is a *normal* subgroup with quotient `Sₙ ⧸ Aₙ ≅ ℤ/2`. By the Galois\ncorrespondence, an `Sₙ`-realization `K/ℚ` realizes the *quotient* `ℤ/2` over `ℚ`, and\nrealizes `Aₙ` only over the quadratic subfield `K^{Aₙ}` — **not over `ℚ`**. So\n`Aₙ`-over-`ℚ` does NOT follow from `Sₙ`-over-`ℚ`; it requires the discriminant of the\nspecialized polynomial to be a square (the separate square-disc family). This is\nencoded honestly as a separate axiom, and the contrast is *proved* via\n`RealizableOverRat.quotient`.\n\n**Built (genuine, machine-checked):**\n- `RealizableOverRat G` — predicate \"G is a Galois group over ℚ\" (mirrors parent `a5_realizable_iso`).\n- `RealizableOverRat.congr` — invariance under group isomorphism.\n- `RealizableOverRat.quotient` — **realizability closed under normal quotients**, via\n  `IsGalois.normalAutEquivQuotient` + `QuotientGroup.congr` + `Subgroup.Normal.map`.\n- `le_alternatingGroup_iff_forall_sign` — abstract square-disc criterion at permutation level.\n- `card_symmetricGroup` (|Sₙ| = n!), `card_alternatingGroup_fin` (2|Aₙ| = n!).\n- `quotient_Sn_An_realizableOverRat` — ℤ/2 ≅ Sₙ/Aₙ realizable, DERIVED from the Sₙ axiom\n  via the quotient theorem (consistency / non-vacuity witness).\n\n**Axiomatized (deep analytic core, 2 axioms):**\n- `symmetricGroup_realizableOverRat` — generic Sₙ family + HIT.\n- `alternatingGroup_realizableOverRat` — generic Aₙ family (square-disc twist) + HIT.\n\n---\n\n## Dead Ends\n\n- Deriving `Aₙ`-over-`ℚ` from `Sₙ`-over-`ℚ` by the Galois correspondence: FAILS —\n  `Aₙ` is a normal subgroup of `Sₙ`, so the correspondence yields the quotient `ℤ/2`\n  over `ℚ` and `Aₙ` only over the fixed quadratic subfield, not over `ℚ`. Hence two\n  separate assumptions are genuinely required.\n\n---\n\n## Next Steps\n\n1. **Discharge `symmetricGroup_realizableOverRat`**: formalize that the roots of the\n   generic polynomial are algebraically independent and `Sₙ` acts as the full Galois\n   group over `ℚ(t₁,…,tₙ)`. Mathlib has symmetric-function and `MvPolynomial` machinery;\n   the function-field Galois computation is the heavy part.\n2. **Formalize the square-disc ↔ Aₙ criterion at the `Polynomial.Gal` level** (currently\n   a Mathlib gap), connecting `Polynomial.discr` to `galActionHom`'s image and `sign`.\n   This is a self-contained, reusable contribution (~300–500 lines) usable by the parent\n   A₅ entry and oq-02 as well.\n3. **State a restricted single-variable HIT** (`f(t,X) ∈ ℚ(t)[X]` irreducible ⟹ infinitely\n   many `t₀` keep it irreducible) as an interface, then attempt the elementary\n   (Mertens/sieve or thin-set) proof for the degree bounds needed. This is the genuine\n   long-term target replacing the HIT half of the two axioms.\n"
+  },
+  "tags": [
+    "field-theory",
+    "galois-theory",
+    "inverse-galois-problem",
+    "number-theory"
+  ],
+  "relatedProofs": [
+    "inverse-galois",
+    "inverse-galois-a5",
+    "inverse-galois-a5-oq-02",
+    "inverse-galois-a5-oq-03",
+    "inverse-galois-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-18T05:36:18.799Z",
+  "lastUpdate": "2026-06-20T05:40:20.535Z",
+  "completed": "2026-06-20T05:40:20.535Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisA5.lean",
+      "filename": "InverseGaloisA5.lean",
+      "lineCount": 2068,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Dedekind.lean",
+      "filename": "InverseGaloisA5Dedekind.lean",
+      "lineCount": 90,
+      "theoremCount": 3,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Dedekind.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5OQ02.lean",
+      "filename": "InverseGaloisA5OQ02.lean",
+      "lineCount": 198,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5OQ02.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5OQ03.lean",
+      "filename": "InverseGaloisA5OQ03.lean",
+      "lineCount": 206,
+      "theoremCount": 9,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5OQ03.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Resultant.lean",
+      "filename": "InverseGaloisA5Resultant.lean",
+      "lineCount": 54,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Resultant.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Resultant2.lean",
+      "filename": "InverseGaloisA5Resultant2.lean",
+      "lineCount": 68,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Resultant2.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5ResultantDet.lean",
+      "filename": "InverseGaloisA5ResultantDet.lean",
+      "lineCount": 61,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5ResultantDet.lean"
+    }
+  ]
+}

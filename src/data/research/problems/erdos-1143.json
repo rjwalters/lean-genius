@@ -6,12 +6,12 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-      "formal": "Let $p_1<\\cdots<p_u$ be primes and let $F_k(p_1,\\ldots,p_u)$ be the minimum, over intervals of $k$ consecutive integers, of the number of integers divisible by at least one $p_i$. Estimate $F_k$, especially for $k=\\alpha p_u$ with constant $\\alpha>2$.",
-      "plain": "How many numbers in the sparsest interval of length $k$ must be covered by multiples of a chosen finite set of primes?",
-      "whyMatters": [
-        "The problem is a finite-interval counterpart to density heuristics for prime divisibility and is related to Jacobsthal-type covering questions.",
-        "The Lean file proves elementary single-prime and density-inequality scaffolding while leaving the main asymptotic and upper-bound estimates axiomatized."
-      ]
+    "formal": "Let $p_1<\\cdots<p_u$ be primes and let $F_k(p_1,\\ldots,p_u)$ be the minimum, over intervals of $k$ consecutive integers, of the number of integers divisible by at least one $p_i$. Estimate $F_k$, especially for $k=\\alpha p_u$ with constant $\\alpha>2$.",
+    "plain": "How many numbers in the sparsest interval of length $k$ must be covered by multiples of a chosen finite set of primes?",
+    "whyMatters": [
+      "The problem is a finite-interval counterpart to density heuristics for prime divisibility and is related to Jacobsthal-type covering questions.",
+      "The Lean file proves elementary single-prime and density-inequality scaffolding while leaving the main asymptotic and upper-bound estimates axiomatized."
+    ]
   },
   "knownResults": {
     "proven": [
@@ -94,8 +94,8 @@
     {
       "path": "Proofs/Erdos1143Problem.lean",
       "filename": "Erdos1143Problem.lean",
-      "lineCount": 299,
-      "theoremCount": 11,
+      "lineCount": 300,
+      "theoremCount": 10,
       "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,

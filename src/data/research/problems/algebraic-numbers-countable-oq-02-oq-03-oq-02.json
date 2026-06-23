@@ -22,5 +22,127 @@
       "Pair the Gδ/Fσ classification with the measure side (algebraic reals Lebesgue-null) and construct an explicit dense Gδ of full measure to witness the independence of category- and measure-smallness on ℝ."
     ],
     "progressSummary": "COMPLETE: parent abstract Baire-category material already merged; this session added the Borel-hierarchy refinement (transcendentals = dense Gδ; algebraic reals not Gδ) as a new verified gallery entry. Build-verified by single-file lean elaboration against prebuilt Mathlib oleans: 0 sorries, axioms = {propext, Classical.choice, Quot.sound} only."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicNumbersCountable.lean",
+      "filename": "AlgebraicNumbersCountable.lean",
+      "lineCount": 255,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountable.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableAristotle.lean",
+      "filename": "AlgebraicNumbersCountableAristotle.lean",
+      "lineCount": 46,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableAristotle.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02.lean",
+      "lineCount": 193,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02.lean",
+      "lineCount": 286,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ02OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ03.lean",
+      "lineCount": 194,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ03OQ02.lean",
+      "lineCount": 137,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ04.lean",
+      "lineCount": 1080,
+      "theoremCount": 42,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ04.lean",
+      "lineCount": 759,
+      "theoremCount": 13,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ04.lean"
+    },
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ05.lean",
+      "filename": "AlgebraicNumbersCountableOQ05.lean",
+      "lineCount": 297,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ05.lean"
+    }
+  ],
+  "relatedProofs": [
+    "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-03",
+    "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-04",
+    "algebraic-numbers-countable-oq-04",
+    "algebraic-numbers-countable-oq-05"
+  ]
 }

@@ -59,9 +59,12 @@
   "tags": [],
   "relatedProofs": [
     "schroeder-bernstein",
+    "schroeder-bernstein-oq-01",
     "schroeder-bernstein-oq-02",
     "schroeder-bernstein-oq-03",
-    "schroeder-bernstein-oq-04"
+    "schroeder-bernstein-oq-04",
+    "schroeder-bernstein-oq-04-oq-01",
+    "schroeder-bernstein-oq-04-oq-01-oq-01"
   ],
   "references": {
     "papers": [],
@@ -81,6 +84,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernstein.lean"
+    },
+    {
+      "path": "Proofs/SchroederBernsteinOQ01.lean",
+      "filename": "SchroederBernsteinOQ01.lean",
+      "lineCount": 354,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ01.lean"
     },
     {
       "path": "Proofs/SchroederBernsteinOQ02.lean",
@@ -116,6 +130,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ03Aristotle.lean"
     },
     {
+      "path": "Proofs/SchroederBernsteinOQ03StatementOnly.lean",
+      "filename": "SchroederBernsteinOQ03StatementOnly.lean",
+      "lineCount": 113,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ03StatementOnly.lean"
+    },
+    {
       "path": "Proofs/SchroederBernsteinOQ04.lean",
       "filename": "SchroederBernsteinOQ04.lean",
       "lineCount": 315,
@@ -125,6 +150,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ04.lean"
+    },
+    {
+      "path": "Proofs/SchroederBernsteinOQ04OQ01.lean",
+      "filename": "SchroederBernsteinOQ04OQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/SchroederBernsteinOQ04OQ01OQ01.lean",
+      "filename": "SchroederBernsteinOQ04OQ01OQ01.lean",
+      "lineCount": 244,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ04OQ01OQ01.lean"
     }
   ]
 }

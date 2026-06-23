@@ -64,6 +64,7 @@
     "e-transcendental",
     "e-transcendental-oq-01",
     "e-transcendental-oq-01-oq-01",
+    "e-transcendental-oq-02",
     "e-transcendental-oq-03"
   ],
   "references": {
@@ -100,15 +101,48 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/ETranscendentalOQ02.lean",
+      "filename": "ETranscendentalOQ02.lean",
+      "lineCount": 716,
+      "theoremCount": 30,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ02.lean"
+    },
+    {
       "path": "Proofs/ETranscendentalOQ03.lean",
       "filename": "ETranscendentalOQ03.lean",
-      "lineCount": 220,
-      "theoremCount": 4,
-      "axiomCount": 2,
+      "lineCount": 313,
+      "theoremCount": 6,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03CF.lean",
+      "filename": "ETranscendentalOQ03CF.lean",
+      "lineCount": 161,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03CF.lean"
+    },
+    {
+      "path": "Proofs/ETranscendentalOQ03Reduction.lean",
+      "filename": "ETranscendentalOQ03Reduction.lean",
+      "lineCount": 113,
+      "theoremCount": 2,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ03Reduction.lean"
     }
   ]
 }

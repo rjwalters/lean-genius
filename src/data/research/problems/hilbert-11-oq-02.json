@@ -149,7 +149,8 @@
     "hilbert-problems"
   ],
   "relatedProofs": [
-    "hilbert-11"
+    "hilbert-11",
+    "hilbert-11-oq-02"
   ],
   "references": {
     "papers": [
@@ -180,11 +181,77 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Hilbert11_QuadraticForms.lean",
+      "filename": "Hilbert11_QuadraticForms.lean",
+      "lineCount": 499,
+      "theoremCount": 9,
+      "axiomCount": 3,
+      "defCount": 17,
+      "sorryCount": 14,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticForms.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11_QuadraticFormsAristotle.lean",
+      "filename": "Hilbert11_QuadraticFormsAristotle.lean",
+      "lineCount": 288,
+      "theoremCount": 51,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11_QuadraticFormsAristotle.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01.lean",
+      "filename": "Hilbert11OQ01.lean",
+      "lineCount": 275,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01Aristotle.lean",
+      "filename": "Hilbert11OQ01Aristotle.lean",
+      "lineCount": 65,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01OQ01.lean",
+      "filename": "Hilbert11OQ01OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Hilbert11OQ01OQ01Aristotle.lean",
+      "filename": "Hilbert11OQ01OQ01Aristotle.lean",
+      "lineCount": 105,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ01OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/Hilbert11OQ02.lean",
       "filename": "Hilbert11OQ02.lean",
       "lineCount": 2093,
       "theoremCount": 64,
-      "axiomCount": 2,
+      "axiomCount": 4,
       "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,

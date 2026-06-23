@@ -55,7 +55,8 @@
   "relatedProofs": [
     "erdos-8",
     "erdos-89",
-    "erdos-895"
+    "erdos-895",
+    "erdos-895-oq-01"
   ],
   "references": {
     "papers": [],
@@ -79,24 +80,35 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895Aristotle.lean"
     },
     {
+      "path": "Proofs/Erdos895OQ01Problem.lean",
+      "filename": "Erdos895OQ01Problem.lean",
+      "lineCount": 320,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895OQ01Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos895Problem.lean",
       "filename": "Erdos895Problem.lean",
-      "lineCount": 261,
+      "lineCount": 463,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 11,
-      "sorryCount": 7,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895Problem.lean"
     },
     {
       "path": "Proofs/Erdos895ProblemAristotle.lean",
       "filename": "Erdos895ProblemAristotle.lean",
-      "lineCount": 118,
+      "lineCount": 143,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 3,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos895ProblemAristotle.lean"
     }

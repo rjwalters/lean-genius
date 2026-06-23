@@ -121,6 +121,9 @@
     "roth-theorem-k3-oq-01",
     "roth-theorem-k3-oq-02",
     "roth-theorem-k3-oq-03",
+    "roth-theorem-k3-oq-03-oq-01-oq-01",
+    "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+    "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
     "szemeredi-theorem"
   ],
   "references": {
@@ -154,15 +157,114 @@
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/RothTheorem.lean",
+      "filename": "RothTheorem.lean",
+      "lineCount": 1402,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheorem.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremAristotle.lean",
+      "filename": "RothTheoremAristotle.lean",
+      "lineCount": 60,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremAristotle.lean"
+    },
+    {
       "path": "Proofs/RothTheoremOQ02.lean",
       "filename": "RothTheoremOQ02.lean",
       "lineCount": 351,
       "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 3,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03.lean",
+      "filename": "RothTheoremOQ03.lean",
+      "lineCount": 420,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01.lean",
+      "lineCount": 144,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01OQ01.lean",
+      "lineCount": 89,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01OQ01OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 135,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremOQ03OQ01OQ01OQ01OQ01.lean",
+      "filename": "RothTheoremOQ03OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 133,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremOQ03OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremQuantitative.lean",
+      "filename": "RothTheoremQuantitative.lean",
+      "lineCount": 307,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitative.lean"
+    },
+    {
+      "path": "Proofs/RothTheoremQuantitativeAristotle.lean",
+      "filename": "RothTheoremQuantitativeAristotle.lean",
+      "lineCount": 271,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RothTheoremQuantitativeAristotle.lean"
     }
   ]
 }

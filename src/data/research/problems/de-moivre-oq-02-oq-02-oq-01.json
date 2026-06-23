@@ -63,10 +63,20 @@
   "relatedProofs": [
     "de-moivre",
     "de-moivre-oq-01",
+    "de-moivre-oq-01-oq-03",
     "de-moivre-oq-02",
     "de-moivre-oq-02-oq-02",
+    "de-moivre-oq-02-oq-02-oq-01",
+    "de-moivre-oq-02-oq-03",
     "de-moivre-oq-03",
-    "de-moivre-oq-03-oq-01"
+    "de-moivre-oq-03-oq-01",
+    "de-moivre-oq-03-oq-01-oq-01",
+    "de-moivre-oq-04",
+    "de-moivre-oq-05",
+    "de-moivre-oq-05-oq-01",
+    "de-moivre-oq-05-oq-01-oq-01",
+    "de-moivre-oq-05-oq-01-oq-01-oq-01",
+    "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -100,6 +110,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ01.lean"
     },
     {
+      "path": "Proofs/DeMoivreOQ01OQ03.lean",
+      "filename": "DeMoivreOQ01OQ03.lean",
+      "lineCount": 190,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/DeMoivreOQ02.lean",
       "filename": "DeMoivreOQ02.lean",
       "lineCount": 158,
@@ -122,6 +143,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/DeMoivreOQ02OQ02OQ01.lean",
+      "filename": "DeMoivreOQ02OQ02OQ01.lean",
+      "lineCount": 147,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02OQ03.lean",
+      "filename": "DeMoivreOQ02OQ03.lean",
+      "lineCount": 379,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean",
+      "filename": "DeMoivreOQ02OQ03UniqueAristotle.lean",
+      "lineCount": 247,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ02OQ03UniqueAristotle.lean"
+    },
+    {
       "path": "Proofs/DeMoivreOQ03.lean",
       "filename": "DeMoivreOQ03.lean",
       "lineCount": 276,
@@ -142,6 +196,83 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ03OQ01OQ01.lean",
+      "filename": "DeMoivreOQ03OQ01OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ04.lean",
+      "filename": "DeMoivreOQ04.lean",
+      "lineCount": 159,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ04.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ05.lean",
+      "filename": "DeMoivreOQ05.lean",
+      "lineCount": 109,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ05.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ05OQ01.lean",
+      "filename": "DeMoivreOQ05OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ05OQ01OQ01.lean",
+      "filename": "DeMoivreOQ05OQ01OQ01.lean",
+      "lineCount": 185,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ05OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ05OQ01OQ01OQ01.lean",
+      "filename": "DeMoivreOQ05OQ01OQ01OQ01.lean",
+      "lineCount": 122,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ05OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DeMoivreOQ05OQ01OQ01OQ01OQ03.lean",
+      "filename": "DeMoivreOQ05OQ01OQ01OQ01OQ03.lean",
+      "lineCount": 138,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DeMoivreOQ05OQ01OQ01OQ01OQ03.lean"
     }
   ]
 }

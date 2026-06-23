@@ -1,0 +1,104 @@
+{
+  "slug": "sophie-germain-oq-03",
+  "title": "What is the longest known Cunningham chain of Sophie Germain primes",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "Extracted as a `extension` follow-up to the gallery proof `sophie-germain` and classified as `challenging` based on the gallery extractor heuristics. The full prose statement above describes what the Researcher should explore.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-09",
+    "iteration": 1,
+    "focus": "Reading the source gallery proof `sophie-germain` and translating the open question into a precise Lean statement.",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge: sophie-germain-oq-03\n\n## Established Facts\n\n(None yet — populated during OBSERVE.)\n\n## Open Questions Within This Problem\n\n- The main open question (see `problem.md`).\n\n## Failed Approaches\n\n(None yet.)\n\n## Promising Leads\n\n(None yet.)\n"
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "modular-arithmetic",
+    "classical"
+  ],
+  "relatedProofs": [
+    "sophie-germain",
+    "sophie-germain-oq-01",
+    "sophie-germain-oq-02",
+    "sophie-germain-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-13T12:52:52.062Z",
+  "lastUpdate": "2026-06-13T12:52:52.150Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SophieGermain.lean",
+      "filename": "SophieGermain.lean",
+      "lineCount": 297,
+      "theoremCount": 31,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermain.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ01.lean",
+      "filename": "SophieGermainOQ01.lean",
+      "lineCount": 197,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ01.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ02.lean",
+      "filename": "SophieGermainOQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ02.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ04.lean",
+      "filename": "SophieGermainOQ04.lean",
+      "lineCount": 72,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ04.lean"
+    }
+  ]
+}

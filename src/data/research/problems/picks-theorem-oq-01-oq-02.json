@@ -20,6 +20,8 @@
   "relatedProofs": [
     "picks-theorem",
     "picks-theorem-oq-01",
+    "picks-theorem-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-01-oq-01",
     "picks-theorem-oq-01-oq-02",
     "picks-theorem-oq-02",
     "picks-theorem-oq-03-cross-poly",
@@ -34,9 +36,9 @@
     {
       "path": "Proofs/PicksTheorem.lean",
       "filename": "PicksTheorem.lean",
-      "lineCount": 485,
-      "theoremCount": 12,
-      "axiomCount": 1,
+      "lineCount": 504,
+      "theoremCount": 13,
+      "axiomCount": 0,
       "defCount": 14,
       "sorryCount": 0,
       "isAristotle": false,
@@ -65,11 +67,22 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 1250,
+      "theoremCount": 62,
+      "axiomCount": 0,
+      "defCount": 27,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/PicksTheoremOQ01OQ02.lean",
       "filename": "PicksTheoremOQ01OQ02.lean",
-      "lineCount": 310,
-      "theoremCount": 22,
-      "axiomCount": 3,
+      "lineCount": 325,
+      "theoremCount": 23,
+      "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

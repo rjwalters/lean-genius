@@ -1,0 +1,133 @@
+{
+  "slug": "ptolemys-theorem-oq-03",
+  "title": "Sine addition formula from Ptolemy's theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Cyclic quadrilateral: } AC\\cdot BD = AB\\cdot CD + AD\\cdot BC\\ \\Longrightarrow\\ \\sin(\\alpha+\\beta) = \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta",
+    "plain": "Ptolemy's theorem states that for a cyclic quadrilateral inscribed in a circle, the product of the diagonals equals the sum of the products of opposite sides: AC·BD = AB·CD + AD·BC. This task formalizes the classical derivation of the sine addition formula sin(α+β) = sinα cosβ + cosα sinβ from Ptolemy's theorem, by inscribing an appropriate quadrilateral (with a diameter) in a unit circle, recovering the historical link between ancient chord tables and modern trigonometry.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-15T06:15:07.078468+00:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context from the parent gallery proof (ptolemys-theorem).",
+    "blockers": [],
+    "nextAction": "Begin OBSERVE phase: study the parent proof and identify the key lemmas needed.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: ptolemys-theorem-oq-03\n\n## Source\nSeeker-selected gallery-extracted open question extending **ptolemys-theorem**.\n\n## Progress Summary\nStub created by Seeker. No research progress yet.\n\n## Mathlib Notes\n[To be filled by the Researcher during OBSERVE/ORIENT.]\n",
+    "archivedSessions": [
+      {
+        "filename": "2026-06-14-s01-orient.md",
+        "date": "unknown",
+        "sessionNumber": 1,
+        "markdown": "# S1 ORIENT — 2026-06-14 (researcher-4)\n\nFresh seeker stub (knowledge 0, no problem.md). Dual-backend blackout\n(Docker down; Aristotle \"Resource not found\"), so build-free.\n\n## Done\n- Defined OQ-03 = geometric derivation of `sin(α+β) = sin α cos β + cos α sin β`\n  from Ptolemy's theorem, via the diameter-diagonal inscribed quadrilateral.\n- Confirmed non-overlap with parent (Ptolemy equality), oq-01 (inequality /\n  cross-ratio), and the ptolemys-complex-proof siblings.\n- Numerical certificate `verify_ptolemy_sine_addition.py` (20000 trials):\n  chord-as-sine, |BD|=sin(α+β), Ptolemy, and the derived identity all to ~1e-16.\n- Bearer audit + two Lean routes (synthetic vs algebraic-guard) + risks.\n\n## Honesty\n`Real.sin_add` is already in Mathlib — this OQ is pedagogical (alternative\ngeometric proof), not a gap-filler. Stated as such.\n\n## Next\n- Docker-up ACT: route 1 (synthetic) — place the explicit points, discharge\n  Mathlib's Ptolemy `Cospherical`/angle hypotheses, simplify distances to\n  sin/cos. R1/R2 (geometry plumbing) is the bulk.\n"
+      }
+    ]
+  },
+  "tags": [],
+  "relatedProofs": [
+    "ptolemys-theorem",
+    "ptolemys-theorem-oq-01",
+    "ptolemys-theorem-oq-01-incomplete-01",
+    "ptolemys-theorem-oq-01-oq-01",
+    "ptolemys-theorem-oq-01-oq-02",
+    "ptolemys-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T04:40:01.690Z",
+  "lastUpdate": "2026-06-16T04:40:01.742Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PtolemysTheorem.lean",
+      "filename": "PtolemysTheorem.lean",
+      "lineCount": 241,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheorem.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01.lean",
+      "filename": "PtolemysTheoremOQ01.lean",
+      "lineCount": 471,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
+      "filename": "PtolemysTheoremOQ01Incomplete01.lean",
+      "lineCount": 490,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01Incomplete01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ01.lean",
+      "filename": "PtolemysTheoremOQ01OQ01.lean",
+      "lineCount": 289,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ01OQ02.lean",
+      "filename": "PtolemysTheoremOQ01OQ02.lean",
+      "lineCount": 271,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PtolemysTheoremOQ04.lean",
+      "filename": "PtolemysTheoremOQ04.lean",
+      "lineCount": 166,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ04.lean"
+    }
+  ]
+}

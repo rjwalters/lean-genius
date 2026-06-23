@@ -90,7 +90,11 @@
     "open"
   ],
   "relatedProofs": [
-    "erdos-1066"
+    "erdos-1",
+    "erdos-10",
+    "erdos-106",
+    "erdos-1066",
+    "erdos-1066-oq-04"
   ],
   "references": {
     "papers": [
@@ -156,22 +160,24 @@
     {
       "path": "Proofs/Erdos1066OQ04.lean",
       "filename": "Erdos1066OQ04.lean",
-      "lineCount": 156,
+      "lineCount": 157,
       "theoremCount": 6,
       "axiomCount": 2,
-      "defCount": 6,
+      "defCount": 5,
       "sorryCount": 2,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1066OQ04.lean"
     },
     {
       "path": "Proofs/Erdos1066Problem.lean",
       "filename": "Erdos1066Problem.lean",
-      "lineCount": 118,
+      "lineCount": 119,
       "theoremCount": 5,
       "axiomCount": 2,
-      "defCount": 6,
+      "defCount": 4,
       "sorryCount": 0,
-      "isAristotle": false
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1066Problem.lean"
     }
   ]
 }

@@ -1,0 +1,172 @@
+{
+  "slug": "picks-theorem-oq-04",
+  "title": "Shoelace formula and its integrality bridge to Pick's theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For a simple lattice polygon with vertices } (x_k,y_k)\\in\\mathbb{Z}^2:\\quad 2A = \\left|\\sum_{k=1}^{m}\\big(x_k y_{k+1} - x_{k+1} y_k\\big)\\right| = 2i + b - 2\\quad (\\text{indices mod } m)",
+    "plain": "Pick's theorem gives the area of a simple lattice polygon as A = i + b/2 − 1, where i and b count interior and boundary lattice points. This task formalizes the shoelace (surveyor's) formula for the area of a polygon from its vertex coordinates, and connects it to Pick's formula via the integrality identity 2i + b − 2 = |Σ(xₖyₖ₊₁ − xₖ₊₁yₖ)|, an arithmetic bridge between the combinatorial lattice-point count and the coordinate area.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-15T06:15:07.078468+00:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context from the parent gallery proof (picks-theorem).",
+    "blockers": [],
+    "nextAction": "Begin OBSERVE phase: study the parent proof and identify the key lemmas needed.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: picks-theorem-oq-04\n\n## Source\nSeeker-selected gallery-extracted open question extending **picks-theorem**.\n\n## Progress Summary\nStub created by Seeker. No research progress yet.\n\n## Mathlib Notes\n[To be filled by the Researcher during OBSERVE/ORIENT.]\n"
+  },
+  "tags": [],
+  "relatedProofs": [
+    "picks-theorem",
+    "picks-theorem-oq-01",
+    "picks-theorem-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-02",
+    "picks-theorem-oq-02",
+    "picks-theorem-oq-03-cross-poly",
+    "picks-theorem-oq-03-ext",
+    "picks-theorem-oq-03-product"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T04:40:01.675Z",
+  "lastUpdate": "2026-06-16T04:40:01.734Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/PicksTheorem.lean",
+      "filename": "PicksTheorem.lean",
+      "lineCount": 504,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 1250,
+      "theoremCount": 62,
+      "axiomCount": 0,
+      "defCount": 27,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ02.lean",
+      "filename": "PicksTheoremOQ01OQ02.lean",
+      "lineCount": 325,
+      "theoremCount": 23,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ02.lean",
+      "filename": "PicksTheoremOQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03.lean",
+      "filename": "PicksTheoremOQ03.lean",
+      "lineCount": 438,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "filename": "PicksTheoremOQ03CrossPoly.lean",
+      "lineCount": 696,
+      "theoremCount": 69,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03CrossPoly.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Ext.lean",
+      "filename": "PicksTheoremOQ03Ext.lean",
+      "lineCount": 289,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Product.lean",
+      "filename": "PicksTheoremOQ03Product.lean",
+      "lineCount": 605,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Product.lean"
+    }
+  ]
+}

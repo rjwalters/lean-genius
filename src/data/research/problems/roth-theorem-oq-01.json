@@ -1,0 +1,58 @@
+{
+  "slug": "roth-theorem-oq-01",
+  "title": "Bourgain's Quantitative Bound for Roth's Theorem",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "r_3(N) = O\\!\\left(N\\left(\\frac{\\log\\log N}{\\log N}\\right)^{1/2}\\right)\n\\quad\\text{(Bourgain 1999; later improved by Bourgain 2008, Sanders, Bloom, Bloom–Sisask, Kelley–Meka).}",
+    "plain": "Roth's theorem says a set of integers with no 3-term arithmetic progression must be \"thin\"",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-14T17:42:10-07:00",
+    "iteration": 2,
+    "focus": "Feasibility and approach identified (Session 1, ORIENT). Statement anchored to Mathlib",
+    "activeApproach": "SURVEY/axiomatized route. The genuine Fourier/density-increment proof is blocked on missing",
+    "blockers": [
+      "- Docker build environment down (cannot compile/verify Lean this session)."
+    ],
+    "nextAction": "When Docker is up: create `proofs/Proofs/RothTheoremOQ01.lean` with the M1 deliverable —",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: roth-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nTarget: a **quantitative** upper bound on the Roth number `r₃(N)` (largest 3-AP-free subset\nof `{1,…,N}`), of Bourgain's strength, rather than the qualitative `r₃(N) = o(N)` already in\nthe parent gallery proof `roth-theorem`.\n\n**Correct quantitative landscape** (the original problem.md misstated Bourgain's bound as\n`N/(log log N)^{1/2}`, which is weaker than even Roth's rate — see Insights):\n\n| Author (year) | Bound on `r₃(N)` |\n|---|---|\n| Roth (1953) | `≪ N / log log N` |\n| **Bourgain (1999)** | `≪ N (log log N / log N)^{1/2}` |\n| Bourgain (2008) | `≪ N (log log N)² / log N` |\n| Sanders (2011) | `≪ N (log log N)^{O(1)} / log N` |\n| Bloom (2016) | `≪ N (log log N)⁴ / log N` |\n| Bloom–Sisask (2020) | `≪ N / (log N)^{1+c}` |\n| Kelley–Meka (2023) | `≪ N · exp(-c (log N)^β)` |\n\nThe \"saving\" in Bourgain 1999 is a **power of log** (`(log N)^{1/2}` up to a `loglog`\nfactor), not a `loglog` saving. The companion problem `roth-theorem-oq-02` targets the\nBloom–Sisask bound; this problem (oq-01) is the strictly weaker Bourgain bound, so it is\n**implied by** oq-02.\n\n---\n\n## Insights\n\n### Session 2026-06-14 (Session 1, ORIENT) — Mode: FRESH\n\n- **Mathlib anchor.** Mathlib already provides `rothNumberNat : ℕ → ℕ`\n  (`Mathlib.Combinatorics.Additive.AP.Three`) and the qualitative\n  `rothNumberNat_isLittleO_id : (fun N => (rothNumberNat N : ℝ)) =o[atTop] (fun N => (N:ℝ))`.\n  Any quantitative statement for this problem should be phrased at the **Mathlib\n  `rothNumberNat`** level, NOT the project-local `Szemeredi.Roth.rothNumber` over `ZMod N`\n  used in `RothTheorem.lean`. The sibling `RothTheoremOQ02.lean` already does exactly this.\n\n- **Sibling precedent (oq-02 = Bloom–Sisask).** `proofs/Proofs/RothTheoremOQ02.lean` states\n  the Bloom–Sisask bound as\n  `axiom rothNumberNat_bloom_sisask : ∃ c > 0, ∀ N ≥ 3, (rothNumberNat N : ℝ) ≤ N / (log N)^(1+c)`\n  and builds a stable downstream API (`blasiConst`, `blasiConst_pos`, `rothNumberNat_le_blasi`).\n  This is the established gallery pattern for these out-of-reach quantitative bounds: state the\n  bound as an `axiom` (status `axiomatized`, NOT `verified`), then derive consequences.\n\n- **Bound-statement error in the seed problem.md.** The auto-generated formal statement gave\n  Bourgain (1999) as `O(N/(log log N)^{1/2})`, and the \"Initial Thoughts\" section described the\n  Bohr-set refinement as a `1/√(log log N)` improvement. Both confuse `log` with `log log`. The\n  actual Bourgain 1999 bound is `N (log log N / log N)^{1/2}`. Corrected in problem.md this\n  session.\n\n- **leanFiles misattribution (fixed).** The research JSON `leanFiles` listed 6 sibling\n  `RothTheorem*` files (base proof, OQ02, OQ03, Quantitative, Aristotle variants) even though no\n  `RothTheoremOQ01*.lean` exists — making this open problem look formalized. Root cause:\n  `scripts/research/enrich-research.ts` `getPascalCasePrefixes` falls back to the bare root\n  `RothTheorem` for `-oq-NN` slugs, whose `startsWith` match greedily grabs every sibling.\n  Pinned `SPECIAL_CASES['roth-theorem-oq-01'] = ['RothTheoremOQ01']` so the match is `[]` now\n  and links only the real file if one is ever added. Verified via `enrich-research.ts --dry-run`.\n  (Systemic note below.)\n\n---\n\n## Buildability Assessment\n\n**Genuine from-scratch proof (density increment / Fourier):**\n- Needs discrete Fourier analysis on `ZMod N` at strength: AP-counting via the third moment\n  `∑_r f̂(r)² f̂(-2r)`, large-spectrum extraction, ℓ² control, and a single-step density\n  increment on a sub-progression (Roth) or Bohr set (Bourgain), then the iteration with explicit\n  constant tracking.\n- Mathlib has `AddChar` / discrete convolution / Cauchy–Schwarz but **not** the\n  large-spectrum + Bohr-set packaging needed for a rate.\n- Estimate: even Roth's original `1/log log N` rate is **> 1000 LOC** of new additive-combinatorics\n  infrastructure; Bourgain's improvement adds Bohr-set geometry on top. **BLOCKED** as a\n  from-scratch proof; not attemptable in a single session (and Docker is currently down).\n\n**Build-free / short routes:**\n- **M1 (small, ~30–60 LOC, Docker to verify):** state `axiom rothNumberNat_bourgain :\n  ∃ C > 0, ∀ N ≥ 3, (rothNumberNat N : ℝ) ≤ C * N * (Real.log (Real.log N) / Real.log N)^(1/2)`\n  and PROVE the bridge `rothNumberNat_bourgain → rothNumberNat_isLittleO_id` (an explicit\n  `(log log N / log N)^{1/2}` bound ⟹ `o(N)`, since the ratio → 0). This is a *real* provable\n  lemma connecting an axiomatized quantitative bound to Mathlib's qualitative result — the honest\n  unit of progress here. Status would be `axiomatized`.\n- Since oq-02's `rothNumberNat_bloom_sisask` axiom implies the Bourgain bound, an alternative is\n  to DERIVE `rothNumberNat_bourgain` from the oq-02 axiom rather than re-axiomatize. Cleaner\n  dependency, but both remain assumptions.\n\n**Decision: SURVEY / ORIENT.** Statement is clear and anchored; a genuine proof is blocked on\nmissing Mathlib infrastructure (>1000 LOC). Realistic next deliverable is M1 once Docker is up.\n\n---\n\n## Dead Ends\n\n- Working at the project-local `ZMod N` `rothNumber` level (as in `RothTheorem.lean`) for the\n  quantitative statement: diverges from the Mathlib `rothNumberNat` API that oq-02 and the\n  qualitative `_isLittleO_id` result use. Stay at the Mathlib level.\n\n---\n\n## Systemic Note (for a builder, not this session)\n\n`scripts/research/enrich-research.ts` has a systemic dual bug affecting all `-oq-NN` slugs:\n1. `slugToPascalCase` emits `Oq` (lowercase `q`) for the `oq` token, so the correctly-cased\n   own-prefix (`RothTheoremOQ01`) is never generated and never matches real `*OQ##*.lean` files.\n2. The bare-root `-oq-NN` fallback (`RothTheorem`) `startsWith`-matches every sibling.\n\nA measured probe (`oq`→`OQ` casing + dropping the bare-root fallback for `-oq` slugs) changes\nattribution for **1431 / 2158** slugs: 9 are pure gains (`-incomplete-01` mid-slug OQs that\ncurrently match nothing due to casing) and the rest only shed misattributed siblings. This is the\nreal root fix but has a large blast radius and cannot be render-verified during the Docker\nblackout — left as a recommendation rather than shipped. Per-slug `SPECIAL_CASES` remains the\nsafe interim patch.\n"
+  },
+  "tags": [
+    "additive-combinatorics",
+    "fourier-analysis",
+    "roth-theorem",
+    "quantitative-bounds"
+  ],
+  "relatedProofs": [
+    "roth-theorem"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-15T02:22:21.995Z",
+  "lastUpdate": "2026-06-15T02:22:23.808Z"
+}

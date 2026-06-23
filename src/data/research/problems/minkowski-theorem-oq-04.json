@@ -106,7 +106,9 @@
     "minkowski-theorem",
     "minkowski-theorem-oq-02",
     "minkowski-theorem-oq-02-oq-01",
-    "minkowski-theorem-oq-04"
+    "minkowski-theorem-oq-03",
+    "minkowski-theorem-oq-04",
+    "minkowski-theorem-oq-05"
   ],
   "references": {
     "papers": [],
@@ -140,15 +142,48 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/MinkowskiTheoremOQ02OQ03.lean",
+      "filename": "MinkowskiTheoremOQ02OQ03.lean",
+      "lineCount": 569,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ03.lean",
+      "filename": "MinkowskiTheoremOQ03.lean",
+      "lineCount": 163,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ03.lean"
+    },
+    {
       "path": "Proofs/MinkowskiTheoremOQ04.lean",
       "filename": "MinkowskiTheoremOQ04.lean",
-      "lineCount": 1126,
+      "lineCount": 1127,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ05.lean",
+      "filename": "MinkowskiTheoremOQ05.lean",
+      "lineCount": 122,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ05.lean"
     }
   ],
   "lastUpdate": "2026-06-13"

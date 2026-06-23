@@ -1,0 +1,87 @@
+{
+  "slug": "menelaus-theorem-oq-01",
+  "title": "Menelaus's theorem: collinearity via signed side ratios",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Formalize Menelaus's theorem in the affine/Euclidean plane: for triangle ABC and points X on line BC, Y on line CA, Z on line AB, the three points are collinear iff the product of signed ratios (BX/XC)*(CY/YA)*(AZ/ZB) = -1. Recommended route: work in EuclideanSpace R (Fin 2) or a real affine space; encode each division point via an affine combination X = B + t*(C-B), express collinearity through a 2x2 determinant (or AffineMap), and reduce the equivalence to a polynomial identity dischargeable by field_simp + ring. Complements the existing Ceva gallery entries (Ceva = concurrency of cevians; Menelaus = collinearity of a transversal). Not a named Mathlib result.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-16T12:40:00.000Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: menelaus-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "seeker-selected",
+    "euclidean-geometry",
+    "affine-geometry",
+    "collinearity",
+    "triangle-geometry",
+    "research"
+  ],
+  "relatedProofs": [
+    "menelaus-theorem-oq-01",
+    "menelaus-theorem-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-16T18:50:58.743Z",
+  "lastUpdate": "2026-06-16T18:50:58.743Z",
+  "completed": "2026-06-16T18:50:58.743Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MenelausTheorem.lean",
+      "filename": "MenelausTheorem.lean",
+      "lineCount": 140,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MenelausTheorem.lean"
+    },
+    {
+      "path": "Proofs/MenelausTheoremOQ01.lean",
+      "filename": "MenelausTheoremOQ01.lean",
+      "lineCount": 192,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MenelausTheoremOQ01.lean"
+    }
+  ]
+}

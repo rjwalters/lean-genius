@@ -123,7 +123,10 @@
     "seeker-selected"
   ],
   "relatedProofs": [
-    "erdos-998"
+    "erdos-9",
+    "erdos-99",
+    "erdos-998",
+    "erdos-998-oq-04"
   ],
   "references": {
     "papers": [
@@ -143,5 +146,29 @@
   "started": "2026-06-15T00:00:00Z",
   "lastUpdate": "2026-06-19T09:30:00-08:00",
   "significance": 7,
-  "tractability": 7
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos998Problem.lean",
+      "filename": "Erdos998Problem.lean",
+      "lineCount": 191,
+      "theoremCount": 4,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos998Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos998ThreeGapOQ04.lean",
+      "filename": "Erdos998ThreeGapOQ04.lean",
+      "lineCount": 761,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos998ThreeGapOQ04.lean"
+    }
+  ]
 }

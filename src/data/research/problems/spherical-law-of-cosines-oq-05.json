@@ -89,5 +89,68 @@
       "S6: Mathlib contribution path — lift haversine + haversine_formula_algebraic + eq_two_arcsin_sqrt_haversine + haversine_eq_one_sub_cos_div_two etc. into Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic. Discuss with maintainers.",
       "S7: strict monotonicity of haversine on [0, π] (haversine_strictMonoOn_Icc_zero_pi), giving injectivity of the side-from-haversine recovery."
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SphericalLawOfCosines.lean",
+      "filename": "SphericalLawOfCosines.lean",
+      "lineCount": 342,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosines.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ03.lean",
+      "filename": "SphericalLawOfCosinesOQ03.lean",
+      "lineCount": 425,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ03.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ03Bidual.lean",
+      "filename": "SphericalLawOfCosinesOQ03Bidual.lean",
+      "lineCount": 97,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ03Bidual.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ03Primal.lean",
+      "filename": "SphericalLawOfCosinesOQ03Primal.lean",
+      "lineCount": 104,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ03Primal.lean"
+    },
+    {
+      "path": "Proofs/SphericalLawOfCosinesOQ05.lean",
+      "filename": "SphericalLawOfCosinesOQ05.lean",
+      "lineCount": 690,
+      "theoremCount": 38,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SphericalLawOfCosinesOQ05.lean"
+    }
+  ],
+  "relatedProofs": [
+    "law-of-cosines-oq-01",
+    "spherical-law-of-cosines",
+    "spherical-law-of-cosines-oq-03",
+    "spherical-law-of-cosines-oq-05"
+  ]
 }

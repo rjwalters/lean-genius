@@ -56,7 +56,10 @@
     "repunit",
     "divisibility"
   ],
-  "relatedProofs": [],
+  "relatedProofs": [
+    "repunit-oq-01",
+    "repunit-oq-02"
+  ],
   "references": {
     "papers": [],
     "urls": [],
@@ -70,13 +73,24 @@
     {
       "path": "Proofs/RepunitDivisibilityOQ01.lean",
       "filename": "RepunitDivisibilityOQ01.lean",
-      "lineCount": 140,
+      "lineCount": 134,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RepunitDivisibilityOQ01.lean"
+    },
+    {
+      "path": "Proofs/RepunitDivisibilityOQ02.lean",
+      "filename": "RepunitDivisibilityOQ02.lean",
+      "lineCount": 114,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RepunitDivisibilityOQ02.lean"
     }
   ]
 }

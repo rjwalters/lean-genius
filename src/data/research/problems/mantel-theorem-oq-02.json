@@ -59,11 +59,27 @@
     ],
     "markdown": "# Knowledge Base: mantel-theorem-oq-02\n\n## Problem Understanding\n\nClean closed-form Turán bound for an arbitrary K_{r+1}-free graph, generalizing the gallery's Mantel entry (r = 2).\n\n## Insights\n\nMathlib supplies the exact bound for arbitrary graphs and the clean bound only for the Turán graph; the missing textbook statement is their composition, bridged by the fact that the arbitrary-graph bound's RHS equals the Turán graph's edge count.\n\n## Outcome\n\nProved axiom-free in Proofs/TuranEdgeBound.lean: integer form, rational form, sharpness, and Mantel as the r = 2 corollary. 0 sorries, 0 axioms.\n"
   },
-  "tags": ["graph-theory", "combinatorics", "extremal-graph-theory", "turan", "mantel"],
-  "relatedProofs": ["mantel-theorem", "mantel-theorem-oq-01"],
+  "tags": [
+    "graph-theory",
+    "combinatorics",
+    "extremal-graph-theory",
+    "turan",
+    "mantel"
+  ],
+  "relatedProofs": [
+    "mantel-theorem",
+    "mantel-theorem-oq-01",
+    "mantel-theorem-oq-02",
+    "mantel-theorem-oq-03",
+    "mantel-theorem-oq-04",
+    "mantel-theorem-oq-04-oq-01",
+    "mantel-theorem-oq-04-oq-02"
+  ],
   "references": {
     "papers": [],
-    "urls": ["https://en.wikipedia.org/wiki/Tur%C3%A1n%27s_theorem"],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Tur%C3%A1n%27s_theorem"
+    ],
     "mathlib": [
       "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
     ]
@@ -72,15 +88,70 @@
   "significance": 8,
   "leanFiles": [
     {
-      "path": "Proofs/TuranEdgeBound.lean",
-      "filename": "TuranEdgeBound.lean",
-      "lineCount": 119,
+      "path": "Proofs/MantelTheorem.lean",
+      "filename": "MantelTheorem.lean",
+      "lineCount": 85,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TuranEdgeBound.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheorem.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ03.lean",
+      "filename": "MantelTheoremOQ03.lean",
+      "lineCount": 105,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ04.lean",
+      "filename": "MantelTheoremOQ04.lean",
+      "lineCount": 112,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ04OQ01.lean",
+      "filename": "MantelTheoremOQ04OQ01.lean",
+      "lineCount": 148,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremOQ04OQ02.lean",
+      "filename": "MantelTheoremOQ04OQ02.lean",
+      "lineCount": 143,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/MantelTheoremUniqueness.lean",
+      "filename": "MantelTheoremUniqueness.lean",
+      "lineCount": 71,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MantelTheoremUniqueness.lean"
     }
   ]
 }

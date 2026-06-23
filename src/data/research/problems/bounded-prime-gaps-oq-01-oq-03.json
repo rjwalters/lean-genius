@@ -33,17 +33,17 @@
     "builtItems": [
       "BoundedPrimeGapsOQ01OQ03.lean: table_k2, table_k3, table_k5, table_k50 (diameter witness theorems)",
       "complete_diameter_table: k={2,3,5,50} diameter table in one theorem",
-      "oq01_upper_bound_is_tight: 246 is exact, not just \u2264 246",
+      "oq01_upper_bound_is_tight: 246 is exact, not just ≤ 246",
       "maynard_tao_50_sieve_limit: 50-tuple sieve limit is exactly 246",
-      "exact_gap_bound_hierarchy: TPC \u2192 H=2, unconditional H\u2264246 (tight)",
+      "exact_gap_bound_hierarchy: TPC → H=2, unconditional H≤246 (tight)",
       "gallery entry src/data/proofs/bounded-prime-gaps-oq-01-oq-03/"
     ],
     "insights": [
-      "BoundedPrimeGapsOQ03 already proves the Engelsma result \u2014 this file connects it to the OQ-01 diameter framework",
-      "The OQ-01 table entry for k=50 was previously only \u2264246; Engelsma lower bound makes it exact = 246",
+      "BoundedPrimeGapsOQ03 already proves the Engelsma result — this file connects it to the OQ-01 diameter framework",
+      "The OQ-01 table entry for k=50 was previously only ≤246; Engelsma lower bound makes it exact = 246",
       "Importing BoundedPrimeGapsOQ03 avoids duplicating the admissibility proof and native_decide checks",
-      "The sieve limit theorem states both parts: H\u2264246 is achievable AND no improvement possible via 50-tuple",
-      "engelsma_lower_bound in OQ03 uses H.card \u2265 50 (not = 50) \u2014 generalized to \u2265 50 elements"
+      "The sieve limit theorem states both parts: H≤246 is achievable AND no improvement possible via 50-tuple",
+      "engelsma_lower_bound in OQ03 uses H.card ≥ 50 (not = 50) — generalized to ≥ 50 elements"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -59,8 +59,11 @@
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
     "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-01-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
     "bounded-prime-gaps-oq-04",
     "bounded-prime-gaps-oq-04-oq-01",
@@ -110,6 +113,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
     },
     {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
       "filename": "BoundedPrimeGapsOQ03.lean",
       "lineCount": 280,
@@ -132,6 +146,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
     },
     {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean",
+      "lineCount": 407,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01ChebyshevLower.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
       "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
       "lineCount": 188,
@@ -141,6 +188,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 998,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",

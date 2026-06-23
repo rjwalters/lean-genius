@@ -66,6 +66,7 @@
     "erdos-10",
     "erdos-106",
     "erdos-1065",
+    "erdos-1065-incomplete-01",
     "erdos-1065-oq-05"
   ],
   "references": {
@@ -81,7 +82,7 @@
     {
       "path": "Proofs/Erdos1065BatemanHorn.lean",
       "filename": "Erdos1065BatemanHorn.lean",
-      "lineCount": 460,
+      "lineCount": 461,
       "theoremCount": 35,
       "axiomCount": 1,
       "defCount": 3,
@@ -99,6 +100,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065CunninghamChains.lean"
+    },
+    {
+      "path": "Proofs/Erdos1065Incomplete01.lean",
+      "filename": "Erdos1065Incomplete01.lean",
+      "lineCount": 182,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1065Incomplete01.lean"
     },
     {
       "path": "Proofs/Erdos1065Problem.lean",

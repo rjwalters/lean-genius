@@ -62,7 +62,9 @@
     "fourier-series-oq-02-oq-03",
     "fourier-series-oq-02-oq-03-oq-02",
     "fourier-series-oq-03",
-    "fourier-series-oq-04"
+    "fourier-series-oq-04",
+    "fourier-series-oq-04-oq-01",
+    "fourier-series-oq-04-wip-01"
   ],
   "references": {
     "papers": [],
@@ -220,13 +222,24 @@
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 280,
-      "theoremCount": 8,
+      "lineCount": 599,
+      "theoremCount": 15,
       "axiomCount": 1,
       "defCount": 4,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04WIP01.lean",
+      "filename": "FourierSeriesOQ04WIP01.lean",
+      "lineCount": 124,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04WIP01.lean"
     }
   ]
 }

@@ -47,10 +47,13 @@
   ],
   "relatedProofs": [
     "solution-of-cubic",
+    "solution-of-cubic-oq-01",
+    "solution-of-cubic-oq-01-oq-01",
     "solution-of-cubic-oq-03",
     "solution-of-cubic-oq-03-oq-01",
     "solution-of-cubic-oq-03-oq-02",
     "solution-of-cubic-oq-03-oq-03",
+    "solution-of-cubic-oq-03-oq-04",
     "solution-of-cubic-oq-03-oq-05",
     "solution-of-cubic-oq-05"
   ],
@@ -75,6 +78,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubic.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ01.lean",
+      "filename": "SolutionOfCubicOQ01.lean",
+      "lineCount": 162,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ01.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ01OQ01.lean",
+      "filename": "SolutionOfCubicOQ01OQ01.lean",
+      "lineCount": 202,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ01OQ01.lean"
     },
     {
       "path": "Proofs/SolutionOfCubicOQ03.lean",
@@ -119,6 +144,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/SolutionOfCubicOQ03OQ04.lean",
+      "filename": "SolutionOfCubicOQ03OQ04.lean",
+      "lineCount": 220,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SolutionOfCubicOQ03OQ04.lean"
     },
     {
       "path": "Proofs/SolutionOfCubicOQ03OQ05.lean",

@@ -40,8 +40,8 @@
       "ap_free_min_removal: edge removal lower bound |R| >= |A|N",
       "Gallery entry: src/data/proofs/roth-theorem-k3-oq-02/",
       "rsVertex_card: Fintype.card (RSVertex N) = 3 * N (proved)",
-      "rs_tc_ap_free_le: triangleCount RS \u2264 6|A|N when APFree (sorry - needs triangle counting argument)",
-      "rs_removal_lb: |R| \u2265 |A|\u00b7N when R makes RS triangle-free and APFree (sorry - needs edge-disjointness injectivity)",
+      "rs_tc_ap_free_le: triangleCount RS ≤ 6|A|N when APFree (sorry - needs triangle counting argument)",
+      "rs_removal_lb: |R| ≥ |A|·N when R makes RS triangle-free and APFree (sorry - needs edge-disjointness injectivity)",
       "roth_via_triangle_removal: complete 60-line proof body connecting TRL to RS via helper lemmas",
       "roth_proofs_agree: fixed broken proof (replaced min 1 (le_of_lt hdelta) with correct case split)"
     ],
@@ -52,7 +52,7 @@
       "Edge-disjointness is the key: each edge in exactly one triangle when AP-free",
       "linear_combination tactic essential for ZMod N arithmetic (linarith does not work)",
       "Existing Mathlib uses triangle removal internally via corners chain, but does not expose the RS construction",
-      "Main proof structure: get rational eps_q=1/n0 < delta/18, apply TRL to get gamma, set N0=ceil(6/27gamma)+1, contradiction via delta*N^2 \u2264 |A|*N \u2264 |R| \u2264 9*eps_q*N^2 < delta*N^2",
+      "Main proof structure: get rational eps_q=1/n0 < delta/18, apply TRL to get gamma, set N0=ceil(6/27gamma)+1, contradiction via delta*N^2 ≤ |A|*N ≤ |R| ≤ 9*eps_q*N^2 < delta*N^2",
       "SzemerediCounting.lean has pre-existing timeout errors (lines 665, 1031) blocking full build verification",
       "The two helper sorries have clear mathematical content: rs_tc_ap_free_le via bijection (a,x,sigma)->ordered-triangle, rs_removal_lb via XY-edge injectivity"
     ],
@@ -72,6 +72,7 @@
     "seeker-selected"
   ],
   "relatedProofs": [
+    "roth-theorem",
     "roth-theorem-k3",
     "roth-theorem-k3-oq-02"
   ],

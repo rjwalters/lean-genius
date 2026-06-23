@@ -43,11 +43,13 @@
     "dissection-of-cubes",
     "dissection-of-cubes-oq-01",
     "dissection-of-cubes-oq-01-oq-01",
+    "dissection-of-cubes-oq-01-oq-01-oq-01",
     "dissection-of-cubes-oq-01-oq-03",
     "dissection-of-cubes-oq-02",
     "dissection-of-cubes-oq-02-oq-02",
     "dissection-of-cubes-oq-02-wip-01",
     "dissection-of-cubes-oq-03",
+    "dissection-of-cubes-oq-03-oq-02",
     "dissection-of-cubes-oq-04"
   ],
   "references": {
@@ -85,13 +87,24 @@
     {
       "path": "Proofs/DissectionOfCubesOQ01OQ01.lean",
       "filename": "DissectionOfCubesOQ01OQ01.lean",
-      "lineCount": 329,
+      "lineCount": 325,
       "theoremCount": 26,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ01OQ01OQ01.lean",
+      "filename": "DissectionOfCubesOQ01OQ01OQ01.lean",
+      "lineCount": 285,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/DissectionOfCubesOQ01OQ03.lean",
@@ -140,13 +153,24 @@
     {
       "path": "Proofs/DissectionOfCubesOQ03.lean",
       "filename": "DissectionOfCubesOQ03.lean",
-      "lineCount": 600,
+      "lineCount": 624,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 11,
-      "sorryCount": 6,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03.lean"
+    },
+    {
+      "path": "Proofs/DissectionOfCubesOQ03OQ02.lean",
+      "filename": "DissectionOfCubesOQ03OQ02.lean",
+      "lineCount": 209,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DissectionOfCubesOQ03OQ02.lean"
     },
     {
       "path": "Proofs/DissectionOfCubesOQ04.lean",

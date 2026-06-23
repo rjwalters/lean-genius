@@ -54,7 +54,12 @@
   "relatedProofs": [
     "mean-value-theorem",
     "mean-value-theorem-oq-02",
-    "mean-value-theorem-oq-03"
+    "mean-value-theorem-oq-02-oq-01",
+    "mean-value-theorem-oq-02-oq-04",
+    "mean-value-theorem-oq-02-oq-04-oq-01",
+    "mean-value-theorem-oq-03",
+    "mean-value-theorem-oq-04",
+    "mean-value-theorem-oq-05"
   ],
   "references": {
     "papers": [],
@@ -80,13 +85,57 @@
     {
       "path": "Proofs/MeanValueTheoremOQ02.lean",
       "filename": "MeanValueTheoremOQ02.lean",
-      "lineCount": 155,
-      "theoremCount": 4,
-      "axiomCount": 1,
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02OQ01.lean",
+      "filename": "MeanValueTheoremOQ02OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02OQ02UIcc.lean",
+      "filename": "MeanValueTheoremOQ02OQ02UIcc.lean",
+      "lineCount": 131,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02OQ02UIcc.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02OQ04.lean",
+      "filename": "MeanValueTheoremOQ02OQ04.lean",
+      "lineCount": 132,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
+      "filename": "MeanValueTheoremOQ02OQ04OQ01.lean",
+      "lineCount": 772,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 14,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean"
     },
     {
       "path": "Proofs/MeanValueTheoremOQ03.lean",
@@ -109,6 +158,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/MeanValueTheoremOQ05.lean",
+      "filename": "MeanValueTheoremOQ05.lean",
+      "lineCount": 121,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MeanValueTheoremOQ05.lean"
     }
   ]
 }

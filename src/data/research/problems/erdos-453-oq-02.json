@@ -24,7 +24,9 @@
     "since": "2026-03-30T05:40:00Z",
     "iteration": 2,
     "focus": "Session 2 (2026-06-02): added pomerance_consecutive_primes (i=1 corollary, +14 LOC, build-pending Docker INFRA RED)",
-    "blockers": ["Docker INFRA RED (disk 503Mi/96%, sibling container 6h-occupied, corrupted lean4-arm64:v4.26.0 blob)"],
+    "blockers": [
+      "Docker INFRA RED (disk 503Mi/96%, sibling container 6h-occupied, corrupted lean4-arm64:v4.26.0 blob)"
+    ],
     "nextAction": "Search Mathlib for inverse PNT to attempt logPrime_ratio_tendsto_zero elimination",
     "attemptCounts": {
       "total": 2,
@@ -83,7 +85,7 @@
     {
       "path": "Proofs/Erdos453OQ02.lean",
       "filename": "Erdos453OQ02.lean",
-      "lineCount": 248,
+      "lineCount": 255,
       "theoremCount": 7,
       "axiomCount": 2,
       "defCount": 3,
