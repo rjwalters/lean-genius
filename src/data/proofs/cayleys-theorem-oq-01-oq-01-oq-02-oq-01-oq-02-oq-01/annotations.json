@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-explicitreg-overview",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "Cardinality Is Not Structure — Recovering the Regular Representation",
+    "content": "The docstring lays out the three-generation arc. The grandparent showed the orbit map σ ↦ σ·a is a bijection of sets H ≃ α; the parent transported cardinality across it to get #H = #α; but a bijection alone never says which representation H is. This entry supplies the missing structural datum: that orbit bijection is equivariant, e(σ*τ) = σ·(e τ), so it is an isomorphism of H-actions, not just of sets. Consequently, relabelling α by e turns the geometric action of every σ ∈ H into left multiplication by σ on H — the free transitive action literally IS the left-regular representation of H on itself, the sharpest form of the converse to Cayley, valid with no finiteness. A second theme: freeness is the subtle hypothesis throughout, and an abelian transitive subgroup acts freely automatically, making the whole machinery unconditional for abelian groups.",
+    "mathContext": "Grandparent: $H\\simeq\\alpha$ (sets). Parent: $\\#H=\\#\\alpha$. Here: $e(\\sigma\\tau)=\\sigma\\cdot e(\\tau)$, an isomorphism of $H$-actions carrying the geometric action onto $L_\\sigma$.",
+    "significance": "context",
+    "relatedConcepts": ["regular representation", "equivariant map", "converse to Cayley", "isomorphism of group actions", "free transitive action"],
+    "prerequisites": ["group actions", "permutation groups"]
+  },
+  {
+    "id": "ann-equivariance",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 61, "endLine": 77 },
+    "type": "theorem",
+    "title": "Equivariance of the Orbit Map",
+    "content": "regularEquiv_apply records the definitional fact e τ = τ·a (the orbit map evaluates a permutation at the basepoint), kept as a named lemma so the next proof reads cleanly. regularEquiv_equivariant is the structural heart: e(σ*τ) = σ·(e τ), proved in one simp from the apply lemma, Subgroup.coe_mul, and Equiv.Perm.mul_apply. This identity — immediate from e τ = τ·a and associativity of the action — is exactly what upgrades the parent's bare set bijection into an intertwiner of left multiplication on H with the tautological H-action on α. It needs no finiteness and no hypothesis beyond what builds e.",
+    "mathContext": "$e(\\sigma\\tau) = (\\sigma\\tau)\\cdot a = \\sigma\\cdot(\\tau\\cdot a) = \\sigma\\cdot e(\\tau)$.",
+    "significance": "critical",
+    "relatedConcepts": ["equivariance", "intertwiner", "associativity of action", "Equiv.Perm.mul_apply"],
+    "prerequisites": ["group actions", "Mathlib permutation API"]
+  },
+  {
+    "id": "ann-transported-mulleft",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 79, "endLine": 104 },
+    "type": "theorem",
+    "title": "Transported Action Equals Left Multiplication",
+    "content": "transportedAction_eq_mulLeft is the payload: conjugating the geometric permutation σ : Perm α by the orbit bijection e — i.e. e.symm.permCongr σ — yields exactly Equiv.mulLeft σ on H. The proof is ext τ, then the equivariance identity to rewrite e(σ*τ) and Equiv.symm_apply_apply to cancel e.symm ∘ e, leaving σ*τ = mulLeft σ τ. This is the precise sense in which the action 'is' the left-regular representation: relabel α by e and every element acts by left translation. mulLeft_injective then shows σ ↦ Equiv.mulLeft σ is faithful by evaluating both sides at 1 (mulLeft σ 1 = σ), recovering Cayley's theorem for H itself from the geometric action.",
+    "mathContext": "$e^{-1}\\sigma e = L_\\sigma$ on $H$ (where $L_\\sigma\\tau = \\sigma\\tau$); and $\\sigma\\mapsto L_\\sigma$ is injective since $L_\\sigma(1)=\\sigma$.",
+    "significance": "critical",
+    "relatedConcepts": ["Equiv.permCongr", "Equiv.mulLeft", "left-regular representation", "faithfulness", "Cayley's theorem"],
+    "prerequisites": ["conjugation of permutations", "injective maps"]
+  },
+  {
+    "id": "ann-packaged-rep",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 106, "endLine": 119 },
+    "type": "theorem",
+    "title": "The Explicit Regular Representation, Packaged",
+    "content": "isExplicitRegularRepresentation bundles the two pointwise facts at the basepoint Classical.arbitrary α: for arbitrary nonempty α, a free transitive H ≤ Sym(α) admits an equivariant bijection e : H ≃ α carrying left multiplication to the geometric action, under which each σ acts as Equiv.mulLeft σ. This is the formal statement that the free transitive action of H on α is isomorphic, as an H-action, to the left-regular action of H on itself — the sharp converse to Cayley, holding verbatim in the infinite setting.",
+    "mathContext": "$\\exists\\,e:H\\simeq\\alpha,\\ \\forall\\sigma\\tau,\\ \\sigma\\cdot e(\\tau)=e(\\sigma\\tau)\\ \\wedge\\ \\forall\\sigma,\\ e^{-1}\\sigma e = L_\\sigma.$",
+    "significance": "key",
+    "relatedConcepts": ["isomorphism of H-sets", "Classical.arbitrary", "regular representation", "infinite groups"],
+    "prerequisites": ["group action isomorphisms"]
+  },
+  {
+    "id": "ann-abelian-free",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 121, "endLine": 152 },
+    "type": "technique",
+    "title": "Abelian + Transitive ⟹ Free",
+    "content": "Freeness is the delicate hypothesis the whole chain rests on. actsFreely_of_abelian_transitive supplies a clean, checkable sufficient condition: if H acts transitively and its elements pairwise commute, the action is free. The proof is the classical three-line commutation argument — if σ fixes a and τ·a = b, then σ·b = σ(τa) = (στ)a = (τσ)a = τ(σa) = τa = b, so σ fixes every point and equals the identity. This is the textbook fact that a transitive abelian permutation group is regular (sharply transitive), and it needs no finiteness.",
+    "mathContext": "$\\sigma a = a,\\ \\tau a = b \\Rightarrow \\sigma b = \\sigma(\\tau a) = (\\sigma\\tau)a = (\\tau\\sigma)a = \\tau(\\sigma a) = \\tau a = b$, so $\\sigma = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["free action", "abelian group", "point stabiliser", "sharply transitive", "regular permutation group"],
+    "prerequisites": ["commutative groups", "transitive actions"]
+  },
+  {
+    "id": "ann-abelian-consequences",
+    "proofId": "cayleys-theorem-oq-01-oq-01-oq-02-oq-01-oq-02-oq-01",
+    "range": { "startLine": 154, "endLine": 202 },
+    "type": "theorem",
+    "title": "Unconditional Consequences for Abelian Transitive Subgroups",
+    "content": "Feeding the abelian freeness into the ancestor results makes the whole picture unconditional for commutative groups. isRegular_of_abelian_transitive gives regularity; cardinalMk_eq_of_abelian_transitive gives #H = #α (with natCard_eq_of_abelian_transitive the finite refinement to Nat.card H = Fintype.card α); and isExplicitRegularRepresentation_of_abelian_transitive — the capstone — says a transitive abelian H ≤ Sym(α) is, up to relabelling, the left-regular action of H on itself, with commutativity alone supplying freeness. actsFreely_of_isMulCommutative_transitive restates the freeness condition through Mathlib's IsMulCommutative typeclass via Subgroup.mul_comm_of_mem_isMulCommutative, so the result is usable from the idiomatic commutative-subgroup interface.",
+    "mathContext": "Transitive abelian $H \\Rightarrow$ regular, $\\#H=\\#\\alpha$ (and $|H|=|\\alpha|$ when finite), and $H$ carries the explicit regular representation — freeness free from commutativity.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsMulCommutative", "regular representation", "cardinal equality", "Subgroup.mul_comm_of_mem_isMulCommutative"],
+    "prerequisites": ["abelian groups", "Mathlib typeclasses"]
+  }
+]
