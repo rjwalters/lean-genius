@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-fr2-model",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 44, "endLine": 56 },
+    "type": "definition",
+    "title": "Modeling ⁴√2 as √√2",
+    "content": "The fourth root of 2 is defined concretely as Real.sqrt (Real.sqrt 2) rather than via an abstract algebraic root. This choice pays off immediately: fr2_sq proves (⁴√2)² = √2 and fr2_pow_four proves (⁴√2)⁴ = 2, both falling out of Real.sq_sqrt applied to the nonnegativity of √2 and of 2. Working with the explicit real number keeps every later statement (irrationality, the tower, linear independence) anchored in ℝ while the field theory happens over ℚ.",
+    "mathContext": "$\\sqrt[4]{2} := \\sqrt{\\sqrt{2}}$, so $(\\sqrt[4]{2})^2 = \\sqrt 2$ and $(\\sqrt[4]{2})^4 = 2$ by $\\sqrt{x}^2 = x$ for $x \\geq 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["real square root", "nested radicals", "nth roots"],
+    "prerequisites": ["real analysis", "elementary algebra"]
+  },
+  {
+    "id": "ann-fr2-no-rat-fourth",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 58, "endLine": 79 },
+    "type": "technique",
+    "title": "The arithmetic seed: 2 has no rational fourth root",
+    "content": "no_rat_fourth_two reduces the irrationality of ⁴√2 to the classical irrationality of √2. If q⁴ = 2 for a rational q, then r := q² is a rational number with r² = 2 and r ≥ 0, so √2 = r ∈ ℚ — contradicting irrational_sqrt_two. fr2_irrational then casts this back: if ⁴√2 = q then q⁴ = (⁴√2)⁴ = 2. This is a degree-lowering trick — squaring collapses the fourth-power problem onto the already-known square case.",
+    "mathContext": "$q^4 = 2 \\implies (q^2)^2 = 2 \\implies \\sqrt 2 = q^2 \\in \\mathbb{Q}$, contradicting $\\sqrt 2 \\notin \\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["irrationality of √2", "proof by contradiction", "rational numbers"],
+    "prerequisites": ["irrationality of √2", "elementary number theory"]
+  },
+  {
+    "id": "ann-fr2-integral",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 81, "endLine": 83 },
+    "type": "concept",
+    "title": "⁴√2 is integral over ℚ",
+    "content": "fr2_isIntegral exhibits ⁴√2 as a root of the monic polynomial X⁴ − 2 ∈ ℚ[X], establishing integrality (here equivalently algebraicity, since ℚ is a field). This is the hypothesis that later licenses the simple-extension degree formula IntermediateField.adjoin.finrank. The witness is supplied directly as the triple (X⁴ − 2, its monicity, the evaluation (⁴√2)⁴ − 2 = 0).",
+    "mathContext": "$\\sqrt[4]{2}$ is a root of the monic $X^4 - 2 \\in \\mathbb{Q}[X]$, hence integral/algebraic over $\\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["integral element", "algebraic number", "monic polynomial"],
+    "prerequisites": ["field theory", "ring theory"]
+  },
+  {
+    "id": "ann-fr2-eisenstein",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 85, "endLine": 123 },
+    "type": "insight",
+    "title": "Irreducibility over ℤ via Eisenstein at the prime 2",
+    "content": "The centerpiece. Mathlib's dedicated Kummer-extension lemmas (X_pow_sub_C_irreducible_of_prime_pow, _of_odd) explicitly exclude exponent 4 = 2² — their hypotheses demand an odd prime / odd exponent, with TODO comments to generalize. So the proof routes around them via Eisenstein's criterion at p = 2 over ℤ: the coefficient lemma coeff_X4_sub_2 reads off the coefficients (0,0,0,−2) below the leading term, and the four Eisenstein conditions are discharged in the ideal (2): leading coefficient 1 ∉ (2), all lower coefficients ∈ (2), constant term −2 ∉ (2)² = (4), and the polynomial is primitive (being monic). The prime ideal (2) is verified prime via Int.prime_two.",
+    "mathContext": "$X^4 - 2$: leading $1 \\notin (2)$, lower coeffs $\\in (2)$, constant $-2 \\notin (4)=(2)^2 \\Rightarrow$ irreducible over $\\mathbb{Z}$ (Eisenstein at $2$).",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein's criterion", "prime ideal", "irreducible polynomial", "Kummer extension", "primitive polynomial"],
+    "prerequisites": ["ring theory", "ideals", "polynomial irreducibility"]
+  },
+  {
+    "id": "ann-fr2-gauss",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 125, "endLine": 132 },
+    "type": "technique",
+    "title": "Descending to ℚ by Gauss's lemma",
+    "content": "irreducible_X4_sub_2_rat transfers irreducibility from ℤ[X] to ℚ[X]. Gauss's lemma (IsPrimitive.Int.irreducible_iff_irreducible_map_cast) states that a primitive integer polynomial is irreducible over ℤ iff its image in ℚ[X] is irreducible. Since X⁴ − 2 is monic (hence primitive), the integer irreducibility from Eisenstein transports directly; a small map-computation confirms the ℤ→ℚ cast leaves X⁴ − 2 unchanged. This two-step Eisenstein-then-Gauss pattern is the standard route to irreducibility over ℚ when the polynomial has integer coefficients.",
+    "mathContext": "Gauss: primitive $f \\in \\mathbb{Z}[X]$ irreducible over $\\mathbb{Z} \\iff$ irreducible over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["Gauss's lemma", "primitive polynomial", "content of a polynomial", "unique factorization"],
+    "prerequisites": ["ring theory", "unique factorization domains"]
+  },
+  {
+    "id": "ann-fr2-minpoly-degree",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 134, "endLine": 147 },
+    "type": "concept",
+    "title": "Minimal polynomial and the degree [ℚ(⁴√2):ℚ] = 4",
+    "content": "Once X⁴ − 2 is known monic, irreducible over ℚ, and annihilating ⁴√2, minpoly.eq_of_irreducible_of_monic identifies it as the minimal polynomial (minpoly_fr2). Its natDegree is 4 (minpoly_natDegree_fr2), and the simple-extension dimension formula IntermediateField.adjoin.finrank then gives [ℚ(⁴√2):ℚ] = deg(minpoly) = 4 (finrank_adjoin_fr2). This sharpens 'irrational' (degree > 1) to the exact degree 4.",
+    "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}(\\sqrt[4]{2}) = X^4 - 2 \\Rightarrow [\\mathbb{Q}(\\sqrt[4]{2}):\\mathbb{Q}] = \\deg = 4.$",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "field extension degree", "simple extension", "algebraic degree"],
+    "prerequisites": ["field theory", "minimal polynomials"]
+  },
+  {
+    "id": "ann-fr2-tower",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 148, "endLine": 179 },
+    "type": "insight",
+    "title": "The quadratic tower ℚ ⊂ ℚ(√2) ⊂ ℚ(⁴√2)",
+    "content": "Because (⁴√2)² = √2, the element √2 lies in ℚ(⁴√2) (sqrt2_mem_adjoin_fr2 via pow_mem on the generator). The bottom step finrank_adjoin_sqrt2 proves [ℚ(√2):ℚ] = 2: X² − 2 is irreducible over ℚ (it has degree ≤ 3 and no rational root, since x² = 2 would make √2 = |x| rational), so it is the minimal polynomial of √2. The tower law then reads 4 = 2 · 2 — ℚ(⁴√2) is a quadratic extension of the quadratic extension ℚ(√2). Note the no-rational-root step reuses the same irrational_sqrt_two engine as the arithmetic seed.",
+    "mathContext": "$(\\sqrt[4]{2})^2 = \\sqrt 2 \\Rightarrow \\mathbb{Q}(\\sqrt 2) \\subseteq \\mathbb{Q}(\\sqrt[4]{2})$, and $[\\mathbb{Q}(\\sqrt 2):\\mathbb{Q}]=2 \\Rightarrow 4 = 2\\cdot 2.$",
+    "significance": "supporting",
+    "relatedConcepts": ["tower law", "tower of fields", "quadratic extension", "multiplicativity of degree"],
+    "prerequisites": ["field theory", "tower law for field extensions"]
+  },
+  {
+    "id": "ann-fr2-linind",
+    "proofId": "fourth-root-2-irrational",
+    "range": { "startLine": 181, "endLine": 207 },
+    "type": "concept",
+    "title": "ℚ-linear independence of the power basis {1, ⁴√2, √2, ⁴√8}",
+    "content": "linearIndependent_fr2_powers applies linearIndependent_pow: the powers 1, x, …, x^{d−1} below the minimal-polynomial degree d are always linearly independent. Here d = 4, so {1, ⁴√2, (⁴√2)², (⁴√2)³} = {1, ⁴√2, √2, ⁴√8} forms a ℚ-basis of ℚ(⁴√2). fr2_no_cubic_relation restates this elementarily: any rational relation a + b·⁴√2 + c·(⁴√2)² + d·(⁴√2)³ = 0 forces a = b = c = d = 0 — there is no rational polynomial relation of degree ≤ 3 satisfied by ⁴√2. The reformulation extracts the coefficient vanishing from the Fintype.linearIndependent_iff characterization.",
+    "mathContext": "$\\{1, \\sqrt[4]{2}, \\sqrt 2, \\sqrt[4]{8}\\}$ is a $\\mathbb{Q}$-basis of $\\mathbb{Q}(\\sqrt[4]{2})$; no nonzero $a,b,c,d \\in \\mathbb{Q}$ give $a + b\\sqrt[4]{2} + c\\sqrt 2 + d\\sqrt[4]{8} = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["power basis", "linear independence", "vector space basis", "field as vector space"],
+    "prerequisites": ["linear algebra", "field theory"]
+  }
+]
