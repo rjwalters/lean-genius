@@ -55,7 +55,7 @@ This creates `.lean/research/problems.json` with all 400+ open problems.
 
 Before selecting problems, refresh the candidate pool to include newly enriched gallery proofs:
 
-1. Extract problems from gallery: `npx tsx .lean/scripts/extract-problems.ts --json > .lean/research/problems.json`
+1. Extract problems from gallery: `npx tsx .lean/scripts/extract-problems.ts --json` (the script writes `.lean/research/problems.json` itself — do **not** add a `> .lean/research/problems.json` redirect, which clobbers the file and corrupts the reservoir)
 2. Sync to candidate pool: `python3 research/db/sync_pool.py`
 3. Proceed with selection from the refreshed pool
 

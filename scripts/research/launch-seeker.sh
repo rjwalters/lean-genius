@@ -173,7 +173,11 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
 
 2. **Refresh candidate pool** (picks up newly enriched gallery proofs)
    \`\`\`bash
-   npx tsx .lean/scripts/extract-problems.ts --json > .lean/research/problems.json 2>/dev/null
+   # NOTE: --json mode writes .lean/research/problems.json itself. Do NOT add a
+   # shell redirect (> .lean/research/problems.json) — it clobbers the file the
+   # script writes, interleaving stdout progress lines into the JSON and
+   # corrupting the reservoir. (Caused 100+ no-op replenish cycles.)
+   npx tsx .lean/scripts/extract-problems.ts --json 2>/dev/null
    python3 research/db/sync_pool.py 2>/dev/null
    \`\`\`
 
