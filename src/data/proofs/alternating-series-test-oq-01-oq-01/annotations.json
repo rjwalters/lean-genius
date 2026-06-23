@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ast-oq0101-ann-header",
+    "proofId": "alternating-series-test-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 29 },
+    "type": "context",
+    "title": "Sharpening Leibniz to a Two-Sided Error Trap",
+    "content": "The classical Leibniz (alternating series) test bounds the truncation error of S_N = ∑_{i<N} (−1)ⁱ f(i), with f antitone → 0, by the first omitted term: |S_N − l| ≤ f(N). This file adds the matching LOWER bound, trapping the error between two consecutive terms: f(N) − f(N+1) ≤ |S_N − l| ≤ f(N). The lower bound shows the Leibniz estimate is essentially sharp — the error is never smaller than the gap between the first two omitted terms. The mechanism is the nesting of partial sums: l lies between every pair of consecutive partial sums, hence between S_{N+1} and S_{N+2}, and S_{N+2} differs from S_N by exactly ±(f(N) − f(N+1)). The lower bound is absent from Mathlib.",
+    "mathContext": "$f(N) - f(N+1) \\le |S_N - l| \\le f(N),\\quad S_N = \\sum_{i<N}(-1)^i f(i)$",
+    "significance": "key",
+    "relatedConcepts": ["alternating series test", "Leibniz criterion", "truncation error", "nested partial sums"],
+    "prerequisites": ["convergence of series", "antitone sequences"]
+  },
+  {
+    "id": "ast-oq0101-ann-recurrence",
+    "proofId": "alternating-series-test-oq-01-oq-01",
+    "range": { "startLine": 38, "endLine": 69 },
+    "type": "technique",
+    "title": "One- and Two-Step Partial-Sum Recurrences",
+    "content": "partialSum_succ is the one-step recurrence S_{n+1} = S_n + (−1)ⁿ f(n) (Finset.sum_range_succ). partialSum_add_two iterates it twice; using (−1)^{n+1} = −(−1)ⁿ, the two new signed terms collapse to (−1)ⁿ(f(n) − f(n+1)). Split by parity, this gives partialSum_even_add_two (S_{N+2} = S_N + (f(N) − f(N+1)) for even N) and partialSum_odd_add_two (S_{N+2} = S_N − (f(N) − f(N+1)) for odd N). These exact two-step jumps are what let the limit's nesting position be converted into a quantitative distance from S_N.",
+    "mathContext": "$S_{n+2} = S_n + (-1)^n(f(n) - f(n+1))$; even $N$: $+$, odd $N$: $-$",
+    "significance": "supporting",
+    "relatedConcepts": ["telescoping", "Finset.sum_range_succ", "parity of (−1)ⁿ", "two-step recurrence"],
+    "prerequisites": ["finite sums", "sign of (−1)ⁿ"]
+  },
+  {
+    "id": "ast-oq0101-ann-trap",
+    "proofId": "alternating-series-test-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 136 },
+    "type": "theorem",
+    "title": "The Two-Sided Two-Term Trap",
+    "content": "abs_partialSum_sub_limit_trapped proves f(N) − f(N+1) ≤ |S_N − l| ≤ f(N). The proof splits on the parity of N. For even N = 2k: Mathlib's alternating_series_le_tendsto / tendsto_le_alternating_series give S_{2k} ≤ l ≤ S_{2k+1}, so S_N − l ≤ 0; the one-step S_{N+1} = S_N + f(N) gives the upper bound and the two-step S_{N+2} = S_N + (f(N) − f(N+1)) ≤ l gives the lower bound, both via linarith on abs_of_nonpos. The odd case is symmetric with abs_of_nonneg. The two halves are extracted as abs_partialSum_sub_limit_le (Leibniz) and sub_le_abs_partialSum_sub_limit (sharpness).",
+    "mathContext": "Even $N$: $S_N \\le S_{N+2} \\le l \\le S_{N+1} = S_N + f(N)$, so $f(N)-f(N+1) \\le l - S_N \\le f(N)$",
+    "significance": "key",
+    "relatedConcepts": ["nested partial sums", "alternating_series_le_tendsto", "case split on parity", "abs_of_nonpos"],
+    "prerequisites": ["the recurrences above", "order limits of partial sums"]
+  },
+  {
+    "id": "ast-oq0101-ann-harmonic",
+    "proofId": "alternating-series-test-oq-01-oq-01",
+    "range": { "startLine": 138, "endLine": 186 },
+    "type": "insight",
+    "title": "Capstone: The Alternating Harmonic Series Rate",
+    "content": "Specialising to f(i) = 1/(i+1) (antitone_one_div_succ, → 0) gives the alternating harmonic series ∑ (−1)ⁱ/(i+1) → log 2, with the two-sided quantitative rate 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1). The lower bound uses oneDiv_gap telescoping 1/(N+1) − 1/(N+2) = 1/((N+1)(N+2)) (field_simp). This pins the convergence as exactly first-order: the error is Θ(1/N) from above and never beats Θ(1/N²) from below. The limit value log 2 is irrelevant to either estimate.",
+    "mathContext": "$\\tfrac{1}{(N+1)(N+2)} \\le \\left|\\sum_{i<N}\\tfrac{(-1)^i}{i+1} - \\log 2\\right| \\le \\tfrac{1}{N+1}$",
+    "significance": "key",
+    "relatedConcepts": ["alternating harmonic series", "log 2", "rate of convergence", "telescoping gap"],
+    "prerequisites": ["the two-sided trap", "field_simp"]
+  }
+]
