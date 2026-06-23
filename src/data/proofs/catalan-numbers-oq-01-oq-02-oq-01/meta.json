@@ -91,6 +91,57 @@
       }
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: from p = 2 to all primes",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring framing the entry as the general-prime sequel to the sibling 2-adic valuation. Explains why the 2-adic proof was special (doubling-invariance s₂(2n) = s₂(n)) and names the two uniform-in-p ingredients: Legendre's formula and (2n)! = C(2n,n)·(n!)²."
+    },
+    {
+      "id": "setup",
+      "title": "Namespace and prime variable",
+      "startLine": 38,
+      "endLine": 42,
+      "summary": "Opens Nat, enters namespace CatalanPAdic, and declares the implicit prime variable p used throughout (with the Fact p.Prime instance supplied per theorem)."
+    },
+    {
+      "id": "catalan-ne-zero",
+      "title": "Nonvanishing: catalan n ≠ 0",
+      "startLine": 44,
+      "endLine": 49,
+      "summary": "Supporting lemma that catalan n ≠ 0, derived from (n+1)·Cₙ = C(2n,n) and centralBinom_pos. Required for every p-adic valuation split, since padicValNat additivity needs nonzero arguments."
+    },
+    {
+      "id": "central-binom-valuation",
+      "title": "Central-binomial valuation at a general prime",
+      "startLine": 51,
+      "endLine": 80,
+      "summary": "The core theorem (p−1)·v_p(C(2n,n)) + s_p(2n) = 2·s_p(n). Applies Legendre's formula to (2n)! and n!, splits v_p((2n)!) via the factorisation (2n)! = C(2n,n)·(n!)², distributes (p−1) with one ring step, and closes with omega. digit_sum_le keeps the ℕ-subtractions exact."
+    },
+    {
+      "id": "catalan-valuation",
+      "title": "The p-adic valuation of the Catalan numbers",
+      "startLine": 82,
+      "endLine": 97,
+      "summary": "The full identity (p−1)·(v_p(Cₙ) + v_p(n+1)) + s_p(2n) = 2·s_p(n), obtained from the central-binomial identity by splitting v_p across (n+1)·catalan n = C(2n,n). The −v_p(n+1) term is the Catalan-denominator correction."
+    },
+    {
+      "id": "divisibility-criterion",
+      "title": "p-divisibility criterion",
+      "startLine": 99,
+      "endLine": 129,
+      "summary": "The corollary p ∤ Cₙ ⟺ (p−1)·v_p(n+1) + s_p(2n) = 2·s_p(n). Uses padicValNat_dvd_iff_le to recast divisibility as 1 ≤ v_p(catalan n); the reverse direction uses p ≥ 2 and Nat.mul_eq_zero. Specialises at p = 2 to the parity law n+1 a power of two."
+    },
+    {
+      "id": "concrete-example",
+      "title": "Concrete example: 3 ∤ C₂",
+      "startLine": 131,
+      "endLine": 137,
+      "summary": "A kernel-decide check that C₂ = 2 is not divisible by 3, matching the criterion's arithmetic (2·1 + s₃(4) = 4 = 2·s₃(2)). Kernel decide (not native_decide) keeps the entry free of Lean.ofReduceBool."
+    }
+  ],
   "references": [
     {
       "authors": "Kummer, Ernst Eduard",
