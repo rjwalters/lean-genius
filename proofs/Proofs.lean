@@ -793,6 +793,7 @@ import Proofs.DeMoivreOQ03OQ01OQ01
 import Proofs.DeMoivreOQ04
 import Proofs.DeMoivreOQ05
 import Proofs.DeMoivreOQ05OQ01
+import Proofs.DeMoivreOQ05OQ01OQ01
 import Proofs.DedekindFrobeniusBridge
 import Proofs.DenumerabilityRationals
 import Proofs.DenumerabilityRationalsOQ01
