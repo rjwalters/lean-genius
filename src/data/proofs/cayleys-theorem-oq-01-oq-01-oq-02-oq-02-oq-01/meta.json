@@ -1,0 +1,112 @@
+{
+  "id": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+  "slug": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02-oq-01",
+  "title": "The Holomorph: the Normalizer of the Left-Regular Image is L(G)·Aut(G)",
+  "description": "Over an arbitrary group G, the normalizer of the left-regular image L(G) inside the symmetric group Sym(G) — the holomorph of G — decomposes as L(G)·Aut(G): every normalizing permutation is a left translation followed by the permutation of an automorphism, and the automorphisms are recovered exactly as the normalizing permutations that fix the identity.",
+  "meta": {
+    "author": "Classical (holomorph of a group; Burnside, Miller); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Holomorph_(mathematics)",
+    "date": "1908",
+    "status": "verified",
+    "tags": [
+      "group-theory",
+      "cayley",
+      "holomorph",
+      "permutation-group",
+      "regular-representation",
+      "normalizer",
+      "automorphism-group",
+      "symmetric-group",
+      "semidirect-product",
+      "group-homomorphism",
+      "algebra",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Subgroup.mem_normalizer_iff",
+        "description": "g ∈ H.normalizer ↔ ∀ h, h ∈ H ↔ g * h * g⁻¹ ∈ H — the working characterisation of the normalizer, used in both directions of the automorphism/normalizer correspondence",
+        "module": "Mathlib.Algebra.Group.Subgroup.Defs"
+      },
+      {
+        "theorem": "Subgroup.le_normalizer",
+        "description": "H ≤ H.normalizer — places left translations inside the normalizer, the L(G) factor of the holomorph decomposition",
+        "module": "Mathlib.GroupTheory.Subgroup.Basic"
+      },
+      {
+        "theorem": "MulEquiv.ofBijective",
+        "description": "promotes the bijective multiplicative map built from a normalizing permutation that fixes 1 into an honest automorphism (G ≃* G), closing the converse direction",
+        "module": "Mathlib.Algebra.Group.Equiv.Defs"
+      },
+      {
+        "theorem": "Equiv.mulLeft_mul",
+        "description": "Equiv.mulLeft (a * b) = Equiv.mulLeft a * Equiv.mulLeft b — makes leftReg a group homomorphism G →* Equiv.Perm G on the nose",
+        "module": "Mathlib.Algebra.Group.End"
+      },
+      {
+        "theorem": "MulAut.mul_apply",
+        "description": "(e₁ * e₂) m = e₁ (e₂ m) — the composition law for automorphisms, used to make autPermHom a monoid homomorphism MulAut G →* Equiv.Perm G",
+        "module": "Mathlib.Algebra.Group.End"
+      },
+      {
+        "theorem": "DFunLike.congr_fun",
+        "description": "evaluates an equality of permutations at a point — the 'evaluate at 1' / 'evaluate at b' device that extracts c = σ a and multiplicativity σ(a*b) = σ a · σ b",
+        "module": "Mathlib.Data.FunLike.Basic"
+      }
+    ],
+    "originalContributions": [
+      "autPerm / autPermHom: the realisation of an automorphism as a permutation of the underlying set packaged as a genuine monoid homomorphism MulAut G →* Equiv.Perm G, with autPermHom_injective giving the holomorph embedding Aut(G) ↪ Sym(G)",
+      "autPerm_mul_leftReg: an automorphism intertwines the left-regular representation, φ ∘ L_g = L_{φ g} ∘ φ (equivariance), and the conjugation corollary autPerm_conj_leftReg: φ L_g φ⁻¹ = L_{φ g}",
+      "autPerm_mem_normalizer: every automorphism normalizes L(G)",
+      "mem_normalizer_and_fixes_one_iff: σ ∈ N(L(G)) ∧ σ 1 = 1 ↔ ∃ φ : Aut(G), autPerm φ = σ — Aut(G) is realised exactly as the stabiliser of the identity inside the normalizer (the converse runs the classical 'evaluate at 1' multiplicativity argument)",
+      "mem_normalizer_iff_exists: σ ∈ N(L(G)) ↔ ∃ g φ, σ = leftReg g · autPerm φ — the holomorph decomposition N_{Sym(G)}(L(G)) = L(G)·Aut(G), proved by splitting off the left translation L_{σ 1} so the remainder fixes 1"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 178,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms). No decide/native_decide is used. Holds for an arbitrary (possibly infinite) group G.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 3
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Holomorph",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": "Cayley's theorem embeds a group G into its symmetric group Sym(G) = Equiv.Perm G as the left-regular representation L(G), L_g : x ↦ g·x. The parent entry identifies the centralizer of L(G) as the right-regular image R(G). This file takes the next structural step and identifies the normalizer of L(G) — the holomorph Hol(G) = N_{Sym(G)}(L(G)) — over an arbitrary group G.\n\nThe engine is a single equivariance computation: for an automorphism φ of G, φ(g·x) = φ(g)·φ(x) says precisely that φ (viewed as a permutation of G) intertwines left translations, φ ∘ L_g = L_{φ g} ∘ φ. Conjugating gives φ L_g φ⁻¹ = L_{φ g}, so φ permutes the generators of L(G) and therefore normalizes it. Conversely, a permutation σ that normalizes L(G) and fixes the identity must satisfy σ(a·b) = σ(a)·σ(b): writing σ L_a σ⁻¹ = L_c and reading the equation off at 1 forces c = σ(a), and reading it off at a general point forces multiplicativity, so σ is an automorphism. This proves Aut(G) is realised exactly as the stabiliser of 1 inside the normalizer.\n\nThe full holomorph decomposition N(L(G)) = L(G)·Aut(G) then follows by a one-line reduction: given any normalizing σ, the permutation L_{σ 1}⁻¹ ∘ σ still normalizes L(G) and now fixes 1, hence equals some automorphism φ, so σ = L_{σ 1} ∘ φ. Everything is proved over an arbitrary, possibly infinite group with 0 sorries and 0 axioms.",
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) 178-line file with 12 theorems and 3 definitions identifying the normalizer of the left-regular image L(G) inside Sym(G) — the holomorph of G — over an arbitrary group. The automorphisms are realised exactly as the normalizing permutations fixing the identity (mem_normalizer_and_fixes_one_iff), and the full normalizer decomposes as L(G)·Aut(G) (mem_normalizer_iff_exists). Built on Mathlib's normalizer API and MulEquiv.ofBijective, with the equivariance and 'evaluate at 1' arguments proved here.",
+    "implications": "This completes the structural picture begun by the parent entry: the centralizer of L(G) is R(G), and the normalizer of L(G) is L(G)·Aut(G). Together they exhibit the holomorph Hol(G) = N_{Sym(G)}(L(G)) ≅ G ⋊ Aut(G) at the level of the underlying subgroups, with Aut(G) embedded (autPermHom_injective) as the identity-stabiliser. The autPerm_mul_leftReg equivariance lemma — that an automorphism intertwines the regular representation — is a reusable building block for further work on the holomorph and its semidirect-product structure.",
+    "openQuestions": [
+      "Promote the set-level decomposition N(L(G)) = L(G)·Aut(G) to a group isomorphism N_{Sym(G)}(L(G)) ≅ G ⋊ Aut(G) (SemidirectProduct), exhibiting the splitting L(G) ◁ N and the Aut(G) complement explicitly and computing the quotient N/L(G) ≅ Aut(G).",
+      "Specialise to a finite group G to obtain the order formula |Hol(G)| = |G| · |Aut(G)|, and identify the holomorph of small concrete groups (e.g. Hol(C_n) as the group of affine maps x ↦ a·x + b on Z/n)."
+    ]
+  },
+  "references": [
+    {
+      "title": "Holomorph (mathematics)",
+      "url": "https://en.wikipedia.org/wiki/Holomorph_(mathematics)"
+    },
+    {
+      "title": "Regular representation",
+      "url": "https://en.wikipedia.org/wiki/Regular_representation"
+    }
+  ],
+  "crossReferences": [
+    "cayleys-theorem-oq-01-oq-01-oq-02-oq-02"
+  ],
+  "sections": []
+}
