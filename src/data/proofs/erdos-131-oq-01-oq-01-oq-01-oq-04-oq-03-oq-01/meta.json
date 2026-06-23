@@ -17,6 +17,70 @@
     "sorries": 0
   },
   "title": "The Homogeneous-Power Davenport Lower Bound D(Gⁿ) ≥ n·(D(G) − 1) + 1 (Erdős #131)",
+  "description": "For any additive group G, the Davenport constant of the n-fold direct power Gⁿ = (Fin n → G) satisfies D(Gⁿ) ≥ n·(D(G) − 1) + 1. The bound is proved in one shot from a single explicit extremal construction — the power sequence, which lays n disjoint copies of a zero-sum-free sequence along the coordinate axes — rather than by iterating the binary direct-sum bound, so it needs no per-stage finiteness hypotheses. Specializing D(ℤ/pℤ) = p recovers the lower-bound half of Olson's theorem D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1 for elementary abelian p-groups. Verified, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "The Davenport constant D(G) — the least d such that every length-d sequence over a finite abelian group G contains a nonempty zero-sum subsequence — was popularized by Harold Davenport in the 1960s in connection with the ideal class group of a number field: D(G) bounds the maximal length of an irreducible factorization. Its exact value is known only for special families. John Olson settled the elementary abelian p-group case in his 1969 paper 'A combinatorial problem on finite Abelian groups, I', proving D((ℤ/pℤ)ⁿ) = n·(p − 1) + 1, and the cyclic case D(ℤ/nℤ) = n is classical. The general structure — whether D(G₁ ⊕ G₂) = D(G₁) + D(G₂) − 1 holds for all finite abelian groups — remains a famous open problem (false in general; the rank-3 counterexamples of the 1970s show the easy lower bound need not be sharp). Within Erdős problem #131 on non-dividing sets, the Davenport constant is the additive-combinatorial invariant governing the per-element size bounds, and its direct-power growth is the higher-rank generalization of the cyclic case.",
+    "problemStatement": "Let $G$ be an additive group and $G^n = (\\mathrm{Fin}\\,n \\to G)$ its $n$-fold direct power. Writing $D(\\cdot)$ for the Davenport constant (the least length forcing a nonempty zero-sum subsequence, packaged here as $\\mathrm{IsLeast}$ of the Davenport set), prove the lower bound $D(G^n) \\ge n\\,(D(G) - 1) + 1$. Equivalently: exhibit a zero-sum-free sequence over $G^n$ of length $n\\,(D(G)-1)$.",
+    "proofStrategy": "Avoid the obvious induction on the binary bound $D(G_1 \\oplus G_2) \\ge D(G_1) + D(G_2) - 1$, which would require an $\\mathrm{IsLeast}$ (hence finiteness) hypothesis for every intermediate power $G^k$. Instead give one explicit extremal sequence. Take a zero-sum-free $f : \\mathrm{Fin}(d-1) \\to G$ (it exists because $d = D(G)$ is least, so length $d-1$ is not forcing). Build the power sequence $\\mathrm{powerSeq}_n f$ over $G^n$ of length $n(d-1)$ that places $f(k)$ in coordinate $i$ for the index decoding to $(i,k)$ via $\\mathrm{finProdFinEquiv}$. Show it is zero-sum-free: any candidate zero-sum index set, reindexed into $\\mathrm{Fin}\\,n \\times \\mathrm{Fin}\\,\\ell$, must vanish in each coordinate $j$; reading off coordinate $j$ isolates the slice $\\{k : (j,k) \\text{ chosen}\\}$ as a genuine zero-sum subset of $f$, which zero-sum-freeness forces empty. All slices empty ⟹ the set is empty. So $n(d-1) \\notin \\mathcal{D}(G^n)$, and upward closure of the Davenport set turns this into $D(G^n) \\ge n(d-1)+1$.",
+    "keyInsights": [
+      "The n-dimensional zero-sum problem DECOUPLES into n independent one-dimensional copies: because the extremal sequence lives on disjoint coordinate axes, a zero-sum total must vanish coordinatewise, and each coordinate is just the original zero-sum problem over G. This is the structural reason the lower bound is exactly additive across the n factors.",
+      "Packaging the Davenport constant as IsLeast of a SET rather than as a number is what makes the one-shot proof possible: it carries minimality without assuming G is finite, so no separate finiteness argument is needed — unlike an induction on the binary bound, which would force IsLeast at every intermediate power.",
+      "A single product reindexing finProdFinEquiv : Fin n × Fin ℓ ≃ Fin (n·ℓ) replaces the binary companion's left/right sum split finSumFinEquiv; the homogeneous case collapses what would be n − 1 nested binary concatenations into one bijection.",
+      "The coordinate slice is exhibited as an honest zero-sum subset of f by Finset.sum_image, exploiting that Prod.snd is injective on a slice whose first coordinate is pinned — turning a filtered sum back into a sum over a genuine Finset (Fin ℓ).",
+      "The bound is SHARP exactly for elementary abelian p-groups (Olson), where the matching upper bound is the deep half; the construction here is elementary and unconditional, isolating precisely the easy direction of a result whose hard direction needs Chevalley–Warning."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Header: the homogeneous-power bound",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Docstring stating the goal D(Gⁿ) ≥ n·(D(G) − 1) + 1, the one-shot-vs-induction design rationale, the elementary-abelian specialization, and the self-contained import policy (only `import Mathlib`; helper lemmas reproduced verbatim from the binary companion)."
+    },
+    {
+      "id": "definitions",
+      "title": "Zero-sum subsequences and the Davenport set",
+      "startLine": 57,
+      "endLine": 66,
+      "summary": "Defines `HasZeroSumSubseq f` (some nonempty index set sums to zero) and `DavenportSet G` (the lengths at which every sequence is forced to contain one); the Davenport constant is the least element."
+    },
+    {
+      "id": "davenport-helpers",
+      "title": "Upward closure and positivity helpers",
+      "startLine": 68,
+      "endLine": 90,
+      "summary": "`davenport_set_mono` (the Davenport set is upward closed), `zero_not_mem_davenportSet` (length 0 is never forcing), and `one_le_of_isLeast_davenport` (the constant is positive, so d − 1 is a valid zero-sum-free length)."
+    },
+    {
+      "id": "power-sequence",
+      "title": "The power sequence construction",
+      "startLine": 92,
+      "endLine": 99,
+      "summary": "`powerSeq n f` decodes each index via `finProdFinEquiv` to (i,k) and emits `Pi.single i (f k)`, placing f along the n coordinate axes of Gⁿ — the explicit extremal sequence of length n·ℓ."
+    },
+    {
+      "id": "power-zerosumfree",
+      "title": "The engine: the power sequence is zero-sum-free",
+      "startLine": 101,
+      "endLine": 158,
+      "summary": "`powerseq_not_hasZeroSum`: reindex a candidate zero-sum set into Fin n × Fin ℓ, read off each coordinate j (sum_apply, Pi.single_apply, sum_filter) to get a slice sum of f, identify it with a genuine zero-sum subset via sum_image, force every slice empty, hence the whole set empty."
+    },
+    {
+      "id": "headline-bound",
+      "title": "Homogeneous-power Davenport lower bound",
+      "startLine": 160,
+      "endLine": 184,
+      "summary": "`davenport_pow_lower`: a zero-sum-free f of length d − 1 exists by minimality; its power sequence shows n·(d − 1) is not a Davenport length; upward closure then forces D(Gⁿ) ≥ n·(d − 1) + 1."
+    },
+    {
+      "id": "corollaries",
+      "title": "Specializations: Olson's bound and the diagonal",
+      "startLine": 186,
+      "endLine": 210,
+      "summary": "`davenport_elementary_abelian_lower` (D((ℤ/pℤ)ⁿ) ≥ n·(p − 1) + 1 from D(ℤ/pℤ) = p, the lower half of Olson's theorem) and `davenport_pow_two_lower` (the n = 2 diagonal D(G²) ≥ 2·D(G) − 1)."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
