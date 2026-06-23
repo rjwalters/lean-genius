@@ -17,6 +17,14 @@
   },
   "sections": [
     {
+      "id": "setup-section",
+      "title": "Setup: the telescoped error and the increment δ",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Docstring framing the open question oq-03-oq-05-oq-01 and recording the central reduction. The parent recursion excludedCount N = ⌊N/8⌋ + excludedCount ⌈N/4⌉ telescopes the error E(N) = 6·excludedCount N − N into E(N) = E(⌈N/4⌉) + δ(N), where the increment δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8) depends ONLY on N mod 8 and takes the eight values 0,0,−1,−2,−3,−3,−4,−5. The sibling namespace LagrangeFourSquaresWaringG2OQ03OQ05 is opened so its recursion and zero-base facts are reused verbatim.",
+      "mathContext": "E(N) = E(⌈N/4⌉) + δ(N), δ(N) = ⌊(N mod 8 + 3)/4⌋ − (N mod 8) ∈ {0,0,−1,−2,−3,−3,−4,−5}."
+    },
+    {
       "id": "one-sided-section",
       "title": "One-Sided Sharpness",
       "startLine": 56,
