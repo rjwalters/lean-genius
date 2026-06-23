@@ -116,7 +116,8 @@ theorem volume_lem_purePower_lt_degree_bound (c : ℂ) {n : ℕ} (hn : 2 ≤ n) 
   calc (NNReal.pi : ℝ≥0∞)
       = 1 * (NNReal.pi : ℝ≥0∞) := (one_mul _).symm
     _ < (n : ℝ≥0∞) * (NNReal.pi : ℝ≥0∞) :=
-        ENNReal.mul_lt_mul_right
+        -- `mul_lt_mul_left` keeps the RIGHT factor (π) fixed: `b * a < c * a` from `b < c`
+        ENNReal.mul_lt_mul_left
           (ENNReal.coe_ne_zero.mpr NNReal.pi_ne_zero) ENNReal.coe_ne_top hone
 
 /-- **Capstone.** The pure power `(z - c)^n` exhibits, simultaneously and for every
