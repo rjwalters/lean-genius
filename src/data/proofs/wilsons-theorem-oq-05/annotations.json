@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "wilsons-theorem-oq-05",
+    "range": { "startLine": 4, "endLine": 35 },
+    "type": "context",
+    "title": "Wilson's Theorem in Classical, ZMod-Free Form",
+    "content": "Mathlib and the parent entry state Wilson's theorem with the residue in ZMod n: ((n−1)! : ZMod n) = −1. That is algebraically convenient but not the classical elementary form. This file bridges to a congruence of naturals: (n−1)! ≡ n−1 (mod n), equivalently the bare remainder identity (n−1)! % n = n−1, where n−1 plays the role of −1 mod n. The result is a primality criterion phrased purely in ℕ, with no ZMod in any statement.",
+    "mathContext": "Wilson: $n$ prime $\\iff (n-1)! \\equiv -1 \\pmod n$. Here $-1 \\bmod n = n-1$, giving $(n-1)! \\equiv n-1 \\pmod n$ and $(n-1)! \\bmod n = n-1$.",
+    "significance": "context",
+    "relatedConcepts": ["Wilson's theorem", "primality criterion", "congruence vs ZMod", "factorial mod n"],
+    "prerequisites": ["Wilson's theorem", "modular congruence", "factorials"]
+  },
+  {
+    "id": "ann-natcast-hinge",
+    "proofId": "wilsons-theorem-oq-05",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "theorem",
+    "title": "The Hinge: n−1 Reduces to −1 in ZMod n",
+    "content": "The single technical lemma: ((n−1 : ℕ) : ZMod n) = −1 for n ≥ 1. Writing the cast as (n : ZMod n) − 1, then using ZMod.natCast_self (n ≡ 0) and zero_sub gives −1. This identification of the natural number n−1 with the ring element −1 is what lets `ZMod.natCast_eq_natCast_iff` transport Mathlib's ZMod-valued Wilson statement into a `Nat.ModEq`.",
+    "mathContext": "$((n-1 : \\mathbb{N}) : \\mathbb{Z}/n) = (n : \\mathbb{Z}/n) - 1 = 0 - 1 = -1$ for $n \\ge 1$.",
+    "significance": "key",
+    "relatedConcepts": ["natCast into ZMod", "ZMod.natCast_self", "residue −1", "casting subtraction"],
+    "prerequisites": ["ZMod arithmetic", "Nat.cast_sub"]
+  },
+  {
+    "id": "ann-modeq-form",
+    "proofId": "wilsons-theorem-oq-05",
+    "range": { "startLine": 51, "endLine": 59 },
+    "type": "theorem",
+    "title": "Classical Congruence Form",
+    "content": "For n ≥ 2, n is prime iff (n−1)! ≡ n−1 (mod n). The proof rewrites Mathlib's `prime_iff_fac_equiv_neg_one` (the ZMod form), substitutes the hinge lemma to turn −1 into the natural n−1, and applies `ZMod.natCast_eq_natCast_iff` to convert the ZMod equality into a `Nat.ModEq`. This is the elementary number-theory statement.",
+    "mathContext": "$n \\ge 2 \\implies \\big(n\\text{ prime} \\iff (n-1)! \\equiv n-1 \\ [\\mathrm{MOD}\\ n]\\big).$",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's theorem", "Nat.ModEq", "ZMod.natCast_eq_natCast_iff"],
+    "prerequisites": ["the hinge lemma", "Mathlib's ZMod Wilson statement"]
+  },
+  {
+    "id": "ann-mod-criterion",
+    "proofId": "wilsons-theorem-oq-05",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "theorem",
+    "title": "Elementary Primality Criterion (Remainder Form)",
+    "content": "For n ≥ 2, n is prime iff (n−1)! % n = n−1. Obtained from the congruence form by unfolding `Nat.ModEq` and noting n−1 < n so its remainder is itself (`mod_eq_of_lt`). A self-contained decision procedure in ℕ — though of exponential cost, it is the conceptually cleanest primality test.",
+    "mathContext": "$n \\ge 2 \\implies \\big(n\\text{ prime} \\iff (n-1)! \\bmod n = n-1\\big).$",
+    "significance": "key",
+    "relatedConcepts": ["primality test", "factorial mod n", "Nat.ModEq unfolding", "mod_eq_of_lt"],
+    "prerequisites": ["the congruence form", "remainder of a number below the modulus"]
+  },
+  {
+    "id": "ann-forward-remainder",
+    "proofId": "wilsons-theorem-oq-05",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "theorem",
+    "title": "Forward Remainder Identity for Primes",
+    "content": "The convenient forward direction: a prime n satisfies (n−1)! % n = n−1. Just the forward implication of the criterion, packaged for direct use (e.g. as a known value when reasoning about a prime's factorial).",
+    "mathContext": "$n\\text{ prime} \\implies (n-1)! \\bmod n = n-1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Wilson's theorem", "factorial mod n", "forward direction"],
+    "prerequisites": ["the remainder criterion"]
+  },
+  {
+    "id": "ann-compositeness",
+    "proofId": "wilsons-theorem-oq-05",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "theorem",
+    "title": "Compositeness Witness (Contrapositive)",
+    "content": "The contrapositive: if (n−1)! % n ≠ n−1 then n is not prime. This is the practically useful direction for refuting primality — a single remainder computation that differs from n−1 certifies n composite. Wilson's theorem is the rare primality criterion that is an exact iff, so the failure of the identity is conclusive.",
+    "mathContext": "$(n-1)! \\bmod n \\ne n-1 \\implies n\\text{ not prime}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["compositeness certificate", "contrapositive", "primality refutation"],
+    "prerequisites": ["the forward remainder identity"]
+  }
+]
