@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-ng4-header",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Newton-Girard k=4: The First Quartic Closed Form",
+    "content": "The fourth Newton-Girard identity expresses the power sum p₄ = Σ xᵢ⁴ purely in the elementary symmetric polynomials e₁, e₂, e₃, e₄. It is the next rung in the gallery's explicit k=2 → k=3 → k=4 chain and the first one whose reduced form is genuinely quartic in the eⱼ — it acquires the cross term 2·e₂² and the four-distinct symmetric polynomial e₄, neither of which appears at k ≤ 3. The file proves the identity twice: once universally in MvPolynomial σ R, and once concretely over an arbitrary Finset of values in any CommRing, characteristic 2 included. The concrete form costs only two one-line bridge instantiations because the degree-general aeval bridge was already built for the k=3 entry.",
+    "mathContext": "$p_4 = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$. Concretely $a^4+b^4+c^4+d^4 = (a{+}b{+}c{+}d)^4 - 4(a{+}b{+}c{+}d)^2 e_2 + 2 e_2^2 + 4(a{+}b{+}c{+}d) e_3 - 4 e_4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "elementary symmetric polynomials",
+      "power sums",
+      "Newton-Girard identities",
+      "sum of fourth powers"
+    ],
+    "prerequisites": [
+      "multivariate polynomials",
+      "symmetric polynomials",
+      "ring theory"
+    ]
+  },
+  {
+    "id": "ann-ng4-recurrence",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 86
+    },
+    "type": "proof-technique",
+    "title": "psum_four_recurrence: Extracting k=4 from the General Newton Recurrence",
+    "content": "psum_four_recurrence specialises Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum at n = 4. The general statement carries a sum over the antidiagonal of 4 filtered to indices with 0 < a.1 < 4; the proof pins this filter to the explicit three-element set {(1,3),(2,2),(3,1)} by ext + omega, unfolds the sum with Finset.sum_insert (membership facts dispatched by decide) and Finset.sum_singleton, and lets ring evaluate the alternating (−1)ᵏ coefficients together with the lead term (−1)⁵·4·e₄ = −4e₄. The result is the recurrence p₄ = e₁p₃ − e₂p₂ + e₃p₁ − 4e₄. This is exactly the same mechanical recipe used at k=2 and k=3.",
+    "mathContext": "From $p_n = (-1)^{n+1} n\\, e_n - \\sum_{0 < a < n} (-1)^a e_a\\, p_{n-a}$ at $n=4$: the antidiagonal filter is $\\{(1,3),(2,2),(3,1)\\}$ and the lead term is $(-1)^5\\cdot 4\\cdot e_4$, giving $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4 e_4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton's identities",
+      "Finset.antidiagonal",
+      "omega tactic",
+      "decidable membership"
+    ],
+    "prerequisites": [
+      "MvPolynomial",
+      "finite sums",
+      "recurrence relations"
+    ]
+  },
+  {
+    "id": "ann-ng4-closed",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 101
+    },
+    "type": "proof-technique",
+    "title": "psum_four_closed: Substitute Lower Closed Forms and Ring-Normalise",
+    "content": "The universal closed form is obtained by feeding the proven lower closed forms into the recurrence: p₃ = e₁³ − 3e₁e₂ + 3e₃ (psum_three_closed, from the k=3 entry), p₂ = e₁² − 2e₂ and p₁ = e₁ (from the k=2 recurrence sibling). After rewriting the recurrence with these three identities, a single ring call collapses everything to p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄. Because the identity lives in MvPolynomial σ R for an arbitrary [CommRing R], it is a universal polynomial identity with integer coefficients and specialises by evaluation to every commutative ring.",
+    "mathContext": "$e_1 p_3 - e_2 p_2 + e_3 p_1 - 4 e_4 = e_1(e_1^3 - 3e_1 e_2 + 3 e_3) - e_2(e_1^2 - 2 e_2) + e_3 e_1 - 4 e_4 = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring tactic",
+      "polynomial identities",
+      "base change",
+      "induction on degree"
+    ],
+    "prerequisites": [
+      "CommRing",
+      "polynomial substitution"
+    ]
+  },
+  {
+    "id": "ann-ng4-bridge",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 115,
+      "endLine": 132
+    },
+    "type": "insight",
+    "title": "Degree-4 aeval Bridge: Reusing the k=3 Machinery Verbatim",
+    "content": "The concrete section defines e₄ over s.powersetCard 4 and p₄ = Σ fᵢ⁴, then connects them to the universal polynomials with e4_bridge and p4_bridge. The striking point is that these bridges are simply aeval_esymm_subtype s f 4 and aeval_psum_subtype s f 4 — the n-general transport lemmas built for the k=3 entry, instantiated at degree 4. No new bridge machinery is written. This is the concrete payoff of having stated the k=3 bridge for arbitrary degree n: the k=4 concrete form costs only two one-line wrappers, answering by example the k=3 entry's open question about whether its bridge is genuinely degree-uniform.",
+    "mathContext": "$\\mathrm{aeval}\\,(i \\mapsto f\\, i.1)\\,(\\mathrm{esymm}\\,\\{x // x \\in s\\}\\,R\\,4) = e_4(s,f)$ and likewise $\\mathrm{aeval}\\,(\\ldots)(\\mathrm{psum}\\ldots 4) = p_4(s,f)$, both definitional from the degree-general subtype bridge.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebra evaluation (aeval)",
+      "subtype transport",
+      "powersetCard",
+      "code reuse"
+    ],
+    "prerequisites": [
+      "MvPolynomial.aeval",
+      "subtypes",
+      "elementary symmetric polynomials"
+    ]
+  },
+  {
+    "id": "ann-ng4-finset",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 134,
+      "endLine": 148
+    },
+    "type": "insight",
+    "title": "newton_girard_four_finset: Char-2-Safe Transport over Any CommRing",
+    "content": "The concrete identity over an arbitrary CommRing is the congrArg image of psum_four_closed under aeval onto the membership subtype {x // x ∈ s}. Applying aeval distributes over +, −, ×, powers and ofNat (via map_add/map_sub/map_mul/map_pow/map_ofNat), and the five bridge lemmas (e1..e4, p4) rewrite each evaluated atom into its concrete Finset counterpart. Crucially, no characteristic hypothesis is needed: the transport happens at the level of polynomial coefficients, before any evaluation, so no factor of 2 is ever divided away. This is why the identity holds even over rings with 2-torsion — the char-2 obstruction that would derail a doubled-combinatorial-partition proof simply never arises.",
+    "mathContext": "$p_4(s,f) = e_1^4 - 4 e_1^2 e_2 + 2 e_2^2 + 4 e_1 e_3 - 4 e_4$ over any $[\\mathrm{CommRing}\\ R]$, including $\\mathrm{char}\\,R = 2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "congrArg",
+      "ring homomorphism functoriality",
+      "characteristic two",
+      "universal coefficients"
+    ],
+    "prerequisites": [
+      "aeval",
+      "ring homomorphisms",
+      "characteristic of a ring"
+    ]
+  },
+  {
+    "id": "ann-ng4-explicit",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 173
+    },
+    "type": "concept",
+    "title": "fourth_power_sum_four: The Smallest Nondegenerate Instance",
+    "content": "fourth_power_sum_four records the everyday face of the abstract identity: a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ over any CommRing, with e₁ = a+b+c+d, e₂ = Σ pairs, e₃ = Σ triples, e₄ = abcd, closed in a single ring call. It is the n = 4 specialisation of psum_four_closed and the smallest case in which all four elementary symmetric polynomials are nonzero, making it the natural sanity check for the general theorem.",
+    "mathContext": "$a^4+b^4+c^4+d^4 = (a{+}b{+}c{+}d)^4 - 4(a{+}b{+}c{+}d)^2(ab{+}ac{+}ad{+}bc{+}bd{+}cd) + 2(ab{+}ac{+}ad{+}bc{+}bd{+}cd)^2 + 4(a{+}b{+}c{+}d)(abc{+}abd{+}acd{+}bcd) - 4abcd$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "symmetric functions of roots",
+      "sum of fourth powers"
+    ],
+    "prerequisites": [
+      "CommRing",
+      "ring tactic"
+    ]
+  }
+]
