@@ -1,0 +1,115 @@
+{
+  "id": "composition-parts-choose-oq-01-oq-01",
+  "title": "Composition Parts OQ-01-OQ-01: The Total and Mean Number of Parts of a Composition",
+  "slug": "composition-parts-choose-oq-01-oq-01",
+  "description": "A composition of a natural number n is an ordered tuple of positive integers summing to n (Mathlib's Composition n); its number of parts is c.length. The grandparent entry counts compositions (card (Composition n) = 2^(n−1)) and the parent grades that count by number of parts (compositions of n into exactly k parts number C(n−1, k−1)). This entry computes the first moment of the number of parts — its total and mean across all compositions of n. The headline total_parts proves that summed over all 2^(n−1) compositions of n ≥ 2 the total number of parts is (n+1)·2^(n−2); equivalently (two_mul_total_parts, mean_parts) the mean number of parts is exactly (n+1)/2 — the midpoint of the range [1, n] of possible part-counts, reflecting the symmetry C(n−1,k−1) = C(n−1,n−k) of the part-count distribution. The clean route avoids re-summing ∑_k k·C(n−1,k−1) directly: it uses the gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) together with the part-count bridge length_eq_card_gaps (length c = (gaps of c).card + 1 — a composition with k parts cuts k−1 of the n−1 internal gaps), transports the sum along the bijection to ∑_{s ⊆ Fin (n−1)} (|s|+1) = (∑_s |s|) + 2^(n−1), and evaluates ∑_{s ⊆ [m]} |s| = m·2^(m−1) (sum_finset_card, via the binomial identity ∑_k k·C(m,k) = m·2^(m−1) in sum_choose_mul). With m = n−1 this gives (n−1)·2^(n−2) + 2^(n−1) = (n+1)·2^(n−2). Mathlib supplies the bijections compositionEquiv and compositionAsSetEquiv and the count composition_card but records neither the part-count bridge nor any moment of the part-count distribution; all of that is original content here.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Enumerative.Composition",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "CompositionPartsChooseOQ01OQ01",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/CompositionPartsChooseOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Composition_(combinatorics)",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompositionPartsChooseOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "enumerative-combinatorics",
+      "compositions",
+      "counting",
+      "binomial-coefficients",
+      "expectation",
+      "first-moment"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "relatedProblems": [
+      {
+        "id": "composition-parts-choose-oq-01",
+        "relationship": "Direct parent: that entry proves the part-graded count — compositions of n into exactly k parts number C(n−1, k−1). This entry computes the first moment of that distribution: total number of parts (n+1)·2^(n−2) and mean (n+1)/2. It reuses the same part-count bridge (cut-count = length − 1), redeveloped self-containedly, and applies it to a sum rather than a fixed k."
+      },
+      {
+        "id": "composition-card-2pow-oq-01",
+        "relationship": "Grandparent: the ungraded total card (Composition n) = 2^(n−1). It appears here as the count of compositions (the additive `+ 2^(n−1)` term in the total-parts computation) and the denominator of the mean."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 207,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The three small numeric examples (total parts for n = 2, 3, 4 are 3, 8, 20) close with the kernel decision procedure `decide` evaluating closed Nat arithmetic; plain `decide` is kernel-checked and introduces no Lean.ofReduceBool. The named theorems total_parts, two_mul_total_parts and mean_parts were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib does NOT contain the part-count bridge (length = gap-subset.card + 1) nor any moment of the part-count distribution; both are original content here, built on Mathlib's compositionEquiv, compositionAsSetEquiv, composition_card, Finset.sum_powerset_apply_card, Nat.sum_range_choose, and Nat.add_one_mul_choose_eq. The result is unconditional; the hypothesis n ≥ 2 is the natural domain (for n = 1 the single composition has 1 part, and the closed form (n+1)·2^(n−2) degenerates under truncated subtraction).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Compositions of n are ordered sequences of positive parts summing to n (order matters, unlike partitions). There are 2^(n−1) of them, and — refining by number of parts — C(n−1, k−1) with exactly k parts (the 'cuts in n−1 gaps' model). A natural next question, once the distribution of the number of parts is known, is its average: across all 2^(n−1) compositions of n, how many parts does a composition have on average? Because the part-counts range over 1, 2, …, n with the symmetric multiplicities C(n−1,0), C(n−1,1), …, C(n−1,n−1), the distribution is symmetric about its midpoint, and the mean is exactly (n+1)/2. Equivalently the total number of parts summed over all compositions is (n+1)·2^(n−2). This is the first moment of the part-count statistic, the expectation of the number of parts of a uniformly random composition.",
+    "problemStatement": "Across all 2^(n−1) compositions of n, compute the total number of parts ∑_{c : Composition n} c.length and the mean number of parts. Show, for n ≥ 2,\n\n$$\\sum_{c : \\mathrm{Composition}\\ n} c.\\mathrm{length} = (n+1)\\,2^{\\,n-2}, \\qquad \\text{mean number of parts} = \\frac{n+1}{2}.$$",
+    "text": "Mathlib proves composition_card : card (Composition n) = 2^(n−1) and supplies the bijections compositionEquiv : Composition n ≃ CompositionAsSet n and compositionAsSetEquiv : CompositionAsSet n ≃ Finset (Fin (n−1)), the latter sending a boundary set to the subset of internal gaps it cuts. It records neither the bridge length c = (gaps of c).card + 1 nor any moment of the part-count distribution. Both are supplied here. The total number of parts is obtained by summing the bridge over all compositions and transporting along the gap bijection, reducing the computation to the elementary subset-sum ∑_{s ⊆ [m]} |s| = m·2^(m−1).",
+    "proofStrategy": "The gap bridge length_eq_card_gaps (length c = (gapsEquiv n c).card + 1, for n ≥ 1) is built from Mathlib's compositionAsSetEquiv: boundaries_eq exhibits a composition's boundary set as {0, n} together with the shifted gap-subset (image under the embedding i ↦ i+1), boundaries_card counts it as gap-subset.card + 2 (the two forced endpoints are distinct and not shifts of gaps), and casLength_bridge divides by the length = boundaries.card − 1 definition. For the headline total_parts, ∑_c c.length is rewritten via the bridge as ∑_c ((gapsEquiv n c).card + 1), split with Finset.sum_add_distrib into (∑_c (gapsEquiv n c).card) + card(Composition n), reindexed by Equiv.sum_comp to ∑_{s : Finset (Fin (n−1))} s.card, and evaluated: sum_finset_card gives this as (n−1)·2^(n−2) (Finset.powerset_univ + Finset.sum_powerset_apply_card reduce it to ∑_k k·C(n−1,k), which sum_choose_mul evaluates to (n−1)·2^(n−2) via the absorption identity (k+1)·C(m,k+1) = m·C(m,k) and Nat.sum_range_choose), and composition_card gives card(Composition n) = 2^(n−1); the closed form (n+1)·2^(n−2) follows by ring after substituting n = M + 2. two_mul_total_parts and mean_parts repackage the same identity as the multiplicative and rational statements of the mean (n+1)/2, the latter via field_simp using card(Composition n) = 2^(n−1) ≠ 0.",
+    "keyInsights": [
+      "**The expectation collapses to a subset-sum.** Rather than evaluate ∑_k k·C(n−1,k−1) by hand, the part-count bridge length = (gaps).card + 1 turns the total number of parts into ∑_{s ⊆ Fin (n−1)} (|s| + 1) under the gap bijection — i.e. into the elementary fact that the subsets of an (n−1)-set have total size (n−1)·2^(n−2), plus one part per composition. The two summands (n−1)·2^(n−2) and 2^(n−1) are exactly 'one extra part beyond each cut' and 'one base part per composition'.",
+      "**Mean = midpoint of the range.** A composition of n has between 1 and n parts, and the mean is exactly (n+1)/2, the midpoint — a manifestation of the symmetry C(n−1,k−1) = C(n−1,n−k) of the part-count distribution: pairing a composition with k parts against the one with n+1−k parts (complementing its cut-set) averages the part-counts to (n+1)/2.",
+      "**∑_k k·C(m,k) = m·2^(m−1) from absorption.** The arithmetic core sum_choose_mul is the 'every element lies in half the subsets' identity, proved by the absorption rule (k+1)·C(m,k+1) = m·C(m,k) (Nat.add_one_mul_choose_eq) reindexing the sum to m·∑_j C(m−1,j) = m·2^(m−1).",
+      "**Mathlib stops at the count.** composition_card and the two equivalences are available, but neither the part-count bridge nor the moment computation is in Mathlib; that is the original content of this entry, extending the parent's fixed-k graded count to a statistic averaged over all compositions."
+    ],
+    "prerequisites": [
+      "Compositions of a natural number (Mathlib's Composition n), the number of parts c.length, and the boundary-set model CompositionAsSet n with length = boundaries.card − 1",
+      "The bijections compositionEquiv : Composition n ≃ CompositionAsSet n and compositionAsSetEquiv : CompositionAsSet n ≃ Finset (Fin (n−1)), and Equiv.sum_comp for reindexing finite sums",
+      "Finset cardinality and sum API: Finset.sum_add_distrib, Finset.powerset_univ, Finset.sum_powerset_apply_card, Finset.card_insert_of_notMem, Finset.card_map",
+      "Binomial identities: the absorption rule Nat.add_one_mul_choose_eq and ∑_{j=0}^{m} C(m, j) = 2^m (Nat.sum_range_choose); composition_card for card (Composition n) = 2^(n−1)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "gap-bridge",
+      "title": "The Gap Bijection and the Part-Count Bridge",
+      "startLine": 61,
+      "endLine": 138,
+      "mathContext": "$\\mathrm{gapsEquiv}\\ n : \\mathrm{Composition}\\ n \\simeq \\mathrm{Finset}\\,(\\mathrm{Fin}\\,(n-1))$ and $c.\\mathrm{length} = \\#(\\text{gaps of } c) + 1$.",
+      "summary": "boundaries_eq exhibits a composition's boundary set in Fin (n+1) as the two forced endpoints 0 and Fin.last n together with the shifted gap-subset (image of compositionAsSetEquiv n d under the embedding shiftEmb : i ↦ i+1). boundaries_card counts it as gap-subset.card + 2 — the endpoints are distinct (n ≥ 1) and are not shifts of gaps — and casLength_bridge divides by the definition length = boundaries.card − 1 to get length = gap-subset.card + 1. gapsEquiv composes Mathlib's two bijections and length_eq_card_gaps transports the bridge to Composition n via Composition.toCompositionAsSet_length."
+    },
+    {
+      "id": "binomial-sums",
+      "title": "Two Binomial Sums",
+      "startLine": 137,
+      "endLine": 164,
+      "mathContext": "$\\sum_{k} k\\binom{m}{k} = m\\,2^{m-1}$ and $\\sum_{s \\subseteq \\mathrm{Fin}\\,m} \\#s = m\\,2^{m-1}$.",
+      "summary": "sum_choose_mul proves ∑_{k=0}^{m} k·C(m,k) = m·2^(m−1) by peeling the k = 0 term, applying the absorption identity (k+1)·C(m,k+1) = m·C(m,k) (Nat.add_one_mul_choose_eq), and summing with Nat.sum_range_choose. sum_finset_card turns the total size of all subsets of an m-element type into that sum via Finset.powerset_univ and Finset.sum_powerset_apply_card, giving ∑_{s ⊆ Fin m} s.card = m·2^(m−1)."
+    },
+    {
+      "id": "first-moment",
+      "title": "The Total and Mean Number of Parts",
+      "startLine": 162,
+      "endLine": 201,
+      "mathContext": "$\\sum_{c} c.\\mathrm{length} = (n+1)\\,2^{n-2}$ and mean $= \\tfrac{n+1}{2}$ for $n \\ge 2$.",
+      "summary": "total_parts rewrites ∑_c c.length via the bridge as ∑_c ((gapsEquiv n c).card + 1), splits with Finset.sum_add_distrib, reindexes the gap-sum to ∑_{s : Finset (Fin (n−1))} s.card by Equiv.sum_comp, and evaluates with sum_finset_card and composition_card to (n−1)·2^(n−2) + 2^(n−1) = (n+1)·2^(n−2). two_mul_total_parts states the mean (n+1)/2 multiplicatively (2·total = (n+1)·card), and mean_parts states it as the rational average (∑ c, length)/card = (n+1)/2, cleared with field_simp using card = 2^(n−1) ≠ 0."
+    },
+    {
+      "id": "worked-totals",
+      "title": "Worked Totals: n = 2, 3, 4",
+      "startLine": 201,
+      "endLine": 205,
+      "mathContext": "$(n+1)\\,2^{n-2}$ gives $3, 8, 20$ for $n = 2, 3, 4$.",
+      "summary": "The examples specialise total_parts: the compositions of 2 (namely 2 and 1+1) have 1+2 = 3 parts in total, those of 3 have 1+2+2+3 = 8, and those of 4 have 20 — matching (n+1)·2^(n−2). The residual closed Nat arithmetic is discharged by the kernel's decide."
+    }
+  ],
+  "conclusion": "The first moment of the number of parts of a composition is formalised sorry-free and axiom-free: across all 2^(n−1) compositions of n ≥ 2, the total number of parts is (n+1)·2^(n−2) (total_parts) and the mean is exactly (n+1)/2 (two_mul_total_parts, mean_parts), the midpoint of the range [1, n]. The content beyond Mathlib is the part-count bridge length = (gap-subset).card + 1 — derived here from compositionAsSetEquiv via boundaries_eq and boundaries_card — together with its application to a sum: transporting ∑_c c.length along the gap bijection collapses the expectation to the elementary subset-sum ∑_{s ⊆ [m]} |s| = m·2^(m−1) (sum_finset_card, sum_choose_mul). This extends the parent's fixed-k graded count C(n−1, k−1) to a statistic averaged over all compositions. A natural follow-up is the second moment / variance of the number of parts, or the analogous mean part-size n / (mean number of parts) = 2n/(n+1).",
+  "crossReferences": [
+    "composition-parts-choose-oq-01",
+    "composition-card-2pow-oq-01"
+  ]
+}
