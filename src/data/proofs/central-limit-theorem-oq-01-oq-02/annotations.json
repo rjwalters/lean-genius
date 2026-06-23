@@ -104,7 +104,7 @@
     },
     "type": "insight",
     "title": "α-Stable Distributions and Scaling Property",
-    "content": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α and states its defining scaling property: n · ψ(t/n^{1/α}) = ψ(t). This means the n-fold convolution of an α-stable law with scale parameter c/n is the same α-stable law with scale c — the distribution is invariant under normalized summation. The case α = 2 gives the Gaussian (CLT attractor), while α < 2 gives heavy-tailed distributions that arise as limits when variance is infinite. The sorry on stable_scaling involves rpow arithmetic.",
+    "content": "Defines the symmetric α-stable characteristic exponent ψ(t) = -c|t|^α and states its defining scaling property: n · ψ(t/n^{1/α}) = ψ(t). This means the n-fold convolution of an α-stable law with scale parameter c/n is the same α-stable law with scale c — the distribution is invariant under normalized summation. The case α = 2 gives the Gaussian (CLT attractor), while α < 2 gives heavy-tailed distributions that arise as limits when variance is infinite. The scaling property is proved as `stable_scaling`, which reduces to the rpow identity `rpow_scaling_identity`.",
     "mathContext": "$\\psi(t) = -c|t|^\\alpha$ for $\\alpha \\in (0, 2]$, $c > 0$. Scaling property: $n \\cdot \\psi(t/n^{1/\\alpha}) = -cn|t/n^{1/\\alpha}|^\\alpha = -c|t|^\\alpha = \\psi(t)$, using $|t/n^{1/\\alpha}|^\\alpha = |t|^\\alpha/n$.",
     "significance": "key",
     "relatedConcepts": [
