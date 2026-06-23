@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sumdiv-oq06-ann-header",
+    "proofId": "sum-of-divisors-oq-06",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "concept",
+    "title": "τ(n) is odd ⟺ n is a perfect square",
+    "content": "The classical parity criterion for the divisor-counting function $\\tau = \\sigma_0$: the number of divisors of $n$ is odd exactly when $n$ is a perfect square. Intuitively, divisors pair up as $d \\leftrightarrow n/d$, and the only unpaired divisor is $\\sqrt n$ when it exists. The file proves it via prime factorisation. Mathlib has `Nat.card_divisors` but no parity/square characterisation, so this is new to both Mathlib and the gallery.",
+    "mathContext": "$\\tau(n) = \\#\\{d : d \\mid n\\}$ odd $\\iff n = r^2$.",
+    "significance": "key",
+    "relatedConcepts": ["divisor function", "perfect squares", "divisor pairing", "multiplicative functions"],
+    "prerequisites": ["divisors", "prime factorisation"]
+  },
+  {
+    "id": "sumdiv-oq06-ann-oddprod",
+    "proofId": "sum-of-divisors-oq-06",
+    "range": { "startLine": 34, "endLine": 49 },
+    "type": "technique",
+    "title": "A product of naturals is odd iff every factor is odd",
+    "content": "`odd_prod_iff`: $\\mathrm{Odd}\\big(\\prod_{i\\in s} f\\,i\\big) \\iff \\forall i \\in s, \\mathrm{Odd}(f\\,i)$, by `Finset.induction` using `Nat.odd_mul` (a product of two naturals is odd iff both are). This is the combinatorial lemma that lets the parity of $\\tau(n) = \\prod_p (v_p(n)+1)$ be read off factor by factor.",
+    "mathContext": "$\\mathrm{Odd}\\!\\left(\\prod_{i\\in s} f\\,i\\right) \\iff \\forall i\\in s,\\ \\mathrm{Odd}(f\\,i)$",
+    "significance": "supporting",
+    "relatedConcepts": ["parity of products", "Finset.induction", "Nat.odd_mul"],
+    "prerequisites": ["finite products", "induction on Finsets"]
+  },
+  {
+    "id": "sumdiv-oq06-ann-square",
+    "proofId": "sum-of-divisors-oq-06",
+    "range": { "startLine": 51, "endLine": 74 },
+    "type": "technique",
+    "title": "Perfect square ⟺ all prime exponents even",
+    "content": "`isSquare_iff_factorization_even`: a positive $n$ is a perfect square iff every $v_p(n)$ is even. Forward: $n = r^2$ gives $v_p(n) = 2v_p(r)$ via `Nat.factorization_mul`. Reverse: reassemble the square root $r = \\prod_{p \\mid n} p^{v_p(n)/2}$, with $p^{v_p(n)/2}\\cdot p^{v_p(n)/2} = p^{v_p(n)}$ (since each exponent is even, `omega` closes the halving), and `Nat.factorization_prod_pow_eq_self` recovers $r^2 = n$. The square root is built explicitly from the factorisation.",
+    "mathContext": "$n = r^2 \\iff \\forall p,\\ 2 \\mid v_p(n)$; \\; $r = \\prod_{p\\mid n} p^{v_p(n)/2}$.",
+    "significance": "key",
+    "relatedConcepts": ["prime factorisation", "perfect squares", "factorization_prod_pow_eq_self"],
+    "prerequisites": ["p-adic valuation", "Nat.factorization"]
+  },
+  {
+    "id": "sumdiv-oq06-ann-criterion",
+    "proofId": "sum-of-divisors-oq-06",
+    "range": { "startLine": 76, "endLine": 93 },
+    "type": "insight",
+    "title": "Assembling the parity criterion",
+    "content": "`card_divisors_odd_iff_isSquare` chains the pieces: `Nat.card_divisors` writes $\\tau(n) = \\prod_{p\\mid n}(v_p(n)+1)$, `odd_prod_iff` reduces oddness to every factor $v_p(n)+1$ being odd, and $v_p(n)+1$ odd $\\iff v_p(n)$ even — matching `isSquare_iff_factorization_even`. The proof carefully handles primes $p \\nmid n$ (where $v_p(n)=0$ is even, consistent with the product running only over $\\mathrm{primeFactors}$), bridging the quantifier over all primes with the product over prime factors via `Nat.support_factorization`.",
+    "mathContext": "$\\tau(n) = \\prod_{p\\mid n}(v_p(n)+1)$ odd $\\iff \\forall p,\\ v_p(n)$ even $\\iff n$ square.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.card_divisors", "divisor count formula", "support of factorization"],
+    "prerequisites": ["the two preceding lemmas"]
+  },
+  {
+    "id": "sumdiv-oq06-ann-sigma",
+    "proofId": "sum-of-divisors-oq-06",
+    "range": { "startLine": 95, "endLine": 100 },
+    "type": "concept",
+    "title": "σ₀ form via Mathlib's arithmetic function",
+    "content": "`sigma_zero_odd_iff_isSquare` restates the criterion through Mathlib's arithmetic function $\\sigma_0 = \\tau$, using `sigma_zero_apply` to rewrite $\\sigma_0(n) = \\#n.\\mathrm{divisors}$. This connects the result to the parent entries' $\\sigma_k$ development, giving the headline fact in the same vocabulary as the divisor-sum family.",
+    "mathContext": "$\\mathrm{Odd}(\\sigma_0(n)) \\iff n$ is a perfect square.",
+    "significance": "supporting",
+    "relatedConcepts": ["ArithmeticFunction.sigma", "σ₀ = τ"],
+    "prerequisites": ["arithmetic functions"]
+  }
+]
