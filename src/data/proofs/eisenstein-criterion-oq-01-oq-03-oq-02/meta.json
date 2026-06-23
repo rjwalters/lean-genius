@@ -101,6 +101,29 @@
     "path": "Proofs/EisensteinCriterionOQ01OQ03OQ02.lean",
     "sorries": 0
   },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: the Gauss argument",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Module docstring: Φ_p is not visibly Eisenstein, but its translate Φ_p(X+1) = ∑ C(p,k) X^(k−1) is (Eisenstein at p); since X ↦ X+1 is a ring automorphism, Φ_p is irreducible over ℚ. The Eisenstein data feeds the parent's reproved criterion, re-deriving cyclotomic.irreducible_rat for prime indices elementarily."
+    },
+    {
+      "id": "translate-properties",
+      "title": "The translate Φ_p(X+1) and its basic properties",
+      "startLine": 42,
+      "endLine": 58,
+      "summary": "shiftedCyclotomicInt p := (cyclotomic p ℤ).comp (X+1); shiftedCyclotomicInt_monic (composition of monics, no primality needed) and shiftedCyclotomicInt_natDegree = p − 1 (natDegree_comp + Nat.totient_prime) — the monicity and positive-degree Eisenstein inputs."
+    },
+    {
+      "id": "irreducibility-and-descent",
+      "title": "Irreducibility via Eisenstein and descent to Φ_p",
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "cyclotomic_prime_irreducible_rat: unpack Mathlib's cyclotomic_comp_X_add_one_isEisensteinAt into the divisibility hypotheses of the parent's irreducible_rat_of_eisenstein (p ∣ lower coeffs, p² ∤ constant), get irreducibility of the ℚ translate, then descend to Φ_p along algEquivAevalXAddC (1) via MulEquiv.irreducible_iff."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "cyclotomic_prime_irreducible_rat",
