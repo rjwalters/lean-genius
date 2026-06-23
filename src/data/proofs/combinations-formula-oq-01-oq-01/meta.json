@@ -76,6 +76,12 @@
   ],
   "sections": [
     {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 28,
+      "summary": "States the shallow-diagonal Fibonacci identity ∑_j C(n−j, j) = F(n+1), the parent's first open question (recorded there only via native_decide examples), and the strategy: reduce to Mathlib's antidiagonal form Nat.fib_succ_eq_sum_choose by reflecting the index. Imports Mathlib and opens Finset."
+    },
+    {
       "title": "Mirror form from the antidiagonal sum",
       "startLine": 29,
       "endLine": 37,
