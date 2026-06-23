@@ -15,6 +15,45 @@
     "sorries": 0
   },
   "title": "The Two-Square Sufficiency Slice of the Three-Square Theorem",
+  "description": "An elementary, axiom-free slice of the OPEN sufficiency direction of Legendre's three-square theorem, obtained by bridging Mathlib's complete two-square theory into the still-open three-square question. The embedding 'two squares ⟹ three squares' (append 0²) yields an explicit infinite Dirichlet-free family of three-square representable numbers, while the failure of multiplicative closure (3 and 21 are sums of three squares but 3·21 = 63 = 8·7+7 is not) pins down exactly why the full sufficiency direction genuinely requires analytic input.",
+  "overview": {
+    "historicalContext": "Legendre's three-square theorem (1798) states that a natural number n is a sum of three squares iff it is not of the form 4^a(8b+7). The necessity ('only if') half is elementary — a mod-8 obstruction plus a 4-power descent. The sufficiency ('if') half is the deep one: Legendre's and Gauss's proofs rely on the theory of ternary quadratic forms and, ultimately, on Dirichlet's theorem on primes in arithmetic progressions (or the Hasse–Minkowski local–global principle). This is in sharp contrast to the two- and four-square theorems (Fermat/Euler 1749, Lagrange 1770), whose representable sets are multiplicatively closed (Brahmagupta–Fibonacci and Euler's four-square identity), letting them be assembled from prime cases. Mathlib has the full two-square theory but no three-square theorem; the parent oq-03 entry reduces three-square sufficiency to an axiom. This entry extracts the largest slice of that open direction reachable from the two-square theorem alone, and exhibits the concrete obstruction (non-multiplicativity) that blocks the rest.",
+    "problemStatement": "Without assuming three-square sufficiency, prove an explicit infinite family of the open 'if' direction of Legendre's theorem using only Mathlib's two-square theory: every prime p ≢ 3 (mod 4), and more generally every n whose primes ≡ 3 (mod 4) occur to even powers, is a sum of three squares. Then exhibit the structural obstruction — three-square representability is not multiplicatively closed — that prevents extending this slice to the full theorem.",
+    "proofStrategy": "Bridge via the trivial embedding IsSumTwoSq n ⟹ IsSumThreeSq n (append 0²). Composing with Fermat's two-square theorem (Nat.Prime.sq_add_sq) gives the prime slice, and with the full characterization Nat.eq_sq_add_sq_iff gives the even-power-of-3-mod-4 family — both Dirichlet-free. Separately, kernel-decide modular obstructions over ZMod 4 / ZMod 8 (squares mod 8 ∈ {0,1,4}, mod 4 ∈ {0,1}) give the concrete witnesses: 3 is three-square but not two-square (strict containment), and 3·21 = 63 ≡ 7 (mod 8) is excluded though 3 and 21 are not — the failure of multiplicative closure, contrasted with the Brahmagupta–Fibonacci closure isSumTwoSq_mul.",
+    "keyInsights": [
+      "The trivial 'append 0²' embedding is leveraged into substantive unconditional progress: it converts Mathlib's entire two-square theory into an explicit, infinite, Dirichlet-free family verifying the open three-square sufficiency direction.",
+      "The decisive structural fact is negative: three-square representability is NOT multiplicatively closed (3·21 = 63 is excluded), unlike two and four squares — this is precisely why the sufficiency direction cannot be bootstrapped from primes and genuinely needs analytic input.",
+      "The single counterexample 63 = 8·7+7 cleanly localizes 'where the elementary approach stops', making concrete the boundary between the formalizable slice and the axiomatized remainder of the parent entry.",
+      "Strict containment is witnessed minimally: 3 = 1²+1²+1² is three-square but ≡ 3 (mod 4) so not two-square, separating the two families with the smallest possible example.",
+      "All modular obstructions are kernel-decide checks over tiny ZMod rings, keeping the entire development genuinely 0-axiom (no native_decide, no Lean.ofReduceBool)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "predicates-obstructions",
+      "title": "Predicates and Modular Obstructions",
+      "startLine": 54,
+      "endLine": 102,
+      "summary": "Defines IsSumTwoSq / IsSumThreeSq over ℤ and proves the elementary necessity obstructions: a sum of three squares is never ≡ 7 (mod 8) and a sum of two squares never ≡ 3 (mod 4), each a finite kernel-decide check over ZMod 8 / ZMod 4.",
+      "mathContext": "Squares mod 8 ∈ {0,1,4}, mod 4 ∈ {0,1}; excluded family for three squares is 4^a(8b+7)."
+    },
+    {
+      "id": "embedding-slice",
+      "title": "Embedding and the Dirichlet-Free Slice",
+      "startLine": 104,
+      "endLine": 141,
+      "summary": "The embedding isSumTwoSq_imp_isSumThreeSq (append 0²) turns the two-square theory into unconditional three-square families: every prime p ≢ 3 (mod 4) (prime_mod_four_ne_three_isSumThreeSq) and every n with even powers of primes ≡ 3 mod 4 (isSumThreeSq_of_forall_threeMod_even) — an explicit infinite Dirichlet-free slice of the open 'if' direction.",
+      "mathContext": "Two-square numbers ⊆ three-square numbers; Fermat + Nat.eq_sq_add_sq_iff give an infinite family with no Dirichlet input."
+    },
+    {
+      "id": "closure-contrast",
+      "title": "Multiplicative Closure Contrast",
+      "startLine": 143,
+      "endLine": 187,
+      "summary": "Two-square numbers are multiplicatively closed (isSumTwoSq_mul, Brahmagupta–Fibonacci), but three-square numbers are NOT: strict containment (3 is three- but not two-square) and the non-closure witness 3·21 = 63 = 8·7+7, the structural reason the sufficiency direction needs analytic input.",
+      "mathContext": "(a²+b²)(c²+d²) is a sum of two squares, but 3·21 = 63 is excluded though 3, 21 are sums of three squares."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -89,11 +128,6 @@
     }
   ],
   "crossReferences": [
-    {
-      "targetId": "lagrange-four-squares-waring-g2-oq-03",
-      "relationship": "depends-on",
-      "description": "Companion to the parent three-square sufficiency study. Where the parent reduces the full 'if' direction to a Dirichlet/Hasse–Minkowski axiom, this entry carves out an explicit, infinite, axiom-free slice of that same direction using only Mathlib's two-square theory, and isolates (via the 3·21=63 non-closure) exactly why the remaining gap needs analytic input."
-    },
     {
       "targetId": "lagrange-four-squares-waring-g2-oq-03-oq-02",
       "relationship": "extends",
