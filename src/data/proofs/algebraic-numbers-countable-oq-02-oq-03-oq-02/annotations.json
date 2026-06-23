@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-algtrans-overview",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "From Meagre/Comeagre to an Exact Borel Position",
+    "content": "The imports and module docstring frame the refinement. The companion entry `algebraic-reals-meager` already shows the transcendental reals {x : ℝ | ¬ IsAlgebraic ℚ x} are *residual* (comeagre), hence dense. But residuality is only a *covering* statement: by `mem_residual` a residual set merely *contains* some dense Gδ subset — it does not, on its face, say the set itself is Gδ.\n\nThis entry sharpens the picture into the Borel hierarchy in two dual halves:\n1. **The transcendentals are themselves a dense Gδ.** The algebraic reals are *countable*, hence an Fσ set (a countable union of closed singletons), so their complement is genuinely Gδ; with density inherited from residuality, the transcendentals *are* a dense Gδ — upgrading the `mem_residual` witness to the set itself.\n2. **The algebraic reals are not Gδ.** The classical descriptive-set-theory obstruction (the same argument that ℚ is not Gδ): the algebraics are dense and the transcendentals are a dense Gδ disjoint from them; two disjoint dense Gδ sets would intersect densely (hence nonempty) in the Baire space ℝ — contradiction.\n\nSo the three smallness notions are *topologically distinguishable*: algebraic reals = Fσ ∖ Gδ, transcendentals = Gδ ∖ Fσ — strictly finer than 'meagre vs comeagre.' The imports bring Mathlib's Gδ/Baire API (`Topology.GDelta`, `Topology.Baire.Lemmas`, `Topology.Separation.GDelta`), the algebraic API, and the two ancestor files (countability of the algebraic reals; their meagreness/the transcendentals' density).",
+    "mathContext": "A countable set is $F_\\sigma$ (countable union of closed points); its complement is $G_\\delta$. In the Borel hierarchy: $\\{\\text{algebraic reals}\\} \\in F_\\sigma \\setminus G_\\delta$, $\\{\\text{transcendentals}\\} \\in G_\\delta \\setminus F_\\sigma$. Residuality gives only a dense $G_\\delta$ *subset*; countability promotes the complement itself to a dense $G_\\delta$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Borel hierarchy",
+      "Gδ and Fσ sets",
+      "Baire category (meagre/residual)",
+      "transcendental numbers",
+      "mem_residual"
+    ],
+    "prerequisites": [
+      "Gδ / Fσ sets and the Borel hierarchy",
+      "Baire category: residual/meagre sets",
+      "the parent algebraic-reals-meager entry",
+      "countability of the algebraic reals"
+    ]
+  },
+  {
+    "id": "ann-algtrans-compl-countable",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "range": { "startLine": 59, "endLine": 69 },
+    "type": "insight",
+    "title": "compl_countable_isDenseGδ: Countable Complement is a Dense Gδ",
+    "content": "The first abstract lemma: in a nonempty perfect T1 Baire space, the complement of a countable set s is both Gδ and dense. The proof is a two-fact pairing `⟨_, _⟩`:\n- **Gδ**: `hs.isGδ_compl` is Mathlib's `Set.Countable.isGδ_compl` — in a T1 space a countable set is a countable union of closed singletons (Fσ), so its complement is Gδ.\n- **Density**: `dense_of_mem_residual (AlgebraicRealsMeager.countable_isMeagre hs)` — in a perfect T1 space a countable set is meagre (parent lemma), so its complement is residual, and residual sets in a Baire space are dense.\n\nThe value added over Mathlib is the *combination*: `Set.Countable.isGδ_compl` alone gives only the Gδ half, and residuality alone gives only a dense Gδ *subset*; together they make the complement *itself* a dense Gδ. The hypotheses (perfect, T1, Baire, nonempty) are exactly those of ℝ, and the lemma is stated abstractly so it transfers to ℝⁿ, ℂ, and any nontrivial Banach space.",
+    "mathContext": "For countable $s$ in a nonempty perfect $T_1$ Baire space $X$: $s^c$ is $G_\\delta$ (since $s$ is $F_\\sigma$) and dense (since $s$ is meagre, so $s^c$ is residual, so dense). Hence $s^c$ is a dense $G_\\delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Set.Countable.isGδ_compl",
+      "dense_of_mem_residual",
+      "meagre set",
+      "perfect space",
+      "T1 space"
+    ],
+    "prerequisites": [
+      "countable sets are Fσ in T1 spaces",
+      "residual sets are dense in Baire spaces",
+      "the parent's countable_isMeagre lemma"
+    ]
+  },
+  {
+    "id": "ann-algtrans-obstruction",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "range": { "startLine": 71, "endLine": 82 },
+    "type": "insight",
+    "title": "not_isGδ_of_dense_of_disjoint_denseGδ: The Abstract Obstruction",
+    "content": "The second abstract lemma is the engine of the non-Gδ result: in a nonempty Baire space, if s is dense and Gδ, and t is a dense Gδ disjoint from s, then `False`. The proof is three lines:\n1. `Dense.inter_of_Gδ hsg htg hsd htd` — the intersection of two dense Gδ sets is dense (the Baire category theorem in its 'countable intersection of dense opens' form).\n2. `rw [hdisj.inter_eq] at hdense` — disjointness rewrites s ∩ t to ∅, so the empty set would be dense.\n3. `Set.not_nonempty_empty hdense.nonempty` — but a dense set in a nonempty space is nonempty, and ∅ is not.\n\nThis isolates the *one* Baire-category fact (`Dense.inter_of_Gδ`) that powers the entire 'not Gδ' argument, and packages it so the concrete application only has to supply density and disjointness. It is the abstract form of 'two complementary-ish dense Gδ sets can't both be Gδ' that underlies the classical proof that ℚ is not Gδ.",
+    "mathContext": "If $s$ is a dense $G_\\delta$ and $t$ a dense $G_\\delta$ with $s \\cap t = \\emptyset$, then by Baire $s \\cap t$ is dense; but $\\emptyset$ is not dense in a nonempty space — contradiction. Equivalently, the complement of a dense $G_\\delta$ cannot contain a dense $G_\\delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Dense.inter_of_Gδ",
+      "Baire category theorem",
+      "disjoint sets",
+      "proof by contradiction",
+      "ℚ is not Gδ"
+    ],
+    "prerequisites": [
+      "intersection of dense Gδ sets is dense (Baire)",
+      "Disjoint.inter_eq",
+      "a dense subset of a nonempty space is nonempty"
+    ]
+  },
+  {
+    "id": "ann-algtrans-transcendental-gdelta",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "range": { "startLine": 86, "endLine": 103 },
+    "type": "insight",
+    "title": "Transcendentals are a (Dense) Gδ in ℝ",
+    "content": "The concrete instantiation at ℝ. `transcendentalReals_isGδ`: the algebraic reals are countable (`AlgebraicNumbersCountable.algebraic_reals_countable`, reusing Mathlib's `Algebraic.countable`), so in the T1 space ℝ their complement is Gδ via `Set.Countable.isGδ_compl`; `rwa [compl_setOf]` rewrites the complement of `{x | IsAlgebraic ℚ x}` to `{x | ¬ IsAlgebraic ℚ x}`, the transcendentals.\n\n`transcendentalReals_isDenseGδ` then pairs this Gδ fact with density imported from the parent (`AlgebraicRealsMeager.transcendentalReals_dense`, itself from residuality) into the conjunction `IsGδ ∧ Dense`. The docstring stresses the conceptual upgrade: `mem_residual` only guarantees a residual set *contains* a dense Gδ, but here countability makes the transcendentals *equal to* a dense Gδ — the witness is the set itself.",
+    "mathContext": "$\\{x \\in \\mathbb{R} : \\neg\\,\\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\} = \\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}^c$ is $G_\\delta$ because the algebraic reals are countable ($\\Rightarrow F_\\sigma$). Together with density (from residuality), it is a dense $G_\\delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsAlgebraic",
+      "Algebraic.countable",
+      "compl_setOf",
+      "dense Gδ",
+      "residual upgrade"
+    ],
+    "prerequisites": [
+      "countability of the algebraic reals (ancestor)",
+      "Set.Countable.isGδ_compl",
+      "the transcendentals' density (parent)"
+    ]
+  },
+  {
+    "id": "ann-algtrans-algebraic-dense",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "technique",
+    "title": "algebraicReals_dense: The Algebraics Contain the Dense Rationals",
+    "content": "`algebraicReals_dense`: the algebraic reals are dense in ℝ. The argument is monotonicity of density: ℚ (cast into ℝ) has dense range (`Rat.denseRange_cast`), and every rational cast to ℝ is algebraic over ℚ (`isAlgebraic_rat`). So `Dense.mono` lifts the density of the rationals to the larger set of algebraic reals. The `rintro _ ⟨q, rfl⟩` destructures a point in the range of the rational cast, and `isAlgebraic_rat ℚ q` certifies it as algebraic.\n\nDensity is the property that makes the algebraic reals 'large enough' to collide with any dense Gδ — the input the obstruction lemma needs.",
+    "mathContext": "$\\mathbb{Q} \\subseteq \\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}$ and $\\overline{\\mathbb{Q}} = \\mathbb{R}$, so the algebraic reals are dense ($\\mathrm{Dense}\\ s$, $s \\subseteq t \\Rightarrow \\mathrm{Dense}\\ t$). Each $q \\in \\mathbb{Q}$ is algebraic over $\\mathbb{Q}$ (root of $X - q$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Rat.denseRange_cast",
+      "isAlgebraic_rat",
+      "Dense.mono",
+      "density of ℚ in ℝ"
+    ],
+    "prerequisites": [
+      "density of the rationals in ℝ",
+      "rationals are algebraic over ℚ",
+      "monotonicity of density under set inclusion"
+    ]
+  },
+  {
+    "id": "ann-algtrans-not-gdelta",
+    "proofId": "algebraic-numbers-countable-oq-02-oq-03-oq-02",
+    "range": { "startLine": 114, "endLine": 130 },
+    "type": "insight",
+    "title": "algebraicReals_not_isGδ: The Headline Obstruction",
+    "content": "The headline `algebraicReals_not_isGδ`: the algebraic reals are NOT a Gδ subset of ℝ. The proof assumes `hg : IsGδ {x | IsAlgebraic ℚ x}` and feeds the abstract obstruction `not_isGδ_of_dense_of_disjoint_denseGδ` with four ingredients: the algebraics are dense (`algebraicReals_dense`), Gδ (`hg`, the assumption to be refuted), the transcendentals are Gδ (`transcendentalReals_isGδ`) and dense (parent), and the two sets are disjoint. Disjointness is the last `?_`: `Set.disjoint_left` reduces it to 'no x is both algebraic and not algebraic', closed by `exact hx' hx`.\n\nThis pins the algebraic reals as Fσ-but-not-Gδ and (dually) the transcendentals as Gδ-but-not-Fσ — the precise Borel location, strictly finer than meagre/comeagre. The argument is exactly the classical 'ℚ is not Gδ' proof: it uses only that the algebraics are dense, countable (⟹ their complement is a dense Gδ), and co-dense.\n\nThe three trailing `#print axioms` commands (lines 134–136) audit `compl_countable_isDenseGδ`, `transcendentalReals_isDenseGδ`, and `algebraicReals_not_isGδ`, confirming the 0-axiom status (only `propext`/`Classical.choice`/`Quot.sound`, no `native_decide`).",
+    "mathContext": "Suppose $A = \\{x : \\mathrm{IsAlgebraic}_\\mathbb{Q}\\,x\\}$ were $G_\\delta$. $A$ is dense, $A^c$ (transcendentals) is a dense $G_\\delta$, and $A \\cap A^c = \\emptyset$. Two disjoint dense $G_\\delta$ sets contradict Baire ($A \\cap A^c$ would be dense, hence nonempty). So $A \\notin G_\\delta$; being countable, $A \\in F_\\sigma \\setminus G_\\delta$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fσ but not Gδ",
+      "ℚ is not Gδ",
+      "Set.disjoint_left",
+      "Baire category obstruction",
+      "#print axioms"
+    ],
+    "prerequisites": [
+      "the abstract obstruction lemma",
+      "density of the algebraics; dense-Gδ transcendentals",
+      "disjointness of a set and its complement"
+    ]
+  }
+]
