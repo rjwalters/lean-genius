@@ -1,0 +1,166 @@
+{
+  "id": "fibonacci-identities-oq-01-oq-02",
+  "title": "d'Ocagne's Identity for Fibonacci Numbers",
+  "slug": "fibonacci-identities-oq-01-oq-02",
+  "description": "d'Ocagne's identity: with Fₙ = Nat.fib n, the cross-window determinant of two Fibonacci windows is a single signed Fibonacci number — Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ over ℤ (m ≥ n). Answers the second open question of the Cassini entry (fibonacci-identities-oq-01). To avoid natural-number subtraction the headline lemma fixes the gap d = m − n: F_{n+d}·F_{n+1} − F_{n+d+1}·F_n = (−1)ⁿ·F_d, proved by a single induction on n (gap held fixed): casting to ℤ exposes the alternating sign, the recurrence Nat.fib_add_two rewrites the two terms (indices k+2 and k+d+2) introduced at the successor step, and one linear_combination (-1)·ih closes the algebra — each step negates the previous determinant. A classical-form corollary fib_docagne_le restores the m ≥ n / Fₘ₋ₙ statement, and fib_cassini_via_docagne recovers Cassini as the d = 1 specialisation (F₁ = 1). d'Ocagne's identity is absent from Mathlib (which has the recurrence, fib_add, fib_two_mul, fib_gcd, but no cross-window determinant identity); it is the two-window generalisation of Cassini, complementary to the single-window Catalan identity of sibling oq-01-oq-01.",
+  "meta": {
+    "author": "Maurice d'Ocagne (1885); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Other_identities",
+    "date": "1885",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "docagne",
+      "cassini",
+      "recurrence",
+      "induction",
+      "determinant",
+      "integer-sequences",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ01OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining Fibonacci recurrence, cast to ℤ to rewrite the two terms (indices k+2 and k+d+2) introduced at the successor step",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.exists_eq_add_of_le",
+        "description": "n ≤ m → ∃ d, m = n + d — reduces the classical m ≥ n form to the gap form by substituting m = n + d",
+        "module": "Mathlib.Algebra.Order.Sub"
+      },
+      {
+        "theorem": "Nat.add_sub_cancel_left",
+        "description": "(n + d) − n = d — recovers Fₘ₋ₙ = F_d after the gap substitution",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "Nat.fib_zero / Nat.fib_one",
+        "description": "fib 0 = 0, fib 1 = 1 — base values discharging the n = 0 case by simp",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fib_docagne: ∀ n d, (fib (n+d) : ℤ)·fib (n+1) − (fib (n+d+1) : ℤ)·fib n = (−1)ⁿ·fib d — d'Ocagne's identity in gap form (m = n + d), absent from Mathlib",
+      "fib_docagne_le: ∀ m n, n ≤ m → (fib m : ℤ)·fib (n+1) − (fib (m+1) : ℤ)·fib n = (−1)ⁿ·fib (m − n) — the classical m ≥ n / Fₘ₋ₙ statement",
+      "fib_cassini_via_docagne: ∀ n, (fib (n+1) : ℤ)² − fib (n+2)·fib n = (−1)ⁿ — Cassini recovered as the d = 1 specialisation of d'Ocagne, showing d'Ocagne strictly generalises the parent identity"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 114,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used in the universally-quantified theorems (the three trailing decide examples are concrete numeric checks only).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "d'Ocagne's identity, attributed to Maurice d'Ocagne (1885), is the two-index 'cross-window' companion to Cassini's identity. Where Cassini measures the determinant of three consecutive terms, d'Ocagne measures the cross determinant Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ of two windows starting at m and n, and collapses it to the single signed Fibonacci number (−1)ⁿ·Fₘ₋ₙ. It sits alongside Catalan's identity in the classical hierarchy of Fibonacci determinant identities, all of which specialise to Cassini.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-01, second question)**: Prove d'Ocagne's identity Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ.\n\n**Result**: fib_docagne (gap form F_{n+d}·F_{n+1} − F_{n+d+1}·F_n = (−1)ⁿ·F_d), the classical-form corollary fib_docagne_le for n ≤ m, and fib_cassini_via_docagne recovering Cassini as the case d = 1.",
+    "text": "For all n and d (with m = n + d), working over ℤ, F_{n+d}·F_{n+1} − F_{n+d+1}·F_n = (−1)ⁿ·F_d, where Fₙ = Nat.fib n. Equivalently, for n ≤ m, Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ: the cross determinant of two Fibonacci windows is a single signed Fibonacci number.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Cast to ℤ and phrase with the gap d = m − n explicit (m = n + d) to avoid natural-number subtraction; the alternating sign (−1)ⁿ then lives in ℤ.\n2. Induct on n with the gap d held fixed. Base case n = 0: F_d·F₁ − F_{d+1}·F₀ = F_d·1 − F_{d+1}·0 = F_d = (−1)⁰·F_d, closed by simp on fib_zero/fib_one.\n3. Successor step at k+1: normalise the three composite indices (k+1+d+1, k+1+d, k+1+1) to (k+d+2, k+d+1, k+2) by omega, cast the recurrence twice — e1: fib (k+2) = fib k + fib (k+1), e2: fib (k+d+2) = fib (k+d) + fib (k+d+1) — expand pow_succ, and close with `linear_combination (-1) * ih`. Algebraically the new cross determinant is exactly the negation of the previous one, matching (−1)ᵏ → (−1)ᵏ⁺¹.\n4. fib_docagne_le substitutes m = n + d via Nat.exists_eq_add_of_le and rewrites (n+d)−n = d. fib_cassini_via_docagne specialises d = 1 (F₁ = 1), recovering Cassini.",
+    "keyInsights": [
+      "**Fix the gap, induct on the offset.** Holding d = m − n fixed and inducting on n turns a two-index identity into a one-variable induction with the same sign-flip structure as Cassini — the gap appears only as a passive parameter in the recurrence rewrites.",
+      "**The step is again a sign flip.** As in Cassini, the successor cross determinant F_{k+d+1}·F_{k+1} − F_{k+d}·F_{k+2} collapses (via two recurrence substitutions) to the negation of the previous one, so a single linear_combination with coefficient −1 closes the algebra.",
+      "**Cassini is a corollary, not a cousin.** Setting d = 1 (F₁ = 1) turns d'Ocagne into Cassini, so this entry strictly generalises the parent — and the file proves that specialisation explicitly as fib_cassini_via_docagne.",
+      "**Not in Mathlib.** Mathlib carries the recurrence, fib_add, fib_two_mul, and fib_gcd, but no cross-window determinant identity, so d'Ocagne (in both gap and classical forms) is an original contribution."
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two and base values fib_zero/fib_one",
+      "Induction over ℕ with a held parameter, and casting ℕ → ℤ (exact_mod_cast)",
+      "Nat.exists_eq_add_of_le and Nat.add_sub_cancel_left for the gap substitution",
+      "The linear_combination tactic for closing polynomial identities against a hypothesis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring stating d'Ocagne's identity in gap and classical forms with worked numerical examples, the Fibonacci/tactic imports, namespace, and open Nat.",
+      "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$, with $F_0=0, F_1=1, F_{n+2}=F_n+F_{n+1}$."
+    },
+    {
+      "id": "docagne",
+      "title": "d'Ocagne's Identity (gap form)",
+      "startLine": 64,
+      "endLine": 86,
+      "summary": "fib_docagne: the main theorem in the form F_{n+d}·F_{n+1} − F_{n+d+1}·F_n = (−1)ⁿ·F_d, proved by induction on n with the gap d fixed — base case by simp, successor step by normalising indices (omega), casting the recurrence twice, and closing with linear_combination (-1)·ih.",
+      "mathContext": "$F_{n+d} F_{n+1} - F_{n+d+1} F_n = (-1)^n F_d$ over $\\mathbb{Z}$."
+    },
+    {
+      "id": "docagne-le",
+      "title": "Classical Form (m ≥ n)",
+      "startLine": 88,
+      "endLine": 97,
+      "summary": "fib_docagne_le: the classical Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ statement for n ≤ m, obtained by substituting m = n + d (Nat.exists_eq_add_of_le) and rewriting (n+d)−n = d.",
+      "mathContext": "$F_m F_{n+1} - F_{m+1} F_n = (-1)^n F_{m-n}$ for $n \\le m$."
+    },
+    {
+      "id": "cassini-recover",
+      "title": "Cassini as the d = 1 Case",
+      "startLine": 99,
+      "endLine": 112,
+      "summary": "fib_cassini_via_docagne: specialising the gap to d = 1 (F₁ = 1) recovers Cassini's identity Fₙ₊₁² − Fₙ₊₂·Fₙ = (−1)ⁿ, showing d'Ocagne strictly generalises the parent; followed by concrete numeric examples.",
+      "mathContext": "$F_{n+1}^2 - F_{n+2} F_n = (-1)^n$ (Cassini)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-01",
+      "relationship": "parent",
+      "description": "Cassini's identity, the parent entry; d'Ocagne is its second open question and strictly generalises it (Cassini is the d = 1 case, proved here as fib_cassini_via_docagne)"
+    },
+    {
+      "targetId": "fibonacci-identities-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Catalan's identity (single-window generalisation Fₙ₋ᵣFₙ₊ᵣ − Fₙ²); d'Ocagne is the complementary two-window cross identity from the same parent"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of d'Ocagne's identity Fₘ·Fₙ₊₁ − Fₘ₊₁·Fₙ = (−1)ⁿ·Fₘ₋ₙ over ℤ, in both the gap form (m = n + d) and the classical m ≥ n form, by a single induction using only the Fibonacci recurrence; Cassini is recovered as the d = 1 specialisation.",
+    "implications": "Supplies the cross-window determinant identity for Fibonacci numbers — the two-index companion to Cassini and Catalan — as a universally quantified theorem absent from Mathlib, and exhibits Cassini explicitly as a corollary.",
+    "openQuestions": [
+      "Prove Catalan's identity Fₙ₋ᵣ·Fₙ₊ᵣ − Fₙ² = (−1)ⁿ⁻ʳ·Fᵣ² and exhibit both Cassini and a Catalan↔d'Ocagne bridge from a common addition-formula lemma.",
+      "Establish the Lucas-number d'Ocagne analogue Lₘ·Lₙ₊₁ − Lₘ₊₁·Lₙ = (−1)ⁿ·5·Fₘ₋ₙ (or the mixed Fibonacci–Lucas form) and compare signs."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Fib.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "FibonacciIdentitiesOQ01OQ02",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Vajda, S.",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover",
+      "note": "d'Ocagne's, Catalan's, and Cassini's identities and their interrelations"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "d'Ocagne's identity and the family of Fibonacci determinant identities"
+    }
+  ],
+  "sorries": 0
+}
