@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "pell-equation-oq-06-oq-06",
+    "range": { "startLine": 1, "endLine": 60 },
+    "type": "concept",
+    "title": "Overview: One Algebraic Fact Behind the Whole Pell Lineage",
+    "content": "The header isolates the single fact underlying the entire Pell family: solutions of x² − 2y² = ±1 are closed under Brahmagupta composition (the bhāvanā, c. 628 CE), (x,y) ⊛ (u,v) = (xu + 2yv, xv + yu) — exactly multiplication ⟨x,y⟩·⟨u,v⟩ in ℤ[√2]. The parent lineage's recurrence (oq-03), √2-approximation (oq-04), and Cassini determinant (oq-05) are all shadows of this one composition law. The entry proves the Brahmagupta–Fibonacci identity for x² − 2y², derives the commutative monoid / unit-group structure, and the sign law negative ⊛ negative = positive — the structural reason the negative-Pell chain occupies only the odd powers of the fundamental unit ζ = 1 + √2.",
+    "mathContext": "Brahmagupta's bhāvanā composes solutions of $x^2 - Dy^2 = N$: from solutions of $=N_1$ and $=N_2$ one gets a solution of $=N_1 N_2$, via $(x,y)\\otimes(u,v) = (xu + Dyv, xv + yu)$ — the multiplicativity of the norm of $\\mathbb{Z}[\\sqrt D]$. At $D=2$, the unit group of $\\mathbb{Z}[\\sqrt2]$ has rank 1 (Dirichlet), generated up to sign by $\\zeta = 1+\\sqrt2$ of norm $-1$.",
+    "significance": "key",
+    "prerequisites": ["Pell's equation", "quadratic integer rings ℤ[√D]", "norm multiplicativity"],
+    "relatedConcepts": ["Brahmagupta bhāvanā", "Brahmagupta–Fibonacci identity", "fundamental unit", "ℤ[√2]", "Dirichlet unit theorem"]
+  },
+  {
+    "id": "ann-compose-norm",
+    "proofId": "pell-equation-oq-06-oq-06",
+    "range": { "startLine": 61, "endLine": 91 },
+    "type": "definition",
+    "title": "Brahmagupta Composition and the Pell Norm = the ℤ[√2]-Norm",
+    "content": "Two definitions: `compose p q = (xu + 2yv, xv + yu)` (the bhāvanā ⊛) and `pellNorm (x,y) = x² − 2y²`. `pellNorm_eq_zsqrtd_norm` identifies pellNorm with Mathlib's `Zsqrtd.norm ⟨x,y⟩` (the norm of x + y√2), so the elementary two-integer statements are the concrete face of the abstract quadratic-integer norm. The bridge `compose_eq_mul` is the crux: it proves ⟨(p ⊛ q).1, (p ⊛ q).2⟩ = ⟨p⟩ · ⟨q⟩ in Zsqrtd 2, by matching real and imaginary parts via `Zsqrtd.re_mul` / `im_mul`. Once composition is literally multiplication, all the monoid laws come for free from the ring.",
+    "mathContext": "$\\langle x,y\\rangle \\cdot \\langle u,v\\rangle = \\langle xu + 2yv,\\ xv + yu\\rangle$ in $\\mathbb{Z}[\\sqrt2]$ (the $\\sqrt2 \\cdot \\sqrt2 = 2$ in the real part is the $D=2$ coefficient). $N\\langle x,y\\rangle = x^2 - 2y^2$.",
+    "significance": "critical",
+    "prerequisites": ["Zsqrtd (quadratic integers)", "Zsqrtd.re_mul / im_mul", "Zsqrtd.norm"],
+    "relatedConcepts": ["Zsqrtd", "compose_eq_mul", "Zsqrtd.norm", "re/im matching"]
+  },
+  {
+    "id": "ann-brahmagupta",
+    "proofId": "pell-equation-oq-06-oq-06",
+    "range": { "startLine": 92, "endLine": 107 },
+    "type": "theorem",
+    "title": "The Headline: Brahmagupta–Fibonacci Identity",
+    "content": "`brahmagupta` is the headline one-line ring identity for the form x² − 2y²: (x²−2y²)(u²−2v²) = (xu+2yv)² − 2(xv+yu)². Mathlib has this only abstractly as `Zsqrtd.norm_mul`; stating it on bare integers makes the multiplicativity transparent and self-contained — it is a single `ring` computation. `pellNorm_compose` packages it on pairs: N(p ⊛ q) = N(p)·N(q), i.e. pellNorm is a monoid homomorphism (ℤ×ℤ, ⊛) → (ℤ, ·). This multiplicativity is the algebraic engine from which every classical Pell technique (Lagrange continued fractions, convergent recurrences, Cassini identities) descends.",
+    "mathContext": "$(x^2 - 2y^2)(u^2 - 2v^2) = (xu + 2yv)^2 - 2(xv + yu)^2$. Equivalently $N(pq) = N(p)N(q)$ — the norm of $\\mathbb{Z}[\\sqrt2]$ is multiplicative, here written out explicitly for $D = 2$.",
+    "significance": "critical",
+    "prerequisites": ["the ring tactic", "norm multiplicativity"],
+    "relatedConcepts": ["Brahmagupta–Fibonacci identity", "Zsqrtd.norm_mul", "monoid homomorphism", "ring identity"]
+  },
+  {
+    "id": "ann-monoid",
+    "proofId": "pell-equation-oq-06-oq-06",
+    "range": { "startLine": 108, "endLine": 126 },
+    "type": "theorem",
+    "title": "Commutative Monoid Laws Inherited from ℤ[√2]",
+    "content": "`compose_comm`, `compose_assoc`, and `compose_one` establish that (ℤ×ℤ, ⊛) is a commutative monoid with two-sided identity (1,0) — the element 1 ∈ ℤ[√2]. Each is a `ring` computation on the explicit coordinates (and conceptually free via compose_eq_mul, since ℤ[√2] is a commutative ring). `pellNorm_one` records N(1,0) = 1, so the identity is itself a (positive) Pell solution. These laws are what make the solution set a genuine algebraic structure rather than just a set closed under an operation.",
+    "mathContext": "$(\\mathbb{Z}\\times\\mathbb{Z}, \\otimes)$ is a commutative monoid: $\\otimes$ inherits commutativity, associativity, and the identity $(1,0) = 1 \\in \\mathbb{Z}[\\sqrt2]$ from the ring multiplication.",
+    "significance": "key",
+    "prerequisites": ["commutative monoid axioms", "compose_eq_mul"],
+    "relatedConcepts": ["commutative monoid", "two-sided identity", "ring tactic"]
+  },
+  {
+    "id": "ann-closure-sign",
+    "proofId": "pell-equation-oq-06-oq-06",
+    "range": { "startLine": 127, "endLine": 180 },
+    "type": "theorem",
+    "title": "Unit-Group Closure and the Sign Law",
+    "content": "`pellNorm_compose_sq` (N(p⊛q)² = N(p)²·N(q)²) and `compose_unit_closed` show that solutions of |x² − 2y²| = 1 — the units of ℤ[√2], encoded as N² = 1 — are closed under composition, so they form a group. `compose_neg_neg` is the sign law: composing two negative-Pell solutions (N = −1) yields a positive-Pell solution (N = +1), forced by (−1)(−1) = +1. This is the deep reason the negative-Pell chain realizes only the ODD powers of ζ: applied to the parent chain, `compose_negPellSeq_eq_pow` gives negPellSeq m ⊛ negPellSeq n = ζ^(2m+1)·ζ^(2n+1) = ζ^(2(m+n)+2) — an even power — and `compose_negPellSeq_norm` confirms its norm is +1. This generalizes the diagonal squaring case (m = n) of the oq-01 sibling to an arbitrary off-diagonal composition, all from the one multiplicativity identity.",
+    "mathContext": "Units: $|N(p)| = |N(q)| = 1 \\Rightarrow |N(p\\otimes q)| = 1$. Sign law: $N = -1, N = -1 \\Rightarrow N = +1$. On the chain $a_n = \\zeta^{2n+1}$ (odd powers), $a_m \\otimes a_n = \\zeta^{2(m+n)+2}$ (even power, norm $+1$) — adding two odd exponents gives an even one.",
+    "significance": "critical",
+    "prerequisites": ["multiplicativity of the norm", "the parent chain negPellSeq", "the fundamental unit ζ"],
+    "relatedConcepts": ["unit group closure", "sign law", "odd powers of ζ", "negPellSeq_eq_pow", "off-diagonal generalization"]
+  },
+  {
+    "id": "ann-sanity",
+    "proofId": "pell-equation-oq-06-oq-06",
+    "range": { "startLine": 181, "endLine": 204 },
+    "type": "concept",
+    "title": "Sanity Checks: Composition in Action",
+    "content": "Concrete computations confirm the theory. (1,1) ⊛ (1,1) = (3,2): the negative-Pell solution (1,1) (N = 1 − 2 = −1) composed with itself gives (3,2) with N = 9 − 8 = +1 — negative ⊛ negative = positive made literal. (7,5) ⊛ (1,1) = (17,12): N = 289 − 288 = +1, a positive-Pell solution. These ground the abstract monoid/sign-law results in arithmetic anyone can check, and exhibit composition as the step map driving the parent's solution chain.",
+    "mathContext": "$(1,1)\\otimes(1,1) = (1\\cdot1 + 2\\cdot1\\cdot1,\\ 1\\cdot1 + 1\\cdot1) = (3,2)$, $N(3,2) = 9 - 8 = 1$. $(7,5)\\otimes(1,1) = (17,12)$, $N = 289 - 288 = 1$ — the fundamental unit $3 + 2\\sqrt2 = \\zeta^2$.",
+    "significance": "supporting",
+    "prerequisites": ["the composition law", "the sign law"],
+    "relatedConcepts": ["concrete witnesses", "fundamental unit", "ζ²"]
+  }
+]
