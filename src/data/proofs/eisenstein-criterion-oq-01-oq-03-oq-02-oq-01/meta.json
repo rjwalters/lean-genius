@@ -1,0 +1,175 @@
+{
+  "id": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-01",
+  "title": "Irreducibility of the Prime-Power Cyclotomic Polynomial Φ_{pᵏ} via Eisenstein at Φ_{pᵏ}(X + 1)",
+  "slug": "eisenstein-criterion-oq-01-oq-03-oq-02-oq-01",
+  "description": "Answers the first open question of eisenstein-criterion-oq-01-oq-03-oq-02: extend the cyclotomic Eisenstein argument from prime indices to prime powers. For a prime p and k = n + 1 ≥ 1, the cyclotomic polynomial Φ_{pᵏ} is monic of degree φ(pᵏ) = pⁿ(p − 1) but is not visibly Eisenstein at p. Its translate Φ_{pᵏ}(X + 1) is: Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt supplies the Eisenstein-at-p data (monic, every lower coefficient in (p), constant coefficient in (p) but not (p²)). Feeding that data into the grandparent entry's reproved criterion irreducible_rat_of_eisenstein makes Φ_{pᵏ}(X + 1) irreducible over ℚ, and the translation automorphism X ↦ X + 1 of ℚ[X] descends irreducibility to Φ_{pᵏ} itself. This re-derives Polynomial.cyclotomic.irreducible_rat (for prime-power indices) through the elementary Eisenstein-after-translation route rather than invoking it. The only change from the prime case is the index: cyclotomic p becomes cyclotomic (p^(n+1)), and the Eisenstein input is the prime-power lemma rather than the prime one. 3 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cyclotomic_polynomial",
+    "date": "Carl Friedrich Gauss, 1801 (Disquisitiones Arithmeticae); Eisenstein–Schönemann",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "irreducibility",
+      "cyclotomic-polynomials",
+      "number-theory",
+      "ring-theory",
+      "gauss-lemma",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/EisensteinCriterionOQ01OQ03OQ02OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt",
+        "description": "Φ_{p^(n+1)}(X + 1) is Eisenstein at the prime ideal (p) ⊂ ℤ: monic, every lower coefficient inside (p), constant coefficient inside (p) but not (p²). This is the prime-power analogue of the prime-index lemma used by the parent, and the Eisenstein data fed into the grandparent's criterion.",
+        "module": "Mathlib.RingTheory.Polynomial.Eisenstein.IsIntegral"
+      },
+      {
+        "theorem": "EisensteinCriterionOQ01OQ03.irreducible_rat_of_eisenstein",
+        "description": "The GRANDPARENT entry's reproved Eisenstein criterion: a monic integer polynomial with p ∣ coeff k below the degree and p² ∤ coeff 0 is irreducible over ℚ (concrete divisibility form + Gauss's lemma). Reused verbatim for the prime-power cyclotomic case.",
+        "module": "Proofs.EisensteinCriterionOQ01OQ03"
+      },
+      {
+        "theorem": "Polynomial.algEquivAevalXAddC",
+        "description": "The polynomial algebra automorphism p(X) ↦ p(X + t), with inverse p(X) ↦ p(X − t). Used at t = 1 to descend irreducibility of Φ_{pᵏ}(X + 1) to Φ_{pᵏ}, via MulEquiv.irreducible_iff.",
+        "module": "Mathlib.Algebra.Polynomial.AlgebraMap"
+      },
+      {
+        "theorem": "Polynomial.map_cyclotomic / Polynomial.natDegree_comp / Nat.totient_prime_pow_succ",
+        "description": "(cyclotomic n ℤ).map (ℤ→ℚ) = cyclotomic n ℚ; degree of a composition multiplies; totient (p^(n+1)) = pⁿ(p − 1) — supplying the ℚ-map, the degree pⁿ(p − 1), and the positive-degree input.",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic / Mathlib.NumberTheory.Divisors / Mathlib.Algebra.Polynomial.Degree.Lemmas"
+      }
+    ],
+    "assumptions": "None. All 3 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide is used. Depends on the grandparent entry's reproved criterion irreducible_rat_of_eisenstein (itself 0-axiom verified) and on Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt.",
+    "originalContributions": [
+      "cyclotomic_prime_pow_irreducible_rat: irreducibility of the prime-power cyclotomic polynomial Φ_{p^(n+1)} over ℚ, obtained by applying the grandparent entry's reproved Eisenstein criterion (irreducible_rat_of_eisenstein) to the translate Φ_{p^(n+1)}(X + 1), then transporting back along the translation automorphism X ↦ X + 1. This is the first open question of the parent eisenstein-criterion-oq-01-oq-03-oq-02, answered as posed.",
+      "shiftedCyclotomicPrimePowInt: the translate Φ_{p^(n+1)}(X + 1) over ℤ, together with shiftedCyclotomicPrimePowInt_monic (it is monic) and shiftedCyclotomicPrimePowInt_natDegree (its degree is pⁿ(p − 1)) — the structural facts that convert Mathlib's IsEisensteinAt data into the concrete monic / positive-degree / divisibility hypotheses the grandparent's criterion consumes.",
+      "Demonstration that one fixed criterion (irreducible_rat_of_eisenstein) plus the matching Mathlib Eisenstein lemma covers the entire prime-power family uniformly: the prime case (parent) and the prime-power case (this entry) differ only in the index and in which Eisenstein lemma is invoked, re-deriving Polynomial.cyclotomic.irreducible_rat for all prime-power indices through the elementary route."
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 114,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Irreducibility of the cyclotomic polynomial Φ_n over ℚ is classical: Gauss proved it for prime indices (Disquisitiones Arithmeticae, 1801), and the result holds for all n. The standard elementary route for a prime index p, due in essence to Eisenstein and Schönemann, translates Φ_p by X ↦ X + 1 to expose an Eisenstein prime. The same trick works at every prime power pᵏ: although Φ_{pᵏ} is again not visibly Eisenstein, its translate Φ_{pᵏ}(X + 1) is Eisenstein at p. The parent entry eisenstein-criterion-oq-01-oq-03-oq-02 carried this out for the prime index and left the prime-power extension as its first open question; this entry answers it.",
+    "problemStatement": "**Open Question (OQ-01-OQ-03-OQ-02-OQ-01)**: Extend the cyclotomic Eisenstein argument to prime powers — use Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt to supply the Eisenstein data for Φ_{pᵏ}(X + 1) and feed it through the same reproved criterion to obtain irreducibility of Φ_{pᵏ} over ℚ.\n\n**Formalized**: cyclotomic_prime_pow_irreducible_rat — for any prime p and exponent k = n + 1 ≥ 1, the cyclotomic polynomial Φ_{pᵏ} is irreducible over ℚ, proved by feeding the Eisenstein-at-p data of Φ_{pᵏ}(X + 1) into the grandparent's reproved criterion and descending along the translation automorphism X ↦ X + 1.",
+    "text": "A 114-line formalization in 3 theorems and 1 definition. The translate Φ_{p^(n+1)}(X + 1) is introduced over ℤ as shiftedCyclotomicPrimePowInt, shown monic (shiftedCyclotomicPrimePowInt_monic, from monicity of Φ_{pᵏ} and of X + 1 under composition) and of degree pⁿ(p − 1) (shiftedCyclotomicPrimePowInt_natDegree, from natDegree_comp, natDegree_cyclotomic, and Nat.totient_prime_pow_succ). Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt provides the IsEisensteinAt data at the prime ideal (p); Ideal.mem_span_singleton and Ideal.span_singleton_pow convert membership statements into the divisibility hypotheses p ∣ coeff k (for k below the degree) and p² ∤ coeff 0 that the grandparent's irreducible_rat_of_eisenstein requires. That criterion yields irreducibility of (Φ_{pᵏ}(X + 1)).map(ℤ→ℚ) = Φ_{pᵏ}(X + 1) over ℚ; finally the algebra automorphism algEquivAevalXAddC 1 (sending g to g(X + 1)) and MulEquiv.irreducible_iff descend irreducibility from Φ_{pᵏ}(X + 1) to Φ_{pᵏ}. All theorems compile with 0 sorries, 0 axioms, no native_decide.",
+    "proofStrategy": "**Translate (shiftedCyclotomicPrimePowInt = Φ_{p^(n+1)}(X + 1) over ℤ)**: monic by Monic.comp of cyclotomic.monic and monic_X_add_C (natDegree (X + 1) = 1 ≠ 0); natDegree = pⁿ(p − 1) by natDegree_comp · natDegree_cyclotomic · Nat.totient_prime_pow_succ, hence positive since pⁿ ≥ 1 and p − 1 ≥ 1.\n\n**Eisenstein data**: cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt p n gives IsEisensteinAt (Submodule.span ℤ {p}). Its .mem field, rewritten with Ideal.submodule_span_eq and Ideal.mem_span_singleton, gives p ∣ coeff k for k < natDegree; its .notMem field, rewritten with Ideal.span_singleton_pow and Ideal.mem_span_singleton, gives ¬ p² ∣ coeff 0.\n\n**Grandparent's criterion**: EisensteinCriterionOQ01OQ03.irreducible_rat_of_eisenstein (with Prime (p:ℤ) via Nat.prime_iff_prime_int) yields Irreducible ((Φ_{pᵏ}(X+1)).map (ℤ→ℚ)). Polynomial.map_comp + map_cyclotomic + map_add/map_X/map_one rewrite this to Irreducible (Φ_{pᵏ}(X + 1) over ℚ).\n\n**Descent**: the automorphism e = algEquivAevalXAddC (1 : ℚ) satisfies e (Φ_{pᵏ}) = aeval (X + C 1) Φ_{pᵏ} = Φ_{pᵏ}.comp (X + 1) (comp_eq_aeval, C_1). Since e is a MulEquiv, MulEquiv.irreducible_iff turns Irreducible (e Φ_{pᵏ}) into Irreducible Φ_{pᵏ}.",
+    "keyInsights": [
+      "**One trick, every prime power**: the substitution X ↦ X + 1 that exposes an Eisenstein prime for Φ_p works verbatim for Φ_{pᵏ}. The only differences from the prime case are the index pᵏ in place of p and the prime-power Eisenstein lemma in place of the prime one — the criterion and the descent are unchanged.",
+      "**Reuse over reinvention**: the Eisenstein-over-ℚ engine is the grandparent's irreducible_rat_of_eisenstein, not Mathlib's cyclotomic.irreducible_rat. The prime-power cyclotomic case is thereby exhibited as a corollary of one reproved general criterion, which is exactly what the open question asked for.",
+      "**Degree from the totient**: Φ_{p^(n+1)} has degree φ(p^(n+1)) = pⁿ(p − 1), via Nat.totient_prime_pow_succ. Positivity (needed by the criterion) is immediate since pⁿ ≥ 1 and p ≥ 2.",
+      "**Irreducibility is an automorphism invariant**: descending from Φ_{pᵏ}(X + 1) to Φ_{pᵏ} is a one-line transport along the ring automorphism X ↦ X + 1 of ℚ[X], via MulEquiv.irreducible_iff. Translation cannot create or destroy factorizations.",
+      "**Bridging two coefficient languages**: Mathlib states the cyclotomic Eisenstein data with ideal-membership (IsEisensteinAt at (p)); the grandparent's criterion speaks plain divisibility (p ∣ coeff k). Ideal.mem_span_singleton and Ideal.span_singleton_pow are the dictionary between them.",
+      "**0-axiom, no native_decide**: all 3 theorems are kernel-checked, depending only on propext / Classical.choice / Quot.sound, which do not count as assumptions."
+    ],
+    "prerequisites": [
+      "Cyclotomic polynomials Φ_n over a ring; cyclotomic.monic, natDegree_cyclotomic = totient n, map_cyclotomic (Mathlib Cyclotomic.Basic)",
+      "The totient of a prime power: φ(p^(n+1)) = pⁿ(p − 1) (Nat.totient_prime_pow_succ)",
+      "Polynomial composition p.comp q, natDegree_comp, monicity under composition (Monic.comp)",
+      "Eisenstein's criterion in IsEisensteinAt form (prime-power cyclotomic case: cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt) and its concrete divisibility restatement (grandparent entry eisenstein-criterion-oq-01-oq-03)",
+      "Prime ideals (p) ⊂ ℤ: membership x ∈ (p) ↔ p ∣ x, (p)² = (p²) (Ideal.mem_span_singleton, Ideal.span_singleton_pow)",
+      "The translation automorphism of ℚ[X] (Polynomial.algEquivAevalXAddC) and invariance of irreducibility under multiplicative equivalences (MulEquiv.irreducible_iff)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Answers the first open question of eisenstein-criterion-oq-01-oq-03-oq-02. The translate Φ_{p^(n+1)}(X + 1) is introduced over ℤ, shown monic and of degree pⁿ(p − 1), and its Eisenstein-at-p data (from Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt) is converted into the concrete divisibility hypotheses of the grandparent's reproved criterion irreducible_rat_of_eisenstein. That yields irreducibility of Φ_{pᵏ}(X + 1) over ℚ, which the translation automorphism X ↦ X + 1 transports to Φ_{pᵏ} itself. The result, cyclotomic_prime_pow_irreducible_rat, re-derives Polynomial.cyclotomic.irreducible_rat for prime-power indices through the elementary Eisenstein-after-translation argument. 3 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "The entry generalises its parent from prime to prime-power indices, showing the reproved Eisenstein criterion is powerful enough to handle the whole prime-power cyclotomic family with no new ideas — only the matching Mathlib Eisenstein lemma and the same translation-and-descent scaffold. It isolates exactly what changes (the index and one lemma name) and what stays fixed (the criterion, the coefficient-language bridge, the automorphism descent).",
+    "openQuestions": [
+      "Combine the prime-power case with the multiplicativity of cyclotomic degrees toward a uniform treatment of Φ_n for general n (whose irreducibility is no longer a single Eisenstein application but requires the full theory).",
+      "Use cyclotomic_prime_pow_irreducible_rat to compute [ℚ(ζ_{pᵏ}) : ℚ] = φ(pᵏ) = pⁿ(p − 1) explicitly, identifying Φ_{pᵏ} as the minimal polynomial of a primitive pᵏ-th root of unity."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "eisenstein-criterion-oq-01-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry. It establishes irreducibility of the p-th (prime-index) cyclotomic polynomial Φ_p via Eisenstein at Φ_p(X + 1). This entry answers its first open question by extending the same argument to every prime power pᵏ, using the prime-power Eisenstein lemma in place of the prime one."
+    },
+    {
+      "proofId": "eisenstein-criterion-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Grandparent entry. It reproves Eisenstein's criterion over ℚ in concrete divisibility form (irreducible_rat_of_eisenstein), the engine reused verbatim here to turn the prime-power Eisenstein data into irreducibility of Φ_{pᵏ}(X + 1)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.EisensteinCriterionOQ01OQ03"
+    ],
+    "namespace": "EisensteinCriterionOQ01OQ03OQ02OQ01",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/EisensteinCriterionOQ01OQ03OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: the Gauss argument at a prime power",
+      "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring: Φ_{pᵏ} is not visibly Eisenstein, but its translate Φ_{pᵏ}(X+1) is (Eisenstein at p); since X ↦ X+1 is a ring automorphism, Φ_{pᵏ} is irreducible over ℚ. The Eisenstein data feeds the grandparent's reproved criterion, re-deriving cyclotomic.irreducible_rat for prime-power indices elementarily. The only change from the prime case is the index and the prime-power Eisenstein lemma."
+    },
+    {
+      "id": "translate-properties",
+      "title": "The translate Φ_{pᵏ}(X+1) and its basic properties",
+      "startLine": 42,
+      "endLine": 71,
+      "summary": "shiftedCyclotomicPrimePowInt p n := (cyclotomic (p^(n+1)) ℤ).comp (X+1); shiftedCyclotomicPrimePowInt_monic (composition of monics, no primality needed) and shiftedCyclotomicPrimePowInt_natDegree = pⁿ(p − 1) (natDegree_comp + Nat.totient_prime_pow_succ) — the monicity and positive-degree Eisenstein inputs."
+    },
+    {
+      "id": "irreducibility-and-descent",
+      "title": "Irreducibility via Eisenstein and descent to Φ_{pᵏ}",
+      "startLine": 73,
+      "endLine": 113,
+      "summary": "cyclotomic_prime_pow_irreducible_rat: unpack Mathlib's cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt into the divisibility hypotheses of the grandparent's irreducible_rat_of_eisenstein (p ∣ lower coeffs, p² ∤ constant), get irreducibility of the ℚ translate, then descend to Φ_{pᵏ} along algEquivAevalXAddC (1) via MulEquiv.irreducible_iff."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "cyclotomic_prime_pow_irreducible_rat",
+      "type": "core",
+      "statement": "For any prime $p$ and exponent $k = n+1 \\ge 1$, the cyclotomic polynomial $\\Phi_{p^k}$ is irreducible over $\\mathbb{Q}$.",
+      "significance": "The headline result and the direct answer to the open question. Proved by applying the grandparent's reproved Eisenstein criterion to $\\Phi_{p^k}(X+1)$ and descending along the translation automorphism $X \\mapsto X+1$ — re-deriving Mathlib's cyclotomic.irreducible_rat (for prime-power indices) by the elementary route. Generalises the parent's prime-index result to every prime power.",
+      "description": "Φ_{pᵏ} is irreducible over ℚ, via Eisenstein at Φ_{pᵏ}(X + 1)."
+    },
+    {
+      "name": "shiftedCyclotomicPrimePowInt_natDegree",
+      "type": "supporting",
+      "statement": "$\\Phi_{p^{n+1}}(X+1)$ has degree $p^n(p-1)$.",
+      "significance": "Supplies the positive-degree input to the Eisenstein criterion (pⁿ ≥ 1 and p − 1 ≥ 1). Computed from natDegree_comp, natDegree_cyclotomic, and Nat.totient_prime_pow_succ.",
+      "description": "natDegree of Φ_{p^(n+1)}(X + 1) is pⁿ(p − 1)."
+    },
+    {
+      "name": "shiftedCyclotomicPrimePowInt_monic",
+      "type": "supporting",
+      "statement": "$\\Phi_{p^{n+1}}(X+1)$ is monic.",
+      "significance": "Monicity is required both by the grandparent's criterion and by the translation argument. Obtained from Monic.comp of cyclotomic.monic with the monic X + 1; no primality is needed.",
+      "description": "Φ_{p^(n+1)}(X + 1) is monic."
+    }
+  ],
+  "references": [
+    {
+      "text": "Gauss, C. F. (1801). Disquisitiones Arithmeticae. Irreducibility of the cyclotomic polynomial.",
+      "url": "https://en.wikipedia.org/wiki/Cyclotomic_polynomial"
+    },
+    {
+      "text": "Eisenstein's criterion and the X ↦ X + 1 trick for cyclotomic polynomials; Dummit & Foote, Abstract Algebra.",
+      "url": "https://en.wikipedia.org/wiki/Eisenstein%27s_criterion"
+    },
+    {
+      "text": "Mathlib4: Polynomial.cyclotomic_prime_pow_comp_X_add_one_isEisensteinAt, Polynomial.algEquivAevalXAddC, Polynomial.map_cyclotomic, Nat.totient_prime_pow_succ, MulEquiv.irreducible_iff; and the grandparent entry's irreducible_rat_of_eisenstein.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "sorries": 0
+}
