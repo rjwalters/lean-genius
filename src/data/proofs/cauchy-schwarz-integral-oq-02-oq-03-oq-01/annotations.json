@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-cs-lower-tight",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "Equality ⟺ the Cauchy-Schwarz LOWER Bound Is Saturated",
+    "content": "The reverse Minkowski inequality came from the CS lower bound ⟪u,v⟫ ≥ −‖u‖‖v‖; it is therefore an equality exactly when that bound is tight. The reduction is mechanical: |‖u‖−‖v‖| and ‖u+v‖ are both nonnegative, so pow_left_inj₀ and sq_abs replace the equation by the equality of squares (‖u‖−‖v‖)² = ‖u+v‖²; norm_add_sq_real expands the right to ‖u‖²+2⟪u,v⟫+‖v‖²; a one-line linarith against the ring identity (‖u‖−‖v‖)² = ‖u‖²+2(−‖u‖‖v‖)+‖v‖² isolates ⟪u,v⟫ = −(‖u‖·‖v‖). This mirrors the forward triangle equality, which saturates the CS UPPER bound.",
+    "mathContext": "$$\\|u+v\\|^2 = (\\|u\\|-\\|v\\|)^2 \\iff \\langle u,v\\rangle = -\\|u\\|\\,\\|v\\|$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy-Schwarz equality",
+      "norm_add_sq_real",
+      "pow_left_inj₀",
+      "sq_abs"
+    ],
+    "prerequisites": [
+      "inner-product norm-squared identity",
+      "equality of nonnegatives via squares"
+    ]
+  },
+  {
+    "id": "ann-substitute-neg-v",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 94
+    },
+    "type": "technique",
+    "title": "The v ↦ −v Trick: Antiparallel from the Parallel CS Equality Case",
+    "content": "Mathlib's Cauchy-Schwarz equality case inner_eq_norm_mul_iff_real states ⟪x,y⟫ = ‖x‖‖y‖ ↔ ‖y‖•x = ‖x‖•y — the PARALLEL (nonnegative-multiple) case. We need the antiparallel condition ⟪u,v⟫ = −‖u‖‖v‖. Feeding the lemma the pair (u,−v) and simplifying (inner_neg_right, norm_neg, smul_neg) gives −⟪u,v⟫ = ‖u‖‖v‖ ↔ ‖v‖•u = −(‖u‖•v); neg_eq_iff_eq_neg flips the left side to ⟪u,v⟫ = −(‖u‖‖v‖). No bespoke 'negative CS equality' lemma is needed — the substitution turns the lower-bound saturation into the upper-bound one.",
+    "mathContext": "$$\\langle u,v\\rangle = -\\|u\\|\\|v\\| \\iff \\|v\\|\\cdot u = -(\\|u\\|\\cdot v)$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "inner_eq_norm_mul_iff_real",
+      "inner_neg_right",
+      "smul_neg",
+      "neg_eq_iff_eq_neg"
+    ],
+    "prerequisites": [
+      "Cauchy-Schwarz equality case",
+      "linearity of the inner product in the second slot"
+    ]
+  },
+  {
+    "id": "ann-strict-dichotomy",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 110
+    },
+    "type": "insight",
+    "title": "Equality and Strict Inequality Form a Clean Dichotomy",
+    "content": "Because |‖u‖−‖v‖| ≤ ‖u+v‖ holds UNCONDITIONALLY (private reverse_minkowski_le, re-derived from the CS lower bound), the inequality is strict precisely when it is not an equality. not_iff_not over not_lt and not_ne_iff turns the goal |‖u‖−‖v‖| < ‖u+v‖ ↔ ‖v‖•u ≠ −(‖u‖•v) into ‖u+v‖ ≤ |‖u‖−‖v‖| ↔ |‖u‖−‖v‖| = ‖u+v‖, closed by le_antisymm against the unconditional bound. The qualitative question 'when is the reverse triangle inequality sharp' becomes the decidable algebraic test ‖v‖•u =? −(‖u‖•v).",
+    "mathContext": "$$\\big|\\|u\\|-\\|v\\|\\big| < \\|u+v\\| \\iff \\|v\\|\\cdot u \\ne -(\\|u\\|\\cdot v)$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "not_iff_not",
+      "not_lt",
+      "le_antisymm",
+      "reverse triangle inequality"
+    ],
+    "prerequisites": [
+      "unconditional reverse Minkowski bound",
+      "antisymmetry of ≤"
+    ]
+  },
+  {
+    "id": "ann-forward-reverse-mirror",
+    "proofId": "cauchy-schwarz-integral-oq-02-oq-03-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "Forward and Reverse Equality Are Sign-Twinned Collinearity Conditions",
+    "content": "Substituting −v in the sum-form equality yields the difference form |‖u‖−‖v‖| = ‖u−v‖ ↔ ‖v‖•u = ‖u‖•v — now the PARALLEL condition (norm_neg, smul_neg, neg_neg, sub_eq_add_neg do the bookkeeping). Since Mathlib's forward triangle equality norm_add_eq_iff_real reads ‖u+v‖ = ‖u‖+‖v‖ ↔ ‖v‖•u = ‖u‖•v with the SAME right-hand side, the two equalities are equivalent: forward_iff_reverse_sub. The whole picture: ‖v‖•u = ‖u‖•v governs parallel cases (forward-sum, reverse-difference); ‖v‖•u = −(‖u‖•v) governs antiparallel cases (reverse-sum, forward-difference).",
+    "mathContext": "$$\\|u+v\\| = \\|u\\|+\\|v\\| \\iff \\big|\\|u\\|-\\|v\\|\\big| = \\|u-v\\|$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "norm_add_eq_iff_real",
+      "smul_neg",
+      "sub_eq_add_neg",
+      "collinearity"
+    ],
+    "prerequisites": [
+      "forward triangle equality case",
+      "the v ↦ −v reflection"
+    ]
+  }
+]
