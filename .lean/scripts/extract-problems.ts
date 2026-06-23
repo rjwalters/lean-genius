@@ -33,7 +33,8 @@ interface ProofMeta {
     millenniumProblem?: string;
   };
   conclusion?: {
-    openQuestions?: string[];
+    // Legacy entries are plain strings; enriched entries are {id, question, significance} objects.
+    openQuestions?: Array<string | { id?: string; question?: string; significance?: string }>;
   };
 }
 
@@ -112,8 +113,12 @@ function generateProblemId(proofId: string, index: number, type: string): string
 function extractTitle(question: string): string {
   // Take first sentence or first 80 chars
   const firstSentence = question.split(/[.?!]/)[0];
-  if (firstSentence.length <= 80) return firstSentence;
-  return firstSentence.substring(0, 77) + '...';
+  // Split on Unicode code points (not UTF-16 units) so astral-plane characters
+  // such as 𝔽 (U+1D53D = 𝔽) are never truncated mid-surrogate-pair,
+  // which would otherwise emit a lone surrogate and produce invalid JSON.
+  const chars = Array.from(firstSentence);
+  if (chars.length <= 80) return firstSentence;
+  return chars.slice(0, 77).join('') + '...';
 }
 
 // Main extraction function
@@ -135,7 +140,13 @@ function extractProblems(proofsDir: string): ExtractedProblem[] {
 
       // 1. Extract from openQuestions
       if (meta.conclusion?.openQuestions) {
-        meta.conclusion.openQuestions.forEach((question, index) => {
+        meta.conclusion.openQuestions.forEach((rawQuestion, index) => {
+          // openQuestions entries may be plain strings (legacy) or
+          // {id, question, significance} objects (enriched). Normalize to a string.
+          const question =
+            typeof rawQuestion === 'string'
+              ? rawQuestion
+              : (rawQuestion?.question ?? String(rawQuestion ?? ''));
           problems.push({
             id: generateProblemId(meta.id, index, 'oq'),
             title: extractTitle(question),
