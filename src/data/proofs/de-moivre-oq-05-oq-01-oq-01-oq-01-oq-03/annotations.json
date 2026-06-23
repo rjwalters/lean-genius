@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "context",
+    "title": "From Matrix Unitarity to a Hilbert-Space Isometry",
+    "content": "The operator-theoretic statement of the discrete Fourier transform is that it is a **unitary** of the finite-dimensional Hilbert space $\\mathbb{C}^n$: a perfectly invertible, energy-preserving change of orthonormal basis. The parent entry proved the matrix identity $U \\cdot U^{\\mathsf H} = 1$ for the normalised DFT matrix $U(j,k) = e^{2\\pi i jk/n}/\\sqrt n$, i.e. $U \\in \\mathrm{unitaryGroup}$. This file crosses from matrix algebra into Mathlib's *bundled* isometry hierarchy: it assembles $U$ into a `LinearIsometryEquiv` $\\mathbb{C}^n \\simeq_{\\ell i} \\mathbb{C}^n$ and identifies the inverse isometry with the conjugate-transpose operator $\\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$ — the inverse DFT.",
+    "mathContext": "$\\mathrm{dftLIE} : \\mathrm{EuclideanSpace}\\,\\mathbb{C}\\,(\\mathrm{Fin}\\,n) \\simeq_{\\ell i}[\\mathbb{C}] \\mathrm{EuclideanSpace}\\,\\mathbb{C}\\,(\\mathrm{Fin}\\,n)$, with $\\mathrm{dftLIE}^{-1} = \\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "discrete Fourier transform",
+      "unitary operator",
+      "LinearIsometryEquiv",
+      "Hilbert space isomorphism"
+    ],
+    "prerequisites": [
+      "inner product spaces",
+      "unitary matrices",
+      "the discrete Fourier transform"
+    ]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 47, "endLine": 52 },
+    "type": "definition",
+    "title": "Setup: Importing the Parent's Unitary DFT Matrix",
+    "content": "The file imports the parent module `Proofs.DeMoivreOQ05OQ01OQ01OQ01` and opens its namespace, bringing into scope the DFT matrix `dftMatrix n` and the sole nontrivial input `dftMatrix_mem_unitaryGroup` ($U \\in \\mathrm{unitaryGroup}$). Everything proved here is the operator-theoretic *repackaging* of that one fact; no new analysis of the exponential entries is needed. Opening `Matrix` makes the matrix–vector and conjugate-transpose notation ($A^{\\mathsf H}$, $A \\ast_v v$) available.",
+    "mathContext": "Inputs: $\\mathrm{dftMatrix}\\,n$ and $\\mathrm{dftMatrix\\_mem\\_unitaryGroup} : U \\in \\mathrm{Matrix.unitaryGroup}\\,(\\mathrm{Fin}\\,n)\\,\\mathbb{C}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Matrix.unitaryGroup",
+      "namespace import",
+      "proof reuse"
+    ],
+    "prerequisites": [
+      "Lean module imports"
+    ]
+  },
+  {
+    "id": "ann-two-sided-inverse",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 54, "endLine": 78 },
+    "type": "technique",
+    "title": "Uᴴ Is a Two-Sided Inverse as an Operator",
+    "content": "The two faces of unitary-group membership — `mem_unitaryGroup_iff'` ($U^{\\mathsf H} U = 1$) and `mem_unitaryGroup_iff` ($U U^{\\mathsf H} = 1$) — give the left and right inverse identities for the operators on $\\mathbb{C}^n$. Each proof injects into the underlying $\\ell^2$ vector via `WithLp.ofLp_injective`, then collapses the composed matrix–vector products with `Matrix.mulVec_mulVec` ($A *_v (B *_v v) = (AB) *_v v$); the matrix identity rewrites $AB$ to $1$ and `Matrix.one_mulVec` finishes. Together the two lemmas exhibit $\\mathrm{toEuclideanLin}\\,U$ as a bijection of $\\mathbb{C}^n$.",
+    "mathContext": "$\\mathrm{toEuclideanLin}\\,U^{\\mathsf H} \\circ \\mathrm{toEuclideanLin}\\,U = \\mathrm{id}$ and $\\mathrm{toEuclideanLin}\\,U \\circ \\mathrm{toEuclideanLin}\\,U^{\\mathsf H} = \\mathrm{id}$, from $U^{\\mathsf H} U = U U^{\\mathsf H} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "matrix–vector product",
+      "two-sided inverse",
+      "Matrix.mulVec_mulVec",
+      "WithLp / EuclideanSpace"
+    ],
+    "prerequisites": [
+      "unitary group identities",
+      "matrix–vector multiplication"
+    ]
+  },
+  {
+    "id": "ann-inner-preservation",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 80, "endLine": 94 },
+    "type": "insight",
+    "title": "Inner-Product Preservation via Adjoint = Inverse",
+    "content": "The operator-theoretic heart of unitarity: $\\langle Ux, Uy\\rangle = \\langle x, y\\rangle$. The proof rewrites the left side through the adjoint, $\\langle Ux, Uy\\rangle = \\langle x, U^{\\ast}(Uy)\\rangle$ (`LinearMap.adjoint_inner_right`), then uses Mathlib's `toEuclideanLin_conjTranspose_eq_adjoint` to identify the operator adjoint $U^{\\ast}$ with $\\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$, which the left-inverse lemma collapses to give $U^{\\ast}(Uy) = y$. So unitarity = (adjoint equals inverse): the abstract version of \"the conjugate transpose is the inverse\".",
+    "mathContext": "$\\langle Ux, Uy\\rangle = \\langle x, U^{\\ast}Uy\\rangle = \\langle x, y\\rangle$, since $U^{\\ast} = \\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$ is a left inverse of $U$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "adjoint operator",
+      "inner-product preservation",
+      "Parseval/Plancherel",
+      "toEuclideanLin_conjTranspose_eq_adjoint"
+    ],
+    "prerequisites": [
+      "adjoint of a linear map",
+      "Hermitian inner product",
+      "the two-sided inverse above"
+    ]
+  },
+  {
+    "id": "ann-dftLIE",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 114 },
+    "type": "concept",
+    "title": "Assembling the LinearIsometryEquiv dftLIE",
+    "content": "With inner-product preservation in hand, `LinearMap.isometryOfInner` upgrades $\\mathrm{toEuclideanLin}\\,U$ to a `LinearIsometry`, and `LinearIsometryEquiv.ofSurjective` — fed the explicit right inverse $\\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$ as the surjectivity witness — promotes it to a full isometric *equivalence* `dftLIE`. The companion `dftLIE_apply` records the definitional fact that `dftLIE` acts as the original matrix operator, unwinding the `ofSurjective`/`isometryOfInner` wrappers by `rfl`-style rewriting.",
+    "mathContext": "$\\mathrm{dftLIE}\\,x = \\mathrm{toEuclideanLin}\\,U\\,x$; built from $\\mathrm{isometryOfInner}$ + $\\mathrm{ofSurjective}$ with right inverse $\\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "LinearIsometryEquiv.ofSurjective",
+      "isometryOfInner",
+      "bundled morphisms"
+    ],
+    "prerequisites": [
+      "linear isometries",
+      "surjective + isometry ⇒ equivalence"
+    ]
+  },
+  {
+    "id": "ann-properties-and-inverse",
+    "proofId": "de-moivre-oq-05-oq-01-oq-01-oq-01-oq-03",
+    "range": { "startLine": 116, "endLine": 135 },
+    "type": "concept",
+    "title": "Energy Law, Inner-Product Law, and the Inverse DFT",
+    "content": "The bundled structure now yields the headline properties for free: `dftLIE_norm` ($\\lVert \\mathrm{dftLIE}\\,x\\rVert = \\lVert x\\rVert$) is the isometry's `norm_map` — the parent's $\\ell^2$-energy law as structure — and `dftLIE_inner` is `inner_map_map`. Finally `dftLIE_symm_apply` identifies the inverse isometry $(\\mathrm{dftLIE})^{-1}$ with $\\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$: applying `dftLIE` to both sides and using the right inverse shows it. Since $U^{\\mathsf H} = U^{-1}$ for a unitary, this is exactly the inverse discrete Fourier transform $x(k) = \\tfrac1n\\sum_j \\hat x(j)\\,e^{-2\\pi i jk/n}$.",
+    "mathContext": "$\\lVert \\mathrm{dftLIE}\\,x\\rVert = \\lVert x\\rVert$, $\\langle \\mathrm{dftLIE}\\,x, \\mathrm{dftLIE}\\,y\\rangle = \\langle x,y\\rangle$, $(\\mathrm{dftLIE})^{-1} = \\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_map",
+      "inner_map_map",
+      "inverse DFT",
+      "Plancherel theorem"
+    ],
+    "prerequisites": [
+      "the dftLIE construction above",
+      "inverse of an isometric equivalence"
+    ]
+  }
+]
