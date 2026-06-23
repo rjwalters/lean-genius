@@ -1,0 +1,50 @@
+[
+  {
+    "id": "newton-ps-oq0101-header",
+    "proofId": "newton-power-sum-identities-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 37 },
+    "type": "context",
+    "title": "Two more rungs of Newton's recurrence (degrees 4 and 5)",
+    "content": "This child continues the parent's method (degrees 1–3) two further rungs, deriving the explicit closed forms p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ and p₅ = e₁⁵ − 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ − 5e₂e₃ − 5e₁e₄ + 5e₅, valid in MvPolynomial σ R for any finite σ and commutative ring R. The uniform recipe: feed the Newton recurrence `MvPolynomial.psum_eq_mul_esymm_sub_sum` the explicit finite index set of its inner sum (computed by `omega`), expand over that literal Finset, substitute the lower identities, and close with `push_cast; ring`. The descent does not get harder as the degree grows. These are the formulas for ∑xᵢ⁴, ∑xᵢ⁵ of the roots of a quartic/quintic in its coefficients, and trace-power ↔ coefficient conversion of 4×4/5×5 matrices. The file is self-contained: degrees 1–3 are restated.",
+    "mathContext": "$p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2 + 4e_1 e_3 - 4e_4;\\quad p_5 = e_1^5 - 5e_1^3 e_2 + \\cdots + 5e_5$",
+    "significance": "context",
+    "relatedConcepts": ["Newton's identities", "power sums", "elementary symmetric polynomials", "quartic/quintic root powers"],
+    "prerequisites": ["the parent degrees 1–3", "the Newton recurrence", "Finset.antidiagonal"]
+  },
+  {
+    "id": "newton-ps-oq0101-deg123",
+    "proofId": "newton-power-sum-identities-oq-01-oq-01",
+    "range": { "startLine": 45, "endLine": 77 },
+    "type": "theorem",
+    "title": "Degrees 1–3 restated for self-containment",
+    "content": "`psum_one_eq` (p₁ = e₁, from `psum_one`/`esymm_one`), `psum_two_eq` (p₂ = e₁² − 2e₂, inner set {(1,1)} by omega + `sum_singleton`), and `psum_three_eq` (p₃ = e₁³ − 3e₁e₂ + 3e₃, inner set {(1,2),(2,1)} by omega + `sum_pair`) are reproved verbatim from the parent so the file stands alone. Each substitutes the lower identities and closes with `push_cast; ring`. They are the substitution inputs for degrees 4 and 5.",
+    "mathContext": "$p_1 = e_1,\\quad p_2 = e_1^2 - 2e_2,\\quad p_3 = e_1^3 - 3e_1 e_2 + 3e_3$",
+    "significance": "supporting",
+    "relatedConcepts": ["base identities", "Finset.sum_singleton", "Finset.sum_pair", "omega"],
+    "prerequisites": ["the Newton recurrence", "psum_one/esymm_one"]
+  },
+  {
+    "id": "newton-ps-oq0101-deg4",
+    "proofId": "newton-power-sum-identities-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 97 },
+    "type": "theorem",
+    "title": "psum_four_eq: p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄",
+    "content": "The degree-4 identity, from the recurrence at k = 4. The inner index set {a ∈ antidiagonal 4 | 0 < a.1 < 4} reduces by `omega` to {(1,3),(2,2),(3,1)}, peeled by two `Finset.sum_insert` (disjointness side goals like (1,3) ∉ {(2,2),(3,1)} closed by kernel `decide`) plus `Finset.sum_singleton` into the three terms (−1)^i·eᵢ·p_{4−i}. Substituting the degree-3, 2, 1 identities and `push_cast; ring` (evaluating the (−1)^i signs and integer casts) yields the closed form. Absent from Mathlib, which carries only the recurrence.",
+    "mathContext": "$p_4 = e_1^4 - 4e_1^2 e_2 + 2e_2^2 + 4e_1 e_3 - 4e_4$",
+    "significance": "key",
+    "relatedConcepts": ["Newton recurrence at k=4", "Finset.sum_insert", "omega", "kernel decide"],
+    "prerequisites": ["the recurrence", "the degree-1,2,3 identities"]
+  },
+  {
+    "id": "newton-ps-oq0101-deg5",
+    "proofId": "newton-power-sum-identities-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 122 },
+    "type": "theorem",
+    "title": "psum_five_eq: p₅ = e₁⁵ − 5e₁³e₂ + 5e₁e₂² + 5e₁²e₃ − 5e₂e₃ − 5e₁e₄ + 5e₅",
+    "content": "The degree-5 identity, from the recurrence at k = 5. The inner index set {a ∈ antidiagonal 5 | 0 < a.1 < 5} reduces by `omega` to {(1,4),(2,3),(3,2),(4,1)}, peeled by three `Finset.sum_insert` plus `Finset.sum_singleton` into the four terms (−1)^i·eᵢ·p_{5−i}. Substituting the degree-4,3,2,1 identities and `push_cast; ring` gives the seven-term closed form. This and p₄ extend the parent's degree-1,2,3 coverage; the open question notes p₆ follows by the same unrolling over {(1,5),(2,4),(3,3),(4,2),(5,1)}.",
+    "mathContext": "$p_5 = e_1^5 - 5e_1^3 e_2 + 5e_1 e_2^2 + 5e_1^2 e_3 - 5e_2 e_3 - 5e_1 e_4 + 5e_5$",
+    "significance": "key",
+    "relatedConcepts": ["Newton recurrence at k=5", "Finset.sum_insert", "uniform descent", "push_cast; ring"],
+    "prerequisites": ["the recurrence", "the degree-1..4 identities"]
+  }
+]
