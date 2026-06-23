@@ -1,0 +1,202 @@
+{
+  "id": "de-moivre-oq-01-oq-03",
+  "title": "Chebyshev–De Moivre over arbitrary rings: finite fields, ℂ and ℚ_p",
+  "slug": "de-moivre-oq-01-oq-03",
+  "description": "Answers the open question of whether the Chebyshev–De Moivre connection can be formalized over finite fields (and the complex/p-adic settings). The analytic identity C_n(2cos θ) = 2cos(nθ) is shown to be the shadow of a purely algebraic identity that holds over ANY commutative ring: (C R n).eval(z + w) = zⁿ + wⁿ whenever z·w = 1. This specializes uniformly to finite fields 𝔽_q (the cryptographically relevant case), the p-adics ℚ_p, and ℂ (recovering Mathlib's analytic theorem). All results are 0-axiom verified.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ01OQ03.lean",
+    "tags": [
+      "chebyshev-polynomials",
+      "de-moivre",
+      "finite-fields",
+      "p-adic",
+      "cryptography",
+      "polynomials",
+      "ring-theory",
+      "complex-numbers",
+      "extension",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Chebyshev.C_add_two",
+        "description": "C_{n+2} = X·C_{n+1} − C_n: recurrence of the Chebyshev polynomial of the third kind (C 0 = 2, C 1 = X), the engine of the two-step induction",
+        "module": "Mathlib.RingTheory.Polynomial.Chebyshev"
+      },
+      {
+        "theorem": "Polynomial.Chebyshev.C_two_mul_complex_cos",
+        "description": "C_n(2cos θ) = 2cos(nθ) over ℂ: Mathlib's analytic De Moivre–Chebyshev theorem, here re-derived as a corollary of the algebraic identity",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev"
+      },
+      {
+        "theorem": "Complex.exp_nat_mul",
+        "description": "exp(n·z) = exp(z)ⁿ: used to identify zⁿ with e^{inθ} in the complex specialization",
+        "module": "Mathlib.Analysis.Complex.Exponential"
+      },
+      {
+        "theorem": "mul_inv_cancel₀",
+        "description": "z·z⁻¹ = 1 for z ≠ 0 in a field: bridges the z·w = 1 hypothesis to the field/finite-field/p-adic forms",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chebyshevC_eval_add: the algebraic De Moivre–Chebyshev identity (C R n).eval(z+w) = zⁿ + wⁿ over an ARBITRARY commutative ring whenever z·w = 1 — not present in Mathlib, which only has the analytic ℝ/ℂ versions",
+      "chebyshevC_eval_field: a single field-level statement (C F n).eval(z + z⁻¹) = zⁿ + (z⁻¹)ⁿ that simultaneously covers finite fields, the p-adics, ℝ and ℂ",
+      "chebyshevC_eval_zmod: the finite-field form over ZMod p, directly answering the open question's cryptographic motivation (Lucas/Chebyshev sequences over 𝔽_p)",
+      "chebyshevC_eval_padic: the p-adic form over ℚ_p, answering the p-adic part of the sibling open question",
+      "chebyshevC_complex_cos: re-derivation of Mathlib's analytic theorem C_n(2cos θ) = 2cos(nθ) from the purely algebraic identity with z = e^{iθ}",
+      "Concrete worked finite-field examples over ZMod 7 and ZMod 11, with both sides reduced to explicit field elements by kernel decide"
+    ],
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 189,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. All theorems depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The two concrete examples use kernel `decide` (axiom-free), not `native_decide`.",
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**De Moivre, Chebyshev, and the algebraic core**\n\nDe Moivre's theorem $(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta)$ is usually presented analytically. Comparing it with the Chebyshev polynomials yields $T_n(\\cos\\theta) = \\cos(n\\theta)$ and, for the polynomial of the **third kind** $C_n$ (normalized by $C_0 = 2$, $C_1 = X$, $C_{n+2} = X\\,C_{n+1} - C_n$), the cleaner identity $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$.\n\nMathlib formalizes these analytic identities over $\\mathbb{R}$ and $\\mathbb{C}$. But the deepest content of De Moivre is not analytic at all: on the 'unit circle' $z\\cdot w = 1$, the power map $z \\mapsto z^n$ is conjugate to evaluation of one fixed integer polynomial. This is what makes the connection portable to finite fields and $p$-adic numbers, where $\\cos$ has no meaning.",
+    "problemStatement": "**Open question (OQ-03 of de-moivre-oq-01):** Is there a Lean formalization of the Chebyshev–De Moivre connection over finite fields (relevant to cryptography)? And, more broadly (OQ-02), can the connection be extended to complex or p-adic settings?\n\n**Answer: YES — uniformly, over any commutative ring.** For any commutative ring $R$ and $z, w \\in R$ with $z\\cdot w = 1$,\n$$ (C_R\\,n)(z + w) = z^n + w^n. $$\nThis single algebraic statement specializes for free to every finite field $\\mathbb{F}_q$, to $\\mathbb{Q}_p$, and to $\\mathbb{C}$ (where it reproduces $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$).",
+    "text": "The analytic De Moivre–Chebyshev identity C_n(2cos θ) = 2cos(nθ) is the shadow of a purely algebraic identity that needs no analysis: (C R n).eval(z + w) = zⁿ + wⁿ over any commutative ring whenever z·w = 1. This specializes uniformly to finite fields (the cryptographically relevant case), the p-adics, and ℂ.",
+    "proofStrategy": "**Strategy**\n\n1. **The engine (`chebyshevC_eval_add`).** The sequences $n \\mapsto (C_R\\,n)(z+w)$ and $n \\mapsto z^n + w^n$ both satisfy the order-2 linear recurrence $f(n+2) = (z+w)f(n+1) - f(n)$ with the same initial values $f(0) = 2$, $f(1) = z+w$. The recurrence for $z^n + w^n$ uses $z\\cdot w = 1$ to collapse the cross terms. Formally this is a two-step induction, implemented by proving $P(n) \\wedge P(n+1)$ by ordinary induction; the inductive step is closed by `linear_combination (zⁿ + wⁿ) * hzw` on top of Mathlib's `C_add_two` recurrence.\n\n2. **Units and fields.** Specializing $w = z^{-1}$ gives the units version (`chebyshevC_eval_units`) and, via `mul_inv_cancel₀`, the field version (`chebyshevC_eval_field`) valid for any field and any nonzero $z$.\n\n3. **Finite fields and p-adics.** `chebyshevC_eval_zmod` and `chebyshevC_eval_padic` are one-line instantiations at $\\mathbb{F}_p = $ `ZMod p` and $\\mathbb{Q}_p$.\n\n4. **The complex shadow.** With $z = e^{i\\theta}$ (a unit, since $e^{i\\theta} \\neq 0$), $z + z^{-1} = 2\\cos\\theta$ and $z^n + (z^{-1})^n = 2\\cos(n\\theta)$, so the algebraic identity reproves Mathlib's analytic `C_two_mul_complex_cos`.\n\n5. **Concrete examples.** Worked instances over `ZMod 7` and `ZMod 11`, with both sides reduced to explicit elements by kernel `decide`.",
+    "keyInsights": [
+      "**De Moivre is algebra, not analysis.** On the locus z·w = 1, the map z ↦ zⁿ is evaluation of one fixed integer polynomial (the Chebyshev C); cos and the unit circle are only the ℝ/ℂ instance.",
+      "**One identity, every base.** Stating the result over an arbitrary commutative ring makes finite fields, p-adics, ℝ and ℂ all corollaries — no per-field reproof.",
+      "**Chebyshev of the third kind C is the right object.** Because C₀ = 2 and C₁ = X, evaluation at z + z⁻¹ lands exactly on zⁿ + z⁻ⁿ with NO division by 2 — so the identity survives in characteristic 2 and over rings where 2 is not invertible.",
+      "**Two-step induction via the conjunction trick.** Proving P n ∧ P (n+1) by ordinary induction matches the order-2 recurrence and avoids any custom induction principle.",
+      "**Cross-term collapse = the unit-circle hypothesis.** The single use of z·w = 1 is exactly what turns (z+w)(zⁿ⁺¹+wⁿ⁺¹) − (zⁿ+wⁿ) into zⁿ⁺²+wⁿ⁺², captured by one `linear_combination`."
+    ],
+    "prerequisites": [
+      "Chebyshev polynomials of the third kind C_n over a commutative ring (C 0 = 2, C 1 = X, C_{n+2} = X·C_{n+1} − C_n)",
+      "Polynomial evaluation as a ring homomorphism",
+      "Finite fields ZMod p and the p-adic numbers ℚ_p as fields",
+      "Complex exponential: e^{iθ} + e^{-iθ} = 2cos θ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports",
+      "summary": "Imports Mathlib's Chebyshev polynomial library (RingTheory and analytic Trigonometric versions) and the p-adic numbers.",
+      "startLine": 40,
+      "endLine": 45,
+      "mathContext": "Brings in `Polynomial.Chebyshev.C` and its recurrence `C_add_two`, the analytic `C_two_mul_complex_cos`, and `ℚ_[p]` (Padic numbers)."
+    },
+    {
+      "id": "algebraic-engine",
+      "title": "The Algebraic Engine",
+      "summary": "Proves `chebyshevC_eval_add`: over any commutative ring, (C R n).eval(z+w) = zⁿ + wⁿ whenever z·w = 1, by two-step induction on the Chebyshev recurrence. The units version `chebyshevC_eval_units` follows.",
+      "startLine": 51,
+      "endLine": 95,
+      "mathContext": "The core identity $(C_R\\,n)(z+w) = z^n + w^n$ for $z\\cdot w = 1$. The two evaluation sequences satisfy the same order-2 recurrence and initial data; the cross-term collapse is the single use of $z\\cdot w = 1$."
+    },
+    {
+      "id": "fields",
+      "title": "Fields: finite fields, ℚ_p, ℂ at once",
+      "summary": "Proves `chebyshevC_eval_field` (any field, z ≠ 0), then the one-line specializations `chebyshevC_eval_zmod` (finite fields, the cryptographic case) and `chebyshevC_eval_padic` (p-adics).",
+      "startLine": 97,
+      "endLine": 124,
+      "mathContext": "A single field statement $(C_F\\,n)(z + z^{-1}) = z^n + (z^{-1})^n$ specializes to $\\mathbb{F}_p$, $\\mathbb{Q}_p$, $\\mathbb{R}$ and $\\mathbb{C}$."
+    },
+    {
+      "id": "complex-shadow",
+      "title": "The Complex Shadow",
+      "summary": "Proves `chebyshevC_complex_cos`: with z = e^{iθ}, the algebraic identity reproduces Mathlib's analytic C_n(2cos θ) = 2cos(nθ).",
+      "startLine": 126,
+      "endLine": 154,
+      "mathContext": "Recovers the analytic theorem $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$ from pure algebra via $z = e^{i\\theta}$, $z + z^{-1} = 2\\cos\\theta$, $z^n + z^{-n} = 2\\cos(n\\theta)$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Finite-Field Examples",
+      "summary": "Worked instances over ZMod 7 (degree 2) and ZMod 11 (degree 3), with one numeric check reducing both sides to 6 ∈ ZMod 7 by kernel decide.",
+      "startLine": 156,
+      "endLine": 175,
+      "mathContext": "E.g. in $\\mathbb{F}_7$: $3^{-1} = 5$, $3 + 3^{-1} = 1$, $C_2(1) = 1^2 - 2 = -1 = 6 = 3^2 + (3^{-1})^2 = 2 + 4$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is answered affirmatively and in the strongest possible form: the Chebyshev–De Moivre connection holds not just over finite fields and the p-adics but over EVERY commutative ring, as the algebraic identity (C R n).eval(z+w) = zⁿ + wⁿ for z·w = 1. The proof is 6 theorems, 0 sorries, 0 axioms, no native_decide. Finite fields, p-adics, and ℂ are corollaries; the complex case reproves Mathlib's analytic theorem.",
+    "implications": "**Significance**\n\n1. **One theorem, all bases.** Finite-field, p-adic, real and complex Chebyshev–De Moivre identities are unified by a single ring-level statement, removing the need for analysis.\n\n2. **Characteristic-free.** Using the third-kind polynomial C (with C₀ = 2, C₁ = X) avoids any division by 2, so the identity holds even in characteristic 2 and over rings where 2 is a zero divisor.\n\n3. **Cryptographic relevance.** The finite-field form is exactly the setting of Lucas-sequence and Chebyshev-polynomial public-key schemes over 𝔽_p; the identity is the algebraic kernel of their 'exponentiation' law.\n\n4. **Mathlib is subsumed.** Mathlib's analytic C_n(2cos θ) = 2cos(nθ) becomes a one-screen corollary of the algebraic identity.",
+    "openQuestions": [
+      "Does the identity extend cleanly to negative/integer indices n ∈ ℤ using the symmetry C_{-n} = C_n together with w = z⁻¹, giving (C R n).eval(z+w) = zⁿ + wⁿ for all n ∈ ℤ?",
+      "Can the finite-field form be packaged as the multiplication law of a Chebyshev/Lucas public-key cryptosystem over 𝔽_p, with the semigroup property C_{mn} = C_m ∘ C_n formalized?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "Parent. This answers its third open question (the Chebyshev–De Moivre connection over finite fields) and, via the same engine, the second (complex/p-adic settings)."
+    },
+    {
+      "id": "de-moivre",
+      "relationship": "Root De Moivre formalization; this exposes the purely algebraic content behind the analytic theorem."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.RingTheory.Polynomial.Chebyshev",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Chebyshev",
+      "Mathlib.NumberTheory.Padics.PadicNumbers",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial.Chebyshev"
+    ],
+    "namespace": "DeMoivreChebyshevFiniteField",
+    "lineCount": 189,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DeMoivreOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "A. de Moivre",
+      "title": "Miscellanea Analytica de Seriebus et Quadraturis",
+      "year": "1730",
+      "venue": "London",
+      "note": "(cos θ + i sin θ)^n = cos(nθ) + i sin(nθ)"
+    },
+    {
+      "authors": "P. L. Chebyshev",
+      "title": "Théorie des mécanismes connus sous le nom de parallélogrammes",
+      "year": "1853",
+      "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
+      "note": "Introduced the polynomials T_n, U_n; the third-kind C_n used here is C_n(x) = 2T_n(x/2)"
+    },
+    {
+      "authors": "L. Kocarev, Z. Tasev",
+      "title": "Public-key encryption based on Chebyshev maps",
+      "year": "2003",
+      "venue": "Proceedings of the 2003 IEEE International Symposium on Circuits and Systems (ISCAS)",
+      "note": "Chebyshev-polynomial public-key schemes; motivates the finite-field formalization"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent's open question on the Chebyshev–De Moivre connection over finite fields, by exhibiting the underlying ring-level algebraic identity"
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's theorem (e^{iθ})^n = e^{inθ} is the ℂ instance z = e^{iθ} of the algebraic identity proved here"
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "related",
+      "description": "Euler's formula e^{iθ} = cos θ + i sin θ is used in the complex specialization to identify z + z⁻¹ with 2cos θ"
+    }
+  ],
+  "sorries": 0
+}
