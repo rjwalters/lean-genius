@@ -133,30 +133,37 @@ def gridTranspose (m n : ℕ) : Equiv.Perm (Fin (m * n)) :=
 
     STATUS: `sorry`.  This is a KNOWN result (HARD, not OPEN).
 
-    CROSS-REFERENCE / NON-DUPLICATION NOTE.  The *identical* obligation already
-    stands, isolated and build-verified-in-context, in the sibling "algorithm"
-    lineage as `QuadraticReciprocityAlgorithmOQ03M2.sign_gridTranspose_eq_choose`
-    (merged #25053, currently unregistered).  Multiple prior sessions there
-    established that NO Mathlib lemma gives `sign = (-1)^(inversion count)` for a
-    general (non-cycle, non-block-diagonal) permutation — `sign_prodCongr*` /
-    `sign_sumCongr` do NOT apply because the transpose is a coordinate swap — so
-    the only route is the explicit `Finset.card_bij`
+    CROSS-REFERENCE / NON-DUPLICATION NOTE.  The *identical* obligation also
+    stands in the sibling "algorithm" lineage as
+    `QuadraticReciprocityAlgorithmOQ03M2.sign_gridTranspose_eq_choose`
+    (merged #25053, currently unregistered).
 
-        inversions of `gridTranspose m n`  ↔  {i < i' : Fin m} × {j > j' : Fin n}
+    UPDATED ROUTE (researcher-9, 2026-06-23) — the earlier "no Mathlib lemma"
+    assessment is OUT OF DATE.  Mathlib now provides the exact inversion-count
+    bridge for an arbitrary `Perm (Fin N)`:
 
-    unfolded from `signAux = ∏_{finPairsLT}`, of cardinality `C(m,2)·C(n,2)`.
-    This is ~100 intricate LOC; it is the single self-contained Aristotle target
-    the moment that backend stops returning "Resource not found".  The numerical
-    inversion bijection is certified in
-    `research/problems/quadratic-reciprocity-algorithm-oq-03/verify_grid_inversions.py`
-    and `verify_inversion_bijection.py`.
+        `Equiv.Perm.sign_eq_prod_prod_Iio`
+          : σ.sign = ∏ j, ∏ i ∈ Finset.Iio j, (if σ i < σ j then 1 else -1)
 
-    Suggested routes (both attempted/assessed in the sibling thread):
-      * induction on `m`, decomposing the insertion of a row as a block of
-        `finRotate`-type cycles and using `Equiv.Perm.sign_prodCongrLeft`,
-        `sign_prodCongrRight`, `Equiv.Perm.sign_finRotate`; or
-      * a direct inversion count against the `signAux`/`finPairsLT` model
-        (the cleaner of the two — see the certified Python bijection above). -/
+    (`Mathlib/GroupTheory/Perm/Fin.lean`, `section Sign`).  Each factor is `-1`
+    exactly on an inversion `i < j ∧ σ i > σ j`, so `sign σ = (-1)^(#inversions)`
+    with NO `signAux`/`finPairsLT` surgery.  The blocker then reduces to the
+    elementary count `#{(I,J) : I < J ∧ T I > T J} = C(m,2)·C(n,2)` via the
+    bijection `(I,J) ↦ ((row I, row J), (col J, col I))` onto
+    (strictly-increasing row pairs) × (strictly-increasing column pairs), each of
+    cardinality `Nat.choose · 2` (counted by the Gauss sum `∑ b, b`).
+
+    A complete CANDIDATE proof along these lines is written out in
+    `research/problems/elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02/sign_gridTranspose_candidate.lean`.
+    It is NOT yet kernel-verified (Docker daemon wedged + Aristotle MCP returning
+    "Resource not found" across sessions).  Its API has now been fully audited
+    against the pinned Mathlib (rev 2df2f0150c, v4.26.0): every lemma it uses is
+    present with a compatible signature (notably `sign_eq_prod_prod_Iio`,
+    `prod_pow_eq_pow_sum`, and `card_bij'` with matching argument order), so the
+    only remaining risk is whether the `rw`/`simp` steps fire — a build backend
+    just needs to run it.  The numerical inversion bijection is also certified
+    in `research/problems/quadratic-reciprocity-algorithm-oq-03/verify_grid_inversions.py`
+    and `verify_inversion_bijection.py`. -/
 theorem sign_gridTranspose (m n : ℕ) :
     Equiv.Perm.sign (gridTranspose m n)
       = (-1 : ℤˣ) ^ (Nat.choose m 2 * Nat.choose n 2) := by
