@@ -22,12 +22,41 @@
   (strictly-increasing row pairs) × (strictly-increasing col pairs), each of
   cardinality `choose · 2`.
 
-  STATUS: written against Mathlib source but NOT kernel-verified — Docker daemon
-  is wedged (no container spawns; `docker ps`/`images` empty) and Aristotle MCP
-  returns "Resource not found".  Some API lemma names (`Fin.coe_cast`,
-  `finProdFinEquiv_symm_apply`, `Fintype.sum_prod_type`) are best-effort and may
-  need adjustment when a build backend recovers.  DO NOT register or mark
-  verified until this compiles.  This file lives outside the gallery on purpose.
+  STATUS: written against Mathlib source, API audit COMPLETE, but NOT yet
+  kernel-verified — Docker daemon is wedged (no container spawns; `docker ps`/
+  `images` empty) and Aristotle MCP returns "Resource not found".
+
+  API AUDIT (researcher-9, 2026-06-23, S3).  Every lemma name used below was
+  checked against the pinned Mathlib source on disk (rev 2df2f0150c, Lean
+  v4.26.0, `proofs/.lake/packages/mathlib`).  ALL are present with signatures
+  compatible with the usage here:
+    * `Equiv.Perm.sign_eq_prod_prod_Iio` — Mathlib/GroupTheory/Perm/Fin.lean:478;
+      factor form `if σ i < σ j then 1 else -1` matches `inner` exactly.
+    * `Finset.prod_pow_eq_pow_sum` — .../BigOperators/Group/Finset/Basic.lean:656;
+      `∏ a^(f i) = a^(∑ f i)`, matches.
+    * `finProdFinEquiv` — Mathlib/Logic/Equiv/Fin/Basic.lean:329; its `toFun`
+      `⟨x.2 + n*x.1, _⟩` and `invFun (x.divNat, x.modNat)` make `fpe_val`
+      (`val = c + q*a`) and `fpe_symm` (`symm = (divNat, modNat)`) hold by `rfl`.
+    * `Fin.divNat`/`Fin.modNat` — Batteries/Data/Fin/Basic.lean:133/137,
+      types `Fin (m*n) → Fin m` / `Fin n`.
+    * `Fin.coe_cast` (alias `Fin.val_cast`), `finCongr_apply` (a `@[simp]`
+      lemma used across Mathlib) — both present.
+    * `Finset.card_bij'` — Mathlib/Data/Finset/Card.lean:366; argument order
+      `(i, j, hi, hj, left_inv, right_inv)` matches the four `?_` obligations
+      below in order.
+    * supporting: `prod_ite`, `prod_const_one`, `prod_const`, `card_filter`,
+      `sum_filter` (to_additive of `prod_filter`), `univ_product_univ`,
+      `sum_product'`, `sum_comm`, `card_Iio`, `Fin.sum_univ_eq_sum_range`,
+      `sum_range_id`, `Nat.choose_two_right`, `card_product` — all present.
+  The two names flagged "best-effort" in the prior draft
+  (`finProdFinEquiv_symm_apply`, `Fintype.sum_prod_type`) are NOT used in the
+  proof body and were dropped.
+
+  REMAINING RISK after this audit is purely term-level: whether each `rw`/`simp`
+  step actually fires (defeq matching, `simp` set behaviour), which only a real
+  build resolves.  Existence/signature of every lemma is no longer in doubt.
+  DO NOT register or mark verified until this compiles.  This file lives outside
+  the gallery on purpose.
 -/
 import Mathlib
 

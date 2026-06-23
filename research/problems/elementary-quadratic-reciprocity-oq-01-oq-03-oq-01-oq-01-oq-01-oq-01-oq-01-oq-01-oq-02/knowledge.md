@@ -128,3 +128,50 @@ formalize its genuinely distinct part — the **QR assembly** (`α=β∘γ`, ide
 ### Files modified
 - `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean`
 - `research/problems/elementary-quadratic-reciprocity-oq-01-oq-03-…-oq-02/knowledge.md` (new)
+
+---
+
+## Session 2026-06-23 (Session 3) — Candidate API audit (de-risk, no kernel check)
+
+**Mode**: REVISIT
+**Outcome**: progress (verification infra still down; mathematical/API risk reduced)
+
+### What I Did
+- Session preamble: both verifiers still down — Docker daemon wedged (`docker version`
+  shows Client only, no Server; `docker ps`/`images` empty), Aristotle MCP
+  `prove_file` returns "Resource not found" (connected but backend resource 404).
+  So no kernel verification was possible this session either.
+- Highest-value reachable action: full **API audit** of the complete candidate proof
+  `sign_gridTranspose_candidate.lean` against the pinned Mathlib source on disk
+  (rev 2df2f0150c, Lean v4.26.0, `proofs/.lake/packages/mathlib`).
+
+### Key Findings
+- EVERY lemma name in the candidate is present with a compatible signature:
+  - `Equiv.Perm.sign_eq_prod_prod_Iio` (Perm/Fin.lean:478) — factor form
+    `if σ i < σ j then 1 else -1` matches `inner` exactly.
+  - `Finset.prod_pow_eq_pow_sum` (BigOperators/.../Basic.lean:656) — exact form.
+  - `finProdFinEquiv` (Logic/Equiv/Fin/Basic.lean:329): `toFun ⟨x.2 + n*x.1,_⟩`,
+    `invFun (x.divNat,x.modNat)` ⟹ `fpe_val` (val = c+q*a) and `fpe_symm` hold by `rfl`.
+  - `Fin.divNat`/`Fin.modNat` (Batteries Data/Fin/Basic.lean:133/137), correct types.
+  - `Fin.coe_cast` (alias of `val_cast`), `finCongr_apply` (@[simp]) — present.
+  - `Finset.card_bij'` (Data/Finset/Card.lean:366) — arg order
+    `(i,j,hi,hj,left_inv,right_inv)` matches the four `?_` obligations IN ORDER.
+  - All supporting Finset/Nat lemmas confirmed (sum_filter via to_additive prod_filter).
+- The two names the prior draft flagged "best-effort" (`finProdFinEquiv_symm_apply`,
+  `Fintype.sum_prod_type`) are NOT used in the proof body — dropped from caveats.
+- NET: remaining risk reduced from "do these lemmas exist / right names?" (now: YES,
+  all confirmed) to purely term-level "do the rw/simp steps fire?" — mechanical,
+  build-only. Honest status unchanged: still UNVERIFIED, not registered/verified.
+
+### Files Modified
+- `sign_gridTranspose_candidate.lean` — header STATUS block rewritten with the audit.
+- `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03…OQ02.lean` — cross-ref note
+  updated (API audited; only rw/simp firing remains).
+- this knowledge.md.
+
+### Next Steps (unchanged priority)
+1. When EITHER verifier recovers: build/submit the candidate; expect ≤ a couple of
+   `simp`/`rw` adjustments at most, since all names are confirmed.
+2. Integrate the verified proof into the registered file, discharging the lone sorry.
+3. Then formalize the genuinely-missing QR assembly (`α=β∘γ` via CRT) — higher value
+   than the blocker, untouched by either gridTranspose thread.

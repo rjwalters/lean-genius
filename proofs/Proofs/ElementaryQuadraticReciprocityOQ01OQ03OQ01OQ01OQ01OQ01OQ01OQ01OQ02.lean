@@ -156,8 +156,12 @@ def gridTranspose (m n : ℕ) : Equiv.Perm (Fin (m * n)) :=
     A complete CANDIDATE proof along these lines is written out in
     `research/problems/elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02/sign_gridTranspose_candidate.lean`.
     It is NOT yet kernel-verified (Docker daemon wedged + Aristotle MCP returning
-    "Resource not found" this session); a build backend just needs to confirm /
-    fix the API lemma names.  The numerical inversion bijection is also certified
+    "Resource not found" across sessions).  Its API has now been fully audited
+    against the pinned Mathlib (rev 2df2f0150c, v4.26.0): every lemma it uses is
+    present with a compatible signature (notably `sign_eq_prod_prod_Iio`,
+    `prod_pow_eq_pow_sum`, and `card_bij'` with matching argument order), so the
+    only remaining risk is whether the `rw`/`simp` steps fire — a build backend
+    just needs to run it.  The numerical inversion bijection is also certified
     in `research/problems/quadratic-reciprocity-algorithm-oq-03/verify_grid_inversions.py`
     and `verify_inversion_bijection.py`. -/
 theorem sign_gridTranspose (m n : ℕ) :
