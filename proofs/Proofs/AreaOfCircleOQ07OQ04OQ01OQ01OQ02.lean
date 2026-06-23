@@ -63,6 +63,8 @@ theorem gaussian_anisotropic_eq_prod (b : Fin n → ℝ) :
     exact integral_gaussian (b i)
   rw [← key]
   refine integral_congr_ae (Filter.Eventually.of_forall (fun x => ?_))
+  -- beta-reduce the integrand applications `(fun x => …) x` so `Real.exp_sum` matches
+  simp only []
   rw [← Real.exp_sum]
   congr 1
   rw [← Finset.sum_neg_distrib]
