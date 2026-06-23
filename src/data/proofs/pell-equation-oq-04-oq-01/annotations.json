@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-engines",
+    "proofId": "pell-equation-oq-04-oq-01",
+    "range": { "startLine": 124, "endLine": 191 },
+    "type": "insight",
+    "title": "Two Arithmetic Engines: A Unit Exists, and the Form is Anisotropic",
+    "content": "The classification rests on two Mathlib facts about non-square D. `exists_unit` takes the nontrivial Pell solution from `Pell.exists_of_not_isSquare` (Lagrange's theorem) and normalizes it by absolute values to a unit (|x|,|y|) with |x| ≥ 2 — the bound |x| ≥ 2 holds because x² = 1 + Dy² ≥ 2 when D,y² ≥ 1. `solutions_zero` handles the degenerate right-hand side: identifying normForm D x y with the ℤ[√D]-norm of ⟨x,y⟩, `Zsqrtd.norm_eq_zero` (the norm is anisotropic for non-square D) forces x = y = 0, so x²−Dy²=0 has only the trivial solution (0,0). These are exactly the two places non-squareness is used — for square D both fail."
+  },
+  {
+    "id": "ann-pos-seed",
+    "proofId": "pell-equation-oq-04-oq-01",
+    "range": { "startLine": 178, "endLine": 191 },
+    "type": "insight",
+    "title": "Infinitude Needs Only One Solution — Not a Positive One",
+    "content": "The parent proved infinitude from a *positive* seed; here `exists_pos_seed` removes that restriction. Given any solution (x,y) of x²−Dy²=N with N ≠ 0, it produces a positive seed (first coordinate ≥ 1, second ≥ 0) of the same norm. If x ≠ 0, take (|x|,|y|) — the norm is unchanged because |x|²=x². If x = 0, then N = −Dy² ≠ 0 forces y ≠ 0, and a single composition of (0,|y|) with the unit yields (D|y|v, |y|u), whose first coordinate D|y|v ≥ 1 and whose norm is still N·1 = N (a one-line `linear_combination` over the unit and seed norm equations). This is what upgrades the parent's seed-dependent infinitude into the clean dichotomy."
+  },
+  {
+    "id": "ann-trichotomy",
+    "proofId": "pell-equation-oq-04-oq-01",
+    "range": { "startLine": 230, "endLine": 261 },
+    "type": "insight",
+    "title": "The Complete Trichotomy: Empty, {(0,0)}, or Infinite",
+    "content": "Assembling the engines gives the full finiteness picture for positive non-square D. `solutions_infinite` says a nonempty nonzero-N set is infinite (normalize to a positive seed, then run the orbit). `infinite_iff` packages this as the sharp equivalence: the set is infinite ⟺ N ≠ 0 and it is nonempty — so deciding infinitude reduces entirely to deciding solvability. `nonempty_finite_iff_zero` says a nonempty set is finite ⟺ N = 0. Finally `solution_set_trichotomy` case-splits on N=0 (→ {(0,0)}) and otherwise on emptiness, concluding every solution set is empty, the single point {(0,0)}, or infinite — there is no nontrivial finite solution set."
+  }
+]
