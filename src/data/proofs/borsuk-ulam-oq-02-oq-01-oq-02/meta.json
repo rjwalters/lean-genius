@@ -90,24 +90,28 @@
   ],
   "sections": [
     {
+      "id": "nt-core",
       "title": "Number-theoretic core: prime localization of coprimality",
       "startLine": 53,
       "endLine": 71,
       "summary": "coprime_iff_forall_prime_dvd: gcd(a,n)=1 iff no prime divisor of n divides a, via Nat.dvd_gcd one way and Nat.exists_prime_and_dvd the other."
     },
     {
+      "id": "free-action-model",
       "title": "The free-action model",
       "startLine": 73,
       "endLine": 86,
       "summary": "IsFreeRep n a (every rotation weight is a unit mod n) and IsFreeAtPrime a p (no weight divisible by p), modelling free Z/n-actions and their restrictions to prime-order subgroups."
     },
     {
+      "id": "prime-localization",
       "title": "Prime localization of freeness (main theorem)",
       "startLine": 88,
       "endLine": 116,
       "summary": "isFreeRep_iff_forall_prime: Z/n acts freely iff every prime-order subgroup Z/p (p|n) acts freely; plus restrict_prime ('no exotic gain') and the converse isFreeRep_of_forall_prime."
     },
     {
+      "id": "prime-powers-witness",
       "title": "Prime powers, the standard representation, and a witness",
       "startLine": 118,
       "endLine": 144,
