@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-diamond-ch-hypothesis",
+    "proofId": "fodor-pressing-down-oq-02",
+    "range": { "startLine": 53, "endLine": 59 },
+    "type": "definition",
+    "title": "Diamond as a hypothesis, not an axiom",
+    "content": "IsDiamondSeq packages Jensen's principle ◇ as a predicate on a sequence seq : Ordinal → Set Ordinal: each seq α ⊆ Iio α, and for every X ⊆ ω₁ the guessing set {α < ω₁ | X ∩ Iio α = seq α} is stationary below ω₁. Crucially ◇ enters only as the hypothesis (h : IsDiamondSeq seq) of every theorem — the file never asserts that such a sequence exists (that needs V = L, a consistency statement). So all results are honest ZFC implications ◇ ⟹ …, depending only on propext, Classical.choice, Quot.sound.",
+    "mathContext": "$\\Diamond$: there is $\\langle A_\\alpha : \\alpha<\\omega_1\\rangle$ with $A_\\alpha\\subseteq\\alpha$ such that for every $X\\subseteq\\omega_1$ the set $\\{\\alpha<\\omega_1 : X\\cap\\alpha = A_\\alpha\\}$ is stationary in $\\omega_1$.",
+    "significance": "key",
+    "relatedConcepts": ["diamond principle", "stationary set", "constructible universe", "guessing principle", "hypothesis vs axiom"],
+    "prerequisites": ["ordinals", "stationary and club sets", "ω₁"]
+  },
+  {
+    "id": "ann-diamond-ch-tailclub",
+    "proofId": "fodor-pressing-down-oq-02",
+    "range": { "startLine": 63, "endLine": 81 },
+    "type": "technique",
+    "title": "The tail club {β | ω < β < ω₁}",
+    "content": "isClubBelow_Ioo_omega proves the ordinals strictly between ω and ω₁ form a club below ω₁. Closed: an accumulation point p of the tail lies above some tail member s > ω, hence p > ω, and p < ω₁ is given. Unbounded: for any α < ω₁, the ordinal max α ω + 1 lands in the tail and exceeds α, using that ω₁ is a successor-limit (IsSuccLimit) so successors of countable ordinals stay below ω₁. This single club is the only place the proof spends the strength of ◇: stationarity guarantees the guessing set meets it.",
+    "mathContext": "$\\{\\beta : \\omega<\\beta<\\omega_1\\}$ is club (closed and unbounded) in $\\omega_1$. A stationary set meets every club, so meeting this one forces a guess at some $\\alpha>\\omega$.",
+    "significance": "supporting",
+    "relatedConcepts": ["club set", "closed unbounded", "accumulation point", "successor limit ordinal", "ω₁"],
+    "prerequisites": ["club and closed unbounded sets", "ordinal arithmetic"]
+  },
+  {
+    "id": "ann-diamond-ch-guesses",
+    "proofId": "fodor-pressing-down-oq-02",
+    "range": { "startLine": 85, "endLine": 96 },
+    "type": "insight",
+    "title": "The guessing lemma: countable sets are guessed above ω",
+    "content": "IsDiamondSeq.guesses is the heart of the argument. For X ⊆ Iio ω, the guessing set is stationary (from ◇) and therefore meets the tail club, producing α with ω < α < ω₁ and X ∩ Iio α = seq α. Because X ⊆ Iio ω ⊆ Iio α, the intersection X ∩ Iio α collapses to X itself, so seq α = X exactly. The sequence, restricted to countable sets, literally outputs each X ⊆ ω at some ordinal below ω₁.",
+    "mathContext": "For $X\\subseteq\\mathrm{Iio}\\,\\omega$: stationary $\\cap$ club $\\neq\\varnothing$ gives $\\alpha>\\omega$ with $X\\cap\\mathrm{Iio}\\,\\alpha = \\mathrm{seq}\\,\\alpha$; since $X\\subseteq\\mathrm{Iio}\\,\\alpha$, $\\mathrm{seq}\\,\\alpha = X$.",
+    "significance": "key",
+    "relatedConcepts": ["stationary meets club", "guessing", "countable subsets", "diamond principle"],
+    "prerequisites": ["stationary sets", "set intersection of initial segments"]
+  },
+  {
+    "id": "ann-diamond-ch-injection",
+    "proofId": "fodor-pressing-down-oq-02",
+    "range": { "startLine": 100, "endLine": 122 },
+    "type": "technique",
+    "title": "Injecting 𝒫(Iio ω) into Iio ω₁",
+    "content": "guessIndex sends X ∈ 𝒫(Iio ω) to a chosen guessing ordinal in Iio ω₁ (via Classical.choose on the guessing lemma). guessIndex_injective shows the map is injective: if two subsets are guessed at the same ordinal α, then seq α recovers both, so they coincide (seq recovers X from α). mk_powerset_le then reads off the cardinal inequality #𝒫(Iio ω) ≤ #(Iio ω₁) by Cardinal.mk_le_of_injective. This is the structural core: ℵ₁-many ordinals below ω₁ must accommodate all 2^ℵ₀ countable subsets.",
+    "mathContext": "$X\\mapsto\\alpha_X$ injects $\\mathcal P(\\mathrm{Iio}\\,\\omega)$ into $\\mathrm{Iio}\\,\\omega_1$ because $\\mathrm{seq}\\,\\alpha_X = X$ recovers $X$; hence $\\#\\mathcal P(\\mathrm{Iio}\\,\\omega)\\le\\#\\mathrm{Iio}\\,\\omega_1$.",
+    "significance": "key",
+    "relatedConcepts": ["injection", "Cardinal.mk_le_of_injective", "Classical.choose", "powerset cardinality"],
+    "prerequisites": ["injective maps and cardinality", "axiom of choice (choose)"]
+  },
+  {
+    "id": "ann-diamond-ch-cardinal",
+    "proofId": "fodor-pressing-down-oq-02",
+    "range": { "startLine": 126, "endLine": 142 },
+    "type": "technique",
+    "title": "Cardinal bookkeeping and the universe bump",
+    "content": "mk_Iio_omega / mk_Iio_omega1 compute #(Iio ω) = lift ℵ₀ and #(Iio ω₁) = lift ℵ₁ via mk_Iio_ordinal and the cardinalities of ω, ω₁. Because Ordinal.{0} : Type 1, subsets of ordinals have cardinality in Cardinal.{1}, so the injection lives one universe up. diamond_continuum_le rewrites the powerset inequality through mk_powerset, lift_two_power and two_power_aleph0 to get lift 𝔠 ≤ lift ℵ₁ at universe 1, then Cardinal.lift_le.mp descends it to 𝔠 ≤ ℵ₁ at universe 0.",
+    "mathContext": "$2^{\\aleph_0}=\\#\\mathcal P(\\mathrm{Iio}\\,\\omega)\\le\\#\\mathrm{Iio}\\,\\omega_1=\\aleph_1$, computed at universe $1$ and brought down by $\\mathrm{lift\\_le}$ to $\\mathfrak c\\le\\aleph_1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cardinal lift", "universe polymorphism", "2^ℵ₀ = 𝔠", "mk_Iio_ordinal"],
+    "prerequisites": ["cardinal arithmetic", "Lean universes", "continuum 𝔠 = 2^ℵ₀"]
+  },
+  {
+    "id": "ann-diamond-ch-main",
+    "proofId": "fodor-pressing-down-oq-02",
+    "range": { "startLine": 144, "endLine": 155 },
+    "type": "concept",
+    "title": "Diamond implies the Continuum Hypothesis",
+    "content": "diamond_CH concludes 𝔠 = ℵ₁ by le_antisymm: ◇ supplies 𝔠 ≤ ℵ₁ (diamond_continuum_le) while ℵ₁ ≤ 𝔠 is the unconditional ZFC theorem aleph_one_le_continuum. diamond_two_pow_aleph0 restates it in the form 2^ℵ₀ = ℵ₁. This is the canonical first consequence of diamond and places it strictly above CH in the hierarchy of cardinal-arithmetic hypotheses: ◇ ⟹ CH, but CH does not imply ◇.",
+    "mathContext": "$\\mathfrak c = \\aleph_1$, i.e. $2^{\\aleph_0}=\\aleph_1$ (the Continuum Hypothesis), obtained from $\\mathfrak c\\le\\aleph_1$ ($\\Diamond$) and $\\aleph_1\\le\\mathfrak c$ (ZFC).",
+    "significance": "key",
+    "relatedConcepts": ["continuum hypothesis", "le_antisymm", "aleph_one_le_continuum", "cardinal-arithmetic hierarchy"],
+    "prerequisites": ["antisymmetry of ≤ on cardinals", "ℵ₁ ≤ 𝔠 in ZFC"]
+  }
+]
