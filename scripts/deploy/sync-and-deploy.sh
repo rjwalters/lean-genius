@@ -222,6 +222,49 @@ label_unlabeled_prs() {
     fi
 }
 
+# ----------------------------------------------------------------------------
+# Destructive-merge guard
+# ----------------------------------------------------------------------------
+# A PR branch built on an ancient/divergent base — or one whose remote tip was
+# corrupted by a bad rebase+force-push earlier in this very pipeline — can carry
+# a near-empty tree. Merging it deletes most of the repository: on 2026-06-23,
+# PR #27891 merged such a branch and wiped 20,866 files from main. GitHub's
+# additions/deletions are computed against the PR's own (ancient) merge-base, so
+# they look harmless; the only reliable tell is the branch TIP's top-level entry
+# count vs main's. Refuse to merge a branch missing a large fraction of the tree.
+pr_branch_safe() {
+    local pr="$1"
+    local branch
+    branch=$(gh pr view "$pr" --json headRefName --jq '.headRefName' 2>/dev/null) || return 0
+    [[ -z "$branch" ]] && return 0
+    git fetch -q origin "$branch" 2>/dev/null || return 0  # can't verify → don't block
+    local main_n branch_n
+    main_n=$(git ls-tree origin/main --name-only 2>/dev/null | wc -l | tr -d ' ')
+    branch_n=$(git ls-tree FETCH_HEAD --name-only 2>/dev/null | wc -l | tr -d ' ')
+    # If counts are unreadable, do not block (fail open on inspection errors).
+    [[ -z "$main_n" || -z "$branch_n" || "$main_n" -eq 0 ]] && return 0
+    # Refuse if the branch tip has fewer than 75% of main's top-level entries.
+    if (( branch_n * 4 < main_n * 3 )); then
+        print_warning "  #$pr: branch '$branch' tip has $branch_n top-level entries vs main's $main_n — corrupted/ancient base; REFUSING to merge (would delete files)"
+        return 1
+    fi
+    return 0
+}
+
+# Assert origin/main still holds a full tree. Call after the merge loop; if main
+# has collapsed, something merged a destructive branch — abort before deploying.
+assert_main_intact() {
+    git fetch -q origin main 2>/dev/null || return 0
+    local n
+    n=$(git ls-tree origin/main --name-only 2>/dev/null | wc -l | tr -d ' ')
+    [[ -z "$n" || "$n" -eq 0 ]] && return 0
+    if (( n < 30 )); then
+        print_error "origin/main has only $n top-level entries — a destructive merge corrupted main. ABORTING deploy. Recover by reverting the offending merge commit."
+        exit 1
+    fi
+    print_success "main integrity OK ($n top-level entries)"
+}
+
 # ============================================================================
 # Step 1: Merge PRs
 # ============================================================================
@@ -262,7 +305,10 @@ merge_prs() {
             ((++merged))
         else
             echo -n "  #$pr: "
-            if gh pr merge "$pr" --squash 2>/dev/null; then
+            if ! pr_branch_safe "$pr"; then
+                echo "skipped (unsafe tree)"
+                ((++failed))
+            elif gh pr merge "$pr" --squash 2>/dev/null; then
                 echo "merged"
                 ((++merged))
             else
@@ -282,7 +328,9 @@ merge_prs() {
                 ((++merged))
             else
                 echo -n "  #$pr: "
-                if gh pr merge "$pr" --squash 2>/dev/null; then
+                if ! pr_branch_safe "$pr"; then
+                    echo "skipped (unsafe tree)"
+                elif gh pr merge "$pr" --squash 2>/dev/null; then
                     echo "merged"
                     ((++merged))
                 else
@@ -427,7 +475,7 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
         sleep 3
         local new_status=$(gh pr view "$pr" --json mergeable --jq '.mergeable' 2>/dev/null || echo "UNKNOWN")
         echo -n "  #$pr (after rebase): "
-        if [[ "$new_status" == "MERGEABLE" ]] && gh pr merge "$pr" --squash 2>/dev/null; then
+        if [[ "$new_status" == "MERGEABLE" ]] && pr_branch_safe "$pr" && gh pr merge "$pr" --squash 2>/dev/null; then
             echo "merged"
             ((++merged))
         else
@@ -441,6 +489,9 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
     # Update main again after merges
     git fetch origin main
     git reset --hard origin/main
+
+    # Safety net: confirm the merges did not collapse main's tree.
+    assert_main_intact
 }
 
 # ============================================================================
