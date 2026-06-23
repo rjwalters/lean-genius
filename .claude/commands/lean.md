@@ -18,12 +18,23 @@ Parse `$ARGUMENTS` and route:
 # Check if already running
 ./scripts/lean/launch.sh health
 
-# Start in tmux (recommended — runs autonomously)
-tmux new-session -d -s lean-daemon './scripts/lean/launch.sh daemon --enricher 2 --researcher 1 --deployer 1'
+# Start in tmux via the keeper (recommended — runs autonomously AND auto-restarts
+# the daemon if it crashes; the daemon runs under `set -euo pipefail` and can die
+# on any unguarded non-zero in its loop, which leaves agents orphaned).
+tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --enricher 2 --researcher 1 --deployer 1'
 
 # Or with custom pool
-tmux new-session -d -s lean-daemon './scripts/lean/launch.sh daemon --enricher 2 --researcher 3 --aristotle 1 --seeker 1 --deployer 1 --auditor 1 --mechanic 1'
+tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --enricher 2 --researcher 3 --aristotle 1 --seeker 1 --deployer 1 --auditor 1 --mechanic 1'
+
+# Adopt an already-running fleet without tearing it down (keeper + monitor-only):
+tmux new-session -d -s lean-daemon './scripts/lean/daemon-keeper.sh --monitor-only --interval 60 --enricher 2 --researcher 5 --aristotle 1 --auditor 1 --seeker 1 --deployer 1 --tester 1 --herald 1 --mechanic 1'
 ```
+
+> The keeper supervises the supervisor: it restarts `launch.sh daemon` on any
+> non-clean exit, with crash-loop backoff, and logs lifecycle events to
+> `research/lean-daemon-keeper.log` (the daemon's own `daemon_log` only echoes to
+> its tmux pane, which is lost when it dies). A clean stop (`touch
+> .loom/signals/stop-lean-daemon`) makes the keeper exit too.
 
 ### `status` → Show system state
 
