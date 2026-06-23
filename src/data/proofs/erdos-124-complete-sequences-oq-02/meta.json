@@ -52,7 +52,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide (no Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas. The deep ≥ 1 completeness theorem of Erdős 124 is the parent entry's contribution and is not reproved here.",
     "lineCount": 316,
-    "theoremCount": 15,
+    "theoremCount": 19,
     "definitionCount": 3
   },
   "overview": {
@@ -135,7 +135,7 @@
     }
   ],
   "conclusion": {
-    "summary": "The exact boundary ∑ 1/(dᵢ−1) = 1 of Erdős 124 is shown to be precisely an Egyptian-fraction decomposition of 1 (eᵢ = dᵢ − 1), via the bridge reciSum_eq_egyptSum. The Sylvester splitting identity yields an explicit family of boundary configurations of every length (sylvester / exists_boundary_config), and the unit fraction 1/1 saturates the budget so that any boundary configuration using the base d = 2 is the singleton [2] (base_two_forces_singleton). 15 theorems, 3 definitions, 0 axioms, 0 sorries.",
+    "summary": "The exact boundary ∑ 1/(dᵢ−1) = 1 of Erdős 124 is shown to be precisely an Egyptian-fraction decomposition of 1 (eᵢ = dᵢ − 1), via the bridge reciSum_eq_egyptSum. The Sylvester splitting identity yields an explicit family of boundary configurations of every length (sylvester / exists_boundary_config), and the unit fraction 1/1 saturates the budget so that any boundary configuration using the base d = 2 is the singleton [2] (base_two_forces_singleton). 19 theorems, 3 definitions, 0 axioms, 0 sorries.",
     "implications": "Gives a clean structural answer to OQ-02: the boundary needs no new completeness machinery (it is a face of the parent's closed condition), but it carries the full combinatorial richness of Egyptian fractions — arbitrarily many bases, with binary as the unique degenerate single-base case.",
     "openQuestions": [
       "Which boundary configurations (Egyptian decompositions of 1) give the strong, gcd-restricted version of Erdős 124, where the digit-1 power is excluded?",
@@ -152,7 +152,7 @@
     "namespace": "Erdos124OQ02",
     "lineCount": 316,
     "axiomCount": 0,
-    "theoremCount": 15,
+    "theoremCount": 19,
     "definitionCount": 3,
     "path": "Proofs/Erdos124CompleteSequencesOQ02.lean",
     "sorries": 0
