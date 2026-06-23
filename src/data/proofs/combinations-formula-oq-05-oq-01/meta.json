@@ -1,0 +1,107 @@
+{
+  "id": "combinations-formula-oq-05-oq-01",
+  "title": "Telescoping the Alternating Row Sum: Partial Sums of Pascal's Triangle",
+  "slug": "combinations-formula-oq-05-oq-01",
+  "description": "Refines the full-row cancellation ∑_{k=0}^{n} (-1)^k C(n,k) = 0 into the telescoping partial-sum identity ∑_{k=0}^{j} (-1)^k C(n,k) = (-1)^j C(n-1,j). The vanishing of the full row is recovered as the j = n case (C(n-1,n) = 0), and a sharp structural consequence is proved: every proper partial sum (j < n) is nonzero, so the alternating row sum cancels to 0 only when its very last term is included.",
+  "meta": {
+    "author": "Lean Genius researcher-9",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ05OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 98,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. All identities are fully machine-checked for every n ≥ 1 and every j. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). The sanity example uses decide (kernel reduction), not native_decide, so no Lean.ofReduceBool is incurred.",
+    "tags": [
+      "combinatorics",
+      "pascals-triangle",
+      "binomial-coefficients",
+      "alternating-sum",
+      "telescoping",
+      "finite-differences",
+      "finset-sums"
+    ],
+    "dateAdded": "2026-06-23",
+    "originalContributions": [
+      "partial_alternating_sum_choose_succ: the base form ∑_{k=0}^{j} (-1)^k C(m+1,k) = (-1)^j C(m,j), proved by a one-line induction on j using Pascal's rule Nat.choose_succ_succ and ring (formulating over m+1 avoids all ℕ subtraction)",
+      "partial_alternating_sum_choose: the headline telescoping identity ∑_{k=0}^{j} (-1)^k C(n,k) = (-1)^j C(n-1,j) for n ≥ 1, obtained from the base form via Nat.exists_eq_succ_of_ne_zero",
+      "alternating_sum_choose_eq_zero: the parent's full-row cancellation recovered as the j = n instance, since C(n-1,n) = 0 by Nat.choose_eq_zero_of_lt",
+      "partial_alternating_sum_ne_zero: the structural sharpening — for every j < n the partial sum equals ±C(n-1,j) with C(n-1,j) > 0, hence is nonzero; the single cancellation to 0 happens only at k = n",
+      "Worked verification (row 4, j = 2): 1 - 4 + 6 = 3 = (-1)^2 C(3,2)"
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ05OQ01.lean",
+    "namespace": "CombinationsFormulaOQ05OQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 98,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The alternating row sum ∑ (-1)^k C(n,k) = 0 is the classical statement that a nonempty finite set has equally many even-sized and odd-sized subsets. But this endpoint identity is the terminal value of a sharper telescoping phenomenon already implicit in Pascal's rule: the partial alternating sums collapse to a single binomial coefficient. In the calculus of finite differences, the row k ↦ C(n,k) is the n-fold forward difference of the constant sequence, and the partial alternating sum is its discrete antiderivative — exactly analogous to the fundamental theorem of calculus ∫_0^x f' = f(x) - f(0).",
+    "problemStatement": "Open Question OQ-05-OQ-01 (posed by the parent entry combinations-formula-oq-05): formalize the partial alternating sums ∑_{k=0}^{j} (-1)^k C(n,k) = (-1)^j C(n-1,j), refining the full cancellation into a telescoping identity.",
+    "proofStrategy": "Work over ℤ to carry the signs and over n = m+1 to eliminate ℕ subtraction. The base lemma is a direct induction on j: the j = 0 case is C(m+1,0) = C(m,0) = 1; the step uses Finset.sum_range_succ to expose the new term (-1)^{j+1} C(m+1,j+1), rewrites C(m+1,j+1) = C(m,j) + C(m,j+1) by Pascal's rule (Nat.choose_succ_succ), and closes with ring — the +C(m,j) created by Pascal cancels the surviving (-1)^j C(m,j) of the inductive hypothesis, leaving (-1)^{j+1} C(m,j+1). The n ≥ 1 form follows by writing n = m+1. The full-row vanishing is the j = n specialization (C(n-1,n) = 0 since n-1 < n), and the no-early-cancellation result reads ±C(n-1,j) ≠ 0 off the identity using Nat.choose_pos for j < n.",
+    "keyInsights": [
+      "Pascal's rule makes the alternating sum telescope: the +C(n-1,k) term it produces cancels the -C(n-1,k) of the adjacent index, leaving only the boundary term (-1)^j C(n-1,j).",
+      "The classical full-row cancellation ∑_{k=0}^{n} (-1)^k C(n,k) = 0 is not a separate fact but the j = n endpoint of this telescoping, where the boundary term C(n-1,n) itself vanishes.",
+      "The partial sums are never zero before that endpoint: each equals ±C(n-1,j) with C(n-1,j) > 0 for j < n. The alternating row sum cancels exactly once, at the final term — a sharpening the bare endpoint statement cannot see.",
+      "Formulating the base case over m+1 rather than n with a hypothesis n ≥ 1 removes every ℕ-subtraction obstacle and lets a single ring call discharge the inductive step."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "Header stating OQ-05-OQ-01: the telescoping refinement of the alternating row sum, its four results, and the finite-difference / fundamental-theorem-of-calculus analogy."
+    },
+    {
+      "id": "base-form",
+      "title": "Base Form on m+1 (Induction)",
+      "startLine": 56,
+      "endLine": 71,
+      "summary": "partial_alternating_sum_choose_succ: ∑_{k=0}^{j} (-1)^k C(m+1,k) = (-1)^j C(m,j) by induction on j, using Finset.sum_range_succ, Pascal's rule Nat.choose_succ_succ, and ring."
+    },
+    {
+      "id": "headline",
+      "title": "Telescoping Partial Alternating Sum",
+      "startLine": 73,
+      "endLine": 80,
+      "summary": "partial_alternating_sum_choose: the n ≥ 1 form ∑_{k=0}^{j} (-1)^k C(n,k) = (-1)^j C(n-1,j), obtained from the base form via Nat.exists_eq_succ_of_ne_zero."
+    },
+    {
+      "id": "endpoint",
+      "title": "Full-Row Cancellation Recovered",
+      "startLine": 82,
+      "endLine": 89,
+      "summary": "alternating_sum_choose_eq_zero: the parent's vanishing alternating sum is the j = n instance, where C(n-1,n) = 0 by Nat.choose_eq_zero_of_lt."
+    },
+    {
+      "id": "no-early-cancel",
+      "title": "No Early Cancellation",
+      "startLine": 91,
+      "endLine": 98,
+      "summary": "partial_alternating_sum_ne_zero: for j < n the partial sum equals ±C(n-1,j) with C(n-1,j) > 0, hence nonzero; plus a worked row-4 verification (1 - 4 + 6 = 3)."
+    }
+  ],
+  "conclusion": {
+    "summary": "4 theorems, 0 sorries, 0 axioms. The alternating row sum is refined from a single endpoint identity into the telescoping family ∑_{k=0}^{j} (-1)^k C(n,k) = (-1)^j C(n-1,j), the full cancellation is recovered as its j = n case, and every proper partial sum is shown to be nonzero.",
+    "implications": "Directly answers the open question posed in combinations-formula-oq-05. The telescoping identity is the discrete fundamental theorem of calculus for the forward-difference operator on a Pascal row, and the no-early-cancellation result pins down exactly when the alternation cancels. The same induction-with-Pascal template extends to signed weighted sums ∑ (-1)^k p(k) C(n,k) for polynomial weights.",
+    "openQuestions": [
+      "Does the partial sum of the signed falling-factorial moment ∑_{k=0}^{j} (-1)^k k^{(r)} C(n,k) admit an analogous closed form in terms of C(n-1-r, j-r)?",
+      "Can the residue-class (m-way) partial sums of a Pascal row, evaluated via roots of unity, be telescoped in the same Pascal-rule manner?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-05",
+      "relationship": "parent — refines its full-row alternating cancellation into the telescoping partial-sum identity and recovers the cancellation as the endpoint case"
+    }
+  ],
+  "sorries": 0
+}

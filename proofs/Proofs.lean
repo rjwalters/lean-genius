@@ -713,6 +713,7 @@ import Proofs.CombinationsFormulaOQ02Aristotle
 import Proofs.CombinationsFormulaOQ03
 import Proofs.CombinationsFormulaOQ03OQ06
 import Proofs.CombinationsFormulaOQ05
+import Proofs.CombinationsFormulaOQ05OQ01
 import Proofs.CombinationsFormulaOQ06
 import Proofs.CombinationsFormulaOQ07
 import Proofs.CombinationsFormulaOQ07OQ01
