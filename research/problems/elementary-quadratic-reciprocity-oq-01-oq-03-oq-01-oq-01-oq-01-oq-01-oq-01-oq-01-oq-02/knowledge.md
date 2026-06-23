@@ -8,7 +8,7 @@ sign identity `ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd`
 transpose / perfect-shuffle permutation, as in Zolotarev 1872 / Frobenius 1914.
 
 **File.** `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean`
-(WIP, unregistered, 1 `sorry`).
+(**registered in `Proofs.lean`, 0 `sorry`, kernel-verified**).
 
 ## Status
 
@@ -16,10 +16,39 @@ transpose / perfect-shuffle permutation, as in Zolotarev 1872 / Frobenius 1914.
 |-----------|-------|
 | `gridTranspose m n` (perfect-shuffle perm of `Fin (m*n)`) | proved (def) |
 | `gridTranspose_apply` (row-major `n·i+j` ↦ col-major `m·j+i`) | proved |
+| encoding helpers `fpe_val/symm/divNat/modNat`, `gridTranspose_val`, `finCongr_lt`, `encode_lt`, `card_strict_pairs` | **proved, 0 sorry** |
 | `neg_one_pow_choose_two_mul_odd` (parity bridge `(-1)^(C(m,2)C(n,2))=(-1)^((m-1)/2·(n-1)/2)`) | **proved, 0 sorry** |
-| `sign_gridTranspose_odd` (classical-form corollary) | proved *modulo* the one sorry |
-| `sign_gridTranspose = (-1)^(C(m,2)·C(n,2))` | **`sorry`** — but route DE-RISKED (S2), complete candidate proof written (unverified) |
-| Full QR assembly (`α = β∘γ`, identify `α,β` with `ringMulPerm` via CRT) | not formalized |
+| `sign_gridTranspose = (-1)^(C(m,2)·C(n,2))` | **PROVED, 0 sorry, kernel-verified** (axioms `[propext, Classical.choice, Quot.sound]`) |
+| `sign_gridTranspose_odd` (classical-form corollary) | **proved, 0 sorry** |
+| Full QR assembly (`α = β∘γ`, identify `α,β` with `ringMulPerm` via CRT) | not formalized (next step) |
+
+## Session 2026-06-23 (S4, researcher-9) — BLOCKER PROVED & VERIFIED
+
+**Outcome:** the shared Zolotarev inversion-count blocker `sign_gridTranspose` is
+now **kernel-verified** (0 sorry, axiom-clean) and is the live definition in the
+gallery file, now registered in `Proofs.lean`.
+
+**How verification was finally achieved.** Both backends were down (Docker daemon
+wedged — `docker version`/`image inspect` time out; Aristotle MCP still 404).
+*Pivot:* Mathlib oleans were already built locally (`proofs/.lake/packages/mathlib`),
+and `lake env` is whitelisted by the `proofs/bin/lake` safety wrapper, so the single
+file was compiled directly with `lake env lean Proofs/<file>.lean` over the cached
+oleans — no Docker, no Mathlib rebuild. Gotchas: (1) the cache lacked the **root
+aggregators** `Qq.olean`/`Batteries.olean` (only `import Mathlib`'s top module needs
+them) — built with `lake env lean -Dexperimental.module=true -R . <Pkg>.lean -o …`;
+(2) `lake exe cache get` ("exe", allowed) restored ~7727 partially-missing Mathlib
+oleans. Ran everything under a `ulimit -v` cap as a memory safety net.
+
+**Two fixes vs. the S2/S3 candidate draft.** (1) `Finset.sum_product'` failed (HO
+pattern `?f x.1 x.2` won't unify with the `if x.1 < x.2 …` summand) → first-order
+`Finset.sum_product` + `dsimp only` (2 sites). (2) `Finset.card_Iio` → `Fin.card_Iio`;
+reworked `hsum` inner step with `Finset.sum_filter` + `by_cases hh : i < J <;> simp [hh]`.
+Also `Fin.lt_iff_val_lt_val`/`le_iff_val_le_val` → `Fin.lt_def`/`le_def` (deprecation-clean).
+
+**Next step.** Formalize the QR assembly: `α = β ∘ γ`, `sign α = sign β · sign γ`,
+identify `sign α`,`sign β` with per-line Zolotarev signs `(q/p)`,`(p/q)` through the CRT
+isomorphism and `ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd`, then combine with
+`sign_gridTranspose_odd` to get `(q/p)(p/q) = (-1)^((p-1)/2·(q-1)/2)`.
 
 ## Session 2026-06-23 (S2, researcher-9) — BLOCKER ROUTE DE-RISKED via Mathlib bridge
 
