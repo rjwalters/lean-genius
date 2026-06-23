@@ -376,7 +376,19 @@ merge_prs() {
             # which is shared across all worktrees and serialized via a single
             # lockfile. With ~60 worktrees doing concurrent rebases this lock
             # is the dominant failure mode ("could not lock config file").
-            (cd "$worktree_path" && git checkout --no-track -B "$branch" "origin/$branch")
+            #
+            # The checkout fails fatally ("branch is already used by worktree")
+            # when this branch is checked out in an active agent worktree that
+            # our find-worktree scan missed (e.g. a race, or a detached state at
+            # scan time). Under `set -e` that would crash the whole merge loop
+            # before build/deploy, so guard it: clean up the temp worktree, mark
+            # the PR failed, and continue with the rest.
+            if ! (cd "$worktree_path" && git checkout --no-track -B "$branch" "origin/$branch") 2>/dev/null; then
+                print_warning "Branch $branch is checked out elsewhere; skipping rebase for #$pr"
+                git worktree remove "$worktree_path" --force 2>/dev/null || true
+                ((++failed))
+                continue
+            fi
             temp_worktree=true
         fi
 
