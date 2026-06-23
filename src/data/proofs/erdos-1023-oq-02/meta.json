@@ -1,0 +1,112 @@
+{
+  "id": "erdos-1023-oq-02",
+  "title": "Erdős #1023: the intersection-free dual — F_∩(n) = F(n) exactly, via the complement involution",
+  "slug": "erdos-1023-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1023OQ02",
+    "lineCount": 283,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 5,
+    "path": "Proofs/Erdos1023OQ02.lean",
+    "sorries": 0
+  },
+  "description": "Answers the parent entry's open question 'Analogous problems for other operations (intersection, difference)?' for the INTERSECTION case, in the sharpest possible form. The parent (Erdős #1023) studies union-free families — families of subsets of {1,...,n} in which no member is the union of two or more distinct other members — whose extremal function F(n) equals the central binomial coefficient C(n, floor(n/2)). This entry introduces the dual notion of an INTERSECTION-free family (no member is the intersection of other members) and proves that the two extremal problems are IDENTICAL for every n, not merely asymptotically: F_∩(n) = F(n). The bridge is the complement involution A ↦ Aᶜ on subsets of Fin n, lifted to families by complFamily F = F.image compl. This map is a size-preserving involution (complFamily_card, complFamily_complFamily) and, by De Morgan's laws (Finset.compl_sup / Finset.compl_inf), it exchanges unions and intersections: familyInter (complFamily G) = (familyUnion G)ᶜ and familyUnion (complFamily G) = (familyInter G)ᶜ. The core bridge lemma isInterOf_iff_isUnionOf_compl translates 'A is an intersection of a subfamily of H' into 'Aᶜ is a union of the complemented subfamily of complFamily H', and the headline isInterFree_iff_isUnionFree_complFamily promotes it to the family-level equivalence: F is intersection-free iff complFamily F is union-free. The achievable-cardinality sets coincide (interFree_sizes_eq_unionFree_sizes), giving the exact equality interFreeMax n = unionFreeMax n. As an explicit extremal construction, the complemented middle layer is intersection-free of size C(n, floor(n/2)) (complMiddleLayer_interFree, complMiddleLayer_card), yielding interFreeMax n ≥ C(n, floor(n/2)). 14 theorems/lemmas, 5 definitions, 0 sorries, 0 axioms, no native_decide. Self-contained: the parent's union-free definitions are re-declared verbatim and its asymptotic axioms are never used.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1023OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "extremal-set-theory",
+      "union-free-families",
+      "intersection-free-families",
+      "de-morgan-duality",
+      "boolean-algebra",
+      "erdos-problems"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked with Lean v4.26.0 against the repository Mathlib pin (elaborated clean with no errors or warnings; #print axioms on interFreeMax_eq_unionFreeMax, isInterFree_iff_isUnionFree_complFamily, and interFreeMax_ge_choose reports only propext / Classical.choice / Quot.sound). 0 sorries, 0 axiom declarations, no native_decide (hence no Lean.ofReduceBool). Self-contained: the parent's union-free definitions (familyUnion, isUnionOf, isUnionFree, unionFreeMax, layer, middleLayer, antichain_unionFree, middleLayer_unionFree) are re-declared verbatim to match Proofs/Erdos1023Problem.lean, and the parent's axioms (problem_447_solution, stirling_central, asymptoticConstant, unionFreeMax_asymptotic) are NOT imported or used. Honest scope: this establishes the EXACT equivalence F_∩(n) = F(n) of the two extremal problems and the matching lower-bound construction; it does not independently reprove the exact value F(n) = C(n, floor(n/2)) (the union-side upper bound / Erdős-Kleitman optimality remains the parent's, which is axiomatized there).",
+    "lineCount": 283,
+    "theoremCount": 14,
+    "definitionCount": 5,
+    "originalContributions": [
+      "isInterFree_iff_isUnionFree_complFamily: the headline duality — a family is intersection-free iff its complement family is union-free — the exact, non-asymptotic statement of the intersection ⟷ union correspondence for Erdős #1023",
+      "interFreeMax_eq_unionFreeMax: the maximum intersection-free family has exactly the same size as the maximum union-free family, for every n (F_∩(n) = F(n))",
+      "isInterOf_iff_isUnionOf_compl: the core bridge lemma — A is an intersection of a subfamily of H iff Aᶜ is a union of the complemented subfamily of complFamily H",
+      "familyInter_complFamily / familyUnion_complFamily: De Morgan at the family level — complementing a family turns its union into the complement of its intersection and vice versa (Finset.compl_sup / Finset.compl_inf composed with Finset.inf_image / sup_image)",
+      "complFamily / complFamily_card / complFamily_complFamily / complFamily_erase: the complement involution on families is a size-preserving involution that commutes with erase",
+      "interFree_sizes_eq_unionFree_sizes: the sets of achievable cardinalities of the two extremal problems are literally equal",
+      "complMiddleLayer_interFree / complMiddleLayer_card / interFreeMax_ge_choose: the complemented middle layer is an explicit intersection-free family of size C(n, floor(n/2)), giving the matching lower bound"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1023 asks for F(n), the maximum size of a family of subsets of {1,...,n} in which no member is the union of two or more distinct other members (a 'union-free' family). The answer is F(n) = C(n, floor(n/2)), the central binomial coefficient: the middle layer of all floor(n/2)-element subsets is union-free, and Erdős-Kleitman proved it optimal. The parent gallery entry raises several follow-up questions, including 'Analogous problems for other operations (intersection, difference)?'. The natural dual is an intersection-free family — no member is the intersection of other members — with its own extremal function F_∩(n).",
+    "problemStatement": "Determine the intersection-free analogue of Erdős #1023: define intersection-free families, relate their extremal function F_∩(n) to the union-free F(n), and exhibit an extremal construction. The result is that the two problems coincide exactly, F_∩(n) = F(n) for all n.",
+    "proofStrategy": "Work in the Boolean algebra Finset (Fin n) where union is ⊔, intersection is ⊓, and complement is Aᶜ = univ \\ A. Lift complement to families by complFamily F = F.image compl. Because compl is an involution it is injective, so complFamily preserves cardinality (card_image_of_injective) and is itself an involution (image_image + compl_compl). De Morgan's laws for finite folds (Finset.compl_sup, Finset.compl_inf) combined with Finset.inf_image / sup_image give familyInter (complFamily G) = (familyUnion G)ᶜ. From these, the bridge lemma isInterOf_iff_isUnionOf_compl transports the defining property across the involution; reindexing the bounded quantifier (the complement bijection F ↔ complFamily F) and the commutation complFamily (F.erase A) = (complFamily F).erase Aᶜ (image_erase) upgrade it to isInterFree_iff_isUnionFree_complFamily. Since complFamily is a card-preserving bijection between the two classes of families, their achievable-cardinality sets are equal and the sSup-defined extremal functions agree. The complemented middle layer provides the explicit extremal intersection-free family.",
+    "keyInsights": [
+      "Union-free and intersection-free are not merely 'similar' problems — they are the SAME problem, related by the complement involution, so the central binomial coefficient governs both with no separate analysis.",
+      "The equivalence is exact for every finite n, far stronger than an asymptotic match: the complement map is a bijection that preserves cardinality and exchanges the two defining properties term by term.",
+      "All the content is De Morgan at the level of finite Boolean-algebra folds: (⋃ G)ᶜ = ⋂ Gᶜ and (⋂ G)ᶜ = ⋃ Gᶜ, packaged by Finset.compl_sup / Finset.compl_inf.",
+      "Erasing the candidate member and complementing commute (image_erase with compl injective), which is exactly what lets the union-free 'no member is the union of the OTHERS' clause map to the intersection-free clause.",
+      "The explicit extremal intersection-free family is the complement of the union-free middle layer, automatically of size C(n, floor(n/2))."
+    ]
+  },
+  "sections": [
+    {
+      "id": "complement-involution",
+      "title": "The Complement Involution on Families and De Morgan",
+      "summary": "complFamily F = F.image compl is a size-preserving involution (complFamily_card, complFamily_complFamily) that commutes with erase (complFamily_erase). De Morgan at the family level: familyInter (complFamily G) = (familyUnion G)ᶜ and familyUnion (complFamily G) = (familyInter G)ᶜ.",
+      "startLine": 109,
+      "endLine": 175,
+      "mathContext": "compl is an involution on the Boolean algebra Finset (Fin n), hence injective; De Morgan for finite folds is Finset.compl_sup / Finset.compl_inf composed with Finset.inf_image / sup_image."
+    },
+    {
+      "id": "duality",
+      "title": "The Intersection ⟷ Union Duality",
+      "summary": "isInterOf_iff_isUnionOf_compl (the core bridge) and the headline isInterFree_iff_isUnionFree_complFamily: F is intersection-free iff complFamily F is union-free, plus its symmetric form.",
+      "startLine": 176,
+      "endLine": 222,
+      "mathContext": "Transport the defining property across the complement involution; reindex the bounded quantifier via the complement bijection and the erase/complement commutation."
+    },
+    {
+      "id": "extremal-equality",
+      "title": "Exact Equality of the Extremal Functions and the Construction",
+      "summary": "interFree_sizes_eq_unionFree_sizes (the achievable cardinalities coincide), interFreeMax_eq_unionFreeMax (F_∩(n) = F(n)), and the explicit complemented middle layer construction giving interFreeMax n ≥ C(n, floor(n/2)).",
+      "startLine": 223,
+      "endLine": 283,
+      "mathContext": "complFamily is a card-preserving bijection between the two classes, so the sSup-defined extremal functions are equal; the complemented middle layer is an explicit extremal intersection-free family."
+    }
+  ],
+  "conclusion": {
+    "summary": "The intersection-free analogue of Erdős Problem #1023 is the union-free problem in disguise: the complement involution A ↦ Aᶜ is a size-preserving bijection on families that, via De Morgan, exchanges the union-free and intersection-free properties exactly. Consequently F_∩(n) = F(n) for every n (interFreeMax_eq_unionFreeMax), and the complemented middle layer is an explicit intersection-free family of size C(n, floor(n/2)). All results are machine-checked with zero axioms beyond Mathlib's foundations.",
+    "implications": "This settles the intersection case of the parent's 'other operations' open question in the strongest form — an exact, finite-n equivalence rather than an asymptotic one — so the central binomial coefficient C(n, floor(n/2)) is simultaneously the answer to both the union-free and intersection-free extremal problems. The complement involution and family-level De Morgan lemmas are reusable for any Boolean-operation variant of these extremal-set-theory questions.",
+    "openQuestions": [
+      "Resolve the DIFFERENCE operation: is there a clean extremal function for 'difference-free' families (no member is the set difference of two others), and how does it compare to C(n, floor(n/2))? The complement involution does not directly trivialize this, since set difference is not self-dual under complementation.",
+      "Formalize the symmetric-difference variant: families in which no member is the symmetric difference of two others — here the family forms the structure of a subset of the group (Z/2)^n, connecting to cap-set / sum-free questions.",
+      "Combine the duality with the parent's axiomatized Erdős-Kleitman optimality to obtain the exact value F_∩(n) = C(n, floor(n/2)) as a fully proved (axiom-discharged) statement on the intersection side."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1023",
+      "relationship": "parent",
+      "description": "The main Erdős #1023 union-free families file (isUnionFree, middleLayer, the lower bound unionFreeMax_ge_choose, and the axiomatized Erdős-Kleitman optimality and Stirling asymptotic). This entry answers its 'analogous problems for other operations (intersection)?' open question by proving the intersection-free extremal problem is exactly the union-free one via the complement involution."
+    },
+    {
+      "targetId": "erdos-1023-oq-04",
+      "relationship": "sibling",
+      "description": "A sibling extracting elementary 0-axiom growth brackets 2^n/(n+1) ≤ F(n) ≤ 2^n for the union-free maximum. Together with this entry's exact duality F_∩(n) = F(n), the same brackets and divergence apply verbatim to the intersection-free maximum."
+    }
+  ]
+}
