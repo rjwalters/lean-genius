@@ -114,10 +114,48 @@
       "note": "Acta Arith. 71, 107–137 — sharpness and the connection to Belyi maps / dessins d'enfants."
     }
   ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Overview and Proof Sketch",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Docstring stating Davenport's inequality deg f + 2 ≤ 2·deg(f³ − g²) and its derivation from the parent's mason_stothers_charZero by applying Mason–Stothers to the coprime additive triple a = f³, b = −g², c = f³ − g². Imports Mathlib and Proofs.MasonStothersOQ01."
+    },
+    {
+      "id": "sec-setup",
+      "title": "Ambient Field Setup",
+      "startLine": 50,
+      "endLine": 54,
+      "summary": "Opens Polynomial / UniqueFactorizationMonoid / UniqueFactorizationDomain (radical API) and fixes a field k with DecidableEq; CharZero is attached locally to the theorems that need it."
+    },
+    {
+      "id": "sec-radical-bound",
+      "title": "The Radical-Degree Upper Bound",
+      "startLine": 56,
+      "endLine": 74,
+      "summary": "radical_cube_sq_mul_dvd: rad(f³·g²·c) ∣ f·g·c with no coprimality hypothesis, via radical_mul_dvd (split the product), radical_pow (rad(pⁿ) = rad p) and radical_dvd_self. Bounds deg rad ≤ deg f + deg g + deg c."
+    },
+    {
+      "id": "sec-davenport",
+      "title": "Davenport's Inequality",
+      "startLine": 76,
+      "endLine": 121,
+      "summary": "davenport: assemble the coprime triple (f³, −g², f³−g²), apply mason_stothers_charZero for two lower bounds on deg rad, normalise rad(f³·(−g²)·c) = rad(f³·g²·c) via radical_neg, combine with the upper bound and deg(f³)=3 deg f, deg(g²)=2 deg g, and close with omega: deg f + 2 ≤ 2·deg(f³ − g²)."
+    },
+    {
+      "id": "sec-height-form",
+      "title": "Height Form",
+      "startLine": 123,
+      "endLine": 132,
+      "summary": "natDegree_cube_sub_sq_ge: the equivalent height statement deg(f³ − g²) ≥ ½·deg f + 1, rendered over ℕ as f.natDegree / 2 + 1 ≤ (f³ − g²).natDegree, a one-line omega corollary of davenport."
+    }
+  ],
   "crossReferences": [
     {
-      "slug": "mason-stothers-theorem-oq-01",
-      "relation": "Parent entry. Supplies mason_stothers_charZero, the characteristic-zero Mason–Stothers degree bound that this Davenport derivation rests on; this entry answers its second open question."
+      "targetId": "mason-stothers-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry. Supplies mason_stothers_charZero, the characteristic-zero Mason–Stothers degree bound that this Davenport derivation rests on; this entry answers its second open question."
     }
   ],
   "conclusion": {

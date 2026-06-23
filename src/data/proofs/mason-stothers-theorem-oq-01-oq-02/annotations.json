@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ms0102-ann-header",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "Davenport's Inequality as a Mason–Stothers Corollary",
+    "content": "The header lays out the target — Davenport's inequality $\\deg(f^3 - g^2) \\ge \\tfrac12\\deg f + 1$ for coprime non-constant polynomials over a characteristic-zero field — and the strategy: apply the parent entry's `mason_stothers_charZero` to the additive triple $a = f^3$, $b = -g^2$, $c = f^3 - g^2$. The two imports are `Mathlib` (radical machinery, degree lemmas, `omega`) and `Proofs.MasonStothersOQ01`, the parent supplying the characteristic-zero Mason–Stothers bound. The sketch already isolates the two ingredients combined at the end: two *lower* bounds on $\\deg\\mathrm{rad}(abc)$ from the cube and square, and one hypothesis-free *upper* bound on the radical degree.",
+    "mathContext": "Mason–Stothers (function-field abc): for coprime $a+b=c$, not all derivatives zero, $\\max\\{\\deg a, \\deg b, \\deg c\\} + 1 \\le \\deg\\mathrm{rad}(abc)$. Davenport is the special case $(a,b,c) = (f^3, -g^2, f^3-g^2)$.",
+    "significance": "context",
+    "relatedConcepts": ["Mason–Stothers theorem", "abc conjecture", "Hall's conjecture", "radical of a polynomial"],
+    "prerequisites": ["polynomial degree", "function-field abc theorem"]
+  },
+  {
+    "id": "ms0102-ann-setup",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 50, "endLine": 54 },
+    "type": "definition",
+    "title": "Ambient Setting: a Field of Coefficients",
+    "content": "The development works over an arbitrary field `k` with decidable equality. `DecidableEq k` is a technical convenience for the radical/factorization machinery; the genuine mathematical hypothesis `CharZero k` is attached locally to the theorems that need it (Davenport can fail in characteristic $p$). Opening `Polynomial`, `UniqueFactorizationMonoid`, and `UniqueFactorizationDomain` brings the `radical`, `radical_pow`, `radical_mul_dvd` API into scope unqualified — the radical is defined via the UFD structure of $k[X]$.",
+    "mathContext": "$k[X]$ is a unique factorization domain; the radical $\\mathrm{rad}(p) = \\prod_{q \\mid p,\\, q \\text{ irreducible}} q$ is the squarefree part, so $\\deg\\mathrm{rad}(p)$ counts the *distinct* roots (with multiplicity one).",
+    "significance": "supporting",
+    "relatedConcepts": ["unique factorization domain", "radical (squarefree part)", "decidable equality"],
+    "prerequisites": ["fields", "polynomial rings", "UFD"]
+  },
+  {
+    "id": "ms0102-ann-radical-dvd",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 56, "endLine": 74 },
+    "type": "theorem",
+    "title": "radical_cube_sq_mul_dvd: The Hypothesis-Free Radical Bound",
+    "content": "The key combinatorial lemma: $\\mathrm{rad}(f^3 g^2 c) \\mid f g c$, with **no coprimality hypothesis**. The radical is insensitive to exponents — `radical_pow` gives $\\mathrm{rad}(f^3) = \\mathrm{rad}(f)$ and $\\mathrm{rad}(g^2) = \\mathrm{rad}(g)$ — and `radical_mul_dvd` splits a product radical unconditionally. The `calc` chains $\\mathrm{rad}(f^3 g^2) \\mid \\mathrm{rad}(f^3)\\mathrm{rad}(g^2) = \\mathrm{rad}(f)\\mathrm{rad}(g) \\mid fg$, then absorbs the $c$ factor with one more `radical_mul_dvd` and `radical_dvd_self`. This is what makes the cube and square contribute only $\\deg f$ and $\\deg g$ (not $3\\deg f$, $2\\deg g$) to the distinct-root count.",
+    "mathContext": "$\\mathrm{rad}(f^3 g^2 c) \\mid f g c \\Rightarrow \\deg\\mathrm{rad}(f^3 g^2 c) \\le \\deg f + \\deg g + \\deg c.$ Divisibility-only result: works even when $f, g$ share roots.",
+    "significance": "key",
+    "relatedConcepts": ["radical_mul_dvd", "radical_pow", "radical_dvd_self", "distinct roots"],
+    "prerequisites": ["divisibility", "radical lemmas"]
+  },
+  {
+    "id": "ms0102-ann-davenport-setup",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 99 },
+    "type": "technique",
+    "title": "Davenport: Building the Coprime Additive Triple",
+    "content": "The main theorem opens by assembling the Mason–Stothers inputs for $(a,b,c) = (f^3, -g^2, f^3-g^2)$. Non-vanishing of all three terms follows from $f \\ne 0$ (since $\\deg f \\ne 0$), $g \\ne 0$, and $f^3 \\ne g^2$ (so $c \\ne 0$). Coprimality $f^3 \\perp -g^2$ comes from `(hcop.pow).neg_right` — coprimality is preserved under taking powers and negation. The additive relation $f^3 + (-g^2) = f^3 - g^2$ is `ring`. The non-triviality disjunct (needed so Mason–Stothers does not degenerate) is supplied by $\\deg(f^3) = 3\\deg f \\ne 0$.",
+    "mathContext": "`IsCoprime f g` ⟹ `IsCoprime (f^3) (-g^2)` via `IsCoprime.pow` then `neg_right`. The triple must be coprime and additive ($a+b=c$) for Mason–Stothers to apply.",
+    "significance": "supporting",
+    "relatedConcepts": ["IsCoprime.pow", "coprimality under negation", "non-triviality clause"],
+    "prerequisites": ["coprime polynomials", "polynomial arithmetic"]
+  },
+  {
+    "id": "ms0102-ann-apply-ms",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 114 },
+    "type": "insight",
+    "title": "Applying Mason–Stothers and Normalising the Radical",
+    "content": "Invoking the parent's `mason_stothers_charZero` yields two lower bounds `b1`, `b2` on $\\deg\\mathrm{rad}(f^3\\cdot(-g^2)\\cdot c)$ — one from the $f^3$ term, one from the $g^2$ term. Since $f^3(-g^2)c = -(f^3 g^2 c)$ differs from $f^3 g^2 c$ only by the unit $-1$, `radical_neg` identifies their radicals, letting the hypothesis-free upper bound (in terms of $f^3 g^2 c$) apply. `natDegree_le_of_dvd` combined with `radical_cube_sq_mul_dvd` and `natDegree_mul` then gives the upper bound $\\deg\\mathrm{rad} \\le \\deg f + \\deg g + \\deg c$.",
+    "mathContext": "$\\mathrm{rad}(f^3(-g^2)c) = \\mathrm{rad}(-(f^3 g^2 c)) = \\mathrm{rad}(f^3 g^2 c)$ since the radical is unit-invariant. Lower bounds: $3\\deg f + 1 \\le R$ and $2\\deg g + 1 \\le R$ where $R = \\deg\\mathrm{rad}$.",
+    "significance": "key",
+    "relatedConcepts": ["radical_neg", "natDegree_le_of_dvd", "unit invariance", "mason_stothers_charZero"],
+    "prerequisites": ["divisibility and degree", "units in a ring"]
+  },
+  {
+    "id": "ms0102-ann-omega",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 115, "endLine": 121 },
+    "type": "insight",
+    "title": "The Final Sandwich: omega Closes Davenport",
+    "content": "With $\\deg(f^3) = 3\\deg f$ and $\\deg(-g^2) = 2\\deg g$ substituted into the two lower bounds, the proof feeds everything to `omega`: from $3F + 1 \\le R$ and $2G + 1 \\le R$ together with $R \\le F + G + C$, adding the two lower bounds and using $2R \\le 2(F+G+C)$ cancels the $G$ terms to give $F + 2 \\le 2C$. This is exactly Davenport's inequality $\\deg f + 2 \\le 2\\deg(f^3 - g^2)$ — a pure linear-arithmetic consequence once the degree facts are in place.",
+    "mathContext": "$(3F+1) + (2G+1) \\le 2R \\le 2(F+G+C) \\Rightarrow 3F + 2G + 2 \\le 2F + 2G + 2C \\Rightarrow F + 2 \\le 2C.$ Here $F = \\deg f$, $G = \\deg g$, $C = \\deg(f^3-g^2)$.",
+    "significance": "key",
+    "relatedConcepts": ["omega", "linear arithmetic", "sandwich bound", "Davenport inequality"],
+    "prerequisites": ["linear arithmetic over ℕ"]
+  },
+  {
+    "id": "ms0102-ann-height-form",
+    "proofId": "mason-stothers-theorem-oq-01-oq-02",
+    "range": { "startLine": 123, "endLine": 132 },
+    "type": "context",
+    "title": "Height Form: deg(f³ − g²) ≥ ½ deg f + 1",
+    "content": "`natDegree_cube_sub_sq_ge` restates Davenport directly as a lower bound on the degree of $f^3 - g^2$, rendered over $\\mathbb{N}$ as $\\lfloor\\deg f / 2\\rfloor + 1 \\le \\deg(f^3 - g^2)$. It is a one-line `omega` corollary of `davenport`. This is the form in which Davenport's inequality is usually quoted — the polynomial shadow of Hall's conjecture, which asks how small $|x^3 - y^2|$ can be for integers, and which (unlike this polynomial statement) remains open.",
+    "mathContext": "$\\deg(f^3 - g^2) \\ge \\tfrac12\\deg f + 1$, i.e. $\\lfloor \\deg f/2 \\rfloor + 1 \\le \\deg(f^3 - g^2)$ over $\\mathbb{N}$. Sharp: equality is attained by the classical Davenport pairs (related to Belyi maps).",
+    "significance": "supporting",
+    "relatedConcepts": ["Hall's conjecture", "height of a polynomial", "Belyi maps", "sharpness"],
+    "prerequisites": ["integer division over ℕ", "omega"]
+  }
+]
