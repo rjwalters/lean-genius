@@ -1,0 +1,90 @@
+[
+  {
+    "id": "join-context",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 73 },
+    "type": "concept",
+    "title": "The Join of Two Generalisations",
+    "content": "Two solved generalisations of ∑_k C(n,k)² = C(2n,n) are united here. One (OQ-…-OQ-01) widened the object to a product of two different rows C(m,k)·C(n,k) weighted from the left by (k)_r; the other (OQ-…-OQ-03) widened the weighting to both ends (k)_r·(n−k)_s of a single squared row. Their common generalisation is the two-sided cross moment ∑_{k=0}^{n} (k)_r·(n−k)_s·C(m,k)·C(n,k) = (m)_r·(n)_s·C(m+n−r−s, n−r−s), valid for r ≤ m and r+s ≤ n, where (x)_r = Nat.descFactorial x r. The answer is asymmetric: the left order lives on row m via (m)_r, the right order on row n via (n)_s, and the off-centre shift sees only the sum r+s against the anchor m+n.",
+    "mathContext": "$\\sum_{k=0}^{n} (k)_r\\,(n-k)_s\\binom{m}{k}\\binom{n}{k} = (m)_r\\,(n)_s\\binom{m+n-r-s}{n-r-s}$ for $r\\le m,\\ r+s\\le n$. Faces: $s=0$ gives $(m)_r\\binom{m+n-r}{n-r}$; $m=n$ gives $(n)_r(n)_s\\binom{2n-r-s}{n-r-s}$; $r=s=0$ gives $\\binom{m+n}{n}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "falling-factorial (factorial) moments",
+      "product of two Pascal rows",
+      "two-sided / bilateral weighting",
+      "absorption identity",
+      "Vandermonde convolution",
+      "bivariate hypergeometric law"
+    ],
+    "prerequisites": [
+      "Nat.choose binomial coefficients",
+      "Nat.descFactorial falling factorials",
+      "left absorption (k)_r·C(m,k) = (m)_r·C(m−r,k−r)",
+      "right co-absorption (n−k)_s·C(n,k) = (n)_s·C(n−s,k)",
+      "Vandermonde's convolution"
+    ]
+  },
+  {
+    "id": "two-sided-cross-moment-thm",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": { "startLine": 79, "endLine": 152 },
+    "type": "theorem",
+    "title": "The Two-Sided Cross Moment",
+    "content": "sum_twoSided_descFactorial_mixed proves the headline ∑_{k=0}^{n} (k)_r·(n−k)_s·C(m,k)·C(n,k) = (m)_r·(n)_s·C(m+n−r−s, n−r−s) for r ≤ m, r+s ≤ n. The two falling factorials prune the range themselves: (k)_r = 0 kills k<r and (n−k)_s = 0 kills k>n−s, so the sum restricts to the band [r, n−s] (Finset.sum_Ico_consecutive). Reindexing k ↦ r+j, each survivor is rewritten by the left absorption on row m and the right co-absorption on row n acting on disjoint factors; terms with k>m vanish on both sides (Nat.choose_eq_zero_of_lt), the single new ingredient versus the squared-row sibling. Pulling out the constant (m)_r·(n)_s closes the inner sum on the two-parameter Vandermonde diagonal vandermonde_diag_two with a=m−r, b=n−s, t=r.",
+    "mathContext": "On $[r,n-s]$, $(k)_r\\binom{m}{k} = (m)_r\\binom{m-r}{k-r}$ and $(n-k)_s\\binom{n}{k} = (n)_s\\binom{n-s}{k}$; with $k=r+j$ the sum is $(m)_r(n)_s\\sum_j \\binom{m-r}{j}\\binom{n-s}{j+r} = (m)_r(n)_s\\binom{m+n-r-s}{n-r-s}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "absorption from both ends",
+      "doubly-shifted Vandermonde diagonal",
+      "range truncation by falling factorials",
+      "boundary case split k > m"
+    ],
+    "prerequisites": [
+      "CombinationsFormulaOQ07OQ04OQ01.descFactorial_mul_choose",
+      "CombinationsFormulaOQ07OQ04OQ01OQ03.descFactorial_sub_mul_choose",
+      "CombinationsFormulaOQ07OQ04OQ01OQ03.vandermonde_diag_two",
+      "Finset.sum_Ico_consecutive",
+      "Nat.descFactorial_eq_zero_iff_lt"
+    ]
+  },
+  {
+    "id": "parent-faces",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": { "startLine": 154, "endLine": 176 },
+    "type": "theorem",
+    "title": "Recovering Both Parents as Faces",
+    "content": "sum_oneSided_mixed_of_twoSided sets s=0 to recover the two-row one-sided moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r, n−r) (for r ≤ m, r ≤ n) — the headline of OQ-…-OQ-01, here over the symmetric range [0,n]. sum_twoSided_sq_of_mixed sets m=n to recover the one-row two-sided moment ∑ (k)_r·(n−k)_s·C(n,k)² = (n)_r·(n)_s·C(2n−r−s, n−r−s) — the headline of OQ-…-OQ-03. That a single bivariate two-row formula specialises correctly to both established results is the consistency check that it is genuinely their join.",
+    "mathContext": "$s=0$: $(n)_0 = 1$ and the shift drops to $r$, giving $(m)_r\\binom{m+n-r}{n-r}$. $m=n$: $\\binom{n}{k}\\binom{n}{k} = \\binom{n}{k}^2$ and the anchor $m+n$ becomes $2n$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "specialisation / face of a generalisation",
+      "consistency check",
+      "two-row vs one-row moments"
+    ],
+    "prerequisites": [
+      "sum_twoSided_descFactorial_mixed",
+      "Nat.descFactorial_zero",
+      "pow_two"
+    ]
+  },
+  {
+    "id": "vandermonde-and-first-moment",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": { "startLine": 178, "endLine": 207 },
+    "type": "theorem",
+    "title": "Asymmetric Vandermonde and the First Cross Moment",
+    "content": "sum_mixed_vandermonde is the r=s=0 face, the asymmetric Vandermonde ∑ C(m,k)·C(n,k) = C(m+n, n). sum_twoSided_mixed_first is the r=s=1 face, the symmetric first cross moment ∑ k(n−k)·C(m,k)·C(n,k) = m·n·C(m+n−2, n−2) for m ≥ 1, n ≥ 2 — the cleanest genuinely two-sided two-row instance. Two kernel-decide checks pin the closed form numerically: at (r,s,m,n) = (1,1,2,3) the sum is 0+12+6+0 = 18 = 2·3·C(3,1), and at (2,1,3,4) it is 72+24 = 96 = (3)_2·(4)_1·C(4,1).",
+    "mathContext": "$r=s=1$: $(m)_1 = m$, $(n)_1 = n$, shift $r+s = 2$, giving $mn\\binom{m+n-2}{n-2}$. Checks: $\\sum_k k(3-k)\\binom{2}{k}\\binom{3}{k} = 18$; $\\sum_k (k)_2(4-k)\\binom{3}{k}\\binom{4}{k} = 96$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Vandermonde's identity",
+      "first factorial moment",
+      "kernel decide (axiom-free)"
+    ],
+    "prerequisites": [
+      "sum_twoSided_descFactorial_mixed",
+      "Nat.descFactorial_one",
+      "Nat.descFactorial_zero"
+    ]
+  }
+]
