@@ -1,0 +1,146 @@
+{
+  "id": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
+  "title": "Roth/Szemerédi OQ-03-OQ-01-OQ-01-OQ-01-OQ-01: Affine Covariance of the k-AP Counting Operator Λ_k",
+  "slug": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01-oq-01",
+  "description": "Affine covariance of the k-AP counting operator Λ_k(f₀,…,f_{k-1}) = E_{x,d} ∏ᵢ fᵢ(x+i·d): for any unit a ∈ (ZMod N)ˣ and translate t, replacing every fᵢ by y↦fᵢ(a·y+t) leaves the count unchanged (kAPCount_affine). The affine map φ(y)=a·y+t carries the progression {x+i·d} to {φ(x)+i·(a·d)}, and (x,d)↦(a·x+t, a·d) is a bijection of (ZMod N)² precisely because a is invertible. This exhibits the one-dimensional affine group GA(1,ZMod N)=(ZMod N)ˣ⋉ZMod N acting on Λ_k. Two corollaries: kAPCount_dilate (the genuinely new multiplicative dilation invariance, t=0) and kAPCount_translate_of_affine (recovers the parent's translation invariance, a=1). Directly answers the parent's first open question. 0-axiom verified.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gowers_norm",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/RothTheoremOQ03OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "roth-theorem",
+      "szemeredi",
+      "gowers-norm",
+      "additive-combinatorics",
+      "symmetry",
+      "affine-group",
+      "counting-operator",
+      "ZMod"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Units.inv_mul_cancel_left / Units.mul_inv_cancel_left",
+        "description": "↑a⁻¹·(↑a·x)=x and ↑a·(↑a⁻¹·x)=x for a unit a — supply the two inverse laws making multiplication-by-a unit an Equiv of ZMod N",
+        "module": "Mathlib.Algebra.Group.Units.Defs"
+      },
+      {
+        "theorem": "Fintype.sum_equiv",
+        "description": "Reindex a finite sum along an equivalence; used twice — the base-point average x↦a·x+t (outer) and the common-difference average d↦a·d (inner)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "Equiv.addRight / Equiv.trans",
+        "description": "The additive translate y↦y+t as an Equiv, composed with mulUnit a to form the full affine reindexing y↦a·y+t",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "nsmul_eq_mul",
+        "description": "i.val • z = ↑i.val · z in the commutative ring ZMod N, reducing the AP-shift identity a·(x+i·d)+t = (a·x+t)+i·(a·d) to a ring identity",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "kAPCount_affine: affine covariance — for a unit a ∈ (ZMod N)ˣ and translate t, Λ_k(f₀(a·+t),…,f_{k-1}(a·+t)) = Λ_k(f₀,…,f_{k-1}); the affine map y↦a·y+t reindexes the (x,d)-average bijectively",
+      "kAPCount_dilate: dilation invariance (t=0) — Λ_k(f₀(a·),…,f_{k-1}(a·)) = Λ_k(f₀,…,f_{k-1}) for any unit a; the genuinely new multiplicative symmetry, not implied by translation or reflection",
+      "kAPCount_translate_of_affine: translation invariance (a=1) recovered as a special case, confirming affine covariance subsumes the parent's kAPCount_translate",
+      "mulUnit: multiplication by a unit a ∈ (ZMod N)ˣ packaged as a permutation of ZMod N (Equiv with inverse multiplication by a⁻¹) — the dilation part of the affine reindexing"
+    ],
+    "axiomCount": 0,
+    "lineCount": 132,
+    "assumptions": "0 axioms, 0 sorries. Only foundational axioms propext / Classical.choice / Quot.sound are used; no native_decide. Imports the symmetries parent Proofs.RothTheoremOQ03OQ01OQ01OQ01 (hence the multilinearity grandparent and the great-grandparent operator definitions).",
+    "theoremCount": 3,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**The affine symmetry group of the AP-counting average.** In the Gowers-norm approach to Roth's and Szemerédi's theorems the central object is the normalized k-term arithmetic-progression count Λ_k(f₀,…,f_{k-1}) = E_{x,d ∈ ZMod N} ∏ᵢ fᵢ(x + i·d). The set of arithmetic progressions in ZMod N is preserved by the one-dimensional affine group GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N: an invertible affine substitution y ↦ a·y + t sends a progression to a progression. The parent file recorded the additive (translation) part of this symmetry; this entry completes it with the multiplicative (dilation) part, so that the full affine group acts on Λ_k by symmetries. This affine covariance is what lets one normalize a configuration — fixing the base point and rescaling the common difference to a convenient value — throughout the density-increment argument.",
+    "problemStatement": "**Λ_k is affine-covariant.** For the operator Λ_k from the great-grandparent file, every invertible affine map φ(y) = a·y + t with a ∈ (ZMod N)ˣ leaves the count fixed:\n\nΛ_k(f₀∘φ,…,f_{k-1}∘φ) = Λ_k(f₀,…,f_{k-1}).\n\nIn particular the multiplicative part (dilation, t=0) is a new symmetry beyond the parent's translation invariance and reflection symmetry.",
+    "text": "The k-AP counting operator Λ_k is shown to be invariant under every invertible affine substitution y ↦ a·y + t of its arguments. The affine map carries the progression {x+i·d} to {(a·x+t)+i·(a·d)}, and the reindexing (x,d) ↦ (a·x+t, a·d) is a bijection of (ZMod N)² exactly because a is a unit; the outer x-average is reindexed by x↦a·x+t and the inner d-average by d↦a·d. Dilation invariance (t=0) and translation invariance (a=1) follow as corollaries. 0-axiom verified.",
+    "proofStrategy": "**Affine covariance (kAPCount_affine).** Because the affine map is diagonal in the averaging variables — the new base point a·x+t depends only on x and the new difference a·d only on d — the double average is reindexed by two independent single-variable bijections. `mulUnit a` is multiplication by the unit a, an Equiv of ZMod N with inverse multiplication by a⁻¹ (the inverse laws are exactly `Units.inv_mul_cancel_left` and `Units.mul_inv_cancel_left`). `Fintype.sum_equiv ((mulUnit a).trans (Equiv.addRight t))` reindexes the outer x-average, `Fintype.sum_equiv (mulUnit a)` the inner d-average; the product then matches term-by-term via the pointwise identity a·(x+i·d)+t = (a·x+t)+i·(a·d), which `nsmul_eq_mul` + `ring` discharge.\n\n**Dilation (kAPCount_dilate).** The t=0 case: `simpa` removes the `+0`.\n\n**Translation (kAPCount_translate_of_affine).** The a=1 case: `simpa` reduces ↑(1:(ZMod N)ˣ)·y to y, recovering the parent's translation invariance.",
+    "keyInsights": [
+      "**Invertibility is exactly what makes dilation a symmetry:** d ↦ a·d permutes ZMod N iff a is a unit, so the count is preserved precisely for a ∈ (ZMod N)ˣ; for a non-unit the substitution collapses the average and the identity fails.",
+      "**The affine map is diagonal in (x,d):** the new base point a·x+t depends only on x and the new common difference a·d only on d, so a single product Equiv is unnecessary — two independent single-variable reindexings suffice (outer x↦a·x+t, inner d↦a·d).",
+      "**Dilation is genuinely new:** it is not a consequence of translation (parent) or reflection. For a=−1 it gives Λ_k(f₀(−·),…) = Λ_k(f₀,…), the point reflection through the origin that keeps the slot order — distinct from the order-reversing reflection symmetry i↦k−1−i.",
+      "**Affine covariance unifies the symmetry group:** translation (a=1) and the new dilations (t=0) together generate the full GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N action, completing the additive picture of the parent file."
+    ],
+    "prerequisites": [
+      "The great-grandparent operator Λ_k = kAPCount (Proofs.RothTheoremOQ03OQ01), its multilinearity (Proofs.RothTheoremOQ03OQ01OQ01), and its symmetries (Proofs.RothTheoremOQ03OQ01OQ01OQ01)",
+      "Units of a commutative ring and the cancel-left laws (Units.inv_mul_cancel_left, Units.mul_inv_cancel_left)",
+      "Reindexing finite sums along equivalences (Fintype.sum_equiv, Equiv.addRight, Equiv.trans); nsmul arithmetic in ZMod N"
+    ]
+  },
+  "sections": [
+    {
+      "id": "mul-unit",
+      "title": "Multiplication by a Unit is a Bijection",
+      "summary": "mulUnit a: multiplication by a unit a ∈ (ZMod N)ˣ is a permutation of ZMod N, with inverse multiplication by a⁻¹ — the dilation part of the affine reindexing.",
+      "startLine": 64,
+      "endLine": 76,
+      "mathContext": "Equiv from Units.inv_mul_cancel_left and Units.mul_inv_cancel_left."
+    },
+    {
+      "id": "affine-covariance",
+      "title": "Affine Covariance of Λ_k",
+      "summary": "kAPCount_affine: for a unit a and translate t, Λ_k(f₀(a·+t),…) = Λ_k(f₀,…), reindexing the outer x-average by x↦a·x+t and the inner d-average by d↦a·d.",
+      "startLine": 88,
+      "endLine": 107,
+      "mathContext": "Two Fintype.sum_equiv; pointwise a·(x+i·d)+t = (a·x+t)+i·(a·d) by nsmul_eq_mul + ring."
+    },
+    {
+      "id": "corollaries",
+      "title": "Dilation and Translation Invariance",
+      "summary": "kAPCount_dilate (t=0, the new multiplicative symmetry) and kAPCount_translate_of_affine (a=1, recovering the parent's translation invariance).",
+      "startLine": 113,
+      "endLine": 131,
+      "mathContext": "simpa from kAPCount_affine specialized at t=0 and a=1."
+    }
+  ],
+  "conclusion": {
+    "summary": "Building on the great-grandparent's operator Λ_k, the grandparent's multilinearity, and the parent's symmetries, this entry completes the symmetry picture: Λ_k is covariant under every invertible affine substitution y↦a·y+t of its arguments (kAPCount_affine), so the one-dimensional affine group GA(1, ZMod N) = (ZMod N)ˣ ⋉ ZMod N acts on Λ_k. The new multiplicative dilation invariance (kAPCount_dilate) and the recovered translation invariance (kAPCount_translate_of_affine) isolate the two pieces. All 0-axiom and machine-checked.",
+    "implications": "Affine covariance is the symmetry used to normalize AP counts — fixing the base point and rescaling the common difference — which underlies the freedom to choose a convenient progression in the density-increment / generalized von Neumann argument. It directly resolves the parent file's first open question (dilation/affine symmetry of Λ_k under d↦λ·d for a unit λ).",
+    "openQuestions": [
+      "Equivariance under the full general affine action on the index set as well (combining dilation with the reflection i↦k−1−i of the parent) to describe the complete symmetry group of Λ_k",
+      "The failure of dilation for non-units: quantify how Λ_k(f₀(a·),…) deviates from Λ_k(f₀,…) when a is a zero-divisor in ZMod N",
+      "Conjugate symmetry Λ_k(conj f₀,…,conj f_{k-1}) = conj Λ_k(f₀,…,f_{k-1}) and its interaction with affine covariance"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.RothTheoremOQ03OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "RothTheoremOQ03OQ01",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/RothTheoremOQ03OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: symmetries of Λ_k (translation + reflection). This entry answers its first open question by adding the multiplicative dilation, completing the affine symmetry group."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03-oq-01-oq-01",
+      "relationship": "specializes",
+      "description": "Grandparent: multilinearity of Λ_k."
+    },
+    {
+      "targetId": "roth-theorem-k3-oq-03",
+      "relationship": "specializes",
+      "description": "Great-grandparent: Gowers norms and the k-AP counting operator for Roth's theorem."
+    }
+  ],
+  "sorries": 0
+}
