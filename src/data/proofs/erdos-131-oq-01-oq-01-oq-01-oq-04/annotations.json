@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-erdos131-rank2-overview",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Rank 2: Where the Davenport Constant Becomes Non-Trivial",
+    "content": "The docstring frames the regime shift. For cyclic groups D(ℤ/nℤ) = n is elementary (companion entry), but the deep theory of the Davenport constant lives in higher rank. Olson's theorem gives D(ℤ/aℤ ⊕ ℤ/bℤ) = a + b − 1 for a ∣ b. Its UPPER bound is a substantial combinatorial result not in Mathlib; its LOWER bound is an explicit extremal construction and is completely elementary — that is what this file formalizes. The split (easy lower bound, hard upper bound) is the opposite of many extremal problems and is characteristic of zero-sum constants.",
+    "mathContext": "Olson (1969): $D(\\mathbb{Z}/a\\mathbb{Z} \\oplus \\mathbb{Z}/b\\mathbb{Z}) = a+b-1$ for $a\\mid b$. Here only the lower bound $\\ge a+b-1$ is proved, axiom-free.",
+    "significance": "key",
+    "relatedConcepts": ["Davenport constant", "Olson's theorem", "zero-sum sequences", "rank-2 abelian groups", "Erdős #131"],
+    "prerequisites": ["finite abelian groups", "direct sums ℤ/aℤ ⊕ ℤ/bℤ", "the cyclic Davenport constant"]
+  },
+  {
+    "id": "ann-erdos131-rank2-defs",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 54, "endLine": 63 },
+    "type": "definition",
+    "title": "Group-Agnostic HasZeroSumSubseq and DavenportSet",
+    "content": "HasZeroSumSubseq f (for f : Fin m → G over any AddCommMonoid G) holds when some nonempty index set s has ∑_{i∈s} f i = 0, and DavenportSet G = {m | every length-m sequence over G has this property}. The Davenport constant is the least element of this set. Defining these for an arbitrary G (rather than a fixed ZMod n) is a deliberate reusability choice: the same definitions and the upward-closure lemma serve the cyclic case, this rank-2 case, and the general-rank generalization.",
+    "mathContext": "$\\mathrm{DavenportSet}(G) = \\{m : \\forall f:\\mathrm{Fin}\\,m\\to G,\\ \\exists s\\ne\\varnothing,\\ \\sum_{i\\in s} f(i)=0\\}$; $D(G) = \\min \\mathrm{DavenportSet}(G)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["AddCommMonoid", "zero-sum subsequence", "reusable abstraction"],
+    "prerequisites": ["Finset sums", "additive monoids"]
+  },
+  {
+    "id": "ann-erdos131-rank2-mono",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 65, "endLine": 77 },
+    "type": "technique",
+    "title": "davenport_set_mono: Upward Closure Turns One Witness Into a Bound on All Shorter Lengths",
+    "content": "If m ∈ DavenportSet G and m ≤ m', then m' ∈ DavenportSet G. The proof restricts a length-m' sequence f to its first m entries via Fin.castLE (giving fun i => f (Fin.castLE h i)), obtains a zero-sum subset s : Finset (Fin m) from the hypothesis, and re-embeds it into Fin m' with the order embedding Fin.castLEEmb; Finset.sum_map keeps the sum unchanged. This monotonicity is the lever that converts a single fixed-length zero-sum-free witness into the statement that NO length ≤ a+b−2 is a Davenport length.",
+    "mathContext": "$m\\le m'$, $m\\in\\mathrm{DavenportSet}\\Rightarrow m'\\in\\mathrm{DavenportSet}$. Restrict via $\\mathrm{Fin.castLE}$, re-embed the subset via $\\mathrm{Fin.castLEEmb}$ (sum preserved by $\\mathrm{Finset.sum\\_map}$).",
+    "significance": "key",
+    "relatedConcepts": ["upward closure", "Fin.castLE", "Fin.castLEEmb", "Finset.sum_map", "monotonicity"],
+    "prerequisites": ["order embeddings on Fin", "prefix restriction of sequences"]
+  },
+  {
+    "id": "ann-erdos131-rank2-witness",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 79, "endLine": 153 },
+    "type": "theorem",
+    "title": "The Extremal Witness Is Zero-Sum-Free",
+    "content": "witness a b is (1,0) repeated a−1 times then (0,1) repeated b−1 times, of length a+b−2. davenport_rank2_witness proves it has no nonempty zero-sum subsequence. For a nonempty s, the two coordinates of ∑_{i∈s} witness are (|s∩block₁| : ZMod a) and (|s∩block₂| : ZMod b), extracted via Prod.fst_sum/Prod.snd_sum and Finset.sum_boole. Each block cardinality is bounded (≤ a−1, ≤ b−1) by injecting into range (Finset.card_le_card_of_injOn — using i ↦ i.val on block₁ and i ↦ i.val − (a−1) on block₂). Divisibility a ∣ |s∩block₁| with 0 < |s∩block₁| ≤ a−1 is impossible (Nat.not_dvd_of_pos_of_lt), forcing both cardinalities to 0; since the blocks partition s (filter_card_add_filter_neg_card_eq_card), s = ∅ — contradiction.",
+    "mathContext": "$(\\sum_{i\\in s})_1 = (|s\\cap B_1|\\bmod a),\\ (\\sum_{i\\in s})_2 = (|s\\cap B_2|\\bmod b)$; $0 = (\\cdot)$ with $|s\\cap B_j|\\le n_j-1$ forces $|s\\cap B_1| = |s\\cap B_2| = 0$, so $s=\\varnothing$.",
+    "significance": "critical",
+    "relatedConcepts": ["extremal construction", "Prod.fst_sum", "Finset.sum_boole", "Finset.card_le_card_of_injOn", "coordinatewise argument"],
+    "prerequisites": ["sums over product groups", "block cardinality bounds", "ZMod.natCast_eq_zero_iff"]
+  },
+  {
+    "id": "ann-erdos131-rank2-lower",
+    "proofId": "erdos-131-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 155, "endLine": 180 },
+    "type": "theorem",
+    "title": "davenport_rank2_lower: D(ℤ/aℤ ⊕ ℤ/bℤ) ≥ a + b − 1",
+    "content": "The headline bound. If d is the least Davenport length for ℤ/aℤ ⊕ ℤ/bℤ, then a + b − 1 ≤ d. By contradiction: were d ≤ a+b−2, upward closure (davenport_set_mono) would place a+b−2 = (a−1)+(b−1) in the Davenport set, so the witness sequence would have a nonempty zero-sum subsequence — contradicting davenport_rank2_witness. The diagonal corollary davenport_rank2_diag_lower specializes a = b = n to D(ℤ/nℤ ⊕ ℤ/nℤ) ≥ 2n − 1, which is sharp by Olson (upper half not formalized).",
+    "mathContext": "$d \\le a+b-2 \\Rightarrow (a-1)+(b-1)\\in\\mathrm{DavenportSet}$ (upward closure) $\\Rightarrow$ witness has a zero-sum subseq, contradiction. Hence $d\\ge a+b-1$; diagonal $\\ge 2n-1$.",
+    "significance": "key",
+    "relatedConcepts": ["lower bound", "proof by contradiction", "IsLeast", "diagonal specialization"],
+    "prerequisites": ["the witness lemma", "upward closure", "IsLeast"]
+  }
+]
