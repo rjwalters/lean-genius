@@ -1,0 +1,115 @@
+{
+  "slug": "cayleys-theorem-oq-01-oq-01-oq-02-oq-02",
+  "title": "Centralizer of the Left-Regular Image is the Right-Regular Image (Equal iff Abelian)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "C_{\\mathrm{Sym}(G)}\\bigl(L(G)\\bigr) \\;=\\; R(G),\n\\qquad\\text{and}\\qquad L(G) = R(G) \\iff G \\text{ is abelian.}",
+    "plain": "Cayley's theorem embeds `G` into `Sym(G)` by left multiplication. The parent",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-23T07:22:21-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: centralizer of left-regular image = right-regular image, equal iff abelian — proved over arbitrary group G, 0 sorries / 0 axioms (PR pending).",
+    "builtItems": [
+      "leftReg/rightReg : G →* Equiv.Perm G — left/right regular reps as MonoidHoms (rightReg g = mulRight g⁻¹ to fix the anti-hom order) in Proofs/CayleysTheoremOQ01OQ01OQ02OQ02.lean",
+      "centralizer_leftReg_range: Subgroup.centralizer ↑(leftReg G).range = (rightReg G).range",
+      "centralizer_rightReg_range: mirror identity centralizer of R(G) = L(G)",
+      "leftReg_range_eq_rightReg_range_iff: ranges equal ↔ ∀ x y, x*y=y*x (abelian)",
+      "leftReg_injective/rightReg_injective: both reps faithful; leftReg_range_le_centralizer_iff: self-centralizing ⟺ abelian"
+    ],
+    "insights": [
+      "Forward inclusion C(L(G))⊆R(G) is the evaluate-at-1 trick: σ commuting with all leftReg g gives σ x = x*σ1, so σ = mulRight(σ1). Reverse is associativity.",
+      "rightReg must use mulRight g⁻¹ since plain mulRight is an anti-hom (mulRight(a*b)=mulRight b*mulRight a); mul_inv_rev+mulRight_mul restore homomorphism law.",
+      "No finiteness needed — generalises parent Fin n regular-subgroup picture to arbitrary (possibly infinite) groups. This is the centralizer half of the holomorph G⋊Aut(G)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Normalizer N_{Sym(G)}(L(G)) = holomorph G⋊Aut(G), quotient ≅ Aut(G) — extend centralizer to full normalizer.",
+      "Bundle faithfulness into MulEquiv G ≃* (leftReg G).range and relate R(G) to L via opposite-group anti-automorphism."
+    ],
+    "markdown": "# Knowledge Base: cayleys-theorem-oq-01-oq-01-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "group-theory",
+    "regular-representation",
+    "centralizer"
+  ],
+  "relatedProofs": [
+    "cayleys-theorem-oq-01",
+    "cayleys-theorem-oq-01-oq-01",
+    "cayleys-theorem-oq-01-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-23T14:39:14.520Z",
+  "lastUpdate": "2026-06-23",
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleysTheoremOQ01.lean",
+      "filename": "CayleysTheoremOQ01.lean",
+      "lineCount": 90,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01.lean",
+      "filename": "CayleysTheoremOQ01OQ01.lean",
+      "lineCount": 108,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 164,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleysTheoremOQ01OQ01OQ02OQ02.lean",
+      "filename": "CayleysTheoremOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 186,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleysTheoremOQ01OQ01OQ02OQ02.lean"
+    }
+  ]
+}
