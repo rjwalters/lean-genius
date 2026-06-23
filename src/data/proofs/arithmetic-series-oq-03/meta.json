@@ -17,11 +17,11 @@
       "arithmetic-series",
       "divergent-series"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 140,
-    "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide`. All eight theorems depend only on the ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted; `#print axioms` shows no `sorryAx` and no `Lean.ofReduceBool`. The analytic content — meromorphic continuation of ζ and its values at negative integers — is Mathlib's (`riemannZeta_neg_nat_eq_bernoulli`, `riemannZeta_neg_two_mul_nat_add_one`, `riemannZeta_zero`). The contribution here is the explicit closed-form evaluation of the classical regularized values, the trivial-zero family stated on the power index, and the rationality corollary. No new analysis is proved.",
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide`. All nine theorems depend only on the ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted; `#print axioms` shows no `sorryAx` and no `Lean.ofReduceBool`. The analytic content — meromorphic continuation of ζ and its values at negative integers — is Mathlib's (`riemannZeta_neg_nat_eq_bernoulli`, `riemannZeta_neg_two_mul_nat_add_one`, `riemannZeta_zero`). The contribution here is the explicit closed-form evaluation of the classical regularized values, the trivial-zero family stated on the power index, and the rationality corollary. No new analysis is proved.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -51,7 +51,7 @@
       }
     ],
     "dateAdded": "2026-06-21",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
@@ -149,7 +149,7 @@
     "namespace": "ZetaRegularization",
     "lineCount": 140,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 1,
     "mainTheorems": [
       {
