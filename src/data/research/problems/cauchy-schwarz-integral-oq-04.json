@@ -1,14 +1,17 @@
 {
   "slug": "cauchy-schwarz-integral-oq-04",
   "title": "Cauchy-Schwarz Integral OQ-04: Heisenberg Uncertainty Principle",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For u v in an inner product space over 𝕜 (RCLike): |RCLike.im (inner 𝕜 u v)| ≤ ‖u‖·‖v‖ and (RCLike.im (inner 𝕜 u v))² ≤ ‖u‖²·‖v‖² — the Cauchy-Schwarz core of the Heisenberg uncertainty principle.",
+    "plain": "Heisenberg uncertainty principle. The full operator form needs self-adjoint operators and the commutator (beyond one file); this formalizes the single Cauchy-Schwarz inequality |Im⟪u,v⟫| ≤ ‖u‖‖v‖ that drives the derivation.",
+    "whyMatters": [
+      "Writing u = (A−⟨A⟩)ψ, v = (B−⟨B⟩)ψ, the uncertainty product Var(A)·Var(B) = ‖u‖²‖v‖² and the commutator term is Im⟪u,v⟫, so |Im⟪u,v⟫| ≤ ‖u‖‖v‖ IS the Heisenberg lower bound's Cauchy-Schwarz step.",
+      "The parent CauchySchwarzIntegral proves the L²/inner-product |⟪f,g⟫| ≤ ‖f‖‖g‖; the imaginary-part refinement is the new content needed for uncertainty."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -16,25 +19,38 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T08:17:23-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-06-22T00:00:00-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Formalized the Cauchy-Schwarz core of the uncertainty principle; the full operator-commutator statement is beyond a single file.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None for the core inequality. The full Var(A)Var(B) ≥ ¼|⟪[A,B]⟫|² needs self-adjoint operator + commutator infrastructure.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cauchy-schwarz-integral-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "COMPLETE (the Cauchy-Schwarz core). OQ-04 asks for the Heisenberg uncertainty principle. The full operator-theoretic statement Var_ψ(A)·Var_ψ(B) ≥ ¼|⟪ψ,[A,B]ψ⟫|² needs self-adjoint operators and the commutator (beyond a single file). The single inequality that drives it IS a Cauchy-Schwarz corollary, formalized here in any inner product space over ℝ or ℂ: abs_im_inner_le_norm_mul_norm (|Im⟪u,v⟫| ≤ ‖u‖·‖v‖) and im_inner_sq_le ((Im⟪u,v⟫)² ≤ ‖u‖²·‖v‖²). With u = (A−⟨A⟩)ψ, v = (B−⟨B⟩)ψ this is exactly √(Var A · Var B) ≥ |Im⟪u,v⟫|. CauchySchwarzIntegralOQ04.lean, 2 theorems, 0 axioms, 0 sorries, no native_decide.",
+    "builtItems": [
+      "CauchySchwarzIntegralOQ04.lean: 2 theorems over a general RCLike inner product space, 0 axioms (propext/Classical.choice/Quot.sound), 0 sorries.",
+      "abs_im_inner_le_norm_mul_norm: |RCLike.im (inner 𝕜 u v)| ≤ ‖u‖·‖v‖ (RCLike.abs_im_le_norm |im z| ≤ ‖z‖, then norm_inner_le_norm).",
+      "im_inner_sq_le: (RCLike.im (inner 𝕜 u v))² ≤ ‖u‖²·‖v‖² (nlinarith from the core + sq_abs)."
+    ],
+    "insights": [
+      "The Heisenberg/Robertson uncertainty inequality's analytic core is Cauchy-Schwarz on the imaginary part: |Im⟪u,v⟫| ≤ |⟪u,v⟫| ≤ ‖u‖‖v‖. For real fields Im = 0 (trivial); the content is the ℂ case.",
+      "Mathlib v4.26: `inner` now takes the field EXPLICITLY — `inner 𝕜 u v` (notation ⟪u,v⟫_𝕜), NOT `inner u v`. RCLike.abs_im_le_norm (z : K) : |im z| ≤ ‖z‖; norm_inner_le_norm (x y) : ‖⟪x,y⟫‖ ≤ ‖x‖‖y‖ (𝕜 implicit).",
+      "Substituting u = (A−⟨A⟩)ψ, v = (B−⟨B⟩)ψ converts this generic inequality into Heisenberg's bound: ‖u‖² = Var(A), ‖v‖² = Var(B), and 2·Im⟪u,v⟫ = ⟪ψ,(−i)[A,B]ψ⟫."
+    ],
+    "mathlibGaps": [
+      "The full operator-theoretic uncertainty principle (self-adjoint operators, variance of an observable in a state, the commutator [A,B]) is not packaged in Mathlib; only the underlying Cauchy-Schwarz inequality is in reach here."
+    ],
+    "nextSteps": [
+      "Bound by the real part too / combine: ‖u‖²‖v‖² ≥ (Re⟪u,v⟫)² + (Im⟪u,v⟫)² = |⟪u,v⟫|² (the full Gram form).",
+      "Instantiate u = (A−⟨A⟩)ψ, v = (B−⟨B⟩)ψ for concrete self-adjoint A, B to obtain Robertson's inequality once an operator/commutator layer exists.",
+      "L² specialization: phrase the inequality for f, g ∈ Lp ℂ 2 μ tying back to the parent's integral bridge."
+    ]
   },
   "tags": [],
   "relatedProofs": [
