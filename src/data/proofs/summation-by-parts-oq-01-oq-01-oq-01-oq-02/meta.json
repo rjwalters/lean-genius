@@ -15,6 +15,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, motivation, and imports",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Docstring stating identity (A), the general discrete Abel summation by parts ∑ f·ΔG = fG| − ∑ Δf·G(·+1) as the discrete analogue of ∫ f dG = fG − ∫ G df, with G an arbitrary antidifference. Explains it answers the parent's open question, subsumes the geometric recursion (G(k)=rᵏ), and is cleaner than Mathlib's Finset.sum_range_by_parts (primitive g, partial-sum G, n−1 indexing). Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic, opens Finset.",
+      "mathContext": "(A) is hypothesis-free over any commutative ring; the geometric recursion and pure telescoping are its G(k)=rᵏ and f≡1 instances respectively."
+    },
+    {
       "id": "general-abel-transform",
       "title": "The General Discrete Abel Transform",
       "startLine": 74,
