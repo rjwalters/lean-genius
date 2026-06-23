@@ -39,32 +39,39 @@
     "cauchy-schwarz",
     "cauchy-schwarz-integral"
   ],
-  "phase": "ORIENT",
+  "phase": "ACT",
   "knowledge": {
-    "progressSummary": "VERIFIER-BLOCKED (5 consecutive sessions: docker exit124 + Aristotle Resource-not-found). Bridge lemma verified API-sound; chain confirmed source-complete; only the Folland-6.16 maximality construction (~150L, verifier-required) remains. S5: docstring precision fix (source-complete vs build-verified).",
+    "progressSummary": "PROGRESS (verifier-blocked 7th session): implemented step-3 lemma eLpNorm_rpow_restrict_union (q-power Lᵠ-seminorm disjoint-union additivity, a confirmed Mathlib gap) — source-complete + API-grep-verified, build-gate pending. Both analytic ingredients (steps 2+3) now factored out; headline maximality sorry reduced to step-1 extByZeroCLM pullback + step-3 sequence/gluing bookkeeping.",
     "insights": [
       "The previously-flagged Lean infrastructure gaps are RESOLVED. Mathlib supplies the sigma-finite support of any Lp function (0<p<inf) via MeasureTheory.MemLp.aefinStronglyMeasurable (Mathlib/MeasureTheory/Function/StronglyMeasurable/Lp.lean:59) -> AEFinStronglyMeasurable, whose .sigmaFiniteSet / .measurableSet / .ae_eq_zero_compl / sigmaFinite_restrict instance (StronglyMeasurable/AEStronglyMeasurable.lean:892-916) give a measurable set S with mu.restrict S sigma-finite and f=0 a.e. off S.",
       "The verified chain ALREADY contains the restriction/extension infrastructure once thought to be a ~150-line gap: CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean proves eLpNorm (S.indicator f) p mu = eLpNorm f p (mu.restrict S) (line 246), MemLp f p (mu.restrict S) -> MemLp (S.indicator f) p mu (line 260), and the extension-by-zero ISOMETRY extByZeroCLM : Lp p (mu.restrict S) ->L Lp p mu (line 266, currently private).",
       "Therefore the ONLY remaining mathematical content for the general (arbitrary-measure) axiom is the maximality argument (Folland 6.16): c = sup over sigma-finite S of ||g_S||_q (bounded by ||phi||); realize c on a countable-union sigma-finite hull T; for arbitrary f, work on T union supp(f) and use Lq-norm additivity over disjoint pieces + maximality to force the representing function to coincide with g_T. Valid precisely for 1<p<inf.",
       "Public entry point for the reduction is RieszSigmaFinite.riesz_lp_surjective_sigma_finite (CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean:173), which is stated for a measure variable with [SigmaFinite mu] and so applies directly to mu.restrict S.",
       "S5: chain is source-complete (0 sorry tactics / 0 axiom) — naive grep -c overcounts docstring \"sorry\" tokens; never count chain sorries with grep -c",
-      "S5: bridge lemma memLp_exists_sigmaFinite_support confirmed API-sound vs on-disk Mathlib (aefinStronglyMeasurable + sigmaFiniteSet/measurableSet/ae_eq_zero_compl/sigmaFinite_restrict all exist with used signatures)"
+      "S5: bridge lemma memLp_exists_sigmaFinite_support confirmed API-sound vs on-disk Mathlib (aefinStronglyMeasurable + sigmaFiniteSet/measurableSet/ae_eq_zero_compl/sigmaFinite_restrict all exist with used signatures)",
+      "Mathlib has only the BINARY-union σ-finite-restrict instance (SFinite.lean:601); the countable ⋃ₙ version is a genuine gap, now filled here via Measure.sigmaFinite_of_countable.",
+      "The shortcut sigmaFinite_of_le through Measure.sum (μ.restrict ∘ S) FAILS: a countable Measure.sum of σ-finite measures need not be σ-finite (∞·Lebesgue). Must build the finite-measure cover directly from per-set spanningSets.",
+      "Measure.restrict_apply (Restrict.lean:110) lets the cover-finiteness step avoid needing the spanning sets measurable — only S n measurable is required, which matches AEFinStronglyMeasurable.sigmaFiniteSet.",
+      "Step 3 gluing rests on q-POWER additivity of eLpNorm over disjoint supports (the seminorm itself is only Minkowski-subadditive); the q-th power splits exactly via Measure.restrict_union + lintegral_add_measure, with the outer (·)^(1/q) cancelled by ENNReal.rpow_mul + one_div_mul_cancel"
     ],
     "builtItems": [
       "memLp_exists_sigmaFinite_support — bridge lemma: for 0<p<inf, every f in Lp(mu) is a.e. supported on a measurable S with mu.restrict S sigma-finite (proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean). High-confidence (uses only confirmed Mathlib API) but UNVERIFIED this session (no build).",
-      "Scaffold proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean: states riesz_lp_surjective_general (= the parent axiom as a theorem) reduced to one documented HARD sorry (the maximality construction), with the full reduction blueprint in the file docstring."
+      "Scaffold proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean: states riesz_lp_surjective_general (= the parent axiom as a theorem) reduced to one documented HARD sorry (the maximality construction), with the full reduction blueprint in the file docstring.",
+      "sigmaFinite_restrict_iUnion in CauchySchwarzIntegralLpDualitySynthesis.lean — countable-union σ-finiteness of a restricted measure (step 2 of the maximality reduction); source-complete + API-verified, build-gate pending (no local verifier)",
+      "eLpNorm_rpow_restrict_union (step-3 q-power Lᵠ-seminorm additivity over disjoint union) in CauchySchwarzIntegralLpDualitySynthesis.lean — source-complete, build-gate pending"
     ],
     "mathlibGaps": [
       "Mathlib has NO general Lp-Lq duality / Riesz surjectivity (no *Dual* Lp file under MeasureTheory/Function). This remains a genuine Mathlib gap that the gallery chain fills.",
       "extByZeroCLM is declared private in Incomplete01.lean; a public re-export (or moving it to a shared location) is needed before the synthesis file can call it.",
-      "sigmaFinite_restrict_iUnion (countable union of σ-finite restrictions is σ-finite-restricted) is NOT a Mathlib one-liner — needs building; step-2 hull ingredient"
+      "sigmaFinite_restrict_iUnion (countable union of σ-finite restrictions is σ-finite-restricted) is NOT a Mathlib one-liner — needs building; step-2 hull ingredient",
+      "No countable-union form of SigmaFinite (μ.restrict (⋃ n, S n)) in Mathlib (only binary s ∪ t). Candidate upstream contribution.",
+      "No packaged q-power disjoint-union additivity for eLpNorm at general finite exponent (Mathlib has only Minkowski subadditivity eLpNorm_add_le and unit-exponent eLpNorm_one_add_measure) — proved here as eLpNorm_rpow_restrict_union"
     ],
     "nextSteps": [
-      "[verifier-gated] Build sigmaFinite_restrict_iUnion (good Aristotle target)",
-      "[verifier-gated] Re-expose extByZeroCLM (drop private)",
-      "[verifier-gated] Representer g_S w/ norm bound via σ-finite Riesz + extByZeroCLM-pullback",
-      "[verifier-gated] Supremum c=⨆‖g_S‖_q realized on hull T; uniqueness ⇒ g_U=g_T",
-      "[verifier-gated] Assemble riesz_lp_surjective_general, build green, swap parent axiom, flip meta axiomatized→verified"
+      "Re-expose extByZeroCLM (drop private in …Incomplete01.lean)",
+      "Build representer g_S with norm bound from σ-finite Riesz via extByZeroCLM pullback (step 1)",
+      "Realize supremum c=⨆‖g_S‖_q on hull T (uses sigmaFinite_restrict_iUnion); glue g_U=g_T via eLpNorm_rpow_restrict_union + eLpNorm_eq_zero_iff (step 3 bookkeeping)",
+      "Assemble riesz_lp_surjective_general, build green, swap parent axiom, flip meta axiomatized→verified"
     ]
   }
 }

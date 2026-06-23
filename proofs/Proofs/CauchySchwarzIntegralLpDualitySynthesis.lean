@@ -51,8 +51,9 @@ see `memLp_exists_sigmaFinite_support` below). The reduction goes:
    Riesz theorem to obtain `g_S ∈ Lq(μ.restrict S)` with `‖g_S‖_q ≤ ‖φ‖`.
 2. Let `c = ⨆_S ‖g_S‖_q` (bounded above by `‖φ‖`, so finite). Pick σ-finite sets
    `S_n` with `‖g_{S_n}‖_q → c`; set `T = ⋃ₙ S_n`. Then `μ.restrict T` is σ-finite
-   (countable union of σ-finite pieces) and, by uniqueness of the representing
-   function, `g_T` realizes the supremum: `‖g_T‖_q = c`.
+   (countable union of σ-finite pieces — discharged below by
+   `sigmaFinite_restrict_iUnion`, a Mathlib gap proved here) and, by uniqueness of
+   the representing function, `g_T` realizes the supremum: `‖g_T‖_q = c`.
 3. For arbitrary `f ∈ Lᵖ(μ)`, its support `Sf` is σ-finite; put `U = T ∪ Sf`. On `U`,
    `g_U` represents `φ`. Lᵠ-norm additivity over the disjoint pieces `T` and `U \ T`
    plus maximality `‖g_U‖_q ≤ c = ‖g_T‖_q` forces `g_U = g_T` a.e. on `T` and
@@ -66,11 +67,21 @@ dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accou
 
 ## Status
 
-WORK IN PROGRESS. The bridge lemma `memLp_exists_sigmaFinite_support` is complete and
-self-contained. The headline reduction `riesz_lp_surjective_general` is stated with a
-single `sorry` for the maximality construction — it does **not** yet eliminate the
-axiom. Do not present this as verified until the `sorry` is discharged and the file
-builds under the Docker wrapper.
+WORK IN PROGRESS. Three ingredient lemmas are now source-complete and self-contained:
+the bridge lemma `memLp_exists_sigmaFinite_support` (σ-finite support of an Lᵖ
+function), `sigmaFinite_restrict_iUnion` (step 2: countable-union σ-finiteness, a
+genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`), and
+`eLpNorm_rpow_restrict_union` (step 3: `q`-power Lᵠ-seminorm additivity over a
+disjoint union, the analytic identity driving the maximality gluing, also absent from
+Mathlib for a general finite exponent). The headline reduction
+`riesz_lp_surjective_general` still carries a single `sorry` for the remaining
+maximality *plumbing* (step 1's `extByZeroCLM` pullback and step 3's sequence/gluing
+bookkeeping) — it does **not** yet eliminate the axiom.
+
+NOT BUILD-VERIFIED: the local Docker build wrapper has been hanging and Aristotle is
+unavailable, so `sigmaFinite_restrict_iUnion` is source-complete but its proof has not
+been kernel-checked locally; the deployer build-gate is the verifier. Do not present
+this file as verified until the `sorry` is discharged and the file builds.
 
 ## References
 
@@ -104,6 +115,87 @@ theorem memLp_exists_sigmaFinite_support
   have h := hf.aefinStronglyMeasurable hp0 hptop
   exact ⟨h.sigmaFiniteSet, h.measurableSet, h.sigmaFinite_restrict, h.ae_eq_zero_compl⟩
 
+/-- **σ-finiteness of a restriction is closed under countable unions.**
+    If each `μ.restrict (S n)` is σ-finite (with the `S n` measurable), then so is
+    `μ.restrict (⋃ n, S n)`.
+
+    Mathlib supplies only the *binary*-union instance
+    (`SigmaFinite (μ.restrict (s ∪ t))` in
+    `Mathlib/MeasureTheory/Measure/Typeclasses/SFinite.lean`); the countable version
+    is **not** in Mathlib (confirmed by source search) yet is exactly step 2 of the
+    maximality reduction below — forming the σ-finite set `T = ⋃ₙ Sₙ` from a
+    maximizing sequence `Sₙ`. The measurability hypothesis is harmless for the
+    application: the σ-finite supports produced by
+    `AEFinStronglyMeasurable.sigmaFiniteSet` are measurable.
+
+    Proof: each `μ.restrict (S n)` has a countable family of finite-measure spanning
+    sets `spanningSets (μ.restrict (S n)) k`. The countable family
+    `{spanningSets (μ.restrict (S n)) k ∩ S n}ₙ,ₖ ∪ {(⋃ₙ Sₙ)ᶜ}` covers `univ`, and
+    each member has finite `μ.restrict (⋃ₙ Sₙ)`-measure (via `restrict_apply'`, which
+    needs only the `S n` measurable, not the spanning sets). Apply
+    `Measure.sigmaFinite_of_countable`. -/
+theorem sigmaFinite_restrict_iUnion {S : ℕ → Set α}
+    (hSm : ∀ n, MeasurableSet (S n))
+    (hS : ∀ n, SigmaFinite (μ.restrict (S n))) :
+    SigmaFinite (μ.restrict (⋃ n, S n)) := by
+  haveI hSi : ∀ n, SigmaFinite (μ.restrict (S n)) := hS
+  have hTm : MeasurableSet (⋃ n, S n) := MeasurableSet.iUnion hSm
+  refine Measure.sigmaFinite_of_countable
+      (S := Set.range (fun p : ℕ × ℕ => spanningSets (μ.restrict (S p.1)) p.2 ∩ S p.1)
+            ∪ {(⋃ n, S n)ᶜ})
+      ((Set.countable_range _).union (Set.countable_singleton _)) ?_ ?_
+  · rintro s (⟨p, rfl⟩ | rfl)
+    · show (μ.restrict (⋃ n, S n))
+          (spanningSets (μ.restrict (S p.1)) p.2 ∩ S p.1) < ∞
+      have hsub : spanningSets (μ.restrict (S p.1)) p.2 ∩ S p.1 ⊆ ⋃ n, S n :=
+        Set.inter_subset_right.trans (Set.subset_iUnion S p.1)
+      rw [Measure.restrict_apply' hTm, Set.inter_eq_left.2 hsub,
+        ← Measure.restrict_apply' (hSm p.1)]
+      exact measure_spanningSets_lt_top _ _
+    · show (μ.restrict (⋃ n, S n)) ((⋃ n, S n)ᶜ) < ∞
+      rw [Measure.restrict_apply' hTm]
+      simp
+  · rw [Set.sUnion_union, Set.sUnion_range, Set.sUnion_singleton]
+    refine Set.eq_univ_of_forall fun x => ?_
+    by_cases hx : x ∈ ⋃ n, S n
+    · obtain ⟨n, hn⟩ := Set.mem_iUnion.1 hx
+      have hxk : x ∈ ⋃ k, spanningSets (μ.restrict (S n)) k := by
+        rw [iUnion_spanningSets]; exact Set.mem_univ x
+      obtain ⟨k, hk⟩ := Set.mem_iUnion.1 hxk
+      exact Set.mem_union_left _ (Set.mem_iUnion.2 ⟨(n, k), hk, hn⟩)
+    · exact Set.mem_union_right _ hx
+
+/-- **Lᵠ-seminorm `q`-power additivity over a disjoint union** (step 3 ingredient).
+    For `0 < q < ∞` and disjoint measurable sets `A`, `B`, the `q`-th power of the
+    Lᵠ-seminorm is additive over `A ∪ B`:
+
+      `‖g‖_{q, A ∪ B}^q = ‖g‖_{q, A}^q + ‖g‖_{q, B}^q`.
+
+    This is the analytic identity behind the maximality *gluing* in step 3 below.
+    Combined with the maximality bound `‖g_U‖_q ≤ c = ‖g_T‖_q`, additivity over the
+    disjoint pieces `T` and `U \ T` (with `U = T ∪ (U \ T)`) gives
+    `‖g_U‖_{q,T}^q + ‖g_U‖_{q,U\T}^q = ‖g_U‖_{q,U}^q ≤ ‖g_T‖_{q,T}^q`; since the
+    representing function on `T` is unique (`‖g_U‖_{q,T} = ‖g_T‖_q`), the `U \ T`
+    contribution is forced to `0`, so `g_U = 0` a.e. off `T`.
+
+    Mathlib supplies the underlying disjoint additivity of the lower integral
+    (`Measure.restrict_union` + `lintegral_add_measure`) and the unit-exponent
+    measure-additivity `eLpNorm_one_add_measure`, but **not** this packaged
+    `q`-power identity for `eLpNorm` at a general finite exponent (source-searched).
+    The `q`-th power is the right invariant to state it on: the seminorm itself is
+    only *sub*additive (Minkowski, `eLpNorm_add_le`), whereas its `q`-th power
+    splits exactly over disjoint supports. -/
+theorem eLpNorm_rpow_restrict_union {g : α → ℝ} {A B : Set α}
+    (hB : MeasurableSet B) (hAB : Disjoint A B)
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞) :
+    eLpNorm g q (μ.restrict (A ∪ B)) ^ q.toReal
+      = eLpNorm g q (μ.restrict A) ^ q.toReal
+        + eLpNorm g q (μ.restrict B) ^ q.toReal := by
+  have hqr : q.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hq0, hqtop⟩
+  simp only [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop, ← ENNReal.rpow_mul,
+    one_div_mul_cancel hqr, ENNReal.rpow_one]
+  rw [Measure.restrict_union hAB hB, lintegral_add_measure]
+
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
     Every bounded linear functional on `Lp ℝ p μ`, for *any* measure `μ`, is
@@ -115,7 +207,14 @@ theorem memLp_exists_sigmaFinite_support
 
     REMAINING WORK: the `sorry` below is the maximality construction
     (`riesz_representing_function_maximal`). It is HARD (classical, Folland 6.16),
-    not OPEN. All supporting infrastructure already exists in the verified chain. -/
+    not OPEN. Of its three steps, two analytic ingredients are now factored out and
+    source-complete above: step 2's σ-finiteness of the maximizing union `T = ⋃ₙ Sₙ`
+    (`sigmaFinite_restrict_iUnion`), and step 3's `q`-power norm additivity over the
+    disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`). What
+    remains is the *plumbing* that strings them together: (1) pulling `φ` back along
+    `extByZeroCLM` per σ-finite set to invoke the σ-finite Riesz theorem, and the
+    bookkeeping of (3) — choosing a maximizing sequence, extracting `g_T`, and the
+    a.e. identification `g_U = g_T` from the now-available additivity identity. -/
 theorem riesz_lp_surjective_general
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)] :

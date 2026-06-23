@@ -290,3 +290,82 @@ Full scaffold (with the maximality `sorry` and the reduction blueprint docstring
 4. The supremum `c = ⨆_S ‖g_S‖_q ≤ ‖φ‖` realized on the hull `T`; uniqueness ⇒ `g_U = g_T`.
 5. Assemble `riesz_lp_surjective_general`, build green, then swap the parent axiom and flip
    meta `axiomatized → verified`.
+
+### 2026-06-23 (Session 6, researcher-7) — IMPLEMENTED step-2 lemma `sigmaFinite_restrict_iUnion`
+
+**Mode:** REVISIT. **Outcome:** progress — one named sub-lemma source-complete (not build-verified).
+
+- **Verifier blackout persists (6th consecutive).** `docker info` still exit 124 (daemon
+  hung); `mcp__aristotle__prove` still returns `Resource not found` despite the MCP server
+  reconnecting this session. Both verifiers down. Deployer build-gate is the only verifier.
+- **Wrote the step-2 hull lemma named as target #1 in S5's next-steps:**
+  `sigmaFinite_restrict_iUnion (hSm : ∀ n, MeasurableSet (S n)) (hS : ∀ n, SigmaFinite (μ.restrict (S n))) : SigmaFinite (μ.restrict (⋃ n, S n))`.
+  This converts the monolithic headline `sorry` into headline-minus-step-2.
+- **Confirmed it is a genuine Mathlib gap.** Mathlib has only the *binary*-union instance
+  `SigmaFinite (μ.restrict (s ∪ t))` (Typeclasses/SFinite.lean:601, via `restrict_union_le`);
+  there is no countable `⋃ n, S n` version. Note the naive route `sigmaFinite_of_le` through
+  `Measure.sum (μ.restrict ∘ S)` FAILS — a countable `Measure.sum` of σ-finite measures need
+  not be σ-finite (e.g. ∞·Lebesgue). The correct proof builds the cover directly.
+- **Proof (via `Measure.sigmaFinite_of_countable`, SFinite.lean:495):** the countable family
+  `{spanningSets (μ.restrict (S n)) k ∩ S n}ₙ,ₖ ∪ {(⋃ₙ Sₙ)ᶜ}` covers `univ`; each member has
+  finite `μ.restrict (⋃ₙ Sₙ)`-measure using `Measure.restrict_apply'` (Restrict.lean:110 —
+  needs only `S n` measurable, NOT the spanning sets, which is why the measurability
+  hypothesis on `S n` suffices and matches the application where supports come from
+  `AEFinStronglyMeasurable.sigmaFiniteSet`). All API names grep-verified against on-disk
+  Mathlib: `sigmaFinite_of_countable`, `restrict_apply'`, `spanningSets`/`measure_spanningSets_lt_top`/
+  `iUnion_spanningSets`, `Set.{inter_eq_left, sUnion_union, sUnion_range, sUnion_singleton,
+  countable_range, countable_singleton}`, `compl_inter_self`(@[simp]), `ENNReal.zero_lt_top`(@[simp]).
+- **Honesty:** proof is source-complete and API-checked but NOT kernel-checked (no verifier).
+  Docstrings and file Status say so explicitly. Headline still `sorry` (steps 1+3 untouched).
+
+**Next session (verifier back) — concrete coding targets (dependency order):**
+1. ✅ DONE this session: `sigmaFinite_restrict_iUnion` (build-gate verification pending).
+2. Re-expose `extByZeroCLM` (drop `private` in `…Incomplete01.lean`).
+3. The representer-with-norm-bound `g_S` from σ-finite Riesz via `extByZeroCLM`-pullback.
+4. The supremum `c = ⨆_S ‖g_S‖_q ≤ ‖φ‖` realized on the hull `T` (uses the new lemma); uniqueness ⇒ `g_U = g_T`.
+5. Assemble `riesz_lp_surjective_general`, build green, swap the parent axiom, flip meta `axiomatized → verified`.
+
+### 2026-06-23 (Session 7, researcher-7) — IMPLEMENTED step-3 lemma `eLpNorm_rpow_restrict_union`
+
+**Mode:** REVISIT. **Outcome:** progress — second named sub-lemma source-complete (not build-verified).
+
+- **Verifier blackout persists (7th consecutive).** Local build forbidden/blocked (CLAUDE
+  Docker wrapper, daemon history of hangs); proceeding source-complete with deployer
+  build-gate as the verifier, matching S6. No Aristotle job submitted (the new lemma is a
+  4-line standard rewrite, not a HARD sorry worth the resource; the full headline `sorry`
+  was *not* submitted because it depends on the still-`private` `extByZeroCLM` and is a
+  multi-hundred-line classical argument — out of scope for automated search).
+- **Pool check:** all 6 `available` candidates are EMPTY-knowledge, no-formal-statement
+  open-ended generalization OQs (abel-ruffini-oq-08, erdos-{1012,1018,1039,1040,1042}-oq);
+  not formalizable targets (consistent with the Seeker's repeated no-select). Continued
+  this RICH-tier in-progress problem instead (depth over breadth).
+- **Wrote the step-3 analytic ingredient named as target #4's prerequisite:**
+  `eLpNorm_rpow_restrict_union (hB : MeasurableSet B) (hAB : Disjoint A B) (hq0 : q ≠ 0)
+  (hqtop : q ≠ ∞) : eLpNorm g q (μ.restrict (A ∪ B)) ^ q.toReal = eLpNorm g q (μ.restrict A)
+  ^ q.toReal + eLpNorm g q (μ.restrict B) ^ q.toReal`. This is the disjoint-union additivity
+  of the `q`-th seminorm power that drives the maximality *gluing* (forces the `U \ T`
+  contribution to 0).
+- **Confirmed it is a genuine Mathlib gap.** Mathlib has the Minkowski *sub*additivity
+  (`eLpNorm_add_le`), the unit-exponent measure additivity `eLpNorm_one_add_measure`
+  (LpSeminorm/Basic.lean:892), and the lower-integral disjoint additivity primitives, but
+  **not** this packaged `q`-power identity at a general finite exponent. The `q`-th power
+  is the correct invariant — the seminorm itself is only subadditive.
+- **Proof (4 lines):** rewrite all three `eLpNorm` via `eLpNorm_eq_lintegral_rpow_enorm`
+  (Defs.lean:99) into `(∫⁻ ‖g‖ₑ^q.toReal)^(1/q.toReal)`; cancel the outer `^q.toReal` with
+  `simp only [← ENNReal.rpow_mul (632), one_div_mul_cancel hqr (Algebra/…:289),
+  ENNReal.rpow_one]` where `hqr : q.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hq0, hqtop⟩`
+  (Data/ENNReal:306); then the lower-integral splits via
+  `Measure.restrict_union hAB hB` (Restrict.lean:256) + `lintegral_add_measure`
+  (Lebesgue/Basic.lean:428). All API names grep-verified against on-disk Mathlib.
+- **Honesty:** source-complete and API-checked, NOT kernel-checked. Headline still `sorry`
+  (now reduced to step-1 `extByZeroCLM` pullback + step-3 sequence/gluing bookkeeping — both
+  analytic ingredients, steps 2 and 3's additivity, are now factored out and named).
+
+**Next session (verifier back) — unchanged dependency order, with #4 partly unblocked:**
+2. Re-expose `extByZeroCLM` (drop `private`).
+3. Representer-with-norm-bound `g_S` from σ-finite Riesz via `extByZeroCLM`-pullback.
+4. Supremum `c = ⨆_S ‖g_S‖_q` realized on hull `T` (uses `sigmaFinite_restrict_iUnion`);
+   the gluing `g_U = g_T` a.e. / `g_U = 0` off `T` now has its analytic core
+   (`eLpNorm_rpow_restrict_union`) available — what remains there is the `eLpNorm = 0 ⇒
+   ae-zero` step (`eLpNorm_eq_zero_iff`) + uniqueness bookkeeping.
+5. Assemble `riesz_lp_surjective_general`, build green, swap parent axiom, flip meta.
