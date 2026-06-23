@@ -1,0 +1,161 @@
+[
+  {
+    "id": "ann-nakayama0101-header",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 62 },
+    "type": "context",
+    "title": "Counting Minimal Generators via the Residue Vector Space M/𝔪M",
+    "content": "The imports and module docstring lay out the goal. Over a local ring (R, 𝔪) with residue field k = R/𝔪, a finitely generated module M has a *minimal* number of generators μ(M), and this file proves μ(M) is computed by one linear-algebra invariant: the k-dimension of the residue vector space M/𝔪M.\n\nThe roadmap (each bullet a theorem below):\n- **Residue space as a k-vector space** — M/𝔪M is annihilated by 𝔪, hence a module over k = R/𝔪; Mathlib's `Module (R⧸I) (M⧸I•⊤)` instance supplies the structure, and M/𝔪M is finite-dimensional when M is R-finite.\n- **Bridge lemma** — 'the image of t spans M/𝔪M over k' ⟺ 'span R t ⊔ 𝔪•⊤ = ⊤', i.e. t generates M modulo 𝔪M.\n- **Lower bound** — every generating set of M has ≥ dim_k(M/𝔪M) elements (its image spans the residue space).\n- **Upper bound / existence** — lifting a k-basis of M/𝔪M and applying the parent's Nakayama lifting lemma yields a generating set of size exactly dim_k(M/𝔪M).\n- **Headline** — packaging μ(M) = sInf of finite-generating-set sizes, the two bounds give μ(M) = dim_k(M/𝔪M).\n\nThe docstring is careful about what is genuinely new: Mathlib has Nakayama, the residue field, and the k-vector-space structure on M/𝔪M (and the cotangent specialization 𝔪/𝔪²), but states the minimal-generator-count equation for *no* module — only the principal-ideal corollary `finrank ≤ 1 ↔ IsPrincipal`. The parent `NakayamaLemmaOQ01` contributes the lifting lemma; this file builds the two-sided count on it. 0-axiom (`propext`/`Classical.choice`/`Quot.sound`, no `native_decide`).",
+    "mathContext": "For $M$ finitely generated over a local ring $(R,\\mathfrak{m})$ with $k = R/\\mathfrak{m}$, the minimal number of generators is $\\mu(M) = \\dim_k(M/\\mathfrak{m}M)$. This is the quantitative form of Nakayama's lemma — Atiyah–Macdonald Prop. 2.8 / Cor. 2.7, Matsumura Thm. 2.3, Stacks 00DV/07RC. It underlies minimal free resolutions and fibre-dimension of coherent sheaves.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Nakayama's lemma",
+      "minimal free resolution",
+      "local ring",
+      "residue field",
+      "cotangent space 𝔪/𝔪²",
+      "fibre dimension"
+    ],
+    "prerequisites": [
+      "local rings and the residue field k = R/𝔪",
+      "finitely generated / finite modules",
+      "finite-dimensional vector spaces and dimension (finrank)",
+      "the parent entry NakayamaLemmaOQ01 (Nakayama lifting lemma)"
+    ]
+  },
+  {
+    "id": "ann-nakayama0101-setup",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 71, "endLine": 90 },
+    "type": "definition",
+    "title": "The Residue Space M/𝔪M as a k-Vector Space",
+    "content": "The setup makes M/𝔪M a finite-dimensional vector space over k = R/𝔪 entirely from off-the-shelf Mathlib instances:\n- `ResidueModule R M := M ⧸ (𝔪 • ⊤)` — the quotient of M by the submodule 𝔪M = 𝔪•⊤. It is annihilated by 𝔪, so it is naturally a module over R/𝔪.\n- The `Module (ResidueField R) (ResidueModule R M)` instance is `inferInstanceAs` the Mathlib instance `Module (R⧸𝔪) (M⧸𝔪•⊤)` — the residue field acts because 𝔪 kills the quotient.\n- The `IsScalarTower R (ResidueField R) (ResidueModule R M)` instance records that R acts through k, so R-spans and k-spans of the same set agree (used in the bridge lemma).\n- `FiniteDimensional (ResidueField R) (ResidueModule R M)` for R-finite M comes from `Module.Finite.of_restrictScalars_finite` — R-finiteness descends along the tower.\n- `residueMap R M := (𝔪•⊤).mkQ` is the quotient map M → M/𝔪M, the linear map whose images of generating sets are studied throughout.\n\nThis is exactly the machinery Mathlib already uses for the cotangent space 𝔪/𝔪²; here it is applied to an arbitrary finite M.",
+    "mathContext": "$M/\\mathfrak{m}M = M/(\\mathfrak{m}\\cdot\\top)$. Since $\\mathfrak{m}\\cdot(M/\\mathfrak{m}M) = 0$, scalar multiplication factors through $R/\\mathfrak{m} = k$, making $M/\\mathfrak{m}M$ a $k$-vector space. For $M$ finite over $R$, $\\dim_k(M/\\mathfrak{m}M) < \\infty$. The quotient map is $\\pi : M \\to M/\\mathfrak{m}M$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "quotient module",
+      "Module.instModuleQuotientIdealSMulTop",
+      "IsScalarTower",
+      "Module.Finite.of_restrictScalars_finite",
+      "Submodule.mkQ"
+    ],
+    "prerequisites": [
+      "quotient modules M⧸N",
+      "ideal-smul submodule 𝔪•⊤",
+      "scalar restriction/extension and towers",
+      "FiniteDimensional / finrank"
+    ]
+  },
+  {
+    "id": "ann-nakayama0101-bridge",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 102 },
+    "type": "insight",
+    "title": "The Bridge Lemma: Residue-Space Spanning ⟺ Spanning Modulo 𝔪M",
+    "content": "`span_residueModule_eq_top_iff` is the hinge of the whole proof. It states that a set t ⊆ M has its image spanning M/𝔪M over the residue field k *if and only if* `span R t ⊔ 𝔪•⊤ = ⊤` — i.e. t generates M *modulo* 𝔪M. This single equivalence is read in both directions: left-to-right for the lower bound (a spanning set of M ⟹ spanning set of M/𝔪M), right-to-left for the upper bound (a lifted basis spans M/𝔪M ⟹ spans M modulo 𝔪M, then Nakayama).\n\nThe proof composes two surjectivity facts:\n- `Submodule.restrictScalars_span` (with `restrictScalars_injective`): because the structure map R → k = R/𝔪 is surjective, the k-span and the R-span of the same set coincide as R-submodules — so the k-vector-space statement can be re-read over R.\n- `Submodule.map_mkQ_eq_top`: for the quotient map by N = 𝔪•⊤, `map (mkQ N) p = ⊤ ↔ p ⊔ N = ⊤` — 'the image spans the quotient' becomes 'p together with N spans the whole module'.\nThe final `sup_comm` and `Ideal.Quotient.mk_surjective` line up the orientations. The elegance is that *all* the topology of the argument is concentrated here; the bounds on either side are then bookkeeping.",
+    "mathContext": "$\\mathrm{span}_k\\big(\\pi(t)\\big) = M/\\mathfrak{m}M \\iff \\mathrm{span}_R(t) + \\mathfrak{m}M = M$. The forward content: $\\pi$ surjective and $\\ker\\pi = \\mathfrak{m}M$, so spanning the quotient is spanning modulo the kernel. Surjectivity of $R \\twoheadrightarrow k$ makes $k$-spans and $R$-spans of a fixed set agree.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Submodule.restrictScalars_span",
+      "Submodule.map_mkQ_eq_top",
+      "surjective quotient map",
+      "span over a quotient ring",
+      "Ideal.Quotient.mk_surjective"
+    ],
+    "prerequisites": [
+      "span of a set in a module",
+      "image of a submodule under a quotient map",
+      "scalar restriction along a surjective ring map",
+      "lattice operations on submodules (⊔, ⊤)"
+    ]
+  },
+  {
+    "id": "ann-nakayama0101-lower",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 123 },
+    "type": "insight",
+    "title": "Lower Bound: Every Generating Set Has ≥ dim_k(M/𝔪M) Elements",
+    "content": "Two forms of the lower bound. `finrank_le_of_span_eq_top'` (family form): a finite family g : ι → M with `span R (range g) = ⊤` satisfies `dim_k(M/𝔪M) ≤ card ι`. The proof feeds the *images* `residueMap ∘ g` into Mathlib's `finrank_le_of_span_eq_top` (a spanning family of a finite-dimensional vector space has at least dim-many members); the bridge lemma plus `hg` (g spans M) and `top_sup_eq` show those images span the residue space.\n\n`finrank_le_card_of_span_eq_top` (finset form): the same statement for a generating `Finset s`, obtained by viewing s as the range of its coercion `Subtype.val : ↥s → M` (with `Fintype.card_coe` identifying `Fintype.card ↥s = s.card`). This finset version is the one consumed by both the existence proof and the headline.\n\nThe whole content is: spanning M forces spanning M/𝔪M (bridge), and a spanning set of a finite-dimensional space cannot be smaller than its dimension.",
+    "mathContext": "If $\\mathrm{span}_R\\{g_i\\} = M$ then $\\{\\pi(g_i)\\}$ spans $M/\\mathfrak{m}M$, so $\\dim_k(M/\\mathfrak{m}M) \\le |\\iota|$. Equivalently, any generating finset $s$ satisfies $\\dim_k(M/\\mathfrak{m}M) \\le |s|$. (`finrank_le_of_span_eq_top`: $\\dim V \\le$ size of any spanning family.)",
+    "significance": "key",
+    "relatedConcepts": [
+      "finrank_le_of_span_eq_top",
+      "spanning family",
+      "Fintype.card_coe",
+      "Set.range_comp",
+      "dimension lower bound"
+    ],
+    "prerequisites": [
+      "the bridge lemma",
+      "finrank and spanning families in a finite-dimensional space",
+      "Finset as a Fintype via its coercion"
+    ]
+  },
+  {
+    "id": "ann-nakayama0101-upper",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 125, "endLine": 159 },
+    "type": "insight",
+    "title": "Existence / Upper Bound: Lift a k-Basis and Apply Nakayama",
+    "content": "`exists_spanning_finset_card_eq_finrank` (needs `Module.Finite R M`) produces a generating set of M of size *exactly* d = dim_k(M/𝔪M). The construction:\n1. Take a k-basis `b = Module.finBasis` of M/𝔪M, indexed by `Fin d`.\n2. `choose g hg` lifts each basis vector b i to some g i ∈ M along the surjective quotient map `mkQ_surjective`.\n3. The lifts' images are exactly the basis (`residueMap ∘ g = b` via `Set.range_comp` + `funext hg`), so they span M/𝔪M over k (`b.span_eq`).\n4. The bridge lemma (forward) turns this into `span R (range g) ⊔ 𝔪•⊤ = ⊤`, and the **parent's** `NakayamaLemma.nakayama_span_of_span_quotient` promotes 'spans mod 𝔪M' to `span R (range g) = ⊤` — g generates M.\n5. Package g as `Finset.image g univ`. Its card is ≤ d (`Finset.card_image_le`: the image of a d-element index set), and the lower bound `finrank_le_card_of_span_eq_top` gives d ≤ card; `omega` closes card = d.\n\n**The lift is automatically minimal**: lifting d basis vectors can only collide (card ≤ d), and the lower bound forbids fewer than d — no separate injectivity argument is needed. This is the crux that makes the count exact rather than just an inequality.",
+    "mathContext": "Pick a $k$-basis $\\bar b_1,\\ldots,\\bar b_d$ of $M/\\mathfrak{m}M$ ($d = \\dim_k$), lift to $g_1,\\ldots,g_d \\in M$ with $\\pi(g_i) = \\bar b_i$. The $g_i$ span $M/\\mathfrak{m}M$, so by Nakayama they span $M$; hence $|\\{g_i\\}| \\le d$, and the lower bound gives $|\\{g_i\\}| \\ge d$, so $= d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Module.finBasis",
+      "nakayama_span_of_span_quotient",
+      "Submodule.mkQ_surjective",
+      "Finset.card_image_le",
+      "minimal generating set"
+    ],
+    "prerequisites": [
+      "the bridge lemma and the lower bound",
+      "the parent's Nakayama lifting lemma",
+      "bases of finite-dimensional vector spaces",
+      "choice (choose) and Finset.image cardinality"
+    ]
+  },
+  {
+    "id": "ann-nakayama0101-numgen",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 161, "endLine": 165 },
+    "type": "definition",
+    "title": "numGenerators: The Minimal Number of Generators as an Infimum",
+    "content": "`numGenerators R M := sInf { n | ∃ s : Finset M, s.card = n ∧ span R s = ⊤ }` defines μ(M) as the least size of a finite generating set, via the natural-number infimum `sInf` over the set of achievable generating-set cardinalities. It is `noncomputable` (it quantifies over all finsets). Using `sInf` over ℕ is the clean way to formalize 'minimal number' without first proving a minimizer exists: `Nat.sInf_le` and `Nat.sInf_mem` (the latter needing nonemptiness) supply both the ≤ and the attainment facts used in the headline. The set is nonempty precisely because the existence theorem produces at least one generating finset.",
+    "mathContext": "$\\mu(M) = \\inf\\{\\,|s| : s \\subseteq M \\text{ finite}, \\ \\mathrm{span}_R(s) = M\\,\\}$, an infimum over $\\mathbb{N}$. `Nat.sInf` of a nonempty subset of $\\mathbb{N}$ is attained (well-ordering), so the infimum is a genuine minimum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.sInf",
+      "infimum over ℕ",
+      "generating set cardinality",
+      "noncomputable definition",
+      "well-ordering of ℕ"
+    ],
+    "prerequisites": [
+      "sInf on ℕ and Nat.sInf_le / Nat.sInf_mem",
+      "finite generating sets (Finset, span = ⊤)"
+    ]
+  },
+  {
+    "id": "ann-nakayama0101-headline",
+    "proofId": "nakayama-lemma-oq-01-oq-01",
+    "range": { "startLine": 167, "endLine": 183 },
+    "type": "insight",
+    "title": "The Headline: μ(M) = dim_{R/𝔪}(M/𝔪M)",
+    "content": "`numGenerators_eq_finrank` (for `Module.Finite R M`) is the theorem the whole file builds to: μ(M) = dim_k(M/𝔪M). The proof is a clean antisymmetry (`le_antisymm`) feeding off the two bounds:\n- **μ(M) ≤ d**: the existence theorem gives a generating finset t with card = d, so d lies in the cardinality set; `Nat.sInf_le ⟨t, rfl, htspan⟩` (after `← htcard`) gives sInf ≤ d.\n- **d ≤ μ(M)**: by `Nat.sInf_mem` (the set is nonempty, witnessed by t) the infimum is *attained* by some generating finset s with card = μ(M); the lower bound `finrank_le_card_of_span_eq_top hsspan` says d ≤ card s = μ(M).\n\nThe two bounds meet exactly at d, completing the quantitative form of Nakayama's lemma. This directly answers the parent entry's first open question. Notice the symmetry of the argument: both directions route through the bridge lemma — the upper bound via the lifted basis, the lower bound via the image of the minimizer.",
+    "mathContext": "$\\mu(M) = \\dim_k(M/\\mathfrak{m}M)$ by antisymmetry: existence of a size-$d$ generating set gives $\\mu(M) \\le d$; the attained minimizer (a generating set of size $\\mu(M)$) satisfies $d \\le \\mu(M)$ by the lower bound. Hence equality.",
+    "significance": "key",
+    "relatedConcepts": [
+      "le_antisymm",
+      "Nat.sInf_le",
+      "Nat.sInf_mem",
+      "quantitative Nakayama",
+      "embedding dimension"
+    ],
+    "prerequisites": [
+      "numGenerators definition",
+      "the lower bound and the existence/upper bound",
+      "antisymmetry of ≤ on ℕ",
+      "sInf attainment on ℕ"
+    ]
+  }
+]
