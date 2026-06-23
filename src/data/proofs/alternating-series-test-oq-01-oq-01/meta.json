@@ -1,0 +1,151 @@
+{
+  "id": "alternating-series-test-oq-01-oq-01",
+  "title": "Two-Sided, Two-Term Error Trapping for the Alternating Series Test",
+  "slug": "alternating-series-test-oq-01-oq-01",
+  "description": "Sharpening of the parent entry's Leibniz remainder bound |S_N − l| ≤ f N. For an antitone f : ℕ → ℝ tending to 0 with alternating partial sums S_N = ∑_{i<N} (-1)^i f i converging to l, the truncation error after N terms is trapped between two consecutive terms: f N − f (N+1) ≤ |S_N − l| ≤ f N. The upper half is the classical estimate; the lower half — the new content — shows the Leibniz bound is essentially sharp: the error is never smaller than the gap between the first two omitted terms. The mechanism is the nesting of partial sums (the limit lies between every consecutive pair, in particular between S_{N+1} and S_{N+2}, which sits a full f N − f (N+1) past S_N). This directly answers the parent's stated open question. As a capstone the result specialises to the alternating harmonic series ∑ (-1)^i/(i+1), giving the two-sided quantitative rate 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1).",
+  "meta": {
+    "author": "Leibniz (alternating series test); two-term sharpening formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlternatingSeriesTestOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "alternating-series",
+      "error-bound",
+      "sharpness",
+      "alternating-harmonic",
+      "classic"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Antitone.tendsto_alternating_series_of_tendsto_zero",
+        "description": "Convergence of the alternating series for an antitone f → 0 — supplies the limit l",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Antitone.alternating_series_le_tendsto",
+        "description": "Even partial sums underestimate the limit: S_{2k} ≤ l — used both one and two steps out for the lower bound",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Antitone.tendsto_le_alternating_series",
+        "description": "Odd partial sums overestimate the limit: l ≤ S_{2k+1} — used both one and two steps out for the lower bound",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "tendsto_one_div_add_atTop_nhds_zero_nat",
+        "description": "1/(n+1) → 0, giving the hypothesis for the alternating harmonic specialisation",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ],
+    "originalContributions": [
+      "partialSum_add_two: the two-step recurrence S_{N+2} = S_N + (-1)^N (f N − f (N+1)) for alternating partial sums",
+      "partialSum_even_add_two / partialSum_odd_add_two: the signed two-step gap specialised to even and odd N",
+      "abs_partialSum_sub_limit_trapped: the two-sided two-term trap f N − f (N+1) ≤ |S_N − l| ≤ f N — the lower bound (sharpness of the Leibniz estimate) is absent from Mathlib and answers the parent entry's open question",
+      "sub_le_abs_partialSum_sub_limit / abs_partialSum_sub_limit_le: the lower and upper halves extracted as standalone lemmas",
+      "oneDiv_gap: the harmonic two-term gap telescopes, 1/(N+1) − 1/(N+2) = 1/((N+1)(N+2))",
+      "alternatingHarmonic_error_trapped: the alternating harmonic series has error trapped by 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1)"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 186,
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Leibniz alternating series test comes with the truncation-error estimate |S_N − l| ≤ a_N (Rudin, Theorem 3.43), bounding the error by the first omitted term. This upper bound is the parent entry. A natural and practically important question is whether it is sharp — does the error actually approach a_N, or could it be far smaller? The answer, classical but rarely packaged, is that the error is also bounded below: it can never drop beneath a_N − a_{N+1}, the gap between the first two omitted terms. Thus the Leibniz estimate is tight to within one term, and for strictly decreasing coefficients the truncation error has a definite, non-trivial size.",
+    "problemStatement": "The parent entry proves the one-term Leibniz bound |S_N − l| ≤ f N and explicitly asks: can it be sharpened to a two-term estimate? \n\n**Answer: f N − f (N+1) ≤ |S_N − l| ≤ f N.** The limit lies between every pair of consecutive partial sums. Applying this to the pair (S_{N+1}, S_{N+2}) — rather than only (S_N, S_{N+1}) as in the upper bound — pushes l at least |S_{N+2} − S_N| = f N − f (N+1) away from S_N, yielding the lower bound. For the alternating harmonic series the gap telescopes to 1/((N+1)(N+2)), giving 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1).",
+    "text": "The truncation error of an alternating series with antitone terms is trapped between the gap of the first two omitted terms and the first omitted term — the Leibniz bound is sharp to within one term.",
+    "proofStrategy": "Reuse the limit l and the two Mathlib bracketing lemmas. The upper bound is the parent argument. For the lower bound, observe S_{N+2} = S_N + (-1)^N (f N − f (N+1)) (two applications of the one-step recurrence; the two added signed terms collapse). Split on the parity of N. For even N = 2k: S_N ≤ S_{N+2} ≤ l (the even bracket two steps out), and S_{N+2} = S_N + (f N − f (N+1)), so l − S_N ≥ f N − f (N+1). For odd N = 2k+1: l ≤ S_{N+2}'s odd successor S_{2k+3} = S_N − (f N − f (N+1)), so S_N − l ≥ f N − f (N+1). Combined with the parity-matched upper bound this gives the trap. Specialise to f i = 1/(i+1), telescoping the gap to 1/((N+1)(N+2)).",
+    "keyInsights": [
+      "The limit lies between EVERY consecutive pair of partial sums, not just (S_N, S_{N+1}); using the next pair (S_{N+1}, S_{N+2}) yields the matching lower bound",
+      "The two-step displacement S_{N+2} − S_N = (-1)^N (f N − f (N+1)) is exactly the consecutive-term gap, which is what bounds the error from below",
+      "The Leibniz upper bound is therefore sharp to within one term: for strictly decreasing terms the error has a guaranteed nonzero size",
+      "For the alternating harmonic series the lower bound telescopes to 1/((N+1)(N+2)), pinning the convergence to log 2 as exactly first-order"
+    ],
+    "prerequisites": [
+      "Convergence of sequences and series in ℝ",
+      "Monotone/antitone sequences and the alternating series (Leibniz) test",
+      "The parent entry's one-term remainder bound |S_N − l| ≤ f N",
+      "Finite sums: Finset.sum_range_succ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "two-step-recurrence",
+      "title": "The Two-Step Recurrence",
+      "startLine": 38,
+      "endLine": 73,
+      "summary": "S_{N+2} = S_N + (-1)^N (f N − f (N+1)), with the even/odd specialisations giving the signed two-term gap.",
+      "mathContext": "$S_{N+2} = S_N + (-1)^N (f_N - f_{N+1})$."
+    },
+    {
+      "id": "two-term-trap",
+      "title": "The Two-Sided Two-Term Trap",
+      "startLine": 75,
+      "endLine": 142,
+      "summary": "f N − f (N+1) ≤ |S_N − l| ≤ f N, by trapping l between S_{N+1} and S_{N+2} for the lower bound and between S_N and S_{N+1} for the upper bound, splitting on parity.",
+      "mathContext": "$f_N - f_{N+1} \\le |S_N - l| \\le f_N$."
+    },
+    {
+      "id": "alternating-harmonic",
+      "title": "Alternating Harmonic Series",
+      "startLine": 144,
+      "endLine": 186,
+      "summary": "f i = 1/(i+1): the two-term gap telescopes to 1/((N+1)(N+2)), giving 1/((N+1)(N+2)) ≤ |S_N − l| ≤ 1/(N+1).",
+      "mathContext": "$\\frac{1}{(N+1)(N+2)} \\le \\left|\\sum_{i<N}\\frac{(-1)^i}{i+1} - l\\right| \\le \\frac{1}{N+1}$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Leibniz, G. W.",
+      "title": "Letter to Johann Bernoulli",
+      "year": "1714",
+      "note": "The alternating series convergence criterion"
+    },
+    {
+      "authors": "Rudin, W.",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "note": "Alternating series test and the truncation error bound (Theorem 3.43)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "alternating-series-test-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: proves the one-term Leibniz bound |S_N − l| ≤ f N and asks whether it can be sharpened to a two-term estimate. This entry answers that question with the lower bound f N − f (N+1) ≤ |S_N − l|."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Leibniz truncation-error bound is sharpened from one term to two: f N − f (N+1) ≤ |S_N − l| ≤ f N, proved with 0 axioms by trapping the limit between the partial-sum pairs (S_N, S_{N+1}) and (S_{N+1}, S_{N+2}). Specialising to 1/(i+1) telescopes the gap, trapping the alternating harmonic error between 1/((N+1)(N+2)) and 1/(N+1).",
+    "implications": "Establishes that the classical Leibniz estimate is tight to within one term, so the truncation error of an alternating series with strictly decreasing terms has a guaranteed nonzero size; the alternating harmonic instance pins the convergence to log 2 as exactly first-order.",
+    "openQuestions": [
+      "Does the trapping argument extend to a full asymptotic expansion of the remainder (the Euler–Maclaurin / Boole-summation correction terms) for smooth coefficient sequences?",
+      "Can two-sided bounds of this kind be recovered for alternating series whose coefficients are eventually antitone, or of bounded variation, via Abel summation?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "AlternatingSeriesTestOQ01OQ01",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/AlternatingSeriesTestOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
