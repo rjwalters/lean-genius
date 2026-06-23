@@ -42,7 +42,9 @@
     "keyInsights": [
       "Freeness of a cyclic linear action on the sphere is exactly coprimality of every rotation weight to the group order — a number-theoretic, not topological, condition once the weights are recorded.",
       "Coprimality localizes at primes: gcd(a,n)=1 iff a avoids every prime divisor of n, which is precisely the statement that freeness is detected on prime-order subgroups.",
-      "For prime powers the criterion collapses to a single prime, making the 'no exotic representation' phenomenon transparent."
+      "For prime powers the criterion collapses to a single prime, making the 'no exotic representation' phenomenon transparent.",
+      "The biconditional splits into a 'no exotic gain' direction (every free Z/n-rep restricts to a free Z/p-rep) and a converse assembly (prime-level freeness rebuilds Z/n-freeness), so the prime data is a complete invariant for the existence of free representations — not merely a necessary condition.",
+      "Necessity of the all-primes conjunction is sharp: the Z/6 weight a = (2) is free over Z/3 but not Z/2, so a failure at a single prime propagates to the composite group — the localization cannot be weakened to 'some prime'."
     ],
     "prerequisites": [
       "Cyclic group representations and rotation weights",
