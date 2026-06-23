@@ -3222,6 +3222,7 @@ import Proofs.ProbMethodAlterationOQ02
 import Proofs.ProbMethodApplications
 import Proofs.ProbMethodExpectation
 import Proofs.ProbMethodExpectationOQ01
+import Proofs.ProbMethodLovaszLocalOQ02
 import Proofs.ProbMethodSecondMoment
 import Proofs.ProbMethodSecondMomentOQ01
 import Proofs.ProbMethodSecondMomentOQ02
