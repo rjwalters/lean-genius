@@ -3267,6 +3267,7 @@ import Proofs.QuadraticGaussSumSignSmallThirteen
 import Proofs.QuadraticGaussSumSquare
 import Proofs.QuadraticGaussSumSquareOQ01
 import Proofs.QuadraticGaussSumSquareOQ02
+import Proofs.QuadraticGaussSumSquareOQ04
 import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityAlgorithmOQ02
