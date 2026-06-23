@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-soc-oq0103-numeral-nonzero",
+    "proofId": "solution-of-cubic-oq-01-oq-03",
+    "range": {
+      "startLine": 66,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "Porting the Reduction: Numeral Nonzeroness from 3 ≠ 0",
+    "content": "cubic_depress is the parent's ℂ-identity ported to an arbitrary field K. Over ℂ, field_simp discharges the denominator side-conditions 9 ≠ 0 and 27 ≠ 0 by numeral computation. Over a general field that is no longer automatic: the two `have` lines derive them from the hypothesis (3 : K) ≠ 0 via 9 = 3², 27 = 3³ and pow_ne_zero. This is the single concrete obstacle to porting the proof verbatim — once supplied, field_simp + ring closes the identity exactly as before, pinning char K ≠ 3 as the minimal hypothesis."
+  },
+  {
+    "id": "ann-soc-oq0103-bijection",
+    "proofId": "solution-of-cubic-oq-01-oq-03",
+    "range": {
+      "startLine": 98,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "Root Bijection over the General Field",
+    "content": "general_root_of_depressed_root and depressed_root_of_general_root establish that t ↦ t - b/(3a) carries roots of the depressed cubic to roots of the general cubic and back (inverse x ↦ x + b/(3a)). The lift direction uses a ≠ 0 to cancel the harmless factor a from a · depressed(t) = 0 via mul_eq_zero. The argument is identical to the parent's over ℂ; only the ambient field has changed."
+  },
+  {
+    "id": "ann-soc-oq0103-universal-shift",
+    "proofId": "solution-of-cubic-oq-01-oq-03",
+    "range": {
+      "startLine": 133,
+      "endLine": 137
+    },
+    "type": "insight",
+    "title": "The Universal Shift Identity (Any Commutative Ring)",
+    "content": "shift_quadratic_coeff expands (t+s)³ + b(t+s)² + c(t+s) + d and reads off the t²-coefficient as exactly 3s + b — proved by a single `ring`, with no hypothesis on 3 and over an arbitrary commutative ring R. This cleanly separates the universal algebra (the degree-3 expansion) from the characteristic-dependent conclusion (which shifts can actually remove the quadratic term)."
+  },
+  {
+    "id": "ann-soc-oq0103-char3-boundary",
+    "proofId": "solution-of-cubic-oq-01-oq-03",
+    "range": {
+      "startLine": 143,
+      "endLine": 146
+    },
+    "type": "insight",
+    "title": "The Sharp Characteristic-3 Boundary",
+    "content": "charThree_quadratic_coeff_invariant specializes the universal identity to 3 = 0: the quadratic coefficient 3s + b collapses to b for every shift s. So in characteristic 3 the quadratic term is shift-invariant and a cubic with b ≠ 0 can never be depressed. This is not a proof artifact but a theorem — the exact analogue of needing 2 invertible to complete the square for the quadratic ('completing the cube')."
+  },
+  {
+    "id": "ann-soc-oq0103-dichotomy",
+    "proofId": "solution-of-cubic-oq-01-oq-03",
+    "range": {
+      "startLine": 168,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "The Existence Dichotomy",
+    "content": "depress_iff_three_ne_zero crystallizes the result: a quadratic-killing shift (one with 3s + b = 0) exists iff b = 0 or (3 : K) ≠ 0. For a generic cubic (b ≠ 0) depression is possible exactly when 3 is a unit; in characteristic 3 only the already-depressed cubics qualify. The proof is elementary case analysis on whether 3 = 0, with the witness s = -b/3 supplied by monic_shift_kills_quadratic when 3 is invertible."
+  }
+]
