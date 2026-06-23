@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-binomial-transform",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 69, "endLine": 114 },
+    "type": "insight",
+    "title": "The Binomial Transform of the Stirling Numbers (new)",
+    "content": "`sum_choose_mul_stirlingSecond` is the combinatorial engine of the whole entry: ∑_{i≤n} C(n,i)·S(i,j) = S(n+1,j+1), where S = Nat.stirlingSecond. It is proved by induction on n with the column j generalised, using only Pascal's rule (Nat.choose_succ_succ) and the Stirling recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k). Mathlib's Stirling file contains the defining recurrences and edge values but not this convolution identity, so it is genuinely new infrastructure. Combinatorially it expresses building a partition of an (n+1)-set into j+1 blocks by selecting which of the first n elements are partitioned apart from the last element's block.",
+    "mathContext": "$\\sum_{i=0}^{n}\\binom{n}{i}S(i,j) = S(n+1,j+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Stirling numbers of the second kind", "binomial transform", "Pascal's rule", "set partitions", "induction"],
+    "prerequisites": ["binomial coefficients", "Stirling numbers", "finite sums"]
+  },
+  {
+    "id": "ann-vanishing-boundary",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 84, "endLine": 96 },
+    "type": "technique",
+    "title": "The Vanishing-Boundary Shift Lemma",
+    "content": "The inductive step would not close were it not for `hcollapse`: ∑_{i<n+1} C(n,i+1)·S(i+1,j'+1) = ∑_{i<n+1} C(n,i)·S(i,j'+1). Writing g i = C(n,i)·S(i,j'+1), the two sides are ∑ g(i+1) and ∑ g(i); by Finset.sum_range_succ' and Finset.sum_range_succ they differ by exactly g(n+1) − g(0). Both ends vanish — g(0) carries S(0,j'+1)=0 and g(n+1) carries C(n,n+1)=0 — so the sums are equal and omega finishes. This boundary cancellation is what lets the four sub-sums produced by Pascal's rule and the Stirling recurrence recombine into the target via the induction hypothesis at the two columns j' and j'+1.",
+    "mathContext": "$\\sum_{i} g(i+1) - \\sum_i g(i) = g(n+1) - g(0) = 0$.",
+    "significance": "important",
+    "relatedConcepts": ["telescoping", "index shift", "Finset.sum_range_succ", "boundary terms"],
+    "prerequisites": ["finite sums", "Stirling numbers"]
+  },
+  {
+    "id": "ann-canonical-reduction",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 141, "endLine": 218 },
+    "type": "technique",
+    "title": "Both Sides Reduced to a Common Canonical Sum",
+    "content": "After substituting the Frobenius closed form Eₘ = stirlingForm m, both sides of (★∞) are driven to the same expression ∑_j C((j+1)!·S(m+1,j+1))·X^{j+1}·(1−X)^{m+1−j}. `one_sub_X_mul_stirlingForm` handles the left side: (1−X)·(1−X)^{m+1−k} = (1−X)^{m+2−k} raises every power and the k=0 term drops (S(m+1,0)=0). `X_mul_convolution_stirlingForm` handles the right (convolution) side: each inner Stirling sum is padded from range (i+1) up to the square range (m+1) — legitimate since the added j>i terms carry S(i,j)=0 — then Finset.sum_comm swaps the double sum, the common monomial X^{j+1}(1−X)^{m+1−j} is factored out, and the leftover scalar bracket ∑_i C(m+1,i)·S(i,j)·j! collapses to C((j+1)!·S(m+1,j+1)) by the binomial transform of Part 1.",
+    "mathContext": "Both sides $= \\sum_{j<m'+1} C((j+1)!\\,S(m'+1,j+1))\\,X^{j+1}(1-X)^{m'+1-j}$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_comm", "double-sum interchange", "Stirling closed form", "Frobenius identity", "factoring sums"],
+    "prerequisites": ["polynomial rings", "finite double sums", "Stirling numbers"]
+  },
+  {
+    "id": "ann-analysis-free",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 230, "endLine": 247 },
+    "type": "concept",
+    "title": "The Analysis-Free Recurrence Over Any Commutative Ring",
+    "content": "`eulerPoly_recurrence_alg` is the headline: (1 − X)·Eₘ = 0ᵐ·(1 − X)^{m+1} + X·∑_{i<m} C(m,i)·Eᵢ·(1 − X)^{m−i} over an ARBITRARY commutative ring R[X]. The parent proved the same identity only over ℝ[X], and only by Polynomial.eq_of_infinite_eval_eq — agreement at the infinitely many points of (−1,1). Here there is no evaluation, no convergence, no infinite set: m=0 is (1−X)·1=(1−X), and m=m'+1 simply chains the two canonical-form reductions. That the statement now holds over every commutative ring is the clearest evidence the proof is free of analysis.",
+    "mathContext": "$(1-X)E_m = 0^m(1-X)^{m+1} + X\\sum_{i<m}\\binom{m}{i}E_i(1-X)^{m-i}$ in $R[X]$, any commutative ring $R$.",
+    "significance": "key",
+    "relatedConcepts": ["Eulerian polynomials", "commutative rings", "polynomial identity", "binomial convolution", "analysis-free proof"],
+    "prerequisites": ["polynomial rings", "commutative rings", "recurrences"]
+  },
+  {
+    "id": "ann-real-specialisation",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 249, "endLine": 253 },
+    "type": "concept",
+    "title": "Recovering the Parent's ℝ[X] Theorem",
+    "content": "`eulerPoly_recurrence` is verbatim the parent's statement over ℝ[X], obtained as the R = ℝ specialisation of eulerPoly_recurrence_alg. It exhibits the originally analytically-proved theorem as the shadow of a ring-theoretic identity: the analytic machinery of the parent is shown to be inessential to the result, only to one particular route to it.",
+    "mathContext": "The parent's $\\mathbb{R}[X]$ recurrence is the $R = \\mathbb{R}$ case of the general algebraic theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialisation", "Eulerian polynomials", "real polynomials"],
+    "prerequisites": ["polynomial rings"]
+  }
+]
