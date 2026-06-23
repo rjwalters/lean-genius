@@ -1,0 +1,50 @@
+[
+  {
+    "id": "niven-oq03-header",
+    "proofId": "niven-theorem-oq-03",
+    "range": { "startLine": 6, "endLine": 49 },
+    "type": "context",
+    "title": "Niven for tangent: only {0, ±1}, via the double-angle bridge",
+    "content": "The header states the tangent companion to Niven's theorem: if θ is a rational multiple of π and tan θ is rational, then tan θ ∈ {0, 1, −1} — a strictly smaller set than the five values {0, ±1/2, ±1} of the sine/cosine case. The strategy reduces to cosine Niven via the rational double-angle map cos(2θ) = (1 − tan²θ)/(1 + tan²θ), valid when cos θ ≠ 0: a rational tangent t makes cos(2θ) rational at the rational-multiple-of-π angle 2θ, so cosine Niven gives cos(2θ) ∈ {0, ±1/2, ±1}; solving for t leaves only {0, ±1}, since the two ±1/2 branches force t² = 1/3 or 3, impossible over ℚ (√3 irrational). At cos θ = 0, Lean's tan = sin/cos convention makes tan θ = 0, already in the target set — no side condition needed. Tangent is unbounded, so routing through the bounded image cos(2θ) restores a finite Niven enumeration.",
+    "mathContext": "$\\theta \\in \\mathbb{Q}\\pi,\\ \\tan\\theta \\in \\mathbb{Q} \\implies \\tan\\theta \\in \\{0, 1, -1\\}$",
+    "significance": "context",
+    "relatedConcepts": ["Niven's theorem", "double-angle identity", "rational multiples of π", "irrationality of √3"],
+    "prerequisites": ["Niven's cosine theorem", "tan = sin/cos", "the double-angle identity"]
+  },
+  {
+    "id": "niven-oq03-cos",
+    "proofId": "niven-theorem-oq-03",
+    "range": { "startLine": 55, "endLine": 83 },
+    "type": "theorem",
+    "title": "cos_niven: the cosine classification (restated helper)",
+    "content": "`cos_niven` restates Niven's cosine theorem (parent oq-01) so the tangent corollary is self-contained: if θ = (m/n)π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. The deep step — 2·cos θ is an algebraic integer — is delegated to Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi`; `IsIntegral.exists_int_iff_exists_rat` pins 2·cos θ = k ∈ ℤ, the cosine bounds force k ∈ [−2, 2], and `interval_cases k` enumerates the five values, each closed by `linarith`. It is applied below to the *doubled* angle 2θ.",
+    "mathContext": "$\\theta = \\tfrac{m}{n}\\pi,\\ \\cos\\theta \\in \\mathbb{Q} \\implies \\cos\\theta \\in \\{0, \\pm\\tfrac12, \\pm1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["algebraic integers", "Real.isIntegral_two_mul_cos_rat_mul_pi", "interval_cases", "cosine bounds"],
+    "prerequisites": ["integrality of 2cos(qπ)", "bounded integer enumeration"]
+  },
+  {
+    "id": "niven-oq03-obstruction",
+    "proofId": "niven-theorem-oq-03",
+    "range": { "startLine": 84, "endLine": 91 },
+    "type": "theorem",
+    "title": "no_rat_sq_eq_three: the irrationality obstruction",
+    "content": "`no_rat_sq_eq_three`: (s : ℝ)² ≠ 3 for every rational s. If it did, then √3 = √(s²) = |s| (`Real.sqrt_sq_eq_abs`) would be a rational value, contradicting `Nat.prime_three.irrational_sqrt` (√3 ∉ ℚ). This single Diophantine fact is exactly what collapses cosine Niven's five values down to the tangent set {0, ±1}: the two ±1/2 branches demand tan²θ = 1/3 or 3, both excluded here.",
+    "mathContext": "$\\sqrt3 \\notin \\mathbb{Q} \\implies \\forall s \\in \\mathbb{Q},\\ s^2 \\ne 3$",
+    "significance": "key",
+    "relatedConcepts": ["irrationality of √3", "Nat.Prime.irrational_sqrt", "Real.sqrt_sq_eq_abs", "Diophantine obstruction"],
+    "prerequisites": ["irrationality of square roots of primes"]
+  },
+  {
+    "id": "niven-oq03-tan",
+    "proofId": "niven-theorem-oq-03",
+    "range": { "startLine": 93, "endLine": 142 },
+    "type": "theorem",
+    "title": "tan_niven: the tangent companion via the double-angle identity",
+    "content": "`tan_niven` is the headline. If cos θ = 0 then tan θ = 0 (Lean's `tan = sin/cos` with div_zero) — done. Otherwise set t = tan θ (rational) and prove the double-angle identity cos(2θ) = (1 − t²)/(1 + t²) from `Real.cos_two_mul` and the Pythagorean identity (`eq_div_iff` + `field_simp` + `nlinarith`). Since cos(2θ) is then rational and 2θ = (2m/n)·π, `cos_niven` gives cos(2θ) ∈ {0, ±1/2, ±1}; a five-way `rcases` resolves t: value 0 ⟹ t² = 1 ⟹ t = ±1 (factoring (t−1)(t+1)); value 1 ⟹ t² = 0 ⟹ t = 0; value −1 is impossible (1 = −1); values ±1/2 ⟹ (3t)² = 3 or t² = 3, both killed by `no_rat_sq_eq_three`. The result completes the sin/cos/tan Niven triad.",
+    "mathContext": "$\\cos 2\\theta = \\frac{1 - \\tan^2\\theta}{1 + \\tan^2\\theta} \\in \\{0, \\pm\\tfrac12, \\pm1\\} \\implies \\tan\\theta \\in \\{0, \\pm1\\}$",
+    "significance": "key",
+    "relatedConcepts": ["double-angle identity", "Real.cos_two_mul", "Pythagorean identity", "case analysis"],
+    "prerequisites": ["cos_niven", "no_rat_sq_eq_three", "tan = sin/cos convention"]
+  }
+]
