@@ -78,6 +78,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header, Imports, and the Polynomial F",
+      "summary": "Frames Erdős #978 OQ-01 (is n⁴+2 squarefree infinitely often?), explains why the conjecture is OPEN and out of reach, scopes the two finite local conditions actually formalized, imports Mathlib.Tactic and ZMod.Basic, and defines F n = n⁴ + 2.",
+      "startLine": 1,
+      "endLine": 47,
+      "mathContext": "F(n) = n⁴ + 2; the k=4 (k−2)-power-free case of Erdős #978, OPEN."
+    },
+    {
       "id": "no-fixed-square",
       "title": "No Fixed Square Obstruction",
       "summary": "For every m>1 some value n⁴+2 is not divisible by m² (witness n=0, value 2); ρ(p²)<p² for all primes p.",
