@@ -1,0 +1,86 @@
+[
+  {
+    "id": "geomseries-oq06-ann-header",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "concept",
+    "title": "The arithmetico-geometric series as a differentiated geometric series",
+    "content": "Differentiating $\\sum r^n = 1/(1-r)$ term by term gives $\\sum n\\,r^{n-1} = 1/(1-r)^2$, i.e. $\\sum n\\,r^n = r/(1-r)^2$ — the arithmetico-geometric series, valid for $\\|r\\|<1$. It is the first moment of the geometric distribution: with success probability $p = 1-r$, expected trials $\\sum n r^{n-1} p = 1/p$. The file packages the `HasSum`, `Summable`, and `tsum` forms, a general normed-ring version, a shifted companion, and the concrete $\\sum n/2^n = 2$.",
+    "mathContext": "$\\sum_{n} n\\,r^n = \\dfrac{r}{(1-r)^2}, \\quad \\|r\\| < 1$",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "term-by-term differentiation", "geometric distribution", "generating functions"],
+    "prerequisites": ["infinite series", "normed fields"]
+  },
+  {
+    "id": "geomseries-oq06-ann-hassum",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 39, "endLine": 50 },
+    "type": "definition",
+    "title": "HasSum and Summable forms over a normed field",
+    "content": "Over a `NormedField` $\\mathbb{K}$, `hasSum_coe_mul_geometric` states the partial sums of $n\\,r^n$ converge to $r/(1-r)^2$ for $\\|r\\|<1$ — a thin named wrapper of Mathlib's `hasSum_coe_mul_geometric_of_norm_lt_one`. `summable_coe_mul_geometric` extracts summability via `HasSum.summable`. Stating the `HasSum` form first is the idiomatic Lean pattern: it carries the convergence content, with `tsum` and `Summable` as corollaries.",
+    "mathContext": "$\\mathrm{HasSum}\\;(n \\mapsto n\\,r^n)\\;\\dfrac{r}{(1-r)^2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["HasSum", "Summable", "normed field"],
+    "prerequisites": ["unconditional convergence", "Mathlib summation API"]
+  },
+  {
+    "id": "geomseries-oq06-ann-tsum",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 52, "endLine": 57 },
+    "type": "concept",
+    "title": "The headline tsum identity",
+    "content": "`tsum_coe_mul_geometric` gives the closed-form sum $\\sum' n, n\\,r^n = r/(1-r)^2$, the headline result, wrapping `tsum_coe_mul_geometric_of_norm_lt_one`. This is the value most users want; the wrappers give the family a clean, discoverable gallery API distinct from the raw Mathlib names.",
+    "mathContext": "$\\sum'_{n} n\\,r^n = \\dfrac{r}{(1-r)^2}$",
+    "significance": "key",
+    "relatedConcepts": ["tsum", "closed-form summation"],
+    "prerequisites": ["tsum"]
+  },
+  {
+    "id": "geomseries-oq06-ann-shifted",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 59, "endLine": 85 },
+    "type": "technique",
+    "title": "The shifted companion ∑(n+1)·rⁿ = (1−r)⁻²",
+    "content": "`tsum_succ_mul_geometric` is a genuine derivation rather than a wrapper: adding the plain geometric series $\\sum r^n = (1-r)^{-1}$ to the weighted sum $\\sum n\\,r^n = r/(1-r)^2$ and combining termwise ($n r^n + r^n = (n+1)r^n$) gives $\\sum (n+1)r^n = (1-r)^{-2}$. The proof establishes $1-r \\ne 0$, uses `HasSum.add`, a `funext`+`ring` congruence to merge the summands, and a `field_simp`+`ring` computation $r/(1-r)^2 + (1-r)^{-1} = (1-r)^{-2}$. This is the second-derivative-style identity behind the negative-binomial generating function.",
+    "mathContext": "$\\sum'_{n} (n+1)\\,r^n = (1-r)^{-2}$",
+    "significance": "key",
+    "relatedConcepts": ["HasSum.add", "index shift", "negative binomial", "field_simp"],
+    "prerequisites": ["geometric series sum", "adding convergent series"]
+  },
+  {
+    "id": "geomseries-oq06-ann-ring",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "technique",
+    "title": "The general normed-ring version via Ring.inverse",
+    "content": "`tsum_coe_mul_geometric_ring` generalises beyond fields to any `NormedRing` with `HasSummableGeomSeries` (e.g. a Banach algebra), where division is replaced by `Ring.inverse`: $\\sum' n, n\\,x^n = x \\cdot \\mathrm{Ring.inverse}(1-x)^2$ for $\\|x\\|<1$. It wraps the primed Mathlib lemma `hasSum_coe_mul_geometric_of_norm_lt_one'`. This covers matrix and operator settings where $1-x$ need not be invertible in the field sense.",
+    "mathContext": "$\\sum'_{n} n\\,x^n = x\\,\\big(\\mathrm{inv}(1-x)\\big)^2$ in a Banach algebra.",
+    "significance": "supporting",
+    "relatedConcepts": ["Ring.inverse", "Banach algebra", "normed ring", "operator series"],
+    "prerequisites": ["normed rings", "HasSummableGeomSeries"]
+  },
+  {
+    "id": "geomseries-oq06-ann-concrete",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 102, "endLine": 115 },
+    "type": "insight",
+    "title": "Concrete evaluation ∑ n·(1/2)ⁿ = 2",
+    "content": "`tsum_nat_mul_half_pow` specialises the field identity at $r=1/2$ over $\\mathbb{R}$: $\\sum' n, n\\,(1/2)^n = (1/2)/(1/2)^2 = 2$, the textbook $\\sum n/2^n = 2$. The proof checks $\\|1/2\\|<1$, rewrites with the headline `tsum_coe_mul_geometric`, and finishes with `norm_num`. Probabilistically, this is (a rescaling of) the expected number of fair-coin tosses to first success.",
+    "mathContext": "$\\sum'_{n} n\\,(1/2)^n = \\dfrac{1/2}{(1/2)^2} = 2$",
+    "significance": "supporting",
+    "relatedConcepts": ["geometric distribution mean", "worked example"],
+    "prerequisites": ["real series", "norm_num"]
+  },
+  {
+    "id": "geomseries-oq06-ann-summary",
+    "proofId": "geometric-series-oq-06",
+    "range": { "startLine": 117, "endLine": 145 },
+    "type": "context",
+    "title": "Summary table and #check sanity",
+    "content": "A markdown summary table lists all six results with their backing Mathlib lemmas, and re-derives the differentiation heuristic $\\sum r^n = 1/(1-r) \\Rightarrow \\sum n r^{n-1} = 1/(1-r)^2$. The trailing `#check`s confirm the exported signatures elaborate. Together these document that the entry's value is a clean, named gallery API over Mathlib's weighted-geometric lemmas, plus the genuinely-derived shifted companion.",
+    "mathContext": "$\\frac{d}{dr}\\sum r^n = \\frac{d}{dr}\\frac{1}{1-r} = \\frac{1}{(1-r)^2}$",
+    "significance": "context",
+    "relatedConcepts": ["documentation", "#check"],
+    "prerequisites": []
+  }
+]

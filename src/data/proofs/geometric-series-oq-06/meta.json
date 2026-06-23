@@ -69,6 +69,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header, Imports, and Setup",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Docstring deriving ∑ n·rⁿ = r/(1−r)² as the term-by-term derivative of the geometric series, framing it as the first moment of the geometric distribution and the prototype weighted-geometric sum; imports SpecificLimits.Normed and Tactic, opens Topology.",
+      "mathContext": "∑' n, n·rⁿ = r/(1−r)² for ‖r‖ < 1; expected trials = 1/p with p = 1−r."
+    },
+    {
       "id": "field-version",
       "title": "The Series over a Normed Field",
       "startLine": 35,
