@@ -57,6 +57,14 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, motivation, and imports",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Docstring stating the second-order identity ∑_{k<n} k²·rᵏ, explaining why it is absent from Mathlib and the gallery (only the geometric and first-order sums exist), and outlining the three approaches (induction, Abel summation by parts, r=2 specialization). Imports Mathlib.Algebra.BigOperators.Module and Mathlib.Tactic, opens Finset, and fixes an arbitrary field K.",
+      "mathContext": "The identity is exact over any field for r ≠ 1; the classical ∑ k²·rᵏ = r(1+r)/(1−r)³ is only its |r|<1 limit."
+    },
+    {
       "id": "closed-form",
       "title": "The Second-Order Closed Form by Induction",
       "startLine": 54,
