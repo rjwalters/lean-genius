@@ -16,6 +16,7 @@
     "sorries": 0
   },
   "title": "q-Fold Residue-Class Splitting of the Geometric Series: ∑ r^(qn+a) = r^a/(1−r^q)",
+  "description": "Generalises the even/odd splitting to arbitrary modulus q: for ‖r‖ < 1 over any complete normed field, the residue-a subseries ∑_{n≥0} r^(qn+a) = r^a/(1−r^q) is itself geometric of ratio r^q, and summing over a = 0,…,q−1 reassembles the full series ∑ rⁿ = 1/(1−r) via the factorisation 1 − r^q = (1−r)(1 + r + ⋯ + r^{q−1}). The q=2 case recovers the parent's even/odd subsums.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -68,6 +69,55 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Multisection (or q-section) of a power series — extracting the terms whose index lies in a fixed residue class mod q — is a classical generating-function technique. The general formula uses the discrete Fourier / roots-of-unity filter: for ω = e^{2πi/q}, ∑_{n ≡ a (q)} cₙxⁿ = (1/q)∑_{j<q} ω^{−ja} f(ωʲx), where f(x) = ∑ cₙxⁿ. Applied to the geometric series f(x) = 1/(1−x) it yields the residue subsums, but those subsums have a far simpler self-similar form than the general filter suggests: each is again geometric, of ratio r^q. The technique is catalogued in Concrete Mathematics and underlies, e.g., the closed forms for sums of binomial coefficients in fixed residue classes. This entry formalises the geometric case directly — without roots of unity — for every q ≥ 1 and over any complete normed field, so ℝ and ℂ are handled uniformly, generalising the q = 2 even/odd entry.",
+    "problemStatement": "Fix a modulus $q \\ge 1$ and residue $a$. For $r$ in a complete normed field with $\\lVert r \\rVert < 1$, sum the arithmetic-progression subseries with common difference $q$: prove $\\sum_{n=0}^{\\infty} r^{qn+a} = \\dfrac{r^a}{1-r^q}$, and prove the recombination $\\sum_{a=0}^{q-1}\\sum_{n=0}^{\\infty} r^{qn+a} = \\sum_{m=0}^{\\infty} r^m = \\dfrac{1}{1-r}$ — exhibiting the full geometric series as the disjoint union of $q$ geometric subseries indexed by residue classes mod $q$.",
+    "proofStrategy": "Each residue subseries is summed by the reindexing r^(qn+a) = r^a·(r^q)ⁿ (pow_add, pow_mul, ring), which exhibits it as r^a times a geometric series of ratio r^q; hasSum_geometric_of_norm_lt_one applies at ratio r^q because ‖r^q‖ = ‖r‖^q < 1 (norm_pow_lt_one, needing q ≠ 0), and HasSum.mul_left (r^a) supplies the value r^a·(1 − r^q)⁻¹ (hasSum_geometric_residue), with tsum and Summable forms following. The recombination tsum_residues_eq_geometric rewrites each subseries to closed form, factors (1 − r^q)⁻¹ out of the finite sum over residues (Finset.sum_mul), and closes via the algebraic backbone one_sub_pow_eq: 1 − r^q = (1 − r)·∑_{a<q} r^a, proved by induction on q. The whole development is generic over a complete normed field; the q = 2 specialisations recover the parent's even/odd subsums, and concrete checks at r = 1/2, q = 3 give 8/7 and 2/7.",
+    "keyInsights": [
+      "A subseries taken along ANY arithmetic progression of indices (common difference q) is again geometric — of ratio r^q. The even/odd case (q = 2) and this general q are the same phenomenon; raising the modulus only raises the power of r in the new ratio, so the proof is the q = 2 proof with 2 replaced by q.",
+      "The recombination's entire algebraic content is the factorisation 1 − r^q = (1 − r)(1 + r + ⋯ + r^{q−1}) (one_sub_pow_eq, by induction on q). This finite geometric-sum identity is what makes the q closed forms r^a/(1 − r^q) telescope back to 1/(1 − r): summing the numerators ∑ r^a produces exactly the cofactor that cancels (1 − r^q) down to (1 − r).",
+      "Only one analytic hypothesis is ever needed — ‖r^q‖ = ‖r‖^q < 1 — and it follows mechanically from ‖r‖ < 1 and q ≠ 0. Everything else (the reindexing, the factorisation, the recombination algebra) is formal, so the parity/residue structure adds no genuine convergence difficulty.",
+      "Working over an arbitrary complete normed field 𝕜 rather than ℝ covers ℝ and ℂ uniformly with one proof; set_option linter.unusedSectionVars false is used because the purely algebraic lemmas (one_sub_pow_eq, the nonvanishing denominators) do not invoke CompleteSpace, which is only required where the geometric series is actually summed.",
+      "The recombination is currently proved by adding the closed forms of the parts; the open question asks to instead establish it as a direct HasSum over the bijection ℕ ≃ ℕ × Fin q (m ↦ (m / q, m % q)) — a Fubini/regrouping of the summation itself, which would prove the splitting without first evaluating the pieces."
+    ]
+  },
+  "sections": [
+    {
+      "id": "nonvanishing-denominators",
+      "title": "Nonvanishing Denominators and the r^q Bound",
+      "startLine": 53,
+      "endLine": 71,
+      "summary": "Supporting lemmas over a general normed field: ne_one and one_sub_ne_zero (r ≠ 1, 1 − r ≠ 0 from ‖r‖ < 1), the keystone norm_pow_lt_one (‖r^q‖ = ‖r‖^q < 1 for q ≠ 0, via norm_pow and pow_lt_one₀) that licenses Mathlib's geometric lemma at ratio r^q, and one_sub_pow_ne_zero (1 − r^q ≠ 0)."
+    },
+    {
+      "id": "residue-subseries",
+      "title": "The Residue-Class Subseries",
+      "startLine": 73,
+      "endLine": 93,
+      "summary": "hasSum_geometric_residue proves ∑ r^(qn+a) = r^a·(1 − r^q)⁻¹ by reindexing r^(qn+a) = r^a·(r^q)ⁿ (pow_add, pow_mul, ring) and applying hasSum_geometric_of_norm_lt_one at ratio r^q scaled by HasSum.mul_left (r^a). tsum_geometric_residue and summable_geometric_residue give the tsum and Summable forms."
+    },
+    {
+      "id": "recombination",
+      "title": "Recombination of the q Subseries",
+      "startLine": 95,
+      "endLine": 124,
+      "summary": "one_sub_pow_eq is the algebraic backbone: 1 − r^q = (1 − r)·∑_{a<q} r^a, by induction on q. tsum_residues_eq_geometric then sums the q closed forms over residues, factors out (1 − r^q)⁻¹ via Finset.sum_mul, and closes ∑_{a<q} r^a · (1 − r^q)⁻¹ = (1 − r)⁻¹ with field_simp and linear_combination of the factorisation — recovering the full series 1/(1 − r)."
+    },
+    {
+      "id": "even-odd-specialisation",
+      "title": "Connection to the Even/Odd (q = 2) Case",
+      "startLine": 126,
+      "endLine": 140,
+      "summary": "tsum_geometric_even (q = 2, a = 0) and tsum_geometric_odd (q = 2, a = 1) recover the parent GeometricSeriesOQ09's closed forms ∑ r^(2n) = 1/(1 − r²) and ∑ r^(2n+1) = r/(1 − r²) as direct specialisations of tsum_geometric_residue, closed by simpa."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete Values at r = 1/2, q = 3",
+      "startLine": 142,
+      "endLine": 154,
+      "summary": "Two sanity checks at r = 1/2, q = 3: ∑ (1/2)^(3n) = ∑ (1/8)ⁿ = 8/7 (a = 0) and ∑ (1/2)^(3n+2) = 2/7 (a = 2), each via tsum_geometric_residue plus norm_num, exercising a modulus beyond the even/odd case."
+    }
+  ],
   "openQuestions": [
     {
       "id": "geometric-series-oq-09-oq-01-oq-01",

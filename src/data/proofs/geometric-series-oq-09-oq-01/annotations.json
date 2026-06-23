@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-norm-pow-lt-one",
+    "proofId": "geometric-series-oq-09-oq-01",
+    "range": { "startLine": 62, "endLine": 71 },
+    "type": "technique",
+    "title": "The General Ratio Bound ‖r^q‖ < 1",
+    "content": "`norm_pow_lt_one` is the lone analytic ingredient, the q-fold generalisation of the parent's squared-ratio bound: ‖r^q‖ = ‖r‖^q < 1 whenever ‖r‖ < 1 and q ≠ 0. The proof rewrites ‖r^q‖ = ‖r‖^q with `norm_pow`, then `pow_lt_one₀` (0 ≤ a, a < 1, n ≠ 0 ⟹ aⁿ < 1) finishes — the hypothesis q ≠ 0 is exactly what pow_lt_one₀ needs. This is the only place convergence enters; once supplied, every residue subsum is immediate. one_sub_ne_zero and one_sub_pow_ne_zero record the nonvanishing denominators 1 − r ≠ 0 and 1 − r^q ≠ 0 used in the recombination.",
+    "mathContext": "$\\lVert r^q \\rVert = \\lVert r \\rVert^q < 1$ for $\\lVert r \\rVert < 1$, $q \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": ["normed field", "norm_pow", "pow_lt_one₀", "complete normed field"],
+    "prerequisites": ["normed fields", "powers and norms"]
+  },
+  {
+    "id": "ann-hasSum-residue",
+    "proofId": "geometric-series-oq-09-oq-01",
+    "range": { "startLine": 73, "endLine": 93 },
+    "type": "insight",
+    "title": "Every Residue Subseries Is Geometric of Ratio r^q",
+    "content": "`hasSum_geometric_residue` is the keystone: ∑ r^(qn+a) = r^a·(1 − r^q)⁻¹ for any modulus q ≠ 0 and residue a. The decisive reindexing r^(qn+a) = r^a·(r^q)ⁿ (pow_add then pow_mul, closed by ring) exhibits the residue-a subseries as r^a times a geometric series of ratio r^q. `hasSum_geometric_of_norm_lt_one` applies at ratio r^q (legal by norm_pow_lt_one), and `HasSum.mul_left (r^a)` scales it. This is the same self-similarity as the parent's even/odd case, now for arbitrary common difference q — raising the modulus only raises the power in the new ratio. tsum and Summable forms follow mechanically.",
+    "mathContext": "$\\sum_{n\\ge0} r^{qn+a} = r^a \\sum_{n\\ge0} (r^q)^n = \\dfrac{r^a}{1-r^q}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "series multisection", "self-similarity", "pow_add", "HasSum.mul_left"],
+    "prerequisites": ["geometric series", "infinite series", "reindexing"]
+  },
+  {
+    "id": "ann-one-sub-pow-eq",
+    "proofId": "geometric-series-oq-09-oq-01",
+    "range": { "startLine": 97, "endLine": 106 },
+    "type": "technique",
+    "title": "The Factorisation 1 − r^q = (1 − r)·∑ r^a",
+    "content": "`one_sub_pow_eq` is the algebraic backbone of the recombination: 1 − r^q = (1 − r)·∑_{a<q} r^a over any commutative field, proved by induction on q. The base case q = 0 is 1 − 1 = 0 (simp); the successor step uses Finset.sum_range_succ, the induction hypothesis, and pow_succ, closed by ring. This is the finite geometric-sum identity in its product form, and it is exactly what makes the q residue closed forms r^a/(1 − r^q) telescope back to 1/(1 − r): the sum of numerators ∑ r^a is the cofactor that cancels (1 − r^q) down to (1 − r).",
+    "mathContext": "$1 - r^q = (1-r)\\sum_{a=0}^{q-1} r^a = (1-r)(1 + r + \\cdots + r^{q-1})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite geometric sum", "factorisation", "induction", "telescoping"],
+    "prerequisites": ["polynomial identities", "induction", "finite sums"]
+  },
+  {
+    "id": "ann-recombination",
+    "proofId": "geometric-series-oq-09-oq-01",
+    "range": { "startLine": 108, "endLine": 124 },
+    "type": "insight",
+    "title": "The q Subseries Reassemble the Full Series",
+    "content": "`tsum_residues_eq_geometric` proves the split is a faithful partition: ∑_{a<q} (∑ r^(qn+a)) = ∑ rᵐ = 1/(1 − r). After rewriting each subseries to its closed form r^a·(1 − r^q)⁻¹ (simp_rw) and factoring the common (1 − r^q)⁻¹ out of the finite sum with `Finset.sum_mul`, the goal becomes (∑_{a<q} r^a)·(1 − r^q)⁻¹ = (1 − r)⁻¹, closed by field_simp and `linear_combination` of the factorisation one_sub_pow_eq. This confirms the q arithmetic-progression subseries are disjoint and exhaustive — they partition ℕ by residue mod q and reassemble the whole geometric series.",
+    "mathContext": "$\\sum_{a=0}^{q-1} \\dfrac{r^a}{1-r^q} = \\dfrac{\\sum_{a<q} r^a}{1-r^q} = \\dfrac{1}{1-r}$.",
+    "significance": "key",
+    "relatedConcepts": ["series multisection", "partition of indices", "Finset.sum_mul", "linear_combination", "Fubini"],
+    "prerequisites": ["infinite series", "finite sums", "residue classes"]
+  },
+  {
+    "id": "ann-specialisation-generality",
+    "proofId": "geometric-series-oq-09-oq-01",
+    "range": { "startLine": 126, "endLine": 154 },
+    "type": "context",
+    "title": "q = 2 Recovery and Concrete Values",
+    "content": "The final sections anchor the general result to the parent and to numbers. tsum_geometric_even (q = 2, a = 0) and tsum_geometric_odd (q = 2, a = 1) recover GeometricSeriesOQ09's ∑ r^(2n) = 1/(1 − r²) and ∑ r^(2n+1) = r/(1 − r²) as one-line specialisations (simpa) of tsum_geometric_residue — confirming this entry strictly generalises the parent. The concrete checks at r = 1/2, q = 3 give ∑ (1/2)^(3n) = ∑ (1/8)ⁿ = 8/7 and ∑ (1/2)^(3n+2) = 2/7, exercising a modulus beyond even/odd. Note the whole file is generic over a complete normed field, so it applies to ℝ and ℂ alike.",
+    "mathContext": "$q=2$: $\\sum r^{2n} = \\tfrac{1}{1-r^2}$, $\\sum r^{2n+1} = \\tfrac{r}{1-r^2}$. $q=3, r=\\tfrac12$: $8/7$ and $2/7$.",
+    "significance": "context",
+    "relatedConcepts": ["specialisation", "complete normed field", "norm_num", "worked example"],
+    "prerequisites": ["arithmetic with fractions", "normed fields"]
+  }
+]
