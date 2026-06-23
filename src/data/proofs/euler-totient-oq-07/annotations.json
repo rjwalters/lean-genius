@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-totient-coprime-iff",
+    "proofId": "euler-totient-oq-07",
+    "range": { "startLine": 42, "endLine": 48 },
+    "type": "theorem",
+    "title": "Characterization: Coprime Totients ⟺ Some Argument in {1,2}",
+    "content": "The flagship biconditional, re-exported from Mathlib's `Nat.totient_coprime_totient_iff`. Its engine is the parity of φ: for k > 2 the totient is even, so two large totients always share the factor 2. The only escape is φ = 1, achieved exactly at arguments 1 and 2 — where φ is coprime to everything. This is the abstract characterization the entry then makes concrete.",
+    "mathContext": "$\\varphi(m)$ and $\\varphi(n)$ coprime $\\iff (m\\in\\{1,2\\}) \\lor (n\\in\\{1,2\\})$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient", "coprimality", "parity of totient", "biconditional characterization"],
+    "prerequisites": ["Euler's totient function", "coprimality", "parity of φ"]
+  },
+  {
+    "id": "ann-gcd-totient-eq-one-iff",
+    "proofId": "euler-totient-oq-07",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "theorem",
+    "title": "gcd Form of the Characterization",
+    "content": "Spells out the coprimality predicate as `gcd(φ m, φ n) = 1`, using the definitional identity `Nat.Coprime a b := gcd a b = 1`. Same mathematical content, but in the explicit gcd form callers reasoning about common divisors actually need. The proof is a direct re-export of the previous theorem.",
+    "mathContext": "$\\gcd(\\varphi(m),\\varphi(n)) = 1 \\iff (m\\in\\{1,2\\}) \\lor (n\\in\\{1,2\\})$, since $\\mathrm{Coprime}\\,a\\,b \\equiv \\gcd(a,b)=1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["gcd", "coprimality", "definitional unfolding"],
+    "prerequisites": ["gcd", "Nat.Coprime definition"]
+  },
+  {
+    "id": "ann-two-dvd-gcd-totient",
+    "proofId": "euler-totient-oq-07",
+    "range": { "startLine": 57, "endLine": 64 },
+    "type": "theorem",
+    "title": "The Shared Factor 2: 2 ∣ gcd(φ m, φ n) for m,n ≥ 3",
+    "content": "The new divisibility fact Mathlib's biconditional only implies. With m, n ≥ 3, `Nat.totient_even` (via `omega` to get 2 < m, n) makes both totients even, so `Even.two_dvd` gives 2 ∣ φ m and 2 ∣ φ n, and `Nat.dvd_gcd` combines them. This is the constructive heart: it names the common divisor rather than merely asserting non-coprimality.",
+    "mathContext": "$3 \\le m,\\ 3 \\le n \\implies 2 \\mid \\gcd(\\varphi(m),\\varphi(n))$, because $2\\mid\\varphi(m)$ and $2\\mid\\varphi(n)$ and $k\\mid a \\land k\\mid b \\implies k\\mid\\gcd(a,b)$.",
+    "significance": "key",
+    "relatedConcepts": ["divisibility", "gcd", "parity of totient", "dvd_gcd"],
+    "prerequisites": ["divisibility", "gcd", "parity of φ"]
+  },
+  {
+    "id": "ann-two-le-gcd-totient",
+    "proofId": "euler-totient-oq-07",
+    "range": { "startLine": 66, "endLine": 72 },
+    "type": "theorem",
+    "title": "Quantitative Lower Bound: gcd ≥ 2",
+    "content": "Upgrades the divisibility into a numeric floor. Since the gcd is positive (both totients are positive for arguments ≥ 3, via `totient_pos`) and divisible by 2, `Nat.le_of_dvd` yields 2 ≤ gcd. This is the practically quotable form: distinct large totients have a common factor of at least 2.",
+    "mathContext": "$3 \\le m,\\ 3 \\le n \\implies 2 \\le \\gcd(\\varphi(m),\\varphi(n))$, from $2\\mid g$ and $g>0$ via $d\\mid g \\land g>0 \\implies d\\le g$.",
+    "significance": "supporting",
+    "relatedConcepts": ["gcd lower bound", "le_of_dvd", "positivity of totient"],
+    "prerequisites": ["divisibility and ordering", "gcd"]
+  },
+  {
+    "id": "ann-not-coprime-totient",
+    "proofId": "euler-totient-oq-07",
+    "range": { "startLine": 74, "endLine": 81 },
+    "type": "theorem",
+    "title": "Headline: Totients of Numbers ≥ 3 Are Never Coprime",
+    "content": "The genuinely informative half of the characterization, stated as a clean implication via `Nat.not_coprime_of_dvd_of_dvd` with witness 2 (1 < 2, 2 ∣ φ m, 2 ∣ φ n). This is the form most arguments invoke: if you need two totients of arguments ≥ 3 to be coprime, you cannot have it — parity forbids it.",
+    "mathContext": "$3 \\le m,\\ 3 \\le n \\implies \\neg\\,\\mathrm{Coprime}(\\varphi(m),\\varphi(n))$, since $1<2$, $2\\mid\\varphi(m)$, $2\\mid\\varphi(n)$.",
+    "significance": "key",
+    "relatedConcepts": ["coprimality", "parity of totient", "not_coprime_of_dvd_of_dvd"],
+    "prerequisites": ["coprimality", "divisibility", "parity of φ"]
+  },
+  {
+    "id": "ann-worked-examples",
+    "proofId": "euler-totient-oq-07",
+    "range": { "startLine": 86, "endLine": 104 },
+    "type": "context",
+    "title": "Worked Examples: φ 9, φ 15 Not Coprime Though 9, 15 Are Coprime",
+    "content": "Concrete witnesses validate the theory by kernel `decide`: φ 1 = φ 2 = 1 (the odd-totient escape hatch), φ 2 coprime to φ 100 (the m = 2 branch), φ 3 = φ 4 = 2 with gcd 2, and the striking case φ 9 = 6, φ 15 = 8 — not coprime (gcd 2) even though 9 and 15 are coprime. The last example dramatizes the key insight: φ destroys coprimality of its arguments because parity is a uniform obstruction independent of the factorizations.",
+    "mathContext": "$\\varphi(9)=6,\\ \\varphi(15)=8,\\ \\gcd(6,8)=2$: the totients are not coprime even though $9,15$ are coprime — the shared factor is forced by parity, not by the arguments' gcd.",
+    "significance": "context",
+    "relatedConcepts": ["worked example", "kernel decide", "coprimality", "Euler's totient"],
+    "prerequisites": ["evaluating φ on small inputs", "gcd"]
+  }
+]
