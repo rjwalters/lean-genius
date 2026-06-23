@@ -1,0 +1,50 @@
+[
+  {
+    "id": "strict",
+    "proofId": "bernoulli-inequality-oq-01",
+    "range": { "startLine": 36, "endLine": 64 },
+    "type": "insight",
+    "title": "Sharp Strict Inequality on a > -1",
+    "content": "one_add_mul_lt_pow proves 1 + n·a < (1+a)ⁿ for every a > -1 with a ≠ 0 and n ≥ 2 — crucially including the negative range -1 < a < 0 that the gallery's a > 0 version (binomial-theorem-oq-05) omits. The proof is Nat.le_induction from n = 2: the base case (1+a)² = 1 + 2a + a² beats 1 + 2a by a² > 0 (nlinarith); the step multiplies the inductive estimate by the positive factor 1 + a (valid since a > -1, NOT a > 0) and gains an extra m·a² > 0. The only positivity used is 1 + a > 0, which is exactly a > -1 — the sign of a is irrelevant since a² > 0 regardless.",
+    "mathContext": "$1 + na < (1+a)^n$ for $a > -1$, $a \\ne 0$, $n \\ge 2$; the step gains $m a^2 > 0$, needing only $1+a>0$.",
+    "significance": "key",
+    "relatedConcepts": ["Bernoulli's inequality", "Nat.le_induction", "strict monotonicity", "binomial expansion"],
+    "prerequisites": ["induction", "ordered fields"]
+  },
+  {
+    "id": "strict-iff",
+    "proofId": "bernoulli-inequality-oq-01",
+    "range": { "startLine": 66, "endLine": 78 },
+    "type": "concept",
+    "title": "Strictness Characterization",
+    "content": "one_add_mul_lt_pow_iff sharpens the inequality to an exact iff: for a > -1, the strict inequality 1 + n·a < (1+a)ⁿ holds iff a ≠ 0 ∧ 2 ≤ n. The backward direction is one_add_mul_lt_pow; the forward direction supplies the failure witnesses — a = 0 collapses both sides to 1 (simp), and n ≤ 1 is dispatched by interval_cases (n = 0 and n = 1 give equality). This leaves no ambiguity about when strictness holds.",
+    "mathContext": "For $a > -1$: $1 + na < (1+a)^n \\iff a \\ne 0 \\wedge 2 \\le n$.",
+    "significance": "key",
+    "relatedConcepts": ["sharp characterization", "iff statements", "interval_cases", "boundary cases"],
+    "prerequisites": ["the strict inequality"]
+  },
+  {
+    "id": "eq-iff",
+    "proofId": "bernoulli-inequality-oq-01",
+    "range": { "startLine": 80, "endLine": 93 },
+    "type": "concept",
+    "title": "Equality Characterization",
+    "content": "one_add_mul_eq_pow_iff is the complementary classification: for a > -1, equality 1 + n·a = (1+a)ⁿ holds iff a = 0 ∨ n ≤ 1. Forward: if a ≠ 0 and n ≥ 2, the strict inequality contradicts equality (linarith); backward: a = 0 gives 1 = 1 and n ≤ 1 is handled by interval_cases. Together with the strictness iff, every (a, n) with a > -1 is exactly classified — strict, or equal — with no gap.",
+    "mathContext": "For $a > -1$: $1 + na = (1+a)^n \\iff a = 0 \\vee n \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "two-sided characterization", "trichotomy", "complementary classification"],
+    "prerequisites": ["the strict inequality"]
+  },
+  {
+    "id": "numeric",
+    "proofId": "bernoulli-inequality-oq-01",
+    "range": { "startLine": 95, "endLine": 107 },
+    "type": "context",
+    "title": "Numeric Witnesses",
+    "content": "Three example instances ground the results: the positive case 1 + 5 = 6 < 32 = 2⁵; the negative-base strict case 1 + 4·(−1/2) = −1 < 1/16 = (1 − 1/2)⁴, which lies outside the gallery's a > 0 strict Bernoulli and demonstrates the full-domain extension (note the linear bound −1 is itself negative); and the n = 1 equality boundary via one_add_mul_eq_pow_iff. These verify the abstract classification on concrete values.",
+    "mathContext": "$1 + 5 < 2^5$; $1 + 4(-\\tfrac12) = -1 < \\tfrac1{16} = (1-\\tfrac12)^4$; equality at $n = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["negative base", "concrete instances", "norm_num", "boundary at n=1"],
+    "prerequisites": ["the strict inequality", "the equality characterization"]
+  }
+]
