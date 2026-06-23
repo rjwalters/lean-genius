@@ -1,0 +1,125 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03",
+  "title": "Norm-Euclidean ℤ[√d] for d ∈ {−1,−2}: A Uniform Family with One Bound",
+  "slug": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03",
+  "description": "Answers the open question of whether the Euclidean-domain proofs for ℤ[i] and ℤ[√-2] can be unified into a parameterized family Zsqrtd(d) with a single uniform bound. We prove that for EVERY negative d the nearest-lattice-point remainder satisfies 4·N(r)·N(y) ≤ (1−d)·N(y)², so the uniform factor (1−d)/4 is < 1 exactly for d ∈ {−1,−2}, yielding a single EuclideanDomain construction specializing to both classical rings. We also prove the obstruction: (1−d)/4 ≥ 1 for d ≤ −3, so the naive Zsqrtd family provably cannot extend (the correct rings there are ℤ[ω]).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NormEuclideanZsqrtdFamilyOQ03.lean",
+    "tags": [
+      "number-theory",
+      "Euclidean-domain",
+      "Zsqrtd",
+      "imaginary-quadratic",
+      "norm-Euclidean"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. Proved from first principles over Mathlib's Zsqrtd, EuclideanDomain, and round/abs_sub_round infrastructure. Depends only on the standard foundational axioms (propext, Classical.choice, Quot.sound); no sorry, no native_decide.",
+    "lineCount": 229,
+    "theoremCount": 11,
+    "definitionCount": 5,
+    "originalContributions": [
+      "sq_two_mul_sub_round_le: the single analytic input — rounding m/k keeps (2·(m−round(m/k)·k))² ≤ k², i.e. the coordinate error stays within ±k/2",
+      "four_mul_norm_rem_le: ONE uniform inequality 4·N(r)·N(y) ≤ (1−d)·N(y)² valid for EVERY negative d, factoring the d-dependence into the single constant (1−d)/4",
+      "norm_rem_lt / exists_quotient_remainder: the norm-Euclidean division property for the whole range −2 ≤ d < 0 at once",
+      "euclideanDomain: a single EuclideanDomain (ℤ√d) value parameterized by −2 ≤ d < 0, with euclideanDomainNegOne and euclideanDomainNegTwo recovering ℤ[i] and ℤ[√-2] from one proof",
+      "nearest_point_factor_ge_one_of_le_neg_three: the honest obstruction — the uniform factor (1−d)/4 reaches 1 at d=−3, so the Zsqrtd family provably stops at d=−2 (d=−3,−7,−11 need the ring of integers ℤ[ω])",
+      "A fully algebraic division proof using rational rounding (round on ℚ), avoiding the complex embedding ℂ used by the per-ring parent proofs"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Among imaginary quadratic fields ℚ(√d), exactly five discriminants d = −1,−2,−3,−7,−11 give norm-Euclidean rings of integers. For d = −1,−2 that ring is ℤ[√d] = Zsqrtd(d); for d = −3,−7,−11 it is ℤ[(1+√d)/2], strictly larger than ℤ[√d]. The classical norm-Euclidean proofs (Gauss for ℤ[i], Dedekind for the rest) all use the nearest-lattice-point division: round the rational/real quotient to the nearest lattice point and bound the remainder norm by the covering radius of the lattice. The parent gallery entries proved ℤ[i] and ℤ[√-2] separately, each via a complex embedding and an ad-hoc bound (1/2 and 3/4). This entry asks — and answers — whether the two proofs are instances of one uniform argument.",
+    "problemStatement": "Can the Euclidean-domain proof be generalized to a parameterized family Zsqrtd(d) for d ∈ {−1,−2,−3,−7,−11} with a uniform bound?",
+    "text": "**Answer**: Yes for d ∈ {−1,−2}, with a single uniform bound; and provably NO for d ≤ −3 over Zsqrtd(d), for a genuine arithmetic reason.\n\n**The uniform bound.** For any negative d and any x, y with y ≠ 0, set q = ⟨round(Re(x·ȳ)/N(y)), round(Im(x·ȳ)/N(y))⟩ and r = x − y·q. Multiplying r by ȳ turns each coordinate into a pure rounding error, and multiplicativity of the norm gives the single identity\n\n    4·N(r)·N(y) = (2·Re(r·ȳ))² − d·(2·Im(r·ȳ))² ≤ (1 − d)·N(y)².\n\nThe entire d-dependence is the constant (1 − d)/4. It is < 1 exactly when −2 ≤ d, i.e. d ∈ {−1,−2}, giving N(r) < N(y).\n\n**The obstruction.** For d ≤ −3 the factor (1 − d)/4 ≥ 1, so the covering-radius bound no longer forces a strict decrease — and indeed Zsqrtd(d) is the wrong ring there (ℤ[√−3] is not integrally closed, hence not a PID/Euclidean domain). The honest uniform family for all five discriminants must be built over ℤ[(1+√d)/2].",
+    "proofStrategy": "1. Prove the only analytic fact, sq_two_mul_sub_round_le, from Mathlib's abs_sub_round: |t − round t| ≤ 1/2 scaled by k. 2. Define the nearest-point quotient quo and remainder rem over ℚ-coordinates (no ℂ). 3. Show (rem·conj y) has coordinates equal to the rounding errors (rem_mul_star_re/im), using norm_eq_mul_conj. 4. Combine multiplicativity N(r·ȳ)=N(r)·N(y) (norm_mul, norm_conj) with the two squared error bounds to get the single inequality four_mul_norm_rem_le for all d<0. 5. Specialize to −2 ≤ d to get norm_rem_lt and assemble the EuclideanDomain value. 6. Record the d ≤ −3 obstruction.",
+    "keyInsights": [
+      "Working purely algebraically over ℚ (rational rounding) instead of embedding into ℂ makes the proof uniform in d: the factor √(−d) never appears, only the integer d as a coefficient.",
+      "Multiplying the remainder r by the conjugate ȳ is the key trick: (r·ȳ).re and (r·ȳ).im are exactly the scaled rounding errors, and N(r·ȳ) = N(r)·N(y) converts the coordinate bounds into a bound on N(r).",
+      "All of the d-dependence collapses into the single constant (1−d)/4 = (1+|d|)/4 — the squared covering radius of the rectangular lattice ℤ ⊕ √|d|·ℤ.",
+      "(1−d)/4 < 1 ⟺ |d| < 3, so d ∈ {−1,−2} is forced; the boundary case |d| = 3 (factor exactly 1) is precisely where Zsqrtd stops being the ring of integers.",
+      "The same statement four_mul_norm_rem_le holds for ALL negative d (even where the ring is not Euclidean): it is the bound that is uniform, and the conclusion that depends on d."
+    ],
+    "prerequisites": [
+      "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03: ℤ[√-2] as a Euclidean domain (3/4 bound)",
+      "Mathlib: Zsqrtd (norm, star, norm_mul, norm_conj, norm_eq_mul_conj), EuclideanDomain, round, abs_sub_round",
+      "The covering-radius / nearest-lattice-point view of norm-Euclidean rings"
+    ]
+  },
+  "conclusion": {
+    "summary": "There is a single uniform nearest-lattice-point bound 4·N(r)·N(y) ≤ (1−d)·N(y)² valid for every negative d. Its factor (1−d)/4 is < 1 exactly for d ∈ {−1,−2}, so one EuclideanDomain construction covers ℤ[i] and ℤ[√-2] simultaneously; for d ≤ −3 the factor is ≥ 1 and the Zsqrtd family provably cannot continue.",
+    "implications": "The uniform argument cleanly separates the geometric core (a single covering-radius inequality, uniform in d) from the arithmetic threshold (which d keep the factor below 1). It also identifies the precise reason the family stops at d = −2 over Zsqrtd: the boundary |d| = 3 is exactly where ℤ[√d] ceases to be the ring of integers. A genuinely complete five-discriminant family requires reformulating over the maximal orders ℤ[(1+√d)/2].",
+    "openQuestions": [
+      "Build the analogous uniform Euclidean-domain proof over the rings of integers ℤ[(1+√d)/2] for d ∈ {−3,−7,−11}, where the covering radius of the hexagonal/centered lattice gives the correct sub-1 bound.",
+      "Does the uniform bound four_mul_norm_rem_le give a clean uniform proof that ℤ[√d] is a PID/UFD for d ∈ {−1,−2}, and can the inert-prime classifications of the parent entries be merged into one Legendre-symbol statement over the family?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "NormEuclideanZsqrtdFamily",
+    "lineCount": 229,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 5,
+    "path": "Proofs/NormEuclideanZsqrtdFamilyOQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Parent proof: ℤ[√-2] as a Euclidean domain via the ad-hoc 3/4 bound and complex embedding. This entry answers its third open question by unifying it with the ℤ[i] case under one bound."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Grandparent proof: Gaussian integers ℤ[i] = ℤ[√-1] as a Euclidean domain (1/2 bound). Recovered here as euclideanDomainNegOne, the d = −1 member of the uniform family."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "thematic",
+      "description": "The arithmetic threshold separating norm-Euclidean discriminants ties to which d are squares mod p; the parent entries use quadratic reciprocity for their inert-prime classifications."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-rounding",
+      "title": "Part I: The Rational Rounding Bound",
+      "startLine": 50,
+      "endLine": 81,
+      "summary": "sq_two_mul_sub_round_le: the sole analytic input. From Mathlib's abs_sub_round (|t − round t| ≤ 1/2), scaling by k gives (2·(m − round(m/k)·k))² ≤ k², proved over ℚ and cast back to ℤ."
+    },
+    {
+      "id": "sec-division",
+      "title": "Part II: Nearest-Lattice-Point Division",
+      "startLine": 83,
+      "endLine": 139,
+      "summary": "quo and rem defined over ℚ-coordinates (no ℂ). quo_zero gives the y=0 convention. rem_mul_star_re/im show that r·conj y has the two scaled rounding errors as coordinates, via norm_eq_mul_conj."
+    },
+    {
+      "id": "sec-bound",
+      "title": "Part III: The Uniform Norm Bound",
+      "startLine": 141,
+      "endLine": 185,
+      "summary": "four_mul_norm_rem_le: 4·N(r)·N(y) ≤ (1−d)·N(y)² for all d<0, combining norm multiplicativity with the two coordinate bounds. norm_rem_lt and exists_quotient_remainder specialize to −2 ≤ d < 0."
+    },
+    {
+      "id": "sec-euclidean",
+      "title": "Part IV: One Euclidean Domain for the Family",
+      "startLine": 187,
+      "endLine": 218,
+      "summary": "euclideanDomain: a single EuclideanDomain (ℤ√d) value for any −2 ≤ d < 0, with euclideanDomainNegOne (ℤ[i]) and euclideanDomainNegTwo (ℤ[√-2]) as the two members."
+    },
+    {
+      "id": "sec-obstruction",
+      "title": "Part V: The Obstruction at d ≤ −3",
+      "startLine": 220,
+      "endLine": 229,
+      "summary": "nearest_point_factor_ge_one_of_le_neg_three: (1−d)/4 ≥ 1 exactly when d ≤ −3, so the uniform Zsqrtd argument provably stops at d = −2; the d = −3,−7,−11 rings require ℤ[ω]."
+    }
+  ],
+  "sorries": 0
+}
