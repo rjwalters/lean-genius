@@ -92,3 +92,48 @@ now proven; the full Mycielski theorem is complete and machine-checked)
 ## Mathlib Gaps
 - No Mycielskian construction in Mathlib (`Combinatorics/SimpleGraph/*`) — built here.
 - No `χ(M(G)) = χ(G)+1` theorem — both inequalities are proved in this file.
+
+## Session 2026-06-22 (Session 3) — Quantify the witness tower's size
+
+**Mode**: CONTINUE (SOLVED → outward follow-up) · **Outcome**: progress (new theory-level
+content: exact vertex count of the tower, addressing a documented open question)
+
+### What I Did
+The colourability theory was already complete (and Session-2's "next steps" — the concrete
+K₂ witness and exact `iff` — were in fact already in the file). The file pinned the
+*chromatic number* of the tower but said nothing about its *size*, which is precisely the
+variable in Erdős #1104's `f(n)`. Added the size theory:
+- `fintypeMycVertexIter`: recursive `Fintype` instance for the iterated vertex type.
+- `card_mycVertex`: one Mycielski step doubles the vertex count, `|M(G)| = 2|G| + 1`.
+- `card_mycVertexIter_succ`: the doubling recurrence for the tower.
+- `card_mycVertexIter_add_one`: subtraction-free closed form `|tower_k| + 1 = (|V|+1)·2^k`.
+- `card_mycVertexIter_fin_two`: over K₂, `|tower_k| + 1 = 3·2^k`.
+- `exists_triangleFree_chromatic_with_card`: the quantified witness — a triangle-free graph
+  on `N` vertices (`N+1 = 3·2^k`) of chromatic number exactly `k+2`, so `χ ≍ log₂ N`.
+
+This directly addresses the meta.json open question "Quantify the construction's efficiency:
+the tower's vertex count roughly doubles each step …", making explicit the exponential gap to
+the true `f(n) = Θ(√(n/log n))`.
+
+### Key Findings
+- **`mycVertexIter V (k+1)` is *definitionally* `MycVertex (mycVertexIter V k)`, but the
+  auto-derived `Fintype` instance and the `Option`/`Sum` instance are not syntactically
+  defeq for `exact`.** Bridge with the instance-agnostic `Fintype.card_congr (Equiv.refl _)`:
+  `have e : mycVertexIter V (k+1) ≃ MycVertex (mycVertexIter V k) := Equiv.refl _; rw [Fintype.card_congr e]`.
+- **Refer to a recursive `instance` by expected type, not a named argument.** Section
+  `variable {V}` is auto-bound, so `fintypeMycVertexIter (V := V) k` fails ("Invalid argument
+  name V"); write `fintypeMycVertexIter k` and let the expected `Fintype (mycVertexIter V k)`
+  pin `V`. As a global instance it is also found by TC automatically — no `haveI` needed (a
+  named `haveI` even *causes* an inner-instance mismatch `this` vs `fintypeMycVertexIter k`).
+- **Keep the closed form subtraction-free** (`card + 1 = (c+1)·2^k`) to avoid ℕ-subtraction;
+  the succ step is `2·a + 1 + 1 = 2·(a+1)`, closed by `ring` after `rw [← ih]`.
+- Base case `card (mycVertexIter V 0) = card V` is `rfl` (the instance reduces to ambient).
+
+### Files Modified
+- `proofs/Proofs/Erdos1104OQ01.lean` (added size section, 345→420 lines, 6 thm + 1 instance)
+- `src/data/proofs/erdos-1104-oq-01/meta.json` (counts, contributions, section, open Qs)
+
+### Next Steps
+- Formalize the quantitative gap to `f(n) = Θ(√(n/log n))` and the sharper random/Kim R(3,k)
+  constructions that achieve the optimal exponent (Mycielski's tower provably cannot).
+- Discharge the parent `erdos-1104` `mycielski_construction` axiom against this construction.
