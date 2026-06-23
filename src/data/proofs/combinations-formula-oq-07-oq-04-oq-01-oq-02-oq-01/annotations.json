@@ -1,0 +1,68 @@
+[
+  {
+    "id": "asymmetric-power-moment-context",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 78 },
+    "type": "concept",
+    "title": "Lifting the Asymmetric Falling Moment to a Raw Power Moment",
+    "content": "Two gallery results meet here. The sibling OQ-07-OQ-04-OQ-01-OQ-02 proved the Stirling bridge m^p = ∑_r S(p,r)·(m)_r — the monomial-to-falling-factorial change of basis Mathlib lacks — and used it to turn the SYMMETRIC falling moment into the raw power moment ∑ k^p·C(n,k)². The cross moment OQ-07-OQ-04-OQ-01-OQ-03-OQ-01 has, as its s=0 face, the one-sided ASYMMETRIC falling moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r,n−r). The sibling asked whether the identical expand-swap-close argument lifts that asymmetric moment to a raw power moment. It does: ∑_{k=0}^{n} k^p·C(m,k)·C(n,k) = ∑_{r=0}^{p} S(p,r)·(m)_r·C(m+n−r,n−r). The one new subtlety is a side condition (the regime m ≥ r > n breaks the unconditional vanishing of the symmetric case), removed by either p ≤ n or m ≤ n.",
+    "mathContext": "Target: $\\sum_{k=0}^{n} k^p \\binom{m}{k}\\binom{n}{k} = \\sum_{r=0}^{p} S(p,r)\\,(m)_r \\binom{m+n-r}{n-r}$ where $S(p,r)$ are the Stirling numbers of the second kind and $(m)_r$ the falling factorial. Recovers the asymmetric Vandermonde $\\binom{m+n}{n}$ at $p=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "monomial / falling-factorial change of basis",
+      "asymmetric Vandermonde convolution",
+      "power moments of a product of two Pascal rows"
+    ],
+    "prerequisites": [
+      "the Stirling bridge m^p = ∑_r S(p,r)·(m)_r",
+      "the one-sided two-row falling moment ∑ (k)_r·C(m,k)·C(n,k) = (m)_r·C(m+n−r,n−r)",
+      "Nat.descFactorial falling factorials"
+    ]
+  },
+  {
+    "id": "relax-onesided",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": { "startLine": 80, "endLine": 121 },
+    "type": "lemma",
+    "title": "Relaxing the One-Sided Two-Row Moment to All Orders",
+    "content": "The s=0 face of the cross moment carries the hypothesis r ≤ m, but the Stirling sum runs r = 0..p, so the moment must hold for orders r exceeding m. sum_oneSided_mixed_all drops the hypothesis to r ≤ n: when r > m both sides vanish — the right because (m)_r = 0, the left because each term has either (k)_r = 0 (when k < r) or C(m,k) = 0 (when k ≥ r > m). sum_oneSided_mixed_le drops it entirely under m ≤ n: orders r > n satisfy r > n ≥ m, so again (m)_r = 0 and every k ≤ n < r kills (k)_r. These two vanishing mechanisms — descFactorial_eq_zero_iff_lt and choose_eq_zero_of_lt — are exactly what the symmetric case got for free.",
+    "mathContext": "$\\sum_{k=0}^{n} (k)_r \\binom{m}{k}\\binom{n}{k} = (m)_r \\binom{m+n-r}{n-r}$ holds for $r \\le n$ (any $m$), and for all $r$ when $m \\le n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["falling factorial vanishing", "binomial vanishing C(m,k)=0 for k>m", "hypothesis relaxation"],
+    "prerequisites": ["Nat.descFactorial_eq_zero_iff_lt", "Nat.choose_eq_zero_of_lt", "the s=0 cross-moment face"]
+  },
+  {
+    "id": "power-moment",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": { "startLine": 123, "endLine": 168 },
+    "type": "theorem",
+    "title": "The Asymmetric Power Moment ∑ k^p·C(m,k)·C(n,k)",
+    "content": "Expand each k^p by the Stirling bridge into ∑_r S(p,r)·(k)_r, giving a double sum; Finset.sum_comm swaps ∑_k ∑_r to ∑_r ∑_k, Finset.mul_sum factors out the constant S(p,r), and the relaxed one-sided moment closes the inner k-sum. Two hypotheses each make the closure legal for every order in range: sum_pow_mixed assumes p ≤ n (so r ≤ p ≤ n) and sum_pow_mixed_of_le assumes m ≤ n (unconditional in p). The proof skeleton is verbatim that of the sibling's symmetric sum_pow_weighted_sq, the only change being which relaxation lemma closes the inner sum.",
+    "mathContext": "$\\sum_{k=0}^{n} k^p \\binom{m}{k}\\binom{n}{k} = \\sum_{r=0}^{p} S(p,r)\\,(m)_r \\binom{m+n-r}{n-r}$, under $p \\le n$ or (for all $p$) $m \\le n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "expand-swap-close",
+      "Finset.sum_comm",
+      "Finset.mul_sum",
+      "Stirling-weighted Vandermonde diagonals"
+    ],
+    "prerequisites": [
+      "the Stirling bridge (sibling OQ-02)",
+      "sum_oneSided_mixed_all / sum_oneSided_mixed_le",
+      "Finset double-sum manipulation"
+    ]
+  },
+  {
+    "id": "faces",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": { "startLine": 170, "endLine": 188 },
+    "type": "remark",
+    "title": "Faces: m = n Recovers the Symmetric Moment; p = 1 the Linear Moment",
+    "content": "sum_pow_weighted_sq_of_mixed sets m = n in the m ≤ n form (admissible since n ≤ n) and folds C(n,k)·C(n,k) into C(n,k)², recovering the sibling's symmetric power moment ∑ k^p·C(n,k)² = ∑_r S(p,r)·(n)_r·C(2n−r,n−r) verbatim and unconditionally in p — a witness that the asymmetric result subsumes the symmetric one. sum_linear_mixed sets p = 1: the Stirling row S(1,·) = 0,1 collapses the sum to its r = 1 term, where (m)_1 = m, giving ∑ k·C(m,k)·C(n,k) = m·C(m+n−1,n−1). Two kernel-decide checks pin the numerics (p=2,m=3,n=4 gives 120; the linear face at m=3,n=4 gives 60).",
+    "mathContext": "$m=n$: $\\sum k^p \\binom{n}{k}^2 = \\sum_r S(p,r)(n)_r\\binom{2n-r}{n-r}$. $p=1$: $\\sum k\\binom{m}{k}\\binom{n}{k} = m\\binom{m+n-1}{n-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialisation", "central binomial coefficient", "subsumption of the symmetric case"],
+    "prerequisites": ["the asymmetric power moment", "Nat.descFactorial_one", "pow_two"]
+  }
+]
