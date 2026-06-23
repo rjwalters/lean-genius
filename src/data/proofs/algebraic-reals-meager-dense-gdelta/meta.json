@@ -177,5 +177,34 @@
     }
   ],
   "crossReferences": [],
-  "sections": []
+  "sections": [
+    {
+      "id": "abstract-lemmas",
+      "title": "Abstract lemmas: complements of countable sets",
+      "startLine": 54,
+      "endLine": 105,
+      "summary": "The reusable core. isGδ_compl_of_countable: in any T1 space the complement of a countable set is a Gδ, realized as ⋂_{a ∈ s} {a}ᶜ (open singleton-complements, biInter over a countable index). dense_compl_of_countable and isGδ_dense_compl_of_countable upgrade this to a dense Gδ in a perfect T1 Baire space via meagreness of the countable set."
+    },
+    {
+      "id": "not-gdelta-mechanism",
+      "title": "A dense meagre set is never a Gδ",
+      "startLine": 95,
+      "endLine": 106,
+      "summary": "not_isGδ_of_dense_isMeagre: the abstract 'ℚ is not a Gδ' mechanism. A dense Gδ would be residual, making its complement meagre; together with the set itself being meagre, univ would be meagre — impossible in a nonempty Baire space."
+    },
+    {
+      "id": "transcendentals-dense-gdelta",
+      "title": "The transcendental reals as a concrete dense Gδ",
+      "startLine": 107,
+      "endLine": 136,
+      "summary": "transcendentalReals_isGδ instantiates the abstract lemma at the countable algebraic reals; the headline transcendentalReals_dense_isGδ exhibits the transcendentals as an explicit dense Gδ — the concrete residual witness the parent's open question requested. transcendentalReals_residual_of_dense_Gδ re-derives residuality directly from that structure."
+    },
+    {
+      "id": "algebraic-dense-not-gdelta",
+      "title": "The algebraic reals are dense but not a Gδ",
+      "startLine": 137,
+      "endLine": 165,
+      "summary": "algebraicReals_dense (they contain the dense ℚ) and algebraicReals_not_isGδ (dense + meagre ⟹ not Gδ), completing the dichotomy: transcendentals are a dense Gδ, the algebraic reals are not — the algebraic/transcendental analogue of irrationals/ℚ. Closing #print axioms confirm 0 axioms."
+    }
+  ]
 }
