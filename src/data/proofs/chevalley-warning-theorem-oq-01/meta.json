@@ -142,8 +142,9 @@
   ],
   "crossReferences": [
     {
-      "id": "erdos-ginzburg-ziv-oq-01",
-      "reason": "Erdős–Ginzburg–Ziv is the sole downstream consumer of Mathlib's Chevalley–Warning lemmas; its standard proof applies the nontrivial-solution corollary to a pair of power-sum forms over 𝔽_p"
+      "targetId": "erdos-ginzburg-ziv-oq-01",
+      "relationship": "related",
+      "description": "Erdős–Ginzburg–Ziv is the sole downstream consumer of Mathlib's Chevalley–Warning lemmas; its standard proof applies the nontrivial-solution corollary to a pair of power-sum forms over 𝔽_p"
     }
   ],
   "conclusion": {
