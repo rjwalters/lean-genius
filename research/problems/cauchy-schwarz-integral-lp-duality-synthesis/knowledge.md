@@ -182,3 +182,71 @@ removes the only open *mathematical* question that was gating the elimination pl
 - Per the project's "flag BLOCKED over PREP churn" rule, marking this **blocked**
   rather than writing a third ORIENT memo. Re-open the moment Docker/Aristotle return:
   build-check the σ-finite `Incomplete01` chain, then apply option (A) iff green.
+
+### 2026-06-23 (Session 4, researcher-7) — PROGRESS (option B de-risked; verifier blackout continues)
+
+**Mode:** REVISIT. **Outcome:** progress (no verified code — Docker hung `docker version` exit 124, Aristotle backend returns `Resource not found`).
+
+**Headline:** the general→σ-finite reduction (option B), which Session 2 dropped from
+the critical path as too hard, is now **fully scoped and de-risked**. The one piece
+prior sessions treated as a vague "Lean infrastructure gap" — the σ-finite support of
+an arbitrary Lᵖ function — **is already in Mathlib**, and the verified chain already
+contains the restriction/extension isometries. The only remaining mathematical content
+is a single maximality argument.
+
+**Why option B (not option A):** Session 2 favored option A (add `[SigmaFinite μ]` to
+the axiom and discharge with `riesz_lp_surjective_sigma_finite`). But that silently
+narrows the published *Full* Lᵖ-duality claim to σ-finite measures — the exact overclaim
+hazard recorded in `surveyFindings`. Option B keeps the unqualified statement and is now
+tractable, so it is the right path.
+
+**What I located (static source read):**
+- `MeasureTheory.MemLp.aefinStronglyMeasurable` (`Mathlib/.../StronglyMeasurable/Lp.lean:59`):
+  `MemLp f p μ → p ≠ 0 → p ≠ ∞ → AEFinStronglyMeasurable f μ`.
+- `AEFinStronglyMeasurable.{sigmaFiniteSet, measurableSet, ae_eq_zero_compl}` +
+  `instance sigmaFinite_restrict` (`StronglyMeasurable/AEStronglyMeasurable.lean:892–916`):
+  yield a measurable `S` with `μ.restrict S` σ-finite and `f =ᵐ[μ.restrict Sᶜ] 0`.
+- Chain already proves (in `…Incomplete01.lean`): `eLpNorm (S.indicator f) p μ =
+  eLpNorm f p (μ.restrict S)` (l.246), `MemLp f p (μ.restrict S) → MemLp (S.indicator f) p μ`
+  (l.260), and the extension-by-zero **isometry** `extByZeroCLM` (l.266, `private`).
+- Mathlib has **no** general Lᵖ duality (`grep` found no `*Dual*` Lp file) — genuine gap
+  the chain fills.
+
+**What I wrote (UNVERIFIED — no build available):**
+- `proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean`:
+  - `memLp_exists_sigmaFinite_support` — the bridge lemma, proven with the confirmed
+    Mathlib API above (high confidence, but not kernel-checked).
+  - `riesz_lp_surjective_general` — the parent axiom restated as a theorem, reduced to a
+    single documented `sorry` for the maximality construction (HARD, not OPEN). File
+    docstring carries the full Folland-6.16 blueprint. **This does not yet eliminate the
+    axiom.**
+
+**Maximality blueprint (the only remaining content):** `c = ⨆_S ‖g_S‖_q ≤ ‖φ‖` over
+σ-finite `S` (each `g_S` from σ-finite Riesz on `μ.restrict S` via `extByZeroCLM`-pullback);
+realize `c` on a countable-union hull `T`; for arbitrary `f`, work on `T ∪ supp f` and use
+Lᵠ-norm additivity over disjoint pieces + maximality to pin the representing function to
+`g_T`. Valid exactly for `1 < p < ∞`.
+
+**Next session (verifier back):** build `memLp_exists_sigmaFinite_support`; re-expose
+`extByZeroCLM`; formalize the maximality lemma (or hand it to Aristotle with the chain as
+context + the blueprint as hint); then swap the axiom and flip meta `axiomatized→verified`
+iff green.
+
+#### Bridge lemma source (for preservation; UNVERIFIED)
+
+```lean
+import Mathlib
+open MeasureTheory ENNReal
+variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
+
+/-- For 0 < p < ∞, every f ∈ Lᵖ(μ) is a.e. supported on a measurable S with
+    μ.restrict S σ-finite. Reduces general Riesz representation to the σ-finite case. -/
+theorem memLp_exists_sigmaFinite_support
+    {f : α → ℝ} {p : ℝ≥0∞} (hf : MemLp f p μ) (hp0 : p ≠ 0) (hptop : p ≠ ∞) :
+    ∃ S : Set α, MeasurableSet S ∧ SigmaFinite (μ.restrict S) ∧ f =ᵐ[μ.restrict Sᶜ] 0 := by
+  have h := hf.aefinStronglyMeasurable hp0 hptop
+  exact ⟨h.sigmaFiniteSet, h.measurableSet, h.sigmaFinite_restrict, h.ae_eq_zero_compl⟩
+```
+
+Full scaffold (with the maximality `sorry` and the reduction blueprint docstring) is in
+`proofs/Proofs/CauchySchwarzIntegralLpDualitySynthesis.lean`.
