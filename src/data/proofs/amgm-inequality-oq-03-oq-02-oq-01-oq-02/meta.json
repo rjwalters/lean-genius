@@ -17,11 +17,11 @@
       "amgm",
       "equality-case"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 243,
-    "assumptions": "",
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used; `#print axioms` reports only the standard foundational axioms (propext, Classical.choice, Quot.sound). The equality-case engine of this file is Mathlib's `Real.geom_mean_eq_arith_mean_weighted_iff'` (the equality case of weighted AM-GM): it is reached through the gallery parent `JensenInequalityOQ01.weighted_amgm_eq_iff`, which is a one-line `rw` wrapper around that Mathlib theorem. This file's contribution is the transport of that equality case — substantial but not an independent AM-GM equality proof: it carries the characterization to every power-mean order `M_r` (`r ≠ 0`) via the substitution `uᵢ = zᵢ^r` and injectivity of `x ↦ x^r` (`Real.rpow_left_inj`), establishes the sign-independence of the equality locus, and derives the strict crossing-zero forms and the sharp HM < GM < AM corner. Because the core equality muscle bottoms out at a Mathlib theorem, the badge is `mathlib` (Tier B) rather than `original`.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "power_mean_eq_geom_mean_iff: M_r = GM ↔ data constant, for EVERY r ≠ 0 — the equality locus is identical for positive and negative orders even though the inequality reverses across zero (sign-independent unification)",
