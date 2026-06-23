@@ -1,0 +1,38 @@
+[
+  {
+    "id": "conjclass-oq0101-ann-header",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "From cardinality form to index form — the open question answered",
+    "content": "The parent entry proves the per-class identity |class(g)| = [G : C_G(g)] and leaves as its first open question the assembly of the full numeric class equation |G| = |Z(G)| + Σ [G : C_G(gᵢ)] over representatives of the noncentral classes. Mathlib supplies the summed class equation only in cardinality form, Nat.card (center G) + ∑ᶠ x ∈ noncenter G, Nat.card x.carrier = Nat.card G. This file closes the gap by rewriting each summand |K| into a centralizer index [G : C_G(gᵢ)]. The header re-derives the per-class bridge conjClass_card_eq_index_centralizer (orbit_eq_carrier_conjClasses ▸ index_stabilizer ▸ stabilizer_eq_centralizer) so the file is self-contained.",
+    "mathContext": "$|G| = |Z(G)| + \\sum_i [G : C_G(g_i)].$",
+    "significance": "key",
+    "relatedConcepts": ["class equation", "centralizer index", "conjugacy class", "ConjAct"],
+    "prerequisites": ["orbit–stabilizer theorem", "per-class identity |class(g)| = [G : C_G(g)]"]
+  },
+  {
+    "id": "conjclass-oq0101-ann-classrep",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 48, "endLine": 68 },
+    "type": "technique",
+    "title": "Choosing representatives and the pointwise bridge",
+    "content": "A conjugacy class x : ConjClasses G is a quotient with no canonical element, so the index [G : C_G(gᵢ)] only makes sense after choosing a representative. classRep x := (ConjClasses.exists_rep x).choose supplies one, with mk_classRep : ConjClasses.mk (classRep x) = x as the defining simp lemma. The pointwise bridge card_carrier_eq_index_centralizer then lifts the per-class identity to an arbitrary class: rewriting x as ConjClasses.mk (classRep x) inside Nat.card x.carrier (via mk_classRep at the hypothesis) turns the per-class identity into |x| = [G : C_G(classRep x)]. This is the equation that gets summed.",
+    "mathContext": "$|x| = [G : C_G(\\mathrm{classRep}\\,x)] \\quad\\text{for every class } x.$",
+    "significance": "key",
+    "relatedConcepts": ["ConjClasses.exists_rep", "Classical.choice", "representative selection"],
+    "prerequisites": ["quotient representatives", "centralizer index"]
+  },
+  {
+    "id": "conjclass-oq0101-ann-indexform",
+    "proofId": "conjugacy-class-equation-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 89 },
+    "type": "key-step",
+    "title": "One summand rewrite assembles the index form",
+    "content": "classEquation_centralizer_index_form starts from Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card. After congr 1 isolates the two finitary sums (the center terms match by rfl), a single finsum_mem_congr rfl (fun x _ => (card_carrier_eq_index_centralizer x).symm) rewrites every summand from Nat.card x.carrier into the centralizer index [G : C_G(classRep x)], producing |Z(G)| + Σ_{noncentral classes} [G : C_G(classRep x)] = |G|. The corollary sum_noncenter_index_eq_card_sub_center then reads off Σ [G : C_G(gᵢ)] = |G| − |Z(G)| by omega. The whole conversion from Mathlib's combinatorial cardinality form to the textbook index form is thus one pointwise rewrite. Only [Finite G] is assumed.",
+    "mathContext": "$|Z(G)| + \\sum_{x \\in \\mathrm{noncenter}} [G : C_G(g_x)] = |G|; \\qquad \\sum_x [G : C_G(g_x)] = |G| - |Z(G)|.$",
+    "significance": "key",
+    "relatedConcepts": ["finsum_mem_congr", "class equation", "p-group center", "Sylow theory"],
+    "prerequisites": ["finitary sums ∑ᶠ", "summed class equation"]
+  }
+]
