@@ -134,7 +134,8 @@
     "keyInsights": [
       "**The conformal estimate is the Cauchy/Schwarz derivative bound**: a disc inscribed in {|f| < 1} maps into the unit disc, so the first Cauchy coefficient gives |f'(c)| ≤ 1/r — a derivative bound with no area content, the form oq-03 asks about",
       "**Radius from derivative**: equivalently r ≤ 1/|f'(c)|, so large derivative at a point forbids a large inscribed disc centred there",
-      "**The obstruction is critical points**: the bound is vacuous wherever f'(c) = 0, and the extremal inscribed disc of a lemniscate tends to sit at a flat saddle of f — so the direct conformal estimate cannot by itself bound ρ(f), explaining why KLR resort to the area approach"
+      "**The obstruction is critical points**: the bound is vacuous wherever f'(c) = 0, and the extremal inscribed disc of a lemniscate tends to sit at a flat saddle of f — so the direct conformal estimate cannot by itself bound ρ(f), explaining why KLR resort to the area approach",
+      "**The degeneracy is witnessed, not merely asserted**: the constant f ≡ 0 has sublevel set all of ℂ (so discs of every radius are inscribed) yet f' ≡ 0, turning the bound into the false r ≤ 0 — a concrete certificate that the f'(c) ≠ 0 hypothesis is necessary and the conformal route carries no information at a critical centre, so the limitation of OQ-03's approach is proved rather than informally argued"
     ],
     "prerequisites": [
       "The lemniscate interior {z : |f(z)| < 1} and the inscribed-disc radius ρ(f)",
