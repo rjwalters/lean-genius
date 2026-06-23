@@ -41,7 +41,7 @@ noncomputable def RootedPoly.eval (p : RootedPoly) (z : ℂ) : ℂ :=
 
 /-- The lemniscate of `p`, the open sublevel set `{z : |f(z)| < 1}`. -/
 def lem (p : RootedPoly) : Set ℂ :=
-  {z : ℂ | Complex.abs (p.eval z) < 1}
+  {z : ℂ | ‖p.eval z‖ < 1}
 
 /-- The polynomial map `z ↦ f(z)` is continuous (a finite product of the
 continuous maps `z ↦ z - rootᵢ`). -/
@@ -52,9 +52,8 @@ theorem continuous_eval (p : RootedPoly) : Continuous p.eval := by
 /-- The lemniscate is open: it is the preimage of the open ray `(-∞, 1)` under the
 continuous map `z ↦ |f(z)|`. -/
 theorem isOpen_lem (p : RootedPoly) : IsOpen (lem p) := by
-  have h : Continuous fun z => Complex.abs (p.eval z) :=
-    Complex.continuous_abs.comp (continuous_eval p)
-  show IsOpen ((fun z => Complex.abs (p.eval z)) ⁻¹' Set.Iio 1)
+  have h : Continuous fun z => ‖p.eval z‖ := (continuous_eval p).norm
+  show IsOpen ((fun z => ‖p.eval z‖) ⁻¹' Set.Iio 1)
   exact h.isOpen_preimage (Set.Iio 1) isOpen_Iio
 
 /-- Each root of `f` lies in the lemniscate: `f(rootᵢ) = 0`, and `|0| = 0 < 1`. -/
@@ -62,7 +61,7 @@ theorem root_mem_lem (p : RootedPoly) (i : Fin p.degree) : p.roots i ∈ lem p :
   have h0 : p.eval (p.roots i) = 0 := by
     unfold RootedPoly.eval
     exact Finset.prod_eq_zero (Finset.mem_univ i) (sub_self _)
-  show Complex.abs (p.eval (p.roots i)) < 1
+  show ‖p.eval (p.roots i)‖ < 1
   rw [h0]; simp
 
 /-- In positive degree the lemniscate is nonempty (it contains the first root). -/
@@ -73,14 +72,14 @@ theorem lem_nonempty (p : RootedPoly) (hp : 0 < p.degree) : (lem p).Nonempty :=
 root: if `z` were `≥ 1` away from all roots then `|f(z)| = ∏ᵢ|z - rootᵢ| ≥ 1`,
 contradicting `z ∈ lem p`. -/
 theorem lem_near_root (p : RootedPoly) {z : ℂ} (hz : z ∈ lem p) :
-    ∃ i : Fin p.degree, Complex.abs (z - p.roots i) < 1 := by
+    ∃ i : Fin p.degree, ‖z - p.roots i‖ < 1 := by
   by_contra h
   push_neg at h
-  have h1 : (1 : ℝ) ≤ Complex.abs (p.eval z) := by
+  have h1 : (1 : ℝ) ≤ ‖p.eval z‖ := by
     unfold RootedPoly.eval
-    rw [map_prod]
+    rw [norm_prod]
     exact Finset.one_le_prod' fun i _ => h i
-  have hz' : Complex.abs (p.eval z) < 1 := hz
+  have hz' : ‖p.eval z‖ < 1 := hz
   exact absurd hz' (not_lt.mpr h1)
 
 /-- **Geometric confinement of the lemniscate.** The lemniscate is contained in the
@@ -92,7 +91,7 @@ theorem lem_subset_iUnion_ball (p : RootedPoly) :
   intro z hz
   obtain ⟨i, hi⟩ := lem_near_root p hz
   refine Set.mem_iUnion.mpr ⟨i, ?_⟩
-  rw [Metric.mem_ball, Complex.dist_eq]
+  rw [Metric.mem_ball, dist_eq_norm]
   exact hi
 
 /-- The lemniscate is bounded: it sits inside a finite union of unit balls. -/

@@ -19,7 +19,7 @@
     "content": "The monic polynomial is a finite product of the continuous maps z ↦ z - rootᵢ, so continuous_finset_prod gives continuity of f. The lemniscate is then the preimage of the open ray (-∞,1) under the continuous map z ↦ |f(z)|, hence open by Continuous.isOpen_preimage.",
     "mathContext": "$\\{|f| < 1\\} = (\\,|f|\\,)^{-1}(\\,(-\\infty,1)\\,)$ is open because $z \\mapsto |f(z)|$ is continuous.",
     "significance": "standard",
-    "relatedConcepts": ["continuous_finset_prod", "Complex.continuous_abs", "open preimage", "sublevel set"]
+    "relatedConcepts": ["continuous_finset_prod", "Continuous.norm", "open preimage", "sublevel set"]
   },
   {
     "id": "ann-erdos1042oq03-roots",
@@ -38,10 +38,10 @@
     "range": { "startLine": 75, "endLine": 97 },
     "type": "key-step",
     "title": "Confinement: Lemniscate Points Are Near a Root",
-    "content": "The heart of the entry. If a point z were at distance ≥ 1 from every root then each factor |z - rootᵢ| ≥ 1, so |f(z)| = ∏ᵢ|z - rootᵢ| ≥ 1 (Finset.one_le_prod' after map_prod), contradicting z ∈ lemniscate. Contrapositively, every lemniscate point is within distance 1 of some root, so the lemniscate lies inside the union of the degree-many open unit balls about the roots.",
+    "content": "The heart of the entry. If a point z were at distance ≥ 1 from every root then each factor |z - rootᵢ| ≥ 1, so |f(z)| = ∏ᵢ|z - rootᵢ| ≥ 1 (Finset.one_le_prod' after norm_prod), contradicting z ∈ lemniscate. Contrapositively, every lemniscate point is within distance 1 of some root, so the lemniscate lies inside the union of the degree-many open unit balls about the roots.",
     "mathContext": "$\\forall i,\\ |z - r_i| \\geq 1 \\Rightarrow |f(z)| = \\prod_i |z - r_i| \\geq 1$. Hence $\\{|f|<1\\} \\subseteq \\bigcup_i B(r_i, 1)$.",
     "significance": "key",
-    "relatedConcepts": ["map_prod", "Finset.one_le_prod'", "Complex.dist_eq", "covering by balls"]
+    "relatedConcepts": ["norm_prod", "Finset.one_le_prod'", "dist_eq_norm", "covering by balls"]
   },
   {
     "id": "ann-erdos1042oq03-bounded",
