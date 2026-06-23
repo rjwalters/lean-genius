@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-angle-tri-oq04-oq01-overview",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 3, "endLine": 56 },
+    "type": "concept",
+    "title": "From Gleason's Degree Condition to a 3-Smoothness Test",
+    "content": "The docstring frames the whole development. By Gleason's theorem (1988), a real is neusis-constructible (constructible with a marked ruler — the tool that trisects angles and duplicates the cube) iff its degree over ℚ divides some 2^a·3^b, a so-called '2-3 number'. The parent entry certifies these existentially by finding witnesses a, b. The goal here is to prove the existential definition equals an intrinsic test on the prime factorization: d is a 2-3 number iff every prime factor of d is 2 or 3 — exactly the 3-smooth numbers. The honest-scope paragraph is important: this is the number-theoretic layer; it does NOT re-prove Gleason's field-theoretic equivalence, which is taken as the modelling assumption.",
+    "mathContext": "Gleason: $\\alpha$ neusis-constructible $\\iff [\\mathbb{Q}(\\alpha):\\mathbb{Q}] \\mid 2^a 3^b$. Target: $\\mathrm{IsTwoThreeNumber}(d) \\iff$ every prime factor of $d$ is in $\\{2,3\\}$ (i.e. $d$ is 3-smooth).",
+    "significance": "key",
+    "relatedConcepts": ["Gleason's theorem", "neusis construction", "marked ruler", "smooth numbers", "constructibility"],
+    "prerequisites": ["field extension degree", "angle trisection impossibility", "prime factorization"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-def",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 58, "endLine": 69 },
+    "type": "definition",
+    "title": "IsTwoThreeNumber: The Existential Predicate to Be Eliminated",
+    "content": "The predicate is re-stated verbatim from the parent AngleTrisectionOQ04 so the file is self-contained: d is a 2-3 number iff 0 < d and there exist a, b with d ∣ 2^a·3^b. This existential form is exactly what makes membership awkward — certifying d requires producing witnesses a, b — and is what the rest of the file works to replace with a structural test.",
+    "mathContext": "$\\mathrm{IsTwoThreeNumber}(d) := 0 < d \\wedge \\exists\\, a\\, b : \\mathbb{N},\\ d \\mid 2^a \\cdot 3^b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["existential quantifier", "divisibility", "self-contained restatement"],
+    "prerequisites": ["divisibility in ℕ"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-backward",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 71, "endLine": 105 },
+    "type": "lemma",
+    "title": "exists_dvd_of_primes: Strong Induction on minFac (the Technical Heart)",
+    "content": "This is the hard backward direction and the only nontrivial proof in the file. It uses Nat.strong_induction_on. If d = 1, take a = b = 0. Otherwise let p = d.minFac, which is prime (Nat.minFac_prime, valid since d ≠ 1) and divides d, so d = p·e. One shows e > 0 and e < d (since p > 1), and that e ∣ d, so every prime factor of e is also a prime factor of d — hence in {2,3}. The induction hypothesis applied to e gives e ∣ 2^a·3^b. Finally p ∈ {2,3} (it is a prime factor of d), and we re-absorb it: if p = 2, then d = 2e ∣ 2·(2^a·3^b) = 2^{a+1}·3^b; symmetrically for p = 3. The ring lemma 2^{a+1}·3^b = 2·(2^a·3^b) and mul_dvd_mul_left close it.",
+    "mathContext": "Peel $p = \\mathrm{minFac}(d) \\in \\{2,3\\}$, write $d = p\\cdot e$ with $e < d$; from $e \\mid 2^a 3^b$ get $d = pe \\mid p\\cdot 2^a 3^b$, which is $2^{a+1}3^b$ or $2^a 3^{b+1}$.",
+    "significance": "critical",
+    "relatedConcepts": ["strong induction", "Nat.minFac", "Euclid's lemma", "smooth numbers", "divisibility"],
+    "prerequisites": ["strong induction on ℕ", "minimal prime factor", "induction hypothesis on a proper divisor"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-iff",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 107, "endLine": 122 },
+    "type": "theorem",
+    "title": "isTwoThreeNumber_iff: The Intrinsic Criterion",
+    "content": "The headline equivalence. The forward direction is the easy one: given d ∣ 2^a·3^b and a prime p ∣ d, then p ∣ 2^a·3^b; by Nat.Prime.dvd_mul it divides 2^a or 3^b, and Nat.Prime.dvd_of_dvd_pow reduces to p ∣ 2 or p ∣ 3, so by Nat.prime_dvd_prime_iff_eq we get p = 2 or p = 3. The backward direction is exactly exists_dvd_of_primes. The result turns membership from an existential witness search into a finite, decidable inspection of the prime factorization.",
+    "mathContext": "$\\mathrm{IsTwoThreeNumber}(d) \\iff 0 < d \\wedge \\forall p\\ \\text{prime},\\ p \\mid d \\Rightarrow p = 2 \\vee p = 3$. Forward uses Euclid's lemma; backward is the strong induction.",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's lemma", "Nat.Prime.dvd_mul", "decidability", "if and only if"],
+    "prerequisites": ["prime divisibility", "Nat.Prime.dvd_of_dvd_pow"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-obstruction",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 124, "endLine": 145 },
+    "type": "insight",
+    "title": "not_isTwoThreeNumber_of_prime: One Lemma for All Obstructions",
+    "content": "The uniform obstruction: any prime p ∉ {2,3} fails the criterion (it divides itself but is neither 2 nor 3), so it is not a neusis-constructible degree. This single lemma supersedes the parent's hand-written per-number proofs — five_/seven_/eleven_not_isTwoThreeNumber are now one-line instances. Conceptually it pinpoints that the obstruction to trisection-style problems is always a 'bad' prime factor (≥ 5) in the degree, e.g. why the regular heptagon (linked to 7) resists.",
+    "mathContext": "For prime $p \\notin \\{2,3\\}$: $p \\mid p$ yet $p \\neq 2,3$, so $p$ violates the criterion. Recovers $5,7,11 \\notin$ instantly.",
+    "significance": "key",
+    "relatedConcepts": ["uniform obstruction", "regular heptagon", "prime obstruction", "factor-based impossibility"],
+    "prerequisites": ["the intrinsic criterion"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-closure",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 147, "endLine": 163 },
+    "type": "theorem",
+    "title": "Closure Under Divisors and Products",
+    "content": "isTwoThreeNumber_of_dvd: a positive divisor e ∣ d of a 2-3 number is again a 2-3 number — its prime factors are a subset of d's, so still ⊆ {2,3}. isTwoThreeNumber_mul: the product d·e is a 2-3 number, since a prime dividing d·e divides d or e (Euclid) and hence is in {2,3}. Both proofs simply rewrite with isTwoThreeNumber_iff and chase prime divisibility — no witness arithmetic, illustrating the leverage the criterion provides over the existential definition.",
+    "mathContext": "$e \\mid d$, primes of $e$ $\\subseteq$ primes of $d$ $\\subseteq \\{2,3\\}$; primes of $d\\cdot e$ = primes of $d$ $\\cup$ primes of $e$.",
+    "significance": "supporting",
+    "relatedConcepts": ["closure properties", "divisor closure", "multiplicative structure"],
+    "prerequisites": ["transitivity of divisibility", "Euclid's lemma"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-lcm",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 165, "endLine": 177 },
+    "type": "insight",
+    "title": "isTwoThreeNumber_lcm: Closure That the Existential Definition Hides",
+    "content": "The lcm of two 2-3 numbers is a 2-3 number. This is the genuinely new structural fact: it is NOT obvious from the existential definition (there is no canonical way to combine two witnessed factorizations into a witness for the lcm), but it is a one-liner from the criterion. The key step is Nat.lcm d e ∣ d·e, so any prime dividing the lcm divides d·e, hence d or e, hence is in {2,3}. This makes the neusis-constructible degrees closed under the natural multiplicative 'join'.",
+    "mathContext": "$\\mathrm{lcm}(d,e) \\mid d\\cdot e$; primes of $\\mathrm{lcm}(d,e)$ $\\subseteq$ primes of $d\\cdot e$ $\\subseteq \\{2,3\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["least common multiple", "lattice join", "closure under lcm"],
+    "prerequisites": ["lcm divides product", "the intrinsic criterion"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-examples",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 179, "endLine": 196 },
+    "type": "theorem",
+    "title": "Composite Non-Members and a Positive Witness",
+    "content": "ten_not_isTwoThreeNumber (10 = 2·5) and fifteen_not_isTwoThreeNumber (15 = 3·5) are dispatched by exhibiting the bad prime 5 dividing them — read straight off the criterion, with omega closing 5 ≠ 2 ∧ 5 ≠ 3. twelve_isTwoThreeNumber (12 = 2²·3) shows the positive side, still given via the explicit existential witness (a,b) = (2,1) since that is the most direct certificate for a specific small number. Together they illustrate both directions of the criterion in action.",
+    "mathContext": "$10 = 2\\cdot 5$, $15 = 3\\cdot 5$: factor $5$ obstructs. $12 = 2^2\\cdot 3 \\mid 2^2\\cdot 3^1$: witness $(2,1)$.",
+    "significance": "context",
+    "relatedConcepts": ["worked examples", "concrete obstructions", "explicit witnesses"],
+    "prerequisites": ["the uniform obstruction lemma"]
+  },
+  {
+    "id": "ann-angle-tri-oq04-oq01-trisection",
+    "proofId": "angle-trisection-oq-04-oq-01",
+    "range": { "startLine": 198, "endLine": 217 },
+    "type": "insight",
+    "title": "The Geometry Payoff: cos(20°) Is Neusis-Constructible",
+    "content": "IsNeusisConstructible packages the degree condition geometrically, and isNeusisConstructible_iff restates the criterion as the marked-ruler analogue of the Gauss–Wantzel prime-factor test. The capstone trisection_degree_neusis proves cos(20°) = cos(π/9) — which has minimal polynomial 8x³−6x−1 of degree 3 — passes the criterion because 3's only prime factor is 3. This is exactly why a marked ruler trisects 60° though compass-and-straightedge cannot: 3 is 3-smooth but not a power of 2. The contrast crisply separates the two construction regimes.",
+    "mathContext": "$\\cos(\\pi/9)$ has degree $3$ over $\\mathbb{Q}$ (min. poly $8x^3 - 6x - 1$). $3$ passes the neusis test ($3 \\in \\{2,3\\}$) but fails the compass test ($3$ is not a power of $2$).",
+    "significance": "key",
+    "relatedConcepts": ["cos(20°)", "Gauss–Wantzel theorem", "compass vs marked ruler", "minimal polynomial degree"],
+    "prerequisites": ["minimal polynomial of cos(π/9)", "compass-constructibility degree condition"]
+  }
+]
