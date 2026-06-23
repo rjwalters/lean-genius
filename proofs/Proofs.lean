@@ -3662,6 +3662,7 @@ import Proofs.VietasFormulasOQ03OQ05
 import Proofs.VivianiTheorem
 import Proofs.WeakGoldbach
 import Proofs.WeitzenbockInequalityOQ01
+import Proofs.WeitzenbockInequalityOQ01OQ01
 import Proofs.WilsonsTheorem
 import Proofs.WilsonsTheoremOQ01
 import Proofs.WilsonsTheoremOQ01OQ01
