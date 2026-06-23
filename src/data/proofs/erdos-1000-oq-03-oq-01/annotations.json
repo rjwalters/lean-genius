@@ -1,0 +1,62 @@
+[
+  {
+    "id": "combinatorial-definition",
+    "proofId": "erdos-1000-oq-03-oq-01",
+    "range": { "startLine": 37, "endLine": 47 },
+    "type": "definition",
+    "title": "The Combinatorial Definition C_k(n)",
+    "content": "The honest counting definition that the parent erdos-1000-oq-03 deferred. `gv a` is the gcd of all coordinates of a tuple a : Fin k → Fin n (taken as naturals); `coprimeTuples k n` filters the n^k tuples to those jointly coprime to n (gcd(a₀,…,a_{k-1},n) = 1); and `jordanCount k n` = C_k(n) is the cardinality. At k = 1 this is just the count of residues coprime to n, i.e. Euler's totient — Jordan's J_k is the natural k-dimensional generalization, counting coprime tuples instead of coprime residues.",
+    "mathContext": "$C_k(n)=\\#\\{(a_0,\\dots,a_{k-1})\\in(\\mathbb{Z}/n)^k:\\gcd(a_0,\\dots,a_{k-1},n)=1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["Jordan totient", "Euler totient", "joint coprimality", "Finset cardinality", "gcd of a family"],
+    "prerequisites": ["modular arithmetic", "gcd", "Finset cardinality"]
+  },
+  {
+    "id": "gcd-scaling",
+    "proofId": "erdos-1000-oq-03-oq-01",
+    "range": { "startLine": 49, "endLine": 61 },
+    "type": "technique",
+    "title": "The GCD Scaling Lemmas",
+    "content": "Two reusable ℕ-valued lemmas that make the scaling bijection work. `gcd_smul`: scaling every coordinate by d multiplies the coordinate-gcd by d, gcd(d·f₀,…) = d·gcd(f₀,…), derived from Mathlib's `Finset.gcd_mul_left` (clearing the `normalize` factor over ℕ). `gcd_div`: dividing every coordinate by d (when d divides each) divides the gcd by d, obtained from gcd_smul by cancelling d. Together they let the proof move freely between a tuple and its d-scaled/divided image while tracking exactly how the content gcd transforms — the algebraic core of both directions of the fiber bijection.",
+    "mathContext": "$\\gcd(d f_0,\\dots,d f_{k-1})=d\\cdot\\gcd(f_0,\\dots,f_{k-1})$; and $\\gcd(f_i/d)=\\gcd(f_i)/d$ when $d\\mid f_i$ for all $i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["gcd scaling", "Finset.gcd_mul_left", "normalize", "divisibility"],
+    "prerequisites": ["gcd of a family", "ℕ division", "divisibility"]
+  },
+  {
+    "id": "divisor-sum",
+    "proofId": "erdos-1000-oq-03-oq-01",
+    "range": { "startLine": 63, "endLine": 136 },
+    "type": "theorem",
+    "title": "The Gauss-Type Divisor Identity ∑_{d∣n} C_k(d) = nᵏ",
+    "content": "`jordanCount_divisor_sum`: the exact k-dimensional generalization of Gauss's ∑_{d∣n} φ(d) = n. Proved bijectively, not by Möbius computation. The n^k tuples mod n are partitioned by their 'content' d = gcd(coordinates, n) via `Finset.card_eq_sum_card_fiberwise`; then `Finset.card_bij'` realises each fiber over d as the jointly-coprime tuples mod n/d, with the explicit two-sided maps a ↦ a/d and b ↦ d·b. The gcd scaling lemmas plus `Nat.coprime_div_gcd_div_gcd` verify both maps land correctly (the scaled-down tuple is coprime to n/d; the scaled-up tuple has content exactly d). A final divisor reindex `Nat.sum_div_divisors` turns ∑ C_k(n/d) into ∑ C_k(d).",
+    "mathContext": "$\\sum_{d\\mid n} C_k(d)=n^k$; every tuple mod $n$ is $d\\cdot(\\text{a coprime tuple mod }n/d)$ for a unique $d=\\gcd(\\text{coords},n)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Gauss divisor sum", "fiberwise counting", "bijective proof", "Finset.card_bij'", "content of a tuple"],
+    "prerequisites": ["double counting", "bijections", "divisor sums", "gcd"]
+  },
+  {
+    "id": "moebius-inversion",
+    "proofId": "erdos-1000-oq-03-oq-01",
+    "range": { "startLine": 138, "endLine": 152 },
+    "type": "theorem",
+    "title": "The Möbius-Inversion Closed Form C_k(n) = ∑_{d∣n} μ(d)·(n/d)ᵏ",
+    "content": "`jordanCount_eq_moebius_sum`: inverting the divisor identity over ℤ via Mathlib's `sum_eq_iff_sum_smul_moebius_eq` yields C_k(n) = ∑_{d∣n} μ(d)·(n/d)^k — which is exactly the Dirichlet convolution (μ * pow k)(n). This is the punchline: the combinatorial count C_k of this entry coincides with the convolution-defined J_k of the parent erdos-1000-oq-03, so the two definitions of Jordan's totient (count of coprime tuples vs μ * pow k) agree. The cast to ℤ is needed because Möbius values are signed; `Nat.sum_divisorsAntidiagonal` rearranges the inverted sum into divisor form.",
+    "mathContext": "$C_k(n)=\\sum_{d\\mid n}\\mu(d)\\,(n/d)^k=(\\mu * \\mathrm{pow}_k)(n)=J_k(n)$.",
+    "significance": "critical",
+    "relatedConcepts": ["Möbius inversion", "Dirichlet convolution", "Jordan totient closed form", "arithmetic functions"],
+    "prerequisites": ["Möbius inversion", "Dirichlet convolution", "integer casts"]
+  },
+  {
+    "id": "euler-recovery",
+    "proofId": "erdos-1000-oq-03-oq-01",
+    "range": { "startLine": 154, "endLine": 176 },
+    "type": "theorem",
+    "title": "Euler Recovery: C_1(n) = φ(n)",
+    "content": "`jordanCount_one_eq_totient`: at k = 1 the count specializes to Euler's totient. A length-one tuple's content gcd is just its single coordinate (hgv), so the jointly-coprime condition becomes plain coprimality to n; a `Finset.card_bij'` between length-one coprime tuples and the totient's defining filter range(n) finishes it. This sanity check confirms J_1 = φ and anchors the whole k-parameter family in the classical case.",
+    "mathContext": "$C_1(n)=\\varphi(n)$ — Jordan's totient at $k=1$ is Euler's totient.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler totient", "specialization", "Finset.card_bij'", "sanity check"],
+    "prerequisites": ["Euler's totient", "coprimality", "bijections"]
+  }
+]

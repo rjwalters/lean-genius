@@ -79,5 +79,107 @@
         "relationship": "Parent entry. Builds J_k from the Dirichlet-convolution definition J_k = μ * pow k and explicitly defers the combinatorial counting definition; this entry supplies that definition C_k and proves C_k = J_k, equating the two."
       }
     ]
-  }
+  },
+  "overview": {
+    "historicalContext": "Jordan's totient J_k was introduced by Camille Jordan in his 1870 Traité des substitutions et des équations algébriques. It generalizes Euler's totient φ = J_1: J_k(n) counts the k-tuples of residues mod n that, together with n, are jointly coprime, and equivalently the number of cyclic subgroups / ordered bases relevant to counting subgroups of (ℤ/n)^k. Two equivalent definitions circulate in the literature: the COMBINATORIAL count C_k(n) of jointly-coprime tuples, and the DIRICHLET-CONVOLUTION form J_k = μ * pow_k (equivalently the product n^k ∏_{p∣n}(1 − p^{-k})). Their equivalence rests on the Gauss-type divisor identity ∑_{d∣n} J_k(d) = n^k, the exact analogue of Gauss's ∑_{d∣n} φ(d) = n. The parent gallery entry erdos-1000-oq-03 developed the convolution side (multiplicativity, divisor sums) but explicitly deferred the combinatorial definition; this entry supplies it and proves the two coincide. Mathlib has Euler's totient and Möbius inversion but not Jordan's totient, so the counting object and its identities are built from scratch here.",
+    "problemStatement": "Define C_k(n) = #{(a₀,…,a_{k-1}) ∈ (ℤ/n)^k : gcd(a₀,…,a_{k-1},n) = 1}, the count of jointly-coprime k-tuples mod n, and prove: (1) the Gauss-type divisor identity ∑_{d∣n} C_k(d) = n^k; (2) the explicit closed form C_k(n) = ∑_{d∣n} μ(d)·(n/d)^k = (μ * pow_k)(n), establishing C_k = J_k (the parent's convolution-defined Jordan totient); and (3) the specialization C_1(n) = φ(n).",
+    "proofStrategy": "The crux is a single elementary scaling bijection; no analysis, no generating functions. (1) DIVISOR SUM: classify each of the n^k tuples mod n by its 'content' d = gcd(coordinates, n), a divisor of n, using fiberwise counting (Finset.card_eq_sum_card_fiberwise). The fiber over d is exactly the jointly-coprime tuples mod n/d, realised by the two-sided bijection a ↦ a/d and b ↦ d·b (Finset.card_bij'); the gcd scaling lemmas gcd_smul/gcd_div together with Nat.coprime_div_gcd_div_gcd verify both maps are well-defined and land correctly. A divisor reindex (Nat.sum_div_divisors) gives ∑_{d∣n} C_k(d) = n^k. (2) CLOSED FORM: invert the divisor identity over ℤ with Mathlib's Möbius inversion sum_eq_iff_sum_smul_moebius_eq to get C_k(n) = ∑_{d∣n} μ(d)·(n/d)^k = (μ * pow_k)(n) = J_k(n). (3) EULER: at k=1 the content gcd is the single coordinate, so joint coprimality is ordinary coprimality and a card_bij' matches the totient's defining filter. All 0-axiom.",
+    "keyInsights": [
+      "The whole equivalence of Jordan's two definitions reduces to ONE elementary bijection: every k-tuple mod n is uniquely d·(a coprime tuple mod n/d) where d is its content gcd. This 'factor out the content' map is the k-dimensional generalization of the orbit-counting that proves Gauss's φ identity.",
+      "The Gauss-type divisor sum ∑_{d∣n} C_k(d) = n^k is proved combinatorially (a bijective fiber count), and the closed form C_k(n) = ∑ μ(d)(n/d)^k is then a FORMAL consequence via Möbius inversion — separating the combinatorial content from the algebraic bookkeeping keeps each step short.",
+      "Working over ℤ for the inversion is essential: Möbius values are signed, so the closed form cannot be stated purely over ℕ; the proof casts the all-ℕ divisor identity up to ℤ exactly once before inverting.",
+      "The gcd scaling lemmas (gcd of a scaled family scales, gcd of a divided family divides) are the only nontrivial arithmetic, and they isolate the single fact that makes both directions of the bijection land in the right coprime-tuple set.",
+      "Recovering C_1 = φ at k=1 is not just a sanity check: it certifies that this combinatorial object IS the standard Jordan totient family, so the parent's convolution-side theory (multiplicativity, divisor sums) transfers to the count without re-proof."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Combinatorial Definition",
+      "startLine": 37,
+      "endLine": 47,
+      "summary": "Defines gv (the coordinate-gcd of a tuple), coprimeTuples k n (tuples jointly coprime to n), and jordanCount k n = C_k(n), the count of jointly-coprime k-tuples mod n that the parent deferred.",
+      "mathContext": "$C_k(n)=\\#\\{a\\in(\\mathbb{Z}/n)^k:\\gcd(a,n)=1\\}$."
+    },
+    {
+      "id": "gcd-lemmas",
+      "title": "GCD Scaling Lemmas",
+      "startLine": 49,
+      "endLine": 61,
+      "summary": "Two ℕ lemmas: gcd_smul (scaling all coordinates by d scales the gcd by d) and gcd_div (dividing by a common d divides the gcd by d), the algebraic core of the scaling bijection.",
+      "mathContext": "$\\gcd(d f_i)=d\\gcd(f_i)$ and $\\gcd(f_i/d)=\\gcd(f_i)/d$."
+    },
+    {
+      "id": "divisor-sum",
+      "title": "The Gauss-Type Divisor Identity",
+      "startLine": 63,
+      "endLine": 136,
+      "summary": "jordanCount_divisor_sum: ∑_{d∣n} C_k(d) = n^k, proved by fibering the n^k tuples by content d = gcd(coords,n) and bijecting each fiber with the coprime tuples mod n/d via a ↦ a/d, b ↦ d·b (Finset.card_bij').",
+      "mathContext": "$\\sum_{d\\mid n}C_k(d)=n^k$."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Möbius-Inversion Closed Form",
+      "startLine": 138,
+      "endLine": 152,
+      "summary": "jordanCount_eq_moebius_sum: Möbius inversion (over ℤ) of the divisor sum gives C_k(n) = ∑_{d∣n} μ(d)·(n/d)^k = (μ * pow_k)(n) = J_k(n), equating the count with the parent's convolution-defined Jordan totient.",
+      "mathContext": "$C_k(n)=\\sum_{d\\mid n}\\mu(d)(n/d)^k=J_k(n)$."
+    },
+    {
+      "id": "euler",
+      "title": "Euler Recovery at k = 1",
+      "startLine": 154,
+      "endLine": 176,
+      "summary": "jordanCount_one_eq_totient: C_1(n) = φ(n), since a length-one tuple's content is its single coordinate, reducing joint coprimality to ordinary coprimality (Finset.card_bij' onto the totient's filter).",
+      "mathContext": "$C_1(n)=\\varphi(n)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Defines Jordan's totient combinatorially as C_k(n) = #{jointly-coprime k-tuples mod n} — the definition the parent erdos-1000-oq-03 deferred — and proves three results with 0 axioms and 0 sorries (no native_decide): the Gauss-type divisor identity ∑_{d∣n} C_k(d) = n^k (by an explicit content-scaling bijection), the closed form C_k(n) = ∑_{d∣n} μ(d)·(n/d)^k via Möbius inversion (showing C_k = (μ * pow_k) = J_k, the parent's convolution totient), and the Euler recovery C_1(n) = φ(n). The argument rests on one elementary scaling bijection plus Mathlib's Möbius inversion; 179 lines, 5 theorems, 3 definitions.",
+    "implications": "The two standard definitions of Jordan's totient — the combinatorial count of coprime tuples and the Dirichlet convolution μ * pow_k — are now provably the same object in the gallery, so the parent's convolution-side theory (multiplicativity, divisor-sum identities) applies verbatim to the count. The content-scaling bijection generalizes the classical orbit argument behind Gauss's φ identity to arbitrary k, and the same template (fiber by content, biject each fiber with a scaled copy, Möbius-invert) computes the divisor sums of other gcd-defined counting functions.",
+    "openQuestions": [
+      "Derive the product formula J_k(n) = n^k·∏_{p∣n}(1 − p^{-k}) from the Möbius closed form via multiplicativity, giving the third standard description of Jordan's totient.",
+      "Prove the combinatorial count C_k is multiplicative directly (via CRT on (ℤ/mn)^k ≅ (ℤ/m)^k × (ℤ/n)^k for coprime m,n) and reconcile with the convolution multiplicativity inherited from the parent."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-1000-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry. Built Jordan's totient J_k from the Dirichlet-convolution definition J_k = μ * pow_k (multiplicativity, divisor sums) and explicitly deferred the combinatorial counting definition. This entry supplies that definition C_k and proves C_k = J_k via the Gauss-type divisor identity and Möbius inversion, closing the equivalence."
+    },
+    {
+      "targetId": "erdos-1000-oq-03",
+      "relationship": "related",
+      "description": "Both entries develop Jordan's totient; the combinatorial divisor identity ∑_{d∣n} C_k(d) = n^k proved here is the counting counterpart of the convolution identities established in the parent, and the k=1 specialization recovers the Euler-totient theory underlying the whole #1000 lineage."
+    }
+  ],
+  "references": [
+    {
+      "title": "Traité des substitutions et des équations algébriques",
+      "author": "Camille Jordan",
+      "year": "1870",
+      "venue": "Gauthier-Villars (Jordan's totient J_k)",
+      "description": "Original source introducing the totient function J_k generalizing Euler's φ, counting jointly-coprime k-tuples."
+    },
+    {
+      "title": "Mathlib4: NumberTheory.ArithmeticFunction.Moebius",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of the Möbius inversion theorem sum_eq_iff_sum_smul_moebius_eq used to invert the divisor sum into the explicit Jordan closed form."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "erdos-1000-oq-03-oq-01-oq-01",
+      "question": "Derive the Euler-product form J_k(n) = n^k·∏_{p∣n}(1 − p^{-k}) from the Möbius closed form C_k(n) = ∑_{d∣n} μ(d)(n/d)^k via multiplicativity of the squarefree Möbius sum, completing the trio of standard descriptions of Jordan's totient.",
+      "significance": "medium"
+    },
+    {
+      "id": "erdos-1000-oq-03-oq-01-oq-02",
+      "question": "Prove the combinatorial count C_k is multiplicative directly from the Chinese Remainder Theorem (ℤ/mn)^k ≅ (ℤ/m)^k × (ℤ/n)^k for coprime m,n, and reconcile it with the convolution multiplicativity inherited from erdos-1000-oq-03.",
+      "significance": "low"
+    }
+  ]
 }
