@@ -1,0 +1,211 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01",
+  "title": "The Mean, Second Moment, and Variance of the Descent Statistic from the Eulerian Numbers",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ01",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ05"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "GeometricSeriesOQ07OQ01OQ01OQ01",
+      "GeometricSeriesOQ07OQ01OQ01OQ01OQ01",
+      "GeometricSeriesOQ07OQ01OQ01OQ01OQ05"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01",
+    "lineCount": 212,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "descent-statistic",
+      "moments",
+      "variance",
+      "expected-value",
+      "factorial",
+      "recurrence",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 212,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "moment_transfer: THE ENGINE — for an arbitrary integer weight w, the weighted row-(n+1) sum ∑ₖ w(k)·⟨n+1,k⟩ equals the weighted row-n sum ∑ᵢ (w(i)·(i+1) + w(i+1)·(n−i))·⟨n,i⟩. This single lemma converts the triangle recurrence ⟨n+1,k+1⟩ = (k+2)·⟨n,k+1⟩ + (n−k)·⟨n,k⟩ into a transfer operator on the moment generating functional: any polynomial moment of the descent distribution at row n+1 is expressed through moments at row n. Proved by peeling the k=0 term, expanding the recurrence inside the shifted sum, and reindexing ∑ⱼ w(j+1)·(j+2)·⟨n,j+1⟩ back over ⟨n,i⟩. Not a Mathlib export; the descent statistic and its moments are not in Mathlib.",
+      "eulerian_first_moment: 2·∑ₖ k·⟨n,k⟩ = (n−1)·n! for n ≥ 1, i.e. the expected number of descents of a uniformly random permutation of {1,…,n} is exactly (n−1)/2. Proved purely from palindromy (the sibling oq-05): reflecting k ↦ n−1−k via Finset.sum_range_reflect pairs k·⟨n,k⟩ with (n−1−k)·⟨n,k⟩, so twice the first moment is ∑ₖ (n−1)·⟨n,k⟩ = (n−1)·n!. A symmetry argument requiring no recurrence.",
+      "eulerian_M2_succ: the second-moment recurrence M₂(n+1) = (n−1)·M₂(n) + (2n−1)·M₁(n) + n·M₀(n), obtained by specialising moment_transfer to the weight w(k) = k² and simplifying the transferred coefficient i²·(i+1) + (i+1)²·(n−i) = (n−1)·i² + (2n−1)·i + n. This exhibits the second moment as a linear combination of the lower moments at the previous row.",
+      "eulerian_second_moment: 12·∑ₖ k²·⟨n,k⟩ = n!·(3n²−5n+4) for n ≥ 2, the closed form of the second moment. Proved by induction on n from the base row n = 2, stepping with eulerian_M2_succ and feeding in the zeroth moment M₀ = n! (eulerian_M0) and the first moment M₁ (eulerian_first_moment); the inductive step closes by linear_combination over the recurrence.",
+      "eulerian_variance: 12·(M₂·n! − M₁²) = (n+1)·n!² for n ≥ 2 — the variance of the number of descents is (n+1)/12. A pure-algebra consequence (linear_combination) of the first and second moments, cleared of denominators over ℤ. Together with the mean (n−1)/2 this is the full second-order description of the descent distribution.",
+      "eulerian_M0: the zeroth moment ∑ₖ ⟨n,k⟩ = n! cast to ℤ, repackaging the parent's row-sum identity (eulerian_row_sum) as the M₀ input to the moment recurrence."
+    ],
+    "prerequisites": [
+      "Grandparent: geometric-series-oq-07-oq-01-oq-01-oq-01 (the combinatorial Eulerian numbers ⟨n,k⟩) — supplies the eulerian triangle, the triangle recurrence eulerian_succ_succ, the boundary values eulerian_succ_zero / eulerian_col_zero / eulerian_succ_self, and eulerian_eq_zero_of_lt",
+      "Parent: geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01 (the Eulerian row sum ∑ₖ ⟨n,k⟩ = n!) — supplies eulerian_row_sum, the zeroth moment M₀",
+      "Sibling: geometric-series-oq-07-oq-01-oq-01-oq-01-oq-05 (palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩) — supplies eulerian_palindrome', the reflection symmetry from which the mean is read off",
+      "Mathlib: Finset.sum_range_reflect (index reflection), Finset.sum_range_succ' / Finset.sum_range_succ (peeling boundary terms), Finset.sum_add_distrib and Finset.mul_sum (linearity), Nat.le_induction (induction from a base), and linear_combination for the closing algebra"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_reflect",
+        "description": "∑ i in range n, f (n−1−i) = ∑ i in range n, f i. The reflection identity that, combined with palindromy of the Eulerian row, pairs k·⟨n,k⟩ with (n−1−k)·⟨n,k⟩ and yields the mean (n−1)/2 by symmetry alone.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "∑ i in range (n+1), f i = (∑ i in range n, f (i+1)) + f 0. Peels the k=0 term off the row-(n+1) sum in moment_transfer so the triangle recurrence (which is stated at k+1) can be applied to the shifted sum.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.le_induction",
+        "description": "Induction starting from a base value (here n = 2). Drives the proof of the second-moment closed form, with eulerian_M2_succ as the inductive step.",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "eulerian_succ_succ",
+        "description": "The Eulerian triangle recurrence ⟨n+1,k+1⟩ = (k+2)·⟨n,k+1⟩ + (n−k)·⟨n,k⟩ from the grandparent entry. The sole combinatorial input to moment_transfer; everything downstream is linearity and algebra.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+      },
+      {
+        "theorem": "eulerian_row_sum",
+        "description": "The Eulerian row sum ∑ₖ ⟨n,k⟩ = n! from the parent entry, repackaged here as the zeroth moment M₀ that feeds the second-moment recurrence.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ01"
+      },
+      {
+        "theorem": "eulerian_palindrome'",
+        "description": "The palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ from the sibling oq-05. Combined with Finset.sum_range_reflect it gives the first moment (the mean number of descents) purely by symmetry.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ05"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent (the Eulerian row sum ∑ₖ ⟨n,k⟩ = n!). This entry reuses the row sum as the zeroth moment M₀ and goes beyond it to the first two moments and the variance of the descent distribution — statements about the shape of the Eulerian row rather than its total."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-05",
+      "relationship": "uses",
+      "description": "Sibling (palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩). The reflection symmetry is exactly what gives the mean number of descents (n−1)/2 without any recurrence: twice the first moment collapses to (n−1)·n! by pairing k with n−1−k."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Grandparent (the combinatorial Eulerian numbers ⟨n,k⟩). Supplies the triangle recurrence eulerian_succ_succ that the moment-transfer engine turns into a recurrence on the moments of the descent statistic."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers, descent statistic)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian numbers, the descent statistic of a random permutation, and the fact that its mean is (n−1)/2 and variance (n+1)/12."
+    },
+    {
+      "title": "Combinatorics of Permutations",
+      "author": "Miklós Bóna",
+      "year": "2012",
+      "venue": "CRC Press",
+      "description": "Develops the distribution of descents (and the asymptotic normality of the Eulerian distribution), for which the mean and variance computed here are the first two moments."
+    }
+  ],
+  "sorries": 0,
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "question": "Use the moment-transfer engine to compute the third (and higher) moments of the descent statistic, or the centred moments, and verify the central-limit behaviour: that the standardised descent count (X − (n−1)/2)/√((n+1)/12) is asymptotically standard normal.",
+      "significance": "medium"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02",
+      "question": "Prove the moment generating / probability generating function of the descent statistic equals the (normalised) Eulerian polynomial Eₙ(t)/n!, recovering all moments at once as derivatives at t = 1, and compare with the moment-transfer recurrence used here.",
+      "significance": "low"
+    }
+  ],
+  "description": "Computes the first two moments and the variance of the number of descents of a uniformly random permutation of {1,…,n}, distributed as the Eulerian row (⟨n,0⟩,…,⟨n,n−1⟩). The mean is (n−1)/2 (2·∑ₖ k·⟨n,k⟩ = (n−1)·n!), read straight off the palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ by reflection. The second moment 12·∑ₖ k²·⟨n,k⟩ = n!·(3n²−5n+4) and hence the variance (n+1)/12 (12·(M₂·n! − M₁²) = (n+1)·n!²) come from a single moment-transfer lemma: the triangle recurrence ⟨n+1,k+1⟩ = (k+2)·⟨n,k+1⟩ + (n−k)·⟨n,k⟩ is turned into ∑ₖ w(k)·⟨n+1,k⟩ = ∑ᵢ (w(i)·(i+1)+w(i+1)·(n−i))·⟨n,i⟩ for any weight w, which at w = k² gives the moment recurrence M₂(n+1) = (n−1)·M₂(n) + (2n−1)·M₁(n) + n·M₀(n) closing the closed form by induction. 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "The Eulerian numbers ⟨n,k⟩ count the permutations of {1,…,n} with exactly k descents, so row n of Euler's 1755 triangle is the distribution of the descent statistic of a uniformly random permutation. Its first two moments are classical: the mean number of descents is (n−1)/2 and the variance is (n+1)/12 — the seed facts behind the asymptotic normality of the Eulerian distribution (a permutation of {1,…,n} has, to first order, (n−1)/2 ± √(n/12) descents). The mean is forced by the palindromic symmetry ⟨n,k⟩ = ⟨n,n−1−k⟩ alone; the variance needs the triangle recurrence. Mathlib has neither the combinatorial Eulerian numbers nor the descent statistic, so both the triangle (grandparent) and these moment computations are gallery-specific; only the linearity and reflection lemmas for finite sums and the induction principle are Mathlib's.",
+    "problemStatement": "For the combinatorial Eulerian numbers ⟨n,k⟩ of the grandparent entry, compute the first two moments of the descent statistic: prove 2·∑ₖ k·⟨n,k⟩ = (n−1)·n! (mean (n−1)/2), 12·∑ₖ k²·⟨n,k⟩ = n!·(3n²−5n+4) (second moment), and 12·(M₂·n! − M₁²) = (n+1)·n!² (variance (n+1)/12), all over ℤ to avoid denominators.",
+    "proofStrategy": "(1) MEAN (eulerian_first_moment): drop the vanishing top term, then apply Finset.sum_range_reflect to ∑ₖ k·⟨n,k⟩; palindromy (eulerian_palindrome') turns the reflected summand (n−1−k)·⟨n,k⟩ into the partner of k·⟨n,k⟩, so twice the moment is ∑ₖ (n−1)·⟨n,k⟩ = (n−1)·n! by the row sum. No recurrence is used. (2) MOMENT TRANSFER (moment_transfer): for any weight w, peel the k=0 term of ∑ₖ w(k)·⟨n+1,k⟩ (Finset.sum_range_succ'), expand ⟨n+1,k+1⟩ by the triangle recurrence eulerian_succ_succ, and reindex the shifted binomial sum back over ⟨n,i⟩, obtaining ∑ᵢ (w(i)·(i+1)+w(i+1)·(n−i))·⟨n,i⟩. (3) SECOND-MOMENT RECURRENCE (eulerian_M2_succ): specialise w = k² and simplify i²·(i+1)+(i+1)²·(n−i) = (n−1)·i²+(2n−1)·i+n to get M₂(n+1) = (n−1)·M₂(n)+(2n−1)·M₁(n)+n·M₀(n). (4) CLOSED FORM (eulerian_second_moment): induct from n = 2, feeding M₀ = n! (eulerian_M0) and M₁ (the mean) into the recurrence and closing with linear_combination. (5) VARIANCE (eulerian_variance): combine the first and second moments by linear_combination.",
+    "keyInsights": [
+      "The mean is a pure symmetry fact: palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ pairs the k-th and (n−1−k)-th terms, so reflecting the index in ∑ₖ k·⟨n,k⟩ doubles it into ∑ₖ (n−1)·⟨n,k⟩. No recurrence, no induction — Finset.sum_range_reflect does all the work.",
+      "The whole second-order theory is generated by one lemma. moment_transfer converts the triangle recurrence into a transfer operator on weighted row sums: a moment at row n+1 with weight w is a moment at row n with the modified weight w(i)·(i+1)+w(i+1)·(n−i). Specialising the weight to 1, k, k² reads off the recurrences for the zeroth, first, and second moments uniformly.",
+      "The transferred coefficient for w = k² factors as i²·(i+1)+(i+1)²·(n−i) = (n−1)·i²+(2n−1)·i+n, a polynomial identity (ring), which is exactly why the second moment satisfies the linear recurrence M₂(n+1) = (n−1)·M₂(n)+(2n−1)·M₁(n)+n·M₀(n) coupling it to the lower moments.",
+      "Working over ℤ throughout (rather than ℚ) clears the denominators in (n−1)/2 and (n+1)/12, so the statements are exact integer identities (2·M₁ = (n−1)·n!, 12·M₂ = n!·(3n²−5n+4), 12·(M₂·n!−M₁²) = (n+1)·n!²) and the closing steps are linear_combination over the recurrence and the moments — no field inversion."
+    ]
+  },
+  "sections": [
+    {
+      "id": "zeroth-moment",
+      "title": "The Zeroth Moment (Row Sum)",
+      "startLine": 53,
+      "endLine": 56,
+      "summary": "eulerian_M0 recasts the parent's row sum ∑ₖ ⟨n,k⟩ = n! to ℤ as the M₀ input to the moment recurrence.",
+      "mathContext": "$\\sum_{k} \\langle n,k\\rangle = n!$."
+    },
+    {
+      "id": "moment-transfer",
+      "title": "The Moment-Transfer Lemma",
+      "startLine": 60,
+      "endLine": 110,
+      "summary": "moment_transfer turns the triangle recurrence into a transfer operator on weighted row sums: ∑ₖ w(k)·⟨n+1,k⟩ = ∑ᵢ (w(i)·(i+1)+w(i+1)·(n−i))·⟨n,i⟩ for any weight w. Proved by peeling k=0, expanding ⟨n+1,k+1⟩, and reindexing the shifted sum.",
+      "mathContext": "$\\sum_{k} w(k)\\langle n{+}1,k\\rangle = \\sum_{i}\\big(w(i)(i{+}1)+w(i{+}1)(n{-}i)\\big)\\langle n,i\\rangle$."
+    },
+    {
+      "id": "first-moment",
+      "title": "The First Moment: Mean (n−1)/2",
+      "startLine": 112,
+      "endLine": 150,
+      "summary": "eulerian_first_moment proves 2·∑ₖ k·⟨n,k⟩ = (n−1)·n! by reflecting k ↦ n−1−k (Finset.sum_range_reflect) and using palindromy to pair k·⟨n,k⟩ with (n−1−k)·⟨n,k⟩, so twice the moment is (n−1)·(row sum).",
+      "mathContext": "$2\\sum_{k} k\\,\\langle n,k\\rangle = (n-1)\\,n!$, i.e. $\\mathbb{E}[X]=\\tfrac{n-1}{2}$."
+    },
+    {
+      "id": "second-moment",
+      "title": "The Second Moment via the Moment Recurrence",
+      "startLine": 153,
+      "endLine": 183,
+      "summary": "eulerian_M2_succ reads the recurrence M₂(n+1) = (n−1)·M₂(n)+(2n−1)·M₁(n)+n·M₀(n) off moment_transfer at w = k²; eulerian_second_moment closes the closed form 12·∑ₖ k²·⟨n,k⟩ = n!·(3n²−5n+4) by induction from n = 2, feeding in M₀ and M₁.",
+      "mathContext": "$12\\sum_{k} k^2\\langle n,k\\rangle = n!\\,(3n^2-5n+4)$."
+    },
+    {
+      "id": "variance",
+      "title": "The Variance of the Descent Statistic is (n+1)/12",
+      "startLine": 186,
+      "endLine": 198,
+      "summary": "eulerian_variance combines the first and second moments by linear_combination, giving 12·(M₂·n! − M₁²) = (n+1)·n!² — the variance of the number of descents is (n+1)/12.",
+      "mathContext": "$\\mathrm{Var}(X)=\\dfrac{M_2}{n!}-\\Big(\\dfrac{M_1}{n!}\\Big)^2=\\dfrac{n+1}{12}$."
+    },
+    {
+      "id": "checks",
+      "title": "Corroboration on Concrete Rows",
+      "startLine": 200,
+      "endLine": 209,
+      "summary": "Row 3 (1,4,1): ∑ k·⟨3,k⟩ = 6 = (3−1)·3!/2 and ∑ k²·⟨3,k⟩ = 8; row 4 (1,11,11,1): the variance identity 12·(M₂·4! − M₁²) = 5·(4!)². All discharged by kernel decide (not native_decide, so still axiom-free).",
+      "mathContext": "Row 3 gives mean $1$ and variance $\\tfrac{1}{3}=\\tfrac{3+1}{12}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Computes the first two moments and the variance of the descent statistic of a uniformly random permutation of {1,…,n}, whose distribution is the Eulerian row. The mean (n−1)/2 falls out of palindromy by reflection; the second moment n!·(3n²−5n+4)/12 and the variance (n+1)/12 come from a single moment-transfer lemma that converts the Eulerian triangle recurrence into a recurrence M₂(n+1) = (n−1)·M₂(n)+(2n−1)·M₁(n)+n·M₀(n) on the moments, closed by induction from n = 2. 210 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound; the concrete-row checks use kernel decide, not native_decide).",
+    "implications": "Together with the row sum (M₀ = n!), these give the complete first- and second-order description of the descent distribution: mean (n−1)/2, variance (n+1)/12. The moment-transfer lemma is reusable — specialising its weight to any monomial yields the recurrence for the corresponding moment — so the same engine reaches the higher moments and, ultimately, the central-limit behaviour of the descent count. The argument is entirely elementary (palindromy, one recurrence, linearity, and a single induction) and uses Mathlib only for finite-sum bookkeeping.",
+    "openQuestions": [
+      "Compute the third and higher moments with the same moment-transfer engine and establish the asymptotic normality of the standardised descent count.",
+      "Identify the moment/probability generating function of the descent statistic with the normalised Eulerian polynomial Eₙ(t)/n! and recover all moments as derivatives at t = 1."
+    ]
+  }
+}
