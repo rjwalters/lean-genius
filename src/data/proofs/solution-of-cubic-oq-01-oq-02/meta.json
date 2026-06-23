@@ -1,0 +1,153 @@
+{
+  "id": "solution-of-cubic-oq-01-oq-02",
+  "title": "The Discriminant of the General Cubic",
+  "slug": "solution-of-cubic-oq-01-oq-02",
+  "description": "Formalizes the classical discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² of the general cubic ax³ + bx² + cx + d and proves it equals −108·a⁴ times the parent's depressed discriminant q²/4 + p³/27 under the Tschirnhaus reduction. Derives that the two discriminants vanish together (Δ = 0 ⟺ q²/4 + p³/27 = 0), expresses Δ in factored form as a⁴·((r−s)(r−t)(s−t))² via Vieta, and proves Δ = 0 exactly when two roots coincide.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Discriminant#Degree_3",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "cubic-equations",
+      "discriminant",
+      "tschirnhaus-transformation",
+      "depressed-cubic",
+      "polynomial-arithmetic",
+      "vieta",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "cubicDisc: the classical cubic discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² as a polynomial in the coefficients",
+      "cubicDisc_eq_depressed: the bridge Δ = −108·a⁴·(q²/4 + p³/27) tying the general discriminant to the parent's depressed discriminant under the Tschirnhaus shift (a ≠ 0)",
+      "cubicDisc_eq_zero_iff_depressed: the two discriminants vanish simultaneously, so the shift preserves the repeated-root locus",
+      "cubicDisc_eq_of_roots: the factored / Vieta form Δ = a⁴·((r−s)(r−t)(s−t))², the textbook product of squared root differences",
+      "cubicDisc_roots_eq_zero_iff: Δ = 0 ⟺ two of the roots coincide (a ≠ 0), the geometric meaning of the discriminant"
+    ],
+    "dateAdded": "2026-06-23",
+    "prerequisites": [
+      "Tschirnhaus reduction of the general cubic (parent proof solution-of-cubic-oq-01)",
+      "Field arithmetic over the complex numbers",
+      "Vieta's formulas for a cubic"
+    ],
+    "relatedProblems": [
+      {
+        "id": "solution-of-cubic-oq-01",
+        "relationship": "Parent: Tschirnhaus reduction; this entry answers its second open question (formalize the discriminant and relate it to q²/4 + p³/27)"
+      },
+      {
+        "id": "solution-of-cubic",
+        "relationship": "Grandparent: Cardano's formula for the depressed cubic, whose q²/4 + p³/27 this discriminant generalizes"
+      },
+      {
+        "id": "solution-of-cubic-oq-03",
+        "relationship": "Sibling: Vieta's formulas for the Cardano roots of the depressed cubic"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 171,
+    "assumptions": "None. All theorems fully proved from Mathlib with 0 axioms and 0 sorries. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms); no native_decide, no Lean.ofReduceBool.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The discriminant of a polynomial — the quantity whose vanishing signals a repeated root — was developed in the 18th and 19th centuries as the theory of symmetric functions and resultants matured (Lagrange, Gauss, Sylvester, who coined the term 'discriminant' in 1851). For the cubic ax³ + bx² + cx + d the discriminant is Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d². Cardano's older analysis of the depressed cubic x³ + px + q already isolated the key quantity q²/4 + p³/27, whose sign distinguishes one real root (positive) from three real roots (negative) over the reals, and whose vanishing marks a repeated root. This entry makes precise the relationship between these two classical objects: they are the same invariant viewed through the Tschirnhaus shift of the parent file.",
+    "keyInsight": "The Tschirnhaus shift x = t − b/(3a) translates the roots without changing their pairwise differences, so it cannot change whether two roots coincide. Concretely, the discriminant Δ of the general cubic equals a⁴·((r−s)(r−t)(s−t))² in terms of the roots, while the monic depressed cubic obtained from the shift has the same root differences. The only changes are the universal scaling a⁴ (from the leading coefficient) and the sign-convention factor −108 between Δ = a⁴(−4p³ − 27q²) and the Cardano form q²/4 + p³/27. Hence Δ = −108·a⁴·(q²/4 + p³/27), and the two discriminants vanish together."
+  },
+  "sections": [
+    {
+      "id": "classical-discriminant",
+      "title": "Part 1: The Classical Discriminant",
+      "startLine": 49,
+      "endLine": 61,
+      "summary": "Defines cubicDisc a b c d = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d², the standard discriminant of the general cubic, and depressedDisc p q = q²/4 + p³/27, the depressed discriminant used by the parent's Cardano formula.",
+      "mathContext": "cubicDisc is the degree-4-in-coefficients symmetric polynomial that vanishes exactly on cubics with a repeated root; depressedDisc is its Cardano-convention counterpart for the monic depressed cubic t³ + pt + q."
+    },
+    {
+      "id": "discriminant-bridge",
+      "title": "Part 2: The Bridge to the Depressed Discriminant",
+      "startLine": 63,
+      "endLine": 108,
+      "summary": "Proves cubicDisc_eq_depressed: for a ≠ 0, Δ = −108·a⁴·(q²/4 + p³/27) with p, q the depressed parameters of the parent. Deduces cubicDisc_eq_zero_iff_depressed: the two discriminants vanish simultaneously.",
+      "mathContext": "The factor a⁴ is the expected scaling of a cubic discriminant by its leading coefficient; −108 is the conversion between the two standard sign conventions. The proof is pure field arithmetic (field_simp + ring)."
+    },
+    {
+      "id": "root-form",
+      "title": "Part 3: The Root Form and Geometric Meaning",
+      "startLine": 100,
+      "endLine": 138,
+      "summary": "Proves cubicDisc_eq_of_roots: with the cubic in factored form a(x−r)(x−s)(x−t) (Vieta), Δ = a⁴·((r−s)(r−t)(s−t))². Deduces cubicDisc_roots_eq_zero_iff: Δ = 0 ⟺ two roots coincide.",
+      "mathContext": "This is the textbook product-of-squared-differences description of the discriminant; the vanishing criterion is its geometric meaning — Δ detects a repeated root."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Part 4: Sanity Checks",
+      "startLine": 140,
+      "endLine": 163,
+      "summary": "Specializes to already-depressed cubics (a = 1, b = 0): Δ = −4p³ − 27q² = −108·(q²/4 + p³/27). Checks x³ − 3x + 2 (repeated root, Δ = 0), x³ − x (distinct roots, Δ = 4), and the root form on r,s,t = 0,1,−1.",
+      "mathContext": "Concrete numerical confirmations that the abstract identities reproduce the classical discriminant values."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of the general cubic's discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d², its identity Δ = −108·a⁴·(q²/4 + p³/27) bridging to the parent's depressed discriminant, the consequent simultaneous-vanishing criterion, the Vieta root form Δ = a⁴·((r−s)(r−t)(s−t))², and the repeated-root criterion Δ = 0 ⟺ two roots coincide. 171 lines, 5 theorems, 2 definitions.",
+    "implications": "Completes the second open question of the parent Tschirnhaus-reduction entry, making explicit that the depressed discriminant the parent uses for solvability is, up to the universal factor −108·a⁴, the classical discriminant of the original cubic. Together with the parent's root bijection this confirms the Tschirnhaus shift preserves the repeated-root structure, and supplies the discriminant criterion needed to classify the cubic's root multiplicities."
+  },
+  "status": "verified",
+  "badge": "verified",
+  "leanFile": {
+    "imports": [
+      "Proofs.SolutionOfCubicOQ01"
+    ],
+    "opens": [
+      "SolutionOfCubicOQ01"
+    ],
+    "namespace": "SolutionOfCubicOQ01OQ02",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "path": "Proofs/SolutionOfCubicOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic-oq-01",
+      "relationship": "extends",
+      "description": "Parent proof: the Tschirnhaus shift x = t − b/(3a) reducing the general cubic to depressed form a·(t³ + pt + q). This entry answers the parent's second open question by formalizing the general discriminant and proving Δ = −108·a⁴·(q²/4 + p³/27)."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Grandparent: Cardano's formula for the depressed cubic, whose discriminant q²/4 + p³/27 is generalized here to the discriminant of an arbitrary cubic."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03",
+      "relationship": "complementary",
+      "description": "Sibling: Vieta's formulas for the three Cardano roots; the discriminant's root form a⁴·((r−s)(r−t)(s−t))² is the symmetric function those roots determine."
+    }
+  ],
+  "references": [
+    {
+      "key": "Sy51",
+      "citation": "Sylvester, J.J., On a remarkable discovery in the theory of canonical forms and of hyperdeterminants, Philosophical Magazine (1851). (Origin of the term 'discriminant'.)",
+      "type": "article"
+    },
+    {
+      "key": "Wi-Disc",
+      "citation": "Discriminant — Degree 3, Wikipedia. https://en.wikipedia.org/wiki/Discriminant#Degree_3",
+      "type": "web"
+    },
+    {
+      "key": "Ti01",
+      "citation": "Tignol, J.-P., Galois' Theory of Algebraic Equations, World Scientific (2001), Chapters 3–5.",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}

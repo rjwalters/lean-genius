@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-soc-oq0102-disc",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 61
+    },
+    "type": "definition",
+    "title": "The Classical Cubic Discriminant",
+    "content": "cubicDisc a b c d = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² is the standard degree-4-in-coefficients symmetric polynomial whose vanishing detects a repeated root of ax³ + bx² + cx + d. depressedDisc p q = q²/4 + p³/27 is its Cardano-convention counterpart for the monic depressed cubic t³ + pt + q, exactly the quantity the parent's Cardano formula uses to decide solvability."
+  },
+  {
+    "id": "ann-soc-oq0102-bridge",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "The Bridge: Δ = −108·a⁴·(q²/4 + p³/27)",
+    "content": "cubicDisc_eq_depressed substitutes the parent's depressed parameters p = (3ac − b²)/(3a²), q = (2b³ − 9abc + 27a²d)/(27a³) into q²/4 + p³/27 and shows the result is the general discriminant up to the universal factor −108·a⁴. The a⁴ is the expected scaling of a cubic discriminant by its leading coefficient; the −108 converts between the two standard sign conventions Δ = a⁴(−4p³ − 27q²) and the Cardano form q²/4 + p³/27. The proof is a single field_simp (clearing the a-denominators using a ≠ 0) followed by ring."
+  },
+  {
+    "id": "ann-soc-oq0102-simultaneous",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 85,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "Both Discriminants Vanish Together",
+    "content": "Because the bridge factor −108·a⁴ is nonzero when a ≠ 0, cubicDisc_eq_zero_iff_depressed reads off that Δ = 0 ⟺ q²/4 + p³/27 = 0. So the general cubic has a repeated root exactly when its depressed reduction does — the Tschirnhaus shift preserves the repeated-root locus, consistent with the parent's theorem that the shift is a bijection on roots. The proof factors through mul_eq_zero and pow_ne_zero."
+  },
+  {
+    "id": "ann-soc-oq0102-vieta",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 100,
+      "endLine": 120
+    },
+    "type": "insight",
+    "title": "The Vieta Root Form: Δ = a⁴·((r−s)(r−t)(s−t))²",
+    "content": "cubicDisc_eq_of_roots writes the cubic in factored form a(x−r)(x−s)(x−t) — equivalently, plugs the Vieta coefficients b = −a(r+s+t), c = a(rs+rt+st), d = −a·rst into cubicDisc — and proves the discriminant collapses to a⁴ times the square of the product of pairwise root differences. This is the textbook product-of-squared-differences identity, here a pure ring computation."
+  },
+  {
+    "id": "ann-soc-oq0102-repeated",
+    "proofId": "solution-of-cubic-oq-01-oq-02",
+    "range": {
+      "startLine": 122,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "The Geometric Meaning: Δ = 0 ⟺ a Repeated Root",
+    "content": "cubicDisc_roots_eq_zero_iff combines the root form with a⁴ ≠ 0, sq_eq_zero_iff, and sub_eq_zero to conclude that the discriminant vanishes precisely when two of r, s, t coincide. This is the geometric content of the discriminant: it is the obstruction to the cubic having three distinct roots."
+  }
+]
