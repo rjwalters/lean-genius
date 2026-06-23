@@ -1,1 +1,0 @@
-../../../.loom/scripts/research-claim.sh
