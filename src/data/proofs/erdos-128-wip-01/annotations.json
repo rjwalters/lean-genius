@@ -1,0 +1,62 @@
+[
+  {
+    "id": "erdos128-wip01-ann-header",
+    "proofId": "erdos-128-wip-01",
+    "range": { "startLine": 3, "endLine": 40 },
+    "type": "context",
+    "title": "Erdős #128: A Ramsey–Turán Density Question",
+    "content": "Erdős Problem #128 ($250, open) asks whether a uniform edge-density condition on all large induced subgraphs forces a triangle: if every induced subgraph on ≥ ⌊n/2⌋ vertices has more than n²/50 edges, must G contain a triangle? The constant 1/50 is conjectured optimal, witnessed by blow-ups of C₅ (triangle-free, yet induced-subgraph density ≈ 1/5). The scaffold Erdos128Problem.lean only sets up objects and prose and fails to build; this file re-declares the objects (with classical decidability) and proves the first structural theorems.",
+    "mathContext": "Every induced subgraph on $\\ge \\lfloor n/2\\rfloor$ vertices with $> n^2/50$ edges $\\stackrel{?}{\\Rightarrow}$ a triangle; conjectured optimal constant $1/50$.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey–Turán theory", "triangle-free graphs", "C₅ blow-up", "flag algebras"],
+    "prerequisites": ["graph theory", "extremal combinatorics"]
+  },
+  {
+    "id": "erdos128-wip01-ann-objects",
+    "proofId": "erdos-128-wip-01",
+    "range": { "startLine": 44, "endLine": 71 },
+    "type": "definition",
+    "title": "The Graph Objects (Re-declared with Classical Decidability)",
+    "content": "Graph n bundles an adjacency relation on Fin n with symmetry and irreflexivity. edgeCount is the cardinality of the filtered set of ordered pairs p.1 < p.2 with G.adj p.1 p.2 — noncomputable, relying on open Classical for the filter's DecidablePred (the exact instance the scaffold was missing). induce S restricts adjacency to u ∈ S ∧ v ∈ S ∧ G.adj u v. hasTriangle asserts three pairwise-distinct mutually adjacent vertices; triangleFree is its negation. These re-declarations make the entry self-contained against the non-building scaffold.",
+    "mathContext": "$\\mathrm{edgeCount}(G) = |\\{(u,v) : u<v,\\ G.\\mathrm{adj}\\,u\\,v\\}|;\\quad (G.\\mathrm{induce}\\,S).\\mathrm{adj}\\,u\\,v = (u\\in S \\wedge v\\in S \\wedge G.\\mathrm{adj}\\,u\\,v)$",
+    "significance": "supporting",
+    "relatedConcepts": ["simple graph", "induced subgraph", "DecidablePred", "Classical.choice"],
+    "prerequisites": ["Finset.filter", "structures in Lean"]
+  },
+  {
+    "id": "erdos128-wip01-ann-hastriangle",
+    "proofId": "erdos-128-wip-01",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "theorem",
+    "title": "Induced Triangles Lift to the Ambient Graph",
+    "content": "hasTriangle_induce: a triangle in G.induce S is a triangle of G. The induced adjacency (G.induce S).adj u v is by definition u ∈ S ∧ v ∈ S ∧ G.adj u v, so projecting the third component (.2.2) of each of the three induced adjacencies yields the ambient adjacencies, with the same distinct vertices. This 'lifting' is the elementary fact behind heredity.",
+    "mathContext": "$(G.\\mathrm{induce}\\,S).\\mathrm{hasTriangle} \\Rightarrow G.\\mathrm{hasTriangle}$",
+    "significance": "key",
+    "relatedConcepts": ["induced subgraph", "adjacency projection", "substructure lifting"],
+    "prerequisites": ["existential destructuring"]
+  },
+  {
+    "id": "erdos128-wip01-ann-hereditary",
+    "proofId": "erdos-128-wip-01",
+    "range": { "startLine": 80, "endLine": 84 },
+    "type": "insight",
+    "title": "Triangle-Freeness is Hereditary",
+    "content": "triangleFree_induce is the contrapositive of hasTriangle_induce: every induced subgraph of a triangle-free graph is triangle-free. This is the structural reason the extremal C₅-blow-up witnesses stay triangle-free at every scale — triangle-freeness is exactly the property 'no induced subgraph has a triangle'. Heredity is what makes the extremal examples robust against the induced-subgraph density hypothesis.",
+    "mathContext": "$G.\\mathrm{triangleFree} \\Rightarrow (G.\\mathrm{induce}\\,S).\\mathrm{triangleFree}$ for all $S$",
+    "significance": "key",
+    "relatedConcepts": ["hereditary property", "C₅ blow-up", "extremal witness", "contrapositive"],
+    "prerequisites": ["hasTriangle_induce"]
+  },
+  {
+    "id": "erdos128-wip01-ann-edgemono",
+    "proofId": "erdos-128-wip-01",
+    "range": { "startLine": 86, "endLine": 100 },
+    "type": "theorem",
+    "title": "Edge Count is Monotone Under Induction",
+    "content": "edgeCount_induce_le: (G.induce S).edgeCount ≤ G.edgeCount, since induction only deletes edges. The induced edge set is a subset of the ambient one — every pair satisfying the induced filter (p.1 < p.2 and induced adjacency) also satisfies the ambient filter by projecting the adjacency — so Finset.card_le_card gives the inequality. This monotonicity underlies the density hypothesis denseSubgraphs that compares subgraph edge counts to n²/50. The degenerate triangleFree_of_no_edges (an edgeless graph is triangle-free) closes the base case.",
+    "mathContext": "$\\mathrm{edgeCount}(G.\\mathrm{induce}\\,S) \\le \\mathrm{edgeCount}(G)$ via $\\mathrm{Finset.card\\_le\\_card}$ on a subset of edges",
+    "significance": "key",
+    "relatedConcepts": ["monotonicity", "Finset.card_le_card", "edge density", "denseSubgraphs"],
+    "prerequisites": ["Finset.filter", "subset cardinality"]
+  }
+]
