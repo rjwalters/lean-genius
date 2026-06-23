@@ -1,0 +1,177 @@
+{
+  "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+  "title": "Strict Monotonicity of the Weighted Power Mean Chain: WHM < WGM < WAM < WQM ⇔ a ≠ b",
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+  "description": "Answers the strict-monotonicity open question for the two-point weighted power mean chain. Off the diagonal a ≠ b, every link of WHM ≤ WGM ≤ WAM ≤ WQM is strict, and each strict gap is governed by the single scalar condition a ≠ b. The result is a rigidity dichotomy: either a = b and all four means coincide, or a ≠ b and every inequality is strict simultaneously — a single strict gap anywhere forces all of them. Each strict link is obtained by upgrading a non-strict inequality with the parent's equality characterization (= ⇔ a = b).",
+  "meta": {
+    "author": "Formal verification",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03OQ02OQ02.lean",
+    "parentProofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02",
+    "tags": [
+      "inequalities",
+      "power-means",
+      "weighted",
+      "AM-GM",
+      "strict",
+      "monotonicity",
+      "rigidity",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 226,
+    "assumptions": "No axioms or sorries. Kernel-verified via #print axioms: depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. Builds on the parent sibling file (the equality case of the chain), which uses Mathlib's weighted AM-GM equality condition; the two remaining non-strict links are re-derived here from Mathlib's two-variable weighted AM-GM.",
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "LE.le.lt_of_ne",
+        "description": "x ≤ y and x ≠ y give x < y; the elementary engine upgrading each non-strict link to a strict one",
+        "module": "Mathlib.Order.Basic"
+      },
+      {
+        "theorem": "Iff.not",
+        "description": "(a ↔ b) → (¬a ↔ ¬b); turns each equality characterization (= ⇔ a = b) into the strict-gap characterization (< ⇔ a ≠ b)",
+        "module": "Mathlib.Logic.Basic"
+      },
+      {
+        "theorem": "Real.geom_mean_le_arith_mean2_weighted",
+        "description": "Two-variable weighted AM-GM a^w₁·b^w₂ ≤ w₁·a + w₂·b, used to re-derive the WGM ≤ WAM and (via reciprocals) WHM ≤ WGM links",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "inv_le_comm₀",
+        "description": "x⁻¹ ≤ y ↔ y⁻¹ ≤ x for positive x, y; inverts the reciprocal AM-GM to obtain WHM ≤ WGM",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "Real.div_rpow",
+        "description": "(x/y)^p = x^p / y^p for nonneg base, used in the reciprocal identity (1/a)^w₁·(1/b)^w₂ = (a^w₁·b^w₂)⁻¹",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "strict_chain_iff_ne: (WHM < WGM ∧ WGM < WAM ∧ WAM < WQM) ⇔ a ≠ b — the headline strict weighted power mean chain, answering the parent's strict-monotonicity open question for two points",
+      "any_strict_iff_all_strict: a single strict gap anywhere in the chain forces every gap to be strict — the rigidity dichotomy (means are either all equal or all strictly ordered)",
+      "whm_lt_wgm_iff_ne / wgm_lt_wam_iff_ne / wam_lt_wqm_iff_ne: each individual link is strict iff a ≠ b, controlled by the same scalar condition",
+      "whm_lt_wgm_of_ne / wgm_lt_wam_of_ne / wam_lt_wqm_of_ne: the three strict links, each = (non-strict ≤) upgraded by (parent's = ⇔ a = b)",
+      "strict_chain_of_ne: the off-diagonal strict chain WHM < WGM < WAM < WQM in one statement",
+      "unweighted_strict_chain_of_ne: equal-weight specialization giving the classical strict 2ab/(a+b) < √(ab) < (a+b)/2 < √((a²+b²)/2) for a ≠ b"
+    ],
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The classical mean chain HM ≤ GM ≤ AM ≤ QM and its weighted generalization come with a sharp equality theory: equality holds throughout iff all arguments coincide. The strict form — every inequality is strict once the arguments differ — is the contrapositive content, and is exactly the two-point, weighted instance of the strict monotonicity of power means p ↦ M_p. Hardy, Littlewood and Pólya (Inequalities, 1934) give the strict-convexity argument behind the underlying weighted AM-GM equality case.",
+    "problemStatement": "The grandparent file proved the non-strict weighted chain WHM ≤ WGM ≤ WAM ≤ WQM, and the parent file characterized when each link is an equality (iff a = b). Are the inequalities strict off the diagonal, i.e. when a ≠ b?",
+    "text": "We prove that for positive reals a, b with positive weights w₁, w₂ summing to 1, every link of the chain is strict precisely when a ≠ b. Because all three equality conditions reduce to the same scalar condition a = b, the strict gaps appear and disappear together: there is no intermediate regime where some links are tight and others slack.",
+    "proofStrategy": "Each strict link is LE.le.lt_of_ne applied to (i) the non-strict inequality and (ii) the parent's equality characterization, whose contrapositive supplies the strict inequality whenever a ≠ b. The two harmonic/geometric ≤ links are re-derived inline from Mathlib's two-variable weighted AM-GM (so the file imports only the parent, not the grandparent), while the quadratic–arithmetic strict gap is reused directly from the parent's wam_lt_wqm_of_ne (positive weighted variance). Packaging each link as an iff (< ⇔ a ≠ b) via Iff.not yields the headline strict_chain_iff_ne and the rigidity dichotomy any_strict_iff_all_strict. The equal-weight corollary rewrites each mean into its textbook closed form.",
+    "keyInsights": [
+      "Strictness needs no new analytic input: it is purely (non-strict inequality) + (equality characterization). The mathematical work was already done in the equality case; strictness is its logical shadow.",
+      "All three equality conditions collapse to the single scalar a = b, so the three strict gaps are equivalent to one another and to a ≠ b. This is what makes the dichotomy 'all or nothing'.",
+      "The rigidity statement any_strict_iff_all_strict has no analogue at the level of a bare inequality chain: it is a consequence of every link sharing the same equality locus.",
+      "Reusing sibling files (non-strict chain + equality case) rather than re-deriving keeps the file short and isolates the genuinely new content (the strict dichotomy)."
+    ],
+    "prerequisites": [
+      "Basic real analysis and order theory (≤ vs <)",
+      "The non-strict weighted chain (grandparent) and its equality case (parent)",
+      "Lean 4 rpow (Real.rpow) for the weighted geometric mean"
+    ]
+  },
+  "sections": [
+    {
+      "id": "nonstrict-links",
+      "title": "The Two Non-Strict Links (inlined)",
+      "summary": "inv_wgm_eq, wgm_le_wam_aux, whm_le_wgm_aux from Mathlib two-variable weighted AM-GM",
+      "startLine": 62,
+      "endLine": 93,
+      "mathContext": "$\\text{WGM} \\le \\text{WAM}$ and $\\text{WHM} \\le \\text{WGM}$, re-derived so the file needs only the parent."
+    },
+    {
+      "id": "strict-links",
+      "title": "The Three Strict Links",
+      "summary": "whm_lt_wgm_of_ne, wgm_lt_wam_of_ne, wam_lt_wqm_of_ne: each ≤ upgraded by a ≠ b",
+      "startLine": 95,
+      "endLine": 122,
+      "mathContext": "For $a \\ne b$: $\\text{WHM} < \\text{WGM}$, $\\text{WGM} < \\text{WAM}$, $\\text{WAM} < \\text{WQM}$."
+    },
+    {
+      "id": "iff-links",
+      "title": "Each Link Governed by a ≠ b",
+      "summary": "whm_lt_wgm_iff_ne, wgm_lt_wam_iff_ne, wam_lt_wqm_iff_ne via Iff.not",
+      "startLine": 124,
+      "endLine": 147,
+      "mathContext": "$\\text{WHM} < \\text{WGM} \\iff a \\ne b$, and likewise for the other two links."
+    },
+    {
+      "id": "headline",
+      "title": "Strict Chain and Rigidity Dichotomy",
+      "summary": "strict_chain_of_ne, strict_chain_iff_ne, any_strict_iff_all_strict",
+      "startLine": 149,
+      "endLine": 193,
+      "mathContext": "$(\\text{WHM} < \\text{WGM} \\wedge \\text{WGM} < \\text{WAM} \\wedge \\text{WAM} < \\text{WQM}) \\iff a \\ne b$; one strict gap forces all."
+    },
+    {
+      "id": "specialization",
+      "title": "Equal-Weight Specialization",
+      "summary": "unweighted_strict_chain_of_ne: classical strict HM < GM < AM < QM at w₁ = w₂ = 1/2",
+      "startLine": 195,
+      "endLine": 226,
+      "mathContext": "At $w_1 = w_2 = 1/2$, $a \\ne b$: $2ab/(a+b) < \\sqrt{ab} < (a+b)/2 < \\sqrt{(a^2+b^2)/2}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Off the diagonal a ≠ b, every link of the weighted power mean chain WHM < WGM < WAM < WQM is strict, and each strict gap is equivalent to the single condition a ≠ b. Hence the chain obeys a rigidity dichotomy: all four means coincide (a = b) or all inequalities are strict (a ≠ b), with no intermediate regime — a single strict gap forces them all.",
+    "implications": "This sharpens the equality case into a full trichotomy-free picture of the chain: the equality locus of every link is the same diagonal a = b. In probabilistic terms (a, b with probabilities w₁, w₂), WAM < WQM ⇔ a ≠ b is positive variance of a non-constant two-point variable, and the dichotomy says the means degenerate together exactly when the variable is constant.",
+    "openQuestions": [
+      "Does the same all-or-nothing rigidity hold for the n-variable weighted chain — is each strict link equivalent to 'the aᵢ are not all equal', and do all links become strict simultaneously?",
+      "Can the strict monotonicity be upgraded to a quantitative gap, e.g. a lower bound on WQM − WAM (or WAM − WGM) in terms of w₁w₂(a−b)², refining the qualitative strictness?"
+    ]
+  },
+  "references": [
+    {
+      "authors": [
+        "G. H. Hardy",
+        "J. E. Littlewood",
+        "G. Pólya"
+      ],
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "Power-mean theory including the strict equality conditions of weighted AM-GM via strict convexity."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02",
+      "relationship": "parent",
+      "description": "Parent file: the equality case WHM = WGM = WAM = WQM ⇔ a = b. This file uses its three equality characterizations to make each link strict when a ≠ b."
+    },
+    {
+      "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03",
+      "relationship": "grandparent",
+      "description": "Grandparent file: the non-strict chain WHM ≤ WGM ≤ WAM ≤ WQM. Its ≤ links are re-derived inline (from Mathlib weighted AM-GM) and upgraded to strict here; the file imports only the parent."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03OQ02"
+    ],
+    "opens": [
+      "Real",
+      "WeightedPowerMeanEquality"
+    ],
+    "namespace": "WeightedPowerMeanStrict",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ03OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
