@@ -1,0 +1,133 @@
+{
+  "id": "area-of-circle-oq-07-oq-03-oq-01",
+  "slug": "area-of-circle-oq-07-oq-03-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.MeasureTheory.Integral.Gamma",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Real", "MeasureTheory", "Set"],
+    "namespace": "AreaOfCircleOQ07OQ03OQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Half-Integer Gamma Ladder as the Tower of Even Gaussian Moments",
+  "description": "The parent entry isolates a single value, Γ(1/2) = √π = ∫_ℝ e^{-x²}. This entry climbs the whole half-integer Gamma ladder and identifies each rung with an even Gaussian moment: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n+1/2) = (2n-1)‼·√π/2ⁿ. The substantive step proves the moment-to-Gamma identification — evenness folds the line onto the half-line (integral_comp_abs) where Mathlib's integral_rpow_mul_exp_neg_rpow evaluates the half-line moment as ½·Γ(n+1/2). The companion odd moments vanish (∫_ℝ x^{2n+1} e^{-x²} = 0) via negation-invariance of Lebesgue measure, so the entire moment sequence of the Gaussian weight is pinned down, with the parent's √π recovered as the n=0 rung.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ03OQ01.lean",
+    "tags": [
+      "analysis",
+      "gamma-function",
+      "gaussian-integral",
+      "gaussian-moments",
+      "double-factorial",
+      "special-functions",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 119,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "verified",
+    "originalContributions": [
+      "evenGaussianMoment_eq_gamma: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n+1/2) — every even Gaussian moment is exactly a half-integer Gamma value, proved by folding the line onto the half-line via evenness (integral_comp_abs) and evaluating the half-line integral with integral_rpow_mul_exp_neg_rpow at p=2, q=2n",
+      "halfLine_evenMoment: ∫_{x>0} x^{2n} e^{-x²} = ½·Γ(n+1/2), the half-line evaluation converting natural powers to real powers (Real.rpow_natCast) so Mathlib's Gamma-integral lemma applies",
+      "evenGaussianMoment_eq_doubleFactorial: ∫_ℝ x^{2n} e^{-x²} dx = (2n-1)‼·√π/2ⁿ, the even moments as double-factorial multiples of √π",
+      "oddGaussianMoment_eq_zero: ∫_ℝ x^{2n+1} e^{-x²} dx = 0, the odd moments vanish by oddness and negation-invariance of Lebesgue measure (Measure.measurePreserving_neg)",
+      "evenGaussianMoment_zero: ∫_ℝ e^{-x²} = √π, the n=0 rung recovering the parent entry's Gaussian integral",
+      "gammaLadder: Γ(n+1/2) = (2n-1)‼·√π/2ⁿ, a re-export of Mathlib's Real.Gamma_nat_add_half providing the analytic backbone"
+    ],
+    "prerequisites": [
+      "Euler Gamma function and its integral representation",
+      "Mathlib's integral_rpow_mul_exp_neg_rpow (half-line ∫ x^q e^{-x^p} = (1/p)Γ((q+1)/p))",
+      "Mathlib's Real.Gamma_nat_add_half (the half-integer ladder closed form)",
+      "integral_comp_abs (even-function integral folding) and Measure.measurePreserving_neg",
+      "Parent: area-of-circle-oq-07-oq-03 (Γ(1/2) = √π = ∫_ℝ e^{-x²})"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_rpow_mul_exp_neg_rpow",
+        "description": "∫ x in Ioi 0, x ^ q * exp (-x ^ p) = (1 / p) * Gamma ((q + 1) / p) for 0 < p, -1 < q. Specialized at p = 2, q = 2n to evaluate the half-line even moment as ½·Γ(n+1/2).",
+        "module": "Mathlib.MeasureTheory.Integral.Gamma"
+      },
+      {
+        "theorem": "integral_comp_abs",
+        "description": "∫ x, f |x| = 2 * ∫ x in Ioi 0, f x. Folds the full-line even integrand x^{2n}e^{-x²} = f(|x|) onto twice the half-line integral.",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Integral"
+      },
+      {
+        "theorem": "Real.Gamma_nat_add_half",
+        "description": "Gamma (k + 1/2) = (2k-1)‼ · √π / 2^k, the half-integer ladder closed form. Turns each Gamma value into a double-factorial multiple of √π.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Measure.measurePreserving_neg",
+        "description": "The Lebesgue measure on ℝ is preserved by negation. Combined with the oddness of x^{2n+1}e^{-x²}, forces the odd moments to vanish.",
+        "module": "Mathlib.MeasureTheory.Measure.Haar.OfBasis"
+      },
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Real.Gamma (1/2) = √π. Identifies the n=0 even moment ∫_ℝ e^{-x²} with √π, recovering the parent entry.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's Gamma function Γ(s) = ∫₀^∞ u^{s−1}e^{−u}du interpolates the factorial, and its archetypal non-integer value Γ(1/2) = √π is the same number as the Gaussian normalization ∫_ℝ e^{−x²} = √π. But Γ(1/2) is only the bottom rung of an infinite ladder: the functional equation Γ(s+1) = s·Γ(s) propagates √π up through all half-integers, Γ(n+1/2) = (2n−1)‼·√π/2ⁿ. On the probability side these same numbers are the even moments of the Gaussian weight e^{−x²} — the quantities that determine the variance, kurtosis, and every higher even moment of a Gaussian. The double factorial counting of these moments (Wick's theorem / Isserlis' theorem in physics and statistics) is exactly the (2n−1)‼ appearing here. This entry, in the area-of-circle family because the Gaussian √π is a polar-coordinate cousin of the circle constant π, ties the analytic ladder to the probabilistic moment sequence.",
+    "problemStatement": "**Open Question (oq-01)**: extend the parent entry's single value Γ(1/2) = √π to the whole half-integer Gamma ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ, and identify each value with the even Gaussian moment ∫_ℝ x^{2n} e^{−x²} dx. Answer: yes — ∫_ℝ x^{2n} e^{−x²} = Γ(n+1/2) = (2n−1)‼·√π/2ⁿ, the odd moments vanish, and n = 0 recovers the parent's √π.",
+    "proofStrategy": "The analytic ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ is already in Mathlib (Real.Gamma_nat_add_half), so it is re-exported as gammaLadder; the entry's mathematical content is the moment identification. (1) halfLine_evenMoment evaluates the half-line moment: the natural-power integrand x^{2n}e^{−x²} is converted to real powers via Real.rpow_natCast on Ioi 0, then Mathlib's integral_rpow_mul_exp_neg_rpow at p=2, q=2n gives ½·Γ((2n+1)/2) = ½·Γ(n+1/2). (2) evenGaussianMoment_eq_gamma folds the full line onto the half-line: x^{2n}e^{−x²} = f(|x|) for f(t)=t^{2n}e^{−t²} (using Even.pow_abs for |x|^{2n}=x^{2n} and sq_abs for |x|²=x²), so integral_comp_abs doubles the half-line value to Γ(n+1/2). (3) evenGaussianMoment_eq_doubleFactorial composes with Real.Gamma_nat_add_half. (4) oddGaussianMoment_eq_zero uses negation-invariance (Measure.measurePreserving_neg) and Odd.neg_pow: the integral equals its own negative. (5) evenGaussianMoment_zero specializes n=0.",
+    "keyInsights": [
+      "The even Gaussian moments are not merely computable from Γ — they ARE the half-integer Gamma values: ∫_ℝ x^{2n}e^{−x²} = Γ(n+1/2) exactly, with no extra constants.",
+      "Evenness does the structural work: x^{2n}e^{−x²} = f(|x|), so integral_comp_abs reduces the full-line moment to twice a half-line Gamma integral that Mathlib evaluates in one lemma.",
+      "The double factorial (2n−1)‼ — the Wick/Isserlis pairing count — emerges as the closed form, exhibiting every even moment as a rational multiple of the parent's √π.",
+      "The odd moments vanish for a structural reason (negation-invariance of Lebesgue measure + oddness), so the entire moment sequence is determined; the parent's √π is exactly the n = 0 base rung.",
+      "The entry is honestly scoped: the ladder formula itself is Mathlib's (badge reflects the new content is the moment identification and the odd-moment vanishing, assembled from library lemmas)."
+    ]
+  },
+  "openQuestions": [],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-03",
+      "relationship": "extends",
+      "description": "Parent. The parent records the single value Γ(1/2) = √π = ∫_ℝ e^{−x²}; this entry extends it to the whole half-integer ladder Γ(n+1/2) = (2n−1)‼·√π/2ⁿ and identifies each rung with the even Gaussian moment ∫_ℝ x^{2n}e^{−x²}, recovering the parent as evenGaussianMoment_zero (n = 0)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.Gamma",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_rpow_mul_exp_neg_rpow, the half-line evaluation ∫ x^q e^{-x^p} = (1/p)Γ((q+1)/p) that powers the moment identification."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_nat_add_half (the half-integer ladder closed form) and Real.Gamma_one_half_eq."
+    },
+    {
+      "title": "Wick's theorem and Gaussian moments",
+      "author": "Gian-Carlo Wick / Leon Isserlis",
+      "year": "1950",
+      "venue": "classical probability/physics",
+      "description": "The even moments of a Gaussian are counted by the double factorial (2n−1)‼, the pairing count appearing in the closed form here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The even Gaussian moments are exactly the half-integer Gamma values: ∫_ℝ x^{2n}e^{−x²} dx = Γ(n+1/2) = (2n−1)‼·√π/2ⁿ (evenGaussianMoment_eq_gamma, evenGaussianMoment_eq_doubleFactorial), the odd moments vanish (oddGaussianMoment_eq_zero), and the n=0 rung recovers the parent's ∫_ℝ e^{−x²} = √π (evenGaussianMoment_zero). The half-integer ladder itself is re-exported from Mathlib (gammaLadder). 119 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; each result depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The contribution is the identification of the entire even-moment sequence of the Gaussian weight with the half-integer Gamma ladder, plus the vanishing of the odd moments — turning the parent's single √π into the base rung of a fully-determined moment tower. The analytic ladder formula is Mathlib's; the moment bridge (half-line evaluation + evenness folding) and the odd-moment vanishing are assembled here from library lemmas.",
+    "openQuestions": []
+  }
+}
