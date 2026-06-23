@@ -16,6 +16,45 @@
     "sorries": 0
   },
   "title": "q-Fold Residue-Class Splitting of the Geometric Series: ∑ r^(qn+a) = r^a/(1−r^q)",
+  "description": "The full q-fold multisection of the geometric series, generalising the parent's even/odd case. For ‖r‖ < 1 over any complete normed field and any modulus q ≠ 0, the arithmetic-progression subseries with common difference q is itself geometric of ratio r^q: ∑_{n≥0} r^(q·n+a) = r^a/(1−r^q) for every residue a. Summing over a = 0,…,q−1 recombines into the full series ∑ rᵐ = 1/(1−r), the closing step being the factorisation 1−r^q = (1−r)·(1+r+⋯+r^{q−1}). The reusable move: a subseries along any arithmetic progression of indices is geometric with ratio r^q, reducing to Mathlib's lemma at a new ratio plus the bound ‖r^q‖ < 1.",
+  "overview": {
+    "historicalContext": "The q-section (multisection) of a power series — extracting the subseries of terms whose indices lie in a fixed residue class mod q — is a classical generating-function operation (Graham–Knuth–Patashnik, Concrete Mathematics), used to derive identities for sequences sampled along arithmetic progressions and, via roots of unity, to isolate residue classes. The geometric series is its cleanest instance: every residue-class subseries ∑ r^(q·n+a) is again geometric, of ratio r^q. The parent geometric-series-oq-09 handled the even/odd case q = 2; this entry completes the open question to arbitrary modulus q and residue a, over an arbitrary complete normed field (covering ℝ and ℂ uniformly). Mathlib records the plain geometric series ∑ rⁿ = 1/(1−r) but not its residue-class multisections.",
+    "problemStatement": "For ‖r‖ < 1 over a complete normed field and any modulus q ≠ 0, sum the geometric series along each residue class mod q. Prove ∑_{n≥0} r^(q·n+a) = r^a/(1−r^q) for every residue a (HasSum, tsum, summability forms), and prove the recombination ∑_{a=0}^{q−1} (∑_{n≥0} r^(q·n+a)) = ∑ rᵐ = 1/(1−r). Recover the parent's q = 2 even/odd subsums as specialisations.",
+    "proofStrategy": "Each residue subseries reduces to Mathlib's lemma at a new ratio; the recombination is pure algebra. (1) Key bound: ‖r^q‖ = ‖r‖^q < 1 for q ≠ 0 (norm_pow + pow_lt_one₀). (2) Residue subseries: rewrite r^(q·n+a) = r^a·(r^q)ⁿ (pow_add, pow_mul) and apply hasSum_geometric_of_norm_lt_one at ratio r^q, scaled by HasSum.mul_left (r^a), giving value r^a·(1−r^q)⁻¹. (3) Recombination: substitute the q closed forms, factor out (1−r^q)⁻¹ via Finset.sum_mul, and reduce to the polynomial identity one_sub_pow_eq: 1−r^q = (1−r)·∑_{a<q} r^a (proved by induction on q) — field_simp + linear_combination close it. q = 2 specialisations and concrete r = 1/2, q = 3 checks confirm.",
+    "keyInsights": [
+      "A subseries along ANY arithmetic progression of indices is again geometric, with ratio r^q: the single reindexing r^(q·n+a) = r^a·(r^q)ⁿ reduces every residue-class subseries to the known geometric series at the new ratio r^q, scaled by the constant r^a.",
+      "The only analytic content is the bound ‖r^q‖ = ‖r‖^q < 1; once that lets Mathlib's lemma apply at ratio r^q, the residue closed forms are immediate and the recombination is entirely algebraic.",
+      "The recombination rests on the factorisation 1−r^q = (1−r)(1+r+⋯+r^{q−1}): summing the q closed forms r^a/(1−r^q) over residues a gives (∑_{a<q} r^a)/(1−r^q) = 1/(1−r), exactly the analytic shadow of that polynomial identity.",
+      "Working over a general complete normed field — not just ℝ — handles ℝ and ℂ uniformly with a single proof; the multisection and its recombination are field-level facts requiring only completeness where the series is actually summed.",
+      "The q geometric subseries partition the index set ℕ by residue class mod q, so the recombination is a discrete Fubini: the full series is the disjoint union of its multisections, and the closed forms reassemble it exactly — the parent's even/odd case is q = 2."
+    ]
+  },
+  "sections": [
+    {
+      "id": "denominators",
+      "title": "Nonvanishing Denominators and the Key Bound",
+      "startLine": 53,
+      "endLine": 71,
+      "summary": "ne_one (r ≠ 1) and one_sub_ne_zero (1−r ≠ 0) for ‖r‖ < 1. norm_pow_lt_one: the key bound ‖r^q‖ = ‖r‖^q < 1 for q ≠ 0 (norm_pow + pow_lt_one₀), which lets Mathlib's geometric lemma apply at the new ratio r^q. one_sub_pow_ne_zero: 1−r^q ≠ 0, needed for the recombination's field arithmetic.",
+      "mathContext": "$\\|r^q\\|=\\|r\\|^q<1$ for $q\\ne 0$; $1-r\\ne 0$ and $1-r^q\\ne 0$ for $\\|r\\|<1$."
+    },
+    {
+      "id": "residue-subseries",
+      "title": "The Residue-Class Subseries",
+      "startLine": 73,
+      "endLine": 93,
+      "summary": "hasSum_geometric_residue: ∑_{n} r^(q·n+a) = r^a/(1−r^q) for q ≠ 0 and any residue a. The reindexing r^(q·n+a) = r^a·(r^q)ⁿ (pow_add, pow_mul) exhibits the subseries as geometric of ratio r^q, summed by hasSum_geometric_of_norm_lt_one (valid since ‖r^q‖ < 1) and scaled by HasSum.mul_left (r^a). tsum and summability forms follow for free.",
+      "mathContext": "$\\sum_n r^{qn+a}=r^a\\sum_n (r^q)^n=\\dfrac{r^a}{1-r^q}$, geometric of ratio $r^q$."
+    },
+    {
+      "id": "recombination-and-specialisation",
+      "title": "Recombination, q = 2 Case, and Concrete Values",
+      "startLine": 95,
+      "endLine": 152,
+      "summary": "one_sub_pow_eq: 1−r^q = (1−r)·∑_{a<q} r^a, the algebraic backbone, proved by induction on q. tsum_residues_eq_geometric: ∑_{a<q} (subseries_a) = ∑ rᵐ = 1/(1−r), by substituting the closed forms, factoring out (1−r^q)⁻¹ (Finset.sum_mul), and applying the factorisation (field_simp; linear_combination). tsum_geometric_even/odd recover the parent's q = 2 cases; concrete r = 1/2, q = 3 checks give 8/7 and 2/7.",
+      "mathContext": "$1-r^q=(1-r)\\sum_{a<q}r^a$, so $\\sum_{a<q}\\dfrac{r^a}{1-r^q}=\\dfrac{1}{1-r}$."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
