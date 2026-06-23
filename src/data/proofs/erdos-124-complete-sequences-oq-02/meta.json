@@ -1,0 +1,145 @@
+{
+  "id": "erdos-124-complete-sequences-oq-02",
+  "slug": "erdos-124-complete-sequences-oq-02",
+  "title": "Erdős #124 Follow-up: A Counting Necessity (Density Obstruction)",
+  "description": "The parent solves Erdős #124's sufficiency: if d₁,…,dₖ ≥ 2 and ∑ 1/(dᵢ−1) ≥ 1 then every n is a sum ∑ aᵢ with each aᵢ having 0/1 digits in base dᵢ. This entry proves the necessity counterpart: a counting obstruction N ≤ ∏ᵢ 2^{Lᵢ(N)} (Lᵢ(N) = #{j : dᵢʲ < N}) on covering the initial segment [0,N), showing the bases must be dense enough. Concrete instance: a single base 3 cannot cover [0,8), while base 2 saturates the bound.",
+  "overview": {
+    "text": "Erdős Problem #124 (the 'weak version', famously the first open conjecture solved autonomously by an AI, Harmonic's Aristotle, in 2025) asks for SUFFICIENT conditions on bases d₁,…,dₖ so that every natural number is a sum ∑ aᵢ where each aᵢ has only the digits 0 and 1 in base dᵢ. The parent formalization proves that ∑ 1/(dᵢ−1) ≥ 1 suffices. This follow-up provides the complementary NECESSITY side: a counting (density) obstruction. Modeling 'a has 0/1 digits in base d' by the equivalent subset-sum form 'a is a sum of distinct powers of d', each base-dᵢ summand below N is a subset of the Lᵢ(N) = #{j : dᵢʲ < N} powers below N, hence takes at most 2^{Lᵢ(N)} values. Because a representation n = ∑ aᵢ determines n, the map n ↦ (a₁,…,aₖ) is injective, giving N ≤ ∏ᵢ 2^{Lᵢ(N)}. This bounds how long an initial segment [0,N) the bases can cover and shows a hypothesis on the bases is unavoidable. The bound is sharp: at N = 8, base 2 gives L = 3 and 2³ = 8 = N (ordinary binary), while a single base 3 gives L = 2 and 2² = 4 < 8, so base 3 provably cannot represent all of [0,8). Fully machine-checked, 0 sorries, only the standard foundational axioms."
+  },
+  "mainTheorems": [
+    {
+      "name": "counting_necessity",
+      "type": "proved",
+      "description": "If d₁,…,dₖ ≥ 2 and every n < N is representable as ∑ᵢ aᵢ with each aᵢ a sum of distinct powers of dᵢ, then N ≤ ∏ᵢ 2^{Lᵢ(N)} where Lᵢ(N) = #{j : dᵢʲ < N}."
+    },
+    {
+      "name": "counting_necessity_single",
+      "type": "proved",
+      "description": "Single-base specialization: if every n < N is a sum of distinct powers of d ≥ 2, then N ≤ 2^{L} with L = #{j : dʲ < N}."
+    },
+    {
+      "name": "base_three_cannot_cover_eight",
+      "type": "proved",
+      "description": "Concrete density obstruction: a single base 3 cannot represent every n in [0,8); the bound forces 8 ≤ 2² = 4, a contradiction."
+    },
+    {
+      "name": "base_two_bound_tight",
+      "type": "proved",
+      "description": "Sharpness: at N = 8 base 2 gives L = 3 and 2³ = 8 = N, matching binary representation."
+    }
+  ],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Representability and the power-count",
+      "startLine": 49,
+      "endLine": 65,
+      "summary": "RepBase d a (a is a sum of distinct powers of d = 0/1 digits in base d), Rep d a (sum over bases), powExps d N (exponents with dʲ < N), and valSet d N (values < N as image of the powerset of powExps).",
+      "mathContext": "$\\mathrm{RepBase}(d,a) \\iff \\exists S \\subseteq \\mathbb{N},\\ a = \\sum_{j \\in S} d^{j}$; $L(N) = |\\{ j : d^{j} < N \\}|$."
+    },
+    {
+      "id": "key-lemma",
+      "title": "Key counting lemma",
+      "startLine": 71,
+      "endLine": 98,
+      "summary": "Every base-d representable value below N is a subset-sum of the powers below N, so it lies in valSet d N, which has at most 2^{L(N)} elements.",
+      "mathContext": "Used powers satisfy $d^{j} \\le a < N$, and $j < 2^{j} \\le d^{j} < N$, so $j$ indexes a power below $N$."
+    },
+    {
+      "id": "main",
+      "title": "Counting necessity",
+      "startLine": 100,
+      "endLine": 159,
+      "summary": "Choosing a representation per n < N gives an injection [0,N) ↪ ∏ᵢ valSet (dᵢ) N (since the sum recovers n), yielding N ≤ ∏ᵢ 2^{Lᵢ(N)}; plus the single-base specialization.",
+      "mathContext": "$N = |[0,N)| \\le \\bigl|\\prod_i V_i\\bigr| = \\prod_i |V_i| \\le \\prod_i 2^{L_i(N)}$."
+    },
+    {
+      "id": "concrete",
+      "title": "Concrete instances",
+      "startLine": 161,
+      "endLine": 181,
+      "summary": "Kernel-evaluated power counts for bases 2 and 3 below 8, the impossibility for base 3 to cover [0,8), and tightness for base 2.",
+      "mathContext": "$L_3(8) = 2 \\Rightarrow 8 \\le 4$ is false; $L_2(8) = 3 \\Rightarrow 8 \\le 8$ is sharp."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 181,
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "lemmaCount": 4,
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos124OQ02",
+    "path": "Proofs/Erdos124CompleteSequencesOQ02.lean",
+    "sorries": 0,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-124-complete-sequences",
+      "relationship": "parent",
+      "description": "Parent problem: Erdős #124, sufficiency (∑ 1/(dᵢ−1) ≥ 1 ⟹ every n representable)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Burr, S., Erdős, P., Graham, R., Li, W.",
+      "title": "Complete sequences of sets of integer powers",
+      "year": "1996",
+      "venue": "Acta Arithmetica 77.2",
+      "note": "Origin of Erdős Problem #124."
+    },
+    {
+      "authors": "Harmonic",
+      "title": "Aristotle: autonomous formal solution of Erdős #124",
+      "year": "2025",
+      "venue": "Harmonic AI announcement",
+      "note": "First open conjecture solved and Lean-verified autonomously by an AI; sufficiency direction."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent proves Erdős #124's sufficient condition; this entry proves the complementary necessity via a counting (density) obstruction N ≤ ∏ᵢ 2^{Lᵢ(N)}. The bound is independent of any digit machinery — it follows purely from the fact that a base-d summand below N is a subset of the powers below N, and that a representation determines the represented number.",
+    "implications": "Shows that the parent's reciprocal-sum hypothesis cannot simply be dropped: covering an initial segment [0,N) forces the bases to have enough powers below N. The single-base case recovers the classical fact that only base 2 (binary) represents every natural number with 0/1 digits, and the bound is provably sharp there.",
+    "openQuestions": [
+      "Can the finite obstruction be sharpened to the asymptotic necessary condition ∑ᵢ 1/log₂(dᵢ) ≥ 1, and how does this gap to the sufficient ∑ᵢ 1/(dᵢ−1) ≥ 1 behave?",
+      "For subcritical base systems, what is the exact density (counting function) of the representable set, and which initial segments fail first?"
+    ]
+  },
+  "meta": {
+    "author": "Erdős (follow-up)",
+    "sourceUrl": "https://erdosproblems.com/124",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos124CompleteSequencesOQ02.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "complete-sequences",
+      "digit-representation",
+      "counting-bound",
+      "follow-up"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 124,
+    "erdosUrl": "https://erdosproblems.com/124",
+    "erdosProblemStatus": "solved (weak version)",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "assumptions": "No axioms beyond Mathlib's foundations (propext, Classical.choice, Quot.sound — confirmed via #print axioms; no Lean.ofReduceBool, no sorryAx). The concrete instances use kernel `decide`, not `native_decide`. '0/1 digits in base d' is modeled by the standard equivalent subset-sum characterization 'sum of distinct powers of d'; this is the same set of integers as the (Nat.digits d a).toFinset ⊆ {0,1} formulation used in the parent file.",
+    "lineCount": 181,
+    "relatedProblems": [
+      {
+        "id": "erdos-124-complete-sequences",
+        "relationship": "Parent problem: Erdős #124 sufficiency (AI-solved weak version)"
+      }
+    ],
+    "theoremCount": 6,
+    "definitionCount": 4
+  }
+}
