@@ -1,0 +1,183 @@
+{
+  "id": "wilsons-theorem-oq-05-oq-01-oq-01",
+  "title": "The $(n-2)! \\bmod n$ Companion, a ZMod-Free Wilson Primality Test, and the Kempner Threshold",
+  "slug": "wilsons-theorem-oq-05-oq-01-oq-01",
+  "description": "Answers the registered open questions of the parent entry `wilsons-theorem-oq-05-oq-01` (the complete trichotomy of (n-1)! mod n) by (1) turning the classification into decidable ZMod-free primality criteria and (2) sharpening and extending the divisibility analysis to neighbouring factorial residues. The central new result is that the parent's composite divisibility already holds one factorial step earlier: for composite n ≥ 2 with n ≠ 4, n ∣ (n-2)! (`dvd_factorial_sub_two_of_not_prime`), strictly stronger than the parent's n ∣ (n-1)! (which is re-derived here for free as a corollary, since (n-2)! ∣ (n-1)!). This yields the companion trichotomy `factorial_sub_two_mod`: for n ≥ 2, (n-2)! % n = if n.Prime then 1 else if n = 4 then 2 else 0, classifying the factorial immediately below the classical Wilson factorial. The prime value 1 is the Wilson companion residue (the cofactor (n-1)!/(n-1) ≡ (-1)/(-1) ≡ 1). Combining the prime and (now strictly stronger) composite branches gives two decidable ZMod-free Wilson primality tests: `prime_iff_factorial_pred_mod` (n.Prime ↔ (n-1)! % n = n-1) and `prime_iff_factorial_sub_two_mod` (n.Prime ↔ (n-2)! % n = 1), both for n ≥ 2. Finally `exists_lt_dvd_factorial_iff` pins the Kempner–Smarandache threshold: for n ≥ 2, (∃ m < n, n ∣ m!) ↔ (¬n.Prime ∧ n ≠ 4), i.e. the least factorial divisible by n drops below n! exactly for composite n ≠ 4 (witness m = n-2). The prime branches transport Mathlib's ZMod.wilsons_lemma; the n = 4 values are closed by ordinary kernel `decide`. Fully machine-checked: 0 sorries, 0 axioms beyond the foundational propext, Classical.choice, Quot.sound; no native_decide.",
+  "meta": {
+    "author": "Wilson/Lagrange (1771); Kempner (1918) / Smarandache function; (n-2)! companion + ZMod-free primality test formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Wilson%27s_theorem",
+    "date": "1771",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ05OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "primality",
+      "factorial",
+      "modular-arithmetic",
+      "kempner-function",
+      "smarandache-function",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 261,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The prime branches rest on Mathlib's `ZMod.wilsons_lemma` (the ZMod-valued Wilson statement ((p-1)! : ZMod p) = -1 for prime p). The composite branch uses elementary divisibility/factorial lemmas (`Nat.dvd_factorial`, `Nat.factorial_dvd_factorial`, `Nat.minFac_prime`, `Nat.minFac_le_of_dvd`, `Nat.prime_def_minFac`) and the Kempner necessity uses `Nat.Prime.dvd_factorial`. The exceptional values at n = 4 are discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.wilsons_lemma",
+        "description": "`((p - 1)! : ZMod p) = -1` for prime p (with `Fact p.Prime`). Used for both prime branches: directly for (n-1)! % n = n-1, and combined with the factorial split (n-1)! = (n-1)·(n-2)! and (n-1) ≡ -1 to obtain the companion residue (n-2)! % n = 1.",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "`0 < m → m ≤ n → m ∣ n!`. The base divisibility fact behind `mul_dvd_factorial`: the smaller factor a divides (b-1)!.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_dvd_factorial",
+        "description": "`m ≤ n → m! ∣ n!`, factorial monotonicity under divisibility. Lifts a·b ∣ b! up to a·b ∣ (n-2)!, and derives the parent's n ∣ (n-1)! from the sharper n ∣ (n-2)! via (n-2)! ∣ (n-1)!.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_factorial",
+        "description": "`p.Prime → (p ∣ n! ↔ p ≤ n)`. The necessity half of the Kempner threshold: a prime n divides m! only when n ≤ m, contradicting m < n.",
+        "module": "Mathlib.Data.Nat.Prime.Factorial"
+      },
+      {
+        "theorem": "Nat.minFac_prime / Nat.minFac_le_of_dvd / Nat.prime_def_minFac",
+        "description": "Least-prime-factor API: minFac n is prime (for n ≠ 1), is ≤ any divisor ≥ 2 (giving p ≤ q), and n is prime iff 2 ≤ n and minFac n = n (giving p < n for composite n).",
+        "module": "Mathlib.Data.Nat.Prime.Defs"
+      },
+      {
+        "theorem": "Nat.dvd_iff_mod_eq_zero / ZMod.natCast_eq_natCast_iff",
+        "description": "Bridges between divisibility, ℕ remainder, and ZMod equality: n ∣ k ↔ k % n = 0 converts the composite divisibility to the residue 0; (↑a = ↑b in ZMod n) ↔ a ≡ b [MOD n] transports the companion residue back to ℕ.",
+        "module": "Mathlib.Data.Nat.Defs / Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "originalContributions": [
+      "`dvd_factorial_sub_two_of_not_prime`: for composite n ≥ 2 with n ≠ 4, n ∣ (n-2)! — strictly stronger than the parent's n ∣ (n-1)!. The minFac split is reused but with both distinct factors forced below n-2; the boundary n = 4 = 2² is exactly where 2 and 2·2 = 4 no longer fit below n-2.",
+      "`factorial_sub_two_mod`: the companion trichotomy (n-2)! % n = if n.Prime then 1 else if n = 4 then 2 else 0 for n ≥ 2 — a classification of the factorial one step below the classical Wilson factorial.",
+      "`factorial_sub_two_mod_of_prime`: the Wilson companion residue (n-2)! % n = 1 for prime n, obtained from ZMod.wilsons_lemma via the factorial split (n-1)! = (n-1)·(n-2)! and (n-1) ≡ -1.",
+      "`prime_iff_factorial_pred_mod` and `prime_iff_factorial_sub_two_mod`: two decidable ZMod-free Wilson primality tests — n.Prime ↔ (n-1)! % n = n-1 and n.Prime ↔ (n-2)! % n = 1 (n ≥ 2) — answering the parent's first registered open question (turn the trichotomy into a primality certificate).",
+      "`exists_lt_dvd_factorial_iff`: the Kempner–Smarandache threshold (∃ m < n, n ∣ m!) ↔ (¬n.Prime ∧ n ≠ 4) for n ≥ 2 — the first factorial divisible by n falls below n! exactly for composite n ≠ 4 (S(n) < n iff composite, n ≠ 4), with witness m = n-2.",
+      "`dvd_factorial_pred_of_not_prime`: re-derives the parent's composite divisibility n ∣ (n-1)! as a one-line corollary of the sharper (n-2)! result, documenting the strict strengthening."
+    ],
+    "prerequisites": [
+      "Wilson's theorem and its ZMod formulation (ZMod.wilsons_lemma)",
+      "Least prime factor `Nat.minFac` and the prime/composite dichotomy",
+      "Factorials and divisibility (`Nat.dvd_factorial`, `Nat.factorial_dvd_factorial`, `Nat.Prime.dvd_factorial`)",
+      "Natural-number remainder `%`, `Nat.dvd_iff_mod_eq_zero`, and the ℕ↔ZMod cast bridge",
+      "The Kempner–Smarandache function S(n) = min {m : n ∣ m!}"
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "wilsons-theorem-oq-05-oq-01",
+        "relationship": "Parent: oq-05-oq-01 establishes the complete trichotomy of (n-1)! mod n (prime ⟹ n-1, n=4 ⟹ 2, composite ⟹ 0) and lists, as open questions, turning it into a primality certificate and studying neighbouring factorial residues. This entry answers both: the ZMod-free primality tests, the companion trichotomy of (n-2)! (strictly stronger composite divisibility), and the Kempner threshold."
+      },
+      {
+        "id": "wilsons-theorem-oq-05",
+        "relationship": "Ancestor: oq-05 gives Wilson's theorem in classical ℕ-congruence form. The primality test prime_iff_factorial_pred_mod here is the decidable biconditional form of that criterion, now provable in both directions from the trichotomy."
+      },
+      {
+        "id": "wilsons-theorem-oq-03",
+        "relationship": "Sibling line: oq-03 computes the p-adic valuation ν_p((p-1)!) = 0; this entry pins exact residues of (n-2)! and (n-1)! across all moduli and locates the Kempner threshold S(n) < n."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 261,
+    "path": "Proofs/WilsonsTheoremOQ05OQ01OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 9
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Wilson's theorem (Ibn al-Haytham c. 1000; Wilson/Lagrange 1771) characterizes the residue (n-1)! mod n at primes. The parent gallery entry assembled the complete trichotomy of (n-1)! mod n. Two classical threads continue the story. First, Wilson's theorem is in principle a primality test — n is prime iff (n-1)! ≡ -1 (mod n) — though an exponentially slow one; making the biconditional decidable in ℕ-remainder form is the natural certificate. Second, the question 'what is the smallest m with n ∣ m!' is the Kempner–Smarandache function S(n) (Kempner 1918): S(p) = p for primes, and S(n) < n for composite n with the single small exception n = 4 (where S(4) = 4). This entry ties both threads to a single sharpening of the parent: the composite divisibility n ∣ (n-1)! already holds at (n-2)!.",
+    "problemStatement": "**Open Questions (wilsons-theorem-oq-05-oq-01):** (1) turn the (n-1)! mod n trichotomy into a genuine ZMod-free primality certificate; (2) study the analogous residues of neighbouring factorials. This entry proves the sharper composite divisibility n ∣ (n-2)! (composite n ≠ 4), the companion trichotomy of (n-2)! mod n, two decidable ZMod-free Wilson primality tests, and the Kempner threshold characterizing when some factorial below n is divisible by n.",
+    "text": "For n ≥ 2: (n-2)! % n = 1 if n is prime, 2 if n = 4, and 0 otherwise; n is prime iff (n-1)! % n = n-1 iff (n-2)! % n = 1; and some factorial m! with m < n is divisible by n iff n is composite and n ≠ 4.",
+    "proofStrategy": "The composite core dvd_factorial_sub_two_of_not_prime reuses the parent's engine mul_dvd_factorial (0 < a < b ≤ m ⟹ a·b ∣ m!) with m = n-2. Set p = minFac n, q = n/p. If p < q then q ≤ n-2 (since n = p·q ≥ 2q and q ≥ 3), so the distinct factors p, q give p·q = n ∣ (n-2)!. If p = q then n = p² with p ≥ 3 (n ≠ 4), so 2p ≤ n-2 (since p² ≥ 3p) and the distinct factors p, 2p give p·(2p) = 2n ∣ (n-2)!, hence n ∣ (n-2)!. The parent's n ∣ (n-1)! follows via (n-2)! ∣ (n-1)!. The prime companion residue factorial_sub_two_mod_of_prime uses ZMod.wilsons_lemma: in ZMod n, (n-1)! = -1 and (n-1) = -1, and (n-1)! = (n-1)·(n-2)! gives -1 = (-1)·(n-2)!, so (n-2)! = 1, transported to ℕ by ZMod.natCast_eq_natCast_iff. The trichotomy and primality tests assemble these by by_cases on primality and n = 4 (the n = 4 values by kernel decide). The Kempner threshold exists_lt_dvd_factorial_iff uses m = n-2 as witness for the composite side and Nat.Prime.dvd_factorial (p ∣ m! ↔ p ≤ m) for the prime necessity, with n = 4 checked by interval_cases.",
+    "keyInsights": [
+      "**The Wilson divisibility holds one step earlier.** Composite n ≠ 4 divides not just (n-1)! but already (n-2)!: both factors in the minFac split fit below n-2 once n ≥ 6. This makes n ∣ (n-1)! a free corollary and exhibits the parent's result as strictly weaker.",
+      "**The prime companion residue is exactly 1.** Wilson's (n-1)! ≡ -1 factors as (n-1)·(n-2)! with (n-1) ≡ -1, so the cofactor (n-2)! ≡ 1. The companion trichotomy of (n-2)! mod n (1 / 2 / 0) mirrors the parent's (n-1 / 2 / 0), with the same sporadic 2 at n = 4.",
+      "**A decidable ZMod-free primality test.** Wilson's biconditional becomes n.Prime ↔ (n-1)! % n = n-1 (equivalently (n-2)! % n = 1) purely in natural-number remainder arithmetic — the backward direction is exactly the trichotomy ruling out the composite (residue 0) and n = 4 (residue 2) cases.",
+      "**The Kempner threshold S(n) < n is 'composite and not 4'.** The least factorial divisible by n drops below n! precisely for composite n ≠ 4 (witness n-2); for primes and for 4, n! is the first multiple. This is the divisibility shadow of the same n = 4 exception that governs the Wilson residue."
+    ],
+    "prerequisites": [
+      "Wilson's theorem (ZMod form) and ZMod.wilsons_lemma",
+      "Least prime factor Nat.minFac and prime/composite structure",
+      "Factorials and the divisibility lemmas Nat.dvd_factorial, Nat.factorial_dvd_factorial, Nat.Prime.dvd_factorial",
+      "Natural-number remainder %, Nat.dvd_iff_mod_eq_zero, and the ℕ↔ZMod cast bridge",
+      "The Kempner–Smarandache function"
+    ]
+  },
+  "conclusion": {
+    "summary": "The parent's composite divisibility n ∣ (n-1)! is sharpened to n ∣ (n-2)! (composite n ≠ 4), yielding the companion trichotomy of (n-2)! mod n (prime ⟹ 1, n = 4 ⟹ 2, composite ⟹ 0). Two decidable ZMod-free Wilson primality tests follow (n.Prime ↔ (n-1)! % n = n-1 and ↔ (n-2)! % n = 1), answering the parent's primality-certificate open question, and the Kempner–Smarandache threshold is characterized: some factorial below n is divisible by n iff n is composite and n ≠ 4. 9 theorems, 261 lines, 0 sorries, 0 axioms (kernel decide for the n = 4 values; no native_decide).",
+    "implications": "Sharpens and extends the parent trichotomy in elementary ℕ form: the divisibility content is pushed one factorial step earlier and reorganized as a primality certificate and a Kempner-function statement. The reusable engine mul_dvd_factorial is shown robust under the tighter bound m = n-2, and the chain (n-2)! ∣ (n-1)! makes the strengthening explicit.",
+    "openQuestions": [
+      "Determine the exact Kempner–Smarandache value S(n) for composite n (not merely S(n) < n): e.g. S(p^k) and the role of the largest prime power dividing n, and formalize S(n) = max over prime powers.",
+      "Push the divisibility further: for which composite n does n ∣ (n-k)! hold, as a function of n's factorization, sharpening the (n-2)! bound toward S(n)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 72,
+      "summary": "Module docstring stating the (n-2)! sharpening, the companion trichotomy, the two ZMod-free primality tests, and the Kempner threshold, with the proof strategies; imports Mathlib, opens Nat and scoped Nat."
+    },
+    {
+      "id": "engine",
+      "title": "Part 0: The Divisibility Engine",
+      "startLine": 73,
+      "endLine": 90,
+      "summary": "mul_dvd_factorial: 0 < a < b ≤ m → a·b ∣ m! (the parent's engine), proved from b! = b·(b-1)!, Nat.dvd_factorial, and Nat.factorial_dvd_factorial."
+    },
+    {
+      "id": "composite",
+      "title": "Part I: The Sharper Composite Divisibility n ∣ (n-2)!",
+      "startLine": 91,
+      "endLine": 138,
+      "summary": "dvd_factorial_sub_two_of_not_prime sets p = minFac n, q = n/p, and splits on p < q (distinct pair p, q ≤ n-2) vs p = q = p² with p ≥ 3 (distinct pair p, 2p ≤ n-2). dvd_factorial_pred_of_not_prime re-derives the parent's n ∣ (n-1)! via (n-2)! ∣ (n-1)!."
+    },
+    {
+      "id": "prime-branches",
+      "title": "Part II: The Prime Branches via ZMod.wilsons_lemma",
+      "startLine": 139,
+      "endLine": 188,
+      "summary": "factorial_sub_two_mod_of_prime derives the companion residue (n-2)! % n = 1 from ZMod.wilsons_lemma, the split (n-1)! = (n-1)·(n-2)!, and (n-1) ≡ -1. factorial_pred_mod_of_prime re-derives (n-1)! % n = n-1."
+    },
+    {
+      "id": "trichotomy-tests",
+      "title": "Parts III–V: Companion Trichotomy, Primality Tests, Kempner Threshold",
+      "startLine": 189,
+      "endLine": 261,
+      "summary": "factorial_sub_two_mod bundles the (n-2)! trichotomy; prime_iff_factorial_pred_mod and prime_iff_factorial_sub_two_mod give the two ZMod-free primality tests; exists_lt_dvd_factorial_iff characterizes the Kempner threshold (∃ m < n, n ∣ m!) ↔ (¬n.Prime ∧ n ≠ 4)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem-oq-05-oq-01",
+      "relationship": "parent",
+      "description": "The parent establishes the (n-1)! mod n trichotomy and lists the primality-certificate and neighbouring-residue open questions. This entry answers them: ZMod-free primality tests, the strictly stronger (n-2)! divisibility and its companion trichotomy, and the Kempner threshold."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-05",
+      "relationship": "ancestor",
+      "description": "oq-05 states Wilson's theorem in ℕ-congruence form; prime_iff_factorial_pred_mod here is its decidable ZMod-free biconditional, provable in both directions from the trichotomy."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "oq-03 computes ν_p((p-1)!) = 0; this entry pins exact residues of (n-2)! and (n-1)! across all moduli and locates the Kempner threshold S(n) < n."
+    }
+  ]
+}
