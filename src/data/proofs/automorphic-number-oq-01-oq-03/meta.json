@@ -87,6 +87,25 @@
     "path": "Proofs/AutomorphicNumberOQ01OQ03.lean",
     "sorries": 0
   },
+  "overview": {
+    "historicalContext": "Automorphic numbers — integers whose square ends in the same digits as the number itself (5²=25, 6²=36, 25²=625, 76²=5776) — were studied recreationally well before their structural meaning was understood; the term appears in the work of recreational mathematicians and was popularized in the 20th century. The modern reading is purely ring-theoretic: a k-digit automorphic residue is exactly an idempotent of ZMod (10^k), since n²≡n (mod 10^k) ⟺ e·e=e. The fact that 10 = 2·5 splits the ring as ZMod (10^k) ≅ ZMod (2^k) × ZMod (5^k) (CRT) forces exactly four idempotents (0,0),(1,0),(0,1),(1,1) at every level — the two nontrivial ones being the …5 and …6 towers. Passing to the inverse limit recovers the 10-adic integers ℤ₁₀ ≅ ℤ₂ × ℤ₅, whose four idempotents are the limits of these towers. The phenomenon that idempotents lift uniquely along a surjection with nil kernel is the elementary, finite shadow of Hensel's lemma and of the idempotent-lifting theorems for complete and Henselian local rings (lifting idempotents modulo the Jacobson radical). This entry isolates that lifting at each finite stage, explaining why the digits accrete one at a time.",
+    "problemStatement": "The parent entries count the automorphic residues at a fixed modulus (exactly four idempotents in ZMod (10^k)) and describe their pairing, but treat each modulus in isolation. The structural question left open: how do the levels relate? Concretely, why is 5 → 25 → 625 → … a single coherent sequence rather than unrelated solutions at each modulus? Formally: is the digit-dropping reduction red k : ZMod (10^(k+1)) →+* ZMod (10^k) a bijection on idempotent sets, so that each k-digit automorphic residue ē has exactly one (k+1)-digit automorphic residue e reducing to it? We prove ∃! e, e·e=e ∧ red k e = ē for every idempotent ē and every k ≥ 1.",
+    "proofStrategy": "1. map_idem: any ring homomorphism preserves idempotency (f e · f e = f(e·e) = f e), so red k maps idempotents to idempotents (the MapsTo half).\n2. ker_red_nilpotent: lift a kernel element x to a natural number m (ZMod.natCast_rightInverse); red k x = 0 gives 10^k ∣ m (ZMod.natCast_eq_zero_iff), so x is a multiple of 10^k and x² is a multiple of 10^(2k); since k+1 ≤ 2k for k ≥ 1, 10^(k+1) ∣ 10^(2k), hence x² = 0. The kernel is nil.\n3. red_injOn_idem: two idempotents e,f with red k e = red k f have red k (e−f) = 0, so e−f is nilpotent; the parent's idem_eq_of_sub_nilpotent forces e = f.\n4. red_image_idem: the injective image of the four upper idempotents is contained in the four lower ones (map_idem) and has the same cardinality 4 (automorphic_idempotent_count on both levels), so Finset.eq_of_subset_of_card_le upgrades inclusion to equality — red k is onto the idempotents.\n5. unique_digit_extension: ē ∈ lower idempotent set = image (by step 4), so a lift e exists; uniqueness is red_injOn_idem.\n6. Concrete checks 25↦5, 76↦6, 625↦25 by decide.",
+    "keyInsights": [
+      "Automorphic residues mod 10^k ARE the idempotents of ZMod (10^k); the whole problem is the structure of idempotents under reduction, recasting an arithmetic curiosity as a question about an inverse system of rings.",
+      "The entire bijection is bought with one arithmetic fact — the kernel of reduction is nil because (10^k)² = 10^(2k) vanishes in ZMod (10^(k+1)) for k ≥ 1. Doubly-exponential vanishing is exactly what pins down the lift.",
+      "Surjectivity needs no explicit lifting formula: injective + equal finite cardinality (both sets have 4 idempotents, imported from the verified parent) = bijective. The hard counting is reused, not redone.",
+      "This is Hensel/idempotent-lifting in miniature: idempotents lift uniquely along a surjection with nil kernel. The finite tower ZMod (10^k) is the truncation whose limit is the 10-adic ring ℤ₁₀ ≅ ℤ₂ × ℤ₅, also with exactly four idempotents.",
+      "The two nontrivial towers 5,25,625,… and 6,76,376,… are complementary (a and 1−a at every level, from the sibling pairing entry), converging to the two nontrivial 10-adic idempotents e₂ and e₅ = 1 − e₂ that effect the CRT splitting ℤ₁₀ ≅ ℤ₂ × ℤ₅."
+    ],
+    "prerequisites": [
+      "Idempotents of a commutative ring and the equivalence n²≡n (mod 10^k) ⟺ idempotent of ZMod (10^k)",
+      "Reduction homomorphisms ZMod.castHom and the inverse system ZMod (10^(k+1)) → ZMod (10^k)",
+      "Nilpotent elements, nil ideals, and unique lifting of idempotents across a nil kernel (idem_eq_of_sub_nilpotent)",
+      "Finite-set counting: injective-on maps preserve cardinality and an injection between equinumerous finite sets is a bijection (Finset.card_image_of_injOn, Finset.eq_of_subset_of_card_le)",
+      "Inverse limits and the 10-adic integers ℤ₁₀ ≅ ℤ₂ × ℤ₅ (CRT at the level of p-adics)"
+    ]
+  },
   "mainTheorems": [
     {
       "name": "unique_digit_extension",
@@ -156,6 +175,25 @@
       "endLine": 153,
       "summary": "unique_digit_extension: membership of ē in the lower idempotent set, rewritten through red_image_idem, exhibits a lift e; uniqueness is red_injOn_idem. The concrete reductions 25↦5, 76↦6, 625↦25 (by decide) show the tower explicitly.",
       "mathContext": "Each automorphic number extends uniquely by one digit, so 5,25,625,… and 6,76,376,… are coherent sequences — the two nontrivial idempotents of the inverse limit ℤ₁₀ ≅ ℤ₂ × ℤ₅."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, fully verified (0 sorries, 0 axioms, no native_decide) proof that the digit-dropping reduction red k : ZMod (10^(k+1)) →+* ZMod (10^k) restricts to a bijection between the four-element idempotent sets at consecutive levels, so every k-digit automorphic residue extends to a UNIQUE (k+1)-digit one. This supplies the tower structure that the counting and pairing entries left unexplained: 5→25→625→…, 6→76→376→… are single coherent sequences. The argument rests on one arithmetic fact — the kernel of reduction is nil because (10^k)²=0 in ZMod (10^(k+1)) — plus the parent's count of exactly four idempotents per level, which upgrades injectivity to a bijection for free.",
+    "implications": "Identifying automorphic residues with idempotents and proving they lift uniquely realizes the rings ZMod (10^k) as an inverse system whose transition maps are bijective on idempotents. The inverse limit is the 10-adic ring ℤ₁₀ ≅ ℤ₂ × ℤ₅, whose four idempotents 0,1,e₂,e₅ are exactly the limits of the four towers; the two nontrivial ones implement the Chinese-remainder splitting. The mechanism — unique lifting of idempotents along a surjection with nil kernel — is the elementary finite model of Hensel's lemma and of idempotent lifting modulo the Jacobson radical in complete local rings.",
+    "openQuestions": [
+      "Replace base 10 by an arbitrary modulus m with ω(m) distinct prime factors: does the same nil-kernel argument show reduction is a bijection between the 2^ω(m) idempotent sets of ZMod (m^(k+1)) and ZMod (m^k), realizing the idempotents of the m-adic completion ∏_p ℤ_p?",
+      "Quantify the convergence of the towers in the 10-adic metric: the k-digit residue a_k satisfies a_{k+1} ≡ a_k (mod 10^k), so the tower is Cauchy with |a_{k+1} − a_k|_10 ≤ 10^{-k} — can one give a closed form for the limiting 10-adic idempotents e₂, e₅ as explicit 10-adic series?",
+      "Does the unique-lifting bijection assemble into an isomorphism of profinite idempotent sets, recovering the four idempotents of ℤ₁₀ as the inverse limit of the level-wise four-element sets, and can this be formalized as an inverse-limit statement in Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "automorphic-number-oq-01-oq-01",
+      "description": "Sibling entry: counts the idempotents of ZMod n as 2^ω(n) in general, specializing to exactly four for n = 10^k. The count = 4 on both consecutive levels is the equal-cardinality ingredient that turns injectivity of reduction into a bijection here."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-02",
+      "description": "Sibling entry: describes the pairing 0, 1 and a complementary pair a, 1−a, and proves idem_eq_of_sub_nilpotent (idempotents with nilpotent difference coincide). This entry reuses that lemma verbatim to get injectivity of reduction on idempotents from the nil kernel."
     }
   ]
 }
