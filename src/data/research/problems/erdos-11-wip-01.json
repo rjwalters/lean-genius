@@ -49,6 +49,7 @@
       "Squarefree's kernel decidability is impractical (minSqFac non-reducing); large-range verification of Erdős #11 needs native_decide (axiomatized) or a manually-reducing squarefree check."
     ],
     "nextSteps": [
+      "DONE (child oq-01): DecidablePred IsSquarefreePlusPow2 instance + works_of_pred_squarefree (n-1 squarefree ⟹ representable, 2^0 family) + one_not_works (n=1 not representable, conjecture's n>1 necessary) — Proofs/Erdos11WIP01OQ01.lean, gallery erdos-11-wip-01-oq-01, 0-axiom verified.",
       "A manually-reducible squarefree predicate (∀ d ≤ √n, ¬ d²∣n with Nat.decidable_dvd) + an iff to Squarefree, enabling a kernel-`decide` range verification that stays 0-axiom.",
       "native_decide verification of all odd n < 2^k for a chosen k (explicitly axiomatized, status axiomatized).",
       "Structural necessary conditions and the Granville–Soundararajan link to non-Wieferich primes."
