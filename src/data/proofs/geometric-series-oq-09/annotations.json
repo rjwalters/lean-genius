@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-norm-sq-lt-one",
+    "proofId": "geometric-series-oq-09",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "technique",
+    "title": "The Squared-Ratio Bound ‖r²‖ < 1",
+    "content": "`norm_sq_lt_one` is the only genuinely new analytic ingredient: ‖r²‖ = ‖r‖² < 1 whenever ‖r‖ < 1. The proof rewrites ‖r²‖ = ‖r‖² with `norm_pow`, then `pow_lt_one₀` (0 ≤ a, a < 1, n ≠ 0 ⟹ aⁿ < 1) finishes. This bound is exactly the hypothesis Mathlib's geometric-series lemma needs at the new ratio r²; once it is in hand, summing the even subseries is immediate. The companions one_sub_ne_zero and one_sub_sq_ne_zero record 1 − r ≠ 0 and 1 − r² ≠ 0, the nonvanishing denominators the recombination step requires.",
+    "mathContext": "$\\lVert r^2 \\rVert = \\lVert r \\rVert^2 < 1$ when $\\lVert r \\rVert < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["normed field", "norm_pow", "pow_lt_one₀", "convergence radius"],
+    "prerequisites": ["normed fields", "powers and norms"]
+  },
+  {
+    "id": "ann-hasSum-even",
+    "proofId": "geometric-series-oq-09",
+    "range": { "startLine": 65, "endLine": 81 },
+    "type": "insight",
+    "title": "The Even Subseries Is Geometric of Ratio r²",
+    "content": "`hasSum_geometric_even` is the keystone: ∑ r^(2n) = (1 − r²)⁻¹. The decisive move is the reindexing r^(2n) = (r²)ⁿ (`pow_mul`), which exhibits the even-index subseries as itself a geometric series — but of ratio r², not r. Then `hasSum_geometric_of_norm_lt_one` applies at ratio r² (legal because ‖r²‖ < 1), and `simpa only [pow_mul]` transports its conclusion back. This self-similarity — a subseries along an arithmetic index progression is again geometric, with the ratio raised to the step — is the reusable idea behind the whole entry. The tsum and Summable forms are mechanical projections via HasSum.tsum_eq and HasSum.summable.",
+    "mathContext": "$\\sum_{n\\ge0} r^{2n} = \\sum_{n\\ge0} (r^2)^n = \\dfrac{1}{1-r^2}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric series", "series bisection", "self-similarity", "pow_mul", "HasSum"],
+    "prerequisites": ["geometric series", "infinite series", "reindexing"]
+  },
+  {
+    "id": "ann-hasSum-odd",
+    "proofId": "geometric-series-oq-09",
+    "range": { "startLine": 83, "endLine": 101 },
+    "type": "technique",
+    "title": "The Odd Subseries by Factoring Out r",
+    "content": "`hasSum_geometric_odd` sums ∑ r^(2n+1) = r·(1 − r²)⁻¹ not by reindexing from scratch but by transporting the even result. Factoring r^(2n+1) = r·r^(2n) (via pow_succ and mul_comm) writes the odd subseries as r times the even one, so `HasSum.mul_left r` applied to hasSum_geometric_even immediately yields the value. This keeps the odd value manifestly proportional to the even (odd = r·even) and is cheaper than an independent summation. Equivalently r/(1 − r²), the closed form.",
+    "mathContext": "$\\sum_{n\\ge0} r^{2n+1} = r\\sum_{n\\ge0} r^{2n} = \\dfrac{r}{1-r^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["HasSum.mul_left", "scalar multiple of a series", "factoring", "geometric series"],
+    "prerequisites": ["infinite series", "HasSum arithmetic"]
+  },
+  {
+    "id": "ann-recombination",
+    "proofId": "geometric-series-oq-09",
+    "range": { "startLine": 103, "endLine": 113 },
+    "type": "insight",
+    "title": "Recombination and the Factorisation 1 − r² = (1−r)(1+r)",
+    "content": "`tsum_even_add_odd` verifies the split is faithful: ∑ r^(2n) + ∑ r^(2n+1) = ∑ rⁿ = 1/(1 − r). After rewriting all three tsums to closed form, the goal (1 − r²)⁻¹ + r(1 − r²)⁻¹ = (1 − r)⁻¹ is closed by field_simp; ring, using 1 − r ≠ 0 and 1 − r² ≠ 0. The arithmetic is the analytic shadow of the factorisation 1 − r² = (1 − r)(1 + r): the combined numerator 1 + r cancels the (1 + r) factor in the denominator (1 − r)(1 + r), leaving 1/(1 − r). This consistency check confirms the even and odd parts partition the full series with no overlap or omission.",
+    "mathContext": "$\\dfrac{1}{1-r^2} + \\dfrac{r}{1-r^2} = \\dfrac{1+r}{(1-r)(1+r)} = \\dfrac{1}{1-r}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["difference of squares", "partial fractions", "series bisection", "field_simp"],
+    "prerequisites": ["algebraic identities", "infinite series"]
+  },
+  {
+    "id": "ann-concrete-values",
+    "proofId": "geometric-series-oq-09",
+    "range": { "startLine": 115, "endLine": 127 },
+    "type": "context",
+    "title": "Concrete Values at r = 1/2",
+    "content": "Two examples ground the closed forms at r = 1/2: ∑ (1/2)^(2n) = ∑ (1/4)ⁿ = 1/(1 − 1/4) = 4/3, and ∑ (1/2)^(2n+1) = (1/2)/(1 − 1/4) = 2/3. Each is proved by rewriting with the corresponding tsum closed form and finishing with norm_num. They also exercise the recombination on numbers: 4/3 + 2/3 = 2 = 1/(1 − 1/2), the full geometric sum at r = 1/2.",
+    "mathContext": "$\\sum (1/2)^{2n} = 4/3$, $\\sum (1/2)^{2n+1} = 2/3$, and $4/3 + 2/3 = 2 = 1/(1-1/2)$.",
+    "significance": "context",
+    "relatedConcepts": ["worked example", "norm_num", "numerical verification"],
+    "prerequisites": ["arithmetic with fractions"]
+  }
+]
