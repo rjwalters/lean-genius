@@ -17,11 +17,11 @@
       "amgm",
       "equality-case"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 243,
-    "assumptions": "",
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions; no `native_decide`. The core equality characterization — `geomMean_rpow_eq_weightedSum_rpow_iff` (GM^r = ∑ wᵢ zᵢ^r ↔ data constant) — is obtained from Mathlib's `Real.geom_mean_eq_arith_mean_weighted_iff'` (the equality case of weighted AM–GM), reached via `weighted_amgm_eq_iff` in JensenInequalityOQ01, which is a one-line `rw` wrapper around that Mathlib theorem. Every downstream result (`power_mean_eq_geom_mean_iff`, the crossing-zero equality/strictness lemmas, the sharp HM < GM < AM corner) specializes that equality case after transport. This file's independent contribution is the transport infrastructure — rpow injectivity collapsing zⱼ^r = zₖ^r to zⱼ = zₖ, raising to the bijective 1/r power to convert GM^r = ∑ wᵢ zᵢ^r into GM = M_r independently of the sign of r, and the strictness/squeeze arguments — not an independent proof of the AM–GM equality case. Hence the `mathlib` (Tier B) badge; status remains `verified` as the file is fully machine-checked.",
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "power_mean_eq_geom_mean_iff: M_r = GM ↔ data constant, for EVERY r ≠ 0 — the equality locus is identical for positive and negative orders even though the inequality reverses across zero (sign-independent unification)",
