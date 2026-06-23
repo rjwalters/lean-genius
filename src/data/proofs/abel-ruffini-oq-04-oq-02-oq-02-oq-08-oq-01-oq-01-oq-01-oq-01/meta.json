@@ -67,7 +67,7 @@
     "dateAdded": "2026-06-21",
     "axiomCount": 0,
     "lineCount": 188,
-    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used. All thresholds rewrite the parent chain's intrinsic classification (perm_solvable_iff_card / alternating_solvable_iff_card) through Fintype.card_sum / Fintype.card_prod; the reflection and escape lemmas use only elementary Nat arithmetic (Nat.le_mul_of_pos_right, Nat.mul_le_mul, omega). `#print axioms` on all main results reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`.",
+    "assumptions": "0 `axiom` declarations, 0 sorries, 0 structure-encoded assumptions. No `native_decide` is used. All thresholds rewrite the parent chain's intrinsic classification (perm_solvable_iff_card / alternating_solvable_iff_card) through Fintype.card_sum / Fintype.card_prod; that classification descends from Mathlib's symmetric-group solvability result (Equiv.Perm.not_solvable / the A₅ non-solvability core), so this file supplies the ⊕/× boundary arithmetic and the reflection/escape derivations on top of a Mathlib-backed classification rather than an independent solvability proof — hence the `mathlib` badge (Tier B). The reflection and escape lemmas use only elementary Nat arithmetic (Nat.le_mul_of_pos_right, Nat.mul_le_mul, omega). `#print axioms` on all main results reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no `Lean.ofReduceBool`, no `sorryAx`.",
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
     "definitionCount": 0,
