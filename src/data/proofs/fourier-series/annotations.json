@@ -360,7 +360,7 @@
     },
     "type": "concept",
     "title": "Riemann-Lebesgue Lemma",
-    "content": "States the **Riemann-Lebesgue lemma**: Fourier coefficients of $L^2$ functions decay to zero, $c_n \\to 0$ as $|n| \\to \\infty$. This is axiomatized since the proof requires showing that $\\sum|c_n|^2 < \\infty$ (Parseval) implies $c_n \\to 0$.",
+    "content": "States and **proves** the **Riemann-Lebesgue lemma**: Fourier coefficients of $L^2$ functions decay to zero, $c_n \\to 0$ as $|n| \\to \\infty$. The proof (`fourierCoeff_tendsto_zero`) is fully machine-checked — no axiom, no sorry: from Parseval, $\\sum|c_n|^2 < \\infty$, so $\\|c_n\\|^2 \\to 0$ along the `cofinite` filter (`summable_sq_fourierCoeff.tendsto_cofinite_zero`); converting the squared-norm bound to a norm bound via `nlinarith` then gives $c_n \\to 0$.",
     "mathContext": "Stated: `fourier_coeff_tendsto_zero_of_L2 (f : Lp ℂ 2 haarAddCircle) : Tendsto (fun n : ℤ => fourierCoeff (⇑f) n) cofinite (𝓝 0)`. The `cofinite` filter means convergence along $|n| \\to \\infty$: for any $\\varepsilon > 0$, only finitely many $n$ have $|c_n| \\geq \\varepsilon$. This follows from $\\sum|c_n|^2 < \\infty$.",
     "significance": "key",
     "relatedConcepts": [
