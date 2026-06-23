@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "subset-count-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "From Finite Subset Counting to Cantor's Theorem",
+    "content": "The parent entry counts the subsets of a finite set: an n-element set has exactly 2^n subsets. This file makes explicit the two facts hidden inside that formula: 2^n already strictly exceeds n (a finite set has strictly more subsets than elements), and this strict gap is not a finiteness artifact — it holds at every cardinality. That universal strict gap is Cantor's theorem (1891), the infinite analogue of subset counting and the source of the transfinite hierarchy of infinities.",
+    "mathContext": "Parent: $|\\mathcal P(S)| = 2^n$ for $|S| = n$. This entry: $|S| < |\\mathcal P(S)|$ for every set $S$ — Cantor's theorem.",
+    "significance": "context",
+    "relatedConcepts": ["Cantor's theorem", "power set", "cardinality", "diagonal argument", "transfinite hierarchy"],
+    "prerequisites": ["set theory", "cardinality"]
+  },
+  {
+    "id": "ann-diagonal-set",
+    "proofId": "subset-count-oq-01",
+    "range": { "startLine": 37, "endLine": 50 },
+    "type": "insight",
+    "title": "The Diagonal Set Escapes Every Enumeration",
+    "content": "diagonalSet f = {x | x ∉ f x} is the explicit witness of Cantor's argument: it collects exactly the elements that are NOT members of the set they are mapped to. The key lemma diagonalSet_not_mem_range shows it can never equal any f(a). If it did, then asking whether a ∈ f(a) gives a ∈ f(a) ↔ a ∈ diagonalSet f ↔ a ∉ f(a) — a direct contradiction (closed by tauto). A single set disagrees with every f(a) precisely at the point a, so it escapes the entire range. This is the whole diagonal argument in one self-contained step, with no appeal to Mathlib's Cantor lemmas.",
+    "mathContext": "$D := \\{x \\mid x \\notin f(x)\\}$. If $f(a) = D$ then $a \\in f(a) \\iff a \\notin f(a)$ — contradiction. So $D \\notin \\mathrm{range}\\,f$.",
+    "significance": "key",
+    "relatedConcepts": ["diagonal argument", "self-reference", "Russell's paradox", "range of a function"],
+    "prerequisites": ["sets", "functions", "proof by contradiction"]
+  },
+  {
+    "id": "ann-cantor-maps",
+    "proofId": "subset-count-oq-01",
+    "range": { "startLine": 52, "endLine": 61 },
+    "type": "concept",
+    "title": "Surjection and Injection Forms of Cantor's Theorem",
+    "content": "The diagonal lemma immediately yields Cantor in two dual forms. not_surjective_to_set: no f : α → Set α can be surjective, because surjectivity would force the diagonal set into the range, which it provably avoids. not_injective_from_set: no g : Set α → α can be injective — there is no way to label distinct subsets by distinct elements (re-exporting Mathlib's cantor_injective). Together they say the power set is unreachable both 'from below' (cannot enumerate it) and 'from above' (cannot embed it back).",
+    "mathContext": "No $f : \\alpha \\to \\mathcal P(\\alpha)$ is onto; no $g : \\mathcal P(\\alpha) \\to \\alpha$ is injective.",
+    "significance": "supporting",
+    "relatedConcepts": ["surjection", "injection", "Cantor's theorem", "cardinal comparison"],
+    "prerequisites": ["surjective and injective maps", "Cantor's theorem"]
+  },
+  {
+    "id": "ann-cardinal-form",
+    "proofId": "subset-count-oq-01",
+    "range": { "startLine": 63, "endLine": 74 },
+    "type": "concept",
+    "title": "The Cardinal Inequality #α < 2^#α",
+    "content": "On the cardinal side the result becomes the literal infinite analogue of the parent's count. mk_set_eq_two_pow records #(Set α) = 2^#α — exactly the parent's Fintype.card (Finset α) = 2^n promoted from natural numbers to arbitrary cardinals. mk_lt_mk_set then combines this with Mathlib's Cardinal.cantor to give the strict inequality #α < #(Set α), and mk_lt_two_pow_mk states it as #α < 2^#α. The exponential 2^κ is genuine cardinal exponentiation, so this is Cantor's theorem at full generality.",
+    "mathContext": "$\\#(\\mathrm{Set}\\,\\alpha) = 2^{\\#\\alpha}$ and $\\#\\alpha < 2^{\\#\\alpha}$ (Cardinal.cantor). The infinite analogue of $|\\mathcal P(S)| = 2^n > n$.",
+    "significance": "key",
+    "relatedConcepts": ["cardinal arithmetic", "cardinal exponentiation", "power set cardinality", "Cantor's theorem"],
+    "prerequisites": ["cardinal numbers", "cardinal exponentiation"]
+  },
+  {
+    "id": "ann-finite-shadow",
+    "proofId": "subset-count-oq-01",
+    "range": { "startLine": 76, "endLine": 90 },
+    "type": "concept",
+    "title": "The Finite Shadow: n < 2^n",
+    "content": "card_lt_card_finset closes the loop back to the parent. For a finite type, Fintype.card α < Fintype.card (Finset α), and since Fintype.card (Finset α) = 2^n (the parent's count), this unfolds to n < 2^n via Nat.lt_two_pow_self. card_lt_two_pow states the bare arithmetic fact n < 2^n. These show the parent's 2^n is not merely a count but a strict upper bound on n — the finite case of Cantor's theorem, exhibiting the same strict gap that the cardinal form generalises to every infinity.",
+    "mathContext": "$\\mathrm{card}\\,\\alpha < \\mathrm{card}(\\mathrm{Finset}\\,\\alpha) = 2^{\\mathrm{card}\\,\\alpha}$, i.e. $n < 2^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite cardinality", "Finset", "n < 2^n", "finite Cantor"],
+    "prerequisites": ["finite types", "natural number inequalities"]
+  }
+]
