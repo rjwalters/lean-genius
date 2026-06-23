@@ -2,6 +2,19 @@
   "id": "egorov-theorem-oq-01-oq-01",
   "slug": "egorov-theorem-oq-01-oq-01",
   "title": "Egorov's Theorem is Sharp: the Finiteness Hypothesis is Essential",
+  "description": "Egorov's theorem upgrades almost-everywhere convergence to uniform convergence off an arbitrarily small set — but only on a finite-measure space. This entry proves the finiteness hypothesis μ s ≠ ∞ is essential, via the canonical counterexample on the σ-finite-but-infinite space (ℝ, Lebesgue): the marching indicators 𝟙_[n,n+1) converge to 0 at every point of ℝ, yet for every set t of finite Lebesgue measure the convergence on tᶜ is not uniform. The geometric heart is that a finite-measure set cannot contain a ray [N,∞) (which has infinite measure), so beyond any threshold a unit block still escapes t. Together with the sibling entry (which shows the exceptional set cannot be omitted on [0,1)), this pins down exactly which hypotheses of Egorov are load-bearing. Verified, 0 axioms, no native_decide.",
+  "overview": {
+    "historicalContext": "Egorov's theorem (Dmitri Egorov, 1911; independently Carlo Severini, 1910) is the second of Littlewood's 'three principles' of real analysis: every a.e.-convergent sequence of measurable functions is 'nearly' uniformly convergent — uniformly so after deleting a set of arbitrarily small measure. The theorem is the standard bridge from pointwise to uniform convergence and the classical route to Lusin's theorem. Its single structural hypothesis beyond measurability is that the ambient set have finite measure, and the textbook caution is that this cannot be relaxed: on an infinite-measure space the conclusion fails. The marching-bump sequence 𝟙_[n,n+1) on ℝ is the canonical witness to that failure, appearing in Folland, Royden, and essentially every graduate real-analysis text immediately after the theorem. Mathlib formalizes the abstract theorem (tendstoUniformlyOn_of_ae_tendsto) but records neither of its two sharpness facts; the sibling entry egorov-theorem-oq-01 supplies the 'exceptional set cannot be omitted' direction and this entry supplies the orthogonal 'finite measure is essential' direction.",
+    "problemStatement": "Prove that the finite-measure hypothesis of Egorov's theorem is necessary by exhibiting, on the σ-finite-but-infinite space (ℝ, Lebesgue), a sequence that meets every other Egorov hypothesis yet violates the conclusion. Concretely, for the marching indicators marching n = 𝟙_[n,n+1): (1) each is strongly measurable; (2) marching n → 0 at every point of ℝ (hence a.e.); yet (3) for every set t of finite Lebesgue measure, marching n does not converge uniformly to 0 on tᶜ. Thus no finite-measure — let alone arbitrarily small — exceptional set can be removed to recover uniform convergence.",
+    "proofStrategy": "The construction localizes the obstruction to the infiniteness of Lebesgue measure. Strong measurability is immediate (indicator of a measurable set by a constant). Everywhere convergence to 0 is eventual constancy: for fixed x, once n exceeds ⌊x⌋₊ the block [n, n+1) lies strictly right of x, so marching n x = 0 eventually (Nat.lt_floor_add_one, tendsto_const_nhds.congr'). The crux is exists_uncovered: a finite-measure set t cannot contain the ray [N, ∞), because if every block past N sat inside t then [N, ∞) ⊆ t, giving volume[N,∞) ≤ volume t via measure_mono — but Real.volume_Ici = ∞ contradicts finiteness. Failure of uniform convergence (marching_not_tendstoUniformlyOn) then follows from the ε-characterization Metric.tendstoUniformlyOn_iff at ε = 1/2: any claimed uniform threshold N is defeated by the uncovered point x ∈ [n, n+1) \\ t (n ≥ N) where marching n x = 1, forcing 1 < 1/2. The capstone egorov_finiteness_essential bundles measurability, everywhere convergence, and the no-finite-exceptional-set conclusion.",
+    "keyInsights": [
+      "The counterexample is sharp because the a.e.-convergence hypothesis holds in its strongest form: the marching indicators converge to 0 at EVERY point of ℝ, not merely almost everywhere — so the failure is attributable solely to the missing finite-measure hypothesis, nothing else.",
+      "The obstruction is measure-theoretic, not topological. The single fact Real.volume_Ici = ∞ (a ray has infinite measure) is what defeats Egorov: a finite-measure exceptional set is 'too small' to corral the bumps, which keep escaping it forever. This is exactly the content exists_uncovered isolates.",
+      "Mass that escapes to infinity, not mass that concentrates, is the failure mode. Unlike the finite-measure sibling (xⁿ on [0,1), where non-uniformity concentrates near x = 1), here the sup of |marching n| stays equal to 1 forever because the support marches off to +∞ — a phenomenon impossible on a finite-measure space.",
+      "The two Egorov sharpness entries are orthogonal and together complete the picture: egorov-theorem-oq-01 shows the exceptional set cannot be dropped (finite measure, genuine non-uniformity); this entry shows the finite-measure hypothesis cannot be dropped (everywhere convergence, yet no exceptional set helps). Each isolates one load-bearing hypothesis.",
+      "Phrasing the negative result as 'for EVERY finite-measure t' (not just small t) is strictly stronger than negating Egorov verbatim: it shows removing any amount of finite measure buys no uniform control at all, the quantitative sharpness flagged in the open questions."
+    ]
+  },
   "conclusion": {
     "summary": "Egorov's theorem upgrades almost-everywhere convergence to uniform convergence off an arbitrarily small set, but ONLY on a finite-measure space. This entry proves the finiteness hypothesis μ s ≠ ∞ cannot be dropped, via the canonical counterexample on the σ-finite-but-infinite space (ℝ, Lebesgue): the marching indicators marching n = 𝟙_[n,n+1). marching_stronglyMeasurable shows each bump is strongly measurable (so the family meets every Egorov hypothesis except finiteness); marching_tendsto_zero shows the sequence converges to 0 at EVERY point of ℝ (once n > ⌊x⌋₊ the block has passed x, so marching n x = 0 for all large n); and marching_not_tendstoUniformlyOn shows that for EVERY set t of finite Lebesgue measure the sequence fails to converge uniformly to 0 on tᶜ. The geometric heart (exists_uncovered) is that a finite-measure t cannot contain the ray [N,∞) (which has infinite measure Real.volume_Ici), so beyond any threshold some unit block [n,n+1) still pokes out of t, keeping the sup of |marching n| equal to 1 infinitely often. The capstone egorov_finiteness_essential bundles the three. 159 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries, no native_decide.",
     "implications": "This is the sharpness companion to egorov-theorem-oq-01. That entry shows Egorov's exceptional set cannot be omitted (xⁿ on [0,1) converges everywhere but not uniformly); this one shows the orthogonal necessity: the finiteness of the ambient measure is itself essential. On [0,1] removing a small set works (EgorovTheorem.pow_egorov_on_Icc); on ℝ no finite-measure set removal suffices. Together the two entries pin down exactly which hypotheses of Egorov's theorem are load-bearing. Mathlib has the abstract theorem but records neither failure mode.",
@@ -38,7 +51,61 @@
     }
   ],
   "crossReferences": [
-    "egorov-theorem-oq-01"
+    {
+      "targetId": "egorov-theorem-oq-01",
+      "relationship": "related",
+      "description": "The sibling sharpness entry. That entry shows Egorov's exceptional set cannot be omitted (xⁿ on [0,1) converges everywhere but not uniformly, on a finite-measure space); this entry shows the orthogonal necessity that the finite-measure hypothesis itself cannot be dropped (marching indicators on ℝ converge everywhere yet no finite-measure exceptional set recovers uniformity). Together they identify exactly which Egorov hypotheses are load-bearing. This entry answers that one's open question oq-01."
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Why Finiteness Is Essential",
+      "startLine": 5,
+      "endLine": 59,
+      "summary": "States the result — Egorov's finite-measure hypothesis μ s ≠ ∞ is necessary — and the plan: the marching indicators 𝟙_[n,n+1) on (ℝ, Lebesgue) meet every Egorov hypothesis except finiteness, converge to 0 everywhere, yet admit no finite-measure exceptional set off which convergence is uniform. Explains the geometric reason (a finite-measure set can't contain a ray) and notes Mathlib records neither failure mode. Confirms 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "Egorov on finite-measure $s$: a.e. $f_n \\to g \\Rightarrow$ uniform off arbitrarily small $t$. On infinite measure this fails."
+    },
+    {
+      "id": "marching",
+      "title": "The Marching Indicators",
+      "startLine": 66,
+      "endLine": 81,
+      "summary": "marching n = 𝟙_[n,n+1) defined via Set.Ico.indicator; marching_apply_mem gives its value 1 on the block; marching_stronglyMeasurable certifies each bump is strongly measurable (indicator of a measurable set by a constant), so the family satisfies every Egorov hypothesis except finiteness.",
+      "mathContext": "$\\mathrm{marching}\\,n = \\mathbf{1}_{[n,n+1)}$, a unit bump walking off to $+\\infty$; strongly measurable for every $n$."
+    },
+    {
+      "id": "everywhere-convergence",
+      "title": "Everywhere Convergence to Zero",
+      "startLine": 83,
+      "endLine": 100,
+      "summary": "marching_tendsto_zero: the sequence converges to 0 at every real point. For fixed x, once n > ⌊x⌋₊ the block [n,n+1) lies strictly right of x (Nat.lt_floor_add_one), so marching n x = 0 eventually; tendsto_const_nhds.congr' turns eventual-zero into the limit. The a.e. hypothesis holds in its strongest possible (everywhere) form.",
+      "mathContext": "For fixed $x$, $\\mathrm{marching}\\,n\\,x = 0$ for all $n > \\lfloor x \\rfloor$, hence $\\to 0$ pointwise everywhere."
+    },
+    {
+      "id": "exists-uncovered",
+      "title": "The Geometric Obstruction",
+      "startLine": 102,
+      "endLine": 123,
+      "summary": "exists_uncovered: a finite-measure set t cannot contain the ray [N,∞). If every block past N lay inside t then [N,∞) ⊆ t, so volume[N,∞) ≤ volume t (measure_mono); but Real.volume_Ici = ∞ contradicts volume t ≠ ∞. Hence beyond any threshold some block [n,n+1) pokes a point out of t.",
+      "mathContext": "$\\mathrm{vol}(t) < \\infty \\Rightarrow [N,\\infty) \\not\\subseteq t$, since $\\mathrm{vol}[N,\\infty) = \\infty$."
+    },
+    {
+      "id": "not-uniform",
+      "title": "Failure of Uniform Convergence",
+      "startLine": 125,
+      "endLine": 142,
+      "summary": "marching_not_tendstoUniformlyOn: for every finite-measure t, no uniform convergence to 0 on tᶜ. From Metric.tendstoUniformlyOn_iff at ε = 1/2 get a threshold N; exists_uncovered yields n ≥ N and x ∈ [n,n+1) \\ t with marching n x = 1, so 1 < 1/2 — contradiction. No finite-measure exceptional set helps.",
+      "mathContext": "$\\sup_{x \\in t^c}|\\mathrm{marching}\\,n\\,x| = 1$ infinitely often, so $\\mathrm{marching}\\,n \\not\\rightrightarrows 0$ on $t^c$."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: Egorov Is Sharp",
+      "startLine": 144,
+      "endLine": 157,
+      "summary": "egorov_finiteness_essential bundles the three: strong measurability, everywhere convergence to 0, and failure of uniform convergence off any finite-measure set. The only Egorov hypothesis the marching indicators miss is finiteness of the ambient measure, so that hypothesis cannot be dropped.",
+      "mathContext": "Measurable $\\wedge$ everywhere-convergent $\\wedge$ no-finite-exceptional-set $\\Rightarrow$ Egorov fails; only finiteness was absent."
+    }
   ],
   "meta": {
     "author": "Lean Genius",
