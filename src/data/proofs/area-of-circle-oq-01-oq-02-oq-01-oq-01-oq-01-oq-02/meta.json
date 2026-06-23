@@ -83,5 +83,52 @@
       "Asymptotic equivalence calculus",
       "Gamma recurrence and ball-volume even formula"
     ]
-  }
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header: Statement, Correction, Self-Containment",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Docstring framing the sharpening of ω_n → 0 to the exact even asymptotic, the honest correction of the posed constant (1/√(πn), not √(2π/n)), the self-contained re-derivation rationale (ancestor no longer builds under v4.26), imports, and the BallVolumeAsymptotic namespace.",
+      "mathContext": "$\\omega_{2k} \\sim (\\pi e/k)^k/\\sqrt{2\\pi k}$; constant $1/\\sqrt{\\pi n}$ vs posed $\\sqrt{2\\pi/n}$ (off by $\\sqrt2\\,\\pi$)."
+    },
+    {
+      "id": "infrastructure",
+      "title": "Ball-Volume Infrastructure",
+      "startLine": 53,
+      "endLine": 92,
+      "summary": "ω (definition π^(n/2)/Γ(n/2+1)), omega_zero (ω_0 = 1), gamma_half_pos (positivity), omega_recurrence (drift-corrected ω_{n+2} = (2π/(n+2))·ω_n), and omega_even_formula (the exact even closed form ω_{2k} = π^k/k! by induction).",
+      "mathContext": "$\\omega_{n+2} = \\tfrac{2\\pi}{n+2}\\omega_n \\Rightarrow \\omega_{2k} = \\pi^k/k!$ (exact)."
+    },
+    {
+      "id": "asymptotic",
+      "title": "The Exact Stirling Asymptotic",
+      "startLine": 94,
+      "endLine": 147,
+      "summary": "omega_even_isEquivalent (ω_{2k} ~ (πe/k)^k/√(2πk), proved by transporting Stirling for k! through inv/mul/congr_right) and omega_even_ratio_tendsto_one (the same as a normalized-ratio limit → 1 via isEquivalent_iff_tendsto_one).",
+      "mathContext": "$\\omega_{2k} = \\pi^k(k!)^{-1} \\sim (\\pi e/k)^k/\\sqrt{2\\pi k}$; ratio $\\to 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The exact even-subsequence asymptotic of the unit-ball volumes is established and machine-checked (0 sorries, 0 axioms): ω_{2k} ~[atTop] (πe/k)^k/√(2πk), equivalently ω_n ~ (2πe/n)^(n/2)/√(πn). The proof leverages the exact even closed form ω_{2k} = π^k/k! to reduce everything to Mathlib's Stirling formula for k!, then transports it through the calculus of asymptotic equivalence. Along the way the originally-posed leading constant √(2π/n) is corrected to the true 1/√(πn).",
+    "implications": "This pins the precise rate of the curse of dimensionality on the even subsequence: the ball volume decays super-exponentially like (πe/k)^k — faster than any geometric rate once k > πe — with polynomial prefactor 1/√(2πk). The work also demonstrates a robust formalization pattern (exact closed form + equivalence calculus) for converting a 'tends to 0' statement into a sharp asymptotic, and records a careful correction of a mis-stated constant rather than silently proving a different claim.",
+    "openQuestions": [
+      "Extend the exact asymptotic to the full (including odd) subsequence ω_n, where the half-integer Gamma values require the duplication formula or a direct Stirling estimate of Γ(n/2+1).",
+      "Quantify the second-order term: an asymptotic expansion ω_{2k} = (πe/k)^k/√(2πk)·(1 + c/k + O(1/k²)) from the refined Stirling series.",
+      "Determine the dimension k maximizing ω_{2k} (the volume peaks near n ≈ 5 and then decays) directly from the closed form π^k/k!."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Sharpens the ancestor's ω_n → 0 to the exact even-subsequence decay rate ω_{2k} ~ (πe/k)^k/√(2πk), and re-derives its infrastructure in a form that compiles under Mathlib v4.26."
+    },
+    {
+      "targetId": "area-of-circle",
+      "relationship": "related",
+      "description": "Part of the area-of-circle / ball-volume lineage: the n-dimensional generalization of the circle-area computation, here analyzed asymptotically in high dimension."
+    }
+  ]
 }
