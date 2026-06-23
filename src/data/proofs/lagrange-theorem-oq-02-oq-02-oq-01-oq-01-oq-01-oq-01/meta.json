@@ -1,0 +1,122 @@
+{
+  "id": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "slug": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.GroupAction.Quotient",
+      "Mathlib.GroupTheory.Index",
+      "Mathlib.SetTheory.Cardinal.Finite",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MulAction"
+    ],
+    "namespace": "OrbitCountingIndex",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Orbit-Counting Index Identity over Nat.card",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "group-theory",
+      "group-action",
+      "orbit-stabilizer",
+      "lagrange",
+      "subgroup-index",
+      "nat-card",
+      "finite",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 124,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "card_orbit_eq_index_stabilizer: Nat.card (orbit G x) = (stabilizer G x).index — the orbit-counting index identity, proved unconditionally by transporting orbitEquivQuotientStabilizer through Nat.card and unfolding Subgroup.index; no Finite/Fintype hypothesis",
+      "card_orbit_eq_index_stabilizer_via_cancellation: the same identity derived the way the open question literally asks — set the orbit-stabilizer product equal to Lagrange's product and right-cancel the common stabilizer factor; this route genuinely requires Finite G because ℕ-cancellation needs the stabilizer card to be nonzero",
+      "card_stabilizer_pos: 0 < Nat.card (stabilizer G x) for Finite G — the positivity fact that legitimises the cancellation, isolating exactly where finiteness enters",
+      "card_orbit_mul_card_stabilizer: the parent's orbit-stabilizer product over Nat.card, restated locally so the file is self-contained"
+    ],
+    "prerequisites": [
+      "Group actions: orbit, stabilizer, the orbit space G ⧸ stabilizer (MulAction)",
+      "Subgroup index as Nat.card (G ⧸ H) and Lagrange's theorem in card form (Subgroup.index_mul_card)",
+      "Mathlib's finiteness-free bijections orbitEquivQuotientStabilizer and orbitProdStabilizerEquivGroup",
+      "ℕ right-cancellation (Nat.eq_of_mul_eq_mul_right) and Nat.card_pos for finite nonempty types",
+      "Parent: lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01 (orbit-stabilizer family over Nat.card)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.orbitEquivQuotientStabilizer",
+        "description": "orbit G x ≃ G ⧸ stabilizer G x — the finiteness-free orbit/coset bijection. Transported through Nat.card it gives the index identity unconditionally.",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "Subgroup.index_eq_card",
+        "description": "H.index = Nat.card (G ⧸ H) — unfolds the subgroup index to a quotient cardinal, the bridge between the orbit/coset bijection and the index notation [G : stabilizer G x].",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Subgroup.index_mul_card",
+        "description": "H.index * Nat.card H = Nat.card G — Lagrange's theorem over Nat.card; supplies the second product that, combined with the orbit-stabilizer product, yields the index identity by cancellation.",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Nat.eq_of_mul_eq_mul_right",
+        "description": "0 < c → a * c = b * c → a = b — the ℕ right-cancellation law that makes the combine-and-cancel derivation valid only when the stabilizer card is positive.",
+        "module": "Mathlib (Nat)"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "question": "Specialise the index identity to the conjugation action ConjAct G on G to obtain the conjugacy-class size formula Nat.card (conjugacy class of g) = [G : centralizer g] over Nat.card, connecting it to the class equation Group.nat_card_center_add_sum_card_noncenter_eq_card.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent. That entry proved the orbit-stabilizer product and quotient forms over Nat.card. This entry uses them to settle the index identity Nat.card (orbit G x) = [G : stabilizer G x], and makes precise that the direct bijection proves it unconditionally while the literal combine-and-cancel route needs Finite G."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "related",
+      "description": "Grandparent family. The orbit-counting index identity is the orbit-theoretic form of Lagrange's theorem: an orbit is in bijection with the cosets of its stabilizer, so its size is the stabilizer's index."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: GroupTheory.Index",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Subgroup.index_eq_card and Subgroup.index_mul_card (Lagrange's theorem over Nat.card)."
+    },
+    {
+      "title": "Mathlib4: GroupTheory.GroupAction.Quotient",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of orbitEquivQuotientStabilizer and orbitProdStabilizerEquivGroup."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The orbit-counting index identity Nat.card (orbit G x) = [G : stabilizer G x] is proved two ways. The direct proof transports the finiteness-free bijection orbitEquivQuotientStabilizer through Nat.card and unfolds Subgroup.index, holding for any group action with no finiteness hypothesis. The combine-and-cancel proof — the literal route the open question describes — sets the orbit-stabilizer product equal to Lagrange's product and right-cancels the shared stabilizer factor; this needs Finite G, because ℕ-cancellation requires the stabilizer card to be nonzero. 124 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The two derivations pin down exactly where finiteness is and is not needed: the bijection, not the cardinal arithmetic, is what removes the finiteness hypothesis from orbit-stabilizer counting. This is why Mathlib builds orbit-stabilizer from equivalences rather than from cancellation — the cancellation step silently assumes the stabilizer is finite, whereas the equivalence is unconditional. The unconditional index identity supplies a total, instance-free statement of 'orbit size = stabilizer index' for downstream use.",
+    "openQuestions": [
+      "Specialise to the conjugation action to obtain the conjugacy-class size formula Nat.card (conjugacy class of g) = [G : centralizer g] and connect it to the class equation."
+    ]
+  }
+}
