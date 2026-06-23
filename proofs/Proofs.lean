@@ -3304,6 +3304,7 @@ import Proofs.QuadraticReciprocityOQ03OQ01
 import Proofs.QuadraticReciprocityOQ03OQ01Exp
 import Proofs.RamanujanSumFallacy
 import Proofs.RamseyFirstMoment
+import Proofs.RamseyFirstMomentOQ01
 import Proofs.RamseyHypergraph
 import Proofs.RamseyR4k
 import Proofs.RamseyR4kExtensions
