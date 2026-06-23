@@ -1,0 +1,147 @@
+[
+  {
+    "id": "markov-ann-header",
+    "proofId": "markov-equation",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "The Markov Equation and the Markov Tree",
+    "content": "The Markov equation x² + y² + z² = 3xyz, introduced by A. A. Markov in 1879 while studying minima of indefinite binary quadratic forms, has positive integer solutions (Markov triples) that organize into an infinite ternary tree rooted at the singular solution (1,1,1): (1,1,1), (1,1,2), (1,2,5), (1,5,13), (2,5,29), …. The file defines IsMarkov x y z as the conjunction 0 < x ∧ 0 < y ∧ 0 < z ∧ x² + y² + z² = 3xyz and proves the root (1,1,1) is a solution. The whole development is elementary and axiom-free — the equation is not in Mathlib (Pell.Solution₁ only covers norm-+1 binary Pell), so the ternary descent is built from scratch.",
+    "mathContext": "$x^2 + y^2 + z^2 = 3xyz,\\qquad (x,y,z)\\in\\mathbb{Z}_{>0}^3.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Markov equation",
+      "Markov tree",
+      "Diophantine equations",
+      "Markov numbers"
+    ],
+    "prerequisites": [
+      "Diophantine equations",
+      "quadratic forms",
+      "positive integers over ℤ"
+    ]
+  },
+  {
+    "id": "markov-ann-symmetry",
+    "proofId": "markov-equation",
+    "range": { "startLine": 39, "endLine": 49 },
+    "type": "technique",
+    "title": "Symmetry: Coordinate Transpositions Preserve Solutions",
+    "content": "Because x² + y² + z² = 3xyz is symmetric in its three variables, any transposition of coordinates sends a Markov triple to a Markov triple. markov_swap12 and markov_swap23 record the two adjacent transpositions (which generate the full symmetric group S₃); each is a one-line linear_combination on the defining equation, carrying along the positivity conjuncts. These transpositions are later combined with the Vieta jump to form the move relation of the tree.",
+    "mathContext": "$\\mathrm{IsMarkov}(x,y,z)\\iff\\mathrm{IsMarkov}(y,x,z)\\iff\\mathrm{IsMarkov}(x,z,y).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "symmetric polynomials",
+      "transpositions",
+      "S₃ action",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "symmetry of polynomials",
+      "permutations"
+    ]
+  },
+  {
+    "id": "markov-ann-vieta",
+    "proofId": "markov-equation",
+    "range": { "startLine": 51, "endLine": 74 },
+    "type": "theorem",
+    "title": "Vieta Jumping: the Root-Swapping Involution",
+    "content": "Fixing x and y, the Markov equation is the monic quadratic t² − 3xy·t + (x²+y²) = 0 in the third coordinate. Its two roots z and z' = 3xy − z satisfy z·z' = x² + y² (markov_root_prod, by Vieta). markov_vieta shows the jump z ↦ 3xy − z again yields a Markov triple: solution-preservation is one linear_combination, and positivity of the new coordinate follows from z·z' = x² + y² > 0 with z > 0 (nlinarith). The jump is an involution (markov_vieta_involutive), so the move relation it generates is symmetric and produces a tree rather than a directed chain.",
+    "mathContext": "$z + z' = 3xy,\\qquad z\\,z' = x^2 + y^2,\\qquad z' = 3xy - z.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Vieta's formulas",
+      "root conjugation",
+      "involution",
+      "quadratic in one variable"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "quadratic equations",
+      "positivity reasoning"
+    ]
+  },
+  {
+    "id": "markov-ann-descent",
+    "proofId": "markov-equation",
+    "range": { "startLine": 76, "endLine": 112 },
+    "type": "insight",
+    "title": "The Descent Inequality — the Arithmetic Heart",
+    "content": "For a sorted triple x ≤ y ≤ z with z ≥ 2, markov_top_strict shows the top coordinate is a strict maximum (y < z): a tie y = z would force x² = z²(3x−2), impossible for 1 ≤ x ≤ z. markov_vieta_lt then proves the jump strictly decreases the maximum: 3xy − z < z. The engine is the sign of the quadratic at t = y, g(y) = (y − z)(y − z') = x² + 2y² − 3xy² = x² + y²(2 − 3x) ≤ 0 (since x ≥ 1). With y < z this gives z' ≤ y, so z·z' = x²+y² ≤ z·y < z², which converts to 3xy < 2z, i.e. 3xy − z < z. So replacing the maximal coordinate strictly decreases the sum.",
+    "mathContext": "$g(y) = (y-z)(y-z') = x^2 + y^2(2-3x) \\le 0 \\ \\Rightarrow\\ 3xy - z < z.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "infinite descent",
+      "sign of a quadratic",
+      "monovariant",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "quadratic inequalities",
+      "ordered rings",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "markov-ann-reachability",
+    "proofId": "markov-equation",
+    "range": { "startLine": 114, "endLine": 167 },
+    "type": "definition",
+    "title": "The Move Relation and Sorting",
+    "content": "Step is the inductive move relation with three constructors — the two transpositions and the Vieta jump — and Reachable is its reflexive-transitive closure (Relation.ReflTransGen). isMarkov_of_step confirms every single move preserves IsMarkov. sort_reachable handles the six orderings of a triple: any triple reaches a sorted representative a ≤ b ≤ c, with the same coordinate sum, by at most three transpositions. Encoding reachability via ReflTransGen lets the main descent be a single downward chain assembled with .head / .tail / .trans.",
+    "mathContext": "$\\mathrm{Reachable} = \\mathrm{ReflTransGen}\\,\\mathrm{Step},\\quad \\mathrm{Step} = \\{\\text{swap}_{12}, \\text{swap}_{23}, \\text{vieta}\\}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "reflexive-transitive closure",
+      "Relation.ReflTransGen",
+      "inductive relations",
+      "sorting networks"
+    ],
+    "prerequisites": [
+      "inductive predicates",
+      "transitive closure",
+      "case analysis on order"
+    ]
+  },
+  {
+    "id": "markov-ann-classification",
+    "proofId": "markov-equation",
+    "range": { "startLine": 169, "endLine": 207 },
+    "type": "theorem",
+    "title": "Classification by Strong Induction on the Sum",
+    "content": "markov_reachable_one is the main theorem: every positive Markov triple is reachable from (1,1,1). The proof is strong induction on the coordinate sum (as a ℕ via toNat). Sort the triple; if the top coordinate c = 1 then a = b = c = 1 and we are at the root; otherwise c ≥ 2, so the Vieta jump produces a genuine Markov triple with strictly smaller sum (markov_vieta_lt + Int.toNat_lt_toNat), and the induction hypothesis finishes. markov_classification is the clean corollary. The sum x + y + z is the monovariant that makes descent terminate.",
+    "mathContext": "$\\forall (x,y,z),\\ \\mathrm{IsMarkov}(x,y,z)\\ \\Rightarrow\\ \\mathrm{Reachable}((x,y,z),(1,1,1)).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "strong induction",
+      "infinite descent",
+      "monovariant",
+      "Int.toNat"
+    ],
+    "prerequisites": [
+      "well-founded induction",
+      "Nat.strong_induction_on",
+      "descent arguments"
+    ]
+  },
+  {
+    "id": "markov-ann-uniqueness",
+    "proofId": "markov-equation",
+    "range": { "startLine": 209, "endLine": 237 },
+    "type": "context",
+    "title": "Uniqueness of the Root and Small Triples",
+    "content": "markov_all_eq proves (t,t,t) is Markov iff t = 1: the equation collapses to t²(t−1) = 0, and positivity rules out t = 0. So (1,1,1) is the unique fixed triple of the descent — every other triple has a strict maximum to jump down. The file closes with concrete witnesses (1,1,2), (1,2,5), (2,5,29) and markov_step_root_to_112 exhibiting the first Vieta jump (1,1,1) ↦ (1,1,2), anchoring the abstract classification to the leading entries of the Markov tree.",
+    "mathContext": "$\\mathrm{IsMarkov}(t,t,t)\\iff t^2(t-1)=0 \\iff t = 1;\\quad (1,1,1)\\to(1,1,2)\\to(1,2,5)\\to\\cdots$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fixed points",
+      "Markov triples",
+      "singular solution",
+      "tree leaves"
+    ],
+    "prerequisites": [
+      "factoring over ℤ",
+      "small-case verification"
+    ]
+  }
+]
