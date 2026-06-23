@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "pythagorean-triples-oq-04-oq-01",
+    "range": { "startLine": 4, "endLine": 42 },
+    "type": "context",
+    "title": "Sums of Two Squares: From Primes to All n, Constructively",
+    "content": "The parent entry packaged Fermat's two-square theorem for primes (p = a²+b² iff p ≢ 3 mod 4) and the Brahmagupta–Fibonacci identity (two-factor multiplicativity). This file lifts that to arbitrarily many prime factors, giving the constructive sufficiency direction: if every prime factor of n is ≢ 3 (mod 4), then n is a sum of two squares. Crucially the proof is algorithmic — strong induction peeling the least prime factor — not a citation of Mathlib's existence-only `Nat.eq_sq_add_sq_iff`.",
+    "mathContext": "$(\\forall p\\mid n\\ \\text{prime},\\ p\\not\\equiv 3\\ (4)) \\implies \\exists a,b,\\ n = a^2+b^2$, built constructively from the Gaussian-integer factorizations of the primes.",
+    "significance": "context",
+    "relatedConcepts": ["sum of two squares", "Fermat's two-square theorem", "Brahmagupta–Fibonacci identity", "Gaussian integers"],
+    "prerequisites": ["sums of two squares", "primes mod 4", "multiplicativity"]
+  },
+  {
+    "id": "ann-constructive-statement",
+    "proofId": "pythagorean-triples-oq-04-oq-01",
+    "range": { "startLine": 52, "endLine": 62 },
+    "type": "theorem",
+    "title": "Constructive Sufficiency",
+    "content": "The headline: if every prime factor of n is ≢ 3 (mod 4), then n = a² + b² for some naturals a, b. Stated with an explicit existential so the witnesses are produced, not merely asserted to exist.",
+    "mathContext": "$(\\forall p,\\ p\\text{ prime} \\to p\\mid n \\to p\\bmod 4 \\ne 3) \\implies \\exists a\\,b,\\ a^2+b^2 = n.$",
+    "significance": "key",
+    "relatedConcepts": ["sum of two squares", "prime factorization condition", "constructive existence"],
+    "prerequisites": ["primes dividing n", "sums of two squares"]
+  },
+  {
+    "id": "ann-constructive-proof",
+    "proofId": "pythagorean-triples-oq-04-oq-01",
+    "range": { "startLine": 63, "endLine": 91 },
+    "type": "technique",
+    "title": "Proof: Strong Induction Peeling the Least Prime Factor",
+    "content": "Strong induction on n. Base cases n = 0, 1 are 0²+0² and 1²+0². For n ≥ 2, take p = n.minFac (prime, ≢ 3 by hypothesis); Fermat's prime case (`Nat.Prime.sq_add_sq`) writes p = a²+b². The cofactor m = n/p is strictly smaller and inherits the hypothesis (its prime factors divide n), so the induction hypothesis gives m = c²+d². The Brahmagupta–Fibonacci identity (`Nat.sq_add_sq_mul`) recombines into n = p·m = r²+s². Unrolling the recursion yields an explicit representation.",
+    "mathContext": "$p = a^2+b^2,\\ m = n/p = c^2+d^2 \\Rightarrow n = pm = (ac\\mp bd)^2 + (ad\\pm bc)^2$ (Brahmagupta–Fibonacci).",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "minFac", "Brahmagupta–Fibonacci identity", "Fermat prime case"],
+    "prerequisites": ["Nat.strongRecOn", "least prime factor", "two-square identity"]
+  },
+  {
+    "id": "ann-prime-powers",
+    "proofId": "pythagorean-triples-oq-04-oq-01",
+    "range": { "startLine": 97, "endLine": 105 },
+    "type": "theorem",
+    "title": "Prime Powers pᵏ Are Sums of Two Squares",
+    "content": "A clean corollary: if p is prime with p ≢ 3 (mod 4), then every power pᵏ is a sum of two squares. The only prime factor of pᵏ is p itself (via `Prime.dvd_of_dvd_pow` and `prime_dvd_prime_iff_eq`), so the headline's hypothesis is satisfied and applies directly.",
+    "mathContext": "$p$ prime, $p\\not\\equiv 3\\ (4) \\implies \\exists a,b,\\ a^2+b^2 = p^k.$",
+    "significance": "supporting",
+    "relatedConcepts": ["prime powers", "sum of two squares", "divisors of a prime power"],
+    "prerequisites": ["prime divides a power", "the headline theorem"]
+  },
+  {
+    "id": "ann-crosscheck",
+    "proofId": "pythagorean-triples-oq-04-oq-01",
+    "range": { "startLine": 111, "endLine": 122 },
+    "type": "theorem",
+    "title": "Cross-Check Against Mathlib's Characterization",
+    "content": "An independent, non-constructive proof of the same sufficiency from Mathlib's full existence characterization `Nat.eq_sq_add_sq_iff`: that theorem's parity condition (no prime factor ≡ 3 mod 4 appears to odd multiplicity) is vacuously met when no prime factor is ≡ 3 at all. Having both a constructive and a characterization-based proof confirms the two formulations agree.",
+    "mathContext": "`Nat.eq_sq_add_sq_iff`: $n = a^2+b^2 \\iff \\forall q\\equiv 3\\ (4)$ dividing $n$, $v_q(n)$ even; vacuous here since no such $q$ divides $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["existence characterization", "independent proof", "primeFactors", "consistency check"],
+    "prerequisites": ["Nat.eq_sq_add_sq_iff", "prime factors of n"]
+  }
+]
