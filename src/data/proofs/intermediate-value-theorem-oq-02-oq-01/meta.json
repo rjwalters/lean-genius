@@ -81,6 +81,13 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Overview, open question, and imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring stating the inherited open question (recover the exact IVT from the parent's approximate bisection) and the strategy (monotone bounded endpoints with vanishing width → common limit c, continuity gives f c = 0). Imports Mathlib and the parent Proofs.IntermediateValueTheoremOQ02, opens Set / Filter / Topology, and enters the ConstructiveIVT namespace."
+    },
+    {
       "id": "endpoint-monotone",
       "title": "Endpoint sequences are monotone",
       "startLine": 44,
