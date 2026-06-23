@@ -57,7 +57,7 @@
       "startLine": 31,
       "endLine": 51
     },
-    "title": "Counting Lemma (sorry)",
+    "title": "Counting Lemma (proved)",
     "content": "The counting lemma: if $(A, B)$, $(A, C)$, and $(B, C)$ are all $\\varepsilon$-regular pairs with edge densities $\\geq \\varepsilon$, then the triangle count is at least $(d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$.\n\nThe proof idea: for a vertex $a \\in A$, its neighborhood in $B$ has size $\\approx d_{AB}|B|$ by regularity (for all but $\\varepsilon|A|$ vertices). Similarly for $C$. The number of edges between $N(a) \\cap B$ and $N(a) \\cap C$ is $\\approx d_{BC}|N(a) \\cap B||N(a) \\cap C|$ by regularity of $(B, C)$. Summing over $a$ and handling error terms gives the bound.",
     "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. The error bound is at most $3\\varepsilon|A||B||C|$ when densities are $\\Theta(1)$.",
     "significance": "key",
@@ -128,7 +128,7 @@
       "startLine": 67,
       "endLine": 86
     },
-    "title": "Triangle Removal Lemma (sorry)",
+    "title": "Triangle Removal Lemma (qualitative)",
     "content": "For every $\\delta > 0$, there exists $\\gamma > 0$ such that any graph with at most $\\gamma n^3$ triangles can be made triangle-free by removing at most $\\delta n^2$ edges.\n\nThe proof strategy: (1) Apply the Regularity Lemma with $\\varepsilon = \\delta/2$ to get a partition. (2) Remove all edges within parts, in irregular pairs, and in regular pairs with density $< \\delta/2$. This removes at most $\\delta n^2$ edges. (3) Any remaining triangle must have vertices in three mutually regular, dense parts. (4) By the counting lemma, this yields at least $c n^3$ triangles. (5) So if the graph has fewer than $c n^3$ triangles, no such triangle exists and the graph is triangle-free.\n\nThe statement uses `True` as a placeholder for the edge count bound, which should be `(Finset.filter ... R).card \\leq delta * n^2`.",
     "mathContext": "$\\forall \\delta > 0, \\exists \\gamma > 0, \\forall G$ on $n$ vertices: $T(G) \\leq \\gamma n^3 \\Rightarrow \\exists R \\subseteq E(G), |R| \\leq \\delta n^2 \\wedge G \\setminus R$ is triangle-free.",
     "significance": "key",
