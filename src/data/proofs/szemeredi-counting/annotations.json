@@ -57,7 +57,7 @@
       "startLine": 31,
       "endLine": 51
     },
-    "title": "Counting Lemma (sorry)",
+    "title": "Counting Lemma",
     "content": "The counting lemma: if $(A, B)$, $(A, C)$, and $(B, C)$ are all $\\varepsilon$-regular pairs with edge densities $\\geq \\varepsilon$, then the triangle count is at least $(d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$.\n\nThe proof idea: for a vertex $a \\in A$, its neighborhood in $B$ has size $\\approx d_{AB}|B|$ by regularity (for all but $\\varepsilon|A|$ vertices). Similarly for $C$. The number of edges between $N(a) \\cap B$ and $N(a) \\cap C$ is $\\approx d_{BC}|N(a) \\cap B||N(a) \\cap C|$ by regularity of $(B, C)$. Summing over $a$ and handling error terms gives the bound.",
     "mathContext": "$T(A,B,C) \\geq (d_{AB} - \\varepsilon)(d_{AC} - \\varepsilon)(d_{BC} - \\varepsilon)|A||B||C|$. The error bound is at most $3\\varepsilon|A||B||C|$ when densities are $\\Theta(1)$.",
     "significance": "key",
