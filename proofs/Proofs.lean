@@ -139,6 +139,7 @@ import Proofs.AngleTrisectionOQ05OQ01
 import Proofs.AngleTrisectionOQ05OQ02
 import Proofs.AngleTrisectionOQ05OQ03
 import Proofs.AngleTrisectionOQ05OQ04
+import Proofs.AntitoneIntegralSumComparisonOQ01OQ01
 import Proofs.ArchimedesMethodOfExhaustion
 import Proofs.AreaFromCircumferenceIntegral
 import Proofs.AreaOfCircle
