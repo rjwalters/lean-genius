@@ -1,0 +1,69 @@
+{
+  "id": "prob-method-expectation-oq-02",
+  "title": "First Moment Method: The Genuine Erdős Ramsey Lower Bound",
+  "slug": "prob-method-expectation-oq-02",
+  "description": "Supplies the real content of Erdős's 1947 first-moment Ramsey bound, which the parent entry only stated vacuously. Via a union-bound counting argument over edge-2-colourings of K_n, proves that C(n,k)·2^(C(n,2)−C(k,2)+1) < 2^C(n,2) implies a 2-colouring with no monochromatic K_k, i.e. R(k,k) > n. Includes the textbook rational form C(n,k)·2^(1−C(k,2)) < 1 and the concrete instance R(4,4) > 6.",
+  "meta": {
+    "author": "Erdős (1947), formalized via first-moment counting",
+    "date": "1947",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodExpectationOQ02.lean",
+    "tags": [
+      "probabilistic-method",
+      "ramsey-theory",
+      "first-moment-method",
+      "union-bound",
+      "combinatorics",
+      "extremal-graph-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-22",
+    "axiomCount": 0,
+    "lineCount": 298,
+    "theoremCount": 6,
+    "definitionCount": 3
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-expectation",
+      "relationship": "extends",
+      "description": "Replaces the parent's vacuous statement `∃ n, n ≥ 2^(k/2) ∧ n > 0` (which says nothing about Ramsey numbers) with the genuine first-moment union-bound argument that actually produces a good 2-colouring."
+    },
+    {
+      "targetId": "prob-method-expectation-oq-01",
+      "relationship": "complements",
+      "description": "Sibling open question of the same parent: OQ-01 builds the measure-theoretic first-moment machinery; OQ-02 carries out the discrete counting form on the original Ramsey application."
+    }
+  ],
+  "overview": {
+    "historicalContext": "In 1947 Paul Erdős gave a two-line probabilistic proof that the Ramsey number R(k,k) grows at least exponentially: a random 2-colouring of the edges of K_n has expected number of monochromatic K_k equal to C(n,k)·2^(1−C(k,2)), and when this is below 1 a colouring with no monochromatic K_k must exist. This is widely regarded as the founding application of the probabilistic method. The parent gallery entry `prob-method-expectation` stated an `erdos_ramsey_lower_bound` of the form `∃ n, n ≥ 2^(k/2) ∧ n > 0`, which is vacuously true and proves nothing about colourings or Ramsey numbers. This entry supplies the real content: the union bound over k-sets and the explicit counting of monochromatic colourings.",
+    "problemStatement": "Formalize the genuine first-moment Ramsey lower bound: give a hypothesis on n and k under which a 2-colouring of the edges of K_n with no monochromatic K_k provably exists, and prove it by the counting/union-bound argument (not a vacuous existential). Confirm the textbook expected-value form C(n,k)·2^(1−C(k,2)) < 1 and exhibit a concrete non-vacuous instance.",
+    "proofStrategy": "Model an edge 2-colouring as a function c : Edge n → Bool, where Edge n is the finite type of 2-element subsets of Fin n. (1) Prove the reusable counting engine `card_const_le`: the number of Boolean colourings constant on a nonempty coordinate set I is at most 2^(|ι|−|I|+1) (fix the common value plus the free coordinates, via an injection). (2) Build the edge/clique model: `internal S` (edges inside S) has C(|S|,2) elements, and there are C(n,2) edges total. (3) The headline `ramsey_lower_bound`: the bad colourings (those with some monochromatic k-clique) inject into a biUnion over the C(n,k) k-sets, each block bounded by `card_const_le` at 2^(C(n,2)−C(k,2)+1); summing gives bad.card ≤ C(n,k)·2^(C(n,2)−C(k,2)+1) < 2^C(n,2) = |all colourings|, leaving a good one extracted by `filter_card_add_filter_neg_card_eq_card`. (4) `ramsey_lower_bound_rat`: transport the ℚ hypothesis C(n,k)·2^(1−C(k,2)) < 1 to the integer hypothesis. (5) `ramsey_K6_no_mono_K4`: instantiate at n=6, k=4 (15·2^10 = 15360 < 32768) to get R(4,4) > 6.",
+    "keyInsights": [
+      "The parent entry's `erdos_ramsey_lower_bound : ∃ n, n ≥ 2^(k/2) ∧ n > 0` is vacuously true — it asserts a number exists, not that a good colouring does. The genuine theorem must produce, for the given n and k, an actual colouring c with a witnessed pair of differently-coloured internal edges in every k-set. This entry proves exactly that existential over colourings.",
+      "`card_const_le` is the reusable counting heart of every first-moment argument: a colouring constant on a coordinate set I is pinned down by its single common value together with its values off I, so there are at most 2^(1 + (|ι|−|I|)) of them. The bound is proved by an explicit injection c ↦ (c i₀, c restricted to the complement of I) and `Finset.card_le_card_of_injOn`.",
+      "Monochromatic-on-S is reduced to constant-on-internal-edges: `Mono c S` means all internal edges share a colour, and choosing any base edge e₀ ∈ internal S shows the monochromatic colourings are a subset of those constant relative to e₀ — exactly the hypothesis of `card_const_le` with ι = Edge n, I = internal S (nonempty because C(k,2) ≥ 1 when k ≥ 2).",
+      "The union bound is `Finset.card_biUnion_le` followed by `Finset.sum_le_sum` against the per-clique bound, giving the clean product C(n,k)·2^(C(n,2)−C(k,2)+1). Combined with the total count 2^C(n,2) and the strict hypothesis, the good set `filter (¬ ∃ S, Mono c S)` is forced nonempty by `filter_card_add_filter_neg_card_eq_card` and `omega`.",
+      "The rational form is the bridge to the textbook statement. The negative ℤ exponent in 2^(1−C(k,2)) is collapsed to ℕ by rewriting 1−C(k,2) = −(C(k,2)−1) (valid since C(k,2) ≥ 1) and using `zpow_neg`/`zpow_natCast`, turning the hypothesis into C(n,k) < 2^(C(k,2)−1); multiplying by 2^(C(n,2)−C(k,2)+1) and recombining exponents with `omega` recovers the integer hypothesis."
+    ]
+  },
+  "conclusion": {
+    "summary": "This 295-line fully verified (0 sorries, 0 axioms, no native_decide) file gives the genuine Erdős 1947 first-moment Ramsey lower bound, replacing the parent entry's vacuous existential. The headline `ramsey_lower_bound` proves that C(n,k)·2^(C(n,2)−C(k,2)+1) < 2^C(n,2) forces a 2-colouring of K_n with no monochromatic K_k; the rational form `ramsey_lower_bound_rat` matches the textbook expected-value criterion C(n,k)·2^(1−C(k,2)) < 1; and `ramsey_K6_no_mono_K4` exhibits the concrete instance R(4,4) > 6. The reusable engine `card_const_le` isolates the counting bound common to all first-moment arguments.",
+    "implications": "The union-bound counting form proved here is the discrete backbone of the probabilistic method as it actually appears in Erdős's original argument and in Alon–Spencer Chapter 1. Having `card_const_le` and the Edge/clique model in the gallery enables further first-moment results (e.g. lower bounds for off-diagonal Ramsey numbers R(s,t), or hypergraph/property-B style bounds) to be formalized by changing only the per-event count, without re-deriving the union-bound scaffolding.",
+    "openQuestions": [
+      "Can the symmetric closed-form threshold be derived: that C(n,k)·2^(1−C(k,2)) < 1 holds whenever n ≤ 2^(k/2) (for k ≥ 3), recovering the clean statement R(k,k) > 2^(k/2)? This requires bounding C(n,k) ≤ n^k/k! and comparing exponents.",
+      "Can the argument be extended to off-diagonal Ramsey numbers R(s,t) by counting monochromatic K_s in one colour and K_t in the other, giving the asymmetric first-moment bound?",
+      "Can `card_const_le` be sharpened to an exact count (2^(|ι|−|I|+1) when I is nonempty, 2^|ι| when empty) and reused to compute the exact expected number of monochromatic k-cliques rather than just the upper bound?"
+    ]
+  },
+  "leanFile": {
+    "axiomCount": 0,
+    "lineCount": 298,
+    "path": "Proofs/ProbMethodExpectationOQ02.lean",
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 6
+  },
+  "sorries": 0
+}

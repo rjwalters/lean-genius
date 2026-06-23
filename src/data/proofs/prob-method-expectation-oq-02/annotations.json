@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ann-pmeoq02-card-const-le",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": {
+      "startLine": 56,
+      "endLine": 96
+    },
+    "type": "theorem",
+    "title": "card_const_le: The Reusable First-Moment Counting Engine",
+    "content": "`card_const_le` bounds the number of Boolean colourings `c : ι → Bool` that are constant on a nonempty coordinate set `I` (with base point `i₀ ∈ I`) by `2 ^ (Fintype.card ι − I.card + 1)`. The proof injects each such colouring into the pair `(c i₀, c restricted to {x // x ∉ I})` via `Finset.card_le_card_of_injOn`: injectivity is `funext` with a case split on `y ∈ I` (on I both equal their common base value; off I read the second component). The codomain cardinality is `2 · 2^(card ι − I.card)` computed with `Fintype.card_prod`, `Fintype.card_fun`, `Fintype.card_subtype_compl`, and `pow_succ`.",
+    "mathContext": "A function constant on a set $I$ of coordinates has only $1 + (|\\iota| - |I|)$ degrees of freedom: one binary choice for the common value on $I$, plus a free binary choice at each of the $|\\iota| - |I|$ coordinates outside $I$. Hence at most $2^{|\\iota| - |I| + 1}$ such functions. This is the combinatorial core of every 'expected number of bad events' computation in the probabilistic method.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_le_card_of_injOn",
+      "Fintype.card_subtype_compl",
+      "Fintype.card_fun",
+      "union bound"
+    ],
+    "prerequisites": [
+      "Finset cardinality and injections",
+      "Fintype.card of products and function types",
+      "subtype complements"
+    ]
+  },
+  {
+    "id": "ann-pmeoq02-edge-model",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 151
+    },
+    "type": "definition",
+    "title": "Edge / Clique Model for K_n",
+    "content": "`Edge n := {e : Finset (Fin n) // e.card = 2}` is the finite type of edges of the complete graph. `internal S` collects the edges contained in a vertex set S; `card_internal` proves `(internal S).card = C(|S|,2)` by imaging through `Subtype.val` onto `S.powersetCard 2` (`Finset.card_image_of_injective`, `Finset.card_powersetCard`), and `card_edge` specialises it to `Fintype.card (Edge n) = C(n,2)`. `Mono c S` says every two internal edges of S share a colour, with a `Decidable` instance so the bad set is a `Finset.filter`.",
+    "mathContext": "A 2-colouring of $K_n$ is a map from its $\\binom{n}{2}$ edges to $\\{0,1\\}$. A vertex set $S$ of size $k$ spans $\\binom{k}{2}$ internal edges, and $S$ is a *monochromatic clique* under $c$ when all of these receive the same colour. Identifying edges with 2-element subsets and internal edges with `powersetCard 2` gives the exact binomial counts $\\binom{n}{2}$ and $\\binom{k}{2}$ used in the expected-value calculation.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Finset.powersetCard",
+      "Finset.card_powersetCard",
+      "complete graph K_n",
+      "monochromatic clique"
+    ],
+    "prerequisites": [
+      "subtypes over Finset",
+      "powersetCard and binomial coefficients",
+      "Decidable instances"
+    ]
+  },
+  {
+    "id": "ann-pmeoq02-ramsey-lower-bound",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": {
+      "startLine": 169,
+      "endLine": 244
+    },
+    "type": "theorem",
+    "title": "ramsey_lower_bound: The Union-Bound Existence of a Good Colouring",
+    "content": "Under `C(n,k)·2^(C(n,2)−C(k,2)+1) < 2^C(n,2)`, produces a colouring `c : Edge n → Bool` such that every k-set S has two internal edges of different colours. The bad colourings (filter of `∃ S ∈ K, Mono c S`, K = `powersetCard k univ`) inject into `K.biUnion (fun S => filter (Mono · S))`; each block is bounded by reducing `Mono c S` to constant-relative-to-a-base-edge and applying `card_const_le` (internal S nonempty since C(k,2) ≥ 1), giving the per-clique bound 2^(C(n,2)−C(k,2)+1). `Finset.card_biUnion_le` + `Finset.sum_le_sum` + `Finset.sum_const` yield bad.card ≤ C(n,k)·2^(…). Since the total colouring count is 2^C(n,2), `filter_card_add_filter_neg_card_eq_card` and `omega` force a good colouring to exist, and `push_neg` on `¬ Mono c S` extracts the witnessing pair of edges.",
+    "mathContext": "Erdős's 1947 first-moment argument: the expected number of monochromatic $k$-cliques in a uniformly random 2-colouring is $\\binom{n}{k}\\,2^{1-\\binom{k}{2}}$. Equivalently, the number of colourings containing *some* monochromatic $k$-clique is at most $\\binom{n}{k}\\,2^{\\binom{n}{2}-\\binom{k}{2}+1}$ by the union bound over the $\\binom{n}{k}$ candidate cliques. When this is strictly below the total $2^{\\binom{n}{2}}$, at least one colouring avoids every monochromatic $K_k$, so $R(k,k) > n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "union bound",
+      "Finset.card_biUnion_le",
+      "filter_card_add_filter_neg_card_eq_card",
+      "Ramsey number R(k,k)",
+      "probabilistic method"
+    ],
+    "prerequisites": [
+      "card_const_le",
+      "Finset biUnion and filter cardinalities",
+      "pigeonhole via complementary counts"
+    ]
+  },
+  {
+    "id": "ann-pmeoq02-rational-form",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": {
+      "startLine": 259,
+      "endLine": 287
+    },
+    "type": "theorem",
+    "title": "ramsey_lower_bound_rat: The Textbook Expected-Value Criterion",
+    "content": "Restates the bound with the Alon–Spencer hypothesis `(C(n,k) : ℚ)·2^(1−C(k,2)) < 1` (a zpow with negative ℤ exponent). The proof collapses the negative exponent: since C(k,2) ≥ 1 (`Nat.choose_pos`), `1 − C(k,2) = −(C(k,2)−1)` (`Nat.cast_sub`), so `zpow_neg`/`zpow_natCast` rewrite the hypothesis to `(C(n,k) : ℚ) < 2^(C(k,2)−1)`; `mul_lt_mul_of_pos_right` then `mul_inv_cancel_right₀` clear the inverse, and `exact_mod_cast` lands the ℕ bound `C(n,k) < 2^(C(k,2)−1)`. Multiplying by `2^(C(n,2)−C(k,2)+1)` and recombining exponents (`← pow_add`, `omega`, using C(k,2) ≤ C(n,2)) recovers the integer hypothesis of `ramsey_lower_bound`.",
+    "mathContext": "The expected number of monochromatic $k$-cliques is $\\binom{n}{k}\\,2^{1-\\binom{k}{2}}$; the first moment method applies precisely when this is $< 1$. This is the form in which the result is usually stated. Translating between the rational expected-value inequality and the integer counting inequality is the routine but technically fiddly bridge between 'expected value $< 1$' and 'fewer bad objects than total objects'.",
+    "significance": "important",
+    "relatedConcepts": [
+      "zpow_neg",
+      "Nat.cast_sub",
+      "expected value < 1",
+      "Alon–Spencer"
+    ],
+    "prerequisites": [
+      "zpow arithmetic over ℚ",
+      "ℕ truncated subtraction and omega",
+      "casting inequalities"
+    ]
+  },
+  {
+    "id": "ann-pmeoq02-k6-instance",
+    "proofId": "prob-method-expectation-oq-02",
+    "range": {
+      "startLine": 289,
+      "endLine": 294
+    },
+    "type": "theorem",
+    "title": "ramsey_K6_no_mono_K4: A Concrete Non-Vacuous Instance (R(4,4) > 6)",
+    "content": "Instantiates `ramsey_lower_bound` at n = 6, k = 4: the hypothesis `C(6,4)·2^(C(6,2)−C(4,2)+1) = 15·2^(15−6+1) = 15·2^10 = 15360 < 32768 = 2^15 = 2^C(6,2)` is discharged by `decide` (kernel computation, not native_decide — axiom-free). The conclusion is a genuine 2-colouring of K_6 with no monochromatic K_4, witnessing R(4,4) > 6.",
+    "mathContext": "The first nontrivial diagonal Ramsey instance the union bound resolves: $\\binom{6}{4} = 15$ candidate cliques, each fixing $\\binom{4}{2}=6$ of the $\\binom{6}{2}=15$ edges, so $15\\cdot 2^{15-6+1}=15360$ bad colourings out of $2^{15}=32768$. Strict inequality guarantees a good colouring, so $R(4,4)>6$. (The true value is $R(4,4)=18$; the first-moment bound is far from tight but genuinely non-vacuous, unlike the parent statement.)",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "decide (kernel)",
+      "Ramsey number R(4,4)",
+      "concrete instantiation"
+    ],
+    "prerequisites": [
+      "ramsey_lower_bound",
+      "Nat.choose evaluation"
+    ]
+  }
+]
