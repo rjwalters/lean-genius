@@ -3,8 +3,16 @@
   "title": "Spectral Consequences of Sylvester's Interpolation Formula",
   "slug": "cayley-hamilton-oq-02-oq-02-oq-01",
   "leanFile": {
-    "imports": ["Mathlib", "Proofs.CayleyHamiltonOQ02OQ02"],
-    "opens": ["Matrix", "Polynomial", "Finset", "CayleyHamiltonOQ02OQ02"],
+    "imports": [
+      "Mathlib",
+      "Proofs.CayleyHamiltonOQ02OQ02"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial",
+      "Finset",
+      "CayleyHamiltonOQ02OQ02"
+    ],
     "namespace": "CayleyHamiltonOQ02OQ02OQ01",
     "lineCount": 140,
     "axiomCount": 0,
@@ -13,11 +21,11 @@
     "path": "Proofs/CayleyHamiltonOQ02OQ02OQ01.lean",
     "sorries": 0
   },
-  "description": "Draws out the spectral consequences of Sylvester's interpolation formula for a diagonalizable matrix A = U * diagonal d * V. The parent entry cayley-hamilton-oq-02-oq-02 proves Sylvester's formula aeval A p = sum over distinct eigenvalues mu of p.eval(mu) * Z_mu (Z_mu the Frobenius covariants / spectral projections) plus the projection algebra (Z_mu^2 = Z_mu, Z_mu Z_nu = 0, sum Z_mu = 1, A Z_mu = mu Z_mu), but never records what the formula says about A itself. This entry reads those off: (1) spectral_decomposition A = sum mu * Z_mu (Sylvester at p = X); (2) pow_eq_sum_frobenius A^k = sum mu^k * Z_mu, the spectral mapping theorem for powers (Sylvester at p = X^k); (3) aeval_eq_of_eval_eq, interpolation uniqueness — aeval A p depends on p only through its values on the eigenvalues; (4) frobenius_eigen_right Z_mu A = mu Z_mu and frobenius_commute A Z_mu = Z_mu A, showing the covariants are two-sided eigen-projections that commute with A. 5 theorems, 0 sorries, 0 axioms.",
+  "description": "Draws out the spectral consequences of Sylvester's interpolation formula for a diagonalizable matrix A = U * diagonal d * V. The parent entry cayley-hamilton-oq-02-oq-02 proves Sylvester's formula aeval A p = sum over distinct eigenvalues mu of p.eval(mu) * Z_mu (Z_mu the Frobenius covariants / spectral projections) plus the projection algebra (Z_mu^2 = Z_mu, Z_mu Z_nu = 0, sum Z_mu = 1, A Z_mu = mu Z_mu), but never records what the formula says about A itself. This entry reads those off: (1) spectral_decomposition A = sum mu * Z_mu (Sylvester at p = X); (2) pow_eq_sum_frobenius A^k = sum mu^k * Z_mu, the spectral mapping theorem for powers (Sylvester at p = X^k); (3) aeval_eq_of_eval_eq, interpolation uniqueness \u2014 aeval A p depends on p only through its values on the eigenvalues; (4) frobenius_eigen_right Z_mu A = mu Z_mu and frobenius_commute A Z_mu = Z_mu A, showing the covariants are two-sided eigen-projections that commute with A. 5 theorems, 0 sorries, 0 axioms.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "date": "formalized 2026",
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CayleyHamiltonOQ02OQ02OQ01.lean",
     "tags": [
       "linear-algebra",
@@ -28,25 +36,25 @@
       "frobenius-covariants",
       "diagonalizable"
     ],
-    "badge": "verified",
+    "badge": "formalized",
     "sorries": 0,
     "dateAdded": "2026-06-22",
     "axiomCount": 0,
-    "assumptions": "Machine-checked: `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonOQ02OQ02OQ01` builds green (Lean v4.26.0, Mathlib pin). 0 sorries, 0 axiom declarations, no native_decide; only the standard foundational axioms via Mathlib (inherited through the verified, axiom-free parent CayleyHamiltonOQ02OQ02). Builds on the parent's Sylvester formula and Frobenius-covariant lemmas, which are themselves sorry-free and axiom-free.",
+    "assumptions": "BUILD PENDING \u2014 NOT YET MACHINE-VERIFIED. The proof is complete by source inspection (0 sorries, 0 axiom declarations, no native_decide; a clean polynomial specialization of the verified, axiom-free parent CayleyHamiltonOQ02OQ02), but the Docker build could not be executed: the host build environment suffered Docker storage corruption (containerd I/O errors, snapshot-not-found) and repeated worktree deletion during this session. Requires `./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonOQ02OQ02OQ01` to pass before promotion to verified.",
     "lineCount": 140,
     "theoremCount": 5,
     "definitionCount": 0,
     "originalContributions": [
       "spectral_decomposition: A = sum over distinct eigenvalues mu of mu * Z_mu, the matrix as the eigenvalue-weighted sum of its own Frobenius covariants (Sylvester's formula specialized to p = X)",
-      "pow_eq_sum_frobenius: A^k = sum mu^k * Z_mu, the spectral mapping theorem for powers — raising A to a power re-weights the same fixed spectral projections by mu^k (Sylvester at p = X^k)",
-      "aeval_eq_of_eval_eq: interpolation uniqueness — the functional calculus aeval A p depends on p only through its values p.eval(mu) on the eigenvalues, so two polynomials agreeing on the spectrum give the same matrix",
+      "pow_eq_sum_frobenius: A^k = sum mu^k * Z_mu, the spectral mapping theorem for powers \u2014 raising A to a power re-weights the same fixed spectral projections by mu^k (Sylvester at p = X^k)",
+      "aeval_eq_of_eval_eq: interpolation uniqueness \u2014 the functional calculus aeval A p depends on p only through its values p.eval(mu) on the eigenvalues, so two polynomials agreeing on the spectrum give the same matrix",
       "coordProj_mul_diag and frobenius_eigen_right: the right-hand eigen-relation Z_mu * A = mu * Z_mu (companion to the parent's left-hand A * Z_mu = mu * Z_mu)",
       "frobenius_commute: each Frobenius covariant commutes with A (A Z_mu = Z_mu A), confirming they are intrinsic two-sided spectral projections"
     ]
   },
   "overview": {
-    "historicalContext": "Sylvester's interpolation formula (1883) expresses any function f of a diagonalizable matrix A as f(A) = sum over eigenvalues lambda of f(lambda) Z_lambda, where the Frobenius covariants Z_lambda are the spectral projections onto the eigenspaces — the matrix analogue of Lagrange interpolation and the algebraic core of the holomorphic functional calculus. The covariants are intrinsic to A and independent of f, so f(A) is obtained by re-weighting the fixed projections by the scalars f(lambda).",
-    "problemStatement": "The parent entry proves Sylvester's formula and the projection algebra of the Frobenius covariants, but does not record what the formula says about A itself. What are the spectral consequences — the decomposition of A and its powers, the dependence of the functional calculus on the spectrum, and the two-sidedness of the eigen-projections?",
+    "historicalContext": "Sylvester's interpolation formula (1883) expresses any function f of a diagonalizable matrix A as f(A) = sum over eigenvalues lambda of f(lambda) Z_lambda, where the Frobenius covariants Z_lambda are the spectral projections onto the eigenspaces \u2014 the matrix analogue of Lagrange interpolation and the algebraic core of the holomorphic functional calculus. The covariants are intrinsic to A and independent of f, so f(A) is obtained by re-weighting the fixed projections by the scalars f(lambda).",
+    "problemStatement": "The parent entry proves Sylvester's formula and the projection algebra of the Frobenius covariants, but does not record what the formula says about A itself. What are the spectral consequences \u2014 the decomposition of A and its powers, the dependence of the functional calculus on the spectrum, and the two-sidedness of the eigen-projections?",
     "proofStrategy": "Specialize the parent's Sylvester formula. For the spectral decomposition take p = X (so aeval A X = A and X.eval mu = mu) and simplify; for the power formula take p = X^k (aeval A (X^k) = A^k, (X^k).eval mu = mu^k). Interpolation uniqueness rewrites both sides by Sylvester and applies Finset.sum_congr term by term. The right eigen-relation mirrors the parent's left one: prove coordProj * diagonal d = mu * coordProj (diagonal matrices commute) and conjugate, then commutation follows from the two one-sided relations.",
     "keyInsights": [
       "Sylvester's formula at p = X gives the spectral decomposition A = sum mu Z_mu; at p = X^k it gives A^k = sum mu^k Z_mu, the spectral mapping theorem for powers.",
