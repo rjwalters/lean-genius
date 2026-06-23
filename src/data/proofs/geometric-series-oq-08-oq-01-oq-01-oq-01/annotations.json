@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-overview-unification",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 69 },
+    "type": "context",
+    "title": "One Recurrence for the Whole Weight Family",
+    "content": "The gallery built the weighted-geometric family ∑_{k<n} kᵐ·xᵏ one moment at a time — m = 0 (geometric-series-oq-08), m = 1 (geometric-series-oq-08-oq-01), m = 2 (parent geometric-series-oq-08-oq-01-oq-01), each with its own closed form over (1−x)^{m+1}. This entry unifies them with a single division-free recurrence (★) valid for every m over every commutative ring. The honest scope of a fully general statement is a recurrence, not one explicit formula: the finite sum's boundary term nᵐ·xⁿ has no m-independent closed form, so (★) is the sharpest uniform identity.",
+    "mathContext": "$(1-x)\\,\\mathrm{momentSum}\\,m\\,n\\,x = 0^m - n^m x^n + x\\sum_{i<m}\\binom{m}{i}\\mathrm{momentSum}\\,i\\,n\\,x$.",
+    "significance": "context",
+    "relatedConcepts": ["arithmetico-geometric series", "moments", "Eulerian polynomial", "recurrence"],
+    "prerequisites": ["geometric series", "finite sums"]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 79 },
+    "type": "definition",
+    "title": "The Finite m-th Moment Sum",
+    "content": "`momentSum m n x = ∑_{k ∈ range n} (k:R)ᵐ·xᵏ`, a single definition over any commutative ring R, uniform in the exponent m. Writing the index as a ring cast (k:R) keeps the definition well-defined for all m (including m = 0, where 0⁰ = 1 in the ring) and lets the same object stand for the unweighted geometric sum (m = 0), the linear arithmetico-geometric sum (m = 1), and all higher moments at once.",
+    "mathContext": "$\\mathrm{momentSum}\\,m\\,n\\,x=\\sum_{k\\in\\mathrm{range}\\,n}(k{:}R)^m x^k$ over any $\\mathrm{CommRing}\\,R$.",
+    "significance": "supporting",
+    "relatedConcepts": ["weighted sum", "uniform definition", "commutative ring"],
+    "prerequisites": ["Finset sums"]
+  },
+  {
+    "id": "ann-binomial-helper",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 90 },
+    "type": "theorem",
+    "title": "Binomial Helper: ∑_{i<m} C(m,i)·aⁱ = (a+1)ᵐ − aᵐ",
+    "content": "`sum_choose_mul_pow`: the algebraic engine of the recurrence. The full binomial sum ∑_{i<m+1} C(m,i)·aⁱ·1^{m−i} = (a+1)ᵐ (from add_pow at y = 1); peeling its top term C(m,m)·aᵐ = aᵐ with Finset.sum_range_succ leaves ∑_{i<m} C(m,i)·aⁱ = (a+1)ᵐ − aᵐ. This is exactly the shape needed to turn the telescoped increment (n+1)ᵐ − nᵐ into the coupling across lower moments in the induction step.",
+    "mathContext": "$\\sum_{i<m}\\binom{m}{i}a^i = (a+1)^m - a^m$, from $(a+1)^m=\\sum_{i\\le m}\\binom{m}{i}a^i$ minus the top term $a^m$.",
+    "significance": "key",
+    "relatedConcepts": ["binomial theorem", "add_pow", "partial binomial sum", "telescoping"],
+    "prerequisites": ["binomial theorem", "Finset sums"]
+  },
+  {
+    "id": "ann-momentsum-succ",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 95 },
+    "type": "technique",
+    "title": "Top-Term Peel",
+    "content": "`momentSum_succ`: momentSum m (n+1) x = momentSum m n x + nᵐ·xⁿ, immediate from Finset.sum_range_succ. The inductive workhorse: every momentSum at length n+1 in the recurrence proof is rewritten by this lemma to expose the new top term nᵐ·xⁿ, which is precisely the boundary contribution the master recurrence tracks.",
+    "mathContext": "$\\mathrm{momentSum}\\,m\\,(n{+}1)\\,x = \\mathrm{momentSum}\\,m\\,n\\,x + n^m x^n$.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.sum_range_succ", "induction step", "boundary term"],
+    "prerequisites": ["finite sums"]
+  },
+  {
+    "id": "ann-master-recurrence",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 97, "endLine": 129 },
+    "type": "theorem",
+    "title": "The Master Recurrence (★)",
+    "content": "`momentSum_recurrence`: (1−x)·momentSum m n x = 0ᵐ − nᵐ·xⁿ + x·∑_{i<m} C(m,i)·momentSum i n x, over any commutative ring, uniform in m. Proved by induction on n. The step expands the interior sum at n+1 (hsig): each C(m,i)·momentSum i (n+1) x splits via momentSum_succ into the n-version plus C(m,i)·nⁱ·xⁿ, and Finset.sum_add_distrib + the binomial helper collapse ∑_{i<m} C(m,i)·nⁱ to (n+1)ᵐ − nᵐ. push_cast and linear_combination against the hypothesis close it. Reduces moment m to ALL lower moments because (k+1)ᵐ couples to every i < m via C(m,i).",
+    "mathContext": "$(1-x)\\,\\mathrm{momentSum}\\,m\\,n\\,x = 0^m - n^m x^n + x\\sum_{i<m}\\binom{m}{i}\\mathrm{momentSum}\\,i\\,n\\,x$; iterating clears $(1-x)^{m+1}$.",
+    "significance": "critical",
+    "relatedConcepts": ["induction", "linear_combination", "moment coupling", "division-free identity"],
+    "prerequisites": ["induction", "binomial coefficients", "Finset manipulation"]
+  },
+  {
+    "id": "ann-specialisations",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 131, "endLine": 155 },
+    "type": "theorem",
+    "title": "Specialisations m = 0, 1, 2",
+    "content": "Instantiating (★) recovers the gallery's known forms. `momentSum_recurrence_zero`: (1−x)·∑_{k<n} xᵏ = 1 − xⁿ (the plain finite geometric sum). `momentSum_recurrence_one`: (1−x)·∑_{k<n} k·xᵏ = −n·xⁿ + x·∑_{k<n} xᵏ. `momentSum_recurrence_two`: (1−x)·∑_{k<n} k²·xᵏ = −n²·xⁿ + x·(∑_{k<n} xᵏ + 2·∑_{k<n} k·xᵏ). Each evaluates the short binomial sum (Finset.sum_range_one, sum_range_succ) and finishes by ring. Multiplying the m = 1, 2 lines by (1−x), (1−x)² reproduces the parents' (1−x)², (1−x)³ closed forms.",
+    "mathContext": "$m{=}0{:}\\,(1{-}x)\\sum x^k=1{-}x^n$; $m{=}1{:}\\,-nx^n+x\\sum x^k$; $m{=}2{:}\\,-n^2x^n+x(\\sum x^k+2\\sum kx^k)$.",
+    "significance": "key",
+    "relatedConcepts": ["specialisation", "geometric sum", "recovering ancestors", "(1-x)^{m+1}"],
+    "prerequisites": ["substitution", "finite sums"]
+  },
+  {
+    "id": "ann-numeric",
+    "proofId": "geometric-series-oq-08-oq-01-oq-01-oq-01",
+    "range": { "startLine": 157, "endLine": 161 },
+    "type": "technique",
+    "title": "Numerical Sanity Check",
+    "content": "An example over ℤ anchors the recurrence to arithmetic: ∑_{k<3} k·2ᵏ = 0 + 1·2 + 2·4 = 10, and the m = 1 recurrence gives (1−2)·10 = 0 − 3·8 + 2·(1+2+4) = −10 consistently. Closed by norm_num [momentSum, Finset.sum_range_succ]. A cheap guard that the uniform recurrence and the definition agree on a concrete instance.",
+    "mathContext": "$\\sum_{k<3}k\\cdot 2^k = 2+8 = 10$; the $m=1$ recurrence checks $(1-2)\\cdot 10=-10$.",
+    "significance": "technical",
+    "relatedConcepts": ["numerical verification", "norm_num", "consistency check"],
+    "prerequisites": ["arithmetic"]
+  }
+]
