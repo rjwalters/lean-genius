@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-overview-sine-companion",
+    "proofId": "niven-theorem-oq-02",
+    "range": { "startLine": 6, "endLine": 38 },
+    "type": "context",
+    "title": "Niven's Theorem for Sine via the Co-Function Identity",
+    "content": "Niven's theorem says the only rational values of cos at rational multiples of π are 0, ±1/2, ±1. The sibling entry niven-theorem-oq-01 proves the cosine case; this entry derives the sine analogue as a clean corollary. The bridge is the co-function identity cos(π/2 − θ) = sin θ: if θ = (m/n)π then φ = π/2 − θ = ((n−2m)/(2n))π is again a rational multiple of π, and cos φ = sin θ, so cosine Niven applied to φ transfers the classification to sine.",
+    "mathContext": "$\\sin\\theta = \\cos(\\tfrac{\\pi}{2}-\\theta)$; if $\\theta=\\tfrac{m}{n}\\pi$ then $\\tfrac{\\pi}{2}-\\theta = \\tfrac{n-2m}{2n}\\pi$, a rational multiple of $\\pi$.",
+    "significance": "context",
+    "relatedConcepts": ["Niven's theorem", "rational multiples of π", "co-function identity", "rational trigonometric values"],
+    "prerequisites": ["Niven's theorem (cosine)", "trigonometric identities", "rational numbers"]
+  },
+  {
+    "id": "ann-cos-niven-statement",
+    "proofId": "niven-theorem-oq-02",
+    "range": { "startLine": 44, "endLine": 51 },
+    "type": "theorem",
+    "title": "Cosine Niven (Helper, Restated)",
+    "content": "Restates the cosine theorem from niven-theorem-oq-01 so the sine corollary is self-contained: if θ = (m/n)π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. The deep ingredient — that 2 cos θ is an algebraic integer — is delegated to Mathlib, exactly as in the cosine entry.",
+    "mathContext": "$\\theta = \\tfrac{m}{n}\\pi \\,\\land\\, \\cos\\theta\\in\\mathbb{Q} \\implies \\cos\\theta \\in \\{0, \\pm\\tfrac12, \\pm 1\\}.$",
+    "significance": "key",
+    "relatedConcepts": ["Niven's theorem", "algebraic integers", "rational multiples of π"],
+    "prerequisites": ["algebraic integers", "rational cosine values"]
+  },
+  {
+    "id": "ann-cos-niven-proof",
+    "proofId": "niven-theorem-oq-02",
+    "range": { "startLine": 52, "endLine": 71 },
+    "type": "technique",
+    "title": "Proof: Algebraic Integer + Bounded Enumeration",
+    "content": "The engine. `Real.isIntegral_two_mul_cos_rat_mul_pi` makes 2 cos θ integral over ℤ; since cos θ is rational, 2 cos θ is a rational algebraic integer, hence an honest integer k (`IsIntegral.exists_int_iff_exists_rat`). The cosine bounds −1 ≤ cos θ ≤ 1 force −2 ≤ k ≤ 2, and `interval_cases k` enumerates k ∈ {−2,−1,0,1,2}, each giving one of the five allowed values via `linarith`.",
+    "mathContext": "$2\\cos\\theta = k \\in \\mathbb{Z}$ with $-2 \\le k \\le 2$, so $\\cos\\theta = k/2 \\in \\{-1,-\\tfrac12,0,\\tfrac12,1\\}.$",
+    "significance": "key",
+    "relatedConcepts": ["algebraic integer is rational ⟹ integer", "interval_cases", "cosine bounds", "case enumeration"],
+    "prerequisites": ["IsIntegral", "interval_cases tactic", "linarith"]
+  },
+  {
+    "id": "ann-sin-niven-statement",
+    "proofId": "niven-theorem-oq-02",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "theorem",
+    "title": "Niven's Theorem for Sine",
+    "content": "The headline result: if θ is a rational multiple of π and sin θ is rational, then sin θ ∈ {0, ±1/2, ±1}. This is the sine companion that Mathlib's `Mathlib.NumberTheory.Niven` does not directly state.",
+    "mathContext": "$\\theta = \\tfrac{m}{n}\\pi \\,\\land\\, \\sin\\theta\\in\\mathbb{Q} \\implies \\sin\\theta \\in \\{0, \\pm\\tfrac12, \\pm 1\\}.$",
+    "significance": "key",
+    "relatedConcepts": ["Niven's theorem", "rational sine values", "rational multiples of π"],
+    "prerequisites": ["rational multiples of π", "rational trigonometric values"]
+  },
+  {
+    "id": "ann-sin-niven-proof",
+    "proofId": "niven-theorem-oq-02",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "technique",
+    "title": "Proof: Reduce to Cosine at the Complementary Angle",
+    "content": "Set φ = π/2 − θ. The co-function identity (`Real.cos_pi_div_two_sub`) gives cos φ = sin θ, so rationality of sin θ transfers to cos φ. A `field_simp`/`push_cast` computation rewrites φ = ((n−2m)/(2n))π as a rational multiple of π with denominator 2n ≠ 0. Applying `cos_niven` to φ classifies cos φ, and rewriting cos φ = sin θ transports the conclusion back to sin θ.",
+    "mathContext": "$\\varphi = \\tfrac{\\pi}{2}-\\theta = \\tfrac{n-2m}{2n}\\pi$, $\\cos\\varphi = \\sin\\theta$; cosine Niven on $\\varphi$ classifies $\\cos\\varphi$, hence $\\sin\\theta$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complementary angle", "co-function identity", "rational multiple reduction", "field_simp"],
+    "prerequisites": ["trigonometric co-function identities", "cosine Niven theorem"]
+  }
+]
