@@ -92,6 +92,43 @@
       "The parent entry's automorphism-to-embedding injection and the bound |Aut_F(K)| ≤ [K:F]_s"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Statement and Strategy of the Sharpness Result",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Docstring framing the file as the converse to the parent's inequality |Aut_F(K)| ≤ [K:F]_s: the bound is attained iff K/F is normal. Fixes the ambient setting (a normal extension L/F, K an intermediate field with K/F finite), recalls that the embedding count K →ₐ[F] L is the separable degree when L is algebraically closed, and previews the two directions (Normal.algHomEquivAut forward; counting + normal_iff_forall_fieldRange_le converse). Opens namespace AngleTrisectionAutSharp."
+    },
+    {
+      "id": "aut-to-emb",
+      "title": "The Automorphism-to-Embedding Map and Its Injectivity",
+      "startLine": 55,
+      "endLine": 82,
+      "summary": "autToAlgHom e = K.val ∘ e sends an F-automorphism of K to the F-embedding K →ₐ[F] L obtained by including into the ambient field; autToAlgHom_apply records that it acts as x ↦ ↑(e x). autToAlgHom_injective shows it is injective (post-composition with the injective inclusion K ↪ L). autToAlgHom_fieldRange_le shows every value ↑(e x) lies in K, so the embedding's field range is ≤ K — the property the normality criterion consumes."
+    },
+    {
+      "id": "biconditional-relative",
+      "title": "The Biconditional (Relative Form)",
+      "startLine": 84,
+      "endLine": 103,
+      "summary": "normal_iff_card_aut_eq_card_algHom: Nat.card (K ≃ₐ[F] K) = Nat.card (K →ₐ[F] L) ↔ Normal F K. Forward (→): equal finite cardinalities promote the injection to a bijection (Nat.bijective_iff_injective_and_card); surjectivity makes every embedding σ the inclusion of an automorphism, so σ.fieldRange ≤ K, and normal_iff_forall_fieldRange_le yields normality. Backward (←): Nat.card_congr of Mathlib's Normal.algHomEquivAut."
+    },
+    {
+      "id": "sep-degree-form",
+      "title": "Separable-Degree Form and Strict Inequality",
+      "startLine": 105,
+      "endLine": 129,
+      "summary": "normal_iff_card_aut_eq_finSepDegree rewrites the embedding count as the separable degree via Field.finSepDegree_eq_of_isAlgClosed (L algebraically closed), giving |Aut_F(K)| = [K:F]_s ↔ Normal F K. card_aut_lt_finSepDegree_of_not_normal then combines the parent's ≤ bound with the ≠ from sharpness (lt_of_le_of_ne) to conclude |Aut_F(K)| < [K:F]_s off the normal locus."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone over the Algebraic Closure",
+      "startLine": 131,
+      "endLine": 147,
+      "summary": "Specialises the ambient field to AlgebraicClosure F (normal and algebraically closed over F), so every finite intermediate field K satisfies the clean, usually-quoted biconditional Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K ↔ Normal F K — a finite extension is normal exactly when its automorphism group has order equal to its separable degree."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05",
@@ -104,6 +141,7 @@
   ],
   "conclusion": {
     "summary": "A complete, fully verified (0 sorries, 0 axioms) proof that the automorphism bound of the parent entry is SHARP: for a finite extension K/F inside a normal ambient field L, |Aut_F(K)| equals the number of F-embeddings K →ₐ[F] L (the separable degree [K:F]_s when L is algebraically closed) if and only if K/F is normal, and is strictly smaller otherwise. The forward direction is Mathlib's Normal.algHomEquivAut; the converse upgrades the parent's injection to a bijection by counting and reads off normality from normal_iff_forall_fieldRange_le.",
+    "implications": "Together with the parent (inequality) and the normal-case sibling, this closes the automorphism-bound story into a sharp biconditional: |Aut_F(K)| = [K:F]_s exactly on the normal locus, strict off it. For separable extensions [K:F]_s = [K:F], so the result specialises to the classical Galois criterion |Aut_F(K)| = [K:F] ⟺ K/F Galois, but it is proved here without any separability hypothesis. Methodologically it illustrates a reusable pattern: an injection between two finite sets of equal cardinality is automatically a bijection (Nat.bijective_iff_injective_and_card), and surjectivity of the automorphism-to-embedding map is precisely the field-theoretic content of normality — no minimal-polynomial or splitting-field computation is needed once the count is known.",
     "openQuestions": [
       "Quantify the defect [K:F]_s − |Aut_F(K)| for a non-normal K in terms of the normal closure: is it controlled by the index [normalClosure(K) : K] or by the number of distinct conjugate subfields of K?",
       "State and prove the separable analogue purely in terms of fixed fields: for a finite group G ≤ Aut_F(K), |G| = [K : K^G] with K^G the fixed field, and relate the 'equality ⟹ normal' phenomenon here to Artin's theorem K/K^G is Galois."
