@@ -40,20 +40,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE (sign part): Proved 2^(nonzeroCount t) ∣ contribution t for every four-square type, hence 8 ∣ contribution when ≥3 nonzero and 16 ∣ when all 4 nonzero. New file FourSquareDistributionOQ05.lean, 110L, 8 thm, 0 sorry, 0 axiom. Parent had only bounds (≤384), no divisibility.",
+    "progressSummary": "COMPLETE (per-type factor of 8): eight_dvd_contribution_of_pos proves 1 ≤ nonzeroCount t → 8 ∣ contribution t for ALL nonzero types, closing the prior open step (permutation parity in the 1- and 2-nonzero cases). 213L, 13 thm, 0 sorry, 0 axiom, verified. The remaining gap to global 8 ∣ r₄(n) is only the parent decomposition lemma.",
     "builtItems": [
       "Created FourSquareDistributionOQ05.lean (110L, 8 thm, 0 sorry/axiom)",
       "two_pow_nonzeroCount_dvd_contribution + the 2-adic tower",
-      "eight/sixteen_dvd corollaries"
+      "eight/sixteen_dvd corollaries",
+      "eight_dvd_contribution_of_pos + zero_pattern_one/two + permutations_one_nonzero + two_dvd_permutations_two_nonzero in FourSquareDistributionOQ05.lean (now 213L, 13 thm, 0 sorry/axiom)"
     ],
     "insights": [
       "contribution = permutations·signFactor with signFactor = 2^nonzeroCount, so the 2-adic divisibility is STRUCTURAL (signFactor is literally a factor) — no number theory needed.",
       "The parent already proves the bounds (nonzeroCount_le_four, permutations_le_twentyfour, signFactor_le_sixteen, contribution_le_384) — reusing those names errors with 'already declared'; the NEW content is the divisibility.",
-      "Full 8 ∣ contribution for nz≥1 (⟹ 8 ∣ r₄(n)) needs evaluating the permutation count (dedup/count over symbolic tuples) in the 1- and 2-nonzero cases — left as the open step."
+      "Full 8 ∣ contribution for nz≥1 (⟹ 8 ∣ r₄(n)) needs evaluating the permutation count (dedup/count over symbolic tuples) in the 1- and 2-nonzero cases — left as the open step.",
+      "RESOLVED the open step: 8 ∣ contribution for EVERY nonzero type (eight_dvd_contribution_of_pos). Sortedness pins the zero pattern (zero_pattern_one/two), then the multinomial permutation count is even in the 2-nonzero case (6 or 12) and exactly 4 in the 1-nonzero case, supplying the missing factors of 2.",
+      "Technique: compute List-based permutations symbolically via List.dedup_cons_of_mem / dedup_cons_of_notMem to evaluate dedup, then List.count_cons_self / count_cons_of_ne (passing the specific ≠-hypotheses) to evaluate counts, finishing with decide on the numeric residue. Avoids native_decide → stays 0-axiom."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Permutation-parity lemmas for nonzeroCount ∈ {1,2} to upgrade to the full Jacobi 8 ∣ r₄(n)."
+      "Upstream: prove the additive decomposition r₄(n) = Σ_types contribution t (parent file) to derive the global 8 ∣ r₄(n) for n ≥ 1 from the per-type divisibility now in hand."
     ],
     "markdown": "# Knowledge Base: four-square-distribution-oq-05\n\nCompleted the sign-part divisibility of the symmetry multiplier. See FourSquareDistributionOQ05.lean."
   },
