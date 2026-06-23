@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-multiplicativity",
+    "proofId": "pell-equation-oq-04",
+    "range": { "startLine": 67, "endLine": 87 },
+    "type": "insight",
+    "title": "Brahmagupta's Identity is Multiplicativity of the Norm",
+    "content": "`normForm_mul` is the single identity normForm D (xu+Dyv) (xv+yu) = (x²−Dy²)(u²−Dv²), closed by `ring` because the cross terms 2Dxyuv cancel. This is exactly the statement that the norm of x + y√D in ℤ[√D] is multiplicative — Brahmagupta's 7th-century composition law. `sol_comp` is the immediate consequence: a solution of x²−Dy²=M and a solution of x²−Dy²=N compose to a solution of x²−Dy²=MN. Everything else in the file is downstream of this one line."
+  },
+  {
+    "id": "ann-pell-group",
+    "proofId": "pell-equation-oq-04",
+    "range": { "startLine": 116, "endLine": 159 },
+    "type": "insight",
+    "title": "The Norm-1 Solutions Form an Abelian Group",
+    "content": "`PellUnit D` is the subtype of integer points with x²−Dy²=1, and it carries a genuine `CommGroup` instance: the identity is (1,0), multiplication is composition (`comp`), and the inverse of (x,y) is its conjugate (x,−y) — because (x,y)·(x,−y) = (x²−Dy², 0) = (1,0) precisely when the norm is 1. Associativity and commutativity are `ring` facts about the coordinates. This is the Pell group, and `unit_smul_sol` shows it *acts* on the solutions of every right-hand side N (since N·1 = N), so the N-solutions are partitioned into group orbits — the structural meaning of 'generalize to arbitrary N'."
+  },
+  {
+    "id": "ann-infinitude",
+    "proofId": "pell-equation-oq-04",
+    "range": { "startLine": 168, "endLine": 233 },
+    "type": "insight",
+    "title": "One Seed plus One Unit gives Infinitely Many Solutions",
+    "content": "The orbit of a seed (a,b) under repeated composition with a fixed unit (u,v) keeps norm N at every step (`orbit_sol`, via multiplicativity and the unit having norm 1). When the data is positive, a nontrivial unit has u ≥ 2 (since u² = 1 + Dv² ≥ 2), so the first coordinate at least doubles each step (`orbit_fst_strictMono`) and is therefore strictly increasing — hence the orbit map ℕ → solutions is injective. `Set.infinite_of_injective_forall_mem` turns this into `infinite_solutions`: x²−Dy²=N has infinitely many solutions once it has one positive solution and a nontrivial unit. The worked instance derives that x²−2y²=7 has infinitely many integer solutions from the seed (3,1) and the fundamental unit (3,2) of ℤ[√2]."
+  }
+]
