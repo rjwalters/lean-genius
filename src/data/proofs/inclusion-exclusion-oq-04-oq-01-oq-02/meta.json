@@ -1,0 +1,190 @@
+{
+  "id": "inclusion-exclusion-oq-04-oq-01-oq-02",
+  "slug": "inclusion-exclusion-oq-04-oq-01-oq-02",
+  "title": "Bonferroni Inequalities for the Derangement Sieve",
+  "status": null,
+  "badge": null,
+  "theoremCount": null,
+  "axiomCount": null,
+  "parent": null,
+  "description": "Answers the second open question of inclusion-exclusion-oq-04-oq-01 (Derangements as an Instance of the Inclusion–Exclusion Sieve): prove the Bonferroni inequalities for the derangement sieve. The parent derives the exact sieve identity D_n = Σ_{k=0}^n (-1)^k C(n,k)(n-k)!; this entry shows that truncating that alternating sum after the size-m layer, B(n,m) := Σ_{k=0}^m (-1)^k C(n,k)(n-k)!, brackets D_n alternately from above and below: D_n ≤ B(n,m) when m is even, and B(n,m) ≤ D_n when m is odd. Equivalently (-1)^m (B(n,m) - D_n) ≥ 0 for every m. The proof is a per-permutation reindexing: each binomial term C(n,k)(n-k)! counts pairs (t,σ) with |t|=k and σ fixing t pointwise (the parent's crux count card_fixesOn), so exchanging the order of summation (Finset.sum_comm) gives B(n,m) = Σ_σ A(f_σ, m) where f_σ is the number of fixed points of σ and A(f,m) = Σ_{j=0}^m (-1)^j C(f,j) is the partial alternating binomial sum. Pascal's rule telescopes this to A(0,m)=1 and A(f+1,m)=(-1)^m C(f,m); derangements (f=0) reproduce D_n exactly, and every non-derangement contributes the single signed term (-1)^m C(f-1,m) of magnitude ≥ 0. Verified, 0 axioms, 0 sorries, no native_decide.",
+  "overview": "Bonferroni inequalities are the quantitative refinement of inclusion–exclusion: stopping the alternating sieve sum early gives a one-sided estimate whose direction is governed by the parity of the last index included. For the derangement count D_n = #{σ ∈ Perm(Fin n) : σ has no fixed point}, the exact sieve form (proved in the parent file) is D_n = Σ_{k=0}^n (-1)^k C(n,k)(n-k)!. This entry proves that the truncated sieve B(n,m) = Σ_{k=0}^m (-1)^k C(n,k)(n-k)! over- or under-estimates D_n according to the parity of m. The mechanism is a clean reindexing over permutations: the truncated sieve, written as a double sum over subsets t with |t| ≤ m of the signed crux count (-1)^|t|·#{σ fixing t pointwise}, is reorganised (Fubini) into Σ_σ A(f_σ, m), where each permutation contributes the partial alternating binomial sum of its fixed-point count. Pascal's rule collapses that partial sum to a single non-negative binomial term carrying the sign (-1)^m, which is exactly the Bonferroni bound. The worked case n=4 (D_4 = 9) exhibits the bracketing ladder 24 ≥ 12 ≥ 9 ≥ 8 ≥ 0.",
+  "sections": [
+    {
+      "id": "partial-alternating-binomial",
+      "title": "The Partial Alternating Binomial Sum",
+      "startLine": 82,
+      "endLine": 111,
+      "mathContext": "$A(f,m) := \\sum_{j=0}^{m} (-1)^j \\binom{f}{j}, \\qquad A(0,m)=1, \\qquad A(f+1,m) = (-1)^m \\binom{f}{m}$",
+      "summary": "altPartial f m is the truncated binomial expansion of (1-1)^f. altPartial_zero gives A(0,m)=1 (only the j=0 term survives). altPartial_succ is the Pascal telescoping A(f+1,m) = (-1)^m C(f,m), proved by induction on m using C(f+1,m+1) = C(f,m) + C(f,m+1); its sign (-1)^m and non-negative magnitude C(f,m) are the entire source of the Bonferroni one-sidedness."
+    },
+    {
+      "id": "truncated-sieve-reindex",
+      "title": "The Truncated Sieve and Its Per-Permutation Reindexing",
+      "startLine": 113,
+      "endLine": 229,
+      "mathContext": "$B(n,m) = \\sum_{k=0}^{m} (-1)^k \\binom{n}{k}(n-k)! = \\sum_{\\sigma \\in \\mathrm{Perm}(\\mathrm{Fin}\\,n)} A(f_\\sigma, m)$",
+      "summary": "truncSieve_eq_subset_sum rewrites each binomial term C(n,k)(n-k)! as the sum over size-k subsets t of the crux count (-1)^|t|·#{σ fixing t pointwise}, reusing the parent's card_fixesOn. truncSieve_eq_sum_altPartial is the Fubini step: expanding the crux count as Σ_σ of indicators and exchanging the order of summation (Finset.sum_comm) lands on Σ_σ A(f_σ, m), since for fixed σ the subsets t fixed pointwise are exactly the subsets of the fixed-point set, of which there are C(f_σ, k)."
+    },
+    {
+      "id": "bonferroni-inequalities",
+      "title": "Derangements and the Bonferroni Inequalities",
+      "startLine": 231,
+      "endLine": 322,
+      "mathContext": "$(-1)^m\\,(B(n,m) - D_n) = \\sum_{\\sigma:\\,f_\\sigma \\ge 1} \\binom{f_\\sigma - 1}{m} \\ge 0$",
+      "summary": "card_deranged_filter and numDerangements_eq_indicator_sum identify the derangements as the f=0 permutations, so D_n is the indicator sum Σ_σ [f_σ=0]. truncSieve_sub_numDerangements writes B(n,m) - D_n as Σ_σ (A(f_σ,m) - [f_σ=0]); neg_one_pow_mul_term_nonneg shows each term times (-1)^m is non-negative (0 for derangements, C(f-1,m) otherwise). The core neg_one_pow_mul_truncSieve_sub_nonneg gives (-1)^m(B-D_n) ≥ 0, whence bonferroni_even (D_n ≤ B(n,m) for even m) and bonferroni_odd (B(n,m) ≤ D_n for odd m). truncSieve_self confirms B(n,n) = D_n."
+    }
+  ],
+  "conclusion": {
+    "summary": "Truncating the exact derangement sieve D_n = Σ_{k=0}^n (-1)^k C(n,k)(n-k)! after the size-m layer yields a one-sided estimate: the even truncations over-count D_n and the odd truncations under-count it, the single signed statement being (-1)^m(B(n,m) - D_n) ≥ 0. The proof reindexes the truncated sieve over permutations — each contributes the partial alternating binomial sum of its fixed-point count, which Pascal's rule collapses to one non-negative term with sign (-1)^m. Verified, 0 axioms, 0 sorries, no native_decide.",
+    "implications": "This is the prototypical Bonferroni phenomenon, made formal for the flagship inclusion–exclusion instance. Mathlib has the exact inclusion–exclusion identity but no truncated one-sided bound; the bracketing of D_n by alternating partial sums is added here for the first time in the gallery. The per-permutation reindexing — exact count for derangements plus a non-negative correction for each non-derangement — is reusable: the same A(f,m) sign argument bounds the truncations of any sieve once the crux count is in place (e.g. the surjection count).",
+    "openQuestions": [
+      "Quantify the error term: the correction (-1)^m(B(n,m)-D_n) = Σ_{σ: f_σ≥1} C(f_σ-1,m) equals C(n,m+1)(n-m-1)! by a second sieve identity (the tail's leading term); prove this closed form for the gap between consecutive Bonferroni bounds.",
+      "Prove the analogous Bonferroni inequalities for the surjection sieve #(surjections [n]↠[k]) = Σ_j (-1)^j C(k,j)(k-j)^n, reusing the same altPartial sign lemma with crux count (k-|J|)^n in place of (n-|t|)!."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Bonferroni, Carlo Emilio",
+      "title": "Teoria statistica delle classi e calcolo delle probabilità",
+      "year": "1936",
+      "venue": "Pubblicazioni del R. Istituto Superiore di Scienze Economiche e Commerciali di Firenze",
+      "note": "The original source of the inequalities bounding a probability/count by truncated inclusion–exclusion partial sums of alternating parity."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Section 2.2 develops the sieve form of inclusion–exclusion and the derangement count; the Bonferroni one-sided truncation bounds are the standard refinement of the exact identity proved there."
+    },
+    {
+      "authors": "Comtet, Louis",
+      "title": "Advanced Combinatorics",
+      "year": "1974",
+      "venue": "D. Reidel Publishing Company",
+      "note": "Chapter IV treats the inclusion–exclusion sieve and the Bonferroni inequalities, including the partial-alternating-binomial-sum identity Σ_{j≤m}(-1)^j C(f,j) = (-1)^m C(f-1,m) that drives the sign analysis."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Answers open question oq-02 of the parent. The parent proves the exact derangement sieve D_n = Σ_{k=0}^n (-1)^k C(n,k)(n-k)! and its crux count card_fixesOn; this entry imports both and proves that truncating the alternating sum brackets D_n from above (even m) and below (odd m)."
+    },
+    {
+      "targetId": "inclusion-exclusion-sieve",
+      "relationship": "related",
+      "description": "The grandparent dual sieve card_avoid_sieve already records a two-set Bonferroni-type remark (card_avoid_two_le); this entry proves the full alternating Bonferroni ladder at all truncation depths for the derangement instance."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "related",
+      "description": "Bounds the same derangement count studied via the recurrence in Derangements / DerangementsOQ03, here through one-sided truncations of the inclusion–exclusion sum."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/InclusionExclusionSieveDerangementsBonferroni.lean",
+    "imports": [
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Data.Fintype.Perm",
+      "Mathlib.Data.Finset.Powerset",
+      "Mathlib.Tactic",
+      "Proofs.InclusionExclusionSieveDerangements"
+    ],
+    "opens": [
+      "Equiv",
+      "Finset",
+      "InclusionExclusionSieveDerangements"
+    ],
+    "namespace": "InclusionExclusionSieveDerangementsBonferroni",
+    "lineCount": 357,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 14,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionSieveDerangementsBonferroni.lean"
+  },
+  "proofRepoPath": "Proofs/InclusionExclusionSieveDerangementsBonferroni.lean",
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Researcher)",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionSieveDerangementsBonferroni.lean",
+    "tags": [
+      "combinatorics",
+      "inclusion-exclusion",
+      "sieve",
+      "bonferroni-inequalities",
+      "derangements",
+      "permutations",
+      "counting",
+      "binomial-coefficients"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "InclusionExclusionSieveDerangements.card_fixesOn",
+        "description": "The parent's crux count: #{σ ∈ Perm(Fin n) : σ fixes every point of t} = (n − |t|)!. Reused here to rewrite each truncated binomial term C(n,k)(n-k)! as a sum over size-k subsets of the signed permutation count, the starting point of the Fubini reindexing.",
+        "module": "Proofs.InclusionExclusionSieveDerangements"
+      },
+      {
+        "theorem": "InclusionExclusionSieveDerangements.numDerangements_eq_sieve_sum",
+        "description": "The parent's exact sieve identity D_n = Σ_{k=0}^n (-1)^k C(n,k)(n-k)!. Used to prove truncSieve_self (B(n,n) = D_n), confirming the Bonferroni bounds become equality at full depth.",
+        "module": "Proofs.InclusionExclusionSieveDerangements"
+      },
+      {
+        "theorem": "Nat.choose_succ_succ",
+        "description": "Pascal's rule C(f+1,m+1) = C(f,m) + C(f,m+1). The inductive engine of altPartial_succ, telescoping the partial alternating binomial sum Σ_{j≤m}(-1)^j C(f+1,j) to the single signed term (-1)^m C(f,m).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_comm",
+        "description": "Exchanges the order of a double Finset sum. The Fubini step turning the truncated sieve's sum over (subset, permutation) pairs into a sum over permutations of the per-permutation partial alternating binomial sum.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.card_powersetCard",
+        "description": "#(s.powersetCard k) = C(|s|, k). Counts, for a fixed permutation σ, the size-k subsets of its fixed-point set, giving the binomial coefficient C(f_σ, k) in each permutation's contribution.",
+        "module": "Mathlib.Data.Finset.Powerset"
+      },
+      {
+        "theorem": "card_derangements_eq_numDerangements",
+        "description": "Fintype.card (derangements α) = numDerangements (Fintype.card α). Identifies the permutations with no fixed point (f_σ = 0) as the derangements, so D_n is exactly their contribution to the reindexed sieve.",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(-1)^m = 1 for even m and = -1 for odd m. Converts the single signed core inequality (-1)^m(B(n,m)-D_n) ≥ 0 into the parity-split Bonferroni statements D_n ≤ B(n,m) (even) and B(n,m) ≤ D_n (odd).",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "bonferroni_even / bonferroni_odd: the Bonferroni inequalities for the derangement sieve — the even-depth truncations B(n,m) = Σ_{k=0}^m (-1)^k C(n,k)(n-k)! over-count D_n and the odd-depth truncations under-count it. This one-sided bracketing of the derangement count by alternating partial sums is not in Mathlib or the gallery, which record only the exact sieve identity.",
+      "neg_one_pow_mul_truncSieve_sub_nonneg: the unifying single-inequality form (-1)^m(B(n,m) - D_n) ≥ 0, from which both parity cases follow; the sign is exhibited termwise as a sum of non-negative binomial coefficients.",
+      "truncSieve_eq_sum_altPartial: the per-permutation reindexing B(n,m) = Σ_σ A(f_σ, m) of the truncated sieve, obtained by exchanging the order of summation in the subset form — the structural identity that makes the Bonferroni sign visible as a property of each permutation's fixed-point count.",
+      "altPartial_succ: the Pascal telescoping A(f+1,m) = (-1)^m C(f,m) of the partial alternating binomial sum Σ_{j=0}^m (-1)^j C(f+1,j), the elementary identity carrying the entire one-sidedness (sign (-1)^m, magnitude the non-negative C(f,m)).",
+      "truncSieve_sub_numDerangements: the decomposition of the truncation error B(n,m) - D_n into a single sum over permutations of A(f_σ,m) - [f_σ=0], isolating the derangements (which reproduce D_n) from the strictly signed non-derangement correction."
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "inclusion-exclusion-oq-04-oq-01",
+        "relationship": "Answers open question oq-02. The parent entry proves the exact derangement sieve and its crux count and asks to 'prove the Bonferroni inequalities for this instance: truncating the derangement sieve sum at an even (resp. odd) partial sum over-counts (resp. under-counts) D_n'. This entry proves exactly that, importing card_fixesOn and numDerangements_eq_sieve_sum."
+      },
+      {
+        "id": "derangements",
+        "relationship": "Provides one-sided truncation bounds for the derangement count whose exact closed forms are proved (via the recurrence) in Derangements and DerangementsOQ03."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 357,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. n and m : ℕ are arbitrary (the bounds hold for every truncation depth m, with equality at m ≥ n). #print axioms reports only the foundational propext, Classical.choice, Quot.sound for bonferroni_even, bonferroni_odd, and truncSieve_eq_sum_altPartial — no sorryAx, no Lean.ofReduceBool. The worked examples (the n=4 ladder, D_4 = 9) use decide (kernel reduction), not native_decide, so the file remains axiom-free.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 14,
+    "definitionCount": 3
+  }
+}
