@@ -1,0 +1,95 @@
+{
+  "id": "prob-method-expectation-oq-02",
+  "slug": "prob-method-expectation-oq-02",
+  "title": "The Tightest First-Moment Ramsey Bound",
+  "sorries": 0,
+  "description": "The classical Erdős (1947) union-bound criterion for diagonal Ramsey numbers, formalized over genuine edge 2-colorings of the complete graph: if 2·C(n,k) < 2^(C(k,2)) then there is a 2-coloring of K_n with no monochromatic K_k, hence R(k,k) > n. This is the tightest bound the first moment method alone can deliver, answering open question #2 of the parent entry.",
+  "overview": "The parent entry's `erdos_ramsey_lower_bound` is only a placeholder (it asserts `∃ n ≥ 2^(k/2)`, vacuously true, over no actual coloring). This entry replaces it with the real content of the first moment method for Ramsey numbers: a complete counting / union-bound proof, carried out entirely over ℕ, that a good 2-coloring genuinely exists.\n\nThe sample space is the set of all 2-colorings `c : Edges n → Bool` of the C(n,2) edges of the complete graph on `Fin n`; there are exactly 2^(C(n,2)) of them. A k-clique K is *monochromatic* when all C(k,2) of its induced edges receive the same color. The crux lemma bounds the number of colorings monochromatic on a fixed clique by 2·2^(C(n,2)−C(k,2)), via an explicit injection: such a coloring is determined by the common color of the clique together with its values on every edge outside the clique. Summing this bound over the C(n,k) cliques (the union bound) shows the number of 'bad' colorings is strictly below the total 2^(C(n,2)) exactly when 2·C(n,k) < 2^(C(k,2)) — which is the integer form of the textbook criterion C(n,k)·2^(1−C(k,2)) < 1. A coloring outside the bad set witnesses R(k,k) > n.",
+  "conclusion": {
+    "summary": "Formalizes the union-bound (first moment) Ramsey lower bound over real colorings: whenever 2·C(n,k) < 2^(C(k,2)), the complete graph K_n admits a 2-coloring with no monochromatic K_k, so the diagonal Ramsey number satisfies R(k,k) > n. This is the sharpest bound the first moment method can produce, and it directly answers open question #2 of the parent entry.",
+    "implications": "**1. Replaces a placeholder with content.** The parent's Ramsey lower bound was a trivial existential; here the bound is proved over an honest model of edge colorings via a genuine counting argument.\n\n**2. The probabilistic method without measure theory.** The entire argument is a finite ℕ counting/union bound — no probability measure is required, making the 'expected number of monochromatic cliques < 1' heuristic fully rigorous and machine-checkable.\n\n**3. Reusable counting infrastructure.** The crux lemma (colorings constant on a sub-family of coordinates number at most 2·2^(N−|family|)) is a general first-moment tool applicable to other existence-by-union-bound arguments.\n\n**4. Concrete witness.** Instantiating at k=4, n=6 gives R(4,4) > 6, with an existence proof of a 2-coloring of K_6 free of monochromatic K_4.",
+    "openQuestions": [
+      "Derive the explicit asymptotic R(k,k) > (1+o(1))·(k/e)·2^(k/2) by estimating C(n,k) and choosing n optimally, showing first moment recovers the classical 2^(k/2) growth.",
+      "Formalize the off-diagonal version: 2·C(n,s)·... thresholds giving lower bounds on R(s,t) for s ≠ t via the same union bound.",
+      "Quantify the gap to the Lovász Local Lemma bound on the same model, making precise how much the alteration / local-lemma methods improve on the pure first moment."
+    ]
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "ProbMethod.RamseyFirstMoment",
+    "lineCount": 220,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "path": "Proofs/RamseyFirstMoment.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "first_moment_ramsey",
+      "type": "main",
+      "description": "If 2·C(n,k) < 2^(C(k,2)) and 2 ≤ k ≤ n, there exists a 2-coloring of the edges of K_n with no monochromatic K_k — i.e. R(k,k) > n.",
+      "leanType": "(hk : 2 ≤ k) (hkn : k ≤ n) (hbound : 2 * n.choose k < 2 ^ (k.choose 2)) : ∃ c : Coloring n, ∀ K : Finset (Fin n), K.card = k → ¬ Mono c K"
+    },
+    {
+      "name": "card_mono_le",
+      "type": "core",
+      "description": "Crux count: the number of colorings monochromatic on a fixed clique K with at least one edge is at most 2·2^(C(n,2) − |EdgesIn K|), via an injection into Bool × (off-clique edges → Bool).",
+      "leanType": "(hK : (EdgesIn n K).Nonempty) : (univ.filter (Mono · K)).card ≤ 2 * 2 ^ ((Edges n).card - (EdgesIn n K).card)"
+    },
+    {
+      "name": "ramsey_number_gt",
+      "type": "corollary",
+      "description": "Witness form of R(k,k) > n: a coloring in which every k-clique contains two edges of different colors.",
+      "leanType": "∃ c : Coloring n, ∀ K, K.card = k → ∃ e ∈ EdgesIn n K, ∃ f ∈ EdgesIn n K, c e ≠ c f"
+    },
+    {
+      "name": "ramsey_four_gt_six",
+      "type": "example",
+      "description": "Concrete instance: 2·C(6,4) = 30 < 64 = 2^(C(4,2)), so K_6 has a 2-coloring with no monochromatic K_4 (R(4,4) > 6).",
+      "leanType": "∃ c : Coloring 6, ∀ K : Finset (Fin 6), K.card = 4 → ¬ Mono c K"
+    }
+  ],
+  "sections": [
+    { "title": "Edges and Colorings", "description": "Edges of K_n as 2-element subsets of Fin n (card C(n,2)); a coloring assigns a Bool to each edge." },
+    { "title": "Induced Clique Edges", "description": "The C(k,2) edges contained in a vertex set K, in bijection with the 2-subsets of K." },
+    { "title": "Monochromatic Cliques", "description": "A clique is monochromatic when all its induced edges share one color." },
+    { "title": "Crux Count (Union-Bound Term)", "description": "Colorings monochromatic on a fixed clique number at most 2·2^(C(n,2)−C(k,2)), by an explicit injection." },
+    { "title": "First-Moment Ramsey Bound", "description": "Union bound over the C(n,k) cliques yields a good coloring whenever 2·C(n,k) < 2^(C(k,2))." },
+    { "title": "Ramsey Number Lower Bound and Concrete Witness", "description": "Witness form R(k,k) > n and the instance R(4,4) > 6." }
+  ],
+  "crossReferences": [
+    { "slug": "prob-method-expectation", "relation": "parent", "description": "Answers open question #2 ('tightest Ramsey bound achievable via the first moment method alone') and replaces its placeholder Ramsey lower bound." },
+    { "slug": "prob-method-alteration", "relation": "related", "description": "The alteration method improves on the pure first-moment bound proved here." },
+    { "slug": "prob-method-lovasz-local", "relation": "related", "description": "The Lovász Local Lemma gives a stronger existence criterion on the same coloring model." }
+  ],
+  "references": [
+    { "label": "Erdős 1947", "citation": "P. Erdős, Some remarks on the theory of graphs, Bull. Amer. Math. Soc. 53 (1947), 292–294." },
+    { "label": "Alon–Spencer", "citation": "N. Alon, J. H. Spencer, The Probabilistic Method, Ch. 1 (the first moment / union bound and the Ramsey lower bound)." }
+  ],
+  "meta": {
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "lineCount": 220,
+    "proofRepoPath": "Proofs/RamseyFirstMoment.lean",
+    "author": "Paul Erdős (1947), formalized in Lean 4",
+    "date": "1947",
+    "dateAdded": "2026-06-22",
+    "mathlib_version": "4.26.0",
+    "sorries": 0,
+    "tags": ["probabilistic-method", "combinatorics", "ramsey-theory", "union-bound", "graph-coloring", "intermediate"],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on the foundational axioms propext, Classical.choice, Quot.sound; no sorryAx, no native_decide / Lean.ofReduceBool).",
+    "originalContributions": [
+      "A genuine model of edge 2-colorings of K_n (functions on the C(n,2) two-element subsets of Fin n), with the total count 2^(C(n,2)) proved.",
+      "card_EdgesIn: the induced edges of a vertex set K biject with its 2-subsets, giving exactly C(|K|,2) clique edges.",
+      "card_mono_le: the union-bound term — colorings monochromatic on a fixed clique number at most 2·2^(C(n,2)−C(k,2)) — proved by an explicit injection into Bool × (off-clique edges → Bool).",
+      "first_moment_ramsey: the tightest first-moment criterion 2·C(n,k) < 2^(C(k,2)) ⟹ ∃ good 2-coloring of K_n ⟹ R(k,k) > n, entirely over ℕ with no probability measure.",
+      "ramsey_number_gt: witness reformulation as 'every k-clique has two differently colored edges'.",
+      "ramsey_four_gt_six: concrete decidable instance R(4,4) > 6."
+    ]
+  }
+}
