@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-baire-oq01-docstring",
+    "proofId": "baire-category-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "context",
+    "title": "Baire's Theorem and Why It Matters",
+    "content": "The docstring frames the entry. Baire's category theorem (1899) says a complete (pseudo)metric space — or any BaireSpace — cannot be topologically 'small' (meagre) in itself. Mathlib packages the abstract theorem through named lemmas (dense_iInter_of_isOpen, nonempty_interior_of_iUnion_of_closed, not_isMeagre_of_isOpen, and the BaireSpace.of_completelyPseudoMetrizable instance), which this file re-exports — hence the mathlib badge. On top it records the content the gallery lacked: the contrapositive category form, the non-meagreness of the whole space, and the classical uncountability of ℝ derived from Baire. Everything is machine-checked with no sorry and no native_decide.",
+    "mathContext": "A set is *meagre* (first category) if it is a countable union of nowhere-dense sets. Baire: a nonempty complete metric space is *not* meagre in itself.",
+    "significance": "context",
+    "relatedConcepts": ["Baire category theorem", "meagre sets", "complete metric space", "functional analysis", "descriptive set theory"],
+    "prerequisites": ["metric/topological spaces", "open and closed sets", "countable unions"]
+  },
+  {
+    "id": "ann-baire-oq01-abstract",
+    "proofId": "baire-category-theorem-oq-01",
+    "range": { "startLine": 39, "endLine": 72 },
+    "type": "theorem",
+    "title": "The Two Dual Forms and the Contrapositive",
+    "content": "Part (a). baire_dense_iInter re-exports the dense-Gδ form: in any BaireSpace, a countable intersection of dense open sets is dense. baire_nonempty_interior re-exports the category form: if countably many closed sets cover a nonempty Baire space, one has nonempty interior. The genuinely new baire_not_iUnion_empty_interior is the contrapositive: assume a countable closed cover with all interiors empty, apply the category form to get a piece with nonempty interior, and derive a contradiction (not_nonempty_empty after rewriting interior = ∅). baire_univ_not_meagre specializes not_isMeagre_of_isOpen to the open, nonempty universal set: the whole space is non-meagre. The contrapositive form is the one functional-analysis arguments actually consume.",
+    "mathContext": "Dense-$G_\\delta$: $\\overline{\\bigcap_i U_i} = X$ for dense open $U_i$. Category: $\\bigcup_i F_i = X$, $F_i$ closed $\\Rightarrow \\exists i,\\ \\mathrm{int}\\,F_i \\ne \\emptyset$. Contrapositive: all $\\mathrm{int}\\,F_i = \\emptyset \\Rightarrow \\bigcup_i F_i \\ne X$.",
+    "significance": "key",
+    "relatedConcepts": ["dense_iInter_of_isOpen", "nonempty_interior_of_iUnion_of_closed", "contrapositive", "non-meagre space", "interior"],
+    "prerequisites": ["Baire space", "interior and closure", "proof by contradiction"]
+  },
+  {
+    "id": "ann-baire-oq01-instance",
+    "proofId": "baire-category-theorem-oq-01",
+    "range": { "startLine": 74, "endLine": 78 },
+    "type": "technique",
+    "title": "ℝ Is a Baire Space — for Free",
+    "content": "Part (b). baireSpace_real : BaireSpace ℝ is obtained by inferInstance, resolved automatically through BaireSpace.of_completelyPseudoMetrizable: every complete metrizable space is a Baire space, and ℝ is complete and metrizable. This is the single piece where the genuinely deep theorem (completeness ⇒ Baire) is invoked; everything downstream is elementary topology over the meagre/nowhere-dense API. The one-liner makes explicit that the entire uncountability argument rests on the completeness of ℝ.",
+    "mathContext": "Completeness $\\Rightarrow$ Baire is Mathlib's `BaireSpace.of_completelyPseudoMetrizable`; ℝ being a complete metric space inherits the `BaireSpace` instance.",
+    "significance": "supporting",
+    "relatedConcepts": ["BaireSpace.of_completelyPseudoMetrizable", "completeness", "metrizability", "typeclass inference"],
+    "prerequisites": ["complete metric spaces", "Lean typeclass resolution"]
+  },
+  {
+    "id": "ann-baire-oq01-singletons",
+    "proofId": "baire-category-theorem-oq-01",
+    "range": { "startLine": 80, "endLine": 105 },
+    "type": "insight",
+    "title": "Singletons and Countable Sets Are Meagre in ℝ",
+    "content": "Part (c), the engine of uncountability. isMeagre_singleton_real proves {x} ⊆ ℝ is meagre: via isMeagre_iff_countable_union_isNowhereDense it suffices that {x} is nowhere dense, and IsClosed.isNowhereDense_iff reduces this to interior {x} = ∅ — which holds because ℝ has no isolated points (interior_singleton). isMeagre_of_countable_real then writes any countable s as the countable union of its singletons (the image of s under x ↦ {x}), each nowhere dense, so s is meagre. The key topological fact is that points in ℝ are nowhere dense; this is exactly what fails in a discrete space, where singletons are open and the argument breaks.",
+    "mathContext": "$\\mathrm{int}\\{x\\} = \\emptyset$ (no isolated points) $\\Rightarrow \\{x\\}$ nowhere dense $\\Rightarrow$ countable $s = \\bigcup_{x\\in s}\\{x\\}$ is meagre.",
+    "significance": "key",
+    "relatedConcepts": ["IsMeagre", "IsNowhereDense", "interior_singleton", "no isolated points", "countable union"],
+    "prerequisites": ["meagre/nowhere-dense characterization", "interior of singletons", "countable image"]
+  },
+  {
+    "id": "ann-baire-oq01-uncountable",
+    "proofId": "baire-category-theorem-oq-01",
+    "range": { "startLine": 107, "endLine": 118 },
+    "type": "theorem",
+    "title": "Uncountability of ℝ via Baire",
+    "content": "real_uncountable is the payoff: if ℝ were countable then by isMeagre_of_countable_real the whole space would be meagre, contradicting baire_univ_not_meagre (a nonempty Baire space is non-meagre). real_not_iUnion_singletons restates this concretely through the contrapositive category form: ℝ is never the union of countably many singletons ⋃ₙ {g n}, since each {g n} is closed with empty interior. This is the textbook theorem 'a nonempty perfect complete metric space is uncountable', specialized to ℝ and made fully explicit — a categorically different proof from Cantor's diagonal argument, using completeness rather than a digit construction.",
+    "mathContext": "Countable ℝ $\\Rightarrow$ ℝ meagre in itself $\\Rightarrow\\!\\Leftarrow$ Baire non-meagreness. Hence $\\neg(\\mathrm{univ} : \\mathrm{Set}\\,\\mathbb R).\\mathrm{Countable}$.",
+    "significance": "key",
+    "relatedConcepts": ["uncountability of ℝ", "Baire non-meagreness", "perfect set", "Cantor's theorem (alternative)"],
+    "prerequisites": ["isMeagre_of_countable_real", "baire_univ_not_meagre", "the contrapositive category form"]
+  }
+]
