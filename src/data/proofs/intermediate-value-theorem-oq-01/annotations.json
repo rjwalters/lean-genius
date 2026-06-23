@@ -8,7 +8,7 @@
     },
     "type": "concept",
     "title": "Header and Problem Context",
-    "content": "The header describes the bisection method as a constructive counterpart to the Intermediate Value Theorem. While the IVT asserts existence non-constructively, bisection builds an explicit sequence of nested intervals converging to a root. The file proves 7 theorems with 2 sorries (the inductive width decay and error bound).",
+    "content": "The header describes the bisection method as a constructive counterpart to the Intermediate Value Theorem. While the IVT asserts existence non-constructively, bisection builds an explicit sequence of nested intervals converging to a root. The file proves 10 theorems with 0 sorries, including the inductive width decay and the error bound.",
     "mathContext": "The IVT states: if $f: [a,b] \\to \\mathbb{R}$ is continuous and $f(a) \\cdot f(b) < 0$, then $\\exists c \\in (a,b)$ with $f(c) = 0$. The classical proof uses completeness of $\\mathbb{R}$ (sup of $\\{x : f(x) \\leq 0\\}$) and is non-constructive. Bisection provides a constructive alternative.",
     "significance": "supporting",
     "relatedConcepts": [
@@ -95,8 +95,8 @@
     },
     "type": "concept",
     "title": "Width Decay: Single Step and Inductive",
-    "content": "bisectStep_width proves the single-step case: the output width equals $(b-a)/2$, by case-splitting on the sign test and using `ring` for each branch. bisect_width states the general case $(b-a)/2^n$ but is sorry'd — the induction requires composing bisectStep_width with an invariant that each intermediate pair satisfies $a_k \\leq b_k$.",
-    "mathContext": "**Proved**: $b_1 - a_1 = (b_0 - a_0)/2$. **Sorry'd**: $b_n - a_n = (b_0 - a_0)/2^n$. The inductive proof needs: (i) $a_k \\leq b_k$ for all $k$ (so bisectStep_width applies), (ii) rewriting $((b-a)/2^k)/2 = (b-a)/2^{k+1}$. The ordering invariant requires sign persistence or direct interval containment.",
+    "content": "bisectStep_width proves the single-step case: the output width equals $(b-a)/2$, by case-splitting on the sign test and using `ring` for each branch. bisect_width proves the general case $(b-a)/2^n$ by induction on $n$: the successor step rewrites the width via bisectStep_width' (the ordering-free single-step lemma), then closes with `div_div` and `← pow_succ`.",
+    "mathContext": "**Proved**: $b_1 - a_1 = (b_0 - a_0)/2$ (single step) and $b_n - a_n = (b_0 - a_0)/2^n$ (general). The inductive proof uses bisectStep_width' (which needs no ordering hypothesis), so the only algebra is rewriting $((b-a)/2^n)/2 = (b-a)/2^{n+1}$.",
     "significance": "key",
     "relatedConcepts": [
       "exponential convergence",
@@ -116,8 +116,8 @@
       "endLine": 100
     },
     "type": "concept",
-    "title": "Error Bound (sorry)",
-    "content": "bisect_error_bound states that the interval width after $n$ steps is at most $(b-a)/2^n$. This is sorry'd and would follow immediately from bisect_width (equality implies inequality). The error bound is the key practical result: it guarantees that the midpoint of the $n$-th interval approximates any root to within $(b-a)/2^{n+1}$.",
+    "title": "Error Bound",
+    "content": "bisect_error_bound states that the interval width after $n$ steps is at most $(b-a)/2^n$. It is proved as a one-line corollary of bisect_width via `le_of_eq` (equality implies inequality). The error bound is the key practical result: it guarantees that the midpoint of the $n$-th interval approximates any root to within $(b-a)/2^{n+1}$.",
     "mathContext": "After $n$ bisection steps, any root $c \\in [a_n, b_n]$ satisfies $|c - m_n| \\leq (b_n - a_n)/2 = (b-a)/2^{n+1}$, where $m_n$ is the midpoint. For $[1,2]$: 10 steps give error $< 10^{-3}$, 20 steps give error $< 10^{-6}$, 34 steps give error $< 10^{-10}$.",
     "significance": "supporting",
     "relatedConcepts": [
