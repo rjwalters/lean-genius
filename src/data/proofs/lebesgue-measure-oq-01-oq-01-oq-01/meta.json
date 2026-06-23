@@ -17,6 +17,7 @@
     "sorries": 0
   },
   "title": "Thomae's Function and Lebesgue's Criterion for Riemann Integrability",
+  "description": "Thomae's (popcorn) function — 1/q.den at a rational q, 0 at irrationals — treated through Lebesgue's criterion: a bounded function on [a,b] is Riemann integrable iff its discontinuity set is Lebesgue-null. Continuity at every irrational is reproved self-containedly (only finitely many rationals of bounded denominator lie near an irrational, at a positive distance), so the discontinuity set sits inside the rationals, which are countable hence null. This gives the MEASURE side of the criterion (thomae_discontinuitySet_null) and a.e.-continuity — exactly what the prior Riemann entry sidestepped via the cheaper thomae =ᵐ 0 route. Integrability and the value ∫₀¹ = 0 are recovered and packaged as thomae_riemann_via_lebesgue_criterion. Also repairs a bit-rotted continuity proof against the current Mathlib API.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -84,6 +85,48 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Thomae's function (1875), also called the popcorn, raindrop, or modified Dirichlet function, is the textbook example of a function that is continuous at every irrational and discontinuous at every rational — a discontinuity set (the rationals) that is dense yet 'small'. It is the canonical witness for Lebesgue's criterion (Henri Lebesgue, 1902): a bounded function on a closed interval is Riemann integrable if and only if its set of discontinuities has Lebesgue measure zero. Where Riemann's own integrability condition is phrased via oscillation and upper/lower sums, Lebesgue's reformulation is purely measure-theoretic — the discontinuity set being null is exactly what makes the upper and lower Darboux integrals coincide. Thomae's function passes the test: its discontinuities are the countable, hence null, rationals, so it is Riemann integrable with integral 0, despite being discontinuous on a dense set. This entry formalizes the measure-theoretic heart of that argument in Lean and, as a side effect, rebuilds the continuity-at-irrationals proof against the current Mathlib API, repairing a bit-rotted gallery file.",
+    "problemStatement": "**Open Question (oq-01-oq-01-oq-01)**: formalize the Riemann integrability of Thomae's function via Lebesgue's criterion — i.e. by showing its discontinuity set has Lebesgue measure zero — rather than through the cheaper a.e.-vanishing route used by the prior Riemann entry. Answer: the discontinuity set {x | ¬ContinuousAt thomae x} ⊆ ℚ is null, so Thomae is continuous a.e., hence (classically) Riemann integrable on [0,1] with ∫ = 0.",
+    "proofStrategy": "Three parts. **Part 1 (continuity at irrationals, self-contained):** for irrational x and ε > 0, pick N with 1/(N+1) < ε. Only finitely many rationals of denominator ≤ N lie within distance 1 of x (finite_rat_bounded, by bracketing the numerator between ⌊(x−1)d⌋ and ⌈(x+1)d⌉ for each denominator d ≤ N), and these finitely many points sit a positive distance δ from x (pos_min_dist, by induction over the finite set using irrationality to keep each distance strictly positive). Within min(δ,1) of x, any rational point has denominator > N, so thomae < 1/(N+1) < ε; irrational points give thomae = 0. **Part 2 (the criterion's measure side):** the discontinuity set is contained in the rationals (contrapositive of Part 1), the rationals are countable hence null for the atomless volume measure (Set.Countable.measure_zero), so the discontinuity set is null (measure_mono_null) and Thomae is continuous a.e. (ae_iff). **Part 3 (integrability/value):** Thomae vanishes a.e. (same null-rationals argument), so it is Lebesgue integrable with ∫ = 0 on the line and ∫₀¹ = 0 (integral_congr_ae), all packaged into thomae_riemann_via_lebesgue_criterion.",
+    "keyInsights": [
+      "A function can be discontinuous on a dense set yet Riemann integrable — what matters is not topological density but measure: the rationals are dense but null, so Thomae's discontinuities cost nothing for integrability.",
+      "Continuity at the irrationals is a finiteness phenomenon: near any point, only finitely many rationals have small denominator (hence large Thomae value), and an irrational keeps a positive distance from all of them — so the value can be forced below any ε.",
+      "Lebesgue's criterion replaces Riemann's oscillation condition with a clean measure statement (discontinuity set null), and this entry formalizes exactly that measure content — the part Mathlib's lack of a first-class Riemann integral leaves implicit.",
+      "The entry deliberately supplies what a sibling sidestepped: the prior Riemann entry proved ∫ = 0 via thomae =ᵐ 0 and explicitly noted it bypassed the criterion; here the null discontinuity set and a.e.-continuity are proved head-on.",
+      "Formal proofs bit-rot: the continuity-at-irrationals argument is rebuilt against the current Mathlib (div_lt_iff → div_lt_iff₀, Set.Finite.subset for the finiteness, one_div_le_one_div_of_le, the @insert induction pattern), a concrete instance of API-drift maintenance."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "Thomae's Function: Definition and Values",
+      "startLine": 51,
+      "endLine": 67,
+      "summary": "thomae is defined as 1/q.den at a rational q and 0 at irrationals (via a decidable existence check). thomae_irrational and thomae_rat record the two value cases, the latter pinning the rational value to 1/q.den in lowest terms."
+    },
+    {
+      "id": "continuity-irrational",
+      "title": "Part 1: Continuity at Every Irrational",
+      "startLine": 69,
+      "endLine": 155,
+      "summary": "The ε–δ core. rat_num_eq_mul_den and finite_rat_bounded show only finitely many rationals of denominator ≤ N lie within distance 1 of x (numerator bracketed by floor/ceil per denominator). pos_min_dist gives a positive minimum distance δ from an irrational x to that finite set (induction using irrationality). thomae_continuous_at_irrational assembles these: within min(δ,1), rationals have denominator > N so thomae < 1/(N+1) < ε."
+    },
+    {
+      "id": "criterion-null",
+      "title": "Part 2: Lebesgue's Criterion — Null Discontinuity Set",
+      "startLine": 157,
+      "endLine": 183,
+      "summary": "thomae_discontinuitySet_subset (contrapositive of Part 1: every discontinuity is rational), rat_range_null (the rationals are countable hence null for atomless volume), thomae_discontinuitySet_null (the measure side of Lebesgue's criterion), and thomae_ae_continuousAt (continuous a.e., via ae_iff)."
+    },
+    {
+      "id": "integrability",
+      "title": "Part 3: Integrability and the Value 0",
+      "startLine": 185,
+      "endLine": 227,
+      "summary": "thomae_ae_zero (vanishes a.e., same null-rationals argument), thomae_integrable (Lebesgue integrable by congruence with 0), thomae_integral_zero / thomae_integrableOn_Icc / thomae_intervalIntegral_zero (∫ = 0 on the line and on [0,1]), packaged with the null discontinuity set into thomae_riemann_via_lebesgue_criterion."
+    }
+  ],
   "openQuestions": [
     {
       "id": "lebesgue-measure-oq-01-oq-01-oq-01-oq-01",
