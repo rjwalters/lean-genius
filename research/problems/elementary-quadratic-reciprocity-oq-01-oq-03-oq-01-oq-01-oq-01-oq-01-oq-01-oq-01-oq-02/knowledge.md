@@ -325,3 +325,56 @@ kernel-verified lemma (0 sorry, axioms `[propext, Classical.choice, Quot.sound]`
 3. Feed into `quadratic_reciprocity_of_transition_signs` to obtain an
    UNCONDITIONAL `quadratic_reciprocity_zolotarev`. No further Zolotarev/Jacobi
    input is needed — only Fin↔ZMod transport bookkeeping.
+
+## Session 2026-06-23 (researcher-9, S7) — q-fold sign collapse lemma PROVED
+
+**Mode**: REVISIT (continuing the assembly skeleton thread)
+**Outcome**: progress — the "`sign_prodCongrLeft` collapses the `q`-fold product"
+step (Next-Step #2's second half) is now a kernel-verified lemma (0 sorry, axioms
+`[propext, Classical.choice, Quot.sound]`). File now 627L, builds clean.
+
+### What I Did
+- Added `sign_prodCongrLeft_affineLine {p q}[Fact p.Prime][NeZero q] (p≠2)(Odd q)
+  (a:(ZMod p)ˣ)(β:ZMod q→ZMod p)(A)(A≡a) :
+  (sign (Equiv.prodCongrLeft (fun k => addLeft (β k) * ringMulPerm a)) : ℤ)
+    = legendreSym p A`.
+  This is the abstract collapse: a permutation of `ZMod p × ZMod q` that is
+  *fiberwise* (over the `ZMod q` factor) the affine line `x ↦ a·x + β k` on `ZMod p`
+  has total sign equal to the single per-line Legendre symbol `(A/p)`.
+- Proof (≈10 lines): `Equiv.Perm.sign_prodCongrLeft` ⟹ `∏_{k:ZMod q} sign(fiber k)`;
+  every fiber sign collapses to `sign (ringMulPerm a)` by the S6 translation-parity
+  corollary `sign_addLeft_mul` (so the `β k` are irrelevant); `Finset.prod_const`
+  + `Finset.card_univ` + `ZMod.card q` ⟹ `sign(ringMulPerm a) ^ q`; odd-power
+  collapse `ZolotarevCRT.units_pow_odd _ hq` ⟹ `sign(ringMulPerm a)`; cast to ℤ
+  and apply the `b=0` instance of S6's `sign_affineLine_eq_legendreSym`.
+
+### Key Findings
+- Mathlib's fiberwise-permutation sign lemmas are `Equiv.Perm.sign_prodCongrRight`
+  / `sign_prodCongrLeft` (`GroupTheory/Perm/Sign.lean`), each `= ∏ k, sign (σ k)`.
+  The underlying equiv is `Equiv.prodCongrLeft (e : α₁ → β₁ ≃ β₂) : β₁×α₁ ≃ β₂×α₁`
+  (fibers indexed by the **second** factor, acting on the **first**) — matches the
+  `ZMod p × ZMod q` array with per-column (j∈ZMod q) action on rows (i∈ZMod p).
+- The collapse needs nothing about the individual `β k`: translation-parity makes
+  every fiber sign identical (`= sign (ringMulPerm a)`), so the product is a pure
+  `q`-th power, killed by `units_pow_odd` since `q` is odd. The Legendre symbol's
+  being ±1 is never invoked explicitly — the unit-group exponent-2 argument suffices.
+- `ZMod.card` lives in `Data/ZMod/Defs.lean` (`Fintype.card (ZMod n) = n`), needs the
+  `[NeZero n]`→`Fintype (ZMod n)` instance.
+
+### Files Modified
+- `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean`
+  (588L→627L; new lemma + `#check`). Kernel-verified via `lake env lean` over the
+  prebuilt parent-chain oleans; `#print axioms` = `[propext, Classical.choice,
+  Quot.sound]` (no `sorryAx`, no `ofReduceBool`).
+- this knowledge.md.
+
+### Next Steps (single remaining gap, purely combinatorial)
+1. Define the concrete CRT order `D : Fin p × Fin q ≃ Fin (p*q)`.
+2. The ONLY thing left: show `(rowOrder p q).trans D.symm`, transported across
+   `Fin p × Fin q ≃ ZMod p × ZMod q`, **equals** `Equiv.prodCongrLeft (fun j =>
+   addLeft (βⱼ) * ringMulPerm q̄)` for the appropriate per-column translations `βⱼ`
+   and multiplier `q̄ = (q : ZMod p)ˣ`. Then `sign_prodCongrLeft_affineLine` gives
+   `(q/p)` directly; dually `colOrder` ⟹ `(p/q)`; feed both into
+   `quadratic_reciprocity_of_transition_signs` for the UNCONDITIONAL law.
+   Both the per-line sign (S6) and the q-fold collapse (S7) are now done — the
+   remaining work is *only* the Fin↔ZMod transport + the CRT structure identity.

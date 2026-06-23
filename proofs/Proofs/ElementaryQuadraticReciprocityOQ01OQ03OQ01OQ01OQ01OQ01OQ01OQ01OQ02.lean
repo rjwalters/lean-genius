@@ -573,6 +573,44 @@ theorem sign_affineLine_eq_legendreSym {p : ℕ} [hp : Fact p.Prime] (hp2 : p �
       ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd hodd a A hA,
       jacobiSym.legendreSym.to_jacobiSym]
 
+/-- **Collapse of the per-line signs over a residue array.**
+
+    Let `p` be an odd prime and `q` an odd number.  Consider a permutation of the
+    array `ZMod p × ZMod q` that acts *fiberwise over the `ZMod q` factor* as the
+    affine line map `x ↦ a·x + β k` on the `ZMod p` factor, i.e.
+
+        `prodCongrLeft (fun k : ZMod q => addLeft (β k) * ringMulPerm a)`.
+
+    Its total sign is the *single* per-line Legendre symbol `(A / p)`:
+    `sign_prodCongrLeft` turns the sign into the product of the `q` fiber signs;
+    each fiber sign is `(A/p)` (translation is even, `sign_affineLine_eq_legendreSym`);
+    and the `q`-fold product `(A/p)^q` collapses to `(A/p)` because `q` is odd and
+    the sign is a unit (`units_pow_odd`).
+
+    This is exactly the "`sign_prodCongrLeft` collapses the `q`-fold product" step
+    flagged at the end of the file header.  Together with the CRT identification of
+    each transition `τ_rd`, `τ_cd` as such a fiberwise-affine permutation, it
+    discharges the two hypotheses of `quadratic_reciprocity_of_transition_signs`;
+    the *only* remaining gap is that purely combinatorial identification. -/
+theorem sign_prodCongrLeft_affineLine {p q : ℕ} [hp : Fact p.Prime] [NeZero q]
+    (hp2 : p ≠ 2) (hq : Odd q) (a : (ZMod p)ˣ) (β : ZMod q → ZMod p)
+    (A : ℤ) (hA : (A : ZMod p) = (a : ZMod p)) :
+    (Equiv.Perm.sign (Equiv.prodCongrLeft
+        (fun k : ZMod q => Equiv.addLeft (β k) * ringMulPerm a)) : ℤ)
+      = legendreSym p A := by
+  haveI : NeZero p := ⟨hp.out.pos.ne'⟩
+  have hodd : Odd p := hp.out.odd_of_ne_two hp2
+  rw [Equiv.Perm.sign_prodCongrLeft]
+  -- every fiber sign collapses (translation is even) to `sign (ringMulPerm a)`.
+  have hfib : (fun k : ZMod q => Equiv.Perm.sign (Equiv.addLeft (β k) * ringMulPerm a))
+      = fun _ : ZMod q => Equiv.Perm.sign (ringMulPerm a) :=
+    funext fun k => sign_addLeft_mul hodd (β k) (ringMulPerm a)
+  rw [hfib, Finset.prod_const, Finset.card_univ, ZMod.card q,
+      ZolotarevCRT.units_pow_odd _ hq]
+  -- the surviving single line is the `b = 0` instance of the affine-line sign.
+  have h0 := sign_affineLine_eq_legendreSym hp2 a 0 A hA
+  rwa [sign_addLeft_mul hodd 0 (ringMulPerm a)] at h0
+
 end ZolotarevQR
 
 #check @ZolotarevQR.gridTranspose
@@ -586,3 +624,4 @@ end ZolotarevQR
 #check @ZolotarevQR.sign_addLeft_odd
 #check @ZolotarevQR.sign_addLeft_mul
 #check @ZolotarevQR.sign_affineLine_eq_legendreSym
+#check @ZolotarevQR.sign_prodCongrLeft_affineLine
