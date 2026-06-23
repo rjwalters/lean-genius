@@ -7,7 +7,14 @@
     "problemStatement": "**Open Question** (parent de-moivre-oq-05-oq-01-oq-01-oq-01, third question): package the normalised DFT matrix U as a `LinearIsometryEquiv` on `EuclideanSpace ℂ (Fin n)`, upgrading the matrix-level unitarity `U·Uᴴ = 1` to an explicit isometric isomorphism.\n\n**Answer**: Let U act on ℂⁿ by the matrix–vector product, f = `toEuclideanLin U`. The adjoint of f is `toEuclideanLin Uᴴ` (Mathlib's `toEuclideanLin_conjTranspose_eq_adjoint`), and the two forms of `U ∈ unitaryGroup` (`Uᴴ·U = 1` and `U·Uᴴ = 1`) make `toEuclideanLin Uᴴ` a two-sided inverse of f. Hence f preserves the Hermitian inner product `⟪Ux,Uy⟫ = ⟪x,y⟫` and is bijective, so it assembles into `dftLIE : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n)`. Its inverse `(dftLIE)⁻¹` acts as `toEuclideanLin Uᴴ` — exactly the inverse / conjugate-transpose discrete Fourier transform.",
     "historicalContext": "The operator-theoretic statement of the discrete Fourier transform is that it is a unitary of the finite-dimensional Hilbert space ℂⁿ: a perfectly invertible, energy-preserving change of orthonormal basis. The parent entry proved the underlying matrix identity U·Uᴴ = 1; this entry crosses from the matrix algebra into the bundled `≃ₗᵢ` (linear isometric equivalence) world, the form in which the DFT is used as a Hilbert-space isomorphism. Identifying the inverse isometry with the conjugate-transpose matrix is the abstract counterpart of the inverse-DFT formula x(k) = (1/n)∑_j x̂(j)·exp(−2πi·jk/n).",
     "significance": "Closes the parent entry's third open question. It places the explicit exponential DFT matrix inside Mathlib's bundled isometry hierarchy (`LinearIsometryEquiv`), making the energy law (`norm_map`) and inner-product preservation (`inner_map_map`) available as structure, and exhibits the inverse transform as the genuine inverse of the forward isometry.",
-    "keyInsight": "Unitarity is exactly two-sided invertibility of `toEuclideanLin U` together with adjoint = inverse. The adjoint of `toEuclideanLin U` is `toEuclideanLin Uᴴ` (Mathlib), and `Uᴴ·U = U·Uᴴ = 1` turns the matrix unitary group membership into a bona-fide isometric isomorphism whose inverse IS the conjugate-transpose operator."
+    "keyInsight": "Unitarity is exactly two-sided invertibility of `toEuclideanLin U` together with adjoint = inverse. The adjoint of `toEuclideanLin U` is `toEuclideanLin Uᴴ` (Mathlib), and `Uᴴ·U = U·Uᴴ = 1` turns the matrix unitary group membership into a bona-fide isometric isomorphism whose inverse IS the conjugate-transpose operator.",
+    "proofStrategy": "Write f = toEuclideanLin U on EuclideanSpace ℂ (Fin n). (1) Read off the two matrix identities Uᴴ·U = 1 and U·Uᴴ = 1 from the two forms of U ∈ unitaryGroup, and turn each into an operator identity (toEuclideanLin Uᴴ is a two-sided inverse of f) by injecting through WithLp.ofLp and collapsing the composition with Matrix.mulVec_mulVec. (2) Identify the operator adjoint of f with toEuclideanLin Uᴴ (toEuclideanLin_conjTranspose_eq_adjoint) and combine with the left-inverse identity to get inner-product preservation ⟪f x, f y⟫ = ⟪x, y⟫ via adjoint_inner_right. (3) Feed inner-preservation to isometryOfInner and the explicit right inverse to LinearIsometryEquiv.ofSurjective to obtain dftLIE. (4) Derive dftLIE_apply / dftLIE_norm / dftLIE_inner from the bundled structure and identify (dftLIE).symm with toEuclideanLin Uᴴ.",
+    "keyInsights": [
+      "Unitarity of a matrix is exactly two-sided invertibility of the induced operator toEuclideanLin U together with the fact that its adjoint equals its inverse — the abstract content of 'the conjugate transpose is the inverse'.",
+      "Mathlib's toEuclideanLin_conjTranspose_eq_adjoint is the bridge from matrix algebra to operator theory: it makes the operator adjoint of toEuclideanLin U literally toEuclideanLin Uᴴ, so the parent's matrix identities become statements about f and its adjoint.",
+      "The two forms of unitary-group membership (Uᴴ·U = 1 and U·Uᴴ = 1) supply the left and right inverses separately; the left inverse gives inner-product preservation and the right inverse gives surjectivity, the two hypotheses LinearIsometryEquiv.ofSurjective needs.",
+      "Once bundled, the parent's ℓ²-energy law ‖Ux‖ = ‖x‖ and the inner-product law are no longer separate theorems but the norm_map and inner_map_map of a single isometry, and the inverse DFT is literally the inverse morphism (dftLIE).symm = toEuclideanLin Uᴴ."
+    ]
   },
   "leanFile": {
     "imports": [
@@ -146,5 +153,65 @@
       "relationship": "foundational",
       "description": "Grandparent character orthonormality, the nontrivial input behind the unitarity that this entry lifts to an isometric isomorphism."
     }
-  ]
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module header and open question",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "States the parent's matrix unitarity U·Uᴴ = 1 for the normalised DFT U(j,k) = exp(2πi·jk/n)/√n and the third open question — upgrade it to an isometric isomorphism of ℂⁿ — then sketches the plan (adjoint = toEuclideanLin Uᴴ, two-sided inverse, isometryOfInner + ofSurjective) and lists the eight results.",
+      "mathContext": "Goal: $\\mathrm{dftLIE} : \\mathbb{C}^n \\simeq_{\\ell i}[\\mathbb{C}] \\mathbb{C}^n$ from $U \\in \\mathrm{unitaryGroup}$."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and namespace",
+      "startLine": 47,
+      "endLine": 52,
+      "summary": "Imports the parent module (bringing dftMatrix and dftMatrix_mem_unitaryGroup into scope), opens Matrix and the parent namespace, and opens namespace DeMoivreOQ05OQ01OQ01OQ01OQ03.",
+      "mathContext": "Sole nontrivial input: $\\mathrm{dftMatrix\\_mem\\_unitaryGroup} : U \\in \\mathrm{unitaryGroup}\\,(\\mathrm{Fin}\\,n)\\,\\mathbb{C}$."
+    },
+    {
+      "id": "two-sided-inverse",
+      "title": "Uᴴ as a two-sided operator inverse",
+      "startLine": 54,
+      "endLine": 78,
+      "summary": "dftMatrix_conjTranspose_toEuclideanLin_left_inverse (from Uᴴ·U = 1) and dftMatrix_toEuclideanLin_right_inverse (from U·Uᴴ = 1): toEuclideanLin Uᴴ is a two-sided inverse of toEuclideanLin U on ℂⁿ, proved by WithLp.ofLp_injective + Matrix.mulVec_mulVec.",
+      "mathContext": "$\\mathrm{toEuclideanLin}\\,U^{\\mathsf H} \\circ \\mathrm{toEuclideanLin}\\,U = \\mathrm{id} = \\mathrm{toEuclideanLin}\\,U \\circ \\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$."
+    },
+    {
+      "id": "inner-preservation",
+      "title": "Inner-product preservation",
+      "startLine": 80,
+      "endLine": 94,
+      "summary": "dftMatrix_toEuclideanLin_inner: ⟪Ux, Uy⟫ = ⟪x, y⟫, via adjoint_inner_right + toEuclideanLin_conjTranspose_eq_adjoint and the left-inverse identity (adjoint = inverse).",
+      "mathContext": "$\\langle Ux, Uy\\rangle = \\langle x, U^{\\ast}Uy\\rangle = \\langle x, y\\rangle$."
+    },
+    {
+      "id": "dftlie",
+      "title": "Assembling dftLIE",
+      "startLine": 96,
+      "endLine": 114,
+      "summary": "dftLIE: the normalised DFT as a LinearIsometryEquiv, built from isometryOfInner (inner preservation) + LinearIsometryEquiv.ofSurjective (right inverse as the surjectivity witness); dftLIE_apply records that it acts as toEuclideanLin U.",
+      "mathContext": "$\\mathrm{dftLIE}\\,x = \\mathrm{toEuclideanLin}\\,U\\,x$."
+    },
+    {
+      "id": "properties",
+      "title": "Norm/inner laws and the inverse DFT",
+      "startLine": 116,
+      "endLine": 137,
+      "summary": "dftLIE_norm (‖dftLIE x‖ = ‖x‖, the norm_map), dftLIE_inner (the inner_map_map), and dftLIE_symm_apply: (dftLIE).symm acts as toEuclideanLin Uᴴ — the inverse / conjugate-transpose discrete Fourier transform.",
+      "mathContext": "$(\\mathrm{dftLIE})^{-1} = \\mathrm{toEuclideanLin}\\,U^{\\mathsf H}$, i.e. $x(k) = \\tfrac1n\\sum_j \\hat x(j)\\,e^{-2\\pi i jk/n}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The normalised discrete Fourier transform is packaged as an explicit linear isometric isomorphism dftLIE : EuclideanSpace ℂ (Fin n) ≃ₗᵢ[ℂ] EuclideanSpace ℂ (Fin n), upgrading the parent's matrix unitarity U·Uᴴ = 1 to Mathlib's bundled ≃ₗᵢ world. Its forward action is toEuclideanLin U, it preserves the Euclidean norm and the Hermitian inner product, and its inverse (dftLIE).symm is toEuclideanLin Uᴴ — the inverse / conjugate-transpose DFT. 7 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "Realises the DFT in the form actually used in functional analysis and signal processing: a unitary of the finite-dimensional Hilbert space ℂⁿ. As a LinearIsometryEquiv it carries the energy law and inner-product law as structural lemmas (norm_map, inner_map_map) rather than ad-hoc identities, and the inverse transform is the genuine inverse morphism. This is the discrete, finite-dimensional shadow of the Plancherel theorem, with the inverse isometry making the conjugate-transpose = inverse-DFT identification explicit.",
+    "openQuestions": [
+      "Express dftLIE in Mathlib's orthonormal-basis framework: exhibit the DFT as the change-of-basis isometry between the standard basis and the Fourier (character) basis of ℂⁿ.",
+      "Connect dftLIE to Mathlib's abstract Fourier transform on finite abelian groups (the characters of ℤ/nℤ), recovering this concrete matrix as a special case.",
+      "Quantify the spectrum of dftLIE: its eigenvalues are fourth roots of unity (U⁴ = 1), with multiplicities given by the classical Gauss-sum / McClellan–Parks analysis — formalize the eigenvalue multiplicities.",
+      "Derive the convolution theorem in this bundled setting: dftLIE intertwines cyclic convolution with pointwise multiplication."
+    ]
+  }
 }
