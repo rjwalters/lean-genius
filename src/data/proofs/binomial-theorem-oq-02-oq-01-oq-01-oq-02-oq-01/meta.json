@@ -1,0 +1,89 @@
+{
+  "id": "binomial-theorem-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-02-oq-01",
+  "title": "The Degree-One Multinomial Support Is the Index Set",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Classical"
+    ],
+    "namespace": "BinomialTheoremOQ02OQ01OQ01OQ02OQ01",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 3,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "multinomial",
+      "finset",
+      "piAntidiag",
+      "bijection",
+      "compositions",
+      "binomial-theorem"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 125,
+    "assumptions": "Axiom-free: every result is fully machine-checked with no axiom declarations and no structure-encoded assumptions. `#print axioms` reports only the standard foundational axioms (propext, Classical.choice, Quot.sound); there is no sorryAx and no Lean.ofReduceBool. Proved: single_mem_piAntidiag_one, piAntidiag_one_eq_image, single_one_injective, card_piAntidiag_one, and the definition piAntidiagOneEquiv.",
+    "originalContributions": [
+      "single_mem_piAntidiag_one: the indicator Pi.single i 1 is a degree-one tuple supported on s whenever i ∈ s",
+      "piAntidiag_one_eq_image: s.piAntidiag 1 = s.image (fun i => Pi.single i 1) — the degree-one tuples are exactly the indicators (structural characterisation not present in Mathlib)",
+      "single_one_injective: i ↦ Pi.single i 1 is injective",
+      "card_piAntidiag_one: (s.piAntidiag 1).card = s.card",
+      "piAntidiagOneEquiv: the explicit bijection ↥s ≃ ↥(s.piAntidiag 1), i ↦ Pi.single i 1, realising the degree-one multinomial support as the index set"
+    ],
+    "theoremCount": 4,
+    "substantiveTheoremCount": 3,
+    "definitionCount": 1
+  },
+  "description": "For the multinomial distribution of n trials over a finite category set s, the support is Mathlib's `Finset.piAntidiag s n` — the functions k : ι → ℕ supported on s with ∑_{i∈s} k i = n. This entry treats the degree-one case n = 1: a single trial must land in exactly one category, so each composition is an indicator Pi.single i 1 for a unique i ∈ s. We prove the structural characterisation s.piAntidiag 1 = s.image (Pi.single · 1), deduce the cardinality (s.piAntidiag 1).card = s.card, and package the canonical bijection ↥s ≃ ↥(s.piAntidiag 1). This isolates a clean combinatorial leaf of the parent Multinomial Entropy formalization, where the n = 1 support underlies the recovery of the source entropy.",
+  "overview": "The parent entry sums the multinomial probability over `s.piAntidiag n`. At n = 1 the support collapses to the index set s: this file proves that collapse explicitly, from Mathlib's `mem_piAntidiag` characterisation, with no axioms and no sorries.",
+  "conclusion": "Every degree-one composition over a finite set s is the indicator of exactly one element of s; hence s.piAntidiag 1 is canonically in bijection with s and has cardinality |s|.",
+  "sorries": [],
+  "mainTheorems": [
+    "piAntidiag_one_eq_image",
+    "card_piAntidiag_one",
+    "piAntidiagOneEquiv"
+  ],
+  "sections": [
+    {
+      "title": "Indicators are degree-one tuples",
+      "description": "single_mem_piAntidiag_one: Pi.single i 1 lies in s.piAntidiag 1 for i ∈ s, via mem_piAntidiag (sum 1, support ⊆ s)."
+    },
+    {
+      "title": "Structural characterisation",
+      "description": "piAntidiag_one_eq_image: a degree-one tuple over s, having natural-number entries summing to 1, has exactly one entry equal to 1 and is therefore an indicator; conversely every indicator qualifies."
+    },
+    {
+      "title": "Cardinality and the explicit bijection",
+      "description": "single_one_injective + card_piAntidiag_one give |s.piAntidiag 1| = |s|; piAntidiagOneEquiv packages i ↦ Pi.single i 1 as an Equiv ↥s ≃ ↥(s.piAntidiag 1)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02",
+      "relationship": "answers-question",
+      "description": "Parent (Multinomial Entropy): isolates the degree-one support s.piAntidiag 1 used in the source-entropy recovery at n = 1."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01",
+      "relationship": "ancestor",
+      "description": "Ancestor: multinomial distribution and its support over s.piAntidiag n."
+    }
+  ]
+}
