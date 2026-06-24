@@ -1,0 +1,81 @@
+{
+  "id": "pell-equation-oq-07-oq-01",
+  "title": "Binet and Companion-Matrix Closed Forms for Pell Coordinate Sequences",
+  "slug": "pell-equation-oq-07-oq-01",
+  "description": "The parent entry (pell-equation-oq-07) extracts the second-order linear recurrence uₙ₊₂ = 2x₁·uₙ₊₁ − N(a)·uₙ that the coordinate sequences of the power sequence aⁿ of a generator a = ⟨x₁,y₁⟩ ∈ ℤ[√d] satisfy — the recurrence is the additive shadow of the multiplicative power structure. This entry answers the parent's own first open question by supplying the two closed forms the recurrence is the shadow of: a Binet form expressing each coordinate of aⁿ in terms of the conjugate roots x₁ ± y₁√d of the characteristic polynomial t² − 2x₁·t + N(a), and a companion-matrix power form Mⁿ. The mechanism is that Galois conjugation x + y√d ↦ x − y√d is exactly Mathlib's ring involution star on ℤ[√d], which commutes with powers (star_pow); reading the real and √d parts of aⁿ ± (star a)ⁿ isolates the two coordinate sequences as aⁿ + (star a)ⁿ = ⟨2·re(aⁿ),0⟩ and aⁿ − (star a)ⁿ = ⟨0,2·im(aⁿ)⟩. Mapping these into ℝ through the ring hom Zsqrtd.lift √d (defined for d ≥ 0), which sends a and star a to the conjugate reals x₁ ± y₁√d, yields Binet's formulas re(aⁿ) = ((x₁+y₁√d)ⁿ + (x₁−y₁√d)ⁿ)/2 and 2·im(aⁿ)·√d = (x₁+y₁√d)ⁿ − (x₁−y₁√d)ⁿ. The companion matrix M = ⟨⟨x₁, d·y₁⟩, ⟨y₁, x₁⟩⟩ of multiplication-by-a on the basis {1,√d} has Mⁿ = ⟨⟨re(aⁿ), d·im(aⁿ)⟩, ⟨im(aⁿ), re(aⁿ)⟩⟩, with trace 2x₁ and determinant N(a) — the coefficients of the characteristic polynomial whose roots are the conjugate units, made explicit (eigenvalue picture).",
+  "leanFile": "Proofs/PellEquationOQ07OQ01.lean",
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius (Binet/companion-matrix closed forms via conjugation = star in ℤ[√d]); Binet / Lagrange (classical closed-form Pell theory)",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PellEquationOQ07OQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-equations",
+      "pell-equation",
+      "quadratic-integers",
+      "zsqrtd",
+      "binet-formula",
+      "closed-form",
+      "companion-matrix",
+      "characteristic-polynomial",
+      "conjugation",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-23",
+    "lineCount": 232,
+    "originalContributions": [
+      "pow_add_star_pow / pow_sub_star_pow: the conjugate-symmetric decompositions aⁿ + (star a)ⁿ = ⟨2·re(aⁿ),0⟩ and aⁿ − (star a)ⁿ = ⟨0,2·im(aⁿ)⟩ inside ℤ[√d] for every a and any d, isolating each coordinate of the power sequence — proved by Zsqrtd.ext + star_pow (conjugation is Mathlib's StarRing involution, a ring hom that commutes with powers)",
+      "re_binet: Binet's formula for the real coordinate, re(aⁿ) = ((x₁+y₁√d)ⁿ + (x₁−y₁√d)ⁿ)/2 for d ≥ 0, obtained by pushing the integer decomposition through the ring hom Zsqrtd.lift ⟨√d, _⟩ : ℤ[√d] →+* ℝ that sends a and star a to the conjugate roots x₁ ± y₁√d",
+      "im_binet: Binet's formula for the √d coordinate, 2·im(aⁿ)·√d = (x₁+y₁√d)ⁿ − (x₁−y₁√d)ⁿ (stated multiplicatively so it holds at d = 0 too), the difference of the conjugate roots' n-th powers",
+      "companion (def) + companion_pow: the multiplication-by-a matrix M = !![x₁, d·y₁; y₁, x₁] on the basis {1,√d} satisfies Mⁿ = !![re(aⁿ), d·im(aⁿ); im(aⁿ), re(aⁿ)], proved by induction using Matrix.mul_apply, Fin.sum_univ_two and Zsqrtd.re_mul/im_mul — powers of the matrix carry exactly the coordinates of aⁿ",
+      "companion_trace / companion_det / companion_det_pell: tr M = 2x₁ and det M = N(a) are the coefficients of the characteristic polynomial t² − 2x₁·t + N(a), whose roots are the conjugate units x₁ ± y₁√d (the eigenvalue picture); for a Pell generator (N(a) = 1) the determinant is 1, giving t² − 2x₁·t + 1",
+      "companion_pow_two: the D = 2 instance — the companion matrix !![3,4;2,3] of the fundamental unit 3 + 2√2 = ⟨3,2⟩ ∈ ℤ[√2] has Mⁿ carrying the coordinates of (3+2√2)ⁿ; numeric checks M² = !![17,24;12,17] and (3+2√2)² = 17 + 12√2 against the chain 1,3,17,99,577 / 0,2,12,70,408"
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide (the two `decide` uses are kernel `decide`, not `native_decide`, so no Lean.ofReduceBool). #print axioms reports only the standard triple [propext, Classical.choice, Quot.sound]; Classical.choice enters solely through Real.sqrt. Uses Mathlib's Zsqrtd API (star/star_pow, re_mul, im_mul, norm_def, lift), the Real.sqrt API (mul_self_sqrt), the 2×2 Matrix API (mul_apply, det_fin_two_of, trace_fin_two_of, one_fin_two), and standard tactics (induction, simp, ring, linarith, push_cast, decide).",
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "crossReferences": [
+    {
+      "targetId": "pell-equation-oq-07",
+      "relationship": "extends",
+      "description": "The parent derives the recurrence uₙ₊₂ = 2x₁·uₙ₊₁ − N(a)·uₙ for the coordinate sequences of aⁿ via Cayley–Hamilton in ℤ[√d], and lists the Binet and companion-matrix closed forms as its first open question. This entry proves exactly those: the Binet form via conjugation = star and Zsqrtd.lift, and the companion-matrix power form Mⁿ with trace 2x₁, determinant N(a)."
+    },
+    {
+      "targetId": "pell-equation-oq-06-oq-03",
+      "relationship": "related",
+      "description": "The sibling proves the D = 2 chain obeys uₙ₊₂ = 6uₙ₊₁ − uₙ and attributes the 6 to a transfer matrix [[3,4],[2,3]]. This entry proves that exact matrix !![3,4;2,3] is the companion matrix of 3 + 2√2 = ⟨3,2⟩ ∈ ℤ[√2] and that its n-th power carries the coordinates of (3+2√2)ⁿ, with the conjugate-unit eigenvalues 3 ± 2√2 made explicit."
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "related",
+      "description": "The root entry classifies Pell solutions multiplicatively as powers of a fundamental unit. This entry gives the explicit closed forms of the coordinates of those powers — the Binet average/difference of the conjugate units and the companion-matrix power — turning the abstract power classification into computable formulas."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Binet's formula — expressing the n-th term of a Lucas-type sequence as a combination of the n-th powers of the two roots of its characteristic polynomial — is the classical closed form for Pell coordinate sequences: writing (x₁ + y₁√D)ⁿ = xₙ + yₙ√D and its conjugate (x₁ − y₁√D)ⁿ = xₙ − yₙ√D, addition and subtraction give xₙ = ((x₁+y₁√D)ⁿ + (x₁−y₁√D)ⁿ)/2 and yₙ√D = ((x₁+y₁√D)ⁿ − (x₁−y₁√D)ⁿ)/2. Equivalently the column (xₙ, yₙ) is the n-th power of the companion matrix [[x₁, D·y₁],[y₁, x₁]] applied to (1,0); the matrix is the transfer matrix of the linear recurrence and its eigenvalues are the conjugate units x₁ ± y₁√D, roots of t² − 2x₁t + N. This entry formalizes both closed forms inside Mathlib's quadratic-integer ring ℤ[√d] for arbitrary d, identifying Galois conjugation with the StarRing involution and the conjugate roots with the image of a, star a under the real evaluation Zsqrtd.lift √d.",
+    "problemStatement": "The parent entry derived the recurrence the Pell coordinate sequences satisfy but left their closed forms as an open question: can one express re(aⁿ) and im(aⁿ) directly in terms of the conjugate roots x₁ ± y₁√d of the characteristic polynomial (Binet form), and realize the coordinate vector as a power of the companion matrix, making the eigenvalue picture explicit?",
+    "proofStrategy": "Work in Mathlib's ℤ√d = Zsqrtd d. (1) Identify Galois conjugation with the StarRing involution star ⟨x,y⟩ = ⟨x,−y⟩, which commutes with powers (star_pow). Prove pow_add_star_pow and pow_sub_star_pow by Zsqrtd.ext, reading re/im of aⁿ ± (star a)ⁿ. (2) For d ≥ 0 build the ring hom toReal = Zsqrtd.lift ⟨Real.sqrt d, Real.mul_self_sqrt _⟩ : ℤ[√d] →+* ℝ, sending a ↦ a.re + a.im·√d; it sends a and star a to x₁ ± y₁√d. Push the two integer decompositions through toReal (map_add/map_sub, map_pow, map_intCast) and finish with push_cast + linarith to get re_binet and im_binet. (3) Define the companion matrix and prove companion_pow by induction with Matrix.mul_apply, Fin.sum_univ_two and Zsqrtd.re_mul/im_mul; compute trace (trace_fin_two_of) and determinant (det_fin_two_of + norm_def). (4) Instantiate at a = ⟨3,2⟩ ∈ ℤ[√2] for the D = 2 matrix !![3,4;2,3] and numeric checks by decide / norm_num.",
+    "keyInsights": [
+      "Galois conjugation x + y√d ↦ x − y√d is exactly Mathlib's StarRing involution star on ℤ[√d]. Because star is a ring homomorphism on the commutative ring ℤ[√d], star (aⁿ) = (star a)ⁿ (star_pow): conjugation commutes with taking powers, which is the entire content needed to split the power sequence into its two coordinates.",
+      "Adding and subtracting aⁿ and (star a)ⁿ isolates the coordinates: aⁿ + (star a)ⁿ = ⟨2·re(aⁿ),0⟩ is purely rational and aⁿ − (star a)ⁿ = ⟨0,2·im(aⁿ)⟩ is purely irrational, because conjugation fixes the rational part and negates the √d part. This is the algebraic heart of Binet's formula, proved with no analysis at all.",
+      "The bridge to the real closed form is the ring hom Zsqrtd.lift ⟨√d,_⟩ : ℤ[√d] →+* ℝ, which evaluates a = ⟨x₁,y₁⟩ at √d to x₁ + y₁√d and star a to x₁ − y₁√d. Applying a ring hom to the integer decompositions turns them into Binet's averages/differences of the conjugate roots — the homomorphism does all the work, no induction over n is needed for the closed form.",
+      "The companion matrix M = [[x₁, d·y₁],[y₁, x₁]] is the matrix of multiplication-by-a in the basis {1,√d}, so Mⁿ is multiplication-by-aⁿ and its entries are exactly re(aⁿ), im(aⁿ). Its trace 2x₁ and determinant N(a) are the coefficients of the characteristic polynomial t² − 2x₁t + N(a), whose roots are the conjugate units — the eigenvalue picture behind Binet made fully explicit.",
+      "Everything specializes cleanly to D = 2: the fundamental unit 3 + 2√2 = ⟨3,2⟩ has companion matrix !![3,4;2,3] (determinant 1, trace 6), and its powers reproduce the chain 1,3,17,99,577 (real part) and 0,2,12,70,408 (√2 part) — connecting to the sibling pell-equation-oq-06-oq-03's transfer matrix and the parent's coefficient 6."
+    ]
+  },
+  "conclusion": {
+    "summary": "This fully verified 232-line file (0 sorries, 0 axioms, no native_decide) answers the parent entry's first open question by proving the two closed forms of the Pell coordinate sequences. The algebraic engine is that Galois conjugation is Mathlib's StarRing involution star, which commutes with powers; adding/subtracting aⁿ and (star a)ⁿ isolates re(aⁿ) and im(aⁿ), and pushing these through the real evaluation ring hom Zsqrtd.lift √d yields Binet's formulas re(aⁿ) = ((x₁+y₁√d)ⁿ + (x₁−y₁√d)ⁿ)/2 and 2·im(aⁿ)·√d = (x₁+y₁√d)ⁿ − (x₁−y₁√d)ⁿ. The companion matrix M = [[x₁,d·y₁],[y₁,x₁]] satisfies Mⁿ = [[re(aⁿ),d·im(aⁿ)],[im(aⁿ),re(aⁿ)]] with trace 2x₁ and determinant N(a), exhibiting the conjugate units as the eigenvalues.",
+    "implications": "The closed forms complete the picture begun by the parent: the recurrence, the Binet formula, and the matrix power are three faces of the same conjugate-unit structure. The technique — identify conjugation with star, split a power sequence by star-symmetry, then evaluate through Zsqrtd.lift — is reusable for any quadratic-integer sequence (Lucas/Fibonacci-type sequences, continued-fraction convergents, units of real quadratic fields) and complements Mathlib's Pell.Solution₁ API, which records the multiplicative structure but neither the Binet form nor the companion-matrix power.",
+    "openQuestions": [
+      "Prove the Cassini/Catalan-type identity xₙ₋₁xₙ₊₁ − xₙ² = (constant)·(N(a))ⁿ from det(Mⁿ) = (det M)ⁿ = N(a)ⁿ, deriving the determinant identity directly from the companion-matrix closed form.",
+      "Connect companion_pow and re_binet to Mathlib's Pell.Solution₁: show the coordinate maps n ↦ re(aⁿ), n ↦ im(aⁿ) of a fundamental Solution₁ generator are the Binet sequences, giving a closed-form reformulation of the power classification.",
+      "Derive the asymptotics xₙ/yₙ → √D and the exponential growth rate xₙ ~ (x₁+y₁√D)ⁿ/2 from re_binet, since the subdominant conjugate root x₁ − y₁√D has absolute value < 1 for a Pell unit."
+    ]
+  }
+}

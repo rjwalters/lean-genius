@@ -3336,6 +3336,8 @@ import Proofs.PellEquationOQ05
 import Proofs.PellEquationOQ06
 import Proofs.PellEquationOQ06OQ01
 import Proofs.PellEquationOQ06OQ02
+import Proofs.PellEquationOQ07
+import Proofs.PellEquationOQ07OQ01
 import Proofs.PentagonalNumberTheoremOQ01
 import Proofs.PerfectNumbers
 import Proofs.PerfectNumbersOQ02
