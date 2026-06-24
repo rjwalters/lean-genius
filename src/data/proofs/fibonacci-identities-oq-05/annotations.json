@@ -1,0 +1,102 @@
+[
+  {
+    "id": "ann-fiboq05-1",
+    "proofId": "fibonacci-identities-oq-05",
+    "range": { "startLine": 3, "endLine": 31 },
+    "type": "context",
+    "title": "The Product Analogue of the Sum of Squares",
+    "content": "**Module framing.** The parent `FibonacciIdentities` entry telescopes the sum of *squares* $F_0^2 + \\cdots + F_n^2$ into a single product $F_n F_{n+1}$. This entry supplies the product analogue: the partial sum of **consecutive products** $F_k F_{k+1}$. Unlike the sum of squares, there is no single-product closed form — the answer alternates with parity, $F_{m+1}^2$ for odd $m$ and $F_{m+1}^2 - 1$ for even $m$. The cause is Cassini's identity, whose sign $(-1)^m$ is exactly the parity correction. The clean packaging is the doubled integer identity $2\\,S(m) = 2F_{m+1}^2 - (1 + (-1)^m)$.",
+    "mathContext": "$S(m) = \\sum_{k=0}^{m} F_k F_{k+1}$; the $k=0$ term $F_0 F_1 = 0$ is free, so this is the classical $F_1 F_2 + \\cdots + F_m F_{m+1}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Sum-of-squares telescoping identity",
+      "Cassini's identity and the alternating sign",
+      "Parity-governed closed forms"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence",
+      "Classical Fibonacci summation identities"
+    ],
+    "tags": ["module-header", "framing", "fibonacci"]
+  },
+  {
+    "id": "ann-fiboq05-2",
+    "proofId": "fibonacci-identities-oq-05",
+    "range": { "startLine": 37, "endLine": 54 },
+    "type": "insight",
+    "title": "Cassini's Determinant, Sign Isolated",
+    "content": "**`fib_det`** proves $F_{n+1}^2 - F_n F_{n+2} = (-1)^n$ from scratch by induction, using only the recurrence `Nat.fib_add_two`. The point of stating it this way — with the alternating sign alone on the right — is that it is the *single arithmetic input* to the whole staircase sum. The successor step casts $F_{k+2} = F_k + F_{k+1}$ and $F_{k+3} = F_{k+1} + F_{k+2}$ to $\\mathbb{Z}$ and closes with `linear_combination (-1) * ih`, the difference of two consecutive determinants being a one-line ring fact.",
+    "mathContext": "$F_{n+1}^2 - F_n F_{n+2} = (-1)^n$ — Cassini's identity in reduced form.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cassini's identity",
+      "Nat.fib_add_two (recurrence)",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "Fibonacci recurrence",
+      "Integer casting of Nat.fib"
+    ],
+    "tags": ["cassini", "determinant", "induction"]
+  },
+  {
+    "id": "ann-fiboq05-3",
+    "proofId": "fibonacci-identities-oq-05",
+    "range": { "startLine": 56, "endLine": 76 },
+    "type": "insight",
+    "title": "Doubling Removes the Parity Case-Split",
+    "content": "**`two_mul_fib_sum_consec_prod`** is the engine: $2\\,S(m) = 2F_{m+1}^2 - (1 + (-1)^m)$. The naive closed form has a constant that is $-1$ for even $m$ and $0$ for odd $m$ — a parity split that would have to be carried *inside* the induction. Multiplying through by $2$ replaces that constant with the single polynomial $-(1 + (-1)^m)$, so the successor step becomes one uniform line: after `Finset.sum_range_succ` peels off $F_{k+1}F_{k+2}$, the goal closes with `linear_combination 2 * fib_det k`. The difference of right-hand sides is exactly $2(-1)^k$, which is twice Cassini at $k$.",
+    "mathContext": "$2\\,S(k+1) - 2\\,S(k) = 2 F_{k+1} F_{k+2}$, matched against $2(-1)^k = 2(F_{k+1}^2 - F_k F_{k+2})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Telescoping induction",
+      "Finset.sum_range_succ",
+      "linear_combination against Cassini"
+    ],
+    "prerequisites": [
+      "fib_det (Cassini determinant)",
+      "Induction on partial sums"
+    ],
+    "tags": ["engine", "doubling", "parity", "induction"]
+  },
+  {
+    "id": "ann-fiboq05-4",
+    "proofId": "fibonacci-identities-oq-05",
+    "range": { "startLine": 78, "endLine": 91 },
+    "type": "insight",
+    "title": "Unified Closed Form via a Parity Split",
+    "content": "**`fib_sum_consec_prod`** recovers the readable closed form $S(m) = F_{m+1}^2 - [\\,m\\text{ even}\\,]$ from the doubled engine. The split is done once, at the end rather than inside the induction: `Nat.even_or_odd m` branches, `Even.neg_one_pow` / `Odd.neg_one_pow` collapse $(-1)^m$ to $1$ or $-1$, and `linarith` halves the engine identity to finish each branch.",
+    "mathContext": "$S(m) = F_{m+1}^2 - \\big(\\text{if } m \\text{ even then } 1 \\text{ else } 0\\big)$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "Even.neg_one_pow / Odd.neg_one_pow",
+      "Parity split",
+      "linarith"
+    ],
+    "prerequisites": [
+      "The doubled engine identity",
+      "Parity of (-1)^m"
+    ],
+    "tags": ["closed-form", "parity", "if-form"]
+  },
+  {
+    "id": "ann-fiboq05-5",
+    "proofId": "fibonacci-identities-oq-05",
+    "range": { "startLine": 93, "endLine": 122 },
+    "type": "insight",
+    "title": "Natural-Number Corollaries and Sanity Checks",
+    "content": "**`fib_sum_consec_prod_odd`** and **`fib_sum_consec_prod_even`** translate the integer identity back to $\\mathbb{N}$: for odd $m$ the staircase sum *is* a perfect square $F_{m+1}^2$, and for even $m$ it is *one short* of one, $S(m) + 1 = F_{m+1}^2$. The casts are routine `exact_mod_cast` / `push_cast`. Three kernel-`decide` examples confirm the alternation numerically: $S(3) = 9 = F_4^2$, $S(4) = 24 = F_5^2 - 1$, $S(5) = 64 = F_6^2$.",
+    "mathContext": "Odd $m$: $S(m) = F_{m+1}^2$. Even $m$: $S(m) + 1 = F_{m+1}^2$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "Casting Int identities to Nat",
+      "Perfect-square / one-short alternation",
+      "Kernel decide for concrete values"
+    ],
+    "prerequisites": [
+      "The unified closed form",
+      "exact_mod_cast / push_cast"
+    ],
+    "tags": ["corollaries", "nat", "examples"]
+  }
+]

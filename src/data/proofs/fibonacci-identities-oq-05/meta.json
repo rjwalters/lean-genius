@@ -1,0 +1,181 @@
+{
+  "id": "fibonacci-identities-oq-05",
+  "title": "The Fibonacci Staircase: Partial Sums of Consecutive Products",
+  "slug": "fibonacci-identities-oq-05",
+  "description": "The partial sums of consecutive Fibonacci products F_k*F_{k+1} have a parity-governed closed form: writing S(m) = F_0*F_1 + F_1*F_2 + ... + F_m*F_{m+1}, one has S(m) = F_{m+1}^2 when m is odd and S(m) = F_{m+1}^2 - 1 when m is even. This is the product analogue of the sum-of-squares identity F_0^2 + ... + F_n^2 = F_n*F_{n+1} recorded in the parent FibonacciIdentities entry. The two parity cases differ by exactly the alternating Cassini sign, and that is the engine of the proof: a single integer identity 2*S(m) = 2*F_{m+1}^2 - (1 + (-1)^m) is proved by one induction whose only arithmetic input is the Cassini determinant F_{m+1}^2 - F_m*F_{m+2} = (-1)^m. The unified if-form and the two natural-number corollaries (perfect square for odd m, one short of a square for even m) follow by a parity split. Fully verified: 0 axioms, 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Classical Fibonacci identity; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "summation-identity",
+      "telescoping",
+      "cassini",
+      "parity",
+      "induction",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ05.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining Fibonacci recurrence; the only Fibonacci-specific fact used, both to prove the Cassini determinant and to expand the new term at each induction step",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "peels the top term F_{m+1}*F_{m+2} off the partial sum to set up the induction step",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(-1)^m = 1 for even m and = -1 for odd m — collapses the alternating sign when splitting the unified identity into the even and odd closed forms",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.not_even_iff_odd",
+        "description": "bridges Odd m to ¬Even m so the if-form specializes to the two natural-number corollaries",
+        "module": "Mathlib.Algebra.Parity"
+      }
+    ],
+    "originalContributions": [
+      "fib_det: (F_{n+1})^2 - F_n*F_{n+2} = (-1)^n — Cassini's determinant in reduced form, proved from scratch by induction with only Nat.fib_add_two (the alternating sign isolated on the right)",
+      "two_mul_fib_sum_consec_prod: 2*(F_0*F_1 + ... + F_m*F_{m+1}) = 2*F_{m+1}^2 - (1 + (-1)^m) — the doubled unified identity, a single induction with successor step linear_combination 2*fib_det k; this is the product analogue of the parent's sum-of-squares identity and is not in Mathlib",
+      "fib_sum_consec_prod: F_0*F_1 + ... + F_m*F_{m+1} = F_{m+1}^2 - (if Even m then 1 else 0) — the closed form over the integers",
+      "fib_sum_consec_prod_odd: for odd m the staircase sum is the perfect square F_{m+1}^2 (over Nat)",
+      "fib_sum_consec_prod_even: for even m the staircase sum is one short of a perfect square, (sum) + 1 = F_{m+1}^2 (over Nat)"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 122,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound). No decide on substantive results and no native_decide; the three concrete numeric examples use kernel `decide` only.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Fibonacci numbers satisfy a wealth of summation identities. The best known is the sum-of-squares telescoping F_0^2 + F_1^2 + ... + F_n^2 = F_n*F_{n+1}, which dissects an F_n x F_{n+1} rectangle into squares and is recorded in the parent FibonacciIdentities entry. Less often stated is the product analogue — the partial sum of consecutive products F_k*F_{k+1} — whose closed form is not a single clean telescope but is governed by parity, alternating between a perfect square and one less than a perfect square. The obstruction is precisely Cassini's identity (1680), the oldest of the Fibonacci product identities, whose sign (-1)^n is what flips between the two cases.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-05)**: Determine the closed form of the partial sums of consecutive Fibonacci products F_1*F_2 + F_2*F_3 + ... + F_m*F_{m+1}, the product analogue of the parent entry's sum of squares.\n\n**Result**: 2*S(m) = 2*F_{m+1}^2 - (1 + (-1)^m), equivalently S(m) = F_{m+1}^2 for odd m and S(m) = F_{m+1}^2 - 1 for even m.",
+    "text": "For every m, with F the Fibonacci sequence, F_0*F_1 + F_1*F_2 + ... + F_m*F_{m+1} = F_{m+1}^2 - (1 if m is even, else 0). The k = 0 term F_0*F_1 = 0 is harmless, so this is the classical sum starting at F_1*F_2. The result is packaged most cleanly as the doubled integer identity 2*S(m) = 2*F_{m+1}^2 - (1 + (-1)^m), which avoids any parity case-split inside the induction.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Cassini determinant (`fib_det`).** Prove F_{n+1}^2 - F_n*F_{n+2} = (-1)^n by induction. The base case is numeric; the successor step casts the recurrence F_{k+2} = F_k + F_{k+1} and F_{k+3} = F_{k+1} + F_{k+2} to the integers and closes with linear_combination (-1) * ih. This isolates the alternating sign on the right.\n\n2. **The engine (`two_mul_fib_sum_consec_prod`).** Prove 2*S(m) = 2*F_{m+1}^2 - (1 + (-1)^m) by induction. After Finset.sum_range_succ peels off the new product F_{k+1}*F_{k+2}, the recurrence is substituted and the entire step closes with linear_combination 2 * (fib_det k). Doubling is the trick that turns the parity-dependent constant into the single polynomial expression 1 + (-1)^m, so no case-split is needed inside the induction.\n\n3. **Closed form (`fib_sum_consec_prod`).** Split on Nat.even_or_odd m and rewrite (-1)^m via Even.neg_one_pow / Odd.neg_one_pow; linarith on the halved engine yields the if-form.\n\n4. **Natural-number corollaries.** Casting the integer identity back to Nat with exact_mod_cast / push_cast gives fib_sum_consec_prod_odd (perfect square) and fib_sum_consec_prod_even (one short of a square).",
+    "keyInsights": [
+      "**Doubling kills the parity case-split.** The constant is -1 for even m and 0 for odd m; written as -(1 + (-1)^m)/2 it would force a parity split inside the induction. Multiplying the whole identity by 2 replaces it with the single polynomial -(1 + (-1)^m), so the induction step is one uniform linear_combination against Cassini.",
+      "**Cassini is the only arithmetic input.** Once the determinant F_{m+1}^2 - F_m*F_{m+2} = (-1)^m is in hand, the successor step is pure linear algebra: 2*S(k+1) - 2*S(k) = 2*F_{k+1}*F_{k+2}, and the difference of the right-hand sides is exactly 2*(-1)^k = 2*(Cassini at k).",
+      "**Product analogue of the sum of squares.** The parent entry telescopes F_0^2 + ... + F_n^2 into the single product F_n*F_{n+1}; the consecutive-product sum has no such single-product form precisely because Cassini's sign alternates, which is what makes the parity statement the right one.",
+      "**The k = 0 term is free.** Because F_0 = 0, starting the sum at k = 0 rather than k = 1 changes nothing, which is what lets the clean Finset.range (m+1) indexing match the classical statement."
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two and the values F_0 = 0, F_1 = 1, F_2 = 1",
+      "Cassini's identity (re-proved here in reduced form as fib_det)",
+      "Finset.sum_range_succ and the linear_combination tactic for closing integer identities",
+      "Parity lemmas Even.neg_one_pow / Odd.neg_one_pow and casting between Nat and Int"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring locating the consecutive-product sum as the product analogue of the parent sum-of-squares identity, stating the parity-governed closed form and the doubled packaging, and the import/namespace setup.",
+      "mathContext": "$S(m) = \\sum_{k=0}^{m} F_k F_{k+1}$, equal to $F_{m+1}^2$ for odd $m$ and $F_{m+1}^2 - 1$ for even $m$."
+    },
+    {
+      "id": "cassini",
+      "title": "Cassini Determinant (reduced form)",
+      "startLine": 37,
+      "endLine": 54,
+      "summary": "fib_det: F_{n+1}^2 - F_n*F_{n+2} = (-1)^n by induction on n, using only the recurrence cast to the integers; closes with linear_combination (-1) * ih. Isolates the alternating sign that drives the parity behaviour.",
+      "mathContext": "$F_{n+1}^2 - F_n F_{n+2} = (-1)^n$."
+    },
+    {
+      "id": "engine",
+      "title": "The Staircase Engine",
+      "startLine": 56,
+      "endLine": 76,
+      "summary": "two_mul_fib_sum_consec_prod: the doubled unified identity 2*S(m) = 2*F_{m+1}^2 - (1 + (-1)^m). One induction; Finset.sum_range_succ peels the new term and the step closes with linear_combination 2 * fib_det k — no parity split.",
+      "mathContext": "$2\\,S(m) = 2F_{m+1}^2 - (1 + (-1)^m)$."
+    },
+    {
+      "id": "closed-form",
+      "title": "Unified Closed Form",
+      "startLine": 78,
+      "endLine": 91,
+      "summary": "fib_sum_consec_prod: S(m) = F_{m+1}^2 - (if Even m then 1 else 0), obtained from the engine by a parity split and Even/Odd.neg_one_pow plus linarith.",
+      "mathContext": "$S(m) = F_{m+1}^2 - [\\,m\\text{ even}\\,]$."
+    },
+    {
+      "id": "corollaries",
+      "title": "Natural-Number Corollaries (odd / even)",
+      "startLine": 93,
+      "endLine": 109,
+      "summary": "fib_sum_consec_prod_odd (S(m) = F_{m+1}^2 for odd m) and fib_sum_consec_prod_even ((S(m)) + 1 = F_{m+1}^2 for even m), recovered over Nat by casting the integer identity back with exact_mod_cast / push_cast.",
+      "mathContext": "Odd $m$: $S(m) = F_{m+1}^2$. Even $m$: $S(m) + 1 = F_{m+1}^2$."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Values",
+      "startLine": 111,
+      "endLine": 122,
+      "summary": "Three kernel-decide sanity checks: S(3) = 9 = F_4^2, S(4) = 24 = F_5^2 - 1, S(5) = 64 = F_6^2, illustrating the perfect-square / one-short alternation.",
+      "mathContext": "$S(3) = 9,\\ S(4) = 24,\\ S(5) = 64$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "extends",
+      "description": "The parent FibonacciIdentities entry proves the sum-of-squares identity F_0^2 + ... + F_n^2 = F_n*F_{n+1}; this entry supplies the product analogue, the partial sum of consecutive products F_k*F_{k+1}."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-01",
+      "relationship": "uses",
+      "description": "The oq-01 entry formalizes Cassini's identity over Nat.fib; the same determinant (in reduced form, fib_det) is the single arithmetic engine of the staircase sum here."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, fully verified (0 sorries, 0 axioms, no native_decide) determination of the partial sums of consecutive Fibonacci products: 2*S(m) = 2*F_{m+1}^2 - (1 + (-1)^m), equivalently S(m) = F_{m+1}^2 for odd m and F_{m+1}^2 - 1 for even m.",
+    "implications": "Completes the pair of classical Fibonacci partial-sum identities — the parent's sum of squares and this product analogue — and exhibits Cassini's alternating sign as the precise cause of the parity behaviour, packaged so that doubling removes any case-split from the induction.",
+    "openQuestions": [
+      "Find the closed form for the partial sums of the Lucas analogue L_k*L_{k+1}, and for the mixed products F_k*L_{k+1}, where the Cassini-type sign is replaced by a discriminant constant.",
+      "Determine the partial sums of the gapped products F_k*F_{k+2} (and more generally F_k*F_{k+r}), where Catalan's identity rather than Cassini's controls the alternating correction."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "FibonacciIdentitiesOQ05",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Catalogues the Fibonacci summation identities, including consecutive-product sums"
+    },
+    {
+      "authors": "Vajda, S.",
+      "title": "Fibonacci and Lucas Numbers, and the Golden Section: Theory and Applications",
+      "year": "1989",
+      "venue": "Ellis Horwood / Dover",
+      "note": "Cassini's identity and the product-identity hierarchy underlying the parity behaviour"
+    }
+  ],
+  "sorries": 0
+}
