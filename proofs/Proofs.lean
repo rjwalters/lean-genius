@@ -3212,6 +3212,7 @@ import Proofs.LawOfCosinesOQ04OQ02
 import Proofs.LawOfCosinesOQ04OQ02OQ01
 import Proofs.LawOfCosinesOQ05
 import Proofs.LawOfCosinesOQ07
+import Proofs.LawOfCosinesOQ08
 import Proofs.LawOfSinesOQ06
 import Proofs.LawsOfLargeNumbers
 import Proofs.LawsOfLargeNumbersOQ01
