@@ -1,0 +1,183 @@
+{
+  "id": "baire-category-theorem-oq-01-oq-02",
+  "slug": "baire-category-theorem-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal",
+      "Set"
+    ],
+    "namespace": "BairePerfectContinuum",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/BairePerfectContinuumOQ0102.lean",
+    "sorries": 0
+  },
+  "title": "A Complete Metric Space with No Isolated Points Has Cardinality ≥ 𝔠",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BairePerfectContinuumOQ0102.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "complete-metric-space",
+      "perfect-set",
+      "cardinality",
+      "continuum",
+      "cantor-scheme",
+      "descriptive-set-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 106,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "continuum_le_mk_of_perfect: the headline — a nonempty perfect set C in a complete metric space has cardinality at least the continuum, 𝔠 ≤ #C, obtained by corestricting the Cantor-scheme injection (ℕ → Bool) ↪ C to C. Mathlib supplies the injection (Perfect.exists_nat_bool_injection) but not this cardinal consequence.",
+      "continuum_le_mk_of_perfectSpace: the space-level form answering the open question — a nonempty complete metric space with no isolated points (PerfectSpace) satisfies 𝔠 ≤ #α, by applying the set form to univ and rewriting #(univ) = #α.",
+      "mk_nat_arrow_bool: the supporting cardinal arithmetic #(ℕ → Bool) = 2^ℵ₀ = 𝔠 (mk_arrow + mk_bool + mk_nat + two_power_aleph0).",
+      "aleph0_lt_mk_of_perfectSpace: strict sharpening of uncountability — ℵ₀ < #α, since ℵ₀ < 𝔠 ≤ #α; this strictly improves the parent entry's bare 'ℝ is uncountable'.",
+      "not_countable_of_perfectSpace: such a space is uncountable as a type (¬ Countable α), via mk_le_aleph0_iff.",
+      "perfectSpace_iff_no_isolated: bridge confirming the hypothesis PerfectSpace α is exactly 'no isolated points' — every punctured neighbourhood filter 𝓝[≠] x is nontrivial (re-export of perfectSpace_iff_forall_not_isolated).",
+      "continuum_le_mk_real: the motivating instance 𝔠 ≤ #ℝ, since ℝ is a nontrivial connected complete metric space hence a PerfectSpace — the cardinality floor falls out of the purely topological 'no isolated points' hypothesis."
+    ],
+    "prerequisites": [
+      "Perfect.exists_nat_bool_injection (Mathlib.Topology.MetricSpace.Perfect): a nonempty perfect set in a complete metric space admits a continuous injection from (ℕ → Bool), built by the Cantor-scheme tree of shrinking nonempty closed sets.",
+      "PerfectSpace typeclass and PerfectSpace.univ_perfect (Mathlib.Topology.Perfect): the whole space is a perfect set iff it has no isolated points.",
+      "Cardinal arithmetic: mk_arrow, mk_bool, mk_nat, two_power_aleph0, and the comparison lemmas mk_le_of_injective, mk_univ, mk_le_aleph0_iff (Mathlib.SetTheory.Cardinal).",
+      "aleph0_lt_continuum: the continuum is itself uncountable (ℵ₀ < 𝔠)."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Perfect.exists_nat_bool_injection",
+        "description": "The Cantor-scheme construction: a nonempty perfect set in a complete metric space receives a continuous injection from (ℕ → Bool). This is the deep ingredient; the entry assembles it into the cardinal bound.",
+        "module": "Mathlib.Topology.MetricSpace.Perfect"
+      },
+      {
+        "theorem": "PerfectSpace.univ_perfect",
+        "description": "For a PerfectSpace (a space with no isolated points) the universal set is a perfect set; lets the set-level bound be specialised to the whole space.",
+        "module": "Mathlib.Topology.Perfect"
+      },
+      {
+        "theorem": "perfectSpace_iff_forall_not_isolated",
+        "description": "PerfectSpace α ↔ ∀ x, NeBot (𝓝[≠] x); confirms the hypothesis is exactly 'no isolated points'. Re-exported as perfectSpace_iff_no_isolated.",
+        "module": "Mathlib.Topology.Perfect"
+      },
+      {
+        "theorem": "two_power_aleph0",
+        "description": "2 ^ ℵ₀ = 𝔠, the definition-level identity used (with mk_arrow, mk_bool, mk_nat) to prove #(ℕ → Bool) = 𝔠.",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "mk_le_of_injective / mk_univ / mk_le_aleph0_iff",
+        "description": "Cardinal comparison from an injection, #(univ) = #α, and countability ↔ #α ≤ ℵ₀ — the bookkeeping turning the injection into the stated cardinal bounds.",
+        "module": "Mathlib.SetTheory.Cardinal.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "baire-category-theorem-oq-01-oq-02-oq-01",
+      "question": "Upgrade the cardinality lower bound to an equality for separable spaces: a nonempty perfect Polish space (complete, separable, no isolated points) has cardinality exactly 𝔠, i.e. #α = 𝔠, by combining this bound with the upper bound #α ≤ 𝔠 for second-countable spaces.",
+      "significance": "medium"
+    },
+    {
+      "id": "baire-category-theorem-oq-01-oq-02-oq-02",
+      "question": "Prove the perfect set itself is uncountable directly (¬ C.Countable) and conclude the Cantor–Bendixson flavoured statement: every uncountable Polish space contains a nonempty perfect set, hence has a subset of cardinality 𝔠.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "baire-category-theorem-oq-01",
+      "relation": "parent",
+      "description": "The parent entry derives the bare uncountability of a complete metric space with no isolated points (via meagreness); this child sharpens uncountability to the explicit cardinal floor 𝔠 ≤ #α."
+    }
+  ],
+  "references": [
+    {
+      "title": "Classical Descriptive Set Theory",
+      "author": "A. S. Kechris",
+      "year": "1995",
+      "venue": "Graduate Texts in Mathematics 156, Springer",
+      "description": "Chapters 6–7 develop perfect sets, Cantor schemes, and the Cantor–Bendixson theorem; the source for Mathlib's Perfect.exists_nat_bool_injection."
+    },
+    {
+      "title": "Mathlib4: Topology.MetricSpace.Perfect",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Perfect.exists_nat_bool_injection (the Cantor-scheme injection) and the PerfectSpace API assembled here into a cardinal lower bound."
+    }
+  ],
+  "overview": {
+    "historicalContext": "That a nonempty complete metric space without isolated points is not merely uncountable but has at least the cardinality of the continuum is a classical result of descriptive set theory, going back to the Cantor–Bendixson analysis of closed subsets of ℝ. The mechanism is Cantor's own diagonal-free argument: a *Cantor scheme*, a binary tree of nonempty closed sets indexed by finite 0–1 strings, each level splitting its parent into two disjoint shrinking pieces. Completeness makes each infinite branch intersect in a single point, and distinct branches give distinct points, so the 2^ℵ₀ branches inject into the space. The parent gallery entry used Baire category to show such a space is uncountable; this entry supplies the sharp quantitative form. Mathlib packages the Cantor scheme as `Perfect.exists_nat_bool_injection`; what was missing — and is added here — is the one-step cardinal conclusion.",
+    "problemStatement": "Let α be a nonempty complete metric space with no isolated points (equivalently, α is a `PerfectSpace`: its universe is a perfect set). Show #α ≥ 𝔠, the cardinality of the continuum. More generally, every nonempty perfect set C ⊆ α in a complete metric space satisfies 𝔠 ≤ #C.",
+    "proofStrategy": "Mathlib's `Perfect.exists_nat_bool_injection` gives, for a nonempty perfect set C in a complete metric space, an injection f : (ℕ → Bool) → α with range f ⊆ C. Corestricting f to C (x ↦ ⟨f x, _⟩) keeps it injective, so #(ℕ → Bool) ≤ #C. The cardinal identity #(ℕ → Bool) = #Bool ^ #ℕ = 2 ^ ℵ₀ = 𝔠 (mk_arrow, mk_bool, mk_nat, two_power_aleph0) then yields 𝔠 ≤ #C (continuum_le_mk_of_perfect). For the space-level statement, a `PerfectSpace` has `Perfect (univ)` (PerfectSpace.univ_perfect) and univ is nonempty (α nonempty), so the set form applied to univ and rewritten with #(univ) = #α gives 𝔠 ≤ #α (continuum_le_mk_of_perfectSpace). Corollaries: ℵ₀ < 𝔠 ≤ #α gives strict uncountability (aleph0_lt_mk_of_perfectSpace) and ¬ Countable α (not_countable_of_perfectSpace). ℝ is a nontrivial connected complete metric space, hence a PerfectSpace, so 𝔠 ≤ #ℝ (continuum_le_mk_real).",
+    "keyInsights": [
+      "Uncountability and 'cardinality ≥ 𝔠' are genuinely different strengths, and the Cantor scheme delivers the stronger one for free: the binary tree literally produces a 2^ℵ₀-sized family of points, so once Mathlib hands you the injection (ℕ → Bool) ↪ C, the continuum bound is pure cardinal bookkeeping. The parent's Baire argument only yields 'not countable'.",
+      "The whole topological hypothesis is captured by one typeclass: PerfectSpace α ('no isolated points') is exactly Perfect (univ). This is why the space-level theorem is a two-line specialization of the set-level one — there is no separate construction for 'the whole space'.",
+      "Completeness is essential and enters only through Mathlib's injection lemma: it is what forces each infinite branch of the Cantor scheme to converge to an actual point of the space. Drop completeness (e.g. ℚ, which is a perfect metric space) and the conclusion fails — ℚ has no isolated points yet is countable.",
+      "The bound is one-sided by design. For separable (Polish) spaces it is tight — #α = 𝔠 — because second-countability also gives #α ≤ 𝔠; the recorded open questions push toward that equality and the Cantor–Bendixson statement that every uncountable Polish space contains a perfect set.",
+      "ℝ is the motivating instance and needs no special argument: it is a PerfectSpace purely formally (T1 + connected + nontrivial), so the topological hypothesis alone — with no use of the order or field structure — forces 𝔠 ≤ #ℝ."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Cantor Schemes and the Continuum Bound",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Frames the result as the sharp quantitative form of the parent's uncountability statement, explains the Cantor-scheme mechanism that injects (ℕ → Bool) into a perfect set, and lists the contents: the cardinal identity, the set- and space-level bounds, the uncountability corollaries, the no-isolated-points bridge, and the ℝ instance.",
+      "mathContext": "A perfect set in a complete metric space contains a homeomorphic copy of the Cantor space 2^ℕ, hence at least 2^ℵ₀ = 𝔠 points."
+    },
+    {
+      "id": "cardinal-arith",
+      "title": "Cardinal Arithmetic: #(ℕ → Bool) = 𝔠",
+      "startLine": 48,
+      "endLine": 51,
+      "summary": "mk_nat_arrow_bool computes #(ℕ → Bool) = #Bool ^ #ℕ = 2 ^ ℵ₀ = 𝔠 via mk_arrow, mk_bool, mk_nat and two_power_aleph0.",
+      "mathContext": "The cardinality of the Cantor space: binary sequences are 2^ℵ₀ in number, which is the definition of the continuum 𝔠."
+    },
+    {
+      "id": "set-bound",
+      "title": "Headline: Perfect Sets Have Cardinality ≥ 𝔠",
+      "startLine": 53,
+      "endLine": 65,
+      "summary": "continuum_le_mk_of_perfect: for a nonempty perfect C in a complete metric space, the Cantor-scheme injection (Perfect.exists_nat_bool_injection) corestricts to C and stays injective, giving 𝔠 = #(ℕ → Bool) ≤ #C.",
+      "mathContext": "𝔠 ≤ #C for any nonempty perfect C ⊆ α, α complete metric. The core mathematical content."
+    },
+    {
+      "id": "space-bound",
+      "title": "Space-Level Form and Uncountability Corollaries",
+      "startLine": 67,
+      "endLine": 90,
+      "summary": "continuum_le_mk_of_perfectSpace specializes the set bound to univ (PerfectSpace.univ_perfect, mk_univ), giving 𝔠 ≤ #α. aleph0_lt_mk_of_perfectSpace (ℵ₀ < #α) and not_countable_of_perfectSpace (¬ Countable α) strictly sharpen the parent's uncountability.",
+      "mathContext": "PerfectSpace α (no isolated points) + complete + nonempty ⟹ 𝔠 ≤ #α ⟹ ℵ₀ < #α."
+    },
+    {
+      "id": "bridge-and-real",
+      "title": "No-Isolated-Points Bridge and the ℝ Instance",
+      "startLine": 92,
+      "endLine": 106,
+      "summary": "perfectSpace_iff_no_isolated confirms PerfectSpace is exactly the open question's 'no isolated points' hypothesis (NeBot (𝓝[≠] x) for all x). continuum_le_mk_real derives 𝔠 ≤ #ℝ, since ℝ is a nontrivial connected complete metric space hence a PerfectSpace.",
+      "mathContext": "ℝ has #ℝ = 𝔠; here the floor 𝔠 ≤ #ℝ comes purely from the topological hypothesis, with no use of the order/field structure."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "A nonempty complete metric space with no isolated points has cardinality at least the continuum: 𝔠 ≤ #α (continuum_le_mk_of_perfectSpace), and more generally every nonempty perfect set C in a complete metric space has 𝔠 ≤ #C (continuum_le_mk_of_perfect). The proof corestricts Mathlib's Cantor-scheme injection (ℕ → Bool) ↪ C and uses #(ℕ → Bool) = 2^ℵ₀ = 𝔠 (mk_nat_arrow_bool). Corollaries strictly sharpen the parent entry's uncountability of ℝ: ℵ₀ < #α (aleph0_lt_mk_of_perfectSpace) and ¬ Countable α (not_countable_of_perfectSpace). A bridge lemma confirms PerfectSpace is exactly the 'no isolated points' hypothesis, and the motivating instance 𝔠 ≤ #ℝ falls out from ℝ being a nontrivial connected complete metric space. 106 lines, 7 theorems, 0 axioms, 0 sorries.",
+    "implications": "This answers the parent's open question (oq-02): the bare uncountability obtained from Baire category is upgraded to a sharp cardinal lower bound, with the deep Cantor-scheme construction delegated to Mathlib's Perfect.exists_nat_bool_injection and the cardinal assembly supplied here. The bound is tight for Polish spaces (where second-countability also gives #α ≤ 𝔠), pointing toward the equality #α = 𝔠 and the Cantor–Bendixson theorem recorded as follow-up questions.",
+    "openQuestions": [
+      "For separable (Polish) perfect spaces, upgrade 𝔠 ≤ #α to the equality #α = 𝔠 using #α ≤ 𝔠 for second-countable spaces.",
+      "Prove every uncountable Polish space contains a nonempty perfect set (Cantor–Bendixson), hence a subset of cardinality 𝔠."
+    ]
+  }
+}
