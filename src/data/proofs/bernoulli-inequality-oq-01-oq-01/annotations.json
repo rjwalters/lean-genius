@@ -1,0 +1,62 @@
+[
+  {
+    "id": "pos-range",
+    "proofId": "bernoulli-inequality-oq-01-oq-01",
+    "range": { "startLine": 45, "endLine": 64 },
+    "type": "insight",
+    "title": "Positive-Factor Range a > −1",
+    "content": "one_add_mul_lt_pow_pos re-establishes the strict inequality 1 + n·a < (1+a)ⁿ for a > −1 (a ≠ 0, n ≥ 2) by Nat.le_induction from n = 2 — the parent entry's mechanism, kept self-contained. The inductive step multiplies the estimate by the positive factor 1 + a (valid precisely because a > −1) and gains an extra m·a² > 0. This branch handles exactly the part of the domain where 1 + a > 0, leaving the negative tail to a separate argument.",
+    "mathContext": "$1 + na < (1+a)^n$ for $a > -1$, $a \\ne 0$, $n \\ge 2$; step gains $m a^2 > 0$, needing $1+a>0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Bernoulli's inequality", "Nat.le_induction", "strict monotonicity"],
+    "prerequisites": ["induction", "ordered fields"]
+  },
+  {
+    "id": "full-domain",
+    "proofId": "bernoulli-inequality-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 92 },
+    "type": "insight",
+    "title": "Strict Inequality on the Full Weak Domain −2 ≤ a",
+    "content": "one_add_mul_lt_pow_full is the entry's central result: the strict inequality holds for EVERY −2 ≤ a with a ≠ 0 and n ≥ 2, matching the reach of Mathlib's weak one_add_mul_le_pow. The proof splits on the sign of 1 + a. For a > −1 it defers to the induction. For the new range −2 ≤ a ≤ −1 the factor 1 + a is non-positive, so the induction is unavailable; instead, |1 + a| ≤ 1 gives |(1+a)ⁿ| ≤ 1 (pow_le_one₀ on |1+a|, then abs_le), so (1+a)ⁿ ≥ −1, while a ≤ −1 forces n·a ≤ −n hence 1 + n·a ≤ 1 − n ≤ −2 < −1 for n ≥ 3. The lone case n = 2 is the unconditional identity (1+a)² − (1+2a) = a² > 0. The power is trapped in [−1,1] while the line escapes below it.",
+    "mathContext": "For $-2 \\le a \\le -1$, $n \\ge 3$: $(1+a)^n \\ge -1 > 1-n \\ge 1+na$; for $n=2$, gap is $a^2>0$.",
+    "significance": "key",
+    "relatedConcepts": ["sign change", "power bounds", "pow_le_one₀", "size argument", "case split"],
+    "prerequisites": ["the a > −1 inductive case", "|x| ≤ 1 power bounds"]
+  },
+  {
+    "id": "strict-iff",
+    "proofId": "bernoulli-inequality-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 106 },
+    "type": "concept",
+    "title": "Strictness Characterization on −2 ≤ a",
+    "content": "one_add_mul_lt_pow_full_iff sharpens the inequality to an exact iff on the full domain: for −2 ≤ a, strictness 1 + n·a < (1+a)ⁿ holds iff a ≠ 0 ∧ 2 ≤ n. The backward direction is one_add_mul_lt_pow_full; the forward direction supplies the failure witnesses — a = 0 collapses both sides to 1, and n ≤ 1 is dispatched by interval_cases.",
+    "mathContext": "For $-2 \\le a$: $1 + na < (1+a)^n \\iff a \\ne 0 \\wedge 2 \\le n$.",
+    "significance": "key",
+    "relatedConcepts": ["sharp characterization", "iff statements", "interval_cases"],
+    "prerequisites": ["the full-domain strict inequality"]
+  },
+  {
+    "id": "eq-iff",
+    "proofId": "bernoulli-inequality-oq-01-oq-01",
+    "range": { "startLine": 108, "endLine": 121 },
+    "type": "concept",
+    "title": "Equality Characterization on −2 ≤ a",
+    "content": "one_add_mul_eq_pow_full_iff is the complementary classification on the full domain: for −2 ≤ a, equality 1 + n·a = (1+a)ⁿ holds iff a = 0 ∨ n ≤ 1. Forward: if a ≠ 0 and n ≥ 2, the full-domain strict inequality contradicts equality; backward: a = 0 gives 1 = 1 and n ≤ 1 is handled by interval_cases. Every (a, n) with −2 ≤ a is now exactly classified, with no a > −1 restriction.",
+    "mathContext": "For $-2 \\le a$: $1 + na = (1+a)^n \\iff a = 0 \\vee n \\le 1$.",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "two-sided characterization", "complementary classification"],
+    "prerequisites": ["the full-domain strict inequality"]
+  },
+  {
+    "id": "numeric",
+    "proofId": "bernoulli-inequality-oq-01-oq-01",
+    "range": { "startLine": 123, "endLine": 134 },
+    "type": "example",
+    "title": "Numeric Witnesses in the New Range",
+    "content": "Concrete instances strictly inside the new negative tail, outside the parent's a > −1 domain: 1 + 3·(−3/2) = −7/2 < −1/8 = (1 − 3/2)³, the boundary value 1 + 3·(−2) = −5 < −1 = (1 − 2)³, and the n = 2 boundary 1 + 2·(−2) = −3 < 1 = (1 − 2)². Each is discharged by one_add_mul_lt_pow_full with norm_num side goals, demonstrating the inequality holds all the way to a = −2.",
+    "mathContext": "Witnesses at $a=-3/2$ and the endpoint $a=-2$, both outside $a>-1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "boundary a = −2", "negative base"],
+    "prerequisites": ["the full-domain strict inequality"]
+  }
+]
