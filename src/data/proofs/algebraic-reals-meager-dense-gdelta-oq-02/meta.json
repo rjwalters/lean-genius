@@ -1,0 +1,227 @@
+{
+  "id": "algebraic-reals-meager-dense-gdelta-oq-02",
+  "title": "A Fully Constructive Transcendental Gδ — Explicit Decreasing Dense-Open Sequence",
+  "slug": "algebraic-reals-meager-dense-gdelta-oq-02",
+  "description": "Upgrades the parent's abstract dense-Gδ witness for the transcendental reals to a fully constructive one. The parent proves the transcendentals are a dense Gδ only via IsGδ.biInter_of_isOpen over the family of singleton complements {a}ᶜ — it never hands you an honest sequence you could enumerate. This entry fixes an explicit enumeration algEnum : ℕ → ℝ of the (countable, nonempty) algebraic reals and defines U n = (algEnum '' Set.Iic n)ᶜ — the reals with the first n+1 enumerated algebraics removed. Each U n is open (complement of a finite, hence closed, set), dense (complement of a countable set in the perfect Baire space ℝ), and the sequence is decreasing (Antitone). The headline iInter_U proves ⋂ n, U n is EXACTLY the transcendentals {x | ¬ IsAlgebraic ℚ x}: stage k removes algEnum k and nothing else is removed. The Gδ property is then re-derived directly from the explicit open sequence via IsGδ.iInter_of_isOpen, answering the parent OQ01's own second open question (a constructive enumeration of the algebraic reals and the resulting monotone sequence) on the Gδ side.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/G%CE%B4_set",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ02.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "real-analysis",
+      "g-delta-set",
+      "descriptive-set-theory",
+      "algebraic-numbers",
+      "transcendental-numbers",
+      "constructive"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Set.Countable.exists_eq_range",
+        "description": "A nonempty countable set is the range of a sequence ℕ → α — produces the enumeration algEnum of the algebraic reals",
+        "module": "Mathlib.Data.Set.Countable"
+      },
+      {
+        "theorem": "Set.Finite.isClosed",
+        "description": "In a T1 space every finite set is closed — each removed finite set algEnum '' Iic n is closed, so its complement U n is open",
+        "module": "Mathlib.Topology.Separation.Basic"
+      },
+      {
+        "theorem": "IsGδ.iInter_of_isOpen",
+        "description": "A countable intersection of open sets is Gδ — re-derives the transcendental Gδ directly from the explicit sequence U",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "Set.image_iUnion",
+        "description": "f '' (⋃ i, s i) = ⋃ i, f '' s i — used to collapse ⋃ n, algEnum '' Iic n into the full range of algEnum",
+        "module": "Mathlib.Data.Set.Lattice"
+      },
+      {
+        "theorem": "Set.compl_iUnion",
+        "description": "(⋃ i, s i)ᶜ = ⋂ i, (s i)ᶜ — De Morgan turning the intersection of the open U n into the complement of the union of removed sets",
+        "module": "Mathlib.Data.Set.Lattice"
+      },
+      {
+        "theorem": "isAlgebraic_zero",
+        "description": "0 is algebraic over any nontrivial base ring — the nonemptiness witness for the algebraic reals needed to form the enumeration",
+        "module": "Mathlib.RingTheory.Algebraic.Basic"
+      }
+    ],
+    "originalContributions": [
+      "algEnum: fixed an explicit enumeration ℕ → ℝ of the algebraic reals (range exactly {x | IsAlgebraic ℚ x}) from their countability and nonemptiness — the constructive input the parent's abstract argument lacks",
+      "U: defined the explicit sequence U n = (algEnum '' Set.Iic n)ᶜ, ℝ with the first n+1 enumerated algebraics removed",
+      "U_isOpen: PROVED each U n is open as the complement of a finite (hence closed in T1) set",
+      "U_dense: PROVED each U n is dense, reusing the parent's dense_compl_of_countable on the finite removed set",
+      "U_antitone: PROVED the sequence is decreasing — Set.Iic is monotone in n so the removed sets grow and the U n shrink",
+      "iInter_U (HEADLINE): PROVED ⋂ n, U n is EXACTLY the transcendentals {x | ¬ IsAlgebraic ℚ x} — every algebraic algEnum k is removed at stage k, nothing else is removed",
+      "transcendentalReals_isGδ_of_U: PROVED the transcendentals are Gδ, re-derived directly from the explicit open sequence U via IsGδ.iInter_of_isOpen rather than the parent's abstract biInter family",
+      "transcendentalReals_constructive_dense_Gδ: PROVED the packaged constructive statement — an explicit decreasing sequence of dense open sets whose intersection is precisely the transcendentals"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Gδ sets (Mathlib's IsGδ) as countable intersections of open sets",
+      "Baire category: ℝ is a perfect T1 Baire space, so complements of countable sets are dense (parent)",
+      "Countability of the algebraic reals (Algebraic.countable) and enumeration of a countable set",
+      "De Morgan duality for countable unions/intersections of sets"
+    ],
+    "lineCount": 128,
+    "relatedProblems": [
+      {
+        "id": "algebraic-reals-meager-dense-gdelta-oq-01",
+        "relationship": "Sibling: dualizes to the algebraic reals as an explicit Fσ; its own second open question asks for exactly this constructive enumeration of the algebraic reals and the resulting monotone sequence, which this entry supplies on the Gδ side"
+      },
+      {
+        "id": "algebraic-reals-meager-dense-gdelta",
+        "relationship": "Parent: proves the transcendentals are a dense Gδ only abstractly (via IsGδ.biInter_of_isOpen over all singleton complements); this entry replaces that with an honest enumerable decreasing sequence and re-derives the Gδ property from it"
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "The algebraic reals are countable — the countability that yields the enumeration algEnum driving the construction"
+      }
+    ],
+    "assumptions": "0 axioms (only propext, Classical.choice, Quot.sound — the standard Mathlib triple; no sorryAx, no native_decide). The enumeration algEnum is obtained non-constructively in the metatheory via Set.Countable.exists_eq_range (Classical.choice), but the resulting sequence U n and all its properties (open, dense, decreasing, intersection exactly the transcendentals) are explicit and proved from Mathlib's set-theoretic and Baire-category lemmas, reusing the parent's dense_compl_of_countable.",
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 128,
+    "namespace": "AlgebraicRealsMeagerDenseGDeltaOQ02",
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "substantiveTheoremCount": 6,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.Topology.GDelta.Basic",
+      "Mathlib.Topology.Baire.Lemmas",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Data.Set.Lattice",
+      "Mathlib.Tactic",
+      "Proofs.AlgebraicRealsMeagerDenseGDelta",
+      "Proofs.AlgebraicNumbersCountable"
+    ],
+    "path": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ02.lean",
+    "sorries": 0,
+    "definitionCount": 2,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "algEnum",
+      "type": "definition",
+      "description": "An enumeration of the algebraic reals: a sequence ℕ → ℝ whose range is exactly {x | IsAlgebraic ℚ x}",
+      "leanType": "ℕ → ℝ"
+    },
+    {
+      "name": "U",
+      "type": "definition",
+      "description": "The explicit decreasing sequence: U n is ℝ with the first n+1 enumerated algebraic reals removed",
+      "leanType": "ℕ → Set ℝ"
+    },
+    {
+      "name": "U_isOpen",
+      "type": "core",
+      "description": "Each U n is open — the complement of a finite (hence closed in the T1 space ℝ) set",
+      "leanType": "∀ (n : ℕ), IsOpen (U n)"
+    },
+    {
+      "name": "U_dense",
+      "type": "core",
+      "description": "Each U n is dense — the complement of a countable set in the perfect Baire space ℝ (parent dense_compl_of_countable)",
+      "leanType": "∀ (n : ℕ), Dense (U n)"
+    },
+    {
+      "name": "U_antitone",
+      "type": "core",
+      "description": "The sequence is decreasing — Set.Iic grows with n, so the removed sets grow and the U n shrink",
+      "leanType": "Antitone U"
+    },
+    {
+      "name": "iInter_U",
+      "type": "headline",
+      "description": "The intersection of the explicit sequence is EXACTLY the transcendentals: every algebraic algEnum k is removed at stage k and nothing else",
+      "leanType": "⋂ n, U n = {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "transcendentalReals_isGδ_of_U",
+      "type": "core",
+      "description": "The transcendentals are Gδ, re-derived directly from the explicit open sequence U rather than the parent's abstract biInter family",
+      "leanType": "IsGδ {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "transcendentalReals_constructive_dense_Gδ",
+      "type": "headline",
+      "description": "The packaged constructive statement: an explicit decreasing sequence of dense open sets whose intersection is precisely the transcendental reals",
+      "leanType": "(∀ n, IsOpen (U n)) ∧ (∀ n, Dense (U n)) ∧ Antitone U ∧ ⋂ n, U n = {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    }
+  ],
+  "overview": "The parent entry proves the transcendental reals form a dense Gδ, but only abstractly: its witness comes from IsGδ.biInter_of_isOpen ranging over the family of singleton complements {a}ᶜ for all algebraic a — there is no honest sequence you could enumerate. This entry makes the construction fully constructive. Fix an enumeration algEnum : ℕ → ℝ of the algebraic reals (they are countable by Algebraic.countable and nonempty because 0 is algebraic) and define U n = (algEnum '' Set.Iic n)ᶜ, the reals with the first n+1 enumerated algebraics removed. Each U n is open as the complement of a finite — hence closed in the T1 space ℝ — set, and dense because ℝ is a perfect Baire space in which the complement of any countable set is dense (the parent's dense_compl_of_countable). Because Set.Iic n grows with n, the removed finite sets grow and the U n form a decreasing (Antitone) sequence. The headline iInter_U computes their intersection exactly: ⋃ n, algEnum '' Iic n is the whole range of algEnum, i.e. the algebraic reals, so its complement ⋂ n, U n is precisely the transcendentals {x | ¬ IsAlgebraic ℚ x}. The transcendental Gδ property is then re-derived directly from this explicit open sequence via IsGδ.iInter_of_isOpen. This answers the second open question recorded by the sibling Fσ entry — an explicit enumeration of the algebraic reals and the resulting monotone sequence of finite sets — on the Gδ/transcendental side.",
+  "conclusion": {
+    "summary": "A 128-line, 0-sorry, 0-axiom formalization upgrading the parent's abstract dense-Gδ witness for the transcendental reals to a fully constructive one: an explicit enumeration algEnum of the algebraic reals and a decreasing sequence U n = (algEnum '' Iic n)ᶜ of dense open sets whose intersection is exactly the transcendentals. The Gδ property is re-derived from the explicit sequence via IsGδ.iInter_of_isOpen.",
+    "implications": "Where the parent only certified existence of a dense Gδ structure, this entry exhibits a concrete antitone basis for it. The decreasing dense-open sequence is the form actually used in Baire-category arguments (one applies the Baire theorem to a sequence, not to an uncountable family), so the result turns the parent's classification into something directly usable. It also closes the constructive open question raised by the sibling Fσ entry on the Gδ side: the Fσ entry asks for an increasing sequence of finite closed sets ⋃_{k≤n}{a k}; here the complementary decreasing sequence of dense open sets is built and its intersection identified.",
+    "openQuestions": [
+      "Make the enumeration itself computable: replace the Classical.choice-extracted algEnum with an explicit recursive enumeration of algebraic reals (e.g. by diagonalizing over integer polynomials and their real roots) so that U n becomes a decidable/computable sequence and the whole construction is choice-free.",
+      "Quantify the approximation: for a fixed transcendental x, bound the rate at which the dense open sets U n shrink around x, relating the construction to effective transcendence measures (e.g. Liouville-type lower bounds on |x − algEnum k|)."
+    ]
+  },
+  "references": [
+    {
+      "title": "Gδ set — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/G%CE%B4_set"
+    },
+    {
+      "title": "Oxtoby, Measure and Category (Springer GTM 2)",
+      "url": "https://link.springer.com/book/10.1007/978-1-4684-9339-9"
+    },
+    {
+      "title": "Kechris, Classical Descriptive Set Theory (Springer GTM 156)",
+      "url": "https://link.springer.com/book/10.1007/978-1-4612-4190-4"
+    }
+  ],
+  "crossReferences": [],
+  "sections": [
+    {
+      "id": "enumeration",
+      "title": "An enumeration of the algebraic reals",
+      "startLine": 64,
+      "endLine": 76,
+      "summary": "algEnum and algEnum_range: the algebraic reals are countable (Algebraic.countable) and nonempty (0 is algebraic), so Set.Countable.exists_eq_range yields a sequence ℕ → ℝ whose range is exactly {x | IsAlgebraic ℚ x}."
+    },
+    {
+      "id": "explicit-sequence",
+      "title": "The explicit decreasing sequence of dense open sets",
+      "startLine": 78,
+      "endLine": 95,
+      "summary": "U n = (algEnum '' Set.Iic n)ᶜ. removed_finite, U_isOpen (complement of a finite closed set), U_dense (parent's dense_compl_of_countable on the finite removed set), and U_antitone (Set.Iic monotone) establish the three structural properties."
+    },
+    {
+      "id": "intersection",
+      "title": "The intersection is exactly the transcendentals",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "iInter_U: ⋃ n, algEnum '' Iic n collapses (via Set.image_iUnion and ⋃ n Iic n = univ) to the range of algEnum = the algebraic reals; De Morgan (Set.compl_iUnion) then gives ⋂ n, U n = {x | ¬ IsAlgebraic ℚ x}."
+    },
+    {
+      "id": "consequences",
+      "title": "Constructive Gδ and the packaged statement",
+      "startLine": 112,
+      "endLine": 128,
+      "summary": "transcendentalReals_isGδ_of_U re-derives the Gδ property from the explicit open sequence via IsGδ.iInter_of_isOpen; transcendentalReals_constructive_dense_Gδ packages openness, density, monotonicity and the intersection identity. Closing #print axioms confirm 0 axioms."
+    }
+  ]
+}
