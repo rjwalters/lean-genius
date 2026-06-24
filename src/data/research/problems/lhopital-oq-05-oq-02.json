@@ -1,0 +1,62 @@
+{
+  "slug": "lhopital-oq-05-oq-02",
+  "title": "A General Remainder-Bound Limit Lemma (generalising abs_sub_le beyond sine)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "Proofs/LHopitalOQ05OQ02.lean",
+  "problemStatement": {
+    "formal": "\\lim_{x\\to 0}\\frac{1-\\cos x}{x^{2}} = \\frac{1}{2},",
+    "plain": "Prove the companion quadratic limit lim_{x→0} (1 − cos x)/x² = 1/2 by the same divide-the-remainder argument used for the cubic sine limit, using Mathlib's Real.cos_bound, and record the unified family alongside (x − sin x)/x³.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": "SOLVED (OQ-02): general remainder-bound limit lemma tendsto_of_remainder_bound — from an explicit Taylor remainder bound |e(x)| <= C*|x|^m (n<m) and deviation g x - L = -e(x)/x^n, concludes g x -> L. Generalises the parent sine-only abs_sub_le to arbitrary order; instantiated to cosine (n=2, L=1/2!) and sine (n=3, L=1/3!). Verified, 0 axioms. Shipped as gallery entry lhopital-oq-05-oq-02 (Proofs/LHopitalOQ05OQ02.lean, 145L, 5 theorems). NOTE: cosine special case independently shipped under sibling oq-05-oq-01 (PR #29249); this entry headlines the GENERAL lemma.",
+  "knowledge": {
+    "progressSummary": "COMPLETE (OQ-02): general remainder-bound limit lemma + 2 instances (cos n=2, sin n=3), verified 0-axiom, 5 theorems / 145 lines.",
+    "builtItems": [
+      "tendsto_of_remainder_bound (Proofs/LHopitalOQ05OQ02.lean:51): general remainder-bound limit lemma, the headline.",
+      "tendsto_cosine_quadratic (Proofs/LHopitalOQ05OQ02.lean:101): first instance (1-cos x)/x^2 -> 1/2 via Real.cos_bound.",
+      "tendsto_cubic_sine_unified (Proofs/LHopitalOQ05OQ02.lean:130): second instance, parent sine limit recovered via Real.sin_bound.",
+      "abs_sub_le_cos (Proofs/LHopitalOQ05OQ02.lean:85): order-2 deviation bound |(1-cos x)/x^2-1/2| <= (5/96)*|x|^2.",
+      "tendsto_cosine_factorial (Proofs/LHopitalOQ05OQ02.lean:117): cosine value as 1/2!."
+    ],
+    "insights": [
+      "OQ-02 asks for the order-n principle behind the parent cubic-sine trick; tendsto_of_remainder_bound supplies it: from an explicit remainder bound and deviation g x - L = -e(x)/x^n (n<m), concludes g x -> L using only the bound — no differentiation, no L'Hopital, no MVT.",
+      "Denominator degree n and remainder degree m are independent (only n<m needed); pow_le_pow_of_le_one weakens |x|^m to |x|^(n+1) on the unit ball, so a single degree-4 Mathlib bound serves both the x^2 (cosine) and x^3 (sine) denominators with the same linear envelope C*|x|.",
+      "Each instance target L is the leading Taylor coefficient f^(n)(0)/n!: 1/2 = 1/2! (cosine), 1/6 = 1/3! (sine), recorded by the factorial packagings — the order-n reading OQ-02 requests, realised across two orders by one lemma.",
+      "Honest scope: the deviation identity and the value L are supplied per instance, not yet generated from a formal Taylor polynomial T_{n-1}; full abstraction over f remains open (next step).",
+      "Dedup note: the cosine special case (1-cos x)/x^2 -> 1/2 shipped concurrently under sibling slug oq-05-oq-01 (PR #29249, cosine-only); this entry headlines the GENERAL lemma answering the distinct OQ-02, with cosine as one of two demonstrating instances."
+    ],
+    "mathlibGaps": [
+      "No single Mathlib lemma packages explicit-Taylor-remainder-over-monomial-denominator into a punctured-neighbourhood limit; tendsto_of_remainder_bound fills this locally for fixed-order remainders."
+    ],
+    "nextSteps": [
+      "Parametrise tendsto_of_remainder_bound over a formal Taylor polynomial T_{n-1} and analytic f so the deviation identity and L = f^(n)(0)/n! are generated from f rather than supplied per instance.",
+      "Prove sharpness: linear envelope optimal for sine, quadratic for cosine, via matching lower bounds on the deviation from the next Taylor term."
+    ],
+    "markdown": "# Knowledge Base: lhopital-oq-05-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "analysis",
+    "limits",
+    "taylor-remainder",
+    "trigonometry",
+    "squeeze-theorem"
+  ],
+  "relatedProofs": [
+    "lhopital",
+    "lhopital-oq-05"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T18:10:26.104Z",
+  "lastUpdate": "2026-06-24"
+}
