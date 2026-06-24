@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-cheby-oq0103-header",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-03",
+    "range": { "startLine": 4, "endLine": 50 },
+    "type": "context",
+    "title": "The parent's open question: a continuous Chebyshev inequality",
+    "content": "The docstring poses verbatim the parent entry's open question — the continuous (integral) Chebyshev inequality for monotone functions on an interval: (∫ₐᵇ f)(∫ₐᵇ g) ≤ (b−a)∫ₐᵇ f·g, reversing when one function increases and the other decreases. Mathlib contains Chebyshev's inequality only for finite sums (the MonovaryOn lemmas the parent uses); there is no integral version, so this entry builds it.",
+    "mathContext": "$\\big(\\int_a^b f\\big)\\big(\\int_a^b g\\big) \\le (b-a)\\int_a^b f\\cdot g$ for monotone $f,g$.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev's sum inequality", "integral inequalities", "monotone functions", "open question"],
+    "prerequisites": ["the parent discrete Chebyshev entry", "Lebesgue integration"]
+  },
+  {
+    "id": "ann-cheby-oq0103-sign",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-03",
+    "range": { "startLine": 53, "endLine": 68 },
+    "type": "key",
+    "title": "The whole inequality lives in one sign",
+    "content": "sub_mul_sub_nonneg_of_monotoneOn is the engine: for x, y ∈ [a,b], 0 ≤ (f x − f y)(g x − g y). The proof case-splits on x ≤ y versus y ≤ x. When x ≤ y both differences are ≤ 0 (monotonicity), so their product is ≥ 0; when y ≤ x both are ≥ 0. This single pointwise fact — not any analytic estimate — is what makes the integral inequality true.",
+    "mathContext": "$x\\le y \\Rightarrow f(x)\\le f(y),\\, g(x)\\le g(y) \\Rightarrow (f x-f y)(g x-g y)\\ge 0$.",
+    "significance": "fundamental",
+    "relatedConcepts": ["rearrangement", "monovariance", "sign analysis"],
+    "prerequisites": ["MonotoneOn", "products of reals with equal sign"]
+  },
+  {
+    "id": "ann-cheby-oq0103-integrability",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-03",
+    "range": { "startLine": 70, "endLine": 130 },
+    "type": "technique",
+    "title": "Integrability from monotonicity alone — no continuity",
+    "content": "The statement assumes only monotonicity, so integrability must be derived. MonotoneOn.integrableOn_of_measure_ne_top gives f, g ∈ L¹(μ) on the finite-measure interval μ = volume.restrict (Icc a b). norm_le_of_monotoneOn bounds g by max|g a||g b|, so f·g is integrable (bounded × integrable). On the product measure the four cross-terms are integrable via Integrable.mul_prod (off-diagonal) and Integrable.comp_fst_iff / comp_snd_iff (diagonal).",
+    "mathContext": "Monotone on $[a,b]$ $\\Rightarrow$ measurable and bounded $\\Rightarrow$ integrable; $\\mu(\\,[a,b]\\,)=b-a<\\infty$.",
+    "significance": "standard",
+    "relatedConcepts": ["MonotoneOn.integrableOn_of_measure_ne_top", "Integrable.mul_bdd", "product measure"],
+    "prerequisites": ["L¹ integrability", "finite measures"]
+  },
+  {
+    "id": "ann-cheby-oq0103-fubini",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-03",
+    "range": { "startLine": 131, "endLine": 159 },
+    "type": "key",
+    "title": "Evaluating the double integral by Fubini",
+    "content": "Expanding (f x − f y)(g x − g y) into the diagonal part f(x)g(x)+f(y)g(y) minus the cross part f(x)g(y)+g(x)f(y), the two diagonal terms evaluate via integral_fun_fst / integral_fun_snd to (b−a)·∫f·g each (the (b−a) is the total mass μ.real univ), and the two cross terms via integral_prod_mul to (∫f)(∫g) each. The double integral therefore equals 2(b−a)∫fg − 2(∫f)(∫g); since the integrand is a.e. ≥ 0 (transported to the square [a,b]² by Measure.prod_restrict), this difference is ≥ 0.",
+    "mathContext": "$\\iint (f x-f y)(g x-g y)\\,d(\\mu\\times\\mu)=2(b-a)\\!\\int\\! fg-2\\big(\\!\\int\\! f\\big)\\big(\\!\\int\\! g\\big)\\ge 0$.",
+    "significance": "fundamental",
+    "relatedConcepts": ["integral_prod_mul", "integral_fun_fst", "integral_nonneg_of_ae", "Fubini's theorem"],
+    "prerequisites": ["product measures", "linearity of the integral"]
+  },
+  {
+    "id": "ann-cheby-oq0103-reverse",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-03",
+    "range": { "startLine": 161, "endLine": 195 },
+    "type": "technique",
+    "title": "Reverse inequality and interval-integral packaging",
+    "content": "For opposite monotonicity (f up, g down), −g is monotone, so applying the main theorem to (f, −g) and simplifying with mul_neg / integral_neg flips the inequality to (b−a)∫fg ≤ (∫f)(∫g). Finally both directions are restated with the everyday interval integral ∫ x in a..b via integral_of_le and integral_Icc_eq_integral_Ioc (Icc and Ioc agree up to a null set).",
+    "mathContext": "$f\\uparrow, g\\downarrow \\Rightarrow (b-a)\\int_a^b fg \\le \\big(\\int_a^b f\\big)\\big(\\int_a^b g\\big)$.",
+    "significance": "standard",
+    "relatedConcepts": ["AntitoneOn.neg", "intervalIntegral", "integral_neg"],
+    "prerequisites": ["interval integrals", "sign reversal under negation"]
+  }
+]
