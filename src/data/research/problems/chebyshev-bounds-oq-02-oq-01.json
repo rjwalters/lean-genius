@@ -1,0 +1,57 @@
+{
+  "slug": "chebyshev-bounds-oq-02-oq-01",
+  "title": "Chebyshev's Lower Bound: explicit linear bounds c₁·n ≤ ψ(n) ≤ c₂·n",
+  "problemStatement": "Derive the explicit Chebyshev bounds c₁·n ≤ ψ(n) ≤ c₂·n for the second Chebyshev function ψ, by telescoping the parent's Legendre identity log(n!) = ∑_{d≤n} Λ(d)·⌊n/d⌋ against the central binomial coefficient C(n) = (2n choose n).",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 6,
+  "tags": [
+    "number-theory",
+    "primes",
+    "chebyshev",
+    "von-mangoldt",
+    "central-binomial",
+    "analytic-number-theory"
+  ],
+  "path": "Proofs/ChebyshevBoundsOQ02OQ01.lean",
+  "leanFiles": [
+    "Proofs/ChebyshevBoundsOQ02OQ01.lean"
+  ],
+  "started": "2026-06-23",
+  "lastUpdate": "2026-06-23",
+  "currentState": "SOLVED. Proved the two-sided explicit Chebyshev estimate (log 2/3)·m ≤ ψ(m) ≤ (log 4 + 4)·m for m ≥ 2, fully verified (0 sorries, 0 axioms beyond the foundational triple). The lower bound is new content; the upper bound is imported from Mathlib across a chebyshevPsi ↔ Chebyshev.psi bridge.",
+  "knowledge": {
+    "insights": [
+      "Chebyshev's lower bound reduces to log C(n) ≤ ψ(2n): applying the parent's Legendre identity to (2n)! = C(n)·(n!)² gives log C(n) = ∑_{d≤2n} Λ(d)·(⌊2n/d⌋ − 2⌊n/d⌋), and every coefficient ⌊2n/d⌋ − 2⌊n/d⌋ lies in {0,1}.",
+      "No prime factorization of C(n) is needed — only the floor inequality ⌊2n/d⌋ ≤ 2⌊n/d⌋ + 1 and Λ(d) ≥ 0.",
+      "Mathlib's Nat.four_pow_le_two_mul_self_mul_centralBinom (4ⁿ ≤ 2n·C(n)) converts the combinatorial bound into ψ(2n) ≥ n·log 4 − log(2n).",
+      "The log(2n) error term is absorbed by the elementary 2n ≤ 2ⁿ, giving the clean n·log 2 ≤ ψ(2n) with explicit constant.",
+      "Mathlib's NumberTheory/Chebyshev.lean lists 'Prove Chebyshev's lower bound' as an explicit TODO; it provides the upper bound (psi_le_const_mul_self) but not the lower — this file fills exactly that gap."
+    ],
+    "builtItems": [
+      "two_mul_div_le (floor identity ⌊2n/d⌋ ≤ 2⌊n/d⌋+1) — ChebyshevBoundsOQ02OQ01.lean:44",
+      "log_centralBinom_eq_sum (Legendre expansion of C(n)) — ChebyshevBoundsOQ02OQ01.lean:57",
+      "centralBinom_log_le_psi (log C(n) ≤ ψ(2n)) — ChebyshevBoundsOQ02OQ01.lean:97",
+      "psi_two_mul_ge_sub_log / psi_two_mul_ge_linear (n·log 2 ≤ ψ(2n)) — ChebyshevBoundsOQ02OQ01.lean:110,151",
+      "chebyshevPsi_lower_linear ((log 2/3)·m ≤ ψ(m)) and chebyshev_psi_bounds (two-sided) — ChebyshevBoundsOQ02OQ01.lean:164,196"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the Chebyshev upper bound (Chebyshev.psi_le_const_mul_self) but not the lower bound; its source explicitly flags 'Prove Chebyshev's lower bound' as a TODO."
+    ],
+    "nextSteps": [
+      "Sharpen constants toward the optimal Chebyshev values (lower ≈ log 2, upper ≈ 2 log 2).",
+      "Transfer to θ(n) via ψ(n) − θ(n) = O(√n log² n).",
+      "Combine with partial summation for explicit π(n) = Θ(n/log n)."
+    ],
+    "progressSummary": "COMPLETE: two-sided explicit Chebyshev bounds (log 2/3)·m ≤ ψ(m) ≤ (log 4 + 4)·m for m ≥ 2, verified 0-sorry 0-axiom."
+  },
+  "knownResults": [],
+  "references": [],
+  "relatedProofs": [
+    "chebyshev-bounds-oq-02",
+    "chebyshev-bounds",
+    "chebyshev-pnt-bridge"
+  ]
+}
