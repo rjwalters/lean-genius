@@ -67,26 +67,29 @@ dependency chain (the σ-finite Riesz theorem and `extByZeroCLM`); see the accou
 
 ## Status
 
-WORK IN PROGRESS. Three ingredient lemmas are now **kernel-verified** and
+WORK IN PROGRESS. Four ingredient lemmas are now **kernel-verified** and
 self-contained: the bridge lemma `memLp_exists_sigmaFinite_support` (σ-finite support
 of an Lᵖ function), `sigmaFinite_restrict_iUnion` (step 2: countable-union
 σ-finiteness, a genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`),
-and `eLpNorm_rpow_restrict_union` (step 3: `q`-power Lᵠ-seminorm additivity over a
+`eLpNorm_rpow_restrict_union` (step 3: `q`-power Lᵠ-seminorm additivity over a *binary*
 disjoint union, the analytic identity driving the maximality gluing, also absent from
-Mathlib for a general finite exponent). The headline reduction
+Mathlib for a general finite exponent), and now `eLpNorm_rpow_restrict_iUnion` — the
+*countable* σ-additive generalization of that identity, which is the form step 2 actually
+consumes since the maximizing set `T = ⋃ₙ Sₙ` is a countable union. The headline reduction
 `riesz_lp_surjective_general` still carries a single `sorry` for the remaining
 maximality *plumbing* (step 1's `extByZeroCLM` pullback and step 3's sequence/gluing
 bookkeeping) — it does **not** yet eliminate the axiom.
 
-BUILD STATUS (2026-06-23, researcher-1): the three ingredient lemmas above are now
-kernel-checked via host `lake env lean` against Mathlib v4.26.0 (Docker remained
-down; the host single-file path works). This fixed a real defect that the prior
-"source-complete" sessions had never compiled: the complement branch of
-`sigmaFinite_restrict_iUnion` left the goal `μ ((⋃ n, S n)ᶜ ∩ ⋃ n, S n) < ⊤` unsolved
-under a bare `simp`; it is discharged by `Set.compl_inter_self` (the set is `sᶜ ∩ s = ∅`).
-The file now compiles with exactly one expected `sorry` warning (the headline
-maximality). The axiom is **not** yet eliminated — do not present the headline as
-verified until the `sorry` is discharged.
+BUILD STATUS (2026-06-23, researcher-2): all four ingredient lemmas are kernel-checked
+via host `lake env lean` against Mathlib v4.26.0 (Docker remained down; the host
+single-file path works). The new `eLpNorm_rpow_restrict_iUnion` reduces the `q`-power
+identity over `⋃ₙ Sₙ` to `Measure.restrict_iUnion` (disjoint σ-additivity of `restrict`)
+followed by `lintegral_sum_measure`, mirroring the binary lemma's
+`eLpNorm_eq_lintegral_rpow_enorm` reduction. The earlier session's fix to the complement
+branch of `sigmaFinite_restrict_iUnion` (`Set.compl_inter_self` discharging
+`μ ((⋃ n, S n)ᶜ ∩ ⋃ n, S n) < ⊤`) is retained. The file compiles with exactly one
+expected `sorry` warning (the headline maximality). The axiom is **not** yet eliminated —
+do not present the headline as verified until the `sorry` is discharged.
 
 ## References
 
@@ -200,6 +203,34 @@ theorem eLpNorm_rpow_restrict_union {g : α → ℝ} {A B : Set α}
   simp only [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop, ← ENNReal.rpow_mul,
     one_div_mul_cancel hqr, ENNReal.rpow_one]
   rw [Measure.restrict_union hAB hB, lintegral_add_measure]
+
+/-- **Lᵠ-seminorm `q`-power σ-additivity over a countable disjoint union**
+    (step 2 ingredient — the countable generalization of `eLpNorm_rpow_restrict_union`).
+    For `0 < q < ∞` and a pairwise-disjoint, measurable family `Sₙ`, the `q`-th power of
+    the Lᵠ-seminorm is countably additive over `⋃ₙ Sₙ`:
+
+      `‖g‖_{q, ⋃ₙ Sₙ}^q = ∑ₙ ‖g‖_{q, Sₙ}^q`.
+
+    This is the form that step 2 of the maximality reduction actually consumes: the
+    maximizing set `T = ⋃ₙ Sₙ` is a *countable* union, so gluing the representing
+    functions across it needs σ-additivity of the `q`-power, not merely the binary
+    split. Like its binary companion it is absent from Mathlib for a general finite
+    exponent — Mathlib provides the disjoint σ-additivity of the lower integral
+    (`Measure.restrict_iUnion` + `lintegral_sum_measure`) and unit-exponent `eLpNorm`
+    additivity, but not this packaged `q`-power identity. The proof is the same
+    `eLpNorm_eq_lintegral_rpow_enorm` reduction as the binary case, now closed by the
+    σ-additive `Measure.restrict_iUnion`/`lintegral_sum_measure` pair. The disjointness
+    hypothesis is harmless for the application: a maximizing sequence is disjointified
+    (`Set.disjointed`) before the union is formed, preserving `⋃ₙ`. -/
+theorem eLpNorm_rpow_restrict_iUnion {g : α → ℝ} {S : ℕ → Set α}
+    (hSm : ∀ n, MeasurableSet (S n)) (hSd : Pairwise (Function.onFun Disjoint S))
+    {q : ℝ≥0∞} (hq0 : q ≠ 0) (hqtop : q ≠ ∞) :
+    eLpNorm g q (μ.restrict (⋃ n, S n)) ^ q.toReal
+      = ∑' n, eLpNorm g q (μ.restrict (S n)) ^ q.toReal := by
+  have hqr : q.toReal ≠ 0 := ENNReal.toReal_ne_zero.2 ⟨hq0, hqtop⟩
+  simp only [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop, ← ENNReal.rpow_mul,
+    one_div_mul_cancel hqr, ENNReal.rpow_one]
+  rw [Measure.restrict_iUnion hSd hSm, lintegral_sum_measure]
 
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
