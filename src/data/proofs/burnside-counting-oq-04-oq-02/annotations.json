@@ -1,0 +1,86 @@
+[
+  {
+    "id": "burnside-oq0402-ann-positions",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 59, "endLine": 63 },
+    "type": "definition",
+    "title": "Positions and binary colourings of the n-cycle",
+    "content": "The n vertices of the regular n-gon are modeled as ZMod n, so a rotation by i is literally addition by i. A binary colouring is a function Coloring n = ZMod n → Fin 2; there are 2^n of them. Choosing ZMod n (rather than Fin n) is what lets rotations and reflections be expressed as group operations on the index, which is the lever that makes the whole construction n-uniform.",
+    "mathContext": "$\\mathrm{Pos}(n) = \\mathbb{Z}/n\\mathbb{Z}$, $\\;\\mathrm{Coloring}(n) = (\\mathbb{Z}/n\\mathbb{Z} \\to \\{0,1\\})$, $\\;|\\mathrm{Coloring}(n)| = 2^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic group ZMod n", "binary necklaces", "group action carrier"],
+    "prerequisites": ["modular arithmetic", "function types"]
+  },
+  {
+    "id": "burnside-oq0402-ann-posperm",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 67, "endLine": 76 },
+    "type": "definition",
+    "title": "The dihedral permutation representation on positions",
+    "content": "Defines how each dihedral symmetry permutes the n positions: a rotation r i acts by x ↦ x + i (Equiv.addRight), and a reflection sr i acts by x ↦ -i - x (Equiv.subLeft (-i)). The reflection form -i-x is not the geometrically obvious i-x: only -i-x makes the assignment a group homomorphism for Mathlib's dihedral convention sr i * sr j = r (j - i). Getting this sign right is the crux of the whole generalisation.",
+    "mathContext": "$\\rho(r_i): x \\mapsto x + i, \\qquad \\rho(s r_i): x \\mapsto -i - x$ on $\\mathbb{Z}/n\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["dihedral group", "permutation representation", "Equiv.Perm", "reflection convention"],
+    "prerequisites": ["dihedral group structure", "permutations"]
+  },
+  {
+    "id": "burnside-oq0402-ann-posperm-mul",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 84, "endLine": 102 },
+    "type": "technique",
+    "title": "posPerm is a homomorphism, bundled as ρ",
+    "content": "posPerm_mul verifies posPerm(g·h) = posPerm(g)·posPerm(h) in all four (r/sr)×(r/sr) cases by extensionality (ext) followed by ZMod arithmetic against Mathlib's dihedral multiplication table (r_mul_r, r_mul_sr, sr_mul_r, sr_mul_sr). Crucially this needs nothing about n, so the representation is built before NeZero n is assumed. With posPerm_one and posPerm_mul in hand, the map is bundled as the monoid homomorphism ρ : DihedralGroup n →* Equiv.Perm (ZMod n).",
+    "mathContext": "$\\rho(g h) = \\rho(g)\\,\\rho(h)$ for all $g,h \\in D_n$; e.g. $sr_i \\cdot sr_j = r_{j-i}$ forces $\\rho(sr_i)\\rho(sr_j) = \\rho(r_{j-i})$.",
+    "significance": "key",
+    "relatedConcepts": ["monoid homomorphism", "dihedral multiplication table", "case analysis", "MonoidHom"],
+    "prerequisites": ["group homomorphisms", "ext tactic", "ring/ZMod arithmetic"]
+  },
+  {
+    "id": "burnside-oq0402-ann-mulaction",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 104, "endLine": 121 },
+    "type": "concept",
+    "title": "The induced action on colourings",
+    "content": "Lifts the position permutation to an action on colourings: a symmetry g sends the colouring c to p ↦ c((ρ g)⁻¹ p), relabeling positions backwards so that composition is covariant. The MulAction laws one_smul and mul_smul follow directly from ρ.map_one and ρ.map_mul — the action is a genuine left action precisely because ρ is a homomorphism. The inverse (ρ g).symm is what makes (g·h)•c = g•(h•c) rather than the opposite order.",
+    "mathContext": "$(g \\bullet c)(p) = c\\big((\\rho g)^{-1} p\\big)$, with $1 \\bullet c = c$ and $(gh)\\bullet c = g\\bullet(h\\bullet c)$.",
+    "significance": "key",
+    "relatedConcepts": ["MulAction", "induced action on functions", "contravariance of pullback", "permutation of colourings"],
+    "prerequisites": ["group actions", "function composition"]
+  },
+  {
+    "id": "burnside-oq0402-ann-fintype",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 123, "endLine": 151 },
+    "type": "technique",
+    "title": "Decidability and Fintype layer (under NeZero n)",
+    "content": "Burnside's lemma needs the fixed-point sets and the orbit quotient to be finite and the orbit relation decidable. These instances are introduced only from here on, gated by NeZero n (which makes ZMod n and DihedralGroup n finite). The fixed-point predicate g•c = c is decidable by decidable equality of colourings; the orbit relation a ~ b ⇔ ∃ g, g•b = a is decidable because DihedralGroup n is a Fintype; and Quotient.fintype then makes the orbit quotient finite, so braceletCard n = |orbit quotient| is a well-defined natural number — the bracelet count b(n).",
+    "mathContext": "$b(n) = |\\mathrm{Coloring}(n)/D_n|$, the number of binary colourings up to rotation and reflection.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype", "DecidableRel", "orbit quotient", "NeZero", "Quotient.fintype"],
+    "prerequisites": ["decidability typeclasses", "finite types", "quotients by group actions"]
+  },
+  {
+    "id": "burnside-oq0402-ann-burnside",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 153, "endLine": 172 },
+    "type": "insight",
+    "title": "The general-n Burnside bracelet identity",
+    "content": "The headline result: for every n, the sum over all dihedral symmetries of the number of colourings each fixes equals b(n)·(2n). This is Mathlib's Burnside (Cauchy–Frobenius) lemma sum_card_fixedBy_eq_card_orbits_mul_card_group instantiated at the dihedral colouring action, with |Dₙ| = 2n substituted via DihedralGroup.card. It is the reusable orbit-counting engine: splitting the left sum into its rotation half (Σ over r i, giving the necklace contribution) and reflection half (Σ over sr i) and dividing by 2n yields the closed form b(n) = (necklaces(n)+reflection-total(n))/(2n).",
+    "mathContext": "$\\sum_{g \\in D_n} |\\mathrm{Fix}(g)| = b(n)\\cdot 2n$, the Cauchy–Frobenius (Burnside) average-fixed-points count of orbits.",
+    "significance": "key",
+    "relatedConcepts": ["Burnside's lemma", "Cauchy–Frobenius lemma", "orbit counting", "necklace and bracelet numbers", "Pólya enumeration"],
+    "prerequisites": ["Burnside's lemma", "fixed-point sets", "cardinality of the dihedral group"]
+  },
+  {
+    "id": "burnside-oq0402-ann-concrete",
+    "proofId": "burnside-counting-oq-04-oq-02",
+    "range": { "startLine": 174, "endLine": 210 },
+    "type": "technique",
+    "title": "Concrete bracelet counts by kernel decide",
+    "content": "Feeds the general identity to small lengths n = 3, 5, 6. In each case the only computation is the fixed-point sum, evaluated by KERNEL decide (not native_decide) — cheap because it checks 2n symmetries against 2^n colourings: 24 at n=3, 80 at n=5, 156 at n=6. Burnside's identity then pins down b(n) by omega: b(3)=4, b(5)=8, b(6)=13 (OEIS A000029). Crucially the orbit quotient itself is never enumerated — only fixed points are counted — which keeps the computation inside the kernel's reach and the proof free of Lean.ofReduceBool. n=6 is about the practical ceiling for kernel decide here.",
+    "mathContext": "$b(3)=4,\\; b(5)=8,\\; b(6)=13$ from fixed-point sums $24, 80, 156$, since $24/6=4$, $80/10=8$, $156/12=13$.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel decide", "native_decide avoidance", "axiom hygiene", "OEIS A000029", "computational verification"],
+    "prerequisites": ["the Burnside identity", "decide tactic", "omega tactic"]
+  }
+]
