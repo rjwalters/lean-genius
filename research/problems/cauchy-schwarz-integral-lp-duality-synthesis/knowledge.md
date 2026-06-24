@@ -369,3 +369,38 @@ Full scaffold (with the maximality `sorry` and the reduction blueprint docstring
    (`eLpNorm_rpow_restrict_union`) available — what remains there is the `eLpNorm = 0 ⇒
    ae-zero` step (`eLpNorm_eq_zero_iff`) + uniqueness bookkeeping.
 5. Assemble `riesz_lp_surjective_general`, build green, swap parent axiom, flip meta.
+
+### 2026-06-23 (Session 8, researcher-1) — PROGRESS (verifier UNBLOCKED; 3 ingredient lemmas now kernel-verified; real bug fixed)
+
+**Mode:** REVISIT. **Outcome:** real verified progress (first kernel check in 8 sessions).
+
+**Headline:** the 7-session "verifier blackout" was a false constraint. Docker is still
+down (`docker info` timeout), but the **host single-file path works**:
+`cd proofs && lake env lean <file>` resolves against the prebuilt Mathlib v4.26.0 oleans
+at `.lake/packages/mathlib/.lake/build/lib/lean/` (7382 oleans present — note the
+`lib/lean/` segment, not `lib/`). A trivial `import Mathlib` file compiled EXIT 0.
+
+**What I verified / fixed in `CauchySchwarzIntegralLpDualitySynthesis.lean`:**
+- Compiling the file (orphaned from `Proofs.lean`, so CI had **never** built it) exposed a
+  **real defect** that every prior "source-complete" session missed: the complement branch
+  of `sigmaFinite_restrict_iUnion` left `μ ((⋃ n, S n)ᶜ ∩ ⋃ n, S n) < ⊤` unsolved under a
+  bare `simp`. Fixed with `Set.compl_inter_self` (`sᶜ ∩ s = ∅`) before `simp`.
+- After the fix the file compiles with **exactly one** expected `sorry` warning (the
+  headline maximality). `#print axioms` on all three ingredient lemmas
+  (`memLp_exists_sigmaFinite_support`, `sigmaFinite_restrict_iUnion`,
+  `eLpNorm_rpow_restrict_union`) → `[propext, Classical.choice, Quot.sound]` only. No
+  `sorryAx`, no `ofReduceBool`. Genuinely verified, axiom-free Mathlib-gap lemmas.
+- **Registered the file in `proofs/Proofs.lean`** (inserted in LC_ALL=C order after
+  `CauchySchwarzIntegral`) so CI now compiles it — durable verification + regression guard.
+  Root cause it was missed for 7 sessions: orphaned from the build graph, never compiled.
+
+**Axiom NOT eliminated.** The headline `riesz_lp_surjective_general` still carries the
+documented maximality `sorry` (step 1 `extByZeroCLM` pullback + step 3 sequence/gluing).
+The parent `axiom riesz_lp_surjective` is untouched; `axiomCount` unchanged. This session
+hardened the *ingredients* of the reduction into kernel-checked form, it did not close the
+reduction.
+
+**Next session:** verifier IS available via host `lake env lean` — discharge the headline
+maximality. Prereq: re-expose `extByZeroCLM` (currently `private` in `…Incomplete01.lean`)
+and build the σ-finite chain (`…OQ01OQ01.lean`) to confirm `riesz_lp_surjective_sigma_finite`
+truly compiles, then wire steps 1–3 (ingredients now all verified).
