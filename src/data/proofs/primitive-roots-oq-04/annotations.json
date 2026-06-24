@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "primitive-roots-oq-04",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "From the Cyclotomic Identity to the Regular-Polygon Chord Product",
+    "content": "For a primitive m-th root of unity μ in an integral domain, ∏_{k=1}^{m-1}(1 − μᵏ) = m. This is the algebraic shadow of evaluating (Xᵐ − 1)/(X − 1) = ∏_{k=1}^{m-1}(X − μᵏ) at X = 1 (equivalently the derivative of Xᵐ − 1 at the root 1). Mathlib proves it (IsPrimitiveRoot.prod_one_sub_pow_eq_order, stated with m = n+1 to dodge the side condition m ≠ 0) plus its sign companion and divisibility forms, but records NO analytic reading. This entry adds the geometric corollary over ℂ: taking moduli gives ∏‖1 − μᵏ‖ = m — the product of distances from one vertex of a regular m-gon to the other m−1 vertices equals m — and the explicit instantiation at μ = exp(2πi/m).",
+    "mathContext": "$\\prod_{k=1}^{m-1}(1-\\mu^k) = m$; the chord reading $\\prod_{k=1}^{m-1}\\lVert 1-\\mu^k\\rVert = m$.",
+    "significance": "context",
+    "relatedConcepts": ["cyclotomy", "roots of unity", "regular polygon", "cyclotomic polynomial", "Gauss"],
+    "prerequisites": ["roots of unity", "complex modulus", "polynomial factorization"]
+  },
+  {
+    "id": "ann-order-identity",
+    "proofId": "primitive-roots-oq-04",
+    "range": { "startLine": 37, "endLine": 51 },
+    "type": "theorem",
+    "title": "The Order Identity and Its Sign Companion (Mathlib core)",
+    "content": "prod_one_sub_pow re-exports IsPrimitiveRoot.prod_one_sub_pow_eq_order: for a primitive (n+1)-th root μ in an integral domain, ∏_{k∈range n}(1 − μ^{k+1}) = n+1 (i.e. ∏_{j=1}^{m-1}(1 − μʲ) = m with m = n+1). neg_one_pow_mul_prod_pow_sub re-exports the sign-flipped companion (−1)ⁿ·∏(μ^{k+1} − 1) = n+1. The n+1 indexing is a deliberate Mathlib convention that removes the m ≠ 0 hypothesis throughout. These are the algebraic core taken moduli of for the geometric corollary.",
+    "mathContext": "$\\prod_{k\\in\\mathrm{range}\\,n}(1-\\mu^{k+1}) = n+1$ and $(-1)^n\\prod(\\mu^{k+1}-1) = n+1$.",
+    "significance": "key",
+    "relatedConcepts": ["IsPrimitiveRoot.prod_one_sub_pow_eq_order", "order of a root", "integral domain"],
+    "prerequisites": ["primitive roots of unity", "finite products"]
+  },
+  {
+    "id": "ann-norm-form",
+    "proofId": "primitive-roots-oq-04",
+    "range": { "startLine": 53, "endLine": 68 },
+    "type": "insight",
+    "title": "prod_norm_one_sub_pow: The Geometric Reading via Norm Multiplicativity",
+    "content": "The first new result: over ℂ, ∏_{k∈range n}‖1 − μ^{k+1}‖ = n+1. The entire bridge from algebra to geometry is norm multiplicativity ‖∏ aᵢ‖ = ∏‖aᵢ‖ (norm_prod): rewrite the product of moduli as the modulus of the product, apply the order identity inside the norm to get ‖(↑(n+1) : ℂ)‖, then Complex.norm_natCast gives n+1. No separate analysis of chord lengths is needed. Geometrically the m = n+1 points μ⁰,…,μ^{m-1} are the vertices of a regular m-gon inscribed in the unit circle, and the product of distances from vertex 1 to the others is exactly the order m.",
+    "mathContext": "$\\prod_k\\lVert 1-\\mu^{k+1}\\rVert = \\big\\lVert\\textstyle\\prod_k(1-\\mu^{k+1})\\big\\rVert = \\lVert n+1\\rVert = n+1$.",
+    "significance": "key",
+    "relatedConcepts": ["norm_prod", "Complex.norm_natCast", "norm multiplicativity", "chord product"],
+    "prerequisites": ["complex modulus", "finite products"]
+  },
+  {
+    "id": "ann-explicit-exp",
+    "proofId": "primitive-roots-oq-04",
+    "range": { "startLine": 70, "endLine": 91 },
+    "type": "technique",
+    "title": "prod_one_sub_exp: Explicit Instantiation at exp(2πi/m)",
+    "content": "prod_one_sub_exp instantiates the identity at the standard primitive root μ = exp(2πi/(n+1)) (Complex.isPrimitiveRoot_exp, valid since n+1 ≠ 0), giving ∏(1 − exp(2πi(k+1)/(n+1))) = n+1. The key care (step): each factor exp(2πi(k+1)/(n+1)) is rewritten as exp(2πi/(n+1))^{k+1} via Complex.exp_nat_mul BEFORE applying the order identity, so the n+1 in the exponent's denominator is left untouched — matching the abstract factor 1 − μ^{k+1} exactly. Then the order identity closes it.",
+    "mathContext": "$\\mu = e^{2\\pi i/(n+1)}$; $e^{2\\pi i(k+1)/(n+1)} = \\mu^{k+1}$ via $\\exp(nz)=\\exp(z)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Complex.isPrimitiveRoot_exp", "Complex.exp_nat_mul", "standard primitive root"],
+    "prerequisites": ["complex exponential", "roots of unity"]
+  },
+  {
+    "id": "ann-explicit-norm",
+    "proofId": "primitive-roots-oq-04",
+    "range": { "startLine": 93, "endLine": 101 },
+    "type": "theorem",
+    "title": "prod_norm_one_sub_exp: The Fully Explicit Chord Product",
+    "content": "prod_norm_one_sub_exp combines the norm form and the explicit instantiation: ∏_{k∈range n}‖1 − exp(2πi(k+1)/(n+1))‖ = n+1 — the product of the chord lengths from one vertex of a regular (n+1)-gon to all the others, in fully explicit form. Same norm_prod + Complex.norm_natCast mechanism as prod_norm_one_sub_pow, applied to prod_one_sub_exp. This is the directly citable analytic statement the gallery adds on top of Mathlib's purely algebraic identity.",
+    "mathContext": "$\\prod_{k=0}^{n-1}\\big\\lVert 1 - e^{2\\pi i(k+1)/(n+1)}\\big\\rVert = n+1$ — regular-polygon chord product.",
+    "significance": "supporting",
+    "relatedConcepts": ["norm_prod", "regular polygon", "chord length"],
+    "prerequisites": ["complex modulus", "complex exponential"]
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "primitive-roots-oq-04",
+    "range": { "startLine": 103, "endLine": 114 },
+    "type": "context",
+    "title": "Concrete Checks at m = 2 and m = 3",
+    "content": "Two worked examples specialise the order identity. For m = 2 the square roots of unity are ±1 and 1 − (−1) = 2. For m = 3 a primitive cube root μ gives (1 − μ)(1 − μ²) = 3 (the product over the two non-trivial vertices of an equilateral triangle). Both are immediate from prod_one_sub_pow + norm_num, exhibiting the first non-trivial cases of the vertex-product identity.",
+    "mathContext": "$m=2$: $1-(-1)=2$. $m=3$: $(1-\\mu)(1-\\mu^2)=3$.",
+    "significance": "context",
+    "relatedConcepts": ["square roots of unity", "cube roots of unity", "sanity check"],
+    "prerequisites": ["roots of unity"]
+  }
+]
