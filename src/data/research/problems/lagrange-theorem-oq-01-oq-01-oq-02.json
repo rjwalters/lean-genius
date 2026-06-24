@@ -1,0 +1,347 @@
+{
+  "slug": "lagrange-theorem-oq-01-oq-01-oq-02",
+  "title": "Prove the full isomorphism uniqueness: any two groups of order pq are isomorp...",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Prove the full isomorphism uniqueness: any two groups of order pq are isomorp....",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-06-23T23:16:23.903Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PROGRESS (verified, self-contained): abelian-case isomorphism uniqueness fully formalized — every abelian group of order pq is cyclic ≅ ℤ/pq (7 thms, 0 sorries, 0 axioms, Mathlib-only). General cyclic + non-abelian uniqueness BLOCKED on parent SylowTheoremOQ01 which fails to compile on v4.26.0.",
+    "builtItems": [
+      "pq_abelian_isCyclic (LagrangeTheoremOQ01OQ01OQ02.lean): any CommGroup of order pq is cyclic (no divisibility hyp) via Cauchy exists_prime_orderOf_dvd_card + Commute.orderOf_mul_eq_mul_orderOf_of_coprime + isCyclic_of_orderOf_eq_card",
+      "pq_abelian_iso, pq_abelian_iso_zmod: any two abelian order-pq groups isomorphic, each ≅ Multiplicative (ZMod pq), via mulEquivOfCyclicCardEq + zmodCyclicMulEquiv",
+      "Concrete: order_6/15/35_abelian_unique (≅ ℤ/n), order_15_abelian_pair. Kernel-verified standard triple, 0 axioms"
+    ],
+    "insights": [
+      "Mathlib mulEquivOfCyclicCardEq (Cyclic.lean:787) upgrades IsCyclic-level classification to genuine MulEquiv from equal Nat.card — short but is the count→isomorphism step",
+      "Abelian of squarefree order pq is cyclic for EVERY pair of distinct primes, independent of p|(q-1); isolates the abelian iso class on both sides of the dichotomy",
+      "Fintype.card (parent) must be bridged to Nat.card (cyclic-iso API) via Nat.card_eq_fintype_card",
+      "Commute.orderOf_mul_eq_mul_orderOf_of_coprime is in namespace Commute (dot notation), not _root_",
+      "BLOCKER: parent chain Proofs.SylowTheoremOQ01 → LagrangeTheoremOQ01OQ01 does NOT compile on Mathlib v4.26.0 — uses removed/renamed names Nat.Prime.eq_of_dvd_of_prime and orderOf_eq_one_iff_eq_one (confirmed absent from Mathlib source; 14 deterministic errors). The parent entry is marked verified but is stale → Mechanic repair needed. This file therefore imports ONLY Mathlib and delivers the abelian case independently."
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma recognizing an internal semidirect product from a normal subgroup + complement (needed for nonabelian uniqueness)",
+      "Parent SylowTheoremOQ01.lean stale on v4.26.0 (renamed lemmas) — must be repaired before the general cyclic-case (p∤q-1 ⟹ cyclic) and non-abelian uniqueness can build on pq_unique_when_coprime"
+    ],
+    "nextSteps": [
+      "Non-abelian uniqueness: recognize any non-cyclic order-pq group as internal semidirect product ZMod q ⋊ ZMod p, and show all nontrivial actions ZMod p → Aut(ZMod q) give isomorphic products — the harder open direction",
+      "Consider whether Mathlib SemidirectProduct + the sibling oq-01-oq-01-oq-01 ApproachB actionHom infrastructure can be reused to build the nonabelian iso"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-01-oq-01",
+    "lagrange-theorem-oq-01-oq-01-oq-01",
+    "lagrange-theorem-oq-01-oq-02",
+    "lagrange-theorem-oq-01-oq-03",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-02-oq-01-oq-01",
+    "lagrange-theorem-oq-02-oq-01-oq-02",
+    "lagrange-theorem-oq-02-oq-02",
+    "lagrange-theorem-oq-02-oq-02-oq-01",
+    "lagrange-theorem-oq-02-oq-02-oq-01-oq-01",
+    "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01",
+    "lagrange-theorem-oq-02-oq-02-oq-01-oq-01-oq-01-oq-01",
+    "lagrange-theorem-oq-02-oq-02-oq-01-oq-02",
+    "lagrange-theorem-oq-03",
+    "lagrange-theorem-oq-05",
+    "lagrange-theorem-oq-06",
+    "lagrange-theorem-oq-07",
+    "lagrange-theorem-oq-07-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-23T23:16:23.903Z",
+  "lastUpdate": "2026-06-23",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 223,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01.lean",
+      "filename": "LagrangeTheoremOQ01.lean",
+      "lineCount": 142,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ01.lean",
+      "filename": "LagrangeTheoremOQ01OQ01.lean",
+      "lineCount": 170,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ01OQ01.lean",
+      "filename": "LagrangeTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 141,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean",
+      "filename": "LagrangeTheoremOQ01OQ01OQ01ApproachB.lean",
+      "lineCount": 441,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 168,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ01OQ02.lean",
+      "lineCount": 122,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ01OQ03.lean",
+      "filename": "LagrangeTheoremOQ01OQ03.lean",
+      "lineCount": 212,
+      "theoremCount": 13,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02.lean",
+      "filename": "LagrangeTheoremOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ01.lean",
+      "lineCount": 231,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ01OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ01OQ01.lean",
+      "lineCount": 138,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ02OQ01OQ02.lean",
+      "lineCount": 77,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ02.lean",
+      "filename": "LagrangeTheoremOQ02OQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ02OQ01.lean",
+      "lineCount": 196,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ02OQ01OQ01.lean",
+      "lineCount": 110,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ02OQ01OQ01OQ01.lean",
+      "lineCount": 104,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01OQ01.lean",
+      "filename": "LagrangeTheoremOQ02OQ02OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 125,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ02OQ02OQ01OQ02.lean",
+      "filename": "LagrangeTheoremOQ02OQ02OQ01OQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ03.lean",
+      "filename": "LagrangeTheoremOQ03.lean",
+      "lineCount": 374,
+      "theoremCount": 27,
+      "axiomCount": 2,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 114,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ06.lean",
+      "filename": "LagrangeTheoremOQ06.lean",
+      "lineCount": 114,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ06.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ07.lean",
+      "filename": "LagrangeTheoremOQ07.lean",
+      "lineCount": 129,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ07.lean"
+    },
+    {
+      "path": "Proofs/LagrangeTheoremOQ07OQ02.lean",
+      "filename": "LagrangeTheoremOQ07OQ02.lean",
+      "lineCount": 159,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ07OQ02.lean"
+    }
+  ]
+}
