@@ -133,7 +133,18 @@
       "leanType": "ContinuousAt f r → (∀ x, r < x → 0 ≤ f x) → 0 ≤ f r"
     }
   ],
-  "overview": "Hilbert's 17th problem asks whether every polynomial that is non-negative on all of ℝⁿ is a sum of squares — of polynomials, or at least of rational functions. The univariate case n = 1 is both the historical starting point (Hilbert, 1888) and the only case where the strong, polynomial-valued conclusion holds: a non-negative p ∈ ℝ[X] is always a sum of two squares of real polynomials. (For n ≥ 2 the Motzkin and Robinson polynomials, siblings in this gallery, show one must allow rational functions.) The parent entry hilbert-17 carried the univariate result as the axiom univariate_psd_is_sos_aux; this follow-up proves it from scratch with 0 axioms, reducing the parent's axiom count from 3 to 2. The argument is a strong induction on degree with three moves. (1) Base: a non-negative constant c equals (√c)² + 0². (2) Real root: by the fundamental theorem of algebra a non-constant p has a complex root; if it is real, a non-negative polynomial must vanish there to even multiplicity — the analytic crux, proved by writing p = (x − r)·g for a simple root and using one-sided limits of g to force the contradictory signs g(r) ≥ 0 and g(r) ≤ 0 — so (X − C r)² divides p and the quotient is non-negative of smaller degree; then (X − C r)²·(u² + v²) is a sum of two squares. (3) Conjugate pair: if the root is non-real, the positive real quadratic Q = (X − C z.re)² + (C z.im)² divides p, the quotient is non-negative of smaller degree, and the Brahmagupta–Fibonacci identity turns Q·(u² + v²) into two squares. The formalization's only analytic ingredient is continuity of polynomial evaluation; everything else is the FTA (Complex.exists_root), the real-quadratic divisibility lemma, and root-multiplicity bookkeeping from Mathlib.",
+  "overview": {
+    "historicalContext": "Hilbert's 17th problem asks whether every polynomial that is non-negative on all of ℝⁿ is a sum of squares — of polynomials, or at least of rational functions. The univariate case n = 1 is both the historical starting point (Hilbert, 1888) and the only case where the strong, polynomial-valued conclusion holds: a non-negative p ∈ ℝ[X] is always a sum of two squares of real polynomials. For n ≥ 2 the Motzkin (1967) and Robinson polynomials — siblings in this gallery — are non-negative yet provably NOT sums of squares of polynomials, which is exactly why Hilbert had to weaken the conclusion to 'sum of squares of rational functions' (proved in general by Artin, 1927). The two-squares sharpness in one variable goes back to Hilbert's original 1888 memoir.",
+    "problemStatement": "Prove the univariate case of Hilbert's 17th problem with no axioms: every positive-semidefinite real univariate polynomial p ∈ ℝ[X] (one with p.eval x ≥ 0 for all x ∈ ℝ) is a sum of squares of real polynomials — in fact a sum of exactly two squares, p = u² + v². This discharges the parent entry hilbert-17's axiom univariate_psd_is_sos_aux, reducing its axiom count from 3 to 2.",
+    "proofStrategy": "Strong induction on degree, with three moves. (1) Base: a non-negative constant c equals (√c)² + 0². (2) Real root: by the fundamental theorem of algebra a non-constant p has a complex root; if it is real, a non-negative polynomial must vanish there to even multiplicity — the analytic crux sq_dvd_of_psd_root, proved by writing p = (x − r)·g for a hypothetical simple root and using one-sided limits of g to force the contradictory signs g(r) ≥ 0 (from the right) and g(r) ≤ 0 (from the left) — so (X − C r)² divides p and the quotient is non-negative of strictly smaller degree; then (X − C r)²·(u² + v²) is a sum of two squares. (3) Conjugate pair: if the root is non-real, the positive real quadratic Q = (X − C z.re)² + (C z.im)² divides p (Mathlib's quadratic_dvd_of_aeval_eq_zero_im_ne_zero), the quotient is non-negative of smaller degree, and the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)²+(ad+bc)² turns Q·(u² + v²) into two squares. The only analytic ingredient is continuity of polynomial evaluation; everything else is the FTA (Complex.exists_root) plus root-multiplicity and divisibility bookkeeping from Mathlib.",
+    "keyInsights": [
+      "One variable is special: PSD ⟺ sum of (two) squares of polynomials holds for n = 1 but fails for n ≥ 2, where the Motzkin/Robinson polynomials force the passage to rational functions. This entry is the positive counterpart to those negative sibling examples.",
+      "The analytic crux is purely a sign argument: a real root of a non-negative polynomial cannot have odd multiplicity, because an odd factor (x − r)^odd changes sign across r. Formalized via one-sided limits of the quotient g, with no derivatives or Sturm sequences.",
+      "Two squares always suffice. Real roots are removed two at a time as (X − C r)², conjugate pairs as a single positive quadratic, and the Brahmagupta–Fibonacci identity keeps the running product a sum of exactly two squares throughout the induction.",
+      "The induction never leaves ℝ[X] except to borrow the FTA over ℂ: the complex root z is immediately split into the real-root and conjugate-pair cases by testing z.im = 0, and each case produces a real polynomial factor.",
+      "This is an axiom-discharging entry: the PSD and SOS predicates are definitionally equal to the parent hilbert-17's, so proving univariate_psd_is_sos here removes the parent's univariate_psd_is_sos_aux axiom by exact reference, leaving only the genuinely deep quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound)."
+    ]
+  },
   "conclusion": {
     "summary": "A 208-line, 0-sorry, 0-axiom formalization of the univariate case of Hilbert's 17th problem: every non-negative real univariate polynomial is a sum of two squares of polynomials. Discharges the parent entry's axiom univariate_psd_is_sos_aux (parent axiom count 3 → 2).",
     "implications": "This is the positive counterpart to the Motzkin and Robinson entries: in one variable, non-negativity and 'sum of squares of polynomials' coincide, so no passage to rational functions is needed. The proof is fully elementary — induction on degree, the FTA, even multiplicity of real roots via one-sided limits, and the two-square identity — with no real-closed-field, Gram-matrix, or Positivstellensatz machinery. It leaves the parent entry with just two genuinely deep axioms: quadratic_psd_is_sos_aux (Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound)."
@@ -154,17 +165,56 @@
   ],
   "crossReferences": [
     {
-      "slug": "hilbert-17",
-      "relation": "Parent entry; this discharges its axiom univariate_psd_is_sos_aux (axiom count 3 → 2)."
+      "proofId": "hilbert-17",
+      "relationship": "discharges-axiom-of",
+      "description": "Parent entry: states Artin's theorem and carried the univariate case as the axiom univariate_psd_is_sos_aux. This entry proves exactly that statement with 0 axioms, discharging the axiom by reference (parent axiom count 3 → 2)."
     },
     {
-      "slug": "hilbert-17-oq-03-oq-02",
-      "relation": "Sibling: the Motzkin polynomial, a multivariate PSD polynomial that is NOT a sum of squares of polynomials."
+      "proofId": "hilbert-17-oq-03-oq-02",
+      "relationship": "contrasts-with",
+      "description": "Sibling (multivariate, negative side): the Motzkin polynomial is non-negative but NOT a sum of squares of polynomials. Contrasts with this entry, which shows the polynomial conclusion DOES hold in one variable."
     },
     {
-      "slug": "hilbert-17-oq-03-oq-03",
-      "relation": "Sibling: the Robinson polynomial, the ternary PSD-but-not-polynomial-SOS counterexample."
+      "proofId": "hilbert-17-oq-03-oq-03",
+      "relationship": "contrasts-with",
+      "description": "Sibling (multivariate, negative side): the Robinson polynomial is the analogous ternary PSD-but-not-polynomial-SOS counterexample, the other witness that 'sum of squares of polynomials' must be weakened to rational functions for n ≥ 2."
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "PSD Definition and the Brahmagupta–Fibonacci Identity",
+      "startLine": 30,
+      "endLine": 43,
+      "summary": "Defines IsPSD p (p.eval x ≥ 0 for all real x), definitionally equal to the parent entry's IsPositiveSemidefinite, and proves the Brahmagupta–Fibonacci two-square identity (a²+b²)(c²+d²) = (ac−bd)²+(ad+bc)² for polynomials by ring — the recombination engine for the conjugate-pair case."
+    },
+    {
+      "id": "continuity-helper",
+      "title": "One-Sided Continuity Helper",
+      "startLine": 45,
+      "endLine": 52,
+      "summary": "nonneg_of_forall_gt: a function continuous at r and non-negative just to the right of r has f r ≥ 0, via the half-neighbourhood limit 𝓝[>] r and ge_of_tendsto. The right-hand half of the sign argument behind the even-multiplicity crux."
+    },
+    {
+      "id": "analytic-crux",
+      "title": "Analytic Crux: Real Roots Have Even Multiplicity",
+      "startLine": 54,
+      "endLine": 91,
+      "summary": "sq_dvd_of_psd_root: a real root of a non-negative p ≠ 0 has multiplicity ≥ 2, so (X − C r)² ∣ p. If the multiplicity were 1, p = (X − C r)·g with g r ≠ 0; one-sided limits force g r ≥ 0 (from the right) and g r ≤ 0 (from the left), contradicting g r ≠ 0."
+    },
+    {
+      "id": "induction-engine",
+      "title": "Strong-Induction Engine: PSD ⟹ Sum of Two Squares",
+      "startLine": 93,
+      "endLine": 196,
+      "summary": "psd_eq_sq_add_sq_aux: strong induction on degree. Base cases p = 0 and constant (√c)²+0². For deg ≥ 1 the FTA gives a complex root: if real, divide by (X − C r)² (crux) and recurse; if non-real, divide by the everywhere-positive quadratic Q = (X − C z.re)² + (C z.im)² and recombine via Brahmagupta–Fibonacci. Both branches strictly drop the degree."
+    },
+    {
+      "id": "main-theorem",
+      "title": "Hilbert's 17th, Univariate Case",
+      "startLine": 198,
+      "endLine": 208,
+      "summary": "univariate_psd_is_sos: packages the two-square engine into the Hilbert-17 form ∃ m (q : Fin m → ℝ[X]), p = ∑ q i² with m = 2 and q = ![u, v]. This is definitionally the parent's univariate_psd_is_sos_aux, discharging that axiom with 0 axioms."
+    }
+  ]
 }
