@@ -22,7 +22,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 101,
+    "lineCount": 123,
     "theoremCount": 5,
     "definitionCount": 0,
     "assumptions": "None. All results proved from first principles. The only hypotheses are the mathematical conditions of the theorem: a, b ≥ 2, gcd(a, b) = 1, and 0 < n < g. No axioms or structure-encoded assumptions.",
@@ -33,9 +33,14 @@
         "module": "Mathlib.Logic.Equiv.Defs"
       },
       {
-        "theorem": "ZMod.isUnit_natCast_iff",
-        "description": "b is a unit in ZMod a iff gcd(a, b) = 1 — the coprimality hypothesis enters here to cancel b in the residue injectivity proof.",
-        "module": "Mathlib.Data.ZMod.Basic"
+        "theorem": "Nat.ModEq.cancel_right_of_coprime",
+        "description": "If gcd(a, b) = 1 and i·b ≡ j·b (mod a) then i ≡ j (mod a) — cancels the right factor b in the residue injectivity proof (refreshed for Mathlib v4.26, replacing the older ZMod-unit cancellation).",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.modEq_iff_dvd'",
+        "description": "For x ≤ y, x ≡ y (mod n) ↔ n ∣ y − x — converts the congruence k·b ≡ n (mod a) into the divisibility facts that build the explicit representations.",
+        "module": "Mathlib.Data.Nat.ModEq"
       },
       {
         "theorem": "Nat.Coprime.dvd_of_dvd_mul_left",
@@ -43,21 +48,21 @@
         "module": "Mathlib.Data.Nat.GCD.Basic"
       },
       {
-        "theorem": "Nat.dvd_sub'",
-        "description": "Divisibility is preserved under truncated subtraction — assembles the second witness in one_of_pair_rep.",
-        "module": "Mathlib.Data.Nat.Defs"
+        "theorem": "Nat.dvd_sub",
+        "description": "Divisibility is preserved under truncated subtraction — assembles the second witness in one_of_pair_rep and the a ∣ b·Y / b ∣ a·X facts in rep_and_complement_false.",
+        "module": "Mathlib.Algebra.Order.Sub.Basic"
       }
     ],
     "originalContributions": [
       "First-principles proof of the Frobenius/Sylvester symmetry Rep(n) ↔ ¬Rep(g−n) for two coprime generators, self-contained with no external symmetry axiom.",
       "rep_and_complement_false: if both n and g−n were representable, summing the witnesses forces a·b = a·(x+x'+1) + b·(y+y'+1) with each factor bounded by the other generator, yielding a ∣ b·(…) and b ∣ a·(…); coprimality then gives a contradiction via a counting/divisibility squeeze.",
-      "one_of_pair_rep: a constructive residue-completion argument — exists_kb_mod shows the map k ↦ k·b mod a is a bijection on Fin a (injective via ZMod cancellation by the unit b, hence surjective), so the residue n mod a equals k·b mod a for some k < a; a case split on k·b ≤ n produces an explicit representation of either n or g−n.",
+      "one_of_pair_rep: a constructive residue-completion argument — exists_kb_mod shows the map k ↦ k·b mod a is a bijection on Fin a (injective via Nat.ModEq.cancel_right_of_coprime cancelling the coprime factor b, hence surjective), so the residue n mod a equals k·b mod a for some k < a; a case split on k·b ≤ n produces an explicit representation of either n or g−n via Nat.modEq_iff_dvd'.",
       "Correction of the problem's posed statement: the symmetry is Rep(n) ↔ ¬Rep(g−n), NOT ¬Rep(n) ↔ ¬Rep(g−n) (counterexample a=3, b=5, g=7: n=1 non-rep, g−n=6 representable)."
     ],
     "prerequisites": [
       "frobenius-number (parent: Sylvester's Frobenius number formula g(a,b) = ab − a − b)",
       "Definition Representable a b n := ∃ x y : ℕ, n = a·x + b·y (from parent FrobeniusNumber)",
-      "ZMod arithmetic: units and cancellation (b invertible mod a ⇔ coprime)",
+      "Modular cancellation in ℕ: i·b ≡ j·b (mod a) ⇒ i ≡ j (mod a) when gcd(a, b) = 1",
       "Pigeonhole on finite types: injective ⇒ surjective on Fin a"
     ],
     "dateAdded": "2026-06-16",
@@ -67,18 +72,18 @@
     "historicalContext": "The **Frobenius coin problem** (Chicken McNugget theorem, postage-stamp problem) for two coprime generators $a, b$ was solved by **James Joseph Sylvester** (1880s): the largest non-representable integer is the *Frobenius number* $g(a, b) = ab - a - b$ (parent entry `frobenius-number`), and there are exactly $\\frac{(a-1)(b-1)}{2}$ non-representable positive integers (sibling `frobenius-number-oq-01`). Underlying *both* of Sylvester's theorems is a single structural fact: the numerical semigroup $\\langle a, b\\rangle$ is **symmetric**. A numerical semigroup $S$ with Frobenius number $g$ is called symmetric when for every $k \\in \\{0, 1, \\ldots, g\\}$, $k \\in S \\Leftrightarrow g - k \\notin S$. For two coprime generators this symmetry *always holds* — and that is precisely the statement formalized here: $\\text{Rep}(n) \\Leftrightarrow \\neg\\text{Rep}(g - n)$ for $0 < n < g$.\n\nThe notion of symmetric numerical semigroups was crystallized by **Kunz (1970)** and connected to **Gorenstein** local rings: $\\langle a, b\\rangle$ symmetric corresponds to $k[t^a, t^b]$ being a Gorenstein ring. **Herzog (1970)** generalized this to complete-intersection numerical semigroups. So the unassuming biconditional in this file is the elementary shadow of a deep duality in commutative algebra.",
     "problemStatement": "For coprime positive integers $a, b \\geq 2$ with Frobenius number $g(a, b) = ab - a - b$, and any $n$ with $0 < n < g$, prove the symmetry\n\n$$\\text{Representable}(a, b, n) \\;\\Longleftrightarrow\\; \\neg\\,\\text{Representable}(a, b, g - n),$$\n\nwhere $\\text{Representable}(a, b, m) := \\exists\\, x, y \\in \\mathbb{N},\\ m = ax + by$. Equivalently: in the open interval $(0, g)$, exactly one of each complementary pair $\\{n, g - n\\}$ is representable.",
     "text": "The structural symmetry of two-generator numerical semigroups: in the range below the Frobenius number, a value is representable exactly when its complement is not. This is the engine behind Sylvester's genus count.",
-    "proofStrategy": "**Two complementary halves, combined into a biconditional.** **(⇒, no two reps) `rep_and_complement_false`:** assume both $n = ax + by$ and $g - n = ax' + by'$ are representable. Adding and using $g = ab - a - b$ gives $ab = a(x + x' + 1) + b(y + y' + 1)$. Each summand is non-negative, forcing $x + x' + 1 \\leq b$ and $y + y' + 1 \\leq a$; rearranging shows $a \\mid b(y + y' + 1)$ and $b \\mid a(x + x' + 1)$. Coprimality (`Nat.Coprime.dvd_of_dvd_mul_left`) turns these into $a \\mid (y+y'+1)$ and $b \\mid (x+x'+1)$, and a `linarith` squeeze against the bounds yields `False`. **(⇐, at least one rep) `one_of_pair_rep`:** the helper `exists_kb_mod` proves $k \\mapsto k b \\bmod a$ is a bijection on $\\mathrm{Fin}\\,a$ — injectivity comes from cancelling the unit $b$ in $\\mathbb{Z}/a\\mathbb{Z}$ (coprimality via `ZMod.isUnit_natCast_iff`), and `Finite.injective_iff_surjective` upgrades to surjectivity — so some $k < a$ satisfies $kb \\equiv n \\pmod a$. Case split: if $kb \\leq n$ then $n - kb$ is a non-negative multiple of $a$, giving $\\text{Rep}(n)$ directly; otherwise an explicit witness $\\langle q, a - 1 - k\\rangle$ represents $g - n$. **Assembly `frobenius_symmetry`:** the forward direction is `rep_and_complement_false` contrapositive; the backward direction picks the representable element from `one_of_pair_rep`.",
+    "proofStrategy": "**Two complementary halves, combined into a biconditional.** **(⇒, no two reps) `rep_and_complement_false`:** assume both $n = ax + by$ and $g - n = ax' + by'$ are representable. Adding and using $g = ab - a - b$ gives $ab = a(x + x' + 1) + b(y + y' + 1)$. Each summand is non-negative, forcing $x + x' + 1 \\leq b$ and $y + y' + 1 \\leq a$; rearranging shows $a \\mid b(y + y' + 1)$ and $b \\mid a(x + x' + 1)$. Coprimality (`Nat.Coprime.dvd_of_dvd_mul_left`) turns these into $a \\mid (y+y'+1)$ and $b \\mid (x+x'+1)$, and a `linarith` squeeze against the bounds yields `False`. **(⇐, at least one rep) `one_of_pair_rep`:** the helper `exists_kb_mod` proves $k \\mapsto k b \\bmod a$ is a bijection on $\\mathrm{Fin}\\,a$ — injectivity comes from `Nat.ModEq.cancel_right_of_coprime` cancelling the coprime factor $b$ in $i b \\equiv j b \\pmod a$, and `Finite.injective_iff_surjective` upgrades to surjectivity — so some $k < a$ satisfies $kb \\equiv n \\pmod a$. Case split (`Nat.modEq_iff_dvd'` turns the congruence into divisibility): if $kb \\leq n$ then $n - kb$ is a non-negative multiple of $a$, giving $\\text{Rep}(n)$ directly; otherwise an explicit witness $\\langle q, a - 1 - k\\rangle$ represents $g - n$. **Assembly `frobenius_symmetry`:** the forward direction is `rep_and_complement_false` contrapositive; the backward direction picks the representable element from `one_of_pair_rep`.",
     "keyInsights": [
       "**The symmetry is the single source of *both* Sylvester theorems.** The Frobenius number formula (largest gap = $g$) and the genus formula (number of gaps = $\\frac{(a-1)(b-1)}{2}$, sibling OQ-01) are both corollaries of this one biconditional: it says the involution $k \\mapsto g - k$ swaps the representable and non-representable sets in $(0, g)$. OQ-01 literally imports this file and uses it as a one-line black box inside a `Finset.card_bij`.",
-      "**Coprimality enters exactly twice, in dual guises.** In `rep_and_complement_false` it converts $a \\mid bc$ into $a \\mid c$ (a *divisibility* use). In `one_of_pair_rep` it makes $b$ a *unit* in $\\mathbb{Z}/a\\mathbb{Z}$, so multiplication by $b$ permutes residues (a *cancellation* use). Both are facets of $\\gcd(a, b) = 1$, and without it the result is false — non-coprime generators only represent multiples of the gcd.",
+      "**Coprimality enters exactly twice, in dual guises.** In `rep_and_complement_false` it converts $a \\mid bc$ into $a \\mid c$ (a *divisibility* use). In `one_of_pair_rep` it cancels the factor $b$ in a congruence mod $a$, so multiplication by $b$ permutes residues (a *cancellation* use, via `Nat.ModEq.cancel_right_of_coprime`). Both are facets of $\\gcd(a, b) = 1$, and without it the result is false — non-coprime generators only represent multiples of the gcd.",
       "**The residue-completion lemma is the constructive core.** `exists_kb_mod` says every residue class mod $a$ is realized by some multiple $kb$ with $k < a$. This is a finite pigeonhole (injective map on $\\mathrm{Fin}\\,a$ is surjective) and is exactly the statement that $\\{0, b, 2b, \\ldots, (a-1)b\\}$ is a complete residue system mod $a$ when $\\gcd(a, b) = 1$. It converts the *existence* of a representation into a concrete search bounded by $a$.",
       "**Statement correction matters.** The problem JSON posed $\\neg\\text{Rep}(n) \\Leftrightarrow \\neg\\text{Rep}(g-n)$, which is FALSE: it would say representability is symmetric under $n \\mapsto g - n$, but the truth is *anti*-symmetric (representable ↔ complement non-representable). The header documents the counterexample $(a,b)=(3,5)$, $g=7$: $n=1$ is non-representable while $g-n=6 = 3\\cdot2$ is representable. Getting the polarity right is the whole content.",
-      "**`Finite.injective_iff_surjective` is the right Lean idiom for complete-residue-system arguments.** Rather than constructing an explicit inverse, the proof packages $k \\mapsto kb \\bmod a$ as an endomorphism of $\\mathrm{Fin}\\,a$, proves injectivity by `ZMod` cancellation, and reads off surjectivity for free. **Pattern reusable** for any 'multiplication by a unit permutes the residues' argument."
+      "**`Finite.injective_iff_surjective` is the right Lean idiom for complete-residue-system arguments.** Rather than constructing an explicit inverse, the proof packages $k \\mapsto kb \\bmod a$ as an endomorphism of $\\mathrm{Fin}\\,a$, proves injectivity by modular cancellation (`Nat.ModEq.cancel_right_of_coprime`), and reads off surjectivity for free. **Pattern reusable** for any 'multiplication by a coprime factor permutes the residues' argument."
     ],
     "prerequisites": [
       "Frobenius number $g(a, b) = ab - a - b$ for coprime $a, b \\geq 2$ (parent `frobenius-number`)",
       "Definition $\\text{Representable}(a, b, n) := \\exists x, y \\in \\mathbb{N},\\ n = ax + by$",
-      "Units and cancellation in $\\mathbb{Z}/a\\mathbb{Z}$: $b$ invertible $\\Leftrightarrow \\gcd(a, b) = 1$",
+      "Modular cancellation: $i b \\equiv j b \\pmod a \\Rightarrow i \\equiv j \\pmod a$ when $\\gcd(a, b) = 1$",
       "Finite pigeonhole: an injective self-map of $\\mathrm{Fin}\\,a$ is surjective"
     ]
   },
@@ -96,8 +101,8 @@
       "title": "Helpers: mul_mod_inj and exists_kb_mod (Complete Residue System)",
       "startLine": 24,
       "endLine": 46,
-      "summary": "Two private lemmas. mul_mod_inj: the map k ↦ (k·b mod a) on Fin a is injective, proved by lifting to ZMod a, cancelling the unit b (ZMod.isUnit_natCast_iff from coprimality), and an omega finish. exists_kb_mod: by Finite.injective_iff_surjective the injective map is surjective, so for every residue r < a there is some k < a with k·b mod a = r.",
-      "mathContext": "{0, b, 2b, …, (a−1)b} is a complete residue system mod a precisely when gcd(a, b) = 1 — multiplication by a unit permutes ℤ/aℤ."
+      "summary": "Two private lemmas. mul_mod_inj: the map k ↦ (k·b mod a) on Fin a is injective, proved by reducing to a congruence i·b ≡ j·b (mod a) and cancelling the coprime factor b (Nat.ModEq.cancel_right_of_coprime). exists_kb_mod: by Finite.injective_iff_surjective the injective map is surjective, so for every residue r < a there is some k < a with k·b mod a = r.",
+      "mathContext": "{0, b, 2b, …, (a−1)b} is a complete residue system mod a precisely when gcd(a, b) = 1 — multiplication by a coprime factor permutes ℤ/aℤ."
     },
     {
       "id": "no-two-reps",
@@ -157,7 +162,7 @@
     {
       "targetId": "gcd-algorithm",
       "relationship": "foundational",
-      "description": "The hypothesis gcd(a, b) = 1 is used twice: to cancel b as a unit in ℤ/aℤ (one_of_pair_rep) and to pass from a ∣ bc to a ∣ c (rep_and_complement_false). Without coprimality only multiples of gcd(a, b) are representable and the symmetry fails."
+      "description": "The hypothesis gcd(a, b) = 1 is used twice: to cancel the coprime factor b in a congruence mod a (one_of_pair_rep) and to pass from a ∣ bc to a ∣ c (rep_and_complement_false). Without coprimality only multiples of gcd(a, b) are representable and the symmetry fails."
     }
   ],
   "references": [
@@ -199,7 +204,7 @@
       "Proofs.FrobeniusNumber"
     ],
     "namespace": "FrobeniusSymmetry",
-    "lineCount": 101,
+    "lineCount": 123,
     "theoremCount": 5,
     "axiomCount": 0,
     "definitionCount": 0,

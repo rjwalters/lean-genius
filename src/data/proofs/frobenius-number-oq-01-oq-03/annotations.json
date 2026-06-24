@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-frob-oq0103-context",
+    "proofId": "frobenius-number-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 33 },
+    "type": "concept",
+    "title": "Symmetric of type one: PF(⟨a,b⟩) = {g}",
+    "content": "For coprime $a, b \\geq 2$ with Frobenius number $g = ab - a - b$, the numerical semigroup $\\langle a, b\\rangle$ is **symmetric of type one**. Two contributions sit here: (1) `symmetric_le_frobenius` extends the interior duality of sibling OQ-02 (which assumes $0 < k < g$) to the *full* closed interval $0 \\le k \\le g$; (2) the **pseudo-Frobenius** predicate is introduced and $\\mathrm{PF}(\\langle a,b\\rangle) = \\{g\\}$ is proved, giving $\\mathrm{type} = 1$.",
+    "mathContext": "The type of a numerical semigroup is $|\\mathrm{PF}(S)|$; type one $\\Leftrightarrow$ symmetric $\\Leftrightarrow$ $k[t^a,t^b]$ Gorenstein (Kunz 1970)."
+  },
+  {
+    "id": "ann-frob-oq0103-fullsym",
+    "proofId": "frobenius-number-oq-01-oq-03",
+    "range": { "startLine": 35, "endLine": 68 },
+    "type": "proof-step",
+    "title": "symmetric_le_frobenius: closing the boundary",
+    "content": "OQ-02 proves $\\text{Rep}(k) \\Leftrightarrow \\neg\\text{Rep}(g-k)$ only for $0 < k < g$, because the two sides flip polarity at the endpoints. Here the endpoints are checked directly: at $k=0$, $0 \\in S$ and $g \\notin S$; at $k=g$, $g \\notin S$ and $0 \\in S$. The interior case delegates to `frobenius_symmetry`. The result is the genuine symmetric-semigroup statement over the whole gap window $[0,g]$.",
+    "mathContext": "A numerical semigroup is symmetric iff $k \\in S \\Leftrightarrow g - k \\notin S$ for every $0 \\le k \\le g$ — boundary included."
+  },
+  {
+    "id": "ann-frob-oq0103-pfdef",
+    "proofId": "frobenius-number-oq-01-oq-03",
+    "range": { "startLine": 70, "endLine": 85 },
+    "type": "definition",
+    "title": "IsPseudoFrobenius and that g qualifies",
+    "content": "`IsPseudoFrobenius a b x := ¬Rep(x) ∧ ∀ s, 0 < s → Rep(s) → Rep(x + s)`: $x$ is a gap that becomes representable on adding *any* nonzero semigroup element. `frobenius_isPseudoFrobenius` shows $g$ qualifies — it is a gap (`frobenius_not_representable`), and $g + s > g$ is representable for positive representable $s$ by the maximality clause of `sylvester_frobenius`.",
+    "mathContext": "Pseudo-Frobenius numbers are the maximal gaps of $S$ under $u \\preceq v \\Leftrightarrow v - u \\in S$; their count is the type."
+  },
+  {
+    "id": "ann-frob-oq0103-uniqueness",
+    "proofId": "frobenius-number-oq-01-oq-03",
+    "range": { "startLine": 87, "endLine": 111 },
+    "type": "key-insight",
+    "title": "Uniqueness: the symmetry corners the maximal gap at g",
+    "content": "`pseudoFrobenius_eq_frobenius` runs a trichotomy on $x$ versus $g$. If $x > g$, maximality makes $x$ representable, contradicting that it is a gap. If $x < g$, then $x > 0$ (as $0 \\in S$) and the interior symmetry yields a *representable* complement $g - x > 0$; feeding it into the pseudo-Frobenius closure produces $x + (g - x) = g \\in S$, contradicting $g \\notin S$. So $x = g$. The two parent facts — symmetry below $g$ and representability above $g$ — cover the line on both sides of $g$.",
+    "mathContext": "The Frobenius number is the unique maximal gap precisely when the semigroup is symmetric."
+  },
+  {
+    "id": "ann-frob-oq0103-type",
+    "proofId": "frobenius-number-oq-01-oq-03",
+    "range": { "startLine": 113, "endLine": 136 },
+    "type": "proof-step",
+    "title": "PF(S) = {g} and type = 1",
+    "content": "`isPseudoFrobenius_iff` fuses existence and uniqueness into $\\text{IsPseudoFrobenius}\\,a\\,b\\,x \\leftrightarrow x = g$. `pseudoFrobenius_setOf_eq` rewrites the set comprehension to the singleton $\\{g\\}$, and `frobenius_type_eq_one` reads off $\\mathrm{ncard} = 1$ via `Set.ncard_singleton`. The closing example checks $g(3,5) = 7$ by kernel `decide` (no `native_decide`), the semigroup $\\langle 3,5\\rangle$ having gaps $\\{1,2,4,7\\}$ with unique maximal gap $7$.",
+    "mathContext": "type$(\\langle a,b\\rangle) = 1$ — a distinct invariant from the genus $(a-1)(b-1)/2$ of sibling OQ-01."
+  }
+]
