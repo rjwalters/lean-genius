@@ -1,0 +1,178 @@
+{
+  "id": "mean-value-theorem-oq-02-oq-01-oq-02",
+  "title": "Global convergence of the Taylor series of sin and cos from the uniform derivative bound M = 1",
+  "slug": "mean-value-theorem-oq-02-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.MeanValueTheoremOQ02",
+      "Proofs.MeanValueTheoremOQ02OQ01"
+    ],
+    "opens": [
+      "Real",
+      "Set",
+      "Filter",
+      "Topology",
+      "MeanValueTheoremOQ02",
+      "MeanValueTheoremOQ02OQ01"
+    ],
+    "namespace": "MeanValueTheoremOQ02OQ01OQ02",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/MeanValueTheoremOQ02OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "description": "Answers the OQ-02 follow-up of mean-value-theorem-oq-02-oq-01: the parent's uniform-bound convergence engine taylorPolynomial_tendsto only delivered the exponential series for x > 0, because exp has no global derivative bound. sin and cos are the opposite extreme — every iterated derivative is bounded by the SINGLE global constant M = 1 (Real.abs_iteratedDeriv_sin_le_one, Real.abs_iteratedDeriv_cos_le_one) — so the engine yields convergence of their Taylor partial sums to sin x and cos x for EVERY real x. The positive half-line is the parent engine applied with M = 1; the negative half-line is recovered from the positive one by parity (sin odd, cos even), encoded in the termwise reflection identities Tₙ(sin, −x) = −Tₙ(sin, x) and Tₙ(cos, −x) = Tₙ(cos, x), which hold exactly because the wrong-parity Taylor coefficients vanish (iteratedDeriv (2m) sin 0 = 0, iteratedDeriv (2m+1) cos 0 = 0). The genuine strengthening over the parent is global (all of ℝ) convergence, powered by the global nature of the bound. All 7 theorems are fully machine-checked, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius researchers (2026)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ02OQ01OQ02.lean",
+    "tags": [
+      "calculus",
+      "taylor-theorem",
+      "mean-value-theorem",
+      "taylor-remainder",
+      "series-convergence",
+      "trigonometric-functions",
+      "sin",
+      "cos",
+      "parity",
+      "analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 169,
+    "assumptions": "None. All seven theorems depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound), confirmed via #print axioms on sin_taylor_tendsto and cos_taylor_tendsto. The convergence engine taylorPolynomial_tendsto is reused from the parent file Proofs/MeanValueTheoremOQ02OQ01.lean as a proven, 0-axiom theorem; the global derivative bounds and parity formulas are taken from Mathlib (Real.abs_iteratedDeriv_sin_le_one, Real.iteratedDeriv_even_sin, Real.iteratedDeriv_odd_cos). No axioms or sorries are introduced or inherited.",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.abs_iteratedDeriv_sin_le_one",
+        "description": "|iteratedDeriv n sin x| ≤ 1 for all n, x — the global uniform derivative bound that powers the convergence on all of ℝ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.abs_iteratedDeriv_cos_le_one",
+        "description": "|iteratedDeriv n cos x| ≤ 1 for all n, x — the cosine counterpart of the global bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.iteratedDeriv_even_sin",
+        "description": "iteratedDeriv (2n) sin = (-1)ⁿ · sin; at 0 it vanishes, killing the even Taylor coefficients of sin and giving the odd reflection",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.iteratedDeriv_odd_cos",
+        "description": "iteratedDeriv (2n+1) cos = (-1)^{n+1} · sin; at 0 it vanishes, killing the odd Taylor coefficients of cos and giving the even reflection",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      },
+      {
+        "theorem": "Real.contDiff_sin",
+        "description": "sin is C^∞, a hypothesis of the parent convergence engine",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv"
+      }
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "sin_taylor_tendsto_pos",
+      "type": "theorem",
+      "description": "For x > 0, taylorPolynomial Real.sin 0 n x → sin x. Direct application of the parent's uniform-bound engine taylorPolynomial_tendsto with M = 1, since every iterated derivative of sin is bounded by 1 (Real.abs_iteratedDeriv_sin_le_one)."
+    },
+    {
+      "name": "cos_taylor_tendsto_pos",
+      "type": "theorem",
+      "description": "For x > 0, taylorPolynomial Real.cos 0 n x → cos x. The cosine counterpart, with the same global bound M = 1."
+    },
+    {
+      "name": "taylorPolynomial_sin_neg",
+      "type": "theorem",
+      "description": "taylorPolynomial Real.sin 0 n (−x) = −taylorPolynomial Real.sin 0 n x. The Taylor polynomial of sin at 0 is an odd function of its argument, because the even-order coefficients iteratedDeriv (2m) sin 0 = (-1)ᵐ·sin 0 = 0 vanish; the odd-order terms flip sign with the odd power."
+    },
+    {
+      "name": "taylorPolynomial_cos_neg",
+      "type": "theorem",
+      "description": "taylorPolynomial Real.cos 0 n (−x) = taylorPolynomial Real.cos 0 n x. The Taylor polynomial of cos at 0 is an even function of its argument, because the odd-order coefficients iteratedDeriv (2m+1) cos 0 = (-1)^{m+1}·sin 0 = 0 vanish; the even-order terms are unchanged by the even power."
+    },
+    {
+      "name": "sin_taylor_tendsto",
+      "type": "theorem",
+      "description": "For EVERY x : ℝ, taylorPolynomial Real.sin 0 n x → sin x. Trichotomy on the sign of x: x > 0 is the engine; x = 0 is constant (Tₙ(0) = sin 0); x < 0 is reduced to −x > 0 through the odd reflection taylorPolynomial_sin_neg and sin(−x) = −sin x."
+    },
+    {
+      "name": "cos_taylor_tendsto",
+      "type": "theorem",
+      "description": "For EVERY x : ℝ, taylorPolynomial Real.cos 0 n x → cos x. Same trichotomy, with the negative half-line reduced via the even reflection taylorPolynomial_cos_neg and cos(−x) = cos x."
+    },
+    {
+      "name": "taylorPolynomial_at_zero",
+      "type": "theorem",
+      "description": "taylorPolynomial f 0 n 0 = f 0 — the Taylor polynomial centred at 0, evaluated at the centre, is the constant term. The x = 0 base case of both global convergence theorems."
+    }
+  ],
+  "overview": {
+    "historicalContext": "That the trigonometric functions equal their Taylor series — sin x = x − x³/3! + x⁵/5! − ⋯ and cos x = 1 − x²/2! + x⁴/4! − ⋯ for all real x — is the prototypical example of an entire function recovered from its derivatives at a single point (Taylor 1715; the modern analytic treatment is Rudin, Principles of Mathematical Analysis, §8). The clean reason the series converge everywhere, in contrast to series like that of 1/(1−x), is that all derivatives of sin and cos are uniformly bounded by 1 on the whole line, so the Lagrange remainder M·|x|ⁿ⁺¹/(n+1)! tends to 0 for every x. This entry formalizes exactly that classical argument, on top of the parent file's reusable remainder/convergence engine.",
+    "problemStatement": "Question (OQ-02 of mean-value-theorem-oq-02-oq-01): the parent built a convergence engine taylorPolynomial_tendsto requiring a single constant M bounding every iterated derivative on an interval, but its concrete payoff (the exponential series) was one-sided (x > 0) because exp has no global derivative bound. sin and cos do: M = 1 works globally. Use this to prove that the Taylor partial sums of sin and cos centred at 0 converge to sin and cos for EVERY real x, including x < 0.",
+    "proofStrategy": "Positive half-line (sin_taylor_tendsto_pos, cos_taylor_tendsto_pos): apply the parent engine taylorPolynomial_tendsto with M = 1, feeding it Real.contDiff_sin/cos and Mathlib's global bounds Real.abs_iteratedDeriv_sin_le_one / Real.abs_iteratedDeriv_cos_le_one. Parity reflections (taylorPolynomial_sin_neg, taylorPolynomial_cos_neg): unfold the parent's taylorPolynomial as a finite sum and compare termwise under x ↦ −x; split each index by parity. The wrong-parity coefficient vanishes (iteratedDeriv (2m) sin 0 = (-1)ᵐ·sin 0 = 0 via Real.iteratedDeriv_even_sin and sin 0 = 0; dually iteratedDeriv (2m+1) cos 0 = 0 via Real.iteratedDeriv_odd_cos), while the correct-parity term transforms by Odd.neg_pow / Even.neg_pow. Global theorems (sin_taylor_tendsto, cos_taylor_tendsto): trichotomy on x. x > 0 is the engine; x = 0 is constant via taylorPolynomial_at_zero; x < 0 takes the positive result at −x > 0 and transports it back through the reflection identity together with sin(−x) = −sin x (resp. cos(−x) = cos x), using Tendsto.congr and Tendsto.neg.",
+    "keyInsights": [
+      "**Global bound ⇒ global convergence.** The parent's exponential payoff was intrinsically one-sided because exp's derivatives grow; sin and cos are bounded by the single constant 1 on all of ℝ, so the same engine delivers convergence on the whole line. This is the precise sense in which the trigonometric Taylor series are 'better behaved' than the exponential one near −∞.",
+      "**The negative half-line is parity, not analysis.** Rather than re-running the remainder argument on (x, 0) for x < 0, the result there is obtained for free from the positive half-line by the oddness of sin and evenness of cos. The reflection identities Tₙ(sin, −x) = −Tₙ(sin, x) and Tₙ(cos, −x) = Tₙ(cos, x) are purely algebraic consequences of the vanishing of the wrong-parity Taylor coefficients.",
+      "**Why the wrong-parity coefficients vanish is the whole content of the reflections.** Mathlib's iteratedDeriv_even_sin / iteratedDeriv_odd_cos pin every even-order derivative of sin (resp. odd-order of cos) to a multiple of sin, which is 0 at the origin. Without this, the Taylor polynomials would not be (anti)symmetric and the sign-reduction would fail.",
+      "**Complementary to Mathlib's power-series route.** Mathlib already knows Real.hasSum_sin / Real.hasSum_cos, derived from the complex exponential. The same analytic fact is obtained here from the mean-value / Taylor-remainder side of the parent thread, phrased for the concrete taylorPolynomial object — a derivation through differential rather than power-series data."
+    ],
+    "prerequisites": [
+      "The parent's uniform-bound convergence engine taylorPolynomial_tendsto (mean-value-theorem-oq-02-oq-01)",
+      "Iterated derivatives of sin and cos and their global bounds (Mathlib)",
+      "Parity of functions and the behaviour of even/odd powers under negation",
+      "Limits of sequences (Filter.Tendsto), Tendsto.congr and Tendsto.neg"
+    ]
+  },
+  "conclusion": {
+    "summary": "On top of the parent's reusable convergence engine, this entry proves that the Taylor partial sums of sin and cos centred at 0 converge to sin and cos for every real x. The positive half-line is the engine applied with the global bound M = 1; the negative half-line is recovered, without further analysis, from the parity reflections taylorPolynomial_sin_neg (odd) and taylorPolynomial_cos_neg (even). All seven results are fully machine-checked with no axioms and no sorries.",
+    "implications": "This is the natural completion of the parent's one-sided exponential result: where exp's lack of a global derivative bound forced x > 0, the global bound M = 1 for sin and cos yields convergence on all of ℝ directly. It demonstrates the parent engine on a second, qualitatively different function class and packages the parity argument that converts one-sided into two-sided convergence — a template reusable for any function with a global uniform derivative bound and a definite parity.",
+    "openQuestions": [
+      "Identify taylorPolynomial Real.sin 0 (2N+2) x explicitly with the alternating partial sum ∑_{j<N+1} (-1)ʲ x^{2j+1}/(2j+1)!, closing the loop with Mathlib's Real.hasSum_sin / Real.hasSum_cos and showing the two derivations agree.",
+      "State a quantitative form: an explicit N(x, ε) past which |sin x − Tₙ(x)| < ε on a given bounded interval, read off from the parent's taylor_remainder_bound with M = 1.",
+      "Abstract the parity-reduction step into a standalone lemma: any C^∞ function with a global uniform derivative bound and a fixed parity has a globally convergent Taylor series at 0."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem-oq-02-oq-01",
+      "relationship": "parent-problem",
+      "description": "The parent entry, which built the uniform-bound convergence engine taylorPolynomial_tendsto and applied it one-sidedly to exp. This file consumes that engine and supplies the global bound M = 1 for sin and cos. The parent's own open-question list explicitly proposes this sin/cos extension."
+    },
+    {
+      "targetId": "mean-value-theorem-oq-02",
+      "relationship": "ancestor",
+      "description": "Taylor's theorem with the exact Lagrange remainder and the definition of taylorPolynomial, the object whose convergence is established here."
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "ancestor",
+      "description": "The base Mean Value Theorem (Wiedijk #75); Taylor's theorem is its higher-order generalization and the source of the remainder estimate driving this convergence."
+    }
+  ],
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Rudin, W. (1976). \"Principles of Mathematical Analysis,\" 3rd ed. McGraw-Hill. §8 (the exponential, logarithmic, and trigonometric functions) and Theorem 5.15 (Taylor's theorem).",
+      "relevance": "Standard source for identifying sin and cos with their Taylor series via the uniform boundedness of their derivatives and the Lagrange remainder — exactly the argument formalized here."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Deriv\" — abs_iteratedDeriv_sin_le_one, abs_iteratedDeriv_cos_le_one, iteratedDeriv_even_sin, iteratedDeriv_odd_cos, contDiff_sin, contDiff_cos. (accessed 2026)",
+      "relevance": "Supplies the global derivative bound M = 1 and the parity formulas for the iterated derivatives of sin and cos, the only external inputs beyond the parent engine."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Series\" — Real.hasSum_sin, Real.hasSum_cos. (accessed 2026)",
+      "relevance": "Mathlib's power-series derivation of the same convergence fact, from the complex exponential; this entry obtains it instead from the mean-value/Taylor-remainder route."
+    }
+  ]
+}
