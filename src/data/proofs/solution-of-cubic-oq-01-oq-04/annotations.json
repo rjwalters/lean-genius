@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-soc-oq0104-shift-roots",
+    "proofId": "solution-of-cubic-oq-01-oq-04",
+    "range": {
+      "startLine": 78,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "A Change of Variable Translates the Root Multiset",
+    "content": "roots_comp_X_sub_C is the reusable core: composing a polynomial with the shift X ↦ X - C s translates its entire root multiset by +s, (p.comp (X - C s)).roots = p.roots.map (· + s). The proof works at the level of multiplicities. Mathlib's rootMultiplicity_eq_rootMultiplicity (p.rootMultiplicity t = (p.comp (X + C t)).rootMultiplicity 0) is applied twice — once to expose the shifted polynomial, once to read off the shifted multiplicity — giving rootMultiplicity a (p.comp (X - C s)) = rootMultiplicity (a - s) p with no derivative computation. count_roots and the injectivity of (· + s) (Multiset.count_map_eq_count') then upgrade the per-point identity to an equality of multisets. The lemma needs only commutative-ring facts, though it is stated here over ℂ."
+  },
+  {
+    "id": "ann-soc-oq0104-funext",
+    "proofId": "solution-of-cubic-oq-01-oq-04",
+    "range": {
+      "startLine": 106,
+      "endLine": 117
+    },
+    "type": "technique",
+    "title": "Lifting an Evaluation Identity to a Polynomial Identity",
+    "content": "The parent proved generalCubicEval_shift as an equality of functions ℂ → ℂ. To talk about root multisets and factorizations we need an equality of actual polynomials: generalCubicPoly.comp (X - C (b/3a)) = C a · depressedCubic. Polynomial.funext supplies the bridge — over an infinite field, two polynomials agreeing at every point are equal — so the polynomial identity follows by checking eval at an arbitrary x and invoking the parent's evaluation identity. This 'evaluate, then funext' pattern is the clean way to reuse pointwise algebra at the level of polynomials."
+  },
+  {
+    "id": "ann-soc-oq0104-bijection-factorization",
+    "proofId": "solution-of-cubic-oq-01-oq-04",
+    "range": {
+      "startLine": 119,
+      "endLine": 178
+    },
+    "type": "insight",
+    "title": "From Multiset Bijection to Factorization: the Leading Coefficient is All That is Forgotten",
+    "content": "The multiset bijection generalCubicPoly_roots = depressedCubic.roots.map (· - b/(3a)) comes from cancelling the constant factor C a (roots_C_mul) on the composed polynomial and inverting the shift. The factorization generalCubicPoly = C a · ∏ (X - C (t - b/(3a))) then restores exactly that forgotten factor: over the algebraically closed field ℂ the cubic splits, so C_leadingCoeff_mul_prod_multiset_X_sub_C writes it as its leading coefficient (= a, with natDegree 3) times the product of its linear factors, and substituting the root multiset gives the shifted depressed factors. Root multiset and factorization thus carry the same information up to the scalar a."
+  }
+]
