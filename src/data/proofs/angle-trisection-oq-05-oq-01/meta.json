@@ -1,8 +1,8 @@
 {
   "id": "angle-trisection-oq-05-oq-01",
-  "title": "Algebraic Characterization of k-Fold Origami Constructibility",
+  "title": "Smooth-Number Model of k-Fold Origami Constructibility (Conjectured Characterization)",
   "slug": "angle-trisection-oq-05-oq-01",
-  "description": "Formalizes the conjectured algebraic characterization of k-fold origami constructibility: k simultaneous folds can construct exactly the p_{k+1}-smooth degrees (all prime factors ≤ the (k+1)-th prime). Proves strict hierarchy (each fold level adds one prime), monotonicity, and algebraic completeness (every degree is eventually constructible).",
+  "description": "Infrastructure formalization that models the conjectured algebraic characterization of k-fold origami constructibility as a smooth-number predicate. IsKFoldConstructible d k is DEFINED as 'k ≥ 1 and d is p_{k+1}-smooth' (all prime factors ≤ the (k+1)-th prime); the file does not import or use the Huzita-Hatori origami axioms (origami appears only in comments) and proves no bridge from fold operations to this predicate. On this definitional model it verifies strict hierarchy (each prime separates one fold level from the next), monotonicity, and algebraic completeness (every degree is eventually smooth) — i.e. number-theoretic facts about smooth numbers, not a geometric formalization of folding. The conjecture k-fold ↔ p_{k+1}-smooth is established (Alperin-Lang 2006) only for k = 1, 2; for k ≥ 3 it remains open and is here encoded as a definition.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Huzita%E2%80%93Hatori_axioms#Multi-fold_axioms",
@@ -17,7 +17,7 @@
       "algebraic-characterization"
     ],
     "proofRepoPath": "Proofs/AngleTrisectionOQ05OQ01.lean",
-    "badge": "original",
+    "badge": "infrastructure",
     "sorries": 0,
     "mathlibDependencies": [
       {
