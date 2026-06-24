@@ -1,0 +1,179 @@
+{
+  "id": "divisibility-rules-oq-01-oq-01-oq-02",
+  "title": "Base-b Divisibility Rule for Moduli Coprime to the Base",
+  "slug": "divisibility-rules-oq-01-oq-01-oq-02",
+  "description": "Generalizes the parent's base-10 digit-sum divisibility rule to an arbitrary base b ≥ 2. For every b ≥ 2 and every d > 1 with gcd(d, b) = 1, there exists k > 0 such that d ∣ n ↔ d ∣ (sum of the base-b^k digits of n). The witness k = φ(d) is given by Euler's theorem: b^φ(d) ≡ 1 (mod d). The base-10 parent is recovered as the special case b = 10. This answers the parent's listed open question: 'Can the rule be extended to bases other than 10?'",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ01OQ01OQ02.lean",
+    "parentProofId": "divisibility-rules-oq-01-oq-01",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "multiplicative-order",
+      "Euler-theorem",
+      "generalization",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Fully machine-verified. All three theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (confirmed via #print axioms — no Lean.ofReduceBool, since the illustrative base witnesses use kernel `decide` rather than `native_decide`).",
+    "dateAdded": "2026-06-24",
+    "lineCount": 132,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.pow_totient",
+        "description": "Euler's theorem: a^φ(n) = 1 for any unit a in (ZMod n)ˣ",
+        "module": "Mathlib.Data.ZMod.Units"
+      },
+      {
+        "theorem": "ZMod.unitOfCoprime",
+        "description": "Constructs a unit in (ZMod n)ˣ from a coprimeness proof",
+        "module": "Mathlib.Data.ZMod.Units"
+      },
+      {
+        "theorem": "Nat.modEq_digits_sum",
+        "description": "When b' ≡ 1 (mod d), n ≡ (digits b' n).sum (mod d)",
+        "module": "Mathlib.Data.Nat.Digits.Lemmas"
+      },
+      {
+        "theorem": "Nat.ModEq.dvd_iff",
+        "description": "Divisibility equivalence via modular congruence",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "General base-b existence theorem: ∀ b ≥ 2, ∀ d > 1 coprime to b, ∃ k > 0 such that d ∣ n ↔ d ∣ (digits(b^k, n)).sum",
+      "Base-agnostic Euler lemma: b^φ(d) % d = 1 for any base b coprime to d (the parent's 10^φ(d) % d = 1 is the b=10 slice)",
+      "Recovery of the base-10 parent as a one-line corollary (general_divisibility_rule_base_ten)",
+      "Cross-base witnesses: base 2 mod 3 (k=2), base 7 mod 4 (k=2), base 16 mod 5 (k=1, hexadecimal casting-out-nines), all via kernel decide"
+    ],
+    "prerequisites": [
+      "Euler's theorem and Euler's totient function",
+      "ZMod units and coprimeness",
+      "Nat.digits and digit sum congruences"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Digit-sum divisibility rules are classically tied to base 10 — 'casting out nines' exploits 10 ≡ 1 (mod 9), and Fibonacci's alternating-digit rule for 11 exploits 10 ≡ -1 (mod 11). But the underlying mechanism is base-independent: in any positional base b, the value of a numeral is congruent modulo d to a weighted sum of its digits, and when b ≡ 1 (mod d) those weights all collapse to 1, giving a plain digit-sum rule. Euler's totient theorem (1763) supplies the missing ingredient for arbitrary bases: whenever gcd(d, b) = 1, b^φ(d) ≡ 1 (mod d), so the base-b^φ(d) digit sum is always a valid test. Familiar non-decimal instances include the hexadecimal analogue of casting out nines (16 ≡ 1 mod 5, and mod 3), used historically in hand-checking hex arithmetic. This leaf (OQ-02) answers the explicit open question posed by the parent OQ-01 proof: 'Can the rule be extended to bases other than 10?'",
+    "problemStatement": "Prove that for every base b ≥ 2 and every d > 1 with gcd(d, b) = 1, there exists k > 0 such that for all n ∈ ℕ, d ∣ n ↔ d ∣ (Nat.digits (b^k) n).sum.",
+    "text": "For any base b ≥ 2 and any d > 1 coprime to b, a base-b^k digit-sum divisibility rule exists, with witness k = φ(d). Base 10 is the special case.",
+    "proofStrategy": "The parent's argument is reused verbatim with 10 replaced by a variable base b. By Euler's theorem (ZMod.pow_totient), the element b (as a unit in (ZMod d)ˣ via ZMod.unitOfCoprime b hcop.symm) satisfies b^φ(d) = 1 in ZMod d. Converting via ZMod.natCast_eq_natCast_iff gives b^φ(d) ≡ 1 (mod d) in ℕ. Then Nat.modEq_digits_sum (in base b^φ(d)) gives n ≡ (digits(b^k, n)).sum (mod d), and Nat.ModEq.dvd_iff turns this into the divisibility equivalence. The b = 10 specialization reproduces the parent.",
+    "keyInsights": [
+      "The parent's Euler-theorem argument never used the value 10 — only that 10 is a unit mod d. Replacing 10 by a variable base b is therefore immediate.",
+      "Euler's theorem gives b^φ(d) ≡ 1 (mod d) for ANY base b coprime to d (pow_totient_mod_eq_one).",
+      "Nat.modEq_digits_sum connects the congruence b^k ≡ 1 (mod d) to a base-b^k digit-sum rule.",
+      "The optimal k is the multiplicative order ord_d(b), which divides φ(d) by Lagrange; using k = φ(d) is sufficient.",
+      "b ≥ 2 is a domain precondition for 'base b' to be meaningful, but is not needed in the proof (the b = 1 case degenerates to the trivial identity d ∣ n ↔ d ∣ n).",
+      "Cross-base witnesses: base 16 mod 5 with k=1 is the hexadecimal analogue of casting out nines."
+    ],
+    "prerequisites": [
+      "Euler's theorem and totient function",
+      "ZMod units and coprimeness",
+      "Nat.digits representation",
+      "Modular congruences and divisibility"
+    ]
+  },
+  "sections": [
+    {
+      "id": "euler-engine",
+      "title": "Base-Agnostic Euler's Theorem b^φ(d) ≡ 1 (mod d)",
+      "startLine": 56,
+      "endLine": 84,
+      "summary": "pow_totient_mod_eq_one generalizes the parent's ten_pow_totient_mod_eq_one by replacing 10 with a variable base b. Constructs the NeZero instance, builds u = ZMod.unitOfCoprime b hcop.symm, applies ZMod.pow_totient, coerces through Units.val, casts back to ℕ via ZMod.natCast_eq_natCast_iff, and simplifies 1 % d = 1.",
+      "mathContext": "The group (ZMod d)ˣ has order φ(d). `ZMod.unitOfCoprime b hcop.symm` realizes b as a unit when gcd(b, d) = 1, and `ZMod.pow_totient u` gives u^φ(d) = 1. The coercion (u : ZMod d) = b is the only place the base enters, and it works for any b. Casting yields the ℕ statement b^φ(d) % d = 1."
+    },
+    {
+      "id": "main-existence",
+      "title": "Main Theorem: General Base-b Existence",
+      "startLine": 86,
+      "endLine": 101,
+      "summary": "general_base_divisibility_rule_exists provides witness k = φ(d) (positive by Nat.totient_pos) and closes the inner iff d ∣ n ↔ d ∣ (digits(b^k, n)).sum via Nat.ModEq.dvd_iff applied to Nat.modEq_digits_sum with the base-agnostic Euler lemma.",
+      "mathContext": "`Nat.modEq_digits_sum d (b^φ(d)) hb n` gives n ≡ (Nat.digits (b^φ(d)) n).sum (mod d) once hb : (b^φ(d)) % d = 1. `Nat.ModEq.dvd_iff` converts the congruence into the divisibility equivalence. The 2 ≤ b hypothesis is carried for statement hygiene (underscored, unused in the proof)."
+    },
+    {
+      "id": "parent-corollary",
+      "title": "Recovering the Base-10 Parent",
+      "startLine": 103,
+      "endLine": 109,
+      "summary": "general_divisibility_rule_base_ten specializes the general theorem to b = 10, reproducing the parent DivisibilityRulesOQ01OQ01.general_divisibility_rule_exists as a one-line corollary.",
+      "mathContext": "Instantiating b := 10 (with 2 ≤ 10 by norm_num) collapses the general statement to the classical decimal digit-block rule, demonstrating the generalization is faithful — it strictly contains the parent."
+    },
+    {
+      "id": "cross-base-witnesses",
+      "title": "Cross-Base Witnesses (bases 2, 7, 16)",
+      "startLine": 111,
+      "endLine": 128,
+      "summary": "Three illustrative instances in non-decimal bases: base 2 mod 3 (k=2, since 4 ≡ 1 mod 3), base 7 mod 4 (k=2, since 49 ≡ 1 mod 4), base 16 mod 5 (k=1, since 16 ≡ 1 mod 5). Each congruence is checked by kernel `decide` (keeping the file free of Lean.ofReduceBool).",
+      "mathContext": "These exhibit the multiplicative order ord_d(b) as the optimal block length: ord_3(2)=2, ord_4(7)=2, ord_5(16)=1. The base-16 mod 5 case is the hexadecimal analogue of casting out nines."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules-oq-01-oq-01",
+      "relationship": "follow-up",
+      "description": "Answers the parent's open question: can the base-10 digit-sum rule be extended to other bases? Yes — to any base b ≥ 2 coprime to d, with k = φ(d)."
+    },
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent: existence of a decimal digit-block rule for every d coprime to 10."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, base-independent proof that every d > 1 coprime to a base b ≥ 2 admits a base-b^k digit-sum divisibility rule, with k = φ(d) as a universal witness. The base-10 parent is the b = 10 corollary. 0 sorries, 0 axioms.",
+    "implications": "Unifies all positional digit-sum divisibility tests under a single Euler-theorem mechanism, independent of the choice of numeral base.",
+    "openQuestions": [
+      "For a fixed d and base b, what is the minimal block length? (It is the multiplicative order ord_d(b), which divides φ(d).)",
+      "When b ≡ -1 (mod d) for some power, one gets an alternating-block rule (as for 11 in base 10). Can the alternating variant be formalized in general base form?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "pow_totient_mod_eq_one",
+      "type": "core",
+      "description": "Base-agnostic Euler's theorem: b^φ(d) ≡ 1 (mod d) for any d > 1 coprime to b",
+      "leanType": "{d b : ℕ} → 1 < d → Nat.Coprime d b → b ^ d.totient % d = 1"
+    },
+    {
+      "name": "general_base_divisibility_rule_exists",
+      "type": "core",
+      "description": "Existence of a base-b^k digit-sum divisibility rule for any base b ≥ 2 and any d coprime to b",
+      "leanType": "{b d : ℕ} → 2 ≤ b → 1 < d → Nat.Coprime d b → ∃ k : ℕ, 0 < k ∧ ∀ n : ℕ, d ∣ n ↔ d ∣ (Nat.digits (b ^ k) n).sum"
+    },
+    {
+      "name": "general_divisibility_rule_base_ten",
+      "type": "corollary",
+      "description": "Base-10 parent recovered: every d coprime to 10 has a decimal digit-block rule",
+      "leanType": "{d : ℕ} → 1 < d → Nat.Coprime d 10 → ∃ k : ℕ, 0 < k ∧ ∀ n : ℕ, d ∣ n ↔ d ∣ (Nat.digits (10 ^ k) n).sum"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Defs",
+      "Mathlib.Data.Nat.Digits.Lemmas",
+      "Mathlib.Data.ZMod.Units",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators"
+    ],
+    "namespace": "DivisibilityRulesOQ01OQ01OQ02",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/DivisibilityRulesOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
