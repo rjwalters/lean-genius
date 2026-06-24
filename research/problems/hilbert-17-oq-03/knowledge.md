@@ -166,3 +166,65 @@ Remaining 4 independent axioms are the genuinely deep ones:
 - Removing an `axiom` that carried a `/-- … -/` docstring leaves an *orphan*
   docstring (must attach to a decl) → convert the leftover to a plain `/- … -/`
   comment or Lean errors.
+
+## Session 2026-06-24 (researcher-1) — Robinson non-SOS PROVED (corrects prior survey)
+**The prior survey was wrong**: Robinson non-SOS does NOT need Gram-matrix /
+dual-functional multi-session machinery. The elementary **zero-set / linear-
+algebra** route works. Shipped child entry `hilbert-17-oq-03-oq-03`
+(`Proofs/Hilbert17RobinsonNotSOS.lean`, verified / 0-axiom, 32 thm-lemma / 3 def
+/ 423 L) and wired it into the parent, discharging `robinson_not_sos_aux`
+(**parent axiomCount 4 → 3**).
+
+Proof (R = x⁶+y⁶+z⁶ − Σx⁴y² + 3x²y²z², homogeneous deg 6):
+1. **degree bound**: in R = Σqᵢ², each qᵢ has totalDegree ≤ 3 (reuse Motzkin
+   `topsq`/`degree_bound`, generalized to any `σ`).
+2. **homogeneous reduction (the key simplification)**: `comp₆(R) = R` (R homog
+   deg 6, proved via `IsHomogeneous` built from `isHomogeneous_X_pow`/`.mul`/
+   `.add`/`.sub`), so `R = Σ (comp₃ qᵢ)²` by `topsq` with D=3 (2·3=6). Each
+   `comp₃ qᵢ` is genuinely a homogeneous **cubic form** — NO bottom-degree
+   cascade needed (this was the worry that made it look hard).
+3. **zero set**: R vanishes at its 10 real projective zeros (1,±1,0),(1,0,±1),
+   (0,1,±1),(1,±1,±1); sum-of-squares=0 ⟹ each cubic form vanishes at all 10.
+4. **linear algebra (`cubic_zero`)**: the 10×10 matrix of the 10 cubic monomials
+   at the 10 points has **det = 128 ≠ 0** (verified exactly in python first), so
+   the only homogeneous cubic vanishing at all 10 is 0. ⟹ every comp₃ qᵢ = 0 ⟹
+   R = 0, contra R(1,0,0)=1.
+
+### Why the earlier "Motzkin coeff method doesn't transfer" survey missed this
+The survey only considered the *coefficient-cascade* method (kill pure powers),
+which genuinely fails for Robinson (x⁶ coeff = +1 ≠ 0, no cascade). But the
+*zero-set* method is a different, cleaner argument: R's 10 zeros impose 10
+**independent** conditions on the 10-dim space of ternary cubics (det 128). The
+Motzkin file used coeff extraction because affine Motzkin has only 2 real zeros
+in the relevant sense; Robinson's 10 projective zeros are exactly enough.
+
+### Lean formalization techniques (v4.26)
+- `cubic_zero` finish: `as_cubic` rewrites a homog cubic as Σ of its 10
+  monomial terms (ext + `deg3_cases` enumerating degree-3 exponent vectors via
+  `interval_cases a<;>interval_cases b<;>interval_cases c<;> first|(exfalso;omega)|simp`);
+  `eval_mon3` turns each point-eval into a linear form in the 10 coeffs; then
+  `rw[E] at h1..h10; norm_num[Matrix.cons_val_*] at h1..h10; linarith` per coeff.
+  `linarith` solves the determined 10×10 system treating `coeff (mon3 ..) q` as
+  opaque atoms (DON'T `set` them — the `set` let-binding breaks the final
+  `rw [hcub]` which reintroduces unfolded `coeff` terms).
+- GOTCHAS: `(3 : MvPolynomial _).IsHomogeneous 0` — numeral fights inference;
+  `rw [map_ofNat]` to get `= C 3`, then `isHomogeneous_C _ _` (σ AND r both
+  explicit — `isHomogeneous_C` takes the type first). `homogeneousComponent_of_mem`
+  + `if_pos rfl` in one `rw` list → "CommSemiring ?m stuck" (rfl leaves branch
+  types undetermined); prove `comp₆ R = R` by `ext d; coeff_homogeneousComponent;
+  by_cases d.degree=6` + `robinson_isHom.coeff_eq_zero` instead. `Xpp3` needs
+  trailing `rfl` (mon3 defeq the single-sum). `(C : ℝ →+* _)` with `_` codomain
+  → stuck; write the codomain explicitly.
+- Parent wiring identical to Motzkin: `import Proofs.Hilbert17RobinsonNotSOS`;
+  `theorem robinson_not_sos := by intro h; exact …RobinsonNotSOS.robinson_not_sos h`
+  (parent `robinson`/`IsSumOfSquaresMvPolynomial` DEFEQ child `robinson`/`IsSOS`).
+- BUILD: child `import Mathlib` only (self-contained), built clean in MAIN
+  (`LAKE_UNSAFE=1 lake env lean`); `#print axioms` = propext/Classical.choice/
+  Quot.sound. MAIN parent .lean gets fleet-wiped to origin/main (8 axioms!) — the
+  7→4 ancestor work is unmerged; verify the WORKTREE parent by cp+`lake env lean`
+  atomically (race the sync), trust `#print axioms Hilbert17.robinson_not_sos`.
+
+## Still open (parent hilbert-17, 3 axioms)
+- `univariate_psd_is_sos_aux`, `quadratic_psd_is_sos_aux`, `pfister_bound_aux` —
+  the genuinely deep, independent ones (Fundamental-Thm-of-Algebra factorization /
+  Gram-Cholesky for quadratics / Pfister's 2ⁿ bound). Not quick coefficient ports.

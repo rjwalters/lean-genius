@@ -44,13 +44,12 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 17,
-    "axiomCount": 4,
-    "lineCount": 558,
+    "axiomCount": 3,
+    "lineCount": 572,
     "assumptions": [
       "univariate_psd_is_sos_aux: Every PSD univariate polynomial is a sum of squares of polynomials (complex factorization)",
       "quadratic_psd_is_sos_aux: Every PSD quadratic form is a sum of squares of polynomials (Gram matrix / Cholesky)",
-      "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)",
-      "robinson_not_sos_aux: Robinson polynomial is not a sum of squares of polynomials (homogeneous form analysis)"
+      "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)"
     ],
     "mathlib_version": "4.26.0",
     "theoremCount": 10,
@@ -208,15 +207,16 @@
       "Mathlib.Data.Real.Basic",
       "Mathlib.FieldTheory.RatFunc.Basic",
       "Mathlib.Tactic",
-      "Proofs.Hilbert17MotzkinNotSOS"
+      "Proofs.Hilbert17MotzkinNotSOS",
+      "Proofs.Hilbert17RobinsonNotSOS"
     ],
     "opens": [
       "Polynomial",
       "RatFunc"
     ],
     "namespace": "Hilbert17",
-    "lineCount": 558,
-    "axiomCount": 4,
+    "lineCount": 572,
+    "axiomCount": 3,
     "theoremCount": 10,
     "definitionCount": 8,
     "path": "Proofs/Hilbert17SumOfSquares.lean",

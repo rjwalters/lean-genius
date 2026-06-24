@@ -29,13 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session (researcher-1, 2026-06-24): eliminated 3 redundant axioms in parent hilbert-17 by converting them to derived theorems (artin_hilbert17 & cassels_bound_bivariate ⟸ pfister_bound_aux; artin_univariate ⟸ univariate_psd_is_sos_aux). Verified via #print axioms (each now depends only on a foundational axiom, no independent artin/cassels axiom). Parent axiomCount 7 → 4. The 4 remaining axioms (univariate_psd_is_sos_aux, quadratic_psd_is_sos_aux, pfister_bound_aux, robinson_not_sos_aux) are the genuinely deep, independent ones; robinson_not_sos still needs the dual-functional / zero-set route per prior survey.",
+    "progressSummary": "Session (researcher-1, 2026-06-24): proved Robinson's polynomial is NOT a sum of squares of polynomials with a fully elementary, 0-axiom Lean proof (new child entry hilbert-17-oq-03-oq-03, Proofs/Hilbert17RobinsonNotSOS.lean) and wired it into the parent, discharging the axiom robinson_not_sos_aux (parent axiomCount 4 → 3). Route: degree bound (each qᵢ deg ≤ 3) + homogeneous reduction R = Σ(comp₃ qᵢ)² + the cubic forms vanish at R's ten real projective zeros + the 10×10 evaluation matrix of cubic monomials has determinant 128 ≠ 0, so each cubic form is 0, forcing R = 0 (contra R(1,0,0)=1). This CORRECTS the earlier survey that judged Robinson non-SOS to need multi-session Gram-matrix/dual-functional machinery — the elementary zero-set route works. Remaining 3 parent axioms (univariate_psd_is_sos_aux, quadratic_psd_is_sos_aux, pfister_bound_aux) are the genuinely deep independent ones.",
     "builtItems": [
+      "Hilbert17RobinsonNotSOS.robinson_not_sos (verified, 0-axiom): Robinson's polynomial is not polynomial-SOS, Proofs/Hilbert17RobinsonNotSOS.lean",
       "Hilbert17.artin_hilbert17 (now theorem ⟸ pfister_bound_aux), Hilbert17SumOfSquares.lean",
       "Hilbert17.artin_univariate (now theorem ⟸ univariate_psd_is_sos_aux via algebraMap), Hilbert17SumOfSquares.lean",
       "Hilbert17.cassels_bound_bivariate (now theorem ⟸ pfister_bound_aux 2), Hilbert17SumOfSquares.lean"
     ],
     "insights": [
+      "Robinson non-SOS has an elementary zero-set proof: R's ten real projective zeros (1,±1,0),(1,0,±1),(0,1,±1),(1,±1,±1) impose ten INDEPENDENT conditions on the ten-dimensional space of ternary cubic forms (the 10×10 evaluation matrix has determinant 128 ≠ 0), so any cubic form in an SOS decomposition of R must be zero. The coefficient-cascade method (which works for Motzkin) genuinely fails for Robinson because its pure powers x⁶,y⁶,z⁶ have nonzero coefficients — but the zero-set method sidesteps that entirely.",
       "Motzkin non-negativity is a polynomial AM–GM inequality that nlinarith closes from square hints (x²y²−1)², (x²y−y)², (xy²−x)²; no transcendental cube-root argument is needed at the eval level.",
       "Robinson's polynomial equals Schur's expression a(a−b)(a−c)+… under a=x², b=y², c=z²≥0, so its non-negativity is exactly Schur's inequality — nlinarith finds the constrained certificate from a·(a−b)² ≥ 0 terms.",
       "Three of the parent hilbert-17 axioms were redundant restatements, not independent assumptions: artin_hilbert17 and cassels_bound_bivariate are specializations of pfister_bound_aux (take m=2^n; and 2^2=4 defeq gives the n=2 case directly), and artin_univariate is the algebraMap image of the stronger polynomial result univariate_psd_is_sos_aux. All three now derived as theorems — axiom count 7 → 4.",
@@ -43,8 +45,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Formalize the non-SOS direction (motzkin_not_sos / robinson_not_sos) via homogeneous-component degree analysis to remove two more axioms.",
-      "State the actual complexity content (SOS membership as SDP feasibility) precisely; assess whether any decidability fragment is Lean-formalizable."
+      "Attempt the deep univariate_psd_is_sos_aux (PSD univariate = SOS via Fundamental Theorem of Algebra factorization into (x-rᵢ)(x-r̄ᵢ) conjugate pairs) — likely the most tractable of the 3 remaining parent axioms.",
+      "Assess quadratic_psd_is_sos_aux (PSD quadratic form = SOS via Gram/Cholesky / eigendecomposition over ℝ)."
     ]
   },
   "tags": [
@@ -63,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T12:03:52.282Z",
-  "lastUpdate": "2026-04-03T12:03:52.282Z",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
