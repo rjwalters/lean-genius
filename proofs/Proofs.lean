@@ -2187,6 +2187,7 @@ import Proofs.Erdos604Problem
 import Proofs.Erdos605Problem
 import Proofs.Erdos606OQ03
 import Proofs.Erdos606OQ03OQ03
+import Proofs.Erdos606OQ03WIP01
 import Proofs.Erdos606Problem
 import Proofs.Erdos607Problem
 import Proofs.Erdos608Aristotle
