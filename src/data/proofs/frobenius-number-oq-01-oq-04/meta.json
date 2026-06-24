@@ -1,0 +1,96 @@
+{
+  "id": "frobenius-number-oq-01-oq-04",
+  "slug": "frobenius-number-oq-01-oq-04",
+  "title": "The Apéry Set of ⟨a, b⟩: Minimal Representatives and Reflection Symmetry",
+  "description": "For coprime a, b ≥ 2 the numerical semigroup S = ⟨a, b⟩ = {a·x + b·y : x, y ∈ ℕ} has, with respect to a, the Apéry set Ap(S, a) = {0, b, 2b, …, (a−1)b} — the least element of S in each residue class mod a (the a values w_k = k·b are pairwise incongruent mod a because gcd(a, b) = 1). The gallery so far works directly with the Representable predicate and never names this object, the central computational device of numerical-semigroup theory (Apéry 1946; Selmer 1977). This entry builds the Apéry set for the two-generator case and proves: (1) the Apéry characterization — inside a fixed residue class mod a a number is representable iff it is ≥ the Apéry element of that class (apery_le_iff_representable), so w_k = k·b is exactly the smallest element of S in its class and membership in S reduces to one comparison (representable_iff_aperyIndex); (2) reflection symmetry — the involution k ↦ a−1−k fixes the Apéry set with w_k + w_{a−1−k} = (a−1)·b = g + a, the Apéry-set source of the Frobenius involution n ↦ g − n, with largest Apéry element g + a (apery_symm, apery_max); (3) the Frobenius number is a gap, re-derived from Apéry minimality — g = (a−1)b − a lies strictly below the Apéry element (a−1)·b of its own class, hence g ∉ S (frobeniusNumber_not_representable). The engine is the coprime cancellation y·b ≡ k·b ⟹ y ≡ k (mod a) together with the minimal-residue bound k ≤ y. Answers the 'via Apéry sets' direction of the parent open question for the two-generator case, supplying the standard entry point to Selmer's genus formula g(S) = (Σ_{w∈Ap} w)/a − (a−1)/2. Verified with 0 axioms, 0 sorries.",
+  "leanFile": {
+    "path": "Proofs/FrobeniusNumberOQ01OQ04.lean",
+    "filename": "FrobeniusNumberOQ01OQ04.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.FrobeniusNumber"
+    ],
+    "namespace": "FrobeniusAperySet",
+    "lineCount": 186,
+    "theoremCount": 10,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusNumberOQ01OQ04.lean"
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FrobeniusNumberOQ01OQ04.lean",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Numerical_semigroup",
+    "date": "1946",
+    "tags": [
+      "number-theory",
+      "frobenius",
+      "coin-problem",
+      "numerical-semigroups",
+      "apery-set",
+      "combinatorics",
+      "verified",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 186,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "assumptions": "None. All theorems proved from first principles over the Representable predicate of the parent entry, using only Mathlib's modular-arithmetic API (Nat.ModEq cancellation, Nat.modEq_iff_dvd') and Fin a injectivity ⟹ surjectivity. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound (no native_decide, no extra axioms).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.ModEq.cancel_left_of_coprime",
+        "description": "Cancel the coprime factor b in b·y ≡ b·k (mod a), the core of Apéry minimality",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Nat.modEq_iff_dvd'",
+        "description": "n ≡ m (mod a) ↔ a ∣ (m − n) for n ≤ m — turns the Apéry comparison into representability",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Finite.injective_iff_surjective",
+        "description": "Injective ⟹ surjective on Fin a, giving existence of the Apéry index of each residue class",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      }
+    ],
+    "originalContributions": [
+      "First gallery definition/use of the Apéry set of a two-generator numerical semigroup as the family of minimal residue-class representatives w_k = k·b",
+      "apery_le_iff_representable / aperyIndex_le_of_representable: w_k = k·b is the least element of ⟨a,b⟩ in its residue class mod a (Apéry minimality), via coprime cancellation y ≡ k (mod a) and k ≤ y",
+      "representable_iff_aperyIndex: membership in ⟨a,b⟩ characterised by a single comparison against the Apéry element of n's class",
+      "apery_symm / apery_max: the involution k ↦ a−1−k fixes the Apéry set with w_k + w_{a−1−k} = (a−1)b = g + a, exhibiting the Apéry-set origin of the Frobenius involution n ↦ g − n",
+      "frobeniusNumber_not_representable: an Apéry-set re-derivation of Sylvester's non-representability of the Frobenius number (g sits one step a below the maximal Apéry element of its class)"
+    ],
+    "prerequisites": [
+      "frobenius-number (parent: Sylvester's Frobenius theorem g(a,b) = ab − a − b)",
+      "frobenius-number-oq-01 (parent: Sylvester gap count (a−1)(b−1)/2)",
+      "Apéry set / minimal residue-class representatives (Apéry 1946, Selmer 1977)",
+      "Mathlib Nat.ModEq coprime cancellation"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0"
+  },
+  "conclusion": {
+    "summary": "The Apéry set Ap(⟨a,b⟩, a) = {0, b, …, (a−1)b} is the family of least residue-class representatives of the two-generator numerical semigroup: representability inside a class is one comparison against its Apéry element, the involution k ↦ a−1−k reflects the set about its maximum (a−1)b = g + a, and the Frobenius number's non-representability falls out of Apéry minimality. This packages the standard Apéry machinery for ⟨a,b⟩ and sets up Selmer's genus formula.",
+    "implications": [
+      "Supplies the Apéry-set object that the 'via Apéry sets' open question requests, in the fully computable two-generator case.",
+      "Re-derives the Frobenius involution n ↦ g − n and Sylvester's non-representability from Apéry-set symmetry, complementing the parent's direct gap-count argument.",
+      "Opens Selmer's genus formula g(S) = (Σ_{w∈Ap} w)/a − (a−1)/2 as a natural follow-up: each Apéry element contributes ⌊w_k/a⌋ gaps to its residue class."
+    ],
+    "openQuestions": [
+      {
+        "id": "frobenius-number-oq-01-oq-04-oq-01",
+        "question": "Prove Selmer's genus formula for ⟨a,b⟩: genus(S) = Σ_{k<a} ⌊k·b / a⌋ = (a−1)(b−1)/2, by showing the gaps of class k·b mod a are exactly the ⌊k·b/a⌋ multiples-of-a shifts below the Apéry element w_k."
+      },
+      {
+        "id": "frobenius-number-oq-01-oq-04-oq-02",
+        "question": "Generalise the Apéry-set construction to three or more generators ⟨a₁, …, a_r⟩ via the Kunz coordinates, and characterise the symmetric (Gorenstein) case by Apéry-set reflection."
+      }
+    ]
+  }
+}
