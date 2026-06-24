@@ -3746,6 +3746,7 @@ import Proofs.SzemerediCoreOQ01Aristotle
 import Proofs.SzemerediCoreOQ03
 import Proofs.SzemerediCoreOQ04
 import Proofs.SzemerediCounting
+import Proofs.SzemerediCountingOQ01
 import Proofs.SzemerediFullOQ02
 import Proofs.SzemerediHypergraphCore
 import Proofs.SzemerediHypergraphCoreOQ01
