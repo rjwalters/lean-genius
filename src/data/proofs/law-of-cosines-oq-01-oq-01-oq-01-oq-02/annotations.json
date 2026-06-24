@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-direct-strategy",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "insight",
+    "title": "The Direct-from-Symmetry Strategy",
+    "content": "The open question is to obtain the angle-over-side sine rule sin(A)/sin(a) = sin(B)/sin(b) = sin(C)/sin(c) WITHOUT first building the side-over-angle ratio form. The strategy: the Gram determinant G is a single vertex-symmetric invariant, and the three cyclic identities sin²(A)·sin²(b)·sin²(c) = sin²(B)·sin²(a)·sin²(c) = sin²(C)·sin²(a)·sin²(b) = G are its orbit under the S₃ relabelling of vertices. The sine rule IS this triple equality: equating any two members and cancelling the shared side-sine gives a cross-product directly. The parent file proved only two of the three members; this file supplies the missing third.",
+    "mathContext": "With $G = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$ the three identities $\\sin^2 A\\,\\sin^2 b\\,\\sin^2 c = \\sin^2 B\\,\\sin^2 a\\,\\sin^2 c = \\sin^2 C\\,\\sin^2 a\\,\\sin^2 b = G$ are a cyclic orbit. Equating the A- and C-members and cancelling the common $\\sin^2 b > 0$ yields $\\sin^2 A\\,\\sin^2 c = \\sin^2 C\\,\\sin^2 a$, i.e. $(\\sin A\\sin c)^2 = (\\sin C\\sin a)^2$, hence (both sides $\\geq 0$) $\\sin A\\sin c = \\sin C\\sin a$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram determinant", "spherical law of sines", "cyclic symmetry", "S₃ vertex permutation"],
+    "prerequisites": ["spherical law of cosines", "Gram determinant", "non-negative square roots"]
+  },
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 44, "endLine": 52 },
+    "type": "context",
+    "title": "Imports and Namespace Reopen",
+    "content": "Imports the side-over-angle file (gramDet, the A/B symmetric identities sinA_sq_times_bc / sinB_sq_times_ac, the multiplicative law spherical_law_of_sines_mul, the angle-sine nonnegativity lemmas) and the dual-law file (cos_C_mul). It reopens namespace LawOfCosinesOQ01OQ02 so those names resolve unqualified. Crucially, BOTH dependency files define a gramDet, so cos_C_mul must be referenced fully-qualified as DualSphericalLawOfCosines.cos_C_mul to avoid resolving against the wrong gramDet.",
+    "mathContext": "Reopening only the LawOfCosinesOQ01OQ02 namespace fixes the meaning of $\\mathrm{gramDet}$ to the version the symmetric identities target; the angle-C cosine law is pulled from the other namespace by its full path to sidestep the collision.",
+    "significance": "technical",
+    "relatedConcepts": ["namespace resolution", "name collision", "Lean module system"],
+    "prerequisites": ["Lean 4 namespaces", "qualified vs unqualified names"]
+  },
+  {
+    "id": "ann-sin-angleC-nonneg",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 59 },
+    "type": "technique",
+    "title": "sin(angleC) ≥ 0",
+    "content": "sin_angleC_nonneg is the C-vertex companion of the existing sin_angleA_nonneg / sin_angleB_nonneg. It unfolds the angleC definition, splits on the degenerate case (where the angle is set to 0, with sin 0 = 0 ≥ 0) versus the generic case, and in the latter applies Real.sin_nonneg_of_nonneg_of_le_pi to the arccos range [0, π]. This nonnegativity is exactly what later lets a squared cross-product equality be promoted to the cross-product itself.",
+    "mathContext": "A dihedral angle of a spherical triangle is an $\\arccos$, hence lies in $[0,\\pi]$; on that interval $\\sin \\geq 0$. Formally $\\angle C = \\arccos(\\cdots) \\in [0,\\pi] \\Rightarrow \\sin(\\angle C) \\geq 0$, with the degenerate branch giving $\\sin 0 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["arccos range", "dihedral angle", "sine nonnegativity"],
+    "prerequisites": ["arccos definition", "Real.sin_nonneg_of_nonneg_of_le_pi"]
+  },
+  {
+    "id": "ann-sinC-sq-times-ab",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 61, "endLine": 83 },
+    "type": "insight",
+    "title": "Third Symmetric Gram Identity sin²(C)·sin²(a)·sin²(b) = G",
+    "content": "sinC_sq_times_ab is the new ingredient that completes the cyclic family. It solves the angle-C law of cosines cos_C_mul for cos(C) = (cos c − cos a·cos b)/(sin a·sin b), substitutes into sin²(C) = 1 − cos²(C), rewrites against the expanded Gram determinant gramDet_expand, and closes with field_simp + simp [Real.sin_sq] + ring. The proof deliberately mirrors the parent's sinB_sq_times_ac line-for-line, so the three members differ only by a cyclic relabelling of (A,a) → (B,b) → (C,c).",
+    "mathContext": "Substituting $\\cos C = \\dfrac{\\cos c - \\cos a\\cos b}{\\sin a\\sin b}$ into $\\sin^2 C = 1 - \\cos^2 C$ and multiplying by $\\sin^2 a\\sin^2 b$ gives $\\sin^2 C\\,\\sin^2 a\\,\\sin^2 b = \\sin^2 a\\sin^2 b - (\\cos c - \\cos a\\cos b)^2$. This equals $G = \\sin^2 b\\sin^2 c - (\\cos a - \\cos b\\cos c)^2$ as a polynomial identity in the side-cosines — both sides expand to $1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram determinant", "law of cosines", "cyclic symmetry", "Pythagorean identity"],
+    "prerequisites": ["angle-C law of cosines cos_C_mul", "gramDet_expand", "field_simp", "ring tactic"]
+  },
+  {
+    "id": "ann-sines-mul-AC",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 85, "endLine": 108 },
+    "type": "insight",
+    "title": "Angle-over-Side Cross-Product sin(a)·sin(C) = sin(c)·sin(A)",
+    "content": "sines_mul_AC reads the A/C cross-product straight off the Gram symmetry. It equates sinA_sq_times_bc (= G) and sinC_sq_times_ab (= G), cancels the shared sin²(b) > 0 via nlinarith to get sin²(A)·sin²(c) = sin²(C)·sin²(a), then takes positive square roots. The square-root step is the standard robust certificate: from u² = v² with u, v ≥ 0, the hints sq_nonneg(u−v), sq_nonneg(u+v), u·v ≥ 0 let nlinarith conclude u = v. This mirrors the parent's spherical_law_of_sines_mul for the A/C vertex pair — no side-over-angle ratio form is used.",
+    "mathContext": "Cancelling the common $\\sin^2 b$ from $\\sin^2 A\\,\\sin^2 b\\,\\sin^2 c = \\sin^2 C\\,\\sin^2 a\\,\\sin^2 b$ leaves $(\\sin A\\sin c)^2 = (\\sin C\\sin a)^2$. With $u = \\sin A\\sin c \\geq 0$ and $v = \\sin C\\sin a \\geq 0$, the identity $u^2 - v^2 = (u-v)(u+v)$ plus $(u-v)^2 \\geq 0$, $(u+v)^2 \\geq 0$, $uv \\geq 0$ forces $u = v$, i.e. $\\sin a\\sin C = \\sin c\\sin A$.",
+    "significance": "key",
+    "relatedConcepts": ["cross-product identity", "nlinarith certificate", "positive square root", "factor cancellation"],
+    "prerequisites": ["symmetric Gram identities", "angle-sine nonnegativity", "nlinarith tactic"]
+  },
+  {
+    "id": "ann-headline",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 110, "endLine": 131 },
+    "type": "insight",
+    "title": "Headline Angle-over-Side Sine Rule",
+    "content": "spherical_law_of_sines_angle_over_side_direct is the answer to the open question: sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). The A/B branch uses the symmetric multiplicative law spherical_law_of_sines_mul; the A/C branch uses the new sines_mul_AC. Each cross-product is converted to a ratio by div_eq_div_iff (a/b = c/d ↔ a·d = c·b for nonzero b, d) and closed by linear_combination, which lets ring absorb the sign and commutation of factors that a plain linarith cannot (it treats sin a·sin C and sin C·sin a as distinct atoms). Neither branch ever forms the side-over-angle ratio form.",
+    "mathContext": "$\\dfrac{\\sin A}{\\sin a} = \\dfrac{\\sin B}{\\sin b} \\iff \\sin A\\sin b = \\sin B\\sin a$ (by $\\texttt{div\\_eq\\_div\\_iff}$, valid since $\\sin a,\\sin b \\neq 0$); this is exactly the multiplicative law. Likewise $\\dfrac{\\sin A}{\\sin a} = \\dfrac{\\sin C}{\\sin c} \\iff \\sin A\\sin c = \\sin C\\sin a$, supplied by $\\texttt{sines\\_mul\\_AC}$. The $\\texttt{linear\\_combination}$ scalar $-1$ closes the residual.",
+    "significance": "key",
+    "relatedConcepts": ["spherical law of sines", "div_eq_div_iff", "linear_combination", "ratio form"],
+    "prerequisites": ["multiplicative law of sines", "sines_mul_AC", "div_eq_div_iff", "linear_combination tactic"]
+  },
+  {
+    "id": "ann-transitivity",
+    "proofId": "law-of-cosines-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 133, "endLine": 141 },
+    "type": "technique",
+    "title": "B/b = C/c Corollary by Transitivity",
+    "content": "spherical_law_of_sines_BC_angle_over_side_direct completes the chain of equal ratios: from the headline conjunction sin(A)/sin(a) = sin(B)/sin(b) and sin(A)/sin(a) = sin(C)/sin(c), the B/b = C/c relation follows by h1.symm.trans h2. Stating it separately makes the third equality of the sine rule directly available to downstream files without re-deriving it.",
+    "mathContext": "From $r = \\dfrac{\\sin B}{\\sin b}$ and $r = \\dfrac{\\sin C}{\\sin c}$ (both equal to the common ratio $r = \\sin A/\\sin a$), transitivity gives $\\dfrac{\\sin B}{\\sin b} = \\dfrac{\\sin C}{\\sin c}$, completing $\\dfrac{\\sin A}{\\sin a} = \\dfrac{\\sin B}{\\sin b} = \\dfrac{\\sin C}{\\sin c}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["transitivity of equality", "common ratio", "sine rule"],
+    "prerequisites": ["Eq.symm", "Eq.trans"]
+  }
+]
