@@ -1,0 +1,52 @@
+[
+  {
+    "id": "ann-h17-oq0302-motzkin",
+    "proofId": "hilbert-17-oq-03-oq-02",
+    "range": { "startLine": 71, "endLine": 101 },
+    "type": "definition",
+    "title": "The Motzkin polynomial and its coefficients",
+    "content": "motzkin is defined exactly as in the parent entry: M = x⁴y² + x²y⁴ − 3x²y² + 1. The lemma motzkin_eq rewrites it as a sum of four monomials, from which the coefficients driving the proof are read off: [x²y²] M = −3 (the single negative coefficient, the source of the eventual contradiction) and the pure-axis coefficients [x²] M = [x⁴] M = [x⁶] M = [y²] M = [y⁴] M = [y⁶] M = 0.",
+    "mathContext": "$M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1,\\qquad [x^2y^2]\\,M = -3.$",
+    "significance": "context"
+  },
+  {
+    "id": "ann-h17-oq0302-sumsq-zero",
+    "proofId": "hilbert-17-oq-03-oq-02",
+    "range": { "startLine": 121, "endLine": 136 },
+    "type": "technique",
+    "title": "A sum of squares is zero only if each term is",
+    "content": "The order-theoretic core, used twice. For real polynomials (sum_sq_eq_zero) the identity Σ fᵢ² = 0 is evaluated at every point via MvPolynomial.funext, reducing to Σ (real)² = 0 and hence each fᵢ = 0. For real numbers (sum_sq_real_eq_zero) it is the direct Finset.sum_eq_zero_iff_of_nonneg. This is the only place the proof uses that the base field is ordered — exactly the ingredient that distinguishes ℝ (where Motzkin fails to be SOS) from ℂ.",
+    "mathContext": "$\\sum_i f_i^2 = 0 \\;\\Longrightarrow\\; \\forall i,\\ f_i = 0 \\quad(\\text{over }\\mathbb{R}).$",
+    "significance": "key-technique"
+  },
+  {
+    "id": "ann-h17-oq0302-topsq",
+    "proofId": "hilbert-17-oq-03-oq-02",
+    "range": { "startLine": 170, "endLine": 223 },
+    "type": "theorem",
+    "title": "The degree bound via leading forms",
+    "content": "topsq proves homogeneousComponent (2D) (p²) = (homogeneousComponent D p)² whenever D bounds deg p: writing p = (top form) + (lower part), the cross and lower-squared terms have total degree < 2D and drop out, while the top form squared is homogeneous of degree 2D and survives. degree_bound then takes D to be the maximal degree among the qᵢ: if D ≥ 4 the degree-2D component of M = Σ qᵢ² would be Σ (top form)² = 0 (M has degree 6 < 2D), forcing every top form to vanish — impossible for the qᵢ attaining the maximum. Hence every qᵢ has total degree ≤ 3.",
+    "mathContext": "$\\deg\\Big(\\sum_i q_i^2\\Big) = 2\\max_i \\deg q_i \\;\\Longrightarrow\\; \\max_i \\deg q_i = 3.$",
+    "significance": "key-step"
+  },
+  {
+    "id": "ann-h17-oq0302-coeff22",
+    "proofId": "hilbert-17-oq-03-oq-02",
+    "range": { "startLine": 290, "endLine": 323 },
+    "type": "theorem",
+    "title": "The x²y² coefficient is a square",
+    "content": "coeff22_sq is the heart of the contradiction. Expanding [x²y²] qᵢ² over the nine antidiagonal pairs (a,b) with a+b = (2,2), every pair other than (xy, xy) contains a factor that the constraints kill: a coefficient of degree ≥ 4 (degree bound), or a pure-x / pure-y coefficient of positive degree (pure-axis vanishing established by the x⁶→x⁴→x² and y⁶→y⁴→y² chains). Only (xy)·(xy) survives, giving [x²y²] qᵢ² = ([xy] qᵢ)². Summing over i: −3 = [x²y²] M = Σᵢ ([xy] qᵢ)² ≥ 0, a contradiction.",
+    "mathContext": "$[x^2y^2]\\,q_i^2 = \\big([xy]\\,q_i\\big)^2 \\;\\Longrightarrow\\; -3 = \\sum_i \\big([xy]\\,q_i\\big)^2 \\ge 0.$",
+    "significance": "key-step"
+  },
+  {
+    "id": "ann-h17-oq0302-main",
+    "proofId": "hilbert-17-oq-03-oq-02",
+    "range": { "startLine": 325, "endLine": 421 },
+    "type": "theorem",
+    "title": "motzkin_not_sos: the full obstruction, 0 axioms",
+    "content": "The main theorem assembles the three steps: degree bound (and its coefficient form, vanishing of every degree-≥4 coefficient), the pure-axis vanishing chains via pureX_extract / pureY_extract, and the x²y² identity. The result, ¬ IsSOS motzkin, is exactly the statement of the parent's axiom motzkin_not_sos_polynomial_aux and is checked with #print axioms to depend only on propext, Classical.choice, Quot.sound.",
+    "mathContext": "$\\nexists\\, q_1,\\dots,q_m \\in \\mathbb{R}[x,y]\\ \\text{with}\\ M = \\textstyle\\sum_i q_i^2.$",
+    "significance": "main-result"
+  }
+]

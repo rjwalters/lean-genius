@@ -3016,6 +3016,7 @@ import Proofs.Hilbert15OQ02OQ03OQ01
 import Proofs.Hilbert15SchubertCalculus
 import Proofs.Hilbert15SchubertCalculusOQ01
 import Proofs.Hilbert16
+import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17OQ01
 import Proofs.Hilbert17SumOfSquares
 import Proofs.Hilbert19OQ03
