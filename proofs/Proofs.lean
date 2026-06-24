@@ -218,6 +218,7 @@ import Proofs.ArithmeticSeriesOQ02OQ02OQ01
 import Proofs.ArithmeticSeriesOQ02OQ02OQ02
 import Proofs.ArithmeticSeriesOQ02OQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ02OQ03OQ01
+import Proofs.ArithmeticSeriesOQ02OQ02OQ03OQ02
 import Proofs.ArithmeticSeriesOQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ03Aristotle
 import Proofs.ArithmeticSeriesOQ02OQ04
