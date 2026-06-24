@@ -1,0 +1,139 @@
+{
+  "id": "gamma-reflection-formula-oq-01-oq-03",
+  "slug": "gamma-reflection-formula-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "GammaReflectionFormulaOQ01OQ03",
+    "lineCount": 107,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GammaReflectionFormulaOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "title": "The Half-Integer Gamma Values: Γ(n+1/2) = (2n)!·√π / (4ⁿ·n!)",
+  "description": "Addresses OQ-03 from gamma-reflection-formula-oq-01: extend the single transcendental value Γ(1/2)=√π to the full closed form of the Gamma function at every half-integer. Starting from Γ(1/2)=√π and the functional equation Γ(s+1)=s·Γ(s), induction forces Γ(n+1/2) = (2n)!/(4ⁿ·n!)·√π — so while Γ(1/2)=√π is irrational, the entire n-dependence is the rational coefficient (2n)!/(4ⁿ n!). The entry proves the closed form, the rational-multiple-of-Γ(1/2) reformulation, positivity of all half-integer values, and two worked values Γ(3/2)=√π/2 and Γ(5/2)=3√π/4 derived independently as cross-checks, plus a consistency check that the general formula reproduces Γ(3/2). Mathlib has Γ(1/2)=√π, the functional equation, and the Legendre duplication formula but not this explicit half-integer closed form. 6 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Particular_values_of_the_gamma_function#Half-integer_arguments",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GammaReflectionFormulaOQ01OQ03.lean",
+    "parentProofId": "gamma-reflection-formula-oq-01",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "gamma-function",
+      "half-integer",
+      "factorial",
+      "induction",
+      "research"
+    ],
+    "badge": "original",
+    "axiomCount": 0,
+    "newAxiomCount": 0,
+    "sorries": 0,
+    "lineCount": 107,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "gamma_nat_add_half: the half-integer closed form Γ(n+1/2) = (2n)!/(4ⁿ·n!)·√π for every n, proved by induction — base case Γ(1/2)=√π, inductive step multiplies by (n+1/2) via the functional equation and promotes the factorial coefficient through the recurrences (2n+2)!=(2n+2)(2n+1)(2n)!, (n+1)!=(n+1)·n!, 4ⁿ⁺¹=4·4ⁿ (closes by field_simp/ring). Absent from Mathlib.",
+      "gamma_nat_add_half_eq_mul_gamma_half: the rational-multiple form Γ(n+1/2) = (2n)!/(4ⁿ n!)·Γ(1/2), making explicit that the only transcendental ingredient is the single value Γ(1/2) and all n-dependence is the rational coefficient",
+      "gamma_nat_add_half_pos: positivity 0 < Γ(n+1/2) for every n, immediate from the closed form since (2n)!, 4ⁿ, n!, √π are all positive",
+      "gamma_three_half: Γ(3/2) = √π/2, the n=1 value, derived independently from Γ(1/2+1)=(1/2)·Γ(1/2) as a cross-check of the general formula",
+      "gamma_five_half: Γ(5/2) = 3√π/4, the n=2 value, derived from Γ(3/2+1)=(3/2)·Γ(3/2)",
+      "gamma_nat_add_half_one: consistency check that instantiating the general closed form at n=1 reproduces Γ(3/2)=√π/2, matching the independently derived gamma_three_half"
+    ],
+    "prerequisites": [
+      "Euler Gamma function Real.Gamma",
+      "Mathlib's Real.Gamma_one_half_eq (Γ(1/2)=√π)",
+      "The functional equation Real.Gamma_add_one (Γ(s+1)=s·Γ(s))",
+      "Factorial recurrence Nat.factorial_succ and positivity Nat.factorial_pos"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Γ(1/2) = √π — the single transcendental base value the whole half-integer ladder is built on.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "Γ(s+1) = s·Γ(s) for s ≠ 0 — the functional equation driving the induction step (multiplying by n+1/2).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_succ",
+        "description": "(n+1)! = (n+1)·n! — expanded twice to turn (2n+2)! into (2n+2)(2n+1)(2n)! in the inductive step.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_pos / Nat.factorial_ne_zero",
+        "description": "n! > 0 and n! ≠ 0, cast to ℝ for the field_simp denominators and the positivity corollary.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      }
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The closed form is proved by ordinary induction on n; the inductive step is a real-arithmetic identity discharged by field_simp/ring after rewriting the factorial and power recurrences, and the worked values use only the functional equation and Γ(1/2)=√π. No native_decide, no axiomatized hypotheses. The deep ingredient Γ(1/2)=√π is delegated to Mathlib; the half-integer closed form, its rational-multiple reformulation, the positivity corollary, and the worked-value cross-checks are the original content, none of which is in Mathlib (which records only Γ(1/2)=√π, the functional equation, and the Legendre duplication formula)."
+  },
+  "openQuestions": [
+    {
+      "id": "gamma-reflection-formula-oq-01-oq-03-oq-01",
+      "question": "Rewrite the coefficient (2n)!/(4ⁿ n!) as the odd double factorial over a power of two, (2n−1)!!/2ⁿ, and formalize the double-factorial identity Γ(n+1/2) = (2n−1)!!·√π/2ⁿ.",
+      "significance": "low"
+    },
+    {
+      "id": "gamma-reflection-formula-oq-01-oq-03-oq-02",
+      "question": "Combine the half-integer closed form with reflection to recover the negative half-integer values Γ(−n+1/2) = (−4)ⁿ n!·√π/(2n)!.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "extends",
+      "description": "The parent re-exports Euler reflection and derives Γ(1/2)²=π and the special-value products; this entry instead climbs the half-integer ladder above 1/2, expressing every Γ(n+1/2) as a rational multiple of √π via the functional equation."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03",
+      "relationship": "related",
+      "description": "That entry establishes Γ(1/2)=√π via the Gaussian integral — the single base value this entry propagates up the half-integer ladder."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gamma.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_one_half_eq, Real.Gamma_add_one, and Real.Gamma_nat_eq_factorial."
+    },
+    {
+      "title": "Particular values of the gamma function",
+      "author": "Wikipedia",
+      "year": "2024",
+      "venue": "encyclopedia",
+      "description": "Half-integer arguments Γ(n+1/2) = (2n)!√π/(4ⁿ n!) and the equivalent double-factorial form."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Euler's Gamma function interpolates the factorial, $\\Gamma(n+1)=n!$, and its values at the half-integers form the next most classical family after the integers. The single value $\\Gamma(1/2)=\\sqrt\\pi$ — equivalently the Gaussian integral $\\int_{-\\infty}^{\\infty}e^{-x^2}\\,dx=\\sqrt\\pi$ — is transcendental, yet every other half-integer value is a *rational* multiple of it. Iterating the functional equation $\\Gamma(s+1)=s\\,\\Gamma(s)$ upward from $1/2$ gives $\\Gamma(3/2)=\\tfrac12\\sqrt\\pi$, $\\Gamma(5/2)=\\tfrac34\\sqrt\\pi$, and in general the closed form $\\Gamma(n+\\tfrac12)=\\dfrac{(2n)!}{4^n\\,n!}\\sqrt\\pi$, equivalently $\\dfrac{(2n-1)!!}{2^n}\\sqrt\\pi$. This formula is ubiquitous: it gives the volume of the $n$-ball, the normalization of the Gaussian and chi/chi-squared distributions, and the moments $\\int x^{2n}e^{-x^2}dx$. Mathlib records the base value $\\Gamma(1/2)=\\sqrt\\pi$, the functional equation, and even the Legendre duplication formula $\\Gamma(s)\\Gamma(s+\\tfrac12)=2^{1-2s}\\sqrt\\pi\\,\\Gamma(2s)$, but it does not record the explicit half-integer closed form — this entry supplies it.",
+    "problemStatement": "**Open Question (gamma-reflection-formula-OQ-01-OQ-03)**: Establish the closed form of the Gamma function at the half-integers, $\\Gamma(n+\\tfrac12)=\\dfrac{(2n)!}{4^n\\,n!}\\sqrt\\pi$, extending the sibling result $B(1/2,1/2)=\\pi$ (equivalently $\\Gamma(1/2)^2=\\pi$) from the single value $1/2$ to the whole ladder $n+\\tfrac12$.\n\n**What this entry establishes**: the closed form $\\Gamma(n+\\tfrac12)=(2n)!/(4^n n!)\\cdot\\sqrt\\pi$ for every $n$, its reformulation as the rational multiple $(2n)!/(4^n n!)$ of $\\Gamma(1/2)$, the positivity $0<\\Gamma(n+\\tfrac12)$, and the worked values $\\Gamma(3/2)=\\sqrt\\pi/2$, $\\Gamma(5/2)=3\\sqrt\\pi/4$ as independent cross-checks.",
+    "proofStrategy": "**gamma_nat_add_half** (the closed form): induction on $n$. The base case $\\Gamma(1/2)=\\sqrt\\pi$ is Mathlib's `Real.Gamma_one_half_eq`, and the coefficient $0!/(4^0\\,0!)=1$. For the step, $\\Gamma((n+1)+\\tfrac12)=\\Gamma((n+\\tfrac12)+1)=(n+\\tfrac12)\\,\\Gamma(n+\\tfrac12)$ by the functional equation `Real.Gamma_add_one` (with $n+\\tfrac12\\ne0$). Substituting the inductive hypothesis leaves a pure real-arithmetic identity: rewriting the factorial recurrences $(2n+2)!=(2n+2)(2n+1)(2n)!$ and $(n+1)!=(n+1)\\,n!$ (two applications of `Nat.factorial_succ`, cast to $\\mathbb R$) and $4^{n+1}=4\\cdot4^n$, the goal closes by `field_simp`/`ring` — the multiplier $n+\\tfrac12=(2n+1)/2$ is exactly the factor the factorial coefficient needs to advance.\n\n**gamma_nat_add_half_eq_mul_gamma_half** rewrites $\\sqrt\\pi$ back to $\\Gamma(1/2)$. **gamma_nat_add_half_pos** applies `mul_pos`/`div_pos` to the closed form using positivity of factorials and $\\sqrt\\pi$. The worked values $\\Gamma(3/2),\\Gamma(5/2)$ are derived directly from `Real.Gamma_add_one` and `Real.Gamma_one_half_eq`, giving an independent check that the general formula's $n=1,2$ instances are correct.",
+    "keyInsights": [
+      "**One transcendental, infinitely many rationals**: $\\Gamma(1/2)=\\sqrt\\pi$ is the only irrational ingredient; every $\\Gamma(n+\\tfrac12)$ is the rational number $(2n)!/(4^n n!)$ times that single value. The functional equation propagates one hard value into a whole arithmetic family.",
+      "**The factorial coefficient advances by exactly $n+\\tfrac12$**: $(2n+2)!/(4^{n+1}(n+1)!) = \\tfrac{(2n+2)(2n+1)}{4(n+1)}\\cdot(2n)!/(4^n n!) = \\tfrac{2n+1}{2}\\cdot(2n)!/(4^n n!) = (n+\\tfrac12)\\cdot(2n)!/(4^n n!)$ — the multiplier the functional equation supplies is precisely the coefficient's growth factor, which is why the induction closes by `ring`.",
+      "**This is the Gaussian-integral / $n$-ball constant**: $(2n)!/(4^n n!)\\sqrt\\pi$ is the value behind $\\int x^{2n}e^{-x^2}dx$ and the volume of the unit $n$-ball; the elementary closed form makes those normalizations machine-checkable.",
+      "**Mathlib has the neighbours but not this**: $\\Gamma(1/2)=\\sqrt\\pi$, $\\Gamma(s+1)=s\\Gamma(s)$, $\\Gamma(n+1)=n!$, and even Legendre duplication are all in Mathlib; the explicit half-integer closed form sits one short induction away and is what this entry contributes.",
+      "**The badge is `original`**: the deep input $\\Gamma(1/2)=\\sqrt\\pi$ is Mathlib's, but the closed form, its rational-multiple reading, the positivity corollary, and the worked-value cross-checks are derived here and are absent from Mathlib."
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete, fully verified (0 sorries, 0 axioms) derivation of the half-integer Gamma closed form Γ(n+1/2) = (2n)!/(4ⁿ n!)·√π by induction from Γ(1/2)=√π and the functional equation, with the rational-multiple reformulation, the positivity corollary, and the worked values Γ(3/2)=√π/2 and Γ(5/2)=3√π/4 as independent cross-checks.",
+    "implications": "Provides the explicit half-integer Gamma values absent from Mathlib — the constant behind Gaussian moments, the chi/chi-squared normalizations, and the volume of the n-ball — in a reusable, machine-checked form, and exhibits the structural fact that all half-integer Gamma values are rational multiples of the single transcendental value √π."
+  },
+  "sorries": 0
+}

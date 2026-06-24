@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-gamma-refl-oq01-oq03-docstring",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 29
+    },
+    "type": "context",
+    "title": "Half-Integer Gamma Values from One Transcendental Seed",
+    "content": "The docstring sets up the half-integer closed form Γ(n+1/2) = (2n)!/(4ⁿ·n!)·√π. The single transcendental ingredient is Γ(1/2)=√π (Mathlib's Real.Gamma_one_half_eq); the functional equation Γ(s+1)=s·Γ(s) (Real.Gamma_add_one) then forces every Γ(n+1/2) to be a rational multiple of √π, the coefficient (2n)!/(4ⁿ n!) — equivalently (2n−1)!!/2ⁿ. Mathlib has the base value, the functional equation, and even the Legendre duplication formula, but not this explicit half-integer closed form; this entry supplies it by induction.",
+    "mathContext": "$\\Gamma\\!\\left(n+\\tfrac12\\right)=\\dfrac{(2n)!}{4^n\\,n!}\\sqrt\\pi=\\dfrac{(2n-1)!!}{2^n}\\sqrt\\pi$"
+  },
+  {
+    "id": "ann-gamma-refl-oq01-oq03-closed-form",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": {
+      "startLine": 44,
+      "endLine": 70
+    },
+    "type": "key-step",
+    "title": "The Closed Form by Induction",
+    "content": "gamma_nat_add_half proves Γ(n+1/2) = (2n)!/(4ⁿ·n!)·√π for every n. Base case: Γ(1/2)=√π and the coefficient is 0!/(1·0!)=1. Inductive step: Γ((n+1)+1/2) = Γ((n+1/2)+1) = (n+1/2)·Γ(n+1/2) via Real.Gamma_add_one (with n+1/2 ≠ 0 by positivity); substitute the inductive hypothesis and rewrite the factorial/power recurrences (2n+2)! = (2n+2)(2n+1)(2n)!, (n+1)! = (n+1)·n!, 4ⁿ⁺¹ = 4·4ⁿ (cast to ℝ). The remaining real-arithmetic identity closes by field_simp/ring — the multiplier n+1/2 = (2n+1)/2 is exactly the factor the coefficient needs to advance.",
+    "mathContext": "$\\Gamma\\!\\left((n{+}1)+\\tfrac12\\right)=\\left(n+\\tfrac12\\right)\\Gamma\\!\\left(n+\\tfrac12\\right),\\quad \\tfrac{(2n+2)(2n+1)}{4(n+1)}=\\tfrac{2n+1}{2}=n+\\tfrac12$"
+  },
+  {
+    "id": "ann-gamma-refl-oq01-oq03-rational-multiple",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": {
+      "startLine": 72,
+      "endLine": 87
+    },
+    "type": "observation",
+    "title": "Rational Multiple of Γ(1/2), and Positivity",
+    "content": "gamma_nat_add_half_eq_mul_gamma_half rewrites the closed form as Γ(n+1/2) = (2n)!/(4ⁿ n!)·Γ(1/2), making explicit that the only transcendental ingredient is the single value Γ(1/2) and all n-dependence is the rational coefficient. gamma_nat_add_half_pos reads off 0 < Γ(n+1/2) for every n from the closed form, since (2n)!, 4ⁿ, n! and √π are all positive (mul_pos/div_pos with the factorial positivity lemmas).",
+    "mathContext": "$\\Gamma\\!\\left(n+\\tfrac12\\right)=\\dfrac{(2n)!}{4^n n!}\\,\\Gamma\\!\\left(\\tfrac12\\right)>0$"
+  },
+  {
+    "id": "ann-gamma-refl-oq01-oq03-worked-values",
+    "proofId": "gamma-reflection-formula-oq-01-oq-03",
+    "range": {
+      "startLine": 89,
+      "endLine": 107
+    },
+    "type": "observation",
+    "title": "Worked Values and Consistency Check",
+    "content": "gamma_three_half (Γ(3/2)=√π/2) and gamma_five_half (Γ(5/2)=3√π/4) are derived independently from the functional equation Γ(x+1)=x·Γ(x) and Γ(1/2)=√π, providing concrete checks at n=1,2. gamma_nat_add_half_one then instantiates the GENERAL closed form at n=1 and confirms it reproduces Γ(3/2)=√π/2 — closing the loop between the abstract formula and the hand-computed value.",
+    "mathContext": "$\\Gamma(3/2)=\\tfrac12\\sqrt\\pi,\\qquad \\Gamma(5/2)=\\tfrac34\\sqrt\\pi$"
+  }
+]
