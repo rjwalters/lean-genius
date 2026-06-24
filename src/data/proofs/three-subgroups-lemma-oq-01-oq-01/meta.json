@@ -101,6 +101,20 @@
       "summary": "sq_commutator_lowerCentralSeries_le is the diagonal special case. derivedSeries_le_lowerCentralSeries_two_pow inducts on n, doubling the index via the bilinear bound to reach γ₍2ⁿ−1₎ — strictly sharper than Mathlib's linear derived_le_lower_central, which is recovered as the cross-check derivedSeries_le_lowerCentralSeries through antitonicity and n < 2ⁿ."
     }
   ],
-  "conclusion": "The bilinear lower-central-series bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎ is formalised sorry-free and axiom-free for an arbitrary group, realising the inductive payoff named in the parent three subgroups lemma entry. The proof is a single induction on j whose only working step is the parent's normal-subgroup three subgroups lemma, applied with the deep lower-central term as the normal subgroup. The bound is absent from Mathlib, which records only the lower central series infrastructure and the linear derived-series estimate derivedSeries G n ≤ γₙ. As a consequence the entry derives the exponentially sharp derivedSeries G n ≤ γ₍2ⁿ−1₎, a quantitative 'nilpotent ⟹ solvable', and confirms it recovers the linear Mathlib bound. A natural follow-up is the associated graded Lie-ring structure ⊕ γₙ/γ₍ₙ₊₁₎ that the bilinear bound makes well-defined, or the matching upper-central-series product bound.",
-  "crossReferences": []
+  "conclusion": {
+    "summary": "The bilinear lower-central-series bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎ is formalised sorry-free and axiom-free for an arbitrary group, realising the inductive payoff named in the parent three subgroups lemma entry. The proof is a single induction on j whose only working step is the parent's normal-subgroup three subgroups lemma, applied with the deep lower-central term γ₍ᵢ₊ⱼ₊₂₎ as the normal subgroup.",
+    "implications": "The bound is absent from Mathlib, which records only the lower central series infrastructure and the linear derived-series estimate derivedSeries G n ≤ γₙ. As a consequence the entry derives the exponentially sharp derivedSeries G n ≤ γ₍2ⁿ−1₎ — a quantitative 'nilpotent ⟹ solvable' that doubles the index at each derived-series step — and confirms it recovers the linear Mathlib bound through antitonicity and n < 2ⁿ. The same bilinear estimate is what makes the associated graded ⊕ γₙ/γ₍ₙ₊₁₎ a well-defined Lie ring, the algebraic backbone of nilpotency arithmetic.",
+    "openQuestions": [
+      "Formalise the associated graded Lie-ring structure ⊕ γₙ/γ₍ₙ₊₁₎ whose bracket is well-defined precisely because of this bilinear bound.",
+      "Prove the matching product bound for the upper central series (the ζ-series analogue), and relate the two via the duality between lower and upper central series.",
+      "Quantify the gap: for which groups is the exponential derivedSeries G n ≤ γ₍2ⁿ−1₎ tight, and when does the derived length collapse far below log₂ of the nilpotency class?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "three-subgroups-lemma-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. Supplies the normal-subgroup form of the three subgroups lemma (commutator_le_of_rotate) that is the sole working step of this entry's induction; this entry carries out the induction it named as future work, yielding the bilinear bound and the exponential derived-series strengthening."
+    }
+  ]
 }
