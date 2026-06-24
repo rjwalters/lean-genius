@@ -1,7 +1,7 @@
 {
   "slug": "bounded-prime-gaps-oq-05",
   "title": "Firoozbakht's Conjecture: p_n^{1/n} Strictly Decreasing",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -11,29 +11,46 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Unconditional equivalence of the three formulations (firoozbakht_forms_tfae), verified and axiom-free"
+    ],
+    "open": [
+      "Firoozbakht itself (whether the inequalities actually hold for all n) — remains open, verified past 10^19"
+    ],
+    "goal": "Establish that the original root form (p_n^{1/n} strictly decreasing), the rpow form p_{n+1} < p_n^{1+1/n}, and the integer-power form p_{n+1}^n < p_n^{n+1} are equivalent — unconditionally, without assuming the conjecture."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T12:51:58.293Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Proved the unconditional equivalence of the three standard formulations of Firoozbakht (root / rpow / integer-power).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Optional follow-ups: formalize Firoozbakht ⟹ Cramér-type gap bound; build a Decidable bridge to certify the integer-power form on an initial segment of primes.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: proved the three standard formulations of Firoozbakht are equivalent (verified, 0 axioms). The conjecture itself is untouched and remains open.",
+    "builtItems": [
+      "root_lt_iff (BoundedPrimeGapsOQ05.lean): root inequality a^{1/(n+1)} < b^{1/n} ⟺ core a^n < b^{n+1} for positive reals, n≥1",
+      "rpow_lt_iff (BoundedPrimeGapsOQ05.lean): a < b^{1+1/n} ⟺ same core a^n < b^{n+1}",
+      "core_real_iff_nat (BoundedPrimeGapsOQ05.lean): real-rpow core ⟺ natural-number inequality p^n < q^{n+1}",
+      "FiroozbakhtRoot / FiroozbakhtRpow / FiroozbakhtIntPow (BoundedPrimeGapsOQ05.lean): the three prime formulations",
+      "firoozbakht_forms_tfae (BoundedPrimeGapsOQ05.lean): List.TFAE of the three formulations"
+    ],
+    "insights": [
+      "All three inequalities are strictly-monotone images of the single core a^n < b^{n+1}: ROOT via power 1/(n(n+1)), RPOW via power 1/n; strict monotonicity of x↦x^c (c>0) makes each a genuine iff.",
+      "The integer-power form is the most elementary — for primes it is a statement purely in ℕ (p_{n+1}^n < p_n^{n+1}), needing no real analysis to state.",
+      "Axiom-freeness comes precisely from asserting only the equivalence, not the conjecture: the file uses Real.rpow_lt_rpow_iff + Real.rpow_mul + rpow_natCast, all foundational."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize Firoozbakht ⟹ Cramér-type gap bound p_{n+1}-p_n < (log p_n)^2 - log p_n for large n.",
+      "Build a Decidable instance for the integer-power form restricted to n ≤ N, certifying the conjecture on the known numerical range from a prime table."
+    ]
   },
   "tags": [
     "number-theory",
@@ -61,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T12:51:58.293Z",
-  "lastUpdate": "2026-04-22T12:51:58.293Z",
+  "lastUpdate": "2026-06-24T12:45:00.000Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
@@ -262,6 +279,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ05.lean",
+      "filename": "BoundedPrimeGapsOQ05.lean",
+      "lineCount": 150,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ05.lean"
     }
   ]
 }

@@ -478,6 +478,7 @@ import Proofs.BoundedPrimeGapsOQ04OQ01
 import Proofs.BoundedPrimeGapsOQ04OQ01WIP01
 import Proofs.BoundedPrimeGapsOQ04OQ01Aristotle
 import Proofs.BoundedPrimeGapsOQ04OQ02
+import Proofs.BoundedPrimeGapsOQ05
 import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
 import Proofs.BrianchonTheorem
