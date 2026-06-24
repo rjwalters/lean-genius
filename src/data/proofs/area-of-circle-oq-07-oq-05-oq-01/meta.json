@@ -1,6 +1,7 @@
 {
   "id": "area-of-circle-oq-07-oq-05-oq-01",
   "slug": "area-of-circle-oq-07-oq-05-oq-01",
+  "description": "Evaluates the general even moment of the standard Gaussian weight, ∫_ℝ x^{2n} e^{-x²} dx = (2n-1)‼·√π / 2ⁿ, for every n by induction — isolating the double-factorial recursion produced by one integration by parts and folding it into the zeroth-moment base value √π. A corollary identifies the integral with the half-integer Gamma value Γ(n+1/2).",
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
@@ -210,6 +211,68 @@
     }
   ],
   "sorries": 0,
+  "overview": {
+    "historicalContext": "The Gaussian moments ∫_ℝ x^{2n} e^{-x²} dx form one of the oldest computed integral families in analysis, central to probability (the moments of the normal distribution), the kinetic theory of gases, and quantum mechanics (the harmonic oscillator). Their closed form (2n-1)‼·√π / 2ⁿ — with the double factorial (2n-1)‼ = 1·3·5···(2n-1) counting the pairings of 2n objects — is the integral incarnation of the half-integer values of Euler's Gamma function, Γ(n+1/2). Classical texts derive the family by the integration-by-parts recursion formalized here; Mathlib already records the Gamma special value Γ(n+1/2) = (2n-1)‼·√π / 2ⁿ combinatorially (Real.Gamma_nat_add_half), and this entry exhibits the Gaussian integral that realizes it for every n.",
+    "problemStatement": "For every n : ℕ, evaluate the even moment ∫_{x : ℝ} x^{2n} · e^{-x²} dx = (2n-1)‼ · √π / 2ⁿ by induction on n, with the second moment (n = 1) as the motivating case, exhibiting the double-factorial recursion that integration by parts generates; and identify the integral with the half-integer Gamma value Γ(n+1/2).",
+    "proofStrategy": "Three ingredients feed an induction. (1) Integrability: x^k e^{-x²} ∈ L¹(ℝ) for every k (integrable_pow_mul_gaussian), since the Gaussian beats any power. (2) Boundary decay: x^m e^{-x²} → 0 at ±∞ (tendsto_pow_mul_gaussian_cocompact). (3) The recursion (gaussian_even_moment_recursion): writing x^{2n+2} e^{-x²} = x^{2n+1}·(x e^{-x²}) and integrating by parts with u = x^{2n+1}, v = -½ e^{-x²}, the boundary term vanishes by (2) and the integral drops two powers, picking up (2n+1)/2. The closed form (gaussian_even_moment) then follows by induction: base case ∫ e^{-x²} = √π (integral_gaussian), step matches the analytic factor (2n+1) to the double-factorial step (2(n+1)-1)‼ = (2n+1)·(2n-1)‼ (Nat.doubleFactorial_add_one). Finally gaussian_even_moment_eq_Gamma rewrites against Real.Gamma_nat_add_half to land on Γ(n+1/2).",
+    "keyInsights": [
+      "**One integration by parts, lifted to all n**: the parent entry computed only the second moment with a single IBP; the key move here is to isolate the *recursion* that one computation generates and fold it into an induction, turning a single integral into the entire even-moment family.",
+      "**The arithmetic factor matches the combinatorics**: integration by parts produces exactly the factor (2n+1), which is precisely what the double factorial accumulates at each step ((2n+1)‼ = (2n+1)·(2n-1)‼). The analytic recursion and the combinatorial recurrence are the same recurrence — this coincidence is the structural reason the closed form holds.",
+      "**Gaussian decay is what makes IBP clean**: every boundary term x^{2n+1}·e^{-x²} vanishes at ±∞ because the Gaussian dominates any polynomial, so the integration by parts on the whole line carries no boundary contribution — the recursion is exact, not asymptotic.",
+      "**An integral representation of half-integer Gamma values**: identifying the moment with Γ(n+1/2) shows the elementary IBP recursion computes the very same special values Mathlib stores combinatorially, giving a Gaussian-integral realization of Γ(n+1/2) uniformly in n.",
+      "**Honest 'mathlib' badge**: the analytic engine (IBP on ℝ, Gaussian decay, integrability, the double-factorial API) is entirely Mathlib; the original content is the assembly — isolating the recursion and the induction that closes it — so the badge is 'mathlib', not 'original', and the proof remains 0-axiom (propext / Classical.choice / Quot.sound only)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: The Even-Moment Problem",
+      "startLine": 6,
+      "endLine": 43,
+      "summary": "Module docstring stating the open question (evaluate ∫ x^{2n} e^{-x²} = (2n-1)‼√π/2ⁿ by induction) and the answer, outlining the double-factorial recursion from integration by parts and the corollary identification with Γ(n+1/2). Imports the Gaussian-integral, Poisson-summation, and double-factorial Mathlib modules.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n} e^{-x^2}\\,dx = \\dfrac{(2n-1)!!\\,\\sqrt\\pi}{2^n}$."
+    },
+    {
+      "id": "integrability",
+      "title": "Integrability of Polynomial-Weighted Gaussians",
+      "startLine": 50,
+      "endLine": 60,
+      "summary": "`integrable_pow_mul_gaussian`: x^k e^{-x²} is integrable over ℝ for every k, from integrable_rpow_mul_exp_neg_mul_sq (s = k > -1) via Real.rpow_natCast. Supplies the integrability hypotheses for integration by parts at every step.",
+      "mathContext": "$x^k e^{-x^2} \\in L^1(\\mathbb{R})$ for all $k \\in \\mathbb{N}$."
+    },
+    {
+      "id": "boundary-decay",
+      "title": "Gaussian Decay of Polynomial Weights",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "`tendsto_pow_mul_gaussian_cocompact`: x^m e^{-x²} → 0 at ±∞ for every m, from tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact. Provides the vanishing boundary terms for the integration-by-parts recursion.",
+      "mathContext": "$x^m e^{-x^2} \\to 0$ as $x \\to \\pm\\infty$."
+    },
+    {
+      "id": "recursion",
+      "title": "The Even-Moment Recursion (Integration by Parts)",
+      "startLine": 74,
+      "endLine": 146,
+      "summary": "`gaussian_even_moment_recursion`: ∫ x^{2(n+1)} e^{-x²} = (2n+1)/2·∫ x^{2n} e^{-x²}. Rewrites the integrand as x^{2n+1}·(x e^{-x²}), sets u = x^{2n+1}, v = -½ e^{-x²}, assembles the five hypotheses of integral_mul_deriv_eq_deriv_mul (two HasDerivAt facts, integrability of u·v' and u'·v, two boundary limits), and the vanishing boundary term leaves the (2n+1)/2 reduction.",
+      "mathContext": "$\\int x^{2n+2}e^{-x^2} = \\tfrac{2n+1}{2}\\int x^{2n}e^{-x^2}$."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Closed Form by Induction",
+      "startLine": 147,
+      "endLine": 169,
+      "summary": "`gaussian_even_moment`: induction on n. Base case n=0 is ∫ e^{-x²} = √π (integral_gaussian) with (2·0-1)‼ = 1; the step applies the recursion + inductive hypothesis and matches the factor (2n+1) to (2(n+1)-1)‼ = (2n+1)·(2n-1)‼ (Nat.doubleFactorial_add_one) and 2^n via pow_succ.",
+      "mathContext": "$(2(n{+}1){-}1)!! = (2n{+}1)\\,(2n{-}1)!!$; base $\\sqrt\\pi$."
+    },
+    {
+      "id": "gamma-and-check",
+      "title": "Gamma Identification and Second-Moment Check",
+      "startLine": 171,
+      "endLine": 188,
+      "summary": "`gaussian_even_moment_eq_Gamma`: the closed form equals Γ(n+1/2) via Real.Gamma_nat_add_half, a Gaussian representation of the half-integer Gamma values. `gaussian_second_moment`: sanity check recovering the parent's ∫ x² e^{-x²} = √π/2 at n = 1.",
+      "mathContext": "$\\int x^{2n}e^{-x^2} = \\Gamma\\!\\left(n+\\tfrac12\\right)$; $\\int x^2 e^{-x^2} = \\tfrac{\\sqrt\\pi}{2}$."
+    }
+  ],
   "conclusion": {
     "summary": "For every n : ℕ the even moment of the standard Gaussian weight is ∫_ℝ x^{2n} e^{-x²} dx = (2n-1)‼·√π / 2ⁿ (gaussian_even_moment). The proof isolates the double-factorial recursion ∫ x^{2(n+1)} e^{-x²} = (2n+1)/2·∫ x^{2n} e^{-x²} (gaussian_even_moment_recursion) — one integration by parts on (-∞, ∞) with u = x^{2n+1}, v = -½ e^{-x²}, boundary term killed by Gaussian decay — and folds it by induction into the base value ∫ e^{-x²} = √π, matching the arithmetic factor (2n+1) to the double-factorial step (2(n+1)-1)‼ = (2n+1)·(2n-1)‼ (Nat.doubleFactorial_add_one). A corollary identifies the integral with the half-integer Gamma value Γ(n+1/2) (gaussian_even_moment_eq_Gamma). 188 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "This closes the even-moment family the parent's second moment opened: every ∫ x^{2n} e^{-x²} now has a machine-checked closed form, and the recursion makes explicit how each integration by parts lowers the power by two while accumulating the odd factor 2n+1. Tying the integral to Γ(n+1/2) shows the elementary IBP recursion computes the same half-integer Gamma values Mathlib records combinatorially, giving a Gaussian integral representation of those special values for all n at once.",
