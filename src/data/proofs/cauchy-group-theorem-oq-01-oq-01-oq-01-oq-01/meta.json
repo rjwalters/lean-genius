@@ -1,0 +1,152 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+  "title": "Counting solutions of xⁿ = 1 in a cyclic group: the exact count is gcd(n, |G|)",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset"],
+    "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01",
+    "lineCount": 104,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Refines the parent power-map dichotomy from a yes/no answer into an exact fibre count: in a finite cyclic group G of order m, the equation xⁿ = 1 has precisely gcd(n, m) solutions (card_pow_eq_one_eq_gcd). This is the sharp cyclic case of Frobenius's theorem, which guarantees only that gcd(n, |G|) divides the number of solutions of xⁿ = 1 in an arbitrary finite group; here the bound is achieved with equality (gcd_dvd_card_pow_eq_one), so a cyclic group realizes the minimum possible number of n-th unity solutions. The proof needs no analytic input: the sets {xⁿ = 1} and {x^gcd(n,m) = 1} coincide because orderOf x ∣ m is automatic, so orderOf x ∣ n ⟺ orderOf x ∣ gcd(n, m); partitioning by element order via sum_card_orderOf_eq_card_pow_eq_one and using the cyclic-group order census IsCyclic.card_orderOf_eq_totient turns the count into ∑_{d ∣ gcd(n,m)} φ(d), which Gauss's divisor-sum identity Nat.sum_totient collapses to gcd(n, m). The coprime boundary gcd = 1 recovers the parent: xⁿ = 1 has the identity as its only solution iff n is coprime to |G| (card_pow_eq_one_eq_one_iff_coprime), exactly when x ↦ xⁿ is a bijection. Concrete 0-axiom witnesses in C₁₂ count 4 solutions of x⁸ = 1 (gcd 8,12 = 4) and 1 solution of x⁷ = 1 (gcd 7,12 = 1) via kernel decide.",
+  "overview": {
+    "historicalContext": "Frobenius proved in 1895 that for any finite group G and any n dividing |G|, the number of solutions of xⁿ = 1 is a multiple of n; more generally gcd(n, |G|) divides that count for every n. The theorem is a cornerstone of finite group theory and a precursor to the modern study of the function counting solutions of word equations. For cyclic groups the divisibility is an equality, and the exact count gcd(n, |G|) is the multiplicative shadow of the elementary fact that the congruence n·x ≡ 0 (mod m) has gcd(n, m) solutions. The parent chain develops Cauchy's theorem (an order-p element for each prime p ∣ |G|) and the power-map dichotomy (x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1); the present entry sharpens that dichotomy from a Boolean into the precise size of the fibre over the identity.",
+    "problemStatement": "For a finite cyclic group G of order m and a natural number n, determine the exact number of solutions of xⁿ = 1. Prove it equals gcd(n, m), deduce the Frobenius divisibility gcd(n, m) ∣ #{xⁿ = 1} as an equality in this case, and recover the parent power-map dichotomy as the coprime boundary where the count is 1.",
+    "proofStrategy": "Fix m = |G| > 0 and write g = gcd(n, m) ≠ 0. First show the solution set is unchanged on replacing the exponent n by g: via orderOf_dvd_iff_pow_eq_one the condition xⁿ = 1 is orderOf x ∣ n, and since orderOf x ∣ m always (orderOf_dvd_card), this is equivalent to orderOf x ∣ g (Nat.dvd_gcd and Nat.gcd_dvd_left). Then sum_card_orderOf_eq_card_pow_eq_one (valid since g ≠ 0) decomposes #{x^g = 1} = ∑_{d ∣ g} #{orderOf x = d}. In a cyclic group IsCyclic.card_orderOf_eq_totient gives #{orderOf x = d} = φ(d) for every d ∣ m — applicable since d ∣ g ∣ m — so the sum becomes ∑_{d ∣ g} φ(d), which Nat.sum_totient evaluates to g. The Frobenius divisibility and the coprime corollary follow by rewriting with the main equality; the C₁₂ witnesses reduce gcd via kernel decide, avoiding Lean.ofReduceBool.",
+    "keyInsights": [
+      "The count depends only on the pair (n, |G|) through their gcd: raising the exponent to gcd(n, |G|) leaves the solution set fixed, because the automatic constraint orderOf x ∣ |G| absorbs everything in n beyond the gcd.",
+      "Solution counting is order counting: {xⁿ = 1} is the disjoint union over divisors d ∣ gcd(n, |G|) of the order-d elements, so the problem reduces to the cyclic-group census #{orderOf x = d} = φ(d).",
+      "Gauss's identity ∑_{d ∣ g} φ(d) = g is exactly what makes the cyclic count sharp — it collapses the order-partition to gcd(n, |G|), turning Frobenius's divisibility into an equality.",
+      "The coprime boundary gcd(n, |G|) = 1 is the count-one slice: the only n-th unity solution is the identity precisely when n is coprime to |G|, which is when the power map is a bijection — connecting this entry to the parent dichotomy.",
+      "A cyclic group minimizes the number of solutions of xⁿ = 1 among all groups of its order: Frobenius bounds the count below by gcd(n, |G|), and the cyclic group attains that floor."
+    ]
+  },
+  "sections": [
+    {
+      "id": "main-count",
+      "title": "The Exact Count gcd(n, |G|)",
+      "startLine": 53,
+      "endLine": 80,
+      "summary": "card_pow_eq_one_eq_gcd is the headline: #{xⁿ = 1} = gcd(n, |G|) in a finite cyclic group, proved by replacing the exponent with the gcd (orderOf x ∣ |G| is automatic), partitioning by element order, and collapsing ∑_{d ∣ g} φ(d) to g via Nat.sum_totient. card_pow_eq_one_eq_gcd_natCard restates it with Nat.card.",
+      "mathContext": "#{x : G | xⁿ = 1} = gcd(n, |G|); orderOf x ∣ n ∧ orderOf x ∣ |G| ⟺ orderOf x ∣ gcd(n, |G|); ∑_{d ∣ g} φ(d) = g."
+    },
+    {
+      "id": "frobenius-and-boundary",
+      "title": "Frobenius Sharpness and the Coprime Boundary",
+      "startLine": 81,
+      "endLine": 94,
+      "summary": "gcd_dvd_card_pow_eq_one records that the count is divisible by gcd(n, |G|) — Frobenius's theorem for an arbitrary finite group — here met with equality. card_pow_eq_one_eq_one_iff_coprime is the bridge to the parent dichotomy: #{xⁿ = 1} = 1 iff n is coprime to |G|, exactly when x ↦ xⁿ is a bijection.",
+      "mathContext": "gcd(n, |G|) ∣ #{xⁿ = 1} (Frobenius, equality here); #{xⁿ = 1} = 1 ⟺ Coprime n |G|."
+    },
+    {
+      "id": "witnesses",
+      "title": "Concrete Counts in C₁₂",
+      "startLine": 95,
+      "endLine": 102,
+      "summary": "Two 0-axiom witnesses in the cyclic group C₁₂ = Multiplicative (ZMod 12): x⁸ = 1 has gcd(8, 12) = 4 solutions, and x⁷ = 1 has gcd(7, 12) = 1 solution (only the identity). Both are closed by kernel decide on the resulting gcd, avoiding native_decide and Lean.ofReduceBool.",
+      "mathContext": "In C₁₂: #{x⁸ = 1} = gcd(8,12) = 4, #{x⁷ = 1} = gcd(7,12) = 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "In a finite cyclic group the number of solutions of xⁿ = 1 is exactly gcd(n, |G|). The argument replaces the exponent by gcd(n, |G|) — legitimate because every element order divides |G| — partitions the solution set by element order into φ(d) classes (the cyclic-group census), and collapses the divisor sum by Gauss's identity ∑_{d ∣ g} φ(d) = g. The result makes Frobenius's divisibility theorem sharp in the cyclic case and recovers the parent power-map dichotomy as its coprime, count-one boundary.",
+    "implications": [
+      "Sharpens the parent dichotomy from 'bijection / not bijection' to the exact fibre size gcd(n, |G|) of the n-th power map over the identity.",
+      "Exhibits the cyclic group as the extremal case of Frobenius's theorem: the divisibility gcd(n, |G|) ∣ #{xⁿ = 1} is attained with equality, the minimum possible solution count.",
+      "Gives the group-theoretic form of 'n·x ≡ 0 (mod m) has gcd(n, m) solutions', the linear-congruence count read multiplicatively through G ≅ ZMod m."
+    ],
+    "openQuestions": [
+      "For a finite abelian group G ≅ ∏ ZMod(dᵢ), the count of xⁿ = 1 is ∏ gcd(n, dᵢ); what is the cleanest invariant-factor formula and when does it again meet the Frobenius floor gcd(n, |G|)?",
+      "Frobenius's theorem holds for every finite group — can the order-partition argument here be adapted to prove the general divisibility gcd(n, |G|) ∣ #{xⁿ = 1} without the cyclic census, or does that genuinely require the full Frobenius machinery?",
+      "Across all groups of fixed order m, the cyclic group minimizes #{xⁿ = 1}; which groups maximize it, and how does the maximum grow with the elementary-abelian content of m?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Refines the parent power-map dichotomy (x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1) into the exact solution count gcd(n, |G|); card_pow_eq_one_eq_one_iff_coprime recovers the parent's coprime boundary as the count-one case."
+    },
+    {
+      "targetId": "cauchy-group-theorem-oq-01",
+      "relationship": "uses",
+      "description": "Sits in the Cauchy / Frobenius circle of ideas: where Cauchy detects a prime divisor of |G| via an order-p element, this entry counts all n-th unity solutions and realizes Frobenius's divisibility with equality in the cyclic case."
+    }
+  ],
+  "meta": {
+    "author": "Lean formalization original (cyclic case of Frobenius's solution-counting theorem)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cyclic-groups",
+      "frobenius-theorem",
+      "solution-counting",
+      "euler-totient",
+      "order-of-element",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "sum_card_orderOf_eq_card_pow_eq_one",
+        "description": "For n ≠ 0, ∑_{d ∣ n} #{orderOf x = d} = #{xⁿ = 1}; partitions the solution set by element order.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "IsCyclic.card_orderOf_eq_totient",
+        "description": "In a finite cyclic group, #{orderOf x = d} = φ(d) for every d ∣ |G|; the cyclic-group order census supplying each term of the divisor sum.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Nat.sum_totient",
+        "description": "Gauss's identity ∑_{d ∣ g} φ(d) = g; collapses the order-partition sum to gcd(n, |G|).",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf x ∣ n ↔ xⁿ = 1; converts the equation into a divisibility on element order.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "orderOf_dvd_card",
+        "description": "orderOf x ∣ Fintype.card G for any x; the automatic constraint that lets the exponent be replaced by gcd(n, |G|).",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "isCyclic_multiplicative",
+        "description": "Multiplicative of a finite additive-cyclic group (here ZMod 12) is a cyclic group; gives the concrete C₁₂ instance for the witnesses.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Frobenius, Ferdinand Georg",
+        "title": "Über einen Fundamentalsatz der Gruppentheorie",
+        "year": "1895",
+        "note": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin — the theorem that gcd(n, |G|) divides the number of solutions of xⁿ = 1; this entry attains it with equality in the cyclic case."
+      },
+      {
+        "authors": "Gauss, Carl Friedrich",
+        "title": "Disquisitiones Arithmeticae",
+        "year": "1801",
+        "note": "Article 39 — the divisor-sum identity ∑_{d ∣ n} φ(d) = n that collapses the order-partition to gcd(n, |G|)."
+      },
+      {
+        "authors": "Isaacs, I. Martin",
+        "title": "Finite Group Theory",
+        "year": "2008",
+        "note": "Graduate Studies in Mathematics 92, AMS — Frobenius's solution-counting theorem and the structure of finite cyclic groups."
+      }
+    ]
+  }
+}
