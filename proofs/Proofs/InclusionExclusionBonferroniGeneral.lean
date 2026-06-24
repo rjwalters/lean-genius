@@ -1,7 +1,7 @@
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Nat.Choose.Basic
-import Mathlib.Algebra.BigOperators.Ring
+import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
 
 /-
