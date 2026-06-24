@@ -894,6 +894,7 @@ import Proofs.DilworthTheoremOQ01
 import Proofs.DiniTheorem
 import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
+import Proofs.DirichletApproximationOQ01OQ01
 import Proofs.DirichletApproximationOQ02
 import Proofs.DirichletApproximationOQ03
 import Proofs.DirichletApproximationOQ04
