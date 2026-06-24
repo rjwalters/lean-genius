@@ -2659,6 +2659,7 @@ import Proofs.EulerCriterionSquaresOQ01
 import Proofs.EulerIdentity
 import Proofs.EulerIdentityOQ01
 import Proofs.EulerIdentityOQ01OQ02
+import Proofs.EulerIdentityOQ01OQ02OQ01
 import Proofs.EulerIdentityOQ01OQ01
 import Proofs.EulerIdentityOQ01OQ01OQ01
 import Proofs.EulerIdentityOQ01OQ01OQ01OQ01
