@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-100-oq-03",
+    "range": { "startLine": 40, "endLine": 54 },
+    "type": "definition",
+    "title": "Integer Distances and Diameter on the Line",
+    "content": "`IntegerDistances A` says every pairwise difference of points in a finite set $A \\subseteq \\mathbb{R}$ is an integer — on the line, where $\\mathrm{dist}(a,b) = |a-b|$, this is exactly the integer-pairwise-distance condition of Erdős #100 (and forces distinct points to differ by at least 1). `diam A` is $\\max A - \\min A$. Restricting to a line makes the points totally ordered, which is what renders the 1-D problem an elementary chain argument while the planar version stays open.",
+    "mathContext": "$\\mathrm{IntegerDistances}(A) :\\iff \\forall a,b\\in A,\\ a-b\\in\\mathbb{Z}$; $\\ \\mathrm{diam}(A) = \\max A - \\min A$.",
+    "significance": "key",
+    "relatedConcepts": ["integer distance sets", "Erdős #100", "collinear points", "diameter"],
+    "prerequisites": ["finite sets of reals", "total order on ℝ"]
+  },
+  {
+    "id": "ann-shift-lemma",
+    "proofId": "erdos-100-oq-03",
+    "range": { "startLine": 58, "endLine": 74 },
+    "type": "technique",
+    "title": "Shifted Points Are Nonnegative Integers",
+    "content": "`shift_eq_floor`: if $A$ has integer distances and $m = \\min A$, then for every $a \\in A$ the shift $a - m$ equals its own floor $\\lfloor a-m\\rfloor$ (it is a genuine integer real) and that floor is $\\ge 0$. The integer-distance property gives $a - m \\in \\mathbb{Z}$; minimality gives $a - m \\ge 0$. Using `Int.floor` as the total $\\mathbb{R}\\to\\mathbb{Z}$ map — rather than an existential/choice extraction — keeps the embedding definitionally transparent (`Int.floor_intCast` recovers the integer exactly).",
+    "mathContext": "$a-m\\in\\mathbb{Z}$ and $a-m\\ge 0$, so $\\lfloor a-m\\rfloor = a-m \\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["floor function as ℝ→ℤ map", "choice-free construction", "Int.floor_intCast"],
+    "prerequisites": ["minimum of a finite set", "Int.floor"]
+  },
+  {
+    "id": "ann-main-bound",
+    "proofId": "erdos-100-oq-03",
+    "range": { "startLine": 78, "endLine": 135 },
+    "type": "theorem",
+    "title": "The Sharp Lower Bound diam(A) ≥ |A| − 1",
+    "content": "`diam_ge_card_sub_one`: the heart of the entry. The map $a \\mapsto \\lfloor a - \\min A\\rfloor$ is injective on $A$ (the shifts are genuine integers, so equal floors force equal points), embedding the $|A|$ points as $|A|$ distinct integers in $[0, \\lfloor\\mathrm{diam}\\rfloor]$. The integer interval $\\mathrm{Icc}\\,0\\,\\lfloor\\mathrm{diam}\\rfloor$ holds at most $\\lfloor\\mathrm{diam}\\rfloor + 1$ of them (`Int.card_Icc`), so $|A| \\le \\lfloor\\mathrm{diam}\\rfloor + 1 \\le \\mathrm{diam} + 1$, i.e. $\\mathrm{diam} \\ge |A| - 1$. This is the pigeonhole/packing core: $n$ distinct integers spanning a range force the range $\\ge n-1$.",
+    "mathContext": "$|A|$ distinct integers in $[0,\\lfloor\\mathrm{diam}\\rfloor]$ $\\Rightarrow |A| \\le \\lfloor\\mathrm{diam}\\rfloor + 1 \\Rightarrow \\mathrm{diam} \\ge |A|-1.$",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "integer interval packing", "injective embedding", "Int.card_Icc"],
+    "prerequisites": ["the shift lemma", "cardinality of finite images", "floor inequalities"]
+  },
+  {
+    "id": "ann-ap-witness",
+    "proofId": "erdos-100-oq-03",
+    "range": { "startLine": 139, "endLine": 197 },
+    "type": "technique",
+    "title": "Sharpness: the Arithmetic Progression {0,…,n−1}",
+    "content": "The witness configuration $\\{0,1,\\dots,n-1\\} \\subseteq \\mathbb{R}$ (`apSet n`, the image of `Finset.range n` under the cast). A chain of lemmas establishes it has $n$ points (`apSet_card`, injectivity of the cast), integer distances (`apSet_integerDistances`), minimum $0$ (`apSet_min`) and maximum $n-1$ (`apSet_max`), hence diameter exactly $n-1$ (`apSet_diam`). Its distinct distances are exactly $\\{1,2,\\dots,n-1\\}$, the extremal pattern.",
+    "mathContext": "$\\mathrm{apSet}(n) = \\{0,1,\\dots,n-1\\}$: $|{\\cdot}| = n$, $\\min = 0$, $\\max = n-1$, so $\\mathrm{diam} = n-1$.",
+    "significance": "key",
+    "relatedConcepts": ["arithmetic progression", "extremal configuration", "sharpness witness"],
+    "prerequisites": ["Finset.range and image", "min'/max' of a finite set"]
+  },
+  {
+    "id": "ann-optimal-constant",
+    "proofId": "erdos-100-oq-03",
+    "range": { "startLine": 199, "endLine": 212 },
+    "type": "insight",
+    "title": "The Optimal Linear Constant is c = 1",
+    "content": "`optimal_constant_one` packages the two halves into the headline: in dimension 1 the optimal linear constant is exactly $c = 1$. It exhibits the witness $\\{0,\\dots,n-1\\}$ attaining $\\mathrm{diam} = n-1$ with $|A| = n$, and asserts the universal lower bound $\\mathrm{diam}(B) \\ge |B|-1$ for every integer-distance set $B$. Together: the bound holds always and cannot be improved, so $c=1$ is exactly optimal — no $o(1)$ slack. This is the unconditional 1-D truth behind the planar `Erdos100StrongConjecture` that the sibling entry oq-02 can only assume as an axiom.",
+    "mathContext": "$c = 1$ optimal: $\\forall B,\\ \\mathrm{diam}(B) \\ge |B|-1$, attained by $\\{0,\\dots,n-1\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["optimal constant", "sharp extremal bound", "Erdős #100 strong conjecture"],
+    "prerequisites": ["the lower bound", "the AP witness"]
+  },
+  {
+    "id": "ann-packing",
+    "proofId": "erdos-100-oq-03",
+    "range": { "startLine": 216, "endLine": 272 },
+    "type": "insight",
+    "title": "Dimension-Free Packing: #(distinct distances) ≤ diam",
+    "content": "`distinct_distances_le_diam`: the distinct pairwise distances of an integer-distance set are distinct positive integers in $\\{1,\\dots,\\lfloor\\mathrm{diam}\\rfloor\\}$, so their count is $\\le \\mathrm{diam}$. Crucially this holds in EVERY dimension. It is the inequality every known lower bound on the open planar problem feeds into: combine it with a distinct-distance lower bound to get a diameter lower bound. In $\\mathbb{R}^1$ the distinct-distance count is $\\ge n-1$, recovering the sharp linear bound; in $\\mathbb{R}^2$ the Guth–Katz count $\\Theta(n/\\sqrt{\\log n})$ is exactly why only $\\mathrm{diam}\\ge cn/\\log n$ is known there.",
+    "mathContext": "$\\#\\{\\text{distinct distances}\\} \\le \\lfloor\\mathrm{diam}\\rfloor \\le \\mathrm{diam}$, in every dimension.",
+    "significance": "key",
+    "relatedConcepts": ["distinct distances problem", "Guth–Katz", "dimension-free inequality", "packing bound"],
+    "prerequisites": ["integer-distance property", "floor and integer intervals"]
+  }
+]
