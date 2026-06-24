@@ -264,6 +264,7 @@ import Proofs.BallotProblemOQ03OQ01OQ04
 import Proofs.BallotProblemOQ03OQ02
 import Proofs.BallotProblemOQ03OQ03
 import Proofs.BanachFixedPointOQ01
+import Proofs.BanachSteinhausTheoremOQ01
 import Proofs.BaselProblem
 import Proofs.BaselProblemOQ01OQ01
 import Proofs.BaselProblemOQ01OQ01OQ02
