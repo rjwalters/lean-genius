@@ -315,6 +315,8 @@ import Proofs.BaselProblemOQ15
 import Proofs.BellNumbersOQ01
 import Proofs.BernoulliInequalityOQ01
 import Proofs.BernoulliInequalityOQ01OQ01
+import Proofs.BernoulliInequalityOQ01OQ01OQ01
+import Proofs.BernoulliInequalityOQ01OQ01OQ01OQ01
 import Proofs.BernoulliInequalityOQ01OQ01OQ02
 import Proofs.BernoulliInequalityOQ01OQ02
 import Proofs.BernoulliInequalityOQ01OQ02OQ01
