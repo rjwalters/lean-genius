@@ -608,6 +608,7 @@ import Proofs.CauchySchwarzOQ03OQ02OQ01
 import Proofs.CauchySchwarzOQ04
 import Proofs.CauchySchwarzOQ04OQ01
 import Proofs.CauchySchwarzOQ06
+import Proofs.CauchySchwarzOQ06OQ01
 import Proofs.CauchySchwarzOQ07
 import Proofs.CauchySchwarzOQ08
 import Proofs.CayleyHamilton
