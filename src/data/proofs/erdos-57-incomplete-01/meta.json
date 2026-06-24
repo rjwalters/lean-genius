@@ -49,6 +49,66 @@
       "Parity arguments (Even/Odd of natural numbers)"
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Problem Statement & Setup",
+      "startLine": 1,
+      "endLine": 45,
+      "summary": "Module docstring framing the goal: prove the hard construction direction of the bipartite characterization in closed-walk form (G.IsBipartite ↔ no odd closed walk), the exact step the parent file leaves as a sorry and Mathlib lists as future work. Imports Mathlib and the parent Erdos57Problem; opens Set and SimpleGraph in namespace Erdos57."
+    },
+    {
+      "id": "odd-closed-walks",
+      "title": "Odd Closed Walks & Parity Well-Definedness",
+      "startLine": 47,
+      "endLine": 61,
+      "summary": "Defines HasOddClosedWalk G (a walk u → u of odd length) and proves even_length_iff_of_noOddClosedWalk: with no odd closed walk, any two walks sharing endpoints have equal length parity, since their append-with-reverse is an even closed walk. This is the well-definedness that legitimizes the parity coloring."
+    },
+    {
+      "id": "base-vertex",
+      "title": "Canonical Base Vertex per Component",
+      "startLine": 63,
+      "endLine": 75,
+      "summary": "baseVertex G v selects a representative of v's connected component via ConnectedComponent.out; reachable_baseVertex establishes reachability from base to v (ConnectedComponent.exact on out_eq); baseWalk G v is a chosen witness walk back to the base."
+    },
+    {
+      "id": "parity-coloring",
+      "title": "The Parity 2-Coloring (Mathlib's deferred construction)",
+      "startLine": 77,
+      "endLine": 102,
+      "summary": "parityColoring h colors each vertex by the parity of a walk to its component base (decide (Odd (baseWalk G v).length)). Properness: adjacent u, v share a base vertex; two walks base → v (one through the edge, one via Walk.copy) have equal parity, forcing the base-walk lengths to opposite parity, so colors differ. The genuinely hard construction direction, axiom-free."
+    },
+    {
+      "id": "headline",
+      "title": "Headline: Bipartite ⟺ No Odd Closed Walk",
+      "startLine": 104,
+      "endLine": 120,
+      "summary": "isBipartite_iff_no_oddClosedWalk. Forward (easy): a Bool-recoloring forces closed walks even (Coloring.even_length_iff_congr). Reverse (the construction): parityColoring h is a Bool-coloring, so colorable with Fintype.card Bool = 2 = IsBipartite."
+    },
+    {
+      "id": "odd-cycle-consequences",
+      "title": "Odd-Cycle Consequences (easy obstruction)",
+      "startLine": 122,
+      "endLine": 148,
+      "summary": "An odd cycle is an odd closed walk (hasOddClosedWalk_of_oddCycle / _of_oddCycleLengths), so a nonempty oddCycleLengths obstructs bipartiteness (not_isBipartite_of_oddCycleLengths), and contrapositively a bipartite graph has empty oddCycleLengths (oddCycleLengths_empty_of_isBipartite) — recovering the parent's forward direction."
+    },
+    {
+      "id": "chromatic-obstruction",
+      "title": "Quantitative Chromatic Obstruction",
+      "startLine": 150,
+      "endLine": 163,
+      "summary": "three_le_chromaticNumber_of_hasOddClosedWalk: an odd closed walk forces 3 ≤ χ(G) via Mathlib's Walk.three_le_chromaticNumber_of_odd_loop; three_le_chromaticNumber_of_oddCycleLengths specializes this to odd cycles."
+    }
+  ],
+  "conclusion": {
+    "summary": "This companion proves, fully axiom-free, the construction (hard) direction of the bipartite characterization in its closed-walk form: a simple graph is bipartite iff it has no odd closed walk (isBipartite_iff_no_oddClosedWalk). The reverse direction is the component-wise parity 2-coloring — choosing a base vertex per connected component and coloring by the parity of a walk back to it — which is exactly the step the parent file leaves as a sorry and Mathlib lists as future work. The easy obstruction direction (odd cycle ⟹ not bipartite, and the quantitative χ(G) ≥ 3) is recovered as a consequence, and the parent's forward bipartite direction is reproved through the closed-walk framework.",
+    "implications": "Isolating bipartiteness to the absence of odd CLOSED WALKS, rather than odd cycles, is what makes the construction direction fully constructive: parity well-definedness is precisely the no-odd-closed-walk hypothesis, so no appeal to the existence of a specific odd cycle is needed. This separates the topological/parity content of the characterization (handled here completely) from the purely combinatorial content (every odd closed walk contains an odd cycle), which is the only remaining gap to the parent's full odd-cycle statement and is assumed nowhere in this file. As the base case of the Erdős–Hajnal cycle-richness hierarchy underlying Erdős #57, the bipartite characterization is the foundation on which the deep Liu–Montgomery result builds.",
+    "openQuestions": [
+      "Formalize the missing combinatorial lemma 'every odd closed walk contains an odd cycle' to close the gap and obtain the parent's full odd-cycle characterization (G.IsBipartite ↔ no odd cycle) axiom-free.",
+      "Upstream the closed-walk characterization to Mathlib, directly resolving the 'future work' note in Mathlib.Combinatorics.SimpleGraph.Bipartite.",
+      "Quantify the obstruction further: relate the shortest odd closed walk / odd girth to lower bounds on χ(G) beyond the threshold χ(G) ≥ 3."
+    ]
+  },
   "leanFile": {
     "imports": [
       "Mathlib",
