@@ -401,6 +401,36 @@ theorem pentSeriesCoeff_one : pentSeriesCoeff 1 = -1 := by
   rw [genPent_one] at h
   rw [h]; rfl
 
+/-- **The series coefficient as a finite sum over the computable enumerator.**
+Although `pentSeriesCoeff` is `noncomputable` (it picks the matching index via
+`Classical.choose`), it agrees with the *explicit* finite sum over `pentIndices n`
+(Part 3c) that keeps only the index landing on `n` exactly.  Since `genPent` is
+injective, at most one summand survives, so the right-hand side is `pentSign k`
+when `n = g(k)` and `0` otherwise — precisely `pentSeriesCoeff`.  This turns the
+abstract `[Xⁿ]` coefficient into a `Finset`-evaluable expression: the form
+Euler's recurrence `p(n) = ∑ₖ (-1)ᵏ⁻¹ p(n - g_k)` ranges over. -/
+theorem pentSeriesCoeff_eq_sum_pentIndices (n : ℤ) :
+    pentSeriesCoeff n
+      = ∑ k ∈ pentIndices n, if genPent k = n then pentSign k else 0 := by
+  by_cases h : IsGenPent n
+  · obtain ⟨k₀, hk₀⟩ := h
+    have hval : genPent k₀ = n := by
+      have h2 := two_mul_genPent k₀; linarith [hk₀, h2]
+    rw [Finset.sum_eq_single k₀]
+    · rw [if_pos hval, ← hval, pentSeriesCoeff_genPent]
+    · intro b _ hb
+      have hbne : genPent b ≠ n := fun hbn =>
+        hb (genPent_injective (hbn.trans hval.symm))
+      rw [if_neg hbne]
+    · intro hmem
+      exact absurd (mem_pentIndices.mpr hval.le) hmem
+  · rw [pentSeriesCoeff_of_not h]
+    refine (Finset.sum_eq_zero ?_).symm
+    intro k _
+    have hkne : genPent k ≠ n := fun hkn =>
+      h ⟨k, by have h2 := two_mul_genPent k; linarith [hkn, h2]⟩
+    rw [if_neg hkne]
+
 /-! ## Part 6: The Mathlib power-series bridges (both ends of Euler's identity)
 
 Mathlib's 2025 `Combinatorics.Enumerative.Partition.GenFun` (Weiyi Wang) supplies
