@@ -1,1 +1,98 @@
-[]
+[
+  {
+    "id": "ann-lucas-def",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 48 },
+    "type": "definition",
+    "title": "The Lucas sequence",
+    "content": "Defines the Lucas numbers by the same two-step recurrence as the Fibonacci numbers but with different seeds: L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1), giving 2, 1, 3, 4, 7, 11, 18, …. Mathlib provides Nat.fib but no Lucas sequence (its only \"Lucas\" content is the unrelated Lucas–Lehmer primality test), so this self-contained definition is the foundation of the whole entry. The three-clause structural recursion lets the base evaluations and the recurrence hold by rfl.",
+    "mathContext": "$L_0 = 2,\\quad L_1 = 1,\\quad L_{n+2} = L_n + L_{n+1}$. Closed form $L_n = \\varphi^n + \\psi^n$ with $\\varphi=\\tfrac{1+\\sqrt5}{2}$, $\\psi=\\tfrac{1-\\sqrt5}{2}$, the second canonical solution of the Fibonacci recurrence alongside $F_n=(\\varphi^n-\\psi^n)/\\sqrt5$.",
+    "significance": "key",
+    "relatedConcepts": ["Lucas numbers", "linear recurrence", "Fibonacci sequence", "golden ratio", "structural recursion"],
+    "prerequisites": ["recursive definitions in Lean", "Fibonacci numbers"]
+  },
+  {
+    "id": "ann-lucas-add-fib",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 68 },
+    "type": "technique",
+    "title": "The Lucas–Fibonacci bridge (subtraction-free)",
+    "content": "The single load-bearing lemma: L(n)+F(n)=2·F(n+1). Phrasing it additively (rather than the textbook L(n)=2·F(n+1)−F(n)) sidesteps natural-number truncated subtraction, which would otherwise force side conditions. The proof is a two-step induction (Nat.twoStepInduction): the two base cases close by decide on concrete values, and the inductive step rewrites by the Lucas and Fibonacci recurrences (lucas_add_two, Nat.fib_add_two) so the two recurrences line up term by term, after which omega finishes the linear arithmetic. Every later result is derived from this one identity.",
+    "mathContext": "$L_n + F_n = 2F_{n+1}$, equivalently $L_n = F_{n-1} + F_{n+1}$. The inductive step compares $L_{n+2}+F_{n+2} = (L_n+L_{n+1})+(F_n+F_{n+1})$ against $2F_{n+3} = 2(F_{n+1}+F_{n+2})$, which match given the two induction hypotheses.",
+    "significance": "key",
+    "relatedConcepts": ["two-step induction", "natural-number subtraction", "Fibonacci recurrence", "Lucas–Fibonacci identity"],
+    "prerequisites": ["mathematical induction", "Nat.twoStepInduction", "omega tactic"]
+  },
+  {
+    "id": "ann-lucas-eq",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "concept",
+    "title": "Lucas–Fibonacci relation L(n+1)=F(n+2)+F(n)",
+    "content": "Reads off the classical relation that a Lucas number straddles two Fibonacci numbers: each Lucas number is the sum of the Fibonacci numbers one step on either side of it. It follows immediately from the bridge specialized at n+1, combined with the Fibonacci recurrence Nat.fib_add_two to re-express F(n+2), with omega discharging the resulting linear identity.",
+    "mathContext": "$L_{n+1} = F_{n+2} + F_n$, i.e. $L_m = F_{m-1}+F_{m+1}$. From the bridge $L_{n+1}+F_{n+1}=2F_{n+2}$ and $F_{n+2}=F_n+F_{n+1}$ one gets $L_{n+1}=2F_{n+2}-F_{n+1}=F_{n+2}+F_n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lucas–Fibonacci identity", "Fibonacci recurrence", "Lucas numbers"],
+    "prerequisites": ["Fibonacci recurrence", "linear arithmetic"]
+  },
+  {
+    "id": "ann-fib-shallow-alt",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 86 },
+    "type": "concept",
+    "title": "Fibonacci shallow-diagonal sum (mirror form)",
+    "content": "The parent entry's headline identity in its mirror index convention: summing the binomial coefficients C(k, n−k) along a rising diagonal of Pascal's triangle yields a Fibonacci number. Replicated here so the file is self-contained. The one-line proof rewrites Nat.fib via Nat.fib_succ_eq_sum_choose and converts the antidiagonal sum to a range sum.",
+    "mathContext": "$\\sum_{k=0}^{n} \\binom{k}{\\,n-k\\,} = F_{n+1}$. Each rising (\"shallow\") diagonal of Pascal's triangle sums to a Fibonacci number — the diagonals run at slope catching every other row.",
+    "significance": "supporting",
+    "relatedConcepts": ["Pascal's triangle", "binomial coefficients", "shallow diagonals", "Fibonacci numbers", "antidiagonal sum"],
+    "prerequisites": ["binomial coefficients", "finite sums over Finset.range"]
+  },
+  {
+    "id": "ann-fib-shallow",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 88, "endLine": 98 },
+    "type": "technique",
+    "title": "Fibonacci shallow-diagonal sum (primary form)",
+    "content": "The parent identity in its primary convention ∑_j C(n−j, j) = F(n+1), obtained from the mirror form by reflecting the summation index (Finset.sum_range_reflect). The reflection sends term j to n−j; the two omega-proved index rewrites (n+1−1−j = n−j and n−(n−j) = j) verify that reflecting the mirror summand reproduces the primary summand. This is the workhorse reused twice by the Lucas diagonal identities below.",
+    "mathContext": "$\\sum_{j=0}^{n} \\binom{n-j}{\\,j\\,} = F_{n+1}$. Reflecting the index $k \\mapsto n-k$ in $\\sum_k \\binom{k}{n-k}$ turns it into $\\sum_j \\binom{n-j}{j}$, so both shallow-diagonal conventions give the same Fibonacci value.",
+    "significance": "key",
+    "relatedConcepts": ["index reflection", "Finset.sum_range_reflect", "Pascal's triangle", "shallow diagonals", "Fibonacci numbers"],
+    "prerequisites": ["finite sums", "summation reindexing", "omega tactic"]
+  },
+  {
+    "id": "ann-lucas-shallow",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 102, "endLine": 118 },
+    "type": "insight",
+    "title": "Lucas number as a sum of two consecutive shallow diagonals",
+    "content": "The entry's central new result, answering the parent's second open question: the Lucas number L(n+2) equals the sum of two consecutive rising diagonals of Pascal's triangle. The proof is structurally elegant — rewrite each shallow-diagonal sum to its Fibonacci value via fib_shallow_diagonal (used twice), reducing the goal to L(n+2)=F(n+3)+F(n+1), which is the Lucas–Fibonacci relation closed by the bridge and omega. The combinatorial content is thus inherited entirely from the parent identity.",
+    "mathContext": "$L_{n+2} = \\sum_{j} \\binom{n+2-j}{j} + \\sum_{j} \\binom{n-j}{j} = F_{n+3} + F_{n+1}$. Where each Fibonacci number is one shallow diagonal, a Lucas number is the superposition of two consecutive ones.",
+    "significance": "key",
+    "relatedConcepts": ["Lucas numbers", "shallow diagonals", "Pascal's triangle", "Lucas–Fibonacci relation", "combinatorial identity"],
+    "prerequisites": ["Fibonacci shallow-diagonal sum", "Lucas–Fibonacci bridge"]
+  },
+  {
+    "id": "ann-lucas-shallow-alt",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 120, "endLine": 133 },
+    "type": "concept",
+    "title": "Lucas shallow-diagonal sum (mirror form)",
+    "content": "The mirror-convention companion of the previous theorem, summing C(k, ·) instead of C(·, j). Same proof shape: expand both shallow diagonals via fib_shallow_diagonal_alt to F(n+3) and F(n+1), then close with the bridge and omega. Providing both index conventions matches the parent entry's symmetric presentation and lets downstream users pick whichever orientation suits their indexing.",
+    "mathContext": "$L_{n+2} = \\sum_{k} \\binom{k}{\\,n+2-k\\,} + \\sum_{k} \\binom{k}{\\,n-k\\,}$, the reflected counterpart of the primary form.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lucas numbers", "shallow diagonals", "index reflection", "Pascal's triangle"],
+    "prerequisites": ["Fibonacci shallow-diagonal sum (mirror form)", "Lucas–Fibonacci bridge"]
+  },
+  {
+    "id": "ann-fib-two-mul-lucas",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 137, "endLine": 144 },
+    "type": "insight",
+    "title": "Mixed Fibonacci–Lucas product identity F(2n)=F(n)·L(n)",
+    "content": "The classical doubling identity: every even-index Fibonacci number factors as the product of the Fibonacci and Lucas numbers at half the index. The proof leans on Mathlib's Nat.fib_two_mul, which gives F(2n)=F(n)·(2·F(n+1)−F(n)); the bridge identifies the second factor 2·F(n+1)−F(n) as exactly L(n), and a single rewrite completes the identity. A clean demonstration of how the bridge makes a Mathlib doubling formula speak in Lucas terms.",
+    "mathContext": "$F_{2n} = F_n \\cdot L_n$, equivalently $F_{2n}=F_n(2F_{n+1}-F_n)$ with $L_n = 2F_{n+1}-F_n$. This is the additive-group restatement of $\\varphi^{2n}-\\psi^{2n} = (\\varphi^n-\\psi^n)(\\varphi^n+\\psi^n)$.",
+    "significance": "key",
+    "relatedConcepts": ["Fibonacci doubling identity", "Lucas numbers", "Nat.fib_two_mul", "even-index Fibonacci", "difference of squares"],
+    "prerequisites": ["Nat.fib_two_mul", "Lucas–Fibonacci bridge"]
+  }
+]
