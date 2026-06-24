@@ -12,6 +12,18 @@
     "prerequisites": ["linear algebra", "polynomials over a field", "Lagrange interpolation"]
   },
   {
+    "id": "ann-vi0102-setup",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02",
+    "range": { "startLine": 38, "endLine": 47 },
+    "type": "context",
+    "title": "Setup: field, nodes, and the node count",
+    "content": "The whole development works over an arbitrary field `F` with `n` nodes `v : Fin n → F`; the distinctness hypothesis enters later as `hv : Function.Injective v`. `open Polynomial Finset` brings `degreeLT`, `leval`, `univ`, and `#` into scope. The private helper `card_univ_fin : #(univ : Finset (Fin n)) = n` (proved by `simp`) does the small but pervasive bookkeeping that bridges Mathlib's set-indexed Lagrange API — whose degree bounds and interpolation identities are stated over a finite set `s` and reference `#s` — to the clean `Fin n` indexing used here, where the relevant set is all of `univ` and `#univ = n`.",
+    "mathContext": "$F$ a field, $v : \\mathrm{Fin}\\,n \\to F$; $\\#(\\mathrm{univ} : \\mathrm{Finset}\\,(\\mathrm{Fin}\\,n)) = n$.",
+    "significance": "technical",
+    "relatedConcepts": ["Finset.univ", "Finset.card_fin", "degreeLT", "set-indexed Lagrange API"],
+    "prerequisites": ["finite types", "Finset cardinality"]
+  },
+  {
     "id": "ann-vi0102-interp",
     "proofId": "vandermonde-interpolation-oq-01-oq-02",
     "range": { "startLine": 49, "endLine": 59 },

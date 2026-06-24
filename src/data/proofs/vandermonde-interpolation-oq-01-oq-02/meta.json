@@ -114,6 +114,11 @@
       "proofId": "vandermonde-interpolation-oq-01",
       "relationship": "extends",
       "description": "The grandparent proves interpolation uniqueness from the nonvanishing of the Vandermonde determinant. Here uniqueness reappears as injectivity of the evaluation linear map, now bundled with surjectivity into a full isomorphism."
+    },
+    {
+      "proofId": "chinese-remainder-constructive",
+      "relationship": "related",
+      "description": "The evaluation isomorphism is the F-linear shadow of polynomial CRT: with pairwise coprime moduli (X − v_j), the ring isomorphism F[X]/∏_j (X − v_j) ≅ ∏_j F[X]/(X − v_j) ≅ F^n sends a polynomial to its residues, i.e. its values p(v_j). evalEquiv restricts this to the degree-< n representatives and records only the additive/linear structure, so the Lagrange interpolant here plays exactly the role of the inverse-CRT reconstruction map that the constructive CRT entry builds over ℤ. The first open question below asks to promote evalEquiv to this full ring statement."
     }
   ],
   "leanFile": {
@@ -187,7 +192,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Upgrades the companion entries' existence and uniqueness lemmas into a single linear isomorphism: evaluation at n distinct nodes, evalNodes v : degreeLT F n →ₗ[F] (Fin n → F), is bijective (evalNodes_bijective) — surjective (evalNodes_surjective, the existence half) and injective (evalNodes_injective, the uniqueness half) — and is packaged as the linear equivalence evalEquiv whose inverse is exactly the Lagrange interpolant. The concrete exists_eval_eq restates existence elementarily, and finrank_degreeLT transports the isomorphism to conclude the degree-< n polynomials have dimension n. All 8 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "summary": "Upgrades the companion entries' existence and uniqueness lemmas into a single linear isomorphism: evaluation at n distinct nodes, evalNodes v : degreeLT F n →ₗ[F] (Fin n → F), is bijective (evalNodes_bijective) — surjective (evalNodes_surjective, the existence half) and injective (evalNodes_injective, the uniqueness half) — and is packaged as the linear equivalence evalEquiv whose inverse is exactly the Lagrange interpolant. The concrete exists_eval_eq restates existence elementarily, and finrank_degreeLT transports the isomorphism to conclude the degree-< n polynomials have dimension n. All 11 theorems (4 of them simp lemmas) and 4 definitions verified with 0 sorries and 0 axioms, no native_decide.",
     "implications": "The interpolation problem is well-posed in the strongest structural sense: value vectors and degree-< n polynomials are the same n-dimensional F-space, identified by evaluation at the nodes, with an explicit computable inverse. This is the abstract content behind change-of-representation arguments in Reed–Solomon coding, polynomial sampling, and the basis duality between point-values and coefficients.",
     "openQuestions": [
       "Make the isomorphism a ring/algebra statement: identify evalNodes with the CRT isomorphism F[X]/∏(X − v_j) ≅ ∏ F[X]/(X − v_j) ≅ F^n, exhibiting interpolation as the inverse Chinese Remainder map.",
