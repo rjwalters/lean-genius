@@ -17,6 +17,7 @@
     "sorries": 0
   },
   "title": "The Half-Integer Closed Form Γ(n+1/2) = (2n)!√π / (4ⁿ n!)",
+  "description": "Proves the explicit closed form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) for every natural number n by a single induction off Γ(1/2) = √π (Real.Gamma_one_half_eq) using only the functional equation Γ(s+1) = s·Γ(s) (Real.Gamma_add_one). The inductive step closes because the half-integer recursion factor n+1/2 equals exactly (2n+2)(2n+1)/(4(n+1)), the ratio of consecutive closed forms, reducing it to an elementary factorial identity. The closed form is repackaged as the rational ratio Γ(n+1/2)/√π = (2n)!/(4ⁿ n!) and, via (2n)! = C(2n,n)·(n!)², through the central binomial coefficient as Γ(n+1/2) = C(2n,n)·n!·√π/4ⁿ, and verified at Γ(3/2) = √π/2 and Γ(5/2) = 3√π/4. Mathlib has Γ(1/2) = √π and the functional equation as separate facts but does not record the half-integer closed form. 125 lines, 5 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
