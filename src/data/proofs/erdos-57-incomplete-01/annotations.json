@@ -5,7 +5,11 @@
     "range": { "startLine": 1, "endLine": 36 },
     "type": "concept",
     "title": "Goal: the bipartite characterization, in closed-walk form",
-    "content": "The parent file `Proofs/Erdos57Problem.lean` axiomatizes the Liu–Montgomery (2020) theorem and leaves one open `sorry`: the hard reverse direction of the bipartite characterization, 'no odd cycle ⟹ 2-colorable'. Mathlib itself flags this exact statement as future work in `Mathlib.Combinatorics.SimpleGraph.Bipartite`.\n\nThis companion proves the genuinely hard *construction* direction in its clean closed-walk form, fully axiom-free:\n\n    G.IsBipartite ↔ G has no odd closed walk.\n\nThe odd-closed-walk version is the 'right' intermediate result: its construction direction is exactly the deferred half, while the odd-CYCLE version additionally needs the combinatorial lemma 'every odd closed walk contains an odd cycle' — which is assumed nowhere here."
+    "content": "The parent file `Proofs/Erdos57Problem.lean` axiomatizes the Liu–Montgomery (2020) theorem and leaves one open `sorry`: the hard reverse direction of the bipartite characterization, 'no odd cycle ⟹ 2-colorable'. Mathlib itself flags this exact statement as future work in `Mathlib.Combinatorics.SimpleGraph.Bipartite`.\n\nThis companion proves the genuinely hard *construction* direction in its clean closed-walk form, fully axiom-free:\n\n    G.IsBipartite ↔ G has no odd closed walk.\n\nThe odd-closed-walk version is the 'right' intermediate result: its construction direction is exactly the deferred half, while the odd-CYCLE version additionally needs the combinatorial lemma 'every odd closed walk contains an odd cycle' — which is assumed nowhere here.",
+    "mathContext": "$G.\\mathrm{IsBipartite} \\iff \\neg\\,\\exists u,\\ \\exists p : G.\\mathrm{Walk}\\ u\\ u,\\ \\mathrm{Odd}(\\mathrm{length}\\ p)$. Bipartite means $2$-colorable, i.e. $\\chi(G) \\le 2$.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite graph", "2-coloring", "odd cycle", "closed walk", "chromatic number"],
+    "prerequisites": ["graph theory", "proper colorings", "parity arguments"]
   },
   {
     "id": "ann-57inc-hasoddwalk",
@@ -13,7 +17,11 @@
     "range": { "startLine": 47, "endLine": 61 },
     "type": "definition",
     "title": "Odd closed walks and parity well-definedness",
-    "content": "`HasOddClosedWalk G` asserts the existence of a walk `u → u` of odd length.\n\nThe key technical lemma `even_length_iff_of_noOddClosedWalk` says: if `G` has no odd closed walk, then any two walks `p, q : G.Walk x y` with the same endpoints have the same length parity. Proof: `p.append q.reverse` is a closed walk at `x` of length `p.length + q.length`; by hypothesis it cannot be odd, hence is even, hence the two summands share parity (`Nat.even_add`). This is exactly the well-definedness that makes the parity coloring legitimate."
+    "content": "`HasOddClosedWalk G` asserts the existence of a walk `u → u` of odd length.\n\nThe key technical lemma `even_length_iff_of_noOddClosedWalk` says: if `G` has no odd closed walk, then any two walks `p, q : G.Walk x y` with the same endpoints have the same length parity. Proof: `p.append q.reverse` is a closed walk at `x` of length `p.length + q.length`; by hypothesis it cannot be odd, hence is even, hence the two summands share parity (`Nat.even_add`). This is exactly the well-definedness that makes the parity coloring legitimate.",
+    "mathContext": "If no closed walk has odd length, then for $p, q : x \\rightsquigarrow y$ the concatenation $p \\cdot \\bar q$ is a closed walk at $x$ of length $\\ell(p)+\\ell(q)$, which is even; by $\\mathrm{Even}(a+b) \\Rightarrow (\\mathrm{Even}\\,a \\leftrightarrow \\mathrm{Even}\\,b)$ the parities agree.",
+    "significance": "critical",
+    "relatedConcepts": ["walk concatenation", "walk reversal", "parity", "Nat.even_add", "well-definedness"],
+    "prerequisites": ["walks in graphs", "Even/Odd arithmetic"]
   },
   {
     "id": "ann-57inc-base",
@@ -21,15 +29,23 @@
     "range": { "startLine": 63, "endLine": 75 },
     "type": "definition",
     "title": "A base vertex per connected component",
-    "content": "`baseVertex G v := (G.connectedComponentMk v).out` selects a canonical representative of `v`'s connected component using `ConnectedComponent.out`. Since `out_eq` gives `connectedComponentMk (baseVertex v) = connectedComponentMk v`, `ConnectedComponent.exact` yields `reachable_baseVertex : G.Reachable (baseVertex G v) v`. The chosen witness walk `baseWalk G v : G.Walk (baseVertex G v) v` is `(reachable_baseVertex G v).some`."
+    "content": "`baseVertex G v := (G.connectedComponentMk v).out` selects a canonical representative of `v`'s connected component using `ConnectedComponent.out`. Since `out_eq` gives `connectedComponentMk (baseVertex v) = connectedComponentMk v`, `ConnectedComponent.exact` yields `reachable_baseVertex : G.Reachable (baseVertex G v) v`. The chosen witness walk `baseWalk G v : G.Walk (baseVertex G v) v` is `(reachable_baseVertex G v).some`.",
+    "mathContext": "Each connected component is a quotient class under reachability; $\\mathrm{out}$ picks a representative via `Quot.out`. Reachability $\\mathrm{baseVertex}(v) \\rightsquigarrow v$ holds because both lie in the same component.",
+    "significance": "supporting",
+    "relatedConcepts": ["connected component", "reachability", "Quot.out", "choice", "quotient representative"],
+    "prerequisites": ["connectivity", "quotient types", "classical choice"]
   },
   {
     "id": "ann-57inc-coloring",
     "proofId": "erdos-57-incomplete-01",
     "range": { "startLine": 77, "endLine": 102 },
-    "type": "proof",
+    "type": "definition",
     "title": "The parity 2-coloring (the construction Mathlib defers)",
-    "content": "`parityColoring h` colors each vertex `v` by `decide (Odd (baseWalk G v).length)` — the parity of a walk back to its component's base vertex. Validity (adjacent vertices get different colors): for `G.Adj u v`, both lie in the same component, so `baseVertex G u = baseVertex G v`. Forming two walks `baseVertex u → v` — one through the edge `u-v` (length `(baseWalk u).length + 1`), one transported from `baseWalk v` via `Walk.copy` (length `(baseWalk v).length`) — the parity lemma forces these to share parity, i.e. `(baseWalk u).length` and `(baseWalk v).length` have OPPOSITE parity. Hence the two `decide (Odd …)` values differ. This is the component-wise walk-parity construction, in full and axiom-free."
+    "content": "`parityColoring h` colors each vertex `v` by `decide (Odd (baseWalk G v).length)` — the parity of a walk back to its component's base vertex. Validity (adjacent vertices get different colors): for `G.Adj u v`, both lie in the same component, so `baseVertex G u = baseVertex G v`. Forming two walks `baseVertex u → v` — one through the edge `u-v` (length `(baseWalk u).length + 1`), one transported from `baseWalk v` via `Walk.copy` (length `(baseWalk v).length`) — the parity lemma forces these to share parity, i.e. `(baseWalk u).length` and `(baseWalk v).length` have OPPOSITE parity. Hence the two `decide (Odd …)` values differ. This is the component-wise walk-parity construction, in full and axiom-free.",
+    "mathContext": "Color $v$ by $c(v) := [\\,\\mathrm{Odd}\\,\\ell(\\mathrm{baseWalk}\\,v)\\,]$. For an edge $u\\!\\sim\\!v$: $\\ell(\\mathrm{baseWalk}\\,u)+1$ and $\\ell(\\mathrm{baseWalk}\\,v)$ have equal parity, so $\\ell(\\mathrm{baseWalk}\\,u) \\not\\equiv \\ell(\\mathrm{baseWalk}\\,v) \\pmod 2$, giving $c(u) \\ne c(v)$.",
+    "significance": "critical",
+    "relatedConcepts": ["proper coloring", "Walk.copy", "Coloring.mk", "parity coloring", "transport of equality"],
+    "prerequisites": ["proper colorings", "walks in graphs", "decidability of Odd"]
   },
   {
     "id": "ann-57inc-headline",
@@ -37,7 +53,11 @@
     "range": { "startLine": 104, "endLine": 120 },
     "type": "theorem",
     "title": "Headline: IsBipartite ⟺ no odd closed walk",
-    "content": "`isBipartite_iff_no_oddClosedWalk`. Forward (easy): from a `Fin 2`-coloring, recolor to `Bool` and apply `Coloring.even_length_iff_congr` at a closed walk (`c u ↔ c u` trivially) to force even length, contradicting an odd closed walk. Reverse (the construction): `parityColoring h` is a `Bool`-coloring, so `(parityColoring h).colorable` gives `Colorable (Fintype.card Bool) = Colorable 2 = IsBipartite`. This is the bipartite characterization's hard half, proved completely."
+    "content": "`isBipartite_iff_no_oddClosedWalk`. Forward (easy): from a `Fin 2`-coloring, recolor to `Bool` and apply `Coloring.even_length_iff_congr` at a closed walk (`c u ↔ c u` trivially) to force even length, contradicting an odd closed walk. Reverse (the construction): `parityColoring h` is a `Bool`-coloring, so `(parityColoring h).colorable` gives `Colorable (Fintype.card Bool) = Colorable 2 = IsBipartite`. This is the bipartite characterization's hard half, proved completely.",
+    "mathContext": "$G.\\mathrm{IsBipartite} \\iff \\neg\\,\\mathrm{HasOddClosedWalk}\\,G$. Forward: a $2$-coloring makes every closed walk even (color must return to itself). Reverse: $\\mathrm{Colorable}(|\\mathrm{Bool}|) = \\mathrm{Colorable}\\,2 = \\mathrm{IsBipartite}$.",
+    "significance": "key",
+    "relatedConcepts": ["IsBipartite", "Coloring.even_length_iff_congr", "recolorOfEquiv", "Colorable", "Fintype.card_bool"],
+    "prerequisites": ["proper colorings", "biconditional proofs", "Fin 2 / Bool equivalence"]
   },
   {
     "id": "ann-57inc-cycles",
@@ -45,7 +65,11 @@
     "range": { "startLine": 122, "endLine": 148 },
     "type": "theorem",
     "title": "Odd cycles obstruct bipartiteness (easy direction)",
-    "content": "An odd cycle is in particular an odd closed walk (`hasOddClosedWalk_of_oddCycle`), so a nonempty `oddCycleLengths G` yields an odd closed walk (`hasOddClosedWalk_of_oddCycleLengths`). Composing with the headline gives `not_isBipartite_of_oddCycleLengths` (odd cycle ⟹ not bipartite) and, contrapositively, `oddCycleLengths_empty_of_isBipartite` — recovering the parent's forward direction of `bipartite_iff_no_odd_cycles` through the closed-walk framework."
+    "content": "An odd cycle is in particular an odd closed walk (`hasOddClosedWalk_of_oddCycle`), so a nonempty `oddCycleLengths G` yields an odd closed walk (`hasOddClosedWalk_of_oddCycleLengths`). Composing with the headline gives `not_isBipartite_of_oddCycleLengths` (odd cycle ⟹ not bipartite) and, contrapositively, `oddCycleLengths_empty_of_isBipartite` — recovering the parent's forward direction of `bipartite_iff_no_odd_cycles` through the closed-walk framework.",
+    "mathContext": "An odd cycle $c : u \\rightsquigarrow u$ with $\\mathrm{Odd}\\,\\ell(c)$ is an odd closed walk. Hence $(\\mathrm{oddCycleLengths}\\,G)\\ne\\emptyset \\Rightarrow \\neg\\,G.\\mathrm{IsBipartite}$, and contrapositively bipartite $\\Rightarrow \\mathrm{oddCycleLengths}\\,G = \\emptyset$.",
+    "significance": "supporting",
+    "relatedConcepts": ["odd cycle", "oddCycleLengths", "contrapositive", "IsCycle", "obstruction"],
+    "prerequisites": ["cycles in graphs", "contraposition"]
   },
   {
     "id": "ann-57inc-chromatic",
@@ -53,6 +77,10 @@
     "range": { "startLine": 150, "endLine": 163 },
     "type": "theorem",
     "title": "Quantitative obstruction: χ(G) ≥ 3",
-    "content": "`three_le_chromaticNumber_of_hasOddClosedWalk` upgrades the qualitative obstruction to a bound: an odd closed walk forces `3 ≤ G.chromaticNumber`, via Mathlib's `Walk.three_le_chromaticNumber_of_odd_loop`. Specializing to cycles, an odd cycle forces `χ(G) ≥ 3` (`three_le_chromaticNumber_of_oddCycleLengths`). The remaining gap to the parent's full odd-cycle characterization is now isolated to the single combinatorial lemma 'every odd closed walk contains an odd cycle', assumed nowhere here."
+    "content": "`three_le_chromaticNumber_of_hasOddClosedWalk` upgrades the qualitative obstruction to a bound: an odd closed walk forces `3 ≤ G.chromaticNumber`, via Mathlib's `Walk.three_le_chromaticNumber_of_odd_loop`. Specializing to cycles, an odd cycle forces `χ(G) ≥ 3` (`three_le_chromaticNumber_of_oddCycleLengths`). The remaining gap to the parent's full odd-cycle characterization is now isolated to the single combinatorial lemma 'every odd closed walk contains an odd cycle', assumed nowhere here.",
+    "mathContext": "$\\mathrm{HasOddClosedWalk}\\,G \\Rightarrow 3 \\le \\chi(G)$. Since $\\chi(G) \\le 2 \\iff$ bipartite, an odd closed walk pushes the chromatic number strictly past the bipartite threshold.",
+    "significance": "supporting",
+    "relatedConcepts": ["chromatic number", "Walk.three_le_chromaticNumber_of_odd_loop", "quantitative bound", "odd loop"],
+    "prerequisites": ["chromatic number", "proper colorings"]
   }
 ]
