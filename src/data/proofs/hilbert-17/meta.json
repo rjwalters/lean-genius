@@ -2,7 +2,7 @@
   "id": "hilbert-17",
   "title": "Hilbert's 17th Problem: Sum of Squares",
   "slug": "hilbert-17",
-  "description": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample).",
+  "description": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample). UPDATE: the non-negativity of both classical counterexamples — Motzkin M(x,y)=x⁴y²+x²y⁴−3x²y²+1 (via AM–GM) and Robinson R(x,y,z) (which equals Schur's expression in x²,y²,z²) — is now machine-checked via nlinarith with explicit square certificates, eliminating the axioms motzkin_nonneg_aux and robinson_nonneg_aux (axiom count 10 → 8).",
   "meta": {
     "proofRepoPath": "Proofs/Hilbert17SumOfSquares.lean",
     "author": "Emil Artin (1927)",
@@ -39,22 +39,21 @@
       "Robinson and Choi-Lam additional counterexamples",
       "Hilbert's 1888 classification of when PSD = polynomial-SOS",
       "Pfister's and Cassels' quantitative bounds on number of squares",
-      "Connection to real closed fields and model-theoretic transfer"
+      "Connection to real closed fields and model-theoretic transfer",
+      "motzkin_nonneg / robinson_nonneg: the PSD (non-negativity) direction of the two canonical PSD-but-not-SOS counterexamples is now proved axiom-free by nlinarith — Motzkin from AM–GM square hints, Robinson from Schur's inequality on x²,y²,z² — removing two former axioms"
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 17,
-    "axiomCount": 10,
-    "lineCount": 561,
+    "axiomCount": 8,
+    "lineCount": 567,
     "assumptions": [
       "artin_hilbert17: Every PSD multivariate polynomial over R is a sum of squares of rational functions (Artin's theorem)",
       "artin_univariate_aux: Every PSD univariate polynomial is a sum of squares of rational functions",
-      "motzkin_nonneg_aux: The Motzkin polynomial M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1 is non-negative everywhere (AM-GM)",
       "motzkin_not_sos_polynomial_aux: The Motzkin polynomial is not a sum of squares of polynomials (degree analysis)",
       "univariate_psd_is_sos_aux: Every PSD univariate polynomial is a sum of squares of polynomials (complex factorization)",
       "quadratic_psd_is_sos_aux: Every PSD quadratic form is a sum of squares of polynomials (Gram matrix / Cholesky)",
       "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)",
       "cassels_bound_bivariate_aux: At most 4 rational function squares needed for bivariate PSD polynomials",
-      "robinson_nonneg_aux: Robinson's polynomial is non-negative everywhere (Schur's inequality)",
       "robinson_not_sos_aux: Robinson's polynomial is not a sum of squares of polynomials (homogeneous form analysis)"
     ],
     "mathlib_version": "4.26.0",
@@ -218,8 +217,8 @@
       "RatFunc"
     ],
     "namespace": "Hilbert17",
-    "lineCount": 561,
-    "axiomCount": 10,
+    "lineCount": 567,
+    "axiomCount": 8,
     "theoremCount": 10,
     "definitionCount": 8,
     "path": "Proofs/Hilbert17SumOfSquares.lean",

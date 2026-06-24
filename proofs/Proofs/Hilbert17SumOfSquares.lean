@@ -61,7 +61,8 @@ Allowing rational functions g²/h² = (g/h)² provides more flexibility.
 - [x] Connection to real closed fields
 - [x] Explanation of why rational functions are needed
 - [x] Pedagogical example
-- [ ] Incomplete (10 axioms - full proof requires model theory and real algebraic geometry)
+- [x] Motzkin and Robinson non-negativity machine-checked (nlinarith; AM-GM / Schur)
+- [ ] Incomplete (8 axioms - full proof requires model theory and real algebraic geometry)
 
 ## Mathlib Dependencies
 
@@ -198,30 +199,23 @@ def motzkin : MvPolynomial (Fin 2) ℝ :=
   let y := MvPolynomial.X (1 : Fin 2)
   x^4 * y^2 + x^2 * y^4 - 3 * x^2 * y^2 + 1
 
-/-- **Axiom: Motzkin Non-Negativity**
-
-    The Motzkin polynomial M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere.
-
-    The proof uses the arithmetic-geometric mean inequality:
-    By AM-GM: (x⁴y² + x²y⁴ + 1) / 3 ≥ ∛(x⁴y² · x²y⁴ · 1) = x²y²
-    Therefore: x⁴y² + x²y⁴ + 1 ≥ 3x²y², which gives M(x,y) ≥ 0.
-
-    Axiomatized because the proof requires:
-    - Multivariate polynomial evaluation machinery
-    - AM-GM inequality for three terms
-    - Real number arithmetic and algebraic manipulation -/
-axiom motzkin_nonneg_aux : IsPositiveSemidefiniteMv motzkin
-
-/-- **The Motzkin Polynomial is Non-Negative**
+/-- **The Motzkin Polynomial is Non-Negative** (axiom-free).
 
     M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 ≥ 0 for all (x,y) ∈ ℝ².
 
-    **Proof Sketch** (using AM-GM):
-    By the arithmetic-geometric mean inequality:
-      (x⁴y² + x²y⁴ + 1) / 3 ≥ ∛(x⁴y² · x²y⁴ · 1) = x²y²
-
-    Therefore: x⁴y² + x²y⁴ + 1 ≥ 3x²y², which gives M(x,y) ≥ 0. -/
-theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := motzkin_nonneg_aux
+    **Proof.** The AM–GM step `x⁴y² + x²y⁴ + 1 ≥ 3x²y²` is a polynomial
+    inequality that `nlinarith` discharges from the square hints
+    `(x²y² - 1)²`, `(x²y - y)²`, `(xy² - x)² ≥ 0` together with `x²y² ≥ 0`.
+    (Formerly the axiom `motzkin_nonneg_aux`; now fully machine-checked.) -/
+theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := by
+  intro v
+  simp only [motzkin, map_add, map_sub, map_mul, map_pow, map_ofNat, map_one,
+    MvPolynomial.eval_X]
+  set x := v 0
+  set y := v 1
+  nlinarith [sq_nonneg (x * y - 1), sq_nonneg (x ^ 2 * y - y),
+    sq_nonneg (x * y ^ 2 - x), sq_nonneg (x * y),
+    mul_nonneg (sq_nonneg x) (sq_nonneg y), sq_nonneg (x ^ 2 * y ^ 2 - 1)]
 
 /-- **Axiom: Motzkin Not Polynomial-SOS**
 
@@ -482,20 +476,32 @@ def robinson : MvPolynomial (Fin 3) ℝ :=
   - x^2*y^4 - y^2*z^4 - z^2*x^4
   + 3*x^2*y^2*z^2
 
-/-- **Axiom: Robinson Non-Negativity**
+/-- **Robinson's polynomial is non-negative** (axiom-free).
 
-    Robinson's polynomial R(x,y,z) = x^6 + y^6 + z^6 - x^4*y^2 - y^4*z^2 - z^4*x^2
-                                   - x^2*y^4 - y^2*z^4 - z^2*x^4 + 3*x^2*y^2*z^2
-    is non-negative everywhere on R^3.
+    R(x,y,z) = x⁶ + y⁶ + z⁶ - x⁴y² - y⁴z² - z⁴x² - x²y⁴ - y²z⁴ - z²x⁴ + 3x²y²z² ≥ 0.
 
-    Axiomatized because the proof requires:
-    - Multivariate polynomial evaluation
-    - Symmetric function analysis
-    - Careful algebraic manipulation to establish the inequality -/
-axiom robinson_nonneg_aux : IsPositiveSemidefiniteMv robinson
-
-/-- Robinson's polynomial is non-negative. -/
-theorem robinson_nonneg : IsPositiveSemidefiniteMv robinson := robinson_nonneg_aux
+    **Proof.** With `a = x², b = y², c = z² ≥ 0`, `R` is precisely Schur's
+    expression `a(a-b)(a-c) + b(b-a)(b-c) + c(c-a)(c-b)`, nonnegative by Schur's
+    inequality. `nlinarith` finds the certificate from the hints
+    `a·(a-b)² , b·(b-c)² , c·(c-a)² , …  ≥ 0` and `a·b·c ≥ 0`.
+    (Formerly the axiom `robinson_nonneg_aux`; now fully machine-checked.) -/
+theorem robinson_nonneg : IsPositiveSemidefiniteMv robinson := by
+  intro v
+  simp only [robinson, map_add, map_sub, map_mul, map_pow, map_ofNat,
+    MvPolynomial.eval_X]
+  set x := v 0
+  set y := v 1
+  set z := v 2
+  have ha : (0 : ℝ) ≤ x ^ 2 := sq_nonneg x
+  have hb : (0 : ℝ) ≤ y ^ 2 := sq_nonneg y
+  have hc : (0 : ℝ) ≤ z ^ 2 := sq_nonneg z
+  nlinarith [mul_nonneg ha (sq_nonneg (x ^ 2 - y ^ 2)),
+    mul_nonneg hb (sq_nonneg (y ^ 2 - z ^ 2)),
+    mul_nonneg hc (sq_nonneg (z ^ 2 - x ^ 2)),
+    mul_nonneg ha (sq_nonneg (x ^ 2 - z ^ 2)),
+    mul_nonneg hb (sq_nonneg (x ^ 2 - y ^ 2)),
+    mul_nonneg hc (sq_nonneg (y ^ 2 - z ^ 2)),
+    mul_nonneg (mul_nonneg ha hb) hc]
 
 /-- **Axiom: Robinson Not Polynomial-SOS**
 
