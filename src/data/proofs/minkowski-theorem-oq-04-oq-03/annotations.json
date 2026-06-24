@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-mink0403-overview",
+    "proofId": "minkowski-theorem-oq-04-oq-03",
+    "range": { "startLine": 7, "endLine": 46 },
+    "type": "context",
+    "title": "Why the Strict Threshold Cannot Be Relaxed",
+    "content": "The parent file proves Blichfeldt's theorem: a measurable set S ⊆ ℝⁿ of volume strictly greater than k contains k+1 distinct points that are pairwise congruent modulo ℤⁿ. The natural companion question is whether the strict inequality is necessary. This file answers yes by exhibiting, for every k, a measurable set of volume exactly k with no k+1 pairwise congruent points — so the hypothesis k < vol(S) cannot be weakened to k ≤ vol(S). The k=1 witness is the half-open unit cube [0,1)ⁿ (a fundamental domain for ℤⁿ); the general witness is the box [0,k) × [0,1)ⁿ⁻¹. Zero axioms beyond Mathlib's foundational set.",
+    "mathContext": "Blichfeldt: $\\mathrm{vol}(S) > k \\Rightarrow \\exists\\,k{+}1$ pairwise $\\mathbb{Z}^n$-congruent points. Sharpness: a witness of volume exactly $k$ with none.",
+    "significance": "context",
+    "relatedConcepts": ["Blichfeldt's theorem", "geometry of numbers", "lattice congruence", "fundamental domain", "sharpness of a bound"],
+    "prerequisites": ["Lebesgue measure on ℝⁿ", "integer lattices", "Blichfeldt's theorem"]
+  },
+  {
+    "id": "ann-mink0403-congruent-eq",
+    "proofId": "minkowski-theorem-oq-04-oq-03",
+    "range": { "startLine": 58, "endLine": 76 },
+    "type": "insight",
+    "title": "The Heart of k=1: Fundamental-Domain Representatives Are Unique",
+    "content": "stdFundDomain_congruent_eq is the geometric core of k=1 sharpness: two points x, y of the half-open unit cube [0,1)ⁿ that are ℤⁿ-congruent (x − y ∈ ℤⁿ) must be equal. The argument runs through fractional parts: a point of the fundamental domain is fixed by ZSpan.fract (ZSpan.fract_eq_self), and ℤⁿ-congruent points share their fractional part (ZSpan.fract_eq_fract). So x = fract x = fract y = y. The unit cube meets each lattice coset in exactly one point — the defining property of a fundamental domain.",
+    "mathContext": "$x, y \\in [0,1)^n$, $x - y \\in \\mathbb{Z}^n \\Rightarrow x = \\mathrm{fract}(x) = \\mathrm{fract}(y) = y$.",
+    "significance": "key",
+    "relatedConcepts": ["fundamental domain", "fractional part", "ZSpan.fract", "coset representative"],
+    "prerequisites": ["ZSpan.fract_eq_self", "ZSpan.fract_eq_fract", "lattice cosets"]
+  },
+  {
+    "id": "ann-mink0403-k1-sharp",
+    "proofId": "minkowski-theorem-oq-04-oq-03",
+    "range": { "startLine": 78, "endLine": 97 },
+    "type": "concept",
+    "title": "k=1 Sharpness: The Unit Cube Is the Witness",
+    "content": "blichfeldt_threshold_sharp packages the k=1 witness: the unit cube [0,1)ⁿ is measurable, has volume exactly 1 (stdLattice_covolume), and (by the uniqueness lemma) contains no two distinct ℤⁿ-congruent points. blichfeldt_basic_threshold_not_le then states the consequence in the form that matters: the hypothesis 1 < vol(S) of the parent's blichfeldt_basic cannot be weakened to 1 ≤ vol(S), since the unit cube satisfies 1 ≤ vol but fails the congruent-pair conclusion.",
+    "mathContext": "$\\mathrm{vol}([0,1)^n) = 1$ exactly, yet no two distinct points are $\\mathbb{Z}^n$-congruent; so $1 \\le \\mathrm{vol}(S)$ does not force a pair.",
+    "significance": "supporting",
+    "relatedConcepts": ["unit cube", "covolume", "tightness of a hypothesis", "measurable witness"],
+    "prerequisites": ["stdLattice_covolume", "the uniqueness lemma"]
+  },
+  {
+    "id": "ann-mink0403-box-volume",
+    "proofId": "minkowski-theorem-oq-04-oq-03",
+    "range": { "startLine": 103, "endLine": 118 },
+    "type": "definition",
+    "title": "The General Witness: A Box of Volume Exactly k",
+    "content": "box n k is the half-open box [0,k) × [0,1)ⁿ⁻¹: the first ('long') coordinate ranges over [0,k), all others over [0,1). volume_box computes its volume as exactly k via volume_pi_pi (product/Fubini volume), with Finset.prod_eq_single isolating coordinate 0 (which contributes k) from the others (each contributing 1). This box is the general-k analogue of the unit cube — stretched k-fold in one direction so it can hold up to k mutually congruent points but no more.",
+    "mathContext": "$\\mathrm{box} = [0,k) \\times [0,1)^{n-1}$, $\\ \\mathrm{vol} = k \\cdot 1^{n-1} = k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["product measure", "Fubini volume", "half-open box", "volume_pi_pi"],
+    "prerequisites": ["product of Lebesgue measures", "Finset.prod_eq_single", "Real.volume_Ico"]
+  },
+  {
+    "id": "ann-mink0403-fract-coord",
+    "proofId": "minkowski-theorem-oq-04-oq-03",
+    "range": { "startLine": 120, "endLine": 141 },
+    "type": "technique",
+    "title": "Congruent Points Share Every Coordinate's Fractional Part",
+    "content": "stdFract_coord identifies the ZSpan fractional part in the standard basis with the coordinatewise real fractional part: (fract x) i = Int.fract(x i), using that Pi.basisFun has the identity repr. congruent_fract_coord then transports ZSpan.fract_eq_fract to coordinates: ℤⁿ-congruent points x, y satisfy Int.fract(x i) = Int.fract(y i) in every coordinate i. This coordinatewise control is what lets the general-k argument reconstruct a point from its floor plus its (shared) fractional part.",
+    "mathContext": "$(\\mathrm{fract}\\,x)_i = \\{x_i\\}$; $\\ x - y \\in \\mathbb{Z}^n \\Rightarrow \\{x_i\\} = \\{y_i\\}\\ \\forall i$.",
+    "significance": "supporting",
+    "relatedConcepts": ["fractional part", "standard basis", "Pi.basisFun", "coordinatewise congruence"],
+    "prerequisites": ["ZSpan.repr_fract_apply", "Int.fract", "ZSpan.fract_eq_fract"]
+  },
+  {
+    "id": "ann-mink0403-general-sharp",
+    "proofId": "minkowski-theorem-oq-04-oq-03",
+    "range": { "startLine": 143, "endLine": 213 },
+    "type": "insight",
+    "title": "General k Sharpness via Floor + Pigeonhole",
+    "content": "blichfeldt_general_threshold_sharp shows the box of volume k holds no injective family of k+1 pairwise ℤⁿ-congruent points. The key: a point of the box is DETERMINED by its (shared) fractional part together with the integer floor of its long coordinate. For coordinates i ≠ 0 the point lies in [0,1) and equals its fractional part; for coordinate 0 it equals ⌊x₀⌋ + Int.fract(x₀) with ⌊x₀⌋ ∈ {0,…,k−1}. Since congruent points share all fractional parts, the map m ↦ ⌊(pts m)₀⌋ ∈ Fin k is injective on the family. An injection Fin (k+1) ↪ Fin k is impossible (Fintype.card_le_of_injective + omega) — exactly the pigeonhole that caps the box at k mutually congruent points and proves Blichfeldt's strict threshold sharp for all k.",
+    "mathContext": "Point $\\leftrightarrow$ $(\\lfloor x_0\\rfloor, \\{x\\})$ with $\\lfloor x_0\\rfloor \\in \\{0,\\dots,k-1\\}$; congruent points share $\\{x\\}$, giving an injection into $\\mathrm{Fin}\\,k$, so $\\le k$ of them.",
+    "significance": "key",
+    "relatedConcepts": ["pigeonhole principle", "integer floor", "injective map", "Fintype.card_le_of_injective", "Blichfeldt sharpness"],
+    "prerequisites": ["Int.floor_add_fract", "congruent_fract_coord", "pigeonhole on Fin"]
+  }
+]
