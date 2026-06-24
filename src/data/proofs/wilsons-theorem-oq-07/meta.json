@@ -1,0 +1,154 @@
+{
+  "id": "wilsons-theorem-oq-07",
+  "title": "An Explicit Square Root of $-1$ Modulo $p\\equiv 1\\pmod 4$ from Wilson's Theorem",
+  "slug": "wilsons-theorem-oq-07",
+  "description": "Answers an open question on the `wilsons-theorem` gallery family: Wilson's theorem says (p−1)! ≡ −1 (mod p), but does it produce an explicit square root of −1? Yes. Pairing each residue k with its reflection p−k ≡ −k splits the factorial across its midpoint m = (p−1)/2 into the sign-controlled identity (p−1)! ≡ (−1)^m · (m!)² (mod p), valid for every odd prime p (`neg_one_pow_mul_factorial_sq`). Specializing parity: when p ≡ 1 (mod 4), m is even, so (m!)² ≡ −1 — the factorial ((p−1)/2)! is an EXPLICIT square root of −1 in ZMod p (`factorial_half_sq_eq_neg_one`); when p ≡ 3 (mod 4), m is odd, so (m!)² ≡ +1 (`factorial_half_sq_eq_one`). Mathlib already knows −1 is a square mod p exactly when p % 4 ≠ 3 (`ZMod.exists_sq_eq_neg_one_iff`), but only existentially; this entry supplies the CONSTRUCTIVE witness and recovers the forward direction (`exists_sq_eq_neg_one_of_one_mod_four`). The reflection step reindexes the upper half {m+1,…,p−1} onto the lower half via `Finset.prod_Ico_reflect`, uses ↑(p−j) = −↑j in ZMod p, and pins the total product at −1 with Mathlib's `ZMod.prod_Ico_one_prime`. The instances p = 5 (2! = 2, 2² ≡ −1 mod 5), p = 13 (6! ≡ 5, 5² ≡ −1 mod 13), and p = 7 (3! ≡ −1, (−1)² = 1 mod 7) are certified by ordinary kernel `decide` — NOT `native_decide`. Fully machine-checked: 0 sorries, 0 axioms (only foundational propext, Classical.choice, Quot.sound; #print axioms confirms no Lean.ofReduceBool).",
+  "meta": {
+    "author": "Wilson/Lagrange (1771); the half-factorial square root of −1 is classical (cf. Gauss, Disquisitiones); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Wilson%27s_theorem",
+    "date": "1771",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ07.lean",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "quadratic-residue",
+      "square-root-of-minus-one",
+      "factorial",
+      "modular-arithmetic",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 123,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `ZMod.prod_Ico_one_prime` (the product of 1,…,p−1 over ZMod p equals −1, the multiplicative form of Wilson's theorem), `Finset.prod_Ico_reflect` (interval reindexing j ↦ n−j), `Finset.prod_neg` (∏ −f = (−1)^card · ∏ f), `Finset.prod_Ico_consecutive`, `Finset.prod_Ico_id_eq_factorial`, `Nat.cast_sub`/`ZMod.natCast_self` (for ↑(p−j) = −↑j), and `Even.neg_one_pow`/`Odd.neg_one_pow`. The three numeric instances (5, 13, 7) are discharged by ordinary kernel `decide` (NOT `native_decide`), so the proof does not depend on `Lean.ofReduceBool`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.prod_Ico_one_prime",
+        "description": "`[Fact p.Prime] → ∏ x ∈ Ico 1 p, (x : ZMod p) = -1`, the multiplicative form of Wilson's theorem. Pins the total product of the lower and upper halves at −1.",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "Finset.prod_Ico_reflect",
+        "description": "`∏ j ∈ Ico k m, f (n - j) = ∏ j ∈ Ico (n+1-m) (n+1-k), f j`. Reindexes the lower half {1,…,m} (under j ↦ p − j) onto the upper half {m+1,…,p−1}, the bijection underlying the reflection k ↔ p − k.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.prod_neg",
+        "description": "`∏ x ∈ s, -f x = (-1)^(#s) * ∏ x ∈ s, f x`. Extracts the sign (−1)^m from the m reflected factors ↑(p−j) = −↑j across the upper half.",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "Finset.prod_Ico_id_eq_factorial",
+        "description": "`∏ i ∈ Ico 1 (n+1), i = n!`. Identifies the lower-half product with m! = ((p−1)/2)!.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_neg_one_iff",
+        "description": "`IsSquare (-1 : ZMod p) ↔ p % 4 ≠ 3`, Mathlib's existential criterion for −1 being a quadratic residue. This entry supplies the constructive witness ((p−1)/2)! for the p ≡ 1 (mod 4) case, recovering the forward direction explicitly.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      }
+    ],
+    "originalContributions": [
+      "`neg_one_pow_mul_factorial_sq`: the reflection refinement of Wilson's theorem — for every odd prime p, with m = (p−1)/2, the identity (−1)^m · (m!)² = −1 in ZMod p, obtained by splitting ∏_{1≤k<p} k at the midpoint and reflecting the upper half k ↦ p − k ≡ −k.",
+      "`factorial_half_sq_eq_neg_one`: the explicit square root of −1 — for a prime p ≡ 1 (mod 4), (((p−1)/2)!)² = −1 in ZMod p. The factorial ((p−1)/2)! is a constructive witness, not merely an existence claim.",
+      "`factorial_half_sq_eq_one`: the companion case — for a prime p ≡ 3 (mod 4), (((p−1)/2)!)² = +1, so ((p−1)/2)! ≡ ±1 and is never a root of −1, matching the non-residue status of −1 mod p in this case.",
+      "`exists_sq_eq_neg_one_of_one_mod_four`: the constructive recovery of the forward direction of `ZMod.exists_sq_eq_neg_one_iff`, packaging the explicit witness into the existential.",
+      "Axiom-free numeric certificates for p = 5, 13, 7 by ordinary kernel `decide` (no `native_decide`, hence no `Lean.ofReduceBool`)."
+    ],
+    "prerequisites": [
+      "Wilson's theorem in multiplicative form (ZMod.prod_Ico_one_prime)",
+      "Reflection/reindexing of Finset products over intervals",
+      "The cast identity ↑(p−j) = −↑j in ZMod p",
+      "Parity of (p−1)/2 governed by p mod 4"
+    ],
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "wilsons-theorem",
+        "relationship": "Parent: the gallery's Wilson's theorem entry supplies (p−1)! ≡ −1 (mod p). This entry refines that congruence by reflection into (−1)^m·(m!)² ≡ −1, extracting from Wilson's theorem an explicit square root of −1 when p ≡ 1 (mod 4)."
+      },
+      {
+        "id": "wilsons-theorem-oq-06",
+        "relationship": "Sibling: oq-06 studies the next-order Wilson quotient ((p−1)!+1)/p and Wilson primes. This entry instead refines the modular congruence itself, splitting (p−1)! at its midpoint; both keep small-case computations axiom-free via kernel `decide`."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Wilson's theorem (Ibn al-Haytham c. 1000; stated by John Wilson; first proved by Lagrange in 1771) states that p is prime iff (p−1)! ≡ −1 (mod p). A classical corollary, going back to Gauss's Disquisitiones, observes that pairing k with p−k turns the factorial into a perfect square times a sign: (p−1)! ≡ (−1)^{(p−1)/2}·(((p−1)/2)!)² (mod p). When p ≡ 1 (mod 4) the sign is +1, so ((p−1)/2)! is an explicit square root of −1 — the cleanest constructive proof that −1 is a quadratic residue for such primes, and the gateway to Fermat's two-squares theorem. When p ≡ 3 (mod 4) the sign is −1 and ((p−1)/2)! ≡ ±1 instead.",
+    "problemStatement": "**Open Question (wilsons-theorem-oq-07):** does Wilson's theorem yield an explicit square root of −1 modulo a prime p ≡ 1 (mod 4)? Formalize the reflection identity (p−1)! ≡ (−1)^{(p−1)/2}·(((p−1)/2)!)² (mod p) for odd primes, deduce that (((p−1)/2)!)² ≡ −1 when p ≡ 1 (mod 4) and ≡ +1 when p ≡ 3 (mod 4), and connect to Mathlib's existential criterion ZMod.exists_sq_eq_neg_one_iff.",
+    "text": "Write m = (p−1)/2. Group the residues 1,…,p−1 into the lower half {1,…,m} and the upper half {m+1,…,p−1}. The map j ↦ p − j carries the lower half bijectively onto the upper half, and p − j ≡ −j (mod p). Hence the upper-half product equals (−1)^m·m!, the lower-half product equals m!, and their product is (p−1)! ≡ −1 by Wilson. Therefore (−1)^m·(m!)² ≡ −1. Parity of m = (p−1)/2 is decided by p mod 4: even when p ≡ 1, odd when p ≡ 3.",
+    "proofStrategy": "The core lemma neg_one_pow_mul_factorial_sq sets m = (p−1)/2 and p = 2m+1 (from p odd). The lower-half product ∏_{i∈Ico 1 (m+1)} (i:ZMod p) equals (m!:ZMod p) via Nat.cast_prod and Finset.prod_Ico_id_eq_factorial. For the upper half, Finset.prod_Ico_reflect with f = (·:ZMod p), k = 1, n = p rewrites ∏_{i∈Ico (m+1) p} (i:ZMod p) as ∏_{j∈Ico 1 (m+1)} ↑(p−j) (the bounds p+1−(m+1) and p+1−1 simplify to m+1 and p by omega using p = 2m+1). Each factor ↑(p−j) = −↑j (Nat.cast_sub with j ≤ p, then ZMod.natCast_self), so Finset.prod_neg gives (−1)^(card Ico 1 (m+1))·(lower product) = (−1)^m·m!. Finset.prod_Ico_consecutive recombines the two halves into ∏_{Ico 1 p}, which ZMod.prod_Ico_one_prime equates to −1; a ring rearrangement yields (−1)^m·(m!)² = −1. The two main theorems then fix the parity of m by omega (Even when p%4=1, Odd when p%4=3) and apply Even.neg_one_pow / Odd.neg_one_pow.",
+    "keyInsights": [
+      "**Reflection turns Wilson into a square.** Pairing k with p−k ≡ −k folds the factorial onto its lower half twice over, so (p−1)! becomes (−1)^m·(m!)² — the appearance of the perfect square (m!)² is exactly what makes m! a square root of ±1.",
+      "**The sign is the whole story.** Whether m! squares to −1 or +1 is governed solely by the parity of m = (p−1)/2, i.e. by p mod 4. This is the elementary heart of 'p ≡ 1 (mod 4) ⟺ −1 is a QR'.",
+      "**Constructive beats existential.** Mathlib's ZMod.exists_sq_eq_neg_one_iff is non-constructive; the half-factorial gives a concrete witness, which is what downstream results (sums of two squares, Gaussian integers) actually need.",
+      "**prod_Ico_reflect is the clean reindexing.** Rather than building a bijection by hand, the upper-half product is obtained from the lower half by Mathlib's interval-reflection lemma, with the interval bounds discharged by omega once p = 2m+1 is known.",
+      "**Axiom-free instances via kernel decide.** The witnesses for p = 5, 13, 7 are small enough that ordinary kernel `decide` certifies them, so the entry never touches native_decide / Lean.ofReduceBool."
+    ],
+    "prerequisites": [
+      "Wilson's theorem in multiplicative form (ZMod.prod_Ico_one_prime)",
+      "Finset product reindexing over intervals (Finset.prod_Ico_reflect, prod_Ico_consecutive)",
+      "The cast identity ↑(p−j) = −↑j in ZMod p",
+      "Parity of (p−1)/2 in terms of p mod 4, and Even/Odd.neg_one_pow"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-reflection-lemma",
+      "title": "Module Overview and the Reflection Refinement",
+      "startLine": 1,
+      "endLine": 82,
+      "summary": "Module docstring stating the reflection identity (p−1)! ≡ (−1)^m·(m!)² and its p mod 4 specializations. The core lemma `neg_one_pow_mul_factorial_sq`: for odd prime p with m = (p−1)/2, (−1)^m·(m!)² = −1 in ZMod p, proved by splitting Ico 1 p at the midpoint, identifying the lower half with m!, reflecting the upper half via Finset.prod_Ico_reflect with ↑(p−j) = −↑j and Finset.prod_neg, recombining with Finset.prod_Ico_consecutive, and applying ZMod.prod_Ico_one_prime."
+    },
+    {
+      "id": "explicit-square-root",
+      "title": "The Explicit Square Root and Companion Case",
+      "startLine": 84,
+      "endLine": 110,
+      "summary": "`factorial_half_sq_eq_neg_one`: for p ≡ 1 (mod 4), (((p−1)/2)!)² = −1 (m even ⟹ (−1)^m = 1). `factorial_half_sq_eq_one`: for p ≡ 3 (mod 4), (((p−1)/2)!)² = 1 (m odd ⟹ (−1)^m = −1). `exists_sq_eq_neg_one_of_one_mod_four`: packages the explicit witness into the existential, recovering the forward direction of ZMod.exists_sq_eq_neg_one_iff."
+    },
+    {
+      "id": "numeric-instances",
+      "title": "Axiom-Free Numeric Instances",
+      "startLine": 112,
+      "endLine": 123,
+      "summary": "Consistency check that p % 4 = 1 ⟹ p % 4 ≠ 3 (the Mathlib criterion), and kernel-`decide` certificates: p = 5 (2² ≡ −1 mod 5), p = 13 (5² ≡ −1 mod 13), p = 7 (3! ≡ −1 ⟹ (−1)² = 1 mod 7) — all without native_decide."
+    }
+  ],
+  "conclusion": {
+    "summary": "Wilson's theorem is refined by reflection into the identity (−1)^{(p−1)/2}·(((p−1)/2)!)² = −1 in ZMod p for every odd prime p. Specializing the parity of (p−1)/2 by p mod 4 gives an explicit square root of −1 when p ≡ 1 (mod 4) — the factorial ((p−1)/2)! — and (((p−1)/2)!)² = +1 when p ≡ 3 (mod 4). The construction supplies the constructive witness behind Mathlib's existential ZMod.exists_sq_eq_neg_one_iff. 4 theorems, 0 definitions, 123 lines, 0 sorries, 0 axioms (no native_decide, no Lean.ofReduceBool).",
+    "implications": "Turns Wilson's theorem into a constructive proof that −1 is a quadratic residue mod p ≡ 1 (mod 4), the standard entry point to Fermat's sum-of-two-squares theorem and to roots of unity in finite fields. The reflection lemma (−1)^m·(m!)² ≡ −1 is itself a reusable refinement: it isolates the perfect-square structure hidden inside the factorial and is the cleanest bridge from Wilson to quadratic-residue theory.",
+    "openQuestions": [
+      "Use the explicit root ((p−1)/2)! to give a constructive formalization of Fermat's two-squares theorem (descent / Gaussian-integer factorization seeded by the concrete square root of −1), rather than the existential route.",
+      "Quantify which residue ±1 the value ((p−1)/2)! takes when p ≡ 3 (mod 4): relate the sign to the class number / to whether p ≡ 3 or 7 (mod 8), via the same reflection bookkeeping.",
+      "Generalize the midpoint reflection to products of units coprime to a composite n (the Gauss generalization, cf. sibling oq-04) and characterize when a half-product squares to ±1."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "wilsons-theorem",
+      "title": "Wilson's Theorem",
+      "relationship": "Parent — supplies (p−1)! ≡ −1 (mod p), refined here by reflection into an explicit square root of −1."
+    },
+    {
+      "id": "wilsons-theorem-oq-06",
+      "title": "The Wilson Quotient and Wilson Primes",
+      "relationship": "Sibling — studies the quotient ((p−1)!+1)/p; this entry instead refines the congruence itself into a square."
+    }
+  ],
+  "mainTheorems": "none",
+  "sorries": 0,
+  "leanFile": {
+    "lineCount": 123,
+    "path": "Proofs/WilsonsTheoremOQ07.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4
+  }
+}
