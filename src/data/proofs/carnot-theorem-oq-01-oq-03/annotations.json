@@ -1,0 +1,62 @@
+[
+  {
+    "id": "carnot-sin-ann-header",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 4, "endLine": 50 },
+    "type": "context",
+    "title": "From the Cosine Form to the Companion Sine Sum",
+    "content": "The parent CarnotTheorem.lean proves the cosine form of Carnot's theorem. This entry adds the companion sine identity sin A + sin B + sin C = 4·cos(A/2)cos(B/2)cos(C/2) for triangle angles (A+B+C=π), establishes its positivity for a genuine triangle, and proves the sharp upper bound sin A + sin B + sin C ≤ 3√3/2 with equality exactly at the equilateral triangle — the trigonometric form of the isoperimetric/perimeter bound for triangles inscribed in a fixed circle.",
+    "mathContext": "$\\sin A+\\sin B+\\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$, maximized at $\\tfrac{3\\sqrt3}{2}$ for the equilateral triangle.",
+    "significance": "context",
+    "relatedConcepts": ["Carnot's theorem", "law of sines", "triangle angle sum", "perimeter bound", "equilateral extremum"],
+    "prerequisites": ["triangle trigonometry", "the parent cosine form"]
+  },
+  {
+    "id": "carnot-sin-ann-identity",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 52, "endLine": 81 },
+    "type": "insight",
+    "title": "The Product-Form Companion Sine Identity",
+    "content": "carnot_sin_sum: for any reals with A+B+C=π, sin A + sin B + sin C = 4·cos(A/2)·cos(B/2)·cos(C/2). The proof works through half-angles, using the sum-to-product structure and the constraint A+B+C=π (so C/2 = π/2 − (A+B)/2, turning cos/sin of the half-angles into a clean product). This product form is what makes both the positivity and the sharp maximum tractable.",
+    "mathContext": "$\\sin A+\\sin B+\\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$ for $A+B+C=\\pi$.",
+    "significance": "key",
+    "relatedConcepts": ["half-angle identities", "sum-to-product", "A+B+C=π constraint", "product form"],
+    "prerequisites": ["sum-to-product trig identities", "the angle-sum constraint"]
+  },
+  {
+    "id": "carnot-sin-ann-positivity",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 82, "endLine": 94 },
+    "type": "concept",
+    "title": "Positivity of the Sine Sum for a Genuine Triangle",
+    "content": "sin_sum_pos: for a genuine triangle (A, B, C > 0 with A+B+C=π) the sine sum is strictly positive. Via the product identity, each half-angle A/2, B/2, C/2 lies in (0, π/2), so each cosine factor is positive and the product 4·cos(A/2)cos(B/2)cos(C/2) > 0. This rules out degenerate cases and underpins the bound.",
+    "mathContext": "$A,B,C>0,\\ A+B+C=\\pi \\Rightarrow \\tfrac{A}{2},\\tfrac{B}{2},\\tfrac{C}{2}\\in(0,\\tfrac{\\pi}{2})$, so each $\\cos>0$ and the sum $>0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity", "half-angle range", "cosine on (0,π/2)", "genuine triangle"],
+    "prerequisites": ["the companion sine identity", "sign of cosine on (0,π/2)"]
+  },
+  {
+    "id": "carnot-sin-ann-maximum",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 95, "endLine": 130 },
+    "type": "insight",
+    "title": "The Sharp Maximum 3√3/2 via Concavity (Jensen)",
+    "content": "sin_sum_le: for A+B+C=π with A,B,C in range, sin A + sin B + sin C ≤ 3√3/2. Since sin is concave on [0,π], Jensen's inequality gives (sin A + sin B + sin C)/3 ≤ sin((A+B+C)/3) = sin(π/3) = √3/2, hence the sum is ≤ 3·√3/2 = 3√3/2. Concavity converts the constrained maximization into a single evaluation at the centroid angle π/3.",
+    "mathContext": "$\\sin$ concave on $[0,\\pi]$ $\\Rightarrow \\tfrac{\\sin A+\\sin B+\\sin C}{3}\\le \\sin\\tfrac{A+B+C}{3}=\\sin\\tfrac{\\pi}{3}=\\tfrac{\\sqrt3}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Jensen's inequality", "concavity of sine", "centroid angle π/3", "constrained maximum"],
+    "prerequisites": ["concavity of sin on [0,π]", "Jensen's inequality"]
+  },
+  {
+    "id": "carnot-sin-ann-sharpness",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 131, "endLine": 138 },
+    "type": "context",
+    "title": "Sharpness: the Equilateral Triangle Attains the Maximum",
+    "content": "sin_sum_eq_at_equilateral: at A = B = C = π/3 the sine sum equals 3·sin(π/3) = 3√3/2, so the upper bound is attained and therefore sharp. Combined with the strict concavity of sine, this is the equality case: the equilateral triangle is the unique maximizer of sin A + sin B + sin C among triangles.",
+    "mathContext": "$A=B=C=\\tfrac{\\pi}{3} \\Rightarrow \\sin A+\\sin B+\\sin C = 3\\sin\\tfrac{\\pi}{3} = \\tfrac{3\\sqrt3}{2}$, attaining the bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["sharpness witness", "equilateral triangle", "equality case", "unique maximizer"],
+    "prerequisites": ["the sharp maximum bound", "sin(π/3)=√3/2"]
+  }
+]
