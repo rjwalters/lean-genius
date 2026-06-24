@@ -1,0 +1,42 @@
+[
+  {
+    "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-module-header",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "type": "concept",
+    "range": { "startLine": 4, "endLine": 38 },
+    "title": "Module Header: From the Defect Biconditional to a Closed Form",
+    "content": "The companion entry proves the **defect (Ore) form** of Hall's theorem: a matching saturating all but $d$ indices exists **iff** every sub-family $s$ satisfies $\\#s \\le \\#(s.\\mathrm{biUnion}\\ t) + d$. This file pins the sharp $d$ to the **deficiency**\n$$\\delta(t) = \\max_{s}\\ \\bigl(\\#s - \\#(s.\\mathrm{biUnion}\\ t)\\bigr),$$\nturning the parametrised biconditional into a single optimum: **maximum partial-transversal size $= \\#\\iota - \\delta(t)$**. Attainability comes from the parent's $\\mathrm{exists\\_matching\\_of\\_deficiency\\_le}$, optimality from $\\mathrm{deficiency\\_le\\_of\\_matching}$; $\\delta = 0$ recovers Hall's full system of distinct representatives."
+  },
+  {
+    "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-deficiency",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "type": "definition",
+    "range": { "startLine": 50, "endLine": 71 },
+    "title": "The Deficiency as a Finset-sup",
+    "content": "`deficiency t = (univ : Finset (Finset ι)).sup (fun s => #s − #(s.biUnion t))`, a maximum over **all** sub-families using $\\mathbb{N}$ **truncated subtraction** — so the empty family contributes $0$ and $\\delta \\ge 0$ holds by construction, no separate proof needed.\n\n`sub_card_le_deficiency`: the per-subfamily bound $\\#s - \\#(s.\\mathrm{biUnion}\\ t) \\le \\delta$, a direct `Finset.le_sup`. `deficiency_spec`: its additive form $\\#s \\le \\#(s.\\mathrm{biUnion}\\ t) + \\delta$ (by `omega`) — exactly the '$t$ is at worst $\\delta$-deficient' hypothesis the parent defect theorem consumes."
+  },
+  {
+    "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-transversal-sizes",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "type": "definition",
+    "range": { "startLine": 73, "endLine": 78 },
+    "title": "Attainable Partial-Transversal Sizes",
+    "content": "`transversalSizes t = { k | ∃ J f, #J = k ∧ Set.InjOn f ↑J ∧ ∀ i ∈ J, f i ∈ t i }`. A **partial transversal** is a set $J \\subseteq \\iota$ together with a choice function $f$ injective on $J$ with $f\\,i \\in t\\,i$ for $i \\in J$; its size is $\\#J$. The headline theorem characterises the greatest element of this set of sizes."
+  },
+  {
+    "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-closed-form",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 80, "endLine": 107 },
+    "title": "Closed-Form Maximum: |ι| − δ",
+    "content": "`isGreatest_transversalSizes`: $\\mathrm{IsGreatest}\\ (\\mathrm{transversalSizes}\\ t)\\ (\\#\\iota - \\delta(t))$ — the optimum is both **attained** and an **upper bound**.\n\n*Attainability*: feed `deficiency_spec` into `exists_matching_of_deficiency_le` to get a matching on some $J$ with $\\#J \\ge \\#\\iota - \\delta$, then `Finset.exists_subset_card_eq` trims it to a sub-transversal of size **exactly** $\\#\\iota - \\delta$ (a subset of an injective partial transversal is again one).\n\n*Optimality*: any attainable $k = \\#J$ gives a matching saturating all but $\\#\\iota - \\#J$ indices, so `deficiency_le_of_matching` plus `Finset.sup_le` force $\\delta \\le \\#\\iota - \\#J$, hence $k \\le \\#\\iota - \\delta$ by `omega`."
+  },
+  {
+    "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-hall-corollaries",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 108, "endLine": 131 },
+    "title": "Vanishing Deficiency Recovers Hall",
+    "content": "`deficiency_eq_zero_iff`: $\\delta(t) = 0 \\iff \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\ t)$ — i.e. $\\delta = 0$ is **exactly Hall's condition** (via `Finset.sup_le` / `Nat.le_zero`).\n\n`maxTransversal_eq_card_of_deficiency_zero`: rewriting $\\delta = 0$ in the closed form collapses $\\#\\iota - \\delta$ to $\\#\\iota$, so the maximum partial transversal saturates all of $\\iota$ — a **full system of distinct representatives**, recovering the classical marriage theorem as the zero-deficiency slice."
+  }
+]
