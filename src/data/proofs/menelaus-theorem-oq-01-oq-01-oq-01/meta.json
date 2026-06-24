@@ -56,6 +56,71 @@
   "conclusion": {
     "summary": "The realisable sign patterns of a Menelaus configuration are characterised exactly: a pattern (sX, sY, sZ) is realisable with signed product -1 iff it has an odd number of external points, and with the Ceva product +1 iff it has an even number. The converse to the parent's parity dichotomy is established constructively via eight explicit witness configurations, four for each product sign. 11 theorems, 0 definitions, 257 lines, 0 sorries, 0 axioms.",
     "implications": "Upgrades the parent's necessary parity condition into a necessary-and-sufficient characterisation, completing the realisability picture for the gallery's Menelaus formalization. The witness-construction template (fix a non-degenerate triangle, solve for division parameters realising a prescribed product and per-factor sign) transfers directly to Ceva, Routh, and other affine division-ratio configurations.",
-    "openQuestions": null
-  }
+    "openQuestions": [
+      "Can the realisability characterisation be lifted from the boolean sign pattern to the full continuum of attainable signed-ratio triples? That is, for which triples (rX, rY, rZ) ∈ (ℝ \\ {0,1})³ does a non-degenerate configuration exist — is the only constraint the product rX·rY·rZ = ±1, or are there further inequalities from non-degeneracy?",
+      "Does an analogous sharp biconditional hold for Routh's theorem, where the three cevians bound a central triangle whose area ratio is a rational function of the division parameters — i.e. which sign patterns and area values are simultaneously realisable?",
+      "The eight witnesses live on a single fixed triangle. Is there a configuration-space statement making precise that the realisable-pattern set is a topological invariant, independent of the triangle's shape (an affine-invariance argument rather than a per-witness norm_num check)?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-docstring",
+      "title": "Overview: from parity dichotomy to biconditional",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring. The parent (MenelausTheoremOQ01) proved the forward parity dichotomy — a collinear transversal (menelausProduct = -1) forces an odd number of external division points, the Ceva value +1 an even number. This file adds the converse/realisability direction and packages both into sharp biconditionals over sign patterns (sX,sY,sZ) ∈ Bool³, encoding 'odd #external' as the xor sX ^^ sY ^^ sZ = true."
+    },
+    {
+      "id": "bookkeeping-helpers",
+      "title": "Sign ↔ boolean bookkeeping helpers",
+      "startLine": 39,
+      "endLine": 64,
+      "summary": "Opens the parent namespaces and four private lemmas: iff_true_of / iff_false_of repackage a Prop and its negation into the boolean iff form p ↔ (b = true); bit_of_neg / bit_of_pos pin a sign bit to true/false from the sign of the corresponding signed ratio. These translate between the geometric sign conditions and the boolean encoding used in the master theorems."
+    },
+    {
+      "id": "witnesses-odd",
+      "title": "Witnesses for the odd (Menelaus, product -1) patterns",
+      "startLine": 66,
+      "endLine": 118,
+      "summary": "Four explicit configurations on the fixed triangle (0,0),(1,0),(0,1) realising each odd sign pattern with menelausProduct = -1: witness_odd_XYZ (all three external), witness_odd_X / witness_odd_Y / witness_odd_Z (exactly one external). Only the division parameters t,u,v change; each goal is discharged by unfold + norm_num."
+    },
+    {
+      "id": "witnesses-even",
+      "title": "Witnesses for the even (Ceva, product +1) patterns",
+      "startLine": 120,
+      "endLine": 168,
+      "summary": "Four explicit configurations with menelausProduct = +1: witness_even_none (none external), witness_even_YZ / witness_even_XZ / witness_even_XY (exactly two external). Same fixed triangle and norm_num discharge pattern."
+    },
+    {
+      "id": "master-biconditionals",
+      "title": "Master biconditionals: realisable ⟺ parity",
+      "startLine": 170,
+      "endLine": 242,
+      "summary": "realisable_iff_odd: a sign pattern is realisable with product -1 iff sX ^^ sY ^^ sZ = true. Forward direction destructures the parent's external_parity_odd disjunction, pins each bit via bit_of_neg/bit_of_pos, and closes by decide; backward direction case-splits the 8 patterns, closing the 4 parity-violating ones by absurd ... (by decide) and supplying a matching witness for each of the 4 admissible ones. realisable_iff_even is the symmetric statement for product +1."
+    },
+    {
+      "id": "corollary-count",
+      "title": "Corollary: exactly four realisable patterns",
+      "startLine": 244,
+      "endLine": 257,
+      "summary": "four_odd_patterns_realisable packages the four odd witnesses into a single conjunction, confirming the count 2³ / 2 = 4 of Menelaus-realisable sign patterns."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "menelaus-theorem-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Provides the forward parity dichotomy reused here: external_parity_odd (product -1 ⟹ odd number of external points) and external_parity_even (product +1 ⟹ even). This leaf supplies the converse, upgrading both to biconditionals."
+    },
+    {
+      "proofId": "menelaus-theorem-oq-01",
+      "relationship": "ancestor",
+      "description": "The base formalization of Menelaus's theorem: the MenelausConfig structure, the signed ratios rX/rY/rZ, and menelausProduct, with collinearity characterised by the signed product equalling -1. All witnesses here are instances of MenelausConfig."
+    },
+    {
+      "proofId": "menelaus-theorem-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "A sibling leaf in the Menelaus family treating Desargues's theorem via the homogeneous-coordinate determinant bracket — another projective/affine incidence result building on the same parent's signed-ratio machinery."
+    }
+  ]
 }
