@@ -128,3 +128,47 @@ each other, for each of the two cases" (cyclic case `p ∤ q-1`; non-cyclic case
    ApproachB `actionHom` infrastructure; show all nontrivial actions give isomorphic
    products. Mathlib has `SemidirectProduct.mulEquivSubgroup` for the internal
    recognition but lacks a normal-complement → semidirect lemma packaged for this.
+
+---
+## Session 2026-06-24 (Session 3, researcher-1) — Common range (Part VII)
+
+**Mode**: DEPTH-FIRST (RICH) · **Outcome**: progress (verified, +4 thms, 0 axioms)
+
+### What I Did
+Closed **fact (2) — "common range"** from Part VI's open-items list. Part VI's
+capstone `semidirectProductIso_of_nontrivial_range_eq` took `f.range = g.range` as a
+hypothesis; Part VII now **proves** it whenever the target is finite cyclic.
+
+New theorems (all standard-triple, 0 axioms):
+- `subgroup_eq_powMonoidHom_ker`: in a finite cyclic group, any subgroup `H` equals the
+  `(Nat.card H)`-torsion subgroup `(powMonoidHom (Nat.card H)).ker` — the unique
+  subgroup of that order.
+- `subgroup_eq_of_card_eq`: uniqueness of subgroups of given order in a cyclic group.
+- `range_eq_of_nontrivial_prime_card`: two nontrivial homs from a prime-order group into
+  a finite cyclic group have equal range.
+- `semidirectProductIso_of_nontrivial_into_cyclic`: hypothesis-free capstone — needs
+  only `[IsCyclic (MulAut N)]` (true for `Aut(ℤ/q) ≅ (ℤ/q)ˣ`, `q` prime).
+
+### Key API
+- `IsCyclic.card_powMonoidHom_ker [CommGroup G] [IsCyclic G] [Finite G] (d) :
+  Nat.card (powMonoidHom d).ker = (Nat.card G).gcd d`. The d-torsion `{x | xᵈ=1}` is a
+  *packaged* `Subgroup` (the ker of `powMonoidHom`), which is what makes the uniqueness
+  argument clean — no need to hand-build the torsion subgroup.
+- `Nat.gcd_eq_right_iff_dvd.2 : d ∣ n → n.gcd d = d`.
+- `Subgroup.eq_of_le_of_card_ge (hle : H ≤ K) (Nat.card K ≤ Nat.card H) : H = K`.
+- `IsCyclic.commGroup` is a `def` (not instance), reuses the ambient `Group`, so
+  `letI := IsCyclic.commGroup` to get `powMonoidHom` causes no diamond.
+- `pow_card_eq_one'` (no Fintype needed, uses `Nat.card`); project from subgroup via
+  `congrArg H.subtype` then `rw [map_pow, map_one]` (NOT `simpa using congrArg …`, which
+  over-simplifies the raw term to `True`).
+
+### Remaining gap (only one left for full non-abelian uniqueness)
+**Internal recognition**: every non-cyclic group of order `pq` is `≃*` to some
+`ℤ/q ⋊[φ] ℤ/p` with `φ` nontrivial. Mathlib lacks a packaged normal-complement ⟹
+internal-semidirect-product lemma. With this, the cyclic-`Aut` capstone closes the
+non-abelian case entirely.
+
+### Build
+Docker DOWN. Host recipe: `cd <main>/proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+<abs path to worktree file>` (worktree `.lake/packages` empty → reuse main's Mathlib
+cache). Axiom check: append `open NS in #print axioms thm` to a `/tmp` copy, recompile.
