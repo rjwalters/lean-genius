@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "fundamental-theorem-algebra-oq-06",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "concept",
+    "title": "Goal and Imports",
+    "content": "The file imports all of `Mathlib` and opens `Polynomial`, `Filter`, and `Topology`. The objective is the odd-degree intermediate-value step of Gauss's 1849 algebraic proof of the Fundamental Theorem of Algebra: every real polynomial of odd degree has a real root. Mathlib provides the polynomial end-behaviour lemmas and the intermediate value theorem, but no packaged 'odd-degree root' theorem — the result is assembled here.",
+    "mathContext": "Target: $\\forall P \\in \\mathbb{R}[X],\\ \\mathrm{Odd}(\\deg P) \\Rightarrow \\exists x \\in \\mathbb{R},\\ P(x) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["fundamental theorem of algebra", "intermediate value theorem", "polynomial degree"],
+    "prerequisites": ["polynomial evaluation", "Lean 4 module system"]
+  },
+  {
+    "id": "ann-reflected-polynomial",
+    "proofId": "fundamental-theorem-algebra-oq-06",
+    "range": { "startLine": 53, "endLine": 67 },
+    "type": "technique",
+    "title": "The Reflected Polynomial Q(x) = P(−x)",
+    "content": "Rather than proving the $-\\infty$ behaviour with a separate `atBot` argument, the proof introduces `Q := P.comp (-X)`, so that `Q.eval x = P.eval (-x)`. Composition with the degree-1 polynomial `-X` preserves the degree (`natDegree_comp` with `natDegree (-X) = 1`) and transforms the leading coefficient: `leadingCoeff_comp` gives `leadingCoeff Q = leadingCoeff P · (leadingCoeff (-X))^(natDegree P) = leadingCoeff P · (-1)^(natDegree P)`. Because the degree is odd, `(-1)^(natDegree P) = -1` (via `Odd.neg_one_pow`), so `leadingCoeff Q = -leadingCoeff P`.",
+    "mathContext": "$\\mathrm{leadingCoeff}(P\\circ(-X)) = (-1)^{\\deg P}\\,\\mathrm{leadingCoeff}(P) = -\\mathrm{leadingCoeff}(P)$ for odd $\\deg P$.",
+    "significance": "central",
+    "relatedConcepts": ["polynomial composition", "leading coefficient", "parity"],
+    "prerequisites": ["Polynomial.comp", "leadingCoeff_comp", "Odd.neg_one_pow"]
+  },
+  {
+    "id": "ann-both-signs",
+    "proofId": "fundamental-theorem-algebra-oq-06",
+    "range": { "startLine": 68, "endLine": 85 },
+    "type": "technique",
+    "title": "Extracting a Negative and a Positive Value",
+    "content": "Case-split on the sign of `leadingCoeff P` with `le_total`. If `0 ≤ leadingCoeff P`, then `P` tends to `+∞` along `atTop` (`tendsto_atTop_of_leadingCoeff_nonneg`), so `(hP.eventually (eventually_gt_atTop 0)).exists` produces `b` with `P(b) > 0`; meanwhile `leadingCoeff Q ≤ 0`, so `Q` tends to `-∞`, yielding `x` with `Q(x) < 0`, i.e. `P(-x) < 0`. The other case is symmetric. Either way both signs are realised.",
+    "mathContext": "`Tendsto.eventually` pulls an eventual statement in the target filter back along the limit; `.exists` then turns 'eventually' into 'there exists'.",
+    "significance": "central",
+    "relatedConcepts": ["Filter.Tendsto", "end behaviour", "eventually"],
+    "prerequisites": ["tendsto_atTop_of_leadingCoeff_nonneg", "eventually_gt_atTop"]
+  },
+  {
+    "id": "ann-ivt",
+    "proofId": "fundamental-theorem-algebra-oq-06",
+    "range": { "startLine": 87, "endLine": 95 },
+    "type": "key-step",
+    "title": "Root via intermediate_value_uIcc",
+    "content": "With `P(a) < 0 < P(b)`, the value `0` lies in the unordered interval `[[P a, P b]]`. Since `P.eval` is continuous (`Polynomial.continuousOn`), `intermediate_value_uIcc` gives `[[P a, P b]] ⊆ P '' [[a, b]]`, so `0` is attained: there is `c` with `P(c) = 0`, i.e. `P.IsRoot c`. Using the unordered interval `[[a,b]]` avoids any case analysis on whether `a ≤ b`.",
+    "mathContext": "$0 \\in [[P(a),P(b)]] \\subseteq P([[a,b]])$, hence $\\exists c,\\ P(c)=0$.",
+    "significance": "central",
+    "relatedConcepts": ["intermediate value theorem", "continuity", "unordered interval"],
+    "prerequisites": ["intermediate_value_uIcc", "Polynomial.continuousOn", "Set.mem_uIcc"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "fundamental-theorem-algebra-oq-06",
+    "range": { "startLine": 97, "endLine": 124 },
+    "type": "concept",
+    "title": "Linear Factor and Even-Degree Irreducibles",
+    "content": "`odd_natDegree_has_linear_factor` turns the root into a divisibility statement via `dvd_iff_isRoot`: `(X - C x) ∣ P`. `natDegree_even_of_irreducible_of_one_lt` then argues that if an irreducible `P` had odd degree and `natDegree P > 1`, it would split off a linear factor; irreducibility forces either the linear factor or the cofactor to be a unit, and both options contradict `natDegree P > 1`. Hence irreducible real polynomials of degree above 1 have even degree — the algebraic shadow of the fact that ℝ's only irreducible higher-degree polynomials are quadratics like $X^2+1$.",
+    "mathContext": "Irreducible $P$ with $\\deg P > 1$ has no linear factor, so $\\deg P$ cannot be odd; the obstruction to ℝ being algebraically closed is exactly even degree.",
+    "significance": "supporting",
+    "relatedConcepts": ["irreducible polynomial", "linear factor", "algebraic closure"],
+    "prerequisites": ["dvd_iff_isRoot", "Irreducible.isUnit_or_isUnit", "natDegree_mul"]
+  }
+]
