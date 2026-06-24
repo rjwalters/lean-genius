@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "rearrangement-inequality-oq-01",
+    "range": { "startLine": 1, "endLine": 28 },
+    "type": "context",
+    "title": "The Covariance Identity Behind Chebyshev's Sum Inequality",
+    "content": "Mathlib proves Chebyshev's sum inequality (MonovaryOn.sum_mul_sum_le_card_mul_sum: (∑f)(∑g) ≤ #s·∑fg for f, g monovarying) but records neither its equality case nor the algebraic identity that drives it. This entry supplies the discrete covariance identity ∑ᵢ∑ⱼ (fᵢ−fⱼ)(gᵢ−gⱼ) = 2(#s·∑fᵢgᵢ − (∑fᵢ)(∑gᵢ)) — the finite unnormalised analogue of 2n²·Cov(f,g), valid with NO order hypothesis — re-derives Chebyshev from it, and characterises equality exactly: for monovarying f, g equality holds iff every pair satisfies fᵢ=fⱼ or gᵢ=gⱼ, collapsing for monotone sequences to 'f or g constant on s'.",
+    "mathContext": "$\\sum_i\\sum_j (f_i-f_j)(g_i-g_j) = 2\\big(\\#s\\sum_i f_ig_i - (\\sum_i f_i)(\\sum_i g_i)\\big) = 2n^2\\,\\mathrm{Cov}(f,g)$.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev sum inequality", "covariance", "rearrangement inequality", "equality case", "monovary"],
+    "prerequisites": ["finite sums", "order correlation", "covariance"]
+  },
+  {
+    "id": "ann-covariance-identity",
+    "proofId": "rearrangement-inequality-oq-01",
+    "range": { "startLine": 36, "endLine": 46 },
+    "type": "insight",
+    "title": "covariance_identity: The Order-Free Engine",
+    "content": "covariance_identity: the symmetric double sum ∑ᵢ∑ⱼ (fᵢ−fⱼ)(gᵢ−gⱼ) equals 2(#s·∑fᵢgᵢ − (∑fᵢ)(∑gᵢ)) for ANY real f, g — no monotonicity. The proof distributes the product (mul_sub, sub_mul), splits the four double sums via Finset.sum_sub_distrib (two collapse to #s·∑fg through a sum over a constant index Finset.sum_const, two to (∑f)(∑g) via Finset.mul_sum/sum_mul), and closes with ring. This single identity simultaneously proves the inequality (its RHS terms are ≥ 0 under monovary) and its equality case (terms = 0) — the algebraic heart that Mathlib omits.",
+    "mathContext": "Distribute $(f_i-f_j)(g_i-g_j)$, collapse $\\sum_j 1 = \\#s$ and factor $\\sum f\\cdot\\sum g$; close by ring.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_const", "Finset.mul_sum", "double sum", "ring"],
+    "prerequisites": ["finite sums", "algebraic manipulation"]
+  },
+  {
+    "id": "ann-term-nonneg",
+    "proofId": "rearrangement-inequality-oq-01",
+    "range": { "startLine": 48, "endLine": 57 },
+    "type": "technique",
+    "title": "term_nonneg: Each Summand is Nonnegative under Monovary",
+    "content": "term_nonneg: under MonovaryOn f g s, each summand (fᵢ−fⱼ)(gᵢ−gⱼ) ≥ 0. A trichotomy on gᵢ vs gⱼ: if gᵢ < gⱼ then monovary gives fᵢ ≤ fⱼ, so both factors are ≤ 0 and their product ≥ 0 (nlinarith); if gᵢ = gⱼ the second factor is 0; if gᵢ > gⱼ then fⱼ ≤ fᵢ and both factors ≥ 0. The point is that monovary forces (fᵢ−fⱼ) and (gᵢ−gⱼ) to share a sign — the discrete shadow of comonotone variables having nonnegative covariance.",
+    "mathContext": "$f,g$ monovary $\\Rightarrow (f_i-f_j)$ and $(g_i-g_j)$ share sign $\\Rightarrow$ product $\\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["MonovaryOn", "trichotomy", "nlinarith", "comonotonicity"],
+    "prerequisites": ["order correlation", "sign analysis"]
+  },
+  {
+    "id": "ann-chebyshev-sum",
+    "proofId": "rearrangement-inequality-oq-01",
+    "range": { "startLine": 59, "endLine": 67 },
+    "type": "theorem",
+    "title": "chebyshev_sum: The Inequality Re-Derived in One Line",
+    "content": "chebyshev_sum: (∑f)(∑g) ≤ #s·∑fg for monovarying f, g. The covariance double sum is a sum of nonnegative terms (Finset.sum_nonneg twice, via term_nonneg), hence ≥ 0; substituting covariance_identity and linarith gives the inequality immediately. Mathlib proves the same bound by a different route; here it is a one-line corollary of the identity, making transparent that Chebyshev IS the statement 'covariance of comonotone sequences is nonnegative'.",
+    "mathContext": "$0 \\le \\sum_i\\sum_j(\\cdots) = 2(\\#s\\sum fg - (\\sum f)(\\sum g)) \\Rightarrow (\\sum f)(\\sum g) \\le \\#s\\sum fg$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_nonneg", "MonovaryOn.sum_mul_sum_le_card_mul_sum", "linarith"],
+    "prerequisites": ["finite sums", "monovary"]
+  },
+  {
+    "id": "ann-eq-iff",
+    "proofId": "rearrangement-inequality-oq-01",
+    "range": { "startLine": 69, "endLine": 95 },
+    "type": "theorem",
+    "title": "chebyshev_sum_eq_iff: The Exact Equality Characterisation",
+    "content": "chebyshev_sum_eq_iff: for monovarying f, g, equality #s·∑fg = (∑f)(∑g) holds IFF for every pair i, j ∈ s either fᵢ = fⱼ or gᵢ = gⱼ. Forward: equality means the covariance double sum is 0; since every term is ≥ 0, Finset.sum_eq_zero_iff_of_nonneg (applied to the outer then inner sum) forces every (fᵢ−fⱼ)(gᵢ−gⱼ) = 0, and mul_eq_zero gives fᵢ = fⱼ ∨ gᵢ = gⱼ. The converse is UNCONDITIONAL (no monovary needed): if every term vanishes the double sum is 0, so the identity yields equality. This pairwise condition is stronger and more informative than 'f or g constant'.",
+    "mathContext": "$\\#s\\sum fg = (\\sum f)(\\sum g) \\iff \\forall i\\,j,\\ f_i=f_j \\lor g_i=g_j$ (no pair witnesses strict comonotonicity).",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_eq_zero_iff_of_nonneg", "mul_eq_zero", "equality case", "rigidity"],
+    "prerequisites": ["finite sums", "vanishing-sum arguments"]
+  },
+  {
+    "id": "ann-eq-iff-const",
+    "proofId": "rearrangement-inequality-oq-01",
+    "range": { "startLine": 97, "endLine": 135 },
+    "type": "insight",
+    "title": "chebyshev_sum_eq_iff_const: The Textbook Monotone Form via Extreme Pairs",
+    "content": "chebyshev_sum_eq_iff_const: for monotone f, g on a linearly ordered index type with s nonempty, equality holds IFF f is constant on s OR g is constant on s. The hard direction is the EXTREME-PAIR argument: a non-constant monotone function already differs between min' s and max' s (since f m ≤ f a ≤ f M sandwiches any value, hfmM). So if both f and g varied, the (min', max') pair would have f m ≠ f M AND g m ≠ g M, violating the pairwise condition from chebyshev_sum_eq_iff. Contrapositive (by_contra + push_neg) gives the constant-or-constant dichotomy; the converse is immediate. This recovers the classical textbook statement.",
+    "mathContext": "Monotone non-constant $\\Rightarrow f(\\min' s) \\ne f(\\max' s)$; so both varying violates the pairwise condition at $(\\min',\\max')$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.min'", "Finset.max'", "Monotone.monovary", "extreme-pair argument"],
+    "prerequisites": ["monotonicity", "extremal elements of a finset"]
+  }
+]
