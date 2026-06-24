@@ -3415,6 +3415,7 @@ import Proofs.MinkowskiTheoremOQ03
 import Proofs.MinkowskiTheoremOQ04
 import Proofs.MinkowskiTheoremOQ04OQ03
 import Proofs.MinkowskiTheoremOQ05
+import Proofs.MinkowskiTheoremOQ06
 import Proofs.MinpolyCharpoly
 import Proofs.MinpolyCharpolyOQ01
 import Proofs.MinpolyCharpolyOQ02
