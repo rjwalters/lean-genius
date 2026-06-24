@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-two-dvd-totient-of-ne-one-two",
+    "proofId": "euler-totient-oq-07-oq-04",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "theorem",
+    "title": "The Parity Engine: a ∉ {1,2} ⟹ 2 ∣ φ a",
+    "content": "Packages the totient's parity into a single divisibility usable element-by-element. The proof cases on `a`: if `a = 0` then `φ 0 = 0` is divisible by 2 (`simp`); otherwise `a` is positive and, being ≠ 1 and ≠ 2, satisfies `2 < a` (by `omega`), so `Nat.totient_even` makes `φ a` even and `Even.two_dvd` extracts the factor. The naturals with an odd totient are exactly {1, 2}.",
+    "mathContext": "$a\\notin\\{1,2\\} \\implies 2\\mid\\varphi(a)$, since $\\varphi(0)=0$ and $\\varphi(k)$ is even for $k>2$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's totient", "parity of totient", "divisibility", "Nat.totient_even"],
+    "prerequisites": ["Euler's totient function", "parity of φ", "divisibility by 2"]
+  },
+  {
+    "id": "ann-two-dvd-gcd-totient-family",
+    "proofId": "euler-totient-oq-07-oq-04",
+    "range": { "startLine": 65, "endLine": 71 },
+    "type": "theorem",
+    "title": "Shared Factor of a Totient Family: 2 ∣ s.gcd",
+    "content": "When every argument of the family avoids {1,2}, all the totients are even, so 2 divides each entry; `Finset.dvd_gcd` lifts this uniform per-element divisibility to a divisibility of the setwise gcd. Holds vacuously for the empty family (2 ∣ 0). This is the explicit common divisor of an entire family of totients — the structural fact that drives non-coprimality.",
+    "mathContext": "$(\\forall i\\in s,\\ a_i\\notin\\{1,2\\}) \\implies 2 \\mid \\gcd_{i\\in s}\\varphi(a_i)$, via $k\\mid f(i)\\ \\forall i \\implies k\\mid \\gcd_i f(i)$.",
+    "significance": "key",
+    "relatedConcepts": ["setwise gcd", "Finset.dvd_gcd", "common divisor", "parity of totient"],
+    "prerequisites": ["Finset.gcd", "divisibility", "parity of φ"]
+  },
+  {
+    "id": "ann-gcd-totient-family-eq-one-iff",
+    "proofId": "euler-totient-oq-07-oq-04",
+    "range": { "startLine": 80, "endLine": 96 },
+    "type": "theorem",
+    "title": "Headline: Setwise Coprimality ⟺ Some Argument in {1,2}",
+    "content": "The flagship biconditional generalizing the pairwise `Nat.totient_coprime_totient_iff` to an arbitrary finite family. Forward direction is the contrapositive: if no argument is in {1,2}, then `two_dvd_gcd_totient_family` gives 2 ∣ s.gcd, contradicting s.gcd = 1 (`2 ∣ 1` is false by `decide`). Reverse direction: an argument with φ(a i) = 1 makes the setwise gcd divide 1 via `Finset.gcd_dvd`, so it equals 1 by `Nat.dvd_one`. No induction on the family is needed — the two one-directional gcd facts suffice.",
+    "mathContext": "$\\gcd_{i\\in s}\\varphi(a_i) = 1 \\iff \\exists i\\in s,\\ a_i\\in\\{1,2\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["setwise gcd", "coprimality", "finite family", "Finset.gcd_dvd", "biconditional characterization"],
+    "prerequisites": ["Finset.gcd", "coprimality", "parity of φ", "dvd_one"]
+  },
+  {
+    "id": "ann-gcd-totient-family-ne-one-of-forall",
+    "proofId": "euler-totient-oq-07-oq-04",
+    "range": { "startLine": 98, "endLine": 104 },
+    "type": "theorem",
+    "title": "Contrapositive: Family Avoiding {1,2} Is Never Setwise Coprime",
+    "content": "States the practically useful direction directly: if every argument avoids {1,2} the totients are not setwise coprime. Proved by feeding a hypothetical gcd = 1 through the headline biconditional to extract an argument in {1,2}, contradicting the hypothesis. The clean 'no escape ⟹ shared factor' form callers reach for.",
+    "mathContext": "$(\\forall i\\in s,\\ a_i\\notin\\{1,2\\}) \\implies \\gcd_{i\\in s}\\varphi(a_i)\\neq 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["setwise gcd", "coprimality", "contrapositive"],
+    "prerequisites": ["Finset.gcd", "coprimality"]
+  },
+  {
+    "id": "ann-pairwise-recovery",
+    "proofId": "euler-totient-oq-07-oq-04",
+    "range": { "startLine": 108, "endLine": 119 },
+    "type": "example",
+    "title": "Recovering the Pairwise Parent (Fin 2 Specialization)",
+    "content": "Shows the pairwise criterion of `euler-totient-oq-07` is exactly the two-element case: the setwise gcd over the family `![m, n]` indexed by `Fin 2` equals 1 iff (m ∈ {1,2}) ∨ (n ∈ {1,2}). Confirms the family theorem is a genuine generalization, not a parallel statement — `fin_cases` on the index recovers the two-argument disjunction.",
+    "mathContext": "$\\gcd(\\varphi(m),\\varphi(n)) = 1 \\iff (m\\in\\{1,2\\})\\lor(n\\in\\{1,2\\})$ as the Fin 2 instance.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "pairwise criterion", "Fin 2", "fin_cases"],
+    "prerequisites": ["Finset.univ over Fin n", "Matrix.cons notation"]
+  },
+  {
+    "id": "ann-worked-examples",
+    "proofId": "euler-totient-oq-07-oq-04",
+    "range": { "startLine": 121, "endLine": 133 },
+    "type": "example",
+    "title": "Worked Fin 3 Families",
+    "content": "Three concrete witnesses over Fin 3: the family ![100, 2, 999] is setwise coprime because a₁ = 2 gives φ = 1; the family ![3, 4, 9] is not setwise coprime (all arguments ≥ 3) via `gcd_totient_family_ne_one_of_forall`; and its setwise gcd is exactly gcd(φ3, φ4, φ9) = gcd(2, 2, 6) = 2 by kernel `decide`.",
+    "mathContext": "$\\gcd(\\varphi 100,\\varphi 2,\\varphi 999)=1$; $\\gcd(\\varphi 3,\\varphi 4,\\varphi 9)=\\gcd(2,2,6)=2\\neq 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked example", "kernel decide", "setwise gcd"],
+    "prerequisites": ["finite evaluation of φ", "Finset.gcd over Fin 3"]
+  }
+]
