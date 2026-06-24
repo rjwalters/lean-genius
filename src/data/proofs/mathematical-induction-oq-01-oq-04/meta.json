@@ -123,7 +123,15 @@
       "mathContext": "$F o = \\bigcup_{a<o} \\mathcal{P}(F a)\\ \\ \\forall o \\ \\Longrightarrow\\ F = V_{\\bullet}.$"
     }
   ],
-  "conclusion": "Ordinal.induction, transported along the von Neumann rank, simultaneously yields the well-foundedness of set membership (the Axiom of Foundation), the rank-stratified and epsilon-induction principles on sets, and the uniqueness of the cumulative hierarchy as the WellFounded.fix solution of its defining recursion. This makes precise how the parent's transfinite-induction principle drives the cumulative-hierarchy construction.",
+  "conclusion": {
+    "summary": "Ordinal.induction, transported along the von Neumann rank, simultaneously yields the well-foundedness of set membership (the Axiom of Foundation), the rank-stratified and epsilon-induction principles on sets, and the uniqueness of the cumulative hierarchy as the WellFounded.fix solution of its defining recursion. This makes precise how the parent's transfinite-induction principle drives the cumulative-hierarchy construction.",
+    "implications": "The entry shows that a single structural fact — that the von Neumann rank embeds membership into the well-founded order on ordinals — is the common root of three pillars of set theory: the Axiom of Foundation, the ∈-induction/recursion principles used throughout ZFC, and the well-definedness of the cumulative hierarchy itself. Casting Foundation as downstream of ordinal well-foundedness (rather than an independent axiom of Regularity) clarifies the dependency structure, and the uniqueness result certifies that any construction matching the cumulative recurrence is forced to be V_, the standard model-building tool for relative consistency and inner-model arguments.",
+    "openQuestions": [
+      "Formalize the converse direction: derive ordinal well-foundedness (or Ordinal.induction itself) from ∈-induction plus the rank function, closing the loop and exhibiting the two principles as inter-derivable rather than one-directional.",
+      "Extend the uniqueness/fixed-point characterization to the relativized hierarchies L_α (the constructible universe) and HF/Vω, identifying which recursion equations admit the same WellFounded.fix uniqueness argument.",
+      "Quantify the proof-theoretic strength actually used: which fragment of ZF (e.g. with/without Powerset or Replacement) suffices for each of mem_wf_via_rank, mem_induction, and vonNeumann_unique?"
+    ]
+  },
   "leanFile": {
     "namespace": "MathematicalInductionOQ01OQ04",
     "lineCount": 169,
@@ -134,5 +142,16 @@
     "definitionCount": 0
   },
   "sorries": [],
-  "crossReferences": []
+  "crossReferences": [
+    {
+      "targetId": "mathematical-induction-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: shows Lean's well-founded recursion IS transfinite induction over ordinals (Ordinal.induction). This child answers its open question OQ-04 by connecting Ordinal.induction to the von Neumann hierarchy and the Axiom of Foundation."
+    },
+    {
+      "targetId": "mathematical-induction",
+      "relationship": "ancestor",
+      "description": "Root entry on the principle of mathematical induction, of which transfinite/ordinal induction and ∈-induction are the well-founded generalizations developed here."
+    }
+  ]
 }
