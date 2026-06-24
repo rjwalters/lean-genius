@@ -550,6 +550,7 @@ import Proofs.CauchyInterlacingKeystone
 import Proofs.CauchyInterlacingOQ01OQ01
 import Proofs.CauchySchwarz
 import Proofs.CauchySchwarzIntegral
+import Proofs.CauchySchwarzIntegralLpDualitySynthesis
 import Proofs.CauchySchwarzIntegralOQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01
 import Proofs.CauchySchwarzIntegralOQ01OQ01OQ01
