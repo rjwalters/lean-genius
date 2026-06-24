@@ -104,12 +104,20 @@
       "mathContext": "$\\text{IsCompact }s\\iff\\forall\\text{ closed }t,\\ s\\cap\\bigcap_i t_i=\\varnothing\\Rightarrow\\exists\\text{ finite }u,\\ s\\cap\\bigcap_{i\\in u}t_i=\\varnothing$."
     },
     {
-      "id": "cantor",
-      "title": "Cantor's Intersection Theorem, by Hand from the FIP Dual",
+      "id": "cantor-compact-set",
+      "title": "Cantor's Intersection Theorem (Compact-Set Form), by Hand",
       "startLine": 83,
-      "endLine": 115,
-      "summary": "cantor_inter_of_isCompact: for a decreasing sequence of nonempty closed subsets of a compact s, every finite subfamily intersection contains the largest-index term t (v.max') (subset_iInter₂ + Finset.le_max'), which is a nonempty subset of s; the FIP dual then delivers a point of s ∩ ⋂ t, and ⋂ t ⊆ t 0 ⊆ s places it in ⋂ t. cantor_inter is the CompactSpace corollary via isCompact_univ.",
+      "endLine": 108,
+      "summary": "cantor_inter_of_isCompact: for a decreasing sequence of nonempty closed subsets of a compact s, every finite subfamily intersection contains the largest-index term t (v.max') (subset_iInter₂ + Finset.le_max'), which is a nonempty subset of s; the FIP dual then delivers a point of s ∩ ⋂ t, and ⋂ t ⊆ t 0 ⊆ s places it in ⋂ t.",
       "mathContext": "$v$ finite $\\Rightarrow t_{\\max v}\\subseteq\\bigcap_{i\\in v}t_i$; FIP $\\Rightarrow\\bigcap_n t_n\\neq\\varnothing$."
+    },
+    {
+      "id": "cantor-compact-space",
+      "title": "Cantor's Intersection Theorem (Compact-Space Corollary)",
+      "startLine": 110,
+      "endLine": 115,
+      "summary": "cantor_inter specializes the compact-set theorem to a CompactSpace X by taking s = univ: a decreasing sequence of nonempty closed sets has nonempty intersection, with t n ⊆ s vacuous (subset_univ) and compactness from isCompact_univ.",
+      "mathContext": "$X$ compact, $t_n$ closed nonempty decreasing $\\Rightarrow\\bigcap_n t_n\\neq\\varnothing$, via $s=\\text{univ}$."
     },
     {
       "id": "instance",
