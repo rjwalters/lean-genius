@@ -4057,3 +4057,4 @@ import Proofs.CombinationsFormulaOQ05OQ01OQ01
 import Proofs.GeometricSeriesOQ09OQ01OQ01OQ02
 
 import Proofs.DerangementsOQ03OQ03
+import Proofs.DerangementsOQ03OQ03OQ01
