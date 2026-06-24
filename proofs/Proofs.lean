@@ -668,6 +668,7 @@ import Proofs.CayleyHamiltonOQ01OQ03
 import Proofs.CayleyHamiltonOQ01OQ04
 import Proofs.CayleyHamiltonOQ02
 import Proofs.CayleyHamiltonOQ02OQ02
+import Proofs.CayleyHamiltonOQ04
 import Proofs.CayleyHamiltonReductionOQ01
 import Proofs.CayleyHamiltonReductionOQ01OQ02
 import Proofs.CayleyHamiltonReductionOQ02
