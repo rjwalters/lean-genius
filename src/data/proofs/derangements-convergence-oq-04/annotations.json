@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-dcoq04-header",
+    "proofId": "derangements-convergence-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 36
+    },
+    "type": "concept",
+    "title": "Module Overview: Divisibility and Congruence for Derangements",
+    "content": "This module proves two arithmetic facts about the derangement numbers D(n) = numDerangements n. The main result is that n − 1 divides D(n) for every n ≥ 2; the companion result is the classical congruence D(n) ≡ (−1)^n (mod n) for all n. Both are read directly off Mathlib's two standard recurrences for numDerangements — no induction or case analysis beyond a single index shift is required. The module imports all of Mathlib and opens the Nat namespace.",
+    "mathContext": "The two recurrences: the additive $D(n+2) = (n+1)\\,(D(n)+D(n+1))$ (`numDerangements_add_two`) puts $n-1$ in front as a literal factor, giving $(n-1)\\mid D(n)$; the multiplicative $(D(n+1):\\mathbb{Z}) = (n+1)D(n) - (-1)^n$ (`numDerangements_succ`) gives the congruence $D(n)\\equiv(-1)^n\\pmod n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "numDerangements",
+      "numDerangements_add_two",
+      "numDerangements_succ",
+      "derangement recurrence"
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.Derangements.Finite (numDerangements and its recurrences)",
+      "Basic divisibility and modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-dcoq04-factorisation",
+    "proofId": "derangements-convergence-oq-04",
+    "range": {
+      "startLine": 38,
+      "endLine": 43
+    },
+    "type": "proof_technique",
+    "title": "Explicit Factorisation D(n) = (n−1)·(D(n−2)+D(n−1))",
+    "content": "The lemma numDerangements_eq_sub_one_mul reindexes the additive recurrence so that n − 1 appears explicitly. Writing n = m + 2 (legitimate since n ≥ 2, discharged by omega), the goal becomes D(m+2) = (m+1)·(D(m)+D(m+1)), which is exactly numDerangements_add_two up to the Nat subtractions n−1 = m+1 and n−2 = m; `simpa` closes the gap. This factorisation is the single source of the divisibility witness used in the main theorem.",
+    "mathContext": "$D(n) = (n-1)\\,(D(n-2)+D(n-1))$. The combinatorial content: place element $n$ into one of the $n-1$ non-fixed positions, then either the resulting transposition is reciprocated (leaving a derangement of the other $n-2$ elements) or not (leaving a derangement-like structure on $n-1$ elements).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "numDerangements_add_two",
+      "index shift",
+      "omega",
+      "simpa"
+    ],
+    "prerequisites": [
+      "numDerangements_add_two: D(n+2) = (n+1)(D(n)+D(n+1))",
+      "Nat subtraction and the n = m + 2 reindexing"
+    ]
+  },
+  {
+    "id": "ann-dcoq04-main",
+    "proofId": "derangements-convergence-oq-04",
+    "range": {
+      "startLine": 45,
+      "endLine": 55
+    },
+    "type": "key_step",
+    "title": "Main Theorem: (n − 1) ∣ D(n)",
+    "content": "sub_one_dvd_numDerangements is proved by supplying the explicit quotient: the divisibility (n−1) ∣ D(n) unfolds to ∃ c, D(n) = (n−1)·c, and the factorisation lemma provides c = D(n−2) + D(n−1) together with the required equation. The proof is therefore `refine ⟨_, ?_⟩; exact numDerangements_eq_sub_one_mul n hn`. The hypothesis n ≥ 2 ensures n − 1 is a meaningful modulus and that the reindexing in the factorisation lemma applies.",
+    "mathContext": "$(n-1)\\mid D(n)$ with explicit quotient $D(n)/(n-1) = D(n-2)+D(n-1)$. Verified at small values: $D(2)=1$ (n−1=1), $D(4)=9=3\\cdot 3$, $D(5)=44=4\\cdot 11$, $D(6)=265=5\\cdot 53$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Dvd",
+      "divisibility witness",
+      "numDerangements_eq_sub_one_mul"
+    ],
+    "prerequisites": [
+      "Definition of divisibility a ∣ b ↔ ∃ c, b = a·c",
+      "The factorisation lemma numDerangements_eq_sub_one_mul"
+    ]
+  },
+  {
+    "id": "ann-dcoq04-congruence",
+    "proofId": "derangements-convergence-oq-04",
+    "range": {
+      "startLine": 57,
+      "endLine": 92
+    },
+    "type": "key_step",
+    "title": "Companion Congruence: D(n) ≡ (−1)^n (mod n)",
+    "content": "numDerangements_congr_neg_one_pow proves (n : ℤ) ∣ (D(n) − (−1)^n) for all n. The n = 0 case is 0 ∣ 0 (simp). For n = k + 1, the witness is D(k); substituting numDerangements_succ (D(k+1) = (k+1)·D(k) − (−1)^k) and expanding (−1)^{k+1} = (−1)^k·(−1) via pow_succ, the identity D(k+1) − (−1)^{k+1} = (k+1)·D(k) is closed by push_cast and ring. The follow-on numDerangements_zmod_eq restates this in ZMod n as (D(n) : ZMod n) = (−1)^n, bridging via ZMod.intCast_zmod_eq_zero_iff_dvd. Three closing examples sanity-check the main divisibility on n = 2, 4, 5.",
+    "mathContext": "$D(n+1) - (-1)^{n+1} = (n+1)D(n)$ because $(-1)^{n+1} = -(-1)^n$, so the $-(-1)^n$ in the recurrence cancels the $-(-1)^{n+1}$. Hence $n \\mid D(n) - (-1)^n$, equivalently $D(n) \\equiv (-1)^n \\pmod n$. This holds for every $n$, including the degenerate $n = 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "numDerangements_succ",
+      "ZMod.intCast_zmod_eq_zero_iff_dvd",
+      "pow_succ",
+      "modular congruence"
+    ],
+    "prerequisites": [
+      "numDerangements_succ: (D(n+1) : ℤ) = (n+1)·D(n) − (−1)^n",
+      "(−1)^{n+1} = −(−1)^n",
+      "The ZMod ↔ integer-divisibility correspondence"
+    ]
+  }
+]
