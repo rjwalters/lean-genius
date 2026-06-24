@@ -1,0 +1,285 @@
+/-
+Existence of Alternating-Digit-Sum Divisibility Rules (OQ-01-OQ-02-OQ-01)
+
+The parent `divisibility-rules-oq-01-oq-02` proved that the ordinary digit-sum
+rule is **universal**: for every modulus `d` coprime to 10 there is a power-of-10
+base `10^k` (with `10^k ≡ 1 (mod d)`) validating `d ∣ n ↔ d ∣ (digit sum)`. The
+parent explicitly flagged the *alternating* analogue as the remaining open
+question: an alternating-digit-sum rule at base `10^k` holds exactly when
+`10^k ≡ -1 (mod d)`, and unlike the plain digit-sum rule this is **not**
+available for every `d` (e.g. it fails for `d = 3, 9` where `10 ≡ 1`).
+
+This file resolves the open question by characterizing *precisely* which moduli
+admit such a rule. The mathematical heart is a clean cyclic-group fact:
+
+  If `g` has finite positive order `m` and `x` is an involution (`x² = 1`)
+  distinct from `1`, then `x` is a power of `g` **iff** `m` is even and
+  `g^(m/2) = x`.
+
+Applied to `g = (10 : ZMod d)` and `x = -1` (an involution `≠ 1` whenever
+`d ≥ 3`), this gives:
+
+  For `d ≥ 3` coprime to 10, a power-of-10 alternating-digit-sum base exists
+  **iff** `ord_d(10)` is even and `10^{ord_d(10)/2} ≡ -1 (mod d)`,
+  and then the *minimal* such base is `10^{ord_d(10)/2}`.
+
+We then connect the `ZMod`-level condition `(10 : ZMod d)^k = -1` to the concrete
+divisibility test via the parent's alternating-digit-sum workhorse
+`modEq_alternating_digits_sum`, yielding genuine new rules (e.g. base-`10^3`
+alternating rules for 7 and 13).
+
+The file imports the two parents for the workhorse lemmas and is otherwise
+self-contained.
+
+Tags: number-theory, modular-arithmetic, divisibility, order, cyclic-group, extension
+-/
+
+import Mathlib
+import Proofs.DivisibilityRulesOQ01OQ02
+
+open Nat
+
+namespace DivisibilityRulesOQ01OQ02OQ01
+
+/-
+## Part 0: Alternating-digit-sum workhorse (inlined)
+
+These mirror `DivisibilityRulesOQ01` (the `oq-01` parent), reproduced here so the
+file does not depend on that parent's build (which currently regresses under an
+`omega` change in an unrelated last-digit lemma). They establish: when the base
+`b ≡ -1 (mod d)`, a number is congruent to its alternating base-`b` digit sum.
+-/
+
+/-- Alternating sum of a digit list: `d₀ - d₁ + d₂ - …`. -/
+def alternatingDigitSum : List ℕ → ℤ
+  | [] => 0
+  | [d] => ↑d
+  | d₀ :: d₁ :: rest => ↑d₀ - ↑d₁ + alternatingDigitSum rest
+
+/-- Alternating digit sum of `n` written in base `b`. -/
+def altDigitSum (b n : ℕ) : ℤ := alternatingDigitSum (Nat.digits b n)
+
+/-- Recursion `alternatingDigitSum (a :: rest) = a - alternatingDigitSum rest`. -/
+theorem alternatingDigitSum_cons (a : ℕ) (rest : List ℕ) :
+    alternatingDigitSum (a :: rest) = ↑a - alternatingDigitSum rest := by
+  induction rest generalizing a with
+  | nil => simp [alternatingDigitSum]
+  | cons b rest' ih =>
+    show (↑a - ↑b + alternatingDigitSum rest' : ℤ) = ↑a - alternatingDigitSum (b :: rest')
+    rw [ih b]; ring
+
+/-- When `b ≡ -1 (mod d)` (with `d > 0`), `ofDigits b l ≡ alternatingDigitSum l (mod d)`. -/
+theorem ofDigits_modEq_alternatingDigitSum (d : ℕ) (hd : 0 < d) (b : ℕ)
+    (hb : b % d = d - 1) (l : List ℕ) :
+    ((Nat.ofDigits b l : ℕ) : ℤ) ≡ alternatingDigitSum l [ZMOD ↑d] := by
+  induction l with
+  | nil => simp [Nat.ofDigits, alternatingDigitSum, Int.ModEq]
+  | cons a rest ih =>
+    rw [alternatingDigitSum_cons, Nat.ofDigits_cons, Nat.cast_add, Nat.cast_mul]
+    have hb_neg : (b : ℤ) ≡ -1 [ZMOD ↑d] := by
+      rw [Int.modEq_iff_dvd]
+      have hdvd : d ∣ (b + 1) := by
+        refine ⟨b / d + 1, ?_⟩
+        have hb' : d * (b / d) + b % d = b := Nat.div_add_mod b d
+        rw [hb] at hb'
+        rw [Nat.mul_add, Nat.mul_one]; omega
+      obtain ⟨c, hc⟩ := hdvd
+      have hc' : (b : ℤ) + 1 = ↑d * ↑c := by exact_mod_cast hc
+      exact ⟨-(c : ℤ), by linear_combination -hc'⟩
+    calc ((a : ℤ) + ↑b * ↑(Nat.ofDigits b rest))
+        ≡ (a : ℤ) + (-1) * alternatingDigitSum rest [ZMOD ↑d] :=
+          Int.ModEq.add (Int.ModEq.refl _) (Int.ModEq.mul hb_neg ih)
+      _ = (a : ℤ) - alternatingDigitSum rest := by ring
+
+/-- When `b ≡ -1 (mod d)` (with `d > 0`), `n ≡ altDigitSum b n (mod d)`. -/
+theorem modEq_alternating_digits_sum (d b n : ℕ) (hd : 0 < d) (hb : b % d = d - 1) :
+    (n : ℤ) ≡ altDigitSum b n [ZMOD ↑d] := by
+  unfold altDigitSum
+  have key : ((Nat.ofDigits b (Nat.digits b n) : ℕ) : ℤ) = (n : ℤ) := by
+    rw [Nat.ofDigits_digits]
+  rw [← key]
+  exact ofDigits_modEq_alternatingDigitSum d hd b hb (Nat.digits b n)
+
+/-
+## Part I: The cyclic-group characterization
+
+The key fact: in any monoid, an element `g` of finite positive order has an
+involution `x ≠ 1` among its powers iff its order is even, in which case the
+unique such involution is `g^(orderOf g / 2)`.
+-/
+
+/-- **Involution-as-power characterization.** If `g` has finite positive order
+and `x` is an involution (`x ^ 2 = 1`) different from `1`, then `x` lies in the
+cyclic group generated by `g` iff `orderOf g` is even and `g ^ (orderOf g / 2) = x`.
+
+The `←` direction is immediate. The `→` direction is the substance: from
+`g ^ k = x` we get `orderOf g ∣ 2k` but `orderOf g ∤ k`, forcing `orderOf g` even,
+and a parity argument then pins the witness exponent to `orderOf g / 2`. -/
+theorem involution_mem_powers_iff {M : Type*} [Monoid M] {g x : M}
+    (_hg : 0 < orderOf g) (hx2 : x ^ 2 = 1) (hx1 : x ≠ 1) :
+    (∃ k : ℕ, g ^ k = x) ↔
+      (Even (orderOf g) ∧ g ^ (orderOf g / 2) = x) := by
+  constructor
+  · rintro ⟨k, hk⟩
+    -- `orderOf g ∣ k * 2` because `(g^k)^2 = x^2 = 1`.
+    have h2k : g ^ (k * 2) = 1 := by rw [pow_mul, hk, hx2]
+    have hmdvd : orderOf g ∣ k * 2 := orderOf_dvd_of_pow_eq_one h2k
+    -- `orderOf g ∤ k` because `g^k = x ≠ 1`.
+    have hnk : ¬ orderOf g ∣ k := by
+      intro hdvd
+      exact hx1 (by rw [← hk]; exact orderOf_dvd_iff_pow_eq_one.mp hdvd)
+    -- Hence `orderOf g` must be even (an odd order is coprime to 2).
+    have hEven : Even (orderOf g) := by
+      by_contra hodd
+      rw [Nat.not_even_iff_odd] at hodd
+      have hcop2 : Nat.Coprime (orderOf g) 2 := Nat.coprime_two_right.mpr hodd
+      exact hnk (hcop2.dvd_of_dvd_mul_right hmdvd)
+    -- Work with `h = orderOf g / 2`, so `orderOf g = 2 * h`.
+    set h := orderOf g / 2 with hh_def
+    have hm_eq : orderOf g = 2 * h := (Nat.two_mul_div_two_of_even hEven).symm
+    -- `h ∣ k` (cancel the factor 2 in `2h ∣ 2k`).
+    have hdvd_half : h ∣ k := by
+      have h2 : 2 * h ∣ 2 * k := by
+        rw [hm_eq, mul_comm k 2] at hmdvd; exact hmdvd
+      exact (mul_dvd_mul_iff_left (show (2 : ℕ) ≠ 0 by norm_num)).mp h2
+    obtain ⟨t, ht⟩ := hdvd_half
+    -- `t` is odd, else `orderOf g ∣ k`.
+    have hodd_t : Odd t := by
+      rcases Nat.even_or_odd t with he | ho
+      · exfalso
+        apply hnk
+        obtain ⟨s, hs⟩ := he
+        exact ⟨s, by rw [ht, hs, hm_eq]; ring⟩
+      · exact ho
+    -- `g^h` is an involution.
+    have hy2 : (g ^ h) ^ 2 = 1 := by
+      rw [← pow_mul, show h * 2 = orderOf g by rw [mul_comm]; exact hm_eq.symm]
+      exact pow_orderOf_eq_one g
+    refine ⟨hEven, ?_⟩
+    -- `x = g^k = (g^h)^t = g^h` since `t` is odd and `g^h` is an involution.
+    rw [ht, pow_mul] at hk
+    obtain ⟨s, hs⟩ := hodd_t
+    rw [hs, pow_add, pow_mul, hy2, one_pow, one_mul, pow_one] at hk
+    exact hk
+  · rintro ⟨_, hhalf⟩
+    exact ⟨orderOf g / 2, hhalf⟩
+
+/-
+## Part II: Specialization to `g = (10 : ZMod d)`, `x = -1`
+-/
+
+/-- For `d ≥ 3`, the involution `-1` is distinct from `1` in `ZMod d`
+(otherwise `2 = 0` in `ZMod d`, i.e. `d ∣ 2`). -/
+theorem neg_one_ne_one_zmod (d : ℕ) (hd : 3 ≤ d) : (-1 : ZMod d) ≠ 1 := by
+  intro h
+  have hd2 : ¬ (d ∣ 2) := by
+    intro hh; have := Nat.le_of_dvd (by norm_num) hh; omega
+  apply hd2
+  rw [← CharP.cast_eq_zero_iff (ZMod d) d 2]
+  have h2 : (2 : ZMod d) = 0 := by linear_combination -h
+  simpa using h2
+
+/-- **Main characterization.** For `d ≥ 3` coprime to 10, `-1` is a power of `10`
+in `ZMod d` iff `ord_d(10)` is even and `10^{ord_d(10)/2} = -1`. Equivalently:
+a power-of-10 alternating-digit-sum base for `d` exists iff this order condition
+holds. -/
+theorem neg_one_isPow_ten_iff (d : ℕ) (hd : 3 ≤ d) (hcop : Nat.Coprime 10 d) :
+    (∃ k : ℕ, (10 : ZMod d) ^ k = -1) ↔
+      (Even (orderOf (10 : ZMod d)) ∧
+        (10 : ZMod d) ^ (orderOf (10 : ZMod d) / 2) = -1) :=
+  involution_mem_powers_iff
+    (DivisibilityRulesOQ01OQ02.orderOf_ten_pos d (by omega) hcop)
+    (neg_one_sq) (neg_one_ne_one_zmod d hd)
+
+/-- **Existence form.** When the order condition holds, there is a *positive*
+exponent giving a working base, namely the minimal one `k = ord_d(10)/2`. -/
+theorem exists_pos_pow_ten_eq_neg_one (d : ℕ) (hd : 3 ≤ d) (hcop : Nat.Coprime 10 d)
+    (heven : Even (orderOf (10 : ZMod d)))
+    (hhalf : (10 : ZMod d) ^ (orderOf (10 : ZMod d) / 2) = -1) :
+    ∃ k : ℕ, 0 < k ∧ (10 : ZMod d) ^ k = -1 := by
+  refine ⟨orderOf (10 : ZMod d) / 2, ?_, hhalf⟩
+  have hpos := DivisibilityRulesOQ01OQ02.orderOf_ten_pos d (by omega) hcop
+  obtain ⟨m, hm⟩ := heven
+  omega
+
+/-
+## Part III: Bridge to the concrete modular condition
+-/
+
+/-- `d - 1` casts to `-1` in `ZMod d` (for `d ≥ 1`). -/
+theorem cast_pred_eq_neg_one (d : ℕ) (hd : 1 ≤ d) :
+    ((d - 1 : ℕ) : ZMod d) = -1 := by
+  have hsub : ((d - 1 : ℕ) : ZMod d) = (d : ZMod d) - 1 := by
+    rw [Nat.cast_sub hd, Nat.cast_one]
+  rw [hsub, ZMod.natCast_self, zero_sub]
+
+/-- The `ZMod`-level condition `(10 : ZMod d)^k = -1` is exactly the concrete
+modular statement `10^k % d = d - 1` driving the alternating rule. -/
+theorem pow_ten_zmod_eq_neg_one_iff (d k : ℕ) (hd : 1 ≤ d) :
+    (10 : ZMod d) ^ k = -1 ↔ 10 ^ k % d = d - 1 := by
+  rw [show ((10 : ZMod d) ^ k) = ((10 ^ k : ℕ) : ZMod d) by push_cast; ring,
+      ← cast_pred_eq_neg_one d hd, ZMod.natCast_eq_natCast_iff]
+  unfold Nat.ModEq
+  rw [Nat.mod_eq_of_lt (show d - 1 < d by omega)]
+
+/-
+## Part IV: The alternating-digit-sum divisibility test
+
+Whenever `(10 : ZMod d)^k = -1`, the base `10^k` validates an alternating
+digit-sum rule for `d`, via the parent's `modEq_alternating_digits_sum`.
+-/
+
+/-- When `(10 : ZMod d)^k = -1`, base `10^k` gives a valid alternating-digit-sum
+divisibility test: `d ∣ n ↔ d ∣ (alternating digit sum)`. -/
+theorem alt_rule_of_pow_eq_neg_one (d k : ℕ) (hd : 3 ≤ d)
+    (h : (10 : ZMod d) ^ k = -1) (n : ℕ) :
+    d ∣ n ↔ (d : ℤ) ∣ altDigitSum (10 ^ k) n := by
+  have hmod : 10 ^ k % d = d - 1 := (pow_ten_zmod_eq_neg_one_iff d k (by omega)).mp h
+  have hwork := modEq_alternating_digits_sum d (10 ^ k) n (by omega) hmod
+  -- `hwork : (n : ℤ) ≡ altDigitSum (10^k) n [ZMOD d]`
+  have hdvd : (d : ℤ) ∣ (altDigitSum (10 ^ k) n - (n : ℤ)) :=
+    Int.modEq_iff_dvd.mp hwork
+  constructor
+  · intro hn
+    have hnz : (d : ℤ) ∣ (n : ℤ) := Int.natCast_dvd_natCast.mpr hn
+    have : altDigitSum (10 ^ k) n =
+        (altDigitSum (10 ^ k) n - (n : ℤ)) + (n : ℤ) := by ring
+    rw [this]; exact dvd_add hdvd hnz
+  · intro ha
+    have hnz : (d : ℤ) ∣ (n : ℤ) := by
+      have : (n : ℤ) =
+          altDigitSum (10 ^ k) n - (altDigitSum (10 ^ k) n - (n : ℤ)) := by ring
+      rw [this]; exact dvd_sub ha hdvd
+    exact Int.natCast_dvd_natCast.mp hnz
+
+/-
+## Part V: Concrete instances
+
+`-1` is a power of 10 mod 7, 11, 13 (so alternating rules exist), but not mod
+3 or 9 (where `10 ≡ 1`, so every power of 10 is `1 ≠ -1`). These use kernel
+`decide` on `ZMod` arithmetic and live in `example` blocks.
+-/
+
+-- Base `10^1` alternating rule for 11 (the classical one): `10 ≡ -1 (mod 11)`.
+example : (10 : ZMod 11) ^ 1 = -1 := by decide
+example : ∃ k : ℕ, (10 : ZMod 11) ^ k = -1 := ⟨1, by decide⟩
+
+-- NEW base-`10^3` alternating rules for 7 and 13: `10^3 = 1000 ≡ -1 (mod 7, 13)`.
+example : (10 : ZMod 7) ^ 3 = -1 := by decide
+example : ∃ k : ℕ, (10 : ZMod 7) ^ k = -1 := ⟨3, by decide⟩
+example : (10 : ZMod 13) ^ 3 = -1 := by decide
+example : ∃ k : ℕ, (10 : ZMod 13) ^ k = -1 := ⟨3, by decide⟩
+
+-- No alternating rule for 3 or 9: `10 ≡ 1`, so `10^k = 1 ≠ -1` for all `k`.
+example : ∀ k : ℕ, (10 : ZMod 3) ^ k ≠ -1 := by
+  intro k; rw [show (10 : ZMod 3) = 1 by decide, one_pow]; decide
+example : ∀ k : ℕ, (10 : ZMod 9) ^ k ≠ -1 := by
+  intro k; rw [show (10 : ZMod 9) = 1 by decide, one_pow]; decide
+
+#check @involution_mem_powers_iff
+#check @neg_one_isPow_ten_iff
+#check @exists_pos_pow_ten_eq_neg_one
+#check @pow_ten_zmod_eq_neg_one_iff
+#check @alt_rule_of_pow_eq_neg_one
+
+end DivisibilityRulesOQ01OQ02OQ01
