@@ -104,12 +104,20 @@
       "summary": "finite_bounded_den: a self-contained re-derivation (independent of the parent file) embedding q ↦ (q.num, q.den) into the finite integer box Finset.Icc(-M,M) ×ˢ Finset.Icc 1 N with M ≥ max|a||b|·N, and injectivity via Rat.num_div_den. This is the discreteness fact that converts the denominator bound into finiteness."
     },
     {
-      "id": "optimality-finiteness",
-      "title": "Optimality: Finitely Many Approximations Beyond √5",
+      "id": "optimality-integer-norm",
+      "title": "Main Theorem, Part 1: The Integer Norm and |A·B| ≥ 1",
       "startLine": 97,
+      "endLine": 161,
+      "mathContext": "(p − qφ)(p − qψ) = p² − pq − q² = N ∈ ℤ, N ≠ 0 by irrationality, so |A·B| = |N| ≥ 1; and B = A + q√5.",
+      "summary": "The arithmetic core of finite_approx_gt_sqrt5. Sets up c > √5 (so c² − c√5 > 0), builds the integer norm N = p² − pq − q², and proves the factorization (p − qφ)(p − qψ) = N via the golden-ratio identities φ+ψ=1, φψ=−1. Shows N ≠ 0 from the irrationality of φ and ψ (a zero factor would force one of them rational), giving the Diophantine lower bound |A·B| = |N| ≥ 1 (Int.one_le_abs). Records the conjugate-gap relation B = A + q√5 (from φ − ψ = √5) and the triangle bound b ≤ a + q√5."
+    },
+    {
+      "id": "optimality-denominator-bound",
+      "title": "Main Theorem, Part 2: Denominator Bound and Finiteness",
+      "startLine": 162,
       "endLine": 222,
-      "mathContext": "For c > √5, {r : ℚ | |φ − r| < 1/(c·r.den²)} is finite.",
-      "summary": "finite_approx_gt_sqrt5: the main theorem. Builds the integer norm N = p² − pq − q², proves the factorization (p − qφ)(p − qψ) = N via φ+ψ=1 and φψ=−1, shows N ≠ 0 from the irrationality of φ and ψ (a zero factor forces φ or ψ rational), and hence |A·B| = |N| ≥ 1. Using B = A + q√5 (from φ − ψ = √5) and the triangle inequality gives 1 ≤ |A|² + |A|·q√5; substituting |A| = q·|φ − r| < 1/(c·q) and clearing denominators yields (c² − c√5)·q² < 1. Since c² − c√5 > 0, the denominators are bounded by an M depending only on c; with |φ − r| < 1 confining r to [φ−1, φ+1], finite_bounded_den finishes."
+      "mathContext": "(c² − c√5)·q² < 1 with c² − c√5 > 0 ⇒ q ≤ M(c); |φ − r| < 1 ⇒ r ∈ [φ−1, φ+1]; finite by finite_bounded_den.",
+      "summary": "Turns the lower bound into finiteness. Substitutes |A| = q·|φ − r| < 1/(c·q) into 1 ≤ |A|² + |A|·q√5 and clears denominators to derive the uniform bound (c² − c√5)·q² < 1. Since c² − c√5 = c(c − √5) > 0, the denominators are bounded by an M depending only on c; combined with the value bound |φ − r| < 1 (confining r to [φ−1, φ+1]), finite_bounded_den concludes that the approximation set is finite."
     },
     {
       "id": "optimality-corollaries",
