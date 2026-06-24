@@ -1,0 +1,181 @@
+{
+  "id": "conjugacy-class-equation-oq-01-oq-01",
+  "title": "The Numeric Class Equation in Centralizer-Index Form, and the p-Group Center Theorem",
+  "slug": "conjugacy-class-equation-oq-01-oq-01",
+  "description": "Building on the per-class identity |class(g)| = [G : C_G(g)] (conjClass_card_eq_index_centralizer), this entry assembles the full numeric class equation in centralizer-index form, |Z(G)| + Σ_{x ∈ noncenter} [G : C_G(x.out)] = |G|, by rewriting each noncentral summand of Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card via the per-class identity transported along mk(x.out) = x. It then recovers the classical theorem that a nontrivial finite p-group has nontrivial center, by the textbook class-equation argument: p divides |G| and divides every noncentral class size [G : C_G(gᵢ)] (a divisor of |G| = pⁿ exceeding 1, hence a positive power of p), so p divides the remaining summand |Z(G)|; since |Z(G)| ≥ 1, this forces |Z(G)| > 1. Mathlib proves IsPGroup.center_nontrivial instead via a fixed-point (Burnside) counting argument, so this is an independent class-equation derivation made possible by the centralizer-index packaging of the class equation.",
+  "meta": {
+    "author": "Classical group theory (Burnside, Frobenius); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Conjugacy_class#Conjugacy_class_equation",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "conjugacy-classes",
+      "class-equation",
+      "p-group",
+      "center",
+      "centralizer",
+      "conjact",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/ConjugacyClassEquationOQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Group.nat_card_center_add_sum_card_noncenter_eq_card",
+        "description": "Nat.card (Subgroup.center G) + ∑ᶠ x ∈ noncenter G, Nat.card x.carrier = Nat.card G — Mathlib's class equation with each summand the conjugacy-class size; the starting point that we rewrite into centralizer-index form",
+        "module": "Mathlib.GroupTheory.ClassEquation"
+      },
+      {
+        "theorem": "Group.card_center_add_sum_card_noncenter_eq_card",
+        "description": "Fintype.card (center G) + ∑ x ∈ (noncenter G).toFinset, x.carrier.toFinset.card = Fintype.card G — the Finset form of the class equation, used for the divisibility argument in the p-group center proof",
+        "module": "Mathlib.GroupTheory.ClassEquation"
+      },
+      {
+        "theorem": "IsPGroup.nontrivial_iff_card",
+        "description": "Nontrivial G ↔ ∃ n > 0, Nat.card G = p ^ n — characterizes a nontrivial finite p-group's order as a positive power of p, supplying p ∣ |G|",
+        "module": "Mathlib.GroupTheory.PGroup"
+      },
+      {
+        "theorem": "Nat.dvd_prime_pow",
+        "description": "i ∣ p ^ m ↔ ∃ k ≤ m, i = p ^ k — every divisor of pⁿ is a power of p; a noncentral class size > 1 is therefore divisible by p",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "finsum_mem_congr",
+        "description": "s = t → (∀ x ∈ t, f x = g x) → ∑ᶠ i ∈ s, f i = ∑ᶠ i ∈ t, g i — rewrites the class-equation sum termwise into centralizer-index form",
+        "module": "Mathlib.Algebra.BigOperators.Finprod"
+      },
+      {
+        "theorem": "Finite.one_lt_card_iff_nontrivial",
+        "description": "1 < Nat.card α ↔ Nontrivial α — converts the divisibility lower bound p ≤ |Z(G)| into nontriviality of the center, and noncentrality of a class into |class| > 1",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "card_carrier_eq_index: for every conjugacy class x, Nat.card x.carrier = [G : C_G(x.out)] — the per-class identity transported along mk(x.out) = x to a chosen representative",
+      "classEquation_centralizer_index: |Z(G)| + Σ_{x ∈ noncenter} [G : C_G(x.out)] = |G| — the full numeric class equation with every noncentral summand written as a centralizer index",
+      "prime_dvd_card_center: for a nontrivial finite p-group, p ∣ |Z(G)| — the class-equation divisibility step",
+      "pgroup_center_nontrivial: a nontrivial finite p-group has nontrivial center — recovered independently of Mathlib's fixed-point proof, via the centralizer-index class equation",
+      "Concrete instance: the smallest nontrivial p-group ℤ/2 (Multiplicative (ZMod 2)) has nontrivial center"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 137,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No native_decide is used, so no Lean.ofReduceBool is introduced; #print axioms reports exactly [propext, Classical.choice, Quot.sound] for all three headline theorems. The class equation is stated with Nat.card and Subgroup.index and the p-group results assume [Finite G], so all statements are non-vacuous exactly where intended.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The class equation |G| = |Z(G)| + Σ [G : C_G(gᵢ)] is the central counting identity of finite group theory, and its most celebrated immediate consequence is that every nontrivial finite p-group has a nontrivial center. That fact in turn drives the induction proving p-groups are nilpotent, the existence of normal subgroups of every order dividing |G|, and parts of the Sylow theory. The classical proof reads p-divisibility off the class equation directly; Mathlib instead proves the center theorem (IsPGroup.center_nontrivial) by a fixed-point counting argument on the conjugation action. This entry supplies the classical class-equation route, which becomes available once the noncentral summands are written as centralizer indices.",
+    "problemStatement": "**Open Question (conjugacy-class-equation-oq-01-oq-01)**: Assemble the full numeric class equation |G| = |Z(G)| + Σ [G : C_G(gᵢ)] over representatives of the noncentral conjugacy classes directly from conjClass_card_eq_index_centralizer, and recover the corollary that a nontrivial finite p-group has nontrivial center.\n\n**Result**: classEquation_centralizer_index (|Z(G)| + Σ_{x ∈ noncenter} [G : C_G(x.out)] = |G|), prime_dvd_card_center (p ∣ |Z(G)| for a nontrivial finite p-group), and pgroup_center_nontrivial (the center is nontrivial), recovered independently of Mathlib's fixed-point proof.",
+    "text": "Mathlib's class equation Group.nat_card_center_add_sum_card_noncenter_eq_card sums the conjugacy-class sizes Nat.card x.carrier over the noncentral classes. The parent entry's per-class identity rewrites each such size as the index of the centralizer of a representative; transporting it along mk(x.out) = x and a termwise sum congruence gives the centralizer-index form of the class equation. Reading the equation modulo p for a nontrivial finite p-group — where |G| = pⁿ and every noncentral index is a power of p exceeding 1 — forces p ∣ |Z(G)|, and since the center contains the identity, |Z(G)| > 1.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Representative identity.** mk_out shows mk(x.out) = x for every conjugacy class x (Quotient.out_eq). card_carrier_eq_index then rewrites the parent's per-class identity conjClass_card_eq_index_centralizer applied to x.out into Nat.card x.carrier = [G : C_G(x.out)], rewriting only the left-hand carrier so the representative on the right is preserved.\n\n2. **Centralizer-index class equation.** classEquation_centralizer_index starts from Group.nat_card_center_add_sum_card_noncenter_eq_card and applies finsum_mem_congr to replace each summand Nat.card x.carrier by [G : C_G(x.out)] using card_carrier_eq_index.\n\n3. **p divides |G|.** From IsPGroup.nontrivial_iff_card, a nontrivial finite p-group has |G| = pⁿ with n > 0, so p ∣ |G|.\n\n4. **p divides each noncentral class size.** For x ∈ noncenter G the carrier is Set.Nontrivial, hence Nat.card x.carrier > 1 (Finite.one_lt_card_iff_nontrivial via Set.nontrivial_coe_sort). It divides |G| = pⁿ (parent's conjClass_card_dvd_card), so by Nat.dvd_prime_pow it is pᵏ with k ≥ 1; thus p divides it, and by Finset.dvd_sum p divides the whole noncentral sum.\n\n5. **p divides |Z(G)|.** The Finset class equation gives center + sum = |G|; with p dividing |G| and the sum, Nat.dvd_sub yields p ∣ |Z(G)| (prime_dvd_card_center).\n\n6. **Nontrivial center.** Since |Z(G)| ≥ 1 and p ∣ |Z(G)| with p prime, p ≤ |Z(G)|, so |Z(G)| > 1 and the center is nontrivial (pgroup_center_nontrivial). The closing example instantiates p = 2, G = ℤ/2.",
+    "keyInsights": [
+      "**Centralizer-index packaging unlocks the classical proof.** Mathlib's class equation sums raw class sizes; rewriting each as a centralizer index [G : C_G(x.out)] is exactly the form in which the textbook p-group argument is stated, and the rewrite is a one-line termwise sum congruence over the parent's per-class identity.",
+      "**Representatives via Quotient.out.** A conjugacy class x is a quotient element; choosing x.out and using mk(x.out) = x lets the per-class identity (stated for elements g) be applied uniformly to classes, which is what the sum over classes requires.",
+      "**The p-group center theorem is pure divisibility.** Once |G| = pⁿ and every noncentral summand is a positive power of p, the class equation forces p ∣ |Z(G)|; no fixed-point counting is needed. This is a genuinely different proof from Mathlib's IsPGroup.center_nontrivial.",
+      "**A divisor of pⁿ exceeding 1 is divisible by p.** The arithmetic crux is Nat.dvd_prime_pow: noncentral classes have size > 1 and dividing pⁿ, hence size pᵏ with k ≥ 1, so p divides each — and therefore their sum."
+    ],
+    "prerequisites": [
+      "The per-class class equation conjClass_card_eq_index_centralizer and conjClass_card_dvd_card (parent entry conjugacy-class-equation-oq-01)",
+      "Mathlib's class equation Group.nat_card_center_add_sum_card_noncenter_eq_card and its Finset form",
+      "Finite p-groups: IsPGroup, IsPGroup.nontrivial_iff_card (GroupTheory/PGroup.lean)",
+      "Divisors of prime powers (Nat.dvd_prime_pow) and finite-sum divisibility (Finset.dvd_sum)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating the centralizer-index class equation and the p-group center theorem, and contrasting the class-equation route with Mathlib's fixed-point proof of IsPGroup.center_nontrivial. Imports Mathlib and the parent module, opens MulAction/ConjAct/ConjClasses, fixes a group G.",
+      "mathContext": "$|Z(G)| + \\sum_{x \\in \\mathrm{noncenter}} [G : C_G(x.\\mathrm{out})] = |G|.$"
+    },
+    {
+      "id": "representative",
+      "title": "Representatives and the Per-Class Index Identity",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "mk_out: mk(x.out) = x for every conjugacy class x (Quotient.out_eq). card_carrier_eq_index: Nat.card x.carrier = [G : C_G(x.out)], obtained by rewriting only the left carrier and applying the parent's conjClass_card_eq_index_centralizer to x.out.",
+      "mathContext": "$\\mathrm{mk}(x.\\mathrm{out}) = x; \\quad |x| = [G : C_G(x.\\mathrm{out})].$"
+    },
+    {
+      "id": "class-equation",
+      "title": "The Centralizer-Index Class Equation",
+      "startLine": 58,
+      "endLine": 69,
+      "summary": "classEquation_centralizer_index: |Z(G)| + Σ_{x ∈ noncenter} [G : C_G(x.out)] = |G|, proved by rewriting Mathlib's Group.nat_card_center_add_sum_card_noncenter_eq_card termwise with finsum_mem_congr and card_carrier_eq_index.",
+      "mathContext": "$|Z(G)| + \\sum_{x \\in \\mathrm{noncenter}} [G : C_G(x.\\mathrm{out})] = |G|.$"
+    },
+    {
+      "id": "p-divides-center",
+      "title": "p Divides the Order of the Center",
+      "startLine": 71,
+      "endLine": 117,
+      "summary": "prime_dvd_card_center: for a nontrivial finite p-group, p ∣ |Z(G)|. p ∣ |G| = pⁿ; each noncentral class size is > 1 and divides pⁿ, hence is divisible by p (Nat.dvd_prime_pow), so p divides the noncentral sum (Finset.dvd_sum); the Finset class equation and Nat.dvd_sub then give p ∣ |Z(G)|.",
+      "mathContext": "$p \\mid |G| = p^n,\\ p \\mid \\sum [G:C_G(g_i)] \\ \\Rightarrow\\ p \\mid |Z(G)|.$"
+    },
+    {
+      "id": "center-nontrivial",
+      "title": "The p-Group Center Theorem and a Concrete Instance",
+      "startLine": 118,
+      "endLine": 137,
+      "summary": "pgroup_center_nontrivial: a nontrivial finite p-group has nontrivial center, since p ∣ |Z(G)| and |Z(G)| ≥ 1 force |Z(G)| > 1 (Finite.one_lt_card_iff_nontrivial). The closing example instantiates p = 2, G = Multiplicative (ZMod 2).",
+      "mathContext": "$p \\mid |Z(G)|,\\ |Z(G)| \\ge 1 \\ \\Rightarrow\\ |Z(G)| > 1 \\ \\Rightarrow\\ Z(G) \\text{ nontrivial}.$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "conjugacy-class-equation-oq-01",
+      "reason": "Parent entry: supplies the per-class identities conjClass_card_eq_index_centralizer and conjClass_card_dvd_card that this entry sums and applies."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) assembly of the numeric class equation in centralizer-index form, |Z(G)| + Σ_{x ∈ noncenter} [G : C_G(x.out)] = |G|, and an independent class-equation proof that a nontrivial finite p-group has nontrivial center (p ∣ |Z(G)|), recovering IsPGroup.center_nontrivial by divisibility rather than Mathlib's fixed-point counting.",
+    "implications": "Turns the parent's per-class identity into the full numeric class equation in the form actually used in applications, and demonstrates the classical p-group center argument end to end. The same divisibility reading of the class equation is the first step toward Cauchy's theorem and the inductive nilpotency of p-groups.",
+    "openQuestions": [
+      "Iterate the center theorem to prove that a finite p-group of order pⁿ has a normal subgroup of order pᵏ for every k ≤ n (the standard induction on the center).",
+      "Recover Cauchy's theorem for abelian groups, and then the general case, from the centralizer-index class equation by the same modulo-p reading."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ConjugacyClassEquationOQ01"
+    ],
+    "opens": [
+      "MulAction",
+      "ConjAct",
+      "ConjClasses"
+    ],
+    "namespace": "ConjugacyClassEquationOQ01OQ01",
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/ConjugacyClassEquationOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Dummit, David S.; Foote, Richard M.",
+      "title": "Abstract Algebra (3rd ed.)",
+      "year": "2004",
+      "venue": "Wiley, §4.3 (The Class Equation), Theorem 8",
+      "note": "Class equation and the corollary that nontrivial finite p-groups have nontrivial center"
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "AMS Graduate Studies in Mathematics 92",
+      "note": "Class equation, p-groups, and Sylow theory"
+    }
+  ],
+  "sorries": 0
+}
