@@ -315,4 +315,116 @@ theorem order_15_iso {G H : Type*} [Group G] [Group H] [Fintype G] [Fintype H]
   exact ⟨mulEquivOfCyclicCardEq
     (by rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, hG, hH])⟩
 
+/-
+  ## Part VI — Non-abelian uniqueness infrastructure: the iso type of a semidirect
+  product is determined by the *range* of its action map.
+
+  The only branch of OQ-01-OQ-01-OQ-02 not settled above is the `p ∣ (q-1)`
+  *non-abelian* uniqueness: any two non-cyclic groups of order `pq` are isomorphic.
+  Classically each such group is an internal semidirect product `ℤ/q ⋊ ℤ/p` for some
+  nontrivial action `ℤ/p →* Aut(ℤ/q)`, and the proof reduces to: *different nontrivial
+  actions still give isomorphic products.*
+
+  This part proves the structural engine for that reduction, fully and self-containedly
+  from Mathlib. The key observation is that the isomorphism type of `N ⋊[φ] G` depends
+  only on the **image** `φ.range ≤ MulAut N` of the action map, not on the particular
+  homomorphism `φ`:
+
+  - `autOfRangeEq` / `exists_mulEquiv_comp_of_range_eq`: two injective homs `f, g` with
+    `f.range = g.range` differ by a source automorphism `α`, i.e. `g = f ∘ α`. The
+    witness is the composite `G ≃* g.range ≃* f.range ≃* G` built from
+    `MonoidHom.ofInjective` and `MulEquiv.subgroupCongr`.
+  - `semidirectProductIsoOfRangeEq`: feeding that `α` into Mathlib's
+    `SemidirectProduct.congr` (with `fn = id` on `N`) yields `N ⋊[g] G ≃* N ⋊[f] G`.
+  - `injective_of_prime_card`: a nontrivial hom out of a group of prime order is
+    injective (its kernel divides the prime, so is `⊥` or `⊤`; `⊤` would force the map
+    to be `1`).
+  - `semidirectProductIso_of_nontrivial_range_eq`: the capstone — two *nontrivial*
+    action maps from a prime-order group with equal range give isomorphic semidirect
+    products.
+
+  **What remains for full non-abelian uniqueness** (two documented standard facts, both
+  outside the scope verified here):
+  1. *Internal recognition*: every non-cyclic group of order `pq` is `≃*` to some
+     `ℤ/q ⋊[φ] ℤ/p` with `φ` nontrivial. Mathlib lacks a packaged normal-complement ⟹
+     internal-semidirect-product lemma for this.
+  2. *Common range*: any two nontrivial `φ₁, φ₂ : ℤ/p →* Aut(ℤ/q)` have equal range —
+     the unique order-`p` subgroup of the cyclic group `Aut(ℤ/q) ≅ (ℤ/q)ˣ` (which has
+     order `q-1`, divisible by `p` exactly in this branch). This is the uniqueness of
+     subgroups of given order in a cyclic group.
+
+  Given (1) and (2), `semidirectProductIso_of_nontrivial_range_eq` closes the
+  non-abelian case. This part delivers the reusable middle link with `0` sorries and
+  `0` axioms.
+-/
+
+variable {Γ Δ : Type*} [Group Γ] [Group Δ]
+
+/-- The source automorphism `α : Γ ≃* Γ` witnessing that two injective homomorphisms
+    `f g : Γ →* Δ` with equal range differ by precomposition: `g = f ∘ α`. The witness is
+    the composite `Γ ≃* g.range ≃* f.range ≃* Γ`. -/
+noncomputable def autOfRangeEq {f g : Γ →* Δ} (hf : Function.Injective f)
+    (hg : Function.Injective g) (hr : f.range = g.range) : Γ ≃* Γ :=
+  (MonoidHom.ofInjective hg).trans
+    ((MulEquiv.subgroupCongr hr.symm).trans (MonoidHom.ofInjective hf).symm)
+
+/-- The defining property of `autOfRangeEq`: `g x = f (α x)` for all `x`. -/
+theorem autOfRangeEq_spec {f g : Γ →* Δ} (hf : Function.Injective f)
+    (hg : Function.Injective g) (hr : f.range = g.range) (x : Γ) :
+    g x = f (autOfRangeEq hf hg hr x) := by
+  rw [autOfRangeEq]
+  simp only [MulEquiv.trans_apply]
+  rw [MonoidHom.apply_ofInjective_symm hf, MulEquiv.subgroupCongr_apply,
+      MonoidHom.ofInjective_apply hg]
+
+/-- Two injective homomorphisms with the same range differ by an automorphism of the
+    source: there is `α : Γ ≃* Γ` with `g = f ∘ α`. -/
+theorem exists_mulEquiv_comp_of_range_eq {f g : Γ →* Δ} (hf : Function.Injective f)
+    (hg : Function.Injective g) (hr : f.range = g.range) :
+    ∃ α : Γ ≃* Γ, ∀ x, g x = f (α x) :=
+  ⟨autOfRangeEq hf hg hr, autOfRangeEq_spec hf hg hr⟩
+
+/-- **Range determines the semidirect product.** If two action maps `f g : Γ →* MulAut N`
+    are injective and have equal range, the associated semidirect products are isomorphic:
+    the isomorphism type of `N ⋊ Γ` depends only on the *image* of the action map. The
+    isomorphism keeps `N` fixed and twists `Γ` by `autOfRangeEq`, via
+    `SemidirectProduct.congr`. -/
+noncomputable def semidirectProductIsoOfRangeEq {N : Type*} [Group N]
+    {f g : Γ →* MulAut N} (hf : Function.Injective f) (hg : Function.Injective g)
+    (hr : f.range = g.range) :
+    SemidirectProduct N Γ g ≃* SemidirectProduct N Γ f :=
+  SemidirectProduct.congr (MulEquiv.refl N) (autOfRangeEq hf hg hr) <| by
+    intro x
+    ext n
+    simp only [MulEquiv.trans_apply, MulEquiv.refl_apply, autOfRangeEq_spec hf hg hr x]
+
+/-- A homomorphism out of a group of prime order is injective unless it is trivial: its
+    kernel has order dividing the prime, hence is `⊥` (injective) or `⊤` (forcing the map
+    to be `1`). -/
+theorem injective_of_prime_card [Fintype Γ] {p : ℕ} (hp : p.Prime)
+    (hcard : Fintype.card Γ = p) {f : Γ →* Δ} (hf : f ≠ 1) : Function.Injective f := by
+  rw [← MonoidHom.ker_eq_bot_iff]
+  have hNat : Nat.card Γ = p := by rw [Nat.card_eq_fintype_card, hcard]
+  have hdvd : Nat.card f.ker ∣ p := hNat ▸ Subgroup.card_subgroup_dvd_card f.ker
+  rcases (hp.eq_one_or_self_of_dvd _ hdvd) with h1 | hpeq
+  · exact f.ker.eq_bot_of_card_eq h1
+  · exfalso
+    apply hf
+    have htop : f.ker = ⊤ := Subgroup.eq_top_of_card_eq f.ker (by rw [hpeq, hNat])
+    ext x
+    have hx : x ∈ f.ker := htop ▸ Subgroup.mem_top x
+    simpa [MonoidHom.mem_ker] using hx
+
+/-- **Capstone (non-abelian `pq` thread).** Two *nontrivial* action maps from a group of
+    prime order `p` with equal range give isomorphic semidirect products. With the two
+    standard facts noted above (internal recognition; all nontrivial `ℤ/p`-actions on
+    `ℤ/q` share the unique order-`p` subgroup of the cyclic `Aut(ℤ/q)`), this pins the
+    non-abelian isomorphism class of groups of order `pq`. -/
+theorem semidirectProductIso_of_nontrivial_range_eq {N : Type*} [Group N] [Fintype Γ]
+    {p : ℕ} (hp : p.Prime) (hcard : Fintype.card Γ = p)
+    {f g : Γ →* MulAut N} (hf : f ≠ 1) (hg : g ≠ 1) (hr : f.range = g.range) :
+    Nonempty (SemidirectProduct N Γ g ≃* SemidirectProduct N Γ f) :=
+  ⟨semidirectProductIsoOfRangeEq (injective_of_prime_card hp hcard hf)
+    (injective_of_prime_card hp hcard hg) hr⟩
+
 end LagrangeOQ01OQ01OQ02
