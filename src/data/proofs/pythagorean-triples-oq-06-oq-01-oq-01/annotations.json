@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-pyth60-overview",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 36 },
+    "type": "context",
+    "title": "The 60 ∣ xyz Divisibility Package",
+    "content": "The module docstring states the headline result — 60 ∣ x·y·z for every integer Pythagorean triple x²+y²=z², with no primitivity hypothesis — and explains the method. The constant 60 = 2²·3·5 factors into three independent prime-power obstructions, each a finite congruence condition: modulo 3 the squares are {0,1}, modulo 5 they are {0,1,4}, and in both rings every solution of a²+b²=c² forces the product a·b·c to vanish. The factor 4 is the subtle one: it is invisible modulo 4 (the residues (1,2,1) form a solution with product 2), so the check must be lifted to ZMod 8. This answers the parent entry's recorded open question, upgrading its parity catalogue to the full divisibility package. Mathlib has Euclid's m²−n²/2mn/m²+n² classification but no such package.",
+    "mathContext": "$60 = 2^2\\cdot 3\\cdot 5$; for all $(x,y,z)\\in\\mathbb{Z}^3$ with $x^2+y^2=z^2$, $\\ 60 \\mid xyz$.",
+    "significance": "context",
+    "relatedConcepts": ["Pythagorean triples", "divisibility", "quadratic residues", "Euclid's parametrization"],
+    "prerequisites": ["integer solutions of x²+y²=z²", "modular arithmetic"]
+  },
+  {
+    "id": "ann-pyth60-zmod-transport",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 53 },
+    "type": "technique",
+    "title": "Transporting the Relation and the Reusable Obstruction Lemma",
+    "content": "Two infrastructure lemmas. `zmod_rel` casts the integer relation x²+y²=z² into ZMod n through the canonical ring homomorphism, which commutes with addition and squaring (exact_mod_cast on congrArg). `dvd_prod_of_zmod` then packages the central pattern: if over ZMod n *every* solution of a²+b²=c² has a·b·c = 0, then n ∣ x·y·z. The proof pushes the cast through the product, applies the ZMod hypothesis to the reduced triple, and concludes via ZMod.intCast_zmod_eq_zero_iff_dvd (an integer's cast vanishes in ZMod n iff n divides it). This converts a universally-quantified congruence — a finite, decidable statement — into an integer divisibility, and is reused verbatim for n = 3 and n = 5.",
+    "mathContext": "$\\big(\\forall a,b,c\\in\\mathbb{Z}/n,\\ a^2+b^2=c^2 \\to abc=0\\big)\\Rightarrow n\\mid xyz$, via $\\overline{xyz}=0 \\iff n\\mid xyz$.",
+    "significance": "key",
+    "relatedConcepts": ["ring homomorphism", "reduction mod n", "ZMod.intCast_zmod_eq_zero_iff_dvd", "decidability"],
+    "prerequisites": ["ZMod ring structure", "integer casts into finite rings"]
+  },
+  {
+    "id": "ann-pyth60-obstructions-3-5",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 63 },
+    "type": "concept",
+    "title": "The Direct Obstructions: 3 and 5",
+    "content": "`three_dvd_prod` and `five_dvd_prod` are one-line corollaries of dvd_prod_of_zmod whose congruence hypotheses are discharged by `decide` — an exhaustive kernel check over the 27 triples in (ZMod 3)³ and the 125 in (ZMod 5)³. Mathematically: since the quadratic residues mod 3 are {0,1}, the only way a²+b²=c² can hold is if at least one of a,b,c is ≡ 0, so 3 divides one of the three sides; mod 5 the residues are {0,1,4} and the same exhaustive verification forces 5 to divide one side. Because the obstruction is checked over all residues, it needs no primitivity hypothesis. Using `decide` (kernel reduction, not native_decide) keeps the proof 0-axiom — it does not invoke Lean.ofReduceBool.",
+    "mathContext": "Squares mod 3: $\\{0,1\\}$; mod 5: $\\{0,1,4\\}$. In each, $a^2+b^2=c^2 \\Rightarrow 3\\mid abc$ (resp. $5\\mid abc$).",
+    "significance": "supporting",
+    "relatedConcepts": ["quadratic residues", "exhaustive verification", "decide tactic", "second moment of residues"],
+    "prerequisites": ["squares modulo a prime", "Decidable instances on ZMod"]
+  },
+  {
+    "id": "ann-pyth60-factor-4",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01",
+    "range": { "startLine": 65, "endLine": 76 },
+    "type": "insight",
+    "title": "The Factor 4: Why ZMod 8 Is Needed",
+    "content": "The most interesting step. The divisibility 4 ∣ xyz is *false* at the level of ZMod 4: the residues (1,2,1) satisfy 1+0=1 with product 2 ≠ 0, so no ZMod 4 check could prove it. The obstruction only becomes visible one level up, modulo 8, where 1+4=5 is not a square and the offending residues are excluded. The lemma runs `decide` over (ZMod 8)³, certifying that for every solution there the image of a·b·c under the canonical ring map ZMod 8 → ZMod 4 (ZMod.castHom, valid since 4 ∣ 8) is 0. Transporting via map_intCast and ZMod.intCast_zmod_eq_zero_iff_dvd yields 4 ∣ xyz. The lesson: the correct modulus for a 2-adic obstruction can exceed the divisor it certifies.",
+    "mathContext": "$(1,2,1)$ solves $a^2+b^2=c^2$ in $\\mathbb{Z}/4$ with product $2\\neq 0$; lift to $\\mathbb{Z}/8$ where it is excluded, then map $\\mathbb{Z}/8\\to\\mathbb{Z}/4$.",
+    "significance": "key",
+    "relatedConcepts": ["2-adic obstruction", "lifting the exponent", "ZMod.castHom", "ring map compatibility"],
+    "prerequisites": ["powers of 2 and quadratic residues", "ring homomorphisms ZMod 8 → ZMod 4"]
+  },
+  {
+    "id": "ann-pyth60-assemble",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01",
+    "range": { "startLine": 78, "endLine": 98 },
+    "type": "technique",
+    "title": "Assembling 60 ∣ xyz by Coprimality",
+    "content": "`sixty_dvd_prod` combines the three components without any single large check. Since 3 and 4 are coprime, IsCoprime.mul_dvd promotes 3 ∣ xyz and 4 ∣ xyz to 12 ∣ xyz; since 12 and 5 are coprime, a second application gives 60 ∣ xyz. The coprimality facts themselves are decided through Int.isCoprime_iff_gcd_eq_one and `decide`. Keeping the obstructions modular (largest check is 8³ = 512 cases) rather than verifying directly modulo 120 is what makes the whole proof cheap. `sixty_dvd_prod_of_pythagoreanTriple` then rephrases the result for Mathlib's bundled PythagoreanTriple structure, unfolding it to x*x+y*y=z*z via PythagoreanTriple.eq.",
+    "mathContext": "$3\\perp 4\\Rightarrow 12\\mid xyz$; $\\ 12\\perp 5\\Rightarrow 60\\mid xyz$, using $\\gcd$-based coprimality.",
+    "significance": "key",
+    "relatedConcepts": ["coprime divisors", "IsCoprime.mul_dvd", "CRT-style assembly", "PythagoreanTriple structure"],
+    "prerequisites": ["coprimality of integers", "IsCoprime.mul_dvd"]
+  },
+  {
+    "id": "ann-pyth60-instances",
+    "proofId": "pythagorean-triples-oq-06-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 113 },
+    "type": "context",
+    "title": "Concrete Instances",
+    "content": "Four worked examples exercise the general theorem, each discharged by `sixty_dvd_prod (by norm_num)` after norm_num verifies the Pythagorean relation: (3,4,5) with product exactly 60 (the sharp case), (5,12,13) with 780, (8,15,17) with 2040, and (20,21,29) — an instance where 5 divides a leg (20) rather than appearing through a small side. These confirm the package applies uniformly and illustrate that 60 is the exact gcd of all such products (witnessed by xyz = 60 for (3,4,5)).",
+    "mathContext": "$60\\mid 3{\\cdot}4{\\cdot}5=60,\\ 5{\\cdot}12{\\cdot}13=780,\\ 8{\\cdot}15{\\cdot}17=2040,\\ 20{\\cdot}21{\\cdot}29=12180$.",
+    "significance": "context",
+    "relatedConcepts": ["worked examples", "sharpness of 60", "norm_num"],
+    "prerequisites": ["the main theorem sixty_dvd_prod"]
+  }
+]
