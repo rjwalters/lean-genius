@@ -1,0 +1,189 @@
+{
+  "id": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+  "title": "Power Sums of Eigenvalues: det(Aᵏ) and tr(A²) Spectrally",
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+  "description": "Follow-up to spectral-trace-det-eigenvalues-oq-01, which posed the open question of proving that the power sums of the eigenvalues equal trace(Aᵏ). This entry settles the determinant half of the spectral mapping theorem in full generality and the trace half in the first nontrivial dimension. For the eigenvalue multiset eigenvalues A := A.charpoly.roots over an algebraically closed field: det(Aᵏ) = Π(λᵢᵏ), the product of the k-th powers of the eigenvalues (det_pow_eq_prod_pow_eigenvalues) — proven for ALL n and k from multiplicativity of the determinant alone, with no triangularisation; tr(Aᵏ) = Σ μⱼ where the μⱼ are the eigenvalues of Aᵏ (trace_pow_eq_sum_eigenvalues_pow_self); and the genuine trace power sum tr(A²) = λ₁² + λ₂² for 2×2 matrices (trace_sq_eq_sum_sq_eigenvalues), via Newton's identity p₂ = e₁² − 2e₂ with e₁ = trace and e₂ = determinant. Concrete 2×2 complex examples give det(A²) = 4 and tr(A²) = 29 for !![1,2;3,4] without computing its irrational eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide. The general trace power sum tr(Aᵏ) = Σλᵢᵏ (all n) is identified as requiring the full multiset spectral mapping, absent from the current Mathlib snapshot.",
+  "meta": {
+    "author": "Classical (Newton's identities; spectral mapping theorem); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "eigenvalues",
+      "characteristic-polynomial",
+      "trace",
+      "determinant",
+      "power-sums",
+      "newtons-identities",
+      "spectral-mapping",
+      "symmetric-functions",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_pow",
+        "description": "det(Aᵏ) = (det A)ᵏ over a commutative ring: multiplicativity of the determinant. The whole determinant power identity rests on this, needing no algebraic closure or triangularisation.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.det_eq_prod_roots_charpoly",
+        "description": "Over an algebraically closed field, A.det = (A.charpoly).roots.prod: the determinant is the product of the eigenvalues. Combined with det_pow it yields det(Aᵏ) = (Πλᵢ)ᵏ.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs"
+      },
+      {
+        "theorem": "Matrix.trace_eq_sum_roots_charpoly",
+        "description": "Over an algebraically closed field, A.trace = (A.charpoly).roots.sum. Applied to the matrix Aᵏ it gives tr(Aᵏ) as the sum of the eigenvalues of Aᵏ, and (with the fin-two computation) drives the 2×2 trace power sum.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs"
+      },
+      {
+        "theorem": "Multiset.prod_hom",
+        "description": "For a monoid hom f, (s.map f).prod = f (s.prod). With f = powMonoidHom k this proves Π(λᵢᵏ) = (Πλᵢ)ᵏ at the level of the eigenvalue multiset.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Multiset"
+      },
+      {
+        "theorem": "Multiset.card_eq_two",
+        "description": "A multiset has cardinality two iff it equals {a, b}. Reduces the 2×2 trace power sum to the two-variable Newton identity Σxᵢ² = (Σxᵢ)² − 2∏xᵢ.",
+        "module": "Mathlib.Data.Multiset.Basic"
+      },
+      {
+        "theorem": "Polynomial.splits_iff_card_roots",
+        "description": "A polynomial splits iff its root multiset has cardinality equal to its degree. With IsAlgClosed.splits and charpoly_natDegree_eq_dim it shows the eigenvalue multiset of a 2×2 matrix has exactly two elements.",
+        "module": "Mathlib.Algebra.Polynomial.Factors"
+      },
+      {
+        "theorem": "Matrix.trace_fin_two",
+        "description": "trace of a 2×2 matrix is M 0 0 + M 1 1. With det_fin_two and mul_apply it computes tr(A²) = (tr A)² − 2 det A, the matrix side of the first Newton identity.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Trace"
+      }
+    ],
+    "originalContributions": [
+      "det_pow_eq_prod_pow_eigenvalues: over an algebraically closed field, det(Aᵏ) = Π(λᵢᵏ) for ALL dimensions n and exponents k — the determinant instance of the spectral mapping theorem for p(X)=Xᵏ, derived purely from multiplicativity of the determinant (Matrix.det_pow) and the oq-01 identity det = Πλ, requiring no triangularisation",
+      "prod_map_pow_eigenvalues: the multiset identity Π(λᵢᵏ) = (Πλᵢ)ᵏ via the power monoid hom, the algebraic core of the determinant power identity",
+      "trace_pow_eq_sum_eigenvalues_pow_self: the tautological-but-useful reading tr(Aᵏ) = Σ(eigenvalues of Aᵏ), the oq-01 trace identity applied to the power matrix",
+      "trace_sq_eq_sum_sq_eigenvalues: the genuine trace power sum tr(A²) = λ₁² + λ₂² for 2×2 matrices over an algebraically closed field, the first Newton identity p₂ = e₁² − 2e₂ with e₁ = trace and e₂ = determinant — the headline power-sum statement in the first nontrivial dimension",
+      "sum_sq_of_card_eq_two: Newton's identity Σxᵢ² = (Σxᵢ)² − 2∏xᵢ for a two-element multiset, the dimension-free heart of the 2×2 trace power sum",
+      "det_sq_example / trace_sq_example: det(A²) = 4 and tr(A²) = 29 for !![1,2;3,4] over ℂ — the product and sum of the SQUARED irrational eigenvalues (5 ± √33)/2, read off without computing them"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 155,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used. The spectral identities require an algebraically closed field. SCOPE: the determinant power identity det(Aᵏ)=Π(λᵢᵏ) is proven in full generality (all n, all k); the trace power sum tr(Aᵏ)=Σλᵢᵏ is proven for 2×2 matrices (k=2). The general trace power sum for all n is NOT proven here — it is equivalent to the eigenvalue multiset of Aᵏ being (eigenvalues A).map(·^k), i.e. the full multiset spectral mapping, which the current Mathlib snapshot (v4.26.0) does not supply (no Schur triangulation over a general algebraically closed field, no Newton-identity bridge from charpoly coefficients to root power sums). That generalisation is left as the standing open question.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Newton's identities (Isaac Newton, c. 1666; also Girard) express the power sums pₖ = Σλᵢᵏ of a collection of numbers in terms of their elementary symmetric functions eⱼ, recursively: p₁ = e₁, p₂ = e₁p₁ − 2e₂, p₃ = e₁p₂ − e₂p₁ + 3e₃, and so on. For the eigenvalues of a matrix the eⱼ are (up to sign) the coefficients of the characteristic polynomial, identified with the trace, determinant, and intermediate invariants in spectral-trace-det-eigenvalues-oq-01. The power sums pₖ are themselves the traces tr(Aᵏ): this is the trace half of the spectral mapping theorem spec(p(A)) = p(spec(A)). The determinant half, det(Aᵏ) = (det A)ᵏ, is immediate from multiplicativity and needs none of this machinery.",
+    "problemStatement": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01)**: Prove that the power sums of the eigenvalues equal trace(Aᵏ) — the open question posed by the parent entry — and the companion determinant statement det(Aᵏ) = Π(λᵢᵏ).\n\n**Result**: det_pow_eq_prod_pow_eigenvalues establishes det(Aᵏ) = Π(λᵢᵏ) for all n and k; trace_sq_eq_sum_sq_eigenvalues establishes the trace power sum tr(A²) = λ₁² + λ₂² for 2×2 matrices via the first Newton identity. The general trace power sum tr(Aᵏ) = Σλᵢᵏ for all n is identified as requiring the full multiset spectral mapping (Schur triangulation), absent from the current Mathlib snapshot, and remains open.",
+    "text": "Let A be an n×n matrix over an algebraically closed field K with eigenvalue multiset eigenvalues A = A.charpoly.roots. The determinant of any power factors spectrally: det(Aᵏ) = Π(λᵢᵏ) = (Πλᵢ)ᵏ, for every n and k. The trace of a power is the sum of the eigenvalues of that power: tr(Aᵏ) = Σ(eigenvalues of Aᵏ). For 2×2 matrices the trace power sum is the genuine spectral statement tr(A²) = λ₁² + λ₂², equal to (tr A)² − 2 det A by Newton's first identity. The general identity tr(Aᵏ) = Σλᵢᵏ for all n is the standing open problem.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Determinant power identity (all n, k): Matrix.det_pow gives det(Aᵏ) = (det A)ᵏ. The oq-01 identity det A = Πλᵢ (det_eq_prod_roots_charpoly) rewrites this as (Πλᵢ)ᵏ, and prod_map_pow_eigenvalues — an instance of Multiset.prod_hom for the power monoid hom — turns (Πλᵢ)ᵏ into Π(λᵢᵏ). No algebraic closure is needed for det_pow itself; closure enters only to express det as a product over the eigenvalue multiset.\n\n2. Trace of a power as a sum of eigenvalues: apply the oq-01 identity trace = Σλ (trace_eq_sum_roots_charpoly) to the matrix Aᵏ, giving tr(Aᵏ) = Σ(eigenvalues of Aᵏ) directly.\n\n3. 2×2 trace power sum: the eigenvalue multiset of a 2×2 matrix has exactly two elements (card_eigenvalues_fin_two, from splits_iff_card_roots and charpoly_natDegree_eq_dim). For a two-element multiset {a,b}, sum_sq_of_card_eq_two proves Σxᵢ² = (Σxᵢ)² − 2∏xᵢ by case analysis and ring. On the matrix side, trace_fin_two and det_fin_two with mul_apply compute tr(A²) = (tr A)² − 2 det A. Equating the two through the oq-01 trace and determinant identities yields tr(A²) = λ₁² + λ₂².\n\n4. Examples: instantiate at !![1,2;3,4] over ℂ. det(A²) = (det A)² = (−2)² = 4 and tr(A²) = (tr A)² − 2 det A = 25 + 4 = 29 equal, respectively, the product and the sum of the squared eigenvalues, computed without ever evaluating the irrational (5 ± √33)/2.",
+    "keyInsights": [
+      "**The determinant power sum is free; the trace power sum is the real content.** det(Aᵏ) = (det A)ᵏ holds by multiplicativity for any matrix over any commutative ring, so det(Aᵏ) = Π(λᵢᵏ) needs no spectral mapping at all. The trace analogue tr(Aᵏ) = Σλᵢᵏ is the genuinely spectral half, equivalent to the eigenvalue multiset of Aᵏ being the k-th powers of those of A.",
+      "**Newton's identities convert trace power sums into trace and determinant.** In dimension two, p₂ = e₁² − 2e₂ expresses Σλᵢ² through e₁ = tr A and e₂ = det A — the two invariants established in oq-01 — so tr(A²) = (tr A)² − 2 det A is computable without the eigenvalues. The same identity tr(A²) = (tr A)² − 2 det A is, on the matrix side, a disguised 2×2 Cayley–Hamilton relation.",
+      "**The obstruction to the general trace power sum is the multiset spectral mapping.** Proving tr(Aᵏ) = Σλᵢᵏ for all n reduces to (A^k).charpoly.roots = A.charpoly.roots.map(·^k). This needs either Schur triangulation over a general algebraically closed field or a Newton-identity bridge from characteristic-polynomial coefficients to root power sums — neither present in the Mathlib snapshot used here — and is the standing open question.",
+      "**The identities compute squared invariants of an unknowable spectrum.** The eigenvalues of !![1,2;3,4] are irrational, yet the product of their squares (4) and the sum of their squares (29) are forced rational values read straight off the trace and determinant."
+    ],
+    "prerequisites": [
+      "The characteristic polynomial and its roots as eigenvalues with algebraic multiplicity (spectral-trace-det-eigenvalues-oq-01)",
+      "Newton's identities relating power sums to elementary symmetric functions",
+      "Multiplicativity of the determinant and the spectral mapping theorem for polynomials of a matrix"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and the Eigenvalue Multiset",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring laying out the determinant power identity (the clean half), the trace power sum (Newton's identity, settled here for 2×2), and the honest scope note that the general trace power sum needs the multiset spectral mapping; import of Mathlib, open of Matrix/Polynomial, and the reducible abbreviation eigenvalues A := A.charpoly.roots reused from oq-01.",
+      "mathContext": "Eigenvalues with multiplicity $= \\operatorname{roots}(\\det(XI-A))$; study under $A \\mapsto A^k$."
+    },
+    {
+      "id": "det-power",
+      "title": "The Determinant Power Identity det(Aᵏ) = Π(λᵢᵏ)",
+      "startLine": 56,
+      "endLine": 77,
+      "summary": "det_pow (det(Aᵏ) = (det A)ᵏ), prod_map_pow_eigenvalues (Π(λᵢᵏ) = (Πλᵢ)ᵏ via the power monoid hom), and det_pow_eq_prod_pow_eigenvalues: over an algebraically closed field the determinant of Aᵏ is the product of the k-th powers of the eigenvalues, for all n and k, with no triangularisation.",
+      "mathContext": "$\\det(A^k) = \\prod_i \\lambda_i^{\\,k} = (\\prod_i \\lambda_i)^k$."
+    },
+    {
+      "id": "trace-sum",
+      "title": "Trace of a Power as a Sum of Eigenvalues",
+      "startLine": 78,
+      "endLine": 93,
+      "summary": "trace_pow_eq_sum_eigenvalues_pow_self: tr(Aᵏ) = Σ(eigenvalues of Aᵏ), the oq-01 trace identity applied to the power matrix; det_pow_one ties the determinant identity back to oq-01 at k = 1.",
+      "mathContext": "$\\operatorname{tr}(A^k) = \\sum_j \\mu_j,\\ \\mu_j \\in \\operatorname{eig}(A^k)$."
+    },
+    {
+      "id": "trace-power-sum-2x2",
+      "title": "The Trace Power Sum tr(A²) = Σλᵢ² for 2×2 Matrices",
+      "startLine": 94,
+      "endLine": 131,
+      "summary": "sum_sq_of_card_eq_two (Newton's identity Σxᵢ² = (Σxᵢ)² − 2∏xᵢ for a two-element multiset), card_eigenvalues_fin_two (a 2×2 matrix has exactly two eigenvalues), and trace_sq_eq_sum_sq_eigenvalues: tr(A²) = λ₁² + λ₂² over an algebraically closed field, via p₂ = e₁² − 2e₂ with e₁ = trace, e₂ = determinant.",
+      "mathContext": "$\\operatorname{tr}(A^2) = \\lambda_1^2 + \\lambda_2^2 = (\\operatorname{tr}A)^2 - 2\\det A$."
+    },
+    {
+      "id": "example",
+      "title": "A Concrete 2×2 Complex Illustration",
+      "startLine": 132,
+      "endLine": 155,
+      "summary": "det_sq_example and trace_sq_example: for !![1,2;3,4] over ℂ the determinant of A² is 4 (product of the squared eigenvalues) and the trace of A² is 29 (sum of the squared eigenvalues), even though the eigenvalues (5 ± √33)/2 are irrational and never computed.",
+      "mathContext": "$\\det(A^2)=4,\\ \\operatorname{tr}(A^2)=29$ for $\\lambda_{1,2}=\\tfrac{5\\pm\\sqrt{33}}{2}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-01",
+      "relationship": "Parent entry: establishes trace = Σλ, determinant = Πλ, the eigenvalue count, and the Vieta correspondence, and explicitly poses the open question — proving the eigenvalue power sums equal trace(Aᵏ) — that this entry takes up (settling the determinant case in general and the trace case for 2×2)."
+    },
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-02",
+      "relationship": "Sibling entry on cyclic invariance of the trace and similarity-invariance of the eigenvalue multiset; the present power identities are similarity-invariant for the same reason (conjugation preserves the characteristic polynomial)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization settling the determinant half of the eigenvalue power-sum question in full generality — det(Aᵏ) = Π(λᵢᵏ) for all n and k — and the trace half in the first nontrivial dimension — tr(A²) = λ₁² + λ₂² via Newton's identity p₂ = e₁² − 2e₂ — with concrete complex examples computing the squared-eigenvalue invariants 4 and 29 of an irrational spectrum.",
+    "implications": "Advances the parent entry's open question by separating the easy (determinant, multiplicative) and hard (trace, spectral) halves of the spectral mapping theorem for powers, and by delivering the trace power sum where Newton's identity reduces it to the already-established trace and determinant. Pinpoints the remaining obstruction — the multiset spectral mapping (A^k).charpoly.roots = A.charpoly.roots.map(·^k) — as the precise Mathlib gap blocking the all-dimensions trace power sum.",
+    "openQuestions": [
+      "Prove the general trace power sum tr(Aᵏ) = Σλᵢᵏ for all dimensions n, equivalently the multiset spectral mapping (A^k).charpoly.roots = A.charpoly.roots.map(·^k), by building Schur triangulation over an algebraically closed field or a Newton-identity bridge from charpoly coefficients to root power sums.",
+      "Extend the 2×2 Newton identity to a uniform tr(A³) = e₁³ − 3e₁e₂ + 3e₃ (and higher) in fixed small dimensions, expressing each trace power sum through the elementary symmetric functions of the spectrum from oq-01."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "SpectralTraceDetEigenvaluesOQ01OQ01",
+    "lineCount": 155,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Roger A. Horn and Charles R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2012",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for the spectral mapping theorem, Newton's identities relating trace power sums to the characteristic-polynomial coefficients, and the trace/determinant as symmetric functions of the eigenvalues."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs and Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of the trace/determinant-as-roots identities and det_pow used to assemble the determinant power identity and the 2×2 trace power sum."
+    }
+  ],
+  "sorries": 0
+}
