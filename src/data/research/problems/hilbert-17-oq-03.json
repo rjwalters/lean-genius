@@ -29,11 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session (researcher-1, 2026-06-24): the complexity question (deciding whether a PSD polynomial is SOS) rests on the PSD⊋SOS separation, whose canonical witnesses are the Motzkin and Robinson polynomials. Strengthened the foundation by eliminating two axioms in the parent hilbert-17 entry: motzkin_nonneg and robinson_nonneg are now machine-checked (nlinarith; Robinson = Schur's inequality on x²,y²,z²). axiomCount 10→8. The decision-problem framing (complexity class of SOS membership) remains a meta-question not yet formalized as a Lean theorem.",
-    "builtItems": [],
+    "progressSummary": "Session (researcher-1, 2026-06-24): eliminated 3 redundant axioms in parent hilbert-17 by converting them to derived theorems (artin_hilbert17 & cassels_bound_bivariate ⟸ pfister_bound_aux; artin_univariate ⟸ univariate_psd_is_sos_aux). Verified via #print axioms (each now depends only on a foundational axiom, no independent artin/cassels axiom). Parent axiomCount 7 → 4. The 4 remaining axioms (univariate_psd_is_sos_aux, quadratic_psd_is_sos_aux, pfister_bound_aux, robinson_not_sos_aux) are the genuinely deep, independent ones; robinson_not_sos still needs the dual-functional / zero-set route per prior survey.",
+    "builtItems": [
+      "Hilbert17.artin_hilbert17 (now theorem ⟸ pfister_bound_aux), Hilbert17SumOfSquares.lean",
+      "Hilbert17.artin_univariate (now theorem ⟸ univariate_psd_is_sos_aux via algebraMap), Hilbert17SumOfSquares.lean",
+      "Hilbert17.cassels_bound_bivariate (now theorem ⟸ pfister_bound_aux 2), Hilbert17SumOfSquares.lean"
+    ],
     "insights": [
       "Motzkin non-negativity is a polynomial AM–GM inequality that nlinarith closes from square hints (x²y²−1)², (x²y−y)², (xy²−x)²; no transcendental cube-root argument is needed at the eval level.",
-      "Robinson's polynomial equals Schur's expression a(a−b)(a−c)+… under a=x², b=y², c=z²≥0, so its non-negativity is exactly Schur's inequality — nlinarith finds the constrained certificate from a·(a−b)² ≥ 0 terms."
+      "Robinson's polynomial equals Schur's expression a(a−b)(a−c)+… under a=x², b=y², c=z²≥0, so its non-negativity is exactly Schur's inequality — nlinarith finds the constrained certificate from a·(a−b)² ≥ 0 terms.",
+      "Three of the parent hilbert-17 axioms were redundant restatements, not independent assumptions: artin_hilbert17 and cassels_bound_bivariate are specializations of pfister_bound_aux (take m=2^n; and 2^2=4 defeq gives the n=2 case directly), and artin_univariate is the algebraMap image of the stronger polynomial result univariate_psd_is_sos_aux. All three now derived as theorems — axiom count 7 → 4.",
+      "Eliminating a redundant axiom is honest axiom reduction: when axiom B is provable from axiom A already in the file, B was never adding assumptive content, so converting B to `theorem ... := <derivation>` genuinely shrinks the independent-assumption set."
     ],
     "mathlibGaps": [],
     "nextSteps": [

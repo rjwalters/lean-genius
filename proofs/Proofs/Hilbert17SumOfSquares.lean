@@ -63,7 +63,9 @@ Allowing rational functions g²/h² = (g/h)² provides more flexibility.
 - [x] Explanation of why rational functions are needed
 - [x] Pedagogical example
 - [x] Motzkin and Robinson non-negativity machine-checked (nlinarith; AM-GM / Schur)
-- [ ] Incomplete (8 axioms - full proof requires model theory and real algebraic geometry)
+- [ ] Incomplete (4 axioms - full proof requires model theory and real algebraic geometry).
+      Artin's general existence, the univariate rational-function case, and Cassels'
+      bivariate bound are now *derived* from the four foundational axioms, not assumed.
 
 ## Mathlib Dependencies
 
