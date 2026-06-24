@@ -1,6 +1,7 @@
 {
   "id": "arsinh-log-formula-oq-01-oq-02-oq-01",
   "slug": "arsinh-log-formula-oq-01-oq-02-oq-01",
+  "description": "The arcosh antiderivative ∫ 1/√(t²−1) dt = arcosh t + C, proved on the domain t > 1 and packaged via the Fundamental Theorem of Calculus as ∫_a^b 1/√(t²−1) dt = arcosh b − arcosh a for 1 < a, b. Because Mathlib defines Real.arcosh and its inverse facts but supplies no derivative lemma (in contrast to the sinh side, where Real.hasDerivAt_arsinh exists), the derivative HasDerivAt Real.arcosh (1/√(t²−1)) t is built from scratch by differentiating the logarithmic form log(t + √(t²−1)) through three chain-rule steps (pow, sqrt, log); the resulting quotient collapses to 1/√(t²−1) by a pure algebraic field_simp; ring with no appeal to √² = t²−1. Includes the logarithmic closed form and the concrete (3,4,5)-triple value ∫_{5/4}^{5/3} 1/√(t²−1) dt = log(3/2). Verified, 0 axioms, 0 sorries, 10 theorems.",
   "leanFile": {
     "imports": [
       "Mathlib"
