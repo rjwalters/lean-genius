@@ -1,11 +1,11 @@
 {
   "id": "lagrange-theorem-oq-01-oq-01-oq-02",
-  "title": "pq-Groups: Isomorphism Uniqueness — Abelian Thread + Full Cyclic Case (every group of order pq with p∤q-1 is ℤ/pq)",
+  "title": "pq-Groups: Isomorphism Uniqueness — Abelian Thread, Full Cyclic Case, and Non-Abelian Semidirect-Product Infrastructure",
   "slug": "lagrange-theorem-oq-01-oq-01-oq-02",
-  "description": "Upgrades the parent pq-classification from a counting statement to genuine MulEquiv isomorphisms, using only Mathlib. (1) ABELIAN thread: for ANY distinct primes p ≠ q, every abelian group of order pq is cyclic (Cauchy + the coprime-order product law), so any two are isomorphic — each ≅ Multiplicative (ZMod pq). (2) FULL CYCLIC case: when ¬ p∣(q-1) and ¬ q∣(p-1), EVERY group of order pq (not just the abelian ones) is cyclic — both Sylow subgroups are forced normal by Sylow counting, so G is nilpotent, and a nilpotent Z-group of squarefree order is cyclic. Consequently any two groups of order pq in this branch are isomorphic (e.g. all groups of order 15 or 35). Self-contained: imports only Mathlib, avoiding the parent's (non-compiling) Sylow file. Only the non-abelian p|(q-1) uniqueness remains open.",
+  "description": "Upgrades the parent pq-classification from a counting statement to genuine MulEquiv isomorphisms, using only Mathlib. (1) ABELIAN thread: for ANY distinct primes p ≠ q, every abelian group of order pq is cyclic (Cauchy + the coprime-order product law), so any two are isomorphic — each ≅ Multiplicative (ZMod pq). (2) FULL CYCLIC case: when ¬ p∣(q-1) and ¬ q∣(p-1), EVERY group of order pq (not just the abelian ones) is cyclic — both Sylow subgroups are forced normal by Sylow counting, so G is nilpotent, and a nilpotent Z-group of squarefree order is cyclic. Consequently any two groups of order pq in this branch are isomorphic (e.g. all groups of order 15 or 35). (3) NON-ABELIAN infrastructure (Part VI): the isomorphism type of a semidirect product N ⋊[φ] G depends only on the IMAGE φ.range ≤ Aut(N), not on φ — two injective action maps with equal range give isomorphic products (via SemidirectProduct.congr twisting the G-factor by a source automorphism), and a nontrivial map out of a prime-order group is injective. This is the reusable engine for non-abelian pq uniqueness, reducing it to two documented standard facts (internal recognition; common range of all nontrivial ℤ/p-actions on ℤ/q). Self-contained: imports only Mathlib, avoiding the parent's (non-compiling) Sylow file.",
   "meta": {
     "author": "Lean Genius",
-    "date": "2026-06-23",
+    "date": "2026-06-24",
     "status": "verified",
     "proofRepoPath": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
     "tags": [
@@ -21,16 +21,18 @@
       "Z-group",
       "nilpotent",
       "ZMod",
-      "finite-groups"
+      "finite-groups",
+      "semidirect-product",
+      "automorphism"
     ],
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 318,
-    "theoremCount": 14,
-    "definitionCount": 0,
-    "assumptions": "None. Imports only Mathlib. Uses standard Mathlib group-theory API: Cauchy's theorem `exists_prime_orderOf_dvd_card`, `Commute.orderOf_mul_eq_mul_orderOf_of_coprime`, `isCyclic_of_orderOf_eq_card`, `mulEquivOfCyclicCardEq`, `zmodCyclicMulEquiv` (abelian thread); and `card_sylow_modEq_one`, `Sylow.card_dvd_index`, `Sylow.normal_of_subsingleton`, `isNilpotent_of_finite_tfae`, `IsZGroup.of_squarefree` (cyclic case). No `axiom` declarations, no structure-encoded assumptions, no `native_decide`. Kernel-verified on Mathlib v4.26.0: all 14 theorems depend on exactly the standard `[propext, Classical.choice, Quot.sound]` triple (confirmed via `#print axioms`; no `sorryAx`, no `Lean.ofReduceBool`).",
+    "lineCount": 430,
+    "theoremCount": 18,
+    "definitionCount": 2,
+    "assumptions": "None. Imports only Mathlib. Uses standard Mathlib group-theory API: Cauchy's theorem `exists_prime_orderOf_dvd_card`, `Commute.orderOf_mul_eq_mul_orderOf_of_coprime`, `isCyclic_of_orderOf_eq_card`, `mulEquivOfCyclicCardEq`, `zmodCyclicMulEquiv` (abelian thread); `card_sylow_modEq_one`, `Sylow.card_dvd_index`, `Sylow.normal_of_subsingleton`, `isNilpotent_of_finite_tfae`, `IsZGroup.of_squarefree` (cyclic case); and `SemidirectProduct.congr`, `MonoidHom.ofInjective`/`ofInjective_apply`/`apply_ofInjective_symm`, `MulEquiv.subgroupCongr`, `MonoidHom.ker_eq_bot_iff`, `Subgroup.card_subgroup_dvd_card`/`eq_bot_of_card_eq`/`eq_top_of_card_eq` (non-abelian Part VI). No `axiom` declarations, no structure-encoded assumptions, no `native_decide`. Kernel-verified on Mathlib v4.26.0: all 18 theorems and 2 definitions depend on exactly the standard `[propext, Classical.choice, Quot.sound]` triple (confirmed via `#print axioms`; no `sorryAx`, no `Lean.ofReduceBool`).",
     "originalContributions": [
       "pq_abelian_isCyclic: every finite ABELIAN group of order pq (any distinct primes p ≠ q) is cyclic — proved from Cauchy (elements of order p and q) plus the coprime-order product law orderOf(a·b) = pq = |G|. Holds with NO divisibility hypothesis, so it also applies inside the non-cyclic p | (q-1) branch.",
       "pq_abelian_iso / pq_abelian_iso_zmod: any two abelian groups of order pq are isomorphic, and each ≅ the canonical model Multiplicative (ZMod pq), via mulEquivOfCyclicCardEq and zmodCyclicMulEquiv.",
@@ -38,7 +40,11 @@
       "pq_isCyclic_of_lt: the classical criterion — for primes p < q with p∤(q-1), every group of order pq is cyclic (the side condition ¬ q∣(p-1) is discharged automatically since 0 < p-1 < q).",
       "pq_cyclic_iso: consequently any two groups of order pq in the cyclic branch are isomorphic to each other.",
       "Concrete corollaries: order_15_cyclic and order_35_cyclic (EVERY group of order 15 or 35 is cyclic, strengthening the abelian-only order_15/35_abelian_unique of Part III), and order_15_iso (any two groups of order 15 are isomorphic). Order 6 = 2·3 escapes the criterion (2 | (3-1)), matching the existence of the non-abelian S₃.",
-      "Self-contained: imports only Mathlib, deliberately avoiding the parent Sylow classification dependency `Proofs.SylowTheoremOQ01` which does not compile on Mathlib v4.26.0 — the cyclic case is rebuilt directly from Mathlib's Sylow/Z-group API."
+      "Self-contained: imports only Mathlib, deliberately avoiding the parent Sylow classification dependency `Proofs.SylowTheoremOQ01` which does not compile on Mathlib v4.26.0 — the cyclic case is rebuilt directly from Mathlib's Sylow/Z-group API.",
+      "Part VI — semidirectProductIsoOfRangeEq (NEW infrastructure for the non-abelian branch): the isomorphism type of a semidirect product N ⋊[φ] G is determined by the IMAGE φ.range ≤ MulAut N of the action map, not by φ itself. Precisely, if two action maps f, g : G →* MulAut N are injective with f.range = g.range, then N ⋊[g] G ≃* N ⋊[f] G. The isomorphism fixes the N-factor and twists the G-factor by a source automorphism, fed into Mathlib's SemidirectProduct.congr.",
+      "Part VI — autOfRangeEq / exists_mulEquiv_comp_of_range_eq: two injective homomorphisms f, g : Γ →* Δ with equal range differ by a source automorphism α : Γ ≃* Γ, i.e. g = f ∘ α. The explicit witness is the composite Γ ≃* g.range ≃* f.range ≃* Γ built from MonoidHom.ofInjective and MulEquiv.subgroupCongr — a reusable lemma in its own right.",
+      "Part VI — injective_of_prime_card: a homomorphism out of a group of prime order p is injective unless it is the trivial map (its kernel has order dividing p, hence is ⊥ or ⊤; the ⊤ case forces the map to be 1). Used to discharge injectivity of nontrivial action maps from ℤ/p.",
+      "Part VI — semidirectProductIso_of_nontrivial_range_eq (capstone): two NONTRIVIAL action maps from a prime-order group with equal range yield isomorphic semidirect products. This is the structural engine reducing the open non-abelian pq uniqueness to two standard facts (internal recognition of each non-cyclic order-pq group as ℤ/q ⋊ ℤ/p, and the common range of all nontrivial ℤ/p-actions on ℤ/q = the unique order-p subgroup of the cyclic Aut(ℤ/q))."
     ]
   },
   "overview": {
@@ -102,15 +108,23 @@
       "id": "cyclic-corollaries",
       "title": "Part V — Cyclic Concrete Corollaries (orders 15, 35)",
       "startLine": 292,
-      "endLine": 318,
+      "endLine": 317,
       "summary": "order_15_cyclic and order_35_cyclic: EVERY group of order 15 or 35 is cyclic (15 = 3·5 with 3∤4, 35 = 5·7 with 5∤6), strengthening the abelian-only statements of Part III. order_15_iso: any two groups of order 15 are isomorphic."
+    },
+    {
+      "id": "nonabelian-infrastructure",
+      "title": "Part VI — Non-Abelian Uniqueness Infrastructure: Range Determines the Semidirect Product",
+      "startLine": 319,
+      "endLine": 430,
+      "summary": "The structural engine for the non-abelian branch. autOfRangeEq / autOfRangeEq_spec / exists_mulEquiv_comp_of_range_eq: two injective homs Γ →* Δ with equal range differ by a source automorphism (g = f ∘ α), via MonoidHom.ofInjective and MulEquiv.subgroupCongr. semidirectProductIsoOfRangeEq: feeding that α to SemidirectProduct.congr gives N ⋊[g] G ≃* N ⋊[f] G — the iso type depends only on the action map's image. injective_of_prime_card: a nontrivial hom out of a prime-order group is injective. semidirectProductIso_of_nontrivial_range_eq: capstone — two nontrivial prime-order action maps with equal range give isomorphic products, reducing the open non-abelian pq uniqueness to internal recognition + common range of nontrivial ℤ/p-actions on ℤ/q."
     }
   ],
   "conclusion": {
-    "summary": "This file proves 14 theorems with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only, no native_decide). It resolves, up to MulEquiv, BOTH the abelian isomorphism class of order pq (every abelian group of order pq is cyclic ≅ ℤ/pq, for any distinct primes) and the full cyclic branch (when ¬p∣(q-1) and ¬q∣(p-1), every group of order pq is cyclic, so any two are isomorphic — e.g. all groups of order 15 and 35).",
-    "implications": "Together with the parent (counting) and sibling oq-01-oq-01-oq-01 (explicit non-cyclic witnesses), the cyclic side of the order-pq classification now has genuine isomorphisms, not just a class count — and crucially without assuming commutativity, rebuilt directly from Mathlib's Sylow/Z-group API rather than the parent's non-compiling Sylow file. The single outstanding piece of full isomorphism uniqueness is the non-abelian case (any two non-cyclic groups of order pq, with p | q-1, are isomorphic), which requires an internal semidirect-product recognition ℤ/q ⋊ ℤ/p.",
+    "summary": "This file proves 18 theorems and 2 definitions with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only, no native_decide). It resolves, up to MulEquiv, BOTH the abelian isomorphism class of order pq (every abelian group of order pq is cyclic ≅ ℤ/pq, for any distinct primes) and the full cyclic branch (when ¬p∣(q-1) and ¬q∣(p-1), every group of order pq is cyclic, so any two are isomorphic — e.g. all groups of order 15 and 35). Part VI then builds the structural engine for the remaining non-abelian branch: the isomorphism type of a semidirect product N ⋊[φ] G is determined by the image of its action map, so two nontrivial prime-order action maps with equal range give isomorphic products.",
+    "implications": "Together with the parent (counting) and sibling oq-01-oq-01-oq-01 (explicit non-cyclic witnesses), the cyclic side of the order-pq classification now has genuine isomorphisms, not just a class count — and crucially without assuming commutativity, rebuilt directly from Mathlib's Sylow/Z-group API rather than the parent's non-compiling Sylow file. The non-abelian case now has its key middle link verified (range-determines-iso), reducing 'any two non-cyclic groups of order pq are isomorphic' to two standard, documented facts: (1) internal recognition of each non-cyclic order-pq group as ℤ/q ⋊ ℤ/p, and (2) the common range of all nontrivial ℤ/p-actions on ℤ/q (the unique order-p subgroup of the cyclic Aut(ℤ/q)).",
     "openQuestions": [
-      "Non-abelian uniqueness: prove any two non-cyclic groups of order pq (with p | q-1) are isomorphic, by recognizing each as the internal semidirect product ℤ/q ⋊ ℤ/p and showing all non-trivial actions ℤ/p → Aut(ℤ/q) yield isomorphic products. (The cyclic-case uniqueness, previously open here, is now resolved by pq_isCyclic / pq_cyclic_iso.)",
+      "Non-abelian uniqueness — remaining piece 1 (internal recognition): show every non-cyclic group of order pq is ≃* to the internal semidirect product ℤ/q ⋊[φ] ℤ/p for some nontrivial φ. Mathlib lacks a packaged normal-complement ⟹ internal-semidirect-product lemma; SemidirectProduct.mulEquivSubgroup recognizes the product but not from a normal subgroup + complement.",
+      "Non-abelian uniqueness — remaining piece 2 (common range): show any two nontrivial φ₁, φ₂ : ℤ/p →* Aut(ℤ/q) have equal range — the unique order-p subgroup of the cyclic group Aut(ℤ/q) ≅ (ℤ/q)ˣ (order q-1, divisible by p exactly in this branch). This is uniqueness of subgroups of given order in a cyclic group (the d-torsion ker(powMonoidHom d) has order exactly d). Combined with Part VI's semidirectProductIso_of_nontrivial_range_eq, pieces 1 and 2 close the non-abelian case.",
       "Canonical model for the cyclic branch: package pq_isCyclic with zmodCyclicMulEquiv to state directly that every group of order pq (¬p∣q-1) is ≅ Multiplicative (ZMod pq), mirroring pq_abelian_iso_zmod but without the commutativity hypothesis.",
       "REPAIR FLAG (lower priority now): the parent chain `Proofs.SylowTheoremOQ01` → `Proofs.LagrangeTheoremOQ01OQ01` uses Mathlib names absent in v4.26.0 (e.g. `Nat.Prime.eq_of_dvd_of_prime`, `orderOf_eq_one_iff_eq_one`); a Mechanic pass would let downstream entries reuse that infrastructure, though this file no longer depends on it."
     ]
@@ -129,10 +143,10 @@
   ],
   "leanFile": {
     "namespace": "LagrangeOQ01OQ01OQ02",
-    "lineCount": 318,
+    "lineCount": 430,
     "axiomCount": 0,
-    "theoremCount": 14,
-    "definitionCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 2,
     "path": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
     "sorries": 0,
     "imports": [

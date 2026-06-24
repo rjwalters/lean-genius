@@ -9,10 +9,75 @@ each other, for each of the two cases" (cyclic case `p ∤ q-1`; non-cyclic case
 
 - **Abelian case: SOLVED & verified.** Every abelian group of order `pq` (any
   distinct primes `p ≠ q`) is cyclic, hence any two are isomorphic, each ≅
-  `Multiplicative (ZMod pq)`. Shipped in `Proofs/LagrangeTheoremOQ01OQ01OQ02.lean`
-  (7 theorems, 0 sorries, 0 axioms, Mathlib-only, kernel-verified standard triple).
-- **General cyclic case & non-abelian case: BLOCKED** on the parent Sylow
-  classification.
+  `Multiplicative (ZMod pq)`. Shipped in `Proofs/LagrangeTheoremOQ01OQ01OQ02.lean`.
+- **General cyclic case: SOLVED & verified** (Part IV, already merged). For
+  `¬p∣(q-1)` and `¬q∣(p-1)`, *every* group of order `pq` is cyclic (Sylow counting ⟹
+  both Sylow normal ⟹ nilpotent ⟹ squarefree Z-group ⟹ cyclic), so any two are
+  isomorphic (`pq_isCyclic`, `pq_cyclic_iso`). The knowledge.md "BLOCKED" note below
+  was stale — Part IV was added directly from Mathlib's Sylow/Z-group API, no parent.
+- **Non-abelian case: structural engine SOLVED & verified** (Part VI, Session 2). The
+  iso type of `N ⋊[φ] G` depends only on `φ.range`; two nontrivial prime-order action
+  maps with equal range give isomorphic products. Reduces the open non-abelian
+  uniqueness to two documented standard facts (internal recognition + common range).
+- File now: **18 theorems, 2 defs, 0 sorries, 0 axioms, Mathlib-only**, kernel-verified
+  standard `[propext, Classical.choice, Quot.sound]` triple.
+
+## Session 2026-06-24 (Session 2) — Non-abelian semidirect-product infrastructure
+
+**Mode**: DEPTH-FIRST (MODERATE) · **Outcome**: progress (verified, +4 thms +2 defs)
+
+### What I Did
+- Found knowledge.md stale: the file already contained Part IV (full cyclic case),
+  merged in `main`, despite knowledge.md marking it BLOCKED. Re-scoped to the only
+  genuinely open piece: the non-abelian `p∣(q-1)` uniqueness.
+- Discovered Mathlib already has `SemidirectProduct.congr` / `map`, so the bare
+  precomposition congruence is free. The substantive missing content is *range
+  uniqueness of the action map*.
+- Built and kernel-verified **Part VI** (range determines the semidirect product):
+  - `autOfRangeEq` (noncomputable def) + `autOfRangeEq_spec` + `exists_mulEquiv_comp_of_range_eq`:
+    two injective homs `f,g : Γ →* Δ` with `f.range = g.range` differ by a source
+    automorphism `α`, `g = f∘α`. Witness `Γ ≃* g.range ≃* f.range ≃* Γ` from
+    `MonoidHom.ofInjective` + `MulEquiv.subgroupCongr`.
+  - `semidirectProductIsoOfRangeEq` (noncomputable def): `N ⋊[g] Γ ≃* N ⋊[f] Γ` via
+    `SemidirectProduct.congr (MulEquiv.refl N) (autOfRangeEq …)`.
+  - `injective_of_prime_card`: nontrivial hom out of a prime-order group is injective
+    (ker divides `p` ⟹ `⊥` or `⊤`; `⊤` forces map `= 1`).
+  - `semidirectProductIso_of_nontrivial_range_eq` (capstone).
+
+### Key Findings / API
+- `MonoidHom.ofInjective hf : G ≃* f.range`; coe lemmas `MonoidHom.ofInjective_apply`
+  (`↑(ofInjective hf x) = f x`) and `MonoidHom.apply_ofInjective_symm`
+  (`f ((ofInjective hf).symm y) = ↑y`). Note: namespace is **MonoidHom**, not MulEquiv.
+- `MulEquiv.subgroupCongr (h : A = B) : A ≃* B`, with `subgroupCongr_apply` preserving coe.
+- `SemidirectProduct.congr (fn : N₁≃*N₂) (fg : G₁≃*G₂) (h : ∀ g, (φ₁ g).trans fn = fn.trans (φ₂ (fg g)))`.
+  With `fn = refl`, the condition reduces (via `MulEquiv.trans_refl`/`refl_trans` — or
+  `ext n; simp`) to `g x = f (α x)`.
+- `Subgroup.eq_bot_of_card_eq` uses dot notation `f.ker.eq_bot_of_card_eq h` (the
+  subgroup is the explicit first arg); plain `Subgroup.eq_bot_of_card_eq h` fails.
+- `Subgroup.card_subgroup_dvd_card (s) : Nat.card s ∣ Nat.card α`; `eq_top_of_card_eq`;
+  `MonoidHom.ker_eq_bot_iff`.
+
+### Build
+- Docker DOWN (old `docker info` hung; a background read failed exit 144). Host recipe:
+  `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean <abs path to file>` against the MAIN
+  repo's cached Mathlib oleans (worktree `proofs/.lake/packages` is empty). Iterated on
+  a `/tmp` scratch with `import Mathlib` first, then appended to the real file.
+- `#print axioms` inline (append `open NS in #print axioms thm` to a copy, recompile) —
+  all new decls = standard triple, no `sorryAx`/`ofReduceBool`.
+
+### Next Steps (to fully close non-abelian uniqueness)
+1. **Common range** (tractable): prove any two nontrivial `φ₁,φ₂ : ℤ/p →* Aut(ℤ/q)`
+   have equal range = unique order-`p` subgroup of cyclic `Aut(ℤ/q)`. Route: in a finite
+   cyclic `K`, two subgroups of equal card are equal — both ⊆ d-torsion
+   `ker(powMonoidHom d)` which has card ≤ d (`IsCyclic.card_pow_eq_one_le`), so an
+   order-d subgroup equals it (`Subgroup.eq_of_le_of_card_ge`). Needs Fintype/Nat.card
+   bridging for the torsion card. Then `Aut(ℤ/q) ≅ (ℤ/q)ˣ` cyclic for prime `q`.
+2. **Internal recognition** (harder, Mathlib gap): every non-cyclic order-`pq` group
+   `≃* ℤ/q ⋊[φ] ℤ/p`. No packaged normal-complement ⟹ internal-semidirect lemma.
+3. Feed 1+2 into `semidirectProductIso_of_nontrivial_range_eq` to finish.
+
+---
+### (Stale — superseded by the summary above) original Session-1 BLOCKED notes follow:
 
 ## Session 2026-06-23 (Session 1) — Abelian uniqueness, FRESH
 
