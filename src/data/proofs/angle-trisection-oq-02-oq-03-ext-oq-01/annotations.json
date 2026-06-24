@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "angle-trisection-oq-02-oq-03-ext-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "context",
+    "title": "The Prime 2 Gap in the Gauss–Wantzel Bridge",
+    "content": "By Gauss–Wantzel, a regular n-gon is constructible with ruler and compass iff φ(n) is a power of 2, i.e. n = 2^a × (product of distinct Fermat primes). The parent file established the arithmetic bridge plus multiplicativity of TotientIsPow2 across COPRIME factors — but that says nothing about the prime 2, which is never coprime to an even number. This file fills exactly that gap, isolating how the prime 2 (classically: angle bisection, the most elementary ruler-and-compass operation) acts on the constructibility predicate. The headline is doubling invariance: the 2n-gon is constructible iff the n-gon is.",
+    "mathContext": "Gauss–Wantzel: $n$-gon constructible $\\iff \\varphi(n)=2^k \\iff n = 2^a\\prod F_{i}$ (distinct Fermat primes).",
+    "significance": "context",
+    "relatedConcepts": ["Gauss–Wantzel theorem", "constructible polygon", "Euler totient", "Fermat primes", "angle bisection"],
+    "prerequisites": ["ruler-and-compass constructibility", "Euler's totient function"]
+  },
+  {
+    "id": "ann-def",
+    "proofId": "angle-trisection-oq-02-oq-03-ext-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 48
+    },
+    "type": "definition",
+    "title": "The Constructibility Predicate TotientIsPow2",
+    "content": "TotientIsPow2 n := ∃ k, φ(n) = 2^k is the arithmetic surrogate for constructibility of the regular n-gon (matching the parent file's definition). The whole file studies how this predicate behaves under multiplication by 2, so 'TotientIsPow2 n' should be read throughout as 'the regular n-gon is constructible'.",
+    "mathContext": "$\\mathrm{TotientIsPow2}(n) := \\exists k,\\ \\varphi(n)=2^k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler totient", "power of two", "existential predicate"],
+    "prerequisites": ["Nat.totient"]
+  },
+  {
+    "id": "ann-single-step",
+    "proofId": "angle-trisection-oq-02-oq-03-ext-oq-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 63
+    },
+    "type": "technique",
+    "title": "Section I — The Two Single-Step Totient Identities for p = 2",
+    "content": "Everything is driven by how φ behaves when one factor of 2 is added. For even n, φ(2n) = 2·φ(n) (totient_two_mul_of_even, a thin wrapper over Nat.totient_mul_of_prime_of_dvd). For odd n, φ(2n) = φ(n) (totient_two_mul_of_odd, from Nat.totient_mul_of_prime_of_not_dvd since the prime-2 contribution is (2−1) = 1). The split on parity here is what propagates through the entire development.",
+    "mathContext": "$2\\mid n \\Rightarrow \\varphi(2n)=2\\varphi(n)$;\\quad $2\\nmid n \\Rightarrow \\varphi(2n)=\\varphi(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicativity of totient", "Nat.totient_mul_of_prime_of_dvd", "parity", "prime factor"],
+    "prerequisites": ["Euler totient identities", "divisibility"]
+  },
+  {
+    "id": "ann-doubling",
+    "proofId": "angle-trisection-oq-02-oq-03-ext-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 108
+    },
+    "type": "insight",
+    "title": "Section II — The Doubling Invariance (the Heart)",
+    "content": "totient_pow2_double_iff: TotientIsPow2 (2n) ↔ TotientIsPow2 n, by parity case split. For odd n the predicate is literally unchanged (φ(2n) = φ(n)). For even n, φ(2n) = 2·φ(n), and the non-obvious forward direction is the arithmetic step 2·φ(n) = 2^k ⟹ k ≥ 1 ∧ φ(n) = 2^{k−1} (2 ∣ 2^k forces k ≥ 1; then pow_succ' + Nat.eq_of_mul_eq_mul_left strips the factor of 2). Geometrically the reverse direction constructible_double is angle bisection (n-gon ⟹ 2n-gon, the familiar move); the forward constructible_of_double is the sharp converse — bisecting backwards is not a ruler-and-compass step, yet the arithmetic forces it.",
+    "mathContext": "$\\mathrm{TotientIsPow2}(2n)\\iff\\mathrm{TotientIsPow2}(n)$; even case: $2\\varphi(n)=2^k\\Rightarrow k\\ge1,\\ \\varphi(n)=2^{k-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["angle bisection", "case split on parity", "Nat.eq_of_mul_eq_mul_left", "pow_succ", "iff (biconditional)"],
+    "prerequisites": ["the single-step identities", "powers of two divisibility"]
+  },
+  {
+    "id": "ann-2power",
+    "proofId": "angle-trisection-oq-02-oq-03-ext-oq-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 129
+    },
+    "type": "insight",
+    "title": "Section III — 2-Power Invariance and Reduction to the Odd Part",
+    "content": "totient_pow2_two_pow_mul_iff: TotientIsPow2 (2^a·n) ↔ TotientIsPow2 n, by induction on a — the successor step rewrites 2^{a+1}·n = 2·(2^a·n) and chains the doubling iff with the inductive hypothesis. totient_pow2_iff_odd_part: if n = 2^a·m then TotientIsPow2 n ↔ TotientIsPow2 m. Conclusion: constructibility of a regular polygon depends ONLY on the odd part of n — every factor of 2 is invisible to constructibility, exactly because bisection neither creates nor destroys it.",
+    "mathContext": "$\\mathrm{TotientIsPow2}(2^a n)\\iff\\mathrm{TotientIsPow2}(n)$; constructibility depends only on the odd part of $n$.",
+    "significance": "key",
+    "relatedConcepts": ["induction on exponent", "odd part of an integer", "2-adic valuation", "doubling invariance"],
+    "prerequisites": ["the doubling invariance", "induction"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "angle-trisection-oq-02-oq-03-ext-oq-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 158
+    },
+    "type": "concept",
+    "title": "Section IV — Whole 2-Power Towers at Once",
+    "content": "A single base computation propagates across an entire 2-power tower. φ(15) = 8 = 2^3 (totient_pow2_fifteen, by decide) ⟹ constructible_two_pow_mul_fifteen: every 2^a·15-gon is constructible (15, 30, 60, 120, …). Dually φ(7) = 6 = 2·3 with odd prime 3 ⟹ not_totient_pow2_seven (3 ∣ 2^k would force 3 ∣ 2 via Prime.dvd_of_dvd_pow, contradiction) ⟹ not_constructible_two_pow_mul_seven: NO 2^a·7-gon is ever constructible (7, 14, 28, 56, …). This is the sharp content of doubling invariance — bisection can never create constructibility. The two decide calls are plain kernel evaluation on closed naturals (not native_decide), so the file stays 0-axiom.",
+    "mathContext": "$\\varphi(15)=2^3\\Rightarrow 2^a\\cdot 15$ always constructible; $\\varphi(7)=2\\cdot 3\\Rightarrow 2^a\\cdot 7$ never constructible.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fermat primes (3, 5)", "Prime.dvd_of_dvd_pow", "decide (kernel evaluation)", "infinite families"],
+    "prerequisites": ["the 2-power invariance", "totient computations"]
+  }
+]
