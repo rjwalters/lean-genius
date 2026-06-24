@@ -1,0 +1,138 @@
+{
+  "id": "euler-totient-oq-01-oq-01-oq-01",
+  "title": "The Explicit Carmichael Function: λ(n) = lcm_p p^(k-1)(p-1) and λ(561)=80",
+  "slug": "euler-totient-oq-01-oq-01-oq-01",
+  "description": "Assembles the textbook closed form of Carmichael's function for odd n — λ(n) = lcm over primes p|n of p^(k_p-1)(p-1) — from Mathlib's factorization lemma and per-prime-power totient values, and computes concrete Carmichael-number data: λ(561) = lcm(2,10,16) = 80 with the Korselt witness 80 ∣ 560.",
+  "meta": {
+    "author": "Robert Carmichael (1910); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
+    "date": "1910 (Carmichael); 1899 (Korselt's criterion)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "carmichael-function",
+      "totient",
+      "carmichael-number",
+      "euler-theorem"
+    ],
+    "proofRepoPath": "Proofs/EulerTotientOQ01OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "lineCount": 136,
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.carmichael_factorization",
+        "description": "λ(n) = lcm over primeFactors of λ(p^{k_p}) — the literal factorization identity (the open question itself)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_pow_of_prime_ne_two",
+        "description": "λ(p^k) = φ(p^k) for odd primes p (the unit group is cyclic)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_mul",
+        "description": "λ(m·n) = lcm(λ(m), λ(n)) for coprime m, n (the parent's keystone, already in Mathlib)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "Nat.totient_prime_pow",
+        "description": "φ(p^k) = p^{k-1}(p-1) for prime p, k ≥ 1",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Finset.lcm_congr",
+        "description": "Congruence for Finset.lcm under a pointwise rewrite of the function",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      }
+    ],
+    "assumptions": [],
+    "definitionCount": 0
+  },
+  "parent": "euler-totient-oq-01-oq-01",
+  "openQuestion": "Complete the induction over the prime-power factorization to state λ(n) = lcm_i λ(p_i^{k_i}) as a single theorem.",
+  "significance": "Carmichael's function λ(n) is the sharp universal exponent in Euler's theorem: it is the least e with a^e ≡ 1 (mod n) for every a coprime to n, and it divides φ(n). The parent entry proved the keystone multiplicativity λ(m·n)=lcm(λ(m),λ(n)). The literal factorization identity λ(n)=lcm_i λ(p_i^{k_i}) requested by the open question turns out to be already present in Mathlib (carmichael_factorization), so this entry does not reprove it — instead it contributes the parts Mathlib leaves unassembled: (1) the explicit textbook closed form for odd n, λ(n) = lcm_{p|n} p^{k_p-1}(p-1), obtained by collapsing each odd prime-power factor λ(p^k)=φ(p^k) to its closed value; and (2) concrete Carmichael-number evaluations, notably λ(561)=80 for the first Carmichael number 561=3·11·17, together with the Korselt-style divisibility 80 ∣ 560 = 561−1 that explains why 561 is a Fermat pseudoprime to every base coprime to it.",
+  "overview": {
+    "historicalContext": "Robert Daniel Carmichael introduced the function λ(n) in 1910 as the 'reduced totient', the smallest exponent that works uniformly in Euler's congruence a^{φ(n)} ≡ 1 (mod n). It is the exponent of the unit group (ℤ/nℤ)ˣ. By the Chinese Remainder Theorem this group splits over the prime-power factors of n, so λ is determined by its prime-power values through an lcm. For odd prime powers the unit group is cyclic, giving λ(p^k)=φ(p^k)=p^{k-1}(p-1); the prime 2 is the lone exception, where (ℤ/2^kℤ)ˣ ≅ ℤ/2 × ℤ/2^{k-2} for k ≥ 3 and λ(2^k)=2^{k-2}. The function is central to A. Korselt's 1899 criterion for Carmichael numbers — composite n with a^{n-1} ≡ 1 for all a coprime to n — which holds precisely when n is squarefree and λ(n) ∣ n−1. The smallest such number is 561 = 3·11·17, with λ(561)=lcm(2,10,16)=80 dividing 560.",
+    "problemStatement": "State the prime-power factorisation law for the Carmichael function λ as a single theorem and assemble the explicit closed form, then evaluate it on concrete inputs including the first Carmichael number 561.",
+    "proofStrategy": "Mathlib's ArithmeticFunction.Carmichael (the exponent of (ℤ/nℤ)ˣ, the same function the parent file defines locally) already provides carmichael_factorization (λ(n)=lcm of λ(p^{k_p})), carmichael_mul (the parent's keystone multiplicativity), carmichael_pow_of_prime_ne_two (λ(p^k)=φ(p^k) for odd p), pow_carmichael (the universal exponent) and carmichael_dvd_totient (λ(n) ∣ φ(n)). This entry cites those and adds: (a) carmichael_odd_prime_pow, collapsing λ(p^k) to p^{k-1}(p-1) via Nat.totient_prime_pow; (b) carmichael_odd_eq_lcm_explicit, which rewrites carmichael_factorization through Finset.lcm_congr, using that every prime factor of an odd n is itself odd (hence ≠ 2) so each factor takes the explicit value; (c) carmichael_15, carmichael_561 and carmichael_561_dvd_560, evaluated by iterating carmichael_mul on coprime prime factors and reducing the resulting nested lcm by kernel computation (decide).",
+    "keyInsights": [
+      "The literal open question λ(n)=lcm_i λ(p_i^{k_i}) is already Mathlib's carmichael_factorization, so the honest contribution is the explicit assembled closed form and concrete data, not a re-proof",
+      "For odd n every prime factor is odd, so each per-factor value λ(p^k)=φ(p^k)=p^{k-1}(p-1) is the cyclic-group order — the prime 2 is the only obstruction to a single clean power formula, which is why the explicit statement is cleanest restricted to odd n",
+      "The Carmichael function is the SHARP constant in Euler's theorem: λ(n) ∣ φ(n) and a^{λ(n)} ≡ 1 for all coprime a, with λ generally much smaller than φ — e.g. λ(561)=80 versus φ(561)=320",
+      "Korselt's criterion reads off directly from the explicit formula: 561=3·11·17 is squarefree and λ(561)=lcm(2,10,16)=80 divides 561−1=560, so 561 is a Carmichael number (Fermat pseudoprime to every coprime base)",
+      "Iterating the coprime multiplicativity law over distinct primes turns Carmichael-value computation into a finite nested-lcm calculation that the Lean kernel discharges by decide"
+    ]
+  },
+  "sections": [
+    {
+      "id": "odd-prime-power-values",
+      "title": "Explicit Values on Odd Prime Powers",
+      "startLine": 49,
+      "endLine": 73,
+      "summary": "carmichael_odd_prime (λ(p)=p−1) and carmichael_odd_prime_pow (λ(p^k)=p^{k-1}(p-1)) specialise Mathlib's carmichael_pow_of_prime_ne_two and Nat.totient_prime_pow to give the cyclic-group closed form for odd prime powers."
+    },
+    {
+      "id": "explicit-closed-form",
+      "title": "The Explicit Closed Form for Odd n",
+      "startLine": 75,
+      "endLine": 102,
+      "summary": "carmichael_odd_eq_lcm_explicit assembles λ(n) = lcm_{p|n} p^{k_p-1}(p-1) for odd n, rewriting Mathlib's carmichael_factorization through Finset.lcm_congr and the fact that every prime factor of an odd number is odd."
+    },
+    {
+      "id": "euler-sharpened",
+      "title": "Euler's Theorem, Sharpened",
+      "startLine": 104,
+      "endLine": 118,
+      "summary": "Records the universal-exponent property a^{λ(n)}=1 (pow_carmichael) and the divisibility λ(n) ∣ φ(n) (carmichael_dvd_totient) as the headline corollaries motivating the Carmichael function."
+    },
+    {
+      "id": "concrete-evaluations",
+      "title": "Concrete Evaluations and the First Carmichael Number",
+      "startLine": 120,
+      "endLine": 136,
+      "summary": "carmichael_15 (=4), carmichael_561 (=80 for 561=3·11·17, the first Carmichael number) and carmichael_561_dvd_560 (the Korselt witness 80 ∣ 560), evaluated by iterating carmichael_mul and reducing nested lcm by decide."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry formalizes the explicit prime-power form of Carmichael's function as a verified (0 sorries, 0 axioms) gallery result. Rather than reprove the literal factorization identity λ(n)=lcm_i λ(p_i^{k_i}), which is already Mathlib's carmichael_factorization, it assembles the textbook closed form λ(n)=lcm_{p|n} p^{k_p-1}(p-1) for odd n and computes concrete data: λ(15)=4, and λ(561)=80 for the first Carmichael number 561=3·11·17 together with the Korselt witness 80 ∣ 560. The universal-exponent property and λ(n) ∣ φ(n) are recorded as the Euler-theorem corollaries.",
+    "implications": "Carmichael's function is the right exponent for primality testing, the structure of (ℤ/nℤ)ˣ, and the theory of Carmichael numbers. The explicit closed form makes λ computable from the factorization, and the 561 evaluation is the canonical example of how λ(n) ∣ n−1 characterises Carmichael numbers via Korselt's criterion — the gateway to Alford–Granville–Pomerance (there are infinitely many Carmichael numbers).",
+    "openQuestions": [
+      "State the full explicit formula including the prime 2 (the piecewise λ(2^k)=2^{k-1} for k≤2, 2^{k-2} for k≥3) to remove the oddness restriction.",
+      "Formalize Korselt's criterion in general: a squarefree composite n is a Carmichael number iff λ(n) ∣ n−1, and derive that every Carmichael number is a product of at least three distinct odd primes.",
+      "Compute λ for further Carmichael numbers (1105, 1729) and verify the Korselt divisibility uniformly."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "euler-totient-oq-01-oq-01",
+      "relationship": "Parent theorem",
+      "description": "The parent proves the keystone multiplicativity λ(m·n)=lcm(λ(m),λ(n)); this entry iterates it over the full factorization and assembles the explicit closed form, answering the parent's first open question."
+    },
+    {
+      "proofId": "euler-totient-oq-01",
+      "relationship": "Grandparent theorem",
+      "description": "Establishes λ(n) ∣ φ(n), the divisibility that makes the Carmichael function a sharp refinement of Euler's totient in Euler's theorem."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "ArithmeticFunction"
+    ],
+    "namespace": "EulerTotientOQ01OQ01OQ01",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/EulerTotientOQ01OQ01OQ01.lean"
+  }
+}
