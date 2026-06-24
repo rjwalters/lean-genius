@@ -95,10 +95,10 @@ theorem blocked_monotone {A B B' : Set Point} (hsub : B ⊆ B')
 /-- The plane `ℝ²` is infinite: the map `t ↦ (t, 0)` (via `EuclideanSpace.single`)
     is an injection from `ℝ`. -/
 instance : Infinite Point :=
-  Infinite.of_injective (fun a : ℝ => EuclideanSpace.single (0 : Fin 2) a) (by
-    intro a b h
+  Infinite.of_injective (fun a : ℝ => EuclideanSpace.single (0 : Fin 2) a) (fun a b h => by
+    have hb : EuclideanSpace.single (0 : Fin 2) a = EuclideanSpace.single (0 : Fin 2) b := h
     have h0 : (EuclideanSpace.single (0 : Fin 2) a) 0
-            = (EuclideanSpace.single (0 : Fin 2) b) 0 := by rw [h]
+            = (EuclideanSpace.single (0 : Fin 2) b) 0 := by rw [hb]
     simpa [EuclideanSpace.single_apply] using h0)
 
 /-- **Padding lemma.** Any finite obstacle set `B` disjoint from `A` can be enlarged

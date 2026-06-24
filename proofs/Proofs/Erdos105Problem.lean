@@ -34,7 +34,7 @@ Tags: discrete-geometry, incidence-geometry, counterexample, disproved
 -/
 
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace
+import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
 import Mathlib.Data.Finset.Card
 import Mathlib.Tactic
 
@@ -117,7 +117,7 @@ theorem erdos_105_disproved : ¬ErdosPurdyConjecture := by
 
 /- ## Part IV: Related Results -/
 
-/-- **Hickerson's Construction:**
+/- **Hickerson's Construction:**
     The conjecture already fails with n-2 obstacles.
     This shows n-3 is the "critical" case (if the conjecture were true). -/
 /-- **Beck-Szemerédi-Trotter Positive Result:**
@@ -132,12 +132,13 @@ axiom beck_szemeredi_trotter_positive :
 
 /- ## Part V: The Szemerédi-Trotter Theorem -/
 
+open scoped Classical in
 /-- The number of point-line incidences.
     I(P, L) = |{(p, ℓ) : p ∈ P, ℓ ∈ L, p ∈ ℓ}|. -/
 noncomputable def incidenceCount (P : Finset Point) (L : Finset Line) : ℕ :=
   (P ×ˢ L).filter (fun (p, ℓ) => ℓ.contains p) |>.card
 
-/-- **Szemerédi-Trotter Theorem (1983):**
+/- **Szemerédi-Trotter Theorem (1983):**
     For n points and m lines in ℝ², the number of incidences is
     O(n^(2/3) m^(2/3) + n + m).
 
@@ -158,7 +159,7 @@ theorem many_rich_lines_exist (A : Finset Point) (hncoll : NonCollinear (A : Set
   have hp_on : L.contains p := ⟨0, by simp [L, Line.contains, zero_smul, add_zero]⟩
   have hq_on : L.contains q := ⟨1, by simp [L, Line.contains, one_smul, add_sub_cancel]⟩
   have hrich : L.isRich (A : Set Point) :=
-    ⟨p, q, Finset.mem_coe.mpr hp, Finset.mem_coe.mpr hq, Ne.symm hpq, hp_on, hq_on⟩
+    ⟨p, q, Finset.mem_coe.mpr hp, Finset.mem_coe.mpr hq, hpq, hp_on, hq_on⟩
   exact ⟨1, le_refl 1, {L}, Finset.card_singleton L, fun L' hL' => by
     rw [Finset.mem_singleton.mp hL']; exact hrich⟩
 
@@ -183,8 +184,8 @@ noncomputable def thresholdFunction (n : ℕ) : ℕ :=
     NonCollinear (A : Set Point) →
     ∃ L : Line, L.richAndUnblocked (A : Set Point) (B : Set Point)}
 
-/-- **Lower bound:** f(n) ≥ c·n for some c > 0. -/
-/-- **Upper bound:** f(n) ≤ n - 4 (from Xichuan's counterexample). -/
+/- **Lower bound:** f(n) ≥ c·n for some c > 0. -/
+/- **Upper bound:** f(n) ≤ n - 4 (from Xichuan's counterexample). -/
 /- ## Part VII: Open Problems -/
 
 /-- **Open Problem 1:** Does the conjecture hold with n-4 obstacles? -/
