@@ -161,5 +161,6 @@
     "openQuestions": [
       "Derive the catenary arc-length formula ∫_0^b √(1 + t²) dt = ½(b√(1+b²) + arsinh b) via the arsinh substitution."
     ]
-  }
+  },
+  "description": "The antiderivative of 1/√(1+x²) is the inverse hyperbolic sine: ∫ 1/√(1+x²) dx = arsinh x + C = log(x+√(1+x²)) + C. Starting from Mathlib's hasDerivAt_arsinh, this capstone supplies the antiderivative fact and integrability API, the FTC evaluation ∫_a^b = arsinh b − arsinh a, its logarithmic closed form, the normalised ∫_0^b = log(b+√(1+b²)), the symmetric-interval doubling ∫_{-a}^a = 2·arsinh a, and two concrete values (∫_0^{3/4} = log 2, ∫_0^{4/3} = log 3) that use the (3,4,5) triple to rationalise the surd. Fully verified, 0 axioms, 0 sorries."
 }
