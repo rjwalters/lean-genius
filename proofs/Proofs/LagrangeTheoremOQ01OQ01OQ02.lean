@@ -343,18 +343,22 @@ theorem order_15_iso {G H : Type*} [Group G] [Group H] [Fintype G] [Fintype H]
     action maps from a prime-order group with equal range give isomorphic semidirect
     products.
 
-  **What remains for full non-abelian uniqueness** (two documented standard facts, both
-  outside the scope verified here):
-  1. *Internal recognition*: every non-cyclic group of order `pq` is `≃*` to some
-     `ℤ/q ⋊[φ] ℤ/p` with `φ` nontrivial. Mathlib lacks a packaged normal-complement ⟹
-     internal-semidirect-product lemma for this.
-  2. *Common range*: any two nontrivial `φ₁, φ₂ : ℤ/p →* Aut(ℤ/q)` have equal range —
-     the unique order-`p` subgroup of the cyclic group `Aut(ℤ/q) ≅ (ℤ/q)ˣ` (which has
-     order `q-1`, divisible by `p` exactly in this branch). This is the uniqueness of
-     subgroups of given order in a cyclic group.
+  **What remains for full non-abelian uniqueness** (both facts are now closed below;
+  see Parts VII and VIII):
+  1. *Internal recognition* (**RESOLVED in Part VIII**): every group of order `pq`
+     (`p < q`) is `≃*` to an internal semidirect product `Q ⋊ P` of its Sylow
+     subgroups (`Q` the normal Sylow `q`-subgroup). See
+     `exists_internalSemidirect_of_card_pq`, built on Mathlib's
+     `SemidirectProduct.mulEquivSubgroup`.
+  2. *Common range* (**RESOLVED in Part VII**): any two nontrivial `φ₁, φ₂ : ℤ/p →*
+     Aut(ℤ/q)` have equal range — the unique order-`p` subgroup of the cyclic group
+     `Aut(ℤ/q) ≅ (ℤ/q)ˣ`. See `range_eq_of_nontrivial_prime_card`.
 
   Given (1) and (2), `semidirectProductIso_of_nontrivial_range_eq` closes the
-  non-abelian case. This part delivers the reusable middle link with `0` sorries and
+  non-abelian case; Part VII supplies (2) and the hypothesis-free capstone
+  `semidirectProductIso_of_nontrivial_into_cyclic`, Part VIII supplies (1). The only
+  residual mathematical input is that the conjugation action is *nontrivial* in the
+  non-cyclic case. This part delivers the reusable middle link with `0` sorries and
   `0` axioms.
 -/
 
@@ -426,5 +430,149 @@ theorem semidirectProductIso_of_nontrivial_range_eq {N : Type*} [Group N] [Finty
     Nonempty (SemidirectProduct N Γ g ≃* SemidirectProduct N Γ f) :=
   ⟨semidirectProductIsoOfRangeEq (injective_of_prime_card hp hcard hf)
     (injective_of_prime_card hp hcard hg) hr⟩
+
+/-
+  ## Part VII — Common range: discharging the hypothesis of Part VI's capstone.
+
+  Part VI's `semidirectProductIso_of_nontrivial_range_eq` *assumes* `f.range = g.range`.
+  Here we **prove** that hypothesis for the case relevant to `pq`-groups: when the
+  target `K` (`= Aut N`) is a finite **cyclic** group, any two nontrivial maps out of
+  a group of prime order automatically have equal range. This settles the second of
+  the two "documented standard facts" listed at the top of Part VI (*common range*),
+  leaving only *internal recognition* (the Mathlib normal-complement gap) for full
+  non-abelian uniqueness.
+
+  The engine is **uniqueness of subgroups of a given order in a cyclic group**: every
+  subgroup `H` of a finite cyclic `K` equals the `(Nat.card H)`-torsion subgroup
+  `(powMonoidHom (Nat.card H)).ker` — the unique subgroup of that order. Indeed `H` is
+  contained in it (`h ^ (Nat.card H) = 1` for `h ∈ H`, Lagrange) and that torsion
+  subgroup has card `gcd(|K|, Nat.card H) = Nat.card H`, so the inclusion is an
+  equality (`Subgroup.eq_of_le_of_card_ge`). The torsion-card computation is Mathlib's
+  `IsCyclic.card_powMonoidHom_ker`. Hence two subgroups of equal order coincide, and
+  the two prime-order ranges (both `≅ Γ` via `MonoidHom.ofInjective`) are equal.
+-/
+
+section CommonRange
+
+variable {K : Type*} [CommGroup K] [Finite K] [IsCyclic K]
+
+/-- **Subgroups of a finite cyclic group are pinned down by their order.** A subgroup
+    `H` of a finite cyclic group equals the `(Nat.card H)`-torsion subgroup
+    `(powMonoidHom (Nat.card H)).ker`, the unique subgroup of that order. -/
+theorem subgroup_eq_powMonoidHom_ker (H : Subgroup K) :
+    H = (powMonoidHom (Nat.card H) : K →* K).ker := by
+  have hdvd : Nat.card H ∣ Nat.card K := Subgroup.card_subgroup_dvd_card H
+  have hcardker : Nat.card (powMonoidHom (Nat.card H) : K →* K).ker = Nat.card H := by
+    rw [IsCyclic.card_powMonoidHom_ker, Nat.gcd_eq_right_iff_dvd.2 hdvd]
+  have hle : H ≤ (powMonoidHom (Nat.card H) : K →* K).ker := by
+    intro x hx
+    rw [MonoidHom.mem_ker, powMonoidHom_apply]
+    have h1 : (⟨x, hx⟩ : H) ^ Nat.card H = 1 := pow_card_eq_one'
+    have h2 := congrArg (Subgroup.subtype H) h1
+    rw [map_pow, map_one] at h2
+    simpa using h2
+  exact Subgroup.eq_of_le_of_card_ge hle (le_of_eq hcardker)
+
+/-- **Uniqueness of subgroups of given order in a cyclic group.** Two subgroups of a
+    finite cyclic group with the same cardinality are equal. -/
+theorem subgroup_eq_of_card_eq {H₁ H₂ : Subgroup K} (h : Nat.card H₁ = Nat.card H₂) :
+    H₁ = H₂ := by
+  rw [subgroup_eq_powMonoidHom_ker H₁, subgroup_eq_powMonoidHom_ker H₂, h]
+
+/-- **Common range.** Any two *nontrivial* homomorphisms from a group of prime order
+    into a finite cyclic group have the same range — both are the unique subgroup of
+    order `p` of the cyclic target. This discharges the `f.range = g.range` hypothesis
+    of `semidirectProductIso_of_nontrivial_range_eq`. -/
+theorem range_eq_of_nontrivial_prime_card [Fintype Γ]
+    {p : ℕ} (hp : p.Prime) (hcard : Fintype.card Γ = p)
+    {f g : Γ →* K} (hf : f ≠ 1) (hg : g ≠ 1) :
+    f.range = g.range := by
+  have hif : Function.Injective f := injective_of_prime_card hp hcard hf
+  have hig : Function.Injective g := injective_of_prime_card hp hcard hg
+  apply subgroup_eq_of_card_eq
+  rw [(Nat.card_congr (MonoidHom.ofInjective hif).toEquiv).symm,
+      (Nat.card_congr (MonoidHom.ofInjective hig).toEquiv).symm]
+
+/-- **Capstone (hypothesis-free, cyclic-`Aut` case).** When `Aut N` is finite cyclic,
+    *any* two nontrivial action maps from a group of prime order `p` give isomorphic
+    semidirect products — no equal-range hypothesis required, since Part VII supplies
+    it automatically. Combined with internal recognition (every non-cyclic group of
+    order `pq` is such a semidirect product), this pins the non-abelian isomorphism
+    class of groups of order `pq`: `Aut (ℤ/q) ≅ (ℤ/q)ˣ` is cyclic for prime `q`. -/
+theorem semidirectProductIso_of_nontrivial_into_cyclic {N : Type*} [Group N]
+    [Finite (MulAut N)] [IsCyclic (MulAut N)] [Fintype Γ]
+    {p : ℕ} (hp : p.Prime) (hcard : Fintype.card Γ = p)
+    {f g : Γ →* MulAut N} (hf : f ≠ 1) (hg : g ≠ 1) :
+    Nonempty (SemidirectProduct N Γ g ≃* SemidirectProduct N Γ f) := by
+  letI : CommGroup (MulAut N) := IsCyclic.commGroup
+  exact semidirectProductIso_of_nontrivial_range_eq hp hcard hf hg
+    (range_eq_of_nontrivial_prime_card hp hcard hf hg)
+
+end CommonRange
+
+/-
+  ## Part VIII — Internal recognition: every group of order `pq` (`p < q`) is an
+  internal semidirect product `Q ⋊ P` with `Q` the *normal* Sylow `q`-subgroup.
+
+  This supplies the *first* of Part VI's two standard facts — internal recognition —
+  the one previously flagged as a Mathlib gap. In fact Mathlib provides the missing
+  link, `SemidirectProduct.mulEquivSubgroup`, which turns a normal subgroup together
+  with a complement into an internal semidirect product `H ⋊ K ≃* G`. For `|G| = pq`
+  with `p < q`:
+
+  - the Sylow `q`-subgroup is **normal** — its count divides `p` and is `≡ 1 (mod q)`,
+    forcing `1` because `q > p` (so `q ∤ (p-1)` automatically), via `pq_card_sylow_one`
+    with the two primes swapped;
+  - the Sylow `p`-subgroup is a **complement** of coprime order
+    (`|Q|·|P| = q·p = |G|`, `gcd(q,p)=1`), via `Subgroup.isComplement'_of_coprime`;
+  - `mulEquivSubgroup` then assembles `G ≃* Q ⋊ P`.
+
+  With Part VII (common range) and Part VI (range determines the product), the
+  structural reduction of non-abelian `pq`-uniqueness is now backed by lemmas all in
+  hand; the only residual mathematical input is that the conjugation action is
+  *nontrivial* in the non-cyclic case (a trivial action would make `G ≅ Q × P` cyclic).
+-/
+
+/-- **Internal semidirect recognition for groups of order `pq`.** For primes `p < q`
+    with `|G| = pq`, `G` is (isomorphic to) an internal semidirect product `Q ⋊ P` of
+    its Sylow subgroups, with `Q` the normal Sylow `q`-subgroup (`|Q| = q`) and `P` a
+    Sylow `p`-subgroup (`|P| = p`). This discharges the *internal recognition* fact
+    that Part VI listed as a Mathlib gap, using `SemidirectProduct.mulEquivSubgroup`. -/
+theorem exists_internalSemidirect_of_card_pq {G : Type*} [Group G] [Fintype G]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpltq : p < q)
+    (hcard : Fintype.card G = p * q) :
+    ∃ (Q P : Subgroup G) (_ : Q.Normal) (φ : P →* MulAut Q),
+      Nat.card Q = q ∧ Nat.card P = p ∧
+        Nonempty (SemidirectProduct Q P φ ≃* G) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : Fact q.Prime := ⟨hq⟩
+  have hpq : p ≠ q := Nat.ne_of_lt hpltq
+  have hpnq : ¬ p ∣ q := fun h => hpq ((Nat.prime_dvd_prime_iff_eq hp hq).mp h)
+  have hqnp : ¬ q ∣ p := fun h => absurd (Nat.le_of_dvd hp.pos h) (by omega)
+  set Q := (default : Sylow q G) with hQ
+  set P := (default : Sylow p G) with hP
+  -- Cardinalities of the two Sylow subgroups.
+  have hcardP : Nat.card (P : Subgroup G) = p := by
+    rw [hP, Sylow.card_eq_multiplicity, Nat.card_eq_fintype_card, hcard,
+        Nat.factorization_mul hp.pos.ne' hq.pos.ne', Finsupp.add_apply,
+        hp.factorization_self, Nat.factorization_eq_zero_of_not_dvd hpnq, add_zero, pow_one]
+  have hcardQ : Nat.card (Q : Subgroup G) = q := by
+    rw [hQ, Sylow.card_eq_multiplicity, Nat.card_eq_fintype_card, hcard,
+        Nat.factorization_mul hp.pos.ne' hq.pos.ne', Finsupp.add_apply,
+        Nat.factorization_eq_zero_of_not_dvd hqnp, hq.factorization_self, zero_add, pow_one]
+  -- The Sylow `q`-subgroup is unique (count `≡ 1 mod q` divides `p`, and `q > p`),
+  -- hence normal.
+  have hsylowq : Nat.card (Sylow q G) = 1 :=
+    pq_card_sylow_one (p := q) (q := p) hp (Ne.symm hpq) (by rw [hcard]; ring)
+      (by intro h; have := Nat.le_of_dvd (by have := hp.two_le; omega) h; omega)
+  haveI : Subsingleton (Sylow q G) := (Nat.card_eq_one_iff_unique.mp hsylowq).1
+  haveI hQnormal : (Q : Subgroup G).Normal := Sylow.normal_of_subsingleton Q
+  -- `P` is a complement of `Q` (coprime orders multiplying to `|G|`).
+  have hcompl : (Q : Subgroup G).IsComplement' (P : Subgroup G) := by
+    apply Subgroup.isComplement'_of_coprime
+    · rw [hcardQ, hcardP, Nat.card_eq_fintype_card, hcard]; ring
+    · rw [hcardQ, hcardP]; exact (Nat.coprime_primes hq hp).mpr (Ne.symm hpq)
+  exact ⟨(Q : Subgroup G), (P : Subgroup G), hQnormal, _, hcardQ, hcardP,
+    ⟨SemidirectProduct.mulEquivSubgroup hcompl⟩⟩
 
 end LagrangeOQ01OQ01OQ02

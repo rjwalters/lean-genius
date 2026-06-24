@@ -31,14 +31,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (verified, self-contained, 18 thms / 2 defs / 0 sorries / 0 axioms, Mathlib-only). Abelian + FULL CYCLIC isomorphism uniqueness both complete (every group of order pq with ¬p∣q-1 is cyclic ≅ ℤ/pq). Session 2 added Part VI: the non-abelian structural engine — the iso type of N ⋊[φ] G depends only on φ.range, so two nontrivial prime-order action maps with equal range give isomorphic products (semidirectProductIsoOfRangeEq / semidirectProductIso_of_nontrivial_range_eq). Remaining for full non-abelian uniqueness: internal recognition (Mathlib gap) + common range of nontrivial ℤ/p-actions on ℤ/q (cyclic subgroup uniqueness).",
+    "progressSummary": "PROGRESS: Parts VII (common range) + VIII (internal recognition) close BOTH standard facts Part VI left open for non-abelian pq-uniqueness. exists_internalSemidirect_of_card_pq gives G≃*Q⋊P; common-range pins the action's range. Only residual: the conjugation action is nontrivial in the non-cyclic case (else G cyclic). File: 23 thm, 2 def, 0 sorry, 0 axiom, verified.",
     "builtItems": [
       "pq_abelian_isCyclic (LagrangeTheoremOQ01OQ01OQ02.lean): any CommGroup of order pq is cyclic (no divisibility hyp) via Cauchy exists_prime_orderOf_dvd_card + Commute.orderOf_mul_eq_mul_orderOf_of_coprime + isCyclic_of_orderOf_eq_card",
       "pq_abelian_iso, pq_abelian_iso_zmod: any two abelian order-pq groups isomorphic, each ≅ Multiplicative (ZMod pq), via mulEquivOfCyclicCardEq + zmodCyclicMulEquiv",
       "Concrete: order_6/15/35_abelian_unique (≅ ℤ/n), order_15_abelian_pair. Kernel-verified standard triple, 0 axioms",
       "Part VI semidirectProductIsoOfRangeEq (LagrangeTheoremOQ01OQ01OQ02.lean): if f,g : Γ →* MulAut N are injective with f.range = g.range then N ⋊[g] Γ ≃* N ⋊[f] Γ — iso type determined by the action map IMAGE. Via SemidirectProduct.congr (refl N) (autOfRangeEq …).",
       "autOfRangeEq / exists_mulEquiv_comp_of_range_eq: two injective homs with equal range differ by a source automorphism α (g = f∘α); witness Γ ≃* g.range ≃* f.range ≃* Γ from MonoidHom.ofInjective + MulEquiv.subgroupCongr.",
-      "injective_of_prime_card: nontrivial hom out of a prime-order group is injective (ker ∣ p ⟹ ⊥ or ⊤). Capstone semidirectProductIso_of_nontrivial_range_eq combines it with the range-iso."
+      "injective_of_prime_card: nontrivial hom out of a prime-order group is injective (ker ∣ p ⟹ ⊥ or ⊤). Capstone semidirectProductIso_of_nontrivial_range_eq combines it with the range-iso.",
+      "subgroup_eq_powMonoidHom_ker in LagrangeTheoremOQ01OQ01OQ02.lean (subgroup of finite cyclic group = its order's torsion subgroup)",
+      "subgroup_eq_of_card_eq (uniqueness of subgroups of given order in a cyclic group)",
+      "range_eq_of_nontrivial_prime_card (common range of nontrivial prime-order maps into a cyclic group)",
+      "semidirectProductIso_of_nontrivial_into_cyclic (hypothesis-free capstone for cyclic Aut)",
+      "exists_internalSemidirect_of_card_pq in LagrangeTheoremOQ01OQ01OQ02.lean (G of order pq ≃* internal Q⋊P, verified 0-axiom)"
     ],
     "insights": [
       "Mathlib mulEquivOfCyclicCardEq (Cyclic.lean:787) upgrades IsCyclic-level classification to genuine MulEquiv from equal Nat.card — short but is the count→isomorphism step",
@@ -48,7 +53,9 @@
       "BLOCKER: parent chain Proofs.SylowTheoremOQ01 → LagrangeTheoremOQ01OQ01 does NOT compile on Mathlib v4.26.0 — uses removed/renamed names Nat.Prime.eq_of_dvd_of_prime and orderOf_eq_one_iff_eq_one (confirmed absent from Mathlib source; 14 deterministic errors). The parent entry is marked verified but is stale → Mechanic repair needed. This file therefore imports ONLY Mathlib and delivers the abelian case independently.",
       "Mathlib SemidirectProduct.congr/map already give the bare precomposition congruence — the real content for non-abelian pq uniqueness is RANGE UNIQUENESS of the action map, not the congruence itself.",
       "MonoidHom.ofInjective (NOT MulEquiv.ofInjective) : G ≃* f.range; coe lemmas MonoidHom.ofInjective_apply and MonoidHom.apply_ofInjective_symm. Subgroup.eq_bot_of_card_eq needs dot notation f.ker.eq_bot_of_card_eq.",
-      "Non-abelian uniqueness now reduced to two standard facts: (1) internal recognition G ≃* ℤ/q ⋊ ℤ/p (Mathlib lacks normal-complement ⟹ internal semidirect), (2) all nontrivial ℤ/p → Aut(ℤ/q) share the unique order-p subgroup of cyclic Aut(ℤ/q)."
+      "Non-abelian uniqueness now reduced to two standard facts: (1) internal recognition G ≃* ℤ/q ⋊ ℤ/p (Mathlib lacks normal-complement ⟹ internal semidirect), (2) all nontrivial ℤ/p → Aut(ℤ/q) share the unique order-p subgroup of cyclic Aut(ℤ/q).",
+      "Common-range fact PROVED (Part VII): two nontrivial homs from a prime-order group into a finite CYCLIC target have equal range, via uniqueness of subgroups of given order in a cyclic group (every order-d subgroup = (powMonoidHom d).ker, the d-torsion). This discharges fact (2) of Part VI's capstone; new hypothesis-free capstone semidirectProductIso_of_nontrivial_into_cyclic needs only [IsCyclic (MulAut N)].",
+      "Internal recognition PROVED (Part VIII): every group of order pq (p<q) is ≃* an internal semidirect product Q⋊P of its Sylow subgroups (Q normal Sylow-q, |Q|=q; P Sylow-p, |P|=p), via Mathlib's SemidirectProduct.mulEquivSubgroup + isComplement'_of_coprime + pq_card_sylow_one (swapped primes give q-Sylow normal since q>p). This was the 'Mathlib gap' fact (1) of Part VI — Mathlib DID have mulEquivSubgroup. Both standard facts of Part VI now closed; only residual is nontriviality of the action in the non-cyclic case."
     ],
     "mathlibGaps": [
       "No Mathlib lemma recognizing an internal semidirect product from a normal subgroup + complement (needed for nonabelian uniqueness)",

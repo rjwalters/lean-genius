@@ -128,3 +128,85 @@ each other, for each of the two cases" (cyclic case `p ∤ q-1`; non-cyclic case
    ApproachB `actionHom` infrastructure; show all nontrivial actions give isomorphic
    products. Mathlib has `SemidirectProduct.mulEquivSubgroup` for the internal
    recognition but lacks a normal-complement → semidirect lemma packaged for this.
+
+---
+## Session 2026-06-24 (Session 3, researcher-1) — Common range (Part VII)
+
+**Mode**: DEPTH-FIRST (RICH) · **Outcome**: progress (verified, +4 thms, 0 axioms)
+
+### What I Did
+Closed **fact (2) — "common range"** from Part VI's open-items list. Part VI's
+capstone `semidirectProductIso_of_nontrivial_range_eq` took `f.range = g.range` as a
+hypothesis; Part VII now **proves** it whenever the target is finite cyclic.
+
+New theorems (all standard-triple, 0 axioms):
+- `subgroup_eq_powMonoidHom_ker`: in a finite cyclic group, any subgroup `H` equals the
+  `(Nat.card H)`-torsion subgroup `(powMonoidHom (Nat.card H)).ker` — the unique
+  subgroup of that order.
+- `subgroup_eq_of_card_eq`: uniqueness of subgroups of given order in a cyclic group.
+- `range_eq_of_nontrivial_prime_card`: two nontrivial homs from a prime-order group into
+  a finite cyclic group have equal range.
+- `semidirectProductIso_of_nontrivial_into_cyclic`: hypothesis-free capstone — needs
+  only `[IsCyclic (MulAut N)]` (true for `Aut(ℤ/q) ≅ (ℤ/q)ˣ`, `q` prime).
+
+### Key API
+- `IsCyclic.card_powMonoidHom_ker [CommGroup G] [IsCyclic G] [Finite G] (d) :
+  Nat.card (powMonoidHom d).ker = (Nat.card G).gcd d`. The d-torsion `{x | xᵈ=1}` is a
+  *packaged* `Subgroup` (the ker of `powMonoidHom`), which is what makes the uniqueness
+  argument clean — no need to hand-build the torsion subgroup.
+- `Nat.gcd_eq_right_iff_dvd.2 : d ∣ n → n.gcd d = d`.
+- `Subgroup.eq_of_le_of_card_ge (hle : H ≤ K) (Nat.card K ≤ Nat.card H) : H = K`.
+- `IsCyclic.commGroup` is a `def` (not instance), reuses the ambient `Group`, so
+  `letI := IsCyclic.commGroup` to get `powMonoidHom` causes no diamond.
+- `pow_card_eq_one'` (no Fintype needed, uses `Nat.card`); project from subgroup via
+  `congrArg H.subtype` then `rw [map_pow, map_one]` (NOT `simpa using congrArg …`, which
+  over-simplifies the raw term to `True`).
+
+### Remaining gap (only one left for full non-abelian uniqueness)
+**Internal recognition**: every non-cyclic group of order `pq` is `≃*` to some
+`ℤ/q ⋊[φ] ℤ/p` with `φ` nontrivial. Mathlib lacks a packaged normal-complement ⟹
+internal-semidirect-product lemma. With this, the cyclic-`Aut` capstone closes the
+non-abelian case entirely.
+
+### Build
+Docker DOWN. Host recipe: `cd <main>/proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+<abs path to worktree file>` (worktree `.lake/packages` empty → reuse main's Mathlib
+cache). Axiom check: append `open NS in #print axioms thm` to a `/tmp` copy, recompile.
+
+---
+## Session 2026-06-24 (Session 3 cont., researcher-1) — Internal recognition (Part VIII)
+
+**Mode**: DEPTH-FIRST (RICH) · **Outcome**: progress (verified, +1 thm, 0 axioms)
+
+### What I Did
+Closed **fact (1) — "internal recognition"** from Part VI's open-items list, the one
+previously flagged as a Mathlib gap. **Mathlib actually has the missing link**:
+`SemidirectProduct.mulEquivSubgroup {H K : Subgroup G} [H.Normal] (h : H.IsComplement' K)
+: H ⋊[φ] K ≃* G` (φ = the normalizer action). New theorem:
+- `exists_internalSemidirect_of_card_pq`: for primes `p < q` with `|G| = pq`, `G` is
+  `≃*` an internal semidirect product `Q ⋊ P` of its Sylow subgroups, `Q` the normal
+  Sylow-`q` subgroup (`|Q|=q`), `P` Sylow-`p` (`|P|=p`).
+
+### Key API / technique
+- `Subgroup.isComplement'_of_coprime [Finite G] (|H|·|K| = |G|) (Coprime |H| |K|) :
+  H.IsComplement' K`.
+- q-Sylow normality: reuse the file's own `pq_card_sylow_one` with **primes swapped**
+  (`p := q, q := p`); the side hypothesis `¬ q ∣ (p-1)` is automatic for `p < q`
+  (`0 < p-1 < q` ⟹ `Nat.le_of_dvd` contradiction). Then
+  `Sylow.normal_of_subsingleton` (from `Nat.card (Sylow q G) = 1`).
+- Sylow cardinalities: replicate the existing `hcardP` chain
+  (`Sylow.card_eq_multiplicity` → `Nat.factorization_mul` → `factorization_self` /
+  `factorization_eq_zero_of_not_dvd`). For q-Sylow the nonzero term is second, so use
+  `zero_add` (vs `add_zero` for p-Sylow).
+- The existential's `φ` is left as `_` and unifies with `mulEquivSubgroup`'s fixed
+  normalizer action; the `[Q.Normal]` instance (haveI) feeds `mulEquivSubgroup`.
+- Built clean **first try**; `#print axioms` = standard triple only (0-axiom).
+
+### State of the non-abelian thread (BOTH Part VI standard facts now closed)
+- Part VI: range determines the semidirect product (`semidirectProductIso_*`).
+- Part VII: **common range** (`range_eq_of_nontrivial_prime_card`).
+- Part VIII: **internal recognition** (`exists_internalSemidirect_of_card_pq`).
+Only residual mathematical input for *full* uniqueness: the conjugation action is
+**nontrivial** in the non-cyclic case (a trivial action ⟹ `G ≅ Q × P` cyclic). With
+that, `semidirectProductIso_of_nontrivial_into_cyclic` (needs `IsCyclic (MulAut Q)`,
+true since `Aut(ℤ/q) ≅ (ℤ/q)ˣ` cyclic for prime `q`) finishes — a clean next session.
