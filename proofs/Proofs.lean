@@ -3698,6 +3698,7 @@ import Proofs.SylowTheorem
 import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
 import Proofs.SylowTheoremOQ02Orbit
+import Proofs.SylowTheoremOQ02OQ01Nilpotent
 import Proofs.SylowTheoremOQ03
 import Proofs.SylowTheoremOQ03OQ02
 import Proofs.SylowTheoremSchurZassenhausOQ03
