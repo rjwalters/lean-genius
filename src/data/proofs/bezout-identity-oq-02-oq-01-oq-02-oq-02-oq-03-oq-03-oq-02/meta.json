@@ -39,7 +39,9 @@
     "keyInsights": [
       "EuclideanDomain ⟹ PID ⟹ UFD is pure typeclass plumbing once the parent's Euclidean structure is available as a local instance; the uniform family means one derivation covers both classical rings.",
       "The arithmetic content is the norm: multiplicativity converts a factorization in ℤ[√d] into a factorization of the integer |N(z)|, and |N(·)| = 1 ⟺ unit makes prime norm force irreducibility.",
-      "irreducible_of_prime_norm needs no hypothesis on d (the norm lemmas are unconditional), so it holds far outside the Euclidean range; it is the UFD structure (−2 ≤ d < 0) that upgrades irreducible to prime."
+      "irreducible_of_prime_norm needs no hypothesis on d (the norm lemmas are unconditional), so it holds far outside the Euclidean range; it is the UFD structure (−2 ≤ d < 0) that upgrades irreducible to prime.",
+      "The prime-norm criterion is the engine behind classifying primes in ℤ[i] and ℤ[√-2]: an element of prime norm p is automatically a Gaussian/Eisenstein-style prime, so factoring rational primes reduces to representing them by the norm form a² + |d|b².",
+      "The PID/UFD facts are stated with the parent's Euclidean instance introduced locally via letI rather than as a global instance, keeping the family parametric in d while still letting Mathlib's inference (inferInstance) discharge each structural consequence."
     ],
     "prerequisites": [
       "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03: the uniform EuclideanDomain (ℤ√d) for −2 ≤ d < 0",
@@ -76,6 +78,14 @@
     }
   ],
   "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States the open question (ℤ[√d] is a PID/UFD for d ∈ {-1,-2} from the uniform norm bound) and the plan: harvest PID/UFD from the parent's Euclidean structure and add the prime-norm irreducibility criterion. Imports the parent file, opens Zsqrtd, fixes a variable d : ℤ.",
+      "mathContext": "ℤ[√d] Euclidean for −2 ≤ d < 0 ⟹ PID ⟹ UFD; prime norm ⟹ irreducible (any d)."
+    },
     {
       "id": "sec-pid-ufd",
       "title": "PID and UFD, uniformly for −2 ≤ d < 0",
