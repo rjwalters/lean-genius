@@ -1,0 +1,109 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "stirling-second-kind-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "The Third Column of the Stirling Triangle",
+    "content": "Mathlib defines Nat.stirlingSecond n k by its Pascal recurrence and records the boundary columns but no interior closed form. The parent entry solved the second column S(n,2) = 2^(n-1) − 1 by treating Pascal at a fixed column as an inhomogeneous geometric recurrence. This file carries that method one column further to S(n,3) = (3^(n-1)+1)/2 − 2^(n-1), answering the parent's open question #1. The recursion is S(m+1,3) = 3·S(m,3) + S(m,2): ratio 3, forced by the previously solved second column.",
+    "mathContext": "$S(n,3) = \\dfrac{3^{n-1}+1}{2} - 2^{n-1}$ for $n \\ge 3$, from $S(m{+}1,3) = 3\\,S(m,3) + S(m,2)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "Pascal's recurrence",
+      "inhomogeneous geometric recurrence",
+      "set partitions"
+    ],
+    "prerequisites": [
+      "set partitions",
+      "geometric recurrences"
+    ]
+  },
+  {
+    "id": "ann-forcing-term",
+    "proofId": "stirling-second-kind-oq-01-oq-01",
+    "range": { "startLine": 47, "endLine": 63 },
+    "type": "proof-technique",
+    "title": "The Two-Block Forcing Term, Re-Derived Inline",
+    "content": "stirlingSecond_two_add proves S(n+2,2) = 2^(n+1) − 1 from the Pascal recurrence S(m+1,2) = 2·S(m,2) + S(m,1) together with S(m,1) = 1, an induction whose step is closed by omega after supplying 2^(n+2) = 2·2^(n+1). This is the parent's column, reproduced here because it is the forcing term of the third-column recursion — keeping the file self-contained.",
+    "mathContext": "$S(n{+}2,2) = 2^{n+1} - 1$, the column that drives the third.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "two-block column",
+      "geometric recurrence"
+    ],
+    "prerequisites": [
+      "Pascal's recurrence"
+    ]
+  },
+  {
+    "id": "ann-dominance",
+    "proofId": "stirling-second-kind-oq-01-oq-01",
+    "range": { "startLine": 65, "endLine": 75 },
+    "type": "proof-technique",
+    "title": "Exponential Dominance 2ⁿ⁺³ ≤ 3ⁿ⁺²",
+    "content": "two_pow_le_three_pow proves 2^(n+3) ≤ 3^(n+2) by induction; the inductive step rewrites both sides via the doubling/tripling relations and lets nlinarith multiply the hypothesis 2^(n+3) ≤ 3^(n+2) by the factor 2 ≤ 3. Equivalently this is 2^n ≤ 3^(n-1) for n ≥ 3 — the comparison that makes the third column strictly positive.",
+    "mathContext": "$2^{n+3} \\le 3^{n+2}$, equivalently $2^n \\le 3^{n-1}$ for $n \\ge 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exponential growth comparison",
+      "induction"
+    ],
+    "prerequisites": [
+      "induction on the natural numbers"
+    ]
+  },
+  {
+    "id": "ann-invariant",
+    "proofId": "stirling-second-kind-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 102 },
+    "type": "key-step",
+    "title": "The Subtraction-Free Invariant",
+    "content": "two_mul_stirlingSecond_three_add establishes 2·S(n+3,3) + 2^(n+3) = 3^(n+2) + 1 by induction on n. The step specialises Nat.stirlingSecond_succ_succ to the third column (S(n+4,3) = 3·S(n+3,3) + S(n+3,2)), substitutes the two-block forcing term S(n+3,2) = 2^(n+2) − 1, supplies the power relations 2^(n+4)=2·2^(n+3), 2^(n+3)=2·2^(n+2), 3^(n+3)=3·3^(n+2), and closes by omega. Tracking this integer identity instead of the division/subtraction closed form turns each step into linear arithmetic over the power atoms.",
+    "mathContext": "$2\\,S(n{+}3,3) + 2^{n+3} = 3^{n+2} + 1$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "loop invariant",
+      "natural-number subtraction",
+      "omega decision procedure"
+    ],
+    "prerequisites": [
+      "Pascal's recurrence",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-closed-form",
+    "proofId": "stirling-second-kind-oq-01-oq-01",
+    "range": { "startLine": 104, "endLine": 129 },
+    "type": "key-step",
+    "title": "Halving to the Textbook Closed Form",
+    "content": "two_mul_stirlingSecond_three re-indexes the invariant to the textbook range n ≥ 3. stirlingSecond_three_closed then reads off S(n,3) = (3^(n-1)+1)/2 − 2^(n-1): because the invariant gives 3^(n-1)+1 = 2·(S(n,3) + 2^(n-1)), the right-hand side is even and the ℕ-division by 2 is exact, so omega recovers the closed form with no loss.",
+    "mathContext": "$3^{n-1}+1 = 2\\,(S(n,3)+2^{n-1}) \\Rightarrow S(n,3) = \\tfrac{3^{n-1}+1}{2} - 2^{n-1}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "exact integer division",
+      "closed form"
+    ],
+    "prerequisites": [
+      "division by a constant in ℕ"
+    ]
+  },
+  {
+    "id": "ann-positivity",
+    "proofId": "stirling-second-kind-oq-01-oq-01",
+    "range": { "startLine": 131, "endLine": 142 },
+    "type": "concept",
+    "title": "Existence of a Three-Block Partition",
+    "content": "stirlingSecond_three_pos shows S(n,3) > 0 for n ≥ 3 by combining the invariant with the dominance 2^n ≤ 3^(n-1): then 2·S(n,3) = 3^(n-1) + 1 − 2^n ≥ 1, so the column is positive. Combinatorially, any set with at least three elements admits a partition into three nonempty blocks — here proved as exponential dominance rather than by a direct construction.",
+    "mathContext": "$S(n,3) > 0$ for $n \\ge 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "nonemptiness of set partitions",
+      "exponential dominance"
+    ],
+    "prerequisites": [
+      "the invariant"
+    ]
+  }
+]
