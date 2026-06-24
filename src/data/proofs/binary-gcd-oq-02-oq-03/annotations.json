@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-binxgcd-reductions",
+    "proofId": "binary-gcd-oq-02-oq-03",
+    "range": {
+      "startLine": 37,
+      "endLine": 95
+    },
+    "type": "concept",
+    "title": "Stein's GCD-preserving reductions",
+    "content": "The binary GCD algorithm rests on four identities that leave gcd unchanged: `gcd(2a,2b) = 2·gcd(a,b)`, `gcd(2a,b) = gcd(a,b)` for odd `b`, `gcd(m-n,n) = gcd(m,n)`, and the combined `gcd((m-n)/2, n) = gcd(m,n)` for both-odd inputs. They are reproved here against the current Mathlib API (self-contained): `gcd_two_mul` reuses `Nat.gcd_mul_left`; `gcd_two_mul_odd` cancels the factor of 2 by coprimality (`Odd b ⇒ Coprime (gcd) 2`); `gcd_sub_right` is a divisibility antisymmetry using the current `Nat.dvd_sub`.",
+    "mathContext": "Each recursive step of `binaryXgcd` corresponds to exactly one of these reductions, so the Bézout correctness proof can rewrite `Nat.gcd a b` to the reduced gcd in lockstep with the algorithm's recursion.",
+    "significance": "supporting",
+    "relatedConcepts": ["binary GCD", "Stein's algorithm", "Nat.gcd reductions", "coprimality"],
+    "prerequisites": ["Nat.gcd_mul_left", "Nat.dvd_sub", "Nat.coprime_two_right"]
+  },
+  {
+    "id": "ann-binxgcd-unhalve",
+    "proofId": "binary-gcd-oq-02-oq-03",
+    "range": {
+      "startLine": 97,
+      "endLine": 130
+    },
+    "type": "definition",
+    "title": "Parity-correcting un-halving (hL / hR)",
+    "content": "The single non-trivial coefficient step. When the algorithm halves an even left operand, a Bézout relation `a'·x + b·y = g` for the reduced pair must become `(2a')·X + b·Y = a'·x + b·y` for the original. The catch: `X` must be an integer. Since `b` is odd, exactly one of `x`, `x+b` is even, so `hL` branches on the parity of `x`: if `x` is even take `(x/2, y)`; otherwise take `((x+b)/2, y - a')`. The mirror `hR` un-halves the right operand. The specs `hL_spec`/`hR_spec` are one-line `linear_combination`s after an `omega` fact that `2·(x/2) = x` (resp. `2·((x+b)/2) = x+b`).",
+    "mathContext": "This is the classical resolution (HAC 14.61) of the coefficient-halving problem in the extended binary GCD: add an odd multiple of the modulus to flip parity, then divide by two, compensating in the other coefficient.",
+    "significance": "key",
+    "relatedConcepts": ["extended binary GCD", "Bézout coefficients", "parity correction", "integer division"],
+    "prerequisites": ["integer parity", "omega for div/mod by 2"]
+  },
+  {
+    "id": "ann-binxgcd-def",
+    "proofId": "binary-gcd-oq-02-oq-03",
+    "range": {
+      "startLine": 131,
+      "endLine": 170
+    },
+    "type": "definition",
+    "title": "binaryXgcd: the extended binary GCD on ℕ",
+    "content": "A well-founded recursion (measure `a + b`) following Stein's case split. Both-even returns the recursive coefficients unchanged (gcd doubles, the relation scales by 2). Even/odd applies one `hL` (resp. `hR`) un-halving. Both-odd subtract-and-halve applies an `hL`/`hR` and then a single linear recombination `(p.1, p.2 - p.1)` (resp. `(p.1 - p.2, p.2)`) to convert the reduced relation back to the original operands. The coefficients are genuinely computed by the binary algorithm — never delegated to Mathlib's `gcdA`/`gcdB`.",
+    "mathContext": "The recursion is identical in shape to the value-only binary GCD, so termination and the inductive structure transfer directly; only the coefficient payload is new.",
+    "significance": "key",
+    "relatedConcepts": ["well-founded recursion", "Stein's algorithm", "extended Euclidean algorithm"],
+    "prerequisites": ["termination_by / decreasing_by", "Stein's reductions"]
+  },
+  {
+    "id": "ann-binxgcd-bezout",
+    "proofId": "binary-gcd-oq-02-oq-03",
+    "range": {
+      "startLine": 171,
+      "endLine": 273
+    },
+    "type": "proof-technique",
+    "title": "Bézout correctness by induction on the algorithm",
+    "content": "`binaryXgcd_bezout` proves `a·x + b·y = Nat.gcd a b` by `binaryXgcd.induct`. Each recursive case rewrites `Nat.gcd a b` to the reduced gcd (via the Part I identities), then closes with a single `linear_combination` combining the induction hypothesis, the relevant `hL_spec`/`hR_spec`, the gcd-reduction cast, and an `omega`-supplied cast fact such as `↑(a+1) = 2·↑((a+1)/2)` or `↑(a+1) - ↑(b+1) = 2·↑c`. The integer/natural casts and division facts are discharged uniformly by `omega`.",
+    "mathContext": "Because both the algorithm and `Nat.gcd` satisfy the same four reductions, the induction is tight: the coefficient algebra (hL/hR plus a linear recombination) exactly accounts for the difference between the reduced and original Bézout relations.",
+    "significance": "key",
+    "relatedConcepts": ["structural induction", "linear_combination", "Bézout's identity"],
+    "prerequisites": ["binaryXgcd.induct", "Nat.gcd reductions", "hL_spec / hR_spec"]
+  },
+  {
+    "id": "ann-binxgcd-int",
+    "proofId": "binary-gcd-oq-02-oq-03",
+    "range": {
+      "startLine": 275,
+      "endLine": 305
+    },
+    "type": "definition",
+    "title": "binaryXgcdInt and the integer Bézout identity",
+    "content": "`binaryXgcdInt a b` runs `binaryXgcd` on `|a|, |b|` and sign-adjusts: `(a.sign · x, b.sign · y)`. The key algebraic fact is `a · a.sign = ↑a.natAbs` (`Int.sign_mul_self_eq_natAbs`), so `a · (a.sign·x) = ↑a.natAbs · x`. Composing with the ℕ-level Bézout identity gives `binaryXgcdInt_bezout : a·x + b·y = Int.gcd a b`.",
+    "mathContext": "`Int.gcd a b` is definitionally `a.natAbs.gcd b.natAbs`, so the sign adjustment is the only content needed to lift the natural-number certificate to ℤ.",
+    "significance": "key",
+    "relatedConcepts": ["Int.gcd", "Int.sign", "natAbs reduction"],
+    "prerequisites": ["Int.sign_mul_self_eq_natAbs", "binaryXgcd_bezout"]
+  },
+  {
+    "id": "ann-binxgcd-eq-gcdab",
+    "proofId": "binary-gcd-oq-02-oq-03",
+    "range": {
+      "startLine": 306,
+      "endLine": 335
+    },
+    "type": "key-result",
+    "title": "Equivalence to Mathlib's Int.gcdA / Int.gcdB",
+    "content": "`binaryXgcdInt_eq_gcdAB` states `a·x + b·y = a·gcdA a b + b·gcdB a b`: the Bézout relation produced by the extended *binary* GCD coincides with the one from Mathlib's extended Euclidean coefficients. Both certify the same `Int.gcd`, so the identities agree even though the coefficient pairs themselves need not (Bézout coefficients are not unique). This answers the binary-GCD analogue of the sibling open question (the Lehmer entry asks the same for `lehmerXgcdInt`). Three `decide`-checked examples (positive, coprime, and negative inputs) certify concrete instances at type-check time.",
+    "mathContext": "The result places the binary extended algorithm on equal footing with the Euclidean one as a certified producer of Bézout witnesses, completing the binary-GCD strand's coverage of the extended algorithm.",
+    "significance": "key",
+    "relatedConcepts": ["Int.gcdA", "Int.gcdB", "Int.gcd_eq_gcd_ab", "Bézout uniqueness"],
+    "prerequisites": ["Int.gcd_eq_gcd_ab", "binaryXgcdInt_bezout"]
+  }
+]
