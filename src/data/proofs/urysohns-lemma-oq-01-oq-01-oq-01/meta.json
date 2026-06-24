@@ -1,0 +1,191 @@
+{
+  "id": "urysohns-lemma-oq-01-oq-01-oq-01",
+  "slug": "urysohns-lemma-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.UrysohnsLemmaOQ01OQ01"
+    ],
+    "opens": [
+      "Set",
+      "Function",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "TietzeTsum",
+    "lineCount": 197,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "path": "Proofs/UrysohnsLemmaOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Tietze Extension as an Explicit Series of Bounded Continuous Corrections",
+  "description": "A fully self-contained construction of the Tietze extension as a genuinely convergent series in the Banach space of bounded continuous functions BoundedContinuousFunction X ℝ, using none of Mathlib's TietzeExtension machinery. The parent entry urysohns-lemma-oq-01-oq-01 exposes the engine of the classical proof — the one-step Urysohn approximation urysohn_approx_step and the geometric iterate urysohn_approx_iterate — but assembles the final extension by invoking Mathlib's exists_restrict_eq, hiding the limit behind a black box. This entry removes the black box. The residual sequence Res n carries the running error rₙ = f − (g₀+…+g_{n-1})|_s with its sup-bound |rₙ| ≤ (2/3)ⁿ·M; the correction gcorr n is the global continuous function returned by one Urysohn step applied to rₙ, with |gcorr n| ≤ (2/3)ⁿ·(M/3); gbcf n packages it as an element of the Banach space. The geometric majorant gives absolute convergence (summable_norm_gbcf), hence summability (summable_gbcf) because the bounded-continuous-function space over ℝ is complete. The headline tietze_extension_via_tsum builds G = ∑' n, gbcf n directly: evaluation at a point is a continuous additive homomorphism, so the series evaluates pointwise to the limit of the partial sums f x − rₙ x → f x on s, giving G = f on s; summing the majorant, ‖G‖ ≤ ∑' (2/3)ⁿ·(M/3) = M, so the extension lands in the same sup-bound [−M, M] as the data. This answers the first recorded open question of urysohns-lemma-oq-01-oq-01 verbatim.",
+  "overview": {
+    "historicalContext": "The classical textbook derivation of the Tietze extension theorem from Urysohn's lemma is a uniformly convergent series: each term is supplied by Urysohn's lemma applied to the two extreme sublevel/superlevel sets of the current residual, and the factor 2/3 forces geometric convergence. The standard analysis course (e.g. Munkres) states the limit is uniform because the partial sums are dominated by a convergent geometric series and the ambient sup-norm space is complete. Mathlib's Mathlib.Topology.TietzeExtension formalizes this argument, but its public theorems (ContinuousMap.exists_restrict_eq and friends) deliver only the final extension; the convergent series itself is internal. The parent gallery entry urysohns-lemma-oq-01-oq-01 isolated the per-step engine and its quantitative geometric rate as standalone lemmas, but still delegated the assembly of the limit to Mathlib's machinery. This entry completes the program: it constructs the series by hand in BoundedContinuousFunction X ℝ — the genuine Banach space whose completeness powers the convergence — and proves the resulting sum is a sup-norm-preserving Tietze extension, citing only the abstract completeness/summability API and never the TietzeExtension theorems.",
+    "problemStatement": "Build the uniform limit of the Urysohn iteration explicitly. For a closed set s in a normal space X and a continuous f : C(s, ℝ) with |f| ≤ M, construct a sequence of bounded continuous corrections gₙ : BoundedContinuousFunction X ℝ with ‖gₙ‖ ≤ (2/3)ⁿ·(M/3), prove the correction series ∑ gₙ is absolutely convergent (hence summable by completeness), and show its sum G satisfies G = f on s and |G| ≤ M everywhere — all without routing the convergence through Mathlib's TietzeExtension machinery.",
+    "proofStrategy": "Res defines the residual sequence by structural recursion: Res 0 = f, and Res (n+1) = Res n − (Urysohn correction)|_s, where the correction is the choice term of the parent's urysohn_approx_step applied to Res n; the subtype carries the invariant |Res n| ≤ (2/3)ⁿ·M, proved from the step's (2/3)-contraction. gcorr n extracts the n-th correction as a C(X, ℝ); gcorr_bound reads off |gcorr n| ≤ (2/3)ⁿ·(M/3) from the step's |g| ≤ M/3 clause. gbcf n promotes gcorr n to BoundedContinuousFunction X ℝ via ofNormedAddCommGroup, and gbcf_norm_le transfers the pointwise bound to the sup-norm with BoundedContinuousFunction.norm_le. Comparison with the geometric series ∑ (2/3)ⁿ·(M/3) (summable_geo) gives Summable (‖gbcf ·‖) (summable_norm_gbcf), hence Summable gbcf (summable_gbcf) since the space is complete (Summable.of_norm). For the main theorem, G := ∑' n, gbcf n. The partial-sum identity psum — ∑_{i<n} gbcf i (↑x) = f x − Res n x on s — is a one-line induction using the defining recursion Res_succ_fst. Evaluation at ↑x is a 1-Lipschitz additive homomorphism (BoundedContinuousFunction.dist_coe_le_dist), so HasSum.map carries HasSum gbcf G to HasSum (gbcf · ↑x) (G ↑x); its partial sums therefore converge to G ↑x. They also equal f x − Res n x, which converges to f x because |Res n x| ≤ (2/3)ⁿ·M → 0 (squeeze_zero_norm against tendsto_pow_atTop_nhds_zero_of_lt_one). Uniqueness of limits gives G ↑x = f x. Finally norm_tsum_le_tsum_norm and Summable.tsum_le_tsum bound ‖G‖ ≤ ∑' (2/3)ⁿ·(M/3) = (1 − 2/3)⁻¹·(M/3) = M, and BoundedContinuousFunction.norm_le converts this to |G y| ≤ M everywhere.",
+    "keyInsights": [
+      "The construction lives in the right Banach space. The corrections are packaged as elements of BoundedContinuousFunction X ℝ, whose completeness (over the complete field ℝ) is exactly what turns the absolutely convergent majorant ∑ (2/3)ⁿ·(M/3) into an actual sum. Summable.of_norm — absolute convergence implies convergence in a complete space — is the single abstract fact that replaces Mathlib's TietzeExtension limit construction.",
+      "Evaluation is a continuous linear functional, so the series commutes with it. The map G ↦ G(↑x) is 1-Lipschitz (BoundedContinuousFunction.dist_coe_le_dist), hence a continuous additive homomorphism; HasSum.map then pushes the vector-valued HasSum gbcf G to the scalar HasSum (gbcf · ↑x) (G ↑x). This is what lets a statement about the abstract sum G be checked pointwise against the explicit partial sums.",
+      "The residual recursion IS the partial-sum telescoping. Because Res is defined by Res (n+1) = Res n − (correction)|_s, the identity ∑_{i<n} gbcf i (↑x) = f x − Res n x falls out of a trivial induction (Res_succ_fst is definitional, rfl). The whole convergence-to-f argument reduces to Res n → 0, which is immediate from the geometric invariant.",
+      "Sup-norm preservation comes for free from summing the majorant. The same geometric bound that proves summability also bounds the sum: ‖G‖ ≤ ∑' (2/3)ⁿ·(M/3) = (1/3·M)·(1−2/3)⁻¹ = M. So the explicit extension automatically respects the data's bound [−M, M] — the bounded Tietze extension — without any separate clamping or truncation step.",
+      "This closes the gap the parent left open. urysohns-lemma-oq-01-oq-01 named the engine but delegated the limit to Mathlib; here the limit is assembled from elementary completeness/summability, so the entire chain from Urysohn's lemma to the Tietze extension is now in-file and independent of Mathlib.Topology.TietzeExtension."
+    ]
+  },
+  "sections": [
+    {
+      "id": "residual-recursion",
+      "title": "The Residual Sequence and its Geometric Invariant",
+      "startLine": 44,
+      "endLine": 81,
+      "summary": "Res n is the running residual rₙ = f − (g₀+…+g_{n-1})|_s, defined by structural recursion (Res 0 = f, Res (n+1) = Res n − correction|_s), packaged in a subtype carrying the invariant |Res n| ≤ (2/3)ⁿ·M (proved from the parent's (2/3)-contraction). gcorr n extracts the n-th Urysohn correction as a C(X, ℝ). Res_zero and Res_succ_fst record the defining equations (both rfl).",
+      "mathContext": "$r_0=f,\\ r_{n+1}=r_n-g_n|_s,\\ |r_n|\\le (2/3)^n M$ on $s$."
+    },
+    {
+      "id": "correction-bcf",
+      "title": "Corrections as Bounded Continuous Functions",
+      "startLine": 83,
+      "endLine": 107,
+      "summary": "gcorr_bound reads off the global bound |gcorr n| ≤ (2/3)ⁿ·(M/3) from the one-step Urysohn lemma. gbcf n promotes the correction to an element of BoundedContinuousFunction X ℝ via ofNormedAddCommGroup, with gbcf_apply identifying its values, and gbcf_norm_le transfers the pointwise bound to the sup-norm ‖gbcf n‖ ≤ (2/3)ⁿ·(M/3) using BoundedContinuousFunction.norm_le.",
+      "mathContext": "$\\|g_n\\|_\\infty\\le (2/3)^n\\,(M/3)$, with $g_n\\in (X\\to_b\\mathbb{R})$."
+    },
+    {
+      "id": "summability",
+      "title": "Absolute Convergence in a Complete Space",
+      "startLine": 108,
+      "endLine": 121,
+      "summary": "summable_geo is the convergent geometric majorant ∑ (2/3)ⁿ·(M/3). summable_norm_gbcf compares against it (Summable.of_nonneg_of_le) to get summability of the norms, and summable_gbcf concludes Summable gbcf by Summable.of_norm — absolute convergence implies convergence because BoundedContinuousFunction X ℝ is complete. This is the abstract fact that replaces Mathlib's TietzeExtension limit.",
+      "mathContext": "$\\sum_n \\|g_n\\|<\\infty\\ \\Rightarrow\\ \\sum_n g_n\\ \\text{converges in the Banach space}$."
+    },
+    {
+      "id": "tietze-via-tsum",
+      "title": "The Tietze Extension as the Series Sum",
+      "startLine": 123,
+      "endLine": 197,
+      "summary": "tietze_extension_via_tsum builds G = ∑' n, gbcf n. The partial-sum identity ∑_{i<n} gbcf i (↑x) = f x − Res n x on s is a one-line induction on Res_succ_fst. Evaluation at ↑x is a 1-Lipschitz additive homomorphism, so HasSum.map gives HasSum (gbcf · ↑x) (G ↑x); the partial sums converge both to G ↑x and (since Res n → 0) to f x, so G = f on s by uniqueness of limits. norm_tsum_le_tsum_norm and Summable.tsum_le_tsum bound ‖G‖ ≤ ∑' (2/3)ⁿ·(M/3) = M, giving |G| ≤ M everywhere.",
+      "mathContext": "$G=\\sum_n g_n,\\ G|_s=f,\\ \\|G\\|_\\infty\\le M$, none of Mathlib's TietzeExtension used."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry constructs the Tietze extension explicitly as a convergent series G = ∑' n, gₙ in the Banach space BoundedContinuousFunction X ℝ, with each gₙ a single Urysohn correction to the running residual bounded by ‖gₙ‖ ≤ (2/3)ⁿ·(M/3). Absolute convergence of the geometric majorant gives summability in the complete space (Summable.of_norm); the partial sums telescope to f x − rₙ x on s and converge to f x because the residual decays like (2/3)ⁿ·M; and summing the majorant gives ‖G‖ ≤ M, so the extension preserves the data's sup-bound. The whole construction avoids Mathlib's TietzeExtension machinery entirely. 197 lines, 9 theorems/lemmas, 3 definitions, 0 axioms, 0 sorries; the main theorem depends only on propext / Classical.choice / Quot.sound.",
+    "implications": "This answers the first recorded open question of urysohns-lemma-oq-01-oq-01 verbatim: the limit is now assembled from elementary completeness and summability rather than delegated to Mathlib. Together with the parent (which isolated the engine and its rate) and the companion tietze-extension-theorem-oq-01 (Urysohn from Tietze), the chain from Urysohn's lemma to a sup-norm-preserving Tietze extension is fully in-file and independent of Mathlib.Topology.TietzeExtension. The construction is the natural setting for the remaining open question — tracking the partial-sum norms to recover the exact norm-preserving form — since ‖G‖ ≤ M already falls out of the majorant.",
+    "openQuestions": [
+      "Strengthen the sup-norm bound to the sharp norm-preserving equality ‖G‖ = ‖f‖ (not merely ‖G‖ ≤ M) by tracking the partial-sum norms in the series, recovering the standard norm-preserving Tietze form directly from the explicit construction.",
+      "Generalize the explicit-series construction from ℝ-valued to Banach-space-valued (or interval-constrained) data, where the same geometric majorant and completeness argument should apply with a vector-valued Urysohn step."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "urysohns-lemma-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. It isolated the one-step Urysohn approximation engine and the geometric iterate but assembled the final extension via Mathlib's TietzeExtension machinery. This entry answers its first recorded open question by building the uniform limit explicitly as a tsum of bounded continuous corrections, with no TietzeExtension machinery."
+    },
+    {
+      "targetId": "urysohns-lemma-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent entry deriving the Tietze extension theorem from Urysohn's lemma."
+    },
+    {
+      "targetId": "tietze-extension-theorem-oq-01",
+      "relationship": "related",
+      "description": "Companion entry running the equivalence the other way (Urysohn's lemma from the assembled Tietze theorem). Together with this entry's explicit forward construction, the two exhibit Urysohn's lemma and the Tietze extension theorem as equivalent functional expressions of normality."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01OQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "urysohns-lemma",
+      "tietze-extension",
+      "bounded-continuous-function",
+      "banach-space",
+      "infinite-series",
+      "tsum",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 197,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "badge": "original",
+    "assumptions": "0 axioms, 0 sorries. The main theorem tietze_extension_via_tsum depends only on Mathlib's standard foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). Classical.choice enters through the per-step correction, which is the choice term of the parent's urysohn_approx_step existence statement. The construction uses only abstract completeness/summability API (Summable.of_norm, HasSum.map, norm_tsum_le_tsum_norm, Summable.tsum_le_tsum) and the parent's urysohn_approx_step; it does NOT use any theorem from Mathlib.Topology.TietzeExtension.",
+    "originalContributions": [
+      "tietze_extension_via_tsum: the Tietze extension built by hand as a convergent series G = ∑' n, gₙ in BoundedContinuousFunction X ℝ, proved to satisfy G = f on the closed set and |G| ≤ M everywhere, using none of Mathlib's TietzeExtension machinery — the explicit uniform limit that the parent entry delegated to Mathlib",
+      "Res: the residual sequence rₙ = f − (g₀+…+g_{n-1})|_s defined by structural recursion, carrying the geometric invariant |rₙ| ≤ (2/3)ⁿ·M in its subtype, with the defining recursion Res_succ_fst holding definitionally",
+      "gbcf and gbcf_norm_le: the n-th Urysohn correction packaged as a bounded continuous function with the sharp geometric sup-norm bound ‖gₙ‖ ≤ (2/3)ⁿ·(M/3), the term that makes the correction series absolutely convergent",
+      "summable_norm_gbcf / summable_gbcf: absolute convergence of the correction series via comparison with the geometric majorant, and summability in the complete space BoundedContinuousFunction X ℝ via Summable.of_norm — the abstract completeness fact that powers the construction",
+      "The pointwise-evaluation argument: evaluation at a point is realized as a 1-Lipschitz additive homomorphism, letting HasSum.map transfer the vector-valued HasSum to a scalar one so the abstract sum can be checked against the explicit telescoping partial sums f x − rₙ x → f x"
+    ],
+    "prerequisites": [
+      "The Banach space of bounded continuous functions BoundedContinuousFunction X ℝ and its completeness",
+      "Absolute convergence implies convergence in a complete space (Summable.of_norm) and norm/tsum monotonicity (norm_tsum_le_tsum_norm, Summable.tsum_le_tsum)",
+      "The parent's one-step Urysohn approximation lemma urysohn_approx_step (Proofs.UrysohnsLemmaOQ01OQ01)",
+      "Geometric series summability and value (summable_geometric_of_lt_one, tsum_geometric_of_lt_one)",
+      "HasSum.map for pushing a HasSum through a continuous additive homomorphism, and squeeze/Lipschitz reasoning for the limit"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "BoundedContinuousFunction.ofNormedAddCommGroup",
+        "description": "Packages a continuous function bounded in norm as an element of the bounded-continuous-function space; used to promote each Urysohn correction gcorr n to gbcf n.",
+        "module": "Mathlib.Topology.ContinuousMap.Bounded.Normed"
+      },
+      {
+        "theorem": "Summable.of_norm",
+        "description": "Absolute convergence implies convergence in a complete normed space; turns the geometric majorant bound into Summable gbcf. The abstract fact that replaces Mathlib's TietzeExtension limit construction.",
+        "module": "Mathlib.Analysis.Normed.Group.InfiniteSum"
+      },
+      {
+        "theorem": "HasSum.map",
+        "description": "Pushes a HasSum through a continuous additive homomorphism; applied to pointwise evaluation (a 1-Lipschitz hom) to evaluate the vector-valued series at a point.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "BoundedContinuousFunction.dist_coe_le_dist",
+        "description": "Pointwise distance is bounded by sup-distance; gives the 1-Lipschitz continuity of evaluation used to build the evaluation homomorphism.",
+        "module": "Mathlib.Topology.ContinuousMap.Compact"
+      },
+      {
+        "theorem": "tsum_geometric_of_lt_one",
+        "description": "Closed form of the geometric series ∑' n, rⁿ = (1 − r)⁻¹; combined with tsum_mul_right gives ∑' (2/3)ⁿ·(M/3) = M for the sup-norm bound ‖G‖ ≤ M.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+      "question": "Strengthen the sup-norm bound to the sharp norm-preserving equality ‖G‖ = ‖f‖ by tracking the partial-sum norms in the explicit series, recovering the standard norm-preserving Tietze form directly from the construction.",
+      "significance": "medium"
+    },
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-01-oq-02",
+      "question": "Generalize the explicit-series construction from ℝ-valued data to Banach-space-valued or interval-constrained data, where the same geometric majorant and completeness argument should carry through with a vector-valued Urysohn step.",
+      "significance": "medium"
+    }
+  ],
+  "references": [
+    {
+      "title": "Tietze extension theorem",
+      "url": "https://en.wikipedia.org/wiki/Tietze_extension_theorem"
+    },
+    {
+      "title": "Urysohn's lemma",
+      "url": "https://en.wikipedia.org/wiki/Urysohn%27s_lemma"
+    },
+    {
+      "title": "Mathlib: BoundedContinuousFunction (completeness, ofNormedAddCommGroup)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/ContinuousMap/Bounded/Basic.html"
+    }
+  ],
+  "status": "verified",
+  "badge": "original",
+  "axiomCount": 0,
+  "sorries": 0
+}
