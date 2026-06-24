@@ -1,0 +1,100 @@
+[
+  {
+    "id": "abundant-density-ann-intro",
+    "proofId": "abundant-number-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "A Positive Lower Bound on the Density of Abundant Numbers",
+    "content": "Let $A(N) = \\#\\{n \\in (0, N] : n \\text{ is abundant}\\}$ count the abundant numbers up to $N$. The **natural density** of the abundant numbers is the limit of $A(N)/N$; Davenport (1933) proved it exists, and it is now known to be $\\approx 0.2476$. That exact value is a deep analytic result, but a *positive lower bound* is elementary. Since $12$ is the smallest abundant number and every positive multiple of an abundant number is abundant (closure, from the parent entry), **all multiples of $12$ are abundant** — a proportion $1/12$ of every initial segment. This entry formalizes the resulting bound: the lower density of the abundant numbers is at least $1/12$.",
+    "mathContext": "A single abundant residue class — the multiples of $12$ — already forces density $\\ge 1/12$.",
+    "significance": "key",
+    "prerequisites": [
+      "natural density and counting functions A(N)",
+      "abundant numbers and closure under multiples"
+    ],
+    "relatedConcepts": [
+      "natural density",
+      "abundant numbers",
+      "Davenport density theorem",
+      "counting function"
+    ]
+  },
+  {
+    "id": "abundant-density-ann-count-def",
+    "proofId": "abundant-number-oq-01-oq-01",
+    "range": { "startLine": 47, "endLine": 56 },
+    "type": "definition",
+    "title": "Counting Abundant Numbers as a Finset Cardinality",
+    "content": "Mathlib's `Nat.Abundant n` unfolds to the decidable comparison $n < \\sum_{d \\in \\mathrm{properDivisors}\\, n} d$, but no `DecidablePred` instance is registered, so we supply one (defeq to that kernel-decidable inequality). With it, the abundant numbers in $(0,N]$ form a `Finset`, and we define\n$$ \\texttt{abundantCount}\\,N := \\#\\{n \\in \\mathrm{Ioc}\\,0\\,N \\mid n.\\mathrm{Abundant}\\}. $$\nKeeping the genuine decidable instance (rather than `Classical.dec`) means the count introduces no choice-based decision procedure and no `native_decide`.",
+    "mathContext": "Abundance is a decidable comparison of divisor sums, so abundant numbers up to N can be counted as `Finset.card`.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Finset.filter and DecidablePred",
+      "Nat.Abundant as a divisor-sum comparison"
+    ],
+    "relatedConcepts": [
+      "decidability",
+      "Finset.Ioc",
+      "Finset.card"
+    ]
+  },
+  {
+    "id": "abundant-density-ann-subset-count",
+    "proofId": "abundant-number-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 76 },
+    "type": "insight",
+    "title": "Density Reduces to an Exact Lattice-Point Count",
+    "content": "`multiples_subset_abundant` shows every $x \\in (0,N]$ divisible by $12$ is abundant — apply `abundant_of_abundant_dvd Nat.abundant_twelve` — giving the finset inclusion $\\{x \\in (0,N] : 12 \\mid x\\} \\subseteq \\{n \\in (0,N] : n.\\mathrm{Abundant}\\}$. The left-hand set has cardinality **exactly** $\\lfloor N/12 \\rfloor$ by Mathlib's `Nat.Ioc_filter_dvd_card_eq_div`, so `Finset.card_le_card` of the inclusion gives the counting bound\n$$ \\lfloor N/12 \\rfloor \\le A(N). $$\nThe only ingredients are an exact count of multiples and monotonicity of cardinality under $\\subseteq$ — no estimation.",
+    "mathContext": "The abundant numbers in (0, N] contain the ⌊N/12⌋ multiples of 12, so their count is at least ⌊N/12⌋.",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.Ioc_filter_dvd_card_eq_div (count of multiples)",
+      "Finset.card_le_card",
+      "abundant_of_abundant_dvd (closure)"
+    ],
+    "relatedConcepts": [
+      "lattice-point counting",
+      "divisibility",
+      "Finset cardinality monotonicity"
+    ]
+  },
+  {
+    "id": "abundant-density-ann-real-ratio",
+    "proofId": "abundant-number-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 106 },
+    "type": "step",
+    "title": "From Floor Count to a Density Ratio",
+    "content": "Casting into $\\mathbb{R}$: from $12\\cdot(N/12) + (N \\bmod 12) = N$ with $N \\bmod 12 < 12$, the floor estimate $12\\cdot\\lfloor N/12\\rfloor \\ge N - 11$ gives `abundantCount_real_lower`: $\\;N/12 - 1 \\le A(N)$. Dividing by $N > 0$ (via `le_div_iff₀`) yields `abundantCount_ratio_lower`:\n$$ \\frac{1}{12} - \\frac{1}{N} \\le \\frac{A(N)}{N} \\qquad (N \\ge 1). $$\nThe floor loss $\\lfloor N/12\\rfloor \\ge N/12 - 1$ becomes the vanishing correction $1/N$ in the ratio.",
+    "mathContext": "The integer floor in ⌊N/12⌋ ≤ A(N) costs only a 1/N correction once divided through by N.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Nat.div_add_mod and Nat.mod_lt",
+      "le_div_iff₀",
+      "casting ℕ inequalities to ℝ"
+    ],
+    "relatedConcepts": [
+      "floor function",
+      "density ratio"
+    ]
+  },
+  {
+    "id": "abundant-density-ann-density",
+    "proofId": "abundant-number-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 124 },
+    "type": "insight",
+    "title": "Capstone: Lower Density at Least 1/12",
+    "content": "`abundant_lower_density`: for every $\\varepsilon > 0$, eventually (as $N \\to \\infty$) $\\;A(N)/N > 1/12 - \\varepsilon$. Given $\\varepsilon$, pick $M > 1/\\varepsilon$ (`exists_nat_gt`); for $N \\ge \\max(M,1)$ one has $1/N < \\varepsilon$, so $A(N)/N \\ge 1/12 - 1/N > 1/12 - \\varepsilon$. Phrased with `Filter.eventually_atTop`, this is exactly\n$$ \\liminf_{N\\to\\infty} \\frac{A(N)}{N} \\ge \\frac{1}{12}, $$\nthe parent entry's first open question — a clean unconditional density lower bound — answered without the Davenport density theorem. The constant $1/12$ is honest but not sharp: the true density $\\approx 0.2476$ counts also the abundant numbers not divisible by $12$ (e.g. $20, 70, 945, \\dots$), and capturing those is what makes the exact value deep.",
+    "mathContext": "Eventually the proportion of abundant numbers exceeds 1/12 − ε for every ε, i.e. the lower density is ≥ 1/12.",
+    "significance": "key",
+    "prerequisites": [
+      "Filter.eventually_atTop and the atTop filter",
+      "exists_nat_gt; 1/N → 0",
+      "liminf interpretation of lower density"
+    ],
+    "relatedConcepts": [
+      "lower density",
+      "liminf",
+      "atTop filter"
+    ]
+  }
+]

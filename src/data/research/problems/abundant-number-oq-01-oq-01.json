@@ -1,0 +1,106 @@
+{
+  "slug": "abundant-number-oq-01-oq-01",
+  "title": "Positive Lower Bound for the Natural Density of Abundant Numbers",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\liminf_{N\\to\\infty} \\frac{\\#\\{n \\le N : \\sigma(n) > 2n\\}}{N} \\ge \\frac{1}{12}",
+    "plain": "The abundant numbers (those with sum of proper divisors exceeding the number, i.e. $\\sigma(n) > 2n$) are known to have a natural density $\\approx 0.2476$ (Davenport, 1933), but that exact value is a deep analytic result. The parent entry's open question asks for a clean unconditional *lower bound*. We prove the lower density is at least $1/12$: every multiple of $12$ is abundant, and the multiples of $12$ form a proportion $1/12$ of all integers.",
+    "whyMatters": [
+      "Quantitatively strengthens the parent entry's infinitude result to a positive density.",
+      "Answers the parent entry's stated first open question with an elementary, axiom-free argument."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "div_twelve_le_abundantCount: N/12 ≤ abundantCount N",
+      "abundantCount_ratio_lower: 0 < N → 1/12 − 1/N ≤ abundantCount N / N",
+      "abundant_lower_density: ∀ ε > 0, eventually 1/12 − ε ≤ abundantCount N / N (liminf ≥ 1/12)"
+    ],
+    "open": [
+      "Exact density exists (Davenport): A(N)/N converges — needs Erdős–Wintner distribution-function theory.",
+      "Sharper elementary bounds via inclusion–exclusion over several abundant residue classes (12, 18, 20, 24, …)."
+    ],
+    "goal": "Prove the lower density of the abundant numbers is at least 1/12, machine-checked and axiom-free."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Completed in a single FRESH session: counting bound + ratio bound + liminf density bound.",
+    "blockers": [],
+    "nextAction": "Done. Optional follow-ups: inclusion–exclusion sharpening; existence of the density (Davenport).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: proved lower density ≥ 1/12 (verified, 0 axioms, 0 sorries) in Proofs/AbundantDensityOQ01.lean.",
+    "builtItems": [
+      "Proofs/AbundantDensityOQ01.lean: abundantCount counting function + DecidablePred Nat.Abundant instance",
+      "multiples_subset_abundant: {x ∈ Ioc 0 N | 12 ∣ x} ⊆ {n ∈ Ioc 0 N | n.Abundant}",
+      "div_twelve_le_abundantCount: N/12 ≤ abundantCount N (via Nat.Ioc_filter_dvd_card_eq_div + card_le_card)",
+      "abundantCount_real_lower, abundantCount_ratio_lower, abundant_lower_density"
+    ],
+    "insights": [
+      "Density ≥ 1/a for any abundant a, from closure: multiples of a are all abundant and have density 1/a. a = 12 (smallest abundant) gives 1/12.",
+      "Density reduces to an EXACT lattice-point count: #{multiples of 12 in (0,N]} = ⌊N/12⌋ (Nat.Ioc_filter_dvd_card_eq_div), then Finset.card monotonicity. Only analytic step is 1/N → 0.",
+      "Nat.Abundant has no registered DecidablePred in Mathlib but is defeq to a decidable < on divisor sums; supplying the instance keeps the count constructive (no Classical decision procedure, no native_decide).",
+      "1/12 is honest but not sharp (true density ≈ 0.2476); the gap is abundant numbers not divisible by 12 (20, 70, 945, …)."
+    ],
+    "mathlibGaps": [
+      "Mathlib registers no DecidablePred Nat.Abundant instance.",
+      "Mathlib lacks the density / liminf of the abundant numbers (Davenport's existence theorem is not formalized)."
+    ],
+    "nextSteps": [
+      "Inclusion–exclusion over abundant residue classes to push the elementary bound toward 0.2476.",
+      "Formalize existence of the density (Erdős–Wintner)."
+    ],
+    "markdown": "# Knowledge Base: abundant-number-oq-01-oq-01\n\n## Result (COMPLETE — verified, 0 axioms)\n\nLower density of abundant numbers ≥ 1/12, in `Proofs/AbundantDensityOQ01.lean`.\n\n- `div_twelve_le_abundantCount : N / 12 ≤ abundantCount N`\n- `abundantCount_ratio_lower : 0 < N → 1/12 − 1/N ≤ abundantCount N / N`\n- `abundant_lower_density : ∀ ε > 0, ∀ᶠ N in atTop, 1/12 − ε ≤ abundantCount N / N`  (liminf ≥ 1/12)\n\n## Method\n\nEvery positive multiple of 12 is abundant (closure, from `AbundantMultiplesOQ01.abundant_of_abundant_dvd` + `Nat.abundant_twelve`). The multiples of 12 in (0, N] number exactly ⌊N/12⌋ (`Nat.Ioc_filter_dvd_card_eq_div`). `Finset.card_le_card` on the subset inclusion gives the counting bound; casting the floor estimate and dividing by N gives the density bound.\n\n## Dead Ends / Notes\n\n- The exact density ≈ 0.2476 is deep (Davenport 1933); only the lower bound is elementary.\n- `Nat.Abundant` needs a user-supplied `DecidablePred` instance for `Finset.filter`.\n"
+  },
+  "tags": [
+    "number-theory",
+    "divisor-sum",
+    "abundant-numbers",
+    "natural-density",
+    "counting"
+  ],
+  "relatedProofs": [
+    "abundant-number-oq-01",
+    "abundant-number-oq-02",
+    "sum-of-divisors"
+  ],
+  "references": {
+    "papers": [
+      "H. Davenport, Über numeri abundantes (1933)",
+      "M. Deléglise, Bounds for the density of abundant integers, Experimental Mathematics 7 (1998)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Abundant_number",
+      "https://oeis.org/A005101"
+    ],
+    "mathlib": [
+      "Nat.Abundant",
+      "Nat.abundant_twelve",
+      "Nat.Ioc_filter_dvd_card_eq_div"
+    ]
+  },
+  "started": "2026-06-24",
+  "leanFiles": [
+    {
+      "path": "Proofs/AbundantDensityOQ01.lean",
+      "filename": "AbundantDensityOQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbundantDensityOQ01.lean"
+    }
+  ]
+}
