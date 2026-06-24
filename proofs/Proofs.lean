@@ -3698,6 +3698,7 @@ import Proofs.ShannonEntropySSA
 import Proofs.ShannonEntropySSAAristotle
 import Proofs.ShannonEntropySSAEq
 import Proofs.ShannonSourceCoding
+import Proofs.ShannonSourceCodingWIP01
 import Proofs.ShannonSourceCodingOQ01
 import Proofs.ShannonSourceCodingOQ02
 import Proofs.ShannonSourceCodingOQ03
