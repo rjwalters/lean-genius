@@ -3376,6 +3376,7 @@ import Proofs.LucasLehmerTestOQ01
 import Proofs.LucasTheoremOQ01
 import Proofs.LucasTheoremOQ01OQ01
 import Proofs.LucasTheoremOQ01OQ01OQ01
+import Proofs.LucasTheoremOQ01OQ01OQ02
 import Proofs.LucasTheoremOQ01OQ02
 import Proofs.LucasTheoremOQ01OQ02OQ01
 import Proofs.MachinFromAddition
