@@ -1,0 +1,85 @@
+{
+  "slug": "stirling-second-kind-oq-01-oq-02",
+  "title": "The General Finite-Difference Formula for Stirling Numbers S(n,k)",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "S(n,k) \\;=\\; \\frac{1}{k!}\\sum_{j=0}^{k} (-1)^j \\binom{k}{j}\\,(k-j)^n,",
+    "plain": "The Stirling number of the second kind $S(n,k)$ counts partitions of an",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-23T17:33:28-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: general finite-difference closed form verified (0 axioms, 0 sorries); parent column S(n,2)=2^(n-1)-1 recovered as corollary.",
+    "builtItems": [
+      "factorial_mul_stirlingSecond, rec_lemma, nat_absorb/absorbZ, T_two, two_mul_stirlingSecond_two, stirlingSecond_two in Proofs/StirlingSecondKindOQ01OQ02.lean (211L, 0 sorries, 0 axioms)"
+    ],
+    "insights": [
+      "k!*S(n,k) = sum (-1)^j C(k,j) (k-j)^n is provable cleanly over the integers (factorial-cleared) by induction on n; the only hard step is the surjection recurrence T(n+1,k+1) = (k+1)(T(n,k+1)+T(n,k)).",
+      "Absorption (k+1-j)*C(k+1,j) = (k+1)*C(k,j) is unconditional over Nat (both sides 0 for j>k+1); proven by chaining Nat.add_one_mul_choose_eq and Nat.choose_succ_right_eq.",
+      "Pascal C(k+1,j)=C(k,j)+C(k,j-1) has a Nat-subtraction trap at j=0; Finset.sum_range_succ' peels j=0 and reindexes the tail so Pascal applies as C(k+1,i+1)=C(k,i)+C(k,i+1) without truncation."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: stirling-second-kind-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "stirling-numbers",
+    "set-partitions",
+    "inclusion-exclusion"
+  ],
+  "relatedProofs": [
+    "stirling-second-kind-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T00:39:32.256Z",
+  "lastUpdate": "2026-06-24T00:39:32.292Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/StirlingSecondKindOQ01.lean",
+      "filename": "StirlingSecondKindOQ01.lean",
+      "lineCount": 81,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingSecondKindOQ01.lean"
+    },
+    {
+      "path": "Proofs/StirlingSecondKindOQ01OQ02.lean",
+      "filename": "StirlingSecondKindOQ01OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/StirlingSecondKindOQ01OQ02.lean"
+    }
+  ]
+}
