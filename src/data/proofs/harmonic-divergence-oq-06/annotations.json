@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ann-hdoq06-header",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 1,
+      "endLine": 37
+    },
+    "type": "concept",
+    "title": "Module Overview: Arithmetic-Progression Reciprocal Divergence",
+    "content": "This module proves that the odd-reciprocal series Σ 1/(2n+1) diverges, as a corollary of the general statement that Σ 1/(a·n+b) is not summable for any reals a > 0, b > 0. The proof compares the progression series against the harmonic series. The module imports all of Mathlib and opens the Filter and Topology namespaces (needed for the partial-sum divergence statement).",
+    "mathContext": "Everything reduces to the divergence of $\\sum 1/n$: the comparison $a n + b \\le (a+b)(n+1)$ bounds the shifted harmonic series above by a constant multiple of the progression series, so summability of the latter would force summability of the former.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Summable",
+      "harmonic series",
+      "comparison test",
+      "arithmetic progression"
+    ],
+    "prerequisites": [
+      "Real.not_summable_one_div_natCast (harmonic divergence)",
+      "The comparison test for nonnegative series"
+    ]
+  },
+  {
+    "id": "ann-hdoq06-main",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 38,
+      "endLine": 64
+    },
+    "type": "key_step",
+    "title": "Main Theorem: Σ 1/(a·n+b) Diverges for a, b > 0",
+    "content": "not_summable_one_div_arith proceeds by contradiction. Assuming the progression series is summable, scaling by the constant a+b (Summable.mul_left) keeps it summable. The pointwise comparison 1/(n+1) ≤ (a+b)·(1/(a·n+b)) is established by clearing denominators with le_div_iff₀ and div_le_iff₀ (both denominators are positive since a > 0, b > 0), reducing to a·n+b ≤ (a+b)·(n+1), which nlinarith closes from 0 ≤ a + b·n. The comparison test Summable.of_nonneg_of_le then yields summability of the shifted harmonic series Σ 1/(n+1); summable_nat_add_iff identifies this with summability of Σ 1/n, contradicting Real.not_summable_one_div_natCast.",
+    "mathContext": "The crux inequality $a n + b \\le (a+b)(n+1) = (a+b)n + (a+b)$ is equivalent to $0 \\le a + b n$, which holds for all $n \\ge 0$ when $a, b > 0$. Hence $\\frac{1}{n+1} \\le \\frac{a+b}{a n + b}$, exhibiting the harmonic series as dominated by a scalar multiple of the progression series.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Summable.of_nonneg_of_le",
+      "Summable.mul_left",
+      "summable_nat_add_iff",
+      "le_div_iff₀",
+      "nlinarith"
+    ],
+    "prerequisites": [
+      "Comparison test Summable.of_nonneg_of_le",
+      "Index-shift lemma summable_nat_add_iff",
+      "Divergence of the harmonic series"
+    ]
+  },
+  {
+    "id": "ann-hdoq06-corollaries",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 65,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Corollaries: Odd, Even, and Partial-Sum Divergence",
+    "content": "not_summable_one_div_odd instantiates the main theorem at a = 2, b = 1 — the headline statement that Σ 1/(2n+1) diverges. not_summable_one_div_even uses a = 2, b = 2 for the even reciprocals Σ 1/(2n+2). Finally tendsto_sum_one_div_odd_atTop converts non-summability into the explicit divergence of partial sums Σ_{i<n} 1/(2i+1) → +∞ via not_summable_iff_tendsto_nat_atTop_of_nonneg, valid because the terms are nonnegative.",
+    "mathContext": "The odd and even reciprocal series are the two halves of the harmonic series; both diverge, illustrating that a divergent series can split into two divergent subseries. The partial-sum statement is the concrete face of non-summability for a nonnegative series.",
+    "significance": "key",
+    "relatedConcepts": [
+      "not_summable_iff_tendsto_nat_atTop_of_nonneg",
+      "odd reciprocals",
+      "even reciprocals",
+      "Tendsto atTop"
+    ],
+    "prerequisites": [
+      "The main theorem not_summable_one_div_arith",
+      "not_summable_iff_tendsto_nat_atTop_of_nonneg for nonnegative terms"
+    ]
+  }
+]
