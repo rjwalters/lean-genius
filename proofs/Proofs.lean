@@ -572,6 +572,7 @@ import Proofs.CantorsTheoremOQ01OQ03
 import Proofs.CantorsTheoremOQ01OQ03OQ04
 import Proofs.CantorsTheoremOQ02
 import Proofs.CantorsTheoremOQ03
+import Proofs.CantorsTheoremOQ03OQ02
 import Proofs.CantorsTheoremOQ05
 import Proofs.CarnotTheorem
 import Proofs.CarnotTheoremOQ01OQ01
