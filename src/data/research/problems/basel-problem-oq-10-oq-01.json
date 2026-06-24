@@ -1,0 +1,51 @@
+{
+  "slug": "basel-problem-oq-10-oq-01",
+  "title": "Explicit Error Bound for the Leibniz Approximation of pi/4",
+  "problemStatement": "BaselProblemOQ10 established that the Leibniz-Madhava-Gregory series for pi/4 converges only conditionally (ordered partial sums tend to pi/4, while the tsum is the junk value 0). OQ-01 asks for the quantitative companion: prove the alternating-series error bound |sum_{i<k} (-1)^i/(2i+1) - pi/4| <= 1/(2k+1), giving the explicit (slow) convergence rate.",
+  "path": "proofs/Proofs/BaselProblemOQ10OQ01.lean",
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 7,
+  "tags": [
+    "analysis",
+    "infinite-series",
+    "alternating-series",
+    "error-bound",
+    "conditional-convergence",
+    "leibniz-formula",
+    "pi"
+  ],
+  "currentState": "COMPLETE. Lean file proofs/Proofs/BaselProblemOQ10OQ01.lean written and machine-checked via host lake env lean (0 sorries, 0 axioms, exit 0). 5 theorems + 1 def, 134 lines. Registered at Proofs.lean:305. Gallery entry (meta.json + 6 annotations) added at src/data/proofs/basel-problem-oq-10-oq-01/.",
+  "relatedProofs": [
+    "basel-problem",
+    "basel-problem-oq-10",
+    "basel-problem-oq-10-oq-01"
+  ],
+  "knowledge": {
+    "insights": [
+      "Mathlib's packaged alternating_series_error_bound CANNOT be used here: it is stated for the tsum of the series and requires Summable f, but the Leibniz family is only conditionally convergent (parent's not_summable_leibniz), so its tsum collapses to the junk value 0. The bound must be derived from convergence of the ORDERED partial sums instead.",
+      "The two Mathlib sandwich lemmas Antitone.alternating_series_le_tendsto (even partial sums <= limit) and Antitone.tendsto_le_alternating_series (limit <= odd partial sums) are stated in terms of a Tendsto limit, NOT a tsum, so they remain valid for conditionally convergent alternating series. They are the right primitives when Summable fails.",
+      "The error is bounded by the first omitted term: pi/4 lies between consecutive partial sums P_k and P_{k+1}, whose gap is exactly the k-th term 1/(2k+1); hence |P_k - pi/4| <= 1/(2k+1). This is the classical Leibniz remainder estimate made formal.",
+      "The argument generalizes verbatim: alternating_error_bound_of_tendsto works for any antitone non-negative f with convergent ordered partial sums, so the same engine bounds e.g. the alternating harmonic series for ln 2 (where Summable also fails)."
+    ],
+    "builtItems": [
+      "alternating_error_bound_of_tendsto (BaselProblemOQ10OQ01.lean:48): summability-free error bound |l - sum_{i<n} (-1)^i f i| <= f n for any antitone non-negative f whose ordered alternating partial sums tend to l. The reusable engine.",
+      "leibTerm + leibTerm_antitone + leibTerm_nonneg (BaselProblemOQ10OQ01.lean:77,79,87): the magnitude sequence 1/(2i+1) with the antitone and non-negativity facts the engine needs.",
+      "leibniz_partialSum_tendsto (BaselProblemOQ10OQ01.lean:92): the bridge identifying the alternating partial sums of leibTerm with Mathlib's Leibniz partial sums, hence converging to pi/4 via tendsto_sum_pi_div_four.",
+      "leibniz_error_bound (BaselProblemOQ10OQ01.lean:109): the headline result |sum_{i<k} (-1)^i/(2i+1) - pi/4| <= 1/(2k+1) - the direct answer to the open question.",
+      "leibniz_error_tendsto_zero (BaselProblemOQ10OQ01.lean:123): the bound 1/(2k+1) -> 0, recovering qualitative convergence from the explicit rate."
+    ],
+    "mathlibGaps": [
+      "Mathlib (v4.26.0) has alternating_series_error_bound only in a Summable/tsum form; it lacks a Tendsto-based (conditionally convergent) alternating-series error bound. The local alternating_error_bound_of_tendsto fills this gap and is a candidate for upstreaming."
+    ],
+    "nextSteps": [
+      "Sharpen to the two-sided bound 1/(2k+2) <= |sum_{i<k} (-1)^i/(2i+1) - pi/4| <= 1/(2k+1), pinning the error strictly between consecutive omitted terms.",
+      "Apply alternating_error_bound_of_tendsto to the alternating harmonic series to get |sum_{i<k} (-1)^i/(i+1) - ln 2| <= 1/(k+1), unifying the conditionally convergent error bounds.",
+      "Consider contributing the Tendsto-based error bound upstream to Mathlib (self-contained, generalizes the existing Summable version)."
+    ],
+    "progressSummary": "COMPLETE: explicit Leibniz error bound |sum_{i<k} (-1)^i/(2i+1) - pi/4| <= 1/(2k+1) proved via a summability-free Tendsto-based alternating-series error bound; verified 0 sorries / 0 axioms; gallery entry added."
+  }
+}
