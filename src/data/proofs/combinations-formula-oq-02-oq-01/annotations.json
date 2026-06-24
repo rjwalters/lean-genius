@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-cfoq0201-def-C",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 39, "endLine": 41 },
+    "type": "definition",
+    "title": "The Catalan Ordinary Generating Function",
+    "content": "Defines C as the formal power series whose n-th coefficient is the n-th Catalan number, built with PowerSeries.mk over the rationals. Working over Q (rather than N) lets us subtract, divide by 2 conceptually, and run linear_combination; the series is noncomputable because PowerSeries values are infinite coefficient sequences.",
+    "mathContext": "$C(X) = \\sum_{n\\ge 0} \\mathrm{catalan}_n\\, X^n \\in \\mathbb{Q}\\llbracket X\\rrbracket$",
+    "significance": "key",
+    "relatedConcepts": ["formal power series", "ordinary generating function", "Catalan numbers"],
+    "prerequisites": ["formal power series ring", "Catalan numbers"]
+  },
+  {
+    "id": "ann-cfoq0201-coeff-C",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 43, "endLine": 45 },
+    "type": "theorem",
+    "title": "Coefficient Extraction: coeff n C = catalan n",
+    "content": "A one-line bridge lemma: unfolding the definition and applying coeff_mk shows the n-th coefficient of C is exactly catalan n. Tagging it @[simp] lets later coefficient comparisons rewrite C automatically, which is what makes the functional-equation proof close cleanly.",
+    "mathContext": "$[X^n]\\,C = \\mathrm{catalan}_n$",
+    "significance": "supporting",
+    "relatedConcepts": ["coefficient extraction", "PowerSeries.coeff", "simp lemma"],
+    "prerequisites": ["formal power series ring"]
+  },
+  {
+    "id": "ann-cfoq0201-functional-eq",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 47, "endLine": 66 },
+    "type": "theorem",
+    "title": "Functional Equation C = 1 + X·C²",
+    "content": "The central result: the generating function satisfies a single quadratic functional equation. The proof compares coefficients (ext n, then cases n). The constant term reduces to catalan 0 = 1; for the coefficient of X^(n+1), coeff_succ_X_mul peels off the X factor and coeff_mul expands C² into the antidiagonal convolution sum, which matches Mathlib's catalan_succ' verbatim after push_cast lifts the identity from N to Q. This is the power-series incarnation of the Segner convolution recurrence.",
+    "mathContext": "$C = 1 + X\\cdot C^2$, equivalently $\\mathrm{catalan}_{n+1} = \\sum_{i+j=n}\\mathrm{catalan}_i\\,\\mathrm{catalan}_j$",
+    "significance": "critical",
+    "relatedConcepts": ["functional equation", "Segner recurrence", "convolution", "antidiagonal"],
+    "prerequisites": ["formal power series multiplication", "Catalan convolution recurrence"]
+  },
+  {
+    "id": "ann-cfoq0201-coeff-mul-bridge",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "technique",
+    "title": "Coefficient Comparison via coeff_mul and catalan_succ'",
+    "content": "The engine of the functional-equation proof: coeff_mul turns [X^n](C²) into a sum over the antidiagonal {(i,j) : i+j=n} of catalan_i·catalan_j, which is precisely the right-hand side of Mathlib's catalan_succ'. Because the two sums are definitionally the same shape, no reindexing is needed — push_cast handles the N→Q coercion and the goal closes by rfl. This illustrates the general principle that multiplication of generating functions is convolution of coefficient sequences.",
+    "mathContext": "$[X^n](C^2) = \\sum_{i+j=n}\\mathrm{catalan}_i\\,\\mathrm{catalan}_j$",
+    "significance": "key",
+    "relatedConcepts": ["coeff_mul", "Cauchy product", "antidiagonal sum", "push_cast"],
+    "prerequisites": ["formal power series multiplication", "Finset.antidiagonal"]
+  },
+  {
+    "id": "ann-cfoq0201-sqrt-form",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 68, "endLine": 81 },
+    "type": "theorem",
+    "title": "Square-Root Form (2·X·C − 1)² = 1 − 4·X",
+    "content": "Encodes the textbook closed form C = (1 − √(1−4x))/(2x) as a polynomial identity. Since a general power series ring has no square root, the honest statement is the quadratic the closed form solves. The proof is pure ring algebra: rearrange the functional equation to X·C² = C − 1, then a single linear_combination (4·X)·hXC2 certifies (2XC−1)² = 1−4X. Choosing the branch fixed by C(0)=catalan 0=1 selects 2XC−1 = −√(1−4X), recovering the stated formula.",
+    "mathContext": "$(2XC-1)^2 = 1-4X \\;\\Longrightarrow\\; C = \\dfrac{1-\\sqrt{1-4X}}{2X}$ (branch $C(0)=1$)",
+    "significance": "critical",
+    "relatedConcepts": ["quadratic formula", "branch selection", "closed form", "linear_combination"],
+    "prerequisites": ["commutative ring identities", "formal power series ring"]
+  },
+  {
+    "id": "ann-cfoq0201-linear-combination",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "tactic",
+    "title": "linear_combination over Q[[X]]",
+    "content": "Both steps of the square-root proof are discharged by linear_combination, which certifies a goal as a ring-linear combination of hypotheses: -h rearranges the functional equation into X·C² = C − 1, and (4·X)·hXC2 verifies the squared identity. Crucially this needs no analysis or convergence — Q[[X]] is just a commutative ring, so an analytic-looking statement becomes a mechanically checkable polynomial identity.",
+    "mathContext": "$(2XC-1)^2 - (1-4X) = 4X\\,\\bigl(XC^2 - (C-1)\\bigr) = 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["linear_combination tactic", "commutative ring", "polynomial identity"],
+    "prerequisites": ["ring tactics in Lean"]
+  }
+]
