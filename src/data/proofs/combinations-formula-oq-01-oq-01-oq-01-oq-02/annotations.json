@@ -1,0 +1,62 @@
+[
+  {
+    "id": "combfml-oq01010101oq02-ann-header",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "concept",
+    "title": "The Lucas Cassini identity — the open question answered",
+    "content": "The parent (combinations-formula-oq-01-oq-01-oq-01) introduces the Lucas sequence and leaves as its second open question the Lucas analogue of Cassini's identity, $L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$, over $\\mathbb{Z}$. This file proves it matrix-theoretically, mirroring the gallery's Fibonacci Q-matrix entry: the same matrix $Q=\\bigl(\\begin{smallmatrix}1&1\\\\1&0\\end{smallmatrix}\\bigr)$ advances the Lucas state, so $\\det(Q^n M_0)$ computed two ways forces Cassini, with the constant $5 = \\det M_0$.",
+    "mathContext": "$L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$, with $5 = \\det M_0$ the discriminant of $x^2-x-1$.",
+    "significance": "key",
+    "relatedConcepts": ["Lucas numbers", "Cassini's identity", "Q-matrix", "determinant multiplicativity"],
+    "prerequisites": ["Fibonacci Q-matrix Cassini", "Lucas sequence"]
+  },
+  {
+    "id": "combfml-oq01010101oq02-ann-lucas-def",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 66 },
+    "type": "definition",
+    "title": "The integer Lucas sequence",
+    "content": "Defines $L$ over $\\mathbb{Z}$ by $L_0=2,\\ L_1=1,\\ L_{n+2}=L_n+L_{n+1}$ (giving $2,1,3,4,7,11,18,\\dots$). Mathlib has no Lucas sequence (its 'Lucas' is the unrelated Lucas–Lehmer test). Working over $\\mathbb{Z}$ rather than $\\mathbb{N}$ is essential: the right-hand side of Cassini alternates in sign, which natural numbers cannot express. The base-value `simp` lemmas and the `rfl`-true `L_add_two` expose the recurrence to the inductive engine.",
+    "mathContext": "$L_0 = 2,\\ L_1 = 1,\\ L_{n+2} = L_n + L_{n+1}$ over $\\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": ["linear recurrence", "Lucas numbers", "integer sequences"],
+    "prerequisites": ["recursive definitions in Lean"]
+  },
+  {
+    "id": "combfml-oq01010101oq02-ann-engine",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 68, "endLine": 110 },
+    "type": "tactic",
+    "title": "The Q-matrix engine: Qⁿ·M₀ collects Lucas numbers",
+    "content": "The crux. `Q_pow_mul_seed` proves $Q^n M_0 = \\bigl(\\begin{smallmatrix}L_{n+2}&L_{n+1}\\\\L_{n+1}&L_n\\end{smallmatrix}\\bigr)$ by induction on $n$, where $Q=\\bigl(\\begin{smallmatrix}1&1\\\\1&0\\end{smallmatrix}\\bigr)$ is the Fibonacci Q-matrix and $M_0=\\bigl(\\begin{smallmatrix}3&1\\\\1&2\\end{smallmatrix}\\bigr)=\\bigl(\\begin{smallmatrix}L_2&L_1\\\\L_1&L_0\\end{smallmatrix}\\bigr)$ is the Lucas seed. The step uses `pow_succ'` ($Q^{n+1}=Q\\cdot Q^n$), associativity, the induction hypothesis, and the explicit product `Matrix.mul_fin_two`; the four entries close by the Lucas recurrence and `ring`. The key realisation: $Q$ encodes the *recurrence*, not the initial values, so the only Lucas-specific datum is the seed $M_0$.",
+    "mathContext": "$Q^n M_0 = \\begin{pmatrix} L_{n+2} & L_{n+1} \\\\ L_{n+1} & L_n \\end{pmatrix}$",
+    "significance": "key",
+    "relatedConcepts": ["matrix powers", "2×2 matrix product", "induction", "companion matrix"],
+    "prerequisites": ["Matrix.mul_fin_two", "pow_succ'", "matrix associativity"]
+  },
+  {
+    "id": "combfml-oq01010101oq02-ann-det",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 81, "endLine": 92 },
+    "type": "insight",
+    "title": "The Cassini constant 5 is a seed determinant",
+    "content": "`det_Q` gives $\\det Q = -1$ and `det_M0` gives $\\det M_0 = 5$. By multiplicativity, $\\det(Q^n M_0) = (\\det Q)^n \\cdot \\det M_0 = (-1)^n\\cdot 5$. This exhibits the Cassini constant structurally: where the Fibonacci Cassini constant $\\pm 1$ is $\\det Q$, the Lucas Cassini constant $5$ is $\\det M_0$ — exactly the discriminant of $x^2-x-1$. The two identities differ only in which determinant the matrix power is anchored to.",
+    "mathContext": "$\\det(Q^n M_0) = (\\det Q)^n \\det M_0 = (-1)^n\\cdot 5$",
+    "significance": "key",
+    "relatedConcepts": ["determinant multiplicativity", "discriminant", "Fibonacci–Lucas contrast"],
+    "prerequisites": ["Matrix.det_mul", "Matrix.det_pow"]
+  },
+  {
+    "id": "combfml-oq01010101oq02-ann-cassini",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 131 },
+    "type": "tactic",
+    "title": "Cassini from the determinant computed two ways",
+    "content": "`lucas_cassini_matrix` equates the two determinant evaluations: multiplicativity gives $(-1)^n\\cdot 5$, while `Matrix.det_fin_two_of` on the explicit entries gives $L_{n+2}L_n - L_{n+1}^2$. Hence $L_{n+2}L_n - L_{n+1}^2 = (-1)^n\\cdot 5$. `lucas_cassini` then recovers the parent's classical centred form $L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$ for $n\\ge 1$ by substituting $n=m+1$ — the substitution makes the natural-subtraction $n-1$ disappear, and `linear_combination` absorbs the commuted product.",
+    "mathContext": "$L_{n+2}L_n - L_{n+1}^2 = (-1)^n\\cdot 5 \\;\\Longrightarrow\\; L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$",
+    "significance": "key",
+    "relatedConcepts": ["determinant two ways", "re-indexing", "Cassini's identity"],
+    "prerequisites": ["Matrix.det_fin_two_of", "linear_combination"]
+  }
+]

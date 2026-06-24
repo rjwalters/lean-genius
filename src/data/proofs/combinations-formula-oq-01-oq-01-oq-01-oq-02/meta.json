@@ -1,0 +1,116 @@
+{
+  "id": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+  "title": "Lucas Analogue of Cassini's Identity via the Q-matrix",
+  "slug": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+  "description": "Answers the parent's second open question: the Lucas analogue of Cassini's identity, L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5, over ℤ. Mathlib has no Lucas numbers, so this entry introduces the integer Lucas sequence L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1) and proves Cassini matrix-theoretically, mirroring the gallery's Fibonacci Q-matrix entry. The same Fibonacci Q-matrix Q=!![1,1;1,0] advances the Lucas state, so left-multiplying the seed M₀=!![3,1;1,2]=!![L2,L1;L1,L0] by Qⁿ collects consecutive Lucas numbers: Qⁿ·M₀ = !![L(n+2),L(n+1);L(n+1),L n]. Taking determinants two ways — multiplicativity gives det(Q)ⁿ·det(M₀)=(−1)ⁿ·5, the explicit entries give L(n+2)·L n − L(n+1)² — forces Cassini. The contrast with Fibonacci is the constant: the Fibonacci seed Q has determinant −1, the Lucas seed M₀ has determinant 5, so the sequence's discriminant 5 is exactly det M₀. Axiom-free.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "lucas-numbers",
+      "fibonacci",
+      "cassini",
+      "matrix-determinant",
+      "q-matrix"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound for lucas_cassini_matrix and lucas_cassini. No axiom declarations, no sorries, and no native_decide — the base case and the three numeric sanity checks use decide on concrete integer values, which reduces in the kernel without ofReduceBool.",
+    "lineCount": 138,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "originalContributions": [
+      "L: the integer Lucas sequence L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1) over ℤ, absent from Mathlib (which has only the unrelated Lucas–Lehmer primality test)",
+      "Q_pow_mul_seed: the Lucas Q-matrix engine Qⁿ·M₀ = !![L(n+2),L(n+1);L(n+1),L n], absent from Mathlib (no Lucas numbers, no Qⁿ-Lucas lemma)",
+      "det_M0: det of the Lucas seed M₀=!![3,1;1,2] equals 5, identifying the sequence's discriminant with a determinant",
+      "lucas_cassini_matrix: the Lucas Cassini identity L(n+2)·L n − L(n+1)² = (−1)ⁿ·5, derived by computing det(Qⁿ·M₀) two ways",
+      "lucas_cassini: the parent's named form L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 for n ≥ 1, recovered by re-indexing"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cassini's identity F(n−1)·F(n+1) − F(n)² = (−1)ⁿ (1680) is the prototypical second-order Fibonacci identity; the gallery's fibonacci-identities-oq-01-oq-03 derives it matrix-theoretically as det(Qⁿ)=(−1)ⁿ with Q=!![1,1;1,0]. The Lucas numbers L_n = φⁿ + ψⁿ are the second canonical solution of the Fibonacci recurrence (L_0=2, L_1=1) and satisfy the analogous Cassini identity L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5, where the constant 5 is the discriminant of x²−x−1. The parent entry (combinations-formula-oq-01-oq-01-oq-01) introduced the Lucas sequence and posed this identity over ℤ as its second open question. Mathlib formalizes F (Nat.fib) but not L.",
+    "problemStatement": "Establish the Lucas analogue of Cassini's identity, L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5, over ℤ, with a derivation that exposes the structural reason for the constant 5.",
+    "text": "We define the integer Lucas sequence L by its two-step recurrence and prove Cassini through the determinant of a matrix power, reusing the same Fibonacci Q-matrix Q=!![1,1;1,0] that drives the gallery's Fibonacci entry. The single engine lemma Q_pow_mul_seed shows, by induction on n, that left-multiplying the seed M₀=!![3,1;1,2] by Qⁿ collects consecutive Lucas numbers: Qⁿ·M₀ = !![L(n+2),L(n+1);L(n+1),L n]. The inductive step uses pow_succ' (Qⁿ⁺¹ = Q·Qⁿ), associativity, the induction hypothesis, and the explicit 2×2 product Matrix.mul_fin_two, with the four entries discharged by the Lucas recurrence and ring. Cassini then follows by computing det(Qⁿ·M₀) two ways: multiplicativity (Matrix.det_mul, Matrix.det_pow) gives det(Q)ⁿ·det(M₀) = (−1)ⁿ·5, while the explicit entries (Matrix.det_fin_two_of) give L(n+2)·L n − L(n+1)². Equating yields lucas_cassini_matrix; substituting n = m+1 recovers the parent's named form lucas_cassini for n ≥ 1.",
+    "proofStrategy": "Encode the Lucas state in a 2×2 matrix, advance it by the Fibonacci Q-matrix, and read Cassini off the determinant computed two ways (multiplicativity versus explicit entries). One induction (the Q-matrix engine) and one determinant comparison.",
+    "keyInsights": [
+      "The Fibonacci Q-matrix advances the Lucas state as well — the recurrence, not the initial values, is what Q encodes — so the only Lucas-specific datum is the seed M₀ = !![L2,L1;L1,L0] = !![3,1;1,2].",
+      "The Cassini constant 5 is precisely det M₀ (the discriminant of x²−x−1), exactly as the Fibonacci Cassini constant ±1 is det Q; the two identities differ only in which determinant the matrix power is anchored to.",
+      "Multiplicativity of det turns the entire identity into det(Qⁿ·M₀) = det(Q)ⁿ·det(M₀), collapsing the induction to the single statement that Qⁿ·M₀ has Lucas entries.",
+      "Working over ℤ (not ℕ) is essential: the right-hand side alternates in sign, which natural numbers cannot express; the integer Lucas sequence is the right setting.",
+      "Re-indexing n ↦ m+1 converts the clean matrix form L(n+2)·L n − L(n+1)² = (−1)ⁿ·5 into the classical centred form L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 without any natural-subtraction friction (the substitution makes m−1 disappear)."
+    ],
+    "prerequisites": [
+      "The Fibonacci Q-matrix Cassini derivation (fibonacci-identities-oq-01-oq-03)",
+      "Determinant multiplicativity Matrix.det_mul, Matrix.det_pow and the 2×2 formula Matrix.det_fin_two_of",
+      "The explicit 2×2 product Matrix.mul_fin_two and matrix power identity pow_succ'",
+      "The integer Lucas sequence and its recurrence (parent combinations-formula-oq-01-oq-01-oq-01)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Lucas analogue of Cassini's identity is proved over ℤ matrix-theoretically: the integer Lucas sequence is introduced, the engine Qⁿ·M₀ = !![L(n+2),L(n+1);L(n+1),L n] is established by induction, and det computed two ways forces L(n+2)·L n − L(n+1)² = (−1)ⁿ·5 (lucas_cassini_matrix), re-indexed to the parent's named form L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 (lucas_cassini). 9 theorems, 3 definitions, 138 lines, axiom-free.",
+    "implications": "Resolves the parent's second open question and extends the gallery's Q-matrix Cassini technique from Fibonacci to Lucas, exhibiting the Cassini constant as a seed determinant (5 = det M₀ versus ±1 = det Q).",
+    "openQuestions": [
+      "Unify both Cassini identities by proving the general companion-sequence Cassini W(n+2)·W(n) − W(n+1)² = (W2·W0 − W1²)·(−1)ⁿ for any sequence W obeying the Fibonacci recurrence, with Fibonacci (constant −1) and Lucas (constant 5) as instances.",
+      "Derive the Lucas analogue of Catalan's identity L(n)² − L(n−r)·L(n+r) = (−1)^(n−r)·5·F(r)² from the same matrix machinery."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01OQ01OQ01OQ02",
+    "lineCount": 138,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "path": "Proofs/CombinationsFormulaOQ01OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: introduces the Lucas sequence and the companion shallow-diagonal identities, posing the Lucas Cassini identity over ℤ as its second open question — answered here."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Fibonacci Cassini via det(Qⁿ)=(−1)ⁿ; this entry reuses the same Q-matrix and determinant technique for the Lucas sequence, with the Cassini constant 5 appearing as det of the Lucas seed."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "States the goal — the parent's second open question, the Lucas Cassini identity over ℤ — and the strategy: the same Fibonacci Q-matrix advances the Lucas state, so det(Qⁿ·M₀) computed two ways forces Cassini, with the constant 5 = det M₀."
+    },
+    {
+      "title": "The integer Lucas sequence",
+      "startLine": 51,
+      "endLine": 66,
+      "summary": "Defines L over ℤ by L(0)=2, L(1)=1, L(n+2)=L(n)+L(n+1), with base evaluations and the recurrence L_add_two as definitional (rfl) facts. Working over ℤ makes the alternating sign expressible."
+    },
+    {
+      "title": "The Q-matrix engine",
+      "startLine": 68,
+      "endLine": 110,
+      "summary": "Defines the Fibonacci Q-matrix Q=!![1,1;1,0] and the Lucas seed M₀=!![3,1;1,2], computes det Q = −1 and det M₀ = 5, and proves the engine Q_pow_mul_seed: Qⁿ·M₀ = !![L(n+2),L(n+1);L(n+1),L n] by induction using pow_succ', Matrix.mul_fin_two, and the Lucas recurrence."
+    },
+    {
+      "title": "Cassini's identity for Lucas numbers",
+      "startLine": 112,
+      "endLine": 131,
+      "summary": "lucas_cassini_matrix: L(n+2)·L n − L(n+1)² = (−1)ⁿ·5, from det(Qⁿ·M₀) two ways. lucas_cassini: the parent's named centred form L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 for n ≥ 1, recovered by substituting n = m+1."
+    },
+    {
+      "title": "Numeric sanity checks",
+      "startLine": 133,
+      "endLine": 138,
+      "summary": "Three decide-checked instances: det(Q²·M₀) = (−1)²·5, L4·L2 − L3² = 5, and L3·L1 − L2² = −5, all reducing in the kernel (no native_decide)."
+    }
+  ],
+  "sorries": []
+}
