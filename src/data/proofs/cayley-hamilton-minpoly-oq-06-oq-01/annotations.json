@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-rcf-overview",
+    "proofId": "cayley-hamilton-minpoly-oq-06-oq-01",
+    "range": { "startLine": 3, "endLine": 54 },
+    "type": "context",
+    "title": "The RCF Readout: invariant factors to charpoly and minpoly",
+    "content": "The header frames the goal: the rational canonical form writes a matrix as a block-diagonal sum of companion matrices C(f₁) ⊕ ⋯ ⊕ C(f_k) whose blocks are the invariant factors f₁ ∣ ⋯ ∣ f_k. The two distinguished polynomials are then read off — the characteristic polynomial is the product of the invariant factors and the minimal polynomial is the largest one. This file proves the two-factor case, stated for arbitrary nonderogatory blocks (minpoly = charpoly) so it applies verbatim to companion matrices.",
+    "mathContext": "For $M \\sim C(f_1) \\oplus \\cdots \\oplus C(f_k)$ with $f_1 \\mid f_2 \\mid \\cdots \\mid f_k$: $\\chi_M = \\prod_i f_i$ and $\\mu_M = f_k$.",
+    "significance": "context",
+    "relatedConcepts": ["rational canonical form", "Frobenius normal form", "invariant factors", "companion matrix", "nonderogatory matrix"],
+    "prerequisites": ["minimal and characteristic polynomials", "rational canonical form"]
+  },
+  {
+    "id": "ann-algebramap-fromblocks",
+    "proofId": "cayley-hamilton-minpoly-oq-06-oq-01",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "technique",
+    "title": "Scalar matrices split block-diagonally",
+    "content": "algebraMap_fromBlocks shows the scalar matrix algebraMap F (Matrix (m ⊕ o)) a is itself the block-diagonal sum of the two scalar blocks. The proof rewrites each algebraMap as a • 1 and uses fromBlocks_one (the identity is block-diagonal) and fromBlocks_smul (scalar multiplication is blockwise). This is the base-case lemma that lets polynomial evaluation be pushed through the block structure in the next theorem.",
+    "mathContext": "$a \\cdot I_{m\\oplus o} = (a\\cdot I_m) \\oplus (a\\cdot I_o)$, i.e. the scalar embedding $F \\to M_{m\\oplus o}(F)$ factors as the block-diagonal of the two scalar embeddings.",
+    "significance": "technical",
+    "relatedConcepts": ["algebra homomorphism", "scalar matrix", "block matrix", "fromBlocks"],
+    "prerequisites": ["F-algebra structure on matrices", "block matrix construction"]
+  },
+  {
+    "id": "ann-aeval-fromblocks",
+    "proofId": "cayley-hamilton-minpoly-oq-06-oq-01",
+    "range": { "startLine": 78, "endLine": 89 },
+    "type": "technique",
+    "title": "Polynomial evaluation distributes over block-diagonal matrices",
+    "content": "aeval_fromBlocks proves q(A ⊕ D) = q(A) ⊕ q(D) for every polynomial q, by polynomial induction (induction_on'). The additive step uses fromBlocks_add; the monomial step a·X^n uses that powers of a block-diagonal matrix are blockwise (fromBlocks_diagonal_pow), that the scalar block splits (algebraMap_fromBlocks), and that block-diagonal matrices multiply blockwise (fromBlocks_multiply). This is the engine of the whole file: it reduces minimal-polynomial questions about A ⊕ D to the individual blocks.",
+    "mathContext": "$q(A \\oplus D) = q(A) \\oplus q(D)$ for all $q \\in F[X]$, expressing that $(A,D) \\mapsto A \\oplus D$ is an $F$-algebra homomorphism $M_m(F) \\times M_o(F) \\to M_{m\\oplus o}(F)$.",
+    "significance": "key",
+    "relatedConcepts": ["polynomial induction", "algebra homomorphism", "block-diagonal matrix", "aeval", "ring homomorphism"],
+    "prerequisites": ["polynomial induction principle", "evaluation of polynomials at matrices"]
+  },
+  {
+    "id": "ann-charpoly-fromblocks",
+    "proofId": "cayley-hamilton-minpoly-oq-06-oq-01",
+    "range": { "startLine": 93, "endLine": 98 },
+    "type": "concept",
+    "title": "Characteristic polynomial multiplies over blocks",
+    "content": "charpoly_fromBlocks records the characteristic-polynomial half of the readout: charpoly(A ⊕ D) = charpoly A · charpoly D. This is a direct instance of Mathlib's charpoly_fromBlocks_zero₁₂ (block-triangular charpoly is the product of the diagonal blocks' charpolys) with the upper-right block set to zero. It is stated separately so the RCF readout can cite it by name.",
+    "mathContext": "$\\chi_{A \\oplus D}(t) = \\det(tI - (A\\oplus D)) = \\chi_A(t)\\,\\chi_D(t)$, since the determinant of a block-triangular matrix is the product of the diagonal blocks' determinants.",
+    "significance": "supporting",
+    "relatedConcepts": ["characteristic polynomial", "block-triangular determinant", "charpoly_fromBlocks_zero₁₂"],
+    "prerequisites": ["characteristic polynomial", "determinant of block matrices"]
+  },
+  {
+    "id": "ann-minpoly-fromblocks",
+    "proofId": "cayley-hamilton-minpoly-oq-06-oq-01",
+    "range": { "startLine": 100, "endLine": 135 },
+    "type": "insight",
+    "title": "Minimal polynomial of a block-diagonal matrix (chain case)",
+    "content": "minpoly_fromBlocks_of_dvd is the new result missing from Mathlib: when minpoly A ∣ minpoly D, the minimal polynomial of A ⊕ D is exactly minpoly D. The proof is two-way divisibility. Forward: minpoly D annihilates A (because it is a multiple of minpoly A) and annihilates D, so by aeval_fromBlocks it annihilates A ⊕ D, giving minpoly(A ⊕ D) ∣ minpoly D. Reverse: evaluating minpoly(A ⊕ D) on the block matrix gives zero; reading off the bottom-right block (fromBlocks_apply₂₂) shows it annihilates D, so minpoly D ∣ minpoly(A ⊕ D). Two monic associates are equal (eq_of_monic_of_associated).",
+    "mathContext": "In general $\\mu_{A\\oplus D} = \\operatorname{lcm}(\\mu_A, \\mu_D)$; the chain hypothesis $\\mu_A \\mid \\mu_D$ collapses the lcm to $\\mu_D$, avoiding any normalisation. Mutual divisibility of monic polynomials forces equality: $p \\mid q$ and $q \\mid p$ with both monic $\\Rightarrow p = q$.",
+    "significance": "key",
+    "relatedConcepts": ["minimal polynomial", "least common multiple", "monic associates", "divisibility", "block extraction"],
+    "prerequisites": ["minimal polynomial and its divisibility property", "monic polynomials and associates"]
+  },
+  {
+    "id": "ann-rcf-readout",
+    "proofId": "cayley-hamilton-minpoly-oq-06-oq-01",
+    "range": { "startLine": 139, "endLine": 159 },
+    "type": "concept",
+    "title": "The two-invariant-factor readout assembled",
+    "content": "rcf_two_invariant_factors packages the two halves for nonderogatory blocks. Given A with minpoly = charpoly = f₁, D with minpoly = charpoly = f₂, and the chain f₁ ∣ f₂, it concludes charpoly(A ⊕ D) = f₁·f₂ and minpoly(A ⊕ D) = f₂. The charpoly half is charpoly_fromBlocks rewritten with the block hypotheses; the minpoly half feeds the chain into minpoly_fromBlocks_of_dvd. Because the hypotheses are exactly the companion-matrix identities charpoly(C f) = minpoly(C f) = f, this is the RCF readout for the canonical two-block form.",
+    "mathContext": "For nonderogatory $A, D$ with invariant factors $f_1 \\mid f_2$: $\\chi_{A\\oplus D} = f_1 f_2$ (product of invariant factors) and $\\mu_{A\\oplus D} = f_2$ (largest invariant factor) — the defining RCF relations for two factors.",
+    "significance": "key",
+    "relatedConcepts": ["rational canonical form", "invariant factors", "companion matrix", "nonderogatory matrix", "minimal polynomial"],
+    "prerequisites": ["rational canonical form", "companion matrices"]
+  }
+]

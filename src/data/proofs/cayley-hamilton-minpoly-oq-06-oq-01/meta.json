@@ -119,12 +119,20 @@
       "mathContext": "Because (A, D) ↦ A ⊕ D is an F-algebra homomorphism, evaluating any polynomial on the block-diagonal matrix acts blockwise — the engine behind the minimal-polynomial computation."
     },
     {
-      "id": "charpoly-minpoly-blockdiag",
-      "title": "Characteristic and Minimal Polynomials of a Block-Diagonal Matrix",
+      "id": "charpoly-blockdiag",
+      "title": "Characteristic Polynomial of a Block-Diagonal Matrix",
       "startLine": 91,
+      "endLine": 99,
+      "summary": "charpoly_fromBlocks records that charpoly(A ⊕ D) = charpoly A · charpoly D, a direct instance of Mathlib's charpoly_fromBlocks_zero₁₂ with the upper-right block zero. This is the characteristic-polynomial half of the RCF readout.",
+      "mathContext": "charpoly multiplies over block-diagonal (indeed block-triangular) matrices: the determinant of a block-triangular matrix is the product of its diagonal-block determinants."
+    },
+    {
+      "id": "minpoly-blockdiag",
+      "title": "Minimal Polynomial of a Block-Diagonal Matrix",
+      "startLine": 100,
       "endLine": 136,
-      "summary": "charpoly_fromBlocks records that charpoly(A ⊕ D) = charpoly A · charpoly D (from Mathlib). minpoly_fromBlocks_of_dvd proves the new result: when minpoly A ∣ minpoly D, minpoly(A ⊕ D) = minpoly D, via two-way divisibility plus block extraction.",
-      "mathContext": "These are the two RCF readout identities at the level of arbitrary blocks: charpoly multiplies, minpoly takes the larger element of the divisibility chain."
+      "summary": "minpoly_fromBlocks_of_dvd proves the new result missing from Mathlib: when minpoly A ∣ minpoly D, minpoly(A ⊕ D) = minpoly D, via two-way divisibility (minpoly D annihilates A ⊕ D; bottom-right block extraction gives the converse) and equality of monic associates.",
+      "mathContext": "minpoly takes the larger element of the divisibility chain: in general minpoly(A ⊕ D) = lcm(minpoly A, minpoly D), and the chain hypothesis collapses the lcm to minpoly D."
     },
     {
       "id": "rcf-readout",
