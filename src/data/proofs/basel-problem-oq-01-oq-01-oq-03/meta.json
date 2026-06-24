@@ -1,0 +1,109 @@
+{
+  "id": "basel-problem-oq-01-oq-01-oq-03",
+  "title": "Ball–Rivoal: The Linear-Form Engine and the Dimension Reduction",
+  "slug": "basel-problem-oq-01-oq-01-oq-03",
+  "description": "Formalizes the two pieces of the Ball–Rivoal theorem (infinitely many odd zeta values are irrational) that are actually within reach: the rate-free integer linear-form irrationality criterion (the engine behind Apéry's ζ(3) proof) and the linear-algebraic dimension reduction (unbounded ℚ-dimension ⟹ infinitely many irrationals). Both fully machine-verified, 0 axioms.",
+  "meta": {
+    "author": "formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Particular_values_of_the_Riemann_zeta_function",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ01OQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "open-problem",
+      "linear-algebra",
+      "irrationality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "assumptions": "0 sorries, 0 axiom declarations, 0 structure-encoded assumptions. #print axioms reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) — no sorryAx, no Lean.ofReduceBool. All 5 theorems are fully proved. The headline reduction theorem is stated with a hypothesis (Rivoal's unbounded-dimension input) that captures the analytic content not proved here; the implication itself is unconditional.",
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 181,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Apéry stunned the mathematical world in 1978 by proving $\\zeta(3)$ irrational, via an explicit sequence of rational approximations. The mechanism — a sequence of integer linear forms $b_n\\alpha - a_n$ that are nonzero but converge to $0$ faster than the denominators grow — is the template for every subsequent irrationality result for zeta values. In 2000 Tanguy Rivoal proved the spectacular Ball–Rivoal theorem: infinitely many of the odd zeta values $\\zeta(3), \\zeta(5), \\zeta(7), \\ldots$ are irrational, even though not a single one beyond $\\zeta(3)$ is individually known to be irrational. Rivoal's proof produces a lower bound on the $\\mathbb{Q}$-dimension of $\\mathrm{span}\\{1, \\zeta(3), \\zeta(5), \\ldots, \\zeta(2n+1)\\}$ that grows like $\\log n$, and then a soft linear-algebra argument converts that growth into 'infinitely many irrationals'. The parent entry on $\\zeta(5)$ explicitly flagged formalizing Ball–Rivoal as an open question requiring 'Lean machinery for linear independence over $\\mathbb{Q}$ and asymptotic estimates'. This file isolates and verifies the two formalizable load-bearing components.",
+    "problemStatement": "Which parts of the Ball–Rivoal theorem can be formalized in Lean 4? The full theorem needs a deep analytic dimension estimate, but its logical skeleton has two reusable, fully-provable parts: (1) a sufficiency criterion turning a sequence of small nonzero integer linear forms into a proof of irrationality, and (2) a linear-algebraic reduction turning an unbounded-dimension hypothesis into the conclusion that infinitely many values are irrational.",
+    "proofStrategy": "Part I establishes the linear-form irrationality criterion. The quantitative core observes that if $\\alpha = a/b$ is rational then $q\\alpha - p = (qa - pb)/b$, whose numerator is an integer; if that numerator is nonzero it has absolute value at least $1$, so $|q\\alpha - p| \\geq 1/|b|$ — a fixed positive floor. Hence if the linear forms $q_n\\alpha - p_n$ are all nonzero yet $q_n\\alpha - p_n \\to 0$, they would have to cross below that floor: contradiction, so $\\alpha$ is irrational. A decay-rate packaging variant accepts the practical hypothesis $|q_n\\alpha - p_n| \\le C_n \\to 0$ via a two-sided squeeze. Part II establishes the dimension reduction. Working in $\\mathbb{R}$ as a $\\mathbb{Q}$-vector space, if only finitely many $x_i$ (those with index in a finite set $T$) are irrational, then every $x_i$ is either irrational (and indexed by $T$) or a $\\mathbb{Q}$-multiple of $1$; so $\\mathrm{span}_{\\mathbb{Q}}(\\{1\\}\\cup\\{x_i\\})$ over any finite index set is contained in the fixed subspace spanned by $\\{1\\}\\cup\\{x_i : i \\in T\\}$, capping its dimension at $|T| + 1$. Contrapositive: unbounded dimension forces infinitely many irrationals.",
+    "keyInsights": [
+      "The whole irrationality engine rests on one elementary fact: a nonzero integer has absolute value at least $1$. For rational $\\alpha = a/b$, the linear form $q\\alpha - p = (qa - pb)/b$ therefore cannot be nonzero and smaller than $1/|b|$ — a uniform floor that any convergent-to-zero sequence of nonzero forms must eventually violate.",
+      "Crucially the criterion is *rate-free*: it needs only $q_n\\alpha - p_n \\to 0$ with the forms nonzero, not the Hurwitz-type rate $1/q^2$ that Mathlib's existing `infinite_rat_abs_sub_lt_one_div_den_sq_iff_irrational` requires. This is exactly the form that Apéry- and Rivoal-style constructions produce, where $q_n$ may grow rapidly.",
+      "Ball–Rivoal's leap from 'dimension grows' to 'infinitely many irrational' is pure linear algebra, fully formalizable independent of the analysis: if all but finitely many $x_i$ were rational, the spans would live inside one finite-dimensional $\\mathbb{Q}$-subspace, so the dimension could not be unbounded.",
+      "The reduction is stated as an unconditional implication whose hypothesis is precisely Rivoal's analytic output ($\\dim_{\\mathbb{Q}} \\to \\infty$). This cleanly separates the verified soft part from the unformalized hard estimate, making explicit what a full formalization would still need to supply.",
+      "Apéry's concrete numbers fit the decay-rate variant exactly: $|b_n\\zeta(3) - a_n| \\sim C(\\sqrt 2 - 1)^{4n}$ tends to $0$ geometrically, which (with non-vanishing) the squeeze form converts into irrationality of $\\zeta(3)$."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-header",
+      "title": "Imports and Overview",
+      "startLine": 1,
+      "endLine": 42,
+      "summary": "Imports the irrationality predicate, finite-rank/span machinery, and metric-space limits. The header explains the two formalizable Ball–Rivoal ingredients and records 0 axioms / 0 sorries."
+    },
+    {
+      "id": "linear-form-engine",
+      "title": "Part I: The Linear-Form Irrationality Criterion",
+      "startLine": 44,
+      "endLine": 110,
+      "summary": "abs_linearForm_ge_of_rat gives the quantitative floor 1/|b| for nonzero integer linear forms at a rational; irrational_of_linearForm_tendsto_zero turns nonzero forms tending to 0 into irrationality; irrational_of_linearForm_le_tendsto_zero packages the practical decay-bound hypothesis via a two-sided squeeze."
+    },
+    {
+      "id": "dimension-reduction",
+      "title": "Part II: The Ball–Rivoal Dimension Reduction",
+      "startLine": 112,
+      "endLine": 181,
+      "summary": "finrank_span_le_of_irrational_subset caps the ℚ-dimension of any finite span by |T|+1 when only the indices in T are irrational; infinite_irrational_of_unbounded_finrank is the headline contrapositive: unbounded dimension implies infinitely many irrational values."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Ball–Rivoal theorem cannot be formalized end-to-end today, but its logical skeleton can. This file machine-verifies, with no axioms, the rate-free integer linear-form irrationality criterion (the Apéry/Rivoal engine, a genuine gap in Mathlib) and the linear-algebraic reduction from unbounded ℚ-dimension to infinitely many irrational values. Together they reduce a full formalization to its single hard analytic input: Rivoal's dimension lower bound.",
+    "implications": "The linear-form criterion is independently reusable: any future Lean formalization of Apéry's ζ(3) proof, or of Beukers' integral approach, can invoke irrational_of_linearForm_le_tendsto_zero as its final step once the approximation sequence and its decay are constructed. The dimension reduction makes precise what 'infinitely many odd zeta values are irrational' formally requires — only that the dimension hypothesis be supplied — and isolates the soft part from the analysis. This is the standard pattern for formalizing the reachable core of a deep open-adjacent theorem.",
+    "openQuestions": [
+      "Can Rivoal's dimension lower bound $\\dim_{\\mathbb{Q}}\\mathrm{span}\\{1,\\zeta(3),\\ldots,\\zeta(2n+1)\\} \\geq (1+o(1))\\log n/(1+\\log 2)$ be formalized? This is the remaining analytic obstruction; it needs the hypergeometric/Padé construction of the linear forms and careful denominator (lcm) estimates.",
+      "Can Apéry's ζ(3) proof be completed in Lean by combining this file's criterion with a formal construction of the Apéry approximation sequences and their geometric decay?",
+      "Is $\\zeta(5)$ irrational? Still open; no Apéry-style sequence is known for it, so the criterion here has no known input to apply to $\\zeta(5)$ specifically."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent entry's open question on whether Ball–Rivoal can be formalized, by verifying its two formalizable components."
+    },
+    {
+      "targetId": "basel-problem-oq-01",
+      "relationship": "related"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related"
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "related"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Real.Irrational",
+      "Mathlib.LinearAlgebra.Dimension.Constructions",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "BaselProblemOQ01OQ01OQ03",
+    "lineCount": 181,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/BaselProblemOQ01OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "references": [],
+  "sorries": 0
+}
