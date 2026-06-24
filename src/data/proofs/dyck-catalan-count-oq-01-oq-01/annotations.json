@@ -1,0 +1,74 @@
+[
+  {
+    "id": "dyck-oq0101-ann-header",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 2, "endLine": 55 },
+    "type": "context",
+    "title": "Choosing rooted plane trees as the new Catalan family",
+    "content": "The parent entry asked to count another Catalan family and exhibit an explicit bijection to Dyck words. The originally suggested family was triangulations of a convex polygon, but a faithful geometric encoding (non-crossing maximal diagonal sets with the apex-uniqueness lemma) is a multi-session undertaking in Lean. The problem statement explicitly sanctions an alternative, so this entry counts rooted plane (ordered) trees — the second-most-classical Catalan family and one Mathlib does not encode. Plane trees are a genuinely distinct combinatorial object from the rooted binary trees Mathlib already counts, even though both are counted by the same Catalan numbers.",
+    "mathContext": "$\\#\\{\\text{rooted plane trees with } n \\text{ edges}\\} = C_n$.",
+    "significance": "context",
+    "relatedConcepts": ["plane trees", "ordered trees", "Catalan numbers", "bijective combinatorics", "polygon triangulations"],
+    "prerequisites": ["rooted ordered trees", "the Catalan numbers"]
+  },
+  {
+    "id": "dyck-oq0101-ann-encoding",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 86 },
+    "type": "concept",
+    "title": "A mutually-recursive encoding of plane trees and forests",
+    "content": "PlaneTree and PlaneForest are defined as a mutually-recursive inductive pair: a PlaneTree is node carrying a PlaneForest (its ordered children), and a PlaneForest is nil or cons of a PlaneTree onto a PlaneForest. The node-count function size is defined by mutual recursion. Because the children of a node form a sequence of arbitrary length (not a fixed left/right pair), this is honestly a different family from rooted binary trees.",
+    "mathContext": "A plane tree is a root with an ordered forest of children; $\\mathrm{size}$ counts nodes.",
+    "significance": "key",
+    "relatedConcepts": ["mutually-recursive inductive types", "ordered trees", "forests", "node count"],
+    "prerequisites": ["inductive types in Lean", "mutual recursion"]
+  },
+  {
+    "id": "dyck-oq0101-ann-bijection",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 140 },
+    "type": "concept",
+    "title": "Knuth's natural correspondence as an explicit bijection",
+    "content": "PlaneForest.toTree encodes a forest as a binary tree by the left-child/right-sibling rotation: the empty forest becomes Tree.nil; a forest cons (node c) f becomes Tree.node () (encode c) (encode f), so the left subtree holds the children of the first tree and the right subtree holds the remaining forest. The inverse fromTree is plain recursion on Tree Unit. The two round-trips fromTree_toTree and toTree_fromTree are proved by structural induction and packaged as forestEquivTree : PlaneForest ≃ Tree Unit — an explicit, verified two-sided bijection.",
+    "mathContext": "$\\mathrm{PlaneForest} \\simeq \\mathrm{Tree}\\,\\mathrm{Unit}$ via the rotation correspondence.",
+    "significance": "key",
+    "relatedConcepts": ["left-child/right-sibling rotation", "Knuth correspondence", "Equiv", "structural induction"],
+    "prerequisites": ["binary trees", "two-sided inverses / equivalences"]
+  },
+  {
+    "id": "dyck-oq0101-ann-sizegraded",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 141, "endLine": 176 },
+    "type": "concept",
+    "title": "Node preservation and the bijection to Dyck words",
+    "content": "numNodes_toTree shows the bijection is node-preserving: a forest with n plane-tree nodes maps to a binary tree with n internal nodes. forestEquivTreeSize restricts the bijection to fixed size n via Equiv.subtypeEquiv. treeEquivDyckSize turns Mathlib's DyckWord.equivTree (with semilength_eq_numNodes_equivTree) into an equivalence between binary trees of n nodes and Dyck words of semilength n; forestEquivDyckSize composes the two into the requested explicit bijection between plane forests of n nodes and Dyck words of semilength n.",
+    "mathContext": "$\\{f \\mid \\mathrm{size}\\,f = n\\} \\simeq \\{p:\\mathrm{DyckWord} \\mid \\mathrm{semilength}\\,p = n\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["size-graded bijection", "Equiv.subtypeEquiv", "DyckWord.equivTree", "Dyck words"],
+    "prerequisites": ["subtype equivalences", "the Dyck-word/binary-tree bijection"]
+  },
+  {
+    "id": "dyck-oq0101-ann-counts",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 177, "endLine": 201 },
+    "type": "concept",
+    "title": "The Catalan counts, transported not re-derived",
+    "content": "card_planeForest_size_eq_catalan transports the parent's Dyck-word count across forestEquivDyckSize by Nat.card_congr: plane forests with n nodes number catalan n. Since a plane tree is exactly a forest with a root placed on top (adding one node), treeEquivForestSize gives { t : PlaneTree // size = n+1 } ≃ { f // size = n }, hence card_planeTree_size_eq_catalan: rooted plane trees with n+1 nodes — equivalently n edges — number catalan n, the classical interpretation #{ordered trees with n edges} = Cₙ.",
+    "mathContext": "$\\#\\{\\text{plane trees with } n \\text{ edges}\\} = C_n$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.card_congr", "count transport", "Catalan numbers", "edges vs nodes"],
+    "prerequisites": ["transporting cardinalities along equivalences"]
+  },
+  {
+    "id": "dyck-oq0101-ann-positivity",
+    "proofId": "dyck-catalan-count-oq-01-oq-01",
+    "range": { "startLine": 202, "endLine": 241 },
+    "type": "concept",
+    "title": "Positivity from an explicit witness, and the small-case ladder",
+    "content": "caterpillar n is an explicit forest of n single-node trees in a row, with caterpillar_size verifying its size; card_planeForest_size_pos concludes positivity of the count via Nat.card_pos_iff, drawing finiteness from the bijection. The closing ladder checks the plane-tree counts 1, 1, 2, 5 for 1, 2, 3, 4 nodes (0, 1, 2, 3 edges) through the counting theorem and Mathlib's catalan_zero/one/two/three — no decide/native_decide.",
+    "mathContext": "$C_0,\\dots,C_3 = 1,1,2,5$ realized as plane-tree counts.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity", "explicit witness", "Nat.card_pos_iff", "sanity checks"],
+    "prerequisites": ["nonempty finite types", "the Catalan small cases"]
+  }
+]

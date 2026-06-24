@@ -1,0 +1,193 @@
+{
+  "id": "dyck-catalan-count-oq-01-oq-01",
+  "title": "Rooted Plane Trees Are Counted by the Catalan Numbers, via an Explicit Bijection to Dyck Words",
+  "slug": "dyck-catalan-count-oq-01-oq-01",
+  "description": "A new Catalan family, counted by an explicit bijection to Dyck words. The parent entry asked to enumerate another Catalan family (the suggestion was triangulations of a convex polygon) and exhibit an explicit bijection to Dyck words rather than re-deriving an arithmetic recurrence. A faithful geometric encoding of triangulations is a genuinely multi-session undertaking in Lean, so — exactly as the problem sanctions as an acceptable alternative — this entry counts rooted plane trees (ordered rooted trees), the second-most-classical Catalan family and one Mathlib does not count. A plane tree is a root carrying an ordered list of plane subtrees; a forest is an ordered list of plane trees. The headline is forestEquivTree: an explicit bijection PlaneForest ≃ Tree Unit given by Knuth's natural correspondence (the left-child / right-sibling rotation), with a fully verified two-sided inverse, shown node-preserving (numNodes_toTree). Composing with Mathlib's DyckWord.equivTree gives the requested explicit bijection forestEquivDyckSize: PlaneForest with n nodes ≃ Dyck words of semilength n. Transporting the parent's Dyck-word count along it yields card_planeForest_size_eq_catalan (plane forests with n nodes number catalan n) and card_planeTree_size_eq_catalan (rooted plane trees with n+1 nodes, i.e. n edges, number catalan n) — the classical interpretation #{ordered trees with n edges} = Cₙ. Plane trees are a genuinely distinct combinatorial object from the rooted binary trees Mathlib already counts. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
+  "meta": {
+    "author": "Classical (Euler / Segner; Catalan; the forest↔binary-tree correspondence due to Knuth); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Catalan_number",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "dyck-words",
+      "plane-trees",
+      "ordered-trees",
+      "bijective-combinatorics",
+      "enumerative-combinatorics",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DyckCatalanCountOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "DyckWord.card_dyckWord_semilength_eq_catalan",
+        "description": "The parent count Fintype.card { p : DyckWord // p.semilength = n } = catalan n. The plane-tree count is transported from this along the explicit bijection, not re-derived.",
+        "module": "Mathlib.Combinatorics.Enumerative.DyckWord"
+      },
+      {
+        "theorem": "DyckWord.equivTree",
+        "description": "The Mathlib bijection DyckWord ≃ Tree Unit. Composed with Knuth's forest↔binary-tree correspondence to obtain the explicit bijection from plane forests to Dyck words.",
+        "module": "Mathlib.Combinatorics.Enumerative.DyckWord"
+      },
+      {
+        "theorem": "DyckWord.semilength_eq_numNodes_equivTree",
+        "description": "p.semilength = (equivTree p).numNodes. Makes the Dyck-word/binary-tree bijection size-graded, so the composed bijection sends forest node count to Dyck semilength.",
+        "module": "Mathlib.Combinatorics.Enumerative.DyckWord"
+      },
+      {
+        "theorem": "Tree.numNodes",
+        "description": "The number of internal nodes of a rooted binary tree. The plane-tree node count is matched to it through numNodes_toTree.",
+        "module": "Mathlib.Data.Tree.Basic"
+      },
+      {
+        "theorem": "Equiv.subtypeEquiv",
+        "description": "Restricts a bijection to fixed-size subtypes given a pointwise iff of the size predicates; used to pass from the global bijections to the size-n equivalences forestEquivTreeSize / treeEquivDyckSize.",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Nat.card_congr",
+        "description": "Transports a cardinality along an equivalence. Used to push the Dyck-word count back through the bijection onto plane forests and plane trees.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      },
+      {
+        "theorem": "Nat.card_pos_iff",
+        "description": "0 < Nat.card α ↔ Nonempty α ∧ Finite α. Combined with the explicit caterpillar witness and finiteness from the bijection to give positivity of the plane-forest count.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "PlaneTree / PlaneForest: a mutually-recursive Lean encoding of rooted plane (ordered) trees and forests — a Catalan family absent from Mathlib, genuinely distinct from the rooted binary trees Mathlib counts",
+      "forestEquivTree: an explicit bijection PlaneForest ≃ Tree Unit realizing Knuth's natural correspondence (left-child / right-sibling rotation), with both inverse directions proved (fromTree_toTree, toTree_fromTree)",
+      "numNodes_toTree: the correspondence is node-preserving — a forest with n plane-tree nodes maps to a binary tree with n internal nodes — making it size-graded",
+      "forestEquivDyckSize: the requested explicit bijection between plane forests with n nodes and Dyck words of semilength n, obtained by composing Knuth's correspondence with Mathlib's DyckWord.equivTree",
+      "card_planeForest_size_eq_catalan and card_planeTree_size_eq_catalan: the counts #{plane forests with n nodes} = catalan n and #{rooted plane trees with n+1 nodes (n edges)} = catalan n, transported from the parent Dyck-word count along the explicit bijection",
+      "card_planeForest_size_pos: positivity of the count from the explicit caterpillar forest witness, with finiteness supplied by the bijection"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 241,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used; the small-case ladder (counts 1,1,2,5) is derived through the counting theorem and Mathlib's catalan_zero/one/two/three, not by kernel computation.",
+    "mathlib_version": "4.31.0",
+    "theoremCount": 7,
+    "definitionCount": 13
+  },
+  "overview": {
+    "historicalContext": "The enumeration of convex-polygon triangulations by what are now the Catalan numbers is due to Euler (1751) and Segner (1758) — the original Catalan family. Rooted plane (ordered) trees are the next most classical family: a plane tree with n edges is counted by Cₙ, and forests of plane trees with n total nodes likewise by Cₙ. The bridge used here, the bijection between forests of plane trees and rooted binary trees — the 'left-child / right-sibling' or 'rotation' correspondence — is the natural correspondence popularized by Knuth (TAOCP Vol. 1). Mathlib counts the Catalan numbers through Dyck words and rooted binary trees (treesOfNumNodesEq) but contains no encoding of plane trees, so this fills a genuine library gap while honouring the parent's request for a bijective transport to Dyck words.",
+    "problemStatement": "**Open Question (dyck-catalan-count-oq-01, question 1)**: Prove the corresponding enumeration for another Catalan family not yet counted in Mathlib and exhibit an explicit bijection to Dyck words.\n\n**Result**: rooted plane trees (and forests) are encoded as a mutually-recursive Lean type; Knuth's natural correspondence is formalized as an explicit, verified bijection PlaneForest ≃ Tree Unit, made size-graded and composed with Mathlib's DyckWord.equivTree to obtain PlaneForest with n nodes ≃ Dyck words of semilength n; the parent's Dyck-word count is transported along it to give #{plane trees with n edges} = catalan n. A faithful geometric encoding of triangulations was the original suggestion but is multi-session work; rooted plane trees are the explicitly sanctioned alternative family.",
+    "text": "A rooted plane tree is a root with an ordered list of plane subtrees; a plane forest is an ordered list of plane trees. For every n, the number of plane forests with n nodes is catalan n, and the number of rooted plane trees with n+1 nodes (equivalently n edges) is catalan n. The count is established bijectively: Knuth's left-child/right-sibling rotation is an explicit node-preserving bijection between plane forests and rooted binary trees, which composed with Mathlib's Dyck-word ↔ binary-tree bijection gives an explicit bijection between plane forests of n nodes and Dyck words of semilength n; the parent's Dyck-word count is then transported across.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Encode plane trees and forests as a mutually-recursive inductive pair (PlaneTree.node carrying a PlaneForest; PlaneForest = nil | cons), with a node-count function size defined by mutual recursion.\n\n2. Define the forest→binary-tree encoding by mutual recursion (PlaneForest.toTree): the empty forest ↦ Tree.nil; a forest cons (node c) f ↦ Tree.node () (encode c) (encode f), i.e. left subtree = children of the head, right subtree = the rest of the forest (the left-child/right-sibling rotation). Define the inverse fromTree by plain recursion on Tree Unit.\n\n3. Prove the two round-trips fromTree_toTree and toTree_fromTree by structural induction (the forest direction matching the nested head cons (node c) f and recursing on c and f, with termination by size), packaging them as forestEquivTree : PlaneForest ≃ Tree Unit.\n\n4. Prove numNodes_toTree: (toTree f).numNodes = f.size, so the bijection is size-graded; restrict to forestEquivTreeSize n : { f // f.size = n } ≃ { b : Tree Unit // b.numNodes = n } via Equiv.subtypeEquiv.\n\n5. Use Mathlib's DyckWord.equivTree and semilength_eq_numNodes_equivTree to build treeEquivDyckSize n : { b // b.numNodes = n } ≃ { p : DyckWord // p.semilength = n }; compose to forestEquivDyckSize n.\n\n6. Transport the parent count: card_planeForest_size_eq_catalan via Nat.card_congr and DyckWord.card_dyckWord_semilength_eq_catalan; deduce card_planeTree_size_eq_catalan through treeEquivForestSize n : { t : PlaneTree // t.size = n+1 } ≃ { f // f.size = n }. Positivity from the explicit caterpillar witness and Nat.card_pos_iff.",
+    "keyInsights": [
+      "**Plane trees are a different family from binary trees, with the same count.** Mathlib counts Cₙ via Dyck words and rooted binary trees; rooted plane (ordered) trees are a distinct combinatorial object. Counting them is not a relabelling of the binary-tree count but a transport across a genuine bijection.",
+      "**Knuth's natural correspondence is the right bridge.** The left-child / right-sibling rotation makes a forest of plane trees correspond to one binary tree: the first tree's children become the left subtree, the remaining forest becomes the right subtree. This single recursive idea is both the bijection and the explanation of why forests and binary trees share the Catalan count.",
+      "**Forests, not single trees, are what biject with binary trees.** A single plane tree node c and its children-forest c encode to the same binary tree, so the bijection lives at the forest level; the single-tree count is recovered by the trivial shift { t // size = n+1 } ≃ { f // size = n } (a plane tree is exactly a forest with a root placed on top, adding one node).",
+      "**Transport, don't re-derive.** Following the parent's mandate, no arithmetic recurrence is re-run: the count is carried from Mathlib's Dyck-word count straight across the composed bijection by Nat.card_congr. The node-preservation lemma is what lets the global bijection descend to each fixed size.",
+      "**Faithfulness drove the family choice.** An abstract inductive 'triangulation' that is secretly a binary tree would weaken the originality claim; rooted plane trees are an honestly distinct object, and the problem statement explicitly lists them as an acceptable alternative to the heavier geometric triangulation encoding."
+    ],
+    "prerequisites": [
+      "Rooted plane (ordered) trees and forests, and their enumeration by the Catalan numbers",
+      "The forest ↔ binary-tree (left-child/right-sibling) correspondence and Mathlib's Dyck-word ↔ binary-tree bijection",
+      "Defining functions and proving equalities by mutual structural recursion on mutually-recursive inductive types",
+      "Transporting cardinalities along equivalences with Equiv.subtypeEquiv and Nat.card_congr"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Plane-Tree Encoding",
+      "startLine": 1,
+      "endLine": 86,
+      "summary": "Module docstring explaining the choice of rooted plane trees as the new Catalan family (with triangulations deferred as multi-session geometry), the mutually-recursive inductive types PlaneTree and PlaneForest, and the node-count function size.",
+      "mathContext": "A plane tree is a root with an ordered forest of children; size counts nodes."
+    },
+    {
+      "id": "bijection",
+      "title": "Knuth's Forest ↔ Binary-Tree Bijection",
+      "startLine": 87,
+      "endLine": 140,
+      "summary": "The encoding PlaneForest.toTree (left-child/right-sibling rotation) and its inverse fromTree, the two round-trip proofs fromTree_toTree and toTree_fromTree, and their packaging as the explicit equivalence forestEquivTree : PlaneForest ≃ Tree Unit.",
+      "mathContext": "$\\mathrm{PlaneForest} \\simeq \\mathrm{Tree}\\,\\mathrm{Unit}$ via the rotation correspondence."
+    },
+    {
+      "id": "size-graded",
+      "title": "Node Preservation and the Bijection to Dyck Words",
+      "startLine": 141,
+      "endLine": 176,
+      "summary": "numNodes_toTree shows the bijection is node-preserving; forestEquivTreeSize restricts it to fixed size n; treeEquivDyckSize uses Mathlib's DyckWord.equivTree; forestEquivDyckSize composes them into the requested explicit bijection between plane forests of n nodes and Dyck words of semilength n.",
+      "mathContext": "$\\{f : \\mathrm{PlaneForest} \\mid \\mathrm{size}\\,f = n\\} \\simeq \\{p : \\mathrm{DyckWord} \\mid \\mathrm{semilength}\\,p = n\\}$."
+    },
+    {
+      "id": "counts",
+      "title": "The Catalan Counts",
+      "startLine": 177,
+      "endLine": 201,
+      "summary": "card_planeForest_size_eq_catalan (plane forests with n nodes number catalan n, transported from the parent Dyck count) and, via treeEquivForestSize, card_planeTree_size_eq_catalan (rooted plane trees with n+1 nodes, i.e. n edges, number catalan n).",
+      "mathContext": "$\\#\\{\\text{plane trees with } n \\text{ edges}\\} = C_n$."
+    },
+    {
+      "id": "positivity-ladder",
+      "title": "Positivity and Small-Case Ladder",
+      "startLine": 202,
+      "endLine": 241,
+      "summary": "The explicit caterpillar forest of each size, caterpillar_size, and card_planeForest_size_pos (positivity from the witness plus finiteness from the bijection); followed by the small-case ladder verifying plane-tree counts 1, 1, 2, 5 for 1, 2, 3, 4 nodes.",
+      "mathContext": "$C_0,\\dots,C_3 = 1,1,2,5$ realized as plane-tree counts."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "dyck-catalan-count-oq-01",
+      "relationship": "Direct parent: supplies the Dyck-word count card_dyckWord_semilength_eq_catalan and the Dyck-word ↔ binary-tree bijection that this entry's count is transported across; this entry answers the parent's first open question (enumerate another Catalan family with an explicit bijection to Dyck words)."
+    },
+    {
+      "id": "dyck-catalan-count",
+      "relationship": "Foundational Dyck-word/Catalan count; the reference family the bijection targets."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, fully verified (0 sorries, 0 axioms) formalization that rooted plane trees and forests are counted by the Catalan numbers, established bijectively: Knuth's left-child/right-sibling correspondence is given as an explicit node-preserving bijection PlaneForest ≃ Tree Unit, composed with Mathlib's Dyck-word ↔ binary-tree bijection to obtain an explicit bijection from plane forests of n nodes to Dyck words of semilength n, along which the parent's Dyck-word count is transported to give #{plane trees with n edges} = catalan n.",
+    "implications": "Adds a Catalan family absent from Mathlib (rooted plane trees) together with the canonical forest↔binary-tree bijection, both reusable for further enumerative work (plane-tree statistics, associahedra, the tree-rotation lattice). Demonstrates the bijective method end-to-end in Lean: encode a new family, build a verified two-sided bijection, make it size-graded, and transport an existing count rather than re-deriving it.",
+    "openQuestions": [
+      "Carry out the originally suggested faithful geometric encoding of convex-polygon triangulations (non-crossing maximal diagonal sets) and prove its count by an explicit bijection to plane trees or Dyck words, including the unique-apex/ear lemma underpinning the recursion.",
+      "Recover the Segner convolution recurrence directly on the plane-forest counts via the head-tree / remaining-forest decomposition, mirroring the parent's card_semilength_succ, and identify the decomposition with the binary-tree split under forestEquivTree."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "PlaneTreeCatalan",
+    "lineCount": 241,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 13,
+    "path": "Proofs/DyckCatalanCountOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Donald E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley",
+      "note": "Section 2.3.2: the natural correspondence between forests of ordered trees and binary trees (left-child / right-sibling), the bijection formalized here."
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press",
+      "note": "Definitive catalogue of Catalan objects; ordered (plane) trees with n edges and Dyck paths appear as foundational families with the standard bijection between them."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.Combinatorics.Enumerative.DyckWord and Mathlib.Combinatorics.Enumerative.Catalan",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of the Dyck-word ↔ binary-tree bijection (DyckWord.equivTree), the Dyck-word count, and the binary-tree count treesOfNumNodesEq used as the transport target."
+    }
+  ],
+  "sorries": 0
+}
