@@ -60,6 +60,50 @@
       "Set.InjOn from Function.Injective (Function.Injective.injOn) and Finset.card_fin"
     ]
   },
+  "sections": [
+    {
+      "id": "interpolant",
+      "title": "The Lagrange Interpolant and its Degree Bound",
+      "startLine": 46,
+      "endLine": 59,
+      "summary": "interp v r = Lagrange.interpolate univ v r is the companion's explicit interpolant; interp_mem_degreeLT shows it lands in degreeLT F n because its degree is < #univ = n (card_univ_fin), so it can serve as the inverse's codomain."
+    },
+    {
+      "id": "eval-map",
+      "title": "Evaluation at Nodes as a Linear Map",
+      "startLine": 61,
+      "endLine": 67,
+      "summary": "evalNodes v : degreeLT F n →ₗ[F] (Fin n → F) is the forward map p ↦ (j ↦ p(v_j)), assembled from Polynomial.leval, the submodule inclusion, and LinearMap.pi, hence F-linear by construction (evalNodes_apply is rfl)."
+    },
+    {
+      "id": "interp-map",
+      "title": "The Interpolant as a Codomain-Restricted Linear Map",
+      "startLine": 69,
+      "endLine": 76,
+      "summary": "interpLT hv is Lagrange.interpolate univ v with codomain restricted into degreeLT F n via LinearMap.codRestrict (justified by the degree bound) — the candidate inverse of evalNodes."
+    },
+    {
+      "id": "isomorphism",
+      "title": "The Full Interpolation Isomorphism",
+      "startLine": 78,
+      "endLine": 100,
+      "summary": "evalEquiv hv = LinearEquiv.ofLinear evalNodes interpLT, with right inverse from Lagrange.eval_interpolate_at_node (the interpolant hits the values) and left inverse from Lagrange.eq_interpolate (a degree-< n polynomial is its own interpolant). evalEquiv_symm_apply records that the inverse is literally interp v."
+    },
+    {
+      "id": "bijectivity",
+      "title": "Bijectivity: Existence and Uniqueness",
+      "startLine": 102,
+      "endLine": 123,
+      "summary": "evalNodes_bijective / surjective / injective are the equivalence's properties: surjectivity is the existence half (the open question's target), injectivity is uniqueness. exists_eval_eq restates existence in elementary ∃ form with the Lagrange interpolant as the witness."
+    },
+    {
+      "id": "dimension",
+      "title": "Dimension Consequence by Transport",
+      "startLine": 125,
+      "endLine": 129,
+      "summary": "finrank_degreeLT transports the isomorphism to Fin n → F (LinearEquiv.finrank_eq, Module.finrank_fin_fun) to conclude dim_F(degreeLT F n) = n — the n node-evaluations serve as coordinates."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "vandermonde-interpolation-oq-01-oq-01",
