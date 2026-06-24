@@ -1,0 +1,91 @@
+{
+  "slug": "arsinh-log-formula-oq-01-oq-02-oq-01",
+  "title": "arcosh Antiderivative ∫ 1/√(t²−1) dt = arcosh t + C",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\frac{d}{dt}\\operatorname{arcosh} t = \\frac{1}{\\sqrt{t^2-1}} \\quad (t > 1),\n\\qquad\n\\int \\frac{1}{\\sqrt{t^2-1}}\\,dt = \\operatorname{arcosh} t + C \\quad (t > 1).",
+    "plain": "The parent entry established the logarithmic form of `arcosh` and its addition law.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T06:31:48-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "",
+    "builtItems": [],
+    "insights": [],
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: arsinh-log-formula-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "analysis",
+    "calculus",
+    "hyperbolic-functions"
+  ],
+  "relatedProofs": [
+    "arsinh-log-formula-oq-01",
+    "arsinh-log-formula-oq-01-oq-01",
+    "arsinh-log-formula-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T13:33:56.154Z",
+  "lastUpdate": "2026-06-24T13:33:56.209Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/ArsinhLogFormulaOQ01.lean",
+      "filename": "ArsinhLogFormulaOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArsinhLogFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/ArsinhLogFormulaOQ01OQ01.lean",
+      "filename": "ArsinhLogFormulaOQ01OQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArsinhLogFormulaOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArsinhLogFormulaOQ01OQ02.lean",
+      "filename": "ArsinhLogFormulaOQ01OQ02.lean",
+      "lineCount": 117,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArsinhLogFormulaOQ01OQ02.lean"
+    }
+  ]
+}
