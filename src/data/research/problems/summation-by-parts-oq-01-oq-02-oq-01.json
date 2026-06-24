@@ -1,0 +1,80 @@
+{
+  "slug": "summation-by-parts-oq-01-oq-02-oq-01",
+  "title": "Second-moment sum ∑ k²·rᵏ over any field: falling factorials and Abel summation",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "started": "2026-06-24T09:05:00.000Z",
+  "lastUpdate": "2026-06-24T09:30:00.000Z",
+  "problemStatement": "The sibling entry summation-by-parts-oq-01-oq-02 evaluates the finite second-moment sum ∑_{k<n} k²·rᵏ over ℝ by bare induction. Strengthen it: prove the same closed form over an arbitrary field, supply the genuine Abel summation-by-parts derivation, add the second falling-factorial closed form ∑ k(k−1)·rᵏ, and realize k²=k(k−1)+k as a finite-sum identity.",
+  "knownResults": {
+    "proven": [
+      "∑_{k<n} k²·rᵏ = (rⁿ·(n² + (1+2n−2n²)·r + (n−1)²·r²) − r − r²)/(r−1)³ over any field, r ≠ 1 (sum_range_sq_geom)",
+      "∑_{k<n} k(k−1)·rᵏ = (rⁿ·(n(n−1) + (4n−2n²)·r + (n−1)(n−2)·r²) − 2r²)/(r−1)³ over any field (sum_range_falling_geom)",
+      "k² = k(k−1) + k as a term-by-term identity of finite sums (sum_sq_eq_falling_add_linear)",
+      "Abel summation-by-parts form: boundary (n−1)²·Gₙ minus correction ∑ (2i+1)·G_{i+1} (sum_range_sq_geom_eq_byParts)"
+    ],
+    "open": [],
+    "goal": "Generalize the second-moment closed form to any field and supply the summation-by-parts derivation plus the falling-factorial companion."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: field-general second-moment closed form + falling-factorial companion + k²=k(k−1)+k decomposition + genuine Abel summation-by-parts derivation; verified, 0 axioms.",
+    "builtItems": [
+      "sum_range_sq_geom in Proofs/SummationByPartsOQ01OQ02OQ01.lean (field-general second-moment closed form)",
+      "sum_range_falling_geom (second falling-factorial closed form)",
+      "sum_sq_eq_falling_add_linear (k²=k(k−1)+k finite-sum decomposition)",
+      "sum_range_sq_geom_eq_byParts (Abel summation-by-parts derivation)"
+    ],
+    "insights": [
+      "The second-moment closed form is purely algebraic — over any field, a polynomial-over-(r−1)³ identity, no norm or |r|<1 needed; the sibling's ℝ restriction was inessential.",
+      "Coefficients must be written with (n:K) so the field subtraction 1+2n−2n² etc. never truncates as it would in ℕ.",
+      "Abel summation by parts exposes the order of the discrete derivative: the weight k² has linear forward differences 2k+1 (vs constant 1 for k), so the correction weights each geometric partial sum by 2i+1.",
+      "The falling-factorial basis k(k−1) has forward difference 2k, dropping degree by one — the discrete analogue of differentiating a monomial."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no closed form for ∑ k²·rᵏ or ∑ k(k−1)·rᵏ; only geom_sum_eq for ∑ rᵏ."
+    ],
+    "nextSteps": [
+      "General ∑ P(k)·rᵏ for fixed polynomial P of degree d via induction on deg P in the falling-factorial basis.",
+      "Uniform ∑ k^(d)·rᵏ in terms of the d-th finite difference of the geometric partial sum."
+    ],
+    "markdown": "# Knowledge Base: summation-by-parts-oq-01-oq-02-oq-01\n\nDepth-2 extension of the second-moment sum entry. Strengthens the ℝ-only sibling summation-by-parts-oq-01-oq-02 to an arbitrary field, supplies the genuine Abel summation-by-parts derivation, the second falling-factorial closed form, and the k²=k(k−1)+k decomposition. Verified, 0 axioms.\n"
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ02OQ01.lean",
+      "filename": "SummationByPartsOQ01OQ02OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "summation-by-parts-oq-01",
+    "summation-by-parts-oq-01-oq-02",
+    "summation-by-parts-oq-01-oq-02-oq-01",
+    "geometric-series-oq-06"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Finset.sum_range_succ",
+      "Finset.sum_range_by_parts",
+      "Finset.sum_add_distrib"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "finite-sums",
+    "second-moment",
+    "summation-by-parts",
+    "falling-factorial",
+    "research"
+  ]
+}
