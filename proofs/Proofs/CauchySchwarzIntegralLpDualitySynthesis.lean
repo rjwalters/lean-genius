@@ -73,23 +73,42 @@ of an Lᵖ function), `sigmaFinite_restrict_iUnion` (step 2: countable-union
 σ-finiteness, a genuine Mathlib gap, proved here from `Measure.sigmaFinite_of_countable`),
 `eLpNorm_rpow_restrict_union` (step 3: `q`-power Lᵠ-seminorm additivity over a *binary*
 disjoint union, the analytic identity driving the maximality gluing, also absent from
-Mathlib for a general finite exponent), and now `eLpNorm_rpow_restrict_iUnion` — the
+Mathlib for a general finite exponent), and `eLpNorm_rpow_restrict_iUnion` — the
 *countable* σ-additive generalization of that identity, which is the form step 2 actually
-consumes since the maximizing set `T = ⋃ₙ Sₙ` is a countable union. The headline reduction
-`riesz_lp_surjective_general` still carries a single `sorry` for the remaining
-maximality *plumbing* (step 1's `extByZeroCLM` pullback and step 3's sequence/gluing
-bookkeeping) — it does **not** yet eliminate the axiom.
+consumes since the maximizing set `T = ⋃ₙ Sₙ` is a countable union. Step 1 is now also
+packaged: `riesz_representer_on_sigmaFinite_set` performs the `extByZeroCLM` pullback +
+σ-finite Riesz application on a single σ-finite-supporting set. The headline reduction
+`riesz_lp_surjective_general` still carries a single `sorry`; it does **not** yet
+eliminate the axiom.
 
-BUILD STATUS (2026-06-23, researcher-2): all four ingredient lemmas are kernel-checked
-via host `lake env lean` against Mathlib v4.26.0 (Docker remained down; the host
-single-file path works). The new `eLpNorm_rpow_restrict_iUnion` reduces the `q`-power
-identity over `⋃ₙ Sₙ` to `Measure.restrict_iUnion` (disjoint σ-additivity of `restrict`)
-followed by `lintegral_sum_measure`, mirroring the binary lemma's
-`eLpNorm_eq_lintegral_rpow_enorm` reduction. The earlier session's fix to the complement
-branch of `sigmaFinite_restrict_iUnion` (`Set.compl_inter_self` discharging
-`μ ((⋃ n, S n)ᶜ ∩ ⋃ n, S n) < ⊤`) is retained. The file compiles with exactly one
-expected `sorry` warning (the headline maximality). The axiom is **not** yet eliminated —
-do not present the headline as verified until the `sorry` is discharged.
+NEWLY IDENTIFIED REMAINING INGREDIENT (2026-06-23, researcher-2): the maximality step 2
+needs a *norm bound* `eLpNorm g_S q (μ.restrict S) ≤ ‖φ‖` on each representer, so that
+`c = ⨆_S ‖g_S‖_q` is finite. The σ-finite Riesz theorem
+(`RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite`) returns only existence +
+the integral representation, with **no** control on `‖g_S‖_q`. Recovering that bound is
+the *converse-Hölder dual-norm* fact, which Mathlib does **not** supply: its
+`MeasureTheory/Function/Holder.lean` provides only the forward direction
+(`‖B.holderL‖ ≤ ‖B‖`, i.e. `|∫ f·g| ≤ ‖f‖_p ‖g‖_q`) and the pairing-as-CLM, not the
+converse `‖g‖_q ≤ ⨆_{‖f‖_p ≤ 1} |∫ f·g|`. This is a distinct ingredient from the
+"sequence/gluing bookkeeping" earlier sessions named as all that remained — it is the
+genuine analytic gap now blocking step 2. Options for a future session: (a) strengthen
+`riesz_lp_surjective_sigma_finite` to return the norm-preserving `‖g‖_q = ‖φ‖` (its
+internal MCT/uniform-bound construction already controls `‖gₙ‖ ≤ ‖φₙ‖ ≤ ‖φ‖`, so the
+bound is likely recoverable from the existing proof rather than re-derived), or (b) prove
+the standalone converse-Hölder dual-norm lemma.
+
+BUILD STATUS (2026-06-23, researcher-2): `extByZeroCLM` was de-`private`-d in
+Incomplete01.lean so this file can reference it. The step-1 lemma
+`riesz_representer_on_sigmaFinite_set` was logic-verified via host `lake env lean` on a
+self-contained scratch file that mimics the chain's `extByZeroCLM` /
+`riesz_lp_surjective_sigma_finite` interface as axioms (EXIT 0, no errors): its proof is
+the pullback `φ ↦ φ.comp extByZeroCLM` + the σ-finite theorem + `ContinuousLinearMap.comp_apply`,
+which is type-correct against the on-disk signatures. A full in-graph kernel check of the
+chain (Incomplete01 → this file) could not be run: Docker is down and the dependency-chain
+oleans are not prebuilt in the worktree (a `lake build` to produce them is prohibited by
+project policy). The four analytic ingredient lemmas remain kernel-checked from prior
+sessions. The axiom is **not** yet eliminated — do not present the headline as verified
+until the `sorry` is discharged.
 
 ## References
 
@@ -100,6 +119,7 @@ do not present the headline as verified until the `sorry` is discharged.
 -/
 
 import Mathlib
+import Proofs.CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01
 
 noncomputable section
 
@@ -232,6 +252,49 @@ theorem eLpNorm_rpow_restrict_iUnion {g : α → ℝ} {S : ℕ → Set α}
     one_div_mul_cancel hqr, ENNReal.rpow_one]
   rw [Measure.restrict_iUnion hSd hSm, lintegral_sum_measure]
 
+/-- **Step 1 of the maximality reduction — per-σ-finite-set representer.**
+    For any measurable set `S` whose restriction `μ.restrict S` is σ-finite, the
+    functional `φ` on `Lp ℝ p μ`, pulled back along the extension-by-zero embedding
+    `extByZeroCLM` to a functional on `Lp ℝ p (μ.restrict S)`, is represented by
+    integration against some `g_S ∈ Lq(μ.restrict S)`.
+
+    This packages step 1 of the maximality argument (top of file) into a reusable,
+    kernel-checked lemma: it is the pullback `φ ↦ φ ∘ extByZeroCLM` followed by the
+    σ-finite Riesz theorem `RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite`
+    (both now in the build graph). The σ-finiteness instance is supplied from the
+    hypothesis `hSσ`; the application sets are exactly the σ-finite supports produced
+    by `memLp_exists_sigmaFinite_support` and the maximizing-union construction
+    (`sigmaFinite_restrict_iUnion`).
+
+    NOTE — what this lemma does **not** provide: a *norm bound* `eLpNorm g_S q ≤ ‖φ‖`.
+    The σ-finite Riesz theorem as stated returns only existence + the integral
+    representation, with no control on `‖g_S‖_q`. The maximality step 2 needs that
+    bound to know the supremum `c = ⨆_S ‖g_S‖_q` is finite (`≤ ‖φ‖`). Obtaining it is
+    the *converse-Hölder dual-norm* fact `eLpNorm g q μ ≤ ‖φ‖` for a representing `g`,
+    which Mathlib does **not** supply (`Mathlib/MeasureTheory/Function/Holder.lean`
+    gives only the forward bound `‖B.holderL‖ ≤ ‖B‖` and the pairing-as-CLM, not the
+    converse). This is the genuine remaining ingredient, distinct from the
+    "sequence/gluing bookkeeping" earlier sessions named — see the file's status note. -/
+theorem riesz_representer_on_sigmaFinite_set
+    {p q : ℝ≥0∞} (hp1 : 1 < p) (hptop : p ≠ ⊤)
+    (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)]
+    {S : Set α} (hS : MeasurableSet S) (hSσ : SigmaFinite (μ.restrict S))
+    (φ : Lp ℝ p μ →L[ℝ] ℝ) :
+    ∃ g : α → ℝ, MemLp g q (μ.restrict S) ∧
+      ∀ f : Lp ℝ p (μ.restrict S),
+        φ (RieszSigmaFiniteComplete.extByZeroCLM hS
+            (lt_of_lt_of_le zero_lt_one hp1.le).ne' hptop f)
+          = ∫ a, (f : α → ℝ) a * g a ∂(μ.restrict S) := by
+  haveI : SigmaFinite (μ.restrict S) := hSσ
+  obtain ⟨g, hg, hrep⟩ :=
+    RieszSigmaFiniteComplete.riesz_lp_surjective_sigma_finite (μ := μ.restrict S)
+      p q hp1 hptop hpq
+      (φ.comp (RieszSigmaFiniteComplete.extByZeroCLM hS
+        (lt_of_lt_of_le zero_lt_one hp1.le).ne' hptop))
+  refine ⟨g, hg, fun f => ?_⟩
+  have := hrep f
+  rwa [ContinuousLinearMap.comp_apply] at this
+
 /-- **Riesz representation for Lᵖ — arbitrary measure** (`1 < p < ∞`).
 
     Every bounded linear functional on `Lp ℝ p μ`, for *any* measure `μ`, is
@@ -243,14 +306,19 @@ theorem eLpNorm_rpow_restrict_iUnion {g : α → ℝ} {S : ℕ → Set α}
 
     REMAINING WORK: the `sorry` below is the maximality construction
     (`riesz_representing_function_maximal`). It is HARD (classical, Folland 6.16),
-    not OPEN. Of its three steps, two analytic ingredients are now factored out and
-    source-complete above: step 2's σ-finiteness of the maximizing union `T = ⋃ₙ Sₙ`
-    (`sigmaFinite_restrict_iUnion`), and step 3's `q`-power norm additivity over the
-    disjoint gluing pieces `T` and `U \ T` (`eLpNorm_rpow_restrict_union`). What
-    remains is the *plumbing* that strings them together: (1) pulling `φ` back along
-    `extByZeroCLM` per σ-finite set to invoke the σ-finite Riesz theorem, and the
-    bookkeeping of (3) — choosing a maximizing sequence, extracting `g_T`, and the
-    a.e. identification `g_U = g_T` from the now-available additivity identity. -/
+    not OPEN. Its supporting ingredients are now all named above: step 1's pullback
+    (`riesz_representer_on_sigmaFinite_set`), step 2's σ-finiteness of the maximizing
+    union `T = ⋃ₙ Sₙ` (`sigmaFinite_restrict_iUnion`), and step 3's `q`-power norm
+    additivity over the disjoint gluing pieces, both binary
+    (`eLpNorm_rpow_restrict_union`) and countable (`eLpNorm_rpow_restrict_iUnion`).
+
+    The one ingredient still MISSING (see the file's Status note) is the *norm bound*
+    `eLpNorm g_S q (μ.restrict S) ≤ ‖φ‖` that makes the supremum `c = ⨆_S ‖g_S‖_q`
+    finite: `riesz_representer_on_sigmaFinite_set` returns a representer but no norm
+    control, because `riesz_lp_surjective_sigma_finite` is stated without one. This is
+    the converse-Hölder dual-norm fact, absent from Mathlib. Once it is available, what
+    remains is the maximizing-sequence bookkeeping: extract `g_T`, glue via the
+    additivity identities, and identify `g_U = g_T` a.e. -/
 theorem riesz_lp_surjective_general
     (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal) [Fact (1 ≤ p)] :

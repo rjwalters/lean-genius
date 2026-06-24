@@ -404,3 +404,44 @@ reduction.
 maximality. Prereq: re-expose `extByZeroCLM` (currently `private` in `…Incomplete01.lean`)
 and build the σ-finite chain (`…OQ01OQ01.lean`) to confirm `riesz_lp_surjective_sigma_finite`
 truly compiles, then wire steps 1–3 (ingredients now all verified).
+
+### 2026-06-23 (Session 9, researcher-2) — PROGRESS (step 1 packaged; converse-Hölder norm-bound identified as the real remaining gap)
+
+**Mode:** REVISIT. **Outcome:** progress — exposed `extByZeroCLM`, added a logic-verified
+step-1 lemma, and corrected the remaining-work assessment.
+
+**What I did:**
+- **Exposed `extByZeroCLM`** (dropped `private` in `…OQ01OQ01Incomplete01.lean`) — the
+  explicitly-named #1 next step, so the synthesis file can reference it.
+- **Added `riesz_representer_on_sigmaFinite_set`** to the synthesis file (imports the chain
+  now): packages step 1 of the maximality reduction — the pullback `φ ↦ φ.comp extByZeroCLM`
+  on a single σ-finite-supporting set `S`, followed by `riesz_lp_surjective_sigma_finite`,
+  yielding a representer `g_S ∈ Lᵠ(μ.restrict S)`. Proof is 4 lines
+  (`haveI` σ-finite instance → apply the σ-finite theorem to the composed functional →
+  `ContinuousLinearMap.comp_apply`).
+- **Logic-verified** that lemma via host `lake env lean` on a scratch file that mimics the
+  chain's `extByZeroCLM` / `riesz_lp_surjective_sigma_finite` interface as axioms with the
+  exact on-disk signatures — EXIT 0, no errors. (Full in-graph kernel check blocked: Docker
+  down + chain oleans not prebuilt in the worktree + `lake build` prohibited by policy.)
+
+**KEY CORRECTION to the remaining-work picture:** prior sessions framed everything left as
+"step 1 plumbing + step 3 sequence/gluing bookkeeping". That **missed a genuine analytic
+ingredient**: the maximality step 2 needs the **norm bound** `‖g_S‖_q ≤ ‖φ‖` to know the
+supremum `c = ⨆_S ‖g_S‖_q` is finite, but `riesz_lp_surjective_sigma_finite` as stated
+returns only existence + the integral representation, with **no** norm control. Recovering
+the bound is the **converse-Hölder dual-norm** fact `‖g‖_q ≤ ⨆_{‖f‖_p ≤ 1} |∫ f·g|`, which
+Mathlib does **not** supply (`MeasureTheory/Function/Holder.lean` has only the forward
+`‖B.holderL‖ ≤ ‖B‖` + the pairing-as-CLM, not the converse). This is the real blocker now.
+
+**Axiom NOT eliminated.** Parent `axiom riesz_lp_surjective` untouched; `axiomCount`
+unchanged. Headline `riesz_lp_surjective_general` still carries the single maximality `sorry`.
+
+**Next session — two options for the missing norm bound:**
+1. **Preferred:** strengthen `riesz_lp_surjective_sigma_finite` to return `‖g‖_q = ‖φ‖`
+   (or `≤`). Its internal MCT/uniform-bound construction in `…Incomplete01.lean` already
+   controls `‖gₙ‖_{Lq(μₙ)} ≤ ‖φₙ‖ ≤ ‖φ‖` (see `localization_existence` outline step 4), so
+   the bound is likely already provable from the existing proof, just not surfaced in the
+   statement. Surface it, then thread it through `riesz_representer_on_sigmaFinite_set`.
+2. Prove a standalone converse-Hölder dual-norm lemma (HARD, needs the extremizer
+   `f = |g|^{q-1} sgn g / ‖g‖^{q/p}`). Could be an Aristotle candidate (KNOWN math).
+   Then steps 2+3 are pure bookkeeping with all analytic ingredients in hand.
