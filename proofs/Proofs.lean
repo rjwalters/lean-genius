@@ -2861,6 +2861,7 @@ import Proofs.FourierSeriesOQ02OQ04
 import Proofs.FourierSeriesOQ03
 import Proofs.FourierSeriesOQ04
 import Proofs.FourierSeriesOQ04WIP01
+import Proofs.FourierSeriesOQ04WIP01OQ01
 import Proofs.FourierSeriesOQ04OQ01
 import Proofs.FourthRoot2Degree4
 import Proofs.FriendshipTheorem
