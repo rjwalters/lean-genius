@@ -1,0 +1,94 @@
+{
+  "slug": "euler-totient-oq-01-oq-01-oq-01",
+  "title": "The Explicit Carmichael Function: lambda(n) = lcm_p p^(k-1)(p-1) and lambda(561)=80",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\lambda(n) = \\operatorname{lcm}_{p \\mid n} p^{k_p - 1}(p-1) \\text{ for odd } n; \\quad \\lambda(561) = \\operatorname{lcm}(2,10,16) = 80 \\mid 560",
+    "plain": "Carmichael's function lambda(n) is the smallest exponent with a^lambda(n) = 1 mod n for all a coprime to n (the exponent of the unit group of Z/nZ). The parent proved lambda(mn)=lcm(lambda m, lambda n) for coprime m,n. The open question asks to complete the induction to lambda(n)=lcm_i lambda(p_i^k_i). That identity is already in Mathlib (carmichael_factorization); the contribution here is the explicit textbook closed form for odd n and concrete Carmichael-number data.",
+    "whyMatters": ["Carmichael's function is the sharp universal exponent in Euler's theorem and the key tool for primality testing and Carmichael numbers; lambda(561)=80 dividing 560 is the canonical witness (Korselt's criterion) that 561 is the first Carmichael number."]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent euler-totient-oq-01-oq-01: lambda(mn)=lcm(lambda m, lambda n) for coprime m,n",
+      "Mathlib ArithmeticFunction.carmichael_factorization: lambda(n)=lcm over primeFactors of lambda(p^k) (the literal open question)",
+      "Mathlib carmichael_pow_of_prime_ne_two: lambda(p^k)=phi(p^k) for odd p; carmichael_two_pow_of_ne_two: lambda(2^k)=2^(k-2) for k != 2",
+      "Mathlib pow_carmichael (a^lambda(n)=1) and carmichael_dvd_totient (lambda(n) | phi(n))"
+    ],
+    "open": [
+      "Full explicit formula including the prime 2 (piecewise 2-part)",
+      "General Korselt criterion: squarefree composite n is Carmichael iff lambda(n) | n-1"
+    ],
+    "goal": "Assemble the explicit closed form lambda(n)=lcm_{p|n} p^(k_p-1)(p-1) for odd n from Mathlib's factorization lemma and per-prime-power totient values, and evaluate concrete cases (lambda(15)=4, lambda(561)=80, 80|560)."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Shipped explicit odd-n Carmichael closed form + concrete Carmichael-number evaluations; entry complete.",
+    "blockers": [],
+    "nextAction": "None - completed. Follow-ups (general 2-part formula, Korselt criterion) recorded as open questions.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED (verified, 0-axiom). DEDUP FINDING: the parent's literal open question lambda(n)=lcm_i lambda(p_i^k_i) is ALREADY Mathlib's ArithmeticFunction.carmichael_factorization, and all three parent open questions (factorization, 2-power value, odd-prime-power cyclicity) are in Mathlib's Carmichael.lean. So rather than reprove a thin wrapper, this entry assembles what Mathlib leaves separate: (1) the explicit closed form for odd n, lambda(n)=lcm_{p|n} p^(k_p-1)(p-1); (2) concrete evaluations lambda(15)=4 and lambda(561)=80 for the first Carmichael number 561=3*11*17, plus the Korselt witness 80 | 560. 8 theorems / 0 axioms / 0 sorries / 136 lines.",
+    "builtItems": [
+      "carmichael_odd_prime: lambda(p)=p-1 for odd prime p (specialise carmichael_pow_of_prime_ne_two at exp 1 + totient_prime)",
+      "carmichael_odd_prime_pow: lambda(p^k)=p^(k-1)(p-1) for odd p, k>=1 (carmichael_pow_of_prime_ne_two + totient_prime_pow)",
+      "carmichael_odd_eq_lcm_explicit: for odd n, lambda(n)=lcm_{p in primeFactors} p^(k_p-1)(p-1) via carmichael_factorization + Finset.lcm_congr (each prime factor of odd n is != 2)",
+      "carmichael_15 = 4 and carmichael_561 = 80 (first Carmichael number 561=3*11*17) by iterating carmichael_mul over coprime primes + decide on nested lcm",
+      "carmichael_561_dvd_560: Korselt witness 80 | 560 = 561-1; pow_carmichael_eq_one + carmichael_dvd_totient' re-exported as Euler-sharpened corollaries"
+    ],
+    "insights": [
+      "DEDUP: Mathlib's NumberTheory/ArithmeticFunction/Carmichael.lean already has carmichael_factorization, carmichael_mul/_lcm, carmichael_pow_of_prime_ne_two, carmichael_two_pow_of_ne_two, pow_carmichael, carmichael_dvd_totient - the parent file even reproved carmichael_mul locally. Always grep Mathlib for the exact target before formalizing a named classical identity.",
+      "The prime 2 is the ONLY obstruction to a single clean power formula for lambda: (Z/2^kZ)^x is non-cyclic for k>=3, so lambda(2^k)=2^(k-2) not phi(2^k). Restricting the explicit closed form to ODD n makes every factor a clean cyclic order p^(k-1)(p-1).",
+      "Proof engine for the odd closed form: rw carmichael_factorization then Finset.lcm_congr rfl; per factor, prime_of_mem_primeFactors + dvd_of_mem_primeFactors give primality and divisibility, Odd n forces p != 2 (else 2|n), and Nat.Prime.factorization_pos_of_dvd gives k_p >= 1.",
+      "Concrete Carmichael values are computable despite Carmichael being noncomputable: iterate carmichael_mul on coprime prime factors to reduce to lambda(p)=p-1, then decide on the small nested Nat.lcm. carmichael_mul needs Coprime proofs by decide.",
+      "Korselt's criterion drops out: 561 squarefree and lambda(561)=80 | 560 means a^560=1 mod 561 for all coprime a (first Carmichael number)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has carmichael_factorization and per-prime-power values separately but does NOT state the single assembled explicit closed form lambda(n)=lcm_{p|n} p^(k-1)(p-1).",
+      "No concrete Carmichael-number evaluations (lambda(561)=80 etc.) and no formalized Korselt criterion."
+    ],
+    "nextSteps": [
+      "Add the prime-2 piecewise term to get the fully general explicit formula.",
+      "Formalize Korselt's criterion: squarefree composite n is Carmichael iff lambda(n) | n-1.",
+      "Evaluate lambda for 1105 and 1729 (next Carmichael numbers)."
+    ],
+    "markdown": "See research/problems/euler-totient-oq-01-oq-01-oq-01/knowledge.md"
+  },
+  "tags": ["number-theory", "group-theory", "carmichael-function", "totient", "carmichael-number"],
+  "relatedProofs": [
+    "euler-totient-oq-01-oq-01",
+    "euler-totient-oq-01",
+    "euler-totient"
+  ],
+  "references": {
+    "papers": ["R. D. Carmichael, Note on a new number theory function, Bull. AMS 16 (1910)", "A. Korselt, Probleme chinois, L'intermediaire des mathematiciens 6 (1899)"],
+    "urls": ["https://en.wikipedia.org/wiki/Carmichael_function", "https://en.wikipedia.org/wiki/Carmichael_number"],
+    "mathlib": ["Mathlib.NumberTheory.ArithmeticFunction.Carmichael (carmichael_factorization, carmichael_mul, carmichael_pow_of_prime_ne_two, pow_carmichael, carmichael_dvd_totient)", "Mathlib.Data.Nat.Totient (totient_prime, totient_prime_pow)", "Mathlib.Algebra.GCDMonoid.Finset (Finset.lcm_congr)"]
+  },
+  "started": "2026-06-24T00:00:00.000Z",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
+  "significance": 7,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerTotientOQ01OQ01OQ01.lean",
+      "filename": "EulerTotientOQ01OQ01OQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01OQ01OQ01.lean"
+    }
+  ]
+}
