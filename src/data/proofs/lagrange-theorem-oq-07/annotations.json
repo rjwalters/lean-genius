@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-lagrangeoq07-chain",
+    "proofId": "lagrange-theorem-oq-07",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "concept",
+    "title": "Lagrange → exponent → Euler → Fermat",
+    "content": "The file makes explicit the dependency chain that unifies three classical results: Lagrange's theorem (orderOf g ∣ |G|) implies the finite-group exponent identity g^|G| = 1, which implies exponent G ∣ |G|, which — applied to the unit group (ZMod n)ˣ whose order is the totient φ(n) — yields Euler's theorem, whose prime case φ(p) = p−1 is Fermat's little theorem. Mathlib has pow_card_eq_one directly; the value here is the explicit derivation from Lagrange and the descent to the number-theoretic corollaries, surfaced as named lemmas. Badge is `mathlib`: the building blocks are library lemmas, assembled into the chain.",
+    "mathContext": "$\\mathrm{ord}(g)\\mid|G|\\Rightarrow g^{|G|}=e\\Rightarrow\\exp(G)\\mid|G|\\Rightarrow x^{\\varphi(n)}=1\\Rightarrow a^{p-1}=1$.",
+    "significance": "context",
+    "relatedConcepts": ["Lagrange's theorem", "group exponent", "Euler's theorem", "Fermat's little theorem", "unit group (ZMod n)ˣ"],
+    "prerequisites": ["finite groups and subgroups", "order of an element", "modular arithmetic"]
+  },
+  {
+    "id": "ann-lagrangeoq07-core",
+    "proofId": "lagrange-theorem-oq-07",
+    "range": { "startLine": 33, "endLine": 61 },
+    "type": "key-step",
+    "title": "The core: g^|G| = 1 from Lagrange",
+    "content": "orderOf_dvd_groupCard restates Lagrange for elements: orderOf g — the cardinality of the cyclic subgroup ⟨g⟩ — divides |G| (orderOf_dvd_card). pow_card_eq_one_of_lagrange converts that divisibility into the power identity via orderOf_dvd_iff_pow_eq_one, giving g^|G| = 1 explicitly from Lagrange rather than as a black-box library call. pow_card_eq_one_agrees then checks (by rfl) that this Lagrange-derived proof is definitionally Mathlib's pow_card_eq_one. pow_natCard_eq_one records the Nat.card form, which needs no finiteness hypothesis at all: for infinite G, Nat.card G = 0 and g^0 = 1 vacuously.",
+    "mathContext": "$\\mathrm{ord}(g)=|\\langle g\\rangle|\\mid|G|$, so $g^{|G|}=e$; and $g^{\\#G}=e$ for any group (vacuous when $\\#G=0$).",
+    "significance": "key",
+    "relatedConcepts": ["orderOf_dvd_card", "orderOf_dvd_iff_pow_eq_one", "cyclic subgroup", "Nat.card vs Fintype.card", "definitional equality (rfl)"],
+    "prerequisites": ["order of an element divides group order", "divisibility ↔ power identity", "Nat.card convention for infinite types"]
+  },
+  {
+    "id": "ann-lagrangeoq07-exponent",
+    "proofId": "lagrange-theorem-oq-07",
+    "range": { "startLine": 63, "endLine": 83 },
+    "type": "insight",
+    "title": "The exponent is the least period, and divides |G|",
+    "content": "card_is_common_period observes that |G| is a common period for every element (the property the exponent is the least positive instance of). exponent_dvd_card states Monoid.exponent G ∣ |G| via the library lemma; exponent_dvd_card_via_universal re-derives it through the universal property Monoid.exponent_dvd_iff_forall_pow_eq_one, making the logical content explicit: because |G| annihilates every element, the least such exponent divides it. The key conceptual point is that |G| is *a* period but generally not the *minimal* one — that minimum is the exponent (the lcm of all element orders), which can be strictly smaller.",
+    "mathContext": "$\\exp(G)=\\mathrm{lcm}_g\\,\\mathrm{ord}(g)\\mid|G|$; the universal property: $\\exp(G)\\mid n\\iff\\forall g,\\ g^n=e$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Monoid.exponent", "universal property of the exponent", "least common period", "lcm of element orders", "Group.exponent_dvd_card"],
+    "prerequisites": ["the exponent identity g^|G|=1", "definition of monoid exponent"]
+  },
+  {
+    "id": "ann-lagrangeoq07-euler-fermat",
+    "proofId": "lagrange-theorem-oq-07",
+    "range": { "startLine": 85, "endLine": 114 },
+    "type": "key-step",
+    "title": "Euler and Fermat as the unit-group instance",
+    "content": "euler_from_exponent proves Euler's theorem x^φ(n) = 1 for x ∈ (ZMod n)ˣ by rewriting φ(n) as |(ZMod n)ˣ| (ZMod.card_units_eq_totient) and applying pow_card_eq_one — no separate number-theoretic argument is needed. fermat_units specialises to prime p via Nat.totient_prime (φ(p) = p−1), giving x^(p−1) = 1 in the unit group. fermat_zmod is the concrete field-form capstone a^(p−1) = 1 for a ≠ 0 in ZMod p, via Mathlib's ZMod.pow_card_sub_one_eq_one. This is the payoff: Fermat (1640) and Euler (1763) are one group-theoretic fact applied to (ℤ/nℤ)ˣ.",
+    "mathContext": "$|(\\mathbb{Z}/n)^\\times|=\\varphi(n)\\Rightarrow x^{\\varphi(n)}=1$; $\\varphi(p)=p-1\\Rightarrow a^{p-1}=1$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's theorem", "Fermat's little theorem", "ZMod.card_units_eq_totient", "Nat.totient_prime", "ZMod.pow_card_sub_one_eq_one"],
+    "prerequisites": ["the exponent identity", "the unit group (ZMod n)ˣ", "totient of a prime"]
+  },
+  {
+    "id": "ann-lagrangeoq07-chain-thm",
+    "proofId": "lagrange-theorem-oq-07",
+    "range": { "startLine": 116, "endLine": 128 },
+    "type": "technique",
+    "title": "The end-to-end chain theorem",
+    "content": "chain_lagrange_to_euler bundles the two endpoints into a single statement: for x ∈ (ZMod n)ˣ, both the Lagrange divisibility orderOf x ∣ |(ZMod n)ˣ| and Euler's conclusion x^φ(n) = 1 hold simultaneously. It makes the dependency from foundation (Lagrange divisibility) to apex (Euler) explicit in one citeable lemma, documenting that the number-theoretic congruence is not an independent fact but a direct consequence of the group-order divisibility.",
+    "mathContext": "$\\big(\\mathrm{ord}(x)\\mid|(\\mathbb{Z}/n)^\\times|\\big)\\wedge\\big(x^{\\varphi(n)}=1\\big)$ — foundation and apex in one statement.",
+    "significance": "supporting",
+    "relatedConcepts": ["dependency chain", "orderOf_dvd_card", "conjunction packaging", "Lagrange-to-Euler descent"],
+    "prerequisites": ["Euler's theorem", "Lagrange divisibility"]
+  }
+]
