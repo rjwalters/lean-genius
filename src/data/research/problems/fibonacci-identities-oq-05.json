@@ -1,0 +1,239 @@
+{
+  "slug": "fibonacci-identities-oq-05",
+  "title": "Fibonacci Staircase — Partial Sum of Consecutive Products",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\sum_{k=1}^{m} F_k\\,F_{k+1} =\n\\begin{cases} F_{m+1}^{2} - 1, & m \\text{ even},\\\\ F_{m+1}^{2}, & m \\text{ odd}.\\end{cases}",
+    "plain": "Add up the products of consecutive Fibonacci numbers, $F_1F_2 + F_2F_3 + \\cdots + F_mF_{m+1}$. The running total has a clean closed form: it is a Fibonacci number squared, with a $-1$ correction on even steps. This is the multiplicative companion to the parent file's additive identity $\\sum F_k^2 = F_n F_{n+1}$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T06:09:40-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Proved the Fibonacci product-sum closed form ∑_{i≤n} F_i·F_{i+1} = F_{n+1}^2 - [n even] (verified, 0 axioms, 5 theorems, 114 lines). Engine = Cassini for Nat.fib (proved from scratch; Mathlib has it only over Int.fib).",
+    "builtItems": [
+      "fib_cassini: (Nat.fib (n+2):ℤ)^2 = Nat.fib (n+1)*Nat.fib (n+3) + (-1)^(n+1) — Cassini for Nat.fib (Proofs/FibonacciIdentitiesOQ05.lean:34)",
+      "cassini_nat_even / cassini_nat_odd: sign-free ℕ Cassini specializations by parity (FibonacciIdentitiesOQ05.lean:52,62)",
+      "fib_prod_sum: Nat.fib (n+1)^2 = (∑ i ∈ range (n+1), Nat.fib i*Nat.fib (i+1)) + (if Even n then 1 else 0) (FibonacciIdentitiesOQ05.lean:72)",
+      "fib_prod_sum_even / fib_prod_sum_odd: explicit branches ∑ = F_{n+1}^2 - 1 / F_{n+1}^2 (FibonacciIdentitiesOQ05.lean:101,108)"
+    ],
+    "insights": [
+      "The product sum ∑ F_k·F_{k+1} is parity-governed (= F_{n+1}^2 for odd n, F_{n+1}^2 - 1 for even n) — unlike the parent sum-of-squares which telescopes exactly onto F_n·F_{n+1}.",
+      "The even/odd dichotomy in the answer is exactly Cassini's alternating sign (-1)^n; the per-step increment is a Cassini relation, not a clean telescope.",
+      "Stating the unified identity additively as F_{n+1}^2 = (∑) + [n even] avoids ℕ truncated subtraction, keeping the whole induction inside ℕ so omega closes each step.",
+      "Once Cassini supplies the one quadratic relation among F_{k+1}^2, F_{k+1}F_{k+2}, F_{k+2}^2, the inductive step is linear in those opaque atoms — omega finishes with no further Fibonacci reasoning."
+    ],
+    "mathlibGaps": [
+      "Mathlib records Cassini's identity only over Int.fib (Int.fib_succ_mul_fib_pred_sub_fib_sq), not over Nat.fib — reproved here directly.",
+      "Mathlib has no closed form for partial sums of consecutive Fibonacci products ∑ F_k·F_{k+1}."
+    ],
+    "nextSteps": [
+      "Alternating/weighted product sums ∑ (-1)^k F_k F_{k+1} and ∑ k F_k F_{k+1}.",
+      "Fixed-gap product sum ∑ F_k F_{k+2} and its relation to F_{n+1} F_{n+2}.",
+      "Lucas / Gibonacci (Horadam) generalization where the parity constant becomes a discriminant."
+    ],
+    "markdown": "# Knowledge Base: fibonacci-identities-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "number-theory",
+    "fibonacci",
+    "telescoping"
+  ],
+  "relatedProofs": [
+    "fibonacci-identities",
+    "fibonacci-identities-oq-01",
+    "fibonacci-identities-oq-01-oq-02",
+    "fibonacci-identities-oq-01-oq-02-oq-01",
+    "fibonacci-identities-oq-02",
+    "fibonacci-identities-oq-02-oq-01",
+    "fibonacci-identities-oq-02-oq-01-oq-01",
+    "fibonacci-identities-oq-03",
+    "fibonacci-identities-oq-03-oq-01",
+    "fibonacci-identities-oq-03-oq-02",
+    "fibonacci-identities-oq-03-oq-03",
+    "fibonacci-identities-oq-04",
+    "fibonacci-identities-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T13:16:33.841Z",
+  "lastUpdate": "2026-06-24",
+  "leanFiles": [
+    {
+      "path": "Proofs/FibonacciIdentities.lean",
+      "filename": "FibonacciIdentities.lean",
+      "lineCount": 71,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentities.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ01.lean",
+      "filename": "FibonacciIdentitiesOQ01.lean",
+      "lineCount": 99,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ01OQ02.lean",
+      "filename": "FibonacciIdentitiesOQ01OQ02.lean",
+      "lineCount": 120,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ01OQ02OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ01OQ02OQ01.lean",
+      "lineCount": 172,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ02.lean",
+      "filename": "FibonacciIdentitiesOQ02.lean",
+      "lineCount": 110,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ02.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ02OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ02OQ01.lean",
+      "lineCount": 267,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ02OQ01OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ02OQ01OQ01.lean",
+      "lineCount": 188,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ03.lean",
+      "filename": "FibonacciIdentitiesOQ03.lean",
+      "lineCount": 77,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ03.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ03OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ03OQ01.lean",
+      "lineCount": 82,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ03OQ02.lean",
+      "filename": "FibonacciIdentitiesOQ03OQ02.lean",
+      "lineCount": 98,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ03OQ03.lean",
+      "filename": "FibonacciIdentitiesOQ03OQ03.lean",
+      "lineCount": 144,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ04.lean",
+      "filename": "FibonacciIdentitiesOQ04.lean",
+      "lineCount": 103,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ04.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ04OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ04OQ01.lean",
+      "lineCount": 213,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ05.lean",
+      "filename": "FibonacciIdentitiesOQ05.lean",
+      "lineCount": 115,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ05.lean"
+    }
+  ]
+}

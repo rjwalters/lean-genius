@@ -1,0 +1,179 @@
+{
+  "id": "fibonacci-identities-oq-05",
+  "title": "Fibonacci Product-Sum: the Staircase of Consecutive Products",
+  "slug": "fibonacci-identities-oq-05",
+  "description": "The parent file FibonacciIdentities.lean records the sum-of-squares telescoping identity F₀² + F₁² + ⋯ + Fₙ² = Fₙ·Fₙ₊₁. This entry supplies its product analogue: the partial sums of the consecutive products Fₖ·Fₖ₊₁. Unlike the sum of squares, the product sum is parity governed — fib_prod_sum gives the unified additive closed form Fₙ₊₁² = (F₀F₁ + F₁F₂ + ⋯ + FₙFₙ₊₁) + [n even], with the bracket contributing 1 for even n and 0 for odd n; the two explicit branches fib_prod_sum_even (∑ = Fₙ₊₁² − 1) and fib_prod_sum_odd (∑ = Fₙ₊₁²) follow. The engine is Cassini's identity Fₙ₊₂² = Fₙ₊₁·Fₙ₊₃ + (−1)ⁿ⁺¹, which Mathlib does not record for Nat.fib; it is proved here in ℤ by a short induction off Nat.fib_add_two and then read off as two natural-number specializations by parity. The main identity is a single induction whose step is closed by omega once Cassini supplies the quadratic relation between Fₙ₊₁² and Fₙ₊₂². Fully verified: 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Classical (Lucas; Fibonacci summation folklore); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence",
+    "date": "1876",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "cassini",
+      "summation-identity",
+      "telescoping",
+      "parity",
+      "integer-sequences",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ05.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining Fibonacci recurrence; the only Fibonacci-specific fact, used to prove Cassini and to expand fib (k+3) = fib (k+1) + fib (k+2) in the induction step",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ i ∈ range (n+1), f i = (∑ i ∈ range n, f i) + f n — peels the last consecutive product Fₙ·Fₙ₊₁ off the partial sum in the inductive step",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(−1)ⁿ = 1 for even n and −1 for odd n — collapses the alternating sign in Cassini to the concrete constant matching each parity branch",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.even_or_odd",
+        "description": "every natural number is even or odd — drives the two-way case split that selects the correct Cassini specialization in the induction step",
+        "module": "Mathlib.Algebra.Parity"
+      }
+    ],
+    "originalContributions": [
+      "fib_prod_sum: ∀ n, Nat.fib (n+1)^2 = (∑ i ∈ range (n+1), Nat.fib i · Nat.fib (i+1)) + (if Even n then 1 else 0) — the unified, subtraction-free closed form for the partial sums of consecutive Fibonacci products, absent from Mathlib",
+      "fib_prod_sum_even: ∀ n, Even n → ∑ i ∈ range (n+1), Nat.fib i · Nat.fib (i+1) = Nat.fib (n+1)^2 − 1 — the even branch",
+      "fib_prod_sum_odd: ∀ n, Odd n → ∑ i ∈ range (n+1), Nat.fib i · Nat.fib (i+1) = Nat.fib (n+1)^2 — the odd branch",
+      "fib_cassini: ∀ n, (Nat.fib (n+2) : ℤ)^2 = Nat.fib (n+1) · Nat.fib (n+3) + (−1)^(n+1) — Cassini's identity for Nat.fib (Mathlib records it only over Int.fib), proved here directly and used as the engine"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 114,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Lucas and his contemporaries catalogued the elementary Fibonacci summation identities in the 1870s. The sum of squares F₀² + ⋯ + Fₙ² = Fₙ·Fₙ₊₁ is the most famous — its geometric reading dissects an Fₙ×Fₙ₊₁ rectangle into squares — and the parent entry FibonacciIdentities.lean formalizes it. The sum of consecutive products F₀F₁ + F₁F₂ + ⋯ + FₙFₙ₊₁ is its close relative, but with a twist: where the sum of squares lands exactly on a single product, the product sum oscillates by one about the perfect square Fₙ₊₁², landing on Fₙ₊₁² for odd n and Fₙ₊₁² − 1 for even n. That oscillation is precisely Cassini's alternating sign (−1)ⁿ, which is why Cassini's identity — and not mere telescoping — is the engine of the proof.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-05)**: Establish the closed form for the partial sums of the consecutive Fibonacci products Fₖ·Fₖ₊₁, the product analogue of the parent file's sum-of-squares identity.\n\n**Result**: fib_prod_sum, the unified additive identity Fₙ₊₁² = (∑ FₖFₖ₊₁) + [n even], together with the explicit even and odd branches.",
+    "text": "Using Mathlib's 0-indexed Nat.fib (F₀ = 0, F₁ = 1), for every n the partial sum F₀F₁ + F₁F₂ + ⋯ + FₙFₙ₊₁ equals Fₙ₊₁² − 1 when n is even and Fₙ₊₁² when n is odd. Equivalently, and without leaving ℕ: Fₙ₊₁² = (∑_{i=0}^{n} Fᵢ·Fᵢ₊₁) + [n even].",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Cassini for Nat.fib (`fib_cassini`).** Prove Fₙ₊₂² = Fₙ₊₁·Fₙ₊₃ + (−1)ⁿ⁺¹ over ℤ by induction. The base case is `norm_num [Nat.fib]`; the step expands fib (k+3) and fib (k+4) by the recurrence and closes with `linear_combination -ih + (fib (k+3))·e1`, where e1 is the recurrence as a cast equation. This is the only place the Fibonacci recurrence enters.\n2. **Parity specializations (`cassini_nat_even`, `cassini_nat_odd`).** For even k the index k+1 is odd, so (−1)^(k+1) = −1 and Cassini becomes the pure ℕ identity Fₖ₊₁·Fₖ₊₃ = Fₖ₊₂² + 1; for odd k it becomes Fₖ₊₂² = Fₖ₊₁·Fₖ₊₃ + 1. Each is obtained by rewriting the sign via Even/Odd.neg_one_pow and discharging with `zify; linarith`.\n3. **Main induction (`fib_prod_sum`).** Induct on n. The base is `simp`. In the step, peel the last term with Finset.sum_range_succ, split on Nat.even_or_odd k, rewrite fib (k+3) = fib (k+1) + fib (k+2) into the matching Cassini specialization (turning it into a relation among the atoms Fₖ₊₁², Fₖ₊₁·Fₖ₊₂, Fₖ₊₂²), evaluate the `if` by parity, and close with `omega`: treating the three quadratic terms and the partial sum as opaque non-negative integers, the goal is a linear consequence of the inductive hypothesis and the Cassini relation.\n4. **Explicit branches.** fib_prod_sum_even and fib_prod_sum_odd specialize the unified form by evaluating the `if` and rearranging with `omega`.",
+    "keyInsights": [
+      "**Cassini, not telescoping, is the engine.** The sum of squares telescopes because Fₙ·Fₙ₊₁ − Fₙ₋₁·Fₙ = Fₙ²; the product sum has no such clean telescope. Instead the per-step increment is governed by Cassini's identity, and its alternating sign (−1)ⁿ is exactly what produces the even/odd dichotomy in the answer.",
+      "**A subtraction-free statement keeps the proof in ℕ.** Phrasing the unified identity as Fₙ₊₁² = (∑) + [n even] — rather than ∑ = Fₙ₊₁² − [n even] — avoids ℕ truncated subtraction entirely, so the inductive step closes by `omega` over the natural numbers with no casting.",
+      "**omega finishes once the nonlinearity is quarantined.** After Cassini supplies the single quadratic relation among Fₖ₊₁², Fₖ₊₁·Fₖ₊₂ and Fₖ₊₂², every remaining obligation is linear in those opaque atoms plus the partial sum, so `omega` discharges the step without any further Fibonacci-specific reasoning.",
+      "**Beyond Mathlib at both levels.** Mathlib records Cassini only over Int.fib; the Nat.fib Cassini here is proved from scratch, and the product-sum identity it powers is absent from Mathlib entirely — the natural product companion to the parent's sum-of-squares entry."
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two",
+      "Cassini's identity and its parity-driven sign (−1)ⁿ",
+      "Induction with Finset.sum_range_succ and the omega decision procedure for linear arithmetic over ℕ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Module docstring framing the product sum as the parity-governed analogue of the parent's sum-of-squares identity, naming Cassini's identity as the engine, and the import/namespace setup (open Finset).",
+      "mathContext": "$F_{n+1}^2 = (F_0F_1 + F_1F_2 + \\cdots + F_nF_{n+1}) + [n \\text{ even}]$."
+    },
+    {
+      "id": "cassini",
+      "title": "Cassini's Identity for Nat.fib",
+      "startLine": 34,
+      "endLine": 50,
+      "summary": "fib_cassini: Fₙ₊₂² = Fₙ₊₁·Fₙ₊₃ + (−1)ⁿ⁺¹ over ℤ, proved by induction off the recurrence and closed with linear_combination. Mathlib records Cassini only over Int.fib, so this Nat.fib form is supplied directly.",
+      "mathContext": "$F_{n+2}^2 = F_{n+1}F_{n+3} + (-1)^{n+1}$ over $\\mathbb{Z}$."
+    },
+    {
+      "id": "specializations",
+      "title": "Parity Specializations of Cassini",
+      "startLine": 52,
+      "endLine": 70,
+      "summary": "cassini_nat_even and cassini_nat_odd: collapse the alternating sign by parity (Even/Odd.neg_one_pow) to obtain the two pure ℕ relations Fₖ₊₁·Fₖ₊₃ = Fₖ₊₂² + 1 (even k) and Fₖ₊₂² = Fₖ₊₁·Fₖ₊₃ + 1 (odd k), via zify; linarith.",
+      "mathContext": "Even $k$: $F_{k+1}F_{k+3} = F_{k+2}^2 + 1$; odd $k$: $F_{k+2}^2 = F_{k+1}F_{k+3} + 1$."
+    },
+    {
+      "id": "main",
+      "title": "The Product-Sum Identity",
+      "startLine": 72,
+      "endLine": 99,
+      "summary": "fib_prod_sum: the unified additive closed form, by induction on n. The step peels the last product with Finset.sum_range_succ, splits on parity, feeds the matching Cassini specialization (with fib (k+3) expanded by the recurrence), and closes by omega.",
+      "mathContext": "$F_{n+1}^2 = \\left(\\sum_{i=0}^{n} F_i F_{i+1}\\right) + [n \\text{ even}]$."
+    },
+    {
+      "id": "branches",
+      "title": "Explicit Even and Odd Branches",
+      "startLine": 101,
+      "endLine": 113,
+      "summary": "fib_prod_sum_even (∑ = Fₙ₊₁² − 1 for even n) and fib_prod_sum_odd (∑ = Fₙ₊₁² for odd n): the two human-facing closed forms, obtained from the unified identity by evaluating the parity bracket and rearranging with omega.",
+      "mathContext": "$\\sum_{i=0}^{n} F_iF_{i+1} = F_{n+1}^2 - 1$ (even $n$) or $F_{n+1}^2$ (odd $n$)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "complements",
+      "description": "The base entry FibonacciIdentities.lean proves the sum-of-squares telescoping identity F₀² + ⋯ + Fₙ² = Fₙ·Fₙ₊₁; this entry is its product analogue ∑ FₖFₖ₊₁, which — unlike the sum of squares — is parity governed and requires Cassini's identity rather than mere telescoping."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-04",
+      "relationship": "relatedTo",
+      "description": "The oq-04 entry formalizes Cassini's identity over Int.fib as a corollary of Vajda's identity; here Cassini is reproved directly over Nat.fib and used as the engine of a summation identity rather than as a product identity in its own right."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) proof of the partial-sum closed form for consecutive Fibonacci products: the unified additive identity Fₙ₊₁² = (∑ FₖFₖ₊₁) + [n even], together with its explicit even (Fₙ₊₁² − 1) and odd (Fₙ₊₁²) branches. Cassini's identity for Nat.fib is supplied as a reusable byproduct.",
+    "implications": "Adds the product companion to the parent's sum-of-squares identity to the formalized record, both absent from Mathlib, and demonstrates that the answer's even/odd dichotomy is exactly Cassini's alternating sign. The subtraction-free phrasing keeps the entire argument inside ℕ, with omega discharging each inductive step.",
+    "openQuestions": [
+      "Find and prove the closed form for the alternating product sum ∑ (−1)ᵏ Fₖ Fₖ₊₁, and for the weighted sum ∑ k Fₖ Fₖ₊₁.",
+      "Generalize the product-sum identity to the Lucas numbers Lₖ Lₖ₊₁ and to general Gibonacci (Horadam) sequences, tracking how the parity constant becomes a discriminant.",
+      "Prove the companion identity for products at a fixed gap, ∑ Fₖ Fₖ₊₂, and relate its closed form to Fₙ₊₁ Fₙ₊₂."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "FibonacciIdentitiesOQ05",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics",
+      "note": "Foundational catalogue of elementary Fibonacci summation and product identities"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Sum of consecutive products and the Cassini-governed parity dichotomy"
+    },
+    {
+      "authors": "Vorobiev, Nicolai N.",
+      "title": "Fibonacci Numbers",
+      "year": "2002",
+      "venue": "Birkhäuser",
+      "note": "Summation identities for the Fibonacci sequence and their inductive proofs"
+    }
+  ],
+  "sorries": 0
+}
