@@ -1,0 +1,50 @@
+[
+  {
+    "id": "wilson-tri-ann-header",
+    "proofId": "wilsons-theorem-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 58 },
+    "type": "context",
+    "title": "The Complete Trichotomy of (n−1)! mod n",
+    "content": "States the goal: classify the residue (n−1)! mod n for every n ≥ 2 in the classical natural-number form (no ZMod). Wilson's theorem pins the prime branch ((n−1)! ≡ −1 ≡ n−1); this entry supplies the composite side and bundles all three cases into one closed-form equation. The composite strategy is previewed: split n = minFac(n)·(n/minFac n), handle the perfect-square subcase, and treat n = 4 as the lone exception. Unlike the sibling oq-01 (ZMod disjunction with native_decide for n=4), this entry is axiom-free — the n=4 value closes by ordinary kernel decide, not native_decide.",
+    "mathContext": "$(n-1)! \\bmod n = \\begin{cases} n-1 & n\\text{ prime}\\\\ 2 & n=4\\\\ 0 & \\text{otherwise}\\end{cases}\\quad (n\\ge 2).$",
+    "significance": "context",
+    "relatedConcepts": ["Wilson's theorem", "Kempner threshold", "trichotomy", "ZMod-free formulation", "decide vs native_decide"],
+    "prerequisites": ["factorials and modular residues", "prime vs composite"]
+  },
+  {
+    "id": "wilson-tri-ann-engine",
+    "proofId": "wilsons-theorem-oq-05-oq-01",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "technique",
+    "title": "The Engine: Distinct Factors Multiply into the Factorial",
+    "content": "mul_dvd_factorial is the reusable lemma: 0 < a < b ≤ m ⟹ a·b ∣ m!. Proof writes b! = b·(b−1)!, uses Nat.dvd_factorial to get a ∣ (b−1)! (since a ≤ b−1), assembles a·b ∣ b!, and lifts to m! via Nat.factorial_dvd_factorial (b ≤ m). This is exactly what makes the composite case work: any two DISTINCT factors below n whose product is divisible by n force n ∣ (n−1)!.",
+    "mathContext": "$0 < a < b \\le m \\Rightarrow ab \\mid m!$, since $a \\mid (b-1)!$ and $ab \\mid b! \\mid m!$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.dvd_factorial", "Nat.factorial_dvd_factorial", "distinct factors", "divisibility of factorials"],
+    "prerequisites": ["factorial divisibility lemmas"]
+  },
+  {
+    "id": "wilson-tri-ann-composite",
+    "proofId": "wilsons-theorem-oq-05-oq-01",
+    "range": { "startLine": 72, "endLine": 123 },
+    "type": "insight",
+    "title": "The Composite Case: n ∣ (n−1)! for Composite n ≠ 4",
+    "content": "dvd_factorial_pred_of_not_prime is the new content. Set p = minFac n (prime, p < n) and q = n/p (≥ 2, with p ≤ q from Nat.minFac_le_of_dvd). Split: if p < q, the pair (p, q) is two distinct factors below n with p·q = n, so mul_dvd_factorial gives n ∣ (n−1)!. If p = q then n = p² with p ≥ 3 (n = 4 is the sole excluded case); use the distinct pair (p, 2p) — both below n — with p² ∣ p·(2p), again via mul_dvd_factorial. factorial_pred_mod_of_not_prime converts this to (n−1)! % n = 0. The n=4 exception is genuine: its only proper factor pair is (2,2), not distinct.",
+    "mathContext": "Composite $n\\neq 4$: write $n=pq$ ($p=\\operatorname{minFac} n$); either $p<q$ (pair $p,q$) or $n=p^2,\\ p\\ge 3$ (pair $p,2p$), so $n\\mid(n-1)!$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.minFac", "perfect-square subcase", "the (p,2p) substitute pair", "n=4 exception"],
+    "prerequisites": ["the mul_dvd_factorial engine", "minFac and its divisibility"]
+  },
+  {
+    "id": "wilson-tri-ann-trichotomy",
+    "proofId": "wilsons-theorem-oq-05-oq-01",
+    "range": { "startLine": 124, "endLine": 169 },
+    "type": "insight",
+    "title": "The Prime Branch and the Assembled Trichotomy",
+    "content": "factorial_pred_mod_of_prime transports Mathlib's ZMod Wilson statement to (n−1)! % n = n−1, via the cast ((n−1 : ℕ) : ZMod n) = −1. factorial_pred_mod then bundles all three cases into the single equation (n−1)! % n = if n.Prime then n−1 else if n = 4 then 2 else 0 (the n=4 value by kernel decide — keeping the file axiom-free). factorial_pred_mod_eq_zero_iff records the sharp characterization that residue 0 detects 'composite and not 4' exactly, and four_factorial_pred_mod notes (4−1)! % 4 = 2 explicitly.",
+    "mathContext": "Prime: $(n-1)!\\equiv -1 \\equiv n-1$. Bundled: $(n-1)!\\bmod n = \\text{if prime } n-1\\text{ else if }n=4\\ 2\\text{ else }0$; residue $0 \\iff$ composite and $\\neq 4$.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's theorem (ZMod form)", "cast (n−1)≡−1", "kernel decide", "iff characterization"],
+    "prerequisites": ["the composite case", "Mathlib's ZMod Wilson statement"]
+  }
+]
