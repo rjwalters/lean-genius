@@ -1,0 +1,164 @@
+{
+  "id": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+  "title": "Closed-form maximum partial transversal: size = |ι| − deficiency",
+  "slug": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+  "description": "Packages the defect (Ore) form of Hall's marriage theorem into a single closed-form optimum, answering the lead open question of the companion entry hall-marriage-theorem-oq-01-oq-01. That entry proved the parametrised biconditional 'a matching saturating all but d indices exists ⟺ ∀ s, #s ≤ #(s.biUnion t) + d'. Here the deficiency δ(t) = maxₛ (#s − #(s.biUnion t)) is defined as an explicit Finset.sup over all sub-families (truncated subtraction, so δ ≥ 0 automatically), and the set of attainable partial-transversal sizes is shown to have a greatest element equal to #ι − δ(t): isGreatest_transversalSizes. Both halves follow from the parent defect theorem — attainability from exists_matching_of_deficiency_le (then shrink the domain to hit the size exactly), optimality from deficiency_le_of_matching. The corollary deficiency_eq_zero_iff identifies δ = 0 with Hall's condition, recovering a full system of distinct representatives. 5 theorems, 2 definitions, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hall%27s_marriage_theorem",
+    "date": "Philip Hall 1935; Øystein Ore 1955 (defect form)",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "hall-marriage",
+      "transversal",
+      "matching",
+      "deficiency",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/HallMarriageTheoremOQ01OQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 5 theorems verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide, so no Lean.ofReduceBool. Builds on the defect form proved in the companion entry hall-marriage-theorem-oq-01-oq-01, which in turn bootstraps Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective.",
+    "originalContributions": [
+      "deficiency: the Hall deficiency δ(t) = maxₛ (#s − #(s.biUnion t)) packaged as an explicit Finset.sup over the universe of sub-families, with truncated subtraction making δ ≥ 0 automatic (the empty family contributes 0)",
+      "isGreatest_transversalSizes: the closed-form optimum — the attainable partial-transversal sizes form a set with greatest element exactly #ι − δ(t). Attainability uses exists_matching_of_deficiency_le and Finset.exists_subset_card_eq to realise the size exactly; optimality uses deficiency_le_of_matching to bound every attainable size by #ι − δ",
+      "deficiency_spec / sub_card_le_deficiency: the deficiency in the additive form #s ≤ #(s.biUnion t) + δ consumed by the parent defect theorem, and the per-subfamily Finset.le_sup bound it comes from",
+      "deficiency_eq_zero_iff: δ(t) = 0 ⟺ Hall's condition (∀ s, #s ≤ #(s.biUnion t)) holds — the vanishing-deficiency characterisation",
+      "maxTransversal_eq_card_of_deficiency_zero: when δ = 0 the maximum partial transversal has size #ι, recovering a full system of distinct representatives as the δ = 0 specialisation of the closed form"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 131,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Hall's 1935 marriage theorem characterises when a finite family of finite sets admits a system of distinct representatives (an injective transversal). When the family fails Hall's condition, Øystein Ore's 1955 defect form quantifies how badly: a matching can still saturate all but δ of the indices, where δ is the deficiency. The deficiency is the discrete analogue of the rank-nullity 'defect' and is the bridge from Hall's theorem to the König–Egerváry min-max theorems of matching theory.",
+    "problemStatement": "**Open Question (OQ-01 of hall-marriage-theorem-oq-01-oq-01)**: Can the sharp deficiency threshold d of the defect form be packaged as an explicit number, turning the parametrised biconditional deficiency_matching_iff into a single closed-form optimum 'maximum partial-transversal size = #ι − δ', with δ = maxₛ (#s − #(s.biUnion t)) as a Finset-sup?\n\n**Formalized**: the deficiency δ as a Finset.sup, and isGreatest_transversalSizes establishing that the attainable partial-transversal sizes have greatest element #ι − δ, plus the δ = 0 ⟺ Hall and full-SDR corollaries.",
+    "text": "A 131-line companion to the defect-form entry. The deficiency δ(t) is defined as (univ : Finset (Finset ι)).sup (fun s => s.card − (s.biUnion t).card), a maximum over every sub-family using ℕ truncated subtraction so the empty family forces δ ≥ 0. Two cheap lemmas turn this Finset.sup into the additive deficiency bound #s ≤ #(s.biUnion t) + δ that the parent theorem consumes. The headline isGreatest_transversalSizes then reads off the optimum from the parent's two directions, and two corollaries handle the δ = 0 (Hall) case. All results compile with 0 sorries and 0 axioms.",
+    "proofStrategy": "**deficiency / sub_card_le_deficiency / deficiency_spec**: δ is a Finset.sup, so Finset.le_sup gives #s − #(s.biUnion t) ≤ δ for every s, and omega rewrites this as the additive bound #s ≤ #(s.biUnion t) + δ.\n\n**isGreatest_transversalSizes** (the closed form): IsGreatest has two parts.\n• *Membership / attainability*: feed deficiency_spec into the parent's exists_matching_of_deficiency_le to obtain a matching on some J with #J ≥ #ι − δ; Finset.exists_subset_card_eq trims J to a subset J' of size exactly #ι − δ, and InjOn/membership restrict to J', so #ι − δ is attainable.\n• *Upper bound / optimality*: given any attainable size k witnessed by a matching on J (so k = #J), the matching saturates all but #ι − #J indices, hence deficiency_le_of_matching gives ∀ s, #s ≤ #(s.biUnion t) + (#ι − #J); Finset.sup_le turns this into δ ≤ #ι − #J, and omega yields k ≤ #ι − δ.\n\n**deficiency_eq_zero_iff**: δ = 0 ⟺ every local deficit is 0 ⟺ Hall's inequality, via Finset.sup_le / Nat.le_zero and omega.\n\n**maxTransversal_eq_card_of_deficiency_zero**: rewrite δ = 0 in the closed form, so #ι − δ collapses to #ι (a full SDR).",
+    "keyInsights": [
+      "**One number replaces a quantifier**: the family of biconditionals 'matches all but d ⟺ d-deficiency bound' collapses to a single optimum once d is pinned to the sharp value δ = maxₛ (#s − #(s.biUnion t)). The Finset.sup is exactly the right packaging.",
+      "**Truncated subtraction does the sign bookkeeping**: defining δ with ℕ subtraction means the empty sub-family contributes 0 − 0 = 0, so δ ≥ 0 holds by construction and no separate non-negativity proof is needed.",
+      "**IsGreatest is the honest 'maximum'**: rather than asserting a max exists by fiat, the entry proves both that #ι − δ is attained (a transversal of that exact size exists) and that nothing larger is — the two directions of the defect theorem map precisely onto the two clauses of IsGreatest.",
+      "**Attaining the size exactly needs a shrink**: the parent yields a matching of size ≥ #ι − δ; Finset.exists_subset_card_eq then produces a sub-transversal of the exact size, since any subset of an injective partial transversal is again one.",
+      "**Hall is the δ = 0 slice**: deficiency_eq_zero_iff and maxTransversal_eq_card_of_deficiency_zero show the classical marriage theorem (full SDR) sitting inside the closed form as the zero-deficiency specialisation."
+    ],
+    "prerequisites": [
+      "Hall's marriage theorem / systems of distinct representatives (Mathlib Finset.all_card_le_biUnion_card_iff_exists_injective)",
+      "The defect (Ore) form of Hall's theorem from the companion entry hall-marriage-theorem-oq-01-oq-01 (exists_matching_of_deficiency_le, deficiency_le_of_matching, deficiency_matching_iff)",
+      "Finset.sup over a finite lattice and Finset.le_sup / Finset.sup_le",
+      "ℕ truncated subtraction and omega for the deficiency arithmetic",
+      "Finset.exists_subset_card_eq and Set.InjOn.mono for trimming a partial transversal to an exact size"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "hall-marriage-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The companion defect-form entry, whose two directions (exists_matching_of_deficiency_le and deficiency_le_of_matching) are the entire engine here. This entry turns its parametrised biconditional deficiency_matching_iff into the closed-form optimum it explicitly asked for."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01",
+      "relationship": "related",
+      "description": "The root entry proving Hall's biconditional. Its existence statement is recovered here as the δ = 0 case (maxTransversal_eq_card_of_deficiency_zero), where the maximum partial transversal saturates all of ι."
+    }
+  ],
+  "sections": [
+    {
+      "id": "deficiency-def",
+      "title": "The deficiency as a Finset-sup",
+      "startLine": 44,
+      "endLine": 71,
+      "summary": "deficiency t = (univ : Finset (Finset ι)).sup (fun s => #s − #(s.biUnion t)) with ℕ truncated subtraction. sub_card_le_deficiency is the per-subfamily Finset.le_sup bound; deficiency_spec restates it additively as #s ≤ #(s.biUnion t) + δ, the hypothesis the parent defect theorem consumes.",
+      "mathContext": "δ = maxₛ (#s − #(s.biUnion t)); ∀ s, #s ≤ #(s.biUnion t) + δ."
+    },
+    {
+      "id": "transversal-sizes",
+      "title": "Attainable partial-transversal sizes",
+      "startLine": 73,
+      "endLine": 78,
+      "summary": "transversalSizes t = { k | ∃ J f, #J = k ∧ Set.InjOn f ↑J ∧ ∀ i ∈ J, f i ∈ t i }: the sizes of partial transversals, i.e. sets J ⊆ ι carrying a choice function injective on J with f i ∈ t i.",
+      "mathContext": "A partial transversal is an InjOn choice function on some J ⊆ ι."
+    },
+    {
+      "id": "closed-form",
+      "title": "The closed-form maximum: |ι| − δ",
+      "startLine": 80,
+      "endLine": 107,
+      "summary": "isGreatest_transversalSizes: IsGreatest (transversalSizes t) (#ι − δ). Membership uses exists_matching_of_deficiency_le then Finset.exists_subset_card_eq to hit the size exactly; the upper bound uses deficiency_le_of_matching and Finset.sup_le, closed by omega.",
+      "mathContext": "max attainable #J = #ι − δ, proved as IsGreatest (both attained and bounding)."
+    },
+    {
+      "id": "hall-corollaries",
+      "title": "Vanishing deficiency recovers Hall",
+      "startLine": 108,
+      "endLine": 131,
+      "summary": "deficiency_eq_zero_iff: δ = 0 ⟺ ∀ s, #s ≤ #(s.biUnion t) (Hall's condition), via Finset.sup_le and Nat.le_zero. maxTransversal_eq_card_of_deficiency_zero: at δ = 0 the closed form gives max = #ι, a full system of distinct representatives.",
+      "mathContext": "δ = 0 ⟺ Hall ⟹ full SDR of size #ι."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isGreatest_transversalSizes",
+      "type": "main",
+      "statement": "$\\mathrm{IsGreatest}\\ (\\mathrm{transversalSizes}\\ t)\\ (\\#\\iota - \\delta(t))$",
+      "significance": "The closed-form answer to the open question: the maximum partial-transversal size of a finite family is exactly #ι minus the Hall deficiency. Proved as IsGreatest, so both attainable and optimal.",
+      "description": "The attainable partial-transversal sizes have greatest element #ι − δ(t)."
+    },
+    {
+      "name": "deficiency",
+      "type": "definition",
+      "statement": "$\\delta(t) = \\max_{s}\\ (\\#s - \\#(s.\\mathrm{biUnion}\\ t))$ as a $\\mathrm{Finset.sup}$",
+      "significance": "Packages the sharp defect threshold as an explicit number — a Finset.sup over all sub-families with truncated subtraction, so δ ≥ 0 holds by construction.",
+      "description": "The Hall deficiency of a finite family, as a Finset.sup."
+    },
+    {
+      "name": "deficiency_spec",
+      "type": "lemma",
+      "statement": "$\\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\ t) + \\delta(t)$",
+      "significance": "The additive deficiency bound — exactly the 'at worst δ-deficient' hypothesis fed into the parent's exists_matching_of_deficiency_le to get attainability.",
+      "description": "Every sub-family is within δ of satisfying Hall's inequality."
+    },
+    {
+      "name": "deficiency_eq_zero_iff",
+      "type": "lemma",
+      "statement": "$\\delta(t) = 0 \\iff \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\ t)$",
+      "significance": "Identifies vanishing deficiency with Hall's condition, locating the classical marriage theorem inside the closed form.",
+      "description": "δ = 0 exactly when Hall's condition holds."
+    },
+    {
+      "name": "maxTransversal_eq_card_of_deficiency_zero",
+      "type": "lemma",
+      "statement": "$\\delta(t) = 0 \\Rightarrow \\mathrm{IsGreatest}\\ (\\mathrm{transversalSizes}\\ t)\\ \\#\\iota$",
+      "significance": "The δ = 0 specialisation: a full system of distinct representatives of size #ι exists, recovering Hall's existence theorem.",
+      "description": "Zero deficiency gives a full SDR of size #ι."
+    }
+  ],
+  "references": [
+    {
+      "text": "Hall, P. (1935). On Representatives of Subsets. J. London Math. Soc. The marriage theorem and systems of distinct representatives.",
+      "url": "https://en.wikipedia.org/wiki/Hall%27s_marriage_theorem"
+    },
+    {
+      "text": "Ore, Ø. (1955). Graphs and matching theorems. Duke Math. J. The defect (deficiency) version of Hall's theorem.",
+      "url": "https://en.wikipedia.org/wiki/Deficiency_(graph_theory)"
+    },
+    {
+      "text": "Mathlib4: Finset.all_card_le_biUnion_card_iff_exists_injective (Combinatorics/Hall/Basic.lean), Finset.le_sup / Finset.sup_le, Finset.exists_subset_card_eq.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Defines the Hall deficiency δ(t) = maxₛ (#s − #(s.biUnion t)) as an explicit Finset.sup and proves isGreatest_transversalSizes: the attainable partial-transversal sizes of a finite family have greatest element exactly #ι − δ(t). Both clauses of IsGreatest come from the companion defect theorem — attainability (with an exact-size shrink) from exists_matching_of_deficiency_le, optimality from deficiency_le_of_matching. The corollaries deficiency_eq_zero_iff and maxTransversal_eq_card_of_deficiency_zero locate Hall's classical theorem as the δ = 0 case. 5 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "The closed form max partial transversal = #ι − δ is the matching-theoretic min-max identity in its sharpest scalar shape: it converts an existential over sub-families into a single optimum, and is the natural launch point for the König–Egerváry theorem (min vertex cover = max matching) and Ore's capacitated defect formula for b-matchings. Packaging the deficiency as a Finset.sup makes it directly computable on concrete families.",
+    "openQuestions": [
+      "Make the deficiency δ a computable/decidable quantity and evaluate the closed form on concrete explicit families, certifying a maximum partial transversal on a small bipartite example?",
+      "Generalise to the weighted / capacitated setting (Ore's defect formula for b-matchings), where each index i may be represented up to b(i) times."
+    ]
+  },
+  "sorries": 0
+}

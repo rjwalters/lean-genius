@@ -1,0 +1,91 @@
+{
+  "slug": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+  "title": "Closed-Form Maximum Partial Transversal Size via Hall Deficiency",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\mathrm{IsGreatest}\\ (\\mathrm{transversalSizes}\\ t)\\ (\\#\\iota - \\delta(t)),\\quad \\delta(t) = \\max_s (\\#s - \\#(s.\\mathrm{biUnion}\\ t))",
+    "plain": "Package the Hall deficiency δ = maxₛ (#s − #(s.biUnion t)) as a Finset-sup and prove the maximum partial-transversal size equals #ι − δ.",
+    "whyMatters": [
+      "Turns the parent's parametrised defect biconditional into a single closed-form optimum (matching min-max identity).",
+      "Launch point for König–Egerváry (min cover = max matching) and Ore's capacitated defect formula."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "deficiency: δ(t) = (univ : Finset (Finset ι)).sup (#s − #(s.biUnion t)), Finset-sup with truncated subtraction (δ ≥ 0 automatic)",
+      "deficiency_spec: ∀ s, #s ≤ #(s.biUnion t) + δ (additive form consumed by parent defect theorem)",
+      "isGreatest_transversalSizes: IsGreatest (transversalSizes t) (#ι − δ) — the closed-form maximum partial transversal",
+      "deficiency_eq_zero_iff: δ = 0 ⟺ Hall's condition (∀ s, #s ≤ #(s.biUnion t))",
+      "maxTransversal_eq_card_of_deficiency_zero: δ = 0 ⟹ full SDR of size #ι"
+    ],
+    "open": [],
+    "goal": "Closed form: maximum partial-transversal size = #ι − δ(t), with δ as an explicit Finset-sup; recover Hall's full SDR as δ = 0."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T17:20:00.000Z",
+    "iteration": 1,
+    "focus": "Solved: deficiency Finset-sup + IsGreatest closed form, verified 0-axiom.",
+    "blockers": [],
+    "nextAction": "PR opened; entry complete.",
+    "attemptCounts": { "total": 0, "currentApproach": 0, "approachesTried": 0 }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: closed-form maximum partial transversal = #ι − δ proved via the parent defect theorem, δ packaged as a Finset.sup, verified 0-axiom (PR research/hall-deficiency-maxtransversal-oq01010101). Recovers Hall's full SDR at δ = 0.",
+    "builtItems": [
+      "Proofs/HallMarriageTheoremOQ01OQ01OQ01.lean: 131 lines, 5 thm, 2 defs, 0 axioms, 0 sorries",
+      "deficiency: Hall deficiency as (univ : Finset (Finset ι)).sup (#s − #(s.biUnion t)), truncated subtraction makes δ ≥ 0 by construction",
+      "deficiency_spec / sub_card_le_deficiency: the additive #s ≤ #(s.biUnion t) + δ bound from Finset.le_sup",
+      "isGreatest_transversalSizes: IsGreatest closed form #ι − δ; attainability via exists_matching_of_deficiency_le + Finset.exists_subset_card_eq (exact-size shrink), optimality via deficiency_le_of_matching + Finset.sup_le",
+      "deficiency_eq_zero_iff + maxTransversal_eq_card_of_deficiency_zero: Hall recovered as the δ = 0 slice"
+    ],
+    "insights": [
+      "The entire engine is the companion defect theorem (exists_matching_of_deficiency_le, deficiency_le_of_matching); this leaf only packages the deficiency and reads off IsGreatest.",
+      "ℕ truncated subtraction in the Finset.sup makes δ ≥ 0 free — the empty sub-family contributes 0 − 0 = 0, no separate non-negativity proof.",
+      "IsGreatest is the honest 'maximum': both that #ι − δ is attained AND that nothing larger is; the two directions of the defect theorem map onto the two IsGreatest clauses.",
+      "Attaining the size EXACTLY (not just ≥) needs Finset.exists_subset_card_eq: a subset of an injective partial transversal is again one (InjOn.mono).",
+      "Mathlib has Hall's biconditional but neither the defect form nor this deficiency closed form."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks the defect (Ore) form of Hall and the closed-form max-partial-transversal = #ι − δ (only the existence biconditional Finset.all_card_le_biUnion_card_iff_exists_injective)."
+    ],
+    "nextSteps": [
+      "Make δ computable/decidable and certify the closed form on concrete explicit families.",
+      "Generalise to the weighted / capacitated (b-matching) setting — Ore's defect formula."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "graph-theory",
+    "hall-marriage",
+    "transversal",
+    "matching",
+    "deficiency",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "hall-marriage-theorem-oq-01",
+    "hall-marriage-theorem-oq-01-oq-01"
+  ],
+  "references": { "papers": [], "urls": [], "mathlib": [] },
+  "started": "2026-06-24T17:20:00.000Z",
+  "lastUpdate": "2026-06-24T17:30:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/HallMarriageTheoremOQ01OQ01OQ01.lean",
+      "filename": "HallMarriageTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/HallMarriageTheoremOQ01OQ01OQ01.lean"
+    }
+  ]
+}
