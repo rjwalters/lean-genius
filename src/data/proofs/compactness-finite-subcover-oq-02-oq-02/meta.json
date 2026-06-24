@@ -1,0 +1,165 @@
+{
+  "id": "compactness-finite-subcover-oq-02-oq-02",
+  "slug": "compactness-finite-subcover-oq-02-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Metric"
+    ],
+    "namespace": "CompactnessFiniteSubcoverOq02Oq02",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/CompactnessFiniteSubcoverOq02Oq02.lean",
+    "sorries": 0
+  },
+  "title": "A Continuous Partition of Unity from Distance-to-Complement Bumps",
+  "description": "Given a finite open cover U : ι → Set X of a metric space (Fintype ι, every U i open, ⋃ i, U i = univ), we construct an explicit continuous partition of unity subordinate to the cover: nonnegative continuous functions ψ i with ψ i x ≠ 0 ⟹ x ∈ U i and ∑ i, ψ i x = 1 everywhere. The bump for member U i is the distance to its complement, bump U i x = infDist x (U i)ᶜ, guarded so the degenerate member U i = univ (empty complement) contributes the constant 1. Because U i is open, (U i)ᶜ is closed, so infDist x (U i)ᶜ > 0 exactly when x ∈ U i (infDist_pos_iff_notMem_closure); subordination is infDist_zero_of_mem in the contrapositive. Each x lies in some cover member, so the finite total weight ∑ j, bump U j x is strictly positive, and normalizing ψ i x = bump U i x / ∑ j, bump U j x produces the partition. The headline exists_partition_of_unity bundles all four properties; exists_partition_of_unity_compact then handles an ARBITRARY open cover of a compact space by extracting a finite subcover (IsCompact.elim_finite_subcover) and reindexing onto it — making precise the parent's open question that compactness contributes only the reduction to a finite cover, after which the construction is purely metric and needs neither a Lebesgue number nor an ε-net.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompactnessFiniteSubcoverOq02Oq02.lean",
+    "tags": [
+      "topology",
+      "metric-spaces",
+      "compactness",
+      "partition-of-unity",
+      "bump-functions",
+      "subordinate-cover",
+      "infDist",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 203,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "bump: the unnormalized bump for cover member U i, defined as the distance infDist x (U i)ᶜ from x to the complement, guarded by a single if so the pathological member U i = univ (empty complement, whose infDist would collapse to 0) instead contributes the constant 1. This is an explicit, elementary bump function built from metric primitives alone — no smooth-manifold or higher-level BumpCovering machinery.",
+      "bump_pos_of_mem / bump_subordinate: the two halves of the support characterization. Positivity on U i comes from infDist_pos_iff_notMem_closure applied to the closed set (U i)ᶜ; subordination (the bump vanishes outside U i) is the contrapositive via infDist_zero_of_mem. Together they pin the support of bump U i exactly inside U i.",
+      "sum_bump_pos: the total weight ∑ j, bump U j x is strictly positive at every point, because the cover hypothesis places x in some member where that member's bump is positive (Finset.sum_pos' from one strictly-positive summand among nonnegative ones). This positivity is what makes normalization legitimate everywhere.",
+      "psi and psi_continuous / psi_nonneg / psi_subordinate / psi_sum_eq_one: the normalized family ψ i x = bump U i x / ∑ j, bump U j x, together with continuity (quotient of continuous functions with nowhere-zero denominator), nonnegativity, subordination inherited from the bump, and the partition identity ∑ i, ψ i x = 1 (Finset.sum_div then div_self of the positive total).",
+      "exists_partition_of_unity: the headline for a FINITE open cover of an arbitrary metric space — an explicit continuous partition of unity subordinate to the cover, bundling continuity, nonnegativity, subordination, and summation to one. Compactness is absent; finiteness of the cover is the only hypothesis the construction uses.",
+      "exists_partition_of_unity_compact: the compact-space corollary for an ARBITRARY open cover. It extracts a finite subcover with IsCompact.elim_finite_subcover, reindexes the cover by the subtype {i // i ∈ s}, applies the finite construction there, and pushes the resulting family back to all of ι (zero off the subcover). This isolates the exact role of compactness — reduce the cover to a finite one — from the metric content that produces the partition."
+    ],
+    "prerequisites": [
+      "Metric.infDist_pos_iff_notMem_closure: for a nonempty set s, infDist x s > 0 ↔ x ∉ closure s — turns openness of U i (closedness of its complement) into strict positivity of the bump on U i",
+      "Metric.infDist_zero_of_mem: x ∈ s ⟹ infDist x s = 0 — gives subordination (the bump vanishes off U i) in the contrapositive",
+      "continuous_infDist_pt: x ↦ infDist x s is continuous — continuity of each bump",
+      "IsCompact.elim_finite_subcover: a compact set covered by opens admits a finite subcover — the sole place compactness enters the compact-space corollary",
+      "Finset.sum_pos', Finset.sum_div, div_self, Continuous.div: the finite-sum and normalization bookkeeping"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Metric.infDist_pos_iff_notMem_closure",
+        "description": "infDist x s > 0 ↔ x ∉ closure s for nonempty s. Converts membership in the open U i into strict positivity of the distance-to-complement bump.",
+        "module": "Mathlib.Topology.MetricSpace.Infimum"
+      },
+      {
+        "theorem": "Metric.infDist_zero_of_mem",
+        "description": "x ∈ s ⟹ infDist x s = 0. Supplies subordination: the bump can be nonzero only inside U i.",
+        "module": "Mathlib.Topology.MetricSpace.Infimum"
+      },
+      {
+        "theorem": "IsCompact.elim_finite_subcover",
+        "description": "A compact set covered by a family of opens has a finite subcover. The only use of compactness, reducing an arbitrary cover to a finite one before the metric construction.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Finset.sum_pos'",
+        "description": "A finite sum of nonnegative terms is strictly positive if at least one term is strictly positive. Gives the strictly-positive total weight from the cover hypothesis.",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Partitions of unity are the standard device for gluing local data into global data: subordinate to an open cover, a family of nonnegative functions summing to one lets one patch local constructions (sections, metrics, integrals) together continuously. On smooth manifolds they are built from smooth bump functions and paracompactness; on a metric space the elementary route uses the distance-to-a-set function, which is automatically continuous and vanishes exactly on the closure of the set. The parent entry (compactness-finite-subcover-oq-02) built a subordinate finite ε-net on a compact metric space from the Lebesgue number lemma and asked, as oq-02-oq-02, for the partition of unity that net is meant to support. This entry answers it and, in doing so, separates two ingredients usually bundled together: compactness (which only reduces an arbitrary cover to a finite one) and the metric bump construction (which needs only finiteness).",
+    "problemStatement": "**Open Question (oq-02 of oq-02)**: construct a continuous partition of unity subordinate to a finite open cover of a compact metric space, localizing bump functions by the subordinate net, and verify the partition sums to one.",
+    "proofStrategy": "For a finite open cover U : ι → Set X, define bump U i x = infDist x (U i)ᶜ, guarded to be the constant 1 when (U i)ᶜ = ∅. Each bump is continuous (continuous_infDist_pt), nonnegative (infDist_nonneg), strictly positive precisely on U i (infDist_pos_iff_notMem_closure, since (U i)ᶜ is closed), and zero off U i (infDist_zero_of_mem) — giving subordination. Since the U i cover X, every x lies in some member, so the finite total ∑ j, bump U j x is strictly positive (Finset.sum_pos'). Normalize: ψ i x = bump U i x / ∑ j, bump U j x. The quotient is continuous (nowhere-zero denominator), nonnegative, subordinate (numerator vanishes off U i), and ∑ i, ψ i x = 1 (Finset.sum_div then div_self). For a compact space and an arbitrary cover, first extract a finite subcover s via IsCompact.elim_finite_subcover, reindex by the subtype {i // i ∈ s}, run the finite construction, and push the family back to ι by zero off s.",
+    "keyInsights": [
+      "Distance-to-complement is the right bump: infDist x (U i)ᶜ is continuous for free, and for an OPEN U i its complement is closed, so infDist_pos_iff_notMem_closure makes the bump strictly positive exactly on U i and zero outside — support control and continuity in one elementary object.",
+      "Finiteness, not compactness, is what the construction needs. The total weight is a FINITE sum, so its positivity (one positive summand among nonnegatives) and continuity are immediate; compactness never appears in exists_partition_of_unity.",
+      "Compactness contributes exactly one step: IsCompact.elim_finite_subcover turns an arbitrary open cover into a finite one. The compact-space theorem is therefore a thin wrapper — extract subcover, reindex, apply the finite construction — making the parent's intuition ('compactness only finitizes the cover') a literal proof structure.",
+      "The single guard for U i = univ is genuinely necessary: there (U i)ᶜ = ∅, infDist to the empty set is 0, and the unguarded bump would vanish identically; setting it to 1 keeps that member's weight positive without disturbing any other case.",
+      "Normalization is legitimate everywhere precisely because the cover is a cover: the total weight is bounded below by a single positive bump at each point, so the denominator is never zero and ψ is globally continuous."
+    ]
+  },
+  "sections": [
+    {
+      "id": "bump-construction",
+      "title": "The Distance-to-Complement Bump",
+      "startLine": 61,
+      "endLine": 103,
+      "summary": "bump U i x = infDist x (U i)ᶜ (guarded to 1 when the complement is empty). bump_nonneg, bump_continuous, bump_pos_of_mem (positivity on U i via infDist_pos_iff_notMem_closure), and bump_subordinate (vanishing off U i via infDist_zero_of_mem) establish nonnegativity, continuity, and exact support control."
+    },
+    {
+      "id": "normalization",
+      "title": "Positive Total Weight and Normalization",
+      "startLine": 105,
+      "endLine": 139,
+      "summary": "sum_bump_pos shows the finite total ∑ j, bump U j x is strictly positive at every point of the cover. psi U i x = bump U i x / ∑ j, bump U j x is then continuous, nonnegative, subordinate, and sums to one (psi_sum_eq_one via Finset.sum_div and div_self)."
+    },
+    {
+      "id": "finite-cover-headline",
+      "title": "Partition of Unity for a Finite Open Cover",
+      "startLine": 141,
+      "endLine": 156,
+      "summary": "exists_partition_of_unity bundles the four properties into the headline for an arbitrary metric space with a finite open cover — compactness nowhere used."
+    },
+    {
+      "id": "compact-corollary",
+      "title": "The Compact-Space Corollary",
+      "startLine": 158,
+      "endLine": 203,
+      "summary": "exists_partition_of_unity_compact handles an arbitrary open cover of a compact space: extract a finite subcover (IsCompact.elim_finite_subcover), reindex by the subtype {i // i ∈ s}, apply the finite construction, and push the family back to ι by zero off the subcover."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "compactness-finite-subcover-oq-02-oq-02-oq-01",
+      "question": "Strengthen subordination to closed-support control: produce a partition of unity whose closed supports {x | ψ i x ≠ 0}ᶜᶜ (the closures) are still contained in the cover members — i.e. a shrinking of the cover — rather than only the open condition ψ i x ≠ 0 ⟹ x ∈ U i. On a normal/metric space this is the genuine 'subordinate' condition used to glue closed data.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "compactness-finite-subcover-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: oq-02 builds the subordinate finite ε-net on a compact metric space from the Lebesgue number lemma; this entry constructs the continuous partition of unity that net supports and shows compactness enters only through the reduction to a finite cover."
+    },
+    {
+      "targetId": "compactness-finite-subcover-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling oq-01 cashes the parent's subordinate net for Heine–Cantor (uniform continuity) via the Lebesgue number as a global modulus; this oq-02 cashes it for the partition of unity via distance-to-complement bumps."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.MetricSpace.Infimum",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of infDist_pos_iff_notMem_closure and infDist_zero_of_mem, the metric facts characterizing the support of the distance-to-complement bump."
+    },
+    {
+      "title": "Topology",
+      "author": "Munkres",
+      "year": "2000",
+      "venue": "Prentice Hall",
+      "description": "Classical construction of partitions of unity subordinate to a finite open cover (§36), via distance/Urysohn bump functions and normalization."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Every finite open cover of a metric space carries an explicit continuous partition of unity (exists_partition_of_unity): the normalized distance-to-complement bumps ψ i x = infDist x (U i)ᶜ / ∑ j, infDist x (U j)ᶜ are continuous, nonnegative, supported inside their cover members, and sum to one. For a compact space and an arbitrary open cover, exists_partition_of_unity_compact first extracts a finite subcover (IsCompact.elim_finite_subcover) and then applies the finite construction. 203 lines, 11 theorems/lemmas, 2 definitions, 0 axioms, 0 sorries.",
+    "implications": "The construction makes the parent's open question precise: compactness contributes only the reduction of an arbitrary cover to a finite one; the partition of unity itself is a purely metric object requiring neither a Lebesgue number nor an ε-net, only finiteness of the cover. The metric facts used (infDist positivity/vanishing) are Mathlib's, but the explicit normalized-bump partition and the clean separation of compactness from the metric content are written from scratch (badge: original), bypassing Mathlib's higher-level partition-of-unity / BumpCovering APIs.",
+    "openQuestions": [
+      "Strengthen open-support subordination to closed-support control (a shrinking of the cover), the condition needed to glue closed data on normal/metric spaces."
+    ]
+  }
+}
