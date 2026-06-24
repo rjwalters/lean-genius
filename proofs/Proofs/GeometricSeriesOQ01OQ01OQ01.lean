@@ -75,14 +75,6 @@ theorem tsum_eq_one_sub_mul_tsum_partialSum (b : ℕ → ℝ) {x : ℝ} (hx : |x
       = (1 - x) * ∑' n : ℕ, (∑ k ∈ Finset.range (n + 1), b k) * x ^ n := by
   sorry
 
-/-- **Growth bound ⇒ summability.** A Cesàro-convergent sequence of partial sums is bounded
-in average, so `Tₙ = O(n)`; together with `|x| < 1` this makes every series in the argument
-summable. (Packaged for the partial sums of `a`.) -/
-theorem summable_partialSum_mul_geometric (a : ℕ → ℝ) {L x : ℝ} (hx : |x| < 1)
-    (hL : Tendsto (fun N : ℕ => partialSum2 a N / ((N : ℝ) + 1)) atTop (𝓝 L)) :
-    Summable (fun n : ℕ => partialSum a n * x ^ n) := by
-  sorry
-
 /-- The same summability for the *second* partial sums `Tₙ`. Proved unconditionally from the
 Cesàro hypothesis: the means `τₙ = Tₙ/(n+1)` form a bounded sequence (they converge), so
 `Tₙ = (n+1)·τₙ = O(n)`, and `∑ n·|x|ⁿ` converges for `|x| < 1`. -/
@@ -120,6 +112,30 @@ theorem summable_partialSum2_mul_geometric (a : ℕ → ℝ) {L x : ℝ} (hx : |
         apply mul_le_mul_of_nonneg_right _ (by positivity)
         exact mul_le_mul_of_nonneg_left (hM n) hnn
     _ = (|U| + |V|) * (((n : ℝ) + 1) * |x| ^ n) := by ring
+
+/-- **Growth bound ⇒ summability.** A Cesàro-convergent sequence of partial sums is bounded
+in average, so `Tₙ = O(n)`; the first partial sums satisfy `Sₙ₊₁ = Tₙ₊₁ − Tₙ`, hence the
+weighted series `∑ Sₙ xⁿ` is the difference of two summable shifts of `∑ Tₙ xⁿ`. -/
+theorem summable_partialSum_mul_geometric (a : ℕ → ℝ) {L x : ℝ} (hx : |x| < 1)
+    (hL : Tendsto (fun N : ℕ => partialSum2 a N / ((N : ℝ) + 1)) atTop (𝓝 L)) :
+    Summable (fun n : ℕ => partialSum a n * x ^ n) := by
+  -- The second partial sums are summable against the geometric weight.
+  have hT : Summable (fun n : ℕ => partialSum2 a n * x ^ n) :=
+    summable_partialSum2_mul_geometric a hx hL
+  -- `Sₙ₊₁ = Tₙ₊₁ − Tₙ`, so `Sₙ₊₁ xⁿ⁺¹ = Tₙ₊₁ xⁿ⁺¹ − x·(Tₙ xⁿ)`.
+  have key : ∀ n : ℕ, partialSum a (n + 1) * x ^ (n + 1)
+      = partialSum2 a (n + 1) * x ^ (n + 1) - x * (partialSum2 a n * x ^ n) := by
+    intro n
+    have hrec : partialSum2 a (n + 1) = partialSum2 a n + partialSum a (n + 1) := by
+      simp [partialSum2, Finset.sum_range_succ]
+    rw [pow_succ, hrec]; ring
+  -- Both `Tₙ₊₁ xⁿ⁺¹` and `x·(Tₙ xⁿ)` are summable, hence so is the shifted `Sₙ₊₁ xⁿ⁺¹`.
+  have hTshift : Summable (fun n : ℕ => partialSum2 a (n + 1) * x ^ (n + 1)) :=
+    (summable_nat_add_iff 1).mpr hT
+  have hxT : Summable (fun n : ℕ => x * (partialSum2 a n * x ^ n)) := hT.mul_left x
+  have hSshift : Summable (fun n : ℕ => partialSum a (n + 1) * x ^ (n + 1)) :=
+    (hTshift.sub hxT).congr (fun n => (key n).symm)
+  exact (summable_nat_add_iff 1).mp hSshift
 
 /-- **Frobenius's theorem (general form).** If the Cesàro means `Tₙ/(n+1)` of the partial
 sums converge to `L`, then the Abel limit `lim_{x→1⁻} ∑ₙ aₙ xⁿ` equals `L`. -/
