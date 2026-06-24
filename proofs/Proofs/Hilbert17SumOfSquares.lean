@@ -347,7 +347,16 @@ theorem univariate_psd_is_sos (p : Polynomial ℝ) (h : IsPositiveSemidefinite p
     Axiomatized because the proof requires:
     - Correspondence between quadratic polynomials and symmetric matrices
     - Spectral theorem / Cholesky decomposition for PSD matrices
-    - Matrix algebra and polynomial evaluation -/
+    - Matrix algebra and polynomial evaluation
+
+    PROGRESS: the *matrix-level* heart of this argument is now proved with
+    zero axioms in `Proofs.Hilbert17QuadraticGram`
+    (`Hilbert17.posSemidef_quadratic_isSumSq`): for a PSD real matrix `M`,
+    `x ⬝ᵥ (M *ᵥ x) = ∑ i, ((√M *ᵥ x) i)²`, an explicit SOS of linear forms via
+    the symmetric Gram factorization `M = (√M)ᵀ (√M)`.  What remains (the
+    un-Mathlib'd "bridge") is the polynomial coefficient-extraction
+    `Q ↦ M` for `totalDegree Q = 2` and the homogenisation/PSD transfer; see
+    `research/problems/hilbert-17-oq-03/knowledge.md`. -/
 axiom quadratic_psd_is_sos_aux {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
     (hQ : MvPolynomial.totalDegree Q = 2)
     (h : IsPositiveSemidefiniteMv Q) :

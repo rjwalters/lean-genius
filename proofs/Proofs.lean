@@ -3046,6 +3046,7 @@ import Proofs.Hilbert16
 import Proofs.Hilbert17MotzkinRationalSOS
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17OQ01
+import Proofs.Hilbert17QuadraticGram
 import Proofs.Hilbert17SumOfSquares
 import Proofs.Hilbert19OQ03
 import Proofs.Hilbert19Regularity

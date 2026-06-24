@@ -320,3 +320,42 @@ the matrix↔polynomial bridge as the hard, un-Mathlib'd part. NOT a quick port.
 
 `pfister_bound_aux` remains genuinely hopeless for a short proof (Pfister forms over
 formally real fields). The two remaining parent axioms are correctly left axiomatized.
+
+## Session 2026-06-24 (researcher-1) — BUILT the verified matrix Gram core
+Discharged the *matrix-level* heart of `quadratic_psd_is_sos_aux` into a new
+zero-axiom file `proofs/Proofs/Hilbert17QuadraticGram.lean` (namespace `Hilbert17`):
+
+- `sqrt_transpose_eq_self`  : `(√M)ᵀ = √M`  — over ℝ the Hermitian sqrt is symmetric
+  (`isHermitian` ⟹ `conjTranspose_eq_transpose_of_trivial`).
+- `posSemidef_eq_transpose_mul_sqrt` : `(√M)ᵀ * √M = M`  — the real Gram factorization.
+- `posSemidef_quadratic_isSumSq` (headline): for `M.PosSemidef`,
+  `x ⬝ᵥ (M *ᵥ x) = ∑ i, ((√M *ᵥ x) i)²` — an explicit SOS of linear forms.
+- `posSemidef_exists_sumSq` : packaged `∃ B, ∀ x, xᵀMx = ∑ ((B*ᵥx) i)²` (B = √M).
+
+`#print axioms` → propext/Classical.choice/Quot.sound only (0 real axioms).
+
+### Engine (the calc)
+`xᵀMx = xᵀ(SᵀS)x = xᵀ(Sᵀ(Sx)) = (xᵥ*Sᵀ)·(Sx) = (Sx)·(Sx) = ∑ (Sx)i²`, using
+`mulVec_mulVec`, `dotProduct_mulVec`, `vecMul_transpose`, `dotProduct`+`pow_two`.
+S := `CFC.sqrt M` (the modern CFC sqrt; the `Matrix.PosSemidef.sqrt` API is now
+DEPRECATED→use `CFC.sqrt`, `CFC.sqrt_nonneg`, `CFC.sqrt_mul_sqrt_self`).
+
+### Gotchas
+- Needs `open scoped MatrixOrder` (brings the `StarOrderedRing`/`PartialOrder`
+  instance so `0 ≤ M` / `CFC.sqrt_nonneg` typecheck). Without it: "failed to
+  synthesize PartialOrder (Matrix …)".
+- `IsHermitian` is a `def` (`Aᴴ = A`) — `rw [conjTranspose_eq_transpose_of_trivial]`
+  can't see the `ᴴ` through the wrapper; ascribe the type explicitly
+  `have h : (CFC.sqrt M)ᴴ = CFC.sqrt M := …isHermitian` first, THEN rw.
+- DOCKER DOWN this session (daemon hangs; `docker version`/`info` never return,
+  docker-build.sh returned exit 0 with empty output and NO olean). Worktree
+  `.lake/packages/mathlib/.lake/build` is EMPTY (0 oleans). Verified instead by
+  `cd <MAIN>/proofs && LAKE_UNSAFE=1 ./bin/lake env lean /tmp/copy.lean` — MAIN's
+  cache has the 7376 mathlib oleans; `lake env lean` on one file only READS them
+  (no mathlib writes, concurrency-safe). Registered in `proofs/Proofs.lean`.
+
+### Remaining bridge (still open, multi-session)
+The polynomial↔matrix coefficient extraction (`Q : MvPolynomial (Fin n) ℝ`,
+`totalDegree = 2` ↦ symmetric `M`) + homogenisation/PSD transfer + reassembly
+into `IsSumOfSquaresMvPolynomial`. The Gram engine above is what that bridge
+will call. `pfister_bound_aux` still genuinely hard.
