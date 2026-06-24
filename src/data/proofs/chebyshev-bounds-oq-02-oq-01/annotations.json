@@ -1,0 +1,206 @@
+[
+  {
+    "id": "ann-cb-oq0201-docstring",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "context",
+    "title": "The Lower Bound: Filling a Mathlib TODO",
+    "content": "The docstring situates the file relative to its parent. ChebyshevBoundsOQ02 developed the second Chebyshev function $\\psi(n) = \\sum_{m\\le n}\\Lambda(m)$ and proved Legendre's identity $\\log(n!) = \\sum_{d\\le n}\\Lambda(d)\\lfloor n/d\\rfloor$, but only obtained the weak estimate $\\psi(n)\\le\\log(n!) = O(n\\log n)$. This file proves the genuinely linear *lower* bound $c_1 n \\le \\psi(n)$ — the harder half of Chebyshev's 1852 theorem, and an explicit TODO ('Prove Chebyshev's lower bound') in Mathlib's own NumberTheory/Chebyshev.lean, which supplies only the upper bound. The strategy is the classical central-binomial argument, executed in four named steps culminating in a two-sided estimate with both constants explicit.",
+    "mathContext": "Goal: $\\dfrac{\\log 2}{3}\\,m \\le \\psi(m) \\le (\\log 4 + 4)\\,m$ for $m \\ge 2$. Mathlib provides the right inequality; this file builds the left from scratch via $C(n) = \\binom{2n}{n}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Chebyshev function ψ",
+      "Prime Number Theorem",
+      "von Mangoldt function",
+      "Legendre's identity"
+    ],
+    "prerequisites": [
+      "analytic number theory",
+      "factorials and binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-floor",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 41,
+      "endLine": 52
+    },
+    "type": "technique",
+    "title": "The Floor Identity: ⌊2n/d⌋ ≤ 2⌊n/d⌋ + 1",
+    "content": "two_mul_div_le is the arithmetic engine of the whole argument. In natural-number division, $\\lfloor 2n/d\\rfloor$ can exceed $2\\lfloor n/d\\rfloor$ by at most 1, so the Legendre coefficient $\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor$ is always 0 or 1. The proof splits on $d = 0$ (trivial) and $d > 0$, where writing $n = d\\lfloor n/d\\rfloor + (n \\bmod d)$ with $n\\bmod d < d$ gives $2n < d(2\\lfloor n/d\\rfloor + 2)$ by nlinarith, and Nat.div_lt_of_lt_mul plus omega finishes. This single fact replaces the usual prime-by-prime analysis of the exponents in $C(n)$.",
+    "mathContext": "For $d \\ge 1$: $2n = d\\lfloor n/d\\rfloor\\cdot 2 + 2(n\\bmod d) < d(2\\lfloor n/d\\rfloor + 2)$, hence $\\lfloor 2n/d\\rfloor < 2\\lfloor n/d\\rfloor + 2$, i.e. $\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor \\in \\{0,1\\}$ (Legendre's classical exponent bound).",
+    "significance": "key",
+    "relatedConcepts": [
+      "floor function",
+      "Euclidean division",
+      "Legendre's formula",
+      "p-adic valuation"
+    ],
+    "prerequisites": [
+      "natural-number division",
+      "omega / nlinarith tactics"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-legendre-expansion",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "Legendre Expansion of the Central Binomial Coefficient",
+    "content": "log_centralBinom_eq_sum turns $\\log C(n)$ into a von Mangoldt sum. From the integer identity $(2n)! = C(n)\\cdot(n!)^2$ (Nat.choose_mul_factorial_mul_factorial, with centralBinom rewritten as $\\binom{2n}{n}$) one gets $\\log C(n) = \\log(2n)! - 2\\log(n!)$ after splitting the log of the product (positivity of factorials). Applying the parent's Legendre identity to both factorials and extending the $n!$ sum harmlessly from $[1,n]$ to $[1,2n]$ (the extra terms vanish because $\\lfloor n/d\\rfloor = 0$ when $d > n$) lets the two sums combine termwise, yielding the single sum over $d \\le 2n$.",
+    "mathContext": "$\\log C(n) = \\log(2n)! - 2\\log(n!) = \\sum_{d=1}^{2n}\\Lambda(d)\\big(\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor\\big)$. The range extension uses Finset.sum_subset with $\\lfloor n/d\\rfloor = 0$ for $d > n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Legendre's identity",
+      "logarithm of a product",
+      "von Mangoldt sum"
+    ],
+    "prerequisites": [
+      "Legendre's identity",
+      "properties of Real.log",
+      "Finset.sum_subset"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-key-inequality",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "The Combinatorial Core: log C(n) ≤ ψ(2n)",
+    "content": "centralBinom_log_le_psi is the crux of the lower bound. Each summand $\\Lambda(d)\\big(\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor\\big)$ is bounded by $\\Lambda(d)$ because the coefficient is at most 1 (the floor identity) and $\\Lambda(d) \\ge 0$ (vonMangoldt_nonneg). Summing termwise over $d \\le 2n$ gives exactly $\\sum_{d\\le 2n}\\Lambda(d) = \\psi(2n)$. Crucially, no prime factorization of $C(n)$ is needed — just the floor inequality and non-negativity of $\\Lambda$. The bound is discharged by Finset.sum_le_sum with an nlinarith on the non-negative slack $1 - (\\text{coefficient})$.",
+    "mathContext": "$\\log C(n) = \\sum_{d\\le 2n}\\Lambda(d)\\big(\\lfloor 2n/d\\rfloor - 2\\lfloor n/d\\rfloor\\big) \\le \\sum_{d\\le 2n}\\Lambda(d)\\cdot 1 = \\psi(2n)$, using $0 \\le \\Lambda(d)$ and coefficient $\\le 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Chebyshev function ψ",
+      "termwise sum bound",
+      "non-negativity of Λ"
+    ],
+    "prerequisites": [
+      "Finset.sum_le_sum",
+      "von Mangoldt non-negativity"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-analytic",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 126
+    },
+    "type": "technique",
+    "title": "Feeding in 4ⁿ ≤ 2n·C(n)",
+    "content": "psi_two_mul_ge_sub_log converts the combinatorial bound into an analytic one using Mathlib's exponential lower bound on the central binomial coefficient, $4^n \\le 2n\\cdot C(n)$ (Nat.four_pow_le_two_mul_self_mul_centralBinom). Taking logs of both sides (monotone via Real.log_le_log_iff), expanding $\\log(4^n) = n\\log 4$ (Real.log_pow) and $\\log(2n\\cdot C(n)) = \\log(2n) + \\log C(n)$ (Real.log_mul), and chaining with the previous step $\\log C(n) \\le \\psi(2n)$, gives $n\\log 4 - \\log(2n) \\le \\psi(2n)$. A pile of positivity side-goals (positivity, exact_mod_cast) keeps the logs well-defined.",
+    "mathContext": "$n\\log 4 = \\log(4^n) \\le \\log(2n\\cdot C(n)) = \\log(2n) + \\log C(n) \\le \\log(2n) + \\psi(2n)$, so $n\\log 4 - \\log(2n) \\le \\psi(2n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial bound",
+      "monotonicity of log",
+      "log of a product"
+    ],
+    "prerequisites": [
+      "Real.log_le_log_iff",
+      "Real.log_pow",
+      "Real.log_mul"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-absorb-log",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 159
+    },
+    "type": "technique",
+    "title": "Absorbing the Logarithm via 2n ≤ 2ⁿ",
+    "content": "The error term $\\log(2n)$ is removed by the elementary bound $2n \\le 2^n$ for $n \\ge 1$ (two_mul_le_two_pow, a clean induction). Monotonicity of log then gives $\\log(2n) \\le n\\log 2$ (log_two_mul_le). Combining with $n\\log 4 - \\log(2n) \\le \\psi(2n)$ and the identity $\\log 4 = 2\\log 2$, psi_two_mul_ge_linear obtains the clean linear bound $n\\log 2 \\le \\psi(2n)$ — no asymptotics, an explicit constant. This is the even case of Chebyshev's lower bound.",
+    "mathContext": "$\\log(2n) \\le \\log(2^n) = n\\log 2$, and $n\\log 4 = 2(n\\log 2)$, so $n\\log 2 = n\\log 4 - n\\log 2 \\le n\\log 4 - \\log(2n) \\le \\psi(2n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exponential vs linear growth",
+      "log 4 = 2 log 2",
+      "induction"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "monotonicity of log"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-lower-linear",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 161,
+      "endLine": 174
+    },
+    "type": "insight",
+    "title": "From Even n to All m: the (log 2)/3 Constant",
+    "content": "chebyshevPsi_lower_linear extends the even-case bound $n\\log 2 \\le \\psi(2n)$ to every $m \\ge 2$. By monotonicity of $\\psi$, $\\psi(m) \\ge \\psi(2\\lfloor m/2\\rfloor) \\ge \\lfloor m/2\\rfloor\\log 2$. The only loss is the odd/even rounding: since $m \\le 3\\lfloor m/2\\rfloor$ for $m \\ge 2$, one has $\\lfloor m/2\\rfloor\\log 2 \\ge (m/3)\\log 2$. Hence the explicit constant $\\log 2/3 \\approx 0.231$ — the factor 3 in the denominator is precisely the price of the floor. An nlinarith on the non-negative slack $3\\lfloor m/2\\rfloor - m$ closes the arithmetic.",
+    "mathContext": "$\\psi(m) \\ge \\lfloor m/2\\rfloor\\log 2 \\ge \\dfrac{m}{3}\\log 2 = \\dfrac{\\log 2}{3}\\,m$ for $m \\ge 2$, using $m \\le 3\\lfloor m/2\\rfloor$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotonicity of ψ",
+      "floor rounding",
+      "explicit constants"
+    ],
+    "prerequisites": [
+      "monotonicity",
+      "omega / nlinarith"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-bridge",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 176,
+      "endLine": 191
+    },
+    "type": "technique",
+    "title": "Bridging to Mathlib for the Upper Bound",
+    "content": "Rather than re-prove the upper bound, the file imports Mathlib's. chebyshevPsi_eq_psi shows the parent's $\\psi$ (a Finset sum of $\\Lambda$ over $[1,n]$) equals Mathlib's Chebyshev.psi $(\\mathbb{R}\\to\\mathbb{R})$ at integer arguments, via Chebyshev.psi_eq_sum_Icc, Nat.floor_natCast, and a Finset.sum_subset that discards the single $d = 0$ term. chebyshevPsi_le_linear then transports Chebyshev.psi_le_const_mul_self across this bridge to get $\\psi(n) \\le (\\log 4 + 4)n$. This is the value of a definitional bridge: a one-line corollary replaces a substantial development.",
+    "mathContext": "$\\text{chebyshevPsi}(n) = \\text{Chebyshev.psi}(n)$, so $\\psi(n) \\le (\\log 4 + 4)\\,n$ follows directly from Mathlib's psi_le_const_mul_self.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "definitional bridge",
+      "Mathlib interoperability",
+      "Chebyshev.psi"
+    ],
+    "prerequisites": [
+      "Mathlib Chebyshev API",
+      "Finset.sum_subset"
+    ]
+  },
+  {
+    "id": "ann-cb-oq0201-two-sided",
+    "proofId": "chebyshev-bounds-oq-02-oq-01",
+    "range": {
+      "startLine": 193,
+      "endLine": 199
+    },
+    "type": "concept",
+    "title": "The Two-Sided Estimate ψ(m) = Θ(m)",
+    "content": "chebyshev_psi_bounds packages the two halves into the headline result: for $m \\ge 2$, $\\frac{\\log 2}{3}m \\le \\psi(m) \\le (\\log 4 + 4)m$, with both constants explicit. This is the elementary $\\psi(m) = \\Theta(m)$, Chebyshev's celebrated approximation to the Prime Number Theorem. By partial summation it is equivalent to $\\pi(x) = \\Theta(x/\\log x)$, and the lower bound also underlies Bertrand's postulate. The proof is just the anonymous constructor pairing the lower and upper bounds.",
+    "mathContext": "$\\dfrac{\\log 2}{3}\\,m \\le \\psi(m) \\le (\\log 4 + 4)\\,m$ for $m \\ge 2$. Optimal constants: lower $\\approx \\log 2 \\approx 0.693$, upper $\\approx 2\\log 2 \\approx 1.386$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Θ asymptotics",
+      "Prime Number Theorem",
+      "Bertrand's postulate",
+      "partial summation"
+    ],
+    "prerequisites": [
+      "asymptotic notation",
+      "prime counting function"
+    ]
+  }
+]
