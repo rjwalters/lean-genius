@@ -100,6 +100,56 @@
       "Formalise the corresponding fractional relaxation and show ρ equals the integral covering number while the fractional cover equals the fractional packing, isolating the integrality gap as the exact obstruction to a polynomial γ(δ)."
     ]
   },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Part I — Triangles, Covers, and Packings",
+      "startLine": 52,
+      "endLine": 75,
+      "summary": "Defines IsTriangle (IsNClique 3), TriangleCoveredBy (F contains an edge of s), IsTriangleEdgeCover (deleting F yields CliqueFree 3), and IsTrianglePacking (triangles pairwise sharing ≤ 1 vertex = edge-disjoint).",
+      "mathContext": "Edge-disjointness for 3-cliques $\\equiv |s \\cap t| \\le 1$, since sharing an edge means sharing two vertices."
+    },
+    {
+      "id": "bridge",
+      "title": "Part II — The Bridge: Triangle-Free After Deletion ⟺ Edge Cover",
+      "startLine": 77,
+      "endLine": 116,
+      "summary": "cliqueFree_deleteEdges_iff_covers: (G.deleteEdges F).CliqueFree 3 ↔ F meets every triangle. An uncovered triangle survives every deletion; a surviving 3-clique is uncovered. Recasts removal as a hitting-set problem.",
+      "mathContext": "$(G \\setminus F)$ triangle-free $\\iff$ every triangle has an edge in $F$."
+    },
+    {
+      "id": "weak-duality",
+      "title": "Part III — Weak Duality: |Packing| ≤ |Cover|",
+      "startLine": 118,
+      "endLine": 177,
+      "summary": "packing_card_le_cover_card: assign each packed triangle a covering edge of F; two triangles on the same edge would share two vertices (Sym2.eq_iff), contradicting |s ∩ t| ≤ 1, so the map injects P into F.",
+      "mathContext": "$|P| \\le |F|$ for any edge-disjoint packing $P$ and cover $F$ — the König-type lower-bound mechanism."
+    },
+    {
+      "id": "greedy",
+      "title": "Part IV — Greedy Upper Bound: Cover of Size ≤ τ(G)",
+      "startLine": 179,
+      "endLine": 236,
+      "summary": "Defines triangles G and numTriangles G = τ(G); exists_cover_card_le_numTriangles picks one edge per triangle and bounds the image size by card_image_le ≤ τ(G), witnessing ρ(G) ≤ τ(G).",
+      "mathContext": "One edge per triangle gives a cover $F$ with $|F| \\le \\tau(G)$."
+    },
+    {
+      "id": "removal-number-bracket",
+      "title": "Part V — The Removal Number and the Bracket ν ≤ ρ ≤ τ",
+      "startLine": 238,
+      "endLine": 292,
+      "summary": "removalNumber G = sInf of cover sizes (attained, removalNumber_mem); packing_card_le_removalNumber gives ν ≤ ρ via weak duality at the optimal cover, removalNumber_le_numTriangles gives ρ ≤ τ via Nat.sInf_le at the greedy cover, combined in packing_le_removal_le_numTriangles.",
+      "mathContext": "$\\rho(G) = \\inf\\{|F| : F \\text{ a cover}\\}$ attained; $\\nu(G) \\le \\rho(G) \\le \\tau(G)$."
+    },
+    {
+      "id": "sharpness",
+      "title": "Part VI — Sharpness: ρ = 0 for Triangle-Free Graphs",
+      "startLine": 294,
+      "endLine": 312,
+      "summary": "removalNumber_eq_zero_of_cliqueFree: the empty edge set covers a triangle-free graph (deleteEdges_empty), so ρ = 0 and the bracket bottoms out at ν = ρ = τ = 0.",
+      "mathContext": "$G$ triangle-free $\\Rightarrow \\rho(G) = 0$, so $\\nu = \\rho = \\tau = 0$."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "szemeredi-counting",
