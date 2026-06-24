@@ -1,0 +1,62 @@
+[
+  {
+    "id": "et-oq010101-ann-header",
+    "proofId": "euler-totient-oq-01-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 54 },
+    "type": "context",
+    "title": "Completing the Prime-Power Factorization of λ(n)",
+    "content": "Carmichael's function λ(n) is the universal exponent of the unit group (ℤ/nℤ)*: the least e with aᵉ ≡ 1 (mod n) for every a coprime to n, here realized as Monoid.exponent (ZMod n)ˣ. The parent entry euler-totient-oq-01-oq-01 proved the structural KEYSTONE — coprime multiplicativity λ(m·n) = lcm(λ(m), λ(n)) for gcd(m,n) = 1 — and explicitly deferred the prime-power factorization formula λ(n) = lcm_p λ(p^{vₚ(n)}) 'as a routine induction'. This file discharges exactly that deferred corollary, expressing λ(n) as a finite Finset.lcm over the prime factors of n. Because each (ℤ/p^kℤ)* is cyclic (odd p) or near-cyclic (p = 2), the formula exhibits λ(n) as the lcm of the orders of the cyclic factors of the unit group.",
+    "mathContext": "$\\lambda(n) = \\operatorname{lcm}_{p \\mid n} \\lambda\\!\\left(p^{v_p(n)}\\right),\\quad v_p(n) = n.\\mathrm{factorization}\\,p$",
+    "significance": "key",
+    "relatedConcepts": ["Carmichael function", "universal exponent", "prime factorization", "least common multiple", "unit group structure"],
+    "prerequisites": ["exponent of a finite abelian group", "p-adic valuation", "the parent coprime-multiplicativity keystone"]
+  },
+  {
+    "id": "et-oq010101-ann-one",
+    "proofId": "euler-totient-oq-01-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 68 },
+    "type": "technique",
+    "title": "Base Value: λ(1) = 1",
+    "content": "carmichael_one establishes the base case λ(1) = 1. The unit group (ZMod 1)ˣ is trivial (a subsingleton), so every element g satisfies g¹ = 1 (proved via Subsingleton.elim g 1). Monoid.exponent_dvd_of_forall_pow_eq_one then gives exponent ∣ 1, and Nat.dvd_one collapses it to exactly 1. This matches the empty-lcm base case of the factorization induction: 1 has no prime factors, so the indexing Finset is empty and Finset.lcm over ∅ is 1.",
+    "mathContext": "$(\\mathbb{Z}/1\\mathbb{Z})^\\times$ trivial $\\Rightarrow \\lambda(1) = \\exp = 1 = \\operatorname{lcm}\\varnothing$",
+    "significance": "supporting",
+    "relatedConcepts": ["trivial group", "Subsingleton", "Monoid.exponent_dvd_of_forall_pow_eq_one", "empty lcm"],
+    "prerequisites": ["exponent of a group", "subsingleton types"]
+  },
+  {
+    "id": "et-oq010101-ann-statement",
+    "proofId": "euler-totient-oq-01-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "theorem",
+    "title": "The Factorization Formula and Its Induction Scheme",
+    "content": "carmichael_eq_factorization_lcm is the headline result: for n ≠ 0, λ(n) = n.factorization.support.lcm (p ↦ λ(p^{vₚ(n)})). The proof inducts with Nat.recOnPosPrimePosCoprime, the recursion principle precisely tailored to multiplicative arithmetic: it reduces every positive n to (i) n = 1, (ii) a prime power p^k, and (iii) a coprime product a·b with a,b > 1. These are exactly the three cases for which facts are available — the empty/singleton lcm and the parent's coprime keystone — so no auxiliary lemmas about general n are needed.",
+    "mathContext": "$\\lambda(n) = \\bigvee_{p \\in \\mathrm{supp}(n.\\mathrm{factorization})} \\lambda\\!\\left(p^{v_p(n)}\\right)$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.recOnPosPrimePosCoprime", "factorization support", "Finset.lcm", "structural induction"],
+    "prerequisites": ["the base value λ(1) = 1", "recursion on the prime factorization"]
+  },
+  {
+    "id": "et-oq010101-ann-primepow",
+    "proofId": "euler-totient-oq-01-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 88 },
+    "type": "technique",
+    "title": "Prime-Power Case Collapses to a Singleton",
+    "content": "For n = p^k with p prime and k ≥ 1, the factorization is the single point vₚ(p^k) = k (hp.factorization_pow), so its support is the singleton {p} (Finsupp.support_single_ne_zero). Finset.lcm over a singleton is just the value at that point (Finset.lcm_singleton), and Finsupp.single_eq_same reads off vₚ(p^k) = k, so both sides reduce to λ(p^k). This is the atom of the induction: the formula is trivially true on prime powers because the indexing set is a single point.",
+    "mathContext": "$n = p^k:\\ \\mathrm{supp} = \\{p\\},\\ \\operatorname{lcm}_{\\{p\\}} = \\lambda(p^k)$",
+    "significance": "supporting",
+    "relatedConcepts": ["factorization of a prime power", "Finset.lcm_singleton", "Finsupp.single", "p-adic valuation"],
+    "prerequisites": ["the induction scheme", "factorization of prime powers"]
+  },
+  {
+    "id": "et-oq010101-ann-coprime",
+    "proofId": "euler-totient-oq-01-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 112 },
+    "type": "insight",
+    "title": "Coprime Step: Distributing lcm Over Disjoint Prime Supports",
+    "content": "The coprime case n = a·b (a, b > 1, gcd = 1) is where the keystone enters. carmichael_mul_coprime rewrites λ(a·b) = lcm(λ(a), λ(b)), and the induction hypotheses iha, ihb replace λ(a), λ(b) by their factorization lcms. The index sets combine: coprimality makes the prime supports disjoint (Coprime.disjoint_primeFactors), so factorization is additive (Nat.factorization_mul + Finsupp.support_add_eq) and the support of a·b is the disjoint union a.support ∪ b.support; Finset.lcm_union then splits the lcm. The subtle point is REALIGNING valuations: on a's primes the partner b contributes vₚ(b) = 0 (Finsupp.notMem_support_iff), so vₚ(a·b) = vₚ(a); Finset.lcm_congr applies this pointwise (ea, eb) so the induction hypotheses transfer verbatim. lcm_eq_nat_lcm aligns the lattice lcm with Nat.lcm to finish.",
+    "mathContext": "$\\gcd(a,b)=1:\\ \\lambda(ab) = \\operatorname{lcm}(\\lambda a, \\lambda b),\\ \\mathrm{supp}(ab) = \\mathrm{supp}\\,a \\sqcup \\mathrm{supp}\\,b,\\ v_p(ab)=v_p(a)\\text{ on }\\mathrm{supp}\\,a$",
+    "significance": "key",
+    "relatedConcepts": ["coprime multiplicativity", "Finset.lcm_union", "disjoint prime supports", "Finset.lcm_congr", "Nat.factorization_mul"],
+    "prerequisites": ["the parent coprime keystone", "additivity of factorization over coprime products", "disjoint-support lemmas"]
+  }
+]

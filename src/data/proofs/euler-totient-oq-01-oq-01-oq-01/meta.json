@@ -110,6 +110,40 @@
       "Carmichael's function and its coprime multiplicativity (parent entries euler-totient-oq-01, euler-totient-oq-01-oq-01)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "The Deferred Factorization Corollary",
+      "startLine": 4,
+      "endLine": 54,
+      "summary": "States the open question: the parent proved coprime multiplicativity λ(m·n) = lcm(λ(m), λ(n)) and deferred the prime-power factorization formula λ(n) = lcm_p λ(p^{vₚ(n)}) 'as a routine induction'. This file discharges that corollary, expressing λ(n) as a Finset.lcm over the prime factors of n. An honesty note records that no new mathematics is involved beyond the multiplicative-to-factorization bootstrap.",
+      "mathContext": "$\\lambda(n) = \\operatorname{lcm}_{p \\mid n}\\lambda\\!\\left(p^{v_p(n)}\\right)$"
+    },
+    {
+      "id": "carmichael-one",
+      "title": "Base Value λ(1) = 1",
+      "startLine": 62,
+      "endLine": 68,
+      "summary": "carmichael_one: (ZMod 1)ˣ is the trivial group, so every element satisfies g¹ = 1 and the exponent divides 1, hence equals 1. This matches the empty-lcm base case of the factorization induction (1 has no prime factors).",
+      "mathContext": "$\\lambda(1) = \\exp(\\mathbb{Z}/1\\mathbb{Z})^\\times = 1$"
+    },
+    {
+      "id": "main-theorem",
+      "title": "The Factorization Formula and Its Induction",
+      "startLine": 70,
+      "endLine": 88,
+      "summary": "carmichael_eq_factorization_lcm: for n ≠ 0, λ(n) = lcm over n.factorization.support of λ(p^{vₚ(n)}). Proved by Nat.recOnPosPrimePosCoprime; the n = 1 case is the empty lcm and the prime-power case n = p^k collapses to the singleton {p} with value λ(p^k) via Finset.lcm_singleton.",
+      "mathContext": "$\\lambda(n) = \\bigvee_{p \\in \\mathrm{supp}}\\lambda\\!\\left(p^{v_p(n)}\\right)$"
+    },
+    {
+      "id": "coprime-step",
+      "title": "Coprime Step: lcm over Disjoint Supports",
+      "startLine": 89,
+      "endLine": 112,
+      "summary": "The coprime case n = a·b applies the parent keystone carmichael_mul_coprime and the induction hypotheses, then combines the index sets: disjoint prime supports (Coprime.disjoint_primeFactors) make the support a union split by Finset.lcm_union, and Finset.lcm_congr realigns vₚ(a·b) to vₚ(a)/vₚ(b) so the hypotheses transfer verbatim.",
+      "mathContext": "$\\lambda(ab) = \\operatorname{lcm}(\\lambda a, \\lambda b),\\ \\mathrm{supp}(ab) = \\mathrm{supp}\\,a \\sqcup \\mathrm{supp}\\,b$"
+    }
+  ],
   "conclusion": {
     "summary": "For every positive n, Carmichael's function satisfies λ(n) = lcm over the prime factors p of n of λ(p^{v_p(n)}). This is the single-theorem prime-power factorization formula the parent entry deferred, obtained by inducting on the factorization with the parent's coprime keystone and distributing Finset.lcm over the disjoint prime supports. Fully verified, 0 axioms, 0 sorries.",
     "implications": "Together with the parent keystone this reduces every value of λ to its prime-power values λ(p^k). Combined with the cyclicity of (Z/p^kZ)* for odd p (and the explicit 2-power structure), it yields the classical closed form 'λ(n) = lcm of the cyclic group orders of (Z/nZ)*', and underlies the use of λ as the minimal exponent in modular exponentiation.",
