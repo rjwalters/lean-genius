@@ -1,0 +1,163 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 55
+    },
+    "type": "context",
+    "title": "Desargues's Theorem via the Determinant Bracket",
+    "content": "Desargues's theorem — the foundational incidence theorem of projective geometry — states that two triangles are **perspective from a point** (the three connector lines $AA'$, $BB'$, $CC'$ concur) iff they are **perspective from a line** (the three cross-side intersections $P, Q, R$ are collinear). This file lifts the parent's affine 'collinearity-via-determinant' idea to **homogeneous coordinates** $\\mathbb{R}^3$, where parallel-line degeneracies vanish and the whole theorem collapses to one polynomial identity: $\\det(PQR) = \\det(ABC)\\cdot\\det(A'B'C')\\cdot\\det(AA',BB',CC')$. Since the two triangle brackets are nonzero for non-degenerate triangles, one determinant vanishes iff the other does. Desargues is not in Mathlib, nor is this projective cross-product bracket calculus.",
+    "mathContext": "Perspective from point: $\\det(A\\times A', B\\times B', C\\times C') = 0$. From line: $\\det(P,Q,R) = 0$. Linked by the bracket identity.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Desargues's theorem",
+      "projective duality",
+      "homogeneous coordinates",
+      "incidence geometry"
+    ],
+    "prerequisites": [
+      "projective plane ℝP²",
+      "cross product and determinant",
+      "collinearity / concurrence"
+    ]
+  },
+  {
+    "id": "ann-vec-cross-det",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 61,
+      "endLine": 77
+    },
+    "type": "definition",
+    "title": "The Projective Dictionary: Vec, cross, det3",
+    "content": "Three definitions encode the projective plane in $\\mathbb{R}^3$. `Vec` is a homogeneous coordinate vector (a nonzero $\\mathbb{R}^3$, points identified up to scale). `cross P Q` is the vector cross product, which by **point/line duality** is *simultaneously* the line joining two points and the intersection of two lines — the single algebraic operation doing double duty is what makes the whole development self-dual. `det3 P Q R` is the scalar triple product $P \\cdot (Q \\times R)$, the $3\\times3$ determinant, which vanishes exactly when three points are collinear (equivalently three lines concurrent). These three primitives are the entire vocabulary of the proof.",
+    "mathContext": "$\\mathrm{cross}(P,Q) = P \\times Q$; $\\det_3(P,Q,R) = P \\cdot (Q \\times R)$; $\\det_3 = 0 \\iff$ collinear/concurrent.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross product",
+      "scalar triple product",
+      "point-line duality",
+      "homogeneous coordinates"
+    ],
+    "prerequisites": [
+      "vectors in ℝ³",
+      "cross product geometry",
+      "3×3 determinant"
+    ]
+  },
+  {
+    "id": "ann-config-and-points",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 79,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "The Desargues Configuration and Its Determinants",
+    "content": "`DesarguesConfig` bundles two non-degenerate triangles ($\\det_3 \\neq 0$ for each, the non-collinearity hypotheses). The three side-intersection points are built by the dual use of `cross`: e.g. `pointP = cross (cross B C) (cross B' C')` — first form the lines $BC$ and $B'C'$, then intersect them. `concurDet` is the determinant of the three connector lines $A\\times A'$, $B\\times B'$, $C\\times C'$ (zero iff they concur), and `collDet` the determinant of $P, Q, R$ (zero iff collinear). The two perspectivity notions `PerspectiveFromPoint`/`PerspectiveFromLine` are exactly these determinants vanishing — turning a geometric statement into an algebraic one.",
+    "mathContext": "$P = (B\\times C)\\times(B'\\times C')$, etc.; PerspectiveFromPoint $\\equiv \\mathrm{concurDet}=0$; PerspectiveFromLine $\\equiv \\mathrm{collDet}=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "meet and join",
+      "non-degenerate triangle",
+      "perspective triangles",
+      "structure bundling"
+    ],
+    "prerequisites": [
+      "cross / det3 dictionary",
+      "intersection of lines as a cross product"
+    ]
+  },
+  {
+    "id": "ann-bracket-identity",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 123,
+      "endLine": 131
+    },
+    "type": "insight",
+    "title": "The Desargues Bracket Identity: the Geometric Content",
+    "content": "`desargues_bracket_identity` is the heart of the theorem: $\\mathrm{collDet} = \\det_3(A,B,C)\\cdot\\det_3(A',B',C')\\cdot\\mathrm{concurDet}$. After `simp only` unfolds every definition to raw coordinates, this becomes a single degree-12 polynomial identity in the 18 coordinates, discharged entirely by `ring`. This is the remarkable fact that makes the homogeneous-coordinate approach so clean: all of Desargues's geometric subtlety reduces to one algebraic identity, with the two triangle determinants appearing as explicit factors. The factorisation is what lets the equivalence be read off by cancellation.",
+    "mathContext": "$\\det_3(P,Q,R) = \\det_3(A,B,C)\\,\\det_3(A',B',C')\\,\\det_3(A\\times A', B\\times B', C\\times C')$ — degree-12 in 18 variables, by `ring`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "bracket algebra",
+      "polynomial identity",
+      "ring tactic",
+      "Grassmann–Cayley algebra"
+    ],
+    "prerequisites": [
+      "the cross/det definitions",
+      "polynomial identities"
+    ]
+  },
+  {
+    "id": "ann-desargues-main",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 133,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "The Main Equivalence by Cancellation",
+    "content": "`desargues` proves PerspectiveFromPoint $\\iff$ PerspectiveFromLine directly from the bracket identity. Forward: if concurDet $= 0$, the product is $0$ so collDet $= 0$. Backward: if collDet $= 0$, then $\\det_3(ABC)\\cdot\\det_3(A'B'C')\\cdot\\mathrm{concurDet} = 0$; `mul_eq_zero` peels off the two triangle factors, each ruled out by the non-degeneracy hypotheses `hABC`, `hA'B'C'`, forcing concurDet $= 0$. The non-degeneracy assumptions are exactly what is needed to cancel the triangle brackets. `perspectiveFromLine_of_point` and `perspectiveFromPoint_of_line` package the two directions separately.",
+    "mathContext": "concurDet $=0 \\Rightarrow$ collDet $=0$ (product); collDet $=0$ and $\\det(ABC),\\det(A'B'C') \\neq 0 \\Rightarrow$ concurDet $=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "mul_eq_zero",
+      "non-degeneracy hypotheses",
+      "biconditional",
+      "cancellation"
+    ],
+    "prerequisites": [
+      "desargues_bracket_identity",
+      "no zero divisors in ℝ"
+    ]
+  },
+  {
+    "id": "ann-self-dual",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 168
+    },
+    "type": "concept",
+    "title": "Self-Duality of Desargues",
+    "content": "`desargues_self_dual` records the celebrated **self-duality**: swapping points for lines (i.e. exchanging the two perspectivity conditions) leaves the theorem invariant. Each direction is the converse of the other, stated as the symmetric pair $(\\text{point} \\iff \\text{line}) \\wedge (\\text{line} \\iff \\text{point})$. This is structurally manifest here because the `cross` operation serves both as join and meet — the algebra itself is self-dual, so the geometric self-duality is automatic rather than a separate argument. Desargues is the smallest non-trivial self-dual configuration in projective geometry.",
+    "mathContext": "Point↔Line duality: the theorem and its dual coincide. The `cross` operation is simultaneously join (of points) and meet (of lines).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "projective duality principle",
+      "self-dual configuration",
+      "Desargues configuration (10₃)"
+    ],
+    "prerequisites": [
+      "the main equivalence",
+      "principle of duality"
+    ]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "menelaus-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 170,
+      "endLine": 184
+    },
+    "type": "context",
+    "title": "Concrete Numerical Instance",
+    "content": "`desargues_example` exhibits an explicit configuration: centre $(0,0,1)$ with connectors along the $x$-axis, $y$-axis, and line $y=x$, and triangles $A=(1,0,1), B=(0,1,1), C=(1,1,1)$, $A'=(3,0,1), B'=(0,2,1), C'=(2,2,1)$. The non-degeneracy and the concurrence (PerspectiveFromPoint) are checked by `norm_num` on the explicit determinants; Desargues (`perspectiveFromLine_of_point`) then *forces* the three side-intersections to be collinear without further computation. This demonstrates the theorem doing real work: collinearity is deduced, not separately verified.",
+    "mathContext": "Centre $(0,0,1)$; $A=(1,0,1),B=(0,1,1),C=(1,1,1)$, $A'=(3,0,1),B'=(0,2,1),C'=(2,2,1)$: concurrent, hence $P,Q,R$ collinear.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "norm_num",
+      "worked example",
+      "perspective triangles"
+    ],
+    "prerequisites": [
+      "the main theorem",
+      "decidable numeric checks"
+    ]
+  }
+]
