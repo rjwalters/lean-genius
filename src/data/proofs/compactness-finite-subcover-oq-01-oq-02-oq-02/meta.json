@@ -1,0 +1,189 @@
+{
+  "id": "compactness-finite-subcover-oq-01-oq-02-oq-02",
+  "slug": "compactness-finite-subcover-oq-01-oq-02-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CompactnessFiniteSubcoverOq01Oq02"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "CompactnessFiniteSubcoverOq01Oq02Oq02",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CompactnessFiniteSubcoverOq01Oq02Oq02.lean",
+    "sorries": 0
+  },
+  "title": "The Cluster-Point Form of Compactness from the Finite-Intersection Dual",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompactnessFiniteSubcoverOq01Oq02Oq02.lean",
+    "tags": [
+      "topology",
+      "compactness",
+      "finite-intersection-property",
+      "cluster-point",
+      "filter",
+      "net",
+      "bolzano-weierstrass",
+      "general-topology",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 136,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "exists_clusterPt_of_isCompact: the cluster-point (Bolzano-Weierstrass for filters) form of compactness, re-derived BY HAND from the parent's finite-intersection dual compact_inter_iInter_nonempty rather than from Mathlib's definitional IsCompact ⇒ cluster point (exact hs hF). Given a compact s and a nontrivial filter F with F ≤ 𝓟 s, the proof feeds the closures of ALL members of F (the generalized tails) to the FIP dual: a finite subfamily {closure A : A ∈ v} is pinned below by the single set s ∩ ⋂_{A ∈ v} A, which lies in F because a filter is closed under finite intersections (biInter_finset_mem) and s ∈ F (le_principal_iff), hence is nonempty by F.NeBot; every point of it lies in each closure A by subset_closure. The FIP dual then returns x ∈ s with x ∈ closure A for every A ∈ F, and clusterPt_iff_frequently' together with mem_closure_iff_frequently identifies 'x ∈ closure A for all A ∈ F' with ClusterPt x F. This is exactly the nontrivial backward direction of the equivalence between the finite-subfamily and the filter faces of compactness, which Mathlib bakes into the definition.",
+      "exists_clusterPt_of_compactSpace: the CompactSpace corollary — every nontrivial filter on a compact space has a cluster point — obtained from the compact-set form with s = univ via isCompact_univ.",
+      "exists_mapClusterPt_of_isCompact: the sequential (net) reading of the open question — a sequence eventually inside a compact set s clusters at a point of s (MapClusterPt x atTop a) — by running exists_clusterPt_of_isCompact on the tail filter map a atTop, whose membership s ∈ map a atTop is the eventual-containment hypothesis (mem_map).",
+      "exists_mapClusterPt_of_compactSpace: the CompactSpace sequential corollary — every sequence in a compact space clusters.",
+      "Concrete ℝ instance: any sequence valued in the compact interval [0,1] clusters at a point of [0,1], instantiating the sequential form at isCompact_Icc."
+    ],
+    "prerequisites": [
+      "compact_inter_iInter_nonempty (parent entry): to meet the intersection of a closed family, a compact set need only meet every finite subfamily — the FIP dual that supplies the cluster point, deliberately used in place of Mathlib's filter-based compactness definition",
+      "biInter_finset_mem: a finite intersection of members of a filter is again a member — verifies the finite-intersection property for the tails",
+      "le_principal_iff: F ≤ 𝓟 s ↔ s ∈ F — places s and hence the tails-with-s inside F",
+      "Filter.nonempty_of_mem: a member of a NeBot filter is nonempty — turns the finite-intersection property into actual points",
+      "clusterPt_iff_frequently' and mem_closure_iff_frequently: identify ClusterPt x F with 'x ∈ closure A for every A ∈ F', closing the argument",
+      "isCompact_univ / isCompact_Icc: drive the CompactSpace corollaries and the concrete ℝ instance"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCompact.inter_iInter_nonempty",
+        "description": "If a compact set s meets s ∩ ⋂_{i ∈ u} t i for every finite u, then it meets s ∩ ⋂ i, t i. Re-exported by the parent as compact_inter_iInter_nonempty; the FIP engine producing the cluster point.",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "Filter.biInter_finset_mem",
+        "description": "(⋂ i ∈ s, f i) ∈ l ↔ ∀ i ∈ s, f i ∈ l — a finite intersection of filter members is a filter member.",
+        "module": "Mathlib.Order.Filter.Finite"
+      },
+      {
+        "theorem": "clusterPt_iff_frequently'",
+        "description": "ClusterPt x F ↔ ∀ s ∈ F, ∃ᶠ y in 𝓝 x, y ∈ s — the frequently-form of being a cluster point.",
+        "module": "Mathlib.Topology.ClusterPt"
+      },
+      {
+        "theorem": "mem_closure_iff_frequently",
+        "description": "x ∈ closure s ↔ ∃ᶠ y in 𝓝 x, y ∈ s — closure membership as frequent neighbourhood incidence, bridging the FIP output to ClusterPt.",
+        "module": "Mathlib.Topology.ClusterPt"
+      },
+      {
+        "theorem": "isCompact_Icc",
+        "description": "A closed bounded real interval [a,b] is compact. Drives the concrete bounded-sequence instance over ℝ.",
+        "module": "Mathlib.Topology.Order.Compact"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Compactness has three classically equivalent faces: every open cover has a finite subcover (Heine-Borel), every family of closed sets with the finite intersection property has nonempty total intersection (the FIP dual), and every filter (or net) refining the set has a cluster point (the Bolzano-Weierstrass / accumulation form). The last is the most analytic: it is the statement that bounded sequences in a compact space have convergent subnets, the abstract heart of the Bolzano-Weierstrass theorem and of the existence of limit points in optimisation and dynamics. Mathlib takes the cluster-point property as the very DEFINITION of IsCompact, so that the equivalence with the finite-subfamily form is internal infrastructure. The parent entry compactness-finite-subcover-oq-01-oq-02 recorded the FIP dual and rebuilt Cantor's intersection theorem from it by hand; this entry answers its remaining open question by closing the triangle, deriving the cluster-point form from the FIP dual in the same by-hand spirit — exhibiting the closures of a filter's sets as the closed family whose finite intersection property is automatic and whose total intersection pins the cluster point.",
+    "problemStatement": "Answer the parent's second open question: derive the cluster-point form of compactness from the finite-intersection dual, without citing Mathlib's filter-based compactness lemmas. Concretely, prove that for a compact set s and a nontrivial filter F with F ≤ 𝓟 s there is a point x ∈ s with ClusterPt x F, by applying the FIP dual to the closures of the members (tails) of F. Supply the compact-space corollary, the sequential (net) reading via the tail filter map a atTop, and a concrete ℝ instance for a bounded sequence.",
+    "proofStrategy": "exists_clusterPt_of_isCompact is the substance. From F ≤ 𝓟 s we get s ∈ F (le_principal_iff). Index the closed family by the members of F: t ⟨A, _⟩ = closure A, each closed (isClosed_closure). Verify the finite intersection property: for a finite v of members, the set s ∩ ⋂_{A ∈ v} A lies in F — inter_mem of s ∈ F with biInter_finset_mem of the memberships A.2 — so it is nonempty (Filter.nonempty_of_mem, F.NeBot); any point p of it lies in s and, since A ⊆ closure A (subset_closure), in every closure A, giving p ∈ s ∩ ⋂_{A ∈ v} closure A (Set.mem_iInter₂). Feeding this to the parent's compact_inter_iInter_nonempty yields x ∈ s lying in ⋂_A closure A, i.e. x ∈ closure A for every A ∈ F (mem_iInter). Finally clusterPt_iff_frequently' rewrites ClusterPt x F as 'for every A ∈ F, ∃ᶠ y in 𝓝 x, y ∈ A', which mem_closure_iff_frequently identifies with x ∈ closure A. exists_clusterPt_of_compactSpace specializes with s = univ via isCompact_univ. exists_mapClusterPt_of_isCompact applies the main theorem to the tail filter map a atTop (NeBot since atTop is; s ∈ map a atTop is the eventual-containment hypothesis via mem_map), giving MapClusterPt x atTop a by definitional unfolding. The concrete instance instantiates the sequential form at isCompact_Icc on [0,1].",
+    "keyInsights": [
+      "A filter is exactly a directed family of generalized tails; its members closed up form the closed family the FIP dual wants, and the directedness makes the finite intersection property automatic — a finite list of tails has a common refinement still in the filter, hence nonempty.",
+      "The single nontrivial step is turning 'x lies in the closure of every tail' into 'x is a cluster point'. That is precisely the content of clusterPt_iff_frequently' composed with mem_closure_iff_frequently: closure membership of A is frequent neighbourhood incidence with A, and a cluster point is one that is frequently incident with every set of the filter.",
+      "Compactness is used once, through the FIP dual; the filter axioms (finite intersections, upward closure) and F ≤ 𝓟 s supply everything else. Drop compactness and the conclusion fails: the tail filter atTop on ℝ refines no compact set and has no cluster point.",
+      "Working with a compact ambient set s rather than a compact space is strictly more general and specializes to the space form instantly with s = univ, while also covering the sequential statement once the tail filter map a atTop is recognised as just another filter refining 𝓟 s.",
+      "The result is one line from Mathlib's definition (exact hs hF), so the value is entirely pedagogical: it reconstructs the equivalence between the finite-subfamily and filter faces of compactness that Mathlib hides inside the definition, mirroring the parent's by-hand Cantor derivation. Hence the honest 'mathlib' badge."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Cluster-Point Form from the FIP Dual",
+      "startLine": 4,
+      "endLine": 51,
+      "summary": "States the cluster-point form of compactness, explains the FIP-via-closures-of-tails argument, and notes that Mathlib's definitional IsCompact ⇒ cluster point is deliberately avoided in favour of re-derivation through the parent's compact_inter_iInter_nonempty.",
+      "mathContext": "Compact $s$, $F$ a filter with $F.\\mathrm{NeBot}$ and $F\\le\\mathcal P\\,s$ $\\Rightarrow\\exists x\\in s,\\ \\mathrm{ClusterPt}\\,x\\,F$."
+    },
+    {
+      "id": "filter-form",
+      "title": "The Cluster-Point Form, via the Finite-Intersection Dual",
+      "startLine": 59,
+      "endLine": 100,
+      "summary": "exists_clusterPt_of_isCompact feeds the closures of the members of F to the FIP dual: every finite subfamily is pinned below by s ∩ ⋂ of the corresponding tails (a member of F, hence nonempty), so the FIP dual returns x ∈ s lying in every closure A, which clusterPt_iff_frequently' and mem_closure_iff_frequently identify with ClusterPt x F. exists_clusterPt_of_compactSpace is the CompactSpace corollary via s = univ.",
+      "mathContext": "$\\bigcap_{A\\in F}\\overline A\\cap s\\neq\\varnothing$, and $x\\in\\overline A\\ \\forall A\\in F\\iff\\mathrm{ClusterPt}\\,x\\,F$."
+    },
+    {
+      "id": "net-form",
+      "title": "The Sequential (Net) Form",
+      "startLine": 102,
+      "endLine": 126,
+      "summary": "exists_mapClusterPt_of_isCompact reads the open question's 'net' case: a sequence eventually inside a compact s clusters at a point of s, obtained by applying the filter form to the tail filter map a atTop (s ∈ map a atTop being the eventual-containment hypothesis). exists_mapClusterPt_of_compactSpace is the CompactSpace corollary.",
+      "mathContext": "$\\forall^\\infty n,\\ a_n\\in s\\Rightarrow\\exists x\\in s,\\ \\mathrm{MapClusterPt}\\,x\\,\\mathrm{atTop}\\,a$."
+    },
+    {
+      "id": "instance",
+      "title": "Concrete Instance over ℝ",
+      "startLine": 128,
+      "endLine": 136,
+      "summary": "A sequence valued in the compact interval [0,1] clusters at a point of [0,1], instantiating the sequential form at isCompact_Icc — the abstract Bolzano-Weierstrass statement for bounded real sequences.",
+      "mathContext": "$a_n\\in[0,1]\\ \\forall n\\Rightarrow\\exists x\\in[0,1],\\ \\mathrm{MapClusterPt}\\,x\\,\\mathrm{atTop}\\,a$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-02-oq-02-oq-01",
+      "question": "Specialize the sequential cluster-point form to extract an actual convergent subsequence: from MapClusterPt x atTop a in a first-countable (e.g. metric) space, build a strictly monotone φ : ℕ → ℕ with a ∘ φ → x, recovering the textbook Bolzano-Weierstrass theorem 'every bounded real sequence has a convergent subsequence' from the filter-level statement proved here.",
+      "significance": "high"
+    },
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-02-oq-02-oq-02",
+      "question": "Prove the converse direction to complete the equivalence: if every nontrivial filter F ≤ 𝓟 s on s has a cluster point in s, then s is compact (in the finite-subfamily sense), so that the cluster-point form and the FIP dual are genuinely interderivable rather than the FIP dual being strictly stronger.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "compactness-finite-subcover-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: records the finite-intersection dual of compactness and re-derives Cantor's intersection theorem by hand. This entry answers its second open question by deriving the cluster-point (Bolzano-Weierstrass for filters) form from the same FIP dual compact_inter_iInter_nonempty, completing the open-cover / FIP / cluster-point triangle."
+    },
+    {
+      "targetId": "compactness-finite-subcover-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling answering the parent's first open question (computing ⋂ [0,1/(n+1)] = {0} exactly and the nested-intervals-shrinking-to-a-point lemma). Both children deepen the FIP-dual entry: the sibling pins the limit of a nested sequence, this entry produces cluster points of arbitrary filters."
+    }
+  ],
+  "references": [
+    {
+      "title": "Topology",
+      "author": "Munkres",
+      "year": "2000",
+      "venue": "Prentice Hall",
+      "description": "Finite intersection property characterisation of compactness and the limit-point / cluster-point forms (§26, §28)."
+    },
+    {
+      "title": "General Topology",
+      "author": "Kelley",
+      "year": "1955",
+      "venue": "Van Nostrand",
+      "description": "Nets, filters, cluster points, and the equivalence of compactness with the accumulation-point property for nets (Chapter 2)."
+    },
+    {
+      "title": "Mathlib4: Topology.ClusterPt, Topology.Compactness.Compact, Order.Filter.Finite",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of IsCompact.inter_iInter_nonempty, clusterPt_iff_frequently', mem_closure_iff_frequently, biInter_finset_mem, and isCompact_Icc. Mathlib's IsCompact is defined as the cluster-point property; that definitional route is deliberately not used here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The cluster-point (Bolzano-Weierstrass for filters) form of compactness is derived from the parent's finite-intersection dual. exists_clusterPt_of_isCompact shows that a compact set s and a nontrivial filter F with F ≤ 𝓟 s admit a point x ∈ s with ClusterPt x F: the closures of the members of F form a closed family whose every finite subfamily is pinned below by s ∩ ⋂ of the corresponding tails — a member of F, nonempty by F.NeBot — so the FIP dual compact_inter_iInter_nonempty returns x ∈ s in every closure A, and clusterPt_iff_frequently' with mem_closure_iff_frequently identifies this with ClusterPt x F. The CompactSpace corollary, the sequential form exists_mapClusterPt_of_isCompact (via the tail filter map a atTop), its CompactSpace corollary, and a concrete bounded-sequence instance over [0,1] follow. 136 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "Mathlib's definitional IsCompact ⇒ cluster point (exact hs hF) is deliberately avoided; the cluster-point form is rebuilt from the finite-intersection dual exactly as the parent rebuilds Cantor from finite subcovers (badge 'mathlib': the FIP engine and the closure/frequently bridge are Mathlib lemmas, the assembly into the filter face of compactness is the by-hand contribution). This closes the open-cover / FIP / cluster-point triangle for the entry and sets up extracting honest convergent subsequences in first-countable spaces and the converse direction.",
+    "openQuestions": [
+      "Extract a convergent subsequence from MapClusterPt in a first-countable space, recovering the textbook Bolzano-Weierstrass theorem.",
+      "Prove the converse: a cluster point for every filter on s implies s is compact, completing the equivalence."
+    ]
+  }
+}
