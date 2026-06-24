@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ann-pent03-defs",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-03",
+    "range": { "startLine": 41, "endLine": 75 },
+    "type": "definition",
+    "title": "Generalized heptagonal numbers via a division-free doubling relation",
+    "content": "genHept k := k(5k−3)/2 is the generalized heptagonal number (OEIS A085787), and IsGenHept m := ∃ k, 2m = k(5k−3) is its Prop-level membership phrased without integer division. The parity lemma two_dvd_hept_index (case split on k even/odd) shows k(5k−3) is even, and Int.mul_ediv_cancel' then yields the exact doubling 2·h(k)=k(5k−3) (two_mul_genHept). Every subsequent proof works through this doubled identity, so no reasoning ever divides by 2.",
+    "mathContext": "$h(k)=\\tfrac{k(5k-3)}{2}$, $2h(k)=k(5k-3)$; $h(0..\\pm2)=0,1,4,7,13$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "figurate numbers",
+      "heptagonal numbers",
+      "integer division",
+      "parity"
+    ],
+    "prerequisites": [
+      "polygonal numbers",
+      "integer division in ℤ"
+    ]
+  },
+  {
+    "id": "ann-pent03-criterion",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-03",
+    "range": { "startLine": 77, "endLine": 132 },
+    "type": "key-step",
+    "title": "Recognition criterion: m is heptagonal ⟺ 40m+9 is a perfect square",
+    "content": "isGenHept_iff_isSquare is the heptagonal analogue of the parent's 24m+1 pentagonal test. Forward: 40·h(k)+9 = 20·(2h(k))+9 = 20·k(5k−3)+9 = (10k−3)² (linear_combination on the doubling relation). Converse: from s²=40m+9, reduce mod 10 (40m≡0) to get s²≡9; the finite check ∀ x:ZMod 10, x²=9→x=3∨x=7 (by decide) forces s≡±3 mod 10; ZMod.intCast_zmod_eq_zero_iff_dvd turns this into 10 ∣ (s∓3), so s=10k+3 or s=10(k+1)−3, and cancelling 20 recovers the index −k or k+1. The governing modulus is 2(s−2)=10, versus 6 for pentagons.",
+    "mathContext": "$\\operatorname{IsGenHept}(m)\\iff \\exists s,\\ 40m+9=s^2$; converse via $s^2\\equiv 9\\ (\\mathrm{mod}\\ 10)\\Rightarrow s\\equiv\\pm3$.",
+    "significance": "main-result",
+    "relatedConcepts": [
+      "square-discriminant criterion",
+      "quadratic residues",
+      "ZMod",
+      "completing the square"
+    ],
+    "prerequisites": [
+      "square residues in ZMod n",
+      "ZMod.intCast_zmod_eq_zero_iff_dvd",
+      "the pentagonal 24m+1 criterion"
+    ]
+  },
+  {
+    "id": "ann-pent03-general",
+    "proofId": "pentagonal-number-theorem-oq-01-oq-03",
+    "range": { "startLine": 190, "endLine": 202 },
+    "type": "concept",
+    "title": "The general s-gonal discriminant identity unifies all figurate tests",
+    "content": "disc_genPolygonal proves that for the generalized s-gonal number P (with 2P=(s−2)k²−(s−4)k), 8(s−2)·P+(s−4)² = ((2s−4)k−(s−4))² — one square-completion valid for every polygon. The proof is linear_combination 4(s−2)·hP, since ((2s−4)k−(s−4))²−(s−4)² = 4(s−2)((s−2)k²−(s−4)k) = 4(s−2)·(2P). Pentagonal (s=5: 24P+1=(6k−1)²) and heptagonal (s=7: 40P+9=(10k−3)²) are the instances disc_genPolygonal_pent and disc_genPolygonal_hept, exhibiting the parent's pentagonal test as a special case.",
+    "mathContext": "$8(s-2)P+(s-4)^2=((2s-4)k-(s-4))^2$, with $2P=(s-2)k^2-(s-4)k$.",
+    "significance": "main-result",
+    "relatedConcepts": [
+      "polygonal numbers",
+      "s-gonal numbers",
+      "completing the square",
+      "discriminant"
+    ],
+    "prerequisites": [
+      "generalized polygonal numbers",
+      "the linear_combination tactic"
+    ]
+  }
+]
