@@ -2822,6 +2822,7 @@ import Proofs.FibonacciIdentitiesOQ03OQ03
 import Proofs.FibonacciIdentitiesOQ04
 import Proofs.FibonacciIdentitiesOQ04OQ01
 import Proofs.FibonacciIdentitiesOQ04OQ03
+import Proofs.FibonacciIdentitiesOQ05
 import Proofs.FiveColorTheorem
 import Proofs.FodorPressingDown
 import Proofs.FourColorTheorem
@@ -2870,6 +2871,7 @@ import Proofs.FrobeniusEndomorphismOQ01OQ02
 import Proofs.FrobeniusEndomorphismOQ02
 import Proofs.FrobeniusNumber
 import Proofs.FrobeniusNumberOQ01
+import Proofs.FrobeniusNumberOQ01OQ03OQ01
 import Proofs.FrobeniusNumberOQ02
 import Proofs.FrobeniusNumberOQ03
 import Proofs.FrobeniusNumberOQ04
@@ -3215,6 +3217,7 @@ import Proofs.LagrangeTheoremOQ05
 import Proofs.LagrangeTheoremOQ06
 import Proofs.LagrangeTheoremOQ07
 import Proofs.LagrangeTheoremOQ07OQ02
+import Proofs.LagrangeTheoremOQ09
 import Proofs.LawOfCosines
 import Proofs.LawOfCosinesOQ01OQ01
 import Proofs.LawOfCosinesOQ01OQ01OQ01
