@@ -1,0 +1,208 @@
+{
+  "id": "kummer-theorem-oq-04-oq-01-oq-01",
+  "title": "Kummer OQ-04-OQ-01-OQ-01: C(2n,n) Divisible by 4 Exactly ⟺ n a Sum of Two Distinct Powers of Two",
+  "slug": "kummer-theorem-oq-04-oq-01-oq-01",
+  "description": "The next level set of popcount for the central binomial coefficient: v₂(C(2n,n)) = 2 if and only if n = 2^a + 2^b with a > b (binary popcount 2). Reduces, via the parent closed form v₂(C(2n,n)) = s₂(n), to the binary-digit-sum lemma s₂(n) = 2 ⟺ ∃ a b, b < a ∧ n = 2^a + 2^b — a popcount=2 characterisation Mathlib does not provide. Includes the sharp 4-exact-divisibility 4 ∥ C(2n,n).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KummerTheoremOQ04OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "kummer-theorem",
+      "p-adic",
+      "binomial-coefficient",
+      "central-binomial-coefficient",
+      "popcount",
+      "powers-of-two"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 241,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "assumptions": "None. 0 axioms, 0 sorries. The headline v₂(C(2n,n)) = s₂(n) is re-derived locally from Mathlib's digit-sum Kummer theorem (sub_one_mul_padicValNat_choose_eq_sub_sum_digits); the new content is the popcount = 2 ⟺ sum-of-two-distinct-powers characterisation proved by strong induction (reusing the parent's popcount = 1 lemma as a black box for the odd-bit case). Numeric witnesses use kernel `decide` (not native_decide), so no Lean.ofReduceBool dependency. #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "originalContributions": [
+      "sum_digits_two_eq_two_iff: the binary digit sum equals 2 exactly for sums of two distinct powers of two, s₂(n) = 2 ⟺ ∃ a b, b < a ∧ n = 2^a + 2^b — the core new lemma, absent from Mathlib (no popcount = 2 characterisation in Mathlib.Data.Nat.Digits), and the next level set beyond the parent's popcount = 1",
+      "sum_digits_two_eq_two_imp: forward direction by strong induction peeling the lowest bit s₂(n) = (n%2) + s₂(n/2): even n shifts both bits up from n/2; odd n forces s₂(n/2) = 1, so n/2 is a single power of two (parent popcount=1 lemma reused), giving n = 2^{k+1} + 2^0",
+      "sum_digits_two_two_pow_add_one: digit sum of 2^c + 1 is 2 for c ≥ 1 — the lowest bit plus the single bit of 2^{c-1}; drives the converse after factoring out trailing zeros",
+      "padicValNat_two_centralBinom_eq_two_iff: the headline characterisation v₂(C(2n,n)) = 2 ⟺ ∃ a b, b < a ∧ n = 2^a + 2^b, packaging the parent valuation formula with the new popcount lemma",
+      "four_exactDvd_centralBinom_of_two_bits: sharp divisibility — for n = 2^a + 2^b (b < a), 4 ∣ C(2n,n) but ¬ 8 ∣ C(2n,n), i.e. 4 ∥ C(2n,n)",
+      "worked numeric witnesses: C(6,3)=20=2²·5 (n=3=2+1), C(10,5)=252=2²·63 (n=5=4+1), C(12,6)=924=2²·231 (n=6=4+2), and the non-example n=7=111₂ (popcount 3) with C(14,7)=3432=2³·429 showing v₂≠2 for three-bit numbers"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.sub_one_mul_padicValNat_choose_eq_sub_sum_digits",
+        "description": "Legendre/Kummer digit-sum identity: (p-1)·v_p(C(n,k)) = s_p(k) + s_p(n-k) - s_p(n), specialised here to p=2 on the diagonal",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      },
+      {
+        "theorem": "Nat.digits_def'",
+        "description": "digits b n = n % b :: digits b (n / b) for 1 < b, 0 < n — the lowest-bit peel driving the strong induction",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "Nat.digits_base_pow_mul",
+        "description": "digits b (b^k * m) = replicate k 0 ++ digits b m — strips the b trailing zero bits when factoring 2^a + 2^b = 2^b·(2^{a-b}+1)",
+        "module": "Mathlib.Data.Nat.Digits"
+      },
+      {
+        "theorem": "pow_padicValNat_dvd / padicValNat_dvd_iff_le",
+        "description": "p^{v_p(m)} ∣ m and p^n ∣ m ↔ n ≤ v_p(m) — used for the sharp 4 ∥ C(2n,n) corollary",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Kummer's theorem (1852) computes the $p$-adic valuation $v_p(\\binom{n}{k})$ as the number of carries when adding $k$ and $n-k$ in base $p$; the digit-sum form gives $(p-1)v_p(\\binom{n}{k}) = s_p(k)+s_p(n-k)-s_p(n)$. The grandparent specialises this to the central binomial coefficient as $v_2(\\binom{2n}{n}) = s_2(n)$, the binary popcount of $n$. The parent entry pinned down the minimal case popcount $=1$ (exactly the powers of two). This follow-up advances to the next level set, popcount $=2$: the central coefficient is divisible by exactly $4$ precisely when $n$ has two $1$-bits, i.e. $n$ is a sum of two distinct powers of two. As with popcount $=1$, the underlying bit-counting fact has no direct statement in Mathlib's digit library.",
+    "problemStatement": "Characterise the natural numbers $n$ for which the central binomial coefficient $\\binom{2n}{n}$ is divisible by $2$ exactly twice, $v_2(\\binom{2n}{n}) = 2$ — the first listed open question of the parent entry.",
+    "text": "Via the parent closed form $v_2(\\binom{2n}{n}) = s_2(n)$, the answer is exactly the sums of two distinct powers of two: $v_2(\\binom{2n}{n}) = 2 \\iff \\exists\\, a > b,\\, n = 2^a + 2^b$.",
+    "proofStrategy": "Reduce $v_2(\\binom{2n}{n}) = 2$ to $s_2(n) = 2$ using the parent valuation formula (re-derived locally to stay self-contained). Then prove $s_2(n) = 2 \\iff \\exists a\\, b,\\, b < a \\wedge n = 2^a + 2^b$. Forward: strong induction on $n$ using $s_2(n) = (n \\bmod 2) + s_2(n/2)$ from `Nat.digits_def'`. If $n$ is even, both bits live in $n/2$, so the induction hypothesis gives $n/2 = 2^a + 2^b$ and shifting up yields $n = 2^{a+1} + 2^{b+1}$; if $n$ is odd, the low bit is one of the two, so $s_2(n/2) = 1$ and the parent popcount=1 lemma gives $n/2 = 2^k$, hence $n = 2^{k+1} + 2^0$. Converse: factor $2^a + 2^b = 2^b(2^{a-b}+1)$, strip the $b$ trailing zeros via `Nat.digits_base_pow_mul`, and compute $s_2(2^c + 1) = 2$ for $c \\geq 1$. The sharp divisibility corollary reads $4 \\parallel \\binom{2n}{n}$ off the valuation via the `padicValNat` API.",
+    "keyInsights": [
+      "**Popcount = 2 is the whole content.** Stripping away the binomial coefficient, the theorem is the bit-counting fact that a natural number has exactly two $1$-bits iff it is a sum of two distinct powers of two. The central binomial coefficient enters only through the parent identity $v_2 = s_2$.",
+      "**The odd case reuses the parent as a black box.** When $n$ is odd, the lowest bit accounts for one of the two, leaving $s_2(n/2) = 1$ — exactly the parent's popcount $=1$ situation, so $n/2$ is a single power of two and $n = 2^{k+1} + 2^0$. The level sets build on each other.",
+      "**The even case shifts both bits up.** An even $n$ has its two bits inherited from $n/2$; the induction hypothesis supplies $n/2 = 2^a + 2^b$ and $n = 2 \\cdot (n/2)$ shifts both exponents by one.",
+      "**The converse factors out the trailing zeros.** Writing $2^a + 2^b = 2^b(2^{a-b}+1)$ and applying `Nat.digits_base_pow_mul` reduces the digit sum to $s_2(2^c + 1) = 2$, which is the lowest bit plus the single bit of $2^{c-1}$.",
+      "**Sharpness, not just divisibility.** At a two-bit $n$ the valuation is exactly $2$: $4 \\mid \\binom{2n}{n}$ but $8 \\nmid \\binom{2n}{n}$, the second-minimal nonzero $2$-adic valuation."
+    ],
+    "prerequisites": [
+      "The parent closed form v₂(C(2n,n)) = s₂(n) (Kummer specialised to p=2 on the diagonal)",
+      "The parent popcount = 1 lemma s₂(n) = 1 ⟺ ∃k, n = 2^k (reused for the odd-bit case)",
+      "Base-2 digit representations and the recursion digits 2 n = n%2 :: digits 2 (n/2)",
+      "Strong induction on ℕ (Nat.strongRecOn)",
+      "The padicValNat divisibility API: pow_padicValNat_dvd, padicValNat_dvd_iff_le"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Research Question and Answer",
+      "startLine": 1,
+      "endLine": 54,
+      "summary": "File header: the open question (when is C(2n,n) divisible by 2 exactly twice), the answer (exactly the sums of two distinct powers of two), the reduction to s₂(n)=2, and the proof outline for both directions."
+    },
+    {
+      "id": "reused-building-blocks",
+      "title": "Reused Building Blocks: Doubling, Positivity, v₂ = s₂, popcount = 1",
+      "startLine": 55,
+      "endLine": 108,
+      "summary": "sum_digits_two_mul (s₂(2n)=s₂(n)), sum_digits_two_pos (s₂(n)>0 for n>0), sum_digits_two_pow (s₂(2^k)=1), and sum_digits_two_eq_one_imp (the parent popcount=1 forward lemma, re-derived self-contained for use in the odd-bit case).",
+      "mathContext": "These lemmas reproduce just enough of the parent and grandparent to translate the valuation question into a pure digit-sum question and to handle the odd case."
+    },
+    {
+      "id": "valuation-formula",
+      "title": "The Valuation Formula v₂(C(2n,n)) = s₂(n)",
+      "startLine": 110,
+      "endLine": 121,
+      "summary": "padicValNat_two_centralBinom: the parent/grandparent headline re-derived locally from Mathlib's digit-sum Kummer theorem, translating the binomial valuation into the binary digit sum.",
+      "mathContext": "Kummer specialised to $p=2$ on the diagonal $\\binom{2n}{n}$ gives $v_2 = s_2(n)$."
+    },
+    {
+      "id": "two-pow-add-one",
+      "title": "Digit Sum of 2^c + 1 is Two",
+      "startLine": 122,
+      "endLine": 134,
+      "summary": "sum_digits_two_two_pow_add_one: s₂(2^c+1)=2 for c≥1, the lowest bit (1) plus s₂(2^{c-1})=1 after the peel. Drives the converse direction.",
+      "mathContext": "$2^c + 1$ for $c \\geq 1$ has bits at positions $0$ and $c$, a two-bit number."
+    },
+    {
+      "id": "forward-induction",
+      "title": "Forward Direction: s₂(n)=2 ⟹ Two Distinct Powers",
+      "startLine": 135,
+      "endLine": 164,
+      "summary": "sum_digits_two_eq_two_imp: strong induction peeling the lowest bit. Even n: both bits in n/2, shift up to get 2^{a+1}+2^{b+1}. Odd n: low bit is one, s₂(n/2)=1 forces n/2=2^k (parent lemma), giving 2^{k+1}+2^0.",
+      "mathContext": "Spending a digit-sum budget of 2 means two 1-bits; parity descent locates them as two distinct powers of two."
+    },
+    {
+      "id": "characterisations",
+      "title": "The Characterisations: Digit Sum and Valuation",
+      "startLine": 166,
+      "endLine": 188,
+      "summary": "sum_digits_two_eq_two_iff (s₂(n)=2 ⟺ ∃ a b, b<a ∧ n=2^a+2^b) combining both directions via the factor-and-strip converse, and padicValNat_two_centralBinom_eq_two_iff (v₂(C(2n,n))=2 ⟺ two distinct powers), the headline result.",
+      "mathContext": "Rewriting the valuation by the parent formula turns the binomial statement into the popcount=2 statement."
+    },
+    {
+      "id": "sharp-divisibility",
+      "title": "Sharp 4-Exact Divisibility at Two-Bit n",
+      "startLine": 190,
+      "endLine": 205,
+      "summary": "four_exactDvd_centralBinom_of_two_bits: for n=2^a+2^b (b<a), 4 ∣ C(2n,n) and ¬ 8 ∣ C(2n,n), i.e. 4 ∥ C(2n,n), derived from v₂=2 via pow_padicValNat_dvd and padicValNat_dvd_iff_le.",
+      "mathContext": "At two-bit n the 2-adic valuation attains its second-minimal nonzero value 2."
+    },
+    {
+      "id": "numeric-witnesses",
+      "title": "Worked Numeric Witnesses",
+      "startLine": 206,
+      "endLine": 241,
+      "summary": "Kernel-decidable evaluations: C(6,3)=20 (n=3=2+1), C(10,5)=252 (n=5=4+1), C(12,6)=924 (n=6=4+2), and the non-example n=7=111₂ with C(14,7)=3432 showing v₂=3≠2 for a three-bit number. Ends namespace KummerCentralBinomTwoBits.",
+      "mathContext": "Sanity checks confirm the positive characterisation on all three two-bit residues and its failure on a three-bit number."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, self-contained Lean 4 formalization characterising the second level set of the central binomial coefficient's 2-adic valuation: v₂(C(2n,n)) = 2 ⟺ n = 2^a + 2^b with a > b. The crux is a new popcount lemma s₂(n)=2 ⟺ sum of two distinct powers of two (strong induction reusing the parent's popcount=1 lemma for the odd-bit case), which Mathlib does not provide. 10 theorems, 0 axioms, 0 sorries.",
+    "implications": "Together with the parent (popcount=1 ⟺ power of two) this maps the bottom of the popcount hierarchy for central binomial coefficients: v₂=1 at one-bit n, v₂=2 at two-bit n. The standalone popcount=2 characterisation is reusable for any digit-sum argument over ℕ, and the inductive method (peel lowest bit, drop to the next-lower level set) extends in principle to popcount=k.",
+    "openQuestions": [
+      "Does the inductive method generalise to a uniform popcount = k ⟺ sum of k distinct powers of two, giving v₂(C(2n,n)) = k as a single parametrized family?",
+      "For an odd prime p, characterise the n with v_p(C(2n,n)) = 2 in terms of base-p digits (two single carries, or one digit ≥ ⌈p/2⌉)?",
+      "Transfer the v₂=2 characterisation to the Catalan number C_n = C(2n,n)/(n+1): for which two-bit n is C_n divisible by exactly 4?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem-oq-04-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry characterising the minimal case v₂(C(2n,n)) = 1 as exactly the powers of two; this follow-up advances to the next level set v₂ = 2, answering its first open question."
+    },
+    {
+      "targetId": "kummer-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Grandparent entry proving the closed form v₂(C(2n,n)) = s₂(n)."
+    },
+    {
+      "targetId": "kummer-theorem",
+      "relationship": "extends",
+      "description": "Root Kummer's theorem on p-adic valuations of binomial coefficients via carry counts."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Kummer, E.E."
+      ],
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, pp. 93-146",
+      "note": "Original carry-count theorem for v_p(C(n,k)); the digit-sum form specialised here"
+    },
+    {
+      "authors": [
+        "Legendre, A.-M."
+      ],
+      "title": "Théorie des nombres",
+      "year": "1830",
+      "venue": "3rd edition, Firmin Didot Frères, Paris",
+      "note": "Legendre's formula v_p(n!) = (n - s_p(n))/(p-1), source of the digit-sum identity"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "KummerCentralBinomTwoBits",
+    "lineCount": 241,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/KummerTheoremOQ04OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

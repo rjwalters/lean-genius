@@ -1,0 +1,138 @@
+[
+  {
+    "id": "ann-kummer-oq040101-headline",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 182,
+      "endLine": 188
+    },
+    "type": "insight",
+    "title": "Headline: v₂(C(2n,n)) = 2 ⟺ n is a Sum of Two Distinct Powers of Two",
+    "content": "`padicValNat_two_centralBinom_eq_two_iff` is the main result: the central binomial coefficient is divisible by 2 exactly twice iff n = 2^a + 2^b with a > b. The proof is a single `rw [padicValNat_two_centralBinom]` rewriting the valuation as the binary digit sum s₂(n), followed by `exact sum_digits_two_eq_two_iff n`. All the real work is in the popcount=2 lemma; the binomial coefficient contributes only through the parent valuation formula.",
+    "mathContext": "Since $v_2(\\binom{2n}{n}) = s_2(n)$, the valuation $2$ occurs exactly when the binary expansion of $n$ has two $1$-bits — i.e. $n = 2^a + 2^b$ with $a > b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "2-adic valuation",
+      "popcount",
+      "sum of two powers of two"
+    ],
+    "prerequisites": [
+      "Nat.centralBinom",
+      "padicValNat",
+      "binary digit sum"
+    ]
+  },
+  {
+    "id": "ann-kummer-oq040101-popcount-iff",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 180
+    },
+    "type": "insight",
+    "title": "The New Lemma: s₂(n) = 2 ⟺ ∃ a b, b < a ∧ n = 2^a + 2^b",
+    "content": "`sum_digits_two_eq_two_iff` characterises when the binary digit sum (popcount) equals 2: exactly for sums of two distinct powers of two. This is the next level set beyond the parent's popcount = 1, and Mathlib's `Mathlib.Data.Nat.Digits` has no such statement. The forward direction is `sum_digits_two_eq_two_imp` (strong induction); the converse factors n = 2^b(2^{a-b}+1), strips the b trailing zeros with `Nat.digits_base_pow_mul`, and reduces to s₂(2^c+1)=2.",
+    "mathContext": "A natural number has Hamming weight (popcount) $2$ precisely when it is $2^a + 2^b$ for distinct exponents — its binary string has exactly two $1$s.",
+    "significance": "key",
+    "relatedConcepts": [
+      "popcount",
+      "Hamming weight",
+      "binary representation",
+      "level sets of popcount"
+    ],
+    "prerequisites": [
+      "Nat.digits",
+      "Nat.digits_base_pow_mul",
+      "strong induction"
+    ]
+  },
+  {
+    "id": "ann-kummer-oq040101-forward",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 164
+    },
+    "type": "proof-technique",
+    "title": "Forward Direction: Peeling the Lowest Bit, Reusing popcount = 1",
+    "content": "`sum_digits_two_eq_two_imp` runs strong induction on n via s₂(n) = (n%2) + s₂(n/2) from `Nat.digits_def'`. The even case (low bit 0) recurses: the induction hypothesis gives n/2 = 2^a + 2^b and n = 2·(n/2) shifts both exponents up by one. The odd case (low bit 1) is the elegant step: the lowest bit is one of the two, so s₂(n/2) = 1, and the parent's popcount=1 lemma `sum_digits_two_eq_one_imp` makes n/2 = 2^k a single power, giving n = 2^{k+1} + 2^0.",
+    "mathContext": "The level sets of popcount are built recursively: popcount $=2$ on odd $n$ drops to popcount $=1$ on $n/2$, so the two-bit characterisation rests on the one-bit characterisation.",
+    "significance": "key",
+    "relatedConcepts": [
+      "strong induction",
+      "parity descent",
+      "binary digit recursion"
+    ],
+    "prerequisites": [
+      "Nat.strongRecOn",
+      "Nat.digits_def'",
+      "sum_digits_two_eq_one_imp"
+    ]
+  },
+  {
+    "id": "ann-kummer-oq040101-converse",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 134
+    },
+    "type": "proof-technique",
+    "title": "Converse Ingredient: s₂(2^c + 1) = 2 and Stripping Trailing Zeros",
+    "content": "`sum_digits_two_two_pow_add_one` proves s₂(2^c+1) = 2 for c ≥ 1 by peeling the lowest bit: (2^{d+1}+1) % 2 = 1 and (2^{d+1}+1)/2 = 2^d, so the digit sum is 1 + s₂(2^d) = 2. The converse of the main iff then writes 2^a + 2^b = 2^b·(2^{a-b}+1), applies `Nat.digits_base_pow_mul` to drop the b leading zero digits (which contribute 0 to the sum), and finishes with this lemma.",
+    "mathContext": "Multiplying by $2^b$ shifts the binary expansion left by $b$ positions, prepending zeros that do not change the digit sum; so the popcount of $2^a+2^b$ equals that of $2^{a-b}+1$, which is $2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.digits_base_pow_mul",
+      "binary shift",
+      "digit sum invariance"
+    ],
+    "prerequisites": [
+      "Nat.digits_def'",
+      "Nat.digits_base_pow_mul"
+    ]
+  },
+  {
+    "id": "ann-kummer-oq040101-sharp",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 190,
+      "endLine": 205
+    },
+    "type": "insight",
+    "title": "Sharp Divisibility: 4 ∥ C(2n,n) at Two-Bit n",
+    "content": "`four_exactDvd_centralBinom_of_two_bits` upgrades the valuation equality to exact divisibility: for n = 2^a + 2^b (b < a), 4 ∣ C(2n,n) but ¬ 8 ∣ C(2n,n). From v₂ = 2, `pow_padicValNat_dvd` gives 2² = 4 ∣ C(2n,n); and `padicValNat_dvd_iff_le` shows 2³ = 8 ∣ would force 3 ≤ 2, a contradiction.",
+    "mathContext": "At a two-bit $n$ the 2-adic valuation is exactly $2$, the second-minimal nonzero value — one step above the powers of two where it equals $1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "exact divisibility",
+      "2-adic valuation",
+      "pow_padicValNat_dvd"
+    ],
+    "prerequisites": [
+      "pow_padicValNat_dvd",
+      "padicValNat_dvd_iff_le"
+    ]
+  },
+  {
+    "id": "ann-kummer-oq040101-witnesses",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 206,
+      "endLine": 241
+    },
+    "type": "example",
+    "title": "Numeric Witnesses Across the Two-Bit Residues",
+    "content": "Kernel-decidable checks confirm the characterisation: n=3=2¹+2⁰ gives C(6,3)=20=2²·5; n=5=2²+2⁰ gives C(10,5)=252=2²·63; n=6=2²+2¹ gives C(12,6)=924=2²·231 — all with v₂=2. The non-example n=7=111₂ (popcount 3) gives C(14,7)=3432=2³·429 with v₂=3≠2, verified by ruling out 2^a+2^b=7 via interval_cases. Uses kernel `decide`, not native_decide, so no Lean.ofReduceBool dependency.",
+    "mathContext": "The three two-bit numbers below 8 (3, 5, 6) all satisfy v₂=2, while the first three-bit number 7 does not — confirming the level set is precisely popcount 2.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "kernel decide",
+      "central binomial coefficient",
+      "popcount"
+    ],
+    "prerequisites": [
+      "Nat.centralBinom"
+    ]
+  }
+]
