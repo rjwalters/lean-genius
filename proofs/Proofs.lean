@@ -3451,6 +3451,7 @@ import Proofs.QuadraticReciprocityAlgorithmOQ03M2
 import Proofs.QuadraticReciprocityOQ03
 import Proofs.QuadraticReciprocityOQ03OQ01
 import Proofs.QuadraticReciprocityOQ03OQ01Exp
+import Proofs.QuadraticReciprocityOQ03OQ03
 import Proofs.RamanujanSumFallacy
 import Proofs.RamseyFirstMoment
 import Proofs.RamseyFirstMomentOQ01
