@@ -1,0 +1,65 @@
+[
+  {
+    "id": "keithb-ann-intro",
+    "proofId": "keith-number-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 47
+    },
+    "type": "concept",
+    "title": "Keith Numbers in an Arbitrary Base",
+    "content": "The parent entry defines a **Keith number** through a sliding-window recurrence over its *decimal* digits and proves the smallest one is $14$. The recurrence itself — drop the oldest window term, append the window sum, stop when you hit the target — never mentions a base; only the seed digits do. So a base-$b$ Keith number is an $N$ with at least two base-$b$ digits whose base-$b$ digit recurrence reaches $N$.\n\nThis follow-up reparametrizes only the digit extraction: $\\texttt{lsdDigitsB}\\ b$ peels base-$b$ digits ($n \\bmod b$, $n / b$) while the window dynamics $\\texttt{step}/\\texttt{reaches}$ are inherited verbatim from the parent.",
+    "mathContext": "The parent (`keith-number-oq-01`) explicitly raised generalizing `IsKeith` to an arbitrary base as an open question; this entry answers it.",
+    "significance": "key",
+    "prerequisites": [
+      "positional (base-b) digit representations",
+      "Fibonacci-like linear recurrences",
+      "decidability and kernel `decide`"
+    ]
+  },
+  {
+    "id": "keithb-ann-def",
+    "proofId": "keith-number-oq-01-oq-02",
+    "range": {
+      "startLine": 49,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "Base-b Digits and IsKeithBase",
+    "content": "$\\texttt{lsdDigitsB}\\ b\\ \\textit{fuel}\\ n$ extracts base-$b$ digits least-significant first by structural recursion on $\\textit{fuel}$, and $\\texttt{msdDigitsB}\\ b\\ n = (\\texttt{lsdDigitsB}\\ b\\ n\\ n).\\texttt{reverse}$. The predicate is\n$$\\texttt{IsKeithBase}\\ b\\ n \\;:=\\; b \\le n \\;\\wedge\\; \\texttt{reaches}\\ n\\ 40\\ (\\texttt{msdDigitsB}\\ b\\ n) = \\texttt{true},$$\nwhere $b \\le n$ is the 'at least two base-$b$ digits' condition. A `DecidablePred (IsKeithBase b)` instance is supplied so concrete claims reduce under `decide`.",
+    "mathContext": "Keeping `lsdDigitsB` fuel-bounded (rather than using Mathlib's well-founded `Nat.digits`) is what keeps the base-b decision procedure kernel-reducible and the result axiom-free.",
+    "significance": "key",
+    "prerequisites": []
+  },
+  {
+    "id": "keithb-ann-recovery",
+    "proofId": "keith-number-oq-01-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 96
+    },
+    "type": "technique",
+    "title": "Recovering the Decimal Predicate",
+    "content": "`lsdDigitsB 10` and the parent's `lsdDigits` are different recursive definitions, so their agreement is *proved*, not assumed: $\\texttt{lsdDigitsB\\_ten}$ shows $\\texttt{lsdDigitsB}\\ 10\\ \\textit{fuel}\\ n = \\texttt{lsdDigits}\\ \\textit{fuel}\\ n$ by induction on $\\textit{fuel}$. Lifting through the reverse gives $\\texttt{msdDigitsB\\_ten}$ and then the bridge $\\texttt{isKeithBase\\_ten} : \\texttt{IsKeithBase}\\ 10\\ n \\leftrightarrow \\texttt{IsKeith}\\ n$. The set equality $\\{n \\mid \\texttt{IsKeithBase}\\ 10\\ n\\} = \\{n \\mid \\texttt{IsKeith}\\ n\\}$ then transports the parent's theorem to $\\texttt{smallest\\_keithBase10} : \\texttt{IsLeast}\\ \\{n \\mid \\texttt{IsKeithBase}\\ 10\\ n\\}\\ 14$.",
+    "mathContext": "Confirms the generalization specializes correctly: the base-10 instance is exactly the classical Keith predicate.",
+    "significance": "key",
+    "prerequisites": [
+      "induction on a fuel parameter",
+      "set-builder equality and `IsLeast`"
+    ]
+  },
+  {
+    "id": "keithb-ann-otherbases",
+    "proofId": "keith-number-oq-01-oq-02",
+    "range": {
+      "startLine": 98,
+      "endLine": 116
+    },
+    "type": "observation",
+    "title": "Small Keith Numbers in Other Bases",
+    "content": "Other bases admit their own small Keith numbers, confirmed directly by `decide`: $5 = (11)_4$ runs the window $1,1,2,3,5$ and is Keith in base $4$ ($\\texttt{keithBase4\\_five}$), and $13 = (11)_{12}$ is Keith in base $12$. With $\\texttt{not\\_keithBase4\\_below\\_five}$ this yields $\\texttt{smallest\\_keithBase4} : \\texttt{IsLeast}\\ \\{n \\mid \\texttt{IsKeithBase}\\ 4\\ n\\}\\ 5$ — the base-4 analogue of $14$ in base $10$. The two-digit $(11)_b$ window is the Fibonacci sequence $1,1,2,3,5,8,\\dots$, so $(11)_b$ is Keith exactly when $b+1$ is a Fibonacci number (e.g. $4+1=5$, $12+1=13$).",
+    "mathContext": "The smallest base-b Keith number depends on b and can be far below the decimal minimum 14.",
+    "significance": "standard",
+    "prerequisites": []
+  }
+]
