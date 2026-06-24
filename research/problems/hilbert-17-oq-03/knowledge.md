@@ -371,3 +371,72 @@ The polynomial↔matrix coefficient extraction (`Q : MvPolynomial (Fin n) ℝ`,
 `totalDegree = 2` ↦ symmetric `M`) + homogenisation/PSD transfer + reassembly
 into `IsSumOfSquaresMvPolynomial`. The Gram engine above is what that bridge
 will call. `pfister_bound_aux` still genuinely hard.
+
+## Session 2026-06-24 (researcher-1) — HOMOGENEOUS quadratic PSD=SOS PROVED (polynomial level)
+Completed the entire **homogeneous** case of `quadratic_psd_is_sos_aux` at the
+polynomial level, 0 axioms, extending `Hilbert17QuadraticGram.lean` (now 325 L).
+The prior Gram work only had the *matrix-given* form
+(`posSemidef_matrixQuadratic_isSumSq`: given a PSD matrix M, `∑ᵢⱼ C(Mᵢⱼ)XᵢXⱼ` is
+SOS). This session built the missing **polynomial → matrix bridge** for arbitrary
+homogeneous degree-2 `Q`:
+
+- `homogeneous_quadratic_psd_isSumSq` (HEADLINE): `Q.IsHomogeneous 2` ∧
+  `(∀x, 0 ≤ eval x Q)` ⟹ `∃ q, Q = ∑ qᵢ²`. Every PSD homogeneous real quadratic
+  form in n variables is a polynomial SOS of linear forms. `#print axioms` →
+  propext/Classical.choice/Quot.sound only.
+- `quad_repr`: `Q.IsHomogeneous 2 ⟹ Q = ∑ᵢⱼ C(quadMatrix Q i j)·Xᵢ·Xⱼ` where
+  `quadMatrix Q i j = if i=j then coeff(single i 2)Q else coeff(single i 1+single j 1)Q/2`
+  (symmetric Gram matrix). Proved by `MvPolynomial.ext` coeff comparison.
+- Supporting: `degree_two_cases` (a deg-2 exponent vector is `single k 2` or
+  `single a 1+single b 1`, a≠b), `match_diag`/`match_offdiag` (which (i,j) realize
+  a given deg-2 monomial), `sum_ite_diag`/`sum_ite_offdiag` (collapse the coeff
+  double sums via product+filter = singleton/pair), `quadMatrix_transpose` (symm).
+
+Assembly of the headline: `quad_repr` gives `Q = ∑ᵢⱼ C(Mᵢⱼ)XᵢXⱼ`; then
+`x ⬝ᵥ (M *ᵥ x) = eval x Q ≥ 0` ⟹ `M.PosSemidef`; then
+`posSemidef_matrixQuadratic_isSumSq` finishes. `M = quadMatrix Q`.
+
+### Why this does NOT yet discharge the parent axiom (honest)
+`quadratic_psd_is_sos_aux` is stated for **affine** `totalDegree Q = 2` (allows
+degree 1 and 0 terms), NOT homogeneous. So parent axiomCount stays at **2**
+(`quadratic_psd_is_sos_aux`, `pfister_bound_aux`). What remains is the standard
+homogenisation: lift Q to a homogeneous quadratic Q* in n+1 vars (add x₀,
+multiply the degree-1 part by x₀ and the constant by x₀²), show Q* PSD (the
+degree-2 top part must be PSD by a scaling limit; the rest is t²Q(x/t)≥0), apply
+`homogeneous_quadratic_psd_isSumSq` to Q*, then set x₀=1 (a ring hom
+`MvPolynomial (Fin (n+1)) → MvPolynomial (Fin n)`) to dehomogenise the linear
+forms into affine-linear polynomials. Estimate: 1 more focused session (the
+Fin n ↔ Fin (n+1) index juggling + the scaling-limit PSD transfer are the work).
+
+### Lean techniques / gotchas (v4.26)
+- `Matrix.PosSemidef` now quantifies over `x : n →₀ R` (Finsupp!), so its second
+  field is `x.sum fun i xi => x.sum fun j xj => star xi * M i j * xj`. Do NOT
+  `refine ⟨_, fun x => _⟩` expecting a plain vector — use
+  `rw [Matrix.posSemidef_iff_dotProduct_mulVec]` first to get the
+  `∀ x : n → R, 0 ≤ star x ⬝ᵥ (M *ᵥ x)` form.
+- `quadMatrix` MUST return `Matrix (Fin n) (Fin n) ℝ` (via `Matrix.of`), not a
+  bare `Fin n → Fin n → ℝ`, or `.PosSemidef` / `ᵀ` dot-notation fails
+  ("environment does not contain Function.PosSemidef"). Add a `@[simp]
+  quadMatrix_apply ... := rfl` to unfold entries.
+- In `heval`, `rw [hrepr]` rewrites EVERY `Q` including the one inside
+  `quadMatrix Q` → garbage. Use `conv_rhs => rw [hrepr]` to touch only `eval x Q`.
+- `open Matrix` + `open Finsupp` ⟹ `single` is AMBIGUOUS (Matrix.single vs
+  Finsupp.single). Either don't open Finsupp and write `Finsupp.single`, or be
+  careful. "singleton"/"single_apply" don't clash (no space after "single").
+- degree of a sum: `Finsupp.degree` is an `AddMonoidHom`, so use `map_add`
+  (the old `Finsupp.degree_add` is a deprecated alias); `Finsupp.degree_single a r = r`.
+- `import Mathlib` (not the narrow imports) needed for `Finsupp.degree` /
+  `MvPolynomial.IsHomogeneous` in this file.
+- `X i * X j = monomial (single i 1 + single j 1) 1` via
+  `← pow_one (X i), ← pow_one (X j), X_pow_eq_monomial, X_pow_eq_monomial, monomial_mul, one_mul`.
+- BUILD: docker DOWN, Aristotle DOWN (404). Verified via MAIN cache:
+  `cd <MAIN>/proofs && cp worktree-file Proofs/ && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/F.lean`.
+  CRITICAL: `cmd | grep | head; echo $PIPESTATUS` gave a FALSE PASS (empty exit);
+  use `lake env lean F > /tmp/out 2>&1; echo RC=$?` then `grep -i error`. MAIN's
+  copy of the Gram file gets fleet-wiped to the 109-line origin version
+  repeatedly — re-`cp` from worktree before every compile, trust the worktree
+  commit + the `#print axioms` from the run that actually compiled.
+
+## Still open (parent hilbert-17, 2 axioms remain)
+- `quadratic_psd_is_sos_aux` — homogeneous case DONE; only affine homogenisation left.
+- `pfister_bound_aux` — Pfister's 2ⁿ bound; genuinely deep, no short Mathlib path.
