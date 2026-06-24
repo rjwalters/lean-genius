@@ -1,0 +1,233 @@
+{
+  "id": "derangements-convergence-oq-05",
+  "title": "Fixed-Point Count Distribution: D_k(n)/n! → e⁻¹/k!",
+  "slug": "derangements-convergence-oq-05",
+  "description": "Resolves the open question of the parent entry: the distribution of the number of fixed points of a uniform random permutation. The combinatorial heart is the exact count D_k(n) = C(n,k)·D(n−k) — the permutations of an n-set with exactly k fixed points are a choice of which k points are fixed together with a derangement of the remaining n−k. The analytic headline is the Poisson(1) limit D_k(n)/n! → e⁻¹/k!, obtained from Mathlib's numDerangements_tendsto_inv_e via the shift n ↦ n−k. The parent treats only k = 0 (derangements); this treats every k.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsConvergenceOQ05.lean",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "fixed-points",
+      "permutations",
+      "poisson",
+      "probability",
+      "limit",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. All theorems are fully machine-checked, depending only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms; no sorryAx, no Lean.ofReduceBool). The combinatorial count is built from Mathlib's derangements.subtypeEquiv and card_derangements_eq_numDerangements; the analytic limit reuses Mathlib's numDerangements_tendsto_inv_e.",
+    "dateAdded": "2026-06-24",
+    "lineCount": 169,
+    "theoremCount": 5,
+    "definitionCount": 2,
+    "originalContributions": [
+      "fixedPointCount_eq (PROVED, MAIN COMBINATORIAL): D_k(n) = C(n,k)·numDerangements(n−k) — the number of permutations of Fin n with exactly k fixed points. Proved by partitioning Sym(n) by fixed-point set (card_eq_sum_card_fiberwise over powersetCard k univ) and counting each fibre via the bijection with derangements of the complement. Not present in Mathlib.",
+      "card_perm_fixedSet_eq (PROVED, core lemma): for a fixed target set S, the permutations whose fixed-point set is exactly S number numDerangements(n − |S|), via derangements.subtypeEquiv specialised to the predicate (· ∈ Sᶜ).",
+      "fixedPointProb_tendsto (PROVED, ANALYTIC HEADLINE): D_k(n)/n! → e⁻¹/k! as n → ∞ — the Poisson(1) probability mass at k. The k = 0 case recovers the parent's D(n)/n! → e⁻¹.",
+      "fixedPointProb_eq (PROVED, helper): for k ≤ n, D_k(n)/n! = (1/k!)·(D(n−k)/(n−k)!), reducing the distribution to a constant multiple of the derangement ratio.",
+      "sum_fixedPointCount (PROVED, completeness): ∑_{k=0}^n D_k(n) = n! — the counts partition the symmetric group, a sanity check that fixedPointCount counts each permutation exactly once."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "derangements.subtypeEquiv",
+        "description": "derangements (Subtype p) ≃ {f : Perm α // ∀ a, ¬p a ↔ a ∈ fixedPoints f} — identifies permutations with a prescribed fixed-point set with derangements of the complementary subtype.",
+        "module": "Mathlib.Combinatorics.Derangements.Basic"
+      },
+      {
+        "theorem": "card_derangements_eq_numDerangements",
+        "description": "Fintype.card (derangements α) = numDerangements (Fintype.card α) — turns the abstract derangement set into the concrete count.",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "numDerangements_tendsto_inv_e",
+        "description": "Tendsto (fun n => numDerangements n / n!) atTop (𝓝 (exp(-1))) — the derangement ratio converges to 1/e; composed with the shift n ↦ n−k it drives the Poisson limit.",
+        "module": "Mathlib.Combinatorics.Derangements.Exponential"
+      },
+      {
+        "theorem": "Finset.card_eq_sum_card_fiberwise",
+        "description": "Partitions a finset by the value of a map into a target finset; used to split Sym(n) by fixed-point set (a k-subset).",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "choose n k · k! · (n−k)! = n! for k ≤ n — the algebraic identity that collapses C(n,k)·D(n−k)/n! to (1/k!)·D(n−k)/(n−k)!.",
+        "module": "Mathlib.Data.Nat.Choose.Factorization"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "That the number of fixed points of a uniform random permutation is asymptotically Poisson(1)-distributed is a cornerstone of probabilistic combinatorics, going back to Montmort's analysis of the game of rencontres (1708). The exact count of permutations of [n] with exactly k fixed points, D_k(n) = C(n,k)·D(n−k), follows by choosing the fixed k-subset and deranging the rest; dividing by n! gives the probability mass function, which converges to e⁻¹/k! as n → ∞. This is the k-th term of the Poisson(1) law, and the k = 0 term is exactly the classical derangement probability D(n)/n! → 1/e treated in the parent entry. The result is the discrete prototype of the 'Poisson approximation' / Chen–Stein method for counting rare fixed structures.",
+    "problemStatement": "**OQ-05 of derangements-convergence**\n\nLet D_k(n) be the number of permutations of an n-element set with exactly k fixed points. Determine the limit of D_k(n)/n! as n → ∞.\n\nThe answer is the Poisson(1) mass e⁻¹/k!, with the exact count given by D_k(n) = C(n,k)·D(n−k).",
+    "text": "D_k(n) = C(n,k)·numDerangements(n−k), and D_k(n)/n! → e⁻¹/k! as n → ∞.",
+    "proofStrategy": "**Combinatorial count (fixedPointCount_eq).** Partition Sym(n) by the fixed-point set, which is some k-subset S. Using Finset.card_eq_sum_card_fiberwise over powersetCard k univ, the count splits into one fibre per S. Each fibre — permutations whose fixed-point set is exactly S — is, by derangements.subtypeEquiv with predicate (· ∈ Sᶜ), in bijection with the derangements of Sᶜ, of which there are numDerangements(n − |S|) = numDerangements(n − k). Summing C(n,k) identical terms gives D_k(n) = C(n,k)·D(n−k).\n\n**Reduction (fixedPointProb_eq).** For k ≤ n, substitute C(n,k) = n!/(k!(n−k)!) (Mathlib's choose_mul_factorial_mul_factorial cast to ℝ, cleared by field_simp + linear_combination) into D_k(n)/n! to get (1/k!)·(D(n−k)/(n−k)!).\n\n**Limit (fixedPointProb_tendsto).** The map n ↦ n−k tends to ∞, so numDerangements_tendsto_inv_e composes to give D(n−k)/(n−k)! → e⁻¹. Multiplying by the constant 1/k! and transferring along the eventual equality (n ≥ k) yields D_k(n)/n! → e⁻¹/k!.",
+    "keyInsights": [
+      "The exact distribution D_k(n) = C(n,k)·D(n−k) decouples the 'which points are fixed' choice (C(n,k)) from the 'no further fixed points' constraint (D(n−k)). Mathlib has numDerangements but NOT this exactly-k-fixed-points count; the bijection {σ : fixedPoints σ = S} ≃ derangements(Sᶜ) is the new infrastructure.",
+      "derangements.subtypeEquiv is exactly the right primitive: specialised to p = (· ∈ Sᶜ), it equates permutations whose fixed set is precisely S with derangements of the complement, turning a fixed-point constraint into a no-fixed-point one on a smaller type.",
+      "Dividing the count by n! makes the binomial coefficient cancel against n!/(n−k)! and leaves the derangement ratio scaled by 1/k!: D_k(n)/n! = (1/k!)·(D(n−k)/(n−k)!). All the n-dependence lives in the single derangement ratio.",
+      "The Poisson(1) limit is then immediate: the inner ratio tends to e⁻¹ (Mathlib), and 1/k! is constant, giving e⁻¹/k! — the Poisson(1) mass function. The k = 0 case is the parent's derangement convergence, so this is a genuine generalisation, not a variant.",
+      "The completeness identity ∑_{k} D_k(n) = n! both validates the count (every permutation is counted once, under its own fixed-point number) and is the discrete analogue of the Poisson masses summing to 1."
+    ],
+    "prerequisites": [
+      "derangements.subtypeEquiv and card_derangements_eq_numDerangements from Mathlib's Combinatorics.Derangements",
+      "numDerangements_tendsto_inv_e (the 1/e derangement limit) from Combinatorics.Derangements.Exponential",
+      "Finset fiberwise counting (card_eq_sum_card_fiberwise, powersetCard) and the binomial identity choose_mul_factorial_mul_factorial",
+      "Filter limits: Tendsto, composition with n ↦ n−k, const_mul, and congr' along eventual equality"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating the open question, the count D_k(n) = C(n,k)·D(n−k), and the Poisson(1) limit D_k(n)/n! → e⁻¹/k!. Imports the three Mathlib derangement modules plus Tactic; opens Equiv, Function, Finset, Filter, Topology.",
+      "mathContext": "Sets up D = numDerangements and the two ingredients: the subtype/derangement bijection and the 1/e limit."
+    },
+    {
+      "id": "sec-count-def",
+      "title": "The Fixed-Point Count",
+      "startLine": 45,
+      "endLine": 49,
+      "summary": "fixedPointCount n k: the number of permutations of Fin n with exactly k fixed points, defined as the cardinality of the filter of σ with (univ.filter (σ i = i)).card = k.",
+      "mathContext": "$D_k(n) = \\#\\{\\sigma \\in \\mathrm{Sym}(n) : |\\mathrm{Fix}(\\sigma)| = k\\}$."
+    },
+    {
+      "id": "sec-fibre",
+      "title": "Core Lemma: Counting Permutations with a Prescribed Fixed Set",
+      "startLine": 51,
+      "endLine": 74,
+      "summary": "card_perm_fixedSet_eq: for any S, the permutations whose fixed-point set is exactly S number numDerangements(n − |S|). Rephrases the fixed-set condition as the derangements.subtypeEquiv predicate (¬(a ∈ Sᶜ) ↔ a ∈ fixedPoints σ), builds the bijection to derangements(↥Sᶜ), and computes the card via card_derangements_eq_numDerangements and |Sᶜ| = n − |S|.",
+      "mathContext": "$\\#\\{\\sigma : \\mathrm{Fix}(\\sigma) = S\\} = D(n - |S|)$ via $\\{\\sigma : \\mathrm{Fix}(\\sigma) = S\\} \\cong \\mathrm{derangements}(S^c)$."
+    },
+    {
+      "id": "sec-count",
+      "title": "Main Count: D_k(n) = C(n,k)·D(n−k)",
+      "startLine": 76,
+      "endLine": 108,
+      "summary": "fixedPointCount_eq: partitions Sym(n) by fixed-point set over powersetCard k univ (card_eq_sum_card_fiberwise), collapses each fibre's constraint to fixedPoints = S (so its size is D(n−k) by the core lemma), and sums C(n,k) identical terms via card_powersetCard.",
+      "mathContext": "$D_k(n) = \\sum_{|S|=k} D(n-k) = \\binom{n}{k} D(n-k)$."
+    },
+    {
+      "id": "sec-sum",
+      "title": "Completeness: ∑ D_k(n) = n!",
+      "startLine": 110,
+      "endLine": 127,
+      "summary": "sum_fixedPointCount: summing the counts over k ∈ range(n+1) recovers n! = |Sym(n)|, by the same fiberwise partition with f = fixed-point count and t = range(n+1), using Fintype.card_perm.",
+      "mathContext": "$\\sum_{k=0}^n D_k(n) = |\\mathrm{Sym}(n)| = n!$ — the counts partition the symmetric group."
+    },
+    {
+      "id": "sec-prob",
+      "title": "Probability and the Poisson(1) Limit",
+      "startLine": 129,
+      "endLine": 169,
+      "summary": "fixedPointProb n k = D_k(n)/n!. fixedPointProb_eq reduces it to (1/k!)·(D(n−k)/(n−k)!) for k ≤ n. fixedPointProb_tendsto proves D_k(n)/n! → e⁻¹/k! by composing numDerangements_tendsto_inv_e with the shift n ↦ n−k, scaling by 1/k!, and transferring along the eventual (n ≥ k) equality.",
+      "mathContext": "$\\dfrac{D_k(n)}{n!} = \\dfrac{1}{k!}\\cdot\\dfrac{D(n-k)}{(n-k)!} \\to \\dfrac{e^{-1}}{k!}$, the Poisson(1) mass at $k$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "sibling",
+      "description": "Parent entry: proves the k = 0 case D(n)/n! → e⁻¹ with the sharp rate. This OQ extends the limit to every fixed-point count k, recovering the parent as k = 0."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "foundational",
+      "description": "Root derangement definitions and numDerangements; the subtype bijection derangements.subtypeEquiv used here lives in the same Mathlib family."
+    },
+    {
+      "targetId": "derangements-convergence-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling treating arithmetic (divisibility/congruence) properties of D(n); together the OQ-04/OQ-05 pair record the arithmetic and the distributional faces of the derangement numbers."
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "foundational",
+      "description": "The exactly-k-fixed-points count is the inclusion-exclusion sieve applied to fixed-point sets; the bijection to derangements of the complement is its structural shadow."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified: the number of permutations of an n-set with exactly k fixed points is D_k(n) = C(n,k)·numDerangements(n−k), the counts sum to n!, and the probability D_k(n)/n! converges to the Poisson(1) mass e⁻¹/k! as n → ∞. The k = 0 case recovers the parent's derangement convergence. Zero sorries, zero extra axioms.",
+    "implications": "**Poisson approximation, exactly.** The fixed-point number of a random permutation converges in distribution to Poisson(1), pointwise in k with the explicit masses e⁻¹/k!. The decomposition D_k(n) = C(n,k)·D(n−k) makes the convergence a one-line consequence of the k = 0 case.\\n\\n**New Mathlib-absent infrastructure.** The bijection {σ : Fix(σ) = S} ≃ derangements(Sᶜ) and the resulting exactly-k count are not in Mathlib; they are reusable for any statement about the fixed-point statistic.",
+    "openQuestions": [
+      "Prove the quantitative rate |D_k(n)/n! − e⁻¹/k!| ≤ (1/k!)·1/(n−k+1)! by transporting the parent's sharp alternating-series bound through the factor 1/k!, giving the O(1/n!) error the open question anticipates.",
+      "Establish total-variation convergence of the whole fixed-point distribution to Poisson(1): ∑_k |D_k(n)/n! − e⁻¹/k!| → 0, strengthening the pointwise limit proved here.",
+      "Compute the factorial moments E[(X)_r] = 1 for the fixed-point count X (the hallmark of the Poisson(1) law) directly from D_k(n) = C(n,k)·D(n−k), and deduce mean and variance both equal 1."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "fixedPointCount_eq",
+      "type": "core",
+      "description": "The number of permutations of Fin n with exactly k fixed points equals C(n,k)·numDerangements(n−k).",
+      "leanType": "(n k : ℕ) → fixedPointCount n k = n.choose k * numDerangements (n - k)"
+    },
+    {
+      "name": "fixedPointProb_tendsto",
+      "type": "core",
+      "description": "The probability that a random permutation of Fin n has exactly k fixed points converges to e⁻¹/k! (the Poisson(1) mass) as n → ∞.",
+      "leanType": "(k : ℕ) → Tendsto (fun n => fixedPointProb n k) atTop (𝓝 (Real.exp (-1) / k.factorial))"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Derangements.Exponential",
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Combinatorics.Derangements.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Equiv",
+      "Function",
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DerangementsFixedPointDistribution",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 2,
+    "path": "Proofs/DerangementsConvergenceOQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Pierre de Montmort",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris: Jacque Quillau (2nd ed. 1713)",
+      "note": "The game of rencontres: first study of fixed points of random permutations, the origin of the derangement numbers and the Poisson(1) heuristic."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1751",
+      "venue": "Mémoires de l'Académie de Berlin 7, pp. 255–270",
+      "note": "Independent treatment of derangements and the rencontre probabilities, including the exact counts of permutations with a given number of coincidences (fixed points)."
+    },
+    {
+      "authors": "Barbour, A. D.; Holst, L.; Janson, S.",
+      "title": "Poisson Approximation",
+      "year": "1992",
+      "venue": "Oxford Studies in Probability 2, Clarendon Press",
+      "note": "Modern reference on the Chen–Stein method; the fixed-point count of a random permutation is the canonical example converging to Poisson(1), with the exact masses C(n,k)D(n−k)/n!."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge Studies in Advanced Mathematics 49, 2nd edition, §2.2",
+      "note": "Exponential generating function treatment of permutations by number of fixed points: ∑_k D_k(n) x^k = the rencontres polynomial, with e^{x-1}/(1-x) as bivariate EGF."
+    }
+  ]
+}
