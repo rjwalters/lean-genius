@@ -807,6 +807,7 @@ import Proofs.CombinationsFormulaOQ01
 import Proofs.CombinationsFormulaOQ01OQ01
 import Proofs.CombinationsFormulaOQ01OQ01OQ01
 import Proofs.CombinationsFormulaOQ01OQ01OQ01OQ02
+import Proofs.CombinationsFormulaOQ01OQ01OQ02
 import Proofs.CombinationsFormulaOQ01OQ04
 import Proofs.CombinationsFormulaOQ02
 import Proofs.CombinationsFormulaOQ02Aristotle

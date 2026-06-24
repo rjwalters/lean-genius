@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Signing the Fibonacci Diagonal Collapses It to Period 6",
+    "content": "The parent entry proves that summing a **shallow (rising) diagonal** of Pascal's triangle gives the Fibonacci numbers, $\\sum_{j} \\binom{n-j}{j} = F_{n+1}$ — an unsigned sum that grows exponentially. This file asks what happens when the very same diagonal is summed with **alternating signs**,\n$$S(n) = \\sum_{j} (-1)^j \\binom{n-j}{j}.$$\nThe answer is striking: the exponential Fibonacci growth collapses into a bounded, purely periodic cycle $1, 1, 0, -1, -1, 0$ of period $6$. The mechanism is the characteristic equation: Fibonacci obeys $x^2 = x + 1$ (golden-ratio roots), but the sign flips it to $x^2 = x - 1$, whose roots are the primitive sixth roots of unity $e^{\\pm i\\pi/3}$.",
+    "mathContext": "$S(n) = \\sum_j (-1)^j \\binom{n-j}{j}$ gives $1,1,0,-1,-1,0,1,1,0,\\dots$ — e.g. $n=3$: $\\binom30 - \\binom21 = 1 - 2 = -1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Pascal's triangle",
+      "Fibonacci numbers",
+      "alternating sums",
+      "roots of unity",
+      "periodic sequences"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "linear recurrences"
+    ]
+  },
+  {
+    "id": "ann-base-values",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 44, "endLine": 66 },
+    "type": "technique",
+    "title": "The Definition and the Six Base Values",
+    "content": "`S n` is defined over $\\mathbb{Z}$ as $\\sum_{j \\in \\mathrm{range}(n+1)} (-1)^j \\binom{n-j}{j}$. The `range (n+1)` upper bound is harmless: a term vanishes as soon as $j > n-j$, since then $\\binom{n-j}{j} = 0$. The six base values $S(0),\\dots,S(5) = 1,1,0,-1,-1,0$ are computed by unfolding the finite sums with `Finset.sum_range_succ` and `norm_num`. These six anchors, together with the period-6 relation proved later, determine every value of the sequence.",
+    "mathContext": "$S(0)=1,\\ S(1)=1,\\ S(2)=0,\\ S(3)=-1,\\ S(4)=-1,\\ S(5)=0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite sums",
+      "binomial coefficients vanishing"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ"
+    ]
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 133 },
+    "type": "key",
+    "title": "The Sign-Flipped Recurrence From Pascal's Rule",
+    "content": "The heart of the file is the recurrence $S(n+2) = S(n+1) - S(n)$, the sign-flipped image of Fibonacci's $a(n+2)=a(n+1)+a(n)$. It is proved directly from **Pascal's rule**. The load-bearing observation is a pointwise identity\n$$\\binom{n+1-i}{i+1} = \\binom{n-i}{i} + \\binom{n-i}{i+1}$$\nthat holds for *every* $i$: for $i \\le n$ it is Pascal's rule (`Nat.choose_succ_succ'`), and for $i > n$ truncated natural-number subtraction sends both sides to zero binomials, so no case split survives into the sum. Peeling the $j=0$ term of each sum with `Finset.sum_range_succ'`, substituting this identity, and splitting into two sums identifies them — after their stray top terms vanish via `Nat.choose_eq_zero_of_lt` — with $S(n)$ and $S(n+1)-1$, yielding the recurrence.",
+    "mathContext": "$S(n+2) = S(n+1) - S(n)$; characteristic roots of $x^2 = x - 1$ are $e^{\\pm i\\pi/3}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pascal's rule",
+      "linear recurrence",
+      "telescoping / reindexing of finite sums"
+    ],
+    "prerequisites": [
+      "Nat.choose_succ_succ'",
+      "Finset.sum_range_succ'",
+      "Nat.choose_eq_zero_of_lt"
+    ]
+  },
+  {
+    "id": "ann-periodicity",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-02",
+    "range": { "startLine": 134, "endLine": 176 },
+    "type": "key",
+    "title": "Period 6 and the Explicit Cycle",
+    "content": "Once the recurrence is in hand, periodicity is pure algebra — no roots-of-unity machinery is needed. Applying $S(n+2)=S(n+1)-S(n)$ twice gives the **antiperiod relation** $S(n+3) = -S(n)$; applying *that* twice gives the **period relation** $S(n+6) = S(n)$, packaged as `Function.Periodic S 6`. A short induction (`S_add_mul_six`) then shows $S$ depends only on $n \\bmod 6$ (`S_eq_mod`), and `interval_cases` on $n \\bmod 6$ against the six base values delivers the closed form: $S(n)$ runs through $1, 1, 0, -1, -1, 0$.",
+    "mathContext": "$S(n+3) = -S(n)$, $S(n+6) = S(n)$, and $S(n) = (1,1,0,-1,-1,0)[n \\bmod 6]$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Function.Periodic",
+      "antiperiodic sequences",
+      "modular reduction"
+    ],
+    "prerequisites": [
+      "the recurrence S_rec",
+      "Function.Periodic"
+    ]
+  }
+]

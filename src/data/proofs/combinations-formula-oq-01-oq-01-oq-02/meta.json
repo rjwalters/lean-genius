@@ -1,0 +1,108 @@
+{
+  "id": "combinations-formula-oq-01-oq-01-oq-02",
+  "title": "The Signed Shallow-Diagonal Sum of Pascal's Triangle Is 6-Periodic",
+  "slug": "combinations-formula-oq-01-oq-01-oq-02",
+  "description": "Attaching an alternating sign to the shallow diagonal of Pascal's triangle collapses the parent's exponentially growing Fibonacci sum ∑_j C(n−j, j) = F(n+1) into a bounded, purely periodic sequence: S(n) = ∑_j (−1)^j C(n−j, j) cycles through 1, 1, 0, −1, −1, 0 with period 6. The sign flips the Fibonacci recurrence a(n)=a(n−1)+a(n−2) to S(n+2)=S(n+1)−S(n), whose characteristic roots are the primitive sixth roots of unity, giving the antiperiod relation S(n+3)=−S(n) and period S(n+6)=S(n). Proved for all n, axiom-free, with the recurrence derived directly from the Pascal rule.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "pascal-triangle",
+      "periodic-sequences",
+      "linear-recurrence",
+      "finite-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound for S_rec, S_periodic, and S_closed_form. No native_decide, no sorry.",
+    "lineCount": 176,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "originalContributions": [
+      "S_rec: the sign-flipped Fibonacci recurrence S(n+2) = S(n+1) − S(n), derived termwise from the Pascal rule C((n−i)+1, i+1) = C(n−i, i) + C(n−i, i+1) with the boundary terms vanishing as zero binomials",
+      "S_antiperiod: S(n+3) = −S(n), the antiperiod-3 relation",
+      "S_period / S_periodic: S(n+6) = S(n), packaged as Function.Periodic S 6",
+      "S_closed_form: the explicit value of S(n) as a function of n mod 6 (the cycle 1, 1, 0, −1, −1, 0)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The parent entry (combinations-formula-oq-01-oq-01) proves the classical fact that the shallow (rising) diagonals of Pascal's triangle sum to Fibonacci numbers, ∑_j C(n−j, j) = F(n+1), an unsigned sum with exponential growth governed by the recurrence a(n) = a(n−1) + a(n−2). A natural companion question is what happens when the same diagonal is summed with alternating signs. Mathlib has no result on this signed sum.",
+    "problemStatement": "Determine the behaviour of the alternating shallow-diagonal sum S(n) = ∑_j (−1)^j C(n−j, j), and prove the answer for all n.",
+    "text": "Putting an alternating sign on the shallow diagonal replaces the Fibonacci recurrence with the sign-flipped recurrence S(n+2) = S(n+1) − S(n). Where Fibonacci's characteristic equation x² = x + 1 has the golden-ratio roots (1±√5)/2 (hence exponential growth), the flipped equation x² = x − 1 has roots e^{±iπ/3}, the primitive sixth roots of unity. The sequence is therefore bounded and purely periodic: applying the recurrence twice gives the antiperiod relation S(n+3) = −S(n), and once more gives S(n+6) = S(n). With the base values S(0)=S(1)=1, S(2)=0 this pins every term to the repeating block 1, 1, 0, −1, −1, 0.",
+    "proofStrategy": "Prove the recurrence S(n+2) = S(n+1) − S(n) directly from Pascal's rule, then obtain periodicity by elementary algebra. The recurrence is the only nontrivial step: peel the j=0 term of each sum (Finset.sum_range_succ'), apply the pointwise identity C(n+1−i, i+1) = C(n−i, i) + C(n−i, i+1) — valid for every i because past the boundary both sides are zero binomials — split the result into two sums, and identify them with S n and S(n+1) − 1 after checking that the extra top terms vanish.",
+    "keyInsights": [
+      "The sign converts the Fibonacci recurrence x² = x + 1 (golden ratio, exponential growth) into x² = x − 1 (sixth roots of unity, period 6).",
+      "The pointwise Pascal identity C(n+1−i, i+1) = C(n−i, i) + C(n−i, i+1) holds for ALL i, not just i ≤ n: past the boundary truncated subtraction sends both sides to zero binomials, so no separate case split is needed inside the sum.",
+      "Periodicity needs no roots-of-unity machinery: S(n+3) = −S(n) follows from two applications of the recurrence, and S(n+6) = S(n) from two applications of that.",
+      "The closed form S(n) = (cycle 1,1,0,−1,−1,0)[n mod 6] reduces to interval_cases on n % 6 once S depends only on n mod 6."
+    ],
+    "prerequisites": [
+      "Binomial coefficients Nat.choose and the Pascal rule Nat.choose_succ_succ'",
+      "Finset range sums: Finset.sum_range_succ, Finset.sum_range_succ', Finset.sum_add_distrib, Finset.sum_neg_distrib",
+      "Nat.choose_eq_zero_of_lt for the vanishing boundary terms",
+      "Function.Periodic"
+    ]
+  },
+  "conclusion": {
+    "summary": "The signed shallow-diagonal sum S(n) = ∑_j (−1)^j C(n−j, j) is proved 6-periodic, axiom-free: it satisfies S(n+2) = S(n+1) − S(n), the antiperiod relation S(n+3) = −S(n), the period relation S(n+6) = S(n) (Function.Periodic S 6), and the closed form cycling through 1, 1, 0, −1, −1, 0 by n mod 6. 13 theorems, 1 definition, 176 lines.",
+    "implications": "Sharpens the parent's unsigned Fibonacci diagonal into its signed companion, exhibiting the same diagonal of Pascal's triangle producing diametrically opposite behaviour (exponential growth vs bounded period 6) under a sign change. The recurrence is built from Pascal's rule rather than imported, so the result is self-contained.",
+    "openQuestions": [
+      "Generalize to signed p-step shallow diagonals ∑_j (−1)^j C(n−pj, j): do the q-roots-of-unity continue to force periodicity, and with what period?",
+      "Identify S(n) with a Chebyshev / cyclotomic evaluation, e.g. relate the generating function ∑ S(n) x^n = (1)/(1 − x + x²) to the 6th cyclotomic polynomial."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01OQ01OQ02",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 1,
+    "path": "Proofs/CombinationsFormulaOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the unsigned shallow-diagonal sum ∑_j C(n−j, j) = F(n+1) (Fibonacci, exponential growth). This entry is the signed companion, where the same diagonal becomes bounded and 6-periodic."
+    },
+    {
+      "targetId": "combinations-formula-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling: the companion Lucas-number diagonal identities. Together with this entry they map out the unsigned (Fibonacci/Lucas) and signed (period-6) shallow-diagonal sums."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States the signed shallow-diagonal sum S(n) = ∑_j (−1)^j C(n−j, j), contrasts the sign-flipped recurrence S(n+2)=S(n+1)−S(n) (roots e^{±iπ/3}) with the parent's Fibonacci recurrence, and lists the main results: the recurrence, antiperiod 3, period 6, and the explicit n-mod-6 closed form."
+    },
+    {
+      "title": "Definition and base values",
+      "startLine": 44,
+      "endLine": 66,
+      "summary": "Defines S over ℤ and computes the six base values S(0)…S(5) = 1, 1, 0, −1, −1, 0 by unfolding the finite sums."
+    },
+    {
+      "title": "The sign-flipped Fibonacci recurrence",
+      "startLine": 67,
+      "endLine": 133,
+      "summary": "S_rec: S(n+2) = S(n+1) − S(n). Proof via a pointwise Pascal identity (valid for all i, with truncated-subtraction boundary terms vanishing as zero binomials), peeling the j=0 term with Finset.sum_range_succ', splitting into two sums, and identifying them with S n and S(n+1) − 1."
+    },
+    {
+      "title": "Periodicity and closed form",
+      "startLine": 134,
+      "endLine": 176,
+      "summary": "S_antiperiod (S(n+3) = −S(n)) and S_period (S(n+6) = S(n)) from the recurrence; S_periodic packages it as Function.Periodic S 6; S_eq_mod reduces S to n mod 6; S_closed_form gives the explicit cycle 1, 1, 0, −1, −1, 0."
+    }
+  ],
+  "sorries": []
+}
