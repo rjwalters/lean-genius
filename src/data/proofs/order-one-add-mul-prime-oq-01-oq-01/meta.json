@@ -1,0 +1,97 @@
+{
+  "id": "order-one-add-mul-prime-oq-01-oq-01",
+  "slug": "order-one-add-mul-prime-oq-01-oq-01",
+  "title": "The Prime 2: Order of 1 + 2·a and the Non-Cyclicity of (ℤ/2ᵏℤ)ˣ",
+  "meta": {
+    "author": "classical number theory; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/OrderOneAddMulPrimeOQ0101.lean",
+    "tags": [
+      "number-theory",
+      "group-theory",
+      "modular-arithmetic",
+      "multiplicative-order",
+      "prime-powers",
+      "ZMod",
+      "cyclic-groups",
+      "units",
+      "involution",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.orderOf_one_add_four_mul",
+        "description": "For odd a, orderOf (1 + 4·a : ZMod (2^(n+2))) = 2^n — the p=2 analogue of the parent's order formula, with 4·a (not 2·a)",
+        "module": "Mathlib.RingTheory.ZMod.UnitsCyclic"
+      },
+      {
+        "theorem": "ZMod.orderOf_five",
+        "description": "orderOf (5 : ZMod (2^(n+2))) = 2^n — the principal-unit generator of order 2^(k-2)",
+        "module": "Mathlib.RingTheory.ZMod.UnitsCyclic"
+      },
+      {
+        "theorem": "ZMod.isCyclic_units_two_pow_iff",
+        "description": "(ZMod (2^k))ˣ is cyclic iff k ≤ 2; re-exported as the cyclicity dichotomy. The file gives an independent two-involution proof of the k ≥ 3 (non-cyclic) direction.",
+        "module": "Mathlib.RingTheory.ZMod.UnitsCyclic"
+      },
+      {
+        "theorem": "IsCyclic.card_orderOf_eq_totient",
+        "description": "In a finite cyclic group, the number of elements of order d equals φ(d); with d = 2 this gives a unique involution, the engine of the non-cyclicity proof",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "orderOf_neg_one",
+        "description": "orderOf (-1) = if ringChar R = 2 then 1 else 2; gives orderOf(-1) = 2 since ringChar (ZMod 2^k) = 2^k ≠ 2",
+        "module": "Mathlib.Algebra.CharP.Two"
+      },
+      {
+        "theorem": "orderOf_eq_prime",
+        "description": "x^p = 1 and x ≠ 1 imply orderOf x = p; used to show the special involution 1 + 2^(k-1) has order 2",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      }
+    ],
+    "originalContributions": [
+      "not_isCyclic_units_two_pow: an explicit, constructive proof that (ℤ/2ᵏℤ)ˣ is not cyclic for k ≥ 3, by exhibiting two distinct elements of order 2 (−1 and 1 + 2^(k-1)) and invoking that a cyclic group has exactly φ(2) = 1 involution. This is a different, more elementary proof architecture than Mathlib's isCyclic_units_two_pow_iff (which reduces through a surjection onto (ℤ/8ℤ)ˣ).",
+      "orderOf_one_add_two_pow: the special involution 1 + 2^(k-1) has multiplicative order exactly 2 modulo 2^k (its square is 1 + 2^k + 2^(2k-2) ≡ 1), proved via a natural-number ModEq congruence, axiom-free.",
+      "neg_one_ne_one_add_two_pow: the two canonical involutions −1 and 1 + 2^(k-1) are distinct precisely for k ≥ 3 (they coincide only at k = 2), pinned down by the residue bound 0 < 2 + 2^(k-1) < 2^k.",
+      "Honest framing of the open question: for p = 2 the clean order formula is carried by 1 + 4·a (a odd), not 1 + 2·a — the residue of 1 + 2·a mod 4 already splits the units into two cosets, only one of which (≡ 1 mod 4) attains the maximal 2-power order 2^(k-2). This is the precise sense in which '1 + 2·a behaves differently' from the odd-prime case.",
+      "Concrete instances orderOf(-1 : ZMod 8) = 2, orderOf(5 : ZMod 8) = 2, and ¬ IsCyclic (ZMod 8)ˣ, all derived from the general theorems (no native_decide)."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries; depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. The order formulas for 1 + 4·a and the cyclicity dichotomy are re-exported from Mathlib's ZMod.UnitsCyclic; the non-cyclicity result is reproved here by the explicit two-involution argument rather than re-exported.",
+    "lineCount": 207,
+    "theoremCount": 14,
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "OrderOneAddMulPrimeOQ0101",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 0,
+    "path": "Proofs/OrderOneAddMulPrimeOQ0101.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "conclusion": {
+    "summary": "At the prime 2 the structure of (ℤ/2ᵏℤ)ˣ departs from the odd-prime case in two linked ways. First, the maximal 2-power order is no longer carried by every 1 + 2·a: the clean order formula orderOf(1 + 4·a) = 2^(k-2) (a odd) needs the 1 + 4·a form, because the residue of 1 + 2·a modulo 4 already splits the units into the squares (≡ 1 mod 4) and the −1 coset (≡ 3 mod 4). Second, and as a consequence, the unit group is not cyclic for k ≥ 3: it carries two distinct involutions, −1 and 1 + 2^(k-1), whereas a cyclic group has exactly one. The file proves the non-cyclicity by exhibiting these two order-2 elements and counting involutions via φ(2) = 1.",
+    "implications": [
+      "Isolates the prime 2 (powers ≥ 3) as the unique prime-power modulus whose unit group fails to be cyclic, complementing the parent's odd-prime order computation.",
+      "Gives a fully constructive obstruction to cyclicity — a named pair of involutions — rather than an abstract reduction, making the failure of cyclicity transparent.",
+      "Locates the maximal cyclic subgroup ⟨5⟩ of order 2^(k-2) inside (ℤ/2ᵏℤ)ˣ, the 2-adic analogue of the principal units 1 + pℤ for odd p."
+    ],
+    "openQuestions": [
+      "Can one package the full isomorphism (ℤ/2ᵏℤ)ˣ ≃ ℤ/2 × ℤ/2^(k-2) for k ≥ 3, with explicit generators −1 and 5, mirroring the odd-prime isomorphism (ℤ/pᵏℤ)ˣ ≃ ℤ/p^(k-1) × ℤ/(p-1)?",
+      "What is the exact multiplicative order of a general 1 + 2·a modulo 2^k as a function of the 2-adic valuation v₂(a) and v₂(a+1), uniformly covering both the ⟨5⟩ coset and the −1 coset?"
+    ]
+  },
+  "sections": []
+}
