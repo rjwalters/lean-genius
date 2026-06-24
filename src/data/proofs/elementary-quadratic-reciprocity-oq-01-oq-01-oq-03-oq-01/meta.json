@@ -43,7 +43,8 @@
     "keyInsights": [
       "**The diagonal is the case that matters.** Although Mathlib's lemma is stated for two independent characters, the higher-reciprocity application only ever uses φ = χ — the reciprocity symbol is read off J(χ,χ). Isolating the diagonal gives the exact statement the downstream argument cites.",
       "**Integrality is what makes the reciprocity symbol well-defined.** Reading the symbol off J(χ,χ) modulo a prime of ℤ[ζ_n] presupposes J(χ,χ) ∈ ℤ[ζ_n]; this membership is the structural prerequisite, not an afterthought.",
-      "**Order ↔ power-triviality.** Downstream a character usually arrives with a known order n; `pow_orderOf_eq_one` converts `orderOf χ = n` into `χ ^ n = 1`, so the integrality lemma can be applied without restating the power hypothesis by hand."
+      "**Order ↔ power-triviality.** Downstream a character usually arrives with a known order n; `pow_orderOf_eq_one` converts `orderOf χ = n` into `χ ^ n = 1`, so the integrality lemma can be applied without restating the power hypothesis by hand.",
+      "**Subring membership is weaker than integrality — and the gap is bridged by finiteness.** Living in `Algebra.adjoin ℤ {μ}` is not by itself `IsIntegral ℤ`; the upgrade hinges on the fact that adjoining a *single integral* element (the root of unity μ) yields a module-finite extension, after which `IsIntegral.of_mem_of_fg` makes every element integral. The same `μ` that names the cyclotomic ring is also what forces it to be finite over ℤ."
     ],
     "prerequisites": [
       "Multiplicative characters on finite fields (`MulChar`) and their orders",
@@ -76,6 +77,49 @@
       "type": "core",
       "description": "The diagonal Jacobi sum is an algebraic integer: jacobiSum χ χ is integral over ℤ whenever χ ^ n = 1 and μ is a primitive n-th root of unity. The φ = χ specialization of jacobiSum_isIntegral — the precise sense in which J(χ,χ) is a cyclotomic integer, the object whose reduction modulo a prime of ℤ[ζ_n] defines the reciprocity symbol.",
       "leanType": "χ ^ n = 1 → IsPrimitiveRoot μ n → IsIntegral ℤ (jacobiSum χ χ)"
+    },
+    {
+      "name": "jacobiSum_self_isIntegral_of_orderOf",
+      "type": "supporting",
+      "description": "The algebraic-integer conclusion for the diagonal sum, phrased from the order hypothesis orderOf χ = n: via pow_orderOf_eq_one this yields χ ^ n = 1, hence IsIntegral ℤ (jacobiSum χ χ). The order-presented form (order 3 for cubic, 4 for quartic reciprocity) of jacobiSum_self_isIntegral.",
+      "leanType": "orderOf χ = n → IsPrimitiveRoot μ n → IsIntegral ℤ (jacobiSum χ χ)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Module overview: diagonal Jacobi sums as cyclotomic integers",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "License header and the `/-! ... -/` module docstring. Motivates why the diagonal case φ = χ is the one that controls higher reciprocity (the symbol is read off J(χ,χ) mod a prime of ℤ[ζ_n]), states the four main results, and records the honest scope: a routine specialization/strengthening of existing Mathlib lemmas packaged as reusable infrastructure."
+    },
+    {
+      "id": "setup",
+      "title": "Imports and variable context",
+      "startLine": 54,
+      "endLine": 56,
+      "summary": "`import Mathlib`, `open scoped BigOperators` for the Jacobi-sum Σ-notation, and the ambient context `variable {F R : Type*} [Fintype F] [Field F] [CommRing R] [IsDomain R]` — a finite field F and an integral domain R receiving the character values."
+    },
+    {
+      "id": "membership",
+      "title": "Subring membership: J(χ,χ) ∈ ℤ[μ]",
+      "startLine": 58,
+      "endLine": 77,
+      "summary": "`jacobiSum_self_mem_algebraAdjoin` is the one-line diagonal instance of `jacobiSum_mem_algebraAdjoin_of_pow_eq_one` (φ := χ). `jacobiSum_self_mem_algebraAdjoin_of_orderOf` rebases the χ ^ n = 1 hypothesis on `orderOf χ = n` via `pow_orderOf_eq_one` and the `▸` rewrite."
+    },
+    {
+      "id": "integrality",
+      "title": "Integrality upgrade: IsIntegral ℤ (jacobiSum χ φ)",
+      "startLine": 79,
+      "endLine": 106,
+      "summary": "`jacobiSum_isIntegral` upgrades subring membership to genuine `IsIntegral ℤ` through IsPrimitiveRoot.isIntegral → IsIntegral.fg_adjoin_singleton → IsIntegral.of_mem_of_fg. `jacobiSum_self_isIntegral` and `jacobiSum_self_isIntegral_of_orderOf` specialize to the diagonal φ = χ, from χ ^ n = 1 and from orderOf χ = n respectively."
+    },
+    {
+      "id": "checks",
+      "title": "Signature sanity checks",
+      "startLine": 108,
+      "endLine": 112,
+      "summary": "`#check` commands echoing the four headline signatures, confirming the statements elaborate with the intended types."
     }
   ],
   "conclusion": {
