@@ -534,6 +534,7 @@ import Proofs.CatalanNumbersOQ01
 import Proofs.CauchyGroupTheoremOQ01
 import Proofs.CauchyGroupTheoremOQ01OQ01
 import Proofs.CauchyGroupTheoremOQ01OQ01OQ01
+import Proofs.CauchyGroupTheoremOQ01OQ02
 import Proofs.CauchyInterlacingKeystone
 import Proofs.CauchyInterlacingOQ01OQ01
 import Proofs.CauchySchwarz
