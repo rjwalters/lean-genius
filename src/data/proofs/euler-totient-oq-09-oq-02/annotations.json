@@ -1,0 +1,94 @@
+[
+  {
+    "id": "totient-oq0902-ann-header",
+    "proofId": "euler-totient-oq-09-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 44
+    },
+    "type": "concept",
+    "title": "Growth Bounds for Prime-Power Totients",
+    "content": "Mathlib gives the exact value φ(p^(n+1)) = pⁿ·(p−1) and the parent oq-09 lifts it to the general power law, but neither describes the magnitude of φ(pᵏ). This file collects the quantitative facts: the exact density φ(pᵏ)/pᵏ = 1 − 1/p and its independence from the exponent, geometric growth with ratio p, the two-sided envelope [pᵏ/2, pᵏ), the base-power floor pᵏ⁻¹ ≤ φ(pᵏ), and the square-root floor φ(pᵏ) ≥ √(pᵏ) for k ≥ 2. Imports Totient/Prime.Basic/Tactic; opens Nat so φ = Nat.totient and fixes the prime base p.",
+    "mathContext": "$\\varphi(p^k) = p^{k-1}(p-1), \\qquad \\tfrac{\\varphi(p^k)}{p^k} = 1 - \\tfrac1p, \\qquad \\tfrac{p^k}{2} \\le \\varphi(p^k) < p^k.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's totient",
+      "prime powers",
+      "growth bounds",
+      "density"
+    ],
+    "prerequisites": [
+      "totient function",
+      "prime-power value",
+      "natural-number inequalities"
+    ]
+  },
+  {
+    "id": "totient-oq0902-ann-density",
+    "proofId": "euler-totient-oq-09-oq-02",
+    "range": {
+      "startLine": 46,
+      "endLine": 62
+    },
+    "type": "lemma",
+    "title": "Exact Density, Independent of the Exponent",
+    "content": "`totient_prime_pow_density` states p·φ(pᵏ) = (p−1)·pᵏ — the cross-multiplied form of φ(pᵏ)/pᵏ = 1 − 1/p — and `totient_density_independent_of_exponent` states the cross-ratio p^(j+1)·φ(p^(k+1)) = p^(k+1)·φ(p^(j+1)), so the relative size 1 − 1/p is the same at every exponent (both sides equal p^(j+k+1)·(p−1)). After substituting `Nat.totient_prime_pow_succ` each goal is a polynomial identity in p and pⁿ with (p−1) treated as an atom, closed by `ring` (which normalises pⁿ·p = pⁿ⁺¹).",
+    "mathContext": "$p\\,\\varphi(p^k) = (p-1)\\,p^k; \\qquad p^{\\,j}\\,\\varphi(p^k) = p^k\\,\\varphi(p^{\\,j}).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "density",
+      "exponent independence",
+      "ring normalisation"
+    ],
+    "prerequisites": [
+      "prime-power totient value",
+      "ring tactic over ℕ"
+    ]
+  },
+  {
+    "id": "totient-oq0902-ann-growth-envelope",
+    "proofId": "euler-totient-oq-09-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 110
+    },
+    "type": "lemma",
+    "title": "Geometric Growth and the Two-Sided Envelope",
+    "content": "`totient_prime_pow_ratio`: φ(p^(k+1)) = p·φ(pᵏ), so each extra factor of p multiplies the totient by exactly p. `two_mul_totient_prime_pow_ge`: pᵏ ≤ 2·φ(pᵏ), the lower half-bound — after the rewrite, pⁿ·p ≤ pⁿ·(2(p−1)) reduces by `gcongr` to p ≤ 2(p−1), discharged by `omega` from p ≥ 2. `totient_prime_pow_lt`: φ(pᵏ) < pᵏ, immediate from `Nat.totient_lt` once `Nat.one_lt_pow` supplies pᵏ > 1. `base_pow_le_totient_prime_pow`: pᵏ⁻¹ ≤ φ(pᵏ), since p − 1 ≥ 1. `sq_prime_pow_le_totient_sq`: for k ≥ 2, pᵏ ≤ φ(pᵏ)² — chain pᵏ ≤ (pᵏ⁻¹)² = p^(2(k−1)) (`Nat.pow_le_pow_right`, k ≤ 2(k−1)) with the base-power floor squared (`Nat.pow_le_pow_left`), giving φ(pᵏ) ≥ √(pᵏ).",
+    "mathContext": "$\\varphi(p^{k+1}) = p\\,\\varphi(p^k); \\qquad \\tfrac{p^k}{2} \\le \\varphi(p^k) < p^k; \\qquad p^{k-1} \\le \\varphi(p^k); \\qquad p^k \\le \\varphi(p^k)^2\\ (k \\ge 2).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "geometric growth",
+      "two-sided bound",
+      "square-root lower bound",
+      "pow monotonicity"
+    ],
+    "prerequisites": [
+      "prime-power totient value",
+      "Nat.totient_lt",
+      "monotonicity of pow",
+      "gcongr / omega"
+    ]
+  },
+  {
+    "id": "totient-oq0902-ann-numeric",
+    "proofId": "euler-totient-oq-09-oq-02",
+    "range": {
+      "startLine": 112,
+      "endLine": 123
+    },
+    "type": "example",
+    "title": "Numeric Sanity Checks",
+    "content": "`totient_two_pow_ten`: φ(2¹⁰) = 512 = 2⁹·(2−1), confirming the geometric form on the prime 2. `totient_three_pow_four`: φ(3⁴) = 54 = 3³·(3−1); since 54² = 2916 ≥ 81 = 3⁴ this also illustrates the square-root floor. Each proof rewrites the literal exponent as n+1, applies `Nat.totient_prime_pow_succ`, and finishes with `norm_num`.",
+    "mathContext": "$\\varphi(2^{10}) = 512, \\qquad \\varphi(3^4) = 54.$",
+    "significance": "standard",
+    "relatedConcepts": [
+      "numeric verification",
+      "prime-power totient value"
+    ],
+    "prerequisites": [
+      "prime-power totient value",
+      "norm_num"
+    ]
+  }
+]
