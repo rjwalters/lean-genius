@@ -1,0 +1,171 @@
+{
+  "id": "fibonacci-identities-oq-03-oq-01",
+  "title": "F₂ₘ = Fₘ·Lₘ: Factoring the Even-Index Difference of Squares via Lucas Numbers",
+  "slug": "fibonacci-identities-oq-03-oq-01",
+  "description": "Follow-up to the parent's even-index identity fib(2n+2) = fib(n+2)² − fib(n)². A difference of two squares always factors: a²−b² = (a−b)(a+b). Here a−b = fib(n+2)−fib(n) = fib(n+1) and a+b = fib(n+2)+fib(n) = L(n+1), the Lucas number. So the parent's difference of squares is the classical doubling product F₂ₘ = Fₘ·Lₘ. Mathlib has Nat.fib but no Lucas sequence, so this entry defines it, proves the Fibonacci–Lucas bridge L(n+1) = F(n) + F(n+2), and packages the doubling identity. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Édouard Lucas (classical); formalized in Lean 4",
+    "date": "1878",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "lucas-numbers",
+      "recurrence",
+      "identities"
+    ],
+    "badge": "original",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 107,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "originalContributions": [
+      "lucas: the Lucas number sequence (L 0 = 2, L 1 = 1, L(n+2) = L n + L(n+1)) — absent from Mathlib, defined here.",
+      "lucas_succ_eq_fib: the Fibonacci–Lucas bridge L(n+1) = fib(n) + fib(n+2), proved by two-step induction.",
+      "fib_two_mul_eq: the doubling identity fib(2m) = fib(m)·lucas(m), for all m.",
+      "fib_even_factorization: the parent's difference of squares fib(2n+2) = fib(n+2)²−fib(n)² as the explicit product fib(n+1)·(fib(n+2)+fib(n)).",
+      "fib_even_isProd: existential packaging — every even-index Fibonacci number is a Fibonacci × Lucas product."
+    ],
+    "prerequisites": [
+      "Fibonacci numbers and the recurrence fib(n+2) = fib(n) + fib(n+1)",
+      "Mathlib's Nat.fib_two_mul_add_two (even-doubling product form)",
+      "Two-step induction on the natural numbers"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_two_mul_add_two",
+        "description": "fib(2n+2) = fib(n+1)·(2·fib(n) + fib(n+1)) — the even-doubling product form combined with the Lucas bridge",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib(n+2) = fib(n) + fib(n+1), the Fibonacci recurrence used to collapse the Lucas bridge induction",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.twoStepInduction",
+        "description": "two-step induction principle proving the Fibonacci–Lucas bridge",
+        "module": "Mathlib.Data.Nat.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Lucas numbers L = 2, 1, 3, 4, 7, 11, … satisfy the same recurrence as the Fibonacci numbers but start L₀ = 2, L₁ = 1. Édouard Lucas (1878) studied them alongside the Fibonacci sequence, and the pair satisfies a web of identities, the most fundamental being the doubling formula F₂ₘ = Fₘ·Lₘ. The parent gallery entry (FibonacciIdentitiesOQ03) established that even-index Fibonacci numbers are a difference of two squares, fib(2n+2) = fib(n+2)² − fib(n)². Since a difference of squares always factors, this entry asks what the factors are — and finds the Fibonacci–Lucas doubling product. Mathlib has Nat.fib but no Lucas sequence, so the entry also supplies that definition and the basic Fibonacci–Lucas bridge.",
+    "problemStatement": "**Follow-up to fibonacci-identities-oq-03**: the parent shows fib(2n+2) = fib(n+2)² − fib(n)². Factor this difference of two squares. Identify the factors fib(n+2) − fib(n) and fib(n+2) + fib(n), and express the result as the classical doubling identity F₂ₘ = Fₘ·Lₘ.",
+    "text": "A 107-line, fully verified (0 sorries, 0 axioms, no native_decide) file. It defines the Lucas sequence, proves the bridge L(n+1) = fib(n) + fib(n+2), the doubling identity fib(2m) = fib(m)·lucas(m), and the explicit factorization of the parent's difference of squares.",
+    "proofStrategy": "lucas_succ_eq_fib proves the Fibonacci–Lucas bridge L(n+1) = fib(n) + fib(n+2) by Nat.twoStepInduction: the base cases L₁ = 1 = fib₀ + fib₂ and L₂ = 3 = fib₁ + fib₃ are decidable, and the step expands L(n+3) = L(n+1) + L(n+2), applies the two inductive hypotheses, and collapses all Fibonacci terms with fib_add_two before ring. fib_two_mul_eq then proves fib(2m) = fib(m)·lucas(m): the m = 0 case is trivial, and for m = n+1 it rewrites fib(2n+2) via Mathlib's product form fib_two_mul_add_two and the Lucas bridge, closing by ring (since fib(n) + fib(n+2) = 2·fib(n) + fib(n+1)). fib_even_factorization specializes the doubling identity to expose the parent's difference of squares as the literal product fib(n+1)·(fib(n+2)+fib(n)).",
+    "keyInsights": [
+      "A difference of two squares always factors, so the parent's fib(2n+2) = fib(n+2)² − fib(n)² must be a product — and the factors are the Fibonacci number fib(n+1) and the Lucas number L(n+1).",
+      "fib(n+2) − fib(n) = fib(n+1) is just the Fibonacci recurrence; fib(n+2) + fib(n) = L(n+1) is the Fibonacci–Lucas bridge.",
+      "The result is the fundamental doubling identity F₂ₘ = Fₘ·Lₘ, here proved for all m (the m = 0 case fib 0 = 0 included).",
+      "Lucas numbers are new to this gallery and to Mathlib; the entry contributes the definition and the basic bridge L(n+1) = fib(n) + fib(n+2) alongside the headline identity."
+    ]
+  },
+  "sections": [
+    {
+      "id": "lucas-def",
+      "title": "The Lucas Sequence and the Fibonacci–Lucas Bridge",
+      "startLine": 35,
+      "endLine": 64,
+      "summary": "Defines lucas (absent from Mathlib) and proves L(n+1) = fib(n) + fib(n+2).",
+      "mathContext": "L 0 = 2, L 1 = 1, L(n+2) = L n + L(n+1); bridge by two-step induction."
+    },
+    {
+      "id": "doubling",
+      "title": "The Doubling Identity and the Factorization",
+      "startLine": 66,
+      "endLine": 91,
+      "summary": "fib(2m) = fib(m)·lucas(m), and the parent's difference of squares as the product fib(n+1)·(fib(n+2)+fib(n)).",
+      "mathContext": "F₂ₘ = Fₘ·Lₘ; a²−b² = (a−b)(a+b) with a−b = fib(n+1), a+b = L(n+1)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The even-index difference of two squares from the parent entry, fib(2n+2) = fib(n+2)² − fib(n)², factors as the Fibonacci–Lucas doubling product fib(n+1)·L(n+1), i.e. the classical identity F₂ₘ = Fₘ·Lₘ. The entry introduces the Lucas sequence (absent from Mathlib) and the bridge L(n+1) = fib(n) + fib(n+2).",
+    "implications": "Identifying the factors of the parent's difference of squares connects two standard Fibonacci facts (the sum-of-squares and difference-of-squares doublings) through the Lucas numbers, and provides reusable Lucas infrastructure for future gallery work (e.g. L²−5F² = ±4, L₂ₘ, and divisibility identities).",
+    "openQuestions": [
+      "Prove the companion identity Lₙ² − 5·Fₙ² = 4·(−1)ⁿ over ℤ.",
+      "Prove the Lucas doubling L₂ₘ = Lₘ² − 2·(−1)ᵐ.",
+      "Establish gcd(Fₘ, Lₘ) ∈ {1, 2} and the index-divisibility consequences."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-03",
+      "relationship": "extends",
+      "description": "Parent: even-index Fibonacci numbers as a difference of two squares. This entry factors that difference via Lucas numbers."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "related",
+      "description": "Grandparent: Fibonacci summation identities."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "FibonacciIdentitiesOQ03OQ01",
+    "lineCount": 107,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "fib_two_mul_eq",
+        "type": "core",
+        "description": "The doubling identity F₂ₘ = Fₘ·Lₘ, for all m",
+        "leanType": "(m : ℕ) → Nat.fib (2 * m) = Nat.fib m * lucas m"
+      },
+      {
+        "name": "lucas_succ_eq_fib",
+        "type": "key",
+        "description": "The Fibonacci–Lucas bridge L(n+1) = fib(n) + fib(n+2)",
+        "leanType": "(n : ℕ) → lucas (n + 1) = Nat.fib n + Nat.fib (n + 2)"
+      },
+      {
+        "name": "fib_even_factorization",
+        "type": "key",
+        "description": "The parent's difference of squares as an explicit product",
+        "leanType": "(n : ℕ) → Nat.fib (2 * n + 2) = Nat.fib (n + 1) * (Nat.fib (n + 2) + Nat.fib n)"
+      }
+    ],
+    "path": "Proofs/FibonacciIdentitiesOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "fib_two_mul_eq",
+      "type": "core",
+      "description": "F₂ₘ = Fₘ·Lₘ: the Fibonacci doubling identity via Lucas numbers",
+      "leanType": "(m : ℕ) → Nat.fib (2 * m) = Nat.fib m * lucas m"
+    },
+    {
+      "name": "lucas_succ_eq_fib",
+      "type": "key",
+      "description": "L(n+1) = fib(n) + fib(n+2), the Fibonacci–Lucas bridge",
+      "leanType": "(n : ℕ) → lucas (n + 1) = Nat.fib n + Nat.fib (n + 2)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics 1, 184–240, 289–321",
+      "note": "Introduces the Lucas sequence and the Fibonacci–Lucas doubling identities"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Standard reference for F₂ₘ = Fₘ·Lₘ and related identities"
+    }
+  ],
+  "sorries": 0
+}

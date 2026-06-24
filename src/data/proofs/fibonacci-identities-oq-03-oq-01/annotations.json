@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-lucas-bridge",
+    "proofId": "fibonacci-identities-oq-03-oq-01",
+    "range": {
+      "startLine": 35,
+      "endLine": 64
+    },
+    "type": "concept",
+    "title": "Defining Lucas Numbers and the Fibonacci–Lucas Bridge",
+    "content": "Mathlib provides Nat.fib but no Lucas sequence, so lucas is defined directly (L 0 = 2, L 1 = 1, L(n+2) = L n + L(n+1)). The bridge lucas_succ_eq_fib proves L(n+1) = fib(n) + fib(n+2) by Nat.twoStepInduction: the base cases L₁ = 1 = fib₀+fib₂ and L₂ = 3 = fib₁+fib₃ are decidable, and the step expands L(n+3) = L(n+1)+L(n+2), substitutes the two inductive hypotheses, and collapses every Fibonacci term with fib_add_two before ring closes it.",
+    "mathContext": "L(n+1) = fib(n) + fib(n+2) is the shift of the familiar Lₙ = Fₙ₋₁ + Fₙ₊₁ that avoids truncated subtraction on ℕ."
+  },
+  {
+    "id": "ann-doubling",
+    "proofId": "fibonacci-identities-oq-03-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Factoring the Difference of Squares into F₂ₘ = Fₘ·Lₘ",
+    "content": "The parent showed fib(2n+2) = fib(n+2)² − fib(n)². A difference of two squares factors as (a−b)(a+b); here a−b = fib(n+2)−fib(n) = fib(n+1) (the Fibonacci recurrence) and a+b = fib(n+2)+fib(n) = L(n+1) (the bridge). fib_two_mul_eq packages this as the classical doubling identity fib(2m) = fib(m)·lucas(m) for all m, proved by rewriting Mathlib's product form fib_two_mul_add_two and the Lucas bridge; fib_even_factorization exposes the parent's difference of squares as the literal product fib(n+1)·(fib(n+2)+fib(n)).",
+    "mathContext": "F₂ₘ = Fₘ·Lₘ is the fundamental Fibonacci–Lucas doubling identity; it makes the parent's even-index difference of two squares a genuine product factorization."
+  }
+]
