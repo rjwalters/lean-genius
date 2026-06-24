@@ -2,7 +2,7 @@
   "id": "hilbert-17",
   "title": "Hilbert's 17th Problem: Sum of Squares",
   "slug": "hilbert-17",
-  "description": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample). UPDATE: the non-negativity of both classical counterexamples — Motzkin M(x,y)=x⁴y²+x²y⁴−3x²y²+1 (via AM–GM) and Robinson R(x,y,z) (which equals Schur's expression in x²,y²,z²) — is now machine-checked via nlinarith with explicit square certificates, eliminating the axioms motzkin_nonneg_aux and robinson_nonneg_aux (axiom count 10 → 8). FURTHER UPDATE: the non-SOS direction for Motzkin — that M is not a sum of squares of polynomials — is now machine-checked by a fully elementary 0-axiom degree/coefficient argument (Proofs/Hilbert17MotzkinNotSOS.lean), wired into this file so motzkin_not_sos_polynomial is no longer an axiom wrapper (axiom count 8 → 7). FURTHER UPDATE: the univariate case of Artin's theorem — every PSD univariate real polynomial is a sum of squares of polynomials (in fact a sum of two squares) — is now machine-checked by a fully elementary 0-axiom proof (Proofs/Hilbert17UnivariatePSDSOS.lean): strong induction on degree, the fundamental theorem of algebra, even multiplicity of real roots of a non-negative polynomial, and the Brahmagupta–Fibonacci identity. This discharges univariate_psd_is_sos_aux (axiom count 3 → 2; the two remaining axioms are quadratic_psd_is_sos_aux and pfister_bound_aux).",
+  "description": "Artin's theorem: every non-negative polynomial is a sum of squares of rational functions, but not necessarily polynomials (Motzkin's counterexample). UPDATE: the non-negativity of both classical counterexamples — Motzkin M(x,y)=x⁴y²+x²y⁴−3x²y²+1 (via AM–GM) and Robinson R(x,y,z) (which equals Schur's expression in x²,y²,z²) — is now machine-checked via nlinarith with explicit square certificates, eliminating the axioms motzkin_nonneg_aux and robinson_nonneg_aux (axiom count 10 → 8). FURTHER UPDATE: the non-SOS direction for Motzkin — that M is not a sum of squares of polynomials — is now machine-checked by a fully elementary 0-axiom degree/coefficient argument (Proofs/Hilbert17MotzkinNotSOS.lean), wired into this file so motzkin_not_sos_polynomial is no longer an axiom wrapper (axiom count 8 → 7). FURTHER UPDATE: the univariate case of Artin's theorem — every PSD univariate real polynomial is a sum of squares of polynomials (in fact a sum of two squares) — is now machine-checked by a fully elementary 0-axiom proof (Proofs/Hilbert17UnivariatePSDSOS.lean): strong induction on degree, the fundamental theorem of algebra, even multiplicity of real roots of a non-negative polynomial, and the Brahmagupta–Fibonacci identity. This discharges univariate_psd_is_sos_aux (axiom count 3 → 2). FURTHER UPDATE: the quadratic-forms case — every PSD polynomial of total degree 2 (affine quadratics included) is a sum of squares of affine-linear forms — is now machine-checked by a fully elementary 0-axiom proof (Proofs/Hilbert17QuadraticGram.lean): the homogeneous Gram/Cholesky core (a PSD symmetric matrix factors as M = (√M)ᵀ√M, giving x·Mx = Σ((√M x)ᵢ)²) plus affine homogenisation by one extra coordinate x₀ (PSD transfers on {x₀≠0} by a scaling identity and to x₀=0 by continuity of evaluation; dehomogenise by setting x₀=1). This discharges quadratic_psd_is_sos_aux (axiom count 2 → 1; the single remaining axiom is pfister_bound_aux, Pfister's 2ⁿ bound).",
   "meta": {
     "proofRepoPath": "Proofs/Hilbert17SumOfSquares.lean",
     "author": "Emil Artin (1927)",
@@ -44,16 +44,15 @@
     ],
     "dateAdded": "2025-12-29",
     "hilbertNumber": 17,
-    "axiomCount": 2,
-    "lineCount": 579,
+    "axiomCount": 1,
+    "lineCount": 590,
     "assumptions": [
-      "quadratic_psd_is_sos_aux: Every PSD quadratic form is a sum of squares of polynomials (Gram matrix / Cholesky)",
       "pfister_bound_aux: At most 2^n rational function squares needed for n-variable PSD polynomials (Pfister forms)"
     ],
     "mathlib_version": "4.26.0",
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 8,
-    "description": "Axiom-reduction history: three axioms were redundant restatements of deeper ones and are now derived theorems (artin_hilbert17 and cassels_bound_bivariate from pfister_bound_aux; artin_univariate from univariate_psd_is_sos_aux), and three more have been fully discharged by elementary 0-axiom child proofs — motzkin_not_sos_polynomial_aux (Hilbert17MotzkinNotSOS.lean), robinson_not_sos_aux (Hilbert17RobinsonNotSOS.lean), and univariate_psd_is_sos_aux (Hilbert17UnivariatePSDSOS.lean). The two remaining independent axioms are quadratic_psd_is_sos_aux (PSD quadratic forms are SOS, via Gram/Cholesky) and pfister_bound_aux (Pfister's 2ⁿ bound)."
+    "description": "Axiom-reduction history: three axioms were redundant restatements of deeper ones and are now derived theorems (artin_hilbert17 and cassels_bound_bivariate from pfister_bound_aux; artin_univariate from univariate_psd_is_sos_aux), and four more have been fully discharged by elementary 0-axiom child proofs — motzkin_not_sos_polynomial_aux (Hilbert17MotzkinNotSOS.lean), robinson_not_sos_aux (Hilbert17RobinsonNotSOS.lean), univariate_psd_is_sos_aux (Hilbert17UnivariatePSDSOS.lean), and quadratic_psd_is_sos_aux (Hilbert17QuadraticGram.lean: the homogeneous Gram/Cholesky core plus affine homogenisation by one extra coordinate). The single remaining independent axiom is pfister_bound_aux (Pfister's 2ⁿ bound)."
   },
   "overview": {
     "historicalContext": "Hilbert's 17th Problem emerged from a long investigation into the relationship between non-negativity and sums of squares. In 1888, Hilbert proved a remarkable non-constructive result: there exist non-negative polynomials that are not sums of squares of polynomials. He showed this happens in all but three exceptional cases — univariate polynomials, quadratic forms, and bivariate quartics — but gave no explicit example.\n\nIn his famous 1900 Paris lecture, Hilbert posed Problem 17: even if polynomial squares don't suffice, can every non-negative polynomial be written as a sum of squares of rational functions (quotients of polynomials)? This seemingly modest weakening turns out to be exactly right.\n\nEmil Artin resolved the problem affirmatively in 1927, as an application of his theory of formally real fields and real closures. The proof is a triumph of abstract algebra: if a non-negative polynomial were not a sum of squares of rational functions, one could construct an ordering of the function field making it negative, which contradicts non-negativity via the transfer principle for real closed fields.\n\nNearly 40 years after Hilbert's non-constructive existence proof, Theodore Motzkin (1967) gave the first explicit counterexample to polynomial SOS: M(x,y) = x⁴y² + x²y⁴ - 3x²y² + 1 is non-negative everywhere (by AM-GM) but cannot be decomposed as a sum of squared polynomials (by degree analysis). In the same year, Albrecht Pfister proved that at most 2^n rational function squares are needed for n-variable polynomials.",
@@ -112,7 +111,7 @@
       "title": "Part IV: Hilbert's 1888 Classification",
       "startLine": 269,
       "endLine": 343,
-      "summary": "Axiomatizes univariate_psd_is_sos (complex factorization) and quadratic_psd_is_sos (Gram matrix / Cholesky) — the two tractable cases from Hilbert's classification.",
+      "summary": "Both tractable cases are now machine-checked, zero axioms: univariate_psd_is_sos (complex factorization, Hilbert17UnivariatePSDSOS.lean) and quadratic_psd_is_sos (Gram/Cholesky core plus affine homogenisation, Hilbert17QuadraticGram.lean).",
       "mathContext": "**Hilbert 1888**: PSD = polynomial-SOS in exactly 3 cases: (1) univariate ($n=1$, any degree), (2) quadratic forms (any $n$, degree 2), (3) bivariate quartics ($n=2$, degree 4). **Univariate**: $f(x) \\geq 0 \\Rightarrow f = g^2 + h^2$ via $f = c\\prod(x-\\alpha_i)(x-\\bar{\\alpha}_i)$. **Quadratic**: PSD $\\iff$ Gram matrix $Q \\succeq 0$ $\\iff$ Cholesky $Q = L^TL$."
     },
     {
@@ -214,9 +213,9 @@
       "RatFunc"
     ],
     "namespace": "Hilbert17",
-    "lineCount": 579,
-    "axiomCount": 2,
-    "theoremCount": 10,
+    "lineCount": 590,
+    "axiomCount": 1,
+    "theoremCount": 11,
     "definitionCount": 8,
     "path": "Proofs/Hilbert17SumOfSquares.lean",
     "sorries": 0
