@@ -1,0 +1,183 @@
+{
+  "id": "binomial-theorem-oq-05-oq-01",
+  "title": "Chu–Vandermonde Convolution and the Sum of Squares of Binomial Coefficients",
+  "slug": "binomial-theorem-oq-05-oq-01",
+  "description": "Multiplying two binomial expansions and comparing coefficients gives the Chu–Vandermonde convolution C(m+n,k) = Σᵢ C(m,i)·C(n,k−i). Mathlib proves only the antidiagonal form; this entry develops the textbook range-indexed form and two specializations absent from Mathlib: the diagonal convolution Σₖ C(n,k)·C(n,k+d) = C(2n,n+d) and the celebrated sum of squares Σₖ C(n,k)² = C(2n,n).",
+  "meta": {
+    "author": "Zhu Shijie (1303) / Alexandre-Théophile Vandermonde (1772); formalized atop Mathlib's Nat.add_choose_eq",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "1303",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ05OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "binomial-theorem",
+      "binomial-coefficients",
+      "vandermonde-identity",
+      "convolution",
+      "central-binomial-coefficient",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde's identity in antidiagonal form: (m+n).choose k = Σ_{(i,j)∈antidiagonal k} C(m,i)·C(n,j). The single Mathlib input of this entry.",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Reparametrizes a sum over the antidiagonal of k as a sum over range (k+1) via (i, k−i). Converts the antidiagonal Vandermonde form to the textbook range form.",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Finset.sum_range_reflect",
+        "description": "∑_{i<n} f(n−1−i) = ∑_{i<n} f i. Reflects the diagonal-convolution index i ↦ n−i to expose the symmetry C(n,n−i) = C(n,i).",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "C(n, n−k) = C(n,k) for k ≤ n. The row symmetry of Pascal's triangle, used to collapse each reflected diagonal term.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.sum_subset",
+        "description": "Extends a sum to a larger index set when the new terms vanish. Drops the tail i > n of the Vandermonde sum, where C(n,i) = 0.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.centralBinom_eq_two_mul_choose",
+        "description": "centralBinom n = C(2n, n). Bridges the sum-of-squares identity to Mathlib's central binomial coefficient.",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      }
+    ],
+    "originalContributions": [
+      "chu_vandermonde: the range-indexed Chu–Vandermonde convolution C(m+n,k) = Σ_{i=0}^{k} C(m,i)·C(n,k−i), the textbook form (Mathlib ships only the antidiagonal Nat.add_choose_eq)",
+      "sum_choose_mul_choose_add: the diagonal convolution Σ_{k=0}^{n} C(n,k)·C(n,k+d) = C(2n,n+d), proved by index reflection plus dropping the vanishing tail — not in Mathlib",
+      "sum_sq_choose: the sum of squares of a row of Pascal's triangle Σ_{k=0}^{n} C(n,k)² = C(2n,n), obtained as the d=0 case of the diagonal convolution — not in Mathlib",
+      "sum_sq_choose_centralBinom: the same identity phrased with Mathlib's centralBinom",
+      "Numeric witnesses: C(4,2)=6 as a range convolution, Σ C(3,k)²=C(6,3)=20, the d=1 diagonal Σ C(4,k)C(4,k+1)=C(8,5)=56, and Σ C(4,k)²=70"
+    ],
+    "dateAdded": "2026-06-24",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 119,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext, Classical.choice, Quot.sound). The sole Mathlib input is the antidiagonal Vandermonde identity Nat.add_choose_eq; the range-form convolution, the diagonal convolution, and the sum-of-squares identity (none of which are in Mathlib) are the original content. Badge `original` reflects that the headline results are new derivations, not re-exports.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The convolution identity for binomial coefficients $\\binom{m+n}{k} = \\sum_i \\binom{m}{i}\\binom{n}{k-i}$ is usually named for **Alexandre-Théophile Vandermonde** (1772), but it was known to the Chinese mathematician **Zhu Shijie** in his 1303 *Jade Mirror of the Four Unknowns* — hence *Chu–Vandermonde*. It is the multiplicative counterpart of the binomial theorem: $(1+x)^m (1+x)^n = (1+x)^{m+n}$, read off coefficient by coefficient. Among its corollaries is the strikingly clean identity $\\sum_k \\binom{n}{k}^2 = \\binom{2n}{n}$, which says that choosing $n$ people from $2n$ can be organized by how many come from the first half. These identities are the workhorses of enumerative combinatorics, hypergeometric summation, and the theory of orthogonal polynomials.",
+    "problemStatement": "**Open Question (binomial-theorem-oq-05-oq-01):** Formalize the Chu–Vandermonde convolution refinement of the binomial sum in the textbook range-indexed form, and derive its principal specializations — the diagonal (off-center) convolution and the sum of squares of binomial coefficients.\n\n**Answer:** Mathlib's antidiagonal Vandermonde $\\binom{m+n}{k} = \\sum_{(i,j)} \\binom{m}{i}\\binom{n}{j}$ reparametrizes to $\\binom{m+n}{k} = \\sum_{i=0}^{k} \\binom{m}{i}\\binom{n}{k-i}$; reflecting the index and discarding vanishing tails yields $\\sum_{k=0}^{n} \\binom{n}{k}\\binom{n}{k+d} = \\binom{2n}{n+d}$, whose $d=0$ case is $\\sum_{k=0}^{n} \\binom{n}{k}^2 = \\binom{2n}{n}$.",
+    "text": "Comparing coefficients in (1+x)^m·(1+x)^n = (1+x)^{m+n} gives the Chu–Vandermonde convolution C(m+n,k) = Σᵢ C(m,i)C(n,k−i). Specializing m=n and using the row symmetry C(n,n−i)=C(n,i) turns the convolution into a sum of products a fixed distance apart, and at distance zero into a sum of squares equal to the central binomial coefficient C(2n,n).",
+    "proofStrategy": "1. **Range form** (`chu_vandermonde`): start from Mathlib's antidiagonal `Nat.add_choose_eq` and apply `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`, which rewrites the antidiagonal of k as range (k+1) under (i, k−i).\n2. **Diagonal convolution** (`sum_choose_mul_choose_add`): instantiate `chu_vandermonde n n (n+d)`. The Vandermonde sum runs over range (n+d+1); the terms i > n vanish because C(n,i)=0, so `Finset.sum_subset` restricts it to range (n+1). Reflecting i ↦ n−i with `Finset.sum_range_reflect` and applying the symmetry `Nat.choose_symm` rewrites each term C(n,i)·C(n,n+d−i) as C(n,n−i)·C(n,i+d) = C(n,i)·C(n,i+d), matching the diagonal sum.\n3. **Sum of squares** (`sum_sq_choose`): the d=0 case, since C(n,k)·C(n,k+0) = C(n,k)² and C(2n,n+0) = C(2n,n).\n4. **centralBinom form** (`sum_sq_choose_centralBinom`): rewrite C(2n,n) as `centralBinom n`.",
+    "keyInsights": [
+      "**Convolution = product of generating functions.** Chu–Vandermonde is exactly the coefficient-by-coefficient reading of $(1+x)^m(1+x)^n = (1+x)^{m+n}$. The range form makes the convolution structure $\\sum_i a_i b_{k-i}$ explicit, which the antidiagonal form hides.",
+      "**Row symmetry turns convolution into autocorrelation.** Setting $m=n$ and substituting $C(n,n-i)=C(n,i)$ converts the convolution $\\sum_i C(n,i)C(n,k-i)$ into the autocorrelation $\\sum_k C(n,k)C(n,k+d)$ — the diagonal sums of Pascal's triangle.",
+      "**Sum of squares is the central coefficient.** $\\sum_k \\binom{n}{k}^2 = \\binom{2n}{n}$ is the $d=0$ autocorrelation: choosing $n$ from $2n$, split by how many of the first $n$ are chosen, with the complementary symmetry $\\binom{n}{n-k}=\\binom{n}{k}$ producing the square.",
+      "**Vanishing tails make the bookkeeping painless.** Because $\\binom{n}{i}=0$ for $i>n$, the finite Vandermonde sum can be freely extended or truncated; `Finset.sum_subset` and `Finset.sum_range_reflect` handle the reindexing without case analysis on $d$."
+    ],
+    "prerequisites": [
+      "Binomial coefficients and the binomial theorem (1+x)ⁿ = Σ C(n,k) xᵏ",
+      "Vandermonde's identity in antidiagonal form (Nat.add_choose_eq)",
+      "Row symmetry of Pascal's triangle C(n,n−k)=C(n,k)",
+      "Reindexing finite sums (reflection, extension by zero terms)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "rangeform",
+      "title": "Chu–Vandermonde Identity (Range Form)",
+      "startLine": 42,
+      "endLine": 52,
+      "summary": "Converts Mathlib's antidiagonal Vandermonde Nat.add_choose_eq into the textbook range-indexed convolution C(m+n,k) = Σ_{i=0}^{k} C(m,i)·C(n,k−i) via the (i, k−i) reparametrization.",
+      "mathContext": "Converts the antidiagonal Vandermonde form into the textbook range-indexed convolution C(m+n,k) = Σ_{i=0}^{k} C(m,i)·C(n,k−i)."
+    },
+    {
+      "id": "diagonal",
+      "title": "Diagonal Vandermonde Convolution",
+      "startLine": 54,
+      "endLine": 81,
+      "summary": "Proves the off-center identity Σ_{k=0}^{n} C(n,k)·C(n,k+d) = C(2n,n+d) by instantiating the range form at (n,n,n+d), dropping the vanishing tail with Finset.sum_subset, and reflecting the index with Finset.sum_range_reflect and the row symmetry Nat.choose_symm.",
+      "mathContext": "Proves the off-center identity Σ_{k=0}^{n} C(n,k)·C(n,k+d) = C(2n,n+d) by index reflection and dropping vanishing tail terms."
+    },
+    {
+      "id": "sumofsquares",
+      "title": "Sum of Squares of Binomial Coefficients",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "The celebrated identity Σ_{k=0}^{n} C(n,k)² = C(2n,n) as the d=0 case of the diagonal convolution, plus its restatement with Mathlib's centralBinom.",
+      "mathContext": "The identity Σ_{k=0}^{n} C(n,k)² = C(2n,n) = centralBinom n, the d=0 case of the diagonal convolution."
+    },
+    {
+      "id": "numeric",
+      "title": "Numeric Witnesses",
+      "startLine": 101,
+      "endLine": 117,
+      "summary": "Concrete instances: C(4,2)=6 as a range convolution, Σ C(3,k)²=C(6,3)=20, the d=1 diagonal Σ C(4,k)C(4,k+1)=C(8,5)=56, and the explicit value Σ C(4,k)²=70.",
+      "mathContext": "Concrete instances of the three identities, including the explicit value Σ C(4,k)²=70 = C(8,4)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Chu–Vandermonde convolution is formalized in the textbook range form C(m+n,k) = Σ_{i=0}^{k} C(m,i)·C(n,k−i), refining Mathlib's antidiagonal statement, and specialized to the diagonal convolution Σ_{k=0}^{n} C(n,k)·C(n,k+d) = C(2n,n+d) and the sum of squares Σ_{k=0}^{n} C(n,k)² = C(2n,n). Fully verified: 0 sorries, 0 axioms.",
+    "implications": "The range-form Vandermonde and the sum-of-squares identity are staples of enumerative combinatorics that Mathlib currently lacks in this packaging — Mathlib has only the antidiagonal convolution. The diagonal convolution and the central-coefficient sum of squares are immediate, frequently-cited corollaries; formalizing them fills a small but practical gap and provides reusable lemmas for hypergeometric and lattice-path arguments.",
+    "openQuestions": [
+      "Can the range-form Chu–Vandermonde and the sum-of-squares identity Σ C(n,k)² = C(2n,n) be contributed to Mathlib alongside the existing antidiagonal Nat.add_choose_eq?",
+      "Does the same coefficient-comparison technique give the q-analogue (q-Vandermonde) and the Pfaff–Saalschütz summation?"
+    ],
+    "crossReferences": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "extends",
+      "description": "Chu–Vandermonde is the coefficient-by-coefficient reading of the product (1+x)ᵐ(1+x)ⁿ = (1+x)ᵐ⁺ⁿ of binomial expansions"
+    },
+    {
+      "targetId": "binomial-theorem-oq-05",
+      "relationship": "sibling",
+      "description": "Both extract identities from the binomial theorem; OQ-05 is the additive first-order truncation (Bernoulli), this entry the multiplicative convolution (Vandermonde)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "BinomialTheoremOQ05OQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Zhu Shijie (朱世杰)",
+      "title": "Siyuan yujian (Jade Mirror of the Four Unknowns)",
+      "year": "1303",
+      "venue": "China",
+      "note": "Earliest known statement of the convolution identity for binomial coefficients"
+    },
+    {
+      "authors": "A.-T. Vandermonde",
+      "title": "Mémoire sur des irrationnelles de différents ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Mémoires de l'Académie Royale des Sciences",
+      "note": "European rediscovery; the identity now bears his name"
+    },
+    {
+      "authors": "R. L. Graham, D. E. Knuth, O. Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "note": "Chapter 5 develops Vandermonde's convolution and the sum of squares of binomial coefficients"
+    }
+  ],
+  "sorries": 0
+}

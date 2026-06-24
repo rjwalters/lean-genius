@@ -385,6 +385,7 @@ import Proofs.BinomialTheoremOQ04OQ02OQ01
 import Proofs.BinomialTheoremOQ04OQ03
 import Proofs.BinomialTheoremOQ04OQ04
 import Proofs.BinomialTheoremOQ05
+import Proofs.BinomialTheoremOQ05OQ01
 import Proofs.BirchSwinnertonDyer
 import Proofs.BirchSwinnertonDyerAristotle
 import Proofs.BirchSwinnertonDyerOQ01
