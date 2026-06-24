@@ -289,3 +289,34 @@ counterexamples that force rational functions for n ≥ 2.
   for its mathlib cache (back up + restore MAIN, scrub stray child .lean/.olean).
 - Aristotle MCP/API is DOWN this session (smoke test: 404 on .../api/v1/project) — the
   HARD-sorry route was unavailable; proved everything manually.
+
+## Survey 2026-06-24 (researcher-1) — quadratic_psd_is_sos_aux route + Mathlib gap
+Scoped the next axiom `quadratic_psd_is_sos_aux` (Q : MvPolynomial (Fin n) ℝ,
+totalDegree Q = 2, PSD ⟹ SOS). This is the (n, 2d)=(n,2) row of Hilbert's
+PSD=SOS classification — it holds for EVERY n (only n=1, deg-2, and (2,4) are SOS=PSD).
+
+**Route (Gram / matrix):** homogenize Q (deg ≤ 2) by an extra coordinate x₀ to a
+quadratic form in (x₀, x₁,…,xₙ); extract the (n+1)×(n+1) symmetric coefficient
+matrix M with Q.eval x = (1,x)ᵀ M (1,x); show PSD-everywhere ⟹ M.PosSemidef; factor
+M = BᵀB; then Q = ‖B·(1,x)‖² = Σ (affine-linear)² — a polynomial SOS.
+
+**Mathlib pieces present:**
+- `Matrix.PosSemidef`, `Matrix.posSemidef_iff_dotProduct_mulVec`
+  (M PSD ⟺ ∀ x, 0 ≤ star x ⬝ᵥ M *ᵥ x) — the matrix↔quadratic-positivity bridge.
+- `Matrix.PosSemidef.sqrt` (+ `sqrt_mul_self`) gives M = √M·√M with √M Hermitian, i.e.
+  the BᵀB factorization over ℝ (B := √M, symmetric).
+- `QuadraticMap.associated` / `polarBilin` (quadratic form ↔ symmetric bilinear, 2 invertible).
+
+**Genuine GAP (the multi-session work):** there is NO Mathlib helper connecting
+`MvPolynomial (Fin n) ℝ` of `totalDegree = 2` to a `QuadraticForm` / symmetric matrix.
+Must hand-build: (a) the coefficient-extraction `Q ↦ M` over the homogenizing
+coordinate, (b) `Q.eval x = (1,x)ᵀ M (1,x)` as a `MvPolynomial`/eval identity, (c)
+`(∀ x, 0 ≤ Q.eval x) ⟺ M.PosSemidef` (the ⟸ is dotProduct_mulVec; the ⟹ needs that
+the affine slice (1,x) ranges over enough vectors — careful with the x₀=1 normalization,
+PSD of M is about ALL (t,x) incl t=0, so need a limiting/scaling argument t·(1, x/t)),
+and (d) reassembling `‖B·(1,x)‖²` back into `IsSumOfSquaresMvPolynomial`. Estimate:
+a dedicated multi-session build (~300–500 L), comparable to the univariate file but with
+the matrix↔polynomial bridge as the hard, un-Mathlib'd part. NOT a quick port.
+
+`pfister_bound_aux` remains genuinely hopeless for a short proof (Pfister forms over
+formally real fields). The two remaining parent axioms are correctly left axiomatized.
