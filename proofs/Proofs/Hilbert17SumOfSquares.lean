@@ -5,6 +5,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.FieldTheory.RatFunc.Basic
 import Mathlib.Tactic
 import Proofs.Hilbert17MotzkinNotSOS
+import Proofs.Hilbert17RobinsonNotSOS
 
 /-!
 # Hilbert's 17th Problem: Sum of Squares Representation
@@ -503,22 +504,26 @@ theorem robinson_nonneg : IsPositiveSemidefiniteMv robinson := by
     mul_nonneg hc (sq_nonneg (y ^ 2 - z ^ 2)),
     mul_nonneg (mul_nonneg ha hb) hc]
 
-/-- **Axiom: Robinson Not Polynomial-SOS**
+/-- **Robinson's polynomial is not polynomial-SOS** (axiom-free).
 
     Robinson's polynomial cannot be written as a sum of squares of polynomials,
     despite being non-negative everywhere.
 
-    Like the Motzkin polynomial, this is proven by analyzing homogeneous components
-    and showing the leading form cannot arise from squaring polynomials.
-
-    Axiomatized because the proof requires:
-    - Homogeneous component decomposition
-    - Analysis of degree-6 symmetric forms in 3 variables
-    - Linear algebra over the coefficient space -/
-axiom robinson_not_sos_aux : ¬ IsSumOfSquaresMvPolynomial robinson
-
-/-- Robinson's polynomial is not polynomial-SOS. -/
-theorem robinson_not_sos : ¬ IsSumOfSquaresMvPolynomial robinson := robinson_not_sos_aux
+    The full elementary proof lives in `Proofs/Hilbert17RobinsonNotSOS.lean`
+    (`Hilbert17RobinsonNotSOS.robinson_not_sos`, 0-axiom): in `R = Σ qᵢ²` each
+    `qᵢ` has total degree ≤ 3, so taking the degree-6 homogeneous component gives
+    `R = Σ (qᵢ⁽³⁾)²` with each `qᵢ⁽³⁾` a homogeneous cubic form; these vanish at
+    `R`'s ten real projective zeros, and the 10×10 evaluation matrix of cubic
+    monomials at those points has determinant `128 ≠ 0`, so every `qᵢ⁽³⁾ = 0`,
+    forcing `R = 0` — contradicting `R(1,0,0) = 1`.
+    (Formerly the axiom `robinson_not_sos_aux`; now fully machine-checked.) -/
+theorem robinson_not_sos : ¬ IsSumOfSquaresMvPolynomial robinson := by
+  -- `IsSumOfSquaresMvPolynomial robinson` and `Hilbert17RobinsonNotSOS.IsSOS
+  -- Hilbert17RobinsonNotSOS.robinson` are definitionally equal (the two
+  -- `robinson` definitions and the two SOS predicates unfold to the same
+  -- expression), so the elementary theorem discharges the parent statement.
+  intro h
+  exact Hilbert17RobinsonNotSOS.robinson_not_sos h
 
 /-- **Choi-Lam Polynomial**: Another family of counterexamples.
     CL(w,x,y,z) = w⁴ + x²y² + y²z² + z²w² - 4wxyz -/
