@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-interval-constrained",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "Tietze into an Arbitrary Closed Interval",
+    "content": "`tietze_extension_Icc` is the classical order form of the Tietze extension theorem: a continuous `f : s → [a,b]` on a closed set `s` of a normal space extends to a continuous `G : X → [a,b]` with the same, possibly asymmetric, two-sided bound `a ≤ G y ≤ b`. The parent series only supplied the symmetric bound `|G| ≤ M`; the asymmetric interval is reached by conjugating with an affine shift. Setting `c = (a+b)/2` and `r = (b−a)/2 ≥ 0`, the recentred data `f' = f − c` satisfies `|f' x| ≤ r` (by `abs_le` and `linarith` from `a ≤ f x ≤ b`), so the parent's `tietze_extension_via_tsum` applied to `f'` with `M = r` returns `G'` with `G' = f'` on `s` and `|G' y| ≤ r`. The extension `G := G'.toContinuousMap + const c` then restricts to `f` on `s` (since `G' x + c = (f x − c) + c`) and lands in `[c−r, c+r] = [a, b]` everywhere, again by `linarith`. `tietze_extension_unitInterval` is the `a=0, b=1` instance, the shape used to build partitions of unity. No new analytic content is needed — only that the parent construction is equivariant under constant shifts, because adding a constant is a sup-norm isometry.",
+    "mathContext": "$a \\le f \\le b \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s = f \\ \\wedge\\ a \\le G \\le b,\\qquad c=\\tfrac{a+b}2,\\ r=\\tfrac{b-a}2.$",
+    "significance": "high",
+    "relatedConcepts": [
+      "order form of the Tietze extension theorem",
+      "affine recentring of an interval",
+      "partitions of unity",
+      "constant-shift isometry of the sup-norm"
+    ],
+    "prerequisites": [
+      "tietze_extension_via_tsum",
+      "abs_le",
+      "ContinuousMap.const"
+    ]
+  },
+  {
+    "id": "ann-vector-valued",
+    "proofId": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 106,
+      "endLine": 160
+    },
+    "type": "theorem",
+    "title": "Finite-Dimensional Vector-Valued Tietze with Preserved ℓ∞ Bound",
+    "content": "`tietze_extension_pi_sup` extends finite-dimensional vector data `f : s → (ι → ℝ)` (`ι` finite) by running the parent series on each scalar component `x ↦ f x i` against the COMMON bound `M`. Because every component obeys `|f x i| ≤ M`, each component extension `Gi` obeys `|Gi y| ≤ M`, and the assembled map `y ↦ (i ↦ Gi y)` — continuous by `continuous_pi` — preserves the joint componentwise bound `|G y i| ≤ M` while restricting to `f` on `s` (`funext`). `tietze_extension_pi_norm` repackages this with the genuine `ℓ∞` norm on the finite-dimensional Banach space `ι → ℝ`: `pi_norm_le_iff_of_nonneg` identifies `‖x‖ ≤ M` with `∀ i, ‖x i‖ ≤ M`, so the componentwise bound becomes `‖G y‖ ≤ M`. `tietze_extension_pi_norm_sharp` records that `G` extends `f` and shares every uniform `ℓ∞` bound, so specialising to the least bound `M = ‖f‖` gives the norm-preserving equality `‖G‖ = ‖f‖` on finite-dimensional codomains — the vector analogue of the parent's sharp scalar result. Using a common bound (rather than each component's own sup) is exactly what keeps the assembled extension inside the `ℓ∞` ball of radius `M`; this is the finite-dimensional shadow of a vector Urysohn step.",
+    "mathContext": "$\\|f x\\|_\\infty \\le M \\ \\Rightarrow\\ \\exists\\,G,\\ G|_s = f \\ \\wedge\\ \\forall y,\\ \\|G y\\|_\\infty = \\max_i |G y\\,i| \\le M.$",
+    "significance": "high",
+    "relatedConcepts": [
+      "vector-valued Tietze extension",
+      "ℓ∞ norm on a finite product",
+      "componentwise extension against a common bound",
+      "finite-dimensional Banach codomain"
+    ],
+    "prerequisites": [
+      "tietze_extension_via_tsum",
+      "pi_norm_le_iff_of_nonneg",
+      "continuous_pi"
+    ]
+  }
+]
