@@ -1,0 +1,56 @@
+{
+  "slug": "herons-formula-oq-05-oq-03",
+  "title": "The Cayley–Menger Polynomials Are Literally Determinants",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 7,
+  "significance": 6,
+  "problemStatement": "Connect cmDet3/cmDet4 to an actual Matrix.det of the bordered squared-distance matrix via cofactor expansion, certifying the parent's hand-expanded polynomials are literally the Cayley–Menger determinants (parent herons-formula-oq-05 open question 3).",
+  "knowledge": {
+    "progressSummary": "COMPLETE: cmDet3_eq_det (4×4) and cmDet4_eq_det (5×5) proved by Laplace expansion (0 sorries, 0 axioms). Reusable det_fin_four lemma contributed (absent from Mathlib). Determinant forms of Heron (−16·Area²) and tetrahedron volume (288·V²) + realizability included. Gallery entry created.",
+    "builtItems": [
+      "CayleyMengerHeronOQ0503.lean: det_fin_four — Laplace cofactor expansion of a general 4×4 matrix along row 0 (line 52), the engine Mathlib lacks above det_fin_three",
+      "cmDet3_eq_det — Matrix.det of the bordered 4×4 squared-distance matrix = parent cmDet3 (line 101)",
+      "cmDet4_eq_det — Matrix.det of the bordered 5×5 squared-distance matrix = parent cmDet4, via det_fin_four on the five minors (line 160)",
+      "det_cmMatrix3_eq_area / det_cmMatrix4_eq_vol — determinant forms of Heron (det = −16·Area²) and the tetrahedron volume law (det = 288·V²) (lines 116, 174)",
+      "det_cmMatrix4_nonneg — realizability (det ≥ 0) read off the bordered matrix (line 184)",
+      "Gallery entry src/data/proofs/herons-formula-oq-05-oq-03/ (meta.json + 3 annotations)"
+    ],
+    "insights": [
+      "Mathlib's explicit determinant API stops at Matrix.det_fin_three; det_fin_four/det_fin_five must be built from the general Laplace expansion Matrix.det_succ_row_zero.",
+      "Proving a generic det_fin_four once turns the 5×5 expansion into a clean single application per minor, avoiding the exponential simp blow-up of recursively unfolding det_succ_row_zero inside a 5×5.",
+      "Concrete !! matrices sidestep the Fin-literal normalization that bites the generic lemma: entry lookups collapse to actual reals via cons_val regardless of Fin index presentation. The generic lemma instead needs explicit Fin.succ/Fin.succAbove numeral reductions (e.g. Fin.succ 2 = 3) because the named lemmas only fire on succ-form indices.",
+      "Once certified, Heron (det = −16·Area²), the volume law (det = 288·V²) and realizability (det ≥ 0) compose directly from the parent polynomial identities cmDet3 = −4·area2², cmDet4 = 8·vol6²."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no Matrix.det_fin_four or Matrix.det_fin_five (only det_fin_two/det_fin_three); contributed det_fin_four locally."
+    ],
+    "nextSteps": []
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Complete: cmDet3/cmDet4 certified as Matrix.det of the bordered squared-distance matrices (0 sorry/0 axiom); gallery entry created.",
+    "blockers": [],
+    "nextAction": "None — graduated to gallery.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knownResults": [],
+  "tags": [
+    "geometry",
+    "cayley-menger",
+    "determinant",
+    "cofactor-expansion",
+    "heron",
+    "distance-geometry"
+  ],
+  "path": "Proofs/CayleyMengerHeronOQ0503.lean",
+  "lastUpdate": "2026-06-24T12:00:00-08:00",
+  "started": "2026-06-24T11:00:00-08:00"
+}
