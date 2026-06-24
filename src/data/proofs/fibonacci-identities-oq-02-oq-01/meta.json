@@ -1,8 +1,8 @@
 {
   "id": "fibonacci-identities-oq-02-oq-01",
-  "title": "Lucas Numbers Are Not a Strong Divisibility Sequence",
+  "title": "Lucas Numbers Are Not a Strong Divisibility Sequence — with the general forward direction of the odd-quotient law",
   "slug": "fibonacci-identities-oq-02-oq-01",
-  "description": "The parent entry showed the Fibonacci numbers form a strong divisibility sequence — fib (gcd m n) = gcd (fib m) (fib n), and for 3 ≤ m, fib m ∣ fib n ↔ m ∣ n. Its first open question asks for the Lucas-number analogue. This entry settles it with a sharp contrast: the Lucas numbers Lₙ (L₀=2, L₁=1, Lₙ₊₂=Lₙ+Lₙ₊₁) are NOT a strong divisibility sequence. Concretely gcd(L₂,L₄)=gcd(3,7)=1 while L_{gcd(2,4)}=L₂=3, so the strong law fails; and 2∣4 yet L₂=3∤7=L₄, so index divisibility does not transfer to value divisibility — the Fibonacci implication m∣n ⇒ fib m ∣ fib n has no Lucas analogue. The correct law is the odd-quotient rule: for m ≥ 2, Lₘ ∣ Lₙ ⟺ m ∣ n and n/m is odd, verified here on the decisive instances (L₂∣L₆ but L₂∤L₄; L₃∣L₉ but L₃∤L₆). The positive engine is the product identity F_{2n} = Fₙ·Lₙ (from Mathlib's Nat.fib_two_mul via the bridge Lₙ = 2·Fₙ₊₁ − Fₙ), giving Lₙ ∣ F_{2n}: the Lucas numbers sit inside the Fibonacci divisibility lattice exactly at the even indices.",
+  "description": "The parent entry showed the Fibonacci numbers form a strong divisibility sequence — fib (gcd m n) = gcd (fib m) (fib n), and for 3 ≤ m, fib m ∣ fib n ↔ m ∣ n. Its first open question asks for the Lucas-number analogue. This entry settles it with a sharp contrast: the Lucas numbers Lₙ (L₀=2, L₁=1, Lₙ₊₂=Lₙ+Lₙ₊₁) are NOT a strong divisibility sequence. Concretely gcd(L₂,L₄)=gcd(3,7)=1 while L_{gcd(2,4)}=L₂=3, so the strong law fails; and 2∣4 yet L₂=3∤7=L₄, so index divisibility does not transfer to value divisibility — the Fibonacci implication m∣n ⇒ fib m ∣ fib n has no Lucas analogue. The correct law is the odd-quotient rule: for m ≥ 2, Lₘ ∣ Lₙ ⟺ m ∣ n and n/m is odd, verified here on the decisive instances (L₂∣L₆ but L₂∤L₄; L₃∣L₉ but L₃∤L₆). The positive engine is the product identity F_{2n} = Fₙ·Lₙ (from Mathlib's Nat.fib_two_mul via the bridge Lₙ = 2·Fₙ₊₁ − Fₙ), giving Lₙ ∣ F_{2n}: the Lucas numbers sit inside the Fibonacci divisibility lattice exactly at the even indices. This session additionally proves the FORWARD DIRECTION of the odd-quotient law in full generality: for all m, n, if m ∣ n and n/m is odd then Lₘ ∣ Lₙ (lucas_dvd_of_odd_quotient), subsuming the concrete instances. The engine is the Lucas shift identity L_{a+1+b} = F_{b+1}·L_{a+1} + F_b·L_a (lucas_add_shift, the Lucas analogue of Nat.fib_add), proved by two-step induction from the Lucas/Fibonacci recurrences with no subtraction and no signs; writing (2k+1)·m = m + 2(km) and using Lₘ ∣ F_{2km} (from Lₘ ∣ F_{2m} ∣ F_{2km}) makes both summands divisible by Lₘ (lucas_dvd_lucas_odd_mul). Only the converse of the biconditional remains open.",
   "meta": {
     "author": "Édouard Lucas / classical Lucas-sequence theory; formalized in Lean 4 with Mathlib",
     "sourceUrl": "https://en.wikipedia.org/wiki/Lucas_number#Divisibility_properties",
@@ -46,13 +46,18 @@
       "fib_two_mul_eq: the product identity F_{2n} = Fₙ·Lₙ, and lucas_dvd_fib_two_mul: Lₙ ∣ F_{2n}",
       "lucas_not_strong_divisibility: the Lucas numbers are NOT a strong divisibility sequence (gcd(L₂,L₄)=1 ≠ 3 = L_{gcd(2,4)})",
       "index_dvd_not_imp_lucas_dvd: m ∣ n does NOT imply Lₘ ∣ Lₙ (2∣4 but L₂=3∤7=L₄) — the Fibonacci transfer law has no Lucas analogue",
-      "odd-quotient characterization verified on decisive instances: L₂∣L₆ vs L₂∤L₄, L₃∣L₉ vs L₃∤L₆"
+      "odd-quotient characterization verified on decisive instances: L₂∣L₆ vs L₂∤L₄, L₃∣L₉ vs L₃∤L₆",
+      "lucas_add_shift: the Lucas shift identity L_{a+1+b} = F_{b+1}·L_{a+1} + F_b·L_a — the Lucas analogue of Nat.fib_add — proved by two-step induction on b from the Lucas and Fibonacci recurrences, subtraction-free and sign-free",
+      "lucas_add_eq: the same identity split as L_{m+b} = F_{b+1}·Lₘ + F_b·L_{m-1} (m ≥ 1), exposing the divisor Lₘ directly",
+      "lucas_dvd_fib_even_mul: Lₘ ∣ F_{2(km)} for all k, from Lₘ ∣ F_{2m} and F_{2m} ∣ F_{2(km)} (Nat.fib_dvd)",
+      "lucas_dvd_lucas_odd_mul: the universal odd-multiple divisibility Lₘ ∣ L_{(2k+1)m} for all m, k",
+      "lucas_dvd_of_odd_quotient: the FORWARD direction of the odd-quotient law in full generality — m ∣ n ∧ Odd (n/m) → Lₘ ∣ Lₙ — proving the '⟸' half of the open biconditional and subsuming the concrete instances L₂ ∣ L₆, L₃ ∣ L₉"
     ],
     "dateAdded": "2026-06-23",
-    "lineCount": 180,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). All concrete instances use decide (kernel evaluation of the structural definitions), not native_decide, so no Lean.ofReduceBool is introduced.",
+    "lineCount": 266,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). All concrete instances use decide (kernel evaluation of the structural definitions), not native_decide, so no Lean.ofReduceBool is introduced. The forward-direction results lucas_add_shift, lucas_add_eq, lucas_dvd_lucas_odd_mul, and lucas_dvd_of_odd_quotient were each #print axioms-checked to depend only on the standard foundational axioms (no sorry, no native_decide); a pre-existing omega atom-unification fragility in two_mul_fib_succ (the IH index fib (n+1+1) vs fib (n+2)) was repaired by restating the induction hypothesis in canonical form.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 22,
+    "theoremCount": 27,
     "definitionCount": 2
   },
   "overview": {
@@ -64,7 +69,8 @@
       "**Lucas numbers are NOT strongly divisible.** Unlike Fibonacci, gcd(Lₘ,Lₙ) is generally not a Lucas number: gcd(L₂,L₄)=1 but L_{gcd(2,4)}=3. The headline analogue of the parent's fib_gcd simply fails.",
       "**Index divisibility does not transfer.** The Fibonacci law m∣n ⇒ Fₘ∣Fₙ (Mathlib's Nat.fib_dvd) has no Lucas counterpart: 2∣4 but L₂=3∤7=L₄. This is the decisive structural difference.",
       "**The correct law is the odd-quotient rule.** Lₘ ∣ Lₙ ⟺ m∣n ∧ n/m odd (m ≥ 2). Divisibility detects not just the index ratio but its parity — even quotients break it (L₂∤L₄, L₃∤L₆), odd quotients preserve it (L₂∣L₆, L₃∣L₉).",
-      "**The bridge is the product identity F_{2n} = Fₙ·Lₙ.** It is what places the Lucas numbers inside the Fibonacci divisibility lattice (Lₙ ∣ F_{2n}) and explains the parity obstruction: doubling the index is exactly where Lₙ ∣ F_{2n} holds but Lₙ ∣ L_{2n} fails."
+      "**The bridge is the product identity F_{2n} = Fₙ·Lₙ.** It is what places the Lucas numbers inside the Fibonacci divisibility lattice (Lₙ ∣ F_{2n}) and explains the parity obstruction: doubling the index is exactly where Lₙ ∣ F_{2n} holds but Lₙ ∣ L_{2n} fails.",
+      "The forward direction of the odd-quotient law needs no integer Lucas sequence or signed addition law: the subtraction-free Lucas shift identity L_{a+1+b} = F_{b+1}L_{a+1} + F_b L_a, together with Lₘ ∣ F_{2m} ∣ F_{2km}, gives Lₘ ∣ L_{(2k+1)m} directly over ℕ."
     ],
     "prerequisites": [
       "The Lucas recurrence and the Fibonacci doubling identity Nat.fib_two_mul",
@@ -135,10 +141,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The Lucas numbers are not a strong divisibility sequence: gcd(L₂,L₄)=1 ≠ 3 = L_{gcd(2,4)}, and 2∣4 does not give L₂∣L₄. The Fibonacci transfer law m∣n ⇒ Fₘ∣Fₙ has no Lucas analogue; the correct law is the odd-quotient rule Lₘ∣Lₙ ⟺ m∣n ∧ n/m odd (m ≥ 2), verified on decisive instances. The product identity F_{2n} = Fₙ·Lₙ provides the positive bridge Lₙ ∣ F_{2n}.",
+    "summary": "The Lucas numbers are not a strong divisibility sequence: gcd(L₂,L₄)=1 ≠ 3 = L_{gcd(2,4)}, and 2∣4 does not give L₂∣L₄. The Fibonacci transfer law m∣n ⇒ Fₘ∣Fₙ has no Lucas analogue; the correct law is the odd-quotient rule Lₘ∣Lₙ ⟺ m∣n ∧ n/m odd (m ≥ 2), verified on decisive instances. The product identity F_{2n} = Fₙ·Lₙ provides the positive bridge Lₙ ∣ F_{2n}. The forward direction of the odd-quotient characterization is now proved in full generality (lucas_dvd_of_odd_quotient); the converse remains the sole open part.",
     "implications": "Resolves the parent's first open question in the negative for the strong-divisibility law, supplies the correct characterization, and packages the Lucas–Fibonacci product identity F_{2n} = Fₙ·Lₙ as a fully verified statement with an explicit, decidable Lucas definition (absent from Mathlib).",
     "openQuestions": [
-      "Prove the general odd-quotient biconditional Lₘ ∣ Lₙ ⟺ m∣n ∧ n/m odd (m ≥ 2) as a universally quantified theorem, via the integer Lucas addition law L_{a+2m} = L_{a+m}·Lₘ − (−1)ᵐ·L_a.",
+      "Prove the CONVERSE of the odd-quotient law: Lₘ ∣ Lₙ → m ∣ n ∧ n/m odd (m ≥ 2). The forward direction (m ∣ n ∧ n/m odd → Lₘ ∣ Lₙ) is now established as lucas_dvd_of_odd_quotient; the converse needs the even-quotient non-divisibility, i.e. a parity/2-adic obstruction at the doubling step.",
       "Establish the exact gcd law gcd(Lₘ,Lₙ) = L_{gcd(m,n)} when v₂(m) = v₂(n) and gcd(Lₘ,Lₙ) ∈ {1,2} otherwise.",
       "Extend the characterization to general Lucas sequences Vₙ(P,Q)."
     ]
@@ -148,11 +154,13 @@
       "Mathlib.Data.Nat.Fib.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": ["Nat"],
+    "opens": [
+      "Nat"
+    ],
     "namespace": "FibonacciIdentitiesOQ02OQ01",
-    "lineCount": 180,
+    "lineCount": 266,
     "axiomCount": 0,
-    "theoremCount": 22,
+    "theoremCount": 27,
     "definitionCount": 2,
     "path": "Proofs/FibonacciIdentitiesOQ02OQ01.lean",
     "sorries": 0

@@ -91,6 +91,9 @@ theorem two_mul_fib_succ (n : ℕ) : 2 * fib (n + 1) = lucas n + fib n := by
   | one => rfl
   | more n ih1 ih2 =>
       show 2 * fib (n + 3) = lucas (n + 2) + fib (n + 2)
+      -- restate `ih2` with the index in canonical `n + 2` form (defeq to
+      -- `n + 1 + 1`) so `omega` unifies it with the `fib (n + 2)` below
+      have ih2' : 2 * fib (n + 2) = lucas (n + 1) + fib (n + 1) := ih2
       have h1 : fib (n + 2) = fib n + fib (n + 1) := fib_add_two
       have h2 : fib (n + 3) = fib (n + 1) + fib (n + 2) := fib_add_two
       have h3 : lucas (n + 2) = lucas n + lucas (n + 1) := lucas_add_two n
@@ -152,11 +155,11 @@ theorem lucas_gcd_two_four : Nat.gcd (lucas 2) (lucas 4) = 1 := by decide
 
 /-! ## The correct law: the "odd quotient" characterization
 
-For `m ≥ 2`, `Lₘ ∣ Lₙ ⟺ m ∣ n and n / m is odd`. We do not prove the general
-biconditional here (it requires the integer Lucas addition law
-`L_{a+2m} = L_{a+m}·Lₘ − (−1)ᵐ·L_a`, beyond the present Mathlib-backed scope);
-instead we verify the rule on the structurally decisive instances, contrasting
-the odd-quotient (divisible) and even-quotient (not divisible) cases. -/
+For `m ≥ 2`, `Lₘ ∣ Lₙ ⟺ m ∣ n and n / m is odd`. We verify the rule on the
+structurally decisive instances, contrasting the odd-quotient (divisible) and
+even-quotient (not divisible) cases. The **forward direction** — odd quotient
+implies divisibility — is then proved in full generality below
+(`lucas_dvd_of_odd_quotient`); only the converse remains for future work. -/
 
 /-- `L₂ ∣ L₆`: quotient `6 / 2 = 3` is odd. (`L₂ = 3 ∣ 18 = L₆`.) -/
 theorem lucas_two_dvd_lucas_six : lucas 2 ∣ lucas 6 := by decide
@@ -176,5 +179,88 @@ theorem lucas_three_not_dvd_lucas_six : ¬ lucas 3 ∣ lucas 6 := by decide
 `m ≥ 2` hypothesis (here `1 / 1 = 1` is odd, consistent with the rule, but the
 content is vacuous since `L₁ = 1`). -/
 theorem lucas_one_dvd (n : ℕ) : lucas 1 ∣ lucas n := by simp
+
+/-! ## The forward direction of the odd-quotient law, in full generality
+
+We now prove the "if" half of the odd-quotient characterization as a
+universally quantified theorem: for every `m` and every `n` with `m ∣ n` and
+`n / m` odd, `Lₘ ∣ Lₙ`. This subsumes the concrete instances above
+(`L₂ ∣ L₆`, `L₃ ∣ L₉`, …).
+
+The engine is the **Lucas shift identity**
+
+    L_{a+1+b} = F_{b+1} · L_{a+1} + F_b · L_a       (`lucas_add_shift`)
+
+— the Lucas analogue of `Nat.fib_add`, proved by two-step induction on `b`
+purely from the recurrences `Lₙ₊₂ = Lₙ + Lₙ₊₁` and `Fₙ₊₂ = Fₙ + Fₙ₊₁`, with no
+subtraction and no signs. Writing an odd multiple as `(2k+1)·m = m + 2·(k·m)`,
+the shift identity gives
+
+    L_{(2k+1)m} = F_{2km+1} · Lₘ + F_{2km} · L_{m-1},
+
+and `Lₘ ∣ F_{2km}` (because `Lₘ ∣ F_{2m} ∣ F_{2km}`, using `Nat.fib_dvd`), so
+both terms are divisible by `Lₘ`. -/
+
+/-- **Lucas shift identity** (the Lucas analogue of `Nat.fib_add`):
+`L_{a+1+b} = F_{b+1}·L_{a+1} + F_b·L_a`. Proved by two-step induction on `b`
+from the Lucas and Fibonacci recurrences — subtraction-free and sign-free, the
+shifted form chosen to avoid any `a - 1`. -/
+theorem lucas_add_shift (a b : ℕ) :
+    lucas (a + 1 + b) = fib (b + 1) * lucas (a + 1) + fib b * lucas a := by
+  induction b using Nat.twoStepInduction with
+  | zero => simp
+  | one =>
+      show lucas (a + 2) = fib 2 * lucas (a + 1) + fib 1 * lucas a
+      rw [lucas_add_two, fib_two, fib_one]; ring
+  | more b ih1 ih2 =>
+      have hrec : lucas (a + 1 + (b + 2))
+          = lucas (a + 1 + b) + lucas (a + 1 + (b + 1)) := by
+        rw [show a + 1 + (b + 2) = (a + 1 + b) + 2 from by ring, lucas_add_two,
+            show a + 1 + b + 1 = a + 1 + (b + 1) from by ring]
+      have ih2' : lucas (a + 1 + (b + 1))
+          = fib (b + 2) * lucas (a + 1) + fib (b + 1) * lucas a := by
+        have h : b + 1 + 1 = b + 2 := rfl
+        rw [← h]; exact ih2
+      have fA : fib (b + 2) = fib b + fib (b + 1) := fib_add_two
+      have fB : fib (b + 2 + 1) = fib (b + 1) + fib (b + 2) := fib_add_two
+      rw [hrec, ih1, ih2', fB, fA]; ring
+
+/-- The same identity with the index split as `m + b` for `m ≥ 1`, exposing the
+divisor `Lₘ` directly: `L_{m+b} = F_{b+1}·Lₘ + F_b·L_{m-1}`. -/
+theorem lucas_add_eq {m : ℕ} (hm : 1 ≤ m) (b : ℕ) :
+    lucas (m + b) = fib (b + 1) * lucas m + fib b * lucas (m - 1) := by
+  obtain ⟨a, rfl⟩ : ∃ a, m = a + 1 := ⟨m - 1, by omega⟩
+  simpa using lucas_add_shift a b
+
+/-- `Lₘ ∣ F_{2(km)}`: the Lucas number `Lₘ` divides every even-multiple-of-`m`
+Fibonacci number, from `Lₘ ∣ F_{2m}` (`lucas_dvd_fib_two_mul`) and
+`F_{2m} ∣ F_{2(km)}` (`Nat.fib_dvd`, since `2m ∣ 2(km)`). -/
+theorem lucas_dvd_fib_even_mul (m k : ℕ) : lucas m ∣ fib (2 * (k * m)) :=
+  (lucas_dvd_fib_two_mul m).trans (fib_dvd (2 * m) (2 * (k * m)) ⟨k, by ring⟩)
+
+/-- **Odd multiples divide (general).** For all `m, k`, `Lₘ ∣ L_{(2k+1)m}`.
+The odd-quotient case of the divisibility rule, proved universally. -/
+theorem lucas_dvd_lucas_odd_mul (m k : ℕ) :
+    lucas m ∣ lucas ((2 * k + 1) * m) := by
+  rcases Nat.eq_zero_or_pos m with hm | hm
+  · subst hm; simp
+  · rw [show (2 * k + 1) * m = m + 2 * (k * m) from by ring, lucas_add_eq hm]
+    exact Nat.dvd_add (dvd_mul_left _ _)
+      ((lucas_dvd_fib_even_mul m k).mul_right _)
+
+/-- **Forward direction of the odd-quotient law (general).** If `m ∣ n` and the
+quotient `n / m` is odd, then `Lₘ ∣ Lₙ`. This proves the "⟸" half of the
+characterization `Lₘ ∣ Lₙ ⟺ m ∣ n ∧ n/m odd` for all `m, n`, generalising the
+concrete instances `L₂ ∣ L₆` and `L₃ ∣ L₉`. The converse remains open. -/
+theorem lucas_dvd_of_odd_quotient {m n : ℕ} (hmn : m ∣ n) (hodd : Odd (n / m)) :
+    lucas m ∣ lucas n := by
+  rcases Nat.eq_zero_or_pos m with hm | hm
+  · rw [hm, Nat.div_zero] at hodd; exact absurd hodd (by decide)
+  · obtain ⟨q, hq⟩ := hmn
+    obtain ⟨k, hk⟩ := hodd
+    have hqv : q = 2 * k + 1 := by
+      rw [← hk, hq, Nat.mul_div_cancel_left q hm]
+    rw [hq, hqv, mul_comm]
+    exact lucas_dvd_lucas_odd_mul m k
 
 end FibonacciIdentitiesOQ02OQ01
