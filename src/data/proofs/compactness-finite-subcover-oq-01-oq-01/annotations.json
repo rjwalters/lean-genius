@@ -1,0 +1,135 @@
+[
+  {
+    "id": "ann-tube-docstring",
+    "proofId": "compactness-finite-subcover-oq-01-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 50
+    },
+    "type": "context",
+    "title": "The Tube Lemma, By Hand from Finite Subcovers",
+    "content": "The docstring states the tube lemma and its purpose. If $K\\subseteq Y$ is compact and $N\\subseteq X\\times Y$ is open containing the whole slice $\\{x_0\\}\\times K$, then some open neighbourhood $W$ of $x_0$ has its entire tube $W\\times K$ inside $N$ — the open set, a priori only fat near each slice point, is uniformly fat in a neighbourhood of $x_0$. Mathlib already has a generalized_tube_lemma via the filter/uniformity machinery, but this file deliberately does NOT cite it: it runs the original finite-subcover argument by hand, in the parent entry's spirit of re-deriving compactness results directly from Heine–Borel. The 'original' badge reflects that the derivation, not the result, is the contribution.",
+    "mathContext": "Compact $K\\subseteq Y$, open $N\\supseteq\\{x_0\\}\\times K$ $\\Rightarrow$ open $W\\ni x_0$ with $W\\times K\\subseteq N$. The tube lemma underlies closed-projection and Tychonoff for finite products.",
+    "significance": "context",
+    "relatedConcepts": [
+      "tube lemma",
+      "compactness",
+      "product topology",
+      "Tychonoff's theorem"
+    ],
+    "prerequisites": [
+      "open covers",
+      "product topology",
+      "compactness"
+    ]
+  },
+  {
+    "id": "ann-tube-core",
+    "proofId": "compactness-finite-subcover-oq-01-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "The Finite-Subcover Argument in the Product Setting",
+    "content": "tube_lemma_of_finite_subcover is the substance. At each $y\\in K$ the point $(x_0,y)$ lies in the open $N$, so isOpen_prod_iff yields a basic product box $u_y\\times w_y\\subseteq N$ with $x_0\\in u_y$, $y\\in w_y$; `choose` packages these into functions over the subtype $\\uparrow K$. The $Y$-projections $\\{w_y\\}$ cover $K$, so IsCompact.elim_finite_subcover — the single use of compactness — returns a finite $r$ with $K\\subseteq\\bigcup_{y\\in r} w_y$. The tube is $W = \\bigcap_{y\\in r} u_y$: open by Set.Finite.isOpen_biInter (a finite intersection of opens), containing $x_0$. For $(x,k)$ with $x\\in W$, $k\\in K$: $k$ lies in some cell $w_y$ ($y\\in r$), and $x\\in W\\subseteq u_y$, so $(x,k)\\in u_y\\times w_y\\subseteq N$. The finite intersection collapsing a pointwise family of neighbourhoods into one tube is the genuine content — the base-side dual of the parent's 'union the finite index Finsets' move.",
+    "mathContext": "$W = \\bigcap_{y\\in r} u_y$ open, $x_0\\in W$, $W\\times K\\subseteq N$. Compactness is used once, via elim_finite_subcover; the finite intersection keeps $W$ open.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isOpen_prod_iff",
+      "IsCompact.elim_finite_subcover",
+      "finite intersection of opens",
+      "basic product box"
+    ],
+    "prerequisites": [
+      "open cover extraction",
+      "Set.Finite.isOpen_biInter",
+      "choose tactic"
+    ]
+  },
+  {
+    "id": "ann-tube-compactspace",
+    "proofId": "compactness-finite-subcover-oq-01-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 108
+    },
+    "type": "concept",
+    "title": "The Classical Compact-Space Headline",
+    "content": "tube_lemma_compactSpace specializes the set-level lemma to a CompactSpace $Y$: an open $N$ with $(x_0,y)\\in N$ for *every* $y$ contains a full tube $W\\times\\text{univ}$. It follows immediately from the general statement with $K = \\text{univ}$ via isCompact_univ. This is the form found in textbooks (Munkres §26), and casting the by-hand lemma in the more flexible set-level form means the classical version is a one-line corollary — while the empty-slice and single-point cases also fall out of the same argument with no separate handling.",
+    "mathContext": "$Y$ compact, $\\{x_0\\}\\times Y\\subseteq N$ open $\\Rightarrow W\\times Y\\subseteq N$. Proof: apply the general lemma with $K = \\text{univ}$, $\\text{isCompact\\_univ}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "CompactSpace",
+      "isCompact_univ",
+      "specialization"
+    ],
+    "prerequisites": [
+      "isCompact_univ"
+    ]
+  },
+  {
+    "id": "ann-tube-forall",
+    "proofId": "compactness-finite-subcover-oq-01-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 116
+    },
+    "type": "concept",
+    "title": "Pointwise Restatement",
+    "content": "tube_lemma_forall repackages the tube as a pointwise quantifier: there is an open $W\\ni x_0$ with $(x,y)\\in N$ for all $x\\in W$ and all $y\\in K$. This is the form in which the tube lemma is most often applied — unfolding the product-set containment $W\\times K\\subseteq N$ into membership of every pair. The proof simply destructures the set-level conclusion.",
+    "mathContext": "$\\exists W$ open, $x_0\\in W$, $\\forall x\\in W,\\ \\forall y\\in K,\\ (x,y)\\in N$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "pointwise quantifier",
+      "product subset"
+    ],
+    "prerequisites": [
+      "Set.prod membership"
+    ]
+  },
+  {
+    "id": "ann-tube-nhds",
+    "proofId": "compactness-finite-subcover-oq-01-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 128
+    },
+    "type": "concept",
+    "title": "Neighbourhood-Filter Consequence",
+    "content": "tube_lemma_mem_nhds connects the by-hand tube to the filter view of the product topology: alongside the tube $W\\times K\\subseteq N$, it records that $N$ is a neighbourhood of every slice point $(x_0, k)$ for $k\\in K$ (via IsOpen.mem_nhds, since $N$ is open and contains each $(x_0,k)$). The product subset, the pointwise quantifier, and the neighbourhood-filter membership are three faces of the same fact, exposed together to match how the tube lemma is consumed downstream (closedness of projections, continuity, Tychonoff).",
+    "mathContext": "$W\\times K\\subseteq N$ and $N\\in\\mathcal{N}(x_0,k)$ for every $k\\in K$, via IsOpen.mem_nhds.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "neighbourhood filter",
+      "IsOpen.mem_nhds",
+      "product topology"
+    ],
+    "prerequisites": [
+      "neighbourhood filters"
+    ]
+  },
+  {
+    "id": "ann-tube-icc",
+    "proofId": "compactness-finite-subcover-oq-01-oq-01",
+    "range": {
+      "startLine": 129,
+      "endLine": 137
+    },
+    "type": "context",
+    "title": "Concrete Instance over ℝ",
+    "content": "isOpen_tube_Icc instantiates the abstract lemma at the compact interval $[0,1] = \\text{Icc}\\,0\\,1$: any open $N\\subseteq\\mathbb{R}^2$ containing the vertical segment $\\{0\\}\\times[0,1]$ contains a genuine tube $W\\times[0,1]$ around it, with $W$ an open neighbourhood of 0. It follows from tube_lemma_of_finite_subcover with $K = [0,1]$, compact by isCompact_Icc. This grounds the general statement in the familiar Euclidean picture — and tacitly illustrates why compactness of the fibre is essential (the lemma fails for a non-compact fibre like $\\mathbb{R}$, where $\\{(x,y):|xy|<1\\}$ contains no tube around $\\{0\\}\\times\\mathbb{R}$).",
+    "mathContext": "$\\{0\\}\\times[0,1]\\subseteq N$ open $\\Rightarrow W\\times[0,1]\\subseteq N$ in $\\mathbb{R}^2$, via isCompact_Icc.",
+    "significance": "context",
+    "relatedConcepts": [
+      "isCompact_Icc",
+      "Euclidean plane",
+      "worked example",
+      "necessity of compactness"
+    ],
+    "prerequisites": [
+      "isCompact_Icc",
+      "real intervals"
+    ]
+  }
+]
