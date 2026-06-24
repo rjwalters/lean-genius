@@ -1,0 +1,153 @@
+{
+  "slug": "cevas-theorem-non-euclidean-oq-01-oq-01",
+  "title": "Prove the flat-limit convergence formally: sin_κ(x) → x as κ → 0, so the curv...",
+  "phase": "OBSERVE",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sin_\\kappa(x) := \\frac{\\sin(\\sqrt{\\kappa}\\,x)}{\\sqrt{\\kappa}} \\;\\xrightarrow[\\kappa\\to 0]{}\\; x, \\qquad\\text{so the curvature-}\\kappa\\text{ Ceva condition} \\to \\text{the Euclidean one}",
+    "plain": "Prove formally that the curvature-scaled sine sin_κ(x) converges to x as the curvature κ → 0, so that the curvature-κ Ceva ratio condition on a triangle degenerates continuously to the flat (Euclidean) Ceva condition for triangles on a manifold of shrinking curvature.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T10:41:37-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: flat limit sin_κ(x)→x as κ→0 proved two-sidedly (verified, 0-axiom, 8 thm/151L); answers parent OQ-01. PR opened.",
+    "builtItems": [
+      "tendsto_sin_mul_div / tendsto_sinh_mul_div (slope kernels) in Proofs/CevasTheoremNonEuclideanOQ01OQ01.lean",
+      "sqrt_tendsto_nhdsGT / sqrt_neg_tendsto_nhdsLT (√κ→0⁺ change of variables)",
+      "tendsto_sinKappa_nhdsGT / nhdsLT / punctured / flat (the OQ-01 answer) + sinKappa_ceva_ratio_tendsto"
+    ],
+    "insights": [
+      "sin_κ(x) = sin(√κ·x)/√κ is, after s=√κ, the slope of t↦sin(x·t) at 0; its limit is the derivative x·cos 0 = x — flat limit = a derivative, not an ε–δ estimate.",
+      "Phrasing the kernel as the slope of t↦sin(x·t) (not x·(sin u/u)) makes the limit uniform in x, eliminating the apparent 0/0 at x=0.",
+      "The two geometries approach κ=0 from opposite sides (spherical 𝓝[>]0, hyperbolic 𝓝[<]0); filter identities 𝓝[<]⊔𝓝[>]=𝓝[≠] and 𝓝[≠]⊔pure=𝓝 glue them plus the value at 0 into a full two-sided limit."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Quantify: explicit O(κ) error bound for sin_κ(x)−x (rate of flat convergence).",
+      "Prove the flat limit for the curvature cosine cos_κ and combine to deform the curvature-κ law of cosines to the Euclidean one."
+    ],
+    "markdown": "# Knowledge Base: cevas-theorem-non-euclidean-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "geometry",
+    "non-euclidean-geometry",
+    "ceva",
+    "curvature",
+    "research"
+  ],
+  "relatedProofs": [
+    "cevas-theorem",
+    "cevas-theorem-non-euclidean",
+    "cevas-theorem-non-euclidean-oq-01",
+    "cevas-theorem-non-euclidean-oq-01-oq-01",
+    "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-non-euclidean-oq-02-oq-01",
+    "cevas-theorem-non-euclidean-oq-02-oq-01-oq-01",
+    "cevas-theorem-non-euclidean-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T18:10:26.102Z",
+  "lastUpdate": "2026-06-24T18:10:26.145Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CevasTheoremNonEuclidean.lean",
+      "filename": "CevasTheoremNonEuclidean.lean",
+      "lineCount": 528,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclidean.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ01.lean",
+      "lineCount": 129,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ01OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ01OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "lineCount": 341,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01OQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ03.lean",
+      "filename": "CevasTheoremNonEuclideanOQ03.lean",
+      "lineCount": 175,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ03.lean"
+    }
+  ]
+}
