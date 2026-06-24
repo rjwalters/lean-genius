@@ -1,0 +1,50 @@
+[
+  {
+    "id": "wq-ann-header",
+    "proofId": "wilsons-theorem-oq-06",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "The Wilson Quotient and Wilson Primes",
+    "content": "States the goal: Wilson's theorem gives p ∣ (p−1)!+1, so W_p = ((p−1)!+1)/p is an integer (the Wilson quotient). The entry defines W_p and proves the three equivalent Wilson-prime conditions, then certifies the small Wilson primes 5 and 13 with kernel decide (axiom-free, unlike native_decide). The definition `wilsonQuotient p = ((p−1)!+1)/p` is stated in ℕ; its integrality is the next theorem.",
+    "mathContext": "$W_p=\\dfrac{(p-1)!+1}{p}\\in\\mathbb{Z}$ for prime $p$; $p$ is a Wilson prime iff $p\\mid W_p$.",
+    "significance": "context",
+    "relatedConcepts": ["Wilson's theorem", "Wilson quotient", "Wilson primes", "decide vs native_decide"],
+    "prerequisites": ["factorials and divisibility", "Wilson's theorem"]
+  },
+  {
+    "id": "wq-ann-integrality",
+    "proofId": "wilsons-theorem-oq-06",
+    "range": { "startLine": 54, "endLine": 75 },
+    "type": "insight",
+    "title": "Integrality: Wilson in ℕ and p·W_p = (p−1)!+1",
+    "content": "prime_dvd_factorial_pred_add_one re-derives Wilson's theorem as the ℕ divisibility p ∣ (p−1)!+1: from ZMod.wilsons_lemma ((p−1)! = −1 in ZMod p), the cast of (p−1)!+1 is 0 in ZMod p, and ZMod.natCast_eq_zero_iff converts this to divisibility. mul_wilsonQuotient then applies Nat.mul_div_cancel' to get p·W_p = (p−1)!+1 exactly — this is what makes W_p a genuine quotient. wilsonQuotient_pos notes W_p > 0 because p·W_p is a successor (hence nonzero).",
+    "mathContext": "$((p-1)!+1 : \\mathrm{ZMod}\\,p)=0 \\Rightarrow p\\mid (p-1)!+1 \\Rightarrow p\\cdot W_p=(p-1)!+1.$",
+    "significance": "key",
+    "relatedConcepts": ["ZMod.wilsons_lemma", "ZMod.natCast_eq_zero_iff", "Nat.mul_div_cancel'", "cast bridge"],
+    "prerequisites": ["Wilson's lemma in ZMod", "exact division in ℕ"]
+  },
+  {
+    "id": "wq-ann-equiv",
+    "proofId": "wilsons-theorem-oq-06",
+    "range": { "startLine": 77, "endLine": 109 },
+    "type": "insight",
+    "title": "The Wilson-Prime Equivalence is One Cancellation",
+    "content": "dvd_wilsonQuotient_iff proves p ∣ W_p ⟺ p² ∣ (p−1)!+1: rewrite (p−1)!+1 as p·W_p and p² as p·p, then Nat.mul_dvd_mul_iff_left cancels the common factor p. So the entire equivalence reduces to left-cancellation of divisibility — the number-theoretic depth lives only in Wilson's theorem upstream. WilsonPrime packages p.Prime ∧ p² ∣ (p−1)!+1; wilsonPrime_iff_dvd_wilsonQuotient restates it via the quotient. sq_dvd_iff_factorial_cast_eq_neg_one gives the ZMod (p²) congruence form (p−1)! ≡ −1 (mod p²), which holds for ALL p — primality is not needed for the equivalence, only for the divisibility to occur.",
+    "mathContext": "$p\\mid W_p \\iff p\\cdot p\\mid p\\cdot W_p=(p-1)!+1 \\iff p^2\\mid(p-1)!+1 \\iff (p-1)!\\equiv -1\\ (\\mathrm{mod}\\ p^2).$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.mul_dvd_mul_iff_left", "left-cancellation", "ZMod (p²) congruence", "Wilson prime definition"],
+    "prerequisites": ["divisibility cancellation", "the quotient identity p·W_p = (p−1)!+1"]
+  },
+  {
+    "id": "wq-ann-certs",
+    "proofId": "wilsons-theorem-oq-06",
+    "range": { "startLine": 111, "endLine": 126 },
+    "type": "technique",
+    "title": "Axiom-Free Certificates: 5 and 13 by Kernel decide",
+    "content": "wilsonPrime_five (4!+1 = 25 = 5², so 25 ∣ 25) and wilsonPrime_thirteen (12!+1 = 479001601 = 169·2834329, so 169 ∣ 479001601) are discharged by ordinary kernel `decide`. The primality halves are norm_num; the divisibility halves reduce factorials by Lean's GMP-accelerated kernel Nat arithmetic. Crucially this uses `decide`, NOT `native_decide`, so the certificates do not depend on Lean.ofReduceBool — #print axioms confirms only propext/Classical.choice/Quot.sound. wilsonQuotient_five records W₅ = 5.",
+    "mathContext": "$4!+1=25=5^2,\\quad 12!+1=479001601=13^2\\cdot 2834329.$",
+    "significance": "key",
+    "relatedConcepts": ["kernel decide", "native_decide", "Lean.ofReduceBool", "GMP Nat reduction", "Wilson primes 5 and 13"],
+    "prerequisites": ["decidability of divisibility", "factorial computation"]
+  }
+]
