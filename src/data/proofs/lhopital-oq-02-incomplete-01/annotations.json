@@ -1,0 +1,38 @@
+[
+  {
+    "id": "lhop02inc-ann-01",
+    "proofId": "lhopital-oq-02-incomplete-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 86
+    },
+    "type": "result",
+    "title": "(ln x)/x → 0 from the ∞/∞ rule",
+    "content": "log_div_id_atTop instantiates the parent's LHopitalInfty.lhopital_infty_atTop with f = log, g = id. The derivative hypotheses are Real.hasDerivAt_log (ne_of_gt hx) (giving f' x = x⁻¹ on Ioi 0) and hasDerivAt_id' (giving g' = 1). The denominator derivative 1 is nonzero, g = id diverges (tendsto_id), and the easy ratio f'/g' = x⁻¹/1 → 0 is supplied by tendsto_inv_atTop_zero (after a `simpa` to clear the /1). The parent rule then returns (log x)/x → 0.",
+    "mathContext": "$\\lim_{x\\to\\infty}\\frac{\\ln x}{x}=0$: the logarithm grows slower than the identity (the $c=0$ case)."
+  },
+  {
+    "id": "lhop02inc-ann-02",
+    "proofId": "lhopital-oq-02-incomplete-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 108
+    },
+    "type": "result",
+    "title": "x/eˣ → 0: exponential dominance",
+    "content": "id_div_exp_atTop uses f = id, g = exp. Derivatives come from hasDerivAt_id' (f' = 1) and Real.hasDerivAt_exp (g' x = eˣ). The denominator derivative eˣ is nonzero via (Real.exp_pos x).ne', and g = exp diverges by Real.tendsto_exp_atTop. The auxiliary ratio f'/g' = 1/eˣ = (eˣ)⁻¹ → 0 is obtained by composing tendsto_inv_atTop_zero with Real.tendsto_exp_atTop and rewriting 1/eˣ via one_div. The parent rule yields x/eˣ → 0 — the canonical ∞/∞ example the parent file only mentioned in commentary.",
+    "mathContext": "$\\lim_{x\\to\\infty}\\frac{x}{e^x}=0$: the exponential dominates the identity (the $c=0$ case)."
+  },
+  {
+    "id": "lhop02inc-ann-03",
+    "proofId": "lhopital-oq-02-incomplete-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 122
+    },
+    "type": "technique",
+    "title": "(x + ln x)/x → 1: the nonzero-limit case",
+    "content": "id_add_log_div_id_atTop exercises the general c ≠ 0 form with f = x + log x, g = id. The derivative of f is assembled by (hasDerivAt_id' x).add (Real.hasDerivAt_log (ne_of_gt hx)), giving f' x = 1 + x⁻¹; g' = 1. The ratio f'/g' = 1 + x⁻¹ → 1 + 0 = 1 via tendsto_const_nhds.add tendsto_inv_atTop_zero (a `simpa` normalizes 1 + 0 to 1). With g = id → +∞, the parent rule returns (x + log x)/x → 1, confirming the theorem handles a genuinely nonzero target limit rather than only vanishing ratios.",
+    "mathContext": "$\\lim_{x\\to\\infty}\\frac{x+\\ln x}{x}=1$: the leading term $x$ dominates (the general $c\\ne 0$ case, here $c=1$)."
+  }
+]
