@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-banach-perturb-pmap",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 42, "endLine": 45 },
+    "type": "definition",
+    "title": "The perturbed map f = id + g",
+    "content": "Defines `pmap g x = x + g x`, the perturbation of the identity by `g`. Writing the object of study as `f = id + g` (rather than an abstract near-linear map) is what makes the whole argument elementary: every estimate below reduces to controlling `g` against the identity. The `@[simp]` unfolding lemma `pmap_apply` lets later proofs rewrite `pmap g x` to `x + g x` automatically.",
+    "mathContext": "$f(x) = x + g(x)$, with $g$ $k$-Lipschitz and $k < 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["perturbation of the identity", "Newton's method", "Neumann series"],
+    "prerequisites": ["normed group", "Lipschitz map"]
+  },
+  {
+    "id": "ann-banach-perturb-expansion",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 47, "endLine": 60 },
+    "type": "technique",
+    "title": "Expansion estimate from the triangle inequality",
+    "content": "The core inequality `(1 − k)‖x − y‖ ≤ ‖f x − f y‖`. The trick is the algebraic identity `x − y = (f x − f y) − (g x − g y)`, so by the triangle inequality `‖x − y‖ ≤ ‖f x − f y‖ + ‖g x − g y‖ ≤ ‖f x − f y‖ + k‖x − y‖`. Rearranging gives the bound, closed by `nlinarith`. Crucially this uses only the normed-group structure and the Lipschitz bound on `g` — no completeness is required, which is why injectivity is cheaper than surjectivity.",
+    "mathContext": "$\\|x-y\\| \\le \\|fx - fy\\| + k\\|x-y\\| \\;\\Rightarrow\\; (1-k)\\|x-y\\| \\le \\|fx-fy\\|.$",
+    "significance": "key",
+    "relatedConcepts": ["triangle inequality", "reverse triangle inequality", "Lipschitz constant"],
+    "prerequisites": ["normed group", "triangle inequality"]
+  },
+  {
+    "id": "ann-banach-perturb-antilipschitz",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 62, "endLine": 73 },
+    "type": "concept",
+    "title": "Repackaging as an antilipschitz bound",
+    "content": "`perturb_antilipschitz` converts the expansion estimate into the structured fact `AntilipschitzWith (1−k)⁻¹ (pmap g)`, i.e. `dist x y ≤ (1−k)⁻¹ · dist (f x) (f y)`. The delicate part is the `ℝ≥0` ↔ `ℝ` cast bookkeeping (`NNReal.coe_inv`, `NNReal.coe_sub hk.le`, `NNReal.coe_one`): subtraction in `ℝ≥0` is truncated, so `coe_sub` needs the hypothesis `k ≤ 1` to commute with the cast. Once packaged, antilipschitz-ness is the reusable interface from which injectivity and the inverse's Lipschitz bound both follow.",
+    "mathContext": "$\\mathrm{dist}(x,y) \\le (1-k)^{-1}\\,\\mathrm{dist}(fx, fy).$",
+    "significance": "key",
+    "relatedConcepts": ["antilipschitz map", "NNReal coercion", "bi-Lipschitz embedding"],
+    "prerequisites": ["antilipschitz maps", "NNReal arithmetic"]
+  },
+  {
+    "id": "ann-banach-perturb-injective",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 75, "endLine": 82 },
+    "type": "insight",
+    "title": "Injectivity and continuity for free",
+    "content": "Two one-liners harvest the structural payoff. `perturb_injective` is just `.injective` on the antilipschitz bound — an antilipschitz map collapses no distinct points, since `dist x y ≤ C · dist (f x) (f y)` forces `f x = f y ⟹ x = y`. `perturb_continuous` is `continuous_id.add hg.continuous`: a sum of continuous maps, using that Lipschitz maps are continuous. Neither needs completeness.",
+    "mathContext": "$f x = f y \\Rightarrow \\mathrm{dist}(x,y) \\le (1-k)^{-1}\\cdot 0 = 0 \\Rightarrow x = y.$",
+    "significance": "supporting",
+    "relatedConcepts": ["injectivity", "continuity of Lipschitz maps"],
+    "prerequisites": ["antilipschitz maps", "continuity"]
+  },
+  {
+    "id": "ann-banach-perturb-surjective",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 84, "endLine": 105 },
+    "type": "technique",
+    "title": "Surjectivity as a Banach fixed point",
+    "content": "The heart of the result and the only place completeness enters. To solve `f x = y`, rewrite it as `x = y − g x`: a fixed-point equation for the map `T y(x) = y − g x`. Since `‖T(a) − T(b)‖ = ‖g a − g b‖ ≤ k‖a − b‖` with `k < 1`, `T` is a `ContractingWith k`, so `ContractingWith.fixedPoint` produces a unique fixed point `fp` with `y − g fp = fp`. Rearranging via `sub_eq_iff_eq_add` gives `fp + g fp = y`, i.e. `f fp = y`. This is the canonical 'second application' of Banach's theorem, alongside Picard–Lindelöf.",
+    "mathContext": "$f x = y \\iff x = y - g x \\iff x \\text{ is a fixed point of } x \\mapsto y - g x.$",
+    "significance": "key",
+    "relatedConcepts": ["Banach contraction principle", "fixed-point equation", "Picard iteration", "completeness"],
+    "prerequisites": ["contraction mapping theorem", "complete metric space"]
+  },
+  {
+    "id": "ann-banach-perturb-homeo",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 107, "endLine": 122 },
+    "type": "concept",
+    "title": "Assembling the homeomorphism E ≃ₜ E",
+    "content": "`perturbHomeo` packages everything into a topological isomorphism. The bijection comes from `Equiv.ofBijective (pmap g)`; `continuous_toFun` is `perturb_continuous`; and `continuous_invFun` is the subtle half — continuity of the inverse follows because the inverse is a right inverse of an antilipschitz map, hence Lipschitz (`AntilipschitzWith.to_rightInverse`) and therefore continuous. The map is `noncomputable` because the inverse is extracted from the abstract fixed point.",
+    "mathContext": "$f \\in \\mathrm{Homeo}(E,E)$: a continuous bijection with continuous inverse.",
+    "significance": "key",
+    "relatedConcepts": ["homeomorphism", "Equiv.ofBijective", "open mapping principle"],
+    "prerequisites": ["homeomorphisms", "antilipschitz maps"]
+  },
+  {
+    "id": "ann-banach-perturb-inverse-bound",
+    "proofId": "banach-fixed-point-oq-01-oq-02",
+    "range": { "startLine": 124, "endLine": 148 },
+    "type": "insight",
+    "title": "The same estimate, read backwards: Lip(f⁻¹) ≤ (1−k)⁻¹",
+    "content": "`symm_norm_sub_le` gives the sharp quantitative payoff `‖f⁻¹ a − f⁻¹ b‖ ≤ (1−k)⁻¹‖a − b‖`. The proof evaluates the expansion estimate `norm_sub_perturb_ge` at the preimages `f⁻¹ a, f⁻¹ b`, then uses `f (f⁻¹ a) = a` (via `apply_symm_apply`) to substitute, turning the lower bound on `f` into the upper bound on `f⁻¹`. One inequality does double duty — the lower bound on the forward map is the inverse's modulus of continuity. This explicit constant `1/(1−k)` is the quantitative advantage over Mathlib's general `ApproximatesLinearOn.toHomeomorph`.",
+    "mathContext": "$(1-k)\\|f^{-1}a - f^{-1}b\\| \\le \\|a-b\\| \\;\\Rightarrow\\; \\|f^{-1}a - f^{-1}b\\| \\le (1-k)^{-1}\\|a-b\\|.$",
+    "significance": "key",
+    "relatedConcepts": ["modulus of continuity", "a priori error estimate", "inverse function theorem"],
+    "prerequisites": ["Lipschitz maps", "inverse functions"]
+  }
+]
