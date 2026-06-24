@@ -1,0 +1,95 @@
+{
+  "slug": "fibonacci-identities-oq-02-oq-01-oq-01",
+  "title": "The Fibonacci–Lucas quadratic identity Lₙ²−5Fₙ²=4(−1)ⁿ and gcd(Fₙ,Lₙ)∈{1,2}",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "L_n^2 - 5\\,F_n^2 = 4\\,(-1)^n \\quad (\\forall n),\\qquad \\gcd(F_n, L_n) \\mid 2.",
+    "plain": "The parent (fibonacci-identities-oq-02-oq-01) isolated the product identity F_{2n}=Fₙ·Lₙ and proved gcd(Fₙ,Lₙ)∣2 only as a remark. This child proves the complementary degree-2 identity Lₙ²−5Fₙ²=4(−1)ⁿ as a universally quantified theorem over ℤ (the integer residue of Binet's φψ=−1), derives the parity forms L_{2k}²=5F_{2k}²+4 and L_{2k+1}²=5F_{2k+1}²−4, and gives a clean proof of gcd(Fₙ,Lₙ)∈{1,2}.",
+    "whyMatters": [
+      "Completes the pair of fundamental same-/double-index Fibonacci–Lucas relations (product + quadratic).",
+      "Supplies the √5-eliminating integer identity behind Binet's formulas as a verified 0-axiom theorem."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lₙ²−5Fₙ²=4(−1)ⁿ over ℤ for all n (lucas_sq_sub_five_fib_sq)",
+      "Lₙ²=5Fₙ²+4(−1)ⁿ and parity forms L_{2k}²=5F_{2k}²+4, L_{2k+1}²=5F_{2k+1}²−4",
+      "gcd(Fₙ,Lₙ)∣2, hence gcd(Fₙ,Lₙ)∈{1,2}, both values attained"
+    ],
+    "open": [],
+    "goal": "Prove the quadratic Fibonacci–Lucas identity and extract gcd(Fₙ,Lₙ)∈{1,2}."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Proved and verified; PR opened.",
+    "blockers": [],
+    "nextAction": "None — entry complete (0 sorries, 0 axioms).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: quadratic identity Lₙ²−5Fₙ²=4(−1)ⁿ over ℤ + parity specialisations + gcd(Fₙ,Lₙ)∈{1,2}. 16 thm/2 def, 0 sorry/0 axiom, verified on host (Lean 4.26.0).",
+    "builtItems": [
+      "fib_sq_sub: sign-clean Cassini relative Fₙ₊₁²−Fₙ₊₁Fₙ−Fₙ²=(−1)ⁿ over ℤ (one-step induction) in Proofs/FibonacciIdentitiesOQ02OQ01OQ01.lean:101",
+      "lucas_sq_sub_five_fib_sq: headline Lₙ²−5Fₙ²=4(−1)ⁿ via bridge + linear_combination :120",
+      "lucas_sq_eq / lucas_sq_even / lucas_sq_odd: rearrangement + parity forms :130,135,141",
+      "gcd_fib_lucas_dvd_two / gcd_fib_lucas_eq_one_or_two: gcd(Fₙ,Lₙ)∈{1,2} :152,168"
+    ],
+    "insights": [
+      "The quadratic identity reduces entirely to the single Fibonacci identity Fₙ₊₁²−Fₙ₊₁Fₙ−Fₙ²=(−1)ⁿ once the bridge Lₙ=2Fₙ₊₁−Fₙ is substituted; linear_combination 4·(core) closes it.",
+      "That core identity — a sign-clean Cassini relative — closes under a ONE-step induction, not two: substituting Fₙ₊₂=Fₙ+Fₙ₊₁ negates the quadratic form, so its value just flips sign. No coupled invariant needed.",
+      "(−1)ⁿ collapses cleanly with Even.neg_one_pow ⟨k, by ring⟩ / Odd.neg_one_pow ⟨k, by ring⟩ for the parity specialisations.",
+      "gcd(Fₙ,Lₙ)∣2 needs only d∣Lₙ+Fₙ=2Fₙ₊₁ plus Nat.fib_coprime_fib_succ; the quadratic identity is not even required for it."
+    ],
+    "mathlibGaps": [
+      "Mathlib still lacks the Lucas integer sequence; reused the parent's structural lucasPair/lucas definition."
+    ],
+    "nextSteps": [
+      "Prove the exact gcd biconditional gcd(Fₙ,Lₙ)=2 ⟺ 3∣n.",
+      "Generalise to Vₙ(P,Q)²−D·Uₙ(P,Q)²=4Qⁿ for arbitrary Lucas sequences (D=P²−4Q)."
+    ],
+    "markdown": "# Knowledge Base: fibonacci-identities-oq-02-oq-01-oq-01\n\n## Problem Understanding\n\nFollow-up to the parent Lucas-divisibility entry. The parent proved the product identity F_{2n}=Fₙ·Lₙ and noted gcd(Fₙ,Lₙ)∣2; this child supplies the quadratic companion Lₙ²−5Fₙ²=4(−1)ⁿ as a universally quantified theorem and gives the clean gcd∈{1,2} result.\n\n## Insights\n\n- Reduce to the pure Fibonacci identity Fₙ₊₁²−Fₙ₊₁Fₙ−Fₙ²=(−1)ⁿ via the bridge Lₙ=2Fₙ₊₁−Fₙ.\n- That Fibonacci identity closes under ONE-step induction (the form negates each step).\n\n## Dead Ends\n\n- Attempting the quadratic identity directly by two-step induction generates a coupled mixed identity (LₙLₙ₊₁−5FₙFₙ₊₁=2(−1)ⁿ); routing through the Fibonacci form avoids the coupling entirely.\n"
+  },
+  "tags": [
+    "number-theory",
+    "fibonacci",
+    "lucas-numbers",
+    "quadratic-identity",
+    "gcd"
+  ],
+  "relatedProofs": [
+    "fibonacci-identities",
+    "fibonacci-identities-oq-01",
+    "fibonacci-identities-oq-02",
+    "fibonacci-identities-oq-02-oq-01",
+    "fibonacci-identities-oq-02-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T08:20:00.000Z",
+  "lastUpdate": "2026-06-24T08:30:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FibonacciIdentitiesOQ02OQ01OQ01.lean",
+      "filename": "FibonacciIdentitiesOQ02OQ01OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FibonacciIdentitiesOQ02OQ01OQ01.lean"
+    }
+  ]
+}
