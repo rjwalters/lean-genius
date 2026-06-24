@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "fundamental-arithmetic-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "concept",
+    "title": "The Euler Product as the Analytic Form of Unique Factorization",
+    "content": "The docblock frames the entry: Mathlib's riemannZeta_eulerProduct_tprod already proves ζ(s) = ∏ₚ(1-p⁻ˢ)⁻¹ for Re s > 1, and its proof is precisely the Fundamental Theorem of Arithmetic — the engine EulerProduct.eulerProduct_completely_multiplicative identifies partial products over p-smooth numbers with partial sums via unique factorization. What this file contributes is the historically decisive specialisation that Mathlib does not state: combining the Euler product with the closed-form special values ζ(2)=π²/6 and ζ(4)=π⁴/90. The single import is Mathlib; opens are Real (for the π notation as Real.pi), Complex, Filter, and Topology.",
+    "mathContext": "The Euler product expresses $\\sum_{n\\ge 1} n^{-s} = \\prod_p (1-p^{-s})^{-1}$. Expanding each factor as a geometric series $(1-p^{-s})^{-1} = \\sum_{k\\ge 0} p^{-ks}$ and multiplying over all primes, the coefficient of $n^{-s}$ counts the number of ways to write $n = \\prod_p p^{k_p}$ — which is exactly one, by the Fundamental Theorem of Arithmetic.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "riemannZeta_eulerProduct_tprod",
+      "EulerProduct.eulerProduct_completely_multiplicative",
+      "Fundamental Theorem of Arithmetic",
+      "Mathlib.NumberTheory.EulerProduct.DirichletLSeries"
+    ],
+    "prerequisites": [
+      "Dirichlet series",
+      "infinite products (tprod / HasProd)",
+      "the Riemann zeta function for Re s > 1"
+    ]
+  },
+  {
+    "id": "ann-basel-product",
+    "proofId": "fundamental-arithmetic-oq-03",
+    "range": {
+      "startLine": 40,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "Euler's Product for π²/6 in Three Forms",
+    "content": "The headline theorem euler_basel_product_tprod proves ∏'(p : Nat.Primes), (1-p⁻²)⁻¹ = π²/6 in a single rewrite: instantiate riemannZeta_eulerProduct_tprod at s=2 (using the trivial hypothesis 1 < (2:ℂ).re, discharged by norm_num in the private lemma one_lt_re_two) and rewrite the result with riemannZeta_two. Two further forms are given: euler_basel_product_hasProd packages it as a HasProd statement (asserting unconditional, order-independent convergence of the product), and euler_basel_product_tendsto states that the finite partial products ∏_{p < n}(1-p⁻²)⁻¹ over primesBelow n tend to π²/6 — the form closest to Euler's original sieve computation.",
+    "mathContext": "At $s=2$: $\\prod_p (1-p^{-2})^{-1} = \\prod_p \\frac{p^2}{p^2-1} = \\zeta(2) = \\frac{\\pi^2}{6}$ (Euler, 1737). The HasProd form records that the product is independent of the ordering of the primes; the Tendsto form expresses convergence of finite partial products indexed by Nat.primesBelow n.",
+    "significance": "key",
+    "relatedConcepts": [
+      "riemannZeta_two",
+      "Basel problem",
+      "HasProd",
+      "Nat.primesBelow",
+      "Filter.Tendsto"
+    ],
+    "prerequisites": [
+      "ζ(2) = π²/6 (Basel problem)",
+      "complex cpow and the bound 1 < (2:ℂ).re"
+    ]
+  },
+  {
+    "id": "ann-zeta-four",
+    "proofId": "fundamental-arithmetic-oq-03",
+    "range": {
+      "startLine": 69,
+      "endLine": 86
+    },
+    "type": "insight",
+    "title": "The Same Recipe at s = 4: π⁴/90",
+    "content": "euler_zeta_four_product_tprod and euler_zeta_four_product_hasProd repeat the construction at s=4, combining the Euler product with riemannZeta_four : ζ(4) = π⁴/90 to obtain ∏ₚ(1-p⁻⁴)⁻¹ = π⁴/90. This demonstrates the uniformity of the method — any closed-form even-argument zeta value yields a corresponding closed-form product over primes — and points toward the general ζ(2k) family noted in the open questions.",
+    "mathContext": "At $s=4$: $\\prod_p (1-p^{-4})^{-1} = \\zeta(4) = \\frac{\\pi^4}{90}$. More generally $\\zeta(2k) = \\frac{(-1)^{k+1} B_{2k} (2\\pi)^{2k}}{2(2k)!}$, so every even argument produces an explicit prime-product identity.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "riemannZeta_four",
+      "Bernoulli numbers",
+      "even zeta values"
+    ],
+    "prerequisites": [
+      "ζ(4) = π⁴/90"
+    ]
+  },
+  {
+    "id": "ann-nonvanishing",
+    "proofId": "fundamental-arithmetic-oq-03",
+    "range": {
+      "startLine": 88,
+      "endLine": 103
+    },
+    "type": "insight",
+    "title": "Non-Vanishing of the Special Values via the Euler Product",
+    "content": "basel_value_ne_zero and zeta_four_value_ne_zero record that π²/6 ≠ 0 and π⁴/90 ≠ 0, proved by rewriting back through riemannZeta_two / riemannZeta_four and applying riemannZeta_ne_zero_of_one_lt_re. Conceptually this is the Euler-product viewpoint on non-vanishing: a convergent infinite product whose factors (1-p⁻ˢ)⁻¹ are each nonzero cannot itself vanish. This same non-vanishing of ζ on Re s > 1 (and its boundary refinement on Re s = 1) is the analytic input to the prime number theorem.",
+    "mathContext": "Each Euler factor $(1-p^{-s})^{-1}$ is a nonzero complex number for $\\mathrm{Re}\\,s > 1$, and the product converges; hence $\\zeta(s) \\neq 0$ there. Mathlib's riemannZeta_ne_zero_of_one_lt_re provides exactly this.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "riemannZeta_ne_zero_of_one_lt_re",
+      "non-vanishing of zeta",
+      "prime number theorem"
+    ],
+    "prerequisites": [
+      "convergent products of nonzero factors are nonzero"
+    ]
+  }
+]

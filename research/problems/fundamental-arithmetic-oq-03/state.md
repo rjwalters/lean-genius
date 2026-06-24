@@ -1,25 +1,27 @@
 # Research State: fundamental-arithmetic-oq-03
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-04-05T23:12:43-07:00
-**Iteration**: 1
+**Since**: 2026-06-24
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Completed. Shipped verified Euler special-value products as a consequence of the
+FTA-driven Euler product.
 
 ## Active Approach
-None yet.
+Instantiate Mathlib's `riemannZeta_eulerProduct_tprod` at s = 2, 4 and rewrite the
+right-hand side with the closed-form special values `riemannZeta_two` / `riemannZeta_four`.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None — completed. Follow-ups (divergence at s=1; uniform ζ(2k) family) recorded as
+open questions in meta.json / research JSON.
