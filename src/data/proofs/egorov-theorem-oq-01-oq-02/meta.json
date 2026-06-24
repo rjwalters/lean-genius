@@ -1,0 +1,170 @@
+{
+  "id": "egorov-theorem-oq-01-oq-02",
+  "slug": "egorov-theorem-oq-01-oq-02",
+  "title": "Lusin's Theorem from Egorov's Theorem",
+  "description": "Littlewood's third principle — every measurable function is nearly continuous — derived from his second (Egorov's theorem) via the density of continuous functions in Lᵖ. For a strongly measurable f : α → ℝ in Lᵖ on a finite, weakly regular, normal measure space, and every ε > 0, there is a CLOSED set K with μ Kᶜ ≤ ε on which f is continuous. The deduction is the classical one: continuous functions are dense in Lᵖ (so f is an Lᵖ-limit of continuous gₙ), Lᵖ convergence gives an a.e.-convergent subsequence, Egorov upgrades a.e. to uniform convergence off a small set, a uniform limit of continuous functions is continuous, and inner regularity shrinks the bad set to a closed one. The engine — that continuous functions converging a.e. force continuity on a large closed set — is isolated as continuousOn_isClosed_of_ae_tendsto. Mathlib has Egorov, Lᵖ density, convergence in measure, and inner regularity but assembles none of them into a measure-theoretic Lusin theorem. Verified, 0 axioms, no native_decide.",
+  "overview": {
+    "historicalContext": "Lusin's theorem (Nikolai Lusin, 1912) is the third of Littlewood's 'three principles of real analysis': every measurable function is 'nearly' continuous — continuous after deleting a set of arbitrarily small measure. It sits one step beyond Egorov's theorem (the second principle, that a.e. convergence is 'nearly' uniform), and the textbook route — Folland, Royden, Stein–Shakarchi — derives Lusin FROM Egorov together with the density of continuous (or simple) functions. The chain is: approximate f in Lᵖ by continuous functions; extract an almost-everywhere convergent subsequence; apply Egorov to make that convergence uniform off a small set; conclude f is a uniform limit of continuous functions there, hence continuous; finally use inner regularity to replace the small measurable set by a closed one. Mathlib formalizes every individual link — Egorov (tendstoUniformlyOn_of_ae_tendsto), density of bounded continuous functions in Lᵖ (boundedContinuousFunction_dense), Lᵖ ⇒ convergence in measure ⇒ a.e. subsequence, and inner regularity of weakly regular measures — but it contains no measure-theoretic Lusin theorem (its 'Lusin'-named results concern Polish-space descriptive set theory, the Lusin–Souslin theorems). This entry assembles the links, answering the open question recorded on the gallery Egorov sharpness entry egorov-theorem-oq-01.",
+    "problemStatement": "Derive Lusin's theorem from Egorov's theorem. Concretely: let μ be a finite, weakly regular measure on a normal Borel space α, and let f : α → ℝ be strongly measurable with f ∈ Lᵖ for some 1 ≤ p < ∞. Prove that for every ε > 0 there exists a CLOSED set K with μ Kᶜ ≤ ε such that the restriction of f to K is continuous. Deduce the bounded-function corollary, in which Lᵖ membership is automatic and no integrability hypothesis is needed.",
+    "proofStrategy": "The proof factors through a self-contained measure-theoretic core, continuousOn_isClosed_of_ae_tendsto: if a sequence of CONTINUOUS functions fₙ converges a.e. on a finite-measure set s to g, then for every ε there is a closed K ⊆ s with μ(s\\K) ≤ ε and ContinuousOn g K. This core is Egorov (from the gallery parent EgorovTheorem.egorov_uniform_off_small_set, applied with budget ε/2) giving uniform convergence off a measurable t; TendstoUniformlyOn.continuousOn turning the uniform limit into ContinuousOn g (s\\t); and MeasurableSet.exists_isClosed_diff_lt (inner regularity, budget ε/2) carving a closed K ⊆ s\\t — with the measure bookkeeping s\\K ⊆ t ∪ ((s\\t)\\K) summing the two ε/2 budgets. The main theorem lusin_memLp manufactures the continuous approximants: BoundedContinuousFunction.toLp_denseRange places the Lᵖ class of f in the closure of the continuous functions, mem_closure_iff_seq_limit extracts a sequence of bounded continuous gₙ with toLp gₙ → toLp f, tendstoInMeasure_of_tendsto_Lp converts Lᵖ convergence to convergence in measure, and TendstoInMeasure.exists_seq_tendsto_ae yields an a.e.-convergent subsequence — after transporting the convergence from the Lᵖ representatives back to the genuine continuous functions via BoundedContinuousFunction.coeFn_toLp and MemLp.coeFn_toLp. Feeding these into the core on s = univ and rewriting univ \\ K = Kᶜ finishes. lusin_of_bounded specializes p = 2 and supplies Lᵖ membership from a bound via MemLp.of_bound.",
+    "keyInsights": [
+      "The substance of Lusin beyond Egorov is producing a CLOSED set, not merely a measurable one. Egorov alone gives uniform convergence off a measurable set; the extra mile is inner regularity (MeasurableSet.exists_isClosed_diff_lt), which approximates that measurable set from inside by a closed set at the cost of a second ε/2. Isolating this as the core lemma continuousOn_isClosed_of_ae_tendsto makes the Egorov ⇒ Lusin step a one-line application.",
+      "Continuity is NOT an almost-everywhere property, so the proof must work with genuine continuous functions, never their Lᵖ equivalence-class representatives. The delicate step is transporting the a.e. convergence of the abstract Lᵖ representatives ⇑(toLp gₙ) (which need not be continuous) back to the honest bounded continuous functions gₙ, using the a.e. equalities coeFn_toLp — combined across the countable family via ae_all_iff.",
+      "Density of continuous functions in Lᵖ is the exact role the 'density' half of the classical statement plays: it is what converts an abstract measurable f into a sequence of concrete continuous approximants. The normality of the space is what powers that density (Tietze-type extension), which is why [NormalSpace α] appears as a hypothesis.",
+      "A uniform limit of continuous functions is continuous — TendstoUniformlyOn.continuousOn — is the single topological fact that turns Egorov's measure-theoretic output into a continuity statement. Everything else is plumbing between the four forms of convergence (Lᵖ, in measure, a.e., uniform).",
+      "Stating the theorem for f ∈ Lᵖ (rather than arbitrary measurable f) is the natural meeting point with Mathlib's density machinery, and loses nothing in practice: the bounded corollary lusin_of_bounded recovers the most-cited form of Lusin with Lᵖ membership automatic on a finite measure space."
+    ]
+  },
+  "conclusion": {
+    "summary": "Lusin's theorem is derived from Egorov's theorem plus the density of continuous functions in Lᵖ. For a strongly measurable f : α → ℝ in Lᵖ (1 ≤ p < ∞) on a finite, weakly regular, normal Borel space, and every ε > 0, lusin_memLp produces a CLOSED set K with μ Kᶜ ≤ ε on which f is continuous. The proof goes through the self-contained core continuousOn_isClosed_of_ae_tendsto: continuous functions converging a.e. on a finite-measure set force continuity on a large closed set (Egorov from the gallery parent + TendstoUniformlyOn.continuousOn + inner regularity). The main theorem manufactures the continuous approximants from BoundedContinuousFunction.toLp_denseRange, extracts an a.e.-convergent subsequence via convergence in measure, and transports it back to genuine continuous functions through the coeFn_toLp a.e. equalities. lusin_of_bounded specializes to bounded measurable functions, where Lᵖ membership is automatic. 166 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries, no native_decide.",
+    "implications": "This completes the classical Egorov ⇒ Lusin route inside the gallery, building directly on the verified Egorov entry. The parent egorov-theorem-oq-01 pins down that Egorov's finite-measure hypothesis is essential; this child consumes Egorov to deliver the third Littlewood principle. The reusable core continuousOn_isClosed_of_ae_tendsto packages 'a.e. limit of continuous functions is continuous on a large closed set,' a lemma of independent use. Mathlib has all the ingredients but no measure-theoretic Lusin theorem, so the assembled statement and the closed-set core are new content.",
+    "openQuestions": [
+      "Remove the Lᵖ hypothesis: extend lusin_memLp to an ARBITRARY strongly measurable f : α → ℝ on a finite measure space by truncating through the homeomorphism arctan : ℝ ≃ₜ (-π/2, π/2) (a bounded measurable conjugate is continuous-on-K, and the homeomorphism transports continuity back), giving the fully general Lusin theorem.",
+      "Strengthen the conclusion to a globally continuous extension: combine the closed set K with the Tietze extension theorem to produce a function g ∈ C(α, ℝ) that agrees with f on K, the form of Lusin's theorem most often used in applications."
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.EgorovTheorem",
+      "Mathlib.MeasureTheory.Function.ConvergenceInMeasure",
+      "Mathlib.MeasureTheory.Function.LpSpace.ContinuousFunctions",
+      "Mathlib.MeasureTheory.Function.ContinuousMapDense",
+      "Mathlib.MeasureTheory.Measure.Regular",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "EgorovLusin",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/EgorovTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "title": "Lusin's theorem",
+      "url": "https://en.wikipedia.org/wiki/Lusin%27s_theorem"
+    },
+    {
+      "title": "Littlewood's three principles of real analysis",
+      "url": "https://en.wikipedia.org/wiki/Littlewood%27s_three_principles_of_real_analysis"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "egorov-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent Egorov sharpness entry, whose open question oq-01 ('derive Lusin's theorem from Egorov via density of continuous/simple functions') this entry answers. Where the parent shows Egorov's finite-measure hypothesis is load-bearing, this child consumes Egorov to deliver Littlewood's third principle, Lusin's theorem."
+    },
+    {
+      "targetId": "egorov-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling child of the same Egorov parent. That entry proves the orthogonal sharpness fact (finiteness is essential, via marching indicators on ℝ); this entry uses Egorov constructively to obtain Lusin's theorem."
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Egorov ⇒ Lusin",
+      "startLine": 7,
+      "endLine": 56,
+      "summary": "States the goal — Lusin's theorem, every Lᵖ-measurable function is continuous off a closed set of arbitrarily small complement — and the five-step classical plan: density of continuous functions in Lᵖ, Lᵖ ⇒ convergence in measure ⇒ a.e. subsequence, Egorov from the gallery parent, uniform-limit-of-continuous, and inner regularity for a closed set. Notes Mathlib has the links but no measure-theoretic Lusin. Confirms 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "Lusin: $f$ measurable $\\Rightarrow \\forall \\varepsilon>0,\\ \\exists$ closed $K,\\ \\mu(K^c) \\le \\varepsilon,\\ f|_K$ continuous."
+    },
+    {
+      "id": "core",
+      "title": "Closed-Set Egorov Core",
+      "startLine": 66,
+      "endLine": 105,
+      "summary": "continuousOn_isClosed_of_ae_tendsto: if continuous fₙ → g a.e. on a finite-measure measurable s, then for every ε there is a closed K ⊆ s with μ(s\\K) ≤ ε and ContinuousOn g K. Egorov (parent EgorovTheorem.egorov_uniform_off_small_set, budget ε/2) gives uniform convergence off a measurable t; TendstoUniformlyOn.continuousOn yields ContinuousOn g (s\\t); MeasurableSet.exists_isClosed_diff_lt (inner regularity, budget ε/2) carves a closed K ⊆ s\\t; the measure bound uses s\\K ⊆ t ∪ ((s\\t)\\K) and add_halves.",
+      "mathContext": "Continuous $f_n \\to g$ a.e. on finite $s \\Rightarrow g$ continuous on a closed $K \\subseteq s$ with $\\mu(s\\setminus K) \\le \\varepsilon$."
+    },
+    {
+      "id": "lusin-lp",
+      "title": "Lusin's Theorem (Lᵖ form)",
+      "startLine": 107,
+      "endLine": 154,
+      "summary": "lusin_memLp: for strongly measurable f ∈ Lᵖ on a finite, weakly regular, normal space, a closed K with μ Kᶜ ≤ ε and ContinuousOn f K. BoundedContinuousFunction.toLp_denseRange + mem_closure_iff_seq_limit give bounded continuous gₙ with toLp gₙ → toLp f; tendstoInMeasure_of_tendsto_Lp and TendstoInMeasure.exists_seq_tendsto_ae give an a.e.-convergent subsequence; coeFn_toLp (via ae_all_iff) and MemLp.coeFn_toLp transport convergence from Lᵖ representatives back to the genuine gₙ; the core lemma on s = univ with univ\\K = Kᶜ finishes.",
+      "mathContext": "Continuous functions dense in $L^p \\Rightarrow$ a.e.-convergent subsequence of continuous $g_n \\to f \\Rightarrow$ Lusin via the core."
+    },
+    {
+      "id": "lusin-bounded",
+      "title": "Lusin's Theorem (bounded form)",
+      "startLine": 156,
+      "endLine": 164,
+      "summary": "lusin_of_bounded: a strongly measurable f with ‖f x‖ ≤ C a.e. on a finite, weakly regular, normal space is continuous off a closed set of arbitrarily small complement. Specializes lusin_memLp at p = 2 and supplies Lᵖ membership from the bound via MemLp.of_bound — so the most-cited form of Lusin needs no integrability hypothesis.",
+      "mathContext": "Bounded measurable $f$ on a finite measure space $\\Rightarrow f \\in L^2 \\Rightarrow$ Lusin, with no extra integrability assumption."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EgorovTheoremOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "convergence",
+      "uniform-convergence",
+      "real-analysis",
+      "egorov",
+      "lusin",
+      "littlewood-principles",
+      "Lp-spaces",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 166,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "lusin_memLp: the headline result — Lusin's theorem derived from Egorov's theorem. For strongly measurable f ∈ Lᵖ (1 ≤ p < ∞) on a finite, weakly regular, normal Borel space and every ε > 0, a CLOSED set K with μ Kᶜ ≤ ε on which f is continuous. Assembles density of continuous functions in Lᵖ, convergence in measure, an a.e. subsequence, Egorov, and inner regularity. Mathlib has no measure-theoretic Lusin theorem.",
+      "continuousOn_isClosed_of_ae_tendsto: the reusable measure-theoretic core — a sequence of CONTINUOUS functions converging a.e. on a finite-measure set forces continuity on a large CLOSED subset. This is Egorov (uniform off a measurable set) refined by inner regularity (closed approximation from inside), the exact extra content Lusin adds over Egorov.",
+      "lusin_of_bounded: the bounded-function corollary, the most frequently cited form of Lusin — a bounded strongly measurable function on a finite measure space is continuous off a closed set of small complement, with Lᵖ membership automatic (no integrability hypothesis), via MemLp.of_bound at p = 2.",
+      "The a.e.-transport technique: converting the convergence-in-measure of abstract Lᵖ representatives ⇑(toLp gₙ) into a.e. convergence of the genuine bounded continuous functions gₙ, by combining the countable family of coeFn_toLp a.e. equalities through ae_all_iff — necessary because continuity, unlike Lᵖ membership, is not an almost-everywhere property."
+    ],
+    "prerequisites": [
+      "EgorovTheorem.egorov_uniform_off_small_set: the gallery parent's sequential Egorov theorem — a.e. convergence on a finite-measure set upgrades to uniform convergence off an arbitrarily small measurable subset",
+      "BoundedContinuousFunction.toLp_denseRange: bounded continuous functions are dense in Lᵖ on a finite, weakly regular, normal space (the 'density of continuous functions' half of the classical Egorov ⇒ Lusin argument)",
+      "TendstoUniformlyOn.continuousOn: a uniform limit of functions continuous on a set is continuous on that set — the topological bridge from Egorov's output to a continuity statement",
+      "MeasurableSet.exists_isClosed_diff_lt: inner regularity — a finite-measure measurable set is approximable from inside by closed sets, the step that upgrades Egorov's measurable exceptional set to a closed one",
+      "tendstoInMeasure_of_tendsto_Lp and TendstoInMeasure.exists_seq_tendsto_ae: Lᵖ convergence implies convergence in measure, which yields an almost-everywhere convergent subsequence",
+      "BoundedContinuousFunction.coeFn_toLp, MemLp.coeFn_toLp, ae_all_iff: the a.e. identifications transporting convergence between Lᵖ representatives and the genuine functions"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "BoundedContinuousFunction.toLp_denseRange",
+        "description": "On a finite, weakly regular, normal Borel space, the bounded continuous functions have dense range in Lᵖ (p < ∞). This is the density input that turns the measurable f into a sequence of continuous approximants.",
+        "module": "Mathlib.MeasureTheory.Function.ContinuousMapDense"
+      },
+      {
+        "theorem": "MeasureTheory.tendstoInMeasure_of_tendsto_Lp",
+        "description": "Convergence in Lᵖ implies convergence in measure. Bridges the density approximation (an Lᵖ limit) to a setting where an a.e.-convergent subsequence can be extracted.",
+        "module": "Mathlib.MeasureTheory.Function.ConvergenceInMeasure"
+      },
+      {
+        "theorem": "MeasureTheory.TendstoInMeasure.exists_seq_tendsto_ae",
+        "description": "Convergence in measure yields a subsequence converging almost everywhere. Supplies the a.e. convergence that Egorov requires as input.",
+        "module": "Mathlib.MeasureTheory.Function.ConvergenceInMeasure"
+      },
+      {
+        "theorem": "TendstoUniformlyOn.continuousOn",
+        "description": "A uniform limit of functions continuous on a set is continuous on that set. Converts Egorov's uniform convergence into the continuity of f off the small set.",
+        "module": "Mathlib.Topology.UniformSpace.UniformApproximation"
+      },
+      {
+        "theorem": "MeasurableSet.exists_isClosed_diff_lt",
+        "description": "Inner regularity of a weakly regular measure: a finite-measure measurable set is approximable from inside by a closed set up to arbitrarily small measure. Upgrades Egorov's measurable exceptional set to a closed set, the extra content of Lusin over Egorov.",
+        "module": "Mathlib.MeasureTheory.Measure.Regular"
+      }
+    ]
+  }
+}
