@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-03",
+    "range": { "startLine": 3, "endLine": 44 },
+    "type": "context",
+    "title": "From the reflection split to closed-form neighbours",
+    "content": "The parent reflection-form entry proved catalan n = C(2n,n) − C(2n,n+1), i.e. the additive split C(2n,n) = catalan n + C(2n,n+1). To get there it used the binomial step relation (n+1)·C(2n,n+1) = n·C(2n,n) but only as scaffolding — it never recorded what the neighbour C(2n,n+1) actually equals. This entry closes that gap: solving the step relation gives the clean closed form C(2n,n+1) = n·catalan n. So the two coefficients flanking the centre of row 2n are exact integer multiples of the n-th Catalan number, and the reflection split reappears as C(2n,n) = catalan n + n·catalan n = (n+1)·catalan n.",
+    "mathContext": "$\\binom{2n}{n+1} = n\\,\\mathrm{catalan}\\,n$, $\\binom{2n}{n-1} = n\\,\\mathrm{catalan}\\,n$, and $\\binom{2n}{n} = (n+1)\\,\\mathrm{catalan}\\,n$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Catalan numbers",
+      "central binomial coefficient",
+      "reflection principle",
+      "ballot numbers",
+      "binomial coefficients"
+    ],
+    "prerequisites": ["binomial coefficients", "Catalan numbers"]
+  },
+  {
+    "id": "ann-choose-central-succ",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-03",
+    "range": { "startLine": 55, "endLine": 77 },
+    "type": "key-insight",
+    "title": "The right-neighbour closed form C(2n, n+1) = n·catalan n",
+    "content": "The headline result. Two Mathlib facts combine: the bridge C(2n,n) = (n+1)·catalan n (succ_mul_catalan_eq_centralBinom) and the binomial step (n+1)·C(2n,n+1) = n·C(2n,n) (Nat.choose_succ_right_eq at (2n,n), using 2n−n = n). Substituting the first into the second gives (n+1)·C(2n,n+1) = n·(n+1)·catalan n; cancelling the positive factor n+1 (Nat.eq_of_mul_eq_mul_left) leaves C(2n,n+1) = n·catalan n. Combinatorially: of the C(2n,n) central lattice paths, catalan n are Dyck paths and the flanking column holds exactly n times as many.",
+    "mathContext": "$(n+1)\\binom{2n}{n+1} = n\\binom{2n}{n} = n(n+1)\\,\\mathrm{catalan}\\,n \\Rightarrow \\binom{2n}{n+1} = n\\,\\mathrm{catalan}\\,n$.",
+    "significance": "high",
+    "relatedConcepts": ["central binomial coefficient", "Catalan numbers", "cancellation"],
+    "prerequisites": ["binomial recurrence", "Catalan–central-binomial bridge"]
+  },
+  {
+    "id": "ann-choose-central-pred",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-03",
+    "range": { "startLine": 79, "endLine": 90 },
+    "type": "technique",
+    "title": "Left neighbour via row symmetry",
+    "content": "The left neighbour needs no new arithmetic: row 2n is symmetric, and since (n+1)+(n−1) = 2n we have C(2n, n−1) = C(2n, n+1) by Nat.choose_symm. Hence C(2n, n−1) = n·catalan n as well (for n ≥ 1, so that n−1 and the symmetry index are well-formed over ℕ).",
+    "mathContext": "$\\binom{2n}{n-1} = \\binom{2n}{2n-(n+1)} = \\binom{2n}{n+1} = n\\,\\mathrm{catalan}\\,n$.",
+    "significance": "medium",
+    "relatedConcepts": ["binomial symmetry", "central binomial coefficient"],
+    "prerequisites": ["binomial coefficient symmetry"]
+  },
+  {
+    "id": "ann-choose-central-succ-two",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-03",
+    "range": { "startLine": 103, "endLine": 119 },
+    "type": "key-insight",
+    "title": "Second neighbour: (n+2)·C(2n, n+2) = n(n-1)·catalan n",
+    "content": "Iterating the binomial step once more, at (2n, n+1), gives (n+2)·C(2n,n+2) = (2n−(n+1))·C(2n,n+1) = (n−1)·C(2n,n+1). Substituting the first-neighbour closed form C(2n,n+1) = n·catalan n yields (n+2)·C(2n,n+2) = n(n−1)·catalan n. Kept in multiplicative form so the identity stays exact over ℕ (the quotient n(n−1)/(n+2) need not be an integer).",
+    "mathContext": "$(n+2)\\binom{2n}{n+2} = (n-1)\\binom{2n}{n+1} = n(n-1)\\,\\mathrm{catalan}\\,n$.",
+    "significance": "medium",
+    "relatedConcepts": ["ballot numbers", "Catalan triangle", "binomial recurrence"],
+    "prerequisites": ["binomial recurrence"]
+  },
+  {
+    "id": "ann-strict-gap",
+    "proofId": "catalan-numbers-oq-01-oq-01-oq-03",
+    "range": { "startLine": 121, "endLine": 142 },
+    "type": "observation",
+    "title": "The strict gap C(2n,n+1) < C(2n,n) and a genuine difference",
+    "content": "Because C(2n,n) = (n+1)·catalan n and C(2n,n+1) = n·catalan n, the gap between centre and neighbour is exactly catalan n. Strict positivity of catalan n (forced by Nat.centralBinom_pos through the bridge) gives n·catalan n < (n+1)·catalan n, so C(2n,n+1) < C(2n,n). This certifies that the ℕ-subtraction in the parent's reflection form catalan n = C(2n,n) − C(2n,n+1) is a true difference, never silently truncated to 0.",
+    "mathContext": "$\\binom{2n}{n} - \\binom{2n}{n+1} = (n+1)\\,\\mathrm{catalan}\\,n - n\\,\\mathrm{catalan}\\,n = \\mathrm{catalan}\\,n > 0$.",
+    "significance": "medium",
+    "relatedConcepts": ["strict monotonicity", "Catalan positivity"],
+    "prerequisites": ["positivity of central binomial coefficient"]
+  }
+]

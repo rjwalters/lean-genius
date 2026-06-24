@@ -1,0 +1,99 @@
+{
+  "id": "catalan-numbers-oq-01-oq-01-oq-03",
+  "slug": "catalan-numbers-oq-01-oq-01-oq-03",
+  "title": "Catalan Numbers: closed forms for the central-binomial neighbours C(2n,n±1) = n·catalan n",
+  "description": "Closed forms for the binomial coefficients adjacent to the centre of row 2n, sharpening the parent reflection identity. The right neighbour C(2n, n+1) = n·catalan n, the left neighbour C(2n, n-1) = n·catalan n (by row symmetry), and the second neighbour (n+2)·C(2n, n+2) = n(n-1)·catalan n. The parent reflection-form entry proved only the additive split C(2n,n) = catalan n + C(2n,n+1) and used (n+1)·C(2n,n+1) = n·C(2n,n) as an internal step, but never recorded the resulting closed form of the neighbour itself; this entry solves for it. The closed form makes the strict gap C(2n,n+1) < C(2n,n) transparent and recovers the parent's additive split as the one-line consequence C(2n,n) = catalan n + n·catalan n = (n+1)·catalan n. Fully verified over ℕ, 0 axioms, 0 sorries.",
+  "overview": "Mathlib gives the multiplicative bridge succ_mul_catalan_eq_centralBinom: (n+1)·catalan n = centralBinom n = C(2n,n), and the binomial step Nat.choose_succ_right_eq, which at (2n, n) reads (n+1)·C(2n,n+1) = n·C(2n,n) since 2n−n = n. Substituting C(2n,n) = (n+1)·catalan n into the step and cancelling the positive factor n+1 yields the headline closed form C(2n,n+1) = n·catalan n. The left neighbour follows from the row symmetry Nat.choose_symm (C(2n,n−1) = C(2n,n+1)). Iterating Nat.choose_succ_right_eq once more at (2n, n+1) gives the second neighbour (n+2)·C(2n,n+2) = (n−1)·C(2n,n+1) = n(n−1)·catalan n. Strict positivity of catalan n (from centralBinom_pos) certifies the strict gap C(2n,n+1) < C(2n,n). Everything is elementary arithmetic over ℕ.",
+  "conclusion": "The binomial coefficients flanking the centre of row 2n are exact multiples of the Catalan number: both immediate neighbours equal n·catalan n, and the second neighbour satisfies (n+2)·C(2n,n+2) = n(n-1)·catalan n. These closed forms are the multiplicative counterpart of the parent's additive reflection identity, and they exhibit the strict descent C(2n,n+1) < C(2n,n) whose difference is exactly catalan n. Mathlib records neither the reflection difference nor these neighbour closed forms.",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Nat"],
+    "namespace": "CatalanNumbersOQ01OQ01OQ03",
+    "lineCount": 161,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanNumbersOQ01OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "crossReferences": [
+    {
+      "proofId": "catalan-numbers-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The reflection-form entry: catalan n = C(2n,n) − C(2n,n+1), the additive split C(2n,n) = catalan n + C(2n,n+1). This child solves the internal neighbour relation (n+1)·C(2n,n+1) = n·C(2n,n) for the closed form C(2n,n+1) = n·catalan n, recovering the additive split as a corollary."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01",
+      "relationship": "related",
+      "description": "The grandparent: the O(1) holonomic recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n, also derived from the central-binomial bridge succ_mul_catalan_eq_centralBinom."
+    },
+    {
+      "proofId": "dyck-catalan-count-oq-01",
+      "relationship": "related",
+      "description": "Enumerates Dyck paths by the Catalan numbers — the combinatorial objects whose central and near-central lattice-path counts these binomial identities compare."
+    }
+  ],
+  "references": [],
+  "sections": [],
+  "meta": {
+    "author": "Classical central-binomial identities; Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanNumbersOQ01OQ01OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "central-binomial",
+      "binomial-coefficients",
+      "reflection-principle",
+      "closed-form",
+      "enumerative-combinatorics",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "succ_mul_catalan_eq_centralBinom",
+        "description": "(n + 1) * catalan n = Nat.centralBinom n. The multiplicative bridge from Catalan numbers to the central binomial coefficient; supplies C(2n,n) = (n+1)*catalan n, used to cancel n+1 and to substitute for the central coefficient.",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      },
+      {
+        "theorem": "Nat.choose_succ_right_eq",
+        "description": "n.choose (k+1) * (k+1) = n.choose k * (n - k). At (2n, n) gives the first-neighbour relation (n+1)*C(2n,n+1) = n*C(2n,n); at (2n, n+1) gives the second-neighbour relation (n+2)*C(2n,n+2) = (n-1)*C(2n,n+1).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "k ≤ n → n.choose (n - k) = n.choose k. At (2n, n+1) gives the row symmetry C(2n, n-1) = C(2n, n+1), so the left neighbour shares the right neighbour's closed form.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.centralBinom_pos",
+        "description": "0 < Nat.centralBinom n. Combined with the bridge it forces catalan n > 0, certifying the strict gap C(2n,n+1) < C(2n,n).",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.eq_of_mul_eq_mul_left",
+        "description": "0 < k → k*a = k*b → a = b. Cancels the positive factor n+1 to extract the closed form C(2n,n+1) = n*catalan n.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "choose_central_succ: the closed form C(2n, n+1) = n·catalan n for the right neighbour of the central binomial coefficient — the headline. Obtained by solving the parent's internal step relation (n+1)·C(2n,n+1) = n·C(2n,n) using C(2n,n) = (n+1)·catalan n and cancelling n+1. Not in Mathlib.",
+      "choose_central_pred: the left neighbour C(2n, n-1) = n·catalan n (n ≥ 1), via the row symmetry C(2n,n-1) = C(2n,n+1).",
+      "succ_mul_choose_central_succ: the multiplicative form (n+1)·C(2n,n+1) = n·centralBinom n — the neighbour is to the centre as n is to n+1.",
+      "choose_central_succ_two: the second neighbour (n+2)·C(2n,n+2) = n(n-1)·catalan n, iterating the binomial step once past the first neighbour. ℕ-clean multiplicative form.",
+      "choose_central_succ_lt: the strict gap C(2n,n+1) < C(2n,n), certifying that the parent's reflection subtraction is a genuine (non-truncated) difference of size catalan n > 0.",
+      "centralBinom_eq_catalan_add_choose: recovers the parent's additive reflection split C(2n,n) = catalan n + C(2n,n+1) as a one-line consequence of the closed form.",
+      "Kernel-decide witnesses: C(8,5) = 56 = 4·14 = 4·catalan 4 and C(8,6)·6 = 168 = 4·3·14, confirming the first- and second-neighbour identities numerically with no native_decide."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for all six public theorems. Concrete checks use kernel `decide` only (no native_decide, hence no Lean.ofReduceBool).",
+    "lineCount": 161,
+    "theoremCount": 8,
+    "definitionCount": 0
+  }
+}
