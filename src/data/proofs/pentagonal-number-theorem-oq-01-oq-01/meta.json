@@ -1,0 +1,163 @@
+{
+  "id": "pentagonal-number-theorem-oq-01-oq-01",
+  "title": "Pentagonal Number Theorem: The Ordered Enumeration of the Generalized Pentagonal Numbers (OEIS A001318)",
+  "slug": "pentagonal-number-theorem-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.PentagonalNumberTheoremOQ01"
+    ],
+    "opens": [
+      "PentagonalNumberTheoremOQ01"
+    ],
+    "namespace": "PentagonalNumberTheoremOQ01OQ01",
+    "lineCount": 204,
+    "axiomCount": 0,
+    "theoremCount": 16,
+    "definitionCount": 2,
+    "path": "Proofs/PentagonalNumberTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Supplies the order-theoretic content missing from the parent's index theory: the parent's index map g(k)=k(3k-1)/2 is injective but neither monotone nor surjective onto an interval, so the generalized pentagonal numbers as a SET carry a canonical strictly-increasing enumeration 0,1,2,5,7,12,15,22,26,… (OEIS A001318) obtained by interleaving the two arms g(k) and g(-k) around g(0)=0. This entry constructs that enumeration gpAt : ℕ → ℤ, proves it is strictly monotone (hence injective), that its range is exactly {m | IsGenPent m}, and packages the capstone gpAt_enumerates: gpAt is a strictly-increasing bijection onto the generalized pentagonal numbers — so gpAt n is THE n-th smallest generalized pentagonal number. The enumeration is then tied back to the parent's square-discriminant criterion (24m+1=□). All 0-sorry, 0-axiom, building only on the parent entry and Mathlib.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "partitions",
+      "pentagonal-numbers",
+      "integer-arithmetic",
+      "order-theory",
+      "enumeration",
+      "research"
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/PentagonalNumberTheoremOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "strictMono_nat_of_lt_succ",
+        "description": "(∀ n, f n < f (n+1)) → StrictMono f — reduces the headline monotonicity of gpAt to the two consecutive-step inequalities (even step = interleaving, odd step = ordered ±k pair)",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "StrictMono.injective",
+        "description": "a strictly monotone function on a linear order is injective — gives gpAt_injective for free from gpAt_strictMono",
+        "module": "Mathlib.Order.Monotone.Basic"
+      },
+      {
+        "theorem": "Nat.even_or_odd",
+        "description": "every natural number is even or odd — the case split n = 2j / n = 2j+1 driving the consecutive-step proof of strict monotonicity",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Int.toNat_of_nonneg",
+        "description": "0 ≤ a → (a.toNat : ℤ) = a — converts the ℤ-index k back through the ℕ-valued rank gpRank when proving gpAt (gpRank k) = g(k)",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "a ≠ 0 → a*b = a*c → b = c — recovers the explicit index k from a generalized pentagonal value via 2m = 2·g(k), reused from the parent's doubling relation",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "gpAt (def) and gpAt_strictMono: the canonical strictly-increasing enumeration of the generalized pentagonal numbers, with even index 2j carrying the negative arm g(-j) and odd index 2j+1 carrying the positive arm g(j+1). Strict monotonicity is the headline — gpAt n is the n-th smallest generalized pentagonal number, the order structure underlying OEIS A001318 that the parent's injective-but-non-monotone index map g does not record.",
+      "genPent_succ_sub: the exact forward gap g(k+1)-g(k)=3k+1, a one-line linear_combination of the parent's doubling relation two_mul_genPent at k and k+1 — the algebraic engine of the ordering.",
+      "genPent_lt_genPent_neg and genPent_neg_lt_genPent_succ: the two inequalities that order the ±k pair (g(k) < g(-k) for k ≥ 1, difference exactly k) and interleave the arms (g(-k) < g(k+1) for k ≥ 0, difference 2k+1), both read off from the parent's genPent_neg pairing g(-k)=g(k)+k together with the forward gap.",
+      "gpRank (def) and gpAt_gpRank: an explicit inverse rank g(k) ↦ position, sending positive indices to odd positions and nonpositive indices to even positions, with gpAt (gpRank k) = g(k) proving it genuinely inverts the enumeration on values.",
+      "range_gpAt / isGenPent_iff_mem_range: surjectivity — the range of gpAt is exactly the set {m | IsGenPent m} of generalized pentagonal numbers; combined with strict monotonicity this is the bijection.",
+      "gpAt_enumerates: the capstone packaging StrictMono gpAt ∧ Set.range gpAt = {m | IsGenPent m} — the generalized pentagonal numbers are precisely the values of a strictly-increasing sequence, i.e. gpAt is an order isomorphism onto them.",
+      "mem_range_gpAt_iff_isSquare: ties the enumeration back to the parent's recognition criterion — a number occurs in gpAt iff 24m+1 is a perfect square — and gpAt_values machine-checks the first seven terms 0,1,2,5,7,12,15 against OEIS A001318."
+    ],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 204,
+    "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. The headline results gpAt_strictMono, gpAt_enumerates, range_gpAt and mem_range_gpAt_iff_isSquare each #print axioms to only [propext, Classical.choice, Quot.sound] — the standard foundational axioms, none counted under the project's axiom policy. gpAt_values is discharged by decide (kernel Decidable evaluation, no native_decide / Lean.ofReduceBool). Machine-verified: the file compiles cleanly against Mathlib 4.26.0 (Built Proofs.PentagonalNumberTheoremOQ01OQ01, 7744 jobs, exit 0).",
+    "theoremCount": 16,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The generalized pentagonal numbers g(k)=k(3k-1)/2 for k ∈ ℤ are the exponents in Euler's pentagonal number theorem ∏(1-xⁿ)=∑(-1)ᵏx^{g(k)}. As a sequence ordered by size they are OEIS A001318: 0,1,2,5,7,12,15,22,26,35,40,…. The parent entry PentagonalNumberTheoremOQ01 builds the number-theoretic index theory — the recognition criterion, injectivity of k ↦ g(k), nonnegativity, concrete values — but the index map g : ℤ → ℤ, while injective, is neither monotone nor surjective onto an interval. The order in which A001318 lists the pentagonal numbers comes from interleaving the two arms g(k) (k ≥ 1, the positive arm) and g(-k) (k ≥ 1, the negative arm) around g(0)=0. This entry makes that interleaving precise and proves it is the unique increasing enumeration of the set.",
+    "problemStatement": "Construct the canonical strictly-increasing enumeration of the generalized pentagonal numbers and prove it is a bijection onto them. Concretely, build gpAt : ℕ → ℤ with gpAt 0 = g(0), odd positions carrying the positive arm and even positions the negative arm, and establish\n\n$$ \\mathrm{StrictMono}\\,\\mathrm{gpAt} \\quad\\text{and}\\quad \\mathrm{range}\\,\\mathrm{gpAt} = \\{\\, m \\mid m \\text{ is generalized pentagonal} \\,\\}, $$\n\nso that gpAt n is the n-th smallest generalized pentagonal number.",
+    "text": "An order-theoretic refinement of the parent's index theory: the strictly-increasing enumeration of the generalized pentagonal numbers, proved to be a bijection onto the set the parent recognizes via the square-discriminant test.",
+    "proofStrategy": "1. **Three inequalities (Part 1)**: the forward gap g(k+1)-g(k)=3k+1 is an exact identity (linear_combination of the parent's two_mul_genPent); the parent's genPent_neg (g(-k)=g(k)+k) then gives g(k) < g(-k) for k ≥ 1 (the ±k pair is ordered) and, with the gap, g(-k) < g(k+1) for k ≥ 0 (the arms interleave).\n\n2. **Enumeration and monotonicity (Part 2)**: define gpAt by the parity of n (even 2j ↦ g(-j), odd 2j+1 ↦ g(j+1)) with even/odd reduction lemmas discharging the ℕ↔ℤ cast bookkeeping once. strictMono_nat_of_lt_succ reduces monotonicity to consecutive steps, and the even/odd split feeds in exactly the two Part-1 inequalities.\n\n3. **Inverse rank and surjectivity (Part 3)**: gpRank k returns the position of g(k); gpAt_gpRank proves it inverts the enumeration on values. Since every generalized pentagonal number is some g(k) (from the parent's doubling relation), gpAt is surjective onto {m | IsGenPent m}, giving range_gpAt.\n\n4. **Capstone and bridge (Part 4)**: gpAt_enumerates bundles strict monotonicity with the range characterization; mem_range_gpAt_iff_isSquare composes surjectivity with the parent's recognition criterion, and gpAt_values checks the first seven A001318 terms by decide.",
+    "keyInsights": [
+      "The whole enumeration rests on three integer inequalities, each a one- or two-line consequence of the parent's doubling relation and ±k pairing: the forward gap 3k+1, the ordered pair (difference k), and the interleaving step (difference 2k+1).",
+      "Encoding the enumeration by the parity of the index — even 2j ↦ g(-j), odd 2j+1 ↦ g(j+1) — turns strict monotonicity into a single consecutive-step check that the even and odd cases dispatch to the two pairing inequalities.",
+      "Strict monotonicity does double duty: it is the headline order statement AND it delivers injectivity for free (StrictMono.injective), so the bijection onto the pentagonal set needs only surjectivity proved separately.",
+      "Surjectivity reduces to the parent's structural fact that every generalized pentagonal number is g(k) for an explicit index k; the rank gpRank then names the position, so the abstract range equals the parent's recognized set.",
+      "The order structure is genuinely new information: the parent's index map g is injective but not monotone, so 'the n-th pentagonal number' is not g(n) — it is gpAt n, the interleaving of the two arms."
+    ],
+    "prerequisites": [
+      "The parent entry's generalized-pentagonal index theory (genPent, IsGenPent, two_mul_genPent, genPent_neg, isGenPent_iff_isSquare)",
+      "Strict monotonicity of sequences on ℕ and order isomorphisms",
+      "Elementary integer arithmetic and parity reasoning"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ordering",
+      "title": "Part 1 — The Forward Gap and the Ordering of the ±k Pair",
+      "startLine": 50,
+      "endLine": 75,
+      "summary": "genPent_succ_sub (the exact forward gap g(k+1)-g(k)=3k+1), genPent_lt_genPent_neg (g(k) < g(-k) for k ≥ 1, the ±k pair is ordered), and genPent_neg_lt_genPent_succ (g(-k) < g(k+1) for k ≥ 0, the arms interleave).",
+      "mathContext": "The gap is a linear_combination of the parent's two_mul_genPent at k and k+1. The pairing genPent_neg (g(-k)=g(k)+k) then makes g(-k)-g(k)=k ≥ 1 and, with the gap, g(k+1)-g(-k)=2k+1 ≥ 1 — the two inequalities that order and interleave the arms."
+    },
+    {
+      "id": "enumeration",
+      "title": "Part 2 — The Enumeration gpAt and Strict Monotonicity (Headline)",
+      "startLine": 77,
+      "endLine": 124,
+      "summary": "gpAt (even index 2j ↦ g(-j), odd index 2j+1 ↦ g(j+1)) with reduction lemmas gpAt_even / gpAt_odd, the headline gpAt_strictMono, gpAt_injective (from StrictMono.injective), and gpAt_isGenPent (every enumerated value is generalized pentagonal).",
+      "mathContext": "strictMono_nat_of_lt_succ reduces monotonicity to gpAt n < gpAt (n+1); the parity split sends the even step 2j → 2j+1 to the interleaving inequality g(-j) < g(j+1) and the odd step 2j+1 → 2j+2 to the ordered-pair inequality g(j+1) < g(-(j+1))."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Part 3 — The Inverse Rank and Surjectivity",
+      "startLine": 126,
+      "endLine": 180,
+      "summary": "isGenPent_exists_index (every generalized pentagonal number is g(k) for an explicit k), gpRank (the position of g(k)), gpAt_gpRank (the rank inverts the enumeration on values), exists_gpAt_eq, isGenPent_iff_mem_range, and range_gpAt: Set.range gpAt = {m | IsGenPent m}.",
+      "mathContext": "gpRank sends positive indices to odd positions 2(k-1)+1 and nonpositive indices to even positions 2(-k); gpAt_gpRank checks gpAt (gpRank k) = g(k) by the parity definition. Composed with isGenPent_exists_index this gives surjectivity onto the parent's recognized set."
+    },
+    {
+      "id": "capstone",
+      "title": "Part 4 — Capstone and the Bridge to the Square-Discriminant Criterion",
+      "startLine": 181,
+      "endLine": 204,
+      "summary": "gpAt_enumerates (StrictMono gpAt ∧ Set.range gpAt = {m | IsGenPent m} — gpAt is a strictly-increasing bijection onto the generalized pentagonal numbers), mem_range_gpAt_iff_isSquare (a number occurs in gpAt iff 24m+1 is a perfect square), and gpAt_values (first seven terms 0,1,2,5,7,12,15 by decide).",
+      "mathContext": "The capstone bundles the order statement with the range characterization, so gpAt n is the n-th smallest generalized pentagonal number. The bridge composes surjectivity with the parent's isGenPent_iff_isSquare to recover the recognition criterion on the enumeration, and the value check pins the sequence to OEIS A001318."
+    }
+  ],
+  "openQuestions": [
+    "Strengthen gpAt_enumerates to an explicit OrderIso ℕ ≃o {m : ℤ // IsGenPent m}, packaging strict monotonicity and the range bijection as a single order isomorphism onto the subtype of generalized pentagonal numbers.",
+    "Give a closed form for gpRank ∘ (g restricted to one arm) and an inverse-rank formula expressing gpAt n directly via ⌈n/2⌉, exhibiting the n-th pentagonal number without the parity case split.",
+    "Use the enumeration to index Euler's partition recurrence p(n) = ∑(-1)^{k-1}(p(n-g_k)+p(n-g_{-k})) by rank, summing over the initial segment of gpAt below n rather than over the index interval [-n,n]."
+  ],
+  "conclusion": {
+    "summary": "This entry adds the order-theoretic layer to the parent's index theory: it constructs gpAt, the canonical strictly-increasing enumeration of the generalized pentagonal numbers obtained by interleaving the arms g(k) and g(-k) around g(0)=0, and proves it is a bijection onto the set {m | IsGenPent m} that the parent recognizes via 24m+1=□. The headline gpAt_strictMono together with range_gpAt gives the capstone gpAt_enumerates — gpAt n is the n-th smallest generalized pentagonal number — all machine-verified with 0 axioms and 0 sorries.",
+    "implications": "The parent's index map g is injective but not monotone, so 'the n-th generalized pentagonal number' is not g(n); this entry supplies the correct object gpAt n and proves it lists exactly OEIS A001318 in order. The whole construction rests on three short integer inequalities derived from the parent's doubling relation and ±k pairing, illustrating how an order structure can be bootstrapped from purely algebraic identities. The bijection range_gpAt is the form a formalization of Euler's partition recurrence wants when summing the pentagonal shifts by rank rather than by index.",
+    "openQuestions": [
+      "Promote the bijection to an explicit OrderIso ℕ ≃o {m // IsGenPent m}.",
+      "Derive a parity-free closed form for gpAt n (and its inverse gpRank) via ⌈n/2⌉.",
+      "Re-index Euler's partition recurrence by rank using the initial segment of gpAt below n."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "pentagonal-number-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry: the division-free index theory of the generalized pentagonal numbers g(k)=k(3k-1)/2 — the recognition criterion 24m+1=□, injectivity of the index map, nonnegativity, the ±k pairing g(-k)=g(k)+k, and the concrete A001318 values. This entry consumes that pairing and the doubling relation to build the strictly-increasing enumeration the parent's injective-but-non-monotone index map does not provide, and ties the enumeration back to the parent's square-discriminant criterion."
+    },
+    {
+      "proofId": "partition-theorem",
+      "relationship": "related",
+      "description": "Euler's theorem that partitions into odd parts equinumerate partitions into distinct parts. The pentagonal exponents enumerated here in increasing order are exactly the supports of Euler's lacunary series ∏(1-xⁿ)=∑(-1)ᵏx^{g(k)} that governs the distinct-parts generating function."
+    },
+    {
+      "proofId": "triangular-reciprocals",
+      "relationship": "related",
+      "description": "The triangular numbers T(n)=n(n+1)/2 are the figurate neighbours of the pentagonal numbers g(k)=k(3k-1)/2; both are quadratic-in-index half-integers carrying a canonical increasing enumeration, and both admit a perfect-square recognition test (8m+1=□ for triangulars, 24m+1=□ for pentagonals)."
+    }
+  ]
+}
