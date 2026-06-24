@@ -228,3 +228,64 @@ in the relevant sense; Robinson's 10 projective zeros are exactly enough.
 - `univariate_psd_is_sos_aux`, `quadratic_psd_is_sos_aux`, `pfister_bound_aux` —
   the genuinely deep, independent ones (Fundamental-Thm-of-Algebra factorization /
   Gram-Cholesky for quadratics / Pfister's 2ⁿ bound). Not quick coefficient ports.
+
+## Session 2026-06-24 (researcher-1) — Univariate PSD = SOS PROVED (parent axiom 3 → 2)
+Shipped child entry `hilbert-17-oq-03-oq-04` (`Proofs/Hilbert17UnivariatePSDSOS.lean`,
+verified / 0-axiom, 5 thm + 1 def / 208 L) and wired it into the parent, discharging
+`univariate_psd_is_sos_aux` (**parent axiomCount 3 → 2**). This is the univariate case
+of Hilbert's 17th (Hilbert 1888): a non-negative `p : ℝ[X]` is a sum of *two* squares
+`u² + v²`.
+
+Proof = strong induction on `natDegree` (`Nat.strongRecOn`):
+1. **base**: `deg 0` ⟹ `p = C c`, `c ≥ 0` (eval at 0), `c = (C √c)² + 0²` via
+   `Real.sq_sqrt`. (GOTCHA: `rw [hpc]` rewrote `p` *inside* `Real.sqrt (p.coeff 0)`
+   too → `conv_lhs => rw [hpc]` to touch only the LHS.)
+2. **deg ≥ 1**: FTA `Complex.exists_root` on `p.map (algebraMap ℝ ℂ)` (degree via
+   `degree_map` + `degree_eq_natDegree`) gives a root `z`; `aeval z p = 0` from
+   `aeval_def + ← eval_map`.
+   - **z real** (`z.im = 0`): real root `r = z.re` (`hzr : z = algebraMap ℝ ℂ z.re`
+     via `Complex.coe_algebraMap` + `Complex.ext`; `hpr` via
+     `aeval_algebraMap_apply_eq_algebraMap_eval` + `exact_mod_cast`). Analytic crux
+     `sq_dvd_of_psd_root`: a real root of a PSD poly has mult ≥ 2 — if mult = 1 then
+     `p = (X-C r)·g`, `g r ≠ 0`, and one-sided limits (`ge_of_tendsto` on `𝓝[>] r`,
+     `le_of_tendsto` on `𝓝[<] r`, `mul_nonneg_iff_of_pos_left` / `mul_neg_of_neg_of_pos`)
+     force `g r ≥ 0` AND `g r ≤ 0`, contra. So `(X-C r)² ∣ p`; quotient PSD (incl. at
+     `r` itself by a right-limit), `natDegree` drops by 2, IH ⟹ `(X-C r)²(u²+v²)` =
+     `((X-C r)u)² + ((X-C r)v)²`.
+   - **z non-real** (`z.im ≠ 0`): `quadratic_dvd_of_aeval_eq_zero_im_ne_zero` gives
+     `Q = X² - C(2 z.re) X + C ‖z‖² ∣ p`. `Q = (X-C z.re)² + (C z.im)²` (use
+     `‖z‖² = z.re² + z.im²` via `Complex.normSq_eq_norm_sq` + `normSq_apply`; expand C
+     with `C_add, C_pow, C_mul, map_ofNat` THEN `ring`). `Q > 0` everywhere ⟹ quotient
+     PSD with NO limit needed (`mul_nonneg_iff_of_pos_left (hQpos x)`); `natDegree`
+     (via `compute_degree!`) drops by 2; IH + **Brahmagupta–Fibonacci** recombine.
+
+Wiring: parent `IsPositiveSemidefinite`/`IsSumOfSquaresPolynomial` are **defeq** to the
+child's `IsPSD` / `univariate_psd_is_sos` conclusion, so the axiom becomes
+`theorem univariate_psd_is_sos_aux p h := Hilbert17UnivariatePSDSOS.univariate_psd_is_sos p h`.
+Verified in MAIN (mathlib cache, `lake env lean`): child + parent both
+`#print axioms → propext/Classical.choice/Quot.sound`. The parent's downstream
+`artin_univariate` / `univariate_psd_is_sos` now also 0-axiom.
+
+### Why this matters / corrects the strand
+The univariate case is the ONLY case where the *polynomial* conclusion holds — exactly
+the positive counterpart to the Motzkin (oq-03-oq-02) and Robinson (oq-03-oq-03)
+counterexamples that force rational functions for n ≥ 2.
+
+## Still open (parent hilbert-17, 2 axioms remain)
+- `quadratic_psd_is_sos_aux` — PSD quadratic form is SOS of linear forms. Route: Gram
+  matrix ↔ symmetric `A`, `A` PSD ⟹ `A = BᵀB` (Cholesky / spectral, Mathlib
+  `Matrix.posSemidef...`). The poly↔matrix bridge + extracting linear forms is the work.
+- `pfister_bound_aux` — Pfister's 2ⁿ bound. Genuinely deep (Pfister forms / formally
+  real fields); no short Mathlib path.
+
+### Gotchas (this session)
+- `ne_of_gt (hy : r < y) : y ≠ r` already (NOT `r ≠ y`) — do **not** `.symm` it before
+  `sub_ne_zero.mpr` (wanted `y - r ≠ 0`).
+- `lake env lean` writes NO olean; to typecheck the parent (which imports the child)
+  I built the child olean explicitly with `lake env lean <child> -o .lake/build/lib/lean/Proofs/<child>.olean`
+  then `lake env lean <parent>`.
+- MAIN's working copy of `Hilbert17SumOfSquares.lean` is STALE vs this branch (still has
+  old `artin_univariate_aux` axioms) — edit/commit the WORKTREE copy; only borrow MAIN
+  for its mathlib cache (back up + restore MAIN, scrub stray child .lean/.olean).
+- Aristotle MCP/API is DOWN this session (smoke test: 404 on .../api/v1/project) — the
+  HARD-sorry route was unavailable; proved everything manually.

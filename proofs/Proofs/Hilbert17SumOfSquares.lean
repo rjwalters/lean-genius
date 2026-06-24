@@ -6,6 +6,7 @@ import Mathlib.FieldTheory.RatFunc.Basic
 import Mathlib.Tactic
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17RobinsonNotSOS
+import Proofs.Hilbert17UnivariatePSDSOS
 
 /-!
 # Hilbert's 17th Problem: Sum of Squares Representation
@@ -145,24 +146,30 @@ independent axioms — they are *derived* from these. They are stated up front s
 the derivations downstream typecheck regardless of presentation order.
 
 Independent assumptions:
-  • `univariate_psd_is_sos_aux` — Hilbert 1888 univariate case (FTA + conjugate
-    pairs); strictly stronger than the rational-function form `artin_univariate`.
   • `pfister_bound_aux` — Pfister's 2ⁿ bound; the general Artin existence
     (`artin_hilbert17`) and Cassels' bivariate bound are specializations of it.
+
+(`univariate_psd_is_sos_aux`, formerly an axiom, is now a fully machine-checked
+theorem — see `Proofs/Hilbert17UnivariatePSDSOS.lean`.)
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Univariate PSD is Polynomial-SOS** (Hilbert 1888, univariate case).
+/-- **Univariate PSD is Polynomial-SOS** (Hilbert 1888, univariate case).
 
-    Every univariate PSD polynomial can be written as a sum of squares of
-    polynomials, via complex factorization:
-    `p = c · ∏ (x - rᵢ)^(2eᵢ) · ∏ ((x - aⱼ)² + bⱼ²)`
-    (real roots have even multiplicity; complex roots come in conjugate pairs).
+    Every univariate PSD polynomial is a sum of squares of polynomials — in fact
+    a sum of just two squares.  The full elementary, 0-axiom proof lives in
+    `Proofs/Hilbert17UnivariatePSDSOS.lean`
+    (`Hilbert17UnivariatePSDSOS.univariate_psd_is_sos`): strong induction on the
+    degree, factoring out either `(X - C r)²` at a real root (which a non-negative
+    polynomial must have to even multiplicity) or a positive real quadratic at a
+    conjugate pair of complex roots, recombined via the Brahmagupta–Fibonacci
+    identity.  The parent's `IsPositiveSemidefinite` / `IsSumOfSquaresPolynomial`
+    are definitionally equal to the child's predicates, so the proof transfers by
+    `exact`.
 
-    Axiomatized pending FTA-based factorization and conjugate-root analysis.
-    This is the *strong* form: `artin_univariate` (rational-function SOS) is a
-    direct corollary obtained by mapping into `RatFunc ℝ`. -/
-axiom univariate_psd_is_sos_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
-    IsSumOfSquaresPolynomial p
+    (Formerly the axiom `univariate_psd_is_sos_aux`; now fully machine-checked.) -/
+theorem univariate_psd_is_sos_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
+    IsSumOfSquaresPolynomial p :=
+  Hilbert17UnivariatePSDSOS.univariate_psd_is_sos p h
 
 /-- **Axiom: Pfister's Bound** (Pfister 1967).
 

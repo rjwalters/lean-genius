@@ -29,14 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session (researcher-1, 2026-06-24): proved Robinson's polynomial is NOT a sum of squares of polynomials with a fully elementary, 0-axiom Lean proof (new child entry hilbert-17-oq-03-oq-03, Proofs/Hilbert17RobinsonNotSOS.lean) and wired it into the parent, discharging the axiom robinson_not_sos_aux (parent axiomCount 4 → 3). Route: degree bound (each qᵢ deg ≤ 3) + homogeneous reduction R = Σ(comp₃ qᵢ)² + the cubic forms vanish at R's ten real projective zeros + the 10×10 evaluation matrix of cubic monomials has determinant 128 ≠ 0, so each cubic form is 0, forcing R = 0 (contra R(1,0,0)=1). This CORRECTS the earlier survey that judged Robinson non-SOS to need multi-session Gram-matrix/dual-functional machinery — the elementary zero-set route works. Remaining 3 parent axioms (univariate_psd_is_sos_aux, quadratic_psd_is_sos_aux, pfister_bound_aux) are the genuinely deep independent ones.",
+    "progressSummary": "Session (researcher-1, 2026-06-24): proved the UNIVARIATE case of Hilbert's 17th (Hilbert 1888) with a fully elementary, 0-axiom Lean proof — every non-negative p : ℝ[X] is a sum of two squares of polynomials (new child entry hilbert-17-oq-03-oq-04, Proofs/Hilbert17UnivariatePSDSOS.lean) — and wired it into the parent, discharging the axiom univariate_psd_is_sos_aux (parent axiomCount 3 → 2). Route: strong induction on degree; FTA gives a complex root; a real root of a PSD poly has even multiplicity (one-sided-limit sign argument) so (X-C r)² factors out; a non-real root contributes a positive real quadratic (X-C z.re)²+(C z.im)² that divides p, recombined via Brahmagupta–Fibonacci. This is the positive counterpart to the Motzkin/Robinson counterexamples (the polynomial conclusion holds only in one variable). The 2 remaining parent axioms (quadratic_psd_is_sos_aux, pfister_bound_aux) are the genuinely deep independent ones.",
     "builtItems": [
+      "Hilbert17UnivariatePSDSOS.univariate_psd_is_sos (verified, 0-axiom): every non-negative univariate real polynomial is a sum of two squares, Proofs/Hilbert17UnivariatePSDSOS.lean",
       "Hilbert17RobinsonNotSOS.robinson_not_sos (verified, 0-axiom): Robinson's polynomial is not polynomial-SOS, Proofs/Hilbert17RobinsonNotSOS.lean",
       "Hilbert17.artin_hilbert17 (now theorem ⟸ pfister_bound_aux), Hilbert17SumOfSquares.lean",
       "Hilbert17.artin_univariate (now theorem ⟸ univariate_psd_is_sos_aux via algebraMap), Hilbert17SumOfSquares.lean",
       "Hilbert17.cassels_bound_bivariate (now theorem ⟸ pfister_bound_aux 2), Hilbert17SumOfSquares.lean"
     ],
     "insights": [
+      "The univariate case has an elementary induction-on-degree proof needing only the FTA plus continuity: the sole analytic input is that a real root of a non-negative polynomial has multiplicity ≥ 2 (if it were simple, p=(x-r)g changes sign across r — one-sided limits force g(r)≥0 and g(r)≤0). Real roots come out as (X-C r)², conjugate pairs as a positive quadratic, and the Brahmagupta–Fibonacci identity keeps everything a sum of two squares. No real-closed-field or Gram-matrix machinery — and unlike n≥2, the conclusion is genuine polynomials, not rational functions.",
       "Robinson non-SOS has an elementary zero-set proof: R's ten real projective zeros (1,±1,0),(1,0,±1),(0,1,±1),(1,±1,±1) impose ten INDEPENDENT conditions on the ten-dimensional space of ternary cubic forms (the 10×10 evaluation matrix has determinant 128 ≠ 0), so any cubic form in an SOS decomposition of R must be zero. The coefficient-cascade method (which works for Motzkin) genuinely fails for Robinson because its pure powers x⁶,y⁶,z⁶ have nonzero coefficients — but the zero-set method sidesteps that entirely.",
       "Motzkin non-negativity is a polynomial AM–GM inequality that nlinarith closes from square hints (x²y²−1)², (x²y−y)², (xy²−x)²; no transcendental cube-root argument is needed at the eval level.",
       "Robinson's polynomial equals Schur's expression a(a−b)(a−c)+… under a=x², b=y², c=z²≥0, so its non-negativity is exactly Schur's inequality — nlinarith finds the constrained certificate from a·(a−b)² ≥ 0 terms.",
@@ -45,8 +47,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Attempt the deep univariate_psd_is_sos_aux (PSD univariate = SOS via Fundamental Theorem of Algebra factorization into (x-rᵢ)(x-r̄ᵢ) conjugate pairs) — likely the most tractable of the 3 remaining parent axioms.",
-      "Assess quadratic_psd_is_sos_aux (PSD quadratic form = SOS via Gram/Cholesky / eigendecomposition over ℝ)."
+      "Attempt quadratic_psd_is_sos_aux (PSD quadratic form = SOS of linear forms) via the Gram matrix: poly↔symmetric A, A PSD ⟹ A = BᵀB (Mathlib Matrix.PosSemidef / Cholesky-spectral), Q = ‖Bx‖². The poly↔matrix bridge is the main work.",
+      "pfister_bound_aux (Pfister's 2ⁿ bound) is genuinely deep (Pfister forms over formally real fields); no short Mathlib path — leave axiomatized."
     ]
   },
   "tags": [
