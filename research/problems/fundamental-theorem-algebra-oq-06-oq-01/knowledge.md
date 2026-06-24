@@ -1,4 +1,4 @@
-# Knowledge Base: arsinh-log-formula-oq-01-oq-01-oq-01
+# Knowledge Base: fundamental-theorem-algebra-oq-06-oq-01
 
 Insights accumulated during research on this problem.
 

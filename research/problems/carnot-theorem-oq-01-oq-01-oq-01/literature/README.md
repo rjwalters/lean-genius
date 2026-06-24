@@ -1,11 +1,11 @@
-# Literature for arsinh-log-formula-oq-01-oq-01-oq-01
+# Literature for carnot-theorem-oq-01-oq-01-oq-01
 
 This directory collects related papers, Mathlib pointers, and sibling gallery
 proofs relevant to the problem.
 
 ## Related Gallery Proofs and Mathlib API
 
-arsinh-log-formula-oq-01-oq-01 (parent: arsinh antiderivative + log form); arsinh-log-formula-oq-01 (root). Mathlib: Real.arsinh, Real.cosh_sq, intervalIntegral.integral_eq_sub_of_hasDerivAt.
+carnot-theorem-oq-01-oq-01 (parent); carnot-theorem-oq-01 (root). Mathlib: EuclideanGeometry.circumcenter, Affine.Simplex.circumradius, EuclideanSpace ℝ (Fin 2), orthogonal-projection/signed-distance lemmas.
 
 ## External References
 

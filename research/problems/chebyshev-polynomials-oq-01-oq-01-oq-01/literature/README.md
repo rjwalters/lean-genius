@@ -1,11 +1,11 @@
-# Literature for wilsons-theorem-oq-02-ext-oq-01
+# Literature for chebyshev-polynomials-oq-01-oq-01-oq-01
 
 This directory collects related papers, Mathlib pointers, and sibling gallery
 proofs relevant to the problem.
 
 ## Related Gallery Proofs and Mathlib API
 
-wilsons-theorem-oq-02-ext (parent: two-involution trick); wilsons-theorem-oq-01 (Wilson core). Mathlib: Finset.prod_involution, Finset.prod_univ, ZMod unit groups.
+chebyshev-polynomials-oq-01-oq-01 (parent); chebyshev-polynomials-oq-01 (root). Mathlib: Polynomial.Chebyshev.T/U, T_add_two, U_add_two, Matrix.det_fin_two_of, Matrix.mul_fin_two.
 
 ## External References
 
