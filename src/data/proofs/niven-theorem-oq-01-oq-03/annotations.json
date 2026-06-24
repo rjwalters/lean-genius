@@ -1,0 +1,177 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 6, "endLine": 59 },
+    "type": "concept",
+    "title": "Statement and Strategy — the Sine Companion of Niven",
+    "content": "The module docstring fixes the claim and the route. For every positive integer n, sin(2π/n) is rational iff n ∈ {1, 2, 4, 12}, with values 0, 0, 1, 1/2. This is the sine companion of the crystallographic-restriction classification cos(2π/n) rational ⟺ n ∈ {1, 2, 3, 4, 6}. The exceptional set differs precisely because the fixed numerator 2 sits differently against the periods of sine and cosine. The forward direction rests on two ingredients: Niven's bounded value set for sine (sin θ ∈ {0, ±1/2, ±1} at rational multiples of π) and the strict monotonicity of sine on [−π/2, π/2]. The reverse direction is five elementary special-angle evaluations.",
+    "mathContext": "$\\sin(2\\pi/n)\\in\\mathbb{Q}\\iff n\\in\\{1,2,4,12\\}$, with values $0,0,1,\\tfrac12$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Niven's theorem",
+      "crystallographic restriction",
+      "rational multiples of π",
+      "rotation matrix entries"
+    ],
+    "prerequisites": [
+      "sine and cosine of an angle",
+      "rational vs irrational numbers"
+    ]
+  },
+  {
+    "id": "ann-cos-niven",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 65, "endLine": 93 },
+    "type": "theorem",
+    "title": "cos_niven — Restated Cosine Restriction",
+    "content": "The cosine form of Niven's theorem, restated locally so the file is self-contained. If θ = (m/n)·π and cos θ is rational, then cos θ ∈ {0, ±1/2, ±1}. The deep half is delegated to Mathlib's `Real.isIntegral_two_mul_cos_rat_mul_pi`: 2·cos θ is an algebraic integer. Since it is also rational (a rational witness 2r is supplied from cos θ = r), `IsIntegral.exists_int_iff_exists_rat` — integral closure of ℤ in ℚ — upgrades it to an ordinary integer k. The bounds −1 ≤ cos θ ≤ 1 confine k to [−2, 2], and `interval_cases k` enumerates the five admissible values, each closed by `linarith`.",
+    "mathContext": "$\\theta=\\tfrac{m}{n}\\pi,\\ \\cos\\theta\\in\\mathbb{Q}\\Rightarrow 2\\cos\\theta\\in\\mathbb{Z}\\cap[-2,2]$",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic integer",
+      "integral closure of ℤ in ℚ",
+      "interval_cases enumeration"
+    ],
+    "prerequisites": [
+      "Real.isIntegral_two_mul_cos_rat_mul_pi",
+      "IsIntegral.exists_int_iff_exists_rat",
+      "bounds on cosine"
+    ]
+  },
+  {
+    "id": "ann-sin-niven",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 94, "endLine": 112 },
+    "type": "technique",
+    "title": "sin_niven — Passing to Sine via the Co-function Identity",
+    "content": "Niven's restriction is transported from cosine to sine by the complementary angle. Setting φ = π/2 − θ, the co-function identity `Real.cos_pi_div_two_sub` gives cos φ = sin θ, so a rational sine becomes a rational cosine. The crucial bookkeeping is that φ is still a rational multiple of π: if θ = (m/n)π then φ = ((n − 2m)/(2n))·π, written explicitly so `cos_niven` applies with denominator 2n ≠ 0. Applying cos_niven to φ and rewriting cos φ = sin θ yields sin θ ∈ {0, ±1/2, ±1}. This is the same bridge used by the gallery sibling niven-theorem-oq-02.",
+    "mathContext": "$\\varphi=\\tfrac{\\pi}{2}-\\theta=\\tfrac{n-2m}{2n}\\pi,\\quad \\cos\\varphi=\\sin\\theta$",
+    "significance": "key",
+    "relatedConcepts": [
+      "co-function identity",
+      "complementary angle",
+      "rational multiple of π closure"
+    ],
+    "prerequisites": [
+      "Real.cos_pi_div_two_sub",
+      "field_simp / push_cast",
+      "cos_niven (above)"
+    ]
+  },
+  {
+    "id": "ann-no-rat-sq-three",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 114, "endLine": 120 },
+    "type": "technique",
+    "title": "no_rat_sq_eq_three — The Arithmetic Obstruction",
+    "content": "A clean restatement of the irrationality of √3 in the form needed downstream: no rational s satisfies s² = 3. If it did, then √3 = |s| would be rational, contradicting `Nat.prime_three.irrational_sqrt`. The contradiction is produced by exhibiting |s| : ℚ as a rational representation of the irrational √3. This single arithmetic fact is the only bespoke irrationality input in the entire classification.",
+    "mathContext": "$\\nexists\\, s\\in\\mathbb{Q},\\ s^2=3$, equivalently $\\sqrt3\\notin\\mathbb{Q}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "irrationality of √p for prime p",
+      "square roots as algebraic numbers"
+    ],
+    "prerequisites": [
+      "Nat.Prime.irrational_sqrt",
+      "Real.sqrt_sq_eq_abs"
+    ]
+  },
+  {
+    "id": "ann-sin-three-irrational",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 122, "endLine": 131 },
+    "type": "insight",
+    "title": "sin(2π/3) = √3/2 is Irrational — Why n = 3 Drops Out",
+    "content": "The lemma that distinguishes the sine set from the cosine set. Rewriting 2π/3 = π − π/3 and using `Real.sin_pi_sub` and `Real.sin_pi_div_three` gives sin(2π/3) = √3/2. If this were a rational r, then 2r would be a rational whose square is 3 (since (√3)² = 3), contradicting no_rat_sq_eq_three. This is exactly the value where sine and cosine part ways: cos(2π/3) = −1/2 is rational, so 3 belongs to the cosine exceptional set, but √3/2 is irrational, so 3 is excluded for sine.",
+    "mathContext": "$\\sin(2\\pi/3)=\\sin(\\pi-\\pi/3)=\\sin(\\pi/3)=\\tfrac{\\sqrt3}{2}\\notin\\mathbb{Q}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "special-angle values",
+      "supplementary angle identity",
+      "cosine vs sine exceptional sets"
+    ],
+    "prerequisites": [
+      "Real.sin_pi_sub",
+      "Real.sin_pi_div_three",
+      "no_rat_sq_eq_three (above)"
+    ]
+  },
+  {
+    "id": "ann-main-small-cases",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 133, "endLine": 149 },
+    "type": "theorem",
+    "title": "Main Theorem — Forward Direction, Small Cases n < 4",
+    "content": "Statement of the classification and the n < 4 branch of the forward direction. `interval_cases n` splits n ∈ {1, 2, 3}. For n = 1 and n = 2 the conclusion n ∈ {1,2,4,12} holds immediately. For n = 3, rationality of sin(2π/3) is impossible: the hypothesis is normalised by `norm_num` to sin(2π/3) and handed to sin_two_pi_div_three_irrational for the contradiction. These three small denominators are the only ones the injectivity machinery (used for n ≥ 4) cannot reach, since their angles can exceed π/2.",
+    "mathContext": "$n<4:\\ n=1,2\\Rightarrow\\sin=0;\\ n=3\\Rightarrow\\sin=\\tfrac{\\sqrt3}{2}\\notin\\mathbb{Q}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "case analysis",
+      "interval_cases",
+      "boundary of the monotonicity window"
+    ],
+    "prerequisites": [
+      "interval_cases",
+      "sin_two_pi_div_three_irrational (above)"
+    ]
+  },
+  {
+    "id": "ann-main-large-setup",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 150, "endLine": 167 },
+    "type": "insight",
+    "title": "Bounding the Angle into the Injectivity Window (n ≥ 4)",
+    "content": "The structural heart of the uniform argument. For n ≥ 4 the angle 2π/n lies in (0, π/2]: positivity is immediate, and the upper bound 2π/n ≤ π/2 follows from 4 ≤ n by `nlinarith`. Two consequences are extracted: sine is positive on (0, π) ⊃ (0, π/2], so by `Real.sin_pos_of_pos_of_lt_pi` the value sin(2π/n) > 0; and the angle lies in the closed interval [−π/2, π/2] where sine is injective. Niven's restriction (sin_niven, applied with m = 2) gives sin(2π/n) ∈ {0, ±1/2, ±1}, and positivity instantly discards 0, −1/2, −1 — leaving only the two candidates 1/2 and 1.",
+    "mathContext": "$n\\ge 4\\Rightarrow \\tfrac{2\\pi}{n}\\in(0,\\tfrac{\\pi}{2}],\\quad \\sin\\tfrac{2\\pi}{n}\\in\\{\\tfrac12,1\\}$",
+    "significance": "key",
+    "relatedConcepts": [
+      "strict monotonicity of sine",
+      "positivity pruning",
+      "injectivity on an interval"
+    ],
+    "prerequisites": [
+      "Real.sin_pos_of_pos_of_lt_pi",
+      "sin_niven (above)",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-main-injectivity",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 168, "endLine": 195 },
+    "type": "technique",
+    "title": "Pinning n by Injectivity — n = 12 and n = 4",
+    "content": "Each surviving value is matched to a reference angle and the denominator is solved by injectivity rather than by inverting sine. If sin(2π/n) = 1/2 = sin(π/6), then since both 2π/n and π/6 lie in [−π/2, π/2], `Real.strictMonoOn_sin.injOn` forces 2π/n = π/6; clearing denominators and cancelling π (via `mul_left_cancel₀` and π ≠ 0) gives n = 12. Identically, sin(2π/n) = 1 = sin(π/2) forces 2π/n = π/2 and hence n = 4. This is what lets the infinitely many excluded n ≥ 5 be dismissed in one stroke: the Niven value set simply never contains sin(2π/n) for them.",
+    "mathContext": "$\\sin\\tfrac{2\\pi}{n}=\\tfrac12\\Rightarrow \\tfrac{2\\pi}{n}=\\tfrac{\\pi}{6}\\Rightarrow n=12;\\quad =1\\Rightarrow \\tfrac{2\\pi}{n}=\\tfrac{\\pi}{2}\\Rightarrow n=4$",
+    "significance": "key",
+    "relatedConcepts": [
+      "injectivity of a strictly monotone function",
+      "cancellation of π",
+      "uniform handling of infinitely many cases"
+    ],
+    "prerequisites": [
+      "Real.strictMonoOn_sin",
+      "Set.InjOn",
+      "mul_left_cancel₀"
+    ]
+  },
+  {
+    "id": "ann-reverse",
+    "proofId": "niven-theorem-oq-01-oq-03",
+    "range": { "startLine": 196, "endLine": 208 },
+    "type": "technique",
+    "title": "Reverse Direction — Five Special-Angle Evaluations",
+    "content": "Each admissible denominator is verified to give a rational sine by direct evaluation. For n = 1, 2π/1 = 2π and sin 2π = 0; for n = 2, 2π/2 = π and sin π = 0; for n = 4, 2π/4 = π/2 and sin(π/2) = 1; for n = 12, 2π/12 = π/6 and sin(π/6) = 1/2. Each case `push_cast`/`norm_num`-normalises the angle, rewrites with the corresponding Mathlib special-angle lemma, and exhibits the explicit rational witness (0, 0, 1, or 1/2).",
+    "mathContext": "$\\sin 2\\pi=0,\\ \\sin\\pi=0,\\ \\sin\\tfrac{\\pi}{2}=1,\\ \\sin\\tfrac{\\pi}{6}=\\tfrac12$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "special-angle sine values",
+      "explicit witnesses"
+    ],
+    "prerequisites": [
+      "Real.sin_two_pi, Real.sin_pi, Real.sin_pi_div_two, Real.sin_pi_div_six",
+      "norm_num"
+    ]
+  }
+]
