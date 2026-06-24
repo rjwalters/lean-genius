@@ -73,7 +73,8 @@
       "Strictness needs no new analytic input: it is purely (non-strict inequality) + (equality characterization). The mathematical work was already done in the equality case; strictness is its logical shadow.",
       "All three equality conditions collapse to the single scalar a = b, so the three strict gaps are equivalent to one another and to a ≠ b. This is what makes the dichotomy 'all or nothing'.",
       "The rigidity statement any_strict_iff_all_strict has no analogue at the level of a bare inequality chain: it is a consequence of every link sharing the same equality locus.",
-      "Reusing sibling files (non-strict chain + equality case) rather than re-deriving keeps the file short and isolates the genuinely new content (the strict dichotomy)."
+      "Reusing sibling files (non-strict chain + equality case) rather than re-deriving keeps the file short and isolates the genuinely new content (the strict dichotomy).",
+      "The headline equivalence is really a statement about the equality locus: because all three links share the same locus {a = b}, strictness of the chain is governed by a single scalar invariant rather than three independent conditions. This is the two-point shadow of the strict monotonicity of the power-mean map p ↦ M_p, whose level sets degenerate only on the constant configurations."
     ],
     "prerequisites": [
       "Basic real analysis and order theory (≤ vs <)",
