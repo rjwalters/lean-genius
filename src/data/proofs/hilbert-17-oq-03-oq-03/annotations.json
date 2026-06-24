@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-hilbert17-oq0303-header",
+    "proofId": "hilbert-17-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Discharging the parent's Robinson axiom, elementarily",
+    "content": "The docstring states the goal: Robinson's polynomial R is nonnegative on ℝ³ (its Schur certificate is in the parent) yet not a sum of squares of polynomials. The parent carried this as the axiom robinson_not_sos_aux; this file proves robinson_not_sos with 0 axioms via a zero-set / linear-algebra argument, and lays out the four moves — degree bound, homogeneous reduction, vanishing on the ten zeros, and the determinant-128 linear system.",
+    "mathContext": "$R = x^6+y^6+z^6 - x^4y^2-y^4z^2-z^4x^2 - x^2y^4-y^2z^4-z^2x^4 + 3x^2y^2z^2$ is PSD but not polynomial-SOS.",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's 17th problem", "sum of squares", "Robinson polynomial", "PSD vs SOS"],
+    "prerequisites": ["multivariate polynomials", "nonnegativity vs SOS"]
+  },
+  {
+    "id": "ann-hilbert17-oq0303-monomials",
+    "proofId": "hilbert-17-oq-03-oq-03",
+    "range": { "startLine": 50, "endLine": 97 },
+    "type": "technique",
+    "title": "Monomial bookkeeping and the ten cubic monomials",
+    "content": "mon3 a b c encodes the exponent vector of xᵃyᵇzᶜ in Fin 3 →₀ ℕ, with coordinate and degree lemmas and the monomial form Xpp3. The key combinatorial fact is deg3_cases: every degree-3 exponent vector in three variables is one of exactly ten cubic monomials (x³, y³, z³, x²y, x²z, xy², y²z, xz², yz², xyz), proved by interval_cases on the three exponents. This ten-element basis is what makes the later linear algebra finite and explicit.",
+    "mathContext": "$\\dim(\\text{ternary cubic forms}) = \\binom{3+2}{2} = 10$: the monomials $x^3,y^3,z^3,x^2y,x^2z,xy^2,y^2z,xz^2,yz^2,xyz$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finsupp exponent vectors", "interval_cases", "monomial basis", "homogeneous cubics"],
+    "prerequisites": ["MvPolynomial monomials", "degree of an exponent vector"]
+  },
+  {
+    "id": "ann-hilbert17-oq0303-robinson",
+    "proofId": "hilbert-17-oq-03-oq-03",
+    "range": { "startLine": 99, "endLine": 188 },
+    "type": "concept",
+    "title": "Robinson's polynomial: homogeneity and its ten zeros",
+    "content": "robinson is defined, then robinson_isHom proves it homogeneous of degree 6 (so comp₆ R = R, used in the reduction). eval_robinson computes its value at a point; eval_robinson_100 gives the non-vanishing R(1,0,0) = 1 (the eventual contradiction), and eval_robinson_P1..P10 verify the ten real projective zeros (1,±1,0), (1,0,±1), (0,1,±1), (1,±1,±1), each cleared by norm_num. These zeros are precisely the points that pin every cubic form to zero.",
+    "mathContext": "$R$ is homogeneous of degree 6; $R(1,0,0)=1$ while $R$ vanishes at its ten real projective zeros.",
+    "significance": "key",
+    "relatedConcepts": ["IsHomogeneous", "homogeneousComponent", "real projective zeros", "Schur inequality"],
+    "prerequisites": ["homogeneous polynomials", "polynomial evaluation"]
+  },
+  {
+    "id": "ann-hilbert17-oq0303-degree",
+    "proofId": "hilbert-17-oq-03-oq-03",
+    "range": { "startLine": 190, "endLine": 294 },
+    "type": "insight",
+    "title": "Top forms cannot cancel: the degree bound",
+    "content": "The generic engine. sum_sq_eq_zero / sum_sq_real_eq_zero record that a finite sum of real squares is 0 only if each term is. topsq shows the degree-2D homogeneous component of p² is exactly (homogeneousComponent D p)², when D bounds totalDegree p. degree_bound combines them: if Σ qᵢ² = P with deg P ≤ 6, the degree-2D top component of the sum is Σ (top form)², a sum of squares that must vanish (P has no such high degree), so every top form is 0 and hence each qᵢ has degree ≤ 3 — the leading forms of a sum of squares cannot cancel.",
+    "mathContext": "$\\mathrm{homogeneousComponent}(2D)(p^2) = (\\mathrm{homogeneousComponent}\\,D\\,p)^2$; $\\sum q_i^2 = P,\\ \\deg P \\le 6 \\Rightarrow \\deg q_i \\le 3$.",
+    "significance": "key",
+    "relatedConcepts": ["leading form", "homogeneousComponent", "no cancellation", "sum of squares positivity"],
+    "prerequisites": ["total degree", "homogeneous decomposition"]
+  },
+  {
+    "id": "ann-hilbert17-oq0303-cubiczero",
+    "proofId": "hilbert-17-oq-03-oq-03",
+    "range": { "startLine": 296, "endLine": 376 },
+    "type": "insight",
+    "title": "The crux: a cubic vanishing at the ten zeros is zero (det 128)",
+    "content": "eval_mon3 evaluates a single cubic monomial, and as_cubic writes any homogeneous cubic as the sum of its ten coefficient·monomial terms — turning point evaluation into an explicit linear form in the ten coefficients. cubic_zero plugs in the ten zeros, producing ten linear equations whose 10×10 coefficient matrix (the cubic monomials evaluated at the points) has determinant 128 ≠ 0; linarith clears the determined system, forcing all ten coefficients — hence the cubic — to zero. The ten zeros impose ten independent conditions on the ten-dimensional space of ternary cubics.",
+    "mathContext": "The evaluation matrix of the ten cubic monomials at the ten zeros has $\\det = 128 \\ne 0$, so the only homogeneous cubic vanishing at all ten is $0$.",
+    "significance": "key",
+    "relatedConcepts": ["evaluation matrix", "invertibility", "linarith", "interpolation conditions"],
+    "prerequisites": ["coefficient extraction", "linear independence", "as_cubic representation"]
+  },
+  {
+    "id": "ann-hilbert17-oq0303-assembly",
+    "proofId": "hilbert-17-oq-03-oq-03",
+    "range": { "startLine": 378, "endLine": 418 },
+    "type": "insight",
+    "title": "Assembling robinson_not_sos",
+    "content": "IsSOS robinson is defined to match the parent's IsSumOfSquaresMvPolynomial. robinson_not_sos assumes R = Σ qᵢ² and chains the four steps: degree_bound gives each qᵢ degree ≤ 3; the homogeneous reduction (comp₆ R = R via topsq) gives R = Σ (homogeneousComponent 3 qᵢ)²; vanishing of a sum of squares at each of the ten zeros (sum_sq_real_eq_zero) makes every cubic part vanish there; cubic_zero forces each cubic part to 0; hence R = 0, contradicting R(1,0,0) = 1. Discharges the parent axiom robinson_not_sos_aux.",
+    "mathContext": "$R = \\sum q_i^2 \\Rightarrow$ each $q_i^{(3)} = 0 \\Rightarrow R = 0$, contradicting $R(1,0,0) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["proof by contradiction", "homogeneous reduction", "axiom discharge", "IsSumOfSquaresMvPolynomial"],
+    "prerequisites": ["the degree bound", "cubic_zero", "the ten zeros"]
+  }
+]
