@@ -2776,6 +2776,7 @@ import Proofs.ErdosMordellFeetAngleAristotle
 import Proofs.ErdosMordellInequalityOQ01
 import Proofs.ErdosSzekeres
 import Proofs.EulerCriterionSquaresOQ01
+import Proofs.EulerCriterionSquaresOQ01OQ02
 import Proofs.EulerIdentity
 import Proofs.EulerIdentityOQ01
 import Proofs.EulerIdentityOQ01OQ02

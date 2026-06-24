@@ -1,0 +1,84 @@
+{
+  "id": "euler-criterion-squares-oq-01-oq-02",
+  "title": "The Two Supplementary Laws of Quadratic Reciprocity from Euler's Criterion",
+  "slug": "euler-criterion-squares-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.EulerCriterionSquaresOQ01"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "EulerCriterionSquaresOQ01OQ02",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/EulerCriterionSquaresOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "description": "The two supplementary laws of quadratic reciprocity, derived for an odd prime p. First supplementary law: (−1 | p) = (−1)^((p−1)/2), obtained directly from the parent's Euler criterion (legendreSym_eq_pow) — the integers (−1 | p) and (−1)^((p−1)/2) both lie in {−1, 1} and are congruent mod p, hence equal by an injectivity-of-{±1}-mod-p lemma — together with its residue form IsSquare(−1) ↔ p ≡ 1 (mod 4). Second supplementary law: 2 is a quadratic residue mod p iff p ≡ ±1 (mod 8), packaged into the explicit value dictionary (2 | p) = 1 ⟺ p ≡ 1,7 (mod 8) and (2 | p) = −1 ⟺ p ≡ 3,5 (mod 8); the deep Gauss-sum content is Mathlib's ZMod.exists_sq_eq_two_iff.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_criterion#Supplements_to_the_law_of_quadratic_reciprocity",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerCriterionSquaresOQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-residues",
+      "euler-criterion",
+      "legendre-symbol",
+      "quadratic-reciprocity",
+      "supplementary-laws"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.eq_one_or_neg_one",
+        "description": "the Legendre symbol of a unit is ±1; supplies membership of (−1 | p) in {−1, 1} for the criterion-to-equality lift",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "legendreSym.eq_one_iff / eq_neg_one_iff",
+        "description": "(a | p) = ±1 characterized by IsSquare (a : ZMod p); converts the residue dictionaries into Legendre-value form",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_neg_one_iff",
+        "description": "IsSquare (−1 : ZMod p) ↔ p % 4 ≠ 3; the residue form of the first supplementary law",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "ZMod.exists_sq_eq_two_iff",
+        "description": "IsSquare (2 : ZMod p) ↔ p % 8 = 1 ∨ p % 8 = 7 — the Gauss-sum content of the SECOND supplementary law; this entry packages it, it does not re-derive it",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      }
+    ],
+    "originalContributions": [
+      "legendreSym_neg_one: (−1 | p) = (−1)^((p−1)/2) derived straight from the PARENT's Euler criterion (legendreSym_eq_pow), not from Mathlib's legendreSym.at_neg_one — both sides are ±1 and congruent mod p, so equal",
+      "intCast_inj_of_pm_one: the reusable bridge lemma making the criterion's congruence into an equality — two integers in {−1, 1} with equal image in ZMod p are equal (uses the parent's one_ne_neg_one)",
+      "neg_one_isSquare_iff / legendreSym_neg_one_eq_one_iff: first supplementary law in residue (p % 4 = 1) and Legendre-value forms",
+      "two_isSquare_iff / legendreSym_two_eq_one_iff / legendreSym_two_eq_neg_one_iff: the SECOND supplementary law as a complete explicit p (mod 8) dictionary, with the residue/non-residue cases (p ≡ 1,7 vs 3,5) separated via omega from oddness of p"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 131,
+    "assumptions": "0 axioms (depends only on propext / Classical.choice / Quot.sound — the foundational Lean axioms; no sorry, no native_decide / Lean.ofReduceBool). 0 sorries. Fully verified. Honest scope: the FIRST supplementary law (−1 | p) is derived from the parent's Euler criterion (an original route); the SECOND supplementary law (2 | p) packages Mathlib's Gauss-sum result ZMod.exists_sq_eq_two_iff into an explicit p (mod 8) dictionary rather than re-deriving the Gauss-sum evaluation from scratch.",
+    "mathlib_version": "4.26.0",
+    "parentProof": "euler-criterion-squares-oq-01",
+    "theoremCount": 11,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Euler's criterion (1748) states that for an odd prime p and a not divisible by p, a is a quadratic residue mod p iff a^((p−1)/2) ≡ 1 (mod p). Two famous consequences are the 'supplementary laws' that accompany Gauss's law of quadratic reciprocity: the value of the Legendre symbol at −1 (governed by p mod 4) and at 2 (governed by p mod 8). The first follows immediately by substituting a = −1 into Euler's criterion; the second is more delicate and classically requires Gauss's lemma or a Gauss-sum computation.",
+    "problemStatement": "Prove the two supplementary laws of quadratic reciprocity from Euler's criterion: (−1 | p) = (−1)^((p−1)/2), and the value of (2 | p) determined by p mod 8.",
+    "keyResults": [
+      "First supplementary law: (−1 | p) = (−1)^((p−1)/2), derived directly from the parent's Euler criterion; equivalently −1 is a square mod p iff p ≡ 1 (mod 4).",
+      "Second supplementary law: 2 is a square mod p iff p ≡ ±1 (mod 8); explicitly (2 | p) = 1 iff p ≡ 1, 7 (mod 8) and (2 | p) = −1 iff p ≡ 3, 5 (mod 8).",
+      "A reusable lemma lifting Euler's congruence to an equality of Legendre values: distinct elements of {−1, 1} stay distinct modulo an odd prime."
+    ]
+  }
+}
