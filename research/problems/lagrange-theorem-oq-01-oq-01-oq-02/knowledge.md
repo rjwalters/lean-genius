@@ -22,6 +22,44 @@ each other, for each of the two cases" (cyclic case `p ∤ q-1`; non-cyclic case
 - File now: **18 theorems, 2 defs, 0 sorries, 0 axioms, Mathlib-only**, kernel-verified
   standard `[propext, Classical.choice, Quot.sound]` triple.
 
+## Session 2026-06-24 (Session 4) — FULL non-abelian uniqueness CLOSED
+
+**Mode**: DEPTH-FIRST (RICH) · **Outcome**: SOLVED (verified, +3 thms, 0-ax).
+
+### What I Did
+- Parts VII (common range) and VIII (internal recognition) were already merged
+  (researcher-1 PR #28828). The file's docstring listed exactly one residual: *the
+  conjugation action is nontrivial in the non-cyclic case*. Closed it + assembled capstone.
+- Added **Part IX** `pq_noncyclic_iso`: **any two non-cyclic groups of order `pq`
+  (`p < q`) are isomorphic.** `#print axioms` = `[propext, Classical.choice, Quot.sound]`.
+
+### Three new theorems
+- `semidirectProduct_trivial_isCyclic`: trivial action over coprime finite cyclic factors
+  ⟹ `N ⋊[1] Γ ≃* N × Γ` (`SemidirectProduct.mulEquivProd`) cyclic (`Group.isCyclic_prod_iff`).
+- `action_ne_one_of_not_isCyclic`: contrapositive (`rintro rfl`).
+- `pq_noncyclic_iso`: Part VIII (`G ≃* QG⋊[φ]PG`) → nontriviality of φ,ψ from non-cyclicity →
+  transport G's action onto H's factors via `SemidirectProduct.congr'` → Part VII capstone.
+
+### Key API (unblocked everything)
+- `SemidirectProduct.mulEquivProd : N ⋊[1] G ≃* N × G`.
+- `SemidirectProduct.congr' fn fg : N₁⋊[φ₁]G₁ ≃* N₂⋊[MulAut.congr fn ∘ φ₁ ∘ fg.symm]G₂` —
+  transport WITHOUT specifying target action. Derive transported-action nontriviality from
+  the source being non-cyclic via the SAME contrapositive lemma (don't compute by hand).
+- `IsCyclic.mulAutMulEquiv : MulAut G ≃* (ZMod (Nat.card G))ˣ` + `ZMod.isCyclic_units_prime`
+  ⟹ `IsCyclic (MulAut Q)` for prime-order cyclic Q. `MulEquiv.isCyclic` transports cyclicity.
+
+### Gotchas
+- `(MulAut.congr e).comp …` → `→ₙ*` type mismatch; coerce: `(MulAut.congr e : _ →* _).comp`.
+- `Fintype` of a Subgroup not auto from `[Fintype H]`: `letI := Fintype.ofFinite _`.
+- MAIN checkout's .lean got reset by a concurrent agent mid-session; WORKTREE file is
+  authoritative — `cp worktree→main` immediately before each build, re-check `wc -l`.
+- Cache lives in MAIN `proofs/.lake/packages/mathlib/.lake/build/`, not fresh worktree.
+
+### Status: SOLVED — all 3 isomorphism classes pinned. Only constructive-existence of the
+non-abelian class (when p∣q-1) remains as a NEW follow-up; the OQ's uniqueness is answered.
+
+---
+
 ## Session 2026-06-24 (Session 2) — Non-abelian semidirect-product infrastructure
 
 **Mode**: DEPTH-FIRST (MODERATE) · **Outcome**: progress (verified, +4 thms +2 defs)

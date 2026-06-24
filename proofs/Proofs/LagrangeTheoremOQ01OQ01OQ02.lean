@@ -41,10 +41,13 @@
   `pq` in this branch are isomorphic (`pq_cyclic_iso`), e.g. all groups of order `15`
   or `35`.
 
-  **Scope / what is deferred.** Only the `p ∣ (q-1)` *non-abelian* uniqueness — "any
-  two non-cyclic groups of order `pq` are isomorphic" — remains open; it requires a
-  full internal semidirect-product recognition `ℤ/q ⋊ ℤ/p` (see this entry's open
-  questions). The parent dependency `Proofs.SylowTheoremOQ01` does not compile on
+  **Scope.** All three isomorphism classes are now resolved. The `p ∣ (q-1)`
+  *non-abelian* uniqueness — "any two non-cyclic groups of order `pq` are isomorphic"
+  — is proved in Part IX (`pq_noncyclic_iso`), built on the full internal
+  semidirect-product recognition `G ≃* ℤ/q ⋊ ℤ/p` (Part VIII), the common range of
+  nontrivial actions into the cyclic `Aut(ℤ/q)` (Part VII), and the fact that a
+  trivial action collapses to the cyclic direct product (Part IX). The parent
+  dependency `Proofs.SylowTheoremOQ01` does not compile on
   Mathlib v4.26.0 (renamed/removed lemmas), so this file deliberately avoids it and
   imports only Mathlib, remaining fully machine-checked with `0` sorries and `0`
   axioms (every theorem depends on exactly `[propext, Classical.choice, Quot.sound]`).
@@ -574,5 +577,106 @@ theorem exists_internalSemidirect_of_card_pq {G : Type*} [Group G] [Fintype G]
     · rw [hcardQ, hcardP]; exact (Nat.coprime_primes hq hp).mpr (Ne.symm hpq)
   exact ⟨(Q : Subgroup G), (P : Subgroup G), hQnormal, _, hcardQ, hcardP,
     ⟨SemidirectProduct.mulEquivSubgroup hcompl⟩⟩
+
+/-
+  ## Part IX — Nontrivial action and FULL non-abelian uniqueness.
+
+  Parts VI–VIII reduced non-abelian `pq`-uniqueness to one residual mathematical
+  input: the conjugation action of the internal semidirect decomposition is
+  *nontrivial* whenever `G` is non-cyclic. We discharge it here and assemble the
+  complete statement.
+
+  - `semidirectProduct_trivial_isCyclic`: a *trivial* action over coprime cyclic
+    factors collapses the semidirect product to the **direct** product `N × Γ`
+    (`SemidirectProduct.mulEquivProd`), which is cyclic (`Group.isCyclic_prod_iff`).
+  - `action_ne_one_of_not_isCyclic`: the contrapositive — a non-cyclic semidirect
+    product over coprime cyclic factors must have a nontrivial action.
+  - `pq_noncyclic_iso`: **any two non-cyclic groups of order `pq` (`p < q`) are
+    isomorphic.** Each is internally `Q ⋊ P` (Part VIII); the actions are nontrivial
+    (above); we transport one group's action onto the other's factors with
+    `SemidirectProduct.congr'` (using `Q₁ ≃* Q₂`, `P₁ ≃* P₂` from
+    `mulEquivOfCyclicCardEq`), and finish with Part VII's capstone
+    `semidirectProductIso_of_nontrivial_into_cyclic`, valid because `MulAut Q` is
+    cyclic for prime-order `Q` (`IsCyclic.mulAutMulEquiv` lands in `(ZMod q)ˣ`, cyclic
+    by `ZMod.isCyclic_units_prime`).
+
+  Together with Part IV (every group of order `pq` is cyclic when `p ∤ q-1`) and
+  Parts I–III (abelian groups of order `pq` are cyclic), this completes the
+  isomorphism-uniqueness upgrade of the `pq`-classification: in the `p ∣ q-1` branch
+  the non-cyclic class is a single isomorphism type.
+-/
+
+/-- **Trivial action ⟹ cyclic.** A semidirect product `N ⋊[1] Γ` with the trivial
+    action map, over finite cyclic factors of coprime order, *is* the direct product
+    `N × Γ` and hence cyclic. -/
+theorem semidirectProduct_trivial_isCyclic {N Γ : Type*} [Group N] [Group Γ]
+    [Finite N] [Finite Γ] [IsCyclic N] [IsCyclic Γ]
+    (hcop : (Nat.card N).Coprime (Nat.card Γ)) :
+    IsCyclic (SemidirectProduct N Γ (1 : Γ →* MulAut N)) := by
+  rw [(SemidirectProduct.mulEquivProd (N := N) (G := Γ)).isCyclic]
+  exact Group.isCyclic_prod_iff.mpr ⟨inferInstance, inferInstance, hcop⟩
+
+/-- **Non-cyclic ⟹ nontrivial action.** Contrapositive of the previous lemma: a
+    non-cyclic semidirect product over coprime cyclic factors has a nontrivial action. -/
+theorem action_ne_one_of_not_isCyclic {N Γ : Type*} [Group N] [Group Γ]
+    [Finite N] [Finite Γ] [IsCyclic N] [IsCyclic Γ]
+    (hcop : (Nat.card N).Coprime (Nat.card Γ)) {φ : Γ →* MulAut N}
+    (hnc : ¬ IsCyclic (SemidirectProduct N Γ φ)) : φ ≠ 1 := by
+  rintro rfl
+  exact hnc (semidirectProduct_trivial_isCyclic hcop)
+
+/-- **Full non-abelian uniqueness for groups of order `pq`.** Any two *non-cyclic*
+    groups `G`, `H` of order `pq` (`p < q` primes) are isomorphic. This closes the
+    non-abelian thread of OQ-01-OQ-01-OQ-02: in the `p ∣ q-1` branch of the
+    `pq`-classification the non-cyclic isomorphism class is unique. -/
+theorem pq_noncyclic_iso {G H : Type*} [Group G] [Group H] [Fintype G] [Fintype H]
+    {p q : ℕ} (hp : p.Prime) (hq : q.Prime) (hpltq : p < q)
+    (hG : Fintype.card G = p * q) (hH : Fintype.card H = p * q)
+    (hGnc : ¬ IsCyclic G) (hHnc : ¬ IsCyclic H) :
+    Nonempty (G ≃* H) := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : Fact q.Prime := ⟨hq⟩
+  have hpq : p ≠ q := Nat.ne_of_lt hpltq
+  -- Internal recognition (Part VIII): both groups are internal semidirect products.
+  obtain ⟨QG, PG, _, φ, hcardQG, hcardPG, ⟨eG⟩⟩ :=
+    exists_internalSemidirect_of_card_pq hp hq hpltq hG
+  obtain ⟨QH, PH, _, ψ, hcardQH, hcardPH, ⟨eH⟩⟩ :=
+    exists_internalSemidirect_of_card_pq hp hq hpltq hH
+  -- All four prime-order factors are cyclic.
+  haveI : IsCyclic QG := isCyclic_of_prime_card hcardQG
+  haveI : IsCyclic PG := isCyclic_of_prime_card hcardPG
+  haveI : IsCyclic QH := isCyclic_of_prime_card hcardQH
+  haveI : IsCyclic PH := isCyclic_of_prime_card hcardPH
+  -- The factor orders `q` and `p` are coprime.
+  have hcopH : (Nat.card QH).Coprime (Nat.card PH) := by
+    rw [hcardQH, hcardPH]; exact (Nat.coprime_primes hq hp).mpr (Ne.symm hpq)
+  -- Isomorphisms between the like-order Sylow factors of `G` and `H`.
+  let e_Q : QG ≃* QH := mulEquivOfCyclicCardEq (hcardQG.trans hcardQH.symm)
+  let e_P : PG ≃* PH := mulEquivOfCyclicCardEq (hcardPG.trans hcardPH.symm)
+  -- Transport `G`'s action onto `H`'s factors, obtaining `QG ⋊[φ] PG ≃* QH ⋊[φ'] PH`.
+  let φ' : PH →* MulAut QH :=
+    (MulAut.congr e_Q : MulAut QG →* MulAut QH).comp (φ.comp (e_P.symm : PH →* PG))
+  have t : SemidirectProduct QG PG φ ≃* SemidirectProduct QH PH φ' :=
+    SemidirectProduct.congr' e_Q e_P
+  -- Both transported actions are nontrivial: their semidirect products are `≃* G`,`H`,
+  -- which are non-cyclic.
+  have hψ : ψ ≠ 1 :=
+    action_ne_one_of_not_isCyclic hcopH (fun hc => hHnc ((eH.isCyclic).mp hc))
+  have hφ' : φ' ≠ 1 :=
+    action_ne_one_of_not_isCyclic hcopH
+      (fun hc => hGnc (((t.symm.trans eG).isCyclic).mp hc))
+  -- `MulAut QH` is cyclic (prime-order cyclic `QH`, so `MulAut QH ≃* (ZMod q)ˣ`).
+  haveI : IsCyclic (MulAut QH) := by
+    have e := IsCyclic.mulAutMulEquiv QH
+    rw [e.isCyclic, hcardQH]
+    exact ZMod.isCyclic_units_prime hq
+  haveI : Fintype PH := Fintype.ofFinite _
+  have hcardPH' : Fintype.card PH = p := by
+    rw [← Nat.card_eq_fintype_card]; exact hcardPH
+  -- Part VII capstone: nontrivial actions into a cyclic `Aut` give isomorphic products.
+  obtain ⟨s⟩ := semidirectProductIso_of_nontrivial_into_cyclic
+    (N := QH) (Γ := PH) hp hcardPH' hφ' hψ
+  -- Stitch: `G ≃* QG⋊[φ]PG ≃* QH⋊[φ']PH ≃* QH⋊[ψ]PH ≃* H`.
+  exact ⟨eG.symm.trans (t.trans (s.symm.trans eH))⟩
 
 end LagrangeOQ01OQ01OQ02
