@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-edpoq010101-header",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Problem Statement: the explicit Dilworth chain decomposition",
+    "content": "The parent entry proves that the largest divisibility-antichain in {1,…,2n} has size n by a pigeonhole count on odd parts. This entry answers its first open question: realize the underlying Dilworth/Mirsky chain partition explicitly. Every m = 2^k · o(m) where o(m) = ordCompl[2] m is the odd part; grouping {1,…,2n} by o(m) yields exactly n classes, the divisibility chains o, 2o, 4o, …. The header lays out the four deliverables — the n-chain count (card_chains), that each fiber is a genuine chain (fiber_chain), the antichain bound as a min–max consequence (antichain_card_le), and the top-half attainment giving the Dilworth equality (max_antichain_eq).",
+    "mathContext": "For the divisibility poset on $\\{1,\\dots,2n\\}$, the maximum antichain size equals the minimum number of chains covering it, both $n$. The canonical cover is by odd parts: one chain $o, 2o, 4o, \\dots$ per odd $o \\le 2n$.",
+    "significance": "key",
+    "relatedConcepts": ["Dilworth's theorem", "Mirsky's theorem", "chain decomposition", "antichain", "divisibility poset", "primitive set"],
+    "prerequisites": ["divisibility", "partial orders", "2-adic valuation"]
+  },
+  {
+    "id": "ann-edpoq010101-oddpart",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+    "range": { "startLine": 44, "endLine": 70 },
+    "type": "definition",
+    "title": "The odd-part interface",
+    "content": "oddPart m := ordCompl[2] m = m / 2^(v₂ m) is the index of the divisibility chain containing m. The helper lemmas package the Mathlib facts in a chain-friendly form: oddPart_dvd (it divides m), oddPart_le (≤ m), oddPart_pos (positive when m ≠ 0), odd_oddPart (it is odd — by Nat.not_dvd_ordCompl, since dividing out all factors of 2 leaves an odd number), and oddPart_eq_self (an odd number equals its own odd part, since its 2-adic valuation is 0). The odd numbers are exactly the fixed points of oddPart, hence the chain representatives.",
+    "mathContext": "$\\mathrm{ordCompl}[2]\\,m = m / 2^{v_2(m)}$; it is odd, divides $m$, and fixes odd numbers. The chain through odd $o$ is $\\{o, 2o, 4o, \\dots\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["odd part", "ordCompl", "2-adic valuation", "chain index"],
+    "prerequisites": ["p-adic valuation", "parity", "Nat.factorization"]
+  },
+  {
+    "id": "ann-edpoq010101-comparability",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 87 },
+    "type": "lemma",
+    "title": "Chain comparability — the structural heart",
+    "content": "dvd_or_dvd_of_oddPart_eq: two positive numbers with the same odd part are comparable under divisibility. The proof uses Nat.ordProj_mul_ordCompl_eq_self to write a = 2^i · m and b = 2^j · m with m the common odd part; le_total on the 2-adic valuations i, j picks the smaller power of two, and pow_dvd_pow with mul_dvd_mul_right orients the division. This is precisely the fact that upgrades the fiber partition to a chain cover — the parent's pigeonhole count never makes it explicit.",
+    "mathContext": "If $o(a) = o(b) = m$ then $a = 2^i m$, $b = 2^j m$; WLOG $i \\le j$ gives $2^i m \\mid 2^j m$, i.e. $a \\mid b$.",
+    "significance": "key",
+    "relatedConcepts": ["comparability", "divisibility chain", "2-adic factorization", "total order"],
+    "prerequisites": ["ordProj_mul_ordCompl_eq_self", "pow_dvd_pow", "le_total"]
+  },
+  {
+    "id": "ann-edpoq010101-chaincount",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 116 },
+    "type": "theorem",
+    "title": "The n-chain partition",
+    "content": "image_oddPart_Icc identifies the set of odd parts occurring in {1,…,2n} with {2i+1 : i < n} — every odd part is an odd number ≤ 2n (forward: oddPart is odd and ≤ 2n), and every odd 2i+1 with i < n is its own odd part (reverse: oddPart_eq_self). card_chains then counts this image as n via the injective i ↦ 2i+1 and card_range, giving the explicit cover by n divisibility chains. fiber_chain restricts the comparability lemma to {1,…,2n}: each fiber is a chain.",
+    "mathContext": "$\\{o(m) : 1 \\le m \\le 2n\\} = \\{2i+1 : i < n\\}$, so there are exactly $n$ chains, indexed by the $n$ odd numbers $\\le 2n$.",
+    "significance": "key",
+    "relatedConcepts": ["chain cover", "fibers", "counting odd numbers", "injectivity"],
+    "prerequisites": ["Finset.image", "card_image_of_injective", "card_range", "omega"]
+  },
+  {
+    "id": "ann-edpoq010101-bound",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+    "range": { "startLine": 119, "endLine": 131 },
+    "type": "theorem",
+    "title": "Upper bound as the Mirsky/Dilworth min–max consequence",
+    "content": "antichain_card_le: any divisibility-antichain A ⊆ {1,…,2n} has at most n elements. The key step is that oddPart is injective on A: if two members had the same odd part, fiber_chain would make them ∣-comparable, contradicting the antichain property (so they coincide). Hence |A| = |A.image oddPart| ≤ |image over {1,…,2n}| = n by card_chains. This is the chain-cover proof of the bound — an antichain meets each of the n chains at most once — structurally distinct from the parent's collision count.",
+    "mathContext": "An antichain meets each chain in $\\le 1$ element, so $|A| \\le$ (number of chains) $= n$: the direction max antichain $\\le$ min chain cover.",
+    "significance": "key",
+    "relatedConcepts": ["Dilworth's theorem", "antichain bound", "injectivity on antichain", "chain cover"],
+    "prerequisites": ["Set.InjOn", "card_image_of_injOn", "card_le_card", "image_subset_image"]
+  },
+  {
+    "id": "ann-edpoq010101-minmax",
+    "proofId": "erdos-divisibility-pigeonhole-oq-01-oq-01-oq-01",
+    "range": { "startLine": 133, "endLine": 166 },
+    "type": "theorem",
+    "title": "Sharpness and the Dilworth equality",
+    "content": "topHalf_antichain proves the block {n+1,…,2n} is a divisibility-antichain: if a ∣ a·c with both in the block, the cofactor c must be 1, since c ≥ 2 would force a·c ≥ 2(n+1) > 2n (the bound via nlinarith and omega). card_topHalf gives its size n through Nat.card_Icc. max_antichain_eq then packages the bound (antichain_card_le) and this attainment into IsGreatest n — the Dilworth min–max equality: the maximum antichain size equals the minimum chain-cover size, both n, for the divisibility poset on {1,…,2n}.",
+    "mathContext": "A proper multiple of $a > n$ is $\\ge 2a > 2n$, so $\\{n+1,\\dots,2n\\}$ (size $n$) is an antichain; with the bound this gives $\\mathrm{IsGreatest}\\,\\{|A|\\} = n$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal construction", "top half", "IsGreatest", "min–max duality"],
+    "prerequisites": ["Nat.card_Icc", "nlinarith", "IsGreatest", "upperBounds"]
+  }
+]
