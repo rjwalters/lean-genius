@@ -1,45 +1,75 @@
 {
   "slug": "fundamental-arithmetic-oq-03",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Euler's Product for the Basel Problem: prod_p (1-p^-2)^-1 = pi^2/6",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\prod_{p\\ \\text{prime}} (1-p^{-2})^{-1} = \\zeta(2) = \\frac{\\pi^2}{6}, \\quad \\prod_p (1-p^{-4})^{-1} = \\zeta(4) = \\frac{\\pi^4}{90}",
+    "plain": "Formalize the Euler product zeta(s) = prod_p (1-p^-s)^-1 as a consequence of the Fundamental Theorem of Arithmetic, and evaluate it at s=2 and s=4 to recover Euler's closed forms prod_p (1-p^-2)^-1 = pi^2/6 and prod_p (1-p^-4)^-1 = pi^4/90.",
+    "whyMatters": [
+      "The Euler product is the analytic incarnation of unique factorization and the founding result of analytic number theory; Euler's 1737 evaluation prod_p p^2/(p^2-1) = pi^2/6 was the first time a property of the primes was expressed through the value of an analytic function."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib riemannZeta_eulerProduct_tprod: zeta(s) = prod_p (1-p^-s)^-1 for Re s > 1 (FTA-driven)",
+      "Mathlib riemannZeta_two: zeta(2) = pi^2/6",
+      "Mathlib riemannZeta_four: zeta(4) = pi^4/90",
+      "Mathlib riemannZeta_ne_zero_of_one_lt_re: zeta(s) != 0 for Re s > 1"
+    ],
+    "open": [
+      "Divergence of the Euler product at s=1 (Euler's analytic proof of infinitude of primes)",
+      "Uniform closed-form family for prod_p (1-p^-2k)^-1 from the general zeta(2k) formula"
+    ],
+    "goal": "State and verify the special-value Euler products prod_p (1-p^-2)^-1 = pi^2/6 and prod_p (1-p^-4)^-1 = pi^4/90 in tprod, HasProd, and partial-product (Tendsto) forms, with non-vanishing corollaries."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-05T23:12:43-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Shipped verified Euler special-value products; entry complete.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None - completed. Follow-ups recorded as open questions.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETED (verified, 0-axiom). Answered the parent FTA entry's third open question by formalizing Euler's 1737 product evaluations as consequences of Mathlib's FTA-driven Euler product. Headline results: prod_p (1-p^-2)^-1 = pi^2/6 and prod_p (1-p^-4)^-1 = pi^4/90, each instantiated from riemannZeta_eulerProduct_tprod at s=2,4 and rewritten with the closed-form special values riemannZeta_two / riemannZeta_four. 9 theorems / 0 axioms / 0 sorries / 103 lines.",
+    "builtItems": [
+      "euler_basel_product_tprod: prod'(p:Primes) (1-p^-2)^-1 = pi^2/6 (the Basel Euler product)",
+      "euler_basel_product_hasProd: HasProd form (order-independent convergence) of the Basel product",
+      "euler_basel_product_tendsto: finite partial products over primesBelow n tend to pi^2/6 (Euler's sieve form)",
+      "euler_zeta_four_product_tprod and euler_zeta_four_product_hasProd: prod_p (1-p^-4)^-1 = pi^4/90",
+      "basel_value_ne_zero and zeta_four_value_ne_zero: non-vanishing of pi^2/6 and pi^4/90 via zeta non-vanishing"
+    ],
+    "insights": [
+      "The Euler product IS the FTA in analytic disguise: Mathlib's riemannZeta_eulerProduct_tprod is proved through eulerProduct_completely_multiplicative, which uses unique factorization to match partial products over p-smooth numbers with partial sums.",
+      "Once the Re s > 1 hypothesis is supplied (trivial: 1 < (2:C).re by norm_num), the famous special-value products reduce to a single rw chaining the Euler product with riemannZeta_two / riemannZeta_four.",
+      "GOTCHA: with only 'open Complex', the pi notation is NOT in scope and Lean auto-bounds pi as a free complex variable, breaking the rewrite against Mathlib's (down-arrow Real.pi); adding 'open Real' makes pi = Real.pi so (pi:C) matches Mathlib's coerced form.",
+      "Three forms (tprod, HasProd, Tendsto over primesBelow n) expose the identity at different structural levels; the Tendsto form is the literal analogue of Euler's original finite-sieve computation.",
+      "Non-vanishing of pi^2/6 and pi^4/90 is free from the Euler-product viewpoint: a convergent product of nonzero factors is nonzero (riemannZeta_ne_zero_of_one_lt_re)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the general Euler product and the special values zeta(2),zeta(4) separately, but does NOT state the combined special-value prime-product identities prod_p (1-p^-2)^-1 = pi^2/6 etc. - that combination is this entry's contribution.",
+      "No formalized divergence of the s=1 Euler product / Euler's product-based proof of infinitude of primes."
+    ],
+    "nextSteps": [
+      "Formalize divergence of prod_p (1-p^-1)^-1 at s=1 for Euler's infinitude-of-primes proof.",
+      "Derive a uniform prod_p (1-p^-2k)^-1 family from the general even-argument zeta value formula."
+    ],
     "markdown": "# Knowledge Base: fundamental-arithmetic-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "number-theory",
+    "analytic-number-theory",
+    "euler-product",
+    "riemann-zeta",
+    "basel-problem"
   ],
   "relatedProofs": [
     "fundamental-arithmetic",
@@ -48,12 +78,18 @@
     "fundamental-arithmetic-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "L. Euler, Variae observationes circa series infinitas, Comm. Acad. Sci. Petrop. 9 (1737)"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.NumberTheory.EulerProduct.DirichletLSeries (riemannZeta_eulerProduct_tprod / _hasProd / _eulerProduct)",
+      "Mathlib.NumberTheory.LSeries.HurwitzZetaValues (riemannZeta_two, riemannZeta_four)",
+      "Mathlib.NumberTheory.LSeries.Dirichlet (riemannZeta_ne_zero_of_one_lt_re)"
+    ]
   },
   "started": "2026-04-06T06:37:41.264Z",
-  "lastUpdate": "2026-04-12T21:07:23.998Z",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
