@@ -1,0 +1,197 @@
+{
+  "id": "group-order-prime-squared-abelian-oq-01-oq-03",
+  "title": "Element-Order Counts in a Group of Order p² — a Sharp Combinatorial Invariant",
+  "slug": "group-order-prime-squared-abelian-oq-01-oq-03",
+  "description": "A follow-up to the order-p² classification that records the full element-order spectrum of a group G of order p² (p prime) and shows it is a sharp invariant for the cyclic / elementary-abelian dichotomy. There is always exactly 1 element of order 1. In the cyclic case (≅ ℤ/p²) the order-p and order-p² counts are the Euler-totient values φ(p) = p − 1 and φ(p²) = p² − p; in the elementary-abelian case (≅ (ℤ/p)²) every non-identity element has order p, giving p² − 1 elements of order p and 0 of order p². The two spectra differ only in the order-p² slot, yielding the clean discriminator: 0 < #{g | orderOf g = p²} ⟺ G is cyclic. This formalises the parent entry's first stated open question.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GroupOrderPrimeSquaredAbelianOrderCountsOQ03.lean",
+    "tags": [
+      "group-theory",
+      "finite-groups",
+      "p-groups",
+      "cyclic-groups",
+      "element-order",
+      "euler-totient",
+      "elementary-abelian",
+      "algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 156,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None beyond the stated theorem hypotheses (Fintype.card G = p² with p prime). 0 axioms, 0 sorries, no native_decide; #print axioms reports only the standard foundational axioms propext / Classical.choice / Quot.sound. The structural dichotomy (pow_prime_eq_one_of_not_isCyclic, isCyclic_or_exponent_p) is imported from the parent file Proofs/GroupOrderPrimeSquaredAbelian.lean and the order-exactly-p sharpening (orderOf_eq_prime_of_not_isCyclic) from the sibling Proofs/GroupOrderPrimeSquaredAbelianExponentOQ01.lean; the cyclic counts use Mathlib's IsCyclic.card_orderOf_eq_totient and the totient formulas Nat.totient_prime / Nat.totient_prime_pow. One private helper (natCard_eq, converting Fintype.card to Nat.card) is not counted among the 8 substantive theorems.",
+    "originalContributions": [
+      "card_orderOf_eq_one_eq_one: in every finite group exactly one element has order 1 (the identity), since orderOf g = 1 ⟺ g = 1; the order-1 slot of the spectrum is constant.",
+      "card_orderOf_eq_prime_of_not_isCyclic: a non-cyclic group of order p² has exactly p² − 1 elements of order p. Using the sibling sharpening that every g ≠ 1 has order exactly p, the order-p set is the complement of the identity, i.e. Finset.univ.erase 1, of cardinality Fintype.card G − 1 = p² − 1.",
+      "card_orderOf_eq_sq_of_not_isCyclic: a non-cyclic group of order p² has no element of order p². Such an element would have order equal to Nat.card G and generate G (isCyclic_of_orderOf_eq_card), contradicting non-cyclicity; the order-p² filter is therefore empty.",
+      "card_orderOf_eq_prime_of_isCyclic: a cyclic group of order p² has exactly p − 1 elements of order p, the Euler-totient value φ(p) via IsCyclic.card_orderOf_eq_totient (p ∣ p²) and Nat.totient_prime.",
+      "card_orderOf_eq_sq_of_isCyclic: a cyclic group of order p² has exactly p² − p elements of order p², the value φ(p²) = p^(2−1)·(p−1) = p·(p−1) = p² − p via IsCyclic.card_orderOf_eq_totient (p² ∣ p²) and Nat.totient_prime_pow.",
+      "card_orderOf_eq_sq_pos_iff_isCyclic: the clean combinatorial discriminator — a group of order p² is cyclic iff it has at least one element of order p². Forward by the non-cyclic emptiness; reverse since p² − p > 0 for p ≥ 2.",
+      "orderSpectrum_isCyclic / orderSpectrum_not_isCyclic: the two full spectra packaged as triples (1, p − 1, p² − p) and (1, p² − 1, 0), exhibiting the element-order count vector as a complete invariant distinguishing ℤ/p² from (ℤ/p)²."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCyclic.card_orderOf_eq_totient",
+        "description": "in a finite cyclic group the number of elements of order d (for d ∣ |G|) equals Euler's totient φ(d) — supplies both cyclic counts: φ(p) = p − 1 elements of order p and φ(p²) = p² − p elements of order p²",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Nat.totient_prime / Nat.totient_prime_pow",
+        "description": "φ(p) = p − 1 and φ(p^n) = p^(n−1)·(p−1) — evaluate the totient counts at d = p and d = p² to the closed forms p − 1 and p² − p",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "isCyclic_of_orderOf_eq_card",
+        "description": "an element whose order equals the group cardinality generates a cyclic group — turns a hypothetical element of order p² in the non-cyclic case into a contradiction, forcing the order-p² count to 0",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Finset.card_erase_of_mem / Finset.card_univ",
+        "description": "(s.erase a).card = s.card − 1 and univ.card = Fintype.card — count the non-identity elements as p² − 1 once the order-p set is identified with Finset.univ.erase 1",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "orderOf_eq_one_iff",
+        "description": "orderOf g = 1 ↔ g = 1 — identifies the order-1 set with the singleton {1}, giving the constant order-1 count",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "After a group of order p² is known to be abelian and to split into the cyclic ℤ/p² and elementary-abelian (ℤ/p)² types, and after the exponent is shown to discriminate the two (sibling OQ-01-OQ-01), the next classical question is the element-order spectrum: how many elements of each possible order p^k does the group have? For finite abelian groups this count is governed by the structure theorem; here the two competing structures are read off directly, the cyclic side from the Euler-totient counting law and the elementary-abelian side from the fact that every non-identity element has order p.",
+    "problemStatement": "Let G be a group with Fintype.card G = p² for a prime p. For each order d ∈ {1, p, p²} compute #{g | orderOf g = d}. Show the spectrum is (1, p − 1, p² − p) when G is cyclic and (1, p² − 1, 0) when G is not, and that the order-p² count being positive characterises cyclicity.",
+    "text": "The element-order spectrum is the second classical invariant (after the exponent) separating the two groups of order p². The order-1 count is always 1. The cyclic counts are exactly the totient values φ(1), φ(p), φ(p²) — a special case of the general fact that a cyclic group of order n has φ(d) elements of order d for each d ∣ n. The elementary-abelian counts come from the sibling sharpening: every non-identity element has order p, so all p² − 1 of them sit in the order-p slot and none in the order-p² slot. The spectra agree on orders 1, differ on p and p², and the single Boolean '∃ element of order p²' already recovers the whole dichotomy.",
+    "proofStrategy": "Order 1: the order-1 set is {1} (orderOf_eq_one_iff), card 1. Cyclic case: p ∣ p² and p² ∣ p², so IsCyclic.card_orderOf_eq_totient gives the counts as φ(p) and φ(p²); Nat.totient_prime and Nat.totient_prime_pow evaluate these to p − 1 and p^(2−1)·(p−1) = p² − p (the last step by Nat.mul_sub_left_distrib and pow_two). Non-cyclic case: the sibling orderOf_eq_prime_of_not_isCyclic shows the order-p set equals the non-identity elements Finset.univ.erase 1, of cardinality Fintype.card G − 1 = p² − 1; an element of order p² would generate G (isCyclic_of_orderOf_eq_card), contradicting non-cyclicity, so the order-p² set is empty. The discriminator combines the two order-p² counts: positivity holds iff cyclic, since p² − p > 0 for p ≥ 2.",
+    "keyInsights": [
+      "**The cyclic spectrum is just Euler's totient.** A cyclic group of order n has exactly φ(d) elements of order d for each divisor d; the order-p² classification instantiates this at n = p² with divisors 1, p, p², giving 1, p − 1, p² − p.",
+      "**The elementary-abelian spectrum collapses onto one slot.** Because every non-identity element has order exactly p, all p² − 1 non-identity elements pile into the order-p count and the order-p² count is forced to 0 — the structural opposite of the cyclic spread.",
+      "**One bit recovers the whole dichotomy.** The two spectra agree on order 1 and differ on orders p and p²; the single predicate 'has an element of order p²' (equivalently, order-p² count > 0) is already equivalent to cyclicity.",
+      "**The order-p set is a set complement.** In the non-cyclic case the order-p elements are precisely the non-identity elements, so the count is a one-line cardinality of Finset.univ.erase 1 rather than a totient computation."
+    ],
+    "prerequisites": [
+      "The parent dichotomy: a group of order p² is cyclic or elementary abelian (imported)",
+      "The sibling sharpening: in the non-cyclic case every non-identity element has order exactly p (imported)",
+      "The cyclic order-counting law: a cyclic group has φ(d) elements of order d (IsCyclic.card_orderOf_eq_totient)",
+      "Euler's totient at prime powers: φ(p) = p − 1, φ(p^n) = p^(n−1)(p − 1)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Docstring tabulating the element-order spectrum of a group of order p² in both cases and stating the order-p² discriminator; imports Mathlib, the parent file, and the exponent sibling, opens their namespaces, and fixes a finite group variable G with Fintype G.",
+      "mathContext": "Spectrum (order 1, p, p²): cyclic (1, p − 1, p² − p) vs elementary abelian (1, p² − 1, 0)."
+    },
+    {
+      "id": "helper",
+      "title": "Nat.card from Fintype.card",
+      "startLine": 42,
+      "endLine": 49,
+      "summary": "Private helper natCard_eq rewrites the Fintype.card hypothesis into the Nat.card form (Nat.card_eq_fintype_card) needed by the imported parent/sibling lemmas, which are phrased over Nat.card. Not counted among the 8 substantive theorems.",
+      "mathContext": "Nat.card G = Fintype.card G = p²."
+    },
+    {
+      "id": "order-one",
+      "title": "The Order-1 Count",
+      "startLine": 50,
+      "endLine": 58,
+      "summary": "card_orderOf_eq_one_eq_one: the order-1 set is the singleton {1} via orderOf_eq_one_iff, so the count is 1 in every finite group, independent of the dichotomy.",
+      "mathContext": "#{g | orderOf g = 1} = 1."
+    },
+    {
+      "id": "non-cyclic-counts",
+      "title": "Counts in the Elementary-Abelian Case",
+      "startLine": 59,
+      "endLine": 90,
+      "summary": "card_orderOf_eq_prime_of_not_isCyclic: the order-p set equals Finset.univ.erase 1 (every non-identity element has order exactly p), so the count is p² − 1. card_orderOf_eq_sq_of_not_isCyclic: an element of order p² would generate G, contradicting non-cyclicity, so the order-p² set is empty.",
+      "mathContext": "Non-cyclic: #{order p} = p² − 1, #{order p²} = 0."
+    },
+    {
+      "id": "cyclic-counts",
+      "title": "Counts in the Cyclic Case (Euler Totient)",
+      "startLine": 91,
+      "endLine": 113,
+      "summary": "card_orderOf_eq_prime_of_isCyclic and card_orderOf_eq_sq_of_isCyclic compute the order-p and order-p² counts as φ(p) = p − 1 and φ(p²) = p² − p via IsCyclic.card_orderOf_eq_totient with the divisibilities p ∣ p² and p² ∣ p², and the totient prime-power formula.",
+      "mathContext": "Cyclic: #{order p} = φ(p) = p − 1, #{order p²} = φ(p²) = p² − p."
+    },
+    {
+      "id": "sharp-invariant",
+      "title": "The Spectrum as a Sharp Invariant",
+      "startLine": 114,
+      "endLine": 156,
+      "summary": "card_orderOf_eq_sq_pos_iff_isCyclic: G is cyclic iff it has an element of order p² (forward by the non-cyclic emptiness, reverse since p² − p > 0). orderSpectrum_isCyclic and orderSpectrum_not_isCyclic package the two full spectra as triples (1, p − 1, p² − p) and (1, p² − 1, 0).",
+      "mathContext": "0 < #{g | orderOf g = p²} ⟺ IsCyclic G; the count vector is a complete invariant."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 follow-up computing the full element-order spectrum of a group of order p² (p prime): the order-1 count is always 1, the cyclic case has p − 1 elements of order p and p² − p of order p² (the Euler-totient values), and the elementary-abelian case has p² − 1 of order p and none of order p². The order-p² count is positive iff G is cyclic, so the spectrum is a sharp invariant for the dichotomy. 8 substantive theorems, 156 lines, 0 axioms, 0 sorries, no native_decide; the structural dichotomy and the order-exactly-p sharpening are imported from the parent and sibling files.",
+    "implications": "Resolves the parent entry's first stated open question — counting Nat.card {g | orderOf g = p} in each case — and exhibits the element-order count vector as a second complete invariant (alongside the exponent) separating ℤ/p² from (ℤ/p)². The cyclic side is a clean instance of the general totient counting law; the elementary-abelian side shows the structural collapse onto a single order.",
+    "openQuestions": [
+      "Generalise the spectrum to order p³: the count vectors of the five groups of order p³ (two abelian, two/three non-abelian depending on parity of p) are no longer determined by the exponent alone — formalise which order spectra occur and which invariants separate the non-abelian pair.",
+      "Express the full cyclic spectrum at general order n as the divisor-indexed totient vector (φ(d))_{d ∣ n} and prove ∑_{d ∣ n} φ(d) = n directly from the element-order partition, recovering Nat.sum_totient as an element-counting identity.",
+      "Upgrade the discriminator to an explicit isomorphism: a single element of order p² yields G ≃* Multiplicative (ZMod (p²)), turning the order-p² count into a structure theorem rather than a numerical invariant."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "group-order-prime-squared-abelian-oq-01",
+      "relationship": "parent",
+      "description": "supplies the cyclic/elementary-abelian dichotomy and the order trichotomy; this entry answers its first stated open question by computing the element-order counts in each case"
+    },
+    {
+      "id": "group-order-prime-squared-abelian-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "the exponent invariant for the same dichotomy; its sharpening 'every non-identity element has order exactly p in the non-cyclic case' is the key input to the order-p count here"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "John Wiley & Sons, 3rd ed.",
+      "note": "§4.3, §5.2: groups of order p², the structure of finite abelian p-groups, and element-order counts"
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th ed.",
+      "note": "cyclic groups have φ(d) elements of order d; the order-p² classification and elementary abelian p-groups"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GroupOrderPrimeSquaredAbelian",
+      "Proofs.GroupOrderPrimeSquaredAbelianExponentOQ01"
+    ],
+    "opens": [
+      "GroupOrderPrimeSq",
+      "GroupOrderPrimeSqExponent",
+      "Finset"
+    ],
+    "namespace": "GroupOrderPrimeSqCounts",
+    "lineCount": 156,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/GroupOrderPrimeSquaredAbelianOrderCountsOQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

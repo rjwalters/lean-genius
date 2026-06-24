@@ -1,0 +1,110 @@
+[
+  {
+    "id": "grpcounts-oq0103-header",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "context",
+    "title": "The element-order spectrum of a group of order p²",
+    "content": "The header tabulates, for a group G of order p² (p prime), the number of elements of each possible order 1, p, p² in the two cases of the parent dichotomy. Cyclic ℤ/p²: (1, p − 1, p² − p). Elementary abelian (ℤ/p)²: (1, p² − 1, 0). The order-1 count is always 1; the two spectra differ only in the order-p² slot, giving the discriminator 0 < #{g | orderOf g = p²} ⟺ G is cyclic. The structural dichotomy is imported from the parent and the 'order exactly p' sharpening from the exponent sibling.",
+    "mathContext": "$\\text{cyclic: } (1,\\,p-1,\\,p^2-p);\\qquad \\text{elem. abelian: } (1,\\,p^2-1,\\,0)$",
+    "significance": "context",
+    "relatedConcepts": ["element order", "Euler totient", "p-groups", "cyclic group", "elementary abelian group", "order spectrum"],
+    "prerequisites": ["the parent order-p² dichotomy", "the exponent sibling sharpening"]
+  },
+  {
+    "id": "grpcounts-oq0103-helper",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 42, "endLine": 49 },
+    "type": "context",
+    "title": "Bridging Fintype.card and Nat.card",
+    "content": "This entry phrases its counting statements over a finite group with Fintype.card G = p² (the natural setting for Finset cardinalities), but the imported parent and sibling lemmas are stated over Nat.card. The private helper natCard_eq converts between the two via Nat.card_eq_fintype_card. It is bookkeeping, not counted among the 8 substantive theorems.",
+    "mathContext": "$\\mathrm{Nat.card}\\,G = \\mathrm{Fintype.card}\\,G = p^2$",
+    "significance": "technical",
+    "relatedConcepts": ["Nat.card", "Fintype.card", "Nat.card_eq_fintype_card"],
+    "prerequisites": ["finite cardinality bridges"]
+  },
+  {
+    "id": "grpcounts-oq0103-order-one",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 58 },
+    "type": "theorem",
+    "title": "card_orderOf_eq_one_eq_one: exactly one element of order 1",
+    "content": "The only element of order 1 is the identity: orderOf g = 1 ⟺ g = 1 (orderOf_eq_one_iff), so the order-1 set is the singleton {1} and its cardinality is 1. This holds in every finite group and fixes the constant first slot of the spectrum in both cases of the dichotomy.",
+    "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = 1\\} = \\#\\{1\\} = 1$",
+    "significance": "standard",
+    "relatedConcepts": ["orderOf_eq_one_iff", "Finset.card_singleton", "identity element"],
+    "prerequisites": ["order of an element", "Finset cardinality of a singleton"]
+  },
+  {
+    "id": "grpcounts-oq0103-nc-prime",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 59, "endLine": 80 },
+    "type": "theorem",
+    "title": "card_orderOf_eq_prime_of_not_isCyclic: p² − 1 elements of order p",
+    "content": "In a non-cyclic group of order p², the sibling sharpening orderOf_eq_prime_of_not_isCyclic says every non-identity element has order exactly p (and the identity has order 1 ≠ p). So the order-p set is precisely the set of non-identity elements, identified with Finset.univ.erase 1. Its cardinality is Fintype.card G − 1 = p² − 1 via Finset.card_erase_of_mem and Finset.card_univ. The forward inclusion uses that orderOf 1 = 1 ≠ p (p > 1).",
+    "mathContext": "$\\{g : \\mathrm{ord}(g) = p\\} = G \\setminus \\{1\\} \\implies \\#\\{g : \\mathrm{ord}(g) = p\\} = p^2 - 1$",
+    "significance": "key",
+    "relatedConcepts": ["element counting", "Finset.univ.erase", "Finset.card_erase_of_mem", "set complement"],
+    "prerequisites": ["order exactly p in the non-cyclic case", "cardinality of an erased Finset"]
+  },
+  {
+    "id": "grpcounts-oq0103-nc-sq",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 82, "endLine": 90 },
+    "type": "theorem",
+    "title": "card_orderOf_eq_sq_of_not_isCyclic: no element of order p²",
+    "content": "An element of order p² would have order equal to Nat.card G = p², hence generate G (isCyclic_of_orderOf_eq_card), making G cyclic — contradicting the hypothesis. So no element has order p² and the order-p² filter is empty (Finset.card_eq_zero, Finset.filter_eq_empty_iff). This is the slot that distinguishes the elementary-abelian spectrum from the cyclic one.",
+    "mathContext": "$\\exists g,\\ \\mathrm{ord}(g) = p^2 \\implies G \\text{ cyclic};\\quad \\text{so } \\#\\{g : \\mathrm{ord}(g) = p^2\\} = 0$",
+    "significance": "key",
+    "relatedConcepts": ["isCyclic_of_orderOf_eq_card", "generator", "Finset.filter_eq_empty_iff"],
+    "prerequisites": ["an element of order |G| generates a cyclic group"]
+  },
+  {
+    "id": "grpcounts-oq0103-c-prime",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 91, "endLine": 103 },
+    "type": "theorem",
+    "title": "card_orderOf_eq_prime_of_isCyclic: φ(p) = p − 1 elements of order p",
+    "content": "In a finite cyclic group the number of elements of order d (for d ∣ |G|) is Euler's totient φ(d) — Mathlib's IsCyclic.card_orderOf_eq_totient. With p ∣ p² and Nat.totient_prime (φ(p) = p − 1), the cyclic group of order p² has exactly p − 1 elements of order p. This is the same count as the order-p subgroup minus its identity.",
+    "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = p\\} = \\varphi(p) = p - 1$",
+    "significance": "key",
+    "relatedConcepts": ["IsCyclic.card_orderOf_eq_totient", "Nat.totient_prime", "Euler totient"],
+    "prerequisites": ["cyclic order-counting law", "totient of a prime"]
+  },
+  {
+    "id": "grpcounts-oq0103-c-sq",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 105, "endLine": 113 },
+    "type": "theorem",
+    "title": "card_orderOf_eq_sq_of_isCyclic: φ(p²) = p² − p elements of order p²",
+    "content": "Again by IsCyclic.card_orderOf_eq_totient with p² ∣ p², the order-p² count is φ(p²). Nat.totient_prime_pow gives φ(p²) = p^(2−1)·(p − 1) = p·(p − 1); Nat.mul_sub_left_distrib and pow_two rewrite this to the closed form p² − p. These are exactly the generators of the cyclic group ℤ/p².",
+    "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = p^2\\} = \\varphi(p^2) = p(p-1) = p^2 - p$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.totient_prime_pow", "Nat.mul_sub_left_distrib", "generators of a cyclic group"],
+    "prerequisites": ["totient of a prime power", "Nat subtraction distributivity"]
+  },
+  {
+    "id": "grpcounts-oq0103-discriminator",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 114, "endLine": 132 },
+    "type": "theorem",
+    "title": "card_orderOf_eq_sq_pos_iff_isCyclic: the order-p² count detects cyclicity",
+    "content": "Combining the two order-p² counts: a group of order p² is cyclic iff it has at least one element of order p². Forward is the non-cyclic emptiness (0 elements ⇒ not positive). Reverse: a cyclic group has p² − p > 0 such elements since p < p² for p ≥ 2 (nlinarith, then omega over the opaque p²). This single positivity test recovers the entire dichotomy.",
+    "mathContext": "$0 < \\#\\{g : \\mathrm{ord}(g) = p^2\\} \\iff G \\text{ is cyclic}$",
+    "significance": "key",
+    "relatedConcepts": ["combinatorial discriminator", "p² − p > 0", "dichotomy"],
+    "prerequisites": ["the two order-p² counts"]
+  },
+  {
+    "id": "grpcounts-oq0103-spectra",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-03",
+    "range": { "startLine": 133, "endLine": 156 },
+    "type": "theorem",
+    "title": "orderSpectrum_isCyclic / orderSpectrum_not_isCyclic: the full spectra",
+    "content": "The two complete spectra packaged as triples: cyclic case (1, p − 1, p² − p) and elementary-abelian case (1, p² − 1, 0), assembled from the per-order counts. Read together with the discriminator, the element-order count vector is a complete invariant separating ℤ/p² from (ℤ/p)², a combinatorial companion to the exponent invariant of the sibling entry.",
+    "mathContext": "$(\\#\\{1\\}, \\#\\{p\\}, \\#\\{p^2\\}) = (1, p-1, p^2-p) \\text{ or } (1, p^2-1, 0)$",
+    "significance": "key",
+    "relatedConcepts": ["order spectrum", "complete invariant", "classification of groups of order p²"],
+    "prerequisites": ["the individual order counts"]
+  }
+]
