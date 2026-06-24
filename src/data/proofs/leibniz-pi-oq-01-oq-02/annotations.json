@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-leibniz0102-header",
+    "proofId": "leibniz-pi-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "Quantifying the parent's informal exponential-rate claim",
+    "content": "The parent entry (leibniz-pi-oq-01) proves the Leibniz/arctan series at $x=1$ converges at the sharp boundary rate $\\Theta(1/N)$ and *asserts* that 'Machin-type formulas achieve exponential $O(1/m^{2N})$ rates instead.' This entry turns that assertion into a theorem: for every $0 \\le x < 1$ the truncation error of the arctangent power series is bounded by the single geometric quantity $x^{2N+1}/(1-x^2)$, which is $O((x^2)^N)$. The Leibniz slowdown is exactly the $x \\to 1$ degeneration of this bound, where $(1-x^2)^{-1}$ diverges.",
+    "mathContext": "$\\arctan x = \\sum_n (-1)^n x^{2n+1}/(2n+1)$; truncation error $\\le x^{2N+1}/(1-x^2)$ for $0 \\le x < 1$.",
+    "significance": "fundamental",
+    "relatedConcepts": ["arctan power series", "convergence rate", "Machin's formula", "Leibniz series", "geometric majorant"],
+    "prerequisites": ["Real.hasSum_arctan", "hasSum_geometric_of_lt_one"]
+  },
+  {
+    "id": "ann-leibniz0102-tail",
+    "proofId": "leibniz-pi-oq-01-oq-02",
+    "range": { "startLine": 111, "endLine": 135 },
+    "type": "technique",
+    "title": "Remainder as a shifted HasSum, then geometric comparison",
+    "content": "The crux is `hasSum_nat_add_iff'`, which identifies the partial-sum remainder $\\arctan x - \\sum_{n<N} a_n$ with a genuine infinite sum $\\sum_i a_{i+N}$ of the shifted sequence. This converts a finite-truncation statement into an infinite-sum comparison closeable by `tsum_of_norm_bounded`: each tail term is dominated by $x^{2(i+N)+1}$ (the $1/(2n+1)$ factor only shrinks it), and the dominating series is geometric with closed-form sum $x^{2N+1}(1-x^2)^{-1}$.",
+    "mathContext": "$\\arctan x - \\sum_{n<N} a_n = \\sum_i a_{i+N}$, $|a_{i+N}| \\le x^{2(i+N)+1}$, $\\sum_i x^{2(i+N)+1} = x^{2N+1}(1-x^2)^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["series tail", "comparison test", "geometric series"],
+    "prerequisites": ["hasSum_nat_add_iff'", "tsum_of_norm_bounded"]
+  },
+  {
+    "id": "ann-leibniz0102-machin",
+    "proofId": "leibniz-pi-oq-01-oq-02",
+    "range": { "startLine": 136, "endLine": 152 },
+    "type": "concept",
+    "title": "Machin's exponential advantage as a corollary",
+    "content": "Rewriting $\\pi/4 = 4\\arctan(1/5) - \\arctan(1/239)$ (Mathlib's `four_mul_arctan_inv_5_sub_arctan_inv_239`) and splitting the error with the triangle inequality yields an explicit two-term bound on the $N$-term Machin truncation error. Because the dominant term decays like $(1/5)^{2N}$, each additional term buys a fixed number of digits — the precise sense in which Machin (1706) beat the Leibniz series.",
+    "mathContext": "$|\\pi/4 - (4 S_{1/5} - S_{1/239})| \\le 4\\frac{(1/5)^{2N+1}}{1-(1/5)^2} + \\frac{(1/239)^{2N+1}}{1-(1/239)^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Machin's formula", "pi computation", "exponential convergence"],
+    "prerequisites": ["four_mul_arctan_inv_5_sub_arctan_inv_239", "triangle inequality"]
+  }
+]
