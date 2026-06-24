@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-birthday-oq0201020101-header",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 54 },
+    "type": "context",
+    "title": "From the local transfer to global Schur-convexity",
+    "content": "The parent isolated a single Robin-Hood transfer (averaging two coordinates weakly lowers ∑pᵢ²). Its open question asks to globalize this into 'p majorized by q ⟹ ∑pᵢ² ≤ ∑qᵢ²'. By the Hardy–Littlewood–Pólya / Birkhoff–von Neumann theorem, majorization p ≺ q is equivalent to p = Dq for a doubly stochastic D, so the substantive content is the operator inequality ∑(Dq)ᵢ² ≤ ∑qᵢ² proved here."
+  },
+  {
+    "id": "ann-birthday-oq0201020101-jensen",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "technique",
+    "title": "Per-row Jensen: each output is a convex combination",
+    "content": "Row i of a doubly stochastic matrix has nonnegative entries summing to 1, so (Dq)ᵢ = ∑ⱼ Dᵢⱼ qⱼ is a genuine convex combination of the qⱼ. Convexity of x ↦ x² (Even.convexOn_pow) plus Jensen's inequality (ConvexOn.map_sum_le) gives the per-row bound (Dq)ᵢ² ≤ ∑ⱼ Dᵢⱼ qⱼ². This is the only analytic input."
+  },
+  {
+    "id": "ann-birthday-oq0201020101-collapse",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 94 },
+    "type": "insight",
+    "title": "Column-stochasticity collapses the double sum",
+    "content": "Summing the per-row bound and swapping the order of summation gives ∑ᵢ(Dq)ᵢ² ≤ ∑ⱼ(∑ᵢ Dᵢⱼ)qⱼ². The two stochasticity constraints play complementary roles: row sums = 1 made each output a convex combination, while column sums = 1 make ∑ᵢ Dᵢⱼ = 1, collapsing the bound back to ∑ⱼ qⱼ²."
+  },
+  {
+    "id": "ann-birthday-oq0201020101-endpoint",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
+    "range": { "startLine": 108, "endLine": 133 },
+    "type": "insight",
+    "title": "Uniform minimizer as one instance of the global inequality",
+    "content": "The all-1/d matrix J is doubly stochastic and sends any probability vector to the constant uniform vector 1/d. Applying the global inequality to J yields 1/d = ∑ᵢ(Jq)ᵢ² ≤ ∑ᵢ qᵢ², recovering the parent chain's sharp lower bound — the uniform vector is exhibited as the bottom of the majorization order rather than via a separate variance computation."
+  }
+]
