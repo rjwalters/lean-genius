@@ -3946,6 +3946,7 @@ import Proofs.TriangularReciprocalsFigurate
 import Proofs.TriangularReciprocalsOQ02
 import Proofs.TriangularReciprocalsOQ02Aristotle
 import Proofs.TriangularReciprocalsOQ04
+import Proofs.TriangularSingleEightMulAddOneSquare
 import Proofs.TuranEdgeBound
 import Proofs.TwinPrimes
 import Proofs.TwinPrimesSpecialOQ01
