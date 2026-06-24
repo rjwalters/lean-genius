@@ -20,6 +20,58 @@
     "sorries": 0
   },
   "title": "The Scaled Even Moment of the Gaussian ∫ x^{2n} e^{-a x²} = (2n-1)‼·√(π/a) / (2a)ⁿ",
+  "description": "Lifts the parent entry's unscaled Gaussian even moment ∫_ℝ x^{2n} e^{-x²} = (2n−1)‼·√π/2ⁿ to every scale a > 0 by a single linear change of variables x ↦ √a·x. Mathlib's dilation rule MeasureTheory.Measure.integral_comp_mul_left applied to the unscaled integrand turns the parent value directly into the closed form ∫_ℝ x^{2n} e^{-a x²} = (2n−1)‼·√(π/a)/(2a)ⁿ, so the moment of order 2n acquires exactly the scale factor a^{-(n+1/2)} with no further analysis. Includes two consistency checks: a = 1 recovers the parent moment, and the n = 1 second moment √(π/a)/(2a) is twice the half-line sibling value √(π/a)/(4a) by even symmetry. Verified, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫_ℝ e^{-x²} = √π and its polynomial-weighted relatives (the even moments) are the analytic backbone of the normal distribution, the heat kernel, and Hermite-polynomial theory. The even moments of the standard weight e^{-x²} are the double factorials times √π: ∫ x^{2n} e^{-x²} = (2n−1)‼·√π/2ⁿ, with the odd moments vanishing by symmetry. In probability the scaled weight e^{-a x²} corresponds to a centred Gaussian of variance 1/(2a); its even moments encode the moment sequence of that distribution, and their generating function is the Gaussian's Laplace/Fourier transform. The classical route evaluates each scaled moment afresh by integration by parts; the dilation viewpoint used here recognises that all scales are a single orbit of the change of variables x ↦ √a·x acting on one master integral.",
+    "problemStatement": "Open question of the parent entry area-of-circle-oq-07-oq-05-oq-01: generalize the unscaled even moment to the scaled Gaussian, proving ∫_ℝ x^{2n} e^{-a x²} dx = (2n−1)‼·√(π/a)/(2a)ⁿ for every n : ℕ and every a > 0.",
+    "proofStrategy": "Reduce the scaled moment to the parent's unscaled moment by one linear change of variables. Set s = √a (so s > 0, s² = a) and g y = y^{2n} e^{-y²}. Mathlib's dilation rule Measure.integral_comp_mul_left gives ∫ g(s·x) = |s⁻¹| · ∫ g. Pointwise, g(s·x) = aⁿ·(x^{2n} e^{-a x²}) because (s·x)^{2n} = aⁿ x^{2n} and (s·x)² = a x², so the left side is aⁿ·I with I the target integral and the right side is s⁻¹ times the parent value (2n−1)‼√π/2ⁿ. Solving aⁿ·I = s⁻¹·(parent value) and simplifying √(π/a) = √π/√a and (2a)ⁿ = 2ⁿaⁿ yields the closed form. Integrability of the scaled integrand comes from integrable_rpow_mul_exp_neg_mul_sq.",
+    "keyInsights": [
+      "All scaled Gaussian even moments lie on a single orbit of the dilation x ↦ √a·x acting on the one unscaled master integral — so they need no separate analysis, only a change of variables",
+      "The dilation rule's Jacobian |s⁻¹| = 1/√a supplies precisely the missing half-power: the integrand contributes aⁿ and the Jacobian contributes a^{-1/2}, combining to the scale factor a^{-(n+1/2)} = √(π/a)/(2a)ⁿ ÷ ((2n−1)‼√π)",
+      "Separating analytic content (the parent's integration-by-parts induction) from algebraic content (this entry's scaling) makes every scaled moment machine-checked for free from the a = 1 case",
+      "The second moment √(π/a)/(2a) is exactly twice the half-line value √(π/a)/(4a), exhibiting the even-symmetry doubling of the (0,∞) integral concretely"
+    ],
+    "prerequisites": [
+      "The unscaled parent even moment ∫ x^{2n} e^{-x²} = (2n−1)‼·√π/2ⁿ",
+      "The dilation rule for Lebesgue integrals on ℝ (change of variables x ↦ a·x)",
+      "Integrability of Gaussian-type integrands x^s e^{-b x²}",
+      "Square-root and power algebra: √(x/y) = √x/√y, (√a)² = a"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Scaling the Gaussian Even Moments",
+      "startLine": 5,
+      "endLine": 37,
+      "summary": "Statement of the open question and the strategy: lift the parent's unscaled even moment to all scales a > 0 by the single change of variables x ↦ √a·x, with the dilation rule supplying the scale factor and no further analysis.",
+      "mathContext": "$\\int_{\\mathbb R} x^{2n} e^{-a x^2} = (2n-1)!!\\,\\dfrac{\\sqrt{\\pi/a}}{(2a)^n}$"
+    },
+    {
+      "id": "integrability",
+      "title": "Integrability of the Scaled Integrand",
+      "startLine": 44,
+      "endLine": 52,
+      "summary": "integrable_pow_mul_scaled_gaussian: x^{2n} e^{-a x²} is integrable over ℝ for a > 0, specialising integrable_rpow_mul_exp_neg_mul_sq at s = 2n, b = a and transporting from real to natural powers.",
+      "mathContext": "$x^{2n} e^{-a x^2} \\in L^1(\\mathbb R),\\ a>0$"
+    },
+    {
+      "id": "main-moment",
+      "title": "The Scaled Even Moment via Dilation",
+      "startLine": 54,
+      "endLine": 100,
+      "summary": "scaled_gaussian_even_moment: the headline closed form, proved by applying Measure.integral_comp_mul_left to the unscaled integrand, identifying g(√a·x) = aⁿ·(x^{2n} e^{-a x²}), substituting the parent value, and finishing with √/power bookkeeping.",
+      "mathContext": "$\\int x^{2n} e^{-a x^2} = (2n-1)!!\\,\\dfrac{\\sqrt{\\pi/a}}{(2a)^n}$"
+    },
+    {
+      "id": "consistency-checks",
+      "title": "Consistency Checks",
+      "startLine": 102,
+      "endLine": 117,
+      "summary": "scaled_gaussian_even_moment_one recovers the parent's a = 1 moment; scaled_gaussian_second_moment gives ∫ x² e^{-a x²} = √(π/a)/(2a), twice the half-line sibling value by even symmetry.",
+      "mathContext": "$\\int_{\\mathbb R} x^2 e^{-a x^2} = \\dfrac{\\sqrt{\\pi/a}}{2a}$"
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
