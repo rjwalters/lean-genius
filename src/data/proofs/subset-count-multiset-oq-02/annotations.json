@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-scm-oq02-header",
+    "proofId": "subset-count-multiset-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "File Context: Connecting Multiset Powersets to Generating Functions",
+    "content": "This file answers the parent proof's second open question — how multiset powerset operations connect to generating functions — by identifying a single generating-function evaluation. The size generating function of a multiset s is ∏ᵢ(1 + x + ⋯ + x^{mᵢ}), where the factor for element i records the 0,…,mᵢ copies that may be chosen. Evaluating at x = -1 collapses each factor to 1 (if mᵢ even) or 0 (if mᵢ odd), and equals the signed-by-size count ∑_{t ≤ s} (-1)^{|t|}. The file imports the OQ-01 companion to reuse its counting bijection submultisetEquiv.",
+    "mathContext": "$\\sum_{t \\le s} (-1)^{|t|} = \\prod_{a \\in s.\\mathrm{toFinset}} \\Big(\\sum_{k=0}^{m_a} (-1)^k\\Big) = \\prod_a [m_a \\text{ even}]$, evaluated as the product of the truncated geometric series $1 + x + \\cdots + x^{m_a}$ at $x = -1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "subset-count-multiset",
+      "generating function",
+      "Multiset.powerset",
+      "alternating sum",
+      "roots-of-unity filter"
+    ],
+    "prerequisites": [
+      "Multiset basics (count, le, toFinset)",
+      "Generating functions for subset/submultiset counting",
+      "Alternating geometric sums"
+    ]
+  },
+  {
+    "id": "ann-scm-oq02-cardsum",
+    "proofId": "subset-count-multiset-oq-02",
+    "range": { "startLine": 60, "endLine": 72 },
+    "type": "lemma",
+    "title": "Cardinality Factors Additively over Distinct Elements",
+    "content": "For a submultiset t ≤ s, the cardinality |t| equals the sum of t's counts taken over the ambient support s.toFinset (not just t's own support). This works because any element outside t's support contributes count 0, so extending the sum from t.toFinset to the larger s.toFinset adds only zeros. This additive form of |t| is what later lets (-1)^{|t|} be written as a product of per-element signs.",
+    "mathContext": "$|t| = \\sum_{a \\in s.\\mathrm{toFinset}} t.\\mathrm{count}\\,a$ for $t \\le s$, obtained from $\\sum_{a \\in t.\\mathrm{toFinset}} t.\\mathrm{count}\\,a = |t|$ (toFinset_sum_count_eq) by Finset.sum_subset.",
+    "significance": "supporting",
+    "relatedConcepts": ["Multiset.toFinset_sum_count_eq", "Finset.sum_subset", "submultiset"],
+    "prerequisites": ["Multiset count and toFinset", "Finite sums over finsets"]
+  },
+  {
+    "id": "ann-scm-oq02-signedsum",
+    "proofId": "subset-count-multiset-oq-02",
+    "range": { "startLine": 74, "endLine": 115 },
+    "type": "theorem",
+    "title": "The Generating Function Evaluated at x = -1",
+    "content": "The central result: the alternating sum ∑_{t ≤ s} (-1)^{|t|} over distinct submultisets factors into a product over distinct elements, each factor being 1 if that element's multiplicity is even and 0 if odd. The proof transports the sum along the OQ-01 bijection submultisetEquiv (submultisets ≃ count functions), rewrites (-1)^{|t|} = ∏_a (-1)^{count} using the additive cardinality and Finset.prod_pow_eq_pow_sum, swaps sum and product with Fintype.prod_sum, and evaluates each per-element factor ∑_{k=0}^{mₐ}(-1)^k with neg_one_geom_sum.",
+    "mathContext": "$\\sum_{t \\le s} (-1)^{|t|} = \\prod_{a \\in s.\\mathrm{toFinset}} \\big(\\mathbf{1}[\\,\\mathrm{Even}(s.\\mathrm{count}\\,a)\\,]\\big)$, since $\\sum_{k=0}^{m}(-1)^k = 1$ if $m$ even and $0$ if $m$ odd.",
+    "significance": "central",
+    "relatedConcepts": [
+      "submultisetEquiv",
+      "Fintype.prod_sum",
+      "neg_one_geom_sum",
+      "Finset.prod_pow_eq_pow_sum",
+      "generating function"
+    ],
+    "prerequisites": [
+      "OQ-01 counting bijection",
+      "Product-of-sums = sum-of-products",
+      "Alternating geometric sum"
+    ]
+  },
+  {
+    "id": "ann-scm-oq02-evenodd",
+    "proofId": "subset-count-multiset-oq-02",
+    "range": { "startLine": 116, "endLine": 149 },
+    "type": "definition",
+    "title": "Even/Odd Submultisets and the Signed Sum as #even − #odd",
+    "content": "Defines evenSubMultisets and oddSubMultisets as the distinct submultisets filtered by parity of cardinality, then shows the signed sum ∑ (-1)^{|t|} equals #even − #odd. Splitting the sum over the parity predicate (Finset.sum_filter_add_sum_filter_not), the even part contributes +1 per element (Even.neg_one_pow) and the odd part contributes -1 (Odd.neg_one_pow), giving exactly the difference of the two filtered cardinalities.",
+    "mathContext": "$\\sum_{t \\le s} (-1)^{|t|} = \\#\\{t : |t| \\text{ even}\\} - \\#\\{t : |t| \\text{ odd}\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.filter", "Finset.sum_filter_add_sum_filter_not", "Even.neg_one_pow", "Odd.neg_one_pow"],
+    "prerequisites": ["Finset filtering", "Parity of (-1)^n"]
+  },
+  {
+    "id": "ann-scm-oq02-main",
+    "proofId": "subset-count-multiset-oq-02",
+    "range": { "startLine": 150, "endLine": 187 },
+    "type": "theorem",
+    "title": "Even–Odd Submultiset Parity Dichotomy",
+    "content": "Combining the two preceding results: #even − #odd equals 1 if every multiplicity of s is even, and 0 otherwise. The product ∏_a (Even? 1 : 0) is 1 exactly when all factors are 1 (Finset.prod_eq_one), and is 0 as soon as one factor vanishes (Finset.prod_eq_zero). Two corollaries restate this concretely: the counts are equal when some multiplicity is odd, and the even count beats the odd count by exactly one when all multiplicities are even — the multiset generalization of the classical 'equal even/odd subset count' for nonempty sets.",
+    "mathContext": "$\\#\\text{even} - \\#\\text{odd} = \\begin{cases} 1 & \\text{all multiplicities even}\\\\ 0 & \\text{otherwise}\\end{cases}$.",
+    "significance": "central",
+    "relatedConcepts": ["Finset.prod_eq_one", "Finset.prod_eq_zero", "even/odd subset parity", "subset-count-oq-04"],
+    "prerequisites": ["Products of 0/1 indicators", "The signed-sum identity"]
+  },
+  {
+    "id": "ann-scm-oq02-examples",
+    "proofId": "subset-count-multiset-oq-02",
+    "range": { "startLine": 188, "endLine": 204 },
+    "type": "example",
+    "title": "Numerical Sanity Checks",
+    "content": "Two concrete checks over ℕ. The multiset {0} has one element of odd multiplicity (1), so its even submultiset ({}) and odd submultiset ({0}) are equinumerous. The multiset {0,0} has all multiplicities even (count 0 = 2), so its even submultisets ({}, {0,0}) outnumber its odd ones ({0}) by exactly one. Both are discharged by kernel `decide` on the parity hypotheses — no native_decide, keeping the file free of Lean.ofReduceBool.",
+    "mathContext": "$\\{0\\}$: $1 = 1$.  $\\{0,0\\}$: even $= $ odd $+ 1$ (i.e. $2 = 1 + 1$).",
+    "significance": "illustrative",
+    "relatedConcepts": ["decide", "submultiset enumeration"],
+    "prerequisites": ["Decidable parity"]
+  }
+]

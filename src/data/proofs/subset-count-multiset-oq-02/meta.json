@@ -1,0 +1,200 @@
+{
+  "id": "subset-count-multiset-oq-02",
+  "title": "Even–Odd Submultiset Parity via the Size Generating Function",
+  "slug": "subset-count-multiset-oq-02",
+  "description": "Answers the parent's open question on connecting multiset powerset operations to generating functions. The signed-by-size count of distinct submultisets is the value of the size generating function ∏(1 + x + … + x^mᵢ) at x = -1. Evaluating gives: the number of even-size distinct submultisets minus the number of odd-size ones is 1 if every multiplicity of s is even, and 0 otherwise. Equivalently, even- and odd-size submultisets are equinumerous unless every multiplicity is even.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SubsetCountMultisetOQ02.lean",
+    "parentProofId": "subset-count-multiset",
+    "tags": [
+      "combinatorics",
+      "multiset",
+      "generating-functions",
+      "parity",
+      "alternating-sum",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. The four named theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). The numerical sanity-check examples use kernel `decide` (no native_decide, no Lean.ofReduceBool).",
+    "mathlibDependencies": [
+      {
+        "theorem": "neg_one_geom_sum",
+        "description": "∑ i ∈ range n, (-1)^i = if Even n then 0 else 1 — the one-variable alternating sum",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      },
+      {
+        "theorem": "Fintype.prod_sum",
+        "description": "A product of sums equals a sum of products over the dependent function type",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "Fintype.sum_equiv",
+        "description": "Transports a finite sum along a bijection",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "Finset.prod_pow_eq_pow_sum",
+        "description": "∏ aᶠⁱ = a^(∑ fi): collapses a product of powers into a power of the sum",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Multiset.toFinset_sum_count_eq",
+        "description": "∑ a ∈ s.toFinset, s.count a = card s",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "signed_sum_eq_prod: ∑_{t ≤ s} (-1)^|t| = ∏ a ∈ s.toFinset, (Even (s.count a) ? 1 : 0) — generating function evaluated at x = -1",
+      "even_sub_odd_eq: #even − #odd = 1 if every multiplicity of s is even, else 0",
+      "even_card_eq_odd_card_of_not_all_even: even- and odd-size submultisets are equinumerous when some multiplicity is odd",
+      "even_card_eq_odd_card_succ_of_all_even: even count = odd count + 1 when every multiplicity is even",
+      "Reuses the parent OQ-01 bijection submultisetEquiv to transport the signed sum to a product of alternating sums"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 206,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "prerequisites": [
+      "Multiset count, ordering, toFinset, powerset",
+      "Finite sums/products and Fintype bijections",
+      "The alternating geometric sum neg_one_geom_sum"
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "A classical fact about finite sets is that any nonempty set has exactly as many even-sized subsets as odd-sized subsets: the alternating sum ∑_{T ⊆ S} (-1)^{|T|} equals (1 - 1)^{|S|} = 0. The multiset analogue is subtler because the size generating function is a product of truncated geometric series ∏ᵢ (1 + x + x² + ⋯ + x^{mᵢ}) rather than ∏ᵢ (1 + x). Evaluating this product at x = -1 — which is exactly the signed-by-size count of distinct submultisets — gives a product of one-variable alternating sums, each of which is 1 when mᵢ is even and 0 when mᵢ is odd. The whole product is therefore 1 precisely when every multiplicity is even, and 0 otherwise.\n\nThis answers the second open question left by the parent proof (subset-count-multiset / SubsetCountOQ02): how do multiset powerset operations connect to generating functions? Here the connection is made concrete and fully verified — the generating-function evaluation at x = -1 is identified with the difference of even and odd submultiset counts.",
+    "problemStatement": "For a finite multiset s over a type with decidable equality, compare the number of distinct submultisets of even cardinality with the number of odd cardinality. Show the difference is 1 if every multiplicity of s is even and 0 otherwise.",
+    "text": "The even-size and odd-size distinct submultisets of s are equal in number, unless every multiplicity of s is even, in which case the even count exceeds the odd count by exactly one.",
+    "proofStrategy": "Form the signed sum ∑_{t ≤ s} (-1)^|t| over distinct submultisets. Transport it along the parent's counting bijection submultisetEquiv (submultisets ≃ count functions ∏ a, Fin (s.count a + 1)). Using |t| = ∑ a (count of a in t) and Finset.prod_pow_eq_pow_sum, the signed sum becomes ∑ over count-functions of ∏ a (-1)^(count). Fintype.prod_sum swaps the sum and product, yielding ∏ a (∑_{k=0}^{mₐ} (-1)^k). Each factor is evaluated by neg_one_geom_sum to (Even mₐ ? 1 : 0). Finally, the signed sum is identified with #even − #odd via Finset.sum_filter_add_sum_filter_not.",
+    "keyInsights": [
+      "The signed-by-size count ∑_{t ≤ s} (-1)^|t| IS the size generating function ∏(1 + x + ⋯ + x^mᵢ) evaluated at x = -1",
+      "Cardinality of a submultiset factors additively over distinct elements: |t| = ∑ a ∈ s.toFinset, t.count a (counts off t's support are 0)",
+      "(-1)^(∑ counts) = ∏ (-1)^count converts the size-grading into a product, enabling Fintype.prod_sum",
+      "Each per-element factor ∑_{k=0}^{mₐ} (-1)^k is 1 iff mₐ is even (neg_one_geom_sum), so the product is 1 iff all multiplicities are even",
+      "For sets (all multiplicities 1, never all even unless empty) this recovers the classical equal even/odd subset count"
+    ],
+    "prerequisites": [
+      "Multiset count, ordering, toFinset",
+      "Fintype bijections (Equiv) and finite sums/products",
+      "Alternating geometric sums"
+    ]
+  },
+  "sections": [
+    {
+      "id": "card-sum",
+      "title": "Cardinality as a sum of counts",
+      "startLine": 60,
+      "endLine": 72,
+      "summary": "card_eq_sum_count_toFinset: a submultiset's cardinality is the sum of its counts over the ambient support s.toFinset.",
+      "mathContext": "|t| = ∑ a ∈ s.toFinset, t.count a for t ≤ s, extending toFinset_sum_count_eq across the larger support."
+    },
+    {
+      "id": "signed-sum",
+      "title": "Generating function at x = -1",
+      "startLine": 74,
+      "endLine": 115,
+      "summary": "signed_sum_eq_prod: the alternating sum over distinct submultisets factors as ∏ a (Even (count a) ? 1 : 0).",
+      "mathContext": "Transport along submultisetEquiv, Finset.prod_pow_eq_pow_sum, Fintype.prod_sum, and neg_one_geom_sum."
+    },
+    {
+      "id": "even-odd-defs",
+      "title": "Even and odd submultisets",
+      "startLine": 116,
+      "endLine": 149,
+      "summary": "Defines evenSubMultisets / oddSubMultisets and proves the signed sum equals #even − #odd.",
+      "mathContext": "signed_sum_eq_card_diff via Finset.sum_filter_add_sum_filter_not, Even.neg_one_pow, Odd.neg_one_pow."
+    },
+    {
+      "id": "main",
+      "title": "Main theorem",
+      "startLine": 150,
+      "endLine": 187,
+      "summary": "even_sub_odd_eq and its two corollaries (equinumerous unless all even; even = odd + 1 when all even).",
+      "mathContext": "Product of (Even ? 1 : 0) is 1 iff all factors are even (Finset.prod_eq_one / prod_eq_zero)."
+    },
+    {
+      "id": "examples",
+      "title": "Sanity checks",
+      "startLine": 188,
+      "endLine": 204,
+      "summary": "Concrete checks: {0} gives equal counts; {0,0} gives even = odd + 1.",
+      "mathContext": "Verified by kernel decide on the parity hypotheses."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "subset-count-multiset",
+      "relationship": "follow-up",
+      "description": "Answers the parent's open question: connecting multiset powerset operations to generating functions"
+    },
+    {
+      "targetId": "subset-count-multiset-oq-01",
+      "relationship": "sibling",
+      "description": "Reuses the submultisetEquiv bijection from OQ-01 (distinct submultiset count ∏(mᵢ+1))"
+    },
+    {
+      "targetId": "subset-count-oq-04",
+      "relationship": "related",
+      "description": "The set-level even/odd subset parity (2^(n-1) each); this is the multiset generalization where parity can fail to balance"
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization identifying the signed-by-size submultiset count with the size generating function at x = -1, yielding the even–odd parity dichotomy. 6 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "Makes the generating-function/powerset connection precise for multisets and pinpoints exactly when the classical even/odd subset balance breaks: it survives unless every multiplicity is even.",
+    "openQuestions": [
+      "What is the full distribution of submultiset counts by size — i.e. the individual coefficients of ∏(1 + x + … + x^mᵢ), not just the value at x = -1?",
+      "Does evaluating the generating function at other roots of unity give a useful 'roots-of-unity filter' counting submultisets whose size lies in a fixed residue class?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SubsetCountMultisetOQ01"
+    ],
+    "opens": [
+      "Multiset",
+      "BigOperators",
+      "Finset",
+      "SubsetCountMultisetOQ01"
+    ],
+    "namespace": "SubsetCountMultisetOQ02",
+    "lineCount": 206,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/SubsetCountMultisetOQ02.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "even_sub_odd_eq",
+      "type": "core",
+      "description": "The number of even-size distinct submultisets minus the number of odd-size ones is 1 if every multiplicity of s is even, and 0 otherwise",
+      "leanType": "(s : Multiset α) → ((evenSubMultisets s).card : ℤ) - (oddSubMultisets s).card = if (∀ a ∈ s.toFinset, Even (s.count a)) then 1 else 0"
+    },
+    {
+      "name": "signed_sum_eq_prod",
+      "type": "core",
+      "description": "The signed-by-size submultiset sum equals the size generating function evaluated at x = -1",
+      "leanType": "(s : Multiset α) → ∑ t ∈ distinctSubMultisets s, (-1)^t.card = ∏ a ∈ s.toFinset, (if Even (s.count a) then 1 else 0)"
+    },
+    {
+      "name": "even_card_eq_odd_card_of_not_all_even",
+      "type": "corollary",
+      "description": "Even- and odd-size distinct submultisets are equinumerous when some multiplicity is odd",
+      "leanType": "(s : Multiset α) → (¬ ∀ a ∈ s.toFinset, Even (s.count a)) → (evenSubMultisets s).card = (oddSubMultisets s).card"
+    },
+    {
+      "name": "even_card_eq_odd_card_succ_of_all_even",
+      "type": "corollary",
+      "description": "When every multiplicity is even, the even count exceeds the odd count by exactly one",
+      "leanType": "(s : Multiset α) → (∀ a ∈ s.toFinset, Even (s.count a)) → (evenSubMultisets s).card = (oddSubMultisets s).card + 1"
+    }
+  ],
+  "sorries": 0
+}
