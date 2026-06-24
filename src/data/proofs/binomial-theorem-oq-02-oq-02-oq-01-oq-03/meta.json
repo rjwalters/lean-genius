@@ -1,0 +1,154 @@
+{
+  "id": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+  "title": "q-Binomial Reflection Symmetry and the Dual q-Pascal Rule",
+  "slug": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+  "description": "Proves the reflection symmetry of the Gaussian binomial coefficient, \\binom{n}{k}_q = \\binom{n}{n-k}_q for k ≤ n, together with the dual q-Pascal recurrence \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q and the algebraic ratio invariant (q^{k+1}-1)\\binom{n}{k+1}_q = (q^{n-k}-1)\\binom{n}{k}_q that drives both. Resolves open-work items #2 and #3 recorded in the parent q-binomial API. Stated over any CommRing; the q = 1 specialization recovers Nat.choose symmetry.",
+  "meta": {
+    "author": "Andrews / Kac-Cheung tradition, formalized in Lean 4 with Mathlib 4.26.0",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "reflection-symmetry",
+      "q-pascal",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ02OQ01OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "geom_sum_mul",
+        "description": "Telescoping geometric sum (∑_{i<n} x^i)·(x-1) = x^n - 1, the base case k=0 of the ratio invariant",
+        "module": "Mathlib.Algebra.GeomSum"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "Classical binomial symmetry, the q = 1 shadow recovered by qBinomial_choose_symm",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "qBinomial_ratio: the unconditional algebraic invariant (q^{k+1}-1)·\\binom{n}{k+1}_q = (q^{n-k}-1)·\\binom{n}{k}_q, proved by induction on n. Its boundary instance k=0 is exactly the telescoping identity (q-1)(1+q+⋯+q^{n-1}) = q^n-1 (geom_sum_mul applied to the parent's closed form \\binom{n}{1}_q = ∑_{i<n} q^i); the inductive step expands both coefficients with the q-Pascal recurrence and closes by a linear_combination of the two smaller instances",
+      "qBinomial_dual_pascal: the dual q-Pascal recurrence \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}·\\binom{n}{k}_q (splitting off the smallest element rather than the largest), obtained immediately from the defining recurrence reconciled with the ratio invariant — resolving parent open-work item #2",
+      "qBinomial_reflection: the reflection symmetry \\binom{n}{k}_q = \\binom{n}{n-k}_q for k ≤ n, the q-analogue of Nat.choose_symm — resolving parent open-work item #3. Proved by induction on n: expanding \\binom{n+1}{k}_q with the ordinary recurrence and \\binom{n+1}{(n+1)-k}_q with the dual recurrence yields two expressions that, after the inductive hypothesis, differ only by commutativity of addition",
+      "qBinomial_choose_symm: the q = 1 specialization, recovering the classical Nat.choose symmetry \\binom{n}{k} = \\binom{n}{n-k} cast into R, via the parent's qBinomial_at_one bridge"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 166,
+    "assumptions": "0 axioms, 0 sorries (depends only on propext, Classical.choice, Quot.sound). Stated over an arbitrary CommRing R because the proofs use the subtraction q^j - 1; this covers ℤ[q], ℚ(q), ℝ, ℂ and every finite field — all settings in which Gaussian binomials are used. The parent's qBinomial is defined over a CommSemiring, so every parent lemma specializes here.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Gaussian binomial coefficient \\binom{n}{k}_q deforms Nat.choose by a parameter q and satisfies two distinct q-Pascal recurrences: one that peels off the largest element, \\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q, and a dual one that peels off the smallest, \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q. The parent entry defined qBinomial through the first recurrence and recorded the dual rule and the reflection symmetry \\binom{n}{k}_q = \\binom{n}{n-k}_q as open future work, proving only the k=1 case from the geometric-sum closed form. This entry settles both for all k. Reflection symmetry is the q-deformation of the classical identity \\binom{n}{k} = \\binom{n}{n-k} and reflects the duality between k-dimensional and (n-k)-dimensional subspaces of 𝔽_q^n; it is the q-analogue of complementation of subsets.",
+    "problemStatement": "Starting from the recurrence-defined Gaussian binomial coefficient of the parent entry, prove the dual q-Pascal recurrence \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q and the reflection symmetry \\binom{n}{k}_q = \\binom{n}{n-k}_q (k ≤ n), and confirm that the q = 1 specialization recovers Nat.choose symmetry.",
+    "proofStrategy": "Establish first the algebraic ratio invariant (q^{k+1}-1)\\binom{n}{k+1}_q = (q^{n-k}-1)\\binom{n}{k}_q by induction on n, whose base case k=0 is the telescoping geometric sum. The dual q-Pascal rule then follows by combining this invariant with the defining recurrence (a one-line linear_combination). Reflection symmetry is proved by a separate induction on n: the ordinary recurrence expands the left endpoint and the dual recurrence expands the right endpoint, and after applying the inductive hypothesis the two expansions coincide up to add_comm.",
+    "keyInsights": [
+      "The single invariant (q^{k+1}-1)\\binom{n}{k+1}_q = (q^{n-k}-1)\\binom{n}{k}_q encodes everything: it is the 'ratio' between adjacent q-binomials and is exactly the obstruction that a naive induction on reflection fails to supply. Proving it once unlocks both the dual recurrence and reflection",
+      "The invariant holds unconditionally — for k ≥ n both sides vanish because the natural subtraction makes the right factor q^0 - 1 = 0 — so no k ≤ n hypothesis is needed, which streamlines the induction",
+      "Its k = 0 base case is literally the telescoping geometric series (q-1)(1+q+⋯+q^{n-1}) = q^n - 1; the parent's closed form \\binom{n}{1}_q = ∑_{i<n} q^i lets Mathlib's geom_sum_mul close it directly",
+      "Once the dual recurrence is available, reflection needs no further algebra: expanding \\binom{n+1}{j+1}_q via the ordinary recurrence and \\binom{n+1}{(n+1)-(j+1)}_q via the dual recurrence gives q^{j+1}·\\binom{n}{n-j-1}_q + \\binom{n}{n-j}_q and \\binom{n}{n-j}_q + q^{j+1}·\\binom{n}{n-j-1}_q after the inductive hypothesis — equal by add_comm",
+      "Reparametrising n = j+1+p eliminates all natural-number subtraction inside the induction, so the q-power exponents become honest sums and ring/linear_combination handle them without omega gymnastics inside the algebra",
+      "Because the q^j - 1 factors require subtraction, the natural home is a CommRing rather than the parent's CommSemiring; reflection symmetry itself is subtraction-free but its proof is not, so the CommRing statement is the honest scope"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ratio-invariant",
+      "title": "The Ratio Invariant",
+      "summary": "qBinomial_ratio: (q^{k+1}-1)·\\binom{n}{k+1}_q = (q^{n-k}-1)·\\binom{n}{k}_q, by induction on n with the k=0 telescoping geometric-sum base case.",
+      "startLine": 70,
+      "endLine": 99
+    },
+    {
+      "id": "dual-pascal",
+      "title": "Dual q-Pascal Rule",
+      "summary": "qBinomial_dual_pascal: \\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}·\\binom{n}{k}_q, from the recurrence plus the ratio invariant.",
+      "startLine": 101,
+      "endLine": 111
+    },
+    {
+      "id": "reflection",
+      "title": "Reflection Symmetry",
+      "summary": "qBinomial_reflection: \\binom{n}{k}_q = \\binom{n}{n-k}_q for k ≤ n, by induction on n using the ordinary recurrence on one endpoint and the dual rule on the other.",
+      "startLine": 114,
+      "endLine": 140
+    },
+    {
+      "id": "choose-symm",
+      "title": "Specialization at q = 1",
+      "summary": "qBinomial_choose_symm: at q = 1 the reflection symmetry recovers the classical Nat.choose symmetry cast into R.",
+      "startLine": 142,
+      "endLine": 147
+    }
+  ],
+  "conclusion": {
+    "summary": "Resolves the parent q-binomial API's open-work items #2 (dual q-Pascal) and #3 (reflection symmetry) for all k, together with the ratio invariant that powers them. Four theorems, 0 definitions, 0 axioms, 0 sorries, over an arbitrary CommRing.",
+    "implications": "Reflection symmetry and the dual recurrence are the two structural identities most often needed when reasoning about Gaussian binomials: the dual recurrence supports inductions that peel off the smallest part, and reflection halves the work in any q-binomial computation. Together with the parent's foundational API, they bring Lean 4's q-binomial toolkit close to the point where the full q-Vandermonde identity and the q-binomial theorem (Cauchy's identity) become routine. The whole development remains self-contained over a CommRing and is a candidate for upstream contribution alongside the parent.",
+    "openQuestions": [
+      "Full inductive q-Vandermonde: \\binom{m+n}{r}_q = ∑_{k} q^{(m-k)(r-k)} \\binom{m}{k}_q \\binom{n}{r-k}_q, now that both q-Pascal recurrences are available to drive the induction",
+      "q-binomial theorem (Cauchy): ∏_{i=0}^{n-1} (1 + q^i x) = ∑_{k} q^{k(k-1)/2} \\binom{n}{k}_q x^k, whose inductive proof uses the dual recurrence proved here",
+      "Negation/q-inversion symmetry \\binom{n}{k}_{q^{-1}} = q^{-k(n-k)} \\binom{n}{k}_q over a field, complementing the reflection symmetry in k"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Group.NatPowAssoc",
+      "Mathlib.Algebra.Order.Field.GeomSum",
+      "Mathlib.Algebra.Order.Ring.GeomSum",
+      "Mathlib.Algebra.Ring.Regular",
+      "Mathlib.Tactic",
+      "Proofs.BinomialTheoremOQ02OQ02OQ01"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "QBinomial",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ02OQ02OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "G. E. Andrews",
+      "title": "The Theory of Partitions",
+      "year": "1976",
+      "venue": "Cambridge University Press, Encyclopedia of Mathematics and its Applications, Vol. 2"
+    },
+    {
+      "authors": "V. Kac and P. Cheung",
+      "title": "Quantum Calculus",
+      "year": "2002",
+      "venue": "Springer Universitext"
+    },
+    {
+      "authors": "R. P. Stanley",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition, §1.7"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-02-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the foundational Gaussian binomial API, which defines qBinomial via the q-Pascal recurrence and lists the dual q-Pascal rule and reflection symmetry as open future work (items #2 and #3). This entry proves both for all k, building on the parent's closed form \\binom{n}{1}_q = ∑_{i<n} q^i."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-03",
+      "relationship": "related",
+      "description": "q-Multinomial coefficients and the q-multinomial theorem — the higher-arity sibling in the q-binomial family."
+    }
+  ],
+  "sorries": 0
+}
