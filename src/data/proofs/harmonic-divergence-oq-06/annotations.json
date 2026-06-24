@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Setup: The Odd-Reciprocal Series ∑ 1/(2k+1)",
+    "content": "The target object is Summable (fun n : ℕ => (1:ℝ)/(2*n+1)), i.e. the series 1 + 1/3 + 1/5 + 1/7 + ⋯ of reciprocals of the odd numbers. The import Mathlib.Analysis.PSeries supplies Real.not_summable_one_div_natCast (the harmonic series is not summable) and not_summable_iff_tendsto_nat_atTop_of_nonneg, the two Mathlib facts the proof leans on. A subtle Lean point recurs throughout: a bare term like 1/(k+1) with k : ℕ elaborates over ℕ (where it is truncating integer division, almost always 0), so every sum body is annotated with an explicit (k : ℝ) cast to force real division.",
+    "mathContext": "The harmonic series splits as $\\sum 1/n = \\sum 1/(2k) + \\sum 1/(2k+1)$ — an even half and an odd half. This entry isolates the odd half and shows it alone already diverges.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.not_summable_one_div_natCast",
+      "Summable",
+      "natural-number casts to ℝ"
+    ],
+    "prerequisites": [
+      "series and summability",
+      "Lean 4 numeric coercions"
+    ]
+  },
+  {
+    "id": "ann-termwise",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 57,
+      "endLine": 67
+    },
+    "type": "key_step",
+    "title": "The Termwise Comparison: (1/2)·1/(k+1) ≤ 1/(2k+1)",
+    "content": "half_harmonic_le_odd is the single inequality the whole entry rests on. Rewriting the left side, (1/2)·1/(k+1) = 1/(2(k+1)) = 1/(2k+2) (via div_mul_div_comm). Since 2k+1 ≤ 2(k+1) and x ↦ 1/x is decreasing on the positives (one_div_le_one_div_of_le), 1/(2(k+1)) ≤ 1/(2k+1). So each odd reciprocal 1/(2k+1) dominates half of the corresponding harmonic term 1/(k+1). Both the explicit partial-sum bound and the non-summability proof are immediate consequences of this one comparison.",
+    "mathContext": "$\\frac12\\cdot\\frac{1}{k+1} = \\frac{1}{2k+2} \\le \\frac{1}{2k+1}$ because $2k+1 \\le 2k+2$. Geometrically, the odd term sits just to the left of the even term and is therefore larger.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "one_div_le_one_div_of_le",
+      "div_mul_div_comm",
+      "monotonicity of reciprocal"
+    ],
+    "prerequisites": [
+      "antitonicity of x ↦ 1/x"
+    ]
+  },
+  {
+    "id": "ann-partial-bound",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 69,
+      "endLine": 77
+    },
+    "type": "key_step",
+    "title": "Explicit Partial-Sum Bound: ∑_{k<N} 1/(2k+1) ≥ (1/2)∑_{k<N} 1/(k+1)",
+    "content": "oddPartial_ge_half_harmonic sums the termwise comparison over range N. The factor 1/2 is distributed into the harmonic partial sum with Finset.mul_sum, after which Finset.sum_le_sum lifts half_harmonic_le_odd term by term. The result is a quantitative witness of divergence: the odd partial sums dominate half the harmonic partial sums, which are themselves unbounded (≈ ln N), so the odd partial sums grow at least like (1/2)ln N.",
+    "mathContext": "$\\sum_{k<N}\\frac{1}{2k+1} \\ge \\frac12\\sum_{k<N}\\frac{1}{k+1} \\approx \\frac12\\ln N$. This makes the divergence quantitative without invoking summability machinery.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.mul_sum",
+      "Finset.sum_le_sum",
+      "harmonic partial sums"
+    ],
+    "prerequisites": [
+      "termwise comparison of finite sums"
+    ]
+  },
+  {
+    "id": "ann-not-summable",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 79,
+      "endLine": 99
+    },
+    "type": "main_result",
+    "title": "The Odd Reciprocals Are Not Summable",
+    "content": "not_summable_one_div_odd is the headline. The argument is by contradiction. Assume ∑ 1/(2k+1) is summable. Since 0 ≤ 1/(2k+2) ≤ 1/(2k+1), the comparison test Summable.of_nonneg_of_le makes ∑ 1/(2k+2) summable. Multiplying by 2 (Summable.mul_left, then Summable.congr with the identity 2·1/(2k+2) = 1/(k+1)) gives ∑ 1/(k+1) summable. A single index shift (summable_nat_add_iff 1) turns this into ∑ 1/n summable, contradicting Real.not_summable_one_div_natCast. The whole chain is just 'comparison → scale → shift', each step elementary.",
+    "mathContext": "If $\\sum 1/(2k+1) < \\infty$ then $\\sum 1/(2k+2) = \\tfrac12\\sum 1/(k+1) < \\infty$, hence $\\sum 1/n < \\infty$ — contradicting the divergence of the harmonic series.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Summable.of_nonneg_of_le",
+      "Summable.mul_left",
+      "summable_nat_add_iff",
+      "Real.not_summable_one_div_natCast",
+      "proof by contradiction"
+    ],
+    "prerequisites": [
+      "the comparison test",
+      "shift-invariance of summability"
+    ]
+  },
+  {
+    "id": "ann-tendsto",
+    "proofId": "harmonic-divergence-oq-06",
+    "range": {
+      "startLine": 101,
+      "endLine": 106
+    },
+    "type": "concept",
+    "title": "Divergence to +∞",
+    "content": "tendsto_oddPartial_atTop upgrades non-summability to a genuine limit. For a nonnegative series the equivalence not_summable_iff_tendsto_nat_atTop_of_nonneg says non-summability is the same as the partial sums tending to +∞. Feeding in positivity of the terms (positivity) and the headline non-summability result yields Tendsto (fun N => ∑_{k<N} 1/(2k+1)) atTop atTop.",
+    "mathContext": "For nonnegative $f$, $\\neg\\text{Summable } f \\iff \\sum_{k<N} f(k) \\to +\\infty$. Here this gives $1 + 1/3 + 1/5 + \\cdots + 1/(2N-1) \\to +\\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "not_summable_iff_tendsto_nat_atTop_of_nonneg",
+      "Filter.Tendsto",
+      "monotone partial sums"
+    ],
+    "prerequisites": [
+      "limits at infinity",
+      "nonnegative series"
+    ]
+  }
+]
