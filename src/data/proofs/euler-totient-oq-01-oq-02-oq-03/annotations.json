@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-maximal-order",
+    "proofId": "euler-totient-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 62,
+      "endLine": 79
+    },
+    "type": "insight",
+    "title": "λ(n) Is the Maximal Multiplicative Order",
+    "content": "Two facts together pin λ(n) as the maximal multiplicative order modulo n. orderOf_dvd_carmichael is the upper bound: every unit a satisfies a^{λ(n)} = 1, so orderOf a ∣ λ(n) (hence orderOf a ≤ λ(n)). exists_orderOf_eq_carmichael is attainment: a finite abelian group always contains an element whose order equals its exponent, so some unit has order exactly λ(n). Both route through carmichael_eq_exponent' (λ(n) = exponent (ℤ/nℤ)ˣ) and Mathlib's exponent API (Monoid.order_dvd_exponent, Monoid.exists_orderOf_eq_exponent on the finite, hence ExponentExists, unit group)."
+  },
+  {
+    "id": "ann-primitive-root",
+    "proofId": "euler-totient-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 81,
+      "endLine": 98
+    },
+    "type": "insight",
+    "title": "Primitive Root Exists ⟺ λ(n) = φ(n)",
+    "content": "A primitive root mod n is a unit of order φ(n) — a generator of (ℤ/nℤ)ˣ. Since the maximal order is λ(n) and λ(n) ∣ φ(n) always (carmichael_le_totient), a generator exists exactly when λ(n) reaches φ(n). isCyclic_units_iff_carmichael_eq_totient states this for cyclicity (rewriting IsCyclic.iff_exponent_eq_card with |units| = φ(n)), and exists_primitiveRoot_iff_carmichael_eq_totient is the headline existential form (via isCyclic_iff_exists_orderOf_eq_natCard). This is the computable form of Gauss's primitive-root theorem expressed through the Carmichael function — a bridge Mathlib states the classification for but never phrases via λ."
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "euler-totient-oq-01-oq-02-oq-03",
+    "range": {
+      "startLine": 100,
+      "endLine": 124
+    },
+    "type": "concept",
+    "title": "Concrete Certificates: 15 (no) vs 7 (yes)",
+    "content": "carmichael_fifteen computes λ(15) = lcm(λ(3), λ(5)) = lcm(2, 4) = 4 (via carmichael_mul on coprime 3·5 and the odd-prime-power identity λ(p) = φ(p)). Because 4 ≠ 8 = φ(15), not_exists_primitiveRoot_fifteen concludes there is no primitive root modulo 15 — the proper divisor λ(15) < φ(15) is the obstruction, reflecting (ℤ/15ℤ)ˣ ≅ ℤ/2 × ℤ/4. By contrast exists_primitiveRoot_seven gives λ(7) = φ(7) = 6, so a primitive root exists mod 7. These are explicit yes/no certificates produced directly by the λ = φ criterion."
+  }
+]

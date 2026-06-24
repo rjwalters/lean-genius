@@ -1,0 +1,169 @@
+{
+  "id": "euler-totient-oq-01-oq-02-oq-03",
+  "title": "The Carmichael Function as the Maximal Order, and Primitive Roots: λ(n) = φ(n) ⟺ a primitive root exists",
+  "slug": "euler-totient-oq-01-oq-02-oq-03",
+  "description": "The grandparent chain (euler-totient → OQ-01 → OQ-02) packages the prime-power values of the Carmichael function λ(n) = exponent of (ℤ/nℤ)ˣ. Its closing open questions ask for (1) the closed form λ(n) = lcm of prime-power values, and (2) the application that the maximal multiplicative order modulo n equals λ(n), characterizing the n with primitive roots. This entry answers both: λ(n) bounds every unit's order (orderOf a ∣ λ(n)) and is attained (some unit has order exactly λ(n)), so λ(n) is the maximal multiplicative order; consequently (ℤ/nℤ)ˣ is cyclic and a primitive root exists iff λ(n) = φ(n). Since λ(n) ∣ φ(n) can be proper (λ(15) = 4 < 8 = φ(15)), primitive roots fail for many n. Fully verified, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Primitive_root_modulo_n",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ01OQ02OQ03.lean",
+    "tags": [
+      "number-theory",
+      "carmichael-function",
+      "euler-totient",
+      "primitive-root",
+      "unit-group",
+      "multiplicative-order",
+      "cyclic-group",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.carmichael_eq_exponent'",
+        "description": "λ(n) = exponent of the unit group (ℤ/nℤ)ˣ",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "Monoid.exists_orderOf_eq_exponent",
+        "description": "A finite commutative monoid has an element whose order equals the exponent",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "Monoid.order_dvd_exponent",
+        "description": "Every element's order divides the group exponent",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "IsCyclic.iff_exponent_eq_card",
+        "description": "A finite commutative group is cyclic iff its exponent equals its order",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "isCyclic_iff_exists_orderOf_eq_natCard",
+        "description": "A finite group is cyclic iff it has an element of order equal to its cardinality",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_factorization",
+        "description": "λ(n) = lcm over primes p ∣ n of λ(p^{vₚ(n)})",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ArithmeticFunction.carmichael_mul",
+        "description": "λ(ab) = lcm(λ(a), λ(b)) for coprime a, b",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Carmichael"
+      },
+      {
+        "theorem": "ZMod.card_units_eq_totient",
+        "description": "|(ℤ/nℤ)ˣ| = φ(n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's theorem says a^{φ(n)} ≡ 1 (mod n) for every a coprime to n. The optimal exponent is not φ(n) but the Carmichael function λ(n) — the exponent of the unit group (ℤ/nℤ)ˣ — which always divides φ(n) and is often strictly smaller. The multiplicative order of any single unit divides λ(n), and λ(n) is exactly the largest order that occurs (a finite abelian group always contains an element of order equal to its exponent). A primitive root modulo n is a unit of maximal possible order φ(n), i.e. a generator of (ℤ/nℤ)ˣ; one exists precisely when the group is cyclic, equivalently when the maximal order λ(n) reaches the group order φ(n). The classical theorem of Gauss identifies these n as 1, 2, 4, pᵏ, and 2pᵏ for odd primes p; for all other n (such as 8, 15, 24) there is no primitive root because λ(n) is a proper divisor of φ(n).\n\nMathlib defines λ = ArithmeticFunction.Carmichael as the group exponent and provides the cyclicity classification ZMod.isCyclic_units_iff, but it does not phrase the connection through the Carmichael function. This entry supplies that bridge: λ(n) is the maximal multiplicative order, and the primitive-root criterion is exactly λ(n) = φ(n).",
+    "problemStatement": "Formalize the closed form λ(n) = lcm of its prime-power values, and the application that the maximal multiplicative order modulo n equals λ(n): show λ(n) bounds and is attained by unit orders, deduce that (ℤ/nℤ)ˣ is cyclic — equivalently a primitive root exists — iff λ(n) = φ(n), and exhibit the divisor gap (λ(15) = 4 < 8 = φ(15), no primitive root mod 15) against the prime case (λ(7) = 6 = φ(7), a primitive root mod 7).",
+    "proofStrategy": "Everything routes through carmichael_eq_exponent' : λ(n) = exponent (ℤ/nℤ)ˣ. The upper bound orderOf a ∣ λ(n) is Monoid.order_dvd_exponent; attainment is Monoid.exists_orderOf_eq_exponent applied to the finite (hence ExponentExists) unit group — together these make λ(n) the maximal order. The cyclicity criterion rewrites IsCyclic.iff_exponent_eq_card with card units = φ(n) (ZMod.card_units_eq_totient) into λ(n) = φ(n); the primitive-root version rewrites isCyclic_iff_exists_orderOf_eq_natCard the same way, turning 'cyclic' into 'an element of order φ(n) exists'. The closed form restates carmichael_factorization. The concrete λ(15) = 4 uses carmichael_mul on 15 = 3·5 with λ(3) = 2, λ(5) = 4 from the odd-prime-power identity, and λ(7) = 6 is the same identity at p = 7.",
+    "keyInsights": [
+      "λ(n) plays two roles at once: it is an upper bound on every unit's multiplicative order (orderOf a ∣ λ(n)) and is attained by some unit — so it is exactly the maximal multiplicative order modulo n.",
+      "A primitive root is a unit of order φ(n); since the maximal order is λ(n) and λ(n) ∣ φ(n) always, a primitive root exists iff λ(n) = φ(n), i.e. iff the unit group is cyclic.",
+      "The criterion λ(n) = φ(n) makes the obstruction visible: whenever the unit group factors as a product of two nontrivial cyclic groups (e.g. n = 15, 8, 24), λ is a proper divisor of φ and no primitive root exists.",
+      "λ(15) = lcm(λ(3), λ(5)) = lcm(2, 4) = 4 is a strict divisor of φ(15) = 8 — a concrete certificate that there is no primitive root modulo 15, while λ(7) = φ(7) = 6 gives one modulo 7.",
+      "The same exponent machinery that defines λ for prime powers extends to all n via carmichael_factorization (λ = lcm of prime-power values), completing the closed form requested by the parent's first open question."
+    ],
+    "prerequisites": [
+      "The unit group (ℤ/nℤ)ˣ, its order φ(n), and multiplicative order of an element",
+      "The exponent of a finite group and the Carmichael function λ as that exponent",
+      "A finite abelian group contains an element of order equal to its exponent",
+      "Cyclic groups: cyclic ⟺ exponent equals order ⟺ a generator exists",
+      "Gauss's classification of n admitting a primitive root (1, 2, 4, pᵏ, 2pᵏ)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "maximal-order",
+      "title": "Section I: λ(n) is the Maximal Multiplicative Order",
+      "startLine": 48,
+      "endLine": 79,
+      "summary": "carmichael_pos (λ(n) > 0), the closed form carmichael_factorization' (λ(n) = lcm of prime-power values, OQ-1), the upper bounds orderOf_dvd_carmichael / orderOf_le_carmichael, and exists_orderOf_eq_carmichael — some unit has order exactly λ(n). Bound plus attainment make λ(n) the maximal order.",
+      "mathContext": "Routing λ = exponent (ℤ/nℤ)ˣ through Monoid.order_dvd_exponent and Monoid.exists_orderOf_eq_exponent on the finite unit group."
+    },
+    {
+      "id": "primitive-root-criterion",
+      "title": "Section II: Cyclicity and the Primitive-Root Criterion",
+      "startLine": 81,
+      "endLine": 98,
+      "summary": "carmichael_le_totient (λ(n) ≤ φ(n)), isCyclic_units_iff_carmichael_eq_totient (the unit group is cyclic ⟺ λ(n) = φ(n)), and the headline exists_primitiveRoot_iff_carmichael_eq_totient — a primitive root mod n exists ⟺ λ(n) = φ(n).",
+      "mathContext": "Rewriting IsCyclic.iff_exponent_eq_card and isCyclic_iff_exists_orderOf_eq_natCard with |units| = φ(n)."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Section III: Concrete Certificates (15 vs 7)",
+      "startLine": 100,
+      "endLine": 124,
+      "summary": "carmichael_fifteen (λ(15) = 4 via carmichael_mul and the odd-prime values), not_exists_primitiveRoot_fifteen (no primitive root mod 15, since 4 ≠ 8 = φ(15)), and exists_primitiveRoot_seven (λ(7) = φ(7) = 6, so a primitive root mod 7 exists).",
+      "mathContext": "Turning the λ = φ criterion into explicit yes/no certificates for primitive roots."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 126 lines and 11 theorems characterizing the Carmichael function λ(n) as the maximal multiplicative order modulo n — λ(n) bounds every unit's order (orderOf a ∣ λ(n)) and is attained — and deducing that the unit group (ℤ/nℤ)ˣ is cyclic, equivalently a primitive root exists, iff λ(n) = φ(n). It includes the closed form λ(n) = lcm of prime-power values and concrete certificates: λ(15) = 4 < 8 = φ(15) (no primitive root mod 15) versus λ(7) = 6 = φ(7) (primitive root mod 7).",
+    "implications": "This answers both of the parent OQ-01-OQ-02's open questions: the closed form via carmichael_factorization, and the application identifying λ(n) as the maximal order and λ(n) = φ(n) as the primitive-root criterion. It connects Mathlib's Carmichael function to its cyclicity classification of unit groups, which the library states (ZMod.isCyclic_units_iff) but never phrases through λ. The criterion λ(n) = φ(n) is the computable form of Gauss's primitive-root theorem: a primitive root exists exactly when the reduced totient meets the totient.",
+    "openQuestions": [
+      "Combine isCyclic_units_iff_carmichael_eq_totient with Mathlib's ZMod.isCyclic_units_iff to prove the explicit equivalence λ(n) = φ(n) ⟺ n ∈ {1, 2, 4, pᵏ, 2pᵏ}, recovering Gauss's classification directly in terms of the Carmichael function.",
+      "Quantify the gap: characterize or bound φ(n)/λ(n) (the number of cyclic factors of the unit group) and relate it to the count of distinct prime factors and the power of 2 dividing n."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction.Carmichael",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["ArithmeticFunction", "Nat"],
+    "namespace": "EulerTotientOQ01OQ02OQ03",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ01OQ02OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent: the Carmichael function on prime powers. This entry answers its two closing open questions — the closed form λ(n) = lcm of prime-power values, and the application that λ(n) is the maximal multiplicative order, with primitive roots existing iff λ(n) = φ(n)."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "extends",
+      "description": "Grandparent chain: Euler's totient φ. This entry pins down exactly when Euler's theorem is optimal (a generator/primitive root exists), namely λ(n) = φ(n)."
+    }
+  ],
+  "references": [
+    {
+      "key": "Carmichael1910",
+      "citation": "Carmichael, R.D., Note on a new number theory function, Bull. Amer. Math. Soc. 16 (1910), 232–238.",
+      "type": "paper"
+    },
+    {
+      "key": "HardyWright",
+      "citation": "Hardy, G.H. and Wright, E.M., An Introduction to the Theory of Numbers, 6th ed., Oxford University Press (2008), §6–7 (primitive roots).",
+      "type": "book"
+    },
+    {
+      "key": "PrimitiveRootWiki",
+      "citation": "Primitive root modulo n, Wikipedia.",
+      "type": "web"
+    }
+  ],
+  "sorries": 0
+}
