@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-gcd-oq0401-preamble",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "concept",
+    "title": "Normalization on k[X] is 'Make it Monic'",
+    "content": "The module docstring frames the goal: identify the abstract NormalizationMonoid structure on the polynomial ring k[X] over a field k with the concrete operation of dividing by the leading coefficient. In any NormalizationMonoid, every element x has a canonical associate normalize x = x * normUnit x, where normUnit x is a unit. The parent entry (gcd-algorithm-oq-04) studied the coherence between EuclideanDomain.gcd and GCDMonoid.gcd abstractly and asked, as an open question, whether the k[X] normalization (choosing a monic representative) has a canonical algebraic characterization. This entry answers yes: normUnit p = C (leadingCoeff p)⁻¹ and normalize p = C (leadingCoeff p)⁻¹ * p, so normalize selects the unique monic associate, and the canonical gcd is therefore the monic gcd.",
+    "mathContext": "For $p \\neq 0$ in $k[X]$: $\\operatorname{normUnit}(p) = C(\\operatorname{lc}(p)^{-1})$ and $\\operatorname{normalize}(p) = C(\\operatorname{lc}(p)^{-1}) \\cdot p$, the monic associate. The $p = 0$ case uses $\\operatorname{normalize}(0) = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["NormalizationMonoid", "normalize", "normUnit", "Polynomial.Monic", "leadingCoeff"],
+    "prerequisites": ["Lean 4 typeclass system", "NormalizationMonoid typeclass", "Polynomial API", "Mathlib import"]
+  },
+  {
+    "id": "ann-gcd-oq0401-normunit",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 54, "endLine": 70 },
+    "type": "insight",
+    "title": "Part I: The Normalization Unit is a Constant",
+    "content": "normUnit_eq_C_inv_leadingCoeff proves that for a nonzero polynomial p over a field, the normalization unit ↑(normUnit p) equals the constant polynomial C (leadingCoeff p)⁻¹. This is a thin wrapper over Mathlib's Polynomial.coe_normUnit_of_ne_zero. The key conceptual point: over a field, the unit group of k[X] is exactly the nonzero constants, so the only normalization available is rescaling by a scalar — it never changes the degree or the roots of p, only its leading coefficient.",
+    "mathContext": "$\\uparrow(\\operatorname{normUnit}(p)) = C(\\operatorname{lc}(p)^{-1})$. Units of $k[X]$ are $\\{C(c) : c \\in k^\\times\\}$, so normalization is multiplication by a constant.",
+    "significance": "key",
+    "relatedConcepts": ["normUnit", "units of k[X]", "leadingCoeff", "constant polynomial C"],
+    "prerequisites": ["normUnit in NormalizationMonoid", "Polynomial.coe_normUnit_of_ne_zero"]
+  },
+  {
+    "id": "ann-gcd-oq0401-normalize-formula",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 71, "endLine": 90 },
+    "type": "insight",
+    "title": "Part II: Headline — normalize p = C (leadingCoeff p)⁻¹ * p",
+    "content": "normalize_eq_C_inv_leadingCoeff_mul is the headline identity: the abstract normalized associate of a nonzero polynomial is the explicit monic polynomial obtained by dividing through by the leading coefficient. The proof rewrites normalize_apply (normalize p = p * normUnit p), substitutes the Part I form of normUnit, and commutes the product. normalize_zero_poly records the p = 0 convention normalize 0 = 0, which is forced because leadingCoeff 0 = 0 has no inverse.",
+    "mathContext": "$\\operatorname{normalize}(p) = p \\cdot \\operatorname{normUnit}(p) = p \\cdot C(\\operatorname{lc}(p)^{-1}) = C(\\operatorname{lc}(p)^{-1}) \\cdot p$. The monic associate divides $p$ by its leading coefficient, making the new leading coefficient $1$.",
+    "significance": "critical",
+    "relatedConcepts": ["normalize_apply", "monic associate", "leadingCoeff", "normalize 0 = 0"],
+    "prerequisites": ["normalize_apply", "Part I normUnit identity", "ring commutativity"]
+  },
+  {
+    "id": "ann-gcd-oq0401-monic",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 91, "endLine": 110 },
+    "type": "insight",
+    "title": "Part III: The Normalized Associate is Monic",
+    "content": "monic_normalize_poly establishes (normalize p).Monic for p ≠ 0 (via Mathlib's monic_normalize), and leadingCoeff_normalize_eq_one restates this as leadingCoeff (normalize p) = 1. normalize_associated_poly records that normalize p is associated to p, so it has exactly the same divisors. Together these say normalize p is a monic associate of p — the existence half of the characterization completed in Part IV.",
+    "mathContext": "$\\operatorname{normalize}(p)$ is monic and $\\operatorname{normalize}(p) \\sim p$ (associated). Monicity is the defining property of the canonical representative; association preserves divisibility behaviour.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.Monic", "monic_normalize", "Associated", "normalize_associated"],
+    "prerequisites": ["Polynomial.monic_normalize", "normalize_associated"]
+  },
+  {
+    "id": "ann-gcd-oq0401-uniqueness",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 111, "endLine": 139 },
+    "type": "insight",
+    "title": "Part IV: normalize p is the Unique Monic Associate",
+    "content": "normalize_eq_self_iff characterizes nonzero fixed points of normalize as exactly the monic polynomials. eq_normalize_of_monic_associated proves uniqueness: any monic q associated to p must equal normalize p — the proof turns the association into normalize p = normalize q via normalize_eq_normalize_iff_associated, then uses Monic.normalize_eq_self to collapse normalize q to q. exists_unique_monic_associate packages existence (Part III) and uniqueness into a single ∃! statement: a nonzero polynomial has exactly one monic associate, namely normalize p.",
+    "mathContext": "For $p \\neq 0$: $\\operatorname{normalize}(p) = p \\iff p$ monic; and $\\exists!\\, m,\\ m\\text{ monic} \\wedge m \\sim p$, with $m = \\operatorname{normalize}(p)$. Uniqueness uses $\\operatorname{normalize}(x) = \\operatorname{normalize}(y) \\iff x \\sim y$.",
+    "significance": "critical",
+    "relatedConcepts": ["uniqueness up to associates", "normalize_eq_normalize_iff_associated", "Monic.normalize_eq_self", "ExistsUnique"],
+    "prerequisites": ["normalize_eq_normalize_iff_associated", "Monic.normalize_eq_self", "normalize_eq_self_iff_monic"]
+  },
+  {
+    "id": "ann-gcd-oq0401-monic-gcd",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 140, "endLine": 168 },
+    "type": "insight",
+    "title": "Part V: The Canonical gcd is Monic",
+    "content": "The Euclidean-algorithm gcd EuclideanDomain.gcd p q need not be monic, so the canonical gcd is its normalized associate normalize(EuclideanDomain.gcd p q). monic_normalize_gcd proves this is monic when nonzero; normalize_gcd_eq gives its explicit monic form C (leadingCoeff g)⁻¹ * g. The remaining theorems show it genuinely is a gcd: normalize_gcd_dvd_left/right transfer divisibility of p and q across the associate normalize(gcd) ~ gcd, and dvd_normalize_gcd proves the universal property (every common divisor of p and q divides the canonical gcd). This is exactly the monic gcd every textbook polynomial-gcd algorithm returns.",
+    "mathContext": "Canonical gcd $= \\operatorname{normalize}(\\gcd(p,q)) = C(\\operatorname{lc}(\\gcd)^{-1}) \\cdot \\gcd(p,q)$, monic and $\\sim \\gcd(p,q)$, hence divides $p$ and $q$ and absorbs every common divisor.",
+    "significance": "critical",
+    "relatedConcepts": ["EuclideanDomain.gcd", "monic gcd", "gcd universal property", "Associated.dvd"],
+    "prerequisites": ["EuclideanDomain.gcd_dvd_left/right", "EuclideanDomain.dvd_gcd", "Parts II–III"]
+  },
+  {
+    "id": "ann-gcd-oq0401-examples",
+    "proofId": "gcd-algorithm-oq-04-oq-01",
+    "range": { "startLine": 169, "endLine": 175 },
+    "type": "example",
+    "title": "Part VI: Worked Examples over ℚ",
+    "content": "Two concrete checks over ℚ. First, a monic polynomial X + C 1 is its own normalization (via Monic.normalize_eq_self with monic_X_add_C). Second, C 2 * X normalizes to the monic X: the headline identity gives C 2⁻¹ * (C 2 * X), and computing the leading coefficient (2 · 1 = 2) and simplifying the constant (2⁻¹ · 2 = 1) collapses it to X. These illustrate both the monic fixed-point case and a genuine rescaling.",
+    "mathContext": "$\\operatorname{normalize}(X + 1) = X + 1$ (already monic); $\\operatorname{normalize}(2X) = X$ (rescale by $\\tfrac12$).",
+    "significance": "supporting",
+    "relatedConcepts": ["monic_X_add_C", "leadingCoeff_mul", "worked example"],
+    "prerequisites": ["headline identity Part II", "Monic.normalize_eq_self"]
+  }
+]
