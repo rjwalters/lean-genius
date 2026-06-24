@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ann-erdos606-oq03-wip01-lower",
+    "proofId": "erdos-606-oq-03-wip-01",
+    "range": {
+      "startLine": 50,
+      "endLine": 59
+    },
+    "type": "insight",
+    "title": "de Bruijn–Erdős: At Least n Lines",
+    "content": "deBruijn_erdos states |P| ≤ |L|: a finite set of points in which any two determine a unique line gives at least as many lines as points. This is the de Bruijn–Erdős theorem (1948) — the correct attribution for the parent entry's prose claim 'at least n lines', which had been mislabeled Sylvester–Gallai (a different statement about ordinary lines). The proof delegates to Mathlib's Configuration.HasLines.card_le, a double-counting argument over line- and point-incidence counts.",
+    "mathContext": "$|P| \\le |L|$: $n$ non-collinear points determine at least $n$ distinct lines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "de Bruijn–Erdős theorem",
+      "incidence geometry",
+      "HasLines configuration"
+    ],
+    "prerequisites": [
+      "Configuration.HasLines.card_le"
+    ]
+  },
+  {
+    "id": "ann-erdos606-oq03-wip01-upper",
+    "proofId": "erdos-606-oq-03-wip-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "Upper Bound C(n,2) by Pair Counting",
+    "content": "card_le_choose_two proves |L| ≤ C(|P|,2). Assuming every line passes through at least two points, it assigns to each line a 2-element subset {p_l, q_l} of points on it. The map L → Finset P is injective: if two lines carried the same pair, both would pass through those two distinct points, contradicting Nondegenerate.eq_or_eq (two points lie on at most one line). Finset.card_image_of_injective and Finset.card_powersetCard then count: the number of lines is at most the number of point-pairs, C(n,2).",
+    "mathContext": "$|L| \\le \\binom{|P|}{2}$: distinct lines carry distinct point-pairs.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counting injection",
+      "uniqueness of the line through two points",
+      "binomial coefficient"
+    ],
+    "prerequisites": [
+      "Nondegenerate.eq_or_eq",
+      "Finset.card_powersetCard"
+    ]
+  },
+  {
+    "id": "ann-erdos606-oq03-wip01-sandwich",
+    "proofId": "erdos-606-oq-03-wip-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 113
+    },
+    "type": "insight",
+    "title": "The Line-Count Sandwich n ≤ #L ≤ C(n,2)",
+    "content": "line_count_sandwich packages both bounds: the number of lines determined by n points lies in [n, C(n,2)]. The lower bound is de Bruijn–Erdős, the upper bound the pair-counting injection — and both rest on the same uniqueness axiom (two points determine at most one line). This is the verified combinatorial range underlying Erdős 606; which intermediate counts are actually achievable is the deeper open question.",
+    "mathContext": "$n \\le (\\text{number of determined lines}) \\le \\binom{n}{2}$.",
+    "significance": "major",
+    "relatedConcepts": [
+      "Erdős 606",
+      "extremal incidence geometry"
+    ],
+    "prerequisites": []
+  }
+]
