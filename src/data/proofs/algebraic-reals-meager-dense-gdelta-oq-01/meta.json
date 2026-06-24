@@ -1,0 +1,214 @@
+{
+  "id": "algebraic-reals-meager-dense-gdelta-oq-01",
+  "title": "The Algebraic Reals are an Explicit Fσ — Completing the Gδ/Fσ Dichotomy",
+  "slug": "algebraic-reals-meager-dense-gdelta-oq-01",
+  "description": "Dualizes the parent's dense-Gδ transcendentals to the algebraic side: the algebraic reals {x : ℝ | IsAlgebraic ℚ x} are exhibited as an explicit Fσ — the countable union ⋃_{a algebraic} {a} of closed singletons. Since Mathlib has the predicate IsGδ but no Fσ counterpart, this entry introduces IsFσ (a countable union of closed sets) and proves the De Morgan duality isFσ_iff_isGδ_compl: s is Fσ iff sᶜ is Gδ. It then derives the abstract lemma that every countable set in a T1 space is Fσ (dual to the parent's isGδ_compl_of_countable), applies it to the algebraic reals, and shows the transcendentals are NOT an Fσ (their Fσ-ness would make the algebraic reals Gδ, contradicting the parent). The headline is the packaged four-way classification: algebraic reals are Fσ-but-not-Gδ (and meagre), transcendentals are Gδ-but-not-Fσ (and comeagre) — the exact algebraic/transcendental analogue of ℚ/irrationals.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/F%CF%83_set",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ01.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "real-analysis",
+      "f-sigma-set",
+      "g-delta-set",
+      "descriptive-set-theory",
+      "algebraic-numbers",
+      "transcendental-numbers",
+      "borel-hierarchy"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsGδ",
+        "description": "Mathlib's predicate for a countable intersection of open sets; dualized here to IsFσ",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "Set.compl_sUnion",
+        "description": "(⋃₀ S)ᶜ = ⋂₀ (compl '' S) — De Morgan, turning a countable union of closed sets into a countable intersection of open sets",
+        "module": "Mathlib.Data.Set.Lattice"
+      },
+      {
+        "theorem": "Set.compl_sInter",
+        "description": "(⋂₀ S)ᶜ = ⋃₀ (compl '' S) — the reverse De Morgan passage for the duality",
+        "module": "Mathlib.Data.Set.Lattice"
+      },
+      {
+        "theorem": "Set.biUnion_of_singleton",
+        "description": "⋃ x ∈ s, {x} = s — every set is the union of its singletons, the explicit Fσ decomposition for a countable set",
+        "module": "Mathlib.Data.Set.Lattice"
+      },
+      {
+        "theorem": "isClosed_singleton",
+        "description": "In a T1 space every singleton is closed — each piece of the Fσ decomposition",
+        "module": "Mathlib.Topology.Separation.Basic"
+      },
+      {
+        "theorem": "Set.Countable.image",
+        "description": "The image of a countable set is countable — the index family of the Fσ decomposition stays countable",
+        "module": "Mathlib.Data.Set.Countable"
+      }
+    ],
+    "originalContributions": [
+      "IsFσ: introduced the Fσ predicate (a countable union of closed sets) dual to Mathlib's IsGδ, which has no Fσ counterpart",
+      "isFσ_iff_isGδ_compl: PROVED the De Morgan duality — s is Fσ iff sᶜ is Gδ — via Set.compl_sUnion / Set.compl_sInter (both directions IsFσ.isGδ_compl and isFσ_of_isGδ_compl)",
+      "isFσ_of_countable: PROVED in any T1 space every countable set is an Fσ, exhibited explicitly as the union of its closed singletons (dual to the parent's isGδ_compl_of_countable)",
+      "algebraicReals_eq_iUnion_singletons: PROVED the explicit decomposition {x | IsAlgebraic ℚ x} = ⋃_{a algebraic} {a}, displaying the Fσ structure before packaging",
+      "algebraicReals_isFσ (HEADLINE): PROVED the algebraic reals are an explicit Fσ in ℝ — the countable union of closed singletons requested by the parent's open question",
+      "transcendentalReals_not_isFσ: PROVED the transcendental reals are NOT an Fσ — were they Fσ, their complement (the algebraic reals) would be a Gδ, contradicting the parent's algebraicReals_not_isGδ",
+      "algebraic_gδ_fσ_dichotomy: PROVED the packaged four-way classification — algebraic reals Fσ-but-not-Gδ, transcendentals Gδ-but-not-Fσ — completing the Gδ/Fσ side of the dichotomy alongside the parent's meagre/comeagre Baire-category side"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Gδ sets (Mathlib's IsGδ) and the dual Fσ notion",
+      "De Morgan duality for arbitrary unions/intersections of sets",
+      "Baire category: the algebraic reals are dense and meagre, the transcendentals comeagre (parent)",
+      "Countability of the algebraic reals (Algebraic.countable)"
+    ],
+    "lineCount": 153,
+    "relatedProblems": [
+      {
+        "id": "algebraic-reals-meager-dense-gdelta",
+        "relationship": "Parent: exhibits the transcendentals as a dense Gδ and the algebraic reals as not-Gδ; its first open question asks for the dual Fσ presentation of the algebraic reals and the full Gδ/Fσ classification, which this entry supplies"
+      },
+      {
+        "id": "algebraic-reals-meager",
+        "relationship": "Grandparent: the algebraic reals are meagre and dense, the Baire-category half of the dichotomy this entry completes on the Borel-complexity side"
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "The algebraic reals are countable — the countability input that drives the Fσ decomposition into singletons"
+      }
+    ],
+    "assumptions": "0 axioms (only propext, Classical.choice, Quot.sound — the standard Mathlib triple; no sorryAx, no native_decide). The Fσ predicate is introduced locally because Mathlib provides IsGδ but no Fσ counterpart; all results are proved from Mathlib's set-theoretic De Morgan lemmas, T1 separation, and countability, reusing the parent's algebraicReals_not_isGδ and transcendentalReals_isGδ.",
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 153,
+    "namespace": "AlgebraicRealsMeagerDenseGDeltaOQ01",
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 7,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.Topology.GDelta.Basic",
+      "Mathlib.Topology.Baire.Lemmas",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.Data.Set.Lattice",
+      "Mathlib.Tactic",
+      "Proofs.AlgebraicRealsMeagerDenseGDelta"
+    ],
+    "path": "Proofs/AlgebraicRealsMeagerDenseGDeltaOQ01.lean",
+    "sorries": 0,
+    "definitionCount": 1,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "IsFσ",
+      "type": "definition",
+      "description": "A set is Fσ if it is a countable union of closed sets — the predicate dual to Mathlib's IsGδ",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X], Set X → Prop"
+    },
+    {
+      "name": "isFσ_iff_isGδ_compl",
+      "type": "core",
+      "description": "The De Morgan duality: s is Fσ exactly when its complement is Gδ",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X] {s : Set X}, IsFσ s ↔ IsGδ sᶜ"
+    },
+    {
+      "name": "isFσ_of_countable",
+      "type": "core",
+      "description": "In any T1 space every countable set is an Fσ, exhibited as the union of its closed singletons (dual to the parent's isGδ_compl_of_countable)",
+      "leanType": "∀ {X : Type*} [TopologicalSpace X] [T1Space X] {s : Set X}, s.Countable → IsFσ s"
+    },
+    {
+      "name": "algebraicReals_isFσ",
+      "type": "headline",
+      "description": "The algebraic reals are an explicit Fσ in ℝ — the countable union of closed singletons requested by the parent's open question",
+      "leanType": "IsFσ {x : ℝ | IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "transcendentalReals_not_isFσ",
+      "type": "core",
+      "description": "The transcendental reals are NOT an Fσ — their Fσ-ness would force the algebraic reals to be a Gδ, contradicting the parent",
+      "leanType": "¬ IsFσ {x : ℝ | ¬ IsAlgebraic ℚ x}"
+    },
+    {
+      "name": "algebraic_gδ_fσ_dichotomy",
+      "type": "headline",
+      "description": "The complete classification: algebraic reals are Fσ-but-not-Gδ, transcendentals are Gδ-but-not-Fσ",
+      "leanType": "(IsFσ {x : ℝ | IsAlgebraic ℚ x} ∧ ¬ IsGδ {x : ℝ | IsAlgebraic ℚ x}) ∧ (IsGδ {x : ℝ | ¬ IsAlgebraic ℚ x} ∧ ¬ IsFσ {x : ℝ | ¬ IsAlgebraic ℚ x})"
+    }
+  ],
+  "overview": "The parent entry exhibits the transcendental reals as an explicit dense Gδ and shows the algebraic reals are not a Gδ — the Baire-category and one half of the Borel-complexity story. Its first open question asks for the dual: present the algebraic reals as an explicit Fσ (a countable union of closed singletons) and record the full Gδ/Fσ classification. Mathlib carries the predicate IsGδ but, surprisingly, no Fσ counterpart, so this entry first introduces IsFσ (a countable union of closed sets) and proves it is dual to IsGδ under complementation — isFσ_iff_isGδ_compl, both directions through the set-theoretic De Morgan laws Set.compl_sUnion and Set.compl_sInter. With the predicate in hand, every countable set in a T1 space is an Fσ (the union of its closed singletons), so the countable algebraic reals are the explicit Fσ ⋃_{a algebraic} {a}. Dually, the transcendentals cannot be an Fσ: that would make their complement — the algebraic reals — a Gδ, which the parent refuted. The result is the complete four-way classification: the algebraic reals are Fσ-but-not-Gδ (and meagre), the transcendentals are Gδ-but-not-Fσ (and comeagre), the exact algebraic/transcendental analogue of ℚ versus the irrationals.",
+  "conclusion": {
+    "summary": "A 154-line, 0-sorry, 0-axiom formalization that completes the Gδ/Fσ classification of the algebraic/transcendental dichotomy. It introduces the Fσ predicate missing from Mathlib, proves its De Morgan duality with IsGδ, and uses it to exhibit the algebraic reals as an explicit Fσ (the countable union of closed singletons) while showing the transcendentals are not an Fσ.",
+    "implications": "The pairing is now symmetric on both axes: in Baire category the algebraic reals are meagre and the transcendentals comeagre (parent); in Borel complexity the algebraic reals are Fσ-but-not-Gδ and the transcendentals are Gδ-but-not-Fσ (here). This is precisely the structure of ℚ versus the irrationals, transported to the algebraic/transcendental partition. The locally-defined IsFσ predicate and the duality isFσ_iff_isGδ_compl are reusable for any descriptive-complexity argument over Mathlib, which currently lacks an Fσ notion.",
+    "openQuestions": [
+      "Lift the Fσ/Gδ classification into Mathlib's Borel hierarchy: show the algebraic reals lie in Σ⁰₂ \\ Π⁰₂ and the transcendentals in Π⁰₂ \\ Σ⁰₂, connecting IsFσ/IsGδ to MeasurableSpace.GenerateMeasurable levels.",
+      "Make the Fσ presentation fully constructive by exhibiting an explicit enumeration a : ℕ → ℝ of the algebraic reals and the resulting increasing sequence of finite closed sets ⋃_{k ≤ n} {a k}."
+    ]
+  },
+  "references": [
+    {
+      "title": "Fσ set — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/F%CF%83_set"
+    },
+    {
+      "title": "Oxtoby, Measure and Category (Springer GTM 2)",
+      "url": "https://link.springer.com/book/10.1007/978-1-4684-9339-9"
+    },
+    {
+      "title": "Kechris, Classical Descriptive Set Theory (Springer GTM 156)",
+      "url": "https://link.springer.com/book/10.1007/978-1-4612-4190-4"
+    }
+  ],
+  "crossReferences": [],
+  "sections": [
+    {
+      "id": "fsigma-predicate-duality",
+      "title": "The Fσ predicate and its duality with Gδ",
+      "startLine": 57,
+      "endLine": 94,
+      "summary": "Introduces IsFσ (a countable union of closed sets), dual to Mathlib's IsGδ, then proves the De Morgan duality isFσ_iff_isGδ_compl (s is Fσ iff sᶜ is Gδ) from Set.compl_sUnion and Set.compl_sInter — both directions IsFσ.isGδ_compl and isFσ_of_isGδ_compl."
+    },
+    {
+      "id": "countable-is-fsigma",
+      "title": "Countable sets are Fσ in T1 spaces",
+      "startLine": 96,
+      "endLine": 101,
+      "summary": "isFσ_of_countable: in any T1 space a countable set is an Fσ, exhibited explicitly as the union of its closed singletons — the structural dual of the parent's isGδ_compl_of_countable."
+    },
+    {
+      "id": "algebraic-reals-fsigma",
+      "title": "The algebraic reals as a concrete Fσ",
+      "startLine": 103,
+      "endLine": 130,
+      "summary": "algebraicReals_eq_iUnion_singletons displays the explicit decomposition; algebraicReals_isFσ packages it via isFσ_of_countable on the countable algebraic reals; transcendentalReals_not_isFσ shows the transcendentals are not Fσ (else their algebraic complement would be Gδ, contradicting the parent)."
+    },
+    {
+      "id": "full-dichotomy",
+      "title": "The full Gδ/Fσ classification",
+      "startLine": 132,
+      "endLine": 153,
+      "summary": "algebraic_gδ_fσ_dichotomy packages the four facts — algebraic reals Fσ-but-not-Gδ, transcendentals Gδ-but-not-Fσ — completing the Borel-complexity half of the dichotomy that pairs with the parent's Baire-category half. Closing #print axioms confirm 0 axioms."
+    }
+  ]
+}
