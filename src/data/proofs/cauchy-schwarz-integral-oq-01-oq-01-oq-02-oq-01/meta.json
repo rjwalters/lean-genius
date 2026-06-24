@@ -2,9 +2,9 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
   "title": "Radon-Nikodým Route to Lp Duality",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
-  "description": "Can Mathlib's Radon-Nikodým machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes — all steps proved, 0 sorries.",
+  "description": "Can Mathlib's Radon-Nikodým machinery (SignedMeasure.rnDeriv) be composed with Lp membership to eliminate the surjectivity axiom? Answer: yes — all steps formalized with 0 sorries. NOTE (2026-06-24, #28788): the file no longer compiles against the pinned v4.26.0 toolchain due to Mathlib API drift (53 errors); repair is tracked separately and the status has been downgraded to formalized until the build is green.",
   "meta": {
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean",
     "tags": [
       "functional-analysis",
@@ -17,7 +17,8 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 1077,
-    "assumptions": "No axioms, no sorries. Main theorem riesz_lp_surjective_from_rn proved via signedMeasureOfFunctional + holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation. Dead-path theorems (truncated_rn_deriv_lq_bound, rn_deriv_memLq) removed 2026-04-23.",
+    "buildStatus": "broken",
+    "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file does NOT currently compile against the pinned toolchain leanprover/lean4:v4.26.0 — Mathlib API drift produces 53 errors (`Real.HolderTriple.one_lt_of_lt` removed, `Function.sign` removed, `MeasureTheory.Measure.withDensityᵥ_apply` renamed, plus ~dozen unsolved-goals / application-type-mismatch sites). The file was last green ~2026-04 before a Mathlib bump; no automated gate built it, so the drift rotted silently. There are 0 literal `sorry` tactics and 0 `axiom` declarations, but the formalization is not currently machine-checked, so status was downgraded verified→formalized pending repair. Mathematical content (riesz_lp_surjective_from_rn via signedMeasureOfFunctional + holder_extremizer_lq_bound + rn_deriv_memLq_from_trunc + integral_representation) is unchanged; dead-path theorems (truncated_rn_deriv_lq_bound, rn_deriv_memLq) removed 2026-04-23.",
     "dateAdded": "2026-04-13",
     "theoremCount": 18,
     "definitionCount": 3
