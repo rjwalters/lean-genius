@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-vajda-header",
+    "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+    "range": { "startLine": 6, "endLine": 67 },
+    "type": "concept",
+    "title": "Goal: Vajda's identity as the master cross-determinant",
+    "content": "Vajda's identity F_{n+i}·F_{n+j} − Fₙ·F_{n+i+j} = (−1)ⁿ·Fᵢ·Fⱼ (over ℤ) is the single two-parameter relation that unifies the Fibonacci index-arithmetic family: d'Ocagne is its j = 1 slice, Cassini its i = j = 1 slice, and Catalan its diagonal i = j = r slice. The header fixes the standard Catalan orientation (Fₙ² − F_{n−r}F_{n+r}, verified at n=2,r=1: 1−2 = −1) and previews the proof idea: the cross-determinant satisfies the Fibonacci recurrence in j, so it is pinned by two base cases. None of these (−1)ⁿ determinant identities are in Mathlib.",
+    "mathContext": "$F_{n+i}F_{n+j} - F_n F_{n+i+j} = (-1)^n F_i F_j$; $F_0=0$, $F_1=1$, $F_{n+2}=F_n+F_{n+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["Vajda's identity", "Cassini identity", "Catalan identity", "d'Ocagne identity", "cross-determinant"],
+    "prerequisites": ["the Fibonacci recurrence", "integer sequences", "linear recurrences"]
+  },
+  {
+    "id": "ann-vajda-gap",
+    "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+    "range": { "startLine": 73, "endLine": 110 },
+    "type": "theorem",
+    "title": "Vajda's identity by two-step induction on j",
+    "content": "fib_vajda_gap is the engine. The proof is Nat.twoStepInduction on j, realising the principle that two sequences with the same second-order recurrence agree once their first two terms do. j = 0 is trivial (g(0) = F_{n+i}·Fₙ − Fₙ·F_{n+i} = 0 = (−1)ⁿ·Fᵢ·F₀ since F₀ = 0). j = 1 is *exactly* d'Ocagne's identity, imported as the parent's fib_docagne_gap and closed by linear_combination — so d'Ocagne is literally the seed of Vajda, not a corollary. The successor step casts the Fibonacci recurrence three times (for F_{n+(j+2)}, F_{n+i+(j+2)}, F_{j+2}), normalises indices to (·)+2/(·)+1 form, and closes with linear_combination ih₀ + ih₁ (g(j+2) = g(j) + g(j+1)).",
+    "mathContext": "$g(j) = F_{n+i}F_{n+j} - F_n F_{n+i+j}$ obeys $g(j+2)=g(j)+g(j+1)$; $g(0)=0$, $g(1)$ = d'Ocagne.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.twoStepInduction", "second-order recurrence", "fib_docagne_gap", "linear_combination", "Nat.fib_add_two"],
+    "prerequisites": ["two-step induction", "the d'Ocagne base case", "casting ℕ→ℤ"]
+  },
+  {
+    "id": "ann-catalan-gap",
+    "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+    "range": { "startLine": 112, "endLine": 123 },
+    "type": "theorem",
+    "title": "Catalan's identity: the diagonal slice (gap form)",
+    "content": "fib_catalan_gap is the subtraction-free Catalan engine F_{m+r}² − Fₘ·F_{m+2r} = (−1)ᵐ·Fᵣ², obtained simply by specialising Vajda at i = j = r (fib_vajda_gap m r r) and normalising m + r + r = m + 2r. Working with the additive gap m avoids any ℕ-subtraction, so the engine runs without truncation issues; the named form follows by one substitution.",
+    "mathContext": "$F_{m+r}^2 - F_m F_{m+2r} = (-1)^m F_r^2$ (Vajda at $i=j=r$).",
+    "significance": "supporting",
+    "relatedConcepts": ["diagonal specialisation", "gap parameterisation", "avoiding ℕ-subtraction"],
+    "prerequisites": ["Vajda's identity"]
+  },
+  {
+    "id": "ann-catalan-named",
+    "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+    "range": { "startLine": 125, "endLine": 138 },
+    "type": "theorem",
+    "title": "Catalan's identity: the named symmetric form",
+    "content": "fib_catalan transports the gap engine to the textbook statement Fₙ² − F_{n−r}·F_{n+r} = (−1)ⁿ⁻ʳ·Fᵣ² for r ≤ n. From r ≤ n it writes n = r + m (Nat.exists_eq_add_of_le), simplifies (r+m) − r = m (Nat.add_sub_cancel_left) in both the fib argument and the sign exponent, reconciles indices (r + m ↦ m + r, m + r + r ↦ m + 2r), and applies fib_catalan_gap. This is the answer to the parent entry's first open question.",
+    "mathContext": "$F_n^2 - F_{n-r}F_{n+r} = (-1)^{n-r}F_r^2$ for $r \\le n$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.exists_eq_add_of_le", "Nat.add_sub_cancel_left", "named symmetric form", "Wikipedia orientation"],
+    "prerequisites": ["the gap engine", "eliminating ℕ-subtraction"]
+  },
+  {
+    "id": "ann-slices",
+    "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+    "range": { "startLine": 140, "endLine": 159 },
+    "type": "insight",
+    "title": "d'Ocagne and Cassini recovered as slices",
+    "content": "Two one-line corollaries close the unification loop. fib_docagne_gap_of_vajda re-derives the parent's d'Ocagne engine as the j = 1 slice (fib_vajda_gap n k 1 with F₁ = 1), confirming Vajda subsumes the very identity that seeded it. fib_cassini_of_vajda recovers Cassini Fₙ₊₁² − Fₙ·Fₙ₊₂ = (−1)ⁿ as the i = j = 1 slice. Together with Catalan, this exhibits Cassini/d'Ocagne/Catalan as uniform specialisations of the single master relation.",
+    "mathContext": "d'Ocagne = Vajda at $j=1$; Cassini = Vajda at $i=j=1$: $F_{n+1}^2 - F_n F_{n+2} = (-1)^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialisation", "unification", "Cassini identity", "d'Ocagne identity"],
+    "prerequisites": ["Vajda's identity"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "fibonacci-identities-oq-01-oq-02-oq-01",
+    "range": { "startLine": 165, "endLine": 169 },
+    "type": "context",
+    "title": "Concrete numeric sanity checks",
+    "content": "Three decide-checked examples confirm the identities on small cases: Catalan at (n,r) = (5,2) gives F₅² − F₃·F₇ = 25 − 26 = −1 = (−1)³·F₂²; at (6,2) gives 64 − 63 = 1 = (−1)⁴·F₂²; and Vajda at (n,i,j) = (2,1,3) gives F₃·F₅ − F₂·F₆ = 10 − 8 = 2 = (−1)²·F₁·F₃. These are illustrative example blocks (the decide here is over concrete ℤ arithmetic, not in the verified theorems, so it does not affect their axiom footprint).",
+    "mathContext": "$F_5^2 - F_3 F_7 = 25 - 26 = -1 = (-1)^3 F_2^2$.",
+    "significance": "context",
+    "relatedConcepts": ["decide", "worked examples", "small-case verification"],
+    "prerequisites": ["the named identities"]
+  }
+]
