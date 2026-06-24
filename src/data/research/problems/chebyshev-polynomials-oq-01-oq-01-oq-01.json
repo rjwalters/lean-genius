@@ -1,0 +1,58 @@
+{
+  "slug": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+  "title": "Chebyshev SL₂ Matrix Multiplicativity Packaging T_add, U_add and the Pell Identity",
+  "problemStatement": {
+    "formal": "def chebMat (n : ℤ) : Matrix (Fin 2) (Fin 2) R[X] := !![T R n, -((1 - X^2) * U R (n-1)); U R (n-1), T R n]; theorem chebMat_mul : chebMat R (m+n) = chebMat R m * chebMat R n; theorem chebMat_det : (chebMat R n).det = 1",
+    "plain": "Package the parent entry's three scalar Chebyshev identities (the first-kind addition formula T_add, the second-kind addition formula U_add, and the Pell/Pythagorean identity T_sq_add) into a single SL₂-style matrix multiplicativity: the 2×2 matrix M(n) = !![Tₙ, −(1−X²)U_{n−1}; U_{n−1}, Tₙ] is a monoid homomorphism (ℤ,+) → SL₂(R[X]) whose powers generate T and U.",
+    "whyMatters": [
+      "Unifies three separate scalar identities as the entries and determinant of one matrix equation",
+      "Makes the Pell identity automatic (det of a homomorphism into SL₂), mirroring the Fibonacci Q-matrix",
+      "Mathlib has the Chebyshev polynomials and recurrences but no SL₂ matrix packaging"
+    ]
+  },
+  "significance": 6,
+  "tier": "B",
+  "tractability": 7,
+  "status": "completed",
+  "phase": "COMPLETED",
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "path": "Proofs/ChebyshevPolynomialsOQ01OQ01OQ01.lean",
+  "tags": [
+    "chebyshev-polynomials",
+    "special-linear-group",
+    "matrix-identity",
+    "pell-equation",
+    "angle-addition",
+    "polynomial-ring"
+  ],
+  "knowledge": {
+    "progressSummary": "COMPLETE: chebMat M(n) = !![Tₙ, −(1−X²)U_{n−1}; U_{n−1}, Tₙ] proved to be a monoid hom (ℤ,+) → SL₂(R[X]) — M(0)=1, M(m+n)=M(m)M(n) (= T_add ∧ U_add), det M(n)=1 (= Pell identity), M(↑n)=M(1)ⁿ with entries Tₙ, U_{n−1}. Verified, 0 axioms, 0 sorries, 8 theorems / 1 def / 121 lines.",
+    "insights": [
+      "The parent's T_add, U_add and Pell identity are not independent: they are the four entries and the determinant of the single equation M(m+n) = M(m)·M(n) with det M(n) = 1, i.e. M : (ℤ,+) → SL₂(R[X]) is a monoid homomorphism.",
+      "det M(n) = Tₙ² + (1−X²)U_{n−1}² is exactly the parent's Pell identity T_sq_add, so the Pell identity becomes the SL₂-membership condition and follows automatically from multiplicativity as (det M(1))ⁿ = 1.",
+      "The off-diagonal entry of M(m+n) needs U_add reindexed at m−1: U_{m+n−1} = U_{m−1}·T_n + T_m·U_{n−1}, obtained by rewriting the indices m−1+n → m+n−1 and m−1+1 → m.",
+      "M(1) = !![X, −(1−X²); 1, X] is the Chebyshev analogue of the Fibonacci Q-matrix !![1,1;1,0]: (M(1)ⁿ) 0 0 = Tₙ and (M(1)ⁿ) 1 0 = U_{n−1}."
+    ],
+    "builtItems": [
+      "chebMat (def): the 2×2 Chebyshev SL₂ matrix over R[X] — ChebyshevPolynomialsOQ01OQ01OQ01.lean:60",
+      "chebMat_mul: M(m+n) = M(m)·M(n) packaging T_add and U_add — :77",
+      "chebMat_det: det M(n) = 1 (the Pell identity) — :88",
+      "chebMat_zero / chebMat_one: M(0)=1, M(1)=!![X,−(1−X²);1,X] — :64, :70",
+      "chebMat_pow + cheb_pow_entry_T/U: M(↑n)=M(1)ⁿ with Tₙ, U_{n−1} as entries — :94, :101, :106",
+      "mat2_ext: reusable 2×2 literal entrywise-equality helper — :53"
+    ],
+    "mathlibGaps": [
+      "Mathlib has Polynomial.Chebyshev.T/U and recurrences but no matrix/SL₂ packaging of the addition formulas",
+      "No bundled MonoidHom from (Multiplicative ℤ) to SL₂(R[X]) for the Chebyshev rotation"
+    ],
+    "nextSteps": [
+      "Bundle M as a MonoidHom from Multiplicative ℤ and derive multiple-angle identities (T_{2n}, U_{2n−1}) from matrix powers.",
+      "Diagonalize M(1) over R[X][√(X²−1)] to recover Binet-type closed forms Tₙ = ½((X+√(X²−1))ⁿ + (X−√(X²−1))ⁿ)."
+    ]
+  },
+  "relatedProofs": [
+    "chebyshev-polynomials-oq-01-oq-01",
+    "fibonacci-identities-oq-01-oq-03"
+  ]
+}

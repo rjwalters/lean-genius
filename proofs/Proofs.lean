@@ -760,6 +760,7 @@ import Proofs.ChebyshevPNTBridgeOQ01OQ02
 import Proofs.ChebyshevPNTBridgeOQ02
 import Proofs.ChebyshevPNTBridgeOQ03
 import Proofs.ChebyshevPolynomialsOQ01
+import Proofs.ChebyshevPolynomialsOQ01OQ01OQ01
 import Proofs.ChebyshevSumMonotoneOQ01
 import Proofs.ChebyshevSumIntegralOQ01OQ01OQ01
 import Proofs.ChebyshevSumWeightedOQ01OQ01
