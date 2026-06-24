@@ -1,0 +1,182 @@
+{
+  "id": "compactness-finite-subcover-oq-01-oq-01-oq-01",
+  "slug": "compactness-finite-subcover-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CompactnessFiniteSubcoverOQ01OQ01"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CompactnessFiniteSubcoverOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Closed-Projection Characterization of Compactness (Forward Direction)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompactnessFiniteSubcoverOQ01OQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "compactness",
+      "closed-map",
+      "projection",
+      "tube-lemma",
+      "product-topology",
+      "general-topology",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 146,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "isClosed_fst_image_of_compactSpace: the headline, derived by hand from the parent's tube lemma. For a CompactSpace Y and a closed C ⊆ X × Y, the image Prod.fst '' C ⊆ X is closed. The proof shows the complement is open: if x₀ ∉ Prod.fst '' C then the entire vertical slice {x₀} × Y misses C, i.e. lies in the open set Cᶜ; tube_lemma_compactSpace (the parent's hand-built tube lemma) upgrades this slice-level miss to a whole tube W ×ˢ univ ⊆ Cᶜ, and the open base W then misses Prod.fst '' C. Compactness of the fibre is exactly what promotes a pointwise miss to a uniform miss on a neighbourhood.",
+      "isClosedMap_fst_via_tube: the headline packaged as IsClosedMap (Prod.fst : X × Y → X) for compact Y. (Mathlib already proves this as isClosedMap_fst_of_compactSpace via the filter/uniformity machinery; the contribution is that it drops straight out of the by-hand tube lemma, in the spirit the parent set out — Mathlib's version is deliberately not cited.)",
+      "isClosedMap_snd_via_tube: the symmetric statement for a compact FIRST factor — Prod.snd : X × Y → Y is closed when X is compact — obtained by rewriting Prod.snd as Prod.fst ∘ (Homeomorph.prodComm X Y) and composing the fst-version with the swap homeomorphism (a closed map).",
+      "isClosed_exists_of_compactSpace: a quantifier-elimination flavoured corollary — the existential projection {x | ∃ y, (x, y) ∈ C} of a closed set is closed when the bound variable ranges over a compact space (this 'shadow' equals Prod.fst '' C). Closing the existential over a compact factor preserves closedness, a baby instance of properness/elimination of a compact quantifier.",
+      "isOpen_emptyFibre_of_compactSpace: the dual open set {x | ∀ y, (x, y) ∉ C} — the base points whose fibre is empty — is open, as the complement of Prod.fst '' C.",
+      "isClosedMap_fst_real_unitInterval: a concrete instance — the projection ℝ × [0,1] → ℝ is a closed map, instantiating the abstract result at the compact fibre unitInterval."
+    ],
+    "prerequisites": [
+      "tube_lemma_compactSpace (parent entry): for a CompactSpace Y, an open N with (x₀, y) ∈ N for all y contains a tube W ×ˢ univ ⊆ N — the by-hand tube lemma that does all the compactness work",
+      "isOpen_iff_forall_mem_open: a set is open iff each of its points has an open neighbourhood inside it — the shape in which the complement of the image is shown open",
+      "IsClosed.isOpen_compl: the complement of a closed set is open — turns 'C closed' into 'Cᶜ open' to feed the tube lemma",
+      "Homeomorph.prodComm: the swap homeomorphism X × Y ≃ₜ Y × X, a closed map — transports the fst-statement to the snd-statement",
+      "IsClosedMap.comp: a composition of closed maps is closed — combines fst with the swap homeomorphism"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "isOpen_iff_forall_mem_open",
+        "description": "IsOpen s ↔ ∀ x ∈ s, ∃ t, t ⊆ s ∧ IsOpen t ∧ x ∈ t. The complement of Prod.fst '' C is shown open by exhibiting the tube base W as the neighbourhood at each point.",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "IsClosed.isOpen_compl",
+        "description": "The complement of a closed set is open. Converts the hypothesis 'C closed' into 'Cᶜ open', the open set fed to the tube lemma.",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "Homeomorph.prodComm",
+        "description": "The coordinate-swap homeomorphism X × Y ≃ₜ Y × X. Being a homeomorphism it is a closed map; rewriting Prod.snd = Prod.fst ∘ prodComm transports the fst result to snd.",
+        "module": "Mathlib.Topology.Homeomorph.Defs"
+      },
+      {
+        "theorem": "IsClosedMap.comp",
+        "description": "The composition of two closed maps is a closed map. Composes the fst projection (closed for a compact factor) with the swap homeomorphism to obtain the snd statement.",
+        "module": "Mathlib.Topology.Maps.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The closed-projection (or 'closed map') characterization of compactness is a cornerstone of point-set topology, sometimes attributed to Kuratowski and Mrówka: a space Y is compact if and only if for EVERY space X the projection X × Y → X is a closed map. It is the cleanest packaging of the fact that 'projecting out a compact factor' is a topologically tame operation, and it is the standard route to results such as the closedness of the graph of a continuous map into a compact space and to (one form of) Tychonoff's theorem. The forward direction — compact fibre ⟹ closed projection — is precisely the tube lemma in disguise: a base point lies outside the image exactly when the whole fibre over it avoids the closed set, and the tube lemma thickens that fibre-wide avoidance to a neighbourhood. Mathlib provides this direction as isClosedMap_fst_of_compactSpace through its filter/uniformity development; in the by-hand spirit of the parent entry, this entry instead derives it directly from the tube lemma the parent built from the raw finite-subcover (Heine–Borel) definition.",
+    "problemStatement": "Answer the parent's first open question: use the (hand-built) tube lemma to prove that the projection X × Y → X is a closed map when Y is compact — the forward half of the closed-projection characterization of compactness — running the finite-subcover argument through the parent's tube lemma rather than citing Mathlib's isClosedMap_fst-style result. Supply the IsClosedMap packaging, the symmetric statement for a compact first factor, the existential-projection and empty-fibre corollaries, and a concrete ℝ instance.",
+    "proofStrategy": "isClosed_fst_image_of_compactSpace is the substance. To show Prod.fst '' C is closed for closed C, rewrite the goal as openness of the complement (isOpen_compl_iff) and use isOpen_iff_forall_mem_open. Fix x₀ outside the image: then for every y, (x₀, y) ∉ C, i.e. (x₀, y) ∈ Cᶜ, so the full slice {x₀} × Y lies in the open set Cᶜ (here C closed ⟹ Cᶜ open via IsClosed.isOpen_compl). Apply the parent's tube_lemma_compactSpace to Cᶜ to get an open W ∋ x₀ with the tube W ×ˢ univ ⊆ Cᶜ. This W is the required neighbourhood inside the complement of the image: if some x' ∈ W were in Prod.fst '' C, witnessed by (a, b) ∈ C with a = x', then (x', b) ∈ W ×ˢ univ ⊆ Cᶜ contradicts (x', b) = (a, b) ∈ C. The remaining results repackage: isClosedMap_fst_via_tube is the IsClosedMap form; isClosedMap_snd_via_tube rewrites Prod.snd = Prod.fst ∘ prodComm and composes with the swap homeomorphism; isClosed_exists_of_compactSpace and isOpen_emptyFibre_of_compactSpace rewrite the shadow/empty-fibre sets as Prod.fst '' C and its complement; isClosedMap_fst_real_unitInterval instantiates at the compact fibre [0,1].",
+    "keyInsights": [
+      "A base point x₀ lies OUTSIDE Prod.fst '' C precisely when the entire fibre {x₀} × Y avoids C. Closedness of C makes Cᶜ open, so the whole slice sits in an open set — exactly the hypothesis of the tube lemma. The closed-projection property is therefore the tube lemma read contrapositively.",
+      "Compactness of the fibre is used exactly once, inside the tube lemma, and it is essential: it is what promotes the pointwise/fibre-wide miss {x₀} × Y ⊆ Cᶜ to a UNIFORM miss W ×ˢ univ ⊆ Cᶜ on a whole neighbourhood. For a non-compact fibre the projection can fail to be closed (e.g. the closed hyperbola {(x, y) : xy = 1} ⊆ ℝ × ℝ projects to the non-closed set ℝ \\ {0}).",
+      "The symmetric statement for a compact first factor needs no new work: Prod.snd factors definitionally as Prod.fst ∘ (swap homeomorphism), and a composite of closed maps is closed — a clean reuse rather than a re-proof.",
+      "Phrasing the result as 'the existential projection of a closed set is closed' exposes it as a topological quantifier-elimination: ∃ over a COMPACT variable preserves closedness (and dually ∀ preserves openness of the empty-fibre set). This is the elementary shadow of properness and of the compactness step in quantifier elimination for real-closed fields.",
+      "The 'original' badge reflects the DERIVATION, not the statement: Mathlib already has isClosedMap_fst_of_compactSpace, but it is obtained through the filter/uniformity machinery; here the result falls out of the parent's hand-built tube lemma, completing the by-hand chain from the bare finite-subcover definition to a headline application."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Closed-Projection Characterization",
+      "startLine": 4,
+      "endLine": 60,
+      "summary": "States the forward direction of the closed-projection characterization (Y compact ⟹ Prod.fst : X × Y → X is a closed map), explains that the entire proof is one application of the parent's hand-built tube lemma read contrapositively, contrasts with Mathlib's filter-based isClosedMap_fst_of_compactSpace, and lists the six results plus the harder converse left to a future leaf.",
+      "mathContext": "$Y$ compact $\\Rightarrow$ $\\mathrm{Prod.fst}:X\\times Y\\to X$ is a closed map."
+    },
+    {
+      "id": "closed-image",
+      "title": "Closed Image: the Headline via the Tube Lemma",
+      "startLine": 68,
+      "endLine": 92,
+      "summary": "isClosed_fst_image_of_compactSpace: for closed C ⊆ X × Y with Y compact, Prod.fst '' C is closed. The complement is shown open (isOpen_iff_forall_mem_open): a point x₀ outside the image has its whole slice {x₀} × Y in the open Cᶜ, so tube_lemma_compactSpace returns an open tube W ×ˢ univ ⊆ Cᶜ whose base W misses the image.",
+      "mathContext": "$x_0\\notin\\mathrm{fst}(C)\\Rightarrow\\{x_0\\}\\times Y\\subseteq C^c\\Rightarrow W\\times Y\\subseteq C^c$."
+    },
+    {
+      "id": "closed-maps",
+      "title": "IsClosedMap Packaging and the Symmetric Statement",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "isClosedMap_fst_via_tube packages the headline as IsClosedMap (Prod.fst : X × Y → X) for compact Y. isClosedMap_snd_via_tube gives the symmetric statement for a compact first factor by rewriting Prod.snd = Prod.fst ∘ (Homeomorph.prodComm X Y) and composing with the swap homeomorphism (IsClosedMap.comp).",
+      "mathContext": "$Y$ compact $\\Rightarrow\\mathrm{fst}$ closed; $X$ compact $\\Rightarrow\\mathrm{snd}$ closed."
+    },
+    {
+      "id": "corollaries",
+      "title": "Existential-Projection and Empty-Fibre Corollaries",
+      "startLine": 110,
+      "endLine": 140,
+      "summary": "isClosed_exists_of_compactSpace: the shadow {x | ∃ y, (x, y) ∈ C} of a closed set is closed (it equals Prod.fst '' C) — closing an existential over a compact variable preserves closedness. isOpen_emptyFibre_of_compactSpace: dually, {x | ∀ y, (x, y) ∉ C}, the empty-fibre set, is open as the complement of the image.",
+      "mathContext": "$\\{x:\\exists y,(x,y)\\in C\\}$ closed; $\\{x:\\forall y,(x,y)\\notin C\\}$ open."
+    },
+    {
+      "id": "instance",
+      "title": "Concrete Instance over ℝ",
+      "startLine": 142,
+      "endLine": 146,
+      "summary": "isClosedMap_fst_real_unitInterval: the projection ℝ × [0,1] → ℝ is a closed map, instantiating the abstract result at the compact fibre unitInterval = [0,1].",
+      "mathContext": "$\\mathrm{Prod.fst}:\\mathbb{R}\\times[0,1]\\to\\mathbb{R}$ is closed."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-01-oq-01-oq-01",
+      "question": "Prove the CONVERSE direction of the closed-projection characterization: if for every space X (equivalently, for the single test space given by the one-point compactification of Y, or via an ultrafilter/net argument) the projection X × Y → X is closed, then Y is compact. Combine with this entry to obtain the full iff.",
+      "significance": "high"
+    },
+    {
+      "id": "compactness-finite-subcover-oq-01-oq-01-oq-01-oq-02",
+      "question": "Derive the closed-graph corollary: a function f : X → Y into a compact Hausdorff space Y is continuous iff its graph {(x, f x)} is closed in X × Y, using closedness of the projection to recover continuity from a closed graph.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "compactness-finite-subcover-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: re-derives the tube lemma by hand from the finite-subcover characterization. This entry answers its first open question by using that tube lemma to prove the projection X × Y → X is a closed map when Y is compact."
+    },
+    {
+      "targetId": "compactness-finite-subcover-oq-01",
+      "relationship": "builds-on",
+      "description": "Grandparent entry: re-derives compactness-propagation results directly from the Heine–Borel finite-subcover definition. This entry completes the by-hand chain from that definition through the tube lemma to the closed-projection headline."
+    }
+  ],
+  "references": [
+    {
+      "title": "Topology",
+      "author": "Munkres",
+      "year": "2000",
+      "venue": "Prentice Hall",
+      "description": "§26: the tube lemma and the corollary that the projection X × Y → X is closed when Y is compact."
+    },
+    {
+      "title": "Mathlib4: Topology.Maps.Basic and Topology.Constructions",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of isOpen_iff_forall_mem_open, IsClosed.isOpen_compl, Homeomorph.prodComm, and IsClosedMap.comp; also carries the filter-based isClosedMap_fst_of_compactSpace deliberately not cited here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The forward direction of the closed-projection characterization of compactness is derived by hand from the parent's tube lemma. isClosed_fst_image_of_compactSpace: for a CompactSpace Y and a closed C ⊆ X × Y, the image Prod.fst '' C is closed — shown by proving its complement open, since a base point outside the image has its whole fibre {x₀} × Y inside the open Cᶜ, which tube_lemma_compactSpace thickens to a tube W ×ˢ univ ⊆ Cᶜ. isClosedMap_fst_via_tube packages this as IsClosedMap; isClosedMap_snd_via_tube gives the compact-first-factor version via the swap homeomorphism; isClosed_exists_of_compactSpace and isOpen_emptyFibre_of_compactSpace are the shadow/empty-fibre corollaries; isClosedMap_fst_real_unitInterval instantiates at ℝ × [0,1]. 146 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "Mathlib's filter-based isClosedMap_fst_of_compactSpace is deliberately not cited; the result instead falls out of the parent's hand-built tube lemma, completing a by-hand chain from the bare finite-subcover (Heine–Borel) definition to a headline application. The existential-projection phrasing exposes the result as a topological quantifier elimination — ∃ over a compact variable preserves closedness — the elementary shadow of properness. The natural next steps are the converse direction (closed projection for all X ⟹ Y compact), giving the full iff, and the closed-graph corollary for maps into compact Hausdorff spaces.",
+    "openQuestions": [
+      "Prove the converse: closed projection X × Y → X for all X forces Y compact, completing the iff.",
+      "Derive the closed-graph theorem for maps into a compact Hausdorff space from closedness of the projection."
+    ]
+  }
+}
