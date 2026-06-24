@@ -1,0 +1,173 @@
+{
+  "id": "sylow-theorem-oq-02-oq-01-oq-01",
+  "title": "Sylow Subgroups of a Nilpotent Group are Characteristic",
+  "slug": "sylow-theorem-oq-02-oq-01-oq-01",
+  "description": "Sharpens the parent's 'normal' to 'characteristic'. In general a normal subgroup need not be characteristic — invariance under every automorphism is strictly stronger than invariance under inner automorphisms — but for a Sylow p-subgroup of a finite group the two notions coincide: a normal Sylow subgroup is the unique Sylow p-subgroup, and every automorphism permutes the Sylow p-subgroups, hence fixes the unique one. Packaging this per-prime coincidence (Sylow.characteristic_of_normal) with the parent's nilpotency criteria yields a four-way characterization — nilpotent ⟺ all Sylow normal ⟺ all Sylow characteristic ⟺ all Sylow counts one — with 'characteristic' as a new tier, plus the explicit automorphism-invariance statement (P : Subgroup G).map φ = P for every φ : G ≃* G.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ02OQ01OQ01.lean",
+    "tags": [
+      "group-theory",
+      "sylow",
+      "nilpotent",
+      "finite-groups",
+      "characteristic-subgroup",
+      "automorphism",
+      "structure-theorem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 149,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None beyond a finite group structure. The whole file assumes only [Group G] [Finite G]; no axioms, no sorries (depends only on the foundational propext / Classical.choice / Quot.sound). Builds against Mathlib 4.26.0. Self-contained: the parent's nilpotent ⟺ all-Sylow-normal and nilpotent ⟺ all-counts-one are re-derived from Mathlib's isNilpotent_of_finite_tfae rather than imported.",
+    "originalContributions": [
+      "sylow_characteristic_iff_normal: for a Sylow p-subgroup of a finite group, (P : Subgroup G).Characteristic ↔ (P : Subgroup G).Normal. The forward direction is the generic normal_of_characteristic; the reverse is Sylow.characteristic_of_normal — a normal Sylow subgroup is unique, and uniqueness forces invariance under every automorphism. This collapse of the normal/characteristic gap for Sylow subgroups is the technical heart of the entry.",
+      "sylow_characteristic_of_nilpotent: in a finite nilpotent group every Sylow p-subgroup is characteristic (compose the headline nilpotent ⇒ normal with characteristic_of_normal).",
+      "sylow_map_aut_eq_of_nilpotent: the explicit automorphism-invariance form — nilpotent ⇒ (P : Subgroup G).map φ.toMonoidHom = P for every φ : G ≃* G, via Subgroup.characteristic_iff_map_eq.",
+      "nilpotent_of_forall_sylow_characteristic: the converse — all Sylow subgroups characteristic ⇒ nilpotent (characteristic ⇒ normal, then the normality criterion).",
+      "nilpotent_iff_forall_sylow_characteristic: the characteristic-tier biconditional IsNilpotent G ↔ (∀ p [Fact p.Prime] (P : Sylow p G), (P : Subgroup G).Characteristic).",
+      "nilpotent_tfae: a four-way TFAE — IsNilpotent G ⟺ all Sylow normal ⟺ all Sylow characteristic ⟺ all Sylow counts one — inserting the characteristic tier into the parent's normal/counting equivalence."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Sylow.characteristic_of_normal",
+        "description": "a normal Sylow p-subgroup of a finite group is characteristic; proved in Mathlib via unique_of_normal + characteristic_of_subsingleton. The non-trivial direction of the per-prime coincidence.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Subgroup.normal_of_characteristic",
+        "description": "characteristic subgroups are normal (instance); the easy direction of sylow_characteristic_iff_normal and the bridge in the converse nilpotency direction.",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.characteristic_iff_map_eq",
+        "description": "H.Characteristic ↔ ∀ φ : G ≃* G, H.map φ.toMonoidHom = H; turns the characteristic instance into the explicit automorphism-invariance statement.",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      },
+      {
+        "theorem": "isNilpotent_of_finite_tfae",
+        "description": "the five-way TFAE for a finite group; TFAE.out 0 3 supplies the headline nilpotent ⟺ all-Sylow-normal equivalence used self-containedly here.",
+        "module": "Mathlib.GroupTheory.Nilpotent"
+      },
+      {
+        "theorem": "Sylow.unique_of_normal",
+        "description": "a normal Sylow p-subgroup is the only one (P.Normal → Unique (Sylow p G)); forward step of the counting characterization.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.normal_of_subsingleton",
+        "description": "if Sylow p G is a subsingleton the unique Sylow p-subgroup is normal; backward step of the counting characterization.",
+        "module": "Mathlib.GroupTheory.Sylow"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Among the standard structure theorems for finite nilpotent groups (Isaacs, Finite Group Theory, Thm 1.26; Hall, Theory of Groups, Ch. 10) one finds that each Sylow subgroup is not merely normal but characteristic. The strengthening is routine once uniqueness is in hand, yet it is the form actually used in practice: characteristic subgroups are preserved by every automorphism, so they descend through quotients and survive embeddings into larger groups in ways merely-normal subgroups do not. The underlying phenomenon — that for Sylow subgroups normality and characteristicity coincide — is a clean illustration of how a global uniqueness fact (only one Sylow p-subgroup) upgrades an inner-automorphism invariance to a full-automorphism invariance.",
+    "problemStatement": "For a finite group G show that (i) a Sylow p-subgroup is characteristic iff it is normal, and (ii) consequently G is nilpotent iff every Sylow p-subgroup is characteristic, fitting the new 'characteristic' condition into the parent entry's chain nilpotent ⟺ all Sylow normal ⟺ all counts one. Give also the explicit automorphism-invariance form P.map φ = P.",
+    "text": "The parent entry characterized nilpotency by the normality (equivalently uniqueness) of all Sylow subgroups. Normality, however, only asserts invariance under inner automorphisms. The present entry observes that for Sylow subgroups this is no weaker than full characteristicity: if P is normal then it is the unique Sylow p-subgroup (Sylow.unique_of_normal), and any automorphism φ sends P to another Sylow p-subgroup φ(P), which must equal P by uniqueness — so P is characteristic (Sylow.characteristic_of_normal). The reverse implication is the generic fact that characteristic ⇒ normal. Hence sylow_characteristic_iff_normal, and lifting it over all primes gives the characteristic-tier biconditional and the four-way TFAE. The automorphism-invariance form P.map φ = P is read off via Subgroup.characteristic_iff_map_eq.",
+    "proofStrategy": "nilpotent_iff_forall_sylow_normal := (isNilpotent_of_finite_tfae (G := G)).out 0 3. sylow_characteristic_iff_normal := ⟨fun h => (haveI := h; inferInstance), fun h => Sylow.characteristic_of_normal P h⟩. sylow_characteristic_of_nilpotent := Sylow.characteristic_of_normal P applied to the forward headline. sylow_map_aut_eq_of_nilpotent := Subgroup.characteristic_iff_map_eq.mp of the previous. nilpotent_of_forall_sylow_characteristic := the normality criterion fed characteristic ⇒ normal pointwise. nilpotent_tfae: tfae_have 1↔2 (headline), 1↔3 (characteristic biconditional), 1↔4 (counting, re-derived via Sylow.unique_of_normal / normal_of_subsingleton), tfae_finish.",
+    "keyInsights": [
+      "**Normal and characteristic coincide for Sylow subgroups.** The gap between invariance-under-inner-automorphisms and invariance-under-all-automorphisms vanishes precisely because a normal Sylow subgroup is unique, and automorphisms permute Sylow subgroups. This is sylow_characteristic_iff_normal — the entry's technical core.",
+      "**Uniqueness upgrades invariance.** The same uniqueness that turns 'normal' into 'count one' (parent entry) also turns 'normal' into 'characteristic' here; both are facets of Sylow.unique_of_normal.",
+      "**A new tier in the nilpotency chain.** nilpotent ⟺ all Sylow characteristic sits strictly above 'all Sylow normal' as a statement (characteristic is stronger than normal in general) yet is logically equivalent for Sylow subgroups — a clean example of an a-priori-stronger condition collapsing onto a weaker one under structural constraints.",
+      "**Explicit automorphism form.** Beyond the typeclass Characteristic, the entry states the concrete equality P.map φ.toMonoidHom = P for every φ : G ≃* G, the form most directly usable downstream."
+    ],
+    "prerequisites": [
+      "Sylow's theorems and the type Sylow p G (Mathlib.GroupTheory.Sylow)",
+      "Characteristic vs normal subgroups; the implication characteristic ⇒ normal and the map/comap characterizations",
+      "Group.IsNilpotent and Mathlib's finite-group TFAE characterization",
+      "The parent entry's nilpotent ⟺ all-Sylow-normal ⟺ all-counts-one characterization"
+    ]
+  },
+  "sections": [
+    {
+      "id": "self-contained-criteria",
+      "title": "Nilpotency Criteria (Self-Contained)",
+      "startLine": 63,
+      "endLine": 90,
+      "summary": "nilpotent_iff_forall_sylow_normal (the (1)↔(4) slice of isNilpotent_of_finite_tfae) and nilpotent_iff_forall_card_sylow_eq_one (re-derived via Sylow.unique_of_normal / Sylow.normal_of_subsingleton), making the file independent of the parent olean.",
+      "mathContext": "The parent's normal and counting characterizations, restated from Mathlib's TFAE."
+    },
+    {
+      "id": "coincidence",
+      "title": "Characteristic ⟺ Normal for a Sylow Subgroup",
+      "startLine": 91,
+      "endLine": 110,
+      "summary": "sylow_characteristic_iff_normal collapses the normal/characteristic gap via Sylow.characteristic_of_normal; sylow_characteristic_of_nilpotent and sylow_map_aut_eq_of_nilpotent give the nilpotent-case consequence and its explicit automorphism-invariance form.",
+      "mathContext": "The technical heart: uniqueness of a normal Sylow subgroup upgrades inner invariance to full invariance."
+    },
+    {
+      "id": "characterization",
+      "title": "Characteristic-Tier Characterization of Nilpotency",
+      "startLine": 111,
+      "endLine": 149,
+      "summary": "nilpotent_of_forall_sylow_characteristic (converse), nilpotent_iff_forall_sylow_characteristic (biconditional), and nilpotent_tfae (four-way: nilpotent ⟺ all normal ⟺ all characteristic ⟺ all counts one).",
+      "mathContext": "Inserting the characteristic condition into the parent's chain of equivalences."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 proof that, for a finite group, a Sylow p-subgroup is characteristic iff it is normal, and hence that nilpotency is equivalent to every Sylow subgroup being characteristic — extending the parent's nilpotent ⟺ all-normal ⟺ all-counts-one into a four-way characterization with a new 'characteristic' tier, plus the explicit P.map φ = P automorphism-invariance. The file is 0-axiom, 0-sorry against Mathlib 4.26.0.",
+    "implications": "Provides the form of the nilpotent-Sylow structure theorem actually used in downstream arguments: characteristic subgroups survive quotients and embeddings, so this is the lemma one reaches for when, e.g., building the upper central series or arguing about subgroups of nilpotent groups. The coincidence sylow_characteristic_iff_normal is itself reusable wherever a normal Sylow subgroup appears.",
+    "openQuestions": [
+      "Strengthen further to fully invariant / verbal subgroups: in a finite nilpotent group is each Sylow subgroup the image of a verbal subgroup, and does the normal ⟺ characteristic coincidence extend to 'characteristic ⟺ fully invariant' for Sylow subgroups, or is there a finite nilpotent counterexample to the latter?",
+      "Quantify the gap in the non-nilpotent regime: exhibit the smallest finite group with a normal-but-not-characteristic subgroup that is NOT Sylow (showing the coincidence is special to Sylow subgroups), and contrast with S_3 where the Sylow 3-subgroup is characteristic but the Sylow 2-subgroups are not even normal."
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "sylow-theorem-oq-02-oq-01",
+      "relation": "Parent entry — characterizes nilpotency by normality (equivalently uniqueness, equivalently count one) of all Sylow subgroups. This entry sharpens 'normal' to 'characteristic', showing the two coincide for Sylow subgroups and inserting the characteristic tier into the equivalence chain."
+    },
+    {
+      "slug": "sylow-theorem-oq-02",
+      "relation": "Grandparent entry — the per-prime orbit enumeration n_p = [G : N_G(P)] underlying both the parent's counting characterization and this entry's uniqueness-driven coincidence."
+    },
+    {
+      "slug": "sylow-theorem",
+      "relation": "Root entry — Sylow existence, conjugacy, and counting, the foundation for the whole strand."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Isaacs, I.M."
+      ],
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "American Mathematical Society, GSM 92",
+      "note": "Theorem 1.26 and surrounding discussion: Sylow subgroups of a finite nilpotent group are characteristic (normal + unique)."
+    },
+    {
+      "authors": [
+        "Hall, M."
+      ],
+      "title": "The Theory of Groups",
+      "year": "1959",
+      "venue": "Macmillan",
+      "note": "Chapter 10: nilpotent groups, normality and characteristicity of Sylow subgroups."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Nilpotent",
+      "Mathlib.GroupTheory.Sylow",
+      "Mathlib.Algebra.Group.Subgroup.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "SylowCharacteristic",
+    "lineCount": 149,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/SylowTheoremOQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
