@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-qbin0203-overview",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "concept",
+    "title": "Two q-Pascal rules and the open work they leave",
+    "content": "The Gaussian binomial coefficient deforms Nat.choose by a parameter q and obeys two distinct q-Pascal recurrences: the ordinary one (A) that splits off the LARGEST part, binom(n+1,k+1)_q = q^(k+1)·binom(n,k+1)_q + binom(n,k)_q, and the dual one (B) that splits off the SMALLEST, binom(n+1,k+1)_q = binom(n,k+1)_q + q^(n-k)·binom(n,k)_q. The parent entry defined qBinomial through (A) and recorded (B) and the reflection symmetry binom(n,k)_q = binom(n,n-k)_q as open future work #2 and #3, proving only the k=1 instance. This file settles both for all k via a single algebraic engine, the ratio invariant. The scope is a CommRing R (not the parent's CommSemiring) because the proofs use the genuine subtraction factor q^j − 1 — covering ℤ[q], ℚ(q), ℝ, ℂ and every finite field.",
+    "mathContext": "$\\binom{n+1}{k+1}_q = q^{k+1}\\binom{n}{k+1}_q + \\binom{n}{k}_q$ (A) and $\\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q$ (B).",
+    "significance": "context",
+    "relatedConcepts": ["Gaussian binomial coefficient", "q-Pascal recurrence", "q-analogues", "subspaces of 𝔽_q^n", "CommRing vs CommSemiring"],
+    "prerequisites": ["the parent qBinomial API", "polynomial identities in q", "natural-number subtraction conventions"]
+  },
+  {
+    "id": "ann-qbin0203-ratio",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+    "range": { "startLine": 61, "endLine": 94 },
+    "type": "key-step",
+    "title": "The ratio invariant — the engine",
+    "content": "qBinomial_ratio proves (q^(k+1)−1)·binom(n,k+1)_q = (q^(n-k)−1)·binom(n,k)_q unconditionally, by induction on n generalizing k. It is the single algebraic obstruction a naive reflection induction fails to supply; proving it once unlocks both the dual recurrence and reflection. The base case k=0 is literally the telescoping geometric sum: the parent's closed form binom(n,1)_q = ∑_{i<n} q^i lets geom_sum_mul close (q−1)(1+q+⋯+q^(n-1)) = q^n−1. The interior inductive step reparametrises n = j+1+p to eliminate all natural-number subtraction (so the q-power exponents become honest sums), expands both coefficients with qBinomial_succ_succ, and closes by linear_combination of the two smaller instances RATIO(n,j+1) and RATIO(n,j). The boundary n<j+1 case vanishes because q^0−1 = 0.",
+    "mathContext": "$(q^{k+1}-1)\\binom{n}{k+1}_q = (q^{n-k}-1)\\binom{n}{k}_q$; base $k=0$: $(q-1)\\sum_{i<n}q^i = q^n-1$.",
+    "significance": "key",
+    "relatedConcepts": ["geom_sum_mul", "telescoping geometric sum", "linear_combination tactic", "induction generalizing k", "reparametrisation to kill nat-subtraction"],
+    "prerequisites": ["the closed form binom(n,1)_q = ∑ q^i", "the ordinary q-Pascal recurrence", "geometric series identity"]
+  },
+  {
+    "id": "ann-qbin0203-dual",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 105 },
+    "type": "key-step",
+    "title": "Dual q-Pascal rule (open-work #2)",
+    "content": "qBinomial_dual_pascal proves binom(n+1,k+1)_q = binom(n,k+1)_q + q^(n-k)·binom(n,k)_q in a single line: rewrite with the defining recurrence (A) via qBinomial_succ_succ, then close by linear_combination of qBinomial_ratio. The dual rule is exactly (A) reconciled with the ratio invariant — where (A) peels the largest element, (B) peels the smallest. This is the form needed for inductions that strip the smallest part, and it resolves the parent's open-work item #2.",
+    "mathContext": "$\\binom{n+1}{k+1}_q = \\binom{n}{k+1}_q + q^{n-k}\\binom{n}{k}_q$ — the smallest-part recurrence.",
+    "significance": "key",
+    "relatedConcepts": ["dual q-Pascal recurrence", "qBinomial_succ_succ", "linear_combination", "ratio invariant"],
+    "prerequisites": ["the ratio invariant", "the ordinary recurrence (A)"]
+  },
+  {
+    "id": "ann-qbin0203-reflection",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+    "range": { "startLine": 107, "endLine": 138 },
+    "type": "insight",
+    "title": "Reflection symmetry (open-work #3)",
+    "content": "qBinomial_reflection proves binom(n,k)_q = binom(n,n-k)_q for k ≤ n — the q-analogue of Nat.choose_symm, reflecting the duality between k- and (n-k)-dimensional subspaces of 𝔽_q^n (the q-analogue of subset complementation). The proof is structural induction on n with the dual rule doing the heavy lifting: the endpoints k=0 and k=n+1 reduce to binom = 1 (qBinomial_zero_right / qBinomial_self). In the interior (reparametrised n = j+1+p), it expands the left side binom(n+1,j+1)_q with the ordinary recurrence (A) and the right side binom(n+1,(n+1)-(j+1))_q with the dual rule (B); after applying the inductive hypotheses IHa and IHb the two expansions differ only by commutativity of addition, closed by ring. So once (B) is available, reflection needs no further use of the ratio invariant.",
+    "mathContext": "$\\binom{n}{k}_q = \\binom{n}{n-k}_q$ for $k\\le n$; interior step closes by $\\mathrm{add\\_comm}$ after expanding the two endpoints with (A) and (B).",
+    "significance": "key",
+    "relatedConcepts": ["reflection symmetry", "Nat.choose_symm", "subspace duality in 𝔽_q^n", "structural induction", "qBinomial_self"],
+    "prerequisites": ["the dual q-Pascal rule", "the ordinary recurrence", "induction on n"]
+  },
+  {
+    "id": "ann-qbin0203-choose-symm",
+    "proofId": "binomial-theorem-oq-02-oq-02-oq-01-oq-03",
+    "range": { "startLine": 140, "endLine": 147 },
+    "type": "context",
+    "title": "Specialization at q = 1",
+    "content": "qBinomial_choose_symm confirms the deformation degenerates correctly: at q = 1 the reflection symmetry recovers the classical Nat.choose symmetry binom(n,k) = binom(n,n-k) cast into R. It rewrites both casts through the parent's qBinomial_at_one bridge (binom(n,k)_1 = Nat.choose n k in R) and applies qBinomial_reflection at q = 1. This is the sanity check that the q-identity is a genuine q-deformation of the classical one.",
+    "mathContext": "$\\binom{n}{k} = \\binom{n}{n-k}$ in $R$, the $q=1$ shadow via $\\binom{n}{k}_1 = \\binom{n}{k}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["q = 1 specialization", "qBinomial_at_one", "Nat.choose_symm", "q-deformation"],
+    "prerequisites": ["reflection symmetry", "the qBinomial_at_one bridge"]
+  }
+]
