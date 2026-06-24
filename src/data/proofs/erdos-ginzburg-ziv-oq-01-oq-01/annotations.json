@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-davenport-overview",
+    "proofId": "erdos-ginzburg-ziv-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 49 },
+    "type": "context",
+    "title": "The Davenport Constant D(ℤ/nℤ) = n",
+    "content": "The docstring frames the second fundamental zero-sum invariant. The Davenport constant D(G) of a finite abelian group is the least length d such that EVERY length-d sequence over G admits a nonempty zero-sum subsequence. It sits beside the Erdős–Ginzburg–Ziv constant s(G) — which forces a zero-sum subsequence of length exactly |G| — and for the cyclic group the two are different numbers: D(ℤ/nℤ) = n versus s(ℤ/nℤ) = 2n−1. This file answers the open question recorded in the EGZ entry by computing D(ℤ/nℤ) = n with a fully independent proof (prefix-sum pigeonhole, not Chevalley–Warning).",
+    "mathContext": "$D(\\mathbb{Z}/n\\mathbb{Z}) = n$: the least $d$ such that every length-$d$ sequence over $\\mathbb{Z}/n\\mathbb{Z}$ has a nonempty zero-sum subsequence.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Davenport constant",
+      "zero-sum sequences",
+      "additive combinatorics",
+      "pigeonhole principle"
+    ]
+  },
+  {
+    "id": "ann-davenport-set",
+    "proofId": "erdos-ginzburg-ziv-oq-01-oq-01",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "definition",
+    "title": "Admissible Lengths: the Minimum-Definition of D(G)",
+    "content": "DavenportSet n is the set of lengths d for which every sequence a : Fin d → ℤ/nℤ has a nonempty subset summing to 0. The Davenport constant is by definition the LEAST element of this set, so proving D(ℤ/nℤ) = n becomes the IsLeast statement IsLeast (DavenportSet n) n — packaging the invariant exactly as in the textbook definition rather than as two separate inequalities.",
+    "mathContext": "$\\mathrm{DavenportSet}(n) = \\{ d : \\forall a \\in (\\mathbb{Z}/n\\mathbb{Z})^d,\\ \\exists \\emptyset \\neq S,\\ \\sum_{i\\in S} a_i = 0 \\}$.",
+    "significance": "core",
+    "relatedConcepts": ["IsLeast", "minimum", "zero-sum subsequence"]
+  },
+  {
+    "id": "ann-davenport-prefixsum",
+    "proofId": "erdos-ginzburg-ziv-oq-01-oq-01",
+    "range": { "startLine": 57, "endLine": 81 },
+    "type": "technique",
+    "title": "Prefix Sums and their Additive Split",
+    "content": "prefixSum a k is the sum of the entries with index < k. The key algebraic fact prefixSum_split says that for u ≤ v, the first v entries split as the first u entries plus the block [u, v): P(v) = P(u) + (∑ over the block). This is proved by Finset.sum_union after exhibiting the index filter for [0,v) as the disjoint union of the filters for [0,u) and [u,v) — pure index bookkeeping discharged by omega. The split is the engine that turns a coincidence of two prefix sums into a zero-sum block.",
+    "mathContext": "$P(v) = P(u) + \\sum_{u \\le k < v} a_k$ for $u \\le v$.",
+    "significance": "core",
+    "relatedConcepts": ["telescoping", "partial sums", "Finset.sum_union"]
+  },
+  {
+    "id": "ann-davenport-upper",
+    "proofId": "erdos-ginzburg-ziv-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 108 },
+    "type": "key-step",
+    "title": "The Crux: Prefix-Sum Pigeonhole (Upper Bound)",
+    "content": "exists_nonempty_zerosum proves that any n elements of ℤ/nℤ contain a nonempty — in fact CONSECUTIVE — zero-sum block. There are n+1 prefix sums P(0), …, P(n) but only n residues in ℤ/nℤ, so by the pigeonhole (Finset.exists_ne_map_eq_of_card_lt_of_maps_to) two of them coincide: P(u) = P(v) with u < v. The intervening block {k : u ≤ k < v} is nonempty (the index valued u lies in Fin n since u < v ≤ n) and sums to P(v) − P(u) = 0 by prefixSum_split. A wlog reduces the symmetric u, v case. This is the classical n-consecutive-integers argument.",
+    "mathContext": "$n+1$ prefix sums in an $n$-element group must collide: $P(u)=P(v)$, $u<v$, giving $\\sum_{u\\le k<v} a_k = 0$.",
+    "significance": "core",
+    "relatedConcepts": ["pigeonhole principle", "consecutive subsequence", "ZMod.card"]
+  },
+  {
+    "id": "ann-davenport-sharp",
+    "proofId": "erdos-ginzburg-ziv-oq-01-oq-01",
+    "range": { "startLine": 114, "endLine": 147 },
+    "type": "key-step",
+    "title": "Sharpness: the All-Ones Extremal Sequence (Lower Bound)",
+    "content": "davenport_sharp exhibits the extremal zero-sum-free sequence: n−1 copies of the generator 1. Any nonempty sub-block S sums to ∑_{i∈S} 1 = (S.card : ℤ/nℤ); since 1 ≤ S.card ≤ n−1 < n, the cardinality is not divisible by n (ZMod.natCast_eq_zero_iff), so the sum is nonzero. davenport_lower_bound upgrades this to: every admissible length is ≥ n, because the all-ones sequence of any length d < n is a counterexample. Together with the upper bound, n is the LEAST admissible length, giving davenport_zmod : IsLeast (DavenportSet n) n.",
+    "mathContext": "The sequence $1^{n-1}$ has every nonempty sub-block summing to $c \\in \\{1,\\dots,n-1\\}$, never $0 \\bmod n$; hence $D(\\mathbb{Z}/n\\mathbb{Z}) \\ge n$.",
+    "significance": "core",
+    "relatedConcepts": ["sharpness", "extremal configuration", "zero-sum-free sequence"]
+  }
+]
