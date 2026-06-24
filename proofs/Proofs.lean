@@ -56,6 +56,8 @@ import Proofs.AlgebraicNumbersCountableOQ02OQ04
 import Proofs.AlgebraicNumbersCountableOQ04
 import Proofs.AlgebraicNumbersCountableOQ05
 import Proofs.AlgebraicRealsMeager
+import Proofs.AlgebraicRealsMeagerDenseGDelta
+import Proofs.AlgebraicRealsMeagerDenseGDeltaOQ01
 import Proofs.AlgebraicRealsMeagerOQ02
 import Proofs.AlgebraicRealsMeagerOQ03
 import Proofs.AlgebraicRealsNull
