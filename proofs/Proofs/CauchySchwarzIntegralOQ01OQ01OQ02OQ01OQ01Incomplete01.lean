@@ -340,6 +340,7 @@ theorem localization_existence
     [SigmaFinite μ] [Fact (1 ≤ p)]
     (φ : Lp ℝ p μ →L[ℝ] ℝ) :
     ∃ g : α → ℝ, MemLp g q μ ∧
+      eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ ∧
       ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
         φ ((memLp_indicator_const p hE 1 (Or.inr hfin)).toLp _) =
         ∫ a in E, g a ∂μ := by
@@ -755,7 +756,12 @@ theorem localization_existence
   have hq0 : q ≠ 0 := by
     intro h; rw [h, ENNReal.toReal_zero] at hpq; linarith [hpq.symm.pos]
   have hq_pos : 0 < q.toReal := ENNReal.toReal_pos hq0 hqtop
-  have hg_lq : MemLp g q μ := by
+  -- We prove `MemLp g q μ` together with the converse-Hölder dual-norm bound
+  -- `eLpNorm g q μ ≤ ‖φ‖`. The bound is exactly `hg_norm` (Step 3 below); it is the
+  -- quantitative content that the maximality reduction in the parent synthesis file
+  -- needs to know the supremum `⨆_S ‖g_S‖_q` is finite. Earlier it was computed here
+  -- only to discharge `MemLp` and then discarded; we now surface it in the return.
+  have hg_lq_norm : MemLp g q μ ∧ eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ := by
     -- Step 1: g =ᵐ[μ.restrict Sₙ] g_seq n for each n
     -- Proof: for each k ≤ n, hconsist gives g_seq k =ᵐ[μ.restrict Sₖ] g_seq n.
     -- For a.e. a ∈ Sₙ: g(a) = g_seq(idx a)(a) where idx a ≤ n, and
@@ -834,13 +840,14 @@ theorem localization_existence
         exact (lintegral_indicator (measurableSet_spanningSets μ n) _).symm
       rw [hMCT_global]
       exact iSup_le hbound_n
-    exact ⟨hg_asm, (lt_of_le_of_lt hg_norm ENNReal.ofReal_lt_top).ne⟩
+    exact ⟨⟨hg_asm, (lt_of_le_of_lt hg_norm ENNReal.ofReal_lt_top).ne⟩, hg_norm⟩
+  obtain ⟨hg_lq, hg_norm⟩ := hg_lq_norm
   -- ── Step A5: Indicator agreement for all E ───────────────────────────────────
   -- For E with μ(E) < ∞:
   --   φ(1_E) = lim_n φ(1_{E∩Sₙ})          [by lp_truncation_tendsto_zero + CLM continuity]
   --          = lim_n ∫_{E∩Sₙ} g dμ         [by hagree_n + g =ᵐ g_seq n on Sₙ]
   --          = ∫_E g dμ                     [by tendsto_setIntegral_of_monotone + DCT]
-  refine ⟨g, hg_lq, ?_⟩
+  refine ⟨g, hg_lq, hg_norm, ?_⟩
   intro E hE hfin
   -- Derived constant: q ≥ 1 (needed for Integrable from MemLp)
   have hq_ge1 : (1 : ℝ≥0∞) ≤ q :=
@@ -941,10 +948,11 @@ theorem riesz_lp_surjective_sigma_finite
     [SigmaFinite μ] [Fact (1 ≤ p)] :
     ∀ φ : Lp ℝ p μ →L[ℝ] ℝ,
     ∃ g : α → ℝ, MemLp g q μ ∧
+      eLpNorm g q μ ≤ ENNReal.ofReal ‖φ‖ ∧
       ∀ f : Lp ℝ p μ, φ f = ∫ a, (f : α → ℝ) a * g a ∂μ := by
   intro φ
-  obtain ⟨g, hg_lq, hagree⟩ := localization_existence p q hp1 hptop hpq φ
-  refine ⟨g, hg_lq, ?_⟩
+  obtain ⟨g, hg_lq, hg_norm, hagree⟩ := localization_existence p q hp1 hptop hpq φ
+  refine ⟨g, hg_lq, hg_norm, ?_⟩
   apply integral_representation_sf p q hp1 hptop hpq φ g hg_lq
   intro E hE hfin
   have heq : (indicator_memLp_sf hE hfin p (le_of_lt hp1) hptop).toLp _ =
