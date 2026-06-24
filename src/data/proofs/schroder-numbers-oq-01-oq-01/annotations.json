@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "schroder-numbers-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "context",
+    "title": "From Doubling to Tripling",
+    "content": "The parent entry proved the doubling step 2·L(n) ≤ L(n+1) by keeping only the i=0 term L(0)·L(n) = L(n) of the convolution recurrence L(n+1) = L(n) + ∑_{i≤n} L(i)·L(n−i). That is wasteful for n ≥ 1: the recurrence is symmetric, so the i=n term L(n)·L(0) = L(n) is a second, distinct copy of L(n). Keeping both upgrades the sum's lower bound to 2·L(n) and hence L(n+1) ≥ 3·L(n). This file formalizes that tripling step and its exponential consequence L(n) ≥ 2·3^(n−1), answering the parent's first open question."
+  },
+  {
+    "id": "ann-two-term",
+    "proofId": "schroder-numbers-oq-01-oq-01",
+    "range": { "startLine": 49, "endLine": 78 },
+    "type": "key-step",
+    "title": "Both Extreme Terms of the Convolution",
+    "content": "two_mul_largeSchroder_le_sum is the engine. For n ≥ 1 the indices 0 and n are distinct (hne), so {0, n} is a genuine two-element subset of Iic n. Finset.sum_pair evaluates the convolution over this pair: L(0)·L(n−0) + L(n)·L(n−n) = L(n) + L(n) = 2·L(n). Since ℕ is canonically ordered, Finset.sum_le_sum_of_subset bounds the full sum below by this pair contribution — no nonnegativity hypothesis is needed."
+  },
+  {
+    "id": "ann-tripling",
+    "proofId": "schroder-numbers-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 84 },
+    "type": "key-step",
+    "title": "The Sharp Tripling Step",
+    "content": "three_mul_largeSchroder_le_succ rewrites L(n+1) by the recurrence to L(n) + sum, then omega closes 3·L(n) ≤ L(n) + sum from the two-term bound 2·L(n) ≤ sum. The constant 3 is sharp: at n = 1 equality 3·L(1) = L(2) = 6 holds, so no larger constant works for all n ≥ 1. The asymptotic ratio L(n+1)/L(n) → 3 + 2√2 ≈ 5.828 is larger, but only because the discarded interior terms contribute."
+  },
+  {
+    "id": "ann-exponential",
+    "proofId": "schroder-numbers-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 104 },
+    "type": "key-step",
+    "title": "Exponential Lower Bound L(n) ≥ 2·3^(n−1)",
+    "content": "two_mul_three_pow_le_largeSchroder_succ proves 2·3^n ≤ L(n+1) by induction: the step computes 2·3^(n+1) = 3·(2·3^n) ≤ 3·L(n+1) ≤ L(n+2) using gcongr and the tripling lemma. Working in the shift-indexed form avoids ℕ-truncated subtraction; two_mul_three_pow_pred_le_largeSchroder then restates it as the advertised 2·3^(n−1) ≤ L(n) for n ≥ 1 by substituting n = m+1. This beats the parent's 2^n bound."
+  },
+  {
+    "id": "ann-sharpness",
+    "proofId": "schroder-numbers-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 111 },
+    "type": "observation",
+    "title": "Both the Constant and the Hypothesis Are Sharp",
+    "content": "Three witnesses, each a norm_num evaluation on Mathlib's named Schröder values: equality 3·L(1) = L(2) shows the tripling constant 3 cannot be raised; 2·3^(2−1) = L(2) shows the lower bound is attained; and ¬ 3·L(0) ≤ L(1) (since 3 > 2) shows the n ≥ 1 hypothesis is necessary — at n = 0 the indices 0 and n collapse to a single term."
+  }
+]

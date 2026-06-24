@@ -1,0 +1,82 @@
+{
+  "slug": "schroder-numbers-oq-01-oq-01",
+  "title": "Large Schröder numbers: the sharp tripling step 3·L(n) ≤ L(n+1) and the lower bound L(n) ≥ 2·3^(n-1)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "L(0) = 1, \\qquad L(n+1) = L(n) + \\sum_{i=0}^{n} L(i)\\,L(n-i).",
+    "plain": "The large Schröder numbers count lattice paths from (0,0) to (n,n) using steps East, North, and Diagonal that never go above the main diagonal (equivalently, certain Schröder paths / super-Catalan structures). They satisfy a self-convolution recurrence: the next term is the current term plus the convolution sum of all earlier terms.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T16:22:20-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: tripling step 3·L(n)≤L(n+1) (n≥1) + lower bound L(n)≥2·3^(n-1), verified 0-axiom",
+    "builtItems": [
+      "two_mul_largeSchroder_le_sum (Proofs/SchroderNumbersOQ0101.lean:48): 2·L(n)≤sum for n≥1 via Finset.sum_pair on {0,n} + sum_le_sum_of_subset",
+      "three_mul_largeSchroder_le_succ (:69): 3·L(n)≤L(n+1) for n≥1",
+      "two_mul_three_pow_le_largeSchroder_succ (:77): 2·3^n≤L(n+1) all n by tripling-driven induction",
+      "two_mul_three_pow_pred_le_largeSchroder (:90): 2·3^(n-1)≤L(n) for n≥1"
+    ],
+    "insights": [
+      "Tripling comes from keeping BOTH extreme convolution terms i=0 and i=n (each = L(0)·L(n)=L(n)); parent kept only i=0 → doubling.",
+      "Constant 3 is SHARP: equality 3·L(1)=L(2)=6 at n=1. Asymptotic ratio is larger (3+2√2≈5.828); gap = discarded interior terms.",
+      "Hypothesis n≥1 necessary: at n=0 indices 0 and n collapse to one term, tripling fails (3·L0=3>2=L1)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Push constant past 3 toward 3+2√2 by bounding interior convolution terms.",
+      "Prove dominance L(n)≥catalan(n) by recurrence comparison (Dyck⊂Schröder paths)."
+    ],
+    "markdown": "# Knowledge Base: schroder-numbers-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "schroder-numbers",
+    "enumerative",
+    "recurrence",
+    "growth-bound",
+    "lattice-paths"
+  ],
+  "relatedProofs": [
+    "schroder-numbers-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T23:28:08.378Z",
+  "lastUpdate": "2026-06-24T23:41:29Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SchroderNumbersOQ0101.lean",
+      "filename": "SchroderNumbersOQ0101.lean",
+      "lineCount": 111,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroderNumbersOQ0101.lean"
+    }
+  ]
+}

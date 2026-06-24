@@ -1,0 +1,157 @@
+{
+  "id": "schroder-numbers-oq-01-oq-01",
+  "title": "Large Schröder numbers: the sharp tripling step 3·L(n) ≤ L(n+1) and the lower bound L(n) ≥ 2·3^(n−1)",
+  "slug": "schroder-numbers-oq-01-oq-01",
+  "description": "Sharpening the parent's doubling step, this entry proves the tripling step 3·L(n) ≤ L(n+1) for the large Schröder numbers (n ≥ 1) and the resulting exponential lower bound L(n) ≥ 2·3^(n−1). The parent kept only the i=0 term L(0)·L(n) = L(n) of the convolution recurrence L(n+1) = L(n) + ∑_{i≤n} L(i)·L(n−i); for n ≥ 1 the symmetric i=n term L(n)·L(0) = L(n) is a second distinct summand, so the sum is at least 2·L(n) and L(n+1) ≥ 3·L(n). The constant 3 is sharp — equality 3·L(1) = L(2) = 6 holds — and at n = 0 tripling fails (3·L(0) = 3 > 2 = L(1)).",
+  "meta": {
+    "author": "Robb Walters",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SchroderNumbersOQ0101.lean",
+    "tags": [
+      "combinatorics",
+      "schroder-numbers",
+      "enumerative",
+      "recurrence",
+      "growth-bound",
+      "lattice-paths"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.largeSchroder_succ",
+        "description": "The convolution recurrence L(n+1) = L(n) + ∑_{i≤n} L(i)·L(n−i) for the large Schröder numbers",
+        "module": "Mathlib.Combinatorics.Enumerative.Schroder"
+      },
+      {
+        "theorem": "Finset.sum_pair",
+        "description": "The sum over a two-element set {0, n} (with 0 ≠ n) splits as f(0) + f(n); used to evaluate the i=0 and i=n convolution terms to L(n) + L(n) = 2·L(n)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset",
+        "description": "Over ℕ (canonically ordered), the sum over a subset lower-bounds the sum over the superset; used to bound the full convolution below by its {0, n} pair contribution",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "two_mul_largeSchroder_le_sum: for n ≥ 1 the convolution sum is at least 2·L(n), extracting BOTH the i=0 and i=n terms L(0)·L(n) = L(n)·L(0) = L(n) via the distinct pair {0, n}",
+      "three_mul_largeSchroder_le_succ: the sharp tripling step 3·L(n) ≤ L(n+1) for n ≥ 1, strengthening the parent's doubling step",
+      "two_mul_three_pow_le_largeSchroder_succ: the shift-indexed exponential lower bound 2·3^n ≤ L(n+1) for all n, proved by induction driven by tripling",
+      "two_mul_three_pow_pred_le_largeSchroder: the stated lower bound 2·3^(n−1) ≤ L(n) for n ≥ 1",
+      "Sharpness witnesses: equality 3·L(1) = L(2) at n = 1 (the constant 3 cannot be raised), attainment 2·3^(2−1) = L(2), and failure of tripling at n = 0 (necessity of n ≥ 1)"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound (confirmed by #print axioms). No `native_decide`, so no `Lean.ofReduceBool`; the three sharpness witnesses are discharged by `norm_num` with Mathlib's named Schröder value lemmas.",
+    "lineCount": 111,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The large Schröder numbers L(n) = 1, 2, 6, 22, 90, 394, … (OEIS A006318) count Schröder lattice paths from (0,0) to (n,n) with steps East, North, Diagonal that never rise above the diagonal. Their generating function f(x) satisfies x·f² − (1−x)·f + 1 = 0, giving the asymptotic growth ratio L(n+1)/L(n) → 3 + 2√2 ≈ 5.828. The parent entry (schroder-numbers-oq-01) supplied the first order-theoretic facts — positivity, the doubling step 2·L(n) ≤ L(n+1), strict monotonicity, and 2^n ≤ L(n) — using only the lone i=0 term of the convolution. Its first open question asked for the sharper tripling step and the corresponding 2·3^(n−1) bound.",
+    "problemStatement": "Sharpen the parent's doubling step to a tripling step 3·L(n) ≤ L(n+1) (n ≥ 1) by exploiting both the i=0 and i=n terms of the convolution recurrence, and derive the exponential lower bound L(n) ≥ 2·3^(n−1).",
+    "text": "For n ≥ 1 the convolution ∑_{i≤n} L(i)·L(n−i) contains the two distinct summands i=0 and i=n, each equal to L(0)·L(n) = L(n); hence the sum is at least 2·L(n) and L(n+1) = L(n) + sum ≥ 3·L(n). Iterating gives 2·3^n ≤ L(n+1), i.e. L(n) ≥ 2·3^(n−1).",
+    "proofStrategy": "1. two_mul_largeSchroder_le_sum: for n ≥ 1, exhibit {0, n} ⊆ Iic n with 0 ≠ n; Finset.sum_pair evaluates the two convolution terms to L(n) + L(n) = 2·L(n), and Finset.sum_le_sum_of_subset (over canonically-ordered ℕ) bounds the full sum below.\n2. three_mul_largeSchroder_le_succ: rewrite by largeSchroder_succ; with 2·L(n) ≤ sum in hand, omega closes 3·L(n) ≤ L(n) + sum.\n3. two_mul_three_pow_le_largeSchroder_succ: induction; 2·3^(n+1) = 3·(2·3^n) ≤ 3·L(n+1) ≤ L(n+2) by gcongr and tripling.\n4. two_mul_three_pow_pred_le_largeSchroder: substitute n = m+1 to remove the n−1 truncated subtraction.\n5. Sharpness: norm_num on the named Schröder values confirms equality at n = 1, attainment at n = 2, and failure at n = 0.",
+    "keyInsights": [
+      "**Two terms, not one**: the parent's doubling step throws away all but the i=0 summand. For n ≥ 1 the recurrence is symmetric, so the i=n term L(n)·L(0) is a *second* copy of L(n) at a distinct index — keeping both is exactly what upgrades doubling to tripling, with no harder analysis.",
+      "**Sharp, but not asymptotically tight**: the constant 3 is the largest valid for all n ≥ 1 because equality 3·L(1) = L(2) = 6 holds at n = 1. It is genuinely a lower-bound constant, not the true growth rate, which is 3 + 2√2 ≈ 5.828 — the remaining convolution terms (discarded here) account for the gap.",
+      "**The hypothesis n ≥ 1 is real**: at n = 0 the indices 0 and n coincide, only one term L(0)·L(0) = 1 is available, and tripling fails (3·L(0) = 3 > 2 = L(1)). The proof records this as an explicit non-example.",
+      "**Shift-indexing dodges truncated subtraction**: proving 2·3^n ≤ L(n+1) for all n (rather than 2·3^(n−1) ≤ L(n) for n ≥ 1) keeps the induction free of ℕ-subtraction; the stated form follows by a one-line substitution."
+    ],
+    "prerequisites": [
+      "The large Schröder numbers and their convolution recurrence (Nat.largeSchroder_succ)",
+      "Summing over a two-element Finset and bounding a sum below by a sub-sum",
+      "Induction on the natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "File-level docstring explaining how the symmetric i=n term upgrades the parent's doubling step to tripling, the sharpness of the constant 3, and the necessity of n ≥ 1. Imports Mathlib and opens Finset / Nat.largeSchroder.",
+      "mathContext": "L(n) is the nth large Schröder number; Mathlib supplies the convolution recurrence largeSchroder_succ and the base values."
+    },
+    {
+      "id": "two-term-bound",
+      "title": "The Two-Term Sum Bound",
+      "startLine": 49,
+      "endLine": 78,
+      "summary": "two_mul_largeSchroder_le_sum: for n ≥ 1 the pair {0, n} ⊆ Iic n is a two-element subset whose convolution terms sum (via Finset.sum_pair) to L(n) + L(n) = 2·L(n); Finset.sum_le_sum_of_subset bounds the full sum below.",
+      "mathContext": "2·L(n) ≤ ∑_{i≤n} L(i)·L(n−i): both the i=0 and i=n summands equal L(n)."
+    },
+    {
+      "id": "tripling-step",
+      "title": "The Sharp Tripling Step",
+      "startLine": 79,
+      "endLine": 84,
+      "summary": "three_mul_largeSchroder_le_succ: rewrite by the recurrence and discharge 3·L(n) ≤ L(n) + sum with omega, using the two-term bound.",
+      "mathContext": "3·L(n) ≤ L(n+1) for n ≥ 1, sharp at n = 1 where 3·L(1) = L(2) = 6."
+    },
+    {
+      "id": "exponential-bound",
+      "title": "The Exponential Lower Bound",
+      "startLine": 85,
+      "endLine": 104,
+      "summary": "two_mul_three_pow_le_largeSchroder_succ proves 2·3^n ≤ L(n+1) by induction driven by tripling; two_mul_three_pow_pred_le_largeSchroder restates it as 2·3^(n−1) ≤ L(n) for n ≥ 1.",
+      "mathContext": "L(n) ≥ 2·3^(n−1): the large Schröder numbers grow at least like 2·3^(n−1), beating the parent's 2^n."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness Witnesses",
+      "startLine": 105,
+      "endLine": 111,
+      "summary": "Three examples: equality 3·L(1) = L(2) (constant 3 is maximal), attainment 2·3^(2−1) = L(2), and the non-example ¬ 3·L(0) ≤ L(1) (necessity of n ≥ 1).",
+      "mathContext": "Demonstrates that both the tripling constant and the n ≥ 1 hypothesis are sharp."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Schröder, Ernst",
+      "title": "Vier combinatorische Probleme",
+      "year": "1870",
+      "note": "Origin of the Schröder numbers"
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 2",
+      "year": "1999",
+      "note": "Generating function and asymptotics of the Schröder numbers, including the growth ratio 3 + 2√2"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "schroder-numbers-oq-01",
+      "relationship": "extends",
+      "description": "Sharpens the parent's doubling step 2·L(n) ≤ L(n+1) and the bound 2^n ≤ L(n), answering its first open question"
+    }
+  ],
+  "conclusion": {
+    "summary": "Exploiting both the i=0 and i=n terms of the convolution recurrence, the large Schröder numbers satisfy the sharp tripling step 3·L(n) ≤ L(n+1) for n ≥ 1 (three_mul_largeSchroder_le_succ) and the exponential lower bound L(n) ≥ 2·3^(n−1) (two_mul_three_pow_pred_le_largeSchroder). The constant 3 is sharp (equality at n = 1) and the hypothesis n ≥ 1 is necessary (tripling fails at n = 0). All four theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Upgrades the parent's geometric lower bound from base 2 to base 3, the best constant attainable from the two extreme convolution terms, and isolates the gap to the true growth rate 3 + 2√2 as exactly the contribution of the discarded interior terms.",
+    "openQuestions": [
+      "Can the interior convolution terms be bounded below to push the constant past 3 toward the true ratio 3 + 2√2 — e.g. a step c·L(n) ≤ L(n+1) with c → 3 + 2√2 for large n?",
+      "Can the dominance L(n) ≥ catalan(n) over the Catalan numbers be proved by comparing their recurrences, formalizing the lattice-path inclusion of Dyck paths into Schröder paths?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "SchroderNumbersOQ0101",
+    "lineCount": 111,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/SchroderNumbersOQ0101.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
