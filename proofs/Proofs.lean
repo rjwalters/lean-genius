@@ -3385,6 +3385,7 @@ import Proofs.MantelTheoremUniqueness
 import Proofs.MantelTheoremOQ04
 import Proofs.MantelTheoremOQ04OQ02
 import Proofs.MaschkeAugmentationNoSplitOQ010101
+import Proofs.MaschkeLocalRingOQ010102
 import Proofs.MathematicalInduction
 import Proofs.MathematicalInductionOQ01
 import Proofs.MathematicalInductionOQ01OQ04
