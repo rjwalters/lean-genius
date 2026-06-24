@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "context",
+    "title": "Discharging the Monotonicity Axiom of Erdős #286",
+    "content": "Erdős #286 asks whether 1 can be written as a sum of k distinct unit fractions whose denominators lie in a short interval of width ≈ (e−1)k; Croot (2001) proved it with the sharp constant. The parent gallery entry axiomatized both Croot's sharp result and the inductive step k → k+1. This file answers the parent's open question oq-02 by proving the inductive step as a genuine 0-axiom theorem (for k ≥ 2) from the splitting identity, re-deriving bounded-interval existence with zero axioms, and exposing that the parent's unrestricted axiom is actually false at k = 1.",
+    "mathContext": "$\\frac{1}{m} = \\frac{1}{m+1} + \\frac{1}{m(m+1)}$ — the unit-fraction splitting identity driving the induction.",
+    "significance": "context",
+    "relatedConcepts": ["Egyptian fractions", "unit fractions", "Erdős problems", "axiom discharge"],
+    "prerequisites": ["unit-fraction representations", "induction"]
+  },
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 55, "endLine": 70 },
+    "type": "definition",
+    "title": "Self-Contained Denominator Definitions",
+    "content": "Three predicates re-declared from the parent so the file stands alone: IsUnitFractionSum S q (denominators in S are positive and ∑ 1/n = q), SumsToOne S (the q = 1 case), and HasShortIntervalRepresentation k width (k distinct positive integers in an interval [a, a+width] whose reciprocals sum to 1). The interval-width parameter is what makes #286 hard — existence is easy, confinement is not.",
+    "mathContext": "$\\mathrm{HasShortIntervalRep}(k, w): \\exists a\\, S,\\; |S| = k,\\; S \\subseteq [a, a+w],\\; \\sum_{n\\in S} \\tfrac1n = 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["unit-fraction sum", "short interval", "Finset"],
+    "prerequisites": ["Finset", "rational sums"]
+  },
+  {
+    "id": "ann-base-case",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 72, "endLine": 84 },
+    "type": "technique",
+    "title": "Axiom-Free Base Case k = 3",
+    "content": "The induction starts at 1 = 1/2 + 1/3 + 1/6 with denominators {2,3,6} ⊆ [2,6] (width 4). Cardinality, interval, and positivity facts are discharged by kernel decide (not native_decide), and the sum 1/2 + 1/3 + 1/6 = 1 by an explicit Finset.sum_insert chain + norm_num. Avoiding native_decide is deliberate: it keeps the base case — and hence the whole development — dependent only on the foundational axioms, with no Lean.ofReduceBool.",
+    "mathContext": "$1 = \\tfrac12 + \\tfrac13 + \\tfrac16$, denominators in $[2,6]$, width $4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["base case", "kernel decide", "0-axiom verification", "native_decide avoidance"],
+    "prerequisites": ["Finset.sum_insert", "decide vs native_decide"]
+  },
+  {
+    "id": "ann-monotone",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 86, "endLine": 167 },
+    "type": "insight",
+    "title": "The Splitting Step as a Theorem (oq-02)",
+    "content": "The heart of the file: representation_monotone_ge2 proves the parent's axiom for k ≥ 2. Given a representation S, take m = max S and split it via 1/m = 1/(m+1) + 1/(m(m+1)). The subtle point is m ≥ 2: with two or more positive reciprocals summing to 1, the denominator 1 cannot appear, so the maximum is at least 2. Maximality then forces both new denominators m+1 and m(m+1) to be fresh (absent from S) and, since m ≥ 2, distinct from each other — so the cardinality grows by exactly one. Sum preservation is closed by field_simp; ring. Splitting the MAXIMUM is what makes freshness automatic with no case analysis.",
+    "mathContext": "$\\sum_{S} \\tfrac1n = 1 \\;\\Rightarrow\\; \\sum_{(S\\setminus\\{m\\}) \\cup \\{m+1,\\,m(m+1)\\}} \\tfrac1n = 1,\\quad m = \\max S \\ge 2.$",
+    "significance": "key",
+    "relatedConcepts": ["partial fractions", "maximum element", "freshness from maximality", "cardinality growth"],
+    "prerequisites": ["Finset.max'", "Finset.sum_insert / erase", "field_simp"]
+  },
+  {
+    "id": "ann-m-ge-2",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 106, "endLine": 128 },
+    "type": "technique",
+    "title": "Why m ≥ 2 Is Essential",
+    "content": "The single delicate step. If the maximum m were < 2, then every denominator would be 1 (positive and ≤ m), so S ⊆ {1} and |S| ≤ 1 — contradicting k ≥ 2. Hence m ≥ 2. This matters because the two replacements m+1 and m(m+1) collide exactly when m = 1 (both equal 2). With m ≥ 2 they are guaranteed distinct (m+1 < m(m+1) by nlinarith), so the cardinality increment is exactly one. This is precisely where the k ≥ 2 hypothesis earns its place.",
+    "mathContext": "$m < 2 \\Rightarrow S \\subseteq \\{1\\} \\Rightarrow |S| \\le 1$; and $m = 1 \\Rightarrow m+1 = m(m+1) = 2$ (collision).",
+    "significance": "technical",
+    "relatedConcepts": ["edge case analysis", "distinctness of replacements", "necessity of hypothesis"],
+    "prerequisites": ["Finset.card_le_card", "omega"]
+  },
+  {
+    "id": "ann-existence",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 169, "endLine": 183 },
+    "type": "concept",
+    "title": "Bounded-Interval Existence with Zero Axioms",
+    "content": "erdos_286_exists re-derives the parent's exact existence statement (∀ k ≥ 3, ∃ width, HasShortIntervalRepresentation k width) by Nat.le_induction from base_k3 using the splitting step — with ZERO axioms. The conceptual payoff: mere bounded-interval existence never required Croot's deep theorem, only the elementary splitting step. This discharges BOTH of the parent's axioms from the existence result; Croot is needed solely for the sharp width ⌈(e−1+ε)k⌉, which this file does not claim.",
+    "mathContext": "$\\forall k \\ge 3,\\; \\exists w,\\; \\mathrm{HasShortIntervalRep}(k, w)$ — proved 0-axiom by induction from $k=3$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.le_induction", "axiom elimination", "existence vs sharpness", "Croot's theorem"],
+    "prerequisites": ["the splitting step", "the base case", "induction on ℕ from a base"]
+  },
+  {
+    "id": "ann-soundness",
+    "proofId": "erdos-286-oq-02",
+    "range": { "startLine": 185, "endLine": 232 },
+    "type": "insight",
+    "title": "The Unrestricted Axiom Is False",
+    "content": "A soundness finding. no_k2_representation shows 1 = 1/x + 1/y with distinct positive x, y is impossible: it forces (x−1)(y−1) = 1, so x = y = 2, violating distinctness. has_rep_one gives the degenerate k = 1 representation {1}. Combining them, unrestricted_monotone_false proves the parent's all-k monotonicity axiom is unsound: at k = 1 it would manufacture an impossible k = 2 representation. So the k ≥ 2 hypothesis is necessary, not cosmetic — the ge2 form is the correct theorem.",
+    "mathContext": "$\\tfrac1x + \\tfrac1y = 1,\\; x \\ne y \\Rightarrow (x-1)(y-1) = 1 \\Rightarrow x = y = 2$ — contradiction. No $k=2$ rep exists.",
+    "significance": "key",
+    "relatedConcepts": ["soundness", "counterexample", "Diophantine equation", "necessity of hypotheses"],
+    "prerequisites": ["Finset.card_eq_two", "Nat.dvd_one", "div_add_div"]
+  }
+]
