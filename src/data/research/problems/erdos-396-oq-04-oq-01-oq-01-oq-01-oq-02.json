@@ -1,0 +1,244 @@
+{
+  "slug": "erdos-396-oq-04-oq-01-oq-01-oq-01-oq-02",
+  "title": "Does the telescoping-product technique applied to the central-binomial recurr...",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "",
+    "plain": "This is an open question (technique) arising from the verified gallery proof",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T10:22:55-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: proved the sharp asymptotic C(2n,n) ~ 4^n/sqrt(pi n) (the Stirling-dependent analytic half the telescoping-product sibling left open) and the Catalan growth law catalan n ~ 4^n/(sqrt(pi) n^{3/2}); verified 0-axiom, 9 thm/1 def/228L.",
+    "builtItems": [
+      "centralBinom_isEquivalent : (C(2n,n):R) ~[atTop] 4^n/sqrt(pi n) (Erdos396OQ04OQ01OQ01OQ01OQ02.lean:107)",
+      "centralBinom_mul_sqrt_pi_div_four_pow_tendsto_one : limit form -> 1 (line 128)",
+      "stirlingFn_quotient : closed-form Stirling-quotient simplification (line 72)",
+      "succ_mul_catalan_eq_centralBinom : C(2n,n)=(n+1) catalan n (line 145)",
+      "catalan_isEquivalent : (catalan n:R) ~[atTop] 4^n/(n sqrt(pi n)) (line 170)",
+      "four_pow_div_two_mul_le_centralBinom : effective 4^n/(2n) <= C(2n,n) (line 208)"
+    ],
+    "insights": [
+      "The telescoping product half of this open question was already established by sibling oq-04-oq-01-oq-01-oq-02-oq-02-oq-01 (PR #27516), which deliberately uses no Stirling input and stops at C(2n,n)<4^n; the genuinely-new contribution is the SHARP asymptotic constant 1/sqrt(pi n).",
+      "C(2n,n) ~ 4^n/sqrt(pi n) derives cleanly from Mathlib Stirling.factorial_isEquivalent_stirling (n! ~ sqrt(2 n pi)(n/e)^n) by pure Asymptotics.IsEquivalent algebra on C(2n,n)=(2n)!/(n!)^2: comp_tendsto (n->2n) for numerator, mul for denominator, div, then a single pointwise simplification.",
+      "The only hand computation is stirlingFn(2n)/(stirlingFn n)^2 = 4^n/sqrt(pi n): (2n/e)^{2n}=4^n(n/e)^{2n}, sqrt(4 n pi)/(2 n pi)=1/sqrt(pi n).",
+      "Catalan asymptotic catalan n ~ 4^n/(sqrt(pi) n^{3/2}) follows from the bridge C(2n,n)=(n+1) catalan n plus (n+1)~n; this is the n^{3/2} correction the parent docstring asserts but never proves."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no centralBinom asymptotic (only Stirling for n! and Bertrand bounds); derived here from factorial_isEquivalent_stirling.",
+      "Mathlib Stirling gives an asymptotic equivalence but no effective two-sided c1 4^n/sqrt n <= C <= c2 4^n/sqrt n for all n (would need sqrt_pi_le_stirlingSeq-style effective bounds)."
+    ],
+    "nextSteps": [
+      "Upgrade to effective two-sided constants using sqrt_pi_le_stirlingSeq effective Stirling lower bound.",
+      "Combine catalan asymptotic with parent strictly-decreasing catalan n/4^n for a monotone n^{-3/2} envelope."
+    ],
+    "markdown": "# Knowledge Base: erdos-396-oq-04-oq-01-oq-01-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "binomial-coefficients",
+    "telescoping"
+  ],
+  "relatedProofs": [
+    "erdos-3",
+    "erdos-39",
+    "erdos-396",
+    "erdos-396-oq-04",
+    "erdos-396-oq-04-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-01-oq-02",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02-oq-01-oq-01",
+    "erdos-396-oq-04-oq-01-oq-01-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T18:10:26.102Z",
+  "lastUpdate": "2026-06-24T18:10:26.141Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos396OQ04.lean",
+      "filename": "Erdos396OQ04.lean",
+      "lineCount": 132,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01.lean",
+      "filename": "Erdos396OQ04OQ01.lean",
+      "lineCount": 188,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ01.lean",
+      "lineCount": 163,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02.lean",
+      "lineCount": 214,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ01.lean",
+      "lineCount": 161,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ02.lean",
+      "lineCount": 249,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ02OQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ01OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ02OQ01OQ01.lean",
+      "lineCount": 167,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ02OQ02.lean",
+      "lineCount": 251,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01.lean",
+      "lineCount": 168,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01OQ01.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01OQ01.lean",
+      "lineCount": 193,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ02OQ02OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/Erdos396OQ04OQ01OQ01OQ03.lean",
+      "filename": "Erdos396OQ04OQ01OQ01OQ03.lean",
+      "lineCount": 129,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396OQ04OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/Erdos396Problem.lean",
+      "filename": "Erdos396Problem.lean",
+      "lineCount": 103,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos396Problem.lean"
+    }
+  ]
+}
