@@ -1,0 +1,132 @@
+{
+  "id": "area-of-circle-oq-07-oq-02-oq-02",
+  "slug": "area-of-circle-oq-07-oq-02-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "title": "Half-Line Gaussian Moments",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ02OQ02.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "special-functions",
+      "measure-theory",
+      "moments",
+      "integration-by-parts",
+      "improper-integral",
+      "half-normal-distribution",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 163,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "badge": "verified",
+    "originalContributions": [
+      "first_half_moment: ∫_{(0,∞)} x·e^{-b x²} dx = 1/(2b) for b > 0, evaluated via the explicit primitive -(2b)⁻¹·e^{-b x²} and integral_Ioi_of_hasDerivAt_of_tendsto' — a genuinely non-trivial value, unlike the full-line first moment which vanishes by odd symmetry",
+      "second_half_moment: ∫_{(0,∞)} x²·e^{-b x²} dx = √(π/b)/(4b) for b > 0, obtained by a single integration by parts (primitive g(x) = -(2b)⁻¹·x·e^{-b x²}, vanishing at 0 and ∞) that reduces the second moment to (2b)⁻¹ times the parent's zeroth moment √(π/b)/2",
+      "mul_exp_neg_b_sq_tendsto_zero: x·e^{-b x²} → 0 along atTop, derived from the linear-exponent decay xˢ·e^{-b x} at s = 1/2 precomposed with x ↦ x² — the boundary input that makes the integration by parts legitimate",
+      "half_normal_mean_relation: cross-multiplied form linking the first moment 1/(2b) to the half-normal distribution's total mass √(π/b)/2 and mean 1/√(πb)"
+    ],
+    "prerequisites": [
+      "Lebesgue integration over Set.Ioi 0 (MeasureTheory)",
+      "The fundamental theorem of calculus on a half-line: integral_Ioi_of_hasDerivAt_of_tendsto'",
+      "HasDerivAt calculus (product, exp, const_mul) for building primitives",
+      "Mathlib's zeroth half-line Gaussian integral_gaussian_Ioi (the parent's result)",
+      "Integrability of xˢ·e^{-b x²} on Ioi (integrableOn_rpow_mul_exp_neg_mul_sq)",
+      "Super-polynomial decay tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero",
+      "Parent: area-of-circle-oq-07-oq-02 (the half-line zeroth moment √(π/b)/2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_Ioi_of_hasDerivAt_of_tendsto'",
+        "description": "∫ x in Ioi a, f' x = m - f a when f has derivative f' on Ici a, f' is integrable on Ioi a, and f → m at atTop. The FTC engine behind both moment evaluations.",
+        "module": "Mathlib.MeasureTheory.Integral.IntegralEqImproper"
+      },
+      {
+        "theorem": "integral_gaussian_Ioi",
+        "description": "∫ x in Ioi 0, exp (-b * x ^ 2) = √(π / b) / 2 — the half-line zeroth moment that the second-moment integration by parts reduces to.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "integrableOn_rpow_mul_exp_neg_mul_sq",
+        "description": "IntegrableOn (fun x => x ^ s * exp (-b * x ^ 2)) (Ioi 0) for b > 0 and s > -1. Used (at s = 2) for the second-moment integrand's integrability.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "tendsto_rpow_mul_exp_neg_mul_atTop_nhds_zero",
+        "description": "x ^ s * exp (-b * x) → 0 along atTop for b > 0. Precomposed with x ↦ x² at s = 1/2 to prove x·e^{-b x²} → 0, the boundary term of the integration by parts.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-02-oq-02-oq-01",
+      "question": "Establish the general half-line moment recursion ∫_{(0,∞)} x^{n+2} e^{-b x²} dx = ((n+1)/(2b))·∫_{(0,∞)} x^{n} e^{-b x²} dx by the same integration-by-parts step, and solve it in closed form: odd moments are elementary rationals in 1/b, even moments are double-factorial multiples of the zeroth moment √(π/b)/2.",
+      "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-02-oq-02-oq-02",
+      "question": "Assemble the normalized half-normal distribution from these moments: with density (2/√(π/b))·e^{-b x²} on (0,∞), verify total mass 1, mean 1/√(π b), second moment 1/(2b), and hence variance (1/2 - 1/π)/b, giving a fully machine-checked derivation of the half-normal variance.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-02",
+      "relationship": "extends",
+      "description": "Parent. That entry evaluates the zeroth half-line moment ∫_{(0,∞)} e^{-b x²} = √(π/b)/2. This entry climbs the moment ladder one and two rungs: the first moment 1/(2b) (elementary primitive) and the second moment √(π/b)/(4b) (one integration by parts back down to the parent's zeroth moment)."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "Grandparent. The √π in the second moment is inherited, through the parent's zeroth moment, from the full-line Gaussian normalization √π."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_gaussian_Ioi and integrableOn_rpow_mul_exp_neg_mul_sq, used for the zeroth moment and the second-moment integrand's integrability."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.IntegralEqImproper",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_Ioi_of_hasDerivAt_of_tendsto', the half-line fundamental theorem of calculus driving both moment evaluations."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For b > 0 the half-line Gaussian moments are ∫_{(0,∞)} x·e^{-b x²} dx = 1/(2b) (first_half_moment) and ∫_{(0,∞)} x²·e^{-b x²} dx = √(π/b)/(4b) (second_half_moment). The first moment is elementary: x·e^{-b x²} has the explicit primitive -(2b)⁻¹·e^{-b x²}, so integral_Ioi_of_hasDerivAt_of_tendsto' returns the boundary value (2b)⁻¹. The second moment is one integration by parts: the primitive g(x) = -(2b)⁻¹·x·e^{-b x²} has derivative x²·e^{-b x²} - (2b)⁻¹·e^{-b x²} and vanishes at both 0 and ∞ (the latter shown by mul_exp_neg_b_sq_tendsto_zero), so ∫_{(0,∞)}(x² - (2b)⁻¹)e^{-b x²} = 0 and the second moment equals (2b)⁻¹ times the parent's zeroth moment √(π/b)/2. 163 lines, 8 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "These are the unnormalized first and second moments of the half-normal distribution: dividing by the total mass √(π/b)/2 yields its mean 1/√(π b) and second moment 1/(2b), hence variance (1/2 - 1/π)/b. The entry makes explicit the recursion engine — one integration by parts lowers the exponent by two — that the parent's symmetry argument could not reach, since the first moment (unlike the zeroth) has no even-symmetry shortcut and the full-line first moment vanishes outright.",
+    "openQuestions": [
+      "Solve the general moment recursion ∫_{(0,∞)} x^{n+2} e^{-b x²} = ((n+1)/(2b))·∫_{(0,∞)} x^{n} e^{-b x²} in closed form (rational odd moments, double-factorial even moments).",
+      "Normalize to the half-normal distribution and machine-check its variance (1/2 - 1/π)/b."
+    ]
+  }
+}
