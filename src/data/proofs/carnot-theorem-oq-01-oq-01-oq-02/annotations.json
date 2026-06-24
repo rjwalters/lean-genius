@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-carnot-oq010102-overview",
+    "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 5, "endLine": 48 },
+    "type": "concept",
+    "title": "The Missing Sharp Extremum and the One Identity That Supplies It",
+    "content": "The docstring frames what the sibling files leave open. CarnotTheoremOQ01OQ01 pins the cosine sum range (1, 3/2] and Euler's inequality r ≤ R/2; CarnotTheoremOQ01OQ02 gives the squared-sum identity cos²A + cos²B + cos²C = 1 − 2 cos A cos B cos C and the acute/right/obtuse trichotomy against 1. What none supplies is the sharp lower extremum of the squared cosine sum — its smallest possible value over all triangles, which is 3/4 at the equilateral triangle. Through the squared identity this is exactly the classical product bound cos A cos B cos C ≤ 1/8. The whole file is driven by a single sum-of-squares identity, made sign-agnostic by deriving it purely algebraically from A + B = π − C with no acute/obtuse case split.",
+    "mathContext": "$\\cos A\\cos B\\cos C \\le \\tfrac18 \\iff \\cos^2 A + \\cos^2 B + \\cos^2 C \\ge \\tfrac34,\\quad\\text{equality}\\iff\\text{equilateral}.$",
+    "significance": "context",
+    "relatedConcepts": ["Carnot's theorem", "extremal triangle inequality", "equilateral triangle", "sum of squares", "sharp bound"],
+    "prerequisites": ["triangle geometry", "trigonometry"]
+  },
+  {
+    "id": "ann-carnot-oq010102-sos-identity",
+    "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 75 },
+    "type": "theorem",
+    "title": "Core Sum-of-Squares Identity",
+    "content": "eight_cos_prod_identity is the engine of the file: for any reals with A + B + C = π, 1 − 8 cos A cos B cos C = (2 cos C − cos(A−B))² + sin²(A−B). The derivation has three moves. First, A + B = π − C with Real.cos_pi_sub gives cos(A+B) = −cos C. Second, combining the addition formulas Real.cos_sub and Real.cos_add by linarith yields the product-to-sum form cos A cos B = ½(cos(A−B) − cos C). Third, rewriting sin²(A−B) = 1 − cos²(A−B) (Pythagorean identity) and a single linear_combination (−8 cos C)·hprod completes the square. No positivity of the angles is used, which is what makes every downstream bound sign-agnostic.",
+    "mathContext": "$1 - 8\\cos A\\cos B\\cos C = (2\\cos C - \\cos(A-B))^2 + \\sin^2(A-B).$",
+    "significance": "key",
+    "relatedConcepts": ["product-to-sum identities", "completing the square", "linear_combination", "Pythagorean identity", "angle-sum constraint"],
+    "prerequisites": ["trigonometric identities", "polynomial algebra"]
+  },
+  {
+    "id": "ann-carnot-oq010102-product-bound",
+    "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 87 },
+    "type": "theorem",
+    "title": "Sharp Cosine-Product Bound cos A cos B cos C ≤ 1/8",
+    "content": "cos_prod_le_eighth follows in one nlinarith step. The right-hand side of the core identity is a sum of two squares, hence nonnegative, so 1 − 8 cos A cos B cos C ≥ 0, i.e. cos A cos B cos C ≤ 1/8. The two sq_nonneg hints supply exactly the nonnegativity facts nlinarith needs. The bound holds for every real triple summing to π — there is no acute/obtuse case split — and it is sharp, attained only at the equilateral triangle (see cos_prod_eq_eighth_iff).",
+    "mathContext": "$(2\\cos C - \\cos(A-B))^2 + \\sin^2(A-B) \\ge 0 \\implies \\cos A\\cos B\\cos C \\le \\tfrac18.$",
+    "significance": "key",
+    "relatedConcepts": ["nonnegativity of squares", "nlinarith", "sharp inequality", "AM-GM on triangle cosines"],
+    "prerequisites": ["trigonometry", "real inequalities"]
+  },
+  {
+    "id": "ann-carnot-oq010102-sqsum-bound",
+    "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 89, "endLine": 100 },
+    "type": "theorem",
+    "title": "Sharp Lower Bound cos²A + cos²B + cos²C ≥ 3/4",
+    "content": "cos_sq_sum_ge_three_quarters transports the product bound through the sibling identity cos²A + cos²B + cos²C = 1 − 2 cos A cos B cos C (CarnotTheoremOQ01OQ02.cos_sq_sum). Substituting cos A cos B cos C ≤ 1/8 gives 1 − 2(1/8) = 3/4 as the floor, closed by a single linarith. This is the genuine extremum the sibling trichotomy leaves open: where that file only compares the squared sum to 1, this gives its smallest value 3/4 (equilateral), while the sum rises toward 3 for degenerate triangles.",
+    "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C = 1 - 2\\cos A\\cos B\\cos C \\ge 1 - 2\\cdot\\tfrac18 = \\tfrac34.$",
+    "significance": "key",
+    "relatedConcepts": ["squared cosine sum", "cross-file identity reuse", "extremal value", "equilateral triangle"],
+    "prerequisites": ["trigonometric identities", "real inequalities"]
+  },
+  {
+    "id": "ann-carnot-oq010102-product-equality",
+    "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 102, "endLine": 148 },
+    "type": "technique",
+    "title": "Equality Case: Product = 1/8 ⟺ Equilateral",
+    "content": "cos_prod_eq_eighth_iff characterizes equality and is where positivity of the angles finally enters. Forward: equality makes the right-hand side of the core identity zero, so each square vanishes — sin(A−B) = 0 and 2 cos C = cos(A−B), extracted by nlinarith then pow_eq_zero_iff. With |A − B| < π (from A, B, C > 0 and the angle sum), Real.sin_eq_zero_iff_of_lt_of_lt forces A = B, hence cos(A−B) = 1 and cos C = 1/2. Injectivity of cosine on [0, π] (Real.injOn_cos) against cos(π/3) = 1/2 gives C = π/3, and the angle sum forces A = B = π/3. Backward is immediate from Real.cos_pi_div_three. This rigidity — two squares pinning two independent constraints — is what makes the equilateral triangle the unique extremizer.",
+    "mathContext": "$\\sin(A-B)=0 \\Rightarrow A=B,\\quad 2\\cos C = \\cos(A-B) = 1 \\Rightarrow C = \\tfrac{\\pi}{3}.$",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "injectivity of cosine", "zero set of sine", "rigidity of extremizers", "pow_eq_zero_iff"],
+    "prerequisites": ["trigonometry", "interval injectivity arguments"]
+  },
+  {
+    "id": "ann-carnot-oq010102-sqsum-equality",
+    "proofId": "carnot-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 150, "endLine": 166 },
+    "type": "theorem",
+    "title": "Equality Case: Squared Sum = 3/4 ⟺ Equilateral",
+    "content": "cos_sq_sum_eq_three_quarters_iff transports the product equality through the sibling identity. Rewriting cos²A + cos²B + cos²C as 1 − 2(cos A cos B cos C), the equation = 3/4 is arithmetically equivalent (one linarith both ways) to the product being exactly 1/8, so the characterization reduces verbatim to cos_prod_eq_eighth_iff. The squared cosine sum thus attains its minimum 3/4 precisely at the equilateral triangle, completing the extremal picture.",
+    "mathContext": "$\\cos^2 A + \\cos^2 B + \\cos^2 C = \\tfrac34 \\iff \\cos A\\cos B\\cos C = \\tfrac18 \\iff A=B=C=\\tfrac{\\pi}{3}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["equality transport", "squared cosine sum", "equilateral triangle", "minimum attainment"],
+    "prerequisites": ["trigonometric identities", "real arithmetic"]
+  }
+]
