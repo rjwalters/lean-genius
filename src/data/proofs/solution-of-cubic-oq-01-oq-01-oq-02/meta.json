@@ -1,0 +1,175 @@
+{
+  "id": "solution-of-cubic-oq-01-oq-01-oq-02",
+  "title": "The Cubic Discriminant as the Resultant Res(f, f′)",
+  "slug": "solution-of-cubic-oq-01-oq-01-oq-02",
+  "description": "Answers the parent's open question by identifying the hand-written general cubic discriminant Δ(a,b,c,d) = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² with Mathlib's intrinsic discriminant (the normalized Sylvester determinant of f and f′), and derives the eliminant relation Res(f, f′) = −a·Δ for the cubic f = a·X³ + b·X² + c·X + d. As a consequence the resultant of a cubic with its derivative vanishes exactly when two roots coincide.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Discriminant#Definition",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ01OQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "cubic-equations",
+      "discriminant",
+      "resultant",
+      "sylvester-matrix",
+      "eliminant",
+      "polynomial-arithmetic",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      "Polynomial.resultant",
+      "Polynomial.discr",
+      "Polynomial.resultant_deriv",
+      "Polynomial.discr_of_degree_eq_three"
+    ],
+    "originalContributions": [
+      "cubicPoly: the general cubic a·X³ + b·X² + c·X + d realized as an element of ℂ[X], with its coefficients, degree, leading coefficient and derivative (3a·X² + 2b·X + c) all computed",
+      "cubic_discr_eq_generalDiscriminant: the bridge identifying Mathlib's intrinsic Polynomial.discr of the cubic with the parent's hand-written generalDiscriminant a b c d — connecting an ad-hoc coefficient polynomial to the determinant of the Sylvester matrix of f and f′",
+      "cubic_resultant_eq_neg_smul_discriminant: the headline Res(f, f′) = −a·Δ(a,b,c,d), the classical relation Res(f, f′) = (−1)^{n(n−1)/2}·aₙ·Δ specialized to the cubic (n = 3, sign = −1)",
+      "cubic_resultant_eq_zero_iff / cubic_resultant_eq_zero_iff_repeated_root: the eliminant criterion — the resultant of f with f′ vanishes iff Δ = 0, i.e. iff two of the roots coincide (via the parent's Vieta repeated_root_iff)"
+    ],
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "The parent's general cubic discriminant generalDiscriminant a b c d (OQ-01-OQ-01)",
+      "Mathlib's resultant/discriminant theory: Sylvester matrix, Polynomial.resultant, Polynomial.discr",
+      "The resultant–discriminant relation resultant_deriv and the cubic discriminant formula discr_of_degree_eq_three"
+    ],
+    "relatedProblems": [
+      {
+        "id": "solution-of-cubic-oq-01-oq-01",
+        "relationship": "Parent: defines generalDiscriminant and its shift identity; its open question asked to derive the discriminant as the resultant Res(f, f′) — answered here."
+      },
+      {
+        "id": "solution-of-cubic-oq-01",
+        "relationship": "Grandparent: the Tschirnhaus shift reducing the general cubic to depressed form."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 190,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries, depending only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms); no native_decide, no Lean.ofReduceBool. The core resultant–discriminant relation is supplied by Mathlib (Polynomial.resultant_deriv, discr_of_degree_eq_three); this entry contributes the explicit cubic construction and the bridge to the parent's coefficient discriminant.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The discriminant of a polynomial can be defined three equivalent ways: as a^(2n−2)·∏_{i<j}(xᵢ − xⱼ)² (root form), as the explicit coefficient polynomial, or as the resultant of f with its derivative f′ — the determinant of their Sylvester matrix. The resultant route, going back to Sylvester (1851) and developed by Cayley, is the one that makes the repeated-root criterion an elimination statement: Res(f, f′) is the polynomial in the coefficients of f that vanishes exactly when f and f′ have a common root, i.e. when f has a repeated root. The parent gallery entry built the cubic discriminant as a hand-written coefficient polynomial; this entry ties it to the intrinsic, basis-free resultant construction now available in Mathlib.",
+    "problemStatement": "Realize the general cubic a·X³ + b·X² + c·X + d as a polynomial, identify the parent's coefficient discriminant Δ(a,b,c,d) with Mathlib's intrinsic Polynomial.discr (the normalized Sylvester determinant of f and f′), derive the resultant identity Res(f, f′) = −a·Δ, and characterize its vanishing as the repeated-root condition.",
+    "proofStrategy": "The coefficients and degree of cubicPoly are obtained by simp and compute_degree. The discriminant bridge cubic_discr_eq_generalDiscriminant feeds these coefficients into Mathlib's discr_of_degree_eq_three and closes with ring against the parent's generalDiscriminant. The headline cubic_resultant_eq_neg_smul_discriminant instantiates Mathlib's resultant_deriv at the cubic: its sign (−1)^{n(n−1)/2} collapses to (−1)^3 = −1 at n = 3 and its leading coefficient is a, so Res(f, f′) = −a·discr f = −a·Δ. The eliminant criteria follow from a ≠ 0 and the parent's Vieta repeated_root_iff.",
+    "keyInsights": [
+      "Mathlib's intrinsic discriminant (a normalized Sylvester determinant) agrees on the nose with the parent's hand-written coefficient polynomial Δ(a,b,c,d) — the two definitions of 'the discriminant of a cubic' coincide.",
+      "The resultant–discriminant relation Res(f, f′) = (−1)^{n(n−1)/2}·aₙ·Δ specializes for the cubic to the clean Res(f, f′) = −a·Δ, with the sign exponent 3·2/2 = 3 forcing the minus sign.",
+      "For the depressed cubic X³ + p·X + q this recovers the textbook value Res(f, f′) = 4p³ + 27q² = −(−4p³ − 27q²).",
+      "Because a ≠ 0, the resultant vanishes iff Δ does, which by the parent's root form holds iff two of the three roots coincide — the discriminant as an eliminant."
+    ],
+    "prerequisites": [
+      "The parent's generalDiscriminant and repeated_root_iff",
+      "Mathlib's Sylvester matrix, Polynomial.resultant and Polynomial.discr",
+      "The relations resultant_deriv and discr_of_degree_eq_three"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cubic-poly",
+      "title": "Part 1: The Cubic as a Polynomial and its Invariants",
+      "startLine": 53,
+      "endLine": 116,
+      "summary": "Defines cubicPoly a b c d = C a·X³ + C b·X² + C c·X + C d and computes its coefficients (a, b, c, d), natDegree and degree (3, for a ≠ 0), leading coefficient (a), and derivative (3a·X² + 2b·X + c).",
+      "mathContext": "Realizes the cubic as an honest element of ℂ[X] so that Mathlib's resultant and discriminant apply."
+    },
+    {
+      "id": "discr-bridge",
+      "title": "Part 2: The Discriminant Bridge",
+      "startLine": 117,
+      "endLine": 132,
+      "summary": "cubic_discr_eq_generalDiscriminant: Mathlib's intrinsic Polynomial.discr of the cubic equals the parent's generalDiscriminant a b c d, via discr_of_degree_eq_three and ring.",
+      "mathContext": "Identifies the parent's hand-written coefficient discriminant with the normalized Sylvester determinant."
+    },
+    {
+      "id": "resultant-identity",
+      "title": "Part 3: The Resultant Identity",
+      "startLine": 133,
+      "endLine": 159,
+      "summary": "cubic_resultant_eq_neg_smul_discriminant: Res(f, f′) = −a·Δ, instantiating Mathlib's resultant_deriv at natDegree 3 where the sign (−1)^{3·2/2} = −1.",
+      "mathContext": "The eliminant construction of the discriminant: the resultant of f with f′ is −a times the coefficient discriminant."
+    },
+    {
+      "id": "eliminant-criterion",
+      "title": "Part 4: The Eliminant Criterion",
+      "startLine": 160,
+      "endLine": 180,
+      "summary": "cubic_resultant_eq_zero_iff: Res(f, f′) = 0 ⟺ Δ = 0; cubic_resultant_eq_zero_iff_repeated_root: for Vieta data, ⟺ two roots coincide, via the parent's repeated_root_iff.",
+      "mathContext": "The classical meaning of the discriminant as the eliminant of f and f′."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Part 5: Sanity Checks",
+      "startLine": 181,
+      "endLine": 190,
+      "summary": "For the depressed cubic X³ + p·X + q the resultant is 4p³ + 27q²; for (X − 2)³ the resultant vanishes (triple root).",
+      "mathContext": "Concrete confirmations of the resultant identity and the eliminant criterion."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) bridge between the parent's hand-written cubic discriminant Δ = 18abcd − 4b³d + b²c² − 4ac³ − 27a²d² and Mathlib's intrinsic resultant/discriminant theory: Mathlib's Polynomial.discr of the cubic equals Δ, and the resultant of the cubic with its derivative is Res(f, f′) = −a·Δ. The resultant vanishes iff Δ = 0, i.e. iff two roots coincide. 190 lines, 8 theorems, 1 definition.",
+    "implications": "This answers the parent OQ-01-OQ-01's second open question: the gallery now expresses the cubic discriminant as the resultant Res(f, f′), the eliminant of f and its derivative, and ties the parent's coefficient polynomial to Mathlib's basis-free Sylvester-determinant definition. The same construction (resultant_deriv) generalizes verbatim to higher degree.",
+    "openQuestions": [
+      "Lift the bridge to a general commutative ring and a symbolic leading coefficient, expressing Res(f, f′) = (−1)^{n(n−1)/2}·aₙ·discr for the cubic over an arbitrary base.",
+      "Carry out the analogous resultant identity for the quartic, matching the sibling general-quartic discriminant entries."
+    ]
+  },
+  "status": "verified",
+  "badge": "mathlib",
+  "leanFile": {
+    "imports": [
+      "Proofs.SolutionOfCubicOQ01OQ01",
+      "Mathlib.RingTheory.Polynomial.Resultant.Basic",
+      "Mathlib.Tactic.ComputeDegree"
+    ],
+    "opens": [
+      "Polynomial",
+      "SolutionOfCubicOQ01OQ01"
+    ],
+    "namespace": "SolutionOfCubicOQ01OQ01OQ02",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/SolutionOfCubicOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent proof: defines generalDiscriminant and the repeated-root criterion. Its open question asked to derive the discriminant as the resultant Res(f, f′); this entry does exactly that, reusing the parent's generalDiscriminant and repeated_root_iff."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent proof: the Tschirnhaus shift reducing the general cubic to depressed form."
+    }
+  ],
+  "references": [
+    {
+      "key": "Sy1851",
+      "citation": "Sylvester, J.J., On a remarkable discovery in the theory of canonical forms and of hyperdeterminants, Philosophical Magazine, Ser. 4, vol. 2 (1851).",
+      "type": "article"
+    },
+    {
+      "key": "CLO15",
+      "citation": "Cox, D., Little, J., O'Shea, D., Ideals, Varieties, and Algorithms, 4th ed., Springer (2015), Chapter 3: resultants and discriminants.",
+      "type": "book"
+    },
+    {
+      "key": "GKZ94",
+      "citation": "Gelfand, I.M., Kapranov, M.M., Zelevinsky, A.V., Discriminants, Resultants, and Multidimensional Determinants, Birkhäuser (1994).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}
