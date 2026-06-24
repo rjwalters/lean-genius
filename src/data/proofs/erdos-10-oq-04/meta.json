@@ -1,0 +1,142 @@
+{
+  "id": "erdos-10-oq-04",
+  "title": "Erdős #10 OQ-04: Foundations for the Lower Density of S₁",
+  "slug": "erdos-10-oq-04",
+  "description": "Erdős Problem #10 asks for a k such that every large integer is a prime plus at most k powers of 2. The fourth open question records: what is the exact lower density d̲(S₁) of the k=1 set? This entry does not resolve that open question; it builds the verified, 0-axiom foundation it rests on — a clean membership characterization of S₁, monotonicity of the family Sₖ (so d̲(S₁) ≤ d̲(Sₖ), the elementary lower edge of Gallagher's theorem), and the basic properties of lower density (monotone, valued in [0,1]), giving d̲(S₁) ∈ [0,1].",
+  "meta": {
+    "author": "Research formalization 2026",
+    "sourceUrl": "https://erdosproblems.com/10",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos10S1Density.lean",
+    "tags": [
+      "number-theory",
+      "erdos",
+      "primes",
+      "powers-of-2",
+      "additive-combinatorics",
+      "density",
+      "liminf"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 181,
+    "assumptions": "0 axioms, 0 sorries. All theorems depend only on the standard foundational axioms (propext, Classical.choice, Quot.sound) — verified via #print axioms on host Lean (LAKE_UNSAFE=1 lake env lean) at the v4.26.0 pin; no sorryAx and no Lean.ofReduceBool. The open question itself — the exact value of d̲(S₁) — is NOT proved or assumed: Romanoff's theorem d̲(S₁) > 0 and the conjectural exact value are documented in source comments only. What is proved is the surrounding structure: the membership characterization of S₁, monotonicity of Sₖ in k, primes ⊆ Sₖ, 1 ∉ Sₖ, and the elementary properties of Set.lowerDensity (monotone under inclusion, valued in [0,1]).",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #10 asks whether some finite k makes every sufficiently large integer a sum of a prime and at most k powers of 2; Erdős called it 'probably unattackable' and, with Graham, conjectured no such k exists. The k = 1 set S₁ = {p} ∪ {p + 2ᵃ} is the smallest case. Romanoff (1934) proved that S₁ already has positive lower density d̲(S₁) > 0, one of the first results on primes as an additive basis with a lacunary companion sequence. Erdős (1950), via covering congruences, showed the complement also has positive density, so 0 < d̲(S₁) < 1. The exact value of d̲(S₁) — and the best explicit bounds — remain open, which is the content of this open question.",
+    "problemStatement": "What is the exact lower density d̲(S₁) of the set S₁ = { n : n = p or n = p + 2ᵃ, p prime }? What are the best known bounds?",
+    "text": "The exact value of d̲(S₁) is unknown. This formalization establishes the verified foundation any density argument must use, and records the known bounds (Romanoff: d̲(S₁) > 0) as documentation.",
+    "proofStrategy": "We mirror the parent file's definitions of Sₖ (a prime plus a multiset of at most k powers of 2) and of lower density (the liminf of |S ∩ [0,n]|/(n+1)), then prove the structural and analytic facts that were previously absent (the parent Erdos10Problem.lean contains definitions and zero theorems). The membership characterization unfolds the multiset of cardinality ≤ 1 into the disjunction 'prime or p + 2ᵃ'. Monotonicity of Sₖ is immediate from the cardinality bound. The lower-density lemmas are obtained from Filter.liminf_le_liminf together with the boundedness of the counting ratio in [0,1].",
+    "keyInsights": [
+      "**Membership of S₁ is elementary**: n ∈ S₁ ⇔ n is prime or n = p + 2ᵃ for a prime p — the multiset-of-≤1-powers definition collapses to a clean disjunction (`mem_sumPrimeAndTwoPows_one_iff`).",
+      "**Monotone family**: Sⱼ ⊆ Sₖ whenever j ≤ k (`sumPrimeAndTwoPows_mono`), so d̲(S₁) ≤ d̲(Sₖ) for every k ≥ 1. Gallagher (1975) proved d̲(Sₖ) → 1; d̲(S₁) is the base of this increasing chain.",
+      "**Lower density is well-behaved**: it is monotone under set inclusion and always lies in [0,1] (`lowerDensity_mono`, `lowerDensity_nonneg`, `lowerDensity_le_one`), hence d̲(S₁) ∈ [0,1] (`lowerDensity_S1_mem_Icc`).",
+      "**The hard content stays open**: Romanoff's lower bound d̲(S₁) > 0 (a sieve/Cauchy–Schwarz argument) and the exact value are *not* proved — they require machinery beyond what is formalized here and are recorded only as references."
+    ],
+    "prerequisites": [
+      "Prime numbers (Nat.Prime)",
+      "Multisets and their sums",
+      "liminf of a real sequence (Filter.liminf) and boundedness under a filter",
+      "Asymptotic (lower) density of sets of natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Core Definitions",
+      "startLine": 42,
+      "endLine": 56,
+      "summary": "Mirrors the parent's `sumPrimeAndTwoPows k` (a prime plus a multiset of ≤ k powers of 2), factors the counting ratio `densityFn S n = |S ∩ [0,n]| / (n+1)`, and defines `lowerDensity S` as its liminf along `atTop`.",
+      "mathContext": "Sₖ = { n : ∃ p prime, ∃ pows : Multiset ℕ, |pows| ≤ k ∧ n = p + Σ 2^{aᵢ} }; d̲(S) = liminf_{n→∞} |S ∩ [0,n]| / (n+1)."
+    },
+    {
+      "id": "structure",
+      "title": "Structure of S₁",
+      "startLine": 58,
+      "endLine": 109,
+      "summary": "Characterizes membership in S₁ as 'prime or p + 2ᵃ', proves the family Sₖ is monotone in k, shows every prime lies in every Sₖ and 1 lies in none, and gives concrete witnesses (4 = 2 + 2¹, 9 = 7 + 2¹).",
+      "mathContext": "n ∈ S₁ ⇔ n.Prime ∨ ∃ p a, p.Prime ∧ n = p + 2ᵃ; Monotone Sₖ; p prime ⇒ p ∈ Sₖ; 1 ∉ Sₖ."
+    },
+    {
+      "id": "density",
+      "title": "Lower Density: Basic Properties",
+      "startLine": 111,
+      "endLine": 181,
+      "summary": "Proves the counting ratio lies in [0,1], that lower density is monotone under inclusion and valued in [0,1], hence d̲(S₁) ∈ [0,1], and finally the lower-edge bound d̲(S₁) ≤ d̲(Sₖ) for k ≥ 1.",
+      "mathContext": "0 ≤ d̲(S) ≤ 1; A ⊆ B ⇒ d̲(A) ≤ d̲(B); d̲(S₁) ∈ [0,1]; 1 ≤ k ⇒ d̲(S₁) ≤ d̲(Sₖ)."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry adds the first verified theorems to the formal treatment of Erdős #10's k = 1 set S₁: a membership characterization, monotonicity of the family Sₖ, the inclusion facts (primes ⊆ Sₖ, 1 ∉ Sₖ), and the basic analytic properties of lower density, culminating in d̲(S₁) ∈ [0,1] and d̲(S₁) ≤ d̲(Sₖ). It does not determine the exact value d̲(S₁), which remains open.",
+    "implications": "The exact lower density d̲(S₁) is unknown; Romanoff (1934) gives d̲(S₁) > 0 and Erdős (1950) gives d̲(S₁) < 1, but the precise value and best explicit bounds are open. The formalized monotonicity d̲(S₁) ≤ d̲(Sₖ) places S₁ at the base of the increasing chain whose limit is Gallagher's 1 (1975); pinning d̲(S₁) would require the sieve machinery behind Romanoff's theorem, which is recorded here as documentation rather than formalized.",
+    "openQuestions": [
+      "What is the exact value of d̲(S₁)? (The open question; only 0 < d̲(S₁) < 1 is known.)",
+      "What are the best explicit numerical lower and upper bounds for d̲(S₁)?",
+      "Can Romanoff's lower bound d̲(S₁) > 0 be formalized in Lean (the sieve / Cauchy–Schwarz second-moment argument)?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-10",
+      "relationship": "extends",
+      "description": "Parent: Erdős #10 (a prime plus powers of 2); supplies the definitions this entry mirrors and proves theorems about."
+    },
+    {
+      "targetId": "erdos-10-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ-02: the Granville–Soundararajan k=3 decidable foundation for Sₖ membership."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Romanoff, N.P.",
+      "title": "Über einige Sätze der additiven Zahlentheorie",
+      "year": "1934",
+      "venue": "Mathematische Annalen 109:668–678",
+      "note": "Proved d̲(S₁) > 0: a positive proportion of integers are a prime plus a power of 2."
+    },
+    {
+      "authors": "Erdős, P.",
+      "title": "On integers of the form 2^k + p and some related problems",
+      "year": "1950",
+      "venue": "Summa Brasiliensis Mathematicae 2:113–123",
+      "note": "Covering-congruence construction: the complement of S₁ also has positive density, so d̲(S₁) < 1."
+    },
+    {
+      "authors": "Gallagher, P.X.",
+      "title": "Primes and powers of 2",
+      "year": "1975",
+      "venue": "Inventiones Mathematicae 29:125–142",
+      "note": "d̲(Sₖ) → 1 as k → ∞; S₁ is the base of this increasing chain."
+    },
+    {
+      "authors": "Erdős, P., Graham, R.",
+      "title": "Old and New Problems and Results in Combinatorial Number Theory",
+      "year": "1980",
+      "venue": "Monographies de L'Enseignement Mathématique 28",
+      "note": "Survey context for the problem and its density questions."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Topology.Algebra.InfiniteSum.Real",
+      "Mathlib.Order.Filter.AtTopBot.Group"
+    ],
+    "namespace": "Erdos10S1Density",
+    "lineCount": 181,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "path": "Proofs/Erdos10S1Density.lean",
+    "sorries": 0,
+    "definitionCount": 3
+  },
+  "sorries": 0
+}
