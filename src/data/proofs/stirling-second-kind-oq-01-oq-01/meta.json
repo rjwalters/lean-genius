@@ -1,0 +1,168 @@
+{
+  "id": "stirling-second-kind-oq-01-oq-01",
+  "title": "Stirling Numbers of the Second Kind: the three-block column S(n,3) = (3ⁿ⁻¹+1)/2 − 2ⁿ⁻¹",
+  "slug": "stirling-second-kind-oq-01-oq-01",
+  "description": "The closed form for the third column of Stirling's triangle: the number of ways to partition an n-element set into exactly three nonempty blocks is (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3. This answers the first open question of the parent entry stirling-second-kind-oq-01 (the k=2 column), climbing one more rung of the column-closed-forms family. Unlike the geometric k=2 case, the k=3 recurrence is genuinely inhomogeneous with two competing exponential modes (3ⁿ and 2ⁿ); the answer carries a division by 2 handled via a denominator-free shifted identity.",
+  "meta": {
+    "author": "James Stirling (1730)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingSecondKindOQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "set-partitions",
+      "enumerative",
+      "closed-form",
+      "recurrence",
+      "classic"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingSecond_succ_succ",
+        "description": "Pascal recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k); specialised to k=2 it gives S(n+1,3) = 3·S(n,3) + S(n,2)",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingSecond_one_right",
+        "description": "First-column value S(n+1,1) = 1, used in the re-derivation of the two-block driving term S(n,2)",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.one_le_two_pow",
+        "description": "1 ≤ 2^n, used to discharge the natural-subtraction arithmetic for the two-block term",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Nat.pow_le_pow_left",
+        "description": "Monotonicity 2^m ≤ 3^m of the base, used to show 2^(m+3) ≤ 3^(m+2) for the positivity corollary",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "stirlingSecond_three_add: the denominator-free shifted identity 2·S(m+3,3) + 2^(m+3) = 3^(m+2) + 1, proved by induction on the Pascal recurrence — the workhorse that keeps the whole argument inside ℕ and makes manifest that 3^(n-1)+1 is even",
+      "stirlingSecond_three: the textbook closed form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for n ≥ 3, obtained by dividing the shifted identity by 2",
+      "stirlingSecond_three_pos: every set with at least three elements admits a three-block partition, i.e. S(n,3) > 0 for n ≥ 3, via the domination 2^(n-1)·2 = 2^n < 3^(n-1)+1",
+      "aux_two: an inline self-contained re-derivation of the two-block column S(m+2,2) = 2^(m+1) − 1, supplying the inhomogeneous driving term without importing the parent entry"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The three results depend only on propext, Classical.choice, Quot.sound. Base cases use kernel `decide` (no `native_decide`, hence no `Lean.ofReduceBool`).",
+    "lineCount": 131,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Stirling numbers of the second kind S(n,k) count the partitions of an n-element set into k nonempty, unlabeled blocks, appearing in James Stirling's 1730 Methodus Differentialis. Their triangle obeys the Pascal-like recurrence S(n+1,k) = k·S(n,k) + S(n,k-1). The boundary columns S(n,1)=1, S(n,n)=1, S(n,n-1)=C(n,2) are elementary and in Mathlib; the parent gallery entry supplies the first nontrivial column S(n,2)=2^(n-1)−1. The third column S(n,3) is the next rung. Its values 1, 6, 25, 90, 301, … (n = 3, 4, 5, 6, 7) are OEIS A000392, and the closed form (3^(n-1)+1)/2 − 2^(n-1) is classical, but it is not recorded in Mathlib.",
+    "problemStatement": "Determine and verify the number of partitions of an n-element set into exactly three nonempty blocks.\n\n**Answer:** S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) for every n ≥ 3.",
+    "text": "The third column of Stirling's triangle of the second kind has the closed form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1), derived by solving the inhomogeneous Pascal recurrence and verified in Lean with no axioms.",
+    "proofStrategy": "1. aux_two: re-derive the two-block value S(m+2,2) = 2^(m+1) − 1 inline by induction (base by decide; step from the Pascal recurrence specialised to the second column), so the file is self-contained.\n2. stirlingSecond_three_add: induct on m to prove the denominator-free shifted identity 2·S(m+3,3) + 2^(m+3) = 3^(m+2) + 1. Base S(3,3)=1 by decide. Step specialises the Pascal recurrence to the third column, S(m+4,3) = 3·S(m+3,3) + S(m+3,2), substitutes S(m+3,2) = 2^(m+2) − 1, expands the three power terms (2^(m+3), 2^(m+4), 3^(m+3)) in terms of 2^(m+2) and 3^(m+2), and closes the linear arithmetic with omega.\n3. stirlingSecond_three: write n = m + 3, rewrite the exponent n − 1 = m + 2, and divide the shifted identity by 2 — omega derives both the exactness of the division (3^(n-1)+1 is even) and the closed form.\n4. stirlingSecond_three_pos: from 2^(m+3) = 8·2^m ≤ 9·3^m = 3^(m+2), the shifted identity forces 2·S(m+3,3) ≥ 1, so S(n,3) > 0.",
+    "keyInsights": [
+      "**Two competing exponential modes.** Specialising Pascal's rule to the third column gives the genuinely inhomogeneous first-order recurrence S(n+1,3) = 3·S(n,3) + (2^(n-1) − 1); its solution superimposes a 3^n mode (homogeneous) and a 2^n mode (driven by the two-block column), unlike the purely geometric k=2 case.",
+      "**Division-by-2 via a denominator-free identity.** The closed form has a /2, which over ℕ invites truncated-division pitfalls. Proving the doubled identity 2·S(m+3,3) + 2^(m+3) = 3^(m+2) + 1 keeps the induction in ℕ and simultaneously exhibits 3^(n-1)+1 as 2·(S + 2^(n-1)), i.e. proves the parity that makes the division exact.",
+      "**omega closes the step once powers are atomised.** The inductive step is linear in the atoms 2^(m+2) and 3^(m+2) after supplying the rewrites 2^(m+3)=2·2^(m+2), 2^(m+4)=4·2^(m+2), 3^(m+3)=3·3^(m+2); omega then handles the natural subtraction and the division.",
+      "**Reusing the predecessor column.** The k=2 value is the inhomogeneous driving term for k=3, exactly the recurrence-to-geometric-sum method the parent used — demonstrating that the technique scales past the trivially geometric column."
+    ],
+    "prerequisites": [
+      "Stirling numbers of the second kind and set partitions",
+      "Induction on the natural numbers",
+      "The Pascal recurrence for Stirling numbers",
+      "Solving inhomogeneous first-order linear recurrences"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "File-level docstring stating S(n,3) = (3^(n-1)+1)/2 − 2^(n-1), the inhomogeneous recurrence S(n+1,3) = 3·S(n,3) + (2^(n-1)−1), and the denominator-free strategy. Imports Mathlib and opens Nat.",
+      "mathContext": "S(n,3) counts partitions of an n-set into three nonempty unlabeled blocks; Mathlib's Nat.stirlingSecond supplies the Pascal recurrence used to derive the column closed form."
+    },
+    {
+      "id": "two-block-aux",
+      "title": "Inline Two-Block Driving Term S(m+2,2) = 2^(m+1) − 1",
+      "startLine": 55,
+      "endLine": 78,
+      "summary": "aux_two: induction re-deriving the two-block column (base by decide; step from the Pascal recurrence specialised to the second column with S(m+2,1)=1 and 1 ≤ 2^(m+1), closed by omega). Keeps the entry self-contained.",
+      "mathContext": "The k=2 column is the inhomogeneous term in the k=3 recurrence; S(m+3,2) = 2^(m+2) − 1 is obtained as aux_two (m+1)."
+    },
+    {
+      "id": "shifted-form",
+      "title": "The Denominator-Free Shifted Identity",
+      "startLine": 80,
+      "endLine": 102,
+      "summary": "stirlingSecond_three_add: induction proving 2·S(m+3,3) + 2^(m+3) = 3^(m+2) + 1. Base S(3,3)=1 by decide. Step uses Pascal (S(m+4,3) = 3·S(m+3,3) + S(m+3,2)), substitutes the two-block value, expands the powers, and closes with omega.",
+      "mathContext": "a(m+1) = 3·a(m) + 2^(m+2) − 1 solved by a(m) = (3^(m+2)+1)/2 − 2^(m+2); the doubled, subtraction-free form keeps the induction inside ℕ."
+    },
+    {
+      "id": "textbook-form",
+      "title": "The Textbook Form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1)",
+      "startLine": 104,
+      "endLine": 116,
+      "summary": "stirlingSecond_three: for n ≥ 3, write n = m + 3, rewrite n − 1 = m + 2, and divide the shifted identity by 2. omega supplies both the exactness of the division and the closed form.",
+      "mathContext": "The standard statement: for n ≥ 3, S(n,3) = (3^(n-1)+1)/2 − 2^(n-1), with the division exact because 3^(n-1) is odd."
+    },
+    {
+      "id": "existence",
+      "title": "Existence of a Three-Block Partition",
+      "startLine": 118,
+      "endLine": 131,
+      "summary": "stirlingSecond_three_pos: S(n,3) > 0 for n ≥ 3. From 2^(m+3) = 8·2^m ≤ 9·3^m = 3^(m+2) and the shifted identity, 2·S(m+3,3) ≥ 1, so the count is positive.",
+      "mathContext": "Any set of size ≥ 3 can be split into three nonempty parts, so the count is strictly positive; the 3^n mode dominates the 2^n mode."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "note": "Origin of the Stirling numbers; S(n,k) as connection coefficients between powers and falling factorials"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6 develops the Stirling triangle, including the column closed forms S(n,2) and S(n,3)"
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "Sequence A000392: Stirling numbers of the second kind S(n,3)",
+      "year": "2024",
+      "note": "Values 1, 6, 25, 90, 301, 966, … with the closed form (3^(n-1)+1)/2 − 2^(n-1)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-second-kind-oq-01",
+      "relationship": "extends",
+      "description": "Answers the first open question of the parent two-block entry by establishing the third column with the same recurrence-to-geometric-sum method, reusing the k=2 value as the inhomogeneous driving term"
+    }
+  ],
+  "conclusion": {
+    "summary": "The third column of Stirling's triangle of the second kind has the closed form S(n,3) = (3^(n-1)+1)/2 − 2^(n-1) (stirlingSecond_three), obtained by solving the inhomogeneous first-order recurrence S(n+1,3) = 3·S(n,3) + (2^(n-1)−1) that Pascal's rule induces on the column. The denominator-free shifted identity (stirlingSecond_three_add) carries the induction and exhibits the parity making the division exact; the existence corollary (stirlingSecond_three_pos) records that the count is always positive. All four results are verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the third nontrivial column value of the Stirling-second-kind triangle as a directly citable closed form and confirms that the recurrence-to-geometric-sum technique scales beyond the geometric k=2 case to a genuinely inhomogeneous recurrence with two exponential modes.",
+    "openQuestions": [
+      "Is there a closed form for the fourth column S(n,4) = (4^(n-1) − 2·3^(n-1) + 2^n − 2)/6, derivable by the same method with three competing exponential modes?",
+      "Can the general finite-difference formula S(n,k) = (1/k!)·∑_{j=0}^{k} (−1)^j C(k,j)(k−j)^n be formalized and shown to recover the k = 2 and k = 3 columns as instances?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "StirlingSecondKindOQ01OQ01",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingSecondKindOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
