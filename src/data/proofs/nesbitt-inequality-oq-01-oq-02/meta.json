@@ -1,0 +1,176 @@
+{
+  "id": "nesbitt-inequality-oq-01-oq-02",
+  "title": "Shapiro's Cyclic Inequality for n = 4, with a Two-Parameter Equality Locus",
+  "slug": "nesbitt-inequality-oq-01-oq-02",
+  "description": "Nesbitt's inequality is the n = 3 case of Shapiro's cyclic inequality Σ aᵢ/(aᵢ₊₁ + aᵢ₊₂) ≥ n/2. This entry settles the next case, n = 4: for positive reals a, b, c, d, a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) ≥ 2. The engine is the two-term Titu (Engel-form Cauchy–Schwarz) estimate p²/x + q²/y ≥ (p+q)²/(x+y), whose deficit is the explicit square (py − qx)²/(xy(x+y)). Pairing the opposite terms (1,3) and (2,4) and applying Titu twice folds the four fractions down to a single quotient (a+b+c+d)²/(X+Y), and the polynomial identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)² exhibits the whole deficit, giving the sharp bound Σ ≥ 2 + ((a−c)² + (b−d)²)/(X+Y). Unlike Nesbitt's single diagonal a = b = c, the n = 4 equality locus is the genuinely two-parameter family {a = c, b = d} (e.g. (1,2,1,2) gives Σ = 2), which we characterise as an iff.",
+  "meta": {
+    "author": "H. S. Shapiro (1954, problem); formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NesbittInequalityOQ01OQ02.lean",
+    "tags": [
+      "inequality",
+      "algebra",
+      "cyclic-sum",
+      "cauchy-schwarz",
+      "shapiro-inequality",
+      "real-analysis",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "field_simp",
+        "description": "Clears positive denominators to reduce the Titu-deficit and folding identities to polynomial identities closed by ring",
+        "module": "Mathlib.Tactic.FieldSimp"
+      },
+      {
+        "theorem": "positivity",
+        "description": "Discharges nonnegativity of squares over positive denominators and nonzeroness of denominators from 0 < a, b, c, d",
+        "module": "Mathlib.Tactic.Positivity"
+      },
+      {
+        "theorem": "mul_div_mul_left",
+        "description": "Cancels the common factor to rewrite each fraction p/u as the square form p²/(p·u), the input shape for the Engel estimate",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "pow_eq_zero_iff",
+        "description": "x^n = 0 ↔ x = 0 (n ≠ 0) — turns (a−c)² = 0 into a − c = 0 in the equality-case necessity argument",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "nlinarith",
+        "description": "Closes the final polynomial step (a+b+c+d)² ≥ 2(X+Y) and the sign extraction of the squared deficit, from sq_nonneg hints",
+        "module": "Mathlib.Tactic.Linarith"
+      }
+    ],
+    "originalContributions": [
+      "engel2: the two-term Titu / Engel-form Cauchy–Schwarz estimate (p+q)²/(x+y) ≤ p²/x + q²/y, proved through the explicit deficit identity (py − qx)²/(xy(x+y)) ≥ 0 (no appeal to a named Mathlib Cauchy–Schwarz lemma)",
+      "titu2: the fraction-form Titu estimate p/u + q/v ≥ (p+q)²/(p·u + q·v), the directly applicable shape for cyclic sums",
+      "shapiro_four_lower: the sharp deficit lower bound Σ ≥ 2 + ((a−c)² + (b−d)²)/(X+Y), obtained by pairing opposite terms and folding via two Titu applications plus the identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)²",
+      "shapiro_four: Shapiro's cyclic inequality for n = 4, a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) ≥ 2 — the next case beyond Nesbitt's n = 3",
+      "shapiro_four_eq_iff: the equality characterisation Σ = 2 ↔ (a = c ∧ b = d), exhibiting a two-parameter equality locus in contrast to Nesbitt's single diagonal a = b = c"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 152,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Harold Shapiro proposed in 1954 (American Mathematical Monthly) the cyclic inequality Σ aᵢ/(aᵢ₊₁ + aᵢ₊₂) ≥ n/2 for positive reals. It turned out to be subtle: the inequality is true for n ≤ 12 even and n ≤ 23 odd, and false beyond (counterexamples exist for n = 14 even and n = 25 odd, by Lighthill, Rankin, and others). Nesbitt's 1903 inequality is exactly the n = 3 instance. The n = 4 case treated here is the first step into the genuinely cyclic regime, where — unlike n = 3 — the minimum is attained on a positive-dimensional set rather than a single ray.",
+    "problemStatement": "For positive reals a, b, c, d, is a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) always at least 2, and when is it exactly 2?\n\n**Answer: Yes**, the sum is ≥ 2, with equality **iff a = c and b = d**. The defect from 2 equals an explicit nonnegative quantity ((a−c)² + (b−d)²)/(X+Y), zero precisely on the family a = c, b = d.",
+    "text": "The 4-cycle Shapiro sum a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) of a positive 4-tuple is bounded below by 2, attained exactly when a = c and b = d.",
+    "proofStrategy": "Write each term a/(b+c) = a²/(a(b+c)) and pair the opposite terms: (1,3) gives, by the two-term Titu estimate engel2, a/(b+c) + c/(d+a) ≥ (a+c)²/X with X = a(b+c) + c(d+a); (2,4) gives b/(c+d) + d/(a+b) ≥ (b+d)²/Y with Y = b(c+d) + d(a+b). A third Titu application folds (a+c)²/X + (b+d)²/Y ≥ (a+b+c+d)²/(X+Y). Finally the polynomial identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)² rewrites the single quotient as 2 + ((a−c)² + (b−d)²)/(X+Y), giving the sharp deficit bound; nonnegativity yields the inequality. For the equality case, Σ = 2 forces the squared deficit term to vanish, hence (a−c)² + (b−d)² = 0 and a = c, b = d; conversely a = c, b = d collapses every estimate to equality.",
+    "keyInsights": [
+      "The two-term Cauchy–Schwarz (Titu/Engel) estimate has an exact square deficit (py − qx)²/(xy(x+y)), so all inequalities here are equalities-minus-an-explicit-square — a self-certifying SOS-style proof",
+      "Pairing the OPPOSITE terms (1,3) and (2,4), not adjacent ones, is what makes the 4-cycle telescope cleanly into a single (a+b+c+d)² numerator",
+      "The folding identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)² turns the whole deficit into two squares, simultaneously delivering the bound and the equality locus",
+      "The minimum is attained on the two-parameter family a = c, b = d — a structural departure from the n = 3 (Nesbitt) case where only a = b = c achieves equality"
+    ],
+    "prerequisites": [
+      "Ordered fields and the arithmetic of real fractions",
+      "The Cauchy–Schwarz inequality in Engel (Titu) form and its square deficit",
+      "Sum-of-squares certificates and basic manipulation of divisions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "engel2",
+      "title": "Two-Term Titu / Engel-Form Cauchy–Schwarz",
+      "startLine": 45,
+      "endLine": 58,
+      "summary": "(p+q)²/(x+y) ≤ p²/x + q²/y for positive x, y, proved via the exact deficit identity (py − qx)²/(xy(x+y)) ≥ 0.",
+      "mathContext": "$\\frac{p^2}{x} + \\frac{q^2}{y} - \\frac{(p+q)^2}{x+y} = \\frac{(py-qx)^2}{xy(x+y)} \\ge 0$."
+    },
+    {
+      "id": "titu2",
+      "title": "Titu in Fraction Form",
+      "startLine": 60,
+      "endLine": 69,
+      "summary": "p/u + q/v ≥ (p+q)²/(p·u + q·v), the shape directly applicable to the cyclic fractions, obtained from engel2 by writing p/u = p²/(p·u).",
+      "mathContext": "$\\frac{p}{u} + \\frac{q}{v} \\ge \\frac{(p+q)^2}{pu+qv}$."
+    },
+    {
+      "id": "deficit",
+      "title": "Sharp Deficit Lower Bound",
+      "startLine": 71,
+      "endLine": 103,
+      "summary": "Pairing opposite terms and folding via two Titu applications, then the identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)², gives Σ ≥ 2 + ((a−c)² + (b−d)²)/(X+Y).",
+      "mathContext": "$\\sum \\ge 2 + \\frac{(a-c)^2 + (b-d)^2}{X+Y}, \\quad X+Y = a(b{+}c)+c(d{+}a)+b(c{+}d)+d(a{+}b).$"
+    },
+    {
+      "id": "inequality",
+      "title": "Shapiro's Inequality for n = 4",
+      "startLine": 105,
+      "endLine": 112,
+      "summary": "Nonnegativity of the deficit term gives a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) ≥ 2.",
+      "mathContext": "$\\frac{a}{b+c} + \\frac{b}{c+d} + \\frac{c}{d+a} + \\frac{d}{a+b} \\ge 2$."
+    },
+    {
+      "id": "equality",
+      "title": "Two-Parameter Equality Locus",
+      "startLine": 114,
+      "endLine": 151,
+      "summary": "Σ = 2 iff a = c and b = d; the squared deficit forces both differences to zero, and conversely the family a = c, b = d attains the bound — a positive-dimensional minimiser set unlike Nesbitt's single point.",
+      "mathContext": "$\\sum = 2 \\iff (a = c \\wedge b = d)$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Shapiro, H. S.",
+      "title": "Problem 4603",
+      "year": "1954",
+      "note": "American Mathematical Monthly — the original posing of the cyclic inequality"
+    },
+    {
+      "authors": "Mitrinović, D. S.; Pečarić, J. E.; Fink, A. M.",
+      "title": "Classical and New Inequalities in Analysis",
+      "year": "1993",
+      "note": "Survey of Shapiro's cyclic inequality, the ranges of validity, and counterexamples"
+    },
+    {
+      "authors": "Nesbitt, A. M.",
+      "title": "Problem 15114",
+      "year": "1903",
+      "note": "Educational Times — the n = 3 case (the parent entry)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "nesbitt-inequality-oq-01",
+      "relationship": "generalizes",
+      "description": "Nesbitt's inequality is the n = 3 case of the same Shapiro cyclic family; this entry proves the n = 4 case and contrasts the equality loci (single diagonal a = b = c for n = 3 versus the two-parameter family a = c, b = d for n = 4)."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "uses",
+      "description": "The proof engine is the two-term Cauchy–Schwarz inequality in Engel (Titu) form, here established directly through its exact square deficit rather than via a named Mathlib lemma."
+    }
+  ],
+  "conclusion": {
+    "summary": "Shapiro's cyclic inequality for n = 4, a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) ≥ 2, is machine-checked with 0 axioms via two applications of the Engel-form Cauchy–Schwarz estimate and a folding identity, which also yields the sharp deficit and the equality characterisation a = c ∧ b = d.",
+    "implications": "Beyond Nesbitt (n = 3), the n = 4 case already exhibits a positive-dimensional minimiser set, showing that the equality structure of Shapiro's inequality changes qualitatively with n. The opposite-pairing + Titu-folding template, with its explicit square deficits, is a reusable certified route for even cyclic sums.",
+    "openQuestions": [
+      "Does the opposite-pairing + Titu folding extend to n = 6 (a valid Shapiro case) to give a certified deficit, or does the absence of a clean two-block pairing for n ≥ 6 require a different SOS certificate?",
+      "Characterise the full equality locus of Shapiro's inequality for each valid even n; is it always the 'alternating-equal' family aᵢ = aᵢ₊₂?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "NesbittInequalityOQ01OQ02",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/NesbittInequalityOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
