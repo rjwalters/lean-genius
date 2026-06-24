@@ -1,0 +1,123 @@
+{
+  "id": "arithmetic-series-oq-04-oq-02",
+  "title": "Generating Functions for Bernoulli and Power Sums",
+  "slug": "arithmetic-series-oq-04-oq-02",
+  "description": "Formalizes the exponential generating function of the Bernoulli numbers (∑ Bₙxⁿ/n! = x/(eˣ−1)) and uses it to build the generating function of the power sums Sₚ(n) = ∑_{k<n} kᵖ and the explicit Faulhaber↔Bernoulli bridge connecting the two — all as formal power series over ℚ.",
+  "meta": {
+    "author": "Classical (Euler, Bernoulli); formalized in Lean 4",
+    "date": "1755",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ04OQ02.lean",
+    "tags": [
+      "number-theory",
+      "generating-functions",
+      "bernoulli",
+      "power-sums",
+      "faulhaber",
+      "power-series"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 163,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms (propext, Classical.choice, Quot.sound). No literal axiom declarations, no structure-encoded assumptions, 0 sorries, and no native_decide (so Lean.ofReduceBool is not used). The headline Bernoulli generating function bernoulli_egf is a restatement of Mathlib's bernoulliPowerSeries_mul_exp_sub_one; the power-sum generating function and the Faulhaber↔Bernoulli bridge are assembled here from Mathlib's exp_pow_sum, geom_sum_mul, exp_pow_eq_rescale_exp, and coeff_rescale.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "bernoulliPowerSeries_mul_exp_sub_one",
+        "description": "The exponential generating function of the Bernoulli numbers: bernoulliPowerSeries A * (exp A - 1) = X",
+        "module": "Mathlib.NumberTheory.Bernoulli"
+      },
+      {
+        "theorem": "PowerSeries.exp_pow_sum",
+        "description": "∑_{k<n} (exp)^k = mk (p ↦ ∑_{k<n} k^p / p!), the geometric sum of exponential power series read coefficientwise",
+        "module": "Mathlib.RingTheory.PowerSeries.WellKnown"
+      },
+      {
+        "theorem": "geom_sum_mul",
+        "description": "(∑_{i<n} x^i) * (x - 1) = x^n - 1 in a commutative ring",
+        "module": "Mathlib.Algebra.GeomSum"
+      },
+      {
+        "theorem": "PowerSeries.exp_pow_eq_rescale_exp",
+        "description": "(exp A)^k = rescale k (exp A), i.e. (e^x)^k = e^{kx}",
+        "module": "Mathlib.RingTheory.PowerSeries.WellKnown"
+      },
+      {
+        "theorem": "PowerSeries.coeff_rescale",
+        "description": "coeff n (rescale a f) = a^n * coeff n f",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "problemStatement": "**Open Question (arithmetic-series-oq-04, second open question)**: Faulhaber's formula (OQ-04) writes the power sum ∑_{k=1}^n kᵖ as a polynomial in n with Bernoulli-number coefficients. The engine behind it is the exponential generating function of the Bernoulli numbers:\n\n$$\\sum_{n=0}^{\\infty} B_n \\frac{x^n}{n!} = \\frac{x}{e^x - 1}.$$\n\n**Can we formalize this generating-function identity for the Bernoulli sums in Lean 4?**\n\n**Answer: YES.** As a formal power series over ℚ the identity reads `bernoulliPowerSeries ℚ * (exp ℚ - 1) = X` (Mathlib's `bernoulliPowerSeries_mul_exp_sub_one`). This entry restates it as the direct answer and then makes the Faulhaber bridge explicit at the generating-function level.",
+    "historicalContext": "The generating function x/(eˣ−1) is the defining property of the Bernoulli numbers Bₙ: Euler used it systematically in the 1750s, and it is the modern starting point for almost every Bernoulli-number identity. Multiplying through by eˣ−1 and comparing coefficients yields the classical recurrence ∑_{k<n} C(n,k)Bₖ = [n=1] that computes the Bₙ; expanding (eⁿˣ−1)/(eˣ−1) recovers Faulhaber's power-sum polynomials. The Bernoulli numbers in turn appear in the Euler–Maclaurin formula, the Taylor series of tan and cot, the values ζ(−n) = −B_{n+1}/(n+1) of the Riemann zeta function, and the Todd class in algebraic geometry.",
+    "keyInsights": [
+      "The literal open question — the Bernoulli generating function ∑ Bₙxⁿ/n! = x/(eˣ−1) — is exactly Mathlib's `bernoulliPowerSeries_mul_exp_sub_one`, here recorded as `bernoulli_egf`.",
+      "The exponential generating function of the power sums Sₚ(n) = ∑_{k<n} kᵖ is just the finite geometric series ∑_{k<n}(eˣ)ᵏ read coefficientwise: by `exp_pow_sum` its X^p coefficient is ∑_{k<n} kᵖ/p!. Multiplying by (eˣ−1) telescopes to eⁿˣ−1 via `geom_sum_mul`, giving ∑ₚ Sₚ(n) xᵖ/p! = (eⁿˣ−1)/(eˣ−1).",
+      "The Faulhaber bridge `faulhaber_bernoulli_egf` — (∑ₚ Sₚ(n)xᵖ/p!)·x = (eⁿˣ−1)·(∑ Bₘxᵐ/m!) — follows purely formally from the two product identities: the shared factor eˣ−1 cancels at the level of products in the commutative ring of power series, so no series inversion is needed.",
+      "Working in formal power series over ℚ avoids all analytic convergence issues; `exp ℚ`, `rescale`, and `bernoulliPowerSeries` are Mathlib's algebraic surrogates for eˣ, e^{cx}, and the Bernoulli generating function.",
+      "Concrete coefficient checks (S₁(4)=6, S₂(4)/2!=7, S₀(n)=n) ground the abstract power-series identities in computable rational values."
+    ],
+    "significance": "Provides the generating-function foundation underneath the Faulhaber/Bernoulli circle of problems (OQ-04 and its siblings OQ-01 on higher power sums and OQ-03 on ζ at negative integers), and contributes a power-sum generating function and an explicit Faulhaber↔Bernoulli bridge that are not present in Mathlib."
+  },
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Finset", "BigOperators", "PowerSeries", "Nat"],
+    "namespace": "ArithmeticSeriesOQ04OQ02",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/ArithmeticSeriesOQ04OQ02.lean",
+    "sorries": 0,
+    "mainTheorems": [
+      {
+        "name": "bernoulli_egf",
+        "type": "core",
+        "description": "The Bernoulli exponential generating function (the direct answer): (∑ Bₙ Xⁿ/n!)·(exp − 1) = X, i.e. ∑ Bₙ Xⁿ/n! = X/(exp − 1).",
+        "leanType": "bernoulliPowerSeries ℚ * (PowerSeries.exp ℚ - 1) = PowerSeries.X"
+      },
+      {
+        "name": "powerSum_egf'",
+        "type": "core",
+        "description": "Exponential generating function of the power sums Sₚ(n) = ∑_{k<n} kᵖ, closed form: (∑ₚ Sₚ(n)Xᵖ/p!)·(exp − 1) = (∑ₚ nᵖXᵖ/p!) − 1, i.e. ∑ₚ Sₚ(n)xᵖ/p! = (eⁿˣ − 1)/(eˣ − 1).",
+        "leanType": "(n : ℕ) → (mk fun p => ∑ k ∈ range n, (k:ℚ)^p / p!) * (exp ℚ - 1) = (mk fun p => (n:ℚ)^p / p!) - 1"
+      },
+      {
+        "name": "faulhaber_bernoulli_egf",
+        "type": "key",
+        "description": "The Faulhaber↔Bernoulli bridge at the generating-function level: multiplying the power-sum generating function by X equals (eⁿˣ − 1) times the Bernoulli generating function — the precise sense in which power sums are 'Bernoulli sums'.",
+        "leanType": "(n : ℕ) → (mk fun p => ∑ k ∈ range n, (k:ℚ)^p / p!) * X = ((mk fun p => (n:ℚ)^p / p!) - 1) * bernoulliPowerSeries ℚ"
+      },
+      {
+        "name": "powerSum_egf",
+        "type": "supporting",
+        "description": "Product form of the power-sum generating function: (∑ₚ Sₚ(n)Xᵖ/p!)·(exp − 1) = expⁿ − 1, obtained from the geometric series ∑_{k<n} expᵏ.",
+        "leanType": "(n : ℕ) → (mk fun p => ∑ k ∈ range n, (k:ℚ)^p / p!) * (exp ℚ - 1) = exp ℚ ^ n - 1"
+      }
+    ]
+  },
+  "references": [
+    {
+      "title": "Mathlib4: Mathlib.NumberTheory.Bernoulli",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Bernoulli.html",
+      "description": "Definitions of bernoulli/bernoulli' and the generating function bernoulliPowerSeries_mul_exp_sub_one."
+    },
+    {
+      "title": "Mathlib4: Mathlib.RingTheory.PowerSeries.WellKnown",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/PowerSeries/WellKnown.html",
+      "description": "PowerSeries.exp, rescale, exp_pow_eq_rescale_exp, and exp_pow_sum."
+    },
+    {
+      "title": "Concrete Mathematics (Graham, Knuth, Patashnik), §6.5 / §7",
+      "url": "https://en.wikipedia.org/wiki/Faulhaber%27s_formula",
+      "description": "Generating-function derivation of Faulhaber's formula from x/(eˣ−1)."
+    }
+  ],
+  "sorries": []
+}
