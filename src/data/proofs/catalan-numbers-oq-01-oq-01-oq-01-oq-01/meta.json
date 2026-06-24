@@ -34,6 +34,63 @@
       "Nat.sInf / Nat.find first-passage (least-witness) arguments"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Imports Mathlib and the parent Proofs.CatalanAndreReflection, then motivates the generalization: the same André reflection that gives catalan n = C(2n,n) − C(2n,n+1) at barrier −1 extends to arbitrary depth −k, yielding the ballot count C(2n,n) − C(2n,n+k). The parent's barrier-independent core is reused verbatim."
+    },
+    {
+      "id": "depth-k-predicates",
+      "title": "Depth-k Descent Predicates",
+      "startLine": 44,
+      "endLine": 60,
+      "summary": "hitsAtK S k j (the path is k below the axis at prefix j, i.e. j = 2·preUps S j + k) and ReachesK S k (it reaches −k at some prefix), both decidable. The parent's barrier-(−1) predicate is the definitional k = 1 case.",
+      "mathContext": "$\\mathrm{hitsAtK}\\,S\\,k\\,j \\iff j = 2\\,\\mathrm{preUps}(S,j)+k$;\\ $\\mathrm{ReachesK}\\,S\\,k \\iff \\exists j \\le 2n,\\ \\mathrm{hitsAtK}\\,S\\,k\\,j$."
+    },
+    {
+      "id": "discrete-ivt",
+      "title": "Discrete Intermediate Value at Depth k",
+      "startLine": 62,
+      "endLine": 91,
+      "summary": "reachesK_of_card_add_le: a path with at most n−k up-steps ends at height ≤ −2k, so by a Nat.find first-passage argument (with ±1 step size, card_filter_val_eq_le_one) it lands exactly on −k at its first crossing. This makes every (n−k)-up path a depth-k bad path, with no side condition beyond 1 ≤ k ≤ n.",
+      "mathContext": "$S.card + k \\le n \\implies \\mathrm{ReachesK}\\,S\\,k$."
+    },
+    {
+      "id": "reflection-cut",
+      "title": "Depth-k Cut Point and the Cardinality Engine",
+      "startLine": 93,
+      "endLine": 148,
+      "summary": "hitsAtK_reflect_iff (the hit predicate is unchanged below the cut, from preUps_reflect_eq), the cut point cutK = sInf {j | hitsAtK}, its first-passage properties (cutK_hits/min/le), reachesK_reflect and cutK_reflect (the cut survives reflection), and the quantitative core card_reflect_cutK: substituting cutK = 2·preUps + k into the parent identity gives #(reflect) + #S + k = 2n, so the up-count drops by exactly k.",
+      "mathContext": "$\\#(\\mathrm{reflect}\\,S\\,(\\mathrm{cutK}\\,S\\,k)) + \\#S + k = 2n$."
+    },
+    {
+      "id": "bijection-count",
+      "title": "The Reflection Bijection and the Ballot Count",
+      "startLine": 150,
+      "endLine": 227,
+      "summary": "BadPathsK / LowPathsK / GoodPathsK definitions; card_badPathsK (Finset.card_bij' with the reflection as its own inverse) proving #BadPathsK = #LowPathsK; card_badPathsK_eq = C(2n,n+k) via Nat.choose_symm; and card_goodPathsK_add / card_goodPathsK_sub giving the generalized ballot count #GoodPathsK = C(2n,n) − C(2n,n+k).",
+      "mathContext": "$\\#\\mathrm{GoodPathsK}\\,n\\,k = \\binom{2n}{n} - \\binom{2n}{n+k}$."
+    },
+    {
+      "id": "k1-recovery",
+      "title": "Recovering the Catalan Form at k = 1",
+      "startLine": 229,
+      "endLine": 246,
+      "summary": "reachesK_one_iff (Iff.rfl) and goodPathsK_one show GoodPathsK n 1 equals the parent's Dyck paths definitionally; card_goodPathsK_one transports the parent's result to #GoodPathsK n 1 = catalan n. The Catalan reflection form is literally the k = 1 slice.",
+      "mathContext": "$\\#\\mathrm{GoodPathsK}\\,n\\,1 = \\mathrm{catalan}\\,n$."
+    },
+    {
+      "id": "concrete-instance",
+      "title": "Concrete Instance n = 3, k = 2",
+      "startLine": 248,
+      "endLine": 258,
+      "summary": "The number of 3-up paths staying strictly above depth −2 is C(6,3) − C(6,5) = 20 − 6 = 14, verified with decide on the binomials and card_goodPathsK_add.",
+      "mathContext": "$\\#\\mathrm{GoodPathsK}\\,3\\,2 = 20 - 6 = 14$."
+    }
+  ],
   "conclusion": {
     "summary": "The depth-k André reflection reflect S (cutK S k) is an explicit involution on up-step position sets that fixes the first descent to −k and drops the up-count by exactly k. This gives a Finset bijection between depth-k bad n-up paths and all (n−k)-up paths (1 ≤ k ≤ n), proving #BadPathsK = C(2n,n+k) and hence the generalized ballot count #GoodPathsK = C(2n,n) − C(2n,n+k). At k = 1 the good paths are the parent's Dyck paths and the count is catalan n. The parent's barrier-independent infrastructure is reused verbatim. Verified, 0 axioms, 0 sorries, no native_decide.",
     "implications": [
