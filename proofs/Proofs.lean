@@ -3133,6 +3133,7 @@ import Proofs.LagrangeTheoremOQ01
 import Proofs.LagrangeTheoremOQ01OQ01
 import Proofs.LagrangeTheoremOQ01OQ01OQ01
 import Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachB
+import Proofs.LagrangeTheoremOQ01OQ01OQ02
 import Proofs.LagrangeTheoremOQ01OQ02
 import Proofs.LagrangeTheoremOQ01OQ03
 import Proofs.LagrangeTheoremOQ02
