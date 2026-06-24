@@ -981,6 +981,7 @@ import Proofs.DetConjugateTransposeOQ01
 import Proofs.DiamondImpliesCH
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
+import Proofs.DilworthTheoremOQ01OQ01OQ02
 import Proofs.DiniTheorem
 import Proofs.DiniTheoremOQ01OQ01
 import Proofs.DirichletApproximation
