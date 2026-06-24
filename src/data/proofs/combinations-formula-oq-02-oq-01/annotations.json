@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-ogf-definition",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 39, "endLine": 45 },
+    "type": "definition",
+    "title": "The Ordinary Generating Function C(X)",
+    "content": "Defines C as the formal power series whose n-th coefficient is the n-th Catalan number, using PowerSeries.mk over the rationals. The companion lemma coeff_C, tagged @[simp], records that the coefficient extraction returns exactly catalan n cast to Q. Working in the formal power series ring sidesteps all convergence questions: C is a purely algebraic object, an element of Q[[X]], not an analytic function on a disk.",
+    "mathContext": "$C(X) = \\sum_{n=0}^{\\infty} C_n X^n \\in \\mathbb{Q}[\\![X]\\!]$, where $C_n = \\frac{1}{n+1}\\binom{2n}{n}$ is the $n$-th Catalan number.",
+    "significance": "key",
+    "relatedConcepts": ["formal power series", "ordinary generating function", "Catalan numbers", "coefficient extraction"],
+    "prerequisites": ["formal power series ring", "Catalan numbers"]
+  },
+  {
+    "id": "ann-functional-equation",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 47, "endLine": 66 },
+    "type": "insight",
+    "title": "The Functional Equation C = 1 + X·C²",
+    "content": "The central identity: the generating function satisfies a quadratic functional equation. The proof compares coefficients on both sides after applying ext n. The constant term (n = 0) matches because catalan 0 = 1 and X·C² has zero constant term. For n = m+1, the coefficient of X^(m+1) in X·C² is the Cauchy-product (antidiagonal) convolution sum, which Mathlib's catalan_succ' identifies with catalan (m+1). A push_cast moves the natural-number recurrence into Q.",
+    "mathContext": "$C = 1 + X \\cdot C^2$, the power-series shadow of the convolution recurrence $C_{n+1} = \\sum_{i+j=n} C_i \\, C_j$. Combinatorially: a non-empty Dyck path splits uniquely as $(\\,P\\,)Q$ with $P, Q$ Dyck paths, giving the $X \\cdot C^2$ term.",
+    "significance": "key",
+    "relatedConcepts": ["functional equation", "Cauchy product", "convolution recurrence", "Dyck path decomposition", "antidiagonal"],
+    "prerequisites": ["Catalan convolution identity", "power series multiplication"]
+  },
+  {
+    "id": "ann-coeff-comparison",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 60, "endLine": 66 },
+    "type": "technique",
+    "title": "Coefficient Comparison and catalan_succ'",
+    "content": "The succ case is where the real work happens. After rewriting the coefficient of X^(m+1) in X·C² as a coeff_mul antidiagonal sum, simp normalizes each Catalan coefficient and the goal becomes literally Mathlib's catalan_succ'. The final push_cast; rfl bridges the cast from N to Q. This 'compare coefficients, recognize a known recurrence' pattern is the standard engine for proving generating-function identities in a formal power series ring.",
+    "mathContext": "$[X^{m+1}](X \\cdot C^2) = \\sum_{i+j=m} C_i \\, C_j = C_{m+1}$ by `catalan_succ'`.",
+    "significance": "technical",
+    "relatedConcepts": ["coeff_mul", "Finset.antidiagonal", "push_cast", "simp normalization"],
+    "prerequisites": ["Lean tactic mode", "Finset sums"]
+  },
+  {
+    "id": "ann-square-root-form",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 68, "endLine": 81 },
+    "type": "concept",
+    "title": "The Square-Root Form (2XC − 1)² = 1 − 4X",
+    "content": "Rearranging the functional equation into a perfect square exposes the closed form. From C = 1 + X·C² one gets X·C² = C − 1; substituting via linear_combination collapses everything algebraically to (2XC − 1)² = 1 − 4X. This is the precise ring-theoretic meaning of the textbook formula C = (1 − √(1−4X))/(2X): solving the quadratic for C and choosing the branch with C(0) = catalan 0 = 1 forces the minus sign on the square root.",
+    "mathContext": "$(2XC - 1)^2 = 1 - 4X \\;\\Longrightarrow\\; 2XC - 1 = -\\sqrt{1 - 4X} \\;\\Longrightarrow\\; C = \\dfrac{1 - \\sqrt{1 - 4X}}{2X}$, branch fixed by $C(0) = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["closed form", "quadratic formula", "branch selection", "central binomial coefficient"],
+    "prerequisites": ["solving quadratics", "formal power series square roots"]
+  },
+  {
+    "id": "ann-linear-combination",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "technique",
+    "title": "Algebraic Closure via linear_combination",
+    "content": "Both steps are discharged by Lean's linear_combination tactic, which certifies a ring identity by exhibiting the exact linear combination of hypotheses that proves it. First -h turns the functional equation into X·C² = C − 1; then (4X)·hXC2 supplies the multiplier that reduces (2XC−1)² − (1−4X) to zero in Q[[X]]. No coefficient bookkeeping is needed once the functional equation is in hand — the square-root form is a one-line algebraic consequence.",
+    "mathContext": "$(2XC-1)^2 - (1-4X) = 4X(X C^2 - (C-1)) = 0$ once $X C^2 = C - 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear_combination tactic", "commutative ring identities", "certificate-based proof"],
+    "prerequisites": ["commutative ring axioms", "Lean tactic mode"]
+  },
+  {
+    "id": "ann-no-square-root-operation",
+    "proofId": "combinations-formula-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Why a Square Root Cannot Be Stated Literally",
+    "content": "The docstring frames the subtlety that motivates the whole formalization: the textbook closed form contains √(1−4X), but a general formal power series ring has no square-root operation. The honest move is to formalize the algebraic content the generating function actually satisfies — the functional equation and the square-root form — from which the closed form is derived by solving a quadratic. This is the recurring theme of rigorizing generating-function folklore: identities are statements in Q[[X]], not manipulations of analytic functions.",
+    "mathContext": "$\\sqrt{1-4X}$ exists in $\\mathbb{Q}[\\![X]\\!]$ only because $1-4X$ has invertible constant term $1$; the identity $(2XC-1)^2 = 1-4X$ captures this without naming the root.",
+    "significance": "context",
+    "relatedConcepts": ["formal vs analytic", "rigor in combinatorics", "Lagrange inversion"],
+    "prerequisites": ["generating function method"]
+  }
+]

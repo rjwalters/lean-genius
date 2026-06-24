@@ -32,20 +32,76 @@
     ]
   },
   "overview": {
-    "problem": "The classical Catalan generating function C(x) = (1 - sqrt(1-4x))/(2x) cannot be stated literally over a formal power series ring because the square root is not a ring operation. We formalize its exact algebraic content instead.",
-    "approach": "Define C = PowerSeries.mk (catalan) over Q. Compare coefficients to prove the functional equation C = 1 + X*C^2 directly from Mathlib's Catalan convolution catalan_succ' (the coefficient of X^(n+1) in X*C^2 is the antidiagonal convolution sum, matching catalan_succ' after a cast). Then a single algebraic substitution X*C^2 = C - 1 yields (2*X*C - 1)^2 = 1 - 4*X, which is the square-root closed form solved for C with the branch fixed by C(0) = catalan 0 = 1.",
-    "significance": "Provides the rigorous power-series statement and machine-checked proof of the Catalan generating function. Mathlib records the convolution recurrence but not the generating-function identity, so the packaging is original."
+    "historicalContext": "Catalan numbers count an astonishing variety of combinatorial objects — triangulations of convex polygons, balanced parenthesizations, Dyck paths, binary trees — and recur throughout enumerative combinatorics. Euler discovered the polygon-triangulation count in 1751 (in correspondence with Goldbach), and Segner gave the convolution recurrence C_{n+1} = sum_{i+j=n} C_i C_j in 1758; the sequence is named for Eugene Charles Catalan (1814-1894), who studied parenthesizations in 1838. The generating-function method that produces the closed form C(x) = (1 - sqrt(1-4x))/(2x) is the historical archetype of solving an enumeration problem by translating a combinatorial recurrence into an algebraic equation for a power series and then solving that equation. This entry rigorizes that classical derivation inside Lean's formal power series ring, where no analytic notion of convergence or square root is presupposed.",
+    "problemStatement": "Establish the generating function of the Catalan numbers, classically written $C(x) = \\dfrac{1 - \\sqrt{1 - 4x}}{2x}$. Because $\\sqrt{\\cdot}$ is not an operation on a general formal power series ring, the literal expression cannot be stated as written; instead prove the two algebraic identities that the ordinary generating function $C(X) = \\sum_n C_n X^n \\in \\mathbb{Q}[\\![X]\\!]$ satisfies and which together are equivalent to the closed form: the functional equation $C = 1 + X C^2$ and the square-root form $(2XC - 1)^2 = 1 - 4X$.",
+    "proofStrategy": "Define C := PowerSeries.mk catalan over the rationals. Prove the functional equation C = 1 + X*C^2 by comparing coefficients (ext n): the constant terms agree since catalan 0 = 1, and the coefficient of X^(n+1) in X*C^2 is exactly the antidiagonal convolution sum that Mathlib's catalan_succ' equates with catalan (n+1). A push_cast moves this natural-number recurrence into Q. From the functional equation, rearrange X*C^2 = C - 1 and apply the linear_combination tactic with multiplier 4X to collapse (2XC - 1)^2 - (1 - 4X) to zero, yielding the square-root form. Selecting the branch with C(0) = 1 recovers the textbook closed form.",
+    "keyInsights": [
+      "A generating-function identity is a statement in the ring Q[[X]], independent of any convergence: the entire derivation is algebraic coefficient bookkeeping, never analysis.",
+      "The functional equation C = 1 + X*C^2 is the formal-power-series image of the Catalan convolution C_{n+1} = sum_{i+j=n} C_i C_j; combinatorially it encodes the unique decomposition of a non-empty Dyck path as (P)Q.",
+      "The closed form's square root is captured without any square-root operation: (2XC - 1)^2 = 1 - 4X says precisely that 2XC - 1 is a square root of 1 - 4X, with the branch fixed by the constant term C(0) = 1.",
+      "Once the functional equation is proved, the square-root form is a one-line algebraic consequence — linear_combination certifies the ring identity, so no further coefficient comparison is needed.",
+      "Mathlib supplies the convolution recurrence (catalan_succ') but not the generating-function packaging, so the bridge from recurrence to closed form is the original mathematical content here."
+    ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Motivation: A Square Root Without a Square-Root Operation",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "Docstring explaining why the classical closed form C(x) = (1 - sqrt(1-4x))/(2x) cannot be stated literally over a formal power series ring, and how the functional equation and square-root form together encode it rigorously inside Q[[X]]."
+    },
+    {
+      "id": "definition",
+      "title": "Defining the Ordinary Generating Function",
+      "startLine": 33,
+      "endLine": 45,
+      "summary": "Imports, namespace, and the definition C := PowerSeries.mk catalan over Q, together with the simp lemma coeff_C identifying its n-th coefficient with the n-th Catalan number."
+    },
+    {
+      "id": "functional-equation",
+      "title": "The Functional Equation C = 1 + X·C²",
+      "startLine": 47,
+      "endLine": 66,
+      "summary": "Proves the defining functional equation by coefficient comparison: the constant terms match via catalan 0 = 1, and the X^(n+1) coefficient reduces to Mathlib's convolution recurrence catalan_succ' after a cast to Q."
+    },
+    {
+      "id": "square-root-form",
+      "title": "The Square-Root Form (2XC − 1)² = 1 − 4X",
+      "startLine": 68,
+      "endLine": 83,
+      "summary": "Derives the square-root identity from the functional equation by the substitution X*C^2 = C - 1, closed by linear_combination with multiplier 4X. This is the precise ring-theoretic content of the closed form C = (1 - sqrt(1-4X))/(2X)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "combinations-formula-oq-02",
+      "relationship": "Parent problem. This entry answers its first open question by establishing the Catalan generating function whose coefficients are the central-binomial-derived Catalan numbers studied there."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01",
+      "relationship": "Companion. Provides the linear-time recurrence view of the Catalan numbers; the functional equation here is the generating-function counterpart of that recurrence."
+    },
+    {
+      "proofId": "dyck-catalan-count-oq-01",
+      "relationship": "Combinatorial model. Dyck words are counted by the Catalan numbers, and the unique decomposition of a non-empty Dyck path is exactly the combinatorial meaning of the functional equation C = 1 + X*C^2."
+    },
+    {
+      "proofId": "combinations-formula",
+      "relationship": "Root entry. The Catalan numbers are built from binomial coefficients (C_n = binom(2n,n)/(n+1)), tying this generating function back to the combinations formula."
+    }
+  ],
   "conclusion": {
     "summary": "The Catalan ordinary generating function C(X) = sum catalan_n X^n over Q satisfies the functional equation C = 1 + X*C^2 and the square-root form (2*X*C - 1)^2 = 1 - 4*X. Together with the constant term C(0) = 1, these encode the closed form C = (1 - sqrt(1-4X))/(2X) entirely within the formal power series ring. Verified with 0 sorries and 0 axioms.",
     "implications": [
-      "The functional equation C = 1 + X*C^2 is the formal-power-series shadow of the Catalan convolution and the standard route to all Catalan asymptotics.",
-      "The square-root identity (2XC-1)^2 = 1-4X is the precise ring-theoretic meaning of the textbook closed form, avoiding any square-root operation."
+      "The functional equation C = 1 + X*C^2 is the formal-power-series shadow of the Catalan convolution and the standard route to all Catalan asymptotics, including the C_n ~ 4^n / (n^{3/2} sqrt(pi)) growth rate obtained by singularity analysis at x = 1/4.",
+      "The square-root identity (2XC-1)^2 = 1-4X is the precise ring-theoretic meaning of the textbook closed form, avoiding any square-root operation and showing exactly which branch the constant term selects.",
+      "The coefficient-comparison-then-recognize-a-recurrence method demonstrated here is reusable for any combinatorial family whose recurrence Mathlib already records, turning a known convolution identity into a generating-function identity with a short, fully checked proof."
     ],
     "openQuestions": [
-      "Can a formal square root be defined on 1 - 4X in a completion or via PowerSeries inversion to recover the literal expression C = (1 - sqrt(1-4X))/(2X) as an equation of power series?",
-      "Does the same coefficient-comparison method yield the generating function 1/(1-2Xt+t^2) connections to Chebyshev/central-binomial families?"
+      "Can a formal square root be defined on 1 - 4X (its constant term 1 is a square) via PowerSeries inversion or in a suitable completion, so that the literal expression C = (1 - sqrt(1-4X))/(2X) becomes a provable equation of power series rather than only its squared form?",
+      "Does the same coefficient-comparison method yield the generating function 1/(1 - 2Xt + t^2) and its connections to the Chebyshev and central-binomial families?",
+      "Can Lagrange inversion be formalized in Q[[X]] to extract the explicit coefficient C_n = binom(2n,n)/(n+1) directly from the functional equation C = 1 + X*C^2, independently of catalan_succ'?"
     ]
   }
 }
