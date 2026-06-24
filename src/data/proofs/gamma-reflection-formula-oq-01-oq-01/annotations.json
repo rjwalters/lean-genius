@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-gamma-refl-oq0101-docstring",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "type": "context",
+    "title": "From Γ(1/2)² = π to the Arcsine Mass",
+    "content": "The docstring answers the parent's first open question: derive the Beta value B(1/2,1/2) = π from Γ(1/2)² = π through Euler's Beta–Gamma integral relation B(x,y) = Γ(x)Γ(y)/Γ(x+y). Mathlib has the Beta integral (Complex.betaIntegral) and the relation (Complex.Gamma_mul_Gamma_eq_betaIntegral) but evaluates neither B(1/2,1/2) nor the resulting real integral. The new content: B(1/2,1/2) = π, the closed form ∫₀¹ dt/√(t(1-t)) = π for the total mass of the arcsine kernel, and the fact that the normalised arcsine density 1/(π√(t(1-t))) integrates to 1 — so the reflection-formula constant π is the normaliser of the arcsine distribution.",
+    "mathContext": "$B(1/2,1/2) = \\Gamma(1/2)^2/\\Gamma(1) = \\pi$ and $\\int_0^1 dt/\\sqrt{t(1-t)} = \\pi$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Beta function",
+      "Gamma function",
+      "arcsine distribution",
+      "Euler integral",
+      "special functions"
+    ],
+    "prerequisites": [
+      "the Gamma and Beta functions",
+      "Euler's Beta–Gamma relation",
+      "interval integrals"
+    ]
+  },
+  {
+    "id": "ann-gamma-refl-oq0101-beta-value",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 67
+    },
+    "type": "key-step",
+    "title": "B(1/2,1/2) = π via the Beta–Gamma Relation",
+    "content": "betaIntegral_half_half instantiates Γ(s)·Γ(t) = Γ(s+t)·B(s,t) at s = t = 1/2. The right-hand Gamma factor is Γ(1/2+1/2) = Γ(1) = 1, leaving B(1/2,1/2) = Γ(1/2)². Substituting Γ(1/2) = π^(1/2) (Complex.Gamma_one_half_eq) and applying the cpow addition law π^(1/2)·π^(1/2) = π^(1/2+1/2) = π^1 = π gives the value. beta_half_half_gamma_ratio records the same fact in textbook ratio form over the real Gamma function, B(1/2,1/2) = Γ(1/2)²/Γ(1) = π, directly recovering the parent's Γ(1/2)² = π via Real.sq_sqrt.",
+    "mathContext": "$\\Gamma(1/2)\\Gamma(1/2) = \\Gamma(1)B(1/2,1/2)$ with $\\Gamma(1)=1$ and $\\Gamma(1/2)=\\pi^{1/2}$, so $B(1/2,1/2)=\\pi$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "Beta–Gamma relation",
+      "complex power cpow",
+      "Gamma(1/2) = √π"
+    ],
+    "prerequisites": [
+      "Complex.Gamma_mul_Gamma_eq_betaIntegral",
+      "Complex.Gamma_one_half_eq",
+      "cpow addition law"
+    ]
+  },
+  {
+    "id": "ann-gamma-refl-oq0101-integrand",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 89
+    },
+    "type": "key-step",
+    "title": "Complex Beta Integrand = Real Arcsine Kernel",
+    "content": "beta_integrand_eq identifies the complex Beta integrand at (1/2,1/2), namely x^(1/2-1)·(1-x)^(1/2-1), with the cast of the real arcsine kernel 1/√(x(1-x)), valid for every x ∈ [0,1]. The exponent 1/2-1 = -1/2, and for 0 ≤ x both x^(-1/2) and (1-x)^(-1/2) are casts of their real counterparts (Complex.ofReal_cpow). Over ℝ the product x^(-1/2)·(1-x)^(-1/2) collapses to 1/√(x(1-x)) using Real.sqrt_mul and rpow/sqrt conversions. This pointwise identity is what lets the complex Beta integral be read as a real integral.",
+    "mathContext": "$x^{-1/2}(1-x)^{-1/2} = \\dfrac{1}{\\sqrt{x(1-x)}}$ for $x \\in [0,1]$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "real/complex cpow cast",
+      "rpow and sqrt",
+      "arcsine kernel"
+    ],
+    "prerequisites": [
+      "Complex.ofReal_cpow",
+      "Real.sqrt_mul",
+      "Real.rpow_neg"
+    ]
+  },
+  {
+    "id": "ann-gamma-refl-oq0101-arcsine-mass",
+    "proofId": "gamma-reflection-formula-oq-01-oq-01",
+    "range": {
+      "startLine": 91,
+      "endLine": 118
+    },
+    "type": "key-step",
+    "title": "Arcsine Total Mass and Probability Normalisation",
+    "content": "arcsine_total_mass transports the complex value to the real closed form ∫₀¹ dx/√(x(1-x)) = π: by the pointwise identity, Complex.betaIntegral (1/2) (1/2) equals the interval integral of the cast real kernel, so intervalIntegral.integral_ofReal turns it into the cast of the real arcsine integral, whose value must therefore be π. arcsine_density_total_mass then factors out the constant 1/π (intervalIntegral.integral_const_mul) to conclude ∫₀¹ dx/(π√(x(1-x))) = 1 — the arcsine law is a genuine probability distribution, normalised exactly by the reflection-formula constant π.",
+    "mathContext": "$\\int_0^1 \\frac{dx}{\\sqrt{x(1-x)}} = \\pi \\;\\Rightarrow\\; \\int_0^1 \\frac{dx}{\\pi\\sqrt{x(1-x)}} = 1$.",
+    "significance": "core",
+    "relatedConcepts": [
+      "arcsine distribution",
+      "probability normalisation",
+      "interval integral transport"
+    ],
+    "prerequisites": [
+      "intervalIntegral.integral_ofReal",
+      "intervalIntegral.integral_const_mul"
+    ]
+  }
+]

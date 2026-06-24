@@ -1,0 +1,169 @@
+{
+  "id": "gamma-reflection-formula-oq-01-oq-01",
+  "slug": "gamma-reflection-formula-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "scoped Real"
+    ],
+    "namespace": "GammaReflectionFormulaOQ01OQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/GammaReflectionFormulaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "B(1/2,1/2) = π and the Total Mass of the Arcsine Density",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GammaReflectionFormulaOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "gamma-function",
+      "beta-function",
+      "arcsine-distribution",
+      "reflection-formula",
+      "probability",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 119,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "betaIntegral_half_half: the special Beta value B(1/2,1/2) = π, obtained by feeding s = t = 1/2 into Mathlib's Beta–Gamma relation Γ(s)·Γ(t) = Γ(s+t)·B(s,t) (where Γ(1) = 1) and collapsing Γ(1/2)² = π^(1/2)·π^(1/2) = π. Mathlib defines the Beta integral but does not evaluate it at (1/2,1/2).",
+      "beta_half_half_gamma_ratio: the textbook ratio form B(1/2,1/2) = Γ(1/2)·Γ(1/2)/Γ(1) = π over the real Gamma function, recovering the parent's Γ(1/2)² = π.",
+      "beta_integrand_eq: pointwise identification on [0,1] of the complex Beta integrand x^(1/2-1)·(1-x)^(1/2-1) with the cast of the real arcsine kernel 1/√(x(1-x)), via Complex.ofReal_cpow.",
+      "arcsine_total_mass: the closed form ∫₀¹ dx/√(x(1-x)) = π for the total mass of the (unnormalised) arcsine kernel, transported from the complex Beta value through intervalIntegral.integral_ofReal. Not in Mathlib.",
+      "arcsine_density_total_mass: the arcsine law on [0,1] is a probability distribution — its density 1/(π√(x(1-x))) integrates to 1 — exhibiting the reflection-formula constant π as the normalisation of the arcsine distribution."
+    ],
+    "prerequisites": [
+      "Euler Gamma function Real.Gamma / Complex.Gamma and the value Γ(1/2) = √π (Complex.Gamma_one_half_eq)",
+      "Mathlib's Beta integral Complex.betaIntegral and the Beta–Gamma relation Complex.Gamma_mul_Gamma_eq_betaIntegral",
+      "Real/complex cpow and the cast Complex.ofReal_cpow for non-negative bases",
+      "intervalIntegral.integral_ofReal to transport a real-valued complex integral back to ℝ"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.Gamma_mul_Gamma_eq_betaIntegral",
+        "description": "Γ(s)·Γ(t) = Γ(s+t)·B(s,t) for s,t of positive real part — Euler's Beta–Gamma integral relation, the bridge from Γ(1/2)² to B(1/2,1/2).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Complex.Gamma_one_half_eq",
+        "description": "Γ(1/2) = π^(1/2) over ℂ, used (with the cpow addition law) to evaluate Γ(1/2)·Γ(1/2) = π.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Γ(1/2) = √π over ℝ, used for the real ratio form B(1/2,1/2) = Γ(1/2)²/Γ(1).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Complex.ofReal_cpow",
+        "description": "(↑x)^(↑r) = ↑(x^r) for 0 ≤ x, used to identify the complex Beta integrand with the cast real arcsine kernel pointwise on [0,1].",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "intervalIntegral.integral_ofReal",
+        "description": "∫ (↑(f x) : ℂ) = ↑(∫ f x); transports the real-valued complex Beta integral back to the real arcsine integral.",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "gamma-reflection-formula-oq-01-oq-01-oq-01",
+      "question": "Compute the general symmetric Beta value B(s,1-s) = π/sin(πs) by combining the Beta–Gamma relation with Euler's reflection formula, recovering B(1/2,1/2) = π as the case s = 1/2.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "extends",
+      "description": "The parent establishes Γ(1/2)² = π from Euler's reflection formula; this entry feeds that value through the Beta–Gamma relation to evaluate B(1/2,1/2) = π and reads it as the total mass of the arcsine density."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-03",
+      "relationship": "related",
+      "description": "That entry proves Γ(1/2) = √π via the Gaussian integral, the value squared here to give B(1/2,1/2) = Γ(1/2)²/Γ(1) = π."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gamma.Beta",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Complex.betaIntegral and the Beta–Gamma relation Complex.Gamma_mul_Gamma_eq_betaIntegral."
+    },
+    {
+      "title": "A Course of Modern Analysis",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press",
+      "description": "Classical reference for the Beta function and the identity B(x,y) = Γ(x)Γ(y)/Γ(x+y) (§12.4)."
+    },
+    {
+      "title": "The Arcsine Law",
+      "author": "Paul Lévy",
+      "year": "1939",
+      "venue": "historical",
+      "description": "The arcsine distribution on [0,1] with density 1/(π√(x(1-x))), whose normalisation constant π is the Beta value computed here."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Beta function B(x,y) = ∫₀¹ tˣ⁻¹(1-t)ʸ⁻¹ dt was studied by Euler alongside the Gamma function, and the two are joined by the celebrated Euler integral identity B(x,y) = Γ(x)Γ(y)/Γ(x+y). The symmetric value B(1/2,1/2) is the simplest non-trivial special value: it equals Γ(1/2)²/Γ(1) = π, the same π that Euler's reflection formula produces at s = 1/2. The integrand at (1/2,1/2) is 1/√(t(1-t)), whose antiderivative is the arcsine — so the value π is literally ∫₀¹ dt/√(t(1-t)), the total mass of the (unnormalised) arcsine kernel. Dividing by π gives the density 1/(π√(t(1-t))) of the arcsine distribution, which appears in Lévy's arcsine laws for Brownian motion and in the spectral theory of random matrices. Mathlib formalises the Beta integral and the Beta–Gamma relation but does not record this special value or the arcsine closed form; both are supplied here.",
+    "problemStatement": "Derive the Beta value B(1/2,1/2) = π from Γ(1/2)² = π via Mathlib's Beta–Gamma relation, and exhibit the same π as the total mass ∫₀¹ dt/√(t(1-t)) of the arcsine density on [0,1], so that the normalised arcsine density 1/(π√(t(1-t))) integrates to 1.",
+    "proofStrategy": "Instantiate the Beta–Gamma relation Γ(s)·Γ(t) = Γ(s+t)·B(s,t) at s = t = 1/2: the right factor Γ(1) = 1, so B(1/2,1/2) = Γ(1/2)². Evaluating Γ(1/2) = π^(1/2) (Complex.Gamma_one_half_eq) and using the cpow law π^(1/2)·π^(1/2) = π^(1/2+1/2) = π gives B(1/2,1/2) = π. For the arcsine reading, unfold Complex.betaIntegral and identify the complex integrand x^(1/2-1)·(1-x)^(1/2-1) with the cast of the real kernel 1/√(x(1-x)) pointwise on [0,1] (Complex.ofReal_cpow), so the complex Beta integral is the cast of a real integral; intervalIntegral.integral_ofReal then transports the value π back to ℝ, yielding ∫₀¹ dx/√(x(1-x)) = π. Factoring out 1/π gives the probability normalisation.",
+    "keyInsights": [
+      "The Beta–Gamma relation turns the parent's transcendental special value Γ(1/2)² = π into a value of a concrete real integral: B(1/2,1/2) is not just an abstract product of Gamma values but the area ∫₀¹ dt/√(t(1-t)).",
+      "The same constant π appears in three guises — the reflection-formula special value Γ(1/2)², the Beta integral B(1/2,1/2), and the total mass of the arcsine kernel — and the proof makes the chain of equalities fully explicit.",
+      "Identifying the complex Beta integrand with the real arcsine kernel needs care only at the cast: for 0 ≤ x the powers x^(-1/2) and (1-x)^(-1/2) are the casts of their real counterparts (Complex.ofReal_cpow), after which the value is real and transports back by integral_ofReal.",
+      "The arcsine distribution's normalisation constant is exactly this Beta value: 1/(π√(x(1-x))) integrates to 1 precisely because ∫₀¹ dx/√(x(1-x)) = π. The reflection-formula π is the probability normaliser of the arcsine law.",
+      "The badge is original: Mathlib supplies the Beta integral and the Beta–Gamma relation, but neither the special value B(1/2,1/2) = π nor the real closed form ∫₀¹ dx/√(x(1-x)) = π is in the library."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: From Γ(1/2)² to the Arcsine Mass",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "States the open question — derive B(1/2,1/2) = π from Γ(1/2)² = π via the Beta–Gamma relation — and the arcsine reading ∫₀¹ dt/√(t(1-t)) = π. Names the Mathlib sources (Complex.betaIntegral, Complex.Gamma_mul_Gamma_eq_betaIntegral) and the new content: the special value, the real closed form, and the probability normalisation of the arcsine law.",
+      "mathContext": "$B(1/2,1/2) = \\Gamma(1/2)^2/\\Gamma(1) = \\pi$ and $\\int_0^1 dt/\\sqrt{t(1-t)} = \\pi$."
+    },
+    {
+      "id": "beta-value",
+      "title": "The Beta Value at the Symmetric Point",
+      "startLine": 46,
+      "endLine": 67,
+      "summary": "betaIntegral_half_half computes B(1/2,1/2) = π from the Beta–Gamma relation at s = t = 1/2 (Γ(1) = 1, Γ(1/2) = π^(1/2), cpow addition). beta_half_half_gamma_ratio records the real ratio form B(1/2,1/2) = Γ(1/2)²/Γ(1) = π recovering the parent's Γ(1/2)² = π.",
+      "mathContext": "$\\Gamma(1/2)\\Gamma(1/2) = \\Gamma(1)\\,B(1/2,1/2)$, $\\Gamma(1)=1$, $\\Gamma(1/2)=\\pi^{1/2}$."
+    },
+    {
+      "id": "arcsine-mass",
+      "title": "The Arcsine Total Mass",
+      "startLine": 69,
+      "endLine": 118,
+      "summary": "beta_integrand_eq identifies the complex Beta integrand x^(1/2-1)(1-x)^(1/2-1) with the cast of 1/√(x(1-x)) on [0,1]. arcsine_total_mass transports B(1/2,1/2) = π to the real closed form ∫₀¹ dx/√(x(1-x)) = π via integral_ofReal. arcsine_density_total_mass factors out 1/π to show the arcsine density integrates to 1.",
+      "mathContext": "$\\int_0^1 \\frac{dx}{\\sqrt{x(1-x)}} = \\pi$, hence $\\int_0^1 \\frac{dx}{\\pi\\sqrt{x(1-x)}} = 1$."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Beta value B(1/2,1/2) = π is derived from Γ(1/2)² = π via Mathlib's Beta–Gamma relation Γ(s)Γ(t) = Γ(s+t)B(s,t) at s = t = 1/2 (with Γ(1) = 1 and Γ(1/2) = π^(1/2)). Unfolding the Beta integral and identifying its integrand with the real arcsine kernel 1/√(x(1-x)) on [0,1] transports the value to the real closed form ∫₀¹ dx/√(x(1-x)) = π, and factoring out 1/π shows the arcsine density 1/(π√(x(1-x))) integrates to 1. 119 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The Beta integral and the Beta–Gamma relation are Mathlib's (used as bridges), but the special value B(1/2,1/2) = π, the real closed form ∫₀¹ dx/√(x(1-x)) = π, and the arcsine probability normalisation are new — hence the original badge. The entry exhibits the reflection-formula constant π simultaneously as a Gamma special value, a Beta integral, and the normalising constant of the arcsine distribution.",
+    "openQuestions": [
+      "Compute the general symmetric Beta value B(s,1-s) = π/sin(πs) by combining the Beta–Gamma relation with Euler's reflection formula."
+    ]
+  }
+}
