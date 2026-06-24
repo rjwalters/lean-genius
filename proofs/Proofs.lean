@@ -43,6 +43,7 @@ import Proofs.AbelRuffiniOQ07NotSolvable
 import Proofs.AbelRuffiniOQ07Order6
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10
+import Proofs.AbundantDeficientDvdOQ04
 import Proofs.AbundantMultiplesOQ01
 import Proofs.AbundantNumberOQ01
 import Proofs.AbundantNumberOQ02
@@ -3130,6 +3131,7 @@ import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert22OQ01
 import Proofs.Hilbert22Uniformization
 import Proofs.Hilbert23CalculusVariations
+import Proofs.Hilbert23CalculusVariationsOQ01
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
 import Proofs.Hilbert5LieGroups
