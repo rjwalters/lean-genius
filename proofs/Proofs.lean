@@ -3679,6 +3679,7 @@ import Proofs.SubsetCount
 import Proofs.SubsetCountMultisetOQ01
 import Proofs.SubsetCountOQ02
 import Proofs.SubsetCountOQ02OQ01
+import Proofs.SubsetCountOQ02OQ02
 import Proofs.SumOfDivisors
 import Proofs.SumOfDivisorsOQ02
 import Proofs.SumOfDivisorsOQ04
