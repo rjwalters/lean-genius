@@ -1,0 +1,128 @@
+{
+  "id": "birch-swinnerton-dyer-oq-06-oq-01",
+  "title": "Cremona Classification: 389a1 is the Smallest-Conductor Rank-2 Curve",
+  "slug": "birch-swinnerton-dyer-oq-06-oq-01",
+  "description": "Formalizes the logical structure of Cremona's classification result that the elliptic curve 389a1 (y² + y = x³ + x² - 2x, conductor 389) has the smallest conductor among all rank-2 elliptic curves over ℚ. The deep computational input — no rank-2 curve has conductor below 389, established by Cremona's exhaustive descent computation over thousands of curves — enters as an explicit theorem hypothesis rather than an axiom, so every declaration is fully machine-checked with 0 axioms and 0 sorries. Builds an abstract minimal-conductor framework (predicate IsMinConductorForRank, the lower-bound derivation, uniqueness of the minimal conductor value, and the contrapositive threshold form), and verifies the arithmetic of the Cremona rank records: smallest conductors 11, 37, 389, 5077 at ranks 0, 1, 2, 3 are strictly increasing.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirchSwinnertonDyerOQ06OQ01.lean",
+    "tags": [
+      "elliptic-curves",
+      "bsd-conjecture",
+      "cremona-classification",
+      "conductor",
+      "mordell-weil-rank",
+      "number-theory",
+      "millennium-prize",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. The result is stated and proved with no axioms and no sorries. The deep mathematical content — that no elliptic curve over ℚ of rank 2 has conductor below 389 (Cremona's exhaustive computation) — is supplied as an explicit hypothesis `hcremona : ∀ E', rk E' = 2 → 389 ≤ cond E'` to the headline theorem, not as an axiom. The headline theorem therefore formalizes the implication 'Cremona's classification ⟹ 389a1 is minimal'. `#print axioms` reports the headline theorem depends on no axioms; the registry summary uses only propext/Classical.choice/Quot.sound (the standard foundational trio, which do not count).",
+    "lineCount": 215,
+    "theoremCount": 13,
+    "definitionCount": 6,
+    "originalContributions": [
+      "IsMinConductorForRank: an abstract predicate capturing 'minimal conductor among curves of a fixed rank', over an arbitrary curve carrier with conductor and rank functions",
+      "isMinConductorForRank_of_lb: the master derivation turning a classification lower bound into a genuine minimality statement",
+      "minConductor_unique: the minimal conductor value is well defined — any two minimal-conductor curves of the same rank share a conductor",
+      "rank_ne_of_conductor_lt / conductor_lt_389_rank_ne_two: contrapositive threshold form — any curve of conductor below 389 has rank ≠ 2",
+      "curve389a_isMinConductorForRank2: the headline conditional theorem — Cremona's classification implies 389a1 is the smallest-conductor rank-2 curve",
+      "records_conductor_strictMono: verified arithmetic that the Cremona rank-record conductors 11 < 37 < 389 < 5077 strictly increase with rank"
+    ],
+    "openQuestions": [
+      "Discharge the hcremona hypothesis for an initial segment of conductors by importing a verified slice of the Cremona database and rigorous (descent-based) rank certificates",
+      "Formalize 2-descent for elliptic curves over ℚ in Mathlib to make rank upper bounds machine-checkable, the missing ingredient for an unconditional classification",
+      "Extend the rank-record registry with the smallest-conductor curves of ranks 4–6 (conductors 234446, 19047851, 5187563742) and prove the monotone pattern continues"
+    ],
+    "mathContext": "Refines the parent OQ-06 'Minimal Conductor Property' section, which only proved the trivial facts 389 = 389 and Nat.Prime 389. This entry gives the first formalization of the actual minimality content. Self-contained (imports only Mathlib); does not depend on the 7,400-line BirchSwinnertonDyer.lean chain.",
+    "proofStrategy": "Separate the verifiable logical/arithmetic content from the infeasible computational content. The order-theoretic core (a curve attaining a lower bound is the minimiser; minimisers are unique in value; the contrapositive threshold) is proved generically over an abstract carrier E with cond, rk : E → ℕ. Cremona's exhaustive computation enters only as an explicit hypothesis. The finite rank-record arithmetic (strict monotonicity, uniqueness of the rank-2 record) is discharged by `decide`/`norm_num`.",
+    "historicalContext": "Curve 389a1 (Cremona label, conductor N = 389 prime) is the smallest-conductor elliptic curve over ℚ of rank 2, a fact established by John Cremona's systematic enumeration of modular elliptic curves and the associated rank computations. It was the rank-2 focus of the 1985 Buhler–Gross–Zagier numerical BSD investigation. The smallest-conductor curves by rank form a classical sequence: 11 (rank 0), 37 (rank 1), 389 (rank 2), 5077 (rank 3).",
+    "problemStatement": "Formalize the exact Cremona classification: that the elliptic curve 389a1 has the smallest conductor among all rank-2 elliptic curves over ℚ."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Scope",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Imports `Mathlib`, declares namespace `BirchSwinnertonDyerOQ06OQ01`. The opening docstring delineates what is and is not provable: the genuine statement (no rank-2 curve has conductor < 389) is Cremona's exhaustive descent computation and is supplied as a hypothesis, while the logical structure and rank-record arithmetic are fully machine-checked."
+    },
+    {
+      "id": "sec-abstract",
+      "title": "Abstract Minimal-Conductor Framework",
+      "startLine": 51,
+      "endLine": 106,
+      "summary": "Over an abstract carrier E with conductor/rank functions cond, rk : E → ℕ, defines `IsMinConductorForRank cond rk E₀ r` and proves: `isMinConductorForRank_of_lb` (a lower bound attained gives minimality), `le_conductor_of_minConductor` (a minimiser dominates all rank-r curves), `minConductor_unique` (the minimal conductor value is unique), and `rank_ne_of_conductor_lt` (below the minimum, rank ≠ r). All zero-axiom."
+    },
+    {
+      "id": "sec-records",
+      "title": "The Cremona Rank-Record Registry",
+      "startLine": 108,
+      "endLine": 155,
+      "summary": "Defines the `RankRecord` data structure and the four smallest-conductor records `record0`..`record3` (11/37/389/5077 at ranks 0/1/2/3) and their list `cremonaRecords`. Verifies by `decide`/`norm_num`: `record2_conductor_prime` (389 prime), `records_conductor_strictMono` (11 < 37 < 389 < 5077), `records_min_conductor_rank_ge_two`, and `records_rank_two_unique`."
+    },
+    {
+      "id": "sec-classification",
+      "title": "The Classification Theorem for 389a1",
+      "startLine": 157,
+      "endLine": 205,
+      "summary": "The headline `curve389a_isMinConductorForRank2`: given rk c389 = 2, cond c389 = 389, and Cremona's lower bound (∀ rank-2 curve, conductor ≥ 389), concludes 389a1 is minimal-conductor for rank 2. Corollaries `rank2_conductor_ge_389` (every rank-2 curve has conductor ≥ 389) and `conductor_lt_389_rank_ne_two` (conductor < 389 ⟹ rank ≠ 2)."
+    },
+    {
+      "id": "sec-summary",
+      "title": "cremona_389a_summary",
+      "startLine": 207,
+      "endLine": 215,
+      "summary": "Bundles the unconditional verified facts: 389 is prime, the rank-record conductors strictly increase, and the rank-2 record is 389a1 with conductor 389 and rank 2."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The conductor of an elliptic curve over ℚ measures its arithmetic complexity; ordering curves by conductor is the organising principle of John Cremona's Elliptic Curve Database. For each rank, the curve of smallest conductor realising that rank is a distinguished object: 11a1 (rank 0), 37a1 (rank 1), 389a1 (rank 2), 5077a1 (rank 3). Curve 389a1 (y² + y = x³ + x² - 2x, conductor 389 prime) was the rank-2 curve studied by Buhler, Gross and Zagier in 1985 in one of the first numerical tests of the Birch–Swinnerton-Dyer conjecture beyond rank 1. The assertion that 389 is the smallest rank-2 conductor is a theorem of computation: every isogeny class of smaller conductor was enumerated and its Mordell–Weil rank pinned down by descent, and none reaches rank 2.",
+    "problemStatement": "Formalize the exact Cremona classification statement that the elliptic curve 389a1 has the smallest conductor among all rank-2 elliptic curves over ℚ, separating the machine-checkable logical and arithmetic content from the infeasible exhaustive computation.",
+    "proofStrategy": "The exhaustive rank computation over all curves of conductor below 389 cannot be reproduced inside Lean today, so it is isolated as a single explicit hypothesis `hcremona`. Everything else is proved unconditionally: an order-theoretic minimal-conductor framework over an abstract curve carrier, and the finite arithmetic of the rank records. The headline theorem composes these into the honest implication 'Cremona's classification ⟹ 389a1 minimal', with `#print axioms` confirming no axioms are used.",
+    "keyInsights": [
+      "Minimality decomposes cleanly: 'E₀ has the smallest conductor among rank-r curves' is exactly 'rk E₀ = r and a lower bound holds for all rank-r curves'. Once the lower bound is granted, minimality is immediate — so the entire mathematical difficulty is concentrated in that single lower-bound hypothesis.",
+      "Threading the deep fact as a hypothesis rather than an axiom keeps the formalization genuinely 0-axiom: the file proves a true implication whose hypothesis is the real Cremona theorem, which is the honest maximal content given that an in-Lean rank computation is infeasible.",
+      "The minimal conductor as a function of rank is strictly increasing on the known records (11 < 37 < 389 < 5077); this monotonicity is a verifiable shadow of the heuristic that higher rank forces larger conductor, and is proved here by decision procedure.",
+      "The contrapositive form (conductor < 389 ⟹ rank ≠ 2) reframes minimality as a threshold phenomenon: 389 is the exact conductor barrier below which rank 2 is impossible, which is the form most useful for ruling curves in or out.",
+      "Keeping the entry self-contained on Mathlib (rather than importing the 7,400-line BSD development) makes it independently buildable and verifiable, while the abstract framework remains directly instantiable by the parent file's curve389a, conductor, and algebraicRank."
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry gives the first formalization of the content of the claim that 389a1 is the smallest-conductor rank-2 elliptic curve over ℚ, beyond the parent OQ-06's trivial '389 = 389'. It supplies an abstract, reusable minimal-conductor framework (minimality from a lower bound, uniqueness of the minimal value, contrapositive threshold), verifies the strictly increasing rank-record conductors 11 < 37 < 389 < 5077, and proves the headline implication that Cremona's classification yields 389a1's minimality — all with 0 axioms and 0 sorries.",
+    "implications": "The framework is directly instantiable: substituting the parent file's algebraicRank, conductor, and curve389a gives an unconditional theorem the moment the lower bound hcremona is itself established. That reduces the open problem to a single concrete target — a verified Cremona-database slice with descent-based rank certificates for conductors below 389 — and the same machinery applies verbatim to the smallest-conductor question at every rank.",
+    "openQuestions": [
+      "Discharge hcremona for conductors below 389 by formalizing a verified slice of the Cremona database together with rigorous 2-descent rank certificates, turning the conditional theorem into an unconditional one.",
+      "Develop elliptic-curve descent in Mathlib so that Mordell–Weil rank upper bounds become machine-checkable, the central missing ingredient for the classification.",
+      "Prove the strictly-increasing minimal-conductor pattern persists for ranks 4, 5, 6 (conductors 234446, 19047851, 5187563742) using the same registry approach."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birch-swinnerton-dyer-oq-06",
+      "relationship": "Parent open question (BSD verification for rank-2 curve 389a). Its 'Minimal Conductor Property' section proved only Nat.Prime 389 and 389 = 389; this entry formalizes the actual minimality statement those facts gesture at."
+    },
+    {
+      "targetId": "birch-swinnerton-dyer-oq-06-oq-02",
+      "relationship": "Sibling entry computing the Weierstrass group law and naive heights for the same curve 389a1; together the two entries cover the arithmetic (heights) and the classification (minimal conductor) facets of 389a1."
+    },
+    {
+      "targetId": "birch-swinnerton-dyer",
+      "relationship": "The root Millennium-Prize conjecture. The smallest-conductor-by-rank curves 11a1/37a1/389a1/5077a1 are the canonical low-rank test cases for BSD; this entry formalizes the conductor-minimality of the rank-2 representative."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BirchSwinnertonDyerOQ06OQ01.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 6,
+    "lineCount": 215
+  },
+  "sorries": 0
+}
