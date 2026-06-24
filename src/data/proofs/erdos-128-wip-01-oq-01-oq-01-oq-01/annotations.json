@@ -1,0 +1,74 @@
+[
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-header",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 53 },
+    "type": "context",
+    "title": "From cliques to arbitrary forbidden subgraphs",
+    "content": "Erdős Problem #128 ($250, open) asks whether a uniform edge-density condition on all large induced subgraphs forces a triangle; the conjectured-optimal constant 1/50 is witnessed by blow-ups of C₅. The parent chain lifted the homomorphism-pullback principle from triangles to K_r-cliques of every order. This entry answers that parent's stated open question by generalizing once more — beyond cliques to arbitrary forbidden subgraphs F — and shows clique-freeness is exactly the F = K_r case.",
+    "mathContext": "A homomorphic copy of $F$ in $G$ is a graph homomorphism $\\varphi : F \\to G$, with no injectivity required.",
+    "significance": "key",
+    "relatedConcepts": ["Ramsey–Turán theory", "forbidden subgraph", "graph homomorphism", "C₅ blow-up"],
+    "prerequisites": ["graph theory", "extremal combinatorics"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-homcopy",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 77 },
+    "type": "definition",
+    "title": "Homomorphic copy of a fixed graph F",
+    "content": "G contains a homomorphic copy of F when there is a graph homomorphism φ : F → G — a map carrying each edge of F to an edge of G. Unlike a clique or an induced copy, this asks for no injectivity: F's edges must be realized, nothing more. F-freeness (homFree) is the absence of any such copy. This is the notion under which the pullback below is purely formal.",
+    "mathContext": "$\\mathrm{hasHomCopy}\\,F\\,G := \\exists\\,\\varphi : \\mathrm{Fin}\\,m \\to \\mathrm{Fin}\\,n,\\ \\mathrm{IsHom}\\,F\\,G\\,\\varphi$.",
+    "significance": "key",
+    "relatedConcepts": ["graph homomorphism", "subgraph containment", "homomorphism density"],
+    "prerequisites": ["graph theory"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-pullback",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 92 },
+    "type": "theorem",
+    "title": "homFree_of_hom — pullback by pure composition",
+    "content": "For every fixed graph F: if there is a homomorphism f : G → H and H has no homomorphic copy of F, then neither does G. The proof composes — a copy φ : F → G followed by f is a copy f ∘ φ : F → H. No irreflexivity is used here; this is the general structural reason behind the parent's cliqueFree_of_hom, with the clique case's appeal to irreflexivity moved entirely into the bridge.",
+    "mathContext": "If $f : G \\to H$ is a homomorphism and $H$ is $F$-free, then $G$ is $F$-free, because $f \\circ \\varphi$ is a homomorphic copy of $F$ in $H$.",
+    "significance": "key",
+    "relatedConcepts": ["homomorphism composition", "monotone graph parameters", "pullback"],
+    "prerequisites": ["graph homomorphism"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-mono",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 97 },
+    "type": "theorem",
+    "title": "hasHomCopy_mono — monotone along homomorphisms",
+    "content": "A homomorphism g : F' → F turns a homomorphic copy of F into one of F' by precomposition. This generalizes clique-order monotonicity (hasClique_mono): the inclusion K_m → K_r for m ≤ r is a homomorphism, so a copy of K_r restricts to a copy of K_m.",
+    "mathContext": "$\\mathrm{IsHom}\\,F'\\,F\\,g$ and a copy $\\varphi$ of $F$ give the copy $\\varphi \\circ g$ of $F'$.",
+    "significance": "important",
+    "relatedConcepts": ["graph minor order", "homomorphism order", "monotonicity"],
+    "prerequisites": ["graph homomorphism"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-bridge",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 146 },
+    "type": "theorem",
+    "title": "The complete-graph bridge — clique-freeness is the F = K_r case",
+    "content": "Over an irreflexive target a homomorphic copy of the complete graph K_r is exactly an r-clique: distinct vertices of K_r are adjacent, so their images are adjacent and — by irreflexivity — distinct, forcing the homomorphism to be injective. Hence K_r-freeness is K_r-homomorphic-copy-freeness (cliqueFree_iff_homFree_completeGraph), and the parent's cliqueFree_of_hom is recovered as the F = K_r corollary of homFree_of_hom. This is where, and only where, irreflexivity enters.",
+    "mathContext": "$\\mathrm{hasHomCopy}\\,(K_r)\\,G \\iff G.\\mathrm{hasClique}\\,r$ for irreflexive $G$.",
+    "significance": "key",
+    "relatedConcepts": ["complete graph", "clique", "irreflexive graph", "injective homomorphism"],
+    "prerequisites": ["graph homomorphism", "clique"]
+  },
+  {
+    "id": "erdos128-wip01oq01oq01oq01-ann-c5",
+    "proofId": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 148, "endLine": 202 },
+    "type": "theorem",
+    "title": "C₅-blow-ups are K_r-free for all r ≥ 3",
+    "content": "The class map of a blow-up is a homomorphism, so blow-ups preserve F-freeness for every F (blowup_homFree). C₅ has no homomorphic copy of K_3 by the ordinary finite decision procedure (decide, with maxRecDepth raised — not native_decide), and by monotonicity none of K_r for r ≥ 3, so every blow-up of C₅ at every size and class assignment is free of K_r-copies. Via the bridge this recovers the parent's blowup_C5_cliqueFree: the conjectured-optimal extremal construction is K_r-free for all r ≥ 3, now as an instance of the forbidden-subgraph framework.",
+    "mathContext": "$\\mathrm{blowup}\\,C_5\\,c$ has no homomorphic copy of $K_r$, hence no $r$-clique, for every $r \\ge 3$.",
+    "significance": "key",
+    "relatedConcepts": ["blow-up", "C₅", "extremal construction", "decision procedure"],
+    "prerequisites": ["graph blow-up", "finite decidability"]
+  }
+]
