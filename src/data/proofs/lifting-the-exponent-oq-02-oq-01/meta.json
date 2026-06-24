@@ -1,0 +1,151 @@
+{
+  "id": "lifting-the-exponent-oq-02-oq-01",
+  "slug": "lifting-the-exponent-oq-02-oq-01",
+  "title": "Lifting the Exponent for Sums $x^n + y^n$ at $p = 2$, and an All-Primes Dispatch",
+  "description": "Answers both open questions of the parent entry lifting-the-exponent-oq-02 (which computes v₂(xⁿ − yⁿ)). It derives the sum companion v₂(xⁿ + yⁿ) for the even prime, where the behaviour splits sharply on the parity of the exponent: for odd n, v₂(xⁿ + yⁿ) = v₂(x + y) with no v₂(n) correction (since 2 ∤ n); for even n ≠ 0 and odd x, y, the sum is ≡ 2 (mod 8), so v₂(xⁿ + yⁿ) = 1 exactly, independent of x, y, n — driven by the classical odd² ≡ 1 (mod 8). Mathlib supplies the odd-prime sum LTE Int.emultiplicity_pow_add_pow but no p = 2 sum statement; this entry fills that gap. It then packages OQ-01 (odd p) and the p = 2 result into a single all-primes dispatch: for any prime p and odd n with p ∣ x + y, p ∤ x, vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n), specialising to v₂(x + y) at p = 2 precisely because vₚ(n) = 0 there. Both emultiplicity and schoolbook padicValInt forms are given. Fully machine-checked: 12 theorems, 0 sorries, 0 axioms.",
+  "overview": {
+    "historicalContext": "The Lifting-the-Exponent (LTE) lemma computes the exact p-adic valuation of xⁿ ± yⁿ. The difference case is classical and uniform across primes; the sum case xⁿ + yⁿ is governed by the substitution xⁿ + yⁿ = xⁿ − (−y)ⁿ, valid for odd n. The even prime p = 2 is the structurally exceptional case throughout LTE: for differences a v₂(x + y) correction and a −1 shift appear (the parent entry), and for sums the exponent parity becomes decisive. Olympiad and competition number theory treat the p = 2 sum case as a separate rule precisely because of this split; this entry formalizes it and unifies it with the odd-prime theory.",
+    "problemStatement": "**Open Questions (lifting-the-exponent-oq-02):** (1) derive the xⁿ + yⁿ companion for the even prime, reconciling the odd-n and even-n behaviour in one statement; (2) combine OQ-01 (odd p) and OQ-02 (p = 2) into a single dispatching theorem covering all primes. This entry settles both.",
+    "text": "For odd x, y: if n is odd then v₂(xⁿ + yⁿ) = v₂(x + y); if n is even (n ≠ 0) then v₂(xⁿ + yⁿ) = 1. Uniformly, for any prime p, odd n, p ∣ x + y, p ∤ x: vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n).",
+    "proofStrategy": "Odd exponent at p = 2: rewrite xⁿ + yⁿ = xⁿ − (−y)ⁿ and invoke Mathlib's general prime lemma `emultiplicity_pow_sub_pow_of_prime` (valid for every prime when p ∤ n, and 2 ∤ n for odd n). Even exponent at p = 2: for odd x, the square (xᵐ)² ≡ 1 (mod 8) gives xⁿ ≡ 1 (mod 8), so xⁿ + yⁿ ≡ 2 (mod 8); writing the sum as 8t + 2 shows 2¹ ∥ (xⁿ + yⁿ), i.e. emultiplicity = 1. The all-primes dispatch case-splits on p = 2 (where emultiplicity 2 n = 0 collapses the correction) versus odd p (Mathlib's `Int.emultiplicity_pow_add_pow`). Finite-multiplicity bridges (`Int.finiteMultiplicity_iff`, `FiniteMultiplicity.emultiplicity_eq_multiplicity`) transfer the emultiplicity statements to the schoolbook `padicValInt` forms.",
+    "keyInsights": [
+      "**Odd exponent erases the correction.** v₂(xⁿ + yⁿ) = v₂(x + y) with no +v₂(n) term, because 2 ∤ n for odd n — the same shape as the odd-prime sum LTE but with the correction automatically zero. The substitution xⁿ + yⁿ = xⁿ − (−y)ⁿ reduces the sum case to the difference case Mathlib already covers for general primes.",
+      "**Even exponent freezes the valuation at 1.** For odd x, y and even n, xⁿ + yⁿ ≡ 2 (mod 8), so v₂ is exactly 1 regardless of x, y, n. This is the LTE 'exception within the exception': no valuation growth at all, controlled entirely by odd² ≡ 1 (mod 8).",
+      "**One theorem, all primes.** `emultiplicity_pow_add_pow_odd_exp` unifies the odd-prime sum LTE and the p = 2 case for odd exponents into vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n); the even prime is not a special case to remember but a corollary where vₚ(n) vanishes.",
+      "**emultiplicity vs padicValInt.** The core is proved in `emultiplicity` (ℕ∞-valued, total) and then transferred to `padicValNat`/`padicValInt` under explicit nonzero hypotheses — the standard discipline for valuations of expressions that could in principle vanish."
+    ],
+    "prerequisites": [
+      "p-adic valuation of integers (`emultiplicity`, `multiplicity`, `padicValInt`)",
+      "The Lifting-the-Exponent lemma for differences and the odd-prime sum form",
+      "Modular arithmetic: odd² ≡ 1 (mod 8)",
+      "Mathlib's `emultiplicity_pow_sub_pow_of_prime` and `Int.emultiplicity_pow_add_pow`"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-helpers",
+      "title": "Overview, Imports, and Arithmetic Helpers",
+      "startLine": 1,
+      "endLine": 75,
+      "summary": "Module docstring laying out the odd-n / even-n split at p = 2 and the all-primes goal. Imports `Mathlib.NumberTheory.Multiplicity` and `Mathlib.NumberTheory.Padics.PadicVal.Basic`. Helper lemmas: two odds sum to an even (`two_dvd_add_of_not_dvd`), the third-odd consequence (`not_dvd_right_of_dvd_add`), not-2-divisible ⇒ odd, odd n casts to a non-2-divisible integer, and the keystone `odd_sq_modEq_eight` (a² ≡ 1 mod 8 for odd a, via k(k+1) even and `linear_combination`)."
+    },
+    {
+      "id": "odd-exponent",
+      "title": "Odd Exponent at p = 2",
+      "startLine": 77,
+      "endLine": 88,
+      "summary": "`two_emultiplicity_pow_add_pow_odd`: for odd x, y and odd n, v₂(xⁿ + yⁿ) = v₂(x + y). Proof rewrites xⁿ + yⁿ = xⁿ − (−y)ⁿ (`Odd.neg_pow`) and applies the general-prime difference lemma `emultiplicity_pow_sub_pow_of_prime` with 2 ∤ n."
+    },
+    {
+      "id": "even-exponent",
+      "title": "Even Exponent at p = 2",
+      "startLine": 90,
+      "endLine": 124,
+      "summary": "`odd_pow_even_modEq_eight` (xⁿ ≡ 1 mod 8 for odd x, even n) and `two_emultiplicity_pow_add_pow_even`: for odd x, y and even n, v₂(xⁿ + yⁿ) = 1. The sum is shown ≡ 2 (mod 8), rewritten as 8t + 2, and pinned to emultiplicity 1 via `emultiplicity_eq_coe` (2¹ divides, 2² does not)."
+    },
+    {
+      "id": "all-primes",
+      "title": "All-Primes Dispatch and padicValInt Forms",
+      "startLine": 126,
+      "endLine": 208,
+      "summary": "`emultiplicity_pow_add_pow_odd_exp`: for any prime p, odd n, p ∣ x + y, p ∤ x, vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n) (case-split p = 2 with the correction collapsing vs odd p via Mathlib). Then nonzero-ness (`pow_add_pow_ne_zero_odd`) and the schoolbook `padicValInt` restatements `two_padicValInt_pow_add_pow_odd` (= v₂(x + y)) and `two_padicValInt_pow_add_pow_even` (= 1), transferred via finite-multiplicity bridges."
+    }
+  ],
+  "conclusion": {
+    "summary": "The p = 2 sum case of Lifting-the-Exponent is fully formalized: v₂(xⁿ + yⁿ) = v₂(x + y) for odd n and = 1 for even n (odd x, y), in both emultiplicity and padicValInt forms, plus an all-primes dispatch vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n) for odd exponents that subsumes the odd-prime and p = 2 cases uniformly. 12 theorems, 208 lines, 0 sorries, 0 axioms.",
+    "implications": "Completes the LTE picture for sums alongside the parent's difference treatment: every prime and both exponent parities are now covered by machine-checked statements. The all-primes dispatch is the form usable in downstream divisibility and order-of-element arguments (e.g. when bounding 2-adic valuations in cyclotomic and Fermat-type problems) without remembering p = 2 as a special case. The odd² ≡ 1 (mod 8) keystone is reusable for other even-prime valuation computations.",
+    "openQuestions": [
+      "State the even-exponent sum at p = 2 without the 'odd x, y' hypothesis: factor out the common 2-power, reducing the general case xⁿ + yⁿ to the odd-residual case treated here.",
+      "Give the matching padicValInt form of the all-primes dispatch (currently emultiplicity-only) under explicit nonzero hypotheses, completing the schoolbook-valuation API across all primes.",
+      "Combine the difference dispatch (OQ-01/OQ-02) and this sum dispatch into one signed statement vₚ(xⁿ − sⁿyⁿ) with s = ±1, branching on the sign and the parities of p and n."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lifting-the-exponent-oq-02",
+      "relationship": "parent",
+      "description": "The parent computes v₂(xⁿ − yⁿ) (the difference at p = 2) and poses two open questions: the xⁿ + yⁿ companion and an all-primes dispatch. This entry answers both — the p = 2 sum LTE (both exponent parities) and the unified vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n)."
+    },
+    {
+      "targetId": "lifting-the-exponent-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 packages the odd-prime LTE vₚ(xⁿ ± yⁿ) = vₚ(x ± y) + vₚ(n). This entry handles the even prime sum case and folds OQ-01's odd-prime sum statement into the same all-primes dispatch."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 208,
+    "path": "Proofs/LiftingTheExponentOQ02OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 12
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius researcher (2026); odd-prime core from Mathlib, p = 2 sum analysis original",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lifting-the-exponent_lemma",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LiftingTheExponentOQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "lifting-the-exponent",
+      "p-adic-valuation",
+      "multiplicity",
+      "modular-arithmetic",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 208,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries — every theorem depends only on the foundational propext / Classical.choice / Quot.sound (confirmed via `#print axioms`). `decide` discharges only tiny numeric facts like (2 : ℤ).natAbs ≠ 1 via kernel reduction; no `native_decide`, so no `Lean.ofReduceBool`. The odd-prime sum core uses Mathlib's `Int.emultiplicity_pow_add_pow` and `emultiplicity_pow_sub_pow_of_prime`; the p = 2 sum analysis (both exponent parities) and the all-primes dispatch are original.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "emultiplicity_pow_sub_pow_of_prime",
+        "description": "The general-prime difference LTE: for a prime p with p ∣ x − y, p ∤ x, p ∤ n, emultiplicity p (xⁿ − yⁿ) = emultiplicity p (x − y). Applied at p = 2 (which is allowed since 2 ∤ n for odd n) after rewriting xⁿ + yⁿ = xⁿ − (−y)ⁿ.",
+        "module": "Mathlib.NumberTheory.Multiplicity"
+      },
+      {
+        "theorem": "Int.emultiplicity_pow_add_pow",
+        "description": "The odd-prime sum LTE carrying the +vₚ(n) correction; the odd-p branch of the all-primes dispatch.",
+        "module": "Mathlib.NumberTheory.Multiplicity"
+      },
+      {
+        "theorem": "Int.finiteMultiplicity_iff",
+        "description": "Characterizes finite multiplicity (p not a unit and the argument nonzero); used to bridge `emultiplicity` results to `multiplicity`/`padicValInt` under nonzero hypotheses.",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      },
+      {
+        "theorem": "Int.ModEq",
+        "description": "Integer congruence machinery (`Int.modEq_iff_dvd`, `Int.ModEq.add`) for the odd² ≡ 1 (mod 8) and xⁿ + yⁿ ≡ 2 (mod 8) computations.",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "originalContributions": [
+      "`two_emultiplicity_pow_add_pow_odd`: the p = 2 sum LTE for odd exponents, v₂(xⁿ + yⁿ) = v₂(x + y), obtained by reducing the sum to a difference via xⁿ + yⁿ = xⁿ − (−y)ⁿ. Mathlib has the odd-prime sum LTE but no p = 2 statement.",
+      "`two_emultiplicity_pow_add_pow_even`: the even-exponent collapse v₂(xⁿ + yⁿ) = 1 (odd x, y), from xⁿ + yⁿ ≡ 2 (mod 8) via the keystone `odd_sq_modEq_eight`.",
+      "`emultiplicity_pow_add_pow_odd_exp`: the all-primes dispatch vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n) for odd n, unifying the odd-prime LTE and the p = 2 case (where the correction vanishes) into one theorem — the parent's second open question.",
+      "`two_padicValInt_pow_add_pow_odd` and `two_padicValInt_pow_add_pow_even`: the schoolbook `padicValInt` forms under explicit nonzero hypotheses (with `pow_add_pow_ne_zero_odd`), making the results usable in concrete divisibility arguments."
+    ],
+    "prerequisites": [
+      "p-adic valuation of integers (emultiplicity / multiplicity / padicValInt)",
+      "Lifting-the-Exponent for differences and the odd-prime sum form",
+      "odd² ≡ 1 (mod 8) and integer modular arithmetic"
+    ],
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "lifting-the-exponent-oq-02",
+        "relationship": "Parent: computes v₂(xⁿ − yⁿ); this entry answers its two open questions (the xⁿ + yⁿ companion at p = 2 and the all-primes dispatch)."
+      },
+      {
+        "id": "lifting-the-exponent-oq-01",
+        "relationship": "Sibling: the odd-prime LTE, folded into this entry's unified all-primes dispatch."
+      }
+    ]
+  }
+}
