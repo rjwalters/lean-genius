@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "simson-line-theorem-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "Simson Lines Rotate at Half Angular Speed",
+    "content": "As a point P traverses the circumcircle of △ABC, its Simson line sweeps a one-parameter family whose envelope is the Steiner deltoid — and it turns at exactly HALF P's angular rate, so the angle between the Simson lines of P and Q is half the central angle of arc PQ. The parent simson-line-theorem-oq-01 formalised only the special antipodal case (Simson lines of P and −P are perpendicular, the half-arc = 90° instance). This entry settles the full angle-doubling law. Working in the parent's unit-circle complex model (Complex.normSq · = 1), the Simson direction D p = foot bc p − foot ab p is captured, and the angle-doubling encoded as an exact nonnegative-real closed form for the squared-direction Hermitian product.",
+    "mathContext": "$\\arg(D_P/D_Q) \\equiv \\tfrac12\\arg(Q/P) \\pmod\\pi$ — the Simson line rotates at half $P$'s angular speed.",
+    "significance": "context",
+    "relatedConcepts": ["Simson line", "angle-doubling", "Steiner deltoid", "circumcircle", "complex coordinates"],
+    "prerequisites": ["complex numbers", "Simson's theorem", "directed angles"]
+  },
+  {
+    "id": "ann-unit-circle-algebra",
+    "proofId": "simson-line-theorem-oq-01-oq-01",
+    "range": { "startLine": 58, "endLine": 79 },
+    "type": "technique",
+    "title": "Unit-Circle Algebra Helpers",
+    "content": "Four re-derived helper lemmas for points on the unit circle (normSq z = 1): ne_zero_of_normSq_one (a unit-circle point is nonzero); conj_eq_inv (the key identity conj z = z⁻¹, from z·conj z = normSq z = 1); and the real/imaginary bridges im_eq_zero_of_conj_eq (conj z = z ⟹ z.im = 0, i.e. z real) and re_eq_zero_of_conj_eq_neg (conj z = −z ⟹ z.re = 0, i.e. z purely imaginary). The conj z = z⁻¹ substitution is what turns every conjugate into a rational function of the points, making the later identities pure field_simp; ring facts.",
+    "mathContext": "On the unit circle: $\\overline{z} = z^{-1}$; $\\overline{z}=z \\Rightarrow z\\in\\mathbb{R}$; $\\overline{z}=-z \\Rightarrow z\\in i\\mathbb{R}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Complex.mul_conj", "conjugation", "purely imaginary", "unit circle"],
+    "prerequisites": ["complex conjugation", "complex modulus"]
+  },
+  {
+    "id": "ann-simson-direction",
+    "proofId": "simson-line-theorem-oq-01-oq-01",
+    "range": { "startLine": 81, "endLine": 89 },
+    "type": "theorem",
+    "title": "simson_direction: Closed Form of the Direction Vector",
+    "content": "simson_direction: for p on the unit circle, the Simson direction D p = foot bc p − foot ab p equals (c−a)(p−b)/(2p). This is the parent's foot_diff (which gives (c−a)(1 − b·conj p)/2) with the conjugate eliminated via conj p = p⁻¹, then field_simp. The closed form exposes that the direction depends on p through the SINGLE linear factor p−b, divided by p — the structural fact that makes the squaring computation tractable.",
+    "mathContext": "$D_p = \\dfrac{(c-a)(p-b)}{2p}$ on the unit circle.",
+    "significance": "key",
+    "relatedConcepts": ["foot_diff", "conj_eq_inv", "field_simp", "Simson direction"],
+    "prerequisites": ["complex arithmetic", "perpendicular foot"]
+  },
+  {
+    "id": "ann-angle-doubling",
+    "proofId": "simson-line-theorem-oq-01-oq-01",
+    "range": { "startLine": 91, "endLine": 123 },
+    "type": "insight",
+    "title": "simson_angle_doubling: The Master Identity (Squaring is the Right Invariant)",
+    "content": "The core result: (D p)²·p·conj((D q)²·q) = |c−a|⁴·|p−b|²·|q−b|²/16, a manifestly nonnegative real. WHY SQUARE: a line's direction is defined only up to a real scalar, so its angle lives in ℝ/πℤ, and the naive Hermitian product D p·conj(D q) still depends on the triangle through vertex b. Squaring lifts the angle to ℝ/2πℤ AND cancels the b-dependence, making the squared product triangle-independent. The proof substitutes foot_diff, expresses the moduli via Complex.mul_conj (hca/hpb/hqb), replaces every conjugate by the inverse on the unit circle (conj_eq_inv ×5), then field_simp; ring. Because the RHS is patently ≥ 0, the LHS has argument 0 mod 2π — exactly the angle-doubling 2·arg(D p/D q) ≡ arg(q/p).",
+    "mathContext": "$(D_p)^2\\,p\\,\\overline{(D_q)^2\\,q} = \\dfrac{|c-a|^4|p-b|^2|q-b|^2}{16} \\ge 0$, so argument $\\equiv 0 \\pmod{2\\pi}$.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.mul_conj", "Hermitian product", "squaring trick", "triangle independence"],
+    "prerequisites": ["complex arithmetic", "argument of a product", "field_simp"]
+  },
+  {
+    "id": "ann-real-nonneg",
+    "proofId": "simson-line-theorem-oq-01-oq-01",
+    "range": { "startLine": 125, "endLine": 144 },
+    "type": "theorem",
+    "title": "Realness and Nonnegativity: Faithful Encoding",
+    "content": "Two corollaries pin the squared-direction Hermitian product to the nonnegative real axis. simson_hermitian_real: its imaginary part is 0 (the RHS is a real cast, Complex.ofReal_im). simson_hermitian_nonneg: its real part is |c−a|⁴|p−b|²|q−b|²/16 ≥ 0 (div_nonneg + mul_nonneg of sq_nonneg and normSq_nonneg). The KEY subtlety: realness ALONE would pin the relative angle only mod π/2; it is NONNEGATIVITY that pins it mod π, which is exactly the faithful half-arc angle-doubling for lines. This is why the closed form, not just 'the product is real', is the right statement.",
+    "mathContext": "$\\mathrm{Im} = 0$ and $\\mathrm{Re} = \\tfrac{1}{16}|c-a|^4|p-b|^2|q-b|^2 \\ge 0$; nonnegativity pins the angle mod $\\pi$.",
+    "significance": "key",
+    "relatedConcepts": ["Complex.ofReal_im", "Complex.normSq_nonneg", "div_nonneg", "faithful encoding"],
+    "prerequisites": ["complex real/imaginary parts", "nonnegativity"]
+  },
+  {
+    "id": "ann-antipodal-recovery",
+    "proofId": "simson-line-theorem-oq-01-oq-01",
+    "range": { "startLine": 146, "endLine": 193 },
+    "type": "theorem",
+    "title": "antipodal_perp_recovered: Perpendicularity as the Q = −P Instance",
+    "content": "antipodal_perp_recovered: specialising the master identity to q = −p recovers the parent's antipodal perpendicularity — the Simson lines of P and its antipode are perpendicular (half-arc = 90°). Setting Y = D p·conj(D(−p)), the master LHS rewrites to −(Y)²·(p·conj p) = −Y² (since p·conj p = 1), so Y² = −R is a NONPOSITIVE real. Then conj(Y²) = Y² gives (conj Y)² = Y², and the difference-of-squares factorisation (conj Y − Y)(conj Y + Y) = 0 splits into two cases: conj Y = Y (Y real with Y² = −R ≤ 0 forces Y = 0 by nlinarith) or conj Y = −Y (Y purely imaginary). Either way Y.re = 0 — perpendicularity. The whole continuous angle-doubling law thus contains the isolated antipodal fact as one instance.",
+    "mathContext": "$q=-p$: $Y^2 = -R \\le 0$ forces $Y = D_p\\overline{D_{-p}}$ purely imaginary $\\Rightarrow Y.\\mathrm{re}=0$ (perpendicular).",
+    "significance": "key",
+    "relatedConcepts": ["difference of squares", "mul_eq_zero", "antipodal perpendicularity", "nlinarith"],
+    "prerequisites": ["complex conjugation", "case analysis", "perpendicularity"]
+  }
+]
