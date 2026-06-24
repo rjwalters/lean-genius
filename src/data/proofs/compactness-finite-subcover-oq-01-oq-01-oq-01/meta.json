@@ -1,6 +1,7 @@
 {
   "id": "compactness-finite-subcover-oq-01-oq-01-oq-01",
   "slug": "compactness-finite-subcover-oq-01-oq-01-oq-01",
+  "description": "The forward half of the closed-projection (Kuratowski) characterization of compactness: if Y is compact then for every space X the projection Prod.fst : X × Y → X is a closed map. Answering the parent's first open question, the proof runs entirely through the tube lemma that the parent built by hand from the finite-subcover (Heine–Borel) definition — no appeal to Mathlib's filter-based isClosedMap_fst_of_compactSpace. To show Prod.fst '' C is closed for a closed C, its complement is shown open: a base point x₀ outside the image has its whole fibre {x₀} × Y inside the open Cᶜ, and the tube lemma thickens that fibre-wide miss to a tube W ×ˢ univ ⊆ Cᶜ whose base W misses the image. Packaged as IsClosedMap, mirrored to a compact first factor via the swap homeomorphism, and shipped with existential-projection / empty-fibre corollaries and a concrete ℝ × [0,1] → ℝ instance. Verified, 0 axioms, 0 sorries.",
   "leanFile": {
     "imports": [
       "Mathlib",
