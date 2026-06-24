@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-sq-mod-four",
+    "proofId": "pythagorean-triples-oq-10",
+    "range": { "startLine": 45, "endLine": 54 },
+    "type": "technique",
+    "title": "Squares mod 4: even ↦ 0, odd ↦ 1",
+    "content": "The two residue facts the whole result rests on. Writing an even integer as $a = k+k$ gives $a^2 = 4k^2 \\equiv 0 \\pmod 4$; an odd integer $a = 2k+1$ gives $a^2 = 4(k^2+k)+1 \\equiv 1 \\pmod 4$. Each proof destructures the parity hypothesis into an explicit witness (`Int.even_iff` / `Int.odd_iff`), supplies the polynomial identity by `ring`, and lets `omega` read off the residue over the opaque atom $a^2$. The mod-4 refinement (not just mod 2) is precisely what distinguishes this entry from mere oddness.",
+    "mathContext": "$a \\equiv 0 \\pmod 2 \\Rightarrow a^2 \\equiv 0;\\quad a \\equiv 1 \\pmod 2 \\Rightarrow a^2 \\equiv 1 \\pmod 4.$",
+    "significance": "supporting",
+    "relatedConcepts": ["quadratic residues", "modular arithmetic", "parity"],
+    "prerequisites": ["modular arithmetic", "integer division with remainder"]
+  },
+  {
+    "id": "ann-extract-param",
+    "proofId": "pythagorean-triples-oq-10",
+    "range": { "startLine": 64, "endLine": 73 },
+    "type": "insight",
+    "title": "Why z² Is Not Enough — Extracting z = m² + n²",
+    "content": "The crux of the sharpening. The weaker sibling result deduces oddness from $z^2 = x^2+y^2 \\equiv 1 \\pmod 4$, but that congruence cannot tell $z \\equiv 1$ from $z \\equiv 3$ — both odd residues square to 1. To pin the residue we need the actual value of $z$, so we call Mathlib's `isPrimitiveClassified_of_coprime_of_pos` to obtain coprime $m,n$ of opposite parity with $x = m^2-n^2,\\ y = 2mn$ (or the legs swapped). Substituting into the Pythagorean identity and clearing with `linear_combination` yields $z^2 = (m^2+n^2)^2$ in both leg-orderings.",
+    "mathContext": "$(m^2-n^2)^2 + (2mn)^2 = (m^2+n^2)^2$, so $z^2 = (m^2+n^2)^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean parametrisation", "primitive triples", "sum of two squares"],
+    "prerequisites": ["Pythagorean triple classification", "polynomial identities"]
+  },
+  {
+    "id": "ann-positive-root",
+    "proofId": "pythagorean-triples-oq-10",
+    "range": { "startLine": 74, "endLine": 82 },
+    "type": "technique",
+    "title": "Taking the Positive Square Root Algebraically",
+    "content": "From $z^2 = (m^2+n^2)^2$ we want $z = m^2+n^2$, not $z = -(m^2+n^2)$. No `sqrt` is invoked: instead $(z-(m^2+n^2))(z+(m^2+n^2)) = z^2-(m^2+n^2)^2 = 0$ (supplied by `linear_combination`), and `mul_eq_zero` splits into two cases. The hypothesis $0 < z$ together with $m^2+n^2 \\ge 0$ kills the $z + (m^2+n^2) = 0$ branch by `linarith`, leaving $z = m^2+n^2$. This is exactly where positivity is load-bearing — drop it and $z \\equiv 3 \\pmod 4$ becomes possible.",
+    "mathContext": "$z^2 = w^2,\\ 0 < z,\\ 0 \\le w \\Rightarrow z = w$ via $(z-w)(z+w)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["no zero divisors", "square roots in ordered rings", "positivity"],
+    "prerequisites": ["integral domains", "ordered ring inequalities"]
+  },
+  {
+    "id": "ann-residue",
+    "proofId": "pythagorean-triples-oq-10",
+    "range": { "startLine": 83, "endLine": 89 },
+    "type": "insight",
+    "title": "Opposite Parity Forces z ≡ 1 (mod 4)",
+    "content": "With $z = m^2+n^2$ in hand, the classification guarantees $m,n$ have opposite parity. In either case one of $m^2, n^2$ is $0 \\pmod 4$ and the other is $1 \\pmod 4$ (by the Part I lemmas), so their sum — and hence $z$ — is $1 \\pmod 4$. `omega` closes both branches over the atoms $m^2, n^2$ given their residues. Had $m,n$ shared parity, the sum would be $0$ or $2 \\pmod 4$; opposite parity is the structural fact pinning the answer to exactly $1$.",
+    "mathContext": "$\\{m^2,n^2\\} \\equiv \\{0,1\\} \\pmod 4 \\Rightarrow z = m^2+n^2 \\equiv 1 \\pmod 4.$",
+    "significance": "key",
+    "relatedConcepts": ["parity", "modular arithmetic", "sum of two squares"],
+    "prerequisites": ["modular arithmetic", "parity of integers"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "pythagorean-triples-oq-10",
+    "range": { "startLine": 91, "endLine": 109 },
+    "type": "context",
+    "title": "Corollaries: Odd, and No 3-mod-4 Hypotenuses",
+    "content": "Two immediate consequences of $z \\equiv 1 \\pmod 4$. First, `hypotenuse_odd` recovers $z \\% 2 = 1$ by `omega` — this is the strictly weaker sibling statement (OQ-07), here a one-line corollary. Second, `not_primitive_hypotenuse_of_three_mod_four` records the structural exclusion: no integer $\\equiv 3 \\pmod 4$ is ever the hypotenuse of a primitive triple, so $3, 7, 11, 19, 23, \\dots$ are ruled out despite being odd. This is the parity shadow of the deeper fact that a primitive hypotenuse is a product of primes $\\equiv 1 \\pmod 4$.",
+    "mathContext": "$z \\equiv 1 \\pmod 4 \\Rightarrow z \\text{ odd and } z \\not\\equiv 3 \\pmod 4.$",
+    "significance": "supporting",
+    "relatedConcepts": ["sum of two squares", "primes 1 mod 4", "Diophantine obstructions"],
+    "prerequisites": ["modular arithmetic"]
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "pythagorean-triples-oq-10",
+    "range": { "startLine": 110, "endLine": 126 },
+    "type": "context",
+    "title": "Concrete Witnesses (3,4,5) and (20,21,29)",
+    "content": "Two primitive triples confirming the residue. The smallest, $(3,4,5)$, has hypotenuse $5 \\equiv 1 \\pmod 4$; the less obvious $(20,21,29)$ — with both legs large and close — has $29 \\equiv 1 \\pmod 4$. Each is checked by `norm_num` for the Pythagorean identity and `decide` for the gcd and residue, grounding the abstract theorem in computable instances.",
+    "mathContext": "$3^2+4^2=5^2,\\ 5 \\equiv 1;\\quad 20^2+21^2=29^2,\\ 29 \\equiv 1 \\pmod 4.$",
+    "significance": "supporting",
+    "relatedConcepts": ["primitive triples", "worked examples"],
+    "prerequisites": ["arithmetic"]
+  }
+]
