@@ -3844,6 +3844,7 @@ import Proofs.SzemerediTheorem
 import Proofs.SzemerediTheoremOQ01
 import Proofs.TangentAdditionFormula
 import Proofs.TangentAdditionFormulaOQ01
+import Proofs.TangentAdditionFormulaOQ01OQ01
 import Proofs.TaxicabNumberOQ01
 import Proofs.TaylorSinCosConvergence
 import Proofs.TaylorSinCosConvergenceOQ01
