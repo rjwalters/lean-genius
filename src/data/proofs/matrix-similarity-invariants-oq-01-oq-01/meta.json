@@ -138,8 +138,9 @@
   ],
   "crossReferences": [
     {
-      "id": "matrix-similarity-invariants-oq-01",
-      "note": "Parent entry: determinant, trace, and characteristic polynomial as similarity invariants; defines the Similar relation reused here"
+      "targetId": "matrix-similarity-invariants-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: determinant, trace, and characteristic polynomial as similarity invariants; defines the Similar relation reused here. This entry adds the structural invariants (rank, nullity, invertibility) on top of those scalar ones."
     }
   ],
   "conclusion": {
