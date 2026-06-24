@@ -1,0 +1,34 @@
+[
+  {
+    "id": "eul-palin-nonneg",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 55, "endLine": 57 },
+    "type": "theorem",
+    "title": "Non-negativity of the explicit Eulerian sum",
+    "content": "`eulerianExplicit_nonneg` records that $\\sum_{i=0}^{k}(-1)^i\\binom{n+1}{i}(k+1-i)^n \\ge 0$. Although the summand alternates in sign, the whole sum is non-negative because — by the parent's identity `eulerian_eq_explicit` — it equals the cast of the natural number $\\langle n,k\\rangle$, which counts something and is therefore $\\ge 0$. This settles the *easy* half of the sibling open question oq-01; the genuinely combinatorial half (that the sum equals the number of permutations with exactly $k$ descents) is left as a follow-up."
+  },
+  {
+    "id": "eul-palin-fdiff",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 65, "endLine": 107 },
+    "type": "theorem",
+    "title": "Finite-difference vanishing: the full alternating sum is zero",
+    "content": "`full_alt_sum_zero` is the engine of the palindromy proof: the alternating sum extended *one term past* the support of `eulerianExplicit`, $\\sum_{i=0}^{n+1}(-1)^i\\binom{n+1}{i}(k+1-i)^n$, vanishes. The reason is that this is precisely the $(n+1)$-st forward difference of the polynomial $P(x)=(k+1-x)^n$, whose degree $n$ is strictly less than the differencing order $n+1$; an order-$(n+1)$ finite difference annihilates any degree-$n$ polynomial. The proof builds $P$ as `(C (k+1) - X)^n`, invokes Mathlib's `Polynomial.fwdDiff_iter_eq_zero_of_degree_lt`, expands the difference with `fwdDiff_iter_eq_sum_shift`, and reconciles that lemma's sign $(-1)^{n+1-i}$ with the target $(-1)^i$ by factoring out the global sign $(-1)^{n+1}$."
+  },
+  {
+    "id": "eul-palin-explicit",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 111, "endLine": 172 },
+    "type": "theorem",
+    "title": "Palindromy of the explicit sum, by reflection i ↦ n+1−i",
+    "content": "`eulerianExplicit_palindrome` proves $\\text{eulerianExplicit}\\,n\\,k = \\text{eulerianExplicit}\\,n\\,(n-1-k)$ for $k<n$. The full vanishing sum splits (`Finset.sum_range_add`) as `head + tail = 0`, where the head $i=0\\dots k$ is by definition `eulerianExplicit n k`. Reflecting the tail via $i\\mapsto n+1-i$ (`Finset.sum_range_reflect`) restores the coefficient through the binomial symmetry $\\binom{n+1}{n+1-i}=\\binom{n+1}{i}$, reflects the base via $(k+1)-(n+1-i)=-\\big((n-1-k)+1-i\\big)$, and collapses the parity to a single sign by $(-1)^{n+1-i}\\cdot(-1)^n=-(-1)^i$. The length-mismatch overhang term is killed by $0^n=0$ (valid since $k<n\\Rightarrow n\\ge 1$), so the tail equals $-\\text{eulerianExplicit}\\,n\\,(n-1-k)$ and palindromy follows."
+  },
+  {
+    "id": "eul-palin-combinatorial",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 174, "endLine": 180 },
+    "type": "theorem",
+    "title": "Palindromy of the combinatorial Eulerian numbers",
+    "content": "`eulerian_palindrome` transfers the symmetry to the combinatorial numbers themselves: $\\langle n,k\\rangle=\\langle n,n-1-k\\rangle$ for $k<n$. This is a one-line consequence of the explicit-sum palindromy and the parent's identity `eulerian_eq_explicit`, casting the $\\mathbb{Z}$-identity back to $\\mathbb{N}$. Combinatorially it is the descent/ascent duality: reversing a permutation of $\\{1,\\dots,n\\}$ turns its $k$ descents into $n-1-k$ descents."
+  }
+]
