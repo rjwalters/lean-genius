@@ -3179,6 +3179,7 @@ import Proofs.JensenInequalityOQ01OQ01OQ01OQ01
 import Proofs.JensenInequalityOQ01OQ01OQ01OQ03
 import Proofs.KaprekarConstantOQ01
 import Proofs.KeithNumberOQ01
+import Proofs.KeithNumberOQ01OQ02
 import Proofs.KeplerConjecture
 import Proofs.KeplerConjectureOQ04
 import Proofs.KnightsTourOblique
