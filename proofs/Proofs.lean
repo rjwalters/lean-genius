@@ -3324,6 +3324,7 @@ import Proofs.LegendrePartial
 import Proofs.LegendrePrimeGapSqrtBoundSuffices
 import Proofs.LeibnizPi
 import Proofs.LeibnizPiOQ01OQ01
+import Proofs.LeibnizPiOQ01OQ02
 import Proofs.LeibnizPiOQ02
 import Proofs.LeibnizPiOQ02Aristotle
 import Proofs.LeibnizPiOQ03
