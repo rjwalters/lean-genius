@@ -415,6 +415,7 @@ import Proofs.BirchSwinnertonDyer
 import Proofs.BirchSwinnertonDyerAristotle
 import Proofs.BirchSwinnertonDyerOQ01
 import Proofs.BirchSwinnertonDyerOQ06
+import Proofs.BirchSwinnertonDyerOQ06OQ01
 import Proofs.BirchSwinnertonDyerOQ06OQ02
 import Proofs.BirthdayProblem
 import Proofs.BirthdayProblemAsymptotics

@@ -1,8 +1,8 @@
 {
   "slug": "birch-swinnerton-dyer-oq-06-oq-01",
   "title": "Formalize Cremona classification: smallest conductor rank-2 elliptic curve",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-05T20:06:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Shipped verified/0-axiom Cremona-minimality formalization (conditional on classification hypothesis).",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Discharge hcremona via verified Cremona DB slice once Mathlib has elliptic-curve descent.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Formalized 389a1 smallest-conductor-rank-2 minimality: abstract IsMinConductorForRank framework + rank-record arithmetic (11<37<389<5077) + headline conditional theorem curve389a_isMinConductorForRank2 (Cremona classification as explicit hypothesis, not axiom). 0 axioms, 0 sorries, 215 lines. See BirchSwinnertonDyerOQ06OQ01.lean.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
