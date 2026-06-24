@@ -3864,6 +3864,8 @@ import Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ06OQ01
 import Proofs.ZetaRegularization
 import Proofs.CatalanNumbersOQ01OQ02
 import Proofs.CatalanNumbersOQ01OQ02OQ01
+import Proofs.CatalanNumbersOQ01OQ01OQ02
+import Proofs.CatalanNumbersOQ01OQ01OQ02OQ03
 import Proofs.MarkovCoprime
 import Proofs.MarkovEquation
 import Proofs.MarkovHurwitz
