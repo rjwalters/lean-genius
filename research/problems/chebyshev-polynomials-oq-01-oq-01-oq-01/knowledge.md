@@ -1,4 +1,4 @@
-# Knowledge Base: wilsons-theorem-oq-02-ext-oq-01
+# Knowledge Base: chebyshev-polynomials-oq-01-oq-01-oq-01
 
 Insights accumulated during research on this problem.
 
