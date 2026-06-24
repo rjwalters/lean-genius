@@ -1,0 +1,163 @@
+{
+  "id": "fermat-two-squares-oq-07",
+  "title": "Brahmagupta's Identity: the Norm Form x² + N·y² Is Multiplicative",
+  "slug": "fermat-two-squares-oq-07",
+  "description": "The general Brahmagupta identity (a²+N·b²)(c²+N·d²) = (ac−N·bd)² + N·(ad+bc)², the norm-multiplicativity of ℤ[√−N], generalizing the Brahmagupta–Fibonacci (N=1, Gaussian) identity to every parameter N. Yields multiplicative closure of the form x²+N·y² for all N, and — via the two sign variants — the two distinct two-square representations of composite numbers (65 = 4²+7² = 8²+1²).",
+  "meta": {
+    "author": "Brahmagupta (628 AD) (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brahmagupta%E2%80%93Fibonacci_identity",
+    "date": "628",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "quadratic-forms",
+      "brahmagupta",
+      "gaussian-integers",
+      "norm-multiplicativity",
+      "sum-of-two-squares",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FermatTwoSquaresOQ07.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [],
+    "originalContributions": [
+      "brahmagupta: the general Brahmagupta identity (a²+N·b²)(c²+N·d²) = (ac−N·bd)² + N·(ad+bc)² over any commutative ring — norm-multiplicativity of ℤ[√−N], parameterized over N",
+      "brahmagupta': the conjugate sign variant (a²+N·b²)(c²+N·d²) = (ac+N·bd)² + N·(ad−bc)², the source of multiple representations",
+      "normForm / normForm_mul: the form f_N(x,y)=x²+N·y² packaged as a function, with explicit multiplicative composition law on arguments",
+      "Represents / Represents_mul: the set of integers represented by x²+N·y² is closed under multiplication for EVERY N (the N=1 case is closure of sums of two squares)",
+      "brahmagupta_fibonacci: the gallery's N=1 Brahmagupta–Fibonacci identity recovered as a one-line specialization",
+      "represents_one_iff: Represents 1 n ↔ n is a sum of two squares, linking the general form to Fermat's classical case",
+      "sixtyFive_two_distinct_reps: the two sign variants produce two genuinely distinct two-square representations 65 = 4²+7² = 8²+1² with {4,7} ≠ {1,8}"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 160,
+    "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms). All ring identities are closed by `ring`; the distinctness of the two representations of 65 is closed by `decide`. No Mathlib number-theory lemmas are invoked — the file is self-contained over Mathlib.Tactic.",
+    "theoremCount": 12,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Brahmagupta, in his Brāhmasphuṭasiddhānta (628 AD), recorded the identity now bearing his name: for the form x² − N·y² (and its sign-variant x² + N·y²), the product of two represented values is again represented, with an explicit composition law on the arguments. In modern language this is the multiplicativity of the norm on the quadratic ring ℤ[√±N]. The N = 1 case (x² + y², the Gaussian-integer norm) is the Brahmagupta–Fibonacci identity, rediscovered in Europe via Fibonacci's Liber Quadratorum (1225) and central to Fermat's theorem on sums of two squares.\n\nBrahmagupta originally exploited the x² − N·y² form to generate new solutions of Pell's equation from old ones — his samasa (\"composition\") method, the historical seed of the modern theory of units in real quadratic fields. The x² + N·y² form, treated here, is the imaginary-quadratic counterpart: it controls which integers a positive-definite binary quadratic form represents and why composite values acquire multiple representations.",
+    "problemStatement": "**Open question (fermat-two-squares-oq-07)**: The gallery's parent entry establishes the Brahmagupta–Fibonacci identity only for N = 1 (sums of two squares / Gaussian integers). Generalize it to the full family of norm forms x² + N·y², establish multiplicative closure for every N, and explain the multiple-representation phenomenon it produces.\n\n**Result**: A fully verified (0 sorries, 0 axioms) development of the general Brahmagupta identity over an arbitrary commutative ring, both sign variants, the multiplicativity of the form f_N(x,y)=x²+N·y², closure of the represented set for every N, the N=1 specialization recovering the parent identity, and an explicit witness (65 = 4²+7² = 8²+1²) showing the two sign variants yield two distinct representations.",
+    "text": "Brahmagupta's identity (a²+N·b²)(c²+N·d²) = (ac−N·bd)² + N·(ad+bc)² is the multiplicativity of the norm on ℤ[√−N]. It generalizes the Brahmagupta–Fibonacci (N=1) identity to every N, makes the value-set of x²+N·y² multiplicatively closed, and — through its two sign variants — explains why composite numbers have several two-square representations.",
+    "proofStrategy": "**Proof Strategy:**\n\n1. **The identity (general N, any commutative ring)**: Both Brahmagupta variants are polynomial identities, closed by `ring`. Stating them over an arbitrary `CommRing R` (rather than ℤ) makes manifest that the result is purely formal — the multiplicativity of a norm — and applies to ℤ, ℚ, ℝ, polynomial rings, etc.\n\n2. **Packaging as a form**: `normForm N x y = x² + N·y²` and `normForm_mul` restate variant one as N(z₁)·N(z₂) = N(z₁ ⊙ z₂) with explicit composition ⊙, the abstract content of multiplicativity.\n\n3. **Multiplicative closure**: `Represents N n := ∃ x y, n = x² + N·y²`; `Represents_mul` destructs the two witnesses and supplies the Brahmagupta-composed witness, proving closure for every N. The N=1 case is closure of sums of two squares (the parent's `two_squares_closed`).\n\n4. **Recovering N=1**: `brahmagupta_fibonacci` is `simpa using brahmagupta 1 …`; `represents_one_iff` identifies `Represents 1` with \"sum of two squares\".\n\n5. **Two distinct representations**: applying the two sign variants to 65 = 5·13 = (2²+1²)(3²+2²) gives (4,7) and (8,1); `decide` confirms the unordered pairs {4,7} and {1,8} differ, exhibiting two essentially different two-square representations of 65.",
+    "keyInsights": [
+      "**Multiplicativity is purely formal**: Both Brahmagupta variants hold over any commutative ring and are dispatched by `ring`. The number-theoretic content (closure, multiple representations) is downstream of a single polynomial identity — the multiplicativity of the quadratic norm N(x+y√−N) = x²+N·y².",
+      "**One identity, every N at once**: The parent gallery entry handles only N = 1 (Gaussian integers). Parameterizing by N covers the entire family of imaginary-quadratic norm forms uniformly — x²+y² (Gauss), x²+2y², x²+3y² (Eisenstein-adjacent), and so on — with the *same* proof, and makes the closure theorem `Represents_mul` hold for all N simultaneously.",
+      "**Two sign variants ⇒ multiple representations**: The existence of two composition laws, (ac−N·bd, ad+bc) and (ac+N·bd, ad−bc), is exactly why a product of two distinct represented numbers typically has two distinct representations. 65 = 4²+7² = 8²+1² is the smallest classical witness; the file proves both equalities and the genuine distinctness {4,7} ≠ {1,8}.",
+      "**The composition law is the group/monoid structure on the norm**: `normForm_mul` says the represented values form a multiplicative monoid under the Brahmagupta composition, the shadow of the multiplicative structure of ℤ[√−N]. Brahmagupta used the x²−N·y² (real-quadratic) version of exactly this law to compose Pell solutions.",
+      "**Self-contained over `ring`/`decide`**: The development invokes no Mathlib number-theory lemmas — every result reduces to a polynomial identity or a finite decision. This isolates the algebraic skeleton of the two-squares theory from the analytic/descent machinery used elsewhere in the Fermat cluster."
+    ],
+    "prerequisites": [
+      "Polynomial (ring) identities",
+      "Quadratic rings ℤ[√−N] and their norm forms",
+      "Sums of two squares and the Gaussian integers (the N = 1 case)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Module docstring framing the general Brahmagupta identity as the norm-multiplicativity of ℤ[√−N], generalizing the parent's N=1 Brahmagupta–Fibonacci identity. Imports Mathlib.Tactic; opens namespace FermatTwoSquaresOQ07.",
+      "mathContext": "The form x²+N·y² is the norm of x+y√−N in the quadratic ring ℤ[√−N]. Brahmagupta's identity is the multiplicativity of this norm."
+    },
+    {
+      "id": "identity",
+      "title": "The General Brahmagupta Identity",
+      "startLine": 54,
+      "endLine": 78,
+      "summary": "brahmagupta and brahmagupta': the two sign-variant identities (a²+N·b²)(c²+N·d²) = (ac∓N·bd)² + N·(ad±bc)² over an arbitrary commutative ring, each closed by `ring`.",
+      "mathContext": "Both variants are polynomial identities valid in any commutative ring; their existence as a pair is the source of multiple representations."
+    },
+    {
+      "id": "normform",
+      "title": "The Norm Form and Its Multiplicativity",
+      "startLine": 79,
+      "endLine": 96,
+      "summary": "normForm N x y = x²+N·y², and normForm_mul restating the identity as N(z₁)·N(z₂) = N(z₁ ⊙ z₂) with explicit composition law on arguments.",
+      "mathContext": "Packaging the form as a function exposes the multiplicativity as a monoid composition, the abstract shadow of multiplication in ℤ[√−N]."
+    },
+    {
+      "id": "closure",
+      "title": "Multiplicative Closure for Every N",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "Represents N n := ∃ x y, n = x²+N·y²; Represents_mul proves the represented set is closed under multiplication for every N, with Represents_sq and Represents_one as base facts.",
+      "mathContext": "Closure of the values of x²+N·y² under multiplication; the N=1 case is closure of sums of two squares."
+    },
+    {
+      "id": "n1",
+      "title": "Recovering the N = 1 Brahmagupta–Fibonacci Identity",
+      "startLine": 125,
+      "endLine": 142,
+      "summary": "brahmagupta_fibonacci specializes the general identity to N=1 in one line (matching the parent's two_squares_mul); represents_one_iff identifies Represents 1 with the sum-of-two-squares predicate.",
+      "mathContext": "The Gaussian-integer / sum-of-two-squares case is the N=1 instance of the general theorem."
+    },
+    {
+      "id": "two-reps",
+      "title": "Two Distinct Representations from the Two Variants",
+      "startLine": 143,
+      "endLine": 160,
+      "summary": "Using 65 = 5·13 = (2²+1²)(3²+2²), the two sign variants give (4,7) and (8,1); sixtyFive_two_distinct_reps proves 65 = 4²+7² = 8²+1² and {4,7} ≠ {1,8}, exhibiting two essentially different representations.",
+      "mathContext": "The classical multiple-representation phenomenon: distinct prime factors ≡ 1 (mod 4) multiply to numbers with several two-square representations, one per sign choice."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fermat-two-squares-oq-01",
+      "relationship": "extends",
+      "description": "Generalizes the parent's N=1 Brahmagupta–Fibonacci identity (two_squares_mul) and sum-of-two-squares closure (two_squares_closed) to the full family of norm forms x²+N·y², recovering the N=1 case as a one-line specialization."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "foundational",
+      "description": "Multiplicative closure of sums of two squares (the N=1 case here) is what reduces Fermat's two-squares theorem from all integers to the prime case."
+    },
+    {
+      "targetId": "pell-equation",
+      "relationship": "related",
+      "description": "Brahmagupta's original samasa (composition) law for the real-quadratic form x²−N·y² composes Pell solutions; this entry treats the imaginary-quadratic counterpart x²+N·y²."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of the general Brahmagupta identity (a²+N·b²)(c²+N·d²) = (ac−N·bd)² + N·(ad+bc)² over an arbitrary commutative ring — the norm-multiplicativity of ℤ[√−N] — together with the conjugate sign variant, the packaged norm form and its composition law, multiplicative closure of the represented set for every N, the N=1 specialization recovering the parent Brahmagupta–Fibonacci identity, and the explicit two-representation witness 65 = 4²+7² = 8²+1².",
+    "implications": "**Theoretical Significance**: Brahmagupta's identity is the algebraic heart of the theory of binary quadratic forms: it is the multiplicativity of the norm on a quadratic ring, the reason the values represented by a norm form are multiplicatively closed, and (via its two sign variants) the explanation for multiple representations of composite numbers. By generalizing the gallery's N=1 case to all N and isolating the result as a self-contained ring identity, this entry exposes the formal skeleton shared by Fermat's two-squares theorem, the theory of Pell's equation (the x²−N·y² sibling), and the genus theory of binary quadratic forms.",
+    "openQuestions": [
+      "For which N does the converse hold — i.e. when is the value-set of x²+N·y² *exactly* a multiplicative monoid characterized by congruence/genus conditions (idoneal numbers)?",
+      "Can the two-representation count be made exact: relate the number of essentially distinct representations of n by x²+y² to the factorization of n into primes ≡ 1 (mod 4), refining the qualitative `sixtyFive_two_distinct_reps`?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FermatTwoSquaresOQ07",
+    "lineCount": 160,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 2,
+    "path": "Proofs/FermatTwoSquaresOQ07.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Brahmagupta",
+      "title": "Brāhmasphuṭasiddhānta",
+      "year": "628",
+      "venue": "",
+      "note": "Original statement of the composition identity for x² ± N·y² (the samasa method)"
+    },
+    {
+      "authors": "Leonardo of Pisa (Fibonacci)",
+      "title": "Liber Quadratorum",
+      "year": "1225",
+      "venue": "",
+      "note": "European rediscovery of the N = 1 (sum of two squares) identity"
+    }
+  ],
+  "sorries": 0
+}
