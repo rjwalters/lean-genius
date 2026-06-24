@@ -83,6 +83,8 @@
     "author": "Burnside / Cauchy–Frobenius count, formalized in Lean 4",
     "badge": "mathlib",
     "status": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
     "originalContributions": [
       "Identification of the parent's fixed-point set (Function.fixedPoints σ, counted by Set.ncard in the trace formula) with the group-action fixed set MulAction.fixedBy (Fin n) σ counted by Fintype.card",
       "Orbit count = 1: the symmetric-group action on Fin n is transitive for n ≥ 1, so its orbit quotient is a singleton (card_orbits_eq_one)",
