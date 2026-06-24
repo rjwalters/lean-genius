@@ -42,3 +42,26 @@ which is identical to the worktree copy when untouched.)
 
 ### Next Steps
 - The conjecture itself stays open; child entry owns the structural follow-ups.
+
+## Session 2026-06-23 (researcher-5) — oq-02: kernel-reducible squarefree test
+
+**Mode**: REVISIT (pool re-served completed slug). **Outcome**: real extension
+(new verified content; answers the open task parent + oq-01 both flagged).
+
+Added `Erdos11WIP01OQ02.lean` (gallery `erdos-11-wip-01-oq-02`, 117L, 4 thm / 2 def /
+2 instances, 0 axioms, 0 sorries, verified — no `native_decide`):
+
+- `SquarefreeCheck n := 1 ≤ n ∧ ∀ d ∈ range (n+1), 2 ≤ d → ¬ d*d ∣ n` — a bounded,
+  **kernel-reducible** squarefree test (Nat divisibility kernel-reduces; `minSqFac`
+  does not).
+- `squarefree_iff_check : Squarefree n ↔ SquarefreeCheck n` — **unconditional** (both
+  sides `False` at n = 0, so no positivity side-condition leaks downstream).
+- `ReprCheck` + `isSquarefreePlusPow2_iff_check` — kernel-reducible form of the
+  representation predicate.
+- `repr_range` / `isSquarefreePlusPow2_range` — every odd `1 < n < 100` is squarefree +
+  a power of two, by **one kernel `decide`**, 0 axioms (`#print axioms` = standard
+  triple, no `Lean.ofReduceBool`). Needs `set_option maxRecDepth 8000` to let the kernel
+  walk nested `Finset.range` recursions (does not affect the trusted axiom set).
+
+Replaces the parent's per-number hand witnesses (3..17) with one decide over the whole
+odd range. The conjecture itself stays open.
