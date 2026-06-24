@@ -1,0 +1,149 @@
+{
+  "slug": "catalan-numbers-oq-01-oq-01-oq-03",
+  "title": "Catalan convolution / further central-binomial identity extending the reflection form",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal investigation in combinatorics: Catalan convolution / further central-binomial identity extending the reflection form.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T04:57:05.033Z",
+    "iteration": 1,
+    "focus": "Completed: closed forms for central-binomial neighbours, verified 0-axiom.",
+    "blockers": [],
+    "nextAction": "None — entry shipped (PR #28792).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: verified 0-axiom closed forms for the central-binomial neighbours, sharpening the parent reflection identity (PR #28792).",
+    "builtItems": [
+      "choose_central_succ: C(2n,n+1) = n*catalan n",
+      "choose_central_pred: C(2n,n-1) = n*catalan n (n>=1)",
+      "succ_mul_choose_central_succ: (n+1)*C(2n,n+1) = n*centralBinom n",
+      "choose_central_succ_two: (n+2)*C(2n,n+2) = n(n-1)*catalan n",
+      "choose_central_succ_lt: C(2n,n+1) < C(2n,n)",
+      "centralBinom_eq_catalan_add_choose: recovers the parent additive split"
+    ],
+    "insights": [
+      "The parent reflection-form entry proved the additive split C(2n,n) = catalan n + C(2n,n+1) and used (n+1)*C(2n,n+1) = n*C(2n,n) only as an internal step, never recording the neighbour closed form.",
+      "Solving that step relation with the bridge C(2n,n) = (n+1)*catalan n and cancelling n+1 gives C(2n,n+1) = n*catalan n — the headline result, not in Mathlib.",
+      "Row symmetry (Nat.choose_symm) makes the left neighbour C(2n,n-1) share the same closed form n*catalan n.",
+      "Iterating Nat.choose_succ_right_eq at (2n,n+1) yields (n+2)*C(2n,n+2) = n(n-1)*catalan n, kept multiplicative to stay exact over the naturals.",
+      "Strict positivity of catalan n (via Nat.centralBinom_pos) certifies the strict gap C(2n,n+1) < C(2n,n), the genuine reflection difference."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the catalan<->centralBinom bridge and the binomial step recurrence but records neither the reflection difference nor closed forms for the off-central coefficients C(2n,n+-k)."
+    ],
+    "nextSteps": [
+      "Open extension: central-binomial self-convolution sum centralBinom i * centralBinom (n-i) = 4^n, needs generalized-binomial (Ring.choose over the rationals) Chu-Vandermonde; materially harder."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "catalan",
+    "binomial",
+    "seeker-selected",
+    "intermediate"
+  ],
+  "relatedProofs": [
+    "catalan-numbers-oq-01",
+    "catalan-numbers-oq-01-oq-01",
+    "catalan-numbers-oq-01-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-01-oq-02-oq-03",
+    "catalan-numbers-oq-01-oq-02",
+    "catalan-numbers-oq-01-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T04:57:05.033Z",
+  "lastUpdate": "2026-06-24T05:00:00.000Z",
+  "significance": 5,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "axiomCount": 0,
+      "defCount": 0,
+      "filename": "CatalanNumbersOQ01OQ01OQ03.lean",
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ03.lean",
+      "isAristotle": false,
+      "lineCount": 161,
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ03.lean",
+      "sorryCount": 0,
+      "theoremCount": 8
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01.lean",
+      "filename": "CatalanNumbersOQ01.lean",
+      "lineCount": 64,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean",
+      "filename": "CatalanNumbersOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 104,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02.lean",
+      "filename": "CatalanNumbersOQ01OQ02.lean",
+      "lineCount": 176,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CatalanNumbersOQ01OQ02OQ01.lean",
+      "filename": "CatalanNumbersOQ01OQ02OQ01.lean",
+      "lineCount": 138,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CatalanNumbersOQ01OQ02OQ01.lean"
+    }
+  ]
+}
