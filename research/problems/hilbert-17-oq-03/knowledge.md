@@ -82,10 +82,41 @@ added the import, refreshed prose.
   repeatedly by the fleet sync; don't trust a post-build `grep` on MAIN — trust
   the olean / `#print axioms` from the build that ran, and the worktree commit.
 
+## Session 2026-06-24 (researcher-1) — Robinson non-SOS: method does NOT transfer (survey)
+Assessed whether the elementary Motzkin coefficient-extraction proof transfers to
+`robinson_not_sos_aux`. **It does not**, and the reason is structural:
+
+- Robinson `R = x⁶+y⁶+z⁶ − Σ_sym x⁴y² + 3x²y²z²` is *homogeneous* of degree 6.
+  The degree-bound step DOES generalize cleanly: in `R = Σ qᵢ²`, the top- and
+  bottom-degree homogeneous components force every `qᵢ` to be a homogeneous
+  **cubic** in `x,y,z` (10 monomials: x³,y³,z³,x²y,x²z,xy²,y²z,xz²,yz²,xyz).
+- BUT the Motzkin engine worked because affine Motzkin has **zero** coefficients
+  on every pure power (no x⁶, x⁴, x², …, no y⁶, …): those zeros force
+  `[x³]qᵢ = [x²y]qᵢ = … = 0`, collapsing each `qᵢ` until only `[xy]qᵢ` survives,
+  and then the single coefficient `[x²y²]M = −3 = Σ([xy]qᵢ)² ≥ 0` contradicts.
+- Robinson has `[x⁶]=[y⁶]=[z⁶] = +1` (nonzero) ⟹ `Σᵢ([x³]qᵢ)² = 1` etc.: the
+  cubic coefficients are NOT forced to vanish, so there is no "kill-the-coeffs"
+  cascade. Worked the coefficient identities: the six `[x⁴y²]`-type coeffs each
+  give `Σᵢ(qᵢ-quadratic) = −1` but each is `(square) + 2·(cross)` — the cross
+  terms (`2 pᵢsᵢ` etc.) are sign-indefinite, so **no single coefficient nor any
+  obvious linear combination yields a `Σ(perfect squares) = negative`** the way
+  `[x²y²]M` did. Robinson's non-SOS-ness sits on the *boundary* of the SOS cone.
+- Correct proof routes (both real projects, not one-coefficient tricks):
+  (a) **Dual functional / Gram-matrix infeasibility**: exhibit a linear `L` on
+      degree-6 forms, PSD on squares of cubics, with `L(R) < 0`. This `L` is
+      *not* a combination of point evaluations (those give `L(R)=ΣλₖR(Pₖ)≥0`);
+      it must be supported with 2nd-order data at R's projective zeros.
+  (b) **Zero-set dimension count** (Reznick/Choi–Lam): every `qᵢ` vanishes at the
+      common real projective zeros of R (the coordinate points [1:0:0],[0:1:0],
+      [0:0:1] and the sign points [±1:±1:±1]); the space of cubics vanishing
+      there is too small to span the needed Gram rank.
+  Neither has a short Mathlib path; estimate ≥ a dedicated multi-session effort
+  (Gram-matrix PSD machinery or a hand-built dual certificate). **Flagged: do
+  not attempt as a quick coefficient port — it will become scaffolding.**
+
 ## Still open
-- `robinson_not_sos` — same degree/coefficient method on the Robinson form
-  (Fin 3, degree 6); would discharge `robinson_not_sos_aux` (parent 7 → 6).
-  Heavier bookkeeping: 3-variable antidiagonals, Schur-form leading analysis.
+- `robinson_not_sos` — needs route (a) or (b) above, NOT the Motzkin port.
+  Would discharge `robinson_not_sos_aux` (parent 7 → 6).
 - Remaining 7 parent axioms are genuinely deep (Artin transfer, Hilbert 1888
   classification, Pfister/Cassels bounds) — not routine Mathlib lookups.
 - The actual complexity classification (SOS membership ≈ SDP feasibility) — a
