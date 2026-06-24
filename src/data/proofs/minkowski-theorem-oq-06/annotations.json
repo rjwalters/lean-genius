@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-shear-mat",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 58, "endLine": 64 },
+    "type": "definition",
+    "title": "The Shear Matrix and Its Linear Map",
+    "content": "`shearMat α = [[1,0],[α,1]]` and `shear α = Matrix.toLin' (shearMat α)` package the change of variables $(x,t) \\mapsto (x,\\, \\alpha x + t)$. A shear is the canonical area-preserving (unipotent) linear map: it slides the second coordinate by an $x$-dependent amount without stretching, which is exactly what turns the trivial rectangle into the Diophantine region while keeping its area fixed.",
+    "mathContext": "$S = \\begin{pmatrix} 1 & 0 \\\\ \\alpha & 1 \\end{pmatrix},\\qquad S\\begin{pmatrix}x\\\\t\\end{pmatrix} = \\begin{pmatrix} x \\\\ \\alpha x + t \\end{pmatrix}.$",
+    "significance": "key",
+    "relatedConcepts": ["shear transformation", "unipotent matrix", "Matrix.toLin'", "change of variables"],
+    "prerequisites": ["linear maps", "matrices"]
+  },
+  {
+    "id": "ann-shear-det",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 75, "endLine": 78 },
+    "type": "theorem",
+    "title": "The Shear Is Area-Preserving (det = 1)",
+    "content": "`shear_det` computes $\\det S = 1$ via `LinearMap.det_toLin'` and `Matrix.det_fin_two_of`. This is the single fact that makes the whole area argument free of Jacobian bookkeeping: under a determinant-1 map, Lebesgue measure is exactly preserved, so the region inherits the rectangle's area verbatim.",
+    "mathContext": "$\\det S = 1\\cdot 1 - 0\\cdot\\alpha = 1.$",
+    "significance": "key",
+    "relatedConcepts": ["determinant", "volume preservation", "special linear group SL₂"],
+    "prerequisites": ["determinant of 2×2 matrix"]
+  },
+  {
+    "id": "ann-box",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 82, "endLine": 98 },
+    "type": "definition",
+    "title": "The Inflated Axis-Aligned Box",
+    "content": "`box N` is the product $[-(N+\\tfrac12), N+\\tfrac12] \\times [-\\tfrac1N, \\tfrac1N]$, with `box_convex` and `box_symmetric` establishing the two structural hypotheses Minkowski needs. The crucial design choice is *inflating* the $x$-half-width from $N$ to $N+\\tfrac12$: this is what pushes the area strictly above $4$ so the strict form of Minkowski applies, while integrality of $q$ later collapses $|q| \\le N+\\tfrac12$ back to $|q| \\le N$.",
+    "mathContext": "$\\mathrm{box}(N) = [-(N+\\tfrac12),\\,N+\\tfrac12] \\times [-\\tfrac1N,\\,\\tfrac1N] \\subset \\mathbb{R}^2.$",
+    "significance": "key",
+    "relatedConcepts": ["convex set", "centrally symmetric set", "product of intervals", "convex_pi"],
+    "prerequisites": ["convexity", "Cartesian products"]
+  },
+  {
+    "id": "ann-box-volume",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 100, "endLine": 106 },
+    "type": "theorem",
+    "title": "Volume of the Box",
+    "content": "`box_volume` evaluates the Lebesgue measure of the product box as the product of side-lengths $\\big(2(N+\\tfrac12)\\big)\\cdot\\big(2\\cdot\\tfrac1N\\big)$, using `volume_pi_pi` (the measure of a product is the product of measures) and `Real.volume_Icc`. This is the raw area that the determinant-1 shear will carry over to the region unchanged.",
+    "mathContext": "$\\mathrm{vol}(\\mathrm{box}(N)) = 2(N+\\tfrac12)\\cdot \\tfrac2N = (2N+1)\\cdot\\tfrac2N.$",
+    "significance": "supporting",
+    "relatedConcepts": ["Lebesgue measure", "product measure", "volume_pi_pi"],
+    "prerequisites": ["measure theory", "Lebesgue measure on ℝⁿ"]
+  },
+  {
+    "id": "ann-region",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 108, "endLine": 117 },
+    "type": "definition",
+    "title": "The Diophantine Region as a Sheared Box",
+    "content": "`region α N = shear α '' box N` is the convex symmetric set $\\{(x,y) : |x| \\le N+\\tfrac12,\\ |\\alpha x - y| \\le \\tfrac1N\\}$. Defining it as the *image* of the box (rather than by its inequalities) is the key move: convexity and central symmetry transport for free along the linear map (`region_convex`, `region_symmetric`), and the area follows from the determinant. The inequality $|\\alpha x - y| \\le 1/N$ is precisely the sheared form of the slab $|t| \\le 1/N$.",
+    "mathContext": "$R = \\{(x,y) : |x| \\le N+\\tfrac12,\\ |\\alpha x - y| \\le \\tfrac1N\\} = S(\\mathrm{box}(N)).$",
+    "significance": "key",
+    "relatedConcepts": ["linear image of a convex set", "central symmetry", "geometry of numbers"],
+    "prerequisites": ["image of a set under a map", "convexity"]
+  },
+  {
+    "id": "ann-region-volume",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 119, "endLine": 137 },
+    "type": "theorem",
+    "title": "Quantitative Heart: Area = 4 + 2/N > 2²",
+    "content": "`region_volume_gt` is the quantitative core that makes Minkowski applicable. By `Measure.addHaar_image_linearMap`, $\\mathrm{vol}(S\\,(\\mathrm{box})) = |\\det S|\\cdot\\mathrm{vol}(\\mathrm{box}) = 1\\cdot\\tfrac{2(2N+1)}{N} = 4 + \\tfrac2N$, which for any $N>0$ is strictly greater than $4 = 2^2$. The threshold $2^n$ (here $n=2$) is exactly Minkowski's volume condition; the surplus $2/N$ is the slack that the inflation bought.",
+    "mathContext": "$\\mathrm{vol}(R) = |\\det S|\\cdot\\mathrm{vol}(\\mathrm{box}) = 4 + \\tfrac2N > 4 = 2^2.$",
+    "significance": "critical",
+    "relatedConcepts": ["Minkowski volume bound", "linear change of variables", "addHaar_image_linearMap", "Haar measure"],
+    "prerequisites": ["measure theory", "change of variables formula"]
+  },
+  {
+    "id": "ann-coord-int",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 141, "endLine": 150 },
+    "type": "technique",
+    "title": "Extracting Integer Coordinates from the Lattice Point",
+    "content": "`stdLattice_coord_int` is the bridge from the abstract Minkowski output to elementary number theory. Minkowski returns a nonzero point of the lattice $\\mathbb{Z}^2$, defined as the $\\mathbb{Z}$-span of the standard basis. `Module.Basis.mem_span_iff_repr_mem` says membership in that span is equivalent to every basis coordinate being an integer; reading off coordinates $0$ and $1$ yields the integers $q$ and $p$. This is the only step connecting the measure-theoretic statement to the integers.",
+    "mathContext": "$v \\in \\mathbb{Z}\\text{-span}(e_0,e_1) \\iff \\forall i,\\ v_i \\in \\mathbb{Z}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["integer lattice", "ℤ-span of a basis", "mem_span_iff_repr_mem", "standard basis"],
+    "prerequisites": ["modules over ℤ", "bases", "lattices"]
+  },
+  {
+    "id": "ann-dirichlet",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 152, "endLine": 244 },
+    "type": "theorem",
+    "title": "Dirichlet's Approximation Theorem via Minkowski",
+    "content": "The headline. For real $\\alpha$ and integer $N \\ge 1$, there are integers $0 < q \\le N$ and $p$ with $|q\\alpha - p| \\le 1/N$. The case $N=1$ is the trivial rounding bound $|\\alpha - \\mathrm{round}\\,\\alpha| \\le 1/2$. For $N \\ge 2$, Minkowski delivers a nonzero $(q,p) \\in \\mathbb{Z}^2 \\cap R$; its membership gives $|q| \\le N+\\tfrac12$ (so $|q| \\le N$ by integrality) and $|\\alpha q - p| \\le 1/N$. The case $q = 0$ is excluded because it would force $|p| \\le 1/N < 1$, hence $p = 0$ and the point would be the origin; a sign flip then arranges $q > 0$. This is the geometry-of-numbers proof, distinct from Mathlib's pigeonhole derivation.",
+    "mathContext": "$\\forall \\alpha\\in\\mathbb{R},\\ \\forall N\\ge 1,\\ \\exists\\, p,q\\in\\mathbb{Z}:\\ 0 < q \\le N,\\ |q\\alpha - p| \\le \\tfrac1N.$",
+    "significance": "critical",
+    "relatedConcepts": ["Dirichlet approximation", "Minkowski convex body theorem", "lattice point", "round function", "sign normalization"],
+    "prerequisites": ["Minkowski's theorem", "integer arithmetic", "absolute value inequalities"]
+  },
+  {
+    "id": "ann-sq-bound",
+    "proofId": "minkowski-theorem-oq-06",
+    "range": { "startLine": 246, "endLine": 267 },
+    "type": "theorem",
+    "title": "Corollary: The 1/q² Bound",
+    "content": "`dirichlet_sq_bound` divides the headline inequality by $q$: from $|q\\alpha - p| \\le 1/N$ one gets $|\\alpha - p/q| \\le 1/(qN)$, and since $q \\le N$ this is at most $1/q^2$. This is the classical form of Dirichlet's theorem and the seed for continued-fraction theory and Hurwitz's theorem on best rational approximations. The proof is routine division and monotonicity (`gcongr`, `one_div_le_one_div_of_le`).",
+    "mathContext": "$|q\\alpha - p| \\le \\tfrac1N \\implies \\left|\\alpha - \\tfrac{p}{q}\\right| \\le \\tfrac{1}{qN} \\le \\tfrac{1}{q^2}.$",
+    "significance": "key",
+    "relatedConcepts": ["rational approximation", "continued fractions", "Hurwitz theorem", "1/q² bound"],
+    "prerequisites": ["inequalities", "division of inequalities"]
+  }
+]

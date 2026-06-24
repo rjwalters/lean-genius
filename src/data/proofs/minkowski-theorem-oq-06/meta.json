@@ -121,5 +121,61 @@
       "The standard lattice ℤ² ⊂ ℝ² and integer coordinates of span members"
     ]
   },
+  "sections": [
+    {
+      "id": "shear",
+      "title": "The Area-Preserving Shear",
+      "startLine": 56,
+      "endLine": 78,
+      "summary": "Defines the shear matrix [[1,0],[α,1]] and its linear map shear α = (x,t) ↦ (x, αx+t), with simp lemmas for its coordinates, then proves shear_det: the shear has determinant 1, so it preserves area."
+    },
+    {
+      "id": "convex-body",
+      "title": "The Convex Body (Inflated, Sheared Box)",
+      "startLine": 80,
+      "endLine": 137,
+      "summary": "Builds the axis-aligned box [−(N+½),N+½]×[−1/N,1/N] (convex, centrally symmetric, volume (2N+1)·(2/N)) and its shear image, the Diophantine region. region_volume_gt computes the region's area as 4 + 2/N > 2² via addHaar_image_linearMap and det = 1."
+    },
+    {
+      "id": "integer-coords",
+      "title": "Extracting Integer Coordinates",
+      "startLine": 139,
+      "endLine": 150,
+      "summary": "stdLattice_coord_int: a point of the standard integer lattice ℤ² has integer coordinates, via Module.Basis.mem_span_iff_repr_mem — the bridge from Minkowski's abstract lattice point to the integers p, q."
+    },
+    {
+      "id": "dirichlet",
+      "title": "Dirichlet's Approximation Theorem and the 1/q² Corollary",
+      "startLine": 152,
+      "endLine": 268,
+      "summary": "dirichlet_approx applies the gallery's integer-lattice Minkowski theorem to the region, extracts integers 0 < q ≤ N and p with |qα − p| ≤ 1/N (N=1 by rounding; q≠0 because q=0 forces the origin; sign flip for q>0). dirichlet_sq_bound divides through to give |α − p/q| ≤ 1/(qN) ≤ 1/q²."
+    }
+  ],
+  "conclusion": {
+    "summary": "Dirichlet's 1842 approximation theorem is obtained purely from the geometry of numbers: applying the gallery's integer-lattice Minkowski convex body theorem to the symmetric convex region {|x| ≤ N+½, |αx − y| ≤ 1/N} — built as a determinant-1 shear of a rectangle, hence of area 4 + 2/N > 2² — produces a nonzero lattice point whose coordinates give integers 0 < q ≤ N and p with |qα − p| ≤ 1/N, and dividing by q yields |α − p/q| ≤ 1/(qN) ≤ 1/q². Fully machine-checked: 0 sorries, 0 axioms.",
+    "implications": "The entry makes precise that Dirichlet's theorem is a one-line corollary of Minkowski's theorem once the right convex body is identified — the lattice-point count, not pigeonhole, is the structural reason the approximation exists. Mathlib proves the same result independently via pigeonhole; the Minkowski/lattice route together with the explicit sheared-box area computation is the original content. The 1/q² bound is the gateway to the metric theory of continued fractions (best approximations), Hurwitz's theorem (the sharp constant 1/√5), and higher-dimensional simultaneous approximation, all of which are most naturally proved in the geometry-of-numbers framework.",
+    "openQuestions": [
+      "Can the same convex-body method be pushed to simultaneous Diophantine approximation in dimension n (Dirichlet's theorem for several reals at once), using an (n+1)-dimensional Minkowski region — a natural next gallery entry?",
+      "Minkowski's route gives the bound |qα − p| ≤ 1/N; can a boundary/closed-body version recover the sharper pigeonhole bound ≤ 1/(N+1), and is that worth formalizing?",
+      "Does iterating the construction (or invoking the closed form for irrational α) yield infinitely many distinct approximations p/q with |α − p/q| < 1/q², the statement usually quoted as 'Dirichlet's theorem'?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "minkowski-theorem",
+      "title": "Minkowski's Convex Body Theorem (Integer Lattice)",
+      "relationship": "Parent entry and the engine of this derivation. Provides minkowski_integer_lattice_proved: a centrally symmetric convex set in ℝⁿ of volume > 2ⁿ contains a nonzero point of ℤⁿ. This entry answers its listed open question of deriving Dirichlet's theorem as a corollary."
+    },
+    {
+      "slug": "minkowski-fundamental-theorem",
+      "title": "Minkowski's Fundamental Theorem (General Lattices)",
+      "relationship": "Supplies the lattice infrastructure (stdLattice, stdBasis) used to extract integer coordinates of the Minkowski lattice point via stdLattice_coord_int."
+    },
+    {
+      "slug": "dirichlet-approximation-theorem",
+      "title": "Dirichlet's Approximation Theorem",
+      "relationship": "Companion entry proving the same theorem; together they exhibit the two classical routes — pigeonhole versus geometry of numbers — to the |α − p/q| ≤ 1/q² approximation bound."
+    }
+  ],
   "sorries": 0
 }
