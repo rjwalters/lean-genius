@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-kummer-oq040101-twobit",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 107,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "Core New Lemma: s₂(n) = 2 ⟺ Two Distinct Powers of Two",
+    "content": "`sum_digits_two_eq_two_iff` is the combinatorial heart: a natural number has binary digit sum (popcount) 2 exactly when it is a sum of two distinct powers of two, n = 2^a + 2^b with a > b. Mathlib has no popcount-2 characterisation; this advances the parent's popcount-1 (powers-of-two) result one level up the ladder."
+  },
+  {
+    "id": "ann-kummer-oq040101-descent",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 96
+    },
+    "type": "technique",
+    "title": "Parity Descent: Popcount-2 Reduces to Popcount-1",
+    "content": "The forward direction is strong induction on n peeling the lowest bit via s₂(n) = (n%2) + s₂(n/2). An even n inherits both bits from n/2 (recurse, doubling both exponents); an odd n spends one bit on 2^0 and the remaining digit sum 1 lands exactly on the parent's popcount-one lemma `sum_digits_two_eq_one_imp`. The popcount ladder climbs by feeding level k into level k-1."
+  },
+  {
+    "id": "ann-kummer-oq040101-converse",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "Converse by a Single Factorisation",
+    "content": "`sum_digits_two_eq_two_of` factors 2^a + 2^b = 2^b·(2^(a-b)+1). Multiplying by a power of two only prepends zero digits (`sum_digits_two_pow_mul`), so the digit sum equals that of the odd part 2^m+1, whose binary string 1 0…0 1 has digit sum 2 (`sum_digits_two_pow_succ_add_one`)."
+  },
+  {
+    "id": "ann-kummer-oq040101-headline",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "Headline: v₂(C(2n,n)) = 2 ⟺ n Has Two 1-Bits",
+    "content": "`padicValNat_two_centralBinom_eq_two_iff` rewrites the valuation as the binary digit sum via the parent identity v₂(C(2n,n)) = s₂(n), then applies the popcount-2 classification. The binomial coefficient contributes only through that valuation formula."
+  },
+  {
+    "id": "ann-kummer-oq040101-exactdvd",
+    "proofId": "kummer-theorem-oq-04-oq-01-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Exact Divisibility as a Valuation Window",
+    "content": "`four_exactDvd_centralBinom_iff` recasts the result as 4 ∣ C(2n,n) ∧ 8 ∤ C(2n,n). The bridge `exactDvd_four_iff_padicValNat_two` uses `padicValNat_dvd_iff_le` on 4 = 2² and 8 = 2³ to bracket the valuation: 4 ∣ m ∧ 8 ∤ m is exactly 2 ≤ v₂(m) < 3, i.e. v₂(m) = 2."
+  }
+]
