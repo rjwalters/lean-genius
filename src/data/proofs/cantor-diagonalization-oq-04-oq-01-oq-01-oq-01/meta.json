@@ -1,0 +1,160 @@
+{
+  "id": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+  "slug": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CantorDiagonalizationOQ04OQ01OQ01"
+    ],
+    "opens": [
+      "CategoryTheory",
+      "CategoryTheory.Category",
+      "CategoryTheory.Limits",
+      "CategoryTheory.MonoidalCategory",
+      "CategoryTheory.CartesianMonoidalCategory",
+      "CategoryTheory.CartesianClosed",
+      "LawvereCCC"
+    ],
+    "namespace": "LawvereType",
+    "lineCount": 159,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/CantorDiagonalizationOQ04OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Cantor and Presheaf Fixed Points as Instances of Lawvere's Theorem",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ04OQ01OQ01OQ01.lean",
+    "tags": [
+      "category-theory",
+      "cartesian-closed-category",
+      "lawvere",
+      "cantor",
+      "diagonal-argument",
+      "fixed-point",
+      "presheaf-topos",
+      "type-theory",
+      "instantiation",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 159,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "pointSurjective_iff_surjective: the categorical-to-set bridge — in Type u, LawvereCCC.PointSurjective φ is equivalent to honest Function.Surjective φ, collapsing global points 𝟙_ ⟶ A to elements and the exponential A ⟹ B to A → B",
+      "ev_apply / uncurry_apply: the cartesian-closed evaluation exp.ev and uncurrying in Type are honest function application ((a, h) ↦ h a, uncurry g (a, y) = g y a), proved from Mathlib's Types.tensorProductAdjunction",
+      "name_apply: the categorical name 𝟙_ ⟶ (A ⟹ B) of f : A → B evaluates back to f itself (name f PUnit.unit = f)",
+      "no_surjective_of_fixedPointFree: Lawvere's diagonal in Type — any fixed-point-free t : B → B forbids a surjection A → (A → B), derived as a corollary of the parent's lawvere_cantor",
+      "cantor_no_surjective: Cantor's theorem (no surjection A → (A → Bool)) recovered from the categorical fixed-point theorem via the fixed-point-free negation t = (!·)",
+      "lawvere_fixedPoint_presheaf / lawvere_cantor_presheaf: the fixed-point form and its Cantor obstruction in a presheaf topos C ⥤ Type u, via Mathlib's CartesianClosed (C ⥤ Type u) instance",
+      "Answers the parent's headline open question by instantiating the abstract CCC Lawvere theorem in the two standard models (Type and presheaf topoi)"
+    ],
+    "prerequisites": [
+      "Parent: CantorDiagonalizationOQ04OQ01OQ01 (Lawvere's fixed-point theorem in any CCC)",
+      "Cartesian closed structure on Type (Mathlib.CategoryTheory.Monoidal.Closed.Types): the adjunction tensorLeft A ⊣ coyoneda.obj (op A)",
+      "Cartesian closed structure on presheaf categories C ⥤ Type u",
+      "Monoidal structure on Type: 𝟙_ (Type u) = PUnit, X ⊗ Y = X × Y, evaluation as application",
+      "Cantor's diagonal argument (1891); Lawvere's fixed-point theorem (1969)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "CategoryTheory.CartesianClosed (Type v₁)",
+        "description": "The cartesian closed instance on Type, built from Types.tensorProductAdjunction; supplies the exponential A ⟹ B = (A → B) and evaluation",
+        "module": "Mathlib.CategoryTheory.Monoidal.Closed.Types"
+      },
+      {
+        "theorem": "CategoryTheory.CartesianClosed (C ⥤ Type v₁)",
+        "description": "The cartesian closed instance on presheaf categories, used to apply the abstract Lawvere theorem in a topos",
+        "module": "Mathlib.CategoryTheory.Monoidal.Closed.Types"
+      },
+      {
+        "theorem": "CartesianClosed.uncurry_eq",
+        "description": "uncurry g = (A ◁ g) ≫ (exp.ev A).app X — reduces uncurrying to whiskering followed by evaluation, the key step in uncurry_apply",
+        "module": "Mathlib.CategoryTheory.Monoidal.Closed.Cartesian"
+      },
+      {
+        "theorem": "CartesianClosed.uncurry_curry",
+        "description": "uncurry (curry f) = f — turns the named diagonal back into a morphism for name_apply",
+        "module": "Mathlib.CategoryTheory.Monoidal.Closed.Cartesian"
+      },
+      {
+        "theorem": "CategoryTheory.types_comp_apply",
+        "description": "(f ≫ g) x = g (f x) — composition in Type is function composition, used throughout the bridge",
+        "module": "Mathlib.CategoryTheory.Types"
+      },
+      {
+        "theorem": "Bool.not_ne_self",
+        "description": "(!b) ≠ b — the fixed-point-free witness on Bool that drives Cantor's theorem",
+        "module": "Mathlib.Data.Bool.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01-oq-01",
+      "question": "Give a genuinely non-Type presheaf instance: pick a small category C and a presheaf B ∈ C ⥤ Type with a concrete fixed-point-free endomorphism (computed on global sections, i.e. natural transformations 𝟙_ ⟶ B), and exhibit the resulting Cantor obstruction explicitly rather than only abstractly.",
+      "significance": "medium"
+    },
+    {
+      "id": "cantor-diagonalization-oq-04-oq-01-oq-01-oq-01-oq-02",
+      "question": "Strengthen pointSurjective_iff_surjective to other concrete CCCs (e.g. the category of pointed sets, or G-sets for a group G), identifying for each model what 'global point' and 'point-surjective' decode to, and which Cantor-type obstructions survive.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-04-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: Lawvere's fixed-point theorem in an arbitrary cartesian closed category. This file cashes out that abstract theorem in the two standard models — Type and presheaf topoi — by proving the categorical-to-set bridge pointSurjective_iff_surjective and feeding fixed-point-free endomorphisms through lawvere_cantor."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "specializes-to",
+      "description": "cantor_no_surjective is the original Cantor diagonal: no surjection A → (A → Bool). Here it is obtained purely as the C = Type instance of the categorical lawvere_cantor with the fixed-point-free negation t = (!·)."
+    },
+    {
+      "targetId": "cantor-diagonalization-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Grandparent setoid generalization. The Type bridge here makes precise the decategorification the grandparent gestured at: global points 𝟙_ ⟶ A are elements and name is the curry isomorphism."
+    }
+  ],
+  "references": [
+    {
+      "title": "Diagonal arguments and cartesian closed categories",
+      "author": "F. William Lawvere",
+      "year": "1969",
+      "venue": "Lecture Notes in Mathematics, Vol. 92, Springer, pp. 134–145",
+      "description": "Original source. The Type and presheaf instances formalized here are exactly the corollaries Lawvere highlights: Cantor in Set and the topos-theoretic fixed-point phenomenon."
+    },
+    {
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "author": "Georg Cantor",
+      "year": "1891",
+      "venue": "Jahresbericht der DMV 1, 75–78",
+      "description": "Cantor's diagonal argument |Y| < |2^Y|; recovered as cantor_no_surjective."
+    },
+    {
+      "title": "A universal approach to self-referential paradoxes, incompleteness and fixed points",
+      "author": "Noson S. Yanofsky",
+      "year": "2003",
+      "venue": "Bulletin of Symbolic Logic 9(3), 362–386",
+      "description": "Exposition of the point-surjectivity formulation; the Type-level reading PointSurjective ↔ Surjective made formal here follows Yanofsky."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The abstract Lawvere fixed-point theorem of the parent entry is instantiated in its two standard models. For C = Type u, a short computational bridge identifies the categorical data with set-theoretic data: the monoidal unit is PUnit so global points 𝟙_ ⟶ A are elements, the exponential A ⟹ B is the function type A → B, and evaluation/uncurrying are honest application (ev_apply, uncurry_apply); consequently the name of f evaluates back to f (name_apply), and categorical point-surjectivity coincides with honest surjectivity (pointSurjective_iff_surjective). Feeding a fixed-point-free t : B → B through lawvere_cantor yields no_surjective_of_fixedPointFree, of which Cantor's theorem cantor_no_surjective (no surjection A → (A → Bool), via t = negation) is the headline instance. For presheaf topoi C ⥤ Type u, Mathlib's CartesianClosed instance lets the abstract theorem apply verbatim (lawvere_fixedPoint_presheaf, lawvere_cantor_presheaf). 159 lines, 9 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This resolves the parent's headline open question. The single non-formal modelling choice in the parent — using point-surjectivity and global points rather than Lean-level surjections and elements — is here shown to be a faithful one in Type: the categorical hypothesis decodes exactly to the classical one, so Cantor's theorem is literally a corollary of the categorical Lawvere theorem, not merely an analogue. The presheaf instances confirm the same machine applies unchanged in a genuine topos, isolating the Cantor/Russell/Gödel/Tarski/Turing diagonal as one categorical statement.",
+    "openQuestions": [
+      "Exhibit a concrete non-Type presheaf B with a fixed-point-free endomorphism on global sections and the explicit Cantor obstruction it produces.",
+      "Decode pointSurjective_iff_surjective in other concrete cartesian closed categories (pointed sets, G-sets), identifying the surviving Cantor-type obstructions.",
+      "Upstream candidate: the Type bridge (ev_apply, uncurry_apply, pointSurjective_iff_surjective) alongside the parent's lawvere_fixedPoint for Mathlib's CategoryTheory.Closed namespace."
+    ]
+  }
+}
