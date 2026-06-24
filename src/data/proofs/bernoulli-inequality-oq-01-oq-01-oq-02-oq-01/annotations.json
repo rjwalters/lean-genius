@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-bern-oq01010201-header",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 48
+    },
+    "type": "context",
+    "title": "From a fixed band to an n-dependent band",
+    "content": "The docstring states the parent's first open question: generalize the bounded-power trap from the fixed band [−1, 1] to a magnitude-≤ B base, whose powers live in the n-dependent band [−Bⁿ, Bⁿ], and characterize which lines escape it. The answer is a sharp dichotomy at the critical value B = 1 — shrinking/critical band (B ≤ 1) lines escape, growing band (B > 1) every line is captured."
+  },
+  {
+    "id": "ann-bern-oq01010201-trap",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 72
+    },
+    "type": "technique",
+    "title": "The generalized trap",
+    "content": "abs_pow_le proves |xⁿ| ≤ Bⁿ from |x| ≤ B using abs_pow (|xⁿ| = |x|ⁿ) and pow_le_pow_left₀ (monotonicity of powers). abs_le then splits this into the two walls −Bⁿ ≤ xⁿ (neg_pow_le_pow) and xⁿ ≤ Bⁿ (pow_le_pow_band). This is the verbatim generalization of the parent's [−1, 1] band."
+  },
+  {
+    "id": "ann-bern-oq01010201-engine",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 87
+    },
+    "type": "technique",
+    "title": "The escape engine (any B)",
+    "content": "Two transitivity one-liners: lt_pow_of_lt_neg_pow says anything below the lower wall (c < −Bⁿ) is beaten by every power (c < xⁿ); pow_lt_of_pow_lt is the mirror above the upper wall. Both are B-agnostic — they need nothing about the sign or size of B."
+  },
+  {
+    "id": "ann-bern-oq01010201-shrinking",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 89,
+      "endLine": 134
+    },
+    "type": "insight",
+    "title": "Shrinking/critical band B ≤ 1: lines still escape",
+    "content": "When B ≤ 1 the wall Bⁿ ≤ 1 (pow_le_one₀), so the band sits inside [−1, 1]. eventually_line_lt_pow_band: a negative-slope line drops below −1 ≤ −Bⁿ past the Archimedean threshold N > (b+1)/(−s), hence below every power. eventually_pow_lt_line_band is the positive-slope mirror. These generalize the parent's lemmas from B = 1 to every B ≤ 1."
+  },
+  {
+    "id": "ann-bern-oq01010201-tendsto",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 157
+    },
+    "type": "technique",
+    "title": "Exponential dominates linear",
+    "content": "tendsto_linear_div_pow proves (|b| + |s|·n)/Bⁿ → 0 for B > 1 by writing it as |b|·(1/Bⁿ) + |s|·(n/Bⁿ) and sending both terms to 0 with tendsto_pow_const_div_const_pow_of_one_lt (k = 0 and k = 1). This is the quantitative engine that lets the exponential wall absorb any line."
+  },
+  {
+    "id": "ann-bern-oq01010201-capture",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 159,
+      "endLine": 191
+    },
+    "type": "insight",
+    "title": "Growing band B > 1: every line is captured",
+    "content": "eventually_line_mem_band turns the limit into an eventual bound (Tendsto.eventually_lt_const, div_lt_one): eventually |b| + |s|·n < Bⁿ, and bounding the line by its envelope (abs_add_le) gives |b + n·s| < Bⁿ, i.e. the line lies strictly inside (−Bⁿ, Bⁿ). No line of any slope escapes — the exact opposite of the B ≤ 1 case."
+  },
+  {
+    "id": "ann-bern-oq01010201-dichotomy",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 193,
+      "endLine": 201
+    },
+    "type": "insight",
+    "title": "The boundary dichotomy at B = 1",
+    "content": "escape_or_capture states both halves for a fixed negative-slope line: B > 1 forces capture inside the band, B ≤ 1 forces escape below every power. The single comparison B ≷ 1 flips one into the other, pinning the parent's fixed band B = 1 as the precise critical threshold the parent's open question asked about."
+  }
+]
