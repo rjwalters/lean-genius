@@ -2920,6 +2920,7 @@ import Proofs.FundamentalTheoremAlgebraOQ02
 import Proofs.FundamentalTheoremAlgebraOQ04
 import Proofs.FundamentalTheoremAlgebraOQ04OQ04
 import Proofs.FundamentalTheoremAlgebraOQ06
+import Proofs.FundamentalTheoremAlgebraOQ06OQ01
 import Proofs.FundamentalTheoremCalculus
 import Proofs.FundamentalTheoremCalculusLebesgue
 import Proofs.FundamentalTheoremCalculusLebesgueOQ01
