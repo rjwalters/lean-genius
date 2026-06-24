@@ -11,25 +11,31 @@
     "whyMatters": []
   },
   "knowledge": {
-    "progressSummary": "Supplied the FIRST theorems for Erdős #128 ($250 open: dense large induced subgraphs force a triangle?). Scaffold Erdos128Problem.lean is prose-only AND fails to build (missing DecidablePred for edgeCount + trailing docstrings). Self-contained re-decl (Classical decidability): hasTriangle_induce (induced triangle => ambient), triangleFree_induce (HEREDITARY -- why C5-blow-ups are triangle-free), edgeCount_induce_le (MONOTONE), triangleFree_of_no_edges. 4 thm/4 def/1 struct, 0 sorries/0 axioms (Classical.choice doesn't count), builds green 7743 jobs.",
+    "progressSummary": "Follow-up entry erdos-128-wip-01-oq-01: proved triangle-freeness pulls back along ARBITRARY graph homomorphisms (triangleFree_of_hom), generalizing the parent hereditary property; defined blow-up as adjacency-pullback along a class map (blowup, blowup_isHom, blowup_triangleFree); proved C5 triangle-free (decide) and hence every C5-blow-up triangle-free at every scale (blowup_C5_triangleFree) -- the triangle-freeness of the conjectured-optimal extremal construction, isolated from the open density estimate. 5 thm/5 def/1 struct, 0 sorries, 0 axioms (propext/Quot.sound only, no native_decide). Kernel-verified via lake env lean.",
     "builtItems": [
       "hasTriangle_induce: induced triangle => ambient triangle",
       "triangleFree_induce: triangle-freeness hereditary",
       "edgeCount_induce_le: edge count monotone under induce",
-      "triangleFree_of_no_edges: empty graph triangle-free"
+      "triangleFree_of_no_edges: empty graph triangle-free",
+      "triangleFree_of_hom: triangle-freeness pulls back along graph homomorphisms (Erdos128WIP01OQ01.lean)",
+      "blowup + blowup_isHom + blowup_triangleFree: blow-up = pullback of adjacency along class map; class map is a homomorphism",
+      "C5_triangleFree + blowup_C5_triangleFree: C5 triangle-free (decide), hence every C5-blow-up triangle-free at every scale"
     ],
     "insights": [
       "Induced adjacency entails ambient adjacency => substructures lift.",
       "Triangle-freeness hereditary = 'no induced subgraph has a triangle' = why C5-blow-up extremal witnesses are triangle-free at every scale.",
-      "Edge-count monotonicity underlies the density hypothesis denseSubgraphs."
+      "Edge-count monotonicity underlies the density hypothesis denseSubgraphs.",
+      "Triangle-freeness is homomorphism-monotone: a homomorphism into a triangle-free graph forces triangle-freeness; the three image vertices are distinct because the target is irreflexive.",
+      "Induced subgraphs (identity map) and blow-ups (class map) are both graph homomorphisms, so one pullback theorem subsumes the parents hereditary property and the extremal-witness triangle-freeness.",
+      "The triangle-freeness of the C5-blow-up extremal construction is a purely structural fact, independent of the open edge-density estimate."
     ],
     "mathlibGaps": [
       "Scaffold Erdos128Problem.lean broken: missing DecidablePred instance for edgeCount filter (G.adj Prop not decidable) + trailing docstrings parse errors."
     ],
     "nextSteps": [
-      "Formalize a partial result toward optimal constant 1/50.",
-      "Formalize the C5-blow-up extremal construction using triangleFree_induce.",
-      "Repair the broken scaffold."
+      "Formalize the edge-density estimate for a balanced C5-blow-up: induced density > n^2/50 on every floor(n/2)-subgraph (the lower-bound witness).",
+      "Generalize triangleFree_of_hom to K_r-freeness pulls back along homomorphisms into irreflexive targets.",
+      "Prove or formalize a partial result toward the main question (density forces a triangle)."
     ]
   },
   "tags": [
