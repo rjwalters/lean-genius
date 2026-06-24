@@ -189,8 +189,148 @@ theorem unionFreeMax_ge_two_pow_div (n : ℕ) :
         Nat.div_le_div_right (unionFreeMax_exponential_lower_bound n)
     _ = unionFreeMax n := Nat.mul_div_cancel_left _ (Nat.succ_pos n)
 
+/-!
+## Monotonicity of the extremal function
+
+A new structural property absent from the parent and the lower-bound section
+above: the extremal function `F(n) = unionFreeMax n` is **monotone**,
+`n ≤ m → F(n) ≤ F(m)`.
+
+The proof is by a *relabelling push-forward*. Any injection `e : Fin n ↪ Fin m`
+lifts to a map on set families, `pushFamily e`, that relabels every member set
+by `e`. This map
+
+  * preserves cardinality (`pushFamily_card`), because relabelling along an
+    embedding is injective; and
+  * preserves union-freeness (`pushFamily_unionFree`), because taking images
+    along an injection commutes with unions (`familyUnion_pushFamily`) and
+    keeps distinct sets distinct, so a spurious union among the relabelled sets
+    would pull back to a spurious union among the originals.
+
+Hence every achievable family size on `Fin n` is also achievable on `Fin m`,
+the set of achievable sizes only grows, and the supremum `unionFreeMax` is
+monotone (`unionFreeMax_mono`). Specialising to `m = n + 1` gives the successor
+form `F(n) ≤ F(n+1)` (`unionFreeMax_le_succ`).
+-/
+
+/-- The empty family is (vacuously) union-free; it witnesses `0 ∈` the set of
+achievable sizes, so that set is nonempty for every `n`. -/
+theorem isUnionFree_empty : isUnionFree (∅ : SetFamily n) :=
+  fun A hA => absurd hA (Finset.notMem_empty A)
+
+/-- Membership characterisation of `familyUnion`: a point lies in the union of a
+family iff it lies in some member. -/
+lemma mem_familyUnion {n : ℕ} {F : SetFamily n} {x : Fin n} :
+    x ∈ familyUnion F ↔ ∃ A ∈ F, x ∈ A := by
+  simp [familyUnion, Finset.mem_sup]
+
+/-- **Relabelling push-forward.** Transport a set family on `Fin n` to one on
+`Fin m` along an embedding `e : Fin n ↪ Fin m`, relabelling every member set by
+`e`. -/
+def pushFamily {n m : ℕ} (e : Fin n ↪ Fin m) (F : SetFamily n) : SetFamily m :=
+  F.map ⟨Finset.map e, Finset.map_injective e⟩
+
+/-- Membership in the push-forward: `B` is a relabelled member iff it is the
+image `A.map e` of some `A ∈ F`. -/
+@[simp] lemma mem_pushFamily {n m : ℕ} {e : Fin n ↪ Fin m} {F : SetFamily n}
+    {B : Finset (Fin m)} : B ∈ pushFamily e F ↔ ∃ A ∈ F, A.map e = B := by
+  simp [pushFamily, Finset.mem_map, Function.Embedding.coeFn_mk]
+
+/-- **Relabelling preserves family size.** Since `e` is injective, the induced
+relabelling of member sets is injective, so the push-forward has the same
+cardinality as the original family. -/
+@[simp] lemma pushFamily_card {n m : ℕ} (e : Fin n ↪ Fin m) (F : SetFamily n) :
+    (pushFamily e F).card = F.card := by
+  unfold pushFamily; exact Finset.card_map _
+
+/-- **Relabelling commutes with taking unions.** The union of a relabelled
+family is the relabelling of its union: `⋃ e[G] = e[⋃ G]`. This is the key
+compatibility making union-freeness stable under push-forward. -/
+lemma familyUnion_pushFamily {n m : ℕ} (e : Fin n ↪ Fin m) (G : SetFamily n) :
+    familyUnion (pushFamily e G) = (familyUnion G).map e := by
+  ext y
+  simp only [mem_familyUnion, mem_pushFamily, Finset.mem_map]
+  constructor
+  · rintro ⟨B, ⟨A, hA, rfl⟩, hyB⟩
+    rw [Finset.mem_map] at hyB
+    obtain ⟨a, ha, rfl⟩ := hyB
+    exact ⟨a, ⟨A, hA, ha⟩, rfl⟩
+  · rintro ⟨a, ⟨A, hA, ha⟩, rfl⟩
+    exact ⟨A.map e, ⟨A, hA, rfl⟩, Finset.mem_map.mpr ⟨a, ha, rfl⟩⟩
+
+/-- **Relabelling preserves union-freeness.** If `F` is union-free on `Fin n`
+and `e : Fin n ↪ Fin m` is an embedding, then the relabelled family
+`pushFamily e F` is union-free on `Fin m`. A spurious union `e[A₀] = ⋃ 𝒢` among
+the relabelled sets pulls back (the originals of `𝒢` form a subfamily `𝒢₀ ⊆ F`
+with `pushFamily e 𝒢₀ = 𝒢`) to a spurious union `A₀ = ⋃ 𝒢₀` in `F`, because
+relabelling is injective and commutes with unions. -/
+theorem pushFamily_unionFree {n m : ℕ} (e : Fin n ↪ Fin m) (F : SetFamily n)
+    (hF : isUnionFree F) : isUnionFree (pushFamily e F) := by
+  intro B hB hUnion
+  rw [mem_pushFamily] at hB
+  obtain ⟨A₀, hA₀, rfl⟩ := hB
+  obtain ⟨G, hGsub, hGcard, hBnotG, hGunion⟩ := hUnion
+  set G₀ : SetFamily n := F.filter (fun A => A.map e ∈ G) with hG₀def
+  have hGeq : G = pushFamily e G₀ := by
+    apply Finset.ext
+    intro C
+    rw [mem_pushFamily]
+    constructor
+    · intro hCG
+      have hCH : C ∈ pushFamily e F := Finset.mem_of_mem_erase (hGsub hCG)
+      rw [mem_pushFamily] at hCH
+      obtain ⟨A, hA, rfl⟩ := hCH
+      refine ⟨A, ?_, rfl⟩
+      rw [hG₀def, Finset.mem_filter]
+      exact ⟨hA, hCG⟩
+    · rintro ⟨A, hA, rfl⟩
+      rw [hG₀def, Finset.mem_filter] at hA
+      exact hA.2
+  refine hF A₀ hA₀ ⟨G₀, ?_, ?_, ?_, ?_⟩
+  · intro A hA
+    rw [hG₀def, Finset.mem_filter] at hA
+    rw [Finset.mem_erase]
+    refine ⟨?_, hA.1⟩
+    intro hAeq
+    apply hBnotG
+    rw [← hAeq]
+    exact hA.2
+  · have hcard : G₀.card = G.card := by rw [hGeq, pushFamily_card]
+    rw [hcard]; exact hGcard
+  · intro hA₀G₀
+    rw [hG₀def, Finset.mem_filter] at hA₀G₀
+    exact hBnotG hA₀G₀.2
+  · have h1 : familyUnion (pushFamily e G₀) = (familyUnion G₀).map e :=
+      familyUnion_pushFamily e G₀
+    rw [← hGeq, hGunion] at h1
+    exact (Finset.map_injective e h1).symm
+
+/-- **Monotonicity of the extremal function.** For `n ≤ m`, every union-free
+family on `Fin n` relabels to a union-free family of the same size on `Fin m`
+(via `Fin.castLEEmb`), so the set of achievable sizes can only grow and
+`F(n) ≤ F(m)`. -/
+theorem unionFreeMax_mono {n m : ℕ} (h : n ≤ m) :
+    unionFreeMax n ≤ unionFreeMax m := by
+  have hne : { k : ℕ | ∃ F : SetFamily n, isUnionFree F ∧ F.card = k }.Nonempty :=
+    ⟨0, ∅, isUnionFree_empty, Finset.card_empty⟩
+  apply csSup_le_csSup (unionFree_sizes_bddAbove m) hne
+  rintro k ⟨F, hF, rfl⟩
+  exact ⟨pushFamily (Fin.castLEEmb h) F, pushFamily_unionFree _ F hF,
+    pushFamily_card _ F⟩
+
+/-- `unionFreeMax` packaged as a `Monotone` function. -/
+theorem unionFreeMax_monotone : Monotone unionFreeMax :=
+  fun _ _ h => unionFreeMax_mono h
+
+/-- **Successor form of monotonicity:** `F(n) ≤ F(n+1)`. Adding one more ground
+element never decreases the maximum union-free family size. -/
+theorem unionFreeMax_le_succ (n : ℕ) : unionFreeMax n ≤ unionFreeMax (n + 1) :=
+  unionFreeMax_mono (Nat.le_succ n)
+
 #check @layer_antichain
 #check @unionFreeMax_ge_choose
 #check @unionFreeMax_exponential_lower_bound
+#check @unionFreeMax_mono
+#check @pushFamily_unionFree
 
 end Erdos1023OQ03
