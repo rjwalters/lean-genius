@@ -1,0 +1,161 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-01-oq-02",
+  "title": "Feuerbach's Theorem: The Altitude-Length Law",
+  "slug": "feuerbachs-theorem-defs-oq-01-oq-02",
+  "description": "Establishes the metric content of the altitude feet: for each of the three altitudes, (altitude length)² × (base length)² equals the squared signed area Δ². A single Lagrange identity per foot collapses the projection formula to the same area, proving (2·Area)² is base-independent — the coordinate proof that ½·base·height is well-defined. 10 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ01OQ02.lean",
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "nine-point-circle",
+      "altitude",
+      "area",
+      "lagrange-identity",
+      "mathlib"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Inherits the coordinate API (Point, Triangle, foot_a/b/c, dist2_sq, area) and the side-length non-degeneracy lemmas from FeuerbachsTheoremDefs.lean, which is itself 0-sorry, 0-axiom.",
+    "lineCount": 171,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "originalContributions": [
+      "foot_a_altitude_length_sq / foot_b_altitude_length_sq / foot_c_altitude_length_sq: the altitude-length law — for each foot, (altitude length)² × (base length)² equals the squared signed area Δ², via Lagrange's identity |u|²|v|² − (u·v)² = (u×v)²",
+      "two_area_sq: the squared signed area Δ² equals (2·Area)², connecting the area function (defined with abs) to the polynomial Δ² through sq_abs",
+      "foot_a_altitude_area / foot_b_altitude_area / foot_c_altitude_area: each altitude-length law restated in terms of the triangle's area function, |vertex foot|² × |base|² = (2·Area)²",
+      "altitude_length_base_independent: the base-independence capstone — all three (altitude length)² × (base length)² products equal the common value (2·Area)², the coordinate proof that ½·base·height does not depend on the chosen base",
+      "triangle_345_altitude_a_sq: worked example, the altitude from A onto the hypotenuse of the 3-4-5 triangle has squared length 144/25 (h_a = 12/5)",
+      "triangle_345_altitude_law: the altitude-length law instantiated at the 3-4-5 triangle, (144/25)·25 = 144 = (2·6)²"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822) concerns the nine-point circle through the three side midpoints, the three midpoints of the vertex-to-orthocenter segments, and the three feet of the altitudes. The gallery's FeuerbachsTheoremDefs.lean defines each altitude foot by an explicit orthogonal-projection formula; its sibling FeuerbachsTheoremDefsOQ01.lean characterizes those feet by collinearity, perpendicularity, and a Pythagorean split. What remained unmeasured was the *length* of each altitude — the height h_a in the schoolbook formula Area = ½·base·height.",
+    "problemStatement": "Given the coordinate foot of the altitude from A,\n$$H_a = B + t\\,(C - B), \\qquad t = \\frac{(A - B)\\cdot(C - B)}{\\lVert C - B\\rVert^2},$$\ncompute the squared altitude length $\\lVert A H_a\\rVert^2$ and relate it to the triangle's area. Prove the altitude-length law\n$$\\lVert A H_a\\rVert^2 \\cdot \\lVert C - B\\rVert^2 = \\Delta^2, \\qquad \\Delta = (B-A)\\times(C-A),$$\nand its analogues at $B$ and $C$, then show all three products equal $(2\\,\\mathrm{Area})^2$ — i.e. that the area is independent of which side is taken as the base.",
+    "text": "A 171-line companion file with 10 theorems and 0 definitions. For each altitude foot it proves the Lagrange-identity altitude-length law, then converts to the area function and bundles a base-independence capstone, closing with the worked 3-4-5 example.",
+    "proofStrategy": "Each altitude-length law reduces, after `unfold dist2_sq Triangle.foot_a; simp only []`, to clearing the base-length denominator $\\lVert C-B\\rVert^2 \\ne 0$ (the parent's `bc_sq_ne_zero` family) and a single `field_simp; ring`. The crux is Lagrange's identity $\\lVert u\\rVert^2\\lVert v\\rVert^2 - (u\\cdot v)^2 = (u\\times v)^2$: expanding $\\lVert A H_a\\rVert^2\\lVert C-B\\rVert^2$ leaves exactly $(u\\times v)^2 = \\Delta^2$, the *same* signed area squared for all three bases.\n\nThe bridge to the area function, `two_area_sq`, unfolds `Triangle.area = |\\Delta|/2`, rewrites $2\\cdot(|\\Delta|/2) = |\\Delta|$ by `ring`, and applies `sq_abs` to turn $|\\Delta|^2$ into $\\Delta^2$. The three area-form theorems and the capstone then follow by `rw`.",
+    "keyInsights": [
+      "The orthogonal projection drops the squared altitude length to a Gram determinant: |A Hₐ|² = |A−B|² − ((A−B)·(C−B))²/|C−B|², so multiplying by |C−B|² yields the bare Lagrange numerator |A−B|²|C−B|² − ((A−B)·(C−B))².",
+      "Lagrange's identity equates that numerator with the squared cross product (A−B)×(C−B), which — by translation invariance of the shoelace determinant — is ±Δ, the same signed area for every vertex. Hence all three altitude-length laws share one right-hand side.",
+      "Because each (altitude length)²·(base length)² equals the single value Δ² = (2·Area)², the schoolbook identity ½·base·height is provably base-independent: the three ways of computing the area must agree.",
+      "The only analytic step is bridging the abs in the area definition to the polynomial Δ²; sq_abs (|x|² = x²) does this cleanly, keeping the entire development denominator-light and decidable by ring."
+    ],
+    "prerequisites": [
+      "FeuerbachsTheoremDefs.lean — coordinate API (Point, Triangle, foot_a/b/c, dist2_sq, area) and the side-length non-degeneracy lemmas",
+      "FeuerbachsTheoremDefsOQ01.lean — the defining characterization of the altitude feet (collinearity, perpendicularity, Pythagoras)",
+      "Lagrange's identity / Cauchy–Binet in two dimensions: |u|²|v|² − (u·v)² = (u×v)²",
+      "field_simp / ring / sq_abs for polynomial identities over ℝ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "Imports and Namespace Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Module docstring stating the open question (the foot lemmas never measured the altitude length), imports FeuerbachsTheoremDefs, opens the FeuerbachsTheorem namespace, and marks the section noncomputable.",
+      "mathContext": "The coordinate API (Point, Triangle, foot_a/b/c, dist2_sq, area) and the non-degeneracy lemmas bc_sq_ne_zero / ca_sq_ne_zero / ab_sq_ne_zero all come from the parent file."
+    },
+    {
+      "id": "length-law",
+      "title": "Part I: The Altitude-Length Law (Lagrange Identity per Foot)",
+      "startLine": 58,
+      "endLine": 97,
+      "summary": "Proves, for each foot, that (altitude length)² × (base length)² equals the squared signed area Δ².",
+      "mathContext": "|A Hₐ|²·|C−B|² = |A−B|²|C−B|² − ((A−B)·(C−B))² = ((A−B)×(C−B))² = Δ². Proof: unfold dist2_sq foot_a; field_simp [bc_sq_ne_zero]; ring. The same Δ² appears for all three bases."
+    },
+    {
+      "id": "area-bridge",
+      "title": "Part II: Connection to the Area Function",
+      "startLine": 99,
+      "endLine": 131,
+      "summary": "Bridges Δ² to (2·Area)² via sq_abs, then restates each altitude-length law in terms of the triangle's area function.",
+      "mathContext": "two_area_sq: (2·Area)² = (2·(|Δ|/2))² = |Δ|² = Δ² by ring and sq_abs. foot_a/b/c_altitude_area then follow by rw, giving |vertex foot|²·|base|² = (2·Area)²."
+    },
+    {
+      "id": "base-independence",
+      "title": "Part III: Base-Independence Capstone",
+      "startLine": 133,
+      "endLine": 148,
+      "summary": "Bundles all three area-form laws: each (altitude length)² × (base length)² equals the common value (2·Area)², so the three products agree.",
+      "mathContext": "altitude_length_base_independent is the conjunction of foot_a/b/c_altitude_area — the coordinate proof that ½·base·height is well-defined, independent of the chosen base."
+    },
+    {
+      "id": "example",
+      "title": "Part IV: Worked Example",
+      "startLine": 150,
+      "endLine": 171,
+      "summary": "Evaluates the altitude from A in the 3-4-5 triangle and checks the length law against Area = 6.",
+      "mathContext": "triangle_345_altitude_a_sq: |A Hₐ|² = 144/25 (h_a = 12/5) by norm_num. triangle_345_altitude_law: (144/25)·25 = 144 = (2·6)², the law instantiated."
+    }
+  ],
+  "conclusion": {
+    "summary": "Supplies the metric content of the altitude feet: a Lagrange-identity altitude-length law for each of the three altitudes, its restatement through the area function, and a base-independence capstone proving (2·Area)² is the common value of every (altitude length)²·(base length)² product. 10 theorems, 0 axioms, 0 sorries.",
+    "implications": "**Completes the foot API**: alongside the OQ01 collinearity/perpendicularity/Pythagoras lemmas, the altitude lengths are now available, so downstream proofs can use Area = ½·base·height directly.\n\n**Base-independence of area**: the file gives a fully verified coordinate proof that the three base-times-height computations of the triangle's area agree, grounding the area function used throughout the Feuerbach development.",
+    "openQuestions": [
+      "Derive the inradius relation Area = r·s and the circumradius relation Area = abc/(4R) from the altitude lengths, linking this file to the incenter/circumcenter API.",
+      "Express the altitude lengths via the side lengths (h_a = 2·Area/a) once Real.sqrt side lengths are related to dist2_sq, bridging to the metric side_a/b/c definitions.",
+      "Lift the altitude-length law to Mathlib's EuclideanGeometry.orthogonalProjection and the area form to MeasureTheory volume for a possible upstream contribution."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-01",
+      "relationship": "extends",
+      "description": "adds the metric altitude lengths to the collinearity/perpendicularity/Pythagoras characterization of the altitude feet proved there"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "related",
+      "description": "uses the coordinate foot, dist2_sq, and area definitions and the non-degeneracy lemmas from the parent file"
+    },
+    {
+      "targetId": "feuerbachs-theorem",
+      "relationship": "related",
+      "description": "the full Feuerbach theorem whose nine-point circle the altitude feet lie on"
+    }
+  ],
+  "leanFile": {
+    "imports": ["Proofs.FeuerbachsTheoremDefs"],
+    "opens": ["FeuerbachsTheorem"],
+    "namespace": "FeuerbachsTheoremDefsOQ01OQ02",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/FeuerbachsTheoremDefsOQ01OQ02.lean",
+    "sorries": 0,
+    "additionalFiles": [
+      "Proofs/FeuerbachsTheoremDefs.lean"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "altitude_length_base_independent",
+      "type": "core",
+      "description": "Each of the three (altitude length)² × (base length)² products equals the common value (2·Area)², so the area is independent of which side is taken as the base.",
+      "leanType": "∀ T : Triangle, (|A Hₐ|²·|BC|² = (2·Area)²) ∧ (|B H_b|²·|CA|² = (2·Area)²) ∧ (|C H_c|²·|AB|² = (2·Area)²)"
+    },
+    {
+      "name": "foot_a_altitude_length_sq",
+      "type": "core",
+      "description": "The altitude-length law at A: the squared altitude length times the squared base equals the squared signed area Δ².",
+      "leanType": "dist2_sq A foot_a · ‖C−B‖² = ((B−A)×(C−A))²"
+    },
+    {
+      "name": "two_area_sq",
+      "type": "lemma",
+      "description": "The squared signed area Δ² equals (2·Area)², bridging the area function to the polynomial identity.",
+      "leanType": "(2 · Area)² = ((B−A)×(C−A))²"
+    }
+  ],
+  "sorries": 0
+}
