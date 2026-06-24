@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ann-cfrect-header",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 68
+    },
+    "type": "context",
+    "title": "From the Squared Diagonal to a Rectangular Product",
+    "content": "The docstring frames the off-diagonal generalization. The parent computed the two-sided moment of the *square* $C(n,k)\\cdot C(n,k)$ — both factors from the same row. This file replaces it by a product of two *different* rows $C(m,k)\\cdot C(n,k)$, the rectangular Vandermonde product whose unweighted sum is the classical convolution $\\sum C(m,k)C(n,k) = C(m+n,n)$. The headline reveals that the two row sizes enter independently: the left weight of order $r$ pushes the left row $m$ down to $m-r$, the right weight of order $s$ pushes the right row $n$ down to $n-s$, and the surviving Vandermonde entry sits at $C((m-r)+(n-s),\\,(n-s)-r) = C(m+n-r-s,\\,n-r-s)$. The square was the artificial coincidence $m=n$; the parent itself flagged this rectangular version as its first open question.",
+    "mathContext": "$\\sum_{k=0}^{n}(k)_r(n-k)_s\\,C(m,k)C(n,k) = (m)_r(n)_s\\,C(m+n-r-s,\\,n-r-s)$ for $r+s\\le n\\le m$. Faces: $m{=}n$ → parent's squared moment; $s{=}0$ → one-sided; $r{=}s{=}0$ → Vandermonde.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Vandermonde convolution",
+      "falling factorial",
+      "factorial moments",
+      "off-diagonal product"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "Vandermonde's identity"
+    ]
+  },
+  {
+    "id": "ann-cfrect-main",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 73,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "The Rectangular Two-Sided Moment (✧): Decoupled Absorption",
+    "content": "sum_rectangular_twoSided_descFactorial is the headline theorem. Its structure mirrors the parent's squared-moment proof exactly, but the two absorption ladders now act on *separate* rows and decouple completely. The falling factorials prune both ends — $(k)_r = 0$ kills $k<r$, $(n-k)_s = 0$ kills $k>n-s$ — restricting to the band $[r, n-s]$ (Finset.sum_Ico_consecutive). After reindexing $k\\mapsto r+i$, the grandparent's left absorption $(k)_r C(m,k) = (m)_r C(m-r,k-r)$ acts on row $m$ while the parent's mirror co-absorption $(n-k)_s C(n,k) = (n)_s C(n-s,k)$ acts on row $n$, independently. The single hypothesis $n\\le m$ keeps every active index $k\\le n-s\\le n\\le m$ inside the left row's absorption domain. Pulling out $(m)_r(n)_s$, the inner sum is the doubly-shortened Vandermonde diagonal ($a=m-r$, $b=n-s$, $t=r$), closing to $C(m+n-r-s, n-r-s)$.",
+    "mathContext": "Band $[r,n-s]$; each survivor $\\to (m)_r(n)_s\\,C(m-r,i)\\,C(n-s,i+r)$; inner sum $\\sum_i C(m-r,i)C(n-s,i+r) = C(m+n-r-s,\\,n-r-s)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "decoupled absorption",
+      "doubly-shortened Vandermonde diagonal",
+      "falling absorption",
+      "mirror co-absorption"
+    ],
+    "prerequisites": [
+      "descFactorial_mul_choose",
+      "descFactorial_sub_mul_choose",
+      "vandermonde_diag_two"
+    ]
+  },
+  {
+    "id": "ann-cfrect-onesided",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 148
+    },
+    "type": "concept",
+    "title": "One-Sided Rectangular Moment (s = 0)",
+    "content": "sum_rectangular_oneSided is the $s=0$ face: $\\sum (k)_r\\,C(m,k)C(n,k) = (m)_r\\,C(m+n-r, n-r)$ for $r\\le n\\le m$. Only the left row is weighted (the right row $n$ is untouched since $(n-k)_0 = 1$), so the left falling weight of order $r$ attaches to the left row $m$ alone, shortening it to $m-r$. This is the off-diagonal generalization of the family's one-sided ladder $\\sum (k)_r C(n,k)^2 = (n)_r C(2n-r,n-r)$, with $m$ and $n$ now distinct.",
+    "mathContext": "$\\sum_{k=0}^{n}(k)_r\\,C(m,k)C(n,k) = (m)_r\\,C(m+n-r,\\,n-r)$, $r\\le n\\le m$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "one-sided moment",
+      "specialization"
+    ],
+    "prerequisites": [
+      "Nat.descFactorial_zero"
+    ]
+  },
+  {
+    "id": "ann-cfrect-vandermonde",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "Vandermonde Convolution (r = s = 0)",
+    "content": "sum_rectangular_vandermonde is the orderless $r=s=0$ face: $\\sum_{k=0}^{n} C(m,k)C(n,k) = C(m+n,n)$ for $n\\le m$ — the classical Chu–Vandermonde convolution, recovered as the bare unweighted product. It is the off-diagonal counterpart of $\\sum C(n,k)^2 = C(2n,n)$ at the root of the whole moment ladder, confirming that the rectangular moment degenerates correctly when all weights are removed.",
+    "mathContext": "$\\sum_{k=0}^{n} C(m,k)C(n,k) = C(m+n,\\,n)$ — Chu–Vandermonde, $n\\le m$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Chu–Vandermonde identity",
+      "binomial convolution"
+    ],
+    "prerequisites": [
+      "Vandermonde's identity"
+    ]
+  },
+  {
+    "id": "ann-cfrect-diagonal",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 158,
+      "endLine": 169
+    },
+    "type": "concept",
+    "title": "Diagonal m = n Recovers the Squared Moment",
+    "content": "sum_recovers_twoSided_squared sets $m=n$ to recover the parent's two-sided squared moment $\\sum (k)_r(n-k)_s\\,C(n,k)^2 = (n)_r(n)_s\\,C(2n-r-s, n-r-s)$. Since $C(n,k)C(n,k) = C(n,k)^2$ (rewritten by pow_two) and $m+n = 2n$, the rectangular formula collapses onto the parent's exactly. This is the consistency check that exhibits the entry as a strict generalization: the square is the $m=n$ diagonal of the rectangular product, not a separate phenomenon.",
+    "mathContext": "At $m=n$: $\\sum (k)_r(n-k)_s\\,C(n,k)^2 = (n)_r(n)_s\\,C(2n-r-s,\\,n-r-s)$ — agrees with the parent's sum_twoSided_descFactorial_weighted_sq.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "diagonal specialization",
+      "consistency check",
+      "squared moment"
+    ],
+    "prerequisites": [
+      "pow_two"
+    ]
+  },
+  {
+    "id": "ann-cfrect-checks",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 171,
+      "endLine": 181
+    },
+    "type": "context",
+    "title": "Kernel-decide Sanity Checks",
+    "content": "Two numeric examples certify the formulas by kernel `decide` (not native_decide, so no Lean.ofReduceBool). The rectangular two-sided moment is checked at $(r,s,m,n) = (1,1,4,3)$: $\\sum_k k(3-k)C(4,k)C(3,k) = (4)_1(3)_1 C(5,1) = 4\\cdot 3\\cdot 5 = 60$. The Vandermonde face is checked at $(m,n) = (5,3)$: $\\sum_k C(5,k)C(3,k) = C(8,3) = 56$. Both ground the abstract identities at concrete small values, exercising the asymmetric $m\\ne n$ regime that distinguishes this file from the parent's square.",
+    "mathContext": "$(1,1,4,3)$: $4\\cdot 3\\cdot 5 = 60$. $(m,n)=(5,3)$: $C(8,3) = 56$. Both verified by kernel reduction.",
+    "significance": "context",
+    "relatedConcepts": [
+      "numerical verification",
+      "kernel decide",
+      "worked example"
+    ],
+    "prerequisites": [
+      "decidability",
+      "arithmetic"
+    ]
+  }
+]
