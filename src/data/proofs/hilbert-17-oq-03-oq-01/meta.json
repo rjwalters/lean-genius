@@ -1,0 +1,193 @@
+{
+  "id": "hilbert-17-oq-03-oq-01",
+  "title": "Hilbert's 17th, Constructively: An Explicit Rational SOS Certificate for the Motzkin Polynomial",
+  "slug": "hilbert-17-oq-03-oq-01",
+  "description": "Hilbert's 17th problem asks whether every nonnegative real polynomial is a sum of squares of rational functions; Artin's affirmative answer is necessarily axiomatized in the parent entry (artin_hilbert17), and the companion fact that the Motzkin polynomial M = x⁴y² + x²y⁴ − 3x²y² + 1 is not a sum of squares of polynomials is also carried as an axiom. What was missing is the explicit positive witness: a fully machine-checked certificate that Motzkin IS a sum of squares of rational functions. This entry supplies it, with 0 axioms. The heart is one integer-coefficient polynomial identity (an SOS Positivstellensatz certificate): (4 + 4x² + 4y²)·M = (2xy − x³y − xy³)² (three copies) + (x³y − xy³)² + (2x − 2xy²)² + (2y − 2x²y)² + (2 − 2x²y²)², closed by ring. The multiplier 4 + 4x² + 4y² = 2² + (2x)² + (2y)² is itself a sum of squares, so dividing through in the field of rational functions ℝ(x,y) and using that a product of two sums of squares is a sum of squares yields M = Σ (rational function)² — Artin's theorem made constructive for the canonical example. The certificate was found by solving the associated semidefinite Gram-matrix feasibility problem: Motzkin sits on the boundary of the SOS cone, and the rational boundary Gram matrix factors into the five squares above.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17MotzkinRationalSOS.lean",
+    "tags": [
+      "real-algebraic-geometry",
+      "sum-of-squares",
+      "hilbert-17",
+      "motzkin-polynomial",
+      "positivstellensatz",
+      "rational-functions",
+      "semidefinite-programming",
+      "constructive",
+      "multivariate-polynomials",
+      "artin-theorem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsFractionRing.injective",
+        "description": "The map from a domain into its fraction field is injective — used to lift multiplier ≠ 0 in ℝ[x,y] to its image ≠ 0 in ℝ(x,y), validating the division step.",
+        "module": "Mathlib.RingTheory.Localization.FractionRing"
+      },
+      {
+        "theorem": "Fintype.sum_prod_type",
+        "description": "∑ over A × B equals the iterated sum ∑ₐ ∑ᵇ — organizes the 21 = 7×3 rational-function squares qᵢ·dⱼ/D as a product index.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "finProdFinEquiv",
+        "description": "The equivalence Fin m × Fin n ≃ Fin (m·n) — reindexes the Fin 7 × Fin 3 family of rational-function squares as a single Fin 21 family for the IsSumOfSquaresRF witness.",
+        "module": "Mathlib.Logic.Equiv.Fin"
+      },
+      {
+        "theorem": "Finset.sum_div",
+        "description": "(∑ aᵢ)/c = ∑ (aᵢ/c) — pulls the common denominator D² out of the sum of rational-function squares.",
+        "module": "Mathlib.Algebra.BigOperators.Field"
+      },
+      {
+        "theorem": "MvPolynomial.eval",
+        "description": "Evaluation of a multivariate polynomial — evaluating the multiplier at 0 gives its constant term 4 ≠ 0, proving multiplier ≠ 0.",
+        "module": "Mathlib.Algebra.MvPolynomial.Eval"
+      }
+    ],
+    "originalContributions": [
+      "multiplier_mul_motzkin_eq: an explicit integer-coefficient SOS Positivstellensatz certificate (4+4x²+4y²)·M = 3·G0² + G1² + G2² + G3² + G4², closed entirely by ring.",
+      "motzkin_isSOS_ratFunc: the fully machine-checked, 0-axiom proof that the Motzkin polynomial is a sum of squares of rational functions — Artin's theorem realized constructively for the canonical example, replacing the parent's existence axiom artin_hilbert17 for this M.",
+      "The SOS multiplier and its square decomposition were obtained by solving the semidefinite Gram-matrix feasibility problem numerically (alternating projection onto the affine constraint set and the PSD cone) and reading off the rational boundary Gram matrix.",
+      "Uses the elementary identity that a product of two sums of squares is a sum of squares ((∑aᵢ²)(∑bⱼ²) = ∑ᵢⱼ(aᵢbⱼ)²) together with the multiplier being SOS to convert the polynomial certificate into a rational-function SOS."
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Hilbert's 17th problem and Artin's theorem (nonnegative ⇒ SOS of rational functions).",
+      "The Motzkin polynomial as the canonical PSD-but-not-polynomial-SOS example.",
+      "Sums of squares, the SOS cone, and SOS/SDP duality (Gram-matrix method).",
+      "Fraction field of a polynomial ring (ℝ(x,y) = FractionRing ℝ[x,y])."
+    ],
+    "lineCount": 177,
+    "relatedProblems": [
+      {
+        "id": "hilbert-17",
+        "relationship": "Parent: states Artin's theorem and the Motzkin counterexample but carries both the existence of a rational SOS (artin_hilbert17) and Motzkin's non-polynomial-SOS (motzkin_not_sos_polynomial_aux) as axioms. This entry discharges the positive side concretely for Motzkin."
+      },
+      {
+        "id": "hilbert-17-oq-03",
+        "relationship": "Sibling strand: the complexity of deciding PSD ⇒ SOS membership. This entry exhibits an explicit membership certificate for the canonical hard instance, the concrete counterpart to that decision question."
+      },
+      {
+        "id": "hilbert-17-oq-01",
+        "relationship": "Sibling: the Pfister bound on the number of squares needed. Here the rational-function representation of Motzkin uses 21 = 7×3 squares (un-optimized)."
+      }
+    ],
+    "assumptions": "0 axioms. #print axioms reports only propext, Classical.choice, Quot.sound for every result, including motzkin_isSOS_ratFunc. No sorryAx, no native_decide / Lean.ofReduceBool. The Motzkin polynomial is defined identically to the parent entry Hilbert17SumOfSquares.lean.",
+    "theoremCount": 7,
+    "definitionCount": 12,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 177,
+    "namespace": "Hilbert17MotzkinRationalSOS",
+    "opens": [
+      "MvPolynomial"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 4,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "path": "Proofs/Hilbert17MotzkinRationalSOS.lean",
+    "sorries": 0,
+    "definitionCount": 12,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "multiplier_mul_motzkin_eq",
+      "type": "theorem",
+      "description": "The SOS Positivstellensatz certificate: (4+4x²+4y²)·M = G0²+G0²+G0²+G1²+G2²+G3²+G4² with integer-coefficient generators. Closed by ring.",
+      "leanType": "multiplier * motzkin = G0^2 + G0^2 + G0^2 + G1^2 + G2^2 + G3^2 + G4^2"
+    },
+    {
+      "name": "motzkin_mul_isSumOfSquares",
+      "type": "theorem",
+      "description": "(4+4x²+4y²)·M is a sum of squares of polynomials (seven squares).",
+      "leanType": "IsSumOfSquaresMv (multiplier * motzkin)"
+    },
+    {
+      "name": "multiplier_isSumOfSquares",
+      "type": "theorem",
+      "description": "The multiplier 4+4x²+4y² = 2²+(2x)²+(2y)² is itself a sum of squares.",
+      "leanType": "IsSumOfSquaresMv multiplier"
+    },
+    {
+      "name": "motzkin_isSOS_ratFunc",
+      "type": "theorem",
+      "description": "Hilbert's 17th problem, constructively, for Motzkin: M is a sum of squares of rational functions, M = Σ (qᵢ·dⱼ / (4+4x²+4y²))². The explicit 0-axiom witness for the canonical example underlying the axiomatized general theorem artin_hilbert17.",
+      "leanType": "IsSumOfSquaresRF (toRF motzkin)"
+    },
+    {
+      "name": "product_identity",
+      "type": "theorem",
+      "description": "The 21-term polynomial product identity Σ_{i<7,j<3} (qᵢ·dⱼ)² = ((4+4x²+4y²)·M)·(4+4x²+4y²), the bridge from the polynomial certificate to the rational-function representation.",
+      "leanType": "∑ p : Fin 7 × Fin 3, (qv p.1 * dv p.2)^2 = (multiplier * motzkin) * multiplier"
+    }
+  ],
+  "overview": "The parent Hilbert's-17th entry states Artin's theorem — every nonnegative real polynomial is a sum of squares of rational functions — but must axiomatize it (the general proof needs real-closed-field model theory), and likewise axiomatizes that the Motzkin polynomial is not a sum of squares of polynomials. This follow-up supplies the missing constructive content for the canonical example. A single integer-coefficient polynomial identity certifies that 4 + 4x² + 4y² times Motzkin is a sum of seven polynomial squares; since that multiplier is 2² + (2x)² + (2y)², a sum of squares, dividing in ℝ(x,y) and multiplying the two SOS representations gives Motzkin itself as a sum of 21 squares of rational functions. Everything is checked by ring plus elementary field algebra, with 0 axioms. The certificate was discovered by solving the semidefinite Gram-matrix feasibility problem for the SOS multiplier.",
+  "conclusion": {
+    "summary": "A 177-line, 0-sorry, 0-axiom formalization giving an explicit, machine-checked rational sum-of-squares certificate for the Motzkin polynomial: the constructive, positive side of Hilbert's 17th problem for the canonical example, complementing the parent's axiomatized general Artin theorem.",
+    "implications": "Where the parent only asserts existence of a rational SOS (artin_hilbert17 as an axiom), this entry exhibits one for Motzkin and verifies it with 0 axioms. It also demonstrates the Gram-matrix / SDP route to SOS certificates inside a formal proof: solve the SDP numerically, read off the rational boundary Gram factorization, and discharge the resulting polynomial identity with ring.",
+    "openQuestions": [
+      "Minimize the number of rational-function squares: the construction uses 21 = 7×3; the true minimum (Pfister-type bound) for Motzkin over ℝ(x,y) is smaller and could be certified directly.",
+      "Discharge the companion axiom motzkin_not_sos_polynomial_aux (Motzkin is not a polynomial SOS) by the coefficient/degree argument, closing the negative side as well.",
+      "Generalize the SDP-certificate pipeline to the Robinson form (robinson_not_sos_aux) and other extremal PSD polynomials in the parent file."
+    ]
+  },
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "Motzkin polynomial — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Positive_polynomial"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    },
+    {
+      "title": "Artin, Über die Zerlegung definiter Funktionen in Quadrate (1927)",
+      "url": "https://link.springer.com/article/10.1007/BF02952513"
+    }
+  ],
+  "crossReferences": [],
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Motzkin, the multiplier, and the SOS predicates",
+      "startLine": 60,
+      "endLine": 101,
+      "summary": "motzkin = x⁴y² + x²y⁴ − 3x²y² + 1 (defined identically to the parent entry); multiplier = 4 + 4x² + 4y²; the polynomial- and rational-function- sum-of-squares predicates IsSumOfSquaresMv and IsSumOfSquaresRF over ℝ(x,y) = FractionRing ℝ[x,y]; and the integer-coefficient generators G0…G4 and the witness vectors qv (seven roots) and dv (three roots of the multiplier)."
+    },
+    {
+      "id": "certificate",
+      "title": "The polynomial SOS certificate",
+      "startLine": 103,
+      "endLine": 124,
+      "summary": "multiplier_mul_motzkin_eq is the integer-coefficient identity (4+4x²+4y²)·M = 3G0² + G1² + G2² + G3² + G4², closed by ring; motzkin_mul_isSumOfSquares packages it as IsSumOfSquaresMv, and multiplier_isSumOfSquares shows the multiplier is 2²+(2x)²+(2y)²."
+    },
+    {
+      "id": "rational-corollary",
+      "title": "Artin for Motzkin, constructively",
+      "startLine": 126,
+      "endLine": 177,
+      "summary": "multiplier_ne_zero / toRF_multiplier_ne_zero validate division by the multiplier in ℝ(x,y); product_identity is the 21-term polynomial identity Σ(qᵢdⱼ)² = (multiplier·M)·multiplier; motzkin_isSOS_ratFunc divides through and reindexes Fin 7 × Fin 3 ≃ Fin 21 to conclude M = Σ (qᵢdⱼ/multiplier)², a sum of squares of rational functions."
+    }
+  ]
+}

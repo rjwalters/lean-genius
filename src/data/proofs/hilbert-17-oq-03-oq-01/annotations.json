@@ -1,0 +1,54 @@
+[
+  {
+    "id": "ann-h17-oq0301-motzkin",
+    "proofId": "hilbert-17-oq-03-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "The Motzkin polynomial and the SOS multiplier",
+    "content": "motzkin is defined exactly as in the parent entry Hilbert17SumOfSquares.lean: M = x⁴y² + x²y⁴ − 3x²y² + 1, the canonical polynomial that is nonnegative on ℝ² yet not a sum of squares of polynomials. The multiplier 4 + 4x² + 4y² is the key auxiliary: it is strictly positive, it is itself a sum of squares (2² + (2x)² + (2y)²), and multiplying M by it lands the product inside the polynomial SOS cone.",
+    "mathContext": "$M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1,\\qquad D(x,y) = 4 + 4x^2 + 4y^2 = 2^2 + (2x)^2 + (2y)^2.$",
+    "significance": "context"
+  },
+  {
+    "id": "ann-h17-oq0301-certificate",
+    "proofId": "hilbert-17-oq-03-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "The SOS Positivstellensatz certificate",
+    "content": "The mathematical heart of the entry. A single polynomial identity, with all integer coefficients, certifies that D·M is a sum of squares: (4+4x²+4y²)·M = (2xy−x³y−xy³)² (three copies) + (x³y−xy³)² + (2x−2xy²)² + (2y−2x²y)² + (2−2x²y²)². Because every coefficient is an integer, Lean's ring tactic closes it outright. The five generators and the multiplier were found by solving the associated semidefinite Gram-matrix feasibility problem: Motzkin lies on the boundary of the SOS cone, and the rational boundary Gram matrix factors into exactly these squares.",
+    "mathContext": "$(4+4x^2+4y^2)\\,M = 3(2xy-x^3y-xy^3)^2 + (x^3y-xy^3)^2 + (2x-2xy^2)^2 + (2y-2x^2y)^2 + (2-2x^2y^2)^2.$",
+    "significance": "key"
+  },
+  {
+    "id": "ann-h17-oq0301-multiplier-sos",
+    "proofId": "hilbert-17-oq-03-oq-01",
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "The multiplier is a sum of squares",
+    "content": "4 + 4x² + 4y² = 2² + (2x)² + (2y)². This is what lets the polynomial certificate become a rational-function certificate: dividing M = (D·M)/D by an SOS denominator D and using that the product of two sums of squares is again a sum of squares ((∑aᵢ²)(∑bⱼ²) = ∑ᵢⱼ(aᵢbⱼ)²) keeps the result a sum of squares, now of rational functions.",
+    "mathContext": "$D = 2^2 + (2x)^2 + (2y)^2,\\qquad M = \\frac{D\\cdot M}{D} = \\frac{(\\sum q_i^2)(\\sum d_j^2)}{D^2} = \\sum_{i,j}\\Big(\\frac{q_i d_j}{D}\\Big)^2.$",
+    "significance": "key"
+  },
+  {
+    "id": "ann-h17-oq0301-ratfunc",
+    "proofId": "hilbert-17-oq-03-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 177
+    },
+    "type": "theorem",
+    "title": "Hilbert's 17th, constructively, for Motzkin",
+    "content": "motzkin_isSOS_ratFunc concludes M is a sum of squares of rational functions in ℝ(x,y) = FractionRing ℝ[x,y]. The proof lifts the 21-term polynomial identity Σ_{i<7,j<3}(qᵢdⱼ)² = (D·M)·D through the embedding ℝ[x,y] ↪ ℝ(x,y), divides by D² (legitimate since D ≠ 0, its constant term being 4), and reindexes Fin 7 × Fin 3 ≃ Fin 21. The result is the explicit, 0-axiom witness for the canonical example underlying the parent's axiomatized general Artin theorem artin_hilbert17: where the parent only asserts existence, here a certificate is exhibited and machine-checked.",
+    "mathContext": "$M = \\sum_{i=1}^{7}\\sum_{j=1}^{3}\\Big(\\frac{q_i\\,d_j}{4+4x^2+4y^2}\\Big)^2 \\in \\Sigma\\,\\mathbb{R}(x,y)^2.$",
+    "significance": "key"
+  }
+]

@@ -1,0 +1,80 @@
+{
+  "slug": "hilbert-17-oq-03-oq-01",
+  "title": "Explicit rational sum-of-squares certificate for the Motzkin polynomial",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(4 + 4x^2 + 4y^2)\\cdot M = \\sum q_i^2,\\quad M = \\sum_{i,j}\\left(\\tfrac{q_i d_j}{4+4x^2+4y^2}\\right)^2.",
+    "plain": "Give an explicit, machine-checked certificate that the Motzkin polynomial M = x⁴y² + x²y⁴ − 3x²y² + 1, which is not a sum of squares of polynomials, is nevertheless a sum of squares of rational functions — the constructive, positive side of Hilbert's 17th problem for the canonical example.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "Discharge, with 0 axioms, an explicit rational SOS representation of Motzkin, complementing the parent entry's axiomatized general Artin theorem."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "SOLVED: integer-coefficient SOS Positivstellensatz certificate (4+4x²+4y²)·M = 3G0²+G1²+G2²+G3²+G4² (ring), upgraded to M = Σ (qᵢdⱼ/D)² in ℝ(x,y); 0-axiom verified.",
+    "blockers": [],
+    "nextAction": "Done. PR shipped.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: verified 0-axiom (propext/Classical.choice/Quot.sound only), 7 theorems / 12 defs / 177 lines in Proofs/Hilbert17MotzkinRationalSOS.lean.",
+    "builtItems": [
+      "multiplier_mul_motzkin_eq : (4+4x²+4y²)·M = 3G0²+G1²+G2²+G3²+G4², integer-coefficient SOS Positivstellensatz certificate closed by ring",
+      "motzkin_mul_isSumOfSquares / multiplier_isSumOfSquares : the product is a polynomial SOS (7 squares); the multiplier is 2²+(2x)²+(2y)²",
+      "product_identity : Σ_{i<7,j<3} (qᵢdⱼ)² = (D·M)·D, the 21-term polynomial bridge",
+      "motzkin_isSOS_ratFunc : M = Σ (qᵢdⱼ/D)² in ℝ(x,y) = FractionRing ℝ[x,y] — Artin for Motzkin, constructively, 0 axioms"
+    ],
+    "keyInsights": [
+      "The SOS multiplier 4+4x²+4y² and its 5-square certificate were found by solving the SDP Gram-matrix feasibility problem (alternating projection onto affine constraints ∩ PSD cone); Motzkin sits on the SOS-cone boundary, giving a rank-deficient rational Gram matrix.",
+      "Using the multiplier 4(1+x²+y²)=2²+(2x)²+(2y)² instead of 1+x²+y² makes every square have integer coefficients, so ring closes the certificate with no C(1/2) fraction bookkeeping.",
+      "Product of two sums of squares is a sum of squares ((∑aᵢ²)(∑bⱼ²)=∑ᵢⱼ(aᵢbⱼ)²); combined with D itself being SOS this converts the polynomial certificate D·M=∑qᵢ² into M=∑(qᵢdⱼ/D)²."
+    ],
+    "deadEnds": [
+      "Multiplier 1+x²+y² also works but lands Motzkin exactly on the SOS-cone boundary with half-integer Gram entries (C(1/2) coefficients), which ring cannot fold; scaling by 4 removes the fractions."
+    ],
+    "nextSteps": [
+      "Reduce the 21 = 7×3 rational-function squares toward the minimal (Pfister-type) count for Motzkin.",
+      "Discharge the parent's companion axiom motzkin_not_sos_polynomial_aux (the negative side: Motzkin is not a polynomial SOS) via the coefficient/degree argument.",
+      "Apply the same SDP-certificate pipeline to the Robinson form (robinson_not_sos_aux)."
+    ]
+  },
+  "tags": [
+    "real-algebraic-geometry",
+    "sum-of-squares",
+    "hilbert-17",
+    "motzkin-polynomial",
+    "positivstellensatz",
+    "constructive",
+    "semidefinite-programming"
+  ],
+  "relatedProofs": [
+    "hilbert-17",
+    "hilbert-17-oq-01",
+    "hilbert-17-oq-03"
+  ],
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    }
+  ],
+  "started": "2026-06-24T00:00:00-07:00",
+  "significance": "Supplies the explicit, 0-axiom positive witness for Hilbert's 17th problem on the canonical Motzkin example, complementing the parent's axiomatized general theorem and demonstrating an SDP-to-Lean SOS-certificate pipeline.",
+  "tractability": "Solved in one session: SDP-found certificate discharged by ring plus elementary fraction-field algebra."
+}
