@@ -1,0 +1,136 @@
+{
+  "id": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+  "slug": "catalan-numbers-oq-01-oq-01-oq-01-oq-01",
+  "title": "Generalized ballot / cycle-lemma count C(2n,n) − C(2n,n+k) via André's reflection",
+  "sorries": 0,
+  "description": "Generalizes the parent's André reflection bijection from barrier height −1 to arbitrary depth −k. A monotone n-up lattice path (encoded by its up-step position set S : Finset (Fin (2n))) reaches depth −k when some prefix has k more downs than ups, i.e. j = 2·preUps S j + k. The same reflection — complement every step from the first descent to −k — is an explicit bijection between depth-k 'bad' n-up paths and ALL (n−k)-up paths, giving #BadPathsK = C(2n,n+k); hence the generalized ballot number, the count of n-up paths staying strictly above −k, is exactly C(2n,n) − C(2n,n+k). At k = 1 this recovers the parent's #GoodPaths = catalan n. Reuses the parent's barrier-independent infrastructure (preUps, reflect, card_reflect_add) verbatim. Fully verified, 0 axioms, no native_decide.",
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.CatalanAndreReflection"],
+    "opens": ["Finset", "CatalanAndreReflection"],
+    "namespace": "CatalanGeneralizedBallot",
+    "lineCount": 259,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 6,
+    "path": "Proofs/CatalanGeneralizedBallot.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "problemStatement": "Generalize André's reflection bijection from the barrier height −1 (which yields catalan n = C(2n,n) − C(2n,n+1)) to an arbitrary depth −k, recovering the generalized ballot / cycle-lemma count C(2n,n) − C(2n,n+k) of monotone n-up lattice paths that never dip k below the axis, with the k = 1 case reproducing the parent's Catalan reflection form.",
+    "answer": "Yes. Keep the parent's encoding of a 2n-step path as its up-step position set S : Finset (Fin (2n)); the height after j steps is 2·preUps S j − j. A path reaches depth −k at prefix j exactly when j = 2·preUps S j + k (predicate hitsAtK). The parent's reflection reflect S t (complement membership at every position ≥ t) is barrier-independent, and its subtraction-free cardinality identity #(reflect S t) + #S + t = 2·preUps S t + 2n is reused verbatim. Cutting at cutK S k, the first descent to depth −k, gives an involution that fixes that descent (cutK preserved) and changes the up-count by exactly −k, so reflect S (cutK S k) is a bijection between depth-k bad n-up paths and all (n−k)-up paths. Every (n−k)-up path automatically reaches −k by a discrete intermediate-value argument (it ends at height −2k). Counting with Finset.powersetCard gives #BadPathsK = C(2n, n−k) = C(2n, n+k), so #GoodPathsK = C(2n,n) − C(2n,n+k). Specializing k = 1, GoodPathsK n 1 = GoodPaths n and the count is catalan n.",
+    "proofStrategy": "1. **Reuse the barrier-independent core.** Import the parent file: preUps, reflect, card_reflect_add (#(reflect S t) + #S + t = 2·preUps S t + 2n), preUps_succ/_eq_card/_zero, preUps_reflect_eq, reflect_involutive, card_filter_val_eq_le_one, card_filter_card_eq — none of these mention the barrier, so they apply at any depth k unchanged.\n2. **Depth-k predicates.** hitsAtK S k j := (j = 2·preUps S j + k) and ReachesK S k := ∃ j ≤ 2n, hitsAtK S k j. The parent's hitsAt is exactly hitsAtK · 1.\n3. **Discrete IVT at depth k (reachesK_of_card_add_le).** If S.card + k ≤ n the path ends at height ≤ −2k; the first prefix where 2·preUps + k ≤ j satisfies the hit equation j = 2·preUps + k (the ±1 step size forces the first crossing to land exactly on −k). Proved with Nat.find and omega.\n4. **First-passage involution.** preUps_reflect_eq (reused) gives hitsAtK_reflect_iff below the cut; hence cutK S k (= sInf {j | hitsAtK S k j}) is preserved by reflecting there (cutK_reflect) and reflect S (cutK S k) is again a depth-k path (reachesK_reflect).\n5. **The bijection.** card_badPathsK: Finset.card_bij' with the reflection both ways for 1 ≤ k ≤ n. Substituting cutK S k = 2·preUps + k into the parent's cardinality identity collapses it to #(reflect) + #S + k = 2n (card_reflect_cutK), so the up-count drops from n to n−k.\n6. **The count.** card_filter_card_eq + Nat.choose_symm give #LowPathsK = C(2n, n−k) = C(2n, n+k); splitting all n-up paths into good and bad yields the additive identity #GoodPathsK + C(2n,n+k) = C(2n,n) (card_goodPathsK_add), with the ℤ subtraction form card_goodPathsK_sub. Finally goodPathsK_one identifies GoodPathsK n 1 with the parent's GoodPaths and card_goodPathsK_one delivers catalan n.",
+    "keyInsights": [
+      "**The reflection is barrier-agnostic.** reflect and its cardinality identity #(reflect S t) + #S + t = 2·preUps S t + 2n never mention the barrier height, so the entire heavy core of the parent transfers to depth −k with no change; only the descent predicate and cut point carry the parameter k.",
+      "**Up-count drops by exactly k.** Substituting the depth-k hit equation cutK = 2·preUps + k into the reflection identity collapses it to #(reflect) + #S + k = 2n. With #S = n the reflected path has n − k up-steps — this single arithmetic fact is the whole bijection.",
+      "**Discrete IVT generalizes cleanly.** A path with at most n − k ups ends at height ≤ −2k, and ±1 steps force a first prefix landing exactly on −k; so every (n−k)-up path is a depth-k bad path and LowPathsK needs no side condition beyond 1 ≤ k ≤ n.",
+      "**k = 1 is definitionally the parent.** hitsAtK S 1 unfolds to the parent's hitsAt, so ReachesK S 1 ↔ Reaches S holds by Iff.rfl and GoodPathsK n 1 = GoodPaths n; the Catalan reflection form is literally the k = 1 slice, not a re-derivation.",
+      "**Closed difference form, not in Mathlib.** Mathlib has no generalized ballot / cycle-lemma count; the bijective C(2n,n) − C(2n,n+k) (the André–Bertrand ballot number) is the original content, extending the parent's k = 1 result to the full family."
+    ],
+    "historicalContext": "The ballot problem and its reflection solution are due to Désiré André (1887) and Joseph Bertrand: among monotone lattice paths, the number staying strictly on one side of a line at distance k is C(2n,n) − C(2n,n+k). The generalized statement is equivalent to the cycle lemma of Dvoretzky and Motzkin (1947) and underlies the enumeration of k-Dyck paths, the Catalan and Fuss–Catalan families, and first-passage results in random-walk theory. This entry formalizes the depth-k reflection bijection itself — building the explicit involution and counting both sides — rather than only its arithmetic shadow.",
+    "prerequisites": [
+      "The parent entry's reflection framework (preUps, reflect, the cardinality identity) on Finset (Fin (2n)) encodings",
+      "Catalan numbers and the central binomial coefficient (Mathlib catalan)",
+      "Finset cardinality, filtering, Finset.powersetCard, and Nat.choose_symm",
+      "Nat.sInf / Nat.find first-passage (least-witness) arguments"
+    ]
+  },
+  "conclusion": {
+    "summary": "The depth-k André reflection reflect S (cutK S k) is an explicit involution on up-step position sets that fixes the first descent to −k and drops the up-count by exactly k. This gives a Finset bijection between depth-k bad n-up paths and all (n−k)-up paths (1 ≤ k ≤ n), proving #BadPathsK = C(2n,n+k) and hence the generalized ballot count #GoodPathsK = C(2n,n) − C(2n,n+k). At k = 1 the good paths are the parent's Dyck paths and the count is catalan n. The parent's barrier-independent infrastructure is reused verbatim. Verified, 0 axioms, 0 sorries, no native_decide.",
+    "implications": [
+      "Realizes the generalized ballot / cycle-lemma number C(2n,n) − C(2n,n+k) as a constructed bijection, not just an arithmetic identity, for the whole family 1 ≤ k ≤ n.",
+      "Demonstrates that the parent's reflection core (reflect, card_reflect_add, preUps_reflect_eq) is genuinely barrier-independent and reusable across depths.",
+      "Recovers the parent's Catalan reflection form as the definitional k = 1 slice (GoodPathsK n 1 = GoodPaths n)."
+    ],
+    "openQuestions": [
+      "Promote the count to k-Dyck / Fuss–Catalan paths with up-steps of size larger than one, where the barrier has slope > 1 and the reflection becomes a rotation (cycle lemma).",
+      "Bridge GoodPathsK to a weighted ballot-number generating function, recovering the Catalan and ballot triangles as the coefficient array in k."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "catalan-numbers-oq-01-oq-01-oq-01",
+      "reason": "The parent entry: André's reflection bijection at barrier −1 (catalan n = C(2n,n) − C(2n,n+1)). This entry imports it and reuses preUps, reflect, card_reflect_add, preUps_reflect_eq and card_goodPaths_eq_catalan, generalizing the barrier to depth −k."
+    },
+    {
+      "id": "catalan-numbers-oq-01-oq-01",
+      "reason": "Grandparent: the arithmetic Catalan reflection form, of which the generalized ballot count C(2n,n) − C(2n,n+k) is the k-parameter family."
+    }
+  ],
+  "references": [
+    "André, D. (1887). Solution directe du problème résolu par M. Bertrand. C. R. Acad. Sci. Paris 105, 436–437.",
+    "Dvoretzky, A. & Motzkin, T. (1947). A problem of arrangements. Duke Math. J. 14, 305–313 (the cycle lemma).",
+    "Stanley, R. P. Enumerative Combinatorics, Vol. 2 — the ballot problem and the reflection principle.",
+    "Mathlib4: Mathlib.Combinatorics.Enumerative.Catalan"
+  ],
+  "meta": {
+    "author": "Désiré André / Joseph Bertrand (ballot reflection, 1887); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanGeneralizedBallot.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "ballot-problem",
+      "cycle-lemma",
+      "reflection-principle",
+      "bijective-combinatorics",
+      "lattice-paths",
+      "binomial-coefficients",
+      "enumerative-combinatorics",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_bij'",
+        "description": "Cardinality equality from an explicit bijection with stated inverse. Carries the depth-k reflection bijection BadPathsK ≃ LowPathsK, with the reflection serving as its own inverse.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_powersetCard / card_filter_card_eq (parent)",
+        "description": "#(powersetCard k s) = s.card.choose k. Counts the (n−k)-up paths (LowPathsK) and all n-up paths as C(2n, ·) for free.",
+        "module": "Mathlib.Combinatorics.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "k ≤ n → n.choose (n − k) = n.choose k. Gives C(2n, n−k) = C(2n, n+k), matching the LowPathsK count to the generalized ballot subtrahend.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Finset.filter_card_add_filter_neg_card_eq_card",
+        "description": "#(filter p s) + #(filter ¬p s) = #s. Splits all n-up paths into depth-k bad and good (generalized Dyck) paths.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.find / Nat.sInf_mem / Nat.sInf_le",
+        "description": "First-witness and least-element API; drive the discrete intermediate-value lemma reachesK_of_card_add_le and the first-descent cut point cutK S k = sInf {j | hitsAtK S k j}.",
+        "module": "Mathlib.Data.Nat.Find / Mathlib.Data.Nat.Lattice"
+      },
+      {
+        "theorem": "CatalanAndreReflection.card_reflect_add",
+        "description": "Parent lemma: #(reflect S t) + #S + t = 2·preUps S t + 2n, the barrier-independent reflection cardinality identity, reused verbatim at depth k (specialized via cutK = 2·preUps + k).",
+        "module": "Proofs.CatalanAndreReflection"
+      },
+      {
+        "theorem": "CatalanAndreReflection.card_goodPaths_eq_catalan",
+        "description": "Parent headline #GoodPaths = catalan n; reused to recover the k = 1 slice (card_goodPathsK_one) after identifying GoodPathsK n 1 = GoodPaths n.",
+        "module": "Proofs.CatalanAndreReflection"
+      }
+    ],
+    "originalContributions": [
+      "hitsAtK / ReachesK: the depth-k descent predicates (j = 2·preUps S j + k) generalizing the parent's barrier −1; with decidability instances.",
+      "reachesK_of_card_add_le: a depth-k discrete intermediate-value lemma — any path with at most n − k up-steps reaches depth −k exactly at some first prefix.",
+      "cutK / cutK_reflect / reachesK_reflect / card_reflect_cutK: the depth-k first-passage involution package, reusing the parent's barrier-independent preUps_reflect_eq, yielding the collapsed identity #(reflect) + #S + k = 2n.",
+      "card_badPathsK / card_badPathsK_eq: the generalized André reflection bijection BadPathsK ≃ LowPathsK (1 ≤ k ≤ n), giving #BadPathsK = C(2n, n+k).",
+      "card_goodPathsK_add / card_goodPathsK_sub: the headline generalized ballot count #GoodPathsK = C(2n,n) − C(2n,n+k), in additive (ℕ) and subtraction (ℤ) forms.",
+      "reachesK_one_iff / goodPathsK_one / card_goodPathsK_one: the k = 1 recovery, identifying the generalized good paths with the parent's Dyck paths (by Iff.rfl) and the count with catalan n."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries, no native_decide (the one concrete instance, GoodPathsK 3 2, is derived from the general theorem; the only decide calls reduce closed Nat.choose numerals via kernel reduction, not Lean.ofReduceBool). Depends only on the foundational axioms propext, Classical.choice, Quot.sound (confirmed by #print axioms on card_goodPathsK_add, card_badPathsK, card_goodPathsK_one, card_goodPathsK_sub).",
+    "lineCount": 259,
+    "theoremCount": 15,
+    "definitionCount": 6
+  }
+}
