@@ -1,0 +1,186 @@
+{
+  "id": "arsinh-log-formula-oq-01-oq-01-oq-01",
+  "slug": "arsinh-log-formula-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "ArsinhLogFormulaOQ01OQ01OQ01",
+    "lineCount": 143,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "path": "Proofs/ArsinhLogFormulaOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Catenary Arc-Length and the Antiderivative of √(1 + t²)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArsinhLogFormulaOQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "hyperbolic-functions",
+      "inverse-hyperbolic",
+      "arsinh",
+      "catenary",
+      "arc-length",
+      "integration",
+      "fundamental-theorem-of-calculus",
+      "antiderivative",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 143,
+    "theoremCount": 11,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "hasDerivAt_sqrtAntideriv: the genuinely new derivative computation d/dt [½(t·√(1+t²) + arsinh t)] = √(1+t²). Mathlib supplies the arsinh derivative (Real.hasDerivAt_arsinh) but NO antiderivative for the conjugate integrand √(1+t²); this is built from scratch via the product rule, the chain rule for √ (HasDerivAt.sqrt), and Real.hasDerivAt_arsinh, with the algebra collapsing because (t²+1)/√(1+t²) = √(1+t²) doubles the leading term.",
+      "integral_sqrt_one_add_sq: the Fundamental-Theorem-of-Calculus evaluation ∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a) — the closed form requested by the parent's open question, obtained by the hyperbolic substitution t = sinh u.",
+      "integral_sqrt_one_add_sq_zero_to: the normalised antiderivative (C = 0) ∫_0^b √(1+t²) dt = ½(b√(1+b²)+arsinh b), anchoring the constant at the antiderivative's value at 0.",
+      "sqrt_one_add_sinh_sq: the Pythagorean simplification √(1 + sinh²x) = cosh x (from cosh²x = 1 + sinh²x and cosh x > 0) that identifies the catenary arc-length integrand √(1 + (cosh)'²).",
+      "integral_cosh_zero_to: ∫_0^b cosh x dx = sinh b, the FTC evaluation for the catenary length element.",
+      "catenary_arclength: the headline geometric statement — the arc length of the catenary y = cosh x over [0, b] equals sinh b, since √(1 + sinh²x) = cosh x collapses the length integral to ∫_0^b cosh x dx = sinh b.",
+      "integral_sqrt_one_add_sq_zero_to_one: the concrete value ∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1), specialising the closed form.",
+      "sqrt_one_add_sq_pos / sq_sqrt_one_add_sq / continuous_sqrt_integrand / intervalIntegrable_sqrt_integrand: the supporting analytic API (the radicand is positive, its square root squares back to the radicand, and the integrand is continuous and hence interval-integrable) needed to differentiate and to apply the FTC."
+    ],
+    "prerequisites": [
+      "Mathlib's derivative Real.hasDerivAt_arsinh : HasDerivAt arsinh (√(1 + x²))⁻¹ x",
+      "The chain rule for square roots HasDerivAt.sqrt and the power derivative hasDerivAt_pow",
+      "Mathlib's derivative Real.hasDerivAt_sinh : HasDerivAt sinh (cosh x) x and the identity Real.cosh_sq : cosh x ^ 2 = sinh x ^ 2 + 1 with Real.cosh_pos",
+      "The Fundamental Theorem of Calculus intervalIntegral.integral_eq_sub_of_hasDerivAt and Continuous.intervalIntegrable for interval integrability"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.hasDerivAt_arsinh",
+        "description": "HasDerivAt arsinh (√(1 + x²))⁻¹ x — the arsinh derivative, one summand of the new antiderivative's derivative.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Arsinh"
+      },
+      {
+        "theorem": "HasDerivAt.sqrt",
+        "description": "Chain rule for √: if HasDerivAt f f' x and f x ≠ 0 then HasDerivAt (√ ∘ f) (f'/(2√(f x))) x. Applied to f = 1 + t² to differentiate √(1 + t²).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "Real.hasDerivAt_sinh",
+        "description": "HasDerivAt sinh (cosh x) x — used as the antiderivative of cosh to evaluate the catenary length integral ∫_0^b cosh x dx = sinh b via the FTC.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.DerivHyp"
+      },
+      {
+        "theorem": "intervalIntegral.integral_eq_sub_of_hasDerivAt",
+        "description": "The Fundamental Theorem of Calculus: if HasDerivAt f (f' x) x on the interval and f' is interval-integrable, then ∫_a^b f' = f b − f a. Applied with the new √(1+t²) antiderivative and with sinh.",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus"
+      },
+      {
+        "theorem": "Real.cosh_sq / Real.cosh_pos",
+        "description": "cosh x ^ 2 = sinh x ^ 2 + 1 and 0 < cosh x — give √(1 + sinh²x) = √(cosh²x) = cosh x, the catenary integrand simplification.",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The catenary y = cosh x is the shape of a hanging chain, and one of its most celebrated features is the strikingly simple closed form of its arc length: the length over [0, b] is exactly sinh b. This is because the arc-length element √(1 + (y')²) = √(1 + sinh²x) collapses to cosh x by the hyperbolic Pythagorean identity, so the length integral is ∫_0^b cosh x dx = sinh b. The companion fact is the generic arc-length integrand √(1 + t²), whose antiderivative ½(t√(1+t²) + arsinh t) is the canonical worked example of the hyperbolic substitution t = sinh u (turning √(1+t²) into cosh u). The parent chain developed the algebra of arsinh and then, in arsinh-log-formula-oq-01-oq-01, the antiderivative of the conjugate integrand 1/√(1+t²); this entry closes the geometric loop with the arc-length facts. Mathlib has the arsinh and sinh derivatives but no antiderivative for √(1+t²), so the central derivative computation is built here from scratch.",
+    "problemStatement": "Derive the catenary arc-length formula — the length of y = cosh x over [0, b] equals sinh b — and re-express the generic arc-length integral via the arsinh substitution to obtain ∫_0^b √(1 + t²) dt = ½(b√(1+b²) + arsinh b). Concretely: build the new derivative d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²), turn it into the FTC evaluation ∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a) and its ∫_0^b normalisation, prove √(1 + sinh²x) = cosh x and ∫_0^b cosh x dx = sinh b, assemble the catenary arc length ∫_0^b √(1 + sinh²x) dx = sinh b, and record the concrete value ∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1).",
+    "proofStrategy": "The crux is hasDerivAt_sqrtAntideriv. Differentiate t√(1+t²) by the product rule, using HasDerivAt.sqrt (with f = 1 + t² ≠ 0) for d/dt √(1+t²) = (2t)/(2√(1+t²)); add Real.hasDerivAt_arsinh for the arsinh summand; divide by 2. The resulting derivative ½(√(1+t²) + t·(2t/(2√(1+t²))) + (√(1+t²))⁻¹) simplifies to √(1+t²): clearing denominators with √(1+t²) > 0 and using √(1+t²)² = 1+t² (so (t²+1)/√(1+t²) = √(1+t²)), the leading term doubles and halves back to √(1+t²) (field_simp then nlinarith). The integrand is continuous (fun_prop), hence interval-integrable, so intervalIntegral.integral_eq_sub_of_hasDerivAt gives the FTC evaluation; setting a = 0 with arsinh 0 = 0 normalises it. For the catenary, Real.cosh_sq gives 1 + sinh²x = cosh²x and Real.cosh_pos makes √(cosh²x) = cosh x; Real.hasDerivAt_sinh plus the FTC give ∫_0^b cosh x dx = sinh b; rewriting the arc-length integrand by sqrt_one_add_sinh_sq finishes catenary_arclength.",
+    "keyInsights": [
+      "The antiderivative of √(1+t²) is not in Mathlib (unlike its conjugate 1/√(1+t²), whose antiderivative arsinh Mathlib differentiates). The whole entry hinges on one hand-built derivative, after which both the closed-form integral and the catenary length follow by the FTC.",
+      "The algebraic collapse is the heart of the computation: (t²+1)/√(1+t²) = √(1+t²), so the product-rule term t·(t/√(1+t²)) combines with the surviving √(1+t²) to double it; halving recovers √(1+t²) exactly. This is why the messy three-term derivative simplifies to the clean integrand.",
+      "The catenary's simplicity is the hyperbolic Pythagorean identity in disguise: cosh²x = 1 + sinh²x means the arc-length element √(1 + (cosh)'²) is just cosh x, so the length integral is an elementary ∫ cosh = sinh — no surd survives once the identity is applied.",
+      "Two conjugate integrands, one substitution: ∫ 1/√(1+t²) (the parent) and ∫ √(1+t²) (here) are the two faces of the substitution t = sinh u, integrating to arsinh and to ½(t√(1+t²)+arsinh t) respectively; together they complete the arsinh calculus table.",
+      "Anchoring at 0 (arsinh 0 = 0, sinh 0 = 0) pins the constant of integration: ∫_0^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) with no free constant, and the catenary length is literally sinh b − sinh 0 = sinh b."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Catenary Arc Length",
+      "startLine": 1,
+      "endLine": 32,
+      "summary": "States the parent's open question (catenary arc length = sinh b and ∫_0^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) via the arsinh substitution) and enumerates the supplied theorems: the new √(1+t²) antiderivative, its FTC evaluation and normalisation, the Pythagorean integrand simplification, ∫ cosh = sinh, the catenary arc length, and a concrete value.",
+      "mathContext": "$\\int_0^b \\sqrt{1+t^2}\\,dt = \\tfrac12\\left(b\\sqrt{1+b^2} + \\operatorname{arsinh} b\\right)$ and arc length of $y=\\cosh x$ over $[0,b]$ is $\\sinh b$."
+    },
+    {
+      "id": "antiderivative",
+      "title": "The New Antiderivative of √(1 + t²)",
+      "startLine": 40,
+      "endLine": 92,
+      "summary": "sqrt_one_add_sq_pos and sq_sqrt_one_add_sq (radicand positivity and the √² identity), hasDerivAt_sqrtAntideriv (the from-scratch derivative d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²) via product + √-chain + arsinh rules), and continuous_sqrt_integrand / intervalIntegrable_sqrt_integrand (the analytic API the FTC consumes).",
+      "mathContext": "$\\dfrac{d}{dt}\\left[\\tfrac12\\left(t\\sqrt{1+t^2} + \\operatorname{arsinh} t\\right)\\right] = \\sqrt{1+t^2}$."
+    },
+    {
+      "id": "ftc-evaluation",
+      "title": "FTC Evaluation of ∫ √(1 + t²)",
+      "startLine": 94,
+      "endLine": 110,
+      "summary": "integral_sqrt_one_add_sq (∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a)) and integral_sqrt_one_add_sq_zero_to (the normalised ∫_0^b = ½(b√(1+b²)+arsinh b), using arsinh 0 = 0).",
+      "mathContext": "$\\int_0^b \\sqrt{1+t^2}\\,dt = \\tfrac12\\left(b\\sqrt{1+b^2} + \\operatorname{arsinh} b\\right)$."
+    },
+    {
+      "id": "catenary",
+      "title": "Catenary Arc Length",
+      "startLine": 112,
+      "endLine": 143,
+      "summary": "sqrt_one_add_sinh_sq (√(1 + sinh²x) = cosh x), integral_cosh_zero_to (∫_0^b cosh x dx = sinh b), catenary_arclength (the arc length of y = cosh x over [0, b] equals sinh b), and integral_sqrt_one_add_sq_zero_to_one (∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1)).",
+      "mathContext": "$\\int_0^b \\sqrt{1+\\sinh^2 x}\\,dx = \\int_0^b \\cosh x\\,dx = \\sinh b$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "arsinh-log-formula-oq-01-oq-01-oq-01-oq-01",
+      "question": "Generalise the arc-length identity to an arbitrary smooth curve via the arsinh substitution: for a differentiable f with continuous derivative, express ∫_a^b √(1 + f'(t)²) dt and, in the affine case f'(t) = m, recover the closed form ½ scaled by √(1+m²); more ambitiously, formalise the surface-area-of-revolution integral 2π ∫ cosh x √(1+sinh²x) dx for the catenoid.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "arsinh-log-formula-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent supplies the antiderivative of the conjugate integrand 1/√(1+t²) (namely arsinh) and lists the catenary arc-length formula as its open question. This entry answers it: it builds the antiderivative of √(1+t²) and derives the catenary arc length sinh b."
+    },
+    {
+      "targetId": "arsinh-log-formula-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "The arcosh companion builds the antiderivative of 1/√(t²−1) from a hand-rolled arcosh derivative; this entry similarly hand-builds the (absent-from-Mathlib) antiderivative of √(1+t²)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Arsinh",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.arsinh and its derivative Real.hasDerivAt_arsinh, one summand of the new antiderivative's derivative."
+    },
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Trigonometric.DerivHyp",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.hasDerivAt_sinh : HasDerivAt sinh (cosh x) x, used to evaluate the catenary length integral via the FTC."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.IntervalIntegral.FundThmCalculus",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of intervalIntegral.integral_eq_sub_of_hasDerivAt, the Fundamental Theorem of Calculus turning the derivative facts into the integral evaluations."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Answers the parent's open question with the catenary arc-length facts. The core contribution hasDerivAt_sqrtAntideriv builds, from scratch, the antiderivative of √(1+t²): d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²) (product rule + √-chain rule + Real.hasDerivAt_arsinh, with the algebra collapsing via (t²+1)/√(1+t²) = √(1+t²)). The FTC then gives ∫_a^b √(1+t²) dt = ½(b√(1+b²)+arsinh b) − ½(a√(1+a²)+arsinh a) and its ∫_0^b normalisation. On the geometric side, √(1 + sinh²x) = cosh x (from cosh²x = 1 + sinh²x, cosh x > 0) and ∫_0^b cosh x dx = sinh b assemble the headline catenary_arclength: the arc length of y = cosh x over [0, b] is sinh b. A concrete value ∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1) closes the file. 143 lines, 11 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "Mathlib differentiates arsinh and sinh and supplies the FTC, but the antiderivative of √(1+t²), the closed-form integral, the Pythagorean integrand simplification, and the catenary arc length are new to the gallery (hence the original badge). Together with the parent (antiderivative of 1/√(1+t²)) this completes the two conjugate arsinh-substitution integrals and connects the arsinh logarithmic theory to its canonical geometric application.",
+    "openQuestions": [
+      "Generalise the arc-length identity to arbitrary smooth curves via the arsinh substitution, and formalise the catenoid surface-area-of-revolution integral 2π ∫ cosh x √(1+sinh²x) dx."
+    ]
+  },
+  "description": "The arc length of the catenary y = cosh x over [0, b] is the strikingly simple sinh b, because the length element √(1 + sinh²x) = cosh x integrates to sinh. Starting from a hand-built derivative — d/dt [½(t√(1+t²)+arsinh t)] = √(1+t²), the antiderivative of the conjugate integrand that Mathlib lacks — this entry derives the closed form ∫_0^b √(1+t²) dt = ½(b√(1+b²)+arsinh b), proves √(1 + sinh²x) = cosh x and ∫_0^b cosh x dx = sinh b, and assembles the catenary arc length sinh b, plus the concrete value ∫_0^1 √(1+t²) dt = ½(√2 + arsinh 1). Answers the parent's open question. Fully verified, 0 axioms, 0 sorries."
+}
