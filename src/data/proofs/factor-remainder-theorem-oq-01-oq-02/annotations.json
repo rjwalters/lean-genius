@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-taylor-transfer",
+    "proofId": "factor-remainder-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 68
+    },
+    "type": "insight",
+    "title": "Divisibility Transfers Through the Taylor Shift X ↦ X + a",
+    "content": "pow_X_sub_C_dvd_iff_taylor reduces a shifted divisibility (X − a)ᵏ ∣ p to the pure-power divisibility Xᵏ ∣ taylor a p. The mechanism is that q ↦ q.comp (X + C a) is a ring automorphism of R[X] (its inverse is q ↦ q.comp (X − C a)) carrying X − a to X, so it preserves divisibility both ways. The proof uses only the composition lemmas mul_comp, pow_comp, sub_comp, add_comp and comp_assoc — crucially, no characteristic hypothesis enters. This is the step that makes coefficient vanishing transparent: divisibility by Xᵏ is just the vanishing of the first k coefficients."
+  },
+  {
+    "id": "ann-main",
+    "proofId": "factor-remainder-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 70,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "The Hasse Multiplicity Factor Theorem in Every Characteristic",
+    "content": "pow_X_sub_C_dvd_iff_hasseDeriv_eval_eq_zero is the entry's headline: over any commutative ring, (X − a)ᵏ ∣ p ↔ ∀ m < k, (hasseDeriv m p)(a) = 0. It chains three facts — the Taylor transfer, X_pow_dvd_iff (Xᵏ ∣ q ↔ the first k coefficients of q vanish), and taylor_coeff (the d-th coefficient of taylor a p is exactly (hasseDeriv d p)(a)). The key point is that the Hasse derivative records the Taylor coefficient WITHOUT dividing by d!, so the criterion stays meaningful when d! = 0 in R. This drops both the characteristic-zero and the p ≠ 0 hypotheses of the parent — content absent from Mathlib."
+  },
+  {
+    "id": "ann-cases",
+    "proofId": "factor-remainder-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 85,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "Factor Theorem, Double Root, and the Multiplicity Reading",
+    "content": "factor_theorem (k = 1: (X − a) ∣ p ↔ p(a) = 0) and double_root_iff (k = 2: (X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0) instantiate the main theorem, using hasseDeriv_zero' (hasseDeriv 0 = id) and hasseDeriv_one' (hasseDeriv 1 = derivative) to recover the familiar low-order derivatives. Both now hold in any characteristic with no p ≠ 0 hypothesis — a strict improvement over the parent's char-0 versions. le_rootMultiplicity_iff_hasseDeriv packages the result as a multiplicity bound: for p ≠ 0, k ≤ rootMultiplicity a p iff the first k Hasse derivatives vanish at a."
+  },
+  {
+    "id": "ann-char-p",
+    "proofId": "factor-remainder-theorem-oq-01-oq-02",
+    "range": {
+      "startLine": 111,
+      "endLine": 129
+    },
+    "type": "concept",
+    "title": "Why Ordinary Derivatives Fail in Characteristic p",
+    "content": "hasseDeriv_detects_char_p is the concrete obstruction that motivates the whole entry. Over ZMod 2, derivative (X²) = C 2 · X = 0 because 2 = 0 — so the characteristic-zero criterion, which only sees ordinary derivatives, would find p(0) = p′(0) = p″(0) = 0 and wrongly certify (X)³ ∣ X². The second Hasse derivative tells the truth: (hasseDeriv 2 (X²))(0) = (taylor 0 (X²)).coeff 2 = (X²).coeff 2 = 1 ≠ 0, and via the Hasse multiplicity factor theorem this refutes (X)³ ∣ X². This is exactly the gap between p^{(m)}(a) = m! · (hasseDeriv m p)(a) collapsing when m! = 0 and the Hasse derivative surviving."
+  }
+]
