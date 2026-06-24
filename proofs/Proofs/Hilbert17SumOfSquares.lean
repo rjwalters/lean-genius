@@ -7,6 +7,7 @@ import Mathlib.Tactic
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17RobinsonNotSOS
 import Proofs.Hilbert17UnivariatePSDSOS
+import Proofs.Hilbert17QuadraticGram
 
 /-!
 # Hilbert's 17th Problem: Sum of Squares Representation
@@ -334,38 +335,34 @@ giving explicit examples. Motzkin (1967) gave the first explicit counterexample.
 theorem univariate_psd_is_sos (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
     IsSumOfSquaresPolynomial p := univariate_psd_is_sos_aux p h
 
-/-- **Axiom: Quadratic PSD is Polynomial-SOS**
+/-- **Quadratic PSD is Polynomial-SOS** (the `totalDegree = 2` case of Hilbert's
+    PSD = SOS classification), fully machine-checked with zero axioms.
 
-    Every quadratic form that is PSD can be written as a sum of squares of linear forms.
+    Every PSD polynomial of total degree 2 — affine quadratics included — is an
+    honest sum of squares of affine-linear forms.  The full proof lives in
+    `Proofs/Hilbert17QuadraticGram.lean`
+    (`Hilbert17.affine_quadratic_psd_isSumSq`):
 
-    The proof uses the Gram matrix approach:
-    - Write Q(x) = x^T A x for symmetric matrix A
-    - Q >= 0 everywhere iff A is positive semidefinite
-    - A positive semidefinite iff A = B^T B for some matrix B
-    - This gives Q = ||Bx||^2, a sum of squares of linear forms
+    * the **homogeneous** core (`homogeneous_quadratic_psd_isSumSq`) reads off the
+      symmetric Gram matrix `quadMatrix Q`, shows PSD of `Q` forces it to be a PSD
+      matrix, and applies the Gram engine `posSemidef_quadratic_isSumSq`
+      (`x ⬝ᵥ (M *ᵥ x) = ∑ i, ((√M *ᵥ x) i)²` via `M = (√M)ᵀ (√M)`);
+    * the **affine** case homogenises by one extra coordinate `x₀`
+      (`homogenize Q`, a PSD homogeneous quadratic in `n+1` variables — PSD
+      transfers on `{x₀ ≠ 0}` by a scaling identity and to `x₀ = 0` by continuity
+      of evaluation), applies the homogeneous core, and dehomogenises the linear
+      forms by setting `x₀ = 1` (`bind₁ (Fin.cons 1 X)`).
 
-    Axiomatized because the proof requires:
-    - Correspondence between quadratic polynomials and symmetric matrices
-    - Spectral theorem / Cholesky decomposition for PSD matrices
-    - Matrix algebra and polynomial evaluation
+    The parent's `IsPositiveSemidefiniteMv` / `IsSumOfSquaresMvPolynomial` are
+    definitionally equal to the child's predicates, so the proof transfers by
+    `exact` (with `totalDegree = 2 ⟹ ≤ 2`).
 
-    PROGRESS: the entire **homogeneous** case is now proved with zero axioms in
-    `Proofs.Hilbert17QuadraticGram` (`Hilbert17.homogeneous_quadratic_psd_isSumSq`):
-    every PSD *homogeneous* degree-2 polynomial in any number of variables is a
-    genuine polynomial sum of squares of linear forms.  The chain is
-    `quad_repr` (read off the symmetric Gram matrix `quadMatrix Q` and prove
-    `Q = ∑ i j, (quadMatrix Q) i j · Xᵢ Xⱼ`), then PSD of `Q` forces
-    `quadMatrix Q` to be a PSD matrix, then the Gram engine
-    `posSemidef_quadratic_isSumSq` (`x ⬝ᵥ (M *ᵥ x) = ∑ i, ((√M *ᵥ x) i)²` via
-    `M = (√M)ᵀ (√M)`).  What remains for the *affine* `totalDegree = 2` axiom
-    below is only the standard homogenisation by one extra coordinate (lift to a
-    homogeneous quadratic in `n+1` variables, transfer PSD via a scaling limit,
-    apply the homogeneous result, set the homogenising coordinate to 1); see
-    `research/problems/hilbert-17-oq-03/knowledge.md`. -/
-axiom quadratic_psd_is_sos_aux {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
+    (Formerly the axiom `quadratic_psd_is_sos_aux`; now fully machine-checked.) -/
+theorem quadratic_psd_is_sos_aux {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
     (hQ : MvPolynomial.totalDegree Q = 2)
     (h : IsPositiveSemidefiniteMv Q) :
-    IsSumOfSquaresMvPolynomial Q
+    IsSumOfSquaresMvPolynomial Q :=
+  affine_quadratic_psd_isSumSq Q hQ.le h
 
 /-- **Case 2: Quadratic forms that are PSD are polynomial-SOS**
 
