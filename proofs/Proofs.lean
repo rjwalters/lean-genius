@@ -3701,6 +3701,7 @@ import Proofs.SummationByPartsOQ01OQ01OQ01OQ02
 import Proofs.SummationByPartsOQ01OQ01OQ01OQ02OQ01
 import Proofs.SummationByPartsOQ01OQ01OQ01OQ02OQ02
 import Proofs.SummationByPartsOQ01OQ01OQ01OQ02OQ02OQ01
+import Proofs.SummationByPartsOQ01OQ02OQ01
 import Proofs.SylowTheorem
 import Proofs.SylowTheoremOQ01
 import Proofs.SylowTheoremOQ02
