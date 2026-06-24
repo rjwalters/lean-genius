@@ -1,0 +1,86 @@
+[
+  {
+    "id": "imports",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 6 },
+    "type": "concept",
+    "title": "Imports: Order Theory over a Finite Field",
+    "content": "Unlike the mod-4 sibling, which imported NumberTheory.SumTwoSquares for Euler's criterion, this file imports FieldTheory.Finite.Basic and GroupTheory.OrderOfElement. The whole proof runs on multiplicative order in ℤ/p: ZMod.orderOf_dvd_card_sub_one (Fermat's little theorem in order form) and orderOf_dvd_of_pow_eq_one. ZMod.natCast_eq_zero_iff bridges divisibility in ℕ and equations in ℤ/p, and Nat.dvd_factorial / Nat.exists_prime_and_dvd power the Euclid construction.",
+    "mathContext": "The argument needs $\\mathbb{Z}/p$ to be a field (so $\\mathbb{F}_p^\\times$ has order $p-1$) and Lagrange's theorem $\\mathrm{ord}(a) \\mid |\\mathbb{F}_p^\\times| = p-1$. These live in `Mathlib.FieldTheory.Finite.Basic` and `Mathlib.GroupTheory.OrderOfElement`.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative order", "Fermat's little theorem", "finite fields", "ZMod p"],
+    "prerequisites": ["ZMod p as a field", "orderOf in a finite group", "Lagrange's theorem"]
+  },
+  {
+    "id": "oq-answer",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 8, "endLine": 50 },
+    "type": "concept",
+    "title": "Answering OQ-03-OQ-01: The Cyclotomic Φ₃ Argument",
+    "content": "The parent entry infinitude-primes-4k3-oq-03 explicitly proposed (in its openQuestions) the construction N = Φ₃(3·k!) = (3·k!)² + 3·k! + 1 for proving infinitely many primes ≡ 1 (mod 3). This file realizes that proposal. Φ₃(x) = x² + x + 1 is the third cyclotomic polynomial; the smallest genuinely cyclotomic case of the Euclid-style infinitude argument (Φ₂ and the linear cases are degenerate; Φ₄ = x²+1 is the mod-4 sibling).",
+    "mathContext": "The general fact: for the $d$-th cyclotomic polynomial $\\Phi_d$, any prime $p \\nmid d$ dividing $\\Phi_d(k)$ satisfies $p \\equiv 1 \\pmod d$. Here $d = 3$, $\\Phi_3(x) = x^2 + x + 1$, and the excluded prime is $p = 3 = d$.",
+    "significance": "key",
+    "relatedConcepts": ["cyclotomic polynomial", "Euclid's proof", "Dirichlet's theorem", "arithmetic progressions"],
+    "prerequisites": ["cyclotomic polynomials", "Euclid's infinitude of primes"]
+  },
+  {
+    "id": "key-lemma-cube",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 65, "endLine": 73 },
+    "type": "proof-technique",
+    "title": "From Divisibility to m³ = 1 via linear_combination",
+    "content": "The divisibility p ∣ m² + m + 1 is cast into ℤ/p as h0 : (m)² + m + 1 = 0. The cubing step m³ = 1 is then a one-line linear_combination over the factorization (m − 1)(m² + m + 1) = m³ − 1: `linear_combination ((m : ZMod p) - 1) * h0`. This is the cyclotomic heart of the argument — Φ₃(m) = 0 is exactly what makes m a primitive cube root of unity (or 1).",
+    "mathContext": "$(m-1)(m^2+m+1) = m^3 - 1$, so $m^2+m+1 = 0 \\Rightarrow m^3 - 1 = (m-1)\\cdot 0 = 0 \\Rightarrow m^3 = 1$ in $\\mathbb{Z}/p$.",
+    "significance": "key",
+    "relatedConcepts": ["roots of unity", "linear_combination tactic", "polynomial factorization", "Φ₃"],
+    "prerequisites": ["commutative ring identities", "linear_combination tactic"]
+  },
+  {
+    "id": "key-lemma-order",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 79, "endLine": 90 },
+    "type": "proof-technique",
+    "title": "Order Exactly 3 ⟹ 3 ∣ p − 1",
+    "content": "From m³ = 1, orderOf_dvd_of_pow_eq_one gives orderOf m ∣ 3, so the order is 1 or 3 (Nat.dvd_prime Nat.prime_three). Order 1 means m = 1, making m² + m + 1 = 3 = 0 in ℤ/p, i.e. p ∣ 3, i.e. p = 3 — excluded by hypothesis. Hence the order is exactly 3, and ZMod.orderOf_dvd_card_sub_one (Fermat) gives 3 ∣ p − 1. With p ≥ 2, omega concludes p % 3 = 1.",
+    "mathContext": "$\\mathrm{ord}(m) \\mid 3 \\Rightarrow \\mathrm{ord}(m) \\in \\{1,3\\}$. $\\mathrm{ord}(m)=1 \\Rightarrow m=1 \\Rightarrow 3 \\equiv 0 \\Rightarrow p=3$ (excluded). So $\\mathrm{ord}(m)=3 \\mid p-1$, i.e. $p \\equiv 1 \\pmod 3$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative order", "Lagrange's theorem", "Fermat's little theorem", "primitive roots"],
+    "prerequisites": ["orderOf and pow_eq_one", "order divides group order"]
+  },
+  {
+    "id": "construction-coprimality",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 105, "endLine": 119 },
+    "type": "proof-technique",
+    "title": "Coprimality: Any Prime Factor of N is Coprime to m",
+    "content": "With m = 3·(n+1)! and N = m² + m + 1, a prime factor p of N cannot divide m: p ∣ m would give p ∣ m² + m, hence p ∣ N − (m² + m) = 1, impossible. This single coprimality fact does triple duty: it forces p ≠ 3 (because 3 ∣ m), it forces p > n (because every prime ≤ n+1 divides (n+1)! ∣ m, via Nat.dvd_factorial), and it is the precondition the key lemma needs.",
+    "mathContext": "$p \\mid m \\Rightarrow p \\mid m(m+1) = m^2 + m \\Rightarrow p \\mid (m^2+m+1) - (m^2+m) = 1$, contradicting $p$ prime. So $\\gcd(p, m) = 1$; since $3 \\mid m$ and $(n+1)! \\mid m$, this yields $p \\neq 3$ and $p > n$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's coprimality trick", "Nat.dvd_factorial", "factorial divisibility"],
+    "prerequisites": ["divisibility arithmetic", "factorial prime divisibility"]
+  },
+  {
+    "id": "set-infinite",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 130, "endLine": 142 },
+    "type": "concept",
+    "title": "Packaging: Set.Infinite and No Largest Prime",
+    "content": "The ∀ n, ∃ p > n form is repackaged two ways. primes_1_mod_3_infinite uses Set.infinite_iff_exists_gt to state that {p prime | p ≡ 1 (mod 3)} is Set.Infinite. no_largest_prime_1_mod_3 states the dual: no prime in the class dominates all others, proved by beating any candidate maximum with the larger prime the main theorem supplies.",
+    "mathContext": "$\\{p \\mid \\mathrm{Prime}\\,p \\wedge p \\bmod 3 = 1\\}$ is infinite $\\iff$ for every $n$ there is a larger member $\\iff$ no member is maximal.",
+    "significance": "supporting",
+    "relatedConcepts": ["Set.Infinite", "Set.infinite_iff_exists_gt", "unboundedness"],
+    "prerequisites": ["Set.Infinite in Mathlib"]
+  },
+  {
+    "id": "examples",
+    "proofId": "infinitude-primes-4k3-oq-03-oq-01",
+    "range": { "startLine": 144, "endLine": 163 },
+    "type": "concept",
+    "title": "The Family Begins: 7, 13, 19, 31, 37",
+    "content": "Concrete members of the infinite family, each ≡ 1 (mod 3) and verified by decide. Note 7 = Φ₃(2), 13 = Φ₃(3): the cyclotomic values themselves produce such primes. The primes ≡ 2 (mod 3) (5, 11, 17, 23, …) form the complementary class, which would be handled by an elementary product argument rather than the cyclotomic one.",
+    "mathContext": "$7,13,19,31,37 \\equiv 1 \\pmod 3$. Indeed $\\Phi_3(2) = 7$ and $\\Phi_3(3) = 13$ are themselves primes $\\equiv 1 \\pmod 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "cyclotomic values", "residue classes mod 3"],
+    "prerequisites": ["decidability of Nat.Prime for small numbers"]
+  }
+]
