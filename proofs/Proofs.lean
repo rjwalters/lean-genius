@@ -804,6 +804,7 @@ import Proofs.CombinationsFormulaOQ08
 import Proofs.CombinationsFormulaOQ09
 import Proofs.CompactnessFiniteSubcover
 import Proofs.CompactnessFiniteSubcoverOq01Oq01
+import Proofs.CompactnessFiniteSubcoverOq01Oq01Oq01
 import Proofs.CompactnessFiniteSubcoverOq01Oq02
 import Proofs.CompactnessFiniteSubcoverOq01Oq02Oq01
 import Proofs.CompactnessFiniteSubcoverOq02
