@@ -1,0 +1,121 @@
+{
+  "id": "lagrange-theorem-oq-01-oq-01-oq-02",
+  "title": "pq-Groups: Abelian Isomorphism Uniqueness (every abelian group of order pq is ℤ/pq)",
+  "slug": "lagrange-theorem-oq-01-oq-01-oq-02",
+  "description": "Upgrades the abelian portion of the parent pq-classification from a counting statement to genuine MulEquiv isomorphisms, using only Mathlib. For ANY distinct primes p ≠ q, every abelian group of order pq is cyclic (via Cauchy + the coprime-order product law), so any two abelian groups of order pq are isomorphic — each isomorphic to Multiplicative (ZMod pq). This identifies the abelian isomorphism class in BOTH branches of the classification (cyclic p ∤ q-1, and the non-cyclic p | q-1 branch where the other class is the non-abelian semidirect product). The general not-necessarily-abelian uniqueness is deferred (it depends on the parent Sylow classification, which currently does not compile on Mathlib v4.26.0).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
+    "tags": [
+      "group-theory",
+      "lagrange",
+      "pq-groups",
+      "classification",
+      "isomorphism",
+      "MulEquiv",
+      "cyclic-groups",
+      "abelian-groups",
+      "ZMod",
+      "finite-groups"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 163,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "assumptions": "None. Imports only Mathlib. Uses standard Mathlib group-theory API (Cauchy's theorem `exists_prime_orderOf_dvd_card`, `Commute.orderOf_mul_eq_mul_orderOf_of_coprime`, `isCyclic_of_orderOf_eq_card`, `mulEquivOfCyclicCardEq`, `zmodCyclicMulEquiv`). No `axiom` declarations and no structure-encoded assumptions. Kernel-verified on Mathlib v4.26.0: every theorem depends on exactly the standard `[propext, Classical.choice, Quot.sound]` triple (no `sorryAx`, no `Lean.ofReduceBool`).",
+    "originalContributions": [
+      "pq_abelian_isCyclic: every finite ABELIAN group of order pq (any distinct primes p ≠ q) is cyclic — proved from Cauchy (elements of order p and q) plus the coprime-order product law orderOf(a·b) = pq = |G|. Holds with NO divisibility hypothesis, so it also applies inside the non-cyclic p | (q-1) branch.",
+      "pq_abelian_iso: consequently any two abelian groups of order pq are isomorphic (Nonempty (G ≃* H)) via mulEquivOfCyclicCardEq.",
+      "pq_abelian_iso_zmod: every abelian group of order pq is isomorphic to the canonical model Multiplicative (ZMod pq) via zmodCyclicMulEquiv.",
+      "Concrete corollaries order_6_abelian_unique, order_15_abelian_unique, order_35_abelian_unique (each abelian group of those orders ≅ ℤ/n), and order_15_abelian_pair (any two abelian groups of order 15 are isomorphic). order_6 illustrates that the abelian class is pinned even though 6 = 2·3 lies in the non-cyclic branch where S₃ is the other class.",
+      "Self-contained: imports only Mathlib, deliberately avoiding the parent Sylow classification dependency `Proofs.SylowTheoremOQ01` which does not compile on Mathlib v4.26.0."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classification of groups of order pq (p < q distinct primes) is a classical application of Sylow theory due to Hölder/Burnside. The parent entry `lagrange-theorem-oq-01-oq-01` establishes the counting facts: the Sylow q-subgroup is always normal, and G is cyclic iff p ∤ (q-1); when p ∤ (q-1) there is a unique isomorphism class (ℤ/pq), and when p | (q-1) there are exactly two (ℤ/pq and a non-abelian semidirect product ℤ/q ⋊ ℤ/p). Sibling entry `lagrange-theorem-oq-01-oq-01-oq-01` supplies explicit non-cyclic witnesses (DihedralGroup q for p = 2, and the general semidirect product). The remaining gap, flagged in that sibling's open questions, is to turn the COUNTING statement into genuine ISOMORPHISMS using Mathlib's MulEquiv machinery. This file does that for the abelian thread, fully and self-containedly.",
+    "problemStatement": "Upgrade the pq-classification to isomorphism uniqueness via Mathlib's group-isomorphism machinery: 'any two groups of order pq are isomorphic to each other, for each of the two cases.' This file resolves the abelian thread: identify, up to MulEquiv, the abelian isomorphism class of order pq.",
+    "proofStrategy": "In a CommGroup of order pq, Cauchy's theorem (`exists_prime_orderOf_dvd_card`) yields a of order p and b of order q. Since the group is abelian a and b commute, and p, q being coprime, `Commute.orderOf_mul_eq_mul_orderOf_of_coprime` gives orderOf(a·b) = p·q = |G|; `isCyclic_of_orderOf_eq_card` then makes G cyclic. Finally `mulEquivOfCyclicCardEq` (two cyclic groups of equal Nat.card are isomorphic) and `zmodCyclicMulEquiv` (a cyclic group ≅ Multiplicative (ZMod (Nat.card G))) deliver the isomorphism statements, bridging Fintype.card to Nat.card via `Nat.card_eq_fintype_card`.",
+    "keyInsights": [
+      "An abelian group of order pq is cyclic for EVERY pair of distinct primes, independent of whether p | (q-1). The squarefree order plus the coprime-order product law forces a generator a·b of order pq. This isolates the abelian isomorphism class on BOTH sides of the classification dichotomy.",
+      "Mathlib's `mulEquivOfCyclicCardEq` is exactly the tool that upgrades an `IsCyclic` fact to a genuine `MulEquiv` — the difference between 'one isomorphism class' and 'a concrete isomorphism'.",
+      "Fintype.card and Nat.card must be bridged (`Nat.card_eq_fintype_card`) because Cauchy/cardinality hypotheses use Fintype.card while the cyclic-iso API is phrased with Nat.card.",
+      "The coprime-order multiplication lemma lives in namespace Commute (used as dot notation `(Commute.all a b).orderOf_mul_eq_mul_orderOf_of_coprime`), not in the root namespace.",
+      "The general (non-abelian-allowed) cyclic case and the non-abelian uniqueness both require the parent Sylow classification; keeping this file Mathlib-only makes the abelian result robust and independently verifiable."
+    ],
+    "prerequisites": [
+      "Cauchy's theorem exists_prime_orderOf_dvd_card (Mathlib.GroupTheory.Perm.Cycle.Type)",
+      "Commute.orderOf_mul_eq_mul_orderOf_of_coprime (Mathlib.GroupTheory.OrderOfElement)",
+      "isCyclic_of_orderOf_eq_card, mulEquivOfCyclicCardEq, zmodCyclicMulEquiv (Mathlib.GroupTheory.SpecificGroups.Cyclic)",
+      "Mathlib v4.26.0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-docstring",
+      "title": "Module Docstring: OQ Statement, Abelian Scope, Deferred Cases",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "States OQ-01-OQ-01-OQ-02 (upgrade the counting classification to MulEquiv isomorphisms), the abelian thread delivered here, the proof of the key cyclicity step, and what is deferred (the general cyclic case and non-abelian uniqueness, which depend on the parent Sylow classification — currently not compiling on Mathlib v4.26.0). Lists the key Mathlib tools and cites Dummit–Foote §4.5 and Conrad's notes."
+    },
+    {
+      "id": "abelian-cyclic",
+      "title": "Part I — Abelian Groups of Order pq Are Cyclic",
+      "startLine": 69,
+      "endLine": 95,
+      "summary": "pq_abelian_isCyclic: any abelian group of order pq is cyclic. Cauchy gives elements of orders p and q; the coprime-order product law makes their product a generator of order pq = |G|. No divisibility hypothesis, so this covers the abelian class in both branches."
+    },
+    {
+      "id": "abelian-iso",
+      "title": "Part II — Abelian Isomorphism Uniqueness",
+      "startLine": 96,
+      "endLine": 130,
+      "summary": "pq_abelian_iso (any two abelian groups of order pq are isomorphic) and pq_abelian_iso_zmod (each ≅ Multiplicative (ZMod pq)), via mulEquivOfCyclicCardEq and zmodCyclicMulEquiv after Part I."
+    },
+    {
+      "id": "corollaries",
+      "title": "Part III — Concrete Corollaries (orders 6, 15, 35)",
+      "startLine": 131,
+      "endLine": 163,
+      "summary": "order_6_abelian_unique, order_15_abelian_unique, order_35_abelian_unique: every abelian group of those orders is ℤ/n. order_15_abelian_pair: any two abelian groups of order 15 are isomorphic. order_6 illustrates the abelian class being pinned even though 6 = 2·3 lies in the non-cyclic branch (2 | 2) where S₃ is the other class."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file proves 7 theorems with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only). It identifies, up to MulEquiv, the abelian isomorphism class of order pq for every pair of distinct primes: every abelian group of order pq is cyclic, any two are isomorphic, and each is isomorphic to Multiplicative (ZMod pq).",
+    "implications": "Together with the parent (counting) and sibling oq-01-oq-01-oq-01 (explicit non-cyclic witnesses), the abelian side of the order-pq classification now has genuine isomorphisms, not just a class count. The outstanding pieces of full isomorphism uniqueness are the general cyclic case (for p ∤ q-1, any two groups of order pq are isomorphic) and the non-abelian case (any two non-cyclic groups of order pq are isomorphic) — both requiring the parent Sylow classification and, for the non-abelian case, an internal semidirect-product recognition ℤ/q ⋊ ℤ/p.",
+    "openQuestions": [
+      "General cyclic-case uniqueness: for distinct primes p < q with p ∤ (q-1), prove any two groups of order pq are isomorphic. This needs the parent's `pq_unique_when_coprime` (every order-pq group is cyclic when p ∤ q-1), which depends on `Proofs.SylowTheoremOQ01`; that file does not compile on Mathlib v4.26.0 and is an independent repair task.",
+      "Non-abelian uniqueness: prove any two non-cyclic groups of order pq (with p | q-1) are isomorphic, by recognizing each as the internal semidirect product ℤ/q ⋊ ℤ/p and showing all non-trivial actions ℤ/p → Aut(ℤ/q) yield isomorphic products.",
+      "REPAIR FLAG: the parent chain `Proofs.SylowTheoremOQ01` → `Proofs.LagrangeTheoremOQ01OQ01` uses Mathlib names absent in v4.26.0 (e.g. `Nat.Prime.eq_of_dvd_of_prime`, `orderOf_eq_one_iff_eq_one`); a Mechanic pass is needed before the cyclic-case upgrade can be built on top of it."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent pq-classification (counting of isomorphism classes). This file upgrades the abelian class to a genuine MulEquiv, independently of the parent's (currently non-compiling) Sylow infrastructure."
+    },
+    {
+      "targetId": "lagrange-theorem-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling supplying explicit non-cyclic witnesses (DihedralGroup q and the general semidirect product). Its open-question list flags the isomorphism-uniqueness upgrade; this file delivers the abelian portion of it."
+    }
+  ],
+  "leanFile": {
+    "namespace": "LagrangeOQ01OQ01OQ02",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
+    "sorries": 0,
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0
+}

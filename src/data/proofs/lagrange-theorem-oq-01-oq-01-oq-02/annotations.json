@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-pq02-001-header",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 68 },
+    "type": "concept",
+    "title": "From Counting to Isomorphisms (Abelian Thread)",
+    "content": "The parent classification answers the open question at the level of *how many* isomorphism classes of groups of order $pq$ exist (one when $p \\nmid (q-1)$, two when $p \\mid (q-1)$). This file upgrades the **abelian** case to genuine isomorphisms $G \\simeq^* H$ using Mathlib's `MulEquiv` machinery, self-containedly (imports only Mathlib). The general cyclic case and the non-abelian uniqueness are scoped out, as they depend on the parent Sylow classification.",
+    "mathContext": "For distinct primes $p < q$, a group of order $pq$ has a unique (hence normal) Sylow $q$-subgroup $Q \\cong \\mathbb{Z}/q$. When $p \\nmid (q-1)$ the group is cyclic; when $p \\mid (q-1)$ a non-abelian semidirect product $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$ also exists. In the latter branch the abelian class is exactly the cyclic group $\\mathbb{Z}/pq$ resolved here."
+  },
+  {
+    "id": "ann-pq02-002-abelian-cyclic",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 79, "endLine": 95 },
+    "type": "key-insight",
+    "title": "Abelian of Order pq ⟹ Cyclic (any p ≠ q)",
+    "content": "`pq_abelian_isCyclic` proves every abelian group of order $pq$ is cyclic with NO divisibility hypothesis. Cauchy's theorem (`exists_prime_orderOf_dvd_card`) produces $a$ of order $p$ and $b$ of order $q$; because the group is abelian they commute, and as $p,q$ are coprime `Commute.orderOf_mul_eq_mul_orderOf_of_coprime` gives $\\mathrm{ord}(ab) = pq = |G|$, so `isCyclic_of_orderOf_eq_card` makes $G$ cyclic. The Fintype.card hypothesis is bridged to Nat.card with `Nat.card_eq_fintype_card`.",
+    "mathContext": "A finite abelian group is cyclic iff each of its Sylow subgroups is cyclic (true here, since each has prime order) and their orders are pairwise coprime. For squarefree order $pq$ this is automatic, independent of the action structure that distinguishes the non-abelian case."
+  },
+  {
+    "id": "ann-pq02-003-abelian-iso",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 104, "endLine": 113 },
+    "type": "technique",
+    "title": "Abelian-Case Uniqueness via mulEquivOfCyclicCardEq",
+    "content": "`pq_abelian_iso` registers both $G$ and $H$ as cyclic instances (from `pq_abelian_isCyclic`) and produces $G \\simeq^* H$ from `mulEquivOfCyclicCardEq`, whose only obligation is the equality of cardinalities (bridged Fintype.card → Nat.card and rewritten by the order hypotheses).",
+    "mathContext": "`mulEquivOfCyclicCardEq` packages the classical fact that a finite cyclic group is determined up to isomorphism by its order: both groups embed into $\\mathrm{Multiplicative}(\\mathbb{Z}/n)$ via a chosen generator."
+  },
+  {
+    "id": "ann-pq02-004-zmod-model",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 115, "endLine": 130 },
+    "type": "technique",
+    "title": "Canonical Representative ℤ/pq",
+    "content": "`pq_abelian_iso_zmod` pins the canonical model: `zmodCyclicMulEquiv` yields $\\mathrm{Multiplicative}(\\mathbb{Z}/\\mathrm{Nat.card}\\,G) \\simeq^* G$, and the cardinality equality $\\mathrm{Nat.card}\\,G = pq$ is transported through the dependent type with the rewrite `hN ▸ (...).symm`, giving $G \\simeq^* \\mathrm{Multiplicative}(\\mathbb{Z}/pq)$.",
+    "mathContext": "Working with `Multiplicative (ZMod n)` keeps the additive cyclic group $\\mathbb{Z}/n$ but views it multiplicatively, matching the `Group`/`MulEquiv` setting."
+  },
+  {
+    "id": "ann-pq02-005-corollaries",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 131, "endLine": 163 },
+    "type": "concept",
+    "title": "Concrete Corollaries",
+    "content": "`order_6_abelian_unique`, `order_15_abelian_unique`, `order_35_abelian_unique` give every abelian group of those orders as $\\mathbb{Z}/n$; `order_15_abelian_pair` states any two abelian groups of order 15 are isomorphic. `order_6` highlights that the abelian-case theorem pins the abelian class even though $6 = 2\\cdot 3$ falls in the non-cyclic branch ($2 \\mid 2$), where $S_3 \\cong D_3$ is the other class.",
+    "mathContext": "Order 6 is the smallest order admitting a non-abelian group ($S_3$). The cyclic group $\\mathbb{Z}/6$ is the unique abelian group of that order."
+  }
+]
