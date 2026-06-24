@@ -2720,6 +2720,7 @@ import Proofs.FairGamesTheoremOQ02OQ04
 import Proofs.FairGamesTheoremOQ03
 import Proofs.FairGamesTheoremOQ03Aristotle
 import Proofs.FatouLemma
+import Proofs.FatouLemmaOQ01OQ01
 import Proofs.FermatDefectOne
 import Proofs.FermatDefectOneAristotle
 import Proofs.FermatDefectOneFamilies
