@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 38
+    },
+    "type": "context",
+    "title": "Moment Determinacy: the Injectivity Half of Newton's Identities",
+    "content": "Newton's identities link the power sums pⱼ = Σᵢ vᵢʲ to the elementary symmetric functions eₖ. The parent packaged the forward recurrence k·eₖ = (−1)^{k+1} Σ_{i+j=k, i<k} (−1)ⁱ eᵢ pⱼ over MvPolynomial σ ℤ; a sibling (…-oq-02) used the inverted recurrence to show power sums and elementary symmetric polynomials generate the same ℚ-subalgebra. This entry answers the determinacy question: the first |σ| power sums are a COMPLETE INVARIANT — equal power sums force equal elementary symmetric functions, hence the same monic polynomial ∏ᵢ(X + vᵢ), hence the same multiset {vᵢ} up to order. Symmetric polynomials are taken over ℤ; evaluation lands in any characteristic-zero domain K (ℚ, ℝ, ℂ, ℤ), where the division by k happens.",
+    "mathContext": "Equal moments $p_j(v)=p_j(w)$ for $1\\le j\\le|\\sigma|$ $\\Rightarrow$ $\\prod_i(X+v_i)=\\prod_i(X+w_i)$ — a finite-multiset moment problem.",
+    "significance": "context",
+    "relatedConcepts": ["Newton's identities", "power sums", "elementary symmetric polynomials", "moment problem", "complete invariant"],
+    "prerequisites": ["symmetric polynomials", "characteristic zero", "Vieta's formulas"]
+  },
+  {
+    "id": "ann-vanish",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 51
+    },
+    "type": "technique",
+    "title": "Elementary Symmetric Functions Vanish Above Degree |σ|",
+    "content": "esymm_eval_eq_zero records that aeval v (esymm σ ℤ k) = 0 whenever k > |σ|: there are no squarefree monomials of degree exceeding the number of variables, so esymm σ ℤ k is literally the empty sum (powersetCard_eq_empty.mpr after rewriting card_univ). This degree cutoff is what lets the determinacy result be promoted from 'all eₖ with k ≤ |σ|' to 'all eₖ whatsoever' — beyond |σ| both sides are 0 for free.",
+    "mathContext": "$e_k(v)=0$ for $k>|\\sigma|$, since $\\binom{[\\sigma]}{k}=\\varnothing$.",
+    "significance": "supporting",
+    "relatedConcepts": ["powersetCard", "squarefree monomials", "degree bound", "empty sum"],
+    "prerequisites": ["esymm definition", "Finset.powersetCard"]
+  },
+  {
+    "id": "ann-newton-eval",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 64
+    },
+    "type": "insight",
+    "title": "Part I — The Forward Newton Identity, Evaluated at a Point",
+    "content": "aeval_mul_esymm_eq_sum applies the evaluation algebra homomorphism aeval v : MvPolynomial σ ℤ → K to Mathlib's polynomial identity mul_esymm_eq_sum. Because aeval is a ring homomorphism it commutes with the sum, product, power, negation, and natCast (the simpa lemma set map_mul/map_sum/map_pow/map_neg/map_one/map_natCast), turning the abstract MvPolynomial recurrence into the numerical Newton–Girard recurrence k·eₖ(v) = (−1)^{k+1} Σ_{i+j=k, i<k} (−1)ⁱ eᵢ(v) pⱼ(v) for the concrete family v. This is the engine the induction runs.",
+    "mathContext": "$k\\,e_k(v) = (-1)^{k+1}\\sum_{i+j=k,\\,i<k}(-1)^i e_i(v)\\,p_j(v)$, obtained by pushing $\\mathrm{aeval}\\,v$ through $\\mathrm{mul\\_esymm\\_eq\\_sum}$.",
+    "significance": "key",
+    "relatedConcepts": ["aeval (evaluation algebra hom)", "ring homomorphism", "Newton–Girard recurrence", "MvPolynomial.mul_esymm_eq_sum", "antidiagonal"],
+    "prerequisites": ["algebra homomorphisms", "Newton's identities", "Finset.antidiagonal"]
+  },
+  {
+    "id": "ann-determinacy",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 101
+    },
+    "type": "insight",
+    "title": "Part II — Power Sums Determine Elementary Symmetric Functions",
+    "content": "esymm_eval_eq_of_psum_eval_eq is the heart: assuming pⱼ(v) = pⱼ(w) for 1 ≤ j ≤ n, it proves eₖ(v) = eₖ(w) for all k ≤ n by strong induction (Nat.strongRecOn). Base k=0: e₀ = 1 (esymm_zero). For k>0, the evaluated recurrence's right-hand side involves only eᵢ with i < k (equal by the induction hypothesis ih, applied within sum_congr) and pⱼ with 1 ≤ j ≤ k ≤ n (equal by hp), so the two sums coincide and k·eₖ(v) = k·eₖ(w). The hypotheses [IsDomain K] [CharZero K] make (k : K) ≠ 0 (Nat.cast_ne_zero), so mul_left_cancel₀ cancels the scalar k — this is exactly where characteristic zero is essential (the recurrence only determines k·eₖ, not eₖ, in positive characteristic).",
+    "mathContext": "Strong induction on $k$: $k\\,e_k(v)=k\\,e_k(w)$ and $(k:K)\\ne 0$ (char $0$ domain) $\\Rightarrow e_k(v)=e_k(w)$ via $\\mathrm{mul\\_left\\_cancel}_0$.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction (Nat.strongRecOn)", "mul_left_cancel₀", "characteristic zero", "integral domain", "Finset.sum_congr"],
+    "prerequisites": ["strong induction", "cancellation in a domain", "the evaluated Newton recurrence"]
+  },
+  {
+    "id": "ann-card",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 112
+    },
+    "type": "concept",
+    "title": "The First |σ| Power Sums Determine Every eₖ",
+    "content": "esymm_eval_eq_of_psum_eval_eq_card specialises the determinacy theorem to n = |σ| and removes the bound on k: for k ≤ |σ| it cites esymm_eval_eq_of_psum_eval_eq, and for k > |σ| both eₖ(v) and eₖ(w) vanish by esymm_eval_eq_zero. So agreement of just the first |σ| power sums forces agreement of ALL elementary symmetric functions — the minimal complete set of moments, matching the |σ| degrees of freedom of an unordered |σ|-tuple.",
+    "mathContext": "$p_1,\\dots,p_{|\\sigma|}$ agree $\\Rightarrow e_k(v)=e_k(w)$ for every $k$ (split at $k=|\\sigma|$).",
+    "significance": "supporting",
+    "relatedConcepts": ["degrees of freedom", "minimal moment set", "case split (le_or_gt)", "degree cutoff"],
+    "prerequisites": ["the determinacy theorem", "esymm vanishing above |σ|"]
+  },
+  {
+    "id": "ann-complete-invariant",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Part III — Complete Invariant: the Monic Polynomial ∏ᵢ(X + vᵢ)",
+    "content": "prod_X_add_C_eq_of_psum_eval_eq is the Vieta capstone: equal power sums (1 ≤ j ≤ |σ|) give the SAME monic polynomial ∏ᵢ(X + vᵢ) = ∏ᵢ(X + wᵢ). The helper `key` expands ∏ᵢ(X + C(uᵢ)) as Σⱼ C(eⱼ(u))·X^{|σ|−j} over range(|σ|+1), using Multiset.prod_X_add_C_eq_sum_esymm (after rewriting the product as a multiset map and matching the cardinality |σ|) and aeval_esymm_eq_multiset_esymm to identify the multiset elementary symmetric functions with aeval u (esymm σ ℤ j). Applying `key` to v and w and rewriting each coefficient via esymm_eval_eq_of_psum_eval_eq_card finishes. Since the polynomial's roots are the multiset {−vᵢ}, this says the first |σ| power sums determine {vᵢ} up to reordering — the sharp form of Newton's identities as a moment problem for finite multisets.",
+    "mathContext": "$\\prod_i (X+C(v_i)) = \\sum_{j=0}^{|\\sigma|} C(e_j(v))\\,X^{|\\sigma|-j}$ (Vieta); equal $e_j$ $\\Rightarrow$ equal polynomial $\\Rightarrow$ equal root multiset.",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's formulas", "Multiset.prod_X_add_C_eq_sum_esymm", "monic polynomial", "root multiset", "moment problem"],
+    "prerequisites": ["Vieta's formulas", "multiset elementary symmetric functions", "polynomial coefficients"]
+  }
+]
