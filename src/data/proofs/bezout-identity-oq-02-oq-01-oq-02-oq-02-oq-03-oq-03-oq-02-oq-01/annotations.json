@@ -1,0 +1,50 @@
+[
+  {
+    "id": "bezout-irrednorm-ann-header",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "The necessary direction of the norm criterion",
+    "content": "The parent entry proved sufficiency — an element whose norm has prime absolute value is irreducible. This file proves the matching necessary constraint: every irreducible z of ℤ[√d] (for −2 ≤ d < 0) has |N(z)| equal to a rational prime p or its square p². The two directions together bracket the norm of any irreducible to exactly two values, the classical split/ramified (norm p) versus inert (norm p²) dichotomy. The file imports the parent so it can reuse the EuclideanDomain instance that makes ℤ[√d] a UFD over this range of d.",
+    "mathContext": "Sufficiency (parent): $|N(z)|$ prime $\\Rightarrow z$ irreducible. Necessity (here): $z$ irreducible $\\Rightarrow |N(z)| \\in \\{p, p^2\\}$ for a rational prime $p$.",
+    "significance": "context",
+    "relatedConcepts": ["norm criterion", "irreducible elements", "quadratic integer rings", "split/inert/ramified primes"],
+    "prerequisites": ["unique factorization domains", "the parent PID/UFD entry"]
+  },
+  {
+    "id": "bezout-irrednorm-ann-exists-prime-dvd",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
+    "range": { "startLine": 46, "endLine": 81 },
+    "type": "technique",
+    "title": "A prime element divides the image of a rational prime",
+    "content": "exists_prime_dvd_natCast is the crux lemma: a prime z of ℤ[√d] dividing the image ↑n of a nonzero natural number must divide the image ↑p of one of n's prime factors. The proof is a strong induction on n (Nat.strong_induction_on). The case n = 1 is impossible — z ∣ 1 would make z a unit, contradicting hz.not_unit. Otherwise Nat.exists_prime_and_dvd extracts a prime factor p, n = p·k, and after pushing the cast through (↑(p·k) = ↑p·↑k) the primality of z splits z ∣ ↑p·↑k via Prime.dvd_or_dvd: either z ∣ ↑p (done) or z ∣ ↑k, where k < p·k (since p ≥ 2) lets the induction hypothesis recurse on the strictly smaller k.",
+    "mathContext": "If $z$ is prime and $z \\mid \\overline{n}$ with $n = \\prod p_i$, then $z \\mid \\overline{p_i}$ for some prime factor $p_i$, by repeatedly applying $z \\mid ab \\Rightarrow z\\mid a \\lor z\\mid b$.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction", "Prime.dvd_or_dvd", "prime factorization", "ring homomorphism on ℤ"],
+    "prerequisites": ["Prime elements in a commutative ring", "Nat.strong_induction_on", "Nat.exists_prime_and_dvd"]
+  },
+  {
+    "id": "bezout-irrednorm-ann-irred-to-prime",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
+    "range": { "startLine": 95, "endLine": 110 },
+    "type": "technique",
+    "title": "From irreducible to a divisibility of ↑|N(z)|",
+    "content": "The main theorem first installs the parent's euclideanDomain as a local instance (letI), which is what makes ℤ[√d] a UFD for −2 ≤ d < 0; in a UFD irreducible and prime coincide, so UniqueFactorizationMonoid.irreducible_iff_prime upgrades z to a prime. From primality z ≠ 0, hence N(z) ≠ 0 (norm_eq_zero_iff) and |N(z)| ≠ 0. Because d < 0 the norm is nonnegative (norm_nonneg), so ↑|N(z)| = N(z) as integers; combined with N(z) = z·z̄ (norm_eq_mul_conj) this exhibits z ∣ ↑|N(z)| with cofactor star z. This is the bridge that feeds the natural number |N(z)| into the crux lemma.",
+    "mathContext": "$N(z) = z\\cdot\\bar z$ and $N(z) \\ge 0$ for $d<0$, so $\\overline{|N(z)|} = N(z)$ and $z \\mid \\overline{|N(z)|}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["UniqueFactorizationMonoid.irreducible_iff_prime", "Zsqrtd.norm_eq_mul_conj", "norm nonnegativity", "conjugate / star"],
+    "prerequisites": ["UFD irreducible↔prime", "the norm form on ℤ[√d]"]
+  },
+  {
+    "id": "bezout-irrednorm-ann-norm-comparison",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03-oq-03-oq-02-oq-01",
+    "range": { "startLine": 111, "endLine": 128 },
+    "type": "insight",
+    "title": "Norm comparison forces |N(z)| = p or p²",
+    "content": "With z ∣ ↑p for a rational prime p (from the crux lemma), write ↑p = z·w and take norms: N(↑p) = p² (norm_intCast) and N is multiplicative (norm_mul), so p² = N(z)·N(w); passing to natAbs gives p·p = |N(z)|·|N(w)|, hence |N(z)| ∣ p². Since z is not a unit, |N(z)| ≠ 1 (norm_eq_one_iff). Nat.dvd_prime_pow lists the divisors of p² as p^0, p^1, p^2; interval_cases k on the exponent discards k=0 (would force |N(z)|=1) and yields |N(z)| = p (k=1, split/ramified) or |N(z)| = p² (k=2, inert). This exponent trichotomy is exactly the split-vs-inert dichotomy.",
+    "mathContext": "$N(\\overline p) = p^2$ and $N(\\overline p) = N(z)N(w)$ give $|N(z)| \\mid p^2$; with $|N(z)|\\ne 1$ the only options are $p$ (split/ramified) and $p^2$ (inert).",
+    "significance": "key",
+    "relatedConcepts": ["multiplicativity of the norm", "Nat.dvd_prime_pow", "divisors of a prime square", "interval_cases"],
+    "prerequisites": ["Zsqrtd.norm_intCast", "Zsqrtd.norm_mul", "Zsqrtd.norm_eq_one_iff", "Nat.dvd_prime_pow"]
+  }
+]
