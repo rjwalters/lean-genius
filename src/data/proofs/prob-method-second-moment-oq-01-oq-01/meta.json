@@ -78,6 +78,40 @@
       "Quantitative Paley–Zygmund, finite form (parent entry: ProbMethodSecondMomentOQ01)"
     ]
   },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Measure-Theoretic Paley–Zygmund",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "States the goal — recast the finite-form quantitative Paley–Zygmund inequality into Mathlib's probability-space / Bochner-integral framework — and previews the classical argument (split the mean over A = {X > θ𝔼X} and its complement, bound the complement, apply Cauchy–Schwarz). Notes Paley–Zygmund is not yet in Mathlib.",
+      "mathContext": "$\\mu(\\{X > \\theta\\mathbb{E}X\\})\\cdot\\mathbb{E}[X^2] \\ge (1-\\theta)^2(\\mathbb{E}X)^2$."
+    },
+    {
+      "id": "cauchy-schwarz",
+      "title": "Integral Cauchy–Schwarz (Squared Form)",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "sq_integral_mul_le: (∫ f·g)² ≤ (∫ f²)(∫ g²) for nonnegative L² functions, derived from Mathlib's Hölder inequality at the conjugate pair (2,2) by converting rpow ^(1/2) factors to Real.sqrt and squaring. The sole analytic ingredient, isolated as a reusable lemma.",
+      "mathContext": "$(\\int fg)^2 \\le (\\int f^2)(\\int g^2)$."
+    },
+    {
+      "id": "paley-zygmund",
+      "title": "The Main Inequality: Split + Cauchy–Schwarz",
+      "startLine": 67,
+      "endLine": 134,
+      "summary": "paley_zygmund: with m = 𝔼X and A = {X > θm}, the mean splits as ∫_A X + ∫_{Aᶜ} X; on Aᶜ, X ≤ θm gives ∫_{Aᶜ} X ≤ θm and hence ∫_A X ≥ (1−θ)m. Cauchy–Schwarz against the indicator of A gives (∫_A X)² ≤ 𝔼[X²]·μ(A). Chaining yields (1−θ)²(𝔼X)² ≤ μ(A)·𝔼[X²].",
+      "mathContext": "$\\int_A X \\ge (1-\\theta)m$ and $(\\int_A X)^2 \\le \\mathbb{E}[X^2]\\mu(A)$ combine to the bound."
+    },
+    {
+      "id": "corollaries",
+      "title": "Probability Form and θ=0 Corollary",
+      "startLine": 136,
+      "endLine": 159,
+      "summary": "paley_zygmund_prob: the division form μ({X > θ𝔼X}) ≥ (1−θ)²(𝔼X)²/𝔼[X²] when 𝔼[X²] > 0. paley_zygmund_pos: the θ=0 specialization (𝔼X)² ≤ μ({X>0})·𝔼[X²], recovering the qualitative second moment method over continuous spaces.",
+      "mathContext": "$\\mu(\\{X>\\theta\\mathbb{E}X\\}) \\ge \\frac{(1-\\theta)^2(\\mathbb{E}X)^2}{\\mathbb{E}[X^2]}$; $\\theta=0$ recovers $(\\mathbb{E}X)^2 \\le \\mu(\\{X>0\\})\\mathbb{E}[X^2]$."
+    }
+  ],
   "conclusion": {
     "summary": "A complete Lean 4 formalization of the quantitative Paley–Zygmund inequality over a probability space, with 4 theorems and 0 axioms. The proof reuses the classical above/below decomposition over Bochner set integrals and packages the integral Cauchy–Schwarz step as the reusable lemma sq_integral_mul_le.",
     "implications": "Provides the measure-theoretic form of Paley–Zygmund needed for the probabilistic method over continuous probability spaces, connecting the gallery's combinatorial second-moment results to Mathlib's MeasureTheory.Lp / ProbabilityTheory API. The squared integral Cauchy–Schwarz lemma is independently reusable.",
