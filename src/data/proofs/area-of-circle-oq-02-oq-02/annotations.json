@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-volume-def",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 49, "endLine": 58 },
+    "type": "definition",
+    "title": "The Unit n-Ball Volume",
+    "content": "Defines `unitBallVolume n = π^(n/2) / Γ(n/2+1)`, the closed-form volume of the unit ball in n dimensions, and proves it is non-negative (numerator is an rpow of π > 0, denominator is Γ of a positive argument, which is positive). Working with the real exponent (n:ℝ)/2 throughout lets the same definition serve both even and odd dimensions uniformly, with the parity split deferred to the limit argument.",
+    "mathContext": "$V_n = \\dfrac{\\pi^{n/2}}{\\Gamma(n/2+1)} \\ge 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Gamma function", "volume of a ball", "real power (rpow)"],
+    "prerequisites": ["the Gamma function", "real exponentiation", "Lebesgue measure of a ball"]
+  },
+  {
+    "id": "ann-gamma-three-half",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 60, "endLine": 82 },
+    "type": "technique",
+    "title": "Base Values V₁ = 2 and V₂ = π",
+    "content": "Computes the seed values of the recurrence. The helper `gamma_three_div_two` evaluates Γ(3/2) = √π/2 from the functional equation Γ(x+1) = x·Γ(x) and Mathlib's Γ(1/2) = √π. Then V₁ = π^(1/2)/Γ(3/2) = √π/(√π/2) = 2 (the length of [-1,1]), and V₂ = π/Γ(2) = π/1 = π (the area of the unit disk — the classical area-of-circle case that names this family).",
+    "mathContext": "$\\Gamma(3/2) = \\tfrac{\\sqrt\\pi}{2}$, so $V_1 = 2$ and $V_2 = \\pi$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Gamma functional equation", "Γ(1/2) = √π", "area of a disk"],
+    "prerequisites": ["Gamma function special values", "field arithmetic"]
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 84, "endLine": 101 },
+    "type": "theorem",
+    "title": "The Dimension Recurrence Vₙ = Vₙ₋₂·2π/n",
+    "content": "The engine of the whole proof: for n ≥ 2, Vₙ = Vₙ₋₂·2π/n, derived self-contained from the Gamma functional equation Γ(x+1) = x·Γ(x) applied at x = (n-2)/2+1. Splitting π^(n/2) = π^((n-2)/2)·π via `rpow_add` and pulling the (n/2) factor out of the Gamma term, the identity closes deterministically with `div_eq_div_iff` and `ring`. Re-deriving the recurrence here (rather than importing it) keeps the file independent of the parent entry's volume axiom.",
+    "mathContext": "$V_n = V_{n-2}\\cdot\\dfrac{2\\pi}{n}$, since $\\Gamma(n/2+1) = (n/2)\\,\\Gamma((n-2)/2+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["recurrence relation", "Gamma functional equation", "concentration of measure"],
+    "prerequisites": ["Gamma functional equation", "real exponent laws (rpow_add)"]
+  },
+  {
+    "id": "ann-even-closed-form",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 107, "endLine": 112 },
+    "type": "theorem",
+    "title": "Even Closed Form V₂ₘ = πᵐ/m!",
+    "content": "For even dimension 2m the formula collapses exactly: V₂ₘ = πᵐ/m!, because Γ(m+1) = m! (Mathlib's `Real.Gamma_nat_eq_factorial`) and π^((2m)/2) = πᵐ (the real exponent becomes the natural number m, so `rpow_natCast` converts the rpow to an ordinary power). This is the crux that makes the even limit a textbook fact rather than an analytic estimate.",
+    "mathContext": "$V_{2m} = \\dfrac{\\pi^m}{m!}$, from $\\Gamma(m+1) = m!$.",
+    "significance": "key",
+    "relatedConcepts": ["factorial", "Γ(n+1) = n!", "exponential vs factorial growth"],
+    "prerequisites": ["Gamma function at integers", "factorials"]
+  },
+  {
+    "id": "ann-odd-bound",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 114, "endLine": 140 },
+    "type": "technique",
+    "title": "Odd Uniform Bound V₂ₘ₊₁ ≤ 2·πᵐ/m!",
+    "content": "Odd dimensions have no clean closed form, so they are bounded instead. Induction on m from the recurrence: the step from 2k+1 to 2k+3 multiplies by 2π/(2k+3), and the key inequality 2π/(2k+3) ≤ π/(k+1) lets the πᵐ/m! pattern absorb each step while only doubling the constant. The base case is V₁ = 2 ≤ 2·π⁰/0! = 2. An `nlinarith` discharges the final polynomial inequality after clearing denominators. The constant 2 is what distinguishes the odd half from the even half.",
+    "mathContext": "$V_{2m+1} \\le \\dfrac{2\\pi^m}{m!}$, because $\\dfrac{2\\pi}{2m+3} \\le \\dfrac{\\pi}{m+1}$ at every step.",
+    "significance": "key",
+    "relatedConcepts": ["mathematical induction", "uniform bound", "telescoping a recurrence"],
+    "prerequisites": ["induction", "inequalities", "factorial recurrence (k+1)! = (k+1)·k!"]
+  },
+  {
+    "id": "ann-subseq-limits",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 146, "endLine": 159 },
+    "type": "technique",
+    "title": "Both Subsequences Tend to 0",
+    "content": "Each parity subsequence vanishes. The even case is immediate: V₂ₘ = πᵐ/m! is literally an instance of Mathlib's `FloorSemiring.tendsto_pow_div_factorial_atTop` (cⁿ/n! → 0 — an exponential is eventually beaten by a factorial). The odd case uses `squeeze_zero`: 0 ≤ V₂ₘ₊₁ ≤ 2·πᵐ/m!, and the upper bound is 2× the same vanishing sequence, so the squeeze theorem forces V₂ₘ₊₁ → 0. A single Mathlib limit lemma drives both halves.",
+    "mathContext": "$\\dfrac{\\pi^m}{m!} \\to 0$ and $0 \\le V_{2m+1} \\le \\dfrac{2\\pi^m}{m!} \\to 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["squeeze theorem", "factorial beats exponential", "subsequence limits"],
+    "prerequisites": ["limits of sequences", "the squeeze theorem"]
+  },
+  {
+    "id": "ann-main-limit",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 165, "endLine": 193 },
+    "type": "insight",
+    "title": "The Main Limit Vₙ → 0",
+    "content": "Combines the two subsequence limits into the full statement Vₙ → 0 by a direct ε–N argument. Given ε > 0, choose thresholds Mₑ, Mₒ from the even and odd limits and take N = 2Mₑ + 2Mₒ + 1; any n ≥ N is either even (n = 2k with k ≥ Mₑ) or odd (n = 2k+1 with k ≥ Mₒ) by `Nat.even_or_odd'`, and in each case the corresponding bound applies. Because the two subsequences exhaust ℕ, no separate even/odd interleaving combinator is needed — the parity case split inside one ε–N proof suffices. Notably the non-monotonicity (Vₙ peaks at n=5) never enters: only eventual factorial dominance matters.",
+    "mathContext": "$\\lim_{n\\to\\infty} V_n = 0$; given $\\varepsilon$, take $N = 2M_e + 2M_o + 1$ and split on parity of $n$.",
+    "significance": "key",
+    "relatedConcepts": ["epsilon-N definition of limit", "parity decomposition of ℕ", "concentration of measure"],
+    "prerequisites": ["epsilon-N limits", "even/odd decomposition of naturals"]
+  },
+  {
+    "id": "ann-eventually-lt",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 186, "endLine": 193 },
+    "type": "context",
+    "title": "Eventually Below Any ε",
+    "content": "A convenient restatement of the main limit: for every ε > 0 there is N with Vₙ < ε for all n ≥ N. It unpacks the metric-space limit, uses dist(Vₙ,0) = |Vₙ| = Vₙ (non-negativity removes the absolute value), and drops the lower bound. This is the form downstream geometric statements actually consume.",
+    "mathContext": "$\\forall \\varepsilon>0,\\ \\exists N,\\ \\forall n\\ge N,\\ V_n < \\varepsilon$.",
+    "significance": "context",
+    "relatedConcepts": ["metric limit", "absolute value of a non-negative quantity"],
+    "prerequisites": ["metric-space convergence"]
+  },
+  {
+    "id": "ann-measure-bridge",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 203, "endLine": 218 },
+    "type": "technique",
+    "title": "Bridge to the Lebesgue Measure",
+    "content": "Connects the gallery's formula Vₙ to the genuine Lebesgue measure. The helper `sqrt_pi_pow_eq` rewrites (√π)ⁿ = π^(n/2) to reconcile Mathlib's form with the gallery's. Then `volume_unitBall_eq` shows volume(ball 0 1) = ENNReal.ofReal(Vₙ) for n ≥ 1, specializing `EuclideanSpace.volume_ball` (with radius 1, so the rⁿ factor is 1 and `Fintype.card (Fin n) = n`). Deriving the scaling law on the spot keeps the measure-theoretic corollary assumption-free.",
+    "mathContext": "$(\\sqrt\\pi)^n = \\pi^{n/2}$, so $\\mathrm{vol}(B^n(1)) = \\mathrm{ofReal}(V_n)$ for $n \\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lebesgue measure", "EuclideanSpace.volume_ball", "ENNReal.ofReal"],
+    "prerequisites": ["Lebesgue measure on ℝⁿ", "extended non-negative reals"]
+  },
+  {
+    "id": "ann-geometric-headline",
+    "proofId": "area-of-circle-oq-02-oq-02",
+    "range": { "startLine": 220, "endLine": 229 },
+    "type": "insight",
+    "title": "Geometric Headline: vol(Bⁿ) → 0",
+    "content": "The payoff: `volume_unitBall_toReal_tendsto_zero` states the real Lebesgue measure of the unit ball in EuclideanSpace ℝ (Fin n) tends to 0. It transports the analytic limit Vₙ → 0 through the bridge identity, valid eventually (for n ≥ 1 via `eventually_gt_atTop 0`), with `ENNReal.toReal_ofReal` removing the coercion using non-negativity. This is the formal expression of the concentration-of-measure phenomenon: in high dimensions the inscribed unit ball is a vanishing fraction of its bounding cube [-1,1]ⁿ.",
+    "mathContext": "$\\mathrm{vol}\\big(B^n(0,1) \\subset \\mathbb{R}^n\\big) \\to 0$ as $n \\to \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["concentration of measure", "high-dimensional geometry", "curse of dimensionality"],
+    "prerequisites": ["Lebesgue measure", "convergence of real sequences"]
+  }
+]
