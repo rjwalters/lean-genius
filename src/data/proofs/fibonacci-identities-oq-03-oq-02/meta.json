@@ -1,0 +1,166 @@
+{
+  "id": "fibonacci-identities-oq-03-oq-02",
+  "title": "Sum of Squares of Fibonacci Numbers: ∑ Fᵢ² = Fₙ·Fₙ₊₁",
+  "slug": "fibonacci-identities-oq-03-oq-02",
+  "description": "The classical Fibonacci square-sum identity: the sum of the squares of the first n Fibonacci numbers equals the product of the n-th and (n+1)-th Fibonacci numbers, F₁² + F₂² + ⋯ + Fₙ² = Fₙ·Fₙ₊₁. Geometrically this is the statement that squares of side F₁,…,Fₙ tile an Fₙ × Fₙ₊₁ rectangle — the picture behind the Fibonacci spiral. Mathlib records the linear sum of Fibonacci numbers (Nat.fib_succ_eq_succ_sum) but not the sum of squares; this entry supplies it. Working in Mathlib's 0-indexed convention fib 0 = 0, the i = 0 term vanishes, so the 1-indexed classical sum ∑_{i=1}^n Fᵢ² equals the 0-indexed ∑_{i ∈ range (n+1)} fib i²; both forms are proved and shown to agree. The proof is the textbook one-line induction: Finset.sum_range_succ peels the top square, the induction hypothesis rewrites the rest, and the recurrence fib(k+2) = fib k + fib(k+1) closes the step by ring (the telescoping Fₙ₊₁·Fₙ₊₂ − Fₙ·Fₙ₊₁ = Fₙ₊₁²). The entry also gives an integer form, a standalone telescoping step, and an oblong-number corollary, all fully verified with 0 axioms and 0 sorries.",
+  "meta": {
+    "author": "Classical (Lucas / Fibonacci square-sum identity); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence#Identities",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "sum-of-squares",
+      "finite-sum",
+      "telescoping",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ03OQ02.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑_{i ∈ range (n+1)} f i = (∑_{i ∈ range n} f i) + f n — peels the top square fib n² off the running sum in the inductive step",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the Fibonacci recurrence, used to advance the consecutive product fib(k+1)·fib(k+2) = fib(k+1)·(fib k + fib(k+1)) so that ring closes the inductive step",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Finset.sum_insert",
+        "description": "∑_{i ∈ insert a s} f i = f a + ∑_{i ∈ s} f i (for a ∉ s) — bridges the 0-indexed range form to the 1-indexed Icc 1 n form by splitting off the vanishing i = 0 term",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fib_sum_sq: ∀ n, ∑_{i ∈ range (n+1)} fib i² = fib n · fib (n+1) — the square-sum closed form (0-indexed), absent from Mathlib, proved by one-line induction",
+      "fib_sum_sq_Icc: ∀ n, ∑_{i ∈ Icc 1 n} fib i² = fib n · fib (n+1) — the classical 1-indexed statement, derived by discarding the vanishing i = 0 term",
+      "fib_sum_sq_int: the same identity over ℤ, for combination with subtractive Fibonacci identities",
+      "fib_sum_sq_succ: ∀ n, (∑_{i ∈ range (n+1)} fib i²) + fib(n+1)² = fib(n+1)·fib(n+2) — the telescoping step in standalone form, exhibiting the partial sums as consecutive products",
+      "fib_sum_sq_isConsecutiveProduct: ∀ n, ∃ m, ∑_{i ∈ range (n+1)} fib i² = fib m · fib (m+1) — every partial sum of Fibonacci squares is a Fibonacci oblong number"
+    ],
+    "dateAdded": "2026-06-23",
+    "lineCount": 97,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound — confirmed by #print axioms on all five theorems). The one numerical sanity check fib 6 · fib 7 = 104 uses decide (kernel reduction, no native_decide / Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The identity ∑_{i=1}^n F_i² = F_n F_{n+1} is one of the oldest Fibonacci sum identities, attributed to Lucas. Its standard proof is a one-line induction, but its most memorable form is geometric: lay down squares of side F_1, F_1, F_2, F_3, …, F_n in a spiral and they exactly fill an F_n × F_{n+1} rectangle — the construction underlying the familiar 'golden spiral' drawn through quarter-circles. The result complements the linear sum ∑ F_i = F_{n+2} − 1 (Mathlib's fib_succ_eq_succ_sum) and the alternating and odd/even-index partial sums; together these form the standard family of Fibonacci summation identities. Mathlib provides the linear sum but not the square-sum, leaving this a genuine gallery gap.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-03 → oq-02)**: Formalize the square-sum closed form ∑_{i=1}^n F_i² = F_n · F_{n+1}, which is not yet a gallery entry.\n\n**Result**: fib_sum_sq (the 0-indexed closed form ∑_{i ∈ range (n+1)} fib i² = fib n · fib (n+1)), fib_sum_sq_Icc (the classical 1-indexed form), fib_sum_sq_int (the ℤ version), fib_sum_sq_succ (the telescoping step), and fib_sum_sq_isConsecutiveProduct (the oblong-number corollary).",
+    "text": "For every n, the sum of the squares of the first n Fibonacci numbers is the product of two consecutive Fibonacci numbers: F_1² + F_2² + ⋯ + F_n² = F_n · F_{n+1}. Equivalently the partial sums are the consecutive products F_n · F_{n+1}, advancing by exactly the next square at each step. Everything stays inside ℕ; an ℤ version is provided for downstream algebra.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **0-indexed induction (fib_sum_sq).** Induct on n. Base n = 0: ∑_{range 1} fib i² = fib 0² = 0 = fib 0 · fib 1, closed by simp. Step: Finset.sum_range_succ rewrites ∑_{range (k+2)} fib i² = (∑_{range (k+1)} fib i²) + fib(k+1)²; the induction hypothesis rewrites the first summand to fib k · fib(k+1); the recurrence fib(k+2) = fib k + fib(k+1) (Nat.fib_add_two) and ring close fib k · fib(k+1) + fib(k+1)² = fib(k+1) · fib(k+2).\n2. **1-indexed form (fib_sum_sq_Icc).** Since fib 0 = 0, the i = 0 term is zero, so range (n+1) = insert 0 (Icc 1 n); Finset.sum_insert splits it off and simp discards the fib 0² = 0 term, reducing to fib_sum_sq.\n3. **Integer form (fib_sum_sq_int).** exact_mod_cast from the ℕ identity (push_cast through the finite sum).\n4. **Telescoping step (fib_sum_sq_succ) and oblong corollary (fib_sum_sq_isConsecutiveProduct).** The first is the inductive step in standalone form (rw fib_sum_sq + Nat.fib_add_two + ring); the second instantiates the existential witness m = n.\n5. The numerical check fib 6 · fib 7 = 104 (= 0+1+1+4+9+25+64) is confirmed by decide; the sum side is the theorem instance fib_sum_sq 6."
+    ,
+    "keyInsights": [
+      "**Telescoping is the whole proof.** The inductive step is exactly F_{n+1}·F_{n+2} − F_n·F_{n+1} = F_{n+1}(F_{n+2} − F_n) = F_{n+1}·F_{n+1} = F_{n+1}², so adding the next square advances the consecutive product by one index. No Fibonacci machinery beyond the defining recurrence is needed — ring does the algebra.",
+      "**The i = 0 term reconciles the conventions.** Mathlib's 0-indexed fib has fib 0 = 0, so its square contributes nothing; the 1-indexed classical sum ∑_{i=1}^n F_i² and the 0-indexed ∑_{i ∈ range (n+1)} fib i² are literally equal. Both are recorded and bridged via Finset.sum_insert.",
+      "**A rectangle-tiling identity.** Geometrically the squares of side F_1,…,F_n tile an F_n × F_{n+1} rectangle, the picture behind the Fibonacci/golden spiral; the algebraic identity is the area bookkeeping of that tiling.",
+      "**Fills a Mathlib gap.** Mathlib has the linear Fibonacci sum (fib_succ_eq_succ_sum) but not the square-sum; this entry supplies the closed form together with integer, telescoping, and oblong-number readings."
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two and the value fib 0 = 0",
+      "Finset.sum_range_succ for the inductive unfolding of finite sums",
+      "Finset.sum_insert for splitting off the vanishing i = 0 term",
+      "The ring tactic and exact_mod_cast for the ℕ→ℤ transfer"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 3,
+      "endLine": 28,
+      "summary": "Module docstring: the square-sum identity ∑ F_i² = F_n F_{n+1}, its rectangle-tiling interpretation, the gap in Mathlib (linear sum only), the 0- vs 1-indexed reconciliation via fib 0 = 0, and the telescoping inductive step.",
+      "mathContext": "$\\sum_{i=1}^{n} F_i^2 = F_n \\, F_{n+1}$; squares of side $F_1,\\dots,F_n$ tile an $F_n \\times F_{n+1}$ rectangle."
+    },
+    {
+      "id": "main",
+      "title": "The Square-Sum Closed Form (0-indexed)",
+      "startLine": 32,
+      "endLine": 47,
+      "summary": "fib_sum_sq: one-line induction. Finset.sum_range_succ peels the top square, the IH rewrites the remaining sum to fib k · fib(k+1), and Nat.fib_add_two + ring close the telescoping step.",
+      "mathContext": "$\\sum_{i \\in \\mathrm{range}(n+1)} F_i^2 = F_n F_{n+1}$."
+    },
+    {
+      "id": "icc",
+      "title": "Classical 1-indexed Form",
+      "startLine": 49,
+      "endLine": 62,
+      "summary": "fib_sum_sq_Icc: derives ∑_{i ∈ Icc 1 n} fib i² = fib n · fib(n+1) by writing range (n+1) = insert 0 (Icc 1 n) and discarding the vanishing fib 0² term via Finset.sum_insert.",
+      "mathContext": "$\\sum_{i=1}^{n} F_i^2 = F_n F_{n+1}$ (the i = 0 term vanishes since $F_0 = 0$)."
+    },
+    {
+      "id": "int-telescope",
+      "title": "Integer, Telescoping, and Oblong Forms",
+      "startLine": 64,
+      "endLine": 85,
+      "summary": "fib_sum_sq_int (the ℤ version via exact_mod_cast), fib_sum_sq_succ (the telescoping step (∑) + fib(n+1)² = fib(n+1)·fib(n+2)), and fib_sum_sq_isConsecutiveProduct (each partial sum is a Fibonacci oblong number fib m · fib(m+1)).",
+      "mathContext": "$\\left(\\sum_{i \\in \\mathrm{range}(n+1)} F_i^2\\right) + F_{n+1}^2 = F_{n+1} F_{n+2}$."
+    },
+    {
+      "id": "checks",
+      "title": "Numerical Checks",
+      "startLine": 87,
+      "endLine": 95,
+      "summary": "The n = 6 instance: ∑_{range 7} fib i² = fib 6 · fib 7 (theorem instance) and fib 6 · fib 7 = 104 = 0+1+1+4+9+25+64 (decide, kernel reduction, no native_decide so the entry stays 0-axiom).",
+      "mathContext": "$0+1+1+4+9+25+64 = 104 = F_6 F_7 = 8 \\cdot 13$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-03",
+      "relationship": "extends",
+      "description": "Answers the parent line's open question by supplying the square-sum closed form ∑ F_i² = F_n F_{n+1}, complementing the parent's doubled-index sum/difference-of-squares identities"
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "complements",
+      "description": "The base Fibonacci entry records per-term and linear-sum identities; this entry adds the sum-of-squares closed form"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) treatment of the Fibonacci square-sum identity ∑_{i=1}^n F_i² = F_n · F_{n+1}: the 0-indexed closed form by one-line induction, the classical 1-indexed form, an integer version, the telescoping step, and the oblong-number corollary.",
+    "implications": "Supplies a reusable closed form for sums of Fibonacci squares, filling a gap left by Mathlib (which records only the linear Fibonacci sum). The telescoping/oblong readings make the partial sums F_n · F_{n+1} available for downstream identities.",
+    "openQuestions": [
+      "Formalize the companion weighted square-sum ∑ i · F_i² and the cross-term sum ∑ F_i F_{i+1} = F_{n+1}² − [n even], identifying the closed forms.",
+      "Prove the Lucas-number analogue ∑ L_i² = L_n L_{n+1} − 2 and relate it to this entry via the F/L conversion identities."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FibonacciIdentitiesOQ03OQ02",
+    "lineCount": 97,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Vorobiev, N. N.",
+      "title": "Fibonacci Numbers",
+      "year": "2002",
+      "venue": "Birkhäuser",
+      "note": "Classical Fibonacci summation identities, including the square-sum"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Square-sum identity and its rectangle-tiling interpretation"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-fiboq0302-1",
+    "proofId": "fibonacci-identities-oq-03-oq-02",
+    "range": { "startLine": 3, "endLine": 28 },
+    "type": "context",
+    "title": "The Square-Sum Identity and Its Rectangle Tiling",
+    "content": "**Module framing.** The sum of the squares of the first $n$ Fibonacci numbers equals the product of consecutive Fibonacci numbers, $F_1^2 + F_2^2 + \\cdots + F_n^2 = F_n F_{n+1}$. Geometrically the squares of side $F_1,\\dots,F_n$ tile an $F_n \\times F_{n+1}$ rectangle — the picture behind the Fibonacci/golden spiral. Mathlib records the *linear* sum (`Nat.fib_succ_eq_succ_sum`) but **not** the sum of squares, so this is a genuine gap. Because Mathlib's `fib` is $0$-indexed with $F_0 = 0$, the $i=0$ term vanishes and the $1$-indexed classical sum coincides with the $0$-indexed `∑_{i ∈ range (n+1)} fib i²`."
+  },
+  {
+    "id": "ann-fiboq0302-2",
+    "proofId": "fibonacci-identities-oq-03-oq-02",
+    "range": { "startLine": 32, "endLine": 47 },
+    "type": "key-step",
+    "title": "One-Line Induction: ∑ fib i² = fib n · fib(n+1)",
+    "content": "**Telescoping is the whole proof.** In the step, `Finset.sum_range_succ` peels the top square off: $\\sum_{i \\in \\mathrm{range}(k+2)} F_i^2 = \\big(\\sum_{i \\in \\mathrm{range}(k+1)} F_i^2\\big) + F_{k+1}^2$. The induction hypothesis rewrites the first summand to $F_k F_{k+1}$, and the recurrence `Nat.fib_add_two` ($F_{k+2} = F_k + F_{k+1}$) plus `ring` close $F_k F_{k+1} + F_{k+1}^2 = F_{k+1} F_{k+2}$ — i.e. adding the next square advances the consecutive product by exactly one index. No Fibonacci machinery beyond the defining recurrence is used."
+  },
+  {
+    "id": "ann-fiboq0302-3",
+    "proofId": "fibonacci-identities-oq-03-oq-02",
+    "range": { "startLine": 49, "endLine": 62 },
+    "type": "key-step",
+    "title": "Reconciling the 1-indexed Classical Form",
+    "content": "**The vanishing $i=0$ term.** To recover the textbook statement $\\sum_{i=1}^n F_i^2 = F_n F_{n+1}$ over `Icc 1 n`, write `range (n+1) = insert 0 (Icc 1 n)` (an `ext`/`omega` set identity) and split off the head with `Finset.sum_insert`. The discarded term is $F_0^2 = 0$, so `simp` reduces the `Icc` form to `fib_sum_sq`. This is exactly where Mathlib's $0$-indexing and the classical $1$-indexing are reconciled."
+  },
+  {
+    "id": "ann-fiboq0302-4",
+    "proofId": "fibonacci-identities-oq-03-oq-02",
+    "range": { "startLine": 64, "endLine": 95 },
+    "type": "key-step",
+    "title": "Integer, Telescoping, and Oblong Readings",
+    "content": "**Packaging.** `fib_sum_sq_int` casts the identity to $\\mathbb{Z}$ by `exact_mod_cast` (for combination with subtractive Fibonacci identities). `fib_sum_sq_succ` records the inductive step in standalone form, $\\big(\\sum_{i \\in \\mathrm{range}(n+1)} F_i^2\\big) + F_{n+1}^2 = F_{n+1} F_{n+2}$, exhibiting the partial sums as the consecutive products $F_n F_{n+1}$. `fib_sum_sq_isConsecutiveProduct` reads each partial sum as a Fibonacci oblong number $F_m F_{m+1}$. The numerical check $F_6 F_7 = 104 = 0+1+1+4+9+25+64$ uses `decide` (kernel reduction, not `native_decide`), keeping the entry $0$-axiom."
+  }
+]
