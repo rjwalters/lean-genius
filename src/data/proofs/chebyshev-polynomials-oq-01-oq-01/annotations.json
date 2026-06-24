@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-chebyoq0101-header",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "The addition formulas Mathlib omits",
+    "content": "Chebyshev polynomials Tₙ and Uₙ are the algebraic shadows of cos(nθ) and sin((n+1)θ)/sin θ. Their angle-addition formulas encode the classical trig sum identities. Mathlib's Chebyshev API has the recurrences, the product-to-sum identity T_mul_T (2·T_m·T_k = T_{m+k} + T_{m−k}) and the composition law T_mul, but NO decoupled addition formula expressing T_{m+n} (or U_{m+n}) directly from the m-th and n-th polynomials. This file supplies them over any commutative ring R and all integer indices: the first-kind T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1}, the second-kind U_{m+n} = U_m·T_n + T_{m+1}·U_{n−1}, the subtraction formula, and the diagonal Pell/Pythagorean identity.",
+    "mathContext": "$T_{m+n}=T_mT_n-(1-X^2)U_{m-1}U_{n-1}$ — the polynomial $\\cos(\\alpha+\\beta)=\\cos\\alpha\\cos\\beta-\\sin\\alpha\\sin\\beta$.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev polynomials", "angle-addition identities", "product-to-sum T_mul_T", "Polynomial.Chebyshev", "commutative ring"],
+    "prerequisites": ["Chebyshev polynomials of both kinds", "the integer-indexed recurrences", "the sine/cosine sum identities"]
+  },
+  {
+    "id": "ann-chebyoq0101-tadd",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 81 },
+    "type": "key-step",
+    "title": "First-kind addition formula T_add",
+    "content": "T_add proves T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1} by Polynomial.Chebyshev.induct on n (the same two-step integer induction backbone Mathlib uses for T_mul_T). The n=0 base uses T_0 = 1 and U_{−1} = 0; the n=1 base is exactly Mathlib's mixed recurrence T_eq_X_mul_T_sub_pol_U reindexed at m−1, so no fresh base computation is needed. Each second-order inductive step closes by linear_combination over the recurrences T_add_two and U_add_two (T_sub_two / U_sub_two on the downward branch), with ring_nf normalizing the integer indices appearing inside T R (·) and U R (·). The geometric content: under x = cos θ, 1 − x² = sin² θ and U_{k−1}(cos θ)·sin θ = sin(kθ), so the subtracted term is sin(mθ)·sin(nθ) — genuinely a second-kind (sine) contribution that cannot be written in T alone.",
+    "mathContext": "$T_{m+n}=T_mT_n-(1-X^2)U_{m-1}U_{n-1}$; under $x=\\cos\\theta$ the factor $1-x^2=\\sin^2\\theta$.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.Chebyshev.induct", "T_eq_X_mul_T_sub_pol_U", "linear_combination", "T_add_two / U_add_two", "ring_nf"],
+    "prerequisites": ["the Chebyshev recurrences", "two-step integer induction", "the n=1 mixed recurrence"]
+  },
+  {
+    "id": "ann-chebyoq0101-tsubsq",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01",
+    "range": { "startLine": 82, "endLine": 100 },
+    "type": "insight",
+    "title": "Subtraction formula and the Pell identity",
+    "content": "T_sub derives T_{m−n} = T_m·T_n + (1−X²)·U_{m−1}·U_{n−1} by specializing T_add at −n and simplifying with the reflections T_neg (T_{−n} = Tₙ) and U_neg_sub_one (U_{−n−1} = −U_{n−1}) — the sign flip on the second term is exactly the cos(α−β) vs cos(α+β) difference. T_sq_add takes the subtraction formula on the DIAGONAL m = n, where the left side collapses to T_0 = 1, yielding Tₙ² + (1−X²)·U_{n−1}² = 1. Equivalently Tₙ² − (X²−1)·U_{n−1}² = 1: the Chebyshev pair (Tₙ, U_{n−1}) is the canonical solution of the Pell equation, the polynomial form of cos²(nθ) + sin²(nθ) = 1.",
+    "mathContext": "$T_n^2+(1-X^2)U_{n-1}^2=1$, i.e. $T_n^2-(X^2-1)U_{n-1}^2=1$ (Pell).",
+    "significance": "key",
+    "relatedConcepts": ["T_neg", "U_neg_sub_one", "Pell equation", "Pythagorean identity", "diagonal specialization"],
+    "prerequisites": ["the first-kind addition formula", "the Chebyshev reflection lemmas", "T_0 = 1"]
+  },
+  {
+    "id": "ann-chebyoq0101-uadd",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01",
+    "range": { "startLine": 101, "endLine": 122 },
+    "type": "key-step",
+    "title": "Second-kind addition formula U_add",
+    "content": "U_add proves U_{m+n} = U_m·T_n + T_{m+1}·U_{n−1} — the polynomial form of sin(α+β) = sin α cos β + cos α sin β — by the same Polynomial.Chebyshev.induct two-step induction, with the head closed via U_add_two and the n=1 base supplied directly by Mathlib's mixed recurrence U_eq_X_mul_U_add_T. Like T_add it is absent from Mathlib's API and complements the product-to-sum identity by expressing U_{m+n} from the m-th and n-th data alone, the form needed for a single angle increment.",
+    "mathContext": "$U_{m+n}=U_mT_n+T_{m+1}U_{n-1}$ — the polynomial $\\sin(\\alpha+\\beta)=\\sin\\alpha\\cos\\beta+\\cos\\alpha\\sin\\beta$.",
+    "significance": "key",
+    "relatedConcepts": ["U_eq_X_mul_U_add_T", "U_add_two", "Polynomial.Chebyshev.induct", "second-kind Chebyshev", "sine addition"],
+    "prerequisites": ["the second-kind recurrence", "two-step integer induction", "the n=1 mixed recurrence"]
+  },
+  {
+    "id": "ann-chebyoq0101-instances",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01",
+    "range": { "startLine": 123, "endLine": 135 },
+    "type": "context",
+    "title": "Concrete instances over ℤ",
+    "content": "Two worked examples instantiate the formulas at small indices over ℤ: T_{2+3} = T₂·T₃ − (1−X²)·U₁·U₂ and U_{2+2} = U₂·T₂ + T₃·U₁, each discharged by the corresponding general theorem. They confirm the formulas fire on concrete polynomials and serve as sanity checks of the index bookkeeping (m−1, n−1, m+1).",
+    "mathContext": "$T_5=T_2T_3-(1-X^2)U_1U_2$; $U_4=U_2T_2+T_3U_1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete instances", "index bookkeeping", "ℤ coefficients"],
+    "prerequisites": ["the addition formulas", "small Chebyshev polynomials"]
+  }
+]
