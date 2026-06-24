@@ -1,1 +1,92 @@
-[]
+[
+  {
+    "id": "ann-context",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 48
+    },
+    "type": "context",
+    "title": "From Per-n decide to a Uniform Closed Form",
+    "content": "The parent burnside-counting-oq-04-oq-01-oq-01 computed binary bracelet counts b(5)=8, b(6)=13 by evaluating the Burnside fixed-point sum ∑_{g∈D_n}|Fix(g)| with kernel decide — a computation, one length at a time. Its open questions ask for a CLOSED FORM of the individual fixed-point counts, the rotation part being ∑_r 2^{gcd(n,r)}. This entry proves the generic rotation term uniformly in n with no computation: the binary colourings of the n-cycle fixed by the rotation x ↦ x + i number exactly 2^{gcd(n, i.val)} — two to the number of orbits. Scope/honesty: only the rotation half is proved; the parity-dependent reflection contribution is left to future work, so the parent still settles the full bracelet counts computationally.",
+    "mathContext": "$\\#\\{c:\\mathbb{Z}/n\\to\\mathbb{F}_2 \\mid c\\text{ fixed by } x\\mapsto x+i\\} = 2^{\\gcd(n,\\,i)}$.",
+    "significance": "context",
+    "relatedConcepts": ["Burnside's lemma", "necklace/bracelet counting", "dihedral group action", "fixed-point counting", "orbit counting"],
+    "prerequisites": ["group actions", "Burnside's lemma", "ℤ/n and cyclic groups"]
+  },
+  {
+    "id": "ann-defs",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Colourings, Rotation-Invariance, and the Fixed Subtype",
+    "content": "Coloring n := ZMod n → Fin 2 is a binary colouring of the n vertices (there are 2^n). IsRotInvariant i c := ∀ p, c (p + i) = c p says adding i never changes a vertex colour, and RotFixed n i := {c // IsRotInvariant i c} is the subtype of colourings fixed by the rotation x ↦ x + i. The DecidablePred and Fintype instances (under [NeZero n]) make RotFixed a finite type whose cardinality is the fixed-point count Burnside needs.",
+    "mathContext": "$\\mathrm{IsRotInvariant}\\,i\\,c \\iff \\forall p,\\ c(p+i)=c(p)$; $\\mathrm{RotFixed}\\,n\\,i = \\{c \\mid \\dots\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binary colouring", "subtype", "Fintype instance", "decidable predicate"],
+    "prerequisites": ["ZMod n", "Fin 2", "subtypes in Lean"]
+  },
+  {
+    "id": "ann-zsmul",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 90
+    },
+    "type": "insight",
+    "title": "Section I — Invariance Extends to the Whole Cyclic Subgroup",
+    "content": "invariant_zsmul upgrades invariance under a single shift +i to invariance under +k•i for EVERY integer k, i.e. c (p + k•i) = c p. The proof is a two-sided induction (Int.induction_on): the succ branch peels off one +i via h, the pred branch uses the subtract-i form hsub : c (p − i) = c p (obtained by substituting p ↦ p − i into h). Conceptually this says an invariant colouring is constant on each coset of the additive subgroup zmultiples i = ⟨i⟩ — the orbits of the rotation.",
+    "mathContext": "$c(p + k\\cdot i) = c(p)\\ \\forall k\\in\\mathbb{Z}$: invariance is constant on cosets of $\\langle i\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.induction_on", "cyclic subgroup ⟨i⟩", "cosets", "zmultiples", "two-sided induction"],
+    "prerequisites": ["integer induction", "additive subgroups"]
+  },
+  {
+    "id": "ann-equiv",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 119
+    },
+    "type": "insight",
+    "title": "Section II — Fixed Colourings ≃ Functions on the Coset Space",
+    "content": "rotFixedEquiv is the bijection RotFixed n i ≃ (ZMod n ⧸ zmultiples i → Fin 2). Forward: an invariant colouring factors through the quotient via Quotient.liftOn', well-defined because a ~ b (leftRel) means b = a + k•i, so c b = c a by invariant_zsmul. Backward: any function d on the quotient pulls back along QuotientAddGroup.mk to a colouring, invariant because (p+i) − p = i ∈ ⟨i⟩ (QuotientAddGroup.eq_iff_sub_mem). The round-trips are rfl / Quotient.inductionOn. This is the structural core: it turns counting fixed colourings into counting arbitrary functions on the orbit set.",
+    "mathContext": "$\\mathrm{RotFixed}\\,n\\,i \\simeq \\big(\\mathbb{Z}/n \\big/ \\langle i\\rangle \\to \\mathbb{F}_2\\big)$ — colourings constant on orbits $=$ functions on the orbit space.",
+    "significance": "key",
+    "relatedConcepts": ["quotient by a subgroup", "Quotient.liftOn'", "QuotientAddGroup.mk", "equivalence of types", "well-definedness"],
+    "prerequisites": ["quotient groups", "Equiv in Lean", "the zsmul invariance lemma"]
+  },
+  {
+    "id": "ann-orbits",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 121,
+      "endLine": 145
+    },
+    "type": "technique",
+    "title": "The Number of Orbits is gcd(n, i)",
+    "content": "card_quotient_zmultiples computes |ZMod n ⧸ ⟨i⟩| = gcd(n, i.val). The chain: the order of i is addOrderOf i = n / gcd(n, i.val) (ZMod.addOrderOf_coe), so Nat.card ⟨i⟩ = n / g (Nat.card_zmultiples); Lagrange's theorem index · |⟨i⟩| = |ZMod n| = n (AddSubgroup.index_mul_card) then gives index = g after cancelling the positive factor n/g (Nat.eq_of_mul_eq_mul_right). The index equals the coset-space cardinality (AddSubgroup.index = Fintype.card of the quotient). So the rotation x ↦ x + i has exactly gcd(n, i) orbits.",
+    "mathContext": "$|\\mathbb{Z}/n / \\langle i\\rangle| = \\gcd(n,i)$ via $\\mathrm{addOrderOf}\\,i = n/\\gcd(n,i)$ and Lagrange.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lagrange's theorem", "subgroup index", "addOrderOf", "Nat.card_zmultiples", "gcd"],
+    "prerequisites": ["order of an element", "Lagrange's theorem", "gcd arithmetic"]
+  },
+  {
+    "id": "ann-closed-form",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 147,
+      "endLine": 182
+    },
+    "type": "concept",
+    "title": "Section III — The Closed Form 2^gcd(n,i) and Corollaries",
+    "content": "card_rotFixed reads off Fintype.card (RotFixed n i) = 2^{gcd(n, i.val)} by composing the equivalence (Fintype.card_congr), the function-space count (Fintype.card_fun, card_fin = 2), and the orbit count. Corollaries: i = 0 gives 2^n (every colouring fixed by the identity); gcd(n,i)=1 gives 2 (only the constant colourings — the clean prime-length case, where every nonzero rotation is a generator). The finite cross-checks rotation_sum_five (∑_{i:ZMod 5} = 40) and rotation_sum_six (∑_{i:ZMod 6} = 84) match the rotation contributions to the parent's computed Burnside totals; they use ordinary kernel decide on closed ℕ (not native_decide), so the file stays 0-axiom.",
+    "mathContext": "$\\#\\mathrm{Fix}(r_i) = 2^{\\gcd(n,i)}$; $\\;\\sum_{i\\in\\mathbb{Z}/5}=40,\\ \\sum_{i\\in\\mathbb{Z}/6}=84$.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_fun", "function-space cardinality", "prime-length necklaces", "kernel decide (0-axiom)", "Burnside sum"],
+    "prerequisites": ["cardinality of function types", "the orbit-count lemma"]
+  }
+]
