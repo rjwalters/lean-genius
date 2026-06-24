@@ -18,6 +18,7 @@
     "sorries": 0
   },
   "title": "A Complete Metric Space with No Isolated Points Has Cardinality ≥ 𝔠",
+  "description": "Sharpens the parent Baire-category uncountability result to an explicit cardinal floor: a nonempty complete metric space with no isolated points (a PerfectSpace) has cardinality at least the continuum, 𝔠 ≤ #α — and more generally every nonempty perfect set C in a complete metric space satisfies 𝔠 ≤ #C. The proof corestricts Mathlib's Cantor-scheme injection (ℕ → Bool) ↪ C and uses #(ℕ → Bool) = 2^ℵ₀ = 𝔠. Corollaries strictly improve the parent's bare uncountability (ℵ₀ < #α, ¬ Countable α), and the motivating instance 𝔠 ≤ #ℝ follows purely from the topological hypothesis.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
