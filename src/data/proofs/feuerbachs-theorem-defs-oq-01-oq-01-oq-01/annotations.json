@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-feuerrefl-equidist",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 114
+    },
+    "type": "context",
+    "title": "Circumcenter equidistance (self-contained)",
+    "content": "The file reproves the two equidistance relations $|B-O|^2 = |A-O|^2$ and $|C-O|^2 = |A-O|^2$ as `private` lemmas (so it builds independently of the parent). Each comes from the perpendicular-bisector identity, which is *linear* in the circumcenter $O$ — so after substituting the explicit circumcenter formula, `field_simp; ring` closes it, and `nlinarith` converts the bisector identity into the squared-distance equality. These two relations are the only facts about $O$ the whole argument needs.",
+    "mathContext": "$|B-O|^2 = |A-O|^2,\\quad |C-O|^2 = |A-O|^2.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "circumcenter",
+      "perpendicular bisector",
+      "equidistance"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "circumcenter formula"
+    ]
+  },
+  {
+    "id": "ann-feuerrefl-reflect-def",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 120,
+      "endLine": 128
+    },
+    "type": "definition",
+    "title": "Reflection of a point over a line",
+    "content": "`reflectOverLine H P Q` mirrors $H$ across the line through $P$ with direction $Q - P$. Using the projection parameter $t = \\frac{(H-P)\\cdot(Q-P)}{\\|Q-P\\|^2}$, the foot of the perpendicular is $P + t(Q-P)$ and the reflection is $2\\cdot\\text{foot} - H$. This is the construction whose image — applied to the orthocenter across each side — is shown to land on the circumcircle.",
+    "mathContext": "$\\mathrm{refl}(H) = 2\\big(P + t(Q-P)\\big) - H,\\quad t = \\tfrac{(H-P)\\cdot(Q-P)}{\\|Q-P\\|^2}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "reflection",
+      "orthogonal projection",
+      "mirror image"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "projection"
+    ]
+  },
+  {
+    "id": "ann-feuerrefl-core",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 141,
+      "endLine": 146
+    },
+    "type": "technique",
+    "title": "The core polynomial identity",
+    "content": "`reflect_core` is the algebraic engine: after clearing the projection denominator $\\|Q-P\\|^2$, the squared distance from $O$ to the reflected orthocenter (numerator $N_1^2 + N_2^2$) equals $|V-O|^2 \\cdot \\|Q-P\\|^4$ — *modulo* the two equidistance relations $h_P, h_Q$. The cofactors were found by ideal membership over the equidistance generators, and the gigantic identity is discharged by a single explicit `linear_combination` (closed by `ring`, with heartbeats raised 4096×). All the geometry is compressed into this one polynomial fact.",
+    "mathContext": "$N_1^2 + N_2^2 \\equiv |V-O|^2\\,\\|Q-P\\|^4 \\pmod{\\langle h_P, h_Q\\rangle}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ideal membership",
+      "linear_combination",
+      "polynomial identity",
+      "Gröbner cofactors"
+    ],
+    "prerequisites": [
+      "the equidistance relations",
+      "polynomial arithmetic"
+    ]
+  },
+  {
+    "id": "ann-feuerrefl-generic",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 153,
+      "endLine": 176
+    },
+    "type": "insight",
+    "title": "Generic distance lemma for the reflected orthocenter",
+    "content": "`reflectOverLine_orthocenter_dist_sq` packages the core identity geometrically: if $H = V + P + Q - 2O$ (the orthocenter, $V$ the vertex opposite side $PQ$) and $O$ is equidistant from $V, P, Q$, then the reflection of $H$ over line $PQ$ is at distance exactly $|V - O|$ from $O$. After substituting $H$ and clearing the denominator via `field_simp`/`div_eq_iff`, the claim reduces to `reflect_core`. This is the reusable statement the three side-specific theorems instantiate.",
+    "mathContext": "$\\mathrm{dist}\\big(O,\\ \\mathrm{refl}_{PQ}(H)\\big) = |V - O|,\\quad H = V+P+Q-2O.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "orthocenter",
+      "reflection",
+      "circumradius"
+    ],
+    "prerequisites": [
+      "the core identity",
+      "orthocenter formula"
+    ]
+  },
+  {
+    "id": "ann-feuerrefl-three-sides",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 182,
+      "endLine": 251
+    },
+    "type": "concept",
+    "title": "The three reflections lie on the circumcircle",
+    "content": "Instantiating the generic lemma at each side gives $\\mathrm{dist}(O, H'_{BC}) = |A-O|$, and cyclically — each reflected orthocenter is at the circumradius $R$ from $O$ (`reflectOrthoBC/CA/AB_on_circumcircle`, using the equidistance relations to identify $|A-O| = |B-O| = |C-O| = R$). `orthocenter_reflections_concyclic` bundles all three: the reflections of the orthocenter across the three sides are concyclic, all on the circumcircle — a hallmark of the orthocentric configuration.",
+    "mathContext": "$\\mathrm{dist}(O, H'_{BC}) = \\mathrm{dist}(O, H'_{CA}) = \\mathrm{dist}(O, H'_{AB}) = R.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "circumcircle",
+      "concyclic points",
+      "orthocentric system"
+    ],
+    "prerequisites": [
+      "the generic distance lemma",
+      "circumradius"
+    ]
+  },
+  {
+    "id": "ann-feuerrefl-antipode",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 257,
+      "endLine": 279
+    },
+    "type": "insight",
+    "title": "Reflection over a side midpoint is the antipode",
+    "content": "A companion symmetry: `reflectOrthoMidBC_eq_antipode` shows the reflection of the orthocenter across the *midpoint* of $BC$ (rather than the side line) equals $2O - A$ — exactly the antipode of $A$ on the circumcircle. Hence `reflectOrthoMidBC_on_circumcircle` places it on the circle too. This is the point-reflection counterpart of the line reflections, and the bridge to the diameter $AA'$ of the circumcircle.",
+    "mathContext": "$\\mathrm{refl}_{\\mathrm{mid}(BC)}(H) = (B+C) - H = 2O - A = A',\\ \\text{the antipode of } A.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "antipode",
+      "point reflection",
+      "diameter",
+      "midpoint"
+    ],
+    "prerequisites": [
+      "the orthocenter formula"
+    ]
+  },
+  {
+    "id": "ann-feuerrefl-example",
+    "proofId": "feuerbachs-theorem-defs-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 285,
+      "endLine": 294
+    },
+    "type": "context",
+    "title": "Worked example: the 3-4-5 triangle",
+    "content": "`triangle_345_reflectOrthoMidBC`: for the right triangle the orthocenter is $A=(0,0)$, and its reflection over the midpoint of $BC$ is $(3,4)$ — the antipode of $A$ on the circumcircle of radius $5/2$ centred at $(3/2, 2)$. Since $A$ is the right-angle vertex, $BC$ is a diameter, so $(3,4)$ being the antipode is geometrically transparent.",
+    "mathContext": "$H = (0,0),\\ \\mathrm{refl}_{\\mathrm{mid}(BC)}(H) = (3,4),\\ \\text{antipode on circle } ((3/2,2), 5/2).$",
+    "significance": "context",
+    "relatedConcepts": [
+      "worked example",
+      "Thales' theorem",
+      "diameter"
+    ],
+    "prerequisites": [
+      "the antipode theorem"
+    ]
+  }
+]
