@@ -1,0 +1,220 @@
+{
+  "id": "derangements-oq-03-oq-03",
+  "title": "Derangement Permutation Matrices and the 1/e Law",
+  "slug": "derangements-oq-03-oq-03",
+  "description": "The 2D permutation-matrix view of derangements. A uniformly random n×n permutation matrix is a derangement matrix (zero diagonal) exactly when the underlying permutation has no fixed point. This entry bridges Mathlib's permutation-matrix API to the derangement combinatorics: zero diagonal and zero trace each characterize derangements, the derangement matrices are exactly counted by numDerangements n, and their probability numDerangements n / n! is a genuine probability in [0,1] — the quantity whose sharp 1/e convergence rate is established in the companion analytic entry derangements-oq-03.",
+  "meta": {
+    "author": "Montmort (1708), Euler (1751), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Derangement",
+    "date": "1708",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ03OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "linear-algebra",
+      "matrices",
+      "derangements",
+      "probability"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.permMatrix",
+        "description": "The permutation matrix associated with a permutation, via toPEquiv.toMatrix",
+        "module": "Mathlib.LinearAlgebra.Matrix.Permutation"
+      },
+      {
+        "theorem": "Matrix.trace_permutation",
+        "description": "The trace of a permutation matrix equals the number of fixed points",
+        "module": "Mathlib.LinearAlgebra.Matrix.Permutation"
+      },
+      {
+        "theorem": "card_derangements_fin_eq_numDerangements",
+        "description": "The number of derangements of Fin n equals numDerangements n",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "mem_derangements_iff_fixedPoints_eq_empty",
+        "description": "Membership in derangements is equivalent to the fixed-point set being empty",
+        "module": "Mathlib.Combinatorics.Derangements.Basic"
+      },
+      {
+        "theorem": "Fintype.card_perm",
+        "description": "The number of permutations of a finite type is the factorial of its cardinality",
+        "module": "Mathlib.Data.Fintype.Perm"
+      }
+    ],
+    "originalContributions": [
+      "Entry formula (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0 and its diagonal specialisation",
+      "Pointwise bridge: a permutation matrix has zero diagonal iff the permutation is a derangement",
+      "Global (trace) bridge: trace (σ.permMatrix ℝ) = 0 iff the permutation is a derangement",
+      "Set identity: the zero-diagonal permutation matrices are exactly the derangements of Fin n",
+      "Count: there are numDerangements n derangement matrices of size n, with numDerangements n ≤ n!",
+      "The derangement-matrix probability numDerangements n / n! is a genuine probability in [0,1]"
+    ],
+    "assumptions": [],
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "lineCount": 132,
+    "prerequisites": [
+      "Mathlib permutation-matrix API (Equiv.Perm.permMatrix, Matrix.trace_permutation)",
+      "Derangement counting (numDerangements, card_derangements_fin_eq_numDerangements)",
+      "Fintype cardinality lemmas (card_perm, card_subtype_le)"
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The derangement ratio D(n)/n! = ∑_{k=0}^n (-1)^k/k! converges to 1/e, a result of Montmort (1708) and Euler (1751), with the sharp first-order rate |D(n)/n! - 1/e| ≤ 1/(n+1)! formalized in the gallery entry derangements-oq-03. The seed open question asked for the convergence of the probability that a uniformly random n×n permutation matrix is a derangement (no fixed point on the diagonal). A permutation matrix is in bijection with its permutation, and it is a derangement matrix exactly when the permutation is a derangement, so the probability is identically D(n)/n! and the analytic rate is the same. This entry supplies the missing formal bridge between the matrix picture and the derangement combinatorics, which no prior gallery entry establishes.",
+    "problemStatement": "Connect Mathlib's permutation-matrix API to the derangement combinatorics: show that the n×n permutation matrices with zero diagonal (the derangement matrices) are exactly the derangements of Fin n, count them, and express the resulting probability, so that the 1/e convergence law of derangements-oq-03 acquires its literal '2D permutation-matrix' meaning.",
+    "text": "A 132-line, self-contained (Mathlib-only) bridge between Mathlib's Equiv.Perm.permMatrix and the derangement combinatorics. Starting from the entry formula (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0, the diagonal entry (σ.permMatrix ℝ) i i vanishes exactly at non-fixed points. Two characterizations of derangement matrices follow: pointwise (hasZeroDiagonal_iff_mem_derangements) and via the trace (trace_permMatrix_eq_zero_iff, using Mathlib's trace_permutation that the trace counts fixed points). The set of zero-diagonal permutation matrices is then shown to be exactly derangements (Fin n), so their count is numDerangements n, and the derangement-matrix probability numDerangements n / n! is shown to lie in [0,1] via numDerangements n ≤ n!. The sharp 1/e convergence rate of this probability is the subject of the companion analytic entry derangements-oq-03.",
+    "proofStrategy": "1. **Entry formula**: Unfold Equiv.Perm.permMatrix = σ.toPEquiv.toMatrix and simplify with PEquiv.toMatrix_apply and Equiv.toPEquiv_apply to get the entry as an if-then-else. The diagonal is the i = j specialisation.\n\n2. **Pointwise bridge**: The diagonal entry equals 0 iff σ i ≠ i (case split on σ i = i). Quantifying over i recovers the definition of derangements (Fin n) as {σ | ∀ x, σ x ≠ x}.\n\n3. **Trace bridge**: Mathlib's trace_permutation gives trace = (fixedPoints σ).ncard. Casting to ℝ, this is 0 iff the fixed-point set is empty (Set.ncard_eq_zero on a finite set), which is exactly mem_derangements_iff_fixedPoints_eq_empty.\n\n4. **Set identity and count**: Extensionality plus the pointwise bridge gives {σ | zero diagonal} = derangements (Fin n); card_derangements_fin_eq_numDerangements supplies the count numDerangements n.\n\n5. **Probability bound**: numDerangements n = card (derangements (Fin n)) ≤ card (Perm (Fin n)) = n! by Fintype.card_subtype_le and Fintype.card_perm, so numDerangements n / n! ∈ [0,1].",
+    "keyInsights": [
+      "**A permutation matrix is a derangement matrix iff its permutation is a derangement.** The single 1 in row i sits in column σ i, so the diagonal entry at (i,i) is 1 precisely when i is a fixed point. Zero diagonal therefore means no fixed points — the geometric '2D' condition is literally the combinatorial one.",
+      "**Trace counts fixed points, so derangement matrices are the zero-trace permutation matrices.** Mathlib's trace_permutation states trace (σ.permMatrix R) = #fixedPoints σ. Over a characteristic-zero ring this vanishes exactly when there are no fixed points, giving a clean global (rather than pointwise) characterization.",
+      "**The matrix reframing adds no new analytic content — and saying so is the honest result.** The probability that a random permutation matrix is a derangement matrix is identically numDerangements n / n!, so its 1/e limit and 1/(n+1)! rate are exactly those of derangements-oq-03. The contribution here is the formal bridge that makes the matrix language rigorous, not a new limit theorem.",
+      "**numDerangements n ≤ n! falls out of the subtype-cardinality bound.** Because derangements (Fin n) is a subtype of Perm (Fin n), Fintype.card_subtype_le immediately bounds the count by n!, which is what makes the probability lie in [0,1]."
+    ],
+    "prerequisites": [
+      "Mathlib permutation-matrix API (Equiv.Perm.permMatrix, Matrix.trace_permutation)",
+      "Derangement counting (numDerangements, card_derangements_fin_eq_numDerangements)",
+      "Fintype cardinality lemmas (card_perm, card_subtype_le)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "entry-formula",
+      "title": "Permutation Matrix Entry Formula",
+      "startLine": 54,
+      "endLine": 75,
+      "summary": "Entry formula (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0 and its diagonal specialisation; a diagonal entry vanishes exactly at non-fixed points.",
+      "mathContext": "$(P_\\sigma)_{ij} = [\\sigma(i) = j]$, so $(P_\\sigma)_{ii} = [\\sigma(i) = i]$"
+    },
+    {
+      "id": "derangement-matrices",
+      "title": "Derangement Matrices are Derangements",
+      "startLine": 77,
+      "endLine": 107,
+      "summary": "Pointwise (zero diagonal) and global (zero trace) characterizations of derangement matrices, plus the set identity {zero-diagonal permutation matrices} = derangements (Fin n).",
+      "mathContext": "$(\\forall i,\\ (P_\\sigma)_{ii} = 0) \\iff \\operatorname{tr} P_\\sigma = 0 \\iff \\sigma \\in \\mathrm{Der}(n)$"
+    },
+    {
+      "id": "count-and-probability",
+      "title": "Counting and Probability",
+      "startLine": 109,
+      "endLine": 132,
+      "summary": "There are numDerangements n derangement matrices of size n, with numDerangements n ≤ n!, so the derangement-matrix probability numDerangements n / n! lies in [0,1].",
+      "mathContext": "$\\#\\{\\text{derangement matrices}\\} = D_n \\le n!,\\quad P_n = D_n/n! \\in [0,1]$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-03",
+      "relationship": "extends",
+      "description": "Supplies the matrix-probability meaning of the parent's analytic result: the parent proves |D(n)/n! - 1/e| ≤ 1/(n+1)! and D(n)/n! → 1/e; this entry identifies D(n)/n! as the probability that a uniformly random n×n permutation matrix is a derangement matrix (zero diagonal)."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "depends-on",
+      "description": "Uses the derangement counting numDerangements n = card (derangements (Fin n)) and the definition of derangements as fixed-point-free permutations."
+    }
+  ],
+  "conclusion": {
+    "summary": "A self-contained, Mathlib-only formalization bridging permutation matrices to derangements: the n×n permutation matrices with zero diagonal (equivalently, zero trace) are exactly the derangements of Fin n, there are numDerangements n of them with numDerangements n ≤ n!, and the derangement-matrix probability numDerangements n / n! is a genuine probability in [0,1]. All 9 theorems and 1 definition are fully proved with 0 axioms and 0 sorries.",
+    "implications": "**1. Rigorous matrix reframing**: The classical derangement 1/e law becomes a statement about random permutation matrices — the probability of a zero diagonal — with the equivalence proved formally rather than asserted.\n\n**2. Two characterizations**: Both the pointwise (zero diagonal) and the spectral/trace (zero trace) conditions are available, the latter connecting to Mathlib's trace_permutation.\n\n**3. Honest scoping**: Because the matrix probability is identically D(n)/n!, the entry deliberately does not restate a new convergence rate; it cross-references derangements-oq-03 for the analytic content.",
+    "openQuestions": [
+      "Can the expected number of fixed points (the expected trace of a random permutation matrix) be formalized as exactly 1 for all n ≥ 1, independent of n?",
+      "Does the joint distribution of small-cycle counts of a random permutation matrix converge to independent Poissons, refining the fixed-point (trace) statement?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Permutation",
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Combinatorics.Derangements.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Equiv",
+      "Equiv.Perm",
+      "Matrix",
+      "Finset",
+      "Function"
+    ],
+    "namespace": "DerangementsOQ03OQ03",
+    "lineCount": 132,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "mainTheorems": [
+      {
+        "name": "permMatrix_apply",
+        "type": "proved",
+        "description": "(σ.permMatrix ℝ) i j = if σ i = j then 1 else 0"
+      },
+      {
+        "name": "permMatrix_diag_eq_zero_iff",
+        "type": "proved",
+        "description": "A diagonal entry vanishes exactly at non-fixed points: (σ.permMatrix ℝ) i i = 0 ↔ σ i ≠ i"
+      },
+      {
+        "name": "hasZeroDiagonal_iff_mem_derangements",
+        "type": "proved",
+        "description": "A permutation matrix has zero diagonal iff the permutation is a derangement"
+      },
+      {
+        "name": "trace_permMatrix_eq_zero_iff",
+        "type": "proved",
+        "description": "trace (σ.permMatrix ℝ) = 0 iff the permutation is a derangement"
+      },
+      {
+        "name": "zeroDiagonal_setOf_eq_derangements",
+        "type": "proved",
+        "description": "The zero-diagonal permutation matrices are exactly derangements (Fin n)"
+      },
+      {
+        "name": "card_derangement_permMatrices",
+        "type": "proved",
+        "description": "There are numDerangements n derangement permutation matrices on Fin n"
+      },
+      {
+        "name": "numDerangements_le_factorial",
+        "type": "proved",
+        "description": "numDerangements n ≤ n!"
+      },
+      {
+        "name": "derangementMatrixProb_mem_Icc",
+        "type": "proved",
+        "description": "The derangement-matrix probability numDerangements n / n! lies in [0,1]"
+      }
+    ],
+    "path": "Proofs/DerangementsOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "de Montmort, Pierre Rémond",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris",
+      "note": "First derivation of the derangement formula D(n) = n! ∑ (-1)^k/k! via inclusion-exclusion"
+    },
+    {
+      "authors": "Euler, Leonhard",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1751",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin 7, 255-270",
+      "note": "Established the connection between derangements and the exponential function e^{-1}"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hasZeroDiagonal_iff_mem_derangements",
+      "type": "core",
+      "description": "A permutation matrix has zero diagonal iff the underlying permutation is a derangement — the matrix↔derangement bridge."
+    }
+  ],
+  "sorries": 0
+}
