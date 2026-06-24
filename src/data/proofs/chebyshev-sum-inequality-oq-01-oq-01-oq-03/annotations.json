@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-cheb-pm-lyapunov",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-03",
+    "range": { "startLine": 52, "endLine": 71 },
+    "type": "technique",
+    "title": "Lyapunov chain: log-convexity of power sums",
+    "content": "`pow_sum_sq_le` is the single substitution that powers the file. Feeding the parent's weighted square bound the weights $w_i a_i^m$ (nonnegative since $a_i, w_i \\ge 0$) and the function $a_i^t$ turns $(\\sum w f)^2 \\le W \\sum w f^2$ into $P(m+t)^2 \\le P(m)\\,P(m+2t)$ for the power sums $P(m) = \\sum w_i a_i^m$. Pure exponent arithmetic (`pow_add`, `pow_mul`) collapses the products; with natural exponents this is entirely root-free, so the discrete log-convexity (Lyapunov) inequality is purely algebraic.",
+    "mathContext": "$P(m+t)^2 \\le P(m)\\,P(m+2t),\\quad P(m) = \\textstyle\\sum_i w_i a_i^m.$",
+    "significance": "key",
+    "relatedConcepts": ["Lyapunov inequality", "log-convexity", "moment sequence", "Cauchy-Schwarz"],
+    "prerequisites": ["weighted Cauchy-Schwarz bound", "exponent arithmetic"]
+  },
+  {
+    "id": "ann-cheb-pm-consecutive",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-03",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "concept",
+    "title": "Consecutive log-convexity P(m+1)² ≤ P(m)·P(m+2)",
+    "content": "`pow_sum_log_convex` is the $t = 1$ instance of the Lyapunov chain, the cleanest statement of log-convexity: three consecutive power sums satisfy $P(m+1)^2 \\le P(m)\\,P(m+2)$, i.e. $\\log P$ is a convex function of the integer exponent. A one-line `simpa` specialization.",
+    "mathContext": "$P(m+1)^2 \\le P(m)\\,P(m+2).$",
+    "significance": "supporting",
+    "relatedConcepts": ["log-convexity", "discrete convexity"],
+    "prerequisites": ["the Lyapunov chain"]
+  },
+  {
+    "id": "ann-cheb-pm-rpow",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-03",
+    "range": { "startLine": 80, "endLine": 94 },
+    "type": "technique",
+    "title": "Real exponents: the r ↦ 2r rung",
+    "content": "`rpow_sum_sq_le` moves from natural to real exponents by applying the same square bound to $f_i = a_i^r$ (real `rpow`). The only rewriting is $(a_i^r)^2 = a_i^{2r}$, which needs $a_i \\ge 0$ to commute the power via `Real.rpow_natCast` and `Real.rpow_mul`. The result $(\\sum w_i a_i^r)^2 \\le W \\sum w_i a_i^{2r}$ is exactly one rung — $r \\mapsto 2r$ — of the power-mean ladder, with no new analytic input beyond the parent bound.",
+    "mathContext": "$\\big(\\textstyle\\sum_i w_i a_i^r\\big)^2 \\le \\big(\\sum_i w_i\\big)\\sum_i w_i a_i^{2r}.$",
+    "significance": "key",
+    "relatedConcepts": ["real power (rpow)", "power-mean inequality", "Hölder mean"],
+    "prerequisites": ["real powers", "nonnegativity"]
+  },
+  {
+    "id": "ann-cheb-pm-def",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-03",
+    "range": { "startLine": 96, "endLine": 101 },
+    "type": "definition",
+    "title": "The weighted power mean Mᵣ",
+    "content": "Defines $M_r = (\\sum_i w_i a_i^r / \\sum_i w_i)^{1/r}$, the weighted generalized (Hölder) mean of order $r$. It interpolates the classical means: harmonic ($r=-1$), geometric ($r\\to 0$), arithmetic ($r=1$), quadratic ($r=2$). `noncomputable` because `rpow` and division are. The power-mean inequality asserts $M_r$ is increasing in $r$; this file proves it along the dyadic ladder.",
+    "mathContext": "$M_r = \\Big(\\frac{\\sum_i w_i a_i^r}{\\sum_i w_i}\\Big)^{1/r}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["generalized mean", "Hölder mean", "arithmetic-geometric-harmonic means"],
+    "prerequisites": ["real powers", "weighted averages"]
+  },
+  {
+    "id": "ann-cheb-pm-double",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-03",
+    "range": { "startLine": 103, "endLine": 132 },
+    "type": "insight",
+    "title": "Mᵣ ≤ M₂ᵣ: the square bound becomes a mean comparison",
+    "content": "`weightedPowerMean_le_double` is the headline. Writing $N_r = \\sum w_i a_i^r / W$, the real-exponent square bound gives $N_r^2 \\le N_{2r}$. The key trick is the exponent identity $2 \\cdot \\tfrac{1}{2r} = \\tfrac{1}{r}$: raising both sides to the power $\\tfrac{1}{2r}$ — monotone on the nonnegatives via `Real.rpow_le_rpow` — turns $N_r^2 \\le N_{2r}$ into $M_r = (N_r^2)^{1/(2r)} \\le N_{2r}^{1/(2r)} = M_{2r}$. No inequality between means is assumed; only the squared-mean comparison plus root monotonicity.",
+    "mathContext": "$N_r^2 \\le N_{2r} \\;\\xRightarrow{\\;(\\cdot)^{1/(2r)}\\;}\\; M_r \\le M_{2r}.$",
+    "significance": "key",
+    "relatedConcepts": ["power-mean inequality", "Lp norm monotonicity", "rpow monotonicity"],
+    "prerequisites": ["the real-exponent square bound", "monotonicity of rpow"]
+  },
+  {
+    "id": "ann-cheb-pm-ladder",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-03",
+    "range": { "startLine": 134, "endLine": 160 },
+    "type": "insight",
+    "title": "The dyadic ladder and its boundary",
+    "content": "`weightedPowerMean_le_pow_two_mul` iterates the doubling by induction on $k$ to reach $M_r \\le M_{2^k r}$ for every $k$ — the full dyadic ladder of exponents $r, 2r, 4r, 8r, \\dots$. This is exactly how far a single Cauchy–Schwarz bound reaches: the continuous monotonicity $M_p \\le M_q$ for arbitrary $p \\le q$ needs Hölder's inequality, intentionally out of scope. The closing `example` checks a concrete rung $M_1 \\le M_2$ for data $0,1,2$ with weights $1,2,3$.",
+    "mathContext": "$M_r \\le M_{2^k r}\\ \\forall k;\\quad \\text{intermediate } M_p \\le M_q \\text{ needs Hölder.}$",
+    "significance": "key",
+    "relatedConcepts": ["dyadic exponents", "Hölder's inequality", "induction", "Lp interpolation"],
+    "prerequisites": ["the doubling step", "induction"]
+  }
+]
