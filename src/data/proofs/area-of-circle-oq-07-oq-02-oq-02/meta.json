@@ -21,6 +21,7 @@
     "sorries": 0
   },
   "title": "Half-Line Gaussian Moments",
+  "description": "Climbs the half-line Gaussian moment ladder two rungs above the parent's zeroth moment √(π/b)/2: the first moment ∫_(0,∞) x·e^(−bx²) dx = 1/(2b) (elementary, via the explicit primitive −(2b)⁻¹·e^(−bx²)) and the second moment ∫_(0,∞) x²·e^(−bx²) dx = √(π/b)/(4b) (one integration by parts back down to the zeroth moment). These are the unnormalized first and second moments of the half-normal distribution. 163 lines, 8 theorems, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -80,6 +81,52 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫_ℝ e^(−x²) dx = √π is among the most-used results in analysis and probability; restricting it to the half-line (0,∞) halves the zeroth moment to √(π/b)/2, the normalization of the half-normal distribution. The moments of e^(−bx²) on (0,∞) have a clean split: even-order moments inherit the √π through the zeroth moment, while odd-order moments are elementary rationals in 1/b with no √π at all — a dichotomy invisible on the full line, where every odd moment vanishes by symmetry. This entry computes the first two moments and exhibits the integration-by-parts recursion that generates all of them.",
+    "problemStatement": "For b > 0, evaluate the first and second half-line Gaussian moments ∫_(0,∞) x·e^(−bx²) dx and ∫_(0,∞) x²·e^(−bx²) dx, and connect them to the mean and variance of the half-normal distribution.",
+    "proofStrategy": "Both moments are evaluated by the half-line fundamental theorem of calculus (integral_Ioi_of_hasDerivAt_of_tendsto'), which returns lim_(x→∞) f(x) − f(0) once a primitive f with the integrand as derivative and a known limit at +∞ is supplied. For the first moment the primitive is −(2b)⁻¹·e^(−bx²), giving 1/(2b) directly. For the second moment the primitive g(x) = −(2b)⁻¹·x·e^(−bx²) has derivative x²·e^(−bx²) − (2b)⁻¹·e^(−bx²) and vanishes at both endpoints, so the integral of that difference is 0; splitting it shows the second moment equals (2b)⁻¹ times the parent's zeroth moment √(π/b)/2 = √(π/b)/(4b). The only analytic input beyond the primitives is the decay x·e^(−bx²) → 0, borrowed from Mathlib's rpow·exp decay lemma.",
+    "keyInsights": [
+      "The half-line first moment 1/(2b) is genuinely new information: on the full line the first moment is 0 by odd symmetry, so the symmetry shortcut that handles the zeroth moment gives no leverage here — an explicit primitive is required.",
+      "Even and odd half-line moments are fundamentally different objects: x·e^(−bx²) is an exact derivative (the first moment is elementary, with no √π), whereas the second moment must be reduced to the transcendental zeroth moment and so carries the √π.",
+      "A single integration by parts is the entire recursion engine: g(x) = −(2b)⁻¹·x·e^(−bx²) lowers the exponent by two, expressing the second moment in terms of the zeroth — the same step iterates to give all higher moments (the medium-significance open question).",
+      "Both evaluations reduce to a boundary term because the primitives vanish at +∞; the only real analytic content is the super-polynomial decay x·e^(−bx²) → 0, reused from Mathlib rather than re-derived.",
+      "Dividing the unnormalized moments by the total mass √(π/b)/2 yields the half-normal mean 1/√(πb) and second moment 1/(2b), hence variance (1/2 − 1/π)/b — making these integrals the computational backbone of the half-normal distribution."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Moment Ladder",
+      "startLine": 4,
+      "endLine": 37,
+      "summary": "States the open question and the two target values, situates them above the parent's zeroth moment √(π/b)/2, and previews the methods: an explicit primitive for the first moment and one integration by parts for the second. Notes the half-normal connection and that no new axioms are introduced.",
+      "mathContext": "$\\int_0^\\infty x\\,e^{-bx^2} = \\tfrac{1}{2b}$, $\\ \\int_0^\\infty x^2 e^{-bx^2} = \\tfrac{1}{4b}\\sqrt{\\pi/b}$."
+    },
+    {
+      "id": "decay-auxiliaries",
+      "title": "Decay Auxiliaries",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "Three private lemmas establish the limits the FTC needs at +∞: −bx² → −∞, hence e^(−bx²) → 0, and x·e^(−bx²) → 0 (the latter from Mathlib's rpow·exp decay at exponent 1/2 precomposed with x ↦ x²). These supply the vanishing boundary terms for both moment evaluations.",
+      "mathContext": "$e^{-bx^2} \\to 0$ and $x\\,e^{-bx^2} \\to 0$ as $x \\to \\infty$ for $b > 0$."
+    },
+    {
+      "id": "first-and-second-moments",
+      "title": "The First and Second Moments",
+      "startLine": 67,
+      "endLine": 142,
+      "summary": "first_half_moment evaluates ∫_(0,∞) x·e^(−bx²) = 1/(2b) from the explicit primitive −(2b)⁻¹·e^(−bx²). second_half_moment evaluates ∫_(0,∞) x²·e^(−bx²) = √(π/b)/(4b) by integrating the primitive g(x) = −(2b)⁻¹·x·e^(−bx²), reducing to (2b)⁻¹ times the parent's zeroth moment integral_gaussian_Ioi.",
+      "mathContext": "$\\frac{d}{dx}\\!\\left[-\\tfrac{1}{2b}xe^{-bx^2}\\right] = x^2 e^{-bx^2} - \\tfrac{1}{2b}e^{-bx^2}$."
+    },
+    {
+      "id": "packaging-and-half-normal",
+      "title": "Packaged Forms and the Half-Normal Mean",
+      "startLine": 144,
+      "endLine": 164,
+      "summary": "half_line_moments bundles both moments; first_half_moment_one gives the b = 1 value 1/2; half_normal_mean_relation states the half-normal mean 1/√(πb) in cross-multiplied (division-free) form.",
+      "mathContext": "Half-normal mean $= \\dfrac{1/(2b)}{\\tfrac12\\sqrt{\\pi/b}} = \\dfrac{1}{\\sqrt{\\pi b}}$."
+    }
+  ],
   "openQuestions": [
     {
       "id": "area-of-circle-oq-07-oq-02-oq-02-oq-01",
