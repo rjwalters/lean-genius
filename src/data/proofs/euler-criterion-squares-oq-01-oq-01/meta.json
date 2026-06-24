@@ -66,6 +66,56 @@
       "description": "Both concern the multiplicative structure of (ℤ/pℤ)ˣ. The squares form the index-2 subgroup counted here; a primitive root generates the whole cyclic group, of which the squares are the even powers."
     }
   ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 27,
+      "summary": "Docstring framing the structural counting strategy (squaring map's image) versus the parent's analytic Euler-criterion route, plus imports and namespace.",
+      "mathContext": "$|\\text{nonzero residues}| = |(\\mathbb{Z}/p)^\\times| / |\\ker(u \\mapsto u^2)| = (p-1)/2$."
+    },
+    {
+      "id": "squaring-map",
+      "title": "The Squaring Endomorphism",
+      "startLine": 28,
+      "endLine": 35,
+      "summary": "Defines sqHom = powMonoidHom 2, the homomorphism u ↦ u² on the unit group, with its defining simp lemma.",
+      "mathContext": "$\\mathrm{sqHom} : (\\mathbb{Z}/p)^\\times \\to (\\mathbb{Z}/p)^\\times,\\ u \\mapsto u^2$."
+    },
+    {
+      "id": "oddness-and-kernel",
+      "title": "Oddness and the Kernel {1, −1}",
+      "startLine": 37,
+      "endLine": 74,
+      "summary": "one_ne_neg_one_units uses 2 < p to make 1 ≠ −1; mem_sqHom_ker identifies the kernel with ±1 via sq_eq_one_iff; card_sqHom_ker concludes the kernel has cardinality 2.",
+      "mathContext": "$\\ker(u \\mapsto u^2) = \\{1, -1\\}$ with $|\\{1,-1\\}| = 2$ because $p$ is odd."
+    },
+    {
+      "id": "count-range",
+      "title": "Counting the Image via the First Isomorphism Theorem",
+      "startLine": 76,
+      "endLine": 84,
+      "summary": "card_sqHom_range: |ker|·|range| = |(ZMod p)ˣ| = p−1, so the image of squaring has cardinality (p−1)/2.",
+      "mathContext": "$2 \\cdot |\\operatorname{range}(\\mathrm{sqHom})| = p - 1 \\Rightarrow |\\operatorname{range}| = (p-1)/2$."
+    },
+    {
+      "id": "bridge-and-main",
+      "title": "Bridge to Field Squares and the Main Count",
+      "startLine": 86,
+      "endLine": 117,
+      "summary": "isSquare_coe_iff_mem_range identifies the unit-group image with the nonzero field squares; card_nonzero_quadratic_residues transports the cardinality along an Equiv chain to the headline (p−1)/2.",
+      "mathContext": "$\\mathrm{Nat.card}\\,\\{a \\ne 0 \\wedge \\mathrm{IsSquare}\\,a\\} = |\\operatorname{range}(\\mathrm{sqHom})| = (p-1)/2$."
+    },
+    {
+      "id": "mod-seven",
+      "title": "Concrete Check Modulo 7",
+      "startLine": 119,
+      "endLine": 129,
+      "summary": "card_residues_mod_seven specializes the general theorem at p = 7, giving 3 nonzero residues {1,2,4} with no native_decide.",
+      "mathContext": "$\\#\\{a \\in \\mathbb{Z}/7 : a \\ne 0 \\wedge \\mathrm{IsSquare}\\,a\\} = 3$, namely $\\{1,2,4\\}$."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
