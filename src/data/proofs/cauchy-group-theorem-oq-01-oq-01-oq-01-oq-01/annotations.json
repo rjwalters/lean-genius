@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 5, "endLine": 55 },
+    "type": "context",
+    "title": "Sharpening Mathlib's Bound to an Exact Count",
+    "content": "Mathlib records only the one-sided bound IsCyclic.card_pow_eq_one_le: #{a | aⁿ = 1} ≤ n for 0 < n, which is all it needs to prove finite subgroups of a field are cyclic. This file pins the value exactly: on a cyclic group the count is gcd(n, |G|) for every n, including n = 0 where both sides equal |G|. The result is simultaneously the base case and the extremal (equality) case of Frobenius' 1895 divisibility theorem, and recovers the parent's power-map dichotomy as the count = 1 slice.",
+    "mathContext": "$$\\#\\{a \\in G : a^n = 1\\} = \\gcd(n, |G|).$$",
+    "significance": "context",
+    "relatedConcepts": ["Frobenius divisibility theorem", "roots of unity", "cyclic groups", "power map"],
+    "prerequisites": ["finite group theory", "order of an element"]
+  },
+  {
+    "id": "ann-arithmetic-core",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 61, "endLine": 83 },
+    "type": "insight",
+    "title": "The Number-Theoretic Core",
+    "content": "The entire arithmetic content is isolated here, fully decoupled from group theory. From m ∣ e·n we extract m/gcd(n,m) ∣ e. Writing d = gcd(n,m), m = d·k, n = d·n' with gcd(k, n') = 1, the proof cancels the common factor d from m ∣ e·n to get k ∣ e·n', then drops n' by coprimality (Nat.Coprime.dvd_of_dvd_mul_right). The point: the part k of m that is coprime to n cannot hide in the n-factor, so it must be supplied entirely by e.",
+    "mathContext": "$m \\mid e\\cdot n,\\; m = d k,\\; n = d n',\\; \\gcd(k,n')=1 \\implies k \\mid e n' \\implies k \\mid e.$",
+    "significance": "key",
+    "relatedConcepts": ["gcd cancellation", "coprime cofactors", "Euclid's lemma", "Nat.coprime_div_gcd_div_gcd"],
+    "prerequisites": ["divisibility", "coprimality", "Nat.dvd_of_mul_dvd_mul_left"]
+  },
+  {
+    "id": "ann-n-zero-case",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 87, "endLine": 98 },
+    "type": "technique",
+    "title": "The n = 0 Edge Case",
+    "content": "The statement is made to hold for every n by absorbing n = 0 first. Since a⁰ = 1 for all a, the solution set is the whole group, and gcd(0, m) = m, so both sides equal |G|. Handling this case explicitly is what lets the headline avoid the 0 < n side condition that Mathlib's bound carries.",
+    "mathContext": "$a^0 = 1$ for all $a$, and $\\gcd(0, m) = m$, so the count is $|G|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["edge cases", "gcd with zero"],
+    "prerequisites": ["Nat.gcd_zero_left", "Finset.card_univ"]
+  },
+  {
+    "id": "ann-generator-order",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 115 },
+    "type": "technique",
+    "title": "Generator and the Order of g^k",
+    "content": "Fix a generator g so orderOf g = |G| = m, set d = gcd(n,m) and k = m/d. The key computation is orderOf (g^k) = d: by orderOf_pow this is m/gcd(m,k), and because k ∣ m we have gcd(m,k) = k, giving m/k = m/(m/d) = d. Choosing k = m/gcd(n,m) is precisely what makes the candidate subgroup zpowers(g^k) have order exactly gcd(n,m) — the structure and the count are engineered to coincide.",
+    "mathContext": "$\\mathrm{ord}(g^k) = \\dfrac{m}{\\gcd(m,k)} = \\dfrac{m}{k} = \\dfrac{m}{m/d} = d = \\gcd(n,m).$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic generator", "orderOf_pow", "order of a power", "unique subgroup of each order"],
+    "prerequisites": ["IsCyclic.exists_generator", "orderOf_pow", "Nat.div_div_self"]
+  },
+  {
+    "id": "ann-solution-set",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 116, "endLine": 141 },
+    "type": "concept",
+    "title": "Identifying the Solution Set as a Subgroup",
+    "content": "The solution set {a | aⁿ = 1} is shown to equal the subgroup zpowers(g^k) by a two-way inclusion. Forward (the crux): write a = gᵉ; then gᵉⁿ = 1 gives m ∣ e·n (orderOf_dvd_iff_pow_eq_one), and the arithmetic core upgrades this to k ∣ e, so a = (g^k)^(e/k) lies in zpowers(g^k). Reverse: any a ∈ zpowers(g^k) has orderOf a ∣ orderOf(g^k) = d ∣ n, so aⁿ = 1. The count is then read off as |zpowers(g^k)| = orderOf(g^k) = d via Fintype.card_zpowers.",
+    "mathContext": "$\\{a : a^n = 1\\} = \\langle g^{m/d}\\rangle, \\quad |\\langle g^{m/d}\\rangle| = \\mathrm{ord}(g^{m/d}) = d.$",
+    "significance": "key",
+    "relatedConcepts": ["zpowers", "two-way inclusion", "orderOf_dvd_of_mem_zpowers", "Fintype.card_zpowers"],
+    "prerequisites": ["subgroup membership", "mem_powers_iff", "Finset.ext"]
+  },
+  {
+    "id": "ann-frobenius-cyclic",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 143, "endLine": 148 },
+    "type": "concept",
+    "title": "Frobenius' Divisibility, Cyclic Case",
+    "content": "An immediate corollary: gcd(n, |G|) divides the solution count — here trivially, since they are equal. This is exactly the statement Frobenius (1895) proved holds in any finite group, where the gcd only divides the count. The cyclic case is the extremal instance where the divisibility is saturated to equality, making it the natural base case for an inductive attack on the general theorem.",
+    "mathContext": "$\\gcd(n, |G|) \\mid \\#\\{a : a^n = 1\\}$ — with equality on a cyclic group.",
+    "significance": "supporting",
+    "relatedConcepts": ["Frobenius theorem", "divisibility", "extremal case"],
+    "prerequisites": ["the main count theorem"]
+  },
+  {
+    "id": "ann-coprime-iff",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 150, "endLine": 156 },
+    "type": "concept",
+    "title": "Count = 1 ⟺ Coprimality (Power-Map Dichotomy)",
+    "content": "The count equals 1 exactly when n is coprime to |G|, since gcd(n, |G|) = 1 ⟺ count = 1. This is the cyclic incarnation of the parent file's power-map dichotomy: x ↦ xⁿ is injective (hence bijective on a finite group) precisely when the only n-th root of unity is the identity. The root count interpolates between this coprime extreme (count 1) and the |G| ∣ n extreme (count |G|).",
+    "mathContext": "$\\#\\{a : a^n = 1\\} = 1 \\iff \\gcd(n, |G|) = 1 \\iff x \\mapsto x^n \\text{ injective}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["power map dichotomy", "injectivity", "coprimality", "roots of unity"],
+    "prerequisites": ["the main count theorem", "coprimality"]
+  },
+  {
+    "id": "ann-card-dvd",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 158, "endLine": 163 },
+    "type": "concept",
+    "title": "Full-Group Boundary: |G| ∣ n",
+    "content": "The opposite extreme: when |G| divides n, every element satisfies aⁿ = 1, so the count is the whole group. This follows from gcd(n, |G|) = |G| when |G| ∣ n. Together with the coprime case it brackets the root-counting formula at its two endpoints — count 1 and count |G|.",
+    "mathContext": "$|G| \\mid n \\implies \\gcd(n, |G|) = |G| \\implies \\#\\{a : a^n = 1\\} = |G|.$",
+    "significance": "supporting",
+    "relatedConcepts": ["exponent of a group", "boundary cases", "gcd_eq_right"],
+    "prerequisites": ["the main count theorem", "Nat.gcd_eq_right"]
+  }
+]
