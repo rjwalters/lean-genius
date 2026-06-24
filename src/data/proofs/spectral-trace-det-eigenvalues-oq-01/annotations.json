@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Spectral Symmetric Functions: Trace, Determinant, and Vieta",
+    "content": "For a square matrix A over a field K, the roots of the characteristic polynomial A.charpoly are the eigenvalues counted with algebraic multiplicity. Mathlib proves the two headline identities over an algebraically closed field — trace = sum of eigenvalues (trace_eq_sum_roots_charpoly), determinant = product (det_eq_prod_roots_charpoly) — but stops there for the charpoly. This entry re-exports those and derives what Mathlib does not state: there are exactly dim-many eigenvalues with multiplicity, the FULL Vieta theorem that every charpoly coefficient is a signed elementary symmetric function of the eigenvalues (of which trace and det are the two extreme cases), and the singularity criterion det = 0 ⟺ 0 ∈ spectrum, valid over ANY field. The eigenvalues abbreviation is A.charpoly.roots — the charpoly root multiset, which (unlike minpoly roots) retains algebraic multiplicity.",
+    "mathContext": "Eigenvalues with multiplicity $= \\mathrm{roots}(\\det(XI-A))$; $\\operatorname{tr}A = \\sum\\lambda_i$, $\\det A = \\prod\\lambda_i$.",
+    "significance": "context",
+    "relatedConcepts": ["characteristic polynomial", "eigenvalues", "Vieta's formulas", "elementary symmetric functions", "spectrum"],
+    "prerequisites": ["linear algebra", "polynomials", "symmetric functions"]
+  },
+  {
+    "id": "ann-headline",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01",
+    "range": { "startLine": 49, "endLine": 61 },
+    "type": "theorem",
+    "title": "Trace = Sum, Determinant = Product (Mathlib re-exports)",
+    "content": "trace_eq_sum_eigenvalues and det_eq_prod_eigenvalues re-export Mathlib's trace_eq_sum_roots_charpoly and det_eq_prod_roots_charpoly under eigenvalue-flavoured names: over an algebraically closed field, A.trace = (eigenvalues A).sum and A.det = (eigenvalues A).prod. The algebraic-closure hypothesis is what guarantees the charpoly splits so that ALL eigenvalues live in K and the multiset is complete. These are the two facts every later result either unifies (Vieta) or applies (the worked example).",
+    "mathContext": "$\\operatorname{tr}A = \\sum_i\\lambda_i$ and $\\det A = \\prod_i\\lambda_i$ over algebraically closed $K$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.trace_eq_sum_roots_charpoly", "Matrix.det_eq_prod_roots_charpoly", "IsAlgClosed", "multiset sum/prod"],
+    "prerequisites": ["characteristic polynomial", "algebraically closed fields"]
+  },
+  {
+    "id": "ann-count",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01",
+    "range": { "startLine": 63, "endLine": 72 },
+    "type": "theorem",
+    "title": "card_eigenvalues_eq_dim: Exactly dim-Many Eigenvalues",
+    "content": "card_eigenvalues_eq_dim: over an algebraically closed field a matrix has exactly Fintype.card n eigenvalues counted with multiplicity — the root multiset has cardinality equal to the dimension. The proof chains IsAlgClosed.splits (the charpoly splits), splits_iff_card_roots (a split polynomial's root-multiset cardinality equals its degree), and charpoly_natDegree_eq_dim (the charpoly has degree = Fintype.card n). Staying in the charpoly root MULTISET (not the minpoly root set) is exactly what makes this count, and the Vieta sums, correct with multiplicity.",
+    "mathContext": "$\\#\\{\\lambda_i\\} = \\deg(\\mathrm{charpoly}) = \\dim = \\mathrm{Fintype.card}\\,n$.",
+    "significance": "key",
+    "relatedConcepts": ["splits_iff_card_roots", "charpoly_natDegree_eq_dim", "IsAlgClosed.splits", "algebraic multiplicity"],
+    "prerequisites": ["polynomial splitting", "root multiplicity"]
+  },
+  {
+    "id": "ann-vieta",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01",
+    "range": { "startLine": 73, "endLine": 85 },
+    "type": "insight",
+    "title": "charpoly_coeff_eq_esymm_eigenvalues: Trace and Determinant Are One Theorem",
+    "content": "The unifying result: over an algebraically closed field, the k-th coefficient of the charpoly is (−1)^{n−k} times the (n−k)-th elementary symmetric polynomial of the eigenvalues. The proof applies Polynomial.coeff_eq_esymm_roots_of_splits to the charpoly (split by IsAlgClosed), kills the leadingCoeff factor with charpoly_monic, and converts degrees to the dimension via charpoly_natDegree_eq_dim. The payoff: trace (k = n−1, giving e₁ = Σλ) and determinant (k = 0, giving eₙ = Πλ) are the two EXTREME cases of this single Vieta correspondence, and the intermediate coefficients are the remaining symmetric functions of the spectrum — so the whole characteristic polynomial is a generating function for the symmetric functions of the eigenvalues.",
+    "mathContext": "$\\mathrm{coeff}_k = (-1)^{n-k}\\,e_{n-k}(\\lambda)$; $k=n-1 \\Rightarrow$ trace, $k=0 \\Rightarrow$ determinant.",
+    "significance": "key",
+    "relatedConcepts": ["Polynomial.coeff_eq_esymm_roots_of_splits", "Multiset.esymm", "charpoly_monic", "Vieta's formulas"],
+    "prerequisites": ["elementary symmetric polynomials", "Vieta's formulas", "monic polynomials"]
+  },
+  {
+    "id": "ann-singularity",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "theorem",
+    "title": "Singular ⟺ Zero Is an Eigenvalue (over Any Field)",
+    "content": "det_eq_zero_iff_zero_mem_spectrum: over an ARBITRARY field (no algebraic closure needed), det A = 0 ⟺ 0 ∈ spectrum K A. The proof writes det as (−1)ⁿ·charpoly.coeff 0 (det_eq_sign_charpoly_coeff), identifies coeff 0 with eval 0 (coeff_zero_eq_eval_zero) and 0 ∈ spectrum with 0 being a charpoly root (mem_spectrum_iff_isRoot_charpoly); since (−1)ⁿ ≠ 0, the determinant vanishes exactly when the constant term does. isUnit_det_iff_zero_not_mem_spectrum is the invertibility dual via isUnit_iff_ne_zero in a field. This singularity criterion is purely a statement about the constant term of the charpoly, so no closure is required.",
+    "mathContext": "$\\det A = 0 \\iff 0 \\in \\sigma(A)$; $\\det A = (-1)^n\\,\\mathrm{charpoly.coeff}\\,0$.",
+    "significance": "key",
+    "relatedConcepts": ["det_eq_sign_charpoly_coeff", "mem_spectrum_iff_isRoot_charpoly", "spectrum", "isUnit_iff_ne_zero"],
+    "prerequisites": ["determinant", "spectrum of a matrix"]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01",
+    "range": { "startLine": 102, "endLine": 126 },
+    "type": "context",
+    "title": "The Identities Compute the Unknowable: !![1,2;3,4] over ℂ",
+    "content": "The closing examples illustrate the leverage of the identities. The matrix !![1,2;3,4] has charpoly X²−5X−2, whose roots (5 ± √33)/2 are IRRATIONAL — yet sum_eigenvalues_example and prod_eigenvalues_example read their sum (5) and product (−2) directly off the rational trace (Matrix.trace_fin_two) and determinant (Matrix.det_fin_two), never computing the eigenvalues themselves. card_eigenvalues_example confirms there are exactly 2. This is the clean demonstration that the symmetric functions of a spectrum are accessible even when the spectrum is not. The #print axioms calls at the end confirm dependence only on the standard foundational axioms — no decide/native_decide.",
+    "mathContext": "$\\lambda_{1,2} = \\tfrac{5\\pm\\sqrt{33}}{2}$ irrational, yet $\\lambda_1+\\lambda_2 = 5$, $\\lambda_1\\lambda_2 = -2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Matrix.trace_fin_two", "Matrix.det_fin_two", "symmetric functions", "axiom integrity"],
+    "prerequisites": ["2x2 matrices", "complex numbers"]
+  }
+]
