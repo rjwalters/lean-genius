@@ -1,0 +1,46 @@
+[
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-02-module-header",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "title": "Module Header: The Fixed Field of the Frobenius",
+    "content": "The parent showed the Frobenius $x \\mapsto x^p$ is a ring homomorphism and is the identity on $\\mathbb{Z}/p$ (Fermat). This file answers: **which elements of a field $F$ of characteristic $p$ does the Frobenius fix?** The answer is the cleanest possible — the fixed points are *exactly* the prime subfield $\\mathbb{F}_p$:\n$$\\mathrm{frobenius}\\,F\\,p\\,x = x \\iff x \\in (\\bot : \\mathrm{Subfield}\\,F) \\iff \\exists a : \\mathbb{Z}/p,\\ \\iota(a) = x.$$\nGeometrically $x$ is fixed iff it is a root of $X^p - X$; this degree-$p$ polynomial has the $p$ elements of $\\mathbb{F}_p$ (Fermat) as $p$ distinct roots, so they exhaust the roots. On a **perfect** field (every finite field) the Frobenius is bijective — an automorphism."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-02-fixed-field-bot",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 40,
+      "endLine": 57
+    },
+    "title": "The Fixed Field is the Prime Subfield ⊥",
+    "content": "`frobenius_fixed_iff_mem_bot`: $\\mathrm{frobenius}\\,F\\,p\\,x = x \\iff x \\in (\\bot : \\mathrm{Subfield}\\,F)$ — the **central characterization**. The proof rewrites `frobenius_def` ($\\mathrm{frobenius}\\,F\\,p\\,x = x^p$, definitional) and applies Mathlib's `Subfield.mem_bot_iff_pow_eq_self`, whose content is that $X^p - X$ has degree $p$ and the $p$ Fermat-fixed elements of $\\mathbb{F}_p$ are all its roots.\n\n`pow_eq_self_iff_mem_bot`: the bare equation $x^p = x \\iff x \\in \\bot$. `fixedSet_frobenius_eq_bot`: the same fact as a `Set` equality $\\{x \\mid \\mathrm{frob}\\,x = x\\} = \\bot$, via `Set.ext`."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-02-primefield",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 59,
+      "endLine": 78
+    },
+    "title": "Explicit 𝔽ₚ Description and the Element Count",
+    "content": "`frobenius_fixed_iff_mem_primeField`: the fixed points are exactly the image of the canonical map $\\mathbb{Z}/p \\to F$, i.e. $\\mathrm{frob}\\,x = x \\iff \\exists a : \\mathbb{Z}/p,\\ \\iota(a) = x$. The proof bridges the $\\bot$ characterization through `ZMod.fieldRange_castHom_eq_bot` ($\\bot$ = range of $\\mathbb{Z}/p \\to F$) and `RingHom.mem_fieldRange` (membership = existential).\n\n`frobenius_fixes_primeField`: the easy inclusion — every $\\iota(a)$, $a : \\mathbb{Z}/p$, is fixed (Fermat inside $F$).\n\n`card_fixedField_eq`: $\\mathrm{Nat.card}\\,(\\bot) = p$ (`Subfield.card_bot`) — the fixed field has exactly $p$ elements, so the Frobenius is the identity on $\\mathbb{F}_{p^n}$ only when $n = 1$."
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-oq-02-perfect",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02",
+    "type": "theorem",
+    "range": {
+      "startLine": 80,
+      "endLine": 116
+    },
+    "title": "Perfect Fields, Finite-Field Synthesis, and a Concrete Check",
+    "content": "`frobenius_bijective_of_perfectField` / `frobenius_surjective_of_perfectField`: on a **perfect** field the Frobenius is bijective (`bijective_frobenius`) — an automorphism. The instances `expChar_prime` ($\\mathbb{F}_p$-characteristic $\\Rightarrow$ ExpChar) and `PerfectField.toPerfectRing` make this apply to every finite field. Bijectivity *is* the definition of perfection.\n\n`finiteField_frobenius_automorphism_with_primeField_fixed`: the synthesis — on a finite field the Frobenius is simultaneously an automorphism and has fixed field $\\mathbb{F}_p$, the generator of $\\mathrm{Gal}(\\mathbb{F}_{p^n}/\\mathbb{F}_p)$.\n\n`frobenius_zmod_five_fixes_all`: a concrete `decide` check (kernel reduction, no `native_decide`) that $x \\mapsto x^5$ fixes every element of $\\mathbb{Z}/5 = \\mathbb{F}_5$, its own prime field."
+  }
+]
