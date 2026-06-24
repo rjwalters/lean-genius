@@ -1,0 +1,181 @@
+{
+  "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "slug": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv",
+      "Finset",
+      "GeometricSeriesOQ07OQ01OQ01OQ01"
+    ],
+    "namespace": "GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ01",
+    "lineCount": 127,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Permutation Descent Statistic and the Descent-Free Base Case of the Eulerian Bijection",
+  "description": "Takes the first concrete step toward the second, still-open half of the parent's question — that the alternating Eulerian sum A(n,k) counts permutations of {1,…,n} with exactly k descents. None of the existing Eulerian-cluster entries works with an actual permutation descent statistic (they compute the distribution and its moments analytically via the Eulerian polynomial); Mathlib has no permutation descent statistic either (only Coxeter-group descents). This entry defines descentCount σ = |{i : Fin n | σ(i.succ) < σ(i.castSucc)}| on σ : Equiv.Perm (Fin (n+1)) and proves the k=0 rung of the bijection: descentCount σ = 0 ↔ σ = 1 (a permutation is descent-free iff it is the increasing identity), and hence |{σ : descentCount σ = 0}| = ⟨n+1,0⟩ = 1. The descent-free characterization rests on a reusable lemma — a strictly monotone self-equivalence of Fin n is the identity — proved by turning the monotone equivalence into an OrderIso and using that Fin n ≃o Fin n is a subsingleton. This is the first place in the gallery matching an abstract Eulerian number against an actual cardinality of a descent class. The remaining columns k ≥ 1 (the full bijection, via the descent insertion recurrence) stay open. 127 lines, 3 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "overview": {
+    "historicalContext": "The Eulerian number ⟨n,k⟩ is defined combinatorially as the number of permutations of {1,…,n} with exactly k descents (positions i where σ(i) > σ(i+1)). The gallery's Eulerian lineage builds these numbers from the triangle recurrence and the Eulerian polynomial, and proves the row sum (∑ₖ⟨n,k⟩ = n!), the explicit inclusion–exclusion formula, the palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩, and even the descent moments (mean (n−1)/2) — but always analytically, never touching an actual permutation. The descent statistic itself is absent from Mathlib (which carries only the abstract Coxeter-group notion of descents). Realizing ⟨n,k⟩ as a genuine cardinality |{σ : des σ = k}| therefore requires building the statistic from scratch. The k=0 case is the natural first rung: a permutation has no descents precisely when it is increasing, and there is exactly one increasing permutation, so descent-free permutations number ⟨n+1,0⟩ = 1, the left border of the Eulerian triangle.",
+    "problemStatement": "Define the descent statistic on permutations σ : Equiv.Perm (Fin (n+1)) and begin the bijection |{σ : descentCount σ = k}| = ⟨n+1,k⟩ requested by the parent's open question. Specifically: characterize the descent-free permutations (descentCount σ = 0 ↔ σ = 1) and prove the resulting cardinality equals the Eulerian number ⟨n+1,0⟩.",
+    "proofStrategy": "Define descentCount σ as the cardinality of the descent set {i : Fin n | σ(i.succ) < σ(i.castSucc)}. For the forward direction of descentCount σ = 0 ↔ σ = 1: a zero count means the descent set is empty, so for every adjacent pair σ(i.castSucc) ≤ σ(i.succ); injectivity of σ (since i.castSucc ≠ i.succ) upgrades this to a strict inequality, making σ strictly monotone via Fin.strictMono_iff_lt_succ. A strictly monotone permutation of Fin (n+1) is the identity (perm_eq_one_of_strictMono): the monotone equivalence and its monotone inverse assemble into an OrderIso through Equiv.toOrderIso, and Fin (n+1) ≃o Fin (n+1) is a subsingleton (Subsingleton.elim), forcing it to be the identity order iso. The converse is immediate from i.castSucc < i.succ. The cardinality card_descentFree then follows from Finset.card_eq_one with witness the identity permutation, and eulerian_succ_zero gives ⟨n+1,0⟩ = 1.",
+    "keyInsights": [
+      "The Eulerian cluster had developed the descent distribution entirely analytically (polynomial coefficients, moments); this entry introduces the missing object — an honest descent statistic descentCount on Equiv.Perm (Fin (n+1)) — and is the first to match an abstract Eulerian number to a real descent-class cardinality.",
+      "Descent-free means increasing: an empty descent set gives σ(i.castSucc) ≤ σ(i.succ) on adjacent pairs, and injectivity (the two indices are distinct) sharpens ≤ to <, so Fin.strictMono_iff_lt_succ makes σ strictly monotone.",
+      "A strictly monotone self-equivalence of Fin n is forced to be the identity not by an induction but structurally: it is an OrderIso, and Fin n ≃o Fin n is a subsingleton, so it equals the identity order iso — a clean, reusable lemma.",
+      "Counting the unique descent-free permutation is then Finset.card_eq_one with the identity as the sole witness, and eulerian_succ_zero closes the bridge to ⟨n+1,0⟩ = 1.",
+      "This isolates exactly what claim (2) of the parent's open question needs and what remains: the columns k ≥ 1 require a descent insertion recurrence on permutations matched to the Eulerian triangle, a substantial further development."
+    ]
+  },
+  "sections": [
+    {
+      "id": "context-docstring",
+      "title": "Context, scope, and method",
+      "startLine": 4,
+      "endLine": 47,
+      "summary": "Docstring situating the entry as the first step on claim (2) of the parent's open question, noting that the cluster and Mathlib both lack a permutation descent statistic, stating the descentCount definition and the two proved results, and outlining the strictly-monotone-equals-identity method. Honest scope note that columns k ≥ 1 remain open."
+    },
+    {
+      "id": "strictmono-id",
+      "title": "A strictly monotone permutation is the identity (perm_eq_one_of_strictMono)",
+      "startLine": 53,
+      "endLine": 73,
+      "summary": "A strictly monotone σ : Equiv.Perm (Fin n) equals 1: its monotone forward and inverse maps give an OrderIso via Equiv.toOrderIso, and Fin n ≃o Fin n is a subsingleton, so σ is the identity order iso."
+    },
+    {
+      "id": "descent-statistic",
+      "title": "The descent statistic (descentCount)",
+      "startLine": 75,
+      "endLine": 81,
+      "summary": "Defines descentCount σ = |{i : Fin n | σ(i.succ) < σ(i.castSucc)}|, the number of falls of a permutation of Fin (n+1)."
+    },
+    {
+      "id": "descentfree-iff",
+      "title": "Descent-free ⟺ identity (descentCount_eq_zero_iff)",
+      "startLine": 83,
+      "endLine": 113,
+      "summary": "descentCount σ = 0 ↔ σ = 1: forward via empty descent set → strict monotonicity (injectivity upgrades ≤ to <) → perm_eq_one_of_strictMono; converse from i.castSucc < i.succ."
+    },
+    {
+      "id": "card-descentfree",
+      "title": "The descent-free base rung (card_descentFree)",
+      "startLine": 115,
+      "endLine": 125,
+      "summary": "|{σ : descentCount σ = 0}| = ⟨n+1,0⟩ = 1, by Finset.card_eq_one with the identity as the unique descent-free permutation and eulerian_succ_zero."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "geometric-series",
+      "eulerian-numbers",
+      "descent-statistic",
+      "permutations",
+      "order-isomorphism",
+      "cardinality",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 127,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "descentCount: the permutation descent statistic descentCount σ = |{i : Fin n | σ(i.succ) < σ(i.castSucc)}| on σ : Equiv.Perm (Fin (n+1)). This is the first honest descent statistic on permutations in the gallery (and absent from Mathlib, which has only Coxeter-group descents); the existing Eulerian-cluster entries treat the descent distribution only analytically, through the Eulerian polynomial.",
+      "descentCount_eq_zero_iff: the descent-free characterization descentCount σ = 0 ↔ σ = 1 — a permutation has no descents iff it is the increasing identity. The forward direction reads the empty descent set as σ(i.castSucc) ≤ σ(i.succ) on every adjacent pair, sharpens it to a strict inequality by injectivity, and concludes strict monotonicity (Fin.strictMono_iff_lt_succ) hence the identity.",
+      "card_descentFree: the k = 0 rung of the open Eulerian bijection — |{σ : Equiv.Perm (Fin (n+1)) | descentCount σ = 0}| = ⟨n+1,0⟩ = 1. This is the first place in the gallery where an abstract Eulerian number is matched against an actual cardinality of a descent class, validating the combinatorial meaning of the left border of the triangle.",
+      "perm_eq_one_of_strictMono: a reusable lemma that a strictly monotone self-equivalence of Fin n is the identity, proved structurally by promoting the monotone equivalence (and its monotone inverse) to an OrderIso and invoking the subsingleton-ness of Fin n ≃o Fin n, with no induction or arithmetic."
+    ],
+    "prerequisites": [
+      "Grandparent: geometric-series-oq-07-oq-01-oq-01-oq-01 (the combinatorial Eulerian numbers) — supplies eulerian and the base value eulerian_succ_zero (⟨n+1,0⟩ = 1) used to close card_descentFree",
+      "Parent: geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02 (the explicit Eulerian formula) and the sibling oq-02-oq-02 (non-negativity and palindromy) — together they settle claim (1) of the open question; this entry begins claim (2), the literal descent-count bijection, which they leave untouched",
+      "Mathlib order theory on Fin: Fin.strictMono_iff_lt_succ, Equiv.toOrderIso, the OrderIso subsingleton on Fin n, Fin.castSucc_lt_succ; and Finset.card_eq_one / filter_eq_empty_iff for the cardinality"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Fin.strictMono_iff_lt_succ",
+        "description": "StrictMono f ↔ ∀ i, f i.castSucc < f i.succ for f : Fin (n+1) → α. Turns the adjacent-pair inequalities extracted from an empty descent set into strict monotonicity of σ.",
+        "module": "Mathlib.Order.Fin.Basic"
+      },
+      {
+        "theorem": "Equiv.toOrderIso",
+        "description": "Promotes an equivalence that is monotone in both directions to an OrderIso. Applied to a strictly monotone permutation σ (monotone, with monotone inverse) to view it as an element of Fin n ≃o Fin n.",
+        "module": "Mathlib.Order.Hom.Basic"
+      },
+      {
+        "theorem": "Finset.card_eq_one",
+        "description": "s.card = 1 ↔ ∃ a, s = {a}. Reduces card_descentFree to exhibiting the identity as the unique descent-free permutation, the singleton equality discharged by descentCount_eq_zero_iff.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "GeometricSeriesOQ07OQ01OQ01OQ01.eulerian",
+        "description": "The grandparent's combinatorial Eulerian-number triangle, with the base value eulerian_succ_zero giving ⟨n+1,0⟩ = 1. The target the descent-free cardinality is matched against.",
+        "module": "Proofs.GeometricSeriesOQ07OQ01OQ01OQ01"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01-oq-01",
+      "question": "Prove the maximal-descent rung descentCount σ = n ↔ σ = Fin.revPerm and hence |{σ : descentCount σ = n}| = ⟨n+1,n⟩ = 1 (the decreasing permutation is the unique one with the maximum number of descents), the dual of the k=0 case proved here, via the strictly-antitone analogue of perm_eq_one_of_strictMono.",
+      "significance": "low"
+    },
+    {
+      "id": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01-oq-02",
+      "question": "Establish the full bijection |{σ : descentCount σ = k}| = ⟨n+1,k⟩ for all k by proving the descent insertion recurrence on permutations — inserting the largest element into a permutation of {1,…,n} either splits an existing ascent/descent — and matching it to the Eulerian triangle recurrence; this is the substantial remaining half of the parent's claim (2).",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent (the explicit Eulerian formula). Its open question asks to prove non-negativity (claim 1) and the descent-count interpretation (claim 2) of A(n,k). Claim 1 is settled by the sibling oq-02-oq-02; this entry opens claim 2 by defining the permutation descent statistic and proving its k=0 rung against the parent's Eulerian numbers."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling that settles claim (1) of the same open question — non-negativity A(n,k) ≥ 0 and the palindromy ⟨n,k⟩ = ⟨n,n−1−k⟩ — working at the level of the alternating sum. This entry is complementary: it works at the level of actual permutations, taking the first step on claim (2) the descent-count bijection."
+    },
+    {
+      "targetId": "geometric-series-oq-07-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent (the combinatorial Eulerian numbers). Supplies the Eulerian triangle and the border value eulerian_succ_zero (⟨n+1,0⟩ = 1) that the descent-free cardinality card_descentFree is matched against."
+    }
+  ],
+  "references": [
+    {
+      "title": "Concrete Mathematics (Eulerian numbers and the descent statistic)",
+      "author": "Graham, Knuth, Patashnik",
+      "year": "1994",
+      "venue": "Addison-Wesley",
+      "description": "Standard reference for the Eulerian numbers as descent counts of permutations, the combinatorial interpretation this entry begins to formalize at the level of Equiv.Perm."
+    },
+    {
+      "title": "Mathlib4: Order.Fin.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Fin.strictMono_iff_lt_succ, Fin.castSucc_lt_succ, and the order structure on Fin used to characterize descent-free permutations as the identity."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "This entry introduces the missing object of the gallery's Eulerian-number lineage — an honest descent statistic on permutations — and proves the base rung of the descent-count bijection requested by the parent's open question. It defines descentCount σ = |{i : Fin n | σ(i.succ) < σ(i.castSucc)}| for σ : Equiv.Perm (Fin (n+1)), proves descentCount_eq_zero_iff (a permutation is descent-free iff it is the identity), and concludes card_descentFree: |{σ : descentCount σ = 0}| = ⟨n+1,0⟩ = 1. The crux is the reusable perm_eq_one_of_strictMono — a strictly monotone self-equivalence of Fin n is the identity, since it is an OrderIso and Fin n ≃o Fin n is a subsingleton — combined with the upgrade of an empty descent set to strict monotonicity via injectivity and Fin.strictMono_iff_lt_succ. 127 lines, 3 theorems, 1 definition, 0 axioms, 0 sorries; everything depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The existing Eulerian-cluster entries describe the descent distribution only through the Eulerian polynomial (its coefficients, palindromy, and moments); this is the first to connect an abstract Eulerian number ⟨n+1,0⟩ to an actual cardinality of permutations classified by their descent count, giving the combinatorial definition of ⟨n,k⟩ a Lean foothold. The descentCount definition and perm_eq_one_of_strictMono lemma are reusable for the remaining columns. The full bijection |{σ : descentCount σ = k}| = ⟨n+1,k⟩ for k ≥ 1 stays open: it needs a descent insertion recurrence on permutations matched to the Eulerian triangle, a substantial further development not currently supported by Mathlib.",
+    "openQuestions": [
+      "Prove the dual maximal-descent rung descentCount σ = n ↔ σ = Fin.revPerm, giving |{σ : descentCount σ = n}| = ⟨n+1,n⟩ = 1.",
+      "Establish the full descent-count bijection for all k via a descent insertion recurrence on permutations matched to the Eulerian triangle."
+    ]
+  }
+}
