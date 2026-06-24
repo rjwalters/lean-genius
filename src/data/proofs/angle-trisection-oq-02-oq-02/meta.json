@@ -21,8 +21,8 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "assumptions": "One axiom: gauss_wantzel_theorem — the cyclotomic field degree connection cos(2π/n) constructible ↔ φ(n) is a power of 2. This requires cyclotomic field theory and connecting geometric constructibility to field extensions.",
+    "axiomCount": 2,
+    "assumptions": "Two assumptions. (1) One axiom: gauss_wantzel_theorem — the cyclotomic field degree connection cos(2π/n) constructible ↔ φ(n) is a power of 2. This requires cyclotomic field theory and connecting geometric constructibility to field extensions. (2) The totient/Fermat-prime computations underlying the constructibility and non-constructibility theorems (e.g. heptadecagon_constructible, polygon257_constructible, polygon65537_constructible, heptagon_not_constructible, and the standalone totient_three_times_five) are discharged by native_decide, which depends on Lean.ofReduceBool (the proof is not axiom-free). Note: leanFile.axiomCount remains 1 since it counts only literal `axiom` declarations.",
     "originalContributions": [
       "IsFermatPrime: all five known Fermat primes (3, 5, 17, 257, 65537) formally verified",
       "fermat_prime_totient_is_pow_two: φ(p) is a power of 2 for any Fermat prime",
