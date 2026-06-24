@@ -1,0 +1,188 @@
+{
+  "id": "little-wedderburn-oq-02-oq-01",
+  "slug": "little-wedderburn-oq-02-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Module"
+    ],
+    "namespace": "LittleWedderburnOQ02OQ01",
+    "lineCount": 133,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/LittleWedderburnOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Subfield Lattice of GF(pⁿ): the Embedding–Divisibility Criterion",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LittleWedderburnOQ02OQ01.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "finite-field",
+      "galois-field",
+      "subfield-lattice",
+      "divisibility",
+      "frobenius",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 133,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "galoisField_embeds_iff_dvd: the embedding criterion GF(p^m) ↪ GF(p^n) (as 𝔽ₚ-algebras) ⟺ m ∣ n, obtained by specializing Mathlib's FiniteField.nonempty_algHom_iff_finrank_dvd to the canonical Galois fields via GaloisField.finrank ([GF(p^k):𝔽ₚ] = k). Mathlib has the abstract finrank-divisibility iff but does not record it for GaloisField p m / GaloisField p n in terms of the exponents m, n.",
+      "galoisField_natCard_algHom: counting embeddings — exactly m distinct 𝔽ₚ-algebra homomorphisms GF(p^m) →ₐ GF(p^n) when m ∣ n (from FiniteField.natCard_algHom_of_finrank_dvd specialized to the exponents).",
+      "galoisField_natCard_endo: the number of 𝔽ₚ-algebra endomorphisms of GF(p^n) is n (the m = n case; these endomorphisms are exactly the n powers of Frobenius).",
+      "exists_subalgebra_finrank_of_dvd / exists_subalgebra_card_of_dvd: every divisor d ∣ n is realised as the degree of a subfield of GF(p^n) — the image of an embedding GF(p^d) ↪ GF(p^n), of degree d and cardinality p^d.",
+      "intermediateField_finrank_dvd: conversely the degree over 𝔽ₚ of ANY intermediate field 𝔽ₚ ⊆ K ⊆ GF(p^n) divides n (tower law). Combined with the existence direction this characterizes the subfield degrees of GF(p^n) as EXACTLY the divisors of n — e.g. for GF(2^12) the degrees {1,2,3,4,6,12}.",
+      "Concrete instances: GF(2^2) ↪ GF(2^4) but not GF(2^2) ↪ GF(2^3); exactly 2 embeddings GF(2^2) →ₐ GF(2^4); GF(2^12) has a degree-6 subfield but no degree-5 subfield."
+    ],
+    "prerequisites": [
+      "Mathlib's GaloisField p n: the canonical Galois field, the splitting field of X^(p^n) − X over ZMod p, with GaloisField.finrank giving [GF(p^n):𝔽ₚ] = n for n ≠ 0",
+      "FiniteField.nonempty_algHom_iff_finrank_dvd: for finite-dimensional extensions K, L of a finite field F with L finite, Nonempty (K →ₐ[F] L) ⟺ finrank F K ∣ finrank F L",
+      "FiniteField.natCard_algHom_of_finrank_dvd: when finrank F K ∣ finrank F L, the number of F-algebra homs K →ₐ L equals finrank F K",
+      "Module.finrank_mul_finrank: the tower law [K:𝔽ₚ]·[GF(p^n):K] = [GF(p^n):𝔽ₚ] for an intermediate field K"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "FiniteField.nonempty_algHom_iff_finrank_dvd",
+        "description": "The engine: an F-algebra homomorphism K →ₐ L between finite-field extensions exists iff finrank F K divides finrank F L. Specialized via GaloisField.finrank it becomes m ∣ n.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "FiniteField.natCard_algHom_of_finrank_dvd",
+        "description": "When finrank F K ∣ finrank F L, the hom set K →ₐ[F] L has cardinality finrank F K; gives the embedding count m.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "GaloisField.finrank",
+        "description": "[GF(p^n) : ZMod p] = n for n ≠ 0; the bridge turning the abstract finrank-divisibility criterion into the concrete m ∣ n.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "AlgEquiv.ofInjectiveField",
+        "description": "An algebra homomorphism out of a field restricts to an isomorphism onto its range; used to transport [GF(p^d):𝔽ₚ] = d onto the image subfield.",
+        "module": "Mathlib.Algebra.Algebra.Subalgebra.Basic"
+      },
+      {
+        "theorem": "Module.finrank_mul_finrank",
+        "description": "The tower law for finite field extensions; gives [K:𝔽ₚ] ∣ n for any intermediate field K of GF(p^n).",
+        "module": "Mathlib.LinearAlgebra.Dimension.Free"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classification of finite fields (the parent entry little-wedderburn-oq-02) says there is exactly one field GF(p^n) of each prime-power order, but tells you nothing about how those fields nest. The subfield structure is the next classical fact, due to the Galois theory of finite fields (Galois, Moore): GF(p^m) sits inside GF(p^n) precisely when m divides n — never otherwise. So GF(2^2) lives inside GF(2^4) and GF(2^6) but not GF(2^3), and the subfields of GF(2^12) are exactly GF(2^d) for d ∈ {1,2,3,4,6,12}, a copy of the divisor lattice of 12. This rigidity is the shadow of a cyclic group: the 𝔽ₚ-automorphisms of GF(p^n) form a cyclic group of order n generated by the Frobenius map x ↦ x^p, and the divisor lattice of subfields mirrors the (upside-down) subgroup lattice of ℤ/nℤ. The subfield lattice is the entry point to the Galois theory of finite fields — the cleanest nontrivial instance of the fundamental theorem of Galois theory, because the Galois group is always cyclic — and underlies coding theory, the factorization of X^(p^n) − X into all monic irreducibles of degree dividing n, and norm/trace theory.",
+    "problemStatement": "Answer the parent's first open question (little-wedderburn-oq-02-oq-01): formalize the subfield lattice of GF(p^n). Establish the embedding criterion GF(p^m) ↪ GF(p^n) ⟺ m ∣ n as 𝔽ₚ-algebras, count the embeddings (exactly m when m ∣ n, in particular n endomorphisms of GF(p^n)), and characterize the subfield degrees of GF(p^n) as exactly the divisors of n — every divisor d ∣ n is realised by a degree-d subfield, and conversely every intermediate field has degree dividing n.",
+    "proofStrategy": "The embedding criterion is a specialization: FiniteField.nonempty_algHom_iff_finrank_dvd says Nonempty (K →ₐ[F] L) ⟺ finrank F K ∣ finrank F L for finite-field extensions; rewriting with GaloisField.finrank ([GF(p^k):𝔽ₚ] = k) turns the finrank-divisibility into m ∣ n. The embedding count is the same specialization of FiniteField.natCard_algHom_of_finrank_dvd (= finrank F K = m), with the endomorphism count the diagonal m = n case (dvd_rfl). For the subfield-degree lattice: given d ∣ n, an embedding GF(p^d) ↪ GF(p^n) exists by the criterion, and AlgEquiv.ofInjectiveField identifies its image subalgebra with GF(p^d), so the image has degree d (and cardinality p^d via Module.natCard_eq_pow_finrank); conversely, for any intermediate field K the tower law Module.finrank_mul_finrank gives [K:𝔽ₚ]·[GF(p^n):K] = n, so [K:𝔽ₚ] ∣ n. Concrete instances (GF(2^2) ↪ GF(2^4), no GF(2^2) ↪ GF(2^3), 2 embeddings, a degree-6 but no degree-5 subfield of GF(2^12)) are discharged by norm_num / decide on the divisibility facts.",
+    "keyInsights": [
+      "The whole embedding criterion collapses to three rewrites: nonempty_algHom_iff_finrank_dvd turns 'embeds' into 'finrank divides', and two applications of GaloisField.finrank turn the finrank-divisibility into m ∣ n. The mathematics lives entirely in Mathlib; the contribution is recognizing the specialization and packaging it against the exponents.",
+      "A field homomorphism is automatically injective, so 'the hom set is nonempty' already means 'GF(p^m) embeds as a subfield' — no separate injectivity argument is needed.",
+      "Subfield degrees of GF(p^n) are EXACTLY the divisors of n: the existence direction (every divisor is realised) uses the embedding criterion plus AlgEquiv.ofInjectiveField to read off the image degree; the converse (every subfield degree divides n) is just the tower law. The two together pin down the degree set without ever counting subfields.",
+      "The number of 𝔽ₚ-algebra endomorphisms of GF(p^n) is n — these are exactly the n powers of Frobenius, the cyclic Galois group Gal(GF(p^n)/𝔽ₚ) ≅ ℤ/nℤ developed in the sibling entries. Here it falls out as the diagonal case of the embedding count.",
+      "Honest 'mathlib' badge: the deep content (the finrank-divisibility iff, the embedding count, GaloisField.finrank, the tower law) is all Mathlib; the original contribution is the specialization to GaloisField and the subfield-degree characterization, which Mathlib does not record."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Subfield Lattice of GF(pⁿ)",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Frames the entry as the parent's first open question: the embedding criterion GF(p^m) ↪ GF(p^n) ⟺ m ∣ n, the embedding count, and the subfield-degree lattice. Notes that the cyclic Frobenius–Galois group is handled in sibling entries; this entry focuses on the embedding/divisor-lattice content. Names the Mathlib engine (nonempty_algHom_iff_finrank_dvd, natCard_algHom_of_finrank_dvd, GaloisField.finrank).",
+      "mathContext": "GF(p^m) embeds in GF(p^n) iff m ∣ n; the subfield degrees of GF(p^n) are exactly the divisors of n."
+    },
+    {
+      "id": "embedding-criterion",
+      "title": "Embedding Criterion: GF(pᵐ) ↪ GF(pⁿ) ⟺ m ∣ n",
+      "startLine": 52,
+      "endLine": 58,
+      "summary": "galoisField_embeds_iff_dvd: for m, n ≥ 1, Nonempty (GF(p^m) →ₐ[ZMod p] GF(p^n)) ⟺ m ∣ n. Proof rewrites FiniteField.nonempty_algHom_iff_finrank_dvd and twice GaloisField.finrank.",
+      "mathContext": "$\\mathrm{GF}(p^m) \\hookrightarrow \\mathrm{GF}(p^n) \\iff m \\mid n$."
+    },
+    {
+      "id": "counting-embeddings",
+      "title": "Counting Embeddings and Endomorphisms",
+      "startLine": 60,
+      "endLine": 74,
+      "summary": "galoisField_natCard_algHom: when m ∣ n there are exactly m embeddings GF(p^m) →ₐ GF(p^n) (FiniteField.natCard_algHom_of_finrank_dvd specialized via GaloisField.finrank). galoisField_natCard_endo: the diagonal m = n case gives n endomorphisms of GF(p^n) — the n powers of Frobenius.",
+      "mathContext": "$\\#(\\mathrm{GF}(p^m) \\to_{\\mathbb{F}_p} \\mathrm{GF}(p^n)) = m$ when $m \\mid n$; $\\#\\mathrm{End}_{\\mathbb{F}_p}\\mathrm{GF}(p^n) = n$."
+    },
+    {
+      "id": "subfield-existence",
+      "title": "Every Divisor Is Realised as a Subfield Degree",
+      "startLine": 76,
+      "endLine": 98,
+      "summary": "exists_subalgebra_finrank_of_dvd: for d ∣ n there is an 𝔽ₚ-subalgebra of GF(p^n) of degree exactly d — the image of an embedding GF(p^d) ↪ GF(p^n), identified with GF(p^d) by AlgEquiv.ofInjectiveField. exists_subalgebra_card_of_dvd: that subfield has p^d elements.",
+      "mathContext": "For each $d \\mid n$ there is a subfield of $\\mathrm{GF}(p^n)$ of degree $d$ and order $p^d$."
+    },
+    {
+      "id": "subfield-degree-dvd",
+      "title": "Every Subfield Degree Divides n",
+      "startLine": 100,
+      "endLine": 110,
+      "summary": "intermediateField_finrank_dvd: the degree over 𝔽ₚ of any intermediate field 𝔽ₚ ⊆ K ⊆ GF(p^n) divides n, by the tower law Module.finrank_mul_finrank. With the existence direction this says the subfield degrees are exactly the divisors of n.",
+      "mathContext": "$[K : \\mathbb{F}_p] \\mid n$ for every intermediate field $K$ of $\\mathrm{GF}(p^n)$."
+    },
+    {
+      "id": "instances",
+      "title": "Concrete Instances",
+      "startLine": 112,
+      "endLine": 133,
+      "summary": "GF(2^2) embeds in GF(2^4) (2 ∣ 4) but not in GF(2^3) (2 ∤ 3); there are exactly 2 embeddings GF(2^2) →ₐ GF(2^4); GF(2^12) has a degree-6 subfield (6 ∣ 12) but no degree-5 subfield (5 ∤ 12).",
+      "mathContext": "$\\mathrm{GF}(2^2) \\hookrightarrow \\mathrm{GF}(2^4)$, $\\mathrm{GF}(2^2) \\not\\hookrightarrow \\mathrm{GF}(2^3)$; subfield degrees of $\\mathrm{GF}(2^{12})$ are the divisors of $12$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "little-wedderburn-oq-02-oq-01-oq-01",
+      "question": "Count the distinct subfields of GF(p^n) as the number of divisors of n, by promoting the subfield-degree characterization to a bijection: show the degree map from intermediate fields to divisors of n is a bijection (uniqueness of the subfield of each degree), e.g. via the Galois correspondence with the cyclic group ℤ/nℤ and its one-subgroup-per-divisor structure.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "little-wedderburn-oq-02",
+      "relationship": "parent",
+      "description": "The parent classifies finite fields up to isomorphism (one field GF(q) per prime power q). This entry answers its first open question by establishing how those fields nest: the embedding criterion GF(p^m) ↪ GF(p^n) ⟺ m ∣ n and the subfield-degree lattice."
+    },
+    {
+      "targetId": "frobenius-endomorphism-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Develops the cyclic Frobenius–Galois group Gal(GF(p^n)/𝔽ₚ) ≅ ℤ/nℤ of order exactly n. The endomorphism count n here is the order of that group; the embedding criterion complements the automorphism story rather than re-proving it."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: FieldTheory.Finite.GaloisField",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of GaloisField, GaloisField.finrank, FiniteField.nonempty_algHom_iff_finrank_dvd, and FiniteField.natCard_algHom_of_finrank_dvd."
+    },
+    {
+      "title": "A doubly-infinite system of simple groups",
+      "author": "E. H. Moore",
+      "year": "1893",
+      "venue": "Mathematical Papers Chicago Congress",
+      "description": "Establishes the structure of finite fields and their subfields, underlying the divisor-lattice of subfields."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The subfield lattice of GF(p^n) is established as the parent classification's first open question. The embedding criterion GF(p^m) ↪ GF(p^n) ⟺ m ∣ n is obtained by specializing Mathlib's finrank-divisibility iff (FiniteField.nonempty_algHom_iff_finrank_dvd) through GaloisField.finrank. The number of 𝔽ₚ-algebra embeddings GF(p^m) →ₐ GF(p^n) is exactly m when m ∣ n, and the number of endomorphisms of GF(p^n) is n. The subfield degrees of GF(p^n) are characterized as exactly the divisors of n: every divisor d ∣ n is realised by a degree-d (order-p^d) subfield, and every intermediate field has degree dividing n by the tower law. Concrete instances confirm GF(2^2) ↪ GF(2^4) but not GF(2^3), exactly 2 embeddings GF(2^2) →ₐ GF(2^4), and a degree-6 but no degree-5 subfield of GF(2^12). 133 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "The engine — the finrank-divisibility iff, the embedding count, GaloisField.finrank, and the tower law — is Mathlib's (hence the mathlib badge); the original content is the specialization to the canonical Galois fields and the subfield-degree characterization, which Mathlib does not record. This makes the gallery's finite-field material structurally usable: not just which finite fields exist, but how they nest, indexed by the divisor lattice.",
+    "openQuestions": [
+      "Promote the subfield-degree characterization to a count of distinct subfields = number of divisors of n, via uniqueness of the subfield of each degree (Galois correspondence with cyclic ℤ/nℤ).",
+      "Combine with little-wedderburn-oq-02-oq-02 (monic-irreducible count) to factor X^(p^n) − X over 𝔽ₚ into all monic irreducibles of degree dividing n."
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "embedding-criterion",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "insight",
+    "title": "Embedding Criterion: GF(pᵐ) ↪ GF(pⁿ) ⟺ m ∣ n",
+    "content": "galoisField_embeds_iff_dvd is the heart of the entry: for m, n ≥ 1 there is an 𝔽ₚ-algebra homomorphism GF(p^m) →ₐ GF(p^n) iff m ∣ n. Because any field homomorphism is injective, 'the hom set is nonempty' already means GF(p^m) embeds as a subfield. The proof is three rewrites: FiniteField.nonempty_algHom_iff_finrank_dvd replaces 'Nonempty (K →ₐ L)' by 'finrank 𝔽ₚ K ∣ finrank 𝔽ₚ L', and two applications of GaloisField.finrank ([GF(p^k):𝔽ₚ] = k for k ≠ 0) turn the finrank-divisibility into the arithmetic statement m ∣ n. The mathematics — that an embedding is governed by divisibility of degrees — is Mathlib's; the contribution is the specialization to the canonical Galois fields in terms of their exponents.",
+    "mathContext": "$\\mathrm{GF}(p^m) \\hookrightarrow \\mathrm{GF}(p^n) \\iff m \\mid n$, via $[\\mathrm{GF}(p^k):\\mathbb{F}_p] = k$.",
+    "significance": "key",
+    "relatedConcepts": ["Galois field", "field embedding", "divisibility", "finrank"],
+    "prerequisites": ["finite fields", "field extensions", "degree of an extension"]
+  },
+  {
+    "id": "counting-embeddings",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": { "startLine": 60, "endLine": 74 },
+    "type": "concept",
+    "title": "Counting Embeddings and Endomorphisms",
+    "content": "galoisField_natCard_algHom refines existence to a count: when m ∣ n there are exactly m distinct 𝔽ₚ-algebra embeddings GF(p^m) →ₐ GF(p^n), one for each conjugate of a primitive generator under Frobenius. It specializes FiniteField.natCard_algHom_of_finrank_dvd (= finrank 𝔽ₚ K) through GaloisField.finrank. The diagonal case m = n (galoisField_natCard_endo, via dvd_rfl) gives n endomorphisms of GF(p^n) — these are exactly the n powers of the Frobenius automorphism x ↦ x^p, i.e. the cyclic Galois group Gal(GF(p^n)/𝔽ₚ) ≅ ℤ/nℤ developed in the sibling Frobenius–Galois entries.",
+    "mathContext": "$\\#(\\mathrm{GF}(p^m) \\to_{\\mathbb{F}_p} \\mathrm{GF}(p^n)) = m$ for $m \\mid n$; $\\#\\mathrm{End}_{\\mathbb{F}_p}\\mathrm{GF}(p^n) = n$.",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius automorphism", "Galois group", "cyclic group", "conjugates"],
+    "prerequisites": ["algebra homomorphisms", "Galois theory of finite fields"]
+  },
+  {
+    "id": "subfield-degree-lattice",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": { "startLine": 76, "endLine": 110 },
+    "type": "insight",
+    "title": "Subfield Degrees Are Exactly the Divisors of n",
+    "content": "Two complementary theorems pin down the subfield structure. exists_subalgebra_finrank_of_dvd: for each divisor d ∣ n there is a subfield of GF(p^n) of degree exactly d — take an embedding GF(p^d) ↪ GF(p^n) (which exists by the criterion) and use AlgEquiv.ofInjectiveField to identify its image with GF(p^d), so the image has degree d (and cardinality p^d, exists_subalgebra_card_of_dvd). intermediateField_finrank_dvd: conversely the degree of ANY intermediate field 𝔽ₚ ⊆ K ⊆ GF(p^n) divides n, directly from the tower law [K:𝔽ₚ]·[GF(p^n):K] = [GF(p^n):𝔽ₚ] = n. Together: the set of subfield degrees of GF(p^n) is exactly the set of divisors of n. For GF(2^12) that set is {1,2,3,4,6,12}, the divisor lattice of 12. (Counting the distinct subfields — uniqueness of the subfield of each degree — is left as the follow-up open question.)",
+    "mathContext": "$\\{[K:\\mathbb{F}_p] : \\mathbb{F}_p \\subseteq K \\subseteq \\mathrm{GF}(p^n)\\} = \\{d : d \\mid n\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["subfield lattice", "divisor lattice", "tower law", "intermediate field"],
+    "prerequisites": ["intermediate fields", "tower law for field extensions"]
+  },
+  {
+    "id": "concrete-instances",
+    "proofId": "little-wedderburn-oq-02-oq-01",
+    "range": { "startLine": 112, "endLine": 133 },
+    "type": "example",
+    "title": "Concrete Instances",
+    "content": "The criterion is made tangible: GF(2^2) embeds in GF(2^4) because 2 ∣ 4, but there is NO embedding GF(2^2) ↪ GF(2^3) because 2 ∤ 3 (proved by rewriting to ¬(2 ∣ 3) and decide). There are exactly 2 embeddings GF(2^2) →ₐ GF(2^4). And GF(2^12) has a degree-6 subfield (since 6 ∣ 12) but no degree-5 subfield (since 5 ∤ 12, via the divides-direction contrapositive). All divisibility side-conditions are discharged by norm_num / decide, keeping the examples axiom-free.",
+    "mathContext": "$\\mathrm{GF}(2^2) \\hookrightarrow \\mathrm{GF}(2^4)$, $\\mathrm{GF}(2^2) \\not\\hookrightarrow \\mathrm{GF}(2^3)$; $\\mathrm{GF}(2^{12})$ has a degree-6 but no degree-5 subfield.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "divisibility", "decide"],
+    "prerequisites": ["the embedding criterion"]
+  }
+]
