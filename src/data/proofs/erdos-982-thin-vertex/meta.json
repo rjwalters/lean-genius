@@ -182,5 +182,22 @@
       "summary": "ceil_half_pred_eq_floor_half: ⌈(n−1)/2⌉ = ⌊n/2⌋ for n ≥ 1 (Nat, via omega). Records the arithmetic reason the crude (n−1)/2 bound is improved to the tight ⌊n/2⌋ — the unique diameter contributes a class of size 1.",
       "mathContext": "From a regular even n-gon vertex the diametric neighbour is unique (class size 1) and the rest pair up (size 2), giving exactly 1 + (n−2)/2 = n/2 = ⌊n/2⌋ distinct distances."
     }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "erdos-982",
+      "relationship": "Parent problem entry",
+      "description": "States the open Erdős #982 conjecture and axiomatizes the published bounds (moser_bound, nppz_bound, regular_polygon_distances, stronger_conjecture_is_false). This file proves the axiom-free combinatorial core those axioms sit on top of and discharges the parent's triangle_case."
+    },
+    {
+      "proofId": "erdos-97",
+      "relationship": "The obstruction, made precise",
+      "description": "Erdős #97 (equidistant vertices) — whether a vertex avoiding three equidistant neighbours always exists — was disproved. The contrapositive `exists_three_equidistant_of_few_distances` shows that disproof is exactly why a thin vertex is not guaranteed and #982 stays open."
+    },
+    {
+      "proofId": "erdos-divisibility-pigeonhole",
+      "relationship": "Shares the pigeonhole technique",
+      "description": "Another Erdős result whose engine is a fibrewise counting / pigeonhole argument, illustrating how the same `card_eq_sum_card_fiberwise`-style partition underlies distinct results across combinatorial number theory and discrete geometry."
+    }
   ]
 }
