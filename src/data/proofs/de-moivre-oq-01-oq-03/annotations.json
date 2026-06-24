@@ -1,0 +1,139 @@
+[
+  {
+    "id": "ann-dmcf-docstring",
+    "proofId": "de-moivre-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 38
+    },
+    "type": "context",
+    "title": "De Moivre Is Algebra, Not Analysis",
+    "content": "The docstring states the thesis: the analytic De Moivre–Chebyshev identity $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$ is the shadow of a purely algebraic identity needing no analysis, no $\\cos$, and no division by 2. Writing $x = z + z^{-1}$ (with $z$ playing the role of $e^{i\\theta}$), the Chebyshev polynomial of the third kind $C$ (normalized $C_0 = 2$, $C_1 = X$, $C_{n+2} = X\\,C_{n+1} - C_n$) satisfies $(C_R\\,n)(z+w) = z^n + w^n$ whenever $z\\cdot w = 1$. Because this lives over an arbitrary commutative ring, it specializes for free to finite fields $\\mathbb{F}_q$ (the cryptographic case), the p-adics $\\mathbb{Q}_p$, and $\\mathbb{C}$ — answering the parent's open questions OQ-02/OQ-03 uniformly.",
+    "mathContext": "$(C_R\\,n)(z+w) = z^n + w^n$ for $z\\cdot w = 1$, over any commutative ring. On the 'unit circle' $zw=1$, the power map $z\\mapsto z^n$ is evaluation of one fixed integer polynomial.",
+    "significance": "context",
+    "relatedConcepts": [
+      "De Moivre's theorem",
+      "Chebyshev polynomials",
+      "finite fields",
+      "p-adic numbers"
+    ],
+    "prerequisites": [
+      "Chebyshev polynomials",
+      "commutative rings"
+    ]
+  },
+  {
+    "id": "ann-dmcf-engine",
+    "proofId": "de-moivre-oq-01-oq-03",
+    "range": {
+      "startLine": 49,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "The Algebraic Engine via Two-Step Induction",
+    "content": "chebyshevC_eval_add is the heart. Both sequences $n\\mapsto (C_R\\,n)(z+w)$ and $n\\mapsto z^n + w^n$ satisfy the same order-2 recurrence $f(n+2) = (z+w)f(n+1) - f(n)$ with the same initial data $f(0)=2$, $f(1)=z+w$. The order-2 recurrence is matched by a two-step induction implemented through the conjunction trick — proving $P(n)\\wedge P(n+1)$ by ordinary induction — which avoids any custom induction principle. The inductive step rewrites by Mathlib's C_add_two recurrence and closes with a single `linear_combination (z^k + w^k) * hzw`: this is exactly where the unit-circle hypothesis $z\\cdot w = 1$ collapses the cross terms of $(z+w)(z^{k+1}+w^{k+1}) - (z^k+w^k)$ into $z^{k+2}+w^{k+2}$. The units version chebyshevC_eval_units specializes $w = z^{-1}$.",
+    "mathContext": "$(z+w)(z^{n+1}+w^{n+1}) - (z^n+w^n) = z^{n+2}+w^{n+2}$ using $zw=1$ (the cross term $zw(z^n+w^n) = z^n+w^n$ cancels). Conjunction trick: prove $P(n)\\wedge P(n+1)$ by induction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear recurrence",
+      "two-step induction",
+      "linear_combination",
+      "cross-term collapse"
+    ],
+    "prerequisites": [
+      "C_add_two recurrence",
+      "induction",
+      "linear_combination tactic"
+    ]
+  },
+  {
+    "id": "ann-dmcf-field",
+    "proofId": "de-moivre-oq-01-oq-03",
+    "range": {
+      "startLine": 95,
+      "endLine": 105
+    },
+    "type": "technique",
+    "title": "One Field Statement for ℝ, ℂ, 𝔽_q, ℚ_p",
+    "content": "chebyshevC_eval_field specializes the ring identity to any field $F$ and any nonzero $z$, taking $w = z^{-1}$ and bridging $z\\cdot z^{-1} = 1$ via mul_inv_cancel₀. The single statement $(C_F\\,n)(z + z^{-1}) = z^n + (z^{-1})^n$ simultaneously covers finite fields, the p-adics, $\\mathbb{R}$ and $\\mathbb{C}$ — no per-field reproof. This is the payoff of stating the engine over an arbitrary commutative ring: the field machinery enters only to produce the inverse witnessing the unit-circle hypothesis.",
+    "mathContext": "$(C_F\\,n)(z + z^{-1}) = z^n + (z^{-1})^n$ for $z\\ne 0$ in any field, via $z\\cdot z^{-1} = 1$ (mul_inv_cancel₀).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "fields",
+      "multiplicative inverse",
+      "specialization"
+    ],
+    "prerequisites": [
+      "mul_inv_cancel₀",
+      "fields"
+    ]
+  },
+  {
+    "id": "ann-dmcf-zmod-padic",
+    "proofId": "de-moivre-oq-01-oq-03",
+    "range": {
+      "startLine": 107,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "Finite-Field and p-adic Forms",
+    "content": "chebyshevC_eval_zmod and chebyshevC_eval_padic are one-line instantiations of the field version at $\\mathbb{F}_p = $ ZMod $p$ (with [Fact p.Prime] supplying the field structure) and at $\\mathbb{Q}_p$. The ZMod form directly answers the open question's cryptographic motivation: it is exactly the setting of Lucas-sequence and Chebyshev-polynomial public-key schemes over $\\mathbb{F}_p$, where the identity is the algebraic kernel of their exponentiation law. The p-adic form answers the OQ-02 p-adic part. Both require no new proof — they are the field lemma read at a specific field.",
+    "mathContext": "$(C_{\\mathbb{F}_p}\\,n)(z + z^{-1}) = z^n + (z^{-1})^n$ for $z\\ne 0\\in\\mathbb{F}_p$; identically over $\\mathbb{Q}_p$. Cryptographic relevance: Chebyshev/Lucas key exchange over $\\mathbb{F}_p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "finite fields",
+      "ZMod",
+      "p-adic numbers",
+      "cryptography"
+    ],
+    "prerequisites": [
+      "ZMod p as a field",
+      "Fact p.Prime"
+    ]
+  },
+  {
+    "id": "ann-dmcf-complex",
+    "proofId": "de-moivre-oq-01-oq-03",
+    "range": {
+      "startLine": 124,
+      "endLine": 152
+    },
+    "type": "insight",
+    "title": "The Complex Shadow: Reproving the Analytic Theorem",
+    "content": "chebyshevC_complex_cos recovers Mathlib's analytic $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$ as a *corollary* of the algebraic identity. The key substitutions: $2\\cos x = e^{ix} + e^{-ix}$ (from the definition of Complex.cos), so $2\\cos\\theta = z + z^{-1}$ with $z = e^{i\\theta}$ (a unit, since $e^{i\\theta}\\ne 0$); then $z^n = e^{in\\theta}$ and $(z^{-1})^n = e^{-in\\theta}$ (Complex.exp_nat_mul, exp_neg), so $z^n + (z^{-1})^n = 2\\cos(n\\theta)$. Applying chebyshevC_eval_field at $z = e^{i\\theta}$ closes it. This subsumes Mathlib's theorem under the ring-level statement — analysis becomes the $\\mathbb{C}$ instance, not the foundation.",
+    "mathContext": "$z = e^{i\\theta}$: $z + z^{-1} = 2\\cos\\theta$, $z^n + z^{-n} = 2\\cos(n\\theta)$, so $C_n(2\\cos\\theta) = 2\\cos(n\\theta)$. Uses $2\\cos x = e^{ix} + e^{-ix}$ and $e^{i\\theta}\\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler's formula",
+      "complex exponential",
+      "Mathlib subsumption",
+      "C_two_mul_complex_cos"
+    ],
+    "prerequisites": [
+      "Complex.cos / Complex.exp",
+      "Complex.exp_nat_mul"
+    ]
+  },
+  {
+    "id": "ann-dmcf-examples",
+    "proofId": "de-moivre-oq-01-oq-03",
+    "range": {
+      "startLine": 154,
+      "endLine": 175
+    },
+    "type": "context",
+    "title": "Concrete Finite-Field Examples",
+    "content": "Two worked instances give the identity cryptographic flavour. In $\\mathbb{F}_7$: $3$ is a unit with $3^{-1} = 5$, so $3 + 3^{-1} = 1$ and $C_2(1) = 1^2 - 2 = -1 = 6$, matching $3^2 + (3^{-1})^2 = 2 + 4 = 6$ — and a separate `decide` reduces both sides to the explicit $6\\in\\mathbb{F}_7$. A degree-3 instance over $\\mathbb{F}_{11}$ at $z=2$ exercises a different field. The nonzero-ness facts and primality instances are discharged by kernel `decide` / norm_num, so the examples are axiom-free (no native_decide).",
+    "mathContext": "$\\mathbb{F}_7$: $3^{-1}=5$, $3+3^{-1}=1$, $C_2(1) = -1 = 6 = 2+4$. $\\mathbb{F}_{11}$: degree-3 at $z=2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "worked example",
+      "kernel decide",
+      "modular arithmetic"
+    ],
+    "prerequisites": [
+      "ZMod arithmetic",
+      "decidability"
+    ]
+  }
+]
