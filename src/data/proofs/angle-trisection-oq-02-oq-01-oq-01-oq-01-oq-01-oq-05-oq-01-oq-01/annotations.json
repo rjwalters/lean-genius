@@ -1,0 +1,50 @@
+[
+  {
+    "id": "normdeg-ann-header",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "Locating the automorphism count inside the full degree",
+    "content": "The parent proved the normal-extension equality |Aut_F(K)| = [K:F]_s. This entry feeds that into Mathlib's degree multiplicativity [K:F]_s · [K:F]_i = [K:F] to factor the full degree through the automorphism count: [K:F] = |Aut_F(K)| · [K:F]_i. Three consequences follow — the divisibility |Aut_F(K)| ∣ [K:F] (the inseparable refinement of the Galois fact |Gal| = [K:F]), the inseparable-degree quotient [K:F]_i = [K:F] / |Aut_F(K)|, and the separability boundary read through the inseparable cofactor. The automorphism group sees exactly the separable part of the degree; the inseparable degree is the residual cofactor.",
+    "mathContext": "$[K:F] = [K:F]_s \\cdot [K:F]_i = |\\mathrm{Aut}_F(K)| \\cdot [K:F]_i$ for normal $K/F$.",
+    "significance": "context",
+    "relatedConcepts": ["separable degree", "inseparable degree", "degree multiplicativity", "automorphism count"],
+    "prerequisites": ["the parent normal equality |Aut|=[K:F]_s", "the factorisation [K:F]_s·[K:F]_i=[K:F]"]
+  },
+  {
+    "id": "normdeg-ann-parent",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01-oq-01",
+    "range": { "startLine": 52, "endLine": 77 },
+    "type": "technique",
+    "title": "The parent equality, recalled self-contained",
+    "content": "card_algEquiv_eq_finSepDegree reproves in one line that Nat.card (K ≃ₐ[F] K) = Field.finSepDegree F K for normal K/F, via Nat.card_congr of Normal.algHomEquivAut (the equivalence between F-embeddings of K into its algebraic closure and F-automorphisms of K). Keeping it in-file makes this entry self-contained — the headline factorisation is then a one-step rewrite away.",
+    "mathContext": "Normal $K/F$: $\\mathrm{Nat.card}(K\\simeq_F K) = [K:F]_s$, from $\\texttt{Normal.algHomEquivAut}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Normal.algHomEquivAut", "Nat.card_congr", "Field.finSepDegree"],
+    "prerequisites": ["normal extensions", "the embedding-automorphism equivalence"]
+  },
+  {
+    "id": "normdeg-ann-factorisation",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01-oq-01",
+    "range": { "startLine": 78, "endLine": 94 },
+    "type": "insight",
+    "title": "The degree factorisation and divisibility",
+    "content": "finrank_eq_card_algEquiv_mul_finInsepDegree is the headline: for any normal extension, Module.finrank F K = Nat.card (K ≃ₐ[F] K) · Field.finInsepDegree F K, i.e. [K:F] = |Aut_F(K)| · [K:F]_i — obtained by rewriting the parent equality into Mathlib's Field.finSepDegree_mul_finInsepDegree. card_algEquiv_dvd_finrank reads this as the divisibility |Aut_F(K)| ∣ [K:F] with the inseparable degree as the explicit cofactor — the inseparable refinement of |Gal(K/F)| = [K:F], which for general normal extensions has the inseparable degree (not 1) as cofactor. No finiteness hypothesis.",
+    "mathContext": "$[K:F] = |\\mathrm{Aut}_F(K)| \\cdot [K:F]_i$, hence $|\\mathrm{Aut}_F(K)| \\mid [K:F]$ with cofactor $[K:F]_i$.",
+    "significance": "key",
+    "relatedConcepts": ["Field.finSepDegree_mul_finInsepDegree", "divisibility", "inseparable cofactor", "Galois refinement"],
+    "prerequisites": ["the parent equality", "degree multiplicativity"]
+  },
+  {
+    "id": "normdeg-ann-quotient-boundary",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01-oq-01",
+    "range": { "startLine": 95, "endLine": 147 },
+    "type": "insight",
+    "title": "The inseparable degree as quotient, and the separability boundary",
+    "content": "card_algEquiv_pos (the automorphism count is positive, via NeZero of the separable degree) licenses cancellation. finInsepDegree_eq_finrank_div_card gives the explicit automorphism-theoretic formula [K:F]_i = [K:F] / |Aut_F(K)| (Nat.mul_div_cancel_left on the factorisation): the inseparable degree is exactly the residual quotient after the automorphism count. card_algEquiv_eq_finrank_iff_finInsepDegree_eq_one and card_algEquiv_eq_finrank_iff_isSeparable read the separability boundary through the cofactor — |Aut| = [K:F] ⟺ [K:F]_i = 1 ⟺ K/F separable — and card_algEquiv_eq_finrank_of_isSeparable recovers Mathlib's IsGalois.card_aut_eq_finrank as the inseparable-cofactor-equals-1 specialisation.",
+    "mathContext": "$[K:F]_i = [K:F] / |\\mathrm{Aut}_F(K)|$; and $|\\mathrm{Aut}_F(K)| = [K:F] \\iff [K:F]_i = 1 \\iff K/F$ separable.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.mul_div_cancel_left", "isSeparable_iff_finInsepDegree_eq_one", "IsGalois.card_aut_eq_finrank", "inseparable degree formula"],
+    "prerequisites": ["positivity of the separable degree", "the degree factorisation"]
+  }
+]
