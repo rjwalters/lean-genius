@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-ttoq0301-iterderiv-exp",
+    "proofId": "taylor-theorem-oq-03-oq-01",
+    "range": { "startLine": 52, "endLine": 58 },
+    "type": "theorem",
+    "title": "Self-Similarity: every derivative of exp is exp",
+    "content": "iteratedDeriv_exp proves iteratedDeriv k Real.exp = Real.exp by induction on k: the base case is iteratedDeriv_zero, and the step rewrites iteratedDeriv_succ then uses Real.hasDerivAt_exp at each point (funext). This single identity is what makes every later step collapse — both the local derivatives in the Taylor polynomial and the (n+1)-th derivative in the Lagrange remainder reduce to exp.",
+    "mathContext": "$\\dfrac{d^k}{dx^k} e^x = e^x$ for all $k \\in \\mathbb{N}$.",
+    "significance": "key",
+    "relatedConcepts": ["iterated derivative", "exponential function", "induction"],
+    "prerequisites": ["derivative of exp", "iterated derivatives"]
+  },
+  {
+    "id": "ann-ttoq0301-local-to-global",
+    "proofId": "taylor-theorem-oq-03-oq-01",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "technique",
+    "title": "The Local-to-Global Bridge (heart of the proof)",
+    "content": "iteratedDerivWithin_exp_Icc shows that for x > 0 the local derivative-within iteratedDerivWithin k exp (Icc 0 x) 0 equals 1. This is the genuinely technical step: iteratedDerivWithin_eq_iteratedDeriv converts the local derivative (which only sees exp on the interval) into the global iteratedDeriv, but only under two hypotheses — uniqueDiffOn_Icc (the interval is a unique-differentiability set) and ContDiffAt (exp is smooth at the basepoint). Then iteratedDeriv_exp and exp_zero finish. The template applies verbatim to any entire function.",
+    "mathContext": "On a UniqueDiffOn set containing $0$, $\\operatorname{iteratedDerivWithin} k\\,\\exp\\,[0,x]\\,0 = \\operatorname{iteratedDeriv} k\\,\\exp\\,0 = e^0 = 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["iteratedDerivWithin", "unique differentiability", "ContDiffAt", "local vs global derivative"],
+    "prerequisites": ["derivative within a set", "UniqueDiffOn", "smoothness"]
+  },
+  {
+    "id": "ann-ttoq0301-bridge",
+    "proofId": "taylor-theorem-oq-03-oq-01",
+    "range": { "startLine": 81, "endLine": 88 },
+    "type": "theorem",
+    "title": "The Bridge: taylorWithinEval exp = explicit partial sum",
+    "content": "The headline result. taylor_within_apply expands taylorWithinEval into a Finset.sum whose k-th summand is (k!)⁻¹·(x−0)^k · iteratedDerivWithin k exp (Icc 0 x) 0. Applying the local-to-global lemma collapses each derivative to 1, and sub_zero/smul_eq_mul/mul_one + ring reduce each summand to x^k/k!. The local Taylor polynomial is thus identified, purely from Mathlib lemmas, with the partial sum one actually computes with.",
+    "mathContext": "$\\operatorname{taylorWithinEval}(\\exp, n, [0,x], 0, x) = \\sum_{k=0}^{n} \\dfrac{x^k}{k!}$ for $x > 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["Taylor polynomial", "taylorWithinEval", "partial sum", "Finset.sum"],
+    "prerequisites": ["Taylor's theorem", "taylor_within_apply"]
+  },
+  {
+    "id": "ann-ttoq0301-lagrange",
+    "proofId": "taylor-theorem-oq-03-oq-01",
+    "range": { "startLine": 101, "endLine": 110 },
+    "type": "theorem",
+    "title": "Explicit Lagrange Remainder for the exp Partial Sum",
+    "content": "exp_lagrange_remainder_partialSum promotes Mathlib's abstract remainder to a concrete formula: there is ξ ∈ (0,x) with exp x − T_n(x) = exp(ξ)·x^(n+1)/(n+1)!. It obtains ξ from taylor_mean_remainder_lagrange_iteratedDeriv (which already uses the global iteratedDeriv, sidestepping a second local-to-global conversion), rewrites the polynomial with the bridge, and replaces iteratedDeriv (n+1) exp ξ by exp ξ via iteratedDeriv_exp.",
+    "mathContext": "$\\exists\\,\\xi \\in (0,x),\\ e^x - \\sum_{k\\le n} \\dfrac{x^k}{k!} = \\dfrac{e^{\\xi}\\,x^{n+1}}{(n+1)!}$.",
+    "significance": "key",
+    "relatedConcepts": ["Lagrange remainder", "mean value theorem", "Taylor remainder"],
+    "prerequisites": ["Taylor's theorem with remainder", "mean value theorem"]
+  },
+  {
+    "id": "ann-ttoq0301-bound",
+    "proofId": "taylor-theorem-oq-03-oq-01",
+    "range": { "startLine": 118, "endLine": 127 },
+    "type": "theorem",
+    "title": "Two-Sided Error Bound",
+    "content": "exp_sub_partialSum_le packages the remainder into the explicit bound 0 ≤ exp x − T_n(x) ≤ exp(x)·x^(n+1)/(n+1)!. The lower bound is positivity of the remainder term; the upper bound replaces exp(ξ) by exp(x) using exp_le_exp (monotonicity) for ξ < x and closes with gcongr. This is exactly the a-priori estimate used to compute e to a prescribed accuracy.",
+    "mathContext": "$0 \\le e^x - \\sum_{k\\le n}\\dfrac{x^k}{k!} \\le \\dfrac{e^x\\,x^{n+1}}{(n+1)!}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["error bound", "monotonicity of exp", "gcongr", "numerical analysis"],
+    "prerequisites": ["inequalities", "monotone functions"]
+  },
+  {
+    "id": "ann-ttoq0301-tendsto",
+    "proofId": "taylor-theorem-oq-03-oq-01",
+    "range": { "startLine": 133, "endLine": 149 },
+    "type": "theorem",
+    "title": "Convergence Sanity Check",
+    "content": "taylorWithinEval_exp_tendsto confirms the bridge is compatible with convergence: the bridged Taylor polynomials tend to exp x. It builds HasSum of the exp series (via NormedSpace.exp_eq_tsum and summable_pow_div_factorial), takes partial sums (tendsto_sum_nat), shifts the index by 1 (tendsto_add_atTop_nat), and rewrites each term with the bridge to match taylorWithinEval.",
+    "mathContext": "$\\operatorname{taylorWithinEval}(\\exp, n, [0,x], 0, x) \\to e^x$ as $n \\to \\infty$.",
+    "significance": "supporting",
+    "relatedConcepts": ["convergence", "HasSum", "exponential series", "partial sums"],
+    "prerequisites": ["infinite series", "limits of sequences"]
+  }
+]
