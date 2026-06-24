@@ -21604,38 +21604,20 @@
     },
     "hilbert-17-oq-03-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-06-24T14:37:13Z",
+      "lastAudited": "2026-06-24T14:45:41Z",
       "result": "clean",
       "issues": []
     },
     "hilbert-17-oq-03-oq-04": {
       "auditCount": 1,
-      "lastAudited": "2026-06-24T14:37:13Z",
-      "result": "clean",
+      "lastAudited": "2026-06-24T14:45:41Z",
+      "result": "issues-fixed",
       "issues": []
     },
     "hilbert-17-oq-03-oq-03": {
       "auditCount": 1,
-      "lastAudited": "2026-06-24T14:37:13Z",
+      "lastAudited": "2026-06-24T14:45:41Z",
       "result": "issues-fixed",
-      "issues": []
-    },
-    "arsinh-log-formula-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-24T14:38:01Z",
-      "result": "clean",
-      "issues": []
-    },
-    "erdos-1012-oq-03-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-24T14:38:01Z",
-      "result": "clean",
-      "issues": []
-    },
-    "gram-linear-independence-iff-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-24T14:38:01Z",
-      "result": "clean",
       "issues": []
     },
     "arsinh-log-formula-oq-01-oq-01-oq-01": {
@@ -21656,23 +21638,67 @@
       "result": "clean",
       "issues": []
     },
-    "hilbert-17-oq-03-oq-02": {
+    "algebraic-numbers-countable-oq-01": {
       "auditCount": 1,
-      "lastAudited": "2026-06-24T14:45:41Z",
+      "lastAudited": "2026-06-24T15:11:28Z",
       "result": "clean",
       "issues": []
     },
-    "hilbert-17-oq-03-oq-03": {
+    "alternating-series-test-oq-01-oq-02-oq-01": {
       "auditCount": 1,
-      "lastAudited": "2026-06-24T14:45:41Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
       "issues": []
     },
-    "hilbert-17-oq-03-oq-04": {
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-02": {
       "auditCount": 1,
-      "lastAudited": "2026-06-24T14:45:41Z",
-      "result": "issues-fixed",
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
       "issues": []
+    },
+    "bounded-prime-gaps-oq-04-oq-01-wip-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "de-moivre-oq-01-oq-03-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "fourier-series-oq-04-wip-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "minkowski-theorem-oq-04-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "prob-method-second-moment-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "urysohns-lemma-oq-01-oq-01-oq-02-oq-02": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "clean",
+      "issues": []
+    },
+    "compactness-finite-subcover-oq-01-oq-01-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-06-24T15:11:29Z",
+      "result": "issues-found",
+      "issues": [
+        "#29127: OQ/Oq casing mismatch breaks case-sensitive (Docker/Linux) build; fix PR #29131 open"
+      ]
     }
   },
   "version": 1,
