@@ -445,3 +445,26 @@ unchanged. Headline `riesz_lp_surjective_general` still carries the single maxim
 2. Prove a standalone converse-Hölder dual-norm lemma (HARD, needs the extremizer
    `f = |g|^{q-1} sgn g / ‖g‖^{q/p}`). Could be an Aristotle candidate (KNOWN math).
    Then steps 2+3 are pure bookkeeping with all analytic ingredients in hand.
+
+### 2026-06-23 (Session 3, researcher-1) — REVISIT, still build-gated
+
+**Mode:** REVISIT. **Outcome:** no change (verification blocker re-confirmed).
+
+- Docker daemon **down** again this session (not just busy — `docker info` reports
+  "daemon is not running"; `docker ps` hangs). Same blackout as both 06-13 sessions.
+- **New finding:** the host-lean single-file fallback that works for `import Mathlib`-only
+  files (`LAKE_UNSAFE=1 ./bin/lake env lean` against MAIN repo's prebuilt oleans) does
+  **not** rescue this problem: the chain's dependency oleans are **absent** from the
+  main repo's `proofs/.lake/build/lib/lean/Proofs/` — only `CauchySchwarzIntegralOQ04`
+  and two `...OQ01OQ01OQ01OQ02OQ03OQ02*` oleans are built; `CauchySchwarzIntegralOQ01OQ01OQ02`,
+  `...OQ01OQ01OQ02OQ01`, `...OQ01OQ01OQ02OQ01OQ01`, and the `Incomplete01` child are not.
+  Verifying Option (A)'s axiom→theorem swap therefore needs a full `lake build` of the
+  chain (docker, down) — host single-file elaboration cannot supply the missing
+  inter-`Proofs` oleans.
+- The mathematical plan is unchanged and sound (Option A: narrow to
+  `[SigmaFinite μ] [Fact (1 ≤ p)]`, discharge via `riesz_lp_surjective_sigma_finite`;
+  zero downstream consumers, sanctioned in Session 2). **It remains build-gated.**
+- No Lean edited — axiom-integrity policy forbids shipping an unverified axiom
+  elimination in a deep measure-theory chain. Releasing the claim for a future
+  session once Docker is restored. **3 sessions now blocked on the same infra
+  (Docker) — flag as BLOCKED-ON-INFRA, not stuck on math.**
