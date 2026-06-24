@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-similar-def",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 45, "endLine": 48 },
+    "type": "definition",
+    "title": "The Similarity Relation B = P A P⁻¹",
+    "content": "Reuses the `Similar A B` relation from the companion entry [oq-01]: there exists an invertible matrix P (a unit of the matrix ring `(Matrix n n R)ˣ`) with B = P·A·P⁻¹. Phrasing P as a unit, rather than carrying a separate invertibility hypothesis, makes `P⁻¹` available definitionally and lets the surrounding-unit cancellation lemmas fire directly. Similarity is the matrix-level shadow of 'the same linear operator written in two different bases', so any quantity intrinsic to the operator must be constant on a similarity class.",
+    "mathContext": "$A \\sim B \\iff \\exists\\,P \\in (\\mathrm{Mat}_n(R))^\\times,\\ B = P A P^{-1}$. Change of basis: $[\\,T\\,]_{\\mathcal{C}} = P\\,[\\,T\\,]_{\\mathcal{B}}\\,P^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["matrix similarity", "conjugation", "change of basis", "unit group of a matrix ring"],
+    "prerequisites": ["matrices over a commutative ring", "invertible matrices", "units of a ring"]
+  },
+  {
+    "id": "ann-refl-symm",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "technique",
+    "title": "Reflexivity and Symmetry",
+    "content": "`Similar.refl` conjugates by the identity (P = 1), and `Similar.symm` conjugates back by P⁻¹, observing that A = P⁻¹·B·(P⁻¹)⁻¹ once B = P·A·P⁻¹. The `@[refl]` attribute registers reflexivity with the `rfl`-style automation. These two facts (with transitivity from the parent entry) make 'up to similarity' a genuine equivalence; here they are the scaffolding that lets every invariant be stated symmetrically in A and B.",
+    "mathContext": "Refl: $A = 1\\,A\\,1^{-1}$. Symm: $B = PAP^{-1} \\Rightarrow A = P^{-1} B (P^{-1})^{-1}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["equivalence relation", "conjugation", "group of units"],
+    "prerequisites": ["matrix multiplication and inverses", "equivalence relations"]
+  },
+  {
+    "id": "ann-invertibility-invariant",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "theorem",
+    "title": "Invertibility Is a Similarity Invariant",
+    "content": "`Similar.isUnit_iff`: B is a unit iff A is. Destructuring the conjugator and rewriting with `Units.isUnit_mul_units` and `Units.isUnit_units_mul` cancels the two surrounding units — multiplying by a unit on either side never changes unit-ness. No determinant, no field, no finite dimension: this is the bare monoid fact `IsUnit (u·a·v) ↔ IsUnit a` for units u, v, specialised to the matrix ring over any commutative ring.",
+    "mathContext": "$A \\sim B \\Rightarrow (\\operatorname{IsUnit} B \\iff \\operatorname{IsUnit} A)$, because $\\operatorname{IsUnit}(P\\,A\\,P^{-1}) \\iff \\operatorname{IsUnit} A$ for units $P$.",
+    "significance": "key",
+    "relatedConcepts": ["invertible matrix", "units of a monoid", "conjugation"],
+    "prerequisites": ["units of a ring", "matrix invertibility"]
+  },
+  {
+    "id": "ann-invertibility-det-form",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 73 },
+    "type": "technique",
+    "title": "Invertibility via the Determinant",
+    "content": "`Similar.isUnit_det_iff` transports the previous result to the determinant form: `det B` is a unit iff `det A` is. The bridge is `Matrix.isUnit_iff_isUnit_det` (a square matrix over a commutative ring is a unit iff its determinant is a unit), applied to both sides. This is the form one checks in practice — testing whether `det` lands in the group of units — even though the conceptual content lives entirely in `isUnit_iff`.",
+    "mathContext": "$\\operatorname{IsUnit} B \\iff \\operatorname{IsUnit} B.\\det$, so $A \\sim B \\Rightarrow (\\operatorname{IsUnit} B.\\det \\iff \\operatorname{IsUnit} A.\\det)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["determinant", "isUnit_iff_isUnit_det", "Cramer's rule"],
+    "prerequisites": ["determinant of a matrix", "units in a commutative ring"]
+  },
+  {
+    "id": "ann-rank-invariant",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "theorem",
+    "title": "Rank Is a Similarity Invariant",
+    "content": "`Similar.rank_eq`: rank B = rank A. The proof is conceptual rather than computational. Conjugation B = P·A·P⁻¹ is left-multiplication by the unit P and right-multiplication by the unit P⁻¹; `Matrix.rank_mul_eq_left_of_isUnit_det` and `Matrix.rank_mul_eq_right_of_isUnit_det` say neither operation changes the rank, with the unit-determinant hypotheses produced by `isUnit_iff_isUnit_det` applied to P and P⁻¹. Because no eigenvalues or determinant *values* appear — only the fact that P is invertible — rank invariance holds over an arbitrary commutative ring, not just a field.",
+    "mathContext": "$\\operatorname{rank}(P A P^{-1}) = \\operatorname{rank}(A P^{-1}) = \\operatorname{rank} A$, since left/right multiplication by an invertible matrix preserves rank.",
+    "significance": "key",
+    "relatedConcepts": ["matrix rank", "invertible multiplication preserves rank", "image of a linear map"],
+    "prerequisites": ["rank of a matrix", "invertible matrices", "linear maps from matrices"]
+  },
+  {
+    "id": "ann-nullity-def",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 96 },
+    "type": "definition",
+    "title": "Nullity as the Dimension of the Kernel",
+    "content": "Over a field K, `nullity A` is defined as `finrank K (LinearMap.ker A.mulVecLin)` — the dimension of the kernel of the linear map x ↦ A·x on (n → K). The `noncomputable` marker reflects that `finrank` is defined via classical dimension theory. Tying nullity to `A.mulVecLin` rather than to row/column operations is what lets the rank–nullity theorem for linear maps apply verbatim.",
+    "mathContext": "$\\operatorname{nullity} A := \\dim_K \\ker(A \\cdot {-}) = \\dim_K \\ker(A.\\mathrm{mulVecLin})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["kernel", "null space", "finrank", "mulVecLin"],
+    "prerequisites": ["kernel of a linear map", "dimension of a vector space", "fields"]
+  },
+  {
+    "id": "ann-rank-nullity",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 98, "endLine": 103 },
+    "type": "theorem",
+    "title": "Rank–Nullity Theorem, Matrix Form",
+    "content": "`rank_add_nullity`: rank A + nullity A = n (= Fintype.card n) over a field. A single rewrite chains `Matrix.rank` (defined as the finrank of the range of `A.mulVecLin`), the definition of `nullity`, `LinearMap.finrank_range_add_finrank_ker` (rank–nullity for the linear map), and `finrank_pi` (which evaluates dim (n → K) to the cardinality of n). The `omit [DecidableEq n]` shows the identity needs no decidable equality on the index type.",
+    "mathContext": "$\\operatorname{rank} A + \\operatorname{nullity} A = \\dim_K (n \\to K) = |n|$, from $\\dim(\\operatorname{range} f) + \\dim(\\ker f) = \\dim(\\text{domain})$.",
+    "significance": "key",
+    "relatedConcepts": ["rank–nullity theorem", "dimension formula", "finrank_pi"],
+    "prerequisites": ["rank–nullity theorem for linear maps", "dimension of a function space"]
+  },
+  {
+    "id": "ann-nullity-invariant",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 112 },
+    "type": "theorem",
+    "title": "Nullity Is a Similarity Invariant",
+    "content": "`Similar.nullity_eq`: nullity B = nullity A over a field. Once rank invariance (`rank_eq`) and the rank–nullity identity for both A and B are in scope, the conclusion is pure arithmetic: from rank A = rank B and rank + nullity = n for each, `omega` derives nullity A = nullity B. This illustrates how a single structural invariant (rank) propagates to its complementary quantity with no further geometric input.",
+    "mathContext": "$\\operatorname{rank} A = \\operatorname{rank} B$ and $\\operatorname{rank} + \\operatorname{nullity} = n \\Rightarrow \\operatorname{nullity} A = \\operatorname{nullity} B$.",
+    "significance": "key",
+    "relatedConcepts": ["nullity", "similarity invariant", "linear arithmetic (omega)"],
+    "prerequisites": ["rank–nullity theorem", "rank invariance under similarity"]
+  },
+  {
+    "id": "ann-trivial-kernel-full-rank",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 114, "endLine": 121 },
+    "type": "insight",
+    "title": "Trivial Kernel ⇔ Full Rank",
+    "content": "`nullity_eq_zero_iff_rank_eq_card`: a square matrix over a field has nullity 0 iff it has full rank n. This is the algebraic shadow of 'injective ⇔ surjective ⇔ bijective' for an endomorphism of a finite-dimensional space — trivial kernel means injective, full rank means surjective, and for endomorphisms these coincide. Because rank A + nullity A = n pins the two numbers as complements, the equivalence is again an `omega` consequence of a single linear relation.",
+    "mathContext": "$\\operatorname{nullity} A = 0 \\iff \\operatorname{rank} A = n$; equivalently injective $\\iff$ surjective $\\iff$ bijective for an endomorphism of $K^n$.",
+    "significance": "key",
+    "relatedConcepts": ["injective = surjective = bijective", "full rank", "trivial kernel", "finite-dimensional endomorphism"],
+    "prerequisites": ["kernel and injectivity", "rank and surjectivity", "rank–nullity theorem"]
+  },
+  {
+    "id": "ann-packaged",
+    "proofId": "matrix-similarity-invariants-oq-01-oq-01",
+    "range": { "startLine": 127, "endLine": 131 },
+    "type": "context",
+    "title": "Packaged Invariants Statement",
+    "content": "`Similar.invariants` bundles the two ring-level results — rank invariance and invertibility invariance — into one statement B.rank = A.rank ∧ (IsUnit B ↔ IsUnit A), valid over any commutative ring. Together with the field-level nullity results and the parent entry's scalar invariants (determinant, trace, characteristic polynomial), this completes a clean interface of quantities well-defined on similarity classes — the data canonical-form theory builds upon.",
+    "mathContext": "$A \\sim B \\Rightarrow \\operatorname{rank} B = \\operatorname{rank} A \\,\\wedge\\, (\\operatorname{IsUnit} B \\iff \\operatorname{IsUnit} A)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["similarity invariants", "canonical forms", "invariant factors"],
+    "prerequisites": ["matrix similarity", "rank", "invertibility"]
+  }
+]
