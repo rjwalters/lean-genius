@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-bsd0601-scope",
+    "proofId": "birch-swinnerton-dyer-oq-06-oq-01",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "context",
+    "title": "What Is and Is Not Provable Here",
+    "content": "The docstring is unusually careful about scope. The genuine statement — no rank-2 elliptic curve over ℚ has conductor below 389 — is Cremona's exhaustive descent computation over thousands of isogeny classes, far outside what Lean can reproduce. So this entry formalizes the LOGICAL STRUCTURE: an abstract minimality predicate, the derivation that a classification lower bound implies minimality, and the verified arithmetic of the rank records. The deep input enters as an explicit HYPOTHESIS hcremona, not an axiom — so every declaration is a genuine 0-axiom, 0-sorry theorem.",
+    "mathContext": "Headline = the implication 'Cremona's classification $\\Rightarrow$ 389a1 is the minimal-conductor rank-2 curve', the honest maximal content.",
+    "significance": "key",
+    "relatedConcepts": ["conductor", "Mordell–Weil rank", "Cremona database", "conditional theorem"],
+    "prerequisites": ["elliptic curves over ℚ", "isogeny classes"]
+  },
+  {
+    "id": "ann-bsd0601-predicate",
+    "proofId": "birch-swinnerton-dyer-oq-06-oq-01",
+    "range": { "startLine": 62, "endLine": 79 },
+    "type": "definition",
+    "title": "The Minimal-Conductor Predicate and Master Derivation",
+    "content": "IsMinConductorForRank cond rk E₀ r abstracts 'E₀ has rank r and no rank-r curve has smaller conductor', over an abstract carrier E with conductor and rank functions — nothing depends on the analytic theory, only the order structure of ℕ-valued conductors at fixed rank. isMinConductorForRank_of_lb is the master lemma: rank r + conductor N + a classification lower bound (∀ rank-r curve has conductor ≥ N) yields minimality. This cleanly separates the provable logic from the unprovable computation.",
+    "mathContext": "$\\mathrm{IsMinConductorForRank} \\iff \\mathrm{rk}(E_0)=r \\wedge \\forall E',\\ \\mathrm{rk}(E')=r \\Rightarrow \\mathrm{cond}(E_0)\\le \\mathrm{cond}(E')$.",
+    "significance": "key",
+    "relatedConcepts": ["abstraction over carrier", "lower bound", "order structure", "separation of concerns"],
+    "prerequisites": ["predicates in Lean", "order on ℕ"]
+  },
+  {
+    "id": "ann-bsd0601-uniqueness",
+    "proofId": "birch-swinnerton-dyer-oq-06-oq-01",
+    "range": { "startLine": 81, "endLine": 104 },
+    "type": "concept",
+    "title": "Uniqueness and Contrapositive of the Minimum",
+    "content": "Three structural corollaries of the predicate: le_conductor_of_minConductor (a minimal curve dominates every rank-r curve), minConductor_unique (any two minimal-conductor curves for the same rank share a conductor, by le_antisymm — the minimum VALUE is well-defined even though the minimizing curve need not be unique up to isomorphism), and rank_ne_of_conductor_lt (a curve with conductor below the minimum cannot have rank r). The last is the 'threshold' reading of 389.",
+    "mathContext": "$\\mathrm{cond}(E') < \\mathrm{cond}(E_0) \\Rightarrow \\mathrm{rk}(E') \\ne r$ — below the threshold conductor, rank $r$ is impossible.",
+    "significance": "supporting",
+    "relatedConcepts": ["le_antisymm", "well-definedness", "contrapositive", "threshold"],
+    "prerequisites": ["antisymmetry of ≤"]
+  },
+  {
+    "id": "ann-bsd0601-records",
+    "proofId": "birch-swinnerton-dyer-oq-06-oq-01",
+    "range": { "startLine": 108, "endLine": 155 },
+    "type": "definition",
+    "title": "The Cremona Rank-Record Registry",
+    "content": "The verified-arithmetic backbone: a RankRecord data structure (rank, conductor, Cremona label) and the four smallest-conductor records 11a1 (rank 0), 37a1 (rank 1), 389a1 (rank 2), 5077a1 (rank 3). records_conductor_strictMono (11 < 37 < 389 < 5077), records_min_conductor_rank_ge_two and records_rank_two_unique are all closed by `decide` — kernel decision on closed Nat/List data, so they add NO axioms (no native_decide). 389 is prime by norm_num.",
+    "mathContext": "Rank records: $11 < 37 < 389 < 5077$; the smallest conductors realizing ranks $0,1,2,3$.",
+    "significance": "key",
+    "relatedConcepts": ["Cremona database", "LMFDB", "decide", "strict monotonicity"],
+    "prerequisites": ["decidable propositions", "structures in Lean"]
+  },
+  {
+    "id": "ann-bsd0601-main",
+    "proofId": "birch-swinnerton-dyer-oq-06-oq-01",
+    "range": { "startLine": 168, "endLine": 199 },
+    "type": "theorem",
+    "title": "The Conditional Classification Theorem",
+    "content": "curve389a_isMinConductorForRank2 is the headline: given rk c389 = 2, cond c389 = 389, and Cremona's lower bound hcremona (no rank-2 curve below 389), 389a1 is the minimal-conductor rank-2 curve — a direct application of isMinConductorForRank_of_lb. Its two consequences rank2_conductor_ge_389 and conductor_lt_389_rank_ne_two restate the bound and its contrapositive. The hypotheses make the dependence on the deep computation completely explicit and auditable.",
+    "mathContext": "$\\mathrm{rk}(c_{389})=2 \\wedge \\mathrm{cond}(c_{389})=389 \\wedge (\\forall E',\\ \\mathrm{rk}(E')=2 \\Rightarrow 389\\le\\mathrm{cond}(E')) \\Rightarrow \\mathrm{IsMinConductorForRank}\\ c_{389}\\ 2$.",
+    "significance": "key",
+    "relatedConcepts": ["conditional theorem", "explicit hypothesis", "auditability", "rank 2"],
+    "prerequisites": ["the master derivation"]
+  },
+  {
+    "id": "ann-bsd0601-summary",
+    "proofId": "birch-swinnerton-dyer-oq-06-oq-01",
+    "range": { "startLine": 203, "endLine": 213 },
+    "type": "context",
+    "title": "The Unconditional Verified Content",
+    "content": "cremona_389a_summary bundles exactly the facts proved WITHOUT the Cremona hypothesis: 389 is prime, the record conductors strictly increase, and 389a1 is the rank-2 record with conductor 389. This delimits precisely the unconditional, fully machine-checked content — the minimality claim itself remains the conditional theorem. The honest separation is what keeps the entry at status verified / 0 axioms despite touching a Clay-problem (BSD) neighborhood.",
+    "mathContext": "Unconditional: $\\mathrm{Prime}(389)$, $11<37<389<5077$, record$_2 = (\\text{rank }2,\\ 389,\\ 389a1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["unconditional content", "axiom integrity", "BSD conjecture"],
+    "prerequisites": ["the rank-record registry"]
+  }
+]
