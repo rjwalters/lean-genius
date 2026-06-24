@@ -71,7 +71,8 @@
       "Rank invariance is conceptual, not computational: conjugation is multiplication by invertible matrices on both sides, and invertible multiplication preserves rank — no reference to det values or eigenvalues is needed, so it holds over any commutative ring",
       "Invertibility invariance needs no determinant at all: cancelling the surrounding units with Units.isUnit_mul_units suffices, with the determinant form obtained afterwards purely for convenience",
       "Once rank invariance and the rank–nullity identity are in hand, nullity invariance is a one-line arithmetic consequence (omega), illustrating how a single structural invariant propagates",
-      "nullity = 0 ⇔ rank = n packages 'injective ⇔ surjective ⇔ bijective' for finite-dimensional endomorphisms as an arithmetic fact about two natural numbers summing to n"
+      "nullity = 0 ⇔ rank = n packages 'injective ⇔ surjective ⇔ bijective' for finite-dimensional endomorphisms as an arithmetic fact about two natural numbers summing to n",
+      "The dimension count is where finiteness is doing the real work: the trivial-kernel ⇔ full-rank equivalence is exactly the failure of the infinite-dimensional case (the shift operator on K^∞ is injective but not surjective), so rank–nullity is not mere bookkeeping but the precise statement that endomorphisms of a finite-dimensional space cannot leak dimension"
     ],
     "prerequisites": [
       "Matrices over a commutative ring; the unit (invertible-matrix) group",
