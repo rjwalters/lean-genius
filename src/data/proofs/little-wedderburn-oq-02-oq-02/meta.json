@@ -1,0 +1,193 @@
+{
+  "id": "little-wedderburn-oq-02-oq-02",
+  "slug": "little-wedderburn-oq-02-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset"
+    ],
+    "namespace": "LittleWedderburnOQ0202",
+    "lineCount": 201,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/LittleWedderburnOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "title": "Gauss's Necklace Formula: Counting Monic Irreducibles over a Finite Field",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LittleWedderburnOQ02OQ02.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "finite-field",
+      "galois-field",
+      "irreducible-polynomial",
+      "moebius-inversion",
+      "necklace-formula",
+      "wedderburn",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 201,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "badge": "original",
+    "originalContributions": [
+      "necklace_formula: Gauss's formula n·N(n) = Σ_{d∣n} μ(n/d)·p^d for the number N(n) of monic irreducible polynomials of degree n over 𝔽_p, expressed via the divisor antidiagonal — absent from Mathlib (Mathlib has Möbius inversion and the GaloisField machinery, but not the count of irreducibles)",
+      "degree_identity: Gauss's degree identity p^m = Σ_{d∣m} d·N(d) for the intrinsic count N(d), the input that Möbius inversion turns into the necklace formula",
+      "degree_identity_field: the per-field form p^m = Σ_{d∣m} d·N(m,d) obtained by partitioning GF(p^m) by the degree of the minimal polynomial of each element",
+      "card_minpoly_fiber: in a finite field, the elements sharing a given minimal polynomial number exactly its degree — a monic irreducible occurring as a minimal polynomial splits with deg distinct roots (separable + normal)",
+      "Nfield_eq (ambient independence): the degree-d count read off GF(p^m) is the same for every m with d∣m, so the intrinsic count N(d) is well defined; proved by embedding GF(p^d) ↪ GF(p^m) to give every degree-d monic irreducible a root",
+      "exists_root_of_dvd: every monic irreducible of degree d acquires a root in GF(p^k) whenever d∣k, via 𝔽_p[X]/(g) ≅ GF(p^d) and the finrank-divisibility embedding criterion",
+      "mem_image_filter_iff: membership in the degree-d minimal-polynomial image of GF(p^k) (for d∣k) is exactly being a monic irreducible of degree d — the characterization underlying ambient independence",
+      "mdeg_dvd: the degree of any minimal polynomial of GF(p^m) divides m (tower law finrank 𝔽_p⟮x⟯ · finrank ⟮x⟯ GF = m)"
+    ],
+    "prerequisites": [
+      "Mathlib's GaloisField p n with GaloisField.card (|GF(p^n)| = p^n) and GaloisField.finrank (finrank 𝔽_p GF(p^n) = n)",
+      "Finite fields are Galois over their prime subfield: Normal.splits (minimal polynomials split) and Algebra.IsSeparable (minimal polynomials are separable, the field being perfect)",
+      "Splits.natDegree_eq_card_roots and nodup_roots: a separable polynomial that splits has deg distinct roots",
+      "FiniteField.nonempty_algHom_of_finrank_dvd: GF(p^d) embeds in GF(p^k) iff d ∣ k (the embedding criterion)",
+      "AdjoinRoot g ≅ 𝔽_p[X]/(g) as a degree-(deg g) field for irreducible g (AdjoinRoot.powerBasis, AdjoinRoot.eval₂_root)",
+      "ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq: Möbius inversion over a commutative ring"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "GaloisField.card / GaloisField.finrank",
+        "description": "The Galois field GF(p^n) has p^n elements and degree n over 𝔽_p; supplies both the cardinality counted in the degree identity and the divisibility of minimal-polynomial degrees.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "Normal.splits / Algebra.IsSeparable.isSeparable",
+        "description": "A finite field is a normal, separable extension of its prime subfield, so each minimal polynomial splits there with distinct roots; the engine behind card_minpoly_fiber.",
+        "module": "Mathlib.FieldTheory.Normal.Defs / Mathlib.FieldTheory.Separable"
+      },
+      {
+        "theorem": "FiniteField.nonempty_algHom_of_finrank_dvd",
+        "description": "An algebra embedding K → L of finite fields exists iff the degrees divide; gives GF(p^d) ↪ GF(p^k) for d ∣ k, hence roots for every degree-d irreducible — the heart of ambient independence.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq",
+        "description": "Möbius inversion: Σ_{d∣n} f(d) = g(n) for all n iff f(n) = Σ_{(a,b): ab=n} μ(a)·g(b); converts the degree identity into the necklace formula.",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Moebius"
+      },
+      {
+        "theorem": "AdjoinRoot.powerBasis / AdjoinRoot.eval₂_root",
+        "description": "For irreducible g, 𝔽_p[X]/(g) is a field of degree deg g in which the class of X is a root of g; used to manufacture a root of any degree-d irreducible inside GF(p^k).",
+        "module": "Mathlib.RingTheory.AdjoinRoot"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Counting irreducible polynomials over a finite field is one of the oldest applications of Möbius inversion. Gauss, in the unpublished section seven of the Disquisitiones, computed the number of monic irreducible polynomials of degree n modulo a prime p and found N(n) = (1/n)·Σ_{d∣n} μ(n/d)·p^d. The same number counts aperiodic necklaces of n beads in p colours (Moreau's 1872 necklace-counting formula) and the dimension contributions in the free Lie algebra (Witt's formula), so the identity recurs across combinatorics, algebra, and dynamics. The mechanism is uniform: the polynomial X^(p^n) − X over 𝔽_p is the product of all monic irreducibles whose degree divides n, each occurring once because the polynomial is separable; comparing degrees gives p^n = Σ_{d∣n} d·N(d), and Möbius inversion isolates N(n). Equivalently — the route taken here — one partitions the field GF(p^n) itself by the degree of each element's minimal polynomial: an element of degree d is one of the d conjugate roots of a degree-d monic irreducible, and every degree-d irreducible (d∣n) contributes its d roots, so the count of degree-d elements is d·N(d).",
+    "problemStatement": "Answer the parent classification's second open question (little-wedderburn-oq-02-oq-02): count the monic irreducible polynomials of degree n over 𝔽_p by Möbius inversion. Concretely, let N(d) be the number of monic irreducible polynomials of degree d over 𝔽_p. Prove Gauss's degree identity p^n = Σ_{d∣n} d·N(d) and invert it to the necklace/Gauss formula n·N(n) = Σ_{d∣n} μ(n/d)·p^d, with N(d) realised intrinsically (independent of any ambient field) as the number of distinct degree-d minimal polynomials.",
+    "proofStrategy": "Work inside K = GF(p^m). Each element x has a monic irreducible minimal polynomial g = minpoly 𝔽_p x; the map x ↦ g partitions K. card_minpoly_fiber shows each fibre {y : minpoly y = g} equals the root set of g in K and has cardinality deg g — because K is a separable normal extension of 𝔽_p, g splits there with deg g distinct roots (Normal.splits, Algebra.IsSeparable, Splits.natDegree_eq_card_roots, nodup_roots). mdeg_dvd shows deg g ∣ m by the tower law. Summing over the partition (Finset.card_eq_sum_card_fiberwise, then regrouping by degree over m.divisors) yields the per-field identity degree_identity_field: p^m = Σ_{d∣m} d·N(m,d), where N(m,d) counts distinct degree-d minimal polynomials of K. Ambient independence (Nfield_eq) upgrades N(m,d) to a degree-only quantity N(d): for d∣m every monic irreducible of degree d has a root in GF(p^m) (exists_root_of_dvd, built from AdjoinRoot g ≅ GF(p^d) and the embedding criterion FiniteField.nonempty_algHom_of_finrank_dvd), so the degree-d minimal polynomials of GF(p^m) are exactly all monic irreducibles of degree d (mem_image_filter_iff) — independent of m. This gives degree_identity p^m = Σ_{d∣m} d·N(d). Finally ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (after casting to ℤ) inverts it to necklace_formula: n·N(n) = Σ_{(a,b): ab=n} μ(a)·p^b.",
+    "keyInsights": [
+      "Partition, don't factor: instead of factoring X^(p^n) − X into irreducibles (which needs squarefree/radical machinery), partition the field GF(p^n) by the degree of each element's minimal polynomial. The counting then rides on Mathlib's strong minpoly + Galois-extension support.",
+      "Each monic irreducible of degree d contributes exactly d field elements — its d conjugate roots. This factor of d is the whole content of the degree identity; it comes from separability (distinct roots) plus normality (the polynomial actually splits in the field).",
+      "Ambient independence is the subtle step. The count N(m,d) is defined relative to GF(p^m), but the necklace formula needs a single function of d. The key fact: for d∣m every degree-d monic irreducible already has all its roots in GF(p^m), so reading the count off any GF(p^m) with d∣m gives the same number — proved by embedding GF(p^d) ↪ GF(p^m).",
+      "AdjoinRoot manufactures roots without naming GF(p^d): for an abstract monic irreducible g of degree d, 𝔽_p[X]/(g) is a degree-d field carrying a root of g, and the finrank-divisibility embedding criterion drops that root into GF(p^k) whenever d∣k.",
+      "Möbius inversion is the easy half once the degree identity holds for ALL exponents simultaneously — which is exactly why ambient independence (a single N(d) valid in every GF(p^m)) is needed before the inversion can even be stated."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Necklace Formula",
+      "startLine": 3,
+      "endLine": 34,
+      "summary": "Frames the count of monic irreducibles as the second open question of the finite-field classification. States Gauss's degree identity and its Möbius inversion, and outlines the field-partition route: separability and normality give each minimal polynomial deg distinct roots, the embedding criterion gives ambient independence.",
+      "mathContext": "$p^n = \\sum_{d\\mid n} d\\,N(d)$ inverts to $n\\,N(n) = \\sum_{d\\mid n}\\mu(n/d)\\,p^d$."
+    },
+    {
+      "id": "fiber",
+      "title": "Conjugate Count: deg Roots per Minimal Polynomial",
+      "startLine": 46,
+      "endLine": 91,
+      "summary": "Nfield defines the degree-d count via the minimal-polynomial image. card_minpoly_fiber proves the elements of GF(p^m) sharing a given minimal polynomial g number exactly deg g, identifying the fibre with the (separable, splitting) root set of g. mdeg_dvd shows every such degree divides m.",
+      "mathContext": "$\\#\\{y : \\mathrm{minpoly}\\,y = g\\} = \\deg g$, and $\\deg g \\mid m$."
+    },
+    {
+      "id": "degree-identity-field",
+      "title": "Per-Field Degree Partition",
+      "startLine": 93,
+      "endLine": 124,
+      "summary": "degree_identity_field assembles the partition: card GF(p^m) = Σ over minimal polynomials of (deg) = Σ_{d∣m} d·N(m,d), via fiberwise counting and regrouping by degree over the divisors of m.",
+      "mathContext": "$p^m = \\sum_{d\\mid m} d\\,N(m,d)$ where $N(m,d)$ counts degree-$d$ minimal polynomials of $\\mathrm{GF}(p^m)$."
+    },
+    {
+      "id": "ambient-independence",
+      "title": "Ambient Independence: a Degree-Only Count",
+      "startLine": 126,
+      "endLine": 169,
+      "summary": "exists_root_of_dvd embeds GF(p^d) ↪ GF(p^k) (d∣k) to give every degree-d monic irreducible a root. mem_image_filter_iff characterizes the degree-d image as exactly the monic irreducibles of degree d. Nfield_eq concludes N(m,d) = N(d,d) for d∣m: the count depends only on d.",
+      "mathContext": "For $d\\mid m$, $N(m,d) = N(d)$: the degree-$d$ count is intrinsic."
+    },
+    {
+      "id": "necklace",
+      "title": "Möbius Inversion: Gauss's Necklace Formula",
+      "startLine": 171,
+      "endLine": 200,
+      "summary": "Nirr packages the intrinsic count N(d). degree_identity restates p^m = Σ_{d∣m} d·N(d) with it. necklace_formula casts to ℤ and applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq to obtain n·N(n) = Σ_{(a,b): ab=n} μ(a)·p^b.",
+      "mathContext": "$n\\,N(n) = \\sum_{d\\mid n}\\mu(n/d)\\,p^d$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "little-wedderburn-oq-02-oq-02-oq-01",
+      "question": "Derive the explicit lower bound N(n) ≥ (p^n − p^{n/2+1})/n > 0 from the necklace formula, giving an independent proof that monic irreducibles of every degree exist over every 𝔽_p (and hence that GF(p^n) exists for all n).",
+      "significance": "medium"
+    },
+    {
+      "id": "little-wedderburn-oq-02-oq-02-oq-02",
+      "question": "Prove the polynomial form X^(p^n) − X = ∏_{d∣n} ∏_{g monic irreducible, deg g = d} g over 𝔽_p, recovering the degree identity by taking degrees and giving the factorization directly.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "little-wedderburn-oq-02",
+      "relationship": "parent",
+      "description": "The parent establishes the existence-and-uniqueness classification of finite fields; this entry answers its second open question by counting the monic irreducible polynomials of each degree via Möbius inversion of the field partition."
+    }
+  ],
+  "references": [
+    {
+      "title": "Disquisitiones Arithmeticae (Section Seven, unpublished) / Werke vol. 2",
+      "author": "C. F. Gauss",
+      "year": "1863",
+      "venue": "Gauss, Werke",
+      "description": "Gauss's original count of monic irreducible polynomials modulo a prime, the source of the formula N(n) = (1/n) Σ_{d∣n} μ(n/d) p^d."
+    },
+    {
+      "title": "Sur les permutations circulaires distinctes",
+      "author": "C. Moreau",
+      "year": "1872",
+      "venue": "Nouvelles annales de mathématiques",
+      "description": "The necklace-counting formula, combinatorially identical to Gauss's count of irreducibles."
+    },
+    {
+      "title": "Mathlib4: NumberTheory.ArithmeticFunction.Moebius",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of sum_eq_iff_sum_mul_moebius_eq, the Möbius inversion used to invert the degree identity."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Gauss's necklace formula for the number N(n) of monic irreducible polynomials of degree n over 𝔽_p is established by Möbius inversion of a field-partition identity. Partitioning GF(p^m) by the degree of each element's minimal polynomial — and using that a minimal polynomial in this separable normal extension splits with exactly deg distinct roots — gives the per-field degree identity p^m = Σ_{d∣m} d·N(m,d). Embedding GF(p^d) ↪ GF(p^m) for d∣m shows the degree-d count is intrinsic, N(m,d) = N(d), yielding p^m = Σ_{d∣m} d·N(d). Möbius inversion then gives the necklace formula n·N(n) = Σ_{d∣n} μ(n/d)·p^d. 204 lines, 8 theorems, 2 definitions, 0 axioms, 0 sorries.",
+    "implications": "Mathlib supplies the finite-field machinery (GaloisField, normality, separability, the embedding criterion) and Möbius inversion, but not the count of irreducible polynomials; the degree identity, its ambient independence, and the necklace formula are new. The partition route deliberately avoids polynomial factorization into irreducibles (radical/squarefree machinery), trading it for minimal-polynomial conjugate-counting in a Galois extension.",
+    "openQuestions": [
+      "Extract the explicit positive lower bound N(n) ≥ (p^n − p^{n/2+1})/n and re-derive existence of GF(p^n).",
+      "Prove the polynomial factorization X^(p^n) − X = ∏_{d∣n} ∏_{deg g = d} g recovering the degree identity directly."
+    ]
+  }
+}
