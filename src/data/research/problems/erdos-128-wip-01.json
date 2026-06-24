@@ -11,7 +11,7 @@
     "whyMatters": []
   },
   "knowledge": {
-    "progressSummary": "Follow-up entry erdos-128-wip-01-oq-01: proved triangle-freeness pulls back along ARBITRARY graph homomorphisms (triangleFree_of_hom), generalizing the parent hereditary property; defined blow-up as adjacency-pullback along a class map (blowup, blowup_isHom, blowup_triangleFree); proved C5 triangle-free (decide) and hence every C5-blow-up triangle-free at every scale (blowup_C5_triangleFree) -- the triangle-freeness of the conjectured-optimal extremal construction, isolated from the open density estimate. 5 thm/5 def/1 struct, 0 sorries, 0 axioms (propext/Quot.sound only, no native_decide). Kernel-verified via lake env lean.",
+    "progressSummary": "Follow-up chain erdos-128-wip-01-oq-01-oq-01: lifted the parent's homomorphism-pullback of triangle-freeness to K_r-cliques of every order (cliqueFree_of_hom), added clique-order monotonicity (hasClique_mono/cliqueFree_mono), bridged triangles to 3-cliques to recover triangleFree_of_hom, and proved every C5-blow-up is K_r-free for all r>=3 (blowup_C5_cliqueFree) at every scale. 11 thm/8 def/1 struct, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only, no native_decide). Kernel-verified via lake env lean.",
     "builtItems": [
       "hasTriangle_induce: induced triangle => ambient triangle",
       "triangleFree_induce: triangle-freeness hereditary",
@@ -19,7 +19,8 @@
       "triangleFree_of_no_edges: empty graph triangle-free",
       "triangleFree_of_hom: triangle-freeness pulls back along graph homomorphisms (Erdos128WIP01OQ01.lean)",
       "blowup + blowup_isHom + blowup_triangleFree: blow-up = pullback of adjacency along class map; class map is a homomorphism",
-      "C5_triangleFree + blowup_C5_triangleFree: C5 triangle-free (decide), hence every C5-blow-up triangle-free at every scale"
+      "C5_triangleFree + blowup_C5_triangleFree: C5 triangle-free (decide), hence every C5-blow-up triangle-free at every scale",
+      "cliqueFree_of_hom + hasClique_mono/cliqueFree_mono + triangleFree_iff_cliqueFree_three + blowup_C5_cliqueFree (Erdos128WIP01OQ01OQ01.lean): K_r-freeness pulls back along homomorphisms for every clique order, clique-freeness monotone in r, parent triangleFree_of_hom recovered as r=3, every C5-blow-up K_r-free for all r>=3"
     ],
     "insights": [
       "Induced adjacency entails ambient adjacency => substructures lift.",
@@ -27,14 +28,16 @@
       "Edge-count monotonicity underlies the density hypothesis denseSubgraphs.",
       "Triangle-freeness is homomorphism-monotone: a homomorphism into a triangle-free graph forces triangle-freeness; the three image vertices are distinct because the target is irreflexive.",
       "Induced subgraphs (identity map) and blow-ups (class map) are both graph homomorphisms, so one pullback theorem subsumes the parents hereditary property and the extremal-witness triangle-freeness.",
-      "The triangle-freeness of the C5-blow-up extremal construction is a purely structural fact, independent of the open edge-density estimate."
+      "The triangle-freeness of the C5-blow-up extremal construction is a purely structural fact, independent of the open edge-density estimate.",
+      "The homomorphism-pullback argument never used the number 3: the same irreflexivity-forces-distinctness step proves K_r-freeness pulls back for every clique order r, so the parent's triangle result is just the r=3 case.",
+      "Clique-freeness is monotone in the order (restrict via Fin.castLE), so one triangle-freeness fact propagates to K_r-freeness for all r>=3 with no extra combinatorics; the C5-blow-up extremal witnesses are thus clique-free of every order, not just triangle-free."
     ],
     "mathlibGaps": [
       "Scaffold Erdos128Problem.lean broken: missing DecidablePred instance for edgeCount filter (G.adj Prop not decidable) + trailing docstrings parse errors."
     ],
     "nextSteps": [
-      "Formalize the edge-density estimate for a balanced C5-blow-up: induced density > n^2/50 on every floor(n/2)-subgraph (the lower-bound witness).",
-      "Generalize triangleFree_of_hom to K_r-freeness pulls back along homomorphisms into irreflexive targets.",
+      "Formalize the edge-density estimate for a balanced C5-blow-up: induced density > n^2/50 on every floor(n/2)-subgraph (the open lower-bound witness).",
+      "Generalize beyond cliques: an injective-homomorphism image of any fixed graph F pulls back along homomorphisms into irreflexive targets (clique-freeness is the F=K_r case).",
       "Prove or formalize a partial result toward the main question (density forces a triangle)."
     ]
   },
