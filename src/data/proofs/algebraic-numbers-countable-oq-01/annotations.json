@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-anc01-iff-integral",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 64, "endLine": 85 },
+    "type": "technique",
+    "title": "Algebraic = Integral over a Field",
+    "content": "The four ring-closure lemmas (isAlgebraic_add/neg/sub/mul) share one move: rewrite IsAlgebraic to IsIntegral via isAlgebraic_iff_isIntegral, then apply Mathlib's integral-closure subring lemmas IsIntegral.add/neg/sub/mul. The rewrite is valid precisely because K is a field — over a general ring 'algebraic' and 'integral' diverge. This reuses, rather than re-proves, the deep fact that integral elements form a subring (whose proof goes through finitely generated modules and the determinant trick).",
+    "mathContext": "Over a field $K$, $x$ is algebraic over $K$ iff $x$ is integral over $K$. The integral elements of any $K$-algebra form a subring, so algebraicity inherits closure under $+, -, \\times$.",
+    "significance": "key",
+    "relatedConcepts": ["integral closure", "isAlgebraic_iff_isIntegral", "determinant trick", "module-finite extensions"],
+    "prerequisites": ["field extensions", "integral elements", "minimal polynomial"]
+  },
+  {
+    "id": "ann-anc01-inv",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 87, "endLine": 88 },
+    "type": "concept",
+    "title": "Closure Under Inversion",
+    "content": "The multiplicative inverse is the one operation integrality alone does not give: 1/2 is integral over Z but its inverse is not, so the subring lemmas stop short. Algebraicity over a field, however, is closed under inversion — isAlgebraic_inv simply invokes Mathlib's IsAlgebraic.inv. Geometrically, if x satisfies a polynomial of degree n, then x⁻¹ satisfies the reversed (palindromic) polynomial, so it too is algebraic.",
+    "mathContext": "If $\\sum_{i=0}^n c_i x^i = 0$ with $c_0 \\neq 0$, then $\\sum_{i=0}^n c_{n-i} (x^{-1})^i = 0$: the reversed polynomial annihilates $x^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["reversed polynomial", "field of fractions", "IsAlgebraic.inv"],
+    "prerequisites": ["field extensions", "minimal polynomial"]
+  },
+  {
+    "id": "ann-anc01-subfield",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 90, "endLine": 103 },
+    "type": "definition",
+    "title": "algebraicSubfield: Packaging the Closure as a Subfield",
+    "content": "The six closure lemmas (mul, one, add, zero, neg, inv) are exactly the Subfield axioms, so they assemble into algebraicSubfield K L : Subfield L with carrier {x | IsAlgebraic K x}. Instantiated at K = Q, L = C this is the field of algebraic numbers; combined with the parent's countability result it upgrades 'countable set' to 'countable subfield of C'. The @[simp] membership lemma mem_algebraicSubfield exposes the carrier definitionally.",
+    "mathContext": "$\\overline{\\mathbb{Q}} = \\{x \\in \\mathbb{C} : x \\text{ algebraic over } \\mathbb{Q}\\}$ is a subfield of $\\mathbb{C}$ — and, being countable, a countable algebraically closed field.",
+    "significance": "key",
+    "relatedConcepts": ["subfield", "algebraic closure of Q", "countable field"],
+    "prerequisites": ["subfield axioms", "countability"]
+  },
+  {
+    "id": "ann-anc01-back-substitution",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 114, "endLine": 135 },
+    "type": "insight",
+    "title": "The Back-Substitution Contradiction",
+    "content": "Every transcendence-preservation theorem is the contrapositive of a §1 closure lemma, proved by the same one-line trick. To show t + a is transcendental, assume it is algebraic; then t = (t + a) − a is a difference of two algebraic numbers, hence algebraic by isAlgebraic_sub — contradicting transcendence of t. Subtraction, the additive variants, and (with a⁻¹) the multiplicative cases all follow this single template, which is why the proofs are uniformly short.",
+    "mathContext": "If $t+a$ were algebraic and $a$ is algebraic, then $t = (t+a) - a$ is algebraic — contradicting $t \\notin \\overline{K}$. The transcendentals form a single orbit-complement under the algebraic affine group.",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "transcendence", "algebraic affine map", "back-substitution"],
+    "prerequisites": ["transcendental numbers", "proof by contradiction"]
+  },
+  {
+    "id": "ann-anc01-mul-rescale",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 137, "endLine": 150 },
+    "type": "technique",
+    "title": "Why Nonzero Is Required for Rescaling",
+    "content": "For products the back-substitution recovers t as a⁻¹·(a·t), which only makes sense when a ≠ 0 — hence the ha0 : a ≠ 0 hypothesis. The proof multiplies the assumed-algebraic a·t by the algebraic a⁻¹ and simplifies via inv_mul_cancel_left₀. The degenerate case a = 0 genuinely fails: 0·t = 0 is algebraic for every t, so the nonzero hypothesis is not a technicality but a true boundary of the statement.",
+    "mathContext": "$t = a^{-1}(a t)$ requires $a \\neq 0$; indeed $0 \\cdot t = 0 \\in \\overline{K}$, so rescaling by $0$ destroys transcendence.",
+    "significance": "supporting",
+    "relatedConcepts": ["inv_mul_cancel_left₀", "nonzero hypothesis", "edge cases"],
+    "prerequisites": ["field operations"]
+  },
+  {
+    "id": "ann-anc01-affine",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 162, "endLine": 169 },
+    "type": "concept",
+    "title": "The Affine Map Capstone",
+    "content": "transcendental_affine packages all the additive and multiplicative cases: for a ≠ 0 and a, b algebraic, the map t ↦ a·t + b sends transcendentals to transcendentals. It is proved by composing transcendental_algebraic_mul (for a·t) with transcendental_add_algebraic (for +b). This is the form used in practice: it says the set of transcendentals is invariant under the entire group of algebraic affine transformations x ↦ a·x + b.",
+    "mathContext": "The algebraic affine group $\\{x \\mapsto ax+b : a,b \\in \\overline{K},\\ a \\neq 0\\}$ acts on $L$ and preserves the transcendentals setwise.",
+    "significance": "key",
+    "relatedConcepts": ["affine group", "group action", "invariant set"],
+    "prerequisites": ["transcendental numbers", "affine maps"]
+  },
+  {
+    "id": "ann-anc01-not-closed",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 175, "endLine": 184 },
+    "type": "insight",
+    "title": "The Transcendentals Are Not a Subfield",
+    "content": "The sharp contrast with §1: for any transcendental t, both t and 1−t are transcendental (the latter by transcendental_algebraic_sub), yet their sum t + (1−t) = 1 is algebraic. So the transcendentals are closed under no field operation. The structural reason is that they are the set-theoretic complement of the algebraic subfield — and the complement of a nontrivial subfield is never itself closed under addition or multiplication.",
+    "mathContext": "$t + (1-t) = 1 \\in \\overline{K}$ with $t, 1-t \\notin \\overline{K}$. A subfield's complement is closed under no field operation.",
+    "significance": "key",
+    "relatedConcepts": ["complement of a subfield", "closure failure", "structural asymmetry"],
+    "prerequisites": ["subfield", "transcendental numbers"]
+  },
+  {
+    "id": "ann-anc01-examples",
+    "proofId": "algebraic-numbers-countable-oq-01",
+    "range": { "startLine": 190, "endLine": 206 },
+    "type": "context",
+    "title": "Concrete Witnesses over ℚ ⊆ ℂ",
+    "content": "The Examples section instantiates the general theorems at K = Q, L = C: for any transcendental t, the numbers t+1, t⁻¹, t², and 1−t are transcendental. Existence of such t is guaranteed abstractly (the transcendentals have cardinality 𝔠, per the sibling leaf) and concretely by classical results: e (Hermite 1873), π (Lindemann 1882), and every Liouville number. From a single such t the affine-orbit toolkit yields infinitely many transcendentals for free.",
+    "mathContext": "$e, \\pi$ transcendental $\\Rightarrow e+1,\\ e^2,\\ 1/e,\\ 2\\pi-3,\\ \\ldots$ all transcendental; Liouville's $\\sum 10^{-n!}$ is an explicit transcendental.",
+    "significance": "context",
+    "relatedConcepts": ["e", "pi", "Liouville numbers", "Lindemann–Weierstrass"],
+    "prerequisites": ["transcendence of e and pi"]
+  }
+]
