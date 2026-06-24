@@ -17,7 +17,7 @@
       "prime-powers"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 175,
     "erdosUrl": "https://erdosproblems.com/175",
     "erdosProblemStatus": "solved",
@@ -36,16 +36,27 @@
         "theorem": "Squarefree",
         "description": "Squarefreeness predicate",
         "module": "Mathlib.Data.Nat.Squarefree"
+      },
+      {
+        "theorem": "sub_one_mul_padicValNat_choose_eq_sub_sum_digits'",
+        "description": "Kummer/Legendre: (p-1)*v_p(C(n+k,k)) = s_p(k)+s_p(n)-s_p(n+k)",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      },
+      {
+        "theorem": "Nat.digits_base_pow_mul",
+        "description": "digits b (b^k * m) = replicate k 0 ++ digits b m",
+        "module": "Mathlib.Data.Nat.Digits.Defs"
       }
     ],
     "originalContributions": [
-      "Formalized central binomial squarefreeness for n ≥ 5",
-      "Axiomatized bounds on maximum prime power exponent f(n)",
-      "Connected Kummer's theorem to divisibility analysis",
-      "Included explicit computations for small cases"
+      "Fully proved (axiom-free) that 4 divides C(2n,n) iff n is not a power of 2, for n >= 2",
+      "Proved v2(C(2n,n)) = s2(n) (base-2 digit sum) specializing Kummer/Legendre via sub_one_mul_padicValNat_choose_eq_sub_sum_digits'",
+      "Proved s2(n) = 1 iff n is a power of two, and that doubling preserves the base-2 digit sum",
+      "Axiomatized the deep bounds (Granville-Ramare squarefreeness; Sander/Erdos-Kolesnik bounds on f(n))",
+      "Included explicit machine-checked computations for small cases"
     ],
     "axiomCount": 4,
-    "lineCount": 182,
+    "lineCount": 248,
     "references": [
       {
         "title": "The largest prime factor of (2n choose n)",
@@ -72,9 +83,9 @@
         "description": "Kummer's classical theorem relating p-adic valuations of binomial coefficients to carries in base-p arithmetic"
       }
     ],
-    "assumptions": "4 axioms: granville_ramare_1996 (Granville-Ramaré 1996: C(2n,n) not squarefree for n≥5), sander_1992_f_unbounded (Sander 1992: f(n) → ∞), sander_1995_upper_bound (Sander 1995: f(n) ≪ log n), erdos_kolesnik_1999 (Erdős-Kolesnik: f(n) ≫ (log n)^{1/4}). 1 sorry.",
+    "assumptions": "4 axioms (deep analytic results, not yet formalizable): granville_ramare_1996 (Granville-Ramaré 1996: C(2n,n) not squarefree for n≥5), sander_1992_f_unbounded (Sander 1992: f(n) → ∞), sander_1995_upper_bound (Sander 1995: f(n) ≪ log n), erdos_kolesnik_1999 (Erdős-Kolesnik: f(n) ≫ (log n)^{1/4}). 0 sorries: the divisibility characterization four_divides_iff is now fully proven (axiom-free) via Kummer theorem.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 5
   },
   "overview": {
@@ -180,19 +191,24 @@
   },
   "mainTheorems": [
     {
+      "name": "four_divides_iff",
+      "type": "core",
+      "description": "Fully proven (axiom-free): for n >= 2, 4 divides C(2n,n) iff n is not a power of 2. Proved via the 2-adic valuation v2(C(2n,n)) = base-2 digit sum of n."
+    },
+    {
+      "name": "padicValNat_two_centralBinom",
+      "type": "supporting",
+      "description": "Kummer/Legendre specialization: v2(C(2n,n)) equals the base-2 digit sum s2(n) (the number of one-bits of n), using that doubling preserves the base-2 digit sum."
+    },
+    {
       "name": "granville_ramare_1996",
       "type": "core",
-      "description": "The main theorem axiomatizing Granville-Ramaré's 1996 result: C(2n,n) is not squarefree for all n ≥ 5, completing the solution to Erdős's problem."
+      "description": "Axiomatized Granville-Ramare 1996 result: C(2n,n) is not squarefree for all n >= 5, completing the solution to Erdos problem #175."
     },
     {
       "name": "c_10_5_not_squarefree",
       "type": "supporting",
-      "description": "Concrete verified instance: C(10,5) = 252 = 2²·3²·7 is not squarefree, proved by norm_num as a machine-checked small case."
-    },
-    {
-      "name": "sander_1992_f_unbounded",
-      "type": "supporting",
-      "description": "Sander's 1992 result that f(n) = max_p v_p(C(2n,n)) tends to infinity, establishing that the prime power exponents of central binomial coefficients grow without bound."
+      "description": "Concrete verified instance: C(10,5) = 252 = 2^2*3^2*7 is not squarefree."
     }
   ],
   "leanFile": {
@@ -203,12 +219,12 @@
       "Nat"
     ],
     "namespace": "Erdos175",
-    "lineCount": 182,
+    "lineCount": 248,
     "axiomCount": 4,
-    "theoremCount": 5,
+    "theoremCount": 8,
     "definitionCount": 5,
     "path": "Proofs/Erdos175Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -253,5 +269,5 @@
       "note": "Modern survey of prime factors and divisibility of binomial coefficients"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
