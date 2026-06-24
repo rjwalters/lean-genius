@@ -3611,6 +3611,7 @@ import Proofs.SylowTheoremOQ03B
 import Proofs.SylowTheoremOQ04
 import Proofs.SylvesterGallaiOQ01
 import Proofs.SylvesterSequenceOQ01
+import Proofs.SylvesterSequenceOQ01OQ01
 import Proofs.SylvesterSequenceOQ02
 import Proofs.SylvesterSequenceOQ03
 import Proofs.SynthesisCurvaturePtolemy
