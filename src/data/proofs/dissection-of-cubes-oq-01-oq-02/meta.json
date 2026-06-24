@@ -1,0 +1,162 @@
+{
+ "id": "dissection-of-cubes-oq-01-oq-02",
+ "title": "The Minimum Collision Number is Exactly 2",
+ "slug": "dissection-of-cubes-oq-01-oq-02",
+ "description": "Answers the parent open question 'What is the actual minimum of collidingCubes.card over all valid dissections?' Within the combinatorial formalization, the minimum is exactly 2: the set of attainable collision counts (the 'collision spectrum') has least element 2. This packages the OQ-01 lower bound (every nonempty dissection has ≥ 2 colliding cubes) and the OQ-01-OQ-01 achievability witness (a dissection attaining exactly 2) into the canonical order-theoretic statement IsLeast collisionSpectrum 2, equivalently sInf collisionSpectrum = 2. In particular neither 0 nor 1 is attainable. To show 2 is the bottom of a genuine spectrum (not the only value), a second construction of three equal-size cubes side-by-side witnesses 3 ∈ collisionSpectrum. The covering/tiling constraint is the placeholder covers_unit_cube : True, so the lower-bound half inherits one base axiom from Wiedijk #82's unformalized 3D geometry; whether the genuine geometric minimum is also 2 remains open.",
+ "meta": {
+  "author": "Lean Genius Researcher",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Squaring_the_square",
+  "date": "2026-06-24",
+  "status": "axiomatized",
+  "proofRepoPath": "Proofs/DissectionOfCubesOQ01OQ02.lean",
+  "tags": [
+   "geometry",
+   "impossibility",
+   "combinatorics",
+   "extremal",
+   "order-theory",
+   "open-problem",
+   "wiedijk-100"
+  ],
+  "badge": "axiom",
+  "sorries": 0,
+  "mathlibDependencies": [
+   {
+    "theorem": "IsLeast",
+    "description": "Least element of a set: membership plus lower bound",
+    "module": "Mathlib.Order.Bounds.Basic"
+   },
+   {
+    "theorem": "IsLeast.csInf_eq",
+    "description": "The least element of a set equals its infimum in a conditionally complete lattice",
+    "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+   },
+   {
+    "theorem": "Finset.card_insert_of_not_mem",
+    "description": "Cardinality grows by one when inserting a fresh element",
+    "module": "Mathlib.Data.Finset.Card"
+   },
+   {
+    "theorem": "Finset.card_pair",
+    "description": "Cardinality of a two-element Finset",
+    "module": "Mathlib.Data.Finset.Card"
+   },
+   {
+    "theorem": "DissectionOfCubesOQ01.at_least_two_colliding_cubes",
+    "description": "Lower bound: every nonempty dissection has ≥ 2 colliding cubes",
+    "module": "Proofs.DissectionOfCubesOQ01"
+   },
+   {
+    "theorem": "DissectionOfCubesOQ01OQ01.example_has_minimal_collision",
+    "description": "Achievability witness: an explicit dissection with exactly 2 colliding cubes",
+    "module": "Proofs.DissectionOfCubesOQ01OQ01"
+   }
+  ],
+  "originalContributions": [
+   "collisionSpectrum: the set of attainable collision counts over nonempty dissections",
+   "isLeast_collisionSpectrum: IsLeast collisionSpectrum 2 — the minimum is exactly 2 (main result)",
+   "sInf_collisionSpectrum: sInf collisionSpectrum = 2 — infimum restatement",
+   "minimum_collision_count_is_two: the minimum stated directly as attainability + lower bound",
+   "zero_not_mem / one_not_mem_collisionSpectrum: 0 and 1 are not attainable",
+   "cubeD + triDissection: a second explicit witness of three equal-size cubes side-by-side",
+   "tri_has_three_collisions: the three-cube dissection has exactly 3 colliding cubes",
+   "three_mem_collisionSpectrum: 3 ∈ collisionSpectrum, so the spectrum is nontrivial",
+   "collisionSpectrum_nontrivial: {2,3} ⊆ collisionSpectrum with 2 as the least element"
+  ],
+  "dateAdded": "2026-06-24",
+  "assumptions": "The CubeDissection structure encodes the covering/tiling condition as the placeholder field covers_unit_cube : True; only containment in the unit cube and pairwise interior-disjointness are formalized. The achievability results (two_mem / three_mem / tri_has_three_collisions and the explicit constructions) are fully machine-checked with 0 axioms. The lower-bound half — and therefore the headline IsLeast / sInf / minimum statements that combine it — inherits exactly one axiom from the base Wiedijk #82 formalization, DissectionOfCubes.all_different_implies_long_chains_axiom, which stands in for the unformalized 3D geometric covering argument. #print axioms confirms this is the only non-foundational axiom in the dependency closure (axiomCount = 1; the Lean file itself declares 0 axioms). Whether the genuine geometric minimum is also 2, or whether Littlewood's cascade forces strictly more, remains open.",
+  "axiomCount": 1,
+  "lineCount": 263,
+  "theoremCount": 25,
+  "definitionCount": 4
+ },
+ "overview": {
+  "historicalContext": "DissectionOfCubesOQ01 proved a lower bound (every nonempty cube dissection has ≥ 2 colliding cubes) and DissectionOfCubesOQ01OQ01 proved achievability (an explicit dissection attains exactly 2). The parent OQ-01 asked, as its second open question, for the actual minimum of collidingCubes.card over all valid dissections. This file answers it: within the combinatorial model the minimum is exactly 2, stated in the canonical order-theoretic form.",
+  "problemStatement": "**Open question (OQ-01, item 2)**: What is the actual minimum of collidingCubes.card over all valid dissections?\n\n**Answer**: Exactly 2. Defining the collision spectrum as { n | ∃ nonempty dissection with collidingCubes.card = n }, we prove IsLeast collisionSpectrum 2: the value 2 is attained and lower-bounds every attained value. Equivalently sInf collisionSpectrum = 2, and 0, 1 ∉ collisionSpectrum.\n\n**Caveat**: The covering constraint is the placeholder covers_unit_cube : True, so the lower-bound half inherits one base axiom from Wiedijk #82; the genuine geometric minimum remains open.",
+  "text": "Pins down the minimum number of colliding cubes in a (combinatorial) cube dissection: it is exactly 2. The result is the least-element packaging of the OQ-01 lower bound and the OQ-01-OQ-01 achievability witness, plus a fresh three-cube construction showing the attainable set also contains 3.",
+  "proofStrategy": "**Spectrum**: Define collisionSpectrum := { n | ∃ d, d.cubes.Nonempty ∧ (collidingCubes d).card = n }.\n\n**Membership of 2**: reuse OQ-01-OQ-01's exampleDissection (two cubes of size 1/4, one of size 1/3).\n\n**Lower bound**: every element is ≥ 2 by at_least_two_colliding_cubes.\n\n**Minimum**: IsLeast collisionSpectrum 2 = ⟨two_mem, lower_bound⟩; sInf via IsLeast.csInf_eq; 0,1 ∉ spectrum by omega against the lower bound.\n\n**Nontrivial spectrum**: add cubeD at (1/4,0,0) size 1/4 so cubes A,D,B of equal size sit side-by-side at x = 0, 1/4, 1/2 (boundary-touching disjointness allowed). All three collide, so collidingCubes = {A,B,D} and card = 3 by Finset.card_insert_of_not_mem + card_pair, giving 3 ∈ collisionSpectrum.",
+  "keyInsights": [
+   "The 'actual minimum' question is exactly an IsLeast statement: attainability + lower bound",
+   "IsLeast.csInf_eq converts the least element into the infimum sInf collisionSpectrum = 2",
+   "0 and 1 are excluded as direct omega consequences of the ≥ 2 lower bound",
+   "Three equal-size cubes side-by-side give collision count 3, so the spectrum is not the singleton {2}",
+   "Achievability is axiom-free; only the inherited lower bound carries the base geometric axiom"
+  ],
+  "prerequisites": [
+   "Order theory (IsLeast, sInf in a conditionally complete lattice)",
+   "Finset theory (membership, filter, cardinality, insert)",
+   "DissectionOfCubes (Wiedijk #82 base theorem)",
+   "DissectionOfCubesOQ01 (lower bound, collidingCubes definition)",
+   "DissectionOfCubesOQ01OQ01 (achievability witness, cube constructions)"
+  ]
+ },
+ "conclusion": {
+  "summary": "The minimum collision number over all nonempty (combinatorial) cube dissections is exactly 2: IsLeast collisionSpectrum 2, equivalently sInf collisionSpectrum = 2. Neither 0 nor 1 is attainable. A second three-cube construction shows 3 is also attainable, so 2 is the genuine bottom of a nontrivial spectrum rather than its only value.",
+  "implications": "**Sharp answer to OQ-01 item 2**: the parent left the minimum collidingCubes.card open with only a lower bound of 2; combining the sibling achievability result yields the exact value via the canonical IsLeast/sInf packaging. **Combinatorial vs geometric**: the achievability half is fully axiom-free, isolating the single inherited base axiom (all_different_implies_long_chains_axiom) as the only place where the unformalized 3D covering argument enters. The genuine geometric minimum — whether Littlewood's cascade forces strictly more than 2 once covers_unit_cube is replaced by a real covering predicate — remains open.",
+  "openQuestions": [
+   "Does the genuine geometric minimum (with covers_unit_cube replaced by a real covering predicate) equal 2, or does Littlewood's cascade force strictly more?",
+   "Which natural numbers ≥ 2 form the full combinatorial collision spectrum — is every n ≥ 2 attainable?",
+   "Can the base axiom all_different_implies_long_chains_axiom be eliminated by formalizing the floor/cascade argument?"
+  ]
+ },
+ "leanFile": {
+  "imports": [
+   "Mathlib.Tactic",
+   "Mathlib.Data.Finset.Basic",
+   "Mathlib.Data.Real.Basic",
+   "Proofs.DissectionOfCubesOQ01",
+   "Proofs.DissectionOfCubesOQ01OQ01"
+  ],
+  "opens": [
+   "DissectionOfCubes",
+   "DissectionOfCubesOQ01",
+   "DissectionOfCubesOQ01OQ01"
+  ],
+  "namespace": "DissectionOfCubesOQ01OQ02",
+  "lineCount": 263,
+  "axiomCount": 0,
+  "theoremCount": 25,
+  "definitionCount": 4,
+  "path": "Proofs/DissectionOfCubesOQ01OQ02.lean",
+  "sorries": 0
+ },
+ "crossReferences": [
+  {
+   "targetId": "dissection-of-cubes-oq-01",
+   "relationship": "answers",
+   "description": "Answers OQ-01's second open question: the actual minimum of collidingCubes.card is exactly 2"
+  },
+  {
+   "targetId": "dissection-of-cubes-oq-01-oq-01",
+   "relationship": "extends",
+   "description": "Reuses the achievability witness (exampleDissection) and cube constructions; upgrades 'tight' to the IsLeast minimum"
+  },
+  {
+   "targetId": "dissection-of-cubes-oq-01-oq-03",
+   "relationship": "sibling",
+   "description": "Sibling OQ formalizing the volume constraint ∑ c.side³ = 1 for cube dissections"
+  },
+  {
+   "targetId": "dissection-of-cubes",
+   "relationship": "extends",
+   "description": "Builds on the base Wiedijk #82 impossibility theorem via the OQ-01 chain"
+  }
+ ],
+ "references": [
+  {
+   "authors": "John Edensor Littlewood",
+   "title": "A Mathematician's Miscellany",
+   "year": "1953",
+   "venue": "Methuen",
+   "note": "Infinite descent / cascade argument underlying Wiedijk #82; suggests many collisions in genuine geometric dissections"
+  },
+  {
+   "authors": "Freek Wiedijk",
+   "title": "Formalizing 100 Theorems",
+   "year": "2008",
+   "venue": "http://www.cs.ru.nl/~freek/100/",
+   "note": "Theorem #82: impossibility of perfect cube dissection, basis for OQ-01"
+  }
+ ],
+ "sorries": 0
+}
