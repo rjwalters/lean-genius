@@ -1,0 +1,105 @@
+{
+  "id": "divisibility-rules-oq-04-oq-01",
+  "slug": "divisibility-rules-oq-04-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Digits.Div",
+      "Mathlib.Data.Nat.Digits.Lemmas",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "DivisibilityRulesOQ04OQ01",
+    "lineCount": 105,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/DivisibilityRulesOQ04OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Unified 7-11-13 Divisibility Rule from One Base-1000 Grouping",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ04OQ01.lean",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "digit-sums",
+      "modular-arithmetic",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 105,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "dvd_iff_dvd_blockAltSum: the single parametric theorem behind the whole rule — for ANY modulus m with (m:ℤ) ∣ 1001, m ∣ n ↔ (m:ℤ) ∣ blockAltSum n, where blockAltSum n is the alternating sum of the base-1000 (three-decimal-digit) blocks. The side condition 1000 ≡ -1 (mod m) holds exactly when m ∣ (1000 - (-1)) = 1001, so one base-1000 grouping serves every divisor of 1001 = 7·11·13 at once. Proved from Nat.dvd_iff_dvd_ofDigits and Nat.ofDigits_neg_one.",
+      "unified_7_11_13: the open question answered directly — the seven_dvd_iff / eleven_dvd_iff / thirteen_dvd_iff trio packaged together, each test reading off the same quantity blockAltSum n, making the shared 1001 structure explicit (the parent oq-04 only established the m = 11 instance).",
+      "all_three_dvd_iff_dvd_1001: divisibility by all of 7, 11, 13 is exactly divisibility by their product 1001, proved by two applications of Nat.Coprime.mul_dvd_of_dvd_of_dvd (pairwise coprimality) — the structural reason the three tests fuse into one.",
+      "all_three_dvd_iff_blockAltSum: the combined 1001-rule — 7 ∣ n ∧ 11 ∣ n ∧ 13 ∣ n ↔ (1001:ℤ) ∣ blockAltSum n, obtained by composing the coprimality fusion with the m = 1001 instance of the parametric lemma.",
+      "modEq_blockAltSum: the underlying residue identity n ≡ blockAltSum n [ZMOD 1001] (from 1000 ≡ -1 mod 1001 via Nat.zmodeq_ofDigits_digits), exhibiting the congruence that powers every one of the rules."
+    ],
+    "prerequisites": [
+      "Nat.digits in an arbitrary base and Nat.ofDigits",
+      "Mathlib's base-b divisibility machinery (dvd_iff_dvd_ofDigits, zmodeq_ofDigits_digits)",
+      "the factorization 1001 = 7·11·13 and pairwise coprimality of 7, 11, 13",
+      "List.alternatingSum and Nat.ofDigits_neg_one"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.dvd_iff_dvd_ofDigits",
+        "description": "For (m:ℤ) ∣ (b':ℤ) - c, m ∣ n ↔ (m:ℤ) ∣ ofDigits c (digits b' n). Instantiated at b' = 1000, c = -1; the side condition (m:ℤ) ∣ 1001 is exactly what makes the rule work for every divisor of 1001.",
+        "module": "Mathlib.Data.Nat.Digits.Div"
+      },
+      {
+        "theorem": "Nat.ofDigits_neg_one",
+        "description": "ofDigits (-1) L = (L.map (↑·)).alternatingSum. Turns the ofDigits form into the explicit alternating sum of three-digit blocks, blockAltSum.",
+        "module": "Mathlib.Data.Nat.Digits.Lemmas"
+      },
+      {
+        "theorem": "Nat.zmodeq_ofDigits_digits",
+        "description": "n ≡ ofDigits c (digits b' n) [ZMOD m] whenever b' ≡ c [ZMOD m]. With b' = 1000, c = -1, m = 1001 it yields the residue identity n ≡ blockAltSum n [ZMOD 1001].",
+        "module": "Mathlib.Data.Nat.Digits.Div"
+      },
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "Coprime a b → a ∣ n → b ∣ n → a*b ∣ n. Applied twice (7·11 then 77·13) to prove 7∣n ∧ 11∣n ∧ 13∣n ↔ 1001∣n.",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      }
+    ]
+  },
+  "openQuestions": [],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules-oq-04",
+      "relationship": "extends",
+      "description": "Parent. oq-04 established the three-digit block-alternating test for the single modulus 11. This entry isolates the parametric phenomenon (one rule for every m ∣ 1001), answering oq-04's open question by deriving the simultaneous 7-11-13 test from a single base-1000 grouping."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Data.Nat.Digits.Div",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of dvd_iff_dvd_ofDigits and zmodeq_ofDigits_digits, the base-b divisibility/congruence machinery specialized here to the divisors of 1001."
+    },
+    {
+      "title": "The 100 Theorems list (Theorem 85: Divisibility by 3 Rule)",
+      "author": "Freek Wiedijk",
+      "year": "2024",
+      "venue": "Radboud University",
+      "description": "The classical digit-based divisibility rules whose base-b generalization underlies the unified 7-11-13 rule established here."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "A fully verified (0-axiom) derivation of the unified 7-11-13 divisibility rule from a single base-1000 grouping. The parametric lemma dvd_iff_dvd_blockAltSum proves that for ANY modulus m ∣ 1001, m ∣ n ↔ (m:ℤ) ∣ blockAltSum n, where blockAltSum n is the alternating sum of the three-decimal-digit blocks; the side condition 1000 ≡ -1 (mod m) holds precisely when m ∣ 1001 = 7·11·13. The 7, 11 and 13 rules, their conjunction (unified_7_11_13), the coprimality fusion all_three_dvd_iff_dvd_1001, the combined 1001-rule all_three_dvd_iff_blockAltSum, and the residue identity modEq_blockAltSum are all one- or few-line corollaries. 105 lines, 8 theorems, 1 definition, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "The parent oq-04 established only the m = 11 instance; this entry exhibits the genuinely unifying mechanism — a single base-1000 alternating block sum is the divisibility certificate for every divisor of 1001 simultaneously — and proves that the three single-prime tests are equivalent to one 1001-divisibility test via pairwise coprimality. The parametric form makes the role of the 1001 = 7·11·13 factorization explicit rather than hidden inside a per-prime norm_num computation.",
+    "openQuestions": []
+  }
+}
