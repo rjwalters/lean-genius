@@ -1,0 +1,162 @@
+{
+  "id": "dirichlet-approximation-theorem-oq-01-oq-01",
+  "title": "Dirichlet Approximation OQ-01-OQ-01: Optimality of the Hurwitz Constant √5",
+  "slug": "dirichlet-approximation-theorem-oq-01-oq-01",
+  "description": "The sharpness half of Hurwitz's theorem, formalized over Mathlib's golden-ratio development. The parent entry upgrades Dirichlet's bound to infinitely many approximations |α − p/q| < 1/q²; Hurwitz sharpens the constant 1 to 1/√5 and asserts √5 is best possible. This entry proves the optimality (best-possible) direction: for the golden ratio φ = (1+√5)/2 and any constant c > √5, only finitely many rationals satisfy |φ − p/q| < 1/(c·q²) — hence no Hurwitz-type theorem can hold with a constant exceeding √5. The proof is elementary and axiom-free: writing A = p − qφ, B = p − qψ (ψ the conjugate), the product A·B = p² − pq − q² is a nonzero integer (nonzero because φ is irrational), so |A·B| ≥ 1; combining with B = A + q√5 and the triangle inequality yields (c² − c√5)·q² < 1, which bounds the denominators and confines the fractions to a finite box of bounded height (a self-contained re-derivation of the parent's finite_bounded_den lemma). Mathlib has Dirichlet's theorem (constant 1), Legendre's theorem, and continued fractions, but no Hurwitz bound and no optimality statement; the existence half of Hurwitz (the 1/√5 bound itself) is left as future work.",
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hurwitz%27s_theorem_(number_theory)",
+    "date": "1891",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DirichletApproximationOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine-approximation",
+      "rational-approximation",
+      "irrational-numbers",
+      "golden-ratio",
+      "hurwitz-theorem",
+      "optimality"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.goldenRatio_add_goldenConj / Real.goldenRatio_mul_goldenConj / Real.goldenRatio_sub_goldenConj",
+        "description": "The defining symmetric functions of the golden ratio φ and its conjugate ψ: φ + ψ = 1, φ·ψ = −1, and φ − ψ = √5. These are exactly the coefficients of the minimal polynomial x² − x − 1, and they make the integer factorization (p − qφ)(p − qψ) = p² − pq − q² hold and give B = A + q√5.",
+        "module": "Mathlib.NumberTheory.Real.GoldenRatio"
+      },
+      {
+        "theorem": "Real.goldenRatio_irrational / Real.goldenConj_irrational",
+        "description": "φ and ψ are irrational. Used to show the integer norm N = p² − pq − q² is nonzero (a vanishing factor p − qφ would make φ = p/q rational), hence |N| ≥ 1.",
+        "module": "Mathlib.NumberTheory.Real.GoldenRatio"
+      },
+      {
+        "theorem": "Int.one_le_abs",
+        "description": "A nonzero integer has absolute value at least 1. Turns N ≠ 0 into the lower bound |A·B| = |N| ≥ 1 that drives the whole estimate.",
+        "module": "Mathlib.Algebra.Order.Ring.Int"
+      },
+      {
+        "theorem": "Set.Finite.of_finite_image / Finset.Icc / lt_div_iff₀",
+        "description": "Elementary finiteness and ordered-field machinery: a set with finite image under an injective map is finite (powers the in-file finite_bounded_den, embedding q ↦ (q.num, q.den) into the integer box [-M,M]×[1,N]); lt_div_iff₀ clears the denominator in the bound a < 1/(c·q).",
+        "module": "Mathlib.Data.Set.Finite.Basic / Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
+      },
+      {
+        "theorem": "Rat.cast_def / Rat.num_div_den / Rat.pos",
+        "description": "Rational-structure facts: (q : ℝ) = q.num/q.den, q determined by (num,den), and 0 < q.den. Convert between the rational error |φ − r| and the integer combination |p − qφ|, and provide the injectivity for finite_bounded_den.",
+        "module": "Mathlib.Data.Rat.Cast.Defs / Mathlib.Data.Rat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "finite_approx_gt_sqrt5: the optimality (best-possible) half of Hurwitz's theorem — for every c > √5 the set {r : ℚ | |φ − r| < 1/(c·r.den²)} is finite. This is genuinely new content: Mathlib has Dirichlet's theorem with constant 1 and continued-fraction infrastructure but neither the Hurwitz bound nor its optimality. The proof is elementary and axiom-free.",
+      "The integer-norm factorization (p − qφ)(p − qψ) = p² − pq − q² = N over ℝ, with N ≠ 0 deduced from the irrationality of φ (a zero factor forces φ = p/q ∈ ℚ), giving the Diophantine lower bound |A·B| = |N| ≥ 1 — the arithmetic heart of why the golden ratio is badly approximable.",
+      "The clearing-of-denominators estimate: combining |A| = q·|φ − p/q| < 1/(c·q), the triangle bound |B| ≤ |A| + q√5, and 1 ≤ |A|·|B|, to derive the uniform denominator bound (c² − c√5)·q² < 1, valid because c > √5 makes c² − c√5 > 0.",
+      "not_infinite_approx_gt_sqrt5 and hurwitz_constant_optimal: the headline corollaries stating that for c > √5 there are not infinitely many approximations to φ, and consequently that no Hurwitz-type theorem holds with any constant exceeding √5 (the golden ratio is the extremal counterexample) — the precise sense in which √5 is optimal.",
+      "finite_bounded_den: a self-contained re-derivation (independent of the parent file) of the finiteness lemma for rationals of bounded height in a bounded real interval, used to turn the denominator bound plus the value bound |φ − r| < 1 into finiteness of the approximation set."
+    ],
+    "dateAdded": "2026-06-23",
+    "relatedProblems": [
+      {
+        "id": "dirichlet-approximation-theorem-oq-01",
+        "relationship": "Parent entry: upgrades Dirichlet's one-shot bound to infinitely many approximations within 1/q². This OQ-01-OQ-01 answers its openQuestions[0] — 'is the √5 shown to be optimal via the golden ratio?' — by proving the sharpness direction of Hurwitz's theorem."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 239,
+    "assumptions": "0 axioms, 0 sorries. The only hypothesis is c > √5 (Real.sqrt 5 < c), which is exactly the threshold past which optimality kicks in. The result is proved in-file from elementary Mathlib facts about the golden ratio (the symmetric-function identities φ+ψ=1, φψ=−1, φ−ψ=√5 and the irrationality of φ, ψ) together with Int.one_le_abs and standard finiteness machinery. Badge is 'original' because the optimality theorem and all corollaries are new in-file results, not restatements of any Mathlib theorem (Mathlib contains neither Hurwitz's bound nor its sharpness).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's 1842 theorem gives, for every irrational α, infinitely many fractions p/q with |α − p/q| < 1/q². In 1891 Hurwitz sharpened the constant: infinitely many p/q satisfy |α − p/q| < 1/(√5·q²), and √5 is best possible — for any larger constant the statement fails, the golden ratio φ = (1+√5)/2 being the obstruction. Among all irrationals φ is the 'most badly approximable' (its continued fraction is [1;1,1,…]). The parent gallery entry formalizes the infinitude with constant 1 and asks, as its first open question, whether the constant can be sharpened to Hurwitz's √5 and whether √5 is shown optimal via the golden ratio. This entry settles the optimality direction.",
+    "problemStatement": "Let φ = (1+√5)/2 be the golden ratio and let c > √5. Then only finitely many rationals p/q satisfy\n\n$$\\left|\\varphi - \\frac{p}{q}\\right| < \\frac{1}{c\\,q^2}.$$\n\nConsequently the constant √5 in Hurwitz's theorem cannot be replaced by any larger constant: there is no c > √5 for which every irrational admits infinitely many approximations within 1/(c·q²).",
+    "text": "Mathlib provides Dirichlet's theorem (constant 1), Legendre's theorem, and continued fractions, but not Hurwitz's sharp bound and not its optimality. This entry proves the optimality (sharpness) half: the golden ratio is approximated within 1/(c·q²) by only finitely many fractions once c exceeds √5. The existence half of Hurwitz (the 1/√5 bound itself) is noted as future work.",
+    "proofStrategy": "Fix c > √5 and a rational r = p/q (q = r.den ≥ 1) with |φ − r| < 1/(c·q²). Let A = p − qφ and B = p − qψ where ψ = (1−√5)/2 is the conjugate. Using φ + ψ = 1 and φ·ψ = −1 (Mathlib), the product A·B equals the integer N = p² − pq − q². N is nonzero: a vanishing factor A = 0 or B = 0 would make φ or ψ equal to the rational p/q, contradicting their irrationality (Real.goldenRatio_irrational). Hence |A·B| = |N| ≥ 1 by Int.one_le_abs. Since φ − ψ = √5, we have B = A + q√5, so |B| ≤ |A| + q√5 by the triangle inequality, giving 1 ≤ |A|·|B| ≤ |A|² + |A|·q√5. Feeding in |A| = q·|φ − r| < 1/(c·q) and clearing denominators yields the uniform denominator bound (c² − c√5)·q² < 1. As c > √5 makes c² − c√5 = c(c − √5) > 0, the denominators are bounded by a constant M depending only on c; together with the value bound |φ − r| < 1 (so r ∈ [φ−1, φ+1]) the approximations lie in a finite box of bounded height, finite by the in-file finite_bounded_den. The corollaries not_infinite_approx_gt_sqrt5 and hurwitz_constant_optimal read off optimality.",
+    "keyInsights": [
+      "**The golden ratio's minimal polynomial does the arithmetic**: φ + ψ = 1 and φ·ψ = −1 are precisely the coefficients of x² − x − 1, and they make (p − qφ)(p − qψ) collapse to the integer p² − pq − q². The Diophantine rigidity of φ is encoded entirely in this integrality",
+      "**Irrationality ⟹ nonvanishing ⟹ |N| ≥ 1**: the single use of φ being irrational is to rule out N = 0; the discreteness of ℤ (Int.one_le_abs) then supplies the crucial lower bound |A·B| ≥ 1 that no purely analytic argument provides",
+      "**The conjugate gap is exactly √5**: B = A + q√5, so the second factor is forced to be large (≈ q√5) whenever the first is small. The product being ≥ 1 then squeezes |A| from below — the golden ratio resists approximation precisely because √5 = φ − ψ is the spectral gap to its conjugate",
+      "**√5 is the break-even constant**: the estimate produces (c² − c√5)·q² < 1, whose leading coefficient c² − c√5 is positive exactly when c > √5. At c = √5 the bound degenerates (consistent with Hurwitz's infinitely-many at the threshold); above it, denominators are bounded and only finitely many fractions survive",
+      "**Finitely many is sharpness**: bounding the denominators turns the approximation set into a bounded-height subset of a bounded interval, hence finite. The contrapositive — no c > √5 works for every irrational — is the optimality statement, with φ as the universal witness"
+    ],
+    "prerequisites": [
+      "Mathlib's golden-ratio development: the symmetric-function identities φ+ψ=1, φψ=−1, φ−ψ=√5, and the irrationality of φ and ψ",
+      "The integrality and discreteness of ℤ (a nonzero integer has |·| ≥ 1)",
+      "Elementary finiteness of bounded-height rationals in a bounded interval (re-derived in-file)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview-and-setup",
+      "title": "Module Overview and Setup",
+      "startLine": 1,
+      "endLine": 57,
+      "mathContext": "Goal: for c > √5, the set of rationals approximating φ within 1/(c·q²) is finite — the optimality half of Hurwitz's theorem.",
+      "summary": "Module docstring framing the open question (sharpness of the Hurwitz constant √5), the elementary axiom-free method via the integer norm (p − qφ)(p − qψ) = p² − pq − q², and the explicit note that Mathlib lacks both the Hurwitz bound and its optimality. Followed by import Mathlib, namespace DirichletApproximationOQ01OQ01, open Set Real, and open scoped goldenRatio."
+    },
+    {
+      "id": "finite-bounded-den",
+      "title": "Bounded-Height Finiteness (in-file infrastructure)",
+      "startLine": 59,
+      "endLine": 95,
+      "mathContext": "Rationals in a bounded interval [a,b] with denominator ≤ N form a finite set.",
+      "summary": "finite_bounded_den: a self-contained re-derivation (independent of the parent file) embedding q ↦ (q.num, q.den) into the finite integer box Finset.Icc(-M,M) ×ˢ Finset.Icc 1 N with M ≥ max|a||b|·N, and injectivity via Rat.num_div_den. This is the discreteness fact that converts the denominator bound into finiteness."
+    },
+    {
+      "id": "optimality-finiteness",
+      "title": "Optimality: Finitely Many Approximations Beyond √5",
+      "startLine": 97,
+      "endLine": 222,
+      "mathContext": "For c > √5, {r : ℚ | |φ − r| < 1/(c·r.den²)} is finite.",
+      "summary": "finite_approx_gt_sqrt5: the main theorem. Builds the integer norm N = p² − pq − q², proves the factorization (p − qφ)(p − qψ) = N via φ+ψ=1 and φψ=−1, shows N ≠ 0 from the irrationality of φ and ψ (a zero factor forces φ or ψ rational), and hence |A·B| = |N| ≥ 1. Using B = A + q√5 (from φ − ψ = √5) and the triangle inequality gives 1 ≤ |A|² + |A|·q√5; substituting |A| = q·|φ − r| < 1/(c·q) and clearing denominators yields (c² − c√5)·q² < 1. Since c² − c√5 > 0, the denominators are bounded by an M depending only on c; with |φ − r| < 1 confining r to [φ−1, φ+1], finite_bounded_den finishes."
+    },
+    {
+      "id": "optimality-corollaries",
+      "title": "Corollaries: √5 Is Best Possible",
+      "startLine": 224,
+      "endLine": 239,
+      "mathContext": "No Hurwitz-type theorem holds with a constant exceeding √5.",
+      "summary": "not_infinite_approx_gt_sqrt5: the approximation set for c > √5 is not infinite (a restatement of finiteness). hurwitz_constant_optimal: for any c > √5 it is false that every irrational has infinitely many approximations within 1/(c·q²) — the golden ratio is the counterexample (via Real.goldenRatio_irrational). This is the sharpness statement complementing Hurwitz's existence theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The optimality (best-possible) half of Hurwitz's theorem is formalized: for the golden ratio φ and any c > √5, only finitely many rationals p/q satisfy |φ − p/q| < 1/(c·q²). The argument is elementary and axiom-free — the integer norm (p − qφ)(p − qψ) = p² − pq − q² is nonzero by irrationality of φ, so |·| ≥ 1, and the conjugate gap φ − ψ = √5 forces (c² − c√5)·q² < 1, bounding the denominators. The corollary hurwitz_constant_optimal states the conclusion in its sharpest form: no Hurwitz-type theorem can hold with a constant exceeding √5, the golden ratio being the universal obstruction. Zero sorries, zero axioms.",
+    "implications": "This pins down the constant in the central theorem of one-dimensional Diophantine approximation. Together with the parent's infinitude (constant 1) and the (future) existence half of Hurwitz (constant √5), it brackets the optimal approximation exponent and constant for irrationals exactly. The method — reduce approximability to the nonvanishing of an algebraic integer norm and exploit the conjugate gap — is the template for the Markov spectrum and for badly approximable numbers generally (numbers with bounded continued-fraction partial quotients).",
+    "openQuestions": [
+      "Can the existence half of Hurwitz be formalized — every irrational has infinitely many p/q with |α − p/q| < 1/(√5·q²) — via three consecutive continued-fraction convergents, completing the theorem?",
+      "Does the optimality argument generalize to the next Lagrange/Markov number (√8 for numbers not equivalent to the golden ratio), exhibiting the discrete spectrum of best constants?",
+      "Can 'badly approximable' be characterized in Lean as bounded partial quotients, with the golden ratio shown to be the extremal (worst-approximable) case?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dirichlet-approximation-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: infinitely many approximations within 1/q² for irrational α. This entry answers its first open question by proving the optimality direction of the Hurwitz sharpening — √5 cannot be improved, with the golden ratio as witness."
+    },
+    {
+      "targetId": "dirichlet-approximation-theorem",
+      "relationship": "sharpens",
+      "description": "The grandparent one-shot Dirichlet bound. This entry sits at the sharp end of the same story: it identifies the exact constant √5 beyond which approximation of the golden ratio fails."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/DirichletApproximationOQ01OQ01.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Real",
+      "goldenRatio"
+    ],
+    "namespace": "DirichletApproximationOQ01OQ01",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4
+  },
+  "sorries": 0
+}
