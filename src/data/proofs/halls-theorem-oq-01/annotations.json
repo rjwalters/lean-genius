@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ann-halloq01-1",
+    "proofId": "halls-theorem-oq-01",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "Completing Hall's Theorem: the Necessity Direction",
+    "content": "**Module framing.** Hall's marriage theorem says a locally finite bipartite graph $G$ with parts $p_1, p_2$ has a matching saturating $p_1$ **iff** *Hall's condition* holds: every $s \\subseteq p_1$ has at least as many neighbours as vertices, $|s| \\le |\\bigcup_{x\\in s} N(x)|$. Mathlib proves only the hard *sufficiency* direction (`exists_isMatching_of_forall_ncard_le`); the *necessity* direction — a saturating matching forces Hall's condition — is absent. This entry supplies it as a standalone, **graph-agnostic** fact (no bipartiteness needed) and assembles the textbook biconditionals plus the deficiency (obstruction) form.",
+    "mathContext": "Hall's condition: $\\forall s \\subseteq p_1,\\ |s| \\le \\left|\\bigcup_{x\\in s} N_G(x)\\right|$; equivalent to existence of a matching saturating $p_1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "Bipartite matchings",
+      "Necessity vs sufficiency",
+      "Systems of distinct representatives"
+    ],
+    "prerequisites": [
+      "SimpleGraph.Subgraph matchings",
+      "Set.ncard and neighborSet"
+    ],
+    "tags": ["module-header", "framing", "halls-theorem"]
+  },
+  {
+    "id": "ann-halloq01-2",
+    "proofId": "halls-theorem-oq-01",
+    "range": { "startLine": 49, "endLine": 80 },
+    "type": "insight",
+    "title": "Necessity via the Matched-Partner Injection",
+    "content": "**`ncard_le_ncard_biUnion_neighborSet_of_isMatching`** is the heart: if a matching $M$ saturates $s$ then $|s| \\le |\\bigcup_{x\\in s} N_G(x)|$ — and it holds in *any* graph. The proof builds the **matched-partner map** $\\varphi$ (each $v \\in M.\\mathrm{verts}$ has a unique $M$-neighbour, extracted with `choose`), then verifies three facts: $\\varphi v$ is an $M$-edge (`hadj`), hence a $G$-neighbour landing in $s$'s neighbourhood (`hmem`, via `M.adj_sub`); and $\\varphi$ is **injective on $s$** (`hinj`) — distinct vertices get distinct partners by the matching axiom `eq_of_adj_right`. An injection into a finite set doesn't increase `ncard` (`ncard_le_ncard_of_injOn`). The infinite-$s$ case is handled separately: `s.ncard = 0` makes the bound vacuous.",
+    "mathContext": "$\\varphi: s \\hookrightarrow \\bigcup_{x\\in s} N_G(x)$ injective $\\Rightarrow |s| \\le |\\bigcup_{x\\in s} N_G(x)|$; the partner map witnesses the injection.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Matched-partner map",
+      "Set.InjOn / ncard_le_ncard_of_injOn",
+      "IsMatching.eq_of_adj_right",
+      "Subgraph.adj_sub"
+    ],
+    "prerequisites": [
+      "Subgraph.IsMatching (unique neighbour)",
+      "ncard monotonicity under injection"
+    ],
+    "tags": ["main-theorem", "necessity", "injection"]
+  },
+  {
+    "id": "ann-halloq01-3",
+    "proofId": "halls-theorem-oq-01",
+    "range": { "startLine": 82, "endLine": 88 },
+    "type": "concept",
+    "title": "Global Form for Perfect Matchings",
+    "content": "**`ncard_le_of_isPerfectMatching`** specializes necessity to a *perfect* matching: since a perfect matching is spanning ($M.\\mathrm{verts} = V$, via `Subgraph.isSpanning_iff`), it saturates *every* set $s$, so Hall's condition holds for all $s \\subseteq V$ unconditionally. This is the global-Hall-condition half used in the perfect-matching biconditional below.",
+    "mathContext": "Perfect matching spanning $\\Rightarrow s \\subseteq V = M.\\mathrm{verts}$ for all $s$, so $|s| \\le |\\bigcup_{x\\in s} N_G(x)|$ everywhere.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Perfect matching",
+      "Spanning subgraph",
+      "Subgraph.isSpanning_iff"
+    ],
+    "prerequisites": [
+      "The necessity lemma",
+      "IsPerfectMatching definition"
+    ],
+    "tags": ["perfect-matching", "global-form", "corollary"]
+  },
+  {
+    "id": "ann-halloq01-4",
+    "proofId": "halls-theorem-oq-01",
+    "range": { "startLine": 90, "endLine": 114 },
+    "type": "concept",
+    "title": "The Full Biconditionals",
+    "content": "**`hall_marriage`** and **`hall_perfect`** assemble the complete theorem. `hall_marriage`: for a bipartite $G$, Hall's condition on $p_1$ $\\iff$ a matching saturating $p_1$ exists — forward is Mathlib's `exists_isMatching_of_forall_ncard_le`, backward is the necessity lemma. `hall_perfect`: the global Hall condition $\\iff$ a perfect matching exists — forward Mathlib's `exists_isPerfectMatching_of_forall_ncard_le`, backward `ncard_le_of_isPerfectMatching`. These are the textbook 'iff' statements that the necessity direction was needed to complete.",
+    "mathContext": "$(\\forall s \\subseteq p_1,\\ |s| \\le |N(s)|) \\iff \\exists M$ saturating $p_1$; and the global/perfect analogue.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Biconditional assembly",
+      "exists_isMatching_of_forall_ncard_le",
+      "Perfect-matching Hall theorem"
+    ],
+    "prerequisites": [
+      "Both directions (Mathlib + necessity lemma)",
+      "IsBipartiteWith"
+    ],
+    "tags": ["biconditional", "headline", "hall-marriage"]
+  },
+  {
+    "id": "ann-halloq01-5",
+    "proofId": "halls-theorem-oq-01",
+    "range": { "startLine": 116, "endLine": 127 },
+    "type": "concept",
+    "title": "Deficiency Form: the Obstruction Certificate",
+    "content": "**`exists_violating_of_no_matching`** is the practical contrapositive: if $G$ admits *no* matching saturating $p_1$, then Hall's condition must fail somewhere — some $s \\subseteq p_1$ has *strictly fewer* neighbours than vertices, $|\\bigcup_{x\\in s} N(x)| < |s|$. Proved by `by_contra` + `push_neg`: negating the conclusion restores Hall's condition, which by `hall_marriage` would produce a matching, contradicting `hno`. This is the obstruction (deficiency) certificate complementing the existence statement — it tells you *why* no matching exists.",
+    "mathContext": "$\\neg\\exists$ saturating matching $\\Rightarrow \\exists s \\subseteq p_1,\\ |\\bigcup_{x\\in s} N(x)| < |s|$ (a Hall violator).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Deficiency version of Hall",
+      "Obstruction certificate",
+      "Contrapositive (by_contra / push_neg)"
+    ],
+    "prerequisites": [
+      "hall_marriage"
+    ],
+    "tags": ["deficiency", "obstruction", "contrapositive"]
+  }
+]
