@@ -1,0 +1,50 @@
+[
+  {
+    "id": "cheb-rev-ann-header",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 64 },
+    "type": "context",
+    "title": "The Reverse Regime: Same Identity, Opposite Sign",
+    "content": "The parent file proves the strict Chebyshev inequality for monovarying sequences. This file treats the opposite ordering regime — f and g antivary (f increasing, g decreasing) — where the inequality reverses to #s·∑ f·g ≤ (∑ f)(∑ g). The whole development reuses the grandparent's order-free covariance identity ∑ᵢ∑ⱼ (fᵢ−fⱼ)(gᵢ−gⱼ) = 2·(#s·∑ fᵢgᵢ − (∑ fᵢ)(∑ gᵢ)). Importing the parent strict file (Proofs.RearrangementChebyshevStrictOQ01OQ02) transitively brings the grandparent's covariance_identity, which `open RearrangementChebyshevEq` makes directly available.",
+    "mathContext": "Monovarying: $\\big(\\sum f\\big)\\big(\\sum g\\big) \\le \\#s\\sum f g$. Antivarying (this file): $\\#s\\sum f g \\le \\big(\\sum f\\big)\\big(\\sum g\\big)$.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev's sum inequality", "AntivaryOn", "discrete covariance identity", "anticomonotone covariance"],
+    "prerequisites": ["finite sums over a Finset", "order-correlation predicates"]
+  },
+  {
+    "id": "cheb-rev-ann-bound",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 66, "endLine": 90 },
+    "type": "technique",
+    "title": "Sign Flip: Each Summand Is Non-Positive",
+    "content": "term_nonpos is the mirror of the grandparent's term_nonneg: under AntivaryOn f g s, when g increases across a pair f weakly decreases, so the two differences (f i − f j) and (g i − g j) have opposite signs and their product is ≤ 0. A trichotomy on g i vs g j feeds AntivaryOn to bound f the right way, and nlinarith closes each branch. chebyshev_sum_reverse then applies Finset.sum_nonpos to make the double sum ≤ 0, and rewriting with covariance_identity turns that into the reverse bound by a single linarith. This is exactly the monovarying proof with sum_nonneg replaced by sum_nonpos.",
+    "mathContext": "$(f_i - f_j)(g_i - g_j) \\le 0$ for antivarying $f,g$, hence $\\sum_i\\sum_j (f_i-f_j)(g_i-g_j) \\le 0$, i.e. $\\#s\\sum f g \\le \\big(\\sum f\\big)\\big(\\sum g\\big)$.",
+    "significance": "key",
+    "relatedConcepts": ["AntivaryOn", "covariance_identity", "Finset.sum_nonpos", "sign case split"],
+    "prerequisites": ["the order-free covariance identity", "trichotomy and nlinarith"]
+  },
+  {
+    "id": "cheb-rev-ann-equality",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 92, "endLine": 159 },
+    "type": "insight",
+    "title": "Identical Equality Condition, Antitone Extreme Pair",
+    "content": "chebyshev_sum_reverse_eq_iff shows equality holds iff ∀ i j ∈ s, f i = f j ∨ g i = g j — the SAME condition as the monovarying case, because a real product is zero exactly when a factor is, regardless of sign. The forward direction uses Finset.sum_eq_zero_iff_of_nonpos (the nonpos analogue of the grandparent's nonneg lemma) to pin each summand to 0, then mul_eq_zero. chebyshev_sum_reverse_eq_iff_const upgrades this to the textbook 'constant' form for f monotone, g antitone: the extreme-pair argument still produces f m ≠ f M at (min' s, max' s) for non-constant f, and for an antitone non-constant g the inequalities g M ≤ g c ≤ g m point the other way but still force g m ≠ g M.",
+    "mathContext": "Equality $\\iff f$ or $g$ constant on $s$; the rigidity lemma transfers from the monotone case because the $(\\min', \\max')$ argument is sign-agnostic.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_eq_zero_iff_of_nonpos", "mul_eq_zero", "extreme-pair argument", "Antitone", "rigidity"],
+    "prerequisites": ["the monovarying equality characterisation", "min'/max' of a nonempty Finset"]
+  },
+  {
+    "id": "cheb-rev-ann-strict",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-02-oq-01",
+    "range": { "startLine": 161, "endLine": 209 },
+    "type": "insight",
+    "title": "Three Strict Forms via lt_of_le_of_ne",
+    "content": "The strict statements mirror the parent exactly, each lt_of_le_of_ne of the reverse bound and the negated equality case. chebyshev_sum_reverse_strict_of_pair: one pair a, b ∈ s with f a ≠ f b AND g a ≠ g b forces (∑ f)(∑ g) > #s·∑ f·g under only AntivaryOn — strictness is local. chebyshev_sum_reverse_strict: the bridge (hf.antivary hg).antivaryOn s plus the negated constant-equality lemma gives the textbook 'f monotone, g antitone, neither constant ⇒ strict'. chebyshev_sum_reverse_strict_strictMonoAnti: Finset.one_lt_card extracts a ≠ b, and StrictMono.injective / StrictAnti.injective turn that into f a ≠ f b and g a ≠ g b automatically.",
+    "mathContext": "$f$ str. monotone, $g$ str. antitone, $1 < \\#s \\Rightarrow \\big(\\sum f\\big)\\big(\\sum g\\big) > \\#s\\sum f g$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lt_of_le_of_ne", "Monotone.antivary", "StrictAnti.injective", "Finset.one_lt_card", "local-to-global strictness"],
+    "prerequisites": ["the reverse bound and its equality case", "the lt_of_le_of_ne pattern"]
+  }
+]
