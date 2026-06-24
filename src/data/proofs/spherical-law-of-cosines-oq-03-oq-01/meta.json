@@ -73,10 +73,17 @@
   },
   "sections": [
     {
+      "id": "module-docstring",
+      "title": "Overview: the open question and its correction",
+      "startLine": 1,
+      "endLine": 93,
+      "summary": "Module docstring stating OQ-01 of the spherical dual entry and answering it: the clear-radicals-then-ring strategy ports to a Lorentzian structure, but the geometrically correct identity is cos C = −cos A·cos B + sin A·sin B·cosh c — the interior angles stay circular, only the included side becomes hyperbolic. Corrects the open question's tentative all-hyperbolic formula."
+    },
+    {
       "id": "part1-lorentzian-toolkit",
       "title": "Part I: Minkowski Vector Toolkit",
-      "startLine": 95,
-      "endLine": 135,
+      "startLine": 104,
+      "endLine": 127,
       "summary": "The 3-field structure V with the Lorentzian inner product mdot (signature +,+,−), the Lorentzian cross product mcross, and mtriple = mdot u (mcross v w) = det(u,v,w)."
     },
     {
