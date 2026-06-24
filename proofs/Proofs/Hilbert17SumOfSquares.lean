@@ -4,6 +4,9 @@ import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.FieldTheory.RatFunc.Basic
 import Mathlib.Tactic
+import Proofs.Hilbert17MotzkinNotSOS
+import Proofs.Hilbert17RobinsonNotSOS
+import Proofs.Hilbert17UnivariatePSDSOS
 
 /-!
 # Hilbert's 17th Problem: Sum of Squares Representation
@@ -62,7 +65,9 @@ Allowing rational functions g²/h² = (g/h)² provides more flexibility.
 - [x] Explanation of why rational functions are needed
 - [x] Pedagogical example
 - [x] Motzkin and Robinson non-negativity machine-checked (nlinarith; AM-GM / Schur)
-- [ ] Incomplete (8 axioms - full proof requires model theory and real algebraic geometry)
+- [ ] Incomplete (4 axioms - full proof requires model theory and real algebraic geometry).
+      Artin's general existence, the univariate rational-function case, and Cassels'
+      bivariate bound are now *derived* from the four foundational axioms, not assumed.
 
 ## Mathlib Dependencies
 
@@ -133,6 +138,54 @@ def IsPositiveSemidefiniteMv {n : ℕ} (p : MvPolynomial (Fin n) ℝ) : Prop :=
   ∀ x : Fin n → ℝ, 0 ≤ MvPolynomial.eval x p
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
+FOUNDATIONAL AXIOMS
+
+The deep, independent assumptions of this development. The pedagogical theorems
+below (`artin_hilbert17`, `artin_univariate`, `cassels_bound_bivariate`) are NOT
+independent axioms — they are *derived* from these. They are stated up front so
+the derivations downstream typecheck regardless of presentation order.
+
+Independent assumptions:
+  • `pfister_bound_aux` — Pfister's 2ⁿ bound; the general Artin existence
+    (`artin_hilbert17`) and Cassels' bivariate bound are specializations of it.
+
+(`univariate_psd_is_sos_aux`, formerly an axiom, is now a fully machine-checked
+theorem — see `Proofs/Hilbert17UnivariatePSDSOS.lean`.)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-- **Univariate PSD is Polynomial-SOS** (Hilbert 1888, univariate case).
+
+    Every univariate PSD polynomial is a sum of squares of polynomials — in fact
+    a sum of just two squares.  The full elementary, 0-axiom proof lives in
+    `Proofs/Hilbert17UnivariatePSDSOS.lean`
+    (`Hilbert17UnivariatePSDSOS.univariate_psd_is_sos`): strong induction on the
+    degree, factoring out either `(X - C r)²` at a real root (which a non-negative
+    polynomial must have to even multiplicity) or a positive real quadratic at a
+    conjugate pair of complex roots, recombined via the Brahmagupta–Fibonacci
+    identity.  The parent's `IsPositiveSemidefinite` / `IsSumOfSquaresPolynomial`
+    are definitionally equal to the child's predicates, so the proof transfers by
+    `exact`.
+
+    (Formerly the axiom `univariate_psd_is_sos_aux`; now fully machine-checked.) -/
+theorem univariate_psd_is_sos_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
+    IsSumOfSquaresPolynomial p :=
+  Hilbert17UnivariatePSDSOS.univariate_psd_is_sos p h
+
+/-- **Axiom: Pfister's Bound** (Pfister 1967).
+
+    At most `2ⁿ` squares of rational functions suffice to represent any PSD
+    polynomial in `n` variables. The proof uses Pfister forms and properties of
+    sums of squares in formally real fields; the bound is optimal in general.
+
+    Axiomatized pending the theory of Pfister forms. The general existence
+    theorem `artin_hilbert17` and `cassels_bound_bivariate` (n = 2) are both
+    specializations of this bound. -/
+axiom pfister_bound_aux (n : ℕ) (p : MvPolynomial (Fin n) ℝ)
+    (h : IsPositiveSemidefiniteMv p) :
+    ∃ (g : Fin (2^n) → RatFunc (MvPolynomial (Fin n) ℝ)),
+      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
 PART II: ARTIN'S THEOREM - THE MAIN RESULT
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
@@ -155,32 +208,27 @@ PART II: ARTIN'S THEOREM - THE MAIN RESULT
     4. But p is non-negative at all real points
     5. By transfer from real closed fields, contradiction!
 
-    **Implementation Note**: Axiomatized pending full formalization of real
-    closed field machinery and model-theoretic transfer. -/
-axiom artin_hilbert17 :
+    **Implementation Note**: Not an independent axiom — the *existence* of a
+    rational-function SOS representation follows directly from Pfister's bound
+    (`pfister_bound_aux`), which moreover gives the explicit count `2ⁿ`. We take
+    `m := 2ⁿ`. -/
+theorem artin_hilbert17 :
     ∀ (n : ℕ) (p : MvPolynomial (Fin n) ℝ),
       IsPositiveSemidefiniteMv p →
       ∃ (m : ℕ) (g : Fin m → RatFunc (MvPolynomial (Fin n) ℝ)),
-        (algebraMap _ _ p : RatFunc (MvPolynomial (Fin n) ℝ)) = ∑ i, g i ^ 2
+        (algebraMap _ _ p : RatFunc (MvPolynomial (Fin n) ℝ)) = ∑ i, g i ^ 2 :=
+  fun n p h => ⟨2 ^ n, pfister_bound_aux n p h⟩
 
-/-- **Axiom: Univariate Artin Theorem**
-
-    This axiom states that univariate PSD polynomials are SOS as rational functions.
-    The univariate case is actually stronger: PSD univariate polynomials ARE sums of
-    squares of polynomials. The proof uses complex root factorization: real roots
-    have even multiplicity and complex roots come in conjugate pairs.
-
-    Axiomatized because the full proof requires:
-    - Complete factorization theory over ℝ and ℂ
-    - Root structure analysis for non-negative polynomials
-    - Algebraic manipulation of the product decomposition -/
-axiom artin_univariate_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
-    IsSumOfSquaresRatFunc (algebraMap _ _ p : RatFunc ℝ)
-
-/-- **Univariate Case**: For univariate polynomials, PSD implies SOS as rational functions. -/
+/-- **Univariate Case**: For univariate polynomials, PSD implies SOS as rational
+    functions. Not an independent axiom — this is the rational-function shadow of
+    the stronger polynomial result `univariate_psd_is_sos_aux`: if `p = ∑ qᵢ²`
+    as polynomials, then `algebraMap p = ∑ (algebraMap qᵢ)²` in `RatFunc ℝ`. -/
 theorem artin_univariate (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
-    IsSumOfSquaresRatFunc (algebraMap _ _ p : RatFunc ℝ) :=
-  artin_univariate_aux p h
+    IsSumOfSquaresRatFunc (algebraMap _ _ p : RatFunc ℝ) := by
+  obtain ⟨m, q, hpq⟩ := univariate_psd_is_sos_aux p h
+  refine ⟨m, fun i => algebraMap _ _ (q i), ?_⟩
+  rw [hpq, map_sum]
+  simp_rw [map_pow]
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: THE MOTZKIN POLYNOMIAL - A COUNTEREXAMPLE FOR POLYNOMIAL SOS
@@ -227,28 +275,18 @@ theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := by
     3. The degree-6 part x⁴y² + x²y⁴ = x²y²(x² + y²) cannot arise from
        squaring degree-3 homogeneous polynomials in 2 variables
 
-    Axiomatized because the proof requires:
-    - Homogeneous component decomposition of multivariate polynomials
-    - Analysis of how SOS structure constrains leading coefficients
-    - Linear algebra over the coefficient space -/
-axiom motzkin_not_sos_polynomial_aux : ¬ IsSumOfSquaresMvPolynomial motzkin
-
-/-- **The Motzkin Polynomial is NOT a Sum of Squares of Polynomials**
-
-    There do not exist polynomials p₁, p₂, ..., pₘ such that
-    M(x,y) = p₁² + p₂² + ... + pₘ².
-
-    **Proof Sketch** (degree argument):
-    1. M has degree 6 (total degree)
-    2. If M = Σᵢ pᵢ², each pᵢ has degree ≤ 3
-    3. The degree-6 part of M is: x⁴y² + x²y⁴ = x²y²(x² + y²)
-    4. For this to be a sum of squares, we'd need the degree-3 parts to square to it
-    5. But degree-3 homogeneous polynomials in 2 variables can't achieve this structure
-    6. Technical: analyze the leading form and show no SOS decomposition exists
-
-    This is proven in detail in papers on real algebraic geometry. -/
-theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin :=
-  motzkin_not_sos_polynomial_aux
+    The full elementary proof lives in `Proofs/Hilbert17MotzkinNotSOS.lean`
+    (`Hilbert17MotzkinNotSOS.motzkin_not_sos`, 0-axiom): a degree/coefficient
+    argument showing each `qᵢ` has total degree ≤ 3, that all pure-axis powers
+    of `x` and `y` of degrees 1–3 vanish in every `qᵢ`, and hence the `[x²y²]`
+    coefficient of `Σ qᵢ²` is `Σ ([xy]qᵢ)² ≥ 0`, contradicting `[x²y²]M = -3`. -/
+theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin := by
+  -- `IsSumOfSquaresMvPolynomial motzkin` and `Hilbert17MotzkinNotSOS.IsSOS
+  -- Hilbert17MotzkinNotSOS.motzkin` are definitionally equal (the two `motzkin`
+  -- definitions and the two SOS predicates unfold to the same expression), so
+  -- the elementary theorem discharges the parent statement directly.
+  intro h
+  exact Hilbert17MotzkinNotSOS.motzkin_not_sos h
 
 /-- **By Artin's Theorem, Motzkin IS a Sum of Squares of Rational Functions**
 
@@ -281,20 +319,10 @@ This remarkable result was non-constructive - Hilbert proved existence without
 giving explicit examples. Motzkin (1967) gave the first explicit counterexample.
 -/
 
-/-- **Axiom: Univariate PSD is Polynomial-SOS**
-
-    Every univariate PSD polynomial can be written as a sum of two squares of polynomials.
-
-    The proof uses complex factorization:
-    p = c * prod((x - r_i)^(2e_i)) * prod((x - a_j)^2 + b_j^2)
-    where r_i are real roots (with even multiplicity) and a_j plus-or-minus i*b_j are complex pairs.
-
-    Axiomatized because the proof requires:
-    - Fundamental theorem of algebra (complex root existence)
-    - Conjugate root theorem for real polynomials
-    - Analysis that non-negative leading coefficient and root structure implies SOS -/
-axiom univariate_psd_is_sos_aux (p : Polynomial ℝ) (h : IsPositiveSemidefinite p) :
-    IsSumOfSquaresPolynomial p
+/- Note: the univariate PSD ⇒ polynomial-SOS statement is the foundational axiom
+   `univariate_psd_is_sos_aux` declared near the top of this file (via complex
+   factorization: real roots have even multiplicity, complex roots come in
+   conjugate pairs). The wrapper below re-exports it under its pedagogical name. -/
 
 /-- **Case 1: Univariate PSD polynomials ARE polynomial-SOS**
 
@@ -319,7 +347,16 @@ theorem univariate_psd_is_sos (p : Polynomial ℝ) (h : IsPositiveSemidefinite p
     Axiomatized because the proof requires:
     - Correspondence between quadratic polynomials and symmetric matrices
     - Spectral theorem / Cholesky decomposition for PSD matrices
-    - Matrix algebra and polynomial evaluation -/
+    - Matrix algebra and polynomial evaluation
+
+    PROGRESS: the *matrix-level* heart of this argument is now proved with
+    zero axioms in `Proofs.Hilbert17QuadraticGram`
+    (`Hilbert17.posSemidef_quadratic_isSumSq`): for a PSD real matrix `M`,
+    `x ⬝ᵥ (M *ᵥ x) = ∑ i, ((√M *ᵥ x) i)²`, an explicit SOS of linear forms via
+    the symmetric Gram factorization `M = (√M)ᵀ (√M)`.  What remains (the
+    un-Mathlib'd "bridge") is the polynomial coefficient-extraction
+    `Q ↦ M` for `totalDegree Q = 2` and the homogenisation/PSD transfer; see
+    `research/problems/hilbert-17-oq-03/knowledge.md`. -/
 axiom quadratic_psd_is_sos_aux {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
     (hQ : MvPolynomial.totalDegree Q = 2)
     (h : IsPositiveSemidefiniteMv Q) :
@@ -339,22 +376,9 @@ theorem quadratic_psd_is_sos {n : ℕ} (Q : MvPolynomial (Fin n) ℝ)
 PART V: QUANTITATIVE BOUNDS - PFISTER'S THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
-/-- **Axiom: Pfister's Bound**
-
-    At most 2^n squares suffice to represent any PSD polynomial in n variables
-    as a sum of squares of rational functions.
-
-    The proof uses Pfister forms and properties of quadratic forms over
-    formally real fields. This bound is optimal in general.
-
-    Axiomatized because the proof requires:
-    - Theory of Pfister forms (multiplicative quadratic forms)
-    - Properties of sums of squares in formally real fields
-    - Inductive construction over the number of variables -/
-axiom pfister_bound_aux (n : ℕ) (p : MvPolynomial (Fin n) ℝ)
-    (h : IsPositiveSemidefiniteMv p) :
-    ∃ (g : Fin (2^n) → RatFunc (MvPolynomial (Fin n) ℝ)),
-      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2
+/- Note: Pfister's 2ⁿ bound is the foundational axiom `pfister_bound_aux` declared
+   near the top of this file. The wrapper below re-exports it under its pedagogical
+   name. -/
 
 /-- **Pfister's Theorem on the Number of Squares**
 
@@ -371,22 +395,15 @@ theorem pfister_bound (n : ℕ) (p : MvPolynomial (Fin n) ℝ)
     ∃ (g : Fin (2^n) → RatFunc (MvPolynomial (Fin n) ℝ)),
       (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := pfister_bound_aux n p h
 
-/-- **Axiom: Cassels' Bound for Bivariate Polynomials**
+/-- **Cassels' Bound**: For bivariate (n=2), at most 4 = 2² squares are needed.
 
-    For bivariate polynomials (n=2), at most 4 = 2^2 squares are needed.
-    This is a special case of Pfister's bound.
-
-    Axiomatized as a direct consequence of pfister_bound_aux for n=2. -/
-axiom cassels_bound_bivariate_aux (p : MvPolynomial (Fin 2) ℝ)
-    (h : IsPositiveSemidefiniteMv p) :
-    ∃ (g : Fin 4 → RatFunc (MvPolynomial (Fin 2) ℝ)),
-      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2
-
-/-- **Cassels' Bound**: For bivariate (n=2), at most 4 = 2^2 squares are needed. -/
+    Not an independent axiom — a direct specialization of Pfister's bound at
+    `n = 2`, since `2² = 4` definitionally, so `pfister_bound_aux 2` already has
+    the required type `Fin 4 → RatFunc …`. -/
 theorem cassels_bound_bivariate (p : MvPolynomial (Fin 2) ℝ)
     (h : IsPositiveSemidefiniteMv p) :
     ∃ (g : Fin 4 → RatFunc (MvPolynomial (Fin 2) ℝ)),
-      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := cassels_bound_bivariate_aux p h
+      (algebraMap _ _ p : RatFunc _) = ∑ i, g i ^ 2 := pfister_bound_aux 2 p h
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART VI: CONNECTION TO REAL CLOSED FIELDS
@@ -503,22 +520,26 @@ theorem robinson_nonneg : IsPositiveSemidefiniteMv robinson := by
     mul_nonneg hc (sq_nonneg (y ^ 2 - z ^ 2)),
     mul_nonneg (mul_nonneg ha hb) hc]
 
-/-- **Axiom: Robinson Not Polynomial-SOS**
+/-- **Robinson's polynomial is not polynomial-SOS** (axiom-free).
 
     Robinson's polynomial cannot be written as a sum of squares of polynomials,
     despite being non-negative everywhere.
 
-    Like the Motzkin polynomial, this is proven by analyzing homogeneous components
-    and showing the leading form cannot arise from squaring polynomials.
-
-    Axiomatized because the proof requires:
-    - Homogeneous component decomposition
-    - Analysis of degree-6 symmetric forms in 3 variables
-    - Linear algebra over the coefficient space -/
-axiom robinson_not_sos_aux : ¬ IsSumOfSquaresMvPolynomial robinson
-
-/-- Robinson's polynomial is not polynomial-SOS. -/
-theorem robinson_not_sos : ¬ IsSumOfSquaresMvPolynomial robinson := robinson_not_sos_aux
+    The full elementary proof lives in `Proofs/Hilbert17RobinsonNotSOS.lean`
+    (`Hilbert17RobinsonNotSOS.robinson_not_sos`, 0-axiom): in `R = Σ qᵢ²` each
+    `qᵢ` has total degree ≤ 3, so taking the degree-6 homogeneous component gives
+    `R = Σ (qᵢ⁽³⁾)²` with each `qᵢ⁽³⁾` a homogeneous cubic form; these vanish at
+    `R`'s ten real projective zeros, and the 10×10 evaluation matrix of cubic
+    monomials at those points has determinant `128 ≠ 0`, so every `qᵢ⁽³⁾ = 0`,
+    forcing `R = 0` — contradicting `R(1,0,0) = 1`.
+    (Formerly the axiom `robinson_not_sos_aux`; now fully machine-checked.) -/
+theorem robinson_not_sos : ¬ IsSumOfSquaresMvPolynomial robinson := by
+  -- `IsSumOfSquaresMvPolynomial robinson` and `Hilbert17RobinsonNotSOS.IsSOS
+  -- Hilbert17RobinsonNotSOS.robinson` are definitionally equal (the two
+  -- `robinson` definitions and the two SOS predicates unfold to the same
+  -- expression), so the elementary theorem discharges the parent statement.
+  intro h
+  exact Hilbert17RobinsonNotSOS.robinson_not_sos h
 
 /-- **Choi-Lam Polynomial**: Another family of counterexamples.
     CL(w,x,y,z) = w⁴ + x²y² + y²z² + z²w² - 4wxyz -/

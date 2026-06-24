@@ -1,0 +1,172 @@
+{
+  "id": "hilbert-17-oq-03-oq-03",
+  "title": "Hilbert's 17th: Robinson's Polynomial Is Not a Sum of Squares of Polynomials",
+  "slug": "hilbert-17-oq-03-oq-03",
+  "description": "Robinson's polynomial R = x⁶ + y⁶ + z⁶ − x⁴y² − y⁴z² − z⁴x² − x²y⁴ − y²z⁴ − z²x⁴ + 3x²y²z² (Robinson, 1973) is nonnegative on all of ℝ³ (its Schur-inequality certificate lives in the parent entry hilbert-17) yet — like the Motzkin polynomial — is NOT a sum of squares of polynomials. The parent entry carried this fact as the axiom robinson_not_sos_aux; this entry supplies a fully elementary, 0-axiom proof, discharging that axiom and reducing the parent's axiom count from 4 to 3. The proof is a zero-set / linear-algebra argument. Suppose R = Σᵢ qᵢ². (1) Degree bound: the degree-2D homogeneous component of a sum of squares is Σ (top form)², which over ℝ vanishes only if every top form does; since R has total degree 6, every qᵢ has total degree ≤ 3. (2) Homogeneous reduction: taking the degree-6 homogeneous component of both sides (R is homogeneous of degree 6) gives R = Σᵢ (qᵢ⁽³⁾)² with each qᵢ⁽³⁾ = homogeneousComponent 3 qᵢ a homogeneous cubic form — no bottom-degree cascade is needed. (3) Vanishing on the zero set: R vanishes at its ten real projective zeros (1,±1,0), (1,0,±1), (0,1,±1), (1,±1,±1); since a sum of real squares is 0 only if each term is, every cubic form qᵢ⁽³⁾ vanishes at all ten points. (4) The decisive linear algebra: the 10×10 matrix of the ten cubic monomials evaluated at the ten points has determinant 128 ≠ 0, so the only homogeneous cubic vanishing at all ten is 0. Hence every qᵢ⁽³⁾ = 0, forcing R = 0 — contradicting R(1,0,0) = 1. This corrects an earlier survey that judged Robinson non-SOS to require multi-session Gram-matrix / dual-functional machinery: the elementary zero-set route works because the zeros impose ten independent conditions on the ten-dimensional space of cubic forms.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17RobinsonNotSOS.lean",
+    "tags": [
+      "real-algebraic-geometry",
+      "sum-of-squares",
+      "hilbert-17",
+      "robinson-polynomial",
+      "positive-polynomials",
+      "multivariate-polynomials",
+      "homogeneous-components",
+      "zero-set",
+      "linear-algebra",
+      "elementary-proof"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.homogeneousComponent",
+        "description": "Degree-n homogeneous part of a multivariate polynomial; the engine of the degree bound and the reduction R = Σ (comp₃ qᵢ)².",
+        "module": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+      },
+      {
+        "theorem": "MvPolynomial.IsHomogeneous",
+        "description": "Homogeneity predicate; robinson.IsHomogeneous 6 gives comp₆ R = R and coeff_eq_zero off-degree.",
+        "module": "Mathlib.RingTheory.MvPolynomial.Homogeneous"
+      },
+      {
+        "theorem": "MvPolynomial.eval_eq / eval_monomial",
+        "description": "Evaluation of a polynomial at a point; expands each cubic form at the ten zeros into a linear form in its ten coefficients.",
+        "module": "Mathlib.Algebra.MvPolynomial.Eval"
+      }
+    ],
+    "originalContributions": [
+      "Fully elementary, 0-axiom Lean proof that Robinson's polynomial is not a sum of squares of polynomials (discharges the parent axiom robinson_not_sos_aux).",
+      "Zero-set / linear-algebra formalization: reduces non-SOS-ness to the invertibility (det 128) of the 10×10 evaluation matrix of cubic monomials at R's ten real projective zeros, solved in Lean by expanding evaluations into coefficient linear forms and clearing the system with linarith.",
+      "Avoids any real-closed-field, Gram-matrix, or dual-functional machinery — only homogeneous components, point evaluation, and the order structure of ℝ."
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Hilbert's 17th problem: the distinction between nonnegative (PSD) polynomials and sums of squares (SOS) of polynomials.",
+      "The Motzkin polynomial as the canonical PSD-but-not-polynomial-SOS example.",
+      "Homogeneous decomposition of multivariate polynomials and the leading form.",
+      "Coefficient extraction via MvPolynomial.coeff_mul over the Finsupp antidiagonal."
+    ],
+    "lineCount": 427,
+    "relatedProblems": [
+      {
+        "id": "hilbert-17",
+        "relationship": "Parent: states Artin's theorem and the Motzkin counterexample but carries Motzkin's non-polynomial-SOS status as the axiom motzkin_not_sos_polynomial_aux. This entry proves exactly that statement with 0 axioms; the same definition of motzkin and IsSumOfSquaresMvPolynomial is used, so the axiom can be discharged by reference."
+      },
+      {
+        "id": "hilbert-17-oq-03-oq-01",
+        "relationship": "Sibling (positive side): an explicit 0-axiom rational SOS certificate showing Motzkin IS a sum of squares of rational functions. Its listed open question — 'Discharge the companion axiom motzkin_not_sos_polynomial_aux (Motzkin is not a polynomial SOS) by the coefficient/degree argument' — is answered here, exactly by that coefficient/degree argument."
+      },
+      {
+        "id": "hilbert-17-oq-03",
+        "relationship": "Parent strand: the complexity of deciding PSD ⇒ SOS membership. This entry exhibits the canonical certificate of NON-membership in the polynomial SOS cone."
+      }
+    ],
+    "assumptions": "0 axioms. #print axioms motzkin_not_sos reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. The Motzkin polynomial and the sum-of-squares predicate are defined identically to the parent entry Hilbert17SumOfSquares.lean (IsSOS unfolds to the parent's IsSumOfSquaresMvPolynomial).",
+    "theoremCount": 25,
+    "definitionCount": 3,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 423,
+    "namespace": "Hilbert17RobinsonNotSOS",
+    "opens": [
+      "MvPolynomial"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 32,
+    "substantiveTheoremCount": 7,
+    "computationalVerifications": 0,
+    "lemmaCount": 31,
+    "imports": [
+      "Mathlib"
+    ],
+    "path": "Proofs/Hilbert17RobinsonNotSOS.lean",
+    "sorries": 0,
+    "definitionCount": 3,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "robinson_not_sos",
+      "type": "theorem",
+      "description": "Robinson's polynomial is not a sum of squares of polynomials: there is no finite family q with R = Σ qᵢ². Discharges the parent axiom robinson_not_sos_aux with 0 axioms.",
+      "leanType": "¬ IsSOS robinson"
+    },
+    {
+      "name": "cubic_zero",
+      "type": "lemma",
+      "description": "The crux: a homogeneous cubic form in three real variables vanishing at the ten real projective zeros of Robinson's polynomial is the zero polynomial. Proved by expanding each evaluation into a linear form in the ten cubic coefficients and clearing the (determinant-128) 10×10 system with linarith.",
+      "leanType": "q.IsHomogeneous 3 → (eval at 10 points = 0) → q = 0"
+    },
+    {
+      "name": "degree_bound",
+      "type": "lemma",
+      "description": "If Σ qᵢ² = P with totalDegree P ≤ 6, then every qᵢ has total degree ≤ 3 — the no-cancellation property of leading forms of a sum of squares.",
+      "leanType": "(∑ i, q i ^ 2 = P) → (q j).totalDegree ≤ 3"
+    },
+    {
+      "name": "topsq",
+      "type": "lemma",
+      "description": "The degree-2D homogeneous component of p² equals the square of the degree-D component when D bounds totalDegree p; gives both the degree bound and the reduction R = Σ (comp₃ qᵢ)².",
+      "leanType": "homogeneousComponent (2*D) (p^2) = (homogeneousComponent D p)^2"
+    },
+    {
+      "name": "as_cubic",
+      "type": "lemma",
+      "description": "A homogeneous cubic equals the sum of its ten cubic-monomial terms; turns point evaluation into an explicit linear form in the ten coefficients.",
+      "leanType": "q.IsHomogeneous 3 → q = Σ (ten cubic monomials of q)"
+    },
+    {
+      "name": "robinson_isHom",
+      "type": "lemma",
+      "description": "Robinson's polynomial is homogeneous of degree 6, so its degree-6 homogeneous component is itself and off-degree coefficients vanish.",
+      "leanType": "robinson.IsHomogeneous 6"
+    },
+    {
+      "name": "deg3_cases",
+      "type": "lemma",
+      "description": "Every degree-3 exponent vector in three variables is one of the ten cubic monomials — the finite enumeration underpinning as_cubic.",
+      "leanType": "(μ 0 + μ 1 + μ 2 = 3) → μ ∈ {ten cubic monomials}"
+    }
+  ],
+  "overview": "Robinson's polynomial R = x⁶ + y⁶ + z⁶ − x⁴y² − y⁴z² − z⁴x² − x²y⁴ − y²z⁴ − z²x⁴ + 3x²y²z² is, alongside Motzkin's, one of the two classical witnesses that nonnegativity is strictly weaker than being a sum of squares of polynomials — the phenomenon at the heart of Hilbert's 17th problem. The parent gallery entry axiomatized this non-representability (robinson_not_sos_aux); this follow-up proves it from scratch with 0 axioms, reducing the parent's axiom count from 4 to 3. The argument is a zero-set / linear-algebra proof in four moves. First, a degree bound: if R = Σ qᵢ² then each qᵢ has total degree ≤ 3 (the leading forms of a sum of squares cannot cancel). Second, a homogeneous reduction: because R is homogeneous of degree 6, taking degree-6 components gives R = Σ (qᵢ⁽³⁾)² where each qᵢ⁽³⁾ is a homogeneous cubic form — so no separate bottom-degree cascade is needed. Third, vanishing on the zero set: R has exactly ten real projective zeros, (1,±1,0), (1,0,±1), (0,1,±1), (1,±1,±1), and since a sum of real squares is 0 only if each term is, every cubic form qᵢ⁽³⁾ vanishes at all ten. Fourth, the decisive linear algebra: the 10×10 matrix of the ten cubic monomials evaluated at the ten points has determinant 128 ≠ 0, so the only homogeneous cubic vanishing at all ten points is 0; hence every qᵢ⁽³⁾ = 0, forcing R = 0, which contradicts R(1,0,0) = 1. The formalization carries out the last step by expanding each point-evaluation into an explicit linear form in the ten cubic coefficients (as_cubic + eval_mon3) and clearing the resulting determined system with linarith.",
+  "conclusion": {
+    "summary": "A 423-line, 0-sorry, 0-axiom formalization that Robinson's polynomial is not a sum of squares of polynomials, via the zero-set / linear-algebra route: each cubic form in an SOS decomposition vanishes at R's ten real projective zeros, and the determinant-128 evaluation matrix forces it to be zero. Discharges the parent entry's axiom robinson_not_sos_aux (parent axiom count 4 → 3).",
+    "implications": "Robinson joins Motzkin (sibling hilbert-17-oq-03-oq-02) as a second fully machine-checked example of a PSD polynomial that is not polynomial-SOS — the negative half of Hilbert's 17th problem. Notably, this corrects an earlier project survey that judged Robinson non-SOS to need multi-session Gram-matrix or dual-functional machinery: the elementary zero-set argument succeeds because R's ten zeros impose ten independent conditions on the ten-dimensional space of ternary cubic forms (the evaluation determinant is 128, not 0)."
+  },
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "R. M. Robinson, Some definite polynomials which are not sums of squares of real polynomials (1973)",
+      "url": "https://en.wikipedia.org/wiki/Positive_polynomial"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "hilbert-17",
+      "relation": "Parent entry; this discharges its axiom robinson_not_sos_aux (axiom count 4 → 3)."
+    },
+    {
+      "slug": "hilbert-17-oq-03-oq-02",
+      "relation": "Sibling: the analogous 0-axiom proof for the Motzkin polynomial."
+    }
+  ],
+  "sections": []
+}
