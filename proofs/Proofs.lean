@@ -3684,6 +3684,7 @@ import Proofs.StirlingExpansion
 import Proofs.StirlingExpansionAristotle
 import Proofs.StirlingFirstKindOQ01
 import Proofs.StirlingFirstKindOQ01OQ01
+import Proofs.StirlingFirstKindOQ01OQ02
 import Proofs.StirlingFirstKindOQ02
 import Proofs.StirlingFormula
 import Proofs.StirlingFormulaOQ01OQ01
