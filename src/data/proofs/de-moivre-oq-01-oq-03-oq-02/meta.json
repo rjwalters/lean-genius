@@ -1,0 +1,146 @@
+{
+  "id": "de-moivre-oq-01-oq-03-oq-02",
+  "title": "Chebyshev semigroup law over 𝔽_p: C_{mn} = C_m ∘ C_n as a monoid homomorphism",
+  "slug": "de-moivre-oq-01-oq-03-oq-02",
+  "description": "Packages the parent's Chebyshev–De Moivre algebra over a finite field 𝔽_p = ZMod p as the semigroup / nesting law C_{mn}(x) = C_m(C_n(x)), bundled as a monoid homomorphism (ℤ, ·) →* (End 𝔽_p, ∘), n ↦ (x ↦ C_n x). The commuting family C_a ∘ C_b = C_b ∘ C_a it yields is the algebraic trapdoor behind Chebyshev/Lucas public-key exchange. The polynomial composition identity C R (m·n) = (C R m).comp (C R n) is Mathlib's (Polynomial.Chebyshev.C_mul); the new content is the evaluation-map form, the bundled monoid homomorphism, the commuting-family corollary, and the power-map conjugacy linking n ↦ C_n to the power monoid n ↦ (·^n) on the unit circle z + z⁻¹ (reusing the parent's identity C_n(z+w) = zⁿ + wⁿ). 0-axiom verified.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_polynomials",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ01OQ03OQ02.lean",
+    "tags": [
+      "chebyshev-polynomials",
+      "de-moivre",
+      "finite-fields",
+      "monoid-homomorphism",
+      "semigroup",
+      "cryptography",
+      "polynomials",
+      "ring-theory",
+      "extension",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.Chebyshev.C_mul",
+        "description": "C R (m·n) = (C R m).comp (C R n): the polynomial composition law for the third-kind Chebyshev polynomial, the engine of the evaluation-map nesting law (this identity is Mathlib's; this entry transports it to evaluation maps and packages it)",
+        "module": "Mathlib.RingTheory.Polynomial.Chebyshev"
+      },
+      {
+        "theorem": "Polynomial.eval_comp",
+        "description": "(p.comp q).eval x = p.eval (q.eval x): turns the polynomial composition C_mul into the evaluation-map nesting law C_{mn}(x) = C_m(C_n(x))",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Defs"
+      },
+      {
+        "theorem": "Polynomial.Chebyshev.C_one",
+        "description": "C R 1 = X: gives map_one of the monoid homomorphism (C_1 evaluates to the identity map)",
+        "module": "Mathlib.RingTheory.Polynomial.Chebyshev"
+      },
+      {
+        "theorem": "mul_inv_cancel₀",
+        "description": "z·z⁻¹ = 1 for z ≠ 0 in a field: supplies the unit-circle hypothesis for the finite-field power-map conjugacy over 𝔽_p",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "chebyshevC_evalComp: the evaluation-map composition law C_{mn}(x) = C_m(C_n(x)) over an arbitrary commutative ring (the evaluation form of Mathlib's C_mul)",
+      "chebyshevC_evalComp_comm: the commuting family C_m(C_n x) = C_n(C_m x), the commutativity behind Chebyshev/Lucas key exchange",
+      "chebyshevC_evalComp_pow: the power-map conjugacy — on the unit circle z·w = 1, both C_{mn}(z+w) and C_m(C_n(z+w)) equal (zⁿ)ᵐ + (wⁿ)ᵐ, exhibiting n ↦ C_n as the shadow of the power monoid n ↦ (·^n) via z ↦ z + z⁻¹ (reuses the parent identity chebyshevC_eval_add)",
+      "chebyshevEnd / chebyshevHom: the bundled monoid homomorphism (ℤ, ·) →* Function.End (ZMod p), n ↦ (x ↦ C_n x), a reusable object whose map_mul IS the semigroup law and map_one is C_1 = X = id",
+      "chebyshevEnd_comm: the commuting-family corollary over ZMod p (the trapdoor identity, packaged on endomorphisms)",
+      "chebyshevEnd_eval_pow: the conjugacy specialized to the finite field 𝔽_p, genuinely using the field structure via mul_inv_cancel₀"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 126,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. All six theorems depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms). The polynomial composition identity itself (C R (m·n) = (C R m).comp (C R n)) is Mathlib's Polynomial.Chebyshev.C_mul; this entry contributes its evaluation-map form, the bundled monoid homomorphism, the commuting-family corollary, and the power-map conjugacy.",
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**Chebyshev maps compose multiplicatively**\n\nThe Chebyshev polynomials of the first kind satisfy the nesting law $T_m(T_n(x)) = T_{mn}(x)$; the same holds for the third-kind normalization $C_n$ (with $C_0 = 2$, $C_1 = X$). This single identity is what makes Chebyshev/Lucas-sequence public-key cryptography work: the maps $C_a$ and $C_b$ commute, so a Diffie–Hellman-style exchange can be run on $\\mathbb{F}_p$ with $C_a \\circ C_b = C_b \\circ C_a = C_{ab}$.\n\nThe parent entry `de-moivre-oq-01-oq-03` exposed the algebraic core of De Moivre's theorem: on the 'unit circle' $z\\cdot w = 1$, $(C_R\\,n)(z+w) = z^n + w^n$. The present entry uses that identity to explain the nesting law structurally — the Chebyshev map family is the shadow of the power monoid $n \\mapsto (\\cdot^n)$ — and bundles the law as a monoid homomorphism.",
+    "problemStatement": "**Open question (OQ-02 of de-moivre-oq-01-oq-03):** Package the finite-field Chebyshev form as the multiplication law of a Chebyshev/Lucas public-key cryptosystem over $\\mathbb{F}_p$, with the semigroup property $C_{mn} = C_m \\circ C_n$ formalized, and state it as a monoid homomorphism $(\\mathbb{N},\\cdot) \\to (\\mathrm{End}\\,\\mathbb{F}_p, \\circ)$.\n\n**Answer.** As evaluation maps over $\\mathbb{F}_p = \\mathrm{ZMod}\\,p$, $C_{mn}(x) = C_m(C_n(x))$; bundled, $n \\mapsto (x \\mapsto C_n\\,x)$ is a monoid homomorphism $(\\mathbb{Z},\\cdot) \\to^* \\mathrm{Function.End}(\\mathrm{ZMod}\\,p)$, yielding the commuting family $C_a \\circ C_b = C_b \\circ C_a$.",
+    "text": "Chebyshev polynomials compose multiplicatively: C_{mn}(x) = C_m(C_n(x)). The polynomial identity is Mathlib's C_mul; this entry transports it to evaluation maps over a finite field 𝔽_p, bundles it as a monoid homomorphism (ℤ, ·) →* (End 𝔽_p, ∘), and shows it is the shadow of the power monoid n ↦ (·^n) on the unit circle z + z⁻¹.",
+    "proofStrategy": "**Strategy**\n\n1. **Evaluation-map law (`chebyshevC_evalComp`).** Apply `Polynomial.eval_comp` to Mathlib's polynomial identity `C_mul` ($C_R(mn) = (C_R\\,m)\\circ(C_R\\,n)$): one rewrite gives $C_{mn}(x) = C_m(C_n(x))$ over any commutative ring.\n\n2. **Commuting family (`chebyshevC_evalComp_comm`).** Since $m\\cdot n = n\\cdot m$, the nesting law gives $C_m(C_n(x)) = C_n(C_m(x))$ directly.\n\n3. **Power-map conjugacy (`chebyshevC_evalComp_pow`).** On the unit circle $z\\cdot w = 1$, $z^n\\cdot w^n = (z\\cdot w)^n = 1$, so $(z^n, w^n)$ is again a unit-circle pair. The parent's identity $C_n(z+w)=z^n+w^n$ then gives both $C_{mn}(z+w) = z^{mn}+w^{mn}$ and $C_m(C_n(z+w)) = (z^n)^m + (w^n)^m$; the two agree because $(z^n)^m = z^{mn}$. This exhibits $n\\mapsto C_n$ as conjugate, via $z\\mapsto z+z^{-1}$, to $n\\mapsto(\\cdot^n)$.\n\n4. **Monoid homomorphism (`chebyshevHom`).** Bundle $n \\mapsto (x \\mapsto C_n\\,x)$ into `Function.End (ZMod p)`: `map_one` is $C_1 = X = \\mathrm{id}$ (via `C_one`), `map_mul` is exactly step 1. The monoid-hom and commuting-family results need only that `ZMod p` is a commutative ring, so they are stated for any modulus $p$.\n\n5. **Finite-field conjugacy (`chebyshevEnd_eval_pow`).** Specialize the conjugacy to $\\mathbb{F}_p$ with $w = z^{-1}$, using `mul_inv_cancel₀` (the genuine use of the field structure).",
+    "keyInsights": [
+      "**The nesting law is the power law in disguise.** Via the parametrization z ↦ z + z⁻¹, the Chebyshev family n ↦ C_n is conjugate to the power monoid n ↦ (·^n); C_{mn} = C_m ∘ C_n is the shadow of (zⁿ)ᵐ = z^{mn}.",
+      "**Mathlib already has the polynomial identity.** Polynomial.Chebyshev.C_mul gives C R (m·n) = (C R m).comp (C R n); the contribution here is transporting it to evaluation maps and packaging it as a homomorphism — eval_comp does the transport in one line.",
+      "**The monoid-hom needs no field.** C_{mn} = C_m ∘ C_n and commutativity hold over ZMod p for any modulus p (it is a CommRing fact); only the unit-circle conjugacy uses the field 𝔽_p (via z⁻¹).",
+      "**Commutativity is the trapdoor.** C_a ∘ C_b = C_b ∘ C_a follows from m·n = n·m and is exactly the identity that makes Chebyshev/Lucas key exchange work.",
+      "**Function.End is the right home.** Bundling into Function.End (ZMod p) (composition monoid, 1 = id) makes map_mul literally the semigroup law and map_one literally C_1 = X = id."
+    ],
+    "prerequisites": [
+      "Chebyshev polynomials of the third kind C_n over a commutative ring (C 0 = 2, C 1 = X, C_{n+2} = X·C_{n+1} − C_n) and Mathlib's composition law C_mul",
+      "Polynomial evaluation and eval_comp",
+      "Function.End as a composition monoid; monoid homomorphisms",
+      "The parent identity (C R n).eval(z+w) = zⁿ + wⁿ for z·w = 1 (de-moivre-oq-01-oq-03)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The parent's open question is answered: over a finite field 𝔽_p = ZMod p, the Chebyshev nesting law C_{mn}(x) = C_m(C_n(x)) holds as evaluation maps, is bundled as a monoid homomorphism (ℤ, ·) →* (End 𝔽_p, ∘), and yields the commuting family C_a ∘ C_b = C_b ∘ C_a. The power-map conjugacy explains the law structurally: n ↦ C_n is the shadow of n ↦ (·^n) on the unit circle z + z⁻¹. 6 theorems, 2 definitions, 0 sorries, 0 axioms. The underlying polynomial composition identity is Mathlib's C_mul.",
+    "implications": "**Significance**\n\n1. **Crypto kernel made explicit.** The commuting family C_a ∘ C_b = C_b ∘ C_a is the single identity behind Chebyshev/Lucas public-key exchange; it is now a named, reusable monoid-homomorphism statement over 𝔽_p.\n\n2. **Structure over computation.** Packaging as a monoid homomorphism (rather than a bare identity) gives map_one, map_mul, and a commutative image for free, reusable by downstream work.\n\n3. **Conjugacy clarifies the law.** The power-map conjugacy shows why the Chebyshev maps compose multiplicatively at all — they are evaluation-conjugate to the power monoid.",
+    "openQuestions": [
+      "Can the commuting family be assembled into a concrete Diffie–Hellman-style key-exchange protocol object over 𝔽_p, with a security reduction stated (not proved) against the Chebyshev/discrete-log assumption?",
+      "Does the monoid homomorphism factor through the units (ZMod p)ˣ via the parametrization z ↦ z + z⁻¹, giving an explicit conjugacy of monoids n ↦ C_n ≅ n ↦ (·^n) on the image of the unit circle?"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-01-oq-03",
+      "relationship": "Parent. Supplies the algebraic identity (C R n).eval(z+w) = zⁿ + wⁿ reused for the power-map conjugacy, and its open question asks exactly for this semigroup/monoid-hom packaging."
+    },
+    {
+      "id": "de-moivre-oq-01",
+      "relationship": "Grandparent De Moivre/Chebyshev formalization over finite fields."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DeMoivreOQ01OQ03"
+    ],
+    "opens": [
+      "Polynomial.Chebyshev"
+    ],
+    "namespace": "DeMoivreChebyshevSemigroup",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/DeMoivreOQ01OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "P. L. Chebyshev",
+      "title": "Théorie des mécanismes connus sous le nom de parallélogrammes",
+      "year": "1853",
+      "venue": "Mémoires des Savants étrangers présentés à l'Académie de Saint-Pétersbourg",
+      "note": "Introduced T_n, U_n; the third-kind C_n used here satisfies C_{mn} = C_m ∘ C_n"
+    },
+    {
+      "authors": "L. Kocarev, Z. Tasev",
+      "title": "Public-key encryption based on Chebyshev maps",
+      "year": "2003",
+      "venue": "Proceedings of the 2003 IEEE International Symposium on Circuits and Systems (ISCAS)",
+      "note": "The semigroup property C_{mn} = C_m ∘ C_n and the commuting family C_a ∘ C_b = C_b ∘ C_a are the algebraic core of the scheme"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Answers the parent's open question by packaging the finite-field Chebyshev form as the semigroup law C_{mn} = C_m ∘ C_n and as a monoid homomorphism over 𝔽_p"
+    },
+    {
+      "targetId": "de-moivre-oq-01",
+      "relationship": "foundational",
+      "description": "Builds on the De Moivre/Chebyshev connection over finite fields"
+    }
+  ],
+  "sorries": 0
+}

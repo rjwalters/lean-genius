@@ -863,6 +863,7 @@ import Proofs.DeMoivre
 import Proofs.DeMoivreOQ01
 import Proofs.DeMoivreOQ01OQ03
 import Proofs.DeMoivreOQ01OQ03OQ01
+import Proofs.DeMoivreOQ01OQ03OQ02
 import Proofs.DeMoivreOQ02
 import Proofs.DeMoivreOQ02OQ02
 import Proofs.DeMoivreOQ02OQ02OQ01
