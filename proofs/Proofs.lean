@@ -799,6 +799,7 @@ import Proofs.CompactnessFiniteSubcoverOq01Oq02
 import Proofs.CompactnessFiniteSubcoverOq01Oq02Oq01
 import Proofs.CompactnessFiniteSubcoverOq02
 import Proofs.CompactnessFiniteSubcoverOq02Oq01
+import Proofs.CompactnessFiniteSubcoverOq02Oq02
 import Proofs.ComplexityCore
 import Proofs.CompositionCard2PowOQ01
 import Proofs.CompositionPartsChooseOQ01
