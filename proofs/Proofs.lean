@@ -3193,6 +3193,7 @@ import Proofs.LiouvilleTheorem
 import Proofs.LiouvilleTheoremOQ04
 import Proofs.LiouvilleTheoremOQ05
 import Proofs.LittleWedderburnOQ01
+import Proofs.LittleWedderburnOQ02
 import Proofs.LittleWedderburnOQ01OQ01
 import Proofs.LovaszLocalLemma
 import Proofs.LovaszLocalLemmaOQ02
