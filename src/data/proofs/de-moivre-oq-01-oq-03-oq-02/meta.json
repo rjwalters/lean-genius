@@ -142,5 +142,35 @@
       "description": "Builds on the De Moivre/Chebyshev connection over finite fields"
     }
   ],
+  "sections": [
+    {
+      "id": "evaluation-law",
+      "title": "Evaluation-Map Composition Law",
+      "startLine": 45,
+      "endLine": 56,
+      "summary": "chebyshevC_evalComp: the evaluation form C_{mn}(x) = C_m(C_n(x)) over any commutative ring, a one-line corollary of Mathlib's polynomial identity C_mul (C R (m·n) = (C R m).comp (C R n)) via eval_comp. chebyshevC_evalComp_comm then derives the commuting family C_m(C_n x) = C_n(C_m x) from mul_comm on the index."
+    },
+    {
+      "id": "power-conjugacy",
+      "title": "Power-Map Conjugacy on the Unit Circle",
+      "startLine": 58,
+      "endLine": 68,
+      "summary": "chebyshevC_evalComp_pow: on the 'unit circle' z·w = 1, the nesting law is the shadow of (zⁿ)ᵐ = z^{mn} — both C_{mn}(z+w) and C_m(C_n(z+w)) equal (zⁿ)ᵐ + (wⁿ)ᵐ, since zⁿwⁿ = (zw)ⁿ = 1 keeps the pair on the circle. Reuses the parent's chebyshevC_eval_add. The structural insight: via z ↦ z + z⁻¹, the family n ↦ C_n is conjugate to the power monoid n ↦ (·ⁿ)."
+    },
+    {
+      "id": "monoid-hom",
+      "title": "Monoid Homomorphism over ZMod p",
+      "startLine": 70,
+      "endLine": 109,
+      "summary": "chebyshevEnd packages x ↦ C_n(x) as an element of the composition monoid Function.End (ZMod p), and chebyshevHom bundles n ↦ (x ↦ C_n x) into a monoid homomorphism (ℤ, ·) →* (End (ZMod p), ∘): map_one is C_1 = X = id, and map_mul is exactly the semigroup law. chebyshevEnd_comm restates the commuting family as endomorphism equality — the trapdoor behind Chebyshev/Lucas key exchange."
+    },
+    {
+      "id": "finite-field",
+      "title": "Power-Map Conjugacy over the Finite Field 𝔽_p",
+      "startLine": 111,
+      "endLine": 124,
+      "summary": "chebyshevEnd_eval_pow: for z ≠ 0 in 𝔽_p, the nested Chebyshev endomorphism at z + z⁻¹ realizes the (m·n)-th power map, equalling z^{mn} + z^{-mn}. This is the genuinely finite-field step (mul_inv_cancel₀ uses the field structure), exhibiting n ↦ C_n as the shadow of the power monoid under z ↦ z + z⁻¹."
+    }
+  ],
   "sorries": 0
 }
