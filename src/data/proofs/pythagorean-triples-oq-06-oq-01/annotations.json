@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "pythagorean-triples-oq-06-oq-01",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "context",
+    "title": "Parity Dichotomy of Primitive Pythagorean Triples",
+    "content": "A primitive Pythagorean triple solves x² + y² = z² with gcd(x,y) = 1. The parity dichotomy says exactly one of the two legs x, y is even (and the hypotenuse z is odd). The whole result follows from two parity facts about the equation, with no appeal to Euclid's parametrization: the legs are NOT both even (else 2 ∣ gcd = 1) and NOT both odd (odd² + odd² ≡ 2 mod 4, while every square is ≡ 0 or 1 mod 4). The mod-4 step is carried out by abstracting each square as an opaque integer and letting omega finish the linear contradiction.",
+    "mathContext": "Primitive $x^2+y^2=z^2 \\Rightarrow$ exactly one leg even, $z$ odd.",
+    "significance": "context",
+    "relatedConcepts": ["Pythagorean triples", "parity", "quadratic residues mod 4", "primitivity"],
+    "prerequisites": ["number theory", "parity", "modular arithmetic"]
+  },
+  {
+    "id": "ann-not-both-even",
+    "proofId": "pythagorean-triples-oq-06-oq-01",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "theorem",
+    "title": "not_both_even: The Legs Cannot Both Be Even",
+    "content": "If x and y were both even, then 2 divides x.natAbs and y.natAbs, so 2 ∣ Nat.gcd x.natAbs y.natAbs = Int.gcd x y = 1 — impossible, closed by omega. This is the ONLY step in the whole development that uses coprimality. Even x is pushed onto x.natAbs via Int.natAbs_even, and the divisibility of the gcd comes from Nat.dvd_gcd.",
+    "mathContext": "$2 \\mid x,\\ 2 \\mid y \\Rightarrow 2 \\mid \\gcd(x,y) = 1$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Int.natAbs_even", "Nat.dvd_gcd", "coprimality"],
+    "prerequisites": ["gcd", "parity"]
+  },
+  {
+    "id": "ann-not-both-odd",
+    "proofId": "pythagorean-triples-oq-06-oq-01",
+    "range": { "startLine": 48, "endLine": 64 },
+    "type": "theorem",
+    "title": "not_both_odd: No Pythagorean Triple Has Two Odd Legs",
+    "content": "Writing x = 2a+1 and y = 2b+1, the leg sum is x² + y² = 4(a²+a+b²+b) + 2, so z² ≡ 2 (mod 4). But splitting z by parity gives z² = 4c² (z even) or z² = 4(c²+c)+1 (z odd) — i.e. z² ≡ 0 or 1 (mod 4) — so the equation 4·k = 4·m + 2 or 4·k + 1 = 4·m + 2 is unsatisfiable. omega closes both once each square is abstracted to an opaque atom (omega is linear but treats nonlinear subterms as atoms). Crucially this lemma needs NO coprimality: it holds for every Pythagorean triple.",
+    "mathContext": "$\\text{odd}^2 + \\text{odd}^2 \\equiv 2 \\pmod 4$, but $z^2 \\equiv 0,1 \\pmod 4$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic residues mod 4", "omega", "Int.even_or_odd"],
+    "prerequisites": ["modular arithmetic", "parity"]
+  },
+  {
+    "id": "ann-dichotomy",
+    "proofId": "pythagorean-triples-oq-06-oq-01",
+    "range": { "startLine": 66, "endLine": 91 },
+    "type": "theorem",
+    "title": "parity_dichotomy / even_left_iff_odd_right: Exactly One Leg Is Even",
+    "content": "parity_dichotomy case-splits each leg with Int.even_or_odd into four corners and discharges the two same-parity corners (even/even, odd/odd) with not_both_even and not_both_odd, leaving exactly (Even x ∧ Odd y) ∨ (Odd x ∧ Even y). even_left_iff_odd_right repackages this as the sharpest 'exactly one' statement, the biconditional Even x ↔ Odd y, using Int.not_even_iff_odd / Int.not_odd_iff_even to eliminate the impossible branch in each direction.",
+    "mathContext": "$(\\text{Even } x \\wedge \\text{Odd } y) \\vee (\\text{Odd } x \\wedge \\text{Even } y)$; equivalently $\\text{Even } x \\leftrightarrow \\text{Odd } y$.",
+    "significance": "key",
+    "relatedConcepts": ["Int.even_or_odd", "opposite parity", "biconditional"],
+    "prerequisites": ["parity", "case analysis"]
+  },
+  {
+    "id": "ann-hypotenuse",
+    "proofId": "pythagorean-triples-oq-06-oq-01",
+    "range": { "startLine": 93, "endLine": 103 },
+    "type": "theorem",
+    "title": "hypotenuse_odd: The Hypotenuse Is Odd",
+    "content": "Since the legs have opposite parity, x² + y² = even² + odd² is odd (Even.add_odd / Odd.add_even after Even.mul_right and Odd.mul). Rewriting through x*x + y*y = z*z gives Odd (z*z), and Int.odd_mul descends this to Odd z. A free corollary of the dichotomy, needing no further case analysis.",
+    "mathContext": "$\\text{even} + \\text{odd} = \\text{odd} \\Rightarrow z^2 \\text{ odd} \\Rightarrow z \\text{ odd}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.odd_mul", "Even.add_odd", "Odd.add_even"],
+    "prerequisites": ["parity"]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "pythagorean-triples-oq-06-oq-01",
+    "range": { "startLine": 105, "endLine": 111 },
+    "type": "example",
+    "title": "triple_3_4_5_parity: The Smallest Triple",
+    "content": "Instantiating the dichotomy at (3,4,5) recovers the split 3 odd, 4 even, with odd hypotenuse 5. The Pythagorean equation 3·3 + 4·4 = 5·5 is checked by norm_num and the gcd / parity side conditions by decide — a concrete sanity check that the abstract statement is correctly formulated.",
+    "mathContext": "$(3,4,5)$: $3$ odd, $4$ even, $5$ odd.",
+    "significance": "supporting",
+    "relatedConcepts": ["concrete instance", "(3,4,5)"],
+    "prerequisites": ["Pythagorean triples"]
+  }
+]

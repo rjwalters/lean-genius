@@ -1,0 +1,185 @@
+{
+  "id": "pythagorean-triples-oq-06-oq-01",
+  "title": "Parity dichotomy of primitive Pythagorean triples",
+  "slug": "pythagorean-triples-oq-06-oq-01",
+  "description": "Answers the open question of pythagorean-triples-oq-06: in a primitive Pythagorean triple x² + y² = z² (gcd(x,y) = 1), exactly one leg is even and the hypotenuse is odd. The proof is fully elementary and needs no parametrization. Two independent parity facts do all the work: the legs cannot both be even (else 2 ∣ gcd = 1), and they cannot both be odd (odd² + odd² ≡ 2 mod 4, but no square is ≡ 2 mod 4). The mod-4 step abstracts each square as an opaque integer and lets omega close a linear contradiction. Packaged as the dichotomy, an 'exactly one' biconditional Even x ↔ Odd y, the odd-hypotenuse corollary, and the (3,4,5) instance. Verified with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ06OQ01.lean",
+    "tags": [
+      "number-theory",
+      "diophantine",
+      "pythagorean-triples",
+      "parity",
+      "modular-arithmetic",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 129,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.even_or_odd",
+        "description": "Every integer is even or odd — the case split driving both the dichotomy and the mod-4 argument",
+        "module": "Mathlib.Algebra.Parity"
+      },
+      {
+        "theorem": "Int.natAbs_even",
+        "description": "Even n.natAbs ↔ Even n, used to push parity of x, y onto their natAbs for the gcd contradiction",
+        "module": "Mathlib.Data.Int.Parity"
+      },
+      {
+        "theorem": "Nat.dvd_gcd",
+        "description": "k ∣ m → k ∣ n → k ∣ gcd m n, giving 2 ∣ Int.gcd x y = 1 in the not-both-even case",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.odd_mul",
+        "description": "Odd (m*n) ↔ Odd m ∧ Odd n, used to descend Odd (z*z) to Odd z for the hypotenuse",
+        "module": "Mathlib.Data.Int.Parity"
+      }
+    ],
+    "originalContributions": [
+      "not_both_even: in a primitive triple the legs cannot both be even, since that forces 2 ∣ gcd(x,y) = 1 — the sole use of coprimality",
+      "not_both_odd: NO Pythagorean triple has two odd legs; odd² + odd² ≡ 2 (mod 4) while every square is ≡ 0 or 1 (mod 4), discharged by abstracting squares and applying omega",
+      "parity_dichotomy: combining the two, exactly one leg is even — (Even x ∧ Odd y) ∨ (Odd x ∧ Even y)",
+      "even_left_iff_odd_right: the sharpest 'exactly one' packaging, Even x ↔ Odd y",
+      "hypotenuse_odd: the hypotenuse z is always odd, since even² + odd² is odd",
+      "triple_3_4_5_parity: the smallest triple (3,4,5) realises the split (3 odd, 4 even) with odd hypotenuse 5"
+    ],
+    "prerequisites": [
+      "Pythagorean triples x² + y² = z² and primitivity (gcd(x,y) = 1)",
+      "Parity of integers and quadratic residues mod 4",
+      "Mathlib's PythagoreanTriple definition"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.PythagoreanTriples",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "PythTriplesParity",
+    "path": "Proofs/PythagoreanTriplesOQ06OQ01.lean",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "That a primitive Pythagorean triple has one even and one odd leg is the first structural fact one proves about such triples, and it is the gateway to Euclid's classification: knowing y is the even leg lets one write y = 2mn and solve for m, n. The mod-4 obstruction — that 2 is not a quadratic residue mod 4 — is the same elementary device behind the proof that x² + y² = z² forces the even/odd split, and behind Fermat's observation that a sum of two odd squares is never a perfect square. Hardy and Wright derive the parity split (Theorem 225) as the opening move of the classification rather than as a consequence of it.",
+    "problemStatement": "Prove, with 0 sorries and 0 axioms, the parity dichotomy of primitive Pythagorean triples: if x² + y² = z² with gcd(x,y) = 1, then exactly one of x, y is even, and z is odd.",
+    "text": "In a primitive Pythagorean triple the two legs have opposite parity — exactly one is even — and the hypotenuse is odd.",
+    "proofStrategy": "Two independent parity lemmas, each proved directly from x*x + y*y = z*z, then assembled. (1) not_both_even: if x and y were both even, then 2 divides each natAbs and hence 2 ∣ Int.gcd x y = 1, a contradiction closed by omega — the only place coprimality is used. (2) not_both_odd: writing x = 2a+1, y = 2b+1 gives x² + y² = 4(a²+a+b²+b) + 2, so z² ≡ 2 (mod 4); splitting z as even (z² = 4c²) or odd (z² = 4(c²+c)+1) yields 4·(opaque) = 4·(opaque) + 2 or 4·(opaque)+1 = 4·(opaque)+2, both impossible by omega once the squares are abstracted to atoms. (3) parity_dichotomy case-splits each leg with Int.even_or_odd and discharges the two same-parity corners with the lemmas. (4) even_left_iff_odd_right repackages this as Even x ↔ Odd y. (5) hypotenuse_odd: the legs have opposite parity, so x² + y² = even + odd is odd, hence z² and z are odd via Int.odd_mul. (6) triple_3_4_5_parity instantiates at (3,4,5).",
+    "keyInsights": [
+      "**Coprimality is needed only once.** Ruling out two odd legs is a fact about the equation alone — it holds for every Pythagorean triple, primitive or not. Only ruling out two even legs uses gcd(x,y) = 1. So 'opposite parity' is two theorems of very different strength glued together.",
+      "**2 is not a quadratic residue mod 4.** odd² ≡ 1 (mod 4), so a sum of two odd squares is ≡ 2 (mod 4); but a square is only ever ≡ 0 or 1 (mod 4). This single residue obstruction is the whole content of not_both_odd.",
+      "**omega handles modular arithmetic if you hide the squares.** omega is linear and cannot square, but it treats nonlinear subterms as opaque atoms. Rewriting z² as 4·c² or 4·(c²+c)+1 and the leg sum as 4·k + 2 turns the mod-4 contradiction into a linear one omega closes outright — no ZMod, no decide.",
+      "**The hypotenuse parity is a free corollary.** Once the legs are opposite-parity, x² + y² is even + odd = odd, so z² is odd and therefore z is odd. No extra case analysis is needed.",
+      "**No parametrization required.** The parent entry derives this kind of fact through Euclid's (m²−n², 2mn, m²+n²) form, where 2mn is visibly even. The dichotomy is logically prior: it is what licenses choosing y as the even leg in the first place, and here it is proved directly, decoupled from the classification."
+    ],
+    "prerequisites": [
+      "Pythagorean triples x² + y² = z² and primitivity",
+      "Parity of integers (even/odd) and the mod-4 behaviour of squares",
+      "Greatest common divisor and coprimality",
+      "The omega decision procedure for linear integer arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "States the parity dichotomy and outlines the two-lemma elementary argument (not both even via gcd, not both odd via mod 4); imports Mathlib's PythagoreanTriples.",
+      "mathContext": "Primitive Pythagorean triples and parity of integers."
+    },
+    {
+      "id": "not-both-even",
+      "title": "not_both_even — the legs are not both even",
+      "startLine": 39,
+      "endLine": 46,
+      "summary": "If x and y are both even then 2 divides each natAbs, hence 2 ∣ Int.gcd x y = 1, closed by omega. The only step that uses coprimality.",
+      "mathContext": "Primitivity rules out a common factor of 2."
+    },
+    {
+      "id": "not-both-odd",
+      "title": "not_both_odd — no triple has two odd legs",
+      "startLine": 48,
+      "endLine": 64,
+      "summary": "Writing x = 2a+1, y = 2b+1 gives x²+y² ≡ 2 (mod 4); splitting z's parity and abstracting squares to atoms lets omega derive a contradiction. Holds for every triple.",
+      "mathContext": "2 is not a quadratic residue mod 4."
+    },
+    {
+      "id": "dichotomy",
+      "title": "parity_dichotomy / even_left_iff_odd_right — exactly one leg is even",
+      "startLine": 66,
+      "endLine": 91,
+      "summary": "Case-splitting both legs with Int.even_or_odd and discharging the same-parity corners with the two lemmas gives the dichotomy, repackaged as the biconditional Even x ↔ Odd y.",
+      "mathContext": "Opposite parity of the legs."
+    },
+    {
+      "id": "hypotenuse",
+      "title": "hypotenuse_odd — the hypotenuse is odd",
+      "startLine": 93,
+      "endLine": 103,
+      "summary": "From opposite-parity legs, x²+y² = even + odd is odd, so z² and hence z is odd via Int.odd_mul.",
+      "mathContext": "Parity of z from the parity of the legs."
+    },
+    {
+      "id": "example",
+      "title": "triple_3_4_5_parity — the smallest triple",
+      "startLine": 105,
+      "endLine": 111,
+      "summary": "Instantiates the dichotomy at (3,4,5): 3 odd, 4 even, hypotenuse 5 odd.",
+      "mathContext": "A concrete witness of the dichotomy."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parity dichotomy of primitive Pythagorean triples is formalized with 0 axioms and 0 sorries: exactly one leg is even and the hypotenuse is odd. The proof is fully elementary — not_both_odd is a mod-4 fact about the bare equation (coprimality-free), and not_both_even is the single step invoking gcd(x,y) = 1 — and is decoupled from Euclid's parametrization.",
+    "implications": "Supplies the structural fact that underlies the classification entry pythagorean-triples-oq-06: knowing exactly one leg is even is what licenses writing the even leg as 2mn. The mod-4 technique — abstracting squares to atoms so omega can settle a residue obstruction — is reusable for other quadratic Diophantine parity arguments.",
+    "openQuestions": [
+      {
+        "id": "pythagorean-triples-oq-06-oq-01-oq-01",
+        "question": "Sharpen the even leg: in a primitive triple the even leg is in fact divisible by 4 (since y = 2mn with exactly one of m, n even). Formalize 4 ∣ (the even leg).",
+        "significance": "low"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples-oq-06",
+      "relationship": "extends",
+      "description": "Parent classification entry; this answers its open question by proving the parity dichotomy directly, without the parametrization."
+    },
+    {
+      "targetId": "pythagorean-triples",
+      "relationship": "extends",
+      "description": "Root Pythagorean-triples entry."
+    }
+  ],
+  "references": [
+    {
+      "title": "An Introduction to the Theory of Numbers",
+      "author": "Hardy, Wright",
+      "year": "2008",
+      "venue": "Oxford University Press",
+      "description": "Theorem 225 and surrounding discussion: the parity split of the legs as the first step in classifying primitive Pythagorean triples."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "pythagorean-triples-oq-06-oq-01-oq-01",
+      "question": "Sharpen the even leg: show the even leg of a primitive triple is divisible by 4.",
+      "significance": "low"
+    }
+  ],
+  "sorries": 0
+}
