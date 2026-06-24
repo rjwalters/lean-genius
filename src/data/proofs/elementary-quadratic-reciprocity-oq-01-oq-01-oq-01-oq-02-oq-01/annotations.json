@@ -1,0 +1,62 @@
+[
+  {
+    "id": "eqr-lift-ann-header",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "context",
+    "title": "The open question: ZMod q congruence vs integer identity",
+    "content": "The docstring frames the last-mile problem. The Gauss-sum pipeline natively produces a congruence in ZMod q: (-1)^(⌊p/2⌋·⌊q/2⌋)·(q|p) = (p|q). But classical quadratic reciprocity is an equation of integers: legendreSym p q · legendreSym q p = (-1)^(⌊p/2⌋·⌊q/2⌋). This file supplies the elementary arithmetic bridge — the 'four-sign lift' — converting the modular congruence into the integer law without invoking Mathlib's black-box legendreSym.quadratic_reciprocity, keeping the Gauss-sum derivation genuinely self-contained.",
+    "mathContext": "From $(-1)^{\\lfloor p/2\\rfloor\\lfloor q/2\\rfloor}\\,(q|p) \\equiv (p|q) \\pmod q$ to $\\big(\\tfrac{p}{q}\\big)\\big(\\tfrac{q}{p}\\big) = (-1)^{\\lfloor p/2\\rfloor\\lfloor q/2\\rfloor}$ in $\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["quadratic reciprocity", "Legendre symbol", "Gauss sums", "ZMod"],
+    "prerequisites": ["Lean 4", "Mathlib", "elementary number theory"]
+  },
+  {
+    "id": "eqr-lift-ann-injectivity",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 56, "endLine": 69 },
+    "type": "insight",
+    "title": "The {+1,−1} lift: the cast is injective on signs",
+    "content": "int_pm_one_cast_inj is the entire content of 'lifting ZMod q to ℤ': for an odd prime q, two integers each equal to ±1 that are congruent mod q must be equal. The proof is a four-way case split on (x,y) ∈ {+1,−1}²; the only nontrivial cases are 1 ≡ −1 (and its symmetric), excluded by ZMod.neg_one_ne_one because q ∤ 2. The odd-prime hypothesis enters exactly here — it is what keeps +1 and −1 distinct mod q.",
+    "mathContext": "For odd prime $q$: $x,y\\in\\{+1,-1\\}$ and $x\\equiv y\\pmod q \\Rightarrow x=y$, since $1\\not\\equiv -1$ unless $q\\mid 2$.",
+    "significance": "key",
+    "relatedConcepts": ["injectivity", "ZMod.neg_one_ne_one", "odd prime", "case analysis"],
+    "prerequisites": ["modular arithmetic", "ZMod cast"]
+  },
+  {
+    "id": "eqr-lift-ann-units",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 71, "endLine": 97 },
+    "type": "technique",
+    "title": "Both symbols are units, hence ±1",
+    "content": "The main theorem first establishes that q is a unit mod p and p is a unit mod q: since p ≠ q are primes, neither divides the other (Nat.prime_dvd_prime_iff_eq), so the casts are nonzero. legendreSym.eq_one_or_neg_one then makes both Legendre symbols ±1, legendreSym.sq_one records (q|p)² = 1, and a parity split on k = ⌊p/2⌋·⌊q/2⌋ makes the reciprocity sign (-1)^k itself ±1. These ±1 facts are precisely the hypotheses the lift lemma consumes.",
+    "mathContext": "$p\\ne q$ prime $\\Rightarrow (q|p),(p|q)\\in\\{\\pm1\\}$, $(q|p)^2=1$, and $(-1)^k\\in\\{\\pm1\\}$ for $k=\\lfloor p/2\\rfloor\\lfloor q/2\\rfloor$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Legendre symbol values", "prime coprimality", "unit mod p", "parity"],
+    "prerequisites": ["Nat.prime_dvd_prime_iff_eq", "ZMod.natCast_eq_zero_iff"]
+  },
+  {
+    "id": "eqr-lift-ann-lift-and-clear",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 98, "endLine": 108 },
+    "type": "insight",
+    "title": "Lift the congruence, then clear (q|p) with its square",
+    "content": "With both sides of gauss_sum_zmod_qr now known to be ±1, int_pm_one_cast_inj lifts the ZMod q congruence to the integer equality (p|q) = (-1)^k·(q|p). Multiplying through by (q|p) and folding (q|p)·(q|p) = (q|p)² = 1 (hBsq) turns the multiplicative relation A = E·B into the symmetric product A·B = E — exactly the reciprocity law (p|q)·(q|p) = (-1)^k. This is the clean single-step replacement for the requested four-sign case analysis.",
+    "mathContext": "$(p|q) = (-1)^k(q|p)$, times $(q|p)$ with $(q|p)^2=1$ gives $(p|q)(q|p) = (-1)^k$.",
+    "significance": "key",
+    "relatedConcepts": ["lifting congruences", "squaring to clear a unit", "reciprocity sign", "non-circular derivation"],
+    "prerequisites": ["the {±1} lift lemma", "pow_two / mul_one"]
+  },
+  {
+    "id": "eqr-lift-ann-concrete",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 110, "endLine": 122 },
+    "type": "context",
+    "title": "Concrete verifications by kernel decide",
+    "content": "Two worked instances ground the theorem: (p,q) = (3,5) gives (3|5)·(5|3) = 1 = (-1)^(2·1), and (3,7) gives (3|7)·(7|3) = -1 = (-1)^(3·1). Both close by decide — pure kernel reduction, not native_decide — so they introduce no Lean.ofReduceBool dependency and the entry remains genuinely axiom-free. They independently confirm both the +1 and −1 sign outcomes of the reciprocity law.",
+    "mathContext": "$(3|5)(5|3) = 1 = (-1)^{1\\cdot2}$;\\quad $(3|7)(7|3) = -1 = (-1)^{1\\cdot3}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide vs native_decide", "kernel reduction", "axiom-free verification", "sanity check"],
+    "prerequisites": ["Decidable instances for legendreSym on literals"]
+  }
+]
