@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ann-bounded-property",
+    "proofId": "tietze-extension-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 78
+    },
+    "type": "definition",
+    "title": "The Bounded Tietze Property and the Clamp",
+    "content": "`HasBoundedTietzeExtensionProperty X` is the range-controlled extension property: for every closed s ⊆ X, every a ≤ b, and every f ∈ C(s, ℝ) with f(x) ∈ [a,b], there is g ∈ C(X, ℝ) with g(x) ∈ [a,b] and g.restrict s = f. It is formally weaker than the parent's `HasTietzeExtensionProperty` in two ways: only bounded-range functions are extended, and the extension's range is constrained too. The engine is the retraction `clamp a b t = max a (min b t)` of ℝ onto [a,b]: `continuous_clamp` (continuity via fun_prop), `clamp_mem_Icc` (it lands in [a,b] when a ≤ b: a ≤ max a _, and max a (min b t) ≤ b since min b t ≤ b), and `clamp_eq_self` (it is the identity on [a,b]).",
+    "mathContext": "$\\mathrm{BddTietze}(X):\\ \\forall s\\ \\text{closed},\\ \\forall a\\le b,\\ \\forall f\\in C(s,[a,b]),\\ \\exists g\\in C(X,[a,b]),\\ g|_s=f$; clamp $t\\mapsto\\max(a,\\min(b,t))$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "range-controlled Tietze extension",
+      "retraction onto an interval",
+      "max/min clamp",
+      "bundled continuous maps C(s, ℝ)"
+    ],
+    "prerequisites": [
+      "normal spaces",
+      "closed intervals Set.Icc",
+      "order arithmetic of max and min"
+    ]
+  },
+  {
+    "id": "ann-forward-full-implies-bounded",
+    "proofId": "tietze-extension-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 79,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "Forward Direction and Full ⟹ Bounded",
+    "content": "`hasBoundedTietzeExtensionProperty_of_normalSpace` proves normal ⟹ bounded without any interval-valued Tietze instance: take an ordinary unrestricted extension F of f via Mathlib's `ContinuousMap.exists_restrict_eq`, then post-compose with the clamp. The result lands in [a,b] everywhere (clamp_mem_Icc) and equals f on s because f is already in [a,b] there, where the clamp is the identity (clamp_eq_self). `hasBoundedTietzeExtensionProperty_of_hasTietzeExtensionProperty` runs the identical clamp on the parent's unrestricted extension, showing the full Tietze property implies the bounded one — so the bounded property is the strictly weaker hypothesis.",
+    "mathContext": "Clamp an unrestricted extension $F$: $\\max(a,\\min(b,F))\\in[a,b]$ and restricts to $f$ on $s$ since $f\\in[a,b]$ there. Hence $\\mathrm{Normal}\\Rightarrow\\mathrm{BddTietze}$ and $\\mathrm{Tietze}\\Rightarrow\\mathrm{BddTietze}$.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "clamping / retraction",
+      "ContinuousMap.exists_restrict_eq",
+      "ContinuousMap composition",
+      "restriction equality"
+    ],
+    "prerequisites": [
+      "Mathlib's Tietze theorem",
+      "continuous map composition",
+      "clamp_mem_Icc and clamp_eq_self"
+    ]
+  },
+  {
+    "id": "ann-converse",
+    "proofId": "tietze-extension-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 172
+    },
+    "type": "theorem",
+    "title": "The Bounded Property Implies Normal",
+    "content": "`normalSpace_of_hasBoundedTietzeExtensionProperty` is the new content. For disjoint closed A, B set s = A ∪ B (closed). By the parent's `isClopen_subtype_of_disjoint_closed` the part of s over B is clopen, hence has empty frontier, so the two-valued indicator f (1 on B, 0 on A) is continuous on s via `Continuous.if`. Crucially its range is {0,1} ⊆ [0,1], so the bounded hypothesis applies with a=0, b=1, extending f to F ∈ C(X, ℝ). Unwinding the restriction gives F = 0 on A and F = 1 on B, and the disjoint open level sets F⁻¹(Iio ½), F⁻¹(Ioi ½) separate A from B. No separation axiom on X is used, and the output range constraint on F is not even exercised — ½ alone does the separating.",
+    "mathContext": "Disjoint closed $A,B$: the $\\{0,1\\}$ boundary function on $A\\cup B$ is $[0,1]$-valued; the bounded hypothesis extends it to $F$, and $F^{-1}(-\\infty,\\tfrac12)\\supseteq A$, $F^{-1}(\\tfrac12,\\infty)\\supseteq B$ are disjoint opens.",
+    "significance": "key",
+    "relatedConcepts": [
+      "converse of Tietze extension",
+      "clopen boundary function",
+      "Continuous.if",
+      "separation by level sets",
+      "NormalSpace"
+    ],
+    "prerequisites": [
+      "the parent clopen boundary lemma",
+      "continuity across an empty frontier",
+      "open level sets of continuous functions"
+    ]
+  },
+  {
+    "id": "ann-equivalence-tfae",
+    "proofId": "tietze-extension-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 173,
+      "endLine": 191
+    },
+    "type": "theorem",
+    "title": "The Equivalence and Three-Way Characterization",
+    "content": "`normalSpace_iff_hasBoundedTietzeExtensionProperty` pairs the converse with the forward direction into the equivalence normal ⟺ bounded Tietze property. `normal_tietze_boundedTietze_tfae` assembles the chain normal → full → bounded → normal into a TFAE over three predicates: normality, the parent's unrestricted Tietze property, and the bounded Tietze property. The cycle uses the parent's forward direction (normal ⟹ full), the clamp (full ⟹ bounded), and the new converse (bounded ⟹ normal), collapsing all three into interchangeable characterizations and showing the range control of the classical statement is inessential.",
+    "mathContext": "$\\mathrm{Normal}\\iff\\mathrm{BddTietze}$; and $[\\mathrm{Normal},\\ \\mathrm{Tietze},\\ \\mathrm{BddTietze}]$ are pairwise equivalent via the cycle $\\mathrm{Normal}\\to\\mathrm{Tietze}\\to\\mathrm{BddTietze}\\to\\mathrm{Normal}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "List.TFAE",
+      "characterization of normality",
+      "equivalence of separation properties"
+    ],
+    "prerequisites": [
+      "the parent equivalence normal ⟺ Tietze",
+      "tfae_have / tfae_finish"
+    ]
+  }
+]
