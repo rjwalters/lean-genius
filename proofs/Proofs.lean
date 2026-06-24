@@ -2701,6 +2701,7 @@ import Proofs.FactorRemainderTheoremOQ01OQ02
 import Proofs.FactorRemainderTheoremOQ02
 import Proofs.FactorRemainderTheoremOQ03
 import Proofs.FactorRemainderTheoremOQ05
+import Proofs.FactorRemainderTheoremOQ06
 import Proofs.FairGamesTheorem
 import Proofs.FairGamesTheoremOQ01
 import Proofs.FairGamesTheoremOQ02
