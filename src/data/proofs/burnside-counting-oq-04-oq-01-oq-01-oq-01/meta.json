@@ -83,6 +83,14 @@
   },
   "sections": [
     {
+      "id": "overview",
+      "title": "Overview and Scope: the rotation half of the closed form",
+      "startLine": 3,
+      "endLine": 52,
+      "summary": "Module docstring: the parent computed bracelet counts via per-n kernel decide and asked for a closed form. This file proves the generic rotation term 2^gcd(n, i.val) uniformly in n (no computation), plus the namespace, the Coloring/IsRotInvariant/RotFixed definitions and their Fintype instances. Honest scope: only the rotation half; the reflection contribution is left to future work; everything is axiom-free (kernel decide, no native_decide).",
+      "mathContext": "$\\#\\{c:\\mathbb{Z}/n\\to\\mathbb{F}_2 \\mid c(p+i)=c(p)\\} = 2^{\\gcd(n,\\,i)}.$"
+    },
+    {
       "id": "invariance",
       "title": "Rotation Invariance Extends to the Whole Cyclic Subgroup",
       "startLine": 54,
