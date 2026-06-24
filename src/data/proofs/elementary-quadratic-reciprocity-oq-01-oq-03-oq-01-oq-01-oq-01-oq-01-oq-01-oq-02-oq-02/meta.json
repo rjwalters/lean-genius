@@ -1,0 +1,131 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+  "title": "The combined supplement (a = -2) to quadratic reciprocity, the Zolotarev way: J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8)",
+  "description": "A follow-up of the second-supplement entry (the parent, a = 2), delivering the COMBINED supplement a = -2 and the power-form characterization of the companion octic character χ₈' (the one attached to ℚ(√-2)/ℚ). For every odd n > 0, J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) — the product of the first supplement (a = -1, exponent (n-1)/2) and the second supplement (a = 2, exponent (n²-1)/8) — and that value is the sign of the permutation x ↦ -2·x on ℤ/n. The genuinely NEW mathematical content is the closed-form POWER formula for the companion octic character, χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) for odd n, the octic-companion analogue of ZMod.χ₄_eq_neg_one_pow (Mathlib provides only the mod-8 case split χ₈'_nat_eq_if_mod_eight). It is obtained STRUCTURALLY — with no fresh parity computation — from the factorization χ₈' = χ₄ · χ₈ (ZMod.χ₈'_eq_χ₄_mul_χ₈), the quartic power form χ₄ n = (-1)^((n-1)/2) (ZMod.χ₄_eq_neg_one_pow), and the parent's octic power form χ₈ n = (-1)^((n²-1)/8), combined through (-1)^a·(-1)^b = (-1)^(a+b). This exhibits the multiplicative law J(-2|·) = J(-1|·)·J(2|·) at the level of the exponents of the supplements. The entry records the Jacobi-symbol supplement, its mod-8 case-split form, the structural product decomposition, the x ↦ -2·x permutation sign (via the parent's full odd-modulus Zolotarev–Frobenius identity), the Legendre/Euler-criterion special case (-2 / p) = (-1)^((p-1)/2 + (p²-1)/8), and recovers the classical criterion that -2 is a quadratic residue mod an odd prime p iff p ≡ 1 or 3 (mod 8).",
+  "leanFile": {
+    "imports": [
+      "Proofs.ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02"
+    ],
+    "opens": [
+      "Equiv",
+      "Equiv.Perm",
+      "ZolotarevCRT"
+    ],
+    "namespace": "ZolotarevThirdSupplement",
+    "lineCount": 176,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "text": "Zolotarev's theory reads arithmetic symbols as permutation parities. The parent supplements handle a = -1 (negation, an involution) and a = 2 (doubling, governed by the multiplicative order of 2). This entry handles the remaining small case a = -2, the unit attached to the field ℚ(√-2). The value J(-2 | n) = χ₈' n is supplied by Mathlib's jacobiSym.at_neg_two; the missing analytic ingredient — and the reusable contribution here — is the explicit power form of the companion octic character, χ₈' n = (-1)^((n-1)/2 + (n²-1)/8). It is obtained without any new parity computation: χ₈' factors as χ₄·χ₈ (ZMod.χ₈'_eq_χ₄_mul_χ₈), and the two factors already have power forms — χ₄ n = (-1)^((n-1)/2) (Mathlib's χ₄_eq_neg_one_pow) and χ₈ n = (-1)^((n²-1)/8) (the parent entry's chi8_eq_neg_one_pow). Multiplying, (-1)^((n-1)/2)·(-1)^((n²-1)/8) = (-1)^((n-1)/2 + (n²-1)/8). The combined exponent is even exactly when n ≡ 1 or 3 (mod 8) — precisely the residues at which -2 is a quadratic residue — so J(-2 | n) = +1 there and -1 at n ≡ 5, 7 (mod 8). Reading this off Zolotarev's permutation, the map x ↦ -2·x on ℤ/n has exactly this sign.",
+    "historicalContext": "The criterion that -2 is a quadratic residue mod an odd prime p iff p ≡ 1 or 3 (mod 8) is the combined supplement, the product of the first supplement (-1 is a QR iff p ≡ 1 mod 4) and the second (2 is a QR iff p ≡ ±1 mod 8). Its Jacobi-symbol form J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) extends it to all odd n. In Mathlib the value is carried by the second primitive quadratic character on ZMod 8, χ₈', corresponding to the field extension ℚ(√-2)/ℚ, paired with χ₈ (for ℚ(√2)) and χ₄ (for ℚ(i)) via χ₈' = χ₄·χ₈. Zolotarev (1872) reorganized quadratic reciprocity around permutation signs; Frobenius (1914) extended this to the Jacobi symbol on composite moduli. In that picture the combined supplement is the permutation parity at a = -2.",
+    "problemStatement": "Follow-up of the second-supplement entry (open question: give the explicit (-1)^e power form for the companion octic character χ₈' and read the resulting combined supplement J(-2 | n) off Zolotarev's permutation). This entry answers it: for every odd n > 0, χ₈' n = (-1)^((n-1)/2 + (n²-1)/8), hence J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8), and that value is the sign of the permutation x ↦ -2·x on ℤ/n.",
+    "proofStrategy": "chi8'_eq_neg_one_pow: χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) for odd n. Rewrite (n-1)/2 = n/2 (omega, using n odd), then χ₈' via ZMod.χ₈'_eq_χ₄_mul_χ₈ (χ₈' a = χ₄ (cast a) · χ₈ a), simplify the ZMod 8 → ZMod 4 cast with ZMod.cast_natCast (4 ∣ 8), apply χ₄_eq_neg_one_pow (giving (-1)^(n/2)) and the parent's chi8_eq_neg_one_pow (giving (-1)^((n²-1)/8)), and merge with ← pow_add. neg_one_pow_combined: the explicit value (-1)^((n-1)/2 + (n²-1)/8) = (n mod 8 ∈ {1,3} ? 1 : -1), from chi8'_eq_neg_one_pow and ZMod.χ₈'_nat_eq_if_mod_eight (n-even branch killed by oddness). jacobiSym_neg_two: J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) by jacobiSym.at_neg_two then chi8'_eq_neg_one_pow. jacobiSym_neg_two_eq_if: the mod-8 case split. jacobiSym_neg_two_eq_mul: J(-2 | n) = J(-1 | n)·J(2 | n) by -2 = (-1)·2 and jacobiSym.mul_left (holds for all n). sign_ringMulPerm_neg_two: the parent's sign_ringMulPerm_eq_jacobiSym_odd (unit u with residue -2, integer representative -2) gives sign(x ↦ -2·x on ℤ/n) = J(-2 | n) = (-1)^(…). legendreSym_neg_two: the prime case via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two. legendreSym_neg_two_eq_one_iff: legendreSym p (-2) = 1 ⇔ p ≡ 1 or 3 (mod 8), recovering the classical -2 reciprocity criterion from the power form.",
+    "keyInsights": [
+      "The combined supplement requires no new parity work: χ₈' = χ₄·χ₈ (ZMod.χ₈'_eq_χ₄_mul_χ₈) reduces its power form to the sum of two power forms already in hand — Mathlib's χ₄_eq_neg_one_pow (exponent (n-1)/2) and the parent's chi8_eq_neg_one_pow (exponent (n²-1)/8). The single law (-1)^a·(-1)^b = (-1)^(a+b) does the rest.",
+      "Mathlib has the companion octic character χ₈' only in mod-8 case-split form (χ₈'_nat_eq_if_mod_eight); the closed-form power expression χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) — the octic-companion analogue of ZMod.χ₄_eq_neg_one_pow — is not in the library and is the reusable contribution of this entry.",
+      "The exponent-level identity (n-1)/2 + (n²-1)/8 mirrors the symbol-level multiplicativity J(-2|n) = J(-1|n)·J(2|n): the additive structure of exponents of (-1) is the shadow of the multiplicative structure of the supplements.",
+      "The combined exponent is even exactly when n ≡ 1 or 3 (mod 8), matching the values of χ₈' and the classical criterion that -2 is a quadratic residue mod an odd prime p iff p ≡ 1 or 3 (mod 8) — consistent with Mathlib's ZMod.exists_sq_eq_neg_two_iff.",
+      "Oddness of n enters compatibly: it makes -2 a unit mod n (so the permutation x ↦ -2·x exists), it identifies (n-1)/2 with n/2 in the exponent, and it kills the n-even branch of χ₈' (where J(-2 | ·) is undefined)."
+    ],
+    "prerequisites": [
+      "The second-supplement entry (the parent): chi8_eq_neg_one_pow (χ₈ n = (-1)^((n²-1)/8) for odd n) and the Zolotarev machinery it imports",
+      "The full odd-modulus Zolotarev–Frobenius identity ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd and the whole-ring multiplication permutation ZolotarevCRT.ringMulPerm",
+      "Mathlib's companion octic character ZMod.χ₈' with χ₈'_nat_eq_if_mod_eight, the factorization ZMod.χ₈'_eq_χ₄_mul_χ₈, and the quartic power form ZMod.χ₄_eq_neg_one_pow",
+      "Mathlib's Jacobi-symbol values: jacobiSym.at_neg_two (J(-2 | b) = χ₈' b), jacobiSym.mul_left (multiplicativity in the numerator), and the cast lemma ZMod.cast_natCast",
+      "For the prime case: jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Power formula for the companion octic character χ₈'",
+      "content": "chi8'_eq_neg_one_pow: χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) for odd n — the octic-companion analogue of ZMod.χ₄_eq_neg_one_pow, absent from Mathlib (which has only the case split χ₈'_nat_eq_if_mod_eight). Proved structurally: χ₈' = χ₄·χ₈ (ZMod.χ₈'_eq_χ₄_mul_χ₈), with χ₄ n = (-1)^((n-1)/2) (χ₄_eq_neg_one_pow) and χ₈ n = (-1)^((n²-1)/8) (the parent's chi8_eq_neg_one_pow), merged by ← pow_add."
+    },
+    {
+      "title": "The combined supplement value as a signed power",
+      "content": "neg_one_pow_combined: (-1)^((n-1)/2 + (n²-1)/8) = (if n % 8 = 1 ∨ n % 8 = 3 then 1 else -1), obtained from chi8'_eq_neg_one_pow and ZMod.χ₈'_nat_eq_if_mod_eight: +1 when n ≡ 1, 3 (mod 8), -1 when n ≡ 5, 7 (mod 8)."
+    },
+    {
+      "title": "The combined supplement and its structural decomposition",
+      "content": "jacobiSym_neg_two: J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) by jacobiSym.at_neg_two (J(-2 | n) = χ₈' n) and chi8'_eq_neg_one_pow. jacobiSym_neg_two_eq_if: its mod-8 case-split form. jacobiSym_neg_two_eq_mul: the structural law J(-2 | n) = J(-1 | n)·J(2 | n) from -2 = (-1)·2 and jacobiSym.mul_left, exhibiting the combined exponent as the sum of the two individual supplement exponents."
+    },
+    {
+      "title": "The permutation sign and the prime (Legendre) case",
+      "content": "sign_ringMulPerm_neg_two: the parent's sign_ringMulPerm_eq_jacobiSym_odd gives sign(x ↦ -2·x on ℤ/n) = J(-2 | n) = (-1)^(…), in unit-hypothesis form. legendreSym_neg_two: the Legendre/Euler-criterion case (-2 / p) = (-1)^((p-1)/2 + (p²-1)/8) at an odd prime. legendreSym_neg_two_eq_one_iff: legendreSym p (-2) = 1 ⇔ p ≡ 1 or 3 (mod 8), recovering the classical -2 reciprocity criterion from the power form."
+    }
+  ],
+  "meta": {
+    "author": "Gauss / Euler (combined supplement); Zolotarev (1872), Frobenius (1914) (permutation-sign route)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quadratic_reciprocity",
+    "date": "1872",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ02OQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "combined-supplement",
+      "legendre-symbol",
+      "jacobi-symbol",
+      "permutation-sign",
+      "zolotarev",
+      "octic-character",
+      "chi8-prime",
+      "minus-two",
+      "odd-modulus",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 176,
+    "theoremCount": 8,
+    "defCount": 0,
+    "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The headline theorems chi8'_eq_neg_one_pow, jacobiSym_neg_two, sign_ringMulPerm_neg_two and legendreSym_neg_two_eq_one_iff were checked with #print axioms and depend only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions). The value J(-2 | n) = χ₈' n is classical and reachable in Mathlib via jacobiSym.at_neg_two; the contributions here are (i) the explicit power formula χ₈' n = (-1)^((n-1)/2 + (n²-1)/8), which Mathlib does not provide, derived structurally from χ₈' = χ₄·χ₈, and (ii) the reading of the combined supplement as the sign of the x ↦ -2·x permutation. The sign value is honestly routed through J(-2 | n) = χ₈' n rather than an independent inversion count.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  },
+  "conclusion": {
+    "summary": "Proves, with 0 sorries and 0 axioms, the combined supplementary law of quadratic reciprocity J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) for every odd n > 0, and identifies it as the sign of the permutation x ↦ -2·x on ℤ/n via the parent's full odd-modulus Zolotarev–Frobenius identity. The new analytic ingredient is the closed-form power formula for the companion octic character, χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) — absent from Mathlib, which carries χ₈' only as a mod-8 case split — derived structurally from χ₈' = χ₄·χ₈ together with the quartic and (parent's) octic power forms. Also records the structural decomposition J(-2 | n) = J(-1 | n)·J(2 | n), the Legendre/Euler-criterion specialization (-2 / p) = (-1)^((p-1)/2 + (p²-1)/8), and the classical criterion that -2 is a quadratic residue mod an odd prime p iff p ≡ 1 or 3 (mod 8).",
+    "implications": "Completes the small-unit supplements in the Zolotarev gallery line — a = -1, a = 2, and now the combined a = -2 — each recorded as a permutation parity. The reusable nugget is chi8'_eq_neg_one_pow: the companion octic character in explicit power form, the χ₈' counterpart of ZMod.χ₄_eq_neg_one_pow and of the parent's chi8_eq_neg_one_pow, suitable for upstreaming to Mathlib alongside the χ₈ power form. With the two supplements and their combination now in hand, the main reciprocity law (the two-dimensional shuffle) remains the only piece for a fully self-contained Zolotarev proof of quadratic reciprocity in the gallery.",
+    "openQuestions": [
+      "Upstream both octic power forms — χ₈ n = (-1)^((n²-1)/8) and χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) for odd n — to Mathlib as the octic analogues of ZMod.χ₄_eq_neg_one_pow, completing the power-form characterizations of the small quadratic/quartic/octic characters χ₄, χ₈, χ₈'.",
+      "Read the a = -2 sign off the permutation x ↦ -2·x independently (e.g. as the composite of negation and doubling, combining the involution fixed-point count for -1 with the doubling cycle structure for 2), so the combined supplement is obtained without routing through χ₈'."
+    ]
+  },
+  "references": [
+    {
+      "title": "Quadratic reciprocity — supplementary laws",
+      "url": "https://en.wikipedia.org/wiki/Quadratic_reciprocity"
+    },
+    {
+      "title": "Zolotarev, Nouvelle démonstration de la loi de réciprocité de Legendre (1872)",
+      "url": "https://en.wikipedia.org/wiki/Zolotarev%27s_lemma"
+    },
+    {
+      "title": "Jacobi symbol",
+      "url": "https://en.wikipedia.org/wiki/Jacobi_symbol"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02",
+      "relation": "parent",
+      "note": "The second supplement J(2 | n) = (-1)^((n²-1)/8) and the octic power form chi8_eq_neg_one_pow; this entry multiplies it by the first supplement to deliver the combined a = -2 supplement and the companion power form χ₈' n = (-1)^((n-1)/2 + (n²-1)/8)."
+    },
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relation": "sibling",
+      "note": "The first supplement J(-1 | n) = (-1)^((n-1)/2), the a = -1 factor whose exponent (n-1)/2 is added to the second supplement's (n²-1)/8 to give the combined a = -2 exponent."
+    },
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relation": "ancestor",
+      "note": "The full odd-modulus Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a | n), instantiated here at a = -2 for the permutation sign reading."
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-eqr-oq01030101010101010202-chi8prime",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 75, "endLine": 83 },
+    "type": "theorem",
+    "title": "Power formula for the companion octic character χ₈'",
+    "content": "chi8'_eq_neg_one_pow: χ₈' n = (-1)^((n-1)/2 + (n²-1)/8) for odd n. Rewrite (n-1)/2 = n/2 (omega, from oddness), expand χ₈' via the factorization ZMod.χ₈'_eq_χ₄_mul_χ₈ (χ₈' a = χ₄ (cast a)·χ₈ a), collapse the ZMod 8 → ZMod 4 cast with ZMod.cast_natCast (4 ∣ 8), then substitute the two factor power forms — χ₄ n = (-1)^(n/2) (ZMod.χ₄_eq_neg_one_pow) and χ₈ n = (-1)^((n²-1)/8) (the parent's chi8_eq_neg_one_pow) — and merge with ← pow_add. This is the octic-companion analogue of ZMod.χ₄_eq_neg_one_pow, absent from Mathlib (which carries χ₈' only as the case split χ₈'_nat_eq_if_mod_eight), and the genuinely new content of the entry — obtained structurally, with no fresh parity computation."
+  },
+  {
+    "id": "ann-eqr-oq01030101010101010202-negonepow",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 86, "endLine": 91 },
+    "type": "theorem",
+    "title": "The combined supplement value as a signed power",
+    "content": "neg_one_pow_combined: (-1)^((n-1)/2 + (n²-1)/8) = (if n % 8 = 1 ∨ n % 8 = 3 then 1 else -1). From chi8'_eq_neg_one_pow and ZMod.χ₈'_nat_eq_if_mod_eight, the combined exponent is even exactly when n ≡ 1 or 3 (mod 8) (value +1) and odd at n ≡ 5, 7 (mod 8) (value -1); the n-even branch is killed by oddness."
+  },
+  {
+    "id": "ann-eqr-oq01030101010101010202-supplement",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 104, "endLine": 122 },
+    "type": "theorem",
+    "title": "The combined (a = -2) supplement to quadratic reciprocity",
+    "content": "jacobiSym_neg_two: J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8) for every odd n > 0, via Mathlib's jacobiSym.at_neg_two (J(-2 | n) = χ₈' n) and chi8'_eq_neg_one_pow. jacobiSym_neg_two_eq_if: the equivalent mod-8 case-split form, +1 on n ≡ 1, 3 (mod 8) and -1 otherwise. This is the combined supplementary law, the product of the first (a = -1) and second (a = 2) supplements."
+  },
+  {
+    "id": "ann-eqr-oq01030101010101010202-mul",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 124, "endLine": 126 },
+    "type": "theorem",
+    "title": "Structural decomposition into the two supplements",
+    "content": "jacobiSym_neg_two_eq_mul: J(-2 | n) = J(-1 | n)·J(2 | n) for all n, from -2 = (-1)·2 and jacobiSym.mul_left (multiplicativity of the Jacobi symbol in its numerator, needing no hypothesis on n). Together with jacobiSym_neg_two this exhibits the combined exponent (n-1)/2 + (n²-1)/8 as the sum of the two individual supplement exponents — the additive shadow of the multiplicative law."
+  },
+  {
+    "id": "ann-eqr-oq01030101010101010202-signperm",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 141, "endLine": 149 },
+    "type": "theorem",
+    "title": "The x ↦ -2·x permutation sign",
+    "content": "sign_ringMulPerm_neg_two: for odd n and a unit u of residue -2, the parent's full odd-modulus identity sign_ringMulPerm_eq_jacobiSym_odd (with integer representative -2) gives sign(x ↦ -2·x on ℤ/n) = J(-2 | n) = (-1)^((n-1)/2 + (n²-1)/8). This reads the combined supplement off Zolotarev's permutation of the unit -2; the sign value is honestly supplied through J(-2 | n) = χ₈' n rather than an independent inversion count."
+  },
+  {
+    "id": "ann-eqr-oq01030101010101010202-legendre",
+    "proofId": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 151, "endLine": 170 },
+    "type": "theorem",
+    "title": "Legendre case and the classical -2 criterion",
+    "content": "legendreSym_neg_two: for an odd prime p, (-2 / p) = (-1)^((p-1)/2 + (p²-1)/8), by specializing jacobiSym_neg_two to a prime modulus via jacobiSym.legendreSym.to_jacobiSym and Nat.Prime.odd_of_ne_two. legendreSym_neg_two_eq_one_iff: legendreSym p (-2) = 1 ⇔ p ≡ 1 or 3 (mod 8), recovering from the power form the classical criterion that -2 is a quadratic residue mod an odd prime p iff p ≡ 1 or 3 (mod 8) (consistent with Mathlib's ZMod.exists_sq_eq_neg_two_iff)."
+  }
+]
