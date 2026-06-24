@@ -1,0 +1,165 @@
+{
+  "id": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+  "slug": "bernoulli-inequality-oq-01-oq-01-oq-02-oq-01",
+  "title": "The Magnitude-Bounded Power Band and the Escape/Capture Dichotomy",
+  "description": "The parent entry (the line-escapes-a-bounded-power lemma) trapped every power of a magnitude-≤ 1 base inside the fixed band [−1, 1] and concluded that any line of nonzero slope eventually escapes it. This entry answers the parent's own first open question: generalize the trap to a magnitude-≤ B base, whose powers live in the n-dependent band [−Bⁿ, Bⁿ], and characterize exactly which lines escape it. The trap generalizes verbatim (abs_pow_le, neg_pow_le_pow, pow_le_pow_band), as does the escape engine (lt_pow_of_lt_neg_pow, pow_lt_of_pow_lt). The new content is a sharp dichotomy governed by the critical value B = 1: for a shrinking or critical band 0 ≤ B ≤ 1 the band sits inside [−1, 1], so the parent's mechanism survives — a negative-slope line eventually drops below every power (eventually_line_lt_pow_band) and a positive-slope line eventually rises above every power (eventually_pow_lt_line_band), with the parent B = 1 as the boundary case. For a growing band B > 1 the walls ±Bⁿ grow exponentially and dominate any line: beyond an explicit threshold the line is trapped strictly inside (−Bⁿ, Bⁿ) (eventually_line_mem_band), so NO line of any slope escapes. The driver is that the exponential Bⁿ dominates the linear |b| + n·|s|, via Mathlib's tendsto_pow_const_div_const_pow_of_one_lt. The escape (B ≤ 1) versus capture (B > 1) contrast is packaged in escape_or_capture, with the parent's fixed band B = 1 sitting exactly on the knife-edge. Verified: 0 sorries, 0 axioms.",
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Filter", "Topology"],
+    "namespace": "BernoulliInequalityOQ01OQ01OQ02OQ01",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/BernoulliInequalityOQ01OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Researcher (Lean Genius); generalization of the bounded-power escape lemma to an n-dependent band",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Bernoulli%27s_inequality",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BernoulliInequalityOQ01OQ01OQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "inequality",
+      "bernoulli-inequality",
+      "bounded-power",
+      "sharp-boundary",
+      "exponential-vs-linear",
+      "archimedean",
+      "asymptotics",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "pow_le_pow_left₀",
+        "description": "For 0 ≤ a ≤ b, aⁿ ≤ bⁿ. Applied to |x| ≤ B to bound |x|ⁿ = |xⁿ| by Bⁿ in abs_pow_le, the generalized trap.",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
+      },
+      {
+        "theorem": "abs_pow",
+        "description": "|xⁿ| = |x|ⁿ. Reduces the magnitude of a power to a power of the magnitude in abs_pow_le.",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      },
+      {
+        "theorem": "abs_le",
+        "description": "|y| ≤ c ↔ −c ≤ y ∧ y ≤ c. Splits the trap |xⁿ| ≤ Bⁿ into the two walls −Bⁿ ≤ xⁿ and xⁿ ≤ Bⁿ.",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      },
+      {
+        "theorem": "pow_le_one₀",
+        "description": "For 0 ≤ a ≤ 1, aⁿ ≤ 1. Gives Bⁿ ≤ 1 when B ≤ 1, placing the band inside [−1, 1] for the shrinking/critical-band escape lemmas.",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "tendsto_pow_const_div_const_pow_of_one_lt",
+        "description": "For 1 < r, (nᵏ)/rⁿ → 0. With k = 0 and k = 1 this is exactly the exponential-dominates-linear engine that forces |b| + |s|·n < Bⁿ eventually, driving the B > 1 capture theorem eventually_line_mem_band.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Filter.Tendsto.eventually_lt_const",
+        "description": "If f → v and v < u then eventually f < u. Turns the limit (|b| + |s|·n)/Bⁿ → 0 into the eventual bound < 1 used to capture the line inside the growing band.",
+        "module": "Mathlib.Topology.Order.OrderClosed"
+      },
+      {
+        "theorem": "div_lt_one",
+        "description": "For 0 < c, a/c < 1 ↔ a < c. Converts the eventual quotient bound (|b| + |s|·n)/Bⁿ < 1 into the linear-vs-exponential inequality |b| + |s|·n < Bⁿ.",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "exists_nat_gt",
+        "description": "Archimedean property: every real is below some natural number. Produces the explicit escape thresholds N in the B ≤ 1 lemmas eventually_line_lt_pow_band and eventually_pow_lt_line_band.",
+        "module": "Mathlib.Algebra.Order.Archimedean.Basic"
+      },
+      {
+        "theorem": "abs_add_le",
+        "description": "|a + b| ≤ |a| + |b|. Bounds the line b + n·s by its linear envelope |b| + |s|·n in the B > 1 capture proof.",
+        "module": "Mathlib.Algebra.Order.AbsoluteValue"
+      }
+    ],
+    "originalContributions": [
+      "abs_pow_le / neg_pow_le_pow / pow_le_pow_band: the generalized trap — every power of a magnitude-≤ B base is confined to the n-dependent band [−Bⁿ, Bⁿ], directly extending the parent's fixed band [−1, 1].",
+      "lt_pow_of_lt_neg_pow / pow_lt_of_pow_lt: the generalized escape engine — anything below the lower wall −Bⁿ is beaten by every power, anything above the upper wall Bⁿ beats every power.",
+      "eventually_line_lt_pow_band / eventually_pow_lt_line_band: for a shrinking or critical band 0 ≤ B ≤ 1, a nonzero-slope line still escapes — generalizing the parent's eventually_line_lt_pow / eventually_pow_lt_line from B = 1 to every B ≤ 1, with explicit Archimedean thresholds.",
+      "tendsto_linear_div_pow: the quantitative heart — for B > 1 the quotient (|b| + |s|·n)/Bⁿ → 0, i.e. the exponential wall dominates the linear envelope of any line.",
+      "eventually_line_mem_band: the genuinely new phenomenon — for B > 1 EVERY line, of any slope, is eventually captured strictly inside the growing band (−Bⁿ, Bⁿ); no line escapes. This is the exact opposite of the B ≤ 1 case and has no analogue in the parent's fixed band.",
+      "eventually_neg_pow_lt_line_lt_pow: the capture statement unpacked into the two strict wall inequalities.",
+      "escape_or_capture: the sharp boundary, side by side — for a negative-slope line, B > 1 forces capture inside the band while B ≤ 1 forces escape below every power; the single comparison B ≷ 1 flips one into the other, and the parent's fixed band B = 1 is exactly the knife-edge."
+    ],
+    "dateAdded": "2026-06-24",
+    "axioms": 0,
+    "axiomCount": 0,
+    "lineCount": 215,
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "trap",
+      "title": "The generalized trap",
+      "content": "From |x| ≤ B (which forces 0 ≤ B), the identity |xⁿ| = |x|ⁿ (abs_pow) together with pow_le_pow_left₀ gives |xⁿ| ≤ Bⁿ. Splitting this with abs_le yields the two walls −Bⁿ ≤ xⁿ ≤ Bⁿ: every power of a magnitude-≤ B base lives in the n-dependent band [−Bⁿ, Bⁿ]. This is the verbatim generalization of the parent's band [−1, 1]."
+    },
+    {
+      "id": "engine",
+      "title": "The escape engine",
+      "content": "Two one-step comparisons hold for any B: anything strictly below the lower wall, c < −Bⁿ, is beaten by every power (lt_pow_of_lt_neg_pow: c < xⁿ); anything strictly above the upper wall, Bⁿ < c, beats every power (pow_lt_of_pow_lt: xⁿ < c). These are the building blocks for both sides of the dichotomy."
+    },
+    {
+      "id": "shrinking",
+      "title": "Shrinking / critical band (0 ≤ B ≤ 1): lines escape",
+      "content": "When B ≤ 1 the wall Bⁿ never exceeds 1 (pow_le_one₀), so the band sits inside [−1, 1] and the parent's argument survives unchanged. A negative-slope line b + n·s eventually drops below −1 ≤ −Bⁿ (threshold N > (b+1)/(−s) from exists_nat_gt), hence below every power (eventually_line_lt_pow_band); the positive-slope mirror is eventually_pow_lt_line_band. The parent (B = 1) is the boundary case."
+    },
+    {
+      "id": "growing",
+      "title": "Growing band (B > 1): the band captures every line",
+      "content": "When B > 1 the walls ±Bⁿ grow exponentially. The quotient (|b| + |s|·n)/Bⁿ → 0 (tendsto_linear_div_pow, built from tendsto_pow_const_div_const_pow_of_one_lt with k = 0, 1), so eventually |b| + |s|·n < Bⁿ (div_lt_one). Bounding the line by its linear envelope (abs_add_le) gives |b + n·s| < Bⁿ, i.e. the line is trapped strictly inside (−Bⁿ, Bⁿ) (eventually_line_mem_band). No line of any slope escapes — the exact opposite of the B ≤ 1 case."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The boundary dichotomy",
+      "content": "escape_or_capture packages the contrast for a fixed negative-slope line: if B > 1 the line is eventually captured inside the band, while if B ≤ 1 it eventually escapes below every power. The single comparison B ≷ 1 flips capture into escape, identifying the parent's fixed band B = 1 as the precise critical threshold the parent's open question asked about."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Bernoulli's inequality (Jacob Bernoulli, 1689) and its sharp extensions live on the interplay between an exponential power $(1+a)^n$ and the linear comparison $1 + na$. The parent gallery entry distilled the hard negative range into a Bernoulli-independent 'trap and escape' lemma over the fixed band $[-1,1]$, and explicitly asked: what happens when the base magnitude bound $B$ is no longer $1$, so the band $[-B^n, B^n]$ itself moves with $n$? This entry answers that question, locating $B = 1$ as the sharp boundary between escape and capture.",
+    "problemStatement": "**Open Question (OQ-01-OQ-01-OQ-02-OQ-01, the parent's first open question):** Generalize the trap to magnitude-$\\le B$ bases: $|x| \\le B \\Rightarrow -B^n \\le x^n \\le B^n$, and characterize exactly which lines escape the now $n$-dependent band $B^n$ — the escape survives only when the line outgrows $B^n$, tying the threshold to whether $B < 1$, $B = 1$, or $B > 1$.\n\n**Answer:** The trap and escape engine generalize verbatim. A sharp dichotomy at $B = 1$ then governs the lines: for $0 \\le B \\le 1$ the band lies inside $[-1,1]$ and every nonzero-slope line still escapes (below for negative slope, above for positive); for $B > 1$ the exponential walls $\\pm B^n$ dominate every line, so no line escapes — each is eventually captured strictly inside $(-B^n, B^n)$. The parent's fixed band $B = 1$ is exactly the knife-edge.",
+    "text": "The generalized trap is immediate: $|x^n| = |x|^n \\le B^n$ from $|x| \\le B$. The dichotomy turns on comparing the exponential wall $B^n$ with the linear line $b + ns$. When $B \\le 1$ the wall is bounded by $1$, the band is contained in the parent's $[-1,1]$, and an unbounded sloped line must leave it — the parent's Archimedean threshold argument carries over unchanged. When $B > 1$ the wall grows exponentially and outpaces any line: $(|b| + |s|n)/B^n \\to 0$, so eventually the entire line lies strictly inside $(-B^n, B^n)$. Thus the very same 'a line escapes a bounded power' phenomenon reverses sign as $B$ crosses $1$.",
+    "proofStrategy": "1. **Trap** (`abs_pow_le`, `neg_pow_le_pow`, `pow_le_pow_band`): `abs_pow` + `pow_le_pow_left₀` give $|x^n| \\le B^n$; `abs_le` splits into the two walls.\n2. **Engine** (`lt_pow_of_lt_neg_pow`, `pow_lt_of_pow_lt`): chain $c < -B^n \\le x^n$ (resp. $x^n \\le B^n < c$) by transitivity.\n3. **Shrinking/critical band** (`eventually_line_lt_pow_band`): for $B \\le 1$, `pow_le_one₀` gives $-1 \\le -B^n$; pick $N > (b+1)/(-s)$ via `exists_nat_gt`, so $b + ns < -1 \\le -B^n$ and the engine finishes. `eventually_pow_lt_line_band` is the positive-slope mirror.\n4. **Growing band** (`tendsto_linear_div_pow`, `eventually_line_mem_band`): write $(|b| + |s|n)/B^n = |b|\\cdot(1/B^n) + |s|\\cdot(n/B^n)$ and send both terms to $0$ using `tendsto_pow_const_div_const_pow_of_one_lt` ($k = 0, 1$); `Filter.Tendsto.eventually_lt_const` then gives the quotient $< 1$, `div_lt_one` gives $|b| + |s|n < B^n$, and `abs_add_le` bounds the line by its envelope, yielding $|b + ns| < B^n$.\n5. **Dichotomy** (`escape_or_capture`): combine the $B > 1$ capture and the $B \\le 1$ escape for a fixed negative-slope line.",
+    "keyInsights": [
+      "**The escape/capture boundary is exactly $B = 1$.** Below it the band shrinks into $[-1,1]$ and every sloped line escapes; above it the band grows exponentially and swallows every line. The parent's fixed band sits precisely on the knife-edge.",
+      "**Exponential beats linear is the whole mechanism for $B > 1$.** The capture is not about any structure of the base $x$ — only that $B^n$ outgrows $|b| + |s|n$, which Mathlib's $n^k/r^n \\to 0$ delivers directly.",
+      "**The trap and engine are genuinely $B$-agnostic.** $-B^n \\le x^n \\le B^n$ and the two comparison lemmas need nothing about the sign or size of $B$; only the asymptotic conclusions split on $B \\lessgtr 1$.",
+      "**The $B \\le 1$ escape is sharper than the parent's.** It holds for the whole family of bands $[-B^n, B^n]$ with $B \\le 1$, not just $B = 1$, because each such band is contained in $[-1,1]$."
+    ],
+    "prerequisites": [
+      "The identity |xⁿ| = |x|ⁿ and monotonicity of powers (pow_le_pow_left₀)",
+      "Splitting an absolute-value bound into two one-sided walls (abs_le)",
+      "The limit nᵏ/rⁿ → 0 for r > 1 (exponential dominates polynomial)",
+      "Turning a limit into an eventual strict inequality (Tendsto.eventually_lt_const) and the Archimedean property (exists_nat_gt)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Generalizing the parent's bounded-power trap from the fixed band [−1, 1] to the n-dependent band [−Bⁿ, Bⁿ] reveals a sharp dichotomy at B = 1. The trap (−Bⁿ ≤ xⁿ ≤ Bⁿ) and the escape engine hold for every B. For a shrinking or critical band 0 ≤ B ≤ 1 the band sits inside [−1, 1] and every nonzero-slope line escapes it, exactly as in the parent. For a growing band B > 1 the exponential walls dominate every line, so no line escapes — each is eventually captured strictly inside (−Bⁿ, Bⁿ). The parent's fixed band B = 1 is the precise critical threshold. Verified: 0 sorries, 0 axioms.",
+    "implications": "The result answers the parent's first open question and sharpens the 'a line escapes a bounded power' principle into a complete escape/capture classification. The capture half (eventually_line_mem_band) is a clean packaging of 'exponential dominates linear' as an explicit eventual band-membership statement, reusable wherever an exponentially growing envelope must be shown to absorb a linear (or, with the same engine, polynomial) comparison. The escape half generalizes the parent's asymptotic lemmas across the entire sub-critical family B ≤ 1.",
+    "openQuestions": [
+      "Replace the line b + n·s by a polynomial p(n) of degree d: for B > 1 the band still captures it (nᵈ/Bⁿ → 0), but for B ≤ 1 the escape now requires the polynomial's leading behavior to outgrow Bⁿ — does a degree-vs-base dichotomy emerge, and is there a clean threshold statement?",
+      "Quantify the capture threshold for B > 1: extract an explicit N(B, b, s) (e.g. via the second-order binomial bound Bⁿ ≥ 1 + n(B−1) + C(n,2)(B−1)²) rather than the existential from the limit, matching the explicit Archimedean thresholds available on the escape side."
+    ],
+    "crossReferences": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "The parent isolates the bounded-power 'trap and escape' lemma over the fixed band [−1, 1] and asks, as its first open question, to generalize to magnitude-≤ B bases and classify which lines escape the n-dependent band. This entry answers that question, exhibiting the sharp escape/capture dichotomy at B = 1."
+    },
+    {
+      "targetId": "bernoulli-inequality-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The grandparent proves strict Bernoulli on the full weak domain −2 ≤ a, whose hard negative range is the original instance of the bounded-power mechanism generalized here."
+    }
+  ]
+}
