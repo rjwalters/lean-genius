@@ -43,6 +43,7 @@ import Proofs.AbelRuffiniOQ07NotSolvable
 import Proofs.AbelRuffiniOQ07Order6
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10
+import Proofs.AbundantDeficientDvdOQ04
 import Proofs.AbundantMultiplesOQ01
 import Proofs.AbundantNumberOQ01
 import Proofs.AbundantNumberOQ02
