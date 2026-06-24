@@ -1,0 +1,50 @@
+[
+  {
+    "id": "wilson-oq0501010101-ann-header",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 46 },
+    "type": "context",
+    "title": "The squarefree-semiprime Kempner value S(pq) = max(p,q)",
+    "content": "The parent entry computed S(p^k) = min{n : p^k ∣ n!} for prime powers via Legendre's formula, and asked to assemble the general value S(n) = max over prime powers p^k ∥ n of S(p^k). This entry settles the first multi-prime case: for two DISTINCT primes p ≠ q, S(p·q) = max(p, q). By symmetry it suffices to treat p < q, where the answer is the larger prime q: q! already contains both p and q once (so pq ∣ q!), while (q−1)! drops the factor q entirely. The proof needs only coprimality of distinct primes — no Legendre bookkeeping.",
+    "mathContext": "$S(m) = \\min\\{n : m \\mid n!\\}$; for distinct primes $p \\ne q$, $S(pq) = \\max(p,q) = \\max(S(p), S(q))$.",
+    "significance": "context",
+    "relatedConcepts": ["Kempner function", "Smarandache function", "squarefree semiprime", "coprimality"],
+    "prerequisites": ["factorials and divisibility", "least factorial divisible by m"]
+  },
+  {
+    "id": "wilson-oq0501010101-ann-def",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 52, "endLine": 65 },
+    "type": "definition",
+    "title": "The Kempner–Smarandache function (restated from the parent)",
+    "content": "S m := sInf {n | m ∣ n!}, the least n whose factorial is divisible by m. Two lemmas fix its specification: dvd_factorial_S (m ∣ (S m)! for m ≥ 1) shows S m is a genuine witness — the defining set is nonempty since m ∣ m! (Nat.dvd_factorial), so Nat.sInf_mem applies; and S_le (any n with m ∣ n! has S m ≤ n) is minimality, directly from Nat.sInf_le. These are restated inline from the parent leaf so the file is self-contained and 0-axiom.",
+    "mathContext": "$S(m) = \\inf\\{n \\in \\mathbb{N} \\mid m \\mid n!\\}$; nonempty since $m \\mid m!$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.sInf", "least-element operator", "Nat.dvd_factorial"],
+    "prerequisites": ["the infimum on ℕ and its membership/minimality lemmas"]
+  },
+  {
+    "id": "wilson-oq0501010101-ann-core",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 66, "endLine": 83 },
+    "type": "key-step",
+    "title": "Core ordered case: S(pq) = q for p < q",
+    "content": "S_mul_primes_of_lt proves the two bounds that pin S(pq) = q. UPPER (S(pq) ≤ q): p ∣ q! because p ≤ q (Nat.Prime.dvd_factorial), q ∣ q! (Nat.dvd_factorial); distinct primes are coprime (Nat.coprime_primes), so p·q ∣ q! (Nat.Coprime.mul_dvd_of_dvd_of_dvd) — q is a witness, giving S(pq) ≤ q via S_le. LOWER (q ≤ S(pq)): S(pq) is a witness so p·q ∣ (S(pq))! (dvd_factorial_S); hence q ∣ p·q ∣ (S(pq))!, and q prime forces q ≤ S(pq) (Nat.Prime.dvd_factorial). Antisymmetry concludes.",
+    "mathContext": "$p \\mid q!$ (since $p\\le q$), $q \\mid q!$, $\\gcd(p,q)=1 \\Rightarrow pq \\mid q! \\Rightarrow S(pq)\\le q$; $q \\mid pq \\mid (S(pq))! \\Rightarrow q \\le S(pq)$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.Prime.dvd_factorial", "Nat.Coprime.mul_dvd_of_dvd_of_dvd", "Nat.coprime_primes", "antisymmetry"],
+    "prerequisites": ["coprimality of distinct primes", "factorial divisibility criterion"]
+  },
+  {
+    "id": "wilson-oq0501010101-ann-main",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 111 },
+    "type": "key-step",
+    "title": "The semiprime value and the maximum-of-S reformulation",
+    "content": "S_mul_primes lifts the core case to both orders: trichotomy on p ≠ q gives p < q (max p q = q, apply the core directly) or q < p (max p q = p; rewrite with mul_comm and apply the core to q·p). S_mul_primes_eq_max_S then rewrites the result as S(p·q) = max(S p)(S q) using the base value S(p) = p (a two-line antisymmetry: S p ≤ p from p ∣ p!, p ≤ S p from p ∣ (S p)!), exhibiting the r = 2 case of the maximum-over-prime-powers principle.",
+    "mathContext": "$S(pq) = \\max(p,q)$ for distinct primes; equivalently $S(pq) = \\max(S(p), S(q))$, the $r=2$ instance of $S(n) = \\max_{p^k \\Vert n} S(p^k)$.",
+    "significance": "key",
+    "relatedConcepts": ["trichotomy / WLOG", "max_eq_left / max_eq_right", "mul_comm", "maximum-over-prime-powers principle"],
+    "prerequisites": ["the base value S(p) = p", "case split on a strict order"]
+  }
+]

@@ -1,0 +1,158 @@
+{
+  "id": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+  "title": "The Kempner–Smarandache Value of a Squarefree Semiprime: $S(pq) = \\max(p,q)$",
+  "slug": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+  "description": "Proves the first nontrivial instance of the parent's maximum-over-prime-powers principle for the Kempner–Smarandache function S(m) = min{n : m ∣ n!}. The parent entry `wilsons-theorem-oq-05-oq-01-oq-01-oq-01` computed S(p^k) on prime powers via Legendre's formula; its first open question asks to assemble the general value S(n) = max over prime powers p^k ∥ n of S(p^k). This entry settles the squarefree-semiprime case: for two DISTINCT primes p ≠ q, S(p·q) = max(p, q) = max(S(p), S(q)). By symmetry it suffices to treat p < q and show S(pq) = q. UPPER BOUND S(pq) ≤ q: both prime factors already appear in q! — p ∣ q! because p ≤ q (Nat.Prime.dvd_factorial) and q ∣ q! trivially; distinct primes are coprime (Nat.coprime_primes), so p·q ∣ q! (Nat.Coprime.mul_dvd_of_dvd_of_dvd), making q a witness for S(pq) via S_le. LOWER BOUND q ≤ S(pq): the value S(pq) is a genuine witness, so p·q ∣ (S(pq))! (dvd_factorial_S); hence q ∣ (S(pq))!, and since q is prime Nat.Prime.dvd_factorial forces q ≤ S(pq). Antisymmetry pins S(pq) = q. The main theorem dispatches both orders of p, q by trichotomy, using mul_comm and max_comm for the q < p branch. A reformulation S(pq) = max(S p)(S q) makes the maximum-over-prime-powers shape explicit, using the base value S(p) = p. This is the r = 2 base case of the full squarefree statement S(p₁⋯p_r) = max_i p_i, and isolates the coprimality (CRT-style independence) argument without the Legendre bookkeeping needed for higher prime powers. Fully machine-checked: 0 sorries, 0 axioms beyond the foundational propext, Classical.choice, Quot.sound; no native_decide.",
+  "meta": {
+    "author": "Kempner (1918) / Smarandache function S(n) = min{m : n ∣ m!}; squarefree-semiprime value S(pq) = max(p,q) formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kempner_function",
+    "date": "1918",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ05OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "wilsons-theorem",
+      "kempner-function",
+      "smarandache-function",
+      "factorial",
+      "semiprime",
+      "coprimality",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 111,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The development rests on standard Mathlib factorial/divisibility infrastructure: `Nat.Prime.dvd_factorial` (p ∣ n! ↔ p ≤ n for prime p), `Nat.dvd_factorial` (0 < m → m ≤ n → m ∣ n!), `Nat.coprime_primes` (distinct primes are coprime), `Nat.Coprime.mul_dvd_of_dvd_of_dvd` (coprime factors multiply through divisibility), and the Kempner function built on `Nat.sInf` (`Nat.sInf_mem`, `Nat.sInf_le`). No `decide` or `native_decide` is used; the only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.dvd_factorial",
+        "description": "`p.Prime → (p ∣ n! ↔ p ≤ n)`. Used in both directions: forward to get the lower bound q ≤ S(pq) (q ∣ (S(pq))! ⟹ q ≤ S(pq)), and backward to get p ∣ q! from p ≤ q for the upper bound.",
+        "module": "Mathlib.Data.Nat.Prime.Factorial"
+      },
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "`Nat.Coprime a b → a ∣ n → b ∣ n → a * b ∣ n`. Combines p ∣ q! and q ∣ q! into p·q ∣ q! once p and q are known coprime — the CRT-style independence of the two prime factors that makes q! the smallest factorial divisible by pq.",
+        "module": "Mathlib.RingTheory.Coprime.Basic / Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.coprime_primes",
+        "description": "`p.Prime → q.Prime → (Nat.Coprime p q ↔ p ≠ q)`. Turns the distinctness hypothesis p ≠ q into the coprimality needed to multiply the two divisibilities through.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "`0 < m → m ≤ n → m ∣ n!`. Gives q ∣ q! (the larger factor's appearance in its own factorial) and m ∣ m! (nonemptiness of the Kempner defining set).",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.sInf_mem / Nat.sInf_le",
+        "description": "Membership and minimality of the natural-number infimum. With m ∣ m! making {n | m ∣ n!} nonempty, these give that S m = sInf{n | m ∣ n!} is a genuine least witness — the `dvd_factorial_S` and `S_le` API reused from the parent leaf.",
+        "module": "Mathlib.Data.Nat.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "`S_mul_primes_of_lt`: the core ordered case — for distinct primes with p < q, S(p·q) = q, via the two divisibility bounds (p·q ∣ q! for the upper bound, q ∣ p·q ∣ (S(pq))! for the lower bound).",
+      "`S_mul_primes`: the squarefree-semiprime value S(p·q) = max(p, q) for any two distinct primes, dispatching both orders by trichotomy with mul_comm/max_comm.",
+      "`S_mul_primes_eq_max_S`: the reformulation S(p·q) = max(S p)(S q) exhibiting the maximum-over-prime-powers principle in this base case, using S(p) = p.",
+      "Restatement of the parent's `S`, `dvd_factorial_S`, and `S_le` API so the file is self-contained and 0-axiom."
+    ],
+    "prerequisites": [
+      "The Kempner–Smarandache function S(n) = min {m : n ∣ m!}",
+      "Factorials and divisibility (`Nat.dvd_factorial`, `Nat.Prime.dvd_factorial`)",
+      "Coprimality of distinct primes and the multiplicative divisibility lemma",
+      "The least-element operator `Nat.sInf` and its membership/minimality lemmas"
+    ],
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01",
+        "relationship": "Parent: computed S(p^k) for prime powers via Legendre's formula and supplies the S, dvd_factorial_S, S_le API reused here. Its first open question asks to assemble the general value S(n) = max over prime powers p^k ∥ n of S(p^k); this entry proves the squarefree-semiprime (two distinct primes, exponent one) base case of that maximum principle."
+      },
+      {
+        "id": "wilsons-theorem-oq-05-oq-01-oq-01",
+        "relationship": "Grandparent: established the Kempner threshold (∃ m < n, n ∣ m!) ↔ (¬n.Prime ∧ n ≠ 4), locating when S(n) < n for composite n without computing S(n). For n = pq this entry computes the exact value max(p,q) < pq."
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 111,
+    "path": "Proofs/WilsonsTheoremOQ05OQ01OQ01OQ01OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 5
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "The Kempner–Smarandache function S(n) = min{m : n ∣ m!} (Kempner 1918, later rediscovered as the Smarandache function) is the inverse problem to the factorial. For a prime p the answer is immediate — S(p) = p — and the parent gallery line computed S(p^k) for prime powers via Legendre's formula. The remaining structural question is how S behaves on numbers with several prime factors. The cleanest first case is the squarefree semiprime n = pq with p ≠ q distinct primes, where the two prime factors are independent and the answer is simply the larger prime.",
+    "problemStatement": "**Open Question (wilsons-theorem-oq-05-oq-01-oq-01-oq-01, #1):** assemble the general Kempner value S(n) = max over prime powers p^k ∥ n of S(p^k), i.e. show S is determined by its values on the prime-power components of n. This entry proves the squarefree-semiprime base case: for distinct primes p ≠ q, S(p·q) = max(p, q) = max(S(p), S(q)).",
+    "text": "For two distinct primes p ≠ q, the least n with p·q ∣ n! is the larger of the two primes: S(p·q) = max(p, q). Equivalently S(p·q) = max(S(p), S(q)), the r = 2 instance of the maximum-over-prime-powers principle.",
+    "proofStrategy": "By symmetry (trichotomy on p, q with mul_comm and max_comm) it suffices to treat p < q and prove S(pq) = q. Upper bound: p ∣ q! since p ≤ q (Nat.Prime.dvd_factorial) and q ∣ q! (Nat.dvd_factorial); distinct primes are coprime (Nat.coprime_primes), so p·q ∣ q! (Nat.Coprime.mul_dvd_of_dvd_of_dvd) and S(pq) ≤ q by the least-witness property S_le. Lower bound: S(pq) is a genuine witness so p·q ∣ (S(pq))! (dvd_factorial_S); hence q ∣ (S(pq))!, and since q is prime, Nat.Prime.dvd_factorial forces q ≤ S(pq). Antisymmetry gives S(pq) = q. The reformulation S(pq) = max(S p)(S q) follows by rewriting with the base value S(p) = p, itself a two-line antisymmetry (S p ≤ p from p ∣ p!, and p ≤ S p from p ∣ (S p)!).",
+    "keyInsights": [
+      "**The larger prime is the bottleneck.** q! already contains both prime factors p and q exactly once (p ≤ q < q+1), so pq ∣ q!; but (q−1)! omits the factor q entirely, so the smallest factorial divisible by pq is exactly q!. The answer is governed by the larger prime, the q = max(p,q) instance of 'the largest prime power controls S(n).'",
+      "**Coprimality replaces Legendre.** Where the prime-power case needed the full Legendre valuation identity, the squarefree case needs only that distinct primes are coprime: p ∣ q! and q ∣ q! multiply through to p·q ∣ q! precisely because gcd(p,q) = 1. This isolates the CRT-style independence of prime factors.",
+      "**Both bounds are one divisibility each.** The upper bound is 'pq divides q!' and the lower bound is 'q divides (S(pq))!' — no case analysis or computation, just the witness/least-witness pair dvd_factorial_S and S_le applied to clean divisibilities.",
+      "**The base case of a maximum principle.** Writing the result as S(pq) = max(S p, S q) exhibits the r = 2 instance of the conjectured S(n) = max over prime powers p^k ∥ n of S(p^k); the same coprime-multiplication argument generalizes to squarefree n with more factors."
+    ],
+    "prerequisites": [
+      "The Kempner–Smarandache function S(n) = min{m : n ∣ m!}",
+      "Nat.Prime.dvd_factorial (p ∣ n! ↔ p ≤ n) and Nat.dvd_factorial",
+      "Coprimality of distinct primes and Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+      "The least-element operator Nat.sInf and its membership/minimality lemmas"
+    ]
+  },
+  "conclusion": {
+    "summary": "The parent's prime-power value S(p^k) is extended to the first multi-prime case: for distinct primes p ≠ q, S(p·q) = max(p, q) = max(S(p), S(q)). The proof is a clean two-bound antisymmetry — p·q ∣ q! (via coprimality of the two primes) for S(pq) ≤ q, and q ∣ (S(pq))! for q ≤ S(pq) — with the two orders of p, q handled by trichotomy. 5 theorems, 1 definition, 111 lines, 0 sorries, 0 axioms; no native_decide.",
+    "implications": "Establishes the r = 2 base case of the maximum-over-prime-powers principle S(n) = max over p^k ∥ n of S(p^k), isolating the coprimality (CRT independence) argument that combines per-prime contributions. The same coprime-multiplication template extends to squarefree n = p₁⋯p_r, where pq ∣ q! generalizes to p₁⋯p_r ∣ (max_i p_i)!.",
+    "openQuestions": [
+      "Generalize to arbitrary squarefree n: prove S(p₁⋯p_r) = max_i p_i for r distinct primes, combining the per-prime divisibilities through pairwise coprimality.",
+      "Combine with the prime-power value S(p^k) to settle the full parent open question S(n) = max over prime powers p^k ∥ n of S(p^k) for general n, via the coprime CRT for factorial divisibility."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-overview",
+      "title": "Module Overview, Imports, and Namespace",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring stating the squarefree-semiprime value S(pq) = max(p,q), the proof outline (upper bound via coprimality, lower bound via the larger prime, trichotomy for symmetry); imports Mathlib, opens Nat."
+    },
+    {
+      "id": "kempner-function",
+      "title": "The Kempner–Smarandache Function (restated)",
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "Restates S m = sInf {n | m ∣ n!} with dvd_factorial_S (m ∣ (S m)! for m ≥ 1, via Nat.sInf_mem and m ∣ m!) and S_le (least-witness property, via Nat.sInf_le) — the parent-leaf API, kept inline so the file is self-contained."
+    },
+    {
+      "id": "core-case",
+      "title": "The Core Ordered Case p < q",
+      "startLine": 66,
+      "endLine": 83,
+      "summary": "S_mul_primes_of_lt: for distinct primes with p < q, S(p·q) = q. Upper bound p·q ∣ q! from p ∣ q! (p ≤ q), q ∣ q!, and coprimality; lower bound q ≤ S(pq) from q ∣ p·q ∣ (S(pq))! and primality; antisymmetry concludes."
+    },
+    {
+      "id": "main-and-reformulation",
+      "title": "The Semiprime Value and Maximum-of-S Reformulation",
+      "startLine": 84,
+      "endLine": 111,
+      "summary": "S_mul_primes: S(p·q) = max(p, q) for distinct primes, dispatching both orders by trichotomy with mul_comm/max_comm. S_mul_primes_eq_max_S: the reformulation S(p·q) = max(S p)(S q), using the base value S(p) = p."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent computed S(p^k) for prime powers via Legendre's formula and supplies the S / dvd_factorial_S / S_le API reused here. Its first open question asks to assemble S(n) = max over prime powers p^k ∥ n of S(p^k); this entry proves the squarefree-semiprime base case S(pq) = max(p,q) = max(S p, S q)."
+    },
+    {
+      "targetId": "wilsons-theorem-oq-05-oq-01-oq-01",
+      "relationship": "grandparent",
+      "description": "The grandparent established the Kempner threshold (∃ m < n, n ∣ m!) ↔ (¬n.Prime ∧ n ≠ 4), locating when S(n) < n for composite n. For n = pq this entry computes the exact value max(p,q)."
+    }
+  ]
+}
