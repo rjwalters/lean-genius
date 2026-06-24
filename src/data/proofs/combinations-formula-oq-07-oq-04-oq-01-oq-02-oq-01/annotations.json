@@ -1,0 +1,157 @@
+[
+  {
+    "id": "ann-cfasym-header",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 69
+    },
+    "type": "context",
+    "title": "The Asymmetric Obstruction p ≤ n",
+    "content": "The docstring frames the rectangular generalization. The sibling (OQ-07-OQ-04-OQ-01-OQ-02) computed the raw power moment of the *squared* Pascal row, $\\sum k^p C(n,k)^2 = \\sum_r S(p,r)(n)_r C(2n-r,n-r)$, unconditionally in $p$. This file asks whether the same Stirling bridge applies to a product of two *different* rows $C(m,k)C(n,k)$. The answer is yes, but with a genuinely new side condition $p \\le n$. The lesson: the symmetric case's unconditionality was an accident of the self-annihilating coefficient $(n)_r$ (which vanishes for $r>n$); the rectangular leading coefficient $(m)_r$ survives on the window $n < r \\le m$, where the inner moment is 0 but the closed form is not — so the two part company unless $p \\le n$.",
+    "mathContext": "$\\sum_{k=0}^{n} k^p\\,C(m,k)C(n,k) = \\sum_{r=0}^{p} S(p,r)\\,(m)_r\\,C(m+n-r,\\,n-r)$ for $p\\le n$, where $S(p,r) = $ stirlingSecond. By $m\\leftrightarrow n$ symmetry a mirror form holds for $p\\le m$, together covering $p \\le \\max(m,n)$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "Vandermonde convolution",
+      "power moments",
+      "self-annihilation"
+    ],
+    "prerequisites": [
+      "binomial coefficients",
+      "falling factorial",
+      "Stirling numbers"
+    ]
+  },
+  {
+    "id": "ann-cfasym-cross",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "The One-Sided Cross Moment (♦)",
+    "content": "sum_descFactorial_cross proves $\\sum_{k=0}^{n}(k)_r\\,C(m,k)C(n,k) = (m)_r\\,C(m+n-r,n-r)$ for $r\\le n$ — a headline referenced across the family but never separately formalized, supplied here from scratch. The case $r\\le m$ discards the order-$<r$ terms (sum_Ico_consecutive), reindexes $k\\mapsto r+i$, and absorbs $(k)_r$ into row $m$ term by term (descFactorial_mul_choose); survivors $k=r+i>m$ vanish on both sides ($C(m,k)=0$ matched by $C(m-r,i)=0$, Nat.choose_eq_zero_of_lt), so no $r\\le m$ hypothesis is needed. The residual closes on the asymmetric Vandermonde diagonal vandermonde_diag_two with second row the full $n$. The case $m<r\\le n$ is the trivial $0 = 0$, since $(m)_r = 0$ and every survivor kills $C(m,k)$.",
+    "mathContext": "$\\sum_{k=0}^{n}(k)_r C(m,k)C(n,k) = (m)_r C(m+n-r,n-r)$, $r\\le n$. Absorb: $(k)_r C(m,k) = (m)_r C(m-r,k-r)$; close: $\\sum_i C(m-r,i)C(n,i+r) = C(m+n-r,n-r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cross moment",
+      "falling absorption",
+      "Vandermonde diagonal",
+      "vanishing terms"
+    ],
+    "prerequisites": [
+      "descFactorial_mul_choose",
+      "vandermonde_diag_two",
+      "Nat.choose_eq_zero_of_lt"
+    ]
+  },
+  {
+    "id": "ann-cfasym-powmoment",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 128,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "The General Asymmetric Power Moment (▲▲) via Expand-Swap-Close",
+    "content": "sum_pow_cross delivers the headline raw-power moment for $p\\le n$. The expand-swap-close skeleton is identical to the sibling's symmetric proof: expand each $k^p$ by the Stirling bridge $k^p = \\sum_r S(p,r)(k)_r$ (pow_eq_sum_stirlingSecond_descFactorial), swap the order of summation (Finset.sum_comm), pull out the constant $S(p,r)$, and close each inner $k$-sum with the one-sided cross moment (♦). The hypothesis $p\\le n$ is exactly what keeps every Stirling order $r\\le p\\le n$ inside the faithful range $r\\le n$ of (♦). Only the inner closing lemma changed (cross moment vs. squared moment) — illustrating that the Stirling bridge converts factorial moments to power moments uniformly across the whole family.",
+    "mathContext": "$\\sum_k k^p C(m,k)C(n,k) = \\sum_k\\sum_r S(p,r)(k)_r C(m,k)C(n,k) = \\sum_r S(p,r)\\sum_k (k)_r C(m,k)C(n,k) = \\sum_r S(p,r)(m)_r C(m+n-r,n-r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling bridge",
+      "change of basis",
+      "Finset.sum_comm",
+      "factorial-to-power moment"
+    ],
+    "prerequisites": [
+      "pow_eq_sum_stirlingSecond_descFactorial",
+      "sum_descFactorial_cross",
+      "Finset.sum_comm"
+    ]
+  },
+  {
+    "id": "ann-cfasym-vandermonde",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 152,
+      "endLine": 156
+    },
+    "type": "concept",
+    "title": "The p = 0 Face: Asymmetric Vandermonde",
+    "content": "sum_cross_vandermonde is the $p=0$ (equivalently $r=0$) face: $\\sum_{k=0}^{n} C(m,k)C(n,k) = C(m+n,n)$, the asymmetric Vandermonde convolution along the diagonal. It follows from the one-sided cross moment at $r=0$, where $(k)_0 = 1$ and $(m)_0 = 1$ collapse the weight, leaving the pure convolution. This is the rectangular generalization of $C(2n,n) = \\sum C(n,k)^2$ (the $m=n$ case) at the root of the whole moment ladder.",
+    "mathContext": "$\\sum_{k=0}^{n} C(m,k)C(n,k) = C(m+n,n)$ — Vandermonde's identity along the diagonal $\\sum_k C(m,k)C(n,n-k)$ rewritten via $C(n,k) = C(n,n-k)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Vandermonde's identity",
+      "binomial convolution"
+    ],
+    "prerequisites": [
+      "sum_descFactorial_cross"
+    ]
+  },
+  {
+    "id": "ann-cfasym-first",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 158,
+      "endLine": 164
+    },
+    "type": "concept",
+    "title": "The p = 1 Face: First Cross Moment",
+    "content": "sum_first_cross is the $p=1$ face: $\\sum_{k=0}^{n} k\\,C(m,k)C(n,k) = m\\,C(m+n-1,n-1)$ for $n\\ge 1$. Since $(k)_1 = k$ (Nat.descFactorial_one), the linear weight appears, and the off-centre shift of order 1 moves the convolution entry to $C(m+n-1,n-1)$ with leading factor $m$. It is the first cross moment of the asymmetric hypergeometric law $C(m,k)C(n,k)/C(m+n,n)$, the rectangular analogue of $\\sum k\\,C(n,k)^2 = n\\,C(2n-1,n-1)$.",
+    "mathContext": "$\\sum_{k=0}^{n} k\\,C(m,k)C(n,k) = m\\,C(m+n-1,\\,n-1)$, $n\\ge 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "first moment",
+      "hypergeometric mean"
+    ],
+    "prerequisites": [
+      "Nat.descFactorial_one"
+    ]
+  },
+  {
+    "id": "ann-cfasym-symmetric",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 166,
+      "endLine": 178
+    },
+    "type": "concept",
+    "title": "The m = n Face: Recovering the Symmetric Moment",
+    "content": "sum_pow_weighted_sq_of_cross sets $m=n$ to recover the sibling's symmetric power moment $\\sum k^p C(n,k)^2 = \\sum_r S(p,r)(n)_r C(2n-r,n-r)$ on the common range $p\\le n$. This exhibits the entry as the strict rectangular generalization: the sibling proves it *unconditionally* in $p$ (because $(n)_r$ self-annihilates for $r>n$), while here it appears as the $m=n$ shadow valid only on $p\\le n$ — the bound being invisible precisely where the self-annihilation makes it harmless.",
+    "mathContext": "At $m=n$: $C(n,k)C(n,k) = C(n,k)^2$, $m+n = 2n$, giving $\\sum k^p C(n,k)^2 = \\sum_r S(p,r)(n)_r C(2n-r,n-r)$ for $p\\le n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "specialization",
+      "symmetric power moment",
+      "self-annihilation"
+    ],
+    "prerequisites": [
+      "sum_pow_cross"
+    ]
+  },
+  {
+    "id": "ann-cfasym-checks",
+    "proofId": "combinations-formula-oq-07-oq-04-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 180,
+      "endLine": 197
+    },
+    "type": "context",
+    "title": "Kernel-decide Sanity Checks (incl. the Vanishing Window)",
+    "content": "Three numeric examples certify the formulas by kernel `decide` (not native_decide, so no Lean.ofReduceBool). The asymmetric power moment is checked at $(p,m,n) = (2,3,4)$; the one-sided cross moment at $(r,m,n) = (2,3,5)$ giving $(3)_2\\cdot C(6,3) = 6\\cdot 20 = 120$; and — most tellingly — the asymmetric vanishing window at $(r,m,n) = (4,2,5)$, where both sides are 0 because $(2)_4 = 0$ (the leading factor) and every survivor $k\\ge 4 > 2$ kills $C(2,k)$. This last check directly exercises the $m<r\\le n$ branch that motivates the $p\\le n$ bound.",
+    "mathContext": "$(r,m,n)=(2,3,5)$: $\\sum (k)_2 C(3,k)C(5,k) = (3)_2 C(6,3) = 120$. $(r,m,n)=(4,2,5)$: both sides $0$ since $(2)_4 = 0$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "numerical verification",
+      "kernel decide",
+      "vanishing window"
+    ],
+    "prerequisites": [
+      "decidability",
+      "falling factorial"
+    ]
+  }
+]
