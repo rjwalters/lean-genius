@@ -1,12 +1,12 @@
 {
-  "id": "nesbitt-inequality-oq-01-oq-02",
+  "id": "nesbitt-inequality-oq-01-oq-01",
   "title": "Shapiro's Cyclic Inequality for n = 4, with a Two-Parameter Equality Locus",
-  "slug": "nesbitt-inequality-oq-01-oq-02",
+  "slug": "nesbitt-inequality-oq-01-oq-01",
   "description": "Nesbitt's inequality is the n = 3 case of Shapiro's cyclic inequality Σ aᵢ/(aᵢ₊₁ + aᵢ₊₂) ≥ n/2. This entry settles the next case, n = 4: for positive reals a, b, c, d, a/(b+c) + b/(c+d) + c/(d+a) + d/(a+b) ≥ 2. The engine is the two-term Titu (Engel-form Cauchy–Schwarz) estimate p²/x + q²/y ≥ (p+q)²/(x+y), whose deficit is the explicit square (py − qx)²/(xy(x+y)). Pairing the opposite terms (1,3) and (2,4) and applying Titu twice folds the four fractions down to a single quotient (a+b+c+d)²/(X+Y), and the polynomial identity (a+b+c+d)² = 2(X+Y) + (a−c)² + (b−d)² exhibits the whole deficit, giving the sharp bound Σ ≥ 2 + ((a−c)² + (b−d)²)/(X+Y). Unlike Nesbitt's single diagonal a = b = c, the n = 4 equality locus is the genuinely two-parameter family {a = c, b = d} (e.g. (1,2,1,2) gives Σ = 2), which we characterise as an iff.",
   "meta": {
     "author": "H. S. Shapiro (1954, problem); formalized for lean-genius",
     "status": "verified",
-    "proofRepoPath": "Proofs/NesbittInequalityOQ01OQ02.lean",
+    "proofRepoPath": "Proofs/NesbittInequalityOQ01OQ01.lean",
     "tags": [
       "inequality",
       "algebra",
@@ -164,12 +164,12 @@
       "Mathlib"
     ],
     "opens": [],
-    "namespace": "NesbittInequalityOQ01OQ02",
+    "namespace": "NesbittInequalityOQ01OQ01",
     "lineCount": 152,
     "axiomCount": 0,
     "theoremCount": 4,
     "definitionCount": 0,
-    "path": "Proofs/NesbittInequalityOQ01OQ02.lean",
+    "path": "Proofs/NesbittInequalityOQ01OQ01.lean",
     "sorries": 0
   },
   "sorries": 0

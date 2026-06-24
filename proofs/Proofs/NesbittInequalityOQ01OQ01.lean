@@ -40,7 +40,7 @@ contrast to the `n = 3` case. We prove this characterisation as an `iff`.
 All results are fully machine-checked with no `sorry` and no extra axioms.
 -/
 
-namespace NesbittInequalityOQ01OQ02
+namespace NesbittInequalityOQ01OQ01
 
 /-- **Two-term Titu / Engel-form Cauchy–Schwarz.** For positive `x, y` and arbitrary
 `p, q`, `(p+q)²/(x+y) ≤ p²/x + q²/y`. The deficit is `(p y − q x)²/(x y (x+y))`. -/
@@ -149,4 +149,4 @@ theorem shapiro_four_eq_iff (a b c d : ℝ) (ha : 0 < a) (hb : 0 < b) (hc : 0 < 
     field_simp
     ring
 
-end NesbittInequalityOQ01OQ02
+end NesbittInequalityOQ01OQ01

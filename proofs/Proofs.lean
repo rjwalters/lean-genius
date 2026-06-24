@@ -4083,4 +4083,4 @@ import Proofs.GeometricSeriesOQ09OQ01OQ01OQ02
 import Proofs.DerangementsOQ03OQ03
 import Proofs.DerangementsOQ03OQ03OQ01
 
-import Proofs.NesbittInequalityOQ01OQ02
+import Proofs.NesbittInequalityOQ01OQ01
