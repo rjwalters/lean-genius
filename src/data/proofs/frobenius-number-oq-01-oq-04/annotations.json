@@ -1,0 +1,86 @@
+[
+  {
+    "id": "frobapery-overview",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "The Apéry set of a two-generator numerical semigroup",
+    "content": "The docstring introduces the central computational device of numerical-semigroup theory. For coprime a, b the semigroup S = ⟨a,b⟩ has Apéry set Ap(S,a) = {0, b, 2b, …, (a−1)b}: the least element of S in each residue class mod a. Because gcd(a,b)=1, the values w_k = k·b for k < a hit all a residue classes exactly once. The file proves the Apéry characterization (membership = one comparison), the reflection symmetry k ↦ a−1−k, and re-derives the Frobenius number's non-representability from Apéry minimality.",
+    "mathContext": "$\\operatorname{Ap}(S,a) = \\{0, b, 2b, \\dots, (a-1)b\\},\\quad w_k = k\\cdot b$",
+    "significance": "key",
+    "relatedConcepts": ["Apéry set", "numerical semigroup", "Frobenius number", "residue classes", "Selmer genus formula"],
+    "prerequisites": ["numerical semigroups", "modular arithmetic", "coprimality"]
+  },
+  {
+    "id": "frobapery-index",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 56, "endLine": 74 },
+    "type": "theorem",
+    "title": "Every residue class has an Apéry index",
+    "content": "`aperyIndex_inj` shows k ↦ k·b mod a is injective on `Fin a` — coprimality lets `Nat.ModEq.cancel_right_of_coprime` cancel b. On the finite type `Fin a`, injective ⟹ surjective (`Finite.injective_iff_surjective`), so `exists_aperyIndex` concludes every n is congruent mod a to a unique k·b with k < a. This pigeonhole packaging is what makes the Apéry set well-defined: exactly one representative per class.",
+    "mathContext": "$\\forall n,\\ \\exists!\\, k < a,\\ n \\equiv k\\cdot b \\pmod a$",
+    "significance": "key",
+    "relatedConcepts": ["injective ⟹ surjective on finite types", "ModEq cancellation", "pigeonhole", "Fin a"],
+    "prerequisites": ["Nat.ModEq.cancel_right_of_coprime", "Finite.injective_iff_surjective"]
+  },
+  {
+    "id": "frobapery-minimality",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 78, "endLine": 113 },
+    "type": "theorem",
+    "title": "Apéry minimality: w_k is least in its class",
+    "content": "Two complementary results. `representable_of_aperyIndex`: if n ≡ k·b (mod a) and k·b ≤ n, then n is representable (write n = a·q + b·k from `Nat.modEq_iff_dvd'`). `aperyIndex_le_of_representable` is the converse and the crux: a representable n = a·x + b·y in the class of k·b satisfies k·b ≤ n. The engine is coprime cancellation — n ≡ b·y forces b·y ≡ b·k, cancel b to get y ≡ k (mod a), and since k < a is the minimal residue, k ≤ y, hence k·b ≤ b·y ≤ n. So w_k = k·b really is the smallest element of ⟨a,b⟩ in its class.",
+    "mathContext": "$n \\equiv k b \\pmod a,\\ k<a,\\ \\text{representable} \\Rightarrow k b \\le n$",
+    "significance": "critical",
+    "relatedConcepts": ["Apéry minimality", "coprime cancellation", "minimal residue representative", "Nat.modEq_iff_dvd'"],
+    "prerequisites": ["Nat.ModEq.cancel_left_of_coprime", "Representable predicate"]
+  },
+  {
+    "id": "frobapery-characterization",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 115, "endLine": 120 },
+    "type": "theorem",
+    "title": "Apéry characterization (one comparison)",
+    "content": "`apery_le_iff_representable` packages both directions: inside the residue class of k·b (k < a), a number is representable iff it is ≥ the Apéry element k·b. Membership in the numerical semigroup is thus decided by a single comparison against the class's Apéry element — the practical payoff of the Apéry set.",
+    "mathContext": "$n \\equiv k b \\pmod a \\ (k<a) \\;\\Rightarrow\\; (k b \\le n \\iff \\mathrm{Representable}\\ n)$",
+    "significance": "key",
+    "relatedConcepts": ["membership test", "Apéry characterization", "biconditional"],
+    "prerequisites": ["the two minimality directions above"]
+  },
+  {
+    "id": "frobapery-reflection",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 124, "endLine": 142 },
+    "type": "theorem",
+    "title": "Reflection symmetry and the maximal Apéry element",
+    "content": "`apery_symm`: the involution k ↦ a−1−k reflects the Apéry set, with w_k + w_{a−1−k} = (a−1)·b — pairing each element with its mirror about the maximum. `apery_max`: that maximum is `(a−1)·b = g + a`, where g = ab − a − b is the Frobenius number. This reflection is the Apéry-set origin of the classical Frobenius involution n ↦ g − n on the gaps of the semigroup.",
+    "mathContext": "$w_k + w_{a-1-k} = (a-1)b = g + a$",
+    "significance": "key",
+    "relatedConcepts": ["Frobenius involution", "symmetric numerical semigroup", "reflection", "maximal Apéry element"],
+    "prerequisites": ["the Apéry set", "frobeniusNumber = ab − a − b"]
+  },
+  {
+    "id": "frobapery-global",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 150, "endLine": 160 },
+    "type": "theorem",
+    "title": "Global characterization of membership",
+    "content": "`representable_iff_aperyIndex` combines index existence with the per-class characterization: n ∈ ⟨a,b⟩ iff there is k < a with n ≡ k·b (mod a) and k·b ≤ n — i.e. n dominates the Apéry element of its own residue class. This is a complete, computable description of the semigroup purely in terms of the Apéry set.",
+    "mathContext": "$\\mathrm{Representable}\\ n \\iff \\exists k<a,\\ n \\equiv k b \\pmod a \\wedge k b \\le n$",
+    "significance": "supporting",
+    "relatedConcepts": ["global characterization", "Apéry set membership", "computable semigroup"],
+    "prerequisites": ["exists_aperyIndex", "apery_le_iff_representable"]
+  },
+  {
+    "id": "frobapery-gap",
+    "proofId": "frobenius-number-oq-01-oq-04",
+    "range": { "startLine": 162, "endLine": 184 },
+    "type": "theorem",
+    "title": "Frobenius number is a gap, via Apéry minimality",
+    "content": "`frobeniusNumber_mod` places g in the residue class of the maximal Apéry element (a−1)·b (since (a−1)·b − g = a). `frobeniusNumber_not_representable` then concludes g ∉ S: if g were representable, Apéry minimality would force (a−1)·b ≤ g, contradicting (a−1)·b = g + a > g. This is an Apéry-set re-derivation of Sylvester's non-representability of the Frobenius number — the largest gap sits exactly one step a below the smallest semigroup element of its class.",
+    "mathContext": "$g \\equiv (a-1)b \\pmod a,\\ g < (a-1)b = \\min_S\\text{-in-class} \\Rightarrow g \\notin S$",
+    "significance": "key",
+    "relatedConcepts": ["Sylvester non-representability", "Frobenius number", "Apéry minimality", "largest gap"],
+    "prerequisites": ["apery_max", "aperyIndex_le_of_representable"]
+  }
+]
