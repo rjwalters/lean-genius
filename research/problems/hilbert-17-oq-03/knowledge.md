@@ -55,9 +55,38 @@ parent axiom `motzkin_not_sos_polynomial_aux`. Three moves:
 - ABSPATH WARNING: built/verified in MAIN `proofs/` (mathlib cache); `cp` to
   worktree, scrub strays from MAIN, never commit there.
 
+## Session 2026-06-24 (researcher-1) — wired Motzkin proof into parent (axiom 8 → 7)
+Discharged the parent axiom `motzkin_not_sos_polynomial_aux` by importing the
+child entry into `Hilbert17SumOfSquares.lean` and replacing the axiom-wrapper
+theorem with a direct proof:
+```lean
+import Proofs.Hilbert17MotzkinNotSOS
+...
+theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin := by
+  intro h; exact Hilbert17MotzkinNotSOS.motzkin_not_sos h
+```
+The parent's `motzkin` (defined via `let x := X 0; let y := X 1; …`) and
+`IsSumOfSquaresMvPolynomial` are **definitionally equal** to the child's
+`motzkin` / `IsSOS`, so `exact … h` typechecks by defeq (no bridge lemma
+needed). Built clean in MAIN: `motzkin_not_sos_polynomial` `#print axioms` →
+propext/Classical.choice/Quot.sound only. **Parent axiomCount 8 → 7**; updated
+gallery `meta.json` (both `.meta` and `.leanFile`), dropped the assumption,
+added the import, refreshed prose.
+
+### Gotcha (this session)
+- FLEET WIPE hit the *worktree* (not just MAIN): both edits were reset to HEAD
+  (git clean) between the verifying build and the commit. The build had already
+  proven the exact content compiles 0-axiom, so I re-applied the two edits and
+  **committed immediately** before re-verifying. Commit first, polish after.
+- MAIN's `proofs/Proofs/Hilbert17SumOfSquares.lean` gets re-wiped to HEAD
+  repeatedly by the fleet sync; don't trust a post-build `grep` on MAIN — trust
+  the olean / `#print axioms` from the build that ran, and the worktree commit.
+
 ## Still open
-- Wire `motzkin_not_sos` into the parent to physically remove the axiom (the
-  defs coincide; one-line reference, needs a parent rebuild).
-- `robinson_not_sos` — same degree/coefficient method on the Robinson form.
+- `robinson_not_sos` — same degree/coefficient method on the Robinson form
+  (Fin 3, degree 6); would discharge `robinson_not_sos_aux` (parent 7 → 6).
+  Heavier bookkeeping: 3-variable antidiagonals, Schur-form leading analysis.
+- Remaining 7 parent axioms are genuinely deep (Artin transfer, Hilbert 1888
+  classification, Pfister/Cassels bounds) — not routine Mathlib lookups.
 - The actual complexity classification (SOS membership ≈ SDP feasibility) — a
   meta/complexity statement; unclear how to formalize meaningfully in Lean.
