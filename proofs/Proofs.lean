@@ -3754,6 +3754,7 @@ import Proofs.SolutionOfCubicOQ05
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ01
 import Proofs.SophieGermainOQ02
+import Proofs.SophieGermainOQ03
 import Proofs.SophieGermainOQ04
 import Proofs.SpectralTraceDetEigenvaluesOQ01
 import Proofs.SpectralTraceDetEigenvaluesOQ02
