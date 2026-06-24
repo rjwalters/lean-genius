@@ -1,0 +1,88 @@
+{
+  "id": "minkowski-theorem-oq-04-oq-03",
+  "title": "Sharpness of the Blichfeldt Volume Threshold",
+  "slug": "minkowski-theorem-oq-04-oq-03",
+  "description": "Blichfeldt's theorem needs measure STRICTLY greater than k to force k+1 lattice-congruent points. This entry shows the threshold is sharp: for every k there is a measurable set of volume exactly k with no k+1 pairwise ℤⁿ-congruent points, so the strict inequality cannot be weakened to ≥. The k=1 witness is the half-open unit cube [0,1)ⁿ itself.",
+  "meta": {
+    "id": "minkowski-theorem-oq-04-oq-03",
+    "title": "Sharpness of the Blichfeldt Volume Threshold",
+    "slug": "minkowski-theorem-oq-04-oq-03",
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Blichfeldt%27s_theorem",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MinkowskiTheoremOQ04OQ03.lean",
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "geometry-of-numbers",
+      "measure-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 215,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "mathlibDependencies": [
+      {
+        "theorem": "ZSpan.fract_eq_fract",
+        "description": "Two points have equal ZSpan fractional parts iff they are congruent modulo the lattice — converts ℤⁿ-congruence into equal fractional parts.",
+        "module": "Mathlib.Algebra.Module.ZLattice.Basic"
+      },
+      {
+        "theorem": "ZSpan.fract_eq_self",
+        "description": "A point of the fundamental domain is its own fractional part — yields pointwise uniqueness of representatives.",
+        "module": "Mathlib.Algebra.Module.ZLattice.Basic"
+      },
+      {
+        "theorem": "ZSpan.repr_fract_apply",
+        "description": "Coordinatewise formula b.repr(fract x) i = Int.fract(b.repr x i); with Pi.basisFun_repr gives (fract x) i = Int.fract(x i).",
+        "module": "Mathlib.Algebra.Module.ZLattice.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.volume_pi_pi",
+        "description": "Volume of a product box equals the product of factor volumes — used to compute vol(box) = k.",
+        "module": "Mathlib.MeasureTheory.Constructions.Pi"
+      },
+      {
+        "theorem": "MinkowskiProved.stdFundDomain",
+        "description": "The fundamental domain F = [0,1)ⁿ for ℤⁿ, used as the k=1 sharpness witness.",
+        "module": "Proofs.MinkowskiFundamentalTheorem"
+      },
+      {
+        "theorem": "BlichfeldtTheorem.blichfeldt_basic",
+        "description": "The k=1 Blichfeldt theorem (parent): vol(S) > 1 forces a congruent pair. This entry proves its threshold is sharp.",
+        "module": "Proofs.MinkowskiTheoremOQ04"
+      }
+    ],
+    "originalContributions": [
+      "stdFundDomain_congruent_eq: pointwise uniqueness of fundamental-domain representatives — two points of the half-open unit cube [0,1)ⁿ that are ℤⁿ-congruent are equal. Proved via ZSpan.fract_eq_self (points of the domain are fixed by fract) + ZSpan.fract_eq_fract (congruent points share fract). This is the geometric heart of k=1 sharpness.",
+      "blichfeldt_threshold_sharp: the unit cube [0,1)ⁿ is a measurable set of volume exactly 1 with no two distinct ℤⁿ-congruent points — exhibiting that Blichfeldt's strict threshold is attained at the boundary.",
+      "blichfeldt_basic_threshold_not_le: the hypothesis 1 < vol(S) of blichfeldt_basic cannot be weakened to 1 ≤ vol(S).",
+      "box / volume_box: the box [0,k) × [0,1)ⁿ⁻¹ has volume exactly k, computed via volume_pi_pi + Finset.prod_eq_single isolating the long coordinate.",
+      "stdFract_coord: the ZSpan fractional part in the standard basis is coordinatewise Int.fract — (fract x) i = Int.fract(x i) — via Pi.basisFun's identity repr.",
+      "congruent_fract_coord: ℤⁿ-congruent points share Int.fract in every coordinate.",
+      "blichfeldt_general_threshold_sharp: for every k the box of volume exactly k contains no injective family of k+1 pairwise ℤⁿ-congruent points; hence the strict inequality k < vol(S) of blichfeldt_general is sharp. A point of the box is determined by its (shared) fractional part together with the integer floor ⌊·₀⌋ ∈ {0,…,k-1} of its long coordinate, giving an injection into Fin k — pigeonhole rules out k+1."
+    ],
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "ZSpan fundamental domains and fractional parts (ZSpan.fract)",
+      "Lebesgue measure on ℝⁿ and product (Fubini) volume of boxes",
+      "Integer lattices ℤⁿ as ℤ-submodules of ℝⁿ",
+      "Blichfeldt's theorem (the statement whose threshold is shown sharp)"
+    ],
+    "relatedProofs": [
+      "minkowski-theorem-oq-04",
+      "minkowski-theorem-oq-02",
+      "minkowski-theorem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Blichfeldt's 1914 theorem strengthens Minkowski's geometry of numbers: any measurable set of volume strictly greater than k holds k+1 distinct points that are pairwise congruent modulo ℤⁿ. A natural companion question is whether the strict inequality is necessary. It is: the half-open unit cube [0,1)ⁿ is a fundamental domain for ℤⁿ, so it has volume exactly 1 yet meets each lattice coset in a single point. This is the canonical demonstration that the volume threshold cannot be relaxed from `> k` to `≥ k`.",
+    "problemStatement": "Is the strict inequality in Blichfeldt's theorem necessary? Equivalently, for each k is there a measurable set of volume exactly k that contains no k+1 pairwise ℤⁿ-congruent points?",
+    "text": "Yes — the threshold is sharp (status `verified`, 0 axioms, 0 sorries). For k=1 the witness is the half-open unit cube F = [0,1)ⁿ = stdFundDomain n: it is measurable, has volume exactly 1 (stdLattice_covolume), and carries no two distinct ℤⁿ-congruent points (stdFundDomain_congruent_eq), so the blichfeldt_basic hypothesis 1 < vol(S) cannot be weakened to ≤. For general k the witness is the box [0,k) × [0,1)ⁿ⁻¹ of volume exactly k, which holds at most k mutually congruent points, contradicting any k+1 family — so the strict inequality of blichfeldt_general is also sharp.",
+    "proofStrategy": "The key conversion (ZSpan.fract_eq_fract) turns ℤⁿ-congruence into equality of fractional parts. (1) k=1: a point of the fundamental domain equals its own fractional part (ZSpan.fract_eq_self), so two congruent points of [0,1)ⁿ have equal fractional parts and are therefore equal. (2) general k: in the box [0,k) × [0,1)ⁿ⁻¹ every coordinate i≠0 lies in [0,1) and so equals its fractional part, while the long coordinate satisfies x₀ = ⌊x₀⌋ + Int.fract(x₀) with ⌊x₀⌋ ∈ {0,…,k-1}. Congruent points share all fractional parts, so a point is determined by ⌊x₀⌋ alone — an injection into Fin k. Volume k is computed by volume_pi_pi. Pigeonhole (Fintype.card_le_of_injective) then forbids k+1 distinct pairwise-congruent points."
+  }
+}
