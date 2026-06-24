@@ -1,0 +1,220 @@
+{
+ "id": "hilbert-17-oq-03-oq-06",
+ "title": "Hilbert's 17th: The Sharp SOS Threshold of the Motzkin Family",
+ "slug": "hilbert-17-oq-03-oq-06",
+ "description": "For the one-parameter Motzkin family Mₐ(x,y) = x⁴y² + x²y⁴ + 1 − c·x²y², the sibling entry hilbert-17-oq-03-oq-05 proves the sharp positive-semidefinite (PSD) threshold: Mₐ is non-negative on ℝ² ⟺ c ≤ 3. This entry establishes the complementary sharp sum-of-squares (SOS) threshold: Mₐ is a sum of squares of polynomials ⟺ c ≤ 0. The (⟸) direction is the explicit decomposition Mₐ = (x²y)² + (xy²)² + (√(−c)·xy)² + 1²; the (⟹) direction is a Newton-polytope / coefficient obstruction (the engine of the sibling hilbert-17-oq-03-oq-02), since the x²y² coefficient of Mₐ is the negative number −c whenever c > 0, while in any representation Mₐ = ∑ qᵢ² the degree bound and the vanishing of every pure-power coefficient force [x²y²]Mₐ = ∑ ([xy]qᵢ)² ≥ 0. Combining the two thresholds localizes the PSD ⊋ SOS gap along this family to exactly the half-open interval (0, 3]: the members that are PSD but not SOS are precisely those with 0 < c ≤ 3. So the famous Motzkin point c = 3 is not an isolated witness — the whole interval (0,3] separates the cones, and the SOS cone closes off already at c = 0. The non-SOS direction is packaged as a reusable abstract obstruction not_sos_of_neg_diag. Everything is 0-axiom.",
+ "meta": {
+  "author": "lean-genius researcher",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+  "date": "2026-06-24",
+  "status": "verified",
+  "proofRepoPath": "Proofs/Hilbert17OQ03OQ06.lean",
+  "tags": [
+   "real-algebraic-geometry",
+   "sum-of-squares",
+   "hilbert-17",
+   "positive-polynomials",
+   "motzkin-polynomial",
+   "psd-sos-gap",
+   "newton-polytope",
+   "sharp-threshold",
+   "elementary-proof"
+  ],
+  "badge": "original",
+  "sorries": 0,
+  "dateAdded": "2026-06-24",
+  "mathlib_version": "4.26.0",
+  "mathlibDependencies": [
+   {
+    "theorem": "MvPolynomial.homogeneousComponent",
+    "description": "The degree-d homogeneous part of a multivariate polynomial. Used (via the sibling oq-02 lemma topsq) to prove the degree bound: the degree-2D component of a sum of squares is the sum of the squares of the top forms, which over ℝ vanishes only if every top form does.",
+    "module": "Mathlib.Algebra.MvPolynomial.Degrees"
+   },
+   {
+    "theorem": "MvPolynomial.coeff_mul",
+    "description": "Coefficient of a product as a sum over the antidiagonal of exponent vectors. Drives the pure-axis and x²y² coefficient extractions reused from the sibling entry oq-02.",
+    "module": "Mathlib.Algebra.MvPolynomial.Basic"
+   },
+   {
+    "theorem": "Real.sq_sqrt",
+    "description": "For 0 ≤ r, (√r)² = r. Supplies the real square root √(−c) (valid since c ≤ 0) used to write the deficit term −c·x²y² = (√(−c)·xy)² as a genuine square in the SOS direction.",
+    "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+   }
+  ],
+  "originalContributions": [
+   "A fully elementary, 0-axiom proof of the SHARP SOS threshold for the Motzkin family Mₐ(x,y) = x⁴y² + x²y⁴ + 1 − c·x²y²: it is a sum of squares of polynomials if and only if c ≤ 0 (theorem motzkinPoly_sos_iff). This is the SOS analogue of the sibling oq-05's sharp PSD threshold (c ≤ 3).",
+   "Localizes the PSD ⊋ SOS gap along the family to EXACTLY the half-open interval (0, 3] (theorem motzkinPoly_psd_not_sos_iff): a member is PSD but not SOS iff 0 < c ≤ 3. This shows the classical Motzkin point c = 3 is not an isolated witness — the entire interval separates the PSD and SOS cones, while the SOS cone already closes at c = 0.",
+   "Packages the non-SOS direction as a reusable abstract Newton-polytope obstruction not_sos_of_neg_diag: any bivariate real polynomial of total degree ≤ 6 whose six pure-power coefficients (x⁶, x⁴, x², y⁶, y⁴, y²) vanish and whose x²y² coefficient is negative cannot be a sum of squares. The Motzkin family is one instantiation.",
+   "Reuses the sibling oq-02 coefficient machinery (degree bound, pure-axis vanishing, x²y² extraction) and the sibling oq-05 family object motzkinPoly and PSD predicate IsPSDMv, demonstrating the modular composition of the Hilbert-17 cluster into a single sharp two-sided result."
+  ],
+  "axiomCount": 0,
+  "prerequisites": [
+   "Hilbert's 17th problem: positive-semidefinite (PSD) polynomials versus sums of squares (SOS), and the PSD/SOS gap for n ≥ 2 variables.",
+   "The Motzkin polynomial as the canonical PSD-but-not-polynomial-SOS example, and its non-SOS proof by coefficient comparison (sibling oq-02).",
+   "Newton polytopes of sums of squares: the support of every summand lies in half the Newton polytope of the target.",
+   "Real square roots and the fact that a sum of real squares is non-negative."
+  ],
+  "lineCount": 275,
+  "relatedProblems": [
+   {
+    "id": "hilbert-17-oq-03-oq-05",
+    "relationship": "Direct complement: oq-05 proves the sharp PSD threshold (PSD ⟺ c ≤ 3) for the same family; this entry proves the sharp SOS threshold (SOS ⟺ c ≤ 0). Combined, they pin the PSD/SOS gap of the family to exactly (0,3]. This entry imports oq-05's motzkinPoly and IsPSDMv directly."
+   },
+   {
+    "id": "hilbert-17-oq-03-oq-02",
+    "relationship": "Engine: oq-02 proves the Motzkin polynomial (c = 3) is not a sum of squares by the coefficient obstruction. This entry imports oq-02's reusable lemmas (degree bound, pure-axis extractions, x²y² coefficient identity) and generalizes the argument to the whole family via not_sos_of_neg_diag."
+   },
+   {
+    "id": "hilbert-17-oq-03-oq-01",
+    "relationship": "Sibling (rational SOS side): an explicit rational-function SOS certificate for the Motzkin polynomial. Together with this entry it frames the boundary member c = 3 as PSD, not polynomial-SOS, but SOS of rational functions."
+   },
+   {
+    "id": "hilbert-17",
+    "relationship": "Grandparent: states Artin's theorem and frames the open questions on the computational complexity of deciding SOS membership and on quantifying the PSD/SOS gap. This entry quantifies the gap interval for the canonical family by an exact SOS threshold."
+   }
+  ],
+  "assumptions": "0 axioms. #print axioms reports only propext, Classical.choice, Quot.sound for not_sos_of_neg_diag, motzkinPoly_sos_iff, motzkinPoly_psd_not_sos_iff, and motzkin_three_psd_not_sos. No sorryAx, no native_decide / Lean.ofReduceBool. The MvPolynomial PSD predicate IsPSDMv and the SOS predicate IsSOS match the parent entry's IsPositiveSemidefiniteMv and IsSumOfSquaresMvPolynomial definitionally.",
+  "theoremCount": 17,
+  "definitionCount": 0,
+  "additionalFiles": []
+ },
+ "leanFile": {
+  "lineCount": 275,
+  "namespace": "Hilbert17OQ03OQ06",
+  "opens": [
+   "MvPolynomial",
+   "Hilbert17MotzkinNotSOS",
+   "Hilbert17OQ03OQ05"
+  ],
+  "structureCount": 0,
+  "axiomCount": 0,
+  "theoremCount": 17,
+  "substantiveTheoremCount": 5,
+  "computationalVerifications": 0,
+  "lemmaCount": 11,
+  "imports": [
+   "Mathlib",
+   "Proofs.Hilbert17MotzkinNotSOS",
+   "Proofs.Hilbert17OQ03OQ05"
+  ],
+  "path": "Proofs/Hilbert17OQ03OQ06.lean",
+  "sorries": 0,
+  "definitionCount": 0,
+  "additionalFiles": []
+ },
+ "sorries": 0,
+ "mainTheorems": [
+  {
+   "name": "motzkinPoly_sos_iff",
+   "type": "theorem",
+   "description": "Sharp SOS threshold: the Motzkin family member Mₐ(x,y) = x⁴y² + x²y⁴ + 1 − c·x²y² is a sum of squares of polynomials if and only if c ≤ 0. The SOS cone closes off at c = 0, in contrast to the PSD cone which closes at c = 3 (sibling oq-05).",
+   "leanType": "IsSOS (motzkinPoly c) ↔ c ≤ 0"
+  },
+  {
+   "name": "motzkinPoly_psd_not_sos_iff",
+   "type": "theorem",
+   "description": "The PSD ⊋ SOS gap along the Motzkin family is exactly the half-open interval (0,3]: a member is positive-semidefinite but not a sum of squares iff 0 < c ≤ 3. The Motzkin point c = 3 is therefore not an isolated witness.",
+   "leanType": "(IsPSDMv (motzkinPoly c) ∧ ¬ IsSOS (motzkinPoly c)) ↔ (0 < c ∧ c ≤ 3)"
+  },
+  {
+   "name": "not_sos_of_neg_diag",
+   "type": "theorem",
+   "description": "Abstract Newton-polytope obstruction: any bivariate real polynomial of total degree ≤ 6 whose pure-power coefficients x⁶, x⁴, x², y⁶, y⁴, y² all vanish and whose x²y² coefficient is negative is not a sum of squares of polynomials.",
+   "leanType": "P.totalDegree ≤ 6 → (coeff (mon 6 0) P = 0) → … → coeff (mon 2 2) P < 0 → ¬ IsSOS P"
+  },
+  {
+   "name": "motzkinPoly_sos",
+   "type": "theorem",
+   "description": "SOS direction: for c ≤ 0 the family member is the explicit sum of squares Mₐ = (x²y)² + (xy²)² + (√(−c)·xy)² + 1², using that the deficit −c·x²y² is itself a square.",
+   "leanType": "c ≤ 0 → IsSOS (motzkinPoly c)"
+  },
+  {
+   "name": "motzkinPoly_not_sos",
+   "type": "theorem",
+   "description": "Non-SOS direction: for c > 0 the family member is not a sum of squares, since its x²y² coefficient −c is negative — an instance of the abstract obstruction not_sos_of_neg_diag.",
+   "leanType": "0 < c → ¬ IsSOS (motzkinPoly c)"
+  },
+  {
+   "name": "motzkin_three_psd_not_sos",
+   "type": "theorem",
+   "description": "The classical Motzkin polynomial (c = 3) lies in the gap: it is PSD but not a sum of squares of polynomials.",
+   "leanType": "IsPSDMv (motzkinPoly 3) ∧ ¬ IsSOS (motzkinPoly 3)"
+  }
+ ],
+ "overview": {
+  "historicalContext": "Hilbert's 17th problem asks whether every polynomial non-negative on ℝⁿ is a sum of squares — of polynomials, or at least of rational functions. For n ≥ 2 the polynomial answer is no: Motzkin (1967) gave M(x,y) = x⁴y² + x²y⁴ + 1 − 3x²y², non-negative everywhere by AM–GM yet not a sum of squares of polynomials. A natural quantitative question is how 'thick' the gap between the PSD and SOS cones is. Embedding the Motzkin polynomial in the one-parameter family Mₐ = x⁴y² + x²y⁴ + 1 − c·x²y² makes the question concrete: the sibling entry oq-05 shows Mₐ is PSD exactly for c ≤ 3, and this entry shows it is SOS exactly for c ≤ 0. The gap is therefore the whole half-open interval (0,3], not a single point.",
+  "keyInsight": "Newton-polytope reasoning makes the SOS threshold transparent. The support of Mₐ has vertices (4,2), (2,4), (0,0); half the Newton polytope is spanned by the monomials x²y, xy², 1, whose pairwise products never produce x²y². Hence in any SOS representation the x²y² coefficient is forced to equal ∑ ([xy]qᵢ)² ≥ 0. Since [x²y²]Mₐ = −c, membership in the SOS cone requires −c ≥ 0, i.e. c ≤ 0 — and that bound is achieved by the explicit decomposition (x²y)² + (xy²)² + (√(−c)·xy)² + 1². The same Newton-polytope argument that excludes the Motzkin polynomial excludes every c > 0.",
+  "approach": "The non-SOS direction is proved once and abstractly as not_sos_of_neg_diag, reusing the degree bound, pure-axis vanishing, and x²y² coefficient identity established in the sibling entry oq-02; the Motzkin family is then a single instantiation. The SOS direction is an explicit square decomposition with √(−c). The family object motzkinPoly and PSD predicate IsPSDMv are imported verbatim from oq-05, so the gap-localization theorem is a direct conjunction of the two thresholds."
+ },
+ "conclusion": {
+  "summary": "A 275-line, 0-sorry, 0-axiom formalization establishing the sharp SOS threshold of the Motzkin family: x⁴y² + x²y⁴ + 1 − c·x²y² is a sum of squares of polynomials if and only if c ≤ 0. Combined with the sibling sharp PSD threshold (c ≤ 3), it localizes the PSD ⊋ SOS gap of the family to exactly the half-open interval (0,3].",
+  "implications": "By exhibiting the gap as a full interval rather than the single Motzkin point, the entry quantifies the PSD/SOS separation for the canonical example and isolates the precise constant (c = 0) at which the SOS cone closes. The reusable obstruction not_sos_of_neg_diag abstracts the Newton-polytope argument for future non-SOS results.",
+  "futureWork": "Extend the abstract obstruction beyond the single x²y² diagonal monomial (e.g. to other affine forms whose Newton polytope has an interior lattice point off the half-polytope), and quantify the SOS/PSD gap for the homogeneous Robinson form, whose non-SOS-ness does not reduce to a single negative coefficient."
+ },
+ "references": [
+  {
+   "title": "Hilbert's seventeenth problem — Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+  },
+  {
+   "title": "Positive polynomial (Motzkin example) — Wikipedia",
+   "url": "https://en.wikipedia.org/wiki/Positive_polynomial"
+  },
+  {
+   "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+   "url": "https://www.ams.org/books/conm/253/"
+  }
+ ],
+ "crossReferences": [
+  {
+   "proofId": "hilbert-17-oq-03-oq-05",
+   "relationship": "complements",
+   "description": "Sibling sharp PSD threshold (PSD ⟺ c ≤ 3). This entry supplies the matching SOS threshold (SOS ⟺ c ≤ 0); together they give the exact PSD/SOS gap interval (0,3]. The family object motzkinPoly and predicate IsPSDMv are imported from here."
+  },
+  {
+   "proofId": "hilbert-17-oq-03-oq-02",
+   "relationship": "builds-on",
+   "description": "Engine entry: the Motzkin polynomial (c = 3) is not a sum of squares. Its degree bound, pure-axis vanishing, and x²y² coefficient lemmas are imported and generalized into the abstract obstruction not_sos_of_neg_diag used here."
+  },
+  {
+   "proofId": "hilbert-17-oq-03-oq-01",
+   "relationship": "related",
+   "description": "Sibling rational SOS certificate for the Motzkin polynomial; the boundary member c = 3 is PSD and SOS-of-rational-functions but not polynomial-SOS, consistent with the gap localized here."
+  },
+  {
+   "proofId": "hilbert-17",
+   "relationship": "specializes",
+   "description": "Grandparent framing Artin's theorem and the PSD/SOS gap question. This entry quantifies the gap as the interval (0,3] for the canonical Motzkin family."
+  }
+ ],
+ "sections": [
+  {
+   "id": "abstract-obstruction",
+   "title": "A Reusable Non-SOS Obstruction",
+   "startLine": 49,
+   "endLine": 177,
+   "summary": "Generalizes the sibling oq-02 degree bound to an arbitrary target P of total degree ≤ 6 (degree_bound'), then proves not_sos_of_neg_diag: a bivariate polynomial of total degree ≤ 6 with vanishing pure-power coefficients (x⁶, x⁴, x², y⁶, y⁴, y²) and a negative x²y² coefficient is not a sum of squares. The proof reuses oq-02's pure-axis extractions and the x²y² coefficient identity, concluding that [x²y²]P = ∑ ([xy]qᵢ)² ≥ 0 contradicts negativity."
+  },
+  {
+   "id": "family-coefficients",
+   "title": "Coefficients and Degree of the Motzkin Family",
+   "startLine": 179,
+   "endLine": 215,
+   "summary": "Writes the imported family object motzkinPoly c = x⁴y² + x²y⁴ + 1 − c·x²y² in monomial form (motzkinPoly_eq), reads off its coefficients (the six pure powers vanish; [x²y²] = −c), and bounds its total degree by 6 — exactly the hypotheses of the abstract obstruction."
+  },
+  {
+   "id": "sos-threshold",
+   "title": "The Sharp SOS Threshold",
+   "startLine": 217,
+   "endLine": 251,
+   "summary": "Non-SOS for c > 0 (motzkinPoly_not_sos) by instantiating the obstruction; SOS for c ≤ 0 (motzkinPoly_sos) via the explicit decomposition (x²y)² + (xy²)² + (√(−c)·xy)² + 1²; the two combine into the sharp threshold motzkinPoly_sos_iff: SOS ⟺ c ≤ 0."
+  },
+  {
+   "id": "gap-localization",
+   "title": "Localizing the PSD ⊋ SOS Gap",
+   "startLine": 253,
+   "endLine": 271,
+   "summary": "Conjoins the sharp SOS threshold with oq-05's sharp PSD threshold to prove motzkinPoly_psd_not_sos_iff: a family member is PSD but not SOS iff 0 < c ≤ 3. The classical Motzkin polynomial (c = 3) is recorded as a member of this gap (motzkin_three_psd_not_sos)."
+  }
+ ]
+}

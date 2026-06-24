@@ -1,0 +1,105 @@
+[
+ {
+  "id": "h17s-obstruction",
+  "proofId": "hilbert-17-oq-03-oq-06",
+  "range": {
+   "startLine": 85,
+   "endLine": 177
+  },
+  "type": "theorem",
+  "title": "Abstract Newton-Polytope Obstruction",
+  "content": "not_sos_of_neg_diag: a bivariate real polynomial of total degree ≤ 6 whose six pure-power coefficients (x⁶, x⁴, x², y⁶, y⁴, y²) vanish and whose x²y² coefficient is negative cannot be a sum of squares. In any representation P = ∑ qᵢ², the degree bound forces each qᵢ to have degree ≤ 3, the pure-power vanishing kills all pure powers of each qᵢ, and the only surviving contribution to x²y² is ([xy]qᵢ)², so [x²y²]P = ∑ ([xy]qᵢ)² ≥ 0 — contradicting negativity.",
+  "mathContext": "$[x^2y^2]\\,P = \\sum_i ([xy]\\,q_i)^2 \\ge 0$",
+  "significance": "key",
+  "prerequisites": [
+   "Newton polytope of a sum of squares",
+   "multivariate polynomial coefficients"
+  ],
+  "relatedConcepts": [
+   "Hilbert's 17th problem",
+   "PSD/SOS gap",
+   "Motzkin polynomial"
+  ]
+ },
+ {
+  "id": "h17s-family-coeffs",
+  "proofId": "hilbert-17-oq-03-oq-06",
+  "range": {
+   "startLine": 182,
+   "endLine": 215
+  },
+  "type": "lemma",
+  "title": "Coefficients of the Motzkin Family",
+  "content": "motzkinPoly c = x⁴y² + x²y⁴ + 1 − c·x²y² (imported from sibling oq-05) is rewritten in monomial form; its six pure-power coefficients vanish, its x²y² coefficient is −c, and its total degree is ≤ 6 — exactly the hypotheses needed to feed the abstract obstruction.",
+  "mathContext": "$[x^2y^2]\\,M_c = -c,\\quad \\deg M_c \\le 6$",
+  "significance": "supporting",
+  "prerequisites": [
+   "monomial coefficients of multivariate polynomials"
+  ],
+  "relatedConcepts": [
+   "Motzkin family",
+   "total degree"
+  ]
+ },
+ {
+  "id": "h17s-sos-direction",
+  "proofId": "hilbert-17-oq-03-oq-06",
+  "range": {
+   "startLine": 229,
+   "endLine": 243
+  },
+  "type": "theorem",
+  "title": "Explicit SOS Decomposition for c ≤ 0",
+  "content": "For c ≤ 0 the deficit term −c·x²y² is itself a square, giving the literal sum of squares Mₐ = (x²y)² + (xy²)² + (√(−c)·xy)² + 1². The witness uses Real.sqrt(−c), valid since −c ≥ 0.",
+  "mathContext": "$M_c = (x^2y)^2 + (xy^2)^2 + (\\sqrt{-c}\\,xy)^2 + 1^2$",
+  "significance": "key",
+  "prerequisites": [
+   "real square roots",
+   "sum-of-squares representation"
+  ],
+  "relatedConcepts": [
+   "SOS certificate"
+  ]
+ },
+ {
+  "id": "h17s-sos-threshold",
+  "proofId": "hilbert-17-oq-03-oq-06",
+  "range": {
+   "startLine": 245,
+   "endLine": 251
+  },
+  "type": "theorem",
+  "title": "Sharp SOS Threshold",
+  "content": "motzkinPoly_sos_iff: Mₐ is a sum of squares of polynomials if and only if c ≤ 0. The SOS cone closes at c = 0, strictly inside the PSD cone (which closes at c = 3).",
+  "mathContext": "$M_c \\text{ is SOS} \\iff c \\le 0$",
+  "significance": "key",
+  "prerequisites": [
+   "sum-of-squares cone"
+  ],
+  "relatedConcepts": [
+   "sharp threshold",
+   "PSD/SOS gap"
+  ]
+ },
+ {
+  "id": "h17s-gap",
+  "proofId": "hilbert-17-oq-03-oq-06",
+  "range": {
+   "startLine": 261,
+   "endLine": 271
+  },
+  "type": "theorem",
+  "title": "The Gap Is Exactly (0,3]",
+  "content": "motzkinPoly_psd_not_sos_iff: a family member is PSD but not SOS iff 0 < c ≤ 3. Combining the sharp PSD threshold (c ≤ 3, oq-05) and the sharp SOS threshold (c ≤ 0) shows the PSD ⊋ SOS gap is the whole half-open interval (0,3] — the Motzkin point c = 3 is not isolated.",
+  "mathContext": "$M_c \\text{ PSD but not SOS} \\iff 0 < c \\le 3$",
+  "significance": "key",
+  "prerequisites": [
+   "positive-semidefinite predicate",
+   "sum-of-squares predicate"
+  ],
+  "relatedConcepts": [
+   "PSD/SOS gap",
+   "Motzkin polynomial"
+  ]
+ }
+]
