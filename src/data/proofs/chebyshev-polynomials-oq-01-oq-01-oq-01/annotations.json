@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-chebyoq010101-header",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 50 },
+    "type": "concept",
+    "title": "From scalar addition formulas to a single SL₂ identity",
+    "content": "The parent entry proved the Chebyshev angle-addition formulas T_add (T_{m+n} = T_m·T_n − (1−X²)·U_{m−1}·U_{n−1}), U_add (U_{m+n} = U_m·T_n + T_{m+1}·U_{n−1}) and the Pell identity T_sq_add (Tₙ² + (1−X²)·U_{n−1}² = 1), and explicitly asked whether they could be packaged as a single 2×2 'Chebyshev rotation' multiplicativity. This file answers that: the matrix M(n) = !![Tₙ, −(1−X²)·U_{n−1}; U_{n−1}, Tₙ] over R[X] satisfies M(m)·M(n) = M(m+n) and det M(n) = 1, so n ↦ M(n) is a monoid homomorphism Multiplicative ℤ →* SL₂(R[X]). M(n) is the polynomial shadow of the rotation R(nθ); the homomorphism property is the polynomial R(α)R(β) = R(α+β). Mathlib has neither the matrix nor the homomorphism.",
+    "mathContext": "$M(n)=\\begin{pmatrix}T_n & -(1-X^2)U_{n-1}\\\\ U_{n-1} & T_n\\end{pmatrix}$, $\\;M(m)M(n)=M(m+n)$, $\\;\\det M(n)=1$.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev rotation matrix", "special linear group SL₂", "group homomorphism", "angle-addition formulas", "Pell identity"],
+    "prerequisites": ["the parent's T_add / U_add / T_sq_add", "2×2 matrices over a polynomial ring", "monoid homomorphisms"]
+  },
+  {
+    "id": "ann-chebyoq010101-matrix",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+    "range": { "startLine": 52, "endLine": 59 },
+    "type": "concept",
+    "title": "The Chebyshev rotation matrix M(n)",
+    "content": "chebyMatrix defines M(n) = !![Tₙ, −(1−X²)·U_{n−1}; U_{n−1}, Tₙ] over R[X]. Under x = cos θ this evaluates to !![cos nθ, −sin θ·sin nθ; sin nθ/sin θ, cos nθ], i.e. the rotation R(nθ) = !![cos nθ, −sin nθ; sin nθ, cos nθ] with the sin θ normalisation absorbed into the metric factor 1 − X² (which is sin²θ). The diagonal carries the first-kind polynomial Tₙ ('cosine') and the off-diagonal the second-kind U_{n−1} ('sine/sin θ'). It is marked noncomputable because Mathlib's Chebyshev polynomials are noncomputable data.",
+    "mathContext": "$M(n)$ is the polynomial analogue of rotation by $n\\theta$, with $1-X^2$ in the role of $\\sin^2\\theta$.",
+    "significance": "context",
+    "relatedConcepts": ["rotation matrix", "Chebyshev T and U", "metric factor 1 − X²", "noncomputable"],
+    "prerequisites": ["Chebyshev polynomials of both kinds", "matrix notation !![ ; ]"]
+  },
+  {
+    "id": "ann-chebyoq010101-mul",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+    "range": { "startLine": 61, "endLine": 79 },
+    "type": "key-step",
+    "title": "Multiplicativity is both addition formulas at once",
+    "content": "chebyMatrix_mul proves M(m)·M(n) = M(m+n). Expanding the product with Matrix.mul_fin_two gives four scalar entries; comparing each with the corresponding entry of M(m+n) is exactly an addition formula. The two diagonal entries each read T_m·T_n − (1−X²)·U_{m−1}·U_{n−1} = T_{m+n}, which is T_add. The two off-diagonal entries each read U_{m−1}·T_n + T_m·U_{n−1} = U_{m+n−1}, which is U_add instantiated at (m−1, n) (after the reindexing m−1+n = m+n−1 and m−1+1 = m). A small 2×2 congruence helper (mateq) splits the matrix equality into these four scalar goals; once T_add and U_add are substituted into the target entries, each goal is a pure ring identity. This single matrix law therefore contains both the cosine and the sine angle-sum identities.",
+    "mathContext": "Diagonal: $T_{m+n}=T_mT_n-(1-X^2)U_{m-1}U_{n-1}$. Off-diagonal: $U_{m+n-1}=U_{m-1}T_n+T_mU_{n-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.mul_fin_two", "T_add", "U_add", "reindexing m−1+n = m+n−1", "ring"],
+    "prerequisites": ["the parent addition formulas", "2×2 matrix multiplication"]
+  },
+  {
+    "id": "ann-chebyoq010101-det",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+    "range": { "startLine": 80, "endLine": 92 },
+    "type": "insight",
+    "title": "Determinant = 1 is the Pell identity; M(0) = I",
+    "content": "chebyMatrix_det computes det M(n) via Matrix.det_fin_two_of as Tₙ·Tₙ − (−(1−X²)·U_{n−1})·U_{n−1} = Tₙ² + (1−X²)·U_{n−1}², which equals 1 by the parent's Pell identity T_sq_add. So the Pell/Pythagorean relation is precisely the SL₂ determinant condition, and M(n) lives in SL₂(R[X]) — the Chebyshev pair is the canonical norm-1 element of the polynomial 'circle group'. chebyMatrix_zero shows M(0) = I from T₀ = 1 and U_{−1} = 0, giving the group identity.",
+    "mathContext": "$\\det M(n)=T_n^2+(1-X^2)U_{n-1}^2=1$; $M(0)=I$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_fin_two_of", "T_sq_add", "Pell equation", "SL₂ determinant condition"],
+    "prerequisites": ["2×2 determinants", "the parent Pell identity"]
+  },
+  {
+    "id": "ann-chebyoq010101-hom",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+    "range": { "startLine": 93, "endLine": 119 },
+    "type": "key-step",
+    "title": "The whole package as one group homomorphism",
+    "content": "chebyMatrixSL packages M(n) with its det = 1 certificate as an element of SL₂(R[X]). chebyMatrixSL_one (M(0) = 1) and chebyMatrixSL_mul (M(m)·M(n) = M(m+n) in the group) are lifted from the matrix-level facts by Subtype.ext together with SpecialLinearGroup.coe_one / coe_mul. chebyMatrixHom then assembles them into the monoid homomorphism Multiplicative ℤ →* SL₂(R[X]), n ↦ M(n): its map_one' is chebyMatrixSL_one and its map_mul' is chebyMatrixSL_mul, using that Multiplicative.toAdd is additive definitionally. The structural payoff: the Chebyshev addition formulas hold for all integer indices at once because they are the functoriality of a single homomorphism, not separate computations.",
+    "mathContext": "$n\\mapsto M(n)$ is a homomorphism $(\\mathbb{Z},+)\\to\\mathrm{SL}_2(R[X])$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.SpecialLinearGroup", "Subtype.ext", "coe_one / coe_mul", "MonoidHom", "Multiplicative ℤ"],
+    "prerequisites": ["the special linear group", "monoid homomorphisms", "Multiplicative/Additive synonyms"]
+  },
+  {
+    "id": "ann-chebyoq010101-instances",
+    "proofId": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+    "range": { "startLine": 120, "endLine": 129 },
+    "type": "concept",
+    "title": "Concrete instances over ℤ",
+    "content": "Two sanity instances: M(2)·M(3) = M(5), the multiplicativity at small indices (equivalently T_add/U_add at m = 2, n = 3); and det M(3) = 1, the Pell identity at n = 3. Each is closed directly by the corresponding theorem.",
+    "mathContext": "$M(2)M(3)=M(5)$; $\\det M(3)=1$.",
+    "significance": "context",
+    "relatedConcepts": ["concrete instantiation", "multiplicativity", "Pell identity"],
+    "prerequisites": ["the general theorems above"]
+  }
+]

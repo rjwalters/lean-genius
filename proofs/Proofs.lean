@@ -235,6 +235,7 @@ import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02
 import Proofs.ArithmeticSeriesOQ04
 import Proofs.ArithmeticSeriesOQ04OQ01
+import Proofs.ArithmeticSeriesOQ04OQ02
 import Proofs.ArithmeticSeriesOQ04OQ03
 import Proofs.ArsinhLogFormulaOQ01
 import Proofs.ArsinhLogFormulaOQ01OQ01
@@ -302,11 +303,13 @@ import Proofs.BaselProblemOQ08OQ02OQ01
 import Proofs.BaselProblemOQ09
 import Proofs.BaselProblemOQ09OQ01
 import Proofs.BaselProblemOQ10
+import Proofs.BaselProblemOQ10OQ01
 import Proofs.BaselProblemOQ11
 import Proofs.BaselProblemOQ12
 import Proofs.BaselProblemOQ13
 import Proofs.BaselProblemOQ13OQ01
 import Proofs.BaselProblemOQ14
+import Proofs.BaselProblemOQ14OQ01
 import Proofs.BaselProblemOQ15
 import Proofs.BellNumbersOQ01
 import Proofs.BernoulliInequalityOQ01
@@ -757,6 +760,8 @@ import Proofs.ChebyshevPNTBridgeOQ01OQ02
 import Proofs.ChebyshevPNTBridgeOQ02
 import Proofs.ChebyshevPNTBridgeOQ03
 import Proofs.ChebyshevPolynomialsOQ01
+import Proofs.ChebyshevPolynomialsOQ01OQ01
+import Proofs.ChebyshevPolynomialsOQ01OQ01OQ01
 import Proofs.ChebyshevSumMonotoneOQ01
 import Proofs.ChebyshevSumIntegralOQ01OQ01OQ01
 import Proofs.ChebyshevSumWeightedOQ01OQ01
@@ -2904,6 +2909,7 @@ import Proofs.FundamentalArithmetic
 import Proofs.FundamentalArithmeticOQ01
 import Proofs.FundamentalArithmeticOQ01OQ01
 import Proofs.FundamentalArithmeticOQ02
+import Proofs.FundamentalArithmeticOQ03
 import Proofs.FundamentalTheoremAlgebra
 import Proofs.FundamentalTheoremAlgebraOQ02
 import Proofs.FundamentalTheoremAlgebraOQ04
@@ -3081,6 +3087,7 @@ import Proofs.Hilbert16
 import Proofs.Hilbert17MotzkinRationalSOS
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17OQ01
+import Proofs.Hilbert17OQ03OQ05
 import Proofs.Hilbert17QuadraticGram
 import Proofs.Hilbert17RobinsonNotSOS
 import Proofs.Hilbert17SumOfSquares

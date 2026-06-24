@@ -1,0 +1,68 @@
+{
+  "slug": "chebyshev-polynomials-oq-01-oq-01-oq-01",
+  "title": "Chebyshev SL₂ Matrix Multiplicativity Packaging T_add, U_add and the Pell Identity",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE | seeker-selected: 2×2 Chebyshev rotation matrix product giving T_add/U_add/Pell as SL₂ multiplicativity.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": "SOLVED: SL₂ matrix packaging complete, verified 0-axiom, PR opened.",
+  "knowledge": {
+    "progressSummary": "COMPLETE: M(n)=!![Tₙ,−(1−X²)Uₙ₋₁;Uₙ₋₁,Tₙ] proven multiplicative M(m)M(n)=M(m+n), det=1, giving monoid hom Multiplicative ℤ→*SL₂(R[X]). Verified, 0 axioms, 129L, 5 thm / 3 def.",
+    "builtItems": [
+      "chebyMatrix (def): the 2×2 Chebyshev rotation matrix over R[X] — ChebyshevPolynomialsOQ01OQ01OQ01.lean:58",
+      "chebyMatrix_mul: M(m)·M(n)=M(m+n) via Matrix.mul_fin_two + T_add/U_add + ring — :65",
+      "chebyMatrix_det: det M(n)=1 from T_sq_add — :81",
+      "chebyMatrix_zero: M(0)=identity — :87",
+      "chebyMatrixSL / chebyMatrixSL_mul / chebyMatrixHom: SL₂ element, group multiplicativity, and the MonoidHom Multiplicative ℤ →* SL₂(R[X]) — :94,:105,:114"
+    ],
+    "insights": [
+      "Reading the four entries of M(m)·M(n)=M(m+n) off separately recovers exactly T_add (both diagonal entries) and U_add at index (m−1,n) (both off-diagonal entries): one matrix identity = both angle-addition formulas.",
+      "det M(n)=Tₙ²+(1−X²)Uₙ₋₁² via Matrix.det_fin_two_of, so the Pell/Pythagorean identity T_sq_add IS the SL₂ determinant condition det=1.",
+      "Combining multiplicativity + det=1 + M(0)=1 yields a genuine monoid homomorphism Multiplicative ℤ →* SL₂(R[X]); the addition formulas hold at all integer indices at once as functoriality of one map.",
+      "M(n) is the polynomial shadow of the rotation R(nθ); the factor 1−X² plays the role of sin²θ, and the homomorphism property is the polynomial R(α)R(β)=R(α+β)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has Polynomial.Chebyshev T/U and recurrences but no Chebyshev transfer/rotation matrix and no SL₂ packaging of the addition formulas."
+    ],
+    "nextSteps": [
+      "Optional follow-up: characterise the image of chebyMatrixHom as the Chebyshev circle subgroup of SL₂(R[X]).",
+      "Optional follow-up: derive the generating functions ∑Tₙtⁿ=(1−Xt)/(1−2Xt+t²), ∑Uₙtⁿ=1/(1−2Xt+t²) from the resolvent (I−t·M(1))⁻¹."
+    ]
+  },
+  "tags": [
+    "algebra",
+    "chebyshev-polynomials",
+    "matrix",
+    "recurrence",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "chebyshev-polynomials-oq-01-oq-01",
+    "chebyshev-polynomials-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T17:05:24.936Z",
+  "lastUpdate": "2026-06-24",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    "proofs/Proofs/ChebyshevPolynomialsOQ01OQ01OQ01.lean"
+  ],
+  "id": "chebyshev-polynomials-oq-01-oq-01-oq-01"
+}
