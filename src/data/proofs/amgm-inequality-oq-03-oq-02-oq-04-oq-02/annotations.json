@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-powermean-def",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 37, "endLine": 48 },
+    "type": "definition",
+    "title": "Power Mean and the Three Pythagorean Means",
+    "content": "`powerMean x r` is the unweighted power mean $M_r$, defined piecewise: at $r=0$ it is the geometric mean $(\\prod x_i)^{1/n}$, and otherwise $(\\sum x_i^r / n)^{1/r}$. The definition matches the parent entry exactly, so results compose. Alongside it are the three classical (Pythagorean) means in closed form — arithmetic $(\\sum x_i)/n$, geometric $(\\prod x_i)^{1/n}$, and harmonic $n/(\\sum x_i^{-1})$ — which the next section identifies as $M_1$, $M_0$, $M_{-1}$.",
+    "mathContext": "$M_r(x) = \\left(\\dfrac{\\sum_i x_i^r}{n}\\right)^{1/r}\\ (r\\ne 0),\\quad M_0(x) = \\left(\\prod_i x_i\\right)^{1/n}.$",
+    "significance": "key",
+    "relatedConcepts": ["power mean", "Pythagorean means", "arithmetic/geometric/harmonic mean"],
+    "prerequisites": ["finite sums and products over a Fintype", "real power function (rpow)"]
+  },
+  {
+    "id": "ann-card-ne-zero",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 50, "endLine": 51 },
+    "type": "technique",
+    "title": "Nonzero Cardinality",
+    "content": "A small private lemma recording that the real cast of $n = |\\iota|$ is nonzero, from `Fintype.card_pos` on the `Nonempty ι` instance. This is the side condition that licenses dividing by $n$ and the weight-normalisation $\\sum 1/n = 1$ throughout the file.",
+    "mathContext": "$(\\,n : \\mathbb{R}) \\ne 0$ since $\\iota$ is nonempty, so $|\\iota| \\ge 1$.",
+    "significance": "technical",
+    "relatedConcepts": ["Fintype.card_pos", "nonempty index type"],
+    "prerequisites": ["cardinality of a finite type", "casts ℕ → ℝ"]
+  },
+  {
+    "id": "ann-powermean-one",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 59, "endLine": 61 },
+    "type": "technique",
+    "title": "M₁ = Arithmetic Mean",
+    "content": "`powerMean_one`: at $r=1$ the power mean is the arithmetic mean. The proof is mechanical — the $r=0$ branch is excluded (`if_neg one_ne_zero`), then `Real.rpow_one` and `div_one` collapse $(\\sum x_i / n)^{1/1}$ to $(\\sum x_i)/n$. The `omit [Nonempty ι]` shows this identity needs no nonemptiness hypothesis.",
+    "mathContext": "$M_1(x) = \\left(\\dfrac{\\sum_i x_i}{n}\\right)^{1} = \\dfrac{\\sum_i x_i}{n} = \\mathrm{AM}(x).$",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic mean", "rpow_one"],
+    "prerequisites": ["real exponentiation identities"]
+  },
+  {
+    "id": "ann-powermean-zero",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 65, "endLine": 66 },
+    "type": "technique",
+    "title": "M₀ = Geometric Mean (Definitional)",
+    "content": "`powerMean_zero`: at $r=0$ the power mean is the geometric mean. Because the definition's $r=0$ branch IS the geometric-mean expression, the proof is just `if_pos rfl` followed by `rfl` — the identity holds by definition. $M_0$ is the limiting value $\\lim_{r\\to 0} M_r$, but here it is taken as the defined value, matching the parent entry's convention.",
+    "mathContext": "$M_0(x) = \\left(\\prod_i x_i\\right)^{1/n} = \\mathrm{GM}(x)$ (by definition of the $r=0$ branch).",
+    "significance": "supporting",
+    "relatedConcepts": ["geometric mean", "limit value of the power mean"],
+    "prerequisites": ["definitional equality"]
+  },
+  {
+    "id": "ann-powermean-neg-one",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "technique",
+    "title": "M₋₁ = Harmonic Mean",
+    "content": "`powerMean_neg_one`: at $r=-1$ the power mean is the harmonic mean (needs $x_i>0$). Two rewrites do the work. Inside the sum, `Real.rpow_neg_one` turns each $x_i^{-1}$ (rpow) into the ordinary inverse, giving $\\sum x_i^{-1}$. On the outer exponent, $1/(-1) = -1$, and `Real.rpow_neg` turns $((\\sum x_i^{-1})/n)^{-1}$ into its reciprocal $n/(\\sum x_i^{-1})$ — the harmonic-mean closed form. Non-negativity of the base is the side condition `rpow_neg` requires.",
+    "mathContext": "$M_{-1}(x) = \\left(\\dfrac{\\sum_i x_i^{-1}}{n}\\right)^{-1} = \\dfrac{n}{\\sum_i x_i^{-1}} = \\mathrm{HM}(x).$",
+    "significance": "key",
+    "relatedConcepts": ["harmonic mean", "rpow_neg_one", "rpow_neg"],
+    "prerequisites": ["real power with negative exponent", "positivity hypotheses"]
+  },
+  {
+    "id": "ann-gm-le-am",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 87, "endLine": 105 },
+    "type": "theorem",
+    "title": "GM ≤ AM (the link M₀ ≤ M₁)",
+    "content": "`geomMean_le_arithMean` specialises Mathlib's weighted AM-GM, `Real.geom_mean_le_arith_mean_weighted`, to uniform weights $w_i = 1/n$. The weights are nonnegative (`positivity`) and sum to 1 ($n \\cdot (1/n) = 1$ via `mul_inv_cancel₀`). The only nontrivial rewrite is `Real.finset_prod_rpow`, converting the weighted lemma's $\\prod x_i^{1/n}$ into the closed-form geometric mean $(\\prod x_i)^{1/n}$; a `calc` block then lands on $(\\sum x_i)/n$.",
+    "mathContext": "$\\left(\\prod_i x_i\\right)^{1/n} = \\prod_i x_i^{1/n} \\le \\sum_i \\tfrac1n x_i = \\dfrac{\\sum_i x_i}{n}.$",
+    "significance": "key",
+    "relatedConcepts": ["weighted AM-GM inequality", "uniform weights", "finset_prod_rpow"],
+    "prerequisites": ["weighted arithmetic-geometric mean inequality", "convexity / Jensen"]
+  },
+  {
+    "id": "ann-hm-le-gm",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 107, "endLine": 129 },
+    "type": "theorem",
+    "title": "HM ≤ GM (the link M₋₁ ≤ M₀)",
+    "content": "`harmMean_le_geomMean` specialises Mathlib's weighted HM-GM, `Real.harm_mean_le_geom_mean_weighted`, to uniform weights $w_i = 1/n$ (here the weights must be strictly positive, so the hypothesis is $x_i>0$). The `calc` rewrites the harmonic mean $n/(\\sum x_i^{-1})$ as $(\\sum (1/n)/x_i)^{-1}$ — pulling the $1/n$ out of the sum and inverting — to match the lemma's left-hand side, then converts the product of powers to the geometric-mean closed form with `Real.finset_prod_rpow`.",
+    "mathContext": "$\\dfrac{n}{\\sum_i x_i^{-1}} = \\left(\\sum_i \\tfrac{1/n}{x_i}\\right)^{-1} \\le \\prod_i x_i^{1/n} = \\left(\\prod_i x_i\\right)^{1/n}.$",
+    "significance": "key",
+    "relatedConcepts": ["weighted HM-GM inequality", "harmonic mean", "uniform weights"],
+    "prerequisites": ["weighted harmonic-geometric mean inequality", "manipulating reciprocals of sums"]
+  },
+  {
+    "id": "ann-full-chain",
+    "proofId": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+    "range": { "startLine": 135, "endLine": 144 },
+    "type": "insight",
+    "title": "The Full Chain HM ≤ GM ≤ AM = M₋₁ ≤ M₀ ≤ M₁",
+    "content": "`harm_le_geom_le_arith` conjoins the two links into the classical chain for the named means, and `powerMean_chain` restates it as the power-mean monotonicity $M_{-1} \\le M_0 \\le M_1$ by rewriting through the three closed-form identities. This is the payoff: the oldest inequality in the subject is recovered as three adjacent rungs of the single one-parameter power-mean ladder, answering the interpolation question posed by the parent entry, which had supplied only the extreme limits $M_{\\pm\\infty} = \\max/\\min$.",
+    "mathContext": "$\\mathrm{HM} \\le \\mathrm{GM} \\le \\mathrm{AM} \\iff M_{-1}(x) \\le M_0(x) \\le M_1(x).$",
+    "significance": "key",
+    "relatedConcepts": ["power-mean monotonicity", "Pythagorean means", "mean interpolation"],
+    "prerequisites": ["the two link inequalities", "the closed-form mean identities"]
+  }
+]
