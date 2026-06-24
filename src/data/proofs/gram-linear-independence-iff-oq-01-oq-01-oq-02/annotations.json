@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gram-col-bridge",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 36, "endLine": 51 },
+    "type": "concept",
+    "title": "Columns as Euclidean Vectors: gram (col A) = AᴴA",
+    "content": "The j-th column of A is embedded as col A j ∈ EuclideanSpace 𝕜 (Fin n) with (col A j) i = A i j (col_apply, a definitional rewrite through WithLp.toLp). The single identity that carries the whole proof is gram_col_eq: Matrix.gram 𝕜 (col A) = Aᴴ * A. It is proved entrywise — the L² inner product expands as ⟪col A i, col A j⟫ = ∑ k, ⟪A k i, A k j⟫ = ∑ k, conj(A k i)·(A k j) (PiLp.inner_apply, RCLike.inner_apply'), which is exactly (Aᴴ A) i j since Aᴴ i k = conj(A k i).",
+    "mathContext": "$\\mathrm{Gram}(\\mathrm{col}\\,A) = A^{\\mathsf H} A,\\quad (\\mathrm{col}\\,A_j)_i = A_{ij}$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix", "conjugate transpose", "Euclidean inner product", "matrix multiplication"],
+    "prerequisites": ["inner product spaces", "matrix multiplication"]
+  },
+  {
+    "id": "det-gram-eq-norm-sq",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 53, "endLine": 65 },
+    "type": "technique",
+    "title": "det(AᴴA) = ‖det A‖² and the Column Norms",
+    "content": "Taking the determinant of the bridge identity, gram_col_det computes det(gram 𝕜 (col A)) = det(Aᴴ)·det(A) = conj(det A)·det A = ‖det A‖² using Matrix.det_mul, Matrix.det_conjTranspose (det Aᴴ = conj det A) and RCLike.conj_mul (conj z · z = ‖z‖²); the result is a manifestly nonnegative real, the algebraic shadow of 'the Gramian is a squared volume'. norm_col_sq records the other half: each column's squared Euclidean norm ‖col A j‖² = ∑ i, ‖A i j‖² (EuclideanSpace.norm_sq_eq with (col A j) i = A i j).",
+    "mathContext": "$\\det(A^{\\mathsf H} A) = \\overline{\\det A}\\,\\det A = \\lVert\\det A\\rVert^2,\\quad \\lVert\\mathrm{col}\\,A_j\\rVert^2 = \\sum_i \\lVert A_{ij}\\rVert^2$.",
+    "significance": "key",
+    "relatedConcepts": ["determinant multiplicativity", "Hermitian product", "RCLike conjugation", "Euclidean norm"],
+    "prerequisites": ["determinants", "complex conjugation"]
+  },
+  {
+    "id": "matrix-hadamard-main",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 98 },
+    "type": "insight",
+    "title": "From the Squared Bound to Hadamard's Inequality",
+    "content": "matrix_hadamard_sq feeds gram_col_det and norm_col_sq into the parent's hadamard_inequality_euclidean (the abstract Gram bound on EuclideanSpace), descending the 𝕜-valued inequality to the reals via RCLike.ofReal_le_ofReal to get ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖². matrix_hadamard_inequality then rewrites ∏ j, ∑ i, ‖A i j‖² = ∏ j, (√(∑ i ‖A i j‖²))² = (∏ j √(∑ i ‖A i j‖²))² (Real.sq_sqrt, Finset.prod_pow) and takes square roots (Real.sqrt_le_sqrt, Real.sqrt_sq) — both sides nonnegative — to land the classical column inequality. matrix_hadamard_inequality_rows applies it to Aᵀ and rewrites det Aᵀ = det A for the row form.",
+    "mathContext": "$\\lVert\\det A\\rVert^2 \\le \\prod_j \\lVert\\mathrm{col}_j\\rVert^2 \\Rightarrow \\lVert\\det A\\rVert \\le \\prod_j \\sqrt{\\textstyle\\sum_i \\lVert A_{ij}\\rVert^2}$.",
+    "significance": "key",
+    "relatedConcepts": ["Hadamard's inequality", "square root monotonicity", "transpose invariance of det"],
+    "prerequisites": ["real square roots", "finite products"]
+  },
+  {
+    "id": "uniform-nn2-bound",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 100, "endLine": 124 },
+    "type": "insight",
+    "title": "The Uniform n^(n/2) Determinant Bound",
+    "content": "matrix_hadamard_bound is Hadamard plus a crude per-column estimate. If every entry has modulus ‖A i j‖ ≤ M with M ≥ 0, then ∑ i, ‖A i j‖² ≤ ∑ i, M² = n·M², so each column norm is at most √(n·M²) = √n·√(M²) = √n·M (Real.sqrt_mul, Real.sqrt_sq). Multiplying the n column bounds (Finset.prod_le_prod, Finset.prod_const) gives ‖det A‖ ≤ (√n · M)^n = M^n · n^(n/2) — the standard ceiling showing the determinant of a matrix with bounded entries cannot grow faster than n^(n/2).",
+    "mathContext": "$\\lVert A_{ij}\\rVert \\le M \\Rightarrow \\lVert\\det A\\rVert \\le (\\sqrt n\\,M)^n = M^n\\,n^{n/2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["geometry of numbers", "determinant growth bounds", "uniform entry bound"],
+    "prerequisites": ["finite products", "real square roots"]
+  }
+]

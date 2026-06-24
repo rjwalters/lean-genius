@@ -1,0 +1,176 @@
+{
+  "id": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+  "slug": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Proofs.GramLinearIndependenceOQ01OQ01"
+    ],
+    "opens": [
+      "Matrix",
+      "RCLike",
+      "Finset",
+      "ComplexOrder",
+      "InnerProductSpace"
+    ],
+    "namespace": "GramLinearIndependenceOQ01OQ01OQ02",
+    "lineCount": 124,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/GramLinearIndependenceOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "Hadamard's Determinant Inequality for Square Matrices (Column, Row, and Uniform Forms)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GramLinearIndependenceOQ01OQ01OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrix",
+      "determinant",
+      "hadamard-inequality",
+      "inner-product-space",
+      "euclidean-space",
+      "gram-matrix",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 124,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "matrix_hadamard_inequality: the classical matrix form of Hadamard's inequality ‖det A‖ ≤ ∏ j, √(∑ i, ‖A i j‖²) — the determinant of a square matrix over an RCLike field 𝕜 is bounded by the product of the Euclidean norms of its columns. This is the form Hadamard actually stated (1893) and is absent from Mathlib",
+      "matrix_hadamard_inequality_rows: the row version ‖det A‖ ≤ ∏ i, √(∑ j, ‖A i j‖²), obtained from the column form via det Aᵀ = det A",
+      "matrix_hadamard_bound: the uniform corollary ‖det A‖ ≤ (√n · M)^n = M^n · n^(n/2) when every entry satisfies ‖A i j‖ ≤ M — the bound exhibiting that a determinant with bounded entries grows no faster than n^(n/2)",
+      "gram_col_eq: the bridge identity Matrix.gram 𝕜 (col A) = Aᴴ * A — the Gram matrix of the columns of A is its conjugate-transpose-times-itself, connecting the matrix determinant to the abstract Gramian of the parent entry",
+      "gram_col_det: det(gram 𝕜 (col A)) = ‖det A‖², via det(Aᴴ A) = conj(det A)·det A and RCLike.conj_mul — the squared volume spanned by the columns is the squared determinant modulus",
+      "norm_col_sq / matrix_hadamard_sq: the squared (pre-square-root) form ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖², the direct image of the parent's EuclideanSpace Hadamard bound under the column embedding"
+    ],
+    "prerequisites": [
+      "The EuclideanSpace Gram-determinant Hadamard bound det(gram 𝕜 v) ≤ ∏ i, ‖v i‖² (parent entry gram-linear-independence-iff-oq-01-oq-01, hadamard_inequality_euclidean)",
+      "Columns as Euclidean vectors: EuclideanSpace 𝕜 (Fin n) = PiLp 2 (fun _ => 𝕜), the inner product ⟪x, y⟫ = ∑ i, conj (x i) · y i (PiLp.inner_apply, RCLike.inner_apply') and norm ‖x‖² = ∑ i, ‖x i‖² (EuclideanSpace.norm_sq_eq)",
+      "Determinant algebra: Matrix.det_mul, Matrix.det_conjTranspose (det Aᴴ = conj (det A)), Matrix.det_transpose, and RCLike.conj_mul (conj z · z = ‖z‖²)",
+      "Square-root and product monotonicity: Real.sqrt_le_sqrt, Real.sqrt_sq, Real.sq_sqrt, Real.sqrt_mul, Finset.prod_le_prod, Finset.prod_pow"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_conjTranspose / Matrix.det_mul / Matrix.det_transpose",
+        "description": "det(Aᴴ) = conj(det A), multiplicativity det(AB) = det A · det B, and det(Aᵀ) = det A — combining to det(Aᴴ A) = conj(det A)·det A = ‖det A‖² and supplying the row form by transposition.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "PiLp.inner_apply / EuclideanSpace.norm_sq_eq",
+        "description": "The L² inner product ⟪x, y⟫ = ∑ i, ⟪x i, y i⟫ on EuclideanSpace and the squared norm ‖x‖² = ∑ i, ‖x i‖², used to identify gram 𝕜 (col A) = Aᴴ A entrywise and to evaluate each column norm as the sum of squared entry moduli.",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "RCLike.conj_mul",
+        "description": "conj z · z = ‖z‖² over an RCLike field, turning the Hermitian determinant det(Aᴴ A) into the manifestly nonnegative real ‖det A‖².",
+        "module": "Mathlib.Analysis.RCLike.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_le_sqrt / Real.sqrt_sq / Real.sqrt_mul",
+        "description": "Monotonicity and the inverse relation between squaring and the real square root, used to descend the squared Hadamard bound ‖det A‖² ≤ (∏ ‖col j‖)² to ‖det A‖ ≤ ∏ ‖col j‖ and to evaluate √(n·M²) = √n·M.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hadamard's inequality, in the form Jacques Hadamard published in 1893, is a statement about an honest square matrix: the absolute value of its determinant is at most the product of the Euclidean lengths of its columns, |det A| ≤ ∏ⱼ ‖aⱼ‖. Geometrically the determinant is the (signed) volume of the parallelepiped spanned by the columns, and Hadamard's inequality says a box with edges of fixed length has the largest volume when those edges are mutually orthogonal. The parent entry proved the abstract Gram-matrix version det(gram v) ≤ ∏ ‖vᵢ‖² in an arbitrary inner product space and its orthogonality equality case; this entry brings the result back down to concrete matrices, recovering the historically original statement together with its row analogue and the uniform n^(n/2) bound for matrices with bounded entries that underlies estimates in the geometry of numbers, numerical conditioning, and random-matrix theory. Mathlib has the Gram–Schmidt machinery but neither the abstract nor the matrix Hadamard determinant bound.",
+    "problemStatement": "Derive the classical matrix form of Hadamard's inequality as a corollary of the parent's Gram-determinant bound: for a square matrix A over an RCLike field 𝕜, prove ‖det A‖ ≤ ∏ j, √(∑ i, ‖A i j‖²) (the product of Euclidean column norms), the corresponding row form, and the uniform bound ‖det A‖ ≤ (√n · M)^n when all entries have modulus at most M. The bridge is the identity det(gram 𝕜 (columns A)) = ‖det A‖².",
+    "proofStrategy": "Embed the columns of A as vectors col A j ∈ EuclideanSpace 𝕜 (Fin n) with (col A j) i = A i j. Three computations connect A to the parent's abstract bound. (1) gram_col_eq: the Gram matrix of the columns is gram 𝕜 (col A) = Aᴴ * A, proved entrywise by expanding the L² inner product ⟪col A i, col A j⟫ = ∑ k, conj(A k i)·A k j and matching it to (Aᴴ A) i j. (2) gram_col_det: taking determinants, det(gram 𝕜 (col A)) = det(Aᴴ)·det(A) = conj(det A)·det A = ‖det A‖² by Matrix.det_conjTranspose and RCLike.conj_mul. (3) norm_col_sq: each column's squared norm is ‖col A j‖² = ∑ i, ‖A i j‖² by EuclideanSpace.norm_sq_eq. Feeding these into the parent's hadamard_inequality_euclidean gives ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖² (matrix_hadamard_sq); rewriting the right side as (∏ j √(∑ i ‖A i j‖²))² and taking square roots yields the column inequality (matrix_hadamard_inequality). The row form follows by applying the column form to Aᵀ and using det Aᵀ = det A; the uniform bound bounds each column norm by √(∑ i M²) = √n·M and multiplies over the n columns.",
+    "keyInsights": [
+      "The whole matrix theorem is a single change of viewpoint on the parent's abstract bound: reading the columns of A as a family of Euclidean vectors turns the abstract Gramian det(gram v) into det(Aᴴ A), and the abstract product of squared norms ∏ ‖vᵢ‖² into the product of squared column norms — no new analysis is needed, only the bridge gram 𝕜 (col A) = Aᴴ A.",
+      "det(Aᴴ A) = ‖det A‖² is the algebraic shadow of the geometric fact that the Gramian is a squared volume: the determinant of the Hermitian square is conj(det A)·det A, which RCLike.conj_mul collapses to the nonnegative real ‖det A‖² uniformly over ℝ and ℂ.",
+      "The square-root step is where the squared Gram bound becomes the classical Hadamard inequality: ‖det A‖² ≤ ∏ ‖col j‖² = (∏ ‖col j‖)² descends to ‖det A‖ ≤ ∏ ‖col j‖ because both sides are nonnegative, and ∏ ‖col j‖ = ∏ √(∑ i ‖A i j‖²) is exactly the product of Euclidean column norms.",
+      "The row form is free: determinants are transpose-invariant, so applying the column inequality to Aᵀ and rewriting det Aᵀ = det A immediately bounds ‖det A‖ by the product of row norms — the two faces of Hadamard's inequality differ only by a transpose.",
+      "The uniform n^(n/2) bound is Hadamard plus a crude per-column estimate: with every entry of modulus ≤ M each column norm is at most √(n·M²) = √n·M, and the n-fold product gives (√n·M)^n = M^n·n^(n/2), the standard ceiling on determinants of bounded matrices."
+    ]
+  },
+  "sections": [
+    {
+      "id": "columns-and-gram",
+      "title": "Columns as Euclidean Vectors and the Bridge gram (col A) = AᴴA",
+      "startLine": 36,
+      "endLine": 51,
+      "summary": "col A j embeds the j-th column of A into EuclideanSpace 𝕜 (Fin n) with (col A j) i = A i j (col_apply). gram_col_eq proves the bridge identity gram 𝕜 (col A) = Aᴴ * A by expanding the L² inner product ⟪col A i, col A j⟫ = ∑ k, conj(A k i)·A k j entrywise and matching it to the conjugate-transpose product.",
+      "mathContext": "$\\mathrm{Gram}(\\mathrm{col}\\,A) = A^{\\mathsf H} A$, $(\\mathrm{col}\\,A_j)_i = A_{ij}$."
+    },
+    {
+      "id": "det-and-norm",
+      "title": "det(gram) = ‖det A‖² and the Column Norms",
+      "startLine": 53,
+      "endLine": 65,
+      "summary": "gram_col_det computes det(gram 𝕜 (col A)) = det(Aᴴ)·det(A) = conj(det A)·det A = ‖det A‖² (Matrix.det_conjTranspose, RCLike.conj_mul). norm_col_sq evaluates each column's squared norm ‖col A j‖² = ∑ i, ‖A i j‖² via EuclideanSpace.norm_sq_eq.",
+      "mathContext": "$\\det\\mathrm{Gram}(\\mathrm{col}\\,A) = \\lVert\\det A\\rVert^2,\\quad \\lVert\\mathrm{col}\\,A_j\\rVert^2 = \\sum_i \\lVert A_{ij}\\rVert^2$."
+    },
+    {
+      "id": "matrix-hadamard",
+      "title": "Hadamard's Inequality: Squared, Column, and Row Forms",
+      "startLine": 67,
+      "endLine": 98,
+      "summary": "matrix_hadamard_sq feeds the bridge identities into the parent's hadamard_inequality_euclidean to get ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖². matrix_hadamard_inequality rewrites the bound as (∏ √(∑ ‖A i j‖²))² and takes square roots to give the column inequality ‖det A‖ ≤ ∏ j, √(∑ i, ‖A i j‖²); matrix_hadamard_inequality_rows transposes to obtain the row form.",
+      "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_j \\sqrt{\\textstyle\\sum_i \\lVert A_{ij}\\rVert^2}$ (and the row analogue)."
+    },
+    {
+      "id": "uniform-bound",
+      "title": "The Uniform n^(n/2) Bound",
+      "startLine": 100,
+      "endLine": 124,
+      "summary": "matrix_hadamard_bound assumes ‖A i j‖ ≤ M with M ≥ 0; each column norm is then at most √(∑ i M²) = √(n·M²) = √n·M (Real.sqrt_mul, Real.sqrt_sq), and the n-fold product over columns yields ‖det A‖ ≤ (√n · M)^n = M^n · n^(n/2).",
+      "mathContext": "$\\lVert A_{ij}\\rVert \\le M \\Rightarrow \\lVert\\det A\\rVert \\le (\\sqrt n\\,M)^n = M^n n^{n/2}$."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-01",
+      "question": "Sharpen the matrix Hadamard inequality to its equality case: ‖det A‖ = ∏ j, ‖col j A‖ for an invertible matrix A holds iff the columns are pairwise orthogonal, by transporting the parent's hadamard_eq_iff_orthogonal_euclidean through the column embedding (det A ≠ 0 supplies the linear independence hypothesis).",
+      "significance": "medium"
+    },
+    {
+      "id": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-02",
+      "question": "Generalise the bridge to rectangular matrices A : Matrix (Fin m) (Fin n) 𝕜 with m ≥ n via Cauchy–Binet, proving det(Aᴴ A) ≤ ∏ j, ‖col j A‖² and hence a Hadamard bound on the n-dimensional volume of the column span.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gram-linear-independence-iff-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The parent established the abstract Gram-determinant Hadamard bound det(gram 𝕜 v) ≤ ∏ ‖v i‖² on an inner product space and its EuclideanSpace specialisation. This entry answers the parent's second open question by specialising that bound to the columns of a square matrix, recovering Hadamard's original 1893 statement ‖det A‖ ≤ ∏ ‖col j‖ together with its row form and the uniform n^(n/2) entry bound."
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "generalizes",
+      "description": "For a 2×2 matrix the column Hadamard inequality is exactly Cauchy–Schwarz: ‖det A‖² = ‖a₁‖²‖a₂‖² − |⟪a₁,a₂⟫|² ≤ ‖a₁‖²‖a₂‖², the determinant of bounded magnitude being controlled by the product of the column lengths."
+    }
+  ],
+  "references": [
+    {
+      "title": "Jacques Hadamard, Résolution d'une question relative aux déterminants",
+      "author": "J. Hadamard",
+      "year": "1893",
+      "venue": "Bulletin des Sciences Mathématiques",
+      "description": "Original statement of the matrix Hadamard inequality |det A| ≤ ∏ ‖column‖ proved here in its column, row, and uniform-bound forms."
+    },
+    {
+      "title": "Mathlib4: Analysis.InnerProductSpace.PiL2",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of EuclideanSpace, PiLp.inner_apply and EuclideanSpace.norm_sq_eq used to embed matrix columns as Euclidean vectors and identify gram 𝕜 (col A) = Aᴴ A."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "Specialising the parent entry's abstract Gram-determinant Hadamard bound to the columns of a square matrix A over an RCLike field 𝕜 recovers the classical matrix form of Hadamard's inequality: ‖det A‖ ≤ ∏ j, √(∑ i, ‖A i j‖²) (matrix_hadamard_inequality), the product of the Euclidean column norms. The bridge is gram 𝕜 (col A) = Aᴴ * A (gram_col_eq), whose determinant is det(Aᴴ A) = conj(det A)·det A = ‖det A‖² (gram_col_det); the parent's hadamard_inequality_euclidean then gives the squared bound ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖² (matrix_hadamard_sq), which descends by square roots to the column inequality. The row form ‖det A‖ ≤ ∏ i, √(∑ j, ‖A i j‖²) follows by transposition (matrix_hadamard_inequality_rows), and a uniform entry bound ‖A i j‖ ≤ M yields ‖det A‖ ≤ (√n · M)^n = M^n · n^(n/2) (matrix_hadamard_bound). 124 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "This answers the parent's second open question and supplies the gallery (and, since Mathlib lacks it, the broader ecosystem) with the determinant form of Hadamard's inequality actually quoted in the literature, in column, row, and uniform-bound versions. The reusable bridge gram 𝕜 (col A) = Aᴴ A and the identity det(Aᴴ A) = ‖det A‖² are the natural entry points for the equality-case sharpening and the Cauchy–Binet rectangular generalisation recorded as open questions.",
+    "openQuestions": [
+      "Equality case: ‖det A‖ = ∏ ‖col j‖ for invertible A iff the columns are pairwise orthogonal.",
+      "Rectangular Cauchy–Binet generalisation: det(Aᴴ A) ≤ ∏ ‖col j‖² for tall matrices, bounding the column-span volume."
+    ]
+  }
+}
