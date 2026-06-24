@@ -3969,6 +3969,7 @@ import Proofs.ThreeSubgroupsLemmaOQ0101
 import Proofs.ThueMorse
 import Proofs.TietzeExtensionTheoremOQ01
 import Proofs.TietzeExtensionTheoremOQ01OQ01
+import Proofs.TietzeExtensionTheoremOQ01OQ01OQ01
 import Proofs.TractatusOntology
 import Proofs.TractatusOntologyEquiv
 import Proofs.TractatusOntologyHorn
