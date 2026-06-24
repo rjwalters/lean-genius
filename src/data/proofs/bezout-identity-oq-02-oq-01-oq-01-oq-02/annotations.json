@@ -1,0 +1,52 @@
+[
+  {
+    "id": "ann-bezout-fp-fermat",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 73 },
+    "type": "insight",
+    "title": "From Root Multiset to Product Factorization",
+    "content": "Mathlib stops at roots (X^q − X) = univ.val: it knows every field element is a simple root, but never writes the polynomial as a product. The gap is bridged by prod_multiset_X_sub_C_of_monic_of_roots_card_eq, which upgrades 'monic with as many roots as its degree' into the closed product ∏ over the root multiset. Three facts feed it: monicity (monic_X_pow_sub, since deg X = 1 < q = |K|), natDegree = q, and #roots = q. The resulting ∏ over univ.val is definitionally ∏_{a:K} (X − C a).",
+    "mathContext": "$X^{|K|} - X = \\prod_{a \\in K} (X - a)$. Equivalent to Fermat's little theorem $a^{|K|} = a$ for all $a$, read as 'every $a$ is a root'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "FiniteField.roots_X_pow_card_sub_X",
+      "Polynomial.prod_multiset_X_sub_C_of_monic_of_roots_card_eq",
+      "Polynomial.monic_X_pow_sub",
+      "FiniteField.X_pow_card_sub_X_natDegree_eq"
+    ],
+    "prerequisites": ["finite fields", "polynomial roots", "monic polynomials"]
+  },
+  {
+    "id": "ann-bezout-fp-frobenius",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 91, "endLine": 100 },
+    "type": "insight",
+    "title": "The Frobenius Collapse: One Root, Multiplicity p",
+    "content": "Where X^q − X is maximally separable (q distinct roots), X^p − a is maximally inseparable. In characteristic p the freshman's dream sub_pow_char gives (X − a)^p = X^p − a^p; Fermat's a^p = a (ZMod.pow_card) then collapses a^p back to a, so X^p − a = (X − a)^p — a single root a of multiplicity p. The same one-line computation with a = 1 yields X^p − 1 = (X − 1)^p, the p-th-roots-of-unity binomial degenerating in characteristic p.",
+    "mathContext": "$X^p - a = (X - a)^p$ over $\\mathbb{F}_p$, since $(X-a)^p = X^p - a^p$ and $a^p = a$. False in characteristic $0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sub_pow_char",
+      "ZMod.pow_card",
+      "Polynomial.C_pow",
+      "frobenius"
+    ],
+    "prerequisites": ["characteristic p", "Frobenius endomorphism", "Fermat's little theorem"]
+  },
+  {
+    "id": "ann-bezout-fp-contrast",
+    "proofId": "bezout-identity-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 128 },
+    "type": "insight",
+    "title": "Where Fermat Factorization Fails: ℚ vs 𝔽_p",
+    "content": "Fermat factorization is a characteristic-p phenomenon. The scalar 2 makes this concrete: over 𝔽_5, ZMod.pow_card forces 2^5 = 2 so 2 is a root of X^5 − X (as is every element); over ℚ, evaluating gives 2^5 − 2 = 30 ≠ 0, so 2 is not a root and the all-linear split cannot survive. The small case X^3 − X = X(X − 1)(X + 1) does split over ℚ — but only because its roots 0, ±1 happen to be rational; for X^5 − X the rational roots are exhausted by 0, ±1 and the rest stay irreducible over ℚ.",
+    "mathContext": "$\\operatorname{eval}_2 (X^5 - X) = 30$ over $\\mathbb{Q}$, but $= 0$ over $\\mathbb{F}_5$. Fermat factorization needs $\\operatorname{char} = p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.eval",
+      "Polynomial.IsRoot",
+      "ZMod.pow_card"
+    ],
+    "prerequisites": ["polynomial evaluation", "rational vs finite fields"]
+  }
+]
