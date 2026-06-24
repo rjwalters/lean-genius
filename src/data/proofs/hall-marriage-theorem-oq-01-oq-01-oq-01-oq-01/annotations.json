@@ -1,0 +1,165 @@
+[
+  {
+    "id": "ann-hallreg-overview",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 40
+    },
+    "type": "context",
+    "title": "Regular bipartite graphs have perfect matchings",
+    "content": "The docstring frames the classical fact: a k-regular bipartite graph (k ≥ 1) always has a perfect matching. Encoded family-theoretically, t : ι → Finset α is k-regular when every index has exactly k neighbours and every occurring element is hit by exactly k indices. The strategy is a single double-count of incidence pairs to derive Hall's condition, after which Mathlib's Hall theorem and the parent entry's deficiency calculus supply the matching and its maximality. The double-counting derivation needs no marriage-theorem machinery — Hall's theorem enters only to convert the condition into an actual transversal.",
+    "mathContext": "A $k$-regular bipartite graph $G=(I\\sqcup A,E)$ with $k\\ge 1$ has a perfect matching. As a family, $t_i=\\{a : (i,a)\\in E\\}$ with $\\#t_i=k$ and $\\#\\{i : a\\in t_i\\}=k$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Hall's marriage theorem",
+      "perfect matching",
+      "regular bipartite graph",
+      "double counting",
+      "König's theorem"
+    ],
+    "prerequisites": [
+      "bipartite graphs",
+      "systems of distinct representatives"
+    ]
+  },
+  {
+    "id": "ann-hallreg-iskregular",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 54
+    },
+    "type": "definition",
+    "title": "IsKRegular: both degrees equal k",
+    "content": "IsKRegular t k conjoins two conditions: left-regularity `∀ i, #(t i) = k` (every index has exactly k neighbours) and right-regularity `∀ a ∈ univ.biUnion t, #{i | a ∈ t i} = k` (every element that actually occurs is hit by exactly k indices). Reading t as a bipartite incidence structure, this is precisely a k-regular bipartite graph. Note right-regularity is only asserted for elements a that occur in the family (a ∈ univ.biUnion t), so elements outside the image impose no constraint — exactly right, since they are not vertices of the graph.",
+    "mathContext": "$\\mathrm{IsKRegular}(t,k) :\\iff (\\forall i,\\ \\#(t_i)=k)\\ \\land\\ (\\forall a\\in\\bigcup_i t_i,\\ \\#\\{i : a\\in t_i\\}=k)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "k-regular bipartite graph",
+      "vertex degree",
+      "Finset.biUnion",
+      "incidence structure"
+    ],
+    "prerequisites": [
+      "Finset cardinality",
+      "Finset.filter",
+      "Finset.biUnion"
+    ]
+  },
+  {
+    "id": "ann-hallreg-doublecount",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "Hall's condition by double counting the incidence pairs",
+    "content": "The engine theorem hall_condition_of_regular. With the bipartite relation r i a := a ∈ t i, Mathlib's `Finset.card_mul_le_card_mul r` packages the two-sided count of incidence pairs {(i,a) : i ∈ s, a ∈ t i} into a single inequality `#s · k ≤ #(s.biUnion t) · k`. Supplying a left lower bound (each index contributes ≥ k) and a right upper bound (each element contributes ≤ k) is exactly the input that lemma demands. The crucial structural point: Hall's marriage *condition* is derived purely combinatorially here — no appeal to Hall's *theorem* — so the matching machinery is deferred to the corollaries.",
+    "mathContext": "$\\sum_{i\\in s}\\#\\{a\\in B : a\\in t_i\\} = \\#\\{(i,a) : i\\in s,\\ a\\in t_i\\} = \\sum_{a\\in B}\\#\\{i\\in s : a\\in t_i\\}$, where $B=s.\\mathrm{biUnion}\\,t$; bounding gives $k\\cdot\\#s \\le k\\cdot\\#B$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "double counting",
+      "Finset.card_mul_le_card_mul",
+      "incidence matrix",
+      "Hall's condition"
+    ],
+    "prerequisites": [
+      "double-counting / Fubini for finite sums",
+      "bipartite incidence finsets"
+    ]
+  },
+  {
+    "id": "ann-hallreg-left-bound",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 77
+    },
+    "type": "technique",
+    "title": "Left count: bipartiteAbove collapses to t i",
+    "content": "For each index i ∈ s, the neighbourhood of i inside the target set s.biUnion t — Mathlib's `(s.biUnion t).bipartiteAbove r i` — is shown by `ext` + `mem_bipartiteAbove` to equal t i exactly. The ⊇ direction is the only content: a ∈ t i implies a ∈ s.biUnion t via `mem_biUnion` (witnessed by i ∈ s), so membership in t i already certifies the bipartite-above condition. Then left-regularity hL rewrites its cardinality to k, giving the exact left contribution k per index.",
+    "mathContext": "For $i\\in s$: $(s.\\mathrm{biUnion}\\,t).\\mathrm{bipartiteAbove}_r\\,i = t_i$ since $t_i\\subseteq s.\\mathrm{biUnion}\\,t$, hence $\\#(\\cdots)=\\#t_i=k$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.bipartiteAbove",
+      "Finset.mem_biUnion",
+      "neighbourhood",
+      "left-regularity"
+    ],
+    "prerequisites": [
+      "Finset extensionality",
+      "bipartiteAbove membership"
+    ]
+  },
+  {
+    "id": "ann-hallreg-right-bound",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Right count: restriction to s only shrinks the degree",
+    "content": "For each element a ∈ s.biUnion t, the indices in s meeting a — `s.bipartiteBelow r a` — inject into the full set of indices meeting a, `univ.filter (· ∈ t i)`, by `card_le_card` + `mem_bipartiteBelow`. That global filter has cardinality k by right-regularity hR (applicable because a occurs in the family: a ∈ s.biUnion t ⊆ univ.biUnion t). So each element contributes *at most* k — an inequality, not an equality, because s may omit some of a's k incident indices. Finally `Nat.le_of_mul_le_mul_right` cancels the common factor k, which is legitimate exactly because k > 0; this is where the hypothesis hk is consumed.",
+    "mathContext": "For $a\\in s.\\mathrm{biUnion}\\,t$: $\\#\\{i\\in s : a\\in t_i\\} \\le \\#\\{i : a\\in t_i\\}=k$. Then $k\\cdot\\#s\\le k\\cdot\\#B \\Rightarrow \\#s\\le\\#B$ by cancelling $k>0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.bipartiteBelow",
+      "Finset.card_le_card",
+      "right-regularity",
+      "Nat.le_of_mul_le_mul_right"
+    ],
+    "prerequisites": [
+      "monotonicity of cardinality under inclusion",
+      "cancellation in ℕ"
+    ]
+  },
+  {
+    "id": "ann-hallreg-sdr",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 102
+    },
+    "type": "theorem",
+    "title": "Full system of distinct representatives",
+    "content": "exists_sdr_of_regular feeds the Hall condition (now proved for *every* sub-family s) into Mathlib's Hall marriage theorem `Finset.all_card_le_biUnion_card_iff_exists_injective`, whose forward direction yields a globally injective choice function f : ι → α with f i ∈ t i. This is a perfect matching of the regular bipartite graph: each index is assigned a distinct neighbour. The conversion from 'condition holds' to 'matching exists' is the one place Hall's theorem proper is invoked.",
+    "mathContext": "$(\\forall s,\\ \\#s\\le\\#(s.\\mathrm{biUnion}\\,t)) \\iff \\exists f,\\ \\mathrm{Injective}\\,f \\land \\forall i,\\ f_i\\in t_i$; regularity supplies the LHS.",
+    "significance": "key",
+    "relatedConcepts": [
+      "system of distinct representatives",
+      "perfect matching",
+      "Finset.all_card_le_biUnion_card_iff_exists_injective",
+      "injective choice function"
+    ],
+    "prerequisites": [
+      "Hall's marriage theorem",
+      "injective functions"
+    ]
+  },
+  {
+    "id": "ann-hallreg-deficiency",
+    "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 109,
+      "endLine": 127
+    },
+    "type": "theorem",
+    "title": "Zero deficiency and the maximal transversal (parent endpoint)",
+    "content": "Two corollaries route the result through the parent entry's deficiency calculus. deficiency_eq_zero_of_regular uses `HallDefect.deficiency_eq_zero_iff`: since Hall's inequality holds for every sub-family, the deficiency maxₛ(#s − #(s.biUnion t)) collapses to 0. Then isGreatest_transversal_of_regular applies the parent's `maxTransversal_eq_card_of_deficiency_zero` to conclude the attainable partial-transversal sizes have greatest element #ι — a full transversal exists and none larger is possible. The `omit [DecidableEq ι] [Nonempty α]` on the first corollary discards section variables it does not actually need.",
+    "mathContext": "$\\delta(t) = \\max_s(\\#s - \\#(s.\\mathrm{biUnion}\\,t)) = 0$, hence $\\mathrm{IsGreatest}(\\mathrm{transversalSizes}\\,t)\\ \\#\\iota$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Hall deficiency",
+      "Ore defect form",
+      "maximum transversal",
+      "deficiency_eq_zero_iff"
+    ],
+    "prerequisites": [
+      "deficiency / defect version of Hall's theorem",
+      "the parent entry's deficiency calculus"
+    ]
+  }
+]
