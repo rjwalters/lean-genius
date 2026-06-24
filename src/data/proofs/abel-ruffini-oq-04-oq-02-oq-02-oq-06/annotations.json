@@ -1,0 +1,97 @@
+[
+  {
+    "id": "ann-gap-header",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-06",
+    "range": { "startLine": 1, "endLine": 37 },
+    "type": "concept",
+    "title": "The Derived-Length Gap: Motivation",
+    "content": "The parent entry proves the *qualitative* fact that $A_n$ is solvable iff $n \\leq 4$. This entry asks the *quantitative* question: how big is the jump at $n = 5$? Solvability is measured by the **derived (solvable) length** — the number of steps the derived series $G \\trianglerighteq G' \\trianglerighteq G'' \\trianglerighteq \\cdots$ takes to reach the trivial subgroup, where each term is the commutator subgroup of the previous, $D^{k+1} = \\lbrack D^k, D^k\\rbrack$.\n\nFor the alternating groups the answer is sharp and explicit:\n$$A_3 \\rightsquigarrow 1, \\quad A_4 \\rightsquigarrow 2, \\quad A_5 \\rightsquigarrow \\infty.$$\n$A_4$ reaches $\\{e\\}$ in exactly two steps through the Klein four-group $V_4 = \\lbrack A_4, A_4\\rbrack$; $A_5$ never reaches $\\{e\\}$ because it is **perfect** — equal to its own commutator subgroup. The derived length jumps from $2$ to infinity precisely at the Abel–Ruffini boundary, giving a numerical invariant in place of a yes/no classification.",
+    "mathContext": "A group $G$ is solvable iff its derived series terminates at $\\{e\\}$; the least number of steps is its derived length. Abelian groups have derived length $\\leq 1$; $G$ with derived length exactly $2$ is solvable but non-abelian (it is metabelian). A group with $G = G'$ (perfect) has constant derived series and is non-solvable unless trivial. $A_5$ is the smallest non-abelian simple group and the smallest non-trivial perfect group.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "derived series",
+      "derived (solvable) length",
+      "solvable group",
+      "perfect group",
+      "commutator subgroup",
+      "Klein four-group",
+      "simple group",
+      "Abel-Ruffini theorem"
+    ],
+    "prerequisites": [
+      "group theory",
+      "solvable groups and the derived series",
+      "commutator subgroups",
+      "Mathlib `derivedSeries` and `IsSolvable`"
+    ]
+  },
+  {
+    "id": "ann-a4-length-two",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-06",
+    "range": { "startLine": 43, "endLine": 100 },
+    "type": "proof-step",
+    "title": "Part I — A₄ Has Derived Length Exactly 2",
+    "content": "Two bounds pin the length. **Lower bound** (`a4_derived1_ne_bot`): $D^1(A_4) = \\lbrack A_4, A_4\\rbrack \\neq \\bot$, because $A_4$ is non-abelian. The proof exhibits non-commuting elements $a, b$ (`a4_non_abelian`, by `decide` over the 12-element group), forms the commutator $\\lbrack a, b\\rbrack \\in D^1(A_4)$ via `Subgroup.commutator_mem_commutator`, and observes that if $D^1 = \\bot$ then $\\lbrack a, b\\rbrack = 1$, i.e. $a, b$ commute — a contradiction, packaged by `commutatorElement_eq_one_iff_commute`.\n\n**Upper bound** (`a4_derived2_eq_bot`): $D^2(A_4) = \\bot$. This is reused verbatim from the parent's `a4_derivedSeries_two_eq_bot`, which identifies $\\lbrack A_4, A_4\\rbrack$ with the Klein four-group $V_4$ (every generator $\\lbrack a, b\\rbrack$ has order dividing $2$, by `decide`) and notes $V_4$ is abelian, so $\\lbrack V_4, V_4\\rbrack = \\bot$. Together (`a4_solvability_class_two`, `a4_exact_derived_length`) these give derived length exactly $2$.",
+    "mathContext": "The derived series of $A_4$ is $A_4 \\trianglerighteq V_4 \\trianglerighteq \\{e\\}$. $V_4 = \\{e, (12)(34), (13)(24), (14)(23)\\}$ is the unique normal subgroup of order $4$, with exponent $2$ (hence abelian). The two-step termination is the defining feature of a *metabelian* group: solvable of derived length $2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "commutator subgroup",
+      "Klein four-group V₄",
+      "metabelian group",
+      "Subgroup.commutator_mem_commutator",
+      "commutatorElement_eq_one_iff_commute",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "commutator subgroups",
+      "Klein four-group",
+      "finite group computation in Lean"
+    ]
+  },
+  {
+    "id": "ann-a5-perfect",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-06",
+    "range": { "startLine": 106, "endLine": 147 },
+    "type": "key-insight",
+    "title": "Part II — A₅ Is Perfect, So Its Derived Series Is Constant",
+    "content": "The crux is `a5_perfect`: $\\lbrack A_5, A_5\\rbrack = A_5$. The commutator subgroup is always normal, so by the simplicity of $A_5$ it is either $\\bot$ or $\\top$ (`Subgroup.Normal.eq_bot_or_eq_top` under the `IsSimpleGroup` instance). It cannot be $\\bot$: that would make $A_5$ abelian and hence solvable, contradicting the parent's `a5_not_solvable`. Therefore it is $\\top$ — $A_5$ equals its own commutator subgroup.\n\nPerfection then propagates through the entire derived series. `IsSimpleGroup.derivedSeries_succ` says that for a simple group *every* successor term $D^{n+1}$ equals the commutator subgroup, which is $\\top$; so `a5_derived_succ_eq_top` gives $D^{n+1}(A_5) = \\top$ for all $n$, and `a5_derived_never_bot` concludes that no term — including $D^0 = \\top$ — is ever $\\bot$. $A_5$ has no finite derived length.",
+    "mathContext": "A perfect group is one equal to its own commutator subgroup ($G = G'$); its derived series is the constant sequence $G, G, G, \\dots$, so it is solvable only if trivial. Non-abelian simple groups are automatically perfect, since $G'$ is a non-trivial (the group is non-abelian) normal subgroup, forced to be all of $G$. $A_5$, order $60$, is the smallest such group.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "perfect group",
+      "simple group",
+      "commutator subgroup",
+      "IsSimpleGroup.derivedSeries_succ",
+      "Subgroup.Normal.eq_bot_or_eq_top",
+      "non-solvable group"
+    ],
+    "prerequisites": [
+      "simple groups",
+      "normal subgroups and quotients",
+      "derived series",
+      "perfect groups"
+    ]
+  },
+  {
+    "id": "ann-the-gap",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-02-oq-06",
+    "range": { "startLine": 160, "endLine": 202 },
+    "type": "concept",
+    "title": "Part III — The Gap and the Phase-Transition Profile",
+    "content": "`derived_length_gap` states the contrast as one proposition: $A_4$'s derived series reaches $\\bot$ ($\\exists n,\\ D^n(A_4) = \\bot$, witnessed by $n = 2$) while $A_5$'s never does ($\\forall n,\\ D^n(A_5) \\neq \\bot$). `derived_length_sequence` records the full profile across the small alternating groups:\n$$\\underbrace{0, 0, 0}_{A_0, A_1, A_2}, \\underbrace{1}_{A_3}, \\underbrace{2}_{A_4}, \\underbrace{\\infty}_{A_5, A_6, \\dots}$$\nThe $A_3$ entry ($D^1(A_3) = \\bot$) is the abelian case: $A_3 \\cong \\mathbb{Z}/3$, so all elements commute (by `decide`), giving $\\lbrack A_3, A_3\\rbrack = \\bot$ via `commutatorElement_eq_one_iff_commute`. The discontinuity between the finite values $1, 2$ and the infinite tail is the exact location of the Abel–Ruffini threshold $n = 5$.",
+    "mathContext": "The derived-length sequence of $\\{A_n\\}$ is a refinement of the solvable/non-solvable dichotomy. The finite initial segment $0,0,0,1,2$ ends at $A_4$ (the largest solvable alternating group); from $A_5$ onward every $A_n$ contains a copy of $A_5$ and is perfect-by-restriction, so the derived length is infinite throughout. This is the group-theoretic shadow of 'the general quintic is not solvable by radicals'.",
+    "significance": "high",
+    "relatedConcepts": [
+      "derived length",
+      "phase transition at n = 5",
+      "abelian group A₃",
+      "Abel-Ruffini threshold",
+      "solvable vs perfect"
+    ],
+    "prerequisites": [
+      "derived series",
+      "solvable and perfect groups",
+      "alternating groups Aₙ"
+    ]
+  }
+]

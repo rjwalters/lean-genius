@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-oq-04-oq-02-oq-02-oq-06",
   "title": "Quantify the 'gap' between A_4 solvability and A_5 non-solvability via th...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,7 +18,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-05-29T19:14:09.143Z",
     "iteration": 1,
     "focus": "Initial exploration of the problem.",
@@ -31,11 +31,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETE: verified A₄-vs-A₅ derived-length gap (PR #29166), 0-axiom, 11 theorems",
+    "builtItems": [
+      "a4_derived2_eq_bot now := AbelRuffiniOQ04OQ02OQ02.a4_derivedSeries_two_eq_bot (Proofs/AbelRuffiniOQ04OQ02OQ02OQ06.lean:67)",
+      "a4_derived1_ne_bot via Subgroup.commutator_mem_commutator + commutatorElement_eq_one_iff_commute (line 50)",
+      "a5_perfect, a5_derived_never_bot, derived_length_gap, derived_length_sequence all verified 0-axiom (kernel decide only)",
+      "Gallery entry src/data/proofs/abel-ruffini-oq-04-oq-02-oq-02-oq-06/ (meta.json + annotations.json)"
+    ],
+    "insights": [
+      "Derived length of A₄ is exactly 2 (D²=⊥, D¹≠⊥); A₅ is perfect (commutator A₅=⊤) so its derived series is constant at ⊤ — the n=5 phase transition is a jump from length 2 to ∞",
+      "The leaf was broken on main: 1 sorry + 6 Mathlib v4.26 drift errors (commutator_mem_commutator→Subgroup.commutator_mem_commutator, Subgroup.bot_le→bot_le, redundant derivedSeries_one after IsSimpleGroup.derivedSeries_succ, omega on non-arithmetic goal)",
+      "The open sorry (D²(A₄)=⊥) was redundant — the parent AbelRuffiniOQ04OQ02OQ02 already proves a4_derivedSeries_two_eq_bot via the Klein-four-group V₄ identification; the leaf only needed to cite it"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Compute derived length of Sₙ (n≤4) and contrast via the sign quotient",
+      "Transport A₅ perfection along A₅↪Aₙ to show infinite derived length for all n≥5"
+    ]
   },
   "tags": [
     "seeker-selected",
