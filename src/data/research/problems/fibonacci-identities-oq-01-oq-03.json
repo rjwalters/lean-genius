@@ -1,0 +1,73 @@
+{
+  "slug": "fibonacci-identities-oq-01-oq-03",
+  "title": "Cassini's Identity via the Fibonacci Q-Matrix Determinant",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\det\\!\\left(\\begin{pmatrix}1&1\\\\1&0\\end{pmatrix}^{\\!n}\\right) = (-1)^n,\\quad\\text{equivalently}\\quad F_{n+1}F_{n-1} - F_n^2 = (-1)^n.",
+    "plain": "Cassini's identity says F_{n+1}·F_{n-1} − F_n² = (−1)ⁿ. The parent gallery entry derives it by a direct induction on n. This open question asks for the matrix-theoretic derivation: the Fibonacci Q-matrix Q = [[1,1],[1,0]] satisfies Qⁿ = [[F_{n+1}, F_n],[F_n, F_{n-1}]], so taking determinants of both sides and using det(Qⁿ) = (det Q)ⁿ = (−1)ⁿ recovers Cassini's identity in one line. The goal is to formalize the Q-matrix power formula and obtain Cassini as a corollary of multiplicativity of the determinant.",
+    "whyMatters": [
+      "Recasts an inductive number-theoretic identity as a structural consequence of det(AB)=det(A)det(B), illustrating how linear algebra streamlines recurrence identities.",
+      "The Q-matrix power formula Qⁿ = [[F_{n+1},F_n],[F_n,F_{n-1}]] is itself a reusable gallery lemma that yields the addition formula F_{m+n}=F_{m+1}F_n+F_mF_{n-1} (from Q^{m+n}=Q^m·Q^n) as a bonus.",
+      "Mathlib has Matrix.det, the multiplicativity Matrix.det_pow / Matrix.det_mul, and Nat.fib, so all ingredients exist; the work is the bridge lemma and the 2×2 determinant computation."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent fibonacci-identities-oq-01 (verified, 0-axiom): Cassini's identity F_{n+1}F_{n-1}−F_n²=(−1)ⁿ by induction.",
+      "Mathlib: Matrix.det_pow (det (M^n) = (det M)^n), Matrix.det_fin_two (closed form for 2×2 determinant), Nat.fib_add_two recurrence.",
+      "Classical: the Q-matrix identity Qⁿ = [[F_{n+1},F_n],[F_n,F_{n-1}]] (Knuth, TAOCP Vol. 1)."
+    ],
+    "open": [
+      "Q1: Prove the Q-matrix power formula Q^n = !![[F (n+1), F n],[F n, F (n-1)]] over ℤ (or as a Matrix (Fin 2) (Fin 2) ℤ), by induction using the recurrence.",
+      "Q2: Derive Cassini F_{n+1}F_{n-1} − F_n² = (−1)ⁿ as a corollary by taking determinants and using det_pow + det_fin_two.",
+      "Q3 (stretch): obtain the addition formula F_{m+n} = F_{m+1}F_n + F_m F_{n-1} from Q^{m+n} = Q^m·Q^n, and Catalan's identity as the generalization of Cassini."
+    ],
+    "goal": "Formalize the Fibonacci Q-matrix and its n-th power, then derive Cassini's identity as a one-line determinant corollary (det(Qⁿ)=(det Q)ⁿ=(−1)ⁿ), 0 sorries / 0 axioms."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 0,
+    "focus": "Seeker-seeded stub. Awaiting a Researcher to begin the OBSERVE phase: read problem.md, confirm Mathlib API names, and draft the first Lean skeleton.",
+    "blockers": [],
+    "nextAction": "Q1: Prove the Q-matrix power formula Q^n = !![[F (n+1), F n],[F n, F (n-1)]] over ℤ (or as a Matrix (Fin 2) (Fin 2) ℤ), by induction using the recurrence.",
+    "lastUpdate": "2026-06-24T00:00:00Z"
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "fibonacci",
+    "cassini",
+    "determinant",
+    "matrix",
+    "recurrence",
+    "identity"
+  ],
+  "relatedProofs": [
+    "fibonacci-identities",
+    "fibonacci-identities-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "D. E. Knuth, The Art of Computer Programming, Vol. 1 (1968) §1.2.8 — Fibonacci Q-matrix.",
+      "R. Honsberger, Mathematical Gems III (1985) — Cassini and the Q-matrix."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Fibonacci_sequence#Matrix_form",
+      "https://en.wikipedia.org/wiki/Cassini_and_Catalan_identities"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic — Matrix.det_pow, Matrix.det_mul",
+      "Mathlib.Data.Matrix.Notation — !![..] literals, Matrix.det_fin_two",
+      "Mathlib.Algebra.BigOperators / Mathlib.Data.Nat.Fib.Basic — Nat.fib recurrence"
+    ]
+  },
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": []
+}
