@@ -2,7 +2,7 @@
   "id": "lagrange-theorem-oq-01-oq-01-oq-02",
   "title": "pq-Groups: Abelian Isomorphism Uniqueness (every abelian group of order pq is ℤ/pq)",
   "slug": "lagrange-theorem-oq-01-oq-01-oq-02",
-  "description": "Upgrades the abelian portion of the parent pq-classification from a counting statement to genuine MulEquiv isomorphisms, using only Mathlib. For ANY distinct primes p ≠ q, every abelian group of order pq is cyclic (via Cauchy + the coprime-order product law), so any two abelian groups of order pq are isomorphic — each isomorphic to Multiplicative (ZMod pq). This identifies the abelian isomorphism class in BOTH branches of the classification (cyclic p ∤ q-1, and the non-cyclic p | q-1 branch where the other class is the non-abelian semidirect product). The general not-necessarily-abelian uniqueness is deferred (it depends on the parent Sylow classification, which currently does not compile on Mathlib v4.26.0).",
+  "description": "Upgrades the abelian portion of the parent pq-classification from a counting statement to genuine MulEquiv isomorphisms, using only Mathlib. For ANY distinct primes p ≠ q, every abelian group of order pq is cyclic (via Cauchy + the coprime-order product law), so any two abelian groups of order pq are isomorphic — each isomorphic to Multiplicative (ZMod pq). This identifies the abelian isomorphism class in BOTH branches of the classification (cyclic p ∤ q-1, and the non-cyclic p | q-1 branch where the other class is the non-abelian semidirect product). The general not-necessarily-abelian uniqueness is deferred (it depends on the parent Sylow classification, which currently does not compile on Mathlib v4.26.0). A new Part IV develops the structural engine for the NON-ABELIAN uniqueness (the p | q-1 branch), all Mathlib-only and 0-axiom: `semidirectProduct_reparam_iso` (actions differing by an automorphism of the acting group give isomorphic semidirect products, via `SemidirectProduct.congr`), `exists_mulEquiv_comp_of_range_eq` (two injective homs with equal image differ by a source automorphism), and `semidirectProduct_iso_of_range_eq` (injective actions with equal image give isomorphic products). It also proves the key enabling fact `mulAut_multiplicative_zmod_isCyclic`: MulAut(ℤ/q) is cyclic for q prime. This reduces non-abelian uniqueness to the two non-trivial actions ℤ/p → MulAut(ℤ/q) sharing the same image — automatic in a cyclic group once the 'unique subgroup of order p' step and the Sylow recognition are filled in.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-06-23",
@@ -18,14 +18,17 @@
       "cyclic-groups",
       "abelian-groups",
       "ZMod",
-      "finite-groups"
+      "finite-groups",
+      "semidirect-product",
+      "non-abelian-groups",
+      "group-actions"
     ],
     "badge": "verified",
     "sorries": 0,
     "dateAdded": "2026-06-23",
     "axiomCount": 0,
-    "lineCount": 163,
-    "theoremCount": 7,
+    "lineCount": 303,
+    "theoremCount": 13,
     "definitionCount": 0,
     "assumptions": "None. Imports only Mathlib. Uses standard Mathlib group-theory API (Cauchy's theorem `exists_prime_orderOf_dvd_card`, `Commute.orderOf_mul_eq_mul_orderOf_of_coprime`, `isCyclic_of_orderOf_eq_card`, `mulEquivOfCyclicCardEq`, `zmodCyclicMulEquiv`). No `axiom` declarations and no structure-encoded assumptions. Kernel-verified on Mathlib v4.26.0: every theorem depends on exactly the standard `[propext, Classical.choice, Quot.sound]` triple (no `sorryAx`, no `Lean.ofReduceBool`).",
     "originalContributions": [
@@ -33,7 +36,13 @@
       "pq_abelian_iso: consequently any two abelian groups of order pq are isomorphic (Nonempty (G ≃* H)) via mulEquivOfCyclicCardEq.",
       "pq_abelian_iso_zmod: every abelian group of order pq is isomorphic to the canonical model Multiplicative (ZMod pq) via zmodCyclicMulEquiv.",
       "Concrete corollaries order_6_abelian_unique, order_15_abelian_unique, order_35_abelian_unique (each abelian group of those orders ≅ ℤ/n), and order_15_abelian_pair (any two abelian groups of order 15 are isomorphic). order_6 illustrates that the abelian class is pinned even though 6 = 2·3 lies in the non-cyclic branch where S₃ is the other class.",
-      "Self-contained: imports only Mathlib, deliberately avoiding the parent Sylow classification dependency `Proofs.SylowTheoremOQ01` which does not compile on Mathlib v4.26.0."
+      "Self-contained: imports only Mathlib, deliberately avoiding the parent Sylow classification dependency `Proofs.SylowTheoremOQ01` which does not compile on Mathlib v4.26.0.",
+      "semidirectProduct_reparam_iso: GENERAL reparametrization engine — for any groups N, G and actions φ, ψ : G →* MulAut N, if φ g = ψ (α g) for an automorphism α : G ≃* G, then N ⋊[φ] G ≃* N ⋊[ψ] G. Specializes Mathlib's SemidirectProduct.congr to the identity on N.",
+      "exists_mulEquiv_comp_of_range_eq: GENERAL group theory — two injective homomorphisms φ, ψ : G →* H with the same image (φ.range = ψ.range) differ by a source automorphism α : G ≃* G with φ g = ψ (α g). Built from the corestrictions MonoidHom.ofInjective and MulEquiv.subgroupCongr across the common range.",
+      "semidirectProduct_iso_of_range_eq: combines the two — injective actions φ, ψ : G →* MulAut N with equal image give N ⋊[φ] G ≃* N ⋊[ψ] G. This is the structural heart of non-abelian uniqueness among semidirect products.",
+      "mulAut_multiplicative_zmod_isCyclic: for q prime, MulAut(Multiplicative (ZMod q)) is cyclic (of order q-1), via IsCyclic.mulAutMulEquiv : MulAut G ≃* (ZMod (Nat.card G))ˣ and ZMod.isCyclic_units_prime. This is the fact forcing the two order-p action images to coincide.",
+      "injective_of_ne_one_zmod: a non-trivial homomorphism out of Multiplicative (ZMod p) (p prime) is injective — its kernel, a subgroup of a prime-order group, is ⊥ or ⊤, and ⊤ would make the map trivial.",
+      "pq_nonabelian_iso_of_range_eq: non-abelian uniqueness in conditional form — for primes p, q, any two non-trivial actions φ, ψ : ℤ/p → MulAut(ℤ/q) with equal image give isomorphic non-abelian groups ℤ/q ⋊[φ] ℤ/p ≃* ℤ/q ⋊[ψ] ℤ/p. The image-equality hypothesis is automatic because MulAut(ℤ/q) is cyclic (a finite cyclic group has a unique subgroup of order p)."
     ]
   },
   "overview": {
@@ -82,14 +91,21 @@
       "startLine": 131,
       "endLine": 163,
       "summary": "order_6_abelian_unique, order_15_abelian_unique, order_35_abelian_unique: every abelian group of those orders is ℤ/n. order_15_abelian_pair: any two abelian groups of order 15 are isomorphic. order_6 illustrates the abelian class being pinned even though 6 = 2·3 lies in the non-cyclic branch (2 | 2) where S₃ is the other class."
+    },
+    {
+      "id": "part-iv-nonabelian-engine",
+      "title": "Part IV — Non-Abelian Uniqueness: Semidirect-Product Reparametrization Engine",
+      "startLine": 165,
+      "endLine": 303,
+      "summary": "The structural engine for the non-abelian branch (p | q-1), fully general and 0-axiom. semidirectProduct_reparam_iso: actions related by an automorphism of the acting group give isomorphic semidirect products (specialization of SemidirectProduct.congr). exists_mulEquiv_comp_of_range_eq: two injective homs with the same image differ by a source automorphism. semidirectProduct_iso_of_range_eq combines them. mulAut_multiplicative_zmod_isCyclic shows MulAut(ℤ/q) is cyclic for q prime, so the two non-trivial order-p action images coincide. injective_of_ne_one_zmod and pq_nonabelian_iso_of_range_eq specialize to the order-pq setting, reducing non-abelian uniqueness to a single cyclic-group fact (unique subgroup of order p) plus the deferred Sylow recognition."
     }
   ],
   "conclusion": {
-    "summary": "This file proves 7 theorems with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only). It identifies, up to MulEquiv, the abelian isomorphism class of order pq for every pair of distinct primes: every abelian group of order pq is cyclic, any two are isomorphic, and each is isomorphic to Multiplicative (ZMod pq).",
-    "implications": "Together with the parent (counting) and sibling oq-01-oq-01-oq-01 (explicit non-cyclic witnesses), the abelian side of the order-pq classification now has genuine isomorphisms, not just a class count. The outstanding pieces of full isomorphism uniqueness are the general cyclic case (for p ∤ q-1, any two groups of order pq are isomorphic) and the non-abelian case (any two non-cyclic groups of order pq are isomorphic) — both requiring the parent Sylow classification and, for the non-abelian case, an internal semidirect-product recognition ℤ/q ⋊ ℤ/p.",
+    "summary": "This file proves 13 theorems with 0 sorries and 0 axioms (kernel-verified: standard [propext, Classical.choice, Quot.sound] triple only). Parts I-III identify, up to MulEquiv, the abelian isomorphism class of order pq for every pair of distinct primes (every abelian group of order pq is cyclic, any two are isomorphic, each ≅ Multiplicative (ZMod pq)). Part IV adds the general engine for the NON-ABELIAN branch: semidirect products whose actions differ by an automorphism of the acting group are isomorphic (semidirectProduct_reparam_iso), injective actions with equal image are reparametrization-equivalent (exists_mulEquiv_comp_of_range_eq, semidirectProduct_iso_of_range_eq), and MulAut(ℤ/q) is cyclic (mulAut_multiplicative_zmod_isCyclic). pq_nonabelian_iso_of_range_eq packages this as: any two non-trivial actions ℤ/p → MulAut(ℤ/q) with equal image give isomorphic non-abelian groups of order pq.",
+    "implications": "The abelian side of the order-pq classification has genuine isomorphisms, not just a class count, and the non-abelian uniqueness is now reduced to its irreducible core: (1) the two non-trivial actions sharing the same image — which follows from MulAut(ℤ/q) being cyclic (proved here) plus the standard fact that a finite cyclic group has a unique subgroup of each order; and (2) the Sylow-theoretic recognition that every non-abelian group of order pq is such an internal semidirect product (deferred, blocked on the parent Proofs.SylowTheoremOQ01 which does not compile on Mathlib v4.26.0). The reparametrization engine (semidirectProduct_reparam_iso, semidirectProduct_iso_of_range_eq) is general group theory, reusable for any semidirect-product uniqueness argument.",
     "openQuestions": [
       "General cyclic-case uniqueness: for distinct primes p < q with p ∤ (q-1), prove any two groups of order pq are isomorphic. This needs the parent's `pq_unique_when_coprime` (every order-pq group is cyclic when p ∤ q-1), which depends on `Proofs.SylowTheoremOQ01`; that file does not compile on Mathlib v4.26.0 and is an independent repair task.",
-      "Non-abelian uniqueness: prove any two non-cyclic groups of order pq (with p | q-1) are isomorphic, by recognizing each as the internal semidirect product ℤ/q ⋊ ℤ/p and showing all non-trivial actions ℤ/p → Aut(ℤ/q) yield isomorphic products.",
+      "Non-abelian uniqueness — FINISH the reduction set up in Part IV. The engine (semidirectProduct_iso_of_range_eq) reduces it to: any two non-trivial actions φ, ψ : ℤ/p → MulAut(ℤ/q) have the same image. Since MulAut(ℤ/q) is cyclic (mulAut_multiplicative_zmod_isCyclic, proved here), this is exactly 'a finite cyclic group has a unique subgroup of order p' — the one remaining group-theory lemma. The other half is the Sylow recognition that every non-cyclic group of order pq IS such an internal semidirect product.",
       "REPAIR FLAG: the parent chain `Proofs.SylowTheoremOQ01` → `Proofs.LagrangeTheoremOQ01OQ01` uses Mathlib names absent in v4.26.0 (e.g. `Nat.Prime.eq_of_dvd_of_prime`, `orderOf_eq_one_iff_eq_one`); a Mechanic pass is needed before the cyclic-case upgrade can be built on top of it."
     ]
   },
@@ -107,9 +123,9 @@
   ],
   "leanFile": {
     "namespace": "LagrangeOQ01OQ01OQ02",
-    "lineCount": 163,
+    "lineCount": 303,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 13,
     "definitionCount": 0,
     "path": "Proofs/LagrangeTheoremOQ01OQ01OQ02.lean",
     "sorries": 0,

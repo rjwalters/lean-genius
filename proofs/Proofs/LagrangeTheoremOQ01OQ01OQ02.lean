@@ -160,4 +160,144 @@ theorem order_15_abelian_pair
   pq_abelian_iso (p := 3) (q := 5) (by norm_num) (by norm_num) (by norm_num)
     (by rw [hG]) (by rw [hH])
 
+/-!
+## Part IV: Non-abelian uniqueness — the semidirect-product reparametrization engine
+
+The non-abelian branch (`p ∣ q - 1`) of the classification has *two* isomorphism
+classes of order `pq`: the cyclic group `ℤ/pq` (Parts I–III) and a non-abelian
+semidirect product `ℤ/q ⋊_φ ℤ/p`. The **existence** of the non-abelian class is
+constructed in the sibling file `LagrangeTheoremOQ01OQ01OQ01ApproachB`
+(`approachBGroup`). The remaining content of this open question is the
+**uniqueness** of that non-abelian class: any two nontrivial actions
+`φ, ψ : ℤ/p →* MulAut (ℤ/q)` yield *isomorphic* semidirect products.
+
+This part develops the structural engine for that uniqueness, in full generality
+and with `0` sorries:
+
+* `semidirectProduct_reparam_iso` — the reparametrization isomorphism: if two
+  actions `φ, ψ : G →* MulAut N` differ by an automorphism `α` of the acting
+  group (`φ = ψ ∘ α`), then `N ⋊[φ] G ≃* N ⋊[ψ] G`. This is the specialization
+  of Mathlib's `SemidirectProduct.congr` to `fn = id_N`, `fg = α`.
+
+* `exists_mulEquiv_comp_of_range_eq` — pure group theory: two *injective*
+  homomorphisms `φ, ψ : G →* H` with the **same image** differ by a source
+  automorphism `α : G ≃* G` (namely `α = ψ⁻¹ ∘ φ` on the common image). This is
+  the algebraic heart of the uniqueness.
+
+* `semidirectProduct_iso_of_range_eq` — combining the two: injective actions with
+  equal image give isomorphic semidirect products.
+
+Specializing to `N = ℤ/q`, `G = ℤ/p`, the uniqueness of the non-abelian class
+reduces to the two nontrivial actions having the *same image* inside
+`MulAut (ℤ/q)`. We prove the key enabling fact
+`mulAut_multiplicative_zmod_isCyclic`: for `q` prime, `MulAut (ℤ/q)` is **cyclic**
+(of order `q - 1`). In a finite cyclic group there is a *unique* subgroup of each
+order, so the two order-`p` images automatically coincide — the final
+`unique subgroup of order p in a cyclic group` step and the Sylow-theoretic
+*recognition* that every non-abelian group of order `pq` actually *is* such a
+semidirect product are the remaining open directions (the latter blocked on the
+parent `Proofs.SylowTheoremOQ01`, which does not compile on Mathlib v4.26.0).
+-/
+
+/-- **Reparametrization engine.** If two actions `φ, ψ : G →* MulAut N` of a group
+`G` on `N` differ by an automorphism `α` of `G` (i.e. `φ g = ψ (α g)` for all `g`),
+then the semidirect products are isomorphic: `N ⋊[φ] G ≃* N ⋊[ψ] G`. Specialization
+of `SemidirectProduct.congr` with the identity on `N` and `α` on `G`. -/
+theorem semidirectProduct_reparam_iso {N G : Type*} [Group N] [Group G]
+    {φ ψ : G →* MulAut N} (α : G ≃* G) (h : ∀ g, φ g = ψ (α g)) :
+    Nonempty (N ⋊[φ] G ≃* N ⋊[ψ] G) :=
+  ⟨SemidirectProduct.congr (MulEquiv.refl N) α fun g => MulEquiv.ext fun y => by
+    simp only [MulEquiv.trans_apply, MulEquiv.refl_apply, h]⟩
+
+/-- **Equal image ⇒ source automorphism.** Two injective homomorphisms
+`φ, ψ : G →* H` with the same image differ by an automorphism of the source:
+there is `α : G ≃* G` with `φ g = ψ (α g)` for all `g`. (Concretely `α` is
+`ψ`-corestriction inverted and composed with `φ`-corestriction across the common
+range.) -/
+theorem exists_mulEquiv_comp_of_range_eq {G H : Type*} [Group G] [Group H]
+    {φ ψ : G →* H} (hφ : Function.Injective φ) (hψ : Function.Injective ψ)
+    (hr : φ.range = ψ.range) :
+    ∃ α : G ≃* G, ∀ g, φ g = ψ (α g) := by
+  refine ⟨(MonoidHom.ofInjective hφ).trans
+            ((MulEquiv.subgroupCongr hr).trans (MonoidHom.ofInjective hψ).symm), fun x => ?_⟩
+  simp only [MulEquiv.trans_apply, MonoidHom.apply_ofInjective_symm,
+    MulEquiv.subgroupCongr_apply, MonoidHom.ofInjective_apply]
+
+/-- **Semidirect uniqueness from equal image.** If two actions
+`φ, ψ : G →* MulAut N` are injective and have the same image, the semidirect
+products `N ⋊[φ] G` and `N ⋊[ψ] G` are isomorphic. -/
+theorem semidirectProduct_iso_of_range_eq {N G : Type*} [Group N] [Group G]
+    {φ ψ : G →* MulAut N} (hφ : Function.Injective φ) (hψ : Function.Injective ψ)
+    (hr : φ.range = ψ.range) :
+    Nonempty (N ⋊[φ] G ≃* N ⋊[ψ] G) := by
+  obtain ⟨α, hα⟩ := exists_mulEquiv_comp_of_range_eq hφ hψ hr
+  exact semidirectProduct_reparam_iso α hα
+
+/-!
+### Part IV·b: the acting target `MulAut (ℤ/q)` is cyclic
+
+For `q` prime, `MulAut (Multiplicative (ZMod q)) ≃* (ZMod q)ˣ` (automorphisms of a
+cyclic group are units of `ZMod` of its order), and `(ZMod q)ˣ` is cyclic
+(`isCyclic_units_prime`). Hence `MulAut (ℤ/q)` is cyclic of order `q - 1`. This is
+the fact that forces the two order-`p` action images to coincide.
+-/
+
+/-- **`MulAut (ℤ/q)` is cyclic** for `q` prime. Via
+`IsCyclic.mulAutMulEquiv : MulAut G ≃* (ZMod (Nat.card G))ˣ` with
+`G = Multiplicative (ZMod q)` (so `Nat.card G = q`) and `isCyclic_units_prime`. -/
+theorem mulAut_multiplicative_zmod_isCyclic {q : ℕ} (hq : q.Prime) :
+    IsCyclic (MulAut (Multiplicative (ZMod q))) := by
+  haveI : Fact q.Prime := ⟨hq⟩
+  haveI : NeZero q := ⟨hq.pos.ne'⟩
+  haveI : IsCyclic (ZMod q)ˣ := ZMod.isCyclic_units_prime hq
+  have hcard : Nat.card (Multiplicative (ZMod q)) = q := by
+    rw [Nat.card_congr (Multiplicative.toAdd : Multiplicative (ZMod q) ≃ ZMod q),
+      Nat.card_eq_fintype_card, ZMod.card]
+  have e0 : MulAut (Multiplicative (ZMod q)) ≃*
+      (ZMod (Nat.card (Multiplicative (ZMod q))))ˣ :=
+    IsCyclic.mulAutMulEquiv (G := Multiplicative (ZMod q))
+  rw [hcard] at e0
+  exact (MulEquiv.isCyclic e0).mpr inferInstance
+
+/-!
+### Part IV·c: nontrivial actions are injective
+
+The acting group `ℤ/p` has prime order, so any nonzero homomorphism out of it is
+injective (its kernel, a subgroup of a group of prime order, is either trivial or
+everything, and "everything" means the trivial homomorphism).
+-/
+
+/-- A nontrivial homomorphism out of `Multiplicative (ZMod p)` (`p` prime) is
+injective: the kernel is `⊥` or `⊤`, and `⊤` would make the map trivial. -/
+theorem injective_of_ne_one_zmod {p : ℕ} (hp : p.Prime) {H : Type*} [Group H]
+    {φ : Multiplicative (ZMod p) →* H} (hφ : φ ≠ 1) : Function.Injective φ := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : NeZero p := ⟨hp.pos.ne'⟩
+  have hcard : Nat.card (Multiplicative (ZMod p)) = p := by
+    rw [Nat.card_congr (Multiplicative.toAdd : Multiplicative (ZMod p) ≃ ZMod p),
+      Nat.card_eq_fintype_card, ZMod.card]
+  haveI : Fact (Nat.card (Multiplicative (ZMod p))).Prime := ⟨by rw [hcard]; exact hp⟩
+  rw [← MonoidHom.ker_eq_bot_iff]
+  rcases φ.ker.eq_bot_or_eq_top_of_prime_card with h | h
+  · exact h
+  · exact absurd (MonoidHom.ext fun x => by
+      have hx : x ∈ φ.ker := h ▸ Subgroup.mem_top x
+      simpa [MonoidHom.mem_ker] using hx) hφ
+
+/-- **Non-abelian uniqueness, conditional form.** For distinct primes `p, q` with
+`p ∣ q - 1`, any two *nontrivial* actions `φ, ψ : ℤ/p →* MulAut (ℤ/q)` whose images
+coincide give isomorphic non-abelian groups of order `pq`:
+`ℤ/q ⋊[φ] ℤ/p ≃* ℤ/q ⋊[ψ] ℤ/p`. The image-coincidence hypothesis is automatic
+because `MulAut (ℤ/q)` is cyclic (`mulAut_multiplicative_zmod_isCyclic`) and a
+finite cyclic group has a unique subgroup of order `p`; discharging that final
+step is the remaining open direction. -/
+theorem pq_nonabelian_iso_of_range_eq {p q : ℕ} (hp : p.Prime)
+    {φ ψ : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))}
+    (hφ : φ ≠ 1) (hψ : ψ ≠ 1) (hr : φ.range = ψ.range) :
+    Nonempty
+      ((Multiplicative (ZMod q) ⋊[φ] Multiplicative (ZMod p)) ≃*
+       (Multiplicative (ZMod q) ⋊[ψ] Multiplicative (ZMod p))) :=
+  semidirectProduct_iso_of_range_eq
+    (injective_of_ne_one_zmod hp hφ) (injective_of_ne_one_zmod hp hψ) hr
+
 end LagrangeOQ01OQ01OQ02
