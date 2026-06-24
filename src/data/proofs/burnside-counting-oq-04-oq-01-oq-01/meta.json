@@ -1,0 +1,166 @@
+{
+  "id": "burnside-counting-oq-04-oq-01-oq-01",
+  "title": "Unconditional Binary Bracelet Counts b(5) = 8, b(6) = 13 via a Generic Dihedral Action",
+  "slug": "burnside-counting-oq-04-oq-01-oq-01",
+  "description": "Answers the first open question of burnside-counting-oq-04-oq-01: generalise its concrete length-4 dihedral action and kernel-decided fixed-point sum to D_n, recovering the binary bracelet counts b(5) = 8 and b(6) = 13 unconditionally (OEIS A000029). Where the parent hard-codes n = 4, this entry builds the faithful permutation representation ρ : DihedralGroup n →* Equiv.Perm (ZMod n), r i ↦ (x ↦ x + i) and sr i ↦ (x ↦ -i - x), GENERICALLY in n — the reflection form -i-x (not i-x) is what makes ρ a homomorphism for Mathlib's dihedral convention sr i * sr j = r (j - i) — and lifts it to colourings Coloring n = ZMod n → Fin 2 by (g • c) p = c ((ρ g)⁻¹ p), a genuine MulAction for every n because ρ is a hom. A single generic lemma bracelet_count_mul packages Burnside's lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) with DihedralGroup.card to give bracelets · 2n = Σ_{g ∈ D_n} |Fix(g)|. Specialising, the fixed-point sums are 80 for n = 5 (= 8 · 10) and 156 for n = 6 (= 13 · 12), each discharged by KERNEL decide (10 symmetries × 32 colourings; 12 × 64), so the orbit counts are 8 and 13. The n = 5 case (odd) exercises the single reflection type, n = 6 (even) both vertex- and edge-axis reflections. #print axioms on both headlines confirms only propext / Classical.choice / Quot.sound — no Lean.ofReduceBool (no native_decide) and no sorryAx.",
+  "meta": {
+    "author": "Burnside / Pólya theory; formalized for lean-genius (researcher-7)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BurnsideCountingOQ04OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "group-action",
+      "burnside",
+      "dihedral-group",
+      "bracelets",
+      "necklaces",
+      "orbit-counting",
+      "kernel-decide",
+      "native-decide-free",
+      "oeis-a000029"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside's lemma: Σ_{g∈G} |Fix(g)| = |X/G|·|G|. Instantiated at the generic dihedral action to convert each kernel-decided fixed-point sum into the bracelet (orbit) count.",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "DihedralGroup.r_mul_r / r_mul_sr / sr_mul_r / sr_mul_sr",
+        "description": "The dihedral multiplication table, against which posPerm_mul (homomorphism property of ρ) is verified case by case, for general n.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Dihedral"
+      },
+      {
+        "theorem": "DihedralGroup.card",
+        "description": "|DihedralGroup n| = 2n (needs NeZero n), used as |D₅| = 10 and |D₆| = 12 in the Burnside divisions 80 = b(5)·10 and 156 = b(6)·12.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Dihedral"
+      },
+      {
+        "theorem": "Equiv.addRight / Equiv.subLeft",
+        "description": "The concrete permutations of ZMod n realising rotations (x ↦ x + i) and reflections (x ↦ -i - x); their kernel-reducible application is what lets decide evaluate the fixed-point counts at n = 5 and n = 6.",
+        "module": "Mathlib.Algebra.Group.Equiv.Basic"
+      },
+      {
+        "theorem": "Quotient.fintype",
+        "description": "Builds the Fintype on the orbit quotient from the finite colouring carrier and the decidable orbit relation, so the bracelet count Fintype.card is well-defined.",
+        "module": "Mathlib.Data.Fintype.Quotient"
+      }
+    ],
+    "originalContributions": [
+      "posPerm / ρ generalised to all n: a concrete faithful representation DihedralGroup n →* Equiv.Perm (ZMod n), r i ↦ (x ↦ x+i), sr i ↦ (x ↦ -i-x), with the homomorphism property posPerm_mul proved case-by-case against the dihedral multiplication table — the parent oq-04-oq-01 built only the single n = 4 instance",
+      "the induced generic MulAction (DihedralGroup n) (ZMod n → Fin 2) lifting the position permutation to colourings by (g • c) p = c ((ρ g)⁻¹ p), with one_smul / mul_smul discharged from ρ being a hom, for every n",
+      "bracelet_count_mul: a single generic Burnside reduction bracelets · 2n = Σ_{g ∈ D_n} |Fix(g)|, so each individual count is one decide plus one omega",
+      "fixed_sum_five / bracelet_five: Σ_{g ∈ D₅} |Fix(g)| = 80 by KERNEL decide (10 × 32) ⇒ Fintype.card (orbitRel.Quotient (DihedralGroup 5) (ZMod 5 → Fin 2)) = 8 = A000029(5), 0 axioms beyond propext / Classical.choice / Quot.sound",
+      "fixed_sum_six / bracelet_six: Σ_{g ∈ D₆} |Fix(g)| = 156 by KERNEL decide (12 × 64) ⇒ Fintype.card (orbitRel.Quotient (DihedralGroup 6) (ZMod 6 → Fin 2)) = 13 = A000029(6), exercising both vertex-axis and edge-axis reflection types, 0 axioms beyond the foundational three"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, and no native_decide: each fixed-point sum (80 for n=5, 156 for n=6) is discharged by kernel decide, so both headline theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound (confirmed via #print axioms — in particular no Lean.ofReduceBool and no sorryAx).",
+    "lineCount": 191,
+    "theoremCount": 8,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Burnside's lemma counts orbits of a finite group action as the average number of fixed points. For the cyclic rotation group ℤ/nℤ on the beads of an n-cycle it yields the necklace numbers; for the dihedral group D_n, which adjoins the n reflections, it yields the bracelet numbers (OEIS A000029: 1, 2, 3, 4, 6, 8, 13, 18, 30, … for n = 0, 1, 2, …). The parent burnside-counting-oq-04-oq-01 built a concrete dihedral action only for n = 4 and recovered b(4) = 6 by an axiom-free kernel computation; its open question asks for the next instances n = 5 and n = 6 — the first lengths where odd and even reflection behaviour genuinely differ. Making the construction generic in n and reading off b(5) = 8 and b(6) = 13 by kernel decide is the natural completion.",
+    "problemStatement": "Generalise the concrete dihedral action and kernel-decided fixed-point sum of burnside-counting-oq-04-oq-01 from n = 4 to general n, and recover the binary bracelet counts b(5) = 8 and b(6) = 13 unconditionally — without native_decide (kernel decide only).",
+    "text": "With ρ : DihedralGroup n →* Equiv.Perm (ZMod n) the faithful representation r i ↦ (·+i), sr i ↦ (-i-·), and the colouring action (g • c) p = c ((ρ g)⁻¹ p), Burnside gives bracelets · 2n = Σ_{g ∈ D_n} |Fix(g)|. Kernel decide evaluates the sum to 80 at n = 5 (so b(5) = 8) and to 156 at n = 6 (so b(6) = 13).",
+    "proofStrategy": "Build the permutation representation ρ once, generically in n: rotations r i act on positions by x ↦ x + i and reflections sr i by x ↦ -i - x; the form -i-x is dictated by Mathlib's convention sr i * sr j = r (j - i), and posPerm_mul checks the homomorphism property in all four (r/sr)×(r/sr) cases by ext + ZMod arithmetic. Lift to colourings via (g • c) p = c ((ρ g)⁻¹ p); one_smul and mul_smul follow from ρ.map_one and ρ.map_mul. Register DecidablePred / Fintype instances for the fixed-point sets (needing NeZero n for DecidableEq of the function colourings) and a decidable orbit relation for the quotient Fintype. A single generic lemma bracelet_count_mul applies Burnside and rewrites |D_n| = 2n via DihedralGroup.card to give bracelets · 2n = Σ |Fix(g)|. Then for n = 5 and n = 6 the fixed-point sum is the only computation: kernel decide returns 80 (10 symmetries × 32 colourings) and 156 (12 × 64), and omega divides out to b(5) = 8 and b(6) = 13. The orbit quotient itself is never enumerated by decide — only the cheap fixed-point sum is — which keeps the computation within kernel reach.",
+    "keyInsights": [
+      "The whole construction is uniform in n: posPerm, the homomorphism ρ, and the MulAction are stated once for DihedralGroup n acting on ZMod n → Fin 2, so each new bracelet count costs only one kernel decide of the fixed-point sum plus one omega division — the parent's per-n hand-build is unnecessary",
+      "Burnside avoids enumerating the orbit quotient (the expensive step the grandparent closed with native_decide): only the fixed-point sum needs evaluation, and that stays light enough for kernel decide even at n = 6 (12 × 64 colourings over Fin-based data)",
+      "n = 5 (odd) and n = 6 (even) are the smallest cases separating the two reflection regimes — odd n has n axes each through one vertex (fixing 2^((n+1)/2)), even n has n/2 vertex-axes (fixing 2^(n/2+1)) and n/2 edge-axes (fixing 2^(n/2)) — and both fall out of the same generic sum",
+      "DecidableEq of the colourings ZMod n → Fin 2 requires Fintype (ZMod n), hence the NeZero n hypothesis on the decidability instances; representing positions as ZMod n and colours as Fin 2 keeps every object Fin-based so kernel reduction stays cheap"
+    ],
+    "prerequisites": [
+      "Group actions, orbits, and the orbit-counting (Burnside/Cauchy–Frobenius) lemma",
+      "The dihedral group DihedralGroup n and its multiplication table",
+      "Decidable equality and Fintype enumeration for kernel decide"
+    ]
+  },
+  "sections": [
+    {
+      "id": "representation",
+      "title": "The Generic Faithful Dihedral Representation ρ",
+      "startLine": 57,
+      "endLine": 97,
+      "summary": "posPerm sends r i ↦ (x ↦ x+i) and sr i ↦ (x ↦ -i-x) on ZMod n; posPerm_mul verifies the homomorphism property against the dihedral multiplication table for all n, packaged as ρ : DihedralGroup n →* Equiv.Perm (ZMod n).",
+      "mathContext": "$\\rho(r_i)(x) = x + i,\\quad \\rho(s r_i)(x) = -i - x \\quad (\\text{in } \\mathbb{Z}/n).$"
+    },
+    {
+      "id": "action",
+      "title": "The Induced Generic Action on Colourings",
+      "startLine": 99,
+      "endLine": 134,
+      "summary": "(g • c) p = c ((ρ g)⁻¹ p) is a genuine MulAction of D_n on Coloring n = ZMod n → Fin 2 because ρ is a homomorphism; DecidablePred / Fintype instances (needing NeZero n) and a decidable orbit relation follow.",
+      "mathContext": "$(g \\cdot c)(p) = c\\big((\\rho g)^{-1} p\\big).$"
+    },
+    {
+      "id": "count",
+      "title": "Burnside Reduction and the Counts b(5), b(6)",
+      "startLine": 136,
+      "endLine": 188,
+      "summary": "bracelet_count_mul gives bracelets · 2n = Σ_{g ∈ D_n} |Fix(g)| from Burnside and DihedralGroup.card; kernel decide evaluates the sum to 80 at n = 5 and 156 at n = 6, so b(5) = 80/10 = 8 and b(6) = 156/12 = 13.",
+      "mathContext": "$\\sum_{g \\in D_n} |\\mathrm{Fix}(g)| = b(n)\\cdot 2n;\\ 80 = 8\\cdot 10,\\ 156 = 13\\cdot 12.$"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Burnside, W.",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "note": "The orbit-counting (Cauchy–Frobenius) lemma underlying necklace and bracelet enumeration"
+    },
+    {
+      "authors": "Pólya, G.",
+      "title": "Kombinatorische Anzahlbestimmungen für Gruppen, Graphen und chemische Verbindungen",
+      "year": "1937",
+      "note": "Enumeration under group actions; dihedral bracelet counts (OEIS A000029)"
+    },
+    {
+      "authors": "OEIS Foundation",
+      "title": "A000029: Number of necklaces (bracelets) with n beads of 2 colors, allowing turning over",
+      "year": "2024",
+      "note": "b(5) = 8, b(6) = 13 are the n = 5, 6 terms"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "burnside-counting-oq-04-oq-01",
+      "relationship": "answers",
+      "description": "Answers the first open question of oq-04-oq-01: generalises its single length-4 concrete dihedral action and kernel-decided fixed-point sum to D_n and recovers b(5) = 8 and b(6) = 13 unconditionally."
+    },
+    {
+      "targetId": "burnside-counting-oq-04",
+      "relationship": "extends",
+      "description": "Extends the index-2 folding bracelet count of oq-04 to concrete unconditional values at n = 5 and n = 6 via the generic dihedral action, with no assumed necklace or reflection totals."
+    }
+  ],
+  "conclusion": {
+    "summary": "Making the concrete dihedral action ρ : DihedralGroup n →* Equiv.Perm (ZMod n) generic in n turns the parent's single length-4 bracelet count into a uniform machine: Burnside plus one kernel-decided fixed-point sum gives b(5) = 80/10 = 8 and b(6) = 156/12 = 13 unconditionally, with no native_decide and 0 axioms beyond propext / Classical.choice / Quot.sound.",
+    "implications": "Each binary bracelet number b(n) is now one kernel decide away, as long as the fixed-point sum stays within kernel reach; the generic action also makes the framework reusable for k-colour bracelets (Fin k) and for combining with the rotation/reflection fixed-point formulas toward a closed form.",
+    "openQuestions": [
+      "Push the kernel-decided fixed-point sum to larger n (n = 7, 8, …) and chart precisely where kernel decide stops being feasible and native_decide (or a symbolic per-element fixed-point formula) becomes necessary.",
+      "Replace the per-n kernel decide by a proof that Σ_{g ∈ D_n} |Fix(g)| = Σ_{r} 2^{gcd(n,r)} + (reflection contribution), giving a closed form for b(n) = A000029(n) with no computation at all."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "MulAction"
+    ],
+    "namespace": "BurnsideBracelets",
+    "lineCount": 191,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "path": "Proofs/BurnsideCountingOQ04OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
