@@ -1,0 +1,195 @@
+{
+  "id": "shannon-source-coding-oq-06",
+  "title": "Universal Source Coding: the Incompressibility Counting Bound",
+  "slug": "shannon-source-coding-oq-06",
+  "description": "Universal source coding (Lempel-Ziv / Kolmogorov complexity) asks for compression to the entropy rate without knowing the source distribution. The full Lempel-Ziv analysis is out of reach, but its converse — why no universal scheme can beat the entropy rate — rests on a distribution-free counting (pigeonhole) bound. For any lossless binary code (an injective map f : α → List Bool), the number of messages with codeword shorter than L bits is at most 2^L − 1 < 2^L. Hence if there are at least 2^L messages, some message needs ≥ L bits: no lossless code compresses everything, and at most a 2^{-c} fraction can be compressed by c bits. Fully verified, 0 axioms.",
+  "meta": {
+    "author": "Shannon (1948); Kolmogorov / Lempel-Ziv incompressibility; formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Kolmogorov_complexity#Incompressibility",
+    "date": "1948",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonSourceCodingOQ06.lean",
+    "tags": [
+      "information-theory",
+      "compression",
+      "lempel-ziv",
+      "kolmogorov-complexity",
+      "combinatorics",
+      "source-coding",
+      "research",
+      "open-problem"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_le_of_injective",
+        "description": "An injection bounds cardinality — the pigeonhole engine mapping short codewords into bounded-length binary strings",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "card_vector",
+        "description": "Fintype.card (List.Vector α n) = (Fintype.card α)^n — counts binary strings of a fixed length as 2^n",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      },
+      {
+        "theorem": "Fintype.card_sigma",
+        "description": "card (Σ i, β i) = ∑ i, card (β i) — sums the per-length string counts",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      },
+      {
+        "theorem": "Fin.sum_univ_eq_sum_range",
+        "description": "Converts a Fin-indexed sum to a Finset.range sum for the geometric series",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      },
+      {
+        "theorem": "List.Vector.toList_injective",
+        "description": "Reading off the underlying list is injective — recovers the codeword from its vector encoding",
+        "module": "Mathlib.Data.Vector.Basic"
+      },
+      {
+        "theorem": "Equiv.subtypeUnivEquiv",
+        "description": "{x // p x} ≃ α when p holds everywhere — used in the no-compression corollary",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsLossless: a lossless binary code as an injective map α → List Bool, the distribution-free unique-decodability condition (definition)",
+      "sum_two_pow_range: ∑_{k<L} 2^k = 2^L − 1, the count of binary strings of length < L (proved by induction)",
+      "compressible_count_le: for any lossless code, #{messages with codeword length < L} ≤ 2^L − 1 — the incompressibility counting bound, proved by injecting short messages into Σ k : Fin L, List.Vector Bool k (proved)",
+      "compressible_count_lt: the strict form < 2^L (proved)",
+      "exists_long_codeword: ≥ 2^L messages ⟹ some message needs a codeword of length ≥ L — no lossless code compresses everything; worst-case length ≥ log₂(#messages) (proved)",
+      "compressible_filter_card_le: the bound restated for the explicit Finset of compressible messages (proved)"
+    ],
+    "assumptions": [],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 125,
+    "prerequisites": [
+      "Lossless (uniquely decodable) codes as injective maps",
+      "Binary strings of fixed length number 2^n",
+      "Geometric series ∑_{k<L} 2^k = 2^L − 1",
+      "Pigeonhole principle (an injection bounds cardinality)"
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Shannon's 1948 source coding theorem assumes the source distribution is known. Universal coding — Lempel-Ziv (1977/1978) and the Kolmogorov-complexity viewpoint — drops that assumption: a single algorithm compresses any source to its entropy rate without prior knowledge of the statistics. The remarkable fact that universal compression cannot beat the entropy rate (and in fact cannot compress 'most' inputs at all) is a purely combinatorial counting argument, independent of any distribution. This 'incompressibility' bound is the workhorse of the incompressibility method in algorithmic information theory (Li–Vitányi) and the converse half of every universal source coding theorem.",
+    "problemStatement": "Open question oq-06 asks for universal source coding (Lempel-Ziv): compression to the entropy rate without knowing the source distribution. This formalization isolates the distribution-free converse: model a lossless binary code as an injective map f : α → List Bool. How many of the messages can be assigned a 'short' codeword (length < L)? Since there are only 2^L − 1 binary strings of length < L, injectivity forces at most 2^L − 1 messages to be compressible below L bits — so no lossless code can compress everything, and the worst-case codeword length is at least log₂(#messages).",
+    "text": "A distribution-free pigeonhole bound: an injective (lossless) binary code can give short codewords to at most 2^L − 1 messages, so no universal scheme compresses below the entropy rate.",
+    "proofStrategy": "The count of binary strings of length < L is ∑_{k<L} 2^k = 2^L − 1 (sum_two_pow_range, by induction). Each message with codeword length < L maps to such a string; package this as an injection from {x // (f x).length < L} into Σ k : Fin L, List.Vector Bool k, whose cardinality is ∑_{k : Fin L} 2^k = 2^L − 1 (Fintype.card_sigma + card_vector + Fin.sum_univ_eq_sum_range). Injectivity comes from f injective via List.Vector.toList. Fintype.card_le_of_injective then gives the bound. The corollaries (strict bound, existence of a long codeword, Finset form) follow by arithmetic and Equiv.subtypeUnivEquiv.",
+    "keyInsights": [
+      "Losslessness = injectivity of f : α → List Bool. This is the only hypothesis, and it is distribution-free — exactly what 'universal' coding requires. No probability, entropy, or source model enters the converse.",
+      "The combinatorial heart is a single equality: there are exactly 2^L − 1 binary strings of length < L, because ∑_{k<L} 2^k = 2^L − 1. Everything else is pigeonhole.",
+      "The clean way to count 'strings of length < L' in Lean is to inject the compressible messages into Σ k : Fin L, List.Vector Bool k: fixed-length binary vectors have cardinality 2^k (card_vector), and the sigma sums them. Reading off List.Vector.toList recovers the codeword, giving injectivity from f injective.",
+      "Contrapositive: ≥ 2^L messages ⟹ some codeword has length ≥ L. So the worst-case length of any lossless code on N messages is ≥ ⌈log₂ N⌉ — the universal lower bound that no Lempel-Ziv-style scheme can evade.",
+      "Quantitatively, at most a 2^{-c} fraction of a 2^n-message block can be compressed by c bits (apply the bound with L = n − c). This is the precise statement that 'most strings are incompressible' — the Kolmogorov-complexity foundation of universal source coding's optimality."
+    ],
+    "prerequisites": [
+      "Injective maps and cardinality",
+      "Counting binary strings of fixed length",
+      "Geometric series over the naturals"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and the Lossless Code Definition",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Frames oq-06 (universal Lempel-Ziv compression to the entropy rate) and isolates its distribution-free converse. Defines `IsLossless f` as injectivity of a binary code f : α → List Bool — unique decodability with no assumption on the source distribution.",
+      "mathContext": "A lossless binary code is an injection $f : \\alpha \\to \\{0,1\\}^*$; the message is always recoverable from its codeword."
+    },
+    {
+      "id": "section-1-string-count",
+      "title": "Section 1: Counting Short Binary Strings",
+      "startLine": 55,
+      "endLine": 64,
+      "summary": "Proves `sum_two_pow_range`: ∑_{k<L} 2^k = 2^L − 1 by induction — there are exactly 2^L − 1 binary strings of length strictly less than L. This is the combinatorial quantity the whole bound rests on.",
+      "mathContext": "$\\sum_{k=0}^{L-1} 2^k = 2^L - 1$ — the number of binary strings of length $< L$."
+    },
+    {
+      "id": "section-2-incompressibility",
+      "title": "Section 2: The Incompressibility Counting Bound",
+      "startLine": 66,
+      "endLine": 99,
+      "summary": "Proves `compressible_count_le`: for any lossless code, at most 2^L − 1 messages get a codeword of length < L. Short messages are injected into Σ k : Fin L, List.Vector Bool k (cardinality ∑ 2^k = 2^L − 1); injectivity comes from f via List.Vector.toList. `compressible_count_lt` gives the strict form < 2^L.",
+      "mathContext": "$\\#\\{x : |f(x)| < L\\} \\le 2^L - 1 < 2^L$ for any injective (lossless) code $f$."
+    },
+    {
+      "id": "section-3-no-compression",
+      "title": "Section 3: No Lossless Code Compresses Everything",
+      "startLine": 101,
+      "endLine": 123,
+      "summary": "Proves `exists_long_codeword`: if there are at least 2^L messages, some message must be assigned a codeword of length ≥ L (the worst-case length is ≥ log₂ of the message count). `compressible_filter_card_le` restates the bound for the explicit Finset of compressible messages.",
+      "mathContext": "$2^L \\le |\\alpha| \\Rightarrow \\exists x,\\ |f(x)| \\ge L$ — the universal lower bound on worst-case codeword length."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "shannon-source-coding",
+      "relationship": "depends-on",
+      "description": "Formalizes the distribution-free converse underlying the source coding theorem's universal form"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-02",
+      "relationship": "related",
+      "description": "OQ-02 (Kraft / Huffman) bounds average length vs entropy for a known distribution; this bound is distribution-free and worst-case, the universal-coding angle"
+    },
+    {
+      "targetId": "shannon-source-coding-oq-04",
+      "relationship": "related",
+      "description": "The method of types extends to universal (Lempel-Ziv) compression; this gives the matching converse counting bound"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified, 0-axiom counting bound: a lossless binary code can give a codeword shorter than L bits to at most 2^L − 1 of its messages. No probability or distribution is involved, so the bound is universal — it holds for Lempel-Ziv and every other lossless scheme. Consequently no code compresses all messages, the worst-case codeword length is at least log₂(#messages), and at most a 2^{-c} fraction can be compressed by c bits.",
+    "implications": "This is the converse foundation of universal source coding: it explains why no distribution-free scheme can beat the entropy rate, and it is the precise 'incompressibility' statement at the heart of Kolmogorov complexity and the incompressibility method.",
+    "openQuestions": [
+      "Formalize the Lempel-Ziv parsing bound (distinct phrases c(n) ≤ n / ((1−ε) log_k n)) to obtain the matching achievability of the entropy rate.",
+      "Strengthen to uniquely decodable (not merely prefix-free or injective-on-symbols) codes via the Kraft–McMillan inequality.",
+      "State the fractional incompressibility corollary (#compressible · 2^c < 2^n) explicitly as a named theorem."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "InformationTheory.UniversalSourceCoding",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/ShannonSourceCodingOQ06.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Ziv, J., Lempel, A.",
+      "title": "A Universal Algorithm for Sequential Data Compression",
+      "year": "1977",
+      "venue": "IEEE Transactions on Information Theory, 23(3), 337–343",
+      "note": "Introduces LZ77 universal compression reaching the entropy rate"
+    },
+    {
+      "authors": "Li, M., Vitányi, P.",
+      "title": "An Introduction to Kolmogorov Complexity and Its Applications",
+      "year": "2008",
+      "venue": "Springer, 3rd edition",
+      "note": "Chapter 2 develops the incompressibility method and the counting bound formalized here"
+    },
+    {
+      "authors": "Cover, T. M., Thomas, J. A.",
+      "title": "Elements of Information Theory",
+      "year": "2006",
+      "venue": "Wiley, 2nd edition",
+      "note": "Chapter 13 covers universal source coding and Lempel-Ziv"
+    }
+  ],
+  "sorries": 0
+}
