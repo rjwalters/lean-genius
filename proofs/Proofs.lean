@@ -3219,6 +3219,7 @@ import Proofs.LHopitalOQ02Aristotle
 import Proofs.LHopitalOQ02Incomplete01
 import Proofs.LHopitalOQ03
 import Proofs.LHopitalOQ05
+import Proofs.LHopitalOQ05OQ01
 import Proofs.LagrangeFourSquares
 import Proofs.LagrangeFourSquaresOQ01
 import Proofs.LagrangeFourSquaresOQ01OQ01
