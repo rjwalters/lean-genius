@@ -4,6 +4,7 @@ import Mathlib.Algebra.Order.Field.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.FieldTheory.RatFunc.Basic
 import Mathlib.Tactic
+import Proofs.Hilbert17MotzkinNotSOS
 
 /-!
 # Hilbert's 17th Problem: Sum of Squares Representation
@@ -227,28 +228,18 @@ theorem motzkin_nonneg : IsPositiveSemidefiniteMv motzkin := by
     3. The degree-6 part x⁴y² + x²y⁴ = x²y²(x² + y²) cannot arise from
        squaring degree-3 homogeneous polynomials in 2 variables
 
-    Axiomatized because the proof requires:
-    - Homogeneous component decomposition of multivariate polynomials
-    - Analysis of how SOS structure constrains leading coefficients
-    - Linear algebra over the coefficient space -/
-axiom motzkin_not_sos_polynomial_aux : ¬ IsSumOfSquaresMvPolynomial motzkin
-
-/-- **The Motzkin Polynomial is NOT a Sum of Squares of Polynomials**
-
-    There do not exist polynomials p₁, p₂, ..., pₘ such that
-    M(x,y) = p₁² + p₂² + ... + pₘ².
-
-    **Proof Sketch** (degree argument):
-    1. M has degree 6 (total degree)
-    2. If M = Σᵢ pᵢ², each pᵢ has degree ≤ 3
-    3. The degree-6 part of M is: x⁴y² + x²y⁴ = x²y²(x² + y²)
-    4. For this to be a sum of squares, we'd need the degree-3 parts to square to it
-    5. But degree-3 homogeneous polynomials in 2 variables can't achieve this structure
-    6. Technical: analyze the leading form and show no SOS decomposition exists
-
-    This is proven in detail in papers on real algebraic geometry. -/
-theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin :=
-  motzkin_not_sos_polynomial_aux
+    The full elementary proof lives in `Proofs/Hilbert17MotzkinNotSOS.lean`
+    (`Hilbert17MotzkinNotSOS.motzkin_not_sos`, 0-axiom): a degree/coefficient
+    argument showing each `qᵢ` has total degree ≤ 3, that all pure-axis powers
+    of `x` and `y` of degrees 1–3 vanish in every `qᵢ`, and hence the `[x²y²]`
+    coefficient of `Σ qᵢ²` is `Σ ([xy]qᵢ)² ≥ 0`, contradicting `[x²y²]M = -3`. -/
+theorem motzkin_not_sos_polynomial : ¬ IsSumOfSquaresMvPolynomial motzkin := by
+  -- `IsSumOfSquaresMvPolynomial motzkin` and `Hilbert17MotzkinNotSOS.IsSOS
+  -- Hilbert17MotzkinNotSOS.motzkin` are definitionally equal (the two `motzkin`
+  -- definitions and the two SOS predicates unfold to the same expression), so
+  -- the elementary theorem discharges the parent statement directly.
+  intro h
+  exact Hilbert17MotzkinNotSOS.motzkin_not_sos h
 
 /-- **By Artin's Theorem, Motzkin IS a Sum of Squares of Rational Functions**
 
