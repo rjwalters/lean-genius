@@ -1,0 +1,62 @@
+[
+  {
+    "id": "tri-defs",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+    "range": { "startLine": 44, "endLine": 59 },
+    "type": "definition",
+    "title": "Triangular Numbers and Exact Halving",
+    "content": "`tri k = k(k+1)/2` is the k-th triangular number and `IsTriangular n` asserts n = T(k) for some natural k. The technical lemma `two_mul_tri` records that the division by 2 is exact: 2·T(k) = k(k+1), because k(k+1) is always even (`Nat.even_mul_succ_self`). Carrying the doubled quantity k(k+1) keeps every later step division-free.",
+    "mathContext": "$T(k)=\\binom{k+1}{2}=\\frac{k(k+1)}{2}$, and $2T(k)=k(k+1)$ exactly since one of $k,k+1$ is even.",
+    "significance": "supporting",
+    "relatedConcepts": ["triangular numbers", "figurate numbers", "parity", "exact division"],
+    "prerequisites": ["natural number arithmetic"]
+  },
+  {
+    "id": "defining-identity",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+    "range": { "startLine": 61, "endLine": 66 },
+    "type": "lemma",
+    "title": "The Defining Identity (2k+1)² = 8·T(k)+1",
+    "content": "The keystone `sq_two_mul_add_one`: the odd square (2k+1)² equals 8·T(k)+1. It follows from the exact halving (8·T(k) = 4·k(k+1)) and a single `ring` step. This one identity drives both directions of the main characterization — left-to-right it produces a perfect square from a triangular number, right-to-left it pins the triangular index from a square root.",
+    "mathContext": "$(2k+1)^2 = 4k(k+1)+1 = 8\\cdot T(k)+1$.",
+    "significance": "critical",
+    "relatedConcepts": ["odd squares", "triangular numbers", "polynomial identity"],
+    "prerequisites": ["exact halving of triangular numbers"]
+  },
+  {
+    "id": "monotonicity",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+    "range": { "startLine": 68, "endLine": 74 },
+    "type": "lemma",
+    "title": "Strict Monotonicity and Index Uniqueness",
+    "content": "`tri_strictMono` shows T is strictly increasing: from a < b the doubled values k(k+1) compare strictly (`nlinarith`), and `omega` transfers this back to T(a) < T(b). Strict monotonicity guarantees the triangular index, when it exists, is unique.",
+    "mathContext": "$a<b \\implies a(a+1)<b(b+1) \\implies T(a)<T(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["strict monotonicity", "uniqueness"],
+    "prerequisites": ["exact halving of triangular numbers"]
+  },
+  {
+    "id": "main-characterization",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+    "range": { "startLine": 76, "endLine": 93 },
+    "type": "theorem",
+    "title": "Headline: n Triangular ⟺ 8n+1 a Perfect Square",
+    "content": "`isTriangular_iff_isSquare`. Forward: if n = T(k) then 8n+1 = (2k+1)² with explicit root 2k+1. Backward: 8n+1 is odd, so any r with r² = 8n+1 is odd (`Nat.odd_mul`), r = 2k+1; running the defining identity in reverse gives 8·T(k)+1 = 8n+1, and `omega` cancels to n = T(k). The proof is fully constructive and axiom-free.",
+    "mathContext": "$n=T(k) \\iff 8n+1=\\square$; the witness is $\\sqrt{8n+1}=2k+1$.",
+    "significance": "critical",
+    "relatedConcepts": ["triangular numbers", "perfect squares", "parity argument"],
+    "prerequisites": ["the defining identity (2k+1)²=8T(k)+1"]
+  },
+  {
+    "id": "decidability",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-01-oq-02",
+    "range": { "startLine": 95, "endLine": 116 },
+    "type": "theorem",
+    "title": "Exact Index Recovery and a Decidable Test",
+    "content": "`eq_tri_of_eight_mul_add_one` reads the index off directly: 8n+1 = (2k+1)² forces n = T(k). Because 'is a perfect square' is decidable on ℕ, `decidable_of_iff` transports decidability across the equivalence, yielding a `DecidablePred IsTriangular` instance — a constant-cost triangular-number test. The worked examples confirm T₄=10, T₆=21 while 5 and 8 are not triangular (closed via the characterization and a finite square search, since `Nat.sqrt` does not reduce under kernel `decide`).",
+    "mathContext": "Triangularity of $n$ reduces to the single decidable check $\\mathrm{IsSquare}(8n+1)$.",
+    "significance": "important",
+    "relatedConcepts": ["decidability", "index recovery", "computational test"],
+    "prerequisites": ["the main characterization"]
+  }
+]
