@@ -246,6 +246,7 @@ import Proofs.ArsinhLogFormulaOQ01OQ01
 import Proofs.ArsinhLogFormulaOQ01OQ01OQ01
 import Proofs.ArsinhLogFormulaOQ01OQ01OQ01OQ01
 import Proofs.ArsinhLogFormulaOQ01OQ02OQ01
+import Proofs.ArsinhLogFormulaOQ01OQ02OQ01OQ01
 import Proofs.AutomorphicNumberOQ01
 import Proofs.AutomorphicNumberOQ01OQ01
 import Proofs.AutomorphicNumberOQ01OQ02
