@@ -1,0 +1,133 @@
+{
+  "id": "lucas-theorem-oq-01-oq-01-oq-01",
+  "slug": "lucas-theorem-oq-01-oq-01-oq-01",
+  "title": "Row-sum fractal dimension: ∑_{n<pᵐ} fineCount p n = (p(p+1)/2)ᵐ",
+  "description": "Summing Fine's count fineCount p n (the number of entries in row n of Pascal's triangle not divisible by a prime p) over a full block of pᵐ consecutive rows yields the closed form ∑_{n<pᵐ} fineCount p n = (p(p+1)/2)ᵐ. This answers the first open question of the parent Fine's-theorem entry. For p = 2 it is the total 3ᵐ odd entries in the first 2ᵐ rows (the Sierpiński-gasket count), and the exponential growth rate log_p(p(p+1)/2) is the box-counting (fractal) dimension of the mod-p Pascal triangle — generalising the Sierpiński dimension log₂3. The proof reuses the multiplicative recursion fineCount p (p·j+r) = (r+1)·fineCount p j established for Fine's theorem: partitioning the block {0,…,pᵐ⁺¹−1} by the last base-p digit r writes every n uniquely as n = p·j+r with j < pᵐ and r < p, so summing the recursion over r factors out the triangular number ∑_{r<p}(r+1) = p(p+1)/2 and leaves fineCount p j, giving ∑_{n<pᵐ⁺¹} fineCount p n = (p(p+1)/2)·∑_{j<pᵐ} fineCount p j. A one-line induction on m then closes the closed form. Two reusable arithmetic facts are proved along the way: Gauss's triangular sum ∑_{r<p}(r+1) = p(p+1)/2 (via a division-free doubled identity), and the Euclidean-division reindexing ∑_{n<p·M} f n = ∑_{j<M} ∑_{r<p} f(p·j+r). Verified with 0 axioms, 0 sorries, no native_decide (concrete row-block checks use kernel decide).",
+  "leanFile": {
+    "imports": ["Mathlib", "Proofs.LucasTheoremOQ01OQ01"],
+    "opens": ["Nat", "Finset"],
+    "namespace": "LucasRowSum",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/LucasTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "text": "Fine's theorem gives a per-row count of binomial coefficients not divisible by p as a product over base-p digits. Because the count is built from a multiplicative recursion in the row index, summing it over a full base-p block telescopes: each of the m digit positions contributes an independent factor ∑_{d<p}(d+1) = p(p+1)/2, so the block total is (p(p+1)/2)ᵐ. The formalization routes this through the recursion fineCount p (p·j+r) = (r+1)·fineCount p j rather than the digit-product form, partitioning the block by the last base-p digit and inducting on the number of digits m."
+  },
+  "meta": {
+    "author": "Classical (consequence of Fine 1947; the row-sum/box-dimension reading is folklore in the study of Pascal's triangle mod p). Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LucasTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "prime",
+      "binomial-coefficients",
+      "lucas-theorem",
+      "fines-theorem",
+      "pascals-triangle",
+      "base-p-digits",
+      "fractal-dimension",
+      "triangular-numbers",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_add",
+        "description": "∑ x ∈ range (m+n), f x = ∑ x ∈ range m, f x + ∑ x ∈ range n, f (m+x). With m = p·M, n = p this performs the inductive step of the block reindexing sum_range_mul_split, splitting off the top block of p rows.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ x ∈ range (n+1), f x = ∑ x ∈ range n, f x + f n. Used to peel the last digit in the triangular sum tri_two and to align the M+1 step of sum_range_mul_split with the range-add split.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_mul",
+        "description": "(∑ i ∈ s, f i) · b = ∑ i ∈ s, f i · b. Run backwards it factors the constant fineCount p j out of ∑_{r<p} (r+1)·fineCount p j, exposing the triangular sum ∑_{r<p}(r+1).",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      },
+      {
+        "theorem": "Finset.mul_sum",
+        "description": "b · ∑ i ∈ s, f i = ∑ i ∈ s, b · f i. Pulls the per-block factor p(p+1)/2 outside the sum over j, reducing the block total to (p(p+1)/2)·rowSum p m.",
+        "module": "Mathlib.Algebra.BigOperators.Ring"
+      },
+      {
+        "theorem": "FineTheorem.fineCount_recursion",
+        "description": "The multiplicative recursion fineCount p (p·n+r) = (r+1)·fineCount p n for r < p, established in the parent Fine's-theorem entry. This is the entire engine: summed over the last digit r it produces the per-block triangular factor.",
+        "module": "Proofs.LucasTheoremOQ01OQ01"
+      }
+    ],
+    "originalContributions": [
+      "rowSum_eq: the row-sum / fractal-dimension identity ∑_{n<pᵐ} fineCount p n = (p(p+1)/2)ᵐ for a prime p, formalized as rowSum p m = (p*(p+1)/2)^m. Proved by induction on the number of base-p digits m, summing the parent's multiplicative recursion over the last digit. Answers the first open question recorded in the parent Fine's-theorem entry; generalises the p = 2 Sierpiński total 3ᵐ to arbitrary p and exhibits the box-counting dimension log_p(p(p+1)/2). Not present in Mathlib.",
+      "tri_sum: Gauss's triangular number ∑_{r<p}(r+1) = p(p+1)/2, the per-digit factor of the block sum, proved from a division-free doubled identity tri_two (2·∑_{r<p}(r+1) = p(p+1)) discharged by omega — robust against natural-number division.",
+      "sum_range_mul_split: the Euclidean-division reindexing ∑_{n<p·M} f n = ∑_{j<M} ∑_{r<p} f(p·j+r) for an arbitrary f : ℕ → ℕ, proved by induction on M via Finset.sum_range_add. A reusable block-partition lemma decoupled from the binomial-coefficient content.",
+      "rowSum: the block count ∑_{n<pᵐ} fineCount p n of entries not divisible by p across the first pᵐ rows of Pascal's triangle."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The headline identity is assembled in-file from the parent's multiplicative recursion FineTheorem.fineCount_recursion and standard Finset big-operator lemmas, all credited in mathlibDependencies. No native_decide — the concrete block checks (rowSum 2 2 = 9, rowSum 2 3 = 27, rowSum 3 1 = 6, rowSum 3 2 = 36) use kernel `decide`, so no Lean.ofReduceBool. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 129,
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "title": "Gauss's Triangular Number (tri_sum)",
+      "text": "The per-digit factor of the block sum is ∑_{r<p}(r+1) = 1+2+⋯+p = p(p+1)/2. To stay clear of natural-number division, the doubled identity tri_two proves 2·∑_{r<p}(r+1) = p(p+1) by induction (peeling the last term with Finset.sum_range_succ and closing with ring), and tri_sum then recovers the divided form by omega."
+    },
+    {
+      "title": "Euclidean-Division Reindexing (sum_range_mul_split)",
+      "text": "A range of length p·M splits into M blocks of p: ∑_{n<p·M} f n = ∑_{j<M} ∑_{r<p} f(p·j+r), since every n < p·M is uniquely p·j+r with j < M and r < p. The proof inducts on M, using Finset.sum_range_add to peel off the top block of p rows and Finset.sum_range_succ to match it against the j = M summand. The lemma is stated for an arbitrary f, independent of the binomial content."
+    },
+    {
+      "title": "The Row-Sum Identity (rowSum_eq)",
+      "text": "Define rowSum p m = ∑_{n<pᵐ} fineCount p n. Induct on m. The base case m = 0 is fineCount p 0 = 1. For m+1, write pᵐ⁺¹ = p·pᵐ and apply the block reindexing; the parent recursion fineCount p (p·j+r) = (r+1)·fineCount p j turns the inner sum over r into (∑_{r<p}(r+1))·fineCount p j = (p(p+1)/2)·fineCount p j. Factoring out the constant gives rowSum p (m+1) = (p(p+1)/2)·rowSum p m, and the induction hypothesis closes (p(p+1)/2)·(p(p+1)/2)ᵐ = (p(p+1)/2)ᵐ⁺¹."
+    },
+    {
+      "title": "Sierpiński Count and Box Dimension",
+      "text": "At p = 2 the identity reads ∑_{n<2ᵐ} fineCount 2 n = 3ᵐ — the number of odd entries in the first 2ᵐ rows of Pascal's triangle, the Sierpiński-gasket count of the parent oq-01-oq-02 entry. The growth rate of the block sum, log_p(p(p+1)/2), is the box-counting (fractal) dimension of the limiting mod-p Pascal triangle; for p = 2 it is log₂3 ≈ 1.585, the Sierpiński dimension."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lucas-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The parent proves Fine's theorem (the per-row digit-product count fineCount p n = ∏ᵢ(nᵢ+1)) and records this row-sum identity as its first open question; this entry discharges it by summing the parent's multiplicative recursion fineCount_recursion over a full base-p block. Reuses Proofs.LucasTheoremOQ01OQ01 as an import."
+    },
+    {
+      "targetId": "lucas-theorem-oq-01-oq-02",
+      "relationship": "generalizes",
+      "description": "The p = 2 case of this block sum is the Sierpiński count 3ᵐ of odd entries in the first 2ᵐ rows of Pascal's triangle; this entry gives the arbitrary-prime total (p(p+1)/2)ᵐ and the corresponding box dimension log_p(p(p+1)/2)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Binomial coefficients modulo a prime (Fine's theorem on N(n,p))",
+      "author": "N. J. Fine",
+      "year": 1947,
+      "note": "American Mathematical Monthly 54 (1947), 589–592. The per-row count ∏(nᵢ+1) summed over a base-p block gives the (p(p+1)/2)ᵐ total."
+    },
+    {
+      "title": "The fractal nature of Pascal's triangle modulo a prime",
+      "author": "various (e.g. Stewart; Wolfram)",
+      "year": 1984,
+      "note": "Self-similar mod-p Pascal triangle: the row-block count (p(p+1)/2)ᵐ gives the box-counting dimension log_p(p(p+1)/2), generalising the Sierpiński dimension log₂3."
+    }
+  ],
+  "sorries": [],
+  "conclusion": {
+    "summary": "Summing Fine's per-row count over a block of pᵐ rows of Pascal's triangle gives the closed form ∑_{n<pᵐ} fineCount p n = (p(p+1)/2)ᵐ. The proof reuses the parent's multiplicative recursion fineCount p (p·j+r) = (r+1)·fineCount p j: summed over the last base-p digit it factors out the triangular number ∑_{r<p}(r+1) = p(p+1)/2, and an induction on the digit count m assembles the closed form. Verified with 0 axioms and no native_decide.",
+    "implications": "The block total (p(p+1)/2)ᵐ is the count of binomial coefficients not divisible by p among the first pᵐ rows of Pascal's triangle. Its exponential growth rate log_p(p(p+1)/2) is the box-counting (fractal) dimension of the self-similar mod-p Pascal triangle; the p = 2 instance recovers the Sierpiński total 3ᵐ and dimension log₂3. The reindexing lemma sum_range_mul_split and triangular sum tri_sum are reusable beyond this entry.",
+    "openQuestions": [
+      "Density and dimension limit: show the fraction of non-divisible entries in the first pᵐ rows, (p(p+1)/2)ᵐ / (½pᵐ(pᵐ+1)), tends to 0, and identify the exact Hausdorff/box dimension log_p(p(p+1)/2) of the limiting fractal, generalising the parent's log₂3 density-zero result for p = 2.",
+      "Higher moments: evaluate ∑_{n<pᵐ} (fineCount p n)^t for t ≥ 2, giving the t-th moment of the digit-product distribution as a per-digit factor (∑_{d<p}(d+1)^t)ᵐ — the multifractal spectrum of Pascal's triangle mod p."
+    ]
+  }
+}
