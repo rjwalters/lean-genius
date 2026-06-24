@@ -1,0 +1,165 @@
+{
+  "id": "niven-theorem-oq-01-oq-03",
+  "title": "Niven at 2π/n for Sine: sin(2π/n) is rational ⟺ n ∈ {1, 2, 4, 12}",
+  "slug": "niven-theorem-oq-01-oq-03",
+  "description": "The sine companion of the crystallographic-restriction classification. For a positive integer n, sin(2π/n) is rational iff n ∈ {1, 2, 4, 12}, with values 0, 0, 1, 1/2. The exceptional set differs from the cosine case {1, 2, 3, 4, 6} (nth-root-irrational-oq-01-oq-01) because the fixed numerator 2 interacts with the period of sine differently than cosine; in particular n = 3 is rational for cosine (cos(2π/3) = −1/2) but irrational for sine (sin(2π/3) = √3/2). The forward direction combines Niven's restriction sin θ ∈ {0, ±1/2, ±1} with strict monotonicity of sine on [−π/2, π/2]; the reverse direction is five special-angle evaluations. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Ivan Niven (1956); crystallographic-restriction corollary formalized in Lean 4 over Mathlib's Niven theorem (Meiburg–Broshi 2025)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Niven%27s_theorem",
+    "date": "1956",
+    "status": "verified",
+    "proofRepoPath": "Proofs/NivenTheoremOQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "algebraic-integers",
+      "trigonometry",
+      "rational-multiples-of-pi",
+      "crystallographic-restriction",
+      "diophantine"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries (only propext, Classical.choice, Quot.sound — the standard foundational axioms — appear under #print axioms). The single hypothesis is n ≥ 1 (so that 2π/n is well-defined and nonzero; without it n = 0 yields 2π/0 = 0 with sin 0 = 0 rational). The deep algebraic-integer core is cited from Mathlib via the restated cosine helper; no assumptions are introduced by that delegation.",
+    "lineCount": 210,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.isIntegral_two_mul_cos_rat_mul_pi",
+        "description": "Niven's algebraic-integer core, used through the restated cosine helper: 2·cos(q·π) is integral over ℤ for any rational q. Reached for the sine via the complementary angle φ = π/2 − θ.",
+        "module": "Mathlib.NumberTheory.Niven"
+      },
+      {
+        "theorem": "Real.cos_pi_div_two_sub",
+        "description": "The co-function identity cos(π/2 − x) = sin x, the bridge transporting the cosine restriction sin θ ∈ {0, ±1/2, ±1} to the sine via a rational multiple of π.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.strictMonoOn_sin",
+        "description": "Sine is strictly increasing on [−π/2, π/2], hence injective there. For n ≥ 4 the angle 2π/n lies in (0, π/2], so the Niven value uniquely determines 2π/n = π/6 (n = 12) or π/2 (n = 4).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pos_of_pos_of_lt_pi",
+        "description": "sin is positive on (0, π). Since 2π/n ∈ (0, π/2] ⊂ (0, π) for n ≥ 4, this discards the Niven values 0, −1/2, −1, leaving only {1/2, 1}.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Nat.Prime.irrational_sqrt",
+        "description": "√p is irrational for prime p. Applied to p = 3 to show sin(2π/3) = √3/2 is irrational, which is why n = 3 is excluded from the sine exceptional set even though it belongs to the cosine set.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      }
+    ],
+    "originalContributions": [
+      "The sine crystallographic-restriction classification sin(2π/n) rational ⟺ n ∈ {1, 2, 4, 12}, a result not present in the gallery (which had the cosine version cos(2π/n) ⟺ n ∈ {1, 2, 3, 4, 6}) and not packaged in Mathlib",
+      "An explicit contrast theorem: sin(2π/3) = √3/2 is irrational, isolating exactly why the sine exceptional set drops n = 3 (rational for cosine) and gains n = 12",
+      "A reusable forward-direction template combining Niven's bounded value set with strict monotonicity of sine on [−π/2, π/2] and positivity on (0, π) to pin the denominator n by injectivity, avoiding any case-by-case irrationality argument for the infinitely many excluded n ≥ 5"
+    ],
+    "relatedProblems": [
+      {
+        "id": "niven-theorem-oq-01",
+        "relationship": "Direct parent — proves the general cosine classification cos θ ∈ {0, ±1/2, ±1} at rational multiples of π. This entry specializes to the angles 2π/n for the sine and resolves the resulting exceptional set."
+      },
+      {
+        "id": "niven-theorem-oq-02",
+        "relationship": "Sibling — the general sine restriction sin θ ∈ {0, ±1/2, ±1}, restated here as the helper sin_niven and then specialized to 2π/n."
+      },
+      {
+        "id": "nth-root-irrational-oq-01-oq-01",
+        "relationship": "Cosine counterpart — proves cos(2π/n) rational ⟺ n ∈ {1, 2, 3, 4, 6}. This entry is the sine analogue, highlighting the different exceptional set."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Niven's 1956 theorem classifies the rational values of cosine at rational multiples of π as exactly {0, ±1/2, ±1}. Specializing the angle to 2π/n connects the theorem to the crystallographic restriction: the n-fold rotational symmetries compatible with a lattice are exactly n ∈ {1, 2, 3, 4, 6}, the values for which cos(2π/n) (equivalently, the trace 2·cos(2π/n) of the rotation) is an integer. The sine of the same angle — the off-diagonal entry of the rotation matrix — obeys its own classification, here shown to be rational exactly for n ∈ {1, 2, 4, 12}. The difference from the cosine set is instructive: n = 3 gives the rational cosine −1/2 but the irrational sine √3/2.",
+    "problemStatement": "For a positive integer n, determine exactly when sin(2π/n) is rational. Answer: sin(2π/n) ∈ ℚ ⟺ n ∈ {1, 2, 4, 12}, with sin(2π/1) = sin(2π/2) = 0, sin(2π/4) = 1, sin(2π/12) = 1/2.",
+    "proofStrategy": "Forward (rationality ⇒ n ∈ {1,2,4,12}): for n ∈ {1,2,3} check directly — n = 1, 2 give sin = 0 (in the set), and n = 3 gives sin(2π/3) = √3/2, ruled irrational by the obstruction (s:ℝ)² ≠ 3. For n ≥ 4 the angle 2π/n lies in (0, π/2]; Niven's restriction (helper sin_niven, via the cosine core and cos(π/2 − θ) = sin θ) gives sin(2π/n) ∈ {0, ±1/2, ±1}, positivity on (0, π) cuts this to {1/2, 1}, and strict monotonicity of sine on [−π/2, π/2] forces 2π/n = π/6 (n = 12) or 2π/n = π/2 (n = 4). Reverse: five special-angle evaluations using sin 2π, sin π, sin(π/2), sin(π/6).",
+    "keyInsights": [
+      "**Bounding the angle into an injectivity window.** For n ≥ 4, 2π/n ∈ (0, π/2], where sine is strictly increasing; this turns 'which n give this sine value' from an inversion over (0, 2π] into a single injective match.",
+      "**Positivity prunes half of Niven's set instantly.** On (0, π) the sine is positive, so the candidates 0, −1/2, −1 are impossible without any further work, leaving only {1/2, 1}.",
+      "**One irrationality fact distinguishes sine from cosine.** sin(2π/3) = √3/2 is irrational while cos(2π/3) = −1/2 is rational; this single contrast is the entire reason the exceptional sets differ at n = 3.",
+      "**No per-n irrationality grind.** The infinitely many excluded n ≥ 5 are handled uniformly by injectivity — the Niven value set never contains sin(2π/n) for those n — rather than by proving each sin(2π/n) irrational separately."
+    ],
+    "prerequisites": [
+      "Niven's theorem (cosine and sine forms) and its algebraic-integer core",
+      "Strict monotonicity and positivity of sine on subintervals of [0, π]",
+      "Irrationality of √3 and elementary rational arithmetic with π"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 67,
+      "summary": "Imports (Trigonometric.Basic/Bounds, NumberTheory.Niven, Tactic) and the module docstring stating the classification sin(2π/n) ∈ ℚ ⟺ n ∈ {1,2,4,12}, the contrast with the cosine set {1,2,3,4,6}, and the two-ingredient strategy.",
+      "mathContext": "sin(2π/n) rational ⟺ n ∈ {1, 2, 4, 12}."
+    },
+    {
+      "id": "niven-helpers",
+      "title": "Cosine and Sine Niven (restated helpers)",
+      "startLine": 68,
+      "endLine": 113,
+      "summary": "cos_niven restates the cosine classification (delegating 2·cos θ ∈ algebraic-integers to Mathlib and finishing by interval_cases); sin_niven derives sin θ ∈ {0, ±1/2, ±1} for rational multiples of π via the complementary angle φ = π/2 − θ and cos(π/2 − θ) = sin θ.",
+      "mathContext": "θ = (m/n)π, sin θ ∈ ℚ ⇒ sin θ ∈ {0, ±1/2, ±1}."
+    },
+    {
+      "id": "irrational-three",
+      "title": "sin(2π/3) = √3/2 is Irrational",
+      "startLine": 114,
+      "endLine": 133,
+      "summary": "no_rat_sq_eq_three ((s:ℝ)² ≠ 3 via irrationality of √3) and sin_two_pi_div_three_irrational, which rewrites sin(2π/3) = sin(π − π/3) = sin(π/3) = √3/2 and squares to reach the obstruction. This is the case that excludes n = 3.",
+      "mathContext": "sin(2π/3) = √3/2 ∉ ℚ."
+    },
+    {
+      "id": "classification",
+      "title": "The Classification sin(2π/n) ⟺ n ∈ {1,2,4,12}",
+      "startLine": 134,
+      "endLine": 210,
+      "summary": "sin_two_pi_div_rational_iff: forward direction splits n < 4 (interval_cases, with n = 3 discharged by the irrationality lemma) and n ≥ 4 (angle in (0, π/2]; Niven + positivity ⇒ sin ∈ {1/2, 1}; strictMonoOn_sin.injOn pins 2π/n = π/6 ⇒ n = 12 or = π/2 ⇒ n = 4). Reverse direction evaluates the five special angles.",
+      "mathContext": "n ≥ 1 ⇒ (sin(2π/n) ∈ ℚ ⟺ n ∈ {1,2,4,12})."
+    }
+  ],
+  "conclusion": {
+    "summary": "The sine analogue of the crystallographic-restriction classification is formalized in Lean 4 with zero sorries and zero axioms: sin(2π/n) is rational exactly for n ∈ {1, 2, 4, 12}. The forward direction reuses Niven's bounded value set and the strict monotonicity of sine on [−π/2, π/2], so the infinitely many excluded n are dispatched by injectivity rather than individual irrationality proofs; the only bespoke irrationality input is sin(2π/3) = √3/2.",
+    "implications": "Side by side with the cosine result cos(2π/n) ⟺ n ∈ {1, 2, 3, 4, 6}, this pins down the rationality of both entries of the standard 2π/n rotation matrix and explains the n = 3 discrepancy. The proof template — bound the angle into a monotonicity window, prune by positivity, then match by injectivity — applies to other 'rational value of a periodic special function at a/n' questions.",
+    "openQuestions": [
+      "Classify the tangent at these angles: for which n is tan(2π/n) rational (and defined), combining the tangent Niven restriction tan θ ∈ {0, ±1} with the undefined points 2π/n = π/2 (n = 4) and 3π/2?",
+      "Generalize the numerator: for fixed coprime a, characterize the set of n with sin(2aπ/n) ∈ ℚ as a function of a, identifying how the exceptional set scales with gcd conditions."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "niven-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent cosine entry. This entry specializes Niven to the angles 2π/n for the sine and resolves the exceptional set {1, 2, 4, 12}."
+    },
+    {
+      "targetId": "nth-root-irrational-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Cosine counterpart cos(2π/n) rational ⟺ n ∈ {1, 2, 3, 4, 6}; this entry is the sine analogue with the contrasting set."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/NivenTheoremOQ01OQ03.lean",
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds",
+      "Mathlib.NumberTheory.Niven",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "NivenTheoremOQ01OQ03",
+    "lineCount": 210,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 4
+  },
+  "sorries": 0
+}

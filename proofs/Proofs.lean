@@ -3414,6 +3414,7 @@ import Proofs.NewtonInductiveStepOQ03
 import Proofs.NewtonLogConcavity
 import Proofs.NewtonPowerSumIdentitiesOQ01
 import Proofs.NivenTheorem
+import Proofs.NivenTheoremOQ01OQ03
 import Proofs.NivenTheoremOQ02
 import Proofs.NivenTheoremOQ03
 import Proofs.NthRootIrrational
