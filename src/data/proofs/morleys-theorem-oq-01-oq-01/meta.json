@@ -1,0 +1,171 @@
+{
+  "id": "morleys-theorem-oq-01-oq-01",
+  "title": "Explicit Side Length of the Morley Triangle",
+  "slug": "morleys-theorem-oq-01-oq-01",
+  "description": "Closes the open computation left by OQ-01 (Conway's angle scaffolding): a fully coordinate-free, trigonometric proof that each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), hence the Morley triangle is equilateral with this explicit side length. The geometric input enters only through the classical metric laws (extended law of sines, law of cosines); the mathematical core is two trig identities proved here from scratch — the triple-angle product sin(3θ)=4·sinθ·sin(π/3−θ)·sin(π/3+θ) and a law-of-cosines bracket collapse. 0 axioms, 0 sorries (machine-verified, Mathlib v4.26.0).",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MorleysTheoremOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "morley",
+      "trisectors",
+      "law-of-sines",
+      "law-of-cosines",
+      "triple-angle",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 294,
+    "assumptions": "None beyond the standard foundational axioms. `#print axioms` on the headline `morley_equilateral`, on `sin_three_mul_prod`, and on `morley_side_sq` reports exactly [propext, Classical.choice, Quot.sound] — no `sorryAx`, no `Lean.ofReduceBool`. Machine-verified against the pinned Mathlib v4.26.0 (lake env lean, 2026-06-24). The derivation is coordinate-free: it models the triangle by its angle data plus circumradius R (as the parent OQ-01 does) and encodes the two classical metric facts used — the extended law of sines (AB = 2R·sin γ, packaged in `ear_segment_from_law_of_sines` as the relation AZ·sin∠AZB = AB·sin b₃) and the law of cosines (YZ² = AY²+AZ²−2·AY·AZ·cos α₃, the statement of `morley_side_sq`). The genuinely new mathematical content — the two trigonometric identities that make these collapse to the symmetric closed form — is proved with no assumptions.",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sin_three_mul",
+        "description": "sin(3x) = 3·sin x − 4·sin³x, the triple-angle expansion used to derive the product form",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.sin_sq_add_cos_sq",
+        "description": "Pythagorean identity sin²x + cos²x = 1",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Real.sin_pi_sub / Real.cos_pi_sub",
+        "description": "Supplementary-angle relations sin(π−x)=sin x, cos(π−x)=−cos x, turning the trisector-angle constraint into the law-of-cosines collapse",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sin_pi_div_three / Real.cos_pi_div_three",
+        "description": "sin(π/3)=√3/2, cos(π/3)=1/2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_sq / Real.sq_sqrt",
+        "description": "√(x²)=x for x≥0 and (√x)²=x for x≥0, used to extract the side length from its square",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "Completes the explicit side-length computation that OQ-01 set up but left open, doing so coordinate-free (no complex-plane placement): the whole argument lives in the parent's angle-plus-circumradius model.",
+      "Triple-angle product identity sin(3θ) = 4·sinθ·sin(π/3−θ)·sin(π/3+θ), proved from sin_three_mul via a single linear_combination over the Pythagorean identity and (√3)²=3 — the exact factor the law of sines produces for the ear segments.",
+      "Law-of-cosines bracket collapse (`morley_side_sq`): AY²+AZ²−2·AY·AZ·cos α₃ = (8R·sinα₃·sinβ₃·sinγ₃)², proved by reducing to the pure identity sin²u+sin²v+2·sinu·sinv·cos(u+v)=sin²(u+v) under the supplementary relation α₃ = π−(u+v).",
+      "Each of the three Morley sides (computed independently at vertices A, B, C) equals the same symmetric length 8R·sin(α/3)·sin(β/3)·sin(γ/3), giving the equilateral property as a corollary rather than an assumption.",
+      "The law-of-sines bridge `ear_segment_from_law_of_sines` grounds the ear-segment lengths in the classical metric law, so the closed forms are derived, not posited."
+    ],
+    "theoremCount": 13,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Morley's trisector theorem (Frank Morley, c. 1899) states that the adjacent trisectors of any triangle meet in the vertices of an equilateral triangle. The standard corollary gives that triangle's common side length as 8R·sin(α/3)·sin(β/3)·sin(γ/3), where R is the circumradius. The parent research entry OQ-01 formalized Conway's backward angle scaffolding and *defined* this length, but its own file summary flagged the explicit length computation as the remaining open work: 'show each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3) ... the computation is finite and mechanical but substantial.' This entry carries out exactly that computation, trigonometrically.",
+    "problemStatement": "For a triangle with angles α, β, γ (α+β+γ=π) and circumradius R, prove that each side of its Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), and hence that the Morley triangle is equilateral with this explicit side length.",
+    "text": "Working in the angle-plus-circumradius model, the two ear segments meeting at a Morley vertex are AZ = 8R·sin(β/3)·sin(γ/3)·sin(π/3+γ/3) and AY = 8R·sin(β/3)·sin(γ/3)·sin(π/3+β/3) (law of sines + the triple-angle product). The law of cosines across the middle trisector angle α/3 then collapses, via a pure trig identity, to YZ = 8R·sin(α/3)·sin(β/3)·sin(γ/3). The same value arises at all three vertices, so the triangle is equilateral.",
+    "proofStrategy": "Three steps. (1) Triple-angle product: sin(3θ)=4·sinθ·sin(π/3−θ)·sin(π/3+θ), proved from sin_three_mul by a linear_combination over sin²+cos²=1 and (√3)²=3. (2) Ear segments: the law-of-sines relation AZ·sin(π/3−γ/3)=2R·sin(3·γ/3)·sin(β/3) cancels the sin(π/3−γ/3) factor produced by step (1), leaving AZ=8R·sin(β/3)·sin(γ/3)·sin(π/3+γ/3). (3) Law of cosines: writing u=π/3+β/3, v=π/3+γ/3, the angle constraint forces α/3=π−(u+v), so cos(α/3)=−cos(u+v) and sin(α/3)=sin(u+v); the bracket sin²u+sin²v+2·sinu·sinv·cos(u+v) equals sin²(u+v), reducing AY²+AZ²−2·AY·AZ·cos(α/3) to (8R·sin(α/3)·sin(β/3)·sin(γ/3))². Taking square roots and repeating at each vertex gives equilaterality.",
+    "keyInsights": [
+      "The triple-angle identity in product form sin(3θ)=4·sinθ·sin(π/3−θ)·sin(π/3+θ) is the hinge: the unwanted sin(π/3−θ) it contributes is exactly the law-of-sines denominator sin∠AZB, so the two cancel and leave the clean shifted-sine factor.",
+      "Choosing the supplementary substitution α/3 = π−(u+v) (with u=π/3+β/3, v=π/3+γ/3) turns the law of cosines into a single Pythagorean-type identity sin²u+sin²v+2·sinu·sinv·cos(u+v)=sin²(u+v), avoiding any case analysis.",
+      "The factor K=8R·sin(β/3)·sin(γ/3) is common to both ear segments at a vertex, so the law-of-cosines bracket factors as K²·[…] and the whole computation is one linear_combination once the bracket identity is in hand.",
+      "Equilaterality is not assumed: each side is computed independently at its own vertex (with the angle roles permuted) and all three land on the same symmetric value, so the classical conclusion of Morley's theorem emerges from the side-length formula itself.",
+      "The proof is coordinate-free. It needs only the two metric laws (extended law of sines and law of cosines) that define how the angle model measures lengths — no placement of the triangle in the plane, no trigonometric solving of trisector line intersections."
+    ]
+  },
+  "sections": [
+    {
+      "id": "triple-angle-identity",
+      "title": "The Triple-Angle Product Identity",
+      "summary": "sin(3θ) = 4·sinθ·sin(π/3−θ)·sin(π/3+θ), proved from Real.sin_three_mul by a single linear_combination over the Pythagorean identity and (√3)²=3. This is the trigonometric engine of the side-length formula.",
+      "startLine": 55,
+      "endLine": 74
+    },
+    {
+      "id": "ear-segments",
+      "title": "Ear Segments from the Law of Sines",
+      "summary": "ear_segment_from_law_of_sines: cancelling the sin(π/3−γ/3) factor between the law-of-sines relation and the triple-angle product collapses the ear segment to AZ = 8R·sin(β/3)·sin(γ/3)·sin(π/3+γ/3).",
+      "startLine": 76,
+      "endLine": 97
+    },
+    {
+      "id": "law-of-cosines-core",
+      "title": "The Law-of-Cosines Bracket Collapse",
+      "summary": "trig_pythag_bracket (sin²u+sin²v+2·sinu·sinv·cos(u+v)=sin²(u+v)) and morley_side_sq, which reduces AY²+AZ²−2·AY·AZ·cos(α/3) to (8R·sin(α/3)·sin(β/3)·sin(γ/3))² using the supplementary relation α/3=π−(u+v).",
+      "startLine": 99,
+      "endLine": 140
+    },
+    {
+      "id": "model-and-side-length",
+      "title": "Triangle Model and Side-Length Definitions",
+      "summary": "The angle model TriangleAngles (mirroring the parent), the trisected-angle lemmas, the Morley side length 8R·sin(α/3)·sin(β/3)·sin(γ/3), and the three law-of-cosines side definitions morleySideA/B/C.",
+      "startLine": 141,
+      "endLine": 220
+    },
+    {
+      "id": "sides-equal-and-equilateral",
+      "title": "Each Side Equals the Formula; the Triangle is Equilateral",
+      "summary": "morleySideA/B/C_eq show each independently computed side equals the symmetric length; morley_equilateral assembles them into the equilateral conclusion with explicit side length, and morley_side_pos records positivity for R>0.",
+      "startLine": 221,
+      "endLine": 294
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; machine-verified against Mathlib v4.26.0, 2026-06-24): each side of the Morley triangle equals 8R·sin(α/3)·sin(β/3)·sin(γ/3), so the Morley triangle is equilateral with that explicit side length. The argument is coordinate-free, deriving the ear segments by the law of sines and the side by the law of cosines, with the two underlying trigonometric identities proved from scratch.",
+    "implications": "This completes the explicit length computation that OQ-01 set up and explicitly deferred, doing so without coordinates. The two reusable identities — the product form of the triple-angle formula and the law-of-cosines bracket collapse sin²u+sin²v+2·sinu·sinv·cos(u+v)=sin²(u+v) — are general tools for trigonometric metric computations in triangle geometry. The pattern of computing each side independently and observing they coincide turns Morley's equilateral conclusion into a corollary of the side-length formula rather than a separate fact.",
+    "openQuestions": [
+      "Coordinate realization: place the original triangle in EuclideanSpace ℝ (Fin 2), construct the trisector rays, and prove that the analytic intersection points actually realize the angle-model segment lengths AY, AZ used here — i.e. discharge the law-of-sines / law-of-cosines hypotheses geometrically rather than encoding them.",
+      "Second Morley triangles: the 18 trisector intersection points yield further equilateral triangles (Morley's full theorem). Do the analogous shifted-sine product formulas hold for the central and adjacent Morley triangles, and can the same bracket-collapse method compute their side lengths?",
+      "Orientation and the Morley centre: extend from side lengths to the explicit position/orientation of the Morley triangle (e.g. its centroid relative to the circumcentre), which the law-of-cosines data alone does not pin down."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "morleys-theorem",
+      "relationship": "parent-problem",
+      "description": "Parent: Morley's trisector theorem formalization (Wiedijk #84)"
+    },
+    {
+      "targetId": "morleys-theorem-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01: Conway's backward construction, which set up the angle scaffolding and defined morleySideLength but left the explicit length computation open — closed here."
+    },
+    {
+      "targetId": "morleys-theorem-oq-03",
+      "relationship": "sibling",
+      "description": "OQ-03: extremal question — the Morley triangle is largest at the equilateral — which takes the side-length formula 8R·sin(α/3)·sin(β/3)·sin(γ/3) as its objective."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "The headline computation is a single application of the law of cosines to the two ear segments, collapsed by a trigonometric identity."
+    }
+  ],
+  "references": [
+    {
+      "title": "H. S. M. Coxeter and S. L. Greitzer, Geometry Revisited (1967), §2.9",
+      "description": "Standard derivation of the Morley triangle side length 8R·sin(A/3)·sin(B/3)·sin(C/3) via the law of sines in the trisector sub-triangles."
+    },
+    {
+      "title": "Frank Morley, On the metric geometry of the plane n-line (Trans. AMS, 1900)",
+      "description": "Original source of Morley's trisector configuration."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "MorleysTheoremOQ01OQ01",
+    "lineCount": 294,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 8,
+    "path": "Proofs/MorleysTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
