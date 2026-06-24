@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ann-feuer-collinear",
+    "proofId": "feuerbachs-theorem-defs-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "Collinearity: each foot lies on the opposite side",
+    "content": "`foot_a_collinear` (and its B, C cousins) prove the first defining property of an altitude foot: $H_a$, $B$, $C$ are collinear, expressed as the vanishing of the signed area / 2D cross product $(H_a - B)\\times(C - B) = 0$. This is a *pure algebraic identity* — $H_a - B$ is a scalar multiple of $C - B$, so the projection denominator cancels and **no** non-degeneracy hypothesis is needed (the `ring` tactic closes it outright). The parent file's nine-point-circle theorem was about an opaque projection formula; this restores the geometric meaning.",
+    "mathContext": "$(H_a - B) \\times (C - B) = (H_{a,x}-B_x)(C_y-B_y) - (H_{a,y}-B_y)(C_x-B_x) = 0.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "collinearity",
+      "signed area",
+      "cross product",
+      "altitude foot"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "orthogonal projection"
+    ]
+  },
+  {
+    "id": "ann-feuer-perp",
+    "proofId": "feuerbachs-theorem-defs-oq-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Perpendicularity: the altitude is orthogonal to the side",
+    "content": "`foot_a_perp` proves the second defining property: the altitude $AH_a$ is perpendicular to side $BC$, i.e. the dot product $(H_a - A)\\cdot(C - B) = 0$. Unlike collinearity, this needs the side length to be non-zero — supplied by the parent lemma `bc_sq_ne_zero` so that `field_simp` can clear the projection denominator before `ring`. Together collinearity + perpendicularity are exactly what make a point an 'altitude foot'.",
+    "mathContext": "$(H_a - A)\\cdot(C - B) = 0,\\quad \\text{with } \\|C-B\\|^2 \\ne 0.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "perpendicularity",
+      "dot product",
+      "orthogonality"
+    ],
+    "prerequisites": [
+      "coordinate geometry",
+      "non-degeneracy of the triangle"
+    ]
+  },
+  {
+    "id": "ann-feuer-pythagoras",
+    "proofId": "feuerbachs-theorem-defs-oq-01",
+    "range": {
+      "startLine": 124,
+      "endLine": 150
+    },
+    "type": "insight",
+    "title": "Pythagoras at the foot",
+    "content": "`foot_a_pythagoras`: the right angle at the foot gives an exact Pythagorean split of the side toward $B$, $|AH_a|^2 + |H_aB|^2 = |AB|^2$, stated entirely in squared distances (`dist2_sq`, no `sqrt`). This is the metric consequence of the perpendicularity just proved — the altitude foot decomposes the triangle into two right triangles, the classical entry point to many Feuerbach-circle computations.",
+    "mathContext": "$|AH_a|^2 + |H_aB|^2 = |AB|^2.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pythagorean theorem",
+      "squared distance",
+      "right triangle decomposition"
+    ],
+    "prerequisites": [
+      "perpendicularity at the foot"
+    ]
+  },
+  {
+    "id": "ann-feuer-unique",
+    "proofId": "feuerbachs-theorem-defs-oq-01",
+    "range": {
+      "startLine": 156,
+      "endLine": 171
+    },
+    "type": "technique",
+    "title": "Uniqueness of the foot on its side line",
+    "content": "`foot_a_unique`: $H_a$ is the *only* point on line $BC$ whose join to $A$ is perpendicular to $BC$. Parametrizing the line as $P = B + s(C-B)$, the perpendicularity constraint $(P - A)\\cdot(C-B) = 0$ pins the parameter to a single value $s = \\frac{(A-B)\\cdot(C-B)}{\\|C-B\\|^2}$ (extracted by `field_simp`/`nlinarith`), which is exactly the projection formula for $H_a$. This confirms the explicit foot formula is forced, not just consistent.",
+    "mathContext": "$P = B + s(C-B),\\ (P-A)\\cdot(C-B)=0 \\;\\Rightarrow\\; s = \\frac{(A-B)\\cdot(C-B)}{\\|C-B\\|^2},\\ P = H_a.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniqueness",
+      "line parametrization",
+      "orthogonal projection formula"
+    ],
+    "prerequisites": [
+      "perpendicularity",
+      "non-degeneracy"
+    ]
+  },
+  {
+    "id": "ann-feuer-capstone",
+    "proofId": "feuerbachs-theorem-defs-oq-01",
+    "range": {
+      "startLine": 177,
+      "endLine": 198
+    },
+    "type": "concept",
+    "title": "The capstone characterization",
+    "content": "`altitude_feet_characterization` bundles collinearity + perpendicularity for all three feet $H_a, H_b, H_c$ into one statement — the complete defining characterization of the altitude feet of a triangle. It is assembled directly from the six per-foot lemmas, providing the clean interface a downstream Feuerbach-circle proof can cite without re-deriving the projection algebra.",
+    "mathContext": "$\\forall \\text{ foot}:\\ \\text{collinear with opposite side} \\;\\wedge\\; \\text{altitude} \\perp \\text{side}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "characterization theorem",
+      "altitude feet",
+      "Feuerbach circle"
+    ],
+    "prerequisites": [
+      "collinearity",
+      "perpendicularity"
+    ]
+  },
+  {
+    "id": "ann-feuer-example",
+    "proofId": "feuerbachs-theorem-defs-oq-01",
+    "range": {
+      "startLine": 200,
+      "endLine": 204
+    },
+    "type": "context",
+    "title": "Worked example: the 3-4-5 triangle",
+    "content": "`triangle_345_foot_a` evaluates the foot of the altitude from $A$ onto $BC$ for the right triangle $A=(0,0), B=(3,0), C=(0,4)$, getting $H_a = (48/25, 36/25)$ by `norm_num`. A concrete sanity check that the abstract projection formula produces the expected rational coordinates.",
+    "mathContext": "$A=(0,0),\\ B=(3,0),\\ C=(0,4) \\;\\Rightarrow\\; H_a = (48/25,\\ 36/25).$",
+    "significance": "context",
+    "relatedConcepts": [
+      "worked example",
+      "3-4-5 triangle"
+    ],
+    "prerequisites": [
+      "the foot formula"
+    ]
+  }
+]
