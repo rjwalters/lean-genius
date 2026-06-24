@@ -455,6 +455,7 @@ import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
 import Proofs.BrianchonTheorem
 import Proofs.BrianchonTheoremAristotle
+import Proofs.BritishFlagDefect
 import Proofs.BritishFlagTheorem
 import Proofs.BrouwerFixedPoint
 import Proofs.BrouwerFixedPointOQ01
