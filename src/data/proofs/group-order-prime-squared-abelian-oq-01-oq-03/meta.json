@@ -1,0 +1,183 @@
+{
+  "id": "group-order-prime-squared-abelian-oq-01-oq-03",
+  "title": "The Element-Order Census of a Group of Order p²",
+  "slug": "group-order-prime-squared-abelian-oq-01-oq-03",
+  "description": "A follow-up to the order-p² classification that computes the full element-order census: for a group G of order p² (p prime), exactly how many elements have each of the only possible orders 1, p, p². The counts depend only on the isomorphism type. Cyclic ℤ/p²: 1 element of order 1, p−1 of order p, p·(p−1)=φ(p²) of order p². Elementary abelian (ℤ/p)²: 1 of order 1, p²−1 of order p, none of order p². The order-p count alone is shown to decide the isomorphism type (p−1 ⟺ cyclic), so the census is a sharp invariant. The cyclic column reads off Mathlib's IsCyclic.card_orderOf_eq_totient; the elementary-abelian column uses the parent's sharpening that every non-identity element has order exactly p.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GroupOrderPrimeSquaredAbelianCountOQ03.lean",
+    "tags": [
+      "group-theory",
+      "finite-groups",
+      "p-groups",
+      "cyclic-groups",
+      "element-order",
+      "elementary-abelian",
+      "totient",
+      "algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 144,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "assumptions": "None beyond the stated theorem hypotheses (Fintype.card G = p² with p prime, plus DecidableEq G for the two theorems that count via Finset.erase). 0 axioms, 0 sorries, no native_decide. The structural inputs — orderOf_eq_prime_of_not_isCyclic and pow_prime_eq_one_of_not_isCyclic — are imported from the parent files Proofs/GroupOrderPrimeSquaredAbelian.lean and Proofs/GroupOrderPrimeSquaredAbelianExponentOQ01.lean. The cyclic counts come from Mathlib's IsCyclic.card_orderOf_eq_totient together with the totient values φ(p)=p−1 (Nat.totient_prime) and φ(p²)=p·(p−1) (Nat.totient_prime_pow).",
+    "originalContributions": [
+      "card_orderOf_eq_one: in any finite group exactly one element has order 1 (the trivial census column), via orderOf_eq_one_iff and Finset.card_eq_one.",
+      "card_orderOf_eq_prime_of_isCyclic: a cyclic group of order p² has exactly p−1 elements of order p. Read off IsCyclic.card_orderOf_eq_totient (p ∣ p² = |G|) and Nat.totient_prime, φ(p)=p−1.",
+      "card_orderOf_eq_sq_of_isCyclic: a cyclic group of order p² has exactly p·(p−1)=φ(p²) elements of order p² — precisely the generators of ℤ/p². Via IsCyclic.card_orderOf_eq_totient (p² ∣ |G|) and Nat.totient_prime_pow.",
+      "card_orderOf_eq_prime_of_not_isCyclic: a non-cyclic (elementary-abelian) group of order p² has exactly p²−1 elements of order p. By the parent's sharpening orderOf_eq_prime_of_not_isCyclic, the order-p elements are exactly the non-identity elements, so the count is |G|−1 (Finset.card_erase_of_mem).",
+      "card_orderOf_eq_sq_of_not_isCyclic: a non-cyclic group of order p² has no element of order p². Every gᵖ=1 (pow_prime_eq_one_of_not_isCyclic) forces orderOf g ∣ p ≤ p < p², so the order-p² set is empty.",
+      "isCyclic_iff_card_orderOf_eq_prime: the census is sharp — the number of order-p elements alone decides the isomorphism type: G is cyclic iff it has exactly p−1 elements of order p. Forward is the cyclic count; conversely p²−1 ≠ p−1 for a prime p (p² ≠ p) forces cyclicity."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCyclic.card_orderOf_eq_totient",
+        "description": "in a finite cyclic group the number of elements of order d equals φ(d) for every d dividing the cardinality — supplies both cyclic counts (d = p and d = p²)",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Nat.totient_prime / Nat.totient_prime_pow",
+        "description": "φ(p)=p−1 and φ(pⁿ)=pⁿ⁻¹·(p−1) — evaluate the totient at p and p² to turn the abstract cyclic counts into closed forms",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Finset.card_erase_of_mem",
+        "description": "(s.erase a).card = s.card − 1 for a ∈ s — counts the non-identity elements (= order-p elements) of the elementary-abelian case as |G|−1",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "orderOf_eq_one_iff / orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf g = 1 ↔ g = 1 and gⁿ = 1 ↔ orderOf g ∣ n — isolate the identity as the unique order-1 element and bound the order in the non-cyclic case",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Once the two isomorphism types of order p² are identified (ℤ/p² and (ℤ/p)²) and separated by the exponent invariant, the natural quantitative question is the element-order distribution: how many elements have each order. For cyclic groups this is the classical statement that a cyclic group of order n has exactly φ(d) elements of order d for each d ∣ n; for the elementary-abelian group it is the observation that every non-identity element is an involution-analogue of order p. This entry assembles both into the complete census of the two groups of order p², the parent's own stated open question.",
+    "problemStatement": "Let G be a group with Fintype.card G = p² for a prime p. For each of the possible element orders 1, p, p², count the number of elements of G with that order, and show the counts are determined by whether G is cyclic (ℤ/p²) or not (elementary abelian (ℤ/p)²). Then show the order-p count alone characterizes the isomorphism type.",
+    "text": "The element-order census is the finest elementary invariant of a finite group short of the full multiplication table, and for order p² it is completely explicit. The cyclic group ℤ/p² has the staircase 1, p−1, p·(p−1) across orders 1, p, p²; the elementary-abelian (ℤ/p)² collapses to 1, p²−1, 0 because it has exponent p. The two distributions are disjoint already in the order-p coordinate (p−1 vs p²−1), so the single number #{g : orderOf g = p} recovers the isomorphism type — the census is a sharp invariant.",
+    "proofStrategy": "Cyclic case: apply IsCyclic.card_orderOf_eq_totient with d = p and d = p² (both divide |G| = p²), then evaluate φ(p) = p−1 (Nat.totient_prime) and φ(p²) = p·(p−1) (Nat.totient_prime_pow). Elementary-abelian case: the parent's orderOf_eq_prime_of_not_isCyclic shows the order-p elements are exactly the non-identity elements, so their count is |G| − 1 = p² − 1 via Finset.card_erase_of_mem; and pow_prime_eq_one_of_not_isCyclic forces orderOf g ∣ p < p², so the order-p² set is empty. The order-1 count is 1 in all cases (orderOf_eq_one_iff). Sharpness: combine the two order-p counts; since p² ≠ p for a prime p (omega + nlinarith), the value p−1 occurs only in the cyclic case.",
+    "keyInsights": [
+      "**The census is determined by the type, and conversely.** Each isomorphism type gives a fixed distribution of element orders, and the distributions differ already at order p (p−1 vs p²−1), so one count recovers the type. The census is therefore a complete invariant for the order-p² classification, like the exponent.",
+      "**The cyclic column is pure totient.** Mathlib's IsCyclic.card_orderOf_eq_totient turns 'count elements of order d' into 'evaluate φ(d)', so the cyclic counts are literally φ(p) and φ(p²) — no bespoke counting argument is needed.",
+      "**The elementary-abelian column is 'all-or-nothing'.** Because (ℤ/p)² has exponent p, every non-identity element has order exactly p: the order-p set is the complement of the identity (p²−1 elements) and the order-p² set is empty. This is exactly where the parent's order-exactly-p sharpening is consumed.",
+      "**Disjointness comes from p < p².** The only arithmetic input to sharpness is that p and p² are distinct for a prime p, which separates the two order-p counts p−1 and p²−1."
+    ],
+    "prerequisites": [
+      "The parent dichotomy and its sharpening: a non-cyclic group of order p² has every non-identity element of order exactly p (imported)",
+      "IsCyclic.card_orderOf_eq_totient: φ(d) elements of order d in a cyclic group",
+      "The totient values φ(p) = p−1 and φ(p²) = p·(p−1)",
+      "Finset cardinality of an erased singleton (|s.erase a| = |s| − 1)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Docstring laying out the element-order census table for the two groups of order p² and listing the six theorems; imports Mathlib and both parent files, opens the parent namespaces, and fixes a finite group variable G.",
+      "mathContext": "orders 1/p/p² have counts 1/(p−1)/p·(p−1) for ℤ/p² and 1/(p²−1)/0 for (ℤ/p)²."
+    },
+    {
+      "id": "order-one",
+      "title": "The Identity Is the Unique Order-1 Element",
+      "startLine": 57,
+      "endLine": 64,
+      "summary": "card_orderOf_eq_one: in any finite group exactly one element has order 1. The filter {g | orderOf g = 1} equals the singleton {1} (orderOf_eq_one_iff), so its cardinality is 1 (Finset.card_eq_one).",
+      "mathContext": "$\\#\\{g : \\mathrm{ord}(g) = 1\\} = 1$ — the trivial census column, no cardinality hypothesis."
+    },
+    {
+      "id": "cyclic-counts",
+      "title": "Cyclic Case via the Totient",
+      "startLine": 65,
+      "endLine": 87,
+      "summary": "card_orderOf_eq_prime_of_isCyclic (p−1 elements of order p) and card_orderOf_eq_sq_of_isCyclic (p·(p−1) elements of order p²). Both apply IsCyclic.card_orderOf_eq_totient (p ∣ p² and p² ∣ p²) and evaluate the totient: φ(p)=p−1, φ(p²)=p·(p−1).",
+      "mathContext": "$\\#\\{g : \\mathrm{ord}(g)=d\\} = \\varphi(d)$ for $d \\mid p^2$, with $\\varphi(p)=p-1$, $\\varphi(p^2)=p(p-1)$."
+    },
+    {
+      "id": "elem-abelian-counts",
+      "title": "Elementary-Abelian Case",
+      "startLine": 88,
+      "endLine": 126,
+      "summary": "card_orderOf_eq_prime_of_not_isCyclic (p²−1 elements of order p): the parent's orderOf_eq_prime_of_not_isCyclic makes the order-p set the complement of the identity, counted as |G|−1 by Finset.card_erase_of_mem. card_orderOf_eq_sq_of_not_isCyclic (no order-p² elements): gᵖ=1 forces orderOf g ∣ p < p², so the set is empty.",
+      "mathContext": "$\\#\\{g : \\mathrm{ord}(g)=p\\} = p^2 - 1,\\qquad \\#\\{g : \\mathrm{ord}(g)=p^2\\} = 0$."
+    },
+    {
+      "id": "sharp-invariant",
+      "title": "The Census Is a Sharp Invariant",
+      "startLine": 127,
+      "endLine": 144,
+      "summary": "isCyclic_iff_card_orderOf_eq_prime: G is cyclic iff it has exactly p−1 elements of order p. Forward is the cyclic count; conversely a non-cyclic group has p²−1 ≠ p−1 such elements (p² ≠ p for a prime p), so the count p−1 forces cyclicity.",
+      "mathContext": "$G \\text{ cyclic} \\iff \\#\\{g : \\mathrm{ord}(g)=p\\} = p-1$ — one count recovers the isomorphism type."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 follow-up that computes the complete element-order census of a group of order p² (p prime): orders 1, p, p² occur with counts 1, p−1, p·(p−1) when G is cyclic (ℤ/p²) and 1, p²−1, 0 when G is elementary abelian ((ℤ/p)²). The order-p count alone determines the isomorphism type. 6 theorems, 144 lines, 0 axioms, 0 sorries, no native_decide; the structural inputs are imported from the parent files.",
+    "implications": "Completes the parent's stated open question of counting Nat.card {g | orderOf g = p} in each case, and exhibits the element-order distribution as a sharp invariant complementing the exponent. The cyclic column is a clean application of Mathlib's totient count, while the elementary-abelian column is exactly where the parent's 'order exactly p' sharpening is used.",
+    "openQuestions": [
+      "Package the census as a single statement over a Fintype indexing of the divisors {1, p, p²} and verify the counts sum to p² (a partition-of-the-group identity), giving an internal consistency check of the classification.",
+      "Lift the counts to explicit isomorphisms G ≃* Multiplicative (ZMod (p^2)) and G ≃* Multiplicative (ZMod p) × Multiplicative (ZMod p), turning the order distribution into a structure theorem.",
+      "Compute the analogous census for order p³, where the order distribution no longer determines the isomorphism type (the two non-abelian groups of order p³ for odd p share the same orders of elements counts in some cases), quantifying exactly where element-order data stops being a complete invariant."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "group-order-prime-squared-abelian-oq-01",
+      "relationship": "parent",
+      "description": "supplies the cyclic/elementary-abelian dichotomy and the order trichotomy (orders are 1, p, or p²) underlying the census"
+    },
+    {
+      "id": "group-order-prime-squared-abelian-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "provides orderOf_eq_prime_of_not_isCyclic (every non-identity element has order exactly p in the non-cyclic case), the precise input used to count the p²−1 order-p elements"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Dummit, D.S.",
+        "Foote, R.M."
+      ],
+      "title": "Abstract Algebra",
+      "year": "2004",
+      "venue": "John Wiley & Sons, 3rd ed.",
+      "note": "§4.3, §5.2: groups of order p², element orders, and the count of elements of each order in a finite abelian group"
+    },
+    {
+      "authors": [
+        "Rotman, J.J."
+      ],
+      "title": "An Introduction to the Theory of Groups",
+      "year": "1995",
+      "venue": "Springer GTM 148, 4th ed.",
+      "note": "cyclic groups and the φ(d) count of elements of order d; elementary abelian p-groups"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GroupOrderPrimeSquaredAbelian",
+      "Proofs.GroupOrderPrimeSquaredAbelianExponentOQ01"
+    ],
+    "opens": [
+      "GroupOrderPrimeSq",
+      "GroupOrderPrimeSqExponent",
+      "Finset"
+    ],
+    "namespace": "GroupOrderPrimeSqCount",
+    "lineCount": 144,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GroupOrderPrimeSquaredAbelianCountOQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
