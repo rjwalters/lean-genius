@@ -3388,6 +3388,7 @@ import Proofs.MachinFromAddition
 import Proofs.MantelStabilityOQ01
 import Proofs.MantelTheorem
 import Proofs.MantelTheoremUniqueness
+import Proofs.MantelTheoremOQ03OQ01
 import Proofs.MantelTheoremOQ04
 import Proofs.MantelTheoremOQ04OQ02
 import Proofs.MaschkeAugmentationNoSplitOQ010101

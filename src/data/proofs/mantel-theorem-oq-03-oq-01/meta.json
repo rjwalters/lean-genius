@@ -1,0 +1,165 @@
+{
+  "id": "mantel-theorem-oq-03-oq-01",
+  "title": "Sharpness of the Minimum-Degree Bound in Mantel's Theorem",
+  "slug": "mantel-theorem-oq-03-oq-01",
+  "description": "A fully verified, axiom-free certificate that the ⌊n/2⌋ minimum-degree bound of the Mantel min-degree corollary (mantel-theorem-oq-03: every triangle-free graph on n ≥ 1 vertices has a vertex of degree ≤ ⌊n/2⌋) is sharp and cannot be lowered. The witness is Mathlib's Turán graph turanGraph n 2 — the balanced complete bipartite graph K_{⌈n/2⌉,⌊n/2⌋} realized on Fin n by the residue-mod-2 partition. The degree of a vertex v is computed exactly as the size of the OPPOSITE residue class: ⌊n/2⌋ if v is even, ⌈n/2⌉ = (n+1)/2 if v is odd. Consequently turanGraph n 2 is triangle-free (CliqueFree 3) and has minimum degree exactly ⌊n/2⌋, with every vertex of degree at least ⌊n/2⌋ — so no triangle-free graph can guarantee a vertex of degree below ⌊n/2⌋, certifying that the threshold in exists_degree_le_card_div_two is best possible. The residue-class cardinalities are obtained from Nat.count (with count_succ and omega) transported along the Fin.valEmbedding bridge between Finset.univ over Fin n and Finset.range n, and the minimum degree is pinned by le_antisymm using minDegree_le_degree (even vertex 0) and le_minDegree_of_forall_le_degree.",
+  "meta": {
+    "author": "lean-genius researcher agents, formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Tur%C3%A1n%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "graph-theory",
+      "combinatorics",
+      "extremal-graph-theory",
+      "mantel-theorem",
+      "turan-graph",
+      "minimum-degree",
+      "sharpness"
+    ],
+    "proofRepoPath": "Proofs/MantelTheoremOQ03OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.turanGraph",
+        "description": "The canonical (r+1)-clique-free Turán graph on Fin n with adjacency v % r ≠ w % r; turanGraph_adj is the adjacency lemma identifying the neighbourhood of v with the opposite residue class, and turanGraph_cliqueFree gives CliqueFree 3 at r = 2",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Extremal.Turan"
+      },
+      {
+        "theorem": "SimpleGraph.minDegree",
+        "description": "Minimum degree of a finite graph; minDegree_le_degree and le_minDegree_of_forall_le_degree bracket it for the le_antisymm computing minDegree (turanGraph n 2) = ⌊n/2⌋",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "SimpleGraph.neighborFinset_eq_filter",
+        "description": "Rewrites the neighbour finset as Finset.univ.filter (G.Adj v); combined with card_neighborFinset_eq_degree it turns the degree into the cardinality of the filtered opposite residue class",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
+      },
+      {
+        "theorem": "Nat.count_eq_card_filter_range",
+        "description": "count p n = #{x ∈ range n | p x}; with Nat.count_succ this lets the residue-class counts ⌊n/2⌋ and ⌈n/2⌉ be proved by induction + omega",
+        "module": "Mathlib.Data.Nat.Count"
+      },
+      {
+        "theorem": "Fin.map_valEmbedding_univ",
+        "description": "(univ : Finset (Fin n)).map Fin.valEmbedding = Iio n; with Nat.Iio_eq_range and Finset.filter_map it bridges the Fin-n residue filter to the range-n filter counted by Nat.count",
+        "module": "Mathlib.Data.Fintype.Fin"
+      }
+    ],
+    "originalContributions": [
+      "count_mod_two_one / count_mod_two_zero: Nat.count (· % 2 = 1) n = ⌊n/2⌋ and Nat.count (· % 2 = 0) n = ⌈n/2⌉ = (n+1)/2, proved by induction with Nat.count_succ and omega (no dedicated residue-counting lemma exists in Mathlib in this form)",
+      "card_fin_mod_two: the residue-class count bridge #{w : Fin n | w % 2 = c} = Nat.count (· % 2 = c) n, transferred along Fin.valEmbedding via map_valEmbedding_univ / Nat.Iio_eq_range / Finset.filter_map",
+      "turanTwo_degree_eq: the exact degree of a vertex v in turanGraph n 2 is the size of the opposite residue class — ⌊n/2⌋ if v is even, ⌈n/2⌉ if v is odd — obtained by identifying the neighbour finset with the opposite class and counting it",
+      "turanGraphTwo_forall_degree_ge: every vertex of turanGraph n 2 has degree at least ⌊n/2⌋ (the sharpness certificate: no vertex drops below the Mantel threshold)",
+      "turanGraphTwo_minDegree: the minimum degree of turanGraph n 2 is exactly ⌊n/2⌋ (le_antisymm via the even vertex 0 above and le_minDegree_of_forall_le_degree below)",
+      "mantel_minDegree_bound_sharp: the packaged statement that turanGraph n 2 is triangle-free AND has minimum degree exactly ⌊n/2⌋, certifying the mantel-theorem-oq-03 bound is best possible"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCountNote": "0 axiom declarations, 0 sorries, 0 structure-encoded assumptions, no native_decide. All main results (turanGraphTwo_minDegree, mantel_minDegree_bound_sharp, turanGraphTwo_forall_degree_ge — #print axioms checked) depend only on propext/Classical.choice/Quot.sound, the foundational axioms the project does not count. Degrees and minimum degree are computed entirely from Mathlib's SimpleGraph, Nat.count, and Fin APIs."
+  },
+  "overview": {
+    "historicalContext": "Mantel's theorem (1907) bounds the number of edges of a triangle-free graph on n vertices by ⌊n²/4⌋, with the balanced complete bipartite graph K_{⌈n/2⌉,⌊n/2⌋} as the unique extremal example. The local minimum-degree companion — every triangle-free graph on n ≥ 1 vertices has a vertex of degree at most ⌊n/2⌋ — is proved in mantel-theorem-oq-03 by the neighbourhood-disjointness argument, independently of the edge bound. The first open question posed there asks for a formal sharpness certificate: an explicit triangle-free graph, for each n, whose minimum degree is exactly ⌊n/2⌋, proving the bound cannot be improved. This entry supplies it using Mathlib's Turán graph turanGraph n 2.",
+    "problemStatement": "Exhibit, for each n ≥ 1, a triangle-free graph whose minimum degree is exactly ⌊n/2⌋, certifying that the bound in mantel-theorem-oq-03's exists_degree_le_card_div_two cannot be lowered. Concretely: prove turanGraph n 2 is CliqueFree 3 and compute minDegree (turanGraph n 2) = ⌊n/2⌋.",
+    "proofStrategy": "In turanGraph n 2 a vertex v is adjacent to w iff v % 2 ≠ w % 2, so by neighborFinset_eq_filter and card_neighborFinset_eq_degree the degree of v equals the number of vertices in the OPPOSITE residue class mod 2. Those class sizes are counted by reducing to Nat.count: count_mod_two_one and count_mod_two_zero give Nat.count (· % 2 = 1) n = ⌊n/2⌋ and Nat.count (· % 2 = 0) n = ⌈n/2⌉ by induction with Nat.count_succ and omega, and card_fin_mod_two transports these from range n to Fin n along Fin.valEmbedding (map_valEmbedding_univ, Nat.Iio_eq_range, Finset.filter_map, card_map). Hence turanTwo_degree_eq: deg v = ⌊n/2⌋ for even v and ⌈n/2⌉ for odd v. Both values are ≥ ⌊n/2⌋, so every vertex has degree ≥ ⌊n/2⌋ (turanGraphTwo_forall_degree_ge); the even vertex 0 attains ⌊n/2⌋. minDegree (turanGraph n 2) = ⌊n/2⌋ then follows by le_antisymm: minDegree_le_degree at vertex 0 bounds it above, le_minDegree_of_forall_le_degree bounds it below. Triangle-freeness is turanGraph_cliqueFree at r = 2.",
+    "keyInsights": [
+      "The neighbourhood of a vertex v in turanGraph n 2 is exactly the opposite residue class mod 2, because adjacency is v % 2 ≠ w % 2 and residues mod 2 take only the values 0 and 1 — so the degree is the size of the other class, with no overcounting.",
+      "Minimum degree is achieved at the EVEN vertices (whose opposite class, the odds, has the smaller size ⌊n/2⌋), while odd vertices have the larger degree ⌈n/2⌉; this asymmetry for odd n is exactly why the minimum is ⌊n/2⌋ and not ⌈n/2⌉.",
+      "Mathlib has no direct 'number of k < n with k % 2 = c' lemma, but Nat.count plus Nat.count_succ reduces it to a one-line induction closed by omega (which natively understands division and remainder by the literal 2).",
+      "The Fin.valEmbedding bridge (map_valEmbedding_univ : map valEmbedding univ = Iio n, with Iio = range) lets a residue count over Fin n be computed as the corresponding Nat.count over range n via Finset.filter_map and card_map, avoiding any ad hoc Fin-indexed induction.",
+      "Sharpness is most cleanly certified not just by minDegree = ⌊n/2⌋ but by turanGraphTwo_forall_degree_ge — EVERY vertex has degree ≥ ⌊n/2⌋ — which directly says no triangle-free graph forces a vertex of degree below ⌊n/2⌋."
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete, axiom-free and sorry-free proof that the Mantel minimum-degree bound ⌊n/2⌋ is sharp: turanGraph n 2 is triangle-free (CliqueFree 3) and has minimum degree exactly ⌊n/2⌋, with every vertex of degree at least ⌊n/2⌋. The degree of each vertex is computed exactly as the opposite-residue-class size (⌊n/2⌋ for even vertices, ⌈n/2⌉ for odd), so the threshold of mantel-theorem-oq-03's exists_degree_le_card_div_two cannot be improved.",
+    "implications": "Closes the first open question of mantel-theorem-oq-03 with an explicit, uniform-in-n extremal witness, and supplies reusable residue-class counting lemmas (count_mod_two_one/zero, card_fin_mod_two) and the exact degree formula turanTwo_degree_eq for the balanced complete bipartite / r = 2 Turán graph. The Nat.count + Fin.valEmbedding pattern is a clean template for computing degrees in any residue-defined graph.",
+    "openQuestions": [
+      "Generalize the sharpness certificate to turanGraph n r: compute the exact degree of each vertex (n minus its own residue-class size) and prove minDegree (turanGraph n r) = n − ⌈n/r⌉, certifying the Kᵣ₊₁-free Turán-degree bound (1 − 1/r)·n is sharp.",
+      "Combine turanGraphTwo_minDegree with the part-size identities of mantel-theorem-oq-04-oq-01 to derive the exact edge count of turanGraph n 2 and recover the Mantel extremal value ⌊n²/4⌋ from the degree sequence via the handshake lemma."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports",
+      "title": "License and Imports",
+      "startLine": 1,
+      "endLine": 5,
+      "summary": "Apache-2.0 header and a single import of Mathlib, supplying the SimpleGraph turanGraph / minDegree / neighborFinset API, Nat.count, and the Fin.valEmbedding bridge lemmas.",
+      "mathContext": "Self-contained over Mathlib; no sibling-file dependency."
+    },
+    {
+      "id": "docstring",
+      "title": "Statement and Approach",
+      "startLine": 7,
+      "endLine": 38,
+      "summary": "Module docstring framing the result as the sharpness certificate for mantel-theorem-oq-03's ⌊n/2⌋ bound, naming the witness turanGraph n 2 and the four main results, and outlining the residue-counting strategy.",
+      "mathContext": "turanGraph n 2 is triangle-free with minDegree exactly ⌊n/2⌋."
+    },
+    {
+      "id": "residue-counts",
+      "title": "Residue-Class Counts mod 2",
+      "startLine": 44,
+      "endLine": 71,
+      "summary": "count_mod_two_one and count_mod_two_zero prove Nat.count (· % 2 = 1) n = ⌊n/2⌋ and Nat.count (· % 2 = 0) n = ⌈n/2⌉ by induction with Nat.count_succ + omega; card_fin_mod_two bridges these to Finset.univ.filter over Fin n via Fin.valEmbedding.",
+      "mathContext": "#{w : Fin n | w % 2 = c} = Nat.count (· % 2 = c) n."
+    },
+    {
+      "id": "degree",
+      "title": "Exact Vertex Degree",
+      "startLine": 73,
+      "endLine": 92,
+      "summary": "turanTwo_degree_eq: the degree of v in turanGraph n 2 equals the opposite residue-class size — ⌊n/2⌋ if v is even, ⌈n/2⌉ = (n+1)/2 if v is odd — by identifying the neighbour finset with the opposite class (neighborFinset_eq_filter + turanGraph_adj) and applying the residue counts.",
+      "mathContext": "deg v = if v even then ⌊n/2⌋ else ⌈n/2⌉."
+    },
+    {
+      "id": "sharpness",
+      "title": "Triangle-Freeness, Degree Lower Bound, and Minimum Degree",
+      "startLine": 94,
+      "endLine": 127,
+      "summary": "turanGraphTwo_cliqueFree_three (CliqueFree 3 from turanGraph_cliqueFree at r = 2), turanGraphTwo_forall_degree_ge (every vertex has degree ≥ ⌊n/2⌋), turanGraphTwo_minDegree (minDegree = ⌊n/2⌋ by le_antisymm), and the packaged mantel_minDegree_bound_sharp.",
+      "mathContext": "minDegree (turanGraph n 2) = ⌊n/2⌋, certifying the bound is best possible."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "mantel-theorem-oq-03",
+      "relationship": "extends",
+      "description": "mantel-theorem-oq-03 proves every triangle-free graph on n ≥ 1 vertices has a vertex of degree ≤ ⌊n/2⌋ and explicitly poses the sharpness of this bound as its first open question; this entry settles it by exhibiting turanGraph n 2 as a triangle-free graph with minimum degree exactly ⌊n/2⌋."
+    },
+    {
+      "targetId": "mantel-theorem-oq-04-oq-01",
+      "relationship": "related",
+      "description": "mantel-theorem-oq-04-oq-01 computes the exact residue-class part sizes ⌈n/2⌉ and ⌊n/2⌋ of turanGraph n 2 as a complete bipartite graph; this entry turns those class sizes into the exact vertex degrees and the minimum degree."
+    },
+    {
+      "targetId": "mantel-theorem",
+      "relationship": "related",
+      "description": "mantel-theorem proves the global edge bound ⌊n²/4⌋ via turanGraph n 2; this entry gives the local minimum-degree sharpness of the same extremal graph."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "SimpleGraph"
+    ],
+    "namespace": "MantelMinDegreeSharp",
+    "lineCount": 129,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/MantelTheoremOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    "turanTwo_degree_eq",
+    "turanGraphTwo_cliqueFree_three",
+    "turanGraphTwo_forall_degree_ge",
+    "turanGraphTwo_minDegree",
+    "mantel_minDegree_bound_sharp"
+  ],
+  "sorries": 0
+}
