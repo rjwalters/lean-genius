@@ -327,10 +327,113 @@ element never decreases the maximum union-free family size. -/
 theorem unionFreeMax_le_succ (n : ℕ) : unionFreeMax n ≤ unionFreeMax (n + 1) :=
   unionFreeMax_mono (Nat.le_succ n)
 
+/-!
+## Strict monotonicity via a fresh ground element
+
+The successor bound `F(n) ≤ F(n+1)` above can be sharpened to *strict*
+monotonicity `F(n) + 1 ≤ F(n+1)`: the extra ground element `n` always lets us
+enlarge an extremal family by exactly one. Take an extremal union-free family
+`G` on `Fin n`, relabel it into `Fin (n+1)` (so no member then contains the new
+top element `Fin.last n`), and adjoin the singleton `{Fin.last n}`. That new
+element is *fresh* — it lies in no relabelled member — so the enlarged family is
+still union-free (`unionFree_insert_fresh`) and strictly larger, giving
+`F(n) + 1 ≤ F(n+1)` (`unionFreeMax_succ_strict`). Hence `F` is *strictly*
+increasing (`unionFreeMax_strictMono`), a sharpening of `unionFreeMax_monotone`.
+-/
+
+/-- **Adjoining a set with a fresh element preserves union-freeness.** If `F` is
+union-free and `A` contains a ground element `x` lying in no member of `F`, then
+`insert A F` is union-free. The fresh element `x` blocks every potential
+spurious union: a union of `≥ 2` members equal to `A` would have to omit `x`
+(no member of `F` contains it), and a union producing some `B ∈ F` cannot use
+`A` (that would force `x ∈ B`), so it reduces to a spurious union already inside
+`F`. -/
+theorem unionFree_insert_fresh {n : ℕ} {F : SetFamily n} {A : Finset (Fin n)}
+    (hF : isUnionFree F) {x : Fin n} (hxA : x ∈ A) (hxF : ∀ B ∈ F, x ∉ B) :
+    isUnionFree (insert A F) := by
+  -- `x` lies in no union of a subfamily of `F`
+  have hxUnion : ∀ {G : SetFamily n}, G ⊆ F → x ∉ familyUnion G := by
+    intro G hG hx
+    rw [mem_familyUnion] at hx
+    obtain ⟨C, hC, hxC⟩ := hx
+    exact hxF C (hG hC) hxC
+  intro B hB ⟨G, hGsub, hGcard, hBnotG, hGunion⟩
+  rcases Finset.mem_insert.mp hB with rfl | hBF
+  · -- `B = A`: the union `G` lives in `F`, so it misses `x ∈ A`
+    have hGF : G ⊆ F := by
+      intro C hC
+      have hmem := hGsub hC
+      rw [Finset.mem_erase, Finset.mem_insert] at hmem
+      rcases hmem.2 with rfl | h
+      · exact absurd rfl hmem.1
+      · exact h
+    apply hxUnion hGF
+    rw [hGunion]; exact hxA
+  · -- `B ∈ F`: `A ∉ G` (else `x ∈ B`), so `G ⊆ F.erase B` is a spurious union in `F`
+    have hAnotG : A ∉ G := by
+      intro hAG
+      exact hxF B hBF (hGunion ▸ mem_sub_familyUnion hAG hxA)
+    have hGsub' : G ⊆ F.erase B := by
+      intro C hC
+      have hmem := hGsub hC
+      rw [Finset.mem_erase, Finset.mem_insert] at hmem
+      rw [Finset.mem_erase]
+      refine ⟨hmem.1, ?_⟩
+      rcases hmem.2 with rfl | h
+      · exact absurd hC hAnotG
+      · exact h
+    exact hF B hBF ⟨G, hGsub', hGcard, hBnotG, hGunion⟩
+
+/-- **Strict monotonicity:** `F(n) + 1 ≤ F(n+1)`. The fresh ground element `n`
+strictly increases the maximum union-free family size: relabel an extremal
+family into `Fin (n+1)` and adjoin the singleton `{Fin.last n}` of the new top
+element, which lies in no relabelled member. -/
+theorem unionFreeMax_succ_strict (n : ℕ) :
+    unionFreeMax n + 1 ≤ unionFreeMax (n + 1) := by
+  -- an extremal family `G` of size `F(n)` exists: the `sSup` of a nonempty
+  -- subset of `ℕ` bounded above is attained
+  have hne : { k : ℕ | ∃ F : SetFamily n, isUnionFree F ∧ F.card = k }.Nonempty :=
+    ⟨0, ∅, isUnionFree_empty, Finset.card_empty⟩
+  obtain ⟨G, hG, hGcard⟩ :
+      ∃ G : SetFamily n, isUnionFree G ∧ G.card = unionFreeMax n :=
+    Nat.sSup_mem hne (unionFree_sizes_bddAbove n)
+  -- relabel into `Fin (n+1)` along `castLE`, then adjoin `{Fin.last n}`
+  set e : Fin n ↪ Fin (n + 1) := Fin.castLEEmb (Nat.le_succ n) with he
+  set A : Finset (Fin (n + 1)) := {Fin.last n} with hA
+  have hxA : Fin.last n ∈ A := Finset.mem_singleton_self _
+  -- the new element is fresh: no relabelled member contains `Fin.last n`
+  have hfresh : ∀ B ∈ pushFamily e G, Fin.last n ∉ B := by
+    intro B hB
+    rw [mem_pushFamily] at hB
+    obtain ⟨C, _, rfl⟩ := hB
+    rw [Finset.mem_map]
+    rintro ⟨a, _, ha⟩
+    have h1 : ((e a : Fin (n + 1)) : ℕ) = (a : ℕ) := rfl
+    have h2 : ((e a : Fin (n + 1)) : ℕ) = n := by rw [ha]; exact Fin.val_last n
+    have h3 : (a : ℕ) < n := a.isLt
+    omega
+  -- the enlarged family is union-free and strictly larger
+  have hUF : isUnionFree (insert A (pushFamily e G)) :=
+    unionFree_insert_fresh (pushFamily_unionFree e G hG) hxA hfresh
+  have hAnot : A ∉ pushFamily e G := fun h => hfresh A h hxA
+  have hcard : (insert A (pushFamily e G)).card = unionFreeMax n + 1 := by
+    rw [Finset.card_insert_of_notMem hAnot, pushFamily_card, hGcard]
+  rw [← hcard]
+  exact le_csSup (unionFree_sizes_bddAbove (n + 1))
+    ⟨insert A (pushFamily e G), hUF, rfl⟩
+
+/-- **`F` is strictly monotone.** Strengthens `unionFreeMax_monotone`: the
+extremal union-free family size strictly increases with the number of ground
+elements, `n < m → F(n) < F(m)`. -/
+theorem unionFreeMax_strictMono : StrictMono unionFreeMax :=
+  strictMono_nat_of_lt_succ unionFreeMax_succ_strict
+
 #check @layer_antichain
 #check @unionFreeMax_ge_choose
 #check @unionFreeMax_exponential_lower_bound
 #check @unionFreeMax_mono
 #check @pushFamily_unionFree
+#check @unionFreeMax_succ_strict
+#check @unionFreeMax_strictMono
 
 end Erdos1023OQ03
