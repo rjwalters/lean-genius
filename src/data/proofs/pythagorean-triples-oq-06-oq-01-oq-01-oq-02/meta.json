@@ -1,0 +1,158 @@
+{
+  "id": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+  "slug": "pythagorean-triples-oq-06-oq-01-oq-01-oq-02",
+  "title": "60 is the sharp universal divisor of Pythagorean products",
+  "description": "Among all integers C, exactly the divisors of 60 satisfy C ∣ x·y·z for every Pythagorean triple x²+y²=z². Hence 60 is the greatest such constant (IsGreatest), and the witness (3,4,5) — whose product is exactly 60 — shows no higher prime power (8, 9, 25) is forced.",
+  "overview": {
+    "historicalContext": "The sibling entry pythagorean-triples-oq-06-oq-01-oq-01 proves the classical divisibility package 60 ∣ x·y·z for every Pythagorean triple, with 60 = 2²·3·5 split into the three prime-power obstructions 3 ∣ xyz, 4 ∣ xyz, 5 ∣ xyz. That entry leaves open the dual, sharpness question: is 60 the best possible constant, or could some larger C divide the product of every triple? This entry settles it. The answer is governed entirely by the single triple (3,4,5): its product is exactly 60, so any universal divisor must divide 60, and conversely every divisor of 60 is universal because 60 itself is. The set of universal divisors is therefore the lattice of divisors of 60, with greatest element 60 — a sharp, structural complement to the divisibility package.",
+    "problemStatement": "Call C a universal divisor if C ∣ x·y·z for every integer Pythagorean triple (x,y,z) with x²+y²=z². Determine the largest such C, and prove the prime-power content of 60 = 2²·3·5 cannot be strengthened at any prime.",
+    "proofStrategy": "Two inclusions pin down the universal divisors exactly. (1) Necessity (universal_dvd_sixty): apply the universal hypothesis to the explicit triple (3,4,5), whose product 3·4·5 is exactly 60, to get C ∣ 60 in one line. (2) Sufficiency: any divisor of 60 divides x·y·z by transitivity through the sibling's package 60 ∣ xyz, reproduced self-contained here (universal_iff_dvd_sixty). Together they characterize the universal divisors as precisely the divisors of 60. The headline sharpness statement sixty_isGreatest then follows: 60 is a positive universal divisor, and any positive universal divisor C divides 60 hence C ≤ 60 by Int.le_of_dvd. Finally, because (3,4,5) has product 60 = 2²·3·5, none of 8 = 2³, 9 = 3², 25 = 5² divides 60, so each is non-universal (not_universal_eight / _nine / _twentyfive) — every prime power in 60 is individually maximal.",
+    "keyInsights": [
+      "**One triple decides sharpness**: the entire upper bound is carried by (3,4,5). Because its product is exactly 60 = 2²·3·5, it is simultaneously the minimal certificate that 60 is achievable and the obstruction to any larger universal constant. No family of triples is needed — a single witness suffices.",
+      "**Exact characterization, not just a bound**: the universal divisors are *exactly* the divisors of 60 (universal_iff_dvd_sixty). The forward direction is the new sharpness content; the reverse direction reuses the sibling's 60 ∣ xyz. This upgrades 'the gcd of all products is 60' from an inequality to a complete description of the divisibility lattice.",
+      "**Prime-power maximality**: that 8, 9, 25 each fail to be universal is immediate from C ∣ 60, exhibiting that the package 60 ∣ xyz is sharp prime-by-prime — the 2-adic part stops at 4, the 3-adic at 3, the 5-adic at 5.",
+      "**IsGreatest packaging**: phrasing the result as IsGreatest {C | 0 < C ∧ UniversalDivisor C} 60 records both that 60 is attained and that it is an upper bound, the standard order-theoretic form of a sharp constant."
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete 0-axiom Lean 4 proof that the universal divisors of Pythagorean products are exactly the divisors of 60, so 60 is the greatest such constant (IsGreatest). The single triple (3,4,5), with product exactly 60, supplies the entire upper bound and certifies that no higher prime power (8, 9, 25) is forced. The 60 ∣ xyz engine is reproduced self-contained from the sibling entry.",
+    "implications": "Complements the sibling's divisibility package with its sharp converse: 60 is not merely a divisor but the maximal universal divisor, and the universal divisors form precisely the divisor lattice of 60. The proof illustrates that sharpness of a universal divisibility constant can be certified by a single explicit witness whose product equals the constant. The UniversalDivisor predicate and the witness-application pattern transfer to other 'largest constant dividing every solution' problems.",
+    "openQuestions": []
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header & Statement",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring framing the sharpness question dual to the sibling's 60 ∣ xyz package: characterize the universal divisors and prove 60 is the greatest. Outlines the two-inclusion strategy with witness (3,4,5).",
+      "mathContext": "Universal divisors of $\\{xyz : x^2+y^2=z^2\\}$; greatest element $60 = 2^2\\cdot 3\\cdot 5$."
+    },
+    {
+      "id": "engine",
+      "title": "The 60 ∣ xyz engine (reproduced)",
+      "startLine": 47,
+      "endLine": 99,
+      "summary": "Self-contained reproduction of the sibling's package: zmod_rel casts the relation to ZMod n; dvd_prod_of_zmod converts a decidable congruence obstruction into integer divisibility; three_dvd_prod, five_dvd_prod, four_dvd_prod (via ZMod 8 → ZMod 4) and sixty_dvd_prod assemble 60 ∣ xyz by coprimality.",
+      "mathContext": "$3,5$ by direct ZMod check; $4$ via $\\mathbb{Z}/8\\to\\mathbb{Z}/4$; assemble by $3\\perp4\\perp5$."
+    },
+    {
+      "id": "universal-divisor",
+      "title": "Universal divisors and the witness",
+      "startLine": 100,
+      "endLine": 115,
+      "summary": "UniversalDivisor C is defined as C ∣ xyz for every triple. sixty_universal records 60 as universal. triple_345 verifies (3,4,5) is a triple with product exactly 60. universal_dvd_sixty applies the universal hypothesis to (3,4,5) to deduce C ∣ 60.",
+      "mathContext": "$C$ universal $\\Rightarrow C \\mid 3\\cdot4\\cdot5 = 60$."
+    },
+    {
+      "id": "characterization",
+      "title": "Characterization and sharpness",
+      "startLine": 117,
+      "endLine": 133,
+      "summary": "universal_iff_dvd_sixty proves the universal divisors are exactly the divisors of 60 (reverse direction via transitivity through sixty_dvd_prod). sixty_isGreatest packages 60 as the greatest positive universal divisor using Int.le_of_dvd.",
+      "mathContext": "$\\text{UniversalDivisor}\\,C \\iff C \\mid 60$; $\\ \\mathrm{IsGreatest}\\,\\{C>0 : \\text{univ}\\}\\,60$."
+    },
+    {
+      "id": "prime-power-maximality",
+      "title": "Prime-power maximality",
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "not_universal_eight, not_universal_nine, not_universal_twentyfive, not_universal_onehundredtwenty: each of 8 = 2³, 9 = 3², 25 = 5², 120 = 2·60 fails to divide 60, hence is not universal — every prime power in 60 is individually maximal.",
+      "mathContext": "$8,9,25,120 \\nmid 60$, so none is a universal divisor."
+    },
+    {
+      "id": "structure-form",
+      "title": "PythagoreanTriple structure form",
+      "startLine": 153,
+      "endLine": 158,
+      "summary": "sixty_dvd_prod_of_pythagoreanTriple rephrases the package through Mathlib's PythagoreanTriple structure via PythagoreanTriple.eq.",
+      "mathContext": "$\\mathrm{PythagoreanTriple}\\,x\\,y\\,z \\Rightarrow 60 \\mid xyz$."
+    }
+  ],
+  "references": [
+    {
+      "title": "Pythagorean triple — divisibility properties",
+      "url": "https://en.wikipedia.org/wiki/Pythagorean_triple"
+    },
+    {
+      "title": "Mathlib: Mathlib.NumberTheory.PythagoreanTriples",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/PythagoreanTriples.html"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples-oq-06-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves 60 ∣ xyz for every Pythagorean triple. This entry answers its second open question by proving 60 is the sharp (largest) universal divisor and characterizing the universal divisors as exactly the divisors of 60."
+    }
+  ],
+  "openQuestions": [],
+  "sorries": 0,
+  "leanFile": {
+    "axiomCount": 0,
+    "definitionCount": 1,
+    "imports": ["Mathlib"],
+    "lineCount": 158,
+    "namespace": "PythagoreanTriples60Sharp",
+    "opens": [],
+    "path": "Proofs/PythagoreanTriplesOQ06OQ01OQ01OQ02.lean",
+    "sorries": 0,
+    "theoremCount": 16
+  },
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ06OQ01OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "diophantine",
+      "pythagorean-triples",
+      "divisibility",
+      "sharpness",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 158,
+    "theoremCount": 16,
+    "definitionCount": 1,
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.le_of_dvd",
+        "description": "A positive integer's divisors are bounded by it: from 0 < 60 and C ∣ 60 deduce C ≤ 60, the upper-bound half of IsGreatest",
+        "module": "Mathlib.Algebra.Order.Group.Int"
+      },
+      {
+        "theorem": "ZMod.intCast_zmod_eq_zero_iff_dvd",
+        "description": "An integer's cast to ZMod n vanishes iff n divides it — converts each finite ZMod check in the reproduced engine into integer divisibility",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "Coprime divisors multiply: assembles 3 ∣ xyz, 4 ∣ xyz, 5 ∣ xyz into 60 ∣ xyz in the reproduced engine",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      },
+      {
+        "theorem": "PythagoreanTriple.eq",
+        "description": "Unfolds Mathlib's PythagoreanTriple structure to x*x + y*y = z*z for the structure-level wrapper",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      }
+    ],
+    "originalContributions": [
+      "sixty_isGreatest: 60 is the greatest positive universal divisor of Pythagorean products (IsGreatest) — the sharpness statement answering the sibling entry's open question",
+      "universal_iff_dvd_sixty: the universal divisors are exactly the divisors of 60, a complete description of the divisibility lattice rather than a single bound",
+      "universal_dvd_sixty: necessity via the single witness (3,4,5) whose product is exactly 60",
+      "UniversalDivisor: a reusable predicate for 'C divides the product of every Pythagorean triple', framing the largest-constant question order-theoretically",
+      "not_universal_eight / _nine / _twentyfive / _onehundredtwenty: each prime power 8, 9, 25 (and 120) is non-universal, certifying 60 = 2²·3·5 is sharp prime-by-prime"
+    ],
+    "prerequisites": [
+      "Pythagorean triples (integer solutions of x² + y² = z²)",
+      "Divisibility lattices and greatest elements (IsGreatest, Int.le_of_dvd)",
+      "The sibling divisibility package 60 ∣ xyz (reproduced self-contained)",
+      "Modular arithmetic over ZMod 3, 5, 8 (in the reproduced engine)"
+    ]
+  }
+}
