@@ -832,6 +832,7 @@ import Proofs.CubeRoot2IrrationalOQ05OQ01
 import Proofs.CubeRoot2IrrationalOQ05OQ01OQ01
 import Proofs.CubeRoot3Irrational
 import Proofs.CubeRoot3IrrationalOQ01
+import Proofs.CubeRoot3IrrationalOQ01OQ02
 import Proofs.CubeRoot3IrrationalOQ02
 import Proofs.CubeRoot3IrrationalOQ02OQ01
 import Proofs.CubeRoot3IrrationalOQ02OQ02
