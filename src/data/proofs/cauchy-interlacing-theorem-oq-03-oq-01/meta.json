@@ -1,0 +1,167 @@
+{
+  "id": "cauchy-interlacing-theorem-oq-03-oq-01",
+  "title": "Weyl's Eigenvalue Stability Bound |μ(k) − ν(k)| ≤ ‖T − U‖",
+  "slug": "cauchy-interlacing-theorem-oq-03-oq-01",
+  "description": "Derives the operator-norm eigenvalue stability (Weyl perturbation / Lipschitz) theorem for symmetric operators as a corollary of the Weyl monotonicity theorem (weyl_monotone) proved in the parent entry cauchy-interlacing-theorem-oq-03. For continuous operators T, U on a finite-dimensional inner product space, each presented by an orthonormal eigenbasis and an antitone descending eigenvalue enumeration (μ, ν), the eigenvalues are 1-Lipschitz in the operator norm: |μ(k) − ν(k)| ≤ ‖T − U‖ for every index k. The proof is the classical Loewner sandwich U − ‖T−U‖·I ⪯ T ⪯ U + ‖T−U‖·I: the single new analytic input is the elementary Rayleigh bound re⟪(T−U)x, x⟫ ≤ ‖T−U‖·‖x‖² (Cauchy–Schwarz plus the operator-norm inequality ‖(T−U)x‖ ≤ ‖T−U‖·‖x‖); the shifted operators U ± ‖T−U‖·I share U's eigenbasis with eigenvalues ν ± ‖T−U‖ (a real shift preserves the antitone order), so feeding the two Loewner inequalities into weyl_monotone gives μ(k) ≤ ν(k) + ‖T−U‖ and ν(k) − ‖T−U‖ ≤ μ(k). This answers the lead open question of the parent entry oq-03.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyInterlacingOQ030101Stability.lean",
+    "tags": [
+      "linear-algebra",
+      "spectral-theory",
+      "eigenvalues",
+      "perturbation",
+      "operator-norm",
+      "weyl-inequality",
+      "loewner-order",
+      "cauchy-interlacing",
+      "inner-product-space"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 166,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None beyond the spectral presentation taken as input, exactly as in the parent keystone: T and U are supplied as continuous linear operators (so ‖T − U‖ is the genuine operator norm) each with an orthonormal eigenbasis and an antitone (descending) eigenvalue enumeration μ/ν satisfying T(b i) = μ i • b i. Such a presentation always exists for a symmetric operator on a finite-dimensional inner product space by the spectral theorem; taking it as input keeps the file purely variational. Verified 0 axioms, 0 sorries: #print axioms reports only [propext, Classical.choice, Quot.sound] (no sorryAx, no Lean.ofReduceBool), as for its transitive imports CauchyInterlacingWeyl.lean and CauchyInterlacingKeystone.lean.",
+    "originalContributions": [
+      "weyl_eigenvalue_stability: the operator-norm eigenvalue stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ for symmetric operators, the classical Weyl perturbation / Lipschitz theorem |λ_k(A) − λ_k(B)| ≤ ‖A − B‖. Proved from weyl_monotone alone by the Loewner sandwich U − ‖T−U‖·I ⪯ T ⪯ U + ‖T−U‖·I; each side is one application of Weyl monotonicity to the shifted operator, and the two one-sided bounds combine via abs_le.",
+      "reInner_diff_le: the elementary operator-norm Rayleigh bound re⟪(A−B)x, x⟫ ≤ ‖A−B‖·‖x‖² for continuous operators, the sole new analytic input. Proof chains Cauchy–Schwarz (re_inner_le_norm) with the operator-norm inequality ‖(A−B)x‖ ≤ ‖A−B‖·‖x‖ (ContinuousLinearMap.le_opNorm). This is what converts the operator-norm hypothesis into the two Loewner inequalities.",
+      "reInner_add_smul: the Rayleigh quotient of a scalar-shifted operator splits as re⟪(V + s·I)x, x⟫ = re⟪V x, x⟫ + s·‖x‖² (via inner_smul_left, RCLike.conj_ofReal on the real scalar, and inner_self_eq_norm_sq). This is the algebraic identity that turns the Loewner sandwich into a statement about shifted eigenvalues.",
+      "shift_eigen: a real scalar shift V + s·I acts on each eigenvector e i (eigenvalue lam i) with shifted eigenvalue lam i + s, so the shifted operator inherits V's eigenbasis with eigenvalues lam + s — still antitone (Antitone.add_const). This supplies the spectral presentation of U ± ‖T−U‖·I required by weyl_monotone.",
+      "The structural confirmation that operator-norm eigenvalue stability needs NO new spectral theory beyond Weyl monotonicity: the entire perturbation bound is a Loewner sandwich plus a one-line Cauchy–Schwarz / operator-norm estimate, realising the prediction of the parent entry's conclusion that the |λ_k(A) − λ_k(B)| ≤ ‖A − B‖ bound is 'one short step' from the same keystone."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ContinuousLinearMap.le_opNorm",
+        "description": "‖f x‖ ≤ ‖f‖ · ‖x‖ for a continuous linear map f — supplies the operator-norm half of the Rayleigh bound reInner_diff_le, controlling ‖(T−U)x‖ by ‖T−U‖·‖x‖",
+        "module": "Mathlib.Analysis.Normed.Operator.Basic"
+      },
+      {
+        "theorem": "re_inner_le_norm",
+        "description": "re⟪x, y⟫ ≤ ‖x‖ · ‖y‖ (Cauchy–Schwarz on the real part) — the other half of reInner_diff_le, bounding the real Rayleigh numerator re⟪(T−U)x, x⟫ by ‖(T−U)x‖·‖x‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_self_eq_norm_sq",
+        "description": "re⟪x, x⟫ = ‖x‖² — converts the scalar-shift term re⟪s·x, x⟫ into s·‖x‖² in reInner_add_smul, making the Loewner sandwich an eigenvalue shift by ±‖T−U‖",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "RCLike.conj_ofReal",
+        "description": "conj(↑r) = ↑r for a real scalar r — lets inner_smul_left pass the real shift s through the conjugate-linear slot unchanged, so re⟪(s·I)x, x⟫ = s·‖x‖²",
+        "module": "Mathlib.Analysis.RCLike.Basic"
+      },
+      {
+        "theorem": "Antitone.add_const",
+        "description": "Antitone f ⟹ Antitone (fun x => f x + c) — the shifted eigenvalue enumeration ν ± ‖T−U‖ stays descending, satisfying the antitone hypothesis of weyl_monotone for the sandwich operators U ± ‖T−U‖·I",
+        "module": "Mathlib.Order.Monotone.Basic"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "Weyl's 1912 perturbation theory for Hermitian eigenvalues culminates in the stability bound |λ_k(A) − λ_k(B)| ≤ ‖A − B‖₂: the k-th eigenvalue is a 1-Lipschitz function of the operator in the spectral (operator) norm. It is the quantitative backbone of numerical linear algebra — it guarantees that eigenvalues computed from a perturbed or rounded matrix are accurate to the size of the perturbation — and the scalar case of the Hoffman–Wielandt and Lidskii majorisation theorems (Horn–Johnson Cor. 4.3.15, Bhatia §III.2, VI.3). Classically it follows from the Courant–Fischer min-max principle via the monotonicity A ⪯ B ⟹ λ_k(A) ≤ λ_k(B) applied to the Loewner sandwich B − ‖A−B‖·I ⪯ A ⪯ B + ‖A−B‖·I. The parent gallery entry oq-03 proves Weyl monotonicity from the from-scratch keystone and lists this stability bound as its lead open question; this entry closes it.",
+    "problemStatement": "Using only the parent's Weyl monotonicity theorem weyl_monotone, prove the operator-norm eigenvalue stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ for symmetric continuous operators T, U presented by orthonormal eigenbases and antitone (descending) eigenvalue enumerations μ, ν. This is the scalar Weyl perturbation / Lipschitz theorem for eigenvalues, the quantitative completion of the qualitative monotonicity result.",
+    "text": "The argument is the Loewner sandwich. Write δ = ‖T − U‖. For every x, Cauchy–Schwarz and the operator-norm inequality give re⟪(T−U)x, x⟫ ≤ ‖(T−U)x‖·‖x‖ ≤ δ·‖x‖², and symmetrically re⟪(U−T)x, x⟫ ≤ δ·‖x‖² (using ‖U−T‖ = ‖T−U‖). Equivalently, in the Loewner order, U − δ·I ⪯ T ⪯ U + δ·I. The shifted operators U ± δ·I share U's eigenbasis c with the shifted eigenvalue enumerations ν ± δ, which remain antitone. Feeding T ⪯ U + δ·I into Weyl monotonicity gives μ(k) ≤ ν(k) + δ, and feeding U − δ·I ⪯ T gives ν(k) − δ ≤ μ(k); together |μ(k) − ν(k)| ≤ δ = ‖T − U‖.",
+    "proofStrategy": "Set δ = ‖T − U‖. KEY ESTIMATE (reInner_diff_le): re⟪(A−B)x, x⟫ ≤ ‖A−B‖·‖x‖² by re_inner_le_norm then ContinuousLinearMap.le_opNorm. SHIFT ALGEBRA (reInner_add_smul): re⟪(V + s·I)x, x⟫ = re⟪V x, x⟫ + s·‖x‖² by inner_add_left/inner_smul_left/RCLike.conj_ofReal/inner_self_eq_norm_sq; SHIFT SPECTRUM (shift_eigen): (V + s·I)(e i) = (lam i + s)·e i. STEP 1: build the Loewner hypothesis re⟪T x,x⟫ ≤ re⟪(U + δ·I)x,x⟫ from reInner_diff_le T U, then weyl_monotone T (U + δ·I) with eigenvalues ν + δ (Antitone.add_const) yields μ(k) ≤ ν(k) + δ. STEP 2: symmetric with reInner_diff_le U T (norm_sub_rev) and weyl_monotone (U − δ·I) T, eigenvalues ν − δ, yields ν(k) − δ ≤ μ(k). Combine via abs_le and linarith.",
+    "keyInsights": [
+      "**Stability is a Loewner sandwich, nothing more.** The qualitative monotonicity A ⪯ B ⟹ λ_k(A) ≤ λ_k(B) already contains the quantitative Lipschitz bound: bracket T between U ± ‖T−U‖·I and apply monotonicity twice. No min-max re-derivation, no spectral theorem invocation beyond what weyl_monotone already used.",
+      "**One Cauchy–Schwarz line bridges operator norm and Loewner order.** The only analytic content not already in the parent is re⟪(T−U)x, x⟫ ≤ ‖T−U‖·‖x‖² — Cauchy–Schwarz on the real part composed with ‖(T−U)x‖ ≤ ‖T−U‖·‖x‖. This single estimate converts the operator-norm hypothesis into the two Loewner inequalities the sandwich needs.",
+      "**A real scalar shift is spectrally transparent.** U ± δ·I keeps U's eigenbasis and shifts every eigenvalue by ±δ, preserving the antitone order (Antitone.add_const). This is why the sandwich operators slot directly into weyl_monotone with no new spectral presentation — only an arithmetic shift of the eigenvalue list.",
+      "**Continuous operators make the norm honest.** Presenting T, U as E →L[𝕜] E rather than bare linear maps means ‖T − U‖ is the genuine operator norm with the Lipschitz constant 1 it claims, not a placeholder; the eigen-presentation is carried to the LinearMap coercion to reuse weyl_monotone verbatim."
+    ],
+    "prerequisites": [
+      "The parent entry's Weyl monotonicity theorem (cauchy-interlacing-theorem-oq-03, weyl_monotone): re⟪Tx,x⟫ ≤ re⟪Ux,x⟫ for all x ⟹ μ(k) ≤ ν(k)",
+      "The operator-norm inequality ‖f x‖ ≤ ‖f‖·‖x‖ for continuous linear maps",
+      "Cauchy–Schwarz on the real part of the inner product, re⟪x,y⟫ ≤ ‖x‖·‖y‖",
+      "The Loewner order on symmetric operators and the spectral transparency of a real scalar shift V + s·I"
+    ]
+  },
+  "sections": [
+    {
+      "id": "rayleigh-bound",
+      "title": "The Operator-Norm Rayleigh Bound",
+      "startLine": 52,
+      "endLine": 71,
+      "summary": "reInner_diff_le: re⟪(A−B)x, x⟫ ≤ ‖A−B‖·‖x‖² for continuous operators, by Cauchy–Schwarz (re_inner_le_norm) composed with the operator-norm inequality ‖(A−B)x‖ ≤ ‖A−B‖·‖x‖ (ContinuousLinearMap.le_opNorm). The single new analytic input bridging operator norm and Loewner order.",
+      "mathContext": "The Cauchy–Schwarz + operator-norm estimate that turns ‖T−U‖ into the two Loewner inequalities of the sandwich."
+    },
+    {
+      "id": "shift-algebra",
+      "title": "Algebra of the Scalar Shift V + s·I",
+      "startLine": 72,
+      "endLine": 90,
+      "summary": "reInner_add_smul: re⟪(V + s·I)x, x⟫ = re⟪V x, x⟫ + s·‖x‖² (the Rayleigh quotient shifts by the scalar). shift_eigen: (V + s·I)(e i) = (lam i + s)·e i, so the shifted operator inherits V's eigenbasis with eigenvalues lam + s.",
+      "mathContext": "A real scalar shift is spectrally transparent: it adds s to every eigenvalue and to every Rayleigh quotient, preserving the eigenbasis and antitone order."
+    },
+    {
+      "id": "stability",
+      "title": "The Eigenvalue Stability Theorem",
+      "startLine": 91,
+      "endLine": 156,
+      "summary": "weyl_eigenvalue_stability: |μ(k) − ν(k)| ≤ ‖T − U‖. The Loewner sandwich U − δ·I ⪯ T ⪯ U + δ·I (δ = ‖T−U‖) feeds two applications of weyl_monotone to the shifted operators U ± δ·I, giving μ(k) ≤ ν(k) + δ and ν(k) − δ ≤ μ(k); abs_le combines them.",
+      "mathContext": "The classical Weyl perturbation theorem |λ_k(A) − λ_k(B)| ≤ ‖A − B‖ — eigenvalues are 1-Lipschitz in the operator norm."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 proof of Weyl's operator-norm eigenvalue stability bound |μ(k) − ν(k)| ≤ ‖T − U‖ for symmetric operators, derived entirely from the parent entry's Weyl monotonicity theorem by the Loewner sandwich U − ‖T−U‖·I ⪯ T ⪯ U + ‖T−U‖·I. The file is 0-axiom, 0-sorry (#print axioms: propext, Classical.choice, Quot.sound only), as are its transitive imports. It answers the lead open question of cauchy-interlacing-theorem-oq-03.",
+    "implications": "Completes the eigenvalue-perturbation layer of the Cauchy-interlacing family with its quantitative capstone: the qualitative monotonicity of oq-03 is upgraded to a 1-Lipschitz stability bound — the scalar case of Hoffman–Wielandt and the foundation of eigenvalue conditioning in numerical linear algebra. The two-sided bracket also yields, with no extra work, the symmetric statement ‖μ − ν‖_∞ ≤ ‖T − U‖ in the sup norm of the eigenvalue lists.",
+    "openQuestions": [
+      "Upgrade the pointwise bound to the Lidskii / Hoffman–Wielandt majorisation Σ_k |μ(k) − ν(k)|² ≤ ‖T − U‖_HS² (Frobenius norm), bounding the full eigenvalue vector rather than each coordinate, by combining weyl_add_le with a rearrangement / doubly-stochastic argument.",
+      "Derive the residual / a-posteriori bound: if ‖T x − λ x‖ ≤ ε for a unit vector x, then some eigenvalue μ(k) lies within ε of λ (Bauer–Fike for the Hermitian case), the converse direction of stability used in practice to certify computed eigenpairs."
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "cauchy-interlacing-theorem-oq-03",
+      "relation": "Parent entry — proves Weyl monotonicity (weyl_monotone) and the additive inequality from the Courant–Fischer keystone, and lists this operator-norm stability bound as its lead open question. This entry closes that question, reusing weyl_monotone verbatim via the Loewner sandwich."
+    },
+    {
+      "slug": "cauchy-interlacing-theorem",
+      "relation": "Grandparent entry — proves the Courant–Fischer max–min keystone (eigenvalue_maxmin_lower / eigenvalue_maxmin_upper) on which Weyl monotonicity, and hence this stability bound, ultimately rest."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Horn, R.A.",
+        "Johnson, C.R."
+      ],
+      "title": "Matrix Analysis",
+      "year": "2013",
+      "venue": "Cambridge University Press, 2nd ed.",
+      "note": "Corollary 4.3.15 and §4.3 (Weyl's perturbation theorem |λ_k(A) − λ_k(B)| ≤ ‖A − B‖₂ from monotonicity and the Loewner sandwich)"
+    },
+    {
+      "authors": [
+        "Bhatia, R."
+      ],
+      "title": "Matrix Analysis",
+      "year": "1997",
+      "venue": "Springer GTM 169",
+      "note": "§III.2 and §VI.3 (Weyl's inequalities, eigenvalue perturbation, and the Lipschitz / Lidskii bounds)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.CauchyInterlacingWeyl"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "CauchyInterlacing.Weyl"
+    ],
+    "namespace": "CauchyInterlacing.Stability",
+    "lineCount": 166,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyInterlacingOQ030101Stability.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,65 @@
+[
+  {
+    "id": "ann-stability-oq0301-rayleigh-bound",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "technique",
+    "title": "Cauchy–Schwarz Meets the Operator Norm",
+    "content": "reInner_diff_le is the only new analytic input of the proof: the real Rayleigh numerator of a difference is controlled by the operator norm, re⟪(A−B)x, x⟫ ≤ ‖A−B‖·‖x‖². It is a two-step chain — Cauchy–Schwarz on the real part (re_inner_le_norm: re⟪y, x⟫ ≤ ‖y‖·‖x‖) followed by the defining operator-norm inequality ‖(A−B)x‖ ≤ ‖A−B‖·‖x‖ (ContinuousLinearMap.le_opNorm). This estimate is precisely what converts the operator-norm hypothesis ‖T − U‖ into the two Loewner inequalities the eigenvalue sandwich runs on.",
+    "mathContext": "$$\\mathrm{re}\\langle (A-B)x, x\\rangle \\le \\|(A-B)x\\|\\,\\|x\\| \\le \\|A-B\\|\\,\\|x\\|^2.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy–Schwarz inequality",
+      "operator norm",
+      "Rayleigh quotient",
+      "Loewner order"
+    ],
+    "prerequisites": [
+      "continuous linear maps and the operator norm",
+      "inner product spaces over RCLike fields"
+    ]
+  },
+  {
+    "id": "ann-stability-oq0301-scalar-shift",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": { "startLine": 76, "endLine": 89 },
+    "type": "concept",
+    "title": "A Real Scalar Shift Is Spectrally Transparent",
+    "content": "Two short lemmas record that adding a real multiple of the identity does nothing but shift the spectrum. reInner_add_smul: the Rayleigh quotient shifts by the scalar, re⟪(V + s·I)x, x⟫ = re⟪V x, x⟫ + s·‖x‖² (the cross term re⟪s·x, x⟫ becomes s·‖x‖² because s is real — RCLike.conj_ofReal passes it through the conjugate-linear slot, and inner_self_eq_norm_sq turns ⟪x,x⟫ into ‖x‖²). shift_eigen: the operator V + s·I acts on each eigenvector e i with the shifted eigenvalue lam i + s. Together they let U ± ‖T−U‖·I reuse U's eigenbasis with eigenvalues ν ± ‖T−U‖, which stay antitone (Antitone.add_const) — exactly the spectral presentation weyl_monotone demands.",
+    "mathContext": "$$(V + sI)e_i = (\\lambda_i + s)e_i, \\qquad \\frac{\\mathrm{re}\\langle (V+sI)x,x\\rangle}{\\|x\\|^2} = \\frac{\\mathrm{re}\\langle Vx,x\\rangle}{\\|x\\|^2} + s.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "scalar shift V + s·I",
+      "eigenvalue translation",
+      "antitone eigenvalue enumeration",
+      "Rayleigh quotient"
+    ],
+    "prerequisites": [
+      "eigenvectors and eigenvalues",
+      "inner_smul_left and the conjugate-linear slot",
+      "Antitone.add_const"
+    ]
+  },
+  {
+    "id": "ann-stability-oq0301-sandwich",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01",
+    "range": { "startLine": 103, "endLine": 156 },
+    "type": "key-step",
+    "title": "The Loewner Sandwich Lipschitz Bound",
+    "content": "weyl_eigenvalue_stability is the classical Weyl perturbation theorem |μ(k) − ν(k)| ≤ ‖T − U‖ — eigenvalues are 1-Lipschitz in the operator norm. The proof needs no new spectral theory: with δ = ‖T − U‖, the Rayleigh bound gives the two Loewner inequalities U − δ·I ⪯ T ⪯ U + δ·I. Feeding T ⪯ U + δ·I into the parent's weyl_monotone (with the shifted operator's eigenvalues ν + δ) yields μ(k) ≤ ν(k) + δ; feeding U − δ·I ⪯ T (using ‖U − T‖ = ‖T − U‖ via norm_sub_rev) yields ν(k) − δ ≤ μ(k). The two one-sided bounds combine through abs_le into |μ(k) − ν(k)| ≤ δ. This is the structural point: the qualitative monotonicity of the parent already contains the quantitative stability bound — bracket and apply twice.",
+    "mathContext": "$$U - \\|T-U\\|\\,I \\preceq T \\preceq U + \\|T-U\\|\\,I \\;\\Longrightarrow\\; |\\mu_k - \\nu_k| \\le \\|T-U\\|.$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Weyl perturbation theorem",
+      "Loewner order sandwich",
+      "eigenvalue monotonicity",
+      "Lipschitz stability",
+      "Hoffman–Wielandt inequality"
+    ],
+    "prerequisites": [
+      "Weyl monotonicity (parent entry weyl_monotone)",
+      "the Loewner order on symmetric operators",
+      "abs_le and one-sided bounds"
+    ]
+  }
+]
