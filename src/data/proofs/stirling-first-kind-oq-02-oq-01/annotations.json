@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-first-kind-coeff",
+    "proofId": "stirling-first-kind-oq-02-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 89
+    },
+    "type": "concept",
+    "title": "Per-Coefficient Falling-Factorial Identity",
+    "content": "The first ingredient: (descPochhammer ℤ n).coeff k = (−1)^{n+k}·c(n,k), exhibiting the signed Stirling number of the first kind as the Xᵏ-coefficient of the falling factorial x(x−1)⋯(x−n+1). Proved by induction on n from descPochhammer ℤ (n+1) = descPochhammer ℤ n·(X − n). Extracting the Xᵏ-coefficient of the product splits into the X factor (handled by coeff_mul_X, an index shift k ↦ k−1) and the constant −n (handled by coeff_mul_C), which together reproduce the unsigned recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) with the alternating sign carried through. The exponent is written n+k (subtraction-free, equal to n−k modulo 2) to stay in ℕ. The k=0 case yields c(n+1,0)=0 via the boundary fact c(n,0)·n = 0.",
+    "mathContext": "$(\\text{descPochhammer}\\ \\mathbb{Z}\\ n).\\text{coeff}\\ k = (-1)^{n+k} c(n,k)$, the coefficient-extraction form of the signed identity raised as the parent's open question.",
+    "significance": "central",
+    "relatedConcepts": [
+      "falling factorial",
+      "descending Pochhammer symbol",
+      "polynomial coefficient extraction",
+      "Stirling recurrence"
+    ],
+    "prerequisites": [
+      "descPochhammer_succ_right",
+      "Polynomial.coeff_mul_X",
+      "Polynomial.coeff_mul_C",
+      "Nat.stirlingFirst_succ_succ"
+    ]
+  },
+  {
+    "id": "ann-second-kind-expansion",
+    "proofId": "stirling-first-kind-oq-02-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 151
+    },
+    "type": "concept",
+    "title": "Polynomial Second-Kind Expansion",
+    "content": "The second ingredient and the genuinely new polynomial identity: Xⁿ = ∑ₖ S(n,k)·descPochhammer ℤ k over ℤ[X], writing each monomial in the falling-factorial basis. Mathlib and the gallery carry only the evaluated numeric form mⁿ = ∑ₖ S(n,k)·(m)ₖ; this is the lift to the polynomial ring. The induction multiplies the hypothesis by X and splits every term with X·(x)ₖ = (x)_{k+1} + k·(x)ₖ (itself a rearrangement of descPochhammer_succ_right). Re-indexing the two resulting sums with sum_range_succ'/sum_range_succ and applying the second-kind Pascal recurrence S(n+1,k+1) = (k+1)·S(n,k+1) + S(n,k) — with the edge values S(n+1,0)=0 and S(n,n+1)=0 dropping the boundary terms — reassembles ∑ₖ S(n+1,k)·(x)ₖ.",
+    "mathContext": "$X^n = \\sum_k S(n,k)\\,\\text{descPochhammer}\\ \\mathbb{Z}\\ k$ in $\\mathbb{Z}[X]$, the polynomial form of $m^n = \\sum_k S(n,k)(m)_k$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "falling-factorial basis",
+      "monomial basis",
+      "second-kind Pascal recurrence"
+    ],
+    "prerequisites": [
+      "Nat.stirlingSecond_succ_succ",
+      "Nat.stirlingSecond_eq_zero_of_lt",
+      "descPochhammer_succ_right",
+      "Finset.sum_range_succ'"
+    ]
+  },
+  {
+    "id": "ann-orthogonality",
+    "proofId": "stirling-first-kind-oq-02-oq-01",
+    "range": {
+      "startLine": 165,
+      "endLine": 174
+    },
+    "type": "key-step",
+    "title": "Stirling Orthogonality by Coefficient Extraction",
+    "content": "The payoff: ∑ₖ S(n,k)·(−1)^{k+m} c(k,m) = [m = n], i.e. ∑ₖ S(n,k)·s(k,m) = δₙₘ — the two Stirling triangles are inverse matrices. The proof is a single coefficient extraction: apply congrArg (·.coeff m) to the polynomial expansion Xⁿ = ∑ₖ S(n,k)·descPochhammer ℤ k. The left side is (Xⁿ).coeff m = [m = n] (coeff_X_pow); on the right, coeff is ℤ-linear (finset_sum_coeff pushes it inside the sum, coeff_C_mul pulls the scalar out) and the per-coefficient first-kind formula rewrites (descPochhammer ℤ k).coeff m = (−1)^{k+m} c(k,m) term by term. No sign bookkeeping or combinatorial bijection is needed — composing the two changes of basis is the identity by construction.",
+    "mathContext": "$\\sum_k S(n,k)\\,(-1)^{k+m} c(k,m) = [m = n]$ — the inverse-matrix relation (Stirling inversion, GKP eq. 6.32).",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling inversion",
+      "inverse triangular matrices",
+      "change of basis",
+      "Kronecker delta"
+    ],
+    "prerequisites": [
+      "Polynomial.coeff_X_pow",
+      "Polynomial.finset_sum_coeff",
+      "Polynomial.coeff_C_mul"
+    ]
+  },
+  {
+    "id": "ann-numeric-diag",
+    "proofId": "stirling-first-kind-oq-02-oq-01",
+    "range": {
+      "startLine": 176,
+      "endLine": 193
+    },
+    "type": "technique",
+    "title": "Numeric Sanity Check and the Diagonal Case",
+    "content": "Two corollaries pin the abstract result to the ground. The numeric instance (n=3, m=1) uses the second-kind row S(3,·) = 0,1,3,1 and the signed first-kind column s(·,1) = 0,1,−1,2 to get 1·1 + 3·(−1) + 1·2 = 0 = [1=3], discharged by kernel simp on the Stirling recurrences (no native_decide). The diagonal case specializes orthogonality to m=n, giving ∑ₖ S(n,k)·s(k,n) = 1 — the self-product S(n,n)·s(n,n) = 1·1, since both factors vanish off the diagonal.",
+    "mathContext": "$1\\cdot 1 + 3\\cdot(-1) + 1\\cdot 2 = 0$ for $(n,m)=(3,1)$; and $\\sum_k S(n,k)\\,s(k,n) = 1$ on the diagonal.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "kernel decision procedure",
+      "diagonal specialization",
+      "sanity check"
+    ],
+    "prerequisites": []
+  }
+]
