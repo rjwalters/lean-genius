@@ -1,0 +1,104 @@
+{
+  "slug": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+  "id": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01",
+  "title": "The Norm-Preserving (Sharp) Tietze Extension: ‖G‖ = ‖f‖",
+  "parent": "urysohns-lemma-oq-01-oq-01-oq-01",
+  "status": "verified",
+  "badge": "original",
+  "axiomCount": 0,
+  "sorries": 0,
+  "description": "Sharpens the parent's sup-bound |G| ≤ M to the norm-preserving equality ‖G‖ = ‖f‖ for the explicit-series Tietze extension, and shows the construction is norm-minimal: ‖f‖ is a universal lower bound on the norm of any continuous extension.",
+  "conclusion": "For a closed set s in a normal space X and a bounded continuous f : s →ᵇ ℝ, the parent's explicit-series extension G can be taken with ‖G‖ = ‖f‖. The lower bound ‖f‖ ≤ ‖E‖ holds for every extension E (norm_ge_of_extends), so G attains the minimum possible sup-norm.",
+  "overview": "The parent entry urysohns-lemma-oq-01-oq-01-oq-01 builds the Tietze extension G = ∑' n, gₙ of a bounded continuous f on a closed set s ⊆ X (X normal) as an explicit absolutely-convergent series of Urysohn corrections, and proves the sup-bound |G| ≤ M for any bound M ≥ |f|. Its open question asks to sharpen this to the norm-preserving equality ‖G‖ = ‖f‖, the standard form of the Tietze theorem. This entry settles it in two elementary halves. (1) Upper bound: instantiate the parent's free bound M at the exact sup-norm M = ‖f‖ (legitimate since |f x| = ‖f x‖ ≤ ‖f‖); the parent then gives |G y| ≤ ‖f‖ everywhere, i.e. ‖G‖ ≤ ‖f‖. (2) Lower bound: this half needs nothing about the construction — for any extension E and any x ∈ s, ‖f x‖ = ‖E x‖ ≤ ‖E‖, so taking the sup over s gives ‖f‖ ≤ ‖E‖ (norm_ge_of_extends). Thus ‖f‖ is a universal lower bound and G attains it. Combining the halves gives ‖G‖ = ‖f‖, and the universality of the lower bound shows G is a norm-minimal extension (exists_minimal_norm_extension).",
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "question": "Quantify uniqueness: is the minimal-norm extension unique when X is e.g. a metric space, or characterize the family of all extensions attaining ‖f‖ via the slack in each Urysohn correction step?",
+      "significance": "medium"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.UrysohnsLemmaOQ01OQ01OQ01"
+    ],
+    "opens": [
+      "BoundedContinuousFunction"
+    ],
+    "namespace": "UrysohnsLemmaOQ01OQ01OQ01OQ01",
+    "lineCount": 86,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/UrysohnsLemmaOQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    "urysohns-lemma-oq-01-oq-01-oq-01"
+  ],
+  "references": [
+    {
+      "title": "Tietze extension theorem",
+      "url": "https://en.wikipedia.org/wiki/Tietze_extension_theorem"
+    }
+  ],
+  "sections": [
+    {
+      "title": "The universal lower bound",
+      "content": "For any bounded continuous E : X →ᵇ ℝ that restricts to f on s, the norm of E is at least ‖f‖. This is purely the statement that the supremum of |E| over all of X dominates its supremum over the subset s, which equals ‖f‖. No normality, no series, and no choice are involved — it holds for every extension whatsoever (norm_ge_of_extends)."
+    },
+    {
+      "title": "Instantiating the construction at the sharp bound",
+      "content": "Running the parent's series construction tietze_extension_via_tsum with the free bound M set to the exact sup-norm ‖f‖ yields an extension G with |G y| ≤ ‖f‖ for every y, hence ‖G‖ ≤ ‖f‖. The hypothesis |f x| ≤ ‖f‖ is just BoundedContinuousFunction.norm_coe_le_norm."
+    },
+    {
+      "title": "The sharp equality and norm-minimality",
+      "content": "Combining the upper bound ‖G‖ ≤ ‖f‖ with the universal lower bound ‖f‖ ≤ ‖G‖ gives ‖G‖ = ‖f‖ (tietze_norm_preserving). Because the lower bound applies to every extension, G simultaneously achieves the smallest sup-norm possible among all continuous extensions of f (exists_minimal_norm_extension): the parent's by-hand series is optimal."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "tietze-extension",
+      "bounded-continuous-function",
+      "sup-norm",
+      "norm-preserving",
+      "extremal",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 86,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "original",
+    "assumptions": "0 axioms, 0 sorries. All three theorems depend only on Mathlib's standard foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). Classical.choice is inherited solely through the parent's series construction; norm_ge_of_extends itself uses no choice beyond the foundational set.",
+    "originalContributions": [
+      "tietze_norm_preserving: the sharp norm-preserving Tietze extension ‖G‖ = ‖f‖, obtained by instantiating the parent's free sup-bound at the exact norm ‖f‖ (upper bound) and the universal lower bound (lower bound) — the standard norm-preserving form recovered directly from the explicit series construction",
+      "norm_ge_of_extends: the universal lower bound ‖f‖ ≤ ‖E‖ for every bounded continuous extension E of f, proved from BoundedContinuousFunction.norm_le and norm_coe_le_norm with no appeal to normality, choice, or the construction",
+      "exists_minimal_norm_extension: a restatement that the parent's construction is norm-minimal — its sup-norm equals the infimum of sup-norms over all continuous extensions of f"
+    ],
+    "prerequisites": [
+      "The parent's explicit-series Tietze extension tietze_extension_via_tsum (Proofs.UrysohnsLemmaOQ01OQ01OQ01)",
+      "The sup-norm characterization BoundedContinuousFunction.norm_le : ‖f‖ ≤ C ↔ ∀ x, ‖f x‖ ≤ C (for C ≥ 0)",
+      "The pointwise bound BoundedContinuousFunction.norm_coe_le_norm : ‖f x‖ ≤ ‖f‖"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "BoundedContinuousFunction.norm_le",
+        "description": "‖f‖ ≤ C ↔ ∀ x, ‖f x‖ ≤ C for C ≥ 0; the antisymmetric pair of applications gives both the upper bound ‖G‖ ≤ ‖f‖ and the lower bound ‖f‖ ≤ ‖E‖.",
+        "module": "Mathlib.Topology.ContinuousMap.Bounded.Normed"
+      },
+      {
+        "theorem": "BoundedContinuousFunction.norm_coe_le_norm",
+        "description": "‖f x‖ ≤ ‖f‖; supplies both the |f x| ≤ ‖f‖ hypothesis for the construction and the pointwise step ‖E x‖ ≤ ‖E‖ in the universal lower bound.",
+        "module": "Mathlib.Topology.ContinuousMap.Bounded.Basic"
+      }
+    ]
+  }
+}
