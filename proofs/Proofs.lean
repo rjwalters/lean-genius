@@ -3104,6 +3104,7 @@ import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert22OQ01
 import Proofs.Hilbert22Uniformization
 import Proofs.Hilbert23CalculusVariations
+import Proofs.Hilbert23CalculusVariationsOQ01
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
 import Proofs.Hilbert5LieGroups
