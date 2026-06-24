@@ -3673,6 +3673,7 @@ import Proofs.SchursLemma
 import Proofs.SchursTheorem
 import Proofs.SearchMathlib
 import Proofs.SecondIsomorphismTheoremModulesOQ01
+import Proofs.SecondIsomorphismTheoremModulesOQ01OQ01
 import Proofs.ShannonChannelCoding
 import Proofs.ShannonChannelCodingAWGN
 import Proofs.ShannonChannelCodingBEC
