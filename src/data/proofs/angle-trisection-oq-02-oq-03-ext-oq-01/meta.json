@@ -1,0 +1,153 @@
+{
+  "id": "angle-trisection-oq-02-oq-03-ext-oq-01",
+  "title": "Angle Trisection OQ02-OQ03 Ext OQ01: The Prime 2 in Gauss–Wantzel — Doubling Invariance",
+  "slug": "angle-trisection-oq-02-oq-03-ext-oq-01",
+  "description": "Isolates the role of the prime 2 in the Gauss–Wantzel arithmetic bridge. Proves the doubling invariance TotientIsPow2 (2n) ↔ TotientIsPow2 n (the regular 2n-gon is constructible iff the n-gon is), its 2-power generalization TotientIsPow2 (2^a·n) ↔ TotientIsPow2 n, and reduction to the odd part. Consequences: every 2^a·15-gon is constructible; no 2^a·7-gon ever is. 11 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AngleTrisectionOQ02OQ03ExtOQ01.lean",
+    "tags": [
+      "constructibility",
+      "angle-trisection",
+      "gauss-wantzel",
+      "totient",
+      "number-theory",
+      "regular-polygon",
+      "bisection"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 159,
+    "theoremCount": 11,
+    "assumptions": "None. All 11 theorems proved, 0 axioms. Verified axiom-free: #print axioms reports only propext, Classical.choice, Quot.sound (decide uses kernel reduction, not native_decide, so no Lean.ofReduceBool).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_mul_of_prime_of_dvd",
+        "description": "φ(p·n) = p·φ(n) when p prime and p ∣ n (with p = 2: φ(2n) = 2φ(n) for even n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.totient_mul_of_prime_of_not_dvd",
+        "description": "φ(p·n) = (p-1)·φ(n) when p prime and p ∤ n (with p = 2: φ(2n) = φ(n) for odd n)",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Nat.Prime.dvd_of_dvd_pow",
+        "description": "A prime dividing a power divides the base (used for the 7-gon non-constructibility)",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "By Gauss–Wantzel, a regular n-gon is constructible with ruler and compass iff φ(n) is a power of 2, equivalently iff n = 2^a × (product of distinct Fermat primes). The factor 2^a in this characterization reflects that angle bisection — halving an arc, the most elementary ruler-and-compass operation — turns a constructible n-gon into a constructible 2n-gon. The parent extension file established the arithmetic bridge φ(n)=2^k ↔ constructibility together with multiplicativity of TotientIsPow2 across COPRIME factors. That coprime statement is silent about the prime 2 itself, since 2 is never coprime to an even number. This file supplies exactly the missing prime-2 case.",
+    "problemStatement": "Determine how the prime 2 acts on the Gauss–Wantzel predicate TotientIsPow2 n := (∃ k, φ(n) = 2^k). Prove: (1) TotientIsPow2 (2n) ↔ TotientIsPow2 n (doubling invariance); (2) TotientIsPow2 (2^a·n) ↔ TotientIsPow2 n (2-power invariance); (3) constructibility depends only on the odd part of n; (4) explicit infinite families that are always / never constructible.",
+    "proofStrategy": "Two single-step totient identities for p=2 drive everything: for even n, φ(2n)=2φ(n) (Nat.totient_mul_of_prime_of_dvd); for odd n, φ(2n)=φ(n) (Nat.totient_mul_of_prime_of_not_dvd, since 2-1=1). The doubling iff splits on parity: odd n makes the predicate literally unchanged; even n requires the arithmetic step 2·φ(n)=2^k ⟹ k≥1 ∧ φ(n)=2^(k-1) (the non-obvious forward direction). The 2-power invariance is induction on a using 2^(a+1)·n = 2·(2^a·n). Reduction to the odd part is a direct corollary. Families: a single base computation (φ(15)=2^3, φ(7)=2·3) is propagated across all 2-power multiples by the invariance.",
+    "keyInsights": [
+      "**Doubling invariance**: TotientIsPow2 (2n) ↔ TotientIsPow2 n. The reverse direction is angle bisection (n-gon ⇒ 2n-gon); the forward direction (2n-gon ⇒ n-gon) is the arithmetically forced converse — bisection can never *create* constructibility where there was none.",
+      "**The prime 2 splits by parity**: φ(2n) equals 2φ(n) for even n but only φ(n) for odd n. Both cases nonetheless preserve the power-of-2 property, which is why the prime 2 is 'free' in the Gauss–Wantzel criterion and only the odd part of n matters.",
+      "**Reduction to the odd part**: writing n = 2^a·m collapses constructibility of the n-gon to that of the m-gon. This complements the parent's coprime multiplicativity — together they reduce the whole criterion to odd prime powers.",
+      "**Infinite families from one computation**: φ(15)=8 gives that every 2^a·15-gon (15,30,60,120,…) is constructible; φ(7)=6 has the odd prime factor 3, so no 2^a·7-gon (7,14,28,56,…) is ever constructible, regardless of how many bisections are applied."
+    ]
+  },
+  "sections": [
+    {
+      "id": "single-step",
+      "title": "Section I: The two single-step totient identities for p = 2",
+      "startLine": 47,
+      "endLine": 64,
+      "summary": "totient_two_mul_of_even: 2∣n ⟹ φ(2n)=2φ(n). totient_two_mul_of_odd: 2∤n ⟹ φ(2n)=φ(n). Thin wrappers over Mathlib's prime-multiplicativity lemmas specialized to p=2.",
+      "mathContext": "For even $n$: $\\varphi(2n)=2\\varphi(n)$. For odd $n$: $\\varphi(2n)=\\varphi(n)$ since $2-1=1$."
+    },
+    {
+      "id": "doubling",
+      "title": "Section II: The doubling invariance",
+      "startLine": 65,
+      "endLine": 108,
+      "summary": "totient_pow2_double_iff: TotientIsPow2 (2n) ↔ TotientIsPow2 n, by parity case split. constructible_double (bisection, mpr) and constructible_of_double (sharp converse, mp).",
+      "mathContext": "Even case forward: $2\\varphi(n)=2^k \\Rightarrow k\\geq 1 \\wedge \\varphi(n)=2^{k-1}$. Odd case: predicate is literally unchanged."
+    },
+    {
+      "id": "two-power",
+      "title": "Section III: 2-power invariance and reduction to the odd part",
+      "startLine": 109,
+      "endLine": 132,
+      "summary": "totient_pow2_two_pow_mul_iff: TotientIsPow2 (2^a·n) ↔ TotientIsPow2 n by induction on a. totient_pow2_iff_odd_part: if n=2^a·m then TotientIsPow2 n ↔ TotientIsPow2 m.",
+      "mathContext": "Induction step uses $2^{a+1}\\cdot n = 2\\cdot(2^a\\cdot n)$ and the doubling iff."
+    },
+    {
+      "id": "families",
+      "title": "Section IV: Consequences — whole 2-power towers at once",
+      "startLine": 133,
+      "endLine": 159,
+      "summary": "totient_pow2_fifteen (φ(15)=2^3) ⟹ constructible_two_pow_mul_fifteen: every 2^a·15-gon constructible. not_totient_pow2_seven (φ(7)=6, odd prime 3) ⟹ not_constructible_two_pow_mul_seven: no 2^a·7-gon constructible.",
+      "mathContext": "$15,30,60,120,\\dots$ all constructible; $7,14,28,56,\\dots$ none constructible."
+    }
+  ],
+  "conclusion": {
+    "summary": "The role of the prime 2 in the Gauss–Wantzel arithmetic bridge is isolated and fully formalized: 11 theorems, 1 definition, 0 sorries, 0 axioms. The central result is the doubling invariance TotientIsPow2 (2n) ↔ TotientIsPow2 n, generalized to all 2-power multiples and reduced to the odd part of n.",
+    "implications": "Together with the parent file's coprime multiplicativity, this reduces Gauss–Wantzel constructibility entirely to odd prime powers: the prime 2 is 'free'. The invariance also explains the infinite-family structure of the constructible/non-constructible lists — each is generated by an odd base computation propagated through bisection.",
+    "openQuestions": [
+      "Combine the doubling invariance with the parent's odd-prime-factor analysis to derive the full TotientIsPow2 n ↔ (n = 2^a × distinct Fermat primes) characterization as a single biconditional.",
+      "Is TotientIsPow2 decidable with an explicit Bool decision procedure that operates only on the odd part (avoiding factoring out 2^a by repeated halving)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "AngleTrisectionOQ02OQ03ExtOQ01",
+    "lineCount": 159,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/AngleTrisectionOQ02OQ03ExtOQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "angle-trisection-oq-02-oq-03-ext",
+      "relationship": "extends",
+      "description": "Parent extension established the φ(n)=2^k arithmetic bridge and COPRIME multiplicativity of TotientIsPow2; this file fills the missing prime-2 case via the doubling invariance"
+    },
+    {
+      "targetId": "angle-trisection-oq-02-oq-03",
+      "relationship": "ancestor",
+      "description": "OQ02-OQ03 introduced the TotientIsPow2 predicate this file analyzes under multiplication by 2"
+    },
+    {
+      "targetId": "angle-trisection-oq-02",
+      "relationship": "related",
+      "description": "OQ02 characterizes constructibility via [ℚ(cos 2π/n):ℚ] being a power of 2; the doubling invariance is the arithmetic shadow of the angle-bisection construction"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "totient_pow2_double_iff",
+      "type": "core",
+      "statement": "∀ n, TotientIsPow2 (2 * n) ↔ TotientIsPow2 n",
+      "description": "Doubling invariance: the regular 2n-gon is constructible iff the regular n-gon is.",
+      "significance": "Isolates the prime 2 in the Gauss–Wantzel criterion; the forward direction is the non-obvious arithmetic converse of angle bisection"
+    },
+    {
+      "name": "totient_pow2_two_pow_mul_iff",
+      "type": "core",
+      "statement": "∀ a n, TotientIsPow2 (2^a * n) ↔ TotientIsPow2 n",
+      "description": "Constructibility of a regular polygon depends only on the odd part of n.",
+      "significance": "Reduces Gauss–Wantzel to odd prime powers when combined with coprime multiplicativity"
+    },
+    {
+      "name": "not_constructible_two_pow_mul_seven",
+      "type": "corollary",
+      "statement": "∀ a, ¬ TotientIsPow2 (2^a * 7)",
+      "description": "No 2^a·7-gon (7, 14, 28, 56, …) is constructible — bisection never helps.",
+      "significance": "Sharp illustration: bisection cannot create constructibility"
+    }
+  ],
+  "sorries": 0
+}

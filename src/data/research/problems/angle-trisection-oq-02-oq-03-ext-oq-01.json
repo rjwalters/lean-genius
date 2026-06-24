@@ -1,13 +1,13 @@
 {
   "slug": "angle-trisection-oq-02-oq-03-ext-oq-01",
-  "title": "Angle Trisection OQ02-OQ03 Extension: Gauss-Wantzel Arithmetic Bridge — OQ extension (01)",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Angle Trisection OQ02-OQ03 Extension: Gauss-Wantzel Arithmetic Bridge \u2014 OQ extension (01)",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Angle Trisection OQ02-OQ03 Extension: Gauss-Wantzel Arithmetic Bridge — OQ extension (01).",
+    "plain": "Formal mathematical investigation: Angle Trisection OQ02-OQ03 Extension: Gauss-Wantzel Arithmetic Bridge \u2014 OQ extension (01).",
     "whyMatters": [
       "Research value"
     ]
@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-05-29T19:14:09.202Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Doubling invariance of TotientIsPow2 \u2014 shipped PR #29331.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None \u2014 solved, 0 sorries / 0 axioms.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,11 +31,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Isolated the role of the prime 2 in the Gauss\u2013Wantzel arithmetic bridge: proved TotientIsPow2 (2n) \u2194 TotientIsPow2 n and its 2-power generalization, reducing constructibility to the odd part of n. 11 thm / 1 def / 159L, verified 0-axiom. PR #29331.",
+    "builtItems": [
+      "AngleTrisectionOQ02OQ03ExtOQ01.lean: 11 theorems, 1 definition, 0 sorries, 0 axioms (verified)",
+      "totient_pow2_double_iff: TotientIsPow2 (2n) \u2194 TotientIsPow2 n (doubling invariance)",
+      "totient_pow2_two_pow_mul_iff: TotientIsPow2 (2^a\u00b7n) \u2194 TotientIsPow2 n (reduction to odd part)",
+      "not_constructible_two_pow_mul_seven / constructible_two_pow_mul_fifteen: infinite families"
+    ],
+    "insights": [
+      "The prime 2 splits \u03c6(2n) by parity: 2\u03c6(n) for even n, \u03c6(n) for odd n (Nat.totient_mul_of_prime_of_{dvd,not_dvd}); both preserve the power-of-2 property, so 2 is 'free' in Gauss\u2013Wantzel.",
+      "Doubling iff forward direction is the non-trivial one: from 2\u03c6(n)=2^k deduce k\u22651 and \u03c6(n)=2^(k-1); reverse is angle bisection.",
+      "Constructibility of a regular n-gon depends only on the odd part of n; combined with the parent's coprime multiplicativity this reduces the whole criterion to odd prime powers.",
+      "Bisection can never create constructibility: a single odd-base computation (\u03c6(7)=2\u00b73, \u03c6(15)=2^3) propagates to all 2^a multiples via the invariance."
+    ],
+    "mathlibGaps": [
+      "No direct doubling/2-power-invariance lemma for the power-of-2-totient predicate in Mathlib; built from the prime-multiplicativity totient lemmas."
+    ],
+    "nextSteps": [
+      "Assemble TotientIsPow2 n \u2194 (n = 2^a \u00d7 distinct Fermat primes) as a single biconditional using this invariance + the parent's odd-prime-factor / Fermat analysis.",
+      "Explicit Bool decision procedure operating only on the odd part."
+    ]
   },
   "tags": [
     "seeker-selected",
