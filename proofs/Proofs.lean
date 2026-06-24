@@ -3092,6 +3092,7 @@ import Proofs.FriendshipTheoremOQ04Universal
 import Proofs.FrobeniusEndomorphismOQ01
 import Proofs.FrobeniusEndomorphismOQ01OQ01
 import Proofs.FrobeniusEndomorphismOQ01OQ02
+import Proofs.FrobeniusEndomorphismOQ01OQ03
 import Proofs.FrobeniusEndomorphismOQ02
 import Proofs.FrobeniusEndomorphismOQ02OQ01OQ01
 import Proofs.FrobeniusNumber
