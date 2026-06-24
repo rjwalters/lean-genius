@@ -1,0 +1,162 @@
+{
+  "id": "stirling-first-kind-oq-01-oq-02",
+  "title": "Signed Stirling Numbers of the First Kind: the falling-factorial identity and the alternating row sum",
+  "slug": "stirling-first-kind-oq-01-oq-02",
+  "description": "The signed Stirling numbers of the first kind s(n,k) = (−1)^{n−k} c(n,k) are the coefficients expressing the falling factorial x(x−1)…(x−n+1) in the monomial basis: ∑ₖ (−1)^{n−k} c(n,k) xᵏ = (descPochhammer R n).eval x. Specializing at x = 1 gives the alternating row sum ∑ₖ (−1)^{n−k} c(n,k) = [n ≤ 1], vanishing for every n ≥ 2. Mathlib carries the unsigned Nat.stirlingFirst and the falling-factorial polynomial descPochhammer, but no signed Stirling numbers and neither identity — this entry answers the stated open question of the parent row-sum entry, the signed/falling-factorial counterpart of the rising-factorial generating identity.",
+  "meta": {
+    "author": "James Stirling (1730)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFirstKindOQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "permutations",
+      "cycles",
+      "falling-factorial",
+      "pochhammer",
+      "generating-identity",
+      "enumerative"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.stirlingFirst_succ_succ",
+        "description": "Defining recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) for the unsigned Stirling numbers of the first kind",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "Nat.stirlingFirst_eq_zero_of_lt",
+        "description": "Vanishing above the diagonal c(n,k) = 0 for n < k, used to drop the top term of the shifted sum",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      },
+      {
+        "theorem": "descPochhammer_succ_right",
+        "description": "Falling-factorial recurrence descPochhammer R (n+1) = descPochhammer R n * (X − n), giving the evaluated product ∏(x − i)",
+        "module": "Mathlib.RingTheory.Polynomial.Pochhammer"
+      },
+      {
+        "theorem": "Finset.sum_range_succ'",
+        "description": "Index-shift form ∑_{i<n+1} f i = (∑_{i<n} f(i+1)) + f 0, the engine of the (unsigned) generating recursion used as the foundation",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.prod_eq_zero",
+        "description": "A product vanishes if one factor does; supplies the alternating row sum's vanishing at the (1 − 1) factor for n ≥ 2",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "stirlingFirst_generating_signed: the signed/falling-factorial identity ∑ₖ (−1)^{n−k} c(n,k) xᵏ = ∏_{i<n}(x − i) over any commutative ring, derived from the unsigned rising-factorial identity by x ↦ −x and the parity bridge (−1)^{n−k} = (−1)ⁿ(−1)ᵏ",
+      "stirlingFirst_generating_signed_descPochhammer: the same identity phrased with Mathlib's falling-factorial polynomial, exhibiting the signed Stirling numbers as the monomial coefficients of descPochhammer",
+      "stirlingFirst_alternating_row_sum: the alternating row identity ∑ₖ (−1)^{n−k} c(n,k) = [n ≤ 1], the x = 1 specialization vanishing for all n ≥ 2 — the parent entry's stated open question",
+      "eval_descPochhammer_eq_prod: the evaluated product form (descPochhammer R n).eval x = ∏_{i<n}(x − i), a small Mathlib gap filled along the way",
+      "stirlingFirst_generating: a self-contained re-proof of the unsigned rising-factorial generating identity used as the foundation"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. The x = 1 base cases use kernel `decide`/`simp` (no `native_decide`, so no `Lean.ofReduceBool`).",
+    "lineCount": 197,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The (unsigned) Stirling numbers of the first kind c(n,k) count permutations of an n-set with exactly k disjoint cycles; the signed version s(n,k) = (−1)^{n−k} c(n,k) gives the coefficients expressing the falling factorial x^{(n)}_↓ = x(x−1)…(x−n+1) in the monomial basis, dual to the way the rising factorial expands with the plain unsigned numbers. They originate in James Stirling's 1730 Methodus Differentialis. The parent gallery entry proves the row sum ∑ₖ c(n,k) = n! and explicitly raises the signed alternating identity as an open question; this entry settles it.",
+    "problemStatement": "Express the falling factorial in the monomial basis using the Stirling numbers of the first kind, and evaluate the resulting alternating row sum.\n\n**Answer:** ∑_{k=0}^{n} (−1)^{n−k} c(n,k) xᵏ = x(x−1)…(x−n+1), and at x = 1 the alternating row sum is ∑_{k=0}^{n} (−1)^{n−k} c(n,k) = 1 for n ≤ 1 and 0 for every n ≥ 2.",
+    "text": "The signed Stirling numbers of the first kind are the connection coefficients between the falling factorial and the monomials. Evaluating the resulting polynomial identity at x = 1 makes the (1 − 1) factor of the falling factorial collapse the alternating row sum to zero for n ≥ 2. The whole result is proved in Lean with no axioms, building on a self-contained proof of the unsigned (rising-factorial) generating identity.",
+    "proofStrategy": "1. stirlingFirst_generating (foundation): induct on n to prove the unsigned identity ∑ₖ c(n,k) xᵏ = ∏_{i<n}(x+i), peeling the k=0 term with Finset.sum_range_succ', applying the recurrence c(n+1,k+1)=n·c(n,k+1)+c(n,k) termwise, and folding to (x+n)·F(n) via the boundary fact n·c(n,0)=0.\n2. stirlingFirst_generating_signed: rewrite each signed term (−1)^{n−k} c(n,k) xᵏ as (−1)ⁿ·c(n,k)·(−x)ᵏ using the parity bridge (−1)^{n−k}=(−1)ⁿ(−1)ᵏ (valid for k≤n) and neg_pow; factor out (−1)ⁿ, apply the unsigned identity at −x to get (−1)ⁿ·∏(−x+i), then rewrite ∏(−x+i)=(−1)ⁿ∏(x−i) and cancel (−1)ⁿ(−1)ⁿ=1.\n3. eval_descPochhammer_eq_prod / stirlingFirst_generating_signed_descPochhammer: identify ∏_{i<n}(x−i) with (descPochhammer R n).eval x by induction on descPochhammer_succ_right.\n4. stirlingFirst_alternating_row_sum: specialize at x=1 in ℤ; for n≥2 the product ∏_{i<n}(1−i) carries the zero factor at i=1 (Finset.prod_eq_zero), and the n∈{0,1} cases evaluate directly.",
+    "keyInsights": [
+      "**Signs are the x ↦ −x flip**: the alternating signs (−1)^{n−k} are exactly what turns the rising factorial ∏(x+i) into the falling factorial ∏(x−i); the whole signed identity is the unsigned one composed with negation, mediated by the parity bridge (−1)^{n−k} = (−1)ⁿ(−1)ᵏ.",
+      "**The alternating sum vanishes structurally**: at x = 1 the falling factorial (1)^{(n)}_↓ = 1·0·(−1)⋯ contains the factor (1−1) = 0 as soon as n ≥ 2, so the alternating row sum is forced to 0 with no cancellation bookkeeping — a single Finset.prod_eq_zero.",
+      "**Filling a real Mathlib gap**: Mathlib has the unsigned Nat.stirlingFirst and the falling-factorial polynomial descPochhammer but no signed Stirling numbers and neither the monomial expansion of descPochhammer nor the alternating row identity; both are new.",
+      "**Dual to the rising-factorial entry**: this completes the pair of generating identities — unsigned numbers expand the rising factorial, signed numbers expand the falling factorial — settling the parent's open question."
+    ],
+    "prerequisites": [
+      "Signed and unsigned Stirling numbers of the first kind and the cycle decomposition of permutations",
+      "Rising and falling factorials (ascending/descending Pochhammer symbols)",
+      "Induction on the natural numbers and finite sums/products with index shifts"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "File-level docstring stating the signed/falling-factorial identity and the alternating row sum, their relation to the rising-factorial generating identity, and the parent's open question they answer. Imports Mathlib and opens Nat, Finset, Polynomial.",
+      "mathContext": "s(n,k) = (−1)^{n−k} c(n,k) are the coefficients of the falling factorial; Mathlib supplies descPochhammer and the unsigned recurrence but not these identities."
+    },
+    {
+      "id": "unsigned-foundation",
+      "title": "Unsigned Generating Identity (Foundation)",
+      "startLine": 61,
+      "endLine": 116,
+      "summary": "natCast_mul_stirlingFirst_zero_left (the boundary n·c(n,0)=0) and stirlingFirst_generating (∑ₖ c(n,k) xᵏ = ∏(x+i)), proved by induction on the Stirling recurrence with the index shift sum_range_succ'.",
+      "mathContext": "The rising-factorial recursion F(n+1) = (x+n)·F(n) with F(0)=1, carrying the polynomial weights xᵏ."
+    },
+    {
+      "id": "falling-factorial",
+      "title": "The Signed/Falling-Factorial Identity",
+      "startLine": 117,
+      "endLine": 172,
+      "summary": "eval_descPochhammer_eq_prod identifies ∏(x−i) with descPochhammer.eval; stirlingFirst_generating_signed proves ∑ₖ (−1)^{n−k} c(n,k) xᵏ = ∏(x−i) via the parity bridge and x ↦ −x; stirlingFirst_generating_signed_descPochhammer restates it with descPochhammer.",
+      "mathContext": "The falling factorial ∏(x−i) is the rising factorial composed with negation, and the signed Stirling numbers are its monomial coefficients."
+    },
+    {
+      "id": "alternating-row-sum",
+      "title": "The Alternating Row Sum",
+      "startLine": 173,
+      "endLine": 197,
+      "summary": "stirlingFirst_alternating_row_sum: specialize the signed identity at x=1 in ℤ. The n∈{0,1} cases evaluate directly; for n≥2 the product ∏(1−i) vanishes at the i=1 factor (Finset.prod_eq_zero), giving ∑ₖ (−1)^{n−k} c(n,k) = [n ≤ 1].",
+      "mathContext": "(1)^{(n)}_↓ = 0 for n ≥ 2, so the alternating sum of a Stirling row vanishes — the parent's open question."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "note": "Origin of the Stirling numbers; first-kind numbers as connection coefficients between factorials and powers"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6: the falling-factorial expansion x^{(n)}_↓ = ∑ₖ (−1)^{n−k} c(n,k) xᵏ and the Stirling triangles"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-first-kind-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the row sum ∑ₖ c(n,k) = n!. This entry answers its stated open question — the signed alternating row identity — and supplies the falling-factorial generating identity."
+    }
+  ],
+  "conclusion": {
+    "summary": "The signed Stirling numbers of the first kind s(n,k) = (−1)^{n−k} c(n,k) are the monomial coefficients of the falling factorial: ∑ₖ (−1)^{n−k} c(n,k) xᵏ = x(x−1)…(x−n+1) = (descPochhammer R n).eval x (stirlingFirst_generating_signed). At x = 1 the falling factorial's (1−1) factor collapses the alternating row sum to ∑ₖ (−1)^{n−k} c(n,k) = [n ≤ 1] (stirlingFirst_alternating_row_sum), answering the parent's open question. The proof builds on a self-contained unsigned (rising-factorial) generating identity and is verified with 0 axioms and 0 sorries.",
+    "implications": "Supplies the signed/falling-factorial half of the Stirling-first-kind connection-coefficient story as directly citable results, complementing Mathlib's unsigned numbers and the rising-factorial entry, and pairing the two generating identities (rising ↔ unsigned, falling ↔ signed).",
+    "openQuestions": [
+      "Does the analogous identity for the Stirling numbers of the second kind — xⁿ = ∑ₖ S(n,k) x^{(k)}_↓ expressing powers in the falling-factorial basis — admit the same recurrence-driven proof?",
+      "Can the orthogonality relation ∑ⱼ (−1)^{n−j} c(n,j) S(j,m) = [n = m] between the two Stirling triangles be formalized from these generating identities?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Finset",
+      "Polynomial"
+    ],
+    "namespace": "StirlingFirstKindSigned",
+    "lineCount": 197,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingFirstKindOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
