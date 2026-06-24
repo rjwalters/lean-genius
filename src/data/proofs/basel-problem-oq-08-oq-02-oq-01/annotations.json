@@ -1,0 +1,46 @@
+[
+  {
+    "id": "baseloq08oq02oq01-header",
+    "proofId": "basel-problem-oq-08-oq-02-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Module Header and Problem Setup",
+    "content": "The open question, posed by the parent $\\zeta(6)$ entry, asks for $\\sum_{n=1}^\\infty 1/n^8 = \\pi^8/9450$, the degree-8 even-zeta value, plus the π-free ratio $\\zeta(8)/\\zeta(2)^4$. Euler's 1740 formula $\\zeta(2k) = (-1)^{k+1} B_{2k}(2\\pi)^{2k}/(2(2k)!)$ gives this at $k=4$ using $B_8 = -1/30$. Mathlib formalizes the underlying Hurwitz-zeta computation as `hasSum_zeta_nat`, but stops its packaged Bernoulli evaluations at $B_4$ — so the entry must first compute $B_6$ and then $B_8$, the recurrence for $B_8$ consuming $B_6$ as a summand."
+  },
+  {
+    "id": "baseloq08oq02oq01-bernoulli-numbers",
+    "proofId": "basel-problem-oq-08-oq-02-oq-01",
+    "range": {
+      "startLine": 32,
+      "endLine": 62
+    },
+    "type": "theorem",
+    "title": "The Bernoulli Numbers B₆ = 1/42 and B₈ = −1/30",
+    "content": "`bernoulli_six` recomputes $B_6 = 1/42$ (reused here because it is a summand of the $B_8$ recurrence). `bernoulli_eight` then proves $B_8 = -1/30$ by expanding the defining recurrence $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$ over $k = 0,\\dots,7$: the odd terms $B_5 = B_7 = 0$ come from `bernoulli'_eq_zero_of_odd`, $B_6 = 1/42$ is bridged in via `bernoulli_eq_bernoulli'_of_ne_one`, the lower $B_0,\\dots,B_4$ are resolved by their `@[simp]` lemmas, and the binomials $\\binom{8}{1},\\dots,\\binom{8}{7} = 8,28,56,70,56,28,8$ are supplied to `norm_num`. Remarkably $B_8 = B_4 = -1/30$."
+  },
+  {
+    "id": "baseloq08oq02oq01-zeta-eight",
+    "proofId": "basel-problem-oq-08-oq-02-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "The Value ζ(8) = π⁸/9450",
+    "content": "`tsum_one_div_nat_pow_eight` is the headline result $\\sum' n,\\ 1/n^8 = \\pi^8/9450$. It comes from `hasSum_one_div_nat_pow_eight`, the $k=4$ instance of `hasSum_zeta_nat`: substituting $B_8 = -1/30$ and $8! = 40320$ into $(-1)^5\\cdot 2^7\\cdot\\pi^8\\cdot B_8/8!$ gives $(-1)\\cdot 128\\cdot(-1/30)/40320 = 1/9450$. `riemannZeta_eight_eq` records the same value for the analytically continued zeta, $\\zeta(8) = \\pi^8/9450$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`."
+  },
+  {
+    "id": "baseloq08oq02oq01-ratio",
+    "proofId": "basel-problem-oq-08-oq-02-oq-01",
+    "range": {
+      "startLine": 89,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Euler's π-free Ratio ζ(8)/ζ(2)⁴ = 24/175",
+    "content": "`tsum_eight_div_tsum_two_pow_four` divides the even-zeta values: $\\zeta(8)/\\zeta(2)^4 = (\\pi^8/9450)/(\\pi^2/6)^4 = (\\pi^8/9450)/(\\pi^8/1296) = 1296/9450 = 24/175$. The $\\pi$ cancels entirely, leaving a rational determined only by the Bernoulli numbers $B_2 = 1/6$ and $B_8 = -1/30$. This continues the ratio chain $\\zeta(4)/\\zeta(2)^2 = 2/5$, $\\zeta(6)/\\zeta(2)^3 = 8/35$, $\\zeta(8)/\\zeta(2)^4 = 24/175$."
+  }
+]
