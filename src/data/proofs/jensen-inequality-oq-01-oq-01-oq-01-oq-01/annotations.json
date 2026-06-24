@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "concept",
+    "title": "Goal: the n-fold Hölder inequality, a gap in Mathlib",
+    "content": "Mathlib ships only the two-exponent discrete Hölder inequality (`Real.inner_le_Lp_mul_Lq_of_nonneg`) and the general weighted AM–GM, but not the generalized n-exponent Hölder inequality for finite sums. This file supplies it: for nonnegative functions `f j : ι → ℝ` (j ∈ t) and positive exponents `p j` with `∑ j, (p j)⁻¹ = 1`, the sum of products is bounded by the product of the individual Lᵖ-norms. The header lays out the AM–GM → Young → Hölder ladder the proof climbs, and notes that the classical two-function inequality falls out as the `t = {0,1}` case.",
+    "mathContext": "$\\sum_{i\\in s}\\prod_{j\\in t} f_j(i) \\le \\prod_{j\\in t}\\Big(\\sum_{i\\in s} f_j(i)^{p_j}\\Big)^{1/p_j}$, given $\\sum_j p_j^{-1} = 1$, $p_j>0$, $f_j\\ge 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Hölder's inequality", "Lᵖ-norms", "weighted AM–GM", "Young's inequality", "Lᵖ duality"],
+    "prerequisites": ["finite sums and products", "real exponentiation (rpow)", "Lᵖ spaces"]
+  },
+  {
+    "id": "ann-young-product",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 58 },
+    "type": "insight",
+    "title": "The n-variable Young product inequality (pointwise engine)",
+    "content": "`young_product` is the single pointwise fact the whole result rests on: for nonnegative `a j` and exponents `p j` with `∑ (p j)⁻¹ = 1`, `∏_j a_j ≤ ∑_j (p_j)⁻¹·a_j^{p_j}`. The proof is a two-step `calc`. First the telescoping identity rewrites the product: each factor `a_j = (a_j^{p_j})^{1/p_j}` because `(a_j^{p_j})^{1/p_j} = a_j^{p_j·p_j⁻¹} = a_j^1` (`Real.rpow_mul`, `mul_inv_cancel₀`, `Real.rpow_one`). This casts `∏ a_j` as a weighted geometric mean of the data `z_j = a_j^{p_j}` with weights `w_j = (p_j)⁻¹`. Then Mathlib's weighted AM–GM `Real.geom_mean_le_arith_mean_weighted` bounds that geometric mean by the arithmetic mean `∑ (p_j)⁻¹·a_j^{p_j}`. So Young's product inequality is literally weighted AM–GM in disguise.",
+    "mathContext": "$\\prod_j a_j = \\prod_j (a_j^{p_j})^{1/p_j} \\le \\sum_j p_j^{-1} a_j^{p_j}$ by $\\mathrm{geom\\_mean\\_le\\_arith\\_mean\\_weighted}$.",
+    "significance": "key",
+    "relatedConcepts": ["Real.geom_mean_le_arith_mean_weighted", "telescoping (a^p)^{1/p}=a", "weighted geometric mean", "convexity of exp", "Young's inequality"],
+    "prerequisites": ["weighted AM–GM", "laws of exponents", "calc proofs in Lean"]
+  },
+  {
+    "id": "ann-holder-statement",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 60, "endLine": 67 },
+    "type": "concept",
+    "title": "Statement of the generalized Hölder inequality",
+    "content": "`generalized_holder` is the headline theorem. It quantifies over a finite index `s` for the sum, a finite index `t` for the family of functions, the functions `f : κ → ι → ℝ`, and exponents `p : κ → ℝ`, with hypotheses that the `f j` are nonnegative on `s`, the `p j` are positive, and the reciprocal exponents sum to 1. The conjugacy condition `∑_j (p_j)⁻¹ = 1` is the exact n-variable generalization of the two-exponent `1/p + 1/q = 1` — it is what makes the geometric/arithmetic mean weights sum to 1.",
+    "mathContext": "Conjugacy: $\\sum_{j\\in t} p_j^{-1} = 1$ generalizes $\\tfrac1p + \\tfrac1q = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["conjugate exponents", "Finset-indexed families", "Hölder conjugacy"],
+    "prerequisites": ["Finset", "function types in Lean"]
+  },
+  {
+    "id": "ann-degenerate",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 68, "endLine": 82 },
+    "type": "technique",
+    "title": "Degenerate case: a zero-norm column",
+    "content": "Before normalizing one must split off the case where some column's Lᵖ-norm is zero — you cannot divide by zero. If `∑_i f_{j₀}(i)^{p_j₀} = 0`, then since each `f_{j₀}(i)^{p_j₀} ≥ 0`, every term vanishes (`sum_eq_zero_iff_of_nonneg`), so `f_{j₀}(i) = 0` for all `i ∈ s` (`Real.rpow_eq_zero_iff_of_nonneg`). Then every product `∏_j f_j(i)` contains the zero factor `f_{j₀}(i)`, so the entire left-hand side is 0, while the right-hand side (a product of nonnegative rpow's) is ≥ 0 — the bound is trivially true. This is the discrete analogue of \"if one factor is the zero function, Hölder is vacuous.\"",
+    "mathContext": "$\\sum_i f_{j_0}(i)^{p_{j_0}} = 0 \\Rightarrow f_{j_0}\\equiv 0 \\Rightarrow \\sum_i\\prod_j f_j(i) = 0 \\le \\text{RHS}.$",
+    "significance": "supporting",
+    "relatedConcepts": ["case split / by_cases", "sum_eq_zero_iff_of_nonneg", "Real.rpow_eq_zero_iff_of_nonneg", "vacuous bound"],
+    "prerequisites": ["nonnegative sums", "vanishing of products"]
+  },
+  {
+    "id": "ann-normalization",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 83, "endLine": 99 },
+    "type": "insight",
+    "title": "Normalization by the Lᵖ-norms",
+    "content": "With every column strictly positive, set `C j = (∑_i f_j(i)^{p_j})^{1/p_j}`, the Lᵖ-norm of `f_j`. The key bookkeeping fact `hCp` is `C_j^{p_j} = ∑_i f_j(i)^{p_j}` — raising the norm to its own exponent undoes the `1/p_j` root (`Real.rpow_mul`, `inv_mul_cancel₀`). Normalization is the crux: dividing the goal by `∏_j C_j` (`div_le_one`, valid since the product is positive) and distributing the division across the product (`prod_div_distrib`) reduces the target to `∑_i ∏_j (f_j(i)/C_j) ≤ 1`. Applying Young directly to the un-normalized `f_j` would give only the weaker arithmetic bound `∑_j (p_j)⁻¹‖f_j‖_p^{p}`; dividing by the norms first is exactly what sharpens it to the geometric product `∏_j ‖f_j‖_p`.",
+    "mathContext": "$C_j = \\big(\\sum_i f_j(i)^{p_j}\\big)^{1/p_j},\\quad C_j^{p_j} = \\sum_i f_j(i)^{p_j},\\quad \\text{goal} \\Leftrightarrow \\sum_i\\prod_j \\tfrac{f_j(i)}{C_j} \\le 1.$",
+    "significance": "key",
+    "relatedConcepts": ["normalization", "Lᵖ-norm", "div_le_one", "prod_div_distrib", "homogeneity of Hölder"],
+    "prerequisites": ["rpow inverse laws", "division in ordered fields"]
+  },
+  {
+    "id": "ann-pointwise-sum",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 116 },
+    "type": "technique",
+    "title": "Apply Young pointwise, then sum and swap",
+    "content": "The closing `calc` is the normalization payoff. Apply `young_product` at each `i ∈ s` to the normalized data `f_j(i)/C_j`, giving `∏_j f_j(i)/C_j ≤ ∑_j (p_j)⁻¹·(f_j(i)/C_j)^{p_j}`; summing over `i` (`sum_le_sum`) and exchanging the order of summation (`sum_comm`, `mul_sum`) collects, for each column `j`, the factor `∑_i (f_j(i)/C_j)^{p_j}`. By `hCp` and `Real.div_rpow` this inner sum equals `(∑_i f_j(i)^{p_j})/C_j^{p_j} = 1` — the normalization makes each column a probability-like total. So the bound collapses to `∑_j (p_j)⁻¹·1 = ∑_j (p_j)⁻¹ = 1` by the conjugacy hypothesis, completing the proof.",
+    "mathContext": "$\\sum_i\\prod_j \\tfrac{f_j(i)}{C_j} \\le \\sum_j p_j^{-1}\\underbrace{\\sum_i\\Big(\\tfrac{f_j(i)}{C_j}\\Big)^{p_j}}_{=\\,1} = \\sum_j p_j^{-1} = 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["sum_comm (Fubini for finite sums)", "mul_sum", "Real.div_rpow", "probability normalization", "conjugacy ∑1/p=1"],
+    "prerequisites": ["interchange of finite sums", "monotonicity of sums"]
+  },
+  {
+    "id": "ann-holder-two",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 118, "endLine": 134 },
+    "type": "insight",
+    "title": "Classical two-function Hölder as a Fin 2 instance",
+    "content": "`inner_le_holder_two` recovers the textbook inequality `∑_i u_i v_i ≤ (∑_i u_i^p)^{1/p}(∑_i v_i^q)^{1/q}` for conjugate `p, q` with no extra mathematical work — it is the `t = univ : Finset (Fin 2)` specialization of `generalized_holder`, with the function family `j ↦ if j = 0 then u else v` and exponents `j ↦ if j = 0 then p else q`. The two-element sums and products expand via `Fin.sum_univ_two` / `Fin.prod_univ_two`, the hypotheses discharged by `fin_cases j <;> simp`. This is the payoff of stating the general theorem over an arbitrary finite index: the classical case is a one-line corollary.",
+    "mathContext": "$t = \\{0,1\\}$: $\\sum_i u_i v_i \\le \\big(\\sum_i u_i^p\\big)^{1/p}\\big(\\sum_i v_i^q\\big)^{1/q}$, $p^{-1}+q^{-1}=1$.",
+    "significance": "key",
+    "relatedConcepts": ["classical Hölder inequality", "Fin 2 specialization", "Fin.prod_univ_two", "fin_cases", "Cauchy–Schwarz (p=q=2 case)"],
+    "prerequisites": ["conjugate exponents", "Fin n enumeration in Lean"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "jensen-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": { "startLine": 39, "endLine": 134 },
+    "type": "context",
+    "title": "Self-contained and axiom-free",
+    "content": "The entry is honestly badged `verified` with `axiomCount: 0`: 3 theorems, 0 sorries, 0 `axiom` declarations, no `native_decide`. It is self-contained, importing only `Mathlib.Analysis.MeanInequalities` (for `Real.geom_mean_le_arith_mean_weighted` and the rpow library) and depending on no other gallery file. All theorems rest only on the foundational `propext` / `Classical.choice` / `Quot.sound`. This makes the file a clean, reusable Mathlib-style supplement filling the genuine n-fold Hölder gap.",
+    "mathContext": "Axioms: $\\{\\text{propext},\\ \\text{Classical.choice},\\ \\text{Quot.sound}\\}$ only.",
+    "significance": "context",
+    "relatedConcepts": ["axiom integrity", "self-contained proof", "Mathlib gap-filling", "machine verification"],
+    "prerequisites": ["Lean type theory", "Mathlib imports"]
+  }
+]
