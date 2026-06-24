@@ -1,8 +1,8 @@
 {
   "slug": "lhopital-oq-02-incomplete-01",
   "title": "L Hopital Rule: Infinity/Infinity Form",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETE",
     "since": "2026-04-03T09:13:03.072Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Derived three growth limits as corollaries of the parent infinity/infinity L'Hopital rule; verified 0-axiom.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done - shipped in PR #29199.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Completed: derived (ln x)/x -> 0, x/e^x -> 0, and (x+ln x)/x -> 1 as direct corollaries of the parent infinity/infinity L'Hopital theorem (LHopitalInfty.lhopital_infty_atTop). 3 theorems, 122 lines, 0 sorries, 0 axioms (Lean 4.26.0). Shipped in PR #29199.",
+    "builtItems": [
+      "log_div_id_atTop : Tendsto (fun x => Real.log x / x) atTop (nhds 0) - c=0 case, f=log/g=id, f'/g'=x^-1 -> 0",
+      "id_div_exp_atTop : Tendsto (fun x => x / Real.exp x) atTop (nhds 0) - c=0 case, f=id/g=exp, f'/g'=(e^x)^-1 -> 0",
+      "id_add_log_div_id_atTop : Tendsto (fun x => (x + Real.log x) / x) atTop (nhds 1) - general c<>0 case (c=1), f'/g'=1+x^-1 -> 1"
+    ],
+    "insights": [
+      "The parent infinity/infinity theorem is genuinely usable: each divergent ratio reduces to elementary derivative lemmas (Real.hasDerivAt_log/exp, hasDerivAt_id') plus an inverse-limit computation (tendsto_inv_atTop_zero).",
+      "Both the c=0 (log/x, x/e^x) and the c<>0 ((x+log x)/x -> 1) cases work, confirming the parent rule is not silently restricted to vanishing ratios.",
+      "x/e^x -> 0 appeared only as commentary in the parent file; formalizing it closes the gap between the abstract statement and its canonical application.",
+      "The hard infinity/infinity divergence behaviour is entirely delegated to the parent two-variable Cauchy-MVT argument; the leaf only assembles hypotheses."
+    ],
+    "mathlibGaps": [
+      "Mathlib (v4.26.0) provides 26 L'Hopital variants, all for the 0/0 form; the infinity/infinity rule used here comes from the parent entry, not Mathlib."
+    ],
+    "nextSteps": [
+      "Generalize to x^n/e^x -> 0 (n>=2) and (ln x)/x^s -> 0 (s>0) by iterating the infinity/infinity rule.",
+      "Restate the limits as IsLittleO facts (log =o[atTop] id, id =o[atTop] exp) to connect with Mathlib asymptotics."
+    ]
   },
   "tags": [
     "analysis",
@@ -51,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T09:13:03.072Z",
-  "lastUpdate": "2026-04-03T09:13:03.072Z",
+  "lastUpdate": "2026-06-24",
   "significance": 7,
   "tractability": 5
 }
