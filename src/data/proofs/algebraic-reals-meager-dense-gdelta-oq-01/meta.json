@@ -88,7 +88,7 @@
       }
     ],
     "assumptions": "0 axioms (only propext, Classical.choice, Quot.sound — the standard Mathlib triple; no sorryAx, no native_decide). The Fσ predicate is introduced locally because Mathlib provides IsGδ but no Fσ counterpart; all results are proved from Mathlib's set-theoretic De Morgan lemmas, T1 separation, and countability, reusing the parent's algebraicReals_not_isGδ and transcendentalReals_isGδ.",
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 1,
     "additionalFiles": []
   },
@@ -101,7 +101,7 @@
     ],
     "structureCount": 0,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "substantiveTheoremCount": 7,
     "computationalVerifications": 0,
     "lemmaCount": 0,
