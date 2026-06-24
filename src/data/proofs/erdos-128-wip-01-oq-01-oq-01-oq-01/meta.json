@@ -1,0 +1,123 @@
+{
+  "id": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+  "title": "Erdős #128: forbidden-subgraph freeness pulls back along homomorphisms (clique-freeness is the F = K_r case)",
+  "slug": "erdos-128-wip-01-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos128WIP01OQ01OQ01OQ01",
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 8,
+    "path": "Proofs/Erdos128WIP01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Answers the parent entry erdos-128-wip-01-oq-01-oq-01's stated open question by generalizing clique-freeness pullback from cliques to arbitrary forbidden subgraphs. The parent proved K_r-freeness pulls back along graph homomorphisms; this entry isolates the general mechanism. A homomorphic copy of a fixed graph F in G is a graph homomorphism phi : F -> G (no injectivity required). homFree_of_hom shows F-homomorphic-copy-freeness pulls back along any homomorphism f : G -> H, for every F, by pure composition (f . phi is a copy of F in H) -- crucially requiring no irreflexivity. hasHomCopy_mono shows homomorphic-copy containment is monotone along homomorphisms F' -> F, generalizing clique-order monotonicity (the inclusion K_m -> K_r). The bridge hasHomCopy_completeGraph_iff proves that over an irreflexive target a homomorphic copy of the complete graph K_r is exactly an r-clique (the homomorphism is forced injective by irreflexivity), so K_r-freeness IS K_r-homomorphic-copy-freeness (cliqueFree_iff_homFree_completeGraph) and the parent's cliqueFree_of_hom is recovered as the F = K_r corollary. blowup_homFree generalizes blow-up preservation to every F, and C5_homFree / blowup_C5_homFree / blowup_C5_cliqueFree recover the extremal witnesses' K_r-freeness for all r >= 3 from the general framework, via an ordinary decision procedure (not native_decide). 13 theorems, 8 definitions + 1 structure, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos128WIP01OQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "extremal-graph-theory",
+      "triangle-free",
+      "clique-free",
+      "forbidden-subgraph",
+      "graph-homomorphism",
+      "ramsey-turan",
+      "erdos-problems"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "Machine-checked with `lake env lean Proofs/Erdos128WIP01OQ01OQ01OQ01.lean` (Lean v4.26.0, Mathlib pin): compiles with 0 errors. 0 sorries, 0 axiom declarations, no native_decide. #print axioms reports: homFree_of_hom, hasHomCopy_mono, cliqueFree_of_hom, and hasHomCopy_completeGraph_iff depend on NO axioms at all; C5_homFree_three, C5_homFree, blowup_C5_homFree, and blowup_C5_cliqueFree depend only on the standard foundational axioms [propext, Classical.choice, Quot.sound] (the `decide` evaluation of C₅ over Fin 5 / the function space Fin 3 -> Fin 5 is the ordinary kernel decision procedure, NOT native_decide, so Lean.ofReduceBool is not used; maxRecDepth is raised for the C5_homFree_three decision only). Self-contained: the Graph objects are re-declared. Honest scope: the structural forbidden-subgraph-pullback / monotonicity facts, the complete-graph bridge, and the K_r-freeness of the C₅-blow-up witnesses, NOT the open optimal-constant question (that these blow-ups achieve induced density > n²/50, and that 1/50 is optimal, remain open).",
+    "lineCount": 219,
+    "theoremCount": 13,
+    "definitionCount": 8,
+    "originalContributions": [
+      "homFree_of_hom: forbidden-subgraph freeness pulls back along graph homomorphisms, for EVERY fixed graph F. A homomorphic copy of F is a graph homomorphism phi : F -> G (no injectivity required); if f : G -> H is a homomorphism and H has no homomorphic copy of F then neither does G, because f . phi is a homomorphic copy of F in H. The proof is pure composition and needs no irreflexivity -- this is the general structural reason behind the parent's cliqueFree_of_hom, with the clique case's appeal to irreflexivity isolated entirely in the bridge.",
+      "hasHomCopy_mono: homomorphic-copy containment is monotone along homomorphisms. A homomorphism g : F' -> F turns a homomorphic copy of F into one of F' by precomposition. This generalizes clique-order monotonicity (hasClique_mono), which is the special case of the inclusion homomorphism K_m -> K_r for m <= r.",
+      "hasHomCopy_completeGraph_iff / cliqueFree_iff_homFree_completeGraph: the bridge identifying the F = K_r case with cliques. Over an irreflexive target a homomorphic copy of the complete graph K_r is exactly an r-clique -- a homomorphism out of K_r is forced injective because distinct K_r vertices are adjacent, so their images are adjacent and (by irreflexivity) distinct. Hence K_r-freeness IS K_r-homomorphic-copy-freeness, and this is the precise sense in which clique-freeness is the F = K_r instance.",
+      "cliqueFree_of_hom: the parent's clique-freeness pullback, recovered as the F = K_r corollary of homFree_of_hom through the bridge -- one application of the general theorem.",
+      "blowup_homFree: every blow-up of an F-free graph is F-free, for every fixed F (the forbidden-subgraph generalization of blowup_cliqueFree), since the class map of a blow-up is a homomorphism.",
+      "C5_homFree / blowup_C5_homFree / blowup_C5_cliqueFree: C₅ has no homomorphic copy of K_r for any r >= 3 (it has none of K_3 by the ordinary decision procedure, and copy-containment is monotone), hence neither does any blow-up of C₅ at any size or class assignment; via the bridge this recovers the parent's blowup_C5_cliqueFree, exhibiting the conjectured-optimal extremal construction as K_r-free for all r >= 3 -- now as an instance of the uniform forbidden-subgraph framework."
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #128 is a Ramsey–Turán-type question asking whether a uniform edge-density condition on all large induced subgraphs forces a triangle. The threshold constant 1/50 is conjectured optimal, witnessed by blow-ups of C₅ (and the Petersen graph), which are triangle-free yet have induced-subgraph density about 1/5 > 1/50. A long line of partial results (Erdős–Faudree–Rousseau–Schelp 1/16, Krivelevich, Razborov's flag-algebra 27/1024, Norin–Yepremyan) narrows the constant, but the exact 1/50 remains a $250 open problem. The parent chain isolated the structural reason the witnesses avoid cliques: triangle-freeness, then K_r-freeness, pulls back along graph homomorphisms. This entry shows that pullback principle is not special to cliques at all -- it holds for every forbidden subgraph, with the clique case recovered through a complete-graph bridge.",
+    "problemStatement": "Erdős #128: if every induced subgraph of an n-vertex graph G on >= floor(n/2) vertices has more than n²/50 edges, must G contain a triangle? This entry answers the parent entry's open question by generalizing the homomorphism-pullback principle from cliques to arbitrary forbidden subgraphs F -- freeness of a homomorphic copy of any fixed F pulls back along homomorphisms -- and identifies clique-freeness as the F = K_r instance, recovering the parent's clique results and the C₅-blow-up witnesses' K_r-freeness for every r >= 3.",
+    "proofStrategy": "Re-declare the scaffold's Graph objects and define a homomorphic copy of F in G as a graph homomorphism phi : F -> G (a map preserving edges, with no injectivity demanded). The pullback theorem homFree_of_hom is then pure composition: given f : G -> H and a copy phi : F -> G, the composite f . phi : F -> H preserves edges, so a copy of F in G yields one in H -- F-freeness pulls back, with no irreflexivity needed. Monotonicity hasHomCopy_mono precomposes a copy of F with a homomorphism F' -> F. For the clique bridge, define the complete graph K_r (distinct vertices adjacent); a homomorphism out of K_r into an irreflexive G sends distinct (hence adjacent) vertices to adjacent, therefore distinct, images, so it is injective -- i.e. exactly an r-clique (hasHomCopy_completeGraph_iff). This makes cliqueFree_of_hom a one-line corollary. A blow-up's class map is a homomorphism, so blow-ups preserve F-freeness; C₅ has no homomorphic copy of K_3 by the finite decision procedure (maxRecDepth raised), and by monotonicity none of K_r for r >= 3, so blowup_C5_cliqueFree follows via the bridge.",
+    "keyInsights": [
+      "The pullback argument never used cliques: a homomorphic copy is just an edge-preserving map, and composing it with a homomorphism gives a copy in the target -- so freeness of a homomorphic copy of ANY fixed graph F pulls back, by composition alone, with no appeal to irreflexivity.",
+      "Irreflexivity is exactly what the complete-graph bridge needs and the general pullback does not: over an irreflexive target a homomorphism out of K_r is automatically injective, so a homomorphic copy of K_r is precisely an r-clique. This localizes the parent's irreflexivity step to a single equivalence.",
+      "Clique-order monotonicity is a special case of monotonicity along homomorphisms: the inclusion K_m -> K_r is a homomorphism, and precomposing a copy with it restricts a K_r-copy to a K_m-copy.",
+      "Consequently the parent's whole clique theory -- cliqueFree_of_hom, the C₅-blow-up witnesses' K_r-freeness for all r >= 3 -- drops out of one general forbidden-subgraph theorem plus the complete-graph bridge, and the framework now applies to any fixed forbidden subgraph, not only complete ones."
+    ]
+  },
+  "sections": [
+    {
+      "id": "objects",
+      "title": "Graphs, homomorphisms, and homomorphic copies (re-declared)",
+      "summary": "Graph, the homomorphism predicate IsHom, and the homomorphic-copy notions hasHomCopy / homFree of a fixed graph F.",
+      "startLine": 56,
+      "endLine": 77,
+      "mathContext": "Self-contained re-declaration; a homomorphic copy of F in G is a graph homomorphism F -> G, with no injectivity required."
+    },
+    {
+      "id": "pullback",
+      "title": "Forbidden-subgraph freeness pulls back along homomorphisms",
+      "summary": "homFree_of_hom: a homomorphism into an F-free graph forces F-freeness, by composing f . phi; hasHomCopy_mono: monotonicity along homomorphisms F' -> F.",
+      "startLine": 82,
+      "endLine": 97,
+      "mathContext": "The general mechanism behind the parent's cliqueFree_of_hom -- pure composition, no irreflexivity."
+    },
+    {
+      "id": "cliques",
+      "title": "Cliques as the F = K_r case",
+      "summary": "The complete graph K_r and the bridge hasHomCopy_completeGraph_iff (a homomorphic copy of K_r over an irreflexive target is exactly an r-clique), giving cliqueFree_iff_homFree_completeGraph and recovering cliqueFree_of_hom.",
+      "startLine": 99,
+      "endLine": 146,
+      "mathContext": "Irreflexivity forces a homomorphism out of K_r to be injective, identifying homomorphic copies of K_r with r-cliques."
+    },
+    {
+      "id": "blowups",
+      "title": "Blow-ups and the C₅ witness",
+      "summary": "blowup_homFree (every blow-up of an F-free graph is F-free) and the C₅ application: C5_homFree, blowup_C5_homFree, and the recovered C5_cliqueFree / blowup_C5_cliqueFree for all r >= 3.",
+      "startLine": 148,
+      "endLine": 202,
+      "mathContext": "The class map of a blow-up is a homomorphism; C₅ has no homomorphic copy of K_r for r >= 3 by the finite decision procedure plus monotonicity."
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős #128 asks whether dense large induced subgraphs force a triangle, with conjectured-optimal constant 1/50 witnessed by C₅-blow-ups. The parent chain showed triangle-freeness, then K_r-freeness, pulls back along graph homomorphisms. This entry answers the parent's open question by isolating the general mechanism: homFree_of_hom shows freeness of a homomorphic copy of ANY fixed graph F pulls back along homomorphisms, by pure composition with no irreflexivity; hasHomCopy_mono makes it monotone along homomorphisms F' -> F; and the bridge hasHomCopy_completeGraph_iff identifies homomorphic copies of K_r over irreflexive targets with r-cliques, recovering cliqueFree_of_hom and the C₅-blow-up witnesses' K_r-freeness for all r >= 3 as the F = K_r instance. Self-contained over Mathlib, verified with the ordinary kernel decision procedure (no native_decide), 0 sorries, 0 axioms.",
+    "implications": "The clique-pullback theory of the parent is a single corollary of a forbidden-subgraph principle that applies to every fixed F, with the only use of irreflexivity confined to the complete-graph bridge. Any formal attack on the optimal constant 1/50 thus inherits a reusable, F-uniform foundation: the extremal C₅-blow-ups are free of homomorphic copies of every complete graph K_r (r >= 3), and the same pullback would establish freeness of any other fixed forbidden subgraph whenever the base graph is.",
+    "openQuestions": [
+      "Formalize the edge-density estimate for C₅-blow-ups: that a balanced blow-up has induced-subgraph density > n²/50 on every floor(n/2)-subgraph, completing the lower-bound witness for the 1/50 constant.",
+      "Prove (or formalize a partial result toward) the main question: does density > n²/50 on every floor(n/2)-subgraph force a triangle?",
+      "Strengthen the forbidden-subgraph notion from homomorphic copies to induced or injective (subgraph) copies, and characterize for which F injective-copy-freeness also pulls back along homomorphisms (it does not in general -- non-adjacent vertices of F may collapse under the homomorphism -- so the complete graphs are exactly the F for which homomorphic and injective copies coincide over irreflexive targets)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-128-wip-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent entry lifted homomorphism-pullback from triangles to K_r-cliques (cliqueFree_of_hom) and listed as an open question the generalization beyond cliques to arbitrary forbidden subgraphs. This entry proves exactly that (homFree_of_hom), generalizes clique-order monotonicity to monotonicity along homomorphisms, and recovers cliqueFree_of_hom as the F = K_r case via the complete-graph bridge."
+    },
+    {
+      "targetId": "erdos-128-wip-01-oq-01",
+      "relationship": "related",
+      "description": "The grandparent entry proved triangle-freeness pulls back along graph homomorphisms (triangleFree_of_hom); that is the F = K_3 instance of the forbidden-subgraph pullback established here."
+    },
+    {
+      "targetId": "erdos-128",
+      "relationship": "related",
+      "description": "The base Erdős #128 scaffold, whose conjectured-optimal extremal witnesses are the C₅-blow-ups shown here to be free of homomorphic copies of K_r -- hence K_r-free -- for every r >= 3."
+    }
+  ]
+}
