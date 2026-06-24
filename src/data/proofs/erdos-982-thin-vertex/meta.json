@@ -122,6 +122,33 @@
       "significance": "The n = 3 base case of #982 (⌊3/2⌋ = 1), proved without any of the parent's axioms."
     }
   ],
+  "overview": {
+    "historicalContext": "Erdős Problem #982 asks whether every convex n-gon has some vertex from which at least ⌊n/2⌋ distinct distances to the other vertices are seen. The regular n-gon attains exactly ⌊n/2⌋ from every vertex, making ⌊n/2⌋ the conjectured extremal value. The lower-bound story begins with Moser (1952), whose pigeonhole argument gives ⌈n/3⌉ distinct distances at some vertex; successive geometric refinements by Erdős–Fishburn (1994), Dumitrescu (2006), and Nivasch–Pach–Pinchasi–Zerbib (2013, the current record ≈ 0.3614n) all improve the bound on how many vertices can lie on one circle, never the underlying combinatorics. The problem remains open. Its difficulty is tied to the disproved Erdős Problem #97: one cannot always find a vertex avoiding three equidistant neighbours, so the clean combinatorial route to ⌊n/2⌋ is provably blocked.",
+    "problemStatement": "For a convex polygon with vertex set S, |S| = n, let f(n) be the maximum over vertices p of the number of distinct distances dist(p, q), q ∈ S\\{p}. Erdős #982 conjectures f(n) ≥ ⌊n/2⌋. This file does not resolve the conjecture; it isolates the axiom-free combinatorial engine: $(n-1) \\le (\\#\\text{distinct distances from }p)\\cdot(\\text{largest distance class of }p)$, and derives the exact reduction of #982 to the geometric existence of a 'thin' vertex (one whose every distance class has size ≤ 2).",
+    "proofStrategy": "The whole file descends from one abstract inequality, card_le_image_mul: for f : α → β with decidable equality, if every fibre of f over a finite set s has ≤ M elements, then |s| ≤ |image f|·M (proved from Finset.card_eq_sum_card_fiberwise and Finset.sum_le_sum). Specialising f = dist p to the n−1 other vertices gives distinctDistances_ge_of_classes_le: all distance classes ≤ M ⇒ at least (n−1)/M distinct distances (M = 3 is Moser). Taking M = 2 and upgrading ⌈(n−1)/2⌉ to ⌊n/2⌋ by the unique-diameter parity fact (ceil_half_pred_eq_floor_half, omega) yields the headline distinctDistances_ge_half; lifting one thin vertex through Finset.le_sup gives conjecture_of_exists_thin_vertex. The contrapositive exists_three_equidistant_of_few_distances exposes the link to the disproved #97. Finally maxDistinctDistances_pos discharges the n = 3 base case axiom-free.",
+    "keyInsights": [
+      "All known vertex distinct-distance lower bounds for #982 — Moser's ⌈n/3⌉ and every published refinement — are the SAME one-line pigeonhole inequality (card_le_image_mul) specialised to f = dist p; the published progress is entirely in the geometric bound on the largest distance class, never in the combinatorics.",
+      "The conjectured bound ⌊n/2⌋ is exactly the M = 2 instance: 'no three vertices on a circle centred at p' forces ≥ ⌈(n−1)/2⌉ = ⌊n/2⌋ distances, and the regular polygon shows this is tight, so #982 reduces precisely to the existence of one thin vertex.",
+      "The parity gain from the crude ⌈(n−1)/2⌉ to the exact ⌊n/2⌋ is the unique-diameter phenomenon: a vertex's diametrically opposite neighbour forms a distance class of size 1, so one class is short and the bound rounds up — a genuinely geometric improvement encoded as a Nat arithmetic identity.",
+      "The obstruction is sharp and identifiable: fewer than ⌊n/2⌋ distances at p forces a circle through three vertices, which is exactly the configuration of Erdős #97 — and #97's disproof shows such configurations cannot always be avoided, so no purely combinatorial argument can close #982.",
+      "The file cleanly separates what is provable from what is open: every statement is axiom-free and convex-position-free, isolating the geometric content of #982 as the single open existence claim 'a thin vertex always exists', rather than entangling it with the published bounds (which the parent file axiomatizes)."
+    ],
+    "prerequisites": [
+      "The pigeonhole / fibrewise-counting principle for finite sets",
+      "Euclidean distance in the plane EuclideanSpace ℝ (Fin 2)",
+      "Floor division arithmetic on ℕ (⌊n/2⌋, ⌈(n−1)/2⌉)",
+      "Erdős distinct-distance problems and the status of #97 and #982"
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry extracts, axiom-free, the combinatorial core shared by every Moser-type lower bound for Erdős #982. From the single fibre inequality (n−1) ≤ (#distinct distances from p)·(largest distance class of p) it derives: the Moser-type general bound (n−1)/M; the headline distinctDistances_ge_half (all classes ≤ 2 ⇒ p sees ≥ ⌊n/2⌋ distances, tight at the regular polygon); the packaged reduction conjecture_of_exists_thin_vertex (#982 follows from the existence of one thin vertex); the contrapositive linking few distances to a circle through three vertices (Erdős #97); and an axiom-free n = 3 base case. None of the parent file's four axioms are used.",
+    "implications": "The work pinpoints exactly where Erdős #982 stops being elementary: the combinatorics is a one-line pigeonhole, and the entire open difficulty is the geometric existence of a thin vertex. Because the relevant 'avoid three equidistant neighbours' configuration is the disproved Erdős #97, the reduction explains structurally why #982 has resisted purely combinatorial attacks and why all progress has come from refined geometric bounds on the largest distance class. It also provides a reusable, verified pigeonhole engine and discharges the parent's triangle base case without assumptions.",
+    "openQuestions": [
+      "Does every convex polygon have a thin vertex (all distance classes ≤ 2), or at least a vertex with largest class o(n)? This is the exact geometric gap to the full ⌊n/2⌋ conjecture.",
+      "Can the current record M-bound (Nivasch–Pach–Pinchasi–Zerbib, ≈ 0.3614n) be formalized over this engine by supplying the geometric bound on the largest distance class, thereby machine-checking the best known lower bound for #982?",
+      "Is there a quantitative trade-off — e.g. an averaging bound showing many vertices are simultaneously thin — that would beat the worst-case single-vertex pigeonhole?"
+    ]
+  },
   "sections": [
     {
       "id": "pigeonhole-engine",
