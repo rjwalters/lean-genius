@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-powersetcard-cons-is-pascal",
+    "proofId": "subset-count-oq-02-oq-02",
+    "range": {
+      "startLine": 56,
+      "endLine": 80
+    },
+    "type": "insight",
+    "title": "powersetCard_cons IS Pascal — Counting the Decomposition",
+    "content": "Mathlib's `Multiset.powersetCard_cons` packages the fix-an-element decomposition as an equation of multisets:\n\n```lean\ntheorem powersetCard_cons (k : ℕ) (a : α) (s) :\n    powersetCard (k + 1) (a ::ₘ s)\n      = powersetCard (k + 1) s + map (cons a) (powersetCard k s)\n```\n\nThe $(k+1)$-submultisets of `a ::ₘ s` are exactly those omitting `a` (the $(k+1)$-submultisets of `s`) together with the `cons a`-image of the $k$-submultisets of `s`. Taking `Multiset.card` of both sides and simplifying turns this single structural fact into Pascal's recurrence:\n\n```lean\ntheorem choose_succ_succ_comb (m k : ℕ) :\n    (m + 1).choose (k + 1) = m.choose (k + 1) + m.choose k := by\n  have hcard := congrArg Multiset.card\n    (powersetCard_succ_cons k m (Multiset.range m))\n  simp only [Multiset.card_powersetCard, Multiset.card_cons, Multiset.card_range,\n    Multiset.card_add, Multiset.card_map] at hcard\n  exact hcard\n```\n\nThe `card_map` rewrite is exactly the place where the bijection enters: `card (map (cons a) X) = card X` because `cons a` is injective.",
+    "mathContext": "Counting $\\mathcal{P}_{k+1}(a ::_m s) = \\mathcal{P}_{k+1}(s) \\sqcup \\mathrm{cons}\\,a\\,(\\mathcal{P}_k(s))$ with `card_add` and `card_map`: $\\binom{|s|+1}{k+1} = \\binom{|s|}{k+1} + \\binom{|s|}{k}$. Instantiating at $s = \\text{range}\\,m$ (card $m$) gives $\\binom{m+1}{k+1} = \\binom{m}{k+1} + \\binom{m}{k}$. No appeal to the recursive definition of `choose`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Multiset.powersetCard_cons",
+      "Multiset.card_powersetCard",
+      "Multiset.card_map",
+      "Pascal's recurrence"
+    ],
+    "prerequisites": [
+      "Multisets",
+      "Powerset by cardinality",
+      "Binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-finset-bijection-honest",
+    "proofId": "subset-count-oq-02-oq-02",
+    "range": {
+      "startLine": 82,
+      "endLine": 119
+    },
+    "type": "concept",
+    "title": "The Honest Bijection: Disjointness + Injectivity",
+    "content": "The `Finset` version makes the combinatorial bijection fully explicit. `Finset.powersetCard_succ_insert` decomposes the $(k+1)$-subsets of `insert x s` into two layers, and counting requires two facts:\n\n- **Disjointness.** The two layers cannot overlap: members of `s.powersetCard (k+1)` are subsets of `s`, hence avoid `x` (since `x ∉ s`); members of `(s.powersetCard k).image (insert x)` all contain `x`. Proved via `Finset.disjoint_left`.\n- **Injectivity.** `insert x` is injective on the $k$-subsets of `s`: each such subset `a` avoids `x`, so `erase x (insert x a) = a` recovers it (`Finset.erase_insert`). Proved as a `Set.InjOn`.\n\nThese feed `Finset.card_union_of_disjoint` and `Finset.card_image_of_injOn`:\n\n```lean\nrw [Finset.card_union_of_disjoint hdisj, Finset.card_powersetCard,\n    Finset.card_powersetCard, Finset.card_image_of_injOn hinj,\n    Finset.card_powersetCard, hins] at hcard\n```\n\nThis is the textbook proof — partition by membership of `x`, relabel the `x`-containing subsets by deleting `x` — carried out literally.",
+    "mathContext": "$\\binom{S}{k+1}$ for $S = \\{x\\} \\cup s$ ($x \\notin s$) partitions as $\\binom{s}{k+1} \\sqcup \\{T \\cup \\{x\\} : T \\in \\binom{s}{k}\\}$. The map $T \\mapsto T \\cup \\{x\\}$ is a bijection onto the second block (inverse: delete $x$), so $|\\binom{S}{k+1}| = |\\binom{s}{k+1}| + |\\binom{s}{k}|$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.powersetCard_succ_insert",
+      "Finset.card_union_of_disjoint",
+      "Finset.card_image_of_injOn",
+      "Finset.erase_insert"
+    ],
+    "prerequisites": [
+      "Finsets",
+      "Disjoint unions",
+      "Injective maps and cardinality"
+    ]
+  },
+  {
+    "id": "ann-fix-size-row-sum",
+    "proofId": "subset-count-oq-02-oq-02",
+    "range": {
+      "startLine": 121,
+      "endLine": 144
+    },
+    "type": "insight",
+    "title": "The Second Decomposition: Fix the Size → 2^n",
+    "content": "The same powerset, organized by cardinality instead of by membership, yields the row-sum identity. `Finset.powerset_card_disjiUnion` states that the full powerset is the disjoint union of its size layers:\n\n```lean\nFinset.powerset s = (range (s.card + 1)).disjiUnion (fun i => powersetCard i s) _\n```\n\nCounting both sides:\n\n```lean\ntheorem sum_choose_eq_two_pow_comb (s : Finset α) :\n    (∑ k ∈ Finset.range (s.card + 1), s.card.choose k) = 2 ^ s.card := by\n  have hpow := congrArg Finset.card (Finset.powerset_card_disjiUnion s)\n  rw [Finset.card_powerset, Finset.card_disjiUnion] at hpow\n  simp only [Finset.card_powersetCard] at hpow\n  exact hpow.symm\n```\n\nThe left side is `card_powerset` $= 2^{|s|}$; the right side is `card_disjiUnion` summing the layer cardinalities `card_powersetCard` $= \\binom{|s|}{k}$. Two ways of counting one set give $\\sum_k \\binom{n}{k} = 2^n$ — again with no induction.",
+    "mathContext": "$\\mathcal{P}(S) = \\bigsqcup_{k=0}^{|S|} \\binom{S}{k}$ (disjoint over size). Counting: $2^{|S|} = |\\mathcal{P}(S)| = \\sum_{k=0}^{|S|} |\\binom{S}{k}| = \\sum_{k=0}^{|S|} \\binom{|S|}{k}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.powerset_card_disjiUnion",
+      "Finset.card_powerset",
+      "Finset.card_disjiUnion",
+      "Binomial theorem"
+    ],
+    "prerequisites": [
+      "Finsets",
+      "Disjoint unions over an index",
+      "Cardinality of the powerset"
+    ]
+  }
+]
