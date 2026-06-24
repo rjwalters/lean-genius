@@ -1,0 +1,215 @@
+{
+  "id": "automorphic-number-oq-01-oq-03-oq-02",
+  "slug": "automorphic-number-oq-01-oq-03-oq-02",
+  "title": "The Automorphic Idempotent Towers Converge in the 10-adic Integers",
+  "description": "The parent entry (AutomorphicNumberOQ01OQ03) proves that the four k-digit automorphic residues n²≡n (mod 10^k) — the idempotents of ZMod (10^k) — form coherent TOWERS: each k-digit automorphic number extends uniquely to a (k+1)-digit one (5→25→625→90625→…, 6→76→376→9376→…). It remarks, but does not formalize, that these towers 'converge to the two non-trivial idempotents of the 10-adic integers ℤ₁₀ ≅ ℤ₂ × ℤ₅'. This entry supplies that missing convergence layer, modelling the 10-adic integers as TenAdic := ℤ_[2] × ℤ_[5] (legitimate since 10 = 2·5 and, by CRT, ZMod (10^k) ≅ ZMod (2^k) × ZMod (5^k)). (1) padicInt_idem_eq_zero_or_one: in the integral domain ℤ_[p] the only idempotents are 0 and 1. (2) TenAdic.idem_iff: the idempotents of ℤ₂ × ℤ₅ are EXACTLY the four pairs (0,0),(1,0),(0,1),(1,1) — componentwise an idempotent of a product is a pair of idempotents, each factor 0 or 1. (3) e5=(1,0), e6=(0,1) are the two non-trivial idempotents and form an orthogonal complementary pair: e5+e6=1, e5·e6=0, both ≠0,1. (4) reductions_determine: a 10-adic integer is determined by its tower of reductions toZModPow k in each factor (PadicInt.ext_of_toZModPow) — the inverse-limit / uniqueness form of convergence: a coherent idempotent tower has AT MOST ONE 10-adic limit. (5) red10, red10_e5_idem, red10_e5_ne: the k-digit reduction ρ_k : ℤ₁₀ →+* ZMod (10^k), built from the per-factor PadicInt.toZModPow and the CRT iso ZMod.chineseRemainder, sends e5 to a genuine AUTOMORPHIC residue (idempotent) and, for k≥1, to one of the two NON-trivial ones (matching the 5-tower 5,25,625,90625,…). (6) tendsto_e5, tendsto_e6: the GENUINE METRIC convergence — any integer sequence of k-digit automorphic numbers for the 5-tower (f k ≡ 1 mod 2^k, ≡ 0 mod 5^k) resp. the 6-tower converges, in the 10-adic metric of ℤ₂ × ℤ₅, to e5 resp. e6, via the norm bound ‖(f k - a : ℤ_[p])‖ ≤ p^(-k) → 0 (PadicInt.norm_int_le_pow_iff_dvd) in each factor.",
+  "meta": {
+    "author": "Lean Genius Researcher-3",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AutomorphicNumberOQ01OQ03OQ02.lean",
+    "tags": [
+      "number-theory",
+      "automorphic-numbers",
+      "idempotents",
+      "p-adic",
+      "padic-integers",
+      "10-adic",
+      "crt",
+      "inverse-limit",
+      "convergence",
+      "metric",
+      "zmod"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 215,
+    "theoremCount": 18,
+    "definitionCount": 5,
+    "assumptions": "None. 0 axioms, 0 sorries, no native_decide, no decide. #print axioms confirms every named result (tendsto_e5, tendsto_e6, reductions_determine, red10_e5_ne, TenAdic.idem_iff, red10_e5_idem) depends only on the standard foundational axioms propext / Classical.choice / Quot.sound — no Lean.ofReduceBool, no sorryAx. Builds on the verified parent entry AutomorphicNumberOQ01 (reusing the componentwise idempotent equivalences idemProd / idemCongr in spirit; the idempotent characterization is reproved directly here for ℤ_[p]). The 10-adic integers are modelled as the product ℤ_[2] × ℤ_[5], which is canonically isomorphic to the inverse limit lim_k ZMod (10^k) by CRT.",
+    "mathlibDependencies": [
+      {
+        "theorem": "PadicInt.ext_of_toZModPow",
+        "description": "(∀ n, toZModPow n x = toZModPow n y) ↔ x = y: a p-adic integer is determined by its tower of finite reductions. Applied factorwise in ℤ_[2] × ℤ_[5], it is the inverse-limit uniqueness behind reductions_determine — a coherent idempotent tower has at most one 10-adic limit.",
+        "module": "Mathlib.NumberTheory.Padics.RingHoms"
+      },
+      {
+        "theorem": "PadicInt.toZModPow",
+        "description": "The canonical surjective ring homomorphism ℤ_[p] →+* ZMod (p^n) (n-digit reduction). Combined factorwise via RingHom.prodMap it gives the digit map ℤ₁₀ → ZMod (2^k) × ZMod (5^k).",
+        "module": "Mathlib.NumberTheory.Padics.RingHoms"
+      },
+      {
+        "theorem": "PadicInt.norm_int_le_pow_iff_dvd",
+        "description": "‖(c : ℤ_[p])‖ ≤ p^(-n) ↔ (p^n : ℤ) ∣ c: converts the divisibility p^k ∣ (f k - a) of an automorphic-number sequence into the p-adic norm bound that drives the metric convergence tendsto_e5 / tendsto_e6.",
+        "module": "Mathlib.NumberTheory.Padics.PadicIntegers"
+      },
+      {
+        "theorem": "ZMod.chineseRemainder",
+        "description": "Nat.Coprime m n → ZMod (m*n) ≃+* ZMod m × ZMod n. With m = 2^k, n = 5^k it realizes ZMod (10^k) ≅ ZMod (2^k) × ZMod (5^k), the CRT identification underlying the bridge red10 to the k-digit automorphic residues.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "ZMod.ringEquivCongr",
+        "description": "m = n → ZMod m ≃+* ZMod n: transports along the modulus equality 10^k = 2^k·5^k so that chineseRemainder applies to ZMod (10^k).",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "squeeze_zero",
+        "description": "Squeezes ‖(f k - a : ℤ_[p])‖ between 0 and p^(-k) → 0 to obtain factorwise convergence; combined with tendsto_iff_norm_sub_tendsto_zero it yields Tendsto to the idempotent in each p-adic factor.",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "Filter.Tendsto.prodMk_nhds",
+        "description": "Tendsto f l (𝓝 a) → Tendsto g l (𝓝 b) → Tendsto (fun x => (f x, g x)) l (𝓝 (a,b)): assembles the two factorwise convergences in ℤ_[2] and ℤ_[5] into convergence in the product ℤ₁₀ to e5 = (1,0) resp. e6 = (0,1).",
+        "module": "Mathlib.Topology.Constructions"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0"
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AutomorphicNumberOQ01"
+    ],
+    "opens": [
+      "PadicInt",
+      "Filter"
+    ],
+    "namespace": "AutomorphicNumberOQ01OQ03OQ02",
+    "lineCount": 215,
+    "axiomCount": 0,
+    "theoremCount": 18,
+    "definitionCount": 5,
+    "path": "Proofs/AutomorphicNumberOQ01OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "Automorphic numbers — integers whose square ends in the same digits (5²=25, 6²=36, 25²=625, 76²=5776) — are recreational in base 10, but a k-digit automorphic residue mod 10^k is precisely an idempotent of ZMod (10^k), since n²≡n (mod 10^k) ⟺ e·e=e. Because 10 = 2·5, CRT gives ZMod (10^k) ≅ ZMod (2^k) × ZMod (5^k) and exactly four idempotents at every level, the two non-trivial ones being the …5 and …6 towers. The sibling tower entry shows these levels are linked by a digit-dropping bijection, so each tower is a single coherent thread. The natural completion of that picture is the inverse limit: the rings ZMod (10^k) form an inverse system whose limit is the 10-adic ring ℤ₁₀, which — since 10 is not prime — is not a single PadicInt but the product ℤ₂ × ℤ₅ of the 2-adic and 5-adic integers (ℤ_n ≅ ∏_{p∣n} ℤ_p). This entry realizes ℤ₁₀ concretely as that product, identifies its four idempotents, and proves that the automorphic towers converge to the two non-trivial ones — both in the strong inverse-limit sense (the limit is unique) and in the literal metric sense (the integer truncations converge p-adically).",
+    "problemStatement": "The parent base-10 tower entry remarks, without proof, that the two non-trivial automorphic towers 5,25,625,90625,… and 6,76,376,9376,… 'converge to the two non-trivial idempotents of the 10-adic integers ℤ₁₀ ≅ ℤ₂ × ℤ₅'. Formalize this. Concretely: (a) determine the idempotents of ℤ₂ × ℤ₅; (b) identify the towers' limits among them; (c) prove the convergence is genuine — both that a coherent tower has a UNIQUE 10-adic limit (inverse-limit form) and that the integer truncations actually CONVERGE in the 10-adic metric to that limit.",
+    "proofStrategy": "1. padicInt_idem_eq_zero_or_one: ℤ_[p] is an integral domain, so e·e=e gives e·(e−1)=0 and hence e ∈ {0,1}. 2. TenAdic.idem_iff: an idempotent of a product is componentwise a pair of idempotents (Prod.ext_iff on the multiplication), so the idempotents of ℤ₂×ℤ₅ are exactly the four pairs over {0,1}². 3. The two non-trivial ones e5=(1,0), e6=(0,1) are checked to be orthogonal-complementary by componentwise computation. 4. reductions_determine: x,y∈ℤ₂×ℤ₅ with equal toZModPow-towers in each factor are equal by PadicInt.ext_of_toZModPow applied to each component (Prod.ext) — uniqueness of the 10-adic limit of a coherent tower. 5. Bridge: red10 k := (CRT iso ZMod (10^k) ≅ ZMod (2^k)×ZMod (5^k)).symm ∘ (toZModPow k on each factor). digit_e5 computes the image of e5 to (1,0); red10_e5_idem is map preservation of idempotency; red10_e5_ne uses Nontrivial ZMod (p^k) for k≥1 to separate (1,0) from (0,0) and (1,1), so ρ_k e5 is one of the two non-trivial residues. 6. Metric convergence: for a factor ℤ_[p] and an integer sequence with p^k ∣ (f k − a), the norm ‖(f k − a : ℤ_[p])‖ ≤ p^(−k) (PadicInt.norm_int_le_pow_iff_dvd) is squeezed to 0, giving Tendsto (f k) → a (tendsto_iff_norm_sub_tendsto_zero); tendsto_e5/e6 assemble the two factor limits into convergence in ℤ₂×ℤ₅ to e5/e6 (Filter.Tendsto.prodMk_nhds).",
+    "keyInsights": [
+      "The 10-adic integers are NOT a PadicInt (10 is composite); the correct object is the product ℤ_[2] × ℤ_[5], canonically the inverse limit lim_k ZMod (10^k) by CRT. Modelling ℤ₁₀ this way makes both the idempotent count and the convergence elementary and fully constructive in Mathlib's existing p-adic API.",
+      "Convergence of an idempotent tower has two honest meanings, and both are proved: (i) inverse-limit uniqueness — a coherent tower of reductions determines its limit (PadicInt.ext_of_toZModPow factorwise), so the limit EXISTS AT MOST ONCE; (ii) genuine metric convergence — the integer truncations 5,25,625,90625,… actually tend to e5 in the 10-adic distance, because p^k ∣ (truncation − limit) forces the p-adic norm to 0.",
+      "ℤ_[p] is an integral domain, so it has only the trivial idempotents 0,1; the four idempotents of ℤ₂×ℤ₅ are therefore exactly {0,1}², and the two non-trivial ones (1,0),(0,1) are the orthogonal complementary pair the …5 and …6 towers converge to.",
+      "The 5-tower (…90625) is the idempotent ≡1 mod 2^k and ≡0 mod 5^k, i.e. (1,0) ∈ ℤ₂×ℤ₅; the 6-tower (…09376) is its complement (0,1). The two are exchanged by x ↦ 1−x, mirroring the parent's complementary-pair structure a, 1−a.",
+      "The metric convergence is base-uniform across the two primes: each factor contributes a bound p^(−k) from exactly the divisibility that DEFINES a k-digit automorphic number (≡1 or ≡0 mod p^k), so the convergence statement is a direct translation of the automorphic congruences into the product 10-adic metric."
+    ],
+    "prerequisites": [
+      "Idempotents of a commutative ring and the equivalence n²≡n (mod m) ⟺ idempotent of ZMod m",
+      "The p-adic integers ℤ_[p] as a complete integral domain, with reductions toZModPow n : ℤ_[p] →+* ZMod (p^n)",
+      "ℤ_[p] as the inverse limit of ZMod (p^n): an element is determined by its reductions (PadicInt.ext_of_toZModPow)",
+      "The p-adic norm and the bound ‖(c:ℤ_[p])‖ ≤ p^(-n) ⟺ p^n ∣ c (PadicInt.norm_int_le_pow_iff_dvd)",
+      "Chinese Remainder Theorem for ZMod: ZMod (m·n) ≅ ZMod m × ZMod n for coprime m,n",
+      "Convergence in a normed group via tendsto_iff_norm_sub_tendsto_zero and squeeze_zero, and convergence in a product via Filter.Tendsto.prodMk_nhds"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "TenAdic.idem_iff",
+      "type": "headline",
+      "statement": "e * e = e ↔ e = (0,0) ∨ e = (1,0) ∨ e = (0,1) ∨ e = (1,1)  (for e : ℤ_[2] × ℤ_[5])",
+      "description": "The idempotents of the 10-adic integers ℤ₁₀ = ℤ₂ × ℤ₅ are EXACTLY the four pairs (0,0),(1,0),(0,1),(1,1). An idempotent of a product is componentwise a pair of idempotents, and each p-adic factor — an integral domain — admits only 0 and 1.",
+      "significance": "Pins down the limit set of the automorphic towers: there are precisely four 10-adic idempotents, the two trivial (0,1) and the two non-trivial limits of the …5 and …6 towers."
+    },
+    {
+      "name": "tendsto_e5",
+      "type": "headline",
+      "statement": "(∀ k, (2^k:ℤ) ∣ (f k - 1)) → (∀ k, (5^k:ℤ) ∣ f k) → Tendsto (fun k => ((f k : ℤ_[2]), (f k : ℤ_[5]))) atTop (𝓝 e5)",
+      "description": "GENUINE metric convergence of the 5-tower. Any integer sequence f of k-digit automorphic numbers for the 5-tower (f k ≡ 1 mod 2^k, ≡ 0 mod 5^k — e.g. 5,25,625,90625,…) converges, in the 10-adic metric of ℤ₂ × ℤ₅, to the non-trivial idempotent e5 = (1,0). Proof: in each factor the defining congruence gives ‖(f k − limit : ℤ_[p])‖ ≤ p^(−k) → 0.",
+      "significance": "Formalizes the parent entry's unproved remark that the automorphic towers 'converge to' the non-trivial 10-adic idempotents — here as a literal limit in the p-adic metric, not merely an inverse-limit abstraction."
+    },
+    {
+      "name": "tendsto_e6",
+      "type": "core",
+      "statement": "(∀ k, (2^k:ℤ) ∣ f k) → (∀ k, (5^k:ℤ) ∣ (f k - 1)) → Tendsto (fun k => ((f k : ℤ_[2]), (f k : ℤ_[5]))) atTop (𝓝 e6)",
+      "description": "The companion convergence for the 6-tower (f k ≡ 0 mod 2^k, ≡ 1 mod 5^k — e.g. 6,76,376,9376,…), converging in the 10-adic metric to the complementary non-trivial idempotent e6 = (0,1).",
+      "significance": "Together with tendsto_e5 it exhibits both non-trivial towers converging to the orthogonal complementary pair e5, e6 = 1 − e5."
+    },
+    {
+      "name": "reductions_determine",
+      "type": "core",
+      "statement": "(∀ k, toZModPow k x.1 = toZModPow k y.1) → (∀ k, toZModPow k x.2 = toZModPow k y.2) → x = y",
+      "description": "Inverse-limit / uniqueness form of convergence: a 10-adic integer x = (x₂,x₅) is completely determined by its tower of finite reductions toZModPow k in each factor (PadicInt.ext_of_toZModPow). Hence a coherent tower of k-digit residues has AT MOST ONE 10-adic limit.",
+      "significance": "The structural counterpart to the metric statement: the towers do not merely have a limit, the limit is unique — ℤ₂ × ℤ₅ is the genuine inverse limit lim_k ZMod (10^k)."
+    },
+    {
+      "name": "red10_e5_ne",
+      "type": "supporting",
+      "statement": "0 < k → red10 k e5 ≠ 0 ∧ red10 k e5 ≠ 1",
+      "description": "The k-digit reduction ρ_k : ℤ₁₀ →+* ZMod (10^k) (built from the per-factor toZModPow and the CRT iso) sends the limit e5 to one of the two NON-trivial automorphic residues — never 0 or 1 — for every k ≥ 1, using that ZMod (2^k) and ZMod (5^k) are nontrivial. Together with red10_e5_idem (ρ_k e5 is idempotent) this identifies ρ_k e5 as a genuine non-trivial automorphic number of the 5-tower.",
+      "significance": "Connects the abstract 10-adic limit e5 back to the concrete k-digit automorphic residues of the parent entry, confirming e5 is the limit of the non-trivial …5 tower rather than a trivial idempotent."
+    },
+    {
+      "name": "padicInt_idem_eq_zero_or_one",
+      "type": "supporting",
+      "statement": "e * e = e → e = 0 ∨ e = 1  (for e : ℤ_[p])",
+      "description": "In the integral domain ℤ_[p] the only idempotents are 0 and 1: e·e=e factors as e·(e−1)=0. This is the per-factor input to the four-idempotent count of ℤ₂ × ℤ₅.",
+      "significance": "Isolates why ℤ₁₀ has exactly four idempotents — each p-adic factor is a domain — making TenAdic.idem_iff a one-line product computation."
+    }
+  ],
+  "sections": [
+    {
+      "id": "padic-idempotents",
+      "title": "Part I: The idempotents of ℤ_[p] and of ℤ₁₀ = ℤ₂ × ℤ₅",
+      "startLine": 48,
+      "endLine": 73,
+      "summary": "padicInt_idem_eq_zero_or_one: ℤ_[p] is an integral domain, so e·e=e gives e·(e−1)=0 and e ∈ {0,1}. TenAdic.idem_iff: an idempotent of a product is a pair of idempotents (Prod.ext_iff on multiplication), so the idempotents of ℤ₂ × ℤ₅ are exactly the four pairs (0,0),(1,0),(0,1),(1,1).",
+      "mathContext": "The 10-adic integers, modelled as ℤ₂ × ℤ₅, are a product of two local integral domains, hence have 2² = 4 idempotents — the limit set of the automorphic towers."
+    },
+    {
+      "id": "nontrivial-idempotents",
+      "title": "Part II: The two non-trivial idempotents e5, e6",
+      "startLine": 75,
+      "endLine": 96,
+      "summary": "e5=(1,0) and e6=(0,1) are the two non-trivial idempotents; e5_add_e6 and e5_mul_e6 show they are orthogonal complementary (e5+e6=1, e5·e6=0), and e5_ne_zero/e5_ne_one that e5 is genuinely non-trivial — all by componentwise computation.",
+      "mathContext": "e5 is the limit of the …5 tower (≡1 mod 2^k, ≡0 mod 5^k) and e6 = 1 − e5 the limit of the …6 tower, mirroring the parent's complementary pair a, 1−a."
+    },
+    {
+      "id": "inverse-limit",
+      "title": "Part III: Inverse-limit convergence — reductions determine the limit",
+      "startLine": 98,
+      "endLine": 108,
+      "summary": "reductions_determine: x = y in ℤ₂ × ℤ₅ whenever their toZModPow-towers agree in each factor, by PadicInt.ext_of_toZModPow applied componentwise (Prod.ext).",
+      "mathContext": "ℤ₂ × ℤ₅ is the inverse limit lim_k ZMod (10^k): a coherent tower of k-digit residues has a unique 10-adic limit."
+    },
+    {
+      "id": "crt-bridge",
+      "title": "Part IV: Bridge to the k-digit automorphic residues in ZMod (10^k)",
+      "startLine": 109,
+      "endLine": 157,
+      "summary": "crt k identifies ZMod (10^k) ≅ ZMod (2^k) × ZMod (5^k) (ZMod.ringEquivCongr on 10^k = 2^k·5^k, then ZMod.chineseRemainder); digit k and red10 k assemble the reduction ρ_k : ℤ₁₀ →+* ZMod (10^k). digit_e5 computes ρ_k e5's CRT image (1,0); red10_e5_idem shows ρ_k e5 is automorphic; red10_e5_ne shows it is one of the two non-trivial residues for k ≥ 1.",
+      "mathContext": "The abstract 10-adic limit e5 reduces, level by level, to the concrete non-trivial automorphic residues of the parent entry — confirming e5 is the limit of the genuine …5 tower."
+    },
+    {
+      "id": "metric-convergence",
+      "title": "Part V: Genuine metric convergence in the 10-adic metric",
+      "startLine": 159,
+      "endLine": 215,
+      "summary": "tendsto_inv_pow: p^(−k) → 0. tendsto_padic_of_dvd: an integer sequence with p^k ∣ (f k − a) tends to a in ℤ_[p], via ‖(f k − a : ℤ_[p])‖ ≤ p^(−k) (norm_int_le_pow_iff_dvd) squeezed to 0 and tendsto_iff_norm_sub_tendsto_zero. tendsto_e5/tendsto_e6 assemble the two factor limits (Filter.Tendsto.prodMk_nhds) into convergence in ℤ₂ × ℤ₅ to e5/e6.",
+      "mathContext": "The integer truncations 5,25,625,90625,… (resp. 6,76,376,9376,…) actually converge in the 10-adic distance to e5 (resp. e6): the literal sense in which the automorphic towers converge."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, fully verified (0 sorries, 0 axioms, no native_decide/decide) formalization of the convergence the parent entry only remarked on: modelling the 10-adic integers as ℤ₁₀ = ℤ_[2] × ℤ_[5], the four idempotents are exactly {0,1}², the two non-trivial ones e5=(1,0), e6=(0,1) form an orthogonal complementary pair, and the automorphic towers converge to them in two precise senses — inverse-limit uniqueness (a coherent tower determines its limit, PadicInt.ext_of_toZModPow) and genuine 10-adic metric convergence of the integer truncations (tendsto_e5/e6, via the norm bound p^(-k) → 0). A CRT bridge ρ_k : ℤ₁₀ →+* ZMod (10^k) ties the abstract limit e5 back to the concrete non-trivial k-digit automorphic residues of the parent.",
+    "implications": "Completes the inverse-system picture of the base-10 automorphic numbers: the rings ZMod (10^k) form an inverse system whose limit is ℤ₁₀ ≅ ℤ₂ × ℤ₅, and the four coherent automorphic threads are exactly the four 10-adic idempotents, the two non-trivial …5 and …6 towers converging metrically to (1,0) and (0,1). It is the concrete base-10 realization of the inverse-limit open question raised by the arbitrary-base sibling entry (AutomorphicNumberOQ01OQ03OQ01).",
+    "openQuestions": [
+      "Upgrade the two non-trivial limits to an explicit ring decomposition: realize the CRT idempotents e5, e6 as the images of the Peirce decomposition ℤ₁₀ ≅ e5·ℤ₁₀ × e6·ℤ₁₀ ≅ ℤ₂ × ℤ₅, and identify each automorphic tower with one factor's identity.",
+      "Generalize the metric convergence to an arbitrary base m: model ℤ_m ≅ ∏_{p∣m} ℤ_p and prove the 2^ω(m) automorphic towers converge to the 2^ω(m) idempotents, assembling the levelwise bijections of AutomorphicNumberOQ01OQ03OQ01 into a genuine inverse-limit homeomorphism of idempotent sets."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "automorphic-number-oq-01-oq-03",
+      "description": "Parent entry: proves the unique digit-extension / reduction-bijection tower for base 10 and remarks (without proof) that the towers converge to the non-trivial idempotents of ℤ₁₀ ≅ ℤ₂ × ℤ₅. This entry formalizes that remark as both inverse-limit uniqueness and genuine metric convergence."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-03-oq-01",
+      "description": "Sibling entry: generalizes the tower bijection to an arbitrary base and raises, as an open question, assembling the levelwise idempotent bijections into an inverse-limit identification with ∏_{p∣m} ℤ_p. This entry answers the base-10 case concretely, with the limit idempotents and metric convergence in ℤ₂ × ℤ₅."
+    },
+    {
+      "targetId": "automorphic-number-oq-01-oq-01",
+      "description": "Sibling entry: counts the idempotents of ZMod n as 2^ω(n). Here the four idempotents of the LIMIT ℤ₁₀ = ℤ₂ × ℤ₅ are exhibited directly (2^ω(10) = 4), matching the levelwise count in the limit."
+    }
+  ]
+}
