@@ -235,6 +235,7 @@ import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03
 import Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02
 import Proofs.ArithmeticSeriesOQ04
 import Proofs.ArithmeticSeriesOQ04OQ01
+import Proofs.ArithmeticSeriesOQ04OQ02
 import Proofs.ArithmeticSeriesOQ04OQ03
 import Proofs.ArsinhLogFormulaOQ01
 import Proofs.ArsinhLogFormulaOQ01OQ01
