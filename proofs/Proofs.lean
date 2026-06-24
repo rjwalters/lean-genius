@@ -3106,6 +3106,7 @@ import Proofs.InverseGaloisOQ06OQ01
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoperimetricTheoremOQ01
 import Proofs.IsoperimetricTheoremOQ02
+import Proofs.IsoperimetricTheoremOQ02OQ03OQ01
 import Proofs.IsoscelesTriangle
 import Proofs.IsoscelesTriangleOQ02
 import Proofs.IsoscelesTriangleOQ01
