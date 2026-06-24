@@ -1,0 +1,185 @@
+{
+  "id": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+  "title": "The Geometric Exponential Sum Bound (Pólya–Vinogradov Ingredient)",
+  "slug": "bounded-prime-gaps-oq-04-oq-01-wip-01",
+  "description": "Proves, fully verified, the key technical estimate behind the Pólya–Vinogradov inequality: for θ not an integer, the partial geometric exponential sum |∑_{n=M+1}^{M+N} e^{2πiθn}| is bounded by 1/|sin(πθ)|. Establishes the unit-circle chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)|, the triangle bound |1 − zⁿ| ≤ 2 on the unit circle, and combines them with the geometric series closed form. The companion WIP file (bounded-prime-gaps-oq-04-oq-01) leaves this and three other analytic facts as sorries and currently does not parse against Mathlib (retired ∑-in syntax); this entry completes the cleanest ingredient as a standalone 0-axiom result.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/P%C3%B3lya%E2%80%93Vinogradov_inequality",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean",
+    "tags": [
+      "analytic-number-theory",
+      "character-sums",
+      "polya-vinogradov",
+      "geometric-sum",
+      "exponential-sum",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 130,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-24",
+    "originalContributions": [
+      "geom_partial_sum_bound: |∑_{n=M+1}^{M+N} e^{2πiθn}| ≤ 1/|sin(πθ)| for θ ∉ ℤ — the central exponential-sum estimate of Pólya–Vinogradov",
+      "geom_partial_sum_bound_zero: the M = 0 special case over Icc 1 N",
+      "norm_one_sub_exp_two_pi_I: the chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)| (Euler's formula + double-angle)",
+      "norm_one_sub_pow_le_two: |1 − zⁿ| ≤ 2 for |z| = 1 (triangle inequality on the unit circle)",
+      "sin_pi_mul_ne_zero: sin(πθ) ≠ 0 for non-integer θ"
+    ],
+    "prerequisites": [
+      "BoundedPrimeGapsOQ04OQ01 (companion WIP): states Pólya–Vinogradov and identifies this geometric sum bound as its key ingredient (left as a sorry there)",
+      "geom_sum_eq: closed form ∑_{i<n} xⁱ = (xⁿ − 1)/(x − 1) for x ≠ 1",
+      "Complex.norm_exp_ofReal_mul_I: |e^{ix}| = 1 for real x"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "geom_sum_eq",
+        "description": "∑_{i ∈ range n} xⁱ = (xⁿ − 1)/(x − 1) for x ≠ 1 — the geometric series closed form",
+        "module": "Mathlib.Algebra.Field.GeomSum"
+      },
+      {
+        "theorem": "Complex.norm_exp_ofReal_mul_I",
+        "description": "‖exp (x · I)‖ = 1 for real x — the exponential ratio lies on the unit circle",
+        "module": "Mathlib.Analysis.Complex.Trigonometric"
+      },
+      {
+        "theorem": "Complex.exp_nat_mul",
+        "description": "exp (n · x) = (exp x)ⁿ — turns each summand into a power of the ratio",
+        "module": "Mathlib.Analysis.Complex.Exponential"
+      },
+      {
+        "theorem": "Finset.sum_Ico_eq_sum_range",
+        "description": "Reindexes ∑ over Ico m n to ∑ over range (n − m) — used to factor the partial sum",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Complex.norm_add_mul_I",
+        "description": "‖a + b·I‖ = √(a² + b²) — evaluates the chord length |1 − e^{2πiθ}|",
+        "module": "Mathlib.Analysis.SpecialFunctions.Complex.Circle"
+      }
+    ],
+    "theoremCount": 5,
+    "relatedProblems": [
+      {
+        "id": "bounded-prime-gaps-oq-04-oq-01",
+        "relationship": "Companion WIP: states the full Pólya–Vinogradov inequality with four analytic sorries. This entry verifies its key geometric exponential-sum ingredient."
+      },
+      {
+        "id": "bounded-prime-gaps-oq-04",
+        "relationship": "Ancestor: Pólya–Vinogradov is a prerequisite for the Bombieri–Vinogradov machinery in the bounded-prime-gaps OQ04 line."
+      }
+    ],
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Pólya–Vinogradov inequality (1918) bounds incomplete character sums |∑_{n=M+1}^{M+N} χ(n)| ≤ √q·log q and is the foundational tool for studying the distribution of characters over short intervals. Its proof expands χ via its Gauss-sum Fourier series, reducing the character sum to a combination of partial exponential sums ∑ e^{2πian/q}. The bound on those exponential sums — the content of this entry — is the analytic heart of the argument; the rest is the algebra of Gauss sums and the aggregation of the resulting 1/|sin| factors.",
+    "keyInsight": "A partial sum of e^{2πiθn} is a partial geometric series with ratio z = e^{2πiθ} on the unit circle. Its modulus telescopes to |z^{M+1}|·|zⁿ − 1|/|z − 1|; the numerator is at most 2 by the triangle inequality, and the denominator is exactly the chord length 2|sin(πθ)|. So the whole sum is bounded by 1/|sin(πθ)| — independent of how many terms N are summed.",
+    "significance": "This is the one ingredient of Pólya–Vinogradov that is a clean, self-contained classical estimate, and it is reusable throughout analytic number theory (exponential sums, equidistribution, discrepancy). Verifying it 0-axiom turns the companion's central sorry into machine-checked mathematics."
+  },
+  "sections": [
+    {
+      "id": "helpers",
+      "title": "Helper lemmas",
+      "startLine": 43,
+      "endLine": 79,
+      "summary": "sin(πθ) ≠ 0 for non-integer θ; |1 − zⁿ| ≤ 2 on the unit circle; and the chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)| via Euler's formula and the double-angle identity.",
+      "mathContext": "The chord-length identity is the geometric crux: the distance from 1 to e^{2πiθ} on the unit circle is twice the sine of the half-angle πθ."
+    },
+    {
+      "id": "main",
+      "title": "The geometric exponential sum bound",
+      "startLine": 81,
+      "endLine": 123,
+      "summary": "geom_partial_sum_bound: factor the partial sum as z^{M+1}·∑_{k<N} zᵏ, apply the geometric closed form, and combine |z^{M+1}| = 1, |zⁿ − 1| ≤ 2, |z − 1| = 2|sin(πθ)| to get the bound 1/|sin(πθ)|.",
+      "mathContext": "Each summand e^{2πiθn} = zⁿ; the geometric series is summed in closed form (valid since z ≠ 1 by the chord-length identity), and the modulus estimate is purely the triangle inequality plus the chord length."
+    },
+    {
+      "id": "corollary",
+      "title": "M = 0 special case",
+      "startLine": 124,
+      "endLine": 129,
+      "summary": "geom_partial_sum_bound_zero specialises the bound to the interval Icc 1 N.",
+      "mathContext": "The form most directly invoked when summing e^{2πian/q} over a residue interval starting at 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "The partial exponential sum ∑_{n=M+1}^{M+N} e^{2πiθn} has modulus at most 1/|sin(πθ)|, uniformly in M and N. The proof rests on the chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)| and the geometric series closed form, and is fully machine-checked and 0-axiom. This completes the central analytic ingredient that the companion Pólya–Vinogradov file leaves open.",
+    "futureWork": "Use this bound, together with the Gauss-sum norm |τ(χ)| = √q and the cotangent sum estimate, to discharge the remaining Pólya–Vinogradov sorries; and modernise the companion file's retired ∑-in syntax so the pieces can be assembled in place."
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps-oq-04-oq-01",
+      "relationship": "parent",
+      "description": "Companion WIP entry stating the full Pólya–Vinogradov inequality. This entry verifies its key geometric exponential-sum ingredient."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "geom_partial_sum_bound",
+      "type": "core",
+      "description": "For non-integer θ, the partial geometric exponential sum is bounded by 1/|sin(πθ)|, uniformly in the offset M and length N.",
+      "leanType": "(∀ k : ℤ, θ ≠ ↑k) → ‖∑ n ∈ Finset.Icc (M+1) (M+N), exp (2·π·I·θ·n)‖ ≤ 1 / |Real.sin (π·θ)|"
+    },
+    {
+      "name": "norm_one_sub_exp_two_pi_I",
+      "type": "core",
+      "description": "The unit-circle chord-length identity |1 − e^{2πiθ}| = 2|sin(πθ)|.",
+      "leanType": "‖(1 : ℂ) - exp (2·π·I·θ)‖ = 2 * |Real.sin (π·θ)|"
+    },
+    {
+      "name": "geom_partial_sum_bound_zero",
+      "type": "supporting",
+      "description": "The M = 0 special case over the interval Icc 1 N.",
+      "leanType": "(∀ k : ℤ, θ ≠ ↑k) → ‖∑ n ∈ Finset.Icc 1 N, exp (2·π·I·θ·n)‖ ≤ 1 / |Real.sin (π·θ)|"
+    },
+    {
+      "name": "norm_one_sub_pow_le_two",
+      "type": "supporting",
+      "description": "|1 − zⁿ| ≤ 2 for any z on the unit circle.",
+      "leanType": "‖z‖ = 1 → ‖(1 : ℂ) - z ^ n‖ ≤ 2"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "George Pólya"
+      ],
+      "title": "Über die Verteilung der quadratischen Reste und Nichtreste",
+      "year": "1918",
+      "venue": "Nachrichten der Gesellschaft der Wissenschaften zu Göttingen, pp. 21–29",
+      "note": "One of the two independent 1918 derivations of the character-sum bound; the geometric exponential sum estimate proved here is its analytic core."
+    },
+    {
+      "authors": [
+        "Ivan M. Vinogradov"
+      ],
+      "title": "Über die Verteilung der quadratischen Reste und Nichtreste",
+      "year": "1918",
+      "venue": "Journal of the Physico-Mathematical Society of Perm, vol. 1, pp. 94–98",
+      "note": "The second independent 1918 derivation of the inequality that bears both names."
+    }
+  ],
+  "sorries": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Complex",
+      "Real"
+    ],
+    "namespace": "BoundedPrimeGapsOQ04OQ01WIP01",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/BoundedPrimeGapsOQ04OQ01WIP01.lean"
+  }
+}
