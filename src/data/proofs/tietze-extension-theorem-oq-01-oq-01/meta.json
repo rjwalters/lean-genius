@@ -1,0 +1,180 @@
+{
+  "id": "tietze-extension-theorem-oq-01-oq-01",
+  "slug": "tietze-extension-theorem-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "namespace": "TietzeExtensionTheoremOQ01OQ01",
+    "lineCount": 158,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/TietzeExtensionTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Converse of the Tietze Extension Theorem: the Tietze Property Implies Normality",
+  "description": "The parent entry derives Urysohn's lemma from the Tietze extension theorem in a normal space; this entry proves the reverse implication, closing the equivalence 'normal ⟺ Tietze extension property'. The Tietze extension property of a space X is taken as a hypothesis: every continuous real function on a closed subset extends continuously to all of X. The main theorem normalSpace_of_hasTietzeExtensionProperty shows that any space with this property is normal — and, sharper than the classical statement, no separation axiom on X is needed. Given disjoint closed sets A and B, their union s = A ∪ B is closed and, inside the subspace s, the part lying over B is clopen (closed as a preimage of B; open because its complement in s is the closed part over A, using disjointness). Hence the {0,1}-valued function that is 0 on A and 1 on B is continuous on s (it is locally constant on a clopen partition, here proved directly via Continuous.if with empty frontier). The Tietze property extends it to a continuous F : X → ℝ, and the disjoint open level sets F⁻¹(Iio ½) and F⁻¹(Ioi ½) separate A from B, witnessing normality. The classical 'a T1 space with the Tietze property is normal' is recorded as a corollary, and the full equivalence normalSpace_iff_hasTietzeExtensionProperty packages both directions.",
+  "overview": {
+    "historicalContext": "Heinrich Tietze (1915) proved that a continuous real-valued function on a closed subset of a metric space extends continuously to the whole space; Pavel Urysohn (1925) generalized this to arbitrary normal spaces. The Tietze extension theorem, Urysohn's lemma, and normality are the three classically equivalent expressions of the separation of disjoint closed sets by continuous functions. The forward implications — normal ⟹ Urysohn ⟹ Tietze — are the textbook development and are formalized in Mathlib (Mathlib.Topology.TietzeExtension) and in this entry's parent. The reverse direction, that the Tietze extension property characterizes normality, is the missing arrow that completes the equivalence; it is short but is not recorded in Mathlib. This entry supplies it with an explicit clopen boundary-function construction, mirroring the parent's derivation of Urysohn from Tietze but running the logic in the opposite direction: there the extension theorem is used to build a separator, here the ability to extend an arbitrary boundary function is shown to force the separation property itself.",
+    "problemStatement": "Take as hypothesis that a topological space X has the Tietze extension property: for every closed set s ⊆ X, every f ∈ C(s, ℝ) admits g ∈ C(X, ℝ) with g.restrict s = f. Prove that X is then a normal space (Mathlib's NormalSpace: disjoint closed sets admit disjoint open neighbourhoods). Deduce the classical statement that a T1 space with the Tietze property is normal, and assemble the full equivalence normal ⟺ Tietze property.",
+    "proofStrategy": "Let A, B be disjoint closed sets and set s = A ∪ B, which is closed. The key geometric lemma isClopen_subtype_of_disjoint_closed shows that, inside the subspace s, the set Bsub = {x ∈ s | x ∈ B} is clopen: it is closed as the preimage of the closed set B under the continuous inclusion, and open because its complement in s equals {x ∈ s | x ∈ A} (every point of s lies in A or B, and not both since A, B are disjoint), again a preimage of a closed set. A clopen set has empty frontier, so the two-valued function x ↦ (if x ∈ Bsub then 1 else 0) is continuous on s by Continuous.if (the frontier hypothesis is vacuous), giving f ∈ C(s, ℝ) equal to 1 on B and 0 on A. The Tietze property yields F ∈ C(X, ℝ) with F.restrict s = f; unwinding this restriction equality gives F = 0 on A and F = 1 on B. Finally F⁻¹(Iio ½) and F⁻¹(Ioi ½) are open (preimages of open sets under continuous F), contain A and B respectively (0 < ½ and 1 > ½), and are disjoint (½ separates the two rays), exhibiting SeparatedNhds A B and hence NormalSpace X. The T1 corollary discards the unused separation hypothesis, and the equivalence pairs this converse with the forward direction hasTietzeExtensionProperty_of_normalSpace (Mathlib's ContinuousMap.exists_restrict_eq).",
+    "keyInsights": [
+      "The converse needs no separation axiom. The classical phrasing assumes a T1 space, but the proof never uses T1: the bare Tietze extension property forces Mathlib's NormalSpace (which is not bundled with T1) on its own. The T1 version is a strict corollary, and stating it separately keeps the logical content honest.",
+      "Normality is recovered from a single extension. Where the textbook builds the Tietze extension out of repeated Urysohn separations, here one application of the extension property to one explicit boundary function produces the separating neighbourhoods directly — the equivalence with normality is concrete, not folklore.",
+      "The whole construction is encoded in one clopen set, exactly as in the parent's forward direction. On the closed union A ∪ B the part over B is simultaneously closed (preimage of B) and open (its complement is the preimage of A, by disjointness). Clopen-ness gives an empty frontier, which is precisely the side condition that makes the {0,1} indicator continuous via Continuous.if, with no ε–δ argument.",
+      "Half is the only threshold that matters. Once a continuous F equals 0 on A and 1 on B, any value strictly between separates them; ½ is chosen so that F⁻¹(Iio ½) and F⁻¹(Ioi ½) are automatically disjoint open sets, turning the analytic extension back into a topological separation.",
+      "Pairing the converse with Mathlib's forward direction yields a genuine iff. hasTietzeExtensionProperty_of_normalSpace is ContinuousMap.exists_restrict_eq repackaged as the defined property, so normalSpace_iff_hasTietzeExtensionProperty is a true equivalence rather than a one-sided restatement — the arrow this entry adds is the one absent from the library."
+    ]
+  },
+  "sections": [
+    {
+      "id": "tietze-property",
+      "title": "The Tietze Extension Property and the Forward Direction",
+      "startLine": 46,
+      "endLine": 58,
+      "summary": "HasTietzeExtensionProperty X packages the conclusion of the Tietze theorem as a property: every continuous real function on a closed set extends to all of X. hasTietzeExtensionProperty_of_normalSpace records the forward direction — every NormalSpace has this property — as a thin wrapper around Mathlib's ContinuousMap.exists_restrict_eq, so the converse below completes a genuine equivalence.",
+      "mathContext": "$\\mathrm{TietzeProp}(X):\\ \\forall\\,s\\ \\text{closed},\\ \\forall f\\in C(s,\\mathbb{R}),\\ \\exists g\\in C(X,\\mathbb{R}),\\ g|_s=f$; and $\\mathrm{Normal}\\Rightarrow\\mathrm{TietzeProp}$."
+    },
+    {
+      "id": "clopen-lemma",
+      "title": "The Clopen Boundary Lemma",
+      "startLine": 60,
+      "endLine": 82,
+      "summary": "isClopen_subtype_of_disjoint_closed: for disjoint closed A, B, the part of the subspace s = A ∪ B lying over B is clopen. Closed as the preimage of B under the continuous inclusion; open because its complement in s is exactly the part over A (each point of s is in A or B and not both), again a preimage of a closed set. This is the geometric engine of the whole argument.",
+      "mathContext": "Inside $s=A\\cup B$, the set $\\{x : x\\in B\\}$ is clopen: closed (preimage of $B$) and open (complement is $\\{x:x\\in A\\}$, by $A\\cap B=\\varnothing$)."
+    },
+    {
+      "id": "converse",
+      "title": "The Converse: Tietze Property Implies Normal",
+      "startLine": 84,
+      "endLine": 141,
+      "summary": "normalSpace_of_hasTietzeExtensionProperty: the main result. The clopen set has empty frontier, so x ↦ (if x ∈ B then 1 else 0) is continuous on s by Continuous.if; the Tietze property extends it to F : X → ℝ with F = 0 on A, F = 1 on B; then F⁻¹(Iio ½) and F⁻¹(Ioi ½) are disjoint open neighbourhoods of A and B. No separation axiom on X is used.",
+      "mathContext": "Disjoint closed $A,B$: extend the $\\{0,1\\}$ boundary function on $A\\cup B$ to $F:X\\to\\mathbb{R}$; then $F^{-1}(-\\infty,\\tfrac12)\\supseteq A$ and $F^{-1}(\\tfrac12,\\infty)\\supseteq B$ are disjoint opens."
+    },
+    {
+      "id": "corollaries",
+      "title": "The T1 Statement and the Equivalence",
+      "startLine": 143,
+      "endLine": 156,
+      "summary": "t1Space_normalSpace_of_hasTietzeExtensionProperty restates the result under the classical T1 hypothesis (which is not actually used). normalSpace_iff_hasTietzeExtensionProperty pairs the converse with the forward direction into the full equivalence normal ⟺ Tietze extension property.",
+      "mathContext": "$\\mathrm{T1}+\\mathrm{TietzeProp}\\Rightarrow\\mathrm{Normal}$; and $\\mathrm{Normal}\\iff\\mathrm{TietzeProp}$."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TietzeExtensionTheoremOQ01OQ01.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "tietze-extension",
+      "clopen-set",
+      "continuous-function",
+      "extension-theorem",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 158,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "badge": "original",
+    "originalContributions": [
+      "HasTietzeExtensionProperty: a reusable predicate capturing the conclusion of the Tietze extension theorem as a hypothesis on a space — every continuous real function on a closed set extends to the whole space",
+      "isClopen_subtype_of_disjoint_closed: the geometric lemma that for disjoint closed A, B the part of the subspace A ∪ B lying over B is clopen (closed as a preimage of B; open because its complement is the preimage of A, by disjointness)",
+      "normalSpace_of_hasTietzeExtensionProperty: NEW CONTENT — the converse of the Tietze extension theorem. A space with the Tietze extension property is normal, with the separating open sets produced as the strict sub-/super-level sets of an extended {0,1} boundary function. Sharper than the classical statement: no separation axiom on X is required, and the proof is not present in Mathlib",
+      "t1Space_normalSpace_of_hasTietzeExtensionProperty: the classical phrasing 'a T1 space with the Tietze extension property is normal', obtained as a corollary (the T1 hypothesis is not used internally)",
+      "normalSpace_iff_hasTietzeExtensionProperty: the full equivalence normal ⟺ Tietze extension property, pairing the new converse with the forward direction (Mathlib's ContinuousMap.exists_restrict_eq), completing the loop 'normal ⟺ Tietze ⟺ Urysohn' begun in the parent entry"
+    ],
+    "prerequisites": [
+      "Normal topological spaces (Mathlib's NormalSpace) and SeparatedNhds",
+      "The bundled continuous-map type C(s, ℝ) and ContinuousMap.restrict / restrict equality",
+      "Mathlib's Tietze theorem ContinuousMap.exists_restrict_eq (used only for the forward direction)",
+      "Subspace topology and clopen sets: IsClosed.preimage, isClosed_compl_iff, IsClopen, IsClopen.frontier_eq",
+      "Continuity of two-valued functions across an empty frontier: Continuous.if",
+      "Open level sets of continuous functions: isOpen_Iio, isOpen_Ioi, IsOpen.preimage"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ContinuousMap.exists_restrict_eq",
+        "description": "Mathlib's Tietze extension theorem for NormalSpaces; used here only to prove the forward direction hasTietzeExtensionProperty_of_normalSpace, making the final equivalence genuine.",
+        "module": "Mathlib.Topology.TietzeExtension"
+      },
+      {
+        "theorem": "Continuous.if",
+        "description": "A function 'if p then f else g' is continuous when f, g are continuous and they agree on the frontier of {p}; with a clopen predicate the frontier is empty, so the {0,1} boundary function on A ∪ B is continuous.",
+        "module": "Mathlib.Topology.Piecewise"
+      },
+      {
+        "theorem": "IsClopen.frontier_eq",
+        "description": "A clopen set has empty frontier — the side condition that discharges the frontier hypothesis of Continuous.if for the boundary function.",
+        "module": "Mathlib.Topology.Separation.Basic"
+      },
+      {
+        "theorem": "IsClosed.preimage / isClosed_compl_iff",
+        "description": "Used to show that the part over B is clopen in the subspace A ∪ B (closed as a preimage of B; open because its complement is the preimage of A).",
+        "module": "Mathlib.Topology.Basic"
+      },
+      {
+        "theorem": "NormalSpace / SeparatedNhds",
+        "description": "Target structure: NormalSpace is built by exhibiting, for disjoint closed sets, the disjoint open neighbourhoods F⁻¹(Iio ½) and F⁻¹(Ioi ½).",
+        "module": "Mathlib.Topology.Separation.Regular"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "tietze-extension-theorem-oq-01-oq-01-oq-01",
+      "question": "Strengthen the converse to the bounded Tietze property: show that a space in which every continuous function into a closed interval [a,b] on a closed set extends into [a,b] is normal, matching the range-controlled forward direction and Urysohn separation into [0,1].",
+      "significance": "medium"
+    },
+    {
+      "id": "tietze-extension-theorem-oq-01-oq-01-oq-02",
+      "question": "Establish the parallel converse for Urysohn's lemma directly: a space in which every pair of disjoint closed sets is separated by a continuous [0,1]-valued function is normal, and identify it with the Tietze converse via the parent's urysohn_of_tietze, giving a fully formalized three-way equivalence normal ⟺ Urysohn ⟺ Tietze.",
+      "significance": "high"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "tietze-extension-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. It derives Urysohn's lemma from the Tietze extension theorem in a normal space (the forward direction) and records as an open question the converse characterization proved here; this entry supplies that converse, reusing the same clopen boundary-function idea in reverse to show the Tietze extension property forces normality."
+    },
+    {
+      "targetId": "urysohns-lemma-oq-01",
+      "relationship": "related",
+      "description": "Companion separation theorem. Together with the parent's Urysohn-from-Tietze derivation, the converse here completes the functional characterization of normality: normal spaces are exactly those with the Tietze extension property (equivalently, those satisfying Urysohn separation)."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Topology.TietzeExtension",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of ContinuousMap.exists_restrict_eq, used for the forward direction of the equivalence. The converse implication proved in this entry is not present in Mathlib."
+    },
+    {
+      "title": "James Munkres, Topology",
+      "author": "J. R. Munkres",
+      "year": "2000",
+      "venue": "Prentice Hall, 2nd ed.",
+      "description": "Standard reference for the Tietze extension theorem, Urysohn's lemma, and their equivalence with normality (§35), including the characterization of normal spaces by the extension property."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "This entry proves the converse of the Tietze extension theorem: a space with the Tietze extension property — every continuous real function on a closed set extends to the whole space — is normal. For disjoint closed A, B the union A ∪ B is closed, and inside it the part over B is clopen (closed as a preimage of B, open because its complement is the preimage of A by disjointness), so the {0,1} boundary function 0 on A, 1 on B is continuous; the Tietze property extends it to F : X → ℝ, and the disjoint open level sets F⁻¹(Iio ½), F⁻¹(Ioi ½) separate A and B. The proof uses no separation axiom, so the classical 'T1 + Tietze property ⟹ normal' is a corollary, and pairing the converse with Mathlib's forward direction yields the equivalence normal ⟺ Tietze extension property. 158 lines, 5 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "Completes the equivalence 'normal ⟺ Tietze ⟺ Urysohn' begun in the parent entry, which derived Urysohn's lemma from Tietze. The reverse arrow added here — the Tietze property forces normality — is not in Mathlib; it is obtained by the same clopen boundary-function construction run in the opposite direction. The sharpened form (no T1 needed) isolates exactly how much separation the extension property already encodes, and the defined predicate HasTietzeExtensionProperty makes the characterization reusable.",
+    "openQuestions": [
+      "Prove the bounded (interval-valued) form of the converse, matching range-controlled Tietze extension.",
+      "Establish the Urysohn-separation converse directly and identify it with the Tietze converse for a fully formalized three-way equivalence normal ⟺ Urysohn ⟺ Tietze."
+    ]
+  }
+}
