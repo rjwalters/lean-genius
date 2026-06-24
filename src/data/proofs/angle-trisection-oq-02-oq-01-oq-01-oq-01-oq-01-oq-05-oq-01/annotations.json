@@ -1,0 +1,50 @@
+[
+  {
+    "id": "normaut-ann-header",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "When is the automorphism bound sharp?",
+    "content": "The parent proved |Aut_F(K)| ≤ [K:F]_s via an injection toEmb of automorphisms into embeddings of K into its algebraic closure, and left two open questions: (1) is the bound an equality for normal K/F? (2) is toEmb then a bijection? This entry answers both at once by recognizing that Mathlib's Normal.algHomEquivAut already packages exactly the needed equivalence, with the parent's toEmb as its inverse. The key emphasis: the equality |Aut_F(K)| = [K:F]_s needs only NORMALITY, not separability — the automorphism group counts the separable degree, reaching the full degree [K:F] exactly in the separable (Galois) case.",
+    "mathContext": "$|\\mathrm{Aut}_F(K)| \\le [K:F]_s \\le [K:F]$: first $=$ iff normal, second $=$ iff separable, both $=$ iff Galois.",
+    "significance": "context",
+    "relatedConcepts": ["normal extension", "separable degree", "Galois case", "Normal.algHomEquivAut"],
+    "prerequisites": ["the parent automorphism bound", "F-embeddings into the algebraic closure"]
+  },
+  {
+    "id": "normaut-ann-toemb-inverse",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01",
+    "range": { "startLine": 56, "endLine": 83 },
+    "type": "insight",
+    "title": "The parent's injection is half of a Mathlib equivalence",
+    "content": "The structural insight that makes the whole entry free: toEmb_eq_symm_algHomEquivAut shows the parent's hand-built injection toEmb is definitionally (rfl) the inverse function of Normal.algHomEquivAut F (AlgebraicClosure K) K — that equivalence's invFun σ ↦ (toAlgHom F K _).comp σ.toAlgHom is literally toEmb. embEquivAlgEquiv names the equivalence Field.Emb F K ≃ (K ≃ₐ[F] K), and toEmb_bijective concludes toEmb is bijective for normal K/F via (…).symm.bijective — answering open question 2. Normality is exactly the hypothesis that every F-embedding into the algebraic closure lands back in K, hence restricts to an automorphism.",
+    "mathContext": "$\\mathrm{toEmb} = (\\texttt{Normal.algHomEquivAut})^{-1}$ by rfl; bijective since it is half of an equivalence.",
+    "significance": "key",
+    "relatedConcepts": ["Normal.algHomEquivAut", "definitional equality", "bijection", "restriction of embeddings"],
+    "prerequisites": ["the parent's toEmb", "equivalences of types"]
+  },
+  {
+    "id": "normaut-ann-equality",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01",
+    "range": { "startLine": 84, "endLine": 103 },
+    "type": "insight",
+    "title": "The separable-degree equality [K:F]_s = |Aut_F(K)|",
+    "content": "finSepDegree_eq_card_algEquiv is the headline: for any normal extension K/F, Field.finSepDegree F K = Nat.card (K ≃ₐ[F] K), answering open question 1. Since Field.finSepDegree F K is definitionally Nat.card (Field.Emb F K), this is just Nat.card_congr applied to Normal.algHomEquivAut — no finiteness hypothesis needed. card_algEquiv_eq_finSepDegree is the symmetric statement. Mathlib v4.26 records the cardinality equality only under the stronger Galois hypothesis (IsGalois.card_aut_eq_finrank), so this normal-only equality is genuinely new packaging.",
+    "mathContext": "Normal $K/F$: $[K:F]_s = \\mathrm{Nat.card}(\\texttt{Field.Emb}\\,F\\,K) = \\mathrm{Nat.card}(K\\simeq_F K) = |\\mathrm{Aut}_F(K)|$.",
+    "significance": "key",
+    "relatedConcepts": ["Nat.card_congr", "Field.finSepDegree", "cardinality equality", "normal-only hypothesis"],
+    "prerequisites": ["the embedding-automorphism equivalence", "Nat.card transported across an equivalence"]
+  },
+  {
+    "id": "normaut-ann-boundary",
+    "proofId": "angle-trisection-oq-02-oq-01-oq-01-oq-01-oq-01-oq-05-oq-01",
+    "range": { "startLine": 104, "endLine": 120 },
+    "type": "insight",
+    "title": "Separability boundary and the Galois corollary",
+    "content": "card_algEquiv_eq_finrank_iff_isSeparable isolates the sharp boundary: among finite normal extensions, |Aut_F(K)| = [K:F] ⟺ K/F is separable (rewrite by the equality, then Field.finSepDegree_eq_finrank_iff). This makes precise that the automorphism group measures the separable degree, not the full degree — for a normal purely inseparable extension [K:F]_s = 1 = |Aut| while [K:F] = pⁿ is arbitrary. card_algEquiv_eq_finrank_of_normal_isSeparable recovers Mathlib's Galois fact IsGalois.card_aut_eq_finrank (|Aut| = [K:F] for finite Galois) as a one-line corollary — normal equality + finSepDegree_eq_finrank_of_isSeparable — showing the normal equality strictly subsumes the Galois statement.",
+    "mathContext": "Finite normal $K/F$: $|\\mathrm{Aut}_F(K)| = [K:F] \\iff K/F$ separable; normal $+$ separable $=$ Galois recovers $|\\mathrm{Gal}| = [K:F]$.",
+    "significance": "key",
+    "relatedConcepts": ["Field.finSepDegree_eq_finrank_iff", "IsGalois.card_aut_eq_finrank", "purely inseparable extreme", "Galois characterization"],
+    "prerequisites": ["the separable-degree equality", "separable-degree-equals-degree criterion"]
+  }
+]
