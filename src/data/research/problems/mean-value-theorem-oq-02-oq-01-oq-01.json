@@ -1,0 +1,28 @@
+{
+  "id": "mean-value-theorem-oq-02-oq-01-oq-01",
+  "name": "Exponential Taylor series convergence for all real x (including x ≤ 0)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The parent's Taylor-remainder convergence lemma (taylorPolynomial_tendsto) is one-sided: it needs an interval (a,b) with a < b, so the parent's exp_taylor_tendsto only reached x > 0. The left half-line is the genuinely missing direction.",
+      "Reflection beats re-derivation: instead of building a leftward Lagrange remainder, apply the existing one-sided lemma to the reflected function t ↦ exp(-t) on the positive interval (0, -x). Its Taylor polynomial at 0 is ∑ (-1)ᵏ/k!·(-x)ᵏ = ∑ xᵏ/k! (because (-(-x))ᵏ = xᵏ), and its value at -x is exp x.",
+      "All iterated derivatives of t ↦ exp(-t) are t ↦ (-1)ⁿ exp(-t); on (0,-x) they are bounded by 1 (since exp(-t) ≤ exp 0 = 1), so the uniform-bound hypothesis is met with M = 1 — no x-dependent bound needed.",
+      "x = 0 is a degenerate one-term case: every partial sum ∑_{k≤n} 0ᵏ/k! equals the k=0 term 1 = exp 0, handled by Finset.sum_eq_single and a constant-sequence limit.",
+      "rw pitfall: in a goal containing both (-1)ᵏ and (-y)ᵏ, `rw [neg_pow]` fires on the leftmost `(-1)ᵏ` (since -1 matches the (-a)ⁿ pattern), not the intended (-y)ᵏ. Isolating the rewrite in a standalone `have x^k = (-1)^k * y^k` avoids the misfire."
+    ],
+    "builtItems": [
+      "exp_taylor_tendsto_all (headline: ∑_{k≤n} xᵏ/k! → exp x for ALL real x) in Proofs/MeanValueTheoremOQ02OQ01OQ01.lean",
+      "exp_taylor_tendsto_neg (the new x < 0 direction via reflection) in Proofs/MeanValueTheoremOQ02OQ01OQ01.lean",
+      "iteratedDeriv_exp_neg (iteratedDeriv n (exp ∘ neg) = (-1)ⁿ·exp(-·)) and deriv_exp_neg helper"
+    ],
+    "mathlibGaps": [
+      "Mathlib's scalar Taylor-remainder lemmas (taylor_mean_remainder_lagrange) require x₀ < x, so the parent's MVT-rooted convergence is one-sided; the reflection trick is what extends it to x < 0 without a separate leftward remainder theorem."
+    ],
+    "nextSteps": [
+      "Prove the analogous all-ℝ convergence for sin and cos, where the uniform derivative bound M = 1 holds globally on every interval, so taylorPolynomial_tendsto applies on both half-lines by the same reflection.",
+      "State a quantitative two-sided error bound: an explicit n making |exp x − ∑_{k≤n} xᵏ/k!| < ε on [-R, R], read off from taylor_remainder_bound with M = exp R."
+    ],
+    "progressSummary": "COMPLETE: exp Taylor series convergence extended from x > 0 to all real x via reflection through exp(-t); verified 0-axiom 0-sorry, PR opened."
+  }
+}
