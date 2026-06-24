@@ -1,0 +1,113 @@
+{
+  "id": "ptolemys-theorem-oq-05",
+  "slug": "ptolemys-theorem-oq-05",
+  "title": "Ptolemy's Inequality in an Arbitrary Real Inner Product Space (via Inversion)",
+  "description": "Ptolemy's inequality dist(a,c)·dist(b,d) ≤ dist(a,b)·dist(c,d) + dist(b,c)·dist(a,d) for four arbitrary points of any real inner-product affine space (a NormedAddTorsor over a real inner product space), valid in every dimension. Proved by spherical inversion: the map x ↦ (‖x‖²)⁻¹·x scales distances by 1/(‖x‖‖y‖), so the ordinary triangle inequality for the three inverted points becomes Ptolemy after clearing denominators. This generalises the gallery's plane (ℂ) proof, whose complex algebraic identity is intrinsically two-dimensional, and complements Mathlib's cospherical equality case.",
+  "overview": {
+    "historicalContext": "Ptolemy of Alexandria (c. 100–170 AD) used the equality case AC·BD = AB·CD + AD·BC for cyclic quadrilaterals to build his table of chords, effectively the first trigonometric table. For four arbitrary (not necessarily concyclic) points the relation degrades to an inequality AC·BD ≤ AB·CD + AD·BC, with equality exactly when the points lie on a circle (or line) in the right cyclic order. While the planar inequality has an elegant complex-number proof, the statement is in fact metric and holds in any Euclidean space of any dimension. The standard dimension-free argument is by geometric inversion: inverting in a sphere centred at one of the four points sends the other three to points whose mutual distances are the original distances rescaled, turning Ptolemy's inequality into the ordinary triangle inequality among the images.",
+    "problemStatement": "Formalize Ptolemy's inequality for four ARBITRARY points of a real inner product space (any dimension): $\\operatorname{dist}(a,c)\\cdot\\operatorname{dist}(b,d) \\le \\operatorname{dist}(a,b)\\cdot\\operatorname{dist}(c,d) + \\operatorname{dist}(b,c)\\cdot\\operatorname{dist}(a,d)$, beyond the planar complex-number proof already in the gallery.",
+    "text": "Proves the inversion-distance identity ‖u‖·‖w‖·‖(‖u‖²)⁻¹·u − (‖w‖²)⁻¹·w‖ = ‖u−w‖ in any real inner product space, then derives Ptolemy's inequality with the fourth vertex at the origin and transports it to an arbitrary NormedAddTorsor.",
+    "proofStrategy": "1. inversion_dist: for nonzero u, w, show ‖u‖·‖w‖·‖(‖u‖²)⁻¹•u − (‖w‖²)⁻¹•w‖ = ‖u−w‖ by expanding both sides with the real polarization identity norm_sub_sq_real and real_inner_smul_{left,right}, proving the squared identity (‖u‖‖w‖‖a−b‖)² = ‖u−w‖² via field_simp; ring, then taking square roots (both sides nonnegative, Real.sqrt_sq). 2. ptolemy_origin: for vectors x y z, dispatch the degenerate cases where a vertex equals the origin (the inequality becomes an equality or a triviality), then in the generic case apply the triangle inequality ‖a−c‖ ≤ ‖a−b‖ + ‖b−c‖ to the inverted points a=(‖x‖²)⁻¹•x, b, c, scale by ‖x‖‖y‖‖z‖ > 0, and rewrite each scaled term using inversion_dist to obtain ‖x−z‖·‖y‖ ≤ ‖x−y‖·‖z‖ + ‖y−z‖·‖x‖. 3. ptolemy_dist: translate so the fourth point d is the origin (x = a−ᵥd, etc.), using dist_eq_norm_vsub and vsub_sub_vsub_cancel_right, and apply ptolemy_origin.",
+    "keyInsights": [
+      "The complex-number proof in the gallery (PtolemysComplexProof.lean) relies on the algebraic identity (z₁−z₃)(z₂−z₄) = (z₁−z₂)(z₃−z₄) + (z₁−z₄)(z₂−z₃) together with |z+w| ≤ |z|+|w|. That identity is special to a commutative ring of 'points' and so only proves Ptolemy in the plane ℂ. Inversion replaces it and works verbatim in every dimension.",
+      "The crux is the inversion-distance identity ‖(‖u‖²)⁻¹•u − (‖w‖²)⁻¹•w‖ = ‖u−w‖/(‖u‖‖w‖). Expanding the squared norm, the cross term picks up ⟪u,w⟫ scaled by (‖u‖²)⁻¹(‖w‖²)⁻¹ and the diagonal terms become (‖u‖²)⁻¹ and (‖w‖²)⁻¹; multiplying through by ‖u‖²‖w‖² recovers exactly ‖u‖² − 2⟪u,w⟫ + ‖w‖² = ‖u−w‖².",
+      "Placing the fourth vertex at the origin reduces the four-point statement to a three-vector inequality ‖x−z‖·‖y‖ ≤ ‖x−y‖·‖z‖ + ‖y−z‖·‖x‖. Every four-point configuration translates to this form, so no generality is lost; the NormedAddTorsor version is a one-line transport.",
+      "The degenerate cases (a vertex at the origin) cannot use inversion (the inverted point is undefined) but hold directly: if the second vertex is the origin both sides vanish, and if the first or third coincides with the origin Ptolemy becomes an equality between the two surviving products.",
+      "The development is axiom-clean (only propext / Classical.choice / Quot.sound) and dimension-free: the concrete instantiation in EuclideanSpace ℝ (Fin 3) exhibits a case the planar complex proof cannot reach."
+    ],
+    "prerequisites": [
+      "Real inner product spaces and the polarization identity",
+      "Spherical inversion and its distance-scaling property",
+      "NormedAddTorsor (inner-product affine space) and dist_eq_norm_vsub",
+      "Lean 4 tactics: field_simp, positivity, Real.sqrt_sq"
+    ]
+  },
+  "sections": [
+    {
+      "id": "inversion-dist",
+      "title": "The inversion-distance identity",
+      "startLine": 54,
+      "endLine": 87,
+      "summary": "For nonzero u, w, the inversion x ↦ (‖x‖²)⁻¹•x satisfies ‖u‖·‖w‖·‖(‖u‖²)⁻¹•u − (‖w‖²)⁻¹•w‖ = ‖u−w‖. Proved by the real polarization identity, a squared-norm computation closed by field_simp; ring, then a square root."
+    },
+    {
+      "id": "ptolemy-origin",
+      "title": "Ptolemy with the fourth vertex at the origin",
+      "startLine": 89,
+      "endLine": 132,
+      "summary": "For vectors x y z, ‖x−z‖·‖y‖ ≤ ‖x−y‖·‖z‖ + ‖y−z‖·‖x‖: degenerate cases by hand, generic case by scaling the triangle inequality for the three inverted points and rewriting via inversion_dist."
+    },
+    {
+      "id": "ptolemy-dist",
+      "title": "Ptolemy for four arbitrary points of an affine space",
+      "startLine": 134,
+      "endLine": 152,
+      "summary": "dist(a,c)·dist(b,d) ≤ dist(a,b)·dist(c,d) + dist(b,c)·dist(a,d) in any NormedAddTorsor over a real inner product space, by translating the fourth point to the origin; instantiated concretely in EuclideanSpace ℝ (Fin 3)."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "namespace": "PtolemyInequalityInnerProduct",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/PtolemyInequalityInnerProduct.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Ptolemy (c. 150 AD); inversion proof classical",
+    "date": "2026",
+    "dateAdded": "2026-06-24",
+    "status": "verified",
+    "badge": "verified",
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "theoremCount": 3,
+    "lineCount": 153,
+    "sorries": 0,
+    "mathlib_version": "v4.26.0",
+    "proofRepoPath": "Proofs/PtolemyInequalityInnerProduct.lean",
+    "assumptions": [],
+    "tags": ["geometry", "ptolemy", "inner-product-space", "inversion", "inequality", "research"],
+    "originalContributions": [
+      "Ptolemy's inequality for four arbitrary points of an arbitrary real inner product space (any dimension), beyond the gallery's planar complex-number proof and Mathlib's cospherical equality case",
+      "The inversion-distance identity ‖u‖·‖w‖·‖(‖u‖²)⁻¹•u − (‖w‖²)⁻¹•w‖ = ‖u−w‖ in any real inner product space, the dimension-free engine of the proof",
+      "Transport of the inequality to an arbitrary NormedAddTorsor and a concrete EuclideanSpace ℝ (Fin 3) instantiation demonstrating a case the two-dimensional complex proof cannot reach"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "ptolemys-theorem-oq-01",
+      "relationship": "generalizes",
+      "description": "OQ-01 (built on PtolemysComplexProof.lean) proves Ptolemy's inequality for four points of the plane ℂ via the complex algebraic identity, a proof intrinsically two-dimensional. This entry proves the same inequality for arbitrary points of any real inner product space (any dimension) by inversion."
+    },
+    {
+      "targetId": "ptolemys-theorem",
+      "relationship": "answers-open-question",
+      "description": "Answers the parent open question 'Can Ptolemy's inequality (AC·BD ≤ AB·CD + AD·BC for arbitrary four points) be formalized?' in full dimension-free generality, not just in the plane."
+    }
+  ],
+  "references": [
+    {
+      "author": "Claudius Ptolemy",
+      "title": "Almagest (Ptolemy's theorem and the table of chords)",
+      "year": 150,
+      "note": "Classical source; the equality case for cyclic quadrilaterals underlies the chord table."
+    },
+    {
+      "author": "H. S. M. Coxeter and S. L. Greitzer",
+      "title": "Geometry Revisited",
+      "year": 1967,
+      "note": "Inversion proof of Ptolemy's inequality (Chapter 5)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Ptolemy's inequality is fundamentally a metric statement: for four arbitrary points of any real inner product space, dist(a,c)·dist(b,d) ≤ dist(a,b)·dist(c,d) + dist(b,c)·dist(a,d). The inversion-distance identity provides a dimension-free engine, replacing the gallery's two-dimensional complex-number proof.",
+    "implications": "Establishing Ptolemy's inequality by inversion shows that the result lives at the level of inner product spaces rather than the Euclidean plane, and isolates the reusable inversion-distance identity ‖(‖u‖²)⁻¹•u − (‖w‖²)⁻¹•w‖ = ‖u−w‖/(‖u‖‖w‖) as the geometric content. The same machinery underlies the proof that an inversion is a conformal map and the construction of Ptolemy/Cayley–Menger style metric inequalities.",
+    "openQuestions": [
+      "Can the equality case be characterized in this generality — that equality holds iff the four points are concyclic (or collinear) in cyclic order — recovering the cospherical equality of Mathlib as the boundary case?",
+      "Does the inversion-distance identity extend to a formalized proof that inversion is conformal (angle-preserving) in any real inner product space?"
+    ]
+  }
+}
