@@ -1,0 +1,29 @@
+{
+  "id": "euler-totient-oq-06-oq-01",
+  "name": "2-adic valuation v₂(φ(n)) from the factorization of n",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "Multiplicativity of φ + additivity of v₂ over products ⇒ v₂(φ(n)) is a sum over prime divisors with no cross-prime interaction; reduces entirely to the prime-power case.",
+      "For odd prime p, the factor p^(k−1) in φ(p^k)=p^(k−1)(p−1) is odd, so the exponent k is invisible to v₂; contribution is exactly v₂(p−1).",
+      "Only the prime 2 contributes through its exponent: v₂(φ(2^k))=k−1.",
+      "Evaluating the (ℕ→₀ℕ)-valued Nat.factorization at 2 is cleaner than padicValNat product rules; factorization_prod/_mul/_pow do all bookkeeping, Nat.factorization_def exports to padicValNat."
+    ],
+    "builtItems": [
+      "v2_totient_eq_sum (master formula) in Proofs/EulerTotientOQ06OQ01.lean",
+      "v2_totient_split (clean split isolating prime 2) in Proofs/EulerTotientOQ06OQ01.lean",
+      "v2_totient_two_pow, v2_totient_odd_prime_pow (prime-power blocks)",
+      "padicValNat_two_totient_eq_sum (padicValNat restatement)",
+      "summand_eq (per-summand case split)"
+    ],
+    "mathlibGaps": [
+      "Mathlib has Nat.totient_eq_prod_factorization and Nat.totient_even but no closed form / valuation of v₂(φ(n)); this entry fills that."
+    ],
+    "nextSteps": [
+      "Characterize n with v₂(φ(n))=1 (φ(n)≡2 mod 4): n ∈ {4, p^k, 2p^k}, p≡3 mod 4.",
+      "Generalize to v_q(φ(n)) for general odd prime q — same additive-hom proof generalizes verbatim."
+    ],
+    "progressSummary": "COMPLETE: exact v₂(φ(n)) formula proved, verified 0-axiom 0-sorry, PR opened."
+  }
+}
