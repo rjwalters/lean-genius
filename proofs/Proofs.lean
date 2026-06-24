@@ -3052,7 +3052,9 @@ import Proofs.Hilbert17MotzkinRationalSOS
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17OQ01
 import Proofs.Hilbert17QuadraticGram
+import Proofs.Hilbert17RobinsonNotSOS
 import Proofs.Hilbert17SumOfSquares
+import Proofs.Hilbert17UnivariatePSDSOS
 import Proofs.Hilbert19OQ03
 import Proofs.Hilbert19Regularity
 import Proofs.Hilbert20BoundaryValue
