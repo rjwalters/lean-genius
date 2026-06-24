@@ -1,0 +1,69 @@
+[
+  {
+    "id": "ann-exact-sharpening",
+    "proofId": "euler-totient-oq-03-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "The 'Sharpening' Is the Identity Solved for φ(ab)",
+    "content": "The open question asks whether super-multiplicativity `φ(a)·φ(b) ≤ φ(ab)` can be sharpened to the exact equality\n```\nφ(a)·φ(b)·gcd(a,b) / φ(gcd(a,b)) = φ(ab).\n```\nThis is *literally* the GCD–totient identity\n```\nφ(gcd(a,b))·φ(ab) = φ(a)·φ(b)·gcd(a,b)\n```\nsolved for `φ(ab)`. Over ℕ the division is delicate, but it is **exact** (remainder-free): `φ(gcd(a,b))` divides the numerator because the identity says the numerator equals `φ(gcd(a,b))·φ(ab)`. The Lean proof feeds this to `Nat.div_eq_of_eq_mul_left`, whose only hypothesis is `0 < φ(gcd(a,b))` — supplied by `Nat.totient_pos` from `0 < gcd(a,b)` (i.e. a, b not both zero).\n\nThe defect factor `gcd(a,b)/φ(gcd(a,b)) ≥ 1` measures exactly how far φ is from multiplicative, and equals 1 precisely when `gcd(a,b) = 1`.",
+    "mathContext": "$\\varphi(ab)=\\dfrac{\\varphi(a)\\varphi(b)\\gcd(a,b)}{\\varphi(\\gcd(a,b))}$ for $\\gcd(a,b)>0$. Equivalently $\\dfrac{\\varphi(ab)}{\\varphi(a)\\varphi(b)}=\\dfrac{\\gcd(a,b)}{\\varphi(\\gcd(a,b))}\\ge 1$, the multiplicative defect, $=1$ iff $\\gcd(a,b)=1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.totient_gcd_mul_totient_mul",
+      "Nat.div_eq_of_eq_mul_left",
+      "Nat.totient_pos",
+      "super-multiplicativity"
+    ],
+    "prerequisites": [
+      "euler-totient-oq-03"
+    ]
+  },
+  {
+    "id": "ann-two-collapses",
+    "proofId": "euler-totient-oq-03-oq-03",
+    "range": {
+      "startLine": 69,
+      "endLine": 86
+    },
+    "type": "insight",
+    "title": "One Identity, Two Classical Laws",
+    "content": "Both the multiplicative and the divisibility behaviour of φ are special cases of the *same* identity:\n\n**Coprime collapse** (`totient_mul_coprime`): set `gcd(a,b) = 1`. Then `φ(1) = 1` and the identity becomes `φ(ab) = φ(a)·φ(b)` — ordinary multiplicativity, recovered by `simp` after substituting `Nat.Coprime`.\n\n**Divisibility collapse** (`totient_mul_of_dvd`): if `a ∣ b` then `gcd(a,b) = a` (`Nat.gcd_eq_left`), so the identity reads `φ(a)·φ(ab) = φ(a)·φ(b)·a`. Cancelling `φ(a) > 0` (`Nat.eq_of_mul_eq_mul_left` with `Nat.totient_pos`) gives the exact value `φ(ab) = a·φ(b)`.\n\nThe only side conditions are non-vanishing of the cancelled argument — there is no separate machinery for either law.",
+    "mathContext": "Coprime case: $\\gcd=1\\Rightarrow\\varphi(ab)=\\varphi(a)\\varphi(b)$. Divisibility case: $a\\mid b\\Rightarrow\\gcd(a,b)=a\\Rightarrow\\varphi(ab)=a\\,\\varphi(b)$ after cancelling $\\varphi(a)>0$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Nat.Coprime",
+      "Nat.gcd_eq_left",
+      "Nat.eq_of_mul_eq_mul_left",
+      "Nat.totient_mul"
+    ],
+    "prerequisites": [
+      "euler-totient-oq-03"
+    ]
+  },
+  {
+    "id": "ann-general-power-formula",
+    "proofId": "euler-totient-oq-03-oq-03",
+    "range": {
+      "startLine": 88,
+      "endLine": 114
+    },
+    "type": "insight",
+    "title": "φ(nᵏ⁺¹) = nᵏ·φ(n) for EVERY Base — Beyond Mathlib's Prime Case",
+    "content": "Mathlib's `Nat.totient_prime_pow` computes `φ(p^k) = p^(k-1)(p-1)` only when `p` is **prime**. The general scaling law\n```\nφ(n^(k+1)) = n^k · φ(n)   for every n\n```\nis proved here by induction on `k`. The successor step applies the GCD–totient identity to the pair `(n^(k+1), n)`:\n- `gcd(n^(k+1), n) = n`, since `n ∣ n^(k+1)` (`dvd_pow_self`, `Nat.gcd_eq_right`);\n- rewriting `n^(k+1)·n = n^(k+2)` (`pow_succ`) and applying the induction hypothesis turns the identity into `φ(n)·φ(n^(k+2)) = φ(n)·(n^(k+1)·φ(n))`;\n- cancelling `φ(n) > 0` (positive-base case) gives the result; the `n = 0` case is closed by `simp`.\n\n`totient_pow` restates this in `k − 1` form for `k ≥ 1`, and `totient_sq` is the `k = 1` instance `φ(n²) = n·φ(n)`. The composite-base sanity check `φ(6²) = 6·φ(6)` (= `totient_sq 6`) exercises exactly the regime Mathlib's prime-power lemma cannot reach.",
+    "mathContext": "$\\varphi(n^{k+1})=n^k\\varphi(n)$ for all $n,k$. Induction step uses $\\gcd(n^{k+1},n)=n$ in $\\varphi(\\gcd)\\varphi(n^{k+1}\\cdot n)=\\varphi(n^{k+1})\\varphi(n)\\gcd$, the inductive hypothesis $\\varphi(n^{k+1})=n^k\\varphi(n)$, and cancellation of $\\varphi(n)>0$. Generalizes `Nat.totient_prime_pow` from prime to arbitrary base.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.totient_prime_pow",
+      "Nat.gcd_eq_right",
+      "dvd_pow_self",
+      "pow_succ",
+      "induction"
+    ],
+    "prerequisites": [
+      "euler-totient-oq-03"
+    ]
+  }
+]

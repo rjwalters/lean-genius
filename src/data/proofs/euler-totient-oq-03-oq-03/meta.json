@@ -1,0 +1,136 @@
+{
+  "id": "euler-totient-oq-03-oq-03",
+  "title": "Exact Consequences of the GCD–Totient Identity",
+  "slug": "euler-totient-oq-03-oq-03",
+  "description": "Answers the parent open question by sharpening super-multiplicativity φ(a)·φ(b) ≤ φ(ab) into the exact division form φ(a)·φ(b)·gcd(a,b)/φ(gcd(a,b)) = φ(ab). Specializes the GCD–totient identity to recover the coprime law φ(ab)=φ(a)φ(b) and the divisibility law φ(ab)=a·φ(b), and upgrades the latter by induction to the general power formula φ(nᵏ⁺¹)=nᵏ·φ(n) for EVERY base n — a statement Mathlib provides only for prime bases. 0 sorries, 0 axioms.",
+  "meta": {
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "multiplicative-functions",
+      "totient",
+      "gcd",
+      "product-formula"
+    ],
+    "proofRepoPath": "Proofs/EulerTotientOQ03OQ03.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. All seven theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (not counted). The example sanity checks use kernel `decide`/`norm_num` only — no `native_decide`, so `Lean.ofReduceBool` is NOT introduced. Built against Mathlib's `Nat.totient` API; the central identity `Nat.totient_gcd_mul_totient_mul` is from Mathlib, and the consequences derived here (exact division form, coprime/divisibility collapses, general power formula) are proved from it.",
+    "lineCount": 134,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "Euler's totient function $\\varphi$ is *multiplicative*: $\\varphi(ab)=\\varphi(a)\\varphi(b)$ whenever $\\gcd(a,b)=1$. When $a$ and $b$ share factors the equality fails, but the *direction* of failure is fixed — $\\varphi$ is **super-multiplicative**, $\\varphi(a)\\varphi(b)\\le\\varphi(ab)$. The precise gap is captured by the GCD–totient identity\n$$\\varphi(\\gcd(a,b))\\cdot\\varphi(ab)=\\varphi(a)\\,\\varphi(b)\\,\\gcd(a,b),$$\nwhich appears in Mathlib as `Nat.totient_gcd_mul_totient_mul`. This single relation simultaneously encodes multiplicativity (the $\\gcd=1$ case) and the behaviour of $\\varphi$ on powers (the divisibility case). It is the natural home for any 'exact' statement about how $\\varphi$ interacts with products.",
+    "problemStatement": "**Open Question (OQ-03-OQ-03)**: Can the super-multiplicativity inequality $\\varphi(a)\\varphi(b)\\le\\varphi(ab)$ be *sharpened* into the exact equality\n$$\\frac{\\varphi(a)\\,\\varphi(b)\\,\\gcd(a,b)}{\\varphi(\\gcd(a,b))}=\\varphi(ab)$$\nvia the GCD–totient identity, and what concrete laws does this exact form yield?\n\n**Answer: YES.** Solving the identity for $\\varphi(ab)$ gives the requested division form as an exact natural-number division whenever $\\gcd(a,b)>0$. Specializing the two arguments collapses the identity to the coprime law $\\varphi(ab)=\\varphi(a)\\varphi(b)$ and the divisibility law $\\varphi(ab)=a\\,\\varphi(b)$ (for $a\\mid b$); an induction on the exponent then promotes the divisibility law to the **general power formula** $\\varphi(n^{k+1})=n^k\\,\\varphi(n)$ valid for every base $n$, not only primes.",
+    "proofStrategy": "The file is organized around one Mathlib relation and four exact consequences.\n\n**Foundation:** `totient_gcd_identity` restates $\\varphi(\\gcd(a,b))\\varphi(ab)=\\varphi(a)\\varphi(b)\\gcd(a,b)$ (a thin wrapper of `Nat.totient_gcd_mul_totient_mul`) as the basis for the rest.\n\n**Exact sharpening:** `totient_mul_eq_div` solves the identity for $\\varphi(ab)$ using `Nat.div_eq_of_eq_mul_left`, valid once $\\varphi(\\gcd(a,b))>0$ — exactly the form the open question requests.\n\n**Collapses:** `totient_mul_coprime` substitutes $\\gcd=1$ to recover multiplicativity; `totient_mul_of_dvd` substitutes $\\gcd(a,b)=a$ (from $a\\mid b$) and cancels $\\varphi(a)>0$ to get $\\varphi(ab)=a\\varphi(b)$.\n\n**General power formula:** `totient_pow_succ` proves $\\varphi(n^{k+1})=n^k\\varphi(n)$ by induction on $k$. The successor step applies the identity to $(n^{k+1},n)$ — where $\\gcd(n^{k+1},n)=n$ — and cancels $\\varphi(n)$ in the positive-base case (the $n=0$ case is closed by `simp`). `totient_pow` and `totient_sq` repackage this as $\\varphi(n^k)=n^{k-1}\\varphi(n)$ and $\\varphi(n^2)=n\\varphi(n)$.",
+    "keyInsights": [
+      "The GCD–totient identity is precisely the exact form of super-multiplicativity: the multiplicative defect is the single rational factor gcd(a,b)/φ(gcd(a,b)) ≥ 1, which equals 1 exactly when a, b are coprime. The 'sharpening' the open question asks for is therefore just the identity solved for φ(ab).",
+      "The general power formula φ(n^(k+1)) = n^k·φ(n) holds for EVERY base, not only primes. Mathlib's Nat.totient_prime_pow is restricted to prime bases; the composite-base statement is obtained here by feeding the divisibility case gcd(n^(k+1), n) = n into the identity and inducting on the exponent.",
+      "Two specializations of one identity recover two classical laws: gcd = 1 gives multiplicativity φ(ab) = φ(a)φ(b), and a ∣ b gives φ(ab) = a·φ(b). The cancellation of φ(gcd) (resp. φ(a)) is licensed by Nat.totient_pos, so the only side condition is non-vanishing of the relevant argument.",
+      "Working in ℕ, the exact 'division' form requires care: φ(a)φ(b)gcd(a,b)/φ(gcd(a,b)) is an exact (remainder-free) natural division because φ(gcd) divides φ(a)φ(b)gcd exactly, a fact that is itself just the identity. Nat.div_eq_of_eq_mul_left converts the multiplicative identity into the division statement."
+    ],
+    "prerequisites": [
+      "Euler's totient function and its multiplicativity (euler-totient-oq-02)",
+      "The GCD–totient identity Nat.totient_gcd_mul_totient_mul (parent euler-totient-oq-03)",
+      "Nat.totient_pos and cancellation of positive natural factors",
+      "Induction on the exponent and Nat.gcd_eq_left / gcd_eq_right",
+      "Exact natural-number division (Nat.div_eq_of_eq_mul_left)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "foundation",
+      "title": "Foundation: The GCD–Totient Identity",
+      "startLine": 53,
+      "endLine": 58,
+      "summary": "Restates φ(gcd(a,b))·φ(ab) = φ(a)·φ(b)·gcd(a,b) (Nat.totient_gcd_mul_totient_mul) as the basis for the exact consequences below.",
+      "mathContext": "$\\varphi(\\gcd(a,b))\\cdot\\varphi(ab)=\\varphi(a)\\varphi(b)\\gcd(a,b)$. The parent entry states this identity; here it is the single input from which every other theorem in the file is derived."
+    },
+    {
+      "id": "exact-sharpening",
+      "title": "Exact Sharpening of Super-Multiplicativity",
+      "startLine": 60,
+      "endLine": 67,
+      "summary": "totient_mul_eq_div: φ(a)·φ(b)·gcd(a,b) / φ(gcd(a,b)) = φ(ab) as an exact ℕ-division, valid when gcd(a,b) > 0. This is the literal form the open question requests.",
+      "mathContext": "$\\dfrac{\\varphi(a)\\varphi(b)\\gcd(a,b)}{\\varphi(\\gcd(a,b))}=\\varphi(ab)$ for $\\gcd(a,b)>0$. Proved via `Nat.div_eq_of_eq_mul_left` applied to the identity; the division is exact because $\\varphi(\\gcd(a,b))$ divides the numerator by the identity itself."
+    },
+    {
+      "id": "collapses",
+      "title": "Coprime and Divisibility Collapses",
+      "startLine": 69,
+      "endLine": 86,
+      "summary": "totient_mul_coprime (gcd = 1 ⟹ φ(ab) = φ(a)φ(b)) and totient_mul_of_dvd (a ∣ b, a > 0 ⟹ φ(ab) = a·φ(b)) recover the two classical laws as specializations of the identity.",
+      "mathContext": "Substituting $\\gcd(a,b)=1$ yields multiplicativity $\\varphi(ab)=\\varphi(a)\\varphi(b)$; substituting $\\gcd(a,b)=a$ (from $a\\mid b$, via `Nat.gcd_eq_left`) and cancelling $\\varphi(a)>0$ yields $\\varphi(ab)=a\\,\\varphi(b)$."
+    },
+    {
+      "id": "power-formula",
+      "title": "The General Power Formula (Every Base)",
+      "startLine": 88,
+      "endLine": 114,
+      "summary": "totient_pow_succ: φ(n^(k+1)) = n^k·φ(n) for all n, by induction using gcd(n^(k+1), n) = n. totient_pow and totient_sq repackage it as φ(n^k)=n^(k-1)φ(n) and φ(n²)=n·φ(n). Mathlib has this for prime bases only.",
+      "mathContext": "$\\varphi(n^{k+1})=n^k\\varphi(n)$ for every $n$. Induction on $k$: the step applies the identity to $(n^{k+1},n)$ with $\\gcd(n^{k+1},n)=n$ and cancels $\\varphi(n)>0$ when $n>0$ (the $n=0$ case is immediate). Compare `Nat.totient_prime_pow`, which assumes $p$ prime."
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Sanity Checks (No Computation)",
+      "startLine": 116,
+      "endLine": 132,
+      "summary": "Direct specializations — φ(3²)=3·φ(3), φ(6²)=6·φ(6) (composite base), φ(15)=φ(3)φ(5), φ(12)=2·φ(6) — type-check from the theorems, using kernel decide/norm_num only (no native_decide, so 0 axioms preserved).",
+      "mathContext": "These examples instantiate the general theorems rather than recomputing φ; e.g. $\\varphi(6^2)=6\\varphi(6)$ is `totient_sq 6` at a composite base where Mathlib's prime-power lemma does not apply."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is answered affirmatively: super-multiplicativity φ(a)φ(b) ≤ φ(ab) sharpens to the exact division form φ(a)φ(b)gcd(a,b)/φ(gcd(a,b)) = φ(ab). The same identity collapses to the coprime law φ(ab)=φ(a)φ(b) and the divisibility law φ(ab)=a·φ(b), and induction upgrades the latter to the general power formula φ(n^(k+1))=n^k·φ(n) for every base n — a result Mathlib supplies only for primes. All 7 theorems are machine-verified with 0 sorries and 0 axioms.",
+    "implications": "The exact form makes the multiplicative defect of $\\varphi$ fully explicit: $\\varphi(ab)/(\\varphi(a)\\varphi(b))=\\gcd(a,b)/\\varphi(\\gcd(a,b))\\ge 1$, with equality iff $a,b$ are coprime. The general power formula $\\varphi(n^{k+1})=n^k\\varphi(n)$ gives, for arbitrary $n$, the same scaling that the prime-power formula gives for primes, and immediately yields $\\varphi(n^2)=n\\varphi(n)$. These are the building blocks for computing $\\varphi$ on arbitrary integers once a factorization is known.",
+    "openQuestions": [
+      "Does the exact defect factor gcd(a,b)/φ(gcd(a,b)) admit a clean closed form in terms of the shared prime factors of a and b — e.g. ∏_{p | gcd(a,b)} p/(p-1) for squarefree gcd — and can this be formalized?",
+      "Can the general power formula φ(n^(k+1)) = n^k·φ(n) be packaged as a Mathlib contribution generalizing Nat.totient_prime_pow to arbitrary bases?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-03",
+      "relationship": "extends",
+      "description": "Answers the third open question of the parent: sharpening super-multiplicativity to exact equality via the GCD–totient identity it states."
+    },
+    {
+      "targetId": "euler-totient-oq-02-oq-01",
+      "relationship": "complements",
+      "description": "The product formula entry computes φ via prime factorizations; this entry gives the exact pairwise law φ(ab) and the general power scaling φ(n^(k+1))=n^k φ(n)."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "uses",
+      "description": "Builds on the basic totient API (positivity, multiplicativity) established by the root entry."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G.H. and Wright, E.M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "venue": "Oxford University Press",
+      "note": "Chapter 5 develops the totient function and its multiplicativity. The GCD–totient identity φ(gcd)φ(ab)=φ(a)φ(b)gcd is the exact form of super-multiplicativity discussed there."
+    },
+    {
+      "authors": "mathlib community",
+      "title": "Nat.totient_gcd_mul_totient_mul and Nat.totient_prime_pow",
+      "year": "2025",
+      "venue": "Mathlib4, Mathlib/Data/Nat/Totient.lean",
+      "note": "The GCD–totient identity used as the foundation, and the prime-power totient formula that the general power formula proved here extends to arbitrary bases."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 134,
+    "path": "Proofs/EulerTotientOQ03OQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 7
+  },
+  "sorries": 0
+}

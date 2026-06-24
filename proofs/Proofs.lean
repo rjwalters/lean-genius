@@ -2752,6 +2752,7 @@ import Proofs.EulerTotientOQ01OQ03Minimal
 import Proofs.EulerTotientOQ02
 import Proofs.EulerTotientOQ02OQ01
 import Proofs.EulerTotientOQ03
+import Proofs.EulerTotientOQ03OQ03
 import Proofs.EulerTotientOQ04
 import Proofs.EulerTotientOQ04OQ01
 import Proofs.EulerTotientOQ05
