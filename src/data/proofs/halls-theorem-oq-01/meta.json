@@ -111,7 +111,23 @@
       "summary": "exists_violating_of_no_matching — the contrapositive certificate: no saturating matching ⟹ some subset violates Hall's condition."
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "proofId": "halls-theorem-oq-01-oq-01",
+      "relationship": "Quantitative refinement",
+      "description": "The deficiency (Ore) form of Hall's theorem — the maximum matching size equals |p₁| minus the maximum Hall deficiency. Directly realises this entry's first open question, building on the deficiency certificate exists_violating_of_no_matching."
+    },
+    {
+      "proofId": "halls-theorem-oq-02",
+      "relationship": "Sibling specialisation",
+      "description": "Hall's theorem for balanced bipartite graphs, where the one-sided Hall condition already suffices for a perfect matching. Specialises the hall_perfect biconditional proved here to the |p₁| = |p₂| setting."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01",
+      "relationship": "Related application",
+      "description": "Systems of distinct representatives and concrete deficiency witnesses — the SDR corollary of the marriage biconditional, another consequence flagged in this entry's open questions."
+    }
+  ],
   "references": [
     {
       "text": "Hall, P. (1935). On Representatives of Subsets. Journal of the London Mathematical Society, 10(1), 26–30.",
