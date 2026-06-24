@@ -1,0 +1,62 @@
+[
+  {
+    "id": "necklace-docstring",
+    "proofId": "little-wedderburn-oq-02-oq-02",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "concept",
+    "title": "The Necklace Formula and the Partition Route",
+    "content": "Writing N(d) for the number of monic irreducible polynomials of degree d over 𝔽_p, the goal is Gauss's degree identity p^n = Σ_{d∣n} d·N(d) and its Möbius inversion n·N(n) = Σ_{d∣n} μ(n/d)·p^d. Rather than factoring X^(p^n) − X into irreducibles, the proof partitions the field GF(p^n) by the degree of each element's minimal polynomial. The two finite-field facts that drive everything are already in Mathlib: GF(p^n)/𝔽_p is a separable normal (Galois) extension, so each minimal polynomial splits with exactly deg distinct roots; and GF(p^d) embeds in GF(p^n) iff d∣n, so every monic irreducible of degree d∣n acquires a root.",
+    "mathContext": "$p^n = \\sum_{d\\mid n} d\\,N(d) \\;\\Longleftrightarrow\\; n\\,N(n) = \\sum_{d\\mid n}\\mu(n/d)\\,p^d$.",
+    "significance": "key",
+    "relatedConcepts": ["finite field", "irreducible polynomial", "Möbius inversion", "necklace counting"],
+    "prerequisites": ["finite fields", "minimal polynomials"]
+  },
+  {
+    "id": "conjugate-count",
+    "proofId": "little-wedderburn-oq-02-oq-02",
+    "range": { "startLine": 49, "endLine": 91 },
+    "type": "lemma",
+    "title": "Each Minimal Polynomial Has deg Conjugate Roots",
+    "content": "card_minpoly_fiber proves that the elements of GF(p^m) sharing a given minimal polynomial g number exactly deg g. The fibre {y : minpoly y = g} is identified with the root set of g in GF(p^m): y is a root of g iff g, being monic irreducible, is the minimal polynomial of y. That root set has deg g elements because g splits in the normal extension (Normal.splits) and is separable over the perfect field 𝔽_p (Algebra.IsSeparable), so its roots are distinct (nodup_roots) and number its degree (Splits.natDegree_eq_card_roots). mdeg_dvd records that every such degree divides m, by the tower law finrank 𝔽_p 𝔽_p⟮x⟯ · finrank 𝔽_p⟮x⟯ GF = m.",
+    "mathContext": "$\\#\\{y \\in \\mathrm{GF}(p^m) : \\mathrm{minpoly}\\,y = g\\} = \\deg g$, with $\\deg g \\mid m$.",
+    "significance": "key",
+    "relatedConcepts": ["conjugate elements", "separable extension", "normal extension", "tower law"],
+    "prerequisites": ["minimal polynomials", "splitting of polynomials", "field degree"]
+  },
+  {
+    "id": "per-field-identity",
+    "proofId": "little-wedderburn-oq-02-oq-02",
+    "range": { "startLine": 93, "endLine": 127 },
+    "type": "theorem",
+    "title": "Per-Field Degree Partition",
+    "content": "degree_identity_field assembles the partition into p^m = Σ_{d∣m} d·N(m,d). The field is counted fiberwise over the image of the minimal-polynomial map (Finset.card_eq_sum_card_fiberwise), each fibre contributing its degree (card_minpoly_fiber); the resulting sum over minimal polynomials is regrouped by degree over the divisors of m, each degree-d group contributing d·(number of degree-d minimal polynomials).",
+    "mathContext": "$p^m = \\sum_{d\\mid m} d\\,N(m,d)$, where $N(m,d)$ is the number of degree-$d$ minimal polynomials of $\\mathrm{GF}(p^m)$.",
+    "significance": "key",
+    "relatedConcepts": ["fiberwise counting", "divisor sum", "partition"],
+    "prerequisites": ["finite sums", "field cardinality"]
+  },
+  {
+    "id": "ambient-independence",
+    "proofId": "little-wedderburn-oq-02-oq-02",
+    "range": { "startLine": 129, "endLine": 169 },
+    "type": "theorem",
+    "title": "The Count Depends Only on the Degree",
+    "content": "For the Möbius inversion to make sense the count N(m,d) must not depend on the ambient field GF(p^m). exists_root_of_dvd shows that whenever d∣k every monic irreducible g of degree d has a root in GF(p^k): the quotient 𝔽_p[X]/(g) = AdjoinRoot g is a degree-d field carrying a root of g, and the embedding criterion FiniteField.nonempty_algHom_of_finrank_dvd drops it into GF(p^k). mem_image_filter_iff then characterizes the degree-d minimal polynomials of GF(p^k) as exactly all monic irreducibles of degree d, and Nfield_eq concludes N(m,d) = N(d,d) for d∣m — an intrinsic degree-only count.",
+    "mathContext": "For $d \\mid m$, every degree-$d$ monic irreducible has a root in $\\mathrm{GF}(p^m)$, so $N(m,d) = N(d)$.",
+    "significance": "key",
+    "relatedConcepts": ["embedding criterion", "AdjoinRoot", "subfield lattice", "intrinsic count"],
+    "prerequisites": ["quotient fields", "algebra homomorphisms", "field degree divisibility"]
+  },
+  {
+    "id": "moebius-necklace",
+    "proofId": "little-wedderburn-oq-02-oq-02",
+    "range": { "startLine": 171, "endLine": 202 },
+    "type": "theorem",
+    "title": "Möbius Inversion: Gauss's Necklace Formula",
+    "content": "With the intrinsic count Nirr p d in hand, degree_identity reads p^m = Σ_{d∣m} d·N(d) for all m. Casting to ℤ and applying ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq inverts this divisor-sum relation into necklace_formula: n·N(n) = Σ_{(a,b): ab=n} μ(a)·p^b, i.e. n·N(n) = Σ_{d∣n} μ(n/d)·p^d — Gauss's count of monic irreducible polynomials of degree n over 𝔽_p.",
+    "mathContext": "$n\\,N(n) = \\sum_{d\\mid n}\\mu(n/d)\\,p^d$.",
+    "significance": "key",
+    "relatedConcepts": ["Möbius function", "Möbius inversion", "divisor antidiagonal", "arithmetic functions"],
+    "prerequisites": ["Möbius inversion", "Möbius function"]
+  }
+]
