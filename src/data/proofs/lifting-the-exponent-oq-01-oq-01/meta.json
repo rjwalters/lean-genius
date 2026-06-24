@@ -1,0 +1,168 @@
+{
+  "id": "lifting-the-exponent-oq-01-oq-01",
+  "title": "Lifting the Exponent at p = 2 — the even-exponent exception (difference form)",
+  "slug": "lifting-the-exponent-oq-01-oq-01",
+  "description": "The two-adic exception to Lifting the Exponent, stated as an honest integer valuation equation. The parent entry (lifting-the-exponent-oq-01) proves the odd-prime law v_p(xⁿ - yⁿ) = v_p(x - y) + v_p(n) and explicitly excludes p = 2. For p = 2 the law genuinely differs: when n is even an extra term v_2(x + y) appears and the identity is offset by 1. This entry proves, for odd integers x, y, an even exponent n > 0, and x ≠ y, x + y ≠ 0, the corrected law v_2(xⁿ - yⁿ) + 1 = v_2(x - y) + v_2(x + y) + v_2(n) (padicValInt_two_pow_sub_pow), its truncated-subtraction restatement v_2(xⁿ - yⁿ) = v_2(x - y) + v_2(x + y) + v_2(n) - 1 (padicValInt_two_pow_sub_pow'), and the orders/Mersenne specialisation v_2(aⁿ - 1) + 1 = v_2(a - 1) + v_2(a + 1) + v_2(n) (padicValInt_two_pow_sub_one). Mathlib proves the p = 2 law only in emultiplicity (ℕ∞) form (Int.two_pow_sub_pow); the value added is the finiteness bridge padicValInt_two_eq_emultiplicity together with the nonzero side conditions — notably xⁿ ≠ yⁿ, which for even n needs x ≠ ±y (not merely x ≠ y) since x and -x share the same even power. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
+  "meta": {
+    "author": "Classical olympiad folklore (two-adic LTE); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lifting-the-exponent_lemma",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "p-adic-valuation",
+      "lifting-the-exponent",
+      "lte",
+      "padic",
+      "multiplicity",
+      "valuation",
+      "two-adic",
+      "olympiad",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/LiftingTheExponentOQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.two_pow_sub_pow",
+        "description": "The p = 2 LTE law in emultiplicity form: emultiplicity 2 (xⁿ - yⁿ) + 1 = emultiplicity 2 (x + y) + emultiplicity 2 (x - y) + emultiplicity (2:ℤ) n, given 2 ∣ x - y, ¬ 2 ∣ x, and Even n. The abstract core bridged here to padicValInt.",
+        "module": "Mathlib.NumberTheory.Multiplicity"
+      },
+      {
+        "theorem": "padicValNat_eq_emultiplicity",
+        "description": "The natural-number finiteness bridge: for Fact p.Prime and m ≠ 0, (padicValNat p m : ℕ∞) = emultiplicity p m. Composed with Int.emultiplicity_natAbs to obtain the integer bridge for padicValInt.",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Defs"
+      },
+      {
+        "theorem": "Int.emultiplicity_natAbs",
+        "description": "emultiplicity a b.natAbs = emultiplicity (a:ℤ) b — relates the natural-number multiplicity of |b| to the integer multiplicity of b, the second half of the padicValInt ↔ emultiplicity bridge (padicValInt p z is defined as padicValNat p z.natAbs).",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      },
+      {
+        "theorem": "Nat.pow_left_injective",
+        "description": "For n ≠ 0, a ↦ aⁿ is injective on ℕ. Used on natAbs to deduce |x| = |y| from xⁿ = yⁿ, hence x = ±y — the nonzero side condition xⁿ ≠ yⁿ that the emultiplicity statement hides but the padicValInt statement requires.",
+        "module": "Mathlib.Data.Nat.Basic"
+      },
+      {
+        "theorem": "Int.natAbs_eq_natAbs_iff",
+        "description": "a.natAbs = b.natAbs ↔ a = b ∨ a = -b. Turns |x| = |y| into the dichotomy x = ±y, contradicting x ≠ y and x ≠ -y to finish the xⁿ ≠ yⁿ argument for even n.",
+        "module": "Mathlib.Data.Int.Order"
+      }
+    ],
+    "originalContributions": [
+      "padicValInt_two_pow_sub_pow: v_2(xⁿ - yⁿ) + 1 = v_2(x - y) + v_2(x + y) + v_2(n) for odd x, y, even n > 0, x ≠ y, x + y ≠ 0 — the two-adic even-exponent exception as an honest integer valuation equation (Mathlib has only the emultiplicity/ℕ∞ form Int.two_pow_sub_pow)",
+      "padicValInt_two_pow_sub_pow': the same law with truncated ℕ-subtraction, v_2(xⁿ - yⁿ) = v_2(x - y) + v_2(x + y) + v_2(n) - 1",
+      "padicValInt_two_pow_sub_one: the orders/Mersenne specialisation v_2(aⁿ - 1) + 1 = v_2(a - 1) + v_2(a + 1) + v_2(n) for odd a ≠ ±1, even n > 0",
+      "padicValInt_two_eq_emultiplicity: the integer finiteness bridge (padicValInt 2 z : ℕ∞) = emultiplicity (2:ℤ) z for z ≠ 0, assembled from padicValNat_eq_emultiplicity and Int.emultiplicity_natAbs",
+      "int_pow_ne_pow_of_ne: xⁿ ≠ yⁿ from x ≠ ±y and 0 < n — the even-exponent nonzero side condition, where x ≠ y alone fails because x and -x have equal even powers"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 146,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Lifting the Exponent splits into an odd-prime case and a separate, more delicate p = 2 case. For the prime 2 the standard formula v_2(x - y) + v_2(n) is correct only for odd exponents; for even exponents a second base term v_2(x + y) enters and the total is offset by one. This even-exponent exception is the part of LTE most easily misremembered, and it is exactly what controls the 2-adic valuation of xⁿ - yⁿ in problems on orders, Mersenne numbers, and the structure of (ℤ/2ᵏ)ˣ. The parent gallery entry deliberately left this companion open.",
+    "problemStatement": "**Open Question (lifting-the-exponent-oq-01, follow-up #1)**: Prove the p = 2 companion of LTE — the even-exponent difference form v_2(xⁿ - yⁿ) needing the extra term v_2(x + y) and a -1 offset — by bridging Mathlib's emultiplicity-valued Int.two_pow_sub_pow to an honest integer valuation (padicValInt) equation.\n\n**Result**: padicValInt_two_pow_sub_pow (additive), padicValInt_two_pow_sub_pow' (truncated subtraction), and the specialisation padicValInt_two_pow_sub_one, all fully verified with 0 axioms.",
+    "text": "For odd integers x and y and an even exponent n > 0 with x ≠ y and x + y ≠ 0, the 2-adic valuation of xⁿ - yⁿ satisfies v_2(xⁿ - yⁿ) + 1 = v_2(x - y) + v_2(x + y) + v_2(n). Equivalently v_2(xⁿ - yⁿ) = v_2(x - y) + v_2(x + y) + v_2(n) - 1. Specialising to y = 1 gives v_2(aⁿ - 1) + 1 = v_2(a - 1) + v_2(a + 1) + v_2(n) for odd a ≠ ±1.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Mathlib supplies the abstract identity in extended-natural form: Int.two_pow_sub_pow gives emultiplicity 2 (xⁿ - yⁿ) + 1 = emultiplicity 2 (x + y) + emultiplicity 2 (x - y) + emultiplicity (2:ℤ) n under 2 ∣ x - y, ¬ 2 ∣ x, and Even n. There is no nonzeroness hypothesis because emultiplicity 0 = ⊤.\n\n2. To restate it with padicValInt (an honest ℕ) the degenerate cases must be excluded. The four arguments xⁿ - yⁿ, x - y, x + y, n must be nonzero. The substantive one is xⁿ - yⁿ ≠ 0: for even n this requires x ≠ ±y, proved by passing to natAbs (Int.natAbs_pow) and using Nat.pow_left_injective to get |x| = |y|, then Int.natAbs_eq_natAbs_iff to reach x = ±y and contradict the hypotheses.\n\n3. The integer bridge padicValInt_two_eq_emultiplicity rewrites each (padicValInt 2 z : ℕ∞) to emultiplicity (2:ℤ) z for the nonzero arguments; it is assembled from padicValNat_eq_emultiplicity (with Fact (Nat.Prime 2)) and Int.emultiplicity_natAbs, since padicValInt 2 z is by definition padicValNat 2 z.natAbs. The n-term padicValNat 2 n is matched to padicValInt 2 (n:ℤ) via Int.natAbs_natCast.\n\n4. With the goal cast into ℕ∞ and every valuation rewritten, Int.two_pow_sub_pow closes it up to commutativity of addition (abel), and exact_mod_cast pulls the ℕ∞ equality back to ℕ. The truncated-subtraction and aⁿ - 1 forms follow by omega and specialisation at y = 1.",
+    "keyInsights": [
+      "**Even exponents need x ≠ ±y, not x ≠ y.** The odd-prime parent only needed xⁿ ≠ yⁿ from y < x. Here n is even, so x and -x have the same n-th power; the nonzero side condition xⁿ ≠ yⁿ genuinely requires excluding both x = y and x = -y. This is the one place the p = 2 even case is structurally harder than the odd-prime case.",
+      "**Why the +1 and the v_2(x + y) term appear.** For even n, xⁿ - yⁿ factors through x² - y² = (x - y)(x + y), and the prime 2 divides the geometric cofactor exactly once at each doubling; the emultiplicity bookkeeping in Int.two_pow_sub_pow collects this into a single v_2(x + y) plus the offset, which the bridge faithfully transports.",
+      "**padicValInt, not padicValNat, is the right home.** Because x + y and x - y can be negative, the integer valuation padicValInt (defined via natAbs) is the natural target; the bridge to emultiplicity factors cleanly through Int.emultiplicity_natAbs.",
+      "**Reuse over reproof.** The hard 2-adic induction is delegated to Mathlib's Int.two_pow_sub_pow; this file adds only the finiteness plumbing and the even-exponent nonzeroness lemma, keeping the proofs short and fully axiom-free."
+    ],
+    "prerequisites": [
+      "The integer p-adic valuation padicValInt and its definition padicValInt p z = padicValNat p z.natAbs",
+      "Mathlib's emultiplicity-valued p = 2 LTE lemma Int.two_pow_sub_pow",
+      "Truncated natural subtraction and the nonzeroness conditions it requires",
+      "The parent entry lifting-the-exponent-oq-01 (odd-prime LTE in padicValNat form)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring stating the p = 2 even-exponent law, explaining why it differs from the odd-prime parent (extra v_2(x + y) term and -1 offset) and why the bridge from Mathlib's emultiplicity form requires x ≠ ±y; imports and namespace.",
+      "mathContext": "$v_2(x^n - y^n) + 1 = v_2(x-y) + v_2(x+y) + v_2(n)$ for odd $x,y$ and even $n$."
+    },
+    {
+      "id": "bridge",
+      "title": "Integer Finiteness Bridge",
+      "startLine": 66,
+      "endLine": 88,
+      "summary": "padicValInt_two_eq_emultiplicity: (padicValInt 2 z : ℕ∞) = emultiplicity (2:ℤ) z for z ≠ 0, assembled from padicValNat_eq_emultiplicity and Int.emultiplicity_natAbs; int_pow_ne_pow_of_ne: xⁿ ≠ yⁿ from x ≠ ±y and 0 < n via natAbs injectivity.",
+      "mathContext": "$(\\,v_2(z) : \\mathbb{N}_\\infty) = \\operatorname{emult}_2 z$ and $x^n \\ne y^n$ for $x \\ne \\pm y$."
+    },
+    {
+      "id": "main",
+      "title": "LTE at p = 2 — Difference Form",
+      "startLine": 90,
+      "endLine": 130,
+      "summary": "padicValInt_two_pow_sub_pow: discharges the Int.two_pow_sub_pow hypotheses (¬2∣x, 2∣x-y) and the four nonzero side conditions, casts into ℕ∞, rewrites every valuation to emultiplicity, closes with the Mathlib law plus abel, and returns to ℕ; padicValInt_two_pow_sub_pow' restates with truncated subtraction via omega.",
+      "mathContext": "$v_2(x^n - y^n) = v_2(x-y) + v_2(x+y) + v_2(n) - 1$."
+    },
+    {
+      "id": "repunit",
+      "title": "Specialisation v_2(aⁿ - 1)",
+      "startLine": 132,
+      "endLine": 146,
+      "summary": "padicValInt_two_pow_sub_one: applies the difference form at y = 1, giving the orders/Mersenne form v_2(aⁿ - 1) + 1 = v_2(a - 1) + v_2(a + 1) + v_2(n) for odd a ≠ ±1, even n > 0.",
+      "mathContext": "$v_2(a^n - 1) + 1 = v_2(a-1) + v_2(a+1) + v_2(n)$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "lifting-the-exponent-oq-01",
+      "reason": "Parent entry: the odd-prime LTE in padicValNat form, whose first open question (the p = 2 even-exponent companion) this entry answers."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the p = 2 even-exponent exception to Lifting the Exponent in honest integer valuation form: v_2(xⁿ - yⁿ) + 1 = v_2(x - y) + v_2(x + y) + v_2(n), its truncated-subtraction restatement, and the specialisation v_2(aⁿ - 1) + 1 = v_2(a - 1) + v_2(a + 1) + v_2(n).",
+    "implications": "Completes the two-adic side of the gallery's LTE coverage: together with the odd-prime parent it gives the full prime-by-prime valuation of xⁿ - yⁿ, with the p = 2 even-exponent case (the one most often misremembered) now machine-checked. Makes 2-adic computations on aⁿ - 1 — element orders, Mersenne valuations, the structure of (ℤ/2ᵏ)ˣ — mechanical.",
+    "openQuestions": [
+      "Package the full two-adic dichotomy as a single theorem: v_2(xⁿ - yⁿ) = v_2(x - y) for odd n, and the formula proved here for even n, selected on the parity of n.",
+      "Derive the order-jump corollary at p = 2: for odd a, the 2-adic valuation v_2(aⁿ - 1) is eventually linear in v_2(n), giving the exact exponent at which 2ᵏ first divides aⁿ - 1."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Multiplicity",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "scoped Classical"
+    ],
+    "namespace": "LiftingTheExponentOQ01OQ01",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/LiftingTheExponentOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Amir Hossein Parvardi (compiler)",
+      "title": "Lifting The Exponent Lemma (LTE)",
+      "year": "2011",
+      "venue": "AoPS / olympiad notes",
+      "note": "Standard exposition including the separate p = 2 even/odd exponent cases"
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.NumberTheory.Multiplicity",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of Int.two_pow_sub_pow, the emultiplicity-valued p = 2 LTE law bridged here to padicValInt"
+    }
+  ],
+  "sorries": 0
+}
