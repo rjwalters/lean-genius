@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "triangle-inequality-oq-05",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "context",
+    "title": "Rigidity of the Triangle Inequality under Strict Convexity",
+    "content": "In a general normed space the triangle inequality ‖x+y‖ ≤ ‖x‖ + ‖y‖ can be an equality for many degenerate reasons (e.g. in ℓ¹ or ℓ^∞, where the unit sphere contains line segments). Strict convexity — the unit sphere contains no segments — makes the equality case COMPLETELY RIGID: it holds iff x and y point along a common ray (SameRay ℝ x y, one a nonnegative multiple of the other). Metrically, a triangle through a, b, c degenerates (dist a b + dist b c = dist a c) exactly when the middle point b lies on the segment [a,c] (Wbtw ℝ a b c). This file packages both forms, the equal-norm rigidity corollary, and concrete instances on ℝ and the Euclidean plane. Strict convexity isolated by Clarkson (1936); betweenness goes back to Menger (1928).",
+    "mathContext": "$\\|x+y\\| = \\|x\\| + \\|y\\| \\iff \\mathrm{SameRay}_\\mathbb{R}(x,y)$; the engine behind metric-projection uniqueness.",
+    "significance": "context",
+    "relatedConcepts": ["strict convexity", "triangle inequality", "SameRay", "betweenness", "metric projection"],
+    "prerequisites": ["normed spaces", "convexity", "metric geometry"]
+  },
+  {
+    "id": "ann-vectorial",
+    "proofId": "triangle-inequality-oq-05",
+    "range": { "startLine": 35, "endLine": 56 },
+    "type": "theorem",
+    "title": "Vectorial Form: Equality ⟺ Same Ray, and Rigidity",
+    "content": "Three vectorial results in a strictly convex space. norm_add_eq_iff_sameRay: ‖x+y‖ = ‖x‖ + ‖y‖ ↔ SameRay ℝ x y (the equality case; Mathlib's sameRay_iff_norm_add). The underlying mechanism: if x, y are not on a common ray then the unit vectors x/‖x‖, y/‖y‖ are DISTINCT sphere points, so strict convexity gives ‖x/‖x‖ + y/‖y‖‖ < 2 and the strict triangle inequality. norm_add_lt_iff_not_sameRay is the strict complement off the diagonal. eq_of_norm_eq_of_norm_add_eq is RIGIDITY: SameRay plus equal norms ‖x‖ = ‖y‖ forces x = y (the only way ‖x+y‖ = 2‖x‖ is x = y).",
+    "mathContext": "$\\|x+y\\| < \\|x\\|+\\|y\\|$ when $x,y$ linearly independent; $\\|x\\|=\\|y\\| \\wedge \\|x+y\\|=2\\|x\\| \\Rightarrow x=y$.",
+    "significance": "key",
+    "relatedConcepts": ["sameRay_iff_norm_add", "not_sameRay_iff_norm_add_lt", "eq_of_norm_eq_of_norm_add_eq", "unit sphere"],
+    "prerequisites": ["strict convexity", "SameRay", "norms"]
+  },
+  {
+    "id": "ann-metric",
+    "proofId": "triangle-inequality-oq-05",
+    "range": { "startLine": 58, "endLine": 74 },
+    "type": "theorem",
+    "title": "Metric Form: Equality ⟺ Betweenness",
+    "content": "The metric (betweenness) characterisation, in a strictly convex space acting on a normed additive torsor P. dist_add_dist_eq_iff_wbtw: dist a b + dist b c = dist a c ↔ Wbtw ℝ a b c — the triangle through a, b, c is degenerate (flat) exactly when b lies weakly between a and c. This transports the vectorial SameRay statement through the torsor subtraction map a ↦ ·−ᵥa, which sends segments to segments. dist_add_dist_eq_iff_mem_segment is the in-vector-space segment form b ∈ segment ℝ a c, obtained by gluing dist_add_dist_eq_iff to mem_segment_iff_wbtw — the new packaging connecting normed geometry to synthetic Menger betweenness.",
+    "mathContext": "$\\mathrm{dist}(a,b)+\\mathrm{dist}(b,c) = \\mathrm{dist}(a,c) \\iff \\mathrm{Wbtw}_\\mathbb{R}(a,b,c) \\iff b\\in[a,c]$.",
+    "significance": "key",
+    "relatedConcepts": ["dist_add_dist_eq_iff", "Wbtw", "mem_segment_iff_wbtw", "normed torsor", "Menger betweenness"],
+    "prerequisites": ["metric spaces", "normed torsors", "betweenness"]
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "triangle-inequality-oq-05",
+    "range": { "startLine": 76, "endLine": 101 },
+    "type": "context",
+    "title": "Concrete Instances on ℝ and the Euclidean Plane",
+    "content": "Three worked instantiations confirm the abstract results apply automatically: the real line and EuclideanSpace ℝ (Fin 2) are strictly convex because they carry an inner product (inner-product spaces are uniformly, hence strictly, convex), so all StrictConvexSpace hypotheses are discharged by typeclass inference — no inner product is used in the proofs themselves. On ℝ: |x+y| = |x|+|y| iff x, y have the same sign. In the Euclidean plane: the triangle through a, b, c is degenerate iff b is between a and c; and two distinct UNIT vectors never saturate the triangle inequality (‖x+y‖ < 2), proved by combining norm_add_lt_iff_not_sameRay with the equal-norm rigidity.",
+    "mathContext": "$\\mathbb{R}$ and $\\mathrm{EuclideanSpace}\\,\\mathbb{R}\\,(\\mathrm{Fin}\\,2)$ strictly convex via their inner product (typeclass-inferred).",
+    "significance": "supporting",
+    "relatedConcepts": ["inner-product space", "uniform convexity", "EuclideanSpace", "typeclass inference"],
+    "prerequisites": ["inner-product spaces", "Euclidean space"]
+  }
+]
