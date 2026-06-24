@@ -1,0 +1,92 @@
+[
+  {
+    "id": "ann-pell-oq07-cayley-hamilton",
+    "proofId": "pell-equation-oq-07",
+    "range": {
+      "startLine": 81,
+      "endLine": 89
+    },
+    "type": "technique",
+    "title": "Cayley–Hamilton for ℤ[√d]: every quadratic integer is a root of its characteristic polynomial",
+    "content": "The whole entry rests on one coordinate-free identity: a² = (2·re a)·a − N(a), valid for EVERY a : ℤ√d with no hypothesis. The coefficients are the trace 2·re a = a + ā and the determinant N(a) = a·ā of the multiplication-by-a map — exactly the Cayley–Hamilton theorem for the 2×2 matrix of that map. The proof expands a² = a·a (pow_two), then Zsqrtd.ext splits into real and √d components, each closed by ring after rewriting with norm_def, re_mul/im_mul, re_sub/im_sub, and the intCast component lemmas. norm_def is the only nontrivial fact used.",
+    "mathContext": "$a$ is a root of $t^2-(\\mathrm{tr}\\,a)\\,t+\\det a$ with $\\mathrm{tr}\\,a=a+\\bar a=2\\,\\mathrm{re}\\,a$ and $\\det a=a\\bar a=N(a)$: $a^2=(2\\,\\mathrm{re}\\,a)\\,a-N(a)$.",
+    "significance": "key",
+    "relatedConcepts": ["Cayley–Hamilton theorem", "characteristic polynomial", "quadratic integer ring", "trace and norm", "Zsqrtd"],
+    "prerequisites": ["quadratic integer rings", "norm form", "characteristic polynomial of a 2×2 matrix"]
+  },
+  {
+    "id": "ann-pell-oq07-pow-recurrence",
+    "proofId": "pell-equation-oq-07",
+    "range": {
+      "startLine": 98,
+      "endLine": 102
+    },
+    "type": "insight",
+    "title": "Propagating the relation to the whole power sequence",
+    "content": "Multiplying the characteristic relation through by aⁿ turns a one-off identity into a recurrence for the entire power sequence: aⁿ⁺² = a²·aⁿ = (2·re a)·aⁿ⁺¹ − N(a)·aⁿ. The Lean proof is two lines — split aⁿ⁺² = a²·aⁿ (ring), rewrite a² by the characteristic relation, then ring. This is the additive shadow of the root entry's multiplicative classification: the powers of the fundamental solution are not just a set, they form a linearly recurrent sequence.",
+    "mathContext": "$a^{n+2}=a^2a^n=(2\\,\\mathrm{re}\\,a)\\,a^{n+1}-N(a)\\,a^n$ in $\\mathbb{Z}[\\sqrt d]$.",
+    "significance": "key",
+    "relatedConcepts": ["linear recurrence", "power sequence", "Lucas sequences", "companion matrix"],
+    "prerequisites": ["second-order linear recurrences", "quadratic integer rings"]
+  },
+  {
+    "id": "ann-pell-oq07-coordinate-recurrence",
+    "proofId": "pell-equation-oq-07",
+    "range": {
+      "startLine": 106,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Both coordinates inherit the same recurrence",
+    "content": "Because re and im : ℤ[√d] → ℤ are ℤ-linear functionals, applying congrArg Zsqrtd.re (resp. .im) to the ℤ[√d] recurrence and simplifying yields re(aⁿ⁺²) = 2·re a·re(aⁿ⁺¹) − N(a)·re(aⁿ), and identically for im. So the x-sequence and the y-sequence of Pell powers satisfy ONE shared second-order recurrence with coefficients (2·re a, N(a)) — the trace and norm of the generator. This is the additive counterpart of the multiplicative power structure.",
+    "mathContext": "$\\mathrm{re},\\,\\mathrm{im}$ are $\\mathbb{Z}$-linear, so each commutes with the recurrence: $u_{n+2}=2(\\mathrm{re}\\,a)\\,u_{n+1}-N(a)\\,u_n$ for $u=\\mathrm{re}(a^\\bullet)$ and $u=\\mathrm{im}(a^\\bullet)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear functional", "coordinate projection", "linear recurrence", "Zsqrtd"],
+    "prerequisites": ["linearity", "second-order linear recurrences"]
+  },
+  {
+    "id": "ann-pell-oq07-pell-collapse",
+    "proofId": "pell-equation-oq-07",
+    "range": {
+      "startLine": 131,
+      "endLine": 139
+    },
+    "type": "insight",
+    "title": "The Pell collapse: norm 1 removes the determinant term",
+    "content": "A Pell solution has norm N(a) = 1, so the determinant coefficient collapses and the recurrence becomes the classical uₙ₊₂ = (2·x₁)·uₙ₊₁ − uₙ — whose ONLY coefficient is twice the first coordinate x₁ = re a of the generator. re_recurrence_pell and im_recurrence_pell rewrite the norm hypothesis into the general recurrence and finish with ring. This pins the recurrence down from the generator alone and explains the ubiquitous 2x₁ coefficient across the Pell literature.",
+    "mathContext": "$N(a)=1\\Rightarrow t^2-(2x_1)t+1$, i.e. $u_{n+2}=2x_1u_{n+1}-u_n$; the conjugate roots are the units $a,\\bar a$ with $a\\bar a=1$.",
+    "significance": "key",
+    "relatedConcepts": ["Pell equation", "fundamental unit", "norm-one elements", "linear recurrence"],
+    "prerequisites": ["Pell's equation", "norm form", "units of real quadratic fields"]
+  },
+  {
+    "id": "ann-pell-oq07-rigidity",
+    "proofId": "pell-equation-oq-07",
+    "range": {
+      "startLine": 152,
+      "endLine": 174
+    },
+    "type": "technique",
+    "title": "Rigidity: recurrence plus two initial values determines the sequence",
+    "content": "seq_unique proves by a two-step (paired) induction that any two integer sequences obeying uₙ₊₂ = c·uₙ₊₁ − uₙ and agreeing at n = 0, 1 agree everywhere — the induction carries the pair (f n = g n, f(n+1) = g(n+1)) so each step has both predecessors in hand. re_pell_unique then applies it with c = 2·re a: the recurrence together with re(a⁰) = 1 and re(a¹) = x₁ characterizes the Pell coordinate sequence completely. Additive and multiplicative descriptions carry the same information.",
+    "mathContext": "An order-2 linear recurrence is a deterministic dynamical system on $\\mathbb{Z}^2$; the map $(u_n,u_{n+1})\\mapsto(u_{n+1},cu_{n+1}-u_n)$ fixes the entire orbit from one seed.",
+    "significance": "supporting",
+    "relatedConcepts": ["uniqueness", "two-step induction", "linear recurrence", "dynamical system"],
+    "prerequisites": ["mathematical induction", "second-order linear recurrences"]
+  },
+  {
+    "id": "ann-pell-oq07-d-two",
+    "proofId": "pell-equation-oq-07",
+    "range": {
+      "startLine": 187,
+      "endLine": 201
+    },
+    "type": "context",
+    "title": "The D = 2 instance: the coefficient 6 is just 2·re⟨3,2⟩",
+    "content": "Instantiating a = ⟨3,2⟩ = 3 + 2√2 ∈ ℤ[√2] recovers the sibling pell-equation-oq-06-oq-03's recurrence xₙ₊₂ = 6 xₙ₊₁ − xₙ. norm_three_two checks N(⟨3,2⟩) = 3² − 2·2² = 1 (kernel decide), coeff_two checks 2·re⟨3,2⟩ = 6, and pell_two_recurrence specializes re_recurrence_pell. The point: the coefficient 6, computed case-by-case in the sibling, is simply twice the first coordinate of the fundamental unit — the general-D theorem reveals its source as the trace. The first coordinates run 1, 3, 17, 99, 577, … with 17 = 6·3 − 1, etc.",
+    "mathContext": "$3+2\\sqrt2=\\langle3,2\\rangle$ is the norm-$+1$ fundamental unit of $\\mathbb{Z}[\\sqrt2]$, trace $6$; its powers give $1,3,17,99,577,\\dots$, $a_{n+2}=6a_{n+1}-a_n$.",
+    "significance": "context",
+    "relatedConcepts": ["Pell equation", "fundamental unit of ℤ[√2]", "trace", "Lucas sequence"],
+    "prerequisites": ["Pell's equation", "quadratic units"]
+  }
+]
