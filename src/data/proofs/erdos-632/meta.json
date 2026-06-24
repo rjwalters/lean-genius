@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 5,
+    "sorries": 2,
     "erdosNumber": 632,
     "erdosUrl": "https://erdosproblems.com/632",
     "erdosProblemStatus": "solved",
@@ -47,12 +47,14 @@
       "Axiomatization of the Dvořák-Hu-Sereni counterexample",
       "Connection to list chromatic number (a,1 case)",
       "Positive results for special graph classes",
-      "Related choosability theorems (Ohba, Galvin)"
+      "Related choosability theorems (Ohba, Galvin)",
+      "Repaired the main disproof (ert_conjecture_false): the original committed file did not compile — the m=2 specialization omitted its explicit multiplier argument",
+      "Discharged 3 supporting lemmas to 0 axioms: choosable_mono_b (anti-monotonicity in b), empty_graph_choosable, and choosable_requires_b_le_a (corrected with the necessary Nonempty V hypothesis — false without it)"
     ],
     "relatedProblems": [],
     "axiomCount": 1,
-    "assumptions": "1 axiom: ert_4_1_to_8_2_false (the (4,1)-choosable to (8,2)-choosable ERT case is false). 5 sorries (supporting conjectures on ERT for intermediate parameter values).",
-    "lineCount": 260,
+    "assumptions": "1 axiom: ert_4_1_to_8_2_false (the genuine Dvořák–Hu–Sereni counterexample, asserting the (4,1)→(8,2) ERT case is false). 2 remaining sorries are supporting facts that are not provable in this color encoding (Fin a ties the ambient palette size to the per-vertex list length): list_chromatic_iff_choosable and choosable_mono_a; both are documented inline. The main disproof chain (erdos_632 / erdos_632_disproved) is fully machine-checked and depends only on the single DHS axiom.",
+    "lineCount": 308,
     "theoremCount": 11,
     "definitionCount": 15,
     "additionalFiles": [
