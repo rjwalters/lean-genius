@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
   "title": "Lp Riesz Representation for Sigma-Finite Measures (Complete)",
   "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01-incomplete-01",
-  "description": "Sigma-finite Lp Riesz representation theorem fully formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) are proved with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction.",
+  "description": "Sigma-finite Lp Riesz representation theorem formalized in Lean 4: all three steps (A localization, B Lp truncation convergence, C density extension) with 0 sorries in this file. Step A (localization_existence, ~600 lines) was completed in PR #15581 via the Hölder extremizer construction; Step B uses Vitali's convergence theorem; Step C uses Lp.induction. NOTE (2026-06-24, #28788): this file transitively fails to compile against the pinned v4.26.0 toolchain because its imported foundation has 53 Mathlib-drift errors; status downgraded to formalized until the chain builds green.",
   "leanFile": {
     "namespace": "RieszSigmaFiniteComplete",
     "lineCount": 952,
@@ -13,7 +13,7 @@
     "sorries": 0
   },
   "meta": {
-    "status": "verified",
+    "status": "formalized",
     "proofRepoPath": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01Incomplete01.lean",
     "tags": [
       "functional-analysis",
@@ -27,7 +27,8 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 952,
-    "assumptions": "All three sorries eliminated: Step A (localization_existence) was proved in PR #15581 via the Hölder extremizer construction (g_seq truncations + MCT for hgnorm, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for indicator agreement). Steps B (lp_truncation_tendsto_zero via Vitali) and C (integral_representation_sf via Lp.induction) were proved earlier. The proof depends on lemmas in the parent file Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean — assess parent's status independently.",
+    "buildStatus": "broken",
+    "assumptions": "BUILD BROKEN (2026-06-24, issue #28788): this file imports the chain foundation Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean (line 33), which produces 53 Mathlib-drift errors against leanprover/lean4:v4.26.0, so this file transitively fails to compile. There are 0 literal `sorry` tactics and 0 `axiom` declarations — the formalization exists but is not currently machine-checked, so status was downgraded verified→formalized pending repair of the foundation. Mathematical content unchanged: Step A (localization_existence) proved in PR #15581 via the Hölder extremizer construction (g_seq truncations + MCT for hgnorm, ae_eq_of_forall_setIntegral_eq_of_sigmaFinite for indicator agreement); Steps B (lp_truncation_tendsto_zero via Vitali) and C (integral_representation_sf via Lp.induction) proved earlier. As the assumptions already noted, the parent's status must be assessed independently — it is now also formalized/broken.",
     "dateAdded": "2026-05-03",
     "mathlib_version": "4.26.0",
     "theoremCount": 12,
