@@ -1,0 +1,84 @@
+{
+  "id": "descartes-circle-theorem-oq-01-oq-02",
+  "title": "Integral Apollonian Curvatures: Integrality ⟺ Square Discriminant",
+  "slug": "descartes-circle-theorem-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DescartesCircleTheorem"
+    ],
+    "opens": [
+      "DescartesCircleTheorem"
+    ],
+    "namespace": "DescartesCircleIntegrality",
+    "lineCount": 140,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/DescartesCircleTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "description": "The integrality phenomenon behind integral Apollonian gaskets. Working with the integer Descartes relation (a+b+c+d)² = 2(a²+b²+c²+d²): the conjugate Soddy curvature soddyReflect a b c d = 2(a+b+c)−d is again an integer Descartes solution, so integer curvatures propagate through the gasket (descartesRelZ_reflect). The headline exists_integral_fourth_iff_sq shows an integer fourth curvature completing a,b,c exists IFF the symmetric product ab+bc+ca is a perfect square — the discriminant dictionary for integral base quadruples. A cast bridge ties this to the parent's real-valued descartesRel, yielding apollonian_new_curvature_isInt: from integer real curvatures satisfying Descartes, the reflected Soddy curvature is again an integer.",
+  "meta": {
+    "author": "Lean Genius Researcher (2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Descartes%27_theorem#Integral_Apollonian_circle_packings",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesCircleTheoremOQ01OQ02.lean",
+    "tags": [
+      "geometry",
+      "number-theory",
+      "circles",
+      "curvature",
+      "descartes-circle-theorem",
+      "apollonian-gasket",
+      "soddy-circles",
+      "integrality",
+      "vieta"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Int.prime_two",
+        "description": "primality of 2 in ℤ, used so that 4 ∣ (d−(a+b+c))² forces 2 ∣ (d−(a+b+c))",
+        "module": "Mathlib.Data.Int.Prime"
+      },
+      {
+        "theorem": "Prime.dvd_of_dvd_pow",
+        "description": "a prime dividing a power divides the base; extracts 2 ∣ (d−(a+b+c)) from 2 ∣ (d−(a+b+c))²",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "cancellation of the nonzero factor 4 to pass from 4(ab+bc+ca) = 4m² to ab+bc+ca = m²",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      }
+    ],
+    "originalContributions": [
+      "descartesRelZ / descartesRelZ_iff_sq: the integer Descartes relation and its quadratic-in-d rewriting (d−(a+b+c))² = 4(ab+bc+ca) (single linear_combination identity, both directions)",
+      "soddyReflect + soddyReflect_involutive: the conjugate Soddy curvature 2(a+b+c)−d and the fact that reflecting twice returns the original (the two Soddy circles)",
+      "descartesRelZ_reflect: the gasket-generation step — the conjugate of an integer Descartes quadruple is again an integer Descartes quadruple, so integer curvatures propagate (pure ring identity, holds in any commutative ring)",
+      "soddy_sum_Z / soddy_prod_Z: the integer Vieta relations d + soddyReflect = 2(a+b+c) and d·soddyReflect = (a+b+c)²−4(ab+bc+ca)",
+      "exists_integral_fourth_iff_sq (headline): an integer fourth curvature completing a,b,c to a Descartes quadruple exists IFF ab+bc+ca is a perfect square — uses primality of 2 to force the half-difference to be an integer",
+      "descartesRelZ_iff_real + apollonian_new_curvature_isInt: a push_cast bridge to the parent's real-valued descartesRel, giving that the reflected Soddy curvature of an integer real Descartes quadruple is again an integer with a valid Descartes relation"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 140,
+    "assumptions": "0 axioms (depends only on propext / Classical.choice / Quot.sound — the foundational Lean axioms; no sorry, no native_decide / Lean.ofReduceBool). 0 sorries. Fully verified. Scope: the arithmetic of integral Apollonian gaskets — integrality propagation under Soddy reflection and the perfect-square discriminant characterization of integer base quadruples. It does NOT construct the geometric gasket (nested tangency configuration) nor prove every reachable curvature is enumerated; the single-step reflection closure plus the existence dictionary are what is formalized.",
+    "mathlib_version": "4.26.0",
+    "parentProof": "descartes-circle-theorem-oq-01",
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Descartes' 1643 curvature relation for four mutually tangent circles underlies the theory of Apollonian circle packings. When a base quadruple of mutually tangent circles has integer curvatures, repeatedly inscribing the Soddy circle tangent to three of them produces an infinite packing in which EVERY curvature is an integer — an integral Apollonian gasket. The arithmetic structure of these gaskets (studied by Graham, Lagarias, Mallows, Wilks, and Yan, building on the 2002 complex Descartes theorem) is a rich source of number theory, including local-global conjectures on which integers appear as curvatures. The engine of integrality is elementary: by Vieta, the two solutions of the Descartes quadratic in the fourth curvature sum to twice the sum of the other three, so each new curvature 2(k₁+k₂+k₃)−k₄ is an integer combination of integers.",
+    "problemStatement": "Give a clean Lean statement of the integrality phenomenon for the Descartes Circle Theorem: integer curvatures propagating through the Apollonian gasket, and the discriminant condition (the symmetric product a·b + b·c + c·a being a perfect square) governing when an integer base quadruple exists.",
+    "keyResults": [
+      "Integer curvatures propagate: the Soddy reflection 2(a+b+c)−d of an integer Descartes quadruple is again an integer Descartes quadruple.",
+      "An integer fourth curvature completing a,b,c exists if and only if a·b + b·c + c·a is a perfect square.",
+      "Real phrasing: starting from integer curvatures satisfying the parent's real Descartes relation, the reflected Soddy curvature is again an integer."
+    ]
+  }
+}
