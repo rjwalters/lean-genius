@@ -1,0 +1,164 @@
+{
+  "id": "gamma-reflection-formula-oq-01-oq-03",
+  "slug": "gamma-reflection-formula-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "scoped Real"
+    ],
+    "namespace": "GammaReflectionFormulaOQ01OQ03",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/GammaReflectionFormulaOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "title": "The Half-Integer Closed Form Γ(n+1/2) = (2n)!√π / (4ⁿ n!)",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GammaReflectionFormulaOQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "special-functions",
+      "gamma-function",
+      "factorial",
+      "central-binomial",
+      "reflection-formula",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 125,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "gamma_nat_add_half: the explicit half-integer closed form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) for all n : ℕ, proved by a single induction from Γ(1/2) = √π (Real.Gamma_one_half_eq) and the functional equation Γ(s+1) = s·Γ(s) (Real.Gamma_add_one). Mathlib has both ingredients separately but does not record the closed form.",
+      "gamma_nat_add_half_div_sqrt_pi: the ratio to Γ(1/2), Γ(n+1/2)/√π = (2n)!/(4ⁿ n!), exhibiting the half-integer Gamma quotient as a pure rational number.",
+      "gamma_nat_add_half_centralBinom: the central-binomial packaging Γ(n+1/2) = C(2n,n)·n!·√π/4ⁿ, obtained from (2n)! = C(2n,n)·(n!)² (Nat.choose_mul_factorial_mul_factorial), tying half-integer Gamma values to the central binomial coefficients.",
+      "gamma_three_half: the spot-check value Γ(3/2) = √π/2 (the case n = 1).",
+      "gamma_five_half: the spot-check value Γ(5/2) = 3√π/4 (the case n = 2)."
+    ],
+    "prerequisites": [
+      "Euler Gamma function Real.Gamma and the value Γ(1/2) = √π (Real.Gamma_one_half_eq)",
+      "The functional equation Γ(s+1) = s·Γ(s) (Real.Gamma_add_one) for s ≠ 0",
+      "Factorial recursion Nat.factorial_succ and the central binomial identity Nat.choose_mul_factorial_mul_factorial",
+      "Basic real-field manipulation (field_simp / ring) to clear factorial denominators"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Γ(1/2) = √π over ℝ — the base case of the induction.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "Γ(s+1) = s·Γ(s) for s ≠ 0 — the functional equation driving the inductive step Γ((n+1)+1/2) = (n+1/2)·Γ(n+1/2).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_succ",
+        "description": "(n+1)! = (n+1)·n! — used to expand (2n+2)! and (n+1)! when matching consecutive closed forms.",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "choose n k · k! · (n-k)! = n!; at (2n, n) it gives (2n)! = C(2n,n)·(n!)², the central-binomial packaging of the closed form.",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "gamma-reflection-formula-oq-01-oq-03-oq-01",
+      "question": "Express the same half-integer values through the double factorial, Γ(n+1/2) = (2n-1)!!·√π/2ⁿ, and prove the equivalence (2n)!/(4ⁿ n!) = (2n-1)!!/2ⁿ with the odd double factorial.",
+      "significance": "low"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "gamma-reflection-formula-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The sibling evaluates the symmetric Beta value B(1/2,1/2) = π from Γ(1/2)² = π; this entry pushes the same half-integer thread to the full closed form of Γ at every half-integer."
+    },
+    {
+      "targetId": "gamma-reflection-formula-oq-01",
+      "relationship": "extends",
+      "description": "The parent establishes Euler's reflection formula and Γ(1/2) = √π; this entry iterates the functional equation Γ(s+1) = s·Γ(s) from that base value to the half-integer closed form."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gamma.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_add_one (the functional equation) and the Gamma-function development."
+    },
+    {
+      "title": "A Course of Modern Analysis",
+      "author": "E. T. Whittaker and G. N. Watson",
+      "year": "1927",
+      "venue": "Cambridge University Press",
+      "description": "Classical reference for half-integer values of the Gamma function and the duplication formula (§12.14)."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The values of Euler's Gamma function at half-integers are among the oldest computed special values: from Γ(1/2) = √π (equivalently the Gaussian integral) the functional equation Γ(s+1) = s·Γ(s) generates Γ(3/2) = √π/2, Γ(5/2) = 3√π/4, and in general Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!). This closed form is the half-integer analogue of Γ(n+1) = n! and underlies the volume of the n-ball, the moments of the Gaussian, and the normalisation of the Beta and Student distributions. The numerator/denominator combination (2n)!/(4ⁿ n!) is exactly C(2n,n)·n!/4ⁿ, so the half-integer Gamma values are central binomial coefficients in disguise. Mathlib formalises Γ(1/2) = √π and the functional equation but does not record the closed form; it is supplied here.",
+    "problemStatement": "Prove the closed form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) for every natural number n, and package it through the ratio to Γ(1/2) and through the central binomial coefficient, recovering the concrete values Γ(3/2) = √π/2 and Γ(5/2) = 3√π/4.",
+    "proofStrategy": "Induct on n. The base case Γ(1/2) = √π is Real.Gamma_one_half_eq. For the step, rewrite Γ((n+1)+1/2) as Γ((n+1/2)+1) = (n+1/2)·Γ(n+1/2) using Real.Gamma_add_one (with n+1/2 ≠ 0 by positivity), substitute the inductive hypothesis, and observe that the half-integer recursion factor n+1/2 equals (2n+2)(2n+1)/(4(n+1)) — the ratio of consecutive closed forms. Transporting the factorial recursions (2n+2)! = (2n+2)(2n+1)(2n)! and (n+1)! = (n+1)·n! to ℝ and clearing denominators with field_simp closes the step. The ratio and central-binomial corollaries follow by dividing by √π and substituting (2n)! = C(2n,n)·(n!)²; the small values are independent two-line derivations from the functional equation.",
+    "keyInsights": [
+      "The half-integer closed form is the exact analogue of Γ(n+1) = n!: a single induction off Γ(1/2) = √π using only the functional equation Γ(s+1) = s·Γ(s) produces all values Γ(n+1/2) at once.",
+      "The inductive step works because the half-integer recursion factor n+1/2 is precisely (2n+2)(2n+1)/(4(n+1)), the ratio of the (n+1)-th and n-th closed forms — so the proof reduces to an elementary factorial identity dischargeable by field_simp.",
+      "The combination (2n)!/(4ⁿ n!) is the central binomial coefficient up to a factorial: (2n)! = C(2n,n)·(n!)² gives Γ(n+1/2) = C(2n,n)·n!·√π/4ⁿ, linking the Gamma half-integer values to the central binomial coefficients.",
+      "Dividing by √π = Γ(1/2) shows Γ(n+1/2)/Γ(1/2) = (2n)!/(4ⁿ n!) is a rational number, the clean half-integer analogue of Γ(n+1)/Γ(1) = n!.",
+      "The badge is original: Mathlib has Γ(1/2) = √π and the functional equation as separate facts but does not record the resulting half-integer closed form or its central-binomial packaging."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Half-Integer Closed Form",
+      "startLine": 1,
+      "endLine": 49,
+      "summary": "States the open question — extend the half-integer thread to the explicit closed form Γ(n+1/2) = (2n)!√π/(4ⁿ n!) — names the two Mathlib ingredients (Real.Gamma_one_half_eq, Real.Gamma_add_one) that exist only in isolation, and outlines the single-induction method.",
+      "mathContext": "$\\Gamma(n+\\tfrac12) = \\dfrac{(2n)!\\,\\sqrt{\\pi}}{4^{n}\\,n!}$."
+    },
+    {
+      "id": "closed-form",
+      "title": "The Half-Integer Closed Form",
+      "startLine": 51,
+      "endLine": 86,
+      "summary": "gamma_nat_add_half proves the closed form by induction: base case Γ(1/2) = √π; step Γ((k+1)+1/2) = (k+1/2)·Γ(k+1/2) via Real.Gamma_add_one, then the factorial recursions are transported to ℝ and field_simp closes the consecutive-ratio identity.",
+      "mathContext": "$\\Gamma((k{+}1)+\\tfrac12) = (k+\\tfrac12)\\,\\Gamma(k+\\tfrac12)$, with $k+\\tfrac12 = \\dfrac{(2k+2)(2k+1)}{4(k+1)}$."
+    },
+    {
+      "id": "consequences",
+      "title": "Ratio and Central-Binomial Packaging",
+      "startLine": 88,
+      "endLine": 118,
+      "summary": "gamma_nat_add_half_div_sqrt_pi divides by √π to give the rational quotient (2n)!/(4ⁿ n!). gamma_nat_add_half_centralBinom uses (2n)! = C(2n,n)·(n!)² to rewrite the closed form as C(2n,n)·n!·√π/4ⁿ.",
+      "mathContext": "$\\dfrac{\\Gamma(n+\\tfrac12)}{\\sqrt{\\pi}} = \\dfrac{(2n)!}{4^{n} n!} = \\dbinom{2n}{n}\\dfrac{n!}{4^{n}}$."
+    },
+    {
+      "id": "spot-checks",
+      "title": "Spot Checks at Small Half-Integers",
+      "startLine": 120,
+      "endLine": 125,
+      "summary": "gamma_three_half and gamma_five_half evaluate Γ(3/2) = √π/2 and Γ(5/2) = 3√π/4 directly from the functional equation, matching the closed form at n = 1 and n = 2.",
+      "mathContext": "$\\Gamma(3/2) = \\sqrt{\\pi}/2$, $\\Gamma(5/2) = 3\\sqrt{\\pi}/4$."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The half-integer closed form Γ(n+1/2) = (2n)!·√π/(4ⁿ·n!) is proved for all n by a single induction off Γ(1/2) = √π using only the functional equation Γ(s+1) = s·Γ(s); the half-integer recursion factor n+1/2 = (2n+2)(2n+1)/(4(n+1)) makes the step an elementary factorial identity. The closed form is repackaged as the rational ratio Γ(n+1/2)/√π = (2n)!/(4ⁿ n!) and through the central binomial coefficient C(2n,n), and verified at Γ(3/2) = √π/2 and Γ(5/2) = 3√π/4. 125 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "implications": "Mathlib supplies Γ(1/2) = √π and the functional equation but not the half-integer closed form or its central-binomial form — hence the original badge. The result is the half-integer analogue of Γ(n+1) = n! and the standard ingredient for n-ball volumes, Gaussian moments, and Beta/Student normalisations.",
+    "openQuestions": [
+      "Express the same values through the odd double factorial, Γ(n+1/2) = (2n-1)!!·√π/2ⁿ, and prove (2n)!/(4ⁿ n!) = (2n-1)!!/2ⁿ."
+    ]
+  }
+}
