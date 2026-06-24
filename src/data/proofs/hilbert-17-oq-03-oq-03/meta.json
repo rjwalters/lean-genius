@@ -69,7 +69,7 @@
         "relationship": "Parent strand: the complexity of deciding PSD ⇒ SOS membership. This entry exhibits the canonical certificate of NON-membership in the polynomial SOS cone."
       }
     ],
-    "assumptions": "0 axioms. #print axioms motzkin_not_sos reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. The Motzkin polynomial and the sum-of-squares predicate are defined identically to the parent entry Hilbert17SumOfSquares.lean (IsSOS unfolds to the parent's IsSumOfSquaresMvPolynomial).",
+    "assumptions": "0 axioms. #print axioms robinson_not_sos reports only propext, Classical.choice, Quot.sound. No sorryAx, no native_decide / Lean.ofReduceBool. The Robinson polynomial and the sum-of-squares predicate IsSOS (IsSOS p := ∃ m q, p = ∑ i, q i ^ 2) are defined directly in this file, matching the parent entry's sum-of-squares notion.",
     "theoremCount": 25,
     "definitionCount": 3,
     "additionalFiles": []
