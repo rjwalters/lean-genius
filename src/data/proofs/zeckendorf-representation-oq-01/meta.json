@@ -1,0 +1,144 @@
+{
+  "id": "zeckendorf-representation-oq-01",
+  "title": "Zeckendorf's Theorem: Unique Non-Consecutive Fibonacci Sums",
+  "slug": "zeckendorf-representation-oq-01",
+  "description": "Zeckendorf's theorem (1972): every natural number n has a UNIQUE representation as a sum of non-consecutive Fibonacci numbers — i.e. n = ∑ fib aᵢ where the index list is strictly decreasing with gaps ≥ 2 (no two consecutive Fibonacci numbers appear). This entry surfaces the two consumer statements a reader expects of 'Zeckendorf's theorem' — existence (zeckendorf_existence) and uniqueness (zeckendorf_uniqueness) — bundles them as ∃! (zeckendorf_unique), and records the bijection ℕ ≃ {l // IsZeckendorfRep l} (zeckendorf_bijective). The canonical greedy algorithm Nat.zeckendorf, the validity predicate List.IsZeckendorfRep, and the round-trip lemmas come from Mathlib. 4 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Zeckendorf%27s_theorem",
+    "date": "Édouard Zeckendorf (1972)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "fibonacci",
+      "number-representations",
+      "greedy-algorithm",
+      "uniqueness"
+    ],
+    "proofRepoPath": "Proofs/ZeckendorfRepresentationOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 4 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). The two concrete worked-example checks use kernel `decide` (not `native_decide`), so no Lean.ofReduceBool is introduced.",
+    "originalContributions": [
+      "Packaging and surfacing — the core machinery (the greedy algorithm Nat.zeckendorf, the validity predicate List.IsZeckendorfRep, the round-trip lemmas isZeckendorfRep_zeckendorf / sum_zeckendorf_fib / zeckendorf_sum_fib, and the equivalence Nat.zeckendorfEquiv) lives in Mathlib's Data/Nat/Fib/Zeckendorf. The contribution is exposing Zeckendorf's theorem as the two consumer statements a reader expects (existence and uniqueness), bundling them as ∃!, and recording the bijection.",
+      "zeckendorf_existence: every n is the Fibonacci-sum of some valid (non-consecutive) representation, witnessed by the canonical greedy Nat.zeckendorf n",
+      "zeckendorf_uniqueness: two valid Zeckendorf representations with the same Fibonacci-sum are identical (both recovered as the canonical zeckendorf of their common sum)",
+      "zeckendorf_unique: existence + uniqueness bundled as the single ∃! statement that is 'Zeckendorf's theorem'",
+      "zeckendorf_bijective: the representation map Nat.zeckendorfEquiv : ℕ ≃ {l // IsZeckendorfRep l} is a bijection — the structural restatement of existence + uniqueness"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.zeckendorfEquiv",
+        "description": "The equivalence ℕ ≃ {l // List.IsZeckendorfRep l} packaging the Zeckendorf representation map; its .bijective gives zeckendorf_bijective.",
+        "module": "Mathlib.Data.Nat.Fib.Zeckendorf"
+      },
+      {
+        "theorem": "Nat.sum_zeckendorf_fib",
+        "description": "(Nat.zeckendorf n).map fib).sum = n — the canonical greedy representation sums to n. Supplies correctness for existence.",
+        "module": "Mathlib.Data.Nat.Fib.Zeckendorf"
+      },
+      {
+        "theorem": "Nat.isZeckendorfRep_zeckendorf",
+        "description": "List.IsZeckendorfRep (Nat.zeckendorf n) — the greedy representation is valid (strictly decreasing index list with gaps ≥ 2). Supplies validity for existence.",
+        "module": "Mathlib.Data.Nat.Fib.Zeckendorf"
+      },
+      {
+        "theorem": "Nat.zeckendorf_sum_fib",
+        "description": "For a valid representation l, Nat.zeckendorf ((l.map fib).sum) = l — a valid representation is recovered as the canonical zeckendorf of its sum. The round-trip lemma driving uniqueness.",
+        "module": "Mathlib.Data.Nat.Fib.Zeckendorf"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 79,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "In 1972 Édouard Zeckendorf published the theorem (which he had circulated decades earlier) that every positive integer can be written, in exactly one way, as a sum of non-consecutive Fibonacci numbers. The representation is produced by the obvious greedy algorithm — repeatedly subtract the largest Fibonacci number not exceeding what remains — and the non-consecutiveness of the chosen indices is precisely what makes it unique. Zeckendorf representations underlie Fibonacci coding, the Fibonacci number system, and combinatorial games, and are the additive analogue of base-b expansions with the Fibonacci sequence in place of powers.",
+    "problemStatement": "**Zeckendorf's theorem**: every natural number n admits a unique representation n = ∑ᵢ F_{aᵢ} where the index list a is strictly decreasing with consecutive gaps ≥ 2 (so no two consecutive Fibonacci numbers appear).\n\n**Formalized**: zeckendorf_existence (such a representation exists), zeckendorf_uniqueness (any two with the same sum are equal), zeckendorf_unique (the ∃! bundling), and zeckendorf_bijective (the representation map ℕ ≃ {l // IsZeckendorfRep l} is a bijection).",
+    "text": "A 79-line formalization surfacing Zeckendorf's theorem from Mathlib's Zeckendorf machinery (Data/Nat/Fib/Zeckendorf). The validity predicate List.IsZeckendorfRep encodes 'strictly decreasing index list with gaps ≥ 2', and the greedy map Nat.zeckendorf produces the canonical representation. Existence is the triple ⟨Nat.zeckendorf n, validity, correctness⟩ assembled from Mathlib's isZeckendorfRep_zeckendorf and sum_zeckendorf_fib. Uniqueness routes both representations through zeckendorf_sum_fib (a valid representation is recovered as the canonical zeckendorf of its sum); since the sums agree, both equal the canonical representation of that common value. These combine into the ∃! statement zeckendorf_unique, and the structural restatement zeckendorf_bijective records that Nat.zeckendorfEquiv is a bijection. A concrete worked example (100 = F₁₁ + F₆ + F₄ = 89 + 8 + 3) is checked by kernel decide. All 4 theorems compile with 0 sorries and 0 axioms; no native_decide.",
+    "proofStrategy": "**Existence**: take the witness l := Nat.zeckendorf n. Its validity is isZeckendorfRep_zeckendorf n and its correctness (l.map fib).sum = n is sum_zeckendorf_fib n — both from Mathlib. The greedy choice of the largest Fibonacci ≤ n at each step automatically yields gaps ≥ 2.\n\n**Uniqueness**: for valid l₁, l₂ with equal Fibonacci-sums, apply zeckendorf_sum_fib to each to get Nat.zeckendorf (sum lᵢ) = lᵢ; rewriting by the equality of sums identifies l₁ = l₂.\n\n**∃!**: combine the canonical witness with uniqueness — any other candidate with the same sum collapses to the canonical representation.\n\n**Bijection**: zeckendorf_bijective is Nat.zeckendorfEquiv.bijective; an Equiv is bijective by construction.",
+    "keyInsights": [
+      "**Greedy ⟹ non-consecutive**: subtracting the largest Fibonacci ≤ n at each step cannot leave a remainder ≥ the previous Fibonacci, which forces a gap of at least 2 between chosen indices. The validity predicate IsZeckendorfRep records exactly this gap-≥2 chain.",
+      "**Uniqueness is a round trip**: the crux lemma zeckendorf_sum_fib says a valid representation is its own canonical form — applying the greedy algorithm to its sum returns it unchanged. Two valid representations with equal sums therefore share a canonical form and so coincide.",
+      "**Existence + uniqueness = a bijection**: the two halves of Zeckendorf's theorem are precisely the statement that the representation map ℕ → {valid index lists} is bijective, packaged in Mathlib as the equivalence Nat.zeckendorfEquiv.",
+      "**0-axiom**: the development rests only on propext / Classical.choice / Quot.sound; the concrete 100 = 89 + 8 + 3 check uses kernel `decide`, not `native_decide`, so no Lean.ofReduceBool enters."
+    ],
+    "prerequisites": [
+      "The Fibonacci sequence Nat.fib and basic identities",
+      "List.IsZeckendorfRep — the validity predicate (strictly decreasing index list with consecutive gaps ≥ 2)",
+      "Mathlib's greedy map Nat.zeckendorf and the round-trip lemmas isZeckendorfRep_zeckendorf, sum_zeckendorf_fib, zeckendorf_sum_fib",
+      "The equivalence Nat.zeckendorfEquiv and that an Equiv is bijective",
+      "∃! (existence and uniqueness) statements in Lean"
+    ]
+  },
+  "crossReferences": [],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "ZeckendorfRepresentationOQ01",
+    "lineCount": 79,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/ZeckendorfRepresentationOQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "zeckendorf_unique",
+      "type": "core",
+      "statement": "$\\forall n,\\ \\exists!\\, l,\\ \\mathrm{IsZeckendorfRep}(l) \\land \\sum_i F_{l_i} = n$",
+      "significance": "Zeckendorf's theorem proper: every natural number has exactly one representation as a sum of non-consecutive Fibonacci numbers. Bundles existence and uniqueness into the single ∃! form a reader expects.",
+      "description": "Existence + uniqueness of the Zeckendorf representation, as ∃!."
+    },
+    {
+      "name": "zeckendorf_existence",
+      "type": "core",
+      "statement": "$\\forall n,\\ \\exists l,\\ \\mathrm{IsZeckendorfRep}(l) \\land \\sum_i F_{l_i} = n$",
+      "significance": "Every n is the Fibonacci-sum of some valid non-consecutive representation, witnessed by the canonical greedy Nat.zeckendorf n.",
+      "description": "Existence of a valid Zeckendorf representation for every n."
+    },
+    {
+      "name": "zeckendorf_uniqueness",
+      "type": "core",
+      "statement": "$\\mathrm{IsZeckendorfRep}(l_1),\\ \\mathrm{IsZeckendorfRep}(l_2),\\ \\sum F_{l_1} = \\sum F_{l_2} \\implies l_1 = l_2$",
+      "significance": "Two valid Zeckendorf representations with the same Fibonacci-sum are identical — the uniqueness half, via the round-trip lemma zeckendorf_sum_fib.",
+      "description": "Same Fibonacci-sum ⟹ same representation."
+    },
+    {
+      "name": "zeckendorf_bijective",
+      "type": "supporting",
+      "statement": "$\\mathbb{N} \\simeq \\{\\,l \\mid \\mathrm{IsZeckendorfRep}(l)\\,\\}$ is a bijection",
+      "significance": "The structural restatement of existence + uniqueness: the Zeckendorf representation map Nat.zeckendorfEquiv identifies ℕ with the set of valid Fibonacci index lists.",
+      "description": "The representation map Nat.zeckendorfEquiv is bijective."
+    }
+  ],
+  "references": [
+    {
+      "text": "Zeckendorf's theorem — every positive integer has a unique representation as a sum of non-consecutive Fibonacci numbers.",
+      "url": "https://en.wikipedia.org/wiki/Zeckendorf%27s_theorem"
+    },
+    {
+      "text": "E. Zeckendorf, Représentation des nombres naturels par une somme de nombres de Fibonacci ou de nombres de Lucas, Bull. Soc. Roy. Sci. Liège 41 (1972), 179–182.",
+      "url": "https://en.wikipedia.org/wiki/Zeckendorf%27s_theorem"
+    },
+    {
+      "text": "Mathlib4: Nat.zeckendorf, List.IsZeckendorfRep, Nat.zeckendorfEquiv, Nat.sum_zeckendorf_fib, Nat.zeckendorf_sum_fib (Data/Nat/Fib/Zeckendorf.lean).",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Surfaces Zeckendorf's theorem from Mathlib's Zeckendorf machinery: every natural number has a unique representation as a sum of non-consecutive Fibonacci numbers. zeckendorf_existence gives a valid representation (the greedy Nat.zeckendorf n), zeckendorf_uniqueness shows any two valid representations with the same sum coincide, zeckendorf_unique bundles these as ∃!, and zeckendorf_bijective records the bijection ℕ ≃ {l // IsZeckendorfRep l}. All 4 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "implications": "Zeckendorf's theorem is the additive 'number system' built on the Fibonacci sequence rather than powers of a base, underlying Fibonacci coding, the Fibonacci number system, and combinatorial-game theory (Wythoff's game). The bijection view recasts it as a clean structural identification of ℕ with the set of valid non-consecutive index lists.",
+    "openQuestions": [
+      "Surface the Lucas-number analogue (Brown's theorem) and the more general Ostrowski / numeration-system representations attached to other linear recurrences",
+      "Record the digit-frequency / density statistics of Zeckendorf representations (the average number of summands, Lekkerkerker's theorem)"
+    ]
+  },
+  "sorries": 0
+}
