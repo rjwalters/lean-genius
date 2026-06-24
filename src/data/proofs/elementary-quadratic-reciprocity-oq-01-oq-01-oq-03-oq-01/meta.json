@@ -122,6 +122,36 @@
       "summary": "`#check` commands echoing the four headline signatures, confirming the statements elaborate with the intended types."
     }
   ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Scope",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "License header, docstring stating the diagonal Jacobi-sum integrality fact J(χ,χ) ∈ ℤ[ζ_n], its role as the structural prerequisite of cubic/quartic reciprocity, the honest-scope note, and the variable block fixing a finite field F and integral domain R."
+    },
+    {
+      "id": "diagonal-membership",
+      "title": "Diagonal Membership in ℤ[μ]",
+      "startLine": 58,
+      "endLine": 77,
+      "summary": "`jacobiSum_self_mem_algebraAdjoin` — the φ = χ specialization of Mathlib's two-character lemma, one line — and `jacobiSum_self_mem_algebraAdjoin_of_orderOf`, the same conclusion from `orderOf χ = n` via `pow_orderOf_eq_one`."
+    },
+    {
+      "id": "integrality-upgrade",
+      "title": "Upgrade to Algebraic Integrality over ℤ",
+      "startLine": 79,
+      "endLine": 100,
+      "summary": "`jacobiSum_isIntegral` and its diagonal `jacobiSum_self_isIntegral` upgrade subring membership to `IsIntegral ℤ`, routing through `IsPrimitiveRoot.isIntegral` → `IsIntegral.fg_adjoin_singleton` → `IsIntegral.of_mem_of_fg`."
+    },
+    {
+      "id": "orderof-variant-checks",
+      "title": "Order-Of Integrality Variant and Sanity Checks",
+      "startLine": 102,
+      "endLine": 111,
+      "summary": "`jacobiSum_self_isIntegral_of_orderOf` combines the order bridge with the integrality upgrade, and the closing `#check` commands confirm the four public lemmas' signatures."
+    }
+  ],
   "conclusion": {
     "summary": "The entry records the diagonal Jacobi-sum membership fact J(χ,χ) ∈ ℤ[ζ_n] — the structural prerequisite of the higher power-reciprocity laws — as a standalone, directly citable theorem, plus an order-of variant, and upgrades membership to genuine algebraic integrality `IsIntegral ℤ (jacobiSum χ χ)`. All five theorems are short compositions of existing Mathlib lemmas (`jacobiSum_mem_algebraAdjoin_of_pow_eq_one`, `pow_orderOf_eq_one`, `IsPrimitiveRoot.isIntegral`, `IsIntegral.fg_adjoin_singleton`, `IsIntegral.of_mem_of_fg`), with 0 axioms and 0 sorries.",
     "implications": "This is supporting number-theory infrastructure, not new mathematics: Mathlib already proves the general two-character subring-membership statement. The contribution is packaging the diagonal case with the order bridge and the integrality upgrade so the reciprocity arguments can cite single named lemmas for both `J(χ,χ) ∈ ℤ[ζ_n]` and `IsIntegral ℤ (J(χ,χ))`. It does not advance the open cubic-reciprocity question on the parent entry; it supplies two of the ingredients that question depends on.",
