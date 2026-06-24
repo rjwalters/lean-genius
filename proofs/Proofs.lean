@@ -3532,6 +3532,7 @@ import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ03
 import Proofs.SphericalLawOfCosinesOQ03Bidual
+import Proofs.SphericalLawOfCosinesOQ03OQ01
 import Proofs.SphericalLawOfCosinesOQ03Primal
 import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines
