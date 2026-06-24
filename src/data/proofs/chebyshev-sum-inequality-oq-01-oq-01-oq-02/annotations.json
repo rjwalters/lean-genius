@@ -1,0 +1,98 @@
+[
+  {
+    "id": "cheb-strict-ann-header",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 40 },
+    "type": "context",
+    "title": "From non-strict inequality to a strict/equality dichotomy",
+    "content": "The docstring frames the contribution: the parent proved only the non-strict weighted Chebyshev sum inequality, whose engine is the weighted monovariance identity expressing the Chebyshev defect D as half a sum of nonnegative cross terms wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ). The same representation that gives D ≥ 0 also pins down tightness: a sum of nonnegatives is zero iff every term vanishes (equality), and positive once one term is (strictness). Neither the equality characterization nor the strict inequality is in Mathlib.",
+    "mathContext": "$\\sum_i\\sum_j w_i w_j (f_i-f_j)(g_i-g_j) = 2D$, where $D = \\big(\\sum w_i\\big)\\big(\\sum w_i f_i g_i\\big) - \\big(\\sum w_i f_i\\big)\\big(\\sum w_i g_i\\big) \\ge 0$.",
+    "significance": "context",
+    "relatedConcepts": ["Chebyshev sum inequality", "discrete covariance", "monovariance", "rigidity"],
+    "prerequisites": ["Lean 4", "Mathlib", "finite sums over Finset"]
+  },
+  {
+    "id": "cheb-strict-ann-sign-nonneg",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 65 },
+    "type": "technique",
+    "title": "Cross product is nonnegative under monovariance",
+    "content": "sub_mul_sub_nonneg_of_monovaryOn establishes that for monovarying f, g the two factors fᵢ−fⱼ and gᵢ−gⱼ carry the same sign, so their product is ≥ 0. The proof is a trichotomy on g i vs g j: when g increases the MonovaryOn hypothesis forces f to increase too (and symmetrically when it decreases), and the tie case kills the product. This sign fact is the seed of every nonnegativity claim downstream.",
+    "mathContext": "MonovaryOn $f\\,g\\,s$ means $g_i < g_j \\Rightarrow f_i \\le f_j$; hence $(f_i-f_j)$ and $(g_i-g_j)$ share a sign and $(f_i-f_j)(g_i-g_j)\\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monovariance", "comonotonicity", "sign of a product", "trichotomy"],
+    "prerequisites": ["order theory", "the MonovaryOn predicate"]
+  },
+  {
+    "id": "cheb-strict-ann-sign-pos",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 89 },
+    "type": "technique",
+    "title": "Strict refinement and the weighted summand",
+    "content": "sub_mul_sub_pos_of_monovaryOn sharpens the sign lemma: if f and g both genuinely differ at i, j then the cross product is strictly positive (each ≤ becomes < via lt_of_le_of_ne; the tie case is excluded by the g-differs hypothesis). term_nonneg then folds in the weights, giving the nonnegativity of the full weighted summand wᵢwⱼ(fᵢ−fⱼ)(gᵢ−gⱼ) by positivity. These two are exactly the ingredients the equality and strict theorems feed to Finset.sum_eq_zero_iff_of_nonneg and Finset.sum_pos'.",
+    "mathContext": "$f_i\\ne f_j \\wedge g_i\\ne g_j \\Rightarrow (f_i-f_j)(g_i-g_j) > 0$; and $0 \\le w_i w_j (f_i-f_j)(g_i-g_j)$ when $w\\ge 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["strict monovariance", "lt_of_le_of_ne", "positivity", "nonnegative summand"],
+    "prerequisites": ["order theory", "sign reasoning"]
+  },
+  {
+    "id": "cheb-strict-ann-identity",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 91, "endLine": 139 },
+    "type": "insight",
+    "title": "The weighted monovariance identity (the engine)",
+    "content": "two_mul_chebyshev_defect_eq is the algebraic heart: the symmetric double sum equals exactly twice the Chebyshev defect, with NO sign or monotonicity hypothesis. The proof expands the product (fᵢ−fⱼ)(gᵢ−gⱼ) into four monomial double sums, each collapsed by Finset.sum_mul_sum into a product of single sums, then closed by ring. weighted_sum_mul_sum_le recalls the non-strict inequality directly from this identity plus nonnegativity of every summand — making the entry self-contained.",
+    "mathContext": "$\\sum_i\\sum_j w_i w_j (f_i-f_j)(g_i-g_j) = 2\\big[(\\sum w_i)(\\sum w_i f_i g_i) - (\\sum w_i f_i)(\\sum w_i g_i)\\big]$.",
+    "significance": "key",
+    "relatedConcepts": ["polarization identity", "Finset.sum_mul_sum", "discrete covariance", "Lagrange-type identity"],
+    "prerequisites": ["double sums over Finsets", "ring normalization"]
+  },
+  {
+    "id": "cheb-strict-ann-eq-iff",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 141, "endLine": 173 },
+    "type": "concept",
+    "title": "Equality iff every cross term vanishes",
+    "content": "weighted_chebyshev_eq_iff: since 2D equals a sum of nonnegative terms, D = 0 iff each summand is zero (Finset.sum_eq_zero_iff_of_nonneg applied to the outer then inner sum). weighted_chebyshev_eq_iff_of_pos then strips the weight factor: with strictly positive weights wᵢwⱼ is nonzero, so the condition reduces to the purely combinatorial (fᵢ−fⱼ)(gᵢ−gⱼ) = 0 — no pair on which both f and g strictly vary.",
+    "mathContext": "Equality $\\iff \\forall i,j\\in s,\\ w_i w_j (f_i-f_j)(g_i-g_j) = 0$; for $w>0$, $\\iff \\forall i,j,\\ (f_i-f_j)(g_i-g_j)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["equality case", "sum_eq_zero_iff_of_nonneg", "mul_eq_zero", "termwise vanishing"],
+    "prerequisites": ["finite sums of nonnegative reals", "ordered field facts"]
+  },
+  {
+    "id": "cheb-strict-ann-eq-const",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 175, "endLine": 230 },
+    "type": "insight",
+    "title": "Human-readable equality: f or g constant on s",
+    "content": "weighted_chebyshev_eq_iff_const is the form recorded in the parent's open question: with positive weights, equality holds iff f is constant on s OR g is constant on s. The hard direction is a finite case analysis — from the termwise condition, distinct f forces equal g and vice versa; assuming neither sequence is constant produces a pair where both vary, contradicting the hypothesis. The two degenerate corollaries (eq_of_const_left/right) confirm a constant sequence always makes the bound tight.",
+    "mathContext": "For $w>0$ under monovariance: equality $\\iff (\\forall i,j,\\ f_i=f_j)\\ \\vee\\ (\\forall i,j,\\ g_i=g_j)$.",
+    "significance": "key",
+    "relatedConcepts": ["equality characterization", "constant sequence", "finite case analysis", "covariance vanishing"],
+    "prerequisites": ["combinatorial case analysis", "sub_eq_zero / mul_eq_zero"]
+  },
+  {
+    "id": "cheb-strict-ann-strict",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 232, "endLine": 259 },
+    "type": "concept",
+    "title": "Strictness from a single varying pair",
+    "content": "weighted_chebyshev_strict turns one strictly positive weighted cross term into strict inequality: Finset.sum_pos' says a sum of nonnegatives is positive once a single summand is, so D > 0. weighted_chebyshev_strict_of_ne is the convenient packaging — supply two positively weighted indices a, b where f and g both differ, and the strict sign lemma provides the positive cross product. Strictness is thus a purely local condition: one witnessing pair suffices.",
+    "mathContext": "If $w_a,w_b>0$ and $(f_a-f_b)(g_a-g_b)>0$ then $(\\sum w_i f_i)(\\sum w_i g_i) < (\\sum w_i)(\\sum w_i f_i g_i)$.",
+    "significance": "key",
+    "relatedConcepts": ["strict inequality", "Finset.sum_pos'", "local witness", "positive covariance"],
+    "prerequisites": ["finite sums of nonnegative reals", "the strict sign lemma"]
+  },
+  {
+    "id": "cheb-strict-ann-instances",
+    "proofId": "chebyshev-sum-inequality-oq-01-oq-01-oq-02",
+    "range": { "startLine": 261, "endLine": 283 },
+    "type": "context",
+    "title": "Worked numeric instances",
+    "content": "Two examples ground the abstract theorems. The strict instance takes unit weights on {0,1,2} with f = g = id, giving (0+1+2)² = 9 < 3·(0²+1²+2²) = 15, witnessed by the variation at indices 0 and 1 (monovaryOn_self supplies the monovariance). The equality instance takes f ≡ 5 constant, where eq_of_const_left makes the bound exactly tight for any weights and any g.",
+    "mathContext": "$9 = (0+1+2)^2 < 3\\cdot(0^2+1^2+2^2) = 15$; and $f\\equiv 5 \\Rightarrow$ equality for all $g$.",
+    "significance": "context",
+    "relatedConcepts": ["worked example", "monovaryOn_self", "sanity check", "degenerate equality"],
+    "prerequisites": ["norm_num / decide tactics"]
+  }
+]
