@@ -73,14 +73,22 @@ theorem numDerangements_eq_factorial_mul_altSum (n : ℕ) :
   | _ n ih =>
   match n with
   | 0 => simp [altFactPartialSum, altFactTerm]
-  | 1 => simp [altFactPartialSum, altFactTerm, Finset.sum_range_succ]; ring
+  | 1 => simp [altFactPartialSum, altFactTerm, Finset.sum_range_succ]
   | n + 2 =>
     rw [numDerangements_add_two]
     push_cast
     rw [ih n (by omega), ih (n + 1) (by omega)]
     rw [altFactPartialSum_succ (n + 1), altFactPartialSum_succ n]
-    simp only [altFactTerm, Nat.factorial_succ]
-    push_cast
+    simp only [altFactTerm]
+    have e1 : ((n + 1).factorial : ℝ) = ((n : ℝ) + 1) * (n.factorial : ℝ) := by
+      rw [Nat.factorial_succ]; push_cast; ring
+    have e2 : ((n + 2).factorial : ℝ) =
+        ((n : ℝ) + 2) * (((n : ℝ) + 1) * (n.factorial : ℝ)) := by
+      rw [Nat.factorial_succ, Nat.factorial_succ]; push_cast; ring
+    rw [e1, e2]
+    have hn1 : ((n : ℝ) + 1) ≠ 0 := by positivity
+    have hn2 : ((n : ℝ) + 2) ≠ 0 := by positivity
+    field_simp [factorial_cast_ne_zero n, hn1, hn2]
     ring
 
 /-- D(n)/n! = ∑_{k=0}^n (-1)^k/k! (the n-th partial sum) -/
@@ -95,8 +103,7 @@ theorem derangements_div_factorial (n : ℕ) :
 
 /-- The alternating series ∑ (-1)^k/k! is summable. -/
 lemma summable_altFactTerm : Summable altFactTerm := by
-  apply Summable.of_norm_bounded_eventually (fun k => 1 ^ k / (k.factorial : ℝ))
-    (summable_pow_div_factorial 1)
+  apply Summable.of_norm_bounded_eventually (summable_pow_div_factorial 1)
   filter_upwards with k
   rw [norm_eq_abs, altFactTerm_abs]
   simp [one_pow]
@@ -107,8 +114,7 @@ theorem exp_neg_one_eq_tsum_alt :
   have : rexp (-1) = NormedSpace.exp ℝ (-1 : ℝ) := by
     rw [Real.exp_eq_exp_ℝ]
   rw [this, NormedSpace.exp_eq_tsum (𝕂 := ℝ) (𝔸 := ℝ)]
-  congr 1
-  ext k
+  refine tsum_congr fun k => ?_
   simp only [altFactTerm, smul_eq_mul]
   ring
 
@@ -118,23 +124,9 @@ theorem exp_neg_one_eq_tsum_alt :
 
 lemma tsum_eq_partial_sum_add_tail (n : ℕ) :
     ∑' k, altFactTerm k = altFactPartialSum n + ∑' k, altFactTerm (n + 1 + k) := by
-  have hs := summable_altFactTerm
-  have hshift : HasSum (fun k => altFactTerm (n + 1 + k))
-      (∑' k, altFactTerm k - ∑ k ∈ range (n + 1), altFactTerm k) := by
-    have hfull := hs.hasSum
-    rw [Finset.hasSum_compl_iff (s := range (n + 1)) hs] at hfull
-    rw [← (Function.Injective.hasSum_iff
-      (f := fun (x : ↥(↑(range (n + 1)))ᶜ) => altFactTerm ↑x)
-      (i := fun k => ⟨n + 1 + k, by
-        simp only [Set.mem_compl_iff, Finset.mem_coe, Finset.mem_range, not_lt]; omega⟩)
-      ?_ ?_)] at hfull
-    · exact hfull
-    · intro a b h; simp only [Subtype.mk.injEq] at h; omega
-    · intro ⟨b, hb⟩
-      simp only [Set.mem_compl_iff, Finset.mem_coe, Finset.mem_range, not_lt] at hb
-      exact ⟨b - (n + 1), by simp only [Subtype.mk.injEq]; omega⟩
-  rw [hshift.tsum_eq, altFactPartialSum]
-  ring
+  rw [altFactPartialSum, ← summable_altFactTerm.sum_add_tsum_nat_add (n + 1)]
+  congr 1
+  exact tsum_congr fun k => by rw [Nat.add_comm]
 
 /-- Alternating partial sums starting at index m are non-negative. -/
 lemma alt_partial_sum_nonneg (m : ℕ) (N : ℕ) :
@@ -143,7 +135,7 @@ lemma alt_partial_sum_nonneg (m : ℕ) (N : ℕ) :
   | _ N ih =>
   match N with
   | 0 => simp
-  | 1 => simp; exact div_nonneg one_pos.le (factorial_cast_pos m).le
+  | 1 => simp
   | N' + 2 =>
     have hsplit : ∑ k ∈ range (N' + 2), ((-1 : ℝ) ^ k / ((m + k).factorial : ℝ)) =
         ∑ k ∈ range N', ((-1 : ℝ) ^ k / ((m + k).factorial : ℝ)) +
@@ -154,22 +146,23 @@ lemma alt_partial_sum_nonneg (m : ℕ) (N : ℕ) :
     have hprev := ih N' (by omega)
     by_cases hN' : Even N'
     · obtain ⟨k, rfl⟩ := hN'
+      rw [← two_mul k] at hprev ⊢
       have hpair : 0 ≤ (-1 : ℝ) ^ (2 * k) / ((m + (2 * k)).factorial : ℝ) +
           (-1 : ℝ) ^ (2 * k + 1) / ((m + (2 * k + 1)).factorial : ℝ) := by
-        simp only [pow_succ, pow_mul, neg_one_sq, one_pow, one_mul, neg_one_mul, neg_div]
-        linarith [div_le_div_of_nonneg_left one_pos (factorial_cast_pos (m + (2 * k)))
+        rw [Even.neg_one_pow ⟨k, two_mul k⟩, Odd.neg_one_pow ⟨k, rfl⟩, neg_div]
+        linarith [div_le_div_of_nonneg_left one_pos.le (factorial_cast_pos (m + (2 * k)))
           (show ((m + (2 * k)).factorial : ℝ) ≤ ((m + (2 * k + 1)).factorial : ℝ) from by
-            push_cast; exact_mod_cast Nat.factorial_le (by omega))]
+            exact_mod_cast Nat.factorial_le (by omega))]
       linarith
     · rw [Nat.not_even_iff_odd] at hN'
       obtain ⟨k, rfl⟩ := hN'
       have hprev2 := ih (2 * k) (by omega)
       have hpair : 0 ≤ (-1 : ℝ) ^ (2 * k) / ((m + (2 * k)).factorial : ℝ) +
           (-1 : ℝ) ^ (2 * k + 1) / ((m + (2 * k + 1)).factorial : ℝ) := by
-        simp only [pow_succ, pow_mul, neg_one_sq, one_pow, one_mul, neg_one_mul, neg_div]
-        linarith [div_le_div_of_nonneg_left one_pos (factorial_cast_pos (m + (2 * k)))
+        rw [Even.neg_one_pow ⟨k, two_mul k⟩, Odd.neg_one_pow ⟨k, rfl⟩, neg_div]
+        linarith [div_le_div_of_nonneg_left one_pos.le (factorial_cast_pos (m + (2 * k)))
           (show ((m + (2 * k)).factorial : ℝ) ≤ ((m + (2 * k + 1)).factorial : ℝ) from by
-            push_cast; exact_mod_cast Nat.factorial_le (by omega))]
+            exact_mod_cast Nat.factorial_le (by omega))]
       have hlast : 0 ≤ (-1 : ℝ) ^ (2 * k + 2) / ((m + (2 * k + 2)).factorial : ℝ) := by
         apply div_nonneg
         · simp [pow_succ, pow_mul]
@@ -180,10 +173,10 @@ lemma alt_partial_sum_nonneg (m : ℕ) (N : ℕ) :
           ((-1 : ℝ) ^ (2 * k) / ((m + (2 * k)).factorial : ℝ) +
            (-1 : ℝ) ^ (2 * k + 1) / ((m + (2 * k + 1)).factorial : ℝ)) +
           (-1 : ℝ) ^ (2 * k + 2) / ((m + (2 * k + 2)).factorial : ℝ) := by
-        rw [show 2 * k + 1 + 2 = (2 * k + 2) + 1 from by omega]
+        rw [show 2 * k + 1 + 2 = 2 * k + 1 + 1 + 1 from by omega]
         rw [Finset.sum_range_succ, Finset.sum_range_succ, Finset.sum_range_succ]
         ring
-      rw [hsplit2]
+      rw [← hsplit, hsplit2]
       linarith
 
 /-- Alternating partial sums are bounded above by the first term 1/m!. -/
@@ -193,8 +186,8 @@ lemma alt_partial_sum_le_first (m : ℕ) (N : ℕ) :
   induction N using Nat.strong_induction_on with
   | _ N ih =>
   match N with
-  | 0 => simp; exact div_nonneg one_pos.le (factorial_cast_pos m).le
-  | 1 => simp; exact le_refl _
+  | 0 => simp
+  | 1 => simp
   | N' + 2 =>
     have hsplit : ∑ k ∈ range (N' + 2), ((-1 : ℝ) ^ k / ((m + k).factorial : ℝ)) =
         ∑ k ∈ range N', ((-1 : ℝ) ^ k / ((m + k).factorial : ℝ)) +
@@ -207,7 +200,7 @@ lemma alt_partial_sum_le_first (m : ℕ) (N : ℕ) :
       have hneg : (-1 : ℝ) ^ (N' + 1) / ((m + (N' + 1)).factorial : ℝ) ≤ 0 := by
         obtain ⟨k, rfl⟩ := hN'
         apply div_nonpos_of_nonpos_of_nonneg
-        · simp [pow_succ, pow_mul]; ring_nf; norm_num
+        · simp [pow_succ, pow_mul]
         · exact (factorial_cast_pos _).le
       have hrewrite : ∑ k ∈ range N', ((-1 : ℝ) ^ k / ((m + k).factorial : ℝ)) +
           ((-1 : ℝ) ^ N' / ((m + N').factorial : ℝ) +
@@ -222,10 +215,10 @@ lemma alt_partial_sum_le_first (m : ℕ) (N : ℕ) :
       have hprev := ih (2 * k + 1) (by omega)
       have hpair : (-1 : ℝ) ^ (2 * k + 1) / ((m + (2 * k + 1)).factorial : ℝ) +
           (-1 : ℝ) ^ (2 * k + 2) / ((m + (2 * k + 2)).factorial : ℝ) ≤ 0 := by
-        simp only [pow_succ, pow_mul, neg_one_sq, one_pow, one_mul, neg_one_mul, neg_div]
-        linarith [div_le_div_of_nonneg_left one_pos (factorial_cast_pos (m + (2 * k + 1)))
+        rw [Odd.neg_one_pow ⟨k, rfl⟩, Even.neg_one_pow ⟨k + 1, by ring⟩, neg_div]
+        linarith [div_le_div_of_nonneg_left one_pos.le (factorial_cast_pos (m + (2 * k + 1)))
           (show ((m + (2 * k + 1)).factorial : ℝ) ≤ ((m + (2 * k + 2)).factorial : ℝ) from by
-            push_cast; exact_mod_cast Nat.factorial_le (by omega))]
+            exact_mod_cast Nat.factorial_le (by omega))]
       linarith
 
 /-- The tail of the alternating series is bounded by the first tail term. -/
