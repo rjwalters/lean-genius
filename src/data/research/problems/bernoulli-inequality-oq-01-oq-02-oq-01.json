@@ -1,0 +1,73 @@
+{
+  "slug": "bernoulli-inequality-oq-01-oq-02-oq-01",
+  "title": "Degree-k Binomial Truncation Lower Bound for (1+a)ⁿ",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall a\\ge 0,\\ \\forall n,k\\in\\mathbb{N}:\\quad 1+\\sum_{j=1}^{k}\\binom{n}{j}a^{j}\\ \\le\\ (1+a)^{n},\\quad\\text{with equality}\\iff a=0\\ \\lor\\ n\\le k.",
+    "plain": "Bernoulli's inequality 1 + na ≤ (1+a)ⁿ is the k = 1 case of a family: truncating the binomial expansion of (1+a)ⁿ after the degree-k term gives a lower bound for all a ≥ 0, because every dropped term C(n,j)aʲ (j > k) is nonnegative. This open question asks to formalize the general degree-k truncation 1 + Σ_{j≤k} C(n,j)aʲ ≤ (1+a)ⁿ together with the sharp equality characterization: equality holds iff a = 0 (all higher terms vanish) or n ≤ k (no higher terms exist). The parent suggests a uniform Pascal-style induction.",
+    "whyMatters": [
+      "Generalizes Bernoulli's inequality into a whole tower of polynomial lower bounds, with k=1 recovering the classical statement and larger k giving successively tighter bounds.",
+      "The equality case (a=0 ∨ n≤k) is the interesting refinement — it pins down exactly when truncation is exact, which the plain inequality does not.",
+      "Mathlib has add_pow (binomial theorem), Finset.sum, and Nat.choose; the bound is a Finset.sum_le_sum over the nonnegative tail, so it is well-supported."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent bernoulli-inequality-oq-01-oq-02 (verified, 0-axiom): the degree-k binomial truncation viewpoint of Bernoulli's inequality.",
+      "Mathlib: add_pow / Commute.add_pow giving (1+a)ⁿ = Σ_{j=0}^{n} C(n,j) aʲ.",
+      "Mathlib: Finset.sum_le_sum, Finset.sum_range_succ, nonnegativity of aʲ for a≥0."
+    ],
+    "open": [
+      "Q1: Prove the inequality 1 + Σ_{j∈range(k+1), j≥1} C(n,j) aʲ ≤ (1+a)ⁿ for a≥0, by writing (1+a)ⁿ via add_pow and bounding below by the degree-≤k partial sum (the tail j>k is nonnegative).",
+      "Q2: Prove equality ⟺ a=0 ∨ n≤k: if n≤k the partial sum is the whole sum; if a>0 and n>k the term C(n,k+1)a^{k+1}>0 is strictly dropped.",
+      "Q3 (stretch): derive Bernoulli (k=1) and the quadratic refinement 1+na+C(n,2)a² ≤ (1+a)ⁿ as named corollaries."
+    ],
+    "goal": "Formalize the degree-k binomial truncation lower bound for (1+a)ⁿ with a≥0 and its sharp equality characterization (a=0 ∨ n≤k), verified/0-axiom."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 0,
+    "focus": "Seeker-seeded stub. Awaiting a Researcher to begin the OBSERVE phase: read problem.md, confirm Mathlib API names, and draft the first Lean skeleton.",
+    "blockers": [],
+    "nextAction": "Q1: Prove the inequality 1 + Σ_{j∈range(k+1), j≥1} C(n,j) aʲ ≤ (1+a)ⁿ for a≥0, by writing (1+a)ⁿ via add_pow and bounding below by the degree-≤k partial sum (the tail j>k is nonnegative).",
+    "lastUpdate": "2026-06-24T00:00:00Z"
+  },
+  "tags": [
+    "seeker-selected",
+    "analysis",
+    "inequality",
+    "bernoulli-inequality",
+    "binomial-theorem",
+    "equality-case",
+    "induction"
+  ],
+  "relatedProofs": [
+    "bernoulli-inequality",
+    "bernoulli-inequality-oq-01",
+    "bernoulli-inequality-oq-01-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "G. H. Hardy, J. E. Littlewood, G. Pólya, Inequalities (1934) §2 — Bernoulli and binomial inequalities.",
+      "D. S. Mitrinović, Analytic Inequalities (1970) — Bernoulli-type inequalities."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Bernoulli%27s_inequality",
+      "https://en.wikipedia.org/wiki/Binomial_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.BigOperators.NatAntidiagonal / Mathlib.Algebra.GroupPower — add_pow",
+      "Mathlib.Algebra.Order.BigOperators — Finset.sum_le_sum",
+      "Mathlib.Data.Nat.Choose.Basic — Nat.choose, Pascal recurrence"
+    ]
+  },
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": []
+}

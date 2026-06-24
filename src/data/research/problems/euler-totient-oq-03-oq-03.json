@@ -1,0 +1,71 @@
+{
+  "slug": "euler-totient-oq-03-oq-03",
+  "title": "Exact GCD–Totient Identity φ(a)φ(b)·gcd(a,b) = φ(ab)·φ(gcd(a,b))",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall a,b\\in\\mathbb{N}_{>0}:\\quad \\varphi(ab)\\,\\varphi(\\gcd(a,b)) = \\varphi(a)\\,\\varphi(b)\\,\\gcd(a,b),\\quad\\text{equivalently}\\quad \\varphi(ab)=\\varphi(a)\\,\\varphi(b)\\,\\frac{\\gcd(a,b)}{\\varphi(\\gcd(a,b))}.",
+    "plain": "Euler's totient is multiplicative only on coprime arguments: φ(ab) = φ(a)φ(b) when gcd(a,b)=1. The parent records the super-multiplicativity inequality φ(ab) ≥ φ(a)φ(b). This open question sharpens it to an exact identity for ALL a,b: φ(ab) = φ(a)φ(b)·d/φ(d) where d = gcd(a,b). Cross-multiplying to avoid division gives the clean Nat identity φ(ab)·φ(gcd(a,b)) = φ(a)·φ(b)·gcd(a,b). The goal is to formalize this exact GCD–totient identity, recovering the coprime multiplicativity (d=1) as a special case.",
+    "whyMatters": [
+      "Promotes a one-sided inequality in the gallery to an exact closed form, the genuinely sharp statement of how φ interacts with non-coprime products.",
+      "The identity φ(ab)φ(d)=φ(a)φ(b)d is a standard but frequently-cited number-theory lemma worth a clean verified formalization.",
+      "Mathlib has Nat.totient, Nat.Coprime.totient_mul, and the divisor/gcd API; the proof reduces to multiplicativity on prime-power valuations or a known totient_mul_of_... lemma."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent euler-totient-oq-03 (verified, 0-axiom): super-multiplicativity φ(ab) ≥ φ(a)φ(b).",
+      "Mathlib: Nat.Coprime.totient_mul (φ(ab)=φ(a)φ(b) when coprime), Nat.totient_prime_pow.",
+      "Classical: φ(ab) = φ(a)φ(b)·gcd(a,b)/φ(gcd(a,b)) (Apostol, Introduction to Analytic Number Theory, Thm 2.5 ex.)."
+    ],
+    "open": [
+      "Q1: Prove the cross-multiplied Nat identity Nat.totient (a*b) * Nat.totient (Nat.gcd a b) = Nat.totient a * Nat.totient b * Nat.gcd a b for a,b>0.",
+      "Q2: Derive the division form φ(ab)=φ(a)φ(b)·d/φ(d) and confirm φ(d) ∣ φ(a)φ(b)d so the division is exact.",
+      "Q3: Recover Nat.Coprime.totient_mul (d=1 ⇒ φ(d)=1, gcd=1) as a one-line corollary."
+    ],
+    "goal": "Prove the exact GCD–totient identity φ(ab)·φ(gcd(a,b)) = φ(a)·φ(b)·gcd(a,b) for positive a,b, verified/0-axiom, with coprime multiplicativity as a corollary."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 0,
+    "focus": "Seeker-seeded stub. Awaiting a Researcher to begin the OBSERVE phase: read problem.md, confirm Mathlib API names, and draft the first Lean skeleton.",
+    "blockers": [],
+    "nextAction": "Q1: Prove the cross-multiplied Nat identity Nat.totient (a*b) * Nat.totient (Nat.gcd a b) = Nat.totient a * Nat.totient b * Nat.gcd a b for a,b>0.",
+    "lastUpdate": "2026-06-24T00:00:00Z"
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "totient",
+    "multiplicative-functions",
+    "gcd",
+    "product-formula"
+  ],
+  "relatedProofs": [
+    "euler-totient",
+    "euler-totient-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "T. M. Apostol, Introduction to Analytic Number Theory (1976) Ch. 2 — totient identities.",
+      "G. H. Hardy, E. M. Wright, An Introduction to the Theory of Numbers (1938) §16 — Euler's function."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Euler%27s_totient_function#Divisor_sum",
+      "https://oeis.org/A000010"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Divisors / Mathlib.Data.Nat.Totient — Nat.totient, Nat.Coprime.totient_mul",
+      "Mathlib.NumberTheory.ArithmeticFunction — IsMultiplicative",
+      "Mathlib.Data.Nat.GCD.Basic — Nat.gcd, gcd_mul_lcm"
+    ]
+  },
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": []
+}

@@ -1,0 +1,72 @@
+{
+  "slug": "combinations-formula-oq-02-oq-01",
+  "title": "Generating Function of the Catalan Numbers C(x) = (1−√(1−4x))/(2x)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For the Catalan numbers } C_n=\\frac{1}{n+1}\\binom{2n}{n},\\ \\text{the OGF } C(x)=\\sum_{n\\ge 0}C_n x^{n}\\ \\text{satisfies}\\ x\\,C(x)^2 - C(x) + 1 = 0,\\ \\text{hence}\\ C(x)=\\frac{1-\\sqrt{1-4x}}{2x}.",
+    "plain": "The Catalan numbers C_n = (1/(n+1))·binom(2n,n) count binary trees, balanced parentheses, triangulations, etc. Their ordinary generating function C(x) = Σ C_n xⁿ satisfies the quadratic functional equation x·C(x)² − C(x) + 1 = 0 (from the convolution recurrence C_{n+1} = Σ C_i C_{n−i}), whose root is C(x) = (1−√(1−4x))/(2x). The goal is to formalize this generating-function identity — most robustly as the formal-power-series statement that the Catalan series satisfies the quadratic, and/or that the coefficients of (1−√(1−4x))/(2x) are the Catalan numbers.",
+    "whyMatters": [
+      "The Catalan generating function is one of the most-cited results in enumerative combinatorics, the canonical example of solving a recurrence via generating functions.",
+      "It links the convolution recurrence C_{n+1}=Σ C_i C_{n−i} to a closed analytic form, and underlies the asymptotic C_n ∼ 4ⁿ/(n^{3/2}√π).",
+      "Mathlib has PowerSeries, Catalan numbers (Nat.catalan / Catalan), and the convolution recurrence; the algebraic (quadratic functional equation) form avoids needing a formal square root."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent combinations-formula-oq-02 (verified, 0-axiom): central binomial / combinatorial identities feeding the Catalan recurrence.",
+      "Mathlib: Catalan numbers and the convolution recurrence catalan_succ : catalan (n+1) = Σ_{i} catalan i * catalan (n-i).",
+      "Mathlib: PowerSeries ring structure, PowerSeries.coeff, mul/coeff_mul (Cauchy product)."
+    ],
+    "open": [
+      "Q1 (recommended, algebraic): Let C : PowerSeries ℚ be the Catalan OGF (coeff n C = catalan n). Prove the functional equation X * C^2 - C + 1 = 0 in PowerSeries ℚ, directly from the convolution recurrence via coeff_mul.",
+      "Q2: Interpret the closed form: show C is the (unique, constant-term-1) power-series solution of x y² − y + 1 = 0, equivalently 2x·C = 1 − √(1−4x) as a formal-power-series square-root identity (1−2xC)² = 1−4x.",
+      "Q3 (stretch): connect to the analytic radius 1/4 and the asymptotic C_n ∼ 4ⁿ n^{-3/2}/√π."
+    ],
+    "goal": "Formalize that the Catalan generating function satisfies x·C(x)²−C(x)+1=0 (hence C(x)=(1−√(1−4x))/(2x)), proving the quadratic functional equation from the convolution recurrence in PowerSeries ℚ."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 0,
+    "focus": "Seeker-seeded stub. Awaiting a Researcher to begin the OBSERVE phase: read problem.md, confirm Mathlib API names, and draft the first Lean skeleton.",
+    "blockers": [],
+    "nextAction": "Q1 (recommended, algebraic): Let C : PowerSeries ℚ be the Catalan OGF (coeff n C = catalan n). Prove the functional equation X * C^2 - C + 1 = 0 in PowerSeries ℚ, directly from the convolution recurrence via coeff_mul.",
+    "lastUpdate": "2026-06-24T00:00:00Z"
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "catalan-numbers",
+    "generating-functions",
+    "power-series",
+    "binomial-coefficients",
+    "central-binomial"
+  ],
+  "relatedProofs": [
+    "combinations-formula",
+    "combinations-formula-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "R. P. Stanley, Enumerative Combinatorics Vol. 2 (1999) Ch. 6 + Catalan addendum.",
+      "P. Flajolet, R. Sedgewick, Analytic Combinatorics (2009) §I.5 — Catalan GF."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Catalan_number#Generating_function",
+      "https://oeis.org/A000108"
+    ],
+    "mathlib": [
+      "Mathlib.Combinatorics.Catalan — Catalan numbers, catalan_succ recurrence",
+      "Mathlib.RingTheory.PowerSeries.Basic — PowerSeries, coeff, coeff_mul",
+      "Mathlib.RingTheory.PowerSeries.WellKnown — known series identities"
+    ]
+  },
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": []
+}
