@@ -1,0 +1,178 @@
+{
+  "id": "binomial-theorem-oq-04-oq-02-oq-03",
+  "title": "Central Binomial Coefficient as a Sum of Squares: C(2n,n) = Σ C(n,k)²",
+  "slug": "binomial-theorem-oq-04-oq-02-oq-03",
+  "description": "Formalization of the Chu–Vandermonde diagonal identity C(2n,n) = Σ_{k=0}^{n} C(n,k)², derived as the m = n, r = n specialization of the Vandermonde convolution. The antidiagonal convolution sum is collapsed to a range sum, and the symmetry C(n,n-k) = C(n,k) turns each term into a square. All theorems fully proved, axiom-free.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "vandermonde",
+      "central-binomial",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BinomialTheoremOQ04OQ02OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.add_choose_eq",
+        "description": "Vandermonde convolution C(m+n,r) = Σ_{i+j=r} C(m,i)·C(n,j) over the antidiagonal — the engine of the proof, specialized at m=n, r=n",
+        "module": "Mathlib.Data.Nat.Choose.Vandermonde"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Collapses the antidiagonal sum Σ_{i+j=n} f i j to the range sum Σ_{k=0}^{n} f k (n-k)",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "C(n,n-k) = C(n,k) for k ≤ n — converts each convolution term C(n,k)·C(n,n-k) into the square C(n,k)²",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.centralBinom_eq_two_mul_choose",
+        "description": "centralBinom n = C(2n,n) — used to restate the identity in terms of Mathlib's centralBinom",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      }
+    ],
+    "originalContributions": [
+      "central_binomial_eq_sum_sq: the main identity C(2n,n) = Σ_{k=0}^{n} C(n,k)², not present in Mathlib as of 2026-06",
+      "centralBinom_eq_sum_sq: the same identity phrased with Nat.centralBinom",
+      "sum_sq_choose_example / central_binomial_three: numeric instance C(6,3) = 1²+3²+3²+1² = 20"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 71,
+    "assumptions": "None. All theorems are fully proved with no axioms beyond Lean/Mathlib's foundational propext, Classical.choice, Quot.sound (the numeric examples use kernel `decide`, not `native_decide`).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The identity $\\binom{2n}{n} = \\sum_{k=0}^{n}\\binom{n}{k}^2$ is the diagonal case of the Chu–Vandermonde convolution, known to Chu Shih-Chieh (Zhu Shijie) in his 1303 *Jade Mirror of the Four Unknowns* and rediscovered by Vandermonde in 1772. It is one of the most-cited identities in enumerative combinatorics: the central binomial coefficient $\\binom{2n}{n}$ counts lattice paths, Dyck-path prefixes, and the largest term of row $2n$ of Pascal's triangle, while the right-hand side expresses it as the squared $\\ell^2$-norm of a single row of Pascal's triangle. The same identity underlies the fact that $\\sum_k \\binom{n}{k}^2 x^k$ has the central coefficient $\\binom{2n}{n}$, and appears in the analysis of random walks, the asymptotics $\\binom{2n}{n}\\sim 4^n/\\sqrt{\\pi n}$, and generating-function proofs of Apéry-style irrationality results.",
+    "problemStatement": "**Central binomial as a sum of squares**: for every natural number $n$,\n$$\\binom{2n}{n} = \\sum_{k=0}^{n}\\binom{n}{k}^2.$$\nThis is the specialization $m = n$, $r = n$ of Vandermonde's convolution $\\binom{m+n}{r} = \\sum_{i+j=r}\\binom{m}{i}\\binom{n}{j}$.",
+    "text": "A short, fully machine-verified derivation of the central-binomial sum-of-squares identity from Mathlib's Vandermonde convolution. The proof reduces the antidiagonal convolution sum to a range sum and applies the binomial symmetry $\\binom{n}{n-k} = \\binom{n}{k}$ term by term.",
+    "proofStrategy": "Start from Vandermonde's convolution `Nat.add_choose_eq n n n`, which gives $\\binom{n+n}{n} = \\sum_{(i,j)\\in\\mathrm{antidiagonal}\\,n}\\binom{n}{i}\\binom{n}{j}$ (matching `C(2n,n)` after `two_mul`). Rewrite the antidiagonal sum as a range sum with `Finset.Nat.sum_antidiagonal_eq_sum_range_succ`, so the term at index $k$ is $\\binom{n}{k}\\cdot\\binom{n}{n-k}$. A `Finset.sum_congr` then reduces the goal to the per-term identity $\\binom{n}{k}\\cdot\\binom{n}{n-k} = \\binom{n}{k}^2$; since $k \\le n$ on `range (n+1)`, `Nat.choose_symm` rewrites $\\binom{n}{n-k} = \\binom{n}{k}$ and `sq` finishes. The `centralBinom` restatement follows by `Nat.centralBinom_eq_two_mul_choose`, and the numeric instances are closed by kernel `decide`.",
+    "keyInsights": [
+      "The whole identity is the *diagonal* of Vandermonde: $m = n$ and $r = n$ simultaneously. The parent entry already isolates the $m = n$ case as `vandermonde_equal`; this leaf takes the further step $r = n$ and collapses the convolution to squares.",
+      "The convolution term $\\binom{n}{k}\\binom{n}{n-k}$ becomes a square only because of binomial symmetry $\\binom{n}{n-k} = \\binom{n}{k}$, which requires the side condition $k \\le n$ — automatically supplied by membership in `range (n+1)`.",
+      "Collapsing the antidiagonal to a range sum (`sum_antidiagonal_eq_sum_range_succ`) is what exposes the index $k$ explicitly so the symmetry can be applied pointwise; working directly on the antidiagonal would force reasoning about the pair $(k, n-k)$ throughout.",
+      "Mathlib's `Nat.Choose.Central` file develops many properties of $\\binom{2n}{n}$ (positivity, divisibility, exponential bounds) but does not include this sum-of-squares formula, so the result is genuinely new infrastructure rather than a one-line lookup.",
+      "The combinatorial 'double-counting' reading is faithful to the open question: choosing $n$ from $2n$ objects split into two halves of size $n$ means picking $k$ from the first half and $n-k$ from the second, and $\\binom{n}{n-k} = \\binom{n}{k}$ counts the second-half choices."
+    ],
+    "prerequisites": [
+      "Binomial coefficients and Pascal's triangle",
+      "Vandermonde's convolution identity",
+      "Finset sums over the natural-number antidiagonal"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Documentation and Setup",
+      "summary": "States the open question (direct/combinatorial reading of C(2n,n) = Σ C(n,k)²), explains the reduction to the diagonal of Vandermonde, and lists imports and references.",
+      "startLine": 1,
+      "endLine": 37,
+      "mathContext": "The target $\\binom{2n}{n} = \\sum_k \\binom{n}{k}^2$ is the diagonal $m=n$, $r=n$ of $\\binom{m+n}{r} = \\sum_{i+j=r}\\binom{m}{i}\\binom{n}{j}$."
+    },
+    {
+      "id": "main",
+      "title": "Central Binomial as a Sum of Squares",
+      "summary": "`central_binomial_eq_sum_sq`: C(2n,n) = Σ_{k=0}^{n} C(n,k)². Proved by specializing Vandermonde's convolution, collapsing the antidiagonal sum to a range sum, and applying C(n,n-k) = C(n,k) term by term.",
+      "startLine": 39,
+      "endLine": 54,
+      "mathContext": "`Nat.add_choose_eq n n n` gives the convolution; `sum_antidiagonal_eq_sum_range_succ` exposes index $k$ with term $\\binom{n}{k}\\binom{n}{n-k}$; `Nat.choose_symm` (valid for $k \\le n$) turns it into $\\binom{n}{k}^2$."
+    },
+    {
+      "id": "central-binom",
+      "title": "Restatement via Nat.centralBinom",
+      "summary": "`centralBinom_eq_sum_sq`: the same identity using Mathlib's `Nat.centralBinom n`, obtained from the main theorem and `centralBinom_eq_two_mul_choose`.",
+      "startLine": 56,
+      "endLine": 60,
+      "mathContext": "`Nat.centralBinom n = C(2n,n)`, so the sum-of-squares formula transports verbatim to the `centralBinom` notation used elsewhere in Mathlib."
+    },
+    {
+      "id": "examples",
+      "title": "Numeric Instances",
+      "summary": "`sum_sq_choose_example` (Σ_{k<4} C(3,k)² = 20) and `central_binomial_three` (C(6,3) = 20), both closed by kernel `decide`, confirm 1²+3²+3²+1² = 20 = C(6,3).",
+      "startLine": 62,
+      "endLine": 71,
+      "mathContext": "Smallest non-trivial instance $n=3$: $\\binom{6}{3} = 20$ and $\\sum_{k=0}^{3}\\binom{3}{k}^2 = 1+9+9+1 = 20$."
+    }
+  ],
+  "conclusion": {
+    "summary": "Four theorems, all proved without sorry and depending only on Lean/Mathlib's foundational axioms: the central-binomial sum-of-squares identity C(2n,n) = Σ_{k=0}^{n} C(n,k)², its restatement with Nat.centralBinom, and a numeric instance at n = 3. The proof is a clean diagonal specialization of Vandermonde's convolution, answering the parent entry's open question about deriving the Chu–Vandermonde central case.",
+    "implications": "**Theoretical significance**: the identity expresses the largest entry of row $2n$ of Pascal's triangle as the squared $\\ell^2$-norm of row $n$, a fact behind the $\\binom{2n}{n}\\sim 4^n/\\sqrt{\\pi n}$ asymptotic and numerous generating-function arguments. **Structural lesson**: the derivation shows the standard Lean pattern for collapsing a convolution to a closed form — specialize the convolution, switch from the antidiagonal to a range sum to expose the summation index, then apply the relevant symmetry pointwise via `Finset.sum_congr`. **Practical**: the `central_binomial_eq_sum_sq` lemma is reusable infrastructure for combinatorial identities and lattice-path counts that hinge on $\\binom{2n}{n}$.",
+    "openQuestions": [
+      "Can the weighted refinement $\\sum_{k=0}^{n} k\\binom{n}{k}^2 = \\tfrac{n}{2}\\binom{2n}{n}$ (and more generally $\\sum_k k^m \\binom{n}{k}^2$) be derived from the same diagonal-Vandermonde framework?",
+      "Does the alternating analogue $\\sum_{k=0}^{2n} (-1)^k \\binom{2n}{k}^2 = (-1)^n \\binom{2n}{n}$ admit an equally short proof via Vandermonde with one argument negated?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-04-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry formalizing Vandermonde's convolution via coefficient comparison; its `vandermonde_equal` (m = n case) is the direct precursor of this diagonal r = n specialization"
+    },
+    {
+      "targetId": "binomial-theorem-oq-04-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry: the q-analog (q-Vandermonde) of the same convolution"
+    },
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "extends",
+      "description": "Grandparent entry on Vandermonde's identity"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Choose.Central",
+      "Mathlib.Algebra.BigOperators.NatAntidiagonal",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Nat",
+      "BigOperators",
+      "Finset"
+    ],
+    "namespace": "BinomialTheoremOQ04OQ02OQ03",
+    "lineCount": 71,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "privateCount": 0,
+    "definitionCount": 0,
+    "path": "Proofs/BinomialTheoremOQ04OQ02OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Chu, Shih-Chieh (Zhu Shijie)",
+      "title": "Jade Mirror of the Four Unknowns (Siyuan Yujian)",
+      "year": "1303",
+      "venue": "—",
+      "note": "Earliest known statement of the Chu–Vandermonde convolution, including the diagonal central-binomial case"
+    },
+    {
+      "authors": "Vandermonde, Alexandre-Théophile",
+      "title": "Mémoire sur des irrationnelles de différents ordres avec une application au cercle",
+      "year": "1772",
+      "venue": "Histoire de l'Académie Royale des Sciences",
+      "note": "European rediscovery of the convolution identity"
+    },
+    {
+      "authors": "Graham, Ronald L.; Knuth, Donald E.; Patashnik, Oren",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "venue": "Addison-Wesley, 2nd ed.",
+      "note": "Section 5.1–5.2: Vandermonde's convolution and the sum-of-squares special case"
+    }
+  ],
+  "sorries": 0
+}
