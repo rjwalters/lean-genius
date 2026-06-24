@@ -1,0 +1,34 @@
+[
+  {
+    "id": "fib-lucas-deg2-context",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 47 },
+    "type": "concept",
+    "title": "Completing the Degree-2 Fibonacci–Lucas Trio",
+    "content": "The parent proved the sign-carrying difference Lₙ² − 5Fₙ² = 4(−1)ⁿ. This entry adds its two companions — the sum-of-squares identity Lₙ² + 5Fₙ² = 2L₂ₙ and the cross identity Lₙ·Fₙ = F₂ₙ — to complete the classical trio of quadratic relations between the Fibonacci and Lucas sequences. The three are the P = 1, Q = −1, D = 5 case of the general Lucas-sequence relations Vₙ² − D·Uₙ² = 4Qⁿ. Mathlib has no Lucas sequence, so the parent defines `lucas` from scratch and this file works over ℤ throughout."
+  },
+  {
+    "id": "fib-lucas-deg2-doubling-cast",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 53, "endLine": 62 },
+    "type": "technique",
+    "title": "Lifting Truncated ℕ Subtraction to ℤ",
+    "content": "Mathlib's Nat.fib_two_mul reads F₂ₙ = Fₙ·(2Fₙ₊₁ − Fₙ), but its subtraction is truncated ℕ subtraction. To use it inside an integer ring computation, fib_two_mul_int discharges the side condition Fₙ ≤ 2Fₙ₊₁ — itself from Fₙ ≤ Fₙ₊₁ (fib_mono) — and applies `zify [hle]` so the subtraction becomes honest integer subtraction. This cast is the only non-algebraic step in the whole file."
+  },
+  {
+    "id": "fib-lucas-deg2-signfree",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 84, "endLine": 90 },
+    "type": "insight",
+    "title": "Why the Sum Carries No Sign",
+    "content": "Substituting Lₙ = 2Fₙ₊₁ − Fₙ and the Fₙ, Fₙ₊₁ form of L₂ₙ, both sides of Lₙ² + 5Fₙ² = 2L₂ₙ collapse to the same quadratic 4Fₙ₊₁² − 4FₙFₙ₊₁ + 6Fₙ². No (−1)ⁿ ever appears — `ring` closes it outright. All of the parity information lives in the parent's difference identity; the sum is its sign-free dual."
+  },
+  {
+    "id": "fib-lucas-deg2-bridge",
+    "proofId": "fibonacci-identities-oq-02-oq-01-oq-01-oq-02",
+    "range": { "startLine": 91, "endLine": 99 },
+    "type": "insight",
+    "title": "Sum and Difference Are One Fact",
+    "content": "Adding the sign-free sum Lₙ² + 5Fₙ² = 2L₂ₙ to the parent's sign-carrying difference Lₙ² = 5Fₙ² + 4(−1)ⁿ and cancelling the 5Fₙ² term returns the classical Lucas doubling formula L₂ₙ = Lₙ² − 2(−1)ⁿ. The two degree-2 identities are therefore two faces of a single relation, with `linarith` performing the recombination."
+  }
+]
