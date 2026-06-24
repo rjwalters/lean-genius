@@ -1,0 +1,241 @@
+{
+  "id": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+  "title": "The Pythagorean Means as Power Means: HM ≤ GM ≤ AM",
+  "slug": "amgm-inequality-oq-03-oq-02-oq-04-oq-02",
+  "description": "Identifies the three classical (Pythagorean) means as power means at the exponents r = -1, 0, 1 — HM = M₋₁, GM = M₀, AM = M₁ — and proves the two adjacent links of the power-mean monotonicity chain at these points, i.e. the full HM ≤ GM ≤ AM inequality M₋₁ ≤ M₀ ≤ M₁. Each link specialises Mathlib's weighted mean inequalities to uniform weights wᵢ = 1/n. 8 theorems/lemmas, 4 definitions, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AmgmInequalityOQ03OQ02OQ04OQ02.lean",
+    "tags": [
+      "analysis",
+      "inequalities",
+      "power-means",
+      "pythagorean-means",
+      "amgm"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (depends only on propext, Classical.choice, Quot.sound).",
+    "lineCount": 146,
+    "theoremCount": 8,
+    "definitionCount": 4,
+    "originalContributions": [
+      "powerMean_one / powerMean_zero / powerMean_neg_one: closed-form identification of the arithmetic, geometric and harmonic means as the power mean M_r at r = 1, 0, -1 — the bridge that places the three classical means inside the single power-mean object used by the parent entry",
+      "harm_le_geom_le_arith and powerMean_chain: the full HM ≤ GM ≤ AM inequality, stated both for the named means and as the power-mean monotonicity chain M₋₁ ≤ M₀ ≤ M₁, answering the open question posed in the parent (amgm-inequality-oq-03-oq-02-oq-04)"
+    ],
+    "prerequisites": [
+      "Unweighted power mean M_r(x) = (Σ xᵢ^r / n)^{1/r} on a finite, nonempty index type ι (matching the parent's definition)",
+      "Real power function rpow and its identities (Real.rpow_one, Real.rpow_neg_one, Real.rpow_neg, Real.finset_prod_rpow)",
+      "Mathlib's weighted mean inequalities (Real.geom_mean_le_arith_mean_weighted, Real.harm_mean_le_geom_mean_weighted)",
+      "Specialisation to uniform weights wᵢ = 1/n with Σ wᵢ = 1"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.geom_mean_le_arith_mean_weighted",
+        "description": "Weighted AM-GM: ∏ zᵢ^{wᵢ} ≤ ∑ wᵢ zᵢ for nonnegative weights summing to 1. Specialised to wᵢ = 1/n it gives GM ≤ AM (geomMean_le_arithMean).",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.harm_mean_le_geom_mean_weighted",
+        "description": "Weighted HM-GM: (∑ wᵢ/zᵢ)⁻¹ ≤ ∏ zᵢ^{wᵢ} for positive weights summing to 1. Specialised to wᵢ = 1/n it gives HM ≤ GM (harmMean_le_geomMean).",
+        "module": "Mathlib.Analysis.MeanInequalities"
+      },
+      {
+        "theorem": "Real.finset_prod_rpow",
+        "description": "∏ᵢ fᵢ^r = (∏ᵢ fᵢ)^r for nonnegative fᵢ. Converts the product-of-powers form returned by the weighted lemmas into the closed-form geometric mean (∏ xᵢ)^{1/n}.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_neg_one",
+        "description": "x^{-1} = x⁻¹ (rpow). Used inside the sum to rewrite Σ xᵢ^{-1} = Σ xᵢ⁻¹ when identifying M₋₁ with the harmonic mean.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_neg",
+        "description": "x^{-y} = (x^y)⁻¹ for 0 ≤ x. Applied to the outer exponent 1/(-1) = -1 to turn ((Σ xᵢ⁻¹)/n)^{-1} into the harmonic-mean closed form n/(Σ xᵢ⁻¹).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The arithmetic, geometric and harmonic means are the three classical 'Pythagorean means' studied by the Pythagorean school and codified by Archytas and Nicomachus; the chain HM ≤ GM ≤ AM (with equality iff all entries coincide) is one of the oldest inequalities in mathematics. The unifying observation that all three are values of a single one-parameter family of power means M_r(x) = (Σ xᵢ^r / n)^{1/r} — with HM = M₋₁, GM = M₀ (the limit value), AM = M₁ — is due to the systematic theory of means developed by Schur, Hardy, Littlewood and Pólya (Inequalities, 1934, §2.9) and the quasi-arithmetic-mean characterisation of Kolmogorov and Nagumo (1930). The monotonicity M_r ≤ M_s for r ≤ s places the full interpolation min = M₋∞ ≤ HM ≤ GM ≤ AM ≤ M₊∞ = max in a single picture; this entry formalises the three central, finitely-spaced links HM ≤ GM ≤ AM.",
+    "problemStatement": "For x : ι → ℝ on a finite nonempty index type with all xᵢ > 0, prove (1) HM = M₋₁, GM = M₀, AM = M₁ as closed forms of the power mean, and (2) the chain HM ≤ GM ≤ AM, equivalently M₋₁ ≤ M₀ ≤ M₁.",
+    "text": "The power mean M_r is the same piecewise object used by the parent entry. We first compute its values at r = 1, 0, -1: M₁ reduces to (Σ xᵢ)/n via rpow_one, M₀ is the geometric mean by definition, and M₋₁ reduces to n/(Σ xᵢ⁻¹) via rpow_neg_one (inside the sum) and rpow_neg (on the outer exponent 1/(-1) = -1). The two inequalities then come from Mathlib's weighted mean inequalities at uniform weights wᵢ = 1/n: GM ≤ AM is Real.geom_mean_le_arith_mean_weighted after converting ∏ xᵢ^{1/n} = (∏ xᵢ)^{1/n} with Real.finset_prod_rpow, and HM ≤ GM is Real.harm_mean_le_geom_mean_weighted after rewriting Σ (1/n)/xᵢ = (1/n) Σ xᵢ⁻¹.",
+    "proofStrategy": "Closed-form identities (powerMean_one, powerMean_zero, powerMean_neg_one) bridge the named means and the power-mean object; the two inequality theorems specialise the corresponding weighted Mathlib lemmas to uniform weights; powerMean_chain rewrites the chain through those identities so it reads as M₋₁ ≤ M₀ ≤ M₁.",
+    "keyInsights": [
+      "All three Pythagorean means are values of one power-mean object: HM = M₋₁, GM = M₀, AM = M₁",
+      "Uniform weights wᵢ = 1/n turn the general weighted AM-GM and HM-GM lemmas into the unweighted classical chain",
+      "M₋₁ = n/(Σ xᵢ⁻¹): the outer exponent 1/(-1) = -1 plus rpow_neg gives the harmonic-mean closed form",
+      "∏ xᵢ^{1/n} = (∏ xᵢ)^{1/n} (Real.finset_prod_rpow) is the only nontrivial rewrite needed to match the geometric-mean form"
+    ],
+    "prerequisites": [
+      "powerMean definition M_r(x) = (Σ xᵢ^r / n)^{1/r} (r ≠ 0), M₀ = (∏ xᵢ)^{1/n}",
+      "Real.geom_mean_le_arith_mean_weighted and Real.harm_mean_le_geom_mean_weighted",
+      "rpow identities: Real.rpow_one, Real.rpow_neg_one, Real.rpow_neg, Real.finset_prod_rpow"
+    ]
+  },
+  "conclusion": {
+    "summary": "The classical HM ≤ GM ≤ AM chain is proved as the power-mean monotonicity links M₋₁ ≤ M₀ ≤ M₁, with the three means identified in closed form. 8 theorems/lemmas, 4 definitions, 0 sorries, 0 axioms, 146 lines.",
+    "implications": "Closes the open question posed by the parent entry (amgm-inequality-oq-03-oq-02-oq-04): the parent established the extreme limits M_r → max/min and asked for the finite Pythagorean interpolation, which this entry supplies. Together they give the endpoints (max, min) and the central rungs (HM, GM, AM) of the full power-mean ladder.",
+    "openQuestions": [
+      "Prove the full monotonicity M_r(x) ≤ M_s(x) for all r ≤ s (not just the three exponents -1, 0, 1), via convexity of t ↦ t^{s/r} and Jensen's inequality",
+      "Establish the equality case: HM = GM = AM (equivalently M_r constant in r) holds iff all xᵢ are equal"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "powerMean_one",
+      "type": "supporting",
+      "description": "The power mean at exponent 1 equals the arithmetic mean (Σ xᵢ)/n.",
+      "leanType": "(x : ι → ℝ) → powerMean x 1 = arithMean x"
+    },
+    {
+      "name": "powerMean_zero",
+      "type": "supporting",
+      "description": "The power mean at exponent 0 equals the geometric mean (∏ xᵢ)^{1/n} (by definition).",
+      "leanType": "(x : ι → ℝ) → powerMean x 0 = geomMean x"
+    },
+    {
+      "name": "powerMean_neg_one",
+      "type": "supporting",
+      "description": "The power mean at exponent -1 equals the harmonic mean n/(Σ xᵢ⁻¹), for positive xᵢ.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) → powerMean x (-1) = harmMean x"
+    },
+    {
+      "name": "geomMean_le_arithMean",
+      "type": "core",
+      "description": "GM ≤ AM (the link M₀ ≤ M₁): the geometric mean is at most the arithmetic mean. Specialises Real.geom_mean_le_arith_mean_weighted to uniform weights.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 ≤ x i) → geomMean x ≤ arithMean x"
+    },
+    {
+      "name": "harmMean_le_geomMean",
+      "type": "core",
+      "description": "HM ≤ GM (the link M₋₁ ≤ M₀): the harmonic mean is at most the geometric mean. Specialises Real.harm_mean_le_geom_mean_weighted to uniform weights.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) → harmMean x ≤ geomMean x"
+    },
+    {
+      "name": "harm_le_geom_le_arith",
+      "type": "core",
+      "description": "The full HM ≤ GM ≤ AM chain, stated for the named Pythagorean means.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) → harmMean x ≤ geomMean x ∧ geomMean x ≤ arithMean x"
+    },
+    {
+      "name": "powerMean_chain",
+      "type": "core",
+      "description": "The power-mean monotonicity chain M₋₁ ≤ M₀ ≤ M₁ at the three classical exponents, obtained from the chain via the closed-form identities.",
+      "leanType": "(x : ι → ℝ) (hx : ∀ i, 0 < x i) → powerMean x (-1) ≤ powerMean x 0 ∧ powerMean x 0 ≤ powerMean x 1"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "§2.9–2.10: the power means M_r interpolate the classical means, with HM = M₋₁, GM = M₀, AM = M₁, and the monotonicity M_r ≤ M_s for r ≤ s yields HM ≤ GM ≤ AM."
+    },
+    {
+      "authors": "Kolmogorov, Andrey N.",
+      "title": "Sur la notion de la moyenne",
+      "year": "1930",
+      "venue": "Atti della Reale Accademia Nazionale dei Lincei. Rendiconti, 12, 388–391",
+      "note": "Axiomatic characterisation of the quasi-arithmetic means; the power means are the canonical one-parameter family containing HM, GM and AM."
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications, Vol. 560, Springer (Kluwer)",
+      "doi": "10.1007/978-94-017-0399-4",
+      "note": "Chapter II surveys the Pythagorean means and the power-mean inequality; the chain HM ≤ GM ≤ AM is Theorem 1 of §II.2."
+    },
+    {
+      "authors": "Mathlib contributors",
+      "title": "Mathlib.Analysis.MeanInequalities",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/MeanInequalities.html",
+      "note": "Provides Real.geom_mean_le_arith_mean_weighted and Real.harm_mean_le_geom_mean_weighted, the weighted mean inequalities specialised here to uniform weights."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "AmgmOQ03OQ02OQ04OQ02",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/AmgmInequalityOQ03OQ02OQ04OQ02.lean",
+    "theoremCount": 8,
+    "definitionCount": 4
+  },
+  "crossReferences": [
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02-oq-04",
+      "relationship": "parent",
+      "description": "Extreme Power Mean Limits: M_r → max and min (poses the HM ≤ GM ≤ AM interpolation as an open question)"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03-oq-02",
+      "relationship": "foundational",
+      "description": "Power Mean Limit: lim_{r→0} M_r = GM (identifies M₀ with the geometric mean)"
+    },
+    {
+      "targetId": "amgm-inequality-oq-03",
+      "relationship": "foundational",
+      "description": "Power Mean Interpolation: Weighted Power Means"
+    },
+    {
+      "targetId": "amgm-inequality",
+      "relationship": "foundational",
+      "description": "Arithmetic Mean - Geometric Mean Inequality"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring documenting the Pythagorean means as power means and the HM ≤ GM ≤ AM chain, Mathlib import, namespace/open declarations, and the finite nonempty index type ι."
+    },
+    {
+      "id": "sec-definitions",
+      "title": "Definitions",
+      "startLine": 37,
+      "endLine": 51,
+      "summary": "The power mean M_r (matching the parent), plus the arithmetic, geometric and harmonic means in closed form, and a private nonzero-cardinality lemma."
+    },
+    {
+      "id": "sec-identities",
+      "title": "The Three Classical Means as Power Means",
+      "startLine": 53,
+      "endLine": 87,
+      "summary": "powerMean_one (M₁ = AM), powerMean_zero (M₀ = GM, by definition) and powerMean_neg_one (M₋₁ = HM, via rpow_neg_one inside the sum and rpow_neg on the outer exponent)."
+    },
+    {
+      "id": "sec-links",
+      "title": "The Two Links of the Chain",
+      "startLine": 88,
+      "endLine": 133,
+      "summary": "geomMean_le_arithMean (GM ≤ AM) and harmMean_le_geomMean (HM ≤ GM), each specialising the corresponding weighted Mathlib mean inequality to uniform weights wᵢ = 1/n."
+    },
+    {
+      "id": "sec-chain",
+      "title": "The Full Chain",
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "harm_le_geom_le_arith (HM ≤ GM ≤ AM for the named means) and powerMean_chain (the same as M₋₁ ≤ M₀ ≤ M₁ via the closed-form identities)."
+    }
+  ],
+  "sorries": 0
+}
