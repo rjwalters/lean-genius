@@ -5,6 +5,18 @@
     "range": { "startLine": 1, "endLine": 52 },
     "type": "insight",
     "title": "Header: Expected Fixed Points via Orbit Counting",
+    "mathContext": "$\\mathbb{E}[\\#\\mathrm{Fix}] = \\frac{1}{|S_n|}\\sum_{\\sigma \\in S_n}|\\mathrm{Fix}\\,\\sigma| = \\frac{(\\#\\text{orbits})\\cdot|S_n|}{|S_n|} = \\#\\text{orbits} = 1$ for $n \\ge 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Cauchy–Frobenius / Burnside lemma",
+      "1/e derangement law",
+      "Expected value (first moment)",
+      "Transitive group action"
+    ],
+    "prerequisites": [
+      "Permutations and fixed points",
+      "Uniform distribution on a finite group"
+    ],
     "content": "The parent (derangements-oq-03-oq-03) identifies the trace of a random permutation matrix with the number of fixed points of the underlying permutation and studies P(trace = 0) — the 1/e derangement law. This entry answers its complementary first-moment question: the expected trace, i.e. the expected number of fixed points, is exactly 1 for every n ≥ 1. The chosen route is not linearity of indicators but the Cauchy–Frobenius/Burnside count ∑_g |Fix g| = (#orbits)·|G|, specialised to the transitive natural action of Sₙ on Fin n, where the single orbit makes the total 1·n! = n!."
   },
   {
@@ -13,6 +25,18 @@
     "range": { "startLine": 63, "endLine": 86 },
     "type": "technique",
     "title": "Reconciling Two Notions of Fixed Set",
+    "mathContext": "$\\mathrm{MulAction.fixedBy}\\,(\\mathrm{Fin}\\,n)\\,\\sigma = \\mathrm{Function.fixedPoints}\\,\\sigma = \\{x \\mid \\sigma x = x\\}$; $(\\mathrm{fixedPoints}\\,\\sigma).\\mathrm{ncard} = \\mathrm{Fintype.card}\\,(\\mathrm{fixedBy}\\,(\\mathrm{Fin}\\,n)\\,\\sigma)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "MulAction.fixedBy vs Function.fixedPoints",
+      "Scalar action σ • x = σ x",
+      "Set.ncard ↔ Fintype.card",
+      "Definitional unfolding"
+    ],
+    "prerequisites": [
+      "Group actions and fixed sets",
+      "Set vs Fintype cardinality"
+    ],
     "content": "The parent's trace formula counts fixed points with Set.ncard of Function.fixedPoints σ, while Burnside's lemma counts with Fintype.card of the group-action set MulAction.fixedBy (Fin n) σ. Both are {x | σ x = x}: fixedBy_eq_fixedPoints unfolds the Equiv.Perm scalar action σ • x = σ x to identify the sets, and ncard_fixedPoints_eq_card_fixedBy converts Set.ncard to Fintype.card through Set.ncard_eq_toFinset_card' and Set.toFinset_card. This makes the parent's trace bridge composable with the Burnside count."
   },
   {
@@ -21,6 +45,18 @@
     "range": { "startLine": 93, "endLine": 110 },
     "type": "insight",
     "title": "Transitivity Gives a Single Orbit",
+    "mathContext": "$S_n$ acts pretransitively on $\\mathrm{Fin}\\,n$; for $n \\ge 1$, $\\mathrm{Fintype.card}\\,(\\text{orbit quotient}) = 1$, so $\\#\\text{orbits} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pretransitive / transitive action",
+      "Orbit space (orbitRel.Quotient)",
+      "pretransitive_iff_unique_quotient_of_nonempty",
+      "Number of orbits"
+    ],
+    "prerequisites": [
+      "Orbits and the orbit–stabilizer setup",
+      "Unique type / Fintype.card_unique"
+    ],
     "content": "The natural action of Perm (Fin n) on Fin n is pretransitive (Mathlib's Equiv.Perm.applyMulAction instance: any point can be sent to any other). For n ≥ 1 the space is nonempty, so pretransitive_iff_unique_quotient_of_nonempty supplies a Unique structure on the orbit quotient, and card_orbits_eq_one reads off Fintype.card = 1. The expected number of fixed points is therefore literally the number of orbits of Sₙ on Fin n — a structural reading of the value 1."
   },
   {
@@ -29,6 +65,18 @@
     "range": { "startLine": 117, "endLine": 134 },
     "type": "technique",
     "title": "The Burnside Count Collapses to n!",
+    "mathContext": "$\\sum_{\\sigma \\in S_n}|\\mathrm{Fix}\\,\\sigma| = (\\#\\text{orbits})\\cdot|S_n| = 1 \\cdot n! = n!$ (using $|S_n| = n!$ via Fintype.card_perm, Fintype.card_fin).",
+    "significance": "key",
+    "relatedConcepts": [
+      "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+      "Burnside orbit-counting",
+      "Fintype.card_perm = n!",
+      "No stabilizer computation needed"
+    ],
+    "prerequisites": [
+      "Cauchy–Frobenius lemma",
+      "Cardinality of the symmetric group"
+    ],
     "content": "sum_card_fixedBy applies MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to the symmetric-group action: ∑_{σ ∈ Sₙ} |Fix σ| = (#orbits)·|Sₙ|. With #orbits = 1 (card_orbits_eq_one) and |Sₙ| = n! (Fintype.card_perm, Fintype.card_fin) the right side is 1·n! = n!. No per-point stabiliser computation is needed; the transitive action does the bookkeeping."
   },
   {
@@ -37,6 +85,18 @@
     "range": { "startLine": 136, "endLine": 157 },
     "type": "insight",
     "title": "From Total to Expected Value",
+    "mathContext": "$\\frac{1}{|S_n|}\\sum_{\\sigma}\\mathrm{trace}(\\sigma.\\mathrm{permMatrix}\\,\\mathbb{R}) = \\frac{n!}{n!} = 1$, since $\\mathrm{trace}(\\sigma.\\mathrm{permMatrix}\\,\\mathbb{R}) = |\\mathrm{Fix}\\,\\sigma|$ and $|S_n| = n! \\ne 0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Matrix.trace_permutation",
+      "Average / expectation over a finite group",
+      "Nat.factorial_ne_zero",
+      "First-moment companion to 1/e"
+    ],
+    "prerequisites": [
+      "Trace of a permutation matrix",
+      "Division in ℝ and div_self"
+    ],
     "content": "trace_permMatrix_eq_card_fixedBy recasts the parent's Matrix.trace_permutation through the fixedBy count, sum_trace_permMatrix sums it to (n! : ℝ), and expected_trace_eq_one divides by |Perm (Fin n)| = n! to land on 1. The denominator is written as the genuine count of permutations, so the statement is manifestly an average over the uniform distribution on Sₙ — the first-moment companion of the parent's 1/e derangement probability."
   }
 ]
