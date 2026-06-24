@@ -1,0 +1,70 @@
+[
+  {
+    "id": "ann-sbpoq0102-header",
+    "proofId": "summation-by-parts-oq-01-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 41
+    },
+    "type": "concept",
+    "title": "Module Overview and the Numerator Polynomial",
+    "content": "This module gives the closed form of the finite second-moment sum S(n) = Σ_{k<n} k²·rᵏ, the moment after the parent's Σ k·rᵏ. The strategy is to clear the (1−r)³ denominator and prove a polynomial identity by induction. The private definition `num r n = r(r+1) + rⁿ·(−n²(r−1)² + 2n·r(r−1) − r(r+1))` packages the numerator so the main identity reads (1−r)³·S(n) = num r n.",
+    "mathContext": "The numerator separates the n-independent part r(r+1) (governing the n→∞ limit Σ_{k≥0} k²rᵏ = r(r+1)/(1−r)³ for |r|<1) from the rⁿ boundary correction.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetico-geometric sum",
+      "second moment",
+      "geometric series differentiation"
+    ],
+    "prerequisites": [
+      "Finite sums over Finset.range",
+      "Closed forms of moment sums Σ kᵐ rᵏ"
+    ]
+  },
+  {
+    "id": "ann-sbpoq0102-main",
+    "proofId": "summation-by-parts-oq-01-oq-02",
+    "range": {
+      "startLine": 43,
+      "endLine": 52
+    },
+    "type": "key_step",
+    "title": "Main Theorem: Division-Free Identity by Induction",
+    "content": "sq_geom_sum proves (1−r)³·Σ_{k<n} k²·rᵏ = num r n. The induction's zero case is closed by simp (empty sum = 0, and num r 0 = 0). The successor case rewrites Finset.sum_range_succ to peel the top term m²·rᵐ, distributes with mul_add, applies the inductive hypothesis, unfolds num at both m and m+1, and uses pow_succ for rᵐ⁺¹ = rᵐ·r; after push_cast the goal is a true polynomial identity in r and the atom rᵐ, closed by ring.",
+    "mathContext": "The step identity is num r m + (1−r)³·m²·rᵐ = num r (m+1). Holding rᵐ fixed as an atom and substituting rᵐ⁺¹ = rᵐ·r makes both sides equal polynomials, so no field arithmetic is needed.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Finset.sum_range_succ",
+      "pow_succ",
+      "ring",
+      "induction"
+    ],
+    "prerequisites": [
+      "Induction on Finset.range sums",
+      "Polynomial normalization via ring"
+    ]
+  },
+  {
+    "id": "ann-sbpoq0102-div",
+    "proofId": "summation-by-parts-oq-01-oq-02",
+    "range": {
+      "startLine": 54,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Closed Form for r ≠ 1 and Sanity Checks",
+    "content": "sq_geom_sum_div derives the divided closed form S(n) = num r n / (1−r)³ for r ≠ 1: it establishes (1−r)³ ≠ 0 from r ≠ 1 (pow_ne_zero ∘ sub_ne_zero) and uses eq_div_iff together with mul_comm to reduce the goal to the division-free sq_geom_sum. Two examples then check the r = 2, n = 4 case (0 + 2 + 16 + 72 = 90) both by direct evaluation and against the identity.",
+    "mathContext": "For r ≠ 1 the denominator (1−r)³ is nonzero, so the polynomial identity transfers to the rational closed form. The numerical check confirms num 2 4 = (1−2)³·90 = −90.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "eq_div_iff",
+      "pow_ne_zero",
+      "sub_ne_zero",
+      "sanity check"
+    ],
+    "prerequisites": [
+      "Division by a nonzero field element",
+      "The main division-free identity"
+    ]
+  }
+]
