@@ -1,0 +1,62 @@
+[
+  {
+    "id": "pyth-oq0801-ann-four-even",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 70, "endLine": 79 },
+    "type": "technique",
+    "title": "The even leg 2mn is divisible by 4",
+    "content": "In the Euclid form, the even leg is 2mn with m, n of opposite parity, so exactly one of m, n is even. Whichever it is, mn is even — write the even factor as 2·a — and then 2mn = 4·(a·(other factor)). The witness for 4 ∣ 2mn is produced directly (⟨a*n, by rw [ha]; ring⟩), no mod-8 case analysis is needed once the parametrization is available.",
+    "mathContext": "$2mn$ with one of $m,n$ even is $4 \\cdot (\\text{integer})$.",
+    "significance": "key",
+    "relatedConcepts": ["Euclid parametrization", "parity", "divisibility witness"],
+    "prerequisites": ["opposite parity of m, n in primitive triples"]
+  },
+  {
+    "id": "pyth-oq0801-ann-odd-leg",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 81, "endLine": 97 },
+    "type": "insight",
+    "title": "The odd leg m²−n² is not even, a fortiori not divisible by 4",
+    "content": "With m, n of opposite parity, m²−n² is even−odd or odd−even, hence odd (Even.sub_odd / Odd.sub_even applied to the squares). An odd integer is not divisible by 2, so it cannot be divisible by 4. Closing with omega from `(m²−n²) % 2 = 1` and `m²−n² = 4c` (treating m², n² as atoms) gives the contradiction. This pins the 4-divisibility to a unique leg.",
+    "mathContext": "Odd $\\Rightarrow \\neg 2 \\mid \\Rightarrow \\neg 4 \\mid$.",
+    "significance": "important",
+    "relatedConcepts": ["parity of squares", "omega", "Even/Odd lemmas"],
+    "prerequisites": ["parity arithmetic"]
+  },
+  {
+    "id": "pyth-oq0801-ann-three-decide",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 99, "endLine": 131 },
+    "type": "technique",
+    "title": "Exactly one leg divisible by 3 via a single ZMod 3 decide",
+    "content": "Cast m, n into ZMod 3 and run one finite decide over all nine residue pairs: away from (0,0), exactly one of a²−b², 2ab is zero (an XOR, stated as a disjunction of conjunctions). The excluded (0,0) corresponds to 3 ∣ m ∧ 3 ∣ n, impossible by coprimality (IsCoprime.isUnit_of_dvd' would make 3 a unit). Transport each ZMod equality to integer divisibility through ZMod.intCast_zmod_eq_zero_iff_dvd and push_cast.",
+    "mathContext": "Over $\\mathbb{Z}/3$, with $(a,b)\\neq(0,0)$: exactly one of $a^2-b^2$, $2ab$ vanishes.",
+    "significance": "key",
+    "relatedConcepts": ["ZMod decide", "quadratic residues mod 3", "coprimality", "intCast_zmod_eq_zero_iff_dvd"],
+    "prerequisites": ["modular arithmetic", "squares modulo 3"]
+  },
+  {
+    "id": "pyth-oq0801-ann-main",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 133, "endLine": 157 },
+    "type": "insight",
+    "title": "Per-leg theorems from the coprime classification",
+    "content": "PythagoreanTriple.coprime_classification gives the primitive triple, up to swapping the legs, as (m²−n², 2mn) with Int.gcd m n = 1 and opposite parity. The leg-swap disjunction is handled by rcases and a relabelling, so both theorems state the clean 'exactly one of x, y' form (an Or of And) with no preferred leg. The z-sign disjunction from the classification is discarded — the divisibility of the legs does not see it.",
+    "mathContext": "Up to $x \\leftrightarrow y$: exactly one of $x,y$ is divisible by $4$, exactly one by $3$.",
+    "significance": "key",
+    "relatedConcepts": ["coprime_classification", "leg symmetry", "primitive triples"],
+    "prerequisites": ["Euclid parametrization"]
+  },
+  {
+    "id": "pyth-oq0801-ann-primitivity",
+    "proofId": "pythagorean-triples-oq-08-oq-01",
+    "range": { "startLine": 159, "endLine": 178 },
+    "type": "insight",
+    "title": "Why primitivity is indispensable",
+    "content": "Recovering 12 ∣ x·y from the two per-leg facts (via IsCoprime.mul_dvd on the coprime 4 and 3) shows the per-leg statement implies the parent's product form. But the converse fails: (9,12,15) = 3·(3,4,5) has 3 ∣ 9 and 3 ∣ 12, so 'exactly one leg divisible by 3' is false for this non-primitive triple. The parent's 12 ∣ x·y survives scaling; the per-leg refinement does not. The (3,4,5) instance confirms leg 4 is the unique 4-leg and leg 3 the unique 3-leg.",
+    "mathContext": "$(9,12,15)$ breaks per-leg; $(3,4,5)$ is the minimal witness with $4\\mid4,\\,3\\mid3$.",
+    "significance": "important",
+    "relatedConcepts": ["primitivity", "IsCoprime.mul_dvd", "scaling invariance"],
+    "prerequisites": ["coprimality of 4 and 3"]
+  }
+]

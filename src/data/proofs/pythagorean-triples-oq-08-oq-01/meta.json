@@ -1,0 +1,165 @@
+{
+  "id": "pythagorean-triples-oq-08-oq-01",
+  "title": "Per-Leg Divisibility in Primitive Pythagorean Triples",
+  "slug": "pythagorean-triples-oq-08-oq-01",
+  "description": "In a primitive Pythagorean triple x²+y²=z², exactly one leg is divisible by 4 and exactly one leg is divisible by 3 (and the other leg by neither). This sharpens the parent's product-level 12 ∣ x·y to a per-leg statement that is true only for primitive triples. The even leg 2mn is divisible by 4 and the odd leg m²−n² is not even; a single ZMod 3 decide pins the 3-divisibility to exactly one leg.",
+  "meta": {
+    "author": "researcher-8",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PythagoreanTriplesOQ08OQ01.lean",
+    "tags": [
+      "number-theory",
+      "pythagorean-triples",
+      "divisibility",
+      "modular-arithmetic",
+      "primitive-triples",
+      "diophantine"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "PythagoreanTriple.coprime_classification",
+        "description": "A primitive triple is, up to swapping legs and the sign of z, the Euclid form (m²−n², 2mn, m²+n²) with Int.gcd m n = 1 and m, n of opposite parity",
+        "module": "Mathlib.NumberTheory.PythagoreanTriples"
+      },
+      {
+        "theorem": "ZMod.intCast_zmod_eq_zero_iff_dvd",
+        "description": "(↑a : ZMod b) = 0 ↔ (b : ℤ) ∣ a — transports the ZMod 3 decide to integer divisibility",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Int.isCoprime_iff_gcd_eq_one",
+        "description": "IsCoprime m n ↔ Int.gcd m n = 1 — used to exclude 3 ∣ m ∧ 3 ∣ n and to combine 4 and 3",
+        "module": "Mathlib.RingTheory.Int.Basic"
+      },
+      {
+        "theorem": "IsCoprime.mul_dvd",
+        "description": "IsCoprime a b → a ∣ n → b ∣ n → a * b ∣ n — combines the 4- and 3-divisibility into 12 ∣ x·y",
+        "module": "Mathlib.RingTheory.Coprime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "four_dvd_two_mul_mul: the even leg 2mn is divisible by 4 (opposite parity makes mn even)",
+      "not_four_dvd_sq_sub: the odd leg m²−n² is odd, hence not divisible by 2 — a fortiori not by 4",
+      "three_dvd_exactly_one: a single ZMod 3 decide shows exactly one of m²−n², 2mn vanishes mod 3, given Int.gcd m n = 1",
+      "exactly_one_leg_div_four: primitive triple ⟹ exactly one leg divisible by 4 (the even leg), the other not",
+      "exactly_one_leg_div_three: primitive triple ⟹ exactly one leg divisible by 3, the other not",
+      "twelve_dvd_mul: the primitive corollary 12 ∣ x·y recovered from the two per-leg facts"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. The ZMod 3 step uses `decide` (kernel reduction, not `native_decide`), so no Lean.ofReduceBool. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. The mathematical hypothesis is primitivity (Int.gcd x y = 1), which is part of the statement, not an axiom.",
+    "lineCount": 200,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The classical Euclid parametrization of primitive Pythagorean triples — (m²−n², 2mn, m²+n²) with m, n coprime of opposite parity — encodes fine divisibility structure of the legs that the product-level statements hide. That exactly one leg of a primitive triple is divisible by 4 and exactly one by 3 is the per-leg refinement of the elementary fact that 12 divides the product of the legs. It is a standard exercise in Sierpiński's 'Pythagorean Triangles', and crucially is true only for primitive triples: scaling destroys it.",
+    "problemStatement": "The parent entry pythagorean-triples-oq-08 proves 12 ∣ x·y at the level of the product. Its first open question asks: can the per-leg statement — exactly one leg divisible by 4, exactly one by 3 — be formalised for primitive triples?\n\n**Answer: Yes.** Reading off Mathlib's Euclid parametrization, the even leg 2mn is divisible by 4 while the odd leg m²−n² is not even; and a finite ZMod 3 check pins the 3-divisibility to exactly one leg, using coprimality to exclude the case 3 ∣ m ∧ 3 ∣ n.",
+    "text": "In a primitive Pythagorean triple, exactly one leg is divisible by 4 and exactly one leg by 3 — the per-leg sharpening of the parent's 12 ∣ x·y.",
+    "proofStrategy": "Apply PythagoreanTriple.coprime_classification to write the primitive triple, up to swapping the legs, as (m²−n², 2mn) with Int.gcd m n = 1 and m, n of opposite parity. (1) Divisibility by 4: opposite parity makes one of m, n even, so 2mn is a multiple of 4; meanwhile m²−n² is even−odd (or odd−even) = odd, so it is not divisible by 2, hence not by 4. (2) Divisibility by 3: cast m, n into ZMod 3 and run a single decide over all residue pairs (excluding 0,0, impossible by coprimality) showing exactly one of m²−n², 2mn is zero; transport via ZMod.intCast_zmod_eq_zero_iff_dvd. (3) Combine the two per-leg facts via IsCoprime.mul_dvd to recover 12 ∣ x·y for primitive triples.",
+    "keyInsights": [
+      "Primitivity is essential and the statement is false without it: (9,12,15) = 3·(3,4,5) has 3 ∣ 9 and 3 ∣ 12, so 'exactly one leg divisible by 3' fails — only the parent's scale-invariant product statement survives scaling",
+      "The 4-divisibility is sharp at the level of the parametrization: the even leg is 2mn and opposite parity gives an extra factor of 2, so 4 ∣ 2mn with no mod-8 case analysis needed once the Euclid form is in hand",
+      "The odd leg m²−n² is genuinely odd, so it fails even 2-divisibility — the 4-divisibility lands on a unique leg",
+      "The 3-divisibility is a single finite ZMod 3 decide: away from the coprimality-excluded (0,0), exactly one of m²−n², 2mn vanishes mod 3 across all nine residue pairs",
+      "Coprimality enters twice: to exclude 3 ∣ m ∧ 3 ∣ n (via IsCoprime.isUnit_of_dvd') and to combine the coprime factors 4 and 3 into 12"
+    ],
+    "prerequisites": [
+      "The Euclid parametrization of primitive Pythagorean triples",
+      "Modular arithmetic and residues (ZMod n)",
+      "Divisibility and coprimality over ℤ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "parametrized-helpers",
+      "title": "Parametrized Leg Helpers",
+      "startLine": 70,
+      "endLine": 97,
+      "summary": "From opposite parity: 4 ∣ 2mn (the even leg) and 4 ∤ m²−n² (the odd leg is odd).",
+      "mathContext": "$2mn$ with one of $m,n$ even is a multiple of $4$; $m^2-n^2$ is odd."
+    },
+    {
+      "id": "three-divisibility",
+      "title": "Exactly One Leg Divisible by 3",
+      "startLine": 99,
+      "endLine": 131,
+      "summary": "A ZMod 3 decide: away from the coprimality-excluded (0,0), exactly one of m²−n², 2mn is ≡ 0 mod 3.",
+      "mathContext": "Squares are $\\{0,1\\}$ mod 3; with $\\gcd(m,n)=1$ precisely one of $m^2-n^2$, $2mn$ vanishes."
+    },
+    {
+      "id": "per-leg-theorems",
+      "title": "Per-Leg Divisibility Theorems",
+      "startLine": 133,
+      "endLine": 157,
+      "summary": "exactly_one_leg_div_four and exactly_one_leg_div_three, read off the Euclid form up to swapping the legs.",
+      "mathContext": "Exactly one of $x,y$ is divisible by $4$; exactly one by $3$."
+    },
+    {
+      "id": "corollary-and-instance",
+      "title": "Primitive 12 ∣ x·y and the (3,4,5) Instance",
+      "startLine": 159,
+      "endLine": 178,
+      "summary": "Recover 12 ∣ x·y from the two per-leg facts, and check (3,4,5): leg 4 is the unique 4-leg, leg 3 the unique 3-leg.",
+      "mathContext": "$\\gcd(4,3)=1 \\Rightarrow 12 \\mid xy$; for $(3,4,5)$: $4\\mid 4,\\ 3\\mid 3$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Sierpiński, Wacław",
+      "title": "Pythagorean Triangles",
+      "year": "1962",
+      "note": "Divisibility properties of the legs of primitive Pythagorean triangles via the Euclid parametrization"
+    },
+    {
+      "authors": "Hardy, G. H.; Wright, E. M.",
+      "title": "An Introduction to the Theory of Numbers",
+      "year": "1938",
+      "note": "Standard reference on the classification of Pythagorean triples"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "pythagorean-triples-oq-08",
+      "relationship": "extends",
+      "description": "Sharpens the parent's product-level 12 ∣ x·y to a per-leg statement (exactly one leg divisible by 4, exactly one by 3), answering its first open question. Unlike the parent, the per-leg form requires primitivity."
+    },
+    {
+      "targetId": "pythagorean-triples-oq-06",
+      "relationship": "related",
+      "description": "oq-06 establishes the Euclid m,n parametrization of primitive triples that this entry uses to read off the per-leg divisibility."
+    },
+    {
+      "targetId": "pythagorean-triples-oq-07",
+      "relationship": "related",
+      "description": "oq-07 proves exactly one leg is even; this entry refines that even leg to being divisible by 4, and adds the 3-divisibility of a unique leg."
+    }
+  ],
+  "conclusion": {
+    "summary": "In a primitive Pythagorean triple, exactly one leg is divisible by 4 (the even leg) and exactly one leg by 3, machine-checked at 0 axioms via Mathlib's Euclid parametrization and a single ZMod 3 decide. This per-leg refinement of the parent's 12 ∣ x·y is true only for primitive triples.",
+    "implications": "Shows that the per-leg divisibility structure — invisible at the product level — is read directly off the coprime classification, and isolates exactly where primitivity is indispensable.",
+    "openQuestions": [
+      "Per-leg modulo other primes: for which primes p, and under what congruence condition on the triple, does exactly one leg (or side) carry the factor p in a primitive triple?",
+      "Quantify the joint distribution: among primitive triples with hypotenuse below N, what is the density of those whose even leg is divisible by 8 (rather than just 4)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "PythagoreanTriple"
+    ],
+    "namespace": "PythagoreanPerLeg",
+    "lineCount": 200,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/PythagoreanTriplesOQ08OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
