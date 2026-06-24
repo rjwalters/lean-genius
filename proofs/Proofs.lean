@@ -3128,6 +3128,7 @@ import Proofs.KummerTheoremOQ01OQ01
 import Proofs.KummerTheoremOQ02
 import Proofs.KummerTheoremOQ03
 import Proofs.KummerTheoremOQ04
+import Proofs.KummerTheoremOQ04OQ02
 import Proofs.LHopital
 import Proofs.LHopitalOQ01
 import Proofs.LHopitalOQ02
