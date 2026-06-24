@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-wlgv-structure",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 60,
+      "endLine": 90
+    },
+    "type": "definition",
+    "title": "Weighted-Path Configuration and Generating-Function Matrix",
+    "content": "`WeightedLGV R r` abstracts a weighted LGV configuration over a commutative ring $R$: for each source $i$ and target $j$, a finite type `Path i j` of lattice paths and a weight `weight i j : Path i j → R`. The generating-function matrix is $H_{ij} = \\sum_{P : i \\to j} w(P)$ (`WeightedLGV.matrix`), the weighted replacement for the parent's binomial path-count matrix. A $\\sigma$-path family (`Family σ`) chooses a path $i \\to \\sigma(i)$ for every $i$, with multiplicative weight $\\prod_i w(f_i)$ (`familyWeight`)."
+  },
+  {
+    "id": "ann-wlgv-algebraic-core",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 101,
+      "endLine": 115
+    },
+    "type": "theorem",
+    "title": "Algebraic Core: det H = Signed Generating Function of Path Families",
+    "content": "`det_matrix_eq_signed_family_sum` is the unconditional algebraic half of weighted LGV: $\\det H = \\sum_\\sigma \\operatorname{sign}(\\sigma)\\, \\sum_{f : \\text{Family }\\sigma} \\prod_i w(f_i)$. The proof transposes to the column Leibniz form ($\\det H = \\det H^\\top$, then `Matrix.det_apply`) giving $\\sum_\\sigma \\operatorname{sign}(\\sigma)\\prod_i H_{i,\\sigma(i)}$, and expands each product of entrywise generating functions into a sum over path families via `Fintype.prod_sum` ($\\prod_i \\sum_j f_{ij} = \\sum_{x} \\prod_i f_i(x_i)$). No lattice geometry is used, so it holds over any commutative ring."
+  },
+  {
+    "id": "ann-wlgv-card-specialisation",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 116,
+      "endLine": 131
+    },
+    "type": "theorem",
+    "title": "Weight-1 Specialisation Recovers the Unweighted Determinant",
+    "content": "`det_matrix_eq_signed_card_sum` sets every weight to $1$: each `familyWeight` collapses to $\\prod 1 = 1$, so the inner sum counts the families and $\\det H = \\sum_\\sigma \\operatorname{sign}(\\sigma)\\,\\#(\\text{Family }\\sigma)$ — exactly the parent's unweighted `det_pathMatrix_eq_signed_sum`. This confirms the weighted statement is a genuine generalisation."
+  },
+  {
+    "id": "ann-wlgv-open-goal",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-03",
+    "range": {
+      "startLine": 140,
+      "endLine": 162
+    },
+    "type": "remark",
+    "title": "Open Goal: The Full Weighted LGV Lemma",
+    "content": "`WeightedLGVConjecture` records the full theorem $\\det H = \\sum_{\\text{non-intersecting identity families}} \\prod_i w(f_i)$ as a `def : Prop`. The algebraic core reduces it to weight-invariance of the Gessel–Viennot sign-reversing involution (the tail swap proved unweighted in the parent's `gv_involution_cancellation`): the swap only redistributes existing steps among a family's paths, preserving their total multiset and hence $\\prod w$. This statement is neither proved nor assumed here — nothing in the file depends on it."
+  }
+]
