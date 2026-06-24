@@ -1757,6 +1757,7 @@ import Proofs.Erdos302Aristotle
 import Proofs.Erdos302Problem
 import Proofs.Erdos303Problem
 import Proofs.Erdos304Problem
+import Proofs.Erdos305EgyptianExists
 import Proofs.Erdos305Problem
 import Proofs.Erdos306Problem
 import Proofs.Erdos307Aristotle

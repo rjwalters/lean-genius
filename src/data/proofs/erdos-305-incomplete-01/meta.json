@@ -1,0 +1,139 @@
+{
+  "id": "erdos-305-incomplete-01",
+  "title": "Erdős #305: The Egyptian-Representation Existence Axiom Is a Theorem (Fibonacci–Sylvester)",
+  "slug": "erdos-305-incomplete-01",
+  "description": "Eliminates one axiom from the Erdős #305 gallery development (`Erdos305Problem.lean`, 'Maximum Denominator in Egyptian Fraction Representations'). That file asserts the existence of an Egyptian fraction representation for every proper fraction a/b as an `axiom egyptian_representation_exists`. But this existence statement is itself a classical theorem — the Fibonacci–Sylvester greedy algorithm — so it needs no axiom. This entry proves it from scratch (`egyptian_representation_exists`), discharging the axiom. The proof is by strong induction on the numerator a: with greedy denominator n = ⌈b/a⌉ = (b+a−1)/a, the new numerator a·n − b is strictly smaller than a, and a short interval estimate (a·n < 2b ⟹ a·n − b < b) forces the next greedy denominator to strictly exceed n, so the freshly inserted denominator is automatically new (distinctness is built into `Finset`; the predicate `isEgyptianFraction` requires only positivity). The induction is strengthened to a lower bound 'every denominator ≥ ⌈b/a⌉', which is exactly what makes the inserted unit fraction disjoint from the recursive tail. Ceiling bounds b ≤ a·n ≤ b+a−1 are obtained from `Nat.div_add_mod` + `omega`; the sum identity 1/n + (a·n−b)/(b·n) = a/b is closed by `field_simp`/`ring` after `Nat.cast_sub`. IMPORTANT SCOPE: this entry does NOT touch the remaining `sorry` in `Erdos305Problem.lean` (`erdos_305_solved`), which is the deep asymptotic bound D(b) ≪ b(log b)^{1+o(1)} of Yokota (1988) / Liu–Sawhney (2024) and is genuinely out of reach; it addresses only the elementary existence axiom. Fully machine-checked: 2 theorems, 3 definitions, 151 lines, 0 sorries, 0 axioms (only foundational propext, Classical.choice, Quot.sound).",
+  "meta": {
+    "author": "Greedy algorithm: Fibonacci (1202), Sylvester (1880); Erdős #305 (Bleicher–Erdős 1976, Yokota 1988, Liu–Sawhney 2024); axiom-elimination formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://erdosproblems.com/305",
+    "date": "1880",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos305EgyptianExists.lean",
+    "tags": [
+      "number-theory",
+      "egyptian-fractions",
+      "unit-fractions",
+      "greedy-algorithm",
+      "fibonacci-sylvester",
+      "erdos",
+      "axiom-elimination",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 151,
+    "theoremCount": 2,
+    "definitionCount": 3,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. Rests on Mathlib's `Nat.div_add_mod` (Euclidean identity for the ceiling estimates), `Nat.mul_lt_mul_right` / `Nat.lt_of_mul_lt_mul_left` (monotonicity giving the next denominator > n), `Finset.sum_insert` / `Finset.sum_singleton`, `Nat.cast_sub` (cast of a·n−b to ℚ), and `field_simp`/`ring` (the unit-fraction sum identity). The induction is `Nat.strong_induction_on`. No `native_decide`. The only axioms are the foundational `propext`, `Classical.choice`, `Quot.sound`.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.div_add_mod",
+        "description": "`b * (a / b) + a % b = a`. Combined with `Nat.mod_lt`, gives the ceiling sandwich b ≤ a·n ≤ b+a−1 for n = (b+a−1)/a without invoking a named ceiling lemma — the residual `omega` calls read off both bounds.",
+        "module": "Mathlib (Lean core Nat)"
+      },
+      {
+        "theorem": "Nat.lt_of_mul_lt_mul_left",
+        "description": "`k * m < k * n → m < n`. Cancels the common factor a′ in a′·n < a′·q to conclude the next greedy denominator q strictly exceeds n, which makes the inserted denominator new.",
+        "module": "Mathlib (Lean core Nat)"
+      },
+      {
+        "theorem": "Finset.sum_insert",
+        "description": "`a ∉ s → (insert a s).sum f = f a + s.sum f`. Adds the new unit fraction 1/n to the recursively built sum, valid precisely because n ∉ S′.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.cast_sub",
+        "description": "`h : m ≤ n → ((n - m : ℕ) : ℚ) = n - m`. Casts the greedy remainder a′ = a·n − b (a ℕ subtraction) faithfully into ℚ so the sum identity 1/n + (a·n−b)/(b·n) = a/b can be discharged by field_simp/ring.",
+        "module": "Mathlib.Data.Nat.Cast.Defs"
+      }
+    ],
+    "originalContributions": [
+      "`egyptian_representation_exists`: the former `axiom` of `Erdos305Problem.lean`, now a fully proved theorem — every proper fraction a/b (0 < a < b) has a finite Egyptian-fraction representation. One axiom eliminated from the Erdős #305 development.",
+      "`exists_egyptian_aux`: the strengthened greedy existence lemma — a representation all of whose denominators are ≥ the greedy choice ⌈b/a⌉ — proved by strong induction on the numerator. The lower-bound strengthening is what forces the inserted denominator to be disjoint from the recursive tail.",
+      "A clean Lean encoding of the Fibonacci–Sylvester termination argument: a·n − b < a (numerator strictly decreases) and a·n < 2b (so the next denominator strictly exceeds n), with ceiling bounds derived from Nat.div_add_mod + omega rather than fragile named lemmas."
+    ],
+    "prerequisites": [
+      "Egyptian (unit) fractions and the greedy / Fibonacci–Sylvester algorithm",
+      "Strong induction on ℕ (Nat.strong_induction_on)",
+      "Ceiling division via the Euclidean identity Nat.div_add_mod",
+      "Finset sums and casts ℕ → ℚ (Nat.cast_sub, field_simp/ring)"
+    ],
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "erdos-305",
+        "relationship": "Parent / target: this entry discharges the `axiom egyptian_representation_exists` declared in `Erdos305Problem.lean`, reducing that development's assumption count by one. It deliberately leaves untouched the file's remaining `sorry` (the Yokota / Liu–Sawhney asymptotic), which is the genuinely deep part of the solved problem."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "An Egyptian fraction is a sum of distinct unit fractions 1/n₁ + ⋯ + 1/n_k; this was the only way fractions were written in ancient Egyptian mathematics. That every rational in (0,1] admits such a representation is classical, with the greedy algorithm (subtract the largest unit fraction not exceeding the remainder) going back to Fibonacci (1202) and analysed by Sylvester (1880). Erdős Problem #305 asks the quantitative question: how large must the denominators get? Writing D(b) for the worst-case minimal maximum denominator over all fractions a/b, Erdős conjectured D(b) ≪ b(log b)^{1+o(1)}, confirmed by Yokota (1988) and sharpened by Liu–Sawhney (2024). The gallery's Erdős #305 file formalizes the statement and outcome but takes the elementary existence of representations as an axiom; this entry removes that axiom.",
+    "problemStatement": "**Goal (erdos-305-incomplete-01):** the Erdős #305 development `Erdos305Problem.lean` contains `axiom egyptian_representation_exists`, asserting that every a/b with 0 < a < b has a finite Egyptian-fraction representation. Replace this axiom with a proof. (The file's other `sorry`, the asymptotic bound on D(b), is out of scope — it is the deep solved-problem content.)",
+    "text": "For 0 < a < b, set n = ⌈b/a⌉ = (b+a−1)/a, the greedy denominator. Then a·n ≥ b (so 1/n ≤ a/b) and a·n < b+a (so the remainder numerator a′ = a·n − b satisfies a′ < a). If a′ = 0 the representation is {n}; otherwise recurse on a′/(b·n), obtaining a set S′ whose denominators all exceed n (because a·n < 2b forces the next greedy denominator > n), so n ∉ S′ and insert n S′ works. Strong induction on a terminates because a′ < a.",
+    "proofStrategy": "Define `isEgyptianFraction` (positivity of denominators), `unitFractionSum` (∑ 1/n over a Finset, with a totalizing guard), and `isEgyptianRepresentation`, matching the parent file. The engine `exists_egyptian_aux` proves, by `Nat.strong_induction_on` on a, the strengthened claim ∃ S, (∀ m ∈ S, ⌈b/a⌉ ≤ m) ∧ unitFractionSum S = a/b. Ceiling bounds b ≤ a·n ≤ b+a−1 come from `Nat.div_add_mod` and `Nat.mod_lt` fed to `omega`. The base case a′ = 0 uses {n} with a·n = b and a `field_simp` identity 1/n = a/b. The step case applies the IH to a′ < a at modulus b·n; the disjointness n ∉ S′ is proved by showing every denominator of S′ exceeds n — via `Nat.div_add_mod` on the next quotient q, the inequality a′·n < b·n ≤ a′·q, and `Nat.lt_of_mul_lt_mul_left`. The sum then telescopes: unitFractionSum (insert n S′) = 1/n + a′/(b·n) = a/b, closed by `field_simp`/`ring` after `Nat.cast_sub` casts a′ = a·n − b into ℚ. Finally `egyptian_representation_exists` packages the aux lemma, using ⌈b/a⌉ ≥ 1 for positivity of denominators.",
+    "keyInsights": [
+      "**Existence is greedy, not axiomatic.** The Fibonacci–Sylvester algorithm constructs the representation outright; declaring it an axiom overstates the assumptions of the Erdős #305 file. The whole content is a terminating recursion plus a disjointness estimate.",
+      "**Distinctness is free in `Finset`.** Because the support is a `Finset`, the denominators are automatically distinct; `isEgyptianFraction` only has to assert positivity. The real work is ensuring the inserted denominator is *new*, which the lower-bound strengthening guarantees.",
+      "**The interval estimate a·n < 2b is the crux.** From n = ⌈b/a⌉ one gets a·n < b + a ≤ 2b, hence the remainder numerator a′ = a·n − b < b, which makes the next greedy denominator strictly larger than n — the inequality that powers both termination and disjointness.",
+      "**Ceiling bounds without a named lemma.** Rather than hunting for an exact `Nat` ceiling lemma, `Nat.div_add_mod` + `Nat.mod_lt` + `omega` read off b ≤ a·n ≤ b+a−1 directly, a robust pattern for floor/ceiling arithmetic in Lean.",
+      "**Scope honesty.** The deep part of Erdős #305 — the asymptotic D(b) ≪ b(log b)^{1+o(1)} — remains a `sorry` in the parent file and is not claimed here. Only the elementary existence axiom is discharged."
+    ],
+    "prerequisites": [
+      "Egyptian fractions and the greedy (Fibonacci–Sylvester) algorithm",
+      "Strong induction on ℕ",
+      "Ceiling division through Nat.div_add_mod / Nat.mod_lt",
+      "Finset sums, sum_insert, and ℕ → ℚ casts"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Egyptian-Fraction Definitions",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module docstring stating the axiom-elimination goal and scope (existence only, not the asymptotic sorry). Definitions `isEgyptianFraction` (denominators ≥ 1), `unitFractionSum` (∑ 1/n over a Finset with a totalizing guard), and `isEgyptianRepresentation` (a < b, b > 0, positive denominators, sum = a/b), mirroring the parent file."
+    },
+    {
+      "id": "greedy-aux",
+      "title": "The Strengthened Greedy Existence Lemma",
+      "startLine": 61,
+      "endLine": 132,
+      "summary": "`exists_egyptian_aux`: by strong induction on a, every a/b (0 < a < b) has a representation whose denominators are all ≥ ⌈b/a⌉. Ceiling bounds from Nat.div_add_mod + omega; base case {n} when a·n = b; step case inserts n into the IH result on a′/(b·n), with disjointness n ∉ S′ from the next-denominator-exceeds-n estimate and the telescoping sum identity 1/n + a′/(b·n) = a/b via field_simp/ring."
+    },
+    {
+      "id": "existence-theorem",
+      "title": "Discharging the Axiom",
+      "startLine": 133,
+      "endLine": 151,
+      "summary": "`egyptian_representation_exists`: the parent file's `axiom`, now a theorem. Packages `exists_egyptian_aux`, deriving positivity of every denominator from ⌈b/a⌉ ≥ 1 (Nat.le_div_iff_mul_le + omega)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The existence of Egyptian fraction representations for every proper fraction a/b — declared as `axiom egyptian_representation_exists` in the Erdős #305 gallery file — is proved from scratch by the Fibonacci–Sylvester greedy algorithm, eliminating one axiom from that development. The proof is a strong induction on the numerator with a lower-bound strengthening that guarantees the greedy denominators are new (and strictly increasing). 2 theorems, 3 definitions, 151 lines, 0 sorries, 0 axioms (no native_decide). The deep asymptotic bound D(b) ≪ b(log b)^{1+o(1)} (the parent file's remaining sorry) is explicitly out of scope.",
+    "implications": "Reduces the assumption count of the Erdős #305 development by one, in the spirit of the gallery's axiom-elimination work (cf. erdos-191). The reusable kernel is a clean Lean encoding of greedy unit-fraction expansion with a verified disjointness/termination certificate — a building block for any further formalization of Egyptian-fraction bounds (e.g. the Bleicher–Erdős D(b) ≪ b(log b)² upper bound).",
+    "openQuestions": [
+      "Bound the *length* of the greedy expansion produced here (the Fibonacci–Sylvester expansion can be doubly exponential in the worst case) and compare with the minimal-length representation.",
+      "Formalize the Bleicher–Erdős upper bound D(b) ≪ b(log b)² — the first non-trivial step toward the parent file's still-axiomatized/sorried asymptotic, replacing the greedy construction with the binary/continued-fraction strategy that controls the maximum denominator.",
+      "Prove the greedy denominators are not merely distinct but strictly increasing and super-exponentially growing (1/n′ ≤ remainder < 1/(n(n−1))), quantifying the disjointness margin used here."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "erdos-305",
+      "title": "Erdős #305: Maximum Denominator in Egyptian Fraction Representations",
+      "relationship": "Parent / target — this entry discharges that file's `axiom egyptian_representation_exists`, leaving its deep asymptotic sorry out of scope."
+    }
+  ],
+  "mainTheorems": "none",
+  "sorries": 0,
+  "leanFile": {
+    "lineCount": 151,
+    "path": "Proofs/Erdos305EgyptianExists.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 2
+  }
+}
