@@ -1,0 +1,129 @@
+{
+  "id": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02",
+  "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01-oq-01-oq-02",
+  "title": "Quadratic reciprocity à la Zolotarev, unconditional: (q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2) from permutation signs alone",
+  "description": "Derives the full quadratic reciprocity law (q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2) for distinct odd primes p, q entirely from the sign-of-permutation calculus, with NO hypotheses and — crucially — WITHOUT appeal to Mathlib's legendreSym.quadratic_reciprocity. This answers the first follow-up question flagged by the parent capstone (oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01, 'Zolotarev–Frobenius for every odd modulus'): specialize the general-odd Frobenius identity to recover QR directly via the sign of a suitable shuffle permutation, as in Zolotarev's 1872 derivation. The proof follows the three-transition 'card trick' formulation (J. Shurman, after Baker 2013): on the pq-element array Fin p × Fin q one studies three orderings — row-major (rowOrder), column-major (colOrder), and the diagonal/CRT order (crtOrder, whose inverse is the Chinese-remainder map z ↦ (z mod p, z mod q)). The tautological composition τ_cd⁻¹∘τ_rd = τ_rc of the order-transition permutations, together with multiplicativity of sign, yields sign(τ_cd)·sign(τ_rd) = sign(τ_rc). Shurman's three signs are sign(τ_rd) = (q/p), sign(τ_cd) = (p/q) — each transition restricts per residue line to an affine permutation x ↦ q·x + j (resp. x ↦ p·x + i), whose sign is a Legendre symbol — and sign(τ_rc) = (-1)^((p-1)/2·(q-1)/2), the inversion count of the row↔column transpose. Substituting gives the reciprocity law. The combinatorial gap (sign of the grid transpose) is closed by sign_gridTranspose via an explicit inversion-counting bijection, and the per-line number-theoretic gap is closed by sign_affineLine_eq_legendreSym, which combines the parent's Zolotarev/Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a|n) with the new lemma sign_addLeft_odd: translation is an EVEN permutation on an odd-order group (absent from Mathlib). Both transition-sign hypotheses are discharged for the concrete CRT order crtOrder (sign_rowTransition, sign_colTransition), making the capstone zolotarev_quadratic_reciprocity fully unconditional.",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Equiv",
+      "Equiv.Perm",
+      "Finset"
+    ],
+    "namespace": "ZolotarevQR",
+    "lineCount": 817,
+    "axiomCount": 0,
+    "theoremCount": 28,
+    "definitionCount": 6,
+    "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "text": "Zolotarev (1872) observed that the Legendre symbol (a/p) equals the sign of the permutation x ↦ a·x of ℤ/p, and used this to prove quadratic reciprocity by comparing three ways of reading a p×q array of residues. This entry formalizes that derivation in full, unconditionally. The gallery's parent program had already established the per-line ingredient — sign(x ↦ a·x on ℤ/n) = J(a|n) for every odd n — so a single odd prime gives Zolotarev's lemma sign(x ↦ a·x on ℤ/p) = (a/p). What every sibling had previously delegated to Mathlib's built-in legendreSym.quadratic_reciprocity is the ONE combinatorial ingredient of Zolotarev's argument: the sign of the rectangular transpose / perfect-shuffle permutation of the array. This file proves that sign is (-1)^(C(p,2)·C(q,2)) by directly counting inversions, shows its parity equals ((p-1)/2)·((q-1)/2) for odd p,q, and then assembles the whole law through Shurman's three-transition skeleton — with the two per-line transition signs discharged via a concrete Chinese-remainder ordering. The result depends only on propext / Classical.choice / Quot.sound.",
+    "historicalContext": "Zolotarev (1872) gave a celebrated proof of the quadratic reciprocity law identifying (a/p) with the sign of multiplication-by-a on (ℤ/p)ˣ. Frobenius (1914) generalized the sign-Jacobi correspondence to composite odd moduli; Lerch (1896) and later Cartier and Baker ('Quadratic reciprocity and Zolotarev's Lemma', 2013) recast the argument combinatorially as a comparison of orderings of a rectangular array — the 'dealing cards' picture. J. Shurman's lecture notes give the clean three-transition form (row-major, column-major, diagonal/CRT) used here. The lean-genius gallery rebuilt the Zolotarev/Frobenius sign identity from elementary pieces in layers (prime base, CRT decomposition, squarefree-odd induction, prime power, every-odd-n capstone); this entry consumes that identity for the per-line signs and supplies the missing combinatorial transpose sign, completing a self-contained Zolotarev proof of QR that never calls Mathlib's reciprocity theorem.",
+    "problemStatement": "Open Question (follow-up #1 of elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01): 'Specialize the general-odd Frobenius identity to recover the quadratic reciprocity law (a/p)(p/a) = (-1)^… directly via the sign of a suitable shuffle permutation, as in Zolotarev's 1872 derivation.' This entry proves, for distinct odd primes p and q, that legendreSym q p · legendreSym p q = (-1)^(((p-1)/2)·((q-1)/2)), with 0 sorries, 0 axioms, and no use of legendreSym.quadratic_reciprocity.",
+    "proofStrategy": "Part I (the transpose sign, combinatorial): gridTranspose p q is the row-major ↔ column-major reindexing of Fin (p*q); gridTranspose_apply confirms it sends n·i+j to m·j+i. sign_gridTranspose computes its sign as (-1)^(C(m,2)·C(n,2)) via Equiv.Perm.sign_eq_prod_prod_Iio (sign as a product over inversions) and a Finset.card_bij' bijection counting the C(m,2)·C(n,2) inversion pairs (i,j),(i',j') with i<i' but j>j'. neg_one_pow_choose_two_mul_odd bridges the exponent to ((m-1)/2)·((n-1)/2) for odd m,n, giving sign_gridTranspose_odd. Part II (the three-transition skeleton): rowOrder = finProdFinEquiv, colOrder its mirror, and gridTranspose = rowOrder⁻¹∘colOrder definitionally (gridTranspose_eq). quadratic_reciprocity_of_transition_signs takes any diagonal order D and the two per-line transition-sign hypotheses sign(rowOrder∘D⁻¹) = (q/p), sign(colOrder∘D⁻¹) = (p/q); the tautology τ_cd⁻¹∘τ_rd = τ_rc and multiplicativity of sign reduce QR to sign τ_rc, identified with sign gridTranspose by sign_transRC. Part III (per-line sign): sign_addLeft_odd proves translation x ↦ b+x of ℤ/n (odd n) is even — its order divides n hence is odd, while sign lands in the order-2 group ℤˣ; sign_affineLine_eq_legendreSym then gives sign(x ↦ a·x + b on ℤ/p) = (a/p) via the parent's Frobenius identity. sign_prodCongrLeft_affineLine collapses the q-fold (resp. p-fold) fiber product to a single Legendre symbol since (a/p)^q = (a/p) for odd q. Part IV (closing the gap): crtOrder is the explicit CRT ordering (its inverse is the Chinese-remainder map through ZMod.finEquiv); sign_rowTransition / sign_colTransition conjugate crtOrder⁻¹∘rowOrder (resp. ∘colOrder) by arrEquiv (resp. arrEquiv∘swap) to realize each transition literally as a prodCongrLeft of the affine line maps, discharging the two hypotheses. zolotarev_quadratic_reciprocity assembles everything with D := crtOrder.",
+    "keyInsights": [
+      "Zolotarev's whole argument is one equation among permutation SIGNS: the order-transition permutations of a p×q array satisfy τ_cd⁻¹∘τ_rd = τ_rc as a tautology (the diagonal order D cancels), so sign(τ_cd)·sign(τ_rd) = sign(τ_rc) is forced — quadratic reciprocity is what this becomes once the three signs are evaluated.",
+      "The reciprocity factor (-1)^((p-1)/2·(q-1)/2) is literally an inversion count: the row↔column transpose of the array has exactly C(p,2)·C(q,2) inversions (pairs of cells (i,j),(i',j') with i<i' but j>j'), and for odd p,q this exponent has the same parity as ((p-1)/2)·((q-1)/2). No number theory enters this step — it is pure combinatorics of the shuffle.",
+      "The per-line sign needs a lemma Mathlib lacks: translation x ↦ b+x on ℤ/n is an EVEN permutation when n is odd, because its order divides n (n•b = 0) hence is odd, while sign lands in the order-2 group ℤˣ, forcing sign = sign^n = 1. This makes the affine sign equal the multiplication sign, which is the Zolotarev/Frobenius Legendre symbol.",
+      "Conjugating the abstract order-transition permutations by the concrete Chinese-remainder identification arrEquiv : Fin p × Fin q ≃ ℤ/p × ℤ/q turns each transition LITERALLY into Equiv.prodCongrLeft of per-line affine maps — so Equiv.Perm.sign_prodCongrLeft evaluates the sign as a product of identical per-line Legendre symbols, which collapses to one because the q-fold power of a sign unit is the sign (q odd).",
+      "The proof is genuinely self-contained: it consumes only the parent's Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a|n) for the per-line signs and never invokes Mathlib's legendreSym.quadratic_reciprocity, so it is a real reconstruction of Zolotarev's theorem rather than a repackaging of the library result."
+    ],
+    "prerequisites": [
+      "The parent Zolotarev/Frobenius identity ZolotarevFullOdd.sign_ringMulPerm_eq_jacobiSym_odd : sign(x ↦ a·x on ℤ/n) = J(A|n) for odd n, plus chineseRemainder_fst / chineseRemainder_snd characterizing the CRT projections as casts",
+      "Equiv.Perm.sign as a product over inversions (Equiv.Perm.sign_eq_prod_prod_Iio) and the conjugation-invariance Equiv.Perm.sign_eq_sign_of_equiv",
+      "Equiv.Perm.sign_prodCongrLeft evaluating the sign of a fiberwise permutation as a product of fiber signs",
+      "The Chinese Remainder isomorphism ZMod.chineseRemainder and the indexing equivalences finProdFinEquiv, ZMod.finEquiv, ZMod.unitOfCoprime",
+      "ZolotarevCRT.units_pow_odd (an odd power of a sign unit is the unit) and Finset.card_bij' for the inversion-counting bijection"
+    ]
+  },
+  "sections": [
+    {
+      "title": "The grid transpose and its sign (the combinatorial gap)",
+      "content": "gridTranspose m n is the row-major ↔ column-major reindexing of Fin (m*n); gridTranspose_apply / gridTranspose_val confirm it sends n·i+j to m·j+i. Supporting mixed-radix facts fpe_val, fpe_symm, fpe_divNat, fpe_modNat, finCongr_lt, encode_lt, and card_strict_pairs (#{(i,j) : i<j over Fin k} = C(k,2)) feed sign_gridTranspose: its sign is (-1)^(C(m,2)·C(n,2)), proved by sign_eq_prod_prod_Iio and a Finset.card_bij' bijection onto the inversion set."
+    },
+    {
+      "title": "Parity bridge and the classical-form transpose sign",
+      "content": "neg_one_pow_choose_two_mul_odd: for odd m,n, (-1)^(C(m,2)·C(n,2)) = (-1)^(((m-1)/2)·((n-1)/2)) — the elementary number-theory step turning the inversion count into the textbook reciprocity exponent (independent of sign_gridTranspose). sign_gridTranspose_odd: sign(gridTranspose m n) = (-1)^(((m-1)/2)·((n-1)/2)) for odd m,n."
+    },
+    {
+      "title": "The three-transition skeleton",
+      "content": "rowOrder = finProdFinEquiv and colOrder its mirror; gridTranspose = rowOrder⁻¹∘colOrder (gridTranspose_eq). transRC = colOrder⁻¹∘rowOrder is conjugate to gridTranspose (sign_transRC). quadratic_reciprocity_of_transition_signs: given any diagonal order D and the per-line hypotheses sign(rowOrder∘D⁻¹) = (q/p), sign(colOrder∘D⁻¹) = (p/q), the tautology τ_cd⁻¹∘τ_rd = τ_rc plus multiplicativity of sign and sign_gridTranspose_odd yield (q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2)."
+    },
+    {
+      "title": "Per-line Zolotarev sign: discharging the transition-sign hypotheses",
+      "content": "sign_addLeft_odd: translation x ↦ b+x of ℤ/n is even for odd n (order divides n, sign in order-2 group). sign_addLeft_mul: composing with a translation leaves the sign unchanged. sign_affineLine_eq_legendreSym: sign(x ↦ a·x + b on ℤ/p) = (A/p) for A ≡ a (mod p), via the parent's Frobenius identity. sign_prodCongrLeft_affineLine: a fiberwise-affine permutation of ℤ/p × ℤ/q has total sign the single Legendre symbol (A/p), since the q-fold product collapses (q odd)."
+    },
+    {
+      "title": "Closing the gap: the concrete CRT order",
+      "content": "arrEquiv : Fin p × Fin q ≃ ℤ/p × ℤ/q via ZMod.finEquiv; crtOrder is the diagonal order whose inverse is the Chinese-remainder map. sign_rowTransition / sign_colTransition conjugate crtOrder⁻¹∘rowOrder (resp. ∘colOrder) by arrEquiv (resp. arrEquiv∘swap) to realize each transition as prodCongrLeft of the affine line maps x ↦ q·x + j (resp. x ↦ p·x + i), discharging the hypotheses. zolotarev_quadratic_reciprocity assembles the unconditional law with D := crtOrder."
+    }
+  ],
+  "meta": {
+    "author": "Zolotarev (1872), Frobenius (1914); Shurman exposition",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Zolotarev%27s_lemma",
+    "date": "1872",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ElementaryQuadraticReciprocityOQ01OQ03OQ01OQ01OQ01OQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "legendre-symbol",
+      "permutation-sign",
+      "zolotarev",
+      "frobenius",
+      "chinese-remainder-theorem",
+      "inversion-count",
+      "perfect-shuffle",
+      "open-question"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 817,
+    "theoremCount": 28,
+    "defCount": 6,
+    "assumptions": "None. The file has 0 axiom declarations, 0 sorries, no native_decide, and no assumption-carrying structures. The capstone zolotarev_quadratic_reciprocity was checked with #print axioms and depends only on propext / Classical.choice / Quot.sound (the standard foundational axioms, which do not count as assumptions) — no sorryAx, no Lean.ofReduceBool. Critically, the proof does NOT use Mathlib's legendreSym.quadratic_reciprocity: it is a genuine self-contained Zolotarev derivation, consuming only the parent program's Frobenius sign identity for the per-line signs. The theorem is stated for distinct odd primes p, q (p ≠ 2, q ≠ 2, p ≠ q); the even prime is genuinely outside scope, as the supplementary law (2/p) is a separate phenomenon.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 6
+  },
+  "conclusion": {
+    "summary": "Proves, with 0 sorries and 0 axioms, the quadratic reciprocity law (q/p)·(p/q) = (-1)^((p-1)/2·(q-1)/2) for distinct odd primes p, q, entirely from the sign-of-permutation calculus and WITHOUT Mathlib's legendreSym.quadratic_reciprocity. It is Zolotarev's 1872 argument in Shurman's three-transition form: the tautology τ_cd⁻¹∘τ_rd = τ_rc among the order-transition permutations of the p×q residue array forces sign(τ_cd)·sign(τ_rd) = sign(τ_rc); the two per-line transition signs are the Legendre symbols (p/q), (q/p) (Zolotarev's lemma via the parent Frobenius identity, with translation parity sign_addLeft_odd handling the affine offset), and the third is the inversion count (-1)^((p-1)/2·(q-1)/2) of the grid transpose (sign_gridTranspose). The combinatorial gap (sign_gridTranspose) and the per-line gap (sign_affineLine_eq_legendreSym) are both closed here, and the two transition-sign hypotheses are discharged for the concrete CRT order crtOrder.",
+    "implications": "Completes a fully self-contained elementary reconstruction of Zolotarev's proof of quadratic reciprocity inside the gallery: the Legendre symbol IS a permutation sign (parent program), the reciprocity factor IS an inversion count (this entry), and the law is the single sign relation that ties them together. Reusable by-products: sign_addLeft_odd (translation is even on an odd-order group — absent from Mathlib), sign_gridTranspose / sign_gridTranspose_odd (sign of the perfect-shuffle permutation), and the abstract skeleton quadratic_reciprocity_of_transition_signs that reduces QR to any two per-line transition signs.",
+    "openQuestions": [
+      "Recover the second supplementary law (2/p) = (-1)^((p²-1)/8) as a permutation sign, completing the elementary Zolotarev dictionary for the full Jacobi/Legendre symbol including the even case.",
+      "Promote sign_addLeft_odd (translation is an even permutation on an odd-order finite group) to a general Mathlib-style lemma for an arbitrary finite group of odd order acting on itself by left translation, not just ℤ/n."
+    ]
+  },
+  "references": [
+    {
+      "title": "Zolotarev, Nouvelle démonstration de la loi de réciprocité de Legendre (1872)",
+      "url": "https://en.wikipedia.org/wiki/Zolotarev%27s_lemma"
+    },
+    {
+      "title": "M. Baker, Quadratic reciprocity and Zolotarev's Lemma (2013)",
+      "url": "https://mattbaker.blog/2013/07/19/quadratic-reciprocity-and-zolotarevs-lemma/"
+    },
+    {
+      "title": "J. Shurman, Zolotarev's proof of quadratic reciprocity (lecture notes)",
+      "url": "https://people.reed.edu/~jerry/361/lectures/qrz.pdf"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03-oq-01-oq-01-oq-01-oq-01-oq-01",
+      "relation": "parent",
+      "note": "The Zolotarev–Frobenius identity sign(x ↦ a·x on ℤ/n) = J(a|n) for every odd n; this entry answers that capstone's first follow-up question by specializing it (per residue line) to derive quadratic reciprocity via the shuffle permutation, and supplies the combinatorial transpose sign the whole family had delegated to Mathlib."
+    },
+    {
+      "slug": "elementary-quadratic-reciprocity-oq-01-oq-03",
+      "relation": "ancestor",
+      "note": "Defines ZolotarevCRT.ringMulPerm and the per-residue multiplication-permutation machinery used here through the parent Frobenius identity for the per-line signs."
+    }
+  ]
+}
