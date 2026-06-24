@@ -1,0 +1,146 @@
+[
+  {
+    "id": "ann-pelloq04-definitions",
+    "proofId": "pell-equation-oq-01-oq-04",
+    "range": {
+      "startLine": 43,
+      "endLine": 49
+    },
+    "type": "definition",
+    "title": "The Pell norm and regulator (matching the parent)",
+    "content": "`pellNorm d x y : ℝ` is the real embedding `(x : ℝ) + (y : ℝ) * √(d : ℝ)` of the quadratic integer `x + y√d`, and `pellRegulator d a` is its logarithm `log(pellNorm d a.x a.y)` for a solution `a : Solution₁ d`. These are deliberately the *same* definitions used by the parent entry `pell-equation-oq-01`, so the structural theorems proved here apply verbatim to the parent's regulator. Both are `noncomputable` because they call `Real.sqrt` and `Real.log`. Note the norm is defined on raw integer coordinates `(x, y)`, not on the solution `a` — this lets `pellNorm` be stated for the components produced by the group law `x_mul`/`y_mul` without first re-bundling them into a `Solution₁`.",
+    "mathContext": "$\\mathrm{pellNorm}_d(x,y) = x + y\\sqrt{d}$ is the image of $x+y\\sqrt d \\in \\mathbb{Z}[\\sqrt d]$ under the real embedding $\\sqrt d \\mapsto +\\sqrt d$. Its logarithm $\\mathrm{pellRegulator}_d(a)=\\log(a_x + a_y\\sqrt d)$ is the regulator coordinate of the unit $a$ in the unit group of the real quadratic order.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pell.Solution₁",
+      "real quadratic order",
+      "real embedding",
+      "fundamental unit"
+    ],
+    "prerequisites": [
+      "Pell equation",
+      "Mathlib.NumberTheory.Pell",
+      "real analysis"
+    ]
+  },
+  {
+    "id": "ann-pelloq04-norm-one",
+    "proofId": "pell-equation-oq-01-oq-04",
+    "range": {
+      "startLine": 53,
+      "endLine": 57
+    },
+    "type": "technique",
+    "title": "Norm of the identity solution is 1",
+    "content": "The identity element of `Solution₁ d` is the trivial solution `(1, 0)` (`Solution₁.x_one`, `Solution₁.y_one`). Rewriting with these and unfolding `pellNorm` gives `1 + 0·√d = 1`, closed by `simp`. This is the unit law of the homomorphism: a multiplicative map must send the group identity to the multiplicative identity `1` of `ℝ`. Together with `pellNorm_mul` it certifies that `pellNorm` really is a monoid homomorphism, not merely multiplicative on a subset.",
+    "mathContext": "$\\mathrm{pellNorm}_d(1,0) = 1 + 0\\cdot\\sqrt d = 1$. In the unit group the identity is $1 = 1 + 0\\sqrt d$, whose norm must be the multiplicative identity of $\\mathbb{R}^\\times$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "monoid homomorphism",
+      "identity element",
+      "Solution₁.x_one"
+    ],
+    "prerequisites": [
+      "group theory",
+      "Pell equation"
+    ]
+  },
+  {
+    "id": "ann-pelloq04-brahmagupta",
+    "proofId": "pell-equation-oq-01-oq-04",
+    "range": {
+      "startLine": 59,
+      "endLine": 67
+    },
+    "type": "insight",
+    "title": "Brahmagupta's identity: the norm is multiplicative",
+    "content": "The heart of the entry. Composing two Pell solutions `a·b` produces coordinates `((a·b).x, (a·b).y) = (a.x·b.x + d·a.y·b.y, a.x·b.y + a.y·b.x)` via `Solution₁.x_mul`/`y_mul`. Expanding `pellNorm` on both sides, the claim `(a·b).x + (a·b).y√d = (a.x + a.y√d)(b.x + b.y√d)` reduces to a polynomial identity whose only obstruction is the term `d·a.y·b.y` on the left versus `a.y·b.y·(√d)²` on the right. The single fact `(√d)² = d` (`Real.sq_sqrt`, needing `d ≥ 0`) reconciles them, and `linear_combination (-(a.y·b.y))·hsq` discharges the whole goal. This is exactly the 7th-century composition law (samāsa-bhāvanā) of Brahmagupta, restated as multiplicativity of the field norm's positive companion.",
+    "mathContext": "Brahmagupta–Fibonacci: $(x_1^2 - d y_1^2)(x_2^2 - d y_2^2) = (x_1 x_2 + d y_1 y_2)^2 - d(x_1 y_2 + x_2 y_1)^2$. Equivalently, on the embedded norms, $(x_1 + y_1\\sqrt d)(x_2 + y_2\\sqrt d) = (x_1 x_2 + d y_1 y_2) + (x_1 y_2 + x_2 y_1)\\sqrt d$, so $\\mathrm{pellNorm}_d(a\\cdot b)=\\mathrm{pellNorm}_d(a)\\,\\mathrm{pellNorm}_d(b)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brahmagupta identity",
+      "norm multiplicativity",
+      "Solution₁.x_mul",
+      "linear_combination",
+      "Real.sq_sqrt"
+    ],
+    "prerequisites": [
+      "quadratic field norm",
+      "Pell equation",
+      "ring identities"
+    ]
+  },
+  {
+    "id": "ann-pelloq04-conjugate",
+    "proofId": "pell-equation-oq-01-oq-04",
+    "range": {
+      "startLine": 69,
+      "endLine": 87
+    },
+    "type": "insight",
+    "title": "The conjugate identity exhibits the inverse and nonvanishing",
+    "content": "In `Solution₁ d` the inverse is the conjugate: `a⁻¹ = (a.x, −a.y)` (`Solution₁.x_inv`/`y_inv`). So `pellNorm a · pellNorm a⁻¹ = (x + y√d)(x − y√d) = x² − d·y²`, which equals `1` exactly by the defining Pell relation `a.prop`. The proof feeds both `(√d)² = d` and the cast relation `x² − d·y² = 1` to `linear_combination`. Two corollaries fall out immediately: `pellNorm a⁻¹` is the multiplicative inverse of `pellNorm a`, and (in `pellNorm_ne_zero`) the norm can never be `0`, since a factor of `0` could not multiply to `1`. Nonvanishing is the precondition that makes the logarithm — hence the regulator — well-defined and additive.",
+    "mathContext": "For the conjugate $\\bar a = x - y\\sqrt d$, $N(a) = a\\bar a = x^2 - d y^2 = 1$ is the Pell relation itself. Thus $\\mathrm{pellNorm}_d(a^{-1}) = \\mathrm{pellNorm}_d(a)^{-1}$ and $\\mathrm{pellNorm}_d(a)\\neq 0$ — every Pell unit is a genuine real unit.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraic conjugate",
+      "field norm",
+      "multiplicative inverse",
+      "Solution₁.prop",
+      "Solution₁.x_inv"
+    ],
+    "prerequisites": [
+      "quadratic field norm",
+      "Pell equation",
+      "units of a ring"
+    ]
+  },
+  {
+    "id": "ann-pelloq04-regulator-additive",
+    "proofId": "pell-equation-oq-01-oq-04",
+    "range": {
+      "startLine": 89,
+      "endLine": 95
+    },
+    "type": "insight",
+    "title": "Taking logs: the regulator is additive",
+    "content": "`pellRegulator_mul` is multiplicativity transported through `Real.log`. Because both norms are nonzero (`pellNorm_ne_zero`), `Real.log_mul` applies and `R(a·b) = log(pellNorm(a·b)) = log(pellNorm a · pellNorm b) = log(pellNorm a) + log(pellNorm b) = R(a) + R(b)`. This is the precise sense in which the regulator is the *right* invariant: it is a group homomorphism from `(Solution₁ d, ·)` to the additive reals `(ℝ, +)`. The nonvanishing hypothesis is not cosmetic — `Real.log_mul` genuinely requires both arguments nonzero, which is why the conjugate identity had to come first.",
+    "mathContext": "$R(a\\cdot b) = \\log\\!\\big(\\mathrm{pellNorm}_d(a)\\,\\mathrm{pellNorm}_d(b)\\big) = \\log \\mathrm{pellNorm}_d(a) + \\log \\mathrm{pellNorm}_d(b) = R(a) + R(b)$. The map $R : (\\mathrm{Solution}_1\\,d,\\cdot) \\to (\\mathbb{R},+)$ is a group homomorphism.",
+    "significance": "key",
+    "relatedConcepts": [
+      "group homomorphism",
+      "Dirichlet regulator",
+      "Real.log_mul",
+      "logarithm"
+    ],
+    "prerequisites": [
+      "real analysis",
+      "group theory",
+      "logarithms"
+    ]
+  },
+  {
+    "id": "ann-pelloq04-powers",
+    "proofId": "pell-equation-oq-01-oq-04",
+    "range": {
+      "startLine": 97,
+      "endLine": 111
+    },
+    "type": "technique",
+    "title": "Linear scaling along powers: R(aⁿ) = n·R(a)",
+    "content": "`pellNorm_pow` is a one-line induction on the exponent `n`: the base case is `pellNorm_one`, and the step `pow_succ` peels one factor and applies `pellNorm_mul` plus the induction hypothesis, giving `pellNorm(aⁿ) = (pellNorm a)ⁿ`. Then `pellRegulator_pow` reads off `R(aⁿ) = log((pellNorm a)ⁿ) = n·log(pellNorm a) = n·R(a)` via `Real.log_pow`. This linear scaling is the arithmetic engine of the whole Pell story: a *fundamental* solution `a` with regulator `R(D)` generates the tower `a, a², a³, …` with regulators `R(D), 2R(D), 3R(D), …`, so every solution's size is pinned down by the single fundamental regulator. An open extension noted in the conclusion is to push this to integer exponents (`zpow`) using the conjugate identity, recovering `R(aⁿ) = n·R(a)` for all `n ∈ ℤ`.",
+    "mathContext": "$\\mathrm{pellNorm}_d(a^n) = \\mathrm{pellNorm}_d(a)^n$ and $R(a^n) = \\log\\!\\big(\\mathrm{pellNorm}_d(a)^n\\big) = n\\log \\mathrm{pellNorm}_d(a) = n\\,R(a)$. A fundamental unit $\\varepsilon = a_x + a_y\\sqrt d$ generates $\\varepsilon^n$ with regulators forming the arithmetic progression $\\{nR(D)\\}_{n\\ge 1}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental unit",
+      "induction",
+      "Real.log_pow",
+      "arithmetic progression of regulators"
+    ],
+    "prerequisites": [
+      "mathematical induction",
+      "real analysis",
+      "Pell equation"
+    ]
+  }
+]
