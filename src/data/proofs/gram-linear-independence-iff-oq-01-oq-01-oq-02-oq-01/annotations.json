@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gram-col-bridge",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 37, "endLine": 59 },
+    "type": "concept",
+    "title": "Columns as Euclidean Vectors: gram (col A) = AᴴA",
+    "content": "The j-th column of A is embedded as col A j ∈ EuclideanSpace 𝕜 (Fin n) with (col A j) i = A i j (col_apply, a definitional rewrite through WithLp.toLp). The bridge gram_col_eq proves Matrix.gram 𝕜 (col A) = Aᴴ * A entrywise: the L² inner product expands as ⟪col A i, col A j⟫ = ∑ k, conj(A k i)·(A k j) (PiLp.inner_apply, RCLike.inner_apply'), exactly (Aᴴ A) i j since Aᴴ i k = conj(A k i). Taking determinants, gram_col_det gives det(gram 𝕜 (col A)) = conj(det A)·det A = ‖det A‖² (Matrix.det_conjTranspose, RCLike.conj_mul).",
+    "mathContext": "$\\mathrm{Gram}(\\mathrm{col}\\,A) = A^{\\mathsf H} A,\\ \\det\\mathrm{Gram}(\\mathrm{col}\\,A) = \\lVert\\det A\\rVert^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix", "conjugate transpose", "Euclidean inner product", "Hermitian product"],
+    "prerequisites": ["inner product spaces", "matrix multiplication"]
+  },
+  {
+    "id": "column-form-platform",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 61, "endLine": 91 },
+    "type": "technique",
+    "title": "The Column Form, Reproved Self-Containedly",
+    "content": "norm_col_sq evaluates ‖col A j‖² = ∑ i, ‖A i j‖² (EuclideanSpace.norm_sq_eq). matrix_hadamard_sq feeds gram_col_det and norm_col_sq into the grandparent's hadamard_inequality_euclidean and descends the 𝕜-valued bound to ℝ via RCLike.ofReal_le_ofReal, giving ‖det A‖² ≤ ∏ j, ∑ i, ‖A i j‖². matrix_hadamard_inequality rewrites ∏ j, ∑ i, ‖A i j‖² = (∏ j √(∑ i ‖A i j‖²))² (Real.sq_sqrt, Finset.prod_pow) and takes square roots (Real.sqrt_le_sqrt, Real.sqrt_sq) for the column bound. Reproving it here keeps the row and uniform extensions dependent only on the grandparent entry.",
+    "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_j \\sqrt{\\textstyle\\sum_i \\lVert A_{ij}\\rVert^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hadamard's inequality", "square root monotonicity", "Euclidean norm"],
+    "prerequisites": ["real square roots", "finite products"]
+  },
+  {
+    "id": "row-form-transpose",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 93, "endLine": 101 },
+    "type": "insight",
+    "title": "The Row Form is Free: Transpose Invariance of det",
+    "content": "matrix_hadamard_inequality_rows is the column inequality applied to Aᵀ. Since det Aᵀ = det A (Matrix.det_transpose) the left side is unchanged, and rewriting the transposed entries Aᵀ i j = A j i (Matrix.transpose_apply) turns the product of column norms of Aᵀ into the product of Euclidean ROW norms of A: ‖det A‖ ≤ ∏ i, √(∑ j, ‖A i j‖²). The two faces of Hadamard's inequality — by columns and by rows — differ only by a transpose.",
+    "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_i \\sqrt{\\textstyle\\sum_j \\lVert A_{ij}\\rVert^2}$.",
+    "significance": "key",
+    "relatedConcepts": ["transpose invariance of determinant", "row vs column duality"],
+    "prerequisites": ["determinants", "matrix transpose"]
+  },
+  {
+    "id": "uniform-nn2-bound",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 103, "endLine": 124 },
+    "type": "insight",
+    "title": "The Uniform n^(n/2) Determinant Bound",
+    "content": "matrix_hadamard_bound is Hadamard plus a crude per-column estimate. If every entry has modulus ‖A i j‖ ≤ M with M ≥ 0, then ∑ i, ‖A i j‖² ≤ ∑ i, M² = n·M², so each column norm is at most √(n·M²) = √n·√(M²) = √n·M (Real.sqrt_mul, Real.sqrt_sq). Multiplying the n column bounds (Finset.prod_le_prod, Finset.prod_const) gives ‖det A‖ ≤ (√n · M)^n = M^n · n^(n/2) — the standard ceiling showing the determinant of a matrix with bounded entries cannot grow faster than n^(n/2). The bound is sharp in order, attained up to constants by ±1 Hadamard matrices.",
+    "mathContext": "$\\lVert A_{ij}\\rVert \\le M \\Rightarrow \\lVert\\det A\\rVert \\le (\\sqrt n\\,M)^n = M^n\\,n^{n/2}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometry of numbers", "determinant growth bounds", "Hadamard matrices"],
+    "prerequisites": ["finite products", "real square roots"]
+  }
+]
