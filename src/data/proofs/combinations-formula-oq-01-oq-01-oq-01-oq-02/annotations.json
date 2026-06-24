@@ -1,0 +1,62 @@
+[
+  {
+    "id": "combfml-oq01010102-ann-header",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 36 },
+    "type": "concept",
+    "title": "The Lucas–Cassini open question",
+    "content": "The parent entry introduces the Lucas numbers and the Lucas–Fibonacci bridge $L_n + F_n = 2F_{n+1}$, and lists the Lucas analogue of Cassini's identity, $L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$, as an open question. This file answers it over $\\mathbb{Z}$, proving the subtraction-free shifted form, the literal predecessor form, Cassini's identity for the Fibonacci numbers, and the companion $L_n^2 - 5F_n^2 = 4(-1)^n$ that explains the constant $5$.",
+    "mathContext": "$L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$",
+    "significance": "key",
+    "relatedConcepts": ["Lucas numbers", "Cassini's identity", "second-order recurrence"],
+    "prerequisites": ["Lucas sequence", "Fibonacci sequence"]
+  },
+  {
+    "id": "combfml-oq01010102-ann-lucas-cassini",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 40, "endLine": 62 },
+    "type": "theorem",
+    "title": "Lucas–Cassini via determinant alternation",
+    "content": "`lucas_cassini` proves the shifted, subtraction-free form $L_n L_{n+2} - L_{n+1}^2 = 5(-1)^n$. The engine is that for any sequence with $a_{n+2}=a_n+a_{n+1}$ the determinant $D(n)=a_n a_{n+2}-a_{n+1}^2$ satisfies $D(n+1)=-D(n)$; with $D(0)=2\\cdot 3-1^2=5$, one induction suffices. The inductive step substitutes the Lucas recurrence (`lucas_add_two`) into both the goal and the hypothesis and closes with `linear_combination -ih`. Index forms `k+1+1`, `k+1+2` are first normalised to `k+2`, `k+3` so the ring normaliser sees one atom per Lucas value.",
+    "mathContext": "$D(n) = L_n L_{n+2} - L_{n+1}^2,\\quad D(n+1) = -D(n),\\quad D(0)=5$",
+    "significance": "key",
+    "relatedConcepts": ["Cassini's identity", "linear recurrence determinant", "linear_combination"],
+    "prerequisites": ["induction on ℕ", "casting to ℤ"]
+  },
+  {
+    "id": "combfml-oq01010102-ann-pred",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 64, "endLine": 72 },
+    "type": "theorem",
+    "title": "The literal predecessor form",
+    "content": "`lucas_cassini_pred` gives the classical statement $L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5$ for $n\\ge 1$. Writing $n = m+1$ turns natural-number subtraction $n-1$ into $m$, after which the goal is definitionally the shifted form `lucas_cassini m` (up to commuting $5\\cdot(-1)^m$), discharged by `linear_combination`.",
+    "mathContext": "$L_{n-1}L_{n+1} - L_n^2 = (-1)^{n-1}\\cdot 5,\\quad n\\ge 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["re-indexing", "ℕ subtraction avoidance"],
+    "prerequisites": ["lucas_cassini"]
+  },
+  {
+    "id": "combfml-oq01010102-ann-fib-cassini",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 74, "endLine": 97 },
+    "type": "theorem",
+    "title": "Cassini's identity for the Fibonacci numbers",
+    "content": "`fib_cassini` proves $F_n F_{n+2} - F_{n+1}^2 = (-1)^{n+1}$ over $\\mathbb{Z}$ by the same determinant alternation, with base value $F_0 F_2 - F_1^2 = -1$. Mathlib provides `Nat.fib` and `Nat.fib_add_two` but no Cassini identity, so this is a reusable addition. It is also the lever for locating the constant $5$ in the Lucas case.",
+    "mathContext": "$F_n F_{n+2} - F_{n+1}^2 = (-1)^{n+1}$",
+    "significance": "key",
+    "relatedConcepts": ["Cassini's identity", "Fibonacci numbers", "Nat.fib_add_two"],
+    "prerequisites": ["induction on ℕ", "casting to ℤ"]
+  },
+  {
+    "id": "combfml-oq01010102-ann-five",
+    "proofId": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+    "range": { "startLine": 99, "endLine": 118 },
+    "type": "theorem",
+    "title": "Where the 5 comes from",
+    "content": "`lucas_sq_sub_five_fib_sq` proves the companion $L_n^2 - 5F_n^2 = 4(-1)^n$. Using the bridge in the form $L_n = 2F_{n+1} - F_n$ together with Fibonacci–Cassini, a single `linear_combination` reduces $L_n^2 - 5F_n^2$ to $4(F_{n+1}^2 - F_nF_{n+1} - F_n^2) = 4(-1)^n$. This makes explicit that the $5$ in Lucas–Cassini is the discriminant $1 - 4\\cdot(-1)$ of the characteristic polynomial $x^2 - x - 1$.",
+    "mathContext": "$L_n^2 - 5F_n^2 = 4(-1)^n;\\quad \\operatorname{disc}(x^2-x-1)=5$",
+    "significance": "key",
+    "relatedConcepts": ["discriminant", "Lucas–Fibonacci bridge", "linear_combination"],
+    "prerequisites": ["fib_cassini", "lucas_add_fib"]
+  }
+]

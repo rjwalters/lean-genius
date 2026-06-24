@@ -1,0 +1,107 @@
+{
+  "id": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+  "title": "Lucas Analogue of Cassini's Identity",
+  "slug": "combinations-formula-oq-01-oq-01-oq-01-oq-02",
+  "description": "Answers the parent's listed open question: the Lucas analogue of Cassini's identity L(n-1)·L(n+1) − L(n)² = (−1)^(n−1)·5, over ℤ. The Lucas sequence and the Lucas–Fibonacci bridge are imported from the parent. We prove the subtraction-free shifted form L(n)·L(n+2) − L(n+1)² = 5·(−1)^n by induction on the determinant alternation D(n+1) = −D(n), recover the literal predecessor form, prove Cassini's identity for the Fibonacci numbers (absent from Mathlib), and give the companion identity L(n)² − 5·F(n)² = 4·(−1)^n that locates the constant 5 as the discriminant of x² − x − 1. Axiom-free.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "fibonacci",
+      "lucas-numbers",
+      "cassini-identity",
+      "second-order-recurrence",
+      "finite-sums"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext and Quot.sound for all four named results (no Classical.choice, no sorryAx, no native_decide / Lean.ofReduceBool). No axiom declarations and no sorries.",
+    "lineCount": 118,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "lucas_cassini: the Lucas analogue of Cassini's identity in subtraction-free shifted form, L(n)·L(n+2) − L(n+1)² = 5·(−1)^n, proved by induction on the determinant alternation D(n+1) = −D(n)",
+      "lucas_cassini_pred: the literal predecessor form L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 for n ≥ 1",
+      "fib_cassini: Cassini's identity for the Fibonacci numbers, F(n)·F(n+2) − F(n+1)² = (−1)^(n+1), proved over ℤ (Mathlib has Nat.fib and Nat.fib_add_two but no Cassini identity)",
+      "lucas_sq_sub_five_fib_sq: the companion identity L(n)² − 5·F(n)² = 4·(−1)^n, derived algebraically from the Lucas–Fibonacci bridge and fib_cassini, exhibiting the constant 5 as the discriminant of x² − x − 1"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Cassini's identity F(n−1)·F(n+1) − F(n)² = (−1)^n (Cassini 1680, rediscovered by Simson) is the prototypical second-order Fibonacci identity. Its Lucas counterpart L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 carries an extra factor of 5 — the discriminant of the characteristic polynomial x² − x − 1 of the Fibonacci/Lucas recurrence. The parent entry (combinations-formula-oq-01-oq-01-oq-01) introduced the Lucas numbers in Lean (Mathlib has Nat.fib but no Lucas sequence) and posed the Lucas–Cassini identity as one of its open questions.",
+    "problemStatement": "Prove the Lucas analogue of Cassini's identity over ℤ, reusing the parent's Lucas sequence and Lucas–Fibonacci bridge, and explain the appearance of the constant 5.",
+    "text": "Writing D(n) = L(n)·L(n+2) − L(n+1)² for the second-order determinant of the Lucas sequence, the recurrence L(n+2) = L(n) + L(n+1) forces the alternation D(n+1) = −D(n): substituting the recurrence into D(n+1) and into D(n) shows both equal ±(L(n+1)² − L(n)·L(n+1) − L(n)²). With base value D(0) = 2·3 − 1² = 5, a single induction gives the subtraction-free shifted form L(n)·L(n+2) − L(n+1)² = 5·(−1)^n; specialising at the predecessor index recovers the classical statement L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5 for n ≥ 1. The same determinant alternation, with base value F(0)·F(2) − F(1)² = −1, proves Cassini's identity for the Fibonacci numbers F(n)·F(n+2) − F(n+1)² = (−1)^(n+1) — which Mathlib does not provide. Finally, the bridge L(n) + F(n) = 2·F(n+1) (so L(n) = 2F(n+1) − F(n)) combined with Fibonacci–Cassini yields the companion L(n)² − 5·F(n)² = 4·(−1)^n by a purely algebraic linear combination, making explicit that the 5 in Lucas–Cassini is the discriminant 1 − 4·(−1) of x² − x − 1.",
+    "proofStrategy": "Prove the shifted Lucas–Cassini identity by one-step induction on the determinant alternation D(n+1) = −D(n), discharging the inductive step with linear_combination against the hypothesis after substituting the Lucas recurrence; derive the predecessor form by re-indexing; prove Fibonacci–Cassini the same way; and obtain the L² − 5F² companion as a linear combination of the Lucas–Fibonacci bridge and Fibonacci–Cassini.",
+    "keyInsights": [
+      "For any sequence satisfying a(n+2) = a(n) + a(n+1), the second-order determinant D(n) = a(n)·a(n+2) − a(n+1)² alternates: D(n+1) = −D(n). Both Cassini identities are this single fact with different base values (5 for Lucas, −1 for Fibonacci).",
+      "Working over ℤ (casting the natural-number Lucas and Fibonacci values) is what lets the alternating sign (−1)^n be expressed directly; the shifted form L(n)·L(n+2) − L(n+1)² avoids natural-number subtraction entirely.",
+      "The constant 5 in Lucas–Cassini is the discriminant of x² − x − 1: the companion identity L(n)² − 5·F(n)² = 4·(−1)^n makes this precise, and follows from the bridge L(n) = 2F(n+1) − F(n) together with Fibonacci–Cassini by a one-line linear_combination.",
+      "Index bookkeeping (k+1+1 vs k+2, k+1+2 vs k+3) is handled by rewriting with definitional equalities so that linear_combination's ring normaliser sees a single atom per Lucas/Fibonacci value."
+    ],
+    "prerequisites": [
+      "The parent's Lucas sequence lucas, its recurrence lucas_add_two, and the Lucas–Fibonacci bridge lucas_add_fib (L(n) + F(n) = 2·F(n+1))",
+      "Mathlib's Fibonacci numbers Nat.fib and the recurrence Nat.fib_add_two",
+      "The linear_combination tactic for polynomial identities over ℤ"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Lucas analogue of Cassini's identity is proved over ℤ in both the subtraction-free shifted form L(n)·L(n+2) − L(n+1)² = 5·(−1)^n and the literal predecessor form L(n−1)·L(n+1) − L(n)² = (−1)^(n−1)·5. Cassini's identity for the Fibonacci numbers is proved alongside (Mathlib lacks it), and the companion L(n)² − 5·F(n)² = 4·(−1)^n identifies the constant 5 as the discriminant of x² − x − 1. 4 theorems, 118 lines, axiom-free.",
+    "implications": "Resolves the parent's listed Lucas–Cassini open question and adds the Fibonacci Cassini identity to the gallery as a reusable ℤ-level lemma. The unifying determinant alternation D(n+1) = −D(n) packages all three identities under one mechanism.",
+    "openQuestions": [
+      "Prove the Catalan–Cassini generalisation L(n−r)·L(n+r) − L(n)² = (−1)^(n−r)·5·F(r)² (and its Fibonacci counterpart F(n−r)·F(n+r) − F(n)² = (−1)^(n−r+1)·F(r)²), recovering Cassini at r = 1.",
+      "Formalise the matrix/determinant viewpoint: express both Cassini identities as det of the 2×2 'shift matrix' raised to the n-th power, deriving the sign from det = −1."
+    ]
+  },
+  "leanFile": {
+    "namespace": "CombinationsFormulaOQ01OQ01OQ01OQ02",
+    "lineCount": 118,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CombinationsFormulaOQ01OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: introduces the Lucas sequence and the Lucas–Fibonacci bridge L(n)+F(n)=2·F(n+1), and lists the Lucas analogue of Cassini's identity as an open question. This entry answers it and reuses the bridge."
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "related",
+      "description": "Fibonacci summation and product identities; this entry adds Cassini's identity for the Fibonacci numbers (F(n)·F(n+2)−F(n+1)²=(−1)^(n+1)) and its Lucas counterpart."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Module header and context",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "States the goal — the parent's Lucas–Cassini open question — and lists the four results: the shifted and predecessor Lucas–Cassini forms, Fibonacci–Cassini, and the L²−5F² companion. Imports Mathlib and the parent file."
+    },
+    {
+      "title": "Lucas analogue of Cassini's identity",
+      "startLine": 38,
+      "endLine": 72,
+      "summary": "lucas_cassini: the subtraction-free shifted form L(n)·L(n+2)−L(n+1)²=5·(−1)^n, by induction on the determinant alternation D(n+1)=−D(n) with base D(0)=5; the index forms are normalised so linear_combination closes the step. lucas_cassini_pred: the literal predecessor form L(n−1)·L(n+1)−L(n)²=(−1)^(n−1)·5 for n≥1, by re-indexing."
+    },
+    {
+      "title": "Cassini's identity for the Fibonacci numbers",
+      "startLine": 74,
+      "endLine": 97,
+      "summary": "fib_cassini: F(n)·F(n+2)−F(n+1)²=(−1)^(n+1), proved over ℤ by the same determinant alternation with base F(0)·F(2)−F(1)²=−1. Mathlib provides Nat.fib and Nat.fib_add_two but no Cassini identity."
+    },
+    {
+      "title": "Where the 5 comes from",
+      "startLine": 99,
+      "endLine": 118,
+      "summary": "lucas_sq_sub_five_fib_sq: L(n)²−5·F(n)²=4·(−1)^n, derived from the bridge L(n)=2·F(n+1)−F(n) and fib_cassini by a single linear_combination, exhibiting the 5 in Lucas–Cassini as the discriminant of x²−x−1."
+    }
+  ],
+  "sorries": []
+}
