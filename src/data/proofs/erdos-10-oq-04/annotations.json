@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "OQ-04: the exact lower density of S₁ is open — what is and is not formalized",
+    "content": "Erdős Problem #10 asks for a finite k with every large integer a prime plus at most k powers of 2. The k = 1 set is S₁ = {p} ∪ {p + 2ᵃ}. The fourth open question asks for the exact lower density d̲(S₁). This is genuinely unknown: Romanoff (1934) proved d̲(S₁) > 0 and Erdős (1950, covering congruences) gave d̲(S₁) < 1, but neither the exact value nor the sharpest explicit bounds are known. This file deliberately does NOT claim the open question. It supplies the verified, 0-axiom scaffolding the parent file was missing entirely (the parent has definitions and zero theorems): a clean membership characterization, monotonicity of the family Sₖ, and the order/analytic facts about lower density.",
+    "mathContext": "S₁ = { n : n = p or n = p + 2ᵃ, p prime }. Known: 0 < d̲(S₁) < 1. Open: the exact value of d̲(S₁)."
+  },
+  {
+    "id": "ann-def-sumprimepows-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 44, "endLine": 48 },
+    "type": "definition",
+    "title": "The representable family Sₖ",
+    "content": "`sumPrimeAndTwoPows k` is the set of n of the form p + Σ 2^{aᵢ} where p is prime and the exponents form a multiset of cardinality at most k. Using a multiset (rather than a finite set) of exponents allows repeated powers, matching the parent file's definition exactly so the two formalizations interoperate.",
+    "mathContext": "Sₖ = { n : ∃ p prime, ∃ pows : Multiset ℕ, |pows| ≤ k ∧ n = p + Σ 2^{aᵢ} }."
+  },
+  {
+    "id": "ann-def-lowerdensity-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 50, "endLine": 56 },
+    "type": "definition",
+    "title": "Lower density via liminf of counting ratios",
+    "content": "`densityFn S n = |S ∩ [0,n]| / (n+1)` is the finite counting ratio (factored out so its boundedness can be reused), and `lowerDensity S` is its liminf along `atTop`. The liminf — rather than a plain limit — is used because the limit need not exist; the lower density is exactly what Romanoff's and Gallagher's theorems bound.",
+    "mathContext": "d̲(S) = liminf_{n→∞} |S ∩ [0,n]| / (n+1)."
+  },
+  {
+    "id": "ann-thm-memiff-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 60, "endLine": 78 },
+    "type": "theorem",
+    "title": "Membership in S₁ collapses to 'prime or p + 2ᵃ'",
+    "content": "For k = 1 the exponent multiset has cardinality 0 or 1. The cardinality-0 case (`Multiset.card_eq_zero`) gives n = p, a prime; the cardinality-1 case (`Multiset.card_eq_one`) gives a singleton {a}, whose mapped sum is 2ᵃ, so n = p + 2ᵃ. The proof unpacks both directions, turning the abstract multiset definition into a usable, quantifier-light disjunction.",
+    "mathContext": "n ∈ S₁ ⇔ n.Prime ∨ ∃ p a, p.Prime ∧ n = p + 2ᵃ."
+  },
+  {
+    "id": "ann-thm-mono-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 80, "endLine": 85 },
+    "type": "theorem",
+    "title": "The family Sₖ is monotone in k",
+    "content": "If j ≤ k then any witness for membership in Sⱼ (a prime and a multiset of ≤ j powers) is also a witness for Sₖ, since |pows| ≤ j ≤ k. Combined with monotonicity of lower density, this yields d̲(S₁) ≤ d̲(Sₖ) for every k ≥ 1 — the elementary lower edge of Gallagher's theorem d̲(Sₖ) → 1.",
+    "mathContext": "Monotone (fun k => Sₖ); hence j ≤ k ⇒ Sⱼ ⊆ Sₖ."
+  },
+  {
+    "id": "ann-thm-onenotmem-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 92, "endLine": 100 },
+    "type": "theorem",
+    "title": "1 is never representable",
+    "content": "Any element of Sₖ is at least the prime p ≥ 2 added to a nonnegative power sum, so it cannot equal 1. This is the smallest non-member and shows S₁ ≠ ℕ.",
+    "mathContext": "1 ∉ Sₖ for every k, since p ≥ 2 forces p + Σ2^{aᵢ} ≥ 2."
+  },
+  {
+    "id": "ann-thm-densitymono-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 135, "endLine": 148 },
+    "type": "theorem",
+    "title": "Lower density is monotone under inclusion",
+    "content": "If A ⊆ B then on each window [0,n] the filtered count for A is at most that for B (`Finset.card_le_card` on the filtered subset), so densityFn A n ≤ densityFn B n pointwise. The result follows from `Filter.liminf_le_liminf`, discharging its boundedness side-conditions from the [0,1] bound on counting ratios.",
+    "mathContext": "A ⊆ B ⇒ d̲(A) ≤ d̲(B)."
+  },
+  {
+    "id": "ann-thm-s1le-erdos10oq04",
+    "proofId": "erdos-10-oq-04",
+    "range": { "startLine": 173, "endLine": 179 },
+    "type": "theorem",
+    "title": "Lower edge of Gallagher's theorem",
+    "content": "Since S₁ ⊆ Sₖ for k ≥ 1, lower density's monotonicity gives d̲(S₁) ≤ d̲(Sₖ). Gallagher (1975) proved d̲(Sₖ) → 1; d̲(S₁) sits at the base of this increasing chain, and its exact value is the open question.",
+    "mathContext": "1 ≤ k ⇒ d̲(S₁) ≤ d̲(Sₖ)."
+  }
+]
