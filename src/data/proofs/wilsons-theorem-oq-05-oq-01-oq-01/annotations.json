@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-engine",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "technique",
+    "title": "The Divisibility Engine: a·b ∣ m!",
+    "content": "`mul_dvd_factorial`: two distinct positive factors below $m$ multiply into $m!$ — if $0 < a < b \\le m$ then $a\\cdot b \\mid m!$. The proof is elementary: $a \\le b-1$ gives $a \\mid (b-1)!$ (`Nat.dvd_factorial`), so $a\\cdot b \\mid b\\cdot(b-1)! = b!$, and $b! \\mid m!$ since $b \\le m$ (`Nat.factorial_dvd_factorial`). Distinctness of $a,b$ is essential — it is what lets both factors appear in the factorial product. This is the parent entry's engine, reused here under the tighter bound $m = n-2$.",
+    "mathContext": "$0 < a < b \\le m \\Rightarrow a\\,b \\mid m!$, via $a \\mid (b-1)!$ and $b! \\mid m!$.",
+    "significance": "key",
+    "relatedConcepts": ["factorial divisibility", "distinct factors", "Nat.dvd_factorial"],
+    "prerequisites": ["factorials", "divisibility in ℕ"]
+  },
+  {
+    "id": "ann-composite-sharper",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 126 },
+    "type": "theorem",
+    "title": "The Sharper Composite Divisibility n ∣ (n−2)!",
+    "content": "`dvd_factorial_sub_two_of_not_prime`: for composite $n \\ge 2$ with $n \\ne 4$, already $n \\mid (n-2)!$ — one factorial step stronger than the parent's $n \\mid (n-1)!$. Set $p = \\mathrm{minFac}\\,n$, $q = n/p$. If $p < q$, the distinct factors $p, q$ both lie $\\le n-2$ (since $2q \\le n$), giving $n = pq \\mid (n-2)!$. If $p = q$, then $n = p^2$ with $p \\ge 3$ (as $n \\ne 4$), and the distinct factors $p, 2p$ lie $\\le n-2$ (since $3p \\le p^2$), giving $2n = p\\cdot 2p \\mid (n-2)!$, hence $n \\mid (n-2)!$. The boundary $n = 4 = 2^2$ is exactly where $2$ and $2\\cdot 2$ first fail to fit below $n-2$.",
+    "mathContext": "composite $n \\ne 4 \\Rightarrow n \\mid (n-2)!$; split $n = p\\cdot q$ with $p=\\mathrm{minFac}\\,n$, distinct factors $\\le n-2$.",
+    "significance": "key",
+    "relatedConcepts": ["least prime factor (minFac)", "composite factorization", "Wilson's theorem composite branch"],
+    "prerequisites": ["the divisibility engine", "minFac API", "prime/composite dichotomy"]
+  },
+  {
+    "id": "ann-pred-corollary",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 128, "endLine": 134 },
+    "type": "context",
+    "title": "Parent's n ∣ (n−1)! for Free",
+    "content": "`dvd_factorial_pred_of_not_prime`: the parent's composite divisibility $n \\mid (n-1)!$ now follows in one line from the sharper $(n-2)!$ result, since $(n-2)! \\mid (n-1)!$ (`Nat.factorial_dvd_factorial`). This makes explicit that the new result is strictly stronger — the parent's statement is a corollary.",
+    "mathContext": "$n \\mid (n-2)! \\mid (n-1)!$, so $n \\mid (n-1)!$.",
+    "significance": "supporting",
+    "relatedConcepts": ["strict strengthening", "factorial monotonicity"],
+    "prerequisites": ["the sharper divisibility"]
+  },
+  {
+    "id": "ann-companion-residue",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 138, "endLine": 164 },
+    "type": "theorem",
+    "title": "The Wilson Companion Residue (n−2)! ≡ 1",
+    "content": "`factorial_sub_two_mod_of_prime`: for prime $n$, $(n-2)! \\% n = 1$. The proof works in $\\mathrm{ZMod}\\,n$: Wilson's lemma gives $(n-1)! = -1$ and the cast $n-1 = -1$; the factorial split $(n-1)! = (n-1)\\cdot(n-2)!$ becomes $-1 = (-1)\\cdot(n-2)!$, so $(n-2)! = 1$ by `neg_inj`. The result is transported back to ℕ via `ZMod.natCast_eq_natCast_iff`. Conceptually the companion residue is the cofactor $(n-1)!/(n-1) \\equiv (-1)/(-1) \\equiv 1$.",
+    "mathContext": "prime $n$: in $\\mathrm{ZMod}\\,n$, $-1 = (n-1)! = (n-1)\\,(n-2)! = (-1)\\,(n-2)!$, so $(n-2)! \\equiv 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Wilson's lemma", "ZMod.wilsons_lemma", "cofactor residue"],
+    "prerequisites": ["Wilson's theorem (ZMod form)", "ℕ ↔ ZMod cast bridge"]
+  },
+  {
+    "id": "ann-pred-residue",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 166, "endLine": 177 },
+    "type": "technique",
+    "title": "Re-deriving (n−1)! ≡ n−1 for Primes",
+    "content": "`factorial_pred_mod_of_prime`: the classical Wilson residue $(n-1)! \\% n = n-1$ for prime $n$, transported directly from `ZMod.wilsons_lemma` via the cast $(n-1 : \\mathrm{ZMod}\\,n) = -1$ and `ZMod.natCast_eq_natCast_iff`. This is the prime branch of the parent's trichotomy, re-proved here in self-contained form to feed the primality test.",
+    "mathContext": "prime $n \\Rightarrow (n-1)! \\equiv -1 \\equiv n-1 \\pmod n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Wilson's theorem", "modular residue"],
+    "prerequisites": ["ZMod.wilsons_lemma"]
+  },
+  {
+    "id": "ann-companion-trichotomy",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 181, "endLine": 197 },
+    "type": "insight",
+    "title": "The Companion Trichotomy of (n−2)! mod n",
+    "content": "`factorial_sub_two_mod`: for $n \\ge 2$, $(n-2)! \\% n = 1$ if $n$ is prime, $2$ if $n = 4$, and $0$ otherwise. The proof is a `by_cases` on primality and on $n = 4$: the prime branch is the companion residue, $n = 4$ is closed by kernel `decide` ($(4-2)! = 2$, $2 \\% 4 = 2$), and the remaining composite case is the residue $0$ from the sharper divisibility (`Nat.dvd_iff_mod_eq_zero`). This classifies the factorial one step below the classical Wilson factorial, mirroring the parent's $(n-1 / 2 / 0)$ with $(1 / 2 / 0)$.",
+    "mathContext": "$(n-2)! \\bmod n = \\begin{cases}1 & n\\text{ prime}\\\\ 2 & n=4\\\\ 0 & \\text{else}\\end{cases}$",
+    "significance": "key",
+    "relatedConcepts": ["trichotomy", "Catalan-of-Wilson companion", "sporadic n=4 exception"],
+    "prerequisites": ["the companion residue", "the sharper divisibility"]
+  },
+  {
+    "id": "ann-primality-test-pred",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 201, "endLine": 216 },
+    "type": "insight",
+    "title": "ZMod-Free Wilson Primality Test",
+    "content": "`prime_iff_factorial_pred_mod`: for $n \\ge 2$, $n$ is prime $\\iff (n-1)! \\% n = n-1$ — a decidable primality criterion in pure natural-number remainder arithmetic, no ZMod. Forward is Wilson; backward is the trichotomy ruling out the only other cases ($n=4$ gives $2 \\ne 3$ by `decide`; composite $n \\ne 4$ gives $0 \\ne n-1$). This answers the parent's first registered open question: turning the classification into a genuine primality certificate.",
+    "mathContext": "$n \\ge 2$: $\\;n\\text{ prime} \\iff (n-1)! \\bmod n = n-1$.",
+    "significance": "key",
+    "relatedConcepts": ["primality test", "Wilson's theorem", "decidable criterion"],
+    "prerequisites": ["the trichotomy", "the prime residue"]
+  },
+  {
+    "id": "ann-primality-test-sub-two",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 218, "endLine": 231 },
+    "type": "technique",
+    "title": "The Companion Primality Test",
+    "content": "`prime_iff_factorial_sub_two_mod`: for $n \\ge 2$, $n$ is prime $\\iff (n-2)! \\% n = 1$. The companion form of the Wilson test, with the same structure: forward is the companion residue, backward rules out $n = 4$ (residue $2$) and composite $n \\ne 4$ (residue $0$). Testing $(n-2)! \\% n = 1$ is arguably cleaner than the $(n-1)!$ form since the target value is the constant $1$ rather than $n-1$.",
+    "mathContext": "$n \\ge 2$: $\\;n\\text{ prime} \\iff (n-2)! \\bmod n = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["primality test", "companion residue"],
+    "prerequisites": ["the companion trichotomy"]
+  },
+  {
+    "id": "ann-kempner",
+    "proofId": "wilsons-theorem-oq-05-oq-01-oq-01",
+    "range": { "startLine": 235, "endLine": 259 },
+    "type": "insight",
+    "title": "The Kempner–Smarandache Threshold",
+    "content": "`exists_lt_dvd_factorial_iff`: for $n \\ge 2$, some factorial strictly below $n$ is divisible by $n$ iff $n$ is composite and $n \\ne 4$. Equivalently the Kempner–Smarandache function $S(n) = \\min\\{m : n \\mid m!\\}$ satisfies $S(n) < n$ exactly for composite $n \\ne 4$ — for primes and for $4$, the first factorial divisible by $n$ is $n!$ itself. The composite side uses $m = n-2$ as witness (the sharper divisibility); necessity uses `Nat.Prime.dvd_factorial` ($p \\mid m! \\iff p \\le m$) to rule out primes, and `interval_cases` + `decide` to rule out $n = 4$. This is the divisibility shadow of the same $n=4$ exception governing the Wilson residue.",
+    "mathContext": "$n \\ge 2$: $(\\exists m < n,\\ n \\mid m!) \\iff (\\neg n\\text{ prime} \\wedge n \\ne 4)$; i.e. $S(n) < n$ iff composite $n \\ne 4$.",
+    "significance": "key",
+    "relatedConcepts": ["Kempner function", "Smarandache function", "factorial divisibility threshold"],
+    "prerequisites": ["the sharper divisibility", "Nat.Prime.dvd_factorial"]
+  }
+]
