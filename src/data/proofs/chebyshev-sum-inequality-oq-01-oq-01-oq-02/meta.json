@@ -72,7 +72,8 @@
       "The parent's identity does double duty: the same nonnegative double sum that proves D ≥ 0 also pins the equality case (sum of nonnegatives = 0 ⇔ each term = 0) and the strict case (one positive term ⇒ positive sum). No new algebra is needed — only the order lemmas Finset.sum_eq_zero_iff_of_nonneg and Finset.sum_pos'.",
       "Equality is genuinely a statement about pairs: it holds iff there is NO pair on which f and g both strictly vary. The 'f or g constant' phrasing is the equivalent global form, recovered by a finite combinatorial argument.",
       "Strictness needs only a single witnessing pair, so it is a local condition: two positively weighted indices where both sequences move.",
-      "With strictly positive weights the weight factors are invisible to the equality condition — exactly as for the inequality itself, the weights only rescale, they never change which pairs are tight."
+      "With strictly positive weights the weight factors are invisible to the equality condition — exactly as for the inequality itself, the weights only rescale, they never change which pairs are tight.",
+      "The Chebyshev defect D is, up to normalization, the weighted covariance of f and g; the dichotomy is the discrete rigidity statement that this covariance is zero exactly when one variable is degenerate (constant) and strictly positive otherwise. This is the finite-sum mirror of the integral covariance statement flagged in the open questions, and the same nonnegative-quadratic-form mechanism underlies Cauchy–Schwarz and the variance ≥ 0 inequality."
     ],
     "prerequisites": [
       "The parent weighted Chebyshev inequality and its weighted monovariance (covariance) identity",
