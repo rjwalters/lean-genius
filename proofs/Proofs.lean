@@ -3868,6 +3868,7 @@ import Proofs.VietasFormulasOQ02
 import Proofs.VietasFormulasOQ03
 import Proofs.VietasFormulasOQ03OQ01
 import Proofs.VietasFormulasOQ03OQ05
+import Proofs.VietasFormulasOQ04
 import Proofs.VivianiTheorem
 import Proofs.WeakGoldbach
 import Proofs.WeitzenbockInequalityOQ01

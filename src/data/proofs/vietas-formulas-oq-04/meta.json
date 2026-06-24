@@ -1,0 +1,119 @@
+{
+  "id": "vietas-formulas-oq-04",
+  "title": "The Quadratic Discriminant via Vieta's Formulas",
+  "slug": "vietas-formulas-oq-04",
+  "description": "Expresses the discriminant of a quadratic directly in terms of its roots: b² − 4ac = a²(r − s)². From this single ring identity follow the repeated-root criterion (Δ = 0 ⇔ r = s over any field), nonnegativity of the discriminant over an ordered field, and the distinct-roots dichotomy (Δ > 0 ⇔ r ≠ s). A companion lemma derives the Vieta relations b = −a(r+s), c = a·r·s from the mere fact that r ≠ s are both roots.",
+  "meta": {
+    "author": "Francois Viete (1615); formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Discriminant",
+    "date": "1615",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VietasFormulasOQ04.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "vietas-formulas",
+      "discriminant",
+      "quadratic",
+      "research",
+      "field-theory"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "defCount": 0,
+    "lineCount": 145,
+    "mathlibDependencies": [
+      {
+        "theorem": "mul_eq_zero",
+        "description": "In a domain, a product is zero iff a factor is zero (used to cancel r − s and to read off the repeated-root criterion)",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "sq_eq_zero_iff",
+        "description": "a² = 0 ↔ a = 0 over a monoid with no zero divisors",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "sub_eq_zero",
+        "description": "a − b = 0 ↔ a = b (translating the root-coincidence to the discriminant)",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "The core identity b² − 4ac = a²(r − s)² proved by a single ring computation over any commutative ring",
+      "vieta_from_roots: derives the Vieta relations b = −a(r+s), c = a·r·s from two distinct roots, by factoring the difference of the root equations through (r − s)",
+      "Repeated-root criterion: over any field with a ≠ 0, Δ = 0 ⇔ r = s",
+      "Discriminant nonnegativity over an ordered field (Δ is a square)",
+      "Distinct-roots dichotomy: with a ≠ 0, Δ > 0 ⇔ r ≠ s"
+    ],
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "Vieta's formulas for the quadratic (parent entry)",
+      "Commutative ring and field axioms",
+      "No-zero-divisor cancellation",
+      "Ordered field positivity (positivity tactic)"
+    ],
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries.",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The discriminant b² − 4ac of a quadratic ax² + bx + c is the classical quantity that detects repeated roots and, over the reals, the existence of two distinct real solutions. Its sign governs the qualitative behaviour of the quadratic formula. Vieta's formulas (Francois Viete, 1615) relate the coefficients of a polynomial to symmetric functions of its roots. This entry connects the two: it shows the discriminant is exactly a² times the squared root-gap (r − s)², making every property of the discriminant a transparent consequence of a single algebraic identity.",
+    "problemStatement": "For a quadratic ax² + bx + c with roots r, s (so b = −a(r+s) and c = a·r·s by Vieta), prove the discriminant identity b² − 4ac = a²(r − s)², and deduce: (i) over a field with a ≠ 0, the quadratic has a repeated root exactly when Δ = 0; (ii) over an ordered field the discriminant is always nonnegative; and (iii) it is strictly positive exactly when the roots are distinct.",
+    "text": "Expresses the discriminant b² − 4ac of a quadratic as a²(r − s)² in terms of its roots, and derives the repeated-root, nonnegativity, and distinct-roots criteria from this one identity. Also derives the Vieta relations themselves from the assumption that r ≠ s are roots.",
+    "proofStrategy": "Everything reduces to one ring identity. Substituting the Vieta relations b = −a(r+s), c = a·r·s into b² − 4ac and expanding gives a²[(r+s)² − 4rs] = a²(r − s)² — a one-line `ring` call valid over any commutative ring.\n\nThe converse direction, vieta_from_roots, recovers the Vieta relations from two distinct roots: subtracting the root equations a·r² + b·r + c = 0 and a·s² + b·s + c = 0 factors as (r − s)(a(r+s) + b) = 0; since r ≠ s the factor r − s is invertible, forcing b = −a(r+s), and back-substitution yields c = a·r·s. This step uses `linear_combination` for the algebraic rearrangements.\n\nThe corollaries are then immediate: Δ = 0 ⇔ (r − s)² = 0 ⇔ r = s (no zero divisors, a ≠ 0); Δ ≥ 0 because a²(r − s)² is a square (`positivity`); and Δ > 0 ⇔ r ≠ s because both a² and (r − s)² are strictly positive exactly when their bases are nonzero.",
+    "keyInsights": [
+      "**One identity, all corollaries**: The repeated-root test, the sign analysis, and the discriminant formula are not separate facts — they are three readings of b² − 4ac = a²(r − s)². Proving the identity once makes the rest follow by elementary algebra.",
+      "**Maximal generality for free**: The core identity needs only a commutative ring, so it holds over ℤ, finite fields, and matrix rings, not just ℝ. The field structure is invoked only where cancellation is genuinely required (deriving Vieta from roots, and the repeated-root iff), and the order only for the sign statements.",
+      "**Deriving Vieta from roots**: vieta_from_roots closes the loop — the discriminant identity does not depend on assuming the Vieta relations, since those relations are themselves forced by the existence of two distinct roots. The factor (r − s) appearing in the discriminant is the very factor cancelled to obtain Vieta.",
+      "**Why the discriminant is a square**: Over an ordered field the nonnegativity Δ ≥ 0 is not an inequality to be estimated but an identity: the discriminant literally equals a perfect square. This is the structural reason the quadratic formula's √Δ makes sense exactly when roots are real."
+    ],
+    "prerequisites": [
+      "Vieta's formulas for the quadratic",
+      "Commutative ring and field axioms",
+      "No-zero-divisor cancellation",
+      "Ordered-field positivity"
+    ]
+  },
+  "conclusion": {
+    "summary": "The quadratic discriminant equals a²(r − s)², a single ring identity from which the repeated-root criterion (Δ = 0 ⇔ r = s), discriminant nonnegativity, and the distinct-roots dichotomy (Δ > 0 ⇔ r ≠ s) all follow. A companion lemma derives the Vieta relations from two distinct roots. 6 theorems, 0 sorries, 0 axioms.",
+    "implications": "The identity b² − 4ac = a²(r − s)² makes the sign analysis of quadratics purely algebraic and characteristic-independent. The same root-gap-squared pattern underlies the discriminant of a polynomial as the squared Vandermonde of its roots, suggesting the natural generalization to higher degree.",
+    "openQuestions": [
+      "Express the cubic discriminant as the product of squared root-gaps ∏_{i<j}(rᵢ − rⱼ)² and verify it equals the classical −4p³ − 27q² for the depressed cubic.",
+      "Connect the general degree-n discriminant to the squared Vandermonde determinant of the roots via Mathlib's Polynomial.discriminant.",
+      "Show the discriminant equals the resultant of the polynomial and its derivative (up to leading-coefficient factors)."
+    ]
+  },
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Viete, Francois",
+      "title": "De aequationum recognitione et emendatione",
+      "year": "1615",
+      "venue": "",
+      "note": "Origin of the coefficient-root relations now called Vieta's formulas"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "vietas-formulas",
+      "relationship": "extends",
+      "description": "Extends Vieta's formulas to the discriminant of the general (non-monic) quadratic, expressing b² − 4ac in terms of the roots."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "VietaDiscriminant",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/VietasFormulasOQ04.lean",
+    "sorries": 0
+  }
+}
