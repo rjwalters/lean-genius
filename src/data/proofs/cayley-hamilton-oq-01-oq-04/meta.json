@@ -109,6 +109,50 @@
       "Coprime polynomials and internal direct-sum decompositions"
     ]
   },
+  "sections": [
+    {
+      "id": "invariance",
+      "title": "T-Invariance of the Primary Components",
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "ker_aeval_mapsTo: each kernel ker(p(T)) is T-invariant because p(T) commutes with T (both are polynomials in T), so T maps the kernel into itself."
+    },
+    {
+      "id": "iterated-crt",
+      "title": "Iterated Chinese Remainder Theorem",
+      "startLine": 79,
+      "endLine": 98,
+      "summary": "iSup_ker_aeval_eq_ker_aeval_prod: the technical heart. By Finset induction it lifts Mathlib's binary identity ker(p(T)) ⊔ ker(q(T)) = ker((p·q)(T)) to a finite pairwise-coprime family, keeping each inserted factor coprime to the running product via IsCoprime.prod_right."
+    },
+    {
+      "id": "independence",
+      "title": "Independence of the Kernels",
+      "startLine": 102,
+      "endLine": 125,
+      "summary": "iSupIndep_ker_aeval: each ker(pᵢ(T)) is disjoint from the supremum of the others, which the CRT lemma rewrites as the kernel of the product over univ.erase i; coprimality of pᵢ to that product gives disjointness (disjoint_ker_aeval_of_isCoprime)."
+    },
+    {
+      "id": "spanning",
+      "title": "Spanning When the Product Annihilates T",
+      "startLine": 127,
+      "endLine": 139,
+      "summary": "iSup_ker_aeval_eq_top: the CRT lemma over univ identifies ⨆ ker(pᵢ(T)) with ker((∏pᵢ)(T)); since the product annihilates T, that kernel is the whole space."
+    },
+    {
+      "id": "general-decomposition",
+      "title": "General Coprime Decomposition",
+      "startLine": 141,
+      "endLine": 149,
+      "summary": "isInternal_ker_aeval: independence + spanning are packaged into DirectSum.IsInternal via DirectSum.isInternal_submodule_iff_iSupIndep_and_iSup_eq_top, with no reference to the minimal polynomial, finiteness, or algebraic closure."
+    },
+    {
+      "id": "headline",
+      "title": "Headline: Primary Decomposition from the Minimal Polynomial",
+      "startLine": 151,
+      "endLine": 166,
+      "summary": "isInternal_primaryDecomposition_of_minpoly: specialising pᵢ = qᵢ^eᵢ, IsCoprime.pow promotes coprimality of the irreducibles to their prime powers and minpoly.aeval supplies annihilation, yielding V = ⨁ᵢ ker(qᵢ^eᵢ(T))."
+    }
+  ],
   "conclusion": {
     "summary": "For an endomorphism T whose minimal polynomial factors into pairwise coprime prime powers μ_T = ∏ qᵢ^eᵢ, the space decomposes as an internal direct sum of the T-invariant primary components V = ⨁ᵢ ker(qᵢ^eᵢ(T)). The result is obtained from a general coprime decomposition V = ⨁ᵢ ker(pᵢ(T)) (for any pairwise-coprime family whose product annihilates T), itself an iterated Chinese Remainder Theorem built by Finset induction over Mathlib's binary coprime-kernel lemmas. Fully verified, 0 axioms, 0 sorries.",
     "implications": "This is the structural backbone of operator canonical forms: the primary decomposition reduces the study of T to its action on each invariant component ker(qᵢ^eᵢ(T)), on which qᵢ^eᵢ is the minimal polynomial. Over an algebraically closed field the qᵢ are linear and the components are the generalized eigenspaces, yielding the Jordan form; over a general field it underlies the rational canonical form. It directly answers the parent entry's closing open question.",
