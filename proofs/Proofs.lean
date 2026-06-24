@@ -1046,6 +1046,7 @@ import Proofs.Erdos1017OQ01
 import Proofs.Erdos1017OQ03
 import Proofs.Erdos1017Problem
 import Proofs.Erdos1018Aristotle
+import Proofs.Erdos1018OQ02
 import Proofs.Erdos1018OQ04
 import Proofs.Erdos1018OQ04Incomplete01
 import Proofs.Erdos1018OQ04Incomplete01Aristotle
