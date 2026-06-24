@@ -1,0 +1,194 @@
+{
+  "id": "basel-problem-oq-09-oq-01",
+  "title": "The Dirichlet Lambda Parity Split: λ(s) = (1 − 2⁻ˢ)·ζ(s), with λ(4) = π⁴/96",
+  "slug": "basel-problem-oq-09-oq-01",
+  "description": "Abstracts the parent's even/odd split of the Basel sum into a single reusable lemma valid for an arbitrary exponent s and any realised zeta value Z: the odd-power subseries ∑ 1/(2k+1)ˢ sums to (1 − 1/2ˢ)·Z and the even-power subseries ∑ 1/(2k)ˢ to (1/2ˢ)·Z, because (2k)ˢ = 2ˢ·kˢ and HasSum.even_add_odd recombines the halves. Nothing in the argument uses the value Z, so feeding Mathlib's closed forms gives the odd-index (Dirichlet lambda) values as one-line specialisations: λ(2) = (1 − 1/4)(π²/6) = π²/8 (recovering the parent) and the new λ(4) = (1 − 1/16)(π⁴/90) = π⁴/96. Verified with 0 sorries and 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ09OQ01.lean",
+    "tags": [
+      "number-theory",
+      "analysis",
+      "series",
+      "zeta-function",
+      "dirichlet-lambda",
+      "basel-problem",
+      "research"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 165,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_zeta_two",
+        "description": "ζ(2): HasSum (fun n => 1/n²) (π²/6); specialised to λ(2) = π²/8",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "hasSum_zeta_four",
+        "description": "ζ(4): HasSum (fun n => 1/n⁴) (π⁴/90); specialised to λ(4) = π⁴/96",
+        "module": "Mathlib.NumberTheory.ZetaValues"
+      },
+      {
+        "theorem": "HasSum.even_add_odd",
+        "description": "Recombine the even- and odd-indexed subseries into the full sum",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      },
+      {
+        "theorem": "HasSum.mul_left",
+        "description": "Scale a HasSum by 1/2ˢ to obtain the even part as (1/2ˢ)·Z",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Ring"
+      },
+      {
+        "theorem": "Summable.comp_injective",
+        "description": "Summability of the odd subseries via the injection k ↦ 2k+1",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "HasSum.unique",
+        "description": "Uniqueness of sums, pinning the odd part to (1 − 1/2ˢ)·Z",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "hasSum_odd_of_hasSum: the parity-split lemma λ(s) = (1 − 1/2ˢ)·ζ(s) for ANY exponent s and ANY realised zeta value Z — the abstraction the parent left at the single case s = 2",
+      "hasSum_even_of_hasSum: the complementary even-power lemma ∑ 1/(2k)ˢ = (1/2ˢ)·Z",
+      "hasSum_lambda_four / tsum_lambda_four / summable_lambda_four: the new value λ(4) = π⁴/96 = (1 − 1/16)(π⁴/90) from hasSum_zeta_four, with tsum form and summability",
+      "hasSum_lambda_two: λ(2) = π²/8 recovered as the s = 2 specialisation of the general lemma",
+      "lambda_four_decomposition / parity_factor_complement: the ζ(4) even+odd recombination and the identity 1/2ˢ + (1 − 1/2ˢ) = 1"
+    ],
+    "prerequisites": [
+      "Parent basel-problem-oq-09 (even/odd split of ζ(2))",
+      "Explicit even zeta values ζ(2) = π²/6, ζ(4) = π⁴/90 (Mathlib)",
+      "Even/odd splitting of an infinite sum (HasSum.even_add_odd)",
+      "Uniqueness of sums (HasSum.unique)"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ZetaValues",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.NatInt",
+      "Mathlib.Topology.Algebra.InfiniteSum.Ring",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Real", "Filter", "Topology"],
+    "namespace": "BaselProblemOQ09OQ01",
+    "path": "Proofs/BaselProblemOQ09OQ01.lean",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "The odd-index (Dirichlet lambda) function λ(s) = ∑_{k≥0} 1/(2k+1)^s satisfies λ(s) = (1 − 2^{-s})ζ(s), because the even-indexed terms of ζ(s) reassemble a 2^{-s}-scaled copy of ζ(s) itself. At the even integers this turns Euler's closed forms ζ(2) = π²/6 and ζ(4) = π⁴/90 into λ(2) = π²/8 and λ(4) = π⁴/96 with no further analysis. The parent entry basel-problem-oq-09 proved only the s = 2 instance; this entry isolates the parity split as a single exponent-agnostic lemma.",
+    "problemStatement": "Generalize the even/odd parity split of the Basel sum to a reusable lemma: for any exponent s and any Z with ∑ 1/nˢ = Z, the odd-power subseries sums to (1 − 1/2ˢ)·Z. Then derive λ(2) = π²/8 (recovering the parent) and the new λ(4) = π⁴/96 from Mathlib's hasSum_zeta_four, with 0 sorries and 0 axioms.",
+    "text": "λ(s) = (1 − 2⁻ˢ)·ζ(s) as an exponent-agnostic HasSum lemma, specialised to λ(2) = π²/8 and λ(4) = π⁴/96.",
+    "proofStrategy": "Parametrise the parent argument over s and Z. (1) hasSum_even_of_hasSum: rewrite 1/(2k)ˢ = (1/2ˢ)(1/kˢ) via mul_pow + ring (valid at k = 0 in ℝ) and scale the hypothesis by 1/2ˢ (HasSum.mul_left), giving even sum (1/2ˢ)·Z. (2) hasSum_odd_of_hasSum: the odd subseries fun k ↦ f(2k+1) is summable (Summable.comp_injective with k ↦ 2k+1), so HasSum.even_add_odd reassembles the full series and HasSum.unique forces (1/2ˢ)·Z + odd = Z, hence odd = (1 − 1/2ˢ)·Z (a linarith over the atoms Z, (1/2ˢ)·Z, odd, then ring to fold the factor). (3) The concrete values are rwa after a `ring` proof that (1 − 1/2²)(π²/6) = π²/8 and (1 − 1/2⁴)(π⁴/90) = π⁴/96.",
+    "keyInsights": [
+      "**The parity split never touches the value.** Because the even part is a 2⁻ˢ-scaled copy of the whole series, the odd value (1 − 2⁻ˢ)·Z drops out of uniqueness alone — so the lemma is stated over an arbitrary realised sum Z, and every concrete λ(2m) is a one-line specialisation.",
+      "**Exponent-agnostic rescaling.** (2k)ˢ = 2ˢ·kˢ holds for every nat s and every real k (mul_pow), and 1/(2ˢkˢ) = (1/2ˢ)(1/kˢ) is a field identity valid even at k = 0; one `rw [mul_pow]; ring` discharges the rescale for all s at once, where the parent hard-coded s = 2.",
+      "**λ(4) = π⁴/96 is pure arithmetic on ζ(4).** Feeding hasSum_zeta_four (ζ(4) = π⁴/90) into the lemma yields (1 − 1/16)(π⁴/90); a single `ring` confirms this equals π⁴/96. No new summation or analytic estimate is introduced beyond Mathlib's ζ(4).",
+      "**Uniqueness over a nonlinear atom.** With (1/2ˢ)·Z treated as an opaque product, the value step is linear: from (1/2ˢ)·Z + odd = Z conclude odd = Z − (1/2ˢ)·Z by linarith, then `ring` refolds it as (1 − 1/2ˢ)·Z.",
+      "**The factor is a genuine probability split.** parity_factor_complement records 1/2ˢ + (1 − 1/2ˢ) = 1: the even indices carry fraction 2⁻ˢ of ζ(s) and the odd indices the rest, recovering the parent's 'three quarters is odd' at s = 2 and 'fifteen sixteenths is odd' at s = 4."
+    ],
+    "prerequisites": [
+      "Parent even/odd split of ζ(2) (basel-problem-oq-09)",
+      "Explicit even zeta values ζ(2) = π²/6, ζ(4) = π⁴/90",
+      "Even/odd decomposition of infinite sums (HasSum.even_add_odd)",
+      "Uniqueness of sums (HasSum.unique)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "Documents the exponent-agnostic parity split λ(s) = (1 − 2⁻ˢ)ζ(s) and its specialisations; imports Mathlib's ZetaValues for hasSum_zeta_two and hasSum_zeta_four.",
+      "mathContext": "The odd-index zeta λ(s) carries fraction (1 − 2⁻ˢ) of ζ(s)."
+    },
+    {
+      "id": "general-split",
+      "title": "The general parity split — hasSum_even_of_hasSum / hasSum_odd_of_hasSum",
+      "startLine": 58,
+      "endLine": 110,
+      "summary": "The exponent- and value-agnostic lemmas: even part (1/2ˢ)·Z via mul_pow rescaling + HasSum.mul_left; odd part (1 − 1/2ˢ)·Z via even_add_odd recombination and HasSum.unique.",
+      "mathContext": "λ(s) = (1 − 2⁻ˢ)ζ(s) for any realised zeta value."
+    },
+    {
+      "id": "concrete-values",
+      "title": "Concrete even zeta values — λ(2) = π²/8 and λ(4) = π⁴/96",
+      "startLine": 112,
+      "endLine": 130,
+      "summary": "Specialise the general lemma against hasSum_zeta_two and hasSum_zeta_four; each value is a one-line `ring` simplification of (1 − 1/2^{2m})·ζ(2m).",
+      "mathContext": "λ(2) = (1 − 1/4)(π²/6) = π²/8; λ(4) = (1 − 1/16)(π⁴/90) = π⁴/96."
+    },
+    {
+      "id": "corollaries",
+      "title": "tsum forms, summability, and sanity checks",
+      "startLine": 132,
+      "endLine": 165,
+      "summary": "tsum and summability corollaries for λ(4); the ζ(4) even+odd recombination, the parity-factor complement 1/2ˢ + (1 − 1/2ˢ) = 1, positivity, and numerical checks of the first two odd terms.",
+      "mathContext": "The even and odd masses of ζ(4) recombine to π⁴/90."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Dirichlet lambda parity split λ(s) = (1 − 2⁻ˢ)·ζ(s) is formalized as a single exponent-agnostic HasSum lemma over an arbitrary realised zeta value, with 0 axioms and 0 sorries. Specialising against Mathlib's explicit even zeta values recovers the parent λ(2) = π²/8 and proves the new λ(4) = π⁴/96, both as one-line arithmetic on ζ(2m).",
+    "implications": "Replaces the parent's single hard-coded exponent with a reusable lemma: any future λ(2m) value follows immediately from the corresponding hasSum_zeta_* (or from any other realised ∑ 1/nˢ). The same recombination underlies the Dirichlet eta values η(s) = (1 − 2^{1−s})ζ(s), so η(2) = π²/12 and η(4) = 7π⁴/720 are now one subtraction away.",
+    "openQuestions": [
+      {
+        "id": "basel-problem-oq-09-oq-01-oq-01",
+        "question": "Derive the Dirichlet eta values η(2) = π²/12 and η(4) = 7π⁴/720 from the same machinery, using η(s) = ζ(s) − 2·(even part) = (1 − 2^{1−s})ζ(s), and verify the consistency relation λ(s) − η(s) = 2⁻ˢζ(s).",
+        "significance": "medium"
+      }
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-09",
+      "relationship": "extends",
+      "description": "Parent entry proves the s = 2 case λ(2) = π²/8; this entry abstracts the split over arbitrary s and adds λ(4) = π⁴/96."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Root Basel entry ζ(2) = π²/6; the parity factor (1 − 2⁻ˢ) selects the odd indices of ζ(s)."
+    },
+    {
+      "targetId": "basel-problem-oq-11",
+      "relationship": "related",
+      "description": "The Dirichlet eta companion η(2) = π²/12 uses the same even/odd splitting machinery."
+    }
+  ],
+  "references": [
+    {
+      "title": "Introductio in analysin infinitorum",
+      "author": "Leonhard Euler",
+      "year": "1748",
+      "description": "Euler's evaluation of ζ(2) and ζ(4); the odd-index values λ(2m) follow by separating each sum by parity."
+    },
+    {
+      "title": "Riemann's Zeta Function",
+      "author": "Harold M. Edwards",
+      "year": "1974",
+      "venue": "Academic Press",
+      "description": "Develops ζ and its companions, the Dirichlet lambda and eta functions, whose even-integer values follow from the parity split used here."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "basel-problem-oq-09-oq-01-oq-01",
+      "question": "Derive the Dirichlet eta values η(2) = π²/12 and η(4) = 7π⁴/720 from the same machinery via η(s) = (1 − 2^{1−s})ζ(s), and verify λ(s) − η(s) = 2⁻ˢζ(s).",
+      "significance": "medium"
+    }
+  ],
+  "sorries": 0
+}
