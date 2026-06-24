@@ -1,0 +1,155 @@
+{
+  "id": "euler-totient-oq-01-oq-01-oq-01",
+  "title": "Carmichael's Function as the lcm of its Prime-Power Values: λ(n) = lcm_i λ(p_i^{k_i})",
+  "slug": "euler-totient-oq-01-oq-01-oq-01",
+  "description": "Completes the prime-power factorization formula for Carmichael's function that the parent entry deferred: for every positive n, λ(n) = lcm over the prime factors p of λ(p^{v_p(n)}). Proved by inducting on the factorization with Nat.recOnPosPrimePosCoprime, using the parent's coprime keystone λ(m·n) = lcm(λ(m), λ(n)) at each step and distributing Finset.lcm over the disjoint prime supports.",
+  "meta": {
+    "author": "researcher-2 (Lean Genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Carmichael_function",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ01OQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "carmichael-function",
+      "group-theory",
+      "exponent",
+      "prime-factorization",
+      "lcm",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.recOnPosPrimePosCoprime",
+        "description": "induction reducing every natural to 0, 1, positive prime powers, and coprime products",
+        "module": "Mathlib.Data.Nat.Factorization.Induction"
+      },
+      {
+        "theorem": "Nat.factorization_mul",
+        "description": "(m*n).factorization = m.factorization + n.factorization for nonzero m, n",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.disjoint_primeFactors",
+        "description": "coprime numbers have disjoint sets of prime factors",
+        "module": "Mathlib.Data.Nat.PrimeFin"
+      },
+      {
+        "theorem": "Finset.lcm_union",
+        "description": "the lcm over a union of finite sets is the lcm of the two partial lcms",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Finset.lcm_congr",
+        "description": "lcm is unchanged when the indexed function is replaced by an equal one on the set",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Finset.lcm_singleton",
+        "description": "the lcm over a singleton {b} is normalize (f b)",
+        "module": "Mathlib.Algebra.GCDMonoid.Finset"
+      },
+      {
+        "theorem": "Monoid.exponent_dvd_of_forall_pow_eq_one",
+        "description": "if every element satisfies g^n = 1 then the exponent divides n (used for the trivial group (ZMod 1)ˣ)",
+        "module": "Mathlib.GroupTheory.Exponent"
+      }
+    ],
+    "originalContributions": [
+      "carmichael_one: λ(1) = 1, since (ZMod 1)ˣ is the trivial group whose exponent is 1",
+      "carmichael_eq_factorization_lcm: the prime-power factorization formula λ(n) = lcm over n.primeFactors of λ(p^{v_p(n)}), the single-theorem statement the parent entry left 'as a routine induction'",
+      "Coprime split of the index set via Finset.lcm_union over disjoint prime supports, with Finset.lcm_congr realigning the (a*b)-valuations to the per-factor valuations so the induction hypotheses apply verbatim"
+    ],
+    "references": [
+      {
+        "authors": "Carmichael, Robert D.",
+        "title": "Note on a new number theory function",
+        "year": "1910",
+        "venue": "Bulletin of the American Mathematical Society",
+        "note": "Introduces λ(n) and its determination by prime-power values"
+      },
+      {
+        "authors": "Hardy, G. H.; Wright, E. M.",
+        "title": "An Introduction to the Theory of Numbers",
+        "year": "2008",
+        "venue": "Oxford University Press",
+        "note": "Structure of (Z/nZ)* and the universal exponent λ(n)"
+      }
+    ],
+    "prerequisites": [
+      "Carmichael's function λ(n) = exponent of (Z/nZ)* (parent entry euler-totient-oq-01)",
+      "Coprime multiplicativity λ(m·n) = lcm(λ(m), λ(n)) (parent entry euler-totient-oq-01-oq-01)",
+      "Prime factorization and the p-adic valuation v_p(n) = n.factorization p",
+      "Finite least common multiple Finset.lcm over a NormalizedGCDMonoid"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 114,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound).",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Carmichael's function λ(n), introduced in 1910, is the universal exponent of the unit group (Z/nZ)*: the least e with a^e ≡ 1 (mod n) for every a coprime to n. It divides Euler's totient φ(n) and is the exponent that actually governs modular exponentiation (the modulus in RSA's correctness). Classically λ is computed by reduction to prime powers: λ(n) = lcm over the prime powers p^k exactly dividing n of λ(p^k), with each λ(p^k) read off the cyclic (odd p) or near-cyclic (p = 2) structure of (Z/p^kZ)*.",
+    "problemStatement": "**Open Question (from parent proof euler-totient-oq-01-oq-01)**: 'Complete the induction over the prime-power factorization to state λ(n) = lcm_i λ(p_i^{k_i}) as a single theorem.' The parent proved the coprime keystone λ(m·n) = lcm(λ(m), λ(n)) and explicitly left the factorization corollary as a routine induction.\n\n**Resolution (this entry)**: Prove, for every positive n, λ(n) = lcm over the prime factors p of n of λ(p^{v_p(n)}), expressed as Finset.lcm over n.factorization.support.",
+    "text": "A compact, axiom-free development (2 theorems, 114 lines including documentation). carmichael n is the parent's Monoid.exponent (ZMod n)ˣ, reused by import. carmichael_one establishes the base value λ(1) = 1 from the triviality of (ZMod 1)ˣ. The main theorem carmichael_eq_factorization_lcm inducts on n with Nat.recOnPosPrimePosCoprime: the n = 1 case is the empty lcm; the prime-power case n = p^k collapses to the singleton {p} with value λ(p^k); and the coprime case n = a·b combines the parent keystone carmichael_mul_coprime with Finset.lcm_union over the disjoint prime supports of a and b, using Finset.lcm_congr to identify v_p(a·b) with v_p(a) (resp. v_p(b)) on each part.",
+    "proofStrategy": "Induction via Nat.recOnPosPrimePosCoprime. Base 1: rewrite with Nat.factorization_one (empty support, so the lcm is 1) and carmichael_one. Prime power p^k: simp with hp.factorization_pow (factorization is the single point p ↦ k), Finsupp.support_single_ne_zero ({p}), Finset.lcm_singleton and Finsupp.single_eq_same, reducing both sides to λ(p^k). Coprime a·b: rw carmichael_mul_coprime to get lcm(λ(a), λ(b)); rw the induction hypotheses; rewrite the index set with Nat.factorization_mul + Finsupp.support_add_eq (disjoint supports from Coprime.disjoint_primeFactors) to a.support ∪ b.support; split with Finset.lcm_union; and realign the valuations with Finset.lcm_congr (on a.support the b-valuation is 0 by Finsupp.notMem_support_iff). lcm_eq_nat_lcm aligns the lattice lcm with Nat.lcm.",
+    "keyInsights": [
+      "The factorization formula is a pure consequence of coprime multiplicativity plus the bookkeeping of prime supports — no new number theory beyond the parent keystone.",
+      "Nat.recOnPosPrimePosCoprime is precisely tailored: its prime-power and coprime-product cases are exactly the two facts available (singleton value and carmichael_mul_coprime).",
+      "Writing the answer as Finset.lcm over n.factorization.support makes the coprime step a clean Finset.lcm_union over disjoint supports.",
+      "On a's prime factors the coprime partner contributes valuation 0, so v_p(a·b) = v_p(a); Finset.lcm_congr applies this pointwise so the induction hypothesis transfers without modification.",
+      "λ(1) = 1 follows from (ZMod 1)ˣ being a subsingleton, matching the empty-lcm base case of the induction."
+    ],
+    "prerequisites": [
+      "Group theory (exponent of a finite abelian group; direct products)",
+      "Number theory (prime factorization, p-adic valuation, coprimality)",
+      "Carmichael's function and its coprime multiplicativity (parent entries euler-totient-oq-01, euler-totient-oq-01-oq-01)"
+    ]
+  },
+  "conclusion": {
+    "summary": "For every positive n, Carmichael's function satisfies λ(n) = lcm over the prime factors p of n of λ(p^{v_p(n)}). This is the single-theorem prime-power factorization formula the parent entry deferred, obtained by inducting on the factorization with the parent's coprime keystone and distributing Finset.lcm over the disjoint prime supports. Fully verified, 0 axioms, 0 sorries.",
+    "implications": "Together with the parent keystone this reduces every value of λ to its prime-power values λ(p^k). Combined with the cyclicity of (Z/p^kZ)* for odd p (and the explicit 2-power structure), it yields the classical closed form 'λ(n) = lcm of the cyclic group orders of (Z/nZ)*', and underlies the use of λ as the minimal exponent in modular exponentiation.",
+    "openQuestions": [
+      "Prove λ(2^k) = 2^{k-2} for k ≥ 3 from (Z/2^kZ)* ≅ Z/2 × Z/2^{k-2}, giving the last prime-power value in closed form.",
+      "Identify each odd prime-power value λ(p^k) with the order of the cyclic group (Z/p^kZ)*, closing the full 'lcm of cyclic group orders' characterization."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Discharges the parent's first open question by completing the induction over the prime-power factorization into a single theorem λ(n) = lcm_i λ(p_i^{k_i})"
+    },
+    {
+      "targetId": "euler-totient-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling entry on Carmichael prime-power values λ(p^k); this entry is what assembles those values into λ(n)"
+    },
+    {
+      "targetId": "euler-totient-oq-01",
+      "relationship": "related",
+      "description": "Carmichael's function λ(n) as the exponent of (Z/nZ)*, the root entry of this cluster"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.EulerTotientOQ01OQ01",
+      "Mathlib"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "CarmichaelFactorization",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "sorries": 0,
+    "path": "Proofs/EulerTotientOQ01OQ01OQ01.lean"
+  }
+}
