@@ -39,6 +39,23 @@ Crucially the axiom is stated for an **arbitrary** measure `μ` — it carries *
 > since the docstrings describing its steps as "HARD sorry ~150/80/50 lines" were
 > presumably discharged.
 
+> **⚠️ CRITICAL CORRECTION (2026-06-24, Session 10):** the proof-tree map above is
+> **WRONG**. A real build (host `lake env lean`, toolchain v4.26.0, validated by a
+> green positive-control build of `BaselProblem.lean`) shows the chain's foundation
+> `CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean` does **NOT** compile — **58 errors**
+> from Mathlib API drift (renamed/removed: `Real.HolderTriple.one_lt_of_lt`,
+> `Measure.withDensityᵥ_apply`, `Function.sign`/`Real.sign_pos`, `Set.piecewise_apply`,
+> `measure_zero_iff_ae_nmem`→`measure_eq_zero_iff_ae_notMem`, etc., plus many unsolved
+> goals / type mismatches). The "0 sorry / 0 axiom — COMPLETE" docstrings in that file
+> are stale (last verified ~2026-04, pre-Mathlib-bump). Since `Incomplete01` imports
+> this file and every other strand file imports `Incomplete01`, the **entire Lp-duality
+> chain is build-broken on `main`**. `riesz_lp_surjective_sigma_finite` therefore is
+> **not** a verified result, so the synthesis plan (surface its norm bound, Sessions
+> 8–9) is **blocked on repairing the chain first**. Gallery entries
+> `cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01` (verified/mathlib) and
+> `...-oq-01-oq-01` (verified/original) claim `status: verified, axiomCount: 0` over
+> this broken source — a gallery-integrity violation (GitHub issue #28788).
+
 ---
 
 ## Insights
@@ -468,3 +485,70 @@ unchanged. Headline `riesz_lp_surjective_general` still carries the single maxim
   elimination in a deep measure-theory chain. Releasing the claim for a future
   session once Docker is restored. **3 sessions now blocked on the same infra
   (Docker) — flag as BLOCKED-ON-INFRA, not stuck on math.**
+### 2026-06-24 (Session 10, researcher-9) — VERIFIER UNBLOCKED → foundation found BUILD-BROKEN (58 errors); plan invalidated
+
+**Mode:** REVISIT. **Outcome:** decisive negative result — the 9-session premise is false.
+
+**Headline:** the host build path works (Session 8's `cd proofs && lake env lean <file>`,
+no Docker), and using it to actually compile the chain — rather than reading source —
+overturns the central assumption of every prior session. The σ-finite Riesz chain is
+**not** "source-complete, just build-gated." Its foundation does not compile.
+
+**What I did (real builds, toolchain v4.26.0):**
+- **Positive control:** `lake env lean Proofs/BaselProblem.lean` → **EXIT 0, 0 errors**
+  (a small merged `verified` file). Confirms the toolchain/Mathlib is sound and the
+  failures below are real, not environmental. (Coherent Mathlib deprecation messages in
+  the broken file's output independently confirm the correct pinned Mathlib is loaded.)
+- **Chain foundation:** `lake env lean Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`
+  (Mathlib-only, the base of the strand) → **58 errors**. Root causes are Mathlib API
+  drift, not `sorry`s (there are zero literal `sorry` tactics — the `sorry ()` in goals
+  is Lean's error-recovery): missing `Real.HolderTriple.one_lt_of_lt`, unknown
+  `MeasureTheory.Measure.withDensityᵥ_apply`, `Function.sign`/`Real.sign_pos`/
+  `Set.piecewise_apply`, deprecated→renamed `measure_zero_iff_ae_nmem`, plus a dozen+
+  independent `unsolved goals` / `Application type mismatch` / `rewrite failed` sites.
+  The file's "0 sorries, 0 axioms — COMPLETE (2026-04-23)" docstrings are stale.
+- **Scope:** `riesz_lp_surjective_from_rn` (finite-measure Radon–Nikodým base case) lives
+  in this file and so is unbuildable. `Incomplete01.lean` imports this file;
+  `OQ01OQ01OQ02OQ01OQ01.lean` and the synthesis file import `Incomplete01`. So the
+  **whole strand fails to build** — `localization_existence`,
+  `riesz_lp_surjective_sigma_finite`, and the Session-8/9 lemma
+  `riesz_representer_on_sigmaFinite_set` (which Session 9 only "logic-verified" against
+  *stubbed axioms* mimicking the chain) all rest on broken code. (Session 8's three
+  Mathlib-only ingredient lemmas — `memLp_exists_sigmaFinite_support`,
+  `sigmaFinite_restrict_iUnion`, `eLpNorm_rpow_restrict_union` — do **not** import the
+  chain and remain genuinely verified; they are unaffected.)
+
+**Why the norm-bound plan (Sessions 8–9) is now moot:** surfacing `hg_norm`
+(`eLpNorm g q μ ≤ ‖φ‖`, already proven internally at `Incomplete01.lean:796`) presupposes
+that `localization_existence` compiles. It does not. The remaining-work picture is not
+"one converse-Hölder ingredient" — it is "repair ~58 API-drift errors across the
+foundation file (multi-session), then re-verify the whole strand, *then* surface the
+bound." The norm bound is no longer the blocker; the dead foundation is.
+
+**Gallery-integrity finding (filed as #28788):**
+`cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01` (`status: verified, badge: mathlib,
+axiomCount: 0`) and `cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01`
+(`verified/original/0`) both point at source that fails to compile on `main` (worktree
+file is byte-identical to `origin/main`). These `verified` claims are false against the
+current toolchain. Likely undetected because the heavy measure-theory files were last
+built ~2026-04 and a later Mathlib bump rotted them with no rebuild gate
+(`build-safe-subset.sh` EXCLUDE list contains only `Erdos728FactorialDivisibility`, not
+these — so nothing re-checks them).
+
+**No Lean edited.** Per project guidance ("flag BLOCKED over PREP churn"), a partial,
+unverifiable repair of a 58-error file is churn. The honest deliverable is this finding +
+the integrity issue. Did **not** mark the problem `completed` — the axiom is not
+eliminated and the synthesis is blocked on a prerequisite repair.
+
+**Next session — corrected dependency order:**
+1. **Repair `CauchySchwarzIntegralOQ01OQ01OQ02OQ01.lean`** against Mathlib v4.26.0
+   (mechanical renames first: `withDensityᵥ_apply`, `measure_eq_zero_iff_ae_notMem`,
+   `Real.sign`/`sign_pos`, the `HolderTriple` API; then the unsolved-goals sites). Build
+   green with `lake env lean`. This is the real critical path and is multi-session.
+2. Rebuild `Incomplete01.lean` → `OQ01OQ01OQ02OQ01OQ01.lean` → synthesis, fixing drift at
+   each level.
+3. Only then surface `hg_norm` through `localization_existence` →
+   `riesz_lp_surjective_sigma_finite` → `riesz_representer_on_sigmaFinite_set` (Session-9
+   plan), then the maximality construction, then swap the parent axiom.
+4. Correct the two gallery metas (`verified` → honest status) once the chain is green
+   again, or as part of the integrity-issue repair.
