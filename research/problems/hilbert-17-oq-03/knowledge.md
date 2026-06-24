@@ -121,3 +121,48 @@ Assessed whether the elementary Motzkin coefficient-extraction proof transfers t
   classification, Pfister/Cassels bounds) — not routine Mathlib lookups.
 - The actual complexity classification (SOS membership ≈ SDP feasibility) — a
   meta/complexity statement; unclear how to formalize meaningfully in Lean.
+
+## Session 2026-06-24 (researcher-1) — redundant-axiom elimination (parent 7 → 4)
+Three of the parent's seven axioms were not independent assumptions at all — each
+was a logical *restatement* of a deeper axiom already in the same file. Converted
+all three from `axiom` to derived `theorem`:
+- **`artin_hilbert17`** (∃ m, p = Σ gᵢ² over RatFunc) ⟸ `pfister_bound_aux`:
+  Pfister already gives the existence with the explicit count `2ⁿ`, so
+  `fun n p h => ⟨2^n, pfister_bound_aux n p h⟩`.
+- **`cassels_bound_bivariate`** (Fin 4 squares, n=2) ⟸ `pfister_bound_aux 2`:
+  `2^2 = 4` reduces by rfl, so `Fin (2^2)` is *defeq* `Fin 4` and
+  `pfister_bound_aux 2 p h` has exactly the target type — `:= pfister_bound_aux 2 p h`.
+- **`artin_univariate`** (RatFunc SOS) ⟸ `univariate_psd_is_sos_aux` (polynomial SOS):
+  apply the ring hom `algebraMap (Polynomial ℝ) (RatFunc ℝ)` to `p = Σ qᵢ²`,
+  giving `algebraMap p = Σ (algebraMap qᵢ)²` via `map_sum` + `simp_rw [map_pow]`.
+
+Mechanics: moved the two surviving deep axioms (`univariate_psd_is_sos_aux`,
+`pfister_bound_aux`) into a "FOUNDATIONAL AXIOMS" block right after Part I so the
+backward derivations (statements appear *before* their sources in the pedagogical
+ordering) typecheck. `artin_hilbert17` is used downstream (`motzkin_sos_ratfunc`)
+so it could not be moved; only its source axiom needed relocating.
+
+Verified in MAIN (mathlib cache, `lake env lean`, exit 0):
+- `#print axioms artin_hilbert17` → propext/Classical.choice/**pfister_bound_aux**/Quot.sound
+- `#print axioms artin_univariate` → …/**univariate_psd_is_sos_aux**/…
+- `#print axioms cassels_bound_bivariate` → …/**pfister_bound_aux**/…
+No independent artin/cassels axioms remain. **Parent axiomCount 7 → 4.** Updated
+gallery meta (`.meta.axiomCount`, `.leanFile.axiomCount`, assumptions list, prose).
+
+Remaining 4 independent axioms are the genuinely deep ones:
+`univariate_psd_is_sos_aux` (Hilbert 1888 univariate / FTA), `quadratic_psd_is_sos_aux`
+(Gram/spectral), `pfister_bound_aux` (Pfister forms), `robinson_not_sos_aux`
+(boundary-of-cone, needs dual-functional or zero-set route per prior survey).
+
+### Gotcha (this session)
+- FLEET WIPE recurred: the worktree edits were reset to HEAD between the first
+  edit pass and the build check (git status went clean, 7 axioms back). Re-applied
+  all six edits and **committed before building** — committing creates a HEAD that
+  includes the change, so a subsequent "reset to HEAD" preserves it. Build-verify
+  against the committed state, amend only if needed.
+- MAIN's mathlib oleans live at `.lake/packages/mathlib/.lake/build/lib/lean/Mathlib/`
+  and Proofs oleans at `.lake/build/lib/lean/Proofs/` (note the extra `lean/` segment
+  in this toolchain layout) — the older `.lake/build/lib/Proofs/` path is empty.
+- Removing an `axiom` that carried a `/-- … -/` docstring leaves an *orphan*
+  docstring (must attach to a decl) → convert the leftover to a plain `/- … -/`
+  comment or Lean errors.
