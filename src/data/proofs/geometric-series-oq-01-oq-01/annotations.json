@@ -8,7 +8,20 @@
     },
     "type": "insight",
     "title": "Grandi's Abel Series Is a Geometric Series",
-    "content": "`grandi_power_series` recognizes that ∑ (−1)ⁿ xⁿ is the geometric series with ratio −x: since (−1)ⁿ xⁿ = (−x)ⁿ, Mathlib's tsum_geometric_of_norm_lt_one (applicable because ‖−x‖ = |x| < 1) gives the sum (1 − (−x))⁻¹ = 1/(1+x). The divergent boundary series 1 − 1 + 1 − ⋯ is thus encoded, for |x| < 1, by the analytic function 1/(1+x)."
+    "content": "`grandi_power_series` recognizes that ∑ (−1)ⁿ xⁿ is the geometric series with ratio −x: since (−1)ⁿ xⁿ = (−x)ⁿ, Mathlib's tsum_geometric_of_norm_lt_one (applicable because ‖−x‖ = |x| < 1) gives the sum (1 − (−x))⁻¹ = 1/(1+x). The divergent boundary series 1 − 1 + 1 − ⋯ is thus encoded, for |x| < 1, by the analytic function 1/(1+x).",
+    "mathContext": "$\\sum_{n} (-1)^n x^n = \\sum_n (-x)^n = \\dfrac{1}{1+x}$ for $|x| < 1$",
+    "significance": "key",
+    "relatedConcepts": [
+      "geometric series",
+      "Grandi's series 1−1+1−⋯",
+      "power series / radius of convergence",
+      "Abel summation"
+    ],
+    "prerequisites": [
+      "tsum_geometric_of_norm_lt_one",
+      "norm of a real number ‖−x‖ = |x|",
+      "convergence for |ratio| < 1"
+    ]
   },
   {
     "id": "ann-abel-limit",
@@ -19,6 +32,19 @@
     },
     "type": "insight",
     "title": "The Abel Sum Is the Boundary Value",
-    "content": "`grandi_abel_tendsto` computes the Abel sum as the radial limit x → 1⁻. On the left-neighborhood filter 𝓝[<] 1, the series eventually equals 1/(1+x) (because there x stays in (−1,1), so |x| < 1), and the limit transfers via tendsto_congr'. Then 1/(1+x) is continuous at x = 1 with value 1/(1+1) = 1/2 (Tendsto.inv₀), so the Abel sum is 1/2 — matching the Cesàro value, exactly as Frobenius's theorem predicts."
+    "content": "`grandi_abel_tendsto` computes the Abel sum as the radial limit x → 1⁻. On the left-neighborhood filter 𝓝[<] 1, the series eventually equals 1/(1+x) (because there x stays in (−1,1), so |x| < 1), and the limit transfers via tendsto_congr'. Then 1/(1+x) is continuous at x = 1 with value 1/(1+1) = 1/2 (Tendsto.inv₀), so the Abel sum is 1/2 — matching the Cesàro value, exactly as Frobenius's theorem predicts.",
+    "mathContext": "$\\displaystyle\\lim_{x\\to 1^-} \\frac{1}{1+x} = \\frac{1}{2}$, the Abel sum of $1-1+1-\\cdots$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Abel summation / radial limit",
+      "Frobenius's theorem (Abel = Cesàro)",
+      "one-sided neighborhood filter 𝓝[<] 1",
+      "continuity of 1/(1+x) at the boundary"
+    ],
+    "prerequisites": [
+      "Filter.Tendsto and tendsto_congr'",
+      "Tendsto.inv₀",
+      "left-neighborhood filter 𝓝[<]"
+    ]
   }
 ]
