@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "Algebra replaces combinatorics — now across r factors",
+    "content": "This entry answers the parent's open question: lift the two-factor generating-function proof of the parallel Vandermonde identity to *arbitrarily many* factors. The sibling proves the two-factor case `Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1, a+b+1)` by writing the product of two negative-binomial generating functions as a single one (`negBin(a)·negBin(b) = negBin(a+b+1)`) and reading off a coefficient. The whole point is that the messy combinatorial convolution is captured by a single algebraic step — exponent addition in the formal power series ring. Here the same principle is applied to a finite family `(aᵢ)_{i∈s}`: `∏ negBin(aᵢ) = geom^(Σ(aᵢ+1))`, a single `Finset.prod_pow_eq_pow_sum`. Extracting the n-th coefficient (a sum over `finsuppAntidiag`) yields the full r-fold Vandermonde convolution. The file is deliberately self-contained, restating the geometric-series / simplicial scaffolding so it does not depend on the sibling's compilation.",
+    "mathContext": "$\\prod_{i\\in s}(1-x)^{-(a_i+1)} = (1-x)^{-\\sum_{i\\in s}(a_i+1)}$; the $r$-factor analogue of the two-factor $\\mathrm{negBin}(a)\\cdot\\mathrm{negBin}(b)=\\mathrm{negBin}(a+b+1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Vandermonde's identity", "generating functions", "formal power series", "negative binomial series", "convolution"],
+    "prerequisites": ["binomial coefficients", "formal power series", "generating-function method"]
+  },
+  {
+    "id": "ann-simplicial",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "range": { "startLine": 41, "endLine": 66 },
+    "type": "technique",
+    "title": "Simplicial numbers and the hockey-stick identity",
+    "content": "The combinatorial scaffolding. `simplicial k n = C(n+k, k)` are the simplicial (figurate) numbers — the coefficients of the negative-binomial series. `simplicial_succ` is their Pascal recurrence `S_{k+1}(n+1) = S_{k+1}(n) + S_k(n+1)`, reduced to `Nat.choose_succ_succ` after aligning the index arithmetic. `hockey_stick` proves `∑_{i≤n} S_k(i) = S_{k+1}(n)` — the hockey-stick identity — by a one-line induction (`sum_range_succ` + the Pascal recurrence). This identity is exactly what makes the Cauchy product of `geom` with `negBin k` collapse to `negBin (k+1)`, so it is the engine behind the coefficient computation in Part I.",
+    "mathContext": "$\\sum_{i=0}^{n} \\binom{i+k}{k} = \\binom{n+k+1}{k+1}$ (hockey stick); Pascal: $\\binom{n+k+2}{k+1} = \\binom{n+k+1}{k+1} + \\binom{n+k+1}{k}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["simplicial numbers", "hockey-stick identity", "Pascal's rule", "Nat.choose_succ_succ", "figurate numbers"],
+    "prerequisites": ["binomial coefficients", "induction", "Pascal's triangle"]
+  },
+  {
+    "id": "ann-coeff-negbin",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "range": { "startLine": 76, "endLine": 104 },
+    "type": "insight",
+    "title": "The negative-binomial coefficient: [xⁿ] geom^(k+1) = C(n+k, k)",
+    "content": "The bridge between algebra and combinatorics. `geom = ∑ xⁿ` represents `1/(1−x)` (all coefficients 1), and `negBin k = geom^(k+1)` represents `(1−x)^{−(k+1)}`. `coeff_negBin` proves its n-th coefficient is the simplicial number `C(n+k, k)`, by induction on `k`: the base case is `geom` (all 1s = `C(n,0)`), and the step uses `negBin(k+1) = negBin k · geom`, applies the Cauchy product `PowerSeries.coeff_mul` (a sum over the antidiagonal), and recognizes the result as the hockey-stick sum `∑_{i≤n} S_k(i) = S_{k+1}(n)`. This single lemma is where all the combinatorial work lives; everything afterward is pure exponent algebra.",
+    "mathContext": "$[x^n]\\,(1-x)^{-(k+1)} = \\binom{n+k}{k}$, proved by $\\mathrm{negBin}(k+1)=\\mathrm{negBin}(k)\\cdot\\mathrm{geom}$ and the hockey stick.",
+    "significance": "key",
+    "relatedConcepts": ["negative binomial series", "Cauchy product", "PowerSeries.coeff_mul", "hockey stick", "coefficient extraction"],
+    "prerequisites": ["formal power series multiplication", "the Cauchy product", "induction"]
+  },
+  {
+    "id": "ann-negbin-prod",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "range": { "startLine": 110, "endLine": 129 },
+    "type": "insight",
+    "title": "The one algebraic step: ∏ negBin(aᵢ) = geom^(Σ(aᵢ+1))",
+    "content": "`negBin_prod` is the heart of the r-fold lift, and it is a single line. Since `negBin k = geom^(k+1)`, the product `∏_{i∈s} negBin(aᵢ) = ∏ geom^(aᵢ+1)` collapses to `geom^(Σ(aᵢ+1))` by `Finset.prod_pow_eq_pow_sum` — a product of powers with a common base is the base to the sum of exponents. This is precisely the r-factor analogue of the two-factor `negBin_mul` (which is one `pow_add`). The entire combinatorial content of the multivariate Vandermonde identity is captured by this exponent-addition step; nothing harder is needed at any number of factors. `coeff_geom_pow_succ` restates `coeff_negBin` in the `geom^(k+1)` form so the coefficient extraction can be applied directly to the product.",
+    "mathContext": "$\\prod_{i\\in s}\\mathrm{geom}^{a_i+1} = \\mathrm{geom}^{\\sum_{i\\in s}(a_i+1)}$ (Finset.prod_pow_eq_pow_sum) — exponent addition is the whole proof.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_pow_eq_pow_sum", "exponent addition", "product of generating functions", "pow_add"],
+    "prerequisites": ["powers in a commutative monoid", "finite products"]
+  },
+  {
+    "id": "ann-vandermonde",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "range": { "startLine": 135, "endLine": 180 },
+    "type": "insight",
+    "title": "Reading off the coefficient two ways: the multivariate Vandermonde identity",
+    "content": "The headline. `multivariate_vandermonde_gf` extracts the n-th coefficient of `∏ negBin(aᵢ)` in two ways: `PowerSeries.coeff_prod` expands it as a sum over `finsuppAntidiag s n` (all ways to write `n = Σ_{i∈s} lᵢ` with `lᵢ ≥ 0`) of products of simplicial numbers, while `negBin_prod` says the product is a single power `geom^(Σ(aᵢ+1))`. Equating gives `Σ_{Σlᵢ=n} ∏ C(lᵢ+aᵢ, aᵢ) = [xⁿ] geom^(Σ(aᵢ+1))` — no nonemptiness hypothesis needed (the empty-index case degenerates to `[xⁿ]1 = [n=0]`). `multivariate_vandermonde` then puts the right side in closed form `C(n + Σ(aᵢ+1) − 1, Σ(aᵢ+1) − 1)` for nonempty `s` (nonemptiness guarantees `Σ(aᵢ+1) ≥ 1`, so the `−1` is benign). Specializing to a two-element index set recovers the sibling's two-factor parallel Vandermonde.",
+    "mathContext": "$\\sum_{\\sum_{i\\in s} l_i = n}\\;\\prod_{i\\in s}\\binom{l_i+a_i}{a_i} = \\binom{n+\\sum_{i\\in s}(a_i+1)-1}{\\sum_{i\\in s}(a_i+1)-1}.$",
+    "significance": "key",
+    "relatedConcepts": ["PowerSeries.coeff_prod", "finsuppAntidiag", "multivariate convolution", "Vandermonde's identity", "coefficient extraction"],
+    "prerequisites": ["finsupp antidiagonals", "coefficient of a product of power series"]
+  },
+  {
+    "id": "ann-concrete",
+    "proofId": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "range": { "startLine": 186, "endLine": 210 },
+    "type": "context",
+    "title": "The Fin (r+1) packaging and a concrete three-factor check",
+    "content": "`multivariate_vandermonde_fin` specializes to the full index set `Fin (r+1)`, which is automatically nonempty (`univ_nonempty`): `r = 1` is the two-factor identity, `r = 2` the genuinely new three-factor convolution. `threefold_const_zero` instantiates all exponents to `0`, collapsing the three-factor sum to `C(n+2, 2)` — the number of ways to write `n = i+j+k` in nonnegative integers (stars and bars). `check_threefold_count` verifies the concrete instance `n = 2` gives `C(4,2) = 6`, discharged by kernel `decide` (not `native_decide`, so the entry stays fully 0-axiom). These specializations confirm the abstract identity reproduces the expected concrete counts.",
+    "mathContext": "$\\sum_{i+j+k=n} 1 = \\binom{n+2}{2}$; for $n=2$, $\\binom{4}{2}=6$ (compositions of 2 into 3 nonnegative parts).",
+    "significance": "context",
+    "relatedConcepts": ["stars and bars", "compositions", "Fin (r+1)", "kernel decide", "concrete verification"],
+    "prerequisites": ["combinatorial counting", "stars and bars"]
+  }
+]
