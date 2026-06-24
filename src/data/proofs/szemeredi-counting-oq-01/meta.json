@@ -1,0 +1,172 @@
+{
+  "id": "szemeredi-counting-oq-01",
+  "title": "Quantitative Triangle Removal: the Packing–Covering Bracket ν ≤ ρ ≤ τ",
+  "slug": "szemeredi-counting-oq-01",
+  "description": "Isolates the abstract combinatorial object whose behaviour the optimal quantitative bounds of the triangle removal lemma actually measure: the triangle removal number ρ(G), the minimum number of edges whose deletion makes a finite graph G triangle-free. For an ARBITRARY finite graph the entry proves the two-sided bracket ν(G) ≤ ρ(G) ≤ τ(G), where ν is the maximum size of an edge-disjoint triangle packing and τ is the total number of triangles. The lower inequality is weak LP duality for the triangle hypergraph (a König-type packing/covering bound, packing_card_le_cover_card): assign to each packed triangle a covering edge; edge-disjointness forces the assignment injective, so |packing| ≤ |cover|. The upper inequality is the greedy one-edge-per-triangle cover (exists_cover_card_le_numTriangles). The technical bridge cliqueFree_deleteEdges_iff_covers identifies 'deleting F makes G triangle-free' with 'F meets every triangle', tying the removal-lemma conclusion to edge covers. The Ruzsa–Szemerédi lower-bound graphs already formalized in RothTriangleRemoval.lean are exactly an instance of the lower bracket (ν = |A|·N edge-disjoint triangles), and the gap ρ/τ — the LP integrality gap — is precisely what makes the optimal γ(δ) super-polynomial. 10 theorems + 7 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SzemerediCountingOQ01.lean",
+    "additionalFiles": [],
+    "tags": [
+      "szemeredi",
+      "combinatorics",
+      "graph-theory",
+      "triangle-removal",
+      "regularity",
+      "packing-covering",
+      "lp-duality",
+      "extremal-graph-theory",
+      "verified",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 314,
+    "theoremCount": 10,
+    "definitionCount": 7,
+    "assumptions": "None beyond a finite vertex type. All results are universally quantified over a SimpleGraph G on a Fintype V with DecidableEq V, with edge sets, packings, and covers passed as ordinary Finset hypotheses (no structure-encoded axioms, no DecidableRel on G.Adj required — decidability of the triangle predicate is supplied classically). #print axioms reports only Lean/Mathlib's foundational propext, Classical.choice, Quot.sound for packing_le_removal_le_numTriangles, packing_card_le_cover_card, exists_cover_card_le_numTriangles, cliqueFree_deleteEdges_iff_covers, and removalNumber_eq_zero_of_cliqueFree; no sorryAx, no native_decide, no Lean.ofReduceBool.",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph.deleteEdges / SimpleGraph.deleteEdges_adj",
+        "description": "Removing an edge set from a graph; the adjacency characterisation (G.deleteEdges s).Adj v w ↔ G.Adj v w ∧ s(v,w) ∉ s drives the cover ↔ triangle-free bridge.",
+        "module": "Mathlib.Combinatorics.SimpleGraph.DeleteEdges"
+      },
+      {
+        "theorem": "SimpleGraph.CliqueFree / SimpleGraph.IsNClique / SimpleGraph.IsClique",
+        "description": "Triangles are 3-cliques (IsNClique 3); triangle-freeness is CliqueFree 3. Clique membership is unfolded to pairwise adjacency to test survival under edge deletion.",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Clique"
+      },
+      {
+        "theorem": "Finset.card_le_card_of_injOn",
+        "description": "The weak-duality injection: P.attach injects into the cover F via the chosen covering edges, giving |P| ≤ |F|.",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Sym2.eq_iff",
+        "description": "s(x,y) = s(z,w) ↔ (x=z ∧ y=w) ∨ (x=w ∧ y=z) — extracts that two triangles assigned the same covering edge share both of its endpoints.",
+        "module": "Mathlib.Data.Sym.Sym2"
+      },
+      {
+        "theorem": "Nat.sInf_mem / Nat.sInf_le",
+        "description": "The removal number is the infimum of cover sizes; nonemptiness (the greedy cover) makes the infimum attained, feeding both brackets.",
+        "module": "Mathlib.Order.Bounds.Basic / Mathlib.Data.Nat.Lattice"
+      }
+    ],
+    "originalContributions": [
+      "IsTriangle / TriangleCoveredBy / IsTriangleEdgeCover / IsTrianglePacking: a self-contained vocabulary for the triangle removal number over Mathlib's SimpleGraph. A triangle is an IsNClique 3; an edge cover F is one whose deletion yields CliqueFree 3; an edge-disjoint packing is a family of triangles pairwise sharing ≤ 1 vertex (the combinatorial form of edge-disjointness for 3-cliques).",
+      "cliqueFree_deleteEdges_iff_covers (the bridge): (G.deleteEdges ↑F).CliqueFree 3 ↔ every triangle of G has an edge in F. Forward: an uncovered triangle survives every deletion; reverse: a surviving triangle is uncovered. This is the precise translation between the removal lemma's deletion conclusion and the hitting-set/cover formulation.",
+      "packing_card_le_cover_card (WEAK DUALITY, the core): every edge-disjoint triangle packing P and every edge cover F satisfy |P| ≤ |F|. Each packed triangle is mapped to one of its covering edges in F via a junk-free choice on P.attach; if two distinct triangles map to the same edge they share that edge's two endpoints, contradicting the ≤ 1 shared-vertex condition, so the map is injective.",
+      "exists_cover_card_le_numTriangles (greedy upper bound): selecting one edge from each triangle yields a cover of size ≤ τ(G), witnessing ρ(G) ≤ τ(G).",
+      "removalNumber (ρ(G)): the minimum number of edges whose deletion makes G triangle-free, defined as sInf of the cover-size set; removalNumber_mem shows the infimum is attained by an actual cover.",
+      "packing_card_le_removalNumber (ν ≤ ρ) and removalNumber_le_numTriangles (ρ ≤ τ): the two halves of the bracket, obtained by instantiating weak duality at the optimal cover and the greedy bound at the infimum respectively.",
+      "packing_le_removal_le_numTriangles (the headline ν ≤ ρ ≤ τ): the quantitative-bounds bracket for the removal number of any finite graph — the LP integrality gap ρ/τ (equivalently ν vs. τ) is exactly the quantity Ruzsa–Szemerédi / Behrend constructions push to be super-polynomially small, which is what governs the optimal triangle removal constant γ(δ).",
+      "removalNumber_eq_zero_of_cliqueFree: sharpness at the bottom — a triangle-free graph already has the empty set as a cover, so ν = ρ = τ = 0."
+    ],
+    "prerequisites": [
+      "szemeredi-counting (parent: the quantitative triangle removal lemma γ(δ) and the counting lemma)",
+      "Triangle removal lemma and its optimal-bounds open problem (Fox 2011; Ruzsa–Szemerédi 1978)",
+      "SimpleGraph, IsNClique/CliqueFree, and deleteEdges in Mathlib",
+      "Weak LP duality / König-type packing–covering inequalities for hypergraphs"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The triangle removal lemma (Ruzsa–Szemerédi 1978) states that for every $\\delta > 0$ there is $\\gamma > 0$ such that any $n$-vertex graph with at most $\\gamma n^3$ triangles can be made triangle-free by deleting at most $\\delta n^2$ edges. Deriving it from the Szemerédi regularity lemma forces $\\gamma(\\delta)$ to be a tower of height polynomial in $1/\\delta$; Fox (2011) improved this to a tower of bounded height, but the **optimal** dependence of $\\gamma$ on $\\delta$ remains a famous open problem. The only known lower bounds come from Ruzsa–Szemerédi graphs built on Behrend's large AP-free sets, which force $\\gamma(\\delta)$ to be super-polynomially small. This entry strips the question down to its combinatorial skeleton: the per-graph triangle **removal number** $\\rho(G)$ — the minimum number of edges to delete to kill every triangle — and the two parameters that bracket it, the edge-disjoint triangle **packing number** $\\nu(G)$ and the total triangle count $\\tau(G)$.",
+    "problemStatement": "For a finite graph $G$ let $\\rho(G)$ be the minimum number of edges whose deletion makes $G$ triangle-free, $\\nu(G)$ the maximum number of pairwise edge-disjoint triangles, and $\\tau(G)$ the number of triangles. Prove the bracket $\\nu(G) \\le \\rho(G) \\le \\tau(G)$ for an arbitrary finite graph, via the bridge identifying triangle-freeness of $G$ minus an edge set with that set being a triangle edge cover.",
+    "text": "The minimum number of edges to delete to make a graph triangle-free (its removal number ρ) is sandwiched between the maximum edge-disjoint triangle packing ν and the total triangle count τ: ν ≤ ρ ≤ τ. The gap between these bounds — the integrality gap of the triangle hypergraph LP — is exactly what governs the optimal constant in the triangle removal lemma.",
+    "proofStrategy": "**Setup.** Work over a `SimpleGraph G` on a `Fintype V`. A triangle is `G.IsNClique 3 s`; an edge set `F : Finset (Sym2 V)` is a cover when `(G.deleteEdges ↑F).CliqueFree 3`; a packing is a `Finset (Finset V)` of triangles pairwise sharing ≤ 1 vertex. **Bridge.** `cliqueFree_deleteEdges_iff_covers`: deleting `F` is triangle-free iff `F` meets every triangle. Forward — if a triangle `s` had no edge in `F`, all three of its pairs survive deletion (via `deleteEdges_adj`), so `s` is still a 3-clique, contradicting `CliqueFree`. Reverse — a 3-clique surviving deletion has all its edges outside `F`, contradicting that `F` meets it. **Lower bracket (weak duality).** Given a packing `P` and a cover `F`, choose for each triangle of `P` a covering edge of `F` (a junk-free `Classical.choose` on `P.attach`). The assignment maps into `F`; if two triangles `a ≠ b` map to the same edge `e`, then `Sym2.eq_iff` puts both endpoints of `e` in `a ∩ b`, so `|a ∩ b| ≥ 2`, contradicting the packing's ≤ 1 condition. Hence injective and `|P| ≤ |F|` (`packing_card_le_cover_card`). **Upper bracket (greedy).** Picking one edge per triangle gives a cover that is the image of `triangles G` under a choice map, so its size is ≤ `τ(G)` (`exists_cover_card_le_numTriangles`). **Bracket.** `removalNumber G := sInf {|F| : F a cover}` is attained (`Nat.sInf_mem`, the set is nonempty by the greedy cover); weak duality at the optimal cover gives `ν ≤ ρ`, and `Nat.sInf_le` at the greedy cover gives `ρ ≤ τ` — combined in `packing_le_removal_le_numTriangles`.",
+    "keyInsights": [
+      "**The removal lemma is a hitting-set problem.** `cliqueFree_deleteEdges_iff_covers` shows that 'delete few edges to kill all triangles' is exactly 'find a small edge set meeting every triangle' — a vertex-cover/hitting-set on the triangle hypergraph. This reframing is what lets purely combinatorial packing–covering bounds speak to the analytic removal constant.",
+      "**Edge-disjointness for triangles is a vertex condition.** Two distinct 3-cliques share an edge iff they share two vertices, so the awkward 'no common edge in Sym2 V' becomes the clean Finset condition |s ∩ t| ≤ 1 — and the injectivity in weak duality falls out of `Sym2.eq_iff` plus `Finset.one_lt_card`.",
+      "**Weak duality is the whole lower-bound mechanism, abstracted.** The Ruzsa–Szemerédi proof's 'each edge lies in exactly one triangle ⇒ need ≥ |A|N deletions' is precisely `packing_card_le_cover_card` applied to a packing of |A|N edge-disjoint triangles. The abstract lemma proves once what the construction-specific lower bound proves by hand.",
+      "**The optimal γ(δ) is an integrality gap.** ν ≤ ρ ≤ τ holds for every graph; the removal lemma's strength is governed by how far ρ can sit above ν and below τ — the integrality gap of the triangle-hypergraph covering LP. Behrend/Ruzsa–Szemerédi constructions are exactly the graphs that push this gap to be super-polynomial, which is why no polynomial γ(δ) is known."
+    ],
+    "prerequisites": [
+      "Triangles as 3-cliques and triangle-freeness as CliqueFree 3 in Mathlib",
+      "Edge deletion SimpleGraph.deleteEdges and its adjacency lemma",
+      "Weak LP duality / König-type packing–covering for hypergraphs",
+      "The triangle removal lemma and the open problem of its optimal quantitative bounds"
+    ]
+  },
+  "conclusion": {
+    "summary": "In 314 lines, 0 sorries, 0 axioms, the entry proves the bracket ν(G) ≤ ρ(G) ≤ τ(G) for the triangle removal number of an arbitrary finite graph. The bridge cliqueFree_deleteEdges_iff_covers recasts triangle-freeness-after-deletion as an edge cover; weak duality packing_card_le_cover_card delivers the lower bracket via an injection from any edge-disjoint packing into any cover; and the greedy one-edge-per-triangle cover delivers the upper bracket. The removal number is defined as the infimum of cover sizes and shown attained.",
+    "implications": "This places the quantitative triangle removal lemma on a clean combinatorial footing: its optimal constant γ(δ) is governed by the integrality gap of the triangle-hypergraph covering LP, the quantity ν-vs-τ that Ruzsa–Szemerédi / Behrend constructions exploit. The abstract weak-duality lemma proves once, for all graphs, the lower-bound mechanism that RothTriangleRemoval.lean carries out by hand for the specific AP-free construction (ν = |A|·N edge-disjoint triangles). The scaffolding generalises verbatim to K_r-removal (clique covers/packings) and is the natural setting for formalising explicit lower bounds on γ once Behrend's construction is available.",
+    "openQuestions": [
+      "Prove the matching K_r version: for the minimum number of edges to delete to make G K_r-free, the same bracket νᵣ(G) ≤ ρᵣ(G) ≤ τᵣ(G) holds, with the shared-vertex bound |s ∩ t| ≤ r − 2 for edge-disjoint r-cliques.",
+      "Combine this bracket with a formalised Behrend construction to prove a super-polynomial lower bound on the optimal triangle removal constant γ(δ): exhibit graphs with ν(G) = ρ(G) yet ρ(G) super-polynomially larger than any polynomial in the triangle density.",
+      "Formalise the corresponding fractional relaxation and show ρ equals the integral covering number while the fractional cover equals the fractional packing, isolating the integrality gap as the exact obstruction to a polynomial γ(δ)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-counting",
+      "relationship": "extends",
+      "description": "Parent: formalises the quantitative triangle removal lemma γ(δ) from regularity + counting. This entry isolates the per-graph removal number ρ(G) that the lemma bounds and brackets it ν ≤ ρ ≤ τ, exposing the integrality gap that governs the optimal γ(δ)."
+    },
+    {
+      "targetId": "roth-theorem-k3",
+      "relationship": "related",
+      "description": "The Ruzsa–Szemerédi construction (formalised in RothTriangleRemoval.lean) that proves Roth's theorem via triangle removal is exactly an instance of the lower bracket: an AP-free set A yields |A|·N edge-disjoint triangles, so ρ ≥ ν = |A|·N — a special case of packing_card_le_cover_card."
+    }
+  ],
+  "references": [
+    {
+      "title": "Triple systems with no six points carrying three triangles",
+      "author": "I. Z. Ruzsa, E. Szemerédi",
+      "year": "1978",
+      "venue": "Combinatorics (Keszthely 1976), Coll. Math. Soc. J. Bolyai 18, 939–945",
+      "description": "Introduces the (6,3)-theorem and the triangle removal lemma; the induced-matching / edge-disjoint-triangle mechanism is the lower-bracket weak duality formalised here."
+    },
+    {
+      "title": "A new proof of the graph removal lemma",
+      "author": "Jacob Fox",
+      "year": "2011",
+      "venue": "Annals of Mathematics 174, 561–579",
+      "description": "Proves the best known quantitative bounds (tower of bounded height) for the triangle/graph removal lemma; the optimal dependence γ(δ) — the integrality gap this entry isolates — remains open."
+    },
+    {
+      "title": "On sets of integers containing no three terms in arithmetical progression",
+      "author": "Felix A. Behrend",
+      "year": "1946",
+      "venue": "Proceedings of the National Academy of Sciences 32, 331–332",
+      "description": "Large AP-free sets that, fed through the Ruzsa–Szemerédi construction, push the packing-vs-count gap to be super-polynomial — the source of the only known lower bounds on the optimal removal constant."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/SzemerediCountingOQ01.lean",
+    "filename": "SzemerediCountingOQ01.lean",
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Szemeredi.TriangleRemoval.Bounds",
+    "lineCount": 314,
+    "theoremCount": 10,
+    "axiomCount": 0,
+    "definitionCount": 7,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SzemerediCountingOQ01.lean",
+    "additionalFiles": []
+  },
+  "openQuestions": [
+    {
+      "id": "szemeredi-counting-oq-01-oq-01",
+      "question": "Prove the matching K_r version: for the minimum number of edges to delete to make G K_r-free, the bracket νᵣ(G) ≤ ρᵣ(G) ≤ τᵣ(G) holds, with edge-disjoint r-cliques sharing ≤ r − 2 vertices.",
+      "significance": "medium"
+    },
+    {
+      "id": "szemeredi-counting-oq-01-oq-02",
+      "question": "Combine this bracket with a formalised Behrend construction to prove a super-polynomial lower bound on the optimal triangle removal constant γ(δ).",
+      "significance": "high"
+    },
+    {
+      "id": "szemeredi-counting-oq-01-oq-03",
+      "question": "Formalise the fractional relaxation and identify the integrality gap between the integral removal number ρ and the fractional cover/packing as the exact obstruction to a polynomial γ(δ).",
+      "significance": "medium"
+    }
+  ],
+  "sorries": 0
+}
