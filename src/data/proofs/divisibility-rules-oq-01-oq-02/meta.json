@@ -1,0 +1,125 @@
+{
+  "id": "divisibility-rules-oq-01-oq-02",
+  "title": "Divisibility Rules OQ-01-OQ-02: A Universal Power-of-10 Rule for Every Modulus Coprime to 10",
+  "slug": "divisibility-rules-oq-01-oq-02",
+  "description": "Resolves the second open question of divisibility-rules-oq-01: for every modulus d coprime to 10, there is a power B = 10^k of 10 such that divisibility by d is detected either by the base-B digit sum or by the base-B alternating digit sum. The digit-sum branch is shown to ALWAYS succeed — taking B = 10^φ(d) gives 10^φ(d) ≡ 1 (mod d) by the Fermat–Euler theorem, so d ∣ n ↔ d ∣ (base-B digit sum). The alternating-sum branch is developed as genuinely realizable infrastructure (whenever some 10^k ≡ -1 mod d), often yielding a smaller base than the universal φ(d) bound (e.g. base 1000 for d = 7 and d = 13). All 15 theorems are fully machine-checked with no axioms beyond Lean's standard foundational triple (propext, Classical.choice, Quot.sound) — no sorries, no native_decide, no structure-encoded assumptions.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DivisibilityRulesOQ01OQ02.lean",
+    "tags": [
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "euler-totient",
+      "extensions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean's standard foundational axioms. All four headline theorems (exists_base_divisibility_rule, exists_base_digitSum_rule, exists_base_altDigitSum_rule, dvd_iff_dvd_altDigitSum) verify with #print axioms = [propext, Classical.choice, Quot.sound]. Unlike the parent divisibility-rules-oq-01, this file uses NO native_decide: every base-side condition (e.g. 10^3 % 7 = 6) is discharged by norm_num, so the proof does not depend on Lean.ofReduceBool. The sanity-check examples evaluate the alternating-sum function on explicit digit lists, which the kernel reduces directly via `decide`.",
+    "lineCount": 244,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "originalContributions": [
+      "Universal existence theorem exists_base_divisibility_rule: for every d > 1 coprime to 10, a power of 10 detects divisibility by d via digit sum OR alternating digit sum — the exact open question resolved",
+      "exists_base_digitSum_rule: the digit-sum branch always works, with the explicit witness B = 10^φ(d) supplied by the Fermat–Euler theorem (Nat.pow_totient_mod_eq_one)",
+      "exists_base_altDigitSum_rule: the alternating-sum branch is realizable whenever 10^k ≡ -1 (mod d), often with a smaller base than 10^φ(d)",
+      "Self-contained, native_decide-free alternating-digit-sum framework (dvd_iff_dvd_altDigitSum) re-derived with a generalizing induction and an explicit d ∣ (b+1) construction (omega cannot reason about mod with a variable divisor)",
+      "Worked instances spanning both branches: digit-sum rules for 3, 9, 37, 101; alternating-sum rules for 11 (base 10), 7 and 13 (base 1000, since 10^3 ≡ -1 mod each)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classical schoolbook divisibility rules — casting out nines (3, 9), the alternating sum rule (11), and digit-group sums (37, 101) — are each special cases of a single congruence principle: choosing a base B that is a power of 10 with B ≡ ±1 (mod d). The parent gallery entry divisibility-rules-oq-01 collected many such rules one modulus at a time. The natural theoretical question, posed as its second open problem, is whether EVERY modulus coprime to 10 admits such a rule. The affirmative answer is a direct consequence of Euler's 1763 generalization of Fermat's little theorem: if gcd(a, n) = 1 then a^φ(n) ≡ 1 (mod n). Applied to a = 10, this guarantees a power of 10 congruent to 1 modulo d, hence a digit-sum rule in that base. The refinement to alternating sums (seeking 10^k ≡ -1) recovers the familiar base-10 rule for 11 and the elegant three-digit-block alternating rules for 7 and 13.",
+    "problemStatement": "Prove that for every modulus d coprime to 10, there exists a base B that is a power of 10 such that divisibility by d is detected either by the sum of the base-B digits of n or by the alternating sum of the base-B digits of n. Provide the explicit base, establish the always-available digit-sum branch via the Fermat–Euler theorem, develop the alternating-sum branch as realizable infrastructure, and exhibit concrete instances of both branches.",
+    "proofStrategy": "The digit-sum branch is the engine. Given d > 1 with gcd(10, d) = 1, Euler's theorem (Nat.pow_totient_mod_eq_one) gives (10^φ(d)) % d = 1, so the base B = 10^φ(d) satisfies B ≡ 1 (mod d). Mathlib's Nat.modEq_digits_sum then yields n ≡ (digits B n).sum (mod d), and Nat.ModEq.dvd_iff upgrades this to the iff d ∣ n ↔ d ∣ (digits B n).sum. The headline existence theorem packages this with the witness k = φ(d), and proves the disjunction through its left branch. For the alternating-sum branch, the file re-derives (self-contained) the fact that a base b ≡ -1 (mod d) makes powers of b alternate sign mod d, so ofDigits b l ≡ alternatingDigitSum l (mod d); this is proved by induction on the digit list, with the b ≡ -1 step obtained from an explicit construction of d ∣ (b + 1). The resulting dvd_iff_dvd_altDigitSum gives d ∣ n ↔ (d : ℤ) ∣ altDigitSum b n whenever (10^k) % d = d - 1.",
+    "keyInsights": [
+      "Euler's theorem is exactly the tool that makes the digit-sum rule universal: 10^φ(d) ≡ 1 (mod d) is the only ingredient needed, so the open question reduces to a one-line application of Nat.pow_totient_mod_eq_one.",
+      "The disjunction in the open question is logically settled by its left (digit-sum) branch alone, since that branch never fails for d coprime to 10; the alternating-sum branch is a practical refinement, not a logical necessity.",
+      "The alternating-sum branch can give a strictly smaller base than the universal φ(d) bound: for d = 7, φ(7) = 6 would demand base 10^6, but 10^3 ≡ -1 (mod 7) gives an alternating rule on three-digit blocks (base 1000); the same happens for d = 13.",
+      "omega cannot prove (b + 1) % d = 0 from b % d = d - 1 when d is a variable, because its modular reasoning is limited to constant divisors; the fix is to hand it the Euclidean identity Nat.div_add_mod and an explicit cofactor witness for d ∣ (b + 1).",
+      "Nat.ofDigits is polymorphic over a semiring, so the ascription (Nat.ofDigits b l : ℤ) silently coerces the base into ℤ; keeping the recursion in ℕ and casting afterwards (via Nat.cast_add / Nat.cast_mul rather than push_cast) avoids the coe_ofDigits normal form clashing with the inductive hypothesis."
+    ],
+    "prerequisites": [
+      "The Fermat–Euler totient theorem (Nat.pow_totient_mod_eq_one)",
+      "Nat.digits / Nat.ofDigits and Nat.modEq_digits_sum",
+      "Nat.ModEq and Int.ModEq, including Int.modEq_iff_dvd",
+      "Euler's totient function and Nat.totient_pos"
+    ]
+  },
+  "conclusion": {
+    "summary": "For every modulus d > 1 coprime to 10 there is a power of 10 whose digit sum (always) or alternating digit sum (when a sign-reversing power exists) detects divisibility by d. The universal digit-sum witness B = 10^φ(d) comes directly from the Fermat–Euler theorem, and the alternating-sum branch is realized for 11, 7, and 13. All 15 theorems are machine-checked with zero axioms beyond Lean's foundational triple — a strictly cleaner verification than the parent entry, which relied on native_decide.",
+    "implications": "This closes the gap between the parent's modulus-by-modulus catalogue and a single uniform existence theorem: the catalogue's separate rules are now seen as instances of one Euler-theoretic principle. The contrast with the parent — which discharges base-side conditions by native_decide and so carries Lean.ofReduceBool — shows that the universal statement is not only more general but also more honestly verified, since the totient witness eliminates the need for any compiler-trusting decision procedure.",
+    "openQuestions": [
+      "Characterize exactly which d coprime to 10 admit the alternating-sum branch (i.e. when -1 lies in the cyclic subgroup generated by 10 modulo d), and give the minimal base in each case in terms of the multiplicative order of 10.",
+      "Quantify how much smaller the alternating-sum base 10^k (with 10^k ≡ -1) can be than the digit-sum base 10^(ord_d(10)); equivalently, relate the two to the order and the index of ⟨100⟩ in ⟨10⟩ modulo d."
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-divOQ0102-digitsum",
+      "title": "Part I: The Universal Digit-Sum Rule",
+      "startLine": 34,
+      "endLine": 63,
+      "summary": "dvd_iff_dvd_digitSum packages Nat.modEq_digits_sum into an iff on divisibility for any base B with B % d = 1. exists_base_digitSum_rule is the universal theorem: for d > 1 coprime to 10, the base B = 10^φ(d) is a genuine base (> 1) with B % d = 1 (Fermat–Euler), so divisibility by d is detected by the base-B digit sum, with explicit witness k = φ(d)."
+    },
+    {
+      "id": "sec-divOQ0102-altsum-infra",
+      "title": "Part II: Alternating-Digit-Sum Infrastructure",
+      "startLine": 65,
+      "endLine": 138,
+      "summary": "Self-contained (native_decide-free) re-derivation of the alternating digit sum: the recursive function alternatingDigitSum, its cons recursion (proved by a generalizing induction), the congruence ofDigits_modEq_alternatingDigitSum for bases b ≡ -1 (mod d), and the divisibility iff dvd_iff_dvd_altDigitSum. The b ≡ -1 step is obtained from an explicit construction of d ∣ (b + 1), sidestepping omega's inability to reason about mod with a variable divisor."
+    },
+    {
+      "id": "sec-divOQ0102-altsum-realizable",
+      "title": "Part III: The Alternating-Sum Branch Is Realizable",
+      "startLine": 139,
+      "endLine": 153,
+      "summary": "exists_base_altDigitSum_rule: whenever (10^k) % d = d - 1 (i.e. 10^k ≡ -1 mod d) with d > 1, divisibility by d is detected by the base-10^k alternating digit sum."
+    },
+    {
+      "id": "sec-divOQ0102-headline",
+      "title": "Part IV: The Headline Existence Theorem",
+      "startLine": 154,
+      "endLine": 174,
+      "summary": "exists_base_divisibility_rule states the open question verbatim: for every d > 1 coprime to 10 there is a power 10^k (k ≥ 1) detecting divisibility by d via the digit sum OR the alternating digit sum. It is proved through the always-available digit-sum branch."
+    },
+    {
+      "id": "sec-divOQ0102-instances",
+      "title": "Part V: Worked Instances",
+      "startLine": 175,
+      "endLine": 218,
+      "summary": "Digit-sum branch: 3 and 9 (base 10), 37 (base 1000), 101 (base 10000). Alternating-sum branch: 11 (base 10, since 10 ≡ -1 mod 11), 7 and 13 (base 1000, since 10^3 ≡ -1 modulo each). Every base-side condition is discharged by norm_num."
+    },
+    {
+      "id": "sec-divOQ0102-sanity",
+      "title": "Part VI: Kernel-Checkable Sanity Checks",
+      "startLine": 219,
+      "endLine": 244,
+      "summary": "Sanity checks evaluate alternatingDigitSum on explicit digit lists ([1,0,0,1] for 1001 in base 10, [3,3,2,1] for 1233, [1,1] for 1001 in base 1000) and verify the corresponding ℤ-divisibility verdicts via decide — all kernel-reduced, with no native_decide."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "divisibility-rules-oq-01",
+      "relationship": "extends",
+      "description": "Resolves the second open question posed in the conclusion of divisibility-rules-oq-01, generalizing its modulus-by-modulus rules to a single universal existence theorem and removing the dependence on native_decide."
+    },
+    {
+      "targetId": "divisibility-rules",
+      "relationship": "related",
+      "description": "Provides the theoretical capstone to the base DivisibilityRules collection: every modulus coprime to 10 has a power-of-10 digit-sum rule."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 244,
+    "path": "Proofs/DivisibilityRulesOQ01OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 15
+  },
+  "sorries": 0
+}
