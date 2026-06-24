@@ -1,0 +1,118 @@
+[
+  {
+    "id": "betahalf-ann-antideriv",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-02",
+    "range": {
+      "startLine": 54,
+      "endLine": 88
+    },
+    "type": "insight",
+    "title": "arcsin(2x−1) Is the Antiderivative of the Beta Integrand",
+    "content": "The analytic heart. hasDerivAt_arcsin_affine composes Real.arcsin with the affine map x ↦ 2x−1 (chain rule, derivative 2), giving derivative 2/√(1−(2x−1)²) on (0,1). The algebraic identity 1−(2x−1)² = 4x(1−x) and √(4x(1−x)) = 2√x√(1−x) then identify this with x^{−1/2}(1−x)^{−1/2} — exactly the Beta(1/2,1/2) integrand. So the arcsine substitution is not auxiliary: arcsin(2x−1) is literally the antiderivative of the density.",
+    "mathContext": "$\\frac{d}{dx}\\arcsin(2x-1) = \\frac{2}{\\sqrt{1-(2x-1)^2}} = \\frac{2}{\\sqrt{4x(1-x)}} = x^{-1/2}(1-x)^{-1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.hasDerivAt_arcsin",
+      "chain rule",
+      "Beta integrand",
+      "arcsine density",
+      "antiderivative"
+    ],
+    "prerequisites": [
+      "derivative of arcsin",
+      "the identity 1−(2x−1)²=4x(1−x)"
+    ]
+  },
+  {
+    "id": "betahalf-ann-integrability",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 114
+    },
+    "type": "technique",
+    "title": "Integrability Borrowed from the Complex Beta Convergence",
+    "content": "The density x^{−1/2}(1−x)^{−1/2} has endpoint singularities at 0 and 1, so integrability needs care. intervalIntegrable_arcsineDensity sidesteps a direct estimate: the real density equals, a.e. on (0,1), the NORM of Mathlib's convergent complex Beta integrand, so interval-integrability is inherited from Complex.betaIntegral_convergent. Reusing Mathlib's convergence result avoids re-proving the (improper) integrability of a singular integrand from scratch.",
+    "mathContext": "$x^{-1/2}(1-x)^{-1/2} = \\|x^{1/2-1}(1-x)^{1/2-1}\\|$ a.e. on $(0,1)$; integrable via Complex.betaIntegral_convergent.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Complex.betaIntegral_convergent",
+      "interval integrability",
+      "endpoint singularities",
+      "norm of a complex integrand"
+    ],
+    "prerequisites": [
+      "improper interval integrals",
+      "the complex Beta integral"
+    ]
+  },
+  {
+    "id": "betahalf-ann-integral",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-02",
+    "range": {
+      "startLine": 115,
+      "endLine": 131
+    },
+    "type": "insight",
+    "title": "The Arcsine Integral Equals π",
+    "content": "integral_arcsineDensity evaluates ∫₀¹ x^{−1/2}(1−x)^{−1/2} dx = π using intervalIntegral.integral_eq_sub_of_hasDeriv_right_of_le — the FTC variant requiring the derivative only on the OPEN interval (where the antiderivative exists), plus continuity of arcsin(2x−1) on the closed interval and the integrability just established. The endpoint values arcsin(2·1−1) − arcsin(2·0−1) = arcsin(1) − arcsin(−1) = π/2 − (−π/2) = π give the result.",
+    "mathContext": "$\\int_0^1 x^{-1/2}(1-x)^{-1/2}\\,dx = \\arcsin(1) - \\arcsin(-1) = \\tfrac{\\pi}{2} - (-\\tfrac{\\pi}{2}) = \\pi$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "fundamental theorem of calculus",
+      "open-interval FTC variant",
+      "arcsin(±1)=±π/2",
+      "improper integral"
+    ],
+    "prerequisites": [
+      "the antiderivative lemma",
+      "integrability of the density"
+    ]
+  },
+  {
+    "id": "betahalf-ann-betavalue",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-02",
+    "range": {
+      "startLine": 132,
+      "endLine": 152
+    },
+    "type": "technique",
+    "title": "From the Real Integral to the Complex Beta Value",
+    "content": "betaIntegral_half_half lifts the real computation to B(1/2,1/2) = π. Complex.ofReal_cpow (valid because on (0,1) both bases x and 1−x are nonnegative reals) rewrites the complex cpow Beta integrand as ofReal of the real rpow density; pushing ofReal through the interval integral reduces Complex.betaIntegral (1/2) (1/2) to ↑(∫₀¹ density) = ↑π. Crucially this does NOT invoke any Mathlib Beta special value — the value is computed from the arcsine FTC.",
+    "mathContext": "$B(\\tfrac12,\\tfrac12) = \\int_0^1 x^{-1/2}(1-x)^{-1/2}\\,dx = \\pi$ (complex integrand reduced to $\\mathrm{ofReal}$ of the real density).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.betaIntegral",
+      "Complex.ofReal_cpow",
+      "cpow to rpow reduction",
+      "pushing ofReal through integrals"
+    ],
+    "prerequisites": [
+      "the real arcsine integral",
+      "complex power of a nonnegative real base"
+    ]
+  },
+  {
+    "id": "betahalf-ann-gamma",
+    "proofId": "area-of-circle-oq-07-oq-03-oq-02",
+    "range": {
+      "startLine": 153,
+      "endLine": 185
+    },
+    "type": "insight",
+    "title": "Γ(1/2)² = π via Beta, Independently of the Gaussian Integral",
+    "content": "The payoff. complex_Gamma_half_sq / real_Gamma_half_sq feed B(1/2,1/2) = π into Mathlib's Beta–Gamma relation Complex.Gamma_mul_Gamma_eq_betaIntegral: Γ(1/2)·Γ(1/2) = Γ(1)·B(1/2,1/2) = B(1/2,1/2) = π (since Γ(1)=1). real_Gamma_half recovers Γ(1/2) = √π, and arcsine_density_normalised divides by π to give ∫₀¹ 1/(π√(x(1−x))) dx = 1, the total mass of the arcsine probability density. This is an INDEPENDENT route to Γ(1/2)=√π — it never calls Real.Gamma_one_half_eq (the Gaussian-integral proof) — unifying the two appearances of π.",
+    "mathContext": "$\\Gamma(\\tfrac12)^2 = \\Gamma(1)\\,B(\\tfrac12,\\tfrac12) = \\pi$, so $\\Gamma(\\tfrac12)=\\sqrt\\pi$; and $\\int_0^1 \\frac{dx}{\\pi\\sqrt{x(1-x)}} = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Complex.Gamma_mul_Gamma_eq_betaIntegral",
+      "Beta–Gamma relation",
+      "Gamma(1/2)=√π",
+      "arcsine distribution normalisation"
+    ],
+    "prerequisites": [
+      "the Beta value B(1/2,1/2)=π",
+      "the Beta–Gamma relation"
+    ]
+  }
+]
