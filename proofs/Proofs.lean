@@ -3455,6 +3455,7 @@ import Proofs.PythagoreanTriplesOQ06
 import Proofs.PythagoreanTriplesOQ07
 import Proofs.PythagoreanTriplesOQ08
 import Proofs.PythagoreanTriplesOQ09
+import Proofs.PythagoreanTriplesOQ10
 import Proofs.QuadraticGaussSumDiagonal
 import Proofs.QuadraticGaussSumNormParseval
 import Proofs.QuadraticGaussSumSignReduction
