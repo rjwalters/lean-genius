@@ -121,6 +121,29 @@
       "Can this measure-theoretic Paley–Zygmund be contributed upstream to Mathlib?"
     ]
   },
+  "sections": [
+    {
+      "id": "integral-cauchy-schwarz",
+      "title": "Integral Cauchy–Schwarz (Squared Form)",
+      "startLine": 42,
+      "endLine": 65,
+      "summary": "sq_integral_mul_le: for nonnegative L² functions f, g, (∫ f·g)² ≤ (∫ f²)(∫ g²). Packaged as the conjugate-pair (2,2) case of Mathlib's Hölder inequality (integral_mul_le_Lp_mul_Lq_of_nonneg), squared. The reusable analytic kernel of the whole argument."
+    },
+    {
+      "id": "paley-zygmund-main",
+      "title": "Quantitative Paley–Zygmund (Measure-Theoretic Form)",
+      "startLine": 67,
+      "endLine": 134,
+      "summary": "paley_zygmund: for nonnegative X ∈ L²(μ) on a probability space and θ ∈ [0,1], (1−θ)²(𝔼X)² ≤ μ(X > θ𝔼X)·𝔼[X²]. The classical second-moment argument: split 𝔼X = ∫_A X + ∫_{Aᶜ} X with A = {X > θ𝔼X}; on Aᶜ bound X ≤ θ𝔼X to get ∫_A X ≥ (1−θ)𝔼X; then apply the integral Cauchy–Schwarz to (∫_A X)² ≤ 𝔼[X²]·μ(A) via the indicator of A."
+    },
+    {
+      "id": "probability-and-positivity-forms",
+      "title": "Probability Form and θ = 0 Corollary",
+      "startLine": 136,
+      "endLine": 159,
+      "summary": "paley_zygmund_prob: when 𝔼[X²] > 0, the bound rearranges to μ(X > θ𝔼X) ≥ (1−θ)²(𝔼X)²/𝔼[X²]. paley_zygmund_pos: the θ = 0 specialization (𝔼X)² ≤ μ(X > 0)·𝔼[X²] — so 𝔼X > 0 forces μ(X > 0) > 0, the qualitative 'positive mean ⟹ positive probability of being positive' used in the probabilistic method."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "prob-method-second-moment-oq-01",
