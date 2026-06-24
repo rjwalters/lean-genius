@@ -3820,6 +3820,7 @@ import Proofs.ThreeSquaresSufficiency
 import Proofs.ThreeSquaresSufficiencyCorrected
 import Proofs.ThreeSquaresWitnessObstruction
 import Proofs.ThreeSubgroupsLemmaOQ01
+import Proofs.ThreeSubgroupsLemmaOQ0101
 import Proofs.ThueMorse
 import Proofs.TietzeExtensionTheoremOQ01
 import Proofs.TietzeExtensionTheoremOQ01OQ01

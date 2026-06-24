@@ -1,0 +1,106 @@
+{
+  "id": "three-subgroups-lemma-oq-01-oq-01",
+  "title": "Three Subgroups Lemma OQ-01-OQ-01: The Bilinear Lower-Central-Series Bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎",
+  "slug": "three-subgroups-lemma-oq-01-oq-01",
+  "description": "This entry proves the bilinear estimate for the lower central series of an arbitrary group G: the commutator of the i-th and j-th terms lies in the (i+j+1)-th term, ⁅lowerCentralSeries G i, lowerCentralSeries G j⁆ ≤ lowerCentralSeries G (i+j+1). This is the classical [γᵢ, γⱼ] ⊆ γ₍ᵢ₊ⱼ₎ bound, expressed in Mathlib's γ₀ = G indexing (which shifts the textbook γ₁ = G convention by one, hence +1). It is exactly the inductive payoff named in the parent entry three-subgroups-lemma-oq-01, and it is proved using that parent's normal-subgroup form of the three subgroups lemma. The proof is an induction on j, uniform in i: the base case j=0 is the defining recursion ⁅γᵢ, ⊤⁆ = γ₍ᵢ₊₁₎; the inductive step rewrites γ₍ⱼ₊₁₎ = ⁅γⱼ, ⊤⁆ and applies the three subgroups lemma with H = γⱼ, K = ⊤, L = γᵢ and normal subgroup N = γ₍ᵢ₊ⱼ₊₂₎ (normal by Mathlib's lowerCentralSeries_normal instance), feeding it the two hypotheses ⁅γ₍ᵢ₊₁₎, γⱼ⁆ ≤ N and ⁅⁅γᵢ, γⱼ⁆, ⊤⁆ ≤ N supplied by the inductive hypothesis at i+1 and at i. Mathlib develops the lower central series (lowerCentralSeries_succ, lowerCentralSeries_antitone, lowerCentralSeries_normal) and the LINEAR bound derived_le_lower_central (derivedSeries G n ≤ lowerCentralSeries G n) but does not record the bilinear two-index product bound. As a headline consequence the entry derives the exponentially sharp derived-series estimate derivedSeries G n ≤ lowerCentralSeries G (2ⁿ − 1), which strictly strengthens Mathlib's linear derived_le_lower_central, and cross-checks that it recovers the linear bound via antitonicity and n < 2ⁿ.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Nilpotent",
+      "Mathlib.GroupTheory.Commutator.Basic",
+      "Mathlib.GroupTheory.QuotientGroup.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "ThreeSubgroupsLemmaOQ0101",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/ThreeSubgroupsLemmaOQ0101.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nilpotent_group#Lower_central_series",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ThreeSubgroupsLemmaOQ0101.lean",
+    "tags": [
+      "group-theory",
+      "lower-central-series",
+      "commutator-subgroup",
+      "three-subgroups-lemma",
+      "nilpotent-groups",
+      "derived-series"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      "three-subgroups-lemma-oq-01"
+    ],
+    "axiomCount": 0,
+    "lineCount": 182,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The two headline theorems commutator_lowerCentralSeries_le and derivedSeries_le_lowerCentralSeries_two_pow were checked with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib provides the lower central series infrastructure (lowerCentralSeries_succ, lowerCentralSeries_antitone, the normality instance lowerCentralSeries_normal) and the LINEAR derived-series bound derived_le_lower_central (derivedSeries G n ≤ lowerCentralSeries G n), but NOT the bilinear product bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎. The bilinear bound, its self-commutator specialisation, and the exponentially sharp derivedSeries G n ≤ lowerCentralSeries G (2ⁿ − 1) strengthening are the original content. The normal-subgroup three subgroups lemma used in the inductive step is the result of the parent entry three-subgroups-lemma-oq-01; its short quotient proof (commutator_le_of_rotate, derived from Mathlib's = ⊥ Hall–Witt lemma Subgroup.commutator_commutator_eq_bot_of_rotate) is reproduced as a private lemma so this file is self-contained.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The lower central series γ₀ ≥ γ₁ ≥ γ₂ ≥ … of a group G, with γ₀ = G and γ₍ₙ₊₁₎ = ⁅γₙ, G⁆, measures how far G is from being abelian; G is nilpotent of class c exactly when γ_c = 1. The single most-used structural fact about it is the bilinear estimate [γᵢ, γⱼ] ⊆ γ₍ᵢ₊ⱼ₎ (in the γ₁ = G convention), proved by induction from the three subgroups lemma. It is the multiplicative backbone of nilpotency arithmetic: it shows the associated graded ⊕ γₙ/γ₍ₙ₊₁₎ is a Lie ring, it controls how commutators of deep terms land even deeper, and it immediately yields that a nilpotent group is solvable with an explicit, exponentially better bound on the derived length. The parent entry isolated the three subgroups lemma in the relative form needed for this induction; the present entry carries out the induction.",
+    "problemStatement": "Let G be a group and let γₖ = lowerCentralSeries G k denote the k-th term of its lower central series (Mathlib convention: γ₀ = ⊤, γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆). Prove the bilinear bound\n$$\\lbrack \\gamma_i, \\gamma_j \\rbrack \\le \\gamma_{i+j+1}\\quad\\text{i.e.}\\quad \\lbrack \\mathrm{lowerCentralSeries}\\,G\\,i,\\ \\mathrm{lowerCentralSeries}\\,G\\,j \\rbrack \\le \\mathrm{lowerCentralSeries}\\,G\\,(i+j+1),$$\nand deduce the exponentially sharp derived-series estimate $\\mathrm{derivedSeries}\\,G\\,n \\le \\gamma_{2^n - 1}$.",
+    "text": "Mathlib's GroupTheory/Nilpotent.lean builds the lower central series and proves the antitone, normality, and successor facts, plus the LINEAR derived-series bound derived_le_lower_central : derivedSeries G n ≤ lowerCentralSeries G n. It does not record the bilinear product bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎. This entry supplies it by the classical induction on j, using the normal-subgroup three subgroups lemma proved in the parent entry. Because Mathlib indexes the series from γ₀ = G rather than the textbook γ₁ = G, the bound carries a +1 (the two conventions are related by γₙ^Mathlib = γ₍ₙ₊₁₎^textbook). The original content is the bilinear bound, its self-commutator special case, and the exponentially sharp strengthening of derived_le_lower_central.",
+    "proofStrategy": "commutator_lowerCentralSeries_le is proved by `induction j generalizing i`. Base case j = 0: rewrite γ₀ = ⊤ (lowerCentralSeries_zero) and i+0+1 = i+1, so the goal is ⁅γᵢ, ⊤⁆ ≤ γ₍ᵢ₊₁₎, which is the defining recursion lowerCentralSeries_succ_def. Inductive step: with hypothesis ih : ∀ i, ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎, rewrite γ₍ⱼ₊₁₎ = ⁅γⱼ, ⊤⁆ and commute the outer bracket (commutator_comm) to put the goal in the orientation ⁅⁅γⱼ, ⊤⁆, γᵢ⁆ ≤ γ₍ᵢ₊ⱼ₊₂₎. This is the conclusion of the three subgroups lemma commutator_le_of_rotate₂ with H = γⱼ, K = ⊤, L = γᵢ, N = γ₍ᵢ₊ⱼ₊₂₎ (normal by the lowerCentralSeries_normal instance). Its two hypotheses are discharged by the IH: (1) ⁅⁅⊤, γᵢ⁆, γⱼ⁆ = ⁅γ₍ᵢ₊₁₎, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₂₎ via ih (i+1) after rewriting ⁅⊤, γᵢ⁆ = γ₍ᵢ₊₁₎; (2) ⁅⁅γᵢ, γⱼ⁆, ⊤⁆ ≤ ⁅γ₍ᵢ₊ⱼ₊₁₎, ⊤⁆ = γ₍ᵢ₊ⱼ₊₂₎ via commutator_mono (ih i) le_rfl and the successor recursion. The index bookkeeping (i+(j+1)+1 = i+j+2, (i+1)+j+1 = i+j+2) is closed by omega. The consequence derivedSeries_le_lowerCentralSeries_two_pow inducts on n: derivedSeries G (n+1) = ⁅derivedSeries G n, derivedSeries G n⁆ ≤ ⁅γ₍₂ⁿ₋₁₎, γ₍₂ⁿ₋₁₎⁆ (commutator_mono ih ih) ≤ γ₍(2ⁿ−1)+(2ⁿ−1)+1₎ = γ₍2ⁿ⁺¹−1₎, the index identity coming from omega with 0 < 2ⁿ. The cross-check derivedSeries_le_lowerCentralSeries recovers Mathlib's linear bound through lowerCentralSeries_antitone and n < 2ⁿ (Nat.lt_two_pow_self).",
+    "keyInsights": [
+      "**The three subgroups lemma is exactly the inductive engine**: the entire bilinear bound is one induction whose only nontrivial step is the relative (≤ N) three subgroups lemma applied to H = γⱼ, K = ⊤, L = γᵢ. This is precisely the application for which the parent entry proved the normal-subgroup form — the absolute N = ⊥ case is not enough, because the inductive target γ₍ᵢ₊ⱼ₊₂₎ is a genuine normal subgroup, not the trivial one.",
+      "**Uniformity in i makes the induction close**: the inductive hypothesis must be quantified over all i, because the step feeds it back at the shifted index i+1 (to bound ⁅γ₍ᵢ₊₁₎, γⱼ⁆) as well as at i. A fixed-i induction does not have enough to work with.",
+      "**The +1 is an indexing artefact, not a weakening**: in the textbook γ₁ = G convention the bound reads [γᵢ, γⱼ] ⊆ γ₍ᵢ₊ⱼ₎; Mathlib's γ₀ = G convention shifts every index down by one, so the same theorem appears as ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎. Checking the base case ⁅γᵢ, γ₀⁆ = ⁅γᵢ, ⊤⁆ = γ₍ᵢ₊₁₎ pins the convention down.",
+      "**Bilinearity beats linearity exponentially for the derived series**: feeding the bilinear bound into the derived series doubles the index at each step, giving derivedSeries G n ≤ γ₍2ⁿ−1₎. Mathlib only records the linear derivedSeries G n ≤ γₙ. The sharper bound is the quantitative form of 'nilpotent ⟹ solvable' and follows in two lines once the bilinear estimate is available — the clearest demonstration of why the bilinear bound is worth isolating."
+    ],
+    "prerequisites": [
+      "The lower central series lowerCentralSeries G n with γ₀ = ⊤ and the successor recursion γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆, its antitonicity (lowerCentralSeries_antitone) and the normality instance lowerCentralSeries_normal",
+      "The commutator subgroup ⁅H,K⁆, its monotonicity (Subgroup.commutator_mono) and symmetry (Subgroup.commutator_comm)",
+      "The normal-subgroup three subgroups lemma ⁅⁅H,K⁆,L⁆ ≤ N ∧ ⁅⁅K,L⁆,H⁆ ≤ N ⟹ ⁅⁅L,H⁆,K⁆ ≤ N (parent entry three-subgroups-lemma-oq-01), itself a quotient transport of Mathlib's = ⊥ Hall–Witt lemma Subgroup.commutator_commutator_eq_bot_of_rotate",
+      "The derived series derivedSeries G n with γ₀ = ⊤ and recursion derivedSeries G (n+1) = ⁅derivedSeries G n, derivedSeries G n⁆, and the elementary fact n < 2ⁿ (Nat.lt_two_pow_self)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "three-subgroups-lemma",
+      "title": "The Three Subgroups Lemma (Normal-Subgroup Form)",
+      "startLine": 57,
+      "endLine": 85,
+      "mathContext": "$\\lbrack\\lbrack H,K\\rbrack,L\\rbrack \\le N$ and $\\lbrack\\lbrack K,L\\rbrack,H\\rbrack \\le N$ imply $\\lbrack\\lbrack L,H\\rbrack,K\\rbrack \\le N$, for $N$ normal.",
+      "summary": "commutator_le_of_rotate (and its cyclic relabelling commutator_le_of_rotate₂) is the parent entry's normal-subgroup three subgroups lemma, reproduced as a private lemma so the file is self-contained. Its proof projects to G ⧸ N — where X ≤ N ⟺ X.map (mk' N) = ⊥ and map distributes over the bracket — and applies Mathlib's = ⊥ lemma Subgroup.commutator_commutator_eq_bot_of_rotate."
+    },
+    {
+      "id": "successor-recursion",
+      "title": "The Successor Recursion of the Lower Central Series",
+      "startLine": 86,
+      "endLine": 102,
+      "mathContext": "$\\gamma_{n+1} = \\lbrack \\gamma_n, \\top \\rbrack$.",
+      "summary": "lowerCentralSeries_succ_def names the definitional recursion γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆ for readable rewriting; it holds by rfl."
+    },
+    {
+      "id": "bilinear-bound",
+      "title": "The Bilinear Bound",
+      "startLine": 104,
+      "endLine": 134,
+      "mathContext": "$\\lbrack \\gamma_i, \\gamma_j \\rbrack \\le \\gamma_{i+j+1}$.",
+      "summary": "commutator_lowerCentralSeries_le is the headline theorem, proved by induction on j uniform in i. The base case is the successor recursion; the inductive step is the three subgroups lemma applied with H = γⱼ, K = ⊤, L = γᵢ, N = γ₍ᵢ₊ⱼ₊₂₎, its two hypotheses discharged by the inductive hypothesis at i+1 and at i."
+    },
+    {
+      "id": "consequences",
+      "title": "Self-Commutator and the Exponentially Sharp Derived-Series Bound",
+      "startLine": 136,
+      "endLine": 182,
+      "mathContext": "$\\lbrack \\gamma_i, \\gamma_i \\rbrack \\le \\gamma_{2i+1}$ and $\\mathrm{derivedSeries}\\,G\\,n \\le \\gamma_{2^n-1}$.",
+      "summary": "sq_commutator_lowerCentralSeries_le is the diagonal special case. derivedSeries_le_lowerCentralSeries_two_pow inducts on n, doubling the index via the bilinear bound to reach γ₍2ⁿ−1₎ — strictly sharper than Mathlib's linear derived_le_lower_central, which is recovered as the cross-check derivedSeries_le_lowerCentralSeries through antitonicity and n < 2ⁿ."
+    }
+  ],
+  "conclusion": "The bilinear lower-central-series bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₊₁₎ is formalised sorry-free and axiom-free for an arbitrary group, realising the inductive payoff named in the parent three subgroups lemma entry. The proof is a single induction on j whose only working step is the parent's normal-subgroup three subgroups lemma, applied with the deep lower-central term as the normal subgroup. The bound is absent from Mathlib, which records only the lower central series infrastructure and the linear derived-series estimate derivedSeries G n ≤ γₙ. As a consequence the entry derives the exponentially sharp derivedSeries G n ≤ γ₍2ⁿ−1₎, a quantitative 'nilpotent ⟹ solvable', and confirms it recovers the linear Mathlib bound. A natural follow-up is the associated graded Lie-ring structure ⊕ γₙ/γ₍ₙ₊₁₎ that the bilinear bound makes well-defined, or the matching upper-central-series product bound.",
+  "crossReferences": []
+}
