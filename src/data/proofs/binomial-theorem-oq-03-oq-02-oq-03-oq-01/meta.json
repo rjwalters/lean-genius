@@ -83,7 +83,8 @@
     "summary": "Proves the sharp strict upper bound (1 + 1/n)^n < e for all n ≥ 1 with 0 axioms, 0 sorries, 4 theorems in 84 lines. The general lemma (1 + x/n)^n < exp(x) for x > 0 specializes to the e-bound at x = 1, and the Bernoulli lower companion gives the two-sided 2 ≤ (1+1/n)^n < e.",
     "implications": "This answers the parent proof's first open question — sharpening (1+1/n)^n < 3 to the optimal (1+1/n)^n < e. Combined with the parent's strict monotonicity and the grandparent's limit (1+1/n)^n → e, the picture is complete: a strictly increasing sequence confined to [2, e) converging to its supremum e, which it never attains.",
     "openQuestions": [
-      "Prove the complementary bound e < (1 + 1/n)^(n+1) for all n ≥ 1, giving the two-sided squeeze (1+1/n)^n < e < (1+1/n)^(n+1)."
+      "Prove the complementary bound e < (1 + 1/n)^(n+1) for all n ≥ 1, giving the two-sided squeeze (1+1/n)^n < e < (1+1/n)^(n+1).",
+      "Quantify the gap: establish the sharp asymptotic e - (1 + 1/n)^n ~ e/(2n) as n → ∞ (from the expansion n·log(1+1/n) = 1 - 1/(2n) + O(1/n²)), turning the qualitative 'approaches from below' into a rate."
     ]
   },
   "crossReferences": [
