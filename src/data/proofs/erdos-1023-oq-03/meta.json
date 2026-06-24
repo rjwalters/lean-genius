@@ -1,6 +1,6 @@
 {
   "id": "erdos-1023-oq-03",
-  "title": "Erdős #1023: an axiom-free exponential lower bound F(n) ≥ 2ⁿ/(n+1) for union-free families from single-layer constructions",
+  "title": "Erdős #1023: an axiom-free exponential lower bound F(n) ≥ 2ⁿ/(n+1) and monotonicity F(n) ≤ F(m) for union-free families from single-layer constructions",
   "slug": "erdos-1023-oq-03",
   "leanFile": {
     "imports": [
@@ -10,14 +10,14 @@
       "Finset"
     ],
     "namespace": "Erdos1023OQ03",
-    "lineCount": 196,
+    "lineCount": 336,
     "axiomCount": 0,
-    "theoremCount": 11,
-    "definitionCount": 7,
+    "theoremCount": 20,
+    "definitionCount": 8,
     "path": "Proofs/Erdos1023ProblemOQ03.lean",
     "sorries": 0
   },
-  "description": "Isolates the fully self-contained, axiom-free part of Erdős Problem #1023 (union-free families: F(n) = max size of a family of subsets of {1,…,n} with no member the union of two or more others). The parent file proves F(n) = C(n, ⌊n/2⌋) but routes the matching UPPER bound through Problem 447 as an external input (5 axioms). This entry develops only the LOWER-bound construction, which needs no axioms. Three points: (1) the middle layer is not special — EVERY layer (all k-element subsets, any fixed k) is an antichain, hence union-free, so F(n) ≥ C(n, k) for every k (unionFreeMax_ge_choose), strictly generalising the parent's middle-layer bound; (2) summing the binomial row 2ⁿ = Σ C(n,k) and bounding each term by the central one gives 2ⁿ ≤ (n+1)·C(n, ⌊n/2⌋) (two_pow_le_succ_mul_central); (3) combining them yields the explicit, axiom-free exponential lower bound 2ⁿ ≤ (n+1)·F(n), i.e. F(n) ≥ 2ⁿ/(n+1), proved purely from the single middle-layer construction and independent of the harder upper bound. This already certifies F(n) grows exponentially — the crude pigeonhole 2ⁿ/(n+1) differs from the true ~√(2/π)·2ⁿ/√n only by the polynomial factor √n/(n+1). Self-contained: the small lower-bound infrastructure (set families, isUnionFree, isAntichain, antichain_unionFree, unionFreeMax, layer) is re-declared from the parent so nothing depends on the axiom-carrying asymptotic section. 11 theorems, 7 definitions, 0 sorries, 0 axioms, no native_decide.",
+  "description": "Isolates the fully self-contained, axiom-free part of Erdős Problem #1023 (union-free families: F(n) = max size of a family of subsets of {1,…,n} with no member the union of two or more others). The parent file proves F(n) = C(n, ⌊n/2⌋) but routes the matching UPPER bound through Problem 447 as an external input (5 axioms). This entry develops only the LOWER-bound construction, which needs no axioms. Three points: (1) the middle layer is not special — EVERY layer (all k-element subsets, any fixed k) is an antichain, hence union-free, so F(n) ≥ C(n, k) for every k (unionFreeMax_ge_choose), strictly generalising the parent's middle-layer bound; (2) summing the binomial row 2ⁿ = Σ C(n,k) and bounding each term by the central one gives 2ⁿ ≤ (n+1)·C(n, ⌊n/2⌋) (two_pow_le_succ_mul_central); (3) combining them yields the explicit, axiom-free exponential lower bound 2ⁿ ≤ (n+1)·F(n), i.e. F(n) ≥ 2ⁿ/(n+1), proved purely from the single middle-layer construction and independent of the harder upper bound. This already certifies F(n) grows exponentially — the crude pigeonhole 2ⁿ/(n+1) differs from the true ~√(2/π)·2ⁿ/√n only by the polynomial factor √n/(n+1). A fourth, structural point is added: (4) the extremal function is MONOTONE, F(n) ≤ F(m) for n ≤ m (unionFreeMax_mono), with successor form F(n) ≤ F(n+1) (unionFreeMax_le_succ). The proof is a relabelling push-forward — any injection Fin n ↪ Fin m lifts to a map pushFamily on set families that relabels every member set, preserving cardinality (pushFamily_card) and union-freeness (pushFamily_unionFree, via familyUnion_pushFamily: taking images along an injection commutes with unions), so every achievable family size on Fin n is achievable on Fin m and the supremum can only grow. Self-contained: the small lower-bound infrastructure (set families, isUnionFree, isAntichain, antichain_unionFree, unionFreeMax, layer) is re-declared from the parent so nothing depends on the axiom-carrying asymptotic section. 20 theorems, 8 definitions, 0 sorries, 0 axioms, no native_decide.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "date": "formalized 2026",
@@ -36,17 +36,21 @@
     "sorries": 0,
     "dateAdded": "2026-06-22",
     "axiomCount": 0,
-    "assumptions": "Machine-checked against the Mathlib pin (Lean v4.26.0). 0 sorries, 0 axiom declarations, no native_decide; #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound] for every theorem (verified on unionFreeMax_exponential_lower_bound, unionFreeMax_ge_choose, layer_antichain, unionFreeMax_ge_two_pow_div). Self-contained: the lower-bound infrastructure (SetFamily, isUnionFree, isAntichain, antichain_unionFree, unionFreeMax, layer) is re-declared here verbatim from the parent Erdos1023Problem.lean, whose asymptotic section carries the 5 axioms routing the matching upper bound through Problem 447 — those are neither imported nor used here. Honest scope: this is the unconditional LOWER bound F(n) ≥ 2ⁿ/(n+1) (the exponential growth certificate), not the sharp value F(n) = C(n, ⌊n/2⌋), whose upper half remains the parent's axiomatised external input.",
-    "lineCount": 196,
-    "theoremCount": 11,
-    "definitionCount": 7,
+    "assumptions": "Machine-checked against the Mathlib pin (Lean v4.26.0). 0 sorries, 0 axiom declarations, no native_decide; #print axioms reports only the standard foundational axioms [propext, Classical.choice, Quot.sound] for every theorem (verified on unionFreeMax_exponential_lower_bound, unionFreeMax_ge_choose, layer_antichain, unionFreeMax_ge_two_pow_div, unionFreeMax_mono, pushFamily_unionFree, unionFreeMax_le_succ). Self-contained: the lower-bound infrastructure (SetFamily, isUnionFree, isAntichain, antichain_unionFree, unionFreeMax, layer) is re-declared here verbatim from the parent Erdos1023Problem.lean, whose asymptotic section carries the 5 axioms routing the matching upper bound through Problem 447 — those are neither imported nor used here. Honest scope: this is the unconditional LOWER bound F(n) ≥ 2ⁿ/(n+1) (the exponential growth certificate) plus the structural monotonicity F(n) ≤ F(m), not the sharp value F(n) = C(n, ⌊n/2⌋), whose upper half remains the parent's axiomatised external input.",
+    "lineCount": 336,
+    "theoremCount": 20,
+    "definitionCount": 8,
     "originalContributions": [
       "layer_antichain: every layer (the family of all k-element subsets of Fin n) is an antichain, for every k — generalising the parent's middleLayer_antichain (the k = n/2 case)",
       "layer_unionFree: every layer is union-free, immediate from layer_antichain and antichain_unionFree",
       "unionFreeMax_ge_choose: the lower bound F(n) ≥ C(n, k) holds at EVERY layer k, strictly generalising the parent's single middle-layer bound F(n) ≥ C(n, ⌊n/2⌋)",
       "two_pow_le_succ_mul_central: the row-sum bound 2ⁿ ≤ (n+1)·C(n, ⌊n/2⌋), from Σ_{k} C(n,k) = 2ⁿ with each term ≤ the central coefficient (Nat.choose_le_middle)",
       "unionFreeMax_exponential_lower_bound: the explicit axiom-free bound 2ⁿ ≤ (n+1)·F(n), certifying exponential growth of F(n) without the harder upper bound",
-      "unionFreeMax_ge_two_pow_div: the division form 2ⁿ/(n+1) ≤ F(n)"
+      "unionFreeMax_ge_two_pow_div: the division form 2ⁿ/(n+1) ≤ F(n)",
+      "pushFamily / familyUnion_pushFamily / pushFamily_card: a relabelling push-forward of set families along an embedding Fin n ↪ Fin m that preserves cardinality and commutes with familyUnion (taking images along an injection distributes over unions)",
+      "pushFamily_unionFree: union-freeness is preserved under the relabelling push-forward — a spurious union among relabelled sets pulls back to one among the originals",
+      "unionFreeMax_mono / unionFreeMax_monotone: monotonicity of the extremal function, F(n) ≤ F(m) for n ≤ m — a structural property of F absent from the parent, obtained by pushing an extremal family forward along Fin.castLEEmb so the set of achievable sizes can only grow",
+      "unionFreeMax_le_succ: the successor form F(n) ≤ F(n+1)"
     ]
   },
   "overview": {
@@ -57,7 +61,8 @@
       "The lower bound F(n) ≥ C(n, ⌊n/2⌋) is not special to the middle level: EVERY binomial coefficient C(n,k) is realised by a union-free family, because every layer is an antichain and antichains are union-free.",
       "The central binomial coefficient already controls the whole row: 2ⁿ = Σ_k C(n,k) ≤ (n+1)·C(n, ⌊n/2⌋), so a single layer captures at least a 1/(n+1) fraction of all 2ⁿ subsets.",
       "Combining the two gives an unconditional exponential lower bound 2ⁿ/(n+1) ≤ F(n) that needs none of the axiomatised upper-bound machinery — the crude pigeonhole differs from the sharp √(2/π)·2ⁿ/√n only by the polynomial factor √n/(n+1).",
-      "Separating the axiom-free lower-bound half from the axiom-carrying upper-bound half makes the unconditional content of the formalization explicit and machine-verifiable as 0-axiom."
+      "Separating the axiom-free lower-bound half from the axiom-carrying upper-bound half makes the unconditional content of the formalization explicit and machine-verifiable as 0-axiom.",
+      "Monotonicity is structural, not numeric: relabelling a union-free family along an injection Fin n ↪ Fin m preserves both its size and its union-freeness (image along an injection commutes with unions), so F(n) ≤ F(m) follows by transporting extremal families forward — independent of the exact value of F."
     ]
   },
   "sections": [
@@ -82,8 +87,16 @@
       "title": "Single-layer constructions and the exponential lower bound",
       "summary": "layer_antichain, layer_unionFree, unionFreeMax_ge_choose (F(n) ≥ C(n,k) for every k), two_pow_le_succ_mul_central (2ⁿ ≤ (n+1)·C(n,⌊n/2⌋)), unionFreeMax_exponential_lower_bound (2ⁿ ≤ (n+1)·F(n)), unionFreeMax_ge_two_pow_div (2ⁿ/(n+1) ≤ F(n)).",
       "startLine": 128,
-      "endLine": 196,
+      "endLine": 191,
       "mathContext": "Finset.eq_of_subset_of_card_le for the antichain property, le_csSup for the per-layer lower bound, Nat.sum_range_choose + Nat.choose_le_middle for the row bound, gcongr and Nat.div lemmas to assemble the exponential bound."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity of the extremal function via relabelling push-forward",
+      "summary": "isUnionFree_empty (nonemptiness witness) and mem_familyUnion; pushFamily (relabel a family along Fin n ↪ Fin m), pushFamily_card (injective relabelling preserves size), familyUnion_pushFamily (images along an injection commute with unions), pushFamily_unionFree (union-freeness is preserved by pushing forward), and the payoff unionFreeMax_mono / unionFreeMax_monotone (F(n) ≤ F(m) for n ≤ m, via Fin.castLEEmb) with the successor form unionFreeMax_le_succ (F(n) ≤ F(n+1)).",
+      "startLine": 192,
+      "endLine": 336,
+      "mathContext": "A new structural property of the extremal function, absent from the parent: F is monotone. Pushing an extremal union-free family forward along the standard embedding Fin n ↪ Fin m relabels its members injectively while preserving union-freeness, so every achievable family size on n ground elements is achievable on m ≥ n, and the supremum unionFreeMax can only increase."
     }
   ],
   "conclusion": {
