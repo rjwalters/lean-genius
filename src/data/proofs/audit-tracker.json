@@ -598,10 +598,11 @@
       "result": "clean"
     },
     "arithmetic-series-oq-02-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-05T00:51:26Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "arithmetic-series-oq-02-oq-04": {
       "auditCount": 3,
@@ -646,10 +647,11 @@
       "result": "clean"
     },
     "ballot-problem-oq-01": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-06-18T05:45:35Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "ballot-problem-oq-01-oq-01": {
       "auditCount": 6,
@@ -682,10 +684,11 @@
       "result": "clean"
     },
     "ballot-problem-oq-01-oq-04-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-05T00:51:26Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "ballot-problem-oq-02": {
       "auditCount": 5,
@@ -694,10 +697,11 @@
       "result": "issues-fixed"
     },
     "ballot-problem-oq-03": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:31Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "ballot-problem-oq-03-oq-01": {
       "auditCount": 3,
@@ -820,10 +824,11 @@
       "result": "clean"
     },
     "bezout-identity-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-08T13:32:08Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "bezout-identity-oq-02": {
       "auditCount": 6,
@@ -880,16 +885,18 @@
       "result": "clean"
     },
     "bezout-identity-oq-02-oq-02-oq-01": {
-      "auditCount": 5,
-      "issues": [],
-      "lastAudited": "2026-06-18T00:00:00Z",
-      "result": "issues-fixed"
-    },
-    "bezout-identity-oq-02-oq-02-oq-01-oq-01": {
       "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:34Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
+    },
+    "bezout-identity-oq-02-oq-02-oq-01-oq-01": {
+      "auditCount": 7,
+      "issues": [],
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "bezout-identity-oq-02-oq-04": {
       "auditCount": 2,
@@ -922,10 +929,11 @@
       "result": "clean"
     },
     "bezout-identity-oq-03-oq-01-oq-02": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-08T23:33:29Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "bezout-identity-oq-03-oq-02": {
       "auditCount": 2,
@@ -988,10 +996,11 @@
       "issues": []
     },
     "binary-gcd-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-05T06:09:19Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "binomial-theorem": {
       "auditCount": 5,
@@ -1066,10 +1075,11 @@
       "result": "clean"
     },
     "binomial-theorem-oq-02-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-05T06:09:19Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "binomial-theorem-oq-03": {
       "auditCount": 5,
@@ -1090,16 +1100,18 @@
       "result": "clean"
     },
     "binomial-theorem-oq-04": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-06-18T09:13:52Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "binomial-theorem-oq-04-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-08T19:46:42Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "binomial-theorem-oq-04-oq-02": {
       "auditCount": 4,
@@ -1114,10 +1126,11 @@
       "result": "clean"
     },
     "binomial-theorem-oq-04-oq-03": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T04:00:45Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "birch-swinnerton-dyer": {
       "auditCount": 8,
@@ -2070,10 +2083,11 @@
       "result": "issues-fixed"
     },
     "chebyshev-pnt-bridge-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-07T00:58:12Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "chinese-remainder-constructive": {
       "auditCount": 5,
@@ -2088,10 +2102,11 @@
       "result": "clean"
     },
     "chinese-remainder-constructive-oq-04": {
-      "auditCount": 5,
+      "auditCount": 6,
       "issues": [],
-      "lastAudited": "2026-06-18T00:00:00Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "chinese-remainder-constructive-oq-04-oq-03": {
       "auditCount": 3,
@@ -2134,16 +2149,18 @@
       "result": "clean"
     },
     "chinese-remainder-non-coprime-oq-03-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-06T21:10:12Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "chinese-remainder-non-coprime-oq-04": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:27Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "collatz-cycles": {
       "auditCount": 2,
@@ -2183,9 +2200,10 @@
     },
     "combinations-formula": {
       "agentId": "auditor-reaudit-20260619",
-      "auditCount": 4,
-      "lastAudited": "2026-06-19T08:58:27Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "combinations-formula-oq-01": {
       "auditCount": 3,
@@ -2585,10 +2603,11 @@
       "result": "issues-fixed"
     },
     "divisibility-by-3": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-06-18T09:44:33Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-by-3-oq-01": {
       "auditCount": 4,
@@ -2597,10 +2616,11 @@
       "result": "issues-fixed"
     },
     "divisibility-by-3-oq-02": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-06-18T09:34:27Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-by-3-oq-03": {
       "auditCount": 3,
@@ -2664,18 +2684,20 @@
     },
     "divisibility-rules-oq-01-oq-01": {
       "agentId": "lean-mechanic",
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "missing Lean file DivisibilityRulesOQ01OQ01.lean created; closed #9647"
       ],
-      "lastAudited": "2026-05-04T04:06:34Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-rules-oq-01-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-04T04:08:01Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-rules-oq-02": {
       "auditCount": 2,
@@ -2684,16 +2706,18 @@
       "result": "clean"
     },
     "divisibility-truncation-general": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:30Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-truncation-general-oq-01": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:02:30Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-truncation-general-oq-03": {
       "auditCount": 2,
@@ -2738,10 +2762,11 @@
       "result": "clean"
     },
     "elementary-quadratic-reciprocity-oq-01-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-04T04:08:10Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "elementary-quadratic-reciprocity-oq-02": {
       "auditCount": 3,
@@ -11214,9 +11239,10 @@
     },
     "euler-totient": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 4,
-      "lastAudited": "2026-05-04T04:04:49Z",
-      "result": "clean"
+      "auditCount": 5,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "euler-totient-oq-01": {
       "auditCount": 3,
@@ -11237,16 +11263,18 @@
       "result": "clean"
     },
     "euler-totient-oq-03": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-04T04:10:06Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "euler-totient-oq-04": {
-      "auditCount": 4,
+      "auditCount": 5,
       "issues": [],
-      "lastAudited": "2026-05-04T04:04:48Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "factor-remainder-nullstellensatz": {
       "auditCount": 3,
@@ -11540,9 +11568,10 @@
     },
     "gcd-algorithm": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T23:03:23Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "gcd-algorithm-oq-01": {
       "agentId": "auditor-cycle-20-batch",
@@ -11551,10 +11580,11 @@
       "result": "clean"
     },
     "gcd-algorithm-oq-01-oq-03": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [],
-      "lastAudited": "2026-05-08T12:06:34Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "gcd-algorithm-oq-02": {
       "auditCount": 3,
@@ -11563,10 +11593,11 @@
       "result": "clean"
     },
     "gcd-algorithm-oq-04": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-07T10:30:00Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "gelfond-schneider": {
       "agentId": "auditor-cycle-20-batch",
@@ -11583,9 +11614,10 @@
     },
     "geometric-series": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T23:03:21Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "geometric-series-oq-01": {
       "agentId": "auditor-cycle-20-batch",
@@ -12112,9 +12144,10 @@
     },
     "kummer-theorem": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T22:58:19Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "kummer-theorem-oq-01": {
       "auditCount": 3,
@@ -12696,15 +12729,17 @@
     },
     "primitive-roots": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T22:53:49Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "primitive-roots-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-08T05:15:00Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "prob-method-alteration": {
       "auditCount": 5,
@@ -13304,9 +13339,10 @@
     },
     "subset-count": {
       "agentId": "auditor-cycle-20-batch",
-      "auditCount": 3,
-      "lastAudited": "2026-05-03T23:56:20Z",
-      "result": "clean"
+      "auditCount": 4,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "subset-count-multiset": {
       "auditCount": 3,
@@ -13316,12 +13352,13 @@
     },
     "subset-count-multiset-oq-01": {
       "agentId": "lean-mechanic",
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "missing Lean file SubsetCountMultisetOQ01.lean created; closed #9648"
       ],
-      "lastAudited": "2026-05-04T04:06:33Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "subset-count-oq-02": {
       "auditCount": 3,
@@ -13589,9 +13626,10 @@
     },
     "triangular-reciprocals": {
       "agentId": "auditor-agent",
-      "auditCount": 4,
-      "lastAudited": "2026-06-18T00:00:00Z",
-      "result": "issues-fixed"
+      "auditCount": 5,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "triangular-reciprocals-oq-01": {
       "auditCount": 3,
@@ -13844,10 +13882,11 @@
       "issues": []
     },
     "combinations-formula-oq-03": {
-      "auditCount": 2,
-      "lastAudited": "2026-06-05T17:40:24Z",
+      "auditCount": 3,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "ehrhart-cube-proven": {
       "auditCount": 3,
@@ -13856,12 +13895,13 @@
       "issues": []
     },
     "ehrhart-cube-proven-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T15:58:00Z",
-      "result": "issues-fixed",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
       "issues": [
         "lineCount drift 158->208, theoremCount drift 14->12 (fixed in this PR)"
-      ]
+      ],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "erdos-1006-oq-04": {
       "auditCount": 2,
@@ -14022,13 +14062,14 @@
       "result": "clean"
     },
     "angle-trisection-oq-03-oq-02": {
-      "auditCount": 5,
-      "lastAudited": "2026-06-05T21:31:16Z",
+      "auditCount": 6,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
       "issues": [
         "meta.meta.sorries/axiomCount fields missing; leanFile.lineCount 140\u2192156, theoremCount 12\u219213"
       ],
-      "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight"
+      "notes": "Fix PR #15099 in-flight; tracker PR #15105 in-flight",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "shannon-channel-coding-oq-02-oq-03": {
       "auditCount": 2,
@@ -14131,12 +14172,13 @@
       "issues": []
     },
     "fundamental-arithmetic-oq-01-oq-01": {
-      "auditCount": 2,
-      "lastAudited": "2026-06-06T11:22:19Z",
+      "auditCount": 3,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
       "issues": [
         "badge was original but existence direction uses Nat.factorization_prod_pow_eq_self (Mathlib); corrected to mathlib"
-      ]
+      ],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "erdos-1001-oq-02-oq-01": {
       "auditCount": 3,
@@ -14165,13 +14207,14 @@
       "issues": []
     },
     "inclusion-exclusion-oq-01-oq-01": {
-      "auditCount": 3,
+      "auditCount": 4,
       "issues": [
         "badge was original but main theorem wraps Mathlib's Finset.inclusion_exclusion_card_biUnion; corrected to mathlib in PR #15263",
         "re-audit clean (PR #25585, merged); tracker bump was clobbered by a concurrent merge and is restored here"
       ],
-      "lastAudited": "2026-06-18T09:57:00Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "lebesgue-measure-oq-01-oq-01-oq-02": {
       "auditCount": 3,
@@ -14254,15 +14297,16 @@
       "notes": "Re-audited 2026-05-04: 0 sorries, 4 axioms, all metadata consistent. Empty issues array was auditor artifact."
     },
     "bezout-identity-oq-01-oq-01": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [
         "section-overlap-properties-bezout",
         "oq-id-prefix-mismatch"
       ],
-      "lastAudited": "2026-06-18T13:02:37Z",
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
       "notes": "Issues fixed in PR #15376 (merged 2026-05-03T23:13:29Z). Section properties endLine corrected, OQ IDs updated to correct bezout-identity-oq-01-oq-01 prefix.",
-      "lastFixed": "2026-05-04T00:00:00Z"
+      "lastFixed": "2026-05-04T00:00:00Z",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "wilsons-theorem-oq-01-oq-01": {
       "auditCount": 2,
@@ -14301,10 +14345,11 @@
       "issues": []
     },
     "ballot-problem-oq-03-oq-03": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-04T07:27:21Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "bounded-prime-gaps-oq-01-oq-02": {
       "auditCount": 1,
@@ -14439,10 +14484,11 @@
       "issues": []
     },
     "frobenius-number": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-04T14:09:49Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "birthday-problem-oq-01-oq-01": {
       "auditCount": 1,
@@ -14481,10 +14527,11 @@
       "issues": []
     },
     "bezout-identity-oq-01-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-04T16:08:28Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "bertrands-postulate-oq-03-oq-04-oq-01": {
       "auditCount": 1,
@@ -15008,10 +15055,11 @@
       "issues": []
     },
     "frobenius-number-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-06T20:08:28Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "hilbert-15-oq-02-oq-03": {
       "auditCount": 1,
@@ -15062,16 +15110,18 @@
       "issues": []
     },
     "elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-07T00:16:58Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "bezout-identity-oq-01-oq-01-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-05-07T05:46:36Z",
-      "result": "issues-fixed",
-      "issues": []
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "minkowski-theorem-oq-04": {
       "auditCount": 1,
@@ -15393,10 +15443,11 @@
       "issues": []
     },
     "divisibility-truncation-general-oq-01-oq-01": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-15T11:46:50Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "euler-identity-oq-01-oq-01-oq-01-oq-01": {
       "auditCount": 1,
@@ -15747,10 +15798,11 @@
       "issues": []
     },
     "arithmetic-series-oq-02-oq-02-oq-02": {
-      "auditCount": 1,
-      "lastAudited": "2026-06-16T22:05:21Z",
+      "auditCount": 2,
+      "lastAudited": "2026-06-24T22:10:00Z",
       "result": "clean",
-      "issues": []
+      "issues": [],
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "ballot-problem-oq-01-oq-03": {
       "auditCount": 1,
@@ -19191,10 +19243,11 @@
       "result": "clean"
     },
     "divisibility-by-3-oq-02-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "divisibility-by-3-oq-02-oq-01-oq-01": {
       "auditCount": 1,
@@ -20121,10 +20174,11 @@
       "result": "clean"
     },
     "gcd-algorithm-oq-01-oq-03-oq-01": {
-      "auditCount": 1,
+      "auditCount": 2,
       "issues": [],
-      "lastAudited": "2026-06-24T12:27:19Z",
-      "result": "clean"
+      "lastAudited": "2026-06-24T22:10:00Z",
+      "result": "clean",
+      "note": "native_decide confined to anonymous example sanity-checks; named theorems axiom-clean (verified global sweep 2026-06-24)"
     },
     "gcd-algorithm-oq-01-oq-03-oq-01-oq-01": {
       "auditCount": 1,
@@ -22322,5 +22376,5 @@
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-24T21:43:00Z"
+  "lastUpdated": "2026-06-24T22:10:00Z"
 }
