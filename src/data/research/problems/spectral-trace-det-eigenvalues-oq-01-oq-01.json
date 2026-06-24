@@ -1,0 +1,109 @@
+{
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+  "title": "Power sums of eigenvalues — trace(Aᵏ) = Σ λᵢᵏ",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\operatorname{trace}(A^k) \\;=\\; \\sum_{i} \\lambda_i^{\\,k}",
+    "plain": "The trace of Aᵏ is the sum of the k-th powers of the eigenvalues; the determinant of Aᵏ is the product of the k-th powers — the trace and determinant halves of the spectral mapping theorem for p(X)=Xᵏ.",
+    "whyMatters": [
+      "Resolves the standing open question recorded by the parent entry spectral-trace-det-eigenvalues-oq-01.",
+      "Newton's identities connect the trace power sums to the characteristic-polynomial coefficients (trace, determinant) established in oq-01."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "det(Aᵏ) = Π(λᵢᵏ) for all dimensions n and exponents k (determinant half of the spectral mapping)",
+      "tr(A²) = λ₁² + λ₂² for 2×2 matrices via Newton's identity p₂ = e₁² − 2e₂"
+    ],
+    "open": [
+      "tr(Aᵏ) = Σλᵢᵏ for all dimensions n (the general trace power sum)"
+    ],
+    "goal": "trace(Aᵏ) = Σλᵢᵏ over an algebraically closed field, all n, all k"
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-24T08:00:00.000Z",
+    "iteration": 2,
+    "focus": "Shipped verified entry: determinant power identity in full generality + 2×2 trace power sum (Newton). General trace power sum reduced to the multiset spectral mapping, blocked on missing Mathlib infra.",
+    "blockers": [
+      "General trace power sum tr(Aᵏ)=Σλᵢᵏ needs (A^k).charpoly.roots = A.charpoly.roots.map(·^k) — the full multiset spectral mapping. Mathlib v4.26.0 snapshot has no Schur triangulation over a general algebraically closed field and no Newton-identity bridge from charpoly coefficients to root power sums."
+    ],
+    "nextAction": "Build Schur triangulation (matrix conjugate to upper-triangular with eigenvalues on the diagonal over IsAlgClosed) OR a multiset Newton-identities bridge, to lift the trace power sum to all n.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 2
+    }
+  },
+  "knowledge": {
+    "progressSummary": "PARTIAL/SHIPPED: verified 0-axiom entry proving det(Aᵏ)=Π(λᵢᵏ) for all n,k and tr(A²)=Σλᵢ² for 2×2 (Newton). General trace power sum for all n remains open, blocked on the multiset spectral mapping absent from Mathlib.",
+    "builtItems": [
+      "det_pow_eq_prod_pow_eigenvalues: det(Aᵏ) = Π(λᵢᵏ) over IsAlgClosed K, all n and k — from Matrix.det_pow + det_eq_prod_roots_charpoly + Multiset.prod_hom (SpectralTraceDetEigenvaluesOQ01OQ01.lean)",
+      "prod_map_pow_eigenvalues: Π(λᵢᵏ) = (Πλᵢ)ᵏ via powMonoidHom and Multiset.prod_hom",
+      "trace_pow_eq_sum_eigenvalues_pow_self: tr(Aᵏ) = Σ(eigenvalues of Aᵏ), oq-01 trace identity applied to Aᵏ",
+      "sum_sq_of_card_eq_two: Σxᵢ² = (Σxᵢ)² − 2∏xᵢ for a 2-element multiset (Multiset.card_eq_two + ring)",
+      "card_eigenvalues_fin_two: a 2×2 matrix over IsAlgClosed K has exactly 2 eigenvalues",
+      "trace_sq_eq_sum_sq_eigenvalues: tr(A²) = λ₁²+λ₂² for 2×2, via tr(A²)=(trA)²−2detA and Newton p₂=e₁²−2e₂",
+      "det_sq_example / trace_sq_example: det(A²)=4, tr(A²)=29 for !![1,2;3,4] over ℂ"
+    ],
+    "insights": [
+      "The determinant half of the eigenvalue power sum is FREE: det(Aᵏ)=(det A)ᵏ by multiplicativity (Matrix.det_pow), so det(Aᵏ)=Π(λᵢᵏ) needs no triangularisation and holds for all n, k. The trace half is the genuinely spectral content.",
+      "trace_eq_sum_roots_charpoly applied to Aᵏ gives tr(Aᵏ)=Σ(eigenvalues of Aᵏ) directly, but identifying those eigenvalues with λᵢᵏ is exactly the multiset spectral mapping that is missing.",
+      "In dimension two Newton's identity p₂=e₁²−2e₂ reduces the trace power sum to the trace and determinant from oq-01: tr(A²)=(trA)²−2detA, the 2×2 Cayley–Hamilton identity, gives tr(A²)=λ₁²+λ₂² with no eigenvalue computation.",
+      "Concrete check on !![1,2;3,4]: eigenvalues (5±√33)/2 irrational, yet λ₁²+λ₂²=(λ₁+λ₂)²−2λ₁λ₂=25−2(−2)=29=tr(A²), and λ₁²λ₂²=(det A)²=4=det(A²)."
+    ],
+    "mathlibGaps": [
+      "No matrix Schur triangulation over a general algebraically closed field: no lemma giving ∃ invertible P, P⁻¹AP is BlockTriangular id with the charpoly roots on the diagonal (only GramSchmidt block-triangularisation for RCLike inner-product spaces, and Module.End-level genEigenspace decomposition that is awkward to bridge to the matrix charpoly multiset).",
+      "No multiset/Polynomial-roots Newton-identity bridge: nothing relates A.charpoly.roots power sums to the charpoly coefficients (esymm) at the multiset level; MvPolynomial.NewtonIdentities is stated for polynomial rings in σ variables, not a multiset of field elements.",
+      "No spectral mapping for the full charpoly root multiset under powers: (A^k).charpoly.roots = A.charpoly.roots.map(·^k) is not in the snapshot (spectrum-level polynomial mapping exists only via the continuous functional calculus, set-valued, losing multiplicity)."
+    ],
+    "nextSteps": [
+      "Build Schur triangulation: over IsAlgClosed K, every Matrix n n K is conjugate to an upper-triangular matrix whose diagonal is the charpoly root multiset; then A^k is upper-triangular with diagonal (·^k), giving the multiset spectral mapping and hence the general trace power sum.",
+      "Alternatively formalize the multiset Newton identities (pₖ in terms of eⱼ) and the Cayley–Hamilton trace recurrence, showing tr(Aᵏ) and Σλᵢᵏ satisfy the same recurrence with the same charpoly-coefficient data.",
+      "Extend the fixed-dimension Newton identities to tr(A³)=e₁³−3e₁e₂+3e₃ for 3×3 matrices as a further verified slice while the general infra is built."
+    ],
+    "markdown": "# Knowledge Base: spectral-trace-det-eigenvalues-oq-01-oq-01\n\n## Problem\n\ntrace(Aᵏ) = Σλᵢᵏ (and det(Aᵏ) = Πλᵢᵏ): the trace and determinant halves of the spectral mapping theorem applied to p(X)=Xᵏ, where λᵢ are the eigenvalues (charpoly roots with multiplicity).\n\n## Status (Session 2, 2026-06-24) — PARTIAL, SHIPPED\n\nVerified 0-axiom entry `SpectralTraceDetEigenvaluesOQ01OQ01.lean` (10 theorems, 1 def):\n\n- **det(Aᵏ) = Π(λᵢᵏ)** — proven for ALL n and k. Free from multiplicativity of det; no triangularisation.\n- **tr(A²) = λ₁² + λ₂²** — proven for 2×2 via Newton's identity p₂ = e₁² − 2e₂ = (tr A)² − 2 det A.\n- tr(Aᵏ) = Σ(eigenvalues of Aᵏ) — the parent identity applied to the power.\n- Worked ℂ example: det(A²)=4, tr(A²)=29 for !![1,2;3,4] (irrational spectrum).\n\n## Open / Blocker\n\nThe **general** trace power sum tr(Aᵏ)=Σλᵢᵏ (all n) reduces to the multiset spectral mapping `(A^k).charpoly.roots = A.charpoly.roots.map(·^k)`. Mathlib v4.26.0 lacks:\n- matrix Schur triangulation over a general algebraically closed field;\n- a multiset Newton-identities bridge (esymm ↔ power sums for charpoly roots).\n\nBuilding Schur triangulation (matrix conjugate to upper-triangular, eigenvalues on diagonal) is the cleanest path and the recommended next step.\n\n## Dead Ends\n\n- Direct search for `schur_triangulation` / matrix upper-triangular conjugation existence: not present.\n- Aristotle delegation of the crux lemma: backend returned \"Resource not found\" (down).\n"
+  },
+  "tags": [
+    "linear-algebra",
+    "eigenvalues",
+    "trace",
+    "newton-identities",
+    "power-sums",
+    "spectral-mapping"
+  ],
+  "relatedProofs": [
+    "spectral-trace-det-eigenvalues-oq-01",
+    "spectral-trace-det-eigenvalues-oq-02"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Newton%27s_identities"
+    ],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Eigs",
+      "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+    ]
+  },
+  "started": "2026-06-24T07:25:28.998Z",
+  "lastUpdate": "2026-06-24T08:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean"
+    }
+  ]
+}

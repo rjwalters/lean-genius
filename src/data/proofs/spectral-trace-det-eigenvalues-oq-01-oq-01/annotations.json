@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "Power Sums of Eigenvalues Under Matrix Powers",
+    "content": "Continuing spectral-trace-det-eigenvalues-oq-01 (trace = Σλ, determinant = Πλ for eigenvalues A := A.charpoly.roots), this entry studies the symmetric functions of the spectrum under A ↦ Aᵏ. The determinant behaves perfectly: det(Aᵏ) = (det A)ᵏ = Π(λᵢᵏ) for all n and k, with no spectral machinery. The trace is the genuinely spectral half — tr(Aᵏ) = Σλᵢᵏ is the trace part of the spectral mapping theorem — and is settled here in the first nontrivial dimension via Newton's identity. The docstring states this scope honestly, including which case remains open.",
+    "mathContext": "$\\det(A^k)=\\prod_i\\lambda_i^k$ (all $n,k$); $\\operatorname{tr}(A^2)=\\sum_i\\lambda_i^2$ ($2\\times2$).",
+    "significance": "context",
+    "relatedConcepts": ["spectral mapping theorem", "Newton's identities", "power sums", "eigenvalues"],
+    "prerequisites": ["characteristic polynomial", "symmetric functions"]
+  },
+  {
+    "id": "ann-det-power",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 77 },
+    "type": "theorem",
+    "title": "det(Aᵏ) = Π(λᵢᵏ): The Determinant Power Identity",
+    "content": "det_pow_eq_prod_pow_eigenvalues proves det(Aᵏ) = Π(λᵢᵏ) over any algebraically closed field, for ALL dimensions n and exponents k. The proof needs no triangularisation: Matrix.det_pow gives det(Aᵏ) = (det A)ᵏ by multiplicativity, the oq-01 identity det = Πλ rewrites the base, and prod_map_pow_eigenvalues — an instance of Multiset.prod_hom for the power monoid hom — turns (Πλᵢ)ᵏ into Π(λᵢᵏ). This is the determinant instance of the spectral mapping theorem spec(p(A)) = p(spec(A)) for p(X) = Xᵏ, and it is the EASY half precisely because the determinant is a multiplicative invariant.",
+    "mathContext": "$\\det(A^k) = (\\det A)^k = (\\prod_i\\lambda_i)^k = \\prod_i\\lambda_i^k$.",
+    "significance": "key",
+    "relatedConcepts": ["Matrix.det_pow", "Multiset.prod_hom", "powMonoidHom", "det_eq_prod_roots_charpoly"],
+    "prerequisites": ["multiplicativity of the determinant", "multiset products"]
+  },
+  {
+    "id": "ann-trace-sum",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "range": { "startLine": 78, "endLine": 93 },
+    "type": "theorem",
+    "title": "tr(Aᵏ) = Sum of the Eigenvalues of Aᵏ",
+    "content": "trace_pow_eq_sum_eigenvalues_pow_self records the tautological-but-useful reading tr(Aᵏ) = Σ(eigenvalues of Aᵏ): the oq-01 identity trace = Σλ applied to the matrix Aᵏ. This is an honest statement of what the parent infrastructure gives directly — the trace of Aᵏ as a sum of eigenvalues OF Aᵏ. Upgrading the μⱼ = eigenvalues(Aᵏ) to λᵢᵏ (the eigenvalues of A, raised to the k-th power) is the multiset spectral mapping, the content still missing in general. det_pow_one ties the determinant identity back to oq-01 at k = 1.",
+    "mathContext": "$\\operatorname{tr}(A^k) = \\sum_j \\mu_j$ where $\\mu_j$ are the eigenvalues of $A^k$.",
+    "significance": "standard",
+    "relatedConcepts": ["trace_eq_sum_roots_charpoly", "spectral mapping", "algebraic multiplicity"],
+    "prerequisites": ["characteristic polynomial roots"]
+  },
+  {
+    "id": "ann-trace-power-sum-2x2",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "range": { "startLine": 94, "endLine": 131 },
+    "type": "theorem",
+    "title": "tr(A²) = λ₁² + λ₂²: Newton's First Identity in Dimension Two",
+    "content": "trace_sq_eq_sum_sq_eigenvalues is the headline power-sum statement in the first nontrivial dimension: for a 2×2 matrix over an algebraically closed field, tr(A²) equals the sum of the squares of the eigenvalues. The proof is Newton's identity p₂ = e₁² − 2e₂. sum_sq_of_card_eq_two proves the dimension-free core Σxᵢ² = (Σxᵢ)² − 2∏xᵢ for a two-element multiset (obtained via Multiset.card_eq_two, then ring); card_eigenvalues_fin_two supplies card = 2. The matrix side tr(A²) = (tr A)² − 2 det A comes from trace_fin_two, det_fin_two, and mul_apply — a disguised 2×2 Cayley–Hamilton relation. Equating through the oq-01 identities e₁ = trace, e₂ = determinant closes it.",
+    "mathContext": "$\\operatorname{tr}(A^2) = (\\operatorname{tr}A)^2 - 2\\det A = \\lambda_1^2 + \\lambda_2^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Newton's identities", "Multiset.card_eq_two", "trace_fin_two", "det_fin_two", "Cayley-Hamilton"],
+    "prerequisites": ["elementary symmetric functions", "2×2 matrix algebra"]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "range": { "startLine": 132, "endLine": 155 },
+    "type": "example",
+    "title": "det(A²) = 4 and tr(A²) = 29 for an Irrational Spectrum",
+    "content": "det_sq_example and trace_sq_example instantiate the power identities at !![1,2;3,4] over ℂ. Its eigenvalues are the irrational (5 ± √33)/2, yet det(A²) = (det A)² = (−2)² = 4 is the product of their squares and tr(A²) = (tr A)² − 2 det A = 25 + 4 = 29 is the sum of their squares — both forced rational values, computed straight from the trace and determinant without ever evaluating the eigenvalues. (Check: λ₁²+λ₂² = (λ₁+λ₂)² − 2λ₁λ₂ = 25 − 2(−2) = 29.)",
+    "mathContext": "$\\lambda_{1,2}=\\tfrac{5\\pm\\sqrt{33}}{2}$: $\\lambda_1^2\\lambda_2^2=4$, $\\lambda_1^2+\\lambda_2^2=29$.",
+    "significance": "illustration",
+    "relatedConcepts": ["worked example", "irrational eigenvalues", "symmetric functions of the spectrum"],
+    "prerequisites": ["2×2 complex matrices"]
+  }
+]
