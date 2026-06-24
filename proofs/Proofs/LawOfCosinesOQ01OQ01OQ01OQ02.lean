@@ -124,10 +124,10 @@ theorem spherical_law_of_sines_angle_over_side_direct (t : SphericalTriangle)
     Real.sin t.angleA / Real.sin t.sideA = Real.sin t.angleC / Real.sin t.sideC := by
   refine ⟨?_, ?_⟩
   · -- A/a = B/b  ⟺  sin(A)·sin(b) = sin(B)·sin(a)
-    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)]
+    rw [div_eq_div_iff (ne_of_gt ha) (ne_of_gt hb)]
     linear_combination -(spherical_law_of_sines_mul t ha hb hc)
   · -- A/a = C/c  ⟺  sin(A)·sin(c) = sin(C)·sin(a)
-    rw [div_eq_div_iff (ne_of_gt hA) (ne_of_gt hC)]
+    rw [div_eq_div_iff (ne_of_gt ha) (ne_of_gt hc)]
     linear_combination -(sines_mul_AC t ha hb hc)
 
 /-- The B/b = C/c part of the angle-over-side law, by transitivity. -/
