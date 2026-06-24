@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "Shipped the arithmetic/field side of the algebraic-transcendental dichotomy (gallery entry algebraic-numbers-countable-oq-01, verified, 0-axiom, 208 lines, 17 theorems, 1 def). Proved the algebraic numbers form a subfield (algebraicSubfield K L : Subfield L) for any field extension K ⊆ L, and that transcendence is preserved by every algebraic operation (+, -, *, ⁻¹, neg, positive powers, nonzero rescaling, and the affine map a*t+b). Also proved the transcendentals are NOT closed (t and 1-t transcendental but sum to 1). Note: the assigned statement named full Lindemann–Weierstrass, which is far beyond a tractable leaf; pivoted to this complementary, genuinely-new structural result since all cardinality/measure/category corollaries were already covered by sibling leaves.",
+    "builtItems": [
+      "algebraicSubfield K L : Subfield L — the algebraic elements of L over K assembled as a subfield, upgrading the parent's countable set to a countable subfield of ℂ. Closure under +,-,*,neg via isAlgebraic_iff_isIntegral + IsIntegral.add/sub/mul/neg; under ⁻¹ via IsAlgebraic.inv.",
+      "transcendental_affine: for a≠0 and a,b algebraic, t ↦ a*t+b sends transcendentals to transcendentals (capstone packaging additive + multiplicative preservation).",
+      "Eleven transcendence-preservation theorems: transcendental_add_algebraic/algebraic_add/sub_algebraic/algebraic_sub, transcendental_algebraic_mul/mul_algebraic (a≠0), transcendental_inv, transcendental_neg, transcendental_pow.",
+      "transcendentals_not_add_closed: t and 1-t are both transcendental yet t+(1-t)=1 is algebraic — the transcendentals form no subfield; they are exactly the complement of algebraicSubfield."
+    ],
+    "insights": [
+      "Transcendence preservation is the contrapositive of subfield closure: if t transcendental and a algebraic then t+a is transcendental because t=(t+a)-a would otherwise be a difference of algebraics. The same one-line back-substitution (a⁻¹ for products) handles every field operation.",
+      "Over a FIELD K, algebraic = integral (isAlgebraic_iff_isIntegral), so the integral-closure subring lemmas IsIntegral.add/sub/mul/neg directly give algebraic-number closure; Mathlib has no IsAlgebraic.add/mul in that namespace, so this packaging fills a real gap.",
+      "The assigned 'Lindemann–Weierstrass' statement is intractable as a leaf; the productive move was to isolate the elementary algebraic toolkit that every concrete transcendence proof opens with (e transcendental ⟹ e+1, e², 1/e, 2e-3 transcendental).",
+      "All cardinality/measure/category corollaries of the parent were already taken (uncountable, 𝔠, dense Gδ, Lebesgue-null, Baker); the arithmetic/field structure was the untouched complementary direction."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks direct IsAlgebraic.add/sub/mul/neg lemmas (they live behind integral closure + isAlgebraic_iff_isIntegral); a small convenience packaging.",
+      "No prebuilt 'subfield of algebraic elements' as a Subfield (the integral closure gives a Subalgebra / IsField, not a Subfield object)."
+    ],
+    "nextSteps": [
+      "Strengthen algebraicSubfield to an IntermediateField and prove it algebraically closed (algebraic closure of ℚ in ℂ).",
+      "Bridge ℤ→ℚ transcendence to instantiate the affine orbit on a concrete Liouville witness."
+    ],
     "markdown": "# Knowledge Base: algebraic-numbers-countable-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
