@@ -1,0 +1,204 @@
+[
+  {
+    "id": "ann-divOQ010201-bridge",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 56
+    },
+    "type": "definition",
+    "title": "Bridge: (10 : ZMod d)^k = -1 ↔ d ∣ 10^k + 1",
+    "content": "pow_zmod_eq_neg_one_iff is the dictionary between the clean algebraic condition (10 : ZMod d)^k = -1 and the integer divisibility d ∣ 10^k + 1 that the digit machinery actually consumes. The proof rewrites the equation x = -1 as x + 1 = 0 (eq_neg_iff_add_eq_zero), recasts 10^k + 1 in ZMod d as the image of the integer 10^k + 1, and applies ZMod.intCast_zmod_eq_zero_iff_dvd to turn 'image is zero' into 'd divides it'. This single lemma lets every downstream result phrase its hypothesis in whichever language is convenient.",
+    "mathContext": "$(10 : \\mathbb{Z}/d)^k = -1 \\iff 10^k + 1 \\equiv 0 \\pmod d \\iff d \\mid 10^k + 1$. The equivalence rests on the ring map $\\mathbb{Z} \\to \\mathbb{Z}/d$ having kernel $d\\mathbb{Z}$, so an integer maps to $0$ exactly when $d$ divides it.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "ZMod.intCast_zmod_eq_zero_iff_dvd",
+      "eq_neg_iff_add_eq_zero",
+      "ring homomorphism kernel"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "casts between ℤ and ZMod d"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-workhorse",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 58,
+      "endLine": 71
+    },
+    "type": "insight",
+    "title": "Workhorse: alternating rule from a single congruence 10^k ≡ -1",
+    "content": "altRule_of_pow_neg_one is the sufficiency engine: whenever 10^k ≡ -1 (mod d), the base B = 10^k validates the alternating digit-sum rule — d ∣ n iff d divides the alternating sum of the base-B digits. The proof feeds d ∣ 10^k − (−1) = 10^k + 1 into Mathlib's Nat.dvd_iff_dvd_ofDigits (which says d ∣ n iff d ∣ ofDigits B' n whenever d ∣ B − B') with B' = −1, then rewrites ofDigits(−1) as the alternating sum via Nat.ofDigits_neg_one. This is the alternating analogue of the parent's digit-sum workhorse, replacing the congruence 10^k ≡ 1 with 10^k ≡ -1.",
+    "mathContext": "If $B \\equiv -1 \\pmod d$ then $B^j \\equiv (-1)^j \\pmod d$, so $n = \\sum_j a_j B^j \\equiv \\sum_j a_j (-1)^j = a_0 - a_1 + a_2 - \\cdots \\pmod d$. Hence $d \\mid n$ iff $d$ divides the alternating digit sum. The base-10 rule for 11 is the case $B = 10$, $d = 11$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.dvd_iff_dvd_ofDigits",
+      "Nat.ofDigits_neg_one",
+      "List.alternatingSum",
+      "divisibility by 11"
+    ],
+    "prerequisites": [
+      "Nat.digits / Nat.ofDigits",
+      "positional numeral systems"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-testvalue",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 82,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "The single test value: digits of 10^k + 1 are [1, 1]",
+    "content": "digits_pow_add_one computes that, in base B = 10^k (with k ≥ 1), the number 10^k + 1 has digits exactly [1, 1]: its remainder mod B is 1 and its quotient is 1. This tiny lemma is the crux of the necessity half of the per-base iff — it manufactures a witness whose alternating digit sum is 1 − 1 = 0, so the rule forces d ∣ (10^k + 1). It is the formal device that turns a universally-quantified rule into a concrete arithmetic constraint.",
+    "mathContext": "In base $B = 10^k$, $\\;10^k + 1 = 1\\cdot B + 1$, so its digit list is $[1, 1]$ and its alternating sum is $1 - 1 = 0$. Evaluating the rule at this single $n$ collapses it to $d \\mid 10^k + 1$, the exact condition for $10^k \\equiv -1$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Nat.digits_def'",
+      "Nat.digits_of_lt",
+      "base-B representation"
+    ],
+    "prerequisites": [
+      "Euclidean division",
+      "Nat.digits recursion"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-baseiff",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "A genuine per-base iff (necessity, not just sufficiency)",
+    "content": "altRule_base_iff upgrades the workhorse to a true equivalence: for k ≥ 1 the base-10^k alternating rule holds for every n IFF (10 : ZMod d)^k = -1. The reverse direction is the workhorse; the forward direction is the original contribution. Assuming the rule holds for all n, it must in particular hold at n = 10^k + 1, whose alternating digit sum is 0 (via digits_pow_add_one), forcing d ∣ 10^k + 1 and hence 10^k ≡ -1. This rules out any 'accidental' base that validates the rule without satisfying the congruence — the criterion is necessary as well as sufficient.",
+    "mathContext": "$\\bigl(\\forall n,\\; d \\mid n \\iff d \\mid \\operatorname{altSum}_{10^k}(n)\\bigr) \\iff 10^k \\equiv -1 \\pmod d$. Necessity is forced by the test value $n = 10^k+1$ with $\\operatorname{altSum} = 0$, so $d \\mid 0$ gives $d \\mid n = 10^k+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessary and sufficient conditions",
+      "counterexample by single witness",
+      "Int.natCast_dvd_natCast"
+    ],
+    "prerequisites": [
+      "logical equivalence",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-orderpos",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 123,
+      "endLine": 144
+    },
+    "type": "technique",
+    "title": "Supporting facts: ord_d(10) > 0 and 1 ≠ -1 for d > 2",
+    "content": "Two small but essential lemmas underpin the cyclic-group argument. orderOf_ten_pos shows the multiplicative order of 10 in ZMod d is positive for d ≥ 2 coprime to 10: by Euler's theorem 10^{φ(d)} = 1, so the order divides φ(d) > 0 and cannot be zero. one_ne_neg_one records that 1 ≠ -1 in ZMod d when d > 2, since 1 = -1 would force 2 ≡ 0, i.e. d ∣ 2, contradicting d > 2. The first guarantees we can divide by the order; the second is what makes -1 a genuine order-two element distinct from 1.",
+    "mathContext": "By Fermat–Euler, $10^{\\varphi(d)} \\equiv 1 \\pmod d$ when $\\gcd(10,d)=1$, so $\\operatorname{ord}_d(10) \\mid \\varphi(d)$ and is positive. And $1 = -1$ in $\\mathbb{Z}/d$ iff $d \\mid 2$, which fails for $d > 2$ — so $-1$ has order exactly $2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.ModEq.pow_totient",
+      "orderOf_dvd_of_pow_eq_one",
+      "Euler's totient φ",
+      "order-two element"
+    ],
+    "prerequisites": [
+      "Fermat–Euler theorem",
+      "multiplicative order"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-cyclic-core",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 146,
+      "endLine": 197
+    },
+    "type": "insight",
+    "title": "Cyclic-group core: -1 ∈ ⟨10⟩ iff ord_d(10) is even",
+    "content": "exists_pow_neg_one_iff_order is the heart of the characterization: for d > 2 coprime to 10, some power 10^k equals -1 iff m = ord_d(10) is even AND 10^{m/2} = -1. Forward: from 10^k = -1, squaring gives 10^{2k} = 1 so m ∣ 2k, while m ∤ k (else 10^k = 1 = -1, impossible); coprimality of an odd m with 2 would force m ∣ k, so m must be even. Writing k = (m/2)·q, the element y = 10^{m/2} satisfies y² = 1 and y^q = -1, and reducing y^q mod 2 pins q odd and y = -1. Backward is immediate with witness k = m/2. This is the general fact that a cyclic group has an order-two element iff its order is even.",
+    "mathContext": "In a cyclic group $\\langle g \\rangle$ of order $m$, the equation $g^k = g^{m/2}$ (the unique involution) has a solution iff $m$ is even. Here $g = 10$, the involution is $-1$, and $-1 \\in \\langle 10 \\rangle \\subseteq (\\mathbb{Z}/d)^\\times$ iff $m = \\operatorname{ord}_d(10)$ is even with $10^{m/2} \\equiv -1 \\pmod d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclic group structure",
+      "orderOf_dvd_iff_pow_eq_one",
+      "involution / order-two element",
+      "coprimality with 2"
+    ],
+    "prerequisites": [
+      "cyclic groups",
+      "multiplicative order",
+      "parity arguments"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-main",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 203,
+      "endLine": 224
+    },
+    "type": "insight",
+    "title": "Main theorem: which moduli admit an alternating rule",
+    "content": "altRule_exists_iff resolves the parent's open question by assembling the per-base iff (Part II) with the cyclic-group core (Part III): for d > 2 coprime to 10, a power-of-10 alternating digit-sum rule exists IFF ord_d(10) is even and 10^{ord_d(10)/2} ≡ -1 (mod d) — and when it exists, the witness base is exactly 10^{ord_d(10)/2}. This is the sharp dichotomy that distinguishes the alternating rule (only 'even-order' moduli) from the parent's digit-sum rule (every modulus coprime to 10). The positivity of the witness exponent m/2 follows from m being even and positive.",
+    "mathContext": "$\\bigl(\\exists k \\ge 1,\\ \\text{base-}10^k \\text{ alternating rule for } d\\bigr) \\iff \\operatorname{ord}_d(10) \\text{ even} \\;\\wedge\\; 10^{\\operatorname{ord}_d(10)/2} \\equiv -1 \\pmod d$, with explicit witness base $10^{\\operatorname{ord}_d(10)/2}$.",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "open question resolution",
+      "constructive witness",
+      "divisibility rules"
+    ],
+    "prerequisites": [
+      "multiplicative order",
+      "cyclic groups",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-positive",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 240,
+      "endLine": 256
+    },
+    "type": "context",
+    "title": "Positive instances: 11, 7, 13",
+    "content": "Three concrete confirmations via the workhorse. For 11 the classic rule needs only k = 1, since 10 ≡ -1 (mod 11). For 7 and 13 the witness is k = 3: 10^3 = 1000 ≡ -1, reflecting 1001 = 7·11·13 (so 7, 11, 13 all divide 1001). These give the familiar 'group the digits in threes and alternate' tests for divisibility by 7, 11 and 13. Each finite congruence 10^k ≡ -1 is discharged by kernel `decide`, keeping the entry free of native_decide.",
+    "mathContext": "$10 \\equiv -1 \\pmod{11}$; $10^3 = 1000 \\equiv -1 \\pmod 7$ and $\\pmod{13}$ because $1001 = 7 \\cdot 11 \\cdot 13$. So grouping decimal digits in blocks of three and alternating signs tests divisibility by $7$, $11$, $13$ simultaneously.",
+    "significance": "context",
+    "relatedConcepts": [
+      "1001 = 7·11·13",
+      "block alternating sums",
+      "decide tactic"
+    ],
+    "prerequisites": [
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-divOQ010201-negative",
+    "proofId": "divisibility-rules-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 258,
+      "endLine": 274
+    },
+    "type": "context",
+    "title": "Negative instances: 3 and 37 (non-universality)",
+    "content": "The dichotomy is sharp: some moduli coprime to 10 admit no alternating rule at all. For 3, 10 ≡ 1, so every power of 10 is 1 ≠ -1 — the alternating sum is never the right invariant (the ordinary digit-sum rule governs 3). For 37, ord_37(10) = 3 is odd; the three distinct powers 10^k ∈ {1, 10, 26} never hit -1 = 36, established by reducing the exponent mod 3 (10^3 = 1) and checking the three residues with `decide`. These witness the contrast with the parent's universal digit-sum theorem.",
+    "mathContext": "$10 \\equiv 1 \\pmod 3 \\Rightarrow 10^k \\equiv 1 \\neq -1$. For $d = 37$, $\\operatorname{ord}_{37}(10) = 3$ is odd, so $\\langle 10 \\rangle = \\{1, 10, 26\\}$ omits $-1 = 36$; an odd-order cyclic group has no involution.",
+    "significance": "context",
+    "relatedConcepts": [
+      "odd order ⇒ no involution",
+      "exponent reduction mod order",
+      "digit-sum vs alternating rule"
+    ],
+    "prerequisites": [
+      "multiplicative order",
+      "modular arithmetic"
+    ]
+  }
+]
