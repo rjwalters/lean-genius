@@ -1,0 +1,165 @@
+{
+  "id": "baire-category-theorem-oq-01-oq-01",
+  "slug": "baire-category-theorem-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BaireCategoryTheoremOQ01"
+    ],
+    "opens": [
+      "Set",
+      "Metric",
+      "BaireCategoryTheoremOQ01"
+    ],
+    "namespace": "BaireCategoryTheoremOQ01OQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/BaireCategoryTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "The Uniform Boundedness Principle from Baire's Theorem",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaireCategoryTheoremOQ01OQ01.lean",
+    "tags": [
+      "functional-analysis",
+      "banach-steinhaus",
+      "uniform-boundedness",
+      "baire-category",
+      "operator-norm",
+      "banach-space",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 119,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "uniform_boundedness: the Banach–Steinhaus theorem (Uniform Boundedness Principle) — a pointwise-bounded family g : ι → E →L[𝕜] F of bounded linear operators from a Banach space E into a normed space F has uniformly bounded operator norms. Proved by the classical closed-set exhaustion argument built ON TOP of the gallery Baire category theorem (BaireCategoryTheoremOQ01.baire_nonempty_interior), NOT by invoking Mathlib's banach_steinhaus.",
+      "The derivation is genuinely distinct from current Mathlib: Mathlib's banach_steinhaus is now deduced from the barrelled-space / equicontinuity framework (WithSeminorms.banach_steinhaus via the equicontinuous TFAE), whereas this entry runs the original Baire argument — closed sublevel sets e n = ⋂ i {x | ‖g i x‖ ≤ n}, their union exhausting the space, Baire producing a ball of uniform local boundedness, and a translation-and-scaling (shell) estimate (opNorm_le_of_shell) converting the local bound ‖g i‖ ≤ 2m/(ε/‖c‖).",
+      "uniform_boundedness_with_const: the equicontinuity-form restatement — a single nonnegative constant C' with ‖g i x‖ ≤ C' · ‖x‖ for every operator i and every point x, the bound actually used in convergence arguments.",
+      "exists_resonance_of_not_uniformly_bounded: the contrapositive resonance principle — a family whose operator norms are NOT uniformly bounded must admit a point of resonance, a single x at which no finite C bounds ‖g i x‖ over all i (sup_i ‖g i x‖ = ∞). This is the form invoked in the standard constructions of divergent Fourier series and other resonance phenomena."
+    ],
+    "prerequisites": [
+      "The gallery Baire category theorem in category form (BaireCategoryTheoremOQ01.baire_nonempty_interior): a countable closed cover of a nonempty Baire space has a member with nonempty interior.",
+      "CompleteSpace E ⇒ BaireSpace E for a normed space (Mathlib instance), supplying the Baire hypothesis from completeness.",
+      "Continuous-linear-map operator-norm API: ContinuousLinearMap.opNorm_le_of_shell (shell estimate), le_opNorm, and continuity of x ↦ ‖g i x‖.",
+      "NormedField.exists_one_lt_norm: a nontrivially normed field contains an element of norm > 1, the scalar used in the shell rescaling."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ContinuousLinearMap.opNorm_le_of_shell",
+        "description": "If ‖f x‖ ≤ C·‖x‖ holds on the shell ε/‖c‖ ≤ ‖x‖ < ε (for some scalar c with 1 < ‖c‖), then ‖f‖ ≤ C. Converts the local ball bound from Baire into the uniform operator-norm bound.",
+        "module": "Mathlib.Analysis.Normed.Operator.Basic"
+      },
+      {
+        "theorem": "NormedField.exists_one_lt_norm",
+        "description": "A nontrivially normed field has an element of norm strictly greater than 1; supplies the rescaling scalar c for the shell argument.",
+        "module": "Mathlib.Analysis.Normed.Field.Basic"
+      },
+      {
+        "theorem": "isClosed_le",
+        "description": "The set {x | f x ≤ g x} is closed when f, g are continuous; used to show each sublevel set {x | ‖g i x‖ ≤ n} (and their intersection e n) is closed.",
+        "module": "Mathlib.Topology.Order.IsLUB"
+      },
+      {
+        "theorem": "ContinuousLinearMap.le_opNorm",
+        "description": "‖f x‖ ≤ ‖f‖ · ‖x‖ for a continuous linear map; turns the uniform operator-norm bound into the equicontinuity-form pointwise bound in uniform_boundedness_with_const.",
+        "module": "Mathlib.Analysis.Normed.Operator.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "baire-category-theorem-oq-01-oq-01-oq-01",
+      "question": "Derive the open mapping theorem (and hence the closed graph theorem) for Banach spaces from the same gallery Baire category theorem, completing the trio of Baire-powered cornerstones of functional analysis.",
+      "significance": "high"
+    },
+    {
+      "id": "baire-category-theorem-oq-01-oq-01-oq-02",
+      "question": "Construct an explicit resonance witness for a concrete unbounded family (e.g. the partial-sum operators of Fourier series at a point) using exists_resonance_of_not_uniformly_bounded, formalizing the existence of a continuous function with divergent Fourier series.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "baire-category-theorem-oq-01",
+      "relationship": "Parent entry providing the Baire category theorem (baire_nonempty_interior) that this derivation is built on; this resolves its lead open question."
+    }
+  ],
+  "references": [
+    {
+      "title": "Stefan Banach and Hugo Steinhaus, Sur le principe de la condensation de singularités",
+      "author": "S. Banach, H. Steinhaus",
+      "year": "1927",
+      "venue": "Fundamenta Mathematicae",
+      "description": "Original statement of the uniform boundedness principle and the condensation-of-singularities (resonance) phenomenon."
+    },
+    {
+      "title": "Walter Rudin, Functional Analysis",
+      "author": "W. Rudin",
+      "year": "1991",
+      "venue": "McGraw-Hill",
+      "description": "Textbook treatment of the Banach–Steinhaus theorem via the Baire category theorem, the argument formalized here (Theorem 2.5)."
+    },
+    {
+      "title": "Mathlib4: Analysis.Normed.Operator.BanachSteinhaus",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Mathlib's packaged banach_steinhaus, deduced from the barrelled-space framework — deliberately NOT used here, where the classical Baire proof is reproduced instead."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The Banach–Steinhaus theorem (1927) is the first of the three pillars of functional analysis built on Baire's category theorem, the others being the open mapping theorem and the closed graph theorem. Banach and Steinhaus phrased it as a 'condensation of singularities' principle: if a family of bounded operators fails to be uniformly bounded, the failure must be witnessed at a single point, a *point of resonance* where the operators blow up simultaneously. The standard application is the existence of a continuous periodic function whose Fourier series diverges at a point — the Dirichlet partial-sum operators are unbounded in operator norm, so resonance produces the bad function without an explicit construction. This entry formalizes the theorem by the textbook route (Rudin, Theorem 2.5): it builds directly on the gallery's own Baire category theorem rather than calling Mathlib's `banach_steinhaus`, which today is obtained through the more abstract barrelled-space / equicontinuity machinery.",
+    "problemStatement": "Let E be a Banach space (complete normed space over a nontrivially normed field 𝕜) and F a normed space. Given a family g : ι → E →L[𝕜] F of bounded linear operators that is *pointwise bounded* — for every x there is a finite C with ‖g i x‖ ≤ C for all i — prove the operator norms are *uniformly bounded*: there is a single C' with ‖g i‖ ≤ C' for all i. Equivalently (resonance form): if the operator norms are unbounded, there exists a point x at which sup_i ‖g i x‖ = ∞.",
+    "proofStrategy": "Form the closed sublevel sets e n = ⋂ i, {x | ‖g i x‖ ≤ n}; each is closed because x ↦ ‖g i x‖ is continuous (isClosed_le). Pointwise boundedness means every x lands in some e n, so ⋃ n e n = univ. Completeness makes E a Baire space, so the gallery category form baire_nonempty_interior yields an m with interior (e m) nonempty — a ball ball x ε on which every ‖g i ·‖ ≤ m. For y in the shell ε/‖c‖ ≤ ‖y‖ < ε, write g i y = g i (y+x) − g i x with both arguments in the ball, giving ‖g i y‖ ≤ 2m ≤ (2m/(ε/‖c‖))·‖y‖; opNorm_le_of_shell then bounds ‖g i‖ ≤ 2m/(ε/‖c‖), a constant independent of i. The equicontinuity form feeds this through le_opNorm; the resonance form is the contrapositive via push_neg.",
+    "keyInsights": [
+      "The mathematics is classical (Banach–Steinhaus, 1927); the contribution is formalizing it *self-contained from the gallery Baire theorem* rather than re-exporting Mathlib's banach_steinhaus. This keeps the dependency chain honest: only the operator-norm shell estimate and the Baire category form are used, exactly the ingredients of the textbook proof.",
+      "Continuity of x ↦ ‖g i x‖ is what makes each sublevel set closed, and closedness is what lets Baire act — the whole argument hinges on packaging the pointwise bound as a *countable closed cover* so that the category form applies.",
+      "Baire only gives a ball of *local* uniform boundedness around some unknown center x; the shell/translation trick (g i y = g i(y+x) − g i x) is the device that promotes this off-center local bound to a homogeneous operator-norm bound, absorbing the unknown center into a factor of 2.",
+      "The resonance restatement is the genuinely useful form in applications: rather than constructing a singular object directly, one shows the relevant operators are not uniformly bounded and lets exists_resonance_of_not_uniformly_bounded hand back a point where they condense — the mechanism behind divergent Fourier series.",
+      "This entry is distinct from Mathlib's current proof path: Mathlib routes banach_steinhaus through WithSeminorms.banach_steinhaus and the equicontinuous TFAE (barrelled spaces), so the direct Baire closed-set argument reproduced here is not what Mathlib runs internally."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: UBP from Baire",
+      "startLine": 3,
+      "endLine": 40,
+      "summary": "States the goal — derive Banach–Steinhaus from the gallery Baire category theorem rather than Mathlib's banach_steinhaus — and outlines the classical closed-set exhaustion argument, noting the distinction from Mathlib's barrelled-space derivation.",
+      "mathContext": "Pointwise bounded family of bounded operators on a Banach space ⇒ uniformly bounded operator norms."
+    },
+    {
+      "id": "uniform-boundedness",
+      "title": "The Uniform Boundedness Principle",
+      "startLine": 50,
+      "endLine": 97,
+      "summary": "uniform_boundedness: closed sublevel sets e n = ⋂ i {x | ‖g i x‖ ≤ n} (closed via isClosed_le) whose union is the whole space (pointwise boundedness); baire_nonempty_interior gives a ball of local uniform boundedness; the shell estimate opNorm_le_of_shell turns the off-center ball bound into ‖g i‖ ≤ 2m/(ε/‖c‖).",
+      "mathContext": "Baire ⇒ ball ball x ε with ∀ i, ‖g i ·‖ ≤ m on it; translation g i y = g i(y+x) − g i x ⇒ ‖g i y‖ ≤ 2m on the shell ⇒ ‖g i‖ ≤ 2m/(ε/‖c‖)."
+    },
+    {
+      "id": "consequences",
+      "title": "Equicontinuity and Resonance Forms",
+      "startLine": 99,
+      "endLine": 117,
+      "summary": "uniform_boundedness_with_const repackages the uniform bound as a single constant C' ≥ 0 with ‖g i x‖ ≤ C'·‖x‖ (via le_opNorm). exists_resonance_of_not_uniformly_bounded is the contrapositive resonance principle: non-uniformly-bounded norms force a single point x with sup_i ‖g i x‖ = ∞.",
+      "mathContext": "Equicontinuity form ‖g i x‖ ≤ C'‖x‖; resonance: ¬(uniform op-norm bound) ⇒ ∃ x, ¬∃ C, ∀ i, ‖g i x‖ ≤ C."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The Banach–Steinhaus theorem (Uniform Boundedness Principle) is derived from the gallery Baire category theorem: a pointwise-bounded family of bounded linear operators from a Banach space into a normed space has uniformly bounded operator norms (uniform_boundedness), with an equicontinuity-form restatement ‖g i x‖ ≤ C'·‖x‖ (uniform_boundedness_with_const) and the contrapositive resonance principle that non-uniformly-bounded norms force a single point of simultaneous blow-up (exists_resonance_of_not_uniformly_bounded). 119 lines, 3 theorems, 0 axioms, 0 sorries.",
+    "implications": "The result completes the lead open question of the parent Baire entry. The proof is the classical Rudin-style closed-set exhaustion run on the gallery's own baire_nonempty_interior — deliberately self-contained from Mathlib's packaged banach_steinhaus, which today is obtained through the more abstract barrelled-space framework. The resonance form is the lever behind classical singularity-condensation arguments (e.g. divergent Fourier series), recorded as a follow-up open question, and the same Baire engine yields the open mapping and closed graph theorems, the natural next targets.",
+    "openQuestions": [
+      "Derive the open mapping and closed graph theorems from the same gallery Baire category theorem.",
+      "Use the resonance principle to formalize a continuous function with a Fourier series diverging at a point."
+    ]
+  }
+}

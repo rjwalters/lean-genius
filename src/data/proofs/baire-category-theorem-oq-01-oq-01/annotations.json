@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-baire-oq0101-docstring",
+    "proofId": "baire-category-theorem-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 40 },
+    "type": "context",
+    "title": "Banach–Steinhaus from Baire — Goal and Plan",
+    "content": "The docstring fixes the objective: derive the Uniform Boundedness Principle (Banach–Steinhaus) directly from the gallery Baire category theorem (BaireCategoryTheoremOQ01.baire_nonempty_interior), NOT by invoking Mathlib's packaged banach_steinhaus. It previews the classical textbook argument — closed sublevel sets, their union exhausting the space, Baire producing a ball of local uniform boundedness, and a shell estimate promoting that to a uniform operator-norm bound — and notes this is genuinely distinct from Mathlib's current proof, which goes through the barrelled-space / equicontinuity framework. Three results: the principle, an equicontinuity-form restatement, and the contrapositive resonance principle.",
+    "mathContext": "If $\\{g_i\\}$ are bounded operators on a Banach space with $\\sup_i \\|g_i x\\| < \\infty$ for each $x$, then $\\sup_i \\|g_i\\| < \\infty$.",
+    "significance": "context",
+    "relatedConcepts": ["Banach–Steinhaus theorem", "uniform boundedness principle", "Baire category theorem", "operator norm", "functional analysis"],
+    "prerequisites": ["normed and Banach spaces", "bounded linear operators", "operator norm"]
+  },
+  {
+    "id": "ann-baire-oq0101-ubp",
+    "proofId": "baire-category-theorem-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 97 },
+    "type": "theorem",
+    "title": "The Uniform Boundedness Principle",
+    "content": "uniform_boundedness is the heart of the entry. Define the sublevel sets e n = ⋂ i, {x | ‖g i x‖ ≤ n}; each is closed because x ↦ ‖g i x‖ is continuous (isClosed_le applied to the intersection). Pointwise boundedness — every x has a finite bound C, dominated by some natural m — gives ⋃ n e n = univ. Completeness makes E a Baire space, so the gallery category form baire_nonempty_interior returns an m with interior (e m) nonempty: a ball ball x ε on which every ‖g i ·‖ ≤ m. The off-center bound is homogenized by the shell trick: for ε/‖c‖ ≤ ‖y‖ < ε, write g i y = g i (y+x) − g i x (both arguments in the ball) to get ‖g i y‖ ≤ 2m, then ‖g i y‖ ≤ (2m/(ε/‖c‖))·‖y‖. ContinuousLinearMap.opNorm_le_of_shell converts this into ‖g i‖ ≤ 2m/(ε/‖c‖), a bound independent of i.",
+    "mathContext": "Baire gives a ball where all $\\|g_i\\cdot\\| \\le m$; translation $g_i y = g_i(y+x) - g_i x$ yields $\\|g_i y\\| \\le 2m$ on the shell, so $\\|g_i\\| \\le 2m/(\\varepsilon/\\|c\\|)$.",
+    "significance": "key",
+    "relatedConcepts": ["baire_nonempty_interior", "isClosed_le", "opNorm_le_of_shell", "sublevel set", "shell estimate"],
+    "prerequisites": ["Baire category theorem", "operator norm", "continuity of the norm", "completeness ⇒ Baire space"]
+  },
+  {
+    "id": "ann-baire-oq0101-consequences",
+    "proofId": "baire-category-theorem-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 117 },
+    "type": "theorem",
+    "title": "Equicontinuity and Resonance Restatements",
+    "content": "Two application-facing forms. uniform_boundedness_with_const repackages the uniform operator-norm bound as a single nonnegative constant C' with ‖g i x‖ ≤ C'·‖x‖ for all i and x, obtained by chaining le_opNorm with the uniform bound — the homogeneous (equicontinuity) inequality used in convergence-of-operators arguments. exists_resonance_of_not_uniformly_bounded is the contrapositive resonance principle: if the operator norms are NOT uniformly bounded, then the pointwise-boundedness hypothesis must fail somewhere, so there is a single point x of resonance at which no finite C bounds ‖g i x‖ over all i. Its proof is a clean by_contra / push_neg reduction to uniform_boundedness. This is the lever behind classical condensation-of-singularities constructions.",
+    "mathContext": "Equicontinuity: $\\|g_i x\\| \\le C'\\|x\\|$. Resonance: $\\neg(\\exists C', \\forall i, \\|g_i\\| \\le C') \\Rightarrow \\exists x,\\ \\sup_i \\|g_i x\\| = \\infty$.",
+    "significance": "key",
+    "relatedConcepts": ["le_opNorm", "equicontinuity", "resonance", "condensation of singularities", "contrapositive"],
+    "prerequisites": ["operator norm bound", "proof by contradiction", "push_neg"]
+  }
+]
