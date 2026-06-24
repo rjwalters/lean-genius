@@ -1,0 +1,167 @@
+{
+  "id": "urysohns-lemma-oq-01-oq-01-oq-02",
+  "slug": "urysohns-lemma-oq-01-oq-01-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.UrysohnsLemmaOQ01OQ01OQ01"
+    ],
+    "opens": [
+      "Set",
+      "Function",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "TietzeTsum",
+    "lineCount": 103,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/UrysohnsLemmaOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "title": "The Norm-Preserving Tietze Extension from the Explicit Urysohn Series",
+  "description": "Sharpens the explicit-series Tietze extension of the parent entry urysohns-lemma-oq-01-oq-01-oq-01 from the slack bound ‖G‖ ≤ M to the exact, norm-preserving equality ‖G‖ = ‖f‖, obtained by tracking the sup-norm through the Urysohn correction series rather than by any new construction. The parent builds the extension by hand as a convergent series G = ∑' n, gₙ in the Banach space BoundedContinuousFunction X ℝ, with each correction satisfying ‖gₙ‖ ≤ (2/3)ⁿ·(M/3), and proves G = f on the closed set s together with the sup-bound ‖G‖ ≤ M for whatever ambient bound M was supplied. That bound is not sharp: it controls G by the chosen M, not by the data itself. The lemma partialSum_norm_le tracks the partial sums of the series: every finite partial sum ∑_{i<n} gᵢ has sup-norm ≤ M, because it is dominated by the head of the geometric majorant ∑ (2/3)ⁱ·(M/3), whose full value is exactly M. Specialising M to the genuine sup-norm ‖f‖ of the data (legitimate since |f x| ≤ ‖f‖ for a bounded continuous f) turns the parent's ‖G‖ ≤ M into ‖G‖ ≤ ‖f‖. The reverse inequality ‖f‖ ≤ ‖G‖ is automatic: G agrees with f on s, so every value of f is a value of G, hence the sup-norm of G is at least that of f. Antisymmetry delivers the headline tietze_extension_norm_preserving: ‖G‖ = ‖f‖, the standard sharp form of the bounded Tietze extension theorem, recovered directly from the explicit Urysohn construction with no appeal to Mathlib's TietzeExtension machinery. This answers the second recorded open question of urysohns-lemma-oq-01-oq-01.",
+  "overview": {
+    "historicalContext": "The Tietze extension theorem is usually stated in its bounded form: a continuous real function on a closed subset of a normal space extends to a continuous function on the whole space with the *same* sup-bound. The sharp version asserts the extension can be chosen with sup-norm exactly equal to that of the data, ‖G‖ = ‖f‖. In the classical textbook derivation from Urysohn's lemma (e.g. Munkres), the extension is the uniform limit of partial sums of a geometric correction series whose terms shrink by the factor 2/3; the bound ‖G‖ ≤ ‖f‖ falls out of summing the geometric majorant, and the equality follows because the extension restricts to the data. The grandparent gallery entry urysohns-lemma-oq-01-oq-01 isolated the per-step Urysohn engine and its geometric rate; the parent entry urysohns-lemma-oq-01-oq-01-oq-01 assembled the limit explicitly as a tsum in BoundedContinuousFunction X ℝ and proved G = f on s with ‖G‖ ≤ M. This entry closes the remaining gap, recovering the sharp norm-preserving equality ‖G‖ = ‖f‖ purely by tracking the sup-norm through the same series — no new analytic machinery, just the realisation that the geometric majorant sums to exactly M and that an extension is never smaller in sup-norm than the function it extends.",
+    "problemStatement": "Track the sup-norm of the partial sums of the explicit Urysohn correction series to upgrade the parent's bound ‖G‖ ≤ M to the sharp norm-preserving equality ‖G‖ = ‖f‖. For a bounded continuous f : s →ᵇ ℝ on a closed set s in a normal space X, produce a bounded continuous extension G on X — the explicit series of the parent — with G = f on s and ‖G‖ = ‖f‖, using none of Mathlib's TietzeExtension machinery.",
+    "proofStrategy": "partialSum_norm_le bounds every partial sum of the correction series: ‖∑_{i<n} gᵢ‖ ≤ ∑_{i<n} ‖gᵢ‖ (triangle inequality norm_sum_le) ≤ ∑_{i<n} (2/3)ⁱ·(M/3) (the parent's per-term bound gbcf_norm_le) ≤ ∑'_i (2/3)ⁱ·(M/3) (a finite head is ≤ the full nonnegative sum, Summable.sum_le_tsum) = M (the geometric value tsum_geometric_of_lt_one with (1−2/3)⁻¹ = 3). For the main theorem, the data f : s →ᵇ ℝ is bounded, so M := ‖f‖ is a legitimate bound: |f x| ≤ ‖f‖ by BoundedContinuousFunction.norm_coe_le_norm. Feeding f.toContinuousMap and M = ‖f‖ into the parent's tietze_extension_via_tsum yields G with G = f on s and |G y| ≤ ‖f‖ everywhere; BoundedContinuousFunction.norm_le then gives ‖G‖ ≤ ‖f‖. For the reverse, BoundedContinuousFunction.norm_le reduces ‖f‖ ≤ ‖G‖ to the pointwise claim ‖f x‖ ≤ ‖G‖ for x : s, and since f x = G (x : X) on s this is exactly BoundedContinuousFunction.norm_coe_le_norm for G. le_antisymm of the two bounds gives ‖G‖ = ‖f‖.",
+    "keyInsights": [
+      "Sharpness is a matter of choosing the right bound, not a new construction. The parent already proves ‖G‖ ≤ M for any M dominating the data; the only obstruction to sharpness is that M was arbitrary. Plugging in the genuine sup-norm M = ‖f‖ — legitimate precisely because f is a *bounded* continuous function, so |f x| ≤ ‖f‖ pointwise — converts the slack bound into ‖G‖ ≤ ‖f‖ with no extra analysis.",
+      "The geometric majorant sums to exactly the bound, so the partial sums never overshoot. partialSum_norm_le tracks the sup-norm of every partial sum and finds it bounded by ∑'_i (2/3)ⁱ·(M/3) = M. This is the norm-level shadow of the residual recursion: as the residual decays geometrically inside the bound, the partial sums climb toward G while staying within ‖·‖ ≤ M throughout.",
+      "The reverse inequality is free from the extension property. Any extension G of f satisfies ‖G‖ ≥ ‖f‖ automatically, because the sup defining ‖G‖ ranges over a superset (all of X) of the points (s) defining ‖f‖, and on s the two functions agree. Formally this is just BoundedContinuousFunction.norm_coe_le_norm applied at each x : s after rewriting f x = G (x : X).",
+      "No TietzeExtension machinery, end to end. The forward bound comes from the parent's hand-built series and the elementary geometric-sum value; the reverse from the definition of the sup-norm. The sharp norm-preserving Tietze theorem is therefore assembled entirely from Urysohn's lemma and completeness, independent of Mathlib.Topology.TietzeExtension.",
+      "This is the genuinely sharp form: ‖G‖ = ‖f‖ cannot be improved, since an extension can never have smaller sup-norm than the data it extends. The equality is therefore the exact norm-preserving Tietze extension, the strongest possible bounded form."
+    ]
+  },
+  "sections": [
+    {
+      "id": "partial-sum-tracking",
+      "title": "Tracking the Sup-Norm of the Partial Sums",
+      "startLine": 51,
+      "endLine": 73,
+      "summary": "partialSum_norm_le proves every finite partial sum of the correction series stays inside the data bound: ‖∑_{i<n} gᵢ‖ ≤ M. The triangle inequality (norm_sum_le) bounds it by ∑_{i<n} ‖gᵢ‖, the parent's per-term bound gbcf_norm_le by ∑_{i<n} (2/3)ⁱ·(M/3), monotonicity of partial sums against the full nonnegative series (Summable.sum_le_tsum) by ∑'_i (2/3)ⁱ·(M/3), and the geometric value tsum_geometric_of_lt_one by M.",
+      "mathContext": "$\\bigl\\|\\sum_{i<n} g_i\\bigr\\| \\le \\sum_{i<n}(2/3)^i\\tfrac M3 \\le \\sum_{i}(2/3)^i\\tfrac M3 = M.$"
+    },
+    {
+      "id": "norm-preserving-tietze",
+      "title": "The Sharp Norm-Preserving Extension",
+      "startLine": 76,
+      "endLine": 103,
+      "summary": "tietze_extension_norm_preserving takes a bounded continuous f : s →ᵇ ℝ, sets M = ‖f‖ (a legitimate bound since |f x| ≤ ‖f‖), and feeds f.toContinuousMap into the parent's tietze_extension_via_tsum to obtain G = ∑' n, gₙ with G = f on s and |G y| ≤ ‖f‖. BoundedContinuousFunction.norm_le converts the latter to ‖G‖ ≤ ‖f‖; the reverse ‖f‖ ≤ ‖G‖ follows from BoundedContinuousFunction.norm_coe_le_norm after rewriting f x = G (x : X). le_antisymm gives ‖G‖ = ‖f‖.",
+      "mathContext": "$\\exists\\,G,\\ G|_s=f \\ \\wedge\\ \\|G\\| = \\|f\\|$ — the sharp norm-preserving Tietze extension."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry upgrades the parent's explicit-series Tietze extension from the slack sup-bound ‖G‖ ≤ M to the sharp norm-preserving equality ‖G‖ = ‖f‖. The lemma partialSum_norm_le tracks the sup-norm of the partial sums, finding each bounded by the geometric majorant ∑' (2/3)ⁱ·(M/3) = M. Specialising M to the data's own sup-norm ‖f‖ turns the parent's ‖G‖ ≤ M into ‖G‖ ≤ ‖f‖, and the reverse ‖f‖ ≤ ‖G‖ is automatic because G extends f. Antisymmetry yields the headline tietze_extension_norm_preserving. 103 lines, 2 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries; both results depend only on propext / Classical.choice / Quot.sound, and none of Mathlib's TietzeExtension machinery is used.",
+    "implications": "This answers the second recorded open question of urysohns-lemma-oq-01-oq-01 verbatim: the explicit Urysohn series now delivers the *sharp* norm-preserving Tietze extension ‖G‖ = ‖f‖, not merely a sup-bound. Together with the grandparent (engine and rate) and the parent (explicit limit), the full chain from Urysohn's lemma to the norm-preserving bounded Tietze extension is in-file and independent of Mathlib.Topology.TietzeExtension. The construction is the natural setting for the parent's remaining open question — generalising the explicit series to Banach-space-valued or interval-constrained data — where the same geometric majorant and norm-tracking should carry through with a vector-valued Urysohn step.",
+    "openQuestions": [
+      "Generalise the norm-preserving construction from ℝ-valued to Banach-space-valued or interval-constrained data, tracking the sup-norm through a vector-valued Urysohn correction series so that the sharp ‖G‖ = ‖f‖ persists.",
+      "Quantify the rate of norm convergence: bound ‖G − ∑_{i<n} gᵢ‖ by the geometric tail (2/3)ⁿ·(M/3)·3 = (2/3)ⁿ·M and expose it as an explicit modulus of uniform convergence for the extension."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "urysohns-lemma-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry. It builds the Tietze extension explicitly as a convergent series G = ∑' n, gₙ in BoundedContinuousFunction X ℝ and proves G = f on s with the sup-bound ‖G‖ ≤ M. This entry sharpens that bound to the norm-preserving equality ‖G‖ = ‖f‖ by tracking the sup-norm of the partial sums and specialising M to ‖f‖, reusing the parent's tietze_extension_via_tsum, gbcf_norm_le and summable_geo."
+    },
+    {
+      "targetId": "urysohns-lemma-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent entry that isolates the one-step Urysohn approximation engine and the geometric iterate, and assembles the final extension via Mathlib's TietzeExtension machinery. This entry, through its parent, replaces that machinery and recovers the sharp norm-preserving form."
+    },
+    {
+      "targetId": "urysohns-lemma-oq-01",
+      "relationship": "related",
+      "description": "Ancestor entry deriving the Tietze extension theorem from Urysohn's lemma."
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/UrysohnsLemmaOQ01OQ01OQ02.lean",
+    "tags": [
+      "topology",
+      "separation-axioms",
+      "normal-space",
+      "urysohns-lemma",
+      "tietze-extension",
+      "bounded-continuous-function",
+      "banach-space",
+      "sup-norm",
+      "norm-preserving",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 103,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "badge": "original",
+    "assumptions": "0 axioms, 0 sorries. Both results (tietze_extension_norm_preserving and TietzeTsum.partialSum_norm_le) depend only on Mathlib's standard foundational axioms propext / Classical.choice / Quot.sound (no sorryAx, no Lean.ofReduceBool). Classical.choice enters through the parent's per-step Urysohn correction. The proof builds only on the parent entry's explicit series (tietze_extension_via_tsum, gbcf_norm_le, summable_geo) plus elementary sup-norm and geometric-series API (BoundedContinuousFunction.norm_le, norm_coe_le_norm, Summable.sum_le_tsum, tsum_geometric_of_lt_one); it does NOT use any theorem from Mathlib.Topology.TietzeExtension.",
+    "originalContributions": [
+      "tietze_extension_norm_preserving: the sharp norm-preserving Tietze extension ‖G‖ = ‖f‖ for bounded continuous data on a closed set in a normal space, obtained from the parent's explicit Urysohn series with none of Mathlib's TietzeExtension machinery — upgrading the parent's slack bound ‖G‖ ≤ M to an exact equality",
+      "TietzeTsum.partialSum_norm_le: the norm-tracking lemma that every finite partial sum of the correction series stays within the data bound, ‖∑_{i<n} gᵢ‖ ≤ M, via the geometric majorant whose full value is exactly M — the quantitative core that makes the sharp bound available",
+      "The observation that sharpness needs no new construction: specialising the parent's ambient bound M to the data's own sup-norm ‖f‖ (legitimate because the data is a bounded continuous function) is exactly what turns ‖G‖ ≤ M into ‖G‖ ≤ ‖f‖, with the reverse inequality free from the extension property"
+    ],
+    "prerequisites": [
+      "The parent entry's explicit Tietze series tietze_extension_via_tsum and its per-term bound gbcf_norm_le and geometric majorant summable_geo (Proofs.UrysohnsLemmaOQ01OQ01OQ01)",
+      "The Banach space of bounded continuous functions BoundedContinuousFunction X ℝ and its sup-norm API: norm_le (‖f‖ ≤ C ↔ ∀ x, ‖f x‖ ≤ C) and norm_coe_le_norm (‖f x‖ ≤ ‖f‖)",
+      "Monotonicity of partial sums against a nonnegative summable series (Summable.sum_le_tsum) and the geometric series value (tsum_geometric_of_lt_one, tsum_mul_right)",
+      "Antisymmetry of ≤ (le_antisymm) and the triangle inequality for finite sums (norm_sum_le)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "BoundedContinuousFunction.norm_le",
+        "description": "‖f‖ ≤ C ↔ ∀ x, ‖f x‖ ≤ C for a bounded continuous function; used in both directions to convert the pointwise sup-bound |G y| ≤ ‖f‖ into ‖G‖ ≤ ‖f‖ and to reduce ‖f‖ ≤ ‖G‖ to a pointwise claim.",
+        "module": "Mathlib.Topology.ContinuousMap.Bounded.Normed"
+      },
+      {
+        "theorem": "BoundedContinuousFunction.norm_coe_le_norm",
+        "description": "‖f x‖ ≤ ‖f‖: each value is bounded by the sup-norm. Supplies both the legitimacy of the bound M = ‖f‖ on the data and the reverse inequality ‖f‖ ≤ ‖G‖ once f x = G (x : X) is substituted.",
+        "module": "Mathlib.Topology.ContinuousMap.Bounded.Normed"
+      },
+      {
+        "theorem": "Summable.sum_le_tsum",
+        "description": "A finite partial sum is bounded by the full sum of a nonnegative summable series; bounds each partial sum of the majorant by its total value M in partialSum_norm_le.",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "tsum_geometric_of_lt_one",
+        "description": "Closed form ∑' n, rⁿ = (1 − r)⁻¹ for 0 ≤ r < 1; combined with tsum_mul_right gives ∑' (2/3)ⁿ·(M/3) = M, the exact value the partial sums are bounded by.",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-02-oq-01",
+      "question": "Generalise the norm-preserving construction from ℝ-valued to Banach-space-valued or interval-constrained data, tracking the sup-norm through a vector-valued Urysohn correction series so that the sharp equality ‖G‖ = ‖f‖ persists.",
+      "significance": "medium"
+    },
+    {
+      "id": "urysohns-lemma-oq-01-oq-01-oq-02-oq-02",
+      "question": "Expose an explicit modulus of uniform convergence by bounding the tail ‖G − ∑_{i<n} gᵢ‖ ≤ (2/3)ⁿ·M, quantifying how fast the partial sums approach the norm-preserving extension.",
+      "significance": "low"
+    }
+  ],
+  "references": [
+    {
+      "title": "Tietze extension theorem",
+      "url": "https://en.wikipedia.org/wiki/Tietze_extension_theorem"
+    },
+    {
+      "title": "Urysohn's lemma",
+      "url": "https://en.wikipedia.org/wiki/Urysohn%27s_lemma"
+    },
+    {
+      "title": "Mathlib: BoundedContinuousFunction (sup-norm, norm_le, norm_coe_le_norm)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/ContinuousMap/Bounded/Normed.html"
+    }
+  ],
+  "status": "verified",
+  "badge": "original",
+  "axiomCount": 0,
+  "sorries": 0
+}
