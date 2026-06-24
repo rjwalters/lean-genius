@@ -1,0 +1,49 @@
+{
+  "slug": "divisibility-by-3-oq-03-oq-02-oq-01",
+  "title": "The Iterative Digital Root Equals its Closed Form",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 6,
+  "significance": "Formalizes the actual iterative digital-root process (repeatedly sum base-b digits until one digit remains) and proves it terminates and computes the parent's closed form dr_b(n) = 1 + ((n-1) mod (b-1)) for every base b >= 2, recovering casting out nines as the base-10 case.",
+  "path": "Proofs/DivisibilityBy3OQ03OQ02OQ01.lean",
+  "problemStatement": "The parent entry (divisibility-by-3-oq-03-oq-02) defined the base-b digital root only by its closed form. Can Lean 4 formalize the iterative definition (repeatedly replace n by the sum of its base-b digits until a single digit remains) and prove it equals that closed form?",
+  "tags": [
+    "number-theory",
+    "divisibility",
+    "digital-root",
+    "modular-arithmetic",
+    "well-founded-recursion",
+    "termination",
+    "research"
+  ],
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "currentState": "SOLVED, build-verified, 0-axiom (only propext/Classical.choice/Quot.sound; no native_decide). 15 theorems, 2 definitions, 203 lines. PR opened.",
+  "knownResults": [
+    "Parent divisibility-by-3-oq-03-oq-02 proved the closed form dr_b(n) = 1 + ((n-1) mod (b-1)) and the congruence dr_b(n) ≡ n mod (b-1).",
+    "Mathlib provides Nat.digit_sum_le (non-strict), Nat.modEq_digits_sum, and Nat.getLast_digit_ne_zero."
+  ],
+  "knowledge": {
+    "insights": [
+      "The strict bound (digits b n).sum < n for 2 <= b <= n is the single ingredient that both makes the well-founded definition legal and drives the strong-induction equivalence proof.",
+      "A single digit-sum step is residue-preserving mod (b-1) (Nat.modEq_digits_sum) and value-positive (getLast_digit_ne_zero), and the closed form depends only on that residue — so the iterate and the closed form must agree.",
+      "The parent file DivisibilityBy3OQ03OQ02.lean is currently BROKEN on Lean v4.26.0 (omega failure at line ~128), so the leaf re-states the closed form locally and stays self-contained rather than importing the parent."
+    ],
+    "builtItems": [
+      "digitSum_lt: (digits b n).sum < n for 2 <= b <= n (termination measure) — DivisibilityBy3OQ03OQ02OQ01.lean:54",
+      "digitalRootIter: iterative digital root by well-founded recursion + equations digitalRootIter_of_lt/of_ge — DivisibilityBy3OQ03OQ02OQ01.lean:73",
+      "digitalRootIter_eq_base (headline): iterative process = closed form for all b >= 2 — DivisibilityBy3OQ03OQ02OQ01.lean:160",
+      "digitalRootIter_lt_base, digitalRootIter_modEq, digitalRootIter_ten_nine_mul (casting out nines) — DivisibilityBy3OQ03OQ02OQ01.lean:174,147,194"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the non-strict Nat.digit_sum_le but no strict digit-sum drop lemma; provided here as digitSum_lt.",
+      "Mathlib has no formalized iterative digital root / digital-root algorithm; provided here as digitalRootIter."
+    ],
+    "nextSteps": [
+      "Optional follow-up: prove the number of digit-sum iterations (additive persistence) and bound it by log_b log_b n.",
+      "Optional follow-up: file an issue / repair for the broken parent DivisibilityBy3OQ03OQ02.lean (omega failure ~line 128 on v4.26.0)."
+    ],
+    "progressSummary": "COMPLETE: iterative digital root defined by well-founded recursion and proved equal to the closed form dr_b(n) for all b >= 2; 0-axiom, build-verified."
+  }
+}
