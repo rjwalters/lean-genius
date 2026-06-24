@@ -1,0 +1,79 @@
+[
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-module-header",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 29
+    },
+    "title": "Module Header: J(a|n) = 1 as a Parity Count",
+    "content": "Answers the parent entry's open question: characterize exactly when $J(a\\mid n) = 1$ even though $a$ is a non-residue. For coprime $a, n$ the Jacobi symbol is a pure sign $(-1)^k$, where $k = \\#\\{p \\mid n : (a\\mid p) = -1\\}$ counts the prime factors of $n$ **with multiplicity** at which $a$ is a non-residue. So $J(a\\mid n) = 1 \\iff k$ is even — the $-1$'s cancel in pairs. The parent's puzzle $J(2\\mid 15) = 1$ is the case $k = 2$ (both $3$ and $5$ are non-residue witnesses); $J(2\\mid 45) = -1$ is the case $k = 3$ (the list $[3,3,5]$), showing multiplicity is essential."
+  },
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-legvals",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "definition",
+    "range": {
+      "startLine": 38,
+      "endLine": 47
+    },
+    "title": "The Legendre-Symbol List",
+    "content": "`legVals a n` is the list of Legendre symbols $(a\\mid p)$ as $p$ ranges over `n.primeFactorsList` — the prime factorization of $n$ **as a list, carrying multiplicity**. By the very definition of Mathlib's `jacobiSym`, the Jacobi symbol is the product of this list (`jacobiSym_eq_legVals_prod`, proved by `rfl`). This is the definitional bridge that turns the Jacobi symbol into a counting problem over its prime-factor signs."
+  },
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-each-sign",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 49,
+      "endLine": 71
+    },
+    "title": "Coprimality Makes Each Factor a Genuine Sign",
+    "content": "`legVals_mem_eq_one_or_neg_one`: when $\\gcd(a,n) = 1$, every entry $(a\\mid p)$ of the list is $\\pm 1$, never $0$. A Legendre symbol $(a\\mid p)$ vanishes iff $p \\mid a$ (`ZMod.intCast_zmod_eq_zero_iff_dvd`); but $p$ is a prime factor of $n$, so $p \\mid a$ would give $p \\mid \\gcd(a,n) = 1$, impossible. This is the hypothesis that lets the product-of-signs argument run."
+  },
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-product-sign",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 75,
+      "endLine": 90
+    },
+    "title": "Product of ±1's is (-1) to the Count of -1's",
+    "content": "`prod_eq_neg_one_pow_count`: the elementary engine. For any list $L$ of integers each equal to $1$ or $-1$, $\\prod L = (-1)^{\\#\\{x \\in L : x = -1\\}}$. A one-line induction: a head $+1$ leaves both product and count unchanged (`List.count_cons_of_ne`), while a head $-1$ multiplies the product by $-1$ and increments the count by one (`List.count_cons_self`), matching `pow_succ`. Reusable sign-counting infrastructure, independent of number theory."
+  },
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-sign-formula",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 94,
+      "endLine": 103
+    },
+    "title": "The Sign Formula J(a|n) = (-1)^k",
+    "content": "`numNonResidueFactors a n` is $k = \\#\\{p \\mid n \\text{ (with multiplicity)} : (a\\mid p) = -1\\}$, the count of $-1$ entries in `legVals a n`. Combining the two preceding lemmas, `jacobiSym_eq_neg_one_pow` gives $J(a\\mid n) = (-1)^k$ for coprime $a, n$: the Jacobi symbol is determined entirely by how many prime factors of $n$ (with multiplicity) see $a$ as a non-residue."
+  },
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-parity",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 105,
+      "endLine": 124
+    },
+    "title": "The Parity Characterization (Main Result)",
+    "content": "`jacobiSym_eq_one_iff_even`: reading the sign formula through `neg_one_pow_eq_one_iff_even`, $J(a\\mid n) = 1 \\iff k$ is even. This is the exact answer to the parent's open question — $J(a\\mid n) = 1$ while $a$ is a non-residue happens precisely when an EVEN (positive) number of prime factors are non-residue witnesses. Dually `jacobiSym_eq_neg_one_iff_odd`: $J(a\\mid n) = -1 \\iff k$ is odd, recovering the classical one-sided obstruction as the odd-parity case."
+  },
+  {
+    "id": "jacobi-symbol-oq-01-oq-03-examples",
+    "proofId": "jacobi-symbol-oq-01-oq-03",
+    "type": "theorem",
+    "range": {
+      "startLine": 126,
+      "endLine": 142
+    },
+    "title": "Worked Examples: Multiplicity Matters",
+    "content": "`even_numNonResidue_two_fifteen`: from $J(2\\mid 15) = 1$ the count is even ($k = 2$: both $3$ and $5$ are non-residue witnesses for $2$) — the parent's puzzle, explained. `odd_numNonResidue_two_fortyfive`: from $J(2\\mid 45) = -1$ the **multiplicity-aware** count is odd ($k = 3$, the list $[3,3,5]$), even though only two DISTINCT bad primes occur. The distinct-prime count $\\{3,5\\} = 2$ (even) would predict the wrong sign — so the characterization genuinely requires multiplicity. Both parities are read off the kernel-checked `norm_num` Jacobi values, so no `native_decide` enters."
+  }
+]
