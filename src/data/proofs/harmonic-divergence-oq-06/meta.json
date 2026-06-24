@@ -1,0 +1,178 @@
+{
+  "id": "harmonic-divergence-oq-06",
+  "title": "Reciprocals of the Odd Numbers Diverge",
+  "slug": "harmonic-divergence-oq-06",
+  "description": "Proves that the series of reciprocals of the odd numbers Σ 1/(2n+1) diverges. The result is obtained as a corollary of a general statement: for any reals a > 0 and b > 0, the reciprocal series Σ 1/(a·n+b) along an arithmetic progression is not summable, by comparison with the harmonic series via a·n+b ≤ (a+b)·(n+1). The even-number reciprocals Σ 1/(2n+2) and the divergence of the partial sums to +∞ are also recorded.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HarmonicDivergenceOQ06.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "harmonic-series",
+      "summability",
+      "comparison-test",
+      "arithmetic-progression",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. All theorems are fully machine-checked. The proof reduces to the divergence of the harmonic series (Real.not_summable_one_div_natCast) via the comparison test (Summable.of_nonneg_of_le) and the index-shift lemma summable_nat_add_iff. Only the foundational axioms propext, Classical.choice, Quot.sound are used.",
+    "dateAdded": "2026-06-24",
+    "lineCount": 84,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "not_summable_one_div_arith (PROVED, MAIN): for a > 0, b > 0, ¬ Summable (fun n => 1/(a·n+b)) — a general arithmetic-progression reciprocal divergence",
+      "not_summable_one_div_odd (PROVED, headline): ¬ Summable (fun n => 1/(2n+1)) — the odd-reciprocal series diverges (a=2, b=1)",
+      "not_summable_one_div_even (PROVED): ¬ Summable (fun n => 1/(2n+2)) — the even-reciprocal series diverges (a=2, b=2)",
+      "tendsto_sum_one_div_odd_atTop (PROVED): the partial sums Σ_{i<n} 1/(2i+1) → +∞"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.not_summable_one_div_natCast",
+        "description": "¬ Summable (fun n : ℕ => 1/(n:ℝ)) — divergence of the harmonic series, the engine of the comparison",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Summable.of_nonneg_of_le",
+        "description": "0 ≤ g ≤ f and Summable f ⟹ Summable g — the comparison test used to dominate the shifted harmonic series",
+        "module": "Mathlib.Topology.Instances.ENNReal.Lemmas"
+      },
+      {
+        "theorem": "summable_nat_add_iff",
+        "description": "Summable (fun n => f (n+k)) ↔ Summable f — transports non-summability across the index shift n ↦ n+1",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.NatInt"
+      },
+      {
+        "theorem": "not_summable_iff_tendsto_nat_atTop_of_nonneg",
+        "description": "For nonnegative terms, ¬Summable f ↔ partial sums tend to +∞ — converts non-summability to the explicit divergence statement",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Real"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The divergence of the harmonic series Σ 1/n was first proved by Nicole Oresme (c. 1350) by grouping terms into dyadic blocks each exceeding 1/2. That the odd-reciprocal subseries Σ 1/(2n+1) also diverges is an immediate consequence: removing the even terms (themselves half a harmonic series) cannot make a divergent series converge. More generally, any 'positive-density' arithmetic subseries Σ 1/(a·n+b) diverges — a special case of the fact that Σ 1/n_k diverges whenever n_k grows at most linearly. This is the elementary precursor to the much deeper theorem of Euler (and the divergence of Σ 1/p over primes, Mertens 1874), which quantifies how thin a divergent reciprocal series can be.",
+    "problemStatement": "**OQ-06 of harmonic-divergence**\n\nProve that the series of reciprocals of the odd numbers diverges:\n\n  ¬ Summable (fun n : ℕ => 1/(2n+1)).",
+    "text": "¬ Summable (fun n : ℕ => 1/(2·n+1)), as a corollary of ¬ Summable (fun n => 1/(a·n+b)) for a > 0, b > 0.",
+    "proofStrategy": "**General statement.** Suppose Σ 1/(a·n+b) were summable. Scaling by the constant a+b keeps it summable. For every n, the inequality a·n+b ≤ (a+b)·(n+1) (clearing denominators, equivalent to 0 ≤ a + b·n) gives\n  1/(n+1) ≤ (a+b)·1/(a·n+b).\nBy the comparison test (`Summable.of_nonneg_of_le`), the shifted harmonic series Σ 1/(n+1) would be summable. But `summable_nat_add_iff` identifies its summability with that of Σ 1/n, which fails (`Real.not_summable_one_div_natCast`). Contradiction.\n\n**Corollaries.** Odd reciprocals are a = 2, b = 1; even reciprocals are a = 2, b = 2. The partial-sum divergence to +∞ follows from `not_summable_iff_tendsto_nat_atTop_of_nonneg` since the terms are nonnegative.",
+    "keyInsights": [
+      "The right level of generality is the arithmetic progression a·n+b: the odd and even reciprocal series are the two cases a=2, b∈{1,2}, and the single comparison a·n+b ≤ (a+b)·(n+1) handles all of them uniformly.",
+      "The comparison is downward onto the harmonic series, not upward: one bounds 1/(n+1) above by a constant multiple of 1/(a·n+b), so summability of the progression series would force summability of the harmonic series — the contrapositive is the divergence.",
+      "The hypothesis b > 0 (rather than b ≥ 0) keeps every denominator a·n+b strictly positive at n = 0, avoiding the junk value 1/0 that would break the pointwise comparison at the first term.",
+      "Splitting the harmonic series into odd and even halves shows both halves diverge: this is a clean illustration that a divergent series can be partitioned into two divergent subseries, in contrast with conditionally convergent series.",
+      "The index-shift lemma summable_nat_add_iff is essential: Mathlib's harmonic divergence is stated for 1/n (which has the n=0 junk term 1/0=0), and one must transport it to 1/(n+1) to match the comparison bound."
+    ],
+    "prerequisites": [
+      "Real.not_summable_one_div_natCast (divergence of the harmonic series) from Mathlib",
+      "The comparison test Summable.of_nonneg_of_le",
+      "Basic manipulation of inequalities between positive reals (le_div_iff₀, div_le_iff₀)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring stating the headline (odd reciprocals diverge) and the general arithmetic-progression result, the comparison strategy, and the dependence on harmonic divergence. Imports Mathlib, opens Filter and Topology, namespace HarmonicDivergenceOQ06.",
+      "mathContext": "The engine is the divergence of $\\sum 1/n$; everything reduces to it by comparison and an index shift."
+    },
+    {
+      "id": "sec-main",
+      "title": "Main Theorem: Σ 1/(a·n+b) Diverges",
+      "startLine": 38,
+      "endLine": 64,
+      "summary": "not_summable_one_div_arith (a b : ℝ) (ha : 0 < a) (hb : 0 < b): by contradiction, scale by a+b, establish 1/(n+1) ≤ (a+b)·1/(a·n+b) via le_div_iff₀/div_le_iff₀ and nlinarith, apply Summable.of_nonneg_of_le to get summability of the shifted harmonic series, then contradict not_summable_one_div_natCast through summable_nat_add_iff.",
+      "mathContext": "The crux inequality is $a n + b \\le (a+b)(n+1)$, equivalent to $0 \\le a + b n$, true for $a>0, b>0, n \\ge 0$. Hence $\\frac{1}{n+1} \\le (a+b)\\frac{1}{an+b}$."
+    },
+    {
+      "id": "sec-corollaries",
+      "title": "Corollaries: Odd / Even / Partial Sums",
+      "startLine": 65,
+      "endLine": 84,
+      "summary": "not_summable_one_div_odd (a=2,b=1) is the headline; not_summable_one_div_even (a=2,b=2); tendsto_sum_one_div_odd_atTop converts non-summability of the odd series into divergence of its partial sums via not_summable_iff_tendsto_nat_atTop_of_nonneg.",
+      "mathContext": "Odd reciprocals $\\sum 1/(2n+1)$ and even reciprocals $\\sum 1/(2n+2)$ are the $a=2$, $b\\in\\{1,2\\}$ instances; both diverge, and together they recover the full harmonic series."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "extends",
+      "description": "Parent: divergence of the harmonic series Σ 1/n. This entry shows the odd-reciprocal subseries (and any arithmetic-progression reciprocal series) inherits that divergence."
+    },
+    {
+      "targetId": "p-series",
+      "relationship": "related",
+      "description": "The p-series Σ 1/n^p converges iff p > 1; the arithmetic-progression reciprocals here are the borderline linear-growth case (p = 1) and diverge."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified: the reciprocals of the odd numbers Σ 1/(2n+1) diverge, as the a=2, b=1 case of the general fact that Σ 1/(a·n+b) diverges for any a > 0, b > 0. The even reciprocals diverge likewise, and the odd partial sums tend to +∞. Zero sorries, zero extra axioms.",
+    "implications": "**Subseries of the harmonic series**: any arithmetic-progression subseries of Σ 1/n diverges — the odd and even halves are the canonical example of splitting a divergent series into two divergent pieces.\\n\\n**Sharpness of p = 1**: the linear growth a·n+b is exactly the boundary; replacing the denominator by (a·n+b)^p with p > 1 makes the series converge (the p-series threshold).",
+    "openQuestions": [
+      "Quantify the partial-sum growth: prove Σ_{i<n} 1/(2i+1) = (1/2)(ln n + γ + ln 4) + o(1), the explicit asymptotic with the odd-harmonic constant.",
+      "Generalise to b ≥ 0 (allowing b = 0, i.e. Σ 1/(a·n)) by excising the n = 0 term, recovering Σ 1/n scaled by 1/a.",
+      "Extend to real (non-integer) progressions and to the divergence of Σ 1/(a·n+b) in the sense of Cesàro / Abel summability, contrasting with the conditional convergence of the alternating version Σ (−1)^n/(2n+1) = π/4 (Leibniz)."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "not_summable_one_div_odd",
+      "type": "core",
+      "description": "The reciprocals of the odd numbers diverge: ¬ Summable (fun n => 1/(2n+1)).",
+      "leanType": "¬ Summable (fun n : ℕ => 1 / (2 * (n : ℝ) + 1))"
+    },
+    {
+      "name": "not_summable_one_div_arith",
+      "type": "core",
+      "description": "For a > 0, b > 0, the arithmetic-progression reciprocal series diverges.",
+      "leanType": "(a b : ℝ) → 0 < a → 0 < b → ¬ Summable (fun n : ℕ => 1 / (a * n + b))"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "HarmonicDivergenceOQ06",
+    "lineCount": 84,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "substantiveTheoremCount": 2,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/HarmonicDivergenceOQ06.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Nicole Oresme",
+      "title": "Quaestiones super Geometriam Euclidis",
+      "year": "c. 1350",
+      "venue": "manuscript",
+      "note": "First proof that the harmonic series diverges, by grouping terms into dyadic blocks each summing to more than 1/2. The odd-reciprocal divergence proved here is an immediate corollary."
+    },
+    {
+      "authors": "Leonhard Euler",
+      "title": "Variae observationes circa series infinitas",
+      "year": "1737",
+      "venue": "Commentarii academiae scientiarum Petropolitanae 9, pp. 160–188",
+      "note": "Euler's study of reciprocal series, including the divergence of Σ 1/p over primes — the deep refinement of the elementary fact that linear-density reciprocal series like Σ 1/(2n+1) diverge."
+    },
+    {
+      "authors": "Franz Mertens",
+      "title": "Ein Beitrag zur analytischen Zahlentheorie",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik 78, pp. 46–62",
+      "note": "Mertens' theorems quantify Σ_{p ≤ x} 1/p = ln ln x + M + o(1); the contrast with the arithmetic-progression case here illustrates how thin a divergent reciprocal series can be."
+    }
+  ]
+}
