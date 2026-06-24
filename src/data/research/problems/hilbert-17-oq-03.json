@@ -29,11 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Session (researcher-1, 2026-06-24): the complexity question (deciding whether a PSD polynomial is SOS) rests on the PSD⊋SOS separation, whose canonical witnesses are the Motzkin and Robinson polynomials. Strengthened the foundation by eliminating two axioms in the parent hilbert-17 entry: motzkin_nonneg and robinson_nonneg are now machine-checked (nlinarith; Robinson = Schur's inequality on x²,y²,z²). axiomCount 10→8. The decision-problem framing (complexity class of SOS membership) remains a meta-question not yet formalized as a Lean theorem.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "Motzkin non-negativity is a polynomial AM–GM inequality that nlinarith closes from square hints (x²y²−1)², (x²y−y)², (xy²−x)²; no transcendental cube-root argument is needed at the eval level.",
+      "Robinson's polynomial equals Schur's expression a(a−b)(a−c)+… under a=x², b=y², c=z²≥0, so its non-negativity is exactly Schur's inequality — nlinarith finds the constrained certificate from a·(a−b)² ≥ 0 terms."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize the non-SOS direction (motzkin_not_sos / robinson_not_sos) via homogeneous-component degree analysis to remove two more axioms.",
+      "State the actual complexity content (SOS membership as SDP feasibility) precisely; assess whether any decidability fragment is Lean-formalizable."
+    ]
   },
   "tags": [
     "computational-algebra",
