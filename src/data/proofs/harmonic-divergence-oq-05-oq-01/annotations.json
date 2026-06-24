@@ -1,0 +1,95 @@
+[
+  {
+    "id": "ann-imports-namespace",
+    "proofId": "harmonic-divergence-oq-05-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "type": "concept",
+    "title": "Reusing the Parent's Partial Sum H and Block Split",
+    "content": "Rather than redefine the harmonic partial sum, this entry imports the parent Proofs.HarmonicDivergenceOQ05 and opens its namespace, inheriting H N = ∑_{k ∈ Finset.range N} 1/(k+1) and the split lemma H_two_pow_succ. The only new ingredient is the dual block estimate; everything else (the indexing convention, the range→range+Ico decomposition) is shared verbatim with the lower-bound entry, so the two sides of the sandwich are guaranteed to speak about the same object. As in the parent, the Ico interval is forced to ℕ via the (2^n : ℕ) annotation, since ℝ has no LocallyFiniteOrder instance.",
+    "mathContext": "$H_N = \\sum_{k=0}^{N-1} \\frac{1}{k+1} = \\sum_{j=1}^{N} \\frac{1}{j}$, and $H_{2^{n+1}} = H_{2^n} + \\sum_{k \\in \\text{Ico}(2^n, 2^{n+1})} \\frac{1}{k+1}$ are both reused from the parent OQ-05.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.range",
+      "namespace reuse",
+      "partial sums",
+      "LocallyFiniteOrder"
+    ],
+    "prerequisites": [
+      "Lean 4 Finset sums",
+      "importing and opening namespaces"
+    ]
+  },
+  {
+    "id": "ann-block-le-one",
+    "proofId": "harmonic-divergence-oq-05-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 91
+    },
+    "type": "key_step",
+    "title": "The Dual Dyadic Block Estimate: Each Block Sums to ≤ 1",
+    "content": "block_le_one is the only genuinely new lemma, and it mirrors the parent's block_ge_half with the inequality reversed. The block over k ∈ Ico(2ⁿ, 2ⁿ⁺¹) has exactly 2ⁿ terms (Nat.card_Ico: 2ⁿ⁺¹ − 2ⁿ = 2ⁿ). For each such k, since k ≥ 2ⁿ we have k+1 ≥ 2ⁿ, hence 1/(k+1) ≤ 1/2ⁿ (one_div_le_one_div_of_le). Summing the constant upper bound 1/2ⁿ over the 2ⁿ terms gives 2ⁿ·(1/2ⁿ) = 1 (Finset.sum_const, then push_cast to turn ↑(2ⁿ) into the real (2:ℝ)ⁿ before field_simp). Finset.sum_le_sum lifts the termwise bound to the block, and the calc chains the actual block sum below the constant sum (= 1). Where the lower bound uses the smallest term 1/2ⁿ⁺¹, this uses the largest term 1/2ⁿ.",
+    "mathContext": "$\\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{k+1} \\le \\sum_{k=2^n}^{2^{n+1}-1} \\frac{1}{2^{n}} = 2^n \\cdot \\frac{1}{2^{n}} = 1$. Every term is at most the largest one $1/2^{n}$, and there are $2^{n+1}-2^n = 2^n$ of them.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "one_div_le_one_div_of_le",
+      "Finset.sum_le_sum",
+      "Finset.sum_const",
+      "Nat.card_Ico",
+      "dyadic grouping"
+    ],
+    "prerequisites": [
+      "monotonicity of reciprocal",
+      "constant sums over finite sets"
+    ]
+  },
+  {
+    "id": "ann-main-bound",
+    "proofId": "harmonic-divergence-oq-05-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 110
+    },
+    "type": "key_step",
+    "title": "The Dyadic Upper Bound H_{2ⁿ} ≤ 1 + n",
+    "content": "harmonic_two_pow_le inducts on n. The base case n=0 is H_1 = 1 = 1 + 0 (simp on the definition of H). The step rewrites H_{2ⁿ⁺¹} via the parent's H_two_pow_succ, then adds the inductive hypothesis H_{2ⁿ} ≤ 1 + n to the block bound block_le_one (≤ 1) using add_le_add, giving H_{2ⁿ⁺¹} ≤ (1 + n) + 1 = 1 + (n+1). The structure is the exact mirror of the parent's harmonic_two_pow_ge, with 1/2 replaced by 1 and ≥ replaced by ≤.",
+    "mathContext": "$H_{2^n} \\le 1 + n$ by induction: $H_{2^{n+1}} = H_{2^n} + \\text{block} \\le (1+n) + 1 = 1 + (n+1)$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "induction",
+      "add_le_add",
+      "H_two_pow_succ",
+      "harmonic partial sums"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "monotonicity of addition for inequalities"
+    ]
+  },
+  {
+    "id": "ann-sandwich",
+    "proofId": "harmonic-divergence-oq-05-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 122
+    },
+    "type": "concept",
+    "title": "The Two-Sided Sandwich and Its Width",
+    "content": "harmonic_two_pow_sandwich simply pairs this entry's upper bound with the parent's harmonic_two_pow_ge to deliver 1 + n/2 ≤ H_{2ⁿ} ≤ 1 + n in one statement — answering the open question posed verbatim in the parent OQ-05's conclusion. harmonic_two_pow_window records that the gap between the two bounds is exactly (1 + n) − (1 + n/2) = n/2 (by ring), so the dyadic partial sums are localised to an interval of length n/2. This is the elementary, constant-free witness that H_N grows like log N: at N = 2ⁿ the sum sits between 1 + (log₂ N)/2 and 1 + log₂ N.",
+    "mathContext": "$1 + n/2 \\le H_{2^n} \\le 1 + n$, gap $= n/2$. Equivalently $1 + \\tfrac{\\log_2 N}{2} \\le H_N \\le 1 + \\log_2 N$ at the dyadic points $N = 2^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "two-sided bounds",
+      "logarithmic growth",
+      "harmonic_two_pow_ge",
+      "sandwich theorem"
+    ],
+    "prerequisites": [
+      "conjunction of inequalities",
+      "ring normalization"
+    ]
+  }
+]
