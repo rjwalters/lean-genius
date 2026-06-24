@@ -3890,6 +3890,7 @@ import Proofs.TaylorTheorem
 import Proofs.TaylorTheoremOQ02
 import Proofs.TaylorTheoremOQ03
 import Proofs.TaylorTheoremOQ03OQ01
+import Proofs.TaylorTheoremOQ03OQ02
 import Proofs.TestAdmissible50
 import Proofs.TestApi1056
 import Proofs.TestApi1059
