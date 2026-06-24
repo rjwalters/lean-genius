@@ -969,6 +969,7 @@ import Proofs.DesarguesTheoremOQ01
 import Proofs.DesarguesTheoremOQ01OQ01
 import Proofs.DesarguesTheoremOQ02
 import Proofs.DesarguesTheoremOQ04
+import Proofs.DescartesCircleParityOQ010201
 import Proofs.DescartesCircleTheorem
 import Proofs.DescartesCircleTheoremOQ01OQ02
 import Proofs.DescartesRuleOfSigns
