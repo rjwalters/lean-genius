@@ -26,7 +26,7 @@
     "lineCount": 222,
     "theoremCount": 8,
     "definitionCount": 0,
-    "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide` (the three concrete checks use `decide`, so `#print axioms` lists only the ordinary foundational axioms propext / Classical.choice / Quot.sound, which are not counted). NOTE: local kernel verification via the Docker build wrapper was unavailable this session (the Docker daemon was unresponsive), so the proof is verified at the statement/lemma-signature level against Mathlib v4.26.0 and relies on the deployer build-gate for the final kernel check before merge.",
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, and no `native_decide` (the three concrete checks use `decide`, so `#print axioms` lists only the ordinary foundational axioms propext / Classical.choice / Quot.sound, which are not counted). Kernel-verified with `lake env lean` against Mathlib v4.26.0 (exit 0, `#print axioms` on the headline, the ℕ specialization, and a concrete check all return the standard triple).",
     "originalContributions": [
       "ascPochhammer_eval_add: (x+y)^{(k)} = Σ_{m∈range(k+1)} x^{(m)}·y^{(k-m)}·C(k,m) over any CommSemiring, via (ascPochhammer S _).eval — the rising-factorial Vandermonde convolution (sequence of binomial type). Mathlib has only the multiplicative composition law ascPochhammer_mul; this additive convolution is not in Mathlib.",
       "ascFactorial_add_vandermonde: the ℕ specialization with Nat.ascFactorial — (a+b).ascFactorial k = Σ a.ascFactorial m · b.ascFactorial (k-m) · C(k,m)",
