@@ -610,6 +610,7 @@ import Proofs.CauchySchwarzOQ03OQ02OQ01
 import Proofs.CauchySchwarzOQ04
 import Proofs.CauchySchwarzOQ04OQ01
 import Proofs.CauchySchwarzOQ06
+import Proofs.CauchySchwarzOQ06OQ01
 import Proofs.CauchySchwarzOQ07
 import Proofs.CauchySchwarzOQ08
 import Proofs.CayleyHamilton
@@ -3056,6 +3057,7 @@ import Proofs.InfinitudePrimes4k3OQ01Q12Q24
 import Proofs.InfinitudePrimes4k3OQ01Tower
 import Proofs.InfinitudePrimes4k3OQ02
 import Proofs.InfinitudePrimes4k3OQ03
+import Proofs.InfinitudePrimes4k3OQ03OQ01
 import Proofs.InfinitudePrimesOQ05
 import Proofs.IntegralRootTheoremOQ01
 import Proofs.IntermediateValueTheorem
