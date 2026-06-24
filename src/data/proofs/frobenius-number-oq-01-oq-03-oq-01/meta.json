@@ -97,6 +97,64 @@
       "Give the Apéry-set characterisation of the type: type(S) = |{maximal elements of Ap(S, n) under ⪯}| for any nonzero n ∈ S, linking PF(S) to the Apéry set and recovering type one for symmetric semigroups."
     ]
   },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Generator-Agnostic Numerical Semigroups",
+      "startLine": 56,
+      "endLine": 77,
+      "summary": "Four definitions over a bare S : Set ℕ — IsNumericalSemigroup (0 ∈ S, additive closure, finite cofinite complement, properness), IsFrobeniusNumber (largest gap), IsSymmetric (k ∈ S ↔ g − k ∉ S on [0,g]), and IsPF (pseudo-Frobenius: a gap whose positive translates re-enter S, with type = |{x | IsPF S x}|).",
+      "mathContext": "$\\mathrm{IsPF}(S,x) :\\equiv x \\notin S \\wedge \\forall s \\in S,\\ s>0 \\Rightarrow x+s \\in S$; the type is $|\\{x : \\mathrm{IsPF}(S,x)\\}|$."
+    },
+    {
+      "id": "frobenius-exist-unique",
+      "title": "The Frobenius Number: Existence, Uniqueness, and g ∈ PF",
+      "startLine": 79,
+      "endLine": 118,
+      "summary": "isFrobeniusNumber_unique (trichotomy) and exists_isFrobeniusNumber (max of the finite gap set) establish g; frobeniusNumber_isPF shows g is pseudo-Frobenius and isPF_le_frobeniusNumber bounds every pseudo-Frobenius number by g.",
+      "mathContext": "$g = \\max(\\mathbb{N}\\setminus S)$ is unique; $g \\in \\mathrm{PF}(S) \\subseteq [0,g]$."
+    },
+    {
+      "id": "gap-dominated",
+      "title": "Structural Engine: Every Gap Is Dominated by a Pseudo-Frobenius Number",
+      "startLine": 120,
+      "endLine": 156,
+      "summary": "gap_dominated: for a gap x, the finite nonempty set T = {y ∉ S : y ≥ x, y − x ∈ S} has a maximum m, and m is pseudo-Frobenius (a larger m + s would re-enter T, contradicting maximality). Constructive 'every element lies below a maximal one'.",
+      "mathContext": "For each gap $x$, $\\exists m \\in \\mathrm{PF}(S)$ with $m - x \\in S$, taking $m = \\max\\{y \\notin S : y \\ge x,\\ y-x \\in S\\}$."
+    },
+    {
+      "id": "direction-symmetric-to-type-one",
+      "title": "Direction 1: Symmetric ⟹ Type One",
+      "startLine": 158,
+      "endLine": 180,
+      "summary": "isPF_setOf_eq_of_isSymmetric proves {x | IsPF S x} = {g}: a pseudo-Frobenius x < g would, by symmetry, have g − x ∈ S positive, forcing g = x + (g − x) ∈ S, impossible.",
+      "mathContext": "$S$ symmetric $\\Rightarrow \\mathrm{PF}(S) = \\{g\\}$, hence type one."
+    },
+    {
+      "id": "direction-type-one-to-symmetric",
+      "title": "Direction 2: Type One ⟹ Symmetric (the open converse)",
+      "startLine": 182,
+      "endLine": 212,
+      "summary": "isSymmetric_of_isPF_ncard_one: from |PF(S)| = 1 and g ∈ PF(S), PF(S) = {g}; a gap k is dominated (gap_dominated) by a pseudo-Frobenius number forced to be g, so g − k ∈ S. Type one is used at exactly one point.",
+      "mathContext": "$|\\mathrm{PF}(S)| = 1 \\Rightarrow S$ symmetric: gap $k \\preceq m \\in \\{g\\}$, so $g - k \\in S$."
+    },
+    {
+      "id": "equivalence",
+      "title": "The Full Kunz Equivalence",
+      "startLine": 214,
+      "endLine": 229,
+      "summary": "isSymmetric_iff_isPF_ncard_one combines both directions into S symmetric ⟺ |PF(S)| = 1; isSymmetric_iff_type_one is the bundled-IsNumericalSemigroup form.",
+      "mathContext": "$\\mathrm{IsSymmetric}(S,g) \\iff |\\{x : \\mathrm{IsPF}(S,x)\\}| = 1$."
+    },
+    {
+      "id": "two-generator-subsumption",
+      "title": "Subsuming the Parent: the Two-Generator Semigroup ⟨a,b⟩",
+      "startLine": 231,
+      "endLine": 283,
+      "summary": "{n | Representable a b n} is shown to be a numerical semigroup with Frobenius number ab − a − b (representable_isNumericalSemigroup / _isFrobeniusNumber), is symmetric (re-export of the parent), and representable_type_one re-derives PF(⟨a,b⟩) = {g} from the general equivalence — a verified subsumption.",
+      "mathContext": "$\\{n : \\mathrm{Representable}\\,a\\,b\\,n\\}$ is a numerical semigroup, $g = ab-a-b$, $\\mathrm{PF}(\\langle a,b\\rangle) = \\{g\\}$."
+    }
+  ],
   "crossReferences": [
     {
       "targetId": "frobenius-number-oq-01-oq-03",
