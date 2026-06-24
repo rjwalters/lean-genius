@@ -291,6 +291,7 @@ import Proofs.BaselProblemOQ14
 import Proofs.BellNumbersOQ01
 import Proofs.BernoulliInequalityOQ01
 import Proofs.BernoulliInequalityOQ01OQ01
+import Proofs.BernoulliInequalityOQ01OQ02
 import Proofs.BertrandsPostulate
 import Proofs.BertrandsPostulateOQ03
 import Proofs.BertrandsPostulateOQ03OQ04
