@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-bernOQ01010101-overview",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 3,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "Locating the Quintic Bernoulli Endpoint",
+    "content": "The parent pinned the cubic endpoint a₃* = −3 from (1+a)³ − (1+3a) = a²(a+3) and conjectured that the per-exponent odd endpoints creep up toward the sharp uniform bound −2. This file resolves the next odd case n = 5. The same algebra gives (1+a)⁵ − (1+5a) = a²·g(a) with g(a) = a³ + 5a² + 10a + 10, but g has no rational root, so the endpoint a₅* must be located rather than computed. Showing g strictly increasing makes the endpoint unique, and a sign change pins it inside (−3, −2), confirming a₃* = −3 < a₅* < −2."
+  },
+  {
+    "id": "ann-bernOQ01010101-factor",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "The Residual Cubic",
+    "content": "The double factor a² (the source of the always-equality at a = 0) splits off, leaving the residual cubic g(a) = a³ + 5a² + 10a + 10 to govern the sign of the strict inequality. This mirrors the parent's a²(a+3) — but where a+3 was linear with root −3, here the residual is a genuine cubic."
+  },
+  {
+    "id": "ann-bernOQ01010101-mono",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 83
+    },
+    "type": "insight",
+    "title": "Sum-of-Squares Monotonicity",
+    "content": "The divided difference g(b) − g(a) = (b−a)·(a²+ab+b²+5a+5b+10) has a positive-definite bracket: 12 times it equals (3a+3b+10)² + 3(a−b)² + 20, a sum of squares plus a positive constant. So g is strictly increasing — without differentiating — which both makes the endpoint unique and yields the clean equivalence 0 < g(a) ↔ a₅* < a."
+  },
+  {
+    "id": "ann-bernOQ01010101-endpoint",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "IVT Pins the Irrational Endpoint",
+    "content": "Because g(−3) = −2 < 0 < 2 = g(−2), the intermediate value theorem places a root a₅* in (−3, −2); strict monotonicity makes it the only one. The result 1 + 5a < (1+a)⁵ ↔ a ≠ 0 ∧ a₅* < a is the exact analogue of the parent's cubic_iff, now with an irrational endpoint, and −3 < a₅* < −2 is the first step of the creep."
+  },
+  {
+    "id": "ann-bernOQ01010101-witness",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "The Creep Made Concrete",
+    "content": "At a = −29/10 the cubic inequality (n = 3) still holds — since −29/10 > a₃* = −3 — but the quintic inequality (n = 5) fails, because a₅* > −29/10. A single rational point thus witnesses that the endpoint has strictly risen from −3 to a₅*. The point −5/2 lies on the other side (n = 5 holds there), bracketing a₅* ∈ (−29/10, −5/2)."
+  },
+  {
+    "id": "ann-bernOQ01010101-belowneg2",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 153,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "Why the Creep Stays Below −2",
+    "content": "For every odd n the power (1 + (−2))ⁿ = (−1)ⁿ = −1 already beats the line value 1 − 2n once n ≥ 2, so the strict inequality holds at a = −2 for all odd n. Hence −2 is interior to the strict domain of each odd exponent and aₙ* < −2 universally: the endpoints rise toward −2 = supₙ aₙ* but never reach it."
+  }
+]
