@@ -113,6 +113,50 @@
       "Evaluate the reflection half Σ_{i} |Fix(sr i)| by the parity of n (for odd n every reflection fixes 2^{(n+1)/2} colourings; for even n the two reflection classes fix 2^{n/2+1} and 2^{n/2}), and combine with the rotation half to prove the full closed form b(n) = (necklaces(n) + reflection-total(n))/(2n) without per-n computation."
     ]
   },
+  "sections": [
+    {
+      "title": "Module header and scope",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "States the goal — generalising the sibling's hard-wired n=4 dihedral bracelet machinery to D_n for every n — and the honesty note that the genuinely new content is the n-uniform construction and Burnside identity, with Burnside's lemma and |Dₙ|=2n taken from Mathlib. Confirms axiom hygiene (only propext/Classical.choice/Quot.sound)."
+    },
+    {
+      "title": "Part I: positions, colourings, and the permutation representation",
+      "startLine": 57,
+      "endLine": 102,
+      "summary": "Models positions as ZMod n and colourings as ZMod n → Fin 2. Defines posPerm sending r i to x↦x+i and sr i to x↦-i-x, proves it sends 1 to 1 and is multiplicative (posPerm_mul, case-by-case against the dihedral table), and bundles it as the homomorphism ρ : DihedralGroup n →* Equiv.Perm (ZMod n). None of this needs NeZero n."
+    },
+    {
+      "title": "Part II: the induced action on colourings",
+      "startLine": 104,
+      "endLine": 121,
+      "summary": "Defines the MulAction of DihedralGroup n on colourings by (g•c) p = c((ρ g)⁻¹ p), with one_smul/mul_smul derived from ρ being a homomorphism, plus the pointwise unfolding lemma smul_apply used in the fixed-point computations."
+    },
+    {
+      "title": "Part III: Fintype/decidability infrastructure",
+      "startLine": 123,
+      "endLine": 151,
+      "summary": "Under NeZero n, registers DecidablePred for fixed-point sets, Fintype for fixedBy, a DecidableRel for the orbit relation, and the Fintype on the orbit quotient (via Quotient.fintype), so the bracelet count braceletCard n = |orbit quotient| is well-defined."
+    },
+    {
+      "title": "Part IV: the general Burnside bracelet identity",
+      "startLine": 153,
+      "endLine": 172,
+      "summary": "bracelet_burnside: for every n, Σ_{g∈Dₙ} |Fix(g)| = braceletCard n · (2n), obtained from Mathlib's sum_card_fixedBy_eq_card_orbits_mul_card_group with |Dₙ|=2n substituted via DihedralGroup.card. The reusable orbit-counting engine for the closed form."
+    },
+    {
+      "title": "Part V: concrete bracelet counts from the general machinery",
+      "startLine": 174,
+      "endLine": 210,
+      "summary": "Feeds the general identity to n=3,5,6: each fixed-point sum (24, 80, 156) is discharged by kernel decide, and Burnside plus omega yields b(3)=4, b(5)=8, b(6)=13 (OEIS A000029) — axiom-free, no native_decide."
+    },
+    {
+      "title": "Axiom audit",
+      "startLine": 212,
+      "endLine": 219,
+      "summary": "#print axioms on bracelet_burnside, bracelet_three, bracelet_five, bracelet_six, confirming only the standard foundational axioms — no Lean.ofReduceBool (no native_decide) and no sorryAx."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
