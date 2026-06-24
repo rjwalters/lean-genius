@@ -1,0 +1,86 @@
+[
+  {
+    "id": "csi-strict-ann-header",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 54 },
+    "type": "context",
+    "title": "From non-strict chain and equality case to strict monotonicity",
+    "content": "The module docstring sets up the two-point weighted means of positive reals $a,b$ with positive weights $w_1,w_2$ summing to $1$. Two ancestors are in place: the grandparent proved the non-strict chain $\\text{WHM}\\le\\text{WGM}\\le\\text{WAM}\\le\\text{WQM}$, and the parent characterised each link's equality case ($=\\iff a=b$). The remaining open question — answered here — is the strict form: off the diagonal $a\\ne b$, is every link strict? The answer is yes, and 'all or nothing': because the three equality loci coincide ($a=b$), the strict gaps appear and vanish together.",
+    "mathContext": "Strict link $=$ (non-strict $\\le$) $+$ (equality $\\iff a=b$): $x\\le y$ and $x\\ne y$ give $x<y$.",
+    "significance": "context",
+    "relatedConcepts": ["power means", "weighted AM-GM", "strict inequality", "rigidity"],
+    "prerequisites": ["Lean 4", "Mathlib", "order theory (≤ vs <)"]
+  },
+  {
+    "id": "csi-strict-ann-setup",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 56, "endLine": 60 },
+    "type": "definition",
+    "title": "Setup: reuse the parent's mean definitions",
+    "content": "The file opens `WeightedPowerMeanEquality` (the parent namespace) to reuse the definitions `WHM`, `WGM`, `WAM`, `WQM` and the parent's equality lemmas. Variables `a b w₁ w₂ : ℝ` are the two values and their weights. Importing only the parent (not the grandparent) keeps the dependency graph shallow; the two ≤ links the grandparent provided are re-derived inline.",
+    "mathContext": "WHM, WGM, WAM, WQM denote the weighted harmonic, geometric, arithmetic, and quadratic means of $a,b$ with weights $w_1,w_2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["weighted harmonic mean", "weighted geometric mean", "weighted arithmetic mean", "weighted quadratic mean"],
+    "prerequisites": ["rpow (Real.rpow)"]
+  },
+  {
+    "id": "csi-strict-ann-nonstrict",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 62, "endLine": 94 },
+    "type": "technique",
+    "title": "The two non-strict links, re-derived from Mathlib AM-GM",
+    "content": "Three private lemmas supply the $\\le$ links without importing the grandparent. `inv_wgm_eq` is the reciprocal identity $(1/a)^{w_1}(1/b)^{w_2} = (a^{w_1}b^{w_2})^{-1}$ (via `Real.div_rpow` and `field_simp`). `wgm_le_wam_aux` is Mathlib's two-variable weighted AM-GM `Real.geom_mean_le_arith_mean2_weighted` directly. `whm_le_wgm_aux` applies that same AM-GM to the reciprocals $1/a, 1/b$ and inverts with `inv_le_comm₀` — strict positivity of the weights keeps the harmonic denominator $w_1/a + w_2/b$ positive.",
+    "mathContext": "$a^{w_1}b^{w_2} \\le w_1 a + w_2 b$ (AM-GM); applied to $1/a, 1/b$ and inverted gives $\\text{WHM}\\le\\text{WGM}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["weighted AM-GM", "reciprocal duality", "rpow identities", "positivity"],
+    "prerequisites": ["two-variable weighted AM-GM", "inversion of inequalities for positive reals"]
+  },
+  {
+    "id": "csi-strict-ann-strict-links",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 96, "endLine": 122 },
+    "type": "technique",
+    "title": "The three strict links: ≤ upgraded by a ≠ b",
+    "content": "`whm_lt_wgm_of_ne`, `wgm_lt_wam_of_ne`, and `wam_lt_wqm_of_ne` each turn a non-strict link into a strict one via `LE.le.lt_of_ne`: the $\\le$ together with $a\\ne b$, where $a\\ne b$ excludes equality through the contrapositive of the parent's equality characterization (`whm_eq_wgm_iff`, `wgm_eq_wam_iff`). The arithmetic-quadratic link is re-exported from the parent's `wam_lt_wqm_of_ne` (the 'positive variance' gap) for symmetry. No new analytic input is needed — strictness is the logical shadow of the equality case.",
+    "mathContext": "$x\\le y \\;\\wedge\\; (x=y \\iff a=b) \\;\\wedge\\; a\\ne b \\;\\Longrightarrow\\; x<y$.",
+    "significance": "key",
+    "relatedConcepts": ["lt_of_ne", "contrapositive", "strict AM-GM", "positive variance"],
+    "prerequisites": ["the parent's equality characterizations"]
+  },
+  {
+    "id": "csi-strict-ann-iff",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 124, "endLine": 147 },
+    "type": "insight",
+    "title": "Each strict gap is equivalent to a ≠ b",
+    "content": "`whm_lt_wgm_iff_ne`, `wgm_lt_wam_iff_ne`, `wam_lt_wqm_iff_ne` package each link as a biconditional $\\text{(strict link)}\\iff a\\ne b$. The forward direction is the contrapositive of the parent's equality iff (`Iff.not` applied to `h.ne`); the reverse is the strict link from Part I. Because every link is governed by the *same* scalar condition $a\\ne b$, the three gaps are mutually equivalent — the structural fact behind the rigidity dichotomy.",
+    "mathContext": "$\\text{WHM}<\\text{WGM} \\iff a\\ne b \\iff \\text{WGM}<\\text{WAM} \\iff \\text{WAM}<\\text{WQM}$.",
+    "significance": "key",
+    "relatedConcepts": ["biconditional", "Iff.not", "shared equality locus", "mutual equivalence"],
+    "prerequisites": ["logical negation of an iff"]
+  },
+  {
+    "id": "csi-strict-ann-headline",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 149, "endLine": 193 },
+    "type": "insight",
+    "title": "Headline: strict chain and the all-or-nothing rigidity dichotomy",
+    "content": "`strict_chain_of_ne` collects the three strict links into the full chain $\\text{WHM}<\\text{WGM}<\\text{WAM}<\\text{WQM}$ for $a\\ne b$, and `strict_chain_iff_ne` makes it an equivalence with $a\\ne b$. The capstone `any_strict_iff_all_strict` is the rigidity dichotomy: a *single* strict gap anywhere (a disjunction) forces *every* gap (the conjunction). The proof extracts $a\\ne b$ from whichever disjunct holds (each link's iff) and re-derives the whole strict chain. There is no intermediate regime: the means are either all equal or all strictly ordered.",
+    "mathContext": "$(\\text{any one gap strict}) \\iff (\\text{all gaps strict}) \\iff a\\ne b$.",
+    "significance": "key",
+    "relatedConcepts": ["rigidity", "dichotomy", "disjunction vs conjunction", "degenerate equality locus"],
+    "prerequisites": ["case analysis on disjunctions"]
+  },
+  {
+    "id": "csi-strict-ann-specialization",
+    "proofId": "cauchy-schwarz-integral-oq-01-oq-01-oq-01-oq-02-oq-03-oq-02-oq-02",
+    "range": { "startLine": 195, "endLine": 226 },
+    "type": "concept",
+    "title": "Equal-weight specialization: the classical strict HM < GM < AM < QM",
+    "content": "`unweighted_strict_chain_of_ne` specialises to $w_1=w_2=1/2$ and rewrites each weighted mean into its textbook closed form: $\\text{WHM}=2ab/(a+b)$, $\\text{WGM}=\\sqrt{ab}$, $\\text{WAM}=(a+b)/2$, $\\text{WQM}=\\sqrt{(a^2+b^2)/2}$ (via `field_simp`/`ring`, `Real.mul_rpow`, and `Real.sqrt_eq_rpow`). Feeding these identities into `strict_chain_of_ne` yields the classical strict chain $2ab/(a+b) < \\sqrt{ab} < (a+b)/2 < \\sqrt{(a^2+b^2)/2}$ for $a\\ne b$ — the familiar harmonic–geometric–arithmetic–quadratic ordering.",
+    "mathContext": "$\\dfrac{2ab}{a+b} < \\sqrt{ab} < \\dfrac{a+b}{2} < \\sqrt{\\dfrac{a^2+b^2}{2}}$ for $a\\ne b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["harmonic mean", "geometric mean", "arithmetic mean", "root mean square"],
+    "prerequisites": ["closed forms of the classical means", "rpow ↔ sqrt"]
+  }
+]
