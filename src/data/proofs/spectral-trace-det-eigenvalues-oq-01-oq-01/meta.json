@@ -1,0 +1,178 @@
+{
+  "id": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+  "title": "Power Sums of the Eigenvalues: trace(Aᵏ) = Σλᵢᵏ for Diagonalizable Matrices",
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01",
+  "description": "The parent entry (spectral-trace-det-eigenvalues-oq-01) proved that the trace and determinant of a matrix are the first power sum and the product of its eigenvalues (charpoly roots with multiplicity), and gave the full Vieta correspondence. This follow-up — the open question explicitly posed in the parent's openQuestions — establishes the general power-sum identity trace(Aᵏ) = Σλᵢᵏ for diagonalizable matrices: if A = P·diagonal d·P⁻¹ then trace(Aᵏ) = ((eigenvalues A).map (·^k)).sum = Σᵢ (d i)ᵏ. The proof is elementary and fully verified: conjugation commutes with powers (Aᵏ = P·(diagonal d)ᵏ·P⁻¹), trace is conjugation-invariant (Matrix.trace_units_conj), and (diagonal d)ᵏ = diagonal (dᵏ). The eigenvalue multiset of a diagonalizable matrix is identified with its diagonal entries via charpoly invariance under similarity (Matrix.charpoly_units_conj) and Matrix.charpoly_diagonal, so the diagonal-form sum is genuinely the power sum of the spectrum. A concrete non-diagonal example, the symmetric A = !![1,2;2,1] over ℚ (eigenvalues 3 and -1), is shown diagonalizable and yields trace(A²) = 10 = 3² + (-1)². Scope: the diagonalizable hypothesis is required because the unconditional identity over an algebraically closed field needs the spectral-mapping theorem with multiplicity (eigenvalues of Aᵏ are the k-th powers of the eigenvalues of A), equivalent to a matrix triangularization A = P·T·P⁻¹ that Mathlib does not expose. The diagonalizable class covers Hermitian/normal matrices over ℂ and any matrix with distinct eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
+  "meta": {
+    "author": "Classical (Newton's power sums; spectral theory); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "eigenvalues",
+      "trace",
+      "power-sums",
+      "newton-identities",
+      "diagonalizable",
+      "characteristic-polynomial",
+      "spectrum",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.trace_units_conj",
+        "description": "trace (P·N·P⁻¹) = trace N for a unit P: trace is invariant under similarity. Turns trace(Aᵏ) = trace(P·(diagonal d)ᵏ·P⁻¹) into trace((diagonal d)ᵏ).",
+        "module": "Mathlib.LinearAlgebra.Matrix.Trace"
+      },
+      {
+        "theorem": "Matrix.charpoly_units_conj",
+        "description": "(P·N·P⁻¹).charpoly = N.charpoly: the characteristic polynomial is a similarity invariant. Identifies A.charpoly with (diagonal d).charpoly for a diagonalizable A.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.charpoly_diagonal",
+        "description": "charpoly (diagonal d) = ∏ i, (X - C (d i)). Combined with charpoly_units_conj it gives A.charpoly = ∏ i, (X - d i), whose roots are the diagonal entries.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "Matrix.diagonal_pow",
+        "description": "(diagonal d)ᵏ = diagonal (dᵏ) (pointwise k-th power). Reduces the k-th power of the diagonal factor to a diagonal matrix.",
+        "module": "Mathlib.Data.Matrix.Basic"
+      },
+      {
+        "theorem": "Matrix.trace_diagonal",
+        "description": "trace (diagonal d) = ∑ i, d i. Evaluates the trace of the diagonalized power as the sum of the k-th powers of the diagonal entries.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Trace"
+      },
+      {
+        "theorem": "Polynomial.roots_multiset_prod_X_sub_C",
+        "description": "((s.map fun a => X - C a).prod).roots = s for a multiset s. Computes the eigenvalue multiset of ∏ i, (X - d i) as the multiset of diagonal entries.",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      }
+    ],
+    "originalContributions": [
+      "conj_pow: conjugation by a unit commutes with taking powers, (P·M·P⁻¹)ᵏ = P·Mᵏ·P⁻¹, proved by induction over the matrix monoid (the algebraic engine of the result).",
+      "charpoly_eq_of_isDiagonalizable / eigenvalues_eq_of_isDiagonalizable: the characteristic polynomial of a diagonalizable matrix A = P·diagonal d·P⁻¹ is ∏ i, (X - d i), so the eigenvalue multiset A.charpoly.roots equals the multiset of diagonal entries Finset.univ.val.map d — the bridge that makes the diagonal sum genuinely the power sum of the spectrum.",
+      "trace_pow_eq_sum_pow_eigenvalues: the main power-sum identity trace(Aᵏ) = ((eigenvalues A).map (·^k)).sum = Σ λᵢᵏ for diagonalizable A, the k-th Newton power sum of the spectrum (the open question posed in the parent entry).",
+      "trace_eq_sum_eigenvalues_of_isDiagonalizable: the k = 1 specialization recovers the parent's trace = Σλ, demonstrating consistency across the power-sum family.",
+      "isDiagonalizable_example / trace_sq_example: the symmetric A = !![1,2;2,1] over ℚ is shown diagonalizable (P = !![1,1;1,-1], eigenvalues 3 and -1) and trace(A²) = 10 = 3² + (-1)² is computed through the identity on a genuinely non-diagonal matrix."
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 178,
+    "assumptions": "None beyond Mathlib's foundational propext/Classical.choice/Quot.sound (which do not count). Fully verified with 0 axioms and 0 sorries; no decide/native_decide is used. The mathematical scope is the diagonalizable case: the power-sum identity is stated for matrices A = P·diagonal d·P⁻¹. The unconditional statement over an algebraically closed field is NOT proved here — it requires the spectral-mapping theorem with multiplicity (the eigenvalues of Aᵏ are the k-th powers of those of A), equivalent to a matrix triangularization that Mathlib does not currently expose. The diagonalizable class covers Hermitian and normal matrices over ℂ and any matrix with distinct eigenvalues.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Newton's identities (the Girard–Newton formulas, 17th century) express the power sums pₖ = Σ xᵢᵏ of a finite list of numbers in terms of their elementary symmetric functions eⱼ, and vice versa. Applied to the eigenvalues of a matrix — the roots of the characteristic polynomial, whose elementary symmetric functions are the (signed) charpoly coefficients (Vieta, established in the parent entry) — the power sums become the traces of the matrix powers: pₖ = trace(Aᵏ). This is the spectral form of the power-sum/symmetric-function dictionary and the computational basis for, e.g., the Faddeev–LeVerrier algorithm.",
+    "problemStatement": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01)**: Prove in Lean that the sum of the k-th powers of the eigenvalues equals trace(Aᵏ) — the Newton power sum of the spectrum — extending the parent's trace = Σλ (the k = 1 case) to all k.\n\n**Result**: trace_pow_eq_sum_pow_eigenvalues — for a diagonalizable matrix A, trace(Aᵏ) = ((eigenvalues A).map (·^k)).sum = Σ λᵢᵏ — fully verified with 0 axioms. The diagonalizable hypothesis is used in place of the spectral-mapping-with-multiplicity infrastructure absent from Mathlib (see the scope note).",
+    "text": "Let A be a diagonalizable n×n matrix over a field K, so A = P·diagonal d·P⁻¹ for an invertible P. Then for every k, trace(Aᵏ) equals the sum of the k-th powers of the eigenvalues of A counted with algebraic multiplicity. The eigenvalues are the diagonal entries d, which are exactly the roots of the characteristic polynomial. The k = 1 case recovers the trace = Σλ identity of the parent.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. conj_pow: prove (P·M·P⁻¹)ᵏ = P·Mᵏ·P⁻¹ by induction on k, using P⁻¹·P = 1 to telescope the middle factors.\n\n2. Eigenvalues of a diagonalizable matrix: charpoly_units_conj gives A.charpoly = (diagonal d).charpoly, and charpoly_diagonal evaluates this to ∏ i, (X - d i). Rewriting the finite product as a multiset product and applying roots_multiset_prod_X_sub_C identifies A.charpoly.roots with the multiset of diagonal entries Finset.univ.val.map d.\n\n3. Trace of the power: substitute A = P·diagonal d·P⁻¹, apply conj_pow, then trace_units_conj to drop the conjugation, then diagonal_pow and trace_diagonal to obtain trace(Aᵏ) = Σ i, (d i)ᵏ.\n\n4. Assemble: combining steps 2 and 3, Σ i, (d i)ᵏ is exactly ((eigenvalues A).map (·^k)).sum, giving trace(Aᵏ) = Σ λᵢᵏ. Specializing k = 1 recovers the parent identity.\n\n5. Example: exhibit P = !![1,1;1,-1] (a unit, det = -2) diagonalizing the symmetric A = !![1,2;2,1] to diagonal ![3,-1], and compute trace(A²) = 10 = 3² + (-1)² through the identity.",
+    "keyInsights": [
+      "**Power sums are traces of powers.** The k-th Newton power sum pₖ = Σ λᵢᵏ of the spectrum is exactly trace(Aᵏ). The parent established the k = 1 (trace) and the elementary-symmetric (Vieta) sides of the Newton dictionary; this entry supplies the power-sum side for diagonalizable matrices.",
+      "**Conjugation commutes with powers and is trace-transparent.** The whole computation rests on (P·M·P⁻¹)ᵏ = P·Mᵏ·P⁻¹ together with trace's similarity invariance: powers of a diagonalizable matrix are read off the diagonal, where the k-th power is entrywise.",
+      "**The diagonal entries are the spectrum.** Similarity-invariance of the characteristic polynomial identifies the eigenvalue multiset (charpoly roots) of A = P·diagonal d·P⁻¹ with the multiset of diagonal entries, so the diagonal-form sum Σ (d i)ᵏ is genuinely the power sum of the eigenvalues, not merely of an arbitrary diagonal.",
+      "**Why the diagonalizable hypothesis.** The unconditional identity over an algebraically closed field needs the eigenvalues of Aᵏ to be the k-th powers of those of A WITH multiplicity — the spectral-mapping theorem, equivalent to triangularizing A. Mathlib exposes the endomorphism-level generalized-eigenspace decomposition but no matrix triangularization A = P·T·P⁻¹, so the diagonalizable case is the natural fully-elementary scope."
+    ],
+    "prerequisites": [
+      "The characteristic polynomial and its roots as eigenvalues with algebraic multiplicity (parent entry)",
+      "Diagonalizable matrices and similarity (conjugation by an invertible matrix)",
+      "Newton's identities relating power sums and elementary symmetric functions"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header, Eigenvalue Multiset, and Diagonalizability",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring stating the power-sum identity and the scope note (why diagonalizability is assumed and what the general case needs); import of Mathlib; the eigenvalues A := A.charpoly.roots alias; and the IsDiagonalizable predicate ∃ P d, A = P·diagonal d·P⁻¹.",
+      "mathContext": "$A = P\\,\\operatorname{diag}(d)\\,P^{-1}$, eigenvalues $= \\operatorname{roots}(\\det(XI-A))$."
+    },
+    {
+      "id": "conj-pow",
+      "title": "Conjugation Commutes with Powers",
+      "startLine": 63,
+      "endLine": 78,
+      "summary": "conj_pow: (P·M·P⁻¹)ᵏ = P·Mᵏ·P⁻¹ by induction on k, the algebraic core, using P⁻¹·P = 1 to collapse the telescoping middle factors.",
+      "mathContext": "$(PMP^{-1})^k = P M^k P^{-1}$."
+    },
+    {
+      "id": "eigenvalues-diagonal",
+      "title": "Eigenvalues of a Diagonalizable Matrix Are Its Diagonal Entries",
+      "startLine": 79,
+      "endLine": 104,
+      "summary": "charpoly_eq_of_isDiagonalizable (A.charpoly = ∏ i, (X - d i) via charpoly_units_conj and charpoly_diagonal) and eigenvalues_eq_of_isDiagonalizable (the charpoly root multiset equals Finset.univ.val.map d, by roots_multiset_prod_X_sub_C).",
+      "mathContext": "$A.\\mathrm{charpoly} = \\prod_i (X - d_i),\\ \\mathrm{roots} = \\{d_i\\}$."
+    },
+    {
+      "id": "power-sum",
+      "title": "The Power-Sum Identity",
+      "startLine": 105,
+      "endLine": 145,
+      "summary": "trace_pow_eq_sum_diagonal (trace(Aᵏ) = Σ (d i)ᵏ via conj_pow, trace_units_conj, diagonal_pow, trace_diagonal), the main trace_pow_eq_sum_pow_eigenvalues (trace(Aᵏ) = Σ λᵢᵏ), the k = 1 consistency corollary, and the diagonal-matrix witness/identity.",
+      "mathContext": "$\\operatorname{tr}(A^k) = \\sum_i \\lambda_i^{\\,k} = p_k$."
+    },
+    {
+      "id": "example",
+      "title": "A Concrete Non-Diagonal Example over ℚ",
+      "startLine": 146,
+      "endLine": 178,
+      "summary": "The symmetric A = !![1,2;2,1] is shown diagonalizable (Pexample = !![1,1;1,-1] a unit, eigenvalues ![3,-1]) and trace(A²) = 10 = 3² + (-1)² is computed through the power-sum identity on a genuinely non-diagonal matrix.",
+      "mathContext": "$A = \\bigl(\\begin{smallmatrix}1&2\\\\2&1\\end{smallmatrix}\\bigr),\\ \\operatorname{tr}(A^2) = 3^2 + (-1)^2 = 10$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-01",
+      "relationship": "Parent entry: proves trace = Σλ (the k = 1 power sum), det = Πλ, and the full Vieta correspondence between charpoly coefficients and elementary symmetric functions of the eigenvalues. This follow-up answers the parent's explicit open question by establishing the power-sum side trace(Aᵏ) = Σλᵏ for diagonalizable matrices."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of the Newton power-sum identity trace(Aᵏ) = Σ λᵢᵏ for diagonalizable matrices, with the eigenvalue multiset identified with the diagonal entries via similarity-invariance of the characteristic polynomial, the k = 1 case recovering the parent's trace = Σλ, and a worked non-diagonal example over ℚ.",
+    "implications": "Completes the power-sum side of the Newton symmetric-function dictionary for the spectrum (the parent supplied the elementary-symmetric/Vieta side), within the elementary diagonalizable scope. The conj_pow and eigenvalues_eq_of_isDiagonalizable lemmas are reusable building blocks for further diagonalizable-matrix spectral computations.",
+    "openQuestions": [
+      "Remove the diagonalizability hypothesis: prove trace(Aᵏ) = Σλᵏ unconditionally over an algebraically closed field by building the spectral-mapping theorem with multiplicity (a matrix triangularization A = P·T·P⁻¹ with T upper triangular), the infrastructure Mathlib currently lacks.",
+      "Derive the explicit Newton recurrence pₖ = e₁pₖ₋₁ − e₂pₖ₋₂ + ⋯ relating the traces trace(Aᵏ) to the charpoly coefficients, recovering the power sums from the elementary symmetric functions established in the parent (and conversely, the Faddeev–LeVerrier determination of the charpoly from the traces of powers)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "SpectralTraceDetEigenvaluesOQ01OQ01",
+    "lineCount": 178,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 3,
+    "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Roger A. Horn and Charles R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2012",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for diagonalizable matrices, the trace of matrix powers as power sums of the eigenvalues, and Newton's identities."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.LinearAlgebra.Matrix.Trace and Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of trace_units_conj, charpoly_units_conj, charpoly_diagonal, diagonal_pow, and trace_diagonal used to reduce trace(Aᵏ) to the sum of the k-th powers of the diagonal entries."
+    }
+  ],
+  "sorries": 0
+}
