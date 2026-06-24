@@ -1,0 +1,138 @@
+{
+  "id": "derangements-oq-03-oq-03-oq-01",
+  "slug": "derangements-oq-03-oq-03-oq-01",
+  "title": "Expected Number of Fixed Points of a Random Permutation is 1",
+  "description": "Closes the first open question of derangements-oq-03-oq-03: the expected trace of a uniformly random n×n permutation matrix — equivalently, the expected number of fixed points of a uniformly random permutation of Fin n — is exactly 1 for every n ≥ 1, independent of n. The proof routes through the Cauchy–Frobenius/Burnside count: summing the number of fixed points over all n! permutations equals (number of orbits)·|Sₙ|, and the natural symmetric-group action on Fin n is transitive (a single orbit) for n ≥ 1, so the total is 1·n! = n!. Averaging over the n! permutations gives the expected value 1. The parent's trace bridge trace (σ.permMatrix ℝ) = (fixedPoints σ).ncard turns the combinatorial total into a statement about the average trace of a permutation matrix. 0 axioms, 0 sorries, no native_decide.",
+  "overview": "The parent entry (derangements-oq-03-oq-03) identifies the trace of a random n×n permutation matrix with the number of fixed points of the underlying permutation and studies the probability that this trace is zero (the derangement / 1/e law). It left open the complementary first-moment question: what is the expected trace? This entry answers it: exactly 1, for all n ≥ 1.\n\nRather than the usual linearity-of-indicators argument (each of the n positions is fixed with probability 1/n, giving n·(1/n) = 1), the proof uses the Cauchy–Frobenius lemma (Burnside's counting lemma): the sum over all group elements of the number of points each fixes equals the number of orbits times the order of the group. For the symmetric group Sₙ acting naturally on Fin n, the action is transitive whenever n ≥ 1, so there is exactly one orbit and the sum of fixed-point counts collapses to 1·n! = n!. Dividing by |Sₙ| = n! yields the expected value 1.\n\nThe bridge to the parent's matrix picture is Mathlib's Matrix.trace_permutation, which equates the trace of σ.permMatrix with the cardinality of the fixed-point set. So the result reads equivalently as: the average trace of an n×n permutation matrix is 1.",
+  "conclusion": {
+    "summary": "For every n ≥ 1, summing the number of fixed points over all n! permutations of Fin n gives exactly n! (the Burnside count for the transitive symmetric-group action: one orbit times |Sₙ|). Equivalently, the total trace over all n×n permutation matrices is n!, and the average trace — the expected number of fixed points of a uniformly random permutation — is exactly 1, independent of n. All theorems are fully proved with 0 axioms and 0 sorries.",
+    "implications": "**1. First-moment companion to the 1/e law**: The parent studies P(trace = 0) → 1/e; this entry pins down E(trace) = 1 exactly, the complementary first moment of the same fixed-point statistic.\n\n**2. Orbit-counting proof**: The value 1 is exhibited as the number of orbits of the symmetric-group action, a structural reading rather than an arithmetic coincidence — the expected number of fixed points equals the number of orbits of Sₙ on Fin n.\n\n**3. Trace bridge reused**: The parent's identification of trace with fixed-point count (via Mathlib's Matrix.trace_permutation) carries the combinatorial total directly into the language of random permutation matrices.",
+    "openQuestions": [
+      "Does the variance of the number of fixed points also equal 1 (so that the fixed-point count is asymptotically Poisson(1)), and can the factorial-moment identity E[(X)_k] = 1 for k ≤ n be formalized?",
+      "Can the orbit-counting argument be lifted to the expected number of k-cycles of a random permutation, recovering 1/k as the expected count?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DerangementsOQ03OQ03"
+    ],
+    "opens": [
+      "Equiv"
+    ],
+    "namespace": "DerangementsOQ03OQ03OQ01",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/DerangementsOQ03OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "expected_trace_eq_one",
+      "type": "core",
+      "description": "(∑ σ, trace (σ.permMatrix ℝ)) / |Perm (Fin n)| = 1 — the expected trace of a random permutation matrix, i.e. the expected number of fixed points of a uniformly random permutation of Fin n, is exactly 1 for n ≥ 1."
+    },
+    {
+      "name": "sum_card_fixedBy",
+      "type": "core",
+      "description": "∑_{σ ∈ Sₙ} |Fix σ| = n! — the Burnside count of total fixed points over all permutations, equal to (number of orbits = 1)·|Sₙ|."
+    }
+  ],
+  "sections": [
+    {
+      "title": "Fixed Set as a Group-Action Fixed Set"
+    },
+    {
+      "title": "Transitivity: a Single Orbit"
+    },
+    {
+      "title": "The Burnside Count: Total Fixed Points = n!"
+    },
+    {
+      "title": "Trace Bridge and the Expected Value"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Burnside, William",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1897",
+      "venue": "Cambridge University Press",
+      "note": "Source of the orbit-counting (Cauchy–Frobenius) lemma ∑_g |Fix g| = (#orbits)·|G| used here."
+    },
+    {
+      "authors": "de Montmort, Pierre Rémond",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris",
+      "note": "Origin of the matching/rencontre problem whose first moment (expected number of matches) is 1."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "Answers the parent's first open question. The parent identifies trace (σ.permMatrix ℝ) with the number of fixed points and studies P(trace = 0) (the 1/e derangement law); this entry computes the complementary first moment E(trace) = 1 via the Burnside count, reusing the parent's trace bridge."
+    }
+  ],
+  "sorries": 0,
+  "meta": {
+    "assumptions": [],
+    "author": "Burnside / Cauchy–Frobenius count, formalized in Lean 4",
+    "badge": "mathlib",
+    "status": "verified",
+    "originalContributions": [
+      "Identification of the parent's fixed-point set (Function.fixedPoints σ, counted by Set.ncard in the trace formula) with the group-action fixed set MulAction.fixedBy (Fin n) σ counted by Fintype.card",
+      "Orbit count = 1: the symmetric-group action on Fin n is transitive for n ≥ 1, so its orbit quotient is a singleton (card_orbits_eq_one)",
+      "Burnside total: ∑_{σ ∈ Sₙ} |Fix σ| = n!, specialising MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to the transitive symmetric-group action",
+      "Trace bridge: total trace ∑_σ trace (σ.permMatrix ℝ) = n! and the expected trace (∑_σ trace)/|Sₙ| = 1, the first-moment companion of the parent's 1/e derangement law"
+    ],
+    "prerequisites": [
+      "Mathlib group-action API (MulAction.fixedBy, orbitRel.Quotient, IsPretransitive for Equiv.Perm)",
+      "Burnside / Cauchy–Frobenius lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
+      "Parent permutation-matrix trace bridge (Matrix.trace_permutation)",
+      "Fintype cardinality lemmas (Fintype.card_perm, Fintype.card_fin)"
+    ],
+    "tags": [
+      "combinatorics",
+      "linear-algebra",
+      "matrices",
+      "derangements",
+      "probability",
+      "group-actions",
+      "burnside"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group",
+        "description": "Burnside / Cauchy–Frobenius lemma: the sum over group elements of the number of fixed points equals the number of orbits times the order of the group",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "MulAction.pretransitive_iff_unique_quotient_of_nonempty",
+        "description": "A nonempty action is pretransitive iff its orbit quotient is a singleton (Unique)",
+        "module": "Mathlib.GroupTheory.GroupAction.Basic"
+      },
+      {
+        "theorem": "Equiv.Perm.applyMulAction",
+        "description": "The natural (transitive) action of the symmetric group Perm α on α by evaluation",
+        "module": "Mathlib.Algebra.Group.Action.End"
+      },
+      {
+        "theorem": "Matrix.trace_permutation",
+        "description": "The trace of a permutation matrix equals the cardinality of the fixed-point set",
+        "module": "Mathlib.LinearAlgebra.Matrix.Permutation"
+      },
+      {
+        "theorem": "Fintype.card_perm",
+        "description": "The number of permutations of a finite type is the factorial of its cardinality",
+        "module": "Mathlib.Data.Fintype.Perm"
+      }
+    ],
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/DerangementsOQ03OQ03OQ01.lean",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Random_permutation_statistics"
+  }
+}
