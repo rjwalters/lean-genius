@@ -1,0 +1,94 @@
+{
+  "id": "erdos-396-oq-04-oq-01-oq-01-oq-01-oq-02",
+  "title": "Erdős #396 OQ-04 → OQ-01 → OQ-01 → OQ-01 → OQ-02: The Sharp Central-Binomial Growth Law C(2n,n) ∼ 4ⁿ/√(πn)",
+  "slug": "erdos-396-oq-04-oq-01-oq-01-oq-01-oq-02",
+  "description": "The parent's second open question asks whether the central-binomial recurrence telescopes to C(2n,n) = ∏_{k<n} 2(2k+1)/(k+1) AND yields the matching growth law C(2n,n) ∼ 4ⁿ/√(πn). The telescoping product is already established by a sibling entry that deliberately stops at the elementary bound C(2n,n) < 4ⁿ with no Stirling input. This entry supplies the remaining analytic half — the sharp asymptotic constant: C(2n,n) ~[atTop] 4ⁿ/√(πn) and the limit form C(2n,n)·√(πn)/4ⁿ → 1, derived by pure Asymptotics.IsEquivalent algebra on Mathlib's Stirling equivalence (n! ~ √(2nπ)·(n/e)ⁿ) via C(2n,n) = (2n)!/(n!)². The Catalan bridge C(2n,n) = (n+1)·catalan n then yields the Catalan growth law catalan n ∼ 4ⁿ/(√π·n^{3/2}) the parent's docstring states but never proves. An effective lower bound 4ⁿ/(2n) ≤ C(2n,n) (valid for all n) brackets the rate.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/396",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos396OQ04OQ01OQ01OQ01OQ02.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "asymptotics",
+      "central-binomial-coefficient",
+      "catalan",
+      "stirling-formula",
+      "growth-bounds"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "erdosNumber": 396,
+    "erdosUrl": "https://erdosproblems.com/396",
+    "axiomCount": 0,
+    "lineCount": 228,
+    "assumptions": "0 axioms, 0 sorries. All results depend only on the foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms; no sorryAx, no Lean.ofReduceBool / native_decide). Built against Mathlib 4.26.0.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #396 concerns descending-factorial divisibility of central binomial coefficients, whose base case rests on the Catalan numbers catalan n = C(2n,n)/(n+1). The chain OQ-04 → OQ-01 → OQ-01 → OQ-01 reads the two-term Catalan recurrence multiplicatively, telescoping catalan n = ∏_{k<n} r k, and its second open question asks whether the same technique applied to the central-binomial recurrence (n+1)·C(2(n+1),n+1) = 2(2n+1)·C(2n,n) gives both the product form C(2n,n) = ∏_{k<n} 2(2k+1)/(k+1) AND the matching growth law C(2n,n) ∼ 4ⁿ/√(πn). The telescoping product (and the elementary bound C(2n,n) < 4ⁿ) was established by the sibling entry erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01, which uses no Stirling input by design. This entry completes the remaining, genuinely analytic half: the sharp asymptotic constant 1/√(πn).",
+    "problemStatement": "Establish the matching growth law C(2n,n) ∼ 4ⁿ/√(πn) for the central binomial coefficient (the analytic half of the parent's open question that the telescoping-product sibling left open), and deduce the Catalan growth law catalan n ∼ 4ⁿ/(√π·n^{3/2}).",
+    "text": "Writing C(2n,n) = (2n)!/(n!)² and substituting Mathlib's Stirling equivalence n! ~[atTop] √(2nπ)·(n/e)ⁿ into numerator and denominator, the (n/e) powers contribute 4ⁿ, √(4nπ)/(2nπ) collapses to 1/√(πn), and the Stirling constants cancel, giving C(2n,n) ~[atTop] 4ⁿ/√(πn), equivalently C(2n,n)·√(πn)/4ⁿ → 1. The bridge C(2n,n) = (n+1)·catalan n, together with (n+1) ~ n, transports this to catalan n ~[atTop] 4ⁿ/(n·√(πn)) = 4ⁿ/(√π·n^{3/2}). The asymptotic rate is complemented by the effective bound 4ⁿ/(2n) ≤ C(2n,n), valid for every n.",
+    "proofStrategy": "The core is pure Asymptotics.IsEquivalent algebra. centralBinom_eq_factorial_div gives (C(2n,n):ℝ) = (2n)!/(n!·n!) via Nat.choose_mul_factorial_mul_factorial. Mathlib's Stirling.factorial_isEquivalent_stirling (n! ~ stirlingFn n with stirlingFn n = √(2nπ)·(n/e)ⁿ) is composed with the index map n ↦ 2n (IsEquivalent.comp_tendsto along Tendsto (2·) atTop atTop) for the numerator and squared (IsEquivalent.mul) for the denominator, then divided (IsEquivalent.div). The resulting Stirling quotient is simplified pointwise for n ≥ 1 by stirlingFn_quotient: √(2·2n·π) = 2√(nπ) (Real.sqrt_mul, sqrt_sq), (2n/e)^{2n} = 4ⁿ·(n/e)^{2n} (mul_pow, pow_mul), (√(2nπ))² = 2nπ (Real.sq_sqrt), and field_simp/nlinarith collapse the ratio to 4ⁿ/√(πn); transferring through the eventual equality (IsEquivalent.trans, EventuallyEq.isEquivalent) gives centralBinom_isEquivalent. The limit form is isEquivalent_iff_tendsto_one with div_div_eq_mul_div. The Catalan bridge is catalan_eq_centralBinom_div with Nat.mul_div_cancel' on Nat.succ_dvd_centralBinom; combined with nat_succ_isEquivalent ((n+1)~n via 1+1/n → 1) and IsEquivalent.div it gives the Catalan asymptotic. The effective lower bound casts Nat.four_pow_le_two_mul_self_mul_centralBinom and divides by 2n (div_le_iff₀).",
+    "keyInsights": [
+      "**The sharp constant is exactly the Stirling-dependent ingredient.** The telescoping product and the elementary bound C(2n,n) < 4ⁿ need no analysis (the sibling entry proves them with no Stirling input); the asymptotic constant 1/√(πn) is the one piece that genuinely requires Stirling's formula, supplied here via Mathlib's Stirling.factorial_isEquivalent_stirling.",
+      "**IsEquivalent algebra makes the derivation structural, not computational.** Treating C(2n,n) = (2n)!/(n!)² as a quotient of equivalent sequences, the asymptotic follows from composing/​multiplying/​dividing Stirling equivalences; the only hand computation is the closed-form pointwise simplification stirlingFn(2n)/(stirlingFn n)² = 4ⁿ/√(πn), where √(4nπ)/(2nπ) = 1/√(πn) and the (n/e) powers contribute 4ⁿ.",
+      "**One asymptotic, two growth laws.** The bridge C(2n,n) = (n+1)·catalan n with (n+1) ~ n transports the central-binomial asymptotic to the Catalan growth law catalan n ∼ 4ⁿ/(√π·n^{3/2}) — the n^{3/2} correction the parent's docstring asserts but never proves, now derived from the same Stirling input.",
+      "**Asymptotic rate plus an effective for-all-n bound.** Mathlib's 4ⁿ ≤ 2n·C(2n,n) gives the effective lower bound 4ⁿ/(2n) ≤ C(2n,n) holding for every n ≥ 1 (not merely asymptotically), bracketing 4ⁿ/(2n) ≤ C(2n,n) ∼ 4ⁿ/√(πn) < 4ⁿ."
+    ],
+    "prerequisites": [
+      "Central binomial coefficient C(2n,n) = Nat.centralBinom n and C(2n,n) = (2n)!/(n!)²",
+      "Stirling's formula as an asymptotic equivalence (Stirling.factorial_isEquivalent_stirling)",
+      "Asymptotics.IsEquivalent algebra (comp_tendsto, mul, div, isEquivalent_iff_tendsto_one)",
+      "Catalan numbers and catalan_eq_centralBinom_div"
+    ]
+  },
+  "conclusion": {
+    "summary": "The central binomial coefficient satisfies the sharp asymptotic C(2n,n) ~[atTop] 4ⁿ/√(πn) (limit form C(2n,n)·√(πn)/4ⁿ → 1), proved by pure Asymptotics.IsEquivalent algebra on Mathlib's Stirling equivalence applied to C(2n,n) = (2n)!/(n!)². The bridge C(2n,n) = (n+1)·catalan n transports this to the Catalan growth law catalan n ~[atTop] 4ⁿ/(n·√(πn)) = 4ⁿ/(√π·n^{3/2}). An effective lower bound 4ⁿ/(2n) ≤ C(2n,n) holds for every n ≥ 1. All nine theorems are machine-checked with no axioms or sorries.",
+    "implications": "This completes the analytic half of the parent's second open question: the telescoping-product sibling supplies the recurrence-level product and the elementary 4ⁿ bound with no Stirling input, and this entry supplies the sharp asymptotic constant 1/√(πn) that genuinely needs Stirling. The derivation also delivers the Catalan growth law catalan n ∼ 4ⁿ/(√π·n^{3/2}) — long asserted in the parent's documentation but previously unproved in the gallery — from the same Stirling equivalence, isolating the n^{3/2} polynomial correction the multiplicative recurrence files only shadowed.",
+    "openQuestions": [
+      "Mathlib's Stirling equivalence yields the asymptotic but not an effective two-sided error bound; can the entry's effective lower bound 4ⁿ/(2n) ≤ C(2n,n) and the sibling's C(2n,n) < 4ⁿ be sharpened to explicit constants c₁,c₂ with c₁·4ⁿ/√n ≤ C(2n,n) ≤ c₂·4ⁿ/√n for all n, using sqrt_pi_le_stirlingSeq-style effective Stirling bounds?",
+      "Does the Catalan asymptotic catalan n ∼ 4ⁿ/(√π·n^{3/2}) combine with the parent's strictly decreasing normalized sequence catalan n/4ⁿ to give a monotone (not merely asymptotic) envelope c/n^{3/2} ≤ catalan n/4ⁿ at the recurrence level?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Real",
+      "Nat",
+      "Asymptotics"
+    ],
+    "namespace": "Erdos396OQ04OQ01OQ01OQ01OQ02",
+    "lineCount": 228,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos396OQ04OQ01OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Parent OQ: telescopes the Catalan recurrence into catalan n = ∏_{k<n} r k and tracks the strictly decreasing normalized sequence catalan n/4ⁿ. Its second open question asks for the central-binomial product and the matching growth law C(2n,n) ∼ 4ⁿ/√(πn); this entry supplies the sharp asymptotic (and the Catalan growth law catalan n ∼ 4ⁿ/(√π·n^{3/2}) the parent only asserts)."
+    },
+    {
+      "targetId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling entry that proves the central-binomial telescoping product C(2n,n) = ∏_{k<n} 2(2k+1)/(k+1) and its Wallis form, deliberately stopping at the elementary bound C(2n,n) < 4ⁿ with no Stirling input. This entry supplies the analytic half that sibling leaves open: the sharp asymptotic constant 1/√(πn)."
+    },
+    {
+      "targetId": "erdos-396",
+      "relationship": "ancestor",
+      "description": "Root problem: descending factorials dividing central binomial coefficients, whose growth law C(2n,n) ∼ 4ⁿ/√(πn) is established here."
+    }
+  ],
+  "sorries": 0
+}
