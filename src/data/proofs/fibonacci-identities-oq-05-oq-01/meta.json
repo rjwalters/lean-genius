@@ -1,0 +1,190 @@
+{
+  "id": "fibonacci-identities-oq-05-oq-01",
+  "title": "Weighted and Alternating Fibonacci Product-Sums",
+  "slug": "fibonacci-identities-oq-05-oq-01",
+  "description": "Answers the first open question of the parent fibonacci-identities-oq-05 (the product-staircase ∑ FₖFₖ₊₁ = Fₙ₊₁² − [n even]): closed forms for the weighted sum ∑ k FₖFₖ₊₁ and the alternating sum ∑ (−1)ᵏ FₖFₖ₊₁. The weighted sum has a clean closed form, fib_weighted_prod_sum: 2·∑_{k≤n} k FₖFₖ₊₁ = 2n Fₙ₊₁² − 2 Fₙ Fₙ₊₁ + (if n even then −n else n+1), proved by induction with the step collapsing via Cassini (fib_cassini_sub: Fₙ₊₁² − Fₙ₊₁Fₙ − Fₙ² = (−1)ⁿ). The alternating sum, by contrast, exhibits a genuine asymmetry: the clean companion is the alternating double-index sum fib_alt_double_index_sum: ∑_{k≤n} (−1)ᵏ F₂ₖ = (−1)ⁿ Fₙ Fₙ₊₁ (a pure ring telescope off the index-addition formula F_{2(n+1)} = Fₙ Fₙ₊₁ + Fₙ₊₁ Fₙ₊₂), but the literal alternating product sum does not collapse to a single product — fib_alt_prod_sum_reduction shows 2·∑ (−1)ᵏ FₖFₖ₊₁ = (−1)ⁿ Fₙ Fₙ₊₁ + ∑ (−1)ᵏ Fₖ² via the doubling identity 2 FₖFₖ₊₁ = F₂ₖ + Fₖ² (fib_two_mul_id), leaving an irreducible alternating-square remainder. Fully verified: 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Classical (Fibonacci summation folklore); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Fibonacci_sequence",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "fibonacci",
+      "cassini",
+      "summation-identity",
+      "weighted-sum",
+      "alternating-sum",
+      "parity",
+      "integer-sequences",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ05OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.fib_add_two",
+        "description": "fib (n + 2) = fib n + fib (n + 1) — the defining recurrence; used to prove Cassini and to expand fib (n+2) in the weighted-sum induction step",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_add",
+        "description": "fib (m + n + 1) = fib m · fib n + fib (m+1) · fib (n+1) — the index-addition formula; specialized at m = n, n = n+1 it gives F_{2(n+1)} = Fₙ Fₙ₊₁ + Fₙ₊₁ Fₙ₊₂, the engine of the alternating double-index telescope",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Nat.fib_two_mul",
+        "description": "fib (2n) = fib n · (2 fib (n+1) − fib n) — the doubling formula; recast over ℤ it yields 2 FₖFₖ₊₁ = F₂ₖ + Fₖ², the bridge from the literal alternating product sum to the double-index sum",
+        "module": "Mathlib.Data.Nat.Fib.Basic"
+      },
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑ k ∈ range (n+1), f k = (∑ k ∈ range n, f k) + f n — peels the last term off each partial sum in the inductive steps",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Even.neg_one_pow / Odd.neg_one_pow",
+        "description": "(−1)ⁿ = 1 for even n and −1 for odd n — collapses the alternating sign in Cassini to the concrete constant matching each parity branch of the weighted sum",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Finset.sum_add_distrib",
+        "description": "∑ (f + g) = ∑ f + ∑ g — splits the per-term identity 2 FₖFₖ₊₁ = F₂ₖ + Fₖ² into the double-index sum plus the alternating-square remainder",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "fib_weighted_prod_sum: ∀ n, 2·∑_{k∈range(n+1)} k·Fₖ·Fₖ₊₁ = 2n Fₙ₊₁² − 2 Fₙ Fₙ₊₁ + (if Even n then −n else n+1) — the closed form for the weighted Fibonacci product sum, absent from Mathlib",
+      "fib_alt_double_index_sum: ∀ n, ∑_{k∈range(n+1)} (−1)ᵏ F₂ₖ = (−1)ⁿ Fₙ Fₙ₊₁ — the clean alternating double-index telescope",
+      "fib_alt_prod_sum_reduction: ∀ n, 2·∑_{k∈range(n+1)} (−1)ᵏ Fₖ Fₖ₊₁ = (−1)ⁿ Fₙ Fₙ₊₁ + ∑ (−1)ᵏ Fₖ² — the reduction exposing the irreducible alternating-square remainder of the literal alternating product sum",
+      "fib_cassini_sub: ∀ n, (Fₙ₊₁)² − Fₙ₊₁ Fₙ − Fₙ² = (−1)ⁿ — Cassini for Nat.fib in subtractive integer form, the engine of the weighted sum",
+      "fib_two_mul_id: ∀ k, 2 Fₖ Fₖ₊₁ = F₂ₖ + Fₖ² — the integer doubling identity bridging consecutive products and double-index Fibonacci values"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 128,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The elementary Fibonacci summation identities were catalogued by Lucas and his contemporaries in the 1870s. The parent entry formalizes the consecutive-product staircase F₀F₁ + ⋯ + FₙFₙ₊₁ = Fₙ₊₁² − [n even], whose even/odd oscillation is Cassini's alternating sign. Two natural refinements suggest themselves: weighting each term by its index k, and alternating the signs. This entry settles both and uncovers a structural surprise — the weighting refinement stays clean, but the alternating refinement splits into a clean double-index part and an irreducible alternating-square tail.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-05, first question)**: Find and prove the closed form for the alternating product sum ∑ (−1)ᵏ Fₖ Fₖ₊₁ and for the weighted sum ∑ k Fₖ Fₖ₊₁.\n\n**Result**: fib_weighted_prod_sum gives the clean closed form for the weighted sum; fib_alt_double_index_sum gives the clean alternating companion ∑ (−1)ᵏ F₂ₖ = (−1)ⁿ Fₙ Fₙ₊₁; and fib_alt_prod_sum_reduction reduces the literal alternating product sum to that companion plus an irreducible alternating-square remainder.",
+    "text": "Using Mathlib's 0-indexed Nat.fib (F₀ = 0, F₁ = 1): the weighted partial sum satisfies 2·∑_{k=0}^{n} k FₖFₖ₊₁ = 2n Fₙ₊₁² − 2 Fₙ Fₙ₊₁ + (if n even then −n else n+1) (the factor 2 keeps the parity correction an integer). The alternating double-index sum collapses exactly: ∑_{k=0}^{n} (−1)ᵏ F₂ₖ = (−1)ⁿ Fₙ Fₙ₊₁. The literal alternating product sum, however, only reduces: 2·∑_{k=0}^{n} (−1)ᵏ FₖFₖ₊₁ = (−1)ⁿ Fₙ Fₙ₊₁ + ∑_{k=0}^{n} (−1)ᵏ Fₖ², whose alternating-square tail admits no single-product closed form.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Cassini for Nat.fib (`fib_cassini_sub`).** Prove Fₙ₊₁² − Fₙ₊₁Fₙ − Fₙ² = (−1)ⁿ over ℤ by induction off Nat.fib_add_two, closing the step with linear_combination -ih.\n2. **Weighted sum (`fib_weighted_prod_sum`).** Induct on n; peel the last term with Finset.sum_range_succ, substitute fib (n+2) = fib n + fib (n+1), split on parity, evaluate the `if`, fold (−1)ⁿ to its concrete value, push casts, and close each branch with `linear_combination (2n+2)·hcass` — the whole step is a single Cassini-scaled ring identity.\n3. **Alternating double-index sum (`fib_alt_double_index_sum`).** Induct on n. The new term is (−1)ⁿ⁺¹ F_{2(n+1)}; expand F_{2(n+1)} = Fₙ Fₙ₊₁ + Fₙ₊₁ Fₙ₊₂ via Nat.fib_add, fold the sign, and the step closes by pure `ring` — no Fibonacci-specific reasoning beyond the index-addition expansion.\n4. **Doubling identity (`fib_two_mul_id`).** Recast Nat.fib_two_mul over ℤ (using fib k ≤ 2 fib (k+1) to clear the truncated subtraction) to get 2 FₖFₖ₊₁ = F₂ₖ + Fₖ².\n5. **Reduction (`fib_alt_prod_sum_reduction`).** Distribute the factor 2 into the sum, rewrite the double-index sum back into closed form, merge the two sums with Finset.sum_add_distrib, and discharge the per-term obligation by `linear_combination (−1)ᵏ·hk`.",
+    "keyInsights": [
+      "**Weighting preserves the Cassini collapse.** The weighted step is, after substituting the recurrence and the parity value of (−1)ⁿ, a single ring identity scaled by Cassini: linear_combination (2n+2)·(Fₙ₊₁² − Fₙ₊₁Fₙ − Fₙ²) closes both parity branches. The index weight k only changes the coefficient, not the mechanism.",
+      "**The honest alternating answer is the double index, not the product.** ∑ (−1)ᵏ F₂ₖ = (−1)ⁿ Fₙ Fₙ₊₁ telescopes cleanly because F_{2(n+1)} = Fₙ Fₙ₊₁ + Fₙ₊₁ Fₙ₊₂ makes the step a pure ring cancellation. The literal product sum ∑ (−1)ᵏ FₖFₖ₊₁ inherits only half of this via 2 FₖFₖ₊₁ = F₂ₖ + Fₖ², leaving the alternating-square sum ∑ (−1)ᵏ Fₖ² as an irreducible remainder.",
+      "**A genuine asymmetry between the two refinements.** Both refinements of the parent staircase are parity governed, but the weighted sum keeps a single closed form while the alternating sum splits into a clean part plus an irreducible tail — a structural distinction that the formalization makes precise rather than glossing over.",
+      "**Scaling by 2 keeps the weighted statement subtraction-free over ℤ.** The parity correction (if n even then −n else n+1) is exactly (−1)ⁿ⁺¹⌈n/2⌉; stating 2·∑ rather than ∑ keeps it an honest integer and lets `linear_combination` finish without rational arithmetic."
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence Nat.fib_add_two and the index-addition / doubling formulas Nat.fib_add, Nat.fib_two_mul",
+      "Cassini's identity and its parity-driven sign (−1)ⁿ",
+      "Induction with Finset.sum_range_succ and the linear_combination / ring tactics over ℤ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring framing the weighted and alternating sums as the two refinements requested by the parent's open question, flagging the asymmetry between them, plus the import/namespace setup (open Finset).",
+      "mathContext": "Refine $\\sum F_kF_{k+1} = F_{n+1}^2 - [n\\text{ even}]$ by weighting ($\\sum k F_kF_{k+1}$) and by alternating signs ($\\sum (-1)^k F_kF_{k+1}$)."
+    },
+    {
+      "id": "cassini",
+      "title": "Cassini's Identity (Subtractive Form)",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "fib_cassini_sub: Fₙ₊₁² − Fₙ₊₁Fₙ − Fₙ² = (−1)ⁿ over ℤ, proved by induction off the recurrence and closed with linear_combination -ih. This is the engine of the weighted sum.",
+      "mathContext": "$F_{n+1}^2 - F_{n+1}F_n - F_n^2 = (-1)^n$."
+    },
+    {
+      "id": "weighted",
+      "title": "The Weighted Product-Sum",
+      "startLine": 53,
+      "endLine": 84,
+      "summary": "fib_weighted_prod_sum: 2·∑ k FₖFₖ₊₁ = 2n Fₙ₊₁² − 2 Fₙ Fₙ₊₁ + (if Even n then −n else n+1), by induction. The step substitutes the recurrence, splits on parity, folds (−1)ⁿ, and closes each branch with linear_combination (2n+2)·Cassini.",
+      "mathContext": "$2\\sum_{k=0}^{n} k F_kF_{k+1} = 2n F_{n+1}^2 - 2F_nF_{n+1} + \\begin{cases}-n & n\\text{ even}\\\\ n+1 & n\\text{ odd}\\end{cases}$."
+    },
+    {
+      "id": "alt-double",
+      "title": "The Alternating Double-Index Sum",
+      "startLine": 86,
+      "endLine": 103,
+      "summary": "fib_alt_double_index_sum: ∑ (−1)ᵏ F₂ₖ = (−1)ⁿ Fₙ Fₙ₊₁, by induction. The step expands F_{2(n+1)} = Fₙ Fₙ₊₁ + Fₙ₊₁ Fₙ₊₂ via Nat.fib_add and closes by pure ring — the clean alternating companion.",
+      "mathContext": "$\\sum_{k=0}^{n} (-1)^k F_{2k} = (-1)^n F_n F_{n+1}$."
+    },
+    {
+      "id": "reduction",
+      "title": "Doubling Identity and Alternating Reduction",
+      "startLine": 105,
+      "endLine": 126,
+      "summary": "fib_two_mul_id: 2 FₖFₖ₊₁ = F₂ₖ + Fₖ² (from Nat.fib_two_mul over ℤ), then fib_alt_prod_sum_reduction: 2·∑ (−1)ᵏ FₖFₖ₊₁ = (−1)ⁿ Fₙ Fₙ₊₁ + ∑ (−1)ᵏ Fₖ². The literal alternating product sum reduces to the clean double-index sum plus an irreducible alternating-square remainder.",
+      "mathContext": "$2\\sum_{k=0}^{n} (-1)^k F_kF_{k+1} = (-1)^n F_n F_{n+1} + \\sum_{k=0}^{n} (-1)^k F_k^2$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-05",
+      "relationship": "extends",
+      "description": "Answers the first open question of the parent product-staircase entry by supplying closed forms for the weighted sum ∑ k FₖFₖ₊₁ and the alternating sum ∑ (−1)ᵏ FₖFₖ₊₁, reusing Cassini's identity as the engine."
+    },
+    {
+      "targetId": "fibonacci-identities-oq-04",
+      "relationship": "relatedTo",
+      "description": "The oq-04 entry formalizes Cassini over Int.fib; here a subtractive Nat.fib Cassini is reproved and used to drive the weighted summation, alongside the index-addition and doubling formulas for the alternating identities."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) closed forms for the two refinements of the Fibonacci product staircase requested by the parent: the weighted sum (a single clean closed form via Cassini) and the alternating sum (a clean double-index companion plus a reduction exhibiting an irreducible alternating-square remainder).",
+    "implications": "Settles the parent's first open question while making precise a structural asymmetry: weighting the staircase preserves a single closed form, but alternating it splits into a clean part and an irreducible tail. The Nat.fib Cassini, index-addition, and doubling identities are assembled into a small reusable toolkit for Fibonacci summation, all absent from Mathlib in this combined form.",
+    "openQuestions": [
+      "Determine whether the alternating-square remainder ∑ (−1)ᵏ Fₖ² admits any closed form (e.g. a parity-split quadratic in Fₙ, Fₙ₊₁), or prove rigorously that no single-product closed form exists.",
+      "Extend the weighted closed form to higher index weights ∑ k² FₖFₖ₊₁ and to the Lucas / Gibonacci (Horadam) product sums, tracking how the parity constant generalizes to a discriminant."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "FibonacciIdentitiesOQ05OQ01",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/FibonacciIdentitiesOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Lucas, Édouard",
+      "title": "Théorie des fonctions numériques simplement périodiques",
+      "year": "1878",
+      "venue": "American Journal of Mathematics",
+      "note": "Foundational catalogue of elementary Fibonacci summation and product identities"
+    },
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Weighted and alternating Fibonacci sums, the doubling and index-addition formulas"
+    },
+    {
+      "authors": "Benjamin, Arthur T. and Quinn, Jennifer J.",
+      "title": "Proofs that Really Count: The Art of Combinatorial Proof",
+      "year": "2003",
+      "venue": "Mathematical Association of America",
+      "note": "Combinatorial viewpoint on Fibonacci product and weighted sum identities"
+    }
+  ],
+  "sorries": 0
+}

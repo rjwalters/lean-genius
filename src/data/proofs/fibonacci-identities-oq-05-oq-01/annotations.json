@@ -1,0 +1,104 @@
+[
+  {
+    "id": "ann-fiboq0501-1",
+    "proofId": "fibonacci-identities-oq-05-oq-01",
+    "range": { "startLine": 3, "endLine": 33 },
+    "type": "context",
+    "title": "Two Refinements of the Product Staircase",
+    "content": "**Module framing.** The parent entry proves the consecutive-product staircase $F_0F_1 + \\cdots + F_nF_{n+1} = F_{n+1}^2 - [n\\text{ even}]$. Its open question asks for two refinements: weighting each term by its index ($\\sum k F_kF_{k+1}$) and alternating the signs ($\\sum (-1)^k F_kF_{k+1}$). This file settles both — and exposes a genuine asymmetry: the weighted sum keeps a single clean closed form, while the alternating sum splits into a clean double-index part and an irreducible alternating-square tail.",
+    "mathContext": "Weighted: $\\sum_{k=0}^{n} k F_kF_{k+1}$; alternating: $\\sum_{k=0}^{n} (-1)^k F_kF_{k+1}$, using 0-indexed $\\mathtt{Nat.fib}$ ($F_0 = 0$).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Fibonacci product staircase (parent entry)",
+      "Cassini's identity and the alternating sign",
+      "Weighted and alternating summation refinements"
+    ],
+    "prerequisites": [
+      "The 0-indexed Fibonacci sequence Nat.fib",
+      "Classical Fibonacci summation identities"
+    ],
+    "tags": ["module-header", "framing", "fibonacci"]
+  },
+  {
+    "id": "ann-fiboq0501-2",
+    "proofId": "fibonacci-identities-oq-05-oq-01",
+    "range": { "startLine": 39, "endLine": 51 },
+    "type": "insight",
+    "title": "Cassini in Subtractive Form, the Weighted-Sum Engine",
+    "content": "**`fib_cassini_sub`** establishes $F_{n+1}^2 - F_{n+1}F_n - F_n^2 = (-1)^n$ over $\\mathbb{Z}$, the shape consumed directly by the weighted-sum induction. It is proved by induction off `Nat.fib_add_two`: the base is `simp [Nat.fib]`, and the step rewrites the sign via $(-1)^{n+1} = -(-1)^n$, substitutes $F_{n+2} = F_n + F_{n+1}$, and closes with `linear_combination -ih`.",
+    "mathContext": "$F_{n+1}^2 - F_{n+1}F_n - F_n^2 = (-1)^n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cassini's identity",
+      "Nat.fib_add_two recurrence",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "The Fibonacci recurrence",
+      "Induction over ℕ and casting to ℤ"
+    ],
+    "tags": ["cassini", "engine", "linear_combination"]
+  },
+  {
+    "id": "ann-fiboq0501-3",
+    "proofId": "fibonacci-identities-oq-05-oq-01",
+    "range": { "startLine": 53, "endLine": 84 },
+    "type": "insight",
+    "title": "The Weighted Sum Has a Clean Closed Form",
+    "content": "**`fib_weighted_prod_sum`** proves $2\\sum_{k=0}^{n} k F_kF_{k+1} = 2n F_{n+1}^2 - 2F_nF_{n+1} + (\\text{if } n\\text{ even then } -n\\text{ else } n+1)$. The overall factor $2$ keeps the parity correction — which is $(-1)^{n+1}\\lceil n/2\\rceil$ — an honest integer. The induction peels the last term with `Finset.sum_range_succ`, substitutes the recurrence, splits on parity (`Nat.even_or_odd`), evaluates the `if`, folds $(-1)^n$ to its concrete value, and closes **each branch identically** with `linear_combination (2n+2) * hcass`: after the parity value is fixed, the whole step is a single Cassini-scaled ring identity. The index weight $k$ only changes the scalar coefficient, not the mechanism.",
+    "mathContext": "$2\\sum_{k=0}^{n} k F_kF_{k+1} = 2n F_{n+1}^2 - 2F_nF_{n+1} + \\begin{cases}-n & n\\text{ even}\\\\ n+1 & n\\text{ odd}\\end{cases}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Weighted Fibonacci product sum",
+      "Cassini-scaled ring identity",
+      "Parity case split"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ and induction",
+      "Even/Odd.neg_one_pow",
+      "linear_combination over ℤ"
+    ],
+    "tags": ["weighted-sum", "closed-form", "cassini"]
+  },
+  {
+    "id": "ann-fiboq0501-4",
+    "proofId": "fibonacci-identities-oq-05-oq-01",
+    "range": { "startLine": 86, "endLine": 103 },
+    "type": "insight",
+    "title": "The Clean Alternating Companion Telescopes",
+    "content": "**`fib_alt_double_index_sum`** proves $\\sum_{k=0}^{n} (-1)^k F_{2k} = (-1)^n F_n F_{n+1}$. The right answer for an *alternating* refinement is the double-index sum, not the literal product sum. The inductive step adds $(-1)^{n+1} F_{2(n+1)}$; expanding $F_{2(n+1)} = F_n F_{n+1} + F_{n+1} F_{n+2}$ via `Nat.fib_add` (specialized at $m = n$, $n = n+1$) and folding the sign, the goal becomes a **pure `ring` cancellation** — no Fibonacci-specific reasoning beyond the index-addition expansion.",
+    "mathContext": "$\\sum_{k=0}^{n} (-1)^k F_{2k} = (-1)^n F_n F_{n+1}$, with $F_{2(n+1)} = F_n F_{n+1} + F_{n+1} F_{n+2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Alternating double-index Fibonacci sum",
+      "Index-addition formula Nat.fib_add",
+      "Telescoping via ring"
+    ],
+    "prerequisites": [
+      "Finset.sum_range_succ and induction",
+      "The index-addition formula for Fibonacci numbers"
+    ],
+    "tags": ["alternating-sum", "double-index", "telescoping"]
+  },
+  {
+    "id": "ann-fiboq0501-5",
+    "proofId": "fibonacci-identities-oq-05-oq-01",
+    "range": { "startLine": 105, "endLine": 126 },
+    "type": "insight",
+    "title": "The Literal Alternating Product Sum Only Reduces",
+    "content": "**`fib_two_mul_id`** recasts `Nat.fib_two_mul` over $\\mathbb{Z}$ — using $F_k \\le 2F_{k+1}$ to clear the truncated subtraction — as $2F_kF_{k+1} = F_{2k} + F_k^2$. **`fib_alt_prod_sum_reduction`** then proves $2\\sum_{k=0}^{n} (-1)^k F_kF_{k+1} = (-1)^n F_n F_{n+1} + \\sum_{k=0}^{n} (-1)^k F_k^2$: distribute the factor $2$ into the sum, rewrite the double-index sum back via `fib_alt_double_index_sum`, merge with `Finset.sum_add_distrib`, and discharge each term by `linear_combination (-1)^k * hk`. The **alternating-square remainder** $\\sum (-1)^k F_k^2$ is irreducible — this is the structural asymmetry with the weighted sum, which carries no such tail.",
+    "mathContext": "$2F_kF_{k+1} = F_{2k} + F_k^2$, hence $2\\sum_{k=0}^{n} (-1)^k F_kF_{k+1} = (-1)^n F_n F_{n+1} + \\sum_{k=0}^{n} (-1)^k F_k^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Doubling identity Nat.fib_two_mul",
+      "Alternating-square remainder",
+      "Finset.sum_add_distrib"
+    ],
+    "prerequisites": [
+      "The doubling formula for Fibonacci numbers",
+      "zify with a Nat inequality to clear truncated subtraction",
+      "Finset.sum_congr and per-term linear_combination"
+    ],
+    "tags": ["reduction", "irreducible-remainder", "asymmetry"]
+  }
+]
