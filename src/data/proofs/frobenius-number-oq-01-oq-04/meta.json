@@ -75,6 +75,69 @@
     "dateAdded": "2026-06-24",
     "mathlib_version": "4.26.0"
   },
+  "overview": {
+    "historicalContext": "The Apéry set, introduced by Roger Apéry in 1946 and developed by Ernst Selmer in 1977, is the central computational object of numerical-semigroup theory. For a numerical semigroup S and a nonzero element a ∈ S, Ap(S, a) collects the least element of S in each residue class mod a; from it one reads off the Frobenius number, the genus (number of gaps), and the symmetric/Gorenstein property. For the two-generator semigroup ⟨a,b⟩ with gcd(a,b)=1 the Apéry set is completely explicit — {0, b, 2b, …, (a−1)b} — making it the ideal first formalization. The parent gallery entries proved Sylvester's Frobenius number g = ab − a − b and the gap count (a−1)(b−1)/2 directly via the Representable predicate, never naming the Apéry set; this entry supplies it.",
+    "problemStatement": "For coprime a, b ≥ 2, construct the Apéry set of ⟨a,b⟩ with respect to a and prove: (i) the Apéry characterization — w_k = k·b is the least element of ⟨a,b⟩ in its residue class mod a, so membership reduces to one comparison; (ii) reflection symmetry — k ↦ a−1−k fixes the Apéry set with w_k + w_{a−1−k} = (a−1)b = g + a; (iii) the Frobenius number's non-representability, re-derived from Apéry minimality. This answers the 'via Apéry sets' direction of the parent open question for the two-generator case.",
+    "proofStrategy": "Index existence: k ↦ k·b mod a is injective on Fin a by coprime cancellation (Nat.ModEq.cancel_right_of_coprime); injective ⟹ surjective on a finite type (Finite.injective_iff_surjective) gives, for every n, a unique k < a with n ≡ k·b (mod a). Apéry minimality (aperyIndex_le_of_representable): a representable n = a·x + b·y in the class of k·b satisfies n ≡ b·y, so b·y ≡ b·k, cancel b to get y ≡ k (mod a), and k < a minimal forces k ≤ y, hence k·b ≤ n. The converse representable_of_aperyIndex writes n = a·q + b·k from Nat.modEq_iff_dvd'. Reflection: apery_symm is the algebraic identity k·b + (a−1−k)·b = (a−1)·b; apery_max identifies (a−1)·b = g + a by omega from frobeniusNumber. The Frobenius gap: g lies in the class of (a−1)·b (difference exactly a), and minimality of (a−1)·b in that class rules out g ∈ S.",
+    "keyInsights": [
+      "**The Apéry set turns membership into a single comparison.** Once the least representative w_k = k·b of each residue class mod a is known, n ∈ ⟨a,b⟩ iff n ≡ k·b (mod a) and n ≥ k·b — replacing the existential Representable predicate by one inequality.",
+      "**Coprime cancellation is the whole engine.** Every minimality argument reduces b·y ≡ b·k (mod a) to y ≡ k (mod a); gcd(a,b)=1 is exactly what licenses cancelling b, and it is also why the a multiples 0, b, …, (a−1)b hit all residue classes.",
+      "**Reflection symmetry encodes the Frobenius involution.** The pairing w_k + w_{a−1−k} = (a−1)b = g + a on the Apéry set is the source of the gap involution n ↦ g − n; symmetric (Gorenstein) numerical semigroups are precisely those whose Apéry set is symmetric under this reflection.",
+      "**Non-representability of g is Apéry minimality, not a separate miracle.** The Frobenius number sits one step a below the maximal Apéry element (a−1)·b of its class; since that element is the least element of S in the class, g cannot be in S — recovering Sylvester's result structurally."
+    ],
+    "prerequisites": [
+      "Numerical semigroups and the Representable predicate (parent frobenius-number)",
+      "The Apéry set / least residue-class representatives (Apéry 1946, Selmer 1977)",
+      "Modular arithmetic with coprime cancellation (Nat.ModEq)",
+      "Injective ⟹ surjective on finite types"
+    ]
+  },
+  "sections": [
+    {
+      "id": "apery-index",
+      "title": "The Apéry Index of a Residue Class",
+      "startLine": 50,
+      "endLine": 74,
+      "summary": "aperyIndex_inj (k ↦ k·b mod a injective on Fin a via coprime cancellation) and exists_aperyIndex (injective ⟹ surjective gives a unique k < a with n ≡ k·b mod a) — establishing the Apéry set is well-defined, one representative per class.",
+      "mathContext": "$\\forall n,\\ \\exists!\\, k<a,\\ n \\equiv k b \\pmod a.$"
+    },
+    {
+      "id": "apery-characterization",
+      "title": "Apéry Minimality and Characterization",
+      "startLine": 76,
+      "endLine": 120,
+      "summary": "representable_of_aperyIndex and aperyIndex_le_of_representable establish that w_k = k·b is the least element of ⟨a,b⟩ in its class (coprime cancellation y ≡ k mod a, k ≤ y), packaged as the biconditional apery_le_iff_representable.",
+      "mathContext": "$n \\equiv k b\\ (k<a) \\Rightarrow (k b \\le n \\iff \\mathrm{Representable}\\ n).$"
+    },
+    {
+      "id": "reflection",
+      "title": "Reflection Symmetry of the Apéry Set",
+      "startLine": 122,
+      "endLine": 142,
+      "summary": "apery_symm (the involution k ↦ a−1−k with w_k + w_{a−1−k} = (a−1)b) and apery_max ((a−1)b = g + a, the maximal Apéry element).",
+      "mathContext": "$w_k + w_{a-1-k} = (a-1)b = g + a.$"
+    },
+    {
+      "id": "frobenius-gap",
+      "title": "Global Characterization and the Frobenius Gap",
+      "startLine": 144,
+      "endLine": 186,
+      "summary": "representable_iff_aperyIndex (membership = dominating the Apéry element of n's class), frobeniusNumber_mod (g in the class of (a−1)b), and frobeniusNumber_not_representable (g ∉ S by Apéry minimality — Sylvester re-derived).",
+      "mathContext": "$g \\equiv (a-1)b \\pmod a,\\ g < (a-1)b \\Rightarrow g \\notin \\langle a,b\\rangle.$"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "frobenius-number-oq-01",
+      "relationship": "extends",
+      "description": "Parent: Sylvester's gap count (a−1)(b−1)/2 for ⟨a,b⟩, proved directly via the Representable predicate. This entry introduces the Apéry set as the standard machine behind that count and sets up Selmer's genus formula."
+    },
+    {
+      "targetId": "frobenius-number",
+      "relationship": "ancestor",
+      "description": "Root: Sylvester's Frobenius number g(a,b) = ab − a − b, whose non-representability is here re-derived from Apéry minimality and reflection symmetry."
+    }
+  ],
   "conclusion": {
     "summary": "The Apéry set Ap(⟨a,b⟩, a) = {0, b, …, (a−1)b} is the family of least residue-class representatives of the two-generator numerical semigroup: representability inside a class is one comparison against its Apéry element, the involution k ↦ a−1−k reflects the set about its maximum (a−1)b = g + a, and the Frobenius number's non-representability falls out of Apéry minimality. This packages the standard Apéry machinery for ⟨a,b⟩ and sets up Selmer's genus formula.",
     "implications": [
