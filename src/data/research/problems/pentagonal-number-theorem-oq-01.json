@@ -21,7 +21,8 @@
       "genPent_sq_le_self (k²≤g(k)), index_le_genPent / neg_index_le_genPent / abs_index_le_genPent (|k|≤g(k)), mul_pred_nonneg / mul_succ_nonneg (consecutive-integer products ≥0) [PentagonalNumberTheoremOQ01.lean]",
       "indexSet_finite: for any n, {k | g(k) ≤ n} is finite (⊆ [-n,n]) — Euler's recurrence is a finite sum [PentagonalNumberTheoremOQ01.lean]",
       "pentIndices (def) + mem_pentIndices + coe_pentIndices: COMPUTABLE Finset enumerator of contributing indices {k | g(k) ≤ n} filtered from [-n,n]; membership ⟺ g(k) ≤ n, and its Set coercion is exactly the index set indexSet_finite proves finite [PentagonalNumberTheoremOQ01.lean]",
-      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]"
+      "genPent_neg: the ±k pairing g(-k) = g(k) + k of Euler's recurrence (the two shifts g(k), g(-k) appearing together differ by exactly k) [PentagonalNumberTheoremOQ01.lean]",
+      "pentSeriesCoeff_eq_sum_pentIndices: the noncomputable [Xⁿ] series coefficient pentSeriesCoeff n = ∑_{k∈pentIndices n} (if genPent k = n then pentSign k else 0) — a finite, Finset-evaluable expression over the computable enumerator; genPent_injective leaves at most one surviving summand [PentagonalNumberTheoremOQ01.lean]"
     ],
     "mathlibGaps": [
       "Franklin's sign-reversing involution on partitions into distinct parts is still absent from Mathlib — the genuine combinatorial heart.",
@@ -29,6 +30,7 @@
       "RESOLVED 2026-06-19 (was an open gap S1–S4): the formal-power-series infinite product ∏(1-Xⁿ) IS now in Mathlib via Combinatorics.Enumerative.Partition.GenFun (genFun, genFun_eq_tprod, coeff_genFun) + Partition.Glaisher; distincts/odds are in Partition.Basic."
     ],
     "nextSteps": [
+      "DONE (Session 7, researcher-8): pentSeriesCoeff is now expressed as a finite sum over pentIndices (pentSeriesCoeff_eq_sum_pentIndices), so the RHS [Xⁿ]∑(-1)ᵏX^{g(k)} coefficient is Finset-evaluable — the bridge between Part 3c's computable enumerator and Part 5's abstract coefficient is closed. Remaining open core unchanged: Franklin's involution ∑_{p∈distincts n}(-1)^{#parts} = pentSeriesCoeff (n:ℤ).",
       "State the two now-FREE bridges as lemmas (when a backend recovers): (a) genFun (fun i c => if c=1 then (-1:ℤ) else 0) = ∏'_i (1 - X^{i+1}) via genFun_eq_tprod, and (b) coeff n (genFun f) = ∑_{p∈distincts n} (-1)^{p.parts.card} via coeff_genFun (show the character weight is 0 on repeated-part partitions, (-1)^{#parts} on distinct-part ones).",
       "State the lone remaining open identity as a single sorry: ∑_{p∈distincts n} (-1)^{p.parts.card} = pentSeriesCoeff (n:ℤ) (the ℕ↔ℤ bookkeeping aligns genFun's coefficient with pentSeriesCoeff_genPent/genPent_injective).",
       "Frontier: prove that sorry via Franklin's involution (pair smallest part with longest terminal staircase; fixed points ⟺ pentagonal staircases) — the deep multi-file development now isolated as the ONLY remaining gap."
@@ -39,8 +41,8 @@
     {
       "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
       "filename": "PentagonalNumberTheoremOQ01.lean",
-      "lineCount": 565,
-      "theoremCount": 41,
+      "lineCount": 594,
+      "theoremCount": 42,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,

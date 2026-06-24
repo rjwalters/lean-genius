@@ -13,9 +13,9 @@
       "PowerSeries.WithPiTopology"
     ],
     "namespace": "PentagonalNumberTheoremOQ01",
-    "lineCount": 564,
+    "lineCount": 594,
     "axiomCount": 0,
-    "theoremCount": 43,
+    "theoremCount": 44,
     "definitionCount": 6,
     "path": "Proofs/PentagonalNumberTheoremOQ01.lean",
     "sorries": 0
@@ -84,13 +84,14 @@
       "Both ends of Euler's identity machine-checked through Mathlib's 2025 Partition.GenFun (Weiyi Wang) under the Euler character pentChar i c = (if c = 1 then -1 else 0): genFun_pent_eq_tprod proves the PRODUCT side genFun pentChar = ∏_{i}(1 - X^{i+1}) (each inner tsum collapses to -(X^{i+1}) since the character is supported on multiplicity 1, via tsum_eq_single), and coeff_genFun_pent proves the COEFFICIENT side [Xⁿ] genFun pentChar = ∑_{p ∈ Nat.Partition.distincts n}(-1)^{p.parts.card} = p_even(n)-p_odd(n) (a partition with a repeated part contributes a 0 factor and drops out; a distinct-part partition contributes (-1)^{#parts}, via a Nodup/¬Nodup split over n.Partition and Finset.sum_filter_add_sum_filter_not). Together these reduce the entire remaining open core to the single Franklin-involution identity ∑_{p ∈ distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n).",
       "The two ends joined with no genFun intermediary visible: coeff_tprod_pent composes the product side genFun_pent_eq_tprod with the coefficient side coeff_genFun_pent to state Euler's identity directly on Mathlib's power-series product — [Xⁿ] ∏'_{i}(1 - X^{i+1}) = ∑_{p ∈ Nat.Partition.distincts n}(-1)^{p.parts.card}. coeff_tprod_pent_eq_evenOdd_diff then splits that signed sum by the parity of the number of parts to read the coefficient as the literal difference p_even(n) - p_odd(n): [Xⁿ]∏(1-Xᵐ) = #{distinct-part partitions of n with an even number of parts} - #{those with an odd number}. This is the directly-citable form of Euler's product/partition identity, leaving only the Franklin involution ∑_{p∈distincts n}(-1)^{p.parts.card} = pentSeriesCoeff(n) as the open core.",
       "disc_genPent / disc_genPent_neg: explicit discriminant roots 24·g(±k)+1 = (6k∓1)², naming the concrete square in the recognition criterion (where isGenPent_iff_isSquare only asserts existence); the two roots 6k∓1 of the ±k pair straddle 6k symmetrically",
-      "genPent_add_neg: the ±-pairing sum g(k)+g(-k) = 3k² (complementing genPent_neg's difference g(-k)-g(k)=k), so the two pentagonal shifts in Euler's recurrence have sum 3k² and difference k"
+      "genPent_add_neg: the ±-pairing sum g(k)+g(-k) = 3k² (complementing genPent_neg's difference g(-k)-g(k)=k), so the two pentagonal shifts in Euler's recurrence have sum 3k² and difference k",
+      "pentSeriesCoeff_eq_sum_pentIndices: the noncomputable series coefficient pentSeriesCoeff n equals the explicit finite sum over the computable enumerator pentIndices n keeping only the index hitting n exactly (sum of pentSign k over k with genPent k = n); by genPent_injective at most one summand survives, turning the abstract [Xn] coefficient into a Finset-evaluable expression in the form Euler's partition recurrence ranges over"
     ],
     "dateAdded": "2026-06-18",
     "axiomCount": 0,
-    "lineCount": 530,
+    "lineCount": 594,
     "assumptions": "None counted: 0 axiom declarations, 0 sorries, no structure-encoded hypotheses. pentSeriesCoeff is a noncomputable def using Classical.choice (a foundational axiom that the project's axiom policy does not count toward axiomCount). The genFun bridges genFun_pent_eq_tprod, coeff_genFun_pent and the two composed tprod headlines coeff_tprod_pent, coeff_tprod_pent_eq_evenOdd_diff each #print axioms to [propext, Classical.choice, Quot.sound] — only the standard foundational axioms, none counted. Machine-verified — the file compiles cleanly under the docker Lean build against Mathlib (Built Proofs.PentagonalNumberTheoremOQ01, 7743 jobs, exit 0).",
-    "theoremCount": 39,
+    "theoremCount": 40,
     "definitionCount": 6
   },
   "overview": {
