@@ -3529,6 +3529,7 @@ import Proofs.PythagoreanTriplesOQ06OQ01
 import Proofs.PythagoreanTriplesOQ06OQ01OQ01
 import Proofs.PythagoreanTriplesOQ07
 import Proofs.PythagoreanTriplesOQ08
+import Proofs.PythagoreanTriplesOQ08OQ01
 import Proofs.PythagoreanTriplesOQ09
 import Proofs.PythagoreanTriplesOQ10
 import Proofs.QuadraticGaussSumDiagonal
