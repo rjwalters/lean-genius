@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-fermat-prime-factor-def",
+    "proofId": "infinitude-primes-oq-05",
+    "range": {
+      "startLine": 40,
+      "endLine": 45
+    },
+    "type": "definition",
+    "title": "The Fermat Prime Factor",
+    "content": "fermatPrimeFactor n = (fermatNumber n).minFac assigns to each index n the smallest prime factor of the n-th Fermat number Fₙ = 2^(2ⁿ)+1. This is a concrete computable function — the whole proof of infinitude is just the statement that this assignment is injective. Unlike Euclid's construction it never names a 'new' prime; it counts primes through an explicit map ℕ → {primes}.",
+    "mathContext": "$\\mathrm{fermatPrimeFactor}(n) = (F_n).\\mathrm{minFac}$ with $F_n = 2^{2^n}+1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Fermat numbers",
+      "smallest prime factor",
+      "computable assignment"
+    ],
+    "prerequisites": [
+      "Nat.minFac",
+      "fermatNumber"
+    ]
+  },
+  {
+    "id": "ann-primes-from-fermat",
+    "proofId": "infinitude-primes-oq-05",
+    "range": {
+      "startLine": 46,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Each Fermat Number Yields a Prime",
+    "content": "fermatNumber_ne_one uses 2 < Fₙ (Nat.two_lt_fermatNumber) to get Fₙ ≠ 1; then fermatPrimeFactor_prime applies Nat.minFac_prime (the smallest factor of any n ≠ 1 is prime) and fermatPrimeFactor_dvd records that it divides Fₙ (Nat.minFac_dvd). These two facts — prime and divides Fₙ — are exactly what the injectivity argument needs.",
+    "mathContext": "$2 < F_n \\Rightarrow F_n \\ne 1 \\Rightarrow \\mathrm{minFac}(F_n)$ is prime and $\\mathrm{minFac}(F_n) \\mid F_n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minFac_prime",
+      "Fermat number lower bound"
+    ],
+    "prerequisites": [
+      "Nat.two_lt_fermatNumber",
+      "Nat.minFac_prime",
+      "Nat.minFac_dvd"
+    ]
+  },
+  {
+    "id": "ann-injectivity",
+    "proofId": "infinitude-primes-oq-05",
+    "range": {
+      "startLine": 60,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "Pairwise Coprimality Makes the Map Injective",
+    "content": "fermatPrimeFactor_injective is the heart of Goldbach's proof. Suppose pₘ = pₙ for m ≠ n. The common value p divides both Fₘ and Fₙ, hence divides gcd(Fₘ, Fₙ); but Nat.coprime_fermatNumber_fermatNumber gives gcd(Fₘ, Fₙ) = 1 (distinct Fermat numbers are coprime, from the telescoping identity F₀⋯Fₙ₋₁ = Fₙ − 2). So Nat.eq_one_of_dvd_coprimes forces p = 1, contradicting primality. Coprimality is precisely what makes a repeated prime factor impossible.",
+    "mathContext": "$p = p_m = p_n \\Rightarrow p \\mid \\gcd(F_m, F_n) = 1 \\Rightarrow p = 1$, contradicting $p$ prime. So $n \\mapsto p_n$ is injective.",
+    "significance": "key",
+    "relatedConcepts": [
+      "pairwise coprimality",
+      "telescoping product F₀⋯Fₙ₋₁ = Fₙ−2",
+      "injectivity"
+    ],
+    "prerequisites": [
+      "Nat.coprime_fermatNumber_fermatNumber",
+      "Nat.eq_one_of_dvd_coprimes"
+    ]
+  },
+  {
+    "id": "ann-infinitude",
+    "proofId": "infinitude-primes-oq-05",
+    "range": {
+      "startLine": 78,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Infinitely Many Primes by Injection",
+    "content": "infinite_setOf_prime feeds the injection (fermatPrimeFactor, prime + injective) into Set.infinite_of_injective_forall_mem: an injection from the infinite type ℕ into {p | p.Prime} forces that set to be infinite. exists_injection_nat_to_primes packages the same injection existentially. This is the modern 'prove infinitude by an injection from ℕ' move — non-constructive in spirit but fully constructive in Lean, since fermatPrimeFactor is an explicit computable function.",
+    "mathContext": "An injection $\\mathbb{N} \\hookrightarrow \\{p : p\\text{ prime}\\}$ with $\\mathbb{N}$ infinite makes the prime set infinite.",
+    "significance": "key",
+    "relatedConcepts": [
+      "infinite sets",
+      "injection from ℕ",
+      "Set.Infinite"
+    ],
+    "prerequisites": [
+      "Set.infinite_of_injective_forall_mem",
+      "fermatPrimeFactor_injective"
+    ]
+  },
+  {
+    "id": "ann-examples-summary",
+    "proofId": "infinitude-primes-oq-05",
+    "range": {
+      "startLine": 92,
+      "endLine": 124
+    },
+    "type": "context",
+    "title": "Small Cases and Summary Theorem",
+    "content": "The worked cases confirm fermatPrimeFactor 0 = 3, 1 = 5, 2 = 17 — each of F₀, F₁, F₂ is itself prime, so equals its own smallest prime factor — and the first three extracted primes are pairwise distinct (a concrete shadow of injectivity). infinitude_primes_oq05_summary bundles the three headline facts: each fermatPrimeFactor n is prime, the map is injective, and {p | p.Prime} is infinite — Goldbach's proof in one statement.",
+    "mathContext": "$F_0=3,\\ F_1=5,\\ F_2=17$ (all prime); the summary bundles primality + injectivity + infinitude.",
+    "significance": "context",
+    "relatedConcepts": [
+      "worked examples",
+      "Fermat primes",
+      "summary bundle"
+    ],
+    "prerequisites": [
+      "decide / norm_num",
+      "fermatPrimeFactor_injective"
+    ]
+  }
+]
