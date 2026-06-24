@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ivt-oq0202-ann-header",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "Answering the Parent's Open Question: How Fast?",
+    "content": "The bisection algorithm (parent intermediate-value-theorem-oq-02) and its exact-root recovery (sibling -oq-02-oq-01) settle that bisection converges; the sibling explicitly asked to 'quantify the convergence rate (one bit per step) and compare against Newton's quadratic convergence.' This file answers that. The design separates a reusable rate calculus (abstract lemmas about what recurrence the error satisfies) from two concrete instantiations: bisection (linear, ratio 1/2) and Newton's √A iteration (quadratic). Everything is elementary and 0-axiom — no completeness or limit axioms beyond Mathlib's reals."
+  },
+  {
+    "id": "ivt-oq0202-ann-abstract-rates",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 56, "endLine": 93 },
+    "type": "insight",
+    "title": "Two Recurrences, Two Decay Laws",
+    "content": "The mathematical heart of any rate comparison: linear_rate shows a contraction eₙ₊₁ ≤ r·eₙ forces geometric decay eₙ ≤ rⁿ·e₀, while quadratic_rate shows eₙ₊₁ ≤ C·eₙ² forces doubly-exponential decay. The trick for the quadratic case is to rescale: with gₙ = C·eₙ the recurrence becomes pure squaring gₙ₊₁ ≤ gₙ², so by induction gₙ ≤ g₀^(2ⁿ). In 'correct digits' language, linear adds a fixed number per step while quadratic doubles them."
+  },
+  {
+    "id": "ivt-oq0202-ann-quadratic-tendsto",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 95, "endLine": 106 },
+    "type": "technique",
+    "title": "Squeezing the Doubly-Exponential Bound to Zero",
+    "content": "Rather than reason about 2ⁿ → ∞ inside an exponential directly, quadratic_le_linear_bound observes the termwise inequality q^(2ⁿ) ≤ qⁿ (because n ≤ 2ⁿ and 0 ≤ q ≤ 1), and quadratic_tendsto_zero then squeezes 0 ≤ q^(2ⁿ) ≤ qⁿ between two sequences tending to 0. The geometric bound qⁿ → 0 does the heavy lifting; the squeeze transfers it to the faster quadratic bound."
+  },
+  {
+    "id": "ivt-oq0202-ann-bisection",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 107, "endLine": 179 },
+    "type": "theorem",
+    "title": "Bisection is Linear with Ratio 1/2",
+    "content": "Re-deriving the parent's width law (bisect f n (a,b)).2 - (bisect f n (a,b)).1 = (b-a)/2ⁿ self-contained, bisect_error_bound shows the midpoint sits within (b-a)/2^(n+1) of every point of the bracket — in particular of a true root, which earlier entries prove lies in the bracket. bisect_error_halves and bisect_error_linear_recurrence record that this bound is exactly a 1/2-contraction, so it plugs straight into linear_rate. One correct binary digit is gained per step."
+  },
+  {
+    "id": "ivt-oq0202-ann-newton-identity",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 180, "endLine": 232 },
+    "type": "insight",
+    "title": "The Exact Newton Error Identity for √A",
+    "content": "Newton's √A iteration is xₙ₊₁ = (xₙ + A/xₙ)/2. The exact algebraic identity sqrtNewtonStep_sub_sqrt: (x + A/x)/2 - √A = (x - √A)²/(2x) (proved by field_simp + nlinarith using (√A)² = A) is the engine of quadratic convergence. Because the right side is a square over a positive number, it shows in one stroke that every iterate lands ≥ √A and stays positive — the invariants sqrtNewtonSeq_ge_sqrt and sqrtNewtonSeq_pos — with no second-derivative or Taylor machinery."
+  },
+  {
+    "id": "ivt-oq0202-ann-newton-recurrence",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 233, "endLine": 252 },
+    "type": "theorem",
+    "title": "Deriving (not Assuming) the Quadratic Recurrence",
+    "content": "sqrtNewton_quadratic_recurrence turns the error identity into eₙ₊₁ ≤ eₙ²/(2√A): from step 1 the iterate satisfies xₙ ≥ √A, so the denominator 2xₙ ≥ 2√A and (xₙ-√A)²/(2xₙ) ≤ (xₙ-√A)²/(2√A). This is genuine quadratic convergence with C = 1/(2√A), derived from the iteration itself rather than posited as a hypothesis — exactly the input quadratic_rate consumes."
+  },
+  {
+    "id": "ivt-oq0202-ann-comparison",
+    "proofId": "intermediate-value-theorem-oq-02-oq-02",
+    "range": { "startLine": 253, "endLine": 289 },
+    "type": "concept",
+    "title": "Doubling Digits Beats Adding One",
+    "content": "quadratic_dominates_linear proves r^(2ⁿ) ≤ rⁿ for 0 ≤ r ≤ 1, and quadratic_strictly_dominates sharpens it to a strict inequality for n ≥ 1 when r < 1 (writing r^(2ⁿ) = rⁿ·r^(2ⁿ-n) with r^(2ⁿ-n) < 1). Started from the same contraction factor, the Newton error bound is never worse than the bisection bound and strictly better from the first step. rate_comparison_summary packages this with both convergence-to-zero statements — the precise formalization of 'linear vs quadratic.'"
+  }
+]

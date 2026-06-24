@@ -1,0 +1,128 @@
+{
+  "id": "intermediate-value-theorem-oq-02-oq-02",
+  "title": "Bisection vs. Newton: Linear vs. Quadratic Convergence Rates",
+  "slug": "intermediate-value-theorem-oq-02-oq-02",
+  "description": "Quantifies and compares the convergence speed of the two classical root-finders attached to the constructive IVT. Bisection converges linearly with ratio 1/2 (error ≤ (b-a)/2^(n+1), gaining one correct bit per step); Newton converges quadratically (error eₙ₊₁ ≤ C·eₙ², doubling correct bits per step). Two abstract rate lemmas form the core: a contraction eₙ₊₁ ≤ r·eₙ gives eₙ ≤ rⁿ·e₀, and a quadratic recurrence eₙ₊₁ ≤ C·eₙ² gives the doubly-exponential C·eₙ ≤ (C·e₀)^(2ⁿ). The bisection bound is instantiated from the self-contained bisection algorithm, and the quadratic recurrence is genuinely derived (not assumed) from a fully worked example: Newton's iteration xₙ₊₁ = (xₙ + A/xₙ)/2 for √A, via the exact identity xₙ₊₁ - √A = (xₙ - √A)²/(2xₙ). The comparison theorem r^(2ⁿ) ≤ rⁿ (strict for n ≥ 1) makes 'doubling digits beats adding one digit' precise. Fully machine-checked, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-23",
+    "status": "verified",
+    "proofRepoPath": "Proofs/IntermediateValueTheoremOQ02OQ02.lean",
+    "tags": [
+      "analysis",
+      "numerical-analysis",
+      "intermediate-value-theorem",
+      "bisection",
+      "newtons-method",
+      "convergence-rate",
+      "square-root"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-23",
+    "axiomCount": 0,
+    "assumptions": "None. #print axioms reports only propext, Classical.choice, Quot.sound for every result (including rate_comparison_summary, sqrtNewton_quadratic_recurrence, quadratic_rate, and bisect_error_bound). No sorries, no added axioms.",
+    "lineCount": 289,
+    "theoremCount": 21,
+    "definitionCount": 5,
+    "originalContributions": [
+      "linear_rate / quadratic_rate: abstract convergence-rate lemmas — a contraction eₙ₊₁ ≤ r·eₙ yields eₙ ≤ rⁿ·e₀, while a quadratic recurrence eₙ₊₁ ≤ C·eₙ² yields the doubly-exponential bound C·eₙ ≤ (C·e₀)^(2ⁿ) by squaring the rescaled error",
+      "bisect_error_bound: the bisection midpoint approximates every point of the n-th bracket (in particular a true root) to within (b-a)/2^(n+1) — genuine linear convergence with ratio 1/2",
+      "sqrtNewtonStep_sub_sqrt: the exact Newton error identity (x + A/x)/2 - √A = (x - √A)²/(2x), the engine of quadratic convergence for the square-root iteration",
+      "sqrtNewton_quadratic_recurrence: a derived (not assumed) quadratic error recurrence eₙ₊₁ ≤ eₙ²/(2√A) for Newton's √A iteration, obtained from the error identity plus the invariant xₙ ≥ √A",
+      "quadratic_dominates_linear / quadratic_strictly_dominates: r^(2ⁿ) ≤ rⁿ (strict for n ≥ 1, r < 1), the precise sense in which Newton's digit-doubling outruns bisection's one-bit-per-step",
+      "rate_comparison_summary: packaged termwise domination plus both convergence-to-zero statements (geometric for bisection, doubly-exponential for Newton)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Bisection is the algorithmic heart of Bolzano's (1817) Intermediate Value Theorem: halving a sign-changing bracket gives one correct binary digit of the root per step — linear convergence. Newton's method (Newton 1669, Raphson 1690), when it converges, doubles the number of correct digits each step — quadratic convergence, made rigorous by the Newton–Kantorovich theory. The parent gallery entry intermediate-value-theorem-oq-02 built the bisection algorithm and proved its width bound (b-a)/2ⁿ; the sibling -oq-02-oq-01 recovered the exact root and explicitly posed 'quantify the convergence rate (one bit per step) and compare against Newton's quadratic convergence' as its first open question. This entry answers that question.",
+    "problemStatement": "Formalize and compare the error-decay rates of bisection (linear, ratio 1/2) and Newton's method (quadratic), making precise the sense in which Newton's doubling of correct digits outruns bisection's steady one-digit-per-step gain.",
+    "text": "The mathematical core is two abstract lemmas about a nonnegative error sequence eₙ. linear_rate: if eₙ₊₁ ≤ r·eₙ then eₙ ≤ rⁿ·e₀ (geometric decay). quadratic_rate: if eₙ₊₁ ≤ C·eₙ² then the rescaled error gₙ = C·eₙ is squared each step, giving gₙ ≤ g₀^(2ⁿ), i.e. C·eₙ ≤ (C·e₀)^(2ⁿ) — doubly exponential. Bisection instantiates the linear case directly: re-deriving the parent's width law (bisect f n (a,b)).2 - (bisect f n (a,b)).1 = (b-a)/2ⁿ, the midpoint approximates any bracket point within (b-a)/2^(n+1), a bound that halves at each step. Newton instantiates the quadratic case through a self-contained worked example — the √A iteration xₙ₊₁ = (xₙ + A/xₙ)/2. The exact identity xₙ₊₁ - √A = (xₙ - √A)²/(2xₙ) is proved by clearing denominators; it simultaneously shows xₙ₊₁ ≥ √A (positivity of the square) and yields, using xₙ ≥ √A from step 1, the quadratic recurrence eₙ₊₁ ≤ eₙ²/(2√A). Feeding this into quadratic_rate gives true quadratic convergence with C = 1/(2√A). Finally, quadratic_dominates_linear proves r^(2ⁿ) ≤ rⁿ (strict for n ≥ 1, r < 1), so started from the same contraction factor the Newton bound is never worse than the bisection bound and strictly better from the first step.",
+    "proofStrategy": "Separate the rate analysis (abstract, reusable lemmas proved by induction) from the two instantiations. Bisection's linear bound follows from the width law and a midpoint-distance estimate. Newton's quadratic recurrence is derived — not assumed — from an exact algebraic error identity plus a positivity/monotonicity invariant on the iterates. The comparison is reduced to the elementary fact n < 2ⁿ together with monotonicity of t ↦ rᵗ for 0 < r < 1.",
+    "keyInsights": [
+      "Convergence rate is captured abstractly by the recurrence the error satisfies: linear (eₙ₊₁ ≤ r·eₙ) versus quadratic (eₙ₊₁ ≤ C·eₙ²). Everything specific to bisection or Newton is just verifying which recurrence holds.",
+      "The quadratic bound is doubly exponential: rescaling by C turns the recurrence into pure squaring gₙ₊₁ ≤ gₙ², so gₙ ≤ g₀^(2ⁿ) — the number of correct digits doubles each step.",
+      "Newton's quadratic convergence for √A needs no second-derivative or Taylor machinery: the exact identity (x + A/x)/2 - √A = (x - √A)²/(2x) both proves the iterates stay ≥ √A and exposes the squared error directly.",
+      "Termwise, r^(2ⁿ) ≤ rⁿ because n < 2ⁿ: this single inequality is the precise statement that 'doubling correct digits' dominates 'adding one correct digit per step'."
+    ],
+    "prerequisites": [
+      "The bisection algorithm and its width law (b-a)/2ⁿ (re-stated self-contained from the parent entry)",
+      "Basic properties of Real.sqrt (Real.sq_sqrt, Real.sqrt_pos)",
+      "Monotonicity of powers under 0 ≤ a ≤ 1 (pow_le_pow_of_le_one) and n < 2ⁿ (Nat.lt_two_pow_self)",
+      "Convergence of geometric sequences (tendsto_pow_atTop_nhds_zero_of_lt_one) and the squeeze theorem"
+    ]
+  },
+  "conclusion": {
+    "summary": "The parent's open question is answered: bisection converges linearly (error ≤ (b-a)/2^(n+1), one bit per step) and Newton quadratically (eₙ₊₁ ≤ C·eₙ², digits doubling). Two abstract rate lemmas (linear_rate, quadratic_rate) supply the decay laws rⁿ·e₀ and (C·e₀)^(2ⁿ); the bisection bound is instantiated from the algorithm and the quadratic recurrence is genuinely derived from Newton's √A iteration via the exact identity xₙ₊₁ - √A = (xₙ - √A)²/(2xₙ). quadratic_dominates_linear (r^(2ⁿ) ≤ rⁿ, strict for n ≥ 1) makes the speed gap precise. 21 theorems, 5 definitions, 289 lines, 0 axioms.",
+    "implications": "This gives a reusable, machine-checked vocabulary for convergence rates: any algorithm whose error satisfies a linear or quadratic recurrence inherits the corresponding decay law and the comparison. The derived (not assumed) Newton recurrence for √A is a faithful, self-contained instance of quadratic convergence that sidesteps the heavier Taylor/Newton–Kantorovich apparatus.",
+    "openQuestions": [
+      "Derive the general Newton quadratic recurrence eₙ₊₁ ≤ (M/2m)·eₙ² from a bound |f''| ≤ M and |f'| ≥ m via Taylor's theorem with Lagrange remainder, recovering the √A case as a corollary.",
+      "Formalize the basin of attraction: identify explicit hypotheses on x₀ guaranteeing C·e₀ < 1 so the quadratic bound actually tends to 0, and contrast with bisection's unconditional convergence on any sign-changing bracket.",
+      "Add the superlinear secant method (order ≈ 1.618) to complete the linear/superlinear/quadratic comparison."
+    ]
+  },
+  "leanFile": {
+    "namespace": "IVTConvergenceRates",
+    "lineCount": 289,
+    "axiomCount": 0,
+    "theoremCount": 21,
+    "definitionCount": 5,
+    "path": "Proofs/IntermediateValueTheoremOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "intermediate-value-theorem-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Sibling that recovered the exact root from bisection and posed 'quantify the convergence rate (one bit per step) and compare against Newton's quadratic convergence' as its first open question. This entry answers it."
+    },
+    {
+      "targetId": "intermediate-value-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Parent: the constructive bisection algorithm and its width law (b-a)/2ⁿ, re-stated self-contained here and turned into a linear convergence-rate statement."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "related",
+      "description": "The classical IVT, whose constructive bisection proof is the source of the linear-rate root-finder compared here against Newton's method."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and statement of the rate comparison",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Docstring framing the parent's open question (bisection linear vs Newton quadratic), listing the four parts (abstract rate lemmas, bisection instantiation, the derived Newton √A recurrence, and the comparison) and confirming all results are 0-axiom. Imports Mathlib and enters the IVTConvergenceRates namespace."
+    },
+    {
+      "id": "abstract-rates",
+      "title": "Part I — Abstract convergence-rate lemmas",
+      "startLine": 54,
+      "endLine": 106,
+      "summary": "linear_rate (eₙ₊₁ ≤ r·eₙ ⟹ eₙ ≤ rⁿ·e₀) and quadratic_rate (eₙ₊₁ ≤ C·eₙ² ⟹ C·eₙ ≤ (C·e₀)^(2ⁿ)), both by induction, plus the convergence corollaries linear_tendsto_zero, quadratic_le_linear_bound, and quadratic_tendsto_zero (via squeeze)."
+    },
+    {
+      "id": "bisection-linear",
+      "title": "Part II — Bisection: linear convergence with ratio 1/2",
+      "startLine": 107,
+      "endLine": 179,
+      "summary": "Self-contained bisection primitives (bisectStep, bisect, bisectMid) with the width law bisect_width = (b-a)/2ⁿ; bisect_error_bound shows the midpoint approximates every bracket point within (b-a)/2^(n+1), and bisect_error_halves / bisect_error_linear_recurrence express this as a 1/2-contraction feeding linear_rate."
+    },
+    {
+      "id": "newton-quadratic",
+      "title": "Part III — Newton: quadratic convergence for √A",
+      "startLine": 180,
+      "endLine": 252,
+      "summary": "Newton's √A iteration sqrtNewtonStep/sqrtNewtonSeq; the exact error identity sqrtNewtonStep_sub_sqrt = (x-√A)²/(2x) yields the invariants xₙ > 0 and xₙ ≥ √A (from step 1), and sqrtNewton_quadratic_recurrence derives eₙ₊₁ ≤ eₙ²/(2√A) — genuine quadratic convergence with C = 1/(2√A)."
+    },
+    {
+      "id": "comparison",
+      "title": "Part IV — The comparison: quadratic dominates linear",
+      "startLine": 253,
+      "endLine": 289,
+      "summary": "quadratic_dominates_linear (r^(2ⁿ) ≤ rⁿ for 0 ≤ r ≤ 1) and quadratic_strictly_dominates (strict for n ≥ 1, r < 1), packaged with both convergence-to-zero statements in rate_comparison_summary: started from the same contraction factor, Newton's bound beats bisection's from the first step."
+    }
+  ],
+  "sorries": []
+}
