@@ -1,0 +1,98 @@
+[
+  {
+    "id": "mantel-oq0301-ann-imports",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 5 },
+    "type": "concept",
+    "title": "A Single `import Mathlib`: Turán Graphs, Degrees, and Nat.count",
+    "content": "The file imports all of Mathlib to reach three developments at once: Mathlib.Combinatorics.SimpleGraph.Extremal.Turan (the definition turanGraph n r and turanGraph_cliqueFree), Mathlib.Combinatorics.SimpleGraph.Finite (degree, minDegree, neighborFinset_eq_filter and the extremality lemmas), and Mathlib.Data.Nat.Count (Nat.count and its successor recurrence). No axioms or sorries are introduced.",
+    "mathContext": "$\\mathrm{turanGraph}\\,n\\,r$ has $\\mathrm{Adj}\\,v\\,w \\iff (v : \\mathbb{N}) \\% r \\ne (w : \\mathbb{N}) \\% r$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Turán graph", "complete bipartite graph", "minimum degree", "Nat.count"],
+    "prerequisites": ["simple graphs", "vertex degree"]
+  },
+  {
+    "id": "mantel-oq0301-ann-docstring",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 7, "endLine": 43 },
+    "type": "concept",
+    "title": "Why Sharpness Needs Its Own Proof",
+    "content": "The parent entry proved an upper bound: every triangle-free graph on n ≥ 1 vertices has a vertex of degree at most ⌊n/2⌋. That an upper bound holds says nothing about whether it is attained — perhaps every triangle-free graph in fact has a vertex of much smaller degree. Sharpness is the complementary existence statement: a particular triangle-free graph whose minimum degree equals ⌊n/2⌋. Producing such a witness pins ⌊n/2⌋ as the exact extremal minimum degree. The witness chosen is the balanced complete bipartite graph, which Mathlib already packages as the r = 2 Turán graph.",
+    "mathContext": "Upper bound $\\min\\deg \\le \\lfloor n/2\\rfloor$ for all $G$; sharpness exhibits one $G$ with $\\min\\deg = \\lfloor n/2\\rfloor$.",
+    "significance": "central",
+    "relatedConcepts": ["extremal graph theory", "sharpness", "Mantel's theorem", "balanced bipartition"],
+    "prerequisites": ["upper vs lower bounds", "extremal constructions"]
+  },
+  {
+    "id": "mantel-oq0301-ann-bridge",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 51, "endLine": 64 },
+    "type": "technique",
+    "title": "card_fin_filter_val: Counting in Fin n via Nat.count",
+    "content": "A vertex degree in turanGraph n 2 is a count over Fin n of a predicate that depends only on the underlying natural number (the residue v % 2). card_fin_filter_val equates such a Fin n count, #{w : Fin n | Q w.val}, with Nat.count Q n. The proof maps the filtered Finset through Fin.val, which is injective (so cardinality is preserved by card_image_of_injective), and identifies the image with {x ∈ range n | Q x} = the filter underlying Nat.count. This bridge is the key move: Nat.count has a one-step recurrence (Nat.count_succ) that makes closed-form evaluation a routine induction, whereas inducting directly on Fin n is awkward because the vertex type changes.",
+    "mathContext": "$\\#\\{w : \\mathrm{Fin}\\,n \\mid Q\\,w.\\mathrm{val}\\} = \\mathrm{Nat.count}\\,Q\\,n$ via the injective image of $\\mathrm{Fin.val}$.",
+    "significance": "central",
+    "relatedConcepts": ["Nat.count", "Fin.val_injective", "card_image_of_injective", "Finset.filter"],
+    "prerequisites": ["Finset cardinality", "injective images"]
+  },
+  {
+    "id": "mantel-oq0301-ann-residue-counts",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 66, "endLine": 92 },
+    "type": "technique",
+    "title": "The Two Parity Counts ⌈n/2⌉ and ⌊n/2⌋ by Induction",
+    "content": "count_mod_two_eq_zero proves Nat.count (·%2=0) n = (n+1)/2 = ⌈n/2⌉, and count_mod_two_eq_one proves Nat.count (·%2=1) n = n/2 = ⌊n/2⌋. Each is a clean induction: Nat.count_succ rewrites count at n+1 as count at n plus (if the predicate holds at n then 1 else 0), and after casing on whether m % 2 is 0 or 1 the arithmetic identity ((m+1)/2 vs (m+2)/2, etc.) is discharged by omega, which natively understands integer division and modular arithmetic. count_congr then lets these counts be reused under any pointwise-equivalent predicate.",
+    "mathContext": "$\\mathrm{count}(k \\mapsto k \\% 2 = 0)\\,n = \\lceil n/2\\rceil$ and $\\mathrm{count}(k \\mapsto k \\% 2 = 1)\\,n = \\lfloor n/2\\rfloor$.",
+    "significance": "central",
+    "relatedConcepts": ["Nat.count_succ", "induction", "omega", "ceiling and floor"],
+    "prerequisites": ["induction on ℕ", "integer division"]
+  },
+  {
+    "id": "mantel-oq0301-ann-triangle-free",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 94, "endLine": 98 },
+    "type": "key-step",
+    "title": "Triangle-Freeness for Free from turanGraph_cliqueFree",
+    "content": "Because turanGraph n 2 is Mathlib's r = 2 Turán graph, triangle-freeness is immediate: turanGraph_cliqueFree states that for 0 < r the graph turanGraph n r is CliqueFree (r+1). Instantiating at r = 2 gives CliqueFree (2+1), which is definitionally CliqueFree 3 — exactly the triangle-free hypothesis. No bipartite construction or hand argument is needed; the choice of Mathlib's Turán graph as the witness pays off here.",
+    "mathContext": "$0 < r \\Rightarrow \\mathrm{turanGraph}\\,n\\,r$ is $\\mathrm{CliqueFree}(r+1)$; at $r=2$, $\\mathrm{CliqueFree}\\,3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["CliqueFree", "Turán's theorem", "triangle-free graphs"],
+    "prerequisites": ["cliques in graphs"]
+  },
+  {
+    "id": "mantel-oq0301-ann-degree",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 100, "endLine": 114 },
+    "type": "key-step",
+    "title": "The Exact Degree Sequence: ⌊n/2⌋ at Even Vertices, ⌈n/2⌉ at Odd",
+    "content": "turanTwo_degree computes deg v = if v % 2 = 0 then ⌊n/2⌋ else ⌈n/2⌉. The neighbour finset of v is filter (Adj v) over Fin n; since Adj v w is v % 2 ≠ w % 2, the counting bridge rewrites the degree as Nat.count (fun k => v % 2 ≠ k % 2) n. Casing on v % 2 ∈ {0,1} collapses the disequality to a single residue class: an even vertex (v % 2 = 0) is adjacent to exactly the odd vertices (count n/2 = ⌊n/2⌋), and an odd vertex to exactly the even vertices (count (n+1)/2 = ⌈n/2⌉). This is the precise quantitative content behind the complete bipartite structure.",
+    "mathContext": "$\\deg v = \\lfloor n/2\\rfloor$ when $v$ even, $\\lceil n/2\\rceil$ when $v$ odd.",
+    "significance": "central",
+    "relatedConcepts": ["neighborFinset_eq_filter", "degree", "complete bipartite graph", "residues"],
+    "prerequisites": ["vertex degree", "graph adjacency"]
+  },
+  {
+    "id": "mantel-oq0301-ann-min-degree",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 116, "endLine": 129 },
+    "type": "key-step",
+    "title": "Minimum Degree Exactly ⌊n/2⌋ by Antisymmetry",
+    "content": "turanTwo_minDegree proves (turanGraph n 2).minDegree = ⌊n/2⌋ for n ≥ 1 in two halves. Upper: vertex 0 is even, so its degree is ⌊n/2⌋, and minDegree ≤ deg 0 (minDegree_le_degree) gives minDegree ≤ ⌊n/2⌋. Lower: every vertex has degree ⌊n/2⌋ or ⌈n/2⌉, both ≥ ⌊n/2⌋, so le_minDegree_of_forall_le_degree gives ⌊n/2⌋ ≤ minDegree (using that Fin n is nonempty for n ≥ 1). Antisymmetry yields equality. This is the sharpness statement the parent's open question requested.",
+    "mathContext": "$n \\ge 1 \\Rightarrow (\\mathrm{turanGraph}\\,n\\,2).\\mathrm{minDegree} = \\lfloor n/2\\rfloor$.",
+    "significance": "central",
+    "relatedConcepts": ["minDegree", "le_antisymm", "minDegree_le_degree", "le_minDegree_of_forall_le_degree"],
+    "prerequisites": ["minimum of a finite set", "antisymmetry of ≤"]
+  },
+  {
+    "id": "mantel-oq0301-ann-certificate",
+    "proofId": "mantel-theorem-oq-03-oq-01",
+    "range": { "startLine": 131, "endLine": 146 },
+    "type": "concept",
+    "title": "The Packaged Sharpness Certificate",
+    "content": "turanTwo_degree_le records the companion upper bound deg v ≤ ⌈n/2⌉ for every vertex. turanTwo_sharp then bundles the two facts the open question asks for: turanGraph n 2 is CliqueFree 3 (triangle-free) AND its minimum degree is exactly ⌊n/2⌋. Together with the parent's exists_degree_le_card_div_two (min degree ≤ ⌊n/2⌋ for all triangle-free graphs), this certifies that ⌊n/2⌋ is the exact extremal value — the parent's bound cannot be lowered. Note the maximum-degree value ⌈n/2⌉ is only attained for n ≥ 2 (at n = 1 the lone vertex is isolated), which is why the universally-valid statements are the minimum-degree equality and the degree upper bound.",
+    "mathContext": "$\\mathrm{turanGraph}\\,n\\,2$ is triangle-free with $\\min\\deg = \\lfloor n/2\\rfloor$: the bound is attained.",
+    "significance": "central",
+    "relatedConcepts": ["sharpness certificate", "extremal value", "Mantel's theorem"],
+    "prerequisites": ["upper and lower bounds", "extremal graph theory"]
+  }
+]
