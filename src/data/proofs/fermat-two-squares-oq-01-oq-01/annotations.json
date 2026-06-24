@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-f2sq0101-overview",
+    "proofId": "fermat-two-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "context",
+    "title": "The composition boundary: why n = 3 has no square identity",
+    "content": "The docstring situates the result in the Cayley–Dickson / Hurwitz picture. Multiplicative n-square identities exist exactly in dimensions 1, 2, 4, 8 — the dimensions of the normed composition algebras ℝ, ℂ, ℍ, 𝕆 (Hurwitz's theorem): n=1 (x²·y²=(xy)²), n=2 (Brahmagupta–Fibonacci), n=4 (Euler), n=8 (Degen). This file pins the sharp boundary at the first dimension NOT on the list, n=3: the naturals representable as a sum of three squares are not multiplicatively closed, with smallest witness 3·5 = 15. The obstruction is the easy mod-8 half of Legendre's three-square theorem. Honest scope: only that easy modular direction is formalized, not the full Legendre 'iff' nor Hurwitz's theorem.",
+    "mathContext": "Composition identities exist iff $n\\in\\{1,2,4,8\\}$ (Hurwitz). Here: sums of three squares are not closed under $\\times$; $3,5$ qualify but $15\\equiv7\\pmod8$ does not.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cayley–Dickson construction",
+      "Hurwitz's theorem",
+      "normed composition algebra",
+      "n-square identities",
+      "Legendre three-square theorem"
+    ],
+    "prerequisites": [
+      "sums of squares",
+      "quaternions / octonions (context)",
+      "modular arithmetic"
+    ]
+  },
+  {
+    "id": "ann-f2sq0101-defs",
+    "proofId": "fermat-two-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 59
+    },
+    "type": "definition",
+    "title": "Sums of two and three squares",
+    "content": "Two predicates: IsSumOfTwoSquares n := ∃ a b, a² + b² = n and IsSumOfThreeSquares n := ∃ a b c, a² + b² + c² = n, over the naturals. The whole entry contrasts the multiplicative behaviour of these two sets.",
+    "mathContext": "$\\mathrm{IsSumOfTwoSquares}(n) :\\iff \\exists a,b,\\ a^2+b^2=n$; $\\mathrm{IsSumOfThreeSquares}(n):\\iff \\exists a,b,c,\\ a^2+b^2+c^2=n$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sum of squares",
+      "representability predicate"
+    ],
+    "prerequisites": [
+      "existential predicates"
+    ]
+  },
+  {
+    "id": "ann-f2sq0101-n2closed",
+    "proofId": "fermat-two-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 77
+    },
+    "type": "theorem",
+    "title": "n = 2: sums of two squares are multiplicatively closed",
+    "content": "isSumOfTwoSquares_mul shows the product of two sums of two squares is again a sum of two squares — the number-theoretic shadow of the Brahmagupta–Fibonacci identity (a²+b²)(c²+d²) = (ac−bd)² + (ad+bc)², equivalently multiplicativity of the complex norm |zw|² = |z|²|w|². It is delegated to Mathlib's Nat.sq_add_sq_mul. This is the n=2 rung of the Cayley–Dickson ladder and the positive half of the dichotomy.",
+    "mathContext": "$(a^2+b^2)(c^2+d^2) = (ac-bd)^2+(ad+bc)^2$ — multiplicativity of $|z|^2$ on $\\mathbb{C}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brahmagupta–Fibonacci identity",
+      "Nat.sq_add_sq_mul",
+      "complex norm multiplicativity",
+      "Gaussian integers"
+    ],
+    "prerequisites": [
+      "the two-square identity",
+      "complex numbers"
+    ]
+  },
+  {
+    "id": "ann-f2sq0101-mod8",
+    "proofId": "fermat-two-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 83,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "The mod-8 obstruction: no sum of three squares is ≡ 7",
+    "content": "The crux. three_sq_ne_seven_mod_eight proves ∀ a b c : ZMod 8, a² + b² + c² ≠ 7 by a finite `decide` — squares mod 8 lie in {0,1,4} and no three of these sum to 7. (This is `decide`, kernel-checked, NOT native_decide, so the file stays axiom-free.) not_isSumOfThreeSquares_of_mod_eight lifts it to ℕ: any n ≡ 7 (mod 8) that were a sum of three squares would, pushed into ZMod 8, contradict the finite fact. This is exactly the easy necessity direction of Legendre's three-square theorem.",
+    "mathContext": "Squares mod 8 $\\in\\{0,1,4\\}$; no triple sums to $7\\pmod 8$. Hence $n\\equiv7\\pmod8 \\Rightarrow n$ is not a sum of three squares.",
+    "significance": "key",
+    "relatedConcepts": [
+      "quadratic residues mod 8",
+      "decide tactic",
+      "ZMod 8",
+      "Legendre three-square theorem (easy direction)"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "casting ℕ → ZMod"
+    ]
+  },
+  {
+    "id": "ann-f2sq0101-fail",
+    "proofId": "fermat-two-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 113,
+      "endLine": 137
+    },
+    "type": "theorem",
+    "title": "n = 3: composition fails, witnessed by 3·5 = 15",
+    "content": "The explicit failure. 3 = 1²+1²+1² and 5 = 0²+1²+2² are sums of three squares, but 15 = 3·5 ≡ 7 (mod 8) is not (fifteen_not_isSumOfThreeSquares, from the mod-8 obstruction). isSumOfThreeSquares_not_multiplicative packages this into ∃ m n, both sums of three squares with m·n not — so there can be no three-square composition identity, precisely as Hurwitz predicts (no normed composition algebra in dimension 3). 15 is the smallest such obstruction.",
+    "mathContext": "$3=1^2+1^2+1^2$, $5=0^2+1^2+2^2$, but $3\\cdot5=15\\equiv7\\pmod8$ is not a sum of three squares.",
+    "significance": "key",
+    "relatedConcepts": [
+      "counterexample",
+      "multiplicative non-closure",
+      "smallest witness",
+      "no three-square identity"
+    ],
+    "prerequisites": [
+      "the mod-8 obstruction",
+      "explicit witnesses"
+    ]
+  },
+  {
+    "id": "ann-f2sq0101-dichotomy",
+    "proofId": "fermat-two-squares-oq-01-oq-01",
+    "range": {
+      "startLine": 143,
+      "endLine": 155
+    },
+    "type": "theorem",
+    "title": "The n = 2 vs n = 3 dichotomy, packaged",
+    "content": "two_squares_closed_three_squares_not bundles both halves into a single statement: sums of two squares ARE multiplicatively closed, while sums of three squares are NOT. This is the sharp boundary the Cayley–Dickson / Hurwitz framework predicts between the 'good' dimensions {1,2,4,8} and the rest — the entry's headline contribution, with the three trailing #print axioms confirming everything is axiom-free.",
+    "mathContext": "$\\big(\\forall m,n,\\ \\text{2-sq closed}\\big) \\land \\big(\\exists m,n,\\ \\text{3-sq not closed}\\big)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "dichotomy",
+      "composition boundary",
+      "axiom-free verification"
+    ],
+    "prerequisites": [
+      "the n=2 and n=3 results"
+    ]
+  }
+]
