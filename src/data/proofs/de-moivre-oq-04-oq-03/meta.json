@@ -1,0 +1,230 @@
+{
+  "id": "de-moivre-oq-04-oq-03",
+  "title": "De Moivre OQ-04-OQ-03: The Cyclotomic Polynomial Φₙ is the Minimal Polynomial of ω over ℚ",
+  "slug": "de-moivre-oq-04-oq-03",
+  "description": "Identifies the algebraic invariant of the De Moivre generator ω = cos(2π/n) + i·sin(2π/n): its minimal polynomial over ℚ is the n-th cyclotomic polynomial Φₙ, which is irreducible of degree φ(n), so the cyclotomic field has degree [ℚ(ω) : ℚ] = φ(n).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DeMoivreOQ04OQ03.lean",
+    "tags": [
+      "complex-analysis",
+      "cyclotomic-polynomial",
+      "roots-of-unity",
+      "minimal-polynomial",
+      "field-theory",
+      "number-theory",
+      "de-moivre"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.isPrimitiveRoot_exp",
+        "description": "exp(2πi/n) is a primitive n-th root of unity for n ≠ 0",
+        "module": "Mathlib.RingTheory.RootsOfUnity.Complex"
+      },
+      {
+        "theorem": "Polynomial.cyclotomic_eq_minpoly_rat",
+        "description": "For a primitive n-th root of unity ζ, the n-th cyclotomic polynomial over ℚ equals the minimal polynomial of ζ",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      },
+      {
+        "theorem": "Polynomial.cyclotomic.irreducible_rat",
+        "description": "The n-th cyclotomic polynomial is irreducible over ℚ (Gauss/Kronecker/Dedekind)",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      },
+      {
+        "theorem": "Polynomial.natDegree_cyclotomic",
+        "description": "deg Φₙ = φ(n), Euler's totient",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      },
+      {
+        "theorem": "IntermediateField.adjoin.finrank",
+        "description": "For an integral element, [F(α) : F] equals the degree of its minimal polynomial",
+        "module": "Mathlib.FieldTheory.Adjoin"
+      },
+      {
+        "theorem": "Polynomial.monic_X_pow_sub_C",
+        "description": "Xⁿ − C a is monic for n ≠ 0, witnessing integrality of ω via Xⁿ − 1",
+        "module": "Mathlib.Algebra.Polynomial.Monic"
+      }
+    ],
+    "originalContributions": [
+      "Connects the trigonometric De Moivre generator ω = cos(2π/n) + i·sin(2π/n) (from parent oq-04) to its arithmetic invariant, the cyclotomic field, via the Euler bridge ω = exp(2πi/n)",
+      "Proves ω is integral over ℚ directly, exhibiting the monic witness Xⁿ − 1",
+      "Headline: minpoly ℚ ω = Φₙ, obtained from cyclotomic_eq_minpoly_rat applied to the primitivity of ω",
+      "Irreducibility of the minimal polynomial of ω transported from cyclotomic.irreducible_rat",
+      "Degree computation natDegree (minpoly ℚ ω) = φ(n) via natDegree_cyclotomic",
+      "Cyclotomic field degree [ℚ(ω) : ℚ] = φ(n) via IntermediateField.adjoin.finrank",
+      "Verified small cases: degrees for n = 1, 4, 5 and finrank for n = 5, 6 (φ(1)=1, φ(4)=φ(6)=2, φ(5)=4)"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 157,
+    "assumptions": "0 axioms, 0 sorries. Depends only on Lean's foundational axioms (propext, Classical.choice, Quot.sound). The minimal polynomial identification and irreducibility are transported from Mathlib's cyclotomic API; the integrality, degree, and field-degree results are assembled on top.",
+    "theoremCount": 10,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The parent entry (OQ-04) used De Moivre's formula (1707) to display the $n$-th roots of unity geometrically as the powers of $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$, the vertices of a regular $n$-gon. The next question, going back to Gauss's *Disquisitiones Arithmeticae* (1801), is *arithmetic*: what polynomial equation of least degree does $\\omega$ satisfy over the rationals? Gauss proved the cyclotomic polynomial $\\Phi_p$ irreducible for prime $p$; Kronecker and Dedekind extended this to all $n$. The answer is that $\\Phi_n$ — the monic polynomial whose roots are exactly the *primitive* $n$-th roots of unity — is the minimal polynomial of $\\omega$. Its degree is Euler's totient $\\varphi(n)$, which is therefore the degree of the cyclotomic field $\\mathbb{Q}(\\omega)$ over $\\mathbb{Q}$. This degree controls the entire Galois theory of cyclotomic fields and underlies Gauss's criterion for constructibility of regular polygons.",
+    "problemStatement": "**Open Question** (from OQ-04): Develop the cyclotomic polynomial $\\Phi_n$ as the minimal polynomial of $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$ over $\\mathbb{Q}$.\n\n**Answer**: $\\omega$ is a primitive $n$-th root of unity, so it is a root of $\\Phi_n$; since $\\Phi_n$ is monic and irreducible over $\\mathbb{Q}$, it *is* the minimal polynomial of $\\omega$. Consequently $\\deg(\\operatorname{minpoly}_{\\mathbb{Q}} \\omega) = \\deg \\Phi_n = \\varphi(n)$ and $[\\mathbb{Q}(\\omega) : \\mathbb{Q}] = \\varphi(n)$.",
+    "text": "Identifies the algebraic invariant of the De Moivre generator ω = cos(2π/n) + i·sin(2π/n): its minimal polynomial over ℚ is the n-th cyclotomic polynomial Φₙ, irreducible of degree φ(n), so [ℚ(ω) : ℚ] = φ(n).",
+    "proofStrategy": "The proof proceeds in four parts:\n1. **Euler bridge and primitivity**: Rewrite $\\omega = \\exp(2\\pi i/n)$ via `exp_mul_I` and transport `Complex.isPrimitiveRoot_exp` to get `IsPrimitiveRoot (omega n) n`.\n2. **Integrality**: $\\omega$ is integral over $\\mathbb{Q}$ because it is a root of the monic polynomial $X^n - 1$ (`monic_X_pow_sub_C`).\n3. **Minimal polynomial = Φₙ**: Apply `cyclotomic_eq_minpoly_rat` to the primitivity of $\\omega$, yielding $\\operatorname{minpoly}_{\\mathbb{Q}} \\omega = \\Phi_n$. Irreducibility follows from `cyclotomic.irreducible_rat`; $\\omega$ being a root of $\\Phi_n$ follows from `minpoly.aeval`.\n4. **Degree and field**: $\\deg \\Phi_n = \\varphi(n)$ (`natDegree_cyclotomic`) gives the minimal-polynomial degree, and `IntermediateField.adjoin.finrank` upgrades this to $[\\mathbb{Q}(\\omega) : \\mathbb{Q}] = \\varphi(n)$.",
+    "keyInsights": [
+      "The trigonometric generator $\\omega = \\cos(2\\pi/n) + i\\sin(2\\pi/n)$ and the exponential $e^{2\\pi i/n}$ are the same number (Euler), so the entire cyclotomic API — written for primitive roots — applies verbatim to the De Moivre form",
+      "**Two facts pin down the minimal polynomial**: $\\omega$ is a root of $\\Phi_n$ (by definition of cyclotomic), and $\\Phi_n$ is monic and irreducible over $\\mathbb{Q}$ — a monic irreducible with $\\alpha$ as a root *is* the minimal polynomial",
+      "Irreducibility of $\\Phi_n$ over $\\mathbb{Q}$ (Gauss/Kronecker/Dedekind) is the deep input; everything else is bookkeeping with monic normalisation",
+      "**Degree = $\\varphi(n)$** because $\\Phi_n$ collects exactly the primitive $n$-th roots, of which there are $\\varphi(n)$ — the totient count is read directly off the polynomial degree",
+      "This is the *arithmetic* deepening of OQ-04's *geometric* picture: OQ-04 says $\\omega$ generates the roots of unity as a group; here $\\omega$ generates the cyclotomic field $\\mathbb{Q}(\\omega)$ as a field, of dimension $\\varphi(n)$"
+    ],
+    "prerequisites": [
+      "Roots of unity and primitive roots",
+      "Minimal polynomials and integral elements",
+      "Cyclotomic polynomials and Euler's totient",
+      "Field extensions and degree [K : F]"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the minimal polynomial of ω over ℚ is the cyclotomic polynomial Φₙ, with the two classical facts (ω is a root of Φₙ; Φₙ irreducible) and consequences deg = φ(n), [ℚ(ω):ℚ] = φ(n)",
+      "startLine": 1,
+      "endLine": 51,
+      "mathContext": "**Goal**: $\\operatorname{minpoly}_{\\mathbb{Q}}\\omega = \\Phi_n$, irreducible of degree $\\varphi(n)$, hence $[\\mathbb{Q}(\\omega):\\mathbb{Q}] = \\varphi(n)$."
+    },
+    {
+      "id": "generator-primitivity",
+      "title": "The Generator ω and its Primitivity",
+      "summary": "Defines omega n = cos(↑(2π/n)) + sin(↑(2π/n))·i, the Euler bridge omega_eq_exp (ω = exp(2πi/n)), primitivity omega_isPrimitiveRoot, and ωⁿ = 1",
+      "startLine": 52,
+      "endLine": 75,
+      "mathContext": "$\\omega = e^{2\\pi i/n}$ is a primitive $n$-th root of unity; $\\omega^n = 1$."
+    },
+    {
+      "id": "integrality",
+      "title": "Part I: ω is Integral over ℚ",
+      "summary": "omega_isIntegral: ω is a root of the monic polynomial Xⁿ − 1, so it is integral over ℚ — the prerequisite for the minimal polynomial and field-degree statements",
+      "startLine": 76,
+      "endLine": 83,
+      "mathContext": "$\\omega$ satisfies the monic $X^n - 1 \\in \\mathbb{Q}[X]$, hence is integral over $\\mathbb{Q}$."
+    },
+    {
+      "id": "minpoly-cyclotomic",
+      "title": "Part II: The Minimal Polynomial is the Cyclotomic Polynomial",
+      "summary": "Headline minpoly_omega_eq_cyclotomic: minpoly ℚ ω = Φₙ (from cyclotomic_eq_minpoly_rat); minpoly_omega_irreducible (irreducibility); aeval_omega_cyclotomic (ω is a root of Φₙ)",
+      "startLine": 84,
+      "endLine": 104,
+      "mathContext": "$\\operatorname{minpoly}_{\\mathbb{Q}}\\omega = \\Phi_n$, irreducible over $\\mathbb{Q}$, with $\\Phi_n(\\omega) = 0$."
+    },
+    {
+      "id": "degree-field",
+      "title": "Part III: Degree φ(n) and the Cyclotomic Field",
+      "summary": "natDegree_minpoly_omega: deg(minpoly ℚ ω) = φ(n) (via natDegree_cyclotomic); finrank_adjoin_omega: [ℚ(ω):ℚ] = φ(n) (via IntermediateField.adjoin.finrank)",
+      "startLine": 105,
+      "endLine": 118,
+      "mathContext": "$\\deg(\\operatorname{minpoly}_{\\mathbb{Q}}\\omega) = \\varphi(n)$ and $[\\mathbb{Q}(\\omega):\\mathbb{Q}] = \\varphi(n)$."
+    },
+    {
+      "id": "examples",
+      "title": "Part IV: Verified Small Cases",
+      "summary": "Concrete degrees and field dimensions: n=1 (φ=1), n=4 (φ=2, ω=i, X²+1), n=6 (φ=2, X²−X+1), n=5 (φ=4, X⁴+X³+X²+X+1)",
+      "startLine": 119,
+      "endLine": 135,
+      "mathContext": "$\\varphi(1)=1$, $\\varphi(4)=2$, $\\varphi(6)=2$, $\\varphi(5)=4$ — the minimal-polynomial degrees and cyclotomic-field dimensions for small $n$."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary Theorem",
+      "summary": "demoivre_oq04_oq03_summary bundles all five main results: ω integral, minpoly = Φₙ, irreducible, degree φ(n), and [ℚ(ω):ℚ] = φ(n)",
+      "startLine": 136,
+      "endLine": 157,
+      "mathContext": "Five results in one: ω integral over ℚ; $\\operatorname{minpoly}_{\\mathbb{Q}}\\omega = \\Phi_n$; irreducible; degree $\\varphi(n)$; $[\\mathbb{Q}(\\omega):\\mathbb{Q}] = \\varphi(n)$."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization identifies the minimal polynomial of the De Moivre generator ω = cos(2π/n) + i·sin(2π/n) over ℚ as the n-th cyclotomic polynomial Φₙ. It establishes that ω is integral over ℚ, that minpoly ℚ ω = Φₙ, that this polynomial is irreducible of degree φ(n), and consequently that the cyclotomic field has degree [ℚ(ω) : ℚ] = φ(n). All results are fully proved with zero sorries and zero axioms beyond Lean's foundations.",
+    "implications": "Completes the arithmetic half of the De Moivre OQ-04 program: where OQ-04 displays the roots of unity geometrically as powers of ω, this entry reads off the field-theoretic invariant φ(n) = [ℚ(ω) : ℚ]. The degree φ(n) is the launching point for the Galois theory of cyclotomic fields (Gal(ℚ(ω)/ℚ) ≅ (ℤ/nℤ)ˣ) and Gauss's constructibility criterion (a regular n-gon is constructible iff φ(n) is a power of 2).",
+    "openQuestions": [
+      "Identify the Galois group Gal(ℚ(ω)/ℚ) with the unit group (ℤ/nℤ)ˣ, recovering the abelian structure of the cyclotomic extension",
+      "Derive Gauss's constructibility criterion: the regular n-gon is constructible iff φ(n) is a power of 2 (n a product of a power of 2 and distinct Fermat primes)"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "de-moivre-oq-04",
+      "relationship": "Parent: exhibits ω = cos(2π/n) + i·sin(2π/n) as a primitive n-th root of unity generating the roots of unity"
+    },
+    {
+      "id": "de-moivre-oq-04-oq-01",
+      "relationship": "Sibling follow-up of OQ-04"
+    },
+    {
+      "id": "de-moivre",
+      "relationship": "Base theorem: integer-exponent De Moivre"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Complex",
+      "Real",
+      "Polynomial"
+    ],
+    "namespace": "DeMoivreOQ04OQ03",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 1,
+    "path": "Proofs/DeMoivreOQ04OQ03.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Carl Friedrich Gauss",
+      "title": "Disquisitiones Arithmeticae (irreducibility of Φ_p, cyclotomy)",
+      "year": "1801",
+      "venue": "Leipzig"
+    },
+    {
+      "authors": "Leopold Kronecker",
+      "title": "Irreducibility of Φₙ for all n",
+      "year": "1854",
+      "venue": "Journal für die reine und angewandte Mathematik"
+    },
+    {
+      "authors": "Richard Dedekind",
+      "title": "Irreducibility of the cyclotomic polynomial",
+      "year": "1857",
+      "venue": "Journal für die reine und angewandte Mathematik"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "de-moivre-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry exhibits ω = cos(2π/n) + i·sin(2π/n) as the primitive n-th root of unity generating the roots of unity; this entry identifies its minimal polynomial over ℚ as the cyclotomic polynomial Φₙ, the arithmetic deepening listed in oq-04's open questions."
+    },
+    {
+      "targetId": "de-moivre",
+      "relationship": "foundational",
+      "description": "De Moivre's formula provides the trigonometric generator ω whose algebraic invariant this entry computes."
+    },
+    {
+      "targetId": "euler-identity",
+      "relationship": "foundational",
+      "description": "Euler's formula e^(iθ) = cos θ + i sin θ is the bridge identifying ω = cos(2π/n) + i sin(2π/n) with exp(2πi/n), letting the cyclotomic primitive-root API apply to the trigonometric form."
+    },
+    {
+      "targetId": "primitive-roots",
+      "relationship": "related",
+      "description": "ω is a primitive n-th root of unity; the cyclotomic polynomial Φₙ is precisely the monic polynomial whose roots are the primitive n-th roots, of which there are φ(n)."
+    }
+  ],
+  "sorries": 0
+}
