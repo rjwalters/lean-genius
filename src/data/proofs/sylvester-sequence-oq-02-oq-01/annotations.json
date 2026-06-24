@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-intro",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 42 },
+    "type": "concept",
+    "title": "From Convergence to an Exact Tail",
+    "content": "Sylvester's sequence $a_0 = 2$, $a_{n+1} = a_n^2 - a_n + 1$ (2, 3, 7, 43, 1807, …; OEIS A000058) is the greedy Egyptian-fraction expansion of $1$. The parent entry (oq-02) proves $\\sum'_k 1/a_k = 1$ and that the error term $1/(a_{n+1}-1)$ tends to $0$, but only as an asymptotic statement. This entry makes the convergence **exact**: the entire infinite tail past the first $n+1$ terms equals precisely $1/(a_{n+1}-1)$, which by the Euclid/Sylvester product identity is $1/\\prod_{k\\le n} a_k$.",
+    "mathContext": "$\\sum_{k\\ge n+1} 1/a_k = 1/(a_{n+1}-1) = 1/\\prod_{k\\le n} a_k.$",
+    "significance": "key",
+    "relatedConcepts": ["Egyptian fractions", "tail estimate", "quantitative convergence", "tsum / HasSum"],
+    "prerequisites": ["infinite series", "summability"]
+  },
+  {
+    "id": "ann-prod-int",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 43, "endLine": 57 },
+    "type": "technique",
+    "title": "The Euclid/Sylvester Product Identity",
+    "content": "`syl_prod_eq_pred_int` proves $\\prod_{k\\le n} a_k = a_{n+1} - 1$ over $\\mathbb{Z}$ by induction. The step rests on a single algebraic fact: $a_{n+1}-1 = a_n^2 - a_n = a_n(a_n-1)$, so multiplying the running product by $a_n$ advances $a_n - 1$ to $a_{n+1} - 1$ (Finset.prod_range_succ supplies the new factor; `ring` closes the recurrence after `syl_cast_succ`). Working over $\\mathbb{Z}$ sidesteps $\\mathbb{N}$'s truncated subtraction.",
+    "mathContext": "$a_{n+1}-1 = a_n(a_n-1) \\Rightarrow \\prod_{k\\le n} a_k = a_{n+1}-1.$",
+    "significance": "key",
+    "relatedConcepts": ["Euclid's construction", "telescoping products", "induction"],
+    "prerequisites": ["finite products", "mathematical induction"]
+  },
+  {
+    "id": "ann-prod-real",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 59, "endLine": 75 },
+    "type": "technique",
+    "title": "Transporting the Identity to ℝ and ℕ",
+    "content": "`syl_prod_eq_pred_real` casts the $\\mathbb{Z}$ identity into $\\mathbb{R}$ (where the series lives) by `congrArg` followed by `push_cast`, which distributes the cast over the finite product. `syl_succ_eq_prod_add_one` restates the same fact in $\\mathbb{N}$ as $a_{n+1} = 1 + \\prod_{k\\le n} a_k$ — the defining greedy-growth property — discharged by `omega` from the cast identity and $a_{n+1}\\ge 1$.",
+    "mathContext": "$\\prod_{k\\le n} (a_k:\\mathbb{R}) = a_{n+1}-1;\\quad a_{n+1} = 1 + \\prod_{k\\le n} a_k.$",
+    "significance": "supporting",
+    "relatedConcepts": ["casting ℤ → ℝ", "push_cast", "omega"],
+    "prerequisites": ["coercions between number types"]
+  },
+  {
+    "id": "ann-tail-hassum",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 77, "endLine": 98 },
+    "type": "key-step",
+    "title": "Peeling the Leading Block: the Exact Tail",
+    "content": "`syl_tail_hasSum` is the heart of the entry. `hasSum_nat_add_iff` (with $k = n+1$) states that $\\mathrm{HasSum}\\ (m\\mapsto 1/a_{m+(n+1)})\\ a$ holds iff $\\mathrm{HasSum}\\ (1/a_\\bullet)\\ (a + \\sum_{i\\le n} 1/a_i)$. Substituting the parent's partial-sum closed form $\\sum_{i\\le n} 1/a_i = 1 - 1/(a_{n+1}-1)$, the target sum becomes $a + 1 - 1/(a_{n+1}-1)$; choosing $a = 1/(a_{n+1}-1)$ makes this equal $1$, which is exactly the parent's convergent total `syl_reciprocal_hasSum`. So the tail value is forced to $1/(a_{n+1}-1)$.",
+    "mathContext": "$\\tfrac{1}{a_{n+1}-1} + \\big(1 - \\tfrac{1}{a_{n+1}-1}\\big) = 1 = \\sum'_k 1/a_k.$",
+    "significance": "critical",
+    "relatedConcepts": ["hasSum_nat_add_iff", "tail of a series", "peeling leading terms"],
+    "prerequisites": ["HasSum", "convergent series"]
+  },
+  {
+    "id": "ann-tail-tsum",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 100, "endLine": 116 },
+    "type": "concept",
+    "title": "Tsum Form and Remainder = Tail",
+    "content": "`syl_tsum_tail` reads off the value $\\sum'_m 1/a_{m+(n+1)} = 1/(a_{n+1}-1)$ via `HasSum.tsum_eq`. `syl_remainder_eq_tail` then identifies the partial-sum error with the genuine infinite tail: $1 - \\sum_{k\\le n} 1/a_k = \\sum'_m 1/a_{m+(n+1)}$, since both sides equal $1/(a_{n+1}-1)$. This is the precise 'quantitative convergence' statement the parent leaves open — the error after $n+1$ terms is given exactly, not merely bounded.",
+    "mathContext": "$1 - \\sum_{k\\le n} 1/a_k = \\sum_{m} 1/a_{m+(n+1)} = 1/(a_{n+1}-1).$",
+    "significance": "key",
+    "relatedConcepts": ["tsum", "remainder of a series", "exact error term"],
+    "prerequisites": ["HasSum.tsum_eq"]
+  },
+  {
+    "id": "ann-inv-prod",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 118, "endLine": 123 },
+    "type": "concept",
+    "title": "The Tail as a Reciprocal Product",
+    "content": "Combining the tail identity with the product structure, `syl_tsum_tail_eq_inv_prod` gives $\\sum'_m 1/a_{m+(n+1)} = 1/\\prod_{k\\le n} a_k$. This exhibits the doubly-exponential speed of convergence: the entire infinite remainder past $a_n$ is the reciprocal of the product of every preceding term — Sylvester's greedy expansion converges as fast as any unit-fraction expansion of $1$ possibly can.",
+    "mathContext": "$\\sum_{m} 1/a_{m+(n+1)} = 1/\\prod_{k\\le n} a_k.$",
+    "significance": "key",
+    "relatedConcepts": ["doubly-exponential growth", "fastest unit-fraction convergence"],
+    "prerequisites": ["finite products"]
+  },
+  {
+    "id": "ann-sanity",
+    "proofId": "sylvester-sequence-oq-02-oq-01",
+    "range": { "startLine": 124, "endLine": 130 },
+    "type": "technique",
+    "title": "Numerical Sanity Check",
+    "content": "An `example` confirms the $n = 0$ instance: the tail past the first term is $\\sum'_m 1/a_{m+1} = 1/(a_1 - 1) = 1/(3-1) = 1/2$, matching $1 - 1/a_0 = 1 - 1/2$. A concrete check that the general formula specializes correctly.",
+    "mathContext": "$\\sum_{m} 1/a_{m+1} = 1/(3-1) = 1/2.$",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "numerical verification"],
+    "prerequisites": []
+  }
+]
