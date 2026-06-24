@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ast-oq010201-ann-header",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 39 },
+    "type": "context",
+    "title": "From a Symmetric Bound to an Asymmetric Two-Sided Trap",
+    "content": "The parent file AlternatingSeriesTestOQ01OQ02 controls the alternating block sum of an arbitrary real sequence by a SYMMETRIC absolute-value estimate |∑ (−1)ⁱ aᵢ| ≤ |a(M−1)| + (total variation). That proof throws away sign information twice: it bounds the sign partial sums by |∑(−1)ⁱ| ≤ 1, and it bounds each increment by |a(i+1) − a(i)|. This file recovers the lost sign information. The decisive upgrade is that the sign partial sums are not merely bounded in modulus but POSITIVE — they lie in the unit interval [0,1], being exactly 0 or 1. A multiplier B ∈ [0,1] sends a real x into the asymmetric order interval [min x 0, max x 0] rather than the symmetric [−|x|, |x|]. Feeding this positivity through Abel's transformation traps the canonical alternating sum between the positive and negative variations of the coefficient sequence SEPARATELY — its discrete Jordan decomposition — and absorbs the boundary term two-sidedly via max/min. The result answers the parent's first open question.",
+    "mathContext": "$0 \\le \\sum_{i<k}(-1)^i \\le 1 \\Rightarrow \\sum_{i<n}(-1)^i c_i \\in [\\min(c_{n-1},0) - V^+,\\ \\max(c_{n-1},0) + V^-]$",
+    "significance": "key",
+    "relatedConcepts": ["Abel summation", "Dirichlet test", "Jordan decomposition", "total variation", "two-sided trap", "Leibniz bracket"],
+    "prerequisites": ["summation by parts", "the parent symmetric total-variation bound", "positive and negative parts of a real number"]
+  },
+  {
+    "id": "ast-oq010201-ann-signsum",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 45, "endLine": 55 },
+    "type": "technique",
+    "title": "Positivity of the Sign Partial Sums",
+    "content": "signSum_nonneg and signSum_le_one establish 0 ≤ ∑_{i<k} (−1)ⁱ ≤ 1. Both follow in one line from neg_one_geom_sum, which evaluates the finite geometric sum to 0 (even k) or 1 (odd k); a `split <;> norm_num` discharges each case. This is the single fact that distinguishes this entry from its parent: the parent only needs the modulus bound |∑(−1)ⁱ| ≤ 1, whereas the asymmetric trap needs the strictly stronger POSITIVITY ∑(−1)ⁱ ≥ 0. Membership in [0,1] (rather than [−1,1]) is exactly what makes the order-interval multiplier lemmas below produce a sign-aware, two-sided result.",
+    "mathContext": "$\\sum_{i<k}(-1)^i = \\begin{cases}0 & k\\text{ even}\\\\ 1 & k\\text{ odd}\\end{cases} \\in [0,1]$",
+    "significance": "key",
+    "relatedConcepts": ["neg_one_geom_sum", "finite geometric series", "parity", "Dirichlet boundedness"],
+    "prerequisites": ["finite geometric sums", "parity of natural numbers"]
+  },
+  {
+    "id": "ast-oq010201-ann-multiplier",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 56, "endLine": 70 },
+    "type": "technique",
+    "title": "Order-Interval Multiplier Lemmas",
+    "content": "mul_le_max and min_le_mul prove that for B ∈ [0,1], min x 0 ≤ x·B ≤ max x 0, each by a sign split on x. If x ≥ 0 then x·B ∈ [0, x]; if x < 0 then x·B ∈ [x, 0]. In both cases the product is trapped in the order interval [min x 0, max x 0]. This is the precise mechanism replacing the parent's symmetric |x·B| ≤ |x|: a multiplier confined to the UNIT interval (not just the unit ball) preserves and exploits the sign of x. The asymmetry of the eventual trap is inherited directly from the asymmetry of this order interval, which collapses to {0,x} endpoints rather than the symmetric ±|x|.",
+    "mathContext": "$B \\in [0,1] \\Rightarrow \\min(x,0) \\le x\\,B \\le \\max(x,0)$",
+    "significance": "key",
+    "relatedConcepts": ["order interval", "positive part", "negative part", "monotonicity of multiplication"],
+    "prerequisites": ["sign analysis", "ordered fields"]
+  },
+  {
+    "id": "ast-oq010201-ann-abel",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 72, "endLine": 86 },
+    "type": "theorem",
+    "title": "Abel Transformation of the Canonical Alternating Sum",
+    "content": "abel_sub_identity specialises Finset.sum_range_by_parts (summation by parts) to the sign sequence g_j = (−1)ʲ, whose partial sums are the signSums. It rewrites ∑_{i<n} (−1)ⁱ cᵢ as a boundary term c(n−1)·(∑_{i<n}(−1)ⁱ) minus a sum of increments (c(j+1) − c_j)·(∑_{i<j+1}(−1)ⁱ). Every factor multiplying a coefficient quantity is now a signSum lying in [0,1], so the order-interval multiplier lemmas apply term by term. A small `sum_congr … ring` normalises cᵢ·(−1)ⁱ to (−1)ⁱ·cᵢ to match the canonical orientation. This identity is the algebraic backbone shared by both halves of the trap.",
+    "mathContext": "$\\sum_{i<n}(-1)^i c_i = c_{n-1}\\,S_n - \\sum_{j<n-1}(c_{j+1}-c_j)\\,S_{j+1},\\quad S_k=\\sum_{i<k}(-1)^i$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_range_by_parts", "Abel transformation", "summation by parts", "telescoping structure"],
+    "prerequisites": ["summation by parts", "reindexing finite sums"]
+  },
+  {
+    "id": "ast-oq010201-ann-upper",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 88, "endLine": 111 },
+    "type": "theorem",
+    "title": "Upper Half: Boundary Positive Part plus Downward Variation",
+    "content": "alternating_range_le proves ∑_{i<n} (−1)ⁱ cᵢ ≤ max(c(n−1),0) + ∑_{j<n−1} max(c_j − c(j+1), 0). The boundary term is bounded by max(c(n−1),0) via mul_le_max. For the increment sum, each term (c(j+1) − c_j)·S(j+1) is paired with max(c_j − c(j+1), 0) and shown to sum to something nonnegative: rewriting (c(j+1) − c_j)·S = −(c_j − c(j+1))·S and applying mul_le_max to (c_j − c(j+1)) makes each paired term ≥ 0, so Finset.sum_add_distrib + sum_nonneg closes it. Only the DOWNWARD steps (where c decreases) contribute to the upper bound; no monotonicity is assumed.",
+    "mathContext": "$\\sum_{i<n}(-1)^i c_i \\le \\max(c_{n-1},0) + \\sum_{j<n-1}\\max(c_j - c_{j+1},\\,0)$",
+    "significance": "key",
+    "relatedConcepts": ["negative variation", "downward variation", "Finset.sum_add_distrib", "sum_nonneg"],
+    "prerequisites": ["the Abel identity", "order-interval multiplier lemmas"]
+  },
+  {
+    "id": "ast-oq010201-ann-lower",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 113, "endLine": 129 },
+    "type": "theorem",
+    "title": "Lower Half: Boundary Negative Part minus Upward Variation",
+    "content": "alternating_range_ge proves min(c(n−1),0) − ∑_{j<n−1} max(c(j+1) − c_j, 0) ≤ ∑_{i<n} (−1)ⁱ cᵢ. The boundary term is bounded below by min(c(n−1),0) via min_le_mul. The increment sum is bounded ABOVE termwise: each (c(j+1) − c_j)·S(j+1) ≤ max(c(j+1) − c_j, 0) by mul_le_max, so Finset.sum_le_sum lifts it to the upward variation. A single `linarith` combines the boundary and increment estimates. Only the UPWARD steps (where c increases) contribute to the lower bound — the mirror image of the upper half. Together with alternating_range_le this exhibits the full asymmetric trap.",
+    "mathContext": "$\\min(c_{n-1},0) - \\sum_{j<n-1}\\max(c_{j+1} - c_j,\\,0) \\le \\sum_{i<n}(-1)^i c_i$",
+    "significance": "key",
+    "relatedConcepts": ["positive variation", "upward variation", "Finset.sum_le_sum", "monotonicity of sums"],
+    "prerequisites": ["the Abel identity", "order-interval multiplier lemmas"]
+  },
+  {
+    "id": "ast-oq010201-ann-icc",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 131, "endLine": 137 },
+    "type": "insight",
+    "title": "Packaging the Two Halves as Interval Membership",
+    "content": "alternating_range_mem_Icc bundles alternating_range_ge and alternating_range_le into a single Set.Icc membership: the alternating sum lies in [min(c(n−1),0) − V⁺, max(c(n−1),0) + V⁻], where V⁺ is the upward variation and V⁻ the downward variation. This is the trap proper. The interval is asymmetric — its lower endpoint is governed entirely by the upward jumps and its upper endpoint entirely by the downward jumps — and it is strictly tighter than the parent's symmetric ±(|a(M−1)| + total variation) whenever the increments have mixed signs, because V⁺ + V⁻ = total variation but each half alone is smaller.",
+    "mathContext": "$\\sum_{i<n}(-1)^i c_i \\in \\mathrm{Icc}\\big(\\min(c_{n-1},0) - V^+,\\ \\max(c_{n-1},0) + V^-\\big)$",
+    "significance": "key",
+    "relatedConcepts": ["Set.Icc", "Jordan decomposition", "bounded variation", "interval trap"],
+    "prerequisites": ["the upper and lower half-bounds"]
+  },
+  {
+    "id": "ast-oq010201-ann-leibniz",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 139, "endLine": 168 },
+    "type": "insight",
+    "title": "Recovering the Classical Leibniz Bracket",
+    "content": "leibniz_bracket shows the asymmetric trap CONTAINS the textbook estimate. For antitone c ≥ 0, every upward step c(j+1) − c_j ≤ 0, so max(·,0) = 0 and the upward variation vanishes — the lower bound collapses to min(c(n−1),0) = 0. Every downward step c_j − c(j+1) ≥ 0, so the downward variation equals the genuine telescoping sum ∑(c_j − c(j+1)) = c_0 − c(n−1) (Finset.sum_range_sub'), which cancels the boundary max(c(n−1),0) = c(n−1) to leave c_0. Hence 0 ≤ ∑_{j<n} (−1)ʲ c_j ≤ c_0 — the classical Leibniz two-sided bracket, here exhibited as the special case of the asymmetric trap where one Jordan component vanishes and the other telescopes.",
+    "mathContext": "antitone $c \\ge 0:\\quad 0 \\le \\sum_{j<n}(-1)^j c_j \\le c_0$",
+    "significance": "key",
+    "relatedConcepts": ["Leibniz alternating series test", "telescoping sum", "Finset.sum_range_sub'", "specialisation"],
+    "prerequisites": ["the packaged trap", "antitone sequences"]
+  },
+  {
+    "id": "ast-oq010201-ann-partialsum",
+    "proofId": "alternating-series-test-oq-01-oq-02-oq-01",
+    "range": { "startLine": 170, "endLine": 195 },
+    "type": "theorem",
+    "title": "Cauchy-Difference Form at an Even Truncation Point",
+    "content": "partialSum_diff_mem_Icc applies the trap to the partial-sum difference S_M − S_N. Writing S_k = ∑_{i<k} (−1)ⁱ aᵢ, for even N < M the difference reindexes from the block [N,M) to range(M−N) using Finset.sum_Ico_eq_sub and Finset.sum_Ico_eq_sum_range; the constant sign (−1)^N = 1 drops out (Even.neg_one_pow), so S_M − S_N = ∑_{j<M−N} (−1)ʲ a(N+j). Setting c j = a(N+j), the boundary index satisfies c(M−N−1) = a(M−1) (one `omega`), and alternating_range_mem_Icc applies verbatim. The boundary coefficient a(M−1) now enters two-sidedly via max/min, absorbing the parent's separate |a(M−1)| term — directly answering the parent's open question.",
+    "mathContext": "$N$ even, $N<M:\\quad S_M - S_N \\in \\mathrm{Icc}\\big(\\min(a_{M-1},0) - V^+,\\ \\max(a_{M-1},0) + V^-\\big)$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_Ico_eq_sub", "Even.neg_one_pow", "reindexing", "Cauchy difference", "boundary term absorption"],
+    "prerequisites": ["the packaged trap", "reindexing finite sums", "parity"]
+  }
+]
