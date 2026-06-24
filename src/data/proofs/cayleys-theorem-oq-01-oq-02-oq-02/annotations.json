@@ -1,0 +1,84 @@
+[
+  {
+    "id": "cay-oq010202-ann-docstring",
+    "proofId": "cayleys-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "context",
+    "title": "From the conjugation representation to the outer automorphism exact sequence",
+    "content": "The module docstring answers the parent's second open question. The parent built the conjugation representation C : G →* Sym(G), found ker C = Z(G), and realised Inn(G) ≅ G/Z(G) inside Sym(G). Here the picture moves into the automorphism group Aut(G) = MulAut G, where Inn(G) := (MulAut.conj).range lives as a subgroup, and completes the structural story: a single covariance identity makes Inn(G) normal in Aut(G), which makes Out(G) = Aut(G)/Inn(G) a group and yields the exact sequence 1 → Inn(G) → Aut(G) → Out(G) → 1, the isomorphism G/Z(G) ≅ Inn(G), and the order formula |Aut(G)| = |Out(G)|·|Inn(G)|.",
+    "mathContext": "$\\operatorname{Inn}(G) \\trianglelefteq \\operatorname{Aut}(G)$, $\\operatorname{Out}(G) = \\operatorname{Aut}(G)/\\operatorname{Inn}(G)$, exact $1 \\to \\operatorname{Inn} \\to \\operatorname{Aut} \\to \\operatorname{Out} \\to 1$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "inner automorphism",
+      "outer automorphism group",
+      "normal subgroup",
+      "short exact sequence",
+      "center"
+    ],
+    "prerequisites": [
+      "automorphism group MulAut G",
+      "normal subgroups and quotient groups",
+      "first isomorphism theorem"
+    ]
+  },
+  {
+    "id": "cay-oq010202-ann-covariance",
+    "proofId": "cayleys-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 62, "endLine": 85 },
+    "type": "key-step",
+    "title": "Covariance of conjugation drives normality of Inn(G)",
+    "content": "Inn G := (MulAut.conj).range is the inner automorphism group as a subgroup of MulAut G. The covariance identity conj_mulAut_conj proves φ · (conj g) · φ⁻¹ = conj (φ g) for any automorphism φ: evaluating both automorphisms at x, the left side is φ(g · φ⁻¹(x) · g⁻¹) = φ(g)·x·φ(g)⁻¹ using that φ is a multiplicative equivalence (map_mul, map_inv) and φ(φ⁻¹ x) = x, matching conj(φ g) x. The instance (Inn G).Normal is then immediate: a conjugate of conj g is conj(φ g), still in the range, with explicit witness φ(g).",
+    "mathContext": "$\\varphi\\,(\\operatorname{conj} g)\\,\\varphi^{-1} = \\operatorname{conj}(\\varphi g) \\;\\Rightarrow\\; \\operatorname{Inn}(G) \\trianglelefteq \\operatorname{Aut}(G)$.",
+    "significance": "critical",
+    "relatedConcepts": ["inner automorphism", "covariance", "normal subgroup"],
+    "prerequisites": ["MulAut.conj", "MulEquiv map_mul/map_inv", "Subgroup.Normal"]
+  },
+  {
+    "id": "cay-oq010202-ann-out",
+    "proofId": "cayleys-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 86, "endLine": 94 },
+    "type": "definition",
+    "title": "The outer automorphism group Out(G) = Aut(G)/Inn(G)",
+    "content": "Out G := MulAut G ⧸ Inn G inherits a Group instance from QuotientGroup.Quotient.group precisely because Inn(G) is normal — the Lean development makes this dependency explicit, synthesising the Group instance from the (Inn G).Normal instance. The canonical surjection outMk := QuotientGroup.mk' (Inn G) is the quotient homomorphism Aut(G) →* Out(G).",
+    "mathContext": "$\\operatorname{Out}(G) := \\operatorname{Aut}(G)/\\operatorname{Inn}(G)$.",
+    "significance": "important",
+    "relatedConcepts": ["outer automorphism group", "quotient group"],
+    "prerequisites": ["normal subgroup", "QuotientGroup.mk'"]
+  },
+  {
+    "id": "cay-oq010202-ann-exactness",
+    "proofId": "cayleys-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 95, "endLine": 118 },
+    "type": "key-step",
+    "title": "Exactness of 1 → Inn(G) → Aut(G) → Out(G) → 1",
+    "content": "Three facts assemble the short exact sequence. inn_subtype_injective (Subgroup.subtype_injective) is injectivity of the inclusion Inn(G) ↪ Aut(G) at the left. outMk_surjective (QuotientGroup.mk'_surjective) is surjectivity of the quotient map at the right. range_inn_subtype_eq_ker_outMk proves range(Inn(G).subtype) = ker(outMk) — exactness in the middle — by Subgroup.range_subtype (image of the inclusion is Inn(G)) and QuotientGroup.ker_mk' (kernel of the quotient map is Inn(G)). Once the objects exist, each is a one-line consequence of Mathlib's QuotientGroup API.",
+    "mathContext": "$\\operatorname{im}(\\iota) = \\ker(\\pi)$, $\\iota$ injective, $\\pi$ surjective.",
+    "significance": "critical",
+    "relatedConcepts": ["short exact sequence", "kernel", "image"],
+    "prerequisites": ["Subgroup.range_subtype", "QuotientGroup.ker_mk'", "mk'_surjective"]
+  },
+  {
+    "id": "cay-oq010202-ann-center",
+    "proofId": "cayleys-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 119, "endLine": 144 },
+    "type": "key-step",
+    "title": "G/Z(G) ≅ Inn(G), realised inside Aut(G)",
+    "content": "ker_mulAutConj proves (MulAut.conj).ker = Subgroup.center G directly at the automorphism level, by the same mul_inv_eq_iff_eq_mul manipulation as the parent's ker_conjRep but using MulEquiv.ext_iff and MulAut.one_apply. quotientCenterEquivInn then composes QuotientGroup.quotientMulEquivOfEq ker_mulAutConj.symm with the first isomorphism theorem quotientKerEquivRange to deliver G ⧸ Z(G) ≃* Inn(G) — the parent's isomorphism now landing on the automorphism subgroup Inn(G) ≤ Aut(G).",
+    "mathContext": "$\\ker(\\operatorname{conj}) = Z(G)$, $G/Z(G) \\cong \\operatorname{Inn}(G)$.",
+    "significance": "important",
+    "relatedConcepts": ["center", "first isomorphism theorem", "inner automorphism"],
+    "prerequisites": ["Subgroup.mem_center_iff", "quotientKerEquivRange"]
+  },
+  {
+    "id": "cay-oq010202-ann-order",
+    "proofId": "cayleys-theorem-oq-01-oq-02-oq-02",
+    "range": { "startLine": 145, "endLine": 156 },
+    "type": "key-step",
+    "title": "Order formula |Aut(G)| = |Out(G)|·|Inn(G)| for finite G",
+    "content": "card_mulAut_eq_card_out_mul_card_inn is the Lagrange factorisation Subgroup.card_eq_card_quotient_mul_card_subgroup applied to Inn(G) ◁ Aut(G), giving |Aut(G)| = |Out(G)|·|Inn(G)|. Rewriting Nat.card (Inn G) through the isomorphism quotientCenterEquivInn (Nat.card_congr) refines it to |Aut(G)| = |Out(G)|·|G/Z(G)| in card_mulAut_eq_card_out_mul_card_quotient_center.",
+    "mathContext": "$|\\operatorname{Aut}(G)| = |\\operatorname{Out}(G)|\\cdot|\\operatorname{Inn}(G)| = |\\operatorname{Out}(G)|\\cdot|G/Z(G)|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Lagrange's theorem", "group order", "index"],
+    "prerequisites": ["card_eq_card_quotient_mul_card_subgroup", "Nat.card_congr"]
+  }
+]
