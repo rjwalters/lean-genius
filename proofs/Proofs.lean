@@ -2953,6 +2953,7 @@ import Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ03OQ01
 import Proofs.GeometricSeriesOQ07OQ01OQ01OQ01OQ05
 import Proofs.GeometricSeriesOQ07OQ01OQ01OQ02
 import Proofs.GeometricSeriesOQ07OQ01OQ01OQ03
+import Proofs.GeometricSeriesOQ07OQ02
 import Proofs.GeometricSeriesOQ08
 import Proofs.GeometricSeriesOQ08OQ01
 import Proofs.GeometricSeriesOQ08OQ01OQ01
