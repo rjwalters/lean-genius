@@ -1,0 +1,72 @@
+{
+  "slug": "erdos-105-oq-01",
+  "title": "Does the Erdős–Purdy property hold with n−4 obstacles? (Erdős #105 OQ-01)",
+  "status": "surveyed",
+  "phase": "ORIENT",
+  "tier": "B",
+  "significance": 5,
+  "tractability": 5,
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "completed": null,
+  "path": "Proofs/Erdos105OQ01.lean",
+  "leanFiles": [
+    "proofs/Proofs/Erdos105OQ01.lean"
+  ],
+  "relatedProofs": [
+    "erdos-105",
+    "erdos-105-oq-02",
+    "erdos-105-oq-05"
+  ],
+  "problemStatement": "For all n ≥ 5, do n non-collinear points A in the plane together with n−4 disjoint obstacle points B always admit a line through ≥ 2 points of A that avoids all of B? Equivalently, is the threshold f(n) = n−4 (its maximum possible value given Xichuan's 2024 disproof of the n−3 case)? OPEN.",
+  "knowledge": {
+    "insights": [
+      "The Erdős–Purdy obstacle-avoidance property is antitone in the number of obstacles: surviving m+1 obstacles implies surviving m. Proof is a padding argument — place one extra obstacle in the infinite plane outside A ∪ B, solve the harder instance, and the rich line returned avoids the original smaller obstacle set.",
+      "The only non-formal ingredient in the reduction is that ℝ² is infinite, so a finite point/obstacle configuration always leaves room for one more obstacle.",
+      "Monotonicity locates OQ-01 exactly: a positive answer forces survival at every obstacle count m ≤ n−4, pinning f(n)=n−4 against Xichuan's n−3 failure; a negative answer (an n−4 counterexample) would manufacture a fresh n−3 counterexample, strictly stronger than Xichuan's disproof.",
+      "OQ-01 is the genuine frontier: combined with f(n) ≤ n−4 (Xichuan) and f(n) ≥ cn (Beck/Szemerédi–Trotter), a YES is equivalent to f(n) = n−4 exactly."
+    ],
+    "builtItems": [
+      "RichAvoids n m predicate (per-(n,m) Erdős–Purdy property) in Proofs/Erdos105OQ01.lean",
+      "exists_point_not_mem (the plane is infinite) in Proofs/Erdos105OQ01.lean",
+      "richAvoids_step / richAvoids_antitone (obstacle-count monotonicity) in Proofs/Erdos105OQ01.lean",
+      "not_richAvoids_succ_of_not (upward failure propagation) in Proofs/Erdos105OQ01.lean",
+      "openProblem_n_minus_4_iff and n_minus_4_extends_down (locating OQ-01) in Proofs/Erdos105OQ01.lean"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Attempt to adapt Xichuan's three n−3 counterexamples to an n−4 configuration (would disprove OQ-01 and strengthen Xichuan).",
+      "Formalize a per-n version of Xichuan's counterexample to derive thresholdFunction n ≤ n−4 for all n (currently only ∃-form is axiomatized in the parent).",
+      "Investigate whether the Beck/Szemerédi–Trotter lower bound can be sharpened toward n−4 for specific configuration families."
+    ],
+    "progressSummary": "SURVEYED + INFRASTRUCTURE: created verified, axiom-free monotonicity reduction (0 axioms, 0 sorries) locating the open n−4 question exactly relative to Xichuan's n−3 disproof. The underlying yes/no question remains OPEN."
+  },
+  "knownResults": [
+    "Erdős–Purdy (1995): conjectured the n−3 version holds.",
+    "Hickerson: the n−2 version fails.",
+    "Beck / Szemerédi–Trotter (1983): with cn obstacles a rich unblocked line always exists, so f(n) ≥ cn.",
+    "Xichuan (2024): disproved the n−3 conjecture with three explicit counterexamples, so f(n) ≤ n−4. ($50 prize awarded.)"
+  ],
+  "currentState": "Open question. This session added the verified obstacle-count monotonicity reduction (Erdos105OQ01.lean) that pins OQ-01 against the known bounds without resolving it.",
+  "references": [
+    {
+      "authors": ["Paul Erdős", "George Purdy"],
+      "title": "Extremal problems in combinatorial geometry",
+      "year": "1995"
+    },
+    {
+      "authors": ["Endre Szemerédi", "William T. Trotter Jr."],
+      "title": "Extremal Problems in Discrete Geometry",
+      "venue": "Combinatorica",
+      "year": "1983"
+    }
+  ],
+  "tags": [
+    "discrete-geometry",
+    "incidence-geometry",
+    "erdos",
+    "point-line-incidences",
+    "monotonicity",
+    "open-problem"
+  ]
+}

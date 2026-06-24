@@ -1,0 +1,178 @@
+{
+  "id": "erdos-105-oq-01",
+  "title": "Erdős #105 OQ-01: The n−4 Obstacle Question (Monotonicity Reduction)",
+  "slug": "erdos-105-oq-01",
+  "description": "Open question from Erdős #105: does the Erdős–Purdy rich-line property survive n−4 obstacles, one fewer than Xichuan's disproved n−3 case? This entry does NOT resolve it. It supplies the axiom-free structural reduction — the rich-unblocked property is antitone in the number of obstacles — that locates the question exactly: a YES pins the threshold f(n)=n−4, a NO would strengthen Xichuan's disproof. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Erdős & Purdy (original problem); OQ-01 monotonicity reduction",
+    "sourceUrl": "https://erdosproblems.com/105",
+    "date": "2024",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos105OQ01.lean",
+    "tags": [
+      "discrete-geometry",
+      "incidence-geometry",
+      "erdos",
+      "point-line-incidences",
+      "monotonicity",
+      "open-problem",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 105,
+    "erdosUrl": "https://erdosproblems.com/105",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanSpace",
+        "description": "Euclidean space ℝ² as the ambient plane",
+        "module": "Mathlib.Analysis.InnerProductSpace.PiL2"
+      },
+      {
+        "theorem": "Infinite.exists_not_mem_finset",
+        "description": "An infinite type contains a point outside any finite set",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Nat.le_induction",
+        "description": "Induction upward from a base point, used to iterate the single-step reduction",
+        "module": "Mathlib.Order.Basic"
+      }
+    ],
+    "originalContributions": [
+      "RichAvoids n m: the per-(n,m) Erdős–Purdy obstacle-avoidance predicate",
+      "exists_point_not_mem: the plane is infinite, so any finite configuration leaves room for one more obstacle",
+      "richAvoids_step: single-step obstacle monotonicity (RichAvoids n (m+1) → RichAvoids n m) via a padding argument",
+      "richAvoids_antitone: the property is antitone in the obstacle count",
+      "not_richAvoids_succ_of_not: failure propagates upward (an n−4 counterexample would yield an n−3 one)",
+      "openProblem_n_minus_4_iff: OQ-01 is exactly ∀ n≥5, RichAvoids n (n−4)",
+      "n_minus_4_extends_down: a positive answer pins the threshold f(n) at n−4"
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-105",
+        "relationship": "Parent: rich lines avoiding obstacles in ℝ², n−3 case disproved by Xichuan (2024)"
+      },
+      {
+        "id": "erdos-105-oq-02",
+        "relationship": "Sibling: f(n)=Θ(n); supplies the f(n)≤n−4 upper bound that this entry's reduction complements"
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 230,
+    "assumptions": "0 axioms, 0 sorries. `#print axioms erdos_105_oq01_summary` reports only the standard foundational axioms propext, Classical.choice, Quot.sound (none of which count as assumptions). The file is self-contained: the geometric definitions are reproduced verbatim from Erdos105Problem.lean so that the only import is Mathlib. The underlying yes/no question (OQ-01) is OPEN and is NOT resolved here — only the monotonicity reduction is proved.",
+    "theoremCount": 8,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #105 (Erdős–Purdy, 1995) asks whether n non-collinear points A in the plane, together with n−3 obstacle points B, always admit a 'rich' line — a line through ≥ 2 points of A — that avoids every obstacle. Hickerson showed the analogous n−2 statement fails; Beck and Szemerédi–Trotter (1983) showed that with only cn obstacles a rich unblocked line always exists. Xichuan (2024) disproved the n−3 conjecture with three explicit counterexamples, earning the $50 prize. This leaves a sharp frontier: the threshold function f(n) — the largest obstacle count that can always be avoided — satisfies cn ≤ f(n) ≤ n−4. OQ-01 asks whether the property holds at exactly n−4 obstacles, one fewer than the disproved case.",
+    "problemStatement": "Open Question 1 of Erdős #105: for all n ≥ 5, do n non-collinear points A with n−4 disjoint obstacles B always admit a line through ≥ 2 points of A avoiding all of B? Equivalently, is f(n) = n−4 (its maximum possible value given Xichuan's disproof)?",
+    "text": "Structural reduction for the open n−4 obstacle question of Erdős #105.",
+    "proofStrategy": "The question is OPEN; this file does not answer it. Instead it isolates the one structural fact that makes the question precise: obstacle-count monotonicity. The predicate RichAvoids n m (every disjoint obstacle set of size exactly m can be avoided by a rich line) is antitone in m. The single step RichAvoids n (m+1) → RichAvoids n m is proved by a padding argument: given an m-obstacle instance, place one extra obstacle in the infinite plane outside A ∪ B, solve the harder (m+1)-obstacle instance, and observe that the rich line returned avoids the original smaller obstacle set. Iterating via Nat.le_induction gives full antitonicity. The consequences place OQ-01 exactly: a positive answer forces survival at every obstacle count up to n−4 (pinning f(n)=n−4 against Xichuan's n−3 failure), while a negative answer would manufacture a fresh n−3 counterexample, strictly strengthening Xichuan's disproof.",
+    "keyInsights": [
+      "More obstacles is strictly harder: surviving m+1 obstacles implies surviving m, because an avoided line for the padded set is a fortiori an avoided line for any subset.",
+      "The only non-formal ingredient is that the plane ℝ² is infinite — a finite configuration always leaves room for one more obstacle (exists_point_not_mem).",
+      "OQ-01 sits exactly one obstacle below Xichuan's disproof boundary: monotonicity shows a YES pins f(n)=n−4 and a NO strengthens the disproof, so the n−4 question is genuinely the sharp frontier.",
+      "The reduction is fully verified (0 axioms, only propext/Classical.choice/Quot.sound) and self-contained, importing only Mathlib; it does not inherit the parent file's two axioms."
+    ],
+    "prerequisites": [
+      "Combinatorial geometry (point-line incidences)",
+      "Euclidean space ℝ² and Finset cardinality",
+      "Induction on the natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "framework",
+      "title": "Geometric Framework",
+      "summary": "Points, lines, rich/unblocked lines, non-collinearity, and the open problem, reproduced from the parent file",
+      "startLine": 53,
+      "endLine": 95,
+      "mathContext": "Point = EuclideanSpace ℝ (Fin 2); Line by base+direction; isRich/unblocked/richAndUnblocked; NonCollinear; openProblem_n_minus_4"
+    },
+    {
+      "id": "room",
+      "title": "Room for One More Obstacle",
+      "summary": "The plane is infinite, so any finite configuration misses some point",
+      "startLine": 97,
+      "endLine": 118,
+      "mathContext": "point_infinite via injection ℝ ↪ ℝ²; exists_point_not_mem via Infinite.exists_not_mem_finset"
+    },
+    {
+      "id": "reduction",
+      "title": "Obstacle-Count Monotonicity",
+      "summary": "The padding reduction RichAvoids n (m+1) → RichAvoids n m and its antitone closure",
+      "startLine": 120,
+      "endLine": 180,
+      "mathContext": "richAvoids_step (insert an extra obstacle), richAvoids_antitone (Nat.le_induction), not_richAvoids_succ_of_not (contrapositive)"
+    },
+    {
+      "id": "locate",
+      "title": "Locating OQ-01",
+      "summary": "OQ-01 as RichAvoids n (n−4); a YES pins f(n)=n−4, a NO strengthens Xichuan",
+      "startLine": 182,
+      "endLine": 226,
+      "mathContext": "openProblem_n_minus_4_iff, n_minus_4_extends_down, erdos_105_oq01_summary"
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry establishes the axiom-free monotonicity reduction for the open n−4 obstacle question of Erdős #105. With 8 verified theorems, 0 axioms, and 0 sorries, it pins the open question precisely against Xichuan's n−3 disproof without resolving it.",
+    "implications": "Obstacle-count monotonicity squeezes OQ-01 to a single value: given Xichuan's f(n) ≤ n−4 and the Beck–Szemerédi–Trotter lower bound f(n) ≥ cn, a positive answer to OQ-01 is equivalent to f(n) = n−4 exactly, and a negative answer would be a strictly stronger disproof than Xichuan's. The reduction also clarifies why the n−4 case — not n−5 or lower — is the meaningful frontier.",
+    "openQuestions": [
+      "Does the rich-line property actually hold with n−4 obstacles (is f(n) = n−4)?",
+      "If not, what is the exact threshold f(n) below n−4?",
+      "Can Xichuan's three n−3 counterexamples be adapted to produce an n−4 counterexample?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Parent problem: rich lines avoiding obstacles in ℝ², n−3 case disproved by Xichuan (2024)",
+      "targetId": "erdos-105"
+    },
+    {
+      "relationship": "Sibling: f(n)=Θ(n); provides the f(n)≤n−4 upper bound complemented by this reduction",
+      "targetId": "erdos-105-oq-02"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Paul Erdős",
+        "George Purdy"
+      ],
+      "title": "Extremal problems in combinatorial geometry",
+      "venue": "Handbook of Combinatorics",
+      "year": "1995",
+      "note": "Original n−3 conjecture"
+    },
+    {
+      "authors": [
+        "Endre Szemerédi",
+        "William T. Trotter Jr."
+      ],
+      "title": "Extremal Problems in Discrete Geometry",
+      "venue": "Combinatorica",
+      "year": "1983",
+      "volume": "3",
+      "pages": "381-392",
+      "note": "Incidence bound giving the cn ≤ f(n) lower bound"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos105OQ01",
+    "lineCount": 230,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 9,
+    "path": "Proofs/Erdos105OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

@@ -1,0 +1,88 @@
+[
+  {
+    "id": "ann-erdos105-oq01-room",
+    "proofId": "erdos-105-oq-01",
+    "range": {
+      "startLine": 89,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "The Plane Has Room for One More Obstacle",
+    "content": "The entire reduction rests on a single geometric fact: the plane R^2 is infinite, so any finite point/obstacle configuration leaves room to place one additional obstacle. point_infinite injects R into EuclideanSpace R (Fin 2) via the constant-coordinate map r |-> (r, r), and exists_point_not_mem then produces a point outside any given Finset.",
+    "mathContext": "Point = EuclideanSpace R (Fin 2) is infinite (it contains an injective copy of R). Hence for any finite S there is p with p not in S. This is the only ingredient beyond the parent definitions.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Infinite.of_injective",
+      "Infinite.exists_not_mem_finset",
+      "WithLp.equiv"
+    ],
+    "prerequisites": [
+      "EuclideanSpace",
+      "Finset cardinality"
+    ]
+  },
+  {
+    "id": "ann-erdos105-oq01-step",
+    "proofId": "erdos-105-oq-01",
+    "range": {
+      "startLine": 138,
+      "endLine": 160
+    },
+    "type": "proof-technique",
+    "title": "Single-Step Obstacle Monotonicity (the reduction)",
+    "content": "richAvoids_step proves RichAvoids n (m+1) implies RichAvoids n m. Given an m-obstacle instance (A, B), it pads B with one extra point c chosen outside A union B, obtaining B' of size m+1 still disjoint from A. Solving the harder (m+1)-obstacle instance yields a rich line avoiding B' and hence avoiding the smaller B subset B'. The key conceptual point: adding obstacles only makes blocking easier, so surviving m+1 obstacles is the strictly stronger hypothesis.",
+    "mathContext": "B' = insert c B, card (insert c B) = m+1 since c not in B; Disjoint A B' from c not in A and Disjoint A B; the returned line unblocked by B' is unblocked by B since B subset B'.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.card_insert_of_not_mem",
+      "Finset.disjoint_insert_right",
+      "antitone reduction"
+    ],
+    "prerequisites": [
+      "Finset operations",
+      "padding argument"
+    ]
+  },
+  {
+    "id": "ann-erdos105-oq01-antitone",
+    "proofId": "erdos-105-oq-01",
+    "range": {
+      "startLine": 162,
+      "endLine": 180
+    },
+    "type": "concept",
+    "title": "Antitone in the Obstacle Count",
+    "content": "richAvoids_antitone iterates the single step via Nat.le_induction: surviving m2 obstacles implies surviving any m1 <= m2. not_richAvoids_succ_of_not is the contrapositive direction: a counterexample at m obstacles propagates to m+1.",
+    "mathContext": "RichAvoids n is antitone: m1 <= m2 and RichAvoids n m2 give RichAvoids n m1. Equivalently failure propagates upward: not RichAvoids n m implies not RichAvoids n (m+1).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.le_induction",
+      "monotonicity",
+      "contrapositive"
+    ],
+    "prerequisites": [
+      "induction on naturals"
+    ]
+  },
+  {
+    "id": "ann-erdos105-oq01-locate",
+    "proofId": "erdos-105-oq-01",
+    "range": {
+      "startLine": 182,
+      "endLine": 225
+    },
+    "type": "concept",
+    "title": "Locating OQ-01 Against Xichuan's Disproof",
+    "content": "openProblem_n_minus_4_iff shows OQ-01 is exactly 'for all n >= 5, RichAvoids n (n-4)'. n_minus_4_extends_down then shows a YES answer forces rich lines to survive every obstacle count m <= n-4; combined with Xichuan's n-3 failure this pins the threshold f(n) exactly at n-4. Dually, not_richAvoids_succ_of_not shows a NO answer (an n-4 counterexample) would manufacture a new n-3 counterexample, strictly strengthening Xichuan's disproof. Either way OQ-01 sits exactly one obstacle below the known disproof boundary.",
+    "mathContext": "Known: f(n) <= n-4 (Xichuan), f(n) >= c*n (Beck/Szemeredi-Trotter). OQ-01 asks whether f(n) = n-4. This file proves the antitone structure making that dichotomy precise, without resolving it.",
+    "significance": "key",
+    "relatedConcepts": [
+      "threshold function",
+      "Erdos-Purdy conjecture",
+      "Xichuan counterexample"
+    ],
+    "prerequisites": [
+      "Erdos #105 parent formalization"
+    ]
+  }
+]
