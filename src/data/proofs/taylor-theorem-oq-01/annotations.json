@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-taylor-oq01-restriction",
+    "proofId": "taylor-theorem-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 73
+    },
+    "type": "concept",
+    "title": "The Line Restriction g(t) = f(a + t·v)",
+    "content": "restriction f a v is the one-variable function obtained by restricting f : E → ℝ to the line through a in direction v. Its endpoints are the only values that matter for Taylor's theorem on [0,1]: restriction_zero gives g(0) = f(a) and restriction_one gives g(1) = f(a+v). This single definition is the bridge that turns a multivariate question into a one-dimensional one — every later result is about g.",
+    "mathContext": "$g(t) = f(a + t\\,v)$, with $g(0) = f(a)$ and $g(1) = f(a+v)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "line restriction",
+      "directional derivative",
+      "reduction to one variable"
+    ],
+    "prerequisites": []
+  },
+  {
+    "id": "ann-taylor-oq01-derivative",
+    "proofId": "taylor-theorem-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "Smoothness and the Directional Derivative Transfer",
+    "content": "restriction_contDiff shows g inherits the ContDiff smoothness of f, because g = f ∘ φ with φ(t) = a + t·v an affine (hence smooth) parametrisation, via ContDiff.comp. restriction_hasDerivAt then computes the first derivative by the chain rule HasFDerivAt.comp_hasDerivAt: since φ'(t) = v (line_hasDerivAt), the derivative of g is the Fréchet derivative of f in the direction v, deriv g t = fderiv ℝ f (a + t·v) v. This directional-derivative identity is the reusable core of the entry.",
+    "mathContext": "$g'(t) = Df(a + t\\,v)(v)$, obtained from the chain rule along the curve $\\varphi(t) = a + t\\,v$ with $\\varphi'(t) = v$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "chain rule",
+      "Fréchet derivative",
+      "ContDiff.comp",
+      "affine parametrisation"
+    ],
+    "prerequisites": [
+      "HasFDerivAt.comp_hasDerivAt",
+      "ContDiff.comp"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq01-lagrange",
+    "proofId": "taylor-theorem-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 123
+    },
+    "type": "insight",
+    "title": "Multivariate Taylor with Lagrange Remainder",
+    "content": "multivariate_taylor_lagrange applies Mathlib's one-dimensional taylor_mean_remainder_lagrange_iteratedDeriv to the restriction g on the interval [0,1]. After rewriting g(1) = f(a+v) and g(0) = f(a), this yields f(a+v) = T_n g(0) + g^{(n+1)}(θ)/(n+1)! for some θ ∈ (0,1). The remainder is carried by the iterated derivative of the restriction — the iterated directional derivative of f along v — which is the honest form proved here in place of the heavier symmetric-multilinear / multi-index packaging.",
+    "mathContext": "$f(a+v) = T_n g(0) + \\dfrac{g^{(n+1)}(\\theta)}{(n+1)!}$ for some $\\theta \\in (0,1)$, where $g(t) = f(a+t\\,v)$.",
+    "significance": "major",
+    "relatedConcepts": [
+      "Taylor's theorem",
+      "Lagrange remainder",
+      "iterated directional derivative"
+    ],
+    "prerequisites": [
+      "taylor_mean_remainder_lagrange_iteratedDeriv"
+    ]
+  },
+  {
+    "id": "ann-taylor-oq01-first-order",
+    "proofId": "taylor-theorem-oq-01",
+    "range": {
+      "startLine": 125,
+      "endLine": 134
+    },
+    "type": "insight",
+    "title": "First-Order Case: the Multivariate Mean Value Theorem",
+    "content": "multivariate_taylor_first_order specialises the Lagrange expansion to n = 0. The degree-0 Taylor polynomial of g is f(a) (taylor_within_zero_eval), the single remainder term is deriv g θ = Df(a+θ·v)(v) (restriction_deriv), and 1! = 1, giving f(a+v) = f(a) + Df(a+θ·v)(v) for some θ ∈ (0,1). This is the exact multivariate analogue of the mean value theorem f(b) - f(a) = f'(ξ)(b-a), with the interior point a+θ·v lying strictly on the open segment between a and a+v.",
+    "mathContext": "$f(a+v) = f(a) + Df(a+\\theta\\,v)(v)$ for some $\\theta \\in (0,1)$.",
+    "significance": "major",
+    "relatedConcepts": [
+      "mean value theorem",
+      "Fréchet derivative",
+      "first-order Taylor expansion"
+    ],
+    "prerequisites": [
+      "taylor_within_zero_eval"
+    ]
+  }
+]
