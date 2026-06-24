@@ -1,0 +1,218 @@
+{
+  "id": "quadratic-reciprocity-oq-03-oq-03",
+  "title": "From the Legendre Algorithm to the Jacobi Symbol: Solovay–Strassen Toolkit",
+  "slug": "quadratic-reciprocity-oq-03-oq-03",
+  "description": "Extends the parent's GCD-like Legendre-symbol algorithm to the Jacobi symbol J(a|n) for arbitrary odd n: numerator and denominator multiplicativity, the supplementary laws, full reciprocity, and the residue-reduction step, all against Mathlib's jacobiSym. The centerpiece is the decisive contrast with the Legendre symbol — for composite n, J(a|n)=1 does NOT imply a is a quadratic residue mod n — proved by exhibiting J(2|15)=1 with 2 a non-residue mod 15. This one-sidedness is exactly the population of Euler liars underlying the Solovay–Strassen primality test. Directly answers the parent entry's third open question.",
+  "meta": {
+    "author": "Jacobi (1837), Solovay–Strassen (1977); formalized by lean-genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Jacobi_symbol",
+    "date": "1837",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticReciprocityOQ03OQ03.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "jacobi-symbol",
+      "legendre-symbol",
+      "solovay-strassen",
+      "primality-testing",
+      "algorithm",
+      "verified-computation"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-23",
+    "lineCount": 186,
+    "theoremCount": 17,
+    "originalContributions": [
+      "jacobi_eq_legendre: at an odd prime the Jacobi symbol agrees with the Legendre symbol, so every Legendre computation of the parent is a special case of the Jacobi algorithm",
+      "jacobiSym_mul_left / jacobiSym_mul_right: numerator AND denominator multiplicativity, the latter being the genuinely new phenomenon for composite moduli that makes J(a|n) well-defined beyond primes",
+      "jacobiSym_mod_left, jacobiSym_pow_left, jacobiSym_at_neg_one (χ₄), jacobiSym_at_two (χ₈), jacobiSym_reciprocity: the complete reduction toolkit for the Jacobi symbol presented as named algorithm steps",
+      "nonresidue_of_jacobi_eq_neg_one: the VALID direction of the residue test (J=-1 certifies a non-residue) — holds for every modulus and is what lets the symbol detect composites",
+      "residue_of_jacobi_eq_one_prime: the direction that survives ONLY for prime moduli (J=1 recovers a residue when n is prime)",
+      "jacobi_one_not_residue_test: MAIN CONTRAST — an explicit (a,n)=(2,15) with J(a|n)=1 yet a not a square mod n, proving the Legendre characterization fails for composite moduli (the Euler-liar phenomenon)",
+      "seven_not_square_mod_fifteen: a certified non-residue obtained from J(7|15)=-1, the valid direction in action",
+      "Three norm_num-verified composite-modulus computations J(2|15)=1, J(7|15)=-1, J(3|15)=0 (kernel-checked, no native_decide)"
+    ],
+    "assumptions": "No axioms, no sorries. #print axioms reports only the standard foundational triple [propext, Classical.choice, Quot.sound] for all results; no Lean.ofReduceBool, so the Jacobi-symbol computations are kernel-checked (the norm_num Jacobi-symbol extension produces ordinary proof terms — native_decide is NOT used). The reduction lemmas are thin wrappers exposing Mathlib's jacobiSym API in algorithmic form; the contrast theorem is genuine new content combining a norm_num value with a decide-verified non-residue witness in ZMod 15.",
+    "mathlibDependencies": [
+      {
+        "theorem": "jacobiSym.legendreSym.to_jacobiSym",
+        "description": "At a prime p, J(a|p) = legendreSym p a — the bridge identifying the Jacobi symbol with the Legendre symbol on primes",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.mul_right",
+        "description": "Denominator multiplicativity J(a | m·n) = J(a|m)·J(a|n), the defining multiplicative structure over the factorization of the modulus",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.quadratic_reciprocity",
+        "description": "Quadratic reciprocity for the Jacobi symbol: J(a|b) = (-1)^((a/2)·(b/2))·J(b|a) for odd naturals a, b",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "jacobiSym.at_neg_one / jacobiSym.at_two",
+        "description": "Supplementary laws J(-1|n)=χ₄(n) and J(2|n)=χ₈(n) for odd n",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "ZMod.nonsquare_of_jacobiSym_eq_neg_one",
+        "description": "If J(a|n) = -1 then a is not a square mod n — the one direction of the residue test valid for all moduli",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      },
+      {
+        "theorem": "ZMod.isSquare_of_jacobiSym_eq_one",
+        "description": "If p is prime and J(a|p)=1 then a is a square mod p — the converse, valid only for prime moduli",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+      }
+    ],
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Jacobi symbol $\\left(\\tfrac{a}{n}\\right)$ was introduced by Carl Gustav Jacob Jacobi in 1837 as the multiplicative extension of the Legendre symbol to odd composite denominators: $\\left(\\tfrac{a}{n}\\right) = \\prod_i \\left(\\tfrac{a}{p_i}\\right)^{e_i}$ where $n = \\prod_i p_i^{e_i}$. Remarkably it satisfies the same reciprocity and supplementary laws as the Legendre symbol, so it can be computed by the identical Euclidean-style descent — and crucially, without ever factoring $n$. This makes it the engine of the Solovay–Strassen primality test (1977), one of the first practical randomized primality tests and a milestone in computational number theory. The subtlety Solovay and Strassen exploited is that the Jacobi symbol loses one direction of the residue characterization: for composite $n$, $\\left(\\tfrac{a}{n}\\right) = 1$ no longer guarantees that $a$ is a quadratic residue.",
+    "problemStatement": "Extend the verified Legendre-symbol computation algorithm (parent entry quadratic-reciprocity-oq-03) to the Jacobi symbol $\\left(\\tfrac{a}{n}\\right)$ for arbitrary odd $n$: state the full reduction toolkit (multiplicativity in both arguments, supplementary laws, reciprocity, mod-reduction) against Mathlib's `jacobiSym`, and characterize precisely how the symbol's relationship to quadratic residues degrades at composite moduli — establishing the foundation of the Solovay–Strassen test.",
+    "proofStrategy": "Each reduction step is exposed as a named lemma wrapping Mathlib's `jacobiSym` API in algorithmic form, paralleling the parent's Legendre lemmas but now including denominator multiplicativity (`jacobiSym.mul_right`), the new phenomenon for composite moduli. The residue test is split into its two directions: `nonresidue_of_jacobi_eq_neg_one` (valid for all $n$, from `ZMod.nonsquare_of_jacobiSym_eq_neg_one`) and `residue_of_jacobi_eq_one_prime` (valid only for primes, from `ZMod.isSquare_of_jacobiSym_eq_one`). The centerpiece `jacobi_one_not_residue_test` exhibits $(a,n) = (2,15)$: $J(2|15) = 1$ is evaluated by Mathlib's kernel-checked `norm_num` Jacobi-symbol extension, while $\\neg\\,\\mathrm{IsSquare}\\,(2 : \\mathbb{Z}/15)$ is settled by `decide` over the finite ring — together a constructive witness that the Legendre characterization fails for composite moduli.",
+    "keyInsights": [
+      "Denominator multiplicativity $\\left(\\tfrac{a}{mn}\\right) = \\left(\\tfrac{a}{m}\\right)\\left(\\tfrac{a}{n}\\right)$ is the genuinely new structure: it is what extends the symbol below the prime case and lets the same reciprocity descent compute $\\left(\\tfrac{a}{n}\\right)$ without ever factoring $n$",
+      "The residue characterization is one-sided for composite $n$: $\\left(\\tfrac{a}{n}\\right) = -1 \\Rightarrow a$ is a non-residue (always valid, certifies compositeness), but $\\left(\\tfrac{a}{n}\\right) = 1 \\not\\Rightarrow a$ is a residue",
+      "$J(2|15) = 1$ while $2$ is not a square mod $15$ is the minimal counterexample: $2$ is a non-residue mod both $3$ and $5$, so the two $-1$ factors multiply to $+1$ — a false positive built from two true negatives",
+      "These false positives are exactly the *Euler liars* that make Solovay–Strassen a probabilistic test: a composite $n$ can satisfy $\\left(\\tfrac{a}{n}\\right) \\equiv a^{(n-1)/2}$ for some $a$, so a single witness can fail to detect compositeness",
+      "Mathlib's `norm_num` extension for `jacobiSym` runs the reciprocity descent at elaboration time and emits an ordinary kernel-checked proof term, so the composite-modulus values are verified with zero axioms (no `native_decide`, no `Lean.ofReduceBool`)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "file-setup",
+      "title": "Imports, Doc-Comment, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Imports Mathlib's LegendreSymbol.JacobiSymbol and Tactic. The doc-comment frames the goal: extend the parent's Legendre algorithm to the Jacobi symbol and pin down the decisive contrast (J=1 does not imply residue for composite n). Opens the NumberTheorySymbols scope for the J(a | b) notation and establishes the JacobiAlgorithm namespace.",
+      "mathContext": "The Jacobi symbol is defined as $\\left(\\tfrac{a}{n}\\right) = \\prod_{p\\mid n}\\left(\\tfrac{a}{p}\\right)^{v_p(n)}$, with notation $J(a \\mid n)$ scoped to NumberTheorySymbols."
+    },
+    {
+      "id": "extends-legendre",
+      "title": "The Jacobi Symbol Extends the Legendre Symbol",
+      "startLine": 46,
+      "endLine": 54,
+      "summary": "jacobi_eq_legendre: at an odd prime p, J(a|p) = legendreSym p a, so every Legendre computation from the parent entry is the prime case of the Jacobi algorithm.",
+      "mathContext": "At a prime $p$, $\\left(\\tfrac{a}{p}\\right)_{\\text{Jacobi}} = \\left(\\tfrac{a}{p}\\right)_{\\text{Legendre}}$ — the Jacobi symbol is a conservative extension.",
+      "relatedConcepts": ["Jacobi symbol", "Legendre symbol", "conservative extension"]
+    },
+    {
+      "id": "reduction-toolkit",
+      "title": "Algorithm Reduction Lemmas (the Descent Steps)",
+      "startLine": 56,
+      "endLine": 82,
+      "summary": "Numerator multiplicativity (jacobiSym_mul_left), denominator multiplicativity (jacobiSym_mul_right, the new phenomenon for composite moduli), numerator reduction (jacobiSym_mod_left), and powers (jacobiSym_pow_left). Each is the Jacobi analogue of a Legendre descent step.",
+      "mathContext": "$\\left(\\tfrac{a_1 a_2}{n}\\right) = \\left(\\tfrac{a_1}{n}\\right)\\left(\\tfrac{a_2}{n}\\right)$; $\\left(\\tfrac{a}{mn}\\right) = \\left(\\tfrac{a}{m}\\right)\\left(\\tfrac{a}{n}\\right)$; $\\left(\\tfrac{a}{n}\\right) = \\left(\\tfrac{a \\bmod n}{n}\\right)$; $\\left(\\tfrac{a^e}{n}\\right) = \\left(\\tfrac{a}{n}\\right)^e$.",
+      "relatedConcepts": ["multiplicativity", "modular reduction", "Euclidean descent", "composite modulus"]
+    },
+    {
+      "id": "supplementary-reciprocity",
+      "title": "Supplementary Laws and Reciprocity for Jacobi",
+      "startLine": 84,
+      "endLine": 104,
+      "summary": "First supplementary law J(-1|n)=χ₄(n), second supplementary law J(2|n)=χ₈(n), and full quadratic reciprocity J(a|b) = (-1)^((a/2)·(b/2))·J(b|a) for odd a, b — the engine that flips the symbol and enables descent without factoring either argument.",
+      "mathContext": "$\\left(\\tfrac{-1}{n}\\right) = \\chi_4(n)$, $\\left(\\tfrac{2}{n}\\right) = \\chi_8(n)$, and $\\left(\\tfrac{a}{b}\\right) = (-1)^{\\frac{a-1}{2}\\frac{b-1}{2}}\\left(\\tfrac{b}{a}\\right)$ for odd $a,b$.",
+      "relatedConcepts": ["supplementary laws", "quadratic reciprocity", "χ₄", "χ₈"]
+    },
+    {
+      "id": "residue-test",
+      "title": "One-Directional Residue Test (Solovay–Strassen)",
+      "startLine": 106,
+      "endLine": 121,
+      "summary": "nonresidue_of_jacobi_eq_neg_one: J=-1 certifies a non-residue (valid for every modulus). residue_of_jacobi_eq_one_prime: J=1 recovers a residue only when the modulus is prime. The asymmetry between these two is the heart of the entry.",
+      "mathContext": "For all $n$: $\\left(\\tfrac{a}{n}\\right) = -1 \\Rightarrow a$ is not a square mod $n$. For prime $p$: $\\left(\\tfrac{a}{p}\\right) = 1 \\Rightarrow a$ is a square mod $p$.",
+      "relatedConcepts": ["quadratic residue", "Solovay–Strassen test", "Euler liar", "primality testing"]
+    },
+    {
+      "id": "computations",
+      "title": "Computing Composite-Modulus Symbols",
+      "startLine": 123,
+      "endLine": 139,
+      "summary": "Three values evaluated by Mathlib's kernel-checked norm_num Jacobi-symbol extension: J(2|15)=1, J(7|15)=-1, J(3|15)=0. The extension runs the reciprocity descent at elaboration time and emits an ordinary proof term — no native_decide, so these stay 0-axiom.",
+      "mathContext": "$J(2|15) = J(2|3)\\,J(2|5) = (-1)(-1) = 1$; $J(7|15) = J(7|3)\\,J(7|5) = (1)(-1) = -1$; $J(3|15) = 0$ since $\\gcd(3,15) \\ne 1$.",
+      "relatedConcepts": ["norm_num", "kernel-checked computation", "Jacobi symbol evaluation"]
+    },
+    {
+      "id": "converse-fails",
+      "title": "The Converse FAILS for Composite Moduli",
+      "startLine": 141,
+      "endLine": 161,
+      "summary": "two_not_square_mod_fifteen establishes ¬IsSquare (2 : ZMod 15) by decide. jacobi_one_not_residue_test combines it with J(2|15)=1 to prove ∃ a n, J(a|n)=1 ∧ ¬IsSquare a — the Legendre characterization is genuinely false for composite moduli. seven_not_square_mod_fifteen shows the valid direction: J(7|15)=-1 certifies 7 is a non-residue.",
+      "mathContext": "Squares mod 15 are $\\{0,1,4,6,9,10\\}$, so $2 \\notin$ them despite $J(2|15)=1$. This false positive is an Euler liar — the obstruction making Solovay–Strassen probabilistic rather than exact.",
+      "relatedConcepts": ["Euler liar", "false positive", "ZMod decidability", "counterexample"]
+    },
+    {
+      "id": "descent",
+      "title": "Algorithm Termination (Euclidean Descent)",
+      "startLine": 163,
+      "endLine": 173,
+      "summary": "algorithm_descent: under a < b with both odd, reciprocity rewrites J(a|b) in terms of J(b|a), which then reduces mod a < b — the strictly decreasing measure that justifies termination, exactly as in Euclid's algorithm.",
+      "mathContext": "Each reciprocity swap maps $\\left(\\tfrac{a}{b}\\right)$ to a problem of strictly smaller modulus after $b \\bmod a$, giving a well-founded descent on the modulus.",
+      "relatedConcepts": ["well-founded recursion", "Euclidean algorithm analogy", "termination"]
+    },
+    {
+      "id": "exports",
+      "title": "Public API Exports",
+      "startLine": 175,
+      "endLine": 186,
+      "summary": "Five #check declarations confirming the main API: jacobi_eq_legendre, jacobiSym_mul_right, jacobiSym_reciprocity, nonresidue_of_jacobi_eq_neg_one, and jacobi_one_not_residue_test.",
+      "mathContext": "The exported toolkit: Legendre bridge, denominator multiplicativity, reciprocity, the valid residue-test direction, and the composite-modulus counterexample."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization lifts the parent's Legendre-symbol algorithm to the Jacobi symbol J(a|n) for arbitrary odd n: a complete reduction toolkit (numerator and denominator multiplicativity, supplementary laws, reciprocity, mod-reduction) against Mathlib's jacobiSym, the two directions of the residue test cleanly separated, and an explicit composite-modulus counterexample J(2|15)=1 with 2 a non-residue mod 15. All 17 results are verified with zero sorries and zero axioms (no native_decide).",
+    "implications": "By separating the always-valid direction (J=-1 certifies a non-residue) from the prime-only converse (J=1 implies a residue), the entry isolates exactly the Euler-liar phenomenon that makes the Solovay–Strassen primality test probabilistic. It directly answers the parent entry's third open question — extending the verified Legendre computation to the Jacobi symbol for composite n, proved against Mathlib's jacobiSym, as the foundation of a Solovay–Strassen toolkit.",
+    "openQuestions": [
+      "Can the Euler-criterion congruence J(a|n) ≡ a^((n-1)/2) (mod n) be formalized and the set of Euler liars for a fixed composite n be bounded, giving the ≤ 1/2 error probability that makes Solovay–Strassen a correct randomized test?",
+      "Can these reduction lemmas be assembled into an executable, well-founded recursive Jacobi-symbol evaluator with a proof of correctness against Mathlib's jacobiSym, computing J(a|n) without factoring n?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity-oq-03",
+      "relationship": "extends",
+      "description": "The parent entry packages quadratic reciprocity as an algorithm for the Legendre symbol; this entry extends that algorithm to the Jacobi symbol and answers its third open question."
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "related",
+      "description": "A companion algorithmic presentation that implements a recursive Jacobi-symbol computation; this entry supplies the reduction toolkit and the residue-test characterization."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundation",
+      "description": "The underlying Law of Quadratic Reciprocity, which the Jacobi symbol inherits and which drives the descent."
+    }
+  ],
+  "references": {
+    "papers": [
+      {
+        "title": "A Fast Monte-Carlo Test for Primality",
+        "author": "R. Solovay and V. Strassen",
+        "year": 1977,
+        "url": "https://en.wikipedia.org/wiki/Solovay%E2%80%93Strassen_primality_test"
+      }
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Jacobi_symbol",
+      "https://en.wikipedia.org/wiki/Solovay%E2%80%93Strassen_primality_test"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.LegendreSymbol.JacobiSymbol"
+    ]
+  },
+  "leanFile": {
+    "namespace": "JacobiAlgorithm",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 0,
+    "path": "Proofs/QuadraticReciprocityOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
