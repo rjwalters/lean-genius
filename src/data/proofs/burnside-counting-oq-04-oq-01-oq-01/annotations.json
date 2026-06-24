@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-burnoq040101-overview",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 51 },
+    "type": "context",
+    "title": "Bracelet Counting via Burnside, Made Generic in n",
+    "content": "Burnside's lemma counts orbits of a finite group action as the average number of fixed points. For the dihedral group D_n acting on the 2-colourings of an n-cycle, the orbits are exactly the binary bracelets (necklaces counted up to rotation AND reflection), giving OEIS A000029. The grandparent reduced bracelets to necklaces via index-2 folding; the parent built one concrete D_4 action and got b(4) = 6. This entry's contribution is to construct the dihedral action GENERICALLY in n — once — and then read off b(5) = 8 and b(6) = 13 by evaluating only the cheap fixed-point sum with kernel decide (no native_decide, 0 axioms beyond the foundational three).",
+    "mathContext": "Burnside / Cauchy–Frobenius: $|X/G| = \\dfrac{1}{|G|}\\sum_{g\\in G} |\\mathrm{Fix}(g)|$. For $G = D_n$ acting on $X = (\\mathbb{Z}/n \\to \\mathrm{Fin}\\,2)$ this counts binary bracelets $b(n) = A000029(n)$: $b(5) = 8$, $b(6) = 13$.",
+    "significance": "context",
+    "relatedConcepts": ["Burnside's lemma", "dihedral group", "bracelet/necklace counting", "OEIS A000029"],
+    "prerequisites": ["group actions and orbits", "the orbit-counting lemma", "dihedral groups"]
+  },
+  {
+    "id": "ann-burnoq040101-coloring",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 59, "endLine": 60 },
+    "type": "definition",
+    "title": "Colourings as ZMod n → Fin 2",
+    "content": "Coloring n is the type of binary colourings of the n vertices: functions ZMod n → Fin 2, of which there are 2^n. Representing positions as ZMod n (so rotations are additions) and colours as Fin 2 keeps every object Fin-based, which is exactly what lets kernel decide enumerate the fixed-point sets cheaply at n = 5 (32 colourings) and n = 6 (64 colourings).",
+    "mathContext": "$\\mathrm{Coloring}(n) = (\\mathbb{Z}/n \\to \\mathrm{Fin}\\,2)$, $|\\mathrm{Coloring}(n)| = 2^n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod n", "Fin 2", "function types", "Fintype enumeration"],
+    "prerequisites": ["ZMod arithmetic", "Fintype of function types"]
+  },
+  {
+    "id": "ann-burnoq040101-representation",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 62, "endLine": 97 },
+    "type": "insight",
+    "title": "The Generic Faithful Representation ρ : D_n →* Perm(ZMod n)",
+    "content": "posPerm sends a rotation r i to x ↦ x + i (Equiv.addRight i) and a reflection sr i to x ↦ -i - x (Equiv.subLeft (-i)). The choice of -i - x rather than i - x is essential: it is the unique form that makes the assignment a homomorphism under Mathlib's dihedral convention sr i * sr j = r (j - i). posPerm_mul verifies the homomorphism property case-by-case over all four (r/sr)×(r/sr) combinations against the dihedral multiplication table (r_mul_r, r_mul_sr, sr_mul_r, sr_mul_sr), each closing by ext + ZMod arithmetic. The result is bundled as ρ : DihedralGroup n →* Equiv.Perm (ZMod n) — built once, for every n.",
+    "mathContext": "$\\rho(r_i)(x) = x + i,\\quad \\rho(sr_i)(x) = -i - x$ in $\\mathbb{Z}/n$. Homomorphism check, e.g. $\\rho(sr_i \\cdot sr_j) = \\rho(r_{j-i})$: $x \\mapsto x + (j-i)$, while $\\rho(sr_i)\\big(\\rho(sr_j)(x)\\big) = -i - (-j - x) = x + (j - i)$. ✓",
+    "significance": "key",
+    "relatedConcepts": ["dihedral multiplication table", "permutation representation", "Equiv.addRight / subLeft", "group homomorphism"],
+    "prerequisites": ["DihedralGroup convention sr i * sr j = r (j-i)", "Equiv.Perm", "ext for permutations"]
+  },
+  {
+    "id": "ann-burnoq040101-action",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 99, "endLine": 115 },
+    "type": "technique",
+    "title": "The Induced MulAction on Colourings",
+    "content": "A symmetry g relabels positions by ρ g and so transforms a colouring c into p ↦ c ((ρ g)⁻¹ p) — pulling back along the inverse, which is what makes it a LEFT action. The two MulAction laws fall straight out of ρ being a homomorphism: one_smul uses ρ.map_one and mul_smul uses ρ.map_mul. The inverse (ρ g).symm is what guarantees (g·h)·c = g·(h·c) rather than the opposite order. smul_apply records the pointwise unfolding by rfl, handy for the later decidable fixed-point computations.",
+    "mathContext": "$(g \\cdot c)(p) = c\\big((\\rho g)^{-1} p\\big)$. Then $\\big((gh)\\cdot c\\big)(p) = c\\big((\\rho(gh))^{-1}p\\big) = c\\big((\\rho h)^{-1}(\\rho g)^{-1}p\\big) = \\big(g\\cdot(h\\cdot c)\\big)(p)$ using $\\rho(gh) = \\rho g \\cdot \\rho h$.",
+    "significance": "key",
+    "relatedConcepts": ["MulAction laws", "pullback along inverse", "ρ.map_one / ρ.map_mul"],
+    "prerequisites": ["left vs right actions", "homomorphism ρ from Part I"]
+  },
+  {
+    "id": "ann-burnoq040101-instances",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 134 },
+    "type": "technique",
+    "title": "Decidability and Fintype Instances for Kernel Computation",
+    "content": "Burnside's lemma requires Fintype instances on the fixed-point sets and on the orbit quotient. decFixed makes the predicate g • c = c decidable (via decidable equality of colourings); fintypeFixedBy then gives Fintype (fixedBy ... g). For the quotient, decOrbitRel makes the orbit relation decidable by reducing it to the finite existential ∃ g, g • b = a (MulAction.mem_orbit_iff), and fintypeQuot builds Quotient.fintype from it. The NeZero n hypothesis is needed precisely so ZMod n is a Fintype, which is what gives DecidableEq on the function-type colourings ZMod n → Fin 2.",
+    "mathContext": "DecidableEq$(\\mathbb{Z}/n \\to \\mathrm{Fin}\\,2)$ needs Fintype$(\\mathbb{Z}/n)$, hence $\\mathrm{NeZero}\\,n$; the orbit relation $a \\sim b$ is decidable since $a \\sim b \\iff \\exists g\\in D_n,\\ g\\cdot b = a$ over a finite group.",
+    "significance": "technical",
+    "relatedConcepts": ["DecidablePred", "Quotient.fintype", "NeZero", "MulAction.mem_orbit_iff"],
+    "prerequisites": ["typeclass instances in Lean 4", "Fintype of ZMod n", "decidable quotients"]
+  },
+  {
+    "id": "ann-burnoq040101-burnside-reduction",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 136, "endLine": 150 },
+    "type": "insight",
+    "title": "Generic Burnside Reduction bracelet_count_mul",
+    "content": "This single generic lemma packages Mathlib's Burnside lemma (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) with DihedralGroup.card (= 2n). Given that the fixed-point sum equals some S, it concludes bracelets · 2n = S, so each concrete bracelet count costs only one kernel decide (to evaluate S) plus one omega (to divide). Crucially the orbit quotient itself is NEVER enumerated by decide — only the cheap fixed-point sum is — which is what keeps the whole computation within kernel reach.",
+    "mathContext": "$\\sum_{g\\in D_n} |\\mathrm{Fix}(g)| = |X/D_n|\\cdot|D_n|$ with $|D_n| = 2n$, so $b(n)\\cdot 2n = S$. From $S$ and $2n$, omega recovers $b(n)$.",
+    "significance": "key",
+    "relatedConcepts": ["Burnside's lemma in Mathlib", "DihedralGroup.card", "omega tactic", "avoiding quotient enumeration"],
+    "prerequisites": ["MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group", "|D_n| = 2n"]
+  },
+  {
+    "id": "ann-burnoq040101-counts",
+    "proofId": "burnside-counting-oq-04-oq-01-oq-01",
+    "range": { "startLine": 152, "endLine": 184 },
+    "type": "insight",
+    "title": "The Counts b(5) = 8 and b(6) = 13 by Kernel decide",
+    "content": "fixed_sum_five evaluates Σ_{g ∈ D₅} |Fix(g)| = 80 by kernel decide (10 symmetries × 32 colourings: identity fixes 32, the four nontrivial rotations fix 2 each, the five reflections fix 2³ = 8 each; 32 + 8 + 40 = 80), then bracelet_five divides to get b(5) = 8. fixed_sum_six gives 156 (12 × 64: rotations contribute 64+2+4+8+4+2 = 84, three vertex-axis reflections fix 2⁴ = 16 each, three edge-axis reflections fix 2³ = 8 each; 84 + 48 + 24 = 156), so b(6) = 13. n = 5 (odd) exercises the single reflection regime, n = 6 (even) both vertex- and edge-axis types — the smallest cases separating the two. #print axioms confirms only propext / Classical.choice / Quot.sound: kernel decide, NOT native_decide, so no Lean.ofReduceBool.",
+    "mathContext": "$n=5$: $80 = 32 + 4\\cdot 2 + 5\\cdot 2^{3} = 8\\cdot 10$. $n=6$: $156 = (64+2+4+8+4+2) + 3\\cdot 2^{4} + 3\\cdot 2^{3} = 84 + 48 + 24 = 13\\cdot 12$. Reflection fixed counts: a reflection through $r$ vertex-axes/cycles of length 2 fixes $2^{\\#\\text{cycles}}$ colourings.",
+    "significance": "key",
+    "relatedConcepts": ["kernel decide vs native_decide", "fixed points of rotations and reflections", "odd vs even dihedral reflections", "axiom audit"],
+    "prerequisites": ["the generic Burnside reduction", "fixed-point counting for cyclic/dihedral symmetries", "decide tactic"]
+  }
+]
