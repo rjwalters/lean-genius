@@ -1,0 +1,136 @@
+[
+  {
+    "id": "ann-prime-not-square",
+    "proofId": "infinitude-primes-4k1-oq-02-oq-01",
+    "range": {
+      "startLine": 52,
+      "endLine": 79
+    },
+    "type": "technique",
+    "title": "A Prime Is Never a Perfect Square: Both Legs Positive",
+    "content": "pos_of_prime_eq_sq_add_sq establishes 0 < a ∧ 0 < b for a prime p = a²+b² (reproduced from the sibling so the entry is self-contained). The auxiliary not_sq shows p ≠ n² for every n: a divisor n of a perfect-square prime would have to be 1 or p, both contradicting primality. Hence neither leg can be zero — positivity that the later ordering and distinctness arguments rely on (e.g. |ac−bd| < ac+bd needs ac, bd > 0).",
+    "mathContext": "$p$ prime, $p = a^2+b^2 \\Rightarrow a, b > 0$ (else $p$ would be a perfect square $a^2$ or $b^2$).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "primality",
+      "perfect square",
+      "positivity"
+    ],
+    "prerequisites": [
+      "Nat.Prime divisor structure",
+      "not_sq auxiliary"
+    ]
+  },
+  {
+    "id": "ann-odd-distinct-legs",
+    "proofId": "infinitude-primes-4k1-oq-02-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "An Odd Prime Has Distinct Legs a ≠ b",
+    "content": "ne_of_odd_prime_eq_sq_add_sq: if a = b then p = a²+b² = 2a² is divisible by 2, forcing p = 2 by primality (Nat.Prime.eq_one_or_self_of_dvd), which contradicts Odd p. So a ≠ b (and likewise c ≠ d for q). This single fact is precisely what rules out the degenerate coincidence of the two representations — it is the hinge between primality and the distinctness conclusion.",
+    "mathContext": "$p$ odd prime, $p = a^2+b^2 \\Rightarrow a \\ne b$ (else $p = 2a^2$ is even, so $p = 2$).",
+    "significance": "key",
+    "relatedConcepts": [
+      "odd prime",
+      "parity",
+      "distinct legs"
+    ],
+    "prerequisites": [
+      "Nat.Prime.eq_one_or_self_of_dvd",
+      "Odd"
+    ]
+  },
+  {
+    "id": "ann-brahmagupta",
+    "proofId": "infinitude-primes-4k1-oq-02-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 101
+    },
+    "type": "concept",
+    "title": "The Two Brahmagupta–Fibonacci Sign Variants",
+    "content": "brahmagupta_diff and brahmagupta_sum are the two sign variants of the sum-of-two-squares multiplication identity, each proved by ring over ℤ: (ac+bd)² + (ad−bc)² = (a²+b²)(c²+d²) and (ac−bd)² + (ad+bc)² = (a²+b²)(c²+d²). These two identities are the entire source of the second representation — the product carries two representations precisely because there are two consistent sign choices. Known to Brahmagupta (7th c.) and the basis of Euler's factorization method.",
+    "mathContext": "$(ac \\pm bd)^2 + (ad \\mp bc)^2 = (a^2+b^2)(c^2+d^2)$; the $\\pm$ gives the two representations of $pq$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Brahmagupta–Fibonacci identity",
+      "Gaussian integers ℤ[i]",
+      "multiplicativity of sums of two squares"
+    ],
+    "prerequisites": [
+      "ring"
+    ]
+  },
+  {
+    "id": "ann-integer-core",
+    "proofId": "infinitude-primes-4k1-oq-02-oq-01",
+    "range": {
+      "startLine": 103,
+      "endLine": 133
+    },
+    "type": "insight",
+    "title": "Integer Core: the Two Square-Pairs Are Distinct",
+    "content": "squares_multiset_ne is the pure algebraic heart, independent of primality: for positive a,b,c,d with a≠b and c≠d, the multisets {(ac+bd)², (ad−bc)²} and {(ac−bd)², (ad+bc)²} differ. Assuming equality, (ac+bd)² equals (ac−bd)² — forcing 4abcd = 0, impossible by positivity — or (ad+bc)² — forcing (a−b)(a+b)(c−d)(c+d) = 0, impossible since a≠b, c≠d and the sums are positive. Isolating this over ℤ keeps the main theorem's distinctness step clean.",
+    "mathContext": "$\\{(ac{+}bd)^2,(ad{-}bc)^2\\} \\ne \\{(ac{-}bd)^2,(ad{+}bc)^2\\}$: equality forces $4abcd=0$ or $(a^2{-}b^2)(c^2{-}d^2)=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiset equality",
+      "difference of squares",
+      "case refutation"
+    ],
+    "prerequisites": [
+      "Multiset.mem_cons",
+      "nlinarith",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "infinitude-primes-4k1-oq-02-oq-01",
+    "range": {
+      "startLine": 135,
+      "endLine": 203
+    },
+    "type": "insight",
+    "title": "Main Theorem: Products Have Two Distinct Representations",
+    "content": "product_two_representations proves pq = (ac+bd)² + |ad−bc|² = |ac−bd|² + (ad+bc)² with distinct unordered pairs, over ℕ. The two equalities (eq1, eq2) follow from the Brahmagupta identities after push_cast and replacing |·|² by the signed cross term via sq_abs (the difference summands are packaged as natural numbers via Int.natAbs, bridged by Int.natCast_natAbs). Distinctness: if the pairs coincided, the largest summand ac+bd would lie in the second pair (Multiset.mem_cons), so ac+bd = |ac−bd| — impossible since ac+bd strictly dominates (abs_lt + nlinarith using ac, bd > 0) — or ac+bd = ad+bc, which gives (a−b)(c−d) = 0 (linear_combination), contradicting a≠b, c≠d from odd primality. The distinctness, not the identities, is the real content.",
+    "mathContext": "$pq = (ac{+}bd)^2 + |ad{-}bc|^2 = |ac{-}bd|^2 + (ad{+}bc)^2$, and $\\{ac{+}bd,|ad{-}bc|\\} \\ne \\{|ac{-}bd|,ad{+}bc\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sum of two squares",
+      "sharpness of uniqueness",
+      "Euler's factorization principle"
+    ],
+    "prerequisites": [
+      "brahmagupta_diff / brahmagupta_sum",
+      "sq_abs",
+      "Int.natCast_natAbs",
+      "ne_of_odd_prime_eq_sq_add_sq"
+    ]
+  },
+  {
+    "id": "ann-witness",
+    "proofId": "infinitude-primes-4k1-oq-02-oq-01",
+    "range": {
+      "startLine": 205,
+      "endLine": 214
+    },
+    "type": "context",
+    "title": "The Canonical Witness: 65 = 5·13",
+    "content": "sixtyfive_two_ways grounds the general theorem in the smallest classical example: 65 = 5·13 = 1²+8² = 4²+7², with {1,8} ≠ {4,7}. Built from 5 = 1²+2² and 13 = 2²+3² via the two sign variants. Both representations and their distinctness are discharged by norm_num and decide — a fully decidable check that the abstract statement holds concretely.",
+    "mathContext": "$65 = 5\\cdot 13 = 1^2 + 8^2 = 4^2 + 7^2$, $\\{1,8\\} \\ne \\{4,7\\}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "concrete witness",
+      "decidability",
+      "Euler factorization example"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "decide"
+    ]
+  }
+]
