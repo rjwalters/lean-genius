@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ann-det-fin-four",
+    "proofId": "herons-formula-oq-05-oq-03",
+    "range": {
+      "startLine": 45,
+      "endLine": 76
+    },
+    "type": "theorem",
+    "title": "A Reusable 4×4 Determinant Expansion",
+    "content": "Mathlib provides `Matrix.det_fin_two` and `Matrix.det_fin_three` but stops there. `det_fin_four` records the Laplace (cofactor) expansion of an arbitrary 4×4 matrix along its first row: `det M = Σ_j (-1)^j · M 0 j · det(minor_j)`, with each of the four 3×3 minors written out. The proof mirrors Mathlib's own `det_fin_three`: a single fixed `simp only` set built from `Matrix.det_succ_row_zero`, `Fin.sum_univ_succ`, and the `Fin.succAbove` normalization lemmas drives the recursion down to the `Fin 1` base case (`Matrix.det_unique`), after which `ring` certifies the polynomial. A handful of explicit `Fin.succ`/`Fin.succAbove` numeral reductions (e.g. `Fin.succ 2 = 3`) are supplied because the named lemmas only fire on `succ`-form indices. This lemma is the engine for the 5×5 Cayley–Menger determinant below.",
+    "mathContext": "$\\det M = M_{00}\\,C_{00} - M_{01}\\,C_{01} + M_{02}\\,C_{02} - M_{03}\\,C_{03}$, each cofactor $C_{0j}$ a 3×3 determinant.",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "Laplace expansion",
+      "cofactor",
+      "determinant",
+      "Matrix.det_fin_three"
+    ],
+    "prerequisites": [
+      "determinants",
+      "cofactor expansion"
+    ],
+    "crossReferences": []
+  },
+  {
+    "id": "ann-triangle",
+    "proofId": "herons-formula-oq-05-oq-03",
+    "range": {
+      "startLine": 77,
+      "endLine": 122
+    },
+    "type": "theorem",
+    "title": "The Triangle Polynomial Is the 4×4 Determinant",
+    "content": "`cmMatrix3 d01 d02 d12` is the bordered squared-distance matrix of a triangle — a row and column of ones around the 3×3 matrix of squared edge lengths — built as an honest `Matrix (Fin 4) (Fin 4) ℝ` with `!!` notation. `cmDet3_eq_det` proves `Matrix.det (cmMatrix3 …) = cmDet3 …`, the parent's hand-expanded polynomial: expand once along row 0 (`Matrix.det_succ_row_zero` + `Fin.sum_univ_four`), evaluate the four 3×3 minors with `Matrix.det_fin_three`, reduce the `!!` entry lookups via the `cons_val` simp lemmas, and close with `ring`. Because the matrix is concrete, every entry collapses to an actual real, sidestepping the Fin-literal bookkeeping. `det_cmMatrix3_eq_area` then composes with the parent identity `cmDet3 = −4·(2·Area)²` to give Heron's formula in its determinantal form: the bordered determinant equals `−16·Area²`.",
+    "mathContext": "$\\det\\begin{pmatrix}0&1&1&1\\\\1&0&d_{01}&d_{02}\\\\1&d_{01}&0&d_{12}\\\\1&d_{02}&d_{12}&0\\end{pmatrix} = \\mathrm{cmDet3} = -16\\,\\mathrm{Area}^2.$",
+    "significance": "central",
+    "relatedConcepts": [
+      "Cayley–Menger determinant",
+      "Heron's formula",
+      "bordered matrix",
+      "squared distance"
+    ],
+    "prerequisites": [
+      "determinants",
+      "coordinate geometry"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "herons-formula-oq-05",
+        "relationship": "parent"
+      }
+    ]
+  },
+  {
+    "id": "ann-tetrahedron",
+    "proofId": "herons-formula-oq-05-oq-03",
+    "range": {
+      "startLine": 123,
+      "endLine": 189
+    },
+    "type": "theorem",
+    "title": "The Tetrahedron Polynomial Is the 5×5 Determinant",
+    "content": "`cmMatrix4` is the bordered 5×5 squared-distance matrix of a tetrahedron. `cmDet4_eq_det` proves `Matrix.det (cmMatrix4 …) = cmDet4 …`, the parent's 22-term polynomial, by a single cofactor expansion along row 0 (`Fin.sum_univ_five`) followed by `det_fin_four` on each of the five 4×4 minors — proving the generic `det_fin_four` first keeps this from exploding into a deep recursive `simp`. `det_cmMatrix4_eq_vol` composes with the parent identity `cmDet4 = 8·(6·V)²` to give the tetrahedron volume law in determinantal form, `det = 288·V²`, and `det_cmMatrix4_nonneg` reads realizability (`det ≥ 0`) directly off the bordered matrix via `positivity`. Together with the triangle case this certifies that the Cayley–Menger *polynomials* really are the Cayley–Menger *determinants*.",
+    "mathContext": "$\\det(\\text{bordered }5\\times5) = \\mathrm{cmDet4} = 288\\,V^2 \\geq 0,$ with $V = |\\mathrm{vol6}|/6$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Cayley–Menger determinant",
+      "tetrahedron volume",
+      "realizability",
+      "distance geometry"
+    ],
+    "prerequisites": [
+      "determinants",
+      "cofactor expansion",
+      "coordinate geometry"
+    ],
+    "crossReferences": [
+      {
+        "proofId": "herons-formula-oq-05",
+        "relationship": "parent"
+      }
+    ]
+  }
+]
