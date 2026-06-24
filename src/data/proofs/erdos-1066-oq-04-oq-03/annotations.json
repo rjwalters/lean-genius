@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-framework",
+    "proofId": "erdos-1066-oq-04-oq-03",
+    "range": { "startLine": 62, "endLine": 85 },
+    "type": "definition",
+    "title": "Self-contained unit-distance framework",
+    "content": "Re-declares SepConfig (n points in ℝ^d, pairwise distance ≥ 1), unitEdge (distance exactly 1), unitDegree (neighbour count) and IsIndepSet, keeping the file independent of the axiom-bearing parent so it can be certified 0-axiom. unitEdge_symm proves the relation is symmetric via dist_comm — needed so that 'v adjacent to u' and 'u adjacent to v' coincide in the domination step."
+  },
+  {
+    "id": "ann-closed-nbhd",
+    "proofId": "erdos-1066-oq-04-oq-03",
+    "range": { "startLine": 91, "endLine": 101 },
+    "type": "lemma",
+    "title": "Closed neighbourhood cardinality bound",
+    "content": "closedNbhd u = insert u {unit-neighbours of u}. card_closedNbhd_le shows |N[u]| ≤ 1 + deg(u) via Finset.card_insert_le. This is the per-vertex ingredient that, summed over a dominating set S, produces the covering bound n ≤ |S|·(Δ+1)."
+  },
+  {
+    "id": "ann-greedy-general",
+    "proofId": "erdos-1066-oq-04-oq-03",
+    "range": { "startLine": 103, "endLine": 182 },
+    "type": "theorem",
+    "title": "greedy_independence_of_maxDegree (the 0-axiom greedy bound)",
+    "content": "For any degree bound Δ with unit-degree ≤ Δ everywhere, there is an independent set of size ≥ n/(Δ+1). Proof: choose an independent set S of MAXIMUM cardinality (Finset.exists_max_image over the finite family of independent finsets). Domination — if v∉S had no neighbour in S, then insert v S would be a strictly larger independent set, contradicting maximality. Hence the closed neighbourhoods of S cover univ, giving n ≤ Σ_{u∈S}(1+deg u) ≤ |S|(Δ+1), and Nat.div_le_of_le_mul finishes. No greedy ordering, no axioms."
+  },
+  {
+    "id": "ann-kissing-cor",
+    "proofId": "erdos-1066-oq-04-oq-03",
+    "range": { "startLine": 184, "endLine": 206 },
+    "type": "theorem",
+    "title": "greedy_independence_kissing (parent axiom recovered)",
+    "content": "Instantiating Δ := τ(d) recovers the parent entry's axiomatized greedy_independence as a genuine theorem, now taking the geometric degree bound (degree_le_kissing) as an explicit hypothesis. This discharges the combinatorial half of the parent's open question and isolates degree_le_kissing — the kissing-number problem itself — as the sole residual axiom (budget 2 → 1)."
+  },
+  {
+    "id": "ann-trivial",
+    "proofId": "erdos-1066-oq-04-oq-03",
+    "range": { "startLine": 211, "endLine": 224 },
+    "type": "theorem",
+    "title": "greedy_trivial (fully unconditional instantiation)",
+    "content": "Using the always-valid bound unit-degree ≤ n (a filter of univ has card ≤ |univ| = n), greedy_trivial yields the unconditional independent-set bound n/(n+1) with no geometric input — a degenerate but completely axiom-free witness of the general theorem."
+  }
+]
