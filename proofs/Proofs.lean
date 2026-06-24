@@ -2787,6 +2787,7 @@ import Proofs.FibonacciIdentitiesOQ02
 import Proofs.FibonacciIdentitiesOQ03
 import Proofs.FibonacciIdentitiesOQ03OQ01
 import Proofs.FibonacciIdentitiesOQ03OQ02
+import Proofs.FibonacciIdentitiesOQ03OQ03
 import Proofs.FibonacciIdentitiesOQ04
 import Proofs.FibonacciIdentitiesOQ04OQ01
 import Proofs.FiveColorTheorem
