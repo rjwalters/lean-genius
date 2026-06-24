@@ -17,6 +17,7 @@ import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4
 import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle
 import Proofs.AbelRuffiniGaloisExtensionsOQ07
 import Proofs.AbelRuffiniGaloisExtensionsOQ11
+import Proofs.AbelRuffiniObstructionOQ06
 import Proofs.AbelRuffiniOQ03
 import Proofs.AbelRuffiniOQ04
 import Proofs.AbelRuffiniOQ04OQ01
@@ -44,7 +45,6 @@ import Proofs.AbelRuffiniOQ07Order6
 import Proofs.AbelRuffiniOQ09
 import Proofs.AbelRuffiniOQ10
 import Proofs.AbelRuffiniOQ11
-import Proofs.AbelRuffiniObstructionOQ06
 import Proofs.AbundantDeficientDvdOQ04
 import Proofs.AbundantMultiplesOQ01
 import Proofs.AbundantNumberOQ01
@@ -1510,8 +1510,8 @@ import Proofs.Erdos1142Problem
 import Proofs.Erdos1143Problem
 import Proofs.Erdos1144Problem
 import Proofs.Erdos1145Problem
-import Proofs.Erdos1146Problem
 import Proofs.Erdos1146OQ04
+import Proofs.Erdos1146Problem
 import Proofs.Erdos1147Problem
 import Proofs.Erdos1148Problem
 import Proofs.Erdos1149Aristotle
@@ -3106,6 +3106,7 @@ import Proofs.GammaLogConvexityOQ01
 import Proofs.GammaReflectionFormulaOQ01
 import Proofs.GammaReflectionFormulaOQ01OQ01
 import Proofs.GammaReflectionFormulaOQ01OQ01OQ01
+import Proofs.GammaReflectionFormulaOQ01OQ02
 import Proofs.GammaReflectionFormulaOQ01OQ03
 import Proofs.GammaReflectionFormulaOQ01OQ03OQ01
 import Proofs.GammaReflectionFormulaOQ01OQ03OQ01OQ01
@@ -3242,8 +3243,8 @@ import Proofs.HarmonicDivergenceOQ05
 import Proofs.HarmonicDivergenceOQ05OQ01
 import Proofs.HarmonicDivergenceOQ05OQ02
 import Proofs.HermiteFloorIdentity
-import Proofs.HermiteSawtoothIdentity
 import Proofs.HermiteLindemann
+import Proofs.HermiteSawtoothIdentity
 import Proofs.HeronsFormula
 import Proofs.HeronsFormulaOQ01
 import Proofs.HeronsFormulaOQ03
