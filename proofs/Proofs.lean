@@ -4052,6 +4052,7 @@ import Proofs.VandermondeInterpolationOQ01OQ01
 import Proofs.VandermondeInterpolationOQ01OQ02
 import Proofs.VandermondeInterpolationOQ01OQ02OQ01
 import Proofs.VarignonTheorem
+import Proofs.VarignonTheoremOQ01OQ01
 import Proofs.VietasFormulas
 import Proofs.VietasFormulasOQ02
 import Proofs.VietasFormulasOQ03
