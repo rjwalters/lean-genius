@@ -1,0 +1,200 @@
+{
+  "id": "banach-fixed-point-oq-01-oq-02",
+  "title": "Banach Fixed Point OQ-01-OQ-02: Lipschitz Perturbations of the Identity are Homeomorphisms",
+  "slug": "banach-fixed-point-oq-01-oq-02",
+  "description": "On a complete normed space E, if g : E → E is Lipschitz with constant k < 1 then the perturbation of the identity f(x) = x + g(x) is a homeomorphism of E onto itself, and its inverse is Lipschitz with the sharp constant 1/(1 − k). Surjectivity is supplied by the parent Banach contraction principle: solving x + g(x) = y is the fixed-point equation x = y − g(x) for the k-contraction x ↦ y − g(x). Injectivity and the inverse bound come from the antilipschitz lower estimate ‖f(x) − f(y)‖ ≥ (1 − k)‖x − y‖. This is the global Newton/Banach perturbation result, the contraction-principle pillar of the inverse function theorem (parent OQ-01 open question #2).",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BanachFixedPointOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "fixed-point",
+      "contraction-mapping",
+      "banach",
+      "lipschitz",
+      "homeomorphism",
+      "inverse-function-theorem",
+      "perturbation-of-identity",
+      "metric-spaces"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "AntilipschitzWith.add_lipschitzWith",
+        "description": "If f is AntilipschitzWith Kf and g is LipschitzWith Kg with Kg < Kf⁻¹, then x ↦ f x + g x is AntilipschitzWith (Kf⁻¹ − Kg)⁻¹; specialized to f = id (Kf = 1) gives the (1 − k)⁻¹ lower bound",
+        "module": "Mathlib.Analysis.Normed.Group.Uniform"
+      },
+      {
+        "theorem": "ContractingWith.fixedPoint",
+        "description": "The Banach fixed-point theorem: a contraction on a complete nonempty space has a fixed point; used to invert f via the contraction x ↦ y − g x",
+        "module": "Mathlib.Topology.MetricSpace.Contracting"
+      },
+      {
+        "theorem": "AntilipschitzWith.to_rightInverse",
+        "description": "If f is AntilipschitzWith K and h is a right inverse of f, then h is LipschitzWith K; gives the sharp 1/(1 − k) Lipschitz constant of f⁻¹",
+        "module": "Mathlib.Topology.MetricSpace.Antilipschitz"
+      },
+      {
+        "theorem": "AntilipschitzWith.injective",
+        "description": "An antilipschitz map is injective",
+        "module": "Mathlib.Topology.MetricSpace.Antilipschitz"
+      },
+      {
+        "theorem": "Equiv.ofBijective",
+        "description": "Packages a bijective function as an equivalence, used to build the homeomorphism",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "LipschitzWith.add",
+        "description": "Sum of Lipschitz maps is Lipschitz with the sum of constants; gives f = id + g is (1 + k)-Lipschitz hence continuous",
+        "module": "Mathlib.Topology.MetricSpace.Lipschitz"
+      }
+    ],
+    "originalContributions": [
+      "perturbId_antilipschitz: the perturbation f = id + g is AntilipschitzWith (1 − k)⁻¹, obtained by specializing AntilipschitzWith.add_lipschitzWith to the identity (antilipschitz constant 1) — this single estimate yields both injectivity and the sharp inverse Lipschitz constant",
+      "perturbId_surjective: surjectivity of f via the parent Banach contraction principle — solving f(x) = y is recast as the fixed-point equation x = y − g(x) for the explicitly-constructed k-contraction x ↦ y − g(x) on the complete space E",
+      "perturbIdHomeomorph: the headline assembly of injectivity + surjectivity + the two-sided Lipschitz bounds into an honest E ≃ₜ E homeomorphism, with both directions continuous",
+      "perturbIdHomeomorph_symm_lipschitz: the sharp quantitative inverse bound Lip(f⁻¹) ≤ 1/(1 − k), via AntilipschitzWith.to_rightInverse",
+      "A worked ℝ instance: x ↦ x + (1/2)·sin x is a homeomorphism, from the (1/2)-Lipschitz bound on (1/2)·sin",
+      "Summary theorem bundling the (1 + k)-Lipschitz, (1 − k)⁻¹-antilipschitz, bijective, and (1 − k)⁻¹-inverse-Lipschitz facts"
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 184,
+    "assumptions": "0 axioms, 0 sorries (only Lean's foundational propext / Classical.choice / Quot.sound). E is a complete normed additive group; g : E → E is Lipschitz with constant k < 1. The antilipschitz and Lipschitz bounds are AntilipschitzWith.add_lipschitzWith / LipschitzWith.add specialized to the identity; surjectivity uses Mathlib's ContractingWith.fixedPoint (the Banach theorem) on the contraction x ↦ y − g x; the inverse bound is AntilipschitzWith.to_rightInverse.",
+    "theoremCount": 8,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "After Banach's 1922 contraction mapping principle, its most far-reaching consequence is the inverse function theorem: a continuously differentiable map with invertible derivative is locally invertible. The cleanest building block — and the one Banach himself emphasized — is the perturbation of the identity: if g is a Lipschitz map with constant strictly less than 1, then id + g is a global homeomorphism. This is the nonlinear analogue of the Neumann series (I + A is invertible when ‖A‖ < 1) and underlies Hadamard's global inverse function theorems. Mathlib develops the local inverse function theorem through ApproximatesLinearOn, where this exact estimate appears with the identity replaced by a linear model f'.",
+    "problemStatement": "**Open Question (parent OQ-01, follow-up #2)**: Formalize the global Newton/Banach perturbation result: if g is a small Lipschitz perturbation of the identity, then id + g is a homeomorphism (a step toward the inverse function theorem).\n\n**Answer**: For a complete normed space E and g Lipschitz with constant k < 1, the map f(x) = x + g(x) is a homeomorphism E ≃ₜ E. It is (1 + k)-Lipschitz, AntilipschitzWith (1 − k)⁻¹ (hence injective), and surjective by the contraction principle; its inverse is Lipschitz with the sharp constant 1/(1 − k).",
+    "text": "A Lipschitz perturbation f = id + g of the identity (Lipschitz constant k < 1 of g) on a complete normed space is a homeomorphism, with f⁻¹ Lipschitz of constant 1/(1 − k); surjectivity comes from the parent Banach contraction principle.",
+    "proofStrategy": "1. **Two-sided bounds**: f = id + g is (1 + k)-Lipschitz by LipschitzWith.add (continuity), and AntilipschitzWith (1 − k)⁻¹ by AntilipschitzWith.add_lipschitzWith specialized to the identity (antilipschitz constant 1, condition k < 1 = 1⁻¹). The antilipschitz bound gives injectivity directly.\n2. **Surjectivity via the contraction principle**: For a target y, the map φ_y(x) = y − g(x) is a k-contraction (explicitly: dist(φ_y a, φ_y b) = dist(g a, g b) ≤ k·dist(a,b)). By ContractingWith.fixedPoint on the complete space E it has a fixed point x*, and x* = y − g(x*) rearranges to x* + g(x*) = y, i.e. f(x*) = y.\n3. **Assembly**: injective + surjective gives a bijection (Equiv.ofBijective); continuity of f (Lipschitz) and of f⁻¹ (antilipschitz, via AntilipschitzWith.to_rightInverse) package it as a homeomorphism E ≃ₜ E. The inverse's Lipschitz constant is exactly the antilipschitz constant 1/(1 − k).",
+    "keyInsights": [
+      "The whole inverse is powered by the **parent Banach theorem**: surjectivity is nothing but 'every y has a preimage', and the preimage is the fixed point of the contraction x ↦ y − g(x). This is the cleanest place where the contraction principle reappears to invert a map rather than to find a single fixed point.",
+      "**One estimate does double duty**: the antilipschitz lower bound ‖f(x) − f(y)‖ ≥ (1 − k)‖x − y‖ gives injectivity AND the sharp Lipschitz constant 1/(1 − k) of the inverse — no separate inverse-continuity argument is needed.",
+      "Specializing AntilipschitzWith.add_lipschitzWith to the identity (antilipschitz constant 1) is what reduces the side condition to the familiar k < 1; the same lemma with a linear model f' in place of the identity is Mathlib's local inverse function theorem.",
+      "The perturbation of identity is the nonlinear Neumann series: (I + A) invertible for ‖A‖ < 1 becomes (id + g) homeomorphic for Lip(g) < 1.",
+      "Completeness of E is used in exactly one place — to run the contraction principle for surjectivity; injectivity and the Lipschitz bounds hold without it."
+    ],
+    "prerequisites": [
+      "Banach contraction mapping principle and ContractingWith (parent OQ-01)",
+      "Lipschitz and antilipschitz maps; the AntilipschitzWith API",
+      "Homeomorphisms of metric/normed spaces"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the perturbation-of-identity result, its role as the third contraction-principle pillar (after the fixed-point theorem and Picard–Lindelöf), and the three ingredients (antilipschitz lower bound, contraction-principle surjectivity, Lipschitz upper bound)",
+      "startLine": 1,
+      "endLine": 60,
+      "mathContext": "**Goal**: f(x) = x + g(x) with Lip(g) = k < 1 is a homeomorphism, Lip(f⁻¹) ≤ 1/(1 − k)."
+    },
+    {
+      "id": "lipschitz-bounds",
+      "title": "Part I: The Two-Sided Lipschitz Estimates",
+      "summary": "perturbId_lipschitz (LipschitzWith (1 + k)), perturbId_antilipschitz (AntilipschitzWith (1 − k)⁻¹ via add_lipschitzWith specialized to id), and perturbId_injective",
+      "startLine": 61,
+      "endLine": 90,
+      "mathContext": "$(1-k)\\|x-y\\| \\le \\|f(x)-f(y)\\| \\le (1+k)\\|x-y\\|$."
+    },
+    {
+      "id": "surjectivity",
+      "title": "Part II: Surjectivity via the Contraction Principle",
+      "summary": "perturbId_surjective: the map x ↦ y − g(x) is an explicitly-verified k-contraction, its ContractingWith.fixedPoint solves f(x) = y; perturbId_bijective combines with injectivity",
+      "startLine": 91,
+      "endLine": 124,
+      "mathContext": "$f(x)=y \\iff x = y - g(x)$, the fixed point of the $k$-contraction $\\varphi_y$."
+    },
+    {
+      "id": "homeomorphism",
+      "title": "Part III: The Homeomorphism and the Sharp Inverse Bound",
+      "summary": "perturbIdEquiv (the bijection as Equiv), perturbIdEquiv_symm_lipschitz (Lip(f⁻¹) ≤ (1 − k)⁻¹ via to_rightInverse), perturbIdHomeomorph (the E ≃ₜ E), and perturbIdHomeomorph_symm_lipschitz",
+      "startLine": 125,
+      "endLine": 156,
+      "mathContext": "$f \\in \\mathrm{Homeo}(E)$ with $\\mathrm{Lip}(f^{-1}) \\le 1/(1-k)$."
+    },
+    {
+      "id": "instance",
+      "title": "Part IV: A Worked Instance on ℝ",
+      "summary": "x ↦ x + (1/2)·sin x is a homeomorphism of ℝ, from the (1/2)-Lipschitz bound on (1/2)·sin",
+      "startLine": 157,
+      "endLine": 170,
+      "mathContext": "$g(x) = \\tfrac12\\sin x$ has $\\mathrm{Lip}(g) = \\tfrac12 < 1$."
+    },
+    {
+      "id": "summary",
+      "title": "Part V: Summary Theorem",
+      "summary": "banach_oq01_oq02_summary bundles the (1 + k)-Lipschitz, (1 − k)⁻¹-antilipschitz, bijective, and (1 − k)⁻¹-inverse-Lipschitz facts",
+      "startLine": 171,
+      "endLine": 184,
+      "mathContext": "Four facts in one: continuity, injectivity-with-margin, bijectivity, and the sharp inverse bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "This formalization answers the parent's second open question: on a complete normed space, a Lipschitz perturbation f = id + g of the identity (with Lip(g) = k < 1) is a homeomorphism, and its inverse is Lipschitz with the sharp constant 1/(1 − k). Surjectivity is supplied by the parent Banach contraction principle — solving f(x) = y is the fixed-point equation x = y − g(x) — while injectivity and the inverse bound come from the single antilipschitz estimate ‖f(x) − f(y)‖ ≥ (1 − k)‖x − y‖. Zero sorries, zero axioms beyond Lean's foundations.",
+    "implications": "This is the contraction-principle pillar of the inverse function theorem. Replacing the identity by a linear isomorphism f' (so g is the nonlinear remainder f − f') turns the same estimate into the local inverse function theorem, which Mathlib develops through ApproximatesLinearOn. The sharp 1/(1 − k) inverse bound is the quantitative heart of Newton-type iteration.",
+    "openQuestions": [
+      "Quantify the domain of invertibility for a local perturbation: if g is Lipschitz only on a ball, give an explicit radius on which id + g is a homeomorphism onto its image",
+      "Derive the Lipschitz inverse function theorem: for f with invertible derivative f', write f = f'∘(id + f'⁻¹∘(f − f')) and apply this perturbation result to obtain a local inverse"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "banach-fixed-point-oq-01",
+      "relationship": "Parent: the quantitative contraction mapping principle, whose fixed point supplies the inverse here (this answers its open question #2)"
+    },
+    {
+      "id": "banach-fixed-point-oq-01-oq-01",
+      "relationship": "Sibling: Picard–Lindelöf, the parent's open question #1 — another application of the contraction principle (existence of ODE solutions)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "scoped NNReal"
+    ],
+    "namespace": "BanachFixedPointOQ01OQ02",
+    "lineCount": 184,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "path": "Proofs/BanachFixedPointOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Stefan Banach",
+      "title": "Sur les opérations dans les ensembles abstraits et leur application aux équations intégrales",
+      "year": "1922",
+      "venue": "Fundamenta Mathematicae"
+    },
+    {
+      "authors": "Jacques Hadamard",
+      "title": "Sur les transformations ponctuelles (global inverse function theorems)",
+      "year": "1906",
+      "venue": "Bulletin de la Société Mathématique de France"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "banach-fixed-point-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: the Banach contraction mapping principle. This entry uses its fixed point (Mathlib's ContractingWith.fixedPoint) to invert the perturbation f = id + g, answering the parent's second open question."
+    },
+    {
+      "targetId": "banach-fixed-point-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling Picard–Lindelöf entry: the parent's first open question. Both are applications of the contraction principle — one constructs ODE solutions, this one inverts a Lipschitz perturbation of the identity."
+    }
+  ],
+  "sorries": 0
+}
