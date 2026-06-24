@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-inversion-dist",
+    "proofId": "ptolemys-theorem-oq-05",
+    "range": { "startLine": 57, "endLine": 87 },
+    "type": "insight",
+    "title": "Inversion scales distances by 1/(‖u‖‖w‖)",
+    "content": "inversion_dist is the geometric engine of the whole proof. The spherical inversion x ↦ (‖x‖²)⁻¹•x (centre 0, radius 1) sends two nonzero points u, w to points whose distance is ‖u−w‖/(‖u‖‖w‖). The proof expands ‖(‖u‖²)⁻¹•u − (‖w‖²)⁻¹•w‖² by the real polarization identity norm_sub_sq_real: the diagonal terms become (‖u‖²)⁻¹ and (‖w‖²)⁻¹ and the cross term picks up ⟪u,w⟫ scaled by (‖u‖²)⁻¹(‖w‖²)⁻¹. Multiplying through by ‖u‖²‖w‖² recovers ‖u‖² − 2⟪u,w⟫ + ‖w‖² = ‖u−w‖², so the squared product identity holds; field_simp; ring closes it and a final square root (Real.sqrt_sq, both sides nonnegative) gives the stated form. Unlike the complex algebraic identity, this works in every dimension.",
+    "mathContext": "$\\lVert u\\rVert\\,\\lVert w\\rVert\\,\\lVert \\lVert u\\rVert^{-2}u - \\lVert w\\rVert^{-2}w\\rVert = \\lVert u-w\\rVert$, i.e. $\\lVert u'-w'\\rVert = \\lVert u-w\\rVert/(\\lVert u\\rVert\\lVert w\\rVert)$ for the inverted points $u',w'$.",
+    "significance": "key",
+    "relatedConcepts": ["spherical inversion", "polarization identity", "real inner product space", "conformal map"],
+    "prerequisites": ["inner product spaces", "norm and inner product relation"]
+  },
+  {
+    "id": "ann-ptolemy-origin",
+    "proofId": "ptolemys-theorem-oq-05",
+    "range": { "startLine": 93, "endLine": 132 },
+    "type": "insight",
+    "title": "Ptolemy = triangle inequality after inversion",
+    "content": "Placing the fourth vertex at the origin reduces Ptolemy to the three-vector inequality ‖x−z‖·‖y‖ ≤ ‖x−y‖·‖z‖ + ‖y−z‖·‖x‖. In the generic case (all three vectors nonzero) we apply the ordinary triangle inequality ‖a−c‖ ≤ ‖a−b‖ + ‖b−c‖ to the inverted points a=(‖x‖²)⁻¹•x, b, c, scale by ‖x‖‖y‖‖z‖ > 0, and rewrite each scaled distance with inversion_dist: ‖x‖‖y‖‖z‖·‖a−c‖ = ‖x−z‖·‖y‖, and similarly on the right. The degenerate cases (a vertex at the origin) cannot invert but hold directly — both sides vanish when y = 0, and Ptolemy becomes an equality when x = 0 or z = 0.",
+    "mathContext": "$\\lVert x-z\\rVert\\,\\lVert y\\rVert \\le \\lVert x-y\\rVert\\,\\lVert z\\rVert + \\lVert y-z\\rVert\\,\\lVert x\\rVert$.",
+    "significance": "key",
+    "relatedConcepts": ["triangle inequality", "Ptolemy's inequality", "translation invariance"],
+    "prerequisites": ["triangle inequality", "scaling inequalities by positive constants"]
+  },
+  {
+    "id": "ann-ptolemy-dist",
+    "proofId": "ptolemys-theorem-oq-05",
+    "range": { "startLine": 138, "endLine": 152 },
+    "type": "insight",
+    "title": "Dimension-free four-point form and a 3D witness",
+    "content": "ptolemy_dist transports the origin form to an arbitrary NormedAddTorsor over a real inner product space by translating the fourth point d to the origin (x = a−ᵥd, y = b−ᵥd, z = c−ᵥd): dist_eq_norm_vsub rewrites distances as norms of vsub differences and vsub_sub_vsub_cancel_right cancels the common d, after which ptolemy_origin closes it. The concrete instantiation in EuclideanSpace ℝ (Fin 3) exhibits Ptolemy's inequality in three dimensions — a configuration the gallery's complex-number proof, tied to the plane, cannot reach.",
+    "mathContext": "$\\operatorname{dist}(a,c)\\operatorname{dist}(b,d) \\le \\operatorname{dist}(a,b)\\operatorname{dist}(c,d) + \\operatorname{dist}(b,c)\\operatorname{dist}(a,d)$ for $a,b,c,d$ in any inner-product affine space.",
+    "significance": "high",
+    "relatedConcepts": ["NormedAddTorsor", "inner-product affine space", "EuclideanSpace"],
+    "prerequisites": ["affine spaces and torsors", "vsub and dist"]
+  }
+]
