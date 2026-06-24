@@ -1,1 +1,110 @@
-[]
+[
+  {
+    "id": "icb-deg-incidences",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 42, "endLine": 46 },
+    "type": "definition",
+    "title": "Degree of a Point and Total Incidences",
+    "content": "deg p is the number of lines through the point p, defined as the cardinality of the filtered finset of lines ℓ with Inc p ℓ. The total incidence count I is then the sum of all point degrees, I = ∑_p deg p. This counts each incident (point, line) pair exactly once, organized by point. The same quantity could equally be organized by line — that the two organizations agree is the discrete Fubini principle underpinning the whole argument.",
+    "mathContext": "$\\deg p = \\#\\{\\ell : \\mathrm{Inc}\\,p\\,\\ell\\}, \\qquad I = \\sum_{p \\in P} \\deg p$",
+    "significance": "key",
+    "prerequisites": ["finite sets and cardinality", "Finset.filter"],
+    "relatedConcepts": ["incidence structure", "double counting", "bipartite degree"]
+  },
+  {
+    "id": "icb-deg-eq-sum",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 48, "endLine": 51 },
+    "type": "lemma",
+    "title": "Degree as a Sum of 0/1 Indicators",
+    "content": "Finset.card_filter rewrites the cardinality of a filtered finset as a sum of indicator values: deg p = ∑_ℓ [Inc p ℓ]. Recasting a count as a sum of indicators is the standard move that lets cardinalities be manipulated algebraically — squared, expanded into double sums, and swapped under Fubini — which is exactly what the per-point identity needs next.",
+    "mathContext": "$\\deg p = \\sum_{\\ell \\in L} \\mathbf{1}[\\mathrm{Inc}\\,p\\,\\ell]$",
+    "significance": "supporting",
+    "prerequisites": ["indicator functions", "Finset.card_filter"],
+    "relatedConcepts": ["indicator function", "characteristic function", "counting via sums"]
+  },
+  {
+    "id": "icb-cherry-def",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 57, "endLine": 60 },
+    "type": "definition",
+    "title": "Cherries: Ordered Pairs of Distinct Lines Through a Point",
+    "content": "cherry p counts ordered pairs (ℓ₁, ℓ₂) of distinct lines both incident to p. In incidence-geometry language a 'cherry' is a path of length two centered at p in the point-line bipartite graph. The off-diagonal condition ℓ₁ ≠ ℓ₂ is what separates these genuine two-line configurations from the degenerate diagonal pairs (ℓ, ℓ), and it is precisely the off-diagonal mass that the once-meeting hypothesis will control.",
+    "mathContext": "$\\mathrm{cherry}\\,p = \\#\\{(\\ell_1,\\ell_2) : \\ell_1 \\ne \\ell_2,\\ \\mathrm{Inc}\\,p\\,\\ell_1,\\ \\mathrm{Inc}\\,p\\,\\ell_2\\}$",
+    "significance": "key",
+    "prerequisites": ["ordered pairs", "double sums over a Fintype"],
+    "relatedConcepts": ["cherry (path of length two)", "bipartite incidence graph", "off-diagonal counting"]
+  },
+  {
+    "id": "icb-deg-sq",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 62, "endLine": 106 },
+    "type": "theorem",
+    "title": "Per-Point Identity: deg p² = cherry p + deg p",
+    "content": "The combinatorial heart of the reduction. Squaring the degree and expanding via Finset.sum_mul_sum produces a double sum over ordered line pairs through p. Splitting by the diagonal ℓ₁ = ℓ₂ versus ℓ₁ ≠ ℓ₂: the diagonal collapses to deg p because the 0/1 indicator is idempotent ([Inc p ℓ]² = [Inc p ℓ], extracted with Finset.sum_ite_eq), and the off-diagonal is by definition cherry p. Crucially the identity is stated additively, deg p² = cherry p + deg p, so the proof never touches ℕ-subtraction — there is no deg p(deg p − 1) to guard against underflow.",
+    "mathContext": "$\\deg p^2 = \\underbrace{\\mathrm{cherry}\\,p}_{\\ell_1 \\ne \\ell_2} + \\underbrace{\\deg p}_{\\ell_1 = \\ell_2}$",
+    "significance": "critical",
+    "prerequisites": ["expanding a square as a double sum", "indicator idempotence", "Finset.sum_mul_sum", "Finset.sum_ite_eq"],
+    "relatedConcepts": ["second moment", "diagonal vs off-diagonal decomposition", "falling factorial deg(deg-1)"]
+  },
+  {
+    "id": "icb-two-lines-meet-once",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 112, "endLine": 116 },
+    "type": "definition",
+    "title": "The Sole Hypothesis: Two Distinct Lines Meet at Most Once",
+    "content": "TwoLinesMeetOnce is the only geometric input to the entire theorem, encoded purely combinatorially: for any two distinct lines, the set of points incident to both has at most one element. No plane, no coordinates, no metric — just a nondegeneracy condition on the abstract relation Inc : P → L → Prop. This is the defining property of a partial linear space (a 'near-linear space'), and isolating it makes transparent exactly where — and how little — geometry the bound needs.",
+    "mathContext": "$\\forall\\, \\ell_1 \\ne \\ell_2:\\quad \\#\\{p : \\mathrm{Inc}\\,p\\,\\ell_1 \\wedge \\mathrm{Inc}\\,p\\,\\ell_2\\} \\le 1$",
+    "significance": "critical",
+    "prerequisites": ["partial linear spaces", "incidence axioms"],
+    "relatedConcepts": ["partial linear space", "nondegeneracy axiom", "projective plane axioms", "abstract incidence geometry"]
+  },
+  {
+    "id": "icb-sum-cherry-le",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 118, "endLine": 154 },
+    "type": "theorem",
+    "title": "Cherry Bound by Double Counting: ∑ cherry p ≤ |L|²",
+    "content": "The double-counting step where the hypothesis finally enters. Re-counting cherries by their central line pair instead of by their center point: swap the point sum inward (Finset.sum_comm), pull the p-independent condition ℓ₁ ≠ ℓ₂ out of the point sum (Finset.sum_ite_irrel), and identify the inner sum ∑_p [Inc p ℓ₁][Inc p ℓ₂] with the cardinality #{p on both ℓ₁ and ℓ₂} (Finset.card_filter). TwoLinesMeetOnce caps each distinct-pair term at 1, so the whole double sum is at most ∑_{ℓ₁,ℓ₂} 1 = |L|². This is the only place the hypothesis is used.",
+    "mathContext": "$\\sum_{p} \\mathrm{cherry}\\,p = \\sum_{\\ell_1 \\ne \\ell_2} \\#\\{p \\in \\ell_1 \\cap \\ell_2\\} \\;\\le\\; \\sum_{\\ell_1,\\ell_2} 1 = |L|^2$",
+    "significance": "critical",
+    "prerequisites": ["Fubini / swapping sums", "Finset.sum_comm", "Finset.sum_ite_irrel", "Finset.card_filter"],
+    "relatedConcepts": ["double counting", "counting in two ways", "Fubini for finite sums", "extremal combinatorics"]
+  },
+  {
+    "id": "icb-sum-deg-sq-le",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 160, "endLine": 170 },
+    "type": "theorem",
+    "title": "Second-Moment Bound: ∑ deg p² ≤ |L|² + I",
+    "content": "Assembly step. Summing the per-point identity deg p² = cherry p + deg p over all points gives ∑_p deg p² = (∑_p cherry p) + I, and the cherry bound replaces the first term by |L|². The result ∑_p deg p² ≤ |L|² + I controls the second moment of the degree sequence — exactly the quantity Cauchy–Schwarz consumes in the next step.",
+    "mathContext": "$\\sum_{p} \\deg p^2 = \\Big(\\sum_p \\mathrm{cherry}\\,p\\Big) + I \\;\\le\\; |L|^2 + I$",
+    "significance": "key",
+    "prerequisites": ["second moment of a sequence", "Finset.sum_add_distrib"],
+    "relatedConcepts": ["second moment method", "degree sequence", "variance bound"]
+  },
+  {
+    "id": "icb-incidence-bound",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 176, "endLine": 221 },
+    "type": "theorem",
+    "title": "Main Result: Cauchy–Schwarz Incidence Bound I² ≤ |P||L|² + |P|·I",
+    "content": "The payoff. Cast degrees to ℝ and apply Finset.sum_mul_sq_le_sq_mul_sq (Cauchy–Schwarz) with the constant weight vector 1: I² = (∑_p deg p)² ≤ (∑_p 1²)(∑_p deg p²) = |P|·∑_p deg p². Substituting the second-moment bound gives I² ≤ |P|(|L|² + I). The proof works over ℝ (where Cauchy–Schwarz lives) and then descends back to ℕ via exact_mod_cast, since both sides are casts of naturals. This is the elementary bound that Szemerédi–Trotter and the crossing-number inequality sharpen.",
+    "mathContext": "$I^2 = \\Big(\\sum_p \\deg p\\Big)^2 \\le |P| \\sum_p \\deg p^2 \\le |P|\\big(|L|^2 + I\\big)$",
+    "significance": "critical",
+    "prerequisites": ["Cauchy–Schwarz inequality for finite sums", "casting ℕ → ℝ", "Finset.sum_mul_sq_le_sq_mul_sq"],
+    "relatedConcepts": ["Cauchy–Schwarz inequality", "Szemerédi–Trotter theorem", "crossing-number inequality", "second moment method"]
+  },
+  {
+    "id": "icb-incidence-bound-sqrt",
+    "proofId": "prob-method-applications-oq-02-oq-01",
+    "range": { "startLine": 227, "endLine": 256 },
+    "type": "theorem",
+    "title": "Square-Root Form: I ≤ |P| + |L|·√|P|",
+    "content": "Completing the square turns the quadratic bound into the familiar incidence estimate. If I ≤ |P| the bound is immediate since |L|·√|P| ≥ 0. Otherwise |P| < I, and dropping a nonnegative term from I² ≤ |P||L|² + |P|·I yields (I − |P|)² ≤ |L|²·|P|. Taking square roots via Real.sqrt_sq_eq_abs (√(a²) = |a|) gives I − |P| ≤ |L|·√|P| directly — sidestepping any appeal to subadditivity of √, which would only give the weaker √(a+b) ≤ √a + √b.",
+    "mathContext": "$(I - |P|)^2 \\le |L|^2\\,|P| \\;\\Longrightarrow\\; I \\le |P| + |L|\\sqrt{|P|}$",
+    "significance": "key",
+    "prerequisites": ["completing the square", "monotonicity of √", "Real.sqrt_sq_eq_abs", "case analysis"],
+    "relatedConcepts": ["completing the square", "quadratic formula", "square-root asymptotics", "O(m + n√m) incidence bound"]
+  }
+]
