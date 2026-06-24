@@ -1,5 +1,5 @@
 /-
-  pq-Groups: Abelian isomorphism uniqueness
+  pq-Groups: Isomorphism uniqueness — abelian thread + full cyclic case
   (lagrange-theorem-oq-01-oq-01-oq-02)
 
   This answers the abelian portion of OQ-01-OQ-01-OQ-02 from Lagrange's Theorem OQ-01.
@@ -29,18 +29,25 @@
   so `isCyclic_of_orderOf_eq_card` makes `G` cyclic. Then
   `mulEquivOfCyclicCardEq` / `zmodCyclicMulEquiv` deliver the isomorphisms.
 
-  **Scope / what is deferred.** The *general* (not-necessarily-abelian)
-  uniqueness statements — "for `p ∤ (q-1)`, any two groups of order `pq` are
-  isomorphic" (cyclic case) and "any two non-cyclic groups of order `pq` are
-  isomorphic" (the `p ∣ (q-1)` non-abelian case) — depend on the parent's Sylow
-  classification `pq_unique_when_coprime` and on a full internal
-  semidirect-product recognition `ℤ/q ⋊ ℤ/p`, respectively. They are left as the
-  open directions (see this entry's open questions). NOTE: at the time of writing,
-  the parent dependency `Proofs.SylowTheoremOQ01` does not compile on Mathlib
-  v4.26.0 (renamed/removed lemmas such as `Nat.Prime.eq_of_dvd_of_prime`,
-  `orderOf_eq_one_iff_eq_one`), which is an independent repair task; the present
-  file deliberately avoids that dependency and imports only Mathlib so it is fully
-  machine-checked with `0` sorries and `0` axioms.
+  **The cyclic case (Part IV) is now resolved too**, self-containedly from Mathlib's
+  Sylow theory: when `¬ p ∣ (q-1)` and `¬ q ∣ (p-1)`, *every* group of order `pq`
+  (not merely the abelian ones) is cyclic. The Sylow counts `nₚ, n_q` are forced to
+  `1` (each divides the index of a Sylow subgroup and is `≡ 1` modulo its prime), so
+  both Sylow subgroups are normal; a finite group all of whose Sylow subgroups are
+  normal is nilpotent (`isNilpotent_of_finite_tfae`), and a finite nilpotent group of
+  squarefree order is cyclic (it is a Z-group — `IsZGroup.of_squarefree` — and a
+  nilpotent Z-group is cyclic). For `p < q` the side condition `¬ q ∣ (p-1)` is
+  automatic, recovering the classical criterion. Consequently any two groups of order
+  `pq` in this branch are isomorphic (`pq_cyclic_iso`), e.g. all groups of order `15`
+  or `35`.
+
+  **Scope / what is deferred.** Only the `p ∣ (q-1)` *non-abelian* uniqueness — "any
+  two non-cyclic groups of order `pq` are isomorphic" — remains open; it requires a
+  full internal semidirect-product recognition `ℤ/q ⋊ ℤ/p` (see this entry's open
+  questions). The parent dependency `Proofs.SylowTheoremOQ01` does not compile on
+  Mathlib v4.26.0 (renamed/removed lemmas), so this file deliberately avoids it and
+  imports only Mathlib, remaining fully machine-checked with `0` sorries and `0`
+  axioms (every theorem depends on exactly `[propext, Classical.choice, Quot.sound]`).
 
   **Key Mathlib tools**:
   - `exists_prime_orderOf_dvd_card` (Cauchy) and
@@ -48,13 +55,16 @@
   - `isCyclic_of_orderOf_eq_card` — a generator of full order makes `G` cyclic.
   - `mulEquivOfCyclicCardEq` — two cyclic groups of equal `Nat.card` are isomorphic.
   - `zmodCyclicMulEquiv` — a cyclic group `≅ Multiplicative (ZMod (Nat.card G))`.
+  - `card_sylow_modEq_one`, `Sylow.card_dvd_index` — Sylow's counting theorem (Part IV).
+  - `Sylow.normal_of_subsingleton`, `isNilpotent_of_finite_tfae` — all-Sylow-normal ⟹
+    nilpotent; `IsZGroup.of_squarefree` and the nilpotent-Z-group `IsCyclic` instance.
 
   References:
   - Dummit, D. & Foote, R. (2004). Abstract Algebra, §4.5, Theorem 14.
   - Conrad, K. "Groups of order pq." Expository notes.
 
   Tags: group-theory, lagrange, pq-groups, classification, isomorphism, MulEquiv,
-        cyclic-groups, abelian-groups, ZMod, finite-groups
+        cyclic-groups, abelian-groups, Sylow, Z-group, nilpotent, ZMod, finite-groups
 -/
 
 import Mathlib
@@ -159,5 +169,150 @@ theorem order_15_abelian_pair
     Nonempty (G ≃* H) :=
   pq_abelian_iso (p := 3) (q := 5) (by norm_num) (by norm_num) (by norm_num)
     (by rw [hG]) (by rw [hH])
+
+/-!
+## Part IV: The cyclic case — *every* group of order `pq` is cyclic
+
+Part II showed the *abelian* groups of order `pq` form a single isomorphism class.
+Sylow theory now upgrades this to the full **cyclic branch** of the classification:
+when neither prime divides the other minus one (`¬ p ∣ (q-1)` and `¬ q ∣ (p-1)`),
+*both* Sylow subgroups are normal — with **no** commutativity hypothesis on `G`.
+A finite group all of whose Sylow subgroups are normal is nilpotent, and a finite
+nilpotent group of squarefree order is cyclic (it is a *Z-group* — every Sylow
+subgroup is cyclic — and a nilpotent Z-group is cyclic).
+
+For `p < q` the side condition `¬ q ∣ (p-1)` is automatic (`0 < p-1 < q`), so the
+single hypothesis `p ∤ (q-1)` already forces cyclicity, recovering the classical
+statement "`|G| = pq`, `p < q`, `p ∤ q-1 ⟹ G` cyclic" (e.g. every group of order
+`15` or `35` is cyclic, whereas order `6 = 2·3` escapes because `2 ∣ (3-1)`).
+
+**Key Mathlib tools**:
+- `card_sylow_modEq_one`, `Sylow.card_dvd_index` — Sylow's counting theorem forces
+  `nₚ = n_q = 1`.
+- `Sylow.normal_of_subsingleton`, `isNilpotent_of_finite_tfae` — all Sylow normal ⟹ nilpotent.
+- `IsZGroup.of_squarefree` and the nilpotent-Z-group `IsCyclic` instance — finish.
+-/
+
+/-- For a group of order `pq` (`p ≠ q` primes) with `p ∤ (q-1)`, there is exactly one
+    Sylow `p`-subgroup. The count `nₚ` divides the index `q` of a Sylow `p`-subgroup and
+    satisfies `nₚ ≡ 1 (mod p)`; the alternative `nₚ = q` would give `q ≡ 1 (mod p)`,
+    i.e. `p ∣ (q-1)`, which is excluded. -/
+private theorem pq_card_sylow_one {G : Type*} [Group G] [Fintype G] {p q : ℕ}
+    [Fact p.Prime] (hq : Nat.Prime q) (hpq : p ≠ q)
+    (hcard : Fintype.card G = p * q) (hpd : ¬ p ∣ (q - 1)) :
+    Nat.card (Sylow p G) = 1 := by
+  have hp : Nat.Prime p := Fact.out
+  have hpnq : ¬ p ∣ q := (hp.coprime_iff_not_dvd).mp ((Nat.coprime_primes hp hq).mpr hpq)
+  -- a Sylow `p`-subgroup has order `p`, hence index `q`
+  have hcardP : Nat.card (default : Sylow p G) = p := by
+    rw [Sylow.card_eq_multiplicity, Nat.card_eq_fintype_card, hcard,
+        Nat.factorization_mul hp.pos.ne' hq.pos.ne', Finsupp.add_apply,
+        hp.factorization_self, Nat.factorization_eq_zero_of_not_dvd hpnq, add_zero, pow_one]
+  have hidx : (default : Sylow p G).index = q := by
+    have hmc := (default : Sylow p G).card_mul_index
+    rw [hcardP, Nat.card_eq_fintype_card, hcard] at hmc
+    exact Nat.eq_of_mul_eq_mul_left hp.pos hmc
+  have hdvd : Nat.card (Sylow p G) ∣ q := hidx ▸ (default : Sylow p G).card_dvd_index
+  have hmod : Nat.card (Sylow p G) ≡ 1 [MOD p] := card_sylow_modEq_one p G
+  rcases hq.eq_one_or_self_of_dvd _ hdvd with h1 | hqeq
+  · exact h1
+  · exact absurd ((Nat.modEq_iff_dvd' hq.one_lt.le).mp (hqeq ▸ hmod).symm) hpd
+
+/-- **Cyclic case (full).** For distinct primes `p ≠ q` with `¬ p ∣ (q-1)` and
+    `¬ q ∣ (p-1)`, *every* group of order `pq` is cyclic — not merely the abelian ones.
+    Both Sylow subgroups are forced normal (Sylow counting), making `G` nilpotent; being
+    a Z-group of squarefree order it is then cyclic. -/
+theorem pq_isCyclic {G : Type*} [Group G] [Fintype G] {p q : ℕ}
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p ≠ q)
+    (hpd : ¬ p ∣ (q - 1)) (hqd : ¬ q ∣ (p - 1))
+    (hcard : Fintype.card G = p * q) : IsCyclic G := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI : Fact q.Prime := ⟨hq⟩
+  -- squarefree order ⟹ Z-group (every Sylow subgroup is cyclic of prime order)
+  haveI : IsZGroup G := by
+    apply IsZGroup.of_squarefree
+    rw [Nat.card_eq_fintype_card, hcard]
+    exact (Nat.squarefree_mul ((Nat.coprime_primes hp hq).mpr hpq)).mpr
+      ⟨hp.prime.squarefree, hq.prime.squarefree⟩
+  -- every Sylow subgroup of `G` is normal
+  have hnorm : ∀ (r : ℕ) (_ : Fact r.Prime) (P : Sylow r G), (P : Subgroup G).Normal := by
+    intro r hr P
+    by_cases hrp : r = p
+    · subst hrp
+      haveI : Subsingleton (Sylow r G) :=
+        (Nat.card_eq_one_iff_unique.mp (pq_card_sylow_one hq hpq hcard hpd)).1
+      exact Sylow.normal_of_subsingleton P
+    · by_cases hrq : r = q
+      · subst hrq
+        haveI : Subsingleton (Sylow r G) :=
+          (Nat.card_eq_one_iff_unique.mp
+            (pq_card_sylow_one (p := r) (q := p) hp (Ne.symm hpq)
+              (by rw [hcard]; ring) hqd)).1
+        exact Sylow.normal_of_subsingleton P
+      · -- `r ∤ pq`: the Sylow `r`-subgroup is trivial, hence normal
+        have hrnp : ¬ r ∣ p * q := by
+          intro hdv
+          rcases (Nat.Prime.dvd_mul hr.out).mp hdv with h | h
+          · exact hrp ((Nat.prime_dvd_prime_iff_eq hr.out hp).mp h)
+          · exact hrq ((Nat.prime_dvd_prime_iff_eq hr.out hq).mp h)
+        have hPbot : (P : Subgroup G) = ⊥ := by
+          apply Subgroup.eq_bot_of_card_eq
+          rw [Sylow.card_eq_multiplicity, Nat.card_eq_fintype_card, hcard,
+              Nat.factorization_eq_zero_of_not_dvd hrnp, pow_zero]
+        rw [hPbot]; infer_instance
+  -- all Sylow subgroups normal ⟹ `G` nilpotent ⟹ (Z-group, squarefree) cyclic
+  haveI : Group.IsNilpotent G := (isNilpotent_of_finite_tfae (G := G)).out 3 0 |>.mp hnorm
+  infer_instance
+
+/-- **Cyclic-case uniqueness.** Under the same hypotheses, any two groups of order `pq`
+    are isomorphic to each other (each being cyclic of cardinality `pq`). -/
+theorem pq_cyclic_iso {G H : Type*} [Group G] [Group H] [Fintype G] [Fintype H] {p q : ℕ}
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hpq : p ≠ q)
+    (hpd : ¬ p ∣ (q - 1)) (hqd : ¬ q ∣ (p - 1))
+    (hG : Fintype.card G = p * q) (hH : Fintype.card H = p * q) :
+    Nonempty (G ≃* H) := by
+  haveI : IsCyclic G := pq_isCyclic hp hq hpq hpd hqd hG
+  haveI : IsCyclic H := pq_isCyclic hp hq hpq hpd hqd hH
+  refine ⟨mulEquivOfCyclicCardEq ?_⟩
+  rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, hG, hH]
+
+/-- **Classical cyclic criterion.** For primes `p < q` with `p ∤ (q-1)`, every group of
+    order `pq` is cyclic. The side condition `¬ q ∣ (p-1)` is automatic since
+    `0 < p-1 < q`. -/
+theorem pq_isCyclic_of_lt {G : Type*} [Group G] [Fintype G] {p q : ℕ}
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hlt : p < q)
+    (hpd : ¬ p ∣ (q - 1)) (hcard : Fintype.card G = p * q) : IsCyclic G := by
+  refine pq_isCyclic hp hq (Nat.ne_of_lt hlt) hpd ?_ hcard
+  intro hdvd
+  have hp2 := hp.two_le
+  have hle := Nat.le_of_dvd (by omega) hdvd
+  omega
+
+/-!
+## Part V: Concrete corollaries of the cyclic branch
+
+Orders `15 = 3·5` and `35 = 5·7` lie in the cyclic branch (`3 ∤ 4`, `5 ∤ 6`), so *every*
+group of those orders is cyclic — strengthening the abelian-only statements of Part III.
+-/
+
+/-- Every group of order `15` is cyclic (not just the abelian ones): `15 = 3·5`, `3 ∤ 4`. -/
+theorem order_15_cyclic {G : Type*} [Group G] [Fintype G] (hG : Fintype.card G = 15) :
+    IsCyclic G :=
+  pq_isCyclic_of_lt (p := 3) (q := 5) (by norm_num) (by norm_num) (by norm_num)
+    (by norm_num) (by rw [hG])
+
+/-- Every group of order `35` is cyclic: `35 = 5·7`, `5 ∤ 6`. -/
+theorem order_35_cyclic {G : Type*} [Group G] [Fintype G] (hG : Fintype.card G = 35) :
+    IsCyclic G :=
+  pq_isCyclic_of_lt (p := 5) (q := 7) (by norm_num) (by norm_num) (by norm_num)
+    (by norm_num) (by rw [hG])
+
+/-- Any two groups of order `15` are isomorphic to each other. -/
+theorem order_15_iso {G H : Type*} [Group G] [Group H] [Fintype G] [Fintype H]
+    (hG : Fintype.card G = 15) (hH : Fintype.card H = 15) : Nonempty (G ≃* H) := by
+  haveI : IsCyclic G := order_15_cyclic hG
+  haveI : IsCyclic H := order_15_cyclic hH
+  exact ⟨mulEquivOfCyclicCardEq
+    (by rw [Nat.card_eq_fintype_card, Nat.card_eq_fintype_card, hG, hH])⟩
 
 end LagrangeOQ01OQ01OQ02

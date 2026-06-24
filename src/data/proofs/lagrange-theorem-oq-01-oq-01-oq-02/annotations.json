@@ -4,14 +4,14 @@
     "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
     "range": { "startLine": 1, "endLine": 68 },
     "type": "concept",
-    "title": "From Counting to Isomorphisms (Abelian Thread)",
-    "content": "The parent classification answers the open question at the level of *how many* isomorphism classes of groups of order $pq$ exist (one when $p \\nmid (q-1)$, two when $p \\mid (q-1)$). This file upgrades the **abelian** case to genuine isomorphisms $G \\simeq^* H$ using Mathlib's `MulEquiv` machinery, self-containedly (imports only Mathlib). The general cyclic case and the non-abelian uniqueness are scoped out, as they depend on the parent Sylow classification.",
-    "mathContext": "For distinct primes $p < q$, a group of order $pq$ has a unique (hence normal) Sylow $q$-subgroup $Q \\cong \\mathbb{Z}/q$. When $p \\nmid (q-1)$ the group is cyclic; when $p \\mid (q-1)$ a non-abelian semidirect product $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$ also exists. In the latter branch the abelian class is exactly the cyclic group $\\mathbb{Z}/pq$ resolved here."
+    "title": "From Counting to Isomorphisms (Abelian Thread + Full Cyclic Case)",
+    "content": "The parent classification answers the open question at the level of *how many* isomorphism classes of groups of order $pq$ exist (one when $p \\nmid (q-1)$, two when $p \\mid (q-1)$). This file upgrades that count to genuine isomorphisms $G \\simeq^* H$ using Mathlib's `MulEquiv` machinery, self-containedly (imports only Mathlib). Parts I–III resolve the **abelian** case for any $p \\neq q$; Parts IV–V resolve the **full cyclic branch** — when $p \\nmid (q-1)$ and $q \\nmid (p-1)$, *every* group of order $pq$ is cyclic (no commutativity assumed). Only the non-abelian $p \\mid (q-1)$ uniqueness is left open.",
+    "mathContext": "For distinct primes $p < q$, a group of order $pq$ has a unique (hence normal) Sylow $q$-subgroup $Q \\cong \\mathbb{Z}/q$. When $p \\nmid (q-1)$ the Sylow $p$-subgroup is also normal and the group is cyclic; when $p \\mid (q-1)$ a non-abelian semidirect product $\\mathbb{Z}/q \\rtimes \\mathbb{Z}/p$ also exists."
   },
   {
     "id": "ann-pq02-002-abelian-cyclic",
     "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 79, "endLine": 95 },
+    "range": { "startLine": 77, "endLine": 103 },
     "type": "key-insight",
     "title": "Abelian of Order pq ⟹ Cyclic (any p ≠ q)",
     "content": "`pq_abelian_isCyclic` proves every abelian group of order $pq$ is cyclic with NO divisibility hypothesis. Cauchy's theorem (`exists_prime_orderOf_dvd_card`) produces $a$ of order $p$ and $b$ of order $q$; because the group is abelian they commute, and as $p,q$ are coprime `Commute.orderOf_mul_eq_mul_orderOf_of_coprime` gives $\\mathrm{ord}(ab) = pq = |G|$, so `isCyclic_of_orderOf_eq_card` makes $G$ cyclic. The Fintype.card hypothesis is bridged to Nat.card with `Nat.card_eq_fintype_card`.",
@@ -20,7 +20,7 @@
   {
     "id": "ann-pq02-003-abelian-iso",
     "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 104, "endLine": 113 },
+    "range": { "startLine": 105, "endLine": 124 },
     "type": "technique",
     "title": "Abelian-Case Uniqueness via mulEquivOfCyclicCardEq",
     "content": "`pq_abelian_iso` registers both $G$ and $H$ as cyclic instances (from `pq_abelian_isCyclic`) and produces $G \\simeq^* H$ from `mulEquivOfCyclicCardEq`, whose only obligation is the equality of cardinalities (bridged Fintype.card → Nat.card and rewritten by the order hypotheses).",
@@ -29,7 +29,7 @@
   {
     "id": "ann-pq02-004-zmod-model",
     "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 115, "endLine": 130 },
+    "range": { "startLine": 125, "endLine": 133 },
     "type": "technique",
     "title": "Canonical Representative ℤ/pq",
     "content": "`pq_abelian_iso_zmod` pins the canonical model: `zmodCyclicMulEquiv` yields $\\mathrm{Multiplicative}(\\mathbb{Z}/\\mathrm{Nat.card}\\,G) \\simeq^* G$, and the cardinality equality $\\mathrm{Nat.card}\\,G = pq$ is transported through the dependent type with the rewrite `hN ▸ (...).symm`, giving $G \\simeq^* \\mathrm{Multiplicative}(\\mathbb{Z}/pq)$.",
@@ -38,10 +38,28 @@
   {
     "id": "ann-pq02-005-corollaries",
     "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
-    "range": { "startLine": 131, "endLine": 163 },
+    "range": { "startLine": 134, "endLine": 173 },
     "type": "concept",
-    "title": "Concrete Corollaries",
+    "title": "Abelian Concrete Corollaries (orders 6, 15, 35)",
     "content": "`order_6_abelian_unique`, `order_15_abelian_unique`, `order_35_abelian_unique` give every abelian group of those orders as $\\mathbb{Z}/n$; `order_15_abelian_pair` states any two abelian groups of order 15 are isomorphic. `order_6` highlights that the abelian-case theorem pins the abelian class even though $6 = 2\\cdot 3$ falls in the non-cyclic branch ($2 \\mid 2$), where $S_3 \\cong D_3$ is the other class.",
     "mathContext": "Order 6 is the smallest order admitting a non-abelian group ($S_3$). The cyclic group $\\mathbb{Z}/6$ is the unique abelian group of that order."
+  },
+  {
+    "id": "ann-pq02-006-cyclic-case",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 174, "endLine": 291 },
+    "type": "key-insight",
+    "title": "The Cyclic Case: Every Group of Order pq Is Cyclic (no commutativity)",
+    "content": "`pq_isCyclic` proves that when $p \\nmid (q-1)$ and $q \\nmid (p-1)$, *every* group of order $pq$ is cyclic. The private lemma `pq_card_sylow_one` shows the number of Sylow $p$-subgroups is $1$: it divides the index $q$ of a Sylow $p$-subgroup (whose order is $p$ by `Sylow.card_eq_multiplicity`) via `Sylow.card_dvd_index`, and is $\\equiv 1 \\pmod p$ by `card_sylow_modEq_one`; the alternative $n_p = q$ would force $q \\equiv 1 \\pmod p$, i.e. $p \\mid (q-1)$, excluded. Applying it to both primes forces both Sylow subgroups to be unique, hence normal (`Sylow.normal_of_subsingleton`); off-primes have trivial Sylow subgroups ($\\bot$, normal). With every Sylow subgroup normal, `isNilpotent_of_finite_tfae` makes $G$ nilpotent, and since $pq$ is squarefree `IsZGroup.of_squarefree` makes $G$ a Z-group — a nilpotent Z-group is cyclic. `pq_cyclic_iso` then gives $G \\simeq^* H$, and `pq_isCyclic_of_lt` specializes to $p < q$ (discharging $q \\nmid (p-1)$ automatically).",
+    "mathContext": "This is the classical Hölder/Burnside criterion: a group of order $pq$ ($p < q$) is cyclic iff $p \\nmid (q-1)$. The proof here is the standard double-Sylow-normality argument, but routed through Mathlib's Z-group API ('all Sylow subgroups cyclic') so that 'nilpotent + squarefree order ⟹ cyclic' closes the goal without an explicit internal-direct-product construction."
+  },
+  {
+    "id": "ann-pq02-007-cyclic-corollaries",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 292, "endLine": 318 },
+    "type": "concept",
+    "title": "Cyclic Concrete Corollaries (orders 15, 35)",
+    "content": "`order_15_cyclic` and `order_35_cyclic` state that EVERY group of order $15 = 3\\cdot 5$ ($3 \\nmid 4$) or $35 = 5\\cdot 7$ ($5 \\nmid 6$) is cyclic — strictly stronger than the abelian-only statements of Part III. `order_15_iso` concludes that any two groups of order 15 are isomorphic. Order $6 = 2\\cdot 3$ is excluded from the criterion precisely because $2 \\mid (3-1)$, matching the existence of the non-abelian $S_3$.",
+    "mathContext": "15 and 35 are the smallest non-prime, non-prime-power orders forcing cyclicity for purely arithmetic reasons (the smaller prime fails to divide the larger minus one), so up to isomorphism there is a unique group of each of those orders."
   }
 ]
