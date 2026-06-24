@@ -331,8 +331,20 @@ zero-axiom file `proofs/Proofs/Hilbert17QuadraticGram.lean` (namespace `Hilbert1
 - `posSemidef_quadratic_isSumSq` (headline): for `M.PosSemidef`,
   `x ⬝ᵥ (M *ᵥ x) = ∑ i, ((√M *ᵥ x) i)²` — an explicit SOS of linear forms.
 - `posSemidef_exists_sumSq` : packaged `∃ B, ∀ x, xᵀMx = ∑ ((B*ᵥx) i)²` (B = √M).
+- `posSemidef_matrixQuadratic_isSumSq` (NEW headline, COMPLETE homogeneous case):
+  for `M.PosSemidef`, the homogeneous degree-2 polynomial `∑ i j, C(M i j)·Xᵢ Xⱼ`
+  satisfies `IsSumOfSquaresMvPolynomial` (existence form) — equals `∑ k, (∑ j, C(√M k j)·Xⱼ)²`.
 
 `#print axioms` → propext/Classical.choice/Quot.sound only (0 real axioms).
+
+### SLICK polynomial-equality route (the key trick)
+`IsSumOfSquaresMvPolynomial` is *polynomial EQUALITY* (`∃ q, p = ∑ q²`), NOT eval.
+Don't grind the MvPolynomial double-sum algebra — use `MvPolynomial.funext`
+(ℝ is `[CommRing][IsDomain][Infinite]`): reduce `p = q` to `∀ x, eval x p = eval x q`,
+then `simp only [map_sum, map_mul, map_pow, eval_C, eval_X]` turns both eval sides
+into ℝ-sums and the matrix lemma `posSemidef_quadratic_isSumSq` closes it. Need
+`simp only [dotProduct, mulVec] at key` to unfold the matrix lemma to bare ℝ-sums,
+then `rw [← key]` + `Finset.sum_congr … (Finset.mul_sum) … ring`. Compiled FIRST TRY.
 
 ### Engine (the calc)
 `xᵀMx = xᵀ(SᵀS)x = xᵀ(Sᵀ(Sx)) = (xᵥ*Sᵀ)·(Sx) = (Sx)·(Sx) = ∑ (Sx)i²`, using

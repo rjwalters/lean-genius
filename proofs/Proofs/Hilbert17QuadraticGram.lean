@@ -23,6 +23,7 @@
 -/
 import Mathlib.Analysis.Matrix.Order
 import Mathlib.LinearAlgebra.Matrix.PosDef
+import Mathlib.Algebra.MvPolynomial.Funext
 import Mathlib.Tactic
 
 namespace Hilbert17
@@ -77,5 +78,32 @@ theorem posSemidef_exists_sumSq {M : Matrix (Fin n) (Fin n) ℝ}
     ∃ B : Matrix (Fin n) (Fin n) ℝ,
       ∀ x : Fin n → ℝ, x ⬝ᵥ (M *ᵥ x) = ∑ i, ((B *ᵥ x) i) ^ 2 :=
   ⟨CFC.sqrt M, fun x => posSemidef_quadratic_isSumSq hM x⟩
+
+open MvPolynomial in
+/-- **Homogeneous quadratic-forms case of Hilbert's PSD = SOS, fully verified.**
+
+    For a positive semidefinite real matrix `M`, the homogeneous degree-2
+    polynomial `Q_M = ∑ i j, M i j · Xᵢ Xⱼ` is an honest polynomial sum of
+    squares: `Q_M = ∑ k, (∑ j, (√M) k j · Xⱼ)²`.  The witnesses are the linear
+    forms given by the rows of `√M`.
+
+    This is exactly `IsSumOfSquaresMvPolynomial Q_M` (the existence form below),
+    proved with zero axioms.  It is the homogeneous heart of
+    `quadratic_psd_is_sos_aux`; the remaining gap is the reduction of an
+    *arbitrary* `totalDegree = 2` polynomial to this matrix-given form. -/
+theorem posSemidef_matrixQuadratic_isSumSq {M : Matrix (Fin n) (Fin n) ℝ}
+    (hM : M.PosSemidef) :
+    ∃ (m : ℕ) (q : Fin m → MvPolynomial (Fin n) ℝ),
+      (∑ i, ∑ j, C (M i j) * X i * X j) = ∑ k, q k ^ 2 := by
+  refine ⟨n, fun k => ∑ j, C (CFC.sqrt M k j) * X j, ?_⟩
+  apply MvPolynomial.funext
+  intro x
+  have key := posSemidef_quadratic_isSumSq hM x
+  simp only [dotProduct, mulVec] at key
+  simp only [map_sum, map_mul, map_pow, eval_C, eval_X]
+  rw [← key]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [Finset.mul_sum]
+  exact Finset.sum_congr rfl (fun j _ => by ring)
 
 end Hilbert17
