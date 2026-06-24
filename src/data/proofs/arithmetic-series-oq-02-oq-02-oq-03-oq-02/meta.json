@@ -1,0 +1,181 @@
+{
+  "id": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+  "title": "Multivariate Vandermonde via Generating Functions",
+  "slug": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+  "description": "Lifts the two-factor generating-function proof of the parallel Vandermonde identity to an arbitrary finite family of factors. The product of r negative-binomial generating functions ∏ negBin(aᵢ) equals geom^(Σ(aᵢ+1)) — a single application of Finset.prod_pow_eq_pow_sum, the r-factor analogue of the two-factor pow_add. Extracting the n-th coefficient via PowerSeries.coeff_prod (a sum over finsuppAntidiag) yields the multivariate Vandermonde convolution Σ_{Σlᵢ=n} ∏ C(lᵢ+aᵢ,aᵢ) = C(n+Σ(aᵢ+1)-1, Σ(aᵢ+1)-1). Fully verified, 0 axioms.",
+  "meta": {
+    "author": "Researcher-3 (generating function generalization)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Vandermonde%27s_identity",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "generating-functions",
+      "power-series",
+      "vandermonde",
+      "multivariate",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 243,
+    "assumptions": "0 literal `axiom` declarations and 0 sorries. All results — including the concrete numeric check — are discharged by the Lean kernel (the verification uses `decide`, not `native_decide`), so the only axioms are the ordinary foundational ones (propext, Classical.choice, Quot.sound), which are not counted. The entry is fully verified.",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "PowerSeries.coeff_prod",
+        "description": "Coefficient of a finite product of power series as a sum over finsuppAntidiag",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      },
+      {
+        "theorem": "PowerSeries.coeff_mul",
+        "description": "Cauchy product formula for formal power series",
+        "module": "Mathlib.RingTheory.PowerSeries.Basic"
+      },
+      {
+        "theorem": "Finset.prod_pow_eq_pow_sum",
+        "description": "∏ a^(f i) = a^(Σ f i): exponent addition across a finite product",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.Nat.sum_antidiagonal_eq_sum_range_succ",
+        "description": "Converts an antidiagonal sum to a range sum (used in coefficient extraction)",
+        "module": "Mathlib.Algebra.BigOperators.NatAntidiagonal"
+      },
+      {
+        "theorem": "Finset.single_le_sum",
+        "description": "A single nonnegative term is bounded by the sum (used for nonemptiness positivity)",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "negBin_prod: ∏_{i∈s} negBin(aᵢ) = geom^(Σ_{i∈s}(aᵢ+1)) — the r-factor analogue of the two-factor product formula, a single Finset.prod_pow_eq_pow_sum",
+      "multivariate_vandermonde_gf: exact coefficient form Σ_{Σlᵢ=n} ∏ C(lᵢ+aᵢ,aᵢ) = [xⁿ] geom^(Σ(aᵢ+1)) via PowerSeries.coeff_prod, with no nonemptiness hypothesis",
+      "multivariate_vandermonde: simplicial closed form C(n+Σ(aᵢ+1)-1, Σ(aᵢ+1)-1) for any nonempty finite index set",
+      "multivariate_vandermonde_fin: the always-nonempty Fin (r+1) packaging — r=1 recovers the two-factor identity, r=2 is the new three-factor convolution",
+      "threefold_const_zero / check_threefold_count: concrete three-factor instance counting compositions, kernel-verified by decide (0 axioms)"
+    ],
+    "prerequisites": [
+      "Formal power series (definition, multiplication, finite products)",
+      "Binomial / simplicial numbers (Pascal's identity, hockey stick)",
+      "Exponent laws in commutative monoids"
+    ],
+    "theoremCount": 13,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "**From Two Factors to Many**\n\nThe parent entry (Parallel Vandermonde via Generating Functions) showed that the two-factor Vandermonde convolution Σ_{i+j=n} C(i+a,a)·C(j+b,b) = C(n+a+b+1,a+b+1) collapses, in the formal power series ring, to a single exponent-addition step: g^{a+1}·g^{b+1} = g^{a+b+2}. Its own list of open questions asked explicitly for the **multivariate** lift — replacing the bivariate convolution by a convolution across arbitrarily many factors. This entry answers that question.\n\nThe r-fold generalization is a textbook fact about negative binomial generating functions, but the point is structural: the entire combinatorial content of the r-variable Vandermonde identity is still one algebraic step, now `Finset.prod_pow_eq_pow_sum` instead of `pow_add`. Herbert Wilf's slogan that 'a generating function is a clothesline on which we hang up a sequence of numbers' applies verbatim — only now we hang r clotheslines and read off a single coefficient of their product.",
+    "problemStatement": "**Open Question** (from the parent's openQuestions: 'Multivariate generating functions')\n\nLift the two-factor generating-function proof of the parallel Vandermonde identity to an arbitrary finite family of factors.\n\n**Answer**: Done. For a finite index set s and exponents (aᵢ)_{i∈s},\n  ∏_{i∈s} negBin(aᵢ) = geom^(Σ_{i∈s}(aᵢ+1))   (Finset.prod_pow_eq_pow_sum)\nand extracting the n-th coefficient (PowerSeries.coeff_prod, a sum over finsuppAntidiag) gives\n  Σ_{Σ lᵢ = n} ∏_{i∈s} C(lᵢ+aᵢ, aᵢ) = C(n + Σ(aᵢ+1) - 1, Σ(aᵢ+1) - 1).",
+    "text": "The multivariate (r-fold) Vandermonde convolution proved by formal power series: the product of r negative-binomial generating functions is again a negative-binomial generating function, and a single coefficient extraction yields the r-variable identity.",
+    "proofStrategy": "**The Proof**\n\n1. Restate the geometric series g = Σ xⁿ and negBin(k) = g^{k+1} over PowerSeries ℕ.\n2. coeff_negBin: [xⁿ] g^{k+1} = C(n+k,k), by induction on k using the Cauchy product and the hockey stick (self-contained, current Mathlib API).\n3. negBin_prod: ∏_{i∈s} negBin(aᵢ) = g^{Σ(aᵢ+1)}, by Finset.prod_pow_eq_pow_sum.\n4. multivariate_vandermonde_gf: extract [xⁿ] of the product two ways — PowerSeries.coeff_prod (a finsuppAntidiag sum) on one side, the single power on the other.\n5. multivariate_vandermonde: convert the coefficient of g^{Σ(aᵢ+1)} to the simplicial closed form for nonempty s.\n6. multivariate_vandermonde_fin: package over Fin (r+1); r=2 gives a verified three-factor instance.",
+    "keyInsights": [
+      "The r-factor Vandermonde collapses to one algebraic step — Finset.prod_pow_eq_pow_sum — exactly as the two-factor case collapsed to one pow_add. The multivariate content is purely bookkeeping over the same coefficient extraction lemma.",
+      "PowerSeries.coeff_prod expresses the n-th coefficient of a finite product as a sum over finsuppAntidiag s n, which is precisely the r-dimensional simplex {l : Σ lᵢ = n} — the multivariate convolution appears automatically.",
+      "The exact-coefficient form multivariate_vandermonde_gf needs no nonemptiness hypothesis; the empty-index degenerate case is [xⁿ] 1 = [n=0]. Nonemptiness is only used to rewrite the closed form C(n+Σ(aᵢ+1)-1, …) without a dangling Nat subtraction.",
+      "Working over PowerSeries ℕ keeps every coefficient a natural number — no casting, and prod_pow_eq_pow_sum holds in any commutative monoid.",
+      "Specializing multivariate_vandermonde_fin to r=1 reproduces the parent's two-factor identity, exhibiting the result as a strict generalization rather than a parallel variant."
+    ],
+    "prerequisites": [
+      "Formal power series (multiplication, finite products, coefficient extraction)",
+      "Simplicial / binomial numbers and the hockey stick identity",
+      "Exponent laws in commutative monoids"
+    ]
+  },
+  "sections": [
+    {
+      "id": "simplicial-scaffolding",
+      "title": "Simplicial Numbers and the Hockey Stick",
+      "summary": "Self-contained restatement of simplicial numbers and the hockey stick identity",
+      "startLine": 41,
+      "endLine": 66,
+      "mathContext": "Simplicial numbers $S_k(n) = \\binom{n+k}{k}$ with Pascal recurrence and the hockey stick $\\sum_{i=0}^n S_k(i) = S_{k+1}(n)$."
+    },
+    {
+      "id": "power-series-scaffolding",
+      "title": "Formal Power Series Scaffolding",
+      "summary": "Geometric series, negative binomial generating function, and coefficient extraction",
+      "startLine": 72,
+      "endLine": 104,
+      "mathContext": "Define $g = \\sum x^n$ and $\\mathrm{negBin}(k) = g^{k+1}$; prove $[x^n] g^{k+1} = \\binom{n+k}{k}$ by induction using the Cauchy product and the hockey stick."
+    },
+    {
+      "id": "product-formula",
+      "title": "The r-fold Algebraic Product Formula",
+      "summary": "The product of r negative-binomial generating functions is a single power of g",
+      "startLine": 110,
+      "endLine": 129,
+      "mathContext": "$\\prod_{i\\in s} g^{a_i+1} = g^{\\sum_{i\\in s}(a_i+1)}$ via `Finset.prod_pow_eq_pow_sum` — the r-factor analogue of the two-factor `pow_add`."
+    },
+    {
+      "id": "multivariate-vandermonde",
+      "title": "The Multivariate Vandermonde Identity",
+      "summary": "Coefficient extraction over the product yields the r-fold convolution",
+      "startLine": 135,
+      "endLine": 183,
+      "mathContext": "Extracting $[x^n]$ of $\\prod_{i\\in s}\\mathrm{negBin}(a_i)$ via `PowerSeries.coeff_prod` gives $\\sum_{\\sum l_i = n}\\prod_{i\\in s}\\binom{l_i+a_i}{a_i} = \\binom{n+\\sum(a_i+1)-1}{\\sum(a_i+1)-1}$."
+    },
+    {
+      "id": "fin-specialization",
+      "title": "Specialization to Fin (r+1) and Verification",
+      "summary": "Always-nonempty packaging and a concrete three-factor numeric check",
+      "startLine": 188,
+      "endLine": 222,
+      "mathContext": "Over $\\mathrm{Fin}(r+1)$ the identity is automatically nonempty; $r=2$ gives the three-factor convolution, kernel-verified by `decide`."
+    }
+  ],
+  "conclusion": {
+    "summary": "The multivariate Vandermonde convolution is proved by formal power series: the product of r negative-binomial generating functions equals geom^(Σ(aᵢ+1)) by Finset.prod_pow_eq_pow_sum, and a single coefficient extraction (PowerSeries.coeff_prod over finsuppAntidiag) yields the r-variable identity. Fully verified with 0 axioms and 0 sorries.",
+    "implications": "1. **Strict generalization**: r=1 recovers the parent's two-factor identity; r≥2 is genuinely new.\n\n2. **Algebra replaces combinatorics, at scale**: the r-factor identity is one prod_pow_eq_pow_sum, mirroring the two-factor pow_add.\n\n3. **Generating functions in Lean**: PowerSeries.coeff_prod and finsuppAntidiag make multivariate convolution proofs tractable in Mathlib.",
+    "openQuestions": [
+      "Weighted / colored exponents: can the same coefficient-extraction route prove the q-analogue (Gaussian binomial) multivariate Vandermonde over PowerSeries with a q-deformed geometric series?",
+      "Constant-exponent specialization: is there a clean closed form for ∏ negBin(a) (all aᵢ equal) that exposes the simplex-volume interpretation Σ_{Σlᵢ=n} ∏ C(lᵢ+a,a) = C(n+r(a+1)-1, r(a+1)-1) as a single super-simplicial number?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Two-factor parallel Vandermonde via generating functions; this entry answers its 'multivariate generating functions' open question by lifting to r factors"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Grandparent file proving the two-factor convolution by induction"
+    }
+  ],
+  "references": [
+    {
+      "key": "Wilf2006",
+      "citation": "Wilf, H. S. (2006). generatingfunctionology. 3rd edition, A K Peters.",
+      "type": "book",
+      "note": "Standard reference for generating function methods in combinatorics"
+    },
+    {
+      "key": "Vandermonde1772",
+      "citation": "Vandermonde, A.-T. (1772). Mémoire sur les irrationnelles de différens ordres avec une application au cercle.",
+      "type": "paper",
+      "note": "Original source of the Vandermonde identity"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "PowerSeries"
+    ],
+    "namespace": "ArithmeticSeriesOQ02OQ02OQ03OQ02",
+    "lineCount": 243,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 3,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

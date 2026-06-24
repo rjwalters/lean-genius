@@ -1,8 +1,8 @@
 {
   "slug": "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
   "title": "Arithmetic Series: Multivariate Generating Functions",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOLVED (verified, 0 axioms): proved the multivariate (r-fold) Vandermonde convolution via generating functions, lifting the parent's two-factor identity. negBin_prod (Finset.prod_pow_eq_pow_sum) + PowerSeries.coeff_prod over finsuppAntidiag.",
+    "builtItems": [
+      "negBin_prod in ArithmeticSeriesOQ02OQ02OQ03OQ02.lean: ∏ negBin(aᵢ)=geom^(Σ(aᵢ+1))",
+      "multivariate_vandermonde_gf: Σ_{Σlᵢ=n} ∏ C(lᵢ+aᵢ,aᵢ) = [xⁿ] geom^(Σ(aᵢ+1)) via PowerSeries.coeff_prod",
+      "multivariate_vandermonde: simplicial closed form C(n+Σ(aᵢ+1)-1,…) for nonempty s",
+      "multivariate_vandermonde_fin: Fin (r+1) packaging; r=1 = parent identity"
+    ],
+    "insights": [
+      "Answers the parent's explicit 'Multivariate generating functions' open question.",
+      "Self-contained: parent file uses removed Finset.Nat.antidiagonal constant and PowerSeries.coeff ℕ n (R now implicit) — does not compile on current Mathlib v4.26, so could not be imported.",
+      "PowerSeries.coeff signature changed: coeff (n:ℕ): R⟦X⟧→ₗ[R] R with R implicit. Use PowerSeries.coeff n, not PowerSeries.coeff ℕ n."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
