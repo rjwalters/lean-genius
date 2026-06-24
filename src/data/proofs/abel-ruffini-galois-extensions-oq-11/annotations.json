@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-abelruffini-oq11-docstring",
+    "proofId": "abel-ruffini-galois-extensions-oq-11",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "Noether's Problem and the Universally Positive Sₙ Core",
+    "content": "Noether (1918) asked whether the fixed field K(x₁,…,xₙ)^G of a finite group G ≤ Sₙ permuting variables is purely transcendental over K — a positive answer turning abstract inverse-Galois existence into an explicit parametric family of G-extensions of K. For arbitrary G the answer is negative in general (Swan's ℤ/47ℤ, 1969; the precise obstruction is Bogomolov's multiplier B₀(G)). But for the FULL symmetric group G = Sₙ it is positive for every n, independently of solvability: the fundamental theorem of symmetric functions makes the invariant ring the polynomial ring K[e₁,…,eₙ], whose fraction field K(e₁,…,eₙ) is purely transcendental of transcendence degree n. This file formalizes that core: algebraic independence of the eᵢ, the Noether-rationality witness, and the contrast with the parent's solvability threshold."
+  },
+  {
+    "id": "ann-abelruffini-oq11-algindep",
+    "proofId": "abel-ruffini-galois-extensions-oq-11",
+    "range": {
+      "startLine": 78,
+      "endLine": 96
+    },
+    "type": "key-insight",
+    "title": "Algebraic Independence of e₁,…,eₙ (the transcendence-degree-n core)",
+    "content": "esymm_algebraicIndependent: for n ≤ #σ the n elementary symmetric polynomials e₁,…,eₙ are algebraically independent over any commutative ring R. By algebraicIndependent_iff_injective_aeval this is exactly injectivity of aeval (fun i ↦ esymm σ R (i+1)); that map's values are the coordinates of Mathlib's esymmAlgHom (esymmAlgHom_apply: (esymmAlgHom σ R n p).val = aeval (fun i ↦ esymm σ R (i+1)) p), so injectivity follows from esymmAlgHom_injective composed with Subtype.ext. Mathlib supplies the fundamental theorem esymmAlgEquiv but NOT this algebraic-independence statement — it is the transcendence-degree-n fact that makes the Sₙ-fixed field purely transcendental rather than merely finitely generated."
+  },
+  {
+    "id": "ann-abelruffini-oq11-witness",
+    "proofId": "abel-ruffini-galois-extensions-oq-11",
+    "range": {
+      "startLine": 97,
+      "endLine": 124
+    },
+    "type": "key-insight",
+    "title": "The Noether-Rationality Witness for Sₙ (every n)",
+    "content": "noetherWitnessSn re-exports Mathlib's esymmAlgEquiv: when #σ = n the ring of Sₙ-invariant polynomials symmetricSubalgebra σ R is R-algebra isomorphic to the polynomial ring MvPolynomial (Fin n) R, the i-th coordinate mapping to the (i+1)-st elementary symmetric polynomial. Sn_invariantRing_polynomial packages this as Nonempty of the equivalence, and Sn_noetherRational_all_n asserts it for EVERY n with no solvability hypothesis — the constructive statement that the Sₙ-invariant ring is always an n-generator polynomial ring, the algebra-level heart of Noether-positivity for the full symmetric group."
+  },
+  {
+    "id": "ann-abelruffini-oq11-threshold",
+    "proofId": "abel-ruffini-galois-extensions-oq-11",
+    "range": {
+      "startLine": 125,
+      "endLine": 138
+    },
+    "type": "key-insight",
+    "title": "Noether-Rationality Crosses the Abel–Ruffini Threshold",
+    "content": "S5_not_solvable_but_noether_rational: S₅ is NOT solvable (Equiv.Perm.fin_5_not_solvable, the group-theoretic heart of Abel–Ruffini) yet its invariant ring is STILL a polynomial ring (Sn_noetherRational_all_n R 5). The parent file proves Sₙ solvable iff n ≤ 4; this conjunction shows universal Noether-rationality of Sₙ is independent of that threshold. The quintic has no radical recipe, but the splitting data of the generic degree-5 polynomial still admits an elementary-symmetric-function parametrization — separating parametric construction (universal for Sₙ) from radical solvability (only n ≤ 4)."
+  }
+]
