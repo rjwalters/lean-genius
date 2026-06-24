@@ -262,8 +262,13 @@ private theorem memLp_indicator_of_restrict_loc {S : Set α} (hS : MeasurableSet
   · exact (aestronglyMeasurable_indicator_iff hS).mpr hf.1
   · rw [eLpNorm_indicator_eq_restrict_loc hS _ hp hptop]; exact hf.2
 
-/-- Extension-by-zero: isometric embedding Lp(μ.restrict S) →L[ℝ] Lp(μ). -/
-private noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
+/-- Extension-by-zero: isometric embedding Lp(μ.restrict S) →L[ℝ] Lp(μ).
+
+    Exposed (no longer `private`) so the arbitrary-measure synthesis file
+    (`CauchySchwarzIntegralLpDualitySynthesis.lean`) can pull a functional `φ` on
+    `Lp ℝ p μ` back to `Lp ℝ p (μ.restrict S)` and invoke the σ-finite Riesz theorem
+    on each σ-finite-supporting set `S` (step 1 of the maximality reduction). -/
+noncomputable def extByZeroCLM {S : Set α} (hS : MeasurableSet S)
     {p : ℝ≥0∞} (hp : p ≠ 0) (hptop : p ≠ ⊤) [Fact (1 ≤ p)] :
     Lp ℝ p (μ.restrict S) →L[ℝ] Lp ℝ p μ :=
   LinearMap.mkContinuous
