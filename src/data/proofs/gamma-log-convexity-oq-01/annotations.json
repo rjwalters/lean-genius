@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ann-gammaoq01-1",
+    "proofId": "gamma-log-convexity-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "From Log-Convexity to Gautschi Ratio Bounds",
+    "content": "**Module framing.** The Gamma function is *logarithmically convex* on $(0,\\infty)$ — the structural fact behind the Bohr–Mollerup characterisation — recorded in Mathlib as `Real.convexOn_log_Gamma`. From this single input plus the functional equation $\\Gamma(x+1) = x\\,\\Gamma(x)$, this entry derives the classical **Gautschi double inequality** $x^{1-s} \\le \\Gamma(x+1)/\\Gamma(x+s) \\le (x+1)^{1-s}$ for $x > 0$, $0 < s < 1$ — ratio estimates that Mathlib does *not* carry. The supporting `logGamma_add_one` lemma is the log form of the functional equation: $\\log\\Gamma(x+1) = \\log x + \\log\\Gamma(x)$, the bridge that lets every Gamma ratio become a difference of $\\log\\Gamma$ values amenable to convexity.",
+    "mathContext": "$\\log\\Gamma$ convex on $(0,\\infty)$; $\\log\\Gamma(x+1) = \\log x + \\log\\Gamma(x)$; goal $x^{1-s} \\le \\Gamma(x+1)/\\Gamma(x+s) \\le (x+1)^{1-s}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Logarithmic convexity",
+      "Bohr–Mollerup theorem",
+      "Gamma functional equation",
+      "Gautschi / Kershaw inequalities"
+    ],
+    "prerequisites": [
+      "Real.convexOn_log_Gamma",
+      "Real.Gamma_add_one"
+    ],
+    "tags": ["module-header", "framing", "log-convexity"]
+  },
+  {
+    "id": "ann-gammaoq01-2",
+    "proofId": "gamma-log-convexity-oq-01",
+    "range": { "startLine": 34, "endLine": 51 },
+    "type": "technique",
+    "title": "The Core Convex Decomposition x+s = (1−s)·x + s·(x+1)",
+    "content": "**`logGamma_le_lower`** is the engine of the lower bound: $\\log\\Gamma(x+s) \\le \\log\\Gamma(x) + s\\log x$ for $0 \\le s \\le 1$. The trick is to write the shifted point as a convex combination of $x$ and $x+1$: $x+s = (1-s)\\cdot x + s\\cdot(x+1)$. Feeding the weights $(1-s, s)$ to `convexOn_log_Gamma.2` gives $\\log\\Gamma(x+s) \\le (1-s)\\log\\Gamma(x) + s\\log\\Gamma(x+1)$, and substituting the functional equation $\\log\\Gamma(x+1) = \\log x + \\log\\Gamma(x)$ collapses the right side to $\\log\\Gamma(x) + s\\log x$ (the `ring` step `e`). Choosing *which* two points to interpolate is the entire art here.",
+    "mathContext": "$x+s = (1-s)x + s(x+1) \\Rightarrow \\log\\Gamma(x+s) \\le (1-s)\\log\\Gamma(x) + s\\log\\Gamma(x+1) = \\log\\Gamma(x) + s\\log x$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Convex combination of interpolation points",
+      "ConvexOn.2 (the slope inequality)",
+      "Functional equation substitution"
+    ],
+    "prerequisites": [
+      "Definition of convexity on an interval",
+      "logGamma_add_one"
+    ],
+    "tags": ["core-estimate", "convex-decomposition", "lower"]
+  },
+  {
+    "id": "ann-gammaoq01-3",
+    "proofId": "gamma-log-convexity-oq-01",
+    "range": { "startLine": 50, "endLine": 77 },
+    "type": "concept",
+    "title": "Gautschi Lower Bound: Exponentiate and Assemble",
+    "content": "**`gautschi_lower`**: $x^{1-s} \\le \\Gamma(x+1)/\\Gamma(x+s)$. The core estimate is first **exponentiated** — $\\log\\Gamma(x+s) \\le \\log\\Gamma(x) + s\\log x$ becomes $\\Gamma(x+s) \\le \\Gamma(x)\\cdot x^s$ (using `log_mul`, `log_rpow`, and `exp_log` on both positive sides). Then the ratio bound is assembled via `le_div_iff₀` and the functional equation $\\Gamma(x+1) = x\\Gamma(x)$, with the key power algebra $x^{1-s}\\cdot x^s = x^{1} = x$ (`rpow_add`). A short `calc` closes it: $x^{1-s}\\Gamma(x+s) \\le x^{1-s}\\cdot\\Gamma(x)x^s = x\\,\\Gamma(x) = \\Gamma(x+1)$.",
+    "mathContext": "$\\Gamma(x+s) \\le \\Gamma(x)x^s$, and $x^{1-s}\\cdot x^s = x$, so $x^{1-s}\\Gamma(x+s) \\le x\\Gamma(x) = \\Gamma(x+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Exponentiating a log inequality",
+      "Real.rpow_add",
+      "le_div_iff₀"
+    ],
+    "prerequisites": [
+      "logGamma_le_lower",
+      "exp_log / log_rpow"
+    ],
+    "tags": ["main-theorem", "lower-bound", "exponentiation"]
+  },
+  {
+    "id": "ann-gammaoq01-4",
+    "proofId": "gamma-log-convexity-oq-01",
+    "range": { "startLine": 78, "endLine": 122 },
+    "type": "insight",
+    "title": "Gautschi Upper Bound: a Subtler Convex Combination",
+    "content": "**`gautschi_upper`**: $\\Gamma(x+1)/\\Gamma(x+s) \\le (x+1)^{1-s}$. The upper bound needs a *different* and less obvious decomposition — interpolate $x+1$ between $x+s$ and $x+2$: $x+1 = \\frac{1}{2-s}(x+s) + \\frac{1-s}{2-s}(x+2)$ (weights verified by `field_simp; ring`). Convexity then bounds $\\log\\Gamma(x+1)$, the functional equation rewrites $\\log\\Gamma(x+2) = \\log(x+1) + \\log\\Gamma(x+1)$, and clearing the denominator $2-s$ (multiply through, `field_simp`) plus a linear rearrangement (`nlinarith`) yields $\\log\\Gamma(x+1) - \\log\\Gamma(x+s) \\le (1-s)\\log(x+1)$. Exponentiating via `log_div` and `log_rpow` gives the ratio bound. The asymmetry between the two bounds is exactly the asymmetry of the two interpolation choices.",
+    "mathContext": "$x+1 = \\tfrac{1}{2-s}(x+s) + \\tfrac{1-s}{2-s}(x+2) \\Rightarrow \\log\\Gamma(x+1) - \\log\\Gamma(x+s) \\le (1-s)\\log(x+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Non-obvious convex combination",
+      "field_simp / nlinarith",
+      "Real.log_div"
+    ],
+    "prerequisites": [
+      "convexOn_log_Gamma",
+      "logGamma_add_one"
+    ],
+    "tags": ["main-theorem", "upper-bound", "convex-decomposition"]
+  },
+  {
+    "id": "ann-gammaoq01-5",
+    "proofId": "gamma-log-convexity-oq-01",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "concept",
+    "title": "The Two-Sided Gautschi Bracket",
+    "content": "**`gautschi_bracket`** packages the two directions into the classical two-sided statement $x^{1-s} \\le \\Gamma(x+1)/\\Gamma(x+s) \\le (x+1)^{1-s}$ as a single conjunction, just pairing `gautschi_lower` and `gautschi_upper`. This is the headline form: the unit-shift ratio of Gamma values is bracketed between consecutive powers, the estimate underlying asymptotics like $\\Gamma(x+1)/\\Gamma(x+s) \\sim x^{1-s}$.",
+    "mathContext": "$x^{1-s} \\le \\dfrac{\\Gamma(x+1)}{\\Gamma(x+s)} \\le (x+1)^{1-s}$ for $x>0,\\ 0<s<1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Two-sided bracketing",
+      "Asymptotics of Gamma ratios"
+    ],
+    "prerequisites": [
+      "gautschi_lower and gautschi_upper"
+    ],
+    "tags": ["bracket", "two-sided", "headline"]
+  },
+  {
+    "id": "ann-gammaoq01-6",
+    "proofId": "gamma-log-convexity-oq-01",
+    "range": { "startLine": 129, "endLine": 149 },
+    "type": "concept",
+    "title": "Multiplicative Midpoint Inequality",
+    "content": "**`gamma_midpoint_sq_le`**: $\\Gamma\\!\\left(\\tfrac{a+b}{2}\\right)^2 \\le \\Gamma(a)\\Gamma(b)$ for $a, b > 0$ — the cleanest direct consequence of *midpoint* log-convexity. Taking equal weights $\\tfrac12, \\tfrac12$ in `convexOn_log_Gamma.2` gives $\\log\\Gamma\\!\\left(\\tfrac{a+b}{2}\\right) \\le \\tfrac12\\log\\Gamma(a) + \\tfrac12\\log\\Gamma(b)$; multiplying by $2$ and exponentiating (via `log_pow` and `log_mul`) turns the additive midpoint bound into the multiplicative square inequality. It is the Gamma-function instance of the AM–GM-flavoured statement 'log-convex ⟹ the value at the midpoint is at most the geometric mean of the endpoint values'.",
+    "mathContext": "$\\log\\Gamma\\!\\left(\\tfrac{a+b}{2}\\right) \\le \\tfrac12(\\log\\Gamma(a) + \\log\\Gamma(b)) \\Rightarrow \\Gamma\\!\\left(\\tfrac{a+b}{2}\\right)^2 \\le \\Gamma(a)\\Gamma(b)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Midpoint convexity",
+      "Geometric mean bound",
+      "AM–GM for log-convex functions"
+    ],
+    "prerequisites": [
+      "convexOn_log_Gamma at equal weights",
+      "Real.log_pow"
+    ],
+    "tags": ["midpoint", "geometric-mean", "corollary"]
+  }
+]
