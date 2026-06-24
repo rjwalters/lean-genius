@@ -1,0 +1,188 @@
+[
+  {
+    "id": "ann-feuerOQ020101-overview",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 68
+    },
+    "type": "context",
+    "title": "A Conservation Law: OI² + OIₐ² + OI_b² + OI_c² = 12R²",
+    "content": "Euler's 1765 pair gave OI² = R² − 2Rr (incenter) and OIₐ² = R² + 2Rrₐ (each excenter). This file asks what happens when all four classical tritangent centers — the incenter I and the three excenters Iₐ, I_b, I_c — are summed against the circumcenter O. Adding the four formulas gives 4R² + 2R(rₐ + r_b + r_c − r), and the classical exradius identity rₐ + r_b + r_c − r = 4R makes the parenthesis collapse to 4R, leaving the shape-independent constant 12R². Every dependence on the triangle's side lengths cancels: a clean conservation law sitting on top of Euler's pair. The proof reuses the four Euler formulas and the law of sines from sibling files; the only genuinely new analytic input is Heron's identity.",
+    "mathContext": "$OI^2 + OI_a^2 + OI_b^2 + OI_c^2 = 4R^2 + 2R(r_a+r_b+r_c-r) = 4R^2 + 2R\\cdot 4R = 12R^2$, independent of triangle shape.",
+    "significance": "context",
+    "relatedConcepts": [
+      "tritangent centers",
+      "Euler's triangle formulas",
+      "exradius identity rₐ+r_b+r_c = r+4R",
+      "conservation / invariant"
+    ],
+    "prerequisites": [
+      "incenter and excenters",
+      "circumradius, inradius, exradii",
+      "Euler's center-distance laws"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-positivity",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 127
+    },
+    "type": "technique",
+    "title": "Squared side lengths and positivity",
+    "content": "Foundational facts re-established locally (the parent's are private): the squared side lengths a² = |BC|² (cyclically), strict positivity of each side and of the area, and positivity of the perimeter a+b+c. Each side is positive because the vertices are pairwise distinct; the area is positive because the signed shoelace determinant is nonzero (non-degeneracy). These underpin both the strict triangle inequalities and the eventual cancellation R > 0.",
+    "mathContext": "$a^2 = |B-C|^2$, $b^2 = |C-A|^2$, $c^2 = |A-B|^2$; $\\text{Area} = \\tfrac12|\\det| > 0$ and each side $> 0$ by pairwise-distinct vertices.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "shoelace area",
+      "non-degeneracy",
+      "side length as Euclidean distance"
+    ],
+    "prerequisites": [
+      "coordinate geometry in ℝ²",
+      "determinant / signed area"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-triangleineq",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 129,
+      "endLine": 221
+    },
+    "type": "technique",
+    "title": "Strict triangle inequalities keep the denominators nonzero",
+    "content": "strict_tri_ineq_a/b/c prove a < b + c (and cyclic), reproved locally since the parent declares them private. The argument is the 2-D Lagrange/Cauchy–Schwarz identity: with P = ⟨A−C, B−A⟩, the law of cosines gives a² = b² + c² + 2P and the Lagrange identity b²c² − P² = D² (D the non-degeneracy determinant); D ≠ 0 forces P < bc, hence a² < (b+c)², hence a < b + c. The consequences pa_pos/pb_pos/pc_pos certify the excenter denominators −a+b+c, a−b+c, a+b−c are positive — exactly what makes the reciprocal sum in the key identity well-defined. The constant 12R² thus quietly encodes the genuineness of the triangle.",
+    "mathContext": "$a^2 = b^2+c^2+2P$, $b^2c^2 - P^2 = D^2 > 0 \\Rightarrow P < bc \\Rightarrow a < b+c$, so $p_a = -a+b+c > 0$ (cyclically).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "strict Cauchy–Schwarz",
+      "Lagrange identity",
+      "excenter denominators",
+      "non-degeneracy"
+    ],
+    "prerequisites": [
+      "Cauchy–Schwarz",
+      "2-D determinant",
+      "law of cosines"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-heron",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 223,
+      "endLine": 249
+    },
+    "type": "insight",
+    "title": "Heron's identity — the only new analytic input",
+    "content": "heron proves 16·Area² = (a+b+c)(−a+b+c)(a−b+c)(a+b−c) directly from coordinates, free of trigonometry. Expanding the product by ring gives 2a²b² + 2b²c² + 2c²a² − a⁴ − b⁴ − c⁴; substituting the coordinate squared side lengths a² = |BC|² etc. and the shoelace area (16Area² = 4det²) reduces the whole statement to a single degree-4 polynomial identity closed by ring. This factored form is what later converts the reciprocal sum 1/pₐ + 1/p_b + 1/p_c − 1/p_s into the circumradius, since pₐp_bp_cp_s = 16Area² and (4R·Area)² = (abc)². Everything else in the file is reuse; Heron is the genuinely new bridge.",
+    "mathContext": "$16\\,\\text{Area}^2 = (a{+}b{+}c)(-a{+}b{+}c)(a{-}b{+}c)(a{+}b{-}c) = 2a^2b^2+2b^2c^2+2c^2a^2-a^4-b^4-c^4$, matched against the shoelace area.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Heron's formula",
+      "shoelace / signed area",
+      "symmetric polynomial identity",
+      "ring tactic"
+    ],
+    "prerequisites": [
+      "polynomial expansion",
+      "coordinate area formula",
+      "squared side lengths"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-key",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 250,
+      "endLine": 284
+    },
+    "type": "insight",
+    "title": "The key reciprocal identity 2Rrₐ+2Rr_b+2Rr_c−2Rr = 8R²",
+    "content": "key is the algebraic heart of both main theorems. The four exradius bridges (two_R_ra_eq, …, two_R_r_eq) turn it into abc/pₐ + abc/p_b + abc/p_c − abc/p_s = 8R², where pₐ = −a+b+c (cyclically) and p_s = a+b+c. Over the common denominator pₐp_bp_cp_s the numerator becomes abc·[p_s(pₐp_b+p_bp_c+p_cpₐ) − pₐp_bp_c], and the pure ring identity p_s(pₐp_b+p_bp_c+p_cpₐ) − pₐp_bp_c = 8abc reduces it to 8(abc)². Heron (16Area² = pₐp_bp_cp_s) and the squared law of sines ((4R·Area)² = (abc)²) then give 8(abc)² = 128R²Area² = 8R²·pₐp_bp_cp_s, closing the identity with a single linear_combination.",
+    "mathContext": "$\\sum \\frac{abc}{p_x} - \\frac{abc}{p_s} = 8R^2$; numerator $abc[p_s\\sigma_2 - p_ap_bp_c] = 8(abc)^2$, and $8(abc)^2 = 8R^2(16\\,\\text{Area}^2)$ via Heron + law of sines.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exradius bridges 2Rr_x = abc/p_x",
+      "common-denominator clearing",
+      "law of sines four_R_area_eq_abc",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "Heron's identity",
+      "exradius formulas",
+      "rational identity manipulation"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-main",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 285,
+      "endLine": 300
+    },
+    "type": "insight",
+    "title": "Main theorem: the constant sum 12R²",
+    "content": "sum_OI_sq_eq_twelve_R_sq is the headline conservation law. Rewriting each of the four squared distances by its Euler formula — euler_OI_formula (R²−2Rr) for the incenter and euler_OI_a/b/c_formula (R²+2Rr_x) for the excenters — turns the goal into 4R² + (2Rrₐ + 2Rr_b + 2Rr_c − 2Rr) = 12R². All side-length dependence is now concentrated in the parenthesis, which key shows equals 8R²; a single linear_combination of key closes it. The sum is completely independent of the triangle's shape, a fact more rigid than any single Euler formula.",
+    "mathContext": "$\\sum OI_x^2 = 4R^2 + (2Rr_a+2Rr_b+2Rr_c-2Rr) = 4R^2 + 8R^2 = 12R^2$ by the four Euler formulas plus key.",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "four Euler formulas",
+      "shape-independent invariant",
+      "key reciprocal identity"
+    ],
+    "prerequisites": [
+      "Euler incenter and excenter laws",
+      "the key identity",
+      "linear_combination"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-exradius",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 294,
+      "endLine": 314
+    },
+    "type": "insight",
+    "title": "The classical exradius identity rₐ+r_b+r_c−r = 4R",
+    "content": "sum_exradii_sub_inradius_eq_four_R extracts the load-bearing classical identity as a standalone theorem. Factoring 2R out of key gives 2R(rₐ+r_b+r_c−r) = 2R·4R; since R > 0 (from 4R·Area = abc > 0 with Area > 0), mul_left_cancel₀ removes the common factor 2R, leaving rₐ + r_b + r_c − r = 4R. This is the Euler-era companion of the center-distance laws and the precise reason the shape-dependent term in the main sum annihilates. It is independently reusable wherever exradii and the circumradius interact.",
+    "mathContext": "$2R(r_a+r_b+r_c-r) = 8R^2 = 2R\\cdot 4R$, and $R > 0 \\Rightarrow r_a+r_b+r_c-r = 4R$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exradius–circumradius identity",
+      "mul_left_cancel₀",
+      "positivity of R"
+    ],
+    "prerequisites": [
+      "the key identity",
+      "law of sines positivity",
+      "cancellation in a field"
+    ]
+  },
+  {
+    "id": "ann-feuerOQ020101-example",
+    "proofId": "feuerbachs-theorem-defs-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 316,
+      "endLine": 330
+    },
+    "type": "context",
+    "title": "Worked example: the 3-4-5 right triangle",
+    "content": "triangle_345_sum_OI_sq makes the constant tangible. For the 3-4-5 right triangle the four squared distances are OI² = 5/4, OIₐ² = 145/4, OI_b² = 85/4, OI_c² = 65/4, and they sum to (5+145+85+65)/4 = 300/4 = 75 = 12·(5/2)². The theorem is instantiated at the parent's triangle_345 and norm_num evaluates 12·R² = 12·(5/2)² = 75. The arithmetic closes exactly, witnessing the general conservation law.",
+    "mathContext": "$3$-$4$-$5$: $\\tfrac54 + \\tfrac{145}{4} + \\tfrac{85}{4} + \\tfrac{65}{4} = 75 = 12\\cdot(5/2)^2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "3-4-5 right triangle",
+      "numerical verification",
+      "circumradius 5/2"
+    ],
+    "prerequisites": [
+      "the main theorem",
+      "coordinate computation"
+    ]
+  }
+]
