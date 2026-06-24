@@ -1,0 +1,164 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+  "title": "Counting solutions of xⁿ = 1 in a cyclic group: the count is gcd(n, |G|)",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": ["Function"],
+    "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01",
+    "lineCount": 171,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "description": "Refines the parent dichotomy (x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1) into the exact solution count: in a finite cyclic group, the equation xⁿ = 1 has precisely gcd(n, |G|) solutions, Nat.card {x // x ^ n = 1} = Nat.gcd n (Nat.card G). This is the sharp cyclic case of Frobenius's theorem (1895), which for an arbitrary finite group only guarantees gcd(n, |G|) ∣ #{x : xⁿ = 1}; for cyclic groups the divisibility is an equality. The headline re-packages Mathlib's IsCyclic.card_powMonoidHom_ker (the kernel of the n-th power homomorphism has cardinality (Nat.card G).gcd n) as a count of the solution set — the form in which Frobenius's theorem is stated — and then derives consequences absent from Mathlib: the count always divides |G| (Lagrange made quantitative), xⁿ = 1 holds for all x iff |G| ∣ n, every divisor d ∣ |G| is realised exactly (#{x : x^d = 1} = d), the counts are monotone under divisibility of exponents, and — the sharp characterisation — a value v occurs as some solution count iff v ∣ |G|, so the image of n ↦ #{x : xⁿ = 1} is exactly the divisor set of |G|. A general one-line lemma (xᵃ = 1 ⟹ xᵇ = 1 when a ∣ b, valid in any monoid) underlies the monotonicity. Concrete 0-axiom witnesses on Multiplicative (ZMod 12) (order 12) compute gcd(8,12)=4, gcd(5,12)=1 and gcd(6,12)=6 by kernel decide, no native_decide.",
+  "overview": {
+    "historicalContext": "Frobenius proved in 1895 that for any finite group G and any n, the number of solutions of xⁿ = 1 is divisible by gcd(n, |G|) — a foundational divisibility theorem whose general proof rests on the structure of conjugacy classes and Möbius inversion over the subgroup lattice. The cyclic case is the irreducible computational core: there the count is not merely divisible by gcd(n, |G|) but equal to it, because a cyclic group of order m has a unique subgroup of each order d ∣ m, and {x : xⁿ = 1} is exactly the subgroup of order gcd(n, m). The parent entry CauchyGroupTheoremOQ01OQ01OQ01 settled the qualitative dichotomy — x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1 — which is the boundary case where this count collapses to 1. Quantifying the count for every n turns that yes/no statement into the full Frobenius equality for cyclic groups, the natural first milestone on the way to the general theorem.",
+    "problemStatement": "For a finite cyclic group G of order m = Nat.card G and an exponent n, determine the exact number of solutions of xⁿ = 1. Prove Nat.card {x : G // x ^ n = 1} = gcd(n, m), establish the structural consequences (the count divides m; xⁿ = 1 for all x iff m ∣ n; each divisor of m is attained exactly), and characterise precisely which values occur as solution counts.",
+    "proofStrategy": "The headline card_pow_eq_one_eq_gcd transports the solution subtype {x // xⁿ = 1} along Equiv.subtypeEquivRight to the kernel of powMonoidHom n (membership x ∈ ker ↔ xⁿ = 1 via MonoidHom.mem_ker and powMonoidHom_apply), so Nat.card_congr reduces the count to Nat.card of that kernel, which Mathlib's IsCyclic.card_powMonoidHom_ker evaluates to (Nat.card G).gcd n; Nat.gcd_comm reorders. From this single equality everything else is pure gcd arithmetic: card_pow_eq_one_dvd_card is Nat.gcd_dvd_right; gcd_dvd_card_pow_eq_one is reflexivity after the rewrite (the Frobenius divisibility, here trivially an equality); card_pow_eq_one_eq_card_iff uses Nat.gcd_dvd_left and Nat.gcd_eq_left; card_pow_eq_one_of_dvd_card is Nat.gcd_eq_left applied to d ∣ |G|; card_pow_eq_one_dvd_of_dvd combines Nat.dvd_gcd with the divisibility chain gcd a m ∣ a ∣ b; and exists_card_pow_eq_one_iff_dvd packages the realisability of divisors with the divides-|G| constraint into a clean iff. The general monoid lemma pow_eq_one_of_dvd (xᵃ = 1 ⟹ xᵇ = 1 when a ∣ b) records the underlying set inclusion. Concrete witnesses on Multiplicative (ZMod 12) reduce Nat.card to 12 (Nat.card_eq_fintype_card, Fintype.card_multiplicative, ZMod.card) and finish the gcd computation by kernel decide, keeping the file 0-axiom (only propext, Classical.choice, Quot.sound; no Lean.ofReduceBool).",
+    "keyInsights": [
+      "The solution set {x : xⁿ = 1} is the kernel of the n-th power homomorphism, hence a subgroup; its order is gcd(n, |G|), so the count is forced to divide |G| — Lagrange's theorem made quantitative.",
+      "For cyclic groups Frobenius's divisibility gcd(n, |G|) ∣ #{x : xⁿ = 1} is actually an equality. This is the sharp base case the general theorem must reproduce; the cyclic uniqueness of subgroups is exactly what upgrades divisibility to equality.",
+      "Because the count is always gcd(n, |G|), the function n ↦ #{x : xⁿ = 1} has image exactly the divisors of |G|: every divisor d is hit (take n = d, since gcd(d, |G|) = d) and no non-divisor can occur. This sharp characterisation is not in Mathlib.",
+      "The boundary cases recover familiar statements: count = 1 is the parent dichotomy (x ↦ xⁿ a bijection ⟺ gcd(n, |G|) = 1), and count = |G| says xⁿ = 1 for every x, equivalent to |G| ∣ n (the exponent dividing n).",
+      "Axiom hygiene: the concrete Multiplicative (ZMod 12) witnesses evaluate Nat.gcd by kernel decide, so the entry depends only on the three foundational axioms — genuinely 0-axiom, no Lean.ofReduceBool from native_decide."
+    ]
+  },
+  "sections": [
+    {
+      "id": "general-inclusion",
+      "title": "A General Inclusion (Any Monoid)",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "pow_eq_one_of_dvd: in an arbitrary monoid, if a ∣ b then xᵃ = 1 implies xᵇ = 1 (write b = a·c, then xᵇ = (xᵃ)ᶜ = 1). This records the set-level nesting {x : xᵃ = 1} ⊆ {x : xᵇ = 1} that becomes divisibility of counts in the cyclic setting.",
+      "mathContext": "a ∣ b ⟹ ({x : xᵃ = 1} ⊆ {x : xᵇ = 1}); holds with no finiteness or commutativity."
+    },
+    {
+      "id": "headline",
+      "title": "The Solution Count Is the gcd",
+      "startLine": 73,
+      "endLine": 106,
+      "summary": "card_pow_eq_one_eq_gcd is the headline: Nat.card {x // xⁿ = 1} = gcd(n, |G|), via Equiv.subtypeEquivRight to the kernel of powMonoidHom n and Mathlib's IsCyclic.card_powMonoidHom_ker. card_pow_eq_one_dvd_card (count ∣ |G|, Lagrange quantitative) and gcd_dvd_card_pow_eq_one (Frobenius divisibility, here an equality) follow immediately.",
+      "mathContext": "#{x : xⁿ = 1} = gcd(n, |G|); count ∣ |G|; gcd(n, |G|) ∣ count (equality in the cyclic case)."
+    },
+    {
+      "id": "consequences",
+      "title": "Structural Consequences and Sharpness",
+      "startLine": 107,
+      "endLine": 144,
+      "summary": "card_pow_eq_one_eq_card_iff: xⁿ = 1 for all x ⟺ |G| ∣ n. card_pow_eq_one_of_dvd_card: each divisor d ∣ |G| is realised exactly, #{x : x^d = 1} = d. card_pow_eq_one_dvd_of_dvd: counts are monotone under a ∣ b. exists_card_pow_eq_one_iff_dvd: a value v occurs as a solution count iff v ∣ |G| — the image of the count function is exactly the divisors of |G|.",
+      "mathContext": "count = |G| ⟺ |G| ∣ n; d ∣ |G| ⟹ count(d) = d; a ∣ b ⟹ count(a) ∣ count(b); (∃ n, count(n) = v) ⟺ v ∣ |G|."
+    },
+    {
+      "id": "examples",
+      "title": "Concrete Witnesses on a Cyclic Group of Order 12",
+      "startLine": 145,
+      "endLine": 171,
+      "summary": "card_mul_zmod12 computes |Multiplicative (ZMod 12)| = 12. card_pow8_mul_zmod12, card_pow5_mul_zmod12 and card_pow6_mul_zmod12 instantiate the headline: x⁸ = 1 has gcd(8,12) = 4 solutions, x⁵ = 1 has gcd(5,12) = 1 (only the identity — the parent bijection case), and x⁶ = 1 has gcd(6,12) = 6 (the divisor 6 realised exactly), each finished by kernel decide.",
+      "mathContext": "On the order-12 cyclic group: #{x : x⁸=1}=4, #{x : x⁵=1}=1, #{x : x⁶=1}=6."
+    }
+  ],
+  "conclusion": {
+    "summary": "In a finite cyclic group the equation xⁿ = 1 has exactly gcd(n, |G|) solutions. This sharpens the parent dichotomy (which only distinguishes count = 1 from count > 1) into the full Frobenius equality for the cyclic case: where Frobenius's theorem guarantees only that gcd(n, |G|) divides the solution count for an arbitrary finite group, cyclic groups attain equality. The count is the cardinality of the kernel of the n-th power homomorphism, so it divides |G|; the value |G| is reached iff the group exponent divides n; every divisor of |G| is realised exactly; and the possible counts are precisely the divisors of |G|. The 0-axiom witnesses on the order-12 cyclic group make the gcd formula concrete.",
+    "implications": [
+      "Establishes the sharp cyclic case of Frobenius's theorem — equality rather than mere divisibility — the computational core any proof of the general divisibility theorem must reproduce.",
+      "Refines the parent's qualitative bijection dichotomy into a quantitative count, exhibiting the bijection case (count = 1) and the trivial case (count = |G|) as the two endpoints of the divisor range.",
+      "Characterises exactly which solution counts occur (the divisors of |G|) and how they vary with the exponent (monotonically under divisibility), giving the full image and order structure of the count function."
+    ],
+    "openQuestions": [
+      "For a general finite abelian group G ≅ ∏ ZMod dᵢ, the count factorises as ∏ gcd(n, dᵢ); does this product form give a clean Lean proof of Frobenius's divisibility for abelian groups via the structure theorem?",
+      "Beyond abelian groups, can the equality #{x : xⁿ = 1} = gcd(n, |G|) be characterised — for which finite groups (and which n) is the Frobenius divisibility actually an equality rather than a strict multiple?",
+      "What is the analogous count for the twisted equation xⁿ = g (a fixed g), and how does its solvability and fibre size depend on g lying in the image of the n-th power map?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Refines the parent's qualitative dichotomy (x ↦ xⁿ is a bijection iff gcd(n, |G|) = 1) into the exact solution count gcd(n, |G|) for cyclic groups; the parent's bijection case is precisely solution count = 1 (card_pow5_mul_zmod12)."
+    },
+    {
+      "targetId": "cauchy-group-theorem-oq-01",
+      "relationship": "related",
+      "description": "Both quantify how the order of a finite group controls power maps and element orders; Cauchy detects a prime divisor by an element of that order, while this entry counts all solutions of xⁿ = 1 via the cyclic subgroup structure."
+    }
+  ],
+  "meta": {
+    "author": "Lean formalization original (quantitative cyclic case of Frobenius's theorem)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cyclic-groups",
+      "frobenius-theorem",
+      "solution-counting",
+      "gcd",
+      "power-map",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsCyclic.card_powMonoidHom_ker",
+        "description": "For a finite cyclic CommGroup, the kernel of powMonoidHom d has cardinality (Nat.card G).gcd d; the engine of the headline count after transporting the solution set to this kernel.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Equiv.subtypeEquivRight",
+        "description": "Builds the equivalence {x // xⁿ = 1} ≃ {x // x ∈ ker(powMonoidHom n)} from the pointwise iff (xⁿ = 1 ↔ x ∈ ker), letting Nat.card_congr reduce the count to the kernel cardinality.",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "MonoidHom.mem_ker",
+        "description": "x ∈ f.ker ↔ f x = 1; with powMonoidHom_apply identifies kernel membership with xⁿ = 1.",
+        "module": "Mathlib.Algebra.Group.Subgroup.Ker"
+      },
+      {
+        "theorem": "Nat.gcd_eq_left",
+        "description": "m ∣ n ⟹ gcd m n = m; gives count = d when d ∣ |G| and the all-solutions iff.",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_gcd",
+        "description": "k ∣ m → k ∣ n → k ∣ gcd m n; combined with gcd a m ∣ a ∣ b proves monotonicity of counts under divisibility of exponents.",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "ZMod.card",
+        "description": "Fintype.card (ZMod n) = n for NeZero n; with Fintype.card_multiplicative gives |Multiplicative (ZMod 12)| = 12 for the concrete witnesses.",
+        "module": "Mathlib.Data.ZMod.Basic"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Frobenius, Ferdinand Georg",
+        "title": "Über einen Fundamentalsatz der Gruppentheorie",
+        "year": "1895",
+        "note": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin — the theorem that gcd(n, |G|) divides the number of solutions of xⁿ = 1 in any finite group; this entry proves the sharp cyclic case (equality)."
+      },
+      {
+        "authors": "Isaacs, I. Martin",
+        "title": "Finite Group Theory",
+        "year": "2008",
+        "note": "Graduate Studies in Mathematics 92, AMS — solution counts of xⁿ = 1, Frobenius's theorem and the subgroup structure of cyclic groups."
+      },
+      {
+        "authors": "Hall, Marshall",
+        "title": "The Theory of Groups",
+        "year": "1959",
+        "note": "Macmillan — cyclic groups have a unique subgroup of each order dividing the group order, the structural fact making the solution count exactly gcd(n, |G|)."
+      }
+    ]
+  }
+}
