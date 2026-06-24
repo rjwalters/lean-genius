@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-cantor-cardinality",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "insight",
+    "title": "The Cantor Space Has Cardinality the Continuum",
+    "content": "mk_nat_arrow_bool reads off #(ℕ → Bool) = 𝔠 in one chain. Cardinal.power_def rewrites the function space as a power #Bool ^ #ℕ; mk_bool gives #Bool = 2 and mk_nat gives #ℕ = ℵ₀; and two_power_aleph0 closes with 2 ^ ℵ₀ = 𝔠. This is the cardinal that the Cantor-scheme embedding will transfer into any nonempty perfect set — the whole point is that a perfect set contains a topological copy of Cantor space, and Cantor space already has continuum cardinality."
+  },
+  {
+    "id": "ann-core-perfect-bound",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 64 },
+    "type": "insight",
+    "title": "Corestrict the Cantor-Scheme Injection to the Perfect Set",
+    "content": "continuum_le_mk_of_perfect is the core. Mathlib's Perfect.exists_nat_bool_injection supplies a continuous injection f : (ℕ → Bool) → X whose range lies inside C (the Cantor scheme: nested closed balls of vanishing diameter, whose limit points are indexed by binary sequences). Since range f ⊆ C, every f x lands in C, so g x := ⟨f x, hmem x⟩ corestricts f to the subtype ↥C; corestriction preserves injectivity (congrArg Subtype.val). Then mk_le_of_injective gives #(ℕ → Bool) ≤ #C, and mk_nat_arrow_bool rewrites the left side to 𝔠. The bound is a property of perfect SETS, not just perfect spaces."
+  },
+  {
+    "id": "ann-not-countable",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 66, "endLine": 74 },
+    "type": "insight",
+    "title": "Uncountability as a Corollary of the Cardinal Bound",
+    "content": "not_countable_of_perfect recovers the qualitative Cantor–Bendixson fact (perfect sets are uncountable) from the quantitative one. If C were countable then Countable ↥C (countable_coe_iff), giving #C ≤ ℵ₀ (mk_le_aleph0_iff). But the core bound gives 𝔠 ≤ #C, so 𝔠 ≤ ℵ₀ — contradicting aleph0_lt_continuum (ℵ₀ < 𝔠). The strict gap between ℵ₀ and 𝔠 is exactly what upgrades 'at least continuum' to 'uncountable'."
+  },
+  {
+    "id": "ann-whole-space",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 76, "endLine": 86 },
+    "type": "insight",
+    "title": "Whole-Space Form: No Isolated Points",
+    "content": "continuum_le_mk_of_perfectSpace specializes the core to C = univ. The hypothesis is PerfectSpace α — a space with no isolated points (perfectSpace_iff_forall_not_isolated equates this with NeBot (𝓝[≠] x) at every point). PerfectSpace.univ_perfect makes univ a perfect set and univ_nonempty supplies nonemptiness; mk_univ rewrites #↥univ = #α. uncountable_of_perfectSpace then chains ℵ₀ < 𝔠 ≤ #α through aleph0_lt_mk_iff to conclude Uncountable α. Completeness powers the convergence of the nested balls; no-isolated-points powers the room to keep splitting — both Baire-flavored hypotheses are load-bearing."
+  },
+  {
+    "id": "ann-real-witness",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 93 },
+    "type": "insight",
+    "title": "The Real Line Falls Out for Free",
+    "content": "continuum_le_mk_real : 𝔠 ≤ #ℝ is just the whole-space form at α = ℝ — no real-analysis input. ℝ is a complete metric space, and it is a PerfectSpace purely formally: the instance [T1Space α] [ConnectedSpace α] [Nontrivial α] → PerfectSpace α fires because ℝ is connected, T1, and nontrivial, so it has no isolated points. This recovers and quantitatively sharpens the parent entry's real_uncountable: not merely uncountable, but of cardinality at least the continuum."
+  }
+]
