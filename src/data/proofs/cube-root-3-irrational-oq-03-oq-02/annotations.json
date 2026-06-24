@@ -1,0 +1,74 @@
+[
+  {
+    "id": "quadratic-tower-def",
+    "proofId": "cube-root-3-irrational-oq-03-oq-02",
+    "range": { "startLine": 51, "endLine": 64 },
+    "type": "definition",
+    "title": "Quadratic Towers: the Algebraic Shape of Constructibility",
+    "content": "`IsQuadraticTower : IntermediateField ℚ ℝ → Prop` is defined inductively: the base field ℚ (⊥) is a tower, and any L obtained from a tower K by a single degree-2 step (`relfinrank K L = 2`, i.e. [L:K] = 2) is again a tower. This is the field-theoretic content of Wantzel's reduction: each ruler-and-compass step intersects lines and circles through previously-constructed points and so adjoins at most a square root — a degree-≤2 extension. We take this characterization as the definition; the geometry⟺algebra equivalence itself is the classical, unformalized step.",
+    "mathContext": "$\\mathbb{Q}=K_0\\subseteq K_1\\subseteq\\dots\\subseteq K_n$ with each $[K_{i+1}:K_i]=2$.",
+    "significance": "critical",
+    "relatedConcepts": ["constructible number", "tower of fields", "quadratic extension", "Wantzel's theorem"],
+    "prerequisites": ["field extensions", "intermediate fields"]
+  },
+  {
+    "id": "tower-degree-two-pow",
+    "proofId": "cube-root-3-irrational-oq-03-oq-02",
+    "range": { "startLine": 66, "endLine": 80 },
+    "type": "theorem",
+    "title": "Every Quadratic Tower Has 2-Power Degree",
+    "content": "`IsQuadraticTower.finrank_eq_two_pow`: any quadratic tower K has Module.finrank ℚ K = 2ⁿ for some n. The proof is induction on the tower. Base: [ℚ:ℚ] = 1 = 2⁰ (IntermediateField.finrank_bot). Step: multiplicativity of degrees in a field tower, IntermediateField.finrank_bot_mul_relfinrank, gives [L:ℚ] = [K:ℚ]·[L:K] = 2ⁿ·2 = 2ⁿ⁺¹. This single induction is where 'each step is quadratic' becomes 'the whole degree is a power of 2'.",
+    "mathContext": "$[K_n:\\mathbb{Q}]=\\prod_i [K_{i+1}:K_i]=2^n$.",
+    "significance": "critical",
+    "relatedConcepts": ["tower law", "multiplicativity of degree", "finrank", "induction"],
+    "prerequisites": ["field extension degree", "tower law"]
+  },
+  {
+    "id": "constructible-two-pow",
+    "proofId": "cube-root-3-irrational-oq-03-oq-02",
+    "range": { "startLine": 82, "endLine": 101 },
+    "type": "theorem",
+    "title": "Constructible Numbers Have 2-Power Degree over ℚ",
+    "content": "`IsConstructible α` means α lies in some quadratic tower. `finrank_adjoin_eq_two_pow_of_constructible`: then [ℚ⟮α⟯:ℚ] is a power of 2. Proof: ℚ⟮α⟯ is the smallest intermediate field containing α, so ℚ⟮α⟯ ≤ K for the ambient tower K (adjoin_simple_le_iff). The tower law (finrank_bot_mul_relfinrank) makes [ℚ⟮α⟯:ℚ] divide [K:ℚ] = 2ⁿ, and a divisor of a prime power 2ⁿ is itself a power of 2 (Nat.dvd_prime_pow with Nat.prime_two).",
+    "mathContext": "$[\\mathbb{Q}(\\alpha):\\mathbb{Q}]\\mid[K:\\mathbb{Q}]=2^n \\Rightarrow [\\mathbb{Q}(\\alpha):\\mathbb{Q}]=2^j$.",
+    "significance": "key",
+    "relatedConcepts": ["simple extension", "divisibility of degrees", "prime power divisors", "Nat.dvd_prime_pow"],
+    "prerequisites": ["field extension degree", "divisibility"]
+  },
+  {
+    "id": "general-obstruction",
+    "proofId": "cube-root-3-irrational-oq-03-oq-02",
+    "range": { "startLine": 103, "endLine": 111 },
+    "type": "theorem",
+    "title": "The General Non-Constructibility Obstruction",
+    "content": "`not_constructible_of_finrank_ne_two_pow`: any real α whose degree over ℚ is not a power of 2 is non-constructible — the contrapositive of the previous theorem. This is the reusable engine: instantiating it at different degree computations yields doubling-the-cube (degree 3), angle trisection (degree 3 via cos 20°), and non-constructible regular polygons in one stroke.",
+    "mathContext": "$(\\forall n,\\ [\\mathbb{Q}(\\alpha):\\mathbb{Q}]\\neq 2^n) \\Rightarrow \\neg\\,\\mathrm{Constructible}(\\alpha)$.",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "impossibility theorems", "doubling the cube", "angle trisection"],
+    "prerequisites": ["field extension degree"]
+  },
+  {
+    "id": "three-not-two-pow",
+    "proofId": "cube-root-3-irrational-oq-03-oq-02",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "technique",
+    "title": "3 Is Not a Power of 2",
+    "content": "`three_ne_two_pow`: 3 ≠ 2ⁿ for all n. If 3 = 2ⁿ then 3 ∣ 2ⁿ, and since 3 is prime, Nat.Prime.dvd_of_dvd_pow forces 3 ∣ 2 — false. This is the arithmetic core of the impossibility: the obstruction is purely that 3 and 2 are distinct primes.",
+    "mathContext": "$3=2^n$ would give $3\\mid 2^n$, hence $3\\mid 2$ (3 prime), contradiction.",
+    "significance": "supporting",
+    "relatedConcepts": ["prime divisibility", "powers of two", "Nat.Prime.dvd_of_dvd_pow"],
+    "prerequisites": ["divisibility", "prime numbers"]
+  },
+  {
+    "id": "cbrt3-not-constructible",
+    "proofId": "cube-root-3-irrational-oq-03-oq-02",
+    "range": { "startLine": 121, "endLine": 128 },
+    "type": "theorem",
+    "title": "∛3 Is Not Constructible — Doubling the Cube Is Impossible",
+    "content": "`cbrt3_not_constructible`: ∛3 is not ruler-and-compass constructible. The proof applies the general obstruction not_constructible_of_finrank_ne_two_pow and discharges its hypothesis by rewriting with the parent's finrank_adjoin_cbrt3 ([ℚ(∛3):ℚ] = 3) and three_ne_two_pow (3 ≠ 2ⁿ). Geometrically: a cube of double volume would require constructing the length ∛2 (here the prime analogue ∛3) of degree 3 — impossible, since constructible lengths have 2-power degree. This is the formal resolution of the Delian problem.",
+    "mathContext": "$[\\mathbb{Q}(\\sqrt[3]{3}):\\mathbb{Q}]=3\\neq 2^n \\Rightarrow \\sqrt[3]{3}\\text{ not constructible}$.",
+    "significance": "critical",
+    "relatedConcepts": ["doubling the cube", "Delian problem", "constructible number", "degree obstruction"],
+    "prerequisites": ["field extension degree", "ruler-and-compass constructions"]
+  }
+]
