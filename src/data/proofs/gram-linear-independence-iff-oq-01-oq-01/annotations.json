@@ -1,0 +1,74 @@
+[
+  {
+    "id": "gram-eq-bhb",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 70 },
+    "type": "concept",
+    "title": "The Factorisation gram 𝕜 v = BᴴB",
+    "content": "Let e = gramSchmidtOrthonormalBasis 𝕜 v be Mathlib's Gram–Schmidt orthonormal basis and B the coordinate matrix B i j = ⟪e i, v j⟫ (coordMatrix_apply). The single identity that drives the whole proof is gram_eq_conjTranspose_mul: gram 𝕜 v = Bᴴ * B. It is pure completeness of the basis — expanding ⟪v i, v j⟫ = ∑ k, ⟪v i, e k⟫ * ⟪e k, v j⟫ (OrthonormalBasis.sum_inner_mul_inner) and recognising the right-hand side as the (i,j) entry of BᴴB, with the conjugate-transpose supplying ⟪v i, e k⟫ = conj ⟪e k, v i⟫.",
+    "mathContext": "$\\mathrm{Gram}(v) = B^{\\mathsf H} B$, $B_{ij} = \\langle e_i, v_j\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix", "Gram–Schmidt orthonormal basis", "conjugate transpose", "Parseval completeness"],
+    "prerequisites": ["orthonormal bases", "matrix multiplication"]
+  },
+  {
+    "id": "det-norm-sq",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 87 },
+    "type": "technique",
+    "title": "The Gramian is ‖det B‖²",
+    "content": "From gram = BᴴB, multiplicativity gives det(gram) = det(Bᴴ)·det(B) = conj(det B)·det B = ‖det B‖² (Matrix.det_conjTranspose and RCLike.conj_mul). Because the coordinate matrix B is upper-triangular in the Gram–Schmidt basis, Mathlib's gramSchmidtOrthonormalBasis_det evaluates det B = ∏ i, ⟪e i, v i⟫. Hence gram_det_eq: det(gram 𝕜 v) = ‖∏ i, ⟪e i, v i⟫‖², a manifestly nonnegative real — the determinant has been reduced to a product of diagonal coordinates.",
+    "mathContext": "$\\det\\mathrm{Gram}(v) = \\lVert\\det B\\rVert^2 = \\bigl\\lVert\\prod_i \\langle e_i, v_i\\rangle\\bigr\\rVert^2$.",
+    "significance": "key",
+    "relatedConcepts": ["determinant multiplicativity", "triangular determinant", "RCLike conjugation"],
+    "prerequisites": ["determinants", "Gram–Schmidt triangularity"]
+  },
+  {
+    "id": "bessel-bound",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01",
+    "range": { "startLine": 89, "endLine": 121 },
+    "type": "insight",
+    "title": "Hadamard = Bessel, Diagonal by Diagonal",
+    "content": "Each diagonal factor is bounded by Bessel's inequality: ‖⟪e i, v i⟫‖² is just one term of the Parseval sum ‖v i‖² = ∑ k, ‖⟪e k, v i⟫‖² (OrthonormalBasis.sum_sq_norm_inner_right), so abs_inner_sq_le_norm_sq gives ‖⟪e i, v i⟫‖² ≤ ‖v i‖². Multiplying over i (all factors nonnegative) turns the equality det(gram) = ∏ ‖⟪e i, v i⟫‖² into Hadamard's inequality det(gram 𝕜 v) ≤ ∏ ‖v i‖² (hadamard_inequality, with re_gram_det_le_prod_norm_sq the order-free real-part form).",
+    "mathContext": "$\\lVert\\langle e_i, v_i\\rangle\\rVert^2 \\le \\lVert v_i\\rVert^2 \\Rightarrow \\det\\mathrm{Gram}(v) \\le \\prod_i \\lVert v_i\\rVert^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Bessel's inequality", "Parseval identity", "product monotonicity", "Hadamard's inequality"],
+    "prerequisites": ["Bessel/Parseval", "ordered products"]
+  },
+  {
+    "id": "orthogonal-equality",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01",
+    "range": { "startLine": 123, "endLine": 143 },
+    "type": "concept",
+    "title": "Orthogonal Families Attain Equality",
+    "content": "The easy half of the equality characterisation needs no dimension hypothesis: if v is pairwise orthogonal then gram 𝕜 v is the diagonal matrix with entries ⟪v i, v i⟫, so det(gram 𝕜 v) = ∏ i, ⟪v i, v i⟫ = ∏ i, ‖v i‖² (gram_det_of_orthogonal, gram_det_of_orthogonal_norm). Geometrically: a rectangular box has volume equal to the product of its edge lengths.",
+    "mathContext": "$v$ orthogonal $\\Rightarrow \\mathrm{Gram}(v)$ diagonal $\\Rightarrow \\det = \\prod_i \\lVert v_i\\rVert^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["diagonal matrix", "orthogonal family", "determinant of diagonal"],
+    "prerequisites": ["diagonal matrices"]
+  },
+  {
+    "id": "equality-converse",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01",
+    "range": { "startLine": 145, "endLine": 218 },
+    "type": "insight",
+    "title": "Equality Forces Orthogonality: A Positivity Argument",
+    "content": "The hard direction is not a construction but a strictness argument. For a linearly independent full family, v is a basis, so det B = ∏ ⟪e i, v i⟫ is a unit and every diagonal factor is nonzero (inner_diag_ne_zero). Then strict product monotonicity (Finset.prod_lt_prod) converts product-equality into termwise sharpness ‖⟪e i, v i⟫‖² = ‖v i‖² (diag_sq_eq_of_hadamard_eq). Sharpness uses up the entire Parseval mass at index i, so the off-diagonal coordinates ⟪e k, v i⟫ (k ≠ i) must vanish (coord_off_diag_eq_zero); feeding this back through ⟪v i, v j⟫ = ∑ k, ⟪v i, e k⟫⟪e k, v j⟫ gives orthogonality (orthogonal_of_diag_sq_eq), assembled into hadamard_eq_iff_orthogonal.",
+    "mathContext": "independent $v$: $\\det\\mathrm{Gram}(v) = \\prod_i \\lVert v_i\\rVert^2 \\iff \\langle v_i, v_j\\rangle = 0\\ (i \\ne j)$.",
+    "significance": "key",
+    "relatedConcepts": ["strict product monotonicity", "basis determinant", "Bessel saturation", "orthogonality"],
+    "prerequisites": ["linear independence and bases", "ordered field inequalities"]
+  },
+  {
+    "id": "euclidean-corollaries",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01",
+    "range": { "startLine": 220, "endLine": 236 },
+    "type": "concept",
+    "title": "Concrete Forms on EuclideanSpace",
+    "content": "hadamard_inequality_euclidean and hadamard_eq_iff_orthogonal_euclidean specialise the abstract results to families of n vectors in EuclideanSpace 𝕜 (Fin n), where the dimension hypothesis finrank = n holds automatically (finrank_euclideanSpace_fin). These give directly applicable statements of Hadamard's bound and its orthogonality equality case for the standard coordinate model of n-dimensional inner product space.",
+    "mathContext": "$v : \\mathrm{Fin}\\,n \\to \\mathbb{E}^n$: $\\det\\mathrm{Gram}(v) \\le \\prod_i \\lVert v_i\\rVert^2$, equality $\\iff$ orthogonal.",
+    "significance": "supporting",
+    "relatedConcepts": ["EuclideanSpace", "finrank", "concrete instantiation"],
+    "prerequisites": ["finite-dimensional inner product spaces"]
+  }
+]
