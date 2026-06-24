@@ -1,0 +1,181 @@
+{
+  "id": "triangular-reciprocals-oq-02-oq-04",
+  "title": "Uniform Truncation Error Bound for Generalized Triangular Reciprocals",
+  "slug": "triangular-reciprocals-oq-02-oq-04",
+  "description": "For every k ≥ 1, the tail of ∑_{n=1}^∞ 1/(n(n+k)) after N terms equals exactly (1/k)(H_{N+k} − H_N) and is bounded by 1/(N+1) uniformly in k. A two-sided estimate 1/(N+k) ≤ tail ≤ 1/(N+1) shows the bound is essentially sharp. Answers open question OQ-04 of triangular-reciprocals-oq-02.",
+  "meta": {
+    "author": "Lean Genius Researcher (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Harmonic_number",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "series",
+      "harmonic-numbers",
+      "telescoping",
+      "error-bounds",
+      "rate-of-convergence",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/TriangularReciprocalsOQ02OQ04.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "harmonic",
+        "description": "Definition of the k-th harmonic number as ∑_{i=1}^k 1/i in ℚ",
+        "module": "Mathlib.NumberTheory.Harmonic.Defs"
+      },
+      {
+        "theorem": "harmonic_eq_sum_Icc",
+        "description": "Equivalence of harmonic n with ∑ i ∈ Icc 1 n, (i)⁻¹",
+        "module": "Mathlib.NumberTheory.Harmonic.Defs"
+      },
+      {
+        "theorem": "Finset.sum_Ico_consecutive",
+        "description": "Decompose a sum over consecutive Ico intervals (used to write H_b − H_a as a block sum)",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Monotonicity of finite sums under termwise inequality (per-term harmonic bounds)",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "one_div_le_one_div_of_le",
+        "description": "Reciprocal reverses order on positives: 0 < a → a ≤ b → 1/b ≤ 1/a",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "Nat.card_Icc",
+        "description": "Cardinality |Icc a b| = b + 1 − a, used to count the k harmonic-block terms",
+        "module": "Mathlib.Order.Interval.Finset.Nat"
+      }
+    ],
+    "originalContributions": [
+      "Exact truncation-error identity: (∑' f) − S_N = (1/k)(H_{N+k} − H_N), derived from the parent closed form composed with the tsum value",
+      "Uniform-in-k upper bound: the tail is ≤ 1/(N+1), a constant independent of the gap k",
+      "Matching lower bound 1/(N+k) ≤ tail, proving the 1/(N+1) estimate is sharp up to the factor (N+1)/(N+k) → 1",
+      "Self-contained harmonic-block lemma H_b − H_a = ∑_{i=a+1}^b 1/i with two-sided estimates k/(N+k) ≤ H_{N+k} − H_N ≤ k/(N+1)",
+      "Absolute-value form |S_N − ∑' f| ≤ 1/(N+1) packaged as a Mathlib-style error bound"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 205,
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The convergence rate of telescoping-type series is a classical concern in numerical analysis: for the gap-k harmonic series ∑ 1/(n(n+k)) = H_k/k (parent entry triangular-reciprocals-oq-02), the speed at which the partial sums S_N(k) approach the limit is governed entirely by the harmonic tail H_{N+k} − H_N. Since the harmonic numbers satisfy H_m = ln m + γ + O(1/m) (Euler-Maclaurin), the difference H_{N+k} − H_N = ln((N+k)/N) + O(1/N) ≈ k/N for fixed k and large N. This entry makes the elementary, non-asymptotic side of that estimate fully rigorous, bounding the tail above and below by the per-term harmonic block inequalities 1/(N+k) ≤ 1/i ≤ 1/(N+1) for N+1 ≤ i ≤ N+k.",
+    "problemStatement": "**Uniform truncation error**: For every integer $k \\ge 1$ and every $N \\ge 0$,\n\n$$\\left|\\sum_{n=1}^{\\infty} \\frac{1}{n(n+k)} - \\sum_{n=1}^{N} \\frac{1}{n(n+k)}\\right| = \\frac{1}{k}\\bigl(H_{N+k} - H_N\\bigr) \\le \\frac{1}{N+1},$$\n\nwith the bound on the right **independent of $k$**, and a matching lower bound $\\frac{1}{N+k}$ showing sharpness.",
+    "text": "Quantifies how fast the generalized triangular series converges. After summing N terms, the remaining error equals (1/k)(H_{N+k} − H_N) exactly, and this never exceeds 1/(N+1) no matter how large the gap k is.",
+    "proofStrategy": "1. Express the harmonic difference as a finite block: H_b − H_a = ∑_{i=a+1}^b 1/i (harmonic_sub), via harmonic_eq_sum_Icc + Finset.sum_Ico_consecutive. 2. Bound the block two-sidedly: each of the k terms 1/i with N+1 ≤ i ≤ N+k lies in [1/(N+k), 1/(N+1)], so k/(N+k) ≤ H_{N+k} − H_N ≤ k/(N+1) (harmonic_diff_le, harmonic_diff_ge) using Finset.sum_le_sum + one_div_le_one_div_of_le + Nat.card_Icc. 3. Combine the parent's tsum value H_k/k with its partial-sum closed form to get the exact error identity (∑' f) − S_N = (1/k)(H_{N+k} − H_N) (truncation_error_eq). 4. Multiply the two-sided harmonic estimate by 1/k to land the bounds 1/(N+k) ≤ error ≤ 1/(N+1) (truncation_error_le, truncation_error_ge), and package the absolute-value form (truncation_error_abs).",
+    "keyInsights": [
+      "The error is computed *exactly*, not just bounded: total − partial = (1/k)(H_{N+k} − H_N), so the 1/(N+1) bound comes from a clean inequality on a known quantity rather than an opaque remainder estimate",
+      "Uniformity in k is structural: the harmonic block H_{N+k} − H_N has exactly k terms each ≤ 1/(N+1), so the sum ≤ k/(N+1); dividing by the prefactor 1/k cancels k entirely, leaving 1/(N+1) free of k",
+      "The same block, bounded below by k copies of 1/(N+k), yields tail ≥ 1/(N+k); the ratio of the two bounds (N+1)/(N+k) → 1, so 1/(N+1) is asymptotically sharp for every fixed k",
+      "Building on the parent's tsum value lets the analytic content (summability, limit of partial sums) be reused as a black box — this entry is pure finite-sum inequality manipulation on top of it",
+      "Nonnegativity of the error needed for the absolute-value form is free: the lower bound 1/(N+k) > 0 already certifies total − partial ≥ 0, so no separate monotonicity argument is required"
+    ],
+    "prerequisites": [
+      "Real analysis (series tails, rate of convergence)",
+      "Harmonic numbers and finite-sum reindexing",
+      "Monotonicity of finite sums and reciprocal inequalities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "harmonic-as-sum",
+      "title": "Harmonic Numbers as Real Finite Sums",
+      "startLine": 44,
+      "endLine": 81,
+      "summary": "harmonic_real_eq casts Mathlib's rational `harmonic m` to a real sum ∑_{i∈Icc 1 m} 1/i; harmonic_sub then writes the difference H_b − H_a (for a ≤ b) as the block sum ∑_{i∈Icc (a+1) b} 1/i using Finset.sum_Ico_consecutive.",
+      "mathContext": "$H_b - H_a = \\sum_{i=a+1}^{b} \\frac{1}{i}$ for $a \\le b$. The harmonic difference is a contiguous block of reciprocals — the object every subsequent bound estimates termwise."
+    },
+    {
+      "id": "block-bounds",
+      "title": "Two-Sided Harmonic Block Estimate",
+      "startLine": 82,
+      "endLine": 133,
+      "summary": "harmonic_diff_le bounds H_{N+k} − H_N ≤ k/(N+1) (each of the k terms ≤ 1/(N+1)); harmonic_diff_ge bounds it ≥ k/(N+k) (each term ≥ 1/(N+k)). Both close via Finset.sum_le_sum, one_div_le_one_div_of_le, and Nat.card_Icc giving the term count k.",
+      "mathContext": "$\\frac{k}{N+k} \\le H_{N+k} - H_N \\le \\frac{k}{N+1}$. The block has exactly $k$ terms, each reciprocal pinned between $1/(N+k)$ and $1/(N+1)$."
+    },
+    {
+      "id": "range-partial",
+      "title": "Partial Sum over range N",
+      "startLine": 134,
+      "endLine": 157,
+      "summary": "range_partial lifts the parent's partial_sum_closed_form into the range-indexed convention: ∑_{i<N} f(i) = (1/k)(H_k − (H_{N+k} − H_N)), by reindexing range N to Icc 1 N via Finset.sum_Ico_add'.",
+      "mathContext": "$S_N(k) = \\frac{1}{k}\\bigl(H_k - (H_{N+k} - H_N)\\bigr)$, the parent closed form expressed over the `range`-indexed summand used here."
+    },
+    {
+      "id": "error-identity",
+      "title": "Exact Truncation Error Identity",
+      "startLine": 158,
+      "endLine": 168,
+      "summary": "truncation_error_eq subtracts range_partial from the parent's tsum value H_k/k and simplifies with ring to (1/k)(H_{N+k} − H_N).",
+      "mathContext": "$\\bigl(\\sum_{n\\ge1} \\tfrac{1}{n(n+k)}\\bigr) - S_N(k) = \\frac{1}{k}(H_{N+k} - H_N)$. The $H_k$ contributions cancel, leaving exactly the tail."
+    },
+    {
+      "id": "error-bounds",
+      "title": "Uniform Upper Bound, Sharp Lower Bound, Absolute Form",
+      "startLine": 169,
+      "endLine": 205,
+      "summary": "truncation_error_le multiplies the upper block bound by 1/k to get error ≤ 1/(N+1) (independent of k); truncation_error_ge gives error ≥ 1/(N+k); truncation_error_abs packages |S_N − ∑' f| ≤ 1/(N+1) using the positive lower bound to discharge nonnegativity.",
+      "mathContext": "$\\frac{1}{N+k} \\le \\bigl(\\sum_{n\\ge1}\\tfrac{1}{n(n+k)}\\bigr) - S_N(k) \\le \\frac{1}{N+1}$, hence $\\bigl|S_N(k) - \\sum_{n\\ge1}\\tfrac{1}{n(n+k)}\\bigr| \\le \\frac{1}{N+1}$ uniformly in $k$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "triangular-reciprocals-oq-02",
+      "relationship": "extends",
+      "description": "Directly answers open question OQ-04 of the parent: 'Quantify the rate of convergence ... formalize this as a Mathlib-style truncation error bound for the partial sums.' Reuses the parent's `partial_sum_closed_form` and `generalized_triangular_reciprocals_tsum` as imported black boxes, adding only finite-sum inequality work on top."
+    },
+    {
+      "targetId": "triangular-reciprocals",
+      "relationship": "related",
+      "description": "For the classical k=1 Leibniz case ∑ 1/(n(n+1)) = 1, the error bound specializes to a tail ≤ 1/(N+1) with exact value (H_{N+1} − H_N) = 1/(N+1) — i.e. the bound is attained exactly when k=1, the sharpest possible instance of the uniform estimate."
+    },
+    {
+      "targetId": "harmonic-divergence",
+      "relationship": "complementary",
+      "description": "The harmonic series ∑ 1/n diverges, yet its fixed-width tails H_{N+k} − H_N vanish at rate Θ(k/N). This entry quantifies exactly that vanishing — the convergent counterpart to harmonic divergence: globally the partial sums H_N → ∞, but locally the width-k differences are squeezed into [k/(N+k), k/(N+1)]."
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "related",
+      "description": "Summability of ∑ 1/(n(n+k)) (the object whose tail is bounded here) rests on comparison with the Basel series ∑ 1/n²; this entry takes that convergence as given via the parent and instead pins down the convergence *rate*."
+    }
+  ],
+  "conclusion": {
+    "summary": "The truncation error of the generalized triangular series ∑_{n=1}^∞ 1/(n(n+k)) = H_k/k is computed exactly as (1/k)(H_{N+k} − H_N) and bounded two-sidedly by 1/(N+k) ≤ error ≤ 1/(N+1), with the upper bound uniform in the gap k. Fully verified in Lean 4 (Mathlib v4.26.0), 0 sorries, 0 axioms. Resolves open question OQ-04 of triangular-reciprocals-oq-02.",
+    "implications": "The uniform-in-k bound means a single truncation length N guarantees error ≤ 1/(N+1) simultaneously for the entire family of gap-k series — useful when summing the digamma reformulation H_k/k = (ψ(k+1) + γ)/k across many k. The matching lower bound certifies that no truncation strategy beats the 1/N rate, ruling out acceleration without resummation. The harmonic-block lemmas (harmonic_sub with two-sided estimates) are reusable infrastructure for any fixed-width harmonic-difference estimate.",
+    "openQuestions": [
+      "Sharpen the upper bound to the exact asymptotic (1/k)·ln((N+k)/N) using Euler-Maclaurin / Real.log estimates for harmonic numbers, replacing the elementary k/(N+1) block bound",
+      "Establish a uniform-over-k summability rate in the L¹ sense: bound ∑_{k=1}^K |error_N(k)| and study its growth in K and N"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.TriangularReciprocalsOQ02"
+    ],
+    "opens": [
+      "Finset",
+      "BigOperators",
+      "Filter",
+      "Topology",
+      "Real",
+      "TriangularReciprocalsHarmonic"
+    ],
+    "namespace": "TriangularReciprocalsTruncation",
+    "lineCount": 205,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/TriangularReciprocalsOQ02OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

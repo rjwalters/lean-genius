@@ -1,0 +1,66 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 1, "endLine": 42 },
+    "type": "concept",
+    "title": "Goal: Uniform Truncation Error Bound",
+    "content": "The header states open question OQ-04 of the parent `triangular-reciprocals-oq-02`: quantify the convergence rate of $\\sum_{n=1}^\\infty \\frac{1}{n(n+k)} = H_k/k$. The truncation error after $N$ terms equals exactly $\\frac{1}{k}(H_{N+k} - H_N)$ and is bounded by $\\frac{1}{N+1}$ — a bound **independent of the gap $k$**. The strategy reduces everything to the elementary harmonic-block estimate $k/(N+k) \\le H_{N+k} - H_N \\le k/(N+1)$."
+  },
+  {
+    "id": "ann-summand-def",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 40, "endLine": 46 },
+    "type": "definition",
+    "title": "The Series Summand",
+    "content": "`f k n = 1/((n+1)((n+1)+k))` indexes the series so that `n+1` ranges over 1, 2, 3, …, matching the parent's `HasSum`/`tsum` convention. This lets the imported parent results (`generalized_triangular_reciprocals_tsum`, `partial_sum_closed_form`) be applied verbatim."
+  },
+  {
+    "id": "ann-harmonic-block",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 48, "endLine": 81 },
+    "type": "technique",
+    "title": "Harmonic Difference as a Contiguous Block",
+    "content": "`harmonic_real_eq` casts Mathlib's rational `harmonic m` to a real finite sum $\\sum_{i=1}^m 1/i$ via `harmonic_eq_sum_Icc`. `harmonic_sub` then proves $H_b - H_a = \\sum_{i=a+1}^b 1/i$ for $a \\le b$ by splitting $\\text{Icc}\\,1\\,b$ into consecutive intervals with `Finset.sum_Ico_consecutive`. The harmonic difference is thus a block of exactly $b-a$ reciprocals — the central object every bound estimates termwise."
+  },
+  {
+    "id": "ann-block-upper",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 82, "endLine": 100 },
+    "type": "key-step",
+    "title": "Upper Block Bound H_{N+k} − H_N ≤ k/(N+1)",
+    "content": "Each term $1/i$ with $N+1 \\le i \\le N+k$ satisfies $1/i \\le 1/(N+1)$ (`one_div_le_one_div_of_le`). Summing $k$ such terms via `Finset.sum_le_sum` and counting them with `Nat.card_Icc` (the block $\\text{Icc}(N{+}1)(N{+}k)$ has $k$ elements) gives $H_{N+k} - H_N \\le k/(N+1)$. This is where uniformity in $k$ originates: the factor $k$ here will cancel the $1/k$ prefactor of the error."
+  },
+  {
+    "id": "ann-block-lower",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 101, "endLine": 133 },
+    "type": "key-step",
+    "title": "Lower Block Bound H_{N+k} − H_N ≥ k/(N+k)",
+    "content": "Symmetrically, each term $1/i$ with $i \\le N+k$ satisfies $1/i \\ge 1/(N+k)$, so the $k$-term block is at least $k/(N+k)$. Together with the upper bound this pins the harmonic difference into $[k/(N+k), k/(N+1)]$, the source of the sharp two-sided error estimate."
+  },
+  {
+    "id": "ann-range-partial",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 134, "endLine": 157 },
+    "type": "technique",
+    "title": "Lifting the Parent's Closed Form",
+    "content": "`range_partial` reindexes the `range N`-indexed partial sum into the `Icc 1 N` form via `Finset.sum_Ico_add'`, then applies the parent's `partial_sum_closed_form` to get $S_N(k) = \\frac{1}{k}(H_k - (H_{N+k} - H_N))$. The analytic content (summability, convergence) is reused as an imported black box."
+  },
+  {
+    "id": "ann-error-eq",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 158, "endLine": 168 },
+    "type": "key-step",
+    "title": "Exact Error Identity",
+    "content": "`truncation_error_eq` subtracts the partial sum from the parent's `tsum` value $H_k/k$. The $H_k$ terms cancel under `ring`, leaving the error exactly $\\frac{1}{k}(H_{N+k} - H_N)$ — an equality, not an estimate."
+  },
+  {
+    "id": "ann-error-bounds",
+    "proofId": "triangular-reciprocals-oq-02-oq-04",
+    "range": { "startLine": 169, "endLine": 205 },
+    "type": "key-step",
+    "title": "Uniform Bound, Sharpness, and Absolute Form",
+    "content": "Multiplying the two-sided block estimate by the prefactor $1/k > 0$ yields $\\frac{1}{N+k} \\le \\text{error} \\le \\frac{1}{N+1}$ (`truncation_error_le`, `truncation_error_ge`); the $k$ cancels in the upper bound, making it uniform in $k$. The positive lower bound certifies nonnegativity of the error, so `truncation_error_abs` reads off $|S_N - \\sum' f| \\le \\frac{1}{N+1}$. The ratio of bounds $(N+1)/(N+k) \\to 1$ shows the estimate is asymptotically sharp."
+  }
+]

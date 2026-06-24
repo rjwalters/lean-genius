@@ -3862,6 +3862,7 @@ import Proofs.TriangularReciprocalAlternatingOQ03
 import Proofs.TriangularReciprocalGeneralized
 import Proofs.TriangularReciprocalsFigurate
 import Proofs.TriangularReciprocalsOQ02
+import Proofs.TriangularReciprocalsOQ02OQ04
 import Proofs.TriangularReciprocalsOQ02Aristotle
 import Proofs.TriangularReciprocalsOQ04
 import Proofs.TuranEdgeBound
