@@ -1,0 +1,98 @@
+[
+  {
+    "id": "carnot-oq0103-ann-context",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 4, "endLine": 46 },
+    "type": "context",
+    "title": "The dual sine identity and its perimeter reading",
+    "content": "Frames the file as the sine-form dual of the parent's cosine Carnot identity. Via the law of sines a = 2R sin A, the sum sin A + sin B + sin C equals the triangle's perimeter measured in units of the circumdiameter 2R, and its half-angle factorisation 4 cos(A/2) cos(B/2) cos(C/2) equals s/R. The sharp maximum 3√3/2 is therefore the classical fact that the equilateral triangle has the greatest perimeter among all triangles inscribed in a fixed circle. The sine identity is reproved from scratch in half-angle style — the parent's cosine identity is imported only for family coherence, not used.",
+    "mathContext": "$\\sin A + \\sin B + \\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$, with $a+b+c = 2R(\\sin A+\\sin B+\\sin C)$ by the law of sines.",
+    "significance": "context",
+    "relatedConcepts": ["Carnot's theorem", "law of sines", "circumradius", "triangle perimeter", "half-angle identities"],
+    "prerequisites": ["triangle trigonometry", "law of sines"]
+  },
+  {
+    "id": "carnot-oq0103-ann-identity-statement",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 52, "endLine": 61 },
+    "type": "concept",
+    "title": "Companion sine identity (statement)",
+    "content": "The central identity: for any reals with A+B+C=π, the sine sum factorises into a product of half-angle cosines. It holds for arbitrary reals summing to π, not just triangle angles, so it is a pure trigonometric identity rather than a geometric one. It is the exact dual of the parent's carnot_cos_sum (which factorises the cosine sum into half-angle sines).",
+    "mathContext": "$\\sin A + \\sin B + \\sin C = 4\\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2}\\cos\\tfrac{C}{2}$ whenever $A+B+C=\\pi$.",
+    "significance": "key",
+    "relatedConcepts": ["product-to-sum identities", "half-angle factorisation", "duality of cosine/sine forms"],
+    "prerequisites": ["trigonometric identities"]
+  },
+  {
+    "id": "carnot-oq0103-ann-complementary-C",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 62, "endLine": 70 },
+    "type": "technique",
+    "title": "Expressing the half-angle of C through A and B",
+    "content": "The angle-sum constraint gives C/2 = π/2 - (A/2 + B/2), so the complementary-angle identities convert sin(C/2) and cos(C/2) into expressions in the half-angles of A and B alone: sin(C/2) = cos(A/2+B/2) (via sin_pi_div_two_sub + cos_add) and cos(C/2) = sin(A/2+B/2) (via cos_pi_div_two_sub + sin_add). This is the key move that eliminates C and turns the three-variable goal into a two-variable polynomial identity.",
+    "mathContext": "$\\tfrac{C}{2} = \\tfrac{\\pi}{2} - \\big(\\tfrac{A}{2}+\\tfrac{B}{2}\\big)$, so $\\sin\\tfrac{C}{2} = \\cos\\tfrac{A}{2}\\cos\\tfrac{B}{2} - \\sin\\tfrac{A}{2}\\sin\\tfrac{B}{2}$ and $\\cos\\tfrac{C}{2} = \\sin\\tfrac{A}{2}\\cos\\tfrac{B}{2} + \\cos\\tfrac{A}{2}\\sin\\tfrac{B}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["complementary-angle identities", "angle addition formulas", "variable elimination"],
+    "prerequisites": ["sin/cos of π/2 − x", "addition formulas"]
+  },
+  {
+    "id": "carnot-oq0103-ann-doubleangle-close",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 71, "endLine": 80 },
+    "type": "technique",
+    "title": "Double-angle expansion and Pythagorean closure",
+    "content": "Each full-angle sine is rewritten as 2 sin(·/2) cos(·/2) (from Real.sin_two_mul after normalising 2·(X/2)=X), and after substituting the C-half-angle expressions the goal becomes a polynomial identity in sin(A/2), cos(A/2), sin(B/2), cos(B/2). It is closed by linear_combination of the two Pythagorean relations sin²+cos²=1 for A/2 and B/2 — a slick way to discharge a ring identity that is only true modulo those two relations.",
+    "mathContext": "$\\sin X = 2\\sin\\tfrac{X}{2}\\cos\\tfrac{X}{2}$; the residual identity is true modulo $\\sin^2\\tfrac{A}{2}+\\cos^2\\tfrac{A}{2}=1$ and the same for $B/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["double-angle formula", "Pythagorean identity", "linear_combination tactic", "polynomial identities"],
+    "prerequisites": ["Real.sin_two_mul", "linear_combination"]
+  },
+  {
+    "id": "carnot-oq0103-ann-positivity",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 82, "endLine": 93 },
+    "type": "concept",
+    "title": "Positivity of the sine sum",
+    "content": "For a genuine triangle (A, B, C > 0 with sum π) each angle automatically lies in the open interval (0, π) — e.g. A = π - B - C < π because B, C > 0 — so each sine is strictly positive by Real.sin_pos_of_pos_of_lt_pi, and the sum is positive by linarith. Geometrically this just says a triangle's perimeter is positive.",
+    "mathContext": "$A,B,C \\in (0,\\pi) \\Rightarrow \\sin A,\\sin B,\\sin C > 0 \\Rightarrow \\sin A+\\sin B+\\sin C > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity of sine on (0,π)", "triangle angle constraints"],
+    "prerequisites": ["Real.sin_pos_of_pos_of_lt_pi", "linarith"]
+  },
+  {
+    "id": "carnot-oq0103-ann-concavity-setup",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 95, "endLine": 115 },
+    "type": "insight",
+    "title": "Concavity setup for the sharp maximum",
+    "content": "The sharp bound rests on sin being concave on [0, π] (strictConcaveOn_sin_Icc, weakened to ConcaveOn). Triangle angles lie in [0, π] automatically. The proof introduces the midpoint M = (B+C)/2 and establishes membership of A, B, C, M in [0, π] — the ingredients for two applications of the two-point Jensen inequality that follow.",
+    "mathContext": "$\\sin$ is concave on $[0,\\pi]$; Jensen: $\\sum \\lambda_i \\sin x_i \\le \\sin\\big(\\sum \\lambda_i x_i\\big)$ for weights $\\lambda_i \\ge 0$, $\\sum\\lambda_i = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["concavity", "Jensen's inequality", "strictConcaveOn_sin_Icc", "convex combinations"],
+    "prerequisites": ["convex/concave functions", "Mathlib ConcaveOn API"]
+  },
+  {
+    "id": "carnot-oq0103-ann-jensen-barycentre",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 116, "endLine": 129 },
+    "type": "technique",
+    "title": "Two-step Jensen at the barycentre π/3",
+    "content": "Rather than invoking a three-point Jensen, the bound is reached by two two-point applications: first at equal weights on B and C giving (sin B + sin C)/2 ≤ sin M; then weighting A by 1/3 against M by 2/3, whose convex combination (1/3)A + (2/3)M = (A+B+C)/3 = π/3 lands exactly at the barycentre, where sin = √3/2 (Real.sin_pi_div_three). A single linarith combining 3·step2 + 2·step1 cancels the intermediate sin M and yields sin A + sin B + sin C ≤ 3√3/2.",
+    "mathContext": "$\\tfrac13 A + \\tfrac23\\cdot\\tfrac{B+C}{2} = \\tfrac{A+B+C}{3} = \\tfrac{\\pi}{3}$, $\\;\\sin\\tfrac{\\pi}{3} = \\tfrac{\\sqrt3}{2}$, giving $\\sin A+\\sin B+\\sin C \\le 3\\cdot\\tfrac{\\sqrt3}{2} = \\tfrac{3\\sqrt3}{2}$.",
+    "significance": "key",
+    "relatedConcepts": ["barycentre", "iterated two-point Jensen", "Real.sin_pi_div_three", "linarith combination"],
+    "prerequisites": ["Jensen's inequality", "convex combinations", "linarith"]
+  },
+  {
+    "id": "carnot-oq0103-ann-witness",
+    "proofId": "carnot-theorem-oq-01-oq-03",
+    "range": { "startLine": 131, "endLine": 136 },
+    "type": "insight",
+    "title": "Sharpness witness — the equilateral triangle",
+    "content": "Evaluating the sum at A = B = C = π/3 gives 3 sin(π/3) = 3√3/2, exhibiting the equilateral triangle as the maximiser and confirming 3√3/2 is the exact supremum (not merely an upper bound). This is the dual extremal statement to Euler's inequality r ≤ R/2 that the cosine-sum sibling encodes.",
+    "mathContext": "$\\sin\\tfrac{\\pi}{3}+\\sin\\tfrac{\\pi}{3}+\\sin\\tfrac{\\pi}{3} = 3\\cdot\\tfrac{\\sqrt3}{2} = \\tfrac{3\\sqrt3}{2}$, attained iff $A=B=C=\\tfrac{\\pi}{3}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["equilateral triangle", "extremal perimeter", "sharpness of inequalities", "Euler's inequality"],
+    "prerequisites": ["Real.sin_pi_div_three"]
+  }
+]
