@@ -3396,6 +3396,7 @@ import Proofs.MeanValueTheoremOQ04
 import Proofs.MeanValueTheoremOQ05
 import Proofs.MenelausTheorem
 import Proofs.MenelausTheoremOQ01
+import Proofs.MenelausTheoremOQ01OQ01OQ01
 import Proofs.MidyTheorem
 import Proofs.MinkowskiFundamentalTheorem
 import Proofs.MinkowskiFundamentalTheoremOQ01
