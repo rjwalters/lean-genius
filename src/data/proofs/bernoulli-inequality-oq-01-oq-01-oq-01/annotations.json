@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-strict-pos",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 49,
+      "endLine": 69
+    },
+    "type": "technique",
+    "title": "Strict Bernoulli on the Positive-Factor Range a > −1",
+    "content": "The base case is the workhorse of the whole file: for a > −1 and a ≠ 0, strict Bernoulli is re-proved from scratch by Nat.le_induction starting at n = 2. The inductive step multiplies the hypothesis 1 + m·a < (1+a)^m by the strictly positive factor 1 + a (via mul_lt_mul_of_pos_right) and absorbs the leftover a²-term with nlinarith. Keeping this self-contained means the even-exponent case can call it directly for the a > −1 branch.",
+    "mathContext": "For $a > -1$, $a \\ne 0$, $n \\ge 2$: $1 + na < (1+a)^n$. The step $(1 + ma)(1+a) = 1 + (m{+}1)a + m a^2$ has a strictly positive $a^2$ surplus, so positivity of $1+a$ propagates strictness.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.le_induction",
+      "Bernoulli inequality",
+      "strict monotonicity of multiplication"
+    ],
+    "prerequisites": [
+      "mul_lt_mul_of_pos_right",
+      "nlinarith",
+      "induction from a base exponent"
+    ]
+  },
+  {
+    "id": "ann-strict-even",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 71,
+      "endLine": 93
+    },
+    "type": "insight",
+    "title": "Even Exponents Have No Left Endpoint",
+    "content": "The decisive observation: for even n ≥ 2 the strict inequality holds for every a ≠ 0, with no lower restriction at all. The proof trichotomizes on a vs −1. For a < −1, evenness forces (1+a)^n > 0 (Even.pow_pos on the nonzero base 1+a) while a < −1 drags 1 + n·a strictly below 0 — so the inequality holds with enormous slack. At a = −1 the power is exactly 0 while 1 + n·a = 1 − n ≤ −1. For a > −1 it delegates to strict_pos. This is why parity, not the value of a, governs the admissible range.",
+    "mathContext": "Even $n \\ge 2$, $a \\ne 0 \\Rightarrow 1 + na < (1+a)^n$. For $a < -1$: $(1+a)^n > 0 > 1 + na$. The sign of an even power is the engine.",
+    "significance": "key",
+    "relatedConcepts": [
+      "parity of exponents",
+      "sign of even powers",
+      "Even.pow_pos"
+    ],
+    "prerequisites": [
+      "Even.pow_pos",
+      "zero_pow",
+      "case split on order"
+    ]
+  },
+  {
+    "id": "ann-cubic-iff",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 95,
+      "endLine": 109
+    },
+    "type": "concept",
+    "title": "The Cubic Endpoint Is Exactly −3",
+    "content": "For the smallest odd exponent n = 3, the admissible range is pinned exactly. The algebraic identity (1+a)³ − (1+3a) = a²(a+3) reduces the strict inequality to the sign of a²(a+3): positive iff a ≠ 0 (so a² > 0) and a + 3 > 0. Hence the left endpoint of the cubic case is exactly −3, strictly below −2 — a fixed exponent that admits values the parent's −2 bound excludes. Both directions of the iff fall out of the single factored identity (forward via nlinarith on sq_nonneg, reverse via mul_pos).",
+    "mathContext": "$(1+a)^3 - (1+3a) = a^2(a+3)$, so $1 + 3a < (1+a)^3 \\iff a \\ne 0 \\wedge -3 < a$. Endpoint $= -3 < -2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "factorization sign analysis",
+      "per-exponent endpoint",
+      "cubic identity"
+    ],
+    "prerequisites": [
+      "ring identity",
+      "sq_nonneg",
+      "mul_pos / nlinarith"
+    ]
+  },
+  {
+    "id": "ann-witness",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 116
+    },
+    "type": "insight",
+    "title": "An Explicit Exponent Admitting a < −2",
+    "content": "The open question's parenthetical 'does some n admit a < −2?' is answered affirmatively by exhibiting a single witness: n = 3, a = −5/2 ∈ (−3, −2). A push_cast then norm_num verifies 1 + 3·(−5/2) = −13/2 < (1 − 5/2)³ = (−3/2)³ = −27/8 directly. The witness lives in the cubic admissible interval (−3, −2) established by cubic_iff.",
+    "mathContext": "$n=3,\\ a=-5/2$: $1 + 3a = -\\tfrac{13}{2} < (-\\tfrac{3}{2})^3 = -\\tfrac{27}{8}$, and $-5/2 < -2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "explicit counterexample",
+      "existential witness",
+      "decidable arithmetic"
+    ],
+    "prerequisites": [
+      "push_cast",
+      "norm_num"
+    ]
+  },
+  {
+    "id": "ann-quad-bernoulli",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 138
+    },
+    "type": "technique",
+    "title": "Second-Order Bernoulli Bound: the Quadratic Term",
+    "content": "A power can only outgrow its tangent line at second order, so the sharpness argument needs more than the first-order one_add_mul_le_pow. quad_bernoulli proves 1 + n·x + C(n,2)·x² ≤ (1+x)^n for x ≥ 0 by induction: the step multiplies the hypothesis by 1 + x ≥ 0 and discards a nonnegative cubic remainder (k(k−1)/2·x³ ≥ 0). The C(n,2)·x² term is exactly what later forces an odd power to drop below the line 1 + n·a for a < −2. This lemma is independently reusable wherever a power must be shown to beat its first-order approximation.",
+    "mathContext": "$x \\ge 0 \\Rightarrow 1 + nx + \\binom{n}{2}x^2 \\le (1+x)^n$. The binomial expansion's degree-2 term is retained; higher terms are nonnegative and dropped.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binomial theorem lower bound",
+      "second-order tangency",
+      "induction"
+    ],
+    "prerequisites": [
+      "mul_le_mul_of_nonneg_right",
+      "pow_succ",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-sharp-uniform",
+    "proofId": "bernoulli-inequality-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 187
+    },
+    "type": "insight",
+    "title": "−2 Is the Sharp Uniform (n-Independent) Endpoint",
+    "content": "The headline characterization: (∀ n, 1 + n·a ≤ (1+a)^n) ↔ −2 ≤ a. The easy (⇐) direction is Mathlib's one_add_mul_le_pow. The (⇒) direction is the heart of the file: given a < −2, set s = −1−a > 1 and c = s−1 > 0; the Archimedean property (exists_nat_gt) produces N > 4/c², and the odd exponent n = 2N+1 is built. The quadratic bound gives s^n > n·s + n − 1, and since n is odd, (1+a)^n = (−s)^n = −s^n drops strictly below 1 + n·a — contradicting the assumed inequality at that n. Thus no a < −2 can satisfy Bernoulli for all exponents simultaneously, so −2 is the supremum of per-exponent endpoints rather than the endpoint of any single one.",
+    "mathContext": "$(\\forall n,\\ 1 + na \\le (1+a)^n) \\iff -2 \\le a$. For $a < -2$, odd $n = 2N+1$ with $N > 4/c^2$ ($c = -2-a > 0$) gives $(1+a)^n = -s^n < 1 + na$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sharpness of a constant",
+      "Archimedean property",
+      "odd power sign",
+      "uniform vs pointwise bound"
+    ],
+    "prerequisites": [
+      "one_add_mul_le_pow",
+      "exists_nat_gt",
+      "Odd.neg_pow",
+      "quad_bernoulli"
+    ]
+  }
+]
