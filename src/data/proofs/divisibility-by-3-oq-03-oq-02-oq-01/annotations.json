@@ -1,0 +1,105 @@
+[
+  {
+    "id": "ann-digitsum-lt",
+    "proofId": "divisibility-by-3-oq-03-oq-02-oq-01",
+    "range": { "startLine": 54, "endLine": 66 },
+    "type": "technique",
+    "title": "Strict Digit-Sum Drop (Termination Measure)",
+    "content": "For $2 \\le b \\le n$, the base-$b$ digit sum strictly decreases: $(\\text{digits}_b\\,n).\\text{sum} < n$. The proof uses the one-step recursion $(\\text{digits}_b\\,n).\\text{sum} = n \\bmod b + (\\text{digits}_b\\,\\lfloor n/b\\rfloor).\\text{sum}$, bounds the tail by Mathlib's `Nat.digit_sum_le`, and finishes with `omega` once it knows $2\\cdot\\lfloor n/b\\rfloor \\le b\\cdot\\lfloor n/b\\rfloor$ and $\\lfloor n/b\\rfloor \\ge 1$. This single inequality is reused twice: as the well-founded measure for the iterative definition and as the descent step in the equivalence proof.",
+    "mathContext": "$(\\text{digits}_b\\,n).\\text{sum} \\le n\\bmod b + \\lfloor n/b\\rfloor < n$ because $n = b\\lfloor n/b\\rfloor + n\\bmod b$ and $(b-1)\\lfloor n/b\\rfloor \\ge 1$ when $b \\ge 2$ and $\\lfloor n/b\\rfloor \\ge 1$.",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.digit_sum_le",
+      "Nat.digits_def'",
+      "Nat.div_add_mod",
+      "omega"
+    ],
+    "relatedConcepts": [
+      "well-founded recursion",
+      "termination measures",
+      "positional number systems"
+    ]
+  },
+  {
+    "id": "ann-digitalrootiter-def",
+    "proofId": "divisibility-by-3-oq-03-oq-02-oq-01",
+    "range": { "startLine": 73, "endLine": 90 },
+    "type": "definition",
+    "title": "The Iterative Digital Root",
+    "content": "`digitalRootIter b n` formalizes the schoolbook process: if $n$ is already a single digit ($n < b$) return it, otherwise recurse on the digit sum. It is defined by well-founded recursion on $n$, with `digitSum_lt` discharging the `decreasing_by` obligation. The degenerate bases $b < 2$ (where digit sums never shrink) are guarded so the function stays total. The defining equations `digitalRootIter_of_lt` and `digitalRootIter_of_ge` expose the recursion for downstream proofs.",
+    "mathContext": "$\\mathrm{dr}^{\\text{iter}}_b(n) = n$ if $n<b$, else $\\mathrm{dr}^{\\text{iter}}_b\\big((\\text{digits}_b\\,n).\\text{sum}\\big)$.",
+    "significance": "key",
+    "prerequisites": [
+      "well-founded recursion",
+      "termination_by / decreasing_by",
+      "dite"
+    ],
+    "relatedConcepts": [
+      "digital root algorithm",
+      "fixed-point iteration",
+      "total functions"
+    ]
+  },
+  {
+    "id": "ann-digitalrootbase-modeq",
+    "proofId": "divisibility-by-3-oq-03-oq-02-oq-01",
+    "range": { "startLine": 136, "endLine": 145 },
+    "type": "lemma",
+    "title": "Closed Form Depends Only on the Residue mod (b-1)",
+    "content": "`digitalRootBase_modEq_eq`: if $m, n > 0$ and $m \\equiv n \\pmod{b-1}$ then $\\mathrm{dr}_b(m) = \\mathrm{dr}_b(n)$. The proof peels a successor off each positive input and cancels it with `Nat.ModEq.add_right_cancel'`, reducing $m \\equiv n$ to $(m-1) \\equiv (n-1)$ and hence $(m-1)\\bmod(b-1) = (n-1)\\bmod(b-1)$. This is the bridge that lets a residue-preserving digit-sum step leave the closed form unchanged.",
+    "mathContext": "$\\mathrm{dr}_b(n) = 1 + ((n-1)\\bmod(b-1))$ for $n>0$, so equal residues mod $b-1$ force equal digital roots.",
+    "significance": "important",
+    "prerequisites": [
+      "Nat.ModEq",
+      "Nat.ModEq.add_right_cancel'",
+      "Nat.exists_eq_succ_of_ne_zero"
+    ],
+    "relatedConcepts": [
+      "casting out nines",
+      "modular invariants",
+      "residue classes"
+    ]
+  },
+  {
+    "id": "ann-digitalrootiter-eq-base",
+    "proofId": "divisibility-by-3-oq-03-oq-02-oq-01",
+    "range": { "startLine": 160, "endLine": 172 },
+    "type": "theorem",
+    "title": "Headline: Iterative Process Equals the Closed Form",
+    "content": "`digitalRootIter_eq_base`: for every base $b \\ge 2$, the iterative digital root equals the closed form $1 + ((n-1)\\bmod(b-1))$. Proved by strong induction on $n$. Single-digit $n$ matches `digitalRootBase_of_lt`. For $n \\ge b$, one step recurses to the digit sum $S < n$ (so the induction hypothesis applies), and `digitalRootBase_modEq_eq` shows $\\mathrm{dr}_b(S) = \\mathrm{dr}_b(n)$ because $S \\equiv n \\pmod{b-1}$ (residue invariant) and $S > 0$ (digit-sum positivity). This is the precise statement that the informal 'keep summing digits' algorithm computes the digital root.",
+    "mathContext": "$\\mathrm{dr}^{\\text{iter}}_b(n) = \\mathrm{dr}_b(n) = 1 + ((n-1)\\bmod(b-1))$ for all $n$ when $b \\ge 2$.",
+    "significance": "key",
+    "prerequisites": [
+      "Nat.strong_induction_on",
+      "digitSum_lt",
+      "sumDigits_modEq",
+      "sumDigits_pos",
+      "digitalRootBase_modEq_eq"
+    ],
+    "relatedConcepts": [
+      "digital root",
+      "strong induction",
+      "algorithm verification"
+    ]
+  },
+  {
+    "id": "ann-casting-out-nines",
+    "proofId": "divisibility-by-3-oq-03-oq-02-oq-01",
+    "range": { "startLine": 194, "endLine": 203 },
+    "type": "theorem",
+    "title": "Casting Out Nines (Base-10 Specialization)",
+    "content": "`digitalRootIter_ten_nine_mul`: every positive multiple of $9$ has decimal digital root $9$. Since $9k \\equiv 9 \\pmod 9$ with both positive, `digitalRootBase_modEq_eq` collapses $\\mathrm{dr}_{10}(9k)$ to $\\mathrm{dr}_{10}(9) = 9$. Together with `digitalRootIter_ten` and the worked example `digitalRootIter_ten_12345` (= 6), this recovers the familiar casting-out-nines test as the $b = 10$ instance of the general theorem.",
+    "mathContext": "$9 \\mid n \\iff \\mathrm{dr}_{10}(n) = 9$ for $n > 0$; the digital root mod $9$ equals $n \\bmod 9$ shifted into $\\{1,\\dots,9\\}$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "digitalRootBase_modEq_eq",
+      "Nat.mul_mod_right",
+      "digitalRootIter_ten"
+    ],
+    "relatedConcepts": [
+      "casting out nines",
+      "divisibility by 9",
+      "decimal digital root"
+    ]
+  }
+]
