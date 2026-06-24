@@ -1,0 +1,153 @@
+{
+  "id": "baire-category-theorem-oq-01-oq-03",
+  "slug": "baire-category-theorem-oq-01-oq-03",
+  "title": "Perfect Complete Metric Spaces Have at Least the Cardinality of the Continuum",
+  "description": "The parent entry derives the uncountability of ℝ from the Baire category theorem. This entry sharpens 'uncountable' to the quantitative cardinal bound 𝔠 ≤ #X: a nonempty perfect subset of a complete metric space — and in particular a nonempty complete metric space with no isolated points (a PerfectSpace) — has cardinality at least the continuum. The mechanism is the classical Cantor scheme, a binary tree of nested closed balls of vanishing diameter, which embeds the Cantor space ℕ → Bool; Mathlib packages the embedding as Perfect.exists_nat_bool_injection, and this entry converts it into the cardinal inequality 𝔠 = #(ℕ → Bool) ≤ #X, recovering 𝔠 ≤ #ℝ as the concrete witness. Verified, 0 axioms, no native_decide.",
+  "overview": {
+    "historicalContext": "That a nonempty perfect set in a complete metric space is uncountable is the cardinality half of the Cantor–Bendixson theory (Cantor 1883), and the sharper statement — such a set has at least continuum-many points — is the standard strengthening: a perfect set is 'large' not merely in being uncountable but in carrying a topological copy of Cantor space 2^ℕ, hence cardinality 2^{ℵ₀} = 𝔠. The Baire category theorem (Baire 1899) gives the qualitative version for the whole space (a complete metric space is non-meagre, so a fortiori uncountable), and the parent gallery entry extracts the uncountability of ℝ this way. Mathlib formalizes the Cantor-scheme construction abstractly as Perfect.exists_nat_bool_injection (a continuous injection of ℕ → Bool into any nonempty perfect set of a complete metric space) and the PerfectSpace typeclass for spaces with no isolated points, but records no cardinality corollary. This entry supplies it, turning the embedding into the cardinal lower bound and recovering 𝔠 ≤ #ℝ.",
+    "problemStatement": "Sharpen the Baire-category uncountability theorem from 'uncountable' to a continuum-cardinality lower bound. Concretely: (1) show the Cantor space has cardinality the continuum, #(ℕ → Bool) = 𝔠; (2) show that for a nonempty perfect subset C of a complete metric space, 𝔠 ≤ #C; (3) deduce that such a C is uncountable; (4) specialize to a nonempty complete metric space with no isolated points (PerfectSpace) to get 𝔠 ≤ #X for the whole space, hence X is uncountable; (5) instantiate at ℝ (connected, T1, nontrivial ⇒ PerfectSpace; complete metric) to obtain 𝔠 ≤ #ℝ, sharpening the parent's real_uncountable.",
+    "proofStrategy": "The cardinal identity mk_nat_arrow_bool reads off #(ℕ → Bool) = #Bool ^ #ℕ = 2 ^ ℵ₀ = 𝔠 from Cardinal.power_def, mk_bool, mk_nat, and two_power_aleph0. The core continuum_le_mk_of_perfect invokes Perfect.exists_nat_bool_injection to obtain a continuous injection f : (ℕ → Bool) → X whose range lies in C, restricts its codomain to the subtype ↥C (the corestriction stays injective), and applies mk_le_of_injective to get #(ℕ → Bool) ≤ #C, which mk_nat_arrow_bool rewrites to 𝔠 ≤ #C. not_countable_of_perfect contradicts countability (#C ≤ ℵ₀ via mk_le_aleph0_iff and countable_coe_iff) against 𝔠 ≤ #C and ℵ₀ < 𝔠 (aleph0_lt_continuum). continuum_le_mk_of_perfectSpace applies the core to C = univ, using PerfectSpace.univ_perfect and univ_nonempty and rewriting #↥univ = #X (mk_univ); uncountable_of_perfectSpace then chains ℵ₀ < 𝔠 ≤ #X through aleph0_lt_mk_iff. continuum_le_mk_real is the whole-space form at X = ℝ, whose PerfectSpace instance is inferred from connectedness + T1 + nontriviality. Restricting the ambient type to universe 0 (Type) keeps #(ℕ → Bool) : Cardinal.{0} commensurable with #C and covers ℝ and every concrete metric space.",
+    "keyInsights": [
+      "The leap from 'uncountable' to '≥ continuum' is exactly the leap from the qualitative Baire/Cantor–Bendixson statement to the embedding 2^ℕ ↪ C: a perfect set does not merely fail to be a countable union of points, it topologically contains the whole Cantor space, and Cantor space already has continuum cardinality. mk_nat_arrow_bool isolates that last fact.",
+      "The continuum bound is a property of perfect SETS, not just perfect SPACES. continuum_le_mk_of_perfect takes an arbitrary nonempty perfect subset C, so it applies to closed-without-isolated-points subsets of any complete metric space; the whole-space PerfectSpace form is the special case C = univ. This is the genuinely reusable statement.",
+      "PerfectSpace = 'no isolated points' is the precise hypothesis. perfectSpace_iff_forall_not_isolated equates it with NeBot (𝓝[≠] x) at every point. Completeness supplies the convergence of the nested balls (the Cantor scheme needs a limit), and no-isolated-points supplies the room to keep splitting — both hypotheses are load-bearing, exactly mirroring the original Baire setup.",
+      "ℝ needs no bespoke argument: it is a PerfectSpace purely formally (connected + T1 + nontrivial ⇒ no isolated points), so 𝔠 ≤ #ℝ falls out of the general theorem with zero real-analysis input — a sharper conclusion than the parent's real_uncountable obtained with strictly less hand-tailoring.",
+      "The proof is universe-pinned to Type 0 by design: comparing #(ℕ → Bool) (a Type 0 cardinal) with #C requires them to live in the same universe. Since the target spaces (ℝ and concrete metric spaces) are all Type 0, restricting the ambient type avoids the lift bookkeeping with no loss of applicability."
+    ]
+  },
+  "conclusion": {
+    "summary": "A nonempty perfect subset C of a complete metric space has cardinality at least the continuum, 𝔠 ≤ #C (continuum_le_mk_of_perfect), and is therefore uncountable (not_countable_of_perfect). The engine is mk_nat_arrow_bool (#(ℕ → Bool) = 𝔠) combined with Mathlib's Cantor-scheme embedding Perfect.exists_nat_bool_injection, whose continuous injection of the Cantor space is corestricted to C and fed to mk_le_of_injective. Specializing to C = univ gives the whole-space form continuum_le_mk_of_perfectSpace: a nonempty complete metric space with no isolated points (PerfectSpace) satisfies 𝔠 ≤ #X, hence is Uncountable (uncountable_of_perfectSpace). The concrete witness continuum_le_mk_real : 𝔠 ≤ #ℝ recovers and quantitatively sharpens the parent file's real_uncountable, ℝ being a PerfectSpace by connectedness + T1 + nontriviality. 95 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries, no native_decide.",
+    "implications": "This is the cardinal-arithmetic refinement of the Baire-category uncountability theorem absent from both Mathlib and the gallery: Mathlib supplies the Cantor-scheme injection and the PerfectSpace typeclass but no cardinality corollary. The perfect-SET version (continuum_le_mk_of_perfect) is reusable wherever a closed set without isolated points appears — Cantor sets, perfect kernels in the Cantor–Bendixson decomposition, supports of atomless measures — giving '≥ continuum' immediately. It answers the parent's open question 'Sharpen uncountability to a continuum-cardinality lower bound for perfect complete metric spaces' verbatim.",
+    "openQuestions": [
+      "Upgrade the lower bound to an exact cardinality for separable spaces: a perfect Polish space (nonempty, complete, separable, no isolated points) has cardinality EXACTLY 𝔠, combining 𝔠 ≤ #X with the upper bound #X ≤ 𝔠 that holds for every second-countable T0 (hence separable metric) space.",
+      "Lift the result to arbitrary universes by inserting Cardinal.lift, replacing 𝔠 ≤ #X with the lift-correct statement lift 𝔠 ≤ lift #X, so the bound applies to complete metric spaces in any Type universe rather than only Type 0."
+    ]
+  },
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Cardinal"
+    ],
+    "namespace": "BaireCategoryTheoremOQ01OQ03",
+    "lineCount": 95,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/BaireCategoryTheoremOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaireCategoryTheoremOQ01OQ03.lean",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 95,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "tags": [
+      "topology",
+      "descriptive-set-theory",
+      "cardinality",
+      "continuum",
+      "perfect-set",
+      "cantor-scheme",
+      "baire-category",
+      "metric-space",
+      "research"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Perfect.exists_nat_bool_injection",
+        "description": "For a nonempty perfect set C in a complete metric space, there is a continuous injection f : (ℕ → Bool) → X with range f ⊆ C. This is Mathlib's formalization of the Cantor scheme (nested closed balls of vanishing diameter) and the engine of the whole entry: it transfers the continuum cardinality of Cantor space into C.",
+        "module": "Mathlib.Topology.MetricSpace.Perfect"
+      },
+      {
+        "theorem": "Cardinal.two_power_aleph0",
+        "description": "2 ^ ℵ₀ = 𝔠. Combined with power_def, mk_bool, and mk_nat it gives #(ℕ → Bool) = 𝔠, the cardinal that the Cantor-scheme injection lower-bounds #C by.",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.mk_le_of_injective",
+        "description": "An injection α → β yields #α ≤ #β. Applied to the corestriction of the Cantor-scheme injection to the subtype ↥C to produce #(ℕ → Bool) ≤ #C.",
+        "module": "Mathlib.SetTheory.Cardinal.Order"
+      },
+      {
+        "theorem": "PerfectSpace.univ_perfect",
+        "description": "In a PerfectSpace (a space with no isolated points) the whole space univ is a perfect set. Specializes the perfect-set bound to the whole space. The instance PerfectSpace ℝ is inferred from connectedness + T1 + nontriviality, giving 𝔠 ≤ #ℝ for free.",
+        "module": "Mathlib.Topology.Perfect"
+      },
+      {
+        "theorem": "Cardinal.aleph0_lt_continuum",
+        "description": "ℵ₀ < 𝔠. Turns the cardinal lower bound 𝔠 ≤ #X into uncountability (ℵ₀ < #X) for both the perfect-set and whole-space forms.",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      }
+    ],
+    "originalContributions": [
+      "continuum_le_mk_of_perfect: the core result — a nonempty perfect subset C of a complete metric space satisfies 𝔠 ≤ #C. Obtained by corestricting Mathlib's Cantor-scheme injection (ℕ → Bool) → X to the subtype ↥C and applying mk_le_of_injective, then rewriting #(ℕ → Bool) = 𝔠. Mathlib has the embedding but not this cardinality corollary.",
+      "mk_nat_arrow_bool: #(ℕ → Bool) = 𝔠, the cardinality of the Cantor space, assembled from power_def, mk_bool, mk_nat, and two_power_aleph0.",
+      "continuum_le_mk_of_perfectSpace: the whole-space form — a nonempty complete metric space with no isolated points (PerfectSpace) has 𝔠 ≤ #X, via the core bound at C = univ (PerfectSpace.univ_perfect, mk_univ).",
+      "not_countable_of_perfect / uncountable_of_perfectSpace: the qualitative corollaries (perfect sets and perfect spaces are uncountable) recovered from the quantitative bound against ℵ₀ < 𝔠.",
+      "continuum_le_mk_real: the concrete witness 𝔠 ≤ #ℝ, sharpening the parent entry's real_uncountable; ℝ's PerfectSpace instance is purely formal (connected + T1 + nontrivial)."
+    ],
+    "prerequisites": [
+      "baire-category-theorem-oq-01"
+    ]
+  },
+  "references": [
+    {
+      "title": "Perfect set (Cantor–Bendixson; perfect sets have continuum cardinality)",
+      "url": "https://en.wikipedia.org/wiki/Perfect_set"
+    },
+    {
+      "title": "Cardinality of the continuum",
+      "url": "https://en.wikipedia.org/wiki/Cardinality_of_the_continuum"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "baire-category-theorem-oq-01",
+      "relationship": "parent",
+      "description": "The parent derives the uncountability of ℝ from the Baire category theorem (real_uncountable) and lists as an open question 'Sharpen uncountability to a continuum-cardinality lower bound for perfect complete metric spaces.' This entry answers exactly that, replacing 'uncountable' with the cardinal bound 𝔠 ≤ #X for perfect complete metric spaces and recovering 𝔠 ≤ #ℝ as continuum_le_mk_real."
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: From Uncountable to ≥ Continuum",
+      "startLine": 3,
+      "endLine": 49,
+      "summary": "States the goal — sharpen the Baire-category uncountability of ℝ to a continuum-cardinality lower bound — and the mechanism: the Cantor scheme embeds ℕ → Bool into any nonempty perfect set of a complete metric space (Mathlib's Perfect.exists_nat_bool_injection), and the Cantor space has cardinality 𝔠. Lists the six results and notes Mathlib has the embedding but not the cardinality corollary.",
+      "mathContext": "A nonempty perfect set $C$ in a complete metric space satisfies $\\mathfrak{c} = \\#(\\mathbb{N}\\to\\mathrm{Bool}) \\le \\#C$."
+    },
+    {
+      "id": "cantor-cardinality",
+      "title": "The Cantor Space Has Cardinality the Continuum",
+      "startLine": 53,
+      "endLine": 58,
+      "summary": "mk_nat_arrow_bool: #(ℕ → Bool) = 𝔠, read off as #Bool ^ #ℕ = 2 ^ ℵ₀ = 𝔠 via Cardinal.power_def, mk_bool, mk_nat, and two_power_aleph0. This is the cardinal that the Cantor-scheme embedding transfers into the perfect set.",
+      "mathContext": "$\\#(\\mathbb{N}\\to\\mathrm{Bool}) = \\#\\mathrm{Bool}^{\\#\\mathbb{N}} = 2^{\\aleph_0} = \\mathfrak{c}$."
+    },
+    {
+      "id": "perfect-set-bound",
+      "title": "The Core Bound on Perfect Sets",
+      "startLine": 60,
+      "endLine": 84,
+      "summary": "continuum_le_mk_of_perfect: a nonempty perfect subset C of a complete metric space has 𝔠 ≤ #C, via corestricting the Cantor-scheme injection to ↥C and applying mk_le_of_injective. not_countable_of_perfect deduces C is uncountable by contradicting #C ≤ ℵ₀ with 𝔠 ≤ #C and ℵ₀ < 𝔠.",
+      "mathContext": "$\\mathrm{Perfect}\\,C$, $C \\ne \\varnothing \\Rightarrow \\mathfrak{c} \\le \\#C$, hence $C$ uncountable."
+    },
+    {
+      "id": "whole-space-and-real",
+      "title": "Whole-Space Form and the Real Line",
+      "startLine": 86,
+      "endLine": 95,
+      "summary": "continuum_le_mk_of_perfectSpace applies the core at C = univ (PerfectSpace.univ_perfect, mk_univ) to get 𝔠 ≤ #X for a nonempty complete metric space with no isolated points; uncountable_of_perfectSpace chains ℵ₀ < 𝔠 ≤ #X through aleph0_lt_mk_iff; continuum_le_mk_real instantiates at ℝ, whose PerfectSpace instance is inferred from connectedness, T1, and nontriviality.",
+      "mathContext": "$\\mathrm{PerfectSpace}\\,X$ complete metric $\\Rightarrow \\mathfrak{c} \\le \\#X$; at $X=\\mathbb{R}$, $\\mathfrak{c} \\le \\#\\mathbb{R}$."
+    }
+  ]
+}
