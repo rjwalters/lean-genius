@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-definitions",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 48, "endLine": 55 },
+    "type": "definition",
+    "title": "Edge threshold and the bipartite deficiency",
+    "content": "Re-declares the parent's Woodall edge threshold verbatim so the file is self-contained, and introduces the deficiency (k+1)(n−k−2) — the quantity this entry shows separates the threshold from the complete graph K_n. Naming the deficiency as its own definition is what lets the later theorems read as 'threshold = complete − deficiency + 1'.",
+    "mathContext": "$\\text{edgeThreshold}(n,k) = \\binom{n-k-1}{2} + \\binom{k+2}{2} + 1$; $\\;\\text{deficiency}(n,k) = (k+1)(n-k-2)$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős Problem #1012", "Woodall threshold", "extremal graph theory", "long cycles", "complete graph"],
+    "prerequisites": ["binomial coefficients", "graph edge counts"]
+  },
+  {
+    "id": "ann-doubling-lemma",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 57, "endLine": 75 },
+    "type": "lemma",
+    "title": "Doubling lemma: linearising C(·,2)",
+    "content": "two_mul_choose_two_succ proves 2·C(x+1,2) = (x+1)·x. The successor argument x+1 makes the truncated subtraction (x+1)−1 reduce to x definitionally, and doubling clears the division-by-2 hidden in Nat.choose_two_right. The proof case-splits on the parity of x and finishes each branch with ring_nf + omega. This is the technical key that converts every binomial into a polynomial so a single ring step can close the main split.",
+    "mathContext": "$2\\binom{x+1}{2} = (x+1)\\,x$, derived from $\\binom{m}{2} = \\dfrac{m(m-1)}{2}$ with $m = x+1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["binomial coefficient closed form", "natural number division", "parity case split", "Nat.choose_two_right"],
+    "prerequisites": ["ℕ arithmetic", "even/odd case analysis", "omega tactic"]
+  },
+  {
+    "id": "ann-core-split",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 77, "endLine": 99 },
+    "type": "theorem",
+    "title": "Core split identity (subtraction-free form)",
+    "content": "choose_two_split is the parameter-clean heart: writing n = m+k+2 removes all truncated ℕ subtraction up front, so the goal C(m+k+2,2) = C(m+1,2) + C(k+2,2) + (k+1)·m becomes a clean polynomial identity. The proof doubles all three binomials via the doubling lemma, closes the doubled equation by ring, then cancels the common factor 2 with Nat.eq_of_mul_eq_mul_left.",
+    "mathContext": "$\\binom{m+k+2}{2} = \\binom{m+1}{2} + \\binom{k+2}{2} + (k+1)\\,m$.",
+    "significance": "critical",
+    "relatedConcepts": ["reparametrisation", "polynomial identity", "ring tactic", "cancellation"],
+    "prerequisites": ["binomial identities", "ring normalisation"]
+  },
+  {
+    "id": "ann-split-n",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 101, "endLine": 114 },
+    "type": "theorem",
+    "title": "Complete-graph decomposition (n-indexed)",
+    "content": "choose_two_split_n is the headline structural identity: for n ≥ k+2, the complete graph's edge count C(n,2) decomposes into the two Woodall extremal blocks C(n−k−1,2) + C(k+2,2) plus the bipartite deficiency (k+1)(n−k−2). It is obtained from the subtraction-free form by substituting n = m+k+2 and clearing the ℕ subtractions with omega-proved equalities.",
+    "mathContext": "$\\binom{n}{2} = \\binom{n-k-1}{2} + \\binom{k+2}{2} + (k+1)(n-k-2)$, for $n \\ge k+2$.",
+    "significance": "critical",
+    "relatedConcepts": ["complete graph", "extremal construction", "edge decomposition", "Woodall threshold"],
+    "prerequisites": ["binomial identities", "omega tactic"]
+  },
+  {
+    "id": "ann-threshold-complete",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 116, "endLine": 144 },
+    "type": "theorem",
+    "title": "Threshold as complete graph minus deficiency",
+    "content": "edgeThreshold_add_deficiency_n rewrites the split in threshold terms: edgeThreshold n k + deficiency n k = C(n,2) + 1. maxEdges_add_deficiency_n then drops the +1 to give the maximal long-cycle-free edge count: (edgeThreshold n k − 1) + deficiency n k = C(n,2) — the largest edge count that may avoid the (n−k)-cycle is exactly K_n minus the deficiency. The subtraction is safe because the threshold is always ≥ 1.",
+    "mathContext": "$\\text{edgeThreshold}(n,k) - 1 = \\binom{n}{2} - (k+1)(n-k-2)$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal edge count", "long-cycle-free graphs", "deficiency", "Turán-type bound"],
+    "prerequisites": ["ℕ subtraction", "omega tactic"]
+  },
+  {
+    "id": "ann-bipartite-deficiency",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 146, "endLine": 152 },
+    "type": "theorem",
+    "title": "Deficiency = complete-bipartite edge count",
+    "content": "deficiency_eq_bipartite_edges identifies the arithmetic deficiency (k+1)(n−k−2) as the edge count of the complete bipartite graph K_{k+1, n−k−2} — the product of the two part sizes. This is the precise sense in which the Woodall threshold is 'the complete graph minus a bipartite gap', matching the structure of the Woodall extremal construction (a (k+1)-part governing the cycle defect against the remaining n−k−2 vertices).",
+    "mathContext": "$(k+1)(n-k-2) = |E(K_{k+1,\\,n-k-2})|$.",
+    "significance": "key",
+    "relatedConcepts": ["complete bipartite graph", "Woodall extremal construction", "edge count", "bipartite gap"],
+    "prerequisites": ["complete bipartite graphs"]
+  },
+  {
+    "id": "ann-specialisations",
+    "proofId": "erdos-1012-oq-04",
+    "range": { "startLine": 154, "endLine": 170 },
+    "type": "theorem",
+    "title": "Boundary regimes: Hamiltonian and extremal point",
+    "content": "Two sanity specialisations. maxEdges_hamiltonian sets k=0 (the Ore/Hamiltonian regime, avoiding an n-cycle): the maximal edge count is C(n,2) − (n−2) = C(n−1,2) + 1, one more than the complete graph on n−1 vertices. deficiency_at_extremal evaluates the deficiency at the lower Woodall extremal size n = 2k+2, giving (k+1)·k = 2·C(k+1,2). Both confirm the decomposition behaves correctly at the boundary.",
+    "mathContext": "$k=0$: $\\text{deficiency} = n-2$; $\\;n=2k+2$: $\\text{deficiency} = (k+1)k = 2\\binom{k+1}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Hamiltonian cycle", "Ore's theorem", "extremal point", "pancyclicity"],
+    "prerequisites": ["Hamiltonian cycles", "binomial coefficients"]
+  }
+]
