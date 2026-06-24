@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-bilinear-bound",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 103
+    },
+    "type": "theorem",
+    "title": "The Bilinear Lower-Central-Series Bound (lowerCentralSeries_commutator_le)",
+    "content": "The headline result: ⁅γₐ, γᵦ⁆ ≤ γ₍ₐ₊ᵦ₊₁₎ in Mathlib's 0-indexed convention (the textbook 1-indexed ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎). The proof is induction on b, generalized over a so the inductive hypothesis is the universally quantified ∀ a, ⁅γₐ, γᵦ⁆ ≤ γ₍ₐ₊ᵦ₊₁₎ and is therefore available at the shifted index a+1. Base case b=0: γ₀ = ⊤ and a+0+1 = a+1, so the goal ⁅γₐ, ⊤⁆ ≤ γ₍ₐ₊₁₎ is the definitional recursion lowerCentralSeries G (a+1) = ⁅γₐ, ⊤⁆ (closed by le_of_eq rfl). Inductive step: present γ₍ᵦ₊₁₎ as ⁅γᵦ, ⊤⁆ and flip the goal ⁅γₐ, ⁅γᵦ,⊤⁆⁆ to ⁅⁅γᵦ,⊤⁆, γₐ⁆ via commutator_comm, then apply the parent's relative three subgroups lemma ThreeSubgroupsLemmaOQ01.commutator_le_of_rotate with H=⊤, K=γₐ, L=γᵦ at target N = γ₍ₐ₊(ᵦ₊₁)₊₁₎ (normal by lowerCentralSeries_normal). Its two hypotheses are exactly the induction hypothesis: ⁅⁅⊤,γₐ⁆,γᵦ⁆ = ⁅γ₍ₐ₊₁₎, γᵦ⁆ ≤ N is the hypothesis at index a+1 (after the index identity a+1+b+1 = a+(b+1)+1), and ⁅⁅γₐ,γᵦ⁆,⊤⁆ ≤ ⁅γ₍ₐ₊ᵦ₊₁₎,⊤⁆ = γ₍ₐ₊ᵦ₊₂₎ = N is the hypothesis at index a pushed one step by commutator_mono.",
+    "mathContext": "$\\lbrack \\gamma_a, \\gamma_b \\rbrack \\le \\gamma_{a+b+1}$ for the lower central series; equivalently the textbook $\\lbrack \\gamma_i, \\gamma_j \\rbrack \\le \\gamma_{i+j}$.",
+    "prerequisites": [
+      "Mathlib's lowerCentralSeries (0-indexed: γ₀ = ⊤, γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆) with lowerCentralSeries_zero and the definitional succ unfolding",
+      "lowerCentralSeries_normal (each term is normal in G), needed to invoke the relative three subgroups lemma",
+      "The parent entry's ThreeSubgroupsLemmaOQ01.commutator_le_of_rotate, plus Subgroup.commutator_mono and Subgroup.commutator_comm"
+    ],
+    "relatedConcepts": [
+      "lower central series",
+      "three subgroups lemma",
+      "commutator calculus",
+      "graded Lie ring",
+      "nilpotent groups"
+    ],
+    "significance": "The bilinear grading bound of the lower central series, which Mathlib does not record. It is the concrete inductive payoff the parent entry's relative (≤ N) three subgroups lemma was built for, and the structural fact that makes ⨁ₖ γₖ/γₖ₊₁ a graded Lie ring."
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "three-subgroups-lemma-oq-01-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 126
+    },
+    "type": "theorem",
+    "title": "Symmetric, Corner, and Weakened Forms",
+    "content": "Three immediate consequences. lowerCentralSeries_commutator_le' is the symmetric companion with the two factors swapped, ⁅γᵦ, γₐ⁆ ≤ γ₍ₐ₊ᵦ₊₁₎, obtained by a single commutator_comm rewrite. lowerCentralSeries_commutator_top_le records the b=0 corner ⁅γₐ, ⊤⁆ ≤ γ₍ₐ₊₁₎ — the commutator of a weight-a term with the whole group lands one level deeper — which holds by the defining recursion (le_of_eq rfl). lowerCentralSeries_commutator_le_of_le weakens the target to any smaller index: since the lower central series is antitone (decreasing), c ≤ a+b+1 gives γ₍ₐ₊ᵦ₊₁₎ ≤ γ_c, so ⁅γₐ, γᵦ⁆ ≤ γ_c, by composing the bilinear bound with lowerCentralSeries_antitone.",
+    "mathContext": "$\\lbrack \\gamma_b, \\gamma_a \\rbrack \\le \\gamma_{a+b+1}$; $\\lbrack \\gamma_a, G \\rbrack \\le \\gamma_{a+1}$; and $c \\le a+b+1 \\Rightarrow \\lbrack \\gamma_a, \\gamma_b \\rbrack \\le \\gamma_c$.",
+    "prerequisites": [
+      "lowerCentralSeries_commutator_le (the main bound)",
+      "Subgroup.commutator_comm (symmetry of the bracket)",
+      "lowerCentralSeries_antitone (the series is decreasing)"
+    ],
+    "relatedConcepts": [
+      "antitone series",
+      "commutator symmetry",
+      "lower central series"
+    ],
+    "significance": "Packages the bound in the orientations downstream proofs typically need: either factor order, the familiar one-step corner, and the antitone weakening that lets the bound be applied against any sufficiently shallow target term."
+  }
+]

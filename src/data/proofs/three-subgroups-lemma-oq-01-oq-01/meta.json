@@ -1,0 +1,87 @@
+{
+  "id": "three-subgroups-lemma-oq-01-oq-01",
+  "title": "Three Subgroups Lemma OQ-01-OQ-01: The Bilinear Lower-Central-Series Bound ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎",
+  "slug": "three-subgroups-lemma-oq-01-oq-01",
+  "description": "The lower central series γₙ of a group G satisfies the bilinear (grading) bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎ — the inductive payoff the parent entry's relative three subgroups lemma was built for, and explicitly named as the follow-up there. In Mathlib's 0-indexed convention (lowerCentralSeries G 0 = ⊤ = G, lowerCentralSeries G (n+1) = ⁅lowerCentralSeries G n, ⊤⁆, so Mathlib's index n is the standard γ₍ₙ₊₁₎), this is the clean form ⁅lowerCentralSeries G a, lowerCentralSeries G b⁆ ≤ lowerCentralSeries G (a+b+1). Mathlib develops the lower central series (lowerCentralSeries_succ, lowerCentralSeries_antitone, the Normal instance, products/pis, the derivedSeries comparison) but records NO bilinear commutator bound. This entry supplies it by induction on b, generalized over a so the inductive hypothesis is available at the shifted index a+1. The base case b=0 is the defining recursion ⁅γₐ, ⊤⁆ = γ₍ₐ₊₁₎; the inductive step writes γ₍ᵦ₊₁₎ = ⁅γᵦ, ⊤⁆ and applies the parent's normal-subgroup three subgroups lemma (ThreeSubgroupsLemmaOQ01.commutator_le_of_rotate) with N = γ₍ₐ₊ᵦ₊₂₎ (normal by Mathlib's lowerCentralSeries_normal instance): its two hypotheses are exactly the induction hypothesis at indices a+1 and a, the latter pushed one level by commutator_mono. The entry packages the symmetric companion (factors swapped), the b=0 corner ⁅γₐ, G⁆ ≤ γ₍ₐ₊₁₎, and a weakened-target form via antitonicity.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Nilpotent",
+      "Mathlib.Tactic",
+      "Proofs.ThreeSubgroupsLemmaOQ01"
+    ],
+    "opens": [
+      "Subgroup"
+    ],
+    "namespace": "ThreeSubgroupsLemmaOQ01OQ01",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/ThreeSubgroupsLemmaOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Nilpotent_group#Definition",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ThreeSubgroupsLemmaOQ01OQ01.lean",
+    "tags": [
+      "group-theory",
+      "commutator-subgroup",
+      "lower-central-series",
+      "three-subgroups-lemma",
+      "nilpotent-groups",
+      "graded-lie-ring"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [],
+    "axiomCount": 0,
+    "lineCount": 128,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. All four named theorems depend only on the foundational propext / Classical.choice / Quot.sound (verified with #print axioms). Mathlib's Mathlib/GroupTheory/Nilpotent.lean defines the lower central series and proves lowerCentralSeries_succ, lowerCentralSeries_antitone, the Normal instance, the product/pi behaviour, and derived_le_lower_central, but contains NO bilinear commutator bound ⁅γᵢ,γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎. The bilinear bound (the grading property of the lower central series), its symmetric companion, the b=0 corner, and the antitone weakening are the original content, derived by induction on the second index using the parent entry's relative three subgroups lemma (ThreeSubgroupsLemmaOQ01.commutator_le_of_rotate) together with Mathlib's lowerCentralSeries_normal, commutator_mono, and commutator_comm.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The most important application of the three subgroups lemma is inductive: it powers the proof that the lower central series satisfies ⁅γᵢ(G), γⱼ(G)⁆ ≤ γ₍ᵢ₊ⱼ₎(G). This bilinearity is exactly what makes the associated graded object ⨁ₖ γₖ/γₖ₊₁ a graded Lie ring (with the commutator inducing the Lie bracket), the structure at the heart of the Magnus/Lazard correspondence and of much of the structure theory of nilpotent groups. The parent entry formalized the relative ('modulo a normal N') form of the three subgroups lemma precisely because this is the version the induction needs, and named this bound as its natural follow-up; the present entry carries out that induction.",
+    "problemStatement": "Let G be a group with lower central series γₙ (Mathlib's lowerCentralSeries, 0-indexed: γ₀ = ⊤ = G and γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆). Prove the bilinear bound\n$$\\lbrack \\gamma_a, \\gamma_b \\rbrack \\le \\gamma_{a+b+1},$$\nthe 0-indexed form of the textbook 1-indexed grading inequality ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎ (with γ₁ = G).",
+    "text": "Mathlib defines lowerCentralSeries and proves its basic order/closure theory but not the bilinear commutator bound. This entry fills the gap with a short induction on the second index b, using the parent entry's relative three subgroups lemma as the engine. The base case is the defining recursion; the inductive step is a single application of the three subgroups lemma at a target normal subgroup deeper in the series, whose two hypotheses are precisely the induction hypothesis evaluated at two indices.",
+    "proofStrategy": "Induction on b, generalizing a (so the inductive hypothesis is the universally quantified ∀ a, ⁅γₐ, γᵦ⁆ ≤ γ₍ₐ₊ᵦ₊₁₎, usable at the shifted index a+1). Base case b=0: γ₀ = ⊤ and a+0+1 = a+1, so the goal ⁅γₐ, ⊤⁆ ≤ γ₍ₐ₊₁₎ is the definitional equality lowerCentralSeries G (a+1) = ⁅γₐ, ⊤⁆ (le_of_eq rfl). Inductive step: present γ₍ᵦ₊₁₎ as ⁅γᵦ, ⊤⁆ (definitional) and flip the goal ⁅γₐ, ⁅γᵦ,⊤⁆⁆ to ⁅⁅γᵦ,⊤⁆, γₐ⁆ via commutator_comm. Apply ThreeSubgroupsLemmaOQ01.commutator_le_of_rotate with H=⊤, K=γₐ, L=γᵦ and target N = γ₍ₐ₊(ᵦ₊₁)₊₁₎ (normal by lowerCentralSeries_normal). The two required hypotheses are: (i) ⁅⁅⊤, γₐ⁆, γᵦ⁆ = ⁅γ₍ₐ₊₁₎, γᵦ⁆ ≤ N, which is the induction hypothesis at index a+1 after the index rewrite a+1+b+1 = a+(b+1)+1; and (ii) ⁅⁅γₐ, γᵦ⁆, ⊤⁆ ≤ ⁅γ₍ₐ₊ᵦ₊₁₎, ⊤⁆ = γ₍ₐ₊ᵦ₊₂₎ = N, obtained from the induction hypothesis at index a by commutator_mono followed by the definitional unfolding of the next series term.",
+    "keyInsights": [
+      "**The induction must generalize the first index**: the inductive step bounds ⁅γₐ, γ₍ᵦ₊₁₎⁆ and needs the hypothesis at γ₍ₐ₊₁₎ (the commutator of γₐ with the whole group lands in γ₍ₐ₊₁₎). Generalizing a before inducting on b makes the hypothesis available at a+1 exactly when required.",
+      "**The relative (≤ N) three subgroups lemma is the right tool, not the N = ⊥ case**: the target is a nontrivial subgroup γ₍ₐ₊ᵦ₊₂₎ deep in the series, so the parent's ≤ N generalization is essential — Mathlib's bottom-case Hall–Witt lemma (= ⊥) would not apply here. This is the concrete inductive payoff the parent entry was constructed for.",
+      "**The two hypotheses are the same induction hypothesis at two indices**: one feeds ⁅γ₍ₐ₊₁₎, γᵦ⁆ directly; the other pushes ⁅γₐ, γᵦ⁆ one level deeper with commutator_mono using ⁅γₖ, ⊤⁆ = γ₍ₖ₊₁₎. No new commutator combinatorics beyond the three subgroups lemma are needed.",
+      "**Definitional unfolding handles the index bookkeeping**: γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆ holds by rfl, and a+(b+1)+1 is definitionally a+b+2; the only non-definitional index identity is a+1+b+1 = a+(b+1)+1 (a single omega/succ_add rewrite), because Nat addition recurses on the right argument."
+    ],
+    "prerequisites": [
+      "Mathlib's lower central series lowerCentralSeries (the 0-indexed definition γ₀ = ⊤, γ₍ₙ₊₁₎ = ⁅γₙ, ⊤⁆) with lowerCentralSeries_zero and the definitional succ unfolding",
+      "The Normal instance lowerCentralSeries_normal (each term is normal in G), required to invoke the relative three subgroups lemma",
+      "lowerCentralSeries_antitone (the series is decreasing), used for the weakened-target corollary",
+      "The parent entry's relative three subgroups lemma ThreeSubgroupsLemmaOQ01.commutator_le_of_rotate, plus Subgroup.commutator_mono and Subgroup.commutator_comm"
+    ]
+  },
+  "sections": [
+    {
+      "id": "bilinear-bound",
+      "title": "The Bilinear Lower-Central-Series Bound",
+      "startLine": 75,
+      "endLine": 103,
+      "mathContext": "$\\lbrack \\gamma_a, \\gamma_b \\rbrack \\le \\gamma_{a+b+1}$ (Mathlib 0-indexed), i.e. the textbook $\\lbrack \\gamma_i, \\gamma_j \\rbrack \\le \\gamma_{i+j}$.",
+      "summary": "lowerCentralSeries_commutator_le is the main result, proved by induction on b generalized over a. The base case is the defining recursion ⁅γₐ, ⊤⁆ = γ₍ₐ₊₁₎; the inductive step applies the parent's relative three subgroups lemma (commutator_le_of_rotate) with target N = γ₍ₐ₊ᵦ₊₂₎, whose two hypotheses are the induction hypothesis at indices a+1 and a (the latter pushed one step by commutator_mono)."
+    },
+    {
+      "id": "corollaries",
+      "title": "Symmetric, Corner, and Weakened Forms",
+      "startLine": 105,
+      "endLine": 126,
+      "mathContext": "Swapped factors $\\lbrack \\gamma_b, \\gamma_a \\rbrack \\le \\gamma_{a+b+1}$; the $b=0$ corner $\\lbrack \\gamma_a, G \\rbrack \\le \\gamma_{a+1}$; and $c \\le a+b+1 \\Rightarrow \\lbrack \\gamma_a, \\gamma_b \\rbrack \\le \\gamma_c$.",
+      "summary": "lowerCentralSeries_commutator_le' is the symmetric companion (commutator_comm). lowerCentralSeries_commutator_top_le records the b=0 corner ⁅γₐ, ⊤⁆ ≤ γ₍ₐ₊₁₎ as the familiar defining recursion. lowerCentralSeries_commutator_le_of_le weakens the target to any smaller index c ≤ a+b+1 using lowerCentralSeries_antitone (the series is decreasing, so γ₍ₐ₊ᵦ₊₁₎ ≤ γ_c)."
+    }
+  ],
+  "conclusion": "The bilinear (grading) bound ⁅γᵢ, γⱼ⁆ ≤ γ₍ᵢ₊ⱼ₎ of the lower central series is formalized sorry-free and axiom-free, in Mathlib's 0-indexed form ⁅lowerCentralSeries G a, lowerCentralSeries G b⁆ ≤ lowerCentralSeries G (a+b+1). Mathlib develops the lower central series but does not record this commutator bound; the proof is a clean induction on the second index whose inductive step is a single application of the parent entry's relative three subgroups lemma at a target normal subgroup deep in the series. This is the concrete inductive payoff the parent's ≤ N generalization was built for, and the structural fact that makes the associated graded ⨁ₖ γₖ/γₖ₊₁ a graded Lie ring. Natural further follow-ups include the dual bound for the derived series, the generation of γₙ by weight-n left-normed commutators, and the graded-Lie-ring structure itself.",
+  "crossReferences": []
+}
