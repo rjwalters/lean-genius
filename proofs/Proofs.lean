@@ -3441,6 +3441,7 @@ import Proofs.ProductOfSegmentsOfChords
 import Proofs.ProductOfSegmentsOfChordsConverse
 import Proofs.ProductOfSegmentsOfChordsOQ01
 import Proofs.ProductOfSegmentsOfChordsOQ03
+import Proofs.ProductOfSegmentsOfChordsOQ04
 import Proofs.IncidenceCauchySchwarz
 import Proofs.PropertyBFirstMoment
 import Proofs.PropertyBFirstMomentRamsey
