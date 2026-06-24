@@ -1,0 +1,91 @@
+[
+  {
+    "id": "epsilon-delta-engine",
+    "proofId": "compactness-finite-subcover-oq-02-oq-01",
+    "range": {
+      "startLine": 61,
+      "endLine": 84
+    },
+    "type": "insight",
+    "title": "The Lebesgue Number of the Preimage Cover Is the Modulus",
+    "content": "heine_cantor_dist is the conceptual heart. Fix ε > 0 and cover X by the open sets U z = f⁻¹(ball (f z) ε/2), one centered at the image of each point z: each is open as a preimage of an open ball under the continuous f (isOpen_ball.preimage hf), and they cover X because z ∈ U z (since ε/2 > 0). The Lebesgue number lemma applied to the compact univ returns a SINGLE δ > 0 such that every δ-ball ball x δ is subordinate to some U z. That subordination is exactly a modulus of continuity: it says f maps the whole δ-ball into an ε/2-ball around f z.",
+    "mathContext": "$U_z = f^{-1}\\big(B(f z,\\varepsilon/2)\\big),\\quad \\exists\\,\\delta>0:\\ \\forall x,\\ \\exists z,\\ B(x,\\delta)\\subseteq U_z.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lebesgue number lemma",
+      "modulus of continuity",
+      "open cover by preimages",
+      "uniform continuity"
+    ],
+    "prerequisites": [
+      "compact metric spaces",
+      "continuity and preimages of open sets",
+      "metric balls"
+    ]
+  },
+  {
+    "id": "epsilon-half-trick",
+    "proofId": "compactness-finite-subcover-oq-02-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "The ε/2 Triangle-Inequality Close",
+    "content": "Given dist x y < δ, both x and y lie in ball x δ (x trivially, y because dist y x = dist x y < δ), hence both in the same U z witnessing subordination. So dist (f x) (f z) < ε/2 AND dist (f y) (f z) < ε/2 — each image is close to ONE common center value f z, not to a fixed reference. The triangle inequality dist (f x) (f y) ≤ dist (f x) (f z) + dist (f z) (f y) then closes < ε/2 + ε/2 = ε. Sharing the center f z is what makes a single δ work uniformly.",
+    "mathContext": "$d(fx,fy)\\le d(fx,fz)+d(fz,fy)<\\tfrac{\\varepsilon}{2}+\\tfrac{\\varepsilon}{2}=\\varepsilon.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "triangle inequality",
+      "epsilon/2 argument",
+      "common center"
+    ],
+    "prerequisites": [
+      "metric triangle inequality",
+      "symmetry of distance"
+    ]
+  },
+  {
+    "id": "uniform-continuity",
+    "proofId": "compactness-finite-subcover-oq-02-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "Heine–Cantor as UniformContinuous",
+    "content": "heine_cantor repackages the ε–δ engine through Metric.uniformContinuous_iff to state the classical theorem as UniformContinuous f. This is deliberately proved WITHOUT calling Mathlib's packaged CompactSpace.uniformContinuous_of_continuous — the whole point of the parent chain is to derive uniform continuity from the Lebesgue-number/subordinate-net machinery directly.",
+    "mathContext": "$f\\ \\text{continuous},\\ X\\ \\text{compact metric}\\ \\Longrightarrow\\ f\\ \\text{uniformly continuous}.$",
+    "significance": "primary",
+    "relatedConcepts": [
+      "Heine–Cantor theorem",
+      "uniform continuity",
+      "Metric.uniformContinuous_iff"
+    ],
+    "prerequisites": [
+      "uniform continuity definition"
+    ]
+  },
+  {
+    "id": "equivalence-and-cauchy",
+    "proofId": "compactness-finite-subcover-oq-02-oq-01",
+    "range": {
+      "startLine": 94,
+      "endLine": 104
+    },
+    "type": "insight",
+    "title": "Coincidence on Compacta and Cauchy Preservation",
+    "content": "Two corollaries read off Heine–Cantor. continuous_iff_uniformContinuous pairs the theorem (forward) with the general UniformContinuous.continuous (reverse) to record that on a compact metric domain the two notions of continuity COINCIDE. cauchySeq_comp_of_continuous notes that such a continuous map preserves Cauchy sequences, since uniformly continuous maps do (UniformContinuous.comp_cauchySeq).",
+    "mathContext": "$\\text{Continuous } f \\iff \\text{UniformContinuous } f;\\quad \\text{CauchySeq } u \\Rightarrow \\text{CauchySeq } (f\\circ u).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "uniform continuity",
+      "Cauchy sequences",
+      "completeness"
+    ],
+    "prerequisites": [
+      "Cauchy sequences",
+      "uniform continuity"
+    ]
+  }
+]
