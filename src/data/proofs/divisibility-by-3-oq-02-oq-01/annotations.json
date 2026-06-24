@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-div3-altdigitsum-def",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "The alternating digit sum, taken in ℤ",
+    "content": "`altDigitSum b n` is $d_0 - d_1 + d_2 - d_3 + \\cdots$ over the base-$b$ digits $[d_0, d_1, \\dots]$ of $n$. It is defined in $\\mathbb Z$ (not $\\mathbb N$) because the alternating sum can go negative, which is why every congruence below is stated with `[ZMOD (b+1)]` and integer divisibility $((b+1):\\mathbb Z) \\mid \\cdot$. This is the base-$b$ generalization of the quantity behind the classical 'divisibility by 11' test.",
+    "mathContext": "$\\mathrm{altDigitSum}_b(n) = \\sum_i (-1)^i d_i,\\quad \\mathrm{digits}_b(n) = [d_0, d_1, \\dots].$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "digit expansion",
+      "alternating sum",
+      "base-b representation"
+    ],
+    "prerequisites": [
+      "positional numeral systems"
+    ]
+  },
+  {
+    "id": "ann-div3-driving-congruence",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 70
+    },
+    "type": "insight",
+    "title": "The driving congruence: b ≡ −1 (mod b+1)",
+    "content": "Everything flows from this one fact: `base_zmodEq_neg_one` proves $b \\equiv -1 \\pmod{b+1}$ (since $-1 - b = (b+1)\\cdot(-1)$). It forces $b^k \\equiv (-1)^k$, so $n = \\sum d_i b^i \\equiv \\sum d_i (-1)^i$ = the alternating digit sum. This is the exact mirror of the parent OQ-02's rule for $b-1$, which rests instead on $b \\equiv 1 \\pmod{b-1}$ (giving the ordinary digit sum).",
+    "mathContext": "$b \\equiv -1 \\pmod{b+1} \\;\\Rightarrow\\; b^k \\equiv (-1)^k \\pmod{b+1}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "modular arithmetic",
+      "geometric powers mod n",
+      "digit-sum rule for b−1"
+    ],
+    "prerequisites": [
+      "congruences",
+      "Int.modEq_iff_dvd"
+    ]
+  },
+  {
+    "id": "ann-div3-general-congruence",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 87
+    },
+    "type": "concept",
+    "title": "The general (b+1) congruence",
+    "content": "`modEq_altDigitSum`: in any base $b$, $n \\equiv \\mathrm{altDigitSum}_b(n) \\pmod{b+1}$. The proof feeds the driving congruence into Mathlib's generic `Nat.zmodeq_ofDigits_digits` (with multiplier $-1$) and rewrites $\\mathrm{ofDigits}(-1)$ to the alternating sum (`Nat.ofDigits_neg_one`). `emod_altDigitSum` restates it as an `Int.emod` equality of residues. This promotes Mathlib's base-10-only fact to the full base-$b$ family.",
+    "mathContext": "$n \\equiv \\mathrm{altDigitSum}_b(n) \\pmod{b+1}$ for every base $b$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ofDigits",
+      "residue",
+      "Horner evaluation"
+    ],
+    "prerequisites": [
+      "the driving congruence",
+      "Nat.ofDigits API"
+    ]
+  },
+  {
+    "id": "ann-div3-divisibility-rule",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 93,
+      "endLine": 104
+    },
+    "type": "concept",
+    "title": "The general (b+1) divisibility rule",
+    "content": "`succ_dvd_iff_altDigitSum`: $b+1 \\mid n \\iff (b+1) \\mid \\mathrm{altDigitSum}_b(n)$, in every base. This is the universal divisibility test, derived from `Nat.dvd_iff_dvd_ofDigits`. The primed variant writes the modulus directly over $\\mathbb Z$. It is the test schoolchildren learn for 11 in base 10, here proved once for all bases.",
+    "mathContext": "$(b+1) \\mid n \\iff (b+1) \\mid \\textstyle\\sum_i (-1)^i d_i.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "divisibility test",
+      "dvd_iff_dvd_ofDigits"
+    ],
+    "prerequisites": [
+      "the general congruence"
+    ]
+  },
+  {
+    "id": "ann-div3-eleven-and-bases",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 110,
+      "endLine": 144
+    },
+    "type": "insight",
+    "title": "Recovering 11, and new base instances",
+    "content": "Part IV recovers Mathlib's base-10 results as corollaries: `modEq_eleven` (= `Nat.modEq_eleven_digits_sum`) and `eleven_dvd_iff` (= `Nat.eleven_dvd_iff`, theorem #85 of Freek's list), each a one-line specialization at $b = 10$. Part V supplies instances Mathlib does *not* have, all from the same general theorem: binary→3 (alternating bit sum), octal→9, hexadecimal→17, duodecimal→13. This is the payoff of proving the rule for general $b$ rather than just base 10.",
+    "mathContext": "$b=10 \\Rightarrow 11;\\ b=2 \\Rightarrow 3;\\ b=8 \\Rightarrow 9;\\ b=16 \\Rightarrow 17;\\ b=12 \\Rightarrow 13.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "divisibility by 11",
+      "Freek's 100 theorems",
+      "base conversion"
+    ],
+    "prerequisites": [
+      "the general rule"
+    ]
+  },
+  {
+    "id": "ann-div3-palindrome",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 150,
+      "endLine": 162
+    },
+    "type": "insight",
+    "title": "Even-length palindromes are divisible by b+1",
+    "content": "`succ_dvd_of_palindrome`: if the base-$b$ digits of $n$ form a palindrome of even length, then $(b+1) \\mid n$. The mechanism: for an even-length list the alternating sum equals the negative of its reverse's alternating sum (`alternatingSum_reverse` with $(-1)^{\\text{even}} = 1$), but a palindrome equals its reverse, forcing the alternating sum to be $0$, hence divisible. This generalizes Mathlib's base-10 `Nat.eleven_dvd_of_palindrome` to every base.",
+    "mathContext": "$\\mathrm{digits}_b(n) \\text{ even palindrome} \\Rightarrow \\mathrm{altDigitSum}_b(n) = 0 \\Rightarrow (b+1) \\mid n.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "palindrome",
+      "alternatingSum_reverse",
+      "eleven_dvd_of_palindrome"
+    ],
+    "prerequisites": [
+      "the divisibility rule",
+      "list reversal"
+    ]
+  },
+  {
+    "id": "ann-div3-numerical",
+    "proofId": "divisibility-by-3-oq-02-oq-01",
+    "range": {
+      "startLine": 168,
+      "endLine": 182
+    },
+    "type": "context",
+    "title": "Numerical verifications",
+    "content": "Concrete checks: $121 = 11^2$ (alt sum $1-2+1=0$), $132 = 11\\cdot12$, $123$ (not divisible, alt sum $2$), $9 = 1001_2 \\Rightarrow 3 \\mid 9$, $17 = 11_{16} \\Rightarrow 17 \\mid 17$. These use `native_decide` but appear only in `example`s, not in any substantive theorem — so the entry remains verified/0-axiom (the `Lean.ofReduceBool` dependency stays confined to throwaway sanity checks).",
+    "mathContext": "$1-2+1=0 \\Rightarrow 11 \\mid 121;\\quad 1-0+0-1=0 \\Rightarrow 3 \\mid 9.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "native_decide",
+      "sanity check",
+      "worked examples"
+    ],
+    "prerequisites": [
+      "the divisibility rule"
+    ]
+  }
+]
