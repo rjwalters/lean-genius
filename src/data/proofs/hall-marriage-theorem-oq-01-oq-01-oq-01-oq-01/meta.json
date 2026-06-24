@@ -1,0 +1,158 @@
+{
+  "id": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+  "title": "Regular families satisfy Hall's condition: a k-regular bipartite family admits a full SDR",
+  "slug": "hall-marriage-theorem-oq-01-oq-01-oq-01-oq-01",
+  "description": "A finite family t : ι → Finset α is k-regular when every index has exactly k neighbours (#(t i) = k, left-regularity) and every element occurring in the family is hit by exactly k indices (#{i | a ∈ t i} = k, right-regularity) — the family-theoretic statement of a k-regular bipartite graph. This entry proves that any such family (k ≥ 1) automatically satisfies Hall's marriage condition #s ≤ #(s.biUnion t) for every sub-family s, hence possesses a full system of distinct representatives. The engine is a one-line double-counting argument: the incidence pairs {(i,a) : i ∈ s, a ∈ t i} number exactly k·#s counted from the left and at most k·#(s.biUnion t) counted from the right, so cancelling k > 0 gives Hall's inequality. The count is packaged by Mathlib's Finset.card_mul_le_card_mul. Hall's condition then feeds two endpoints: Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective produces a globally injective choice function f : ι → α with f i ∈ t i (a perfect matching), and the parent entry hall-marriage-theorem-oq-01-oq-01-oq-01 records that the resulting vanishing deficiency makes the maximum partial transversal size equal to #ι. 4 theorems, 1 definition, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hall%27s_marriage_theorem",
+    "date": "Philip Hall 1935; folklore (regular bipartite graphs have perfect matchings)",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "graph-theory",
+      "hall-marriage",
+      "matching",
+      "double-counting",
+      "regular-bipartite-graph",
+      "sdr",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/HallMarriageTheoremOQ01OQ01OQ01OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 4 theorems verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). No native_decide, so no Lean.ofReduceBool. Builds on Mathlib's Finset.card_mul_le_card_mul (double counting), Finset.all_card_le_biUnion_card_iff_exists_injective (Hall's theorem), and the parent entry hall-marriage-theorem-oq-01-oq-01-oq-01 for the deficiency endpoint.",
+    "originalContributions": [
+      "IsKRegular: the family-theoretic definition of a k-regular bipartite graph — left-regularity ∀ i, #(t i) = k together with right-regularity ∀ a ∈ univ.biUnion t, #(univ.filter (· ∈ t i)) = k",
+      "hall_condition_of_regular: the headline — a k-regular family (k ≥ 1) satisfies Hall's inequality #s ≤ #(s.biUnion t) for every sub-family, proved by double-counting the incidence pairs via Finset.card_mul_le_card_mul and cancelling the common factor k with Nat.le_of_mul_le_mul_right",
+      "exists_sdr_of_regular: feeding Hall's condition into Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective yields a globally injective choice function f : ι → α with f i ∈ t i — a perfect matching of the regular bipartite graph",
+      "deficiency_eq_zero_of_regular: a k-regular family has zero Hall deficiency in the sense of the parent entry, via deficiency_eq_zero_iff",
+      "isGreatest_transversal_of_regular: combining vanishing deficiency with the parent's closed-form optimum, the attainable partial-transversal sizes have greatest element #ι — the family has a full transversal and no larger system is possible"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 127,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "That every k-regular bipartite graph (k ≥ 1) has a perfect matching is one of the oldest consequences of Hall's 1935 marriage theorem, and the prototype application of the double-counting method in matching theory. König's edge-colouring theorem decomposes a k-regular bipartite graph into k perfect matchings; the single-matching statement proved here is the base case. The deficiency endpoint connects the result to Ore's 1955 defect form via the parent entry.",
+    "problemStatement": "**Open Question (a regularity instance of the Hall lineage)**: A finite family t : ι → Finset α is k-regular when #(t i) = k for every index i and #{i | a ∈ t i} = k for every element a that occurs. Does k-regularity (k ≥ 1) force Hall's marriage condition #s ≤ #(s.biUnion t), and hence a full system of distinct representatives?\n\n**Formalized**: IsKRegular packaging both regularity conditions; hall_condition_of_regular proving Hall's inequality by double counting; exists_sdr_of_regular producing the injective transversal via Mathlib's Hall theorem; and the deficiency-zero / full-transversal corollaries via the parent entry.",
+    "text": "A 127-line entry. The relation r i a := a ∈ t i reads t as a bipartite incidence structure. For a fixed sub-family s, the incidence pairs {(i,a) : i ∈ s, a ∈ t i} are counted two ways. From the left, Mathlib's bipartiteAbove r i restricted to s.biUnion t equals t i (since t i ⊆ s.biUnion t for i ∈ s), so each index contributes exactly k. From the right, bipartiteBelow r a within s injects into univ.filter (· ∈ t i), whose cardinality is the global degree k, so each element contributes at most k. Finset.card_mul_le_card_mul packages these bounds into #s · k ≤ #(s.biUnion t) · k, and Nat.le_of_mul_le_mul_right cancels k > 0. The remaining theorems are immediate consequences via Mathlib's Hall theorem and the parent deficiency calculus.",
+    "proofStrategy": "**hall_condition_of_regular** (the engine): introduce the incidence relation r i a := a ∈ t i and apply Finset.card_mul_le_card_mul r to obtain #s · k ≤ #(s.biUnion t) · k.\n• *Left bound* (∀ i ∈ s, k ≤ #(bipartiteAbove)): show (s.biUnion t).bipartiteAbove r i = t i by ext + mem_bipartiteAbove (the ⊇ direction needs mem_biUnion since i ∈ s), then rewrite #(t i) = k by left-regularity.\n• *Right bound* (∀ a ∈ s.biUnion t, #(bipartiteBelow) ≤ k): s.bipartiteBelow r a injects into univ.filter (· ∈ t i) via card_le_card and mem_bipartiteBelow; that filter has cardinality k by right-regularity (a ∈ s.biUnion t ⊆ univ.biUnion t).\nFinally Nat.le_of_mul_le_mul_right with k > 0 gives #s ≤ #(s.biUnion t).\n\n**exists_sdr_of_regular**: apply Finset.all_card_le_biUnion_card_iff_exists_injective.mp to hall_condition_of_regular.\n\n**deficiency_eq_zero_of_regular**: apply the parent's deficiency_eq_zero_iff.mpr to hall_condition_of_regular.\n\n**isGreatest_transversal_of_regular**: apply the parent's maxTransversal_eq_card_of_deficiency_zero to deficiency_eq_zero_of_regular.",
+    "keyInsights": [
+      "**Regularity ⟹ Hall by counting alone**: no marriage-theorem machinery is needed to derive Hall's condition from k-regularity — a single double count of incidence pairs does it. Hall's theorem is only invoked afterwards to turn the condition into an actual matching.",
+      "**The two regularity conditions play asymmetric roles**: left-regularity #(t i) = k gives the exact left count, but only the right inequality #{i ∈ s | a ∈ t i} ≤ k (a consequence of right-regularity restricted to s) is used — so the same proof works for any family that is left-k-regular and right-degree-at-most-k.",
+      "**bipartiteAbove collapses to t i**: inside s.biUnion t the neighbourhood filter of an index i ∈ s is exactly t i, because t i ⊆ s.biUnion t; this is what converts the abstract incidence count back into the concrete #(t i) = k.",
+      "**k > 0 is essential**: cancelling the common factor needs k ≥ 1 — a 0-regular family (all t i empty) trivially fails Hall for any nonempty index set, so the hypothesis is sharp.",
+      "**Full SDR and maximal transversal are two readings of the same fact**: exists_sdr_of_regular gives a global injective choice function, while isGreatest_transversal_of_regular phrases the same conclusion through the parent's deficiency-zero closed form (max partial transversal = #ι)."
+    ],
+    "prerequisites": [
+      "Hall's marriage theorem / systems of distinct representatives (Mathlib Finset.all_card_le_biUnion_card_iff_exists_injective)",
+      "The double-counting lemma Finset.card_mul_le_card_mul with the bipartiteAbove / bipartiteBelow incidence finsets (Mathlib Combinatorics/Enumerative/DoubleCounting.lean)",
+      "Finset.biUnion and mem_biUnion, Finset.filter and mem_filter, Finset.card_le_card",
+      "Nat.le_of_mul_le_mul_right for cancelling the common factor k",
+      "The deficiency calculus of the parent entry hall-marriage-theorem-oq-01-oq-01-oq-01 (deficiency_eq_zero_iff, maxTransversal_eq_card_of_deficiency_zero)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "hall-marriage-theorem-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "The parent closed-form-deficiency entry. Its deficiency_eq_zero_iff and maxTransversal_eq_card_of_deficiency_zero turn the Hall condition proved here for k-regular families into the statement that the maximum partial transversal has size #ι."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01",
+      "relationship": "related",
+      "description": "The root Hall biconditional. exists_sdr_of_regular instantiates its existence direction for the special case of k-regular families, where Hall's condition is automatic."
+    }
+  ],
+  "sections": [
+    {
+      "id": "regular-def",
+      "title": "k-regular families",
+      "startLine": 47,
+      "endLine": 58,
+      "summary": "IsKRegular t k bundles left-regularity (∀ i, #(t i) = k) with right-regularity (∀ a ∈ univ.biUnion t, #(univ.filter (· ∈ t i)) = k): every index has exactly k neighbours and every occurring element is hit by exactly k indices — a k-regular bipartite graph.",
+      "mathContext": "k-regular: both index-degree and element-degree equal k."
+    },
+    {
+      "id": "hall-condition",
+      "title": "Hall's condition by double counting",
+      "startLine": 60,
+      "endLine": 97,
+      "summary": "hall_condition_of_regular: for k ≥ 1, #s ≤ #(s.biUnion t). The incidence pairs of s are counted via Finset.card_mul_le_card_mul: exactly k·#s from the left (bipartiteAbove r i = t i), at most k·#(s.biUnion t) from the right (bipartiteBelow r a ⊆ the degree-k filter). Nat.le_of_mul_le_mul_right cancels k.",
+      "mathContext": "k·#s ≤ k·#(s.biUnion t), so #s ≤ #(s.biUnion t)."
+    },
+    {
+      "id": "sdr",
+      "title": "Full system of distinct representatives",
+      "startLine": 99,
+      "endLine": 106,
+      "summary": "exists_sdr_of_regular: Hall's condition plus Mathlib's Finset.all_card_le_biUnion_card_iff_exists_injective yield a globally injective f : ι → α with f i ∈ t i — a perfect matching of the regular bipartite graph.",
+      "mathContext": "∃ f, Injective f ∧ ∀ i, f i ∈ t i."
+    },
+    {
+      "id": "deficiency-endpoint",
+      "title": "Zero deficiency and the maximal transversal",
+      "startLine": 108,
+      "endLine": 127,
+      "summary": "deficiency_eq_zero_of_regular: a k-regular family has Hall deficiency 0 (via the parent's deficiency_eq_zero_iff). isGreatest_transversal_of_regular: combined with the parent's closed form, the attainable partial-transversal sizes have greatest element #ι.",
+      "mathContext": "δ(t) = 0 and max partial transversal = #ι."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hall_condition_of_regular",
+      "type": "main",
+      "statement": "$k \\ge 1 \\land t\\ \\text{is } k\\text{-regular} \\Rightarrow \\forall s,\\ \\#s \\le \\#(s.\\mathrm{biUnion}\\ t)$",
+      "significance": "The headline: k-regularity forces Hall's marriage condition, by a single double-count of incidence pairs. No marriage-theorem machinery is used in the derivation itself.",
+      "description": "Every sub-family of a k-regular family satisfies Hall's inequality."
+    },
+    {
+      "name": "IsKRegular",
+      "type": "definition",
+      "statement": "$(\\forall i,\\ \\#(t\\,i) = k) \\land (\\forall a \\in \\mathrm{univ.biUnion}\\ t,\\ \\#\\{i \\mid a \\in t\\,i\\} = k)$",
+      "significance": "The family-theoretic encoding of a k-regular bipartite graph: index-degree and element-degree both equal k.",
+      "description": "A finite family is k-regular when both sides have all degrees k."
+    },
+    {
+      "name": "exists_sdr_of_regular",
+      "type": "lemma",
+      "statement": "$k \\ge 1 \\land t\\ \\text{is } k\\text{-regular} \\Rightarrow \\exists f,\\ \\mathrm{Injective}\\ f \\land \\forall i,\\ f\\,i \\in t\\,i$",
+      "significance": "A k-regular family admits a full system of distinct representatives — a perfect matching of the bipartite graph — by Hall's theorem.",
+      "description": "k-regularity yields a globally injective transversal."
+    },
+    {
+      "name": "isGreatest_transversal_of_regular",
+      "type": "lemma",
+      "statement": "$k \\ge 1 \\land t\\ \\text{is } k\\text{-regular} \\Rightarrow \\mathrm{IsGreatest}\\ (\\mathrm{transversalSizes}\\ t)\\ \\#\\iota$",
+      "significance": "Phrases the perfect-matching conclusion through the parent's deficiency closed form: the maximum partial transversal has size exactly #ι.",
+      "description": "The attainable partial-transversal sizes have greatest element #ι."
+    }
+  ],
+  "references": [
+    {
+      "text": "Hall, P. (1935). On Representatives of Subsets. J. London Math. Soc. The marriage theorem and systems of distinct representatives.",
+      "url": "https://en.wikipedia.org/wiki/Hall%27s_marriage_theorem"
+    },
+    {
+      "text": "König, D. (1916). Über Graphen und ihre Anwendung auf Determinantentheorie und Mengenlehre. A k-regular bipartite graph decomposes into k perfect matchings.",
+      "url": "https://en.wikipedia.org/wiki/K%C5%91nig%27s_theorem_(graph_theory)"
+    },
+    {
+      "text": "Mathlib4: Finset.card_mul_le_card_mul (Combinatorics/Enumerative/DoubleCounting.lean), Finset.all_card_le_biUnion_card_iff_exists_injective (Combinatorics/Hall/Basic.lean).",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Defines IsKRegular — a finite family whose index-degrees and element-degrees are all equal to k — and proves hall_condition_of_regular: for k ≥ 1 every sub-family satisfies Hall's inequality #s ≤ #(s.biUnion t), by double-counting the incidence pairs through Finset.card_mul_le_card_mul and cancelling k. Hall's condition then yields a full system of distinct representatives (exists_sdr_of_regular, via Mathlib's Hall theorem) and, through the parent deficiency calculus, the statement that the maximum partial transversal has size #ι (deficiency_eq_zero_of_regular, isGreatest_transversal_of_regular). 4 theorems, 1 definition, 0 sorries, 0 axioms.",
+    "implications": "The double-counting derivation is robust: only left-k-regularity and right-degree-at-most-k are actually used, so the same argument covers families that are exactly left-regular but only sub-regular on the right. The single perfect matching is the base case of König's theorem that a k-regular bipartite graph splits into k disjoint perfect matchings — a natural next target — and the deficiency-zero phrasing ties the regular case back to Ore's defect form.",
+    "openQuestions": [
+      "Iterate the matching: prove König's edge-colouring theorem that a k-regular bipartite family decomposes into k pairwise-disjoint perfect matchings, by removing one SDR and applying the (k−1)-regular case.",
+      "Weaken the hypothesis to a semiregular / biregular family (index-degree a, element-degree b with a ≤ b) and show Hall's condition still holds whenever a ≥ 1, recovering the b-matching version."
+    ]
+  },
+  "sorries": 0
+}
