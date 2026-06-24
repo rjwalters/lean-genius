@@ -721,6 +721,7 @@ import Proofs.CayleyHamiltonReductionOQ01OQ02
 import Proofs.CayleyHamiltonReductionOQ02
 import Proofs.CayleyHamiltonReductionOQ02OQ01
 import Proofs.CayleyHamiltonReductionOQ02OQ01Aristotle
+import Proofs.CayleyMengerDeterminantOQ0503
 import Proofs.CayleyMengerHeronOQ05
 import Proofs.CayleyMengerHeronOQ0503
 import Proofs.CayleysTheoremOQ01
