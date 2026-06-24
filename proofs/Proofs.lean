@@ -3414,6 +3414,7 @@ import Proofs.NapoleonsTheoremOQ03
 import Proofs.NarcissisticNumberOQ01
 import Proofs.NavierStokes
 import Proofs.NesbittInequalityOQ01
+import Proofs.NesbittInequalityOQ01OQ02
 import Proofs.NormEuclideanZsqrtdFamilyOQ03
 import Proofs.NormEuclideanZsqrtdFamilyOQ03OQ02
 import Proofs.NormEuclideanZsqrtdFamilyOQ03OQ02OQ01
