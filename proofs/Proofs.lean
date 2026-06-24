@@ -3369,6 +3369,7 @@ import Proofs.LittleWedderburnOQ01
 import Proofs.LittleWedderburnOQ02
 import Proofs.LittleWedderburnOQ01OQ01
 import Proofs.LittleWedderburnOQ01OQ01OQ01
+import Proofs.LittleWedderburnOQ02OQ02
 import Proofs.LovaszLocalLemma
 import Proofs.LovaszLocalLemmaOQ02
 import Proofs.LovaszLocalLemmaOQ02Aristotle
