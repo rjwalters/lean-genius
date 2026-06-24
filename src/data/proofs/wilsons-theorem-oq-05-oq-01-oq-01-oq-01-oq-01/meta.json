@@ -1,0 +1,157 @@
+{
+  "id": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+  "title": "Kempner Function is Determined by its Prime Powers: S(n) = max over p^k ∥ n of S(p^k)",
+  "slug": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01-oq-01",
+  "description": "Assembles the general value of the Kempner–Smarandache function S(m) = sInf {n | m ∣ n!} from its prime-power values, answering the parent prime-power file's first open question. Proves divisibility-monotonicity of S, the maximum identity S(n) = sup over p ∈ primeFactors n of S(p^{v_p(n)}), and that this maximum is attained by a single dominant prime power. 5 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/WilsonsTheoremOQ05OQ01OQ01OQ01OQ01.lean",
+    "tags": [
+      "wilsons-theorem",
+      "kempner-smarandache",
+      "number-theory",
+      "factorial",
+      "prime-factorization",
+      "legendre-formula",
+      "multiplicative-structure"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 115,
+    "theoremCount": 5,
+    "assumptions": "None. All 5 theorems proved, 0 axioms. Verified axiom-free: #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.factorization_le_iff_dvd",
+        "description": "d ∣ n ↔ d.factorization ≤ n.factorization (reduces n ∣ M! to pointwise valuation bounds)",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      },
+      {
+        "theorem": "Nat.Prime.pow_dvd_iff_le_factorization",
+        "description": "p^k ∣ m ↔ k ≤ m.factorization p (Legendre divisibility criterion)",
+        "module": "Mathlib.Data.Nat.Factorization.Basic"
+      },
+      {
+        "theorem": "Nat.ordProj_dvd",
+        "description": "p ^ n.factorization p ∣ n (each prime-power factor divides n)",
+        "module": "Mathlib.Data.Nat.Factorization.Defs"
+      },
+      {
+        "theorem": "Nat.factorial_dvd_factorial",
+        "description": "m ≤ n → m! ∣ n! (factorial monotonicity)",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Finset.exists_mem_eq_sup",
+        "description": "a nonempty Finset sup over ℕ is attained at some element",
+        "module": "Mathlib.Data.Finset.Lattice.Fold"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Kempner–Smarandache function S(m) = min {n : m ∣ n!} (the smallest factorial divisible by m) was studied by Lucas (1883), Kempner (1918, who gave the first algorithm), and later named after Smarandache. A foundational structural fact is that S is determined by the prime-power factorization of its argument: S(n) = max over the prime powers p^k exactly dividing n of S(p^k). This reduces the computation of S to prime powers, where Legendre's formula applies. The grandparent file located the Kempner threshold (when S(n) < n), the parent prime-power file computed S(p^k) for prime powers, and explicitly asked, as its first open question, to 'assemble the general value' via this maximum identity. This file proves it.",
+    "problemStatement": "Prove that the Kempner–Smarandache function is the maximum of its prime-power values: for n ≥ 1, S(n) = sup over p ∈ primeFactors n of S(p^{v_p(n)}); and that for n > 1 the maximum is attained by a single prime power.",
+    "proofStrategy": "Antisymmetry. (≥) Each prime-power factor p^{v_p(n)} divides n, so by divisibility-monotonicity of S (S a ≤ S b when a ∣ b, b ≥ 1) we get S(p^{v_p(n)}) ≤ S(n); take the Finset sup. (≤) It suffices that n ∣ M! where M is the sup. By Nat.factorization_le_iff_dvd this is equivalent to the pointwise valuation inequality v_p(n) ≤ v_p(M!) at every prime p in the support of n.factorization. For such p, S(p^{v_p(n)}) ≤ M, hence p^{v_p(n)} ∣ (S(p^{v_p(n)}))! ∣ M! by factorial monotonicity, and Legendre's criterion (pow_dvd_iff_le_factorization) converts the divisibility to the valuation bound. Attainment follows from Finset.exists_mem_eq_sup on the nonempty primeFactors set.",
+    "keyInsights": [
+      "**Divisibility-monotonicity is the engine**: if a ∣ b and b ≥ 1, then S a ≤ S b, because b ∣ (S b)! already forces a ∣ (S b)!. This three-line lemma drives both halves of the maximum identity.",
+      "**The hard direction is a valuation inequality.** Reducing S(n) ≤ M to n ∣ M! and then, via Nat.factorization_le_iff_dvd, to v_p(n) ≤ v_p(M!) at each prime, converts a global divisibility into independent local checks — each settled by Legendre's formula applied to the dominating prime power.",
+      "**The maximum is realized, not just bounded.** For n > 1 there is a single 'dominant' prime power p^{v_p(n)} with S(n) = S(p^{v_p(n)}); the Kempner value of any n is literally the Kempner value of one of its prime-power factors.",
+      "**The assembly is independent of the exact prime-power values.** It needs only that S exists (sInf of a nonempty set) and is divisibility-monotone, so it composes with any computation of S(p^k) — including the parent's closed form S(p^k) = p·k for k ≤ p."
+    ]
+  },
+  "sections": [
+    {
+      "id": "kempner-def",
+      "title": "The Kempner–Smarandache function",
+      "startLine": 50,
+      "endLine": 62,
+      "summary": "S m := sInf {n | m ∣ n!}. dvd_factorial_S: m ∣ (S m)! for m ≥ 1 (sInf is a member). S_le: S m ≤ n whenever m ∣ n! (sInf is a lower bound). Matches the parent definition; restated for a self-contained file.",
+      "mathContext": "$S(m) = \\min\\{n : m \\mid n!\\}$, well defined since $m \\mid m!$."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Divisibility-monotonicity",
+      "startLine": 63,
+      "endLine": 69,
+      "summary": "S_mono_dvd: a ∣ b → 0 < b → S a ≤ S b. Proof: b ∣ (S b)! and a ∣ b give a ∣ (S b)!, so S a ≤ S b.",
+      "mathContext": "$a \\mid b \\Rightarrow S(a) \\leq S(b)$ — the core monotonicity of the Kempner function."
+    },
+    {
+      "id": "assembly",
+      "title": "Assembly: S is the maximum of its prime-power values",
+      "startLine": 70,
+      "endLine": 115,
+      "summary": "S_eq_sup_prime_pow: S n = primeFactors n .sup (fun p => S (p^{v_p(n)})). Hard direction n ∣ M! via factorization_le_iff_dvd + Finsupp.le_iff + Legendre; easy direction via ordProj_dvd + S_mono_dvd. S_eq_S_some_prime_pow: for n > 1 the sup is attained (Finset.exists_mem_eq_sup).",
+      "mathContext": "$S(n) = \\max_{p \\mid n} S(p^{v_p(n)})$, attained by a single prime power for $n > 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Kempner–Smarandache function is determined by its prime powers: S(n) = max over p ∈ primeFactors n of S(p^{v_p(n)}), with the maximum attained by a single dominant prime power for n > 1. 5 theorems, 1 definition, 0 sorries, 0 axioms.",
+    "implications": "Combined with the parent file's prime-power computation (S(p^k) = p·k iff k ≤ p, and the structural facts p ∣ S(p^k)), this reduces the Kempner function on all of ℕ to prime powers — closing the parent's first open question. The divisibility-monotonicity lemma is reusable for any further Kempner-function work.",
+    "openQuestions": [
+      "Combine with the parent's prime-power closed form to give a fully explicit S(n) for n whose prime powers all satisfy k ≤ p (then S(n) = max p·v_p(n)), and handle the k > p tail via the greedy base-p Kempner algorithm.",
+      "Formalize the classical bound S(n) ≤ (largest prime factor of n) · (its exponent) and the cases of equality."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "WilsonsTheoremOQ05OQ01OQ01OQ01OQ01",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/WilsonsTheoremOQ05OQ01OQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "wilsons-theorem-oq-05-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent computed S(p^k) for prime powers and asked, as its first open question, to assemble the general value S(n) = max over prime powers; this file proves that assembly"
+    },
+    {
+      "targetId": "wilsons-theorem-oq-05-oq-01-oq-01",
+      "relationship": "ancestor",
+      "description": "Grandparent located the Kempner threshold (when S(n) < n); this file determines the actual value structure"
+    },
+    {
+      "targetId": "wilsons-theorem-oq-05",
+      "relationship": "ancestor",
+      "description": "Root of the OQ05 chain connecting Wilson's theorem to the Kempner–Smarandache function"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "S_eq_sup_prime_pow",
+      "type": "core",
+      "statement": "0 < n → S n = n.primeFactors.sup (fun p => S (p ^ n.factorization p))",
+      "description": "The Kempner function equals the maximum of its prime-power values.",
+      "significance": "Closes the parent's first open question: S is determined by the prime powers in n's factorization"
+    },
+    {
+      "name": "S_eq_S_some_prime_pow",
+      "type": "corollary",
+      "statement": "1 < n → ∃ p ∈ n.primeFactors, S n = S (p ^ n.factorization p)",
+      "description": "The maximum is attained by a single dominant prime power.",
+      "significance": "S(n) is literally the Kempner value of one of n's prime-power factors"
+    },
+    {
+      "name": "S_mono_dvd",
+      "type": "lemma",
+      "statement": "a ∣ b → 0 < b → S a ≤ S b",
+      "description": "Divisibility-monotonicity of the Kempner function.",
+      "significance": "The reusable engine behind both directions of the maximum identity"
+    }
+  ],
+  "sorries": 0
+}
