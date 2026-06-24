@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ann-sylnil-headline",
+    "proofId": "sylow-theorem-oq-02-oq-01",
+    "range": { "startLine": 51, "endLine": 56 },
+    "type": "technique",
+    "title": "Extracting a Two-Way Slice from a TFAE",
+    "content": "nilpotent_iff_forall_sylow_normal is the (1) ⟺ (4) slice of Mathlib's five-way isNilpotent_of_finite_tfae, obtained in one line by TFAE.out 0 3. The TFAE lists [IsNilpotent, NormalizerCondition, all maximal subgroups normal, all Sylow normal, internal direct product of Sylow]; .out i j returns the bi-implication between entries i and j, here nilpotency and all-Sylow-normality. The explicit (_hp : Fact p.Prime) binder matches the TFAE's statement verbatim and is definitionally the instance-implicit form.",
+    "mathContext": "$$G \\text{ nilpotent} \\iff \\forall p,\\ P \\in \\mathrm{Syl}_p(G) \\Rightarrow P \\trianglelefteq G.$$",
+    "significance": "central",
+    "relatedConcepts": [
+      "nilpotent group",
+      "Sylow subgroup",
+      "TFAE",
+      "List.TFAE.out"
+    ],
+    "prerequisites": [
+      "Group.IsNilpotent",
+      "isNilpotent_of_finite_tfae"
+    ]
+  },
+  {
+    "id": "ann-sylnil-normalizer",
+    "proofId": "sylow-theorem-oq-02-oq-01",
+    "range": { "startLine": 65, "endLine": 72 },
+    "type": "insight",
+    "title": "Normalizer Collapse Bridges to n_p = [G : N_G(P)]",
+    "content": "normalizer_eq_top_of_nilpotent uses Subgroup.normalizer_eq_top_iff to convert normality of a Sylow subgroup into N_G(P) = ⊤. This is the explicit link to the parent entry: the parent proved n_p = [G : N_G(P)], so a normalizer equal to the whole group forces the index — and hence the Sylow count — to be one. Nilpotency is precisely the regime in which every Sylow subgroup self-normalizes maximally.",
+    "mathContext": "$$N_G(P) = G \\ \\Rightarrow\\ n_p = [G : N_G(P)] = 1.$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "normalizer",
+      "Sylow counting",
+      "index of a subgroup"
+    ],
+    "prerequisites": [
+      "Subgroup.normalizer_eq_top_iff",
+      "n_p = [G : N_G(P)] (parent entry)"
+    ]
+  },
+  {
+    "id": "ann-sylnil-counting",
+    "proofId": "sylow-theorem-oq-02-oq-01",
+    "range": { "startLine": 76, "endLine": 94 },
+    "type": "technique",
+    "title": "Normality ⟺ Uniqueness Turns Structure into Counting",
+    "content": "nilpotent_iff_forall_card_sylow_eq_one fuses the headline with the fact that a Sylow p-subgroup is normal iff it is the unique one. Forward: from normality, Sylow.unique_of_normal yields Unique (Sylow p G), so Nat.card_unique gives n_p = 1. Backward: from n_p = 1, Nat.card_eq_one_iff_unique recovers Subsingleton (Sylow p G), and Sylow.normal_of_subsingleton (via characteristicity) returns normality. Quantifying over all primes converts 'all Sylow normal' into the arithmetic statement 'all n_p = 1', the global counterpart of the parent's per-prime n_p = 1 ⟺ P ◁ G.",
+    "mathContext": "$$G \\text{ nilpotent} \\iff \\forall p,\\ n_p = \\#\\,\\mathrm{Syl}_p(G) = 1.$$",
+    "significance": "central",
+    "relatedConcepts": [
+      "Sylow uniqueness",
+      "subsingleton",
+      "Nat.card",
+      "Sylow counting number"
+    ],
+    "prerequisites": [
+      "Sylow.unique_of_normal",
+      "Sylow.normal_of_subsingleton",
+      "Nat.card_unique",
+      "Nat.card_eq_one_iff_unique"
+    ]
+  }
+]
