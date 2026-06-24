@@ -82,6 +82,50 @@
       "Even/odd parity arithmetic over ℕ"
     ]
   },
+  "sections": [
+    {
+      "id": "statement",
+      "title": "Statement and Two-Route Strategy",
+      "startLine": 5,
+      "endLine": 58,
+      "summary": "Docstring fixing the claim — for n ≥ 1, #even-subsets = #odd-subsets = 2^(n−1) (equivalently ∑_{k even} C(n,k) = ∑_{k odd} C(n,k) = 2^(n−1)) — and outlining the two independent routes: an algebraic one from the alternating binomial identity and a bijective one from a sign-reversing involution."
+    },
+    {
+      "id": "engine",
+      "title": "The Integer Reconciliation Engine",
+      "startLine": 60,
+      "endLine": 107,
+      "summary": "two_pow_split (2^n = 2·2^(n−1) for n ≥ 1) and the core choose_parity_int: working in ℤ, combine E + O = 2^n (Nat.sum_range_choose) with E − O = 0 (Int.alternating_sum_range_choose_of_ne, after collapsing (−1)^k to ±1 on each parity class) to force E = O = 2^(n−1)."
+    },
+    {
+      "id": "binomial-form",
+      "title": "Binomial-Sum Form: Even and Odd Halves",
+      "startLine": 109,
+      "endLine": 135,
+      "summary": "even_choose_sum and odd_choose_sum cast the integer engine back to ℕ (via Nat.cast injectivity), pinning each parity-restricted half of Pascal's row at 2^(n−1); even_eq_odd_choose_sum states their equality. The odd half is obtained by rewriting the Odd filter to ¬Even."
+    },
+    {
+      "id": "involution",
+      "title": "The Toggling Involution",
+      "startLine": 137,
+      "endLine": 172,
+      "summary": "The canonical sign-reversing involution toggle a t = (if a ∈ t then t.erase a else insert a t), with toggle_involutive (self-inverse), toggle_subset (stays inside s when a ∈ s), and toggle_card_flip (it always changes |t| by one, flipping parity) — the combinatorial heart of the bijective proof."
+    },
+    {
+      "id": "powerset-form",
+      "title": "Powerset Form: Bijection and Each Count = 2^(n−1)",
+      "startLine": 174,
+      "endLine": 216,
+      "summary": "card_even_eq_card_odd_subsets uses Finset.card_nbij' with toggle as its own inverse to prove #even = #odd directly; card_even_subsets and card_odd_subsets then combine this with the powerset split (#powerset = 2^#s) to pin each count at 2^(#s − 1)."
+    },
+    {
+      "id": "sanity",
+      "title": "Sanity Checks",
+      "startLine": 218,
+      "endLine": 229,
+      "summary": "Three decide-checked examples for n = 3: the even-indexed sum C(3,0)+C(3,2) = 4, the odd-indexed sum C(3,1)+C(3,3) = 4, and the set {0,1,2} having 4 even-cardinality subsets — all equal to 2² = 2^(3−1)."
+    }
+  ],
   "conclusion": {
     "summary": "For n ≥ 1 the even- and odd-cardinality subsets of an n-set each number exactly 2^(n−1). The result is proved twice: algebraically, by reconciling ∑_k C(n,k) = 2^n with ∑_k (−1)^k C(n,k) = 0 to get ∑_{k even} C(n,k) = ∑_{k odd} C(n,k) = 2^(n−1); and bijectively, via the canonical element-toggling involution on the powerset. 11 theorems/lemmas, 1 definition, 0 sorries, 0 axioms.",
     "implications": "The element-toggling involution is the base case behind inclusion–exclusion parity cancellation: the same sign-reversing pairing that balances even and odd subsets underlies the vanishing of alternating sums throughout combinatorics. The binomial form is the n-th row instance of evaluating a generating function at −1.",
@@ -103,9 +147,19 @@
   ],
   "crossReferences": [
     {
-      "targetId": "subset-count",
+      "proofId": "subset-count",
       "relationship": "extends",
       "description": "Refines the count |P(S)| = 2^n by splitting the powerset according to the parity of subset size, showing each parity class has exactly half the subsets."
+    },
+    {
+      "proofId": "binomial-theorem",
+      "relationship": "related",
+      "description": "The algebraic half of this entry is the binomial theorem evaluated at x = −1: (1 − 1)^n = ∑_k (−1)^k C(n,k) = 0 is exactly the alternating identity that forces the even- and odd-indexed coefficient sums to balance. The unsigned row sum ∑_k C(n,k) = 2^n (the binomial theorem at x = 1) supplies the total."
+    },
+    {
+      "proofId": "inclusion-exclusion",
+      "relationship": "related",
+      "description": "The element-toggling involution used here is the prototype for inclusion–exclusion parity cancellation: the same sign-reversing pairing that balances even- and odd-cardinality subsets is the mechanism behind the vanishing of alternating sums ∑_{T ⊆ S} (−1)^{|T|} that underlie the inclusion–exclusion principle."
     }
   ],
   "leanFile": {
