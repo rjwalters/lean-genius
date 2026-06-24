@@ -1,5 +1,5 @@
 import Mathlib
-import Proofs.CompactnessFiniteSubcoverOQ01OQ01
+import Proofs.CompactnessFiniteSubcoverOq01Oq01
 
 /-
 # The Closed-Projection Characterization of Compactness (Forward Direction)
