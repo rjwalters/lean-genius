@@ -1,0 +1,90 @@
+{
+  "id": "binary-gcd-oq-02-oq-03",
+  "title": "Extended Binary GCD: Certified Bézout Coefficients",
+  "slug": "binary-gcd-oq-02-oq-03",
+  "description": "Builds the extended binary GCD `binaryXgcd`/`binaryXgcdInt`, which returns Bézout coefficients `(x, y)` computed *through Stein's reductions themselves* (halving, parity-correction, subtract-and-halve), and proves the certified identity `a·x + b·y = gcd a b`. The produced identity is shown equivalent to Mathlib's `Int.gcdA`/`Int.gcdB`. Unlike the gallery's other Bézout entries, the coefficients are not delegated to Mathlib's extended Euclidean algorithm — they are produced by the binary algorithm. 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Binary_GCD_algorithm",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinaryGcdOQ02OQ03.lean",
+    "tags": [
+      "algorithms",
+      "number-theory",
+      "gcd",
+      "bezout",
+      "integers",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 335,
+    "assumptions": "None. 0 axiom declarations, 0 sorries. Depends only on Mathlib and the standard foundational axioms (propext, Classical.choice, Quot.sound).",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.gcd_mul_left",
+        "description": "gcd(k·m, k·n) = k·gcd(m, n); supplies the both-even reduction",
+        "module": "Init.Data.Nat.Gcd"
+      },
+      {
+        "theorem": "Nat.dvd_sub",
+        "description": "k ∣ m → k ∣ n → k ∣ m - n on ℕ (truncated subtraction)",
+        "module": "Init.Data.Nat.Dvd"
+      },
+      {
+        "theorem": "Nat.coprime_two_right",
+        "description": "n.Coprime 2 ↔ Odd n; used in the odd-operand halving reduction",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.dvd_of_dvd_mul_left",
+        "description": "Coprime k n → k ∣ n·m → k ∣ m; cancels the factor of 2",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Int.sign_mul_self_eq_natAbs",
+        "description": "sign a · a = ↑a.natAbs; the sign-adjustment for the ℤ coefficients",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "Int.gcd_eq_gcd_ab",
+        "description": "↑(Int.gcd a b) = a·gcdA a b + b·gcdB a b (Mathlib's Bézout identity)",
+        "module": "Mathlib.Data.Int.GCD"
+      }
+    ],
+    "originalContributions": [
+      "Definition of `binaryXgcd : ℕ → ℕ → ℤ × ℤ` (Proofs/BinaryGcdOQ02OQ03.lean:138), an extended binary GCD whose recursion follows Stein's algorithm and threads Bézout coefficients through every reduction",
+      "Parity-correcting un-halving helpers `hL`/`hR` (Proofs/BinaryGcdOQ02OQ03.lean:102,106) with specs `hL_spec`/`hR_spec`: from `a'·x + b·y = g` with `b` odd produce integer `X,Y` with `(2a')·X + b·Y = a'·x + b·y` (the only non-trivial coefficient step)",
+      "Bézout correctness `binaryXgcd_bezout` (Proofs/BinaryGcdOQ02OQ03.lean:174): `a·x + b·y = Nat.gcd a b`, proved by induction on the algorithm with each Stein reduction matched to a `Nat.gcd` reduction identity",
+      "Self-contained reproofs of the four Stein GCD-preserving reductions (gcd_two_mul, gcd_two_mul_odd, gcd_sub_right, gcd_odd_sub_half) against current Mathlib",
+      "Integer extension `binaryXgcdInt` (Proofs/BinaryGcdOQ02OQ03.lean:279) with sign-adjusted coefficients and `binaryXgcdInt_bezout`: `a·x + b·y = Int.gcd a b`",
+      "Equivalence `binaryXgcdInt_eq_gcdAB` (Proofs/BinaryGcdOQ02OQ03.lean:307) to Mathlib's `Int.gcdA`/`Int.gcdB`: both certify the same `Int.gcd`, answering the sibling open question's request for the binary analogue"
+    ],
+    "prerequisites": [
+      "The binary GCD algorithm (Stein 1967) and its GCD-preserving reductions",
+      "Bézout's identity and the extended Euclidean algorithm",
+      "Mathlib's `Int.gcd`, `Int.gcdA`/`Int.gcdB`, and `Int.gcd_eq_gcd_ab`"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 4
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "BinaryGcdOQ02OQ03",
+    "lineCount": 335,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 4,
+    "path": "Proofs/BinaryGcdOQ02OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
