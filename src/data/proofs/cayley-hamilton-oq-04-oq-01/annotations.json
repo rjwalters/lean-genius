@@ -1,0 +1,67 @@
+[
+  {
+    "id": "ann-ch0401-background",
+    "proofId": "cayley-hamilton-oq-04-oq-01",
+    "range": {
+      "startLine": 6,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "The 3×3 Case Cayley Computed by Hand",
+    "content": "The module docstring frames the file as the explicit 3×3 analogue of the parent's 2×2 identity, answering OQ-04 of the Cayley–Hamilton entry. As in the 2×2 case, Mathlib's `Matrix.aeval_self_charpoly` phrases Cayley–Hamilton via the abstract `charpoly` polynomial, not the bare trace/principal-minor/determinant identity A³ − (tr A)·A² + c₂·A − (det A)·1 = 0. That identity is proved here from scratch by entrywise expansion over Fin 3 closed with `ring`, exactly the 3×3 computation Cayley described in his 1858 'Memoir on the Theory of Matrices'.",
+    "mathContext": "For a 3×3 matrix $A=(a_{ij})$ the characteristic polynomial is $\\chi_A(X)=X^3-(\\operatorname{tr}A)X^2+c_2X-\\det A$, where $\\operatorname{tr}A=a_{00}+a_{11}+a_{22}$, $c_2$ is the sum of the three $2\\times2$ principal minors, and $\\det A$ is the full determinant. Cayley–Hamilton asserts $\\chi_A(A)=0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "characteristic polynomial",
+      "elementary symmetric functions",
+      "principal minors"
+    ],
+    "prerequisites": [
+      "3×3 matrix arithmetic",
+      "trace, determinant, and principal minors"
+    ]
+  },
+  {
+    "id": "ann-ch0401-c2",
+    "proofId": "cayley-hamilton-oq-04-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "The Middle Coefficient c₂ as a Sum of Principal Minors",
+    "content": "`c2 A` is defined as (a₀₀a₁₁ − a₀₁a₁₀) + (a₀₀a₂₂ − a₀₂a₂₀) + (a₁₁a₂₂ − a₁₂a₂₁), the sum of the three 2×2 principal minors of A. This is the second elementary symmetric function e₂(λ₁,λ₂,λ₃) of the eigenvalues and the coefficient of X in the characteristic polynomial. Naming it as a definition makes the main identity read like the textbook characteristic polynomial.",
+    "mathContext": "$c_2=\\sum_{i<j}(a_{ii}a_{jj}-a_{ij}a_{ji})=\\lambda_1\\lambda_2+\\lambda_1\\lambda_3+\\lambda_2\\lambda_3=e_2(\\lambda)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "principal minors",
+      "elementary symmetric polynomials"
+    ],
+    "prerequisites": [
+      "2×2 minors of a matrix"
+    ]
+  },
+  {
+    "id": "ann-ch0401-main",
+    "proofId": "cayley-hamilton-oq-04-oq-01",
+    "range": {
+      "startLine": 66,
+      "endLine": 90
+    },
+    "type": "proof-technique",
+    "title": "Entrywise Fin 3 Expansion Closed by ring",
+    "content": "`cube_sub_trace_smul_sq_add_c2_smul_sub_det_smul` proves A³ − (tr A)·A² + c₂·A − (det A)·1 = 0 by first rewriting A³ = A·A·A and A² = A·A, then reducing to the nine scalar entries with `Matrix.ext` and `fin_cases` over Fin 3 × Fin 3. Each entry is expanded with `Matrix.mul_apply`, `Fin.sum_univ_three`, `Matrix.trace_fin_three`, `Matrix.det_fin_three`, and the smul/add/sub entry lemmas, then closed with `ring` — every entry equation is a degree-3 polynomial identity in the nine entries. `cube_eq` rearranges this to the cube reduction A³ = (tr A)·A² − c₂·A + (det A)·1 via `linear_combination (norm := module)`.",
+    "mathContext": "Entry $(i,j)$ of $A^3$ is $\\sum_{k,l}a_{ik}a_{kl}a_{lj}$; subtracting $(\\operatorname{tr}A)(A^2)_{ij}$, adding $c_2 a_{ij}$, and subtracting $(\\det A)\\delta_{ij}$ gives $0$ as a polynomial identity.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Cayley-Hamilton theorem",
+      "matrix multiplication",
+      "polynomial identities"
+    ],
+    "prerequisites": [
+      "matrix multiplication via Matrix.mul_apply",
+      "the ring tactic"
+    ]
+  }
+]
