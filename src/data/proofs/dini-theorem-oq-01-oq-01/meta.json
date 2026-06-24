@@ -1,0 +1,178 @@
+{
+  "id": "dini-theorem-oq-01-oq-01",
+  "title": "Dini's Theorem: Monotonicity in n Is Necessary (a Moving-Bump Witness)",
+  "slug": "dini-theorem-oq-01-oq-01",
+  "description": "Dini's theorem upgrades pointwise convergence of a monotone sequence of continuous functions on a compact space to uniform convergence. The parent entry re-exports Dini's theorem from Mathlib and supplies two sharpness witnesses built from xⁿ — one showing continuity of the limit is necessary, one showing compactness of the domain is necessary. This entry completes the trilogy by addressing the third hypothesis singled out in the parent's open question: monotonicity in n is necessary. The witness is a smooth moving bump Fₙ(x) = n·x·exp(−n·x) on the compact interval [0,1]. Each Fₙ is continuous, the sequence converges pointwise to the continuous function 0, and the domain is compact — every Dini hypothesis holds except monotonicity. Yet the convergence is not uniform: the bump peaks at x = 1/n with height Fₙ(1/n) = e⁻¹, a peak that travels toward 0 without shrinking, so the supremum error stays ≥ e⁻¹ > 1/3. We confirm the family is genuinely non-monotone (at x = 1/2 it rises 1→2 and falls 2→3, hence neither monotone nor antitone in n), so the only failing hypothesis is monotonicity. Fully verified, 0 axioms.",
+  "meta": {
+    "author": "Ulisse Dini (1878); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DiniTheoremOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "real-analysis",
+      "uniform-convergence",
+      "compactness",
+      "monotonicity",
+      "counterexample",
+      "exponential",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero",
+        "description": "tᵏ·exp(−t) → 0 as t → ∞; with k = 1 it gives the pointwise limit Fₙ(x) = (n·x)·exp(−n·x) → 0 after substituting t = n·x → ∞",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "Tendsto.atTop_mul_const",
+        "description": "n·x → ∞ for fixed x > 0, the inner substitution feeding the t·e^{−t} limit",
+        "module": "Mathlib.Order.Filter.AtTopBot.Field"
+      },
+      {
+        "theorem": "Real.add_one_lt_exp",
+        "description": "1 + x < exp x for x ≠ 0; gives the lower bound 3/2 < exp(1/2) used in the non-monotonicity computation",
+        "module": "Mathlib.Analysis.Complex.Exponential"
+      },
+      {
+        "theorem": "Real.exp_one_lt_d9",
+        "description": "exp 1 < 2.7182818286; gives exp(1/2) < 2 (since exp(1/2)² = exp 1 < 4) and e⁻¹ > 1/3, the numeric facts behind non-monotonicity and the e⁻¹ peak height",
+        "module": "Mathlib.Analysis.Complex.ExponentialBounds"
+      },
+      {
+        "theorem": "Metric.tendstoUniformlyOn_iff",
+        "description": "The ε–N characterization of uniform convergence; negated to exhibit the travelling peak x = 1/n where the error stays ≥ 1/3",
+        "module": "Mathlib.Topology.UniformSpace.UniformConvergence"
+      }
+    ],
+    "originalContributions": [
+      "bump: the smooth moving bump Fₙ(x) = n·x·exp(−n·x) on [0,1], peaking at x = 1/n with height e⁻¹ — a smooth analogue of the classical moving triangular tent that keeps continuity a one-line fun_prop",
+      "bump_tendsto_zero: Fₙ(x) → 0 pointwise for every x ≥ 0, via substituting t = n·x → ∞ into the standard limit t·e^{−t} → 0 (the x = 0 case is the constant 0 sequence)",
+      "exp_half_lt_two / three_half_lt_exp_half: the two numeric facts 3/2 < exp(1/2) < 2 isolating where the bump rises then falls",
+      "bump_one_lt_two / bump_three_lt_two: at x = 1/2 the sequence rises F₁ < F₂ and then falls F₃ < F₂, computed from the exp bounds",
+      "bump_not_monotone: the family n ↦ Fₙ(1/2) is neither monotone nor antitone — the Dini hypothesis that fails, verified concretely rather than asserted",
+      "bump_not_tendstoUniformlyOn: SHARPNESS WITNESS #3 — Fₙ on the compact [0,1] is continuous, converges pointwise to the continuous limit 0, and lives on a compact domain, yet is NOT uniformly convergent because for every n ≥ 1 the travelling peak x = 1/n gives Fₙ(1/n) = e⁻¹ > 1/3, so the supremum error never drops below 1/3. Shows monotonicity in n cannot be dropped. Not in Mathlib",
+      "bump_witness: the capstone bundling all Dini hypotheses except monotonicity together with the failure of uniform convergence, certifying the bump is an honest counterexample"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 182,
+    "theoremCount": 14,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Dini's theorem (1878) is the canonical instance of a pointwise hypothesis being promoted to a uniform conclusion under monotonicity and compactness. Every first analysis course pairs it with the counterexamples that show each hypothesis is load-bearing: xⁿ on [0,1] (discontinuous limit) and on [0,1) (non-compact domain). The third hypothesis — monotonicity in the index n — is the subtlest, and the textbook witness is a 'moving bump' that travels across the interval without shrinking. The parent gallery entry formalized the first two witnesses and explicitly asked for the third.",
+    "problemStatement": "Can monotonicity's necessity in Dini's theorem be formalized with a single honest witness: a sequence of continuous functions on a compact interval, converging pointwise to a continuous limit, that fails to converge uniformly purely because it is non-monotone in n?\n\n**Answer:** Yes. The smooth moving bump Fₙ(x) = n·x·exp(−n·x) on [0,1] is continuous in x, converges pointwise to 0 (a continuous limit) on the compact [0,1], and is verifiably non-monotone in n — yet its travelling peak Fₙ(1/n) = e⁻¹ keeps the uniform error ≥ e⁻¹ > 1/3 forever, so convergence is not uniform.",
+    "text": "A formalized sharpness witness for the monotonicity hypothesis of Dini's theorem: the moving bump n·x·e^{−n·x} on [0,1] satisfies every Dini hypothesis except monotonicity in n and fails to converge uniformly. Verified in Lean with no axioms.",
+    "proofStrategy": "1. bump_continuous: n·x·exp(−n·x) is continuous by fun_prop.\n2. bump_tendsto_zero: for x = 0 the sequence is constantly 0; for x > 0, n·x → ∞ (Tendsto.atTop_mul_const) and t·e^{−t} → 0 (Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero with k = 1) compose to give Fₙ(x) → 0.\n3. exp_half_lt_two: exp(1/2)² = exp 1 < 2.72 < 4 with exp(1/2) > 0 gives exp(1/2) < 2 (nlinarith). three_half_lt_exp_half: 1 + 1/2 < exp(1/2) directly from add_one_lt_exp.\n4. bump_one_lt_two / bump_three_lt_two: evaluate F₁(1/2) = (1/2)e^{−1/2}, F₂(1/2) = e^{−1}, F₃(1/2) = (3/2)e^{−3/2}; clearing the exponentials with exp_add reduces the two inequalities to exp(1/2) < 2 and 3/2 < exp(1/2) (nlinarith).\n5. bump_not_monotone: F₁ < F₂ refutes antitonicity, F₃ < F₂ refutes monotonicity.\n6. bump_not_tendstoUniformlyOn: unfold uniform convergence metrically and push the negation; for ε = 1/3 and every n, the point x = 1/n ∈ [0,1] gives Fₙ(1/n) = e⁻¹, and e⁻¹ > 1/3 because exp 1 < 3.\n7. bump_witness: bundle (1)–(6).",
+    "keyInsights": [
+      "**The third hypothesis is the subtle one.** Continuity-of-limit and compactness each fail via a *static* obstruction (a fixed jump, a fixed escaping point). Monotonicity fails via a *moving* one: the bump's peak slides toward 0 while keeping constant height e⁻¹, so no single point witnesses non-uniformity — the witness is the travelling family x = 1/n.",
+      "**A smooth bump beats a triangular tent in Lean.** Replacing the piecewise-linear tent of the textbook with n·x·e^{−n·x} makes continuity a one-line fun_prop and reduces pointwise convergence to the off-the-shelf limit t·e^{−t} → 0, avoiding all piecewise/absolute-value case analysis.",
+      "**Non-monotonicity is verified, not assumed.** The entry proves the family is concretely neither monotone nor antitone at x = 1/2 (it rises 1→2 then falls 2→3), so the witness genuinely satisfies every Dini hypothesis except the one it is built to remove — an honest counterexample, not a strawman.",
+      "**The whole obstruction is a constant peak height.** Because Fₙ(1/n) = e⁻¹ exactly for all n, the supremum error is bounded below by a fixed positive constant; the proof needs only the crude bound e⁻¹ > 1/3, i.e. exp 1 < 3."
+    ],
+    "prerequisites": [
+      "Pointwise versus uniform convergence of sequences of functions",
+      "Dini's theorem and the role of its three hypotheses",
+      "The limit t·e^{−t} → 0 and elementary bounds on the exponential",
+      "Filters and Tendsto / TendstoUniformlyOn in Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Statement",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "File-level docstring recalling Dini's theorem and the parent's two witnesses, then framing the new content: the moving bump n·x·e^{−n·x} addressing the necessity of monotonicity in n.",
+      "mathContext": "Dini's theorem: pointwise + monotone + continuous limit + compact ⟹ uniform convergence; this entry removes monotonicity."
+    },
+    {
+      "id": "bump-hypotheses",
+      "title": "The bump satisfies all Dini hypotheses except monotonicity",
+      "startLine": 49,
+      "endLine": 74,
+      "summary": "bump defines Fₙ(x) = n·x·exp(−n·x); bump_continuous (fun_prop), bump_tendsto_zero (pointwise limit 0 via t·e^{−t} → 0), zero_continuous and domain_isCompact record the continuity-of-limit and compactness hypotheses.",
+      "mathContext": "Each Fₙ is continuous, the pointwise limit 0 is continuous, and the domain [0,1] is compact."
+    },
+    {
+      "id": "exp-bounds",
+      "title": "Two numeric facts about exp(1/2)",
+      "startLine": 76,
+      "endLine": 92,
+      "summary": "exp_half_lt_two (exp(1/2) < 2, from exp(1/2)² = exp 1 < 4) and three_half_lt_exp_half (3/2 < exp(1/2), from 1 + x < exp x) pin exp(1/2) into (3/2, 2).",
+      "mathContext": "3/2 < exp(1/2) < 2 — the window in which the bump rises and then falls."
+    },
+    {
+      "id": "non-monotone",
+      "title": "The bump is non-monotone in n at x = 1/2",
+      "startLine": 94,
+      "endLine": 152,
+      "summary": "bump_one_eval / bump_two_eval / bump_three_eval evaluate the three samples; bump_one_lt_two and bump_three_lt_two reduce the rise F₁ < F₂ and fall F₃ < F₂ to the exp(1/2) bounds; bump_not_monotone concludes the family is neither monotone nor antitone.",
+      "mathContext": "At x = 1/2 the sequence rises 1→2 and falls 2→3, so monotonicity in n genuinely fails."
+    },
+    {
+      "id": "not-uniform",
+      "title": "Yet the convergence is not uniform",
+      "startLine": 154,
+      "endLine": 182,
+      "summary": "bump_not_tendstoUniformlyOn unfolds uniform convergence metrically and, for ε = 1/3 and every n, exhibits the travelling peak x = 1/n with Fₙ(1/n) = e⁻¹ > 1/3; bump_witness bundles all hypotheses and the failure of uniformity.",
+      "mathContext": "The moving peak x = 1/n keeps the supremum error ≥ e⁻¹ > 1/3, so convergence is not uniform — monotonicity cannot be dropped."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dini, Ulisse",
+      "title": "Fondamenti per la teorica delle funzioni di variabili reali",
+      "year": "1878",
+      "note": "The lectures where Dini's theorem on uniform convergence first appears"
+    },
+    {
+      "authors": "Rudin, Walter",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "note": "Theorem 7.13 (Dini's theorem); Chapter 7 discusses why each hypothesis is necessary, including non-monotone moving-bump behaviour"
+    },
+    {
+      "authors": "Bartle, Robert; Sherbert, Donald",
+      "title": "Introduction to Real Analysis",
+      "year": "2011",
+      "note": "Dini's theorem and the role of monotonicity in the index"
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "dini-theorem-oq-01",
+      "relationship": "Parent entry: re-exports Dini's theorem and proves the necessity of continuity-of-limit and compactness; this entry answers its open question on the necessity of monotonicity."
+    }
+  ],
+  "conclusion": {
+    "summary": "The moving bump Fₙ(x) = n·x·exp(−n·x) on the compact interval [0,1] is continuous in x, converges pointwise to the continuous function 0, and is verifiably non-monotone in n, yet does not converge uniformly because its travelling peak Fₙ(1/n) = e⁻¹ keeps the supremum error ≥ e⁻¹ > 1/3. This completes the Dini sharpness trilogy: with the parent's two witnesses it shows all three hypotheses of Dini's theorem — continuity of the limit, compactness of the domain, and monotonicity in n — are each necessary. Verified with 0 axioms and 0 sorries.",
+    "implications": "Gives the gallery a formal demonstration that the monotonicity hypothesis of Dini's theorem is load-bearing, using a smooth moving bump whose only failing hypothesis is monotonicity, and whose non-uniformity is witnessed by a single explicit travelling family of points.",
+    "openQuestions": [
+      "Can the moving-bump escape be quantified into an exact modulus: is sup_{x ∈ [0,1]} Fₙ(x) = e⁻¹ for every n ≥ 1, giving the precise supremum error rather than the crude lower bound 1/3?",
+      "Does the same bump, rescaled to height 1 (e·n·x·exp(−n·x) near its peak), give a uniformly bounded non-monotone witness, and can Dini fail simultaneously with all three hypotheses isolated in one family?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Set"
+    ],
+    "namespace": "DiniTheoremOQ01OQ01",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1,
+    "path": "Proofs/DiniTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
