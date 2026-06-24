@@ -1,0 +1,191 @@
+{
+  "id": "lifting-the-exponent-oq-02-oq-01",
+  "title": "Lifting the Exponent for sums xⁿ + yⁿ at p = 2, and an all-primes dispatch",
+  "slug": "lifting-the-exponent-oq-02-oq-01",
+  "description": "The companion entry lifting-the-exponent-oq-02 computes v₂(xⁿ − yⁿ). This entry handles the sum xⁿ + yⁿ at the even prime p = 2, where behaviour splits sharply on the parity of n. For odd n, v₂(xⁿ + yⁿ) = v₂(x + y) with no v₂(n) correction (because 2 ∤ n); this comes from the general prime lemma emultiplicity_pow_sub_pow_of_prime via xⁿ + yⁿ = xⁿ − (−y)ⁿ. For even n ≠ 0 with x, y odd, v₂(xⁿ + yⁿ) = 1 exactly, since xⁿ + yⁿ ≡ 2 (mod 8) — the mechanism being the classical odd² ≡ 1 (mod 8). Mathlib supplies the odd-prime sum LTE Int.emultiplicity_pow_add_pow (carrying a +vₚ(n) term) but no p = 2 sum statement. We fill that gap and package everything into a single all-primes dispatch: for any prime p and odd exponent n with p ∣ x + y and p ∤ x, vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n), which specialises to v₂(x + y) at p = 2 precisely because v₂(n) = 0 for odd n. The result is the sum-side counterpart to the difference-side OQ-02 entry, realising both follow-up questions it posed. All results are 0-axiom, 0-sorry.",
+  "meta": {
+    "author": "Classical (Lifting the Exponent Lemma, sums at p = 2); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lifting-the-exponent_lemma",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "p-adic-valuation",
+      "lifting-the-exponent",
+      "lte",
+      "even-prime",
+      "sum-of-powers",
+      "multiplicity",
+      "divisibility",
+      "olympiad",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/LiftingTheExponentOQ02OQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "emultiplicity_pow_sub_pow_of_prime",
+        "description": "For a prime p in an integral domain with p ∣ x − y, p ∤ x and p ∤ n, emultiplicity p (xⁿ − yⁿ) = emultiplicity p (x − y). Crucially this holds for EVERY prime including p = 2 (the only restriction is p ∤ n, i.e. n coprime to p), which is exactly what makes the odd-exponent sum case at p = 2 reduce to v₂(x + y) with no correction term.",
+        "module": "Mathlib.NumberTheory.Multiplicity"
+      },
+      {
+        "theorem": "Int.emultiplicity_pow_add_pow",
+        "description": "The odd-prime sum LTE: for an odd prime p with p ∣ x + y, p ∤ x and odd n, emultiplicity p (xⁿ + yⁿ) = emultiplicity p (x + y) + emultiplicity p n. Supplies the odd-prime branch of the all-primes dispatch.",
+        "module": "Mathlib.NumberTheory.Multiplicity"
+      },
+      {
+        "theorem": "Int.even_mul_succ_self",
+        "description": "k(k+1) is even — the parity fact behind odd² ≡ 1 (mod 8): (2k+1)² − 1 = 4k(k+1) = 8·(k(k+1)/2).",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Int.modEq_iff_dvd",
+        "description": "a ≡ b [ZMOD n] ↔ n ∣ b − a — used both to prove odd² ≡ 1 (mod 8) and to extract xⁿ + yⁿ = 8t + 2 in the even-exponent case.",
+        "module": "Mathlib.Data.Int.GCD"
+      },
+      {
+        "theorem": "emultiplicity_eq_coe",
+        "description": "emultiplicity a b = ↑k ↔ aᵏ ∣ b ∧ ¬aᵏ⁺¹ ∣ b — pins emultiplicity 2 (xⁿ + yⁿ) = 1 in the even case from 2 ∣ (xⁿ+yⁿ) and ¬4 ∣ (xⁿ+yⁿ).",
+        "module": "Mathlib.RingTheory.Multiplicity"
+      },
+      {
+        "theorem": "padicValInt.of_ne_one_ne_zero",
+        "description": "For p ≠ 1 and z ≠ 0, padicValInt p z = multiplicity (p : ℤ) z — rewrites the multiplicity identities into the schoolbook padicValInt form.",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal.Basic"
+      }
+    ],
+    "originalContributions": [
+      "two_emultiplicity_pow_add_pow_odd: for odd x, y and odd n, emultiplicity 2 (xⁿ + yⁿ) = emultiplicity 2 (x + y) — the p = 2 sum LTE for odd exponents, obtained from the all-primes lemma via xⁿ + yⁿ = xⁿ − (−y)ⁿ; Mathlib has no p = 2 sum statement",
+      "two_emultiplicity_pow_add_pow_even: for odd x, y and even n, emultiplicity 2 (xⁿ + yⁿ) = 1 exactly, from xⁿ + yⁿ ≡ 2 (mod 8)",
+      "odd_sq_modEq_eight: a² ≡ 1 (mod 8) for every odd integer a — the classical fact, proved by k(k+1) even",
+      "odd_pow_even_modEq_eight: xⁿ ≡ 1 (mod 8) for odd x and even n",
+      "emultiplicity_pow_add_pow_odd_exp: the all-primes dispatch — for any prime p, odd n, p ∣ x + y, p ∤ x, emultiplicity p (xⁿ + yⁿ) = emultiplicity p (x + y) + emultiplicity p n, branching on p = 2 (where the n-term vanishes) versus odd p (Mathlib's lemma)",
+      "two_padicValInt_pow_add_pow_odd: the schoolbook integer form v₂(xⁿ + yⁿ) = v₂(x + y) for odd n with x + y ≠ 0",
+      "two_padicValInt_pow_add_pow_even: v₂(xⁿ + yⁿ) = 1 for even n",
+      "pow_add_pow_ne_zero_odd: xⁿ + yⁿ ≠ 0 for odd x, y, odd n and x + y ≠ 0 — derived from finiteness of the valuation, not assumed"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 208,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which are not counted). decide is used to discharge tiny numeric facts like (2 : ℤ).natAbs ≠ 1; no native_decide is used (#print axioms confirms no Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 12,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Lifting the Exponent Lemma has a difference form (vₚ(xⁿ − yⁿ)) and a sum form (vₚ(xⁿ + yⁿ)). For odd primes the sum form vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n) holds for odd exponents n and is what Mathlib provides. The even prime p = 2 is, as always with LTE, the exceptional case — and for sums it is exceptional in a different way from differences: the answer depends entirely on the parity of n. For odd n the valuation is simply v₂(x + y); for even n the sum of two odd n-th powers is ≡ 2 (mod 8), so the valuation collapses to the constant 1. This sum-at-p=2 behaviour is needed for 2-adic order computations on aⁿ + bⁿ that arise in olympiad number theory and in factorisation/divisibility arguments. Mathlib formalizes the difference LTE at p = 2 and the odd-prime sum LTE, but not the p = 2 sum case; this entry supplies it.",
+    "problemStatement": "**Open Question (lifting-the-exponent-oq-02-oq-01)**: Derive the aⁿ + bⁿ companion for the even prime p = 2 (reconciling odd-n versus even-n behaviour) and unify the odd-prime and p = 2 sum LTE into a single all-primes dispatch.\n\n**Result**: two_emultiplicity_pow_add_pow_odd and two_emultiplicity_pow_add_pow_even give the two p = 2 parity cases; their padicValInt forms are two_padicValInt_pow_add_pow_odd/_even; emultiplicity_pow_add_pow_odd_exp is the all-primes dispatch for odd exponents.",
+    "text": "At p = 2 the 2-adic valuation of a sum of equal powers splits on the parity of the exponent. For odd x, y: if n is odd then v₂(xⁿ + yⁿ) = v₂(x + y); if n ≠ 0 is even then v₂(xⁿ + yⁿ) = 1. For any prime p, odd exponent n, with p ∣ x + y and p ∤ x, the uniform identity vₚ(xⁿ + yⁿ) = vₚ(x + y) + vₚ(n) holds, specialising at p = 2 to v₂(x + y) because v₂(n) = 0 for odd n.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Odd-exponent p = 2 case.** Rewrite xⁿ + yⁿ = xⁿ − (−y)ⁿ using Odd.neg_pow, so the goal becomes the difference form, and apply emultiplicity_pow_sub_pow_of_prime with Int.prime_two. The only hypotheses are 2 ∣ x − (−y) = x + y (two odds sum to an even), 2 ∤ x, and 2 ∤ n (from Odd n) — no v₂(n) term appears because the lemma is the p ∤ n branch.\n\n2. **odd² ≡ 1 (mod 8).** Write a = 2k + 1; then a² − 1 = 4k(k+1), and k(k+1) is even (Int.even_mul_succ_self), so 8 ∣ a² − 1. Discharged by linear_combination on the evenness witness.\n\n3. **Even-exponent p = 2 case.** For even n, xⁿ = (x^{n/2})² ≡ 1 (mod 8) and likewise yⁿ, so xⁿ + yⁿ ≡ 2 (mod 8). Extract xⁿ + yⁿ = 8t + 2; then 2 ∣ xⁿ + yⁿ (witness 4t + 1) and ¬4 ∣ xⁿ + yⁿ (omega), so emultiplicity_eq_coe pins the valuation at 1.\n\n4. **All-primes dispatch.** Case split on p = 2 versus odd. For p = 2, n odd, the term emultiplicity 2 n = 0 (since 2 ∤ n), reducing to step 1. For odd p, it is exactly Mathlib's Int.emultiplicity_pow_add_pow.\n\n5. **padicValInt forms.** Descend from emultiplicity through FiniteMultiplicity, manufacturing xⁿ + yⁿ ≠ 0 from finiteness of the valuation (odd case, needs x + y ≠ 0) or from xⁿ + yⁿ ≡ 2 (mod 8) (even case), then rewrite with padicValInt.of_ne_one_ne_zero.",
+    "keyInsights": [
+      "**The general prime lemma already covers p = 2 for coprime exponents.** emultiplicity_pow_sub_pow_of_prime needs only p ∤ n, not an odd prime; so the odd-exponent sum case at p = 2 follows with no correction term, exactly as for odd primes.",
+      "**Parity of the exponent decides everything at p = 2.** For odd n the valuation tracks v₂(x + y); for even n it is the constant 1. This dichotomy is the structural content distinguishing the sum case from the difference case.",
+      "**odd² ≡ 1 (mod 8) is the engine of the even case.** Two odd n-th powers (n even) are each ≡ 1 (mod 8), so their sum is ≡ 2 (mod 8): even but not divisible by 4, hence v₂ = 1 with no dependence on x, y, or n.",
+      "**One dispatch for all primes.** Writing the n-term as vₚ(n) makes a single statement valid for every prime: it is the genuine +vₚ(n) for odd p and silently zero at p = 2 (odd n), unifying Mathlib's odd-prime lemma with the new p = 2 result.",
+      "**Nonvanishing for free.** xⁿ + yⁿ ≠ 0 is not assumed: in the odd case finiteness of v₂(x + y) (from x + y ≠ 0) forces v₂(xⁿ + yⁿ) finite; in the even case the sum is ≡ 2 (mod 8), hence nonzero outright."
+    ],
+    "prerequisites": [
+      "p-adic valuation of integers: padicValInt / padicValNat and their relation to multiplicity",
+      "The extended valuation emultiplicity and the FiniteMultiplicity predicate",
+      "The general prime lemma emultiplicity_pow_sub_pow_of_prime and the odd-prime sum LTE Int.emultiplicity_pow_add_pow",
+      "The reduction xⁿ + yⁿ = xⁿ − (−y)ⁿ for odd n via Odd.neg_pow",
+      "The classical congruence odd² ≡ 1 (mod 8)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring explaining the sum-at-p=2 LTE, the odd-n versus even-n split, and the all-primes dispatch goal; targeted imports of Mathlib.NumberTheory.Multiplicity and the padic valuation basics.",
+      "mathContext": "$v_2(x^n + y^n)$ depends on the parity of $n$: $v_2(x+y)$ for odd $n$, and $1$ for even $n$."
+    },
+    {
+      "id": "helpers",
+      "title": "Arithmetic helpers",
+      "startLine": 38,
+      "endLine": 76,
+      "summary": "Two odds sum to an even (two_dvd_add_of_not_dvd); 2 ∤ x with 2 ∣ x + y gives 2 ∤ y; an integer with 2 ∤ a is odd; 2 ∤ ↑n for odd n; and the classical odd² ≡ 1 (mod 8) (odd_sq_modEq_eight).",
+      "mathContext": "$a$ odd $\\Rightarrow a^2 \\equiv 1 \\pmod 8$, via $(2k+1)^2 - 1 = 4k(k+1)$."
+    },
+    {
+      "id": "odd-exponent",
+      "title": "Sum LTE at p = 2, odd exponent",
+      "startLine": 77,
+      "endLine": 89,
+      "summary": "two_emultiplicity_pow_add_pow_odd rewrites xⁿ + yⁿ = xⁿ − (−y)ⁿ and applies emultiplicity_pow_sub_pow_of_prime with Int.prime_two, giving v₂(xⁿ + yⁿ) = v₂(x + y) with no correction.",
+      "mathContext": "$\\operatorname{emult}_2(x^n + y^n) = \\operatorname{emult}_2(x + y)$ for odd $n$."
+    },
+    {
+      "id": "even-exponent",
+      "title": "Sum LTE at p = 2, even exponent",
+      "startLine": 90,
+      "endLine": 125,
+      "summary": "odd_pow_even_modEq_eight gives xⁿ ≡ 1 (mod 8); two_emultiplicity_pow_add_pow_even then extracts xⁿ + yⁿ = 8t + 2 and pins emultiplicity 2 (xⁿ + yⁿ) = 1 via emultiplicity_eq_coe (2 ∣ sum, ¬4 ∣ sum).",
+      "mathContext": "$\\operatorname{emult}_2(x^n + y^n) = 1$ for even $n \\neq 0$ and odd $x, y$."
+    },
+    {
+      "id": "dispatch",
+      "title": "All-primes dispatch (odd exponent)",
+      "startLine": 126,
+      "endLine": 151,
+      "summary": "emultiplicity_pow_add_pow_odd_exp case-splits on p = 2 versus odd p: at p = 2 the term emultiplicity 2 n vanishes (n odd) and it reduces to the odd-exponent case; for odd p it is Int.emultiplicity_pow_add_pow.",
+      "mathContext": "$\\operatorname{emult}_p(x^n + y^n) = \\operatorname{emult}_p(x + y) + \\operatorname{emult}_p(n)$ for every prime $p$ and odd $n$."
+    },
+    {
+      "id": "padicval",
+      "title": "Schoolbook integer v₂ forms",
+      "startLine": 152,
+      "endLine": 208,
+      "summary": "pow_add_pow_ne_zero_odd supplies xⁿ + yⁿ ≠ 0 from finiteness; two_padicValInt_pow_add_pow_odd gives v₂(xⁿ + yⁿ) = v₂(x + y) (odd n) and two_padicValInt_pow_add_pow_even gives v₂(xⁿ + yⁿ) = 1 (even n) in padicValInt form.",
+      "mathContext": "$v_2(x^n + y^n) = v_2(x + y)$ (odd $n$); $v_2(x^n + y^n) = 1$ (even $n$)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lifting-the-exponent-oq-02",
+      "relationship": "parent",
+      "description": "OQ-02 packages the difference form v₂(xⁿ − yⁿ) at p = 2; this entry is the sum-form counterpart it explicitly called for, handling v₂(xⁿ + yⁿ) and the all-primes dispatch."
+    },
+    {
+      "targetId": "lifting-the-exponent-oq-01",
+      "relationship": "sibling",
+      "description": "OQ-01 packages the odd-prime difference LTE; the all-primes dispatch here is the sum analogue, with the odd-prime branch supplied by Mathlib's Int.emultiplicity_pow_add_pow."
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) treatment of the sum LTE xⁿ + yⁿ at the even prime p = 2: the odd-exponent case v₂(x + y), the even-exponent collapse to 1, both in emultiplicity and padicValInt form, plus a single all-primes dispatch for odd exponents.",
+    "implications": "Provides the p = 2 sum LTE that Mathlib lacks (it has only the odd-prime sum and the p = 2 difference), and unifies it with the odd-prime case in one dispatching statement, ready for 2-adic order computations on aⁿ + bⁿ over ℤ.",
+    "openQuestions": [
+      "Extend the all-primes dispatch to even exponents, packaging the even-n collapse (v₂ = 1 at p = 2; the odd-prime even-n sum has no general LTE) into a single parity-and-prime branching statement.",
+      "Derive the explicit divisibility consequences (2^{v₂(x+y)} ∣ xⁿ + yⁿ for odd n) mirroring two_lte_pow_dvd from the difference entry."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.Multiplicity",
+      "Mathlib.NumberTheory.Padics.PadicVal.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "LiftingTheExponentOQ02OQ01",
+    "lineCount": 208,
+    "axiomCount": 0,
+    "theoremCount": 12,
+    "definitionCount": 0,
+    "path": "Proofs/LiftingTheExponentOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Wikipedia",
+      "title": "Lifting-the-exponent lemma",
+      "year": "n.d.",
+      "venue": "Wikipedia",
+      "note": "The p = 2 case of LTE and the sum form xⁿ + yⁿ"
+    }
+  ],
+  "sorries": 0
+}

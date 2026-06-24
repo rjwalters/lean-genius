@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-lteoq0201-1",
+    "proofId": "lifting-the-exponent-oq-02-oq-01",
+    "range": { "startLine": 5, "endLine": 36 },
+    "type": "context",
+    "title": "Sum LTE at p = 2: parity of the exponent decides everything",
+    "content": "**Module framing.** The companion entry OQ-02 handles the *difference* $v_2(x^n - y^n)$. Here the *sum* $x^n + y^n$ at $p = 2$ behaves quite differently, splitting on the parity of $n$. For **odd** $n$, $v_2(x^n + y^n) = v_2(x+y)$ — no $v_2(n)$ correction, because $2 \\nmid n$. For **even** $n \\neq 0$ with $x, y$ odd, $v_2(x^n + y^n) = 1$ *exactly*: two odd $n$-th powers are each $\\equiv 1 \\pmod 8$, so their sum is $\\equiv 2 \\pmod 8$. Mathlib has the odd-prime sum LTE and the $p=2$ difference LTE, but no $p = 2$ sum statement; this entry supplies it and unifies it with the odd-prime case.",
+    "mathContext": "$v_2(x^n + y^n) = v_2(x+y)$ for odd $n$; $v_2(x^n + y^n) = 1$ for even $n \\neq 0$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Lifting the Exponent (LTE)",
+      "2-adic valuation",
+      "sum of equal powers",
+      "odd squares mod 8"
+    ]
+  },
+  {
+    "id": "ann-lteoq0201-2",
+    "proofId": "lifting-the-exponent-oq-02-oq-01",
+    "range": { "startLine": 70, "endLine": 76 },
+    "type": "key-step",
+    "title": "odd² ≡ 1 (mod 8): the engine of the even case",
+    "content": "Writing $a = 2k+1$, $a^2 - 1 = 4k^2 + 4k = 4k(k+1)$. Since $k(k+1)$ is the product of consecutive integers it is even (`Int.even_mul_succ_self`), so $8 \\mid a^2 - 1$, i.e. $a^2 \\equiv 1 \\pmod 8$. The proof destructures the evenness witness $k(k+1) = j + j$ and closes the divisibility $8 \\mid 1 - (2k+1)^2$ with a single `linear_combination (-4) * hj`.",
+    "mathContext": "$a$ odd $\\Rightarrow a^2 \\equiv 1 \\pmod 8$.",
+    "significance": "high",
+    "relatedConcepts": ["consecutive integers", "modular arithmetic", "linear_combination"]
+  },
+  {
+    "id": "ann-lteoq0201-3",
+    "proofId": "lifting-the-exponent-oq-02-oq-01",
+    "range": { "startLine": 77, "endLine": 89 },
+    "type": "key-step",
+    "title": "Odd exponent: reduce the sum to a difference",
+    "content": "For odd $n$, $x^n + y^n = x^n - (-y)^n$ (via `Odd.neg_pow`). The general prime lemma `emultiplicity_pow_sub_pow_of_prime` applies to **every** prime $p$ — including $p = 2$ — provided $p \\nmid n$. With $2 \\mid x - (-y) = x + y$ (two odds sum to an even), $2 \\nmid x$, and $2 \\nmid n$ (from `Odd n`), it yields $v_2(x^n + y^n) = v_2(x + y)$ directly, with no $v_2(n)$ term.",
+    "mathContext": "$\\operatorname{emult}_2(x^n + y^n) = \\operatorname{emult}_2(x + y)$ for odd $n$.",
+    "significance": "high",
+    "relatedConcepts": ["Odd.neg_pow", "general prime LTE", "Int.prime_two"]
+  },
+  {
+    "id": "ann-lteoq0201-4",
+    "proofId": "lifting-the-exponent-oq-02-oq-01",
+    "range": { "startLine": 105, "endLine": 125 },
+    "type": "key-step",
+    "title": "Even exponent: the valuation collapses to 1",
+    "content": "For even $n$, both $x^n$ and $y^n$ are $\\equiv 1 \\pmod 8$, so $x^n + y^n \\equiv 2 \\pmod 8$. Extracting $x^n + y^n = 8t + 2$ gives $2 \\mid x^n + y^n$ (witness $4t+1$) but $\\neg\\, 4 \\mid x^n + y^n$ (`omega`). Then `emultiplicity_eq_coe` pins $\\operatorname{emult}_2(x^n + y^n) = 1$, independently of $x$, $y$, and $n$.",
+    "mathContext": "$\\operatorname{emult}_2(x^n + y^n) = 1$ for even $n \\neq 0$.",
+    "significance": "high",
+    "relatedConcepts": ["emultiplicity_eq_coe", "ZMOD 8", "omega"]
+  },
+  {
+    "id": "ann-lteoq0201-5",
+    "proofId": "lifting-the-exponent-oq-02-oq-01",
+    "range": { "startLine": 126, "endLine": 151 },
+    "type": "key-step",
+    "title": "One dispatch for every prime",
+    "content": "The statement writes the exponent term as $\\operatorname{emult}_p(n)$, so a single identity $\\operatorname{emult}_p(x^n + y^n) = \\operatorname{emult}_p(x + y) + \\operatorname{emult}_p(n)$ holds for *every* prime $p$ at odd $n$. The proof branches: for odd $p$ it is exactly Mathlib's `Int.emultiplicity_pow_add_pow`; for $p = 2$ the term $\\operatorname{emult}_2(n) = 0$ (since $2 \\nmid n$), so it reduces to the odd-exponent case above.",
+    "mathContext": "$\\operatorname{emult}_p(x^n + y^n) = \\operatorname{emult}_p(x + y) + \\operatorname{emult}_p(n)$, all primes $p$, odd $n$.",
+    "significance": "high",
+    "relatedConcepts": ["all-primes dispatch", "Int.emultiplicity_pow_add_pow", "case analysis on p = 2"]
+  }
+]
