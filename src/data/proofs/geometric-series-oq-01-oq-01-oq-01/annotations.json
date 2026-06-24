@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ann-closed-form",
+    "proofId": "geometric-series-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 35,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "The Differentiated Geometric Series Without Calculus",
+    "content": "hasSum_alt_nat builds the closed form ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² by addition rather than differentiation. Setting y = −x (with ‖y‖ = |x| < 1), it adds two Mathlib sums: ∑ n·yⁿ = y/(1−y)² (hasSum_coe_mul_geometric_of_norm_lt_one) and ∑ yⁿ = 1/(1−y) (hasSum_geometric_of_norm_lt_one). The combined general term is n·yⁿ + yⁿ = (n+1)yⁿ and the combined value is y/(1−y)² + 1/(1−y) = 1/(1−y)². Rewriting yⁿ = (−1)ⁿxⁿ (neg_pow) and 1−y = 1+x gives HasSum (fun n => (−1)ⁿ(n+1)xⁿ) (1/(1+x)²); alt_nat_power_series is the tsum form."
+  },
+  {
+    "id": "ann-abel-limit",
+    "proofId": "geometric-series-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "The Abel Sum Is the Boundary Value 1/4",
+    "content": "abel_tendsto_quarter reads Euler's series as the radial boundary value of 1/(1+x)². On a left-neighborhood of 1 (filter_upwards over 𝓝[<]1, where x < 1 and eventually x > −1 force |x| < 1) the tsum equals 1/(1+x)², so tendsto_congr' transfers the limit; then lim_{x→1} 1/(1+x)² = 1/(1+1)² = 1/4 follows from Tendsto.inv₀ applied to x ↦ (1+x)² → 4. Hence 1 − 2 + 3 − 4 + ⋯ is Abel summable to 1/4, the value Euler assigned and the one matching η(−1)."
+  }
+]

@@ -1,0 +1,167 @@
+{
+  "id": "geometric-series-oq-01-oq-01-oq-01",
+  "title": "Abel Summation of 1 − 2 + 3 − 4 + ⋯ = 1/4",
+  "slug": "geometric-series-oq-01-oq-01-oq-01",
+  "description": "Follow-up to the parent's Abel summation of Grandi's series (1/2): the term-by-term derivative, Euler's divergent series 1 − 2 + 3 − 4 + ⋯. For |x|<1 the Abel power series ∑(−1)ⁿ(n+1)xⁿ sums to the closed form 1/(1+x)² (derivative of the geometric series, ratio −x), and its boundary value lim_{x→1⁻} 1/(1+x)² = 1/4 is the Abel sum. So Euler's series is Abel summable to 1/4, consistent with η(−1)=1/4. Fully verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Leonhard Euler / Niels Henrik Abel; formalized in Lean 4",
+    "date": "1826",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GeometricSeriesOQ01OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "summability",
+      "abel-summation",
+      "divergent-series",
+      "geometric-series",
+      "dirichlet-eta"
+    ],
+    "badge": "verified",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 107,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "hasSum_alt_nat: for |x|<1, HasSum (fun n => (−1)ⁿ(n+1)xⁿ) (1/(1+x)²), obtained by adding Mathlib's ∑ n yⁿ = y/(1−y)² and ∑ yⁿ = 1/(1−y) at y = −x.",
+      "alt_nat_power_series: the tsum closed form ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x|<1.",
+      "abel_tendsto_quarter: the Abel limit lim_{x→1⁻} ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/4, the boundary value of 1/(1+x)².",
+      "abel_value_quarter: Euler's series 1 − 2 + 3 − 4 + ⋯ is Abel summable to 1/4."
+    ],
+    "prerequisites": [
+      "Geometric series and its derivative ∑ (n+1) rⁿ = 1/(1−r)² for |r|<1",
+      "Abel summation: the radial limit of a power series at the boundary",
+      "Filters, nhdsWithin, and continuity in Lean 4/Mathlib"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "hasSum_coe_mul_geometric_of_norm_lt_one",
+        "description": "HasSum (fun n => n·ξⁿ) (ξ/(1−ξ)²) for ‖ξ‖<1 — the differentiated geometric series, applied with ξ = −x",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "hasSum_geometric_of_norm_lt_one",
+        "description": "HasSum (fun n => ξⁿ) (1−ξ)⁻¹ for ‖ξ‖<1 — added to the above to obtain ∑ (n+1) ξⁿ",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Filter.Tendsto.inv₀",
+        "description": "limits commute with inversion at a nonzero value, giving lim 1/(1+x)² = 1/4",
+        "module": "Mathlib.Topology.Algebra.GroupWithZero"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Euler's series 1 − 2 + 3 − 4 + ⋯ is the term-by-term derivative of Grandi's series 1 − 1 + 1 − 1 + ⋯. Like Grandi's, it diverges in the ordinary sense, but Euler famously assigned it the value 1/4 by manipulating the power series ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² and setting x = 1. Abel's method makes this rigorous: the power series converges for |x| < 1 to 1/(1+x)², whose radial boundary limit as x → 1⁻ is 1/4.\n\nThe value 1/4 is exactly η(−1), where η(s) = ∑ (−1)ⁿ⁻¹ n⁻ˢ is the Dirichlet eta function; via η(s) = (1 − 2¹⁻ˢ)ζ(s) it is tied to the (in)famous ζ(−1) = −1/12. This entry refines the parent's Grandi result one derivative up, staying entirely within elementary, fully-verified real analysis.",
+    "problemStatement": "**Follow-up to geometric-series-oq-01-oq-01 (Abel summation of Grandi's series = 1/2)**: does the term-by-term derivative 1 − 2 + 3 − 4 + ⋯ have an Abel sum, and is it 1/4 = lim_{x→1⁻} ∑ (−1)ⁿ(n+1)xⁿ = lim_{x→1⁻} 1/(1+x)²?\n\n**Result**: yes — the closed form and the boundary limit are both proved.",
+    "text": "A 107-line, fully verified (0 sorries, 0 axioms, no native_decide) file. hasSum_alt_nat / alt_nat_power_series give the closed form ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x|<1; abel_tendsto_quarter proves the Abel limit at x → 1⁻ is 1/4; abel_value_quarter packages the conclusion.",
+    "proofStrategy": "hasSum_alt_nat sets y = −x (with ‖y‖ = |x| < 1) and adds two Mathlib sums: ∑ n·yⁿ = y/(1−y)² (hasSum_coe_mul_geometric_of_norm_lt_one) and ∑ yⁿ = 1/(1−y) (hasSum_geometric_of_norm_lt_one). Their sum has general term (n+1)yⁿ and value y/(1−y)² + 1/(1−y) = 1/(1−y)²; rewriting yⁿ = (−1)ⁿxⁿ (neg_pow) and 1−y = 1+x yields HasSum (fun n => (−1)ⁿ(n+1)xⁿ) (1/(1+x)²) (the value identity closed by field_simp; ring with 1+x ≠ 0 from |x| < 1). alt_nat_power_series is its tsum_eq. abel_tendsto_quarter shows the series equals 1/(1+x)² on a left-neighborhood of 1 (filter_upwards over 𝓝[<]1, where x < 1 and eventually x > −1 give |x| < 1), transfers via tendsto_congr', and computes lim_{x→1} 1/(1+x)² = 1/4 by Tendsto.inv₀ on x ↦ (1+x)² → 4.",
+    "keyInsights": [
+      "Euler's series is the derivative of Grandi's: differentiating ∑ (−1)ⁿxⁿ = 1/(1+x) term by term gives ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)².",
+      "The closed form is obtained without calculus, by adding the two standard sums ∑ n·yⁿ and ∑ yⁿ at y = −x — keeping the proof inside elementary summability.",
+      "The Abel sum is the boundary value of 1/(1+x)², continuous at x = 1 with value 1/4.",
+      "The value 1/4 = η(−1) is consistent with the analytic continuation of the Dirichlet eta function, linking this elementary computation to ζ(−1) = −1/12 via η(s) = (1 − 2¹⁻ˢ)ζ(s).",
+      "Working over 𝓝[<] 1 captures the one-sided radial limit x → 1⁻ precisely, exactly as in the parent Grandi entry."
+    ]
+  },
+  "sections": [
+    {
+      "id": "closed-form",
+      "title": "The Differentiated Geometric Series",
+      "startLine": 35,
+      "endLine": 66,
+      "summary": "hasSum_alt_nat / alt_nat_power_series: ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x| < 1.",
+      "mathContext": "Sum of ∑ n·yⁿ = y/(1−y)² and ∑ yⁿ = 1/(1−y) at y = −x gives ∑ (n+1)yⁿ = 1/(1−y)²."
+    },
+    {
+      "id": "abel-limit",
+      "title": "The Abel Limit 1/4",
+      "startLine": 68,
+      "endLine": 91,
+      "summary": "abel_tendsto_quarter: lim_{x→1⁻} ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/4, the boundary value of 1/(1+x)². abel_value_quarter packages it.",
+      "mathContext": "The radial boundary limit of 1/(1+x)² at x = 1 is 1/4, the Abel sum of 1 − 2 + 3 − 4 + ⋯."
+    }
+  ],
+  "conclusion": {
+    "summary": "Euler's series 1 − 2 + 3 − 4 + ⋯ is Abel summable to 1/4: its Abel power series ∑ (−1)ⁿ(n+1)xⁿ equals 1/(1+x)² for |x| < 1, whose boundary value as x → 1⁻ is 1/4. This refines the parent's Grandi result (1/2) one derivative up.",
+    "implications": "The result is the elementary, fully-verified core of the assignment 1 − 2 + 3 − 4 + ⋯ = 1/4 = η(−1), connecting Abel summation to the Dirichlet eta function and, through η(s) = (1 − 2¹⁻ˢ)ζ(s), to ζ(−1) = −1/12. It shows the boundary regularization theory of the geometric series propagates to its derivatives.",
+    "openQuestions": [
+      "Abel-sum the higher derivatives ∑ (−1)ⁿ binom(n+k,k) xⁿ = 1/(1+x)^{k+1}, giving the boundary values 1/2^{k+1}.",
+      "Connect the value 1/4 to η(−1) formally via the Dirichlet eta function in Mathlib.",
+      "Formalize Frobenius's theorem (Cesàro ⟹ Abel, same value) to cover both this and the parent uniformly."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "geometric-series-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: Abel summation of Grandi's series 1 − 1 + 1 − 1 + ⋯ = 1/2. This entry treats its term-by-term derivative."
+    },
+    {
+      "targetId": "geometric-series-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: the geometric series at the boundary |r| = 1."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "GeometricSeriesOQ01OQ01OQ01",
+    "lineCount": 107,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mainTheorems": [
+      {
+        "name": "abel_tendsto_quarter",
+        "type": "core",
+        "description": "The Abel limit of 1 − 2 + 3 − 4 + ⋯ is 1/4",
+        "leanType": "Tendsto (fun x : ℝ => ∑' n : ℕ, (-1)^n * (n+1) * x^n) (𝓝[<] 1) (𝓝 (1/4))"
+      },
+      {
+        "name": "alt_nat_power_series",
+        "type": "key",
+        "description": "The Abel power series closed form ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x|<1",
+        "leanType": "{x : ℝ} → |x| < 1 → ∑' n : ℕ, (-1)^n * (n+1) * x^n = ((1 + x)^2)⁻¹"
+      }
+    ],
+    "path": "Proofs/GeometricSeriesOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "abel_tendsto_quarter",
+      "type": "core",
+      "description": "Abel summability of 1 − 2 + 3 − 4 + ⋯: the radial limit at x → 1⁻ is 1/4",
+      "leanType": "Tendsto (fun x : ℝ => ∑' n : ℕ, (-1)^n * (n+1) * x^n) (𝓝[<] 1) (𝓝 (1/4))"
+    },
+    {
+      "name": "alt_nat_power_series",
+      "type": "key",
+      "description": "∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x| < 1 (differentiated geometric series, ratio −x)",
+      "leanType": "{x : ℝ} → |x| < 1 → ∑' n : ℕ, (-1)^n * (n+1) * x^n = ((1 + x)^2)⁻¹"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Abel, Niels Henrik",
+      "title": "Recherches sur la série 1 + (m/1)x + (m(m−1)/1·2)x² + ⋯",
+      "year": "1826",
+      "venue": "Journal für die reine und angewandte Mathematik 1, 311–339",
+      "note": "Abel's theorem on the boundary behavior of power series, the basis of Abel summation"
+    },
+    {
+      "authors": "Hardy, G. H.",
+      "title": "Divergent Series",
+      "year": "1949",
+      "venue": "Oxford University Press",
+      "note": "Abel summation and the values 1/2 and 1/4 for 1−1+1−⋯ and 1−2+3−⋯"
+    }
+  ],
+  "sorries": 0
+}

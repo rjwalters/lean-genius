@@ -1,0 +1,68 @@
+{
+  "slug": "geometric-series-oq-01-oq-01-oq-01",
+  "title": "Abel summation of 1 − 2 + 3 − 4 + ⋯ = 1/4 (Geometric Series OQ-01/OQ-01/OQ-01)",
+  "status": "completed",
+  "phase": "DONE",
+  "tier": "B",
+  "significance": 4,
+  "tractability": 7,
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "completed": "2026-06-24",
+  "path": "Proofs/GeometricSeriesOQ01OQ01OQ01.lean",
+  "leanFiles": [
+    "proofs/Proofs/GeometricSeriesOQ01OQ01OQ01.lean"
+  ],
+  "relatedProofs": [
+    "geometric-series-oq-01-oq-01",
+    "geometric-series-oq-01",
+    "geometric-series"
+  ],
+  "problemStatement": "Follow-up to the parent's Abel summation of Grandi's series (1−1+1−1+⋯ = 1/2): does the term-by-term derivative, Euler's series 1 − 2 + 3 − 4 + ⋯, have an Abel sum, and is it 1/4 = lim_{x→1⁻} ∑ (−1)ⁿ(n+1)xⁿ = lim_{x→1⁻} 1/(1+x)²? Resolved: yes.",
+  "knowledge": {
+    "insights": [
+      "∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x|<1 is the term-by-term derivative of Grandi's geometric series ∑ (−1)ⁿxⁿ = 1/(1+x).",
+      "The closed form can be derived WITHOUT differentiation, by adding Mathlib's ∑ n·yⁿ = y/(1−y)² (hasSum_coe_mul_geometric_of_norm_lt_one) and ∑ yⁿ = 1/(1−y) (hasSum_geometric_of_norm_lt_one) at y = −x, since n·yⁿ + yⁿ = (n+1)yⁿ and y/(1−y)² + 1/(1−y) = 1/(1−y)².",
+      "The Abel sum is the boundary value lim_{x→1⁻} 1/(1+x)² = 1/4, computed by Tendsto.inv₀ on x ↦ (1+x)² → 4 over the 𝓝[<]1 filter, mirroring the parent Grandi proof.",
+      "1/4 = η(−1) (Dirichlet eta), consistent via η(s) = (1 − 2¹⁻ˢ)ζ(s) with ζ(−1) = −1/12."
+    ],
+    "builtItems": [
+      "hasSum_alt_nat: HasSum (fun n => (−1)ⁿ(n+1)xⁿ) (1/(1+x)²) for |x|<1, in Proofs/GeometricSeriesOQ01OQ01OQ01.lean",
+      "alt_nat_power_series: tsum closed form = 1/(1+x)²",
+      "abel_tendsto_quarter / abel_value_quarter: Abel limit = 1/4"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Abel-sum the higher derivatives ∑ (−1)ⁿ binom(n+k,k) xⁿ = 1/(1+x)^{k+1} → 1/2^{k+1}.",
+      "Connect 1/4 to η(−1) formally via Mathlib's Dirichlet eta / riemannZeta machinery.",
+      "Formalize Frobenius's theorem (Cesàro ⟹ Abel, same value)."
+    ],
+    "progressSummary": "COMPLETED: verified (0 axioms, 0 sorries) Abel summation of Euler's series 1−2+3−4+⋯ = 1/4 via the differentiated geometric series closed form 1/(1+x)² and its boundary limit. Refines the parent Grandi result one derivative up."
+  },
+  "knownResults": [
+    "Euler (18th c.): assigned 1 − 2 + 3 − 4 + ⋯ the value 1/4 by setting x=1 in ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)².",
+    "Abel (1826): radial boundary limit of a power series makes such assignments rigorous.",
+    "η(−1) = 1/4 via analytic continuation of the Dirichlet eta function."
+  ],
+  "currentState": "Completed and shipped. Verified gallery entry geometric-series-oq-01-oq-01-oq-01.",
+  "references": [
+    {
+      "authors": ["Niels Henrik Abel"],
+      "title": "Recherches sur la série 1 + (m/1)x + ⋯",
+      "year": "1826"
+    },
+    {
+      "authors": ["G. H. Hardy"],
+      "title": "Divergent Series",
+      "year": "1949"
+    }
+  ],
+  "tags": [
+    "analysis",
+    "summability",
+    "abel-summation",
+    "divergent-series",
+    "geometric-series",
+    "dirichlet-eta"
+  ]
+}
