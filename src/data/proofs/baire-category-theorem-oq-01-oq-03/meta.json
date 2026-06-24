@@ -1,0 +1,204 @@
+{
+  "id": "baire-category-theorem-oq-01-oq-03",
+  "slug": "baire-category-theorem-oq-01-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Topology"
+    ],
+    "namespace": "BaireRationalsNotGdelta",
+    "lineCount": 127,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/BaireRationalsNotGdeltaOQ0103.lean",
+    "sorries": 0
+  },
+  "title": "The Rationals Are Not a Gδ, and No Function Is Continuous Exactly at ℚ",
+  "description": "Turns the Baire meagre/residual dichotomy into a Gδ obstruction: the rationals ℚ ⊆ ℝ are not a Gδ set (a dense Gδ would be residual, hence non-meagre, but ℚ is meagre as a countable union of nowhere-dense singletons). Combined with Mathlib's IsGδ.setOf_continuousAt — the continuity set of any function is a Gδ — this yields the classical capstone discussed alongside Thomae's function: no f : ℝ → ℝ is continuous at every rational and discontinuous at every irrational. The obstruction is one-sided: the irrationals ARE a Gδ, so the irrational side is not ruled out.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaireRationalsNotGdeltaOQ0103.lean",
+    "tags": [
+      "topology",
+      "baire-category",
+      "gdelta",
+      "meagre",
+      "rationals",
+      "irrationals",
+      "continuity",
+      "thomae-function",
+      "descriptive-set-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 127,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "not_isGδ_rationals: the rationals ℚ ⊆ ℝ are NOT a Gδ set. The standard countable-dense argument, assembled from Mathlib primitives: ℚ is dense, so a Gδ presentation would make it residual hence non-meagre (not_isMeagre_of_isGδ_of_dense), contradicting its meagreness.",
+      "isMeagre_rationals: ℚ is meagre in ℝ, written as the countable union ⋃ q, {(q : ℝ)} of nowhere-dense singletons (isMeagre_iUnion).",
+      "isMeagre_singleton_real: every real singleton is meagre — closed with empty interior (interior_singleton, since ℝ has no isolated points), hence nowhere dense.",
+      "IsNowhereDense.isMeagre: a reusable bridge that any single nowhere-dense set is meagre (a one-element countable union), via isMeagre_iff_countable_union_isNowhereDense.",
+      "continuitySet_ne_rationals: the capstone — for every f : ℝ → ℝ the continuity set {x | ContinuousAt f x} is never equal to ℚ, because that set is always a Gδ (IsGδ.setOf_continuousAt) and ℚ is not.",
+      "no_function_continuous_exactly_at_rationals: the 'no such function' restatement — there is no f : ℝ → ℝ with ContinuousAt f x ↔ x rational, i.e. continuous exactly at the rationals.",
+      "irrationals_isGδ_no_obstruction: records the sharp asymmetry — the irrationals are a Gδ (IsGδ.setOf_irrational) while the rationals are not, so only the rational side carries a Gδ obstruction (Thomae's function lives on the irrational side)."
+    ],
+    "prerequisites": [
+      "IsGδ.setOf_continuousAt (Mathlib.Topology.GDelta.MetrizableSpace): for any f : X → Y with Y pseudo-metrizable, the set of continuity points {x | ContinuousAt f x} is a Gδ.",
+      "not_isMeagre_of_isGδ_of_dense (Mathlib.Topology.Baire.Lemmas): in a Baire space a dense Gδ set is residual, hence not meagre.",
+      "isMeagre_iUnion and isMeagre_iff_countable_union_isNowhereDense (Mathlib.Topology.GDelta.Basic): meagreness is closed under countable unions and characterised via nowhere-dense sets.",
+      "interior_singleton (Mathlib.Topology.ClusterPt) with NeBot (𝓝[≠] x): singletons have empty interior in a space with no isolated points; ℝ is a PerfectSpace.",
+      "Rat.denseRange_cast (Mathlib.Topology.Algebra.Order.Archimedean): the coercion ℚ → ℝ has dense range.",
+      "IsGδ.setOf_irrational (Mathlib.Topology.Instances.Irrational): the irrationals are a Gδ set."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "IsGδ.setOf_continuousAt",
+        "description": "The set of points of continuity of any function into a (pseudo)metrizable space is a Gδ. The deep analytic ingredient of the capstone; this entry glues it to the not-Gδ-ness of ℚ.",
+        "module": "Mathlib.Topology.GDelta.MetrizableSpace"
+      },
+      {
+        "theorem": "not_isMeagre_of_isGδ_of_dense",
+        "description": "A dense Gδ set in a Baire space is residual, hence not meagre. Supplies the contradiction that proves ℚ is not a Gδ.",
+        "module": "Mathlib.Topology.Baire.Lemmas"
+      },
+      {
+        "theorem": "isMeagre_iUnion / isMeagre_iff_countable_union_isNowhereDense",
+        "description": "Countable unions of meagre sets are meagre, and meagreness is the countable-union-of-nowhere-dense characterisation; used to show ℚ is meagre and that a single nowhere-dense set is meagre.",
+        "module": "Mathlib.Topology.GDelta.Basic"
+      },
+      {
+        "theorem": "interior_singleton",
+        "description": "interior {x} = ∅ when 𝓝[≠] x is nontrivial; ℝ is a PerfectSpace (T1 + connected + nontrivial) so every singleton has empty interior and is nowhere dense.",
+        "module": "Mathlib.Topology.ClusterPt"
+      },
+      {
+        "theorem": "Rat.denseRange_cast / IsGδ.setOf_irrational",
+        "description": "ℚ → ℝ has dense range (so ℚ is dense), and the irrationals are a Gδ — giving both the density needed for the obstruction and the contrasting irrational side.",
+        "module": "Mathlib.Topology.Algebra.Order.Archimedean / Mathlib.Topology.Instances.Irrational"
+      }
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "baire-category-theorem-oq-01-oq-03-oq-01",
+      "question": "Construct Thomae's (popcorn) function explicitly and prove it is continuous exactly at the irrationals, realising the Gδ set {x | Irrational x} as an actual continuity set and showing the asymmetry recorded here is tight.",
+      "significance": "medium"
+    },
+    {
+      "id": "baire-category-theorem-oq-01-oq-03-oq-02",
+      "question": "Generalise the obstruction: in any Baire space with no isolated points, a countable dense set is never a Gδ, hence is never the continuity set of a function into a metrizable space.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "baire-category-theorem-oq-01",
+      "relation": "parent",
+      "description": "The parent entry derives the uncountability of a complete metric space with no isolated points via the meagre/residual dichotomy; this child reuses the same dichotomy as a Gδ obstruction on ℚ and applies it to continuity sets of functions."
+    },
+    {
+      "slug": "baire-category-theorem-oq-01-oq-02",
+      "relation": "sibling",
+      "description": "Sibling OQ-01-OQ-02 turns the dichotomy into a cardinality floor (𝔠 ≤ #α); this entry turns the same dichotomy into a Gδ obstruction and its function-theoretic consequence."
+    },
+    {
+      "slug": "algebraic-reals-meager-dense-gdelta",
+      "relation": "related",
+      "description": "Records the dual fact that the algebraic reals are not a Gδ (the transcendentals being a dense Gδ), the same countable-set mechanism; that ℚ is not a Gδ is the textbook special case, and the new content here is the continuity-set capstone."
+    }
+  ],
+  "references": [
+    {
+      "title": "Counterexamples in Analysis",
+      "author": "B. R. Gelbaum and J. M. H. Olmsted",
+      "year": "1964",
+      "venue": "Holden-Day",
+      "description": "Discusses Thomae's function (continuous exactly at the irrationals) and the impossibility of a function continuous exactly at the rationals."
+    },
+    {
+      "title": "Real Analysis",
+      "author": "H. L. Royden and P. M. Fitzpatrick",
+      "year": "2010",
+      "venue": "Pearson, 4th ed.",
+      "description": "The set of continuity points of any function is a Gδ; combined with Baire category this rules out ℚ as a continuity set."
+    },
+    {
+      "title": "Mathlib4: Topology.GDelta.MetrizableSpace",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of IsGδ.setOf_continuousAt, the statement that continuity sets are Gδ, assembled here with Baire-category obstructions."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Two classical facts of real analysis meet here. First, the set of points at which an arbitrary function is continuous is always a Gδ — a countable intersection of open sets — provable through the oscillation of the function. Second, by Baire category the rationals ℚ, though a countable intersection would make them residual, are too 'small' (meagre) to be a dense Gδ, so ℚ is not a Gδ at all. Together they give a famous impossibility: there is no function on the line that is continuous precisely at the rational points. The companion phenomenon is positive — Thomae's 'popcorn' function is continuous precisely at the irrationals, which is consistent because the irrationals DO form a Gδ. The parent gallery entry used the meagre/residual dichotomy to prove uncountability; this entry deploys the same dichotomy as a Gδ obstruction.",
+    "problemStatement": "Show that the rationals ℚ ⊆ ℝ are not a Gδ set, and deduce that for no function f : ℝ → ℝ is the set of continuity points {x | ContinuousAt f x} equal to ℚ — i.e. no function is continuous at every rational and discontinuous at every irrational. Contrast with the irrationals, which are a Gδ.",
+    "proofStrategy": "ℚ is realised as range ((↑) : ℚ → ℝ); it is dense (Rat.denseRange_cast) and meagre, being the countable union ⋃ q, {(q : ℝ)} of singletons, each nowhere dense because closed with empty interior (interior_singleton, valid since ℝ has no isolated points). A reusable lemma IsNowhereDense.isMeagre turns nowhere-dense singletons into meagre sets, and isMeagre_iUnion assembles the countable union. If ℚ were a Gδ, then being dense it would be residual and so not meagre (not_isMeagre_of_isGδ_of_dense) — a contradiction; hence not_isGδ_rationals. The capstone follows: IsGδ.setOf_continuousAt makes {x | ContinuousAt f x} a Gδ for every f, so it cannot equal the non-Gδ set ℚ (continuitySet_ne_rationals), restated as no_function_continuous_exactly_at_rationals. The asymmetry is recorded by pairing this with IsGδ.setOf_irrational.",
+    "keyInsights": [
+      "The whole impossibility is a clash of two structural facts, neither of which mentions a specific function: continuity sets are always Gδ, and ℚ is never Gδ. No oscillation estimate or explicit function is needed once both are in hand.",
+      "ℚ fails to be Gδ for a soft Baire-category reason, not a cardinality reason: it is meagre yet dense, and in a Baire space dense Gδ sets are residual, the opposite of meagre. The same dichotomy underlies the parent's uncountability proof.",
+      "Meagreness of ℚ reduces to a single local fact about ℝ: points are not isolated, so each singleton has empty interior and is nowhere dense. Drop 'no isolated points' (e.g. in a discrete space) and ℚ-like sets can be open, breaking everything.",
+      "The obstruction is strictly one-sided. The irrationals are a Gδ (IsGδ.setOf_irrational), so they are not ruled out as a continuity set — and indeed Thomae's function realises them. Only the rational side is impossible.",
+      "Delegating the deep half to Mathlib (IsGδ.setOf_continuousAt) keeps the entry short: the mathematical work that remains is the clean assembly of the Baire obstruction on ℚ and the one-line gluing step."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: The Gδ Obstruction on ℚ",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Frames the result as deploying the parent's meagre/residual dichotomy as a Gδ obstruction, states the two halves (ℚ not Gδ; continuity sets are Gδ), the capstone, and the asymmetry with the irrationals, and clarifies the novelty relative to the algebraic-reals entry.",
+      "mathContext": "Continuity sets are Gδ; ℚ is meagre and dense hence not Gδ; therefore no continuity set equals ℚ."
+    },
+    {
+      "id": "rationals-and-density",
+      "title": "The Rationals as a Subset of ℝ, and Their Density",
+      "startLine": 48,
+      "endLine": 60,
+      "summary": "Defines rationals := range ((↑) : ℚ → ℝ), identifies it with the complement of the irrationals (rationals_eq_compl_irrational), and records density (dense_rationals := Rat.denseRange_cast).",
+      "mathContext": "ℚ as range of the cast; Irrational x is by definition x ∉ range (↑), so the rationals are exactly the non-irrationals."
+    },
+    {
+      "id": "meagre-machinery",
+      "title": "Nowhere-Dense Singletons and Meagreness of ℚ",
+      "startLine": 62,
+      "endLine": 81,
+      "summary": "IsNowhereDense.isMeagre (one-element countable union), isMeagre_singleton_real (closed + empty interior via interior_singleton), and isMeagre_rationals (ℚ = ⋃ q, {q} a countable union of meagre singletons).",
+      "mathContext": "In a space with no isolated points every singleton is nowhere dense; countable unions of meagre sets are meagre, so ℚ is meagre."
+    },
+    {
+      "id": "not-gdelta",
+      "title": "ℚ Is Not a Gδ",
+      "startLine": 83,
+      "endLine": 99,
+      "summary": "not_isGδ_rationals: a dense Gδ is non-meagre (not_isMeagre_of_isGδ_of_dense), contradicting meagreness of ℚ. Restated for {x | ¬ Irrational x} (not_isGδ_setOf_not_irrational) and contrasted with isGδ_irrationals.",
+      "mathContext": "Dense + Gδ ⟹ residual ⟹ not meagre; ℚ is meagre, so ℚ is not Gδ."
+    },
+    {
+      "id": "capstone",
+      "title": "Capstone: No Function Continuous Exactly at ℚ",
+      "startLine": 101,
+      "endLine": 127,
+      "summary": "continuitySet_ne_rationals and no_function_continuous_exactly_at_rationals glue IsGδ.setOf_continuousAt to not_isGδ_rationals; irrationals_isGδ_no_obstruction records the sharp one-sided asymmetry.",
+      "mathContext": "{x | ContinuousAt f x} is Gδ; ℚ is not; hence they are never equal. The irrationals, being Gδ, are not obstructed."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "The rationals ℚ ⊆ ℝ are not a Gδ set (not_isGδ_rationals): ℚ is dense, so a Gδ presentation would force it to be residual and non-meagre (not_isMeagre_of_isGδ_of_dense), but ℚ is meagre as a countable union of nowhere-dense singletons (isMeagre_rationals). Since the continuity set of any function is a Gδ (Mathlib's IsGδ.setOf_continuousAt), no f : ℝ → ℝ has continuity set equal to ℚ (continuitySet_ne_rationals, no_function_continuous_exactly_at_rationals): there is no function continuous at every rational and discontinuous at every irrational. The obstruction is one-sided — the irrationals are a Gδ (isGδ_irrationals), so they are not ruled out as a continuity set (irrationals_isGδ_no_obstruction). 127 lines, 11 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "This deploys the parent's meagre/residual dichotomy as a Gδ obstruction and reaches the classical impossibility theorem discussed alongside Thomae's function. The deep analytic half (continuity sets are Gδ) is delegated to Mathlib; the entry supplies the clean Baire obstruction on ℚ and the gluing step. The remaining direction — actually constructing Thomae's function continuous exactly at the irrationals — is recorded as a follow-up.",
+    "openQuestions": [
+      "Construct Thomae's popcorn function and prove it is continuous exactly at the irrationals, realising the Gδ irrational side as a genuine continuity set.",
+      "Generalise: in any Baire space with no isolated points, a countable dense set is never a Gδ and hence never a continuity set."
+    ]
+  }
+}

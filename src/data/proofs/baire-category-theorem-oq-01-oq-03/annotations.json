@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-baire0103-meagre-singleton",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 71, "endLine": 73 },
+    "type": "theorem",
+    "title": "Every Real Singleton Is Meagre",
+    "content": "isMeagre_singleton_real shows {x} ⊆ ℝ is meagre. A singleton is closed (T1), and interior {x} = ∅ because ℝ has no isolated points (interior_singleton, which needs NeBot (𝓝[≠] x) — available since ℝ is a PerfectSpace). By IsClosed.isNowhereDense_iff the singleton is nowhere dense, and a nowhere-dense set is meagre (IsNowhereDense.isMeagre).",
+    "mathContext": "$\\overline{\\{x\\}} = \\{x\\}$ and $\\operatorname{int}\\{x\\} = \\varnothing$, so $\\{x\\}$ is nowhere dense, hence meagre.",
+    "significance": "supporting",
+    "relatedConcepts": ["nowhere dense set", "meagre set", "no isolated points", "PerfectSpace"],
+    "prerequisites": ["interior of a singleton", "nowhere dense sets"]
+  },
+  {
+    "id": "ann-baire0103-meagre-rationals",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 77, "endLine": 81 },
+    "type": "theorem",
+    "title": "ℚ Is Meagre in ℝ",
+    "content": "isMeagre_rationals writes the rationals as the countable union ⋃ q : ℚ, {(q : ℝ)} (Set.iUnion_singleton_eq_range applied to the cast ℚ → ℝ) and concludes meagreness from isMeagre_iUnion, since each singleton is meagre. This is the 'small' half of the meagre/dense clash that obstructs ℚ from being a Gδ.",
+    "mathContext": "$\\mathbb{Q} = \\bigcup_{q \\in \\mathbb{Q}} \\{q\\}$ is a countable union of nowhere-dense singletons, hence meagre.",
+    "significance": "key",
+    "relatedConcepts": ["meagre set", "countable union", "rationals as a range"],
+    "prerequisites": ["meagreness under countable unions"]
+  },
+  {
+    "id": "ann-baire0103-not-gdelta",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 85, "endLine": 87 },
+    "type": "theorem",
+    "title": "The Rationals Are Not a Gδ Set",
+    "content": "not_isGδ_rationals: if ℚ were a Gδ, then being dense (dense_rationals := Rat.denseRange_cast) it would be residual and therefore not meagre (not_isMeagre_of_isGδ_of_dense, valid because ℝ is a Baire space). But ℚ is meagre — contradiction. This is the Baire-category obstruction reused from the parent entry's meagre/residual dichotomy.",
+    "mathContext": "Dense $G_\\delta$ $\\Rightarrow$ residual $\\Rightarrow$ non-meagre; but $\\mathbb{Q}$ is meagre, so $\\mathbb{Q}$ is not $G_\\delta$.",
+    "significance": "key",
+    "relatedConcepts": ["Gδ set", "Baire category theorem", "residual set", "meagre set"],
+    "prerequisites": ["Baire category theorem", "residual vs meagre dichotomy"]
+  },
+  {
+    "id": "ann-baire0103-capstone",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 104, "endLine": 107 },
+    "type": "theorem",
+    "title": "Capstone: No Continuity Set Equals ℚ",
+    "content": "continuitySet_ne_rationals: for every f : ℝ → ℝ the set {x | ContinuousAt f x} is a Gδ (Mathlib's IsGδ.setOf_continuousAt), so it cannot equal the non-Gδ set ℚ. Rewriting along an assumed equality turns the deep fact into a one-line contradiction with not_isGδ_rationals. This is the classical impossibility theorem discussed alongside Thomae's function.",
+    "mathContext": "$\\{x : \\operatorname{ContinuousAt} f\\,x\\}$ is always $G_\\delta$; $\\mathbb{Q}$ is not; hence they are never equal.",
+    "significance": "key",
+    "relatedConcepts": ["continuity points", "Gδ set", "Thomae function", "oscillation"],
+    "prerequisites": ["continuity set is a Gδ", "ℚ is not a Gδ"]
+  },
+  {
+    "id": "ann-baire0103-no-function",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "theorem",
+    "title": "No Function Continuous Exactly at the Rationals",
+    "content": "no_function_continuous_exactly_at_rationals is the 'no such function' restatement: there is no f : ℝ → ℝ with ContinuousAt f x ↔ ¬ Irrational x (i.e. continuous at every rational, discontinuous at every irrational). The hypothesis would make the continuity set equal to ℚ = {x | ¬ Irrational x}, contradicting continuitySet_ne_rationals.",
+    "mathContext": "No $f : \\mathbb{R} \\to \\mathbb{R}$ is continuous precisely on $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["Thomae function", "continuity", "rationals", "irrationals"],
+    "prerequisites": ["continuity set characterisation"]
+  },
+  {
+    "id": "ann-baire0103-asymmetry",
+    "proofId": "baire-category-theorem-oq-01-oq-03",
+    "range": { "startLine": 123, "endLine": 125 },
+    "type": "theorem",
+    "title": "The One-Sided Asymmetry",
+    "content": "irrationals_isGδ_no_obstruction pairs IsGδ.setOf_irrational (the irrationals ARE a Gδ) with not_isGδ_setOf_not_irrational (the rationals are not). The Gδ property splits the two sides of ℝ asymmetrically: the impossibility theorem applies only to the rational side, and Thomae's function (continuous exactly at the irrationals) shows the irrational side is genuinely realisable.",
+    "mathContext": "Irrationals: $G_\\delta$ (realisable as a continuity set). Rationals: not $G_\\delta$ (impossible).",
+    "significance": "supporting",
+    "relatedConcepts": ["irrationals as a Gδ", "Thomae function", "asymmetry"],
+    "prerequisites": ["irrationals form a Gδ"]
+  }
+]

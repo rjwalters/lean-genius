@@ -248,6 +248,7 @@ import Proofs.AutomorphicNumberOQ01OQ03
 import Proofs.AutomorphicNumberOQ01OQ03OQ01
 import Proofs.BaireCategoryTheoremOQ01
 import Proofs.BaireCategoryTheoremOQ01OQ01
+import Proofs.BaireRationalsNotGdeltaOQ0103
 import Proofs.BallotProblem
 import Proofs.BallotProblemOQ01
 import Proofs.BallotProblemOQ01OQ01
