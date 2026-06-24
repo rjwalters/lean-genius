@@ -3512,6 +3512,7 @@ import Proofs.PellEquationOQ07
 import Proofs.PellEquationOQ07OQ01
 import Proofs.PentagonalNumberTheoremOQ01
 import Proofs.PentagonalNumberTheoremOQ01OQ01
+import Proofs.PentagonalNumberTheoremOQ01OQ02
 import Proofs.PentagonalNumberTheoremOQ01OQ03
 import Proofs.PerfectNumbers
 import Proofs.PerfectNumbersOQ02
