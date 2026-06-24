@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "From infinitude to exact classification",
+    "content": "The parent entry builds the chain `(1,1) → (7,5) → (41,29) → …` via the forward map `(x,y) ↦ (3x+4y, 2x+3y)` and proves the negative Pell equation `x² − 2y² = −1` has infinitely many integer solutions. The genuine structural question — answered here — is the converse: does the chain capture *every* positive solution? This file proves the classification theorem by a descent (Vieta-jumping) argument along the inverse unit `3 − 2√2` of `ℤ[√2]`. The header notes that Mathlib's `Pell.Solution₁` covers only the norm `+1` equation, so the norm `−1` classification is genuinely new content.",
+    "mathContext": "Negative Pell $x^2 - 2y^2 = -1$; fundamental solution $(1,1)$; fundamental unit $3+2\\sqrt2$ of $\\mathbb{Z}[\\sqrt2]$ advances the chain, its inverse $3-2\\sqrt2$ descends.",
+    "significance": "key",
+    "relatedConcepts": ["negative Pell equation", "ℤ[√2] and its unit group", "Vieta jumping / descent", "classification vs existence", "Brahmagupta composition"],
+    "prerequisites": ["Pell's equation", "quadratic integer rings", "Diophantine equations"]
+  },
+  {
+    "id": "ann-pred-step",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "technique",
+    "title": "The inverse step preserves the form",
+    "content": "`negPell_pred_step` proves the inverse substitution `(x,y) ↦ (3x−4y, 3y−2x)` keeps `x² − 2y²` unchanged. This map is multiplication by the inverse unit `3 − 2√2` in `ℤ[√2]` (norm 1, so it preserves the norm form), and is the engine of the descent. The entire proof is a single `linear_combination h` — Lean's certificate that the target identity is the hypothesis `x² − 2y² = −1` scaled by an explicit polynomial, sidestepping any manual algebra. Where the forward map advances the chain, this inverse map walks it backward.",
+    "mathContext": "$(3x-4y)^2 - 2(3y-2x)^2 = x^2 - 2y^2$; the map is mult. by $3-2\\sqrt2$, $N(3-2\\sqrt2)=1$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative norm form", "unit group action", "linear_combination tactic", "inverse fundamental unit"],
+    "prerequisites": ["norm of a quadratic field", "polynomial identities"]
+  },
+  {
+    "id": "ann-no-small",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 64, "endLine": 72 },
+    "type": "technique",
+    "title": "No solution with 2 ≤ x ≤ 6: anchoring the descent",
+    "content": "`negPell_no_small_solution` is the finite check that pins the descent's terminus. From `x² − 2y² = −1` with `2 ≤ x ≤ 6` it first bounds `y ≤ 4` (an `nlinarith` using `(6−x)·x ≥ 0` and `(y−4)² ≥ 0`), then exhausts the resulting 5×4 grid with `interval_cases x <;> interval_cases y <;> omega`. The absence of any solution in this band is exactly the gap between the fundamental solution `(1,1)` (where `x = 1`) and the next chain term `(7,5)` (where `x = 7`): the descent cannot stall in between, so it must terminate at `(1,1)`.",
+    "mathContext": "No $(x,y)$ with $2\\le x\\le 6$, $y\\ge1$ solves $x^2-2y^2=-1$; the jump $x:1\\to7$ is the chain's first step.",
+    "significance": "supporting",
+    "relatedConcepts": ["interval_cases", "nlinarith", "finite case exhaustion", "descent termination"],
+    "prerequisites": ["bounded search", "quadratic bounds"]
+  },
+  {
+    "id": "ann-complete",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 74, "endLine": 118 },
+    "type": "insight",
+    "title": "The descent: every positive solution is a chain term",
+    "content": "`negPell_complete` is the classification's core, by strong induction on `x.toNat` (well-founded recursion, `termination_by x.toNat`, `decreasing_by ... omega`). Base case `x = 1` forces `y = 1` (so `(1,1) = negPellSeq 0`). Otherwise `x ≥ 2`; the no-small-solution lemma pushes `x ≥ 7`, whence `y ≥ 5`. The strict decrease `3x − 4y < x` follows from `x < 2y` (itself from `x² = 2y² − 1 < 4y²`). Positivity of the predecessor is the elegant part: the factored identities `(3x−4y−1)(3x+4y+1) = 2(y−5)(y+1)` and `(3y−2x)(3y+2x) = y²+4` — each a one-line `linear_combination` of the constraint — have one manifestly positive factor, forcing the sign of the other, so `3x−4y ≥ 1` and `3y−2x ≥ 1`. The predecessor is again a positive solution with smaller `x`; recursion reaches `(1,1)`, and replaying `negPellSeq_succ` rebuilds the original as `negPellSeq (n+1)`.",
+    "mathContext": "$x<2y$ (from $x^2=2y^2-1$) gives $3x-4y<x$; factored identities force $3x-4y\\ge1,\\ 3y-2x\\ge1$; WF recursion on $x.\\mathrm{toNat}$ terminates at $(1,1)$.",
+    "significance": "key",
+    "relatedConcepts": ["strong induction / well-founded recursion", "Vieta jumping", "factored quadratic identities", "infinite descent", "decreasing_by"],
+    "prerequisites": ["well-founded recursion in Lean", "nlinarith", "method of descent"]
+  },
+  {
+    "id": "ann-set-equality",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 120, "endLine": 137 },
+    "type": "concept",
+    "title": "Exact classification as a set equality",
+    "content": "`negPell_solutions_eq_range` packages both directions into the clean set identity `{(x,y) | x≥1, y≥1, x²−2y²=−1} = Set.range negPellSeq`. The forward inclusion is `negPell_complete` (every positive solution is a chain term); the reverse reuses the parent's facts that every chain term is positive (`negPellSeq_pos`) and satisfies the norm equation (`negPellSeq_norm`). The structural reading: the positive solution set is a single orbit under the unit group of `ℤ[√2]`, generated by the fundamental solution `(1,1)`.",
+    "mathContext": "$\\{(x,y)\\mid x,y\\ge1,\\ x^2-2y^2=-1\\} = \\mathrm{range}\\,\\mathrm{negPellSeq}$ — one orbit, generator $(1,1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["set extensionality", "orbit of the unit group", "Set.range", "bidirectional classification"],
+    "prerequisites": ["set equality proofs", "Set.range"]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 139, "endLine": 161 },
+    "type": "insight",
+    "title": "Multiplicative bridge to the positive Pell equation",
+    "content": "`negPell_sq_is_pos_pell` records that squaring a norm `−1` solution yields a norm `+1` solution: `(x²+2y²)² − 2(2xy)² = 1`. This is multiplicativity of the `ℤ[√2]`-norm in action — `N(α²) = N(α)² = (−1)² = +1` — since `(x + y√2)² = (x²+2y²) + (2xy)√2`. The proof is a `ring` identity reducing the LHS to `(x²−2y²)²` followed by `rw [h]; norm_num`. `negPellSeq_sq_is_pos_pell` specializes this to the chain, producing an explicit infinite family of classical Pell solutions and connecting to Mathlib's `Pell.Solution₁`. A concrete `example` checks `(7,5) ↦ (99,70)`: `99² − 2·70² = 1`.",
+    "mathContext": "$N$ multiplicative: $(x^2+2y^2)^2 - 2(2xy)^2 = (x^2-2y^2)^2 = 1$; $(7,5)\\mapsto(99,70)$, $99^2-2\\cdot70^2=1$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative norm", "positive Pell equation", "Pell.Solution₁", "ring tactic", "(−1)·(−1)=+1"],
+    "prerequisites": ["norm-form multiplicativity", "polynomial identities"]
+  },
+  {
+    "id": "ann-verification",
+    "proofId": "pell-equation-oq-06-oq-01",
+    "range": { "startLine": 163, "endLine": 167 },
+    "type": "context",
+    "title": "Verification and axiom status",
+    "content": "The closing `#check` block exports the three headline theorems. The entry is honestly badged `verified` with `axiomCount: 0`: 6 theorems, 0 sorries, 0 `axiom` declarations, no `native_decide` (the finite checks use `interval_cases`/`omega`/`norm_num`, all kernel-level). All results rest only on `propext` / `Classical.choice` / `Quot.sound`. It imports the parent `Proofs.PellEquationOQ06` to reuse the chain `negPellSeq` and its forward properties, so the descent and classification are the new content.",
+    "mathContext": "Axioms: $\\{\\text{propext},\\ \\text{Classical.choice},\\ \\text{Quot.sound}\\}$ only; no $\\text{ofReduceBool}$.",
+    "significance": "context",
+    "relatedConcepts": ["axiom integrity", "machine verification", "kernel decision procedures", "parent reuse"],
+    "prerequisites": ["Lean type theory", "trusted kernel"]
+  }
+]
