@@ -31,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Part VII closes the 'common range' standard fact (fact 2 of Part VI). Non-abelian pq uniqueness now reduced to a SINGLE remaining gap: internal recognition (every non-cyclic order-pq group is an internal semidirect product), a Mathlib normal-complement gap. File: 22 thm, 2 def, 0 sorry, 0 axiom, verified.",
+    "progressSummary": "PROGRESS: Parts VII (common range) + VIII (internal recognition) close BOTH standard facts Part VI left open for non-abelian pq-uniqueness. exists_internalSemidirect_of_card_pq gives G≃*Q⋊P; common-range pins the action's range. Only residual: the conjugation action is nontrivial in the non-cyclic case (else G cyclic). File: 23 thm, 2 def, 0 sorry, 0 axiom, verified.",
     "builtItems": [
       "pq_abelian_isCyclic (LagrangeTheoremOQ01OQ01OQ02.lean): any CommGroup of order pq is cyclic (no divisibility hyp) via Cauchy exists_prime_orderOf_dvd_card + Commute.orderOf_mul_eq_mul_orderOf_of_coprime + isCyclic_of_orderOf_eq_card",
       "pq_abelian_iso, pq_abelian_iso_zmod: any two abelian order-pq groups isomorphic, each ≅ Multiplicative (ZMod pq), via mulEquivOfCyclicCardEq + zmodCyclicMulEquiv",
@@ -42,7 +42,8 @@
       "subgroup_eq_powMonoidHom_ker in LagrangeTheoremOQ01OQ01OQ02.lean (subgroup of finite cyclic group = its order's torsion subgroup)",
       "subgroup_eq_of_card_eq (uniqueness of subgroups of given order in a cyclic group)",
       "range_eq_of_nontrivial_prime_card (common range of nontrivial prime-order maps into a cyclic group)",
-      "semidirectProductIso_of_nontrivial_into_cyclic (hypothesis-free capstone for cyclic Aut)"
+      "semidirectProductIso_of_nontrivial_into_cyclic (hypothesis-free capstone for cyclic Aut)",
+      "exists_internalSemidirect_of_card_pq in LagrangeTheoremOQ01OQ01OQ02.lean (G of order pq ≃* internal Q⋊P, verified 0-axiom)"
     ],
     "insights": [
       "Mathlib mulEquivOfCyclicCardEq (Cyclic.lean:787) upgrades IsCyclic-level classification to genuine MulEquiv from equal Nat.card — short but is the count→isomorphism step",
@@ -53,7 +54,8 @@
       "Mathlib SemidirectProduct.congr/map already give the bare precomposition congruence — the real content for non-abelian pq uniqueness is RANGE UNIQUENESS of the action map, not the congruence itself.",
       "MonoidHom.ofInjective (NOT MulEquiv.ofInjective) : G ≃* f.range; coe lemmas MonoidHom.ofInjective_apply and MonoidHom.apply_ofInjective_symm. Subgroup.eq_bot_of_card_eq needs dot notation f.ker.eq_bot_of_card_eq.",
       "Non-abelian uniqueness now reduced to two standard facts: (1) internal recognition G ≃* ℤ/q ⋊ ℤ/p (Mathlib lacks normal-complement ⟹ internal semidirect), (2) all nontrivial ℤ/p → Aut(ℤ/q) share the unique order-p subgroup of cyclic Aut(ℤ/q).",
-      "Common-range fact PROVED (Part VII): two nontrivial homs from a prime-order group into a finite CYCLIC target have equal range, via uniqueness of subgroups of given order in a cyclic group (every order-d subgroup = (powMonoidHom d).ker, the d-torsion). This discharges fact (2) of Part VI's capstone; new hypothesis-free capstone semidirectProductIso_of_nontrivial_into_cyclic needs only [IsCyclic (MulAut N)]."
+      "Common-range fact PROVED (Part VII): two nontrivial homs from a prime-order group into a finite CYCLIC target have equal range, via uniqueness of subgroups of given order in a cyclic group (every order-d subgroup = (powMonoidHom d).ker, the d-torsion). This discharges fact (2) of Part VI's capstone; new hypothesis-free capstone semidirectProductIso_of_nontrivial_into_cyclic needs only [IsCyclic (MulAut N)].",
+      "Internal recognition PROVED (Part VIII): every group of order pq (p<q) is ≃* an internal semidirect product Q⋊P of its Sylow subgroups (Q normal Sylow-q, |Q|=q; P Sylow-p, |P|=p), via Mathlib's SemidirectProduct.mulEquivSubgroup + isComplement'_of_coprime + pq_card_sylow_one (swapped primes give q-Sylow normal since q>p). This was the 'Mathlib gap' fact (1) of Part VI — Mathlib DID have mulEquivSubgroup. Both standard facts of Part VI now closed; only residual is nontriviality of the action in the non-cyclic case."
     ],
     "mathlibGaps": [
       "No Mathlib lemma recognizing an internal semidirect product from a normal subgroup + complement (needed for nonabelian uniqueness)",
