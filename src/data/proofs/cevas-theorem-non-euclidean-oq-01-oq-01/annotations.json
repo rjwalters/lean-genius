@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-slope-kernel",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 73
+    },
+    "type": "insight",
+    "title": "The Flat Limit Is a Derivative in Disguise",
+    "content": "On the spherical branch sin_κ(x) = sin(√κ·x)/√κ. Substituting s = √κ, this is exactly the difference quotient (sin(s·x) − sin(0))/(s − 0) of the map t ↦ sin(x·t) at the point 0 — i.e. its slope at 0. By hasDerivAt_iff_tendsto_slope, the limit of that slope is the derivative, which is x·cos 0 = x. So the flat limit is not a delicate ε–δ estimate: it is the value of a derivative. tendsto_sin_mul_div and tendsto_sinh_mul_div package this for sin and sinh. Phrasing the kernel as the slope of t ↦ sin(x·t) — rather than as x·(sin u / u) — makes the argument uniform in x, with no special case at x = 0."
+  },
+  {
+    "id": "ann-sqrt-cov",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 100
+    },
+    "type": "technique",
+    "title": "κ → 0 Becomes √κ → 0, the Slope Increment",
+    "content": "The √κ normalization that makes sin_κ a genuine geometric interpolant is precisely what turns the curvature limit into a difference-quotient limit. sqrt_tendsto_nhdsGT shows √κ → 0⁺ as κ → 0⁺ (continuity of √ plus √κ > 0), and sqrt_neg_tendsto_nhdsLT shows √(−κ) → 0⁺ as κ → 0⁻. Composing these with the kernels transports the limit in the slope increment t to a limit in the curvature κ. The right-punctured filter feeds the kernel's punctured-neighbourhood hypothesis via nhdsGT_le_nhdsNE."
+  },
+  {
+    "id": "ann-gluing",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 142
+    },
+    "type": "insight",
+    "title": "Two Geometries Meet at κ = 0 from Opposite Sides",
+    "content": "Spherical geometry approaches κ = 0 from 𝓝[>] 0 and hyperbolic from 𝓝[<] 0. The standard filter identity 𝓝[<] 0 ⊔ 𝓝[>] 0 = 𝓝[≠] 0 (nhdsLT_sup_nhdsGT) glues the two one-sided flat limits into a punctured two-sided limit (tendsto_sinKappa_punctured). Adjoining the exact value sin_0(x) = x via 𝓝[≠] 0 ⊔ pure 0 = 𝓝 0 (nhdsNE_sup_pure) upgrades it to the full continuous limit tendsto_sinKappa_flat — the formal answer to the parent's OQ-01."
+  },
+  {
+    "id": "ann-ceva-degeneration",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-01",
+    "range": {
+      "startLine": 143,
+      "endLine": 149
+    },
+    "type": "insight",
+    "title": "The Curved Ceva Condition Deforms to the Flat One",
+    "content": "Because sin_κ is continuous at κ = 0 with limit the identity, each curvature-κ Ceva ratio sin_κ(p)/sin_κ(q) tends to the Euclidean ratio p/q as κ → 0 (sinKappa_ceva_ratio_tendsto). Taking the product over the six sub-segments, the curvature-κ concurrency criterion limits to the Euclidean one: the curved Ceva theorem is a genuine deformation of the flat theorem, not an unrelated statement."
+  }
+]
