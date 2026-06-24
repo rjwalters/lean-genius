@@ -3884,6 +3884,7 @@ import Proofs.WilsonsTheoremOQ03
 import Proofs.WilsonsTheoremOQ04
 import Proofs.WilsonsTheoremOQ04OQ02
 import Proofs.WilsonsTheoremOQ05
+import Proofs.WilsonsTheoremOQ06
 import Proofs.WolstenholmePrimeMod4
 import Proofs.WolstenholmeTheorem
 import Proofs.WolstenholmeTheoremOQ01
