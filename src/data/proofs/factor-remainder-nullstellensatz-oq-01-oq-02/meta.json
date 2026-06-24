@@ -1,0 +1,174 @@
+{
+  "id": "factor-remainder-nullstellensatz-oq-01-oq-02",
+  "title": "Nullstellensatz OQ01-OQ02: Necessity of Algebraic Closure — Failure over ℝ",
+  "slug": "factor-remainder-nullstellensatz-oq-01-oq-02",
+  "description": "Answers the parent OQ01's open question on dropping the IsAlgClosed hypothesis with an explicit counterexample. Over ℝ the ideal (X²+1) is proper yet has empty zero locus, so both the weak and strong Nullstellensatz fail; over ℂ the same ideal has a nonempty zero locus (witness i), pinpointing algebraic closure as the exact hypothesis required. 6 theorems, 2 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderNullstellensatzOQ01OQ02.lean",
+    "tags": [
+      "nullstellensatz",
+      "algebraic-geometry",
+      "commutative-algebra",
+      "ideals",
+      "algebraic-closure",
+      "counterexample",
+      "number-theory"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 125,
+    "theoremCount": 6,
+    "assumptions": "None. All 6 theorems proved, 0 axioms. Verified axiom-free: #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.mem_zeroLocus_iff",
+        "description": "x ∈ zeroLocus K I ↔ ∀ p ∈ I, aeval x p = 0",
+        "module": "Mathlib.RingTheory.Nullstellensatz"
+      },
+      {
+        "theorem": "MvPolynomial.vanishingIdeal_empty",
+        "description": "vanishingIdeal k ∅ = ⊤",
+        "module": "Mathlib.RingTheory.Nullstellensatz"
+      },
+      {
+        "theorem": "Ideal.mem_span_singleton",
+        "description": "a ∈ span {g} ↔ g ∣ a (reduces the proper-ideal argument to divisibility)",
+        "module": "Mathlib.RingTheory.Ideal.Span"
+      },
+      {
+        "theorem": "Ideal.radical_eq_top",
+        "description": "radical I = ⊤ ↔ I = ⊤ (so a proper ideal has a proper radical)",
+        "module": "Mathlib.RingTheory.Ideal.Operations"
+      },
+      {
+        "theorem": "Complex.I_sq",
+        "description": "I² = -1 (the missing real root that ℂ supplies)",
+        "module": "Mathlib.Data.Complex.Basic"
+      }
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Hilbert's Nullstellensatz (1893) — the dictionary between ideals and varieties at the foundation of algebraic geometry — holds over an algebraically closed field: I(V(J)) = √J (strong form) and a proper ideal always has a common zero (weak form). Both fail over fields that are not algebraically closed. The classic obstruction is the polynomial X²+1, which has no real root but factors as (X-i)(X+i) over ℂ. The parent gallery entry formalized the positive Nullstellensatz over an algebraically closed field via Mathlib, and explicitly asked (open questions #2 and #4) whether the algebraic-closure hypothesis can be weakened or is truly necessary. This file settles that with a concrete counterexample.",
+    "problemStatement": "Show the IsAlgClosed hypothesis in the parent's Nullstellensatz cannot be dropped. Concretely, exhibit a proper ideal over ℝ with empty zero locus (refuting the weak form) and for which I(V(J)) ≠ √J (refuting the strong form), and contrast with the same ideal over ℂ.",
+    "proofStrategy": "Take J = (X²+1) ⊆ ℝ[X] (one variable, MvPolynomial (Fin 1) ℝ). (1) Empty zero locus: for any real point x, aeval x (X²+1) = x₀²+1 ≥ 1 > 0, so no x lies in zeroLocus ℝ J (mem_zeroLocus_iff + nlinarith). (2) Properness: J ≠ ⊤ via 1 ∉ J — if 1 ∈ J then X²+1 ∣ 1, and applying the ℝ-algebra map aeval(X↦i) : ℝ[X]→ℂ gives 1 = (i²+1)·(…) = 0 in ℂ, a contradiction (Complex.I_sq). This is where ℂ provides the obstruction. (3) Weak failure is (1)+(2). (4) Strong failure: vanishingIdeal(zeroLocus J) = vanishingIdeal ∅ = ⊤, but J.radical ≠ ⊤ since J ≠ ⊤ (Ideal.radical_eq_top). (5) Positive contrast: over ℂ the point x₀ = i lies in zeroLocus ℂ (X²+1) because every multiple of X²+1 evaluates to 0 there.",
+    "keyInsights": [
+      "**The counterexample is X²+1 over ℝ.** It is the minimal obstruction to the Nullstellensatz over a non-algebraically-closed field: a proper ideal (in fact maximal, as ℝ[X]/(X²+1) ≅ ℂ) with no real common zero.",
+      "**ℂ is both the obstruction and the resolution.** The complex root i certifies that J is proper (mapping ℝ[X]→ℂ kills the generator but not 1), and the same i is the witness making the zero locus nonempty over ℂ. Algebraic closure is therefore the exact hypothesis: removing it breaks the theorem, restoring it repairs it.",
+      "**Strong form collapses to ⊤ vs a proper radical.** Once the zero locus is empty, vanishingIdeal of ∅ is the whole ring ⊤, while √J stays proper — the cleanest possible way to see I(V(J)) ≠ √J fail.",
+      "**Single-generator ideals reduce to divisibility.** Properness needs only Ideal.mem_span_singleton (1 ∈ (g) ↔ g ∣ 1) plus an algebra map detecting that g is not a unit — no quotient-field machinery required."
+    ]
+  },
+  "sections": [
+    {
+      "id": "witness",
+      "title": "Part I: The witness ideal (X²+1) over ℝ",
+      "startLine": 38,
+      "endLine": 49,
+      "summary": "Jreal := span {X 0 ^ 2 + 1} in MvPolynomial (Fin 1) ℝ. aeval_gen_real: evaluation of the generator at a real point x is x₀²+1.",
+      "mathContext": "$J = (X^2+1) \\subseteq \\mathbb{R}[X]$; $\\mathrm{aeval}_x(X^2+1) = x_0^2 + 1$."
+    },
+    {
+      "id": "empty-locus",
+      "title": "Part II: Empty zero locus over ℝ",
+      "startLine": 50,
+      "endLine": 65,
+      "summary": "zeroLocus_real_empty: zeroLocus ℝ Jreal = ∅, since x₀²+1 > 0 for all real x₀ (mem_zeroLocus_iff applied to the generator, then nlinarith with sq_nonneg).",
+      "mathContext": "$x_0^2 + 1 \\geq 1 > 0$, so no real point is a common zero."
+    },
+    {
+      "id": "proper",
+      "title": "Part III: The ideal is proper (ℂ supplies the witness)",
+      "startLine": 67,
+      "endLine": 80,
+      "summary": "Jreal_ne_top: 1 ∉ Jreal via Ideal.mem_span_singleton (X²+1 ∣ 1) and apply_fun aeval(X↦i), giving 1 = 0 in ℂ — contradiction.",
+      "mathContext": "The ℝ-algebra map $\\mathbb{R}[X]\\to\\mathbb{C},\\ X\\mapsto i$ sends $X^2+1 \\mapsto i^2+1 = 0$ but $1 \\mapsto 1$."
+    },
+    {
+      "id": "failure",
+      "title": "Part IV: Failure of the Nullstellensatz over ℝ",
+      "startLine": 82,
+      "endLine": 104,
+      "summary": "weak_nullstellensatz_fails_over_real: Jreal ≠ ⊤ ∧ ¬ (zeroLocus ℝ Jreal).Nonempty. strong_nullstellensatz_fails_over_real: vanishingIdeal(zeroLocus Jreal) = ⊤ ≠ Jreal.radical.",
+      "mathContext": "Weak: proper ideal with no zero. Strong: $I(V(J)) = \\top \\neq \\sqrt{J}$."
+    },
+    {
+      "id": "complex-contrast",
+      "title": "Part V: Positive contrast over ℂ",
+      "startLine": 105,
+      "endLine": 125,
+      "summary": "Jcomplex := span {X²+1} over ℂ. zeroLocus_complex_nonempty: x₀ = i is a common zero, since every multiple of X²+1 evaluates to 0 at i.",
+      "mathContext": "$i \\in V_{\\mathbb{C}}(X^2+1)$ — the missing root restores the Nullstellensatz."
+    }
+  ],
+  "conclusion": {
+    "summary": "The algebraic-closure hypothesis in the Nullstellensatz is necessary, demonstrated by an explicit axiom-free counterexample: (X²+1) ⊆ ℝ[X] is proper with empty zero locus, breaking both the weak and strong forms, while the same ideal over ℂ has the common zero i. 6 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "This sharpens the parent's positive formalization by certifying that IsAlgClosed cannot be relaxed to an arbitrary field — directly answering its open questions #2 and #4. The role of ℂ as simultaneously the obstruction (properness) and the resolution (nonempty locus) isolates algebraic closure as precisely the right hypothesis.",
+    "openQuestions": [
+      "Formalize the general dichotomy: for a field k, the weak Nullstellensatz holds for k[X₁,…,Xₙ] for all n iff k is algebraically closed.",
+      "Replace the concrete (X²+1) witness with a parametric family showing failure over every non-algebraically-closed field (e.g. via a non-trivial finite extension), and connect to the Positivstellensatz over ℝ."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MvPolynomial",
+      "Ideal"
+    ],
+    "namespace": "FactorRemainderNullstellensatzOQ01OQ02",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/FactorRemainderNullstellensatzOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-nullstellensatz-oq-01",
+      "relationship": "extends",
+      "description": "Parent OQ01 formalizes the positive Nullstellensatz over an algebraically closed field and asks (open questions #2, #4) whether the IsAlgClosed hypothesis is necessary; this file answers yes with a counterexample over ℝ"
+    },
+    {
+      "targetId": "factor-remainder-nullstellensatz",
+      "relationship": "ancestor",
+      "description": "Root Nullstellensatz entry establishing the ideal–variety correspondence over algebraically closed fields"
+    },
+    {
+      "targetId": "factor-remainder-nullstellensatz-oq-02",
+      "relationship": "related",
+      "description": "Sibling treats Alon's Combinatorial Nullstellensatz; this file treats the necessity of algebraic closure for the classical Nullstellensatz"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "weak_nullstellensatz_fails_over_real",
+      "type": "core",
+      "statement": "Jreal ≠ ⊤ ∧ ¬ (zeroLocus ℝ Jreal).Nonempty",
+      "description": "The ideal (X²+1) over ℝ is proper yet has empty zero locus — the weak Nullstellensatz fails without algebraic closure.",
+      "significance": "Concrete refutation answering the parent's open question on hypothesis necessity"
+    },
+    {
+      "name": "strong_nullstellensatz_fails_over_real",
+      "type": "core",
+      "statement": "vanishingIdeal ℝ (zeroLocus ℝ Jreal) ≠ Jreal.radical",
+      "description": "I(V(J)) = ⊤ but √J ≠ ⊤, so the strong Nullstellensatz identity breaks over ℝ.",
+      "significance": "Shows both forms of the Nullstellensatz require algebraic closure"
+    },
+    {
+      "name": "zeroLocus_complex_nonempty",
+      "type": "corollary",
+      "statement": "(zeroLocus ℂ Jcomplex).Nonempty",
+      "description": "The same ideal over ℂ has the common zero i — the missing root restores the Nullstellensatz.",
+      "significance": "Pinpoints algebraic closure as the exact hypothesis: ℂ is both obstruction and resolution"
+    }
+  ],
+  "sorries": 0
+}
