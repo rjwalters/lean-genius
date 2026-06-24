@@ -1,0 +1,115 @@
+{
+  "id": "law-of-cosines-oq-07-oq-02",
+  "title": "Sum of the Squared Medians of a Triangle",
+  "slug": "law-of-cosines-oq-07-oq-02",
+  "description": "The sum of the squares of the three medians of a triangle equals three quarters of the sum of the squares of its sides: 4·(mₐ² + m_b² + m_c²) = 3·(a² + b² + c²). Proved coordinate-free for points of an arbitrary real inner-product affine space by summing the parent's median-length identity over all three vertices. Answers the openQuestion of law-of-cosines-oq-07.",
+  "meta": {
+    "author": "Robb Walters (researcher-3)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LawOfCosinesOQ07OQ02.lean",
+    "tags": [
+      "geometry",
+      "median",
+      "apollonius",
+      "law-of-cosines",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 88,
+    "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions).",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Sum-of-squared-medians identity 4·(mₐ² + m_b² + m_c²) = 3·(a² + b² + c²) stated coordinate-free for a triangle in an arbitrary NormedAddTorsor over a real inner product space",
+      "Derived purely from three cyclic applications of the parent's metric median-length formula plus dist-symmetry, closed by a single linear_combination",
+      "The ¾-ratio form mₐ² + m_b² + m_c² = ¾·(a² + b² + c²) as an immediate rescaling"
+    ],
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "That the three medians of a triangle satisfy mₐ² + m_b² + m_c² = ¾(a² + b² + c²) is a classical corollary of Apollonius's median theorem, known since antiquity and standard in Euclidean geometry. Each median length is governed by Apollonius's relation 4mₐ² = 2b² + 2c² − a²; summing the three instances cyclically, every side-square is counted with net weight 2 + 2 − 1 = 3, giving the global identity. Here the result is cast coordinate-free in an arbitrary real inner-product affine space, built directly on the parent entry law-of-cosines-oq-07.",
+    "problemStatement": "In any triangle with vertices $a, b, c$ and medians $m_a = \\operatorname{dist}(a, \\operatorname{midpoint}(b,c))$, $m_b$, $m_c$, prove the sum-of-squared-medians identity $4(m_a^2 + m_b^2 + m_c^2) = 3(\\operatorname{dist}(a,b)^2 + \\operatorname{dist}(b,c)^2 + \\operatorname{dist}(c,a)^2)$, equivalently $m_a^2 + m_b^2 + m_c^2 = \\tfrac34(a^2+b^2+c^2)$.",
+    "text": "Sums the parent's coordinate-free median-length formula over the three vertices of the triangle and collapses the result with linear_combination after folding dist-symmetry.",
+    "proofStrategy": "1. sum_sq_medians: instantiate the parent's median_length at (a b c), (b a c), (c a b), giving 4mₐ², 4m_b², 4m_c² in terms of the squared sides. Normalise the dist-symmetries (dist b a = dist a b, dist a c = dist c a, dist c b = dist b c) with simp only [dist_comm …], then close with linear_combination ha + hb + hc: each side-square accumulates coefficient 2 + 2 − 1 = 3 while the medians carry the factor 4. 2. sum_sq_medians_three_quarters: rescale by ¼ via linear_combination h / 4.",
+    "keyInsights": [
+      "The identity is the exact three-fold sum of Apollonius's median-length relation: the only arithmetic content is that each squared side appears once as the 'opposite' side (coefficient −1) and twice as an 'adjacent' side (coefficient +2 each), summing to 3.",
+      "Casting the statement coordinate-free (points and genuine midpoints in a NormedAddTorsor, not scalar side lengths) means it holds verbatim in every Euclidean affine space of any dimension, not just the plane.",
+      "Folding the three dist-symmetries with a single simp only is what lets linear_combination treat the squared sides as common ring atoms; without it the symmetric distances dist a b and dist b a would be distinct terms and the cancellation would not close.",
+      "The whole derivation is axiom-clean (only propext / Classical.choice / Quot.sound) and uses no decision procedure — just two linear_combination calls over the reals."
+    ],
+    "prerequisites": [
+      "Inner-product affine spaces (NormedAddTorsor over a real inner product space)",
+      "Apollonius's median-length identity (law-of-cosines-oq-07)",
+      "Symmetry of the metric (dist_comm)",
+      "Lean 4 tactic linear_combination"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part1-sum-medians",
+      "title": "Part I: Sum of Squared Medians",
+      "startLine": 44,
+      "endLine": 66,
+      "summary": "The identity 4·(mₐ² + m_b² + m_c²) = 3·(ab² + bc² + ca²) obtained by summing the parent's median_length over the three vertices and closing with linear_combination after folding dist-symmetry."
+    },
+    {
+      "id": "part2-three-quarters",
+      "title": "Part II: Three-Quarters Ratio Form",
+      "startLine": 68,
+      "endLine": 78,
+      "summary": "The rescaled form mₐ² + m_b² + m_c² = ¾·(ab² + bc² + ca²), a ¼-rescaling of Part I."
+    },
+    {
+      "id": "part3-instantiation",
+      "title": "Part III: Euclidean Plane Instantiation",
+      "startLine": 80,
+      "endLine": 88,
+      "summary": "Specialisation of the median-sum identity to the standard Euclidean plane EuclideanSpace ℝ (Fin 2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The classical sum-of-squared-medians identity 4(mₐ² + m_b² + m_c²) = 3(a² + b² + c²) is proved coordinate-free in an arbitrary real inner-product affine space by summing the parent's metric median-length formula over the three vertices. Verified, 0 axioms, 0 sorries, no decision procedures. Directly answers the openQuestion posed by law-of-cosines-oq-07.",
+    "openQuestions": [
+      "The centroid g (intersection of the medians) satisfies dist(g,a)² + dist(g,b)² + dist(g,c)² = ⅓(a² + b² + c²), and more generally for any point p, ∑ dist(p, vertex)² = 3·dist(p,g)² + ∑ dist(g, vertex)² (Leibniz / Lagrange identity). Can the centroid version be derived from this median-sum entry together with the 2:1 median-ratio?"
+    ],
+    "implications": "Shows that a global metric relation across all three medians of a triangle is a one-line consequence of the single-median Apollonius identity, and that — like its parent — it lives naturally at the level of inner-product affine spaces rather than coordinatised side lengths."
+  },
+  "crossReferences": [
+    {
+      "targetId": "law-of-cosines-oq-07",
+      "relationship": "parent-problem",
+      "description": "Directly answers the parent's openQuestion: the sum-of-squared-medians identity 4(mₐ²+m_b²+m_c²)=3(a²+b²+c²) derived from three applications of the parent's median_length formula 4mₐ²=2b²+2c²−a²."
+    },
+    {
+      "targetId": "law-of-cosines-oq-04",
+      "relationship": "related",
+      "description": "Stewart's theorem (oq-04) is the scalar algebraic median-length identity; this entry sums the metric median length over all three vertices to obtain the global median-sum relation."
+    }
+  ],
+  "references": [
+    {
+      "author": "Apollonius of Perga",
+      "title": "Classical median theorem (Apollonius's theorem)",
+      "year": -200,
+      "note": "Source of the single-median identity that is summed here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.LawOfCosinesOQ07"
+    ],
+    "namespace": "LawOfCosinesOQ07OQ02",
+    "lineCount": 88,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/LawOfCosinesOQ07OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
