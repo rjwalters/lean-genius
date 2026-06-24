@@ -159,5 +159,6 @@
     "openQuestions": [
       "Establish the general diagonal half-integer closed form B(n+1/2, n+1/2) and connect it to the volume of the n-ball."
     ]
-  }
+  },
+  "description": "An assembly of half-integer Euler Beta values that Mathlib has the pieces for but never derives: B(1/2,1/2)=π and B(3/2,3/2)=π/8. Using the Beta–Gamma relation B(u,v)=Γ(u)Γ(v)/Γ(u+v), the Gauss value Γ(1/2)=π^(1/2), and one step of the functional equation Γ(3/2)=(1/2)·Γ(1/2), the proof recombines the two half-powers π^(1/2)·π^(1/2)=π to evaluate the central value B(1/2,1/2)=π and climbs one rung to B(3/2,3/2)=π/8. Answers open question oq-02 of the parent recurrence entry. 4 theorems, 0 sorries, 0 axioms."
 }
