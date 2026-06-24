@@ -8,8 +8,26 @@
   "axiomCount": 0,
   "sorries": 0,
   "description": "Sharpens the parent's sup-bound |G| ≤ M to the norm-preserving equality ‖G‖ = ‖f‖ for the explicit-series Tietze extension, and shows the construction is norm-minimal: ‖f‖ is a universal lower bound on the norm of any continuous extension.",
-  "conclusion": "For a closed set s in a normal space X and a bounded continuous f : s →ᵇ ℝ, the parent's explicit-series extension G can be taken with ‖G‖ = ‖f‖. The lower bound ‖f‖ ≤ ‖E‖ holds for every extension E (norm_ge_of_extends), so G attains the minimum possible sup-norm.",
-  "overview": "The parent entry urysohns-lemma-oq-01-oq-01-oq-01 builds the Tietze extension G = ∑' n, gₙ of a bounded continuous f on a closed set s ⊆ X (X normal) as an explicit absolutely-convergent series of Urysohn corrections, and proves the sup-bound |G| ≤ M for any bound M ≥ |f|. Its open question asks to sharpen this to the norm-preserving equality ‖G‖ = ‖f‖, the standard form of the Tietze theorem. This entry settles it in two elementary halves. (1) Upper bound: instantiate the parent's free bound M at the exact sup-norm M = ‖f‖ (legitimate since |f x| = ‖f x‖ ≤ ‖f‖); the parent then gives |G y| ≤ ‖f‖ everywhere, i.e. ‖G‖ ≤ ‖f‖. (2) Lower bound: this half needs nothing about the construction — for any extension E and any x ∈ s, ‖f x‖ = ‖E x‖ ≤ ‖E‖, so taking the sup over s gives ‖f‖ ≤ ‖E‖ (norm_ge_of_extends). Thus ‖f‖ is a universal lower bound and G attains it. Combining the halves gives ‖G‖ = ‖f‖, and the universality of the lower bound shows G is a norm-minimal extension (exists_minimal_norm_extension).",
+  "conclusion": {
+    "summary": "For a closed set s in a normal space X and a bounded continuous f : s →ᵇ ℝ, the parent's explicit-series extension G can be taken with ‖G‖ = ‖f‖ (tietze_norm_preserving). The lower bound ‖f‖ ≤ ‖E‖ holds for every continuous extension E (norm_ge_of_extends), so G attains the minimum possible sup-norm and the parent's by-hand series is optimal (exists_minimal_norm_extension). 86 lines, 3 theorems, 0 axioms, 0 sorries.",
+    "implications": "The norm-preserving equality ‖G‖ = ‖f‖ is the standard textbook form of the Tietze extension theorem, here recovered directly from the parent's explicit series rather than from an abstract existence argument — so the same construction that proves extendability also proves it can be done without inflating the sup-norm. The split into a construction-dependent upper bound and a construction-free universal lower bound isolates exactly which half carries the topological content (only the upper bound uses normality), and shows norm-minimality is a soft consequence true of any extremal extension.",
+    "openQuestions": [
+      "Quantify uniqueness: is the minimal-norm extension unique when X is e.g. a metric space, or characterize the family of all extensions attaining ‖f‖ via the slack in each Urysohn correction step?",
+      "Does the norm-preserving sharpening extend to vector-valued or complex-valued bounded continuous f, where the sup-norm is over a larger codomain and the Urysohn corrections must be applied componentwise?"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Tietze extension theorem (Heinrich Tietze, 1915; Urysohn's normal-space generalization, 1925) states that a continuous real function on a closed subset of a normal space extends continuously to the whole space. The sharp, norm-preserving form — the extension can be chosen with the same sup-norm ‖G‖ = ‖f‖ — is the version stated in most functional-analysis texts, since it is what makes the extension operator norm-1 and underlies applications to the Hahn–Banach circle of ideas. The parent entry produced an explicit absolutely-convergent series of Urysohn corrections with only the inequality |G| ≤ M; this entry upgrades that to the equality.",
+    "problemStatement": "Sharpen the parent's sup-bound |G| ≤ M for the explicit-series Tietze extension to the norm-preserving equality ‖G‖ = ‖f‖, and show the construction is norm-minimal among all continuous extensions.",
+    "proofStrategy": "Two elementary halves once the parent's construction is in hand. (1) Upper bound ‖G‖ ≤ ‖f‖: instantiate the parent's free bound M at the exact sup-norm M = ‖f‖ — legitimate because |f x| = ‖f x‖ ≤ ‖f‖ for a bounded continuous f (norm_coe_le_norm) — so the parent delivers |G y| ≤ ‖f‖ for every y, i.e. ‖G‖ ≤ ‖f‖ via BoundedContinuousFunction.norm_le. (2) Lower bound ‖f‖ ≤ ‖G‖: this half uses nothing about the construction. For any extension E and any x ∈ s, ‖f x‖ = ‖E x‖ ≤ ‖E‖; taking the sup over s gives ‖f‖ ≤ ‖E‖ (norm_ge_of_extends). Combining by le_antisymm yields ‖G‖ = ‖f‖, and the universality of the lower bound gives norm-minimality.",
+    "keyInsights": [
+      "The sharpening costs nothing extra in the construction: the parent already proved |G| ≤ M for an arbitrary bound M, so simply choosing M = ‖f‖ — the smallest legal bound — turns the inequality into the sharp upper bound. No reworking of the series is needed.",
+      "The lower bound ‖f‖ ≤ ‖E‖ is construction-free and universal: it holds for EVERY continuous extension, with no normality, no series, and no choice, because the sup of |E| over all of X dominates its sup over the subset s, which is ‖f‖.",
+      "Norm-minimality is therefore automatic: once the upper bound meets the universal lower bound, G achieves the infimum of sup-norms over all extensions — the parent's by-hand construction is optimal without any extremal argument.",
+      "The proof cleanly separates topological content from soft analysis: only the upper bound (through the parent) uses normality of X; the lower bound and minimality are pure sup-norm bookkeeping on bounded continuous functions.",
+      "The badge is original: Mathlib's Tietze API supplies the sup-norm lemmas (norm_le, norm_coe_le_norm) but the norm-preserving sharpening and norm-minimality of this explicit-series extension are not recorded upstream."
+    ]
+  },
   "openQuestions": [
     {
       "id": "urysohns-lemma-oq-01-oq-01-oq-01-oq-01-oq-01",
@@ -34,7 +52,11 @@
     "sorries": 0
   },
   "crossReferences": [
-    "urysohns-lemma-oq-01-oq-01-oq-01"
+    {
+      "targetId": "urysohns-lemma-oq-01-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent. Builds the Tietze extension G = ∑' n, gₙ as an explicit absolutely-convergent series of Urysohn corrections and proves the sup-bound |G| ≤ M for any bound M ≥ |f|. This entry sharpens that inequality to the norm-preserving equality ‖G‖ = ‖f‖, settling the parent's open question."
+    }
   ],
   "references": [
     {
@@ -44,16 +66,36 @@
   ],
   "sections": [
     {
-      "title": "The universal lower bound",
-      "content": "For any bounded continuous E : X →ᵇ ℝ that restricts to f on s, the norm of E is at least ‖f‖. This is purely the statement that the supremum of |E| over all of X dominates its supremum over the subset s, which equals ‖f‖. No normality, no series, and no choice are involved — it holds for every extension whatsoever (norm_ge_of_extends)."
+      "id": "docstring",
+      "title": "Module Docstring: The Sharp Tietze Extension",
+      "startLine": 4,
+      "endLine": 36,
+      "summary": "States the open question — sharpen the parent's sup-bound |G| ≤ M to the norm-preserving equality ‖G‖ = ‖f‖ — and outlines the two-halves method: instantiate the parent's free bound at the exact norm (upper bound, uses the construction) and the universal extension lower bound (needs nothing about the construction). Notes that combining them also makes G norm-minimal.",
+      "mathContext": "$\\|G\\| = \\|f\\|$, recovering the standard norm-preserving form of the Tietze extension theorem."
     },
     {
-      "title": "Instantiating the construction at the sharp bound",
-      "content": "Running the parent's series construction tietze_extension_via_tsum with the free bound M set to the exact sup-norm ‖f‖ yields an extension G with |G y| ≤ ‖f‖ for every y, hence ‖G‖ ≤ ‖f‖. The hypothesis |f x| ≤ ‖f‖ is just BoundedContinuousFunction.norm_coe_le_norm."
+      "id": "universal-lower-bound",
+      "title": "norm_ge_of_extends: The Universal Lower Bound",
+      "startLine": 44,
+      "endLine": 53,
+      "summary": "For any bounded continuous E : X →ᵇ ℝ that restricts to f on s, ‖f‖ ≤ ‖E‖. This is purely that the supremum of |E| over X dominates its supremum over the subset s, which equals ‖f‖: for x ∈ s, ‖f x‖ = ‖E x‖ ≤ ‖E‖ (norm_coe_le_norm), then BoundedContinuousFunction.norm_le takes the sup. No normality, no series, no choice — it holds for every extension whatsoever.",
+      "mathContext": "$\\|f\\| \\le \\|E\\|$ for every extension $E$, since $\\sup_{X}|E| \\ge \\sup_{s}|E| = \\|f\\|$."
     },
     {
-      "title": "The sharp equality and norm-minimality",
-      "content": "Combining the upper bound ‖G‖ ≤ ‖f‖ with the universal lower bound ‖f‖ ≤ ‖G‖ gives ‖G‖ = ‖f‖ (tietze_norm_preserving). Because the lower bound applies to every extension, G simultaneously achieves the smallest sup-norm possible among all continuous extensions of f (exists_minimal_norm_extension): the parent's by-hand series is optimal."
+      "id": "norm-preserving-extension",
+      "title": "tietze_norm_preserving: The Sharp Equality ‖G‖ = ‖f‖",
+      "startLine": 56,
+      "endLine": 74,
+      "summary": "Runs the parent's series construction tietze_extension_via_tsum with the free bound M set to the exact sup-norm ‖f‖ (the hypothesis |f x| ≤ ‖f‖ is norm_coe_le_norm), giving an extension G with |G y| ≤ ‖f‖ everywhere, hence ‖G‖ ≤ ‖f‖. Combined with the universal lower bound norm_ge_of_extends via le_antisymm, this yields the sharp equality ‖G‖ = ‖f‖.",
+      "mathContext": "$\\|G\\| \\le \\|f\\|$ (parent at $M = \\|f\\|$) and $\\|f\\| \\le \\|G\\|$ (universal) give $\\|G\\| = \\|f\\|$."
+    },
+    {
+      "id": "norm-minimality",
+      "title": "exists_minimal_norm_extension: The Construction Is Optimal",
+      "startLine": 76,
+      "endLine": 86,
+      "summary": "A restatement: because the lower bound ‖f‖ ≤ ‖E‖ applies to every extension, the norm-preserving G simultaneously achieves the smallest sup-norm among all continuous extensions of f. The parent's by-hand series is therefore norm-minimal — its sup-norm equals the infimum over all extensions.",
+      "mathContext": "$\\|G\\| = \\|f\\| = \\inf\\{\\,\\|E\\| : E \\text{ extends } f\\,\\}$."
     }
   ],
   "meta": {
