@@ -2925,6 +2925,7 @@ import Proofs.GodelSecondIncompletenessOQ02Soundness
 import Proofs.GodelSecondIncompletenessOQ02Translate
 import Proofs.GoemansWilliamsonMaxCut
 import Proofs.GramLinearIndependenceOQ01
+import Proofs.GramLinearIndependenceOQ01OQ01
 import Proofs.GraphCore
 import Proofs.GreensTheorem
 import Proofs.GreensTheoremOQ01
