@@ -1,0 +1,140 @@
+{
+  "id": "prob-method-second-moment-oq-01-oq-01",
+  "title": "Quantitative Paley–Zygmund in the MeasureTheory.Lp Setting",
+  "slug": "prob-method-second-moment-oq-01-oq-01",
+  "description": "Recasts and proves the quantitative Paley–Zygmund inequality in Mathlib's measure-theoretic framework: for a nonnegative X ∈ L²(μ) on a probability space and threshold θ ∈ [0,1], μ({X > θ·𝔼X}) · 𝔼[X²] ≥ (1-θ)²·(𝔼X)². Answers the parent's open question of generalizing the finite Finset form to genuine probability spaces with Bochner integrals.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ProbMethodSecondMomentOQ01OQ01.lean",
+    "tags": [
+      "probability",
+      "measure-theory",
+      "second-moment-method",
+      "paley-zygmund",
+      "Lp",
+      "cauchy-schwarz"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 159,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "assumptions": "None beyond the stated hypotheses (probability measure, X measurable, X ∈ L², X ≥ 0 a.e., 0 ≤ θ ≤ 1). 0 axioms, 0 sorries. Fully verified in Lean 4 with Mathlib.",
+    "originalContributions": [
+      "sq_integral_mul_le: integral Cauchy–Schwarz in squared form, (∫ f·g)² ≤ (∫ f²)(∫ g²), for nonnegative L² functions — derived from Mathlib's Hölder inequality at the conjugate pair (2,2)",
+      "paley_zygmund: measure-theoretic Paley–Zygmund, (1-θ)²(𝔼X)² ≤ μ({X > θ𝔼X})·𝔼[X²] over a probability space",
+      "paley_zygmund_prob: division/probability form, μ({X > θ𝔼X}) ≥ (1-θ)²(𝔼X)²/𝔼[X²] when 𝔼[X²] > 0",
+      "paley_zygmund_pos: θ=0 corollary, (𝔼X)² ≤ μ({X>0})·𝔼[X²] — the qualitative second moment method"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_mul_le_Lp_mul_Lq_of_nonneg",
+        "description": "Hölder's inequality for nonnegative functions α → ℝ; specialized to the conjugate pair (2,2) it is the integral Cauchy–Schwarz inequality",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "integral_add_compl",
+        "description": "Decompose an integral as the sum of the set integral over A and over its complement",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Set"
+      },
+      {
+        "theorem": "setIntegral_mono_on",
+        "description": "Monotonicity of the set integral from a pointwise bound on the set — used to bound ∫_{Aᶜ} X by θ·𝔼X",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Set"
+      },
+      {
+        "theorem": "MemLp.integrable_sq",
+        "description": "If X ∈ L² then X² is integrable — supplies the finite second moment",
+        "module": "Mathlib.MeasureTheory.Function.L2Space"
+      },
+      {
+        "theorem": "memLp_indicator_const",
+        "description": "The constant-1 indicator of a finite-measure set lies in Lᵖ — used as the second argument to Cauchy–Schwarz",
+        "module": "Mathlib.MeasureTheory.Function.LpSeminorm.Basic"
+      }
+    ],
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Paley–Zygmund inequality was proved by Raymond Paley and Antoni Zygmund in 1932 in their study of lacunary trigonometric series. It strengthens the qualitative second moment method by giving an explicit lower bound on the probability that a nonnegative random variable exceeds a fraction θ of its mean: P[X > θ𝔼X] ≥ (1-θ)²(𝔼X)²/𝔼[X²]. The gallery's parent entry (ProbMethodSecondMomentOQ01) proves the finite/discrete form over Finsets of ℚ-valued functions, which avoids measure theory but is not directly usable over continuous probability spaces. This entry closes the parent's explicit open question — 'Can this be generalized to the measure-theoretic MeasureTheory.Lp setting?' — by proving the inequality natively over a Mathlib probability space with Bochner integrals, the form actually needed for the probabilistic method over continuous spaces. Paley–Zygmund is not currently in Mathlib.",
+    "problemStatement": "For a nonnegative random variable X ∈ L²(μ) on a probability space (μ a probability measure) and a threshold 0 ≤ θ ≤ 1, prove the measure-theoretic quantitative Paley–Zygmund inequality (1-θ)²·(∫ X dμ)² ≤ μ({ω : θ·∫ X dμ < X ω})·∫ X² dμ, together with its division form and the θ=0 qualitative corollary.",
+    "text": "Proves the quantitative Paley–Zygmund inequality over a genuine probability space, recasting the gallery's finite-sum result into Mathlib's MeasureTheory/Bochner-integral framework. The proof packages the integral Cauchy–Schwarz step as a reusable squared-form lemma and reuses the classical above/below decomposition over set integrals.",
+    "proofStrategy": "Let m = 𝔼X and A = {X > θm}. (1) Split m = ∫_A X + ∫_{Aᶜ} X via integral_add_compl. (2) On Aᶜ, X ≤ θm pointwise, so ∫_{Aᶜ} X ≤ θm·μ.real(Aᶜ) ≤ θm by setIntegral_mono_on, setIntegral_const and measureReal_le_one. (3) Hence ∫_A X ≥ (1-θ)m. (4) Integral Cauchy–Schwarz against the constant-1 indicator of A gives (∫_A X)² ≤ 𝔼[X²]·μ.real(A). (5) Since 0 ≤ (1-θ)m ≤ ∫_A X, squaring and chaining the two inequalities yields (1-θ)²m² ≤ μ.real(A)·𝔼[X²].",
+    "keyInsights": [
+      "**ℝ-valued Bochner route with L² hypotheses**: Stating the result for X : Ω → ℝ with `MemLp X 2 μ`, `Measurable X` and `0 ≤ᵐ[μ] X` keeps everything inside Mathlib's standard expectation `∫ ω, X ω ∂μ` while the L² hypothesis supplies exactly the integrability needed (X integrable via MemLp.integrable, X² integrable via MemLp.integrable_sq).",
+      "**Cauchy–Schwarz as squared Hölder**: The bespoke `sq_integral_mul_le` lemma derives (∫ f·g)² ≤ (∫ f²)(∫ g²) from Mathlib's `integral_mul_le_Lp_mul_Lq_of_nonneg` at the Hölder-conjugate pair (2,2), converting the rpow `^(1/2)` factors back to `Real.sqrt` and squaring with `Real.sq_sqrt`. This isolates the only analytic ingredient in one reusable statement.",
+      "**Indicator as the second Cauchy–Schwarz argument**: Taking g = A.indicator 1 turns ∫ X·g into the set integral ∫_A X and ∫ g² into μ.real(A) (indicator is idempotent under squaring), so the abstract product inequality becomes exactly the (∫_A X)² ≤ 𝔼[X²]·μ(A) needed.",
+      "**Measurability replaces the discrete hypotheses**: Where the parent uses `hpos` and `hnn` over a Finset, the measure-theoretic form needs `Measurable X` (so the threshold set A = X⁻¹(Ioi θm) is measurable) plus a.e. nonnegativity; the probability-measure assumption gives μ.real(Aᶜ) ≤ 1 and finiteness of all measures involved.",
+      "**θ=0 recovers the qualitative method**: Specializing θ=0 collapses the bound to (𝔼X)² ≤ μ({X>0})·𝔼[X²], which forces μ({X>0}) > 0 whenever 𝔼X > 0 — the continuous-space analogue of the parent's `paley_zygmund_at_zero`."
+    ],
+    "prerequisites": [
+      "Integral Cauchy–Schwarz / Hölder inequality (integral_mul_le_Lp_mul_Lq_of_nonneg)",
+      "Bochner set integrals and set-integral decomposition (integral_add_compl, setIntegral_mono_on)",
+      "Lp membership and integrability (MemLp.integrable, MemLp.integrable_sq, memLp_indicator_const)",
+      "Quantitative Paley–Zygmund, finite form (parent entry: ProbMethodSecondMomentOQ01)"
+    ]
+  },
+  "conclusion": {
+    "summary": "A complete Lean 4 formalization of the quantitative Paley–Zygmund inequality over a probability space, with 4 theorems and 0 axioms. The proof reuses the classical above/below decomposition over Bochner set integrals and packages the integral Cauchy–Schwarz step as the reusable lemma sq_integral_mul_le.",
+    "implications": "Provides the measure-theoretic form of Paley–Zygmund needed for the probabilistic method over continuous probability spaces, connecting the gallery's combinatorial second-moment results to Mathlib's MeasureTheory.Lp / ProbabilityTheory API. The squared integral Cauchy–Schwarz lemma is independently reusable.",
+    "openQuestions": [
+      "Can the a.e.-nonnegativity / measurability hypotheses be relaxed to AEStronglyMeasurable throughout?",
+      "Does an L¹–L^∞ (Hölder) variant give a one-sided tail bound under weaker moment assumptions?",
+      "Can this measure-theoretic Paley–Zygmund be contributed upstream to Mathlib?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "prob-method-second-moment-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: proves the quantitative Paley–Zygmund inequality in the finite Finset model. This entry answers its open question by recasting the result over a measure-theoretic probability space."
+    },
+    {
+      "targetId": "prob-method-second-moment",
+      "relationship": "related",
+      "description": "Grandparent qualitative second moment method, recovered here as the θ=0 corollary paley_zygmund_pos."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Paley, R.E.A.C.",
+        "Zygmund, A."
+      ],
+      "title": "On some series of functions",
+      "year": "1932",
+      "venue": "Proceedings of the Cambridge Philosophical Society 26, pp. 337-357",
+      "note": "Original Paley–Zygmund inequality"
+    },
+    {
+      "authors": [
+        "Alon, N.",
+        "Spencer, J.H."
+      ],
+      "title": "The Probabilistic Method",
+      "year": "2016",
+      "venue": "Wiley, 4th edition",
+      "note": "Chapter 4: Second moment method and Paley–Zygmund inequality"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory"
+    ],
+    "namespace": "ProbMethod.SecondMoment.MeasureTheoretic",
+    "lineCount": 159,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/ProbMethodSecondMomentOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
