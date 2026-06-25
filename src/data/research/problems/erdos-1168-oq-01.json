@@ -1,0 +1,71 @@
+{
+  "slug": "erdos-1168-oq-01",
+  "title": "Erdős #1168 oq-01: Encode pcf theory — elementary ZFC bounds on ℵ_ω^{ℵ₀}",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "Proofs/Erdos1168OQ01.lean",
+  "problemStatement": "Open question oq-01 of Erdős #1168 asks to encode pcf theory (Shelah's possible-cofinalities theory) in Lean 4 using Mathlib's ordinal/cardinal infrastructure. As a concrete first step, formalize the elementary ZFC bounds on the canonical pcf object ℵ_ω^{ℵ₀}: ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, the general singular cardinal inequality κ⁺ ≤ κ^{cf κ}, and cf(ℵ_ω^{ℵ₀}) > ℵ₀.",
+  "knownResults": "Under GCH, ℵ_ω^{ℵ₀} = ℵ_{ω+1}. GCH-free, Shelah's pcf theory gives the deep ZFC upper bound ℵ_ω^{ℵ₀} < ℵ_{ω₄}. The lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} is elementary (König 1905). Mathlib already has König's cofinality consequences (Cardinal.lt_power_cof, Cardinal.lt_cof_power) but not the singular-cardinal successor-power bound or its specialization to ℵ_ω.",
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-24T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Formalized the elementary ZFC bracket on ℵ_ω^{ℵ₀} as the first verifiable brick toward encoding pcf theory.",
+    "blockers": [],
+    "nextAction": "Deep pcf upper bound ℵ_ω^{ℵ₀} < ℵ_{ω₄} requires full pcf machinery (reduced products, generators, transitive generators) — a multi-thousand-line foundational effort, out of scope for a single session.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Shipped Proofs/Erdos1168OQ01.lean: 11 theorems, 0 axioms, 0 sorries, machine-checked. Formalized the elementary half of Shelah's famous pcf bound on ℵ_ω^{ℵ₀}. Main results: the general singular cardinal inequality κ⁺ ≤ κ^{cf κ} (succ_le_power_cof), the headline lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} (aleph_omega_succ_le_power), the matching upper bound ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, the assembled ZFC interval [ℵ_{ω+1}, 2^{ℵ_ω}], and the König corollary cf(ℵ_ω^{ℵ₀}) > ℵ₀. Reuses the parent file's cardinal infrastructure (aleph_omega, aleph_omega_cof). Created gallery entry erdos-1168-oq-01.",
+    "builtItems": [
+      "succ_le_power_cof: κ⁺ ≤ κ^{cf κ} for every infinite cardinal — the general singular cardinal inequality (elementary engine of pcf).",
+      "aleph_omega_succ_le_power: ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀}, the headline ZFC lower bound (elementary half of Shelah's ℵ_ω^{ℵ₀} < ℵ_{ω₄}).",
+      "power_le_two_pow_aleph_omega: ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω} via cardinal absorption ℵ_ω·ℵ₀ = ℵ_ω.",
+      "aleph_omega_power_interval: the assembled ZFC interval ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}.",
+      "aleph0_lt_cof_power: cf(ℵ_ω^{ℵ₀}) > ℵ₀, so the power has uncountable cofinality (König via lt_cof_power)."
+    ],
+    "insights": [
+      "The exponent ℵ₀ in ℵ_ω^{ℵ₀} equals cf(ℵ_ω) — exactly the hypothesis König needs to force strict growth κ < κ^{cf κ}. Singular cardinals are never closed under exponentiation by their own cofinality.",
+      "The famous pcf result is a sandwich: ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω} in ZFC, with Shelah's deep theorem ℵ_ω^{ℵ₀} < ℵ_{ω₄} sharpening only the right end. The elementary ends are both formalizable from König alone.",
+      "The lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} is GCH-free, while the value ℵ_ω^{ℵ₀} = ℵ_{ω+1} needs GCH. The gap between 'lower bound' (König 1905) and 'value' (independent of ZFC) is exactly where pcf theory lives.",
+      "A sibling gallery file (CantorDiagonalizationOQ01) took König's cofinality bound as an axiom; the same fact is a Mathlib theorem (Cardinal.lt_power_cof / lt_cof_power), so this entry covers the singular base ℵ_ω axiom-free."
+    ],
+    "mathlibGaps": [
+      "Mathlib has König's cofinality consequences but no packaged 'singular cardinal successor power' bound κ⁺ ≤ κ^{cf κ} as a named lemma.",
+      "No pcf infrastructure in Mathlib: reduced products ∏A/U, true cofinality tcf, pcf(A), generators, or Shelah's bounds. Encoding these is the remaining bulk of oq-01 (estimated multi-thousand lines)."
+    ],
+    "nextSteps": [
+      "Build reduced-product / true-cofinality infrastructure on top of Mathlib's Filter.Germ (which already has the ultraproduct LinearOrder) toward defining pcf(A).",
+      "Formalize Shelah's ℵ_ω^{ℵ₀} < ℵ_{ω₄} upper bound (deep; the long-term target of oq-01)."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "cardinal-arithmetic",
+    "pcf-theory",
+    "singular-cardinals",
+    "koenig-theorem",
+    "cofinality"
+  ],
+  "relatedProofs": [
+    "erdos-1168",
+    "cantor-diagonalization-oq-01-oq-01-oq-03"
+  ],
+  "references": [
+    "S. Shelah, Cardinal Arithmetic, Oxford University Press, 1994",
+    "J. König, Zum Kontinuum-Problem, Math. Ann. 60 (1905)",
+    "https://erdosproblems.com/1168"
+  ],
+  "started": "2026-06-24T00:00:00.000Z",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": [
+    "Proofs/Erdos1168OQ01.lean"
+  ]
+}
