@@ -1,26 +1,25 @@
 [
   {
-    "id": "ann-overview-mechanism",
+    "id": "ann-preamble",
     "proofId": "amgm-inequality-oq-04-oq-04",
     "range": {
       "startLine": 4,
       "endLine": 30
     },
-    "type": "concept",
-    "title": "Why the AGM converges doubly exponentially",
-    "content": "The arithmetic–geometric mean iteration $a_{n+1} = (a_n+b_n)/2$, $b_{n+1} = \\sqrt{a_n b_n}$ is famous for converging *quadratically*: the gap $a_n - b_n$ contracts doubly exponentially, not merely geometrically. This file isolates the mechanism in two independent halves — a per-step algebraic identity showing each step squares the gap, and an abstract recursion lemma turning $g_{n+1} \\le g_n^2/C$ into the $(\\cdot)^{2^n}$ rate. Both are proved with 0 axioms; the second half is geometry-free and applies to any quadratically convergent process (e.g. Newton's method).",
-    "mathContext": "$a_n - b_n = O\\!\\left(M(a,b)\\,(b/a)^{2^n}\\right)$ — doubly exponential decay.",
-    "significance": "key",
+    "type": "context",
+    "title": "The Open Question: Doubly Exponential AGM Convergence",
+    "content": "The docstring states the parent's open question: prove that the arithmetic–geometric mean iteration aₙ₊₁ = (aₙ+bₙ)/2, bₙ₊₁ = √(aₙbₙ) contracts the gap aₙ − bₙ DOUBLY exponentially (rate (·)^{2ⁿ}), not merely geometrically. The whole file rests on a single per-step algebraic identity expressing the new gap as proportional to the SQUARE of the old gap, plus an abstract lemma turning any such quadratic recursion into the (·)^{2ⁿ} rate. Imports are analysis-only (Real.sqrt and tactics); everything is proved with 0 axioms.",
+    "mathContext": "$a_{n+1} = \\tfrac{a_n+b_n}{2}$, $b_{n+1} = \\sqrt{a_n b_n}$; goal: $a_n - b_n = O\\big(M(a,b)\\,(b/a)^{2^n}\\big)$.",
+    "significance": "context",
     "relatedConcepts": [
-      "arithmetic–geometric mean",
+      "arithmetic-geometric mean",
       "quadratic convergence",
-      "Newton's method",
-      "elliptic integrals"
+      "Gauss's AGM",
+      "doubly exponential decay"
     ],
     "prerequisites": [
-      "real square roots",
-      "convergence rates",
-      "iteration"
+      "AGM iteration",
+      "rates of convergence"
     ]
   },
   {
@@ -31,19 +30,19 @@
       "endLine": 57
     },
     "type": "insight",
-    "title": "Each AGM step squares the gap",
-    "content": "`agm_gap_eq` proves the one-step identity $(a+b)/2 - \\sqrt{ab} = (\\sqrt a - \\sqrt b)^2/2$ — the gap after a step is half the square of the difference of square roots (expand $\\sqrt{ab} = \\sqrt a\\,\\sqrt b$ and $(\\sqrt a)^2 = a$, then `nlinarith`). `agm_gap_quadratic` then factors $(\\sqrt a - \\sqrt b)(\\sqrt a + \\sqrt b) = a - b$ to rewrite it as $(a-b)^2/(2(\\sqrt a + \\sqrt b)^2)$, exhibiting the new gap as proportional to the *square* of the old gap. Squaring the error each step is precisely what quadratic convergence means.",
-    "mathContext": "$(a+b)/2 - \\sqrt{ab} = \\tfrac{(\\sqrt a - \\sqrt b)^2}{2} = \\tfrac{(a-b)^2}{2(\\sqrt a + \\sqrt b)^2}$.",
+    "title": "Each AGM Step Squares the Gap",
+    "content": "agm_gap_eq proves the one-step identity (a+b)/2 − √(ab) = (√a − √b)²/2: the gap after a step is half the square of the difference of square roots (expand √(ab) = √a·√b and (√a)² = a, closed by nlinarith). agm_gap_quadratic then factors (√a − √b)(√a + √b) = a − b to rewrite this as (a − b)²/(2(√a + √b)²) — the new gap is proportional to the SQUARE of the old gap. Squaring the error each step is precisely quadratic convergence, the source of the doubly exponential rate.",
+    "mathContext": "$\\frac{a+b}{2} - \\sqrt{ab} = \\frac{(\\sqrt a - \\sqrt b)^2}{2} = \\frac{(a-b)^2}{2(\\sqrt a + \\sqrt b)^2}$.",
     "significance": "key",
     "relatedConcepts": [
+      "quadratic convergence",
+      "Real.sq_sqrt",
       "difference of squares",
-      "square-root algebra",
-      "nlinarith",
-      "field_simp"
+      "nlinarith"
     ],
     "prerequisites": [
-      "Real.sqrt and Real.sq_sqrt",
-      "algebraic identities"
+      "properties of √ over ℝ",
+      "algebraic manipulation of square roots"
     ]
   },
   {
@@ -53,19 +52,20 @@
       "startLine": 59,
       "endLine": 76
     },
-    "type": "technique",
-    "title": "A clean recursion gₙ₊₁ ≤ gₙ²/(8b)",
-    "content": "`agm_gap_le` bounds the step by $(a-b)^2/(8b)$ for $0 < b \\le a$. Since $\\sqrt a \\ge \\sqrt b$, we have $(\\sqrt a + \\sqrt b)^2 \\ge (2\\sqrt b)^2 = 4b$, hence $2(\\sqrt a + \\sqrt b)^2 \\ge 8b$ and the quadratic form is at most $(a-b)^2/(8b)$ (closed by `gcongr` after the denominator bound). This packages the squaring into a recursion $g_{n+1} \\le g_n^2/(8b)$ whose denominator is controlled by the *smaller* term — exactly the shape the abstract iteration lemma consumes.",
-    "mathContext": "$(a+b)/2 - \\sqrt{ab} \\le \\dfrac{(a-b)^2}{8b}$ for $0 < b \\le a$.",
-    "significance": "supporting",
+    "type": "concept",
+    "title": "A Clean Recursion gₙ₊₁ ≤ gₙ²/(8b)",
+    "content": "agm_gap_le bounds the step by (a − b)²/(8b) for 0 < b ≤ a. Since √a ≥ √b, (√a + √b)² ≥ (2√b)² = 4b, so 2(√a + √b)² ≥ 8b and the quadratic form is at most (a − b)²/(8b) (gcongr after the denominator bound). This packages the squaring into a recursion gₙ₊₁ ≤ gₙ²/(8b) whose denominator is controlled by the smaller term — exactly the shape needed to iterate.",
+    "mathContext": "$\\frac{a+b}{2} - \\sqrt{ab} \\le \\frac{(a-b)^2}{8b}$ for $0 < b \\le a$, since $2(\\sqrt a + \\sqrt b)^2 \\ge 8b$.",
+    "significance": "key",
     "relatedConcepts": [
-      "monotonicity of sqrt",
+      "monotonicity of √",
       "gcongr",
-      "denominator bounds"
+      "recursive bounds",
+      "error contraction"
     ],
     "prerequisites": [
       "Real.sqrt_le_sqrt",
-      "inequality manipulation"
+      "inequality reasoning"
     ]
   },
   {
@@ -76,41 +76,19 @@
       "endLine": 98
     },
     "type": "insight",
-    "title": "Recursion to rate: the doubly exponential bound",
-    "content": "`quadratic_iteration` is the geometry-free engine: any nonnegative sequence with $g_{n+1} \\le g_n^2/C$ (for $C>0$) satisfies $g_n \\le C\\,(g_0/C)^{2^n}$. The induction squares the inductive bound and uses $2^{n+1} = 2^n\\cdot 2$ (`pow_succ`, `pow_mul`) to land on the next exponent; the base case is $g_0 = C(g_0/C)^1$. This is the doubly exponential rate the problem asks for — the gap raised to the $2^n$ power, far faster than any geometric decay — and the same lemma governs Newton's method and other quadratically convergent iterations.",
-    "mathContext": "$g_{n+1} \\le g_n^2/C \\implies g_n \\le C\\,(g_0/C)^{2^n}$.",
+    "title": "Recursion to Rate: the Doubly Exponential Bound",
+    "content": "quadratic_iteration is the geometry-free engine: any nonnegative sequence with gₙ₊₁ ≤ gₙ²/C satisfies gₙ ≤ C·(g₀/C)^{2ⁿ}. The induction squares the inductive bound and uses 2^(n+1) = 2^n·2 (pow_succ, pow_mul) to land on the next exponent. This is the doubly exponential rate the problem asks for — the gap raised to the 2ⁿ power, far faster than any geometric decay — and the same lemma governs Newton's method and other quadratically convergent iterations.",
+    "mathContext": "$g_{n+1} \\le g_n^2/C \\Rightarrow g_n \\le C\\,(g_0/C)^{2^n}$; the exponent doubles each step via $2^{n+1} = 2^n \\cdot 2$.",
     "significance": "key",
     "relatedConcepts": [
+      "Newton's method",
+      "doubly exponential decay",
       "induction on ℕ",
-      "pow_succ / pow_mul",
-      "Newton's method convergence",
-      "doubly exponential growth"
+      "pow_mul / pow_succ"
     ],
     "prerequisites": [
       "mathematical induction",
-      "exponent arithmetic"
-    ]
-  },
-  {
-    "id": "ann-separation",
-    "proofId": "amgm-inequality-oq-04-oq-04",
-    "range": {
-      "startLine": 78,
-      "endLine": 100
-    },
-    "type": "concept",
-    "title": "Separating the geometry from the rate",
-    "content": "A structural highlight: the proof cleanly splits the analytic content (the AGM-specific gap identity and squaring bound) from the combinatorial content (the abstract $g_{n+1} \\le g_n^2/C \\Rightarrow g_n \\le C(g_0/C)^{2^n}$ recursion). `quadratic_iteration` mentions no square roots and no AGM at all — it is a reusable statement about *any* quadratically contracting sequence. Composing it with `agm_gap_le` yields the AGM rate, but the same lemma instantly transfers to Newton's method, Halley's method, or any other process whose error squares each step.",
-    "mathContext": "Reusable: $g_{n+1} \\le g_n^2/C$ governs every quadratically convergent iteration.",
-    "significance": "supporting",
-    "relatedConcepts": [
-      "abstraction / reuse",
-      "fixed-point iteration",
-      "order of convergence"
-    ],
-    "prerequisites": [
-      "numerical iteration",
-      "convergence order"
+      "manipulation of exponents"
     ]
   }
 ]

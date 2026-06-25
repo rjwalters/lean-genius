@@ -1,162 +1,139 @@
 [
   {
-    "id": "ann-overview-functor-up",
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-oq02-00-preamble",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
     "range": {
       "startLine": 1,
-      "endLine": 51
-    },
-    "type": "concept",
-    "title": "The parent's transport, one functor up",
-    "content": "The parent entry proved the **element**-count is preserved by the k-fold Chinese Remainder isomorphism: $|\\mathbb{Z}/(\\prod n_i)\\mathbb{Z}| = \\prod_i |\\mathbb{Z}/n_i\\mathbb{Z}| = \\prod_i n_i$. This file carries the same transport up to the **unit groups**: $|(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times| = \\prod_i |(\\mathbb{Z}/n_i\\mathbb{Z})^\\times|$. The key conceptual point is that this is *not* a second instance of the same easy counting argument. The element count reads off $\\mathbb{Z}/n\\mathbb{Z}$ from $n$ alone, so its multiplicativity is a triviality; the unit count $|(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(n)$ is genuinely sensitive to the factorization of $n$, so its multiplicativity has real arithmetic content and truly requires the CRT decomposition.",
-    "mathContext": "$|\\mathbb{Z}/n\\mathbb{Z}| = n$ (trivial in $n$) vs. $|(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(n)$ (sensitive to factorization).",
-    "significance": "key",
-    "relatedConcepts": [
-      "Chinese Remainder Theorem",
-      "units functor",
-      "Euler's totient",
-      "multiplicativity"
-    ],
-    "prerequisites": [
-      "Chinese Remainder Theorem",
-      "group of units of a ring",
-      "Euler's totient function"
-    ]
-  },
-  {
-    "id": "ann-imports-reuse",
-    "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
-    "range": {
-      "startLine": 53,
       "endLine": 58
     },
     "type": "context",
-    "title": "Reusing the parent's CRT machinery",
-    "content": "The file imports `Proofs.BezoutIdentityOQ03OQ01OQ01` and opens the `BezoutCRTKFold` namespace to reuse two objects built there: the nested product type `CRTProd ns` (a right-associated $\\mathbb{Z}/n_0\\mathbb{Z} \\times (\\mathbb{Z}/n_1\\mathbb{Z} \\times (\\cdots))$) and the explicit k-fold CRT ring isomorphism `crtKFold ns h : \\mathbb{Z}/(\\prod n_i)\\mathbb{Z} \\simeq+* CRTProd ns`. Nothing about the CRT isomorphism itself is re-derived; this entry only applies functors to it. The `import Mathlib` line is the gallery convention (the file is not Mathlib-bound).",
-    "mathContext": "`crtKFold ns h : ZMod (ns.prod) \\simeq+* CRTProd ns` is the inherited ring isomorphism.",
-    "significance": "context",
+    "title": "Open Question and Reused Machinery",
+    "content": "The docstring states the open question carried over from the parent (oq-03-oq-01-oq-01-oq-02): the parent established the element-count form |ℤ/(∏nᵢ)ℤ| = ∏ᵢnᵢ; this file lifts the same transport 'one functor up' to the unit groups, |(ℤ/(∏nᵢ)ℤ)ˣ| = ∏ᵢ|(ℤ/nᵢℤ)ˣ|, and reads the result through Euler's totient. The file imports full Mathlib and the parent file, then `open BezoutCRTKFold` brings the parent's `crtKFold` ring isomorphism and the nested product type `CRTProd` into scope so they can be reused verbatim.",
+    "mathContext": "The reused objects are $\\texttt{crtKFold}\\ ns\\ h : \\mathbb{Z}/(\\prod_i n_i)\\mathbb{Z} \\simeq^{+*} \\texttt{CRTProd}\\ ns$ (the $k$-fold Chinese Remainder ring isomorphism) and $\\texttt{CRTProd}$, the right-associated product with $\\texttt{CRTProd}\\ (n :: ns) = \\mathbb{Z}/n\\mathbb{Z} \\times \\texttt{CRTProd}\\ ns$.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "ring isomorphism",
-      "nested product type",
-      "code reuse"
+      "Chinese Remainder Theorem",
+      "units functor",
+      "Nat.card",
+      "crtKFold"
     ],
     "prerequisites": [
-      "RingEquiv",
-      "Lean namespaces and imports"
+      "Lean 4 syntax",
+      "Mathlib ZMod",
+      "ring isomorphisms"
     ]
   },
   {
-    "id": "ann-card-units-crtprod",
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-oq02-01-card-units-crtprod",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
     "range": {
-      "startLine": 60,
+      "startLine": 65,
       "endLine": 81
     },
-    "type": "technique",
-    "title": "Splitting the unit count of a product, factor by factor",
-    "content": "`card_units_CRTProd` proves $\\mathrm{Nat.card}\\,(CRTProd\\,ns)^\\times = \\prod_i \\mathrm{Nat.card}\\,(\\mathbb{Z}/n_i\\mathbb{Z})^\\times$ by induction on the modulus list. The **base case** uses $CRTProd\\,[] = \\mathrm{PUnit}$, whose unit group is a one-element subsingleton, so its `Nat.card` is $1$ (`Nat.card_eq_one_iff_unique`). The **inductive step** rests on the algebraic fact that the units of a product ring factor as a product of unit groups, $(\\alpha\\times\\beta)^\\times \\simeq^* \\alpha^\\times\\times\\beta^\\times$ (`MulEquiv.prodUnits`); `Nat.card_prod` then splits the count and the inductive hypothesis finishes. Using `Nat.card` rather than `Fintype.card` keeps the recursion free of finiteness side conditions.",
-    "mathContext": "$(\\alpha\\times\\beta)^\\times \\simeq^* \\alpha^\\times\\times\\beta^\\times$, iterated over $CRTProd$ to give $\\prod_i |(\\mathbb{Z}/n_i\\mathbb{Z})^\\times|$.",
+    "type": "proof-step",
+    "title": "Unit Count of the Nested Product Type",
+    "content": "`card_units_CRTProd` proves Nat.card (CRTProd ns)ˣ = ∏ᵢ Nat.card (ZMod nᵢ)ˣ by induction on the modulus list. The base case unfolds CRTProd [] = PUnit and closes by noting PUnitˣ is a one-element subsingleton (Nat.card_eq_one_iff_unique). The inductive step unfolds CRTProd (n :: ns) = ZMod n × CRTProd ns, then splits the units of the product via MulEquiv.prodUnits and the count via Nat.card_prod before applying the inductive hypothesis.",
+    "mathContext": "The units of a product ring factor as a product of unit groups, $(\\alpha \\times \\beta)^\\times \\cong \\alpha^\\times \\times \\beta^\\times$. Iterating over the right-associated $\\texttt{CRTProd}$ yields $|(\\texttt{CRTProd}\\ ns)^\\times| = \\prod_i |(\\mathbb{Z}/n_i\\mathbb{Z})^\\times|$. Because $\\texttt{Nat.card}$ and $\\texttt{Nat.card\\_prod}$ carry no finiteness hypotheses, no side conditions thread through the recursion.",
     "significance": "key",
     "relatedConcepts": [
-      "units of a product ring",
       "MulEquiv.prodUnits",
       "Nat.card_prod",
-      "induction on lists"
+      "list induction",
+      "group of units"
     ],
     "prerequisites": [
-      "group of units",
-      "cardinality of products",
+      "group of units of a ring",
       "structural induction"
     ]
   },
   {
-    "id": "ann-units-transport",
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-oq02-02-preservation",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
     "range": {
-      "startLine": 83,
+      "startLine": 88,
       "endLine": 97
     },
     "type": "insight",
-    "title": "Applying the units functor to the CRT isomorphism",
-    "content": "`card_units_preservation` is the substantive new result: $|(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times| = \\prod_i |(\\mathbb{Z}/n_i\\mathbb{Z})^\\times|$ for pairwise-coprime moduli. The whole proof is two rewrites. Because a `RingEquiv` is in particular a `MulEquiv` (`.toMulEquiv`), the units functor `Units.mapEquiv` lifts `crtKFold` directly to a group isomorphism $(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times \\simeq^* (CRTProd\\,ns)^\\times$ — no bespoke unit-group isomorphism has to be constructed. `Nat.card_congr` transports the count along its underlying equivalence, and `card_units_CRTProd` reduces the right side to the product of factor unit counts. Notably no positivity hypothesis is needed at this stage.",
-    "mathContext": "$\\mathrm{Units.mapEquiv}\\,(crtKFold)^{\\mathrm{MulEquiv}} : (\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times \\simeq^* (CRTProd\\,ns)^\\times$.",
+    "title": "Transport of the Unit Count Along the CRT Isomorphism",
+    "content": "`card_units_preservation` is the substantive new result: |(ℤ/(∏nᵢ)ℤ)ˣ| = ∏ᵢ|(ℤ/nᵢℤ)ˣ| for pairwise-coprime moduli. The proof is two rewrites. A ring isomorphism is in particular a multiplicative isomorphism (`.toMulEquiv`), so the units functor `Units.mapEquiv` lifts the parent's `crtKFold` to a group isomorphism (ℤ/(∏nᵢ)ℤ)ˣ ≃* (CRTProd ns)ˣ; `Nat.card_congr` transports the count along it, and `card_units_CRTProd` finishes. No positivity hypothesis is needed.",
+    "mathContext": "An isomorphism of rings restricts to an isomorphism of their unit groups. Applying the units functor to $\\texttt{crtKFold}$ and counting yields the multiplicativity of the unit-group order under the CRT — the genuinely arithmetic content, since $|(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(n)$ is not determined by $n$ alone but by its factorization.",
     "significance": "key",
     "relatedConcepts": [
-      "units functor",
       "Units.mapEquiv",
-      "RingEquiv to MulEquiv",
-      "Nat.card_congr"
+      "Nat.card_congr",
+      "units functor",
+      "Chinese Remainder Theorem"
     ],
     "prerequisites": [
-      "functoriality of the units construction",
-      "transport of cardinality along equivalences"
+      "functoriality of units",
+      "ring isomorphisms"
     ]
   },
   {
-    "id": "ann-totient-bridge",
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-oq02-03-totient-bridge",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
     "range": {
-      "startLine": 99,
-      "endLine": 123
+      "startLine": 104,
+      "endLine": 109
     },
-    "type": "concept",
-    "title": "Reading the unit count as a product of totients",
-    "content": "Two theorems convert the unit-count statement into a totient statement. `natCard_units_zmod` records the bridge $\\mathrm{Nat.card}\\,(\\mathbb{Z}/n\\mathbb{Z})^\\times = \\varphi(n)$ for $n > 0$: positivity supplies a `NeZero n` instance making $\\mathbb{Z}/n\\mathbb{Z}$ finite, so `Nat.card_eq_fintype_card` reduces to Mathlib's `ZMod.card_units_eq_totient`. `card_units_eq_totient_prod` then rewrites by the preservation result and replaces each factor termwise (`List.map_congr_left` under `List.prod`), yielding the headline payoff $|(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times| = \\prod_i \\varphi(n_i)$. The positivity hypothesis enters only here, because $\\mathbb{Z}/0\\mathbb{Z} = \\mathbb{Z}$ has the two units $\\pm 1$ while $\\varphi(0) = 0$ — so the totient reading would fail at a zero modulus even though the pure unit-count statement holds.",
-    "mathContext": "$\\mathrm{Nat.card}\\,(\\mathbb{Z}/n\\mathbb{Z})^\\times = \\varphi(n)$ for $n>0$; hence $|(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times| = \\prod_i \\varphi(n_i)$.",
-    "significance": "key",
+    "type": "technique",
+    "title": "Bridge: Unit Count Equals Euler's Totient",
+    "content": "`natCard_units_zmod` proves Nat.card (ℤ/nℤ)ˣ = φ(n) for n > 0. The positivity gives a `NeZero n` instance, making ZMod n a finite type so `Nat.card_eq_fintype_card` reduces Nat.card to Fintype.card, after which `ZMod.card_units_eq_totient` supplies the totient. The hypothesis 0 < n is essential: ℤ/0ℤ = ℤ has the two units ±1 (count 2) while φ(0) = 0.",
+    "mathContext": "Euler's totient counts the units modulo $n$: $|(\\mathbb{Z}/n\\mathbb{Z})^\\times| = \\varphi(n)$ for $n > 0$. This is the bridge that converts the abstract unit-count preservation into a statement about $\\varphi$.",
+    "significance": "supporting",
     "relatedConcepts": [
-      "Euler's totient",
       "ZMod.card_units_eq_totient",
-      "NeZero instance",
-      "List.map_congr_left"
+      "Euler's totient",
+      "NeZero",
+      "Nat.card_eq_fintype_card"
     ],
     "prerequisites": [
       "Euler's totient function",
-      "finiteness of ZMod n",
-      "Nat.card vs Fintype.card"
+      "finite type cardinality"
     ]
   },
   {
-    "id": "ann-totient-not-reproved",
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-oq02-04-totient-prod",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
     "range": {
       "startLine": 111,
       "endLine": 123
     },
-    "type": "context",
-    "title": "What is — and is not — new here",
-    "content": "Multiplicativity of $\\varphi$ itself, $\\varphi(\\prod n_i) = \\prod_i \\varphi(n_i)$, is **not** a new result: it is Mathlib's `Nat.totient_mul`, and it is already proved unconditionally in the parent file as `totient_prod_pairwise_coprime`. This entry does not re-derive it. Its contribution is to exhibit the *same product* $\\prod_i \\varphi(n_i)$ concretely as the order of the unit group $(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times$ — i.e. as the unit-count shadow of the explicit k-fold CRT isomorphism, rather than as an abstract arithmetic identity. This is exactly Euler's own structural route to $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m, n$.",
-    "mathContext": "$\\prod_i\\varphi(n_i)$ realized as $|(\\mathbb{Z}/(\\prod n_i)\\mathbb{Z})^\\times|$, not re-proving $\\varphi(\\prod n_i)=\\prod\\varphi(n_i)$.",
-    "significance": "supporting",
+    "type": "insight",
+    "title": "Headline Payoff: Unit Count as a Product of Totients",
+    "content": "`card_units_eq_totient_prod` is the headline: |(ℤ/(∏nᵢ)ℤ)ˣ| = ∏ᵢφ(nᵢ) for pairwise-coprime positive moduli. It rewrites by `card_units_preservation`, then replaces each factor Nat.card (ℤ/nᵢℤ)ˣ by φ(nᵢ) termwise under the list product via `List.map_congr_left` (each nᵢ positive by `hpos`). Multiplicativity of φ is NOT re-proved here — it is Mathlib's `Nat.totient_mul` (already in the parent as `totient_prod_pairwise_coprime`); this result instead exhibits ∏φ(nᵢ) concretely as the order of a unit group, the unit-count shadow of the explicit CRT isomorphism.",
+    "mathContext": "Reading $|(\\mathbb{Z}/n\\mathbb{Z})^\\times|$ as $\\varphi(n)$ turns the unit-count preservation into $|(\\mathbb{Z}/(\\prod_i n_i)\\mathbb{Z})^\\times| = \\prod_i \\varphi(n_i)$. Combined with the standard $\\varphi(N) = |(\\mathbb{Z}/N\\mathbb{Z})^\\times|$, this re-expresses the classical multiplicativity $\\varphi(mn) = \\varphi(m)\\varphi(n)$ for coprime $m,n$ as the order of a single unit group.",
+    "significance": "key",
     "relatedConcepts": [
+      "Euler's totient",
+      "List.map_congr_left",
       "Nat.totient_mul",
-      "structural vs computational proof",
-      "Euler's totient multiplicativity"
+      "multiplicative functions"
     ],
     "prerequisites": [
-      "multiplicativity of Euler's totient"
+      "Euler's totient function",
+      "Chinese Remainder Theorem"
     ]
   },
   {
-    "id": "ann-worked-example",
+    "id": "ann-bezout-oq03-oq01-oq01-oq02-oq02-05-example-30",
     "proofId": "bezout-identity-oq-03-oq-01-oq-01-oq-02-oq-02",
     "range": {
-      "startLine": 125,
+      "startLine": 126,
       "endLine": 152
     },
-    "type": "definition",
-    "title": "Worked example: 30 = 2 · 3 · 5",
-    "content": "The general theorems are specialized to the modulus list $[2, 3, 5]$, whose product is $30$. `coprime_2_3_5'` checks pairwise coprimality by kernel `decide`. `card_units_2_3_5` instantiates the preservation result, `card_units_30_eq_totient_prod` instantiates the totient payoff, and `card_units_30_eq_8` computes the numeric value $|(\\mathbb{Z}/30\\mathbb{Z})^\\times| = \\varphi(2)\\cdot\\varphi(3)\\cdot\\varphi(5) = 1\\cdot 2\\cdot 4 = 8$. The numeric facts are discharged by kernel `decide`, **not** `native_decide`, so they do not add `Lean.ofReduceBool` to the axiom set and the entry remains genuinely 0-axiom.",
-    "mathContext": "$|(\\mathbb{Z}/30\\mathbb{Z})^\\times| = \\varphi(2)\\varphi(3)\\varphi(5) = 1\\cdot 2\\cdot 4 = 8$.",
-    "significance": "supporting",
+    "type": "context",
+    "title": "Worked Example: 30 = 2 · 3 · 5",
+    "content": "Concrete instances at the list [2, 3, 5]. `coprime_2_3_5'` establishes pairwise coprimality by `decide`. `card_units_2_3_5` specializes the preservation theorem and `card_units_30_eq_totient_prod` the totient payoff. Finally `card_units_30_eq_8` computes the numeric value |(ℤ/30ℤ)ˣ| = φ(2)·φ(3)·φ(5) = 1·2·4 = 8, discharging the arithmetic with kernel `decide` (not native_decide, so the entry stays axiom-free).",
+    "mathContext": "For $30 = 2 \\cdot 3 \\cdot 5$, the unit group $(\\mathbb{Z}/30\\mathbb{Z})^\\times$ has order $\\varphi(30) = \\varphi(2)\\,\\varphi(3)\\,\\varphi(5) = 1 \\cdot 2 \\cdot 4 = 8$, a concrete witness of the general theorem.",
+    "significance": "context",
     "relatedConcepts": [
-      "concrete instantiation",
+      "decide",
       "kernel decidability",
-      "decide vs native_decide"
+      "Euler's totient"
     ],
     "prerequisites": [
-      "Euler's totient values",
-      "decidable propositions in Lean"
+      "modular arithmetic"
     ]
   }
 ]

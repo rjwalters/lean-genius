@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-preamble",
+    "proofId": "chebyshev-bounds-oq-03",
+    "range": {
+      "startLine": 4,
+      "endLine": 32
+    },
+    "type": "context",
+    "title": "The Open Question: ψ vs θ and the PNT Chain",
+    "content": "The docstring frames the parent's open question — formalize the second Chebyshev function ψ(x) = Σ_{p^k ≤ x} log p and connect it to the prime-counting asymptotic. Mathlib already defines Chebyshev.psi (ψ) and Chebyshev.theta (θ) and proves the size estimate |ψ(x) − θ(x)| ≤ 2√x·log x. This file establishes the FIRST link of the PNT equivalence chain rigorously: ψ and θ are asymptotically equivalent (ψ/x → 1 ⟺ θ/x → 1), because ψ − θ collects only proper prime powers p^k (k ≥ 2), a set sparse enough that ψ − θ = o(x). The remaining link θ ∼ x ⟺ π ∼ x/log x is partial-summation work left to sibling bridge entries.",
+    "mathContext": "$\\psi(x) = \\sum_{p^k \\le x} \\log p$, $\\theta(x) = \\sum_{p \\le x} \\log p$; $\\psi - \\theta$ counts only prime powers $p^k$, $k \\ge 2$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "second Chebyshev function",
+      "prime number theorem",
+      "prime powers",
+      "asymptotic equivalence"
+    ],
+    "prerequisites": [
+      "Chebyshev functions θ and ψ",
+      "asymptotic notation o(x)"
+    ]
+  },
+  {
     "id": "ann-restated-facts",
     "proofId": "chebyshev-bounds-oq-03",
     "range": {
@@ -7,12 +30,18 @@
       "endLine": 47
     },
     "type": "definition",
-    "title": "The Two Inputs: Order and Size",
-    "content": "theta_le_psi' and abs_psi_sub_theta_le' restate the only two Mathlib facts the argument consumes. The order fact θ(x) ≤ ψ(x) holds because ψ sums log p over all prime powers p^k ≤ x while θ sums only over primes p ≤ x, so ψ has extra non-negative terms. The size fact |ψ(x) − θ(x)| ≤ 2√x·log x quantifies exactly how much extra: the proper prime powers contribute at most 2√x·log x. These restatements keep the file self-contained and name the inputs in invariant-theory-friendly form, decoupling the asymptotic argument from Mathlib's exact lemma names.",
-    "mathContext": "$\\theta(x) = \\sum_{p \\le x} \\log p \\le \\sum_{n \\le x} \\Lambda(n) = \\psi(x)$, and $|\\psi(x) - \\theta(x)| \\le 2\\sqrt{x}\\,\\log x$.",
+    "title": "The Two Mathlib Facts Reused",
+    "content": "theta_le_psi' restates Chebyshev.theta_le_psi (θ(x) ≤ ψ(x), since ψ counts prime powers and θ only primes) and abs_psi_sub_theta_le' restates Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log (the size estimate |ψ(x) − θ(x)| ≤ 2√x·log x for x ≥ 1). These two imported facts — an order relation and a sharp size bound on the prime-power correction — are the only number-theoretic inputs; everything downstream is analysis and limit arithmetic.",
+    "mathContext": "$\\theta(x) \\le \\psi(x)$ and $|\\psi(x) - \\theta(x)| \\le 2\\sqrt{x}\\,\\log x$ for $x \\ge 1$.",
     "significance": "supporting",
-    "relatedConcepts": ["von Mangoldt function", "prime powers", "Chebyshev functions", "size estimate"],
-    "prerequisites": ["Chebyshev functions ψ and θ", "the von Mangoldt function Λ"]
+    "relatedConcepts": [
+      "Chebyshev.theta_le_psi",
+      "Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log",
+      "prime-power counting"
+    ],
+    "prerequisites": [
+      "Mathlib Chebyshev API"
+    ]
   },
   {
     "id": "ann-log-decay",
@@ -23,11 +52,19 @@
     },
     "type": "concept",
     "title": "log x / √x → 0 Is the Only Growth Fact Needed",
-    "content": "log_div_sqrt_tendsto_zero is the single analytic input: the logarithm grows slower than any positive power, so log = o(x^{1/2}) (Mathlib's isLittleO_log_rpow_atTop at r = 1/2), and since √x = x^{1/2}, log x/√x → 0. The proof rewrites √x as x^{1/2} (Real.sqrt_eq_rpow) so the Mathlib little-o lemma at exponent 1/2 applies directly via its tendsto_div_nhds_zero corollary. Everything else in the file is the size estimate and elementary limit arithmetic — no zeta function, no complex analysis.",
-    "mathContext": "$\\dfrac{\\log x}{\\sqrt{x}} \\to 0$ because $\\log x = o(x^{1/2})$ and $\\sqrt{x} = x^{1/2}$.",
+    "content": "log_div_sqrt_tendsto_zero is the single analytic input: the logarithm grows slower than any positive power, so log = o(x^{1/2}) (Mathlib's isLittleO_log_rpow_atTop at r = 1/2), and since √x = x^{1/2} (Real.sqrt_eq_rpow), log x/√x → 0. Everything else in the argument is the size estimate from Mathlib and elementary limit arithmetic — no zeta function, no complex analysis.",
+    "mathContext": "$\\log x = o(x^{1/2})$, so $\\dfrac{\\log x}{\\sqrt x} \\to 0$ as $x \\to \\infty$.",
     "significance": "key",
-    "relatedConcepts": ["little-o notation", "logarithmic growth", "real power functions", "limits at infinity"],
-    "prerequisites": ["little-o and asymptotic comparison", "log grows slower than any positive power", "√x = x^{1/2}"]
+    "relatedConcepts": [
+      "isLittleO_log_rpow_atTop",
+      "logarithmic growth",
+      "Real.sqrt_eq_rpow",
+      "little-o asymptotics"
+    ],
+    "prerequisites": [
+      "limits at infinity",
+      "growth rates of log vs powers"
+    ]
   },
   {
     "id": "ann-correction-small",
@@ -38,11 +75,19 @@
     },
     "type": "insight",
     "title": "Prime Powers Are Too Sparse to Matter",
-    "content": "psi_sub_theta_div_tendsto_zero proves (ψ(x) − θ(x))/x → 0. The difference ψ − θ collects only the proper prime powers p^k with k ≥ 2 — there are at most √x of them up to x, each contributing at most log x. Mathlib packages this as |ψ(x) − θ(x)| ≤ 2√x·log x; dividing by x gives the bound 2√x·log x/x = 2 log x/√x (using √x/x = 1/√x, Real.sqrt_div_self'). A squeeze against this bound (squeeze_zero_norm'), which tends to 0 by the previous lemma, shows the correction is o(x). The whole prime-power contribution is invisible to the leading x asymptotic.",
-    "mathContext": "$\\dfrac{\\psi(x) - \\theta(x)}{x} \\to 0$ via $\\left|\\dfrac{\\psi(x) - \\theta(x)}{x}\\right| \\le \\dfrac{2\\sqrt{x}\\,\\log x}{x} = \\dfrac{2\\log x}{\\sqrt{x}} \\to 0$.",
+    "content": "psi_sub_theta_div_tendsto_zero proves (ψ(x) − θ(x))/x → 0. The difference ψ − θ collects only the proper prime powers p^k with k ≥ 2 — there are at most √x of them up to x, each contributing at most log x. Mathlib packages this as |ψ(x) − θ(x)| ≤ 2√x·log x; dividing by x gives the bound 2√x·log x/x = 2 log x/√x (using √x/x = 1/√x). A squeeze (squeeze_zero_norm') against this bound, which tends to 0, shows the correction is o(x). The whole prime-power contribution is invisible to the leading x asymptotic.",
+    "mathContext": "$\\dfrac{|\\psi(x) - \\theta(x)|}{x} \\le \\dfrac{2\\sqrt x\\,\\log x}{x} = \\dfrac{2\\log x}{\\sqrt x} \\to 0$.",
     "significance": "key",
-    "relatedConcepts": ["squeeze theorem", "o(x) error terms", "prime power counting", "asymptotic negligibility"],
-    "prerequisites": ["the squeeze theorem for limits", "little-o error estimates", "sparsity of prime powers (≤ √x up to x)"]
+    "relatedConcepts": [
+      "squeeze theorem",
+      "prime-power density",
+      "o(x) correction",
+      "Tendsto"
+    ],
+    "prerequisites": [
+      "squeeze_zero_norm'",
+      "filter limits"
+    ]
   },
   {
     "id": "ann-equivalence",
@@ -53,10 +98,18 @@
     },
     "type": "insight",
     "title": "ψ ∼ x and θ ∼ x Are the Same Statement",
-    "content": "psi_asymp_iff_theta_asymp concludes ψ(x)/x → 1 ⟺ θ(x)/x → 1. The proof is purely algebraic once the correction vanishes: ψ(x)/x = θ(x)/x + (ψ(x) − θ(x))/x, and adding a term tending to 0 cannot change the limit (Tendsto.add / Tendsto.sub, with div_add_div_same / div_sub_div_same to merge the quotients). So the prime number theorem may be established in whichever Chebyshev form is convenient — ψ ∼ x or θ ∼ x — and transferred freely. This isolates the elementary link of the PNT equivalence chain, leaving the genuine partial-summation step θ ∼ x ⟺ π ∼ x/log x to the sibling bridge entries.",
-    "mathContext": "$\\dfrac{\\psi(x)}{x} = \\dfrac{\\theta(x)}{x} + \\dfrac{\\psi(x) - \\theta(x)}{x}$, so $\\dfrac{\\psi(x)}{x} \\to 1 \\iff \\dfrac{\\theta(x)}{x} \\to 1$.",
+    "content": "psi_asymp_iff_theta_asymp concludes ψ(x)/x → 1 ⟺ θ(x)/x → 1. The proof is purely algebraic once the correction vanishes: ψ(x)/x = θ(x)/x + (ψ(x) − θ(x))/x, and adding a term tending to 0 cannot change the limit (Tendsto.add / Tendsto.sub). So the prime number theorem may be established in whichever Chebyshev form is convenient — ψ ∼ x or θ ∼ x — and transferred freely. This isolates the elementary link of the PNT equivalence chain, leaving the genuine partial-summation step θ ∼ x ⟺ π ∼ x/log x to the sibling bridge entries.",
+    "mathContext": "$\\dfrac{\\psi(x)}{x} = \\dfrac{\\theta(x)}{x} + \\dfrac{\\psi(x)-\\theta(x)}{x}$, and the last term $\\to 0$, so the two limits coincide.",
     "significance": "key",
-    "relatedConcepts": ["prime number theorem", "limit arithmetic", "asymptotic equivalence", "PNT equivalence chain"],
-    "prerequisites": ["limit arithmetic (a + o(1) preserves the limit)", "asymptotic equivalence f ∼ x", "the Chebyshev forms of PNT"]
+    "relatedConcepts": [
+      "Tendsto.add",
+      "prime number theorem equivalences",
+      "Chebyshev ψ–θ link",
+      "limit arithmetic"
+    ],
+    "prerequisites": [
+      "limit of a sum",
+      "PNT equivalence chain"
+    ]
   }
 ]
