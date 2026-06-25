@@ -1,0 +1,201 @@
+[
+  {
+    "id": "ann-ring-definitions",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 65,
+      "endLine": 75
+    },
+    "type": "definition",
+    "title": "Ring-Valued Sumset and Product Set",
+    "content": "The parent entry's sumset/product set over Finset ℤ are generalized to an arbitrary [CommRing R] [DecidableEq R]: sumsetR A is the image of A ×ˢ A under (p.1 + p.2), productsetR A the image under (p.1 · p.2), and sumProductMaxR A = max(|A+A|, |A·A|). Over R = ℤ these agree with the parent definitions; the point of the generality is precisely that it exposes commutative rings — like ZMod m — that the integer-only framework cannot see, where the sum-product phenomenon collapses.",
+    "mathContext": "$A+A = \\{a+b : a,b\\in A\\},\\quad A\\cdot A = \\{ab : a,b\\in A\\},\\quad \\mathrm{sumProductMax}(A) = \\max(|A+A|,|A\\cdot A|).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "sumset",
+      "product set",
+      "commutative ring",
+      "Finset.image"
+    ],
+    "prerequisites": [
+      "Finset.product (×ˢ)",
+      "Finset.image",
+      "CommRing / DecidableEq"
+    ]
+  },
+  {
+    "id": "ann-membership",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "Membership Characterizations",
+    "content": "mem_sumsetR and mem_productsetR unfold membership in the image sets to the expected existential form: x ∈ A+A iff x = a+b for some a,b ∈ A, and likewise for the product set. These are the workhorse rewrites that let later proofs reason about elements of the sumset/product set directly, sidestepping the Finset.image/product encoding.",
+    "mathContext": "$x \\in A+A \\iff \\exists\\,a,b\\in A,\\ a+b=x;\\quad x \\in A\\cdot A \\iff \\exists\\,a,b\\in A,\\ ab=x.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.mem_image",
+      "Finset.mem_product"
+    ],
+    "prerequisites": [
+      "existential characterization of images"
+    ]
+  },
+  {
+    "id": "ann-closure-oneliners",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 101,
+      "endLine": 117
+    },
+    "type": "insight",
+    "title": "The Whole Ring is its Own Sumset and Product Set",
+    "content": "The two identities at the heart of the obstruction. sumsetR_univ: the sumset of the entire ring is the entire ring, because every x = x + 0 (additive-group closure, 0 ∈ R). productsetR_univ: the product set of the entire ring is the entire ring, because every x = x · 1 (multiplicative-monoid closure, 1 ∈ R). Each is a single-witness proof. This closure under both operations is exactly what ℤ forbids for finite sets and what every finite ring trivially supplies.",
+    "mathContext": "$x = x + 0 \\Rightarrow R+R = R;\\qquad x = x\\cdot 1 \\Rightarrow R\\cdot R = R.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "subring closure",
+      "additive subgroup",
+      "multiplicative monoid"
+    ],
+    "prerequisites": [
+      "mem_sumsetR / mem_productsetR",
+      "ring axioms x+0=x, x·1=x"
+    ]
+  },
+  {
+    "id": "ann-key-linearity",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
+    "type": "theorem",
+    "title": "Key Linearity Result",
+    "content": "sumProductMaxR_univ: in any finite commutative ring, the full set realizes sumProductMax = Fintype.card R — purely linear, no super-linear growth at all. It follows immediately from the two closure identities (both sumset and product set equal univ, so both cardinalities equal |R|, and max of equal values is that value). This is the structural lemma that defeats the conjecture, and it is reusable for any additive-combinatorics argument over rings.",
+    "mathContext": "$\\max(|R+R|,|R\\cdot R|) = |R| = \\mathrm{Fintype.card}\\,R.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "linear sum-product",
+      "Finset.card_univ",
+      "structural obstruction"
+    ],
+    "prerequisites": [
+      "sumsetR_univ",
+      "productsetR_univ"
+    ]
+  },
+  {
+    "id": "ann-zmod-family",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 142
+    },
+    "type": "theorem",
+    "title": "The ZMod m Family",
+    "content": "sumProductMaxR_zmod and card_univ_zmod specialize the abstract linearity result to the concrete finite rings ZMod m, using Mathlib's ZMod.card (Fintype.card (ZMod m) = m). Both the cardinality and the sum-product quantity of the full set equal m. This turns the abstract 'finite rings are linear' statement into an explicit, computable, and arbitrarily large family of witnesses.",
+    "mathContext": "$\\mathrm{sumProductMax}(\\mathbb{Z}/m) = m = |\\mathbb{Z}/m|.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "ZMod m",
+      "ZMod.card",
+      "finite commutative ring"
+    ],
+    "prerequisites": [
+      "sumProductMaxR_univ",
+      "ZMod.card"
+    ]
+  },
+  {
+    "id": "ann-arbitrarily-large",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 144,
+      "endLine": 153
+    },
+    "type": "theorem",
+    "title": "Arbitrarily Large Linear-Sum-Product Sets",
+    "content": "exists_linear_sum_product packages the family: for every n there is a finite commutative ring (namely ZMod (n+2)) and a subset A of size n+2 with sumProductMax A = |A|. The +2 keeps every set at size ≥ 2 (matching Erdős #52's hypothesis), and unboundedness in n is what no fixed constant or exponent 2−ε can survive.",
+    "mathContext": "$\\forall n,\\ \\exists R,\\ A\\subseteq R,\\ |A| = n+2 \\ge 2 \\text{ and } \\mathrm{sumProductMax}(A) = |A|.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "counterexample family",
+      "instance synthesis"
+    ],
+    "prerequisites": [
+      "sumProductMaxR_zmod",
+      "card_univ_zmod",
+      "NeZero (n+2)"
+    ]
+  },
+  {
+    "id": "ann-conjecture-statement",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 170
+    },
+    "type": "definition",
+    "title": "The Verbatim Ring-Analog of Erdős #52",
+    "content": "SumProductBoundAllCommRings states the naive generalization of the Erdős–Szemerédi conjecture to all finite commutative rings: for every ε > 0 there is C > 0 with max(|A+A|,|A·A|) ≥ C·|A|^{2−ε} for every finite commutative ring R and every A ⊆ R of size ≥ 2. Stating the conjecture as a precise Prop is what makes its refutation a formal theorem rather than an informal remark.",
+    "mathContext": "$\\forall \\varepsilon>0,\\ \\exists C>0,\\ \\forall R\\ \\forall A\\subseteq R\\ (|A|\\ge 2),\\ \\max(|A+A|,|A\\cdot A|) \\ge C\\,|A|^{2-\\varepsilon}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős–Szemerédi conjecture",
+      "sum-product exponent"
+    ],
+    "prerequisites": [
+      "real exponentiation rpow",
+      "quantifier structure of the conjecture"
+    ]
+  },
+  {
+    "id": "ann-main-refutation",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 172,
+      "endLine": 205
+    },
+    "type": "theorem",
+    "title": "Main Theorem: the Ring-Analog is False",
+    "content": "not_SumProductBoundAllCommRings refutes the conjecture. Instantiate ε = 1/2 to obtain a constant C; applied to univ ⊆ ZMod m the bound forces C·m^{3/2} ≤ m for all m ≥ 2. Rewriting m^{3/2} = m·√m (via Real.sqrt_eq_rpow and rpow_add) and dividing by m > 0 collapses this to C·√m ≤ 1 for all m — a uniform bound on C·√m.",
+    "mathContext": "$C\\,m^{3/2} \\le m \\iff C\\,\\sqrt{m} \\le 1 \\quad(\\forall m\\ge 2).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "proof by contradiction",
+      "Real.sqrt_eq_rpow",
+      "rpow_add"
+    ],
+    "prerequisites": [
+      "sumProductMaxR_zmod",
+      "real rpow algebra",
+      "le_of_mul_le_mul_right"
+    ]
+  },
+  {
+    "id": "ann-archimedean-finish",
+    "proofId": "erdos-52-oq-02",
+    "range": {
+      "startLine": 206,
+      "endLine": 224
+    },
+    "type": "insight",
+    "title": "Archimedean Finish: √m is Unbounded",
+    "content": "The contradiction. Since √m grows without bound, no constant can satisfy C·√m ≤ 1 for all m. Concretely exists_nat_gt picks n > (1/C)², set m = max(n,2) ≥ 2, so (1/C)² < m; taking square roots (lt_of_pow_lt_pow_left₀ with Real.sq_sqrt) gives 1/C < √m, hence C·√m > 1 (div_lt_iff₀), contradicting the derived C·√m ≤ 1. A single Archimedean choice of modulus defeats any candidate C, for every ε < 1.",
+    "mathContext": "$\\exists m,\\ \\sqrt{m} > 1/C \\Rightarrow C\\sqrt{m} > 1,\\ \\text{contradicting } C\\sqrt{m}\\le 1.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Archimedean property",
+      "exists_nat_gt",
+      "monotonicity of √"
+    ],
+    "prerequisites": [
+      "Real.sq_sqrt",
+      "lt_of_pow_lt_pow_left₀",
+      "div_lt_iff₀"
+    ]
+  }
+]
