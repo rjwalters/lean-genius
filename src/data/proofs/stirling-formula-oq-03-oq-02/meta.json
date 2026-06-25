@@ -1,0 +1,163 @@
+{
+  "id": "stirling-formula-oq-03-oq-02",
+  "title": "The Central Binomial Asymptotic from Wallis: C(2n,n) ~ 4ⁿ/√(πn)",
+  "slug": "stirling-formula-oq-03-oq-02",
+  "description": "Derives the asymptotic equivalent of the central binomial coefficient, C(2n,n) · √(πn) / 4ⁿ → 1, directly from the parent's Wallis limit. The bridge is the exact identity (4ⁿ/C(2n,n))² = W n · (2n+1), obtained from Mathlib's factorial form of the Wallis sequence and the factorization (2n)! = C(2n,n)·(n!)². Mathlib has central-binomial bounds but not this asymptotic.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFormulaOQ03OQ02.lean",
+    "tags": [
+      "analysis",
+      "combinatorics",
+      "asymptotics",
+      "central-binomial",
+      "wallis-product",
+      "pi",
+      "limits"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Wallis.W_eq_factorial_ratio",
+        "description": "Exact factorial form of the Wallis sequence: W n = 2^(4n)·(n!)⁴ / ((2n)!²·(2n+1))",
+        "module": "Mathlib.Analysis.Real.Pi.Wallis"
+      },
+      {
+        "theorem": "Real.Wallis.tendsto_W_nhds_pi_div_two",
+        "description": "The Wallis sequence converges: W n → π/2",
+        "module": "Mathlib.Analysis.Real.Pi.Wallis"
+      },
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "Factorial factorization (2n).choose n · n! · n! = (2n)!, giving (2n)! = C(2n,n)·(n!)²",
+        "module": "Mathlib.Data.Nat.Choose.Factorization"
+      },
+      {
+        "theorem": "Filter.Tendsto.sqrt",
+        "description": "Continuity of √ transfers limits: f → x ⟹ √∘f → √x",
+        "module": "Mathlib.Data.Real.Sqrt"
+      }
+    ],
+    "originalContributions": [
+      "factorial_two_mul: the real-cast factorization (2n)! = C(2n,n)·(n!)², bridging Mathlib's Wallis factorial form to the central binomial coefficient",
+      "four_pow_div_centralBinom_sq: the exact identity (4ⁿ/C(2n,n))² = W n · (2n+1), collapsing Wallis' factorial ratio onto the central binomial coefficient",
+      "centralBinom_sq_div_tendsto: (4ⁿ/C(2n,n))²/n → π, from W n·(2+1/n) → π",
+      "four_pow_div_centralBinom_sqrt_tendsto: 4ⁿ/(C(2n,n)·√n) → √π, the square-root form",
+      "centralBinom_asymptotic: the textbook asymptotic C(2n,n)·√(πn)/4ⁿ → 1, i.e. C(2n,n) ~ 4ⁿ/√(πn) — not stated by Mathlib"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound.",
+    "lineCount": 128,
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The central binomial coefficient C(2n,n) = \\binom{2n}{n} is the largest binomial coefficient in row 2n of Pascal's triangle and counts lattice paths, Dyck-path prefixes, and the constant term of (x+1/x)^{2n}. Its growth rate C(2n,n) ~ 4ⁿ/√(πn) is one of the most-cited asymptotic estimates in combinatorics and probability — it governs the return probability of the simple random walk, the normalization of the arcsine law, and the sharpness of Bertrand's postulate bounds. The √π in the denominator is exactly Wallis' constant: the same 1656 product for π that fixes the Stirling constant also pins the central binomial asymptotic. The parent entry (stirling-formula-oq-03) isolated Wallis' product as a standalone limit; this entry shows that the standard route from Wallis to factorial asymptotics passes through the central binomial coefficient.",
+    "problemStatement": "State and verify the asymptotic equivalent of the central binomial coefficient, C(2n,n) ~ 4ⁿ/√(πn), as a standalone result derived from the Wallis limit rather than from the full Stirling formula.\n\n**Answer:** C(2n,n)·√(πn)/4ⁿ → 1. The exact identity (4ⁿ/C(2n,n))² = W n · (2n+1) reduces the asymptotic to the convergence W n → π/2, which Mathlib supplies.",
+    "text": "The textbook asymptotic C(2n,n) ~ 4ⁿ/√(πn), obtained directly from Mathlib's factorial form of the Wallis sequence — no manipulation of the Stirling sequence's real powers required.",
+    "proofStrategy": "1. factorial_two_mul: cast the integer factorization C(2n,n)·n!·n! = (2n)! (Nat.choose_mul_factorial_mul_factorial) to ℝ, giving (2n)! = C(2n,n)·(n!)².\n2. four_pow_div_centralBinom_sq: substitute this into Mathlib's W_eq_factorial_ratio; the (n!)⁴ cancels and the difference 2^(4n) = (4ⁿ)² gives the exact identity (4ⁿ/C(2n,n))² = W n · (2n+1), closed by field_simp.\n3. centralBinom_sq_div_tendsto: divide by n. The right side becomes W n·(2+1/n), which tends to (π/2)·2 = π since W n → π/2.\n4. four_pow_div_centralBinom_sqrt_tendsto: apply Filter.Tendsto.sqrt; √((4ⁿ/C)²/n) = 4ⁿ/(C·√n) → √π.\n5. centralBinom_asymptotic: rewrite C(2n,n)·√(πn)/4ⁿ = √π/(4ⁿ/(C·√n)) and take the quotient limit √π/√π = 1.",
+    "keyInsights": [
+      "**Wallis is the whole story**: the central binomial asymptotic needs only the Wallis limit W n → π/2, not the full Stirling formula. The √π is literally Wallis' constant.",
+      "**An exact identity, not an estimate**: (4ⁿ/C(2n,n))² = W n · (2n+1) holds for every n with no error term. All the asymptotics are routine limit algebra on top of it.",
+      "**Avoiding the Stirling sequence's real powers**: deriving the asymptotic from Mathlib's stirlingSeq would require manipulating (n/e)ⁿ and √(2n) as real powers. Routing through W_eq_factorial_ratio keeps everything rational in n!, C(2n,n), and 4ⁿ — only the final √ is irrational.",
+      "**The factorization is the bridge**: (2n)! = C(2n,n)·(n!)² is what turns Wallis' (n!)⁴/(2n)!² into a clean power of 4ⁿ/C(2n,n); without it the Wallis ratio and the central binomial coefficient never meet."
+    ],
+    "prerequisites": [
+      "Binomial coefficients and the central binomial coefficient C(2n,n)",
+      "Limits of sequences (Filter.Tendsto, 𝓝) and continuity of √",
+      "Wallis' product for π (parent entry)",
+      "Elementary factorial identities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-cb",
+      "title": "Imports and the Real Central Binomial Coefficient",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "File-level docstring deriving the plan, imports Mathlib, opens Filter/Topology/Nat and scoped Real. Defines cb n = (Nat.centralBinom n : ℝ) with positivity/nonvanishing lemmas cb_pos, cb_ne_zero.",
+      "mathContext": "cb n = C(2n,n) cast to ℝ; cb n > 0 since the central binomial coefficient is positive."
+    },
+    {
+      "id": "factorial-factorization",
+      "title": "The Factorial Factorization",
+      "startLine": 57,
+      "endLine": 67,
+      "summary": "factorial_two_mul: the real identity (2n)! = C(2n,n)·(n!)², obtained by casting Nat.choose_mul_factorial_mul_factorial (with 2n−n = n) and linear_combination.",
+      "mathContext": "C(2n,n)·n!·(2n−n)! = (2n)! with 2n−n = n gives C(2n,n)·n!·n! = (2n)!, i.e. (2n)! = C(2n,n)·(n!)²."
+    },
+    {
+      "id": "exact-identity",
+      "title": "The Exact Wallis-to-Central-Binomial Identity",
+      "startLine": 68,
+      "endLine": 79,
+      "summary": "four_pow_div_centralBinom_sq: (4ⁿ/C(2n,n))² = W n·(2n+1). Rewrites Mathlib's W_eq_factorial_ratio, substitutes the factorization, and uses 2^(4n) = (4ⁿ)² so field_simp closes the rational identity.",
+      "mathContext": "W n = 2^(4n)(n!)⁴/((2n)!²(2n+1)); substituting (2n)! = C·(n!)² collapses (n!)⁴ and leaves W n·(2n+1) = (2^(4n))/C² = (4ⁿ/C)²."
+    },
+    {
+      "id": "asymptotics",
+      "title": "The Three Asymptotic Forms",
+      "startLine": 80,
+      "endLine": 128,
+      "summary": "centralBinom_sq_div_tendsto ((4ⁿ/C)²/n → π via W n·(2+1/n)), four_pow_div_centralBinom_sqrt_tendsto (4ⁿ/(C·√n) → √π via Tendsto.sqrt), and centralBinom_asymptotic (C·√(πn)/4ⁿ → 1 via the quotient √π/√π).",
+      "mathContext": "From W n → π/2: (4ⁿ/C)²/n = W n·(2+1/n) → π, hence 4ⁿ/(C·√n) → √π, hence C·√(πn)/4ⁿ → 1, i.e. C(2n,n) ~ 4ⁿ/√(πn)."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Wallis, John",
+      "title": "Arithmetica Infinitorum",
+      "year": "1656",
+      "note": "The infinite product for π that supplies the √π constant"
+    },
+    {
+      "authors": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Central binomial coefficient asymptotics C(2n,n) ~ 4ⁿ/√(πn)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-formula-oq-03",
+      "relationship": "extends",
+      "description": "The parent isolates the Wallis limit W n → π/2; this entry uses it (through Mathlib's W) to derive the central binomial asymptotic"
+    },
+    {
+      "targetId": "stirling-formula",
+      "relationship": "supports",
+      "description": "Both rest on Wallis' product; the central binomial asymptotic is the combinatorial face of the same √π constant that fixes the Stirling factor"
+    }
+  ],
+  "conclusion": {
+    "summary": "The central binomial coefficient satisfies C(2n,n)·√(πn)/4ⁿ → 1 (centralBinom_asymptotic), i.e. C(2n,n) ~ 4ⁿ/√(πn). The proof rests on the exact identity (4ⁿ/C(2n,n))² = W n·(2n+1) (four_pow_div_centralBinom_sq), assembled from Mathlib's factorial form of the Wallis sequence and the factorization (2n)! = C(2n,n)·(n!)²; the three asymptotic forms then follow from W n → π/2 by elementary limit algebra and continuity of √.",
+    "implications": "Supplies a directly citable Lean statement of one of combinatorics' most-used asymptotics, and demonstrates that the route from Wallis' product to factorial growth passes cleanly through the central binomial coefficient — avoiding the real-power manipulations needed to extract the same estimate from the Stirling sequence.",
+    "openQuestions": [
+      "Can the convergence be sharpened to the next-order expansion C(2n,n) = 4ⁿ/√(πn)·(1 − 1/(8n) + O(1/n²))?",
+      "Does the same exact-identity route give the asymptotics of the Catalan numbers Cₙ = C(2n,n)/(n+1) ~ 4ⁿ/(√π·n^{3/2})?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Nat",
+      "Real (scoped)"
+    ],
+    "namespace": "StirlingFormulaOQ03OQ02",
+    "lineCount": 128,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/StirlingFormulaOQ03OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
