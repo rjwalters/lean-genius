@@ -1,19 +1,39 @@
 [
   {
+    "id": "h10oq04030201-ann-00",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "Deciding linear Diophantine systems via Smith normal form",
+    "content": "Hilbert's 10th is undecidable in general (MRDP, 1970), but the degree-1 case is classically decidable. The grandparent decided one equation Σ aᵢxᵢ = b by a gcd test; the parent reduced a square system A x = b to column-lattice membership and left the decision step open. This file supplies it: given a Smith normal form U A V = diagonal d (U, V unimodular over ℤ), system solvability becomes the invariant-factor divisibility test ∀ i, d i ∣ (U b) i, packaged as a Decidable instance. The construction of the SNF itself is the only ingredient left open.",
+    "mathContext": "Over the PID $\\mathbb{Z}$: $U A V = D$ diagonal $\\Rightarrow$ ($A x = b$ solvable $\\iff \\forall i,\\ d_i \\mid (Ub)_i$).",
+    "significance": "key",
+    "relatedConcepts": ["Hilbert's tenth problem", "Smith normal form", "invariant factors", "MRDP theorem", "decidability"],
+    "prerequisites": ["linear Diophantine equations", "matrices over a PID"]
+  },
+  {
     "id": "h10oq04030201-ann-01",
     "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
     "range": { "startLine": 54, "endLine": 71 },
     "type": "concept",
     "title": "The Diagonal Case: Where Divisibility Enters",
-    "content": "diagonal_mulVec_solvable_iff is the heart of the criterion. Because (diagonal d *ᵥ x) i = d i * x i (Matrix.mulVec_diagonal), the system diagonal d *ᵥ x = c decouples completely into independent scalar equations d i * xᵢ = c i, one per coordinate. Such a scalar equation is solvable over ℤ exactly when d i ∣ c i. The forward direction reads off the divisibility witness x i from a solution; the backward direction assembles a solution coordinate-by-coordinate, choosing each xᵢ from the witness supplied by d i ∣ c i (Classical choice over the finite index Fin n). This is the only place invariant-factor divisibility appears — everything else is change of basis."
+    "content": "diagonal_mulVec_solvable_iff is the heart of the criterion. Because (diagonal d *ᵥ x) i = d i * x i (Matrix.mulVec_diagonal), the system diagonal d *ᵥ x = c decouples completely into independent scalar equations d i * xᵢ = c i, one per coordinate. Such a scalar equation is solvable over ℤ exactly when d i ∣ c i. The forward direction reads off the divisibility witness x i from a solution; the backward direction assembles a solution coordinate-by-coordinate, choosing each xᵢ from the witness supplied by d i ∣ c i (Classical choice over the finite index Fin n). This is the only place invariant-factor divisibility appears — everything else is change of basis.",
+    "mathContext": "$(\\mathrm{diagonal}\\,d \\,*_v\\, x)_i = d_i x_i$, so $\\mathrm{diagonal}\\,d \\,*_v\\, x = c \\iff \\forall i,\\ d_i x_i = c_i \\iff \\forall i,\\ d_i \\mid c_i$.",
+    "significance": "critical",
+    "relatedConcepts": ["diagonal systems", "coordinate decoupling", "divisibility over ℤ", "Matrix.mulVec_diagonal", "Classical choice"],
+    "prerequisites": ["matrix–vector product", "scalar Diophantine solvability d ∣ c"]
   },
   {
     "id": "h10oq04030201-ann-02",
     "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
     "range": { "startLine": 73, "endLine": 108 },
-    "type": "technique",
+    "type": "insight",
     "title": "Unimodular Reduction by Pure mulVec Associativity",
-    "content": "solvable_iff_solvable_diagonal transports solvability of A x = b to the diagonalised system diagonal d *ᵥ y = U *ᵥ b, given U A V = diagonal d with U, V invertible over ℤ. The two directions are mutually inverse linear bijections: forward sends a solution x to y = Vi *ᵥ x, using V *ᵥ (Vi *ᵥ x) = x; backward sends y to x = V *ᵥ y, using the rearrangement A * V = Ui * diagonal d (obtained by left-multiplying U A V = diagonal d by Ui) and Ui *ᵥ (U *ᵥ b) = b. Remarkably, no determinant or GLₙ machinery is needed — every step is an application of Matrix.mulVec_mulVec (M *ᵥ (N *ᵥ v) = (M * N) *ᵥ v) and Matrix.one_mulVec (1 *ᵥ v = v). The unimodularity of U and V enters only through the supplied two-sided inverses."
+    "content": "solvable_iff_solvable_diagonal transports solvability of A x = b to the diagonalised system diagonal d *ᵥ y = U *ᵥ b, given U A V = diagonal d with U, V invertible over ℤ. The two directions are mutually inverse linear bijections: forward sends a solution x to y = Vi *ᵥ x, using V *ᵥ (Vi *ᵥ x) = x; backward sends y to x = V *ᵥ y, using the rearrangement A * V = Ui * diagonal d (obtained by left-multiplying U A V = diagonal d by Ui) and Ui *ᵥ (U *ᵥ b) = b. Remarkably, no determinant or GLₙ machinery is needed — every step is an application of Matrix.mulVec_mulVec (M *ᵥ (N *ᵥ v) = (M * N) *ᵥ v) and Matrix.one_mulVec (1 *ᵥ v = v). The unimodularity of U and V enters only through the supplied two-sided inverses.",
+    "mathContext": "$y = V^{-1}x \\Rightarrow Dy = U A V (V^{-1}x) = U(Ax) = Ub$; $\\;x = Vy \\Rightarrow Ax = (AV)y = U^{-1}Dy = U^{-1}(Ub) = b$.",
+    "significance": "key",
+    "relatedConcepts": ["unimodular matrices GLₙ(ℤ)", "change of basis", "Matrix.mulVec_mulVec", "two-sided inverse", "linear bijection of solution sets"],
+    "prerequisites": ["associativity of matrix–vector multiplication", "invertible integer matrices"]
   },
   {
     "id": "h10oq04030201-ann-03",
@@ -21,6 +41,22 @@
     "range": { "startLine": 110, "endLine": 137 },
     "type": "concept",
     "title": "From Criterion to Decidable Instance",
-    "content": "solvable_iff_invariantFactor_dvd composes the unimodular reduction with the diagonal case to obtain ∃ x, A *ᵥ x = b ↔ ∀ i, d i ∣ (U *ᵥ b) i: system solvability is decided by n divisibility tests on the single transformed right-hand side U b, with no search over x. Since ∀ i, d i ∣ (U *ᵥ b) i is a Fintype-decidable predicate (finite conjunction of decidable integer-divisibility tests), decidableSolvableOfSmith hands this to decidable_of_iff to produce a Decidable instance for ∃ x, A *ᵥ x = b. The only data the instance needs is the Smith normal form itself — the construction of which is the entry's sole open question."
+    "content": "solvable_iff_invariantFactor_dvd composes the unimodular reduction with the diagonal case to obtain ∃ x, A *ᵥ x = b ↔ ∀ i, d i ∣ (U *ᵥ b) i: system solvability is decided by n divisibility tests on the single transformed right-hand side U b, with no search over x. Since ∀ i, d i ∣ (U *ᵥ b) i is a Fintype-decidable predicate (finite conjunction of decidable integer-divisibility tests), decidableSolvableOfSmith hands this to decidable_of_iff to produce a Decidable instance for ∃ x, A *ᵥ x = b. The only data the instance needs is the Smith normal form itself — the construction of which is the entry's sole open question.",
+    "mathContext": "$\\exists x,\\ A *_v x = b \\iff \\forall i,\\ d_i \\mid (U *_v b)_i$; the RHS is Fintype-decidable, so $\\mathrm{decidable\\_of\\_iff}$ yields a Decidable instance.",
+    "significance": "critical",
+    "relatedConcepts": ["Decidable instance", "decidable_of_iff", "Fintype-decidable predicate", "effective decision procedure"],
+    "prerequisites": ["the diagonal case and unimodular reduction", "decidability of integer divisibility"]
+  },
+  {
+    "id": "h10oq04030201-ann-04",
+    "proofId": "hilbert-10-oq-04-oq-03-oq-02-oq-01",
+    "range": { "startLine": 138, "endLine": 149 },
+    "type": "definition",
+    "title": "Sanity check: the identity system",
+    "content": "A worked instantiation: the identity matrix is its own Smith normal form (U = V = 1, d = 1), so the criterion ∀ i, 1 ∣ b i is vacuously true and every system x = b is solvable, with the obvious witness x = b. This confirms the criterion and the Decidable instance behave correctly on a concrete case where the answer is known a priori.",
+    "mathContext": "For $A = 1$: $U = V = D = 1$, so the test $\\forall i,\\ 1 \\mid b_i$ always holds, matching the solution $x = b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["identity matrix", "sanity check", "trivial Smith normal form"],
+    "prerequisites": ["the divisibility criterion above"]
   }
 ]
