@@ -166,7 +166,18 @@
       "url": "https://link.springer.com/article/10.1007/BF02952513"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "hilbert-17",
+      "relationship": "extends",
+      "description": "Parent: states Artin's theorem (every nonnegative real polynomial is a sum of squares of rational functions) but must axiomatize it, and axiomatizes that Motzkin is not a polynomial SOS. This entry replaces the existence axiom artin_hilbert17 with an explicit, machine-checked rational SOS certificate for the canonical example M."
+    },
+    {
+      "targetId": "hilbert-17-oq-03-oq-02",
+      "relationship": "complements",
+      "description": "Companion proving Motzkin is NOT a sum of squares of polynomials. Together the two entries exhibit the full Hilbert-17 picture for M: polynomial SOS fails (oq-03-oq-02), yet rational-function SOS succeeds (this entry), so rational functions are genuinely necessary."
+    }
+  ],
   "sections": [
     {
       "id": "definitions",
