@@ -92,3 +92,67 @@ so the graph is **not** a counterexample there — illustrating Bug 1 concretely
 This session could not build locally (Docker down + olean header mismatch vs the
 prebuilt cache), so the corrected Lean proof is left for a build-capable session; the
 mathematics above is fully settled and reproducible via the two scripts in this folder.
+
+---
+
+## S2 (researcher-9, 2026-06-25) — corrected Fin-18 counterexample MACHINE-VERIFIED + build-broken finding
+
+**Shipped:** new self-contained file `proofs/Proofs/Erdos895CounterexampleFin18.lean`
+(111 lines, 0 sorry, 0 literal axiom; native_decide ⟹ depends on `Lean.ofReduceBool`,
+status `axiomatized`/badge `axiom`). Builds the 42-edge witness as a genuine
+`SimpleGraph (Fin 18)` and proves by `native_decide`:
+- `ce895_triangleFree` — triangle-free;
+- `ce895_no_distinct_independent_additive_triple` — no independent additive triple in
+  DISTINCT vertices;
+- `counterexample_fin18` — the two combined (the sharp-threshold witness).
+Verified locally via host `lake env lean` (exit 0); independently cross-checked against
+the Z3 UNSAT result and the pure-Python verifier in this directory. Gallery entry
+`src/data/proofs/erdos-895-counterexample-fin18/`.
+
+This is the corrected, build-verified replacement for the false `counterexample_17`
+(researcher-1's analysis confirmed and now realized in Lean), using the explicit
+`IsDistinctAdditiveTriple` (a ≠ b) on `Fin 18`.
+
+**NEW build-integrity finding:** `proofs/Proofs/Erdos895Problem.lean` itself is
+**build-broken on Mathlib v4.26.0** — it has ~9 PRE-EXISTING compilation errors
+(independent of the sorries), all Mathlib API drift in unrelated lemmas:
+`Finset.exists_max_image` / `degree G` signature change (dense_triangleFree_independence),
+`overloaded` errors and a failed `rw` (mantel_theorem / schur_2 region), and `omega`
+failures (erdos895_implies_schur_variant, triangleFree_independence_bound). These are
+NOT touched by this PR; the new counterexample is delivered as a clean standalone file
+so it compiles regardless. Repairing Erdos895Problem.lean (and reconciling its
+statements: add `a ≠ b`, reindex barber_theorem to n ≥ 19) remains open, as does the
+genuinely-hard positive direction `barber_theorem` (large SAT/case computation).
+
+---
+
+## S3 (researcher-9, 2026-06-25) — REPAIRED the build-broken Erdos895Problem.lean
+
+The build-broken finding above is now **fixed**. `proofs/Proofs/Erdos895Problem.lean`
+compiles cleanly (`lake env lean`, exit 0; 0 errors) with only the 3 expected `sorry`
+warnings (`barber_theorem`, `counterexample_17`, `erdos895_sat_verified`). 16 → 0
+compile errors. Concrete Mathlib v4.26.0 API fixes applied (auxiliary lemmas only — no
+change to any theorem statement):
+
+| was | now |
+|---|---|
+| `Finset.ssubset_of_subset_of_ne` | `ssubset_of_subset_of_ne` (no longer Finset-namespaced) |
+| `Finset.mem_of_mem_sdiff h` | `(Finset.mem_sdiff.mp h).1` |
+| `SimpleGraph.mem_neighborFinset.mpr x` | `by rw [SimpleGraph.mem_neighborFinset]; exact x` (lemma now takes explicit `w`) |
+| `Finset.mem_union_left {v} h` | `Finset.mem_union_left _ h` (singleton parse / inferred arg) |
+| `Nat.sqrt_lt'.mpr` hack for `√n·√n ≤ n` | `Nat.sqrt_le n` (direct lemma) |
+| `exists_max_image univ G.degree` | `exists_max_image univ (fun v => G.degree v)` (`degree` carries a `[Fintype (neighborSet…)]` arg, needs η-expansion) |
+| greedy helper `omega` (removed.card ≤ k) | added `have hdv : G.degree v < k := hdeg_S v hv` |
+| `rw [dif_pos …] at h1` (schur_2 lift) | `simp only [dif_pos …] at h1` (β-reduce the `dite` redex first) |
+| `rw [mul_comm (n/3) n, …]` | `rw [mul_comm n (n/3), …]` (goal had `n * (n/3)`, not `(n/3) * n`) |
+| `⟨…, by omega, by omega⟩` for `(⟨1,_⟩:Fin n).val > 0` | `Nat.one_pos` (omega/decide choke on the free-var `Fin.mk`; defeq term works) |
+
+**Net effect:** the file's genuinely-proved auxiliary results are now machine-checked,
+not silently broken — Mantel's theorem (`mantel_theorem`), R(3,3)=6 (`ramsey_3_3` via
+`native_decide`), Schur S(2)=4 (`schur_2`), and the √n / dense triangle-free
+independence bounds (`triangleFree_independence_bound`, `dense_triangleFree_independence`).
+The 3 remaining `sorry`s are the irreducible ones: `barber_theorem` (open, hard SAT/case
+computation), `counterexample_17` (FALSE as stated — corrected witness lives in the
+machine-verified companion `Erdos895CounterexampleFin18.lean`), and `erdos895_sat_verified`
+(depends on barber). Statement-level reconciliation (add `a ≠ b`, reindex to n ≥ 19)
+remains future work but is no longer needed for buildability.
