@@ -686,9 +686,8 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       · simp
       · have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr hn
         rw [Real.sign_of_neg (neg_lt_zero.mpr hn_pos)]
-        have : g a - -(n : ℝ) ≤ 0 := by linarith
-        exact mul_nonneg_of_nonpos_of_nonpos (mul_neg_of_neg_of_pos (by norm_num) (by positivity))
-          this
+        have hle : g a - -(n : ℝ) ≤ 0 := by linarith
+        nlinarith [Real.rpow_nonneg (abs_nonneg (-(n : ℝ))) (q.toReal - 1), hle]
     rcases le_or_gt (n : ℝ) (g a) with h2 | h2
     · -- g(a) ≥ n: g_n = n, sign(g_n) = 1 > 0, g - g_n ≥ 0, product ≥ 0
       have hgn_val : max (min (g a) (n : ℝ)) (-(n : ℝ)) = (n : ℝ) := by
@@ -725,8 +724,9 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
         intro hsf
         have hcoe : ∀ a, ⇑(SimpleFunc.piecewise E hE (SimpleFunc.const α c) (SimpleFunc.const α 0)) a =
             E.indicator (fun _ => c) a := fun a => by
-          simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
-                Set.indicator_apply, Set.piecewise_apply]
+          by_cases h : a ∈ E <;>
+            simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
+                  Set.indicator_apply, Set.piecewise_apply, h]
         have hE_fin : μ E ≠ ⊤ := measure_ne_top μ E
         have hind : MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
           indicator_memLp hE hE_fin p (le_of_lt hp1) hptop
@@ -736,17 +736,11 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
           filter_upwards [hsf.coeFn_toLp,
             Lp.coeFn_smul c (hind.toLp (E.indicator (fun _ => (1 : ℝ)))),
             hind.coeFn_toLp] with a ha hsmul hind_ae
-          rw [ha, hsmul, hind_ae, hcoe]
-          simp [Pi.smul_apply, smul_eq_mul, Set.indicator_apply]
-          split_ifs <;> ring
+          rw [ha, hcoe, hsmul, Pi.smul_apply, hind_ae]
+          by_cases h : a ∈ E <;> simp [Set.indicator_apply, smul_eq_mul, h]
         rw [heq_Lp, map_smul, smul_eq_mul]
         have hphi_ind : φ (hind.toLp (E.indicator (fun _ => (1 : ℝ)))) = ν E := by
           rw [hν_eq E hE]
-          congr 1
-          apply Lp.ext
-          filter_upwards [hind.coeFn_toLp,
-            (indicator_memLp hE hE_fin p (le_of_lt hp1) hptop).coeFn_toLp] with a h1 h2
-          exact h1.trans h2.symm
         rw [hphi_ind, rnDeriv_integral_eq ν hac hE]
         simp only [hcoe]
         calc c * ∫ a in E, g a ∂μ
@@ -754,8 +748,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
           _ = ∫ a, E.indicator (fun _ => c * g a) a ∂μ := (integral_indicator hE).symm
           _ = ∫ a, E.indicator (fun _ => c) a * g a ∂μ := by
                 congr 1; ext a
-                simp only [Set.indicator_apply]
-                split_ifs <;> ring
+                by_cases h : a ∈ E <;> simp [Set.indicator_apply, h]
       | @add sf₁ sf₂ hdisj IH₁ IH₂ =>
         intro h12
         have hsf₁_le : ∀ a, ‖(sf₁ : α → ℝ) a‖ ≤ ‖(sf₁ + sf₂ : SimpleFunc α ℝ) a‖ :=
@@ -773,7 +766,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             · simp [ha]
             · have : (sf₁ : α → ℝ) a = 0 := Function.nmem_support.mp
                   (disjoint_left.mp hdisj.symm (Function.mem_support.mpr ha))
-              rw [this, zero_add]; exact le_refl _
+              rw [this, zero_add]
         have hsf₁ : MemLp ⇑sf₁ p μ := h12.mono
           sf₁.measurable.aestronglyMeasurable (ae_of_all μ hsf₁_le)
         have hsf₂ : MemLp ⇑sf₂ p μ := h12.mono
@@ -810,11 +803,11 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       φ.continuous.continuousAt.tendsto.comp htendsto_Lp
     -- Step 4: φ(apx k) = ∫ (apx k) * g for each k
     have hphi_apx : ∀ k, φ ((SimpleFunc.memLp_approxOn_range hhn_meas hhn_memLp k).toLp _) =
-        ∫ a, ↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ :=
+        ∫ a, (SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ :=
       fun k => phi_simple_eq _ (SimpleFunc.memLp_approxOn_range hhn_meas hhn_memLp k)
     -- Step 5: DCT: ∫ (apx k) * g → ∫ h_n * g
     have htendsto_int : Tendsto
-        (fun k => ∫ a, ↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ)
+        (fun k => ∫ a, (SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ)
         atTop (𝓝 (∫ a, h_n a * g a ∂μ)) := by
       apply tendsto_integral_of_dominated_convergence
           (fun a => 2 * (n : ℝ) ^ (q.toReal - 1) * ‖g a‖)
@@ -829,7 +822,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
           have := SimpleFunc.norm_approxOn_zero_le hhn_meas
             (show (0 : ℝ) ∈ Set.range h_n ∪ {0} from by simp) a k
           simp only [Real.norm_eq_abs] at this ⊢; linarith
-        calc |↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a| * |g a|
+        calc |(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a| * |g a|
             ≤ 2 * ‖h_n a‖ * |g a| := mul_le_mul_of_nonneg_right hbnd (abs_nonneg _)
           _ ≤ 2 * (n : ℝ) ^ (q.toReal - 1) * |g a| := by
               apply mul_le_mul_of_nonneg_right _ (abs_nonneg _)
@@ -844,7 +837,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
         exact hapx.mul_const (g a)
     -- Step 6: Unique limits give φ(h_n) = ∫ h_n * g
     have htendsto_phi' : Tendsto
-        (fun k => ∫ a, ↑(SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ)
+        (fun k => ∫ a, (SimpleFunc.approxOn h_n hhn_meas (Set.range h_n ∪ {0}) 0 (by simp) k) a * g a ∂μ)
         atTop (𝓝 (φ (hhn_memLp.toLp h_n))) := by
       convert htendsto_phi using 1
       ext k; exact (hphi_apx k).symm
