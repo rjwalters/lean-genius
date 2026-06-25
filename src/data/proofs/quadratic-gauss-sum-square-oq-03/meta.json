@@ -1,0 +1,84 @@
+{
+  "id": "quadratic-gauss-sum-square-oq-03",
+  "title": "Sign-Free Quadratic Reciprocity from the Gauss Sum Square",
+  "slug": "quadratic-gauss-sum-square-oq-03",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
+    "namespace": "QuadraticGaussSumSquareOQ03",
+    "lineCount": 209,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "path": "Proofs/QuadraticGaussSumSquareOQ03.lean",
+    "sorries": 0
+  },
+  "description": "The parent computes the square of the quadratic Gauss sum, g² = (−1)^((p−1)/2)·p, whose right-hand side is the integer p* := (−1)^((p−1)/2)·p. This entry carries out the open-question follow-up: combine that identity with a Gauss-sum proof of quadratic reciprocity to obtain a self-contained, sign-free statement of the law. The conceptual payoff of introducing p* is that quadratic reciprocity loses its (−1)^((p−1)(q−1)/4) sign factor and becomes the symmetric (p*/q) = (q/p) for all odd primes p, q — exactly the form the Gauss-sum computation produces. Three points are formalized: (1) gaussSquare_eq_pStar re-derives the parent's headline g² = (p* : ℂ) for a primitive additive character from Mathlib's generic gaussSum_sq, so the development is self-contained; (2) pStar_mod_four proves p* ≡ 1 (mod 4) for every odd prime, the arithmetic reason p* (rather than ±p) is the natural normalisation — it is the fundamental discriminant of ℚ(√p*) = ℚ(g); (3) pStar_reciprocity proves the sign-free law (p*/q) = (q/p), with the symmetric companion pStar_reciprocity_symm and the square-test corollary pStar_isSquare_iff (p* is a square mod q iff q is a square mod p, for distinct odd primes). Verified, no axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-22",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticGaussSumSquareOQ03.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "gauss-sum",
+      "legendre-symbol",
+      "quadratic-character",
+      "discriminant",
+      "zmod"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 209,
+    "theoremCount": 8,
+    "definitionCount": 2,
+    "assumptions": ""
+  },
+  "overview": {
+    "historicalContext": "Gauss's own favourite among his many proofs of quadratic reciprocity ran through the quadratic Gauss sum $g = \\sum_n \\chi(n)\\zeta^n$, whose square is the 'starred prime' $p^* = (-1)^{(p-1)/2} p$. The starred prime is not a cosmetic device: $p^*$ is the discriminant of the quadratic field $\\mathbb{Q}(\\sqrt{p^*}) = \\mathbb{Q}(g)$ sitting inside the $p$-th cyclotomic field, and it is the unique squarefree-up-to-units integer $\\equiv 1 \\pmod 4$ associated to $\\pm p$. Phrased through $p^*$, the law of quadratic reciprocity sheds its awkward sign $(-1)^{(p-1)(q-1)/4}$ and becomes the perfectly symmetric statement $(p^*/q) = (q/p)$. This is the form Eisenstein and Gauss-sum arguments produce most naturally, and it is the conceptual endpoint of 'combining $g^2 = p^*$ with reciprocity': the sign is absorbed once and for all into the definition of $p^*$.",
+    "problemStatement": "Let $p$ and $q$ be odd primes and write $p^* = (-1)^{(p-1)/2}\\,p$, the value of the square of the quadratic Gauss sum at $p$. Prove (i) the bridge $g^2 = (p^* : \\mathbb{C})$ for a primitive additive character, re-derived from Mathlib's generic Gauss-sum square so the development stands alone; (ii) $p^* \\equiv 1 \\pmod 4$ for every odd prime $p$; and (iii) the sign-free reciprocity law $\\left(\\frac{p^*}{q}\\right) = \\left(\\frac{q}{p}\\right)$, together with its symmetric companion and the square-solvability equivalence $x^2 \\equiv p^* \\pmod q \\iff x^2 \\equiv q \\pmod p$ for distinct odd primes.",
+    "proofStrategy": "The bridge gaussSquare_eq_pStar specialises Mathlib's `gaussSum_sq` to the ℂ-valued quadratic character chiC = (quadraticChar (ZMod p)).ringHomComp (Int.castRingHom ℂ): the square equals χ(−1)·#(ZMod p), and evaluating χ(−1) = (−1)^((p−1)/2) (first supplement, via `quadraticChar_neg_one` and `ZMod.χ₄_eq_neg_one_pow`) with #(ZMod p) = p gives p*. The congruence pStar_mod_four splits on the parity of (p−1)/2: for p ≡ 1 (mod 4) the sign is +1 and p* = p ≡ 1; for p ≡ 3 (mod 4) the sign is −1 and p* = −p ≡ 1; each case closes by `Int.modEq_iff_dvd` and `ring`. The heart, pStar_reciprocity, expands the multiplicative Legendre symbol over p* = (−1)^((p−1)/2)·p using `legendreSym.mul`, evaluates the power factor with the first supplement `legendreSym.at_neg_one` and `ZMod.χ₄_eq_neg_one_pow` to obtain (−1)^(q/2·p/2)·(q/p), then substitutes Mathlib's classical `legendreSym.quadratic_reciprocity'` and collapses the doubled sign (−1)^(q/2·p/2)·(−1)^(p/2·q/2) = 1 via `Even.neg_one_pow`. The square-test pStar_isSquare_iff rewrites both sides through `legendreSym.eq_one_iff` (the residues p* mod q and q mod p are nonzero because distinct primes do not divide each other) and applies the sign-free law.",
+    "keyInsights": [
+      "Introducing $p^* = (-1)^{(p-1)/2} p$ is exactly what removes the sign from reciprocity: the classical $\\left(\\frac{q}{p}\\right) = (-1)^{(p-1)(q-1)/4}\\left(\\frac{p}{q}\\right)$ becomes the symmetric $\\left(\\frac{p^*}{q}\\right) = \\left(\\frac{q}{p}\\right)$, because the factor $\\left(\\frac{(-1)^{(p-1)/2}}{q}\\right) = (-1)^{(p-1)(q-1)/4}$ contributed by the sign cancels the classical one.",
+      "The cancellation is structurally an 'even power of $-1$': the sign from expanding $(p^*/q)$ and the sign from classical reciprocity are equal, $(-1)^{a}\\cdot(-1)^{a} = (-1)^{2a} = 1$, which is the entire content of the final step.",
+      "$p^* \\equiv 1 \\pmod 4$ is forced by the same sign: $p \\equiv 1$ keeps $p^* = p \\equiv 1$, while $p \\equiv 3$ flips to $p^* = -p \\equiv 1$. This is why $p^*$, not $\\pm p$, is the fundamental discriminant attached to the Gauss sum.",
+      "The square-solvability form $x^2 \\equiv p^* \\pmod q \\iff x^2 \\equiv q \\pmod p$ is the sign-free law read through `eq_one_iff`; the only side condition is that $p \\ne q$, which guarantees both residues are units."
+    ]
+  },
+  "conclusion": {
+    "summary": "For all odd primes $p, q$ the entry machine-verifies the sign-free reciprocity law $\\left(\\frac{p^*}{q}\\right) = \\left(\\frac{q}{p}\\right)$ with $p^* = (-1)^{(p-1)/2} p$, the value of the square of the quadratic Gauss sum, together with $p^* \\equiv 1 \\pmod 4$ and the equivalence of $x^2 \\equiv p^* \\pmod q$ and $x^2 \\equiv q \\pmod p$. The Gauss-sum square $g^2 = p^*$ is re-derived from Mathlib so the development is self-contained, with no axioms and no sorries.",
+    "implications": "The sign-free form is the practically useful one: it makes reciprocity a symmetric relation between $p^*$ and $q$, eliminates parity bookkeeping in Legendre-symbol computations, and exposes $p^*$ as the discriminant governing the quadratic subfield of the cyclotomic field. It packages the parent's algebraic square identity and Mathlib's classical reciprocity into a single clean statement, completing the 'combine $g^2 = p^*$ with reciprocity' programme posed by the parent entry.",
+    "openQuestions": [
+      "Can the sign-free law be lifted to the Jacobi symbol, proving $\\left(\\frac{m^*}{n}\\right) = \\left(\\frac{n}{m}\\right)$ for odd coprime $m, n$ with $m^* = (-1)^{(m-1)/2} m$, directly from Mathlib's `jacobiSym` reciprocity?",
+      "Does the characteristic-zero (cyclotomic) Gauss-sum congruence argument — reducing $g^q \\equiv \\pm g \\pmod q$ in $\\mathbb{Z}[\\zeta_p]$ — give an independent formal proof of the sign-free law, complementing Mathlib's finite-field derivation used here?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "quadratic-gauss-sum-square",
+      "relationship": "extends",
+      "description": "The parent establishes g² = (−1)^((p−1)/2)·p for the quadratic Gauss sum. This entry names the right-hand side p*, re-derives the identity as gaussSquare_eq_pStar, and uses it to motivate and state the sign-free reciprocity law (p*/q) = (q/p)."
+    },
+    {
+      "proofId": "quadratic-gauss-sum-square-oq-01",
+      "relationship": "related",
+      "description": "The sibling oq-01 extracts the real/imaginary dichotomy and magnitude ‖g‖² = p from the square identity. This entry instead pushes the square identity outward into number theory, recovering quadratic reciprocity in sign-free form."
+    },
+    {
+      "proofId": "quadratic-gauss-sum-square-oq-02",
+      "relationship": "related",
+      "description": "The sibling oq-02 develops the orthogonality (equidistribution) side of the quadratic character. This entry develops the algebraic-square side to its reciprocity conclusion."
+    },
+    {
+      "proofId": "quadratic-reciprocity",
+      "relationship": "related",
+      "description": "This entry repackages Mathlib's classical law of quadratic reciprocity (legendreSym.quadratic_reciprocity') into the symmetric sign-free form (p*/q) = (q/p) natural to the Gauss-sum proof, using the starred prime p* = (−1)^((p−1)/2)·p."
+    }
+  ]
+}
