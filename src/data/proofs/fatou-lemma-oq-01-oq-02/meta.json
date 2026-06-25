@@ -1,0 +1,154 @@
+{
+  "id": "fatou-lemma-oq-01-oq-02",
+  "slug": "fatou-lemma-oq-01-oq-02",
+  "title": "The Escaping Mass Has No Integrable Majorant",
+  "leanFile": {
+    "imports": [
+      "Proofs.FatouLemma",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "FatouLemma",
+    "lineCount": 72,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/FatouLemmaOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FatouLemmaOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "integration",
+      "convergence",
+      "real-analysis",
+      "fatou",
+      "dominated-convergence",
+      "lebesgue-integral",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 72,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "escaping_no_integrable_majorant: the headline — the parent's escaping-mass sequence escaping n = 𝟙_[n,n+1) admits no integrable majorant. If g : ℝ → ℝ≥0∞ dominates every bump pointwise (∀ n, escaping n ≤ g), then ∫⁻ g = ∞. This is the obstruction explaining why the Dominated Convergence Theorem cannot rescue the escaping mass that makes Fatou's inequality strict: DCT requires a single integrable majorant, and none exists. Proof: the bumps [n,n+1) tile [0,∞), so any common majorant is ≥ 1 there, and ∫⁻ g ≥ ∫⁻ 𝟙_[0,∞) = volume (Ici 0) = ∞ by lintegral_mono + lintegral_indicator_one + Real.volume_Ici.",
+      "one_le_of_majorizes_escaping: the key pointwise lemma — any majorant of all bumps is ≥ 1 on the whole ray [0,∞). For x ≥ 0 the bump indexed by n = ⌊x⌋₊ covers x (⌊x⌋₊ ≤ x < ⌊x⌋₊ + 1 via Nat.floor_le and Nat.lt_floor_add_one), so 1 = escaping ⌊x⌋₊ x ≤ g x."
+    ],
+    "prerequisites": [
+      "MeasureTheory.lintegral_mono: monotonicity of the lower Lebesgue integral, f ≤ g ⟹ ∫⁻ f ≤ ∫⁻ g, used to bound ∫⁻ g below by the integral of the indicator of [0,∞)",
+      "MeasureTheory.lintegral_indicator_one: ∫⁻ x, s.indicator 1 x = μ s for measurable s, giving ∫⁻ 𝟙_[0,∞) = volume (Ici 0)",
+      "Real.volume_Ici: the Lebesgue measure of a closed ray [a,∞) is ∞",
+      "Nat.floor_le / Nat.lt_floor_add_one: the floor sandwich ⌊x⌋₊ ≤ x < ⌊x⌋₊ + 1 placing x ≥ 0 inside the bump [⌊x⌋₊, ⌊x⌋₊ + 1)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.lintegral_indicator_one",
+        "description": "∫⁻ x, s.indicator 1 x ∂μ = μ s for measurable s. Turns the lower bound (the indicator of [0,∞)) into the Lebesgue measure volume (Ici 0).",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.lintegral_mono",
+        "description": "Monotonicity of the lower Lebesgue integral; applied to the domination 𝟙_[0,∞) ≤ g to push the infinite measure of the ray into ∫⁻ g.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.Basic"
+      },
+      {
+        "theorem": "Real.volume_Ici",
+        "description": "volume (Ici a) = ∞ — the Lebesgue measure of the ray [0,∞) on which any common majorant of the bumps is ≥ 1.",
+        "module": "Mathlib.MeasureTheory.Measure.Lebesgue.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Fatou's lemma, the monotone convergence theorem, and the dominated convergence theorem (DCT) are the three pillars of Lebesgue integration, logically linked MCT ⇒ Fatou ⇒ DCT. The parent entry fatou-lemma-oq-01 exhibits the escaping-mass sequence 𝟙_[n,n+1) — a unit bump marching to +∞ — as a witness that Fatou's inequality ∫⁻ liminfₙ fₙ ≤ liminfₙ ∫⁻ fₙ can be strict (0 < 1): mass escapes to infinity and is lost in the pointwise liminf. The natural question is why the dominated convergence theorem — which forces equality and convergence of the integrals — does not apply to repair this. DCT carries exactly one extra hypothesis beyond pointwise convergence: a single integrable majorant g dominating every fₙ. This entry settles the obstruction side: the escaping sequence has NO such majorant, so DCT is simply inapplicable, and the strictness of Fatou's inequality is consistent with DCT. The positive companion — the explicit g ± fₙ Fatou ⇒ DCT derivation — is supplied by the follow-up child entry fatou-lemma-oq-01-oq-02-oq-01.",
+    "problemStatement": "Prove that the escaping-mass sequence escaping n = 𝟙_[n,n+1) of the parent Fatou entry has no integrable majorant: there is no g : ℝ → ℝ≥0∞ with finite Lebesgue integral and escaping n ≤ g pointwise for all n. Equivalently, every pointwise majorant of all the bumps has ∫⁻ g = ∞.",
+    "proofStrategy": "Two steps. (1) one_le_of_majorizes_escaping: for x ≥ 0, the bump indexed by n = ⌊x⌋₊ contains x — the floor sandwich Nat.floor_le and Nat.lt_floor_add_one give ⌊x⌋₊ ≤ x < ⌊x⌋₊ + 1, i.e. x ∈ Ico ⌊x⌋₊ (⌊x⌋₊ + 1) — so escaping ⌊x⌋₊ x = 1, and the domination hypothesis gives 1 ≤ g x. (2) escaping_no_integrable_majorant: thus 𝟙_[0,∞) ≤ g pointwise (using zero_le off the ray), so by lintegral_mono, ∫⁻ g ≥ ∫⁻ 𝟙_[0,∞) = volume (Ici 0) = ∞ (lintegral_indicator_one on the measurable ray, then Real.volume_Ici); top_le_iff forces ∫⁻ g = ∞.",
+    "keyInsights": [
+      "The bumps tile the ray. Because the half-open intervals [n, n+1) for n = 0, 1, 2, … partition [0, ∞), a function dominating every bump is forced to be ≥ 1 on the entire ray — a set of infinite Lebesgue measure — so its integral is infinite.",
+      "This pinpoints which DCT hypothesis fails. DCT differs from plain Fatou only by demanding an integrable majorant; the escaping sequence is excluded from DCT precisely by lacking one, which is exactly why the parent's Fatou inequality is allowed to be strict.",
+      "The obstruction is sharp and elementary: it needs nothing about the integrals ∫⁻ escaping n = 1 themselves, only the pointwise tiling of [0,∞) and the infinitude of its Lebesgue measure.",
+      "Paired with the child fatou-lemma-oq-01-oq-02-oq-01 (the positive g ± fₙ Fatou ⇒ DCT derivation), this closes the Fatou ↔ DCT narrative: an integrable majorant collapses the liminf/limsup bracket to equality, and its absence is what frees the escaping mass to violate it."
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry proves the obstruction half of the Fatou ↔ DCT story for the parent's escaping-mass witness: the sequence escaping n = 𝟙_[n,n+1) has no integrable majorant. Any g dominating every bump is ≥ 1 on the ray [0,∞) (since the bumps tile it, via the floor sandwich), so ∫⁻ g ≥ volume (Ici 0) = ∞. This shows the Dominated Convergence Theorem cannot apply to the escaping mass, consistent with the parent's strict Fatou inequality. 72 lines, 2 theorems, 0 axioms, 0 sorries.",
+    "implications": "Identifies exactly which DCT hypothesis the escaping-mass witness violates — the integrable majorant — completing the obstruction side of the bracketing narrative opened by the parent fatou-lemma-oq-01 and answered on the positive side by the child fatou-lemma-oq-01-oq-02-oq-01 (the explicit g ± fₙ Fatou ⇒ DCT derivation).",
+    "openQuestions": [
+      "Quantify the escape: show ∫⁻ over [0,N) of any common majorant grows at least linearly in N, making the divergence rate explicit.",
+      "Characterize which marching-bump sequences (varying width or height) do admit an integrable majorant, drawing the exact boundary of DCT applicability."
+    ]
+  },
+  "references": [
+    {
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "author": "Folland",
+      "year": "1999",
+      "venue": "Wiley",
+      "description": "Theorem 2.24 and surrounding discussion: the dominated convergence theorem and the essential role of the integrable majorant that the escaping-mass sequence lacks."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Measure.Lebesgue.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.volume_Ici (the ray [0,∞) has infinite Lebesgue measure) and the lintegral API (lintegral_mono, lintegral_indicator_one) underpinning the obstruction."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fatou-lemma-oq-01",
+      "relationship": "extends",
+      "description": "The parent formalizes forward Fatou and the escaping-mass witness 𝟙_[n,n+1) showing the inequality is strict. This entry proves that witness has no integrable majorant, explaining why the Dominated Convergence Theorem cannot force equality there."
+    },
+    {
+      "targetId": "fatou-lemma-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "The child entry supplies the positive companion — the explicit g ± fₙ Fatou ⇒ DCT derivation for signed integrands — to this entry's no-majorant obstruction; together they close the Fatou ↔ DCT story."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "fatou-lemma-oq-01-oq-02-oq-01",
+      "question": "Supply the positive companion: the explicit Fatou ⇒ Dominated Convergence derivation via the nonnegative shifts g + fₙ and g − fₙ for signed integrands (formalized in the child entry).",
+      "significance": "medium"
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: No Integrable Majorant for the Escaping Mass",
+      "startLine": 1,
+      "endLine": 30,
+      "summary": "Frames the entry as the obstruction half of the Fatou ↔ DCT story: the parent's escaping-mass sequence 𝟙_[n,n+1) witnesses strict Fatou, and this file shows the Dominated Convergence Theorem cannot rescue it because no integrable majorant exists. Confirms 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "$\\forall n,\\ \\mathbf 1_{[n,n+1)} \\le g \\Rightarrow \\int^- g = \\infty$."
+    },
+    {
+      "id": "pointwise-lower-bound",
+      "title": "Majorant ≥ 1 on the Ray [0,∞)",
+      "startLine": 36,
+      "endLine": 50,
+      "summary": "one_le_of_majorizes_escaping: for x ≥ 0 the bump indexed by n = ⌊x⌋₊ covers x (floor sandwich ⌊x⌋₊ ≤ x < ⌊x⌋₊ + 1), so escaping ⌊x⌋₊ x = 1 and the domination hypothesis forces 1 ≤ g x.",
+      "mathContext": "$x \\ge 0,\\ n = \\lfloor x\\rfloor \\Rightarrow x \\in [n,n+1),\\ 1 = \\text{escaping }n\\,x \\le g\\,x$."
+    },
+    {
+      "id": "no-majorant",
+      "title": "No Integrable Majorant",
+      "startLine": 52,
+      "endLine": 70,
+      "summary": "escaping_no_integrable_majorant: from 𝟙_[0,∞) ≤ g pointwise, lintegral_mono and lintegral_indicator_one give ∫⁻ g ≥ volume (Ici 0) = ∞ (Real.volume_Ici), so ∫⁻ g = ∞.",
+      "mathContext": "$\\mathbf 1_{[0,\\infty)} \\le g \\Rightarrow \\int^- g \\ge \\mathrm{vol}[0,\\infty) = \\infty$."
+    }
+  ]
+}
