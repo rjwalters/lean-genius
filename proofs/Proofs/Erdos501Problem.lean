@@ -89,7 +89,18 @@ def HasInfiniteIndependent (A : SetFamily) : Prop :=
     1-dimensional outer measure < 1. Hence μ(C_{ij}) < L^{n-1}.
     By subadditivity: μ(⋃_{i≠j} C_{ij}) < n(n-1) · L^{n-1} < L^n.
     So conflict-free tuples exist. The non-injective tuples form a
-    measure-zero subset, so conflict-free *injective* tuples exist. -/
+    measure-zero subset, so conflict-free *injective* tuples exist.
+
+    ⚠️ **CAUTION (researcher-7, 2026-06-25): the "Fubini section bound" step
+    above is NOT valid as stated for non-measurable families.** For Lebesgue
+    *outer* measure, `λ*_n(E) ≤ ∫ λ*_1(E_t)` (product ≤ integral of section
+    outer measures) is the FALSE direction; only `λ*_n(E) ≥ ∫_* λ*_1(E_t)`
+    holds. A Sierpiński set in [0,L]^2 has all sections null yet full planar
+    outer measure, so `μ(C_{ij})` can be as large as `L^n`. A correct proof
+    must pass to measurable hulls `H_t ⊇ A_t∩[0,L]` and apply *measurable*
+    Fubini, which requires joint measurability of `t ↦ H_t` — the genuine
+    crux. The same non-measurability is what makes the infinite case
+    CH-dependent (Hechler 1972). This sorry is HARD, not routine. -/
 lemma exists_independent_tuple (A : SetFamily) (hA : BoundedOuterMeasureFamily A)
     (n : ℕ) :
     ∃ f : Fin n → ℝ, Function.Injective f ∧
