@@ -1029,6 +1029,7 @@ import Proofs.DiniTheorem
 import Proofs.DiniTheoremOQ01OQ01
 import Proofs.DiniTheoremOQ01OQ02
 import Proofs.DiniTheoremOQ01OQ02OQ01
+import Proofs.DiniTheoremOQ01OQ02OQ01OQ01
 import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
 import Proofs.DirichletApproximationOQ01OQ01

@@ -1,0 +1,71 @@
+[
+  {
+    "id": "dini-oq01020101-ann-overview",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "Is the Dini Modulus Optimal?",
+    "content": "The header frames OQ-01 of the parent (dini-theorem-oq-01-oq-02-oq-01). The parent recovered uniform convergence of xⁿ on the compact subinterval [0,1−δ] and gave the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉, proving the sufficiency half (1−δ)^N ≤ ε. The open question: is this N the SMALLEST exponent that works, or merely the smallest the log-threshold derivation happens to produce? This file answers it — N is exactly minimal — by upgrading the parent's one-way estimate to a sharp biconditional.",
+    "mathContext": "$N(\\varepsilon,\\delta)=\\lceil \\log\\varepsilon/\\log(1-\\delta)\\rceil$ is the least $m$ with $(1-\\delta)^m\\le\\varepsilon$, and $(1-\\delta)^{N-1}>\\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dini's theorem",
+      "modulus of convergence",
+      "optimality",
+      "ceiling function"
+    ],
+    "prerequisites": [
+      "geometric decay",
+      "logarithms",
+      "ceiling / floor"
+    ]
+  },
+  {
+    "id": "dini-oq01020101-ann-biconditional",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 86
+    },
+    "type": "technique",
+    "title": "From One-Way Estimate to Sharp Biconditional",
+    "content": "The core upgrade. The parent's pow_lt_of_log_modulus took logs of (1−δ)^m ≤ ε to reach m·log(1−δ) ≤ log ε, then divided by the negative log(1−δ) — an implication. Here every step is run as an equivalence: Real.log_le_log_iff makes (1−δ)^m ≤ ε ⟺ log((1−δ)^m) ≤ log ε, Real.log_pow rewrites the left log as m·log(1−δ), and div_le_iff_of_neg (valid since log(1−δ) < 0 by Real.log_neg) turns m·log(1−δ) ≤ log ε into log ε / log(1−δ) ≤ m. That is pow_le_iff_log_le. Then Nat.ceil_le (⌈a⌉₊ ≤ n ↔ a ≤ ↑n) converts the real threshold into the discrete biconditional pow_le_iff_ceil_le.",
+    "mathContext": "$(1-\\delta)^m\\le\\varepsilon \\iff \\log\\varepsilon/\\log(1-\\delta)\\le m \\iff \\lceil\\log\\varepsilon/\\log(1-\\delta)\\rceil_+\\le m$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "monotonicity of log",
+      "dividing by a negative",
+      "Nat.ceil_le"
+    ],
+    "prerequisites": [
+      "Real.log_le_log_iff",
+      "div_le_iff_of_neg"
+    ]
+  },
+  {
+    "id": "dini-oq01020101-ann-minimality",
+    "proofId": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 87,
+      "endLine": 148
+    },
+    "type": "key-step",
+    "title": "Exact Minimality and the Off-by-One",
+    "content": "With membership in {m : (1−δ)^m ≤ ε} literally synonymous with ⌈c⌉₊ ≤ m, the solution set is the up-set [⌈c⌉₊, ∞), so isLeast_modulus reads off directly: the membership half is the biconditional at m = N (reflexivity), the lower-bound half is its forward direction. lt_pow_of_lt_modulus is the contrapositive — m < N forces ε < (1−δ)^m. Finally lt_pow_pred_modulus handles the headline off-by-one: for ε < 1, c = log ε / log(1−δ) is a negative-over-negative, hence positive (div_pos_iff), so N ≥ 1 (Nat.one_le_ceil_iff) and N−1 < N gives ε < (1−δ)^{N−1}. Paired with the parent's (1−δ)^N ≤ ε, the threshold is bracketed exactly.",
+    "mathContext": "$\\varepsilon<(1-\\delta)^{N-1}$ and $(1-\\delta)^{N}\\le\\varepsilon$: $N$ is the unique crossing exponent.",
+    "significance": "central",
+    "relatedConcepts": [
+      "IsLeast",
+      "up-set",
+      "contrapositive",
+      "div_pos_iff"
+    ],
+    "prerequisites": [
+      "Nat.one_le_ceil_iff",
+      "omega"
+    ]
+  }
+]

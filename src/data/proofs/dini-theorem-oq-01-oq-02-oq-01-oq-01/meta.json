@@ -1,0 +1,166 @@
+{
+  "id": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+  "title": "Exact Optimality of the Dini Modulus ⌈log ε / log(1−δ)⌉",
+  "slug": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+  "description": "Answers the parent's open question: the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉ recovering uniform convergence of xⁿ on the compact subinterval [0,1−δ] is EXACTLY minimal. The parent proved sufficiency, (1−δ)^N ≤ ε; this entry upgrades the one-way log-threshold estimate to a sharp biconditional (1−δ)^m ≤ ε ⟺ ⌈log ε / log(1−δ)⌉₊ ≤ m, from which N is the LEAST exponent with (1−δ)^m ≤ ε, every smaller exponent fails, and in particular (1−δ)^{N−1} > ε for ε < 1 — the off-by-one from Nat.le_ceil pinned down exactly. Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "dini",
+      "uniform-convergence",
+      "modulus",
+      "optimality",
+      "ceiling",
+      "logarithm",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 148,
+    "assumptions": "None. Fully machine-verified: lake env lean of Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for pow_le_iff_log_le, pow_le_iff_ceil_le, isLeast_modulus, lt_pow_of_lt_modulus, and lt_pow_pred_modulus. The file imports only Mathlib and is self-contained.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.log_le_log_iff",
+        "description": "0 < x, 0 < y ⟹ (log x ≤ log y ↔ x ≤ y) — runs the comparison (1−δ)^m ≤ ε as an equivalence through the monotone log",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_neg",
+        "description": "0 < x < 1 ⟹ log x < 0 — the sign of log(1−δ) is what reverses the inequality when dividing",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "div_le_iff_of_neg",
+        "description": "dividing by the negative quantity log(1−δ) reverses the inequality, turning m·log(1−δ) ≤ log ε into the threshold log ε / log(1−δ) ≤ m — the biconditional version",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "Real.log_pow",
+        "description": "log(rⁿ) = n · log r — linearizes the geometric bound (1−δ)^m ≤ ε after applying log monotonicity",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Nat.ceil_le",
+        "description": "⌈a⌉₊ ≤ n ↔ a ≤ ↑n — converts the sharp real threshold into the discrete biconditional, the key to exact minimality",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Nat.one_le_ceil_iff",
+        "description": "1 ≤ ⌈a⌉₊ ↔ 0 < a — gives N ≥ 1 from 0 < log ε / log(1−δ) when ε < 1, so the predecessor N−1 is well-defined",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "div_pos_iff",
+        "description": "0 < a/b ↔ (0<a ∧ 0<b) ∨ (a<0 ∧ b<0) — the negative-over-negative case gives 0 < log ε / log(1−δ) for ε < 1",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      }
+    ],
+    "originalContributions": [
+      "pow_le_iff_log_le: the SHARP real biconditional (1−δ)^m ≤ ε ⟺ log ε / log(1−δ) ≤ m — upgrades the parent's one-way pow_lt_of_log_modulus to an equivalence by running the log comparison through Real.log_le_log_iff and dividing the log-linearized inequality by the negative log(1−δ)",
+      "pow_le_iff_ceil_le: the DISCRETE biconditional (1−δ)^m ≤ ε ⟺ ⌈log ε / log(1−δ)⌉₊ ≤ m, via Nat.ceil_le — the master statement from which all optimality follows",
+      "isLeast_modulus: ⌈log ε / log(1−δ)⌉₊ is the LEAST exponent m with (1−δ)^m ≤ ε (IsLeast of the solution set)",
+      "lt_pow_of_lt_modulus: every smaller exponent is insufficient — m < N ⟹ ε < (1−δ)^m",
+      "lt_pow_pred_modulus: the exact off-by-one ε < (1−δ)^{N−1} for ε < 1 (where N ≥ 1) — pins the modulus exactly, showing the parent's (1−δ)^N ≤ ε cannot be lowered to N−1"
+    ],
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dini's theorem says a monotone sequence of continuous functions converging pointwise to a continuous limit on a COMPACT set converges uniformly. The grandparent (dini-theorem-oq-01) probes the necessity of compactness with the witness fₙ(x) = xⁿ; the great-grandparent's child (dini-theorem-oq-01-oq-02) showed the uniform error on the non-compact [0,1) stays exactly 1; and the parent (dini-theorem-oq-01-oq-02-oq-01) restored compactness on [0,1−δ] and gave the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉ for which (1−δ)ⁿ ≤ ε. This entry (OQ-01) answers whether that modulus is the best possible.",
+    "problemStatement": "Is N = ⌈log ε / log(1−δ)⌉ the smallest N with (1−δ)^N ≤ ε for every ε, δ, or only the smallest under the log-threshold derivation? Pin down the off-by-one from Nat.le_ceil exactly: show (1−δ)^{N−1} > ε (minimality) alongside the parent's (1−δ)^N ≤ ε.",
+    "text": "Proves the modulus is exactly minimal. The core upgrade is a biconditional: (1−δ)^m ≤ ε ⟺ ⌈log ε / log(1−δ)⌉₊ ≤ m. From it, N = ⌈log ε / log(1−δ)⌉ is the least exponent with (1−δ)^m ≤ ε, every smaller exponent fails, and (1−δ)^{N−1} > ε for ε < 1.",
+    "proofStrategy": "Write r = 1−δ so that 0 < r < 1 and log r < 0 (Real.log_neg). The parent proved one direction by exp/log monotonicity and dividing m·log r ≤ log ε by the negative log r. Running every step as an equivalence — Real.log_le_log_iff (log monotone) turning (1−δ)^m ≤ ε into log((1−δ)^m) ≤ log ε, Real.log_pow rewriting the left side as m·log r, then div_le_iff_of_neg — yields the SHARP real biconditional pow_le_iff_log_le: (1−δ)^m ≤ ε ⟺ log ε / log r ≤ m. Nat.ceil_le (⌈a⌉₊ ≤ n ↔ a ≤ ↑n) then turns the real threshold into the discrete biconditional pow_le_iff_ceil_le. Exact minimality is now immediate: the membership half of isLeast_modulus is the biconditional at m = N (reflexivity ⌈c⌉₊ ≤ ⌈c⌉₊), and the lower-bound half reads off ⌈c⌉₊ ≤ m from (1−δ)^m ≤ ε. lt_pow_of_lt_modulus is the contrapositive (m < N forces ε < (1−δ)^m by omega). For lt_pow_pred_modulus, ε < 1 makes log ε / log r a negative-over-negative, hence positive (div_pos_iff), so N ≥ 1 (Nat.one_le_ceil_iff) and N−1 < N, giving ε < (1−δ)^{N−1}.",
+    "keyInsights": [
+      "The whole optimality statement is one biconditional. The parent's analysis was an implication; rerunning the same log-monotone/divide-by-negative chain as a chain of iffs (every lemma used is already an equivalence) gives (1−δ)^m ≤ ε ⟺ log ε / log(1−δ) ≤ m for free.",
+      "Nat.ceil_le is exactly the bridge between the continuous and discrete thresholds: ⌈a⌉₊ ≤ n ↔ a ≤ n. It converts the sharp real characterization into the sharp discrete one with no loss, which is why the ceiling — not the ceiling-plus-one — is the true minimum.",
+      "Minimality is a structural consequence, not a separate computation: once membership in {m : (1−δ)^m ≤ ε} is literally synonymous with ⌈c⌉₊ ≤ m, the set is the up-set [⌈c⌉₊, ∞), whose least element is ⌈c⌉₊ by definition.",
+      "The off-by-one ε < (1−δ)^{N−1} is the contrapositive of minimality at m = N−1, valid precisely when N ≥ 1, i.e. when c = log ε / log(1−δ) > 0, i.e. when ε < 1 — exactly the regime where a nontrivial modulus is needed.",
+      "Pairing this entry's (1−δ)^{N−1} > ε with the parent's (1−δ)^N ≤ ε brackets the threshold tightly: N is the unique integer at which the geometric error crosses below ε, so the modulus is forced, not merely sufficient."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-setup",
+      "title": "Problem Statement and Setup",
+      "summary": "Module docstring framing OQ-01 (exact optimality of the parent's modulus), the reduction r = 1−δ, and the namespace/imports (Mathlib; open Set Filter Topology)",
+      "startLine": 1,
+      "endLine": 50
+    },
+    {
+      "id": "biconditional",
+      "title": "The Sharp Biconditional Characterising (1−δ)^m ≤ ε",
+      "summary": "pow_le_iff_log_le (the real biconditional (1−δ)^m ≤ ε ⟺ log ε / log(1−δ) ≤ m via Real.log_le_log_iff and div_le_iff_of_neg) and pow_le_iff_ceil_le (the discrete version via Nat.ceil_le)",
+      "startLine": 51,
+      "endLine": 86
+    },
+    {
+      "id": "minimality",
+      "title": "Exact Minimality of the Modulus",
+      "summary": "isLeast_modulus (⌈log ε / log(1−δ)⌉₊ is the least exponent with (1−δ)^m ≤ ε), lt_pow_of_lt_modulus (every smaller exponent fails), and lt_pow_pred_modulus (the exact off-by-one ε < (1−δ)^{N−1} for ε < 1)",
+      "startLine": 87,
+      "endLine": 148
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉ recovering uniform convergence of xⁿ on the compact [0,1−δ] is EXACTLY minimal. The master biconditional (1−δ)^m ≤ ε ⟺ ⌈log ε / log(1−δ)⌉₊ ≤ m makes N the least exponent with (1−δ)^m ≤ ε, with every smaller exponent failing and (1−δ)^{N−1} > ε for ε < 1.",
+    "implications": "The parent's modulus is not merely sufficient but optimal: N is the unique integer at which the geometric uniform error crosses below ε. The off-by-one from Nat.le_ceil is pinned exactly by the matching pair (1−δ)^N ≤ ε (parent) and (1−δ)^{N−1} > ε (here). The pattern — rerun a one-way log-threshold estimate as a biconditional, then bridge to ⌈·⌉₊ via Nat.ceil_le to extract IsLeast — is a reusable recipe for proving discrete moduli of geometric decay are sharp.",
+    "openQuestions": [
+      "Closed form for the threshold-crossing exponent in special cases (e.g. δ = 1 − 2^{-1} or ε = (1−δ)^k) where ⌈log ε / log(1−δ)⌉ collapses to an explicit integer, and the behaviour exactly at integer values of log ε / log(1−δ).",
+      "Sharp two-sided bracket as δ → 0: combine N = ⌈log ε / log(1−δ)⌉ with the asymptotic log(1−δ) ~ −δ to give N ~ ⌈−log ε / δ⌉ and quantify the error of this approximation, interpolating to the parent's non-uniformity.",
+      "Generalize the minimality argument to arbitrary strictly-decreasing geometric-type errors a^n (0 < a < 1): is the least n with a^n ≤ ε always ⌈log ε / log a⌉₊, and does the same biconditional-via-Nat.ceil_le proof transfer verbatim?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dini-theorem-oq-01-oq-02-oq-01",
+      "relationship": "parent-problem",
+      "description": "Parent: recovered uniform convergence of xⁿ on the compact [0,1−δ] with the explicit modulus ⌈log ε / log(1−δ)⌉ (sufficiency, (1−δ)^N ≤ ε); this entry answers its OQ[0] by proving that modulus is exactly minimal"
+    },
+    {
+      "targetId": "dini-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Grandparent: the sharp NON-uniform convergence of xⁿ on the non-compact [0,1) (unattained supremum 1)"
+    },
+    {
+      "targetId": "dini-theorem",
+      "relationship": "related",
+      "description": "The base Dini's theorem (uniform convergence of monotone sequences on compact sets) whose quantitative modulus this chain sharpens"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "Theorem 7.13 (Dini) and the xⁿ counterexample; uniform convergence on compact subintervals"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DiniTheoremOQ01OQ02OQ01OQ01",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
