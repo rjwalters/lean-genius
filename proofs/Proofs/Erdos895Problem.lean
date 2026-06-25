@@ -108,9 +108,19 @@ def erdos895Threshold : ℕ := 18
         the triple (a, b, a+b) is independent.
     • counterexample lives on `Fin 18` (= {1,…,17}). An explicit witness (42 edges,
       triangle-free, no DISTINCT independent additive triple) is recorded in the
-      research note; vertex 0 is isolated. It is `decide`-checkable once a build is
-      available (this session's local build was unavailable: Docker down + olean
-      header mismatch, so the corrected proof is left for a build-capable session).
+      research note; vertex 0 is isolated. This corrected counterexample is now
+      MACHINE-VERIFIED in the companion file `Erdos895CounterexampleFin18.lean`
+      (`counterexample_fin18`, by `native_decide`).
+
+  BUILD NOTE (researcher-9, 2026-06-25): this file was previously build-broken on
+  Mathlib v4.26.0 — ~16 compile errors in the auxiliary lemmas (API drift:
+  `Finset.ssubset_of_subset_of_ne`/`mem_of_mem_sdiff`/`exists_max_image` signatures,
+  `Nat.sqrt_lt'`, `mem_neighborFinset.mpr`, dite/omega tactic breakage). These are now
+  REPAIRED, so the genuinely-proved auxiliary results below (Mantel's theorem, R(3,3)=6,
+  Schur S(2)=4, the √n and dense triangle-free independence bounds) compile and are
+  machine-checked. Only the three combinatorially-hard / false-as-stated declarations
+  remain `sorry`: `barber_theorem`, `counterexample_17` (false — see companion file),
+  and `erdos895_sat_verified`.
 -/
 
 /- ## Barber's Theorem (2015) -/
@@ -216,7 +226,7 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
       let removed := Nv ∪ {v}
       let S' := S \ removed
       have hS'_subs : S' ⊂ S := by
-        apply Finset.ssubset_of_subset_of_ne Finset.sdiff_subset
+        apply ssubset_of_subset_of_ne Finset.sdiff_subset
         intro heq
         have : v ∈ removed := Finset.mem_union_right _ (Finset.mem_singleton_self v)
         exact absurd this (Finset.mem_sdiff.mp (heq ▸ hv)).2
@@ -228,6 +238,7 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
         have hNv_le : Nv.card ≤ G.degree v := by
           rw [← SimpleGraph.card_neighborFinset_eq_degree]
           exact Finset.card_le_card Finset.inter_subset_left
+        have hdv : G.degree v < k := hdeg_S v hv
         omega
       have hS'_card : S.card ≤ S'.card + k := by
         have hdisj : Disjoint S' (S ∩ removed) :=
@@ -241,7 +252,7 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
         have hSI_le : (S ∩ removed).card ≤ k :=
           (Finset.card_le_card Finset.inter_subset_right).trans hrem_card
         omega
-      obtain ⟨I, hI_sub, hI_card, hI_indep⟩ := ih S' hS'_subs (fun u hu => hdeg_S u (Finset.mem_of_mem_sdiff hu))
+      obtain ⟨I, hI_sub, hI_card, hI_indep⟩ := ih S' hS'_subs (fun u hu => hdeg_S u (Finset.mem_sdiff.mp hu).1)
       have hv_notin_I : v ∉ I := by
         intro hv_I
         exact absurd (Finset.mem_union_right Nv (Finset.mem_singleton_self v))
@@ -249,7 +260,7 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
       refine ⟨insert v I, ?_, ?_, ?_⟩
       · intro u hu
         simp only [Finset.mem_insert] at hu
-        exact hu.elim (fun h => h ▸ hv) (fun h => Finset.mem_of_mem_sdiff (hI_sub h))
+        exact hu.elim (fun h => h ▸ hv) (fun h => (Finset.mem_sdiff.mp (hI_sub h)).1)
       · rw [Finset.card_insert_of_not_mem hv_notin_I]
         calc S.card ≤ S'.card + k := hS'_card
           _ ≤ I.card * k + k := Nat.add_le_add_right hI_card k
@@ -260,14 +271,14 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
         · exact absurd rfl hab
         · intro hadj
           have hb_S' := hI_sub hb
-          exact absurd (Finset.mem_union_left {v} (Finset.mem_inter.mpr
-            ⟨SimpleGraph.mem_neighborFinset.mpr (G.symm hadj), Finset.mem_of_mem_sdiff hb_S'⟩))
-            (Finset.mem_sdiff.mp hb_S').2
+          have hb_rem : b ∈ removed := Finset.mem_union_left _ (Finset.mem_inter.mpr
+            ⟨by rw [SimpleGraph.mem_neighborFinset]; exact hadj, (Finset.mem_sdiff.mp hb_S').1⟩)
+          exact (Finset.mem_sdiff.mp hb_S').2 hb_rem
         · intro hadj
           have ha_S' := hI_sub ha
-          exact absurd (Finset.mem_union_left {v} (Finset.mem_inter.mpr
-            ⟨SimpleGraph.mem_neighborFinset.mpr hadj, Finset.mem_of_mem_sdiff ha_S'⟩))
-            (Finset.mem_sdiff.mp ha_S').2
+          have ha_rem : a ∈ removed := Finset.mem_union_left _ (Finset.mem_inter.mpr
+            ⟨by rw [SimpleGraph.mem_neighborFinset]; exact G.symm hadj, (Finset.mem_sdiff.mp ha_S').1⟩)
+          exact (Finset.mem_sdiff.mp ha_S').2 ha_rem
         · exact hI_indep a b ha hb hab
 
 /-- Triangle-free graphs have independence number at least √n (Ramsey bound) -/
@@ -291,10 +302,7 @@ theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) (hG : 
       refine ⟨I, ?_, hI_indep⟩
       -- From n ≤ I.card * √n and (√n)² ≤ n, deduce √n ≤ I.card.
       -- (√n)² ≤ n: by contradiction, if n < √n * √n then Nat.sqrt_lt' gives √n < √n.
-      have hn_sq : Nat.sqrt n * Nat.sqrt n ≤ n := by
-        by_contra h
-        push_neg at h
-        exact lt_irrefl _ (Nat.sqrt_lt'.mpr h)
+      have hn_sq : Nat.sqrt n * Nat.sqrt n ≤ n := Nat.sqrt_le n
       have hchain : Nat.sqrt n * Nat.sqrt n ≤ I.card * Nat.sqrt n := hn_sq.trans hI_card
       exact Nat.le_of_mul_le_mul_right hchain hsqrt_pos
 
@@ -342,8 +350,8 @@ theorem schur_2 : schurNumber 2 = 4 := by
     have ha5 : a < 5 := by omega
     have hb5 : b < 5 := by omega
     have hab5 : a + b < 5 := by omega
-    rw [dif_pos ha5, dif_pos hb5] at h1
-    rw [dif_pos hb5, dif_pos hab5] at h2
+    simp only [dif_pos ha5, dif_pos hb5] at h1
+    simp only [dif_pos hb5, dif_pos hab5] at h2
     exact hf ⟨a, ha5⟩ ⟨b, hb5⟩ ⟨a + b, hab5⟩ ha1 hb1 rfl ⟨h1, h2⟩
   -- 5 ∉ S: any supposed coloring yields a mono triple from schur_5_forced
   have hS5 : 5 ∉ S := by
@@ -376,7 +384,7 @@ theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) :
   left
   -- The triple (1, 1, 2) satisfies IsAdditiveTriple and the same vertex a=b gives c a = c b trivially.
   exact ⟨⟨1, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
-         ⟨by norm_num, by omega, by omega⟩, rfl⟩
+         ⟨by norm_num, Nat.one_pos, Nat.one_pos⟩, rfl⟩
 
 /- ## Hajnal's Generalization (OPEN) -/
 
@@ -441,7 +449,7 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
   have hpos : 0 < n := Nat.pos_of_ne_zero hn
   -- Get the max-degree vertex
   have hne : (Finset.univ : Finset (Fin n)).Nonempty := ⟨⟨0, hpos⟩, Finset.mem_univ _⟩
-  obtain ⟨v, -, hv_max⟩ := Finset.exists_max_image Finset.univ G.degree hne
+  obtain ⟨v, -, hv_max⟩ := Finset.exists_max_image Finset.univ (fun v => G.degree v) hne
   -- Handshake: Σ deg = 2|E|
   have hsum : ∑ w : Fin n, G.degree w = 2 * G.edgeFinset.card :=
     SimpleGraph.sum_degrees_eq_twice_card_edges G
@@ -460,7 +468,7 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
     -- Use: n*(n/3) ≤ 2*(n²/5) ≤ n*deg(v); cancel n to get n/3 ≤ deg(v)
     apply Nat.le_of_mul_le_mul_left _ hpos
     -- Goal: n/3 * n ≤ G.degree v * n  (after rw of mul_comm)
-    rw [mul_comm (n / 3) n, mul_comm (G.degree v) n]
+    rw [mul_comm n (n / 3), mul_comm n (G.degree v)]
     have hfloor3 : n / 3 * 3 ≤ n := Nat.div_mul_le_self n 3
     have hmod5 : n ^ 2 ≤ n ^ 2 / 5 * 5 + 4 := by omega
     by_cases hn5 : n < 5
