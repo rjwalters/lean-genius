@@ -1,0 +1,68 @@
+[
+  {
+    "id": "ann-cyclic-equiv",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 64,
+      "endLine": 68
+    },
+    "type": "technique",
+    "title": "The Cyclic Isomorphism via zmodCyclicMulEquiv",
+    "content": "**`cyclicMulEquiv`**: a cyclic group of order `p²` is `G ≃* Multiplicative (ZMod (p²))`.\n\nMathlib's `zmodCyclicMulEquiv` provides, for any cyclic group, the canonical isomorphism\n```\nMultiplicative (ZMod (Nat.card G)) ≃* G.\n```\nThe entire proof is to rewrite `Nat.card G = p²` inside this equivalence and invert it. Note that **primality is not used** — only the cardinality *value* `p²` matters — so the hypothesis is stated as `Nat.card G = p ^ 2` with no `p.Prime`. This is the easy half of the structure theorem; all the work is in the elementary-abelian case."
+  },
+  {
+    "id": "ann-zmod-module",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 91,
+      "endLine": 102
+    },
+    "type": "insight",
+    "title": "The Non-Cyclic Group is a 𝔽_p-Vector Space",
+    "content": "The non-cyclic case rests on a reinterpretation: the predicate `gᵖ = 1 for all g` (imported as `pow_prime_eq_one_of_not_isCyclic`) says exactly that the additive group `Additive G` is **annihilated by `p`**, hence carries a module structure over the field `ZMod p`.\n\n`AddCommMonoid.zmodModule` builds this module from the `p`-torsion proof; the `calc` discharges `p • x = 0` by translating it through the `Additive`/`Multiplicative` bridge `ofMul_pow : ofMul (a^p) = p • ofMul a` and the imported relation `(toMul x)^p = 1`. Once `Additive G` is a vector space, the classification of the non-cyclic group becomes pure linear algebra."
+  },
+  {
+    "id": "ann-instance-threading",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 97,
+      "endLine": 106
+    },
+    "type": "technique",
+    "title": "Threading the Module Instance Explicitly",
+    "content": "A formalization subtlety: `AddCommMonoid.zmodModule` is a *reducible non-instance* (it is an `abbrev`, deliberately not registered as a global instance to avoid runaway search). Consequently the local `Module (ZMod p) (Additive G)` it produces cannot be rediscovered by typeclass resolution when downstream lemmas (`Module.Finite`, `Module.Free`, `Module.natCard_eq_pow_finrank`, `Module.finBasisOfFinrankEq`) demand it — search gets *stuck on metavariables*.\n\nThe fix is to **name the instance** (`letI inst := …`) and pass it (together with the derived `hmf : Module.Finite` and `hfree : Module.Free`) explicitly via `@`. This is the difference between a stuck proof and a clean one."
+  },
+  {
+    "id": "ann-dimension-count",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 115
+    },
+    "type": "insight",
+    "title": "Cardinality Forces Dimension 2",
+    "content": "For a finite module over a finite field, `Module.natCard_eq_pow_finrank` gives `Nat.card V = (Nat.card K)^(finrank K V)`. With `K = ZMod p` (so `Nat.card K = p`) and `V = Additive G` (so `Nat.card V = Nat.card G = p²`), this reads\n```\np² = p ^ finrank (ZMod p) (Additive G).\n```\nSince `m ↦ p^m` is injective for `p ≥ 2` (`Nat.pow_right_injective`), the dimension is forced to be exactly `2`. This single numerical step is what pins the isomorphism type: a 2-dimensional 𝔽_p-vector space is `(ℤ/p)²`."
+  },
+  {
+    "id": "ann-transport",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 116,
+      "endLine": 123
+    },
+    "type": "technique",
+    "title": "Basis, finTwoArrow, and the Additive/Multiplicative Transport",
+    "content": "With `finrank = 2`, `Module.finBasisOfFinrankEq` yields a `Basis (Fin 2) (ZMod p) (Additive G)`. Its coordinate equivalence `b.equivFun : Additive G ≃ₗ (Fin 2 → ZMod p)` composes with `LinearEquiv.finTwoArrow : (Fin 2 → ZMod p) ≃ₗ ZMod p × ZMod p` to give an additive identification `Additive G ≃+ ZMod p × ZMod p`.\n\nThe final step carries this back to the multiplicative world: `AddEquiv.toMultiplicativeRight` turns `Additive G ≃+ H` into `G ≃* Multiplicative H`, and `MulEquiv.prodMultiplicative` splits `Multiplicative (ZMod p × ZMod p)` into `Multiplicative (ZMod p) × Multiplicative (ZMod p)`. Working additively to use module theory and then transporting back is what keeps the multiplicative argument free of hand computation."
+  },
+  {
+    "id": "ann-structure-theorem",
+    "proofId": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 131,
+      "endLine": 152
+    },
+    "type": "concept",
+    "title": "From Invariant to Structure Theorem",
+    "content": "`mulEquiv_zmod_sq_or_prod` is the classification proper: a `by_cases` on `IsCyclic G` dispatches to the two explicit isomorphisms, so every group of order `p²` is isomorphic to one of `ℤ/p²`, `(ℤ/p)²` (mutual exclusivity is the grandparent's sharp dichotomy).\n\n`mulEquiv_zmod_sq_of_exponent_sq` and `mulEquiv_prod_of_exponent_prime` then restate this through the **parent's exponent invariant**: composing with `exponent_eq_sq_iff_isCyclic` / `exponent_eq_prime_iff_not_isCyclic` maps the two exponent values `p²` and `p` to the two isomorphism types. This closes the parent chain — the exponent computation the parent introduced now delivers a concrete group identification."
+  }
+]
