@@ -3085,6 +3085,8 @@ import Proofs.GreensTheoremOQ01OQ01OQ02OQ02
 import Proofs.GreensTheoremOQ01OQ01OQ02OQ03
 import Proofs.GreensTheoremOQ01OQ01OQ03
 import Proofs.GreensTheoremOQ01OQ02
+import Proofs.GreensTheoremOQ01OQ03
+import Proofs.GreensTheoremOQ01OQ03OQ02
 import Proofs.GreensTheoremOQ02
 import Proofs.GreensTheoremOQ02Corrected
 import Proofs.GreensTheoremOQ02Counterexample
