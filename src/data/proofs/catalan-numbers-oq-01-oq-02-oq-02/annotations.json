@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-context",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "From Parity to Distribution",
+    "content": "The parent entry (catalan-numbers-oq-01-oq-02) proves the classical parity fact that Cₙ is odd exactly when n+1 is a power of two. This file, imported on top of it, answers the parent's open question 2: where do the odd Catalan numbers sit, and how many are there? Since the odd indices are precisely the shifted powers of two n = 2ᵏ − 1 (0,1,3,7,15,…), the answers are crisp — the gaps double and the count below N is the binary length ⌊log₂ N⌋ + 1, so the odd Catalan numbers have density 0."
+  },
+  {
+    "id": "ann-odd-index-set",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-02",
+    "range": { "startLine": 40, "endLine": 60 },
+    "type": "key-step",
+    "title": "The Odd Indices Are Exactly {2ᵏ − 1}",
+    "content": "odd_catalan_iff_eq rewrites the parent's odd_catalan_iff (n+1 = 2ᵏ) into the canonical form n = 2ᵏ − 1 — valid because 1 ≤ 2ᵏ, so adding/subtracting 1 is reversible (discharged by omega with that bound). oddIndices_eq_range then packages the set {n | Cₙ odd} as the explicit range of k ↦ 2ᵏ − 1, the indices 0,1,3,7,15,…."
+  },
+  {
+    "id": "ann-gap-structure",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-02",
+    "range": { "startLine": 61, "endLine": 81 },
+    "type": "key-step",
+    "title": "Geometric Gaps ⟹ Sparsity",
+    "content": "oddIndex_strictMono shows the enumerating map k ↦ 2ᵏ − 1 is strictly monotone: from 2ⁱ < 2ʲ (Nat.pow_lt_pow_right) and 1 ≤ 2ⁱ, omega gives 2ⁱ − 1 < 2ʲ − 1. This yields injectivity, used in the counting argument. oddIndex_gap computes the exact gap (2^{k+1} − 1) − (2ᵏ − 1) = 2ᵏ (from 2^{k+1} = 2·2ᵏ by omega); since 2ᵏ grows without bound, the odd Catalan numbers thin out geometrically."
+  },
+  {
+    "id": "ann-counting",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-02",
+    "range": { "startLine": 82, "endLine": 114 },
+    "type": "key-step",
+    "title": "The Exact Count ⌊log₂ N⌋ + 1",
+    "content": "card_odd_catalan_below is the centrepiece: for N ≥ 1, #{ n < N : Cₙ odd } = ⌊log₂ N⌋ + 1. The proof identifies the filtered Finset with (range (⌊log₂ N⌋ + 1)).image (k ↦ 2ᵏ − 1). The membership equivalence reduces to 2ᵏ − 1 < N ⟺ k ≤ ⌊log₂ N⌋: since 1 ≤ 2ᵏ, the inequality 2ᵏ − 1 < N is equivalent to 2ᵏ ≤ N, which Nat.le_log_iff_pow_le converts to k ≤ ⌊log₂ N⌋. As k ↦ 2ᵏ − 1 is injective, the image has cardinality card (range (⌊log₂ N⌋ + 1)) = ⌊log₂ N⌋ + 1. card_odd_catalan_below_pow specialises this to N = 2^K via Nat.log_pow, giving K + 1."
+  },
+  {
+    "id": "ann-examples",
+    "proofId": "catalan-numbers-oq-01-oq-02-oq-02",
+    "range": { "startLine": 115, "endLine": 126 },
+    "type": "observation",
+    "title": "Concrete Counts, Axiom-Free",
+    "content": "The examples instantiate card_odd_catalan_below_pow: 4 odd Catalan numbers below 8 = 2³ (C₀,C₁,C₃,C₇) and 5 below 16 = 2⁴ (adding C₁₅). They are direct theorem applications rather than kernel computations on catalan (which does not reduce by decide), so the file stays free of native_decide and of any extra axioms — every theorem depends only on propext, Classical.choice, Quot.sound."
+  }
+]
