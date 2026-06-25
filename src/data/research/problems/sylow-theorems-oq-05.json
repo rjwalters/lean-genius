@@ -1,8 +1,8 @@
 {
   "slug": "sylow-theorems-oq-05",
   "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETE: Built and verified transferAb (G → P/[P,P]) + universal property; status verified/original, 0 axioms.",
+    "builtItems": [
+      "Subgroup.leftTransversals.diff_comp in Proofs/SylowTheoremsOQ05.lean:56 (naturality of transversal difference)",
+      "MonoidHom.transfer_comp in Proofs/SylowTheoremsOQ05.lean:79 (naturality of the transfer)",
+      "MonoidHom.transferAb + transfer_eq_lift_comp_transferAb in Proofs/SylowTheoremsOQ05.lean:89,102 (the G->P/[P,P] map + universal property)",
+      "MonoidHom.transferSylowAb / transferSylowAb_universal in Proofs/SylowTheoremsOQ05.lean:125,133 (Sylow specialization)",
+      "MonoidHom.transferCenterPow_eq_lift_comp_transferAb in Proofs/SylowTheoremsOQ05.lean:147 (central transfer factorization)"
+    ],
+    "insights": [
+      "Mathlib's `diff` is a finite product over G/H, so the transfer is natural in its coefficient hom: transfer (psi.comp phi) = psi.comp (transfer phi) (transfer_comp).",
+      "G -> P/[P,P] (transferAb := transfer Abelianization.of) is the universal abelian transfer: every transfer phi factors as (Abelianization.lift phi).comp transferAb (transfer_eq_lift_comp_transferAb).",
+      "Universality is a kernel statement: ker(transferAb H) <= ker(transfer phi) for all phi (transferAb_ker_le) -- the finest abelian transfer.",
+      "Mathlib's transferCenterPow (g -> g^[G:Z(G)]) is one instance of the universal factorization through transferAb(Z(G))."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no naturality lemma for MonoidHom.transfer in its coefficient hom.",
+      "Mathlib has no transfer into the abelianization (G -> H/[H,H]) and no focalSubgroup / focal-subgroup theorem.",
+      "transferSylow's ad hoc CommGroup.ofIsMulCommutative instance on the Sylow subgroup creates a diamond: direct factorization of transferSylow through transferAb times out at whnf (2M heartbeats)."
+    ],
+    "nextSteps": [
+      "Formalize the focal-subgroup theorem: image of transferSylowAb P = P/(P cap [G,G]).",
+      "Resolve the CommGroup instance diamond to identify Burnside's transferSylow (abelian Sylow) with (Abelianization.lift id).comp transferSylowAb."
+    ],
     "markdown": "# Knowledge Base: sylow-theorems-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

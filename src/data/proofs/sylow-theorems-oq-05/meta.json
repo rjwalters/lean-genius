@@ -1,0 +1,201 @@
+{
+  "id": "sylow-theorems-oq-05",
+  "title": "The Transfer Homomorphism G → P/[P,P] and Its Universal Property",
+  "slug": "sylow-theorems-oq-05",
+  "description": "Constructs the transfer homomorphism into the abelianization of a finite-index subgroup, transferAb : G →* Abelianization H, and proves it is universal: every abelian transfer transfer ϕ factors uniquely as (Abelianization.lift ϕ) ∘ transferAb. The key new infrastructure is the naturality of Mathlib's transfer in its coefficient homomorphism (transfer_comp). Specialized to a Sylow p-subgroup P, transferAb is the classical map G → P/[P,P] underlying focal-subgroup theory; Mathlib's central transfer g ↦ g^[G:Z(G)] is exhibited as one instance of the factorization.",
+  "meta": {
+    "author": "Issai Schur (1902); William Burnside (1911); Robb Walters (formalization, 2026)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Transfer_(group_theory)",
+    "date": "1902",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremsOQ05.lean",
+    "tags": [
+      "group-theory",
+      "finite-groups",
+      "sylow",
+      "transfer-homomorphism",
+      "abelianization",
+      "focal-subgroup",
+      "universal-property",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib's foundational axioms. `#print axioms` on every headline declaration (diff_comp, transfer_comp, transferAb, transfer_eq_lift_comp_transferAb, transferAb_ker_le, transferSylowAb_universal, transferCenterPow_eq_lift_comp_transferAb) reports only `propext`, `Classical.choice`, `Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`. 6 theorems, 2 definitions, 0 axiom declarations, 0 sorries.",
+    "lineCount": 157,
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "The transfer homomorphism (Verlagerung) was introduced by Issai Schur in 1902 and developed by Burnside; it is the principal tool for deducing the existence of normal subgroups from local (Sylow) data. Given a finite-index subgroup H ≤ G and a homomorphism ϕ : H → A into an abelian group, the transfer transfer ϕ : G → A is built from a left transversal of H. Its most important instance takes A = P/[P,P] for a Sylow p-subgroup P, giving the map G → P/[P,P] whose analysis yields the focal-subgroup theorem (Higman) and Burnside's normal p-complement theorem. Mathlib formalizes the transfer and Burnside's theorem, but treats only fixed abelian targets; the abelianization target G → P/[P,P] and the universal property that organizes all abelian transfers were not previously recorded.",
+    "problemStatement": "Formalize the transfer homomorphism G → P/[P,P] of a Sylow subgroup and connect it to the existing Mathlib transfer infrastructure. Establish that this map is universal among abelian transfers of the subgroup.",
+    "text": "A 157-line formalization extending Mathlib's transfer module. It proves the transfer is natural in its coefficient homomorphism (transfer_comp: transfer (ψ ∘ ϕ) = ψ ∘ transfer ϕ), defines the transfer into the abelianization transferAb : G →* Abelianization H, and derives the universal property transfer ϕ = (Abelianization.lift ϕ) ∘ transferAb. It records that transferAb has the smallest kernel among abelian transfers, specializes the construction to a Sylow subgroup (the map G → P/[P,P]), and exhibits Mathlib's transferCenterPow as a concrete factorization through the abelianization transfer of the center.",
+    "proofStrategy": "**Step 1 (diff_comp)**: Mathlib's transversal difference `diff ϕ S T` is by definition a finite product of ϕ-values, so applying a homomorphism ψ : A →* B commutes with it via map_prod: diff (ψ ∘ ϕ) S T = ψ (diff ϕ S T).\n**Step 2 (transfer_comp)**: Since transfer ϕ g = diff ϕ T (g • T) for the default transversal T, naturality of diff lifts pointwise to naturality of transfer.\n**Step 3 (transferAb)**: Define transferAb H = transfer (Abelianization.of), the transfer along the canonical projection H → H/[H,H].\n**Step 4 (universal property)**: Any ϕ : H → A factors as ϕ = (Abelianization.lift ϕ) ∘ Abelianization.of, so transfer_comp gives transfer ϕ = (Abelianization.lift ϕ) ∘ transferAb H.\n**Step 5 (kernel & Sylow)**: The factorization immediately yields ker(transferAb) ≤ ker(transfer ϕ) for all ϕ, and specializes verbatim to a Sylow subgroup P, where transferAb is the map G → P/[P,P].\n**Step 6 (center connection)**: For the center Z(G) the abelianization collapses, and transfer (id) recovers Mathlib's transferCenterPow g = g^[G:Z(G)], exhibiting it as one factorization through transferAb.",
+    "keyInsights": [
+      "**The transfer is a natural transformation in its coefficient map.** Mathlib's `diff` is literally a product ∏ ϕ⟨…⟩ over G/H, so postcomposition with ψ : A →* B passes through the product (map_prod). This single observation — not previously in Mathlib — turns the transfer into a functorial construction and is the engine for everything else.",
+      "**G → P/[P,P] is the universal abelian transfer.** Because A is abelian, every ϕ : H → A factors through the abelianization H/[H,H]; functoriality then forces every transfer to factor through transferAb. The abelianization is precisely the universal abelian target, so transferAb is the initial object among abelian transfers of H.",
+      "**Universality is a kernel statement.** The factorization gives ker(transferAb) ≤ ker(transfer ϕ) for every coefficient map ϕ: the abelianization transfer is the finest abelian transfer, detecting the most about G. This is the structural reason the map G → P/[P,P] is the right home for focal-subgroup arguments.",
+      "**Mathlib's named transfers are instances of one universal map.** The central transfer transferCenterPow : g ↦ g^[G:Z(G)] is exactly (Abelianization.lift id) ∘ transferAb(Z(G)); the apparent g-th-power formula is the universal factorization read off after the abelianization of the (already abelian) center collapses.",
+      "**Instance hygiene matters for the Sylow case.** Burnside's `transferSylow` equips ↥P with an ad hoc CommGroup instance (CommGroup.ofIsMulCommutative), which does not definitionally reduce against the subgroup's group structure; the universal property is therefore stated abstractly (transferSylowAb_universal) and the clean concrete factorization is demonstrated on the center, whose CommGroup instance is canonical."
+    ],
+    "prerequisites": [
+      "The transfer homomorphism: construction from a left transversal of a finite-index subgroup (Mathlib's MonoidHom.transfer)",
+      "Abelianization: G/[G,G] as the universal abelian quotient, with Abelianization.of and the lifting universal property Abelianization.lift",
+      "Sylow subgroups and Burnside's normal p-complement theorem",
+      "Naturality / functoriality and universal (initial) objects"
+    ]
+  },
+  "sections": [
+    {
+      "id": "diff-naturality",
+      "title": "Naturality of the Transversal Difference",
+      "startLine": 51,
+      "endLine": 62,
+      "summary": "Proves diff (ψ.comp ϕ) S T = ψ (diff ϕ S T): pushing the transversal difference through a homomorphism of abelian groups is the same as forming the difference with the postcomposed coefficient map. Immediate from map_prod since diff is a product of ϕ-values.",
+      "mathContext": "$\\mathrm{diff}\\,\\phi\\,S\\,T = \\prod_{q \\in G/H} \\phi\\langle\\cdots\\rangle$, so $\\psi(\\mathrm{diff}\\,\\phi\\,S\\,T) = \\prod_q \\psi(\\phi\\langle\\cdots\\rangle) = \\mathrm{diff}\\,(\\psi\\circ\\phi)\\,S\\,T$."
+    },
+    {
+      "id": "transfer-naturality",
+      "title": "Naturality of the Transfer Homomorphism",
+      "startLine": 71,
+      "endLine": 83,
+      "summary": "Lifts diff_comp to the transfer: transfer (ψ.comp ϕ) = ψ.comp (transfer ϕ). Uses transfer_def to express both sides as diff over the default transversal.",
+      "mathContext": "$\\mathrm{transfer}(\\psi\\circ\\phi) = \\psi\\circ\\mathrm{transfer}(\\phi)$ — the transfer is a natural transformation in the coefficient homomorphism $\\phi$."
+    },
+    {
+      "id": "transferAb-def",
+      "title": "The Transfer into the Abelianization",
+      "startLine": 85,
+      "endLine": 91,
+      "summary": "Defines transferAb H = transfer (Abelianization.of) : G →* Abelianization H, the transfer along the canonical projection H → H/[H,H]. For a Sylow subgroup this is the classical map G → P/[P,P].",
+      "mathContext": "$\\mathrm{transferAb}\\,H = \\mathrm{transfer}(H \\to H/[H,H]) : G \\to H/[H,H]$."
+    },
+    {
+      "id": "universal-property",
+      "title": "Universal Property",
+      "startLine": 93,
+      "endLine": 106,
+      "summary": "Every abelian transfer factors through transferAb: transfer ϕ = (Abelianization.lift ϕ).comp (transferAb H). Follows from naturality applied to Abelianization.lift ϕ, since ϕ = (Abelianization.lift ϕ) ∘ Abelianization.of.",
+      "mathContext": "For any $\\phi : H \\to A$ with $A$ abelian, $\\mathrm{transfer}\\,\\phi = \\widehat{\\phi}\\circ\\mathrm{transferAb}\\,H$ where $\\widehat{\\phi} : H/[H,H] \\to A$ is the induced map. $\\mathrm{transferAb}$ is the initial abelian transfer."
+    },
+    {
+      "id": "kernel-universality",
+      "title": "Smallest Kernel Among Abelian Transfers",
+      "startLine": 108,
+      "endLine": 116,
+      "summary": "transferAb_ker_le: (transferAb H).ker ≤ (transfer ϕ).ker for every ϕ. The abelianization transfer is the finest abelian transfer of H.",
+      "mathContext": "$\\ker(\\mathrm{transferAb}\\,H) \\le \\ker(\\mathrm{transfer}\\,\\phi)$ for all coefficient maps $\\phi$; transfer ϕ is constant on cosets of $\\ker(\\mathrm{transferAb}\\,H)$."
+    },
+    {
+      "id": "sylow-specialization",
+      "title": "The Sylow Transfer G → P/[P,P]",
+      "startLine": 118,
+      "endLine": 138,
+      "summary": "Specializes transferAb to a Sylow p-subgroup P, giving transferSylowAb P : G →* Abelianization P (the map G → P/[P,P]) and its universal property transferSylowAb_universal.",
+      "mathContext": "For a Sylow $p$-subgroup $P$, $\\mathrm{transferSylowAb}\\,P : G \\to P/[P,P]$ is the transfer underlying the focal-subgroup theorem; every $\\phi : P \\to A$ factors through it."
+    },
+    {
+      "id": "center-connection",
+      "title": "Mathlib's Central Transfer as a Factorization",
+      "startLine": 140,
+      "endLine": 156,
+      "summary": "Shows transferCenterPow G = (Abelianization.lift (id)).comp (transferAb (center G)): Mathlib's central transfer g ↦ g^[G:Z(G)] is one instance of the universal factorization through the abelianization transfer of the center.",
+      "mathContext": "$\\mathrm{transferCenterPow}\\,G = \\widehat{\\mathrm{id}}\\circ\\mathrm{transferAb}(Z(G))$; the power map $g \\mapsto g^{[G:Z(G)]}$ is the factorization after the abelianization of the abelian center collapses."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) extension of Mathlib's transfer module: the transfer is natural in its coefficient homomorphism, the transfer into the abelianization transferAb : G →* Abelianization H is universal among abelian transfers, and the Sylow specialization gives the classical map G → P/[P,P]. Mathlib's central transfer is exhibited as one factorization through it.",
+    "implications": "The naturality lemma transfer_comp and the universal map transferAb provide the missing structural layer above Mathlib's transfer: instead of constructing each transfer ad hoc, every abelian transfer of H is now a postcomposition of the single universal map G → H/[H,H]. For a Sylow subgroup this is exactly the map whose image and kernel are computed by the focal-subgroup theorem, so this entry is the natural staging point for formalizing Higman's focal-subgroup theorem and a uniform treatment of Burnside-style normal p-complement results.",
+    "openQuestions": [
+      "Formalize the focal-subgroup theorem: identify the image of transferSylowAb P : G → P/[P,P] with P/(P ∩ [G,G]) and characterize the focal subgroup ⟨x⁻¹y : x,y ∈ P conjugate in G⟩ as P ∩ ker(transferSylowAb composed appropriately).",
+      "Resolve the CommGroup instance diamond so that Burnside's transferSylow (for an abelian Sylow subgroup) is proved definitionally equal to (Abelianization.lift id) ∘ transferSylowAb, completing the connection demonstrated here for the center to the full Sylow case."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "extends",
+      "description": "Builds the transfer homomorphism G → P/[P,P] of a Sylow subgroup on top of the Sylow theory and Mathlib's transfer/Burnside infrastructure."
+    },
+    {
+      "targetId": "sylow-theorems-oq-04",
+      "relationship": "related",
+      "description": "Both analyze finite groups via Sylow subgroups; OQ04 uses Sylow counting for simplicity of A₅, OQ05 builds the transfer map G → P/[P,P] from a Sylow subgroup."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Schur, Issai",
+      "title": "Neuer Beweis eines Satzes über endliche Gruppen",
+      "year": "1902",
+      "venue": "Sitzungsberichte der Preußischen Akademie der Wissenschaften",
+      "note": "Introduces the transfer (Verlagerung) homomorphism."
+    },
+    {
+      "authors": "Burnside, William",
+      "title": "Theory of Groups of Finite Order",
+      "year": "1911",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Develops the transfer and the normal p-complement theorem N(P) ≤ C(P) ⟹ P has a normal complement."
+    },
+    {
+      "authors": "Isaacs, I. Martin",
+      "title": "Finite Group Theory",
+      "year": "2008",
+      "venue": "American Mathematical Society, GSM 92",
+      "note": "Chapter 5: the transfer homomorphism, the focal-subgroup theorem, and Burnside's normal p-complement theorem."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "transfer_comp",
+      "type": "key",
+      "description": "Naturality of the transfer in its coefficient homomorphism: transfer (ψ ∘ ϕ) = ψ ∘ transfer ϕ.",
+      "leanType": "transfer (ψ.comp ϕ) = ψ.comp (transfer ϕ)"
+    },
+    {
+      "name": "transferAb",
+      "type": "core",
+      "description": "The transfer into the abelianization, G →* Abelianization H; for a Sylow subgroup, the map G → P/[P,P].",
+      "leanType": "G →* Abelianization H"
+    },
+    {
+      "name": "transfer_eq_lift_comp_transferAb",
+      "type": "core",
+      "description": "Universal property: every abelian transfer factors through transferAb.",
+      "leanType": "transfer ϕ = (Abelianization.lift ϕ).comp (transferAb H)"
+    },
+    {
+      "name": "transferAb_ker_le",
+      "type": "key",
+      "description": "transferAb has the smallest kernel among all abelian transfers of H.",
+      "leanType": "(transferAb H).ker ≤ (transfer ϕ).ker"
+    },
+    {
+      "name": "transferCenterPow_eq_lift_comp_transferAb",
+      "type": "supporting",
+      "description": "Mathlib's central transfer g ↦ g^[G:Z(G)] factors through the abelianization transfer of the center.",
+      "leanType": "transferCenterPow G = (Abelianization.lift (id)).comp (transferAb (center G))"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.GroupTheory.Transfer",
+      "Mathlib.GroupTheory.Abelianization.Defs"
+    ],
+    "opens": [
+      "Subgroup.leftTransversals",
+      "MonoidHom",
+      "Subgroup"
+    ],
+    "namespace": "MonoidHom",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/SylowTheoremsOQ05.lean"
+  }
+}
