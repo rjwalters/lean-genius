@@ -1,0 +1,62 @@
+[
+  {
+    "id": "burnside-oq030201-header",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "Cyclic specialization: cyc(rotation r) = gcd(n, r) and the necklace count",
+    "content": "The header states the parent's explicit request (openQuestions[0]): recover the concrete cyclic value cyc(rotation r) = gcd(n, r) from the abstract group-agnostic Burnside formula |Fix(g)| = k^cyc(g). Three results are delivered: (A) cyc(rotation r) = gcd(n, r) — the rotation r decomposes the n positions into exactly gcd(n,r) cycles; (B) #(colorings fixed by rotation r) = k^{gcd(n,r)}, immediate from (A) and the parent's per-element count; (C) the classical cyclic necklace count ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces up to rotation)·n. The rotation group is written multiplicatively as Rot n = Multiplicative (ZMod n) acting on itself so the parent's multiplicative machinery applies verbatim. Verified: 0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, no native_decide).",
+    "mathContext": "$\\mathrm{cyc}(\\text{rotation }r) = \\gcd(n,r),\\quad \\#\\mathrm{Fix} = k^{\\gcd(n,r)},\\quad \\sum_{r} k^{\\gcd(n,r)} = \\#\\text{necklaces}\\cdot n$",
+    "significance": "context",
+    "relatedConcepts": ["Burnside's lemma", "necklace counting", "cyclic group action", "gcd", "orbit counting"],
+    "prerequisites": ["the parent's k^{cyc(g)} master formula", "cyclic group ZMod n", "greatest common divisor"]
+  },
+  {
+    "id": "burnside-oq030201-action",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01",
+    "range": { "startLine": 49, "endLine": 66 },
+    "type": "definition",
+    "title": "Rot n = Multiplicative (ZMod n) acting on itself by rotation",
+    "content": "The cyclic group of n rotations is written multiplicatively as `Rot n := Multiplicative (ZMod n)` and acts on itself — the n necklace positions — by left translation g • x = g * x, i.e. rotation. The rotation by r is `rotation r := Multiplicative.ofAdd r`. This multiplicative framing is the key reuse trick: the parent's cyc, card_fixedBy_eq_pow_cyc, and Burnside averaging are stated for [Group G] [MulAction G X], so taking G = X = Rot n with the regular self-action lets them apply with no re-derivation. `card_rot` records that the necklace has Nat.card (Rot n) = n positions (Multiplicative is a type synonym for ZMod n, whose Fintype card is n).",
+    "mathContext": "$\\mathrm{Rot}\\,n = \\mathrm{Multiplicative}(\\mathbb{Z}/n\\mathbb{Z}),\\quad \\text{rotation }r = \\mathrm{ofAdd}\\,r,\\quad |\\mathrm{Rot}\\,n| = n$",
+    "significance": "key",
+    "relatedConcepts": ["Multiplicative type tag", "regular self-action", "ofAdd / toAdd", "ZMod.card"],
+    "prerequisites": ["additive vs multiplicative group notation", "Fintype cardinality"]
+  },
+  {
+    "id": "burnside-oq030201-cyc",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01",
+    "range": { "startLine": 68, "endLine": 100 },
+    "type": "technique",
+    "title": "(A) cyc(rotation r) = gcd(n, r): orbit quotient = coset space, then Lagrange",
+    "content": "The conceptual heart. `card_zpowers_rotation` computes the cyclic subgroup size |⟨rotation r⟩| = orderOf (ofAdd r) = addOrderOf r = n / gcd(n,r), via Nat.card_zpowers, orderOf_ofAdd_eq_addOrderOf, and ZMod.addOrderOf_coe (applied after rewriting r = ↑r.val with ZMod.natCast_zmod_val). `cyc_rotation` then identifies the ⟨r⟩-orbit quotient with the coset space using Mathlib's equivSubgroupOrbitsQuotientGroup — valid because the regular translation action is pretransitive (Regular.isPretransitive) and cancellative (IsCancelSMul for a CancelMonoid) — so cyc(rotation r) = ⟨r⟩.index (Subgroup.index_eq_card). Finally Lagrange (Subgroup.card_mul_index) gives (n/d)·index = n with d = gcd(n,r) ∣ n; since n = (n/d)·d, cancelling the positive factor n/d (Nat.eq_of_mul_eq_mul_left) yields index = d = gcd(n,r).",
+    "mathContext": "$|\\langle r\\rangle| = \\mathrm{addOrderOf}\\,r = \\tfrac{n}{\\gcd(n,r)},\\quad \\mathrm{cyc} = \\langle r\\rangle.\\mathrm{index} = \\tfrac{n}{n/\\gcd(n,r)} = \\gcd(n,r)$",
+    "significance": "key",
+    "relatedConcepts": ["equivSubgroupOrbitsQuotientGroup", "Lagrange's theorem", "ZMod.addOrderOf_coe", "IsCancelSMul", "subgroup index"],
+    "prerequisites": ["orbit ↔ coset for free transitive actions", "card_mul_index", "additive order in ZMod n"]
+  },
+  {
+    "id": "burnside-oq030201-fixed",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01",
+    "range": { "startLine": 101, "endLine": 108 },
+    "type": "theorem",
+    "title": "(B) Fixed colorings = k^{gcd(n,r)}",
+    "content": "`card_fixedColorings_rotation` is the headline necklace fact: the number of k-colorings of the n-bead necklace fixed by rotation r is k^{gcd(n,r)}. It is one rewrite — apply the parent's card_fixedBy_eq_pow_cyc (which gives k^{cyc(rotation r)}) and substitute (A). This is exactly the classical 'a rotation with gcd(n,r) cycles fixes k^{gcd(n,r)} colorings', now obtained as a specialization of the general orbit-count rather than a separate computation.",
+    "mathContext": "$\\#\\{c : \\mathrm{Rot}\\,n \\to \\mathrm{Fin}\\,k \\mid \\text{rotation }r\\cdot c = c\\} = k^{\\gcd(n,r)}$",
+    "significance": "key",
+    "relatedConcepts": ["parent's card_fixedBy_eq_pow_cyc", "fixed colorings", "cycle structure of a rotation"],
+    "prerequisites": ["the per-element count k^{cyc(g)}", "result (A)"]
+  },
+  {
+    "id": "burnside-oq030201-necklace",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01",
+    "range": { "startLine": 109, "endLine": 130 },
+    "type": "theorem",
+    "title": "(C) Cyclic necklace counting via Burnside averaging",
+    "content": "`sum_pow_gcd_eq_card_necklaces_mul` recovers the classical necklace formula in integer form: ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces up to rotation)·n. The proof reindexes the parent's averaging identity sum_pow_cyc_eq_card_orbits_mul_card — a sum over g : Rot n — along the equiv Multiplicative.toAdd : Rot n ≃ ZMod n (Fintype.sum_equiv), rewriting each term k^{cyc g} to k^{gcd(n,(toAdd g).val)} via (A). Dividing by n gives the usual (1/n)·∑_r k^{gcd(n,r)} count of k-colored n-bead necklaces.",
+    "mathContext": "$\\sum_{r \\in \\mathbb{Z}/n\\mathbb{Z}} k^{\\gcd(n,r)} = \\#\\{\\text{necklaces up to rotation}\\}\\cdot n$",
+    "significance": "key",
+    "relatedConcepts": ["Burnside averaging", "Fintype.sum_equiv", "reindexing along toAdd", "necklace enumeration"],
+    "prerequisites": ["parent's sum_pow_cyc_eq_card_orbits_mul_card", "result (A)", "summation over an equiv"]
+  }
+]
