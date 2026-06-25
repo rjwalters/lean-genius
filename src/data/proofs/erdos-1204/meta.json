@@ -1,0 +1,135 @@
+{
+  "id": "erdos-1204",
+  "title": "Erdős Problem #1204: Admissible Sequences",
+  "slug": "erdos-1204",
+  "description": "A sequence 0 ≤ a₁ < ⋯ < a_k is admissible if it misses a residue class modulo every prime. Estimate A(k)=min a_k (is A(k)∼k log k?) and B(k)=min(a₁+⋯+a_k)/k. Both estimates remain OPEN.",
+  "meta": {
+    "author": "Erdős",
+    "sourceUrl": "https://erdosproblems.com/1204",
+    "date": "1204",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1204Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "admissible-tuples",
+      "prime-k-tuples",
+      "sieve",
+      "residue-classes",
+      "open-problem"
+    ],
+    "badge": "wip",
+    "sorries": 0,
+    "erdosNumber": 1204,
+    "erdosUrl": "https://erdosproblems.com/1204",
+    "erdosProblemStatus": "open",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.card",
+        "description": "Fintype.card (ZMod n) = n for n ≠ 0",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_le",
+        "description": "(s.image f).card ≤ s.card",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "monotonicity of card under ⊆",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Nat.Prime",
+        "description": "Prime number predicate",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Admissible definition: a Finset ℕ misses a residue class mod every prime (the admissible-tuple notion from prime k-tuples / bounded gaps)",
+      "missing_class_of_card_lt: a set of size < p always misses a class mod p (image into ZMod p cannot be surjective)",
+      "admissible_iff_card: KEY REDUCTION — admissibility ⟺ missing a class modulo every prime p ≤ |a|; all larger primes are automatic",
+      "Worked examples: ∅, {0}, and {0,2} are admissible; {0,1} is NOT (it covers both classes mod 2)",
+      "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)"
+    ],
+    "axiomCount": 0,
+    "lineCount": 137,
+    "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved (#print axioms shows only propext/Classical.choice/Quot.sound — no native_decide, no Lean.ofReduceBool). Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. The formalization here is the admissibility framework plus the standard reduction to small primes.",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "**Erdős Problem #1204**\n\nThe notion of an *admissible* sequence (or k-tuple) is central to the Hardy–Littlewood prime k-tuples conjecture and to modern work on bounded gaps between primes (Zhang 2013, Maynard 2015, Polymath8). A k-tuple is admissible precisely when it does not occupy every residue class modulo some prime — the only local obstruction to all shifts being simultaneously prime infinitely often.\n\nErdős asks for the size of the minimal *diameter* A(k) of an admissible k-tuple, conjecturally A(k) ∼ k log k, and for the minimal average B(k).",
+    "problemStatement": "**Problem Statement (Open)**\n\nCall 0 ≤ a₁ < ⋯ < a_k *admissible* if for every prime p it misses at least one residue class mod p.\n\nLet A(k) = min a_k over admissible k-element sequences.\n\n1. Estimate A(k). Is A(k) ∼ k log k?\n2. Estimate B(k) = min (a₁ + ⋯ + a_k)/k.",
+    "text": "A sequence 0 ≤ a₁ < ⋯ < a_k is admissible if it misses a residue class modulo every prime. Estimate A(k)=min a_k (is A(k)∼k log k?) and B(k)=min(a₁+⋯+a_k)/k. Both estimates remain OPEN.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Definition:** `Admissible a` for `a : Finset ℕ` says that for every prime p there is a residue class `r : ZMod p` avoided by all elements of `a`.\n\n2. **Reduction to small primes:** For a prime p > |a|, the |a| elements occupy at most |a| < p of the p residue classes, so a class is automatically missed (`missing_class_of_card_lt`, via a counting/pigeonhole argument on the image in ZMod p). Hence admissibility only constrains primes p ≤ |a| (`admissible_iff_card`).\n\n3. **Examples:** ∅, {0}, {0,2} are admissible; {0,1} is not, since {0,1} covers both classes mod 2.\n\n4. **Open questions:** The asymptotics A(k) ∼ k log k and the estimate for B(k) are left as documented open problems — they require sieve-theoretic analytic number theory.",
+    "keyInsights": [
+      "**Local obstructions only:** admissibility is a purely local (mod-p) condition; a tuple fails iff some prime sees every residue.",
+      "**Only small primes matter:** for p > k there are more classes than elements, so a class is always free — admissibility reduces to primes p ≤ k.",
+      "**Minimal example:** {0,2} is admissible but {0,1} is not, because {0,1} hits both classes mod 2 (this is why twin-prime-like patterns must avoid such coverage).",
+      "**Connection:** this is exactly the admissible-tuple notion underlying bounded gaps between primes (Zhang, Maynard)."
+    ],
+    "prerequisites": [
+      "Number theory",
+      "Finite sets and counting",
+      "Modular arithmetic (ZMod)",
+      "Prime k-tuples / sieve heuristics"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the standard reduction showing only primes p ≤ k impose constraints, and small worked examples. The asymptotic questions themselves remain open and are not asserted.",
+    "openQuestions": [
+      "Is A(k) ∼ k log k?",
+      "What is the correct order of B(k) = min (a₁+⋯+a_k)/k?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Both problems are from Erdős's collection on combinatorial number theory and prime patterns.",
+      "targetId": "erdos-1"
+    }
+  ],
+  "references": [
+    {
+      "author": "Erdős, P.",
+      "title": "Problem 1204",
+      "year": "",
+      "venue": "erdosproblems.com",
+      "note": "Admissible sequences: estimate A(k) and B(k).",
+      "url": "https://erdosproblems.com/1204"
+    },
+    {
+      "author": "Hardy, G. H. and Littlewood, J. E.",
+      "title": "Some problems of 'Partitio numerorum' III: On the expression of a number as a sum of primes",
+      "year": "1923",
+      "venue": "Acta Mathematica",
+      "note": "Origin of admissible tuples and the prime k-tuples conjecture."
+    },
+    {
+      "author": "Maynard, J.",
+      "title": "Small gaps between primes",
+      "year": "2015",
+      "venue": "Annals of Mathematics",
+      "note": "Modern use of admissible tuples for bounded gaps."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1204",
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1204Problem.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
