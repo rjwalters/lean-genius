@@ -33,14 +33,14 @@
     ],
     "dateAdded": "2026-06-25",
     "lineCount": 203,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 0,
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "The Gaussian integral ∫_{-∞}^{∞} e^{-a x²} dx = √(π/a) (for a > 0) is fundamental across probability (the normal distribution with variance 1/(2a)), physics, and analysis. The classical polar-coordinate proof, due to Poisson, squares the integral, converts it to a double integral over ℝ², changes to polar coordinates, and separates the radial and angular parts. The parent entry AreaOfCircleOQ05OQ01 makes every step of this derivation explicit — but only for the unit Gaussian (a = 1). The scaled formula √(π/a) is available elsewhere in the gallery only by invoking Mathlib's integral_gaussian as a black box. This entry is the missing intersection: the explicit, step-by-step polar derivation carried through for an arbitrary scale a > 0.",
     "problemStatement": "**Open Question (Incomplete-01 from OQ-05-OQ-01)**: The parent file formalizes the explicit polar-coordinate proof that (∫ e^{-x²} dx)² = π only for the unit Gaussian (a = 1). The scaled formula ∫ e^{-a x²} dx = √(π/a) is proved elsewhere only via Mathlib's integral_gaussian black box. Can the explicit polar-coordinate derivation be carried through for arbitrary a > 0?\n\n**Answer**: YES. (∫ e^{-a x²} dx)² = ∫∫ e^{-a(x²+y²)} [Fubini] = ∫_polar r·e^{-a r²} [polar change of variables] = (1/(2a))·(2π) = π/a [radial × angular], hence ∫ e^{-a x²} dx = √(π/a).",
-    "text": "A 203-line formalization generalizing the classical polar-coordinate proof of the Gaussian integral to an arbitrary scale a > 0. The key a-dependence is isolated in the radial integral ∫₀^∞ r·e^{-a r²} dr = 1/(2a) (Section IV), proved via the Fundamental Theorem of Calculus with antiderivative -(1/(2a))·e^{-a r²}. The angular factor 2π is scale-independent and is reused directly from the parent's verified angular_integral. All ten theorems compile with 0 sorries and 0 axioms; #print axioms shows only propext / Classical.choice / Quot.sound.",
+    "text": "A 203-line formalization generalizing the classical polar-coordinate proof of the Gaussian integral to an arbitrary scale a > 0. The key a-dependence is isolated in the radial integral ∫₀^∞ r·e^{-a r²} dr = 1/(2a) (Section IV), proved via the Fundamental Theorem of Calculus with antiderivative -(1/(2a))·e^{-a r²}. The angular factor 2π is scale-independent and is reused directly from the parent's verified angular_integral. All nine theorems compile with 0 sorries and 0 axioms; #print axioms shows only propext / Classical.choice / Quot.sound.",
     "proofStrategy": "**Section I** (Fubini): (∫ e^{-a x²})² = ∫∫ e^{-a(x²+y²)} via integrable_exp_neg_mul_sq, Integrable.mul_prod, integral_prod, and integral_mul_left/right.\n\n**Section II** (Polar Change of Variables): integral_comp_polarCoord_symm converts the 2D integral to polar form; polar_sum_sq ((r·cos θ)²+(r·sin θ)² = r²) simplifies the exponent to -a r².\n\n**Section III** (Angular = 2π): reused directly from the parent's AreaOfCircleOQ05OQ01.angular_integral — the angular contribution is independent of the scale a.\n\n**Section IV** (Radial = 1/(2a)): the a-dependent generalization. ∫₀^∞ r·e^{-a r²} dr = 1/(2a) by FTC: the antiderivative -(1/(2a))·e^{-a r²} has derivative r·e^{-a r²} (the prefactor -(1/(2a)) cancels the -2a from differentiating the exponent), with boundary values F(0) = -1/(2a) and lim_{r→∞} F(r) = 0.\n\n**Section V** (Separation): polar_integral_factorization_scaled — the scaled polar integral factors as radial × angular since r·e^{-a r²} is independent of θ (Measure.restrict_prod_eq_prod_restrict + integral_prod + Integrable.comp_fst).\n\n**Section VI** (Main Theorems): chain the sections to get two_dim_gaussian_scaled = π/a, gaussian_integral_sq_via_polar_scaled = π/a, and gaussian_integral_via_polar_scaled = √(π/a).\n\n**Section VII** (Consistency): setting a = 1 recovers ∫ e^{-x²} = √π.",
     "keyInsights": [
       "**The scale a appears only in the radial factor**: generalizing the polar proof to a > 0 changes exactly one ingredient — the radial integral becomes ∫₀^∞ r·e^{-a r²} dr = 1/(2a) (vs 1/2 at a = 1). The angular factor 2π is geometric — the circumference of the unit circle — and is scale-independent, which is precisely why π enters the answer √(π/a) with a single power of 1/a.",
@@ -80,7 +80,7 @@
     "namespace": "AreaOfCircleOQ05OQ01Incomplete01",
     "lineCount": 203,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/AreaOfCircleOQ05OQ01Incomplete01.lean",
     "sorries": 0
