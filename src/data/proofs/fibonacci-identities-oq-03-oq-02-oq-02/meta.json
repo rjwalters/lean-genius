@@ -1,0 +1,161 @@
+{
+  "id": "fibonacci-identities-oq-03-oq-02-oq-02",
+  "title": "Sum of Squares of Lucas Numbers: ∑ Lᵢ² = Lₙ·Lₙ₊₁ − 2",
+  "slug": "fibonacci-identities-oq-03-oq-02-oq-02",
+  "description": "The Lucas-number analogue of the Fibonacci square-sum identity. The Lucas numbers Lₙ obey the Fibonacci recurrence Lₙ₊₂ = Lₙ + Lₙ₊₁ but start L₀ = 2, L₁ = 1 (2, 1, 3, 4, 7, 11, …); their squares sum to a consecutive Lucas product shifted by a constant: L₁² + L₂² + ⋯ + Lₙ² = Lₙ·Lₙ₊₁ − 2. The signature −2 correction (versus the Fibonacci case, where ∑ Fᵢ² = Fₙ·Fₙ₊₁ exactly) is precisely the leftover L₀² − 2 = 4 − 2 carried by the L₀ = 2 initial value: the clean, subtraction-free 0-indexed form is ∑_{i ∈ range (n+1)} Lᵢ² = Lₙ·Lₙ₊₁ + 2, and discarding the L₀² = 4 term turns the +2 into the classical −2. Lucas numbers are not packaged in Mathlib, so the sequence is defined locally (matching the convention used elsewhere in the Fibonacci gallery), and the identity is proved by the textbook one-line induction: Finset.sum_range_succ peels the top square, the induction hypothesis rewrites the rest, and the recurrence Lₙ₊₂ = Lₙ + Lₙ₊₁ closes the telescoping step by ring (Lₙ₊₁·Lₙ₊₂ − Lₙ·Lₙ₊₁ = Lₙ₊₁²). The entry also supplies a subtraction-free 1-indexed ℕ form, an integer form carrying the literal −2, and a standalone telescoping step — all fully verified with 0 axioms and 0 sorries. This answers open question oq-02 of the parent Fibonacci square-sum entry verbatim.",
+  "meta": {
+    "author": "Classical (Lucas-number square-sum identity); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lucas_number#Identities",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "lucas-numbers",
+      "fibonacci",
+      "sum-of-squares",
+      "finite-sum",
+      "telescoping",
+      "identity",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/FibonacciIdentitiesOQ03OQ02OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "∑_{i ∈ range (n+1)} f i = (∑_{i ∈ range n} f i) + f n — peels the top square Lₙ² off the running sum in the inductive step",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_insert",
+        "description": "∑_{i ∈ insert a s} f i = f a + ∑_{i ∈ s} f i (for a ∉ s) — bridges the 0-indexed range form to the 1-indexed Icc 1 n form by splitting off the i = 0 term L₀² = 4",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "lucas: the local Lucas sequence L₀ = 2, L₁ = 1, Lₙ₊₂ = Lₙ + Lₙ₊₁ (Lucas numbers are not packaged in Mathlib)",
+      "lucas_sum_sq: ∀ n, ∑_{i ∈ range (n+1)} Lᵢ² = Lₙ·Lₙ₊₁ + 2 — the subtraction-free 0-indexed square-sum closed form, proved by one-line induction",
+      "lucas_sum_sq_Icc_add_two: ∀ n, (∑_{i ∈ Icc 1 n} Lᵢ²) + 2 = Lₙ·Lₙ₊₁ — the classical 1-indexed statement (∑ = Lₙ·Lₙ₊₁ − 2) rearranged to avoid ℕ truncated subtraction, derived by discarding the i = 0 term L₀² = 4",
+      "lucas_sum_sq_Icc_int: ∀ n, ∑_{i ∈ Icc 1 n} (Lᵢ:ℤ)² = Lₙ·Lₙ₊₁ − 2 — the classical statement over ℤ with the literal −2 (no truncation)",
+      "lucas_sum_sq_succ: ∀ n, (∑_{i ∈ range (n+1)} Lᵢ²) + Lₙ₊₁² = Lₙ₊₁·Lₙ₊₂ + 2 — the telescoping step in standalone form, exhibiting the partial sums as the shifted consecutive products Lₙ·Lₙ₊₁ + 2"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 117,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext / Classical.choice / Quot.sound — confirmed by #print axioms on all four theorems). The numerical sanity checks use decide (kernel reduction, no native_decide / Lean.ofReduceBool).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Fibonacci square-sum ∑_{i=1}^n F_i² = F_n F_{n+1} (entry fibonacci-identities-oq-03-oq-02) has a clean rectangle-tiling proof and a one-line induction. Its Lucas companion ∑_{i=1}^n L_i² = L_n L_{n+1} − 2 is the natural analogue: the same telescoping induction goes through, but the differing initial value L_0 = 2 (against F_0 = 0) injects a constant correction. Lucas numbers — Édouard Lucas's companion sequence to the Fibonacci numbers — satisfy the same recurrence with seeds 2, 1; the square-sum identity sits alongside the familiar L_n = F_{n-1} + F_{n+1} conversion and the Fibonacci–Lucas doubling F_{2n} = F_n L_n. Mathlib packages neither the Lucas sequence nor either square-sum, leaving this a genuine gallery gap.",
+    "problemStatement": "**Open Question (fibonacci-identities-oq-03-oq-02 → oq-02)**: Prove the Lucas-number analogue ∑ L_i² = L_n L_{n+1} − 2 and relate it to the Fibonacci square-sum entry.\n\n**Result**: lucas_sum_sq (the 0-indexed subtraction-free closed form ∑_{i ∈ range (n+1)} L_i² = L_n L_{n+1} + 2), lucas_sum_sq_Icc_add_two (the classical 1-indexed form over ℕ), lucas_sum_sq_Icc_int (the ℤ form with literal −2), and lucas_sum_sq_succ (the telescoping step).",
+    "text": "For every n, the sum of the squares of the first n Lucas numbers is a product of two consecutive Lucas numbers minus two: L_1² + L_2² + ⋯ + L_n² = L_n · L_{n+1} − 2. Equivalently the 0-indexed partial sums are the shifted products L_n · L_{n+1} + 2, advancing by exactly the next square at each step; the constant +2 (or −2 in the 1-indexed form) is the fingerprint of the L_0 = 2 seed, the one place the Lucas identity departs from the exact Fibonacci square-sum.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. **Local Lucas sequence.** Define lucas with L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1}; record the recurrence lucas_add_two (a rfl).\n2. **0-indexed induction (lucas_sum_sq).** Induct on n. Base n = 0: ∑_{range 1} L_i² = L_0² = 4 = L_0·L_1 + 2 = 2·1 + 2, closed by decide. Step: Finset.sum_range_succ rewrites ∑_{range (k+2)} L_i² = (∑_{range (k+1)} L_i²) + L_{k+1}²; the induction hypothesis rewrites the first summand to L_k·L_{k+1} + 2; the recurrence L_{k+2} = L_k + L_{k+1} and ring close L_k·L_{k+1} + 2 + L_{k+1}² = L_{k+1}·L_{k+2} + 2.\n3. **1-indexed ℕ form (lucas_sum_sq_Icc_add_two).** Write range (n+1) = insert 0 (Icc 1 n) (an ext/omega set identity), split off the head with Finset.sum_insert; the discarded term is L_0² = 4, and omega rearranges 4 + ∑_{Icc 1 n} L_i² = L_n·L_{n+1} + 2 into (∑_{Icc 1 n} L_i²) + 2 = L_n·L_{n+1}.\n4. **Integer form (lucas_sum_sq_Icc_int).** push_cast the ℕ identity into ℤ and move the +2 across with linarith, yielding the literal ∑_{Icc 1 n} (L_i:ℤ)² = L_n·L_{n+1} − 2.\n5. **Telescoping step (lucas_sum_sq_succ).** The inductive step in standalone form: rw lucas_sum_sq + lucas_add_two + ring.\n6. The numerical check at n = 4 (1 + 9 + 16 + 49 = 75 = 7·11 − 2) is confirmed by decide; the sum side is the theorem instance lucas_sum_sq_Icc_add_two 4.",
+    "keyInsights": [
+      "**The −2 is the L₀ = 2 seed, nothing more.** The Fibonacci square-sum is exact because F₀ = 0 contributes a vanishing square; the Lucas seed L₀ = 2 contributes L₀² = 4, and 4 − 2 = 2 is exactly the constant the 0-indexed sum carries. Discarding the i = 0 term converts the clean +2 into the classical −2.",
+      "**Telescoping is the whole proof.** The inductive step is Lₙ₊₁·Lₙ₊₂ − Lₙ·Lₙ₊₁ = Lₙ₊₁(Lₙ₊₂ − Lₙ) = Lₙ₊₁² — identical to the Fibonacci case — so adding the next square advances the consecutive product by one index, with the additive constant inert. No Lucas machinery beyond the defining recurrence is needed; ring does the algebra.",
+      "**Stay subtraction-free in ℕ.** The headline −2 invites ℕ truncated subtraction; the entry instead proves the +2 / +2 forms over ℕ (lucas_sum_sq, lucas_sum_sq_Icc_add_two) and exposes the literal −2 only over ℤ (lucas_sum_sq_Icc_int), keeping every step a genuine equality.",
+      "**Fills a Mathlib gap.** Mathlib packages neither the Lucas sequence nor any Lucas square-sum; this entry defines the sequence locally and supplies the closed form in ℕ and ℤ together with a telescoping reading."
+    ],
+    "prerequisites": [
+      "The Lucas recurrence L_{n+2} = L_n + L_{n+1} and the seeds L_0 = 2, L_1 = 1 (defined locally)",
+      "Finset.sum_range_succ for the inductive unfolding of finite sums",
+      "Finset.sum_insert for splitting off the i = 0 term L_0² = 4",
+      "The ring, omega, push_cast, and linarith tactics for the algebra and the ℕ→ℤ transfer"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 3,
+      "endLine": 31,
+      "summary": "Module docstring: the Lucas square-sum identity ∑ L_i² = L_n L_{n+1} − 2, its relation to the exact Fibonacci square-sum, the −2 constant as the L_0 = 2 leftover, the Mathlib gap (no Lucas sequence, no square-sum), and the telescoping inductive step.",
+      "mathContext": "$\\sum_{i=1}^{n} L_i^2 = L_n \\, L_{n+1} - 2$; the $-2$ is the $L_0^2 - 2 = 4 - 2$ carried by the seed $L_0 = 2$."
+    },
+    {
+      "id": "lucas-def",
+      "title": "The Lucas Sequence",
+      "startLine": 33,
+      "endLine": 47,
+      "summary": "Local definition of the Lucas numbers (L_0 = 2, L_1 = 1, L_{n+2} = L_n + L_{n+1}) with simp lemmas for the seeds and the recurrence lucas_add_two (a definitional rfl). Lucas numbers are not in Mathlib.",
+      "mathContext": "$L_0 = 2,\\ L_1 = 1,\\ L_{n+2} = L_n + L_{n+1}$ — the sequence $2, 1, 3, 4, 7, 11, \\dots$"
+    },
+    {
+      "id": "main",
+      "title": "The Square-Sum Closed Form (0-indexed)",
+      "startLine": 49,
+      "endLine": 64,
+      "summary": "lucas_sum_sq: one-line induction. Finset.sum_range_succ peels the top square, the IH rewrites the remaining sum to L_k · L_{k+1} + 2, and lucas_add_two + ring close the telescoping step with the additive constant inert. Base case by decide.",
+      "mathContext": "$\\sum_{i \\in \\mathrm{range}(n+1)} L_i^2 = L_n L_{n+1} + 2$."
+    },
+    {
+      "id": "icc",
+      "title": "Classical 1-indexed and Integer Forms",
+      "startLine": 66,
+      "endLine": 96,
+      "summary": "lucas_sum_sq_Icc_add_two: writes range (n+1) = insert 0 (Icc 1 n), splits off the i = 0 term L_0² = 4 via Finset.sum_insert, and omega yields the subtraction-free (∑_{Icc 1 n}) + 2 = L_n · L_{n+1}. lucas_sum_sq_Icc_int: push_cast + linarith expose the literal −2 over ℤ.",
+      "mathContext": "$\\sum_{i=1}^{n} L_i^2 = L_n L_{n+1} - 2$ (literal over $\\mathbb{Z}$; the $i = 0$ term is $L_0^2 = 4$)."
+    },
+    {
+      "id": "telescope-checks",
+      "title": "Telescoping Step and Numerical Checks",
+      "startLine": 97,
+      "endLine": 117,
+      "summary": "lucas_sum_sq_succ: the inductive step in standalone form, (∑_{range (n+1)} L_i²) + L_{n+1}² = L_{n+1} · L_{n+2} + 2. The n = 4 check 1 + 9 + 16 + 49 = 75 = 7·11 − 2 is confirmed by decide (kernel reduction, no native_decide, so the entry stays 0-axiom).",
+      "mathContext": "$1 + 9 + 16 + 49 = 75 = L_4 L_5 - 2 = 7 \\cdot 11 - 2$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fibonacci-identities-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "Answers open question oq-02 of the Fibonacci square-sum entry verbatim — the Lucas analogue ∑ L_i² = L_n L_{n+1} − 2 — mirroring its induction and exhibiting the −2 as the L_0 = 2 seed correction to the exact Fibonacci sum"
+    },
+    {
+      "targetId": "fibonacci-identities",
+      "relationship": "complements",
+      "description": "The base Fibonacci entry records per-term and linear-sum identities; this entry adds the Lucas-number sum-of-squares closed form"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) treatment of the Lucas square-sum identity ∑_{i=1}^n L_i² = L_n · L_{n+1} − 2: a local Lucas sequence, the 0-indexed subtraction-free closed form by one-line induction, the classical 1-indexed ℕ form, the literal ℤ form, and the telescoping step. Answers open question oq-02 of the Fibonacci square-sum entry verbatim.",
+    "implications": "Supplies a reusable closed form for sums of Lucas squares, filling a gap left by Mathlib (which packages neither the Lucas sequence nor either square-sum). The +2 / −2 constant is isolated as the L_0 = 2 seed effect, clarifying exactly how the Lucas identity departs from the exact Fibonacci square-sum.",
+    "openQuestions": [
+      "Formalize the mixed Fibonacci–Lucas square-sum and product-sum identities (e.g. ∑ F_i L_i and ∑ L_i L_{i+1}) and their closed forms.",
+      "Derive the Lucas square-sum from the Fibonacci square-sum directly via the conversion L_n = F_{n-1} + F_{n+1}, avoiding a separate induction."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "FibonacciIdentitiesOQ03OQ02OQ02",
+    "lineCount": 117,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/FibonacciIdentitiesOQ03OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Koshy, Thomas",
+      "title": "Fibonacci and Lucas Numbers with Applications",
+      "year": "2001",
+      "venue": "Wiley-Interscience",
+      "note": "Lucas-number identities, including the sum of squares ∑ L_i² = L_n L_{n+1} − 2"
+    },
+    {
+      "authors": "Vorobiev, N. N.",
+      "title": "Fibonacci Numbers",
+      "year": "2002",
+      "venue": "Birkhäuser",
+      "note": "Companion Fibonacci/Lucas summation identities"
+    }
+  ],
+  "sorries": 0
+}
