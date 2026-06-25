@@ -1,0 +1,53 @@
+{
+  "slug": "abel-ruffini-oq-04-oq-01-oq-01",
+  "title": "Is x⁵ - x - 1 a second concrete S₅ witness, by the parent's argument?",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "A",
+  "path": "full",
+  "problem": {
+    "statement": "The parent (abel-ruffini-oq-04-oq-01) proved Gal(x⁵ - 4x + 2) ≅ S₅ and asked whether x⁵ - x - 1 is a second concrete S₅ witness, claiming it could be handled 'by the same argument used here' after a sign analysis showing '3 real roots'.",
+    "goal": "Determine whether the parent's complex-conjugation argument transfers to x⁵ - x - 1, and machine-check the elementary facts a correct S₅ proof would reuse."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-25",
+    "iteration": 1,
+    "focus": "Found the parent's open-question premise is false (x⁵ - x - 1 has ONE real root, not three) and machine-checked the supporting elementary facts.",
+    "blockers": [
+      "Irreducibility of x⁵ - x - 1 over ℚ not yet formalized (needs reduction mod 3; Mathlib has no cheap irreducibility decision over 𝔽₃, Aristotle was unavailable).",
+      "Exact real-root count (= 1) documented/argued but not yet a Lean theorem (needs derivative monotonicity analysis)."
+    ],
+    "nextAction": "Formalize irreducibility via mod-3 reduction; formalize 'exactly one real root' via f' = 5x⁴-1 sign analysis; then attempt the full S₅ via Dedekind (transposition from mod-2 type (2,3)) + 5-cycle from mod-3 irreducibility.",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+  },
+  "knowledge": {
+    "progressSummary": "Corrected the parent's first open question. x⁵ - x - 1 is an S₅ witness but NOT 'by the same argument used here': it has exactly one real root (local maximum at x = -5^(-1/4) is ≈ -0.465 < 0), hence two complex-conjugate pairs, so complex conjugation acts as an EVEN double transposition in A₅ — the parent's transposition-from-conjugation step does not transfer. Created AbelRuffiniOQ04OQ01OQ01.lean (verified, 0 sorries, 0 axioms; #print axioms = propext/Classical.choice/Quot.sound only, no native_decide) machine-checking: degree 5, monic, ±1 not roots, a real root in (1,2) by IVT, the Bring-Jerrard discriminant value 2869, and 2869 not a perfect square. Did NOT prove Gal ≅ S₅.",
+    "builtItems": [
+      "AbelRuffiniOQ04OQ01OQ01.lean — verified entry (112 lines, 10 theorems, 0 sorry/axiom)",
+      "exists_real_root_Ioo — x⁵ - x - 1 has a real root in (1,2) via intermediate_value_Ioo",
+      "not_isSquare_2869 — 2869 (= 19·151) is not a perfect square (discriminant non-square ⟹ Gal ⊄ A₅)",
+      "q_monic, q_natDegree, q_eval_one, q_eval_neg_one — shape + ±1 not roots (no rational root, monic)"
+    ],
+    "insights": [
+      "Real-root count r controls the cycle type of complex conjugation on the roots: conjugation is a product of (5-r)/2 transpositions. x⁵ - 4x + 2 has r=3 → one transposition (odd, drives the parent proof); x⁵ - x - 1 has r=1 → two transpositions (even, in A₅, gives no parity).",
+      "x⁵ - x - 1 has exactly one real root because its local maximum f(-5^(-1/4)) = -(5^(-1/4))/5 + 5^(-1/4) - 1 ≈ -0.465 is already below the axis.",
+      "Discriminant sign matches: negative for the parent (one conjugate pair, odd) vs the positive non-square 2869 = 19·151 here (two conjugate pairs, even).",
+      "Correct S₅ route for x⁵ - x - 1: Dedekind mod 2 (x⁵ - x - 1 ≡ (x²+x+1)(x³+x²+1), cycle type (2,3) → cube is a transposition) + irreducible mod 3 (5-cycle); a transposition and a 5-cycle generate S₅.",
+      "Reduction-mod-p data computed: x⁵ - x - 1 is irreducible mod 3, 5, 11, 13; splits as (2,3) mod 2 and mod 7."
+    ],
+    "mathlibGaps": [
+      "No cheap decision procedure for Irreducible over a finite field (ZMod 3) for degree-5 polynomials — blocks the clean mod-3 irreducibility lift."
+    ],
+    "nextSteps": [
+      "Formalize Irreducible (x⁵ - x - 1 : ℚ[X]) via Polynomial.Monic.irreducible_of_irreducible_map to ZMod 3 + Gauss.",
+      "Formalize 'exactly one real root' via StrictMono/derivative analysis of f' = 5x⁴ - 1.",
+      "Attempt full Gal ≅ S₅ via the Dedekind route (transposition + 5-cycle), reusing the parent's group-theory lemmas."
+    ]
+  },
+  "tags": ["seeker-selected", "abel-ruffini", "galois-theory", "researcher-1"],
+  "started": "2026-06-25",
+  "lastUpdate": "2026-06-25",
+  "significance": 6,
+  "tractability": 5
+}
