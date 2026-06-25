@@ -43,7 +43,8 @@
       "The whole second-order theory rests on one combinatorial identity — absorption, $k_i\\cdot\\mathrm{multinomial}(s,k) = n\\cdot\\mathrm{multinomial}(s,k')$ — applied once to a pair of coordinates (parent, cross moment) and once to a single coordinate (here, the factorial moment).",
       "Factorial moments linearize the combinatorics: $E[X_i(X_i-1)]$ falls straight out of absorption, whereas $E[X_i^2]$ does not — so the variance is reached via $X_i^2 = X_i(X_i-1) + X_i$ rather than directly.",
       "The Kronecker-delta form $\\mathrm{Cov}(X_i,X_j) = n p_i(\\delta_{ij}-p_j)$ unifies two genuinely different proofs (a new absorption computation on the diagonal, a reduction to the parent off-diagonal) into one statement — the $n(\\operatorname{diag}(p)-p p^{\\mathsf T})$ matrix in coordinate form.",
-      "The off-diagonal case needs no new combinatorics: the centred summand and the parent's raw-moment summand differ only by terms whose total mass vanishes (each sums to a mean), so the covariance equals the parent's value by a linear, mass-conservation argument."
+      "The off-diagonal case needs no new combinatorics: the centred summand and the parent's raw-moment summand differ only by terms whose total mass vanishes (each sums to a mean), so the covariance equals the parent's value by a linear, mass-conservation argument.",
+      "The covariance matrix n·(diag(p) − p·pᵀ) is singular — its rows sum to zero because ∑ⱼ Xⱼ = n is deterministic — which is exactly why the diagonal could not simply be read off the off-diagonal: the variance carries the +n·pᵢ 'mass-conservation' correction that the singular structure forces, and this entry supplies it."
     ],
     "prerequisites": [
       "The multinomial PMF and the parent's mean/cross-moment formalization (binomial-theorem-oq-02-oq-01-oq-01)",
@@ -122,12 +123,20 @@
       "mathContext": "E[Xᵢ(Xᵢ−1)] = n(n−1)pᵢ²."
     },
     {
-      "id": "variance-covariance",
-      "title": "Part 3 — Second Moment, Variance, and the Covariance Matrix",
+      "id": "variance",
+      "title": "Part 3 — Second Moment and Variance",
       "startLine": 236,
+      "endLine": 288,
+      "summary": "multinomial_second_moment: E[Xᵢ²] = n(n−1)pᵢ² + n·pᵢ via Xᵢ² = Xᵢ(Xᵢ−1) + Xᵢ; multinomial_variance: Var(Xᵢ) = n·pᵢ·(1−pᵢ), the diagonal the parent explicitly excluded.",
+      "mathContext": "Var(Xᵢ) = n·pᵢ·(1 − pᵢ)."
+    },
+    {
+      "id": "covariance-matrix",
+      "title": "Part 3 — The Unified Covariance Matrix",
+      "startLine": 289,
       "endLine": 329,
-      "summary": "multinomial_second_moment (E[Xᵢ²] = n(n−1)pᵢ² + n·pᵢ via Xᵢ²=Xᵢ(Xᵢ−1)+Xᵢ), multinomial_variance (n·pᵢ(1−pᵢ) by expanding the centred square), and multinomial_covariance_matrix (the unified δᵢⱼ formula: diagonal = variance, off-diagonal routed through the parent by a mass-zero correction).",
-      "mathContext": "Cov(Xᵢ,Xⱼ) = n·pᵢ·(δᵢⱼ − pⱼ) for all i,j."
+      "summary": "multinomial_covariance_matrix: the unified δᵢⱼ formula Cov(Xᵢ,Xⱼ) = n·pᵢ·(δᵢⱼ − pⱼ) for all i,j — diagonal = variance (new), off-diagonal routed through the parent by a mass-zero correction.",
+      "mathContext": "Cov(Xᵢ,Xⱼ) = n·pᵢ·(δᵢⱼ − pⱼ) = the matrix n·(diag(p) − p·pᵀ)."
     }
   ],
   "conclusion": {
