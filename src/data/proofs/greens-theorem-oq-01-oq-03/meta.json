@@ -68,12 +68,54 @@
       "Orientation conventions for boundary line integrals"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Tiling Strategy",
+      "startLine": 1,
+      "endLine": 68,
+      "summary": "Module docstring: the tiling route from one rectangle to general regions, the shared-edge cancellation it relies on, what is new relative to the parent and Fubini-discharged siblings, imports (Mathlib + Proofs.GreensTheoremOQ01), namespace, and opens.",
+      "mathContext": "Tile a region with rectangles and add cell-wise Green identities; interior edges cancel by orientation."
+    },
+    {
+      "id": "part-i-vertical",
+      "title": "Part I — Vertical Subdivision (cut at x = e)",
+      "startLine": 70,
+      "endLine": 120,
+      "summary": "rectLineIntegral_vsplit (shared edge x=e cancels by ring; outer P-edges glue) and rectDoubleIntegral_vsplit (inner x-additivity lifted through the outer y-integral).",
+      "mathContext": "$\\oint_{[a,b]} = \\oint_{[a,e]} + \\oint_{[e,b]}$ and $\\iint_{[a,b]} f = \\iint_{[a,e]} f + \\iint_{[e,b]} f$."
+    },
+    {
+      "id": "part-ii-horizontal",
+      "title": "Part II — Horizontal Subdivision (cut at y = g)",
+      "startLine": 122,
+      "endLine": 161,
+      "summary": "rectLineIntegral_hsplit (shared edge y=g cancels; outer Q-edges glue) and rectDoubleIntegral_hsplit (single adjacent-interval additivity on the outer integral). Symmetric to Part I with P/Q and x/y swapped.",
+      "mathContext": "$\\oint_{[c,d]} = \\oint_{[c,g]} + \\oint_{[g,d]}$ and $\\iint_{[c,d]} f = \\iint_{[c,g]} f + \\iint_{[g,d]} f$."
+    },
+    {
+      "id": "part-iii-capstone",
+      "title": "Part III — Capstone: Green's Theorem Glues Across a Cut",
+      "startLine": 163,
+      "endLine": 195,
+      "summary": "greens_additive_vertical: if the concrete Green identity holds on the left and right cells, it holds on their union — a pure rewrite via the vertical-split lemmas plus the two cell identities. The inductive step toward Green's theorem on rectangle-tiled regions.",
+      "mathContext": "Green on $R_1$ and on $R_2$ $\\Rightarrow$ Green on $R_1 \\cup R_2$."
+    },
+    {
+      "id": "part-iv-sanity",
+      "title": "Part IV — Concrete Sanity Check",
+      "startLine": 197,
+      "endLine": 219,
+      "summary": "area_vsplit_unit_square: the area of the unit square as ∬1 splits at x=½ into two half-rectangles of area ½ each, plus #check commands listing the five exported subdivision lemmas.",
+      "mathContext": "$\\tfrac12 + \\tfrac12 = 1$."
+    }
+  ],
   "conclusion": {
     "summary": "The concrete Green's-theorem identity is additive under subdivision: both the boundary line integral and the double integral of curl split into adjacent sub-rectangles, with the shared interior edge cancelling by orientation. The capstone greens_additive_vertical shows Green's theorem glues across a cut, giving the inductive step toward Green's theorem on rectangle-tiled regions.",
     "implications": "This isolates the structural ingredient — orientation-driven edge cancellation — that lets the single-rectangle result (OQ-01) extend to general regions. Combined with the discharged-Fubini siblings (OQ-01-OQ-01, OQ-01-OQ-02), it points toward an axiom-free Green's theorem on staircase domains.",
-    "futureDirections": [
+    "openQuestions": [
       "Iterate greens_additive_vertical over a finite grid to obtain Green's theorem on an arbitrary rectangle-tiled region by induction (Finset.sum form).",
-      "Combine horizontal and vertical splits to handle 2D grids of cells.",
+      "Combine horizontal and vertical splits to handle full 2D grids of cells, proving a capstone greens_additive_horizontal and a mixed-grid gluing lemma.",
       "Quantify the staircase approximation error to reach Green's theorem on regions with curved boundary."
     ]
   },
