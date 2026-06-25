@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "The Dedekind mod-2 Route to a Transposition",
+    "content": "The header continues the x⁵−x−1 story. The parent (abel-ruffini-oq-04-oq-01-oq-01) showed complex conjugation gives an even (2,2) double transposition — useless for parity — and flagged the mod-2 reduction as the correct source of a transposition. This entry machine-checks the prime-2 input to Dedekind's theorem: $x^5-x-1 \\equiv (x^2+x+1)(x^3+x^2+1)\\pmod 2$, a product of an irreducible quadratic and irreducible cubic. Dedekind reads the factor degrees as the Frobenius cycle type $(2,3)$; the cube of a $(2,3)$-element is a transposition. Combined with a 5-cycle (from the mod-3 reduction, a separate entry), a transposition and a 5-cycle generate $S_5$. Honest scope: Dedekind's theorem itself, the mod-3 5-cycle, and Gal ≅ S₅ are NOT formalized here.",
+    "mathContext": "$x^5-x-1 \\equiv (x^2+x+1)(x^3+x^2+1) \\pmod 2 \\;\\Rightarrow\\; \\text{cycle type }(2,3)$",
+    "significance": "context",
+    "relatedConcepts": ["Dedekind's theorem", "Frobenius cycle type", "transposition", "S₅ generation", "finite fields"],
+    "prerequisites": ["Galois theory", "factorization mod p"]
+  },
+  {
+    "id": "ann-defs",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 57 },
+    "type": "definition",
+    "title": "The Factors and the Reduction over 𝔽₂",
+    "content": "Three definitions in $(\\mathbb{Z}/2)[X]$: the quadratic $a = X^2+X+1$, the cubic $b = X^3+X^2+1$, and the reduction $q_2 = X^5-X-1$. All are `noncomputable` (polynomials over a field). Working directly in $(\\mathbb{Z}/2)[X]$ rather than reducing from $\\mathbb{Z}[X]$ keeps the arithmetic in characteristic two, where the factorization becomes an identity.",
+    "mathContext": "$a=X^2+X+1,\\ b=X^3+X^2+1,\\ q_2=X^5-X-1 \\in (\\mathbb{Z}/2)[X]$",
+    "significance": "supporting",
+    "relatedConcepts": ["ZMod 2", "polynomial ring over a field", "reduction mod p"],
+    "prerequisites": ["finite fields", "polynomial rings"]
+  },
+  {
+    "id": "ann-factorization",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 59, "endLine": 70 },
+    "type": "technique",
+    "title": "The Factorization Is an Identity in Characteristic Two",
+    "content": "`factor_mod2` proves $a\\cdot b = q_2$. The slick proof avoids expanding by hand: it forms the difference $(X^2+X+1)(X^3+X^2+1) - (X^5-X-1)$ and shows by `ring` that it equals $2\\cdot(X^4+X^3+X^2+X+1)$ — a ring identity valid over any commutative ring. Then `CharTwo.two_eq_zero` (available since $(\\mathbb{Z}/2)[X]$ inherits `CharP _ 2`) kills the factor 2, so the difference is 0 and `sub_eq_zero.mp` concludes equality. Equivalently $x^5-x-1 \\equiv x^5+x+1$ mod 2: the cross terms simply vanish.",
+    "mathContext": "$(X^2+X+1)(X^3+X^2+1)-(X^5-X-1)=2(X^4+X^3+X^2+X+1)\\xrightarrow{\\mathrm{char}\\,2}0$",
+    "significance": "key",
+    "relatedConcepts": ["characteristic two", "CharTwo.two_eq_zero", "ring tactic", "sub_eq_zero"],
+    "prerequisites": ["characteristic of a ring", "ring identities"]
+  },
+  {
+    "id": "ann-irreducible",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 72, "endLine": 104 },
+    "type": "technique",
+    "title": "Both Factors Irreducible: Degree ≤ 3 with No Root",
+    "content": "Over a field, a polynomial of degree 2 or 3 is irreducible iff it has no root (a nontrivial factorization would force a linear factor, i.e. a root). `quadratic_natDegree`/`cubic_natDegree` fix the degrees (2, 3) via `compute_degree!`. `quadratic_no_roots`/`cubic_no_roots` check no root exists by `fin_cases` over the two elements of $\\mathbb{Z}/2$, simplifying `eval` and closing with `decide` (kernel decision — note: not `native_decide`, so axiom-clean). `quadratic_irreducible`/`cubic_irreducible` then invoke Mathlib's `irreducible_of_degree_le_three_of_not_isRoot`, supplying the degree bound (via `Finset.mem_Icc` + `omega`) and the no-root hypothesis.",
+    "mathContext": "$\\deg p\\in\\{2,3\\} \\wedge p \\text{ has no root over a field} \\Rightarrow p \\text{ irreducible}$",
+    "significance": "key",
+    "relatedConcepts": ["irreducibility criterion", "irreducible_of_degree_le_three_of_not_isRoot", "fin_cases", "kernel decide"],
+    "prerequisites": ["irreducibility over fields", "low-degree factorization"]
+  },
+  {
+    "id": "ann-distinct",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+    "range": { "startLine": 106, "endLine": 116 },
+    "type": "insight",
+    "title": "Distinct Factors ⟹ Squarefree ⟹ Cycle Type (2,3)",
+    "content": "`factors_not_associated` proves $a$ and $b$ are not associate: associated polynomials have equal degree (`degree_eq_degree_of_associated` → `natDegree_eq_of_degree_eq`), but $2\\ne 3$ (`norm_num`). Distinct irreducible factors mean the mod-2 factorization is squarefree — precisely the input Dedekind's theorem requires to read the factor degrees as the Frobenius cycle type $(2,3)$. This is the conceptual payoff: a squarefree factorization into a quadratic and a cubic over $\\mathbb{F}_2$ certifies an element of cycle type $(2,3)$ in the Galois group, whose cube is the sought transposition.",
+    "mathContext": "$\\neg\\,\\mathrm{Associated}\\,a\\,b \\;(\\deg 2\\neq\\deg 3) \\Rightarrow \\text{squarefree} \\Rightarrow \\text{Frobenius cycle type }(2,3)$",
+    "significance": "key",
+    "relatedConcepts": ["associated polynomials", "squarefree factorization", "Frobenius element", "cycle type"],
+    "prerequisites": ["associates in a ring", "Dedekind's theorem (conceptual)"]
+  }
+]
