@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-recurrence",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "theorem",
+    "title": "Birthday Recurrence",
+    "content": "The product form $P(\\text{all distinct}) = \\prod_{i<k}\\bigl(1 - \\tfrac{i}{d}\\bigr)$ satisfies $P(k+1) = P(k)\\cdot\\bigl(1 - \\tfrac{k}{d}\\bigr)$, peeling the top factor with `Finset.prod_range_succ`. The new factor $1 - k/d$ is the conditional probability that the $(k{+}1)$-th person avoids the first $k$ birthdays. This single recurrence drives all the monotonicity below.",
+    "mathContext": "$P(k+1) = P(k)\\,(1 - k/d)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Falling factorial", "Conditional probability", "Telescoping product"]
+  },
+  {
+    "id": "ann-step",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 97 },
+    "type": "theorem",
+    "title": "One Person Can Only Lower P(all distinct)",
+    "content": "For $k \\le d$, $P(k+1) \\le P(k)$: the recurrence multiplies the nonnegative quantity $P(k)$ by the factor $1 - k/d \\in [0,1]$, which cannot increase it (`mul_le_mul_of_nonneg_left`). This is the inductive step behind the global monotonicity.",
+    "mathContext": "$P(k+1) \\le P(k)$ for $k \\le d$.",
+    "significance": "key",
+    "relatedConcepts": ["Monotonicity", "Nonnegative product"]
+  },
+  {
+    "id": "ann-monotone",
+    "proofId": "birthday-problem-oq-02-oq-01-oq-03",
+    "range": { "startLine": 111, "endLine": 117 },
+    "type": "theorem",
+    "title": "The Monotone Birthday Paradox",
+    "content": "The headline: the collision probability $1 - P(\\text{all distinct})$ is **non-decreasing** in the number of people (for $j \\le k \\le d$). Formally $\\text{collisionProb}(j,d) \\le \\text{collisionProb}(k,d)$. This is the precise content of the paradox's intuition — adding people can only make a shared birthday more likely, never less — a statement the classic two-sided exponential estimates (sibling OQ-02-OQ-01) leave implicit. It follows immediately from `birthdayProduct_antitone` (proved by `Nat.le_induction` from the one-step bound).",
+    "mathContext": "$j \\le k \\le d \\Rightarrow \\text{collisionProb}(j,d) \\le \\text{collisionProb}(k,d)$.",
+    "significance": "key",
+    "relatedConcepts": ["Birthday paradox", "Monotonicity", "Antitone", "Mathematical induction"]
+  }
+]
