@@ -8,7 +8,11 @@
     },
     "type": "insight",
     "title": "The Survey's Missing Piece Is Already in Mathlib",
-    "content": "The parent feasibility survey was unsure whether the key structural fact — ergodic measures are exactly the extreme points of the invariant probability measures — was available in Mathlib, noting it 'might already be partially there'. ergodic_iff_extremePoint settles it: the full equivalence is Mathlib's Ergodic.iff_mem_extremePoints. This is the Choquet-simplex picture underlying ergodic decomposition: the invariant probability measures form a convex set whose extreme points are precisely the ergodic measures, and the decomposition expresses a general invariant measure as a barycentre over them."
+    "content": "The parent feasibility survey was unsure whether the key structural fact — ergodic measures are exactly the extreme points of the invariant probability measures — was available in Mathlib, noting it 'might already be partially there'. ergodic_iff_extremePoint settles it: the full equivalence is Mathlib's Ergodic.iff_mem_extremePoints. This is the Choquet-simplex picture underlying ergodic decomposition: the invariant probability measures form a convex set whose extreme points are precisely the ergodic measures, and the decomposition expresses a general invariant measure as a barycentre over them.",
+    "mathContext": "$\\mathrm{Ergodic}\\,f\\,\\mu \\iff \\mu \\in \\mathrm{extremePoints}\\,\\{\\nu : \\nu\\text{ is }f\\text{-invariant prob.}\\}$",
+    "significance": "key",
+    "relatedConcepts": ["ergodic measure", "extreme point", "Choquet simplex", "convexity of invariant measures", "ergodic decomposition"],
+    "prerequisites": ["invariant probability measures", "extreme points of a convex set", "Ergodic.iff_mem_extremePoints"]
   },
   {
     "id": "ann-rigidity",
@@ -19,7 +23,11 @@
     },
     "type": "concept",
     "title": "Rigidity and a.e.-Constancy: the Well-Definedness Inputs",
-    "content": "ergodic_eq_of_absolutelyContinuous (Mathlib's Ergodic.eq_of_absolutelyContinuous) shows an invariant probability measure absolutely continuous with respect to an ergodic one must equal it — so distinct ergodic components are mutually singular and the decomposition is a partition into disjoint pieces. ergodic_invariant_ae_const (from PreErgodic.ae_eq_const_of_ae_eq_comp) shows invariant measurable functions are a.e. constant under an ergodic measure, making the decomposition map (point ↦ its ergodic component) well defined because the invariant σ-algebra is a.e. trivial on each component."
+    "content": "ergodic_eq_of_absolutelyContinuous (Mathlib's Ergodic.eq_of_absolutelyContinuous) shows an invariant probability measure absolutely continuous with respect to an ergodic one must equal it — so distinct ergodic components are mutually singular and the decomposition is a partition into disjoint pieces. ergodic_invariant_ae_const (from PreErgodic.ae_eq_const_of_ae_eq_comp) shows invariant measurable functions are a.e. constant under an ergodic measure, making the decomposition map (point ↦ its ergodic component) well defined because the invariant σ-algebra is a.e. trivial on each component.",
+    "mathContext": "$\\nu \\ll \\mu,\\ \\mu\\text{ ergodic} \\Rightarrow \\nu = \\mu; \\qquad g\\circ f = g \\Rightarrow g =_{\\mu\\text{-a.e.}} \\mathrm{const}$",
+    "significance": "supporting",
+    "relatedConcepts": ["mutual singularity", "absolute continuity", "invariant σ-algebra", "almost-everywhere constant functions", "ergodic rigidity"],
+    "prerequisites": ["absolute continuity ν ≪ μ", "invariant functions g∘f = g", "PreErgodic.ae_eq_const_of_ae_eq_comp"]
   },
   {
     "id": "ann-answer",
@@ -30,6 +38,10 @@
     },
     "type": "concept",
     "title": "The Honest Answer to the OQ",
-    "content": "ergodic_decomposition_prerequisites bundles the three Mathlib-provided ingredients. Together with Mathlib's measure disintegration, they answer the parent's OQ: the structure for ergodic decomposition IS available — the extreme-point characterization (which the survey doubted) is in Mathlib, and disintegration supplies the kernel. The honest remaining gap for the full theorem is the Choquet integral representation, writing a general invariant measure as ∫ over its ergodic components and establishing uniqueness (the invariant simplex). Confirming an existing Mathlib result converts the survey's 'might be there' into a verified, citable fact."
+    "content": "ergodic_decomposition_prerequisites bundles the three Mathlib-provided ingredients. Together with Mathlib's measure disintegration, they answer the parent's OQ: the structure for ergodic decomposition IS available — the extreme-point characterization (which the survey doubted) is in Mathlib, and disintegration supplies the kernel. The honest remaining gap for the full theorem is the Choquet integral representation, writing a general invariant measure as ∫ over its ergodic components and establishing uniqueness (the invariant simplex). Confirming an existing Mathlib result converts the survey's 'might be there' into a verified, citable fact.",
+    "mathContext": "$\\mu = \\int \\mu_x \\, d\\mu(x)\\ \\text{(ergodic decomposition: target integral representation, not yet formalized)}$",
+    "significance": "key",
+    "relatedConcepts": ["ergodic decomposition theorem", "measure disintegration", "barycentre / Choquet integral representation", "uniqueness of the simplex", "Furstenberg correspondence"],
+    "prerequisites": ["the three packaged prerequisites", "Mathlib measure disintegration", "Choquet theory of simplices"]
   }
 ]
