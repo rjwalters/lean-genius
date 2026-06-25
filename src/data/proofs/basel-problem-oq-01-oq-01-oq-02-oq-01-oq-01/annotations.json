@@ -7,24 +7,23 @@
     "title": "Closing the parent's two open questions, axiom-free",
     "content": "The parent companion pinned the Apéry numbers bₙ = ∑ C(n,k)²·C(n+k,k)² from below (4ⁿ ≤ bₙ) but left two things open and axiom-free: a matching geometric UPPER bound, and the parity of bₙ. The grandparent ζ(3) irrationality file supplies the upper half only as an axiom (bₙ ≤ 34ⁿ). This file removes the need for that axiom on the elementary side — proving bₙ ≤ 64ⁿ from scratch — and shows every Apéry number is odd. Together with 4ⁿ ≤ bₙ the exponential base is now bracketed in [4, 64] with zero axioms; the true base is the irrational (1+√2)⁴ = 17+12√2 ≈ 33.97.",
     "mathContext": "$4^n\\le b_n\\le 64^n$ and $b_n$ odd, both with $0$ axioms.",
-    "significance": "key",
+    "significance": "context",
     "relatedConcepts": [
       "Apéry numbers",
       "ζ(3) irrationality",
-      "geometric growth bounds",
-      "axiom elimination"
+      "geometric squeeze",
+      "axiom-free formalization"
     ],
     "prerequisites": [
       "binomial coefficients",
-      "Apéry's irrationality proof",
-      "exponential bounds"
+      "irrationality proofs"
     ]
   },
   {
     "id": "ann-basel-oq0101020101-vandermonde",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 51, "endLine": 61 },
-    "type": "technique",
+    "type": "key-step",
     "title": "Vandermonde on the diagonal keeps the bound geometric",
     "content": "sum_choose_sq proves ∑_{k≤n} C(n,k)² = C(2n,n). Writing centralBinom n = (n+n).choose n and expanding over the antidiagonal (Nat.add_choose_eq) produces ∑ C(n,k)·C(n,n-k); pairing each term with its mirror via Nat.choose_symm turns it into ∑ C(n,k)². This exact cancellation is what stops the upper bound from leaking an n-fold polynomial factor: the squared-binomial row is precisely the central coefficient, not merely bounded by it.",
     "mathContext": "$\\sum_{k=0}^n\\binom{n}{k}^2=\\sum_k\\binom{n}{k}\\binom{n}{n-k}=\\binom{2n}{n}.$",
@@ -36,9 +35,8 @@
       "Nat.choose_symm"
     ],
     "prerequisites": [
-      "Vandermonde's identity",
-      "binomial symmetry",
-      "finite sums"
+      "Vandermonde's convolution",
+      "Finset sums"
     ]
   },
   {
@@ -53,52 +51,51 @@
     "relatedConcepts": [
       "central binomial coefficient",
       "Nat.choose_le_centralBinom",
-      "geometric upper bound",
-      "binomial sum 2^{2n}"
+      "Finset.single_le_sum",
+      "geometric growth"
     ],
     "prerequisites": [
-      "monotonicity of binomial coefficients",
-      "central binomial bound C(2n,n) ≤ 4ⁿ"
+      "binomial coefficient monotonicity",
+      "row-sum identity ∑ C(2n,i) = 4ⁿ"
     ]
   },
   {
     "id": "ann-basel-oq0101020101-parity",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 113, "endLine": 156 },
-    "type": "insight",
+    "type": "key-step",
     "title": "Every Apéry number is odd, via trinomial revision",
     "content": "two_dvd_choose_mul shows C(n,k)·C(n+k,k) is even for k ≥ 1: the subset-of-a-subset identity Nat.choose_mul, instantiated at C(n+k,2k)·C(2k,k) = C(n+k,k)·C(n,k), exposes the central binomial factor C(2k,k), even for k ≥ 1 (Nat.two_dvd_centralBinom_of_one_le). Each summand of bₙ is the square of this product, hence also even (two_dvd_aperyB_term). aperyB_odd then peels the k = 0 term (= 1) with Finset.sum_range_succ' and absorbs the even remainder: bₙ ≡ 1 (mod 2).",
     "mathContext": "$\\binom{n}{k}\\binom{n+k}{k}=\\binom{n+k}{2k}\\binom{2k}{k}$, and $2\\mid\\binom{2k}{k}$ for $k\\ge1$.",
     "significance": "key",
     "relatedConcepts": [
       "trinomial revision identity",
-      "even central binomial coefficient",
       "Nat.choose_mul",
+      "even central binomial",
       "Finset.sum_range_succ'"
     ],
     "prerequisites": [
-      "subset-of-a-subset identity",
-      "parity of central binomial coefficients",
-      "modular arithmetic"
+      "divisibility in ℕ",
+      "subset-of-a-subset identity"
     ]
   },
   {
     "id": "ann-basel-oq0101020101-bracket",
     "proofId": "basel-problem-oq-01-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 100, "endLine": 107 },
-    "type": "context",
+    "type": "observation",
     "title": "A two-sided geometric bracket with no axioms",
     "content": "Combining aperyB_le_64_pow with the parent's four_pow_le_aperyB gives 4ⁿ ≤ bₙ ≤ 64ⁿ entirely without axioms. On the elementary side this makes the grandparent ζ(3) file's axiomatic bₙ ≤ 34ⁿ unnecessary for establishing geometric growth. The gap between the crude base 64 and the true 17+12√2 ≈ 33.97 comes from bounding every C(n+k,k) by C(2n,n) uniformly rather than near the dominant index k ≈ 0.8n — the natural next sharpening.",
     "mathContext": "$4^n\\le b_n\\le 64^n$; true base $(1+\\sqrt2)^4=17+12\\sqrt2\\approx 33.97$.",
     "significance": "supporting",
     "relatedConcepts": [
       "two-sided bounds",
-      "true exponential base 17+12√2",
-      "sharpening via dominant index"
+      "exponential growth rate",
+      "Apéry's irrationality squeeze",
+      "Pell numbers (1+√2)"
     ],
     "prerequisites": [
-      "exponential growth rate",
-      "irrational quadratic surds"
+      "exponential asymptotics"
     ]
   }
 ]

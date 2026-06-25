@@ -1,0 +1,71 @@
+{
+  "slug": "ptolemys-theorem-oq-01-oq-01-oq-03",
+  "title": "Ptolemy's Equality Case in a General Euclidean Space (Inversion-Betweenness Certificate)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 8,
+  "significance": 8,
+  "started": "2026-06-24T22:45:00.000Z",
+  "lastUpdate": "2026-06-24T23:20:00.000Z",
+  "path": "Proofs/PtolemysTheoremOQ01OQ01OQ03.lean",
+  "problemStatement": "Can the Lean formalization verify the general Ptolemy inequality AC·BD ≤ AB·CD + BC·DA for non-cyclic quadrilaterals, with equality iff the quadrilateral is cyclic? Answered: yes, in any real inner-product space, with the equality case characterized 0-axiom by Wbtw of the inversion images about a vertex.",
+  "significanceText": "Supplies the equality half of 'Ptolemy ⇔ cyclic' that Mathlib leaves open (its source TODO notes the lack of a cyclic-polygon concept), in full Euclidean generality and without the axiom the parent unit-circle converse relies on.",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Characterize the equality case of Ptolemy's inequality via inversion-image betweenness",
+    "blockers": [],
+    "nextAction": "Done — shipped Proofs/PtolemysTheoremOQ01OQ01OQ03.lean (0-axiom, 0-sorry) and gallery entry.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "Equality in Ptolemy's inequality is exactly equality in the single triangle inequality among the inversion images b'=inversion a 1 b, c', d' that Mathlib already uses to PROVE the inequality. Feeding that same dist_inversion_inversion rewrite into the strict-convexity equality lemma dist_add_dist_eq_iff (instead of the plain triangle inequality) upgrades the ≤ to a sharp iff with no new geometry.",
+      "The equality certificate is coordinate-free: Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). Inversion centred at a maps the circle through a,b,c,d to the line through the images, so betweenness of the images is precisely 'a,b,c,d concyclic (or collinear) with c separated from a' — the honest formal meaning of 'cyclic quadrilateral'.",
+      "Real inner-product spaces are strictly convex for free (InnerProductSpace.toUniformConvexSpace → UniformConvexSpace.toStrictConvexSpace), so dist_add_dist_eq_iff applies with no added hypotheses; the only side condition is b,c,d ≠ a so the inversion images are defined.",
+      "The parent leaf oq-01-oq-01 proves the converse only on the unit circle and seals its angular sign analysis behind the axiom positive_ratio_implies_cyclic_order. The inversion/betweenness reformulation removes BOTH the unit-circle restriction and the axiom: #print axioms gives only propext, Classical.choice, Quot.sound."
+    ],
+    "builtItems": [
+      "ptolemy_eq_iff_wbtw_inversion (Proofs/PtolemysTheoremOQ01OQ01OQ03.lean): dist a c·dist b d = dist a b·dist c d + dist b c·dist a d ↔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d), in any real inner-product space, 0-axiom.",
+      "ptolemy_strict_iff_not_wbtw: the inequality is strict iff the inversion images are not in betweenness order (via mul_dist_le_mul_dist_add_mul_dist + lt_of_le_of_ne).",
+      "ptolemy_eq_imp_collinear_inversion: Ptolemy equality ⟹ Collinear ℝ {b',c',d'} (Wbtw.collinear) — the order-free concyclicity certificate.",
+      "key_equiv: scalar bridge 1²/(p·q)·u + 1²/(q·r)·v = 1²/(p·r)·w ↔ q·w = p·v + u·r for positive p,q,r, via div_eq_div_iff + mul_eq_zero."
+    ],
+    "mathlibGaps": [
+      "Mathlib has Ptolemy's inequality (mul_dist_le_mul_dist_add_mul_dist) and the cyclic equality (mul_dist_add_mul_dist_eq_mul_dist_of_cospherical, Freek 95) but, per its own TODO, no cyclic-polygon concept and hence no equality-case characterization — exactly the gap this entry fills.",
+      "No inversion↔circle duality lemma (inversion at a maps a circle through a to a line) is available to convert Wbtw of inversion images into Cospherical {a,b,c,d}; this remains the bridge to a literal 'cospherical' statement."
+    ],
+    "nextSteps": [
+      "Prove Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d) ↔ Cospherical {a,b,c,d} (with order condition) by formalizing the inversion-maps-circle-to-line duality.",
+      "Specialize to the unit circle to derive the parent's converse and discharge its axiom positive_ratio_implies_cyclic_order.",
+      "Generalize to higher Ptolemy / Cayley–Menger equality cases detecting concyclicity of n points."
+    ],
+    "progressSummary": "COMPLETE: Shipped a 0-axiom, 0-sorry characterization of the equality case of Ptolemy's inequality in any real inner-product space — equality ⇔ Wbtw of the inversion images about a vertex — plus the strict-inequality complement and the collinearity (concyclicity) certificate. Fully general and axiom-free, unlike the parent's unit-circle converse."
+  },
+  "knownResults": [
+    "Mathlib EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist: Ptolemy's inequality (≤ direction) for arbitrary points.",
+    "Mathlib mul_dist_add_mul_dist_eq_mul_dist_of_cospherical: Ptolemy's theorem equality for cospherical points (Freek 95) — forward direction only.",
+    "Mathlib dist_add_dist_eq_iff: triangle equality ⇔ Wbtw in a strictly convex space."
+  ],
+  "relatedProofs": [
+    "ptolemys-theorem-oq-01-oq-01",
+    "ptolemys-theorem-oq-01",
+    "ptolemys-theorem"
+  ],
+  "references": [],
+  "tags": [
+    "geometry",
+    "euclidean-geometry",
+    "ptolemy",
+    "inversion",
+    "betweenness",
+    "concyclicity",
+    "inner-product-space"
+  ]
+}

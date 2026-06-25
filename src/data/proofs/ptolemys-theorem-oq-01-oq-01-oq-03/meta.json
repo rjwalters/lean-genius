@@ -1,0 +1,160 @@
+{
+  "id": "ptolemys-theorem-oq-01-oq-01-oq-03",
+  "slug": "ptolemys-theorem-oq-01-oq-01-oq-03",
+  "title": "Ptolemy's Equality Case in a General Euclidean Space (Inversion-Betweenness Certificate)",
+  "description": "Pins down exactly when Ptolemy's inequality is an equality, for arbitrary points a, b, c, d in any real inner-product (Euclidean) space — no unit circle, no complex coordinates, no cyclic-order hypothesis. Mathlib already proves the inequality dist a c · dist b d ≤ dist a b · dist c d + dist b c · dist a d (mul_dist_le_mul_dist_add_mul_dist) by applying the triangle inequality to the inversion images about a. This entry shows the inequality is an EQUALITY iff those three images are in betweenness order: dist a c · dist b d = dist a b · dist c d + dist b c · dist a d ↔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). Because inversion centred at a sends the circle through a, b, c, d to the line through the three images (cyclic order ↦ collinear order), Wbtw is the coordinate-free, axiom-free incarnation of 'equality ⇔ cyclic quadrilateral'. The proof reuses Mathlib's dist_inversion_inversion (which already underlies the inequality) and the strict-convexity equality lemma dist_add_dist_eq_iff (triangle equality ⇔ Wbtw); real inner-product spaces are strictly convex automatically (InnerProductSpace.toUniformConvexSpace → UniformConvexSpace.toStrictConvexSpace), so no hypotheses are added. The remaining work is elementary algebra clearing the three positive inversion denominators. The companion theorems give the strict inequality off the equality locus (ptolemy_strict_iff_not_wbtw) and the order-free collinearity certificate Collinear ℝ {b', c', d'} (ptolemy_eq_imp_collinear_inversion). Unlike the parent leaf oq-01-oq-01, which proves the unit-circle converse behind an axiom (positive_ratio_implies_cyclic_order), this result is fully general and 0-axiom / 0-sorry.",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "EuclideanGeometry"
+    ],
+    "namespace": "Ptolemy.EqualityCase",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/PtolemysTheoremOQ01OQ01OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Ptolemy's theorem (c. 150 AD, Almagest) states that in a cyclic quadrilateral the product of the diagonals equals the sum of the products of opposite sides; the general metric statement AC·BD ≤ AB·CD + BC·DA, with equality exactly for cyclic (or collinear) quadrilaterals in the correct order, is the inequality form that powers olympiad geometry and the definition of the Ptolemaic metric. The classical proof is by inversion: an inversion centred at one vertex a turns the circumcircle through a, b, c, d into a straight line, and Ptolemy's inequality becomes the ordinary triangle inequality among the three images, with equality precisely when they are collinear in order. Mathlib formalises the inequality direction (Freek No. 95 gives the cyclic equality as mul_dist_add_mul_dist_eq_mul_dist_of_cospherical) but, as its own source TODO notes, lacks a 'cyclic polygon' concept and so does not characterise the equality case. This entry supplies that characterisation in the inversion/betweenness form that the classical proof already implicitly uses.",
+    "problemStatement": "For arbitrary points a, b, c, d in a real inner-product space with b, c, d ≠ a, determine exactly when Ptolemy's inequality dist a c · dist b d ≤ dist a b · dist c d + dist b c · dist a d holds with equality, and prove the characterisation 0-axiom / 0-sorry in full generality (no unit-circle or cyclic-order hypotheses).",
+    "text": "Mathlib's proof of Ptolemy's inequality applies dist_triangle to the three inversion images b' = inversion a 1 b, c' = inversion a 1 c, d' = inversion a 1 d and rewrites with dist_inversion_inversion: dist x' y' = 1²/(dist x a · dist y a) · dist x y. Dividing the resulting triangle inequality dist b' d' ≤ dist b' c' + dist c' d' by the positive factor dist a b · dist a c · dist a d reproduces Ptolemy exactly. Hence Ptolemy is an EQUALITY iff dist b' c' + dist c' d' = dist b' d', and the strict-convexity lemma dist_add_dist_eq_iff identifies that triangle equality with Wbtw ℝ b' c' d'. Real inner-product spaces are strictly convex (InnerProductSpace.toUniformConvexSpace, then UniformConvexSpace.toStrictConvexSpace), so the hypothesis class is empty. The only remaining content is the elementary algebra (key_equiv) clearing the three positive denominators, which converts the inversion-distance equality into the Ptolemy product equality.",
+    "proofStrategy": "MAIN (ptolemy_eq_iff_wbtw_inversion): rewrite the betweenness goal with dist_add_dist_eq_iff (backwards) into dist b' c' + dist c' d' = dist b' d', rewrite the three distances with dist_inversion_inversion and normalise the centre distances with dist_comm, then close with the scalar lemma key_equiv. KEY ALGEBRA (key_equiv): for positive p = dist a b, q = dist a c, r = dist a d, the equality 1²/(p·q)·u + 1²/(q·r)·v = 1²/(p·r)·w is equivalent to q·w = p·v + u·r — proved by div_add_div / div_eq_div_iff to a single cleared polynomial, then one direction by linear_combination and the converse by isolating the common factor p·q·r via mul_eq_zero. COROLLARIES: ptolemy_strict_iff_not_wbtw combines the main iff with Mathlib's inequality mul_dist_le_mul_dist_add_mul_dist and lt_of_le_of_ne; ptolemy_eq_imp_collinear_inversion applies Wbtw.collinear to the betweenness witness.",
+    "keyInsights": [
+      "**Equality ⇔ cyclic is equality ⇔ betweenness of inversion images.** Inversion centred at a vertex a carries the circumcircle through a, b, c, d to a line; cocyclicity in the order b, c, d becomes collinearity in the order b', c', d'. So the single statement Wbtw ℝ b' c' d' is the precise, coordinate-free certificate for 'the quadrilateral is cyclic with c opposite a'. No angles, no orientation, no choice of coordinates.",
+      "**The inequality and its equality case share one lemma.** dist_inversion_inversion is exactly the rewrite Mathlib already uses to PROVE Ptolemy's inequality; running it through the strict-convexity equality lemma dist_add_dist_eq_iff — rather than the plain triangle inequality — upgrades the inequality to a sharp iff with no new geometry.",
+      "**Strict convexity is free for inner-product spaces.** The whole equality case rests on dist_add_dist_eq_iff, which needs StrictConvexSpace ℝ V; this is supplied automatically for any real inner-product space, so the theorem carries no side hypotheses beyond b, c, d ≠ a (needed only so the inversion images are defined).",
+      "**Fully general and axiom-free, unlike the unit-circle converse.** The parent leaf oq-01-oq-01 establishes the converse only for four points on the unit circle and seals its trigonometric sign-analysis behind the axiom positive_ratio_implies_cyclic_order. Reformulating through inversion/betweenness eliminates both the unit-circle restriction and the axiom: #print axioms reports only propext, Classical.choice, Quot.sound."
+    ],
+    "prerequisites": [
+      "Euclidean inversion EuclideanGeometry.inversion and the image-distance formula dist_inversion_inversion: dist (inversion a 1 x) (inversion a 1 y) = 1²/(dist x a · dist y a) · dist x y",
+      "Mathlib's Ptolemy inequality mul_dist_le_mul_dist_add_mul_dist (the ≤ direction, proved by inversion + triangle inequality)",
+      "The strict-convexity equality lemma dist_add_dist_eq_iff: dist a b + dist b c = dist a c ↔ Wbtw ℝ a b c, and that real inner-product spaces are strictly convex",
+      "Weak betweenness Wbtw and Wbtw.collinear"
+    ]
+  },
+  "sections": [
+    {
+      "id": "key-algebra",
+      "title": "Clearing the Inversion Denominators",
+      "startLine": 61,
+      "endLine": 88,
+      "summary": "key_equiv: for positive radii p, q, r the inversion-distance equality 1²/(p·q)·u + 1²/(q·r)·v = 1²/(p·r)·w is equivalent to the Ptolemy product equality q·w = p·v + u·r. Proved by div_add_div / div_eq_div_iff to a single cleared polynomial; the forward direction is one linear_combination, the converse isolates the positive common factor p·q·r through mul_eq_zero.",
+      "mathContext": "The purely scalar bridge between the triangle-equality of inversion images and the Ptolemy product relation."
+    },
+    {
+      "id": "equality-characterisation",
+      "title": "Equality ⇔ Betweenness of Inversion Images",
+      "startLine": 90,
+      "endLine": 137,
+      "summary": "ptolemy_eq_iff_wbtw_inversion: Ptolemy's inequality is an equality iff Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d), via dist_add_dist_eq_iff and dist_inversion_inversion. ptolemy_strict_iff_not_wbtw: the inequality is strict iff the images are not in betweenness order, from Mathlib's mul_dist_le_mul_dist_add_mul_dist and lt_of_le_of_ne.",
+      "mathContext": "The coordinate-free 'equality ⇔ cyclic' characterisation, plus its strict-inequality complement."
+    },
+    {
+      "id": "collinearity-certificate",
+      "title": "The Collinearity (Concyclicity) Certificate",
+      "startLine": 132,
+      "endLine": 147,
+      "summary": "ptolemy_eq_imp_collinear_inversion: Ptolemy equality forces Collinear ℝ {b', c', d'} (Wbtw.collinear), the order-free, purely-Mathlib shadow of 'a, b, c, d are concyclic'. A degenerate sanity check (c = b) confirms the equality locus and the resulting Wbtw with a repeated point.",
+      "mathContext": "The weaker collinearity statement is exactly the image, under inversion at a, of the circle through a, b, c, d."
+    }
+  ],
+  "conclusion": {
+    "summary": "A machine-checked Lean 4 proof characterising the equality case of Ptolemy's inequality in any real inner-product (Euclidean) space: dist a c · dist b d = dist a b · dist c d + dist b c · dist a d ↔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). The file is 0-axiom, 0-sorry (#print axioms: propext, Classical.choice, Quot.sound only). It reuses Mathlib's own inversion rewrite dist_inversion_inversion together with the strict-convexity equality lemma dist_add_dist_eq_iff, so the sharp iff costs only the elementary algebra of clearing the three positive denominators.",
+    "implications": "Supplies the equality half of 'Ptolemy's theorem ⇔ cyclic quadrilateral' that Mathlib's source explicitly leaves open for want of a cyclic-polygon concept, and does so in full generality rather than on the unit circle. The inversion-betweenness certificate Wbtw ℝ b' c' d' — equivalently the collinearity Collinear ℝ {b', c', d'} — is the coordinate-free form of cocyclicity, and the strict companion certifies non-degenerate (strictly sub-Ptolemaic) configurations, exactly the inequality used to characterise Ptolemaic metric spaces. Compared with the parent unit-circle converse it removes both the unit-circle restriction and the axiom positive_ratio_implies_cyclic_order.",
+    "openQuestions": [
+      "Bridge the inversion-image certificate back to Mathlib's sphere API: prove Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d) ↔ Cospherical {a, b, c, d} (with a suitable order condition), i.e. formalise that inversion at a maps the circle through a to the line through the images — the missing inversion↔circle duality flagged in Mathlib's Ptolemy TODO.",
+      "Derive the parent's unit-circle converse (and thereby discharge its axiom positive_ratio_implies_cyclic_order) as a corollary of this general characterisation by specialising a, b, c, d to the unit circle and translating Wbtw of the inversion images into the CCW/CW cyclic order.",
+      "Extend the equality characterisation to the higher Ptolemy / Cayley–Menger inequalities for n points, where equality detects concyclicity of larger point sets."
+    ]
+  },
+  "crossReferences": [
+    {
+      "slug": "ptolemys-theorem-oq-01-oq-01",
+      "relation": "Parent leaf — proves the Ptolemy-equality converse for four points on the unit circle, but seals its angular sign-analysis behind the axiom positive_ratio_implies_cyclic_order. This entry answers the same 'equality ⇔ cyclic' question in full Euclidean generality and 0-axiom, using inversion/betweenness in place of complex coordinates."
+    },
+    {
+      "slug": "ptolemys-theorem-oq-01",
+      "relation": "Grandparent leaf — 'Ptolemy Inequality with Concyclicity Characterization'; this entry sharpens the inequality to an exact equality criterion valid in any real inner-product space."
+    },
+    {
+      "slug": "ptolemys-theorem",
+      "relation": "Root entry — Ptolemy's theorem for cyclic quadrilaterals; the present result is the metric-space equality case of the inequality form that generalises it."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib: Ptolemy's inequality (EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist) and Ptolemy's theorem (mul_dist_add_mul_dist_eq_mul_dist_of_cospherical, Freek No. 95)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Geometry/Euclidean/Inversion/Basic.html"
+    },
+    {
+      "title": "Mathlib: dist_add_dist_eq_iff — triangle equality ⇔ weak betweenness in a strictly convex space",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Convex/StrictConvexBetween.html"
+    }
+  ],
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PtolemysTheoremOQ01OQ01OQ03.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "ptolemy",
+      "inversion",
+      "metric-geometry",
+      "inner-product-space",
+      "strict-convexity",
+      "betweenness",
+      "concyclicity",
+      "inequality-equality-case"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 148,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None beyond b, c, d ≠ a (required only so the inversion images about a are defined). The ambient space is an arbitrary real inner-product (Euclidean) space presented as a NormedAddTorsor over it; strict convexity, the sole structural ingredient of dist_add_dist_eq_iff, is supplied automatically by InnerProductSpace.toUniformConvexSpace → UniformConvexSpace.toStrictConvexSpace, so no hypothesis is added. Verified 0 axioms, 0 sorries: #print axioms on ptolemy_eq_iff_wbtw_inversion, ptolemy_strict_iff_not_wbtw and ptolemy_eq_imp_collinear_inversion reports only [propext, Classical.choice, Quot.sound] (no sorryAx, no Lean.ofReduceBool).",
+    "originalContributions": [
+      "ptolemy_eq_iff_wbtw_inversion: the equality case of Ptolemy's inequality in ANY real inner-product space — dist a c · dist b d = dist a b · dist c d + dist b c · dist a d ↔ Wbtw ℝ (inversion a 1 b) (inversion a 1 c) (inversion a 1 d). The coordinate-free, axiom-free certificate for 'equality ⇔ cyclic quadrilateral', the equality half that Mathlib's Ptolemy formalisation leaves open. Proved by running Mathlib's own inversion rewrite dist_inversion_inversion through the strict-convexity equality lemma dist_add_dist_eq_iff.",
+      "ptolemy_strict_iff_not_wbtw: Ptolemy's inequality is STRICT iff the inversion images are not in betweenness order — combining the main characterisation with Mathlib's inequality mul_dist_le_mul_dist_add_mul_dist and lt_of_le_of_ne. Certifies the strictly sub-Ptolemaic (non-cyclic) configurations.",
+      "ptolemy_eq_imp_collinear_inversion: Ptolemy equality forces Collinear ℝ {inversion a 1 b, inversion a 1 c, inversion a 1 d}, the order-free, purely-Mathlib concyclicity certificate (the line that the circle through a, b, c, d becomes under inversion at a).",
+      "key_equiv: the scalar lemma bridging the inversion-distance equality 1²/(p·q)·u + 1²/(q·r)·v = 1²/(p·r)·w and the Ptolemy product relation q·w = p·v + u·r for positive p, q, r, isolating the positive common denominator p·q·r via div_eq_div_iff and mul_eq_zero. The piece that makes 'triangle equality of images = Ptolemy equality' a deterministic algebraic identity.",
+      "The structural observation that the equality case needs NO new geometry beyond the inequality: the very rewrite (dist_inversion_inversion) Mathlib uses to prove Ptolemy's inequality, fed instead into the strict-convexity equality criterion, yields a sharp iff — and removes both the unit-circle restriction and the axiom of the parent unit-circle converse."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "EuclideanGeometry.dist_inversion_inversion",
+        "description": "dist (inversion c R x) (inversion c R y) = R²/(dist x c · dist y c) · dist x y — the inversion image-distance formula; the same rewrite Mathlib uses to prove Ptolemy's inequality, here also driving its equality case",
+        "module": "Mathlib.Geometry.Euclidean.Inversion.Basic"
+      },
+      {
+        "theorem": "dist_add_dist_eq_iff",
+        "description": "dist a b + dist b c = dist a c ↔ Wbtw ℝ a b c in a strictly convex space — converts the triangle equality among inversion images into weak betweenness, the heart of the characterisation",
+        "module": "Mathlib.Analysis.Convex.StrictConvexBetween"
+      },
+      {
+        "theorem": "EuclideanGeometry.mul_dist_le_mul_dist_add_mul_dist",
+        "description": "Ptolemy's inequality dist a c · dist b d ≤ dist a b · dist c d + dist b c · dist a d — supplies the ≤ bound used by ptolemy_strict_iff_not_wbtw to separate strict from equality",
+        "module": "Mathlib.Geometry.Euclidean.Inversion.Basic"
+      },
+      {
+        "theorem": "Wbtw.collinear",
+        "description": "Wbtw ℝ x y z → Collinear ℝ {x, y, z} — turns the betweenness witness into the order-free collinearity (concyclicity) certificate",
+        "module": "Mathlib.Analysis.Convex.Between"
+      },
+      {
+        "theorem": "InnerProductSpace.toUniformConvexSpace",
+        "description": "every real inner-product space is uniformly convex; composed with UniformConvexSpace.toStrictConvexSpace it supplies the StrictConvexSpace ℝ V instance dist_add_dist_eq_iff requires, so the theorem carries no convexity hypothesis",
+        "module": "Mathlib.Analysis.InnerProductSpace.Convex"
+      }
+    ]
+  }
+}

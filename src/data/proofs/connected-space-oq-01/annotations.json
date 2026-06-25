@@ -8,40 +8,64 @@
     },
     "type": "insight",
     "title": "Connectedness Survives Closure",
-    "content": "preconnected_closure and connected_closure record that the closure of a (pre)connected set is (pre)connected. The reason is that connectedness cannot be destroyed by adding limit points: any pair of open sets separating closure s would already separate the dense original set s, contradicting its preconnectedness. (connected_closure additionally carries nonemptiness, the only difference between IsPreconnected and IsConnected.) These are Mathlib's IsPreconnected.closure / IsConnected.closure, restated in gallery form.",
-    "mathContext": "If $s$ is preconnected then $\\overline{s}$ is preconnected; if $s$ is connected (preconnected and nonempty) then $\\overline{s}$ is connected.",
+    "content": "preconnected_closure and connected_closure record that the closure of a (pre)connected set is (pre)connected. The reason is that connectedness cannot be destroyed by adding limit points: any pair of open sets separating closure s would already separate the dense original set s, contradicting its preconnectedness. These are Mathlib's IsPreconnected.closure / IsConnected.closure, restated in gallery form.",
+    "mathContext": "If $s$ is preconnected then $\\overline{s}$ is preconnected; an open separation $U \\cup V \\supseteq \\overline{s}$ restricts to one of $s$, which is dense in $\\overline{s}$.",
     "significance": "key",
-    "relatedConcepts": ["closure operator", "preconnected vs connected", "open separation", "limit points"],
-    "prerequisites": ["topological closure", "definition of (pre)connectedness via separations"]
+    "relatedConcepts": [
+      "IsPreconnected.closure",
+      "IsConnected.closure",
+      "limit points",
+      "open separation"
+    ],
+    "prerequisites": [
+      "closure of a set",
+      "preconnected and connected sets"
+    ]
   },
   {
     "id": "ann-bark-tree",
     "proofId": "connected-space-oq-01",
     "range": {
       "startLine": 50,
-      "endLine": 59
+      "endLine": 62
     },
     "type": "concept",
     "title": "Bark and Tree: the Sharp Form",
-    "content": "preconnected_of_subset_closure (and its connected analogue connected_of_subset_closure) is strictly stronger than the closure statement: ANY set t with s ⊆ t ⊆ closure s is preconnected, not just t = closure s. Picturesquely, everything between the 'bark' (s) and the 'tree' (closure s) inherits connectedness. The full-closure result is the special case t = closure s; conversely this sharp form is what powers downstream arguments where one only knows a set lies between a connected core and its closure. (Mathlib: IsPreconnected.subset_closure.)",
-    "mathContext": "If $s$ is preconnected and $s \\subseteq t \\subseteq \\overline{s}$, then $t$ is preconnected.",
+    "content": "preconnected_of_subset_closure is strictly stronger than the closure statement: ANY set t with s ⊆ t ⊆ closure s is preconnected, not just t = closure s. Picturesquely, everything between the 'bark' (s) and the 'tree' (closure s) inherits connectedness. The full-closure result is the special case t = closure s; conversely this sharp form is what powers downstream arguments where one only knows a set lies between a connected core and its closure. connected_of_subset_closure is the connected analogue.",
+    "mathContext": "$s \\subseteq t \\subseteq \\overline{s}$ with $s$ preconnected $\\Rightarrow$ $t$ preconnected; taking $t = \\overline{s}$ recovers the closure result.",
     "significance": "key",
-    "relatedConcepts": ["dense subset", "intermediate sets", "monotonicity of connectedness", "subspace topology"],
-    "prerequisites": ["topological closure", "set containment chains", "(pre)connectedness"]
+    "relatedConcepts": [
+      "IsPreconnected.subset_closure",
+      "density",
+      "intermediate sets",
+      "closure"
+    ],
+    "prerequisites": [
+      "subset relations",
+      "closure of a set"
+    ]
   },
   {
     "id": "ann-dense",
     "proofId": "connected-space-oq-01",
     "range": {
-      "startLine": 61,
+      "startLine": 64,
       "endLine": 73
     },
     "type": "insight",
     "title": "Dense Connected Subset ⟹ Connected Space",
-    "content": "connectedSpace_of_dense_connected is the practical corollary (with preconnectedSpace_of_dense_preconnected its weaker twin): if a space has a dense connected subset, the whole space is connected. The proof reduces ConnectedSpace α to IsConnected (univ) (connectedSpace_iff_univ); density gives closure s = univ (Dense.closure_eq), so univ is the closure of a connected set, which is connected (IsConnected.closure). This is a standard and reusable route to proving connectedness — establish it on a dense, easier-to-analyze part and let closure do the rest. A typical application: ℝⁿ is connected because the dense set of rational-coordinate-free paths / the image of a connected parameterization is dense and connected.",
-    "mathContext": "If $s$ is connected and dense ($\\overline{s} = \\alpha$), then $\\alpha$ is a connected space, since $\\alpha = \\overline{s}$ is the closure of a connected set.",
-    "significance": "key",
-    "relatedConcepts": ["dense subset", "ConnectedSpace", "connectedSpace_iff_univ", "reduction to a dense core"],
-    "prerequisites": ["density and Dense.closure_eq", "ConnectedSpace / PreconnectedSpace", "closure of a connected set"]
+    "content": "connectedSpace_of_dense_connected is the practical corollary: if a space has a dense connected subset, the whole space is connected. The proof reduces ConnectedSpace α to IsConnected (univ) (connectedSpace_iff_univ); density gives closure s = univ (Dense.closure_eq), so univ is the closure of a connected set, which is connected (IsConnected.closure). This is a standard and reusable route to proving connectedness — establish it on a dense, easier-to-analyze part and let closure do the rest. preconnectedSpace_of_dense_preconnected is the preconnected analogue.",
+    "mathContext": "$s$ dense $\\Rightarrow \\overline{s} = \\mathrm{univ}$; $s$ connected $\\Rightarrow \\overline{s}$ connected; hence $\\mathrm{univ}$ is connected, i.e. $\\alpha$ is a ConnectedSpace.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Dense.closure_eq",
+      "connectedSpace_iff_univ",
+      "ConnectedSpace",
+      "dense subsets"
+    ],
+    "prerequisites": [
+      "dense subsets",
+      "connected spaces vs connected sets"
+    ]
   }
 ]

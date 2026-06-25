@@ -91,28 +91,44 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Newton–Girard over Any Number of Variables",
+      "startLine": 4,
+      "endLine": 32,
+      "summary": "Docstring and setup (σ finite, R a commutative ring, MvPolynomial): packages Mathlib's general Newton–Girard development, superseding the sibling's hand proof for three quantities.",
+      "mathContext": "Power sums pₖ and elementary symmetric polynomials eₖ over MvPolynomial σ R."
+    },
+    {
       "id": "esymm-recurrence",
       "title": "Section I: The eₖ Recurrence",
-      "startLine": 33,
-      "endLine": 43,
+      "startLine": 34,
+      "endLine": 41,
       "summary": "newton_esymm_recurrence: k·eₖ = (−1)^{k+1} Σ_{i+j=k, i<k} (−1)ⁱ eᵢ pⱼ (Mathlib's mul_esymm_eq_sum).",
       "mathContext": "Newton's identity expressing k·eₖ through lower elementary symmetric polynomials and power sums."
     },
     {
       "id": "psum-recurrence",
       "title": "Section II: The Power-Sum Recurrence",
-      "startLine": 45,
-      "endLine": 56,
+      "startLine": 43,
+      "endLine": 52,
       "summary": "newton_psum_recurrence: pₖ = (−1)^{k+1} k eₖ − Σ_{i+j=k, 0<i<k} (−1)ⁱ eᵢ pⱼ — the OQ's general Newton–Girard recurrence.",
       "mathContext": "The recurrence computing every power sum from the elementary symmetric polynomials."
     },
     {
-      "id": "closure-base",
-      "title": "Section III: Closure and Base Case",
-      "startLine": 58,
-      "endLine": 65,
-      "summary": "newton_sum_zero (Σ_{i+j=k} (−1)ⁱ eᵢ pⱼ = 0 at k = |σ|) and psum_one_eq_esymm_one (p₁ = e₁).",
-      "mathContext": "The recurrence terminates at k = |σ|, and starts from p₁ = e₁."
+      "id": "closure",
+      "title": "Section III: Closure at k = |σ|",
+      "startLine": 54,
+      "endLine": 60,
+      "summary": "newton_sum_zero: Σ_{i+j=k} (−1)ⁱ eᵢ pⱼ = 0 at k = |σ| — the recurrence terminates at the variable count because eᵢ = 0 beyond it.",
+      "mathContext": "Σ_{i+j=|σ|} (−1)ⁱ eᵢ pⱼ = 0."
+    },
+    {
+      "id": "base-case",
+      "title": "Section IV: Base Case p₁ = e₁",
+      "startLine": 62,
+      "endLine": 67,
+      "summary": "psum_one_eq_esymm_one: p₁ = e₁ (both Σᵢ Xᵢ), the seed from which the recurrence computes every power sum.",
+      "mathContext": "p₁ = e₁ = Σᵢ Xᵢ."
     }
   ],
   "conclusion": {

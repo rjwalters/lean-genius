@@ -79,7 +79,7 @@ theorem indicator_eLpNorm_zero {E : Set α} (hE : MeasurableSet E) (hμE : μ E 
     (p : ℝ≥0∞) :
     eLpNorm (E.indicator (fun _ => (1 : ℝ))) p μ = 0 := by
   apply eLpNorm_eq_zero_of_ae_zero
-  filter_upwards [measure_zero_iff_ae_nmem.mp hμE] with x hx
+  filter_upwards [measure_eq_zero_iff_ae_notMem.mp hμE] with x hx
   simp [indicator_apply, hx]
 
 /-
@@ -111,7 +111,7 @@ theorem functionalSetFn_null (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (h
     functionalSetFn p hp hptop φ E hE (by simp [hμE]) = 0 := by
   unfold functionalSetFn
   have hae : E.indicator (fun _ => (1 : ℝ)) =ᵐ[μ] (0 : α → ℝ) := by
-    filter_upwards [measure_zero_iff_ae_nmem.mp hμE] with x hx
+    filter_upwards [measure_eq_zero_iff_ae_notMem.mp hμE] with x hx
     simp [indicator_apply, hx]
   have h0 : (indicator_memLp hE (by simp [hμE]) p hp hptop).toLp _ = 0 := by
     rw [← MemLp.zero.toLp_zero]
@@ -168,11 +168,11 @@ theorem truncated_rn_deriv_memLq [IsFiniteMeasure μ]
     (g : α → ℝ) (hg : Measurable g) (n : ℕ)
     (q : ℝ≥0∞) (hq : 1 ≤ q) (hqtop : q ≠ ⊤) :
     MemLp (fun a => max (min (g a) (n : ℝ)) (-(n : ℝ))) q μ :=
-  MemLp.of_bound (n : ℝ)
-    ((hg.min measurable_const).max measurable_const |>.aestronglyMeasurable)
+  MemLp.of_bound
+    ((hg.min measurable_const).max measurable_const |>.aestronglyMeasurable) (n : ℝ)
     (ae_of_all μ (fun a => by
       simp only [Real.norm_eq_abs, abs_le]
-      exact ⟨le_max_right _ _, le_trans (min_le_right _ _) (le_max_left _ _)⟩))
+      exact ⟨le_max_right _ _, max_le_iff.mpr ⟨min_le_right _ _, neg_le_self (Nat.cast_nonneg n)⟩⟩))
 
 /-- Variant of `rn_deriv_memLq_from_trunc` accepting uniform truncation bounds directly.
     This is the correct approach bypassing the false truncated_rn_deriv_lq_bound pathway.
@@ -185,7 +185,7 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
     MemLp g q μ := by
   have hqtop : q ≠ ⊤ := by
     intro hq; rw [hq, ENNReal.toReal_top] at hpq
-    linarith [hpq.symm.one_lt_of_lt hp1]
+    exact absurd hpq.right_pos (lt_irrefl 0)
   have hq0 : q ≠ 0 := by
     intro hq; rw [hq, ENNReal.toReal_zero] at hpq
     linarith [hpq.symm.pos]
@@ -286,7 +286,7 @@ theorem integrable_mul_of_memLp (p q : ℝ≥0∞)
       = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm']
     _ ≤ eLpNorm f p μ * eLpNorm g q μ :=
         lintegral_mul_le_of_memLp p q hpq hp hptop hf hg
-    _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
+    _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top hg.eLpNorm_lt_top
 
 /-- **Infrastructure**: Integration against g ∈ Lq defines a CLM on Lp.
     This is the functional-analytic form of Hölder's inequality.
@@ -598,7 +598,7 @@ private theorem rnDeriv_integral_eq [IsFiniteMeasure μ]
   -- hrec : μ.withDensityᵥ (ν.rnDeriv μ) = ν (as SignedMeasures)
   -- rewrite ν E as (μ.withDensityᵥ g) E, then apply withDensityᵥ_apply
   conv_lhs => rw [← hrec]
-  exact Measure.withDensityᵥ_apply hint hE
+  exact withDensityᵥ_apply hint hE
 
 /-- **Hölder extremizer bound**: for gₙ = clamp(g, -n, n) where g = ν.rnDeriv μ,
     eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖.
@@ -627,7 +627,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   have hg_meas : Measurable g := ν.measurable_rnDeriv μ
   have hq_pos : 0 < q.toReal := hpq.symm.pos
   have hqne_top : q ≠ ⊤ := by
-    intro hq; rw [hq, ENNReal.toReal_top] at hpq; linarith [hpq.symm.one_lt_of_lt hp1]
+    intro hq; rw [hq, ENNReal.toReal_top] at hpq; exact absurd hpq.right_pos (lt_irrefl 0)
   -- gₙ is bounded: |gₙ(a)| ≤ n for all a
   have hgn_bound : ∀ a, |g_n a| ≤ (n : ℝ) := fun a => by
     simp only [g_n, abs_le]
@@ -637,15 +637,20 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   -- gₙ is integrable (bounded × finite measure)
   have hgn_int : Integrable g_n μ := by
     rw [← memLp_one_iff_integrable]
-    exact MemLp.of_bound (n : ℝ)
-      (((hg_meas.min measurable_const).max measurable_const).aestronglyMeasurable)
+    exact MemLp.of_bound
+      (((hg_meas.min measurable_const).max measurable_const).aestronglyMeasurable) (n : ℝ)
       (ae_of_all μ fun a => by simpa [Real.norm_eq_abs] using hgn_bound a)
   -- Extremizer: hₙ = sign(gₙ) · |gₙ|^{q-1}
   let h_n := fun a => Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1)
   -- hₙ is measurable
-  have hhn_meas : Measurable h_n :=
-    (((hg_meas.min measurable_const).max measurable_const).sign).mul
-      (((hg_meas.min measurable_const).max measurable_const).abs.pow_const _)
+  have hgn_m : Measurable g_n := (hg_meas.min measurable_const).max measurable_const
+  have hsign_m : Measurable (fun a => Real.sign (g_n a)) := by
+    have hrw : (fun a => Real.sign (g_n a)) =
+        fun a => if g_n a < 0 then (-1 : ℝ) else if 0 < g_n a then 1 else 0 := rfl
+    rw [hrw]
+    exact Measurable.ite (measurableSet_lt hgn_m measurable_const) measurable_const
+      (Measurable.ite (measurableSet_lt measurable_const hgn_m) measurable_const measurable_const)
+  have hhn_meas : Measurable h_n := hsign_m.mul (hgn_m.abs.pow_const _)
   -- hₙ is bounded: ‖hₙ(a)‖ ≤ n^{q-1}
   have hhn_bound : ∀ᵐ a ∂μ, ‖h_n a‖ ≤ (n : ℝ) ^ (q.toReal - 1) :=
     ae_of_all μ fun a => by
@@ -656,10 +661,10 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
         _ = |g_n a| ^ (q.toReal - 1) := one_mul _
         _ ≤ (n : ℝ) ^ (q.toReal - 1) :=
             Real.rpow_le_rpow (abs_nonneg _) (hgn_bound a)
-              (by linarith [hpq.symm.one_lt_of_lt hp1])
+              (by linarith [hpq.symm.lt])
   -- hₙ ∈ Lp (bounded on finite measure space)
   have hhn_memLp : MemLp h_n p μ :=
-    MemLp.of_bound ((n : ℝ) ^ (q.toReal - 1)) hhn_meas.aestronglyMeasurable hhn_bound
+    MemLp.of_bound hhn_meas.aestronglyMeasurable ((n : ℝ) ^ (q.toReal - 1)) hhn_bound
   -- Pointwise: hₙ(a) · g(a) ≥ hₙ(a) · gₙ(a) (sign(hₙ) matches sign of g - gₙ)
   have hpw : ∀ a, h_n a * g_n a ≤ h_n a * g a := fun a => by
     suffices h : 0 ≤ h_n a * (g a - g_n a) by linarith [mul_sub (h_n a) (g a) (g_n a)]
@@ -865,7 +870,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     -- via integral_toReal (base is finite: coercion from ℝ≥0 is always ≠ ⊤)
     have hf_meas : AEMeasurable (fun a => (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal) μ :=
       ((hg_meas.min measurable_const).max measurable_const).nnnorm
-        |>.coe_nnreal_ennreal |>.ennreal_rpow_const q.toReal |>.aemeasurable
+        |>.coe_nnreal_ennreal |>.pow_const q.toReal |>.aemeasurable
     have hf_ne_top : ∀ᵐ a ∂μ, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal ≠ ⊤ :=
       ae_of_all μ fun a => by
         rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]; exact ENNReal.coe_ne_top
@@ -882,7 +887,9 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   -- Step C1: gₙ ∈ Lq (bounded on finite measure)
   have hgn_memLq : MemLp g_n q μ :=
     truncated_rn_deriv_memLq g hg_meas n q
-      (by linarith [hpq.symm.one_lt_of_lt hp1]) hqne_top
+      (by
+        rw [show (1 : ℝ≥0∞) = ENNReal.ofReal 1 by simp, ← ENNReal.ofReal_toReal hqne_top]
+        exact ENNReal.ofReal_le_ofReal hpq.symm.lt.le) hqne_top
   have hgn_ne_top : eLpNorm g_n q μ ≠ ⊤ := (hgn_memLq.eLpNorm_lt_top).ne
   -- Step C2: eLpNorm h_n p μ = eLpNorm g_n q μ ^ (q.toReal / p.toReal)
   -- Proof: |h_n a|^p.toReal = |g_n a|^q.toReal pointwise (from p(q-1)=q via HolderConjugate),
