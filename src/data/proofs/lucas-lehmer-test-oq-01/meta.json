@@ -17,6 +17,49 @@
     "sorries": 0
   },
   "title": "The Lucas–Lehmer Primality Test for Mersenne Numbers",
+  "description": "The deterministic Lucas–Lehmer criterion assembled as the full biconditional (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p: the Mersenne number 2^p − 1 is prime exactly when the iterate s_{p-2} of the recurrence s₀ = 4, s_{i+1} = s_i² − 2 vanishes mod 2^p − 1. Four Mersenne primes (M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071) are decided through the test and a composite witness (M₁₁ = 2047 = 23·89, where the test fails) exercises the converse — all by axiom-free kernel reduction.",
+  "overview": {
+    "historicalContext": "Marin Mersenne (1588–1648) catalogued the numbers M_p = 2^p − 1 in his 1644 Cogitata Physico-Mathematica, conjecturing primality for a specific list of exponents that stood, partly erroneous, for over 250 years. Édouard Lucas devised the underlying test in 1876–1878, using it in 1876 to certify by hand that M₁₂₇ = 2¹²⁷ − 1 is prime — a 39-digit number that remained the largest known prime until the computer era. Derrick Henry Lehmer placed the criterion on rigorous footing in his 1930 Annals paper 'An extended theory of Lucas' functions', yielding the modern Lucas–Lehmer test. Because it is deterministic and runs in roughly O(p²·log p·log log p) bit operations (one modular squaring per step for p − 2 steps), it is the engine behind the GIMPS distributed search and every record Mersenne prime found since 1952. The test connects directly to the Euclid–Euler theorem: each Mersenne prime yields exactly one even perfect number, so certifying Mersenne primes simultaneously enumerates the even perfect numbers.",
+    "problemStatement": "For $3 \\le p$, prove the Lucas–Lehmer criterion as a single biconditional $(2^p - 1)\\text{ is prime} \\iff \\mathrm{LucasLehmerTest}(p)$, where the test is the vanishing of the residue $s_{p-2} \\bmod (2^p - 1)$ of the recurrence $s_0 = 4,\\ s_{i+1} = s_i^2 - 2$. Then decide concrete Mersenne numbers through this criterion, in both the prime and composite directions.",
+    "proofStrategy": "Mathlib supplies the two implications under different hypotheses: lucas_lehmer_sufficiency (LucasLehmerTest p → (mersenne p).Prime, needing only 1 < p) and lucas_lehmer_necessity ((mersenne p).Prime → LucasLehmerTest p, needing 3 ≤ p). The biconditional mersenne_prime_iff_lucasLehmerTest is assembled by taking necessity directly for the forward map and sufficiency for the backward map after weakening 3 ≤ p to 1 < p with omega. Each concrete witness is then settled by rewriting the goal along this biconditional and discharging LucasLehmerTest p with norm_num, which fires the evalLucasLehmerTest extension: it computes the residue by kernel reduction of the tail-recursive sModNatTR and closes by rfl. The recurrence values s₁ = 14, s₂ = 194, s₃ = 37634 are unfolded with norm_num [LucasLehmer.s]; the composite direction reads the same biconditional backwards (failing test ⇒ not prime), corroborated by the explicit factorization 2047 = 23·89.",
+    "keyInsights": [
+      "The criterion is genuinely a biconditional, but Mathlib only records its two halves separately and under mismatched hypotheses (1 < p versus 3 ≤ p); packaging them under the single textbook hypothesis 3 ≤ p — bridged by a one-line omega — is the entry's structural contribution.",
+      "The whole primality question reduces to a single quadratic recurrence: p − 2 modular squarings of s₀ = 4, with the verdict read off from whether s_{p-2} ≡ 0 (mod 2^p − 1). No factoring, no trial division, no randomness — a deterministic certificate.",
+      "Verification stays axiom-free because the norm_num extension decides the test by kernel reduction (rfl) of a tail-recursive residue function, deliberately avoiding native_decide and hence the Lean.ofReduceBool axiom that native compilation would introduce.",
+      "The same biconditional certifies compositeness as cleanly as primality: at p = 11 the test fails, so M₁₁ is not prime — and unlike a Lucas–Lehmer failure in general, here the explicit factorization 2047 = 23·89 makes the contrapositive concrete.",
+      "Lucas's 1876 hand-verification of M₁₂₇'s primality, predating the rigorous theory by half a century, shows the test's power: it turns an intractable 39-digit primality question into a finite, mechanical recurrence — exactly the property that makes it the algorithm of choice for record-breaking Mersenne primes today."
+    ]
+  },
+  "sections": [
+    {
+      "id": "recurrence",
+      "title": "The Lucas–Lehmer recurrence sᵢ",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "Spells out the recurrence s₀ = 4 (s_zero) and s_{i+1} = s_i² − 2 (s_succ), computes its first iterates s₁ = 14, s₂ = 194, s₃ = 37634, and identifies the test definitionally with the vanishing of the residue s_{p-2} in ZMod (2^p − 1) via lucasLehmerTest_iff_residue."
+    },
+    {
+      "id": "biconditional",
+      "title": "The biconditional criterion",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "Assembles mersenne_prime_iff_lucasLehmerTest: for 3 ≤ p, (mersenne p).Prime ↔ LucasLehmerTest p, combining Mathlib's lucas_lehmer_necessity (forward) and lucas_lehmer_sufficiency (backward, after weakening 3 ≤ p to 1 < p by omega) into the single textbook statement."
+    },
+    {
+      "id": "prime-witnesses",
+      "title": "Prime witnesses, decided through the test",
+      "startLine": 71,
+      "endLine": 91,
+      "summary": "Certifies M₅ = 31, M₇ = 127, M₁₃ = 8191 and M₁₇ = 131071 prime by rewriting (mersenne p).Prime along the biconditional and discharging LucasLehmerTest p with norm_num's kernel-reducing evalLucasLehmerTest extension."
+    },
+    {
+      "id": "composite-witness",
+      "title": "A composite witness: p = 11",
+      "startLine": 93,
+      "endLine": 109,
+      "summary": "Exercises the converse direction: lucasLehmerTest_eleven_false shows the test fails at p = 11, mersenne_eleven_not_prime concludes M₁₁ is not prime via the biconditional, and mersenne_eleven_factorization confirms M₁₁ = 2047 = 23·89."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -116,7 +159,7 @@
   ],
   "sorries": 0,
   "conclusion": {
-    "summary": "The Lucas–Lehmer test is assembled as the full biconditional (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p, combining Mathlib's separately-stated sufficiency and necessity halves under one hypothesis. The recurrence s₀ = 4, s_{i+1} = s_i² − 2 is spelled out with its first values and identified with the vanishing of the residue s_{p-2} mod 2^p − 1. Four Mersenne primes (M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071) are decided *through the test*, and a composite witness (p = 11, where the test fails so M₁₁ = 2047 = 23·89 is not prime) exercises the converse direction. 110 lines, 11 theorems, 0 definitions, 0 axioms, 0 sorries.",
+    "summary": "The Lucas–Lehmer test is assembled as the full biconditional (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p, combining Mathlib's separately-stated sufficiency and necessity halves under one hypothesis. The recurrence s₀ = 4, s_{i+1} = s_i² − 2 is spelled out with its first values and identified with the vanishing of the residue s_{p-2} mod 2^p − 1. Four Mersenne primes (M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071) are decided *through the test*, and a composite witness (p = 11, where the test fails so M₁₁ = 2047 = 23·89 is not prime) exercises the converse direction. 110 lines, 14 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "implications": "The two implications and the deciding norm_num extension are Mathlib's (hence the mathlib badge); the genuine new content is the packaged biconditional criterion plus the worked prime and composite instances, which Mathlib does not record. All witnesses are discharged by the norm_num extension's kernel reduction of the tail-recursive residue, so the entry is axiom-free in the foundational sense — no native_decide and hence no Lean.ofReduceBool. The entry brings the Lucas–Lehmer primality test, distinct from the gallery's perfect-number / Euclid–Euler work, to the collection.",
     "openQuestions": [
       "Formalize seed-independence and characterize admissible Lucas–Lehmer starting values.",
