@@ -3102,6 +3102,7 @@ import Proofs.HappyNumberOQ01
 import Proofs.HarmonicDivergence
 import Proofs.HarmonicDivergenceOQ01
 import Proofs.HarmonicDivergenceOQ02
+import Proofs.HarmonicDivergenceOQ02OQ01
 import Proofs.HarmonicDivergenceOQ03
 import Proofs.HarmonicDivergenceOQ04
 import Proofs.HarmonicDivergenceOQ05
