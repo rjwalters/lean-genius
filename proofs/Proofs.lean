@@ -158,6 +158,7 @@ import Proofs.AngleTrisectionOQ03OQ02
 import Proofs.AngleTrisectionOQ03OQ03
 import Proofs.AngleTrisectionOQ04
 import Proofs.AngleTrisectionOQ04OQ01
+import Proofs.AngleTrisectionOQ04OQ02
 import Proofs.AngleTrisectionOQ04OQ03
 import Proofs.AngleTrisectionOQ04OQ04
 import Proofs.AngleTrisectionOQ05
