@@ -100,7 +100,15 @@
       "summary": "card_weakComposition is the headline result. Fintype.card_congr transports the cardinality along weakCompositionEquivSym to card (Sym (Fin k) n), which Sym.card_sym_eq_choose evaluates to C(card (Fin k) + n − 1, n); with Fintype.card_fin and commutativity of addition this is C(n + k − 1, n)."
     }
   ],
-  "conclusion": "The function/tuple form of stars and bars — weak compositions of n into k parts number C(n + k − 1, n) — is formalised sorry-free and axiom-free. The mathematical content beyond Mathlib is the explicit bijection weakCompositionEquivSym between the summing subtype {f : Fin k → ℕ // ∑ i, f i = n} and the symmetric power Sym (Fin k) n, identifying a weak composition with the multiset of its indices counted with multiplicity. Mathlib records only the multiset form Sym.card_sym_eq_choose; this entry supplies the equivalent and more familiar tuple count, together with the Fintype instance on the summing subtype that the bijection makes available. It is the weak (empty-parts-allowed) sibling of the positive-parts composition count C(n−1, k−1).",
+  "conclusion": {
+    "summary": "The function/tuple form of stars and bars — weak compositions of n into k parts number C(n + k − 1, n) — is formalised sorry-free and axiom-free. The mathematical content beyond Mathlib is the explicit bijection weakCompositionEquivSym between the summing subtype {f : Fin k → ℕ // ∑ i, f i = n} and the symmetric power Sym (Fin k) n, identifying a weak composition with the multiset of its indices counted with multiplicity. Mathlib records only the multiset form Sym.card_sym_eq_choose; this entry supplies the equivalent and more familiar tuple count, together with the Fintype instance on the summing subtype that the bijection makes available. It is the weak (empty-parts-allowed) sibling of the positive-parts composition count C(n−1, k−1).",
+    "implications": "Because the result is delivered as an explicit Equiv (not merely a cardinality equation), it is reusable: any downstream count phrased as 'ℕ-valued tuples on k indices summing to n' can now be rewritten as a multiset count over Fin k, and the Fintype instance on the summing subtype unlocks Finset.sum / Fintype.card reasoning over weak compositions elsewhere. The bijective, axiom-free style also makes the entry a candidate for upstreaming the tuple form to Mathlib, which currently stops at Sym.card_sym_eq_choose.",
+    "openQuestions": [
+      "Formalize the generating-function view: ∑ₙ (#weak compositions of n into k parts) xⁿ = 1/(1−x)ᵏ, recovering C(n+k−1,n) as the coefficient and connecting to the negative-binomial series.",
+      "Prove the bounded-parts refinement — weak compositions of n into k parts each at most m — counted by inclusion–exclusion ∑ⱼ (−1)ʲ C(k,j) C(n−j(m+1)+k−1, k−1), of which the unbounded count here is the m→∞ case.",
+      "Establish the symmetry/duality with the positive-parts count C(n−1,k−1) as an explicit bijection (add 1 to each part), unifying the two stars-and-bars variants formalized across the sibling entries."
+    ]
+  },
   "crossReferences": [
     "composition-parts-choose-oq-01",
     "composition-card-2pow-oq-01"
