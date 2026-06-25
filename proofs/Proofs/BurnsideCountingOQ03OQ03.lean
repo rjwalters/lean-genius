@@ -17,10 +17,13 @@ via `(Multiplicative.ofAdd r) • c = r +ᵥ c` (definitional equality).
 4. `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group` gives Burnside identity
 5. `Fintype.card (Multiplicative (ZMod n)) = n` closes the sum
 
-**Axiom note**: The companion `BurnsideCounting.lean` retains 4 axioms
-(`fixed_point_sum_binary_4`, `coloringSetoid`, `coloringQuotientFintype`,
-`binary_necklaces_4`). The earlier `rotatedIndex_add` was discharged to
-a proved theorem in the `burnside-counting-oq-01` S1 iteration.
+**Axiom note**: The companion `BurnsideCounting.lean` is now strictly
+axiom-free. All 5 of its original axioms have been discharged:
+`rotatedIndex_add` to a proved theorem (oq-01 S1); `coloringSetoid` /
+`coloringQuotientFintype` to `AddAction.orbitRel` + `Quotient.fintype`
+derivations (S2); and the two finite counts `fixed_point_sum_binary_4` /
+`binary_necklaces_4` to kernel `decide` (S3/S4, strengthened from
+`native_decide` in S5), so neither depends on `Lean.ofReduceBool`.
 
 **Sorry count**: 0.
 -/
@@ -48,7 +51,8 @@ example : MulAction (Multiplicative (ZMod n)) (Coloring n k) := inferInstance
 lemma mem_fixedBy_iff (r : ZMod n) (c : Coloring n k) :
     c ∈ MulAction.fixedBy (Coloring n k) (Multiplicative.ofAdd r) ↔
     IsFixedByRotation r c := by
-  simp only [MulAction.mem_fixedBy, IsFixedByRotation]
+  rw [MulAction.mem_fixedBy]
+  rfl
 
 /-- Cardinality of `fixedBy (Multiplicative.ofAdd r)` equals cardinality of
     `{c | IsFixedByRotation r c}`. -/
@@ -69,10 +73,16 @@ private instance orbitDecidable :
   rw [MulAction.orbitRel_apply, MulAction.mem_orbit_iff]
   exact Fintype.decidableExistsFintype
 
-/-- The orbit quotient is Fintype (finite colorings + decidable orbit relation). -/
+/-- The orbit quotient is a `Fintype` (finite colorings + the decidable orbit
+relation `orbitDecidable`). `Quotient.fintype` resolves `(· ≈ ·)` against the
+*ambient* `Setoid` instance, so we install the orbit setoid via `letI` before
+supplying the decidability (mirrors `coloringQuotientFintype` in the parent). -/
 private instance orbitFintype :
-    Fintype (MulAction.orbitRel.Quotient (Multiplicative (ZMod n)) (Coloring n k)) :=
-  Quotient.fintype (MulAction.orbitRel (Multiplicative (ZMod n)) (Coloring n k))
+    Fintype (MulAction.orbitRel.Quotient (Multiplicative (ZMod n)) (Coloring n k)) := by
+  letI s : Setoid (Coloring n k) :=
+    MulAction.orbitRel (Multiplicative (ZMod n)) (Coloring n k)
+  haveI : DecidableRel (α := Coloring n k) (· ≈ ·) := orbitDecidable
+  exact Quotient.fintype _
 
 /-! ## Section IV: Burnside's Theorem -/
 
@@ -100,10 +110,12 @@ theorem burnside_necklace_count_zmod :
     ∑ r : ZMod n,
       Fintype.card { c : Coloring n k // IsFixedByRotation r c } =
     Fintype.card (MulAction.orbitRel.Quotient (Multiplicative (ZMod n)) (Coloring n k)) * n := by
-  -- Rewrite each term via card_fixedBy_eq, then close with burnside_necklace_count.
-  -- Note: Multiplicative (ZMod n) = ZMod n by def, so 'exact' unifies the sum domains.
-  refine (Finset.sum_congr rfl fun r _ => (card_fixedBy_eq r).symm).trans ?_
-  exact burnside_necklace_count
+  -- Reindex the `Multiplicative (ZMod n)` sum in `burnside_necklace_count` over
+  -- `ZMod n` via the `Multiplicative.ofAdd` equivalence, then match terms with
+  -- `card_fixedBy_eq`.
+  rw [← burnside_necklace_count, ← Equiv.sum_comp Multiplicative.ofAdd
+      (fun g => Fintype.card (MulAction.fixedBy (Coloring n k) g))]
+  exact Finset.sum_congr rfl fun r _ => (card_fixedBy_eq r).symm
 
 /-! ## Section V: Consequences -/
 

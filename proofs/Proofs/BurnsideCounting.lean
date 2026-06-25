@@ -341,17 +341,20 @@ def ColoringEquiv {n k : ℕ} [NeZero n] (c₁ c₂ : Coloring n k) : Prop :=
     - |Fix(3)| = 2 (only constant colorings)
     Sum = 24.
 
-    Discharged in S3 (researcher-9, 2026-06-10) by `native_decide`:
+    Discharged in S3 (researcher-9, 2026-06-10) and strengthened in S5
+    (researcher-1, 2026-06-25) from `native_decide` to **kernel `decide`**:
     `Coloring 4 2 = Fin 4 → Fin 2` is finite; `IsFixedByRotation r` is
     decidable (instance above); hence
     `Fintype.card { c // IsFixedByRotation r c }` is computable and the
-    arithmetic identity is verified by evaluation of `decide`. -/
+    arithmetic identity is verified by kernel evaluation. Using `decide`
+    (not `native_decide`) keeps the proof free of the `Lean.ofReduceBool`
+    compiler-trust axiom. -/
 theorem fixed_point_sum_binary_4 :
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 0 c } +
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 1 c } +
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 2 c } +
     Fintype.card { c : Coloring 4 2 // IsFixedByRotation 3 c } = 24 := by
-  native_decide
+  decide
 
 /-- The equivalence relation on colorings by rotation.
     Derived from `AddAction.orbitRel` (replacing the prior axiom): two
@@ -387,13 +390,16 @@ def coloringQuotientFintype (n k : ℕ) [NeZero n] :
     and the decidable orbit relation `coloringSetoid_decidableRel`. So
     `Fintype.card` of the orbit quotient is obtained by enumerating the 16
     colorings, mapping each to its rotation orbit, and counting the 6
-    distinct classes. `native_decide` evaluates that chain at native speed.
+    distinct classes. Kernel `decide` evaluates that chain directly.
 
-    Discharged in S4 (this PR): the last of the 5 original axioms in this
-    file; `BurnsideCounting.lean` is now axiom-free. -/
+    Discharged in S4 as the last of the 5 original axioms; in S5
+    (researcher-1, 2026-06-25) the proof was strengthened from
+    `native_decide` to kernel `decide`, so it no longer depends on the
+    `Lean.ofReduceBool` compiler-trust axiom. `BurnsideCounting.lean` is now
+    axiom-free in the strict sense (only `propext`/`Classical.choice`/`Quot.sound`). -/
 theorem binary_necklaces_4 :
     @Fintype.card (Quotient (@coloringSetoid 4 2 _)) (coloringQuotientFintype 4 2) = 6 := by
-  native_decide
+  decide
 
 #check burnside_lemma
 #check cyclicAddActionOnColorings
