@@ -1,0 +1,160 @@
+{
+  "id": "erdos-1209",
+  "title": "Shifted Sequences Avoiding Primes and Squarefrees",
+  "slug": "erdos-1209",
+  "description": "Erdős asked whether a fast-growing sequence a₁ < a₂ < ⋯ must have its shifts aₖ + k be prime (or squarefree) infinitely often, calling the questions 'quite hopeless'. This formalizes the trivial counterexample: using Dirichlet's theorem one builds a strictly increasing sequence of primes, growing faster than any prescribed rate, with aₖ + k never prime — and a squarefree variant where aₖ + k is never squarefree.",
+  "meta": {
+    "author": "Paul Erdős (problem), Lean formalization of the counterexample",
+    "sourceUrl": "https://erdosproblems.com/1209",
+    "date": "1980",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1209Problem.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "primes",
+      "squarefree",
+      "dirichlet",
+      "arithmetic-progressions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "erdosNumber": 1209,
+    "erdosUrl": "https://erdosproblems.com/1209",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.forall_exists_prime_gt_and_modEq",
+        "description": "Dirichlet's theorem on primes in arithmetic progressions: for coprime a, q there are arbitrarily large primes p ≡ a (mod q)",
+        "module": "Mathlib.NumberTheory.LSeries.PrimesInAP"
+      },
+      {
+        "theorem": "Nat.exists_infinite_primes",
+        "description": "There exist arbitrarily large primes",
+        "module": "Mathlib.Data.Nat.Prime.Infinite"
+      },
+      {
+        "theorem": "Nat.modEq_zero_iff_dvd",
+        "description": "a ≡ 0 (mod n) ↔ n ∣ a",
+        "module": "Mathlib.Data.Nat.ModEq"
+      },
+      {
+        "theorem": "Squarefree",
+        "description": "Squarefreeness defined via square-divisor units",
+        "module": "Mathlib.Algebra.Squarefree.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Faithful Lean formalization of Erdős's own 'trivial counterexample' to problem #1209 (a variant of the construction in problem #429)",
+      "exists_prime_add_not_prime: for every shift k ≥ 1 and bound N, a prime p > N with p + k composite, obtained by forcing a prime q ∤ k to divide p + k via Dirichlet's theorem on primes in arithmetic progressions",
+      "exists_prime_add_not_squarefree: the q² variant forcing q² ∣ p + k so that p + k is not squarefree",
+      "exists_strictMono_forall: a reusable builder turning a per-index 'find something larger than any bound' existence statement into a single strictly increasing sequence satisfying every per-index predicate",
+      "erdos1209_prime_counterexample / erdos1209_squarefree_counterexample: strictly increasing sequences of primes that grow faster than any prescribed g : ℕ → ℕ, with aₖ + k never prime (resp. never squarefree) for k ≥ 1"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "0 axiom declarations, 0 sorries. All 5 theorems are fully machine-checked and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound (verified via #print axioms on both headline theorems; no sorryAx, no Lean.ofReduceBool). The open Erdős questions themselves are not claimed to be resolved — what is proved is the existence of the explicit counterexamples Erdős described, which show the questions have no positive answer under any fast-growth hypothesis. The single nontrivial input is Mathlib's Dirichlet theorem on primes in arithmetic progressions.",
+    "lineCount": 207,
+    "theoremCount": 5,
+    "prerequisites": [
+      "Dirichlet's theorem on primes in arithmetic progressions",
+      "Modular arithmetic and divisibility (Nat.ModEq)",
+      "Squarefree numbers and prime square divisors",
+      "Strictly monotone sequences built by recursion"
+    ],
+    "definitionCount": 1,
+    "lastUpdated": "2026-06-24"
+  },
+  "overview": {
+    "historicalContext": "In [Er80] Erdős posed questions about strictly increasing sequences A = {a₁ < a₂ < ⋯} and the arithmetic nature of the shifts aₖ + k — whether one could force these shifts to be prime, or squarefree, infinitely often under growth hypotheses on A. Erdős himself remarked 'unless I overlook a trivial way of getting a counterexample these questions are quite hopeless', and pointed to a construction (a variant of problem #429) that does exactly that. The point is that primality and squarefreeness of aₖ + k can be destroyed for every k by a single congruence condition, while still leaving enormous freedom (via Dirichlet's theorem) to choose the primes aₖ as large as one likes.",
+    "problemStatement": "For a strictly increasing sequence a₁ < a₂ < ⋯, must the shifts aₖ + k be prime (resp. squarefree) for infinitely many k under suitable hypotheses on A? Erdős called these questions 'quite hopeless' because of a trivial counterexample.",
+    "text": "Using Dirichlet's theorem, build a strictly increasing sequence of primes growing arbitrarily fast in which aₖ + k is never prime — and, with squares of primes, never squarefree.",
+    "proofStrategy": "For a shift k ≥ 1, choose a prime q > k, so q ∤ k and the residue −k is a unit mod q. Dirichlet's theorem then supplies arbitrarily large primes p with p ≡ −k (mod q), i.e. q ∣ p + k; since q < p + k this makes p + k composite. Replacing q by q² forces q² ∣ p + k, so p + k is not squarefree (the prime q would have to be a unit). A generic builder threads these per-index existence statements into one strictly increasing sequence, choosing each term larger than both the previous term and a prescribed growth bound g k, which yields the 'grows arbitrarily fast' clause.",
+    "keyInsights": [
+      "A single linear congruence aₖ + k ≡ 0 (mod qₖ) destroys primality of every shift while leaving the primes aₖ free to be arbitrarily large",
+      "The condition 'qₖ does not divide k' is exactly what makes the target residue a unit mod qₖ, so Dirichlet's theorem applies — choosing qₖ to be any prime larger than k secures it automatically",
+      "Squaring the modulus (qₖ²) upgrades 'never prime' to 'never squarefree' with no extra work",
+      "Arbitrary growth is free: build the sequence recursively, each term exceeding both its predecessor and a prescribed bound g k",
+      "Dirichlet's theorem on primes in arithmetic progressions is the only deep ingredient; everything else is elementary divisibility"
+    ],
+    "prerequisites": [
+      "Dirichlet's theorem on primes in arithmetic progressions",
+      "Modular arithmetic and divisibility",
+      "Squarefree numbers",
+      "Recursive construction of strictly monotone sequences"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 62,
+      "summary": "Module docstring stating Erdős #1209, the counterexample construction, and what is proved; imports Mathlib; opens namespace Erdos1209",
+      "mathContext": "Erdős #1209: can the shifts aₖ + k of a fast-growing sequence be forced prime/squarefree infinitely often? Answer: no, by a trivial counterexample."
+    },
+    {
+      "id": "prime-block",
+      "title": "Prime-Avoiding Building Block",
+      "startLine": 63,
+      "endLine": 98,
+      "summary": "exists_prime_add_not_prime: for k ≥ 1 and any bound N, a prime p > N with p + k composite, via a prime q > k and Dirichlet's theorem",
+      "mathContext": "$\\forall k\\ge 1,\\ \\forall N,\\ \\exists p>N:\\ p\\ \\text{prime} \\wedge q\\mid p+k\\ \\text{with}\\ q\\nmid k,\\ q<p+k \\Rightarrow p+k\\ \\text{composite}$"
+    },
+    {
+      "id": "squarefree-block",
+      "title": "Squarefree-Avoiding Building Block",
+      "startLine": 99,
+      "endLine": 140,
+      "summary": "exists_prime_add_not_squarefree: the q² variant forcing q² ∣ p + k, so p + k is not squarefree",
+      "mathContext": "$\\forall k\\ge 1,\\ \\forall N,\\ \\exists p>N:\\ p\\ \\text{prime} \\wedge q^2\\mid p+k \\Rightarrow p+k\\ \\text{not squarefree}$"
+    },
+    {
+      "id": "builder",
+      "title": "Strictly Increasing Sequence Builder",
+      "startLine": 141,
+      "endLine": 171,
+      "summary": "seq and exists_strictMono_forall: assemble per-index existence statements into a single strictly increasing sequence satisfying every per-index predicate",
+      "mathContext": "$(\\forall k\\,N,\\ \\exists p>N,\\ Q\\,k\\,p) \\Rightarrow \\exists a\\ \\text{StrictMono},\\ \\forall k,\\ Q\\,k\\,(a\\,k)$"
+    },
+    {
+      "id": "counterexamples",
+      "title": "The Two Counterexamples",
+      "startLine": 172,
+      "endLine": 207,
+      "summary": "erdos1209_prime_counterexample and erdos1209_squarefree_counterexample: strictly increasing prime sequences growing faster than any g with aₖ + k never prime / never squarefree",
+      "mathContext": "$\\exists a\\ \\text{StrictMono of primes},\\ a_k>g_k,\\ \\forall k\\ge 1:\\ \\neg\\,(a_k+k)\\ \\text{prime}\\ (\\text{resp. not squarefree})$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Erdős Problem #1209 is OPEN, but Erdős's own remark that a 'trivial counterexample' exists is here made fully rigorous: there are strictly increasing sequences of primes, of arbitrarily fast growth, whose shifts aₖ + k are never prime, and a variant where they are never squarefree.",
+    "implications": "Any conjecture forcing the shifts of a sufficiently fast-growing sequence to be prime or squarefree infinitely often is false. The mechanism is a single congruence per index, leaving the magnitude of each term completely free thanks to Dirichlet's theorem.",
+    "openQuestions": [
+      "What is the slowest growth rate of A for which the prime-avoidance / squarefree-avoidance constructions still succeed?",
+      "Can the squarefree-avoidance sequence be made to also avoid k-free numbers for fixed k simultaneously across a range of k?",
+      "Which of Erdős's related sequence questions (#429, #1102) admit analogous congruence-based counterexamples?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [],
+    "namespace": "Erdos1209",
+    "lineCount": 207,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1209Problem.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-429",
+      "relationship": "related",
+      "description": "Erdős #1209's counterexample is explicitly a variant of the construction in problem #429"
+    }
+  ],
+  "sorries": 0
+}
