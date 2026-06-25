@@ -1026,6 +1026,7 @@ import Proofs.DescartesRuleOfSigns
 import Proofs.DescartesRuleOfSignsOQ01
 import Proofs.DescartesRuleOfSignsOQ01OQ01
 import Proofs.DescartesRuleOfSignsOQ01OQ02
+import Proofs.DescartesRuleOfSignsOQ01OQ04OQ02
 import Proofs.DescartesRuleOfSignsOQ01OQ04OQ03
 import Proofs.DescartesRuleOfSignsOQ02
 import Proofs.DescartesRuleOfSignsOQ02OQ01
@@ -3254,6 +3255,7 @@ import Proofs.HodgeConjecture
 import Proofs.HurwitzOnlyIf
 import Proofs.HurwitzTheorem
 import Proofs.HurwitzTheoremOQ04
+import Proofs.HyperbolicLawCosinesModelOQ0301
 import Proofs.IncidenceCauchySchwarz
 import Proofs.InclusionExclusion
 import Proofs.InclusionExclusionBonferroniGeneral
@@ -3406,7 +3408,6 @@ import Proofs.LawOfCosinesOQ01OQ01OQ01OQ02
 import Proofs.LawOfCosinesOQ01OQ01OQ03
 import Proofs.LawOfCosinesOQ01OQ02
 import Proofs.LawOfCosinesOQ01OQ04
-import Proofs.HyperbolicLawCosinesModelOQ0301
 import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ03OQ02
 import Proofs.LawOfCosinesOQ04
