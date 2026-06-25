@@ -38,6 +38,49 @@
     "theoremCount": 9,
     "definitionCount": 4
   },
+  "overview": {
+    "historicalContext": "Erdős problem #659 sits in the distinct-distances circle of problems Erdős opened in 1946: here the twist is a four-point property — among n points in the plane, every 4-point subset must determine at least 3 distinct distances — while the total number of distinct distances stays as small as possible. Moree and Osburn (2006) gave a construction achieving O(n/√log n) distinct distances using the anisotropic lattice {(x, y√2)}, whose squared distances are integers of the form x²+2y². The arithmetic of this form is centuries old: Brahmagupta's identity (628 AD) shows products of numbers of the form a²+Db² are again of that form, the seed that grew into Gauss's composition of binary quadratic forms (1801) and the modern theory of the class group. The sparseness of the represented set is the content of Landau's 1908 density theorem, which counts integers ≤ N that are sums x²+2y² as ~ C·N/√log N, with C an analogue of the Landau–Ramanujan constant. This entry formalizes the algebraic backbone — the multiplicative structure of x²+2y² as the norm form of ℤ[√−2] — leaving the analytic Landau density as the open remainder of oq-05.",
+    "problemStatement": "The Moree–Osburn points lie on the lattice {(x, y√2) : x,y ∈ ℤ} ⊂ ℝ², so a squared distance between two of them is an integer of the binary quadratic form Q(x,y) = x²+2y², the norm form of ℤ[√−2]. Open question oq-05 asks whether the whole construction can be formalized in Lean *without axioms*, which ultimately requires Landau's analytic density theorem for this form — not yet in Mathlib. This entry establishes, axiom-free, the algebraic layer: the integers represented by Q form a multiplicative submonoid of ℤ (via the Brahmagupta composition law), and these represented integers are exactly the squared distances of the lattice.",
+    "proofStrategy": "Three linked pieces. (1) Composition: Q_mul proves (a²+2b²)(c²+2d²) = (ac−2bd)²+2(ad+bc)² by a single `ring` call, and Q_eq_zsqrtd_norm identifies Q with Mathlib's Zsqrtd.norm so the same fact is also multiplicativity of the ℤ[√−2] norm. (2) Structure: isRepresented_mul reads off multiplicative closure from the explicit witnesses, isRepresented_one gives the identity, and these assemble into representedSubmonoid : Submonoid ℤ, with closure under arbitrary finite products by Finset.prod_induction. (3) Geometry: latticePoint embeds (x,y) as (x, y√2), and dist_sq_lattice computes the squared Euclidean distance as Q of the coordinate differences, collapsing (√2)²=2 via Real.sq_sqrt — so the squared distances are precisely the represented integers.",
+    "keyInsights": [
+      "The √2 stretch is the whole point: scaling the second axis by √2 converts Euclidean squared distance x²+y² into the norm form x²+2y², turning a geometric distinct-distance question into the arithmetic of a binary quadratic form.",
+      "Multiplicativity is the source of sparseness: because the represented integers are closed under multiplication (Brahmagupta / norm multiplicativity), the distance spectrum grows like Landau's O(N/√log N) rather than linearly — the submonoid structure is the algebraic shadow of the analytic density.",
+      "Two proofs of one fact: the composition law is both an elementary `ring` identity and an instance of Zsqrtd.norm_mul; recording both ties the elementary construction to Mathlib's structured quadratic-integer theory.",
+      "The formalization is honest about its limits: it verifies the algebraic engine with 0 axioms but does NOT close oq-05 — the deep analytic input (Landau's density theorem) is absent from Mathlib and is the genuinely open part."
+    ],
+    "prerequisites": [
+      "Binary quadratic forms and the form x²+2y²",
+      "Quadratic integer rings ℤ[√d] and the algebraic norm (Mathlib Zsqrtd)",
+      "Submonoids and closure under finite products",
+      "Euclidean distance in ℝ² and basic properties of √2"
+    ]
+  },
+  "sections": [
+    {
+      "id": "form-and-composition",
+      "title": "The Form Q and Its Composition Law",
+      "startLine": 39,
+      "endLine": 56,
+      "summary": "Defines Q(x,y)=x²+2y² and the predicate IsRepresented, proves the Brahmagupta composition law Q a b · Q c d = Q(ac−2bd, ad+bc) by `ring`, and identifies Q with the norm of ℤ√(−2).",
+      "mathContext": "$(a^2+2b^2)(c^2+2d^2) = (ac-2bd)^2 + 2(ad+bc)^2 = N(\\alpha\\beta)$"
+    },
+    {
+      "id": "represented-monoid",
+      "title": "Represented Integers Form a Submonoid",
+      "startLine": 58,
+      "endLine": 95,
+      "summary": "Records small represented values and nonnegativity, derives multiplicative closure from the composition law, and packages it as representedSubmonoid : Submonoid ℤ with closure under finite products.",
+      "mathContext": "$\\{n : \\mathrm{IsRepresented}(n)\\} \\le (\\mathbb{Z},\\cdot),\\quad \\mathrm{IsRepresented}\\big(\\textstyle\\prod_i f(i)\\big)$"
+    },
+    {
+      "id": "geometric-link",
+      "title": "Squared Distance Equals Q of Differences",
+      "startLine": 97,
+      "endLine": 125,
+      "summary": "Embeds integer coordinates as the lattice point (x, y√2) and proves the squared Euclidean distance between two lattice points equals Q(x₁−x₂, y₁−y₂), tying the multiplicative arithmetic back to the Moree–Osburn geometry.",
+      "mathContext": "$\\lVert P(x_1,y_1)-P(x_2,y_2)\\rVert^2 = (x_1-x_2)^2 + 2(y_1-y_2)^2$"
+    }
+  ],
   "leanFile": {
     "path": "Proofs/Erdos659OQ05.lean",
     "lineCount": 125,
