@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 29 },
+    "type": "concept",
+    "title": "The real face of the diagonal Beta value",
+    "content": "The diagonal value B(n+1,n+1) = (n!)²/(2n+1)! is, on the parent and sibling entries, proved over ℂ via Mathlib's Complex.betaIntegral and the Gamma relation. This leaf supplies the real-variable statement those entries do not give: the Euler integral ∫₀¹ xⁿ(1-x)ⁿ dx = (n!)²/(2n+1)! and the normalization of the symmetric Beta(n+1,n+1) probability density on [0,1]. The new ingredient is the descent ℂ→ℝ; the closed-form value is reused from the parent."
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03",
+    "range": { "startLine": 43, "endLine": 53 },
+    "type": "theorem",
+    "title": "The ℂ → ℝ bridge",
+    "content": "ofReal_integral_diag: ↑(∫ x in 0..1, xⁿ(1-x)ⁿ) = Complex.betaIntegral (n+1) (n+1). Unfolding the definition, the diagonal integrand is (x:ℂ)^((n+1)-1)·(1-x)^((n+1)-1); the exponent (n+1)-1 reduces to n (ring), and Complex.cpow_natCast collapses (x:ℂ)^(n:ℂ) to the monoid power (x:ℂ)^n — valid for all x with no positivity side condition. The integrand is then ↑(xⁿ(1-x)ⁿ), and intervalIntegral.integral_ofReal (applied via integral_congr on [0,1]) descends the integral. This is the key technical step that makes the real integral reachable without redeveloping Beta theory over ℝ."
+  },
+  {
+    "id": "ann-factorial",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03",
+    "range": { "startLine": 54, "endLine": 68 },
+    "type": "theorem",
+    "title": "The real Euler integral",
+    "content": "integral_diag_eq_factorial: ∫ x in 0..1, xⁿ(1-x)ⁿ = (n!)²/(2n+1)!. Rewrite the bridged identity with the parent's betaIntegral_nat_nat n n (= n!·n!/(n+n+1)!), match (n!)²/(2n+1)! by two_mul and push_cast, and transfer the equality from ℂ down to ℝ by injectivity of the cast (exact_mod_cast). This is the real-analysis form of the Wallis-type diagonal Beta value."
+  },
+  {
+    "id": "ann-central-binom",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03",
+    "range": { "startLine": 69, "endLine": 83 },
+    "type": "theorem",
+    "title": "Central-binomial form",
+    "content": "integral_diag_central_binom: ∫₀¹ xⁿ(1-x)ⁿ = 1/((2n+1)·C(2n,n)). The sibling's factorial factorization (2n+1)! = (2n+1)·C(2n,n)·(n!·n!) (factorial_two_mul_succ, cast to ℝ) converts the factorial form into the central-binomial reciprocal; field_simp discharges the rational identity once factorial positivity is supplied."
+  },
+  {
+    "id": "ann-density",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03",
+    "range": { "startLine": 84, "endLine": 94 },
+    "type": "theorem",
+    "title": "The Beta density normalizes",
+    "content": "betaDensity_integral_eq_one: ∫ x in 0..1, xⁿ(1-x)ⁿ / B = 1, where B = (n!)²/(2n+1)!. intervalIntegral.integral_div pulls the constant normalizer out of the integral, integral_diag_eq_factorial substitutes the value, and the result is B/B = 1 (B > 0 by Nat.factorial_pos). This is the probabilistic payoff the parent open question asked for: x ↦ xⁿ(1-x)ⁿ/B is a probability density on [0,1] — the symmetric Beta(n+1,n+1) distribution."
+  }
+]
