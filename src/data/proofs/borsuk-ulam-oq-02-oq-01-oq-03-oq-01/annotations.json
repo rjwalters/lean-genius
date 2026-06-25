@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-01-strategy",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 58
+    },
+    "type": "concept",
+    "title": "Tightness of the Dihedral Lower Bound: Strategy",
+    "content": "The parent file proved the dihedral lower bound only for individual small cases (D_p, D_5, D_6). Its first open question asks whether that bound is the exact value: is dihedralBUDim n d = max(buDim 2 d, max over odd primes p|n of buDim p d)? The exact value needs an upper bound from RO(D_n)-graded equivariant cohomology (Fadell-Husseini), which is beyond current Mathlib. This file does three honest things without that machinery: (1) packages the conjectured value uniformly in n as a single Finset.sup expression; (2) proves the lower-bound direction for every n using ONLY the parent's existing axioms — adding 0 new axioms; (3) proves tightness is logically equivalent to one matching upper bound, so the entire open question collapses to supplying that single inequality.",
+    "mathContext": "The lower bound is unconditional; the upper bound is the open input. `le_antisymm` turns 'lower + upper' into the conjectured equality."
+  },
+  {
+    "id": "ann-02-uniform-formula",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 60,
+      "endLine": 74
+    },
+    "type": "definition",
+    "title": "dihedralLowerBound: the conjectured value as a Finset.sup",
+    "content": "dihedralLowerBound n d := max (buDim 2 d) (n.primeFactors.sup fun p => buDim p d). The reflection Z/2 always present in D_n gives the left `max` argument; the rotation subgroup Z/n contributes Z/p for each prime divisor p|n, collected by the Finset.sup over n.primeFactors. Including p=2 in the sup is harmless: its value buDim 2 d is already the outer max's left argument, so this equals the 'odd primes only' formula in the open question. Marked noncomputable because buDim is an opaque axiom.",
+    "mathContext": "$\\text{dihedralLowerBound}\\,n\\,d = \\max\\bigl(\\text{buDim}\\,2\\,d,\\ \\bigsqcup_{p \\in n.\\text{primeFactors}} \\text{buDim}\\,p\\,d\\bigr)$."
+  },
+  {
+    "id": "ann-03-general-lower-bound",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 91
+    },
+    "type": "theorem",
+    "title": "dihedralLowerBound_le: the general bound, 0 new axioms",
+    "content": "For n ≥ 1, Nat.max_le splits the goal into two parts. The reflection term buDim 2 d ≤ dihedralBUDim n d is exactly the parent axiom dihedral_has_Z2. The sup term is discharged by Finset.sup_le, which reduces it to a per-prime obligation: for each p ∈ n.primeFactors, Nat.prime_of_mem_primeFactors and Nat.dvd_of_mem_primeFactors recover p.Prime and p ∣ n, which feed the parent axiom dihedral_has_rotation_prime. dihedralBUDim_ge_of_prime_dvd is the companion that extracts the bound for one chosen prime divisor via Finset.le_sup (note the explicit (f := ...) to fix the sup's function).",
+    "mathContext": "Subgroup monotonicity transfers each cyclic prime subgroup's bound to D_n; `Finset.sup_le` aggregates them."
+  },
+  {
+    "id": "ann-04-tightness",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 105,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "dihedral_tight_iff_upper: reduction to one upper bound",
+    "content": "Because the lower bound holds unconditionally (Part I), the conjectured equality dihedralBUDim n d = dihedralLowerBound n d is equivalent to the single inequality dihedralBUDim n d ≤ dihedralLowerBound n d. The forward direction is h.le; the reverse is le_antisymm hupper (dihedralLowerBound_le ...). dihedral_exact_of_upper packages the conditional exact value. Crucially the upper bound is a hypothesis, never a global axiom — #print axioms confirms the file adds 0 axioms beyond the 5 inherited from the parent framework.",
+    "mathContext": "This isolates exactly the Fadell-Husseini equivariant-cohomology upper bound as the only missing ingredient."
+  },
+  {
+    "id": "ann-05-subsumption",
+    "proofId": "borsuk-ulam-oq-02-oq-01-oq-03-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 162
+    },
+    "type": "example",
+    "title": "Recovering the parent's D_6 and D_p bounds",
+    "content": "dihedralBUDim_six_ge_buDim_three obtains buDim 3 d ≤ dihedralBUDim 6 d from 3 ∈ (6).primeFactors (via Nat.mem_primeFactors) — no symbolic factorization needed. Rewriting with buDim_prime then gives the parent's Yang-Borsuk bound 2n-1 ≤ dihedralBUDim 6 (2n) (dihedralBUDim_six_yang_borsuk). dihedralBUDim_odd_prime_ge re-derives the parent's D_p bound max(buDim 2 d, buDim p d) ≤ dihedralBUDim p d. The anonymous examples (D_12, D_15 with no factor of 2, and the D_6 tightness reduction) act as regression checks that the uniform machinery specializes correctly.",
+    "mathContext": "$D_{15} \\supseteq \\mathbb{Z}/5$ even though $2 \\nmid 15$: the all-primes sup picks up every prime divisor."
+  }
+]
