@@ -762,6 +762,7 @@ import Proofs.CayleyHamiltonMinpolyOQ07OQ01
 import Proofs.CayleyHamiltonOQ01
 import Proofs.CayleyHamiltonOQ01OQ01
 import Proofs.CayleyHamiltonOQ01OQ01OQ01
+import Proofs.CayleyHamiltonOQ01OQ02
 import Proofs.CayleyHamiltonOQ01OQ03
 import Proofs.CayleyHamiltonOQ01OQ04
 import Proofs.CayleyHamiltonOQ02
