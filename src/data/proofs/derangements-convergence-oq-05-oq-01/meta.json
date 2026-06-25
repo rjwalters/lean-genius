@@ -1,0 +1,227 @@
+{
+  "id": "derangements-convergence-oq-05-oq-01",
+  "title": "Sharp Poisson(1) Rate: |D_k(n)/n! − e⁻¹/k!| ≤ 1/(k!·(n−k+1)!)",
+  "slug": "derangements-convergence-oq-05-oq-01",
+  "description": "Answers the first open question of the parent fixed-point-distribution entry verbatim: an explicit, non-asymptotic error bound for the Poisson(1) approximation. For every k ≤ n, the probability D_k(n)/n! that a uniform random permutation of an n-set has exactly k fixed points differs from its limit e⁻¹/k! by at most 1/(k!·(n−k+1)!). The bound is the sharp alternating-series remainder: writing m = n−k, the parent's reduction D_k(n)/n! = (1/k!)·(D(m)/m!) together with the identity D(m)/m! = ∑_{j≤m}(−1)ʲ/j! turns the gap into the tail of the alternating series for e⁻¹, which Mathlib's alternating_series_error_bound caps by the first omitted term 1/(m+1)!. Dividing by k! gives the claim.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsConvergenceOQ05OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "fixed-points",
+      "permutations",
+      "poisson",
+      "probability",
+      "rate-of-convergence",
+      "alternating-series",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. All theorems are fully machine-checked, depending only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms; no sorryAx, no Lean.ofReduceBool). The fixed-point probability and its closed form are reused from the verified parent entry; the analytic tail bound reuses Mathlib's alternating_series_error_bound and expSeries_div_hasSum_exp.",
+    "dateAdded": "2026-06-24",
+    "lineCount": 130,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "fixedPointProb_sub_poisson_le (PROVED, HEADLINE): for k ≤ n, |D_k(n)/n! − e⁻¹/k!| ≤ 1/(k!·(n−k+1)!). This is the explicit O(1/n!) Poisson-approximation rate the parent's open question anticipated, with no hidden constants — and it is sharp, equal to the first omitted alternating-series term divided by k!.",
+      "expNegOne_sub_partialSum_le (PROVED, ANALYTIC CORE): |e⁻¹ − ∑_{j=0}^{m}(−1)ʲ/j!| ≤ 1/(m+1)!. The sharp alternating-series remainder for e⁻¹, obtained by feeding the antitone summable sequence 1/j! to Mathlib's alternating_series_error_bound and identifying the tsum as e⁻¹.",
+      "numDerangements_div_factorial (PROVED, KEY IDENTITY): D(m)/m! = ∑_{j=0}^{m}(−1)ʲ/j!. The exact statement that the derangement ratio is an (m+1)-term partial sum of the series for e⁻¹ — the arithmetic core buried inside Mathlib's numDerangements_tendsto_inv_e, here isolated as a reusable standalone lemma.",
+      "hasSum_expNegOne (PROVED, helper): HasSum (fun j => (−1)ʲ/j!) e⁻¹ — the alternating exponential series at x = −1 sums to e⁻¹, via expSeries_div_hasSum_exp and Real.exp_eq_exp_ℝ.",
+      "one_div_factorial_antitone / one_div_factorial_summable (PROVED, helpers): the sequence 1/j! is antitone and summable — the two hypotheses of the alternating-series remainder bound."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "alternating_series_error_bound",
+        "description": "For an antitone summable f : ℕ → ℝ, |∑' i, (−1)ⁱ f i − ∑_{i<n} (−1)ⁱ f i| ≤ f n — the alternating-series remainder is bounded by the first omitted term. Applied with f j = 1/j! and n = m+1 to bound the tail of the series for e⁻¹.",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "expSeries_div_hasSum_exp",
+        "description": "HasSum (fun n => xⁿ/n!) (exp x) — the exponential power series converges to exp x. Used at x = −1 (giving e⁻¹) and at x = 1 (to get summability of 1/j!).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exponential"
+      },
+      {
+        "theorem": "numDerangements_sum",
+        "description": "(numDerangements n : ℤ) = ∑_{k<n+1} (−1)ᵏ · ascFactorial (k+1) (n−k) — the inclusion-exclusion closed form for the derangement numbers, the starting point for D(m)/m! = ∑_{j≤m}(−1)ʲ/j!.",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      },
+      {
+        "theorem": "Real.exp_eq_exp_ℝ",
+        "description": "Real.exp = NormedSpace.exp ℝ — bridges the elementary real exponential with the Banach-algebra exponential whose power series is expSeries_div_hasSum_exp.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exponential"
+      },
+      {
+        "theorem": "Nat.ascFactorial_eq_div",
+        "description": "ascFactorial expressed as a ratio of factorials; with add_tsub_cancel_of_le it turns ascFactorial (k+1) (m−k) into m!/k!, collapsing the inclusion-exclusion term to (−1)ᵏ/k!.",
+        "module": "Mathlib.Data.Nat.Factorial.BigOperators"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The fixed-point count of a uniform random permutation is the textbook example of Poisson approximation: as n → ∞ the distribution converges to Poisson(1), with masses e⁻¹/k!. The parent entry established this convergence pointwise in k. A convergence statement, however, only becomes usable once it carries an error term: how large must n be before the Poisson model is accurate to a prescribed tolerance? For the derangement case (k = 0) the answer is the classical alternating-series fact that D(n)/n! differs from 1/e by at most 1/(n+1)!. This entry lifts that sharp factorial-rate bound to every fixed-point count k, completing the Poisson approximation into an effective, quantitative statement.",
+    "problemStatement": "**OQ-05-OQ-01 of derangements-convergence (first open question of the parent fixed-point-distribution entry).**\n\nThe parent proves D_k(n)/n! → e⁻¹/k!. At what rate? Prove the explicit, non-asymptotic bound\n\n  |D_k(n)/n! − e⁻¹/k!| ≤ (1/k!)·1/(n−k+1)!,   for all k ≤ n,\n\ngiving the O(1/n!) error the open question anticipates.",
+    "text": "For every k ≤ n, |D_k(n)/n! − e⁻¹/k!| ≤ 1/(k!·(n−k+1)!), where D_k(n) is the number of permutations of an n-set with exactly k fixed points.",
+    "proofStrategy": "**Reduce to the derangement ratio.** The parent's fixedPointProb_eq gives D_k(n)/n! = (1/k!)·(D(m)/m!) with m = n−k, and the Poisson target is e⁻¹/k! = (1/k!)·e⁻¹. So the gap factors as (1/k!)·(D(m)/m! − e⁻¹), and since 1/k! ≥ 0 the absolute value pulls out: |gap| = (1/k!)·|e⁻¹ − D(m)/m!|.\n\n**Identify the derangement ratio as a partial sum (numDerangements_div_factorial).** Mathlib's numDerangements_sum expresses D(m) via inclusion–exclusion; casting to ℝ, dividing by m!, and collapsing each ascFactorial (k+1) (m−k) = m!/k! term gives the clean identity D(m)/m! = ∑_{j=0}^{m} (−1)ʲ/j!, the (m+1)-term partial sum of the series for e⁻¹.\n\n**Bound the tail sharply (expNegOne_sub_partialSum_le).** The sequence 1/j! is antitone and summable, and ∑'_j (−1)ʲ/j! = e⁻¹ (from expSeries_div_hasSum_exp at x = −1). Mathlib's alternating_series_error_bound then caps the remainder by the first omitted term: |e⁻¹ − ∑_{j≤m}(−1)ʲ/j!| ≤ 1/(m+1)!.\n\n**Assemble.** Multiplying by 1/k! gives |D_k(n)/n! − e⁻¹/k!| ≤ (1/k!)·1/(m+1)! = 1/(k!·(n−k+1)!).",
+    "keyInsights": [
+      "The entire k-dependence of the Poisson error is the constant prefactor 1/k!: the parent's reduction D_k(n)/n! = (1/k!)·(D(n−k)/(n−k)!) means the rate problem for every k collapses to a single statement about the derangement ratio D(m)/m!. The bound is therefore inherited from the k = 0 case, scaled.",
+      "The derangement ratio is *exactly* a partial sum of the series for e⁻¹: D(m)/m! = ∑_{j=0}^{m}(−1)ʲ/j!. This is the arithmetic heart hidden inside Mathlib's convergence proof numDerangements_tendsto_inv_e; isolating it as numDerangements_div_factorial makes the sharp remainder bound a one-liner.",
+      "Because the series for e⁻¹ is alternating with terms 1/j! decreasing, the truncation error is controlled by the *first omitted term* 1/(m+1)! — the sharp alternating-series estimate, not the cruder |x|ⁿ·(n+1)/(n!·n) bound from Real.exp_bound. Mathlib's alternating_series_error_bound delivers exactly this sharp constant.",
+      "The result is non-asymptotic and constant-free: for fixed k it decays like 1/(n−k+1)!, faster than any power of n, quantifying precisely how fast the Poisson(1) model becomes accurate. This is the per-k brick from which total-variation convergence (summing over k) can be built.",
+      "No e⁻¹ infrastructure is rebuilt: summability of 1/j! and the value of the alternating sum both come from the single Mathlib fact that ∑ xⁿ/n! = exp x, evaluated at x = 1 and x = −1."
+    ],
+    "prerequisites": [
+      "The verified parent entry: fixedPointProb and fixedPointProb_eq giving D_k(n)/n! = (1/k!)·(D(n−k)/(n−k)!) for k ≤ n",
+      "Mathlib's alternating_series_error_bound (sharp remainder for alternating series with antitone summable terms)",
+      "expSeries_div_hasSum_exp and Real.exp_eq_exp_ℝ for the value and summability of the exponential series at x = ±1",
+      "numDerangements_sum (inclusion–exclusion closed form) and ascFactorial/factorial arithmetic to recover D(m)/m! = ∑_{j≤m}(−1)ʲ/j!"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring stating the open question and the sharp bound |D_k(n)/n! − e⁻¹/k!| ≤ 1/(k!·(n−k+1)!), with the four-step strategy. Imports the Mathlib derangement and specific-limits modules and the verified parent entry Proofs.DerangementsConvergenceOQ05.",
+      "mathContext": "Sets up the reuse of the parent's probability reduction and Mathlib's alternating-series remainder bound."
+    },
+    {
+      "id": "sec-antitone-summable",
+      "title": "The Sequence 1/j! is Antitone and Summable",
+      "startLine": 46,
+      "endLine": 63,
+      "summary": "one_div_factorial_antitone: 1/j! decreases since factorials increase (one_div_le_one_div_of_le with Nat.factorial_le). one_div_factorial_summable: 1/j! is summable, being the x = 1 exponential series (expSeries_div_hasSum_exp ℝ 1, simp one_pow).",
+      "mathContext": "The two hypotheses of alternating_series_error_bound: $j \\mapsto 1/j!$ is antitone and $\\sum_j 1/j! < \\infty$."
+    },
+    {
+      "id": "sec-hassum",
+      "title": "The Alternating Exponential Series Sums to e⁻¹",
+      "startLine": 65,
+      "endLine": 69,
+      "summary": "hasSum_expNegOne: HasSum (fun j => (−1)ʲ/j!) (e⁻¹), by rewriting Real.exp = NormedSpace.exp ℝ and invoking expSeries_div_hasSum_exp ℝ (−1).",
+      "mathContext": "$\\sum_{j} (-1)^j/j! = e^{-1}$ — the series whose partial sums are the derangement ratios."
+    },
+    {
+      "id": "sec-ratio-identity",
+      "title": "Key Identity: D(m)/m! = ∑_{j≤m}(−1)ʲ/j!",
+      "startLine": 71,
+      "endLine": 85,
+      "summary": "numDerangements_div_factorial: from numDerangements_sum (inclusion–exclusion, cast to ℝ), distribute the division and collapse each term ascFactorial (k+1) (m−k) = m!/k! via Nat.ascFactorial_eq_div + add_tsub_cancel_of_le, leaving (−1)ᵏ/k! and hence the partial sum.",
+      "mathContext": "$\\dfrac{D(m)}{m!} = \\sum_{j=0}^{m} \\dfrac{(-1)^j}{j!}$ — the derangement ratio is an $(m{+}1)$-term partial sum of $e^{-1}$."
+    },
+    {
+      "id": "sec-tail",
+      "title": "Sharp Alternating-Series Remainder for e⁻¹",
+      "startLine": 87,
+      "endLine": 97,
+      "summary": "expNegOne_sub_partialSum_le: apply alternating_series_error_bound to f j = 1/j! at index m+1, simp the (−1)ʲ·(1/j!) terms to (−1)ʲ/j!, and rewrite the tsum to e⁻¹ via hasSum_expNegOne.tsum_eq, giving |e⁻¹ − ∑_{j≤m}(−1)ʲ/j!| ≤ 1/(m+1)!.",
+      "mathContext": "$\\left|e^{-1} - \\sum_{j=0}^{m}\\frac{(-1)^j}{j!}\\right| \\le \\frac{1}{(m+1)!}$ — the truncation error is at most the first omitted term."
+    },
+    {
+      "id": "sec-headline",
+      "title": "The Quantitative Poisson(1) Rate",
+      "startLine": 99,
+      "endLine": 130,
+      "summary": "fixedPointProb_sub_poisson_le: set m = n−k; rewrite D_k(n)/n! via the parent's fixedPointProb_eq and numDerangements_div_factorial; factor the gap as (1/k!)·(partial sum − e⁻¹), pull out the nonnegative 1/k! through abs_mul, flip with abs_sub_comm, and bound by (1/k!)·1/(m+1)! using the tail lemma; div_mul_div_comm collapses to 1/(k!·(n−k+1)!).",
+      "mathContext": "$\\left|\\dfrac{D_k(n)}{n!} - \\dfrac{e^{-1}}{k!}\\right| \\le \\dfrac{1}{k!\\,(n-k+1)!}$ for all $k \\le n$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "derangements-convergence-oq-05",
+      "relationship": "parent",
+      "description": "Parent entry: proves the count D_k(n) = C(n,k)·D(n−k) and the pointwise Poisson(1) limit D_k(n)/n! → e⁻¹/k!, and reduces the probability to (1/k!)·(D(n−k)/(n−k)!). This leaf answers its first open question — the sharp quantitative rate — verbatim."
+    },
+    {
+      "targetId": "derangements-convergence",
+      "relationship": "foundational",
+      "description": "Grand-parent: the k = 0 derangement convergence D(n)/n! → e⁻¹ with the alternating-series rate, the special case from which this per-k bound is inherited by the 1/k! scaling."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "foundational",
+      "description": "Root derangement definitions and numDerangements, whose inclusion–exclusion closed form numDerangements_sum underlies the partial-sum identity D(m)/m! = ∑_{j≤m}(−1)ʲ/j!."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified: for every k ≤ n the Poisson approximation to the fixed-point distribution carries the explicit, non-asymptotic error bound |D_k(n)/n! − e⁻¹/k!| ≤ 1/(k!·(n−k+1)!). The bound is sharp — it is the first omitted term of the alternating series for e⁻¹, scaled by 1/k! — and is constant-free. Zero sorries, zero extra axioms; the fixed-point probability is reused from the verified parent and the tail estimate from Mathlib's alternating_series_error_bound.",
+    "implications": "**Effective Poisson approximation.** The pointwise limit of the parent becomes a usable quantitative statement: for fixed k the error decays faster than any power of n, so one can read off exactly how large n must be for the Poisson(1) model to hold to a prescribed tolerance.\\n\\n**A reusable derangement-ratio identity.** Isolating D(m)/m! = ∑_{j≤m}(−1)ʲ/j! — the arithmetic core inside Mathlib's numDerangements_tendsto_inv_e — turns any alternating-series estimate into a statement about derangement ratios, and is the natural per-k brick for the sibling total-variation question.",
+    "openQuestions": [
+      "Sum the per-k bounds to prove total-variation convergence ∑_k |D_k(n)/n! − e⁻¹/k!| → 0 with an explicit rate, upgrading the pointwise approximation to a distributional one.",
+      "Show the bound is order-optimal: exhibit a constant c > 0 with |D_k(n)/n! − e⁻¹/k!| ≥ c/(k!·(n−k+1)!) infinitely often, confirming the 1/(n−k+1)! decay cannot be improved."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "fixedPointProb_sub_poisson_le",
+      "type": "core",
+      "description": "For k ≤ n, the probability D_k(n)/n! that a random permutation of Fin n has exactly k fixed points differs from the Poisson(1) mass e⁻¹/k! by at most 1/(k!·(n−k+1)!).",
+      "leanType": "(n k : ℕ) → k ≤ n → |fixedPointProb n k - Real.exp (-1) / k.factorial| ≤ 1 / (k.factorial * (n - k + 1).factorial)"
+    },
+    {
+      "name": "expNegOne_sub_partialSum_le",
+      "type": "core",
+      "description": "The (m+1)-term partial sum of the alternating series for e⁻¹ approximates e⁻¹ to within the first omitted term 1/(m+1)!.",
+      "leanType": "(m : ℕ) → |Real.exp (-1) - ∑ j ∈ Finset.range (m + 1), (-1) ^ j / j.factorial| ≤ 1 / (m + 1).factorial"
+    },
+    {
+      "name": "numDerangements_div_factorial",
+      "type": "supporting",
+      "description": "The derangement ratio D(m)/m! equals the (m+1)-term partial sum ∑_{j=0}^{m}(−1)ʲ/j! of the series for e⁻¹.",
+      "leanType": "(m : ℕ) → (numDerangements m : ℝ) / m.factorial = ∑ j ∈ Finset.range (m + 1), (-1) ^ j / j.factorial"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.Derangements.Exponential",
+      "Mathlib.Combinatorics.Derangements.Finite",
+      "Mathlib.Analysis.SpecificLimits.Normed",
+      "Proofs.DerangementsConvergenceOQ05",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Topology",
+      "NormedSpace"
+    ],
+    "namespace": "DerangementsFixedPointDistribution",
+    "lineCount": 130,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 6,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/DerangementsConvergenceOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Pierre de Montmort",
+      "title": "Essay d'analyse sur les jeux de hazard",
+      "year": "1708",
+      "venue": "Paris: Jacque Quillau (2nd ed. 1713)",
+      "note": "The game of rencontres: the origin of the derangement numbers and the alternating series ∑(−1)ʲ/j! whose truncation error this entry bounds."
+    },
+    {
+      "authors": "Barbour, A. D.; Holst, L.; Janson, S.",
+      "title": "Poisson Approximation",
+      "year": "1992",
+      "venue": "Oxford Studies in Probability 2, Clarendon Press",
+      "note": "The Chen–Stein method gives total-variation bounds for Poisson approximation; the fixed-point count of a random permutation is the canonical example, and the per-k masses C(n,k)D(n−k)/n! are exactly those bounded here."
+    },
+    {
+      "authors": "Knuth, Donald E.",
+      "title": "The Art of Computer Programming, Vol. 1: Fundamental Algorithms",
+      "year": "1997",
+      "venue": "Addison-Wesley, 3rd edition, §1.2.5",
+      "note": "Derives D(n)/n! = ∑_{j=0}^{n}(−1)ʲ/j! and the estimate |D(n)/n! − 1/e| < 1/(n+1)!, the k = 0 prototype of the bound generalised here to every fixed-point count k."
+    }
+  ]
+}
