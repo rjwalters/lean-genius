@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-buffons-noodle-oq-01-oq-01-01",
+    "proofId": "buffons-noodle-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 63 },
+    "type": "concept",
+    "title": "From Polygonal to Smooth: Lifting the Grid Identity to C¹ Curves",
+    "content": "The parent leaf proved the two-family Buffon–Laplace grid identity E = 2L/(πdₕ) + 2L/(πdᵥ) for POLYGONAL noodles, elementarily and axiom-free. This file lifts the same identity to an arbitrary C¹ planar curve γ on [a,b], where L is now the arc-length integral planarCurveArcLength γ a b. The smooth single-family theory, however, is the kinematic-measure layer of the grandparent file: there the primitive functional smoothExpectedCrossings and the smooth Buffon–Barbier law buffon_noodle_smooth_eq (E = 2L/(πd)) are AXIOMS, because an honest proof needs the Cauchy–Crofton formula and a kinematic measure on the space of lines — infrastructure not yet in Mathlib. This entry introduces NO new axioms: granting those two, the grid identity lifts verbatim from polygonal to C¹ by exactly the same additivity-of-expectation argument. Status is therefore axiomatized, not verified — the result is a machine-checked corollary of two stated assumptions.",
+    "mathContext": "Polygonal: E = 2L/(πdₕ) + 2L/(πdᵥ), L = total segment length, axiom-free. Smooth: same formula, L = ∫√(x'²+y'²), conditional on the parent's smooth Barbier axiom.",
+    "significance": "Settles the parent's explicitly out-of-scope smooth/C¹ generalization, modulo the isolated kinematic-measure axioms, and shows the additivity argument is regularity-agnostic.",
+    "relatedConcepts": ["Buffon–Laplace problem", "Buffon–Barbier theorem", "Cauchy–Crofton formula", "kinematic measure", "arc length", "linearity of expectation"],
+    "prerequisites": ["Buffon's noodle (polygonal grid)", "smooth single-family Barbier law (axiom)", "planar C¹ arc length"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-oq-01-02",
+    "proofId": "buffons-noodle-oq-01-oq-01",
+    "range": { "startLine": 56, "endLine": 73 },
+    "type": "definition",
+    "title": "smoothExpectedGridCrossings: Additivity at the Kinematic-Measure Level",
+    "content": "smoothExpectedGridCrossings γ a b dh dv := smoothExpectedCrossings γ a b dh + smoothExpectedCrossings γ a b dv, the sum of the parent's smooth single-family functional over the two perpendicular spacings. This encodes additivity of expectation across families definitionally, with no new probabilistic primitive — the smooth analogue of the parent's expectedGridCrossings for polygonal noodles. It is declared in the BuffonsNoodle namespace (alongside the parent definition) so it sits with the kinematic-measure layer it builds on.",
+    "mathContext": "smoothExpectedGridCrossings(γ, a, b, dh, dv) := E[crossings vs horizontal] + E[crossings vs vertical].",
+    "significance": "A single definitional sum is the entire probabilistic content; every theorem downstream is algebra over the two axioms.",
+    "relatedConcepts": ["linearity of expectation", "expectedGridCrossings", "smoothExpectedCrossings", "kinematic measure"],
+    "prerequisites": ["smoothExpectedCrossings (parent axiom)", "additivity of expectation"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-oq-01-03",
+    "proofId": "buffons-noodle-oq-01-oq-01",
+    "range": { "startLine": 74, "endLine": 119 },
+    "type": "theorem",
+    "title": "The Smooth Buffon–Laplace Grid Theorem",
+    "content": "buffon_noodle_smooth_grid is the headline result: for a C¹ curve and positive spacings, E = 2L/(πdₕ) + 2L/(πdᵥ). The proof unfolds the definitional sum and rewrites each family term once with the parent axiom buffon_noodle_smooth_eq (the smooth Barbier law 2L/(πd)) — two rewrites and done; no independence between the two tallies is needed, since E[X+Y] = E[X] + E[Y] unconditionally. buffon_noodle_smooth_grid_eq_sum records the additivity by rfl; buffon_noodle_smooth_square_grid specializes to equal spacing giving 4L/(πd); and buffon_noodle_smooth_grid_eq_two_mul_single collapses the square-grid case to twice the single-family count, needing neither the C¹ hypothesis nor positivity. #print axioms confirms dependence only on [propext, Classical.choice, Quot.sound, buffon_noodle_smooth_eq, smoothExpectedCrossings].",
+    "mathContext": "E = 2L/(πdₕ) + 2L/(πdᵥ); square grid d=dh=dv → 4L/(πd) = 2·(2L/(πd)).",
+    "significance": "The curved-needle Buffon–Laplace identity, proved as a two-line corollary of the smooth single-family axiom by additivity of expectation across families.",
+    "relatedConcepts": ["buffon_noodle_smooth_eq", "Barbier orientation-invariance", "linearity of expectation", "square grid"],
+    "prerequisites": ["smooth single-family Barbier law (axiom)", "arc length", "field algebra"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-oq-01-04",
+    "proofId": "buffons-noodle-oq-01-oq-01",
+    "range": { "startLine": 120, "endLine": 184 },
+    "type": "theorem",
+    "title": "Structure and the Variance-Reduced π-Estimator",
+    "content": "Three structural corollaries plus the estimator. buffon_noodle_smooth_grid_shape_independence: two C¹ curves of equal arc length have identical expected grid crossings, whatever their shapes — the Barbier length-only dependence made explicit at the grid level. buffon_noodle_smooth_grid_nonneg: nonnegativity, from arc-length nonnegativity (planarCurveArcLength_nonneg) and positivity of the spacing factors. buffon_noodle_smooth_grid_mono: monotonicity in arc length, by gcongr through the positive factors π·dh and π·dv. pi_times_spacing_mul_smooth_grid_crossings: on a square grid, π·d·E = 4L — the clean multiplicative form of the estimator π = 4L/(dE) with no nondegeneracy hypothesis on E, extending the variance-reduced Buffon–Laplace π-estimator from straight needles to any C¹ curve.",
+    "mathContext": "Equal arc length ⟹ equal E; 0 ≤ E; arc length L₁ ≤ L₂ ⟹ E₁ ≤ E₂; π·d·E = 4L on a square grid.",
+    "significance": "Confirms the smooth grid functional behaves like a genuine expected count (nonneg, monotone, shape-blind) and that the variance-reduced π estimator transfers to curved needles.",
+    "relatedConcepts": ["shape independence", "gcongr", "positivity", "Monte-Carlo estimation of π", "variance reduction"],
+    "prerequisites": ["buffon_noodle_smooth_grid", "planarCurveArcLength_nonneg", "field_simp"]
+  },
+  {
+    "id": "ann-buffons-noodle-oq-01-oq-01-05",
+    "proofId": "buffons-noodle-oq-01-oq-01",
+    "range": { "startLine": 185, "endLine": 204 },
+    "type": "theorem",
+    "title": "Bridging the Smooth and Polygonal Layers",
+    "content": "buffon_noodle_smooth_eq_polygonal_grid: a C¹ curve γ of arc length L and a polygonal noodle N of the same total length L have identical expected grid crossings. The proof rewrites the smooth side with buffon_noodle_smooth_grid and the polygonal side with the parent's buffon_noodle_grid, then matches them via the equal-length hypothesis — both equal 2L/(πdₕ) + 2L/(πdᵥ). This makes precise that the smooth and polygonal grid laws share one algebraic skeleton, differing only in what L means (arc-length integral vs. total segment length). It also exhibits, concretely, the polygonal-to-smooth correspondence that the (still-axiomatized) approximation argument buffon_noodle_approx_limit is meant to justify.",
+    "mathContext": "planarCurveArcLength γ a b = N.totalLength ⟹ smoothExpectedGridCrossings γ a b dh dv = N.expectedGridCrossings dh dv.",
+    "significance": "Explicitly unifies the kinematic-measure (smooth) and elementary (polygonal) layers of the gallery's Buffon–Laplace theory at the grid level.",
+    "relatedConcepts": ["buffon_noodle_grid", "polygonal approximation", "arc length", "buffon_noodle_approx_limit"],
+    "prerequisites": ["buffon_noodle_smooth_grid", "buffon_noodle_grid (parent)", "equal-length hypothesis"]
+  }
+]
