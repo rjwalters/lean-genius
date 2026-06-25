@@ -1,0 +1,172 @@
+{
+  "id": "herons-formula-oq-06",
+  "slug": "herons-formula-oq-06",
+  "title": "Euler's Inequality R ≥ 2r from Heron's Formula",
+  "description": "For any nondegenerate triangle, the circumradius R and inradius r satisfy Euler's inequality R ≥ 2r, with equality iff the triangle is equilateral. Using R = abc/(4·Area) and r = Area/s, the inequality reduces algebraically (via Heron's Area² = s(s-a)(s-b)(s-c)) to abc ≥ 8(s-a)(s-b)(s-c), which under the substitution x = s-a, y = s-b, z = s-c becomes the symmetric AM-GM consequence (x+y)(y+z)(z+x) ≥ 8xyz with SOS certificate x(y-z)² + y(z-x)² + z(x-y)².",
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization of Euler's inequality R ≥ 2r together with its equality characterization (equilateral). The geometric statement is reduced to the symmetric inequality (x+y)(y+z)(z+x) ≥ 8xyz on the positive 'Ravi' variables x = s-a, y = s-b, z = s-c, which is proved from the explicit sum-of-squares identity (x+y)(y+z)(z+x) - 8xyz = x(y-z)² + y(z-x)² + z(x-y)².",
+    "implications": "Euler's inequality is the basic relation constraining the two characteristic radii of a triangle and is the entry point for the Euler triangle formula OI² = R(R-2r). The SOS identity proved here gives the sharp equality case for free: R = 2r exactly when the triangle is equilateral. The reusable core — a positivity-respecting product/AM-GM inequality with full equality characterization — is independently useful for other triangle extremal problems.",
+    "openQuestions": [
+      "Can the full Euler triangle formula OI² = R² - 2Rr (with O the circumcenter, I the incenter) be formalized, recovering R ≥ 2r as the nonnegativity OI² ≥ 0?",
+      "Does the same Ravi-substitution SOS technique give a clean Lean proof of the related inequality chain (e.g. the Gerretsen inequalities s² ≤ 4R² + 4Rr + 3r²)?"
+    ]
+  },
+  "overview": "{\"historicalContext\":\"Euler's inequality R ≥ 2r, relating a triangle's circumradius R and inradius r, was published by Leonhard Euler in 1765 as a corollary of his formula OI² = R(R - 2r) for the distance between the circumcenter and incenter. Since OI² ≥ 0, one obtains R(R - 2r) ≥ 0, hence R ≥ 2r, with equality exactly when O = I, i.e. the triangle is equilateral. The inequality is one of the cornerstones of classical triangle geometry and the starting point for a large family of sharper relations (Gerretsen, Blundon).\",\"problemStatement\":\"For a triangle with side lengths a, b, c (satisfying the strict triangle inequalities), let s = (a+b+c)/2, Area = √(s(s-a)(s-b)(s-c)) (Heron), circumradius R = abc/(4·Area) and inradius r = Area/s. Prove R ≥ 2r, with equality iff a = b = c.\",\"proofStrategy\":\"Rather than constructing O and I and computing OI², we give a purely algebraic proof from the radius formulas. Clearing the positive denominators, R ≥ 2r ⟺ abc·s ≥ 8·Area². By Heron, Area² = s(s-a)(s-b)(s-c), and cancelling s > 0 leaves abc ≥ 8(s-a)(s-b)(s-c). The Ravi substitution x = s-a, y = s-b, z = s-c (all positive for a nondegenerate triangle) turns a, b, c into y+z, z+x, x+y, so the target is the symmetric inequality (x+y)(y+z)(z+x) ≥ 8xyz. This is settled by the explicit SOS identity (x+y)(y+z)(z+x) - 8xyz = x(y-z)² + y(z-x)² + z(x-y)², which is manifestly ≥ 0 and vanishes iff x = y = z.\",\"keyInsights\":[\"The whole geometric inequality collapses, after clearing denominators and applying Heron, to a single symmetric polynomial inequality on the positive Ravi variables.\",\"The product–AM–GM inequality (x+y)(y+z)(z+x) ≥ 8xyz has a one-line sum-of-squares certificate, which simultaneously proves the inequality and pins down the equality case.\",\"Working with Area² (not Area) keeps the proof free of square roots everywhere except the single definitional step Area² = s(s-a)(s-b)(s-c) (Real.sq_sqrt).\"],\"prerequisites\":[\"Heron's formula Area² = s(s-a)(s-b)(s-c)\",\"AM-GM / sum-of-squares positivity\",\"Ravi substitution x = s-a, y = s-b, z = s-c\"],\"text\":\"This entry formalizes Euler's inequality R ≥ 2r for triangles as an algebraic consequence of Heron's formula. The circumradius and inradius are defined by the standard formulas R = abc/(4·Area) and r = Area/s. After clearing denominators the inequality becomes abc·s ≥ 8·Area², and Heron's formula reduces it to abc ≥ 8(s-a)(s-b)(s-c). The Ravi substitution converts this to the symmetric AM-GM inequality (x+y)(y+z)(z+x) ≥ 8xyz, proved (with its equality case) from an explicit sum-of-squares identity. Both the inequality and the equality characterization R = 2r ⟺ equilateral are machine-checked with 0 axioms and 0 sorries.\"}",
+  "mainTheorems": [
+    {
+      "name": "prod_sum_ge_eight_mul",
+      "type": "supporting",
+      "description": "Symmetric AM-GM core: (y+z)(z+x)(x+y) ≥ 8xyz for x,y,z ≥ 0, via a sum-of-squares certificate.",
+      "leanType": "8 * (x * y * z) ≤ (y + z) * (z + x) * (x + y)"
+    },
+    {
+      "name": "prod_sum_eq_iff",
+      "type": "supporting",
+      "description": "Equality characterization for the AM-GM core: equality holds iff x = y = z (for positive reals).",
+      "leanType": "(y + z) * (z + x) * (x + y) = 8 * (x * y * z) ↔ x = y ∧ y = z"
+    },
+    {
+      "name": "euler_inequality",
+      "type": "main",
+      "description": "Euler's inequality: for any nondegenerate triangle, 2r ≤ R.",
+      "leanType": "2 * inradius a b c ≤ circumradius a b c"
+    },
+    {
+      "name": "euler_equality_iff",
+      "type": "main",
+      "description": "Equality case: R = 2r holds iff the triangle is equilateral (a = b = c).",
+      "leanType": "2 * inradius a b c = circumradius a b c ↔ a = b ∧ b = c"
+    }
+  ],
+  "sections": [
+    {
+      "id": "amgm-core",
+      "title": "The Algebraic Core — an SOS form of AM-GM",
+      "startLine": 46,
+      "endLine": 98,
+      "summary": "Proves the symmetric inequality (y+z)(z+x)(x+y) ≥ 8xyz from the explicit SOS identity (y+z)(z+x)(x+y) - 8xyz = x(y-z)² + y(z-x)² + z(x-y)², and derives the equality characterization x = y = z for positive reals.",
+      "mathContext": "The mathematical heart of Euler's inequality, independent of any geometry. The SOS identity gives both the inequality (nlinarith on nonnegative summands) and the equality case (each summand vanishes)."
+    },
+    {
+      "id": "triangle-data",
+      "title": "Triangle Data — semi-perimeter, Heron product, area, radii",
+      "startLine": 100,
+      "endLine": 151,
+      "summary": "Defines the semi-perimeter s, Heron product s(s-a)(s-b)(s-c), area = √(Heron product), circumradius R = abc/(4·Area) and inradius r = Area/s, and proves positivity facts plus Area² = Heron product.",
+      "mathContext": "Standard triangle quantities. area_sq (via Real.sq_sqrt) is the only place a square root is removed; everything downstream is polynomial."
+    },
+    {
+      "id": "reduced-inequality",
+      "title": "The Reduced Side Inequality abc ≥ 8(s-a)(s-b)(s-c)",
+      "startLine": 153,
+      "endLine": 179,
+      "summary": "Specializes the AM-GM core to x = s-a, y = s-b, z = s-c, where a = y+z, b = z+x, c = x+y, giving abc ≥ 8(s-a)(s-b)(s-c) for any nondegenerate triangle.",
+      "mathContext": "The Ravi substitution. This is the algebraic content of Euler's inequality once Heron and denominator-clearing are applied."
+    },
+    {
+      "id": "euler-inequality",
+      "title": "Euler's Inequality R ≥ 2r and its Equality Case",
+      "startLine": 181,
+      "endLine": 248,
+      "summary": "Clears the positive denominators in R ≥ 2r to abc·s ≥ 8·Area², applies Heron and the reduced inequality to prove 2r ≤ R, and characterizes equality R = 2r ⟺ equilateral via the AM-GM equality case.",
+      "mathContext": "The main results. euler_inequality uses div_le_div_iff₀ and nlinarith; euler_equality_iff transports the AM-GM equality characterization through the Ravi substitution."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "herons-formula",
+      "relationship": "extends",
+      "description": "Uses Heron's formula Area² = s(s-a)(s-b)(s-c) to eliminate the area from the radius formulas."
+    },
+    {
+      "targetId": "herons-formula-oq-04",
+      "relationship": "related",
+      "description": "Shares the Ravi substitution x = s-a, y = s-b, z = s-c and an AM-GM core with full equality characterization; there for the isoperimetric inequality, here for Euler's inequality."
+    }
+  ],
+  "references": [
+    {
+      "title": "Euler's theorem in geometry (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry"
+    },
+    {
+      "title": "Euler's inequality (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry#Euler's_inequality"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "EulerInequalityHeronOQ06",
+    "lineCount": 248,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/HeronsFormulaOQ06.lean",
+    "theoremCount": 10,
+    "definitionCount": 5
+  },
+  "meta": {
+    "author": "Classical result (Euler, 1765), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry",
+    "date": "1765",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ06.lean",
+    "tags": [
+      "geometry",
+      "euler-inequality",
+      "triangle",
+      "circumradius",
+      "inradius",
+      "amgm",
+      "ravi-substitution",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext, Classical.choice, Quot.sound).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "sqrt(x)^2 = x for x ≥ 0; used to obtain Area² = Heron product.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.sqrt_pos",
+        "description": "0 < sqrt x ↔ 0 < x; used for area positivity.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Sqrt"
+      },
+      {
+        "theorem": "div_le_div_iff₀",
+        "description": "a/b ≤ c/d ↔ a*d ≤ c*b for positive denominators; clears denominators in R ≥ 2r.",
+        "module": "Mathlib.Algebra.Order.GroupWithZero.Unbundled.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Euler's inequality R ≥ 2r formalized directly from the radius formulas R = abc/(4·Area), r = Area/s and Heron's formula — no circumcenter/incenter construction needed.",
+      "Equality characterization R = 2r ⟺ equilateral, obtained from the AM-GM equality case.",
+      "Symmetric AM-GM core (x+y)(y+z)(z+x) ≥ 8xyz with explicit sum-of-squares certificate x(y-z)² + y(z-x)² + z(x-y)² and full equality characterization (reusable).",
+      "Reduction of the geometric inequality to abc ≥ 8(s-a)(s-b)(s-c) via the Ravi substitution.",
+      "Square-root-free proof: the only sqrt elimination is the single definitional step Area² = s(s-a)(s-b)(s-c)."
+    ],
+    "prerequisites": [
+      "Heron's formula",
+      "AM-GM / sum-of-squares positivity",
+      "Ravi substitution"
+    ],
+    "difficulty": "intermediate",
+    "category": "geometry",
+    "parentSlug": "herons-formula",
+    "dateAdded": "2026-06-24",
+    "lineCount": 248,
+    "theoremCount": 10,
+    "definitionCount": 5,
+    "mathlib_version": "v4.26"
+  }
+}

@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ann-euler-context",
+    "proofId": "herons-formula-oq-06",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "concept",
+    "title": "Euler's Inequality R ≥ 2r",
+    "content": "Euler's inequality (Euler, 1765) states that the circumradius R of any triangle is at least twice its inradius r, with equality exactly for the equilateral triangle. Euler proved it as a corollary of his distance formula OI² = R(R - 2r) between the circumcenter O and incenter I: since OI² ≥ 0, we get R(R - 2r) ≥ 0, hence R ≥ 2r. This formalization avoids constructing O and I and instead works directly from the radius formulas R = abc/(4·Area) and r = Area/s, reducing the whole statement to an algebraic inequality.",
+    "mathContext": "**Euler's inequality**: $R \\geq 2r$ for every triangle, equality iff equilateral. It is the basic constraint between a triangle's two characteristic radii and the gateway to sharper relations (Gerretsen's $s^2 \\le 4R^2 + 4Rr + 3r^2$, Blundon's inequalities).",
+    "significance": "foundational",
+    "relatedConcepts": [
+      "circumradius",
+      "inradius",
+      "Euler's triangle formula OI² = R(R-2r)",
+      "Heron's formula"
+    ],
+    "prerequisites": [
+      "Heron's formula (herons-formula)",
+      "circumradius and inradius formulas"
+    ]
+  },
+  {
+    "id": "ann-sos-core",
+    "proofId": "herons-formula-oq-06",
+    "range": { "startLine": 50, "endLine": 67 },
+    "type": "technique",
+    "title": "The Sum-of-Squares Certificate for AM-GM",
+    "content": "The mathematical heart is the symmetric inequality (y+z)(z+x)(x+y) ≥ 8xyz for nonnegative reals. It is proved from the explicit identity (y+z)(z+x)(x+y) - 8xyz = x(y-z)² + y(z-x)² + z(x-y)², whose right-hand side is a sum of products of a nonnegative variable with a square, hence nonnegative. `nlinarith` is fed exactly these three nonnegative products. The same identity (theorem prod_sum_sub_eight_mul, proved by `ring`) is what makes the equality case transparent.",
+    "mathContext": "This is the three-variable instance of $(a+b) \\geq 2\\sqrt{ab}$ multiplied out: $\\prod (x+y) \\geq \\prod 2\\sqrt{xy} = 8xyz$. The SOS form $\\sum x(y-z)^2 \\geq 0$ is a Schur-like certificate that simultaneously yields the inequality and its equality locus.",
+    "significance": "key",
+    "relatedConcepts": ["AM-GM inequality", "sum of squares", "Schur's inequality", "nlinarith"],
+    "prerequisites": ["nonnegativity of squares"]
+  },
+  {
+    "id": "ann-amgm-equality",
+    "proofId": "herons-formula-oq-06",
+    "range": { "startLine": 69, "endLine": 98 },
+    "type": "technique",
+    "title": "Extracting the Equality Case from the SOS Form",
+    "content": "When (y+z)(z+x)(x+y) = 8xyz, the SOS sum x(y-z)² + y(z-x)² + z(x-y)² is zero. Since each summand is nonnegative, every summand vanishes. With x, y, z strictly positive, z(x-y)² = 0 forces (x-y)² = 0 and y(z-x)² = 0 forces (z-x)² = 0; `sq_eq_zero_iff` then gives x = y and z = x, so x = y = z. The converse is a one-line `ring` after substitution. This is the standard 'SOS ⟹ equality locus' argument.",
+    "mathContext": "Equality in AM-GM holds iff all variables are equal. The strict positivity hypotheses are essential: they let one cancel the nonnegative coefficients to conclude the squared differences vanish.",
+    "significance": "supporting",
+    "relatedConcepts": ["equality case", "sq_eq_zero_iff", "no zero divisors"],
+    "prerequisites": ["a² = 0 ↔ a = 0"]
+  },
+  {
+    "id": "ann-triangle-data",
+    "proofId": "herons-formula-oq-06",
+    "range": { "startLine": 100, "endLine": 151 },
+    "type": "concept",
+    "title": "Radii from Heron, and the Square-Root-Free Setup",
+    "content": "The semi-perimeter s = (a+b+c)/2, Heron product s(s-a)(s-b)(s-c), area = √(Heron product), circumradius R = abc/(4·Area) and inradius r = Area/s are defined exactly as in classical geometry. The key lemma area_sq proves Area² = Heron product via Real.sq_sqrt (valid because the Heron product is positive for a nondegenerate triangle). After this single step, no square roots remain — every subsequent manipulation is polynomial, which is what makes `nlinarith` and `linear_combination` effective.",
+    "mathContext": "$R = \\frac{abc}{4K}$ and $r = \\frac{K}{s}$ where $K$ is the area. Working with $K^2 = s(s-a)(s-b)(s-c)$ instead of $K$ keeps the algebra rational.",
+    "significance": "supporting",
+    "relatedConcepts": ["Heron's formula", "circumradius formula", "inradius formula", "Real.sq_sqrt"],
+    "prerequisites": ["triangle inequality", "positivity of the Heron product"]
+  },
+  {
+    "id": "ann-ravi-reduction",
+    "proofId": "herons-formula-oq-06",
+    "range": { "startLine": 153, "endLine": 179 },
+    "type": "technique",
+    "title": "Ravi Substitution: abc ≥ 8(s-a)(s-b)(s-c)",
+    "content": "Setting x = s-a, y = s-b, z = s-c (all positive iff the triangle inequalities are strict), the sides become a = y+z, b = z+x, c = x+y. The AM-GM core then reads exactly (y+z)(z+x)(x+y) ≥ 8xyz, i.e. abc ≥ 8(s-a)(s-b)(s-c). The lemma sides_ge_eight_prod packages this substitution, rewriting a, b, c via the three identities a = (s-b)+(s-c), etc.",
+    "mathContext": "The **Ravi substitution** is the standard change of variables for triangle inequalities: it converts the triangle-inequality constraints into plain positivity of x, y, z, turning geometric inequalities into symmetric polynomial inequalities.",
+    "significance": "key",
+    "relatedConcepts": ["Ravi substitution", "triangle inequality", "symmetric polynomials"],
+    "prerequisites": ["AM-GM core (prod_sum_ge_eight_mul)"]
+  },
+  {
+    "id": "ann-euler-main",
+    "proofId": "herons-formula-oq-06",
+    "range": { "startLine": 181, "endLine": 248 },
+    "type": "proof",
+    "title": "Clearing Denominators to Prove R ≥ 2r and its Equality Case",
+    "content": "R ≥ 2r is 2·(Area/s) ≤ abc/(4·Area). Since s and Area are positive, div_le_div_iff₀ clears denominators to 2·Area·(4·Area) ≤ abc·s, i.e. 8·Area² ≤ abc·s; substituting Area² = Heron product and the reduced inequality finishes via `nlinarith`. For the equality case, the same denominator-clearing turns R = 2r into abc·s = 8·Area², and after cancelling s > 0 the AM-GM equality characterization (prod_sum_eq_iff) transported through the Ravi substitution gives a = b ∧ b = c.",
+    "mathContext": "$R \\geq 2r \\iff abc \\cdot s \\geq 8 K^2 = 8 s (s-a)(s-b)(s-c) \\iff abc \\geq 8(s-a)(s-b)(s-c)$. The equality case threads the AM-GM equality locus $x=y=z$ back to $a=b=c$.",
+    "significance": "key",
+    "relatedConcepts": ["div_le_div_iff₀", "nlinarith", "linear_combination", "equality characterization"],
+    "prerequisites": ["reduced inequality (sides_ge_eight_prod)", "AM-GM equality case (prod_sum_eq_iff)"]
+  }
+]
