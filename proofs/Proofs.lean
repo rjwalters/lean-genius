@@ -1510,6 +1510,7 @@ import Proofs.Erdos1143Problem
 import Proofs.Erdos1144Problem
 import Proofs.Erdos1145Problem
 import Proofs.Erdos1146Problem
+import Proofs.Erdos1146OQ04
 import Proofs.Erdos1147Problem
 import Proofs.Erdos1148Problem
 import Proofs.Erdos1149Aristotle
