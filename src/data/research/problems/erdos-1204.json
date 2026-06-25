@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT/BUILD (session 2): added 4 verified structural theorems to Erdos1204Problem.lean — Admissible.subset (downward closure), admissible_image_add (translation invariance) + card_image_add, and exists_admissible_card (an admissible k-set exists for every k via primorial multiples 0,N,2N,...,(k-1)N ⇒ A(k) well-defined, with explicit weak bound A(k) ≤ (k-1)·∏_{p≤k}p). Now 10 thm/1 def, 0 axioms/0 sorries, fully verified. Headline A(k)∼k log k and B(k) remain OPEN.",
+    "progressSummary": "PROGRESS: A(k) now defined in Lean and pinned in the trivial regime (A(0)=A(1)=0, A(2)=2; bounds k-1 ≤ A(k) ≤ (k-1)·primorial). Headline asymptotics A(k)∼k log k and B(k) remain OPEN (sieve theory).",
     "builtItems": [
       "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
       "Erdos1204.missing_class_of_card_lt",
@@ -38,14 +38,16 @@
       "Admissible.subset (downward closure) in Erdos1204Problem.lean:130",
       "admissible_image_add (translation invariance) in Erdos1204Problem.lean:140",
       "card_image_add (translation preserves card) in Erdos1204Problem.lean:152",
-      "exists_admissible_card (∃ admissible k-set ⇒ A(k) well-defined) in Erdos1204Problem.lean:165"
+      "exists_admissible_card (∃ admissible k-set ⇒ A(k) well-defined) in Erdos1204Problem.lean:165",
+      "Erdos1204Problem.lean: def A + A_mem/A_le/sub_one_le_A/A_zero/A_one/A_two/card_le_sup_succ/A_set_nonempty (8 thm + 1 def)"
     ],
     "insights": [
       "Admissibility is purely local: only the residue pattern mod each prime matters.",
       "Reduction: for primes p > k, k elements cannot cover all p classes, so admissibility only constrains primes p ≤ k.",
       "{0,2} is the minimal nontrivial admissible 2-tuple; {0,1} fails because it covers both classes mod 2.",
       "Admissibility is downward-closed and translation-invariant: it is a property of the *pattern* of a tuple, not its position.",
-      "An admissible k-tuple exists for every k: take multiples 0,N,2N,...,(k-1)N of the primorial N=∏_{p≤k}p; mod each prime p≤k all are ≡0 so class 1 is missed, larger primes auto by size bound. This makes A(k) well-defined and gives the explicit weak upper bound A(k) ≤ (k-1)·∏_{p≤k}p."
+      "An admissible k-tuple exists for every k: take multiples 0,N,2N,...,(k-1)N of the primorial N=∏_{p≤k}p; mod each prime p≤k all are ≡0 so class 1 is missed, larger primes auto by size bound. This makes A(k) well-defined and gives the explicit weak upper bound A(k) ≤ (k-1)·∏_{p≤k}p.",
+      "A(k) defined as sInf of max over admissible k-sets; infimum attained (nonempty family); k-1 ≤ A(k) ≤ (k-1)·primorial; A(0)=A(1)=0, A(2)=2 (admissibility first binding at k=2)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
