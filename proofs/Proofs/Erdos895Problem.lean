@@ -70,6 +70,49 @@ def erdos895Conjecture : Prop :=
 /-- The threshold is n = 18 -/
 def erdos895Threshold : ℕ := 18
 
+/-
+  ⚠️ FORMALIZATION CORRECTNESS NOTE (researcher-1, 2026-06-25)
+
+  This file's statements are internally inconsistent with Barber's theorem, for
+  two independent reasons. The analysis below is verified by an exhaustive SAT
+  search (Z3, sound UNSAT) plus pure-Python checking of every witness graph; the
+  reproducible scripts live in `research/problems/erdos-895-incomplete-01/`.
+
+  BUG 1 — `IsAdditiveTriple` omits `a ≠ b`.
+    As written it admits the degenerate triple (a, a, 2a). Since `IsIndependentTriple`
+    makes `¬G.Adj a a` vacuously true, a non-edge `a — 2a` already counts as an
+    "independent additive triple". Barber's theorem is about THREE DISTINCT vertices
+    a, b, a+b. Allowing a=b changes the answer: under this loose definition every
+    triangle-free graph on `Fin N` has an independent additive triple already for
+    every N ≥ 12 (not 18).
+
+  BUG 2 — off-by-one in the `Fin n` ↔ {1,…,m} indexing.
+    `GraphOnInterval n = SimpleGraph (Fin n)` has value-set {0,…,n-1} (vertex 0 is
+    inert: it is never part of an additive triple). So `Fin n` models {1,…,n-1}.
+    Barber's threshold "n = 18 for {1,…,n}" therefore lands at `Fin 19`, not `Fin 18`.
+
+  CONSEQUENCES (with the file's own loose definition):
+    • `barber_theorem` (∀ n ≥ 18): TRUE but NOT sharp (it already holds from n ≥ 12);
+      the `sorry` is the genuinely hard SAT-verified combinatorics — OPEN to formalize.
+    • `counterexample_17` (∃ G on `Fin 17` …): FALSE. Z3 proves UNSAT, i.e. EVERY
+      triangle-free graph on `Fin 17` has an independent additive triple. This `sorry`
+      can never be filled as stated.
+    • `threshold_sharp` and `erdos895_sat_verified`: unfixable as stated (they depend
+      on the two above).
+    There is NO single definition under which BOTH `barber_theorem` (n ≥ 18) and
+    `counterexample_17` (Fin 17) hold simultaneously.
+
+  CORRECTED STATEMENT (distinct vertices a ≠ b, matching Barber):
+    • positive: ∀ n ≥ 19, ∀ G : SimpleGraph (Fin n), triangle-free →
+        ∃ a b : Fin n, a ≠ b ∧ a.val>0 ∧ b.val>0 ∧ a.val+b.val<n ∧
+        the triple (a, b, a+b) is independent.
+    • counterexample lives on `Fin 18` (= {1,…,17}). An explicit witness (42 edges,
+      triangle-free, no DISTINCT independent additive triple) is recorded in the
+      research note; vertex 0 is isolated. It is `decide`-checkable once a build is
+      available (this session's local build was unavailable: Docker down + olean
+      header mismatch, so the corrected proof is left for a build-capable session).
+-/
+
 /- ## Barber's Theorem (2015) -/
 
 /-- Ben Barber's result: the conjecture holds with threshold 18 -/
