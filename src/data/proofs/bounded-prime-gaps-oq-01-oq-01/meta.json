@@ -114,5 +114,26 @@
       "endLine": 205,
       "summary": "pair_density_implies_bounded_gaps specialises to {0,d}: a density of two primes among {n, n+d} yields infinitely many consecutive gaps <= d, recovering the twin-style reading at d = 2."
     }
+  ],
+  "conclusion": {
+    "summary": "Five machine-checked theorems (0 sorries, 0 axioms beyond propext/Classical.choice/Quot.sound) show that the two gap-sieve axioms of the parent BoundedPrimeGaps formalization are logically redundant: their conclusion — infinitely many consecutive prime gaps ≤ D — is derived elementarily from the single Maynard–Tao density statement MaynardTaoDensity H 2 together with the diameter bound. The arithmetic core gap_from_two_primes turns any two primes within distance D into a bounded consecutive gap; density_two_implies_bounded_gaps lifts it to 'infinitely often'; and sieve_conclusion_from_density / sieve_eh_conclusion_from_density reproduce the eliminated axioms' exact signatures with the admissibility and cardinality hypotheses provably unused.",
+    "implications": "The result sharpens the formalization's axiomatic footprint: the irreducible analytic input of the bounded-prime-gaps program is one density statement, not three axioms. It also cleanly localises where the depth lives — admissibility and the sieve machinery serve only to make the density antecedent true; the passage from 'two nearby primes' to 'a bounded consecutive gap' is pure prime-counting arithmetic. This separation is a reusable pattern for auditing which assumptions in a formalization are genuinely primitive versus derivable.",
+    "openQuestions": [
+      "Can the remaining density axiom maynard_tao_m_tuples itself be reduced — e.g. derived from a Bombieri–Vinogradov-type equidistribution statement formalized in Mathlib — to shrink the axiomatic core to a single analytic input?",
+      "Does the density-to-gap reduction generalise from m = 2 (consecutive gaps) to m ≥ 3, certifying clusters of m primes within a bounded window and bounding p_{n+m-1} − p_n?",
+      "Is the diameter bound forall h in H, h <= D the minimal sufficient hypothesis, or can the same conclusion be extracted from a weaker average/quantile bound on the tuple H?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "extends",
+      "description": "Parent: the BoundedPrimeGaps formalization that encodes the Maynard–Tao machinery as three axioms (one density, two gap-sieve). This entry proves the two gap-sieve axioms redundant, reducing the irreducible analytic input to the single density axiom."
+    },
+    {
+      "targetId": "bounded-prime-gaps-oq-01",
+      "relationship": "related",
+      "description": "Sibling open-question branch of the bounded-prime-gaps family; this entry answers the OQ-01-OQ-01 sub-question on eliminating the gap-sieve axioms."
+    }
   ]
 }
