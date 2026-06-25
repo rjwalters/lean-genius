@@ -77,11 +77,16 @@
     "Sanity Checks"
   ],
   "sorries": [],
-  "overview": [
-    "Lamé's theorem (1844) is usually quoted in its asymptotic form: the Euclidean algorithm on a pair with smaller entry b terminates in O(log b) steps, with the worst case realized by consecutive Fibonacci numbers. This entry formalizes that asymptotic statement as an explicit, fully verified inequality.",
-    "The parent entry proved the combinatorial heart of the matter — the exact worst-case count and, crucially, the minimality bound fib(n+1) ≤ b for any pair taking n steps. What remained was to convert that Fibonacci bound into a logarithm, the step Lamé took using the geometric growth of the Fibonacci sequence.",
-    "The bridge is a clean geometric lower bound: φⁿ ≤ fib(n+2) for every n, where φ = (1+√5)/2 is the golden ratio from the grandparent entry. It is proved by two-step induction, the inductive step being φ^(n+2) = φ^(n+1) + φⁿ (a restatement of φ² = φ + 1) matched against the Fibonacci recurrence fib(n+4) = fib(n+3) + fib(n+2).",
-    "Chaining φ^(n-1) ≤ fib(n+1) ≤ b and applying log base φ (monotone since φ > 1, with log_φ(φ^(n-1)) = n-1) yields the headline bound n ≤ log_φ(b) + 1. A final section makes the Lamé constant explicit: because φ³ = 2φ + 1 > 4, one has log₂(φ) > 2/3, so the step count is at most (3/2)·log₂(b) + 1 — the textbook ≈ 1.44 log₂(b) bound, with a transparent (slightly loose) rational constant in place of the optimal 1/log₂(φ) ≈ 1.4404.",
-    "Everything is verified from the foundational axioms only, with no native_decide anywhere: the sanity-check example discharges euclidSteps (fib 7) (fib 6) = 5 via the parent's proven worst-case identity euclidSteps (fib (n+2)) (fib (n+1)) = n at n = 5."
-  ]
+  "overview": {
+    "historicalContext": "Lamé's theorem (1844) is usually quoted in its asymptotic form: the Euclidean algorithm on a pair with smaller entry b terminates in O(log b) steps, with the worst case realized by consecutive Fibonacci numbers. This is historically the first complexity analysis of an algorithm, and the constant 1/log₂(φ) ≈ 1.4404 (φ the golden ratio) is the textbook bound steps ≤ 1.44·log₂(b). This entry formalizes that asymptotic statement as an explicit, fully verified inequality, building on the parent's exact worst-case count and minimality bound.",
+    "problemStatement": "Convert the parent entry's Fibonacci minimality bound (fib(n+1) ≤ b for any pair taking n steps) into a closed-form logarithmic bound on the Euclidean step count: prove n ≤ log_φ(b) + 1, and make the Lamé constant explicit as a transparent rational bound (3/2)·log₂(b) + 1.",
+    "proofStrategy": "The bridge is a clean geometric lower bound φⁿ ≤ fib(n+2) for every n, where φ = (1+√5)/2 is the golden ratio from the grandparent entry. It is proved by two-step induction, the inductive step φ^(n+2) = φ^(n+1) + φⁿ (a restatement of φ² = φ + 1) matched against the Fibonacci recurrence. Chaining φ^(n-1) ≤ fib(n+1) ≤ b and applying log base φ (monotone since φ > 1, with log_φ(φ^(n-1)) = n-1) yields n ≤ log_φ(b) + 1. A final section makes the constant explicit: because φ³ = 2φ + 1 > 4, one has log₂(φ) > 2/3, so the step count is at most (3/2)·log₂(b) + 1 — the textbook ≈ 1.44 log₂(b) bound with a transparent (slightly loose) rational constant in place of the optimal 1/log₂(φ).",
+    "keyInsights": [
+      "The asymptotic O(log b) form of Lamé's theorem is recovered as an explicit, fully verified inequality n ≤ log_φ(b) + 1 — not just a growth rate but a concrete constant.",
+      "The whole conversion hinges on one geometric lower bound φⁿ ≤ fib(n+2), the discrete form of the Fibonacci sequence's golden-ratio growth.",
+      "That bound is proved by two-step induction whose inductive step is exactly φ² = φ + 1 (the defining relation of φ) matched term-for-term against the Fibonacci recurrence — the golden ratio and the Fibonacci numbers obey the same recurrence.",
+      "Taking log base φ is the precise inverse of Fibonacci's geometric growth: log_φ(φ^(n-1)) = n-1 turns the multiplicative bound into the additive step count, exactly as Lamé did in 1844.",
+      "The explicit rational constant 3/2 comes from φ³ = 2φ + 1 > 4 ⟹ log₂(φ) > 2/3; it is deliberately loose (vs. the optimal 1.4404) but elementary and fully checked, trading sharpness for a transparent proof."
+    ]
+  }
 }
