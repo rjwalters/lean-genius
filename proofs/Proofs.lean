@@ -3411,6 +3411,7 @@ import Proofs.LagrangeFourSquares
 import Proofs.LagrangeFourSquaresOQ01
 import Proofs.LagrangeFourSquaresOQ01OQ01
 import Proofs.LagrangeFourSquaresOQ02
+import Proofs.LagrangeFourSquaresOQ03
 import Proofs.LagrangeFourSquaresOQ04
 import Proofs.LagrangeFourSquaresWaringG2
 import Proofs.LagrangeFourSquaresWaringG2OQ01
