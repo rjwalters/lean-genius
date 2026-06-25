@@ -1529,6 +1529,7 @@ import Proofs.Erdos129Problem
 import Proofs.Erdos12Problem
 import Proofs.Erdos12ProblemAPNPartI
 import Proofs.Erdos12ProblemAPNPartII
+import Proofs.Erdos12WIP01
 import Proofs.Erdos130Problem
 import Proofs.Erdos130WIP01
 import Proofs.Erdos131DavenportPower
