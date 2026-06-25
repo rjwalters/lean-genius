@@ -3,44 +3,60 @@
     "id": "integral-root-theorem-oq-01-module-header",
     "proofId": "integral-root-theorem-oq-01",
     "type": "concept",
-    "range": {
-      "startLine": 1,
-      "endLine": 23
-    },
+    "range": { "startLine": 1, "endLine": 23 },
     "title": "Module Header: The Rational Root Theorem",
-    "content": "If $r = a/b$ (lowest terms) is a rational root of an integer polynomial $p$, then $a \\mid p(0)$ (numerator divides the constant term) and $b \\mid$ leading coefficient. So a **monic** integer polynomial has only **integer** rational roots — exactly the integral closedness of $\\mathbb{Z}$ in $\\mathbb{Q}$. This drives the classic irrationality proofs: $\\sqrt 2$ is irrational because it would be an integer root of the monic $X^2 - 2$, and no integer squares to $2$. The file specializes Mathlib's integrally-closed-domain results to $\\mathbb{Z} \\subset \\mathbb{Q}$ and derives the $\\sqrt 2$ application."
+    "content": "If $r = a/b$ (lowest terms) is a rational root of an integer polynomial $p$, then $a \\mid p(0)$ (numerator divides the constant term) and $b \\mid$ leading coefficient. So a **monic** integer polynomial has only **integer** rational roots — exactly the integral closedness of $\\mathbb{Z}$ in $\\mathbb{Q}$. This drives the classic irrationality proofs: $\\sqrt 2$ is irrational because it would be an integer root of the monic $X^2 - 2$, and no integer squares to $2$. The file specializes Mathlib's integrally-closed-domain results to $\\mathbb{Z} \\subset \\mathbb{Q}$ and derives the $\\sqrt 2$ application.",
+    "mathContext": "$r = a/b$ a root of $p\\in\\mathbb{Z}[X]\\Rightarrow a\\mid p(0),\\ b\\mid p_{\\deg}$; monic $\\Rightarrow b\\mid 1\\Rightarrow r\\in\\mathbb{Z}$.",
+    "significance": "context",
+    "relatedConcepts": ["rational root theorem", "integrally closed domain", "irrationality proofs", "Z is integrally closed in Q"],
+    "prerequisites": ["integer polynomials", "fractions in lowest terms", "divisibility"]
   },
   {
     "id": "integral-root-theorem-oq-01-divisibility",
     "proofId": "integral-root-theorem-oq-01",
     "type": "theorem",
-    "range": {
-      "startLine": 27,
-      "endLine": 47
-    },
+    "range": { "startLine": 32, "endLine": 42 },
     "title": "Numerator and Denominator Divisibility",
-    "content": "`num_dvd_of_root`: the numerator of a rational root $r$ of $p \\in \\mathbb{Z}[X]$ divides $p.\\mathrm{coeff}\\,0$ (the constant term).\n\n`den_dvd_of_root`: the denominator of $r$ divides $p.\\mathrm{leadingCoeff}$.\n\nTogether these restrict the rational roots to a finite, checkable candidate list. They specialize Mathlib's `Polynomial.num_dvd_of_is_root` / `den_dvd_of_is_root` (valid over any integrally closed domain with its fraction field) to $\\mathbb{Z} \\subset \\mathbb{Q}$, using `IsFractionRing.num` / `.den`."
+    "content": "`num_dvd_of_root`: the numerator of a rational root $r$ of $p \\in \\mathbb{Z}[X]$ divides $p.\\mathrm{coeff}\\,0$ (the constant term).\n\n`den_dvd_of_root`: the denominator of $r$ divides $p.\\mathrm{leadingCoeff}$.\n\nTogether these restrict the rational roots to a finite, checkable candidate list. They specialize Mathlib's `Polynomial.num_dvd_of_is_root` / `den_dvd_of_is_root` (valid over any integrally closed domain with its fraction field) to $\\mathbb{Z} \\subset \\mathbb{Q}$, using `IsFractionRing.num` / `.den`.",
+    "mathContext": "$a = \\mathrm{num}_\\mathbb{Z}(r)\\mid p.\\mathrm{coeff}\\,0$ and $b = \\mathrm{den}_\\mathbb{Z}(r)\\mid p.\\mathrm{leadingCoeff}$, giving the finite candidate set $\\{\\pm(\\text{divisor of }p(0))/(\\text{divisor of }p_{\\deg})\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["IsFractionRing.num", "IsFractionRing.den", "candidate root list", "Gauss's lemma"],
+    "prerequisites": ["fraction field", "leading coefficient and constant term", "divisibility in Z"]
   },
   {
     "id": "integral-root-theorem-oq-01-monic-integer",
     "proofId": "integral-root-theorem-oq-01",
-    "type": "theorem",
-    "range": {
-      "startLine": 49,
-      "endLine": 64
-    },
+    "type": "insight",
+    "range": { "startLine": 44, "endLine": 54 },
     "title": "Monic Roots Are Integers",
-    "content": "`isInteger_of_monic_root`: a rational root of a **monic** integer polynomial is integral over $\\mathbb{Z}$ (`IsLocalization.IsInteger`).\n\n`monic_root_isInteger`: unpacking this gives an explicit integer — $\\exists z : \\mathbb{Z},\\ (z : \\mathbb{Q}) = r$. Since the leading coefficient is $1$, the denominator divides $1$, forcing $r$ to be an integer. This is the statement that $\\mathbb{Z}$ is integrally closed in $\\mathbb{Q}$, and the lever for the irrationality application."
+    "content": "`isInteger_of_monic_root`: a rational root of a **monic** integer polynomial is integral over $\\mathbb{Z}$ (`IsLocalization.IsInteger`).\n\n`monic_root_isInteger`: unpacking this gives an explicit integer — $\\exists z : \\mathbb{Z},\\ (z : \\mathbb{Q}) = r$. Since the leading coefficient is $1$, the denominator divides $1$, forcing $r$ to be an integer. This is the statement that $\\mathbb{Z}$ is integrally closed in $\\mathbb{Q}$, and the lever for the irrationality application.",
+    "mathContext": "$p$ monic, $\\mathrm{aeval}\\,r\\,p = 0 \\Rightarrow b\\mid 1 \\Rightarrow \\exists z\\in\\mathbb{Z},\\ (z:\\mathbb{Q}) = r$.",
+    "significance": "key",
+    "relatedConcepts": ["integral closure", "IsLocalization.IsInteger", "monic polynomial", "algebraic integer"],
+    "prerequisites": ["integral elements", "monic polynomials"]
+  },
+  {
+    "id": "integral-root-theorem-oq-01-no-int-sq",
+    "proofId": "integral-root-theorem-oq-01",
+    "type": "technique",
+    "range": { "startLine": 58, "endLine": 63 },
+    "title": "No integer squares to 2",
+    "content": "`no_int_sq_eq_two`: $\\forall z : \\mathbb{Z},\\ z^2 \\neq 2$. The proof bounds the candidate range by $-2 < z < 2$ — each bound from `nlinarith` fed the hint `sq_nonneg (z \\mp 2)$ (since $(z\\pm2)^2 \\ge 0$ expands to a linear consequence once $z^2 = 2$ is assumed) — then `interval_cases z` enumerates $z \\in \\{-1,0,1\\}$ and `simp_all` refutes each. This is the arithmetic obstruction that the rational-root machinery reduces $\\sqrt2$-irrationality to.",
+    "mathContext": "Assuming $z^2 = 2$: $(z-2)^2\\ge 0\\Rightarrow z<2$ and $(z+2)^2\\ge 0\\Rightarrow z>-2$; no $z\\in\\{-1,0,1\\}$ has $z^2=2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["nlinarith", "interval_cases", "sq_nonneg", "finite case analysis"],
+    "prerequisites": ["integer arithmetic", "quadratic bounds"]
   },
   {
     "id": "integral-root-theorem-oq-01-sqrt2",
     "proofId": "integral-root-theorem-oq-01",
-    "type": "theorem",
-    "range": {
-      "startLine": 66,
-      "endLine": 79
-    },
+    "type": "insight",
+    "range": { "startLine": 65, "endLine": 77 },
     "title": "Application: √2 Is Irrational",
-    "content": "`no_int_sq_eq_two`: no integer squares to $2$ — proved by bounding $-2 < z < 2$ (via `nlinarith` with `sq_nonneg (z \\mp 2)`) and `interval_cases`.\n\n`no_rat_sq_eq_two`: **$\\sqrt 2$ is irrational**. A rational $r$ with $r^2 = 2$ is a root of the monic $X^2 - C\\,2$ (`monic_X_pow_sub_C`), hence equals an integer $z$ by `monic_root_isInteger`; casting gives $z^2 = 2$, contradicting `no_int_sq_eq_two`. The same template yields $\\sqrt[n]{p}$ irrational for any prime $p$."
+    "content": "`no_rat_sq_eq_two`: **$\\sqrt 2$ is irrational**. A rational $r$ with $r^2 = 2$ is a root of the monic $X^2 - C\\,2$ (`monic_X_pow_sub_C`), hence equals an integer $z$ by `monic_root_isInteger`; casting $z^2 = 2$ back to $\\mathbb{Z}$ via `exact_mod_cast` contradicts `no_int_sq_eq_two`. The same template yields $\\sqrt[n]{p}$ irrational for any prime $p$ (root of the monic $X^n - C\\,p$ with no integer root), making this a reusable irrationality engine rather than a one-off.",
+    "mathContext": "$r^2 = 2\\Rightarrow r$ is a root of monic $X^2 - 2\\Rightarrow r = z\\in\\mathbb{Z}\\Rightarrow z^2 = 2$, contradiction. Generalizes to $\\sqrt[n]{p}\\notin\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["irrationality of √2", "monic_X_pow_sub_C", "exact_mod_cast", "nth root of a prime"],
+    "prerequisites": ["the monic-roots-are-integers corollary", "casting between Z and Q"]
   }
 ]
