@@ -23537,8 +23537,36 @@
       "lastAudited": "2026-06-25T08:05:00Z",
       "result": "clean",
       "notes": "Inversion carries circle-through-centre to a line (cospherical iff images on hyperplane); verified/original/0-ax/0-sorry, 5 theorems match meta. Original. CLEAN."
+    },
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-04": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:20:00Z",
+      "result": "clean",
+      "notes": "WZ/creative-telescoping engine + hand-verified WZ certificate for Σ C(n,k)=2ⁿ; verified/original/0-ax/0-sorry/0-native_decide, 10 theorems + 3 defs (def F, def G, abbrev rowSum) match meta. Mathlib telescoping deps disclosed in assumptions. Original infrastructure, not a wrapper. CLEAN."
+    },
+    "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:20:00Z",
+      "result": "clean",
+      "notes": "Power-map fibre sizes constant on finite abelian groups; #fibre·#{xⁿ=1}=|G| and product-of-cyclics ∏gcd(n,mᵢ); verified/original/0-ax/0-sorry, 8 theorems match leanFile. Builds on parent card_fiber_pow (disclosed). CLEAN."
+    },
+    "dini-theorem-oq-01-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:20:00Z",
+      "result": "clean",
+      "notes": "Sharp modulus sup_{x∈[0,1)}|xⁿ|=1 improving parent 1/2; verified/original/0-ax/0-sorry, 6 theorems match meta. #print axioms reports only foundational axioms (disclosed). CLEAN."
+    },
+    "ptolemys-theorem-oq-01-oq-01-oq-03-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:20:00Z",
+      "result": "clean",
+      "notes": "Discharges parent unit-circle converse axiom positive_ratio_implies_cyclic_order as a theorem; verified/original/0-ax/0-sorry, 12 theorems + 2 defs (1 def + 1 structure) match meta. #print axioms confirms axiom absent. CLEAN."
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-25T08:00:00Z"
+  "lastUpdated": "2026-06-25T08:20:00Z"
 }
