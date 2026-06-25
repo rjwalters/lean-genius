@@ -1,0 +1,129 @@
+[
+  {
+    "id": "ann-log-prod-rpow",
+    "proofId": "amgm-inequality-oq-05-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "log_prod_rpow: log(∏ xᵢ^{wᵢ}) = ∑ wᵢ·log xᵢ",
+    "content": "The logarithmic bridge. For strictly positive xᵢ, the logarithm of the weighted geometric mean equals the weighted sum of logarithms. The proof applies Real.log_prod (each factor xᵢ^{wᵢ} is positive, hence nonzero, by Real.rpow_pos_of_pos) and then Real.log_rpow on each term to turn log(xᵢ^{wᵢ}) into wᵢ·log xᵢ. This is what linearises the multiplicative geometric mean into the additive form on which Jensen's inequality acts.",
+    "mathContext": "$\\log\\!\\left(\\prod_i x_i^{w_i}\\right) = \\sum_i w_i \\log x_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.log_prod",
+      "Real.log_rpow",
+      "weighted geometric mean"
+    ],
+    "prerequisites": [
+      "Real.log_prod",
+      "Real.log_rpow",
+      "Real.rpow_pos_of_pos"
+    ]
+  },
+  {
+    "id": "ann-prod-rpow-pos",
+    "proofId": "amgm-inequality-oq-05-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 55
+    },
+    "type": "theorem",
+    "title": "prod_rpow_pos: positivity of the geometric mean",
+    "content": "The weighted geometric mean ∏ xᵢ^{wᵢ} of positive reals is positive, since it is a finite product of positive rpows (Finset.prod_pos with Real.rpow_pos_of_pos). Needed so that the geometric mean lies in the domain (0,∞) where log is injective.",
+    "mathContext": "$\\prod_i x_i^{w_i} > 0$ when each $x_i > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.prod_pos",
+      "Real.rpow_pos_of_pos"
+    ],
+    "prerequisites": [
+      "Finset.prod_pos"
+    ]
+  },
+  {
+    "id": "ann-mean-pos",
+    "proofId": "amgm-inequality-oq-05-oq-02",
+    "range": {
+      "startLine": 58,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "mean_pos: positivity of the arithmetic mean",
+    "content": "The weighted arithmetic mean ∑ wᵢxᵢ is positive: each summand wᵢxᵢ is a product of positive numbers, and the index set is nonempty, so Finset.sum_pos applies. Positivity places the arithmetic mean in the domain of log, the other endpoint of the bridge.",
+    "mathContext": "$\\sum_i w_i x_i > 0$ over a nonempty index set with $w_i, x_i > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Finset.sum_pos",
+      "weighted arithmetic mean"
+    ],
+    "prerequisites": [
+      "Finset.sum_pos"
+    ]
+  },
+  {
+    "id": "ann-weighted-amgm-eq-iff",
+    "proofId": "amgm-inequality-oq-05-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "weighted_amgm_eq_iff: equality iff every xⱼ equals the mean",
+    "content": "The headline result (canonical form). For positive weights summing to 1 and positive x, the weighted geometric mean equals the weighted arithmetic mean iff every xⱼ equals that common mean. Proof: the index set is nonempty (weights sum to 1 ≠ 0), so both means are positive; by injectivity of log on (0,∞) (Real.log_injOn_pos) the multiplicative equality is equivalent to the equality of logs; rewriting the geometric side by log_prod_rpow reduces this to the additive equality log(∑ wᵢxᵢ) = ∑ wᵢ·log xᵢ, which is exactly the equality case of Jensen for the strictly concave Real.log. Mathlib's StrictConcaveOn.map_sum_eq_iff applied to strictConcaveOn_log_Ioi, with smul = mul on ℝ, finishes the equivalence.",
+    "mathContext": "$\\prod_i x_i^{w_i} = \\sum_i w_i x_i \\iff \\forall j,\\; x_j = \\sum_i w_i x_i$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "StrictConcaveOn.map_sum_eq_iff",
+      "strictConcaveOn_log_Ioi",
+      "Real.log_injOn_pos",
+      "equality case of Jensen's inequality"
+    ],
+    "prerequisites": [
+      "StrictConcaveOn.map_sum_eq_iff",
+      "strictConcaveOn_log_Ioi",
+      "Real.log_injOn_pos"
+    ]
+  },
+  {
+    "id": "ann-weighted-amgm-eq-iff-pairwise",
+    "proofId": "amgm-inequality-oq-05-oq-02",
+    "range": {
+      "startLine": 90,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "weighted_amgm_eq_iff_pairwise: equality iff all xⱼ equal",
+    "content": "The familiar phrasing. Equality in weighted AM-GM holds iff all the xⱼ are pairwise equal. Derived from the canonical form: if all xⱼ equal the mean they are pairwise equal; conversely, if the sequence is constant then its weighted mean (with weights summing to 1) equals that constant, so each xⱼ equals the mean. This recovers the textbook statement that the geometric and arithmetic means coincide exactly for constant data.",
+    "mathContext": "$\\prod_i x_i^{w_i} = \\sum_i w_i x_i \\iff \\forall i\\,j,\\; x_i = x_j$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "weighted AM-GM equality case",
+      "constant sequence"
+    ],
+    "prerequisites": [
+      "weighted_amgm_eq_iff",
+      "Finset.sum_mul"
+    ]
+  },
+  {
+    "id": "ann-weighted-amgm-eq-of-const",
+    "proofId": "amgm-inequality-oq-05-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "weighted_amgm_eq_of_const: the trivial direction",
+    "content": "Recorded explicitly for completeness: if all xⱼ equal a common value c, the weighted geometric and arithmetic means coincide. Immediate from the pairwise equality characterisation.",
+    "mathContext": "$(\\forall i,\\, x_i = c) \\implies \\prod_i x_i^{w_i} = \\sum_i w_i x_i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "weighted AM-GM equality case"
+    ],
+    "prerequisites": [
+      "weighted_amgm_eq_iff_pairwise"
+    ]
+  }
+]
