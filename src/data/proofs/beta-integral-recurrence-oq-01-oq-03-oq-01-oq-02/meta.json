@@ -97,6 +97,43 @@
       "Does the variance formula (m+1)(n+1)/((m+n+2)²(m+n+3)) reproduce, after the substitution m ↦ a-1, n ↦ b-1, Mathlib's real Beta-distribution variance for integer a, b, and can the equality be stated against a Mathlib pdf if one is added?"
     ]
   },
+  "sections": [
+    {
+      "id": "module-docstring-and-setup",
+      "title": "Module docstring, imports, and the B abbreviation",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "The module docstring frames the goal — derive the mean, second moment, and variance of the integer Beta(m+1,n+1) distribution from the single parent identity ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!. Imports the parent leaf `Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01` and `Mathlib.Tactic`, opens `intervalIntegral`/`MeasureTheory`, enters the namespace, and introduces a shorthand `B` for the parent's off-diagonal integer Beta integral."
+    },
+    {
+      "id": "normalising-pos",
+      "title": "normalising_pos: the Beta value is positive",
+      "startLine": 44,
+      "endLine": 56,
+      "summary": "Proves 0 < ∫₀¹ xᵐ(1-x)ⁿ by rewriting to the closed form m!·n!/(m+n+1)! (parent's integral_offdiag_eq_factorial) and applying Nat.factorial_pos. This guarantees the moment ratios below divide by a nonzero quantity."
+    },
+    {
+      "id": "mean-eq",
+      "title": "mean_eq: E[X] = (m+1)/(m+n+2)",
+      "startLine": 57,
+      "endLine": 82,
+      "summary": "The parent's second open question. The weighted numerator x·xᵐ(1-x)ⁿ = xᵐ⁺¹(1-x)ⁿ (integral_congr + ring) shifts the index m ↦ m+1, so the parent closed form applies to both numerator and denominator; Nat.factorial_succ peels the factorials and field_simp yields (m+1)/(m+n+2)."
+    },
+    {
+      "id": "second-moment-eq",
+      "title": "second_moment_eq: E[X²] = (m+1)(m+2)/((m+n+2)(m+n+3))",
+      "startLine": 83,
+      "endLine": 108,
+      "summary": "The weight x² shifts m ↦ m+2; two applications of Nat.factorial_succ peel (m+2)! and (m+n+3)!, and field_simp produces the ascending-factor ratio α(α+1)/((α+β)(α+β+1)) at α=m+1, β=n+1."
+    },
+    {
+      "id": "variance-eq",
+      "title": "variance_eq: Var(X) = (m+1)(n+1)/((m+n+2)²(m+n+3))",
+      "startLine": 109,
+      "endLine": 122,
+      "summary": "Rewrites Var = E[X²] − E[X]² by the two proven moments; the bracketed numerator (m+2)(m+n+2) − (m+1)(m+n+3) collapses to n+1 (field_simp, ring), giving the symmetric Beta variance αβ/((α+β)²(α+β+1))."
+    }
+  ],
   "references": [
     {
       "authors": "Johnson, N. L.; Kotz, S.; Balakrishnan, N.",
