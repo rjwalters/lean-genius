@@ -414,6 +414,7 @@ import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle
 import Proofs.BinomialTheoremOQ01OQ01
+import Proofs.BinomialTheoremOQ01OQ01OQ02
 import Proofs.BinomialTheoremOQ02
 import Proofs.BinomialTheoremOQ02OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ01
@@ -3908,6 +3909,7 @@ import Proofs.SpernerNDimMathlib
 import Proofs.SpernerNDimMathlibOQ01
 import Proofs.SpernerNDimMathlibOQ01OQ04
 import Proofs.SpernerNDimMathlibOQ02
+import Proofs.SpernerNDimMathlibOQ03
 import Proofs.SpernerNDimOQ01
 import Proofs.SpernerNDimOQ03
 import Proofs.SpernerNDimOQ03OQ01

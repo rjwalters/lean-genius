@@ -1,7 +1,7 @@
 {
   "slug": "sperner-ndim-mathlib-oq-03",
   "title": "Generalize to the Borsuk-Ulam theorem: does the abstract cell complex framewo...",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,24 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-06-09",
-    "iteration": 1,
-    "focus": "Reading the source gallery proof `sperner-ndim-mathlib` and translating the open question into a precise Lean statement.",
+    "iteration": 2,
+    "focus": "Base case (1-D Tucker) proved with 0 axioms; next is an AntipodalCellComplex for higher dimensions.",
     "blockers": [],
-    "nextAction": "",
+    "nextAction": "Define AntipodalCellComplex (free ℤ/2-action on boundary) and attempt n-dim Tucker parity via even_card_fpf_invol.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "PROGRESS: 1-D Tucker (combinatorial Borsuk–Ulam) proved, 0 axioms/0 sorries; antipodal parity engine isolated; higher-dim obstruction identified.",
+    "builtItems": [
+      "signChanges + signChanges_succ in SpernerNDimMathlibOQ03.lean (complementary-edge count and its recurrence)",
+      "signChanges_odd_iff: antipodal parity engine (sign-change count odd ↔ endpoints disagree) — Tucker analogue of sperner_parity",
+      "tucker_one_dim / tucker_one_dim_antipodal / tucker_one_dim_int: 1-D Tucker (Bool, antipodal, and ±1-integer phrasings), 0 axioms"
+    ],
+    "insights": [
+      "Borsuk–Ulam combinatorial analogue is Tucker’s lemma (Tucker : Borsuk–Ulam :: Sperner : Brouwer)",
+      "In dimension 1 the interior door-pairing involution degenerates; parity = boundary endpoint mismatch (telescoping mod 2)",
+      "Proving the count is ODD (not just existence) is the reusable content mirroring sperner_parity"
+    ],
+    "mathlibGaps": [
+      "No combinatorial Tucker / discrete Borsuk–Ulam in Mathlib",
+      "CellComplex (parent) carries no antipodal involution α on the boundary subcomplex — the datum Tucker needs"
+    ],
+    "nextSteps": [
+      "Define AntipodalCellComplex extending CellComplex with free ℤ/2-action α (α∘α=id) compatible with vertices/adj",
+      "Attempt n-dim Tucker parity theorem reusing even_card_fpf_invol verbatim; formalize 2-D Tucker via Freund–Todd special simplices",
+      "Derive discrete then continuous Borsuk–Ulam by subdivision limit (mirror sperner-ndim-mathlib-oq-02)"
+    ],
     "markdown": "# Knowledge: sperner-ndim-mathlib-oq-03\n\n## Established Facts\n\n(None yet — populated during OBSERVE.)\n\n## Open Questions Within This Problem\n\n- The main open question (see `problem.md`).\n\n## Failed Approaches\n\n(None yet.)\n\n## Promising Leads\n\n(None yet.)\n"
   },
   "tags": [
@@ -54,5 +69,5 @@
     "mathlib": []
   },
   "started": "2026-06-13T12:52:51.881Z",
-  "lastUpdate": "2026-06-13T12:52:52.113Z"
+  "lastUpdate": "2026-06-25T00:00:00.000Z"
 }
