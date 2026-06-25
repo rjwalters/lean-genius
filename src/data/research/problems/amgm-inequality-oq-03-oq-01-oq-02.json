@@ -1,8 +1,8 @@
 {
   "slug": "amgm-inequality-oq-03-oq-01-oq-02",
   "title": "Contribute negative power mean monotonicity to Mathlib",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-05T20:06:18-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — completed and shipped as PR #29576.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETED. Proved Real.rpow_mean_le_rpow_mean: a single self-contained, Mathlib-idiom theorem giving the generalized mean inequality M_p ≤ M_q for ALL nonzero real p ≤ q (positive, negative, and sign-crossing), stated on the raw expression (∑ wᵢzᵢ^p)^(1/p) — exactly the gap recorded in the Mathlib.Analysis.MeanInequalitiesPow TODO. Verified: 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries. Shipped as PR #29576.",
+    "builtItems": [
+      "proofs/Proofs/AmgmInequalityOQ03OQ01OQ02.lean — 254 lines, 1 theorem + 10 lemmas + 1 private def, compiles against Mathlib v4.26",
+      "Real.rpow_mean_le_rpow_mean — headline theorem on raw expressions covering all nonzero p ≤ q",
+      "Geometric-mean bridge lemmas geom_mean_le_pmean_of_pos (G ≤ M_q, q>0) and pmean_le_geom_mean_of_neg (M_p ≤ G, p<0)",
+      "Duality identity pmean_neg_inv: M_p(z) = M_{-p}(z⁻¹)⁻¹, plus positivity helpers and inv_anti_of_le",
+      "Gallery entry src/data/proofs/amgm-inequality-oq-03-oq-01-oq-02/ (meta.json + annotations.json)"
+    ],
+    "insights": [
+      "Stating the theorem on the bare (∑ wᵢzᵢ^p)^(1/p) expression (no custom power-mean def in the public statement) is what makes it a drop-in upstream contribution matching Real.arith_mean_le_rpow_mean.",
+      "The duality M_p(z)=M_{-p}(z⁻¹)⁻¹ is an involution on the exponent, so the entire negative-exponent theory is a mechanical mirror of the positive case (Jensen) plus weighted AM-GM.",
+      "The geometric mean G=∏zᵢ^wᵢ is the unavoidable bridge for the sign-crossing case p<0<q, since (∑ wᵢzᵢ^p)^(1/p) is undefined at p=0 but G is its limit and satisfies M_p ≤ G ≤ M_q.",
+      "G ≤ M_q for q>0 is weighted AM-GM in disguise: apply it to zᵢ^q and collapse ∏(zᵢ^q)^wᵢ=(∏zᵢ^wᵢ)^q via finset_prod_rpow."
+    ],
+    "mathlibGaps": [
+      "Fills the explicit TODO in Mathlib.Analysis.MeanInequalitiesPow: 'generalized mean inequality with any p ≤ q, including negative numbers'.",
+      "Remaining TODO items: equality characterization (M_p = M_q ↔ all zᵢ equal) and the p→0 geometric-mean limit; NNReal/ENNReal versions."
+    ],
+    "nextSteps": [
+      "Optional upstream PR: drop the private pmean abbreviation, add the equality characterization, and provide NNReal/ENNReal variants."
+    ],
     "markdown": "# Knowledge Base: amgm-inequality-oq-03-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
