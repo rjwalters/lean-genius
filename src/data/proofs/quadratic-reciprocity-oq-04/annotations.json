@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-qr-oq04-overview",
+    "proofId": "quadratic-reciprocity-oq-04",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "What the Jacobi Symbol Keeps and Loses",
+    "content": "The Jacobi symbol J(a | b) extends the Legendre symbol to odd b by multiplicativity over the prime factorization, and keeps the quadratic reciprocity law — so it stays efficiently computable without factoring b. But it loses residue-detection: for composite b, J(a | b) = 1 no longer implies that a is a square mod b. Mathlib has the residue equivalence only for prime moduli.",
+    "mathContext": "For prime p, J(a|p) = legendreSym p a detects squares; for composite b only J = -1 ⟹ non-square survives.",
+    "significance": "key",
+    "relatedConcepts": ["jacobi-symbol", "legendre-symbol", "quadratic-reciprocity", "quadratic-residue"],
+    "prerequisites": ["Legendre symbol", "Jacobi symbol multiplicativity and reciprocity"]
+  },
+  {
+    "id": "ann-qr-oq04-evaluation",
+    "proofId": "quadratic-reciprocity-oq-04",
+    "range": { "startLine": 49, "endLine": 64 },
+    "type": "technique",
+    "title": "Computing J(2 | 15) and Its Factorization",
+    "content": "jacobiSym_two_fifteen evaluates J(2 | 15) = 1 using Mathlib's reciprocity-based norm_num extension (axiom-clean, not native_decide). jacobiSym_two_fifteen_factor exhibits the multiplicative decomposition J(2 | 15) = J(2 | 3)·J(2 | 5) = (-1)(-1), the mechanism by which two Legendre non-residues produce a Jacobi value of +1.",
+    "mathContext": "J(2|15) = J(2|3)·J(2|5) = (-1)(-1) = 1.",
+    "significance": "standard",
+    "relatedConcepts": ["jacobiSym.mul_right", "norm_num extension"],
+    "prerequisites": ["jacobiSym.mul_right"]
+  },
+  {
+    "id": "ann-qr-oq04-nonsquare",
+    "proofId": "quadratic-reciprocity-oq-04",
+    "range": { "startLine": 65, "endLine": 68 },
+    "type": "technique",
+    "title": "2 Is Not a Square mod 15",
+    "content": "two_nonsquare_mod_fifteen is decided over the finite ring ℤ/15: the squares are {0,1,4,6,9,10}, and 2 is not among them. This uses kernel decide (no native_decide), so it adds no axioms.",
+    "mathContext": "2 ∉ {x² : x ∈ ℤ/15}.",
+    "significance": "standard",
+    "relatedConcepts": ["quadratic residues", "ZMod", "decidability"],
+    "prerequisites": ["IsSquare over a finite ring"]
+  },
+  {
+    "id": "ann-qr-oq04-counterexample",
+    "proofId": "quadratic-reciprocity-oq-04",
+    "range": { "startLine": 69, "endLine": 86 },
+    "type": "concept",
+    "title": "Converse Fails; One-Way Test Survives",
+    "content": "jacobi_one_not_isSquare_of_composite packages the witness a = 2, b = 15 into the statement that there is an odd composite b with J(a | b) = 1 yet a not a square mod b — so Mathlib's prime-only isSquare_of_jacobiSym_eq_one is sharp. jacobiSym_neg_one_imp_nonsquare re-exports the surviving direction (J = -1 ⟹ non-square, valid for all b), framing exactly what detection remains. These J=1 non-squares are the Euler liars of the Solovay–Strassen test.",
+    "mathContext": "∃ a b, ¬Prime b ∧ Odd b ∧ J(a|b)=1 ∧ ¬IsSquare (a : ZMod b); and J(a|b)=-1 ⇒ ¬IsSquare.",
+    "significance": "key",
+    "relatedConcepts": ["Euler liars", "Solovay–Strassen", "primality testing"],
+    "prerequisites": ["ZMod.nonsquare_of_jacobiSym_eq_neg_one"]
+  }
+]
