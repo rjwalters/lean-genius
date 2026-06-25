@@ -106,17 +106,17 @@ The correct answer is m ≈ n^α vertices:
 - Upper bound: Complete bipartite graphs K_{n^α, n^{1-α}} show we can't do better
 - Lower bound: There always exists a 6-balanced subgraph on ≫ n^α vertices -/
 
-/-- **Axiom (Jiang-Longbrake 2025 - Upper Bound):**
+/- **Jiang-Longbrake 2025 - Upper Bound:**
     Complete bipartite graphs show the optimal bound is at most n^α vertices.
 
     For K_{n^α, n^{1-α}}, any balanced subgraph has at most O(n^α) vertices
     from the smaller side. -/
-/-- **Axiom (Jiang-Longbrake 2025 - Lower Bound):**
+/- **Jiang-Longbrake 2025 - Lower Bound:**
     Every graph with n^{1+α} edges contains a 6-balanced subgraph on
     at least c·n^α vertices with proportionally many edges.
 
     The constant 6 is explicit in their proof. -/
-/-- **Erdős Problem 1077** (Resolved)
+/- **Erdős Problem 1077** (Resolved)
 
     The original conjecture (as literally stated) is FALSE.
 
@@ -141,5 +141,71 @@ formulation from [ErSi70]. The key clarifications:
 3. The question is really about the dependence of m on n
 
 Jiang-Longbrake (2025) provide a complete resolution showing m = Θ(n^α). -/
+
+/- ## Verified structural results on the balance predicates
+
+This section records machine-checked facts about the two balance predicates
+above. The headline observation is that the per-pair disjunctive predicate
+`IsBalanced` is **degenerate**: it holds for *every* graph as soon as `1 ≤ D`,
+so it does NOT faithfully capture "D-almost-regular". The global predicate
+`IsBalanced'` (max-degree ≤ D · min-degree) is the correct formalization, and
+the lemmas below establish its basic order-theoretic behaviour. -/
+
+/-- The minimum degree never exceeds the maximum degree. -/
+theorem minDegree_le_maxDegree {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] :
+    minDegree G ≤ maxDegree G := by
+  unfold minDegree maxDegree
+  apply Finset.min'_le_max'
+
+/-- **The disjunctive predicate `IsBalanced` is degenerate.**
+    For any graph whatsoever, `IsBalanced G D` holds as soon as `1 ≤ D`.
+    Reason: for any pair `v, w`, the smaller of the two degrees `d` satisfies
+    `d ≤ D · d` (since `1 ≤ D`), so one disjunct is automatically true.
+    Consequently the per-pair "OR" formulation carries no information, and the
+    faithful notion of D-almost-regularity is `IsBalanced'`. -/
+theorem isBalanced_of_one_le {V : Type*} [Fintype V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {D : ℕ} (hD : 1 ≤ D) :
+    IsBalanced G D := by
+  intro v w
+  rcases le_total (G.degree v) (G.degree w) with h | h
+  · left
+    exact h.trans (Nat.le_mul_of_pos_left _ hD)
+  · right
+    exact h.trans (Nat.le_mul_of_pos_left _ hD)
+
+/-- `IsBalanced'` is monotone in the balance parameter `D`:
+    a `D`-balanced graph is also `D'`-balanced for every `D' ≥ D`. -/
+theorem isBalanced'_mono {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {D D' : ℕ} (h : D ≤ D') :
+    IsBalanced' G D → IsBalanced' G D' := by
+  unfold IsBalanced'
+  intro hD
+  calc maxDegree G ≤ D * minDegree G := hD
+    _ ≤ D' * minDegree G := by gcongr
+
+/-- A `k`-regular graph has equal maximum and minimum degree. -/
+theorem maxDegree_eq_minDegree_of_regular {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ} (h : G.IsRegularOfDegree k) :
+    maxDegree G = minDegree G := by
+  unfold maxDegree minDegree
+  have himg : Finset.univ.image (fun v => G.degree v) = {k} := by
+    apply Finset.eq_singleton_iff_unique_mem.mpr
+    refine ⟨?_, ?_⟩
+    · obtain ⟨v⟩ := ‹Nonempty V›
+      simp only [Finset.mem_image]
+      exact ⟨v, Finset.mem_univ _, h.degree_eq v⟩
+    · intro x hx
+      simp only [Finset.mem_image] at hx
+      obtain ⟨v, _, rfl⟩ := hx
+      exact h.degree_eq v
+  simp only [himg, Finset.max'_singleton, Finset.min'_singleton]
+
+/-- A regular graph is `1`-balanced (in the faithful `IsBalanced'` sense):
+    regularity is exactly the `D = 1` case of bounded degree variation. -/
+theorem regular_isBalanced'_one {V : Type*} [Fintype V] [Nonempty V] [DecidableEq V]
+    (G : SimpleGraph V) [DecidableRel G.Adj] {k : ℕ} (h : G.IsRegularOfDegree k) :
+    IsBalanced' G 1 :=
+  (one_balanced_iff_regular G).mpr (maxDegree_eq_minDegree_of_regular G h)
 
 end Erdos1077
