@@ -1,0 +1,113 @@
+{
+  "id": "composition-parts-choose-oq-01-oq-01-oq-01",
+  "title": "Composition Parts OQ-01-OQ-01-OQ-01: The Second Moment and Variance of the Number of Parts of a Composition",
+  "slug": "composition-parts-choose-oq-01-oq-01-oq-01",
+  "description": "A composition of a natural number n is an ordered tuple of positive integers summing to n (Mathlib's Composition n); its number of parts is c.length. The grandparent counts compositions (card (Composition n) = 2^(n−1)), the parent grades that count by part number (C(n−1, k−1) compositions of n into k parts), and the direct parent computes the first moment (total parts (n+1)·2^(n−2), mean (n+1)/2). This entry computes the second moment of the part-count and hence its variance. The headline second_moment proves that, summed over all 2^(n−1) compositions of n ≥ 2, the total of the squared part-counts satisfies 4·∑_{c} c.length² = n·(n+3)·2^(n−1) (the factor 4 keeps the statement in ℕ without truncating the 2^(n−3) of the exact form n(n+3)2^(n−3)). From this, variance proves that the variance of the number of parts under the uniform distribution on compositions is exactly (n−1)/4: (1/2^(n−1))·∑_c (c.length − (n+1)/2)² = (n−1)/4. The route mirrors the first moment: transport the sum along the gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) via the bridge length_eq_card_gaps (length c = (gaps c).card + 1), reducing ∑_c c.length² to ∑_{s ⊆ Fin (n−1)} (|s|+1)² = ∑_s |s|² + 2∑_s |s| + 2^(n−1). The new arithmetic core is the second-moment subset sum ∑_{s ⊆ [m]} |s|² (sum_finset_card_sq), itself reduced to the binomial identity 4·∑_k C(m,k)·k² = m(m+1)2^m (sum_choose_mul_sq), proved by the absorption rule (k+1)·C(m,k+1) = m·C(m,k) applied once to drop a factor k+1, reducing the k²-sum to the parent's k-sum plus ∑_k C(m,k) = 2^m. The variance follows by expanding (X − μ)² and feeding in the first moment (total_parts), second moment, and count (composition_card). Mathlib has ∑_k C(m,k) = 2^m but neither the weighted binomial sums ∑ k·C(m,k), ∑ k²·C(m,k) nor any moment of the part-count distribution of a composition; all of that is original content here.",
+  "leanFile": {
+    "imports": [
+      "Proofs.CompositionPartsChooseOQ01OQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset",
+      "CompositionPartsChooseOQ01OQ01"
+    ],
+    "namespace": "CompositionPartsChooseOQ01OQ01OQ01",
+    "lineCount": 213,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CompositionPartsChooseOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Composition_(combinatorics)",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CompositionPartsChooseOQ01OQ01OQ01.lean",
+    "tags": [
+      "combinatorics",
+      "enumerative-combinatorics",
+      "compositions",
+      "counting",
+      "binomial-coefficients",
+      "variance",
+      "second-moment"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "relatedProblems": [
+      {
+        "id": "composition-parts-choose-oq-01-oq-01",
+        "relationship": "Direct parent: that entry computes the first moment of the number of parts (total (n+1)·2^(n−2), mean (n+1)/2). This entry computes the second moment 4·∑ length² = n(n+3)2^(n−1) and the variance (n−1)/4, reusing the same gap bridge length = (gaps).card + 1 and the subset-sum reduction, and feeding the parent's total_parts and mean into the variance computation."
+      },
+      {
+        "id": "composition-parts-choose-oq-01",
+        "relationship": "Grandparent: the part-graded count C(n−1, k−1) of compositions of n into exactly k parts — the distribution whose second moment and variance are computed here."
+      },
+      {
+        "id": "composition-card-2pow-oq-01",
+        "relationship": "Great-grandparent: the ungraded total card (Composition n) = 2^(n−1), used as the count of compositions (the 2^(n−1) term in the second-moment expansion) and the denominator of the variance."
+      }
+    ],
+    "axiomCount": 0,
+    "lineCount": 213,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. All four named theorems (sum_choose_mul_sq, sum_finset_card_sq, second_moment, variance) were verified with #print axioms to depend only on the foundational propext / Classical.choice / Quot.sound. Mathlib contains ∑_k C(m,k) = 2^m (Nat.sum_range_choose) and the absorption rule Nat.add_one_mul_choose_eq, but neither the second-moment binomial sum 4∑ k²C(m,k) = m(m+1)2^m nor any moment of the part-count distribution of a composition; both are original content here, built on the parent's gapsEquiv, length_eq_card_gaps, sum_choose_mul, sum_finset_card together with Finset.sum_powerset_apply_card, Equiv.sum_comp, and Fintype.card_finset. The results are unconditional; the hypothesis n ≥ 2 is the natural domain (for n = 1 the single composition has one part, variance 0, and the closed forms degenerate under truncated subtraction). The headline second moment is stated multiplied by 4 to remain in ℕ; the variance is stated over ℚ where the division is exact.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Compositions of n are ordered sequences of positive parts summing to n. There are 2^(n−1) of them, C(n−1, k−1) with exactly k parts. Once the distribution of the number of parts is known — symmetric about its mean (n+1)/2 — the next natural statistics are its spread: the second moment ∑ length² and the variance. Treating a uniformly random composition of n as a random variable X = (number of parts), the part-count is distributed as 1 + Binomial(n−1, 1/2) (each of the n−1 internal gaps is independently cut or not), so X has mean (n+1)/2 and variance (n−1)/4 — exactly the Binomial(n−1, 1/2) variance. This entry proves both the integer second-moment identity and the rational variance directly from the combinatorics, without invoking probability theory.",
+    "problemStatement": "Across all 2^(n−1) compositions of n, compute the second moment of the number of parts and its variance. Show, for n ≥ 2,\n\n$$4\\sum_{c : \\mathrm{Composition}\\ n} (c.\\mathrm{length})^2 = n\\,(n+3)\\,2^{\\,n-1}, \\qquad \\mathrm{Var}(X) = \\frac{1}{2^{\\,n-1}}\\sum_{c}\\Bigl(c.\\mathrm{length} - \\tfrac{n+1}{2}\\Bigr)^2 = \\frac{n-1}{4}.$$",
+    "text": "The part-count of a composition equals one plus the number of internal gaps it cuts, and a composition of n corresponds bijectively to the subset of the n−1 internal gaps it cuts (gapsEquiv : Composition n ≃ Finset (Fin (n−1))). Transporting the squared part-count along this bijection reduces the second moment to the subset sum ∑_{s ⊆ [m]} (|s|+1)², and hence to the three elementary subset sums ∑|s|², ∑|s|, ∑1. Mathlib supplies ∑_k C(m,k) = 2^m but not the weighted sums; the second-moment binomial identity 4∑_k k²C(m,k) = m(m+1)2^m is established here. The variance then follows from the second moment, the parent's first moment, and the count of compositions.",
+    "proofStrategy": "sum_choose_mul_sq proves 4·∑_{k≤m} C(m,k)·k² = m(m+1)2^m: peel the k = 0 term (Finset.sum_range_succ'), then for the shifted sum use C(m,k+1)·(k+1)² = (m)·(C(m−1,k)·(k+1)) via the absorption rule Nat.add_one_mul_choose_eq (which drops one factor k+1), split C(m−1,k)·(k+1) = C(m−1,k)·k + C(m−1,k) into the parent's sum_choose_mul (= (m−1)·2^(m−2)) and Nat.sum_range_choose (= 2^(m−1)), and close by ring after a second case split to resolve the 2^(m−1). sum_finset_card_sq transports this to ∑_{s ⊆ Fin m} |s|² = via Finset.powerset_univ and Finset.sum_powerset_apply_card. second_moment rewrites ∑_c c.length² through the bridge length_eq_card_gaps as ∑_c ((gapsEquiv n c).card + 1)², reindexes by Equiv.sum_comp to ∑_{s : Finset (Fin (n−1))} (|s|+1)², expands (|s|+1)² = |s|² + 2|s| + 1, and combines sum_finset_card_sq, sum_finset_card and the count 2^(n−1) (Fintype.card_finset); the closed form n(n+3)2^(n−1) follows by ring after substituting n = M + 2. variance expands ∑_c (length − μ)² = ∑ length² − 2μ∑ length + (card)μ² with μ = (n+1)/2 over ℚ, substitutes the second moment, the parent's total_parts and composition_card, and closes with field_simp and ring.",
+    "keyInsights": [
+      "**The variance is the Binomial(n−1, 1/2) variance.** The part-count of a composition is 1 + (number of cut gaps), and each of the n−1 internal gaps is cut independently, so X − 1 ~ Binomial(n−1, 1/2). The mean (n+1)/2 and variance (n−1)/4 are exactly the shifted-Binomial mean and variance — recovered here purely combinatorially, by transporting the moments along the gap bijection rather than invoking probability theory.",
+      "**The second moment collapses to three subset sums.** Under the gap bijection, ∑_c c.length² becomes ∑_{s ⊆ Fin (n−1)} (|s|+1)² = ∑_s |s|² + 2∑_s |s| + ∑_s 1, reducing everything to the subset-size second moment ∑|s|², the first moment ∑|s| = m·2^(m−1) (the parent's), and the count ∑1 = 2^m.",
+      "**4∑ k²C(m,k) = m(m+1)2^m from a single absorption.** The arithmetic core sum_choose_mul_sq is proved by applying the absorption rule (k+1)·C(m,k+1) = m·C(m−1,k) once: it lowers the troublesome k² to (k+1) inside an (m−1)-binomial, reducing the second-moment sum to the already-known first-moment sum plus the plain binomial sum. Stating it times 4 sidesteps the truncated ℕ-subtraction in the exact form m(m+1)2^(m−2).",
+      "**Mathlib stops at ∑ C(m,k) = 2^m.** Neither the weighted binomial sums ∑ k·C(m,k), ∑ k²·C(m,k) nor any moment of the part-count of a composition is in Mathlib; the second-moment identity and the variance are the original content of this entry, extending the parent's first moment."
+    ],
+    "prerequisites": [
+      "Compositions of a natural number (Mathlib's Composition n), the number of parts c.length, and the gap bijection gapsEquiv : Composition n ≃ Finset (Fin (n−1)) with the bridge length c = (gaps c).card + 1 (from the parent entry)",
+      "Finite-sum reindexing along an equivalence (Equiv.sum_comp) and the powerset-by-cardinality grouping Finset.sum_powerset_apply_card",
+      "Binomial identities: the absorption rule Nat.add_one_mul_choose_eq, ∑_{j=0}^m C(m,j) = 2^m (Nat.sum_range_choose), and the parent's ∑_k k·C(m,k) = m·2^(m−1)",
+      "Variance as a second-moment computation: Var(X) = E[X²] − (E[X])², expanded as (1/N)∑(X−μ)² with μ the mean, cleared over ℚ with field_simp using card (Composition n) = 2^(n−1) ≠ 0"
+    ]
+  },
+  "sections": [
+    {
+      "id": "second-moment-binomial",
+      "title": "The Second-Moment Binomial Sum",
+      "startLine": 71,
+      "endLine": 124,
+      "mathContext": "$4\\sum_{k} k^2\\binom{m}{k} = m(m+1)2^m$ and $4\\sum_{s \\subseteq \\mathrm{Fin}\\,m} \\#s^2 = m(m+1)2^m$.",
+      "summary": "sum_choose_mul_sq proves 4·∑_{k=0}^m k²·C(m,k) = m(m+1)2^m by peeling the k = 0 term and applying the absorption identity (k+1)·C(m,k+1) = m·C(m−1,k) (Nat.add_one_mul_choose_eq) once, lowering the k²-sum to ∑_k C(m−1,k)·(k+1) = ∑_k C(m−1,k)·k + ∑_k C(m−1,k), evaluated by the parent's sum_choose_mul and Nat.sum_range_choose; a final case split resolves the 2^(m−1) and ring closes. The factor 4 keeps the identity in ℕ for all m. sum_finset_card_sq transports this to the subset sum ∑_{s ⊆ Fin m} |s|² via Finset.powerset_univ and Finset.sum_powerset_apply_card."
+    },
+    {
+      "id": "second-moment",
+      "title": "The Second Moment of the Number of Parts",
+      "startLine": 126,
+      "endLine": 170,
+      "mathContext": "$4\\sum_{c} (c.\\mathrm{length})^2 = n(n+3)2^{n-1}$ for $n \\ge 2$.",
+      "summary": "second_moment rewrites ∑_c c.length² through length_eq_card_gaps as ∑_c ((gapsEquiv n c).card + 1)², reindexes by Equiv.sum_comp to ∑_{s : Finset (Fin (n−1))} (|s|+1)², expands (|s|+1)² = |s|² + 2|s| + 1, and combines the three subset sums — sum_finset_card_sq, the parent's sum_finset_card (∑|s| = m·2^(m−1)), and the count ∑1 = 2^(n−1) (Fintype.card_finset) — to give n(n+3)2^(n−1) by ring after substituting n = M + 2."
+    },
+    {
+      "id": "variance",
+      "title": "The Variance",
+      "startLine": 172,
+      "endLine": 211,
+      "mathContext": "$\\mathrm{Var}(X) = \\tfrac{1}{2^{n-1}}\\sum_c (c.\\mathrm{length} - \\tfrac{n+1}{2})^2 = \\tfrac{n-1}{4}$ for $n \\ge 2$.",
+      "summary": "variance expands ∑_c (length − μ)² = ∑ length² − 2μ∑ length + (card)·μ² over ℚ with μ = (n+1)/2 (Finset.mul_sum, sum_sub_distrib, sum_add_distrib), substitutes the second moment (divided by 4), the parent's first moment total_parts, and composition_card for the count, then clears denominators with field_simp and closes by ring after substituting n = M + 2 — yielding exactly (n−1)/4, the Binomial(n−1, 1/2) variance."
+    }
+  ],
+  "conclusion": "The second moment and variance of the number of parts of a composition are formalised sorry-free and axiom-free. Across all 2^(n−1) compositions of n ≥ 2, the total of the squared part-counts is 4·∑ c.length² = n(n+3)2^(n−1) (second_moment) and the variance of the number of parts under the uniform distribution is exactly (n−1)/4 (variance) — the variance of 1 + Binomial(n−1, 1/2), reflecting that each of the n−1 internal gaps is cut independently. The content beyond Mathlib is the second-moment binomial identity 4∑ k²C(m,k) = m(m+1)2^m (sum_choose_mul_sq) — proved by a single application of the absorption rule reducing it to the parent's first-moment sum — and its assembly, via the gap bijection, into the second moment and variance of the part-count statistic. This completes the first- and second-moment description of the part-count distribution begun by the parent. A natural follow-up is the analogous moments of the part-size (rather than the part-count), or higher moments / the full moment generating function of the Binomial(n−1, 1/2) part-count.",
+  "crossReferences": [
+    "composition-parts-choose-oq-01-oq-01",
+    "composition-parts-choose-oq-01",
+    "composition-card-2pow-oq-01"
+  ]
+}
