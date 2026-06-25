@@ -1,0 +1,177 @@
+{
+  "id": "stirling-first-kind-oq-02-oq-02",
+  "title": "Stirling Numbers of the First Kind, III: the alternating row sum ∑ₖ (−1)ᵏ c(n,k) = 0 for n ≥ 2",
+  "slug": "stirling-first-kind-oq-02-oq-02",
+  "description": "The complement of the parent's row sum: where evaluating the rising-factorial generating function X(X+1)⋯(X+n−1) = ∑ₖ c(n,k) Xᵏ at X=1 gives the ordinary row sum n!, evaluating it at the OTHER unit X=−1 gives the alternating row sum ∑ₖ (−1)ᵏ c(n,k). Because the factor (X+1) of the rising factorial vanishes at X=−1 as soon as n ≥ 2, the alternating row sum is 0 for every n ≥ 2 — with the two exceptional small rows n=0 (value 1) and n=1 (value −1). Answers the parent oq-02's open question verbatim.",
+  "meta": {
+    "author": "James Stirling (1730)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/StirlingFirstKindOQ02OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "stirling-numbers",
+      "permutations",
+      "cycles",
+      "enumerative",
+      "generating-functions",
+      "rising-factorial",
+      "ascPochhammer",
+      "alternating-sum",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ascPochhammer_succ_right",
+        "description": "ascPochhammer S (n+1) = ascPochhammer S n · (X + n); drives both the coefficient induction and the X=−1 vanishing (the new (X+n) factor leaves the existing zero product unchanged)",
+        "module": "Mathlib.RingTheory.Polynomial.Pochhammer"
+      },
+      {
+        "theorem": "ascPochhammer_natDegree",
+        "description": "(ascPochhammer S n).natDegree = n over a nontrivial domain, fixing the summation range as range (n+1) when expanding the evaluation",
+        "module": "Mathlib.RingTheory.Polynomial.Pochhammer"
+      },
+      {
+        "theorem": "Polynomial.eval_eq_sum_range",
+        "description": "p.eval x = ∑_{i<natDegree+1} coeff i · xⁱ; at x=−1 this is exactly the alternating sum of coefficients",
+        "module": "Mathlib.Algebra.Polynomial.Eval.Degree"
+      },
+      {
+        "theorem": "Polynomial.coeff_mul_X",
+        "description": "coeff (p·X) (k+1) = coeff p k, the index shift reproducing the c(n,k) term of the Pascal recurrence",
+        "module": "Mathlib.Algebra.Polynomial.Coeff"
+      },
+      {
+        "theorem": "Nat.stirlingFirst_succ_succ",
+        "description": "Pascal recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k), recovered by coefficient extraction in the self-contained generating identity",
+        "module": "Mathlib.Combinatorics.Enumerative.Stirling"
+      }
+    ],
+    "originalContributions": [
+      "alternating_row_sum_eq_eval: the reduction ∑ₖ (−1)ᵏ c(n,k) = (ascPochhammer ℤ n).eval (−1), the X=−1 analogue of the parent's X=1 row-sum route",
+      "ascPochhammer_eval_neg_one: (ascPochhammer ℤ (m+2)).eval (−1) = 0 — the rising factorial vanishes at −1 from n=2 on, by induction off the base X(X+1)|_{−1}=0 with the recurrence preserving the zero product",
+      "alternating_row_sum_eq_zero: the headline ∑ₖ (−1)ᵏ c(n,k) = 0 for n ≥ 2, answering the parent oq-02's stated open question",
+      "alternating_row_sum_zero / alternating_row_sum_one: the two exceptional small rows n=0 (value 1) and n=1 (value −1)",
+      "alternating_row_four: numeric sanity check that 0 − 6 + 11 − 6 + 1 = 0 for row 4"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on propext, Classical.choice, Quot.sound. No `decide`/`native_decide` (so no Lean.ofReduceBool); numeric checks close by `simp` unfolding the recursive definition.",
+    "lineCount": 145,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The unsigned Stirling numbers of the first kind c(n,k) count permutations of n elements into exactly k disjoint cycles, and classically arise as the coefficients of the rising factorial x(x+1)⋯(x+n−1) = ∑ₖ c(n,k) xᵏ (Stirling, 1730). The parent gallery entry stirling-first-kind-oq-02 formalized that generating identity over ℤ as (ascPochhammer ℤ n).coeff k = c(n,k), and recovered the ordinary row sum ∑ₖ c(n,k) = n! by evaluating the polynomial at x=1. A rising factorial has exactly the two integer units 1 and −1 available as evaluation points that send xᵏ to the simplest possible weights; the parent used x=1. This entry uses the other one, x=−1, which weights the row by the alternating signs (−1)ᵏ. The resulting alternating row sum is the value of the polynomial at −1, and because the second rising factor (x+1) is zero there, the whole product collapses for every n ≥ 2.",
+    "problemStatement": "Use the rising-factorial generating identity c(n,k) = [Xᵏ] ascPochhammer ℤ n to evaluate the alternating row sum ∑ₖ (−1)ᵏ c(n,k), proving it equals 0 for every n ≥ 2 (and identifying the exceptional small rows n=0 and n=1).",
+    "text": "Evaluating the rising-factorial generating function X(X+1)⋯(X+n−1) = ∑ₖ c(n,k) Xᵏ at X=−1 sends Xᵏ to (−1)ᵏ, so the polynomial value equals the alternating row sum ∑ₖ (−1)ᵏ c(n,k). The factor (X+1) of the rising factorial vanishes at X=−1 whenever n ≥ 2, so this value is 0; the rows n=0 and n=1 are exceptional with values 1 and −1. Verified in Lean with no axioms.",
+    "proofStrategy": "1. stirlingFirst_eq_ascPochhammer_coeff (reproved self-contained from the parent): c(n,k) = [Xᵏ] ascPochhammer ℤ n, by induction on n extracting the Xᵏ-coefficient of ascPochhammer (n+1) = ascPochhammer n · (X + n).\n2. alternating_row_sum_eq_eval: expand (ascPochhammer ℤ n).eval (−1) via eval_eq_sum_range over range (natDegree+1); ascPochhammer_natDegree fixes the range to range (n+1), and each coefficient becomes c(n,k) by theorem 1, so the value equals ∑ₖ (−1)ᵏ c(n,k).\n3. ascPochhammer_eval_neg_one: (ascPochhammer ℤ (m+2)).eval (−1) = 0 by induction on m. Base m=0: ascPochhammer ℤ 2 = X·(X+1), value (−1)·0 = 0. Step: ascPochhammer ℤ (m+3) = ascPochhammer ℤ (m+2)·(X+(m+2)), value 0·(…) = 0 by the induction hypothesis.\n4. alternating_row_sum_eq_zero: for n ≥ 2 write n = m+2 and combine 2 and 3.\n5. alternating_row_sum_zero / alternating_row_sum_one: simp-evaluate the small rows directly to 1 and −1.\n6. alternating_row_four: simp checks 0 − 6 + 11 − 6 + 1 = 0.",
+    "keyInsights": [
+      "**Two units, two row sums**: a rising factorial can be evaluated at the integer units 1 and −1. The parent used X=1 (every Xᵏ ↦ 1) to get the ordinary row sum n!; this entry uses X=−1 (Xᵏ ↦ (−1)ᵏ) to get the alternating row sum. Same generating polynomial, complementary evaluations.",
+      "**The vanishing is structural, not arithmetic**: ∑ₖ (−1)ᵏ c(n,k) = 0 for n ≥ 2 is not a cancellation identity to be checked term-by-term — it is the single fact that the rising factorial X(X+1)⋯(X+n−1) literally contains the factor (X+1), which is zero at X=−1. One factor kills the whole product.",
+      "**The recurrence propagates the zero for free**: once n ≥ 2 supplies the (X+1) factor, every later factor (X+n) only multiplies an already-zero value, so a one-line induction off the base case X(X+1)|_{X=−1}=0 covers all n ≥ 2.",
+      "**Signed-Stirling reading**: since the signed first-kind number is s(n,k) = (−1)^{n−k} c(n,k), the result is equivalent to the signed row sum ∑ₖ s(n,k) = 0 for n ≥ 2 — i.e. the falling factorial x(x−1)⋯(x−n+1) vanishes at x=1 for n ≥ 2."
+    ],
+    "prerequisites": [
+      "Stirling numbers of the first kind and the cycle decomposition of permutations",
+      "The rising factorial / Pochhammer polynomial (ascPochhammer) and its recurrence",
+      "Polynomial coefficients, degree, and evaluation; the generating-function viewpoint",
+      "Induction on the natural numbers"
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-docstring",
+      "title": "Imports and Setup",
+      "startLine": 1,
+      "endLine": 61,
+      "summary": "File-level docstring contrasting the parent's X=1 row sum with the X=−1 alternating row sum, explaining the (X+1)-factor vanishing for n ≥ 2 and the exceptional rows n=0,1, plus the signed-Stirling reading. Imports Mathlib; opens Nat and Polynomial.",
+      "mathContext": "X(X+1)⋯(X+n−1) = ∑ₖ c(n,k) Xᵏ; at X=−1 the value is ∑ₖ (−1)ᵏ c(n,k)."
+    },
+    {
+      "id": "generating-identity",
+      "title": "The Generating Identity (self-contained from the parent)",
+      "startLine": 63,
+      "endLine": 92,
+      "summary": "stirlingFirst_eq_ascPochhammer_coeff: c(n,k) = [Xᵏ] ascPochhammer ℤ n, by induction on n extracting the Xᵏ-coefficient of ascPochhammer (n+1) = ascPochhammer n · (X + n), reproducing the Pascal recurrence.",
+      "mathContext": "Reproduces the parent's bridge between ascPochhammer and the Stirling recurrence so this file stands alone."
+    },
+    {
+      "id": "alternating-as-eval",
+      "title": "Alternating Row Sum = Value at X = −1",
+      "startLine": 94,
+      "endLine": 109,
+      "summary": "alternating_row_sum_eq_eval: expand (ascPochhammer ℤ n).eval (−1) by eval_eq_sum_range, fix the range to range (n+1) via ascPochhammer_natDegree, and replace each coefficient by c(n,k) to get ∑ₖ (−1)ᵏ c(n,k).",
+      "mathContext": "The X=−1 analogue of the parent's X=1 reduction of eval to a coefficient sum."
+    },
+    {
+      "id": "vanishing",
+      "title": "The Rising Factorial Vanishes at −1 for n ≥ 2",
+      "startLine": 111,
+      "endLine": 118,
+      "summary": "ascPochhammer_eval_neg_one: (ascPochhammer ℤ (m+2)).eval (−1) = 0 by induction on m. Base ascPochhammer ℤ 2 = X·(X+1) gives (−1)·0; the recurrence multiplies the zero by (X+(m+2)), preserving it.",
+      "mathContext": "The (X+1) factor present from n=2 on is zero at X=−1, collapsing the whole product."
+    },
+    {
+      "id": "headline-and-small-rows",
+      "title": "Headline Vanishing and Exceptional Small Rows",
+      "startLine": 120,
+      "endLine": 145,
+      "summary": "alternating_row_sum_eq_zero: ∑ₖ (−1)ᵏ c(n,k) = 0 for n ≥ 2, combining the two previous theorems (write n = m+2). alternating_row_sum_zero / alternating_row_sum_one evaluate the exceptional rows n=0 (value 1) and n=1 (value −1); alternating_row_four checks 0 − 6 + 11 − 6 + 1 = 0.",
+      "mathContext": "The complete picture: 1, −1, 0, 0, 0, … for n = 0, 1, 2, 3, 4, …"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Stirling, James",
+      "title": "Methodus Differentialis",
+      "year": "1730",
+      "note": "Introduces the first-kind numbers as coefficients of the rising factorial — the generating function evaluated here at X=−1"
+    },
+    {
+      "authors": "Graham, Knuth, Patashnik",
+      "title": "Concrete Mathematics",
+      "year": "1994",
+      "note": "Chapter 6: the rising-factorial generating function xⁿ̄ = ∑ₖ [n;k] xᵏ; the alternating row sum is its value at x=−1, vanishing for n ≥ 2"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "stirling-first-kind-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: oq-02 proves the generating identity c(n,k) = [Xᵏ] ascPochhammer ℤ n and the ordinary row sum n! by evaluating at X=1. This entry answers oq-02's stated open question by evaluating the same polynomial at X=−1 to get the alternating row sum, which vanishes for n ≥ 2."
+    },
+    {
+      "targetId": "stirling-first-kind-oq-01",
+      "relationship": "related",
+      "description": "The grandparent row-sum entry ∑ₖ c(n,k) = n!; the alternating row sum here is its signed counterpart."
+    }
+  ],
+  "conclusion": {
+    "summary": "Evaluating the rising-factorial generating function at X=−1 gives the alternating row sum of the unsigned first-kind Stirling numbers: ∑ₖ (−1)ᵏ c(n,k) = (ascPochhammer ℤ n).eval (−1). Because the rising factorial contains the factor (X+1), which is zero at X=−1, this value is 0 for every n ≥ 2 (alternating_row_sum_eq_zero); the rows n=0 and n=1 are exceptional with values 1 and −1. Verified with 0 axioms and 0 sorries, answering the parent oq-02's open question.",
+    "implications": "Completes the evaluation picture for the first-kind generating polynomial at both integer units: X=1 yields the ordinary row sum n!, X=−1 yields the alternating row sum 0 (n ≥ 2). Equivalently it records the signed row sum ∑ₖ s(n,k) = 0 for n ≥ 2 as a machine-checked, citable fact.",
+    "openQuestions": [
+      "What is the value of the row sum ∑ₖ c(n,k) wᵏ at a general root of unity w, and which residues of n make it vanish? (X=−1 is the order-2 case treated here.)",
+      "Can the same coefficient-extraction style evaluate the second derivative / weighted sums ∑ₖ k·c(n,k) (the total number of cycles over all permutations) directly from the ascPochhammer polynomial?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat",
+      "Polynomial"
+    ],
+    "namespace": "StirlingFirstKindOQ02OQ02",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/StirlingFirstKindOQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
