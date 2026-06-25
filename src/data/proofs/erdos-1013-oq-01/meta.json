@@ -1,0 +1,132 @@
+{
+  "id": "erdos-1013-oq-01",
+  "title": "Erdős #1013: The Asymptotic Constant Subsumes Ratio Convergence",
+  "slug": "erdos-1013-oq-01",
+  "description": "Erdős #1013 poses two open questions about h₃(k), the least number of vertices in a triangle-free graph of chromatic number k: (1) the exact asymptotic constant c in h₃(k) ~ c·k²·log k (known only to lie in [1/2,1]), and (2) whether h₃(k+1)/h₃(k) → 1. This entry does NOT determine c. Instead it proves the two questions are not independent: if the asymptotic constant exists for ANY c > 0, then ratio convergence follows automatically, and the constant is unique. The analytic core is a machine-checked proof that ((k+1)²·log(k+1))/(k²·log k) → 1. 4 theorems, 1 definition, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://erdosproblems.com/1013",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1013ConstantRatio.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 162,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "erdosNumber": 1013,
+    "erdosUrl": "https://erdosproblems.com/1013",
+    "erdosProblemStatus": "open",
+    "assumptions": "None. All results are proved unconditionally for an arbitrary candidate function h : ℕ → ℝ; the asymptotic constant enters only as a hypothesis of the reduction theorem. #print axioms reports only the foundational propext / Classical.choice / Quot.sound for all four theorems — no sorryAx, no Lean.ofReduceBool, no custom axioms. The underlying open problem (the exact value of c) is NOT resolved; this entry proves a structural relationship between its two parts.",
+    "tags": [
+      "erdos",
+      "graph theory",
+      "chromatic number",
+      "triangle-free graphs",
+      "asymptotics",
+      "real analysis",
+      "filters",
+      "extremal combinatorics"
+    ],
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Machine-checked proof that the asymptotic-constant question of Erdős #1013 subsumes its separately-posed ratio-convergence question: if h₃(k)/(k²·log k) → c with c > 0, then h₃(k+1)/h₃(k) → 1 (ratio_tendsto_one / asymptotic_subsumes_ratio)",
+      "Verified analytic core scale_ratio_tendsto_one: ((k+1)²·log(k+1))/(k²·log k) → 1, factored as the squared linear ratio ((k+1)/k)² → 1 times the logarithmic ratio log(k+1)/log k → 1, the latter via log(k+1) = log k + log(1+1/k) and (numerator → 0)/(denominator → ∞)",
+      "Uniqueness of the asymptotic constant (constant_unique) from uniqueness of limits in ℝ",
+      "Abstract formulation over an arbitrary h : ℕ → ℝ, so the reduction applies verbatim to the genuine threshold function once its asymptotic is established — decoupling the structural result from the unproven finiteness/Mycielski machinery"
+    ],
+    "prerequisites": [
+      "Filters and Filter.Tendsto, neighbourhood filters (nhds), atTop",
+      "Limit arithmetic: Tendsto.mul / Tendsto.div / Tendsto.div_atTop, tendsto_nhds_unique",
+      "Real logarithm asymptotics: Real.tendsto_log_atTop, Real.log_div, continuity of log at 1",
+      "Eventual-equality reasoning (Filter.Tendsto.congr', filter_upwards) to handle small-index degeneracies"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #1013 concerns h₃(k), the smallest number of vertices in a triangle-free graph with chromatic number k. Mycielski (1955) proved such graphs exist for every k; Graver and Yackel (1968) gave the first quantitative lower bound, and Shearer's (1983) Ramsey bound R(3,k) ≤ (1+o(1))k²/(2 log k) yields h₃(k) ≥ (1/2 − o(1))k²·log k, with a matching upper bound up to a factor of 2. The exact constant c in h₃(k) ~ c·k²·log k, known only to lie in [1/2, 1], remains open. Erdős separately asked the weaker question of whether h₃(k+1)/h₃(k) → 1. A standard folklore observation is that any smooth asymptotic forces ratio convergence; this entry makes that observation fully rigorous and machine-checked, isolating exactly what is needed: existence of the constant.",
+    "problemStatement": "Determine the exact asymptotic constant c in h₃(k) ~ c·k²·log k, and decide whether h₃(k+1)/h₃(k) → 1. This entry proves the structural reduction: existence of c (any c > 0) implies ratio convergence, and c is unique.",
+    "proofStrategy": "Work abstractly with a candidate h : ℕ → ℝ and the growth scale g(k) = k²·log k. (1) constant_unique is immediate from tendsto_nhds_unique. (2) scale_ratio_tendsto_one is the analytic heart: write g(k+1)/g(k) = ((k+1)/k)²·(log(k+1)/log k); the first factor tends to 1 since 1/k → 0, and the second tends to 1 because log(k+1) = log k + log(1+1/k) with log(1+1/k) → 0 and log k → ∞ (so their quotient → 0 via Tendsto.div_atTop). (3) ratio_tendsto_one factors h(k+1)/h(k) = (h(k+1)/g(k+1))·(g(k+1)/g(k))/(h(k)/g(k)), whose three factors tend to c, 1, and c, giving c·1/c = 1; all pointwise identities are justified eventually (k ≥ 2, where g(k) ≠ 0) via Tendsto.congr'. (4) asymptotic_subsumes_ratio restates the reduction for the genuine threshold h₃.",
+    "keyInsights": [
+      "**The two open questions are not independent**: ratio convergence h₃(k+1)/h₃(k) → 1 is a logical *consequence* of the existence of the asymptotic constant — it does not require knowing the constant's value",
+      "**The scale grows smoothly**: k²·log k satisfies g(k+1)/g(k) → 1, which is the only analytic input the reduction needs",
+      "**Logarithmic smoothness via decomposition**: log(k+1)/log k → 1 follows from log(k+1) − log k = log(1+1/k) → 0 against log k → ∞, a clean (→0)/(→∞) argument",
+      "**Abstraction buys generality**: stating everything for an arbitrary h : ℕ → ℝ avoids any dependence on the unproven Mycielski finiteness axiom of the parent entry — the four theorems are fully 0-axiom",
+      "**Degeneracies are handled honestly**: division by log k or by h(k) is only valid eventually, so each identity is established on the filter atTop (k ≥ 2) rather than pointwise for all k"
+    ],
+    "prerequisites": [
+      "Real analysis (limits, filters, neighbourhoods)",
+      "Asymptotics of the real logarithm",
+      "Extremal graph theory (background: triangle-free graphs, chromatic number)",
+      "Mathlib's Filter.Tendsto API"
+    ]
+  },
+  "conclusion": {
+    "summary": "For the triangle-free chromatic threshold h₃(k) of Erdős #1013, the existence of the asymptotic constant c in h₃(k) ~ c·k²·log k (for any c > 0) implies the separately-posed ratio convergence h₃(k+1)/h₃(k) → 1, and the constant is unique. The result is proved abstractly for any h : ℕ → ℝ, is 0-axiom and 0-sorry, and rests on the verified analytic fact that the growth scale k²·log k has consecutive ratio tending to 1.",
+    "implications": "This sharpens the structure of Problem #1013: it shows the ratio-convergence question is strictly subordinate to the asymptotic-constant question, so any future proof that the constant exists (even without pinning down its value in [1/2, 1]) would immediately settle ratio convergence. It cleanly separates the genuinely hard part (existence and value of c, an extremal/probabilistic question) from the soft analytic part (smoothness of the scale).",
+    "openQuestions": [
+      "What is the exact asymptotic constant c in h₃(k) ~ c·k²·log k? Is c = 1/2 (matching Shearer's Ramsey lower bound)?",
+      "Does the asymptotic h₃(k) ~ c·k²·log k even exist (i.e. does the limit of h₃(k)/(k²·log k) exist)?",
+      "Can h₃(k+1)/h₃(k) → 1 be proved directly, without establishing the full asymptotic — i.e. is the converse direction tractable?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "parent problem",
+      "note": "This entry refines Erdős Problem #1013, whose formalization (Erdos1013Problem.lean) sets up h₃(k) and states both open conjectures as Prop definitions under a single Mycielski finiteness axiom. The present file proves, axiom-free, that the asymptotic conjecture implies the ratio conjecture.",
+      "targetId": "erdos-1013"
+    },
+    {
+      "relationship": "structural analogy",
+      "note": "Erdős Problem #1014 asks whether R(k,l+1)/R(k,l) → 1 — the same 'does the threshold grow smoothly' question for Ramsey numbers. The reduction here (smooth scale ⇒ ratio → 1) is the analytic template common to both.",
+      "targetId": "erdos-1014"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "James B. Shearer"
+      ],
+      "title": "A note on the independence number of triangle-free graphs",
+      "venue": "Discrete Mathematics",
+      "year": "1983",
+      "volume": "46",
+      "issue": "1",
+      "pages": "83–87",
+      "doi": "10.1016/0012-365X(83)90273-X",
+      "note": "Yields the lower bound h₃(k) ≥ (1/2 − o(1))k²·log k, fixing the lower end of the constant's known range [1/2, 1]."
+    },
+    {
+      "authors": [
+        "John E. Graver",
+        "James Yackel"
+      ],
+      "title": "Some graph theoretic results associated with Ramsey's theorem",
+      "venue": "Journal of Combinatorial Theory",
+      "year": "1968",
+      "volume": "4",
+      "issue": "2",
+      "pages": "125–175",
+      "doi": "10.1016/S0021-9800(68)80035-1",
+      "note": "First quantitative lower bound on h₃(k), establishing the k²·log k order of growth relevant to the asymptotic constant."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "Erdos1013Constant",
+    "lineCount": 162,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/Erdos1013ConstantRatio.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
