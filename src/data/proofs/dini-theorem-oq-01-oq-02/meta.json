@@ -1,0 +1,163 @@
+{
+  "id": "dini-theorem-oq-01-oq-02",
+  "title": "The Sharp Modulus of Non-Uniform Convergence of xⁿ on [0,1)",
+  "slug": "dini-theorem-oq-01-oq-02",
+  "description": "Sharpens the parent Dini sharpness witness: on the non-compact interval [0,1), the sequence xⁿ converges pointwise to 0 but not uniformly, and the uniform error sup_{x∈[0,1)} |xⁿ| equals exactly 1 for every n ≥ 1 — the sharp modulus of non-uniform convergence, improving the parent's lower bound of 1/2. The supremum is approached along x = 1 − 1/(k+1) → 1 but never attained. Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DiniTheoremOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "dini",
+      "uniform-convergence",
+      "supremum",
+      "sharpness",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 172,
+    "assumptions": "None. Fully machine-verified: lake env lean of Proofs/DiniTheoremOQ01OQ02.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for pow_uniform_error_Ico and pow_not_tendstoUniformlyOn_Ico_sharp. The file imports only Mathlib and is self-contained.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsLUB.csSup_eq",
+        "description": "an IsLUB witness equals the sSup on a nonempty set",
+        "module": "Mathlib.Order.ConditionallyCompleteLattice.Basic"
+      },
+      {
+        "theorem": "le_of_tendsto'",
+        "description": "if f → a and f n ≤ b for all n, then a ≤ b — used to pass to the limit along x = 1 − 1/(k+1)",
+        "module": "Mathlib.Order.Topology.Basic"
+      },
+      {
+        "theorem": "tendsto_one_div_add_atTop_nhds_zero_nat",
+        "description": "1/(n+1) → 0, the source of the approximating sequence 1 − 1/(k+1) → 1",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      },
+      {
+        "theorem": "pow_le_one₀",
+        "description": "0 ≤ a, a ≤ 1 ⟹ aⁿ ≤ 1 — the upper-bound half of the LUB",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      },
+      {
+        "theorem": "Metric.tendstoUniformlyOn_iff",
+        "description": "ε-characterization of uniform convergence on a set, negated for the non-uniformity witness",
+        "module": "Mathlib.Topology.UniformSpace.UniformConvergence"
+      }
+    ],
+    "originalContributions": [
+      "pow_image_Ico_isLUB: the least upper bound of { xⁿ : x ∈ [0,1) } is exactly 1 (for n ≥ 1), proved by approaching it along x = 1 − 1/(k+1) → 1 and passing to the limit",
+      "pow_sSup_Ico: sSup { xⁿ : x ∈ [0,1) } = 1, the supremum that is never attained",
+      "pow_uniform_error_Ico: the sharp modulus — sup_{x∈[0,1)} |xⁿ − 0| = 1 for every n ≥ 1, improving the parent's 1/2",
+      "pow_exists_gt_of_lt_one: for any c < 1, a point of [0,1) with xⁿ > c (the LUB unpacked)",
+      "pow_not_tendstoUniformlyOn_Ico_sharp: non-uniformity with ANY threshold c ∈ (0,1), not merely 1/2"
+    ],
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dini's theorem gives a compactness condition under which pointwise convergence of a monotone sequence of continuous functions to a continuous limit is automatically uniform. The parent entry (dini-theorem-oq-01) studies the sharpness of its hypotheses with the textbook witness fₙ(x) = xⁿ: on the compact [0,1] the limit is discontinuous (so uniformity fails through the continuity-of-limit obstruction), while on the non-compact [0,1) the limit 0 is continuous yet uniformity still fails — showing compactness of the domain cannot be dropped. The parent quantified the [0,1) failure with the non-sharp bound 1/2. This entry (OQ-02) determines the exact modulus.",
+    "problemStatement": "Does a quantitative refinement hold: on [0,1) the uniform distance sup_x |xⁿ| stays exactly 1, giving an explicit lower bound on the modulus of non-uniform convergence rather than the value 1/2 used in the parent?",
+    "text": "Proves sup_{x∈[0,1)} xⁿ = 1 (a least upper bound, never attained), hence the uniform error sup_{x∈[0,1)} |xⁿ − 0| = 1 for every n ≥ 1, and that non-uniformity holds with any threshold c ∈ (0,1).",
+    "proofStrategy": "The crux is the least-upper-bound computation pow_image_Ico_isLUB. Upper bound: for x ∈ [0,1), xⁿ ≤ 1 (pow_le_one₀). Least: for any upper bound b, the points xₖ = 1 − 1/(k+1) ∈ [0,1) satisfy xₖ → 1 (from 1/(k+1) → 0), hence xₖⁿ → 1ⁿ = 1; since each xₖⁿ ≤ b, passing to the limit (le_of_tendsto') gives 1 ≤ b. Thus 1 is the LUB and sSup = 1 (IsLUB.csSup_eq). The error sup equals the xⁿ sup because |xⁿ − 0| = xⁿ on [0,1) (image_congr). Finally, c < 1 = LUB means c is not an upper bound, giving a point with xⁿ > c, which feeds the negated ε-criterion of uniform convergence for every threshold c ∈ (0,1).",
+    "keyInsights": [
+      "The exact modulus is 1, not 1/2: the parent's IVT argument produced an attained value 1/2, but the true supremum of the error is the unattained 1.",
+      "The supremum is approached but never attained — every xⁿ < 1 on [0,1), while x = 1 − 1/(k+1) → 1 drives xⁿ → 1. This 'approached-but-not-attained' behaviour is exactly the failure of compactness that Dini's theorem rules out.",
+      "Sharpness is a least-upper-bound statement: 1 cannot be lowered (no c < 1 is an upper bound) nor is it exceeded (no value > 1 occurs), so it is the precise modulus.",
+      "Passing to the limit along an explicit sequence (le_of_tendsto') turns the supremum into a clean, fully constructive computation, avoiding any appeal to the abstract structure of conditionally complete lattices beyond IsLUB.csSup_eq.",
+      "Once the LUB is in hand, every downstream statement — the error sup, the for-all-c<1 threshold, the negated uniform-convergence criterion — is a short corollary."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-setup",
+      "title": "Problem Statement and Setup",
+      "summary": "Module docstring framing OQ-02 (the sharp modulus 1 vs the parent's 1/2), the witness xⁿ on [0,1), and the namespace/imports (Mathlib; open Set Filter Topology)",
+      "startLine": 1,
+      "endLine": 52
+    },
+    {
+      "id": "supremum-is-one",
+      "title": "The Supremum of xⁿ over [0,1) is Exactly 1",
+      "summary": "pow_image_Ico_isLUB (least upper bound 1 via the approaching sequence x = 1 − 1/(k+1)), pow_image_Ico_nonempty, and pow_sSup_Ico (sSup = 1)",
+      "startLine": 53,
+      "endLine": 105
+    },
+    {
+      "id": "sharp-modulus",
+      "title": "The Sharp Modulus of Non-Uniform Convergence",
+      "summary": "pow_uniform_error_Ico (sup of |xⁿ − 0| = 1), pow_exists_gt_of_lt_one (any c < 1 is exceeded), and pow_not_tendstoUniformlyOn_Ico_sharp (non-uniformity with any threshold c ∈ (0,1))",
+      "startLine": 106,
+      "endLine": 172
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the modulus of non-uniform convergence of xⁿ on [0,1) is exactly 1. The supremum sup_{x∈[0,1)} xⁿ = 1 is a least upper bound approached along x = 1 − 1/(k+1) → 1 but never attained, so the uniform error sup_{x∈[0,1)} |xⁿ − 0| = 1 for every n ≥ 1, sharpening the parent's 1/2; non-uniformity holds with any threshold c ∈ (0,1).",
+    "implications": "The exact modulus pins down precisely how badly uniform convergence fails on the non-compact domain, confirming that Dini's compactness hypothesis cannot be relaxed on [0,1). The least-upper-bound-via-approaching-sequence pattern (upper bound + le_of_tendsto' along an explicit sequence + IsLUB.csSup_eq) is a reusable recipe for computing unattained suprema of pointwise limits.",
+    "openQuestions": [
+      "Rate of approach: quantify how fast sup_{x∈[0,1−δ]} xⁿ → 0 as the domain is shrunk to a compact subinterval [0,1−δ], recovering uniform convergence with an explicit modulus in δ and n.",
+      "General monotone families: for a continuous, antitone-in-n family converging pointwise to 0 on [0,1) with discontinuous-at-1 'limit envelope', is the uniform-error supremum always the boundary value, and when is it attained?",
+      "Higher-dimensional or operator analogues: identify the sharp non-uniformity modulus for xⁿ-type contractions on non-compact subsets of a Banach space."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dini-theorem-oq-01",
+      "relationship": "parent-problem",
+      "description": "Parent: Dini's theorem and the sharpness of its hypotheses; established non-uniformity of xⁿ on [0,1) with the non-sharp bound 1/2 that this entry improves to 1"
+    },
+    {
+      "targetId": "dini-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling open question of the same parent witness"
+    },
+    {
+      "targetId": "dini-theorem",
+      "relationship": "related",
+      "description": "The base Dini's theorem (uniform convergence of monotone sequences on compact sets) whose compactness hypothesis this sharpness witness shows to be necessary"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Ulisse Dini"
+      ],
+      "title": "Fondamenti per la teorica delle funzioni di variabili reali",
+      "year": "1878",
+      "venue": "Pisa",
+      "note": "Origin of Dini's theorem"
+    },
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "Theorem 7.13 (Dini) and the xⁿ counterexample on [0,1)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "DiniTheoremOQ01OQ02",
+    "lineCount": 172,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DiniTheoremOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
