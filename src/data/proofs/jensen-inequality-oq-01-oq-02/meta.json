@@ -1,0 +1,103 @@
+{
+  "id": "jensen-inequality-oq-01-oq-02",
+  "title": "Weighted Power-Mean Monotonicity in the Exponent (M_p ≤ M_q)",
+  "slug": "jensen-inequality-oq-01-oq-02",
+  "description": "Proves the weighted power-mean inequality for positive exponents: for nonnegative data zᵢ and weights wᵢ ≥ 0 summing to 1, the generalized power mean M_r = (∑ᵢ wᵢ·zᵢ^r)^(1/r) is monotone nondecreasing in the exponent r over the positive range — if 0 < p ≤ q then (∑ᵢ wᵢ·zᵢ^p)^(1/p) ≤ (∑ᵢ wᵢ·zᵢ^q)^(1/q). Mathlib supplies the convexity engine (Real.rpow_arith_mean_le_arith_mean_rpow, finite weighted Jensen for the convex map t ↦ t^s, s ≥ 1) but does not package monotonicity of M_r in the exponent; this entry derives it. The proof sets t = q/p ≥ 1 and applies Jensen with exponent t to the data yᵢ = zᵢ^p: (∑ wᵢ zᵢ^p)^t ≤ ∑ wᵢ (zᵢ^p)^t = ∑ wᵢ zᵢ^q, using (zᵢ^p)^t = zᵢ^{p·t} and p·t = q; raising the resulting bound A^t ≤ B to the power 1/q ≥ 0 and simplifying (A^t)^{1/q} = A^{1/p} gives M_p ≤ M_q. The arithmetic-mean ≤ quadratic-mean inequality is recovered as the (p,q) = (1,2) specialization. Directly answers the top open question recorded by the gallery sibling jensen-inequality-oq-01-oq-01-oq-01-oq-02 (full power-mean monotonicity for real exponents) over the positive range.",
+  "meta": {
+    "author": "Lean Genius (power-mean monotonicity via Jensen with exponent q/p); classical (generalized-mean / Hölder inequality)",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/JensenInequalityOQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "convexity",
+      "power-means",
+      "inequalities",
+      "jensen",
+      "rpow",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-25",
+    "lineCount": 87,
+    "originalContributions": [
+      "powerMean_le_powerMean: weighted power-mean monotonicity for positive exponents — for nonnegative data and nonnegative weights summing to 1, 0 < p ≤ q implies (∑ᵢ wᵢ·zᵢ^p)^(1/p) ≤ (∑ᵢ wᵢ·zᵢ^q)^(1/q). Not packaged in Mathlib; derived from the rpow Jensen inequality by raising the data to the power-ratio exponent t = q/p ≥ 1.",
+      "weighted_am_le_qm: the weighted arithmetic-mean ≤ quadratic-mean inequality ∑ᵢ wᵢ·zᵢ ≤ (∑ᵢ wᵢ·zᵢ²)^(1/2), obtained as the (p,q) = (1,2) specialization of the monotonicity theorem."
+    ],
+    "assumptions": "None. Fully machine-checked: 0 axioms, 0 sorries, no native_decide. #print axioms reports only propext / Classical.choice / Quot.sound. Builds on the Mathlib rpow library (Real.rpow_arith_mean_le_arith_mean_rpow, Real.rpow_mul, Real.rpow_le_rpow).",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "jensen-inequality-oq-01-oq-01-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "That entry (weighted AM–HM, the M₋₁ ≤ M₁ rung) explicitly poses as its top open question the full weighted power-mean monotonicity M_r ≤ M_s for real exponents r ≤ s, via convexity of t ↦ t^{s/r} and Jensen. This entry answers it over the positive range 0 < p ≤ q with exactly that argument."
+    },
+    {
+      "targetId": "jensen-inequality-oq-01",
+      "relationship": "extends",
+      "description": "Sits on the same weighted power-mean ladder as the parent Jensen/AM–GM chain, but proves monotonicity in the exponent rather than a fixed rung, using Mathlib's rpow Jensen inequality directly instead of the AM–GM specialization."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The power means M_r(z; w) = (∑ wᵢ zᵢ^r)^{1/r} interpolate between the harmonic (r = -1), geometric (r → 0), arithmetic (r = 1), and quadratic (r = 2) means, and their monotonicity in r is one of the classical inequalities of analysis (the generalized-mean or Hölder inequality). Mathlib formalizes the weighted Jensen inequality for convex power maps but does not record the monotonicity of M_r in the exponent; this entry supplies the positive-exponent case.",
+    "problemStatement": "Prove that for nonnegative data zᵢ and nonnegative weights wᵢ summing to 1, the weighted power mean M_r = (∑ wᵢ zᵢ^r)^{1/r} is monotone nondecreasing in r over r > 0: 0 < p ≤ q ⟹ (∑ wᵢ zᵢ^p)^{1/p} ≤ (∑ wᵢ zᵢ^q)^{1/q}.",
+    "proofStrategy": "Let A = ∑ wᵢ zᵢ^p, B = ∑ wᵢ zᵢ^q, and set t = q/p ≥ 1. The map t ≥ 1 makes y ↦ y^t convex, so Mathlib's Real.rpow_arith_mean_le_arith_mean_rpow applied to the data yᵢ = zᵢ^p gives A^t = (∑ wᵢ zᵢ^p)^t ≤ ∑ wᵢ (zᵢ^p)^t. Since (zᵢ^p)^t = zᵢ^{p·t} (Real.rpow_mul, valid as zᵢ ≥ 0) and p·t = q, the right side equals B, so A^t ≤ B. Both A, B ≥ 0, so raising to the power 1/q ≥ 0 preserves the inequality (Real.rpow_le_rpow): (A^t)^{1/q} ≤ B^{1/q}. Finally (A^t)^{1/q} = A^{t·(1/q)} = A^{1/p} because t·(1/q) = (q/p)·(1/q) = 1/p, giving M_p = A^{1/p} ≤ B^{1/q} = M_q.",
+    "keyInsights": [
+      "Monotonicity in the exponent is not a new convexity fact but a change of variable on the existing rpow Jensen inequality: raising the data to the ratio exponent t = q/p ≥ 1 turns 'M_p ≤ M_q' into a single application of the convex-power Jensen bound.",
+      "The exponent bookkeeping is the whole proof: p·t = q collapses ∑ wᵢ (zᵢ^p)^t to ∑ wᵢ zᵢ^q, and t·(1/q) = 1/p collapses (A^t)^{1/q} to A^{1/p}. Both are elementary rpow identities (Real.rpow_mul) valid because the base is nonnegative.",
+      "The argument needs only 0 < p ≤ q, not p ≥ 1 or any normalization of the data; the weight normalization ∑ wᵢ = 1 is the only structural hypothesis, inherited from the Jensen inequality.",
+      "Specializing to (p, q) = (1, 2) recovers the weighted arithmetic-mean ≤ quadratic-mean inequality with no extra work, illustrating how the single monotonicity theorem subsumes the named two-rung inequalities."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Overview",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "States the goal — weighted power-mean monotonicity M_p ≤ M_q for 0 < p ≤ q, a gap in Mathlib — and outlines the change-of-variable strategy: apply the rpow Jensen inequality with exponent t = q/p ≥ 1, then raise to the power 1/q.",
+      "mathContext": "Power mean $M_r(z;w) = (\\sum_i w_i z_i^r)^{1/r}$; claim: $0 < p \\le q \\Rightarrow M_p \\le M_q$ for $z_i \\ge 0$, $w_i \\ge 0$, $\\sum_i w_i = 1$."
+    },
+    {
+      "id": "power-mean-monotone",
+      "title": "Weighted power-mean monotonicity",
+      "startLine": 40,
+      "endLine": 77,
+      "summary": "powerMean_le_powerMean: set t = q/p ≥ 1; Jensen (Real.rpow_arith_mean_le_arith_mean_rpow) on yᵢ = zᵢ^p gives A^t ≤ ∑ wᵢ zᵢ^q = B (via (zᵢ^p)^t = zᵢ^{p·t}, p·t = q); raise to 1/q (Real.rpow_le_rpow) and simplify (A^t)^{1/q} = A^{1/p} to conclude M_p ≤ M_q.",
+      "mathContext": "$A^{q/p} \\le B$ then $(A^{q/p})^{1/q} = A^{1/p} \\le B^{1/q}$, where $A = \\sum_i w_i z_i^p$, $B = \\sum_i w_i z_i^q$."
+    },
+    {
+      "id": "am-le-qm",
+      "title": "Arithmetic mean ≤ quadratic mean",
+      "startLine": 79,
+      "endLine": 87,
+      "summary": "weighted_am_le_qm: the (p,q) = (1,2) specialization, ∑ wᵢ zᵢ ≤ (∑ wᵢ zᵢ²)^{1/2}, obtained by instantiating powerMean_le_powerMean and normalizing the M₁ side (zᵢ^{(1:ℝ)} = zᵢ, exponent 1/1 = 1).",
+      "mathContext": "$\\sum_i w_i z_i \\le \\left(\\sum_i w_i z_i^2\\right)^{1/2}$, the weighted AM–QM inequality."
+    }
+  ],
+  "conclusion": {
+    "summary": "This fully verified 87-line file (0 sorries, 0 axioms, no native_decide) proves weighted power-mean monotonicity over positive exponents — 0 < p ≤ q ⟹ M_p ≤ M_q — which Mathlib does not package, and recovers the weighted arithmetic-mean ≤ quadratic-mean inequality as a specialization. The proof is a single change of variable on Mathlib's rpow Jensen inequality.",
+    "implications": "This answers, over the positive range, the open question posed by the AM–HM sibling entry: the full power-mean ladder M_r is monotone in r. The same change-of-variable template would extend to negative exponents (with the inequality direction tracked through the sign of the ratio) and, in the limit, to the geometric-mean rung M_r → G as r → 0.",
+    "openQuestions": [
+      "Extend monotonicity to all real exponents, including p < 0 ≤ q and both-negative ranges, unifying the harmonic (r = -1) and geometric (r → 0) rungs with the positive-exponent case proved here.",
+      "Establish the equality case: M_p = M_q (for p < q) holds iff all the data zᵢ with positive weight are equal, via the strict convexity of t ↦ t^{q/p} and the strict Jensen inequality.",
+      "Prove the limiting identifications M_r → ∏ zᵢ^{wᵢ} as r → 0 and M_r → max zᵢ / min zᵢ as r → ±∞, connecting the discrete ladder to its endpoints."
+    ]
+  },
+  "leanFile": {
+    "lineCount": 87,
+    "axiomCount": 0,
+    "path": "Proofs/JensenInequalityOQ01OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 2,
+    "imports": [
+      "Mathlib"
+    ]
+  },
+  "sorries": 0
+}
