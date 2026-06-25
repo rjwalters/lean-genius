@@ -76,20 +76,32 @@
   },
   "sections": [
     {
+      "id": "module-header",
       "title": "Module Header, Imports, and Namespace",
-      "description": "Imports Mathlib; opens MvPolynomial and Ideal; works in a noncomputable section over a commutative ring R and index set σ."
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "The docstring states the open question (can the Nullstellensatz be formalized over the multivariate UFD ℤ[X,Y]?), the honest negative answer, and why: Hilbert's Nullstellensatz needs an algebraically closed field, and ℤ — though a UFD — is not a field. It contrasts this not-a-field obstruction with the not-algebraically-closed obstruction (X²+1 over ℝ) and flags that Mathlib's zeroLocus/vanishingIdeal are field-only. Imports Mathlib; opens MvPolynomial and Ideal; works in a noncomputable section over a commutative ring R and index set σ."
     },
     {
-      "title": "Ring-level zero locus and vanishing ideal",
-      "description": "Defines zeroSet I and vanishingId V over any commutative ring (Mathlib's versions require a field), with membership simp lemmas and vanishingId_empty (= ⊤)."
+      "id": "ring-level-defs",
+      "title": "Ring-level Zero Locus and Vanishing Ideal",
+      "startLine": 52,
+      "endLine": 82,
+      "summary": "Defines zeroSet I = {x | ∀ p ∈ I, eval x p = 0} and vanishingId V over any commutative ring (Mathlib's MvPolynomial.zeroLocus / vanishingIdeal require [Field k]), the vanishingId carrier closed under +/• by evaluation being a ring hom. Adds the membership simp lemmas mem_zeroSet / mem_vanishingId and the vacuous fact vanishingId ∅ = ⊤ (every polynomial vanishes on the empty set)."
     },
     {
-      "title": "The general arithmetic obstruction",
-      "description": "weakNSS_fails_of_nonunit: a nonzero non-unit constant C p gives a proper ideal (C p) with empty zero locus."
+      "id": "general-obstruction",
+      "title": "The General Arithmetic Obstruction",
+      "startLine": 84,
+      "endLine": 107,
+      "summary": "weakNSS_fails_of_nonunit: for a nonzero non-unit constant C p, the ideal (C p) is proper (span {C p} = ⊤ ↔ IsUnit (C p), contradicted by the hypothesis) and its zero locus is empty (eval x (C p) = p ≠ 0 for every point x). This is the field-agnostic core: any commutative ring carrying a nonzero non-unit already breaks the weak Nullstellensatz; over a field there are no such elements."
     },
     {
-      "title": "The UFD case — failure over ℤ and ℤ[X,Y]",
-      "description": "not_isUnit_C_two via constantCoeff and Int.isUnit_iff; weak_nullstellensatz_fails_over_int, weak_nullstellensatz_fails_over_ZXY, and strong_nullstellensatz_fails_over_int."
+      "id": "ufd-case",
+      "title": "The UFD Case — Failure over ℤ and ℤ[X,Y]",
+      "startLine": 109,
+      "endLine": 150,
+      "summary": "not_isUnit_C_two pushes C 2 through the ring hom constantCoeff to 2 ∈ ℤ and applies Int.isUnit_iff. Instantiating the general obstruction at p = 2 gives weak_nullstellensatz_fails_over_int (any σ) and the headline weak_nullstellensatz_fails_over_ZXY (σ = Fin 2). strong_nullstellensatz_fails_over_int then derives I(V(2)) = vanishingId ∅ = ⊤ while √(2) ≠ ⊤ (radical_eq_top), so the strong correspondence breaks."
     }
   ],
   "crossReferences": [
