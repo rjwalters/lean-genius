@@ -22,6 +22,8 @@ namespace Erdos318Aristotle
 
 open Finset BigOperators Real
 
+open scoped Classical
+
 /- ## Definitions (mirrored from Erdos318Problem.lean) -/
 
 /-- Signed sum of unit fractions. -/
@@ -105,15 +107,15 @@ theorem sum_reciprocal_squares_less_than_one :
     · simp [h, show ¬(n < 2) from by omega]
     · simp [h, show n < 2 from by omega]
   -- Add the two tsum pieces to get the full sum
-  have h_add := tsum_add h_summ_ge2 h_summ_lt2
+  have h_add := Summable.tsum_add h_summ_ge2 h_summ_lt2
   simp_rw [← h_split] at h_add
   -- The k≥2 sum = π²/6 - 1
   have h_val : ∑' n : ℕ, (if n ≥ 2 then (1 : ℝ) / n^2 else 0) = Real.pi^2 / 6 - 1 := by
     have hlt2 := h_lt2_hassum.tsum_eq  -- ∑'(k<2) = 1
-    linarith [h_add.trans h_full_sum, hlt2]  -- A + B = π²/6 and B = 1 → A = π²/6 - 1
+    linarith [h_add.symm.trans h_full_sum, hlt2]  -- A + B = π²/6 and B = 1 → A = π²/6 - 1
   -- Conclude: π²/6 - 1 < 1 since π < 3.15
   rw [h_val]
-  have hpi := Real.pi_lt_315
+  have hpi := Real.pi_lt_d2
   nlinarith [Real.pi_pos]
 
 /-- The counterexample set (odd numbers ∪ {2m}) has positive density ≥ 1/4.
@@ -149,14 +151,15 @@ theorem counterexample_positive_density (m : ℕ) (hm : m ≥ 1) :
   -- (n+1)/2 * 4 ≥ n (by Nat division: (n+1)/2 ≥ n/2 ≥ n/4)
   have h_nat : (n + 1) / 2 * 4 ≥ n := by omega
   -- Cast to ℝ: ((n+1)/2 : ℕ) ≥ 1/4 * n
-  have h_real : ((n + 1) / 2 : ℕ) : ℝ ≥ 1 / 4 * n := by
-    have h : (n : ℝ) ≤ 4 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_nat
+  have h_real : (((n + 1) / 2 : ℕ) : ℝ) ≥ 1 / 4 * n := by
+    have h_nat' : n ≤ 4 * ((n + 1) / 2) := by omega
+    have h : (n : ℝ) ≤ 4 * (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_nat'
     linarith
   -- Combine: filter card ≥ (n+1)/2 ≥ 1/4 * n
   calc ((Finset.filter (· ∈ counterexampleSet m) (Finset.range (n + 1))).card : ℝ)
       ≥ ((Finset.filter (fun k => k % 2 = 1) (Finset.range (n + 1))).card : ℝ) := by
           exact_mod_cast h_card
-    _ = ((n + 1) / 2 : ℕ) := by exact_mod_cast h_odd_count
+    _ = (((n + 1) / 2 : ℕ) : ℝ) := by exact_mod_cast h_odd_count
     _ ≥ 1 / 4 * n := h_real
 
 /-- Clearing denominators: if ∑_{n ∈ S} f(n)/n = 0 as rationals, then
@@ -172,27 +175,21 @@ theorem zero_sum_integer_form (S : Finset ℕ) (f : ℕ → ℤ) (hS : S.Nonempt
     (h0 : ∀ n ∈ S, n ≠ 0) (hzero : signedUnitSum S f = 0) :
     ∑ n ∈ S, f n * (∏ m ∈ S, m) / n = 0 := by
   -- Each n ∈ S divides ∏ m ∈ S, m (as integers)
-  have h_dvd_nat : ∀ n ∈ S, n ∣ ∏ m ∈ S, m := fun n hn => Finset.dvd_prod_of_mem _ hn
-  -- Rewrite: f n * P / n = f n * (P / n) since n | P (exact integer division)
-  have h_exact : ∀ n ∈ S, f n * ↑(∏ m ∈ S, m) / (n : ℤ) = f n * (↑(∏ m ∈ S, m) / (n : ℤ)) := by
+  have hP : ∀ n ∈ S, (n : ℤ) ∣ (↑(∏ m ∈ S, m) : ℤ) :=
+    fun n hn => by exact_mod_cast Finset.dvd_prod_of_mem _ hn
+  -- Cast the integer sum to ℚ: it equals (signedUnitSum) * P, term by term.
+  have hcast : (((∑ n ∈ S, f n * (∏ m ∈ S, m) / n : ℤ)) : ℚ)
+      = (∑ n ∈ S, (f n : ℚ) / (n : ℚ)) * (↑(∏ m ∈ S, m) : ℚ) := by
+    rw [Int.cast_sum, Finset.sum_mul]
+    apply Finset.sum_congr rfl
     intro n hn
-    have hdvd : (n : ℤ) ∣ ↑(∏ m ∈ S, m) := by exact_mod_cast h_dvd_nat n hn
-    rw [Int.mul_ediv_assoc _ hdvd]
-  simp_rw [Finset.sum_congr rfl h_exact]
-  -- Now prove ∑ n ∈ S, f n * (P / n : ℤ) = 0
-  -- via casting to ℚ: the ℤ/n is exact, matching the ℚ structure
-  apply_fun (Int.cast : ℤ → ℚ) using Int.cast_injective
-  push_cast
-  simp only [Int.cast_sum, Int.cast_mul]
-  -- Rearrange to match signedUnitSum
-  conv_lhs =>
-    arg 2; ext n
-    rw [show (f n : ℚ) * (↑(∏ m ∈ S, m) / ↑n) =
-             ((f n : ℚ) / ↑n) * ↑(∏ m ∈ S, m) from by ring]
-  rw [← Finset.sum_mul]
-  have hsu : ∑ n ∈ S, (f n : ℚ) / ↑n = 0 := by
-    have : signedUnitSum S f = ∑ n ∈ S, (f n : ℚ) / ↑n := rfl
-    rw [← this]; exact hzero
-  rw [hsu, zero_mul]
+    rw [Int.mul_ediv_assoc _ (hP n hn), Int.cast_mul,
+        Int.cast_div (hP n hn) (by exact_mod_cast (h0 n hn))]
+    push_cast
+    ring
+  have hsu : (∑ n ∈ S, (f n : ℚ) / (n : ℚ)) = 0 := hzero
+  have hzeroℚ : (((∑ n ∈ S, f n * (∏ m ∈ S, m) / n : ℤ)) : ℚ) = 0 := by
+    rw [hcast, hsu, zero_mul]
+  exact_mod_cast hzeroℚ
 
 end Erdos318Aristotle
