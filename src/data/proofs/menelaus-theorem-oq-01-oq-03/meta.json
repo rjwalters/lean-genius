@@ -1,0 +1,143 @@
+{
+  "id": "menelaus-theorem-oq-01-oq-03",
+  "title": "The Cevian Triangle and Routh's Theorem",
+  "slug": "menelaus-theorem-oq-01-oq-03",
+  "description": "Builds on the parent Menelaus formalization to study the cevian triangle PQR cut out by the three cevians AX, BY, CZ. Two results, both from the parent's signed-area determinant collinearDet: (1) a general-triangle concurrency criterion — P=AX∩BY lies on CZ iff t·u·v=(1-t)(1-u)(1-v), driven by the polynomial identity collinearDet C Z P · detP = ((1-t)(1-u)(1-v) - tuv)·(collinearDet A B C)²; and (2) Routh's theorem in signed-area form on the reference triangle: collinearDet P Q R = (tuv-(1-t)(1-u)(1-v))² / ((1-u+tu)(1-v+uv)(1-t+vt)), with the three vertices certified to lie on the correct cevians. The Routh numerator is the square of the concurrency defect, so the cevian triangle collapses to a point exactly when the cevians concur; the classical 1/7-area triangle (t=u=v=1/3) drops out as a corollary. 13 theorems, 7 definitions, 0 sorries, 0 axioms. Routh's theorem is not in Mathlib.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Routh%27s_theorem",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MenelausTheoremOQ01OQ03.lean",
+    "tags": [
+      "geometry",
+      "routh-theorem",
+      "menelaus",
+      "ceva",
+      "cevian-triangle",
+      "affine-coordinates",
+      "triangles",
+      "signed-area"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified; #print axioms reports only propext, Classical.choice, Quot.sound for every theorem (no native_decide, no sorry). The Routh area formula is proved for the canonical reference triangle A=(0,0), B=(1,0), C=(0,1); since the cevian-triangle area ratio is an affine invariant and every triangle is an affine image of the reference triangle, the closed form is the general Routh ratio. The concurrency criterion is proved for a fully general non-degenerate triangle.",
+    "lineCount": 239,
+    "theoremCount": 13,
+    "definitionCount": 7,
+    "originalContributions": [
+      "detLines / interPt: cross-product parallelism denominator and Cramer's-rule intersection point of two lines in ℝ²",
+      "cevP: the cevian-triangle vertex AX∩BY, with cevP_on_AX / cevP_on_BY certifying it lies on both cevians",
+      "concurrency_defect: the general-triangle polynomial identity collinearDet C Z P · detP = ((1-t)(1-u)(1-v) - tuv)·(collinearDet A B C)², the engine of the concurrency criterion",
+      "cevians_concurrent_iff: the cevian (Ceva-type) concurrency criterion — cevians AX, BY, CZ concur iff t·u·v = (1-t)(1-u)(1-v), the companion of the parent's transversal Menelaus criterion",
+      "vP, vQ, vR: closed-form cevian-triangle vertices on the reference triangle, each certified on its two cevians by the six on-line lemmas",
+      "routh_area: Routh's theorem in signed-area form — collinearDet P Q R = (tuv-(1-t)(1-u)(1-v))² / ((1-u+tu)(1-v+uv)(1-t+vt)), with explicit closed-form Routh denominators",
+      "routh_area_zero_iff: the cevian triangle degenerates to a point iff the cevians concur (numerator is the square of the concurrency defect)",
+      "routh_one_seventh: the classical one-seventh-area triangle (t=u=v=1/3) as a concrete instance"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Edward John Routh published this area formula in his 1891 treatise on analytical statics, generalizing the classical 'one-seventh area' puzzle: if each side of a triangle is trisected and a cevian is drawn to the nearer trisection point, the three cevians bound a central triangle of exactly one-seventh the area. Routh's theorem subsumes both Ceva's theorem (the central triangle degenerates to a point — concurrency — precisely when the area is zero) and, through that degeneration, the cevian companion of Menelaus's transversal theorem. Where the parent entry characterises when a transversal line meets the three sides collinearly (signed-ratio product -1), this entry characterises the triangle cut out by the three cevians and computes its area in closed form.",
+    "problemStatement": "Given triangle ABC with cevians AX, BY, CZ to the division points X=(1-t)B+tC, Y=(1-u)C+uA, Z=(1-v)A+vB, let P=AX∩BY, Q=BY∩CZ, R=CZ∩AX be the vertices of the cevian triangle. (1) When are the three cevians concurrent (cevian triangle a single point)? (2) What is the signed area of the cevian triangle relative to ABC?",
+    "text": "Both questions reduce to the parent's signed-area determinant collinearDet. For (1), the intersection point P=AX∩BY is computed by Cramer's rule (denominator detP = the cross product of the two cevian directions). The signed area collinearDet C Z P, which vanishes exactly when P also lies on CZ, satisfies the pure polynomial identity collinearDet C Z P · detP = ((1-t)(1-u)(1-v) - t·u·v)·(collinearDet A B C)². For a non-degenerate triangle (collinearDet A B C ≠ 0) the cevians therefore concur iff t·u·v = (1-t)(1-u)(1-v) — the Ceva condition, mirroring the parent's Menelaus condition with the opposite sign. For (2), on the reference triangle the three cevian-triangle vertices have the closed forms P=((1-t)(1-u)/D₁, t(1-u)/D₁), Q=(uv/D₂, (1-u)(1-v)/D₂), R=((1-t)v/D₃, tv/D₃) with Routh denominators D₁=1-u+tu, D₂=1-v+uv, D₃=1-t+vt. Each is certified to lie on its two cevians, and a field_simp/ring computation yields Routh's formula collinearDet P Q R = (tuv-(1-t)(1-u)(1-v))² / (D₁D₂D₃). The numerator is the square of the concurrency defect from part (1), so the area vanishes exactly at concurrency.",
+    "proofStrategy": "Part I builds the general intersection machinery: detLines (parallelism denominator) and interPt (Cramer's-rule intersection). cevP = AX∩BY is certified on both cevians by cevP_on_AX and cevP_on_BY (field_simp; ring). Part II proves concurrency_defect — a 9-variable polynomial identity over the six triangle coordinates and t,u,v, discharged by field_simp/ring after clearing the single intersection denominator — and derives cevians_concurrent_iff by cancelling the squared (nonzero) area factor. Part III works on the reference triangle: the three vertices vP, vQ, vR are given in closed form, certified to lie on the correct cevians by six on-line lemmas, and Routh's area formula routh_area is proved by clearing the three Routh denominators and applying ring. routh_area_zero_iff reads off the concurrency corollary from the squared numerator, and routh_one_seventh instantiates t=u=v=1/3.",
+    "keyInsights": [
+      "The cevian intersection point P=AX∩BY is a rational function of the coordinates and t,u,v with denominator detP (the cross product of the two cevian directions)",
+      "Concurrency is governed by the polynomial identity collinearDet C Z P · detP = ((1-t)(1-u)(1-v) - tuv)·(collinearDet A B C)² — a single ring computation valid for any triangle",
+      "Cevians concur iff t·u·v = (1-t)(1-u)(1-v) (signed-ratio product +1), the exact sign-flip of the parent's Menelaus collinearity condition (product -1)",
+      "Routh's area numerator (tuv-(1-t)(1-u)(1-v))² is the SQUARE of the concurrency defect, so the cevian triangle collapses to a point precisely when the cevians concur",
+      "The three Routh denominators have the clean cyclic closed form 1-u+tu, 1-v+uv, 1-t+vt",
+      "Because the area ratio is an affine invariant, the reference-triangle computation gives the general Routh ratio; t=u=v=1/3 recovers the classical 1/7-area triangle"
+    ],
+    "prerequisites": [
+      "Parent Menelaus formalization: Pt = ℝ×ℝ, collinearDet, MenelausConfig, ptX/ptY/ptZ",
+      "Line intersection via Cramer's rule and the cross-product parallelism test",
+      "Affine invariance of area ratios; the reference triangle A=(0,0),B=(1,0),C=(0,1)",
+      "Real field arithmetic: field_simp, ring, the square-of-defect factorisation"
+    ]
+  },
+  "conclusion": {
+    "summary": "The cevian triangle PQR cut from triangle ABC by the cevians AX, BY, CZ is fully analysed via the parent's signed-area determinant. A general-triangle polynomial identity yields the cevian concurrency criterion t·u·v = (1-t)(1-u)(1-v) — the sign-flipped companion of the parent's Menelaus condition — and, on the reference triangle, Routh's theorem in signed-area form collinearDet P Q R = (tuv-(1-t)(1-u)(1-v))²/((1-u+tu)(1-v+uv)(1-t+vt)), with all three vertices certified on their cevians. The squared numerator makes the Ceva degeneracy immediate, and the classical one-seventh-area triangle is recovered. 13 theorems, 7 definitions, 239 lines, 0 sorries, 0 axioms.",
+    "implications": "Completes the Ceva/Menelaus picture in the gallery: the parent handles transversal collinearity, this entry handles cevian concurrency and the full cevian-triangle area (Routh). The intersection-point machinery (detLines, interPt) and the square-of-defect factorisation are reusable for further triangle-geometry area formulas. Routh's theorem is not present in Mathlib.",
+    "openQuestions": [
+      "Lift the Routh area formula from the reference triangle to a fully general triangle by formalizing affine invariance of the area ratio (or by a direct 9-variable ring identity)",
+      "Specialize to the medial/Gergonne/Nagel cevians and recover their classical area ratios as corollaries of routh_area",
+      "Prove the converse Routh problem: given a target area ratio, characterize the (t,u,v) achieving it"
+    ]
+  },
+  "leanFile": {
+    "namespace": "MenelausTheoremOQ01OQ03",
+    "lineCount": 239,
+    "axiomCount": 0,
+    "theoremCount": 13,
+    "definitionCount": 7,
+    "path": "Proofs/MenelausTheoremOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "menelaus-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the transversal Menelaus criterion (product -1). This entry reuses its collinearDet / MenelausConfig / ptX,ptY,ptZ machinery for the cevian (product +1) and area story."
+    },
+    {
+      "targetId": "cevas-theorem",
+      "relationship": "related",
+      "description": "Ceva's concurrency theorem (product +1); cevians_concurrent_iff is the determinant-form companion, and routh_area_zero_iff shows the cevian triangle degenerates exactly at Ceva's condition."
+    }
+  ],
+  "references": [
+    {
+      "text": "Routh, E. J. (1891). A Treatise on Analytical Statics, Vol. 1. The cevian-triangle area ratio.",
+      "url": "https://en.wikipedia.org/wiki/Routh%27s_theorem"
+    },
+    {
+      "text": "Coxeter, H. S. M. & Greitzer, S. L. (1967). Geometry Revisited. MAA. §1.3 (Ceva), §3.4 (Menelaus), and Routh's theorem.",
+      "url": "https://en.wikipedia.org/wiki/Geometry_Revisited"
+    }
+  ],
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview and Imports",
+      "startLine": 1,
+      "endLine": 64,
+      "description": "Module docstring framing the cevian triangle PQR as the natural successor to the parent's transversal Menelaus theorem: a general concurrency criterion plus Routh's signed-area formula, both from the parent's collinearDet.",
+      "mathContext": "Cevian triangle of $AX,BY,CZ$; concurrency iff $tuv=(1-t)(1-u)(1-v)$; Routh area $\\frac{(tuv-(1-t)(1-u)(1-v))^2}{(1-u+tu)(1-v+uv)(1-t+vt)}$."
+    },
+    {
+      "id": "intersection",
+      "title": "Cevian Line Intersection (General Triangle)",
+      "startLine": 65,
+      "endLine": 108,
+      "description": "detLines (cross product of two line directions — the parallelism denominator) and interPt (the intersection point by Cramer's rule). cevP = AX∩BY, with detP its denominator; cevP_on_AX and cevP_on_BY certify cevP lies on both cevians.",
+      "mathContext": "$P=AX\\cap BY$ with $\\det_P=(X-A)\\times(Y-B)$; $P=\\bigl(\\tfrac{c_1\\Delta x_2-c_2\\Delta x_1}{\\det_P},\\dots\\bigr)$."
+    },
+    {
+      "id": "concurrency",
+      "title": "Concurrency Criterion (General Triangle)",
+      "startLine": 109,
+      "endLine": 155,
+      "description": "concurrency_defect: the polynomial identity collinearDet C Z P · detP = ((1-t)(1-u)(1-v) - tuv)·(collinearDet A B C)², valid for any triangle. cevians_concurrent_iff cancels the squared nonzero area factor to conclude the cevians concur iff t·u·v = (1-t)(1-u)(1-v).",
+      "mathContext": "$AX,BY,CZ$ concurrent $\\iff tuv=(1-t)(1-u)(1-v)$ — the cevian companion of Menelaus's $tuv=-(1-t)(1-u)(1-v)$."
+    },
+    {
+      "id": "routh-vertices",
+      "title": "Cevian-Triangle Vertices (Reference Triangle)",
+      "startLine": 156,
+      "endLine": 191,
+      "description": "Closed-form vertices vP, vQ, vR of the cevian triangle on the reference triangle A=(0,0),B=(1,0),C=(0,1), each certified to lie on its two cevians by the six on-line lemmas vP_on_AX, vP_on_BY, vQ_on_BY, vQ_on_CZ, vR_on_CZ, vR_on_AX.",
+      "mathContext": "$P=\\bigl(\\tfrac{(1-t)(1-u)}{D_1},\\tfrac{t(1-u)}{D_1}\\bigr)$, $D_1=1-u+tu$; similarly $Q,R$ with $D_2=1-v+uv$, $D_3=1-t+vt$."
+    },
+    {
+      "id": "routh-theorem",
+      "title": "Routh's Theorem (Signed-Area Formula)",
+      "startLine": 192,
+      "endLine": 239,
+      "description": "routh_area: collinearDet P Q R = (tuv-(1-t)(1-u)(1-v))² / ((1-u+tu)(1-v+uv)(1-t+vt)). routh_area_zero_iff reads off the Ceva degeneracy (squared numerator), and routh_one_seventh instantiates t=u=v=1/3 to the classical one-seventh-area triangle.",
+      "mathContext": "$[PQR]=\\frac{(tuv-(1-t)(1-u)(1-v))^2}{(1-u+tu)(1-v+uv)(1-t+vt)}\\,[ABC]$; $t=u=v=\\tfrac13\\Rightarrow\\tfrac17$."
+    }
+  ]
+}
