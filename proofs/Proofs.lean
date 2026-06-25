@@ -880,6 +880,7 @@ import Proofs.CombinationsFormulaOQ02Aristotle
 import Proofs.CombinationsFormulaOQ02OQ01
 import Proofs.CombinationsFormulaOQ03
 import Proofs.CombinationsFormulaOQ03OQ06
+import Proofs.CombinationsFormulaOQ04
 import Proofs.CombinationsFormulaOQ05
 import Proofs.CombinationsFormulaOQ05OQ01
 import Proofs.CombinationsFormulaOQ05OQ01OQ01
