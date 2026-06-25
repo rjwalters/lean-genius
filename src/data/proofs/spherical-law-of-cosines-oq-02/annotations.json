@@ -1,0 +1,156 @@
+[
+  {
+    "id": "ann-header-girard",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "OQ-02: the Girard–Euler spherical excess formula",
+    "content": "Girard's theorem identifies the area (in steradians) of a spherical triangle on the unit sphere with its **spherical excess** $S = A + B + C - \\pi$. A fully self-contained proof needs a spherical-area (solid-angle) measure together with lune-area lemmas and a covering count — infrastructure Mathlib lacks at v4.26.0 (estimated >1000 lines). This file instead formalises the two arithmetic pillars every classical proof rests on, with 0 axioms and 0 sorries: finite additivity of the excess under geodesic subdivision, and the lune-covering reduction. The geometric inputs enter as theorem hypotheses, so every result is an unconditional, machine-checked implication.",
+    "mathContext": "$\\operatorname{area}(\\triangle) = A + B + C - \\pi$",
+    "significance": "key",
+    "relatedConcepts": [
+      "spherical excess",
+      "solid angle / steradian",
+      "Gauss–Bonnet theorem",
+      "constant curvature K = 1",
+      "lune (digon)"
+    ],
+    "prerequisites": [
+      "Spherical geometry (geodesic triangles, dihedral angles, lunes)",
+      "Solid angle / area on the unit sphere"
+    ]
+  },
+  {
+    "id": "ann-excess-def",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 50,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "The spherical excess",
+    "content": "`sphericalExcess A B C := A + B + C - π`, noncomputable because it references `Real.pi`. The `@[simp]` unfolding lemma and the symmetry lemma (the labelling of vertices is arbitrary) are recorded. Girard's theorem is the assertion that this quantity equals the triangle's area.",
+    "mathContext": "$S(A,B,C) = A + B + C - \\pi$",
+    "significance": "standard",
+    "relatedConcepts": [
+      "angle excess",
+      "area in steradians"
+    ],
+    "prerequisites": [
+      "Real.pi"
+    ]
+  },
+  {
+    "id": "ann-additivity-cevian",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 93
+    },
+    "type": "theorem",
+    "title": "Pillar 1: excess is additive under a cevian subdivision",
+    "content": "`sphericalExcess_additive_cevian`: a geodesic from vertex C to a point D on the opposite side AB splits △ABC into △ADC and △DBC. Given the vertex split `C = C₁ + C₂` and the supplementary relation `δ₁ + δ₂ = π` at the interior point D, the excesses of the two pieces sum to the excess of the whole. The proof is a single `linarith` after unfolding: the angle sums contribute `+ (δ₁ + δ₂) − 2π = +π − 2π = −π`, exactly reconstituting the whole-triangle excess. This finite additivity is the structural reason the excess behaves like an area.",
+    "mathContext": "$S(A,\\delta_1,C_1) + S(B,\\delta_2,C_2) = S(A,B,C)$ when $C=C_1+C_2,\\ \\delta_1+\\delta_2=\\pi$",
+    "significance": "key",
+    "relatedConcepts": [
+      "finite additivity",
+      "geodesic subdivision",
+      "supplementary angles",
+      "additive measure"
+    ],
+    "prerequisites": [
+      "Definition of sphericalExcess",
+      "The two geometric subdivision relations (taken as hypotheses)"
+    ]
+  },
+  {
+    "id": "ann-polygon",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 117
+    },
+    "type": "theorem",
+    "title": "Spherical polygon excess: quadrilateral and pentagon cases",
+    "content": "`sphericalExcess_quadrilateral` proves a geodesic quadrilateral has area $\\alpha+\\beta+\\gamma+\\delta-2\\pi$ by cutting along a diagonal (the angles at the two diagonal endpoints split). `sphericalExcess_pentagon` proves the $n=5$ case, area $=\\sum\\text{angles}-3\\pi$, via a fan of two diagonals from one vertex into three triangles. Both confirm the general spherical polygon formula $\\operatorname{area} = (\\sum\\text{angles}) - (n-2)\\pi$, which follows from triangulating an $n$-gon into $n-2$ triangles and summing Girard's excess.",
+    "mathContext": "$\\operatorname{area}(n\\text{-gon}) = \\Big(\\sum_{i=1}^{n}\\theta_i\\Big) - (n-2)\\pi$",
+    "significance": "key",
+    "relatedConcepts": [
+      "spherical polygon",
+      "triangulation",
+      "angle excess",
+      "Gauss–Bonnet for polygons"
+    ],
+    "prerequisites": [
+      "Cevian additivity",
+      "Diagonal/fan triangulation (angle splits taken as hypotheses)"
+    ]
+  },
+  {
+    "id": "ann-lune-reduction",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 118,
+      "endLine": 139
+    },
+    "type": "theorem",
+    "title": "Pillar 2: Girard's theorem from the lune covering",
+    "content": "`girard_euler_from_lunes` derives `S = A + B + C - π` from the classical lune computation. Extending the triangle's three sides to great circles produces, at each vertex, an antipodal pair of lunes; a lune of dihedral angle θ has area 2θ, so the three pairs have combined areas 4A, 4B, 4C. These six lunes tile the sphere (area 4π) while covering the triangle T and its antipode T′ (each of area S) three times and every other point once, so their total area is also `4π + 4S`. Equating gives `4A + 4B + 4C = 4π + 4S`, hence Girard's formula by `linarith`. The lune-area and covering-count facts are the hypotheses; the arithmetic closure is the verified content.",
+    "mathContext": "$4A+4B+4C = 4\\pi + 4S \\ \\Rightarrow\\ S = A+B+C-\\pi$",
+    "significance": "key",
+    "relatedConcepts": [
+      "lune (digon) area = 2θ",
+      "antipodal map",
+      "covering / tiling of the sphere",
+      "inclusion–exclusion overcount"
+    ],
+    "prerequisites": [
+      "Lune area = twice the dihedral angle (hypothesis)",
+      "Six-lune covering count (hypothesis)",
+      "Sphere area = 4π (hypothesis)"
+    ]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 140,
+      "endLine": 179
+    },
+    "type": "theorem",
+    "title": "Consequences: angle-sum dichotomy, flat limit, bounds, monotonicity",
+    "content": "Five corollaries of Girard's formula. `pos_area_iff_angle_sum_gt_pi`: positive area ⟺ angle sum exceeds π (genuine spherical triangles are 'fat', a hallmark of positive curvature). `excess_eq_zero_iff`: zero excess ⟺ angle sum = π, recovering the Euclidean angle-sum theorem as the flat (zero-curvature) limit. `excess_nonneg_iff`: the non-negativity criterion. `excess_lt_two_pi`: each interior angle < π forces area < 2π, the hemisphere bound. `excess_strictMono_left`: the area is strictly increasing in any single opening angle.",
+    "mathContext": "$0 < S \\iff \\pi < A+B+C$; $\\ S = 0 \\iff A+B+C=\\pi$; $\\ S < 2\\pi$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positive curvature",
+      "Euclidean angle-sum theorem",
+      "hemisphere area bound",
+      "monotonicity of area"
+    ],
+    "prerequisites": [
+      "Girard's formula (or the definition of excess)"
+    ]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "spherical-law-of-cosines-oq-02",
+    "range": {
+      "startLine": 180,
+      "endLine": 203
+    },
+    "type": "note",
+    "title": "Summary and honest scoping",
+    "content": "1 definition, 11 theorems, 0 sorries, 0 axioms (`#print axioms` lists only propext/Classical.choice/Quot.sound). The geometric inputs of Girard's theorem appear as hypotheses, so the file proves the arithmetic backbone and lune reduction rather than a self-contained measure-theoretic proof — the missing piece (a Mathlib spherical-area measure with the lune-area lemma) is recorded as the principal open question.",
+    "mathContext": "Status: verified, badge original.",
+    "significance": "standard",
+    "relatedConcepts": [
+      "honest scoping",
+      "open infrastructure gap"
+    ],
+    "prerequisites": []
+  }
+]
