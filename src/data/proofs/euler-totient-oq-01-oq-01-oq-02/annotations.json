@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-carmichael-theorem",
+    "proofId": "euler-totient-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 44,
+      "endLine": 50
+    },
+    "type": "theorem",
+    "title": "Carmichael's Theorem",
+    "content": "`unit_pow_carmichael`: every unit `a` of `ℤ/nℤ` satisfies `a ^ λ(n) = 1`. Because the parent defines `carmichael n = Monoid.exponent (ZMod n)ˣ`, this is the defining property of the group exponent, specialised from Mathlib's `Monoid.pow_exponent_eq_one`. It is the universal-exponent statement that names Carmichael's function and refines the Fermat–Euler theorem `a ^ φ(n) = 1`.",
+    "mathContext": "$a^{\\lambda(n)} \\equiv 1 \\pmod n$ for every $a$ coprime to $n$, where $\\lambda(n) = \\exp\\big((\\mathbb{Z}/n\\mathbb{Z})^\\times\\big)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Carmichael's function",
+      "group exponent",
+      "Fermat–Euler theorem"
+    ],
+    "prerequisites": [
+      "the parent definition λ(n) = exponent of the unit group",
+      "Monoid.pow_exponent_eq_one"
+    ]
+  },
+  {
+    "id": "ann-minimality",
+    "proofId": "euler-totient-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 52,
+      "endLine": 58
+    },
+    "type": "theorem",
+    "title": "Minimality of λ(n)",
+    "content": "`carmichael_dvd_of_forall_pow_eq_one`: any `k` such that `a ^ k = 1` for every unit `a` is a multiple of `λ(n)`. This is the (⇐) direction of `Monoid.exponent_dvd_iff_forall_pow_eq_one`. Combined with Carmichael's theorem it says λ(n) is the LEAST positive universal exponent of the unit group — no smaller exponent kills all units.",
+    "mathContext": "$\\big(\\forall a,\\ a^k = 1\\big) \\implies \\lambda(n) \\mid k$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "least universal exponent",
+      "divisibility characterisation of the exponent"
+    ],
+    "prerequisites": [
+      "Monoid.exponent_dvd_iff_forall_pow_eq_one"
+    ]
+  },
+  {
+    "id": "ann-attainment",
+    "proofId": "euler-totient-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 66
+    },
+    "type": "theorem",
+    "title": "Attainment of the Exponent (Sharpness)",
+    "content": "`exists_unit_orderOf_eq_carmichael`: for `n ≥ 1` there is a unit of `ℤ/nℤ` whose order is exactly `λ(n)`. The finite unit group satisfies `Monoid.ExponentExists.of_finite`, so `Monoid.exists_orderOf_eq_exponent` produces the witness. Together with minimality this pins λ(n) as the sharp universal exponent: the bound `a^λ(n)=1` is attained and cannot be lowered.",
+    "mathContext": "$\\exists a \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times,\\ \\operatorname{ord}(a) = \\lambda(n)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "exponent attainment",
+      "maximal order",
+      "finite abelian groups"
+    ],
+    "prerequisites": [
+      "Monoid.exists_orderOf_eq_exponent",
+      "Monoid.ExponentExists.of_finite",
+      "finiteness of (ℤ/nℤ)* for n ≥ 1"
+    ]
+  },
+  {
+    "id": "ann-dvd-totient",
+    "proofId": "euler-totient-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 75
+    },
+    "type": "theorem",
+    "title": "λ(n) Divides φ(n)",
+    "content": "`carmichael_dvd_totient`: `λ(n) ∣ φ(n)`. The exponent of a finite group divides its order (`Group.exponent_dvd_nat_card`), and the unit group of `ℤ/nℤ` has order `φ(n)` (`ZMod.card_units_eq_totient`). This single divisibility is exactly why Carmichael's theorem refines Euler's.",
+    "mathContext": "$\\lambda(n) \\mid \\varphi(n)$; e.g. $\\lambda(8) = 2 \\mid 4 = \\varphi(8)$, $\\lambda(561) = 80 \\mid 320 = \\varphi(561)$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "exponent divides order",
+      "Euler's totient",
+      "order of the unit group"
+    ],
+    "prerequisites": [
+      "Group.exponent_dvd_nat_card",
+      "ZMod.card_units_eq_totient"
+    ]
+  },
+  {
+    "id": "ann-euler-recovered",
+    "proofId": "euler-totient-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 81
+    },
+    "type": "theorem",
+    "title": "Euler's Theorem Recovered from Carmichael",
+    "content": "`unit_pow_totient`: `a ^ φ(n) = 1` for every unit, derived from `a^λ(n)=1` and `λ(n) ∣ φ(n)` by writing `φ(n) = λ(n)·m` and collapsing `(a^λ(n))^m = 1`. This exhibits the Fermat–Euler theorem as a corollary of the sharper Carmichael period λ(n), generally smaller than φ(n).",
+    "mathContext": "$a^{\\varphi(n)} = (a^{\\lambda(n)})^{m} = 1$ where $\\varphi(n) = \\lambda(n)\\,m$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fermat–Euler theorem",
+      "corollary of Carmichael's theorem"
+    ],
+    "prerequisites": [
+      "unit_pow_carmichael",
+      "carmichael_dvd_totient"
+    ]
+  }
+]

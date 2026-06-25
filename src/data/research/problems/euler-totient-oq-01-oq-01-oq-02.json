@@ -1,0 +1,45 @@
+{
+  "slug": "euler-totient-oq-01-oq-01-oq-02",
+  "status": "active",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "title": "Carmichael's theorem: λ(n) is the sharp universal exponent dividing φ(n)",
+  "problemStatement": "Working with the parent's definition λ(n) = exponent of (ℤ/nℤ)*, prove Carmichael's theorem a^λ(n)=1 for every unit a, and establish that λ(n) is the sharp universal exponent: minimality (any common exponent is a multiple of λ(n)), attainment (some unit has order exactly λ(n)), λ(n) ∣ φ(n), and the Fermat–Euler theorem a^φ(n)=1 as a corollary.",
+  "tags": [
+    "number-theory",
+    "carmichael-function",
+    "euler-totient",
+    "exponent",
+    "units",
+    "fermat-euler",
+    "research"
+  ],
+  "leanFiles": [
+    "proofs/Proofs/EulerTotientOQ01OQ01OQ02.lean"
+  ],
+  "relatedProofs": [
+    "euler-totient-oq-01-oq-01",
+    "euler-totient-oq-01-oq-01-oq-01"
+  ],
+  "knownResults": [
+    "Parent euler-totient-oq-01-oq-01 defines carmichael n = Monoid.exponent (ZMod n)ˣ and proves multiplicativity λ(m·n)=lcm(λ(m),λ(n)) for coprime m,n.",
+    "Sibling euler-totient-oq-01-oq-01-oq-01 computes the explicit value λ(n)=lcm_p p^(k−1)(p−1) and λ(561)=80.",
+    "Mathlib provides the Fermat–Euler theorem (ZMod.pow_totient) and a full monoid-exponent API but no ℕ-indexed Carmichael function; the named theorem package is assembled here."
+  ],
+  "currentState": "COMPLETE: 0 sorries, 0 axioms (only foundational propext/Classical.choice/Quot.sound). 5 theorems, 0 definitions, 82 lines. Builds clean via host lake env lean against the Mathlib cache, importing the parent Proofs.EulerTotientOQ01OQ01. Proofs are short specialisations of Mathlib's monoid-exponent API; badge set to 'verified' (not 'original') to reflect that the value is the coherent assembly rather than new proof technique.",
+  "knowledge": {
+    "progressSummary": "COMPLETE: Assembled the operational content of the gallery's Carmichael function. Proved Carmichael's theorem (unit_pow_carmichael: a^λ(n)=1), minimality (carmichael_dvd_of_forall_pow_eq_one), attainment/sharpness (exists_unit_orderOf_eq_carmichael), the refinement λ(n)∣φ(n) (carmichael_dvd_totient), and Euler recovered (unit_pow_totient: a^φ(n)=1). Each is a specialisation of Mathlib's monoid-exponent API to the unit group, bridged to the totient via ZMod.card_units_eq_totient. Badge 'verified'.",
+    "builtItems": [
+      "unit_pow_carmichael: a ^ λ(n) = 1 for every unit (Monoid.pow_exponent_eq_one specialised)",
+      "carmichael_dvd_of_forall_pow_eq_one: any universal exponent k satisfies λ(n) ∣ k (minimality)",
+      "exists_unit_orderOf_eq_carmichael: ∃ unit of order exactly λ(n) for n ≥ 1 (attainment/sharpness)",
+      "carmichael_dvd_totient: λ(n) ∣ φ(n) (exponent divides group order; #units = φ(n))",
+      "unit_pow_totient: a ^ φ(n) = 1 recovered from Carmichael's theorem plus λ ∣ φ"
+    ],
+    "insights": [
+      "Because the parent defines λ(n) as the group exponent, Carmichael's theorem a^λ(n)=1 is the exponent's defining property — the mathematical work is the definition (parent) and the explicit value (sibling); this leaf packages the governing theorem and its sharpness.",
+      "λ(n) is sharp from both sides: minimality (every common exponent is a multiple of λ) plus attainment (some element has order λ) together pin λ(n) as the least universal exponent with the bound met.",
+      "The totient enters only as the order of the unit group (#(ℤ/nℤ)* = φ(n)); the refinement λ(n)∣φ(n) is purely the exponent dividing the order, and feeding it back recovers a^φ(n)=1 with λ(n) ≤ φ(n) as the true period."
+    ]
+  }
+}
