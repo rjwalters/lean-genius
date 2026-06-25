@@ -1,0 +1,105 @@
+[
+  {
+    "id": "iso-oq0201-concept",
+    "proofId": "isosceles-triangle-oq-02-oq-01",
+    "range": {
+      "startLine": 6,
+      "endLine": 42
+    },
+    "type": "concept",
+    "title": "Converse Pons Asinorum via the Dual Law of Cosines",
+    "content": "This file proves **Euclid I.6** (the converse of Pons Asinorum: *equal base angles ⟹ equal opposite sides*) in spherical and hyperbolic geometry. The tool is the **dual (polar) law of cosines**, which expresses a side from the three angles:\n$$\\cos a = \\frac{\\cos A + \\cos B\\cos C}{\\sin B\\sin C}\\ (\\text{spherical}),\\qquad \\cosh a = \\frac{\\cos A + \\cos B\\cos C}{\\sin B\\sin C}\\ (\\text{hyperbolic}).$$\nThe right-hand side is the *same symmetric expression* in both geometries — only the left side changes. When $A=B$ the two opposite-side expressions coincide, so $\\cos a=\\cos b$ (resp. $\\cosh a=\\cosh b$), and injectivity of $\\cos$ on $[0,\\pi]$ / $\\cosh$ on $[0,\\infty)$ gives $a=b$.",
+    "mathContext": "The exact dual of the parent (isosceles-triangle-oq-02): there, equal sides forced equal angle-cosines; here, equal angles force equal side-(co)sines. No inner product space, 0 axioms.",
+    "significance": "key",
+    "prerequisites": [
+      "spherical and hyperbolic laws of cosines (and their dual forms)",
+      "injectivity of cos on [0,π] and cosh on [0,∞)"
+    ],
+    "relatedConcepts": [
+      "Pons Asinorum",
+      "non-Euclidean geometry",
+      "law of cosines",
+      "side-angle duality"
+    ]
+  },
+  {
+    "id": "iso-oq0201-defs",
+    "proofId": "isosceles-triangle-oq-02-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 58
+    },
+    "type": "definition",
+    "title": "Dual-Law Side Expressions sphCosSide / hypCoshSide",
+    "content": "`sphCosSide A B C` and `hypCoshSide A B C` both equal $(\\cos A + \\cos B\\cos C)/(\\sin B\\sin C)$ — the dual-law value of $\\cos a$ (spherical) and $\\cosh a$ (hyperbolic), where $A$ is the angle opposite side $a$. The shared body makes the geometric duality explicit: the *same* algebra governs both geometries; only the interpretation of the left-hand side differs.",
+    "mathContext": "The dual law of cosines determines an actual side length from the three angles — an AAA phenomenon with no Euclidean analogue.",
+    "significance": "important",
+    "prerequisites": [
+      "dual (polar) law of cosines"
+    ],
+    "relatedConcepts": [
+      "polar triangle",
+      "AAA congruence"
+    ]
+  },
+  {
+    "id": "iso-oq0201-cores",
+    "proofId": "isosceles-triangle-oq-02-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 66
+    },
+    "type": "technique",
+    "title": "Algebraic Core: Symmetry Under Swapping A and B",
+    "content": "`sph_converse_eq` / `hyp_converse_eq` prove that $A=B$ forces `sphCosSide A B C = sphCosSide B A C` (resp. `hypCoshSide`). Each is a one-line `subst h; rfl`: after substituting $A=B$ both sides become syntactically identical, because the dual-law expression is invariant under swapping its first two angle arguments.",
+    "mathContext": "Equal angles ⟹ equal cos a / cosh a — the entire mathematical content of the converse, reduced to a symmetry.",
+    "significance": "important",
+    "prerequisites": [
+      "definitional unfolding (subst, rfl)"
+    ],
+    "relatedConcepts": [
+      "symmetry argument"
+    ]
+  },
+  {
+    "id": "iso-oq0201-converse",
+    "proofId": "isosceles-triangle-oq-02-oq-01",
+    "range": {
+      "startLine": 68,
+      "endLine": 84
+    },
+    "type": "technique",
+    "title": "Recovering the Side by Injectivity",
+    "content": "`spherical_isosceles_converse` rewrites the dual-law hypotheses to $\\cos a=\\cos b$ and applies `Real.injOn_cos` (injectivity of cos on $[0,\\pi]$, the range of spherical sides) to conclude $a=b$. `hyperbolic_isosceles_converse` is identical but lands on $\\cosh a=\\cosh b$ and uses `StrictMonoOn.injOn Real.cosh_strictMonoOn` (cosh is strictly monotone, hence injective, on $[0,\\infty)$, the range of hyperbolic sides). The membership wrappers `mem_Ici.mpr` convert $0\\le a$ into $a\\in\\mathrm{Ici}\\,0$.",
+    "mathContext": "Once the algebra gives equal (co)sines, injectivity on the natural side-length range delivers equal sides — the only analytic input.",
+    "significance": "key",
+    "prerequisites": [
+      "Real.injOn_cos",
+      "Real.cosh_strictMonoOn, StrictMonoOn.injOn"
+    ],
+    "relatedConcepts": [
+      "injectivity on an interval",
+      "strict monotonicity"
+    ]
+  },
+  {
+    "id": "iso-oq0201-corollaries",
+    "proofId": "isosceles-triangle-oq-02-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "Equiangular ⟹ Equilateral",
+    "content": "`spherical_equiangular` / `hyperbolic_equiangular` specialize all three angles to a common value $A$. Then the three side-expressions are literally equal, so the same injectivity lemmas yield $a=b$ and $b=c$: an equiangular spherical or hyperbolic triangle is equilateral. These are the converse-direction duals of the parent's equilateral ⟹ equiangular corollaries.",
+    "mathContext": "Completes the isosceles ⟺ equal-angle equivalence in non-Euclidean geometry.",
+    "significance": "supporting",
+    "prerequisites": [
+      "the converse theorems above"
+    ],
+    "relatedConcepts": [
+      "equilateral triangle",
+      "equiangular triangle"
+    ]
+  }
+]
