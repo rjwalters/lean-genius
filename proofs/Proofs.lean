@@ -3324,6 +3324,7 @@ import Proofs.IsoscelesTriangleOQ01
 import Proofs.IsoscelesTriangleOQ02
 import Proofs.JacobiSumDiagonalIntegral
 import Proofs.JacobiSymbolOQ01
+import Proofs.JacobiSymbolOQ0101
 import Proofs.JacobiSymbolOQ0103
 import Proofs.JensenInequalityOQ01
 import Proofs.JensenInequalityOQ01OQ01
