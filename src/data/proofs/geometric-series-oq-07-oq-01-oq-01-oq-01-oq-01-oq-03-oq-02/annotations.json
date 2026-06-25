@@ -1,0 +1,13 @@
+[
+  {
+    "id": "ann-col-three",
+    "proofId": "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
+    "range": { "startLine": 54, "endLine": 79 },
+    "type": "theorem",
+    "title": "Fourth Column Closed Form ⟨n,3⟩",
+    "content": "The closed form for the fourth column of the Eulerian triangle: $\\langle n,3\\rangle = 4^n - (n{+}1)3^n + \\binom{n+1}{2}2^n - \\binom{n+1}{3}$ (OEIS A000498), stated as $6\\langle n,3\\rangle = 6\\cdot4^n - 6(n{+}1)3^n + 3n(n{+}1)2^n - (n{-}1)n(n{+}1)$ to stay over $\\mathbb{Z}$ with no division. It is the third nontrivial case of the Eulerian inclusion–exclusion formula $\\langle n,k\\rangle = \\sum_{i=0}^{k}(-1)^i\\binom{n+1}{i}(k{+}1{-}i)^n$. The proof inducts on $n$ using the definitional recurrence $\\langle n{+}1,3\\rangle = 4\\langle n,3\\rangle + (n{-}2)\\langle n,2\\rangle$ (`rfl`), the inductive hypothesis, and the parent's `eulerian_col_two`. The truncated $(n-2:\\mathbb{N})$ is handled by splitting $n\\in\\{0,1,\\ge 2\\}$: for $n\\in\\{0,1\\}$ the column-two value $\\langle n,2\\rangle = 0$ zeroes the term either way. Checks: $\\langle 3,3\\rangle=0$, $\\langle 4,3\\rangle=1$, $\\langle 5,3\\rangle=26$.",
+    "mathContext": "$6\\langle n,3\\rangle = 6\\cdot4^n - 6(n{+}1)3^n + 3n(n{+}1)2^n - (n{-}1)n(n{+}1)$.",
+    "significance": "key",
+    "relatedConcepts": ["Eulerian numbers", "Eulerian triangle", "Inclusion–exclusion", "Worpitzky identity", "OEIS A000498"]
+  }
+]
