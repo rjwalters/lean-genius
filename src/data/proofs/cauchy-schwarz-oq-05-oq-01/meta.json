@@ -1,0 +1,218 @@
+{
+  "id": "cauchy-schwarz-oq-05-oq-01",
+  "title": "Weighted Lagrange Identity: the Exact Weighted Cauchy-Schwarz Defect",
+  "slug": "cauchy-schwarz-oq-05-oq-01",
+  "description": "The weighted Lagrange identity (∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)² = ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over an arbitrary Finset on a linearly ordered index type. The exact defect of the weighted Cauchy-Schwarz inequality is realized as a weighted sum of squared 2×2 minors. The identity itself holds for arbitrary real weights (it is a polynomial identity, no sign hypothesis); non-negativity of the weights yields the weighted Cauchy-Schwarz inequality and its exact equality characterization as corollaries. Answers the parent's stated open question on extending Lagrange's identity to a weighted inner product.",
+  "meta": {
+    "author": "Robb Walters (Lean Genius researcher) — generalizing Lagrange (1773)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_identity",
+    "date": "2026",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "algebra",
+      "cauchy-schwarz",
+      "lagrange-identity",
+      "weighted-inequality",
+      "finset",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ05OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_mul_sum",
+        "description": "Expands a product of two Finset sums into a double sum of pointwise products",
+        "module": "Mathlib.Algebra.BigOperators.Ring.Finset"
+      },
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Splits a Finset sum by a decidable predicate into the matching and non-matching parts",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_nbij'",
+        "description": "Reindexes a Finset sum along a bijection given with an explicit inverse",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.diag_union_offDiag",
+        "description": "s ×ˢ s decomposes as the disjoint union of its diagonal and off-diagonal",
+        "module": "Mathlib.Data.Finset.Prod"
+      },
+      {
+        "theorem": "Finset.sum_diag",
+        "description": "A sum over the diagonal of s ×ˢ s reduces to a single sum over s",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_eq_zero_iff_of_nonneg",
+        "description": "A sum of nonnegative terms is zero iff every term is zero",
+        "module": "Mathlib.Algebra.BigOperators.Order"
+      }
+    ],
+    "originalContributions": [
+      "weighted_lagrange_identity: the weighted strict-upper-triangle Lagrange identity (∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)² = ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over an arbitrary Finset, valid for ARBITRARY real weights (a polynomial identity, no sign hypothesis)",
+      "Pointwise factorisation of the weighted symmetric kernel wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = (wᵢaᵢ²)(wⱼbⱼ²) + (wᵢbᵢ²)(wⱼaⱼ²) − 2(wᵢaᵢbᵢ)(wⱼaⱼbⱼ), collapsing the double sum to 2·(weighted defect) via Finset.sum_mul_sum",
+      "weighted_cauchy_schwarz: the weighted finite Cauchy-Schwarz inequality (∑wᵢaᵢbᵢ)² ≤ (∑wᵢaᵢ²)(∑wᵢbᵢ²) for non-negative weights, as an immediate corollary (defect is a sum of non-negative terms)",
+      "weighted_cauchy_schwarz_eq_iff: exact equality characterization — weighted Cauchy-Schwarz is tight iff every weighted minor wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over a strictly increasing pair vanishes",
+      "sum_offDiag_eq_two_mul_sum_filter_lt: the general triangle-doubling lemma for symmetric kernels (shared with the parent), reused verbatim for the weighted kernel"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 163,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (depends only on propext / Classical.choice / Quot.sound). The non-negativity hypothesis wᵢ ≥ 0 is a stated antecedent of the two inequality corollaries, not an axiom; the identity itself requires no hypothesis on the weights.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Lagrange's identity (Recherches d'arithmétique, 1773) records the exact gap in what is now the Cauchy-Schwarz inequality as a sum of squared 2×2 minors. The weighted refinement is the natural statement for a weighted inner product ⟨a, b⟩_w = ∑ wᵢ aᵢ bᵢ — the setting of weighted least squares, Gauss-Markov estimation, and discrete measures with non-uniform mass. The parent entry (cauchy-schwarz-oq-05) formalizes the unweighted identity and explicitly poses the weighted extension as an open question, conjecturing weighted minors of the form √(wᵢwⱼ)(aᵢbⱼ − aⱼbᵢ). This entry resolves it, and sharpens the conjecture: no square roots are needed — the squared weighted minor is wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)², so the identity is a genuine polynomial identity in a, b, w valid for arbitrary (even negative) weights. Mathlib carries inner_mul_le_norm_mul_norm and the discrete Cauchy-Schwarz inner_mul_le_norm_mul_norm-style lemmas but no named weighted sum-form Lagrange identity.",
+    "problemStatement": "**Open Question (cauchy-schwarz-oq-05-oq-01)**: Does Lagrange's identity extend to a weighted inner product ∑ wᵢ aᵢ bᵢ, and if so what are the weighted minors?\n\n**Result**: Over an arbitrary `Finset` on a linearly ordered index type, for arbitrary real weights w, (∑ᵢ wᵢaᵢ²)(∑ᵢ wᵢbᵢ²) − (∑ᵢ wᵢaᵢbᵢ)² = ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)². The weighted minor is wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² (a product of the two weights times the squared unweighted minor), with no square roots. For non-negative weights the right-hand side is ≥ 0, giving weighted Cauchy-Schwarz, and it is 0 iff every weighted minor vanishes.",
+    "text": "The weighted Lagrange identity gives the exact weighted Cauchy-Schwarz defect as a weighted sum of squared 2×2 minors over strictly increasing index pairs, valid for arbitrary real weights; non-negative weights yield the weighted inequality and its equality case as corollaries.",
+    "proofStrategy": "**Proof Strategy: weighted triangle-doubling of a symmetric kernel**\n\n1. **Weighted kernel.** Set F i j = wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)². It is symmetric (F i j = F j i) and vanishes on the diagonal (aᵢbᵢ − aᵢbᵢ = 0).\n2. **Pointwise factorisation.** Each kernel value factors as a sum of rank-one products: F i j = (wᵢaᵢ²)(wⱼbⱼ²) + (wᵢbᵢ²)(wⱼaⱼ²) − 2(wᵢaᵢbᵢ)(wⱼaⱼbⱼ), proved by `ring`.\n3. **Doubled form.** Summing the factorisation over all ordered pairs and applying `Finset.sum_mul_sum` to each rank-one block collapses ∑ᵢ∑ⱼ F i j to 2·[(∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)²], i.e. 2·(weighted defect).\n4. **Triangle-doubling lemma.** For any symmetric kernel, the off-diagonal sum equals 2·∑_{i<j} via the swap involution (i,j) ↦ (j,i) (LinearOrder trichotomy). Splitting s ×ˢ s = diag ⊎ offDiag with vanishing diagonal gives ∑ᵢ∑ⱼ F = 2·∑_{i<j} F.\n5. **Cancel the 2.** Equating steps 3 and 4 yields 2·defect = 2·∑_{i<j} F; `mul_left_cancel₀ two_ne_zero` gives the identity.\n6. **Corollaries.** With wᵢ ≥ 0 each term wᵢwⱼ(minor)² is a product of non-negatives, so the defect is ≥ 0 (weighted Cauchy-Schwarz); and the defect is 0 iff each weighted minor vanishes (`sum_eq_zero_iff_of_nonneg`).",
+    "keyInsights": [
+      "**No square roots — the identity is polynomial in the weights**: The parent's open question conjectured weighted minors √(wᵢwⱼ)(aᵢbⱼ − aⱼbᵢ). The correct (and cleaner) answer is that the SQUARED weighted minor is wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)², so the identity is a genuine polynomial identity in a, b, w with no roots, valid even for negative weights. Square roots only appear if one insists on writing each summand as a perfect square.",
+      "**Weights factor pointwise**: The whole generalization rests on one `ring` fact — wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = (wᵢaᵢ²)(wⱼbⱼ²) + (wᵢbᵢ²)(wⱼaⱼ²) − 2(wᵢaᵢbᵢ)(wⱼaⱼbⱼ) — which splits the weighted kernel into three rank-one blocks, each of which `Finset.sum_mul_sum` turns into a product of weighted sums.",
+      "**The combinatorial engine is weight-agnostic**: The triangle-doubling lemma sum_offDiag_eq_two_mul_sum_filter_lt is about any symmetric kernel; it is reused verbatim from the unweighted parent. Only the algebraic collapse of the double sum (step 3) sees the weights.",
+      "**Sign of the weights only matters for the inequality**: The identity holds for arbitrary real w. The hypothesis wᵢ ≥ 0 enters exactly once — to make each summand wᵢwⱼ(minor)² non-negative — and is therefore an antecedent only of the inequality and equality-characterization corollaries, not of the identity.",
+      "**Recovers the parent at w ≡ 1**: Substituting wᵢ = 1 collapses every weighted statement to the unweighted Lagrange identity, the finite Cauchy-Schwarz inequality, and its equality case, exactly as in cauchy-schwarz-oq-05."
+    ],
+    "prerequisites": [
+      "Finite sums over a `Finset` and the product `s ×ˢ s`",
+      "Diagonal / off-diagonal decomposition of a finite product",
+      "Expanding a product of sums (`Finset.sum_mul_sum`)",
+      "Reindexing sums along bijections (`Finset.sum_nbij'`)",
+      "Linear orders and trichotomy",
+      "Nonnegativity of squares and products of non-negatives"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Module docstring stating the weighted Lagrange identity, its relation to the parent's unweighted form, the key pointwise factorisation of the weighted kernel, imports, the WeightedLagrangeCS namespace, `open Finset`, and the linearly ordered index variable.",
+      "mathContext": "Index type ι with `[LinearOrder ι]`; weight, and sequences w, a, b : ι → ℝ summed over a `Finset ι`. The weighted strict-upper-triangle index set is `s.offDiag.filter (fun p => p.1 < p.2)`."
+    },
+    {
+      "id": "triangle-doubling",
+      "title": "Triangle-Doubling for Symmetric Kernels",
+      "startLine": 53,
+      "endLine": 75,
+      "summary": "sum_offDiag_eq_two_mul_sum_filter_lt: for a symmetric F, the off-diagonal sum equals twice the strictly-increasing-pair sum. Reused verbatim from the parent — it is weight-agnostic. Splits the off-diagonal by the predicate p.1 < p.2 and matches the two halves through the swap bijection (i,j) ↦ (j,i).",
+      "mathContext": "For F i j = F j i: ∑_{(i,j) ∈ offDiag} F i j = 2·∑_{i<j} F i j. The swap maps {j < i} bijectively onto {i < j}; `lt_of_le_of_ne` and `not_lt` discharge the membership side-conditions using the linear order."
+    },
+    {
+      "id": "weighted-lagrange-identity",
+      "title": "Weighted Lagrange Identity",
+      "startLine": 77,
+      "endLine": 132,
+      "summary": "weighted_lagrange_identity: (∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)² = ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)². Factors the weighted kernel pointwise into three rank-one blocks, collapses each with Finset.sum_mul_sum to get 2·(weighted defect), splits s ×ˢ s into diagonal (zero) and off-diagonal (twice the upper triangle), and cancels the factor of 2.",
+      "mathContext": "Doubled form: ∑ᵢ∑ⱼ wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = 2·[(∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)²] via the pointwise factorisation and `Finset.sum_mul_sum`. Combined with the triangle-doubling lemma and the vanishing diagonal, `mul_left_cancel₀ two_ne_zero` yields the identity. No hypothesis on the weights."
+    },
+    {
+      "id": "weighted-cauchy-schwarz",
+      "title": "Weighted Cauchy-Schwarz as a Corollary",
+      "startLine": 134,
+      "endLine": 146,
+      "summary": "weighted_cauchy_schwarz: (∑wᵢaᵢbᵢ)² ≤ (∑wᵢaᵢ²)(∑wᵢbᵢ²) for non-negative weights. The defect equals the upper-triangle weighted sum, each term a product of non-negatives, hence ≥ 0, so the inequality is one `linarith` step away.",
+      "mathContext": "With wᵢ ≥ 0, each summand wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² ≥ 0 by `mul_nonneg` and `sq_nonneg`; `Finset.sum_nonneg` gives defect ≥ 0 and the weighted Cauchy-Schwarz inequality follows."
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "startLine": 148,
+      "endLine": 163,
+      "summary": "weighted_cauchy_schwarz_eq_iff: with non-negative weights, weighted Cauchy-Schwarz is tight iff every weighted minor wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over a strictly increasing pair vanishes. Rewrites the equality as defect = 0, identifies the defect with the weighted sum of non-negative terms, and applies sum-of-nonnegatives-is-zero pointwise.",
+      "mathContext": "(∑wᵢaᵢbᵢ)² = (∑wᵢaᵢ²)(∑wᵢbᵢ²) ↔ ∀ i<j, wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = 0, via `sub_eq_zero`, the weighted Lagrange identity, and `Finset.sum_eq_zero_iff_of_nonneg`. On the support where both weights are positive this is exactly the proportionality (linear dependence) condition aᵢbⱼ = aⱼbᵢ."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-05",
+      "relationship": "extends",
+      "description": "Directly answers the parent's stated open question 'Does the identity extend to a weighted inner product ∑ wᵢ aᵢ bᵢ?'. Carries an arbitrary weight wᵢ through the entire computation, recovering the unweighted Lagrange identity verbatim at w ≡ 1, and sharpens the conjectured √(wᵢwⱼ) minors to the polynomial form wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)²"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-04",
+      "relationship": "related",
+      "description": "OQ-04 pins the proportionality constant in the unweighted equality case via residual-norm decomposition; this entry derives the weighted equality condition (all weighted minors vanish) directly from the sum-of-non-negatives form of the weighted defect"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-03",
+      "relationship": "related",
+      "description": "OQ-03 records the symmetric doubled identity for the unweighted defect; this entry's doubled form ∑ᵢ∑ⱼ wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² = 2·(weighted defect) is its weighted analogue, sharpened to the strict-upper-triangle form over i<j"
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms) formalization of the weighted Lagrange identity over an arbitrary Finset: the weighted Cauchy-Schwarz defect (∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)² equals the weighted sum of squared 2×2 minors ∑_{i<j} wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)². The identity holds for arbitrary real weights; non-negativity of the weights yields the weighted Cauchy-Schwarz inequality and its exact equality characterization as one-line corollaries. Answers the parent entry's open question and sharpens its conjectured weighted minors.",
+    "implications": "The weighted defect formula is the exact-gap refinement underlying weighted least squares and weighted-measure Cauchy-Schwarz: the gap between (∑wᵢaᵢ²)(∑wᵢbᵢ²) and (∑wᵢaᵢbᵢ)² is a transparent weighted sum of pairwise 2×2 minors. The proof reuses the parent's weight-agnostic triangle-doubling lemma, isolating the entire weighted content in a single pointwise `ring` factorisation plus `Finset.sum_mul_sum`, a pattern that transfers to any weighted symmetric bilinear double sum (weighted Gram matrices, weighted variance/covariance).",
+    "openQuestions": [
+      "Does the weighted identity specialize to a clean weighted Binet–Cauchy identity for products of determinants with a diagonal weight matrix?",
+      "For non-negative weights, can the equality case be restated intrinsically as 'a and b are proportional on the support {i : wᵢ > 0}', and formalized as such?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.BigOperators.Ring.Finset",
+      "Mathlib.Data.Finset.Prod",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "WeightedLagrangeCS",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ05OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "sum_offDiag_eq_two_mul_sum_filter_lt",
+      "type": "supporting",
+      "description": "Triangle-doubling for a symmetric kernel: summing F over all distinct ordered pairs of s counts each unordered pair twice, so it equals twice the sum over strictly increasing pairs. Reused verbatim from the parent (weight-agnostic); proved by splitting the off-diagonal on the predicate p.1 < p.2 and matching the two halves through the swap involution (i,j) ↦ (j,i), with `LinearOrder` trichotomy certifying the membership conditions.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (F : ι → ι → ℝ), (∀ i j, F i j = F j i) → ∑ p ∈ s.offDiag, F p.1 p.2 = 2 * ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), F p.1 p.2"
+    },
+    {
+      "name": "weighted_lagrange_identity",
+      "type": "core",
+      "description": "**The headline result.** The weighted Lagrange identity over an arbitrary Finset: the weighted Cauchy-Schwarz defect (∑wᵢaᵢ²)(∑wᵢbᵢ²) − (∑wᵢaᵢbᵢ)² equals the weighted sum of squared 2×2 minors wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over strictly increasing index pairs i < j. Holds for arbitrary real weights — it is a polynomial identity, no sign hypothesis. Combines the pointwise kernel factorisation, the doubled symmetric expansion via `Finset.sum_mul_sum`, the triangle-doubling lemma, and cancellation of the factor of 2.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (w a b : ι → ℝ), (∑ i ∈ s, w i * a i ^ 2) * (∑ i ∈ s, w i * b i ^ 2) - (∑ i ∈ s, w i * (a i * b i)) ^ 2 = ∑ p ∈ s.offDiag.filter (fun p => p.1 < p.2), w p.1 * w p.2 * (a p.1 * b p.2 - a p.2 * b p.1) ^ 2"
+    },
+    {
+      "name": "weighted_cauchy_schwarz",
+      "type": "core",
+      "description": "The weighted finite Cauchy-Schwarz inequality (∑wᵢaᵢbᵢ)² ≤ (∑wᵢaᵢ²)(∑wᵢbᵢ²) for non-negative weights, as an immediate corollary of the weighted Lagrange identity: the defect is a weighted sum of squares, hence non-negative.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (w a b : ι → ℝ), (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i * (a i * b i)) ^ 2 ≤ (∑ i ∈ s, w i * a i ^ 2) * (∑ i ∈ s, w i * b i ^ 2)"
+    },
+    {
+      "name": "weighted_cauchy_schwarz_eq_iff",
+      "type": "core",
+      "description": "Exact equality characterization: with non-negative weights, weighted Cauchy-Schwarz holds with equality iff every weighted minor wᵢwⱼ(aᵢbⱼ − aⱼbᵢ)² over a strictly increasing pair vanishes. Reads straight off the sum-of-non-negatives form of the weighted defect.",
+      "leanType": "∀ {ι : Type*} [inst : LinearOrder ι] (s : Finset ι) (w a b : ι → ℝ), (∀ i ∈ s, 0 ≤ w i) → ((∑ i ∈ s, w i * (a i * b i)) ^ 2 = (∑ i ∈ s, w i * a i ^ 2) * (∑ i ∈ s, w i * b i ^ 2) ↔ ∀ p ∈ s.offDiag.filter (fun p => p.1 < p.2), w p.1 * w p.2 * (a p.1 * b p.2 - a p.2 * b p.1) ^ 2 = 0)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Lagrange, Joseph-Louis",
+      "title": "Recherches d'arithmétique",
+      "year": "1773",
+      "venue": "Nouveaux Mémoires de l'Académie royale des Sciences et Belles-Lettres de Berlin",
+      "note": "Contains the unweighted identity ∑(aᵢbⱼ − aⱼbᵢ)² = (∑aᵢ²)(∑bᵢ²) − (∑aᵢbᵢ)², generalized here to arbitrary weights"
+    },
+    {
+      "authors": "Steele, J. Michael",
+      "title": "The Cauchy-Schwarz Master Class: An Introduction to the Art of Mathematical Inequalities",
+      "year": "2004",
+      "venue": "Cambridge University Press, MAA Problem Books Series",
+      "note": "Develops the Lagrange identity and the weighted / inner-product forms of Cauchy-Schwarz, with the minor-vanishing equality condition used here"
+    }
+  ],
+  "sorries": 0
+}
