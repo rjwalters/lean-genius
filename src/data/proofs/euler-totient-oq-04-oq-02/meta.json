@@ -1,0 +1,115 @@
+{
+  "id": "euler-totient-oq-04-oq-02",
+  "title": "Möbius Inversion of the Totient: φ = μ ∗ id",
+  "slug": "euler-totient-oq-04-oq-02",
+  "description": "Proves the Möbius-inversion formula for Euler's totient, φ(n) = Σ_{d|n} μ(d)·(n/d), i.e. the totient is the Dirichlet convolution μ ∗ id (over ℤ). This is the inverse of the parent's Gauss identity n = Σ_{d|n} φ(d): instantiating Mathlib's abstract Möbius inversion with f = φ and g = id turns Gauss's forward sum into the signed divisor sum for φ. Also gives the antidiagonal-convolution form and the n/d↔d reflected form. 4 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerTotientOQ04OQ02.lean",
+    "tags": [
+      "number-theory",
+      "euler-totient",
+      "moebius-function",
+      "dirichlet-convolution",
+      "moebius-inversion",
+      "divisor-sum"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified using Mathlib's ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq, Nat.sum_totient, and Nat.sum_divisorsAntidiagonal.",
+    "lineCount": 98,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "totient_eq_sum_moebius: φ(n) = Σ_{d|n} μ(d)·(n/d) — the named Möbius-inversion formula for the totient (φ = μ ∗ id), valid for all n including n = 0",
+      "totient_eq_sum_antidiagonal: φ(n) = Σ_{(a,b) ∈ antidiagonal n} μ(a)·b — the Dirichlet-convolution form, obtained directly from the inversion lemma instantiated at f = φ, g = id",
+      "totient_eq_sum_moebius_swap: φ(n) = Σ_{d|n} μ(n/d)·d — the n/d ↔ d reflected divisor-sum form",
+      "sum_totient_int: ℤ-cast of Gauss's identity Σ_{d|n} φ(d) = n, the hypothesis fed into Möbius inversion"
+    ],
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Möbius inversion, introduced by August Ferdinand Möbius in 1832, is the duality at the heart of multiplicative number theory: it inverts any divisor-sum relation g(n) = Σ_{d|n} f(d) to recover f(n) = Σ_{d|n} μ(n/d)·g(d). Applied to Gauss's totient identity n = Σ_{d|n} φ(d) (Disquisitiones Arithmeticae, 1801, Art. 39), it yields the closed signed divisor sum φ(n) = Σ_{d|n} μ(d)·(n/d). In the language of Dirichlet convolution this is the arithmetic-function identity φ = μ ∗ id, the inverse companion of the parent entry's φ ∗ ζ = id, where ζ is the constant-one function and id(n) = n. Together with the kernel identity μ ∗ ζ = ε (the indicator [n=1], the sibling entry euler-totient-oq-04-oq-01), these three convolutions form the closed triangle that defines the Möbius function as the convolution inverse of ζ: from φ ∗ ζ = id and μ ∗ ζ = ε one obtains φ = φ ∗ ζ ∗ μ = id ∗ μ = μ ∗ id. Expanding φ(n) = Σ_{d|n} μ(d)·(n/d) over the prime factorization recovers Euler's product formula φ(n) = n·∏_{p|n}(1 − 1/p), since the only surviving (squarefree) terms are signed products over subsets of the prime divisors.",
+    "problemStatement": "Prove that Euler's totient is the Dirichlet convolution of the Möbius function with the identity, φ(n) = Σ_{d|n} μ(d)·(n/d), by inverting the parent's Gauss divisor-sum identity n = Σ_{d|n} φ(d) via Möbius inversion.",
+    "text": "The proof instantiates Mathlib's abstract Möbius-inversion equivalence ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq at f = (φ · : ℤ) and g = (· : ℤ). Its left-hand side, ∀ n > 0, Σ_{d|n} φ(d) = n, is exactly Gauss's identity Nat.sum_totient cast to ℤ; the equivalence then delivers the right-hand side, φ(n) = Σ_{(a,b) ∈ divisorsAntidiagonal n} μ(a)·b, for free. Folding the antidiagonal back to a single divisor index via Nat.sum_divisorsAntidiagonal gives the headline form φ(n) = Σ_{d|n} μ(d)·(n/d); the swap variant uses the reflected fold Nat.sum_divisorsAntidiagonal'. The n = 0 edge case is handled separately: both sides collapse to 0 because the divisor set of 0 is empty.",
+    "proofStrategy": "Cast Gauss's identity to ℤ (sum_totient_int), feed it as the hypothesis of sum_eq_iff_sum_mul_moebius_eq to obtain the antidiagonal convolution form, then rewrite with Nat.sum_divisorsAntidiagonal (and its swap) to land on the divisor-sum forms. Patch n = 0 with simp.",
+    "keyInsights": [
+      "Möbius inversion is the formal inverse of the parent's combinatorial Gauss identity: the same data n = Σ φ(d) is read backwards to solve for φ.",
+      "Choosing f = φ and g = id in the abstract inversion lemma makes the hypothesis literally Nat.sum_totient — no new arithmetic is needed, only the cast to ℤ (μ is ℤ-valued).",
+      "The antidiagonal form Σ_{(a,b)} μ(a)·b is the Dirichlet convolution (μ ∗ id)(n); Nat.sum_divisorsAntidiagonal converts it to the textbook Σ_{d|n} μ(d)·(n/d).",
+      "The identity holds for n = 0 too: divisors 0 = ∅, so both φ(0) = 0 and the empty sum agree.",
+      "Expanding the signed divisor sum over the prime factorization recovers Euler's product φ(n) = n·∏_{p|n}(1 − 1/p), since μ kills all non-squarefree divisors."
+    ],
+    "prerequisites": [
+      "Euler's totient and Gauss's divisor-sum identity: Nat.totient, Nat.sum_totient",
+      "The Möbius function and Dirichlet convolution: ArithmeticFunction.moebius, ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq",
+      "Divisor antidiagonal folding: Nat.sum_divisorsAntidiagonal"
+    ]
+  },
+  "conclusion": {
+    "summary": "φ(n) = Σ_{d|n} μ(d)·(n/d), the Möbius-inversion formula for the totient (φ = μ ∗ id), obtained by inverting the parent's Gauss identity n = Σ_{d|n} φ(d). Includes the antidiagonal-convolution form and the reflected n/d↔d form. 4 theorems, 0 axioms, 98 lines.",
+    "implications": "This closes the convolution triangle for the totient: with the parent's φ ∗ ζ = id and the sibling's μ ∗ ζ = ε, the present φ = μ ∗ id makes μ the convolution inverse of ζ explicit at the totient. The signed divisor sum is the direct route to Euler's product formula and to Dirichlet-series identities such as Σ φ(n)/n^s = ζ(s−1)/ζ(s).",
+    "openQuestions": [
+      "Expand φ(n) = Σ_{d|n} μ(d)·(n/d) over the prime factorization to mechanically derive Euler's product formula φ(n) = n·∏_{p|n}(1 − 1/p).",
+      "Formalize the Dirichlet-series shadow Σ_{n≥1} φ(n)/n^s = ζ(s−1)/ζ(s) implied by φ = μ ∗ id."
+    ]
+  },
+  "leanFile": {
+    "namespace": "EulerTotientOQ04OQ02",
+    "lineCount": 98,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/EulerTotientOQ04OQ02.lean",
+    "sorries": 0,
+    "additionalFiles": []
+  },
+  "crossReferences": [
+    {
+      "targetId": "euler-totient-oq-04",
+      "relationship": "extends",
+      "description": "Parent entry proves the forward Gauss identity n = Σ_{d|n} φ(d) (φ ∗ ζ = id); this leaf inverts it to φ(n) = Σ_{d|n} μ(d)·(n/d) (φ = μ ∗ id)."
+    },
+    {
+      "targetId": "euler-totient-oq-04-oq-01",
+      "relationship": "related",
+      "description": "Sibling proves the kernel identity Σ_{d|n} μ(d) = [n=1] (μ ∗ ζ = ε); together with this leaf and the parent it completes the convolution triangle defining μ as the inverse of ζ."
+    },
+    {
+      "targetId": "euler-totient",
+      "relationship": "related",
+      "description": "Parent formalization of Euler's totient function."
+    }
+  ],
+  "sections": [
+    {
+      "id": "gauss-identity-cast",
+      "title": "Gauss's Identity over ℤ",
+      "summary": "sum_totient_int: casts Nat.sum_totient (Σ_{d|n} φ(d) = n) to ℤ, the hypothesis side of Möbius inversion.",
+      "startLine": 64,
+      "endLine": 69,
+      "mathContext": "Möbius inversion is stated over a ring; since μ is ℤ-valued we work over ℤ. The hypothesis ∀ n>0, Σ_{d|n} φ(d) = n is exactly Gauss's identity, here `exact_mod_cast Nat.sum_totient n`."
+    },
+    {
+      "id": "antidiagonal-form",
+      "title": "Antidiagonal Convolution Form",
+      "summary": "totient_eq_sum_antidiagonal: φ(n) = Σ_{(a,b) ∈ antidiagonal n} μ(a)·b, the Dirichlet convolution (μ ∗ id)(n), obtained by .mp of the inversion equivalence.",
+      "startLine": 71,
+      "endLine": 82,
+      "mathContext": "ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq with f = φ, g = id: the forward implication takes Gauss's identity to ∑_{(a,b) ∈ divisorsAntidiagonal n} μ(a)·g(b) = φ(n), the convolution form."
+    },
+    {
+      "id": "divisor-sum-form",
+      "title": "The Möbius-Inversion Divisor Sum",
+      "summary": "totient_eq_sum_moebius: φ(n) = Σ_{d|n} μ(d)·(n/d) for all n, via Nat.sum_divisorsAntidiagonal; n = 0 patched by simp. The swap form totient_eq_sum_moebius_swap follows from the reflected fold.",
+      "startLine": 84,
+      "endLine": 97,
+      "mathContext": "Nat.sum_divisorsAntidiagonal folds Σ_{(a,b)} f(a,b) = Σ_{d|n} f(d, n/d), turning the antidiagonal convolution into the textbook signed divisor sum φ(n) = Σ_{d|n} μ(d)·(n/d). The reflected fold Nat.sum_divisorsAntidiagonal' gives the swap form Σ_{d|n} μ(n/d)·d."
+    }
+  ],
+  "sorries": 0
+}
