@@ -414,6 +414,7 @@ import Proofs.BinomialTheorem
 import Proofs.BinomialTheoremOQ01
 import Proofs.BinomialTheoremOQ01Aristotle
 import Proofs.BinomialTheoremOQ01OQ01
+import Proofs.BinomialTheoremOQ01OQ01OQ02
 import Proofs.BinomialTheoremOQ02
 import Proofs.BinomialTheoremOQ02OQ01
 import Proofs.BinomialTheoremOQ02OQ01OQ01
