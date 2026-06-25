@@ -1,8 +1,8 @@
 {
   "slug": "bezout-identity-oq-04-oq-01-oq-03",
   "title": "Does Mathlib's Matrix.smithNormalForm Infrastructure Cover the Axiomatized Linear Diophantine Results?",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-05T04:27:09-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Survey complete + solvability axiom derived (0-axiom). snf_exists left in place.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optionally retire snf_solvability_criterion in parent (axiom 2->1).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETED (survey + partial axiom elimination). (1) snf_exists (matrix-form SNF D=U*A*V with explicit unimodular U,V) is NOT in Mathlib — only the module-theoretic SNF (Module.Basis.SmithNormalForm / Submodule.smithNormalForm over a PID) exists; the matrix<->module bridge is substantial and left in place. (2) snf_solvability_criterion is DERIVED here from the decomposition alone, 0 axioms (BezoutIdentityOQ04OQ01OQ03.lean). Parent honest axiom count can drop 2->1. Also surfaced a convention issue: parent axiom uses U*b where convention A=U*D*V requires U^{-1}*b.",
+    "builtItems": [
+      "diophantine_solvable_iff (proofs/Proofs/BezoutIdentityOQ04OQ01OQ03.lean): exists x, A*x=b <=> forall i, dEntry D i | (U^{-1}*b)_i, derived from A=U*D*V (0 axioms)",
+      "diophantine_solvable_iff_branches: same criterion in the parent axioms two-pronged shape, corrected U^{-1}*b RHS",
+      "diag_solvable_iff: exists y, D*y=c <=> forall i, dEntry D i | c_i for rectangular diagonal D",
+      "diag_mulVec_apply, int_dvd_iff_branches, isUnit_det_of_unimodular: supporting lemmas"
+    ],
+    "insights": [
+      "Mathlib SNF is module-theoretic (Module.Basis.SmithNormalForm / Submodule.smithNormalForm, Mathlib/LinearAlgebra/FreeModule/PID.lean): bases of M and N over a PID plus a divisibility chain of scalars. No Matrix.smithNormalForm producing D=U*A*V with explicit unimodular integer matrices.",
+      "Eliminating snf_exists needs the bridge: realize the integer matrix as a map Z^n -> Z^m, apply Submodule.smithNormalForm to its image, reconstruct unimodular change-of-basis matrices and prove them unimodular. ~hundreds of lines; not closed this session.",
+      "snf_solvability_criterion follows from snf_exists: A*x=b <=> U*(D*(V*x))=b <=> D*(V*x)=U^{-1}*b (strip U) <=> exists y, D*y=U^{-1}*b (strip V via bijection y=V*x) <=> forall i, dEntry D i divides (U^{-1}*b)_i (diagonal system). All steps reversible, 0-axiom over Z.",
+      "Over Z the two-pronged branch (d!=0->d|c) and (d=0->c=0) equals plain divisibility d|c, since 0|c <=> c=0.",
+      "Convention: parent writes transformed RHS as U*b, but with A=U*D*V the correct RHS is U^{-1}*b. The derived theorem uses the genuine inverse."
+    ],
+    "mathlibGaps": [
+      "No matrix-form Smith Normal Form (D = U*A*V with explicit unimodular U,V over Z) in Mathlib; only the module/submodule form Module.Basis.SmithNormalForm exists."
+    ],
+    "nextSteps": [
+      "Optionally update parent bezout-identity-oq-04-oq-01 to import diophantine_solvable_iff and retire snf_solvability_criterion (axiom 2->1), correcting U*b -> U^{-1}*b."
+    ],
     "markdown": "# Knowledge Base: bezout-identity-oq-04-oq-01-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [

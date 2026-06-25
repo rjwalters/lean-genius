@@ -1,0 +1,65 @@
+{
+  "id": "bezout-identity-oq-04-oq-01-oq-03",
+  "title": "Smith Normal Form — the Solvability Criterion is Derived, not Assumed",
+  "slug": "bezout-identity-oq-04-oq-01-oq-03",
+  "description": "Resolves the open question of whether the two Smith-Normal-Form axioms in the parent entry bezout-identity-oq-04-oq-01 (Linear Diophantine Systems via Smith Normal Form) can be eliminated using Mathlib. The finding is two-part. (1) The EXISTENCE axiom snf_exists (every integer matrix A admits a decomposition A = U·D·V with U, V unimodular and D diagonal) is genuinely missing from Mathlib in matrix form: Mathlib provides the module-theoretic Smith Normal Form (Module.Basis.SmithNormalForm, Submodule.smithNormalForm over a PID) but not the explicit unimodular-matrix factorization, so closing it requires a substantial matrix↔module bridge that is not built here. (2) The SOLVABILITY axiom snf_solvability_criterion is NOT an independent assumption: taking only the decomposition A = U·D·V as a hypothesis, the criterion 'A·x = b is solvable over ℤ iff every diagonal invariant factor divides the corresponding component of the transformed right-hand side' is a theorem of elementary matrix algebra, proved here with zero axioms (diophantine_solvable_iff and the parent-shaped diophantine_solvable_iff_branches). Hence the parent's axiom count can drop from 2 to 1. A convention correction falls out of the derivation: with the convention A = U·D·V the transformed right-hand side is the genuine inverse U⁻¹·b, not U·b as the parent axiom writes. The result is fully general over rectangular Fin m × Fin n integer matrices and so covers the parent's 1×2 Bézout specialization.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ04OQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "linear-algebra",
+      "smith-normal-form",
+      "diophantine-equations",
+      "integer-matrices",
+      "bezout",
+      "axiom-elimination",
+      "algebra"
+    ],
+    "badge": "original",
+    "mathlib_version": "4.26.0",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 201,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "assumptions": "None beyond the stated theorem hypotheses. The Smith Normal Form decomposition A = U·D·V (with U, V invertible over ℤ and D diagonal) is taken as an explicit hypothesis, NOT an axiom, so importing this file adds no assumptions. 0 axioms, 0 sorries, no native_decide; #print axioms reports only propext / Classical.choice / Quot.sound for diophantine_solvable_iff, diophantine_solvable_iff_branches, and diag_solvable_iff. The unimodular hypotheses are phrased as IsUnit U.det / IsUnit V.det; isUnit_det_of_unimodular records that a ±1 determinant satisfies this. The proof uses only Mathlib's mulVec/matrix-inverse API (mulVec_mulVec, nonsing_inv_mul, mul_nonsing_inv, Int.mul_ediv_cancel'). This entry deliberately does NOT prove the existence axiom snf_exists, which requires a matrix↔module bridge to Mathlib's module-theoretic Smith Normal Form that is out of scope.",
+    "originalContributions": [
+      "diophantine_solvable_iff: the Smith-Normal-Form solvability criterion as a THEOREM derived from the decomposition A = U·D·V alone. ∃x, A·x = b ↔ ∀i, dEntry D i ∣ (U⁻¹·b) i. The proof reduces the system in three reversible steps — strip U by left-multiplying by the inverse (nonsing_inv_mul), strip V by the change of variable y = V·x (V invertible), and solve the resulting diagonal system. This shows the parent's snf_solvability_criterion is not an independent axiom, lowering the parent's honest axiom count from 2 to 1.",
+      "diag_solvable_iff: the diagonal core — for a rectangular diagonal D, ∃y, D·y = c ↔ ∀i, dEntry D i ∣ c i. The forward direction reads off divisibility from a solution; the backward direction constructs the witness column vector entrywise via integer division (Int.mul_ediv_cancel'), handling out-of-range rows/columns where the diagonal entry is 0 (so 0 ∣ c forces c = 0).",
+      "diophantine_solvable_iff_branches: the criterion restated in the parent axiom's exact two-pronged shape ((d ≠ 0 → d ∣ c) ∧ (d = 0 → c = 0)), making the comparison with snf_solvability_criterion line-for-line explicit. The bridge int_dvd_iff_branches shows this two-pronged form is, over ℤ, literally d ∣ c.",
+      "Convention correction: the derivation pins the transformed right-hand side to the genuine inverse U⁻¹·b for the convention A = U·D·V. The parent's snf_solvability_criterion axiom writes snf.U·b, which is the U⁻¹ of this convention — a bookkeeping inconsistency surfaced by carrying the proof through.",
+      "diag_mulVec_apply: a reusable lemma that a rectangular diagonal matrix acts by mulVec as a single per-row product (D·y) i = D i ⟨i,_⟩ · y ⟨i,_⟩ when i < n and 0 otherwise, isolating the column index bookkeeping that the rectangular case forces."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.mulVec_mulVec",
+        "description": "M ·ᵥ N ·ᵥ v = (M * N) ·ᵥ v — associativity of matrix–vector multiplication, used to peel U and V off the decomposition A = U·D·V",
+        "module": "Mathlib.Data.Matrix.Mul"
+      },
+      {
+        "theorem": "Matrix.nonsing_inv_mul",
+        "description": "U⁻¹ * U = 1 when IsUnit U.det — strips the left unimodular factor U by left-multiplying by its inverse over ℤ",
+        "module": "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+      },
+      {
+        "theorem": "Matrix.mul_nonsing_inv",
+        "description": "U * U⁻¹ = 1 when IsUnit U.det — the companion identity used in the reverse direction and for the change of variable y = V·x",
+        "module": "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+      },
+      {
+        "theorem": "Int.mul_ediv_cancel'",
+        "description": "d ∣ c → d * (c / d) = c over ℤ — recovers the witness component for each diagonal equation d·yᵢ = cᵢ in the backward direction of diag_solvable_iff",
+        "module": "Mathlib.Data.Int.Order"
+      },
+      {
+        "theorem": "Module.Basis.SmithNormalForm",
+        "description": "Mathlib's module-theoretic Smith Normal Form over a PID — the existing infrastructure the open question asks about; it covers the submodule/basis form but NOT the explicit unimodular-matrix factorization snf_exists needs, which is why that axiom is left in place",
+        "module": "Mathlib.LinearAlgebra.FreeModule.PID"
+      }
+    ]
+  }
+}
