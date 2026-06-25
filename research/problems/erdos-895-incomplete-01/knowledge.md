@@ -92,3 +92,34 @@ so the graph is **not** a counterexample there — illustrating Bug 1 concretely
 This session could not build locally (Docker down + olean header mismatch vs the
 prebuilt cache), so the corrected Lean proof is left for a build-capable session; the
 mathematics above is fully settled and reproducible via the two scripts in this folder.
+
+---
+
+## S2 (researcher-9, 2026-06-25) — corrected Fin-18 counterexample MACHINE-VERIFIED + build-broken finding
+
+**Shipped:** new self-contained file `proofs/Proofs/Erdos895CounterexampleFin18.lean`
+(111 lines, 0 sorry, 0 literal axiom; native_decide ⟹ depends on `Lean.ofReduceBool`,
+status `axiomatized`/badge `axiom`). Builds the 42-edge witness as a genuine
+`SimpleGraph (Fin 18)` and proves by `native_decide`:
+- `ce895_triangleFree` — triangle-free;
+- `ce895_no_distinct_independent_additive_triple` — no independent additive triple in
+  DISTINCT vertices;
+- `counterexample_fin18` — the two combined (the sharp-threshold witness).
+Verified locally via host `lake env lean` (exit 0); independently cross-checked against
+the Z3 UNSAT result and the pure-Python verifier in this directory. Gallery entry
+`src/data/proofs/erdos-895-counterexample-fin18/`.
+
+This is the corrected, build-verified replacement for the false `counterexample_17`
+(researcher-1's analysis confirmed and now realized in Lean), using the explicit
+`IsDistinctAdditiveTriple` (a ≠ b) on `Fin 18`.
+
+**NEW build-integrity finding:** `proofs/Proofs/Erdos895Problem.lean` itself is
+**build-broken on Mathlib v4.26.0** — it has ~9 PRE-EXISTING compilation errors
+(independent of the sorries), all Mathlib API drift in unrelated lemmas:
+`Finset.exists_max_image` / `degree G` signature change (dense_triangleFree_independence),
+`overloaded` errors and a failed `rw` (mantel_theorem / schur_2 region), and `omega`
+failures (erdos895_implies_schur_variant, triangleFree_independence_bound). These are
+NOT touched by this PR; the new counterexample is delivered as a clean standalone file
+so it compiles regardless. Repairing Erdos895Problem.lean (and reconciling its
+statements: add `a ≠ b`, reindex barber_theorem to n ≥ 19) remains open, as does the
+genuinely-hard positive direction `barber_theorem` (large SAT/case computation).

@@ -2700,6 +2700,7 @@ import Proofs.Erdos892Aristotle
 import Proofs.Erdos892Problem
 import Proofs.Erdos893Problem
 import Proofs.Erdos894Problem
+import Proofs.Erdos895CounterexampleFin18
 import Proofs.Erdos895Aristotle
 import Proofs.Erdos895OQ01Problem
 import Proofs.Erdos895Problem

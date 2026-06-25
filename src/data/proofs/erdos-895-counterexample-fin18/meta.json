@@ -1,0 +1,143 @@
+{
+  "id": "erdos-895-counterexample-fin18",
+  "title": "Erdős 895: Sharp Fin-18 Counterexample (machine-verified)",
+  "slug": "erdos-895-counterexample-fin18",
+  "description": "The corrected, machine-verified sharp counterexample for Erdős Problem #895 (independent additive/Schur triples in triangle-free graphs). Barber (2015) proved every triangle-free graph on {1,…,n} contains three pairwise-non-adjacent vertices a, b, a+b for all n ≥ 18, with the threshold sharp at {1,…,17}. This companion to Erdos895Problem.lean builds the explicit 42-edge witness as a genuine `SimpleGraph (Fin 18)` (vertex 0 isolated, modelling {1,…,17}) and proves by `native_decide`, exhaustively over Fin 18, that it is triangle-free (`ce895_triangleFree`) and has NO independent additive triple among three DISTINCT vertices (`ce895_no_distinct_independent_additive_triple`); `counterexample_fin18` packages both. It corrects the sibling Erdos895Problem.lean's `counterexample_17`, which is false as stated: that statement uses an additive-triple predicate omitting `a ≠ b` (admitting degenerate (k,k,2k)) and is placed on Fin 17 — an exhaustive SAT search (Z3 UNSAT) proves every triangle-free graph on Fin 17 has such a loose triple, so the genuine distinct-vertex counterexample lives on Fin 18, not Fin 17.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://erdosproblems.com/895",
+    "date": "2026-06-25",
+    "status": "axiomatized",
+    "tags": [
+      "erdos-problems",
+      "graph-theory",
+      "additive-combinatorics",
+      "triangle-free",
+      "schur-triple",
+      "counterexample",
+      "native_decide"
+    ],
+    "proofRepoPath": "Proofs/Erdos895CounterexampleFin18.lean",
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "lineCount": 111,
+    "dateAdded": "06/25/26",
+    "erdosNumber": 895,
+    "erdosUrl": "https://erdosproblems.com/895",
+    "mathlibDependencies": [
+      {
+        "theorem": "SimpleGraph",
+        "description": "The simple-graph structure; the witness is built as an explicit SimpleGraph (Fin 18) with a symmetric Boolean adjacency.",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+      },
+      {
+        "theorem": "Fintype.decidableForallFintype / decidableExistsFintype",
+        "description": "Decidability of bounded quantifiers over the finite type Fin 18, enabling the exhaustive native_decide checks.",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "G895: the explicit 42-edge sharp counterexample built as a genuine SimpleGraph (Fin 18) with a symmetric (min/max) Boolean adjacency and a clean DecidableRel instance.",
+      "ce895_triangleFree: native_decide proof that G895 is triangle-free (exhaustive over Fin 18³).",
+      "ce895_no_distinct_independent_additive_triple: native_decide proof that G895 has no independent additive triple among three DISTINCT vertices — the corrected statement Barber's theorem is about.",
+      "counterexample_fin18: packages the two into the sharp-threshold witness, the machine-verified replacement for the false `counterexample_17` (Fin 17) in Erdos895Problem.lean.",
+      "IsDistinctAdditiveTriple: the corrected predicate adding `a ≠ b`, isolating the bug in the sibling file's loose IsAdditiveTriple."
+    ],
+    "assumptions": "1 axiom: `Lean.ofReduceBool`, introduced by the two `native_decide` proofs (`ce895_triangleFree`, `ce895_no_distinct_independent_additive_triple`). Both are exhaustive finite checks over Fin 18 (triangle-freeness over all triples; absence of a distinct-vertex independent additive triple), so the trusted step is the Lean compiler's kernel reduction. No `sorry`, no literal `axiom` declarations (`leanFile.axiomCount = 0`); the witness graph is independently re-verified by Z3 (UNSAT) and pure Python in research/problems/erdos-895-incomplete-01/. Status `axiomatized` per the project's native_decide policy.",
+    "theoremCount": 5,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #895 (Erdős–Hajnal) asks whether, for large n, every triangle-free graph on {1,…,n} must contain three pairwise-non-adjacent vertices a, b, a+b — an independent additive (Schur) triple. Ben Barber (2015) answered YES for all n ≥ 18 using SAT-solver verification, and showed the threshold is sharp: a triangle-free graph on {1,…,17} exists with no such triple among three distinct vertices.",
+    "problemStatement": "Exhibit and machine-verify the sharp counterexample on {1,…,17}: a triangle-free graph with no independent additive triple in three distinct vertices a, b, a+b. (Companion to Erdos895Problem.lean, whose `counterexample_17` is false as stated.)",
+    "proofStrategy": "Encode the 42-edge witness (researcher-1's Z3/Python-verified graph) as a List of ascending pairs on {1,…,17}; define a symmetric Boolean adjacency `ce895Adj` via the ascending pair (min, max); build `G895 : SimpleGraph (Fin 18)` with that adjacency plus `a ≠ b` (symmetry from min/max commutativity, looplessness immediate). Mark the triangle-free / independent-triple / distinct-additive-triple predicates `@[reducible]` so instance synthesis sees the bounded quantifiers, then discharge `IsTriangleFree G895` and the negated existence statement by `native_decide` — each an exhaustive check over Fin 18.",
+    "keyInsights": [
+      "**Distinctness is the crux.** Barber's theorem concerns three DISTINCT vertices a, b, a+b. A predicate omitting `a ≠ b` admits the degenerate (k, k, 2k) and changes the answer — making every triangle-free graph on Fin 17 (indeed Fin 12+) trivially have a 'triple'. The sibling Erdos895Problem.lean uses the loose predicate, so its `counterexample_17` (Fin 17) is false.",
+      "**Index alignment: Fin 18 = {1,…,17}.** `SimpleGraph (Fin 18)` has vertices {0,…,17}; vertex 0 is inert (never part of an additive triple since a+b ≥ 2). So the {1,…,17} counterexample lives on Fin 18, not Fin 17 — an off-by-one in the sibling file.",
+      "**native_decide makes the SAT result a kernel-checkable fact.** The exhaustive search Barber ran with a SAT solver becomes, for this specific witness, a `native_decide` evaluation over Fin 18 — turning an external computation into a Lean-verified (modulo Lean.ofReduceBool) statement, cross-checked by an independent Z3 UNSAT proof and a pure-Python verifier.",
+      "**fromRel vs explicit structure.** Building `G895` as an explicit `SimpleGraph` structure (Adj := symmetric Bool ∧ a ≠ b) gives a directly-decidable adjacency, avoiding the extra unfolding `SimpleGraph.fromRel` would interpose before native_decide."
+    ],
+    "prerequisites": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic (SimpleGraph, Adj)",
+      "Decidability of bounded quantifiers over Fintype (native_decide)",
+      "Erdos895Problem.lean (sibling: Barber's theorem statement, the loose-predicate bug)",
+      "Basic additive combinatorics (Schur triples) and triangle-free graphs"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble: background and the corrected statement",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Docstring: Erdős #895 / Barber's theorem, why counterexample_17 (Fin 17, loose predicate) is false, and that the genuine distinct-vertex counterexample lives on Fin 18. Discloses the native_decide / Lean.ofReduceBool assumption.",
+      "mathContext": "Barber (2015): triangle-free graphs on {1,…,n} have an independent additive triple for n ≥ 18; sharp at {1,…,17}."
+    },
+    {
+      "id": "predicates",
+      "title": "Predicates (with distinctness corrected)",
+      "startLine": 44,
+      "endLine": 57,
+      "summary": "IsIndependentTriple, IsTriangleFree, and the corrected IsDistinctAdditiveTriple (adding a ≠ b). Marked @[reducible] so native_decide's instance synthesis sees the bounded quantifiers.",
+      "mathContext": "The distinctness constraint a ≠ b is exactly what the sibling file's IsAdditiveTriple omits."
+    },
+    {
+      "id": "witness-graph",
+      "title": "The explicit witness graph on Fin 18",
+      "startLine": 58,
+      "endLine": 86,
+      "summary": "ce895Pairs (42 ascending edges), ce895Adj (symmetric Boolean adjacency via min/max), ce895Adj_comm (symmetry), G895 (the SimpleGraph structure), and its DecidableRel instance.",
+      "mathContext": "The 42-edge witness is researcher-1's Z3/Python-verified graph; vertex 0 is isolated."
+    },
+    {
+      "id": "verified-properties",
+      "title": "Verified properties (exhaustive native_decide)",
+      "startLine": 87,
+      "endLine": 111,
+      "summary": "ce895_triangleFree and ce895_no_distinct_independent_additive_triple (both native_decide over Fin 18), combined into counterexample_fin18 — the sharp-threshold witness.",
+      "mathContext": "Triangle-freeness over all triples and absence of any distinct-vertex independent additive triple, checked exhaustively."
+    }
+  ],
+  "conclusion": {
+    "summary": "An explicit triangle-free graph on Fin 18 (= {1,…,17}) with no independent additive triple among three distinct vertices, machine-verified by native_decide and independently cross-checked by Z3 and pure Python. This is the corrected, sharp counterexample for Erdős #895, replacing the false-as-stated `counterexample_17` (Fin 17) of the sibling Erdos895Problem.lean.",
+    "implications": "Establishes the n = 18 threshold of Barber's theorem is sharp, on the mathematically correct (distinct-vertex) reading. Isolates two bugs in the sibling formalization: (1) the additive-triple predicate must require a ≠ b; (2) the Fin n ↔ {1,…,n-1} off-by-one places the counterexample on Fin 18, not Fin 17.",
+    "openQuestions": [
+      "Formalize Barber's positive direction (n ≥ 18 ⟹ a distinct-vertex independent additive triple always exists). Barber's proof is a large SAT/case computation; it remains the genuinely-open `barber_theorem` sorry in Erdos895Problem.lean and is not attemptable via short tactics.",
+      "Repair Erdos895Problem.lean, which is build-broken on Mathlib v4.26 (≈9 pre-existing API-drift errors in unrelated Turán/Mantel/greedy-independence lemmas, independent of the sorries) — and reconcile its statements with this corrected witness (add a ≠ b, reindex barber_theorem to n ≥ 19).",
+      "Hajnal's generalization: do triangle-free graphs contain independent Hindman sets (all finite sums of a base set)? Open."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Barber, B.",
+      "title": "Partition regularity and independent additive triples in triangle-free graphs (SAT-verified threshold n = 18)",
+      "year": "2015",
+      "note": "Resolves Erdős #895: every triangle-free graph on {1,…,n} has an independent additive triple for n ≥ 18, sharp at {1,…,17}."
+    },
+    {
+      "authors": "Erdős, P. and Hajnal, A.",
+      "title": "Problems and results on additive and multiplicative combinatorial structures (problem source)",
+      "year": "1980",
+      "note": "Origin of the independent-additive-triple / independent-Hindman-set questions; see erdosproblems.com/895."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "counterexample_fin18",
+      "statement": "∃ G : SimpleGraph (Fin 18), IsTriangleFree G ∧ ¬ ∃ a b c : Fin 18, IsDistinctAdditiveTriple a b c ∧ IsIndependentTriple G a b c",
+      "description": "The sharp counterexample: a triangle-free graph on Fin 18 (= {1,…,17}) with no independent additive triple among three distinct vertices. Machine-verified (native_decide), the corrected replacement for the false counterexample_17."
+    },
+    {
+      "name": "ce895_triangleFree",
+      "statement": "IsTriangleFree G895",
+      "description": "The 42-edge witness graph G895 is triangle-free (native_decide, exhaustive over Fin 18)."
+    },
+    {
+      "name": "ce895_no_distinct_independent_additive_triple",
+      "statement": "¬ ∃ a b c : Fin 18, IsDistinctAdditiveTriple a b c ∧ IsIndependentTriple G895 a b c",
+      "description": "G895 has no independent additive triple among three distinct vertices (native_decide)."
+    }
+  ],
+  "sorries": 0
+}
