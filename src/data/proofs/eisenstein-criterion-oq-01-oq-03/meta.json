@@ -77,6 +77,57 @@
       "Basic ℤ divisibility: p ∣ 1 ↔ IsUnit p, cancelling a factor of p (mul_dvd_mul_iff_left)"
     ]
   },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module header and open question",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Docstring framing the parent entry's third open question — generalize the Eisenstein coefficient bookkeeping beyond Xⁿ − p to arbitrary lower coefficients divisible by p — and listing the three contributions: a concrete divisibility-form criterion over ℤ, the general family Xⁿ + p·g, and the upgrade to ℚ via Gauss's lemma. Imports Mathlib, opens the Polynomial namespace, opens the EisensteinCriterionOQ01OQ03 namespace."
+    },
+    {
+      "id": "abstract-reexport",
+      "title": "Re-export of Mathlib's abstract criterion",
+      "startLine": 43,
+      "endLine": 54,
+      "summary": "aux_irreducible_of_eisenstein restates Mathlib's irreducible_of_eisenstein_criterion over an arbitrary integral domain with a prime ideal P (leading coeff ∉ P, lower coeffs ∈ P, positive degree, constant coeff ∉ P², primitive ⇒ irreducible). This is the core engine specialized below."
+    },
+    {
+      "id": "int-criterion",
+      "title": "Concrete Eisenstein criterion over ℤ",
+      "startLine": 56,
+      "endLine": 85,
+      "summary": "irreducible_int_of_eisenstein: a monic f of positive degree with p ∣ f.coeff k for all k below the degree and p² ∤ f.coeff 0 is irreducible over ℤ. The proof instantiates P = Ideal.span {p} (prime via Ideal.span_singleton_prime) and discharges the four abstract hypotheses through Ideal.mem_span_singleton (membership ⇔ divisibility) and Ideal.span_singleton_pow ((p)² = (p²)); primitivity from Monic.isPrimitive. Lower coefficients are now arbitrary subject only to divisibility by p."
+    },
+    {
+      "id": "rat-criterion",
+      "title": "Irreducibility over ℚ via Gauss's lemma",
+      "startLine": 87,
+      "endLine": 98,
+      "summary": "irreducible_rat_of_eisenstein: because the polynomial is monic and ℚ is the fraction field of ℤ, Gauss's lemma (Monic.irreducible_iff_irreducible_map_fraction_map) lifts irreducibility over ℤ to irreducibility over ℚ. This is the operative form of the criterion — it is over ℚ that such an f is the minimal polynomial of its roots."
+    },
+    {
+      "id": "general-family",
+      "title": "The general family Xⁿ + p·g",
+      "startLine": 100,
+      "endLine": 151,
+      "summary": "monic_X_pow_add_CP_mul and natDegree_X_pow_add_CP_mul establish monicity and natDegree = n for Xⁿ + p·g when deg g < n (via monic_X_pow_add, degree_C_mul, degree_add_eq_left_of_degree_lt). irreducible_int_X_pow_add_CP_mul then proves irreducibility over ℤ for any g with deg g < n and p ∤ g.coeff 0: the coefficient formula coeff k = [k = n] + p·g.coeff k makes lower coefficients divisible by p, and p² ∤ p·g.coeff 0 reduces to p ∤ g.coeff 0 via mul_dvd_mul_iff_left. irreducible_rat_X_pow_add_CP_mul lifts it to ℚ. This is the direct answer to the open question."
+    },
+    {
+      "id": "recover-xn-minus-p",
+      "title": "Recovering Xⁿ − p over ℤ and ℚ",
+      "startLine": 153,
+      "endLine": 175,
+      "summary": "irreducible_int_X_pow_sub_C and irreducible_rat_X_pow_sub_C: the parent's flagship Xⁿ − p = Xⁿ + p·(−1) is the g = −1 member of the family, with p ∤ −1 because p is not a unit. The ℚ version is what underlies [ℚ(ⁿ√p):ℚ] = n, which the parent did not reach."
+    },
+    {
+      "id": "concrete-instances",
+      "title": "Concrete instances with nonzero middle coefficients",
+      "startLine": 177,
+      "endLine": 214,
+      "summary": "irreducible_int_X_sq_add_two_X_add_two (X² + 2X + 2, Eisenstein at 2), irreducible_int_X_cube_add_three_X_add_three (X³ + 3X + 3, at 3), and irreducible_rat_X_sq_add_two_X_add_two (the first over ℚ). Each is the g = X + 1 family member at the relevant prime, where g(0) = 1 is not divisible by p — genuine Eisenstein polynomials with nonzero middle coefficients beyond the parent's Xⁿ − p form."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "eisenstein-criterion-oq-01",
