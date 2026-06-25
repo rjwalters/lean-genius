@@ -1,0 +1,52 @@
+{
+  "id": "british-flag-theorem-oq-01-oq-02-oq-01",
+  "slug": "british-flag-theorem-oq-01-oq-02-oq-01",
+  "title": "British Flag Defect for a General Non-Orthogonal Parallelepiped",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 8,
+  "significance": 6,
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "path": "proofs/Proofs/BritishFlagParallelepipedOQ010201.lean",
+  "tags": [
+    "geometry",
+    "inner-product-space",
+    "british-flag-theorem",
+    "parallelepiped",
+    "finite-differences",
+    "alternating-sum",
+    "seeker-selected"
+  ],
+  "problemStatement": "Parent british-flag-theorem-oq-01-oq-02's first open question. For a parallelepiped with base c and edge vectors u₁,…,uₙ in a real inner product space, the alternating vertex sum ∑_t (−1)^{|t|}·‖X − vertex t‖² (vertex t = c + ∑_{i∈t} uᵢ) should equal a fixed defect independent of the observer X, unifying the orthotope parent (all inner products zero) with the n = 2 parallelogram (defect 2⟪u₁,u₂⟫). Prove the general defect formula.",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Proved the general defect formula in full: defect ≡ 0 for n ≥ 3 (any configuration), defect = 2⟪u₀,u₁⟫ for n = 2, orthogonal n=2 recovers the classical British Flag Theorem. Verified, 0 axioms, 0 sorries."
+  },
+  "knownResults": "Parent oq-01-oq-02 proved the orthotope (orthogonal-edge) case vanishes for n ≥ 2. Sibling oq-01-oq-01 proved the n = 2 parallelogram defect 2⟪u,v⟫. Mathlib supplies polarization (norm_sub_sq_real), inner-product bilinearity, and powerset machinery.",
+  "knowledge": {
+    "progressSummary": "COMPLETE: general defect formula proved. The squared distance to a parallelepiped vertex is a degree-2 polynomial in the membership indicators; the alternating powerset sum is the n-th finite difference, which annihilates degree < n. Hence defect ≡ 0 for n ≥ 3 and = 2⟪u₀,u₁⟫ for n = 2. Verified / 0-axiom / original, 300 lines, 11 theorems, 3 definitions.",
+    "insights": [
+      "The squared distance ‖X − vertex t‖² is a polynomial of degree exactly 2 in the membership indicators [i ∈ t], with constant coeff ‖X−c‖², linear coeffs ⟪X−c,uᵢ⟫, and quadratic coeffs ⟪uᵢ,uⱼ⟫. The parent's orthotope hid this because there the quadratic coefficients are all zero.",
+      "The alternating powerset sum g ↦ ∑_t (−1)^{|t|}·g t is the n-th iterated finite difference on the Boolean cube; it annihilates every monomial omitting a coordinate, hence every polynomial of degree < n. This single fact explains both the n ≥ 3 vanishing and the surviving n = 2 defect.",
+      "n ≥ 3 is the SHARP threshold for unconditional vanishing because the squared distance has degree exactly 2: the defect vanishes for all configurations iff n > 2. At n = 2 only the top monomial [0∈t][1∈t] survives (coefficient 2⟪u₀,u₁⟫); at n = 1 even the linear term survives and the defect is observer-dependent.",
+      "The cleanest formalization of 'finite difference kills low degree' is monomial-by-monomial: an indicator monomial constant in coordinate k is invariant under inserting k, so its alternating sum vanishes by the antipodal pairing s ↔ insert k s. Free coordinate exists exactly when the monomial degree < n."
+    ],
+    "builtItems": [
+      "alt_sum_eq_zero_of_indep (BritishFlagParallelepipedOQ010201.lean:90): finite-difference annihilation — coordinate-independent g ⟹ ∑_t (−1)^{|t|}·g t = 0",
+      "sqDist_expand (BritishFlagParallelepipedOQ010201.lean:151): degree-≤2 inner-product expansion of the squared distance",
+      "const_term_zero / linear_term_zero / quadratic_term_zero (lines 166/173/193): the three monomial pieces vanish for n ≥ 1 / 2 / 3",
+      "parallelepiped_defect_eq_zero (line 243): MAIN — n ≥ 3 ⟹ defect = 0 for any parallelepiped",
+      "parallelepiped_defect_two (line 276): n = 2 ⟹ defect = 2⟪u₀,u₁⟫; quadSum_two (line 261) enumerates the four subsets of {0,1}",
+      "parallelepiped_defect_two_orthogonal (line 295): orthogonal n = 2 recovers the classical British Flag Theorem"
+    ],
+    "mathlibGaps": "none — the proof is self-contained over Mathlib's inner-product and Finset libraries.",
+    "nextSteps": [
+      "Higher moments: ‖X − vertex‖^{2k} is degree 2k in the indicators, so the defect should vanish for n ≥ 2k+1 with an explicit top-degree defect (sum over pairings) at n = 2k.",
+      "Relate the n = 2 defect 2⟪u₀,u₁⟫ to the deviation of the parallelogram from a rectangle and to the mixed second difference of the squared-distance field over the cube."
+    ]
+  }
+}
