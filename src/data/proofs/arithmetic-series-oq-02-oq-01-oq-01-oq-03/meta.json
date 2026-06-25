@@ -1,0 +1,134 @@
+{
+  "id": "arithmetic-series-oq-02-oq-01-oq-01-oq-03",
+  "title": "Dual and Symmetric Forms of the q-Vandermonde Identity",
+  "slug": "arithmetic-series-oq-02-oq-01-oq-01-oq-03",
+  "description": "Derives the dual (m↔n swap) and reflected-index (k↦r−k) forms of the q-Vandermonde convolution [m+n choose r]_q = ∑_{k=0}^{r} q^{k(m+k−r)} [m choose r−k]_q [n choose k]_q proved in the parent entry, and proves the two re-indexed convolution sums equal as ring elements. This exposes the hidden symmetry of the q-exponent k(m+k−r) ↔ k(n+k−r) and (r−k)(m−k): different-looking q-weighted sums that nonetheless both compute the same Gaussian binomial. All four results are corollaries of the parent's qVandermonde via add_comm on ℕ and Finset.sum_range_reflect; no new analytic input. 4 theorems, 0 axioms, 0 sorries.",
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient#q-Vandermonde_identity",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean",
+    "tags": [
+      "combinatorics",
+      "q-analogs",
+      "gaussian-binomial",
+      "vandermonde",
+      "quantum-calculus",
+      "symmetry"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "None. Axiom-free and sorry-free (depends only on propext, Classical.choice, Quot.sound — the standard Lean foundations).",
+    "lineCount": 106,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "qVandermonde_swap: dual form [m+n choose r]_q = ∑_{k=0}^{r} q^{k(n+k−r)} [n choose r−k]_q [m choose k]_q, obtained by the m↔n involution (q-exponent k(m+k−r) ↦ k(n+k−r))",
+      "qVandermonde_sum_symm: the original and m↔n-swapped convolution sums are equal ring elements (both equal [m+n choose r]_q) — the precise statement that the q-exponent symmetry is a genuine identity",
+      "qVandermonde_reflect: reflected-index form [m+n choose r]_q = ∑_{k=0}^{r} q^{(r−k)(m−k)} [m choose k]_q [n choose r−k]_q, obtained by the k↦r−k involution on the summation range via Finset.sum_range_reflect",
+      "qVandermonde_reflect_sum_symm: the original and k↦r−k-reflected convolution sums are equal ring elements"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Gauss q-Vandermonde identity (parent entry arithmetic-series-oq-02-oq-01-oq-01) generalizes the classical Vandermonde convolution to Gaussian binomial coefficients. A single algebraic form hides the symmetry that the Gaussian binomial enjoys under exchanging its two summand factors and under reflecting the summation index. This entry, answering open question 3 of the parent, makes both involutions explicit and verifies the resulting dual / reflected identities are equivalent within Lean. The phenomenon is the q-analog of the elementary fact that the classical Vandermonde sum ∑_k C(m,k)C(n,r−k) is manifestly symmetric in m and n and under k↦r−k; in the q-deformed setting the symmetry is no longer manifest because the q-exponent k(m+k−r) is not symmetric on its face.",
+    "problemStatement": "Derive the dual/symmetric forms of the q-Vandermonde identity (swapping the roles of m and n, or reflecting r ↦ m+n−r / k ↦ r−k) and verify they are equivalent within Lean, exposing the hidden symmetry of the q-exponent q^{k(m+k−r)}.",
+    "text": "The parent proves [m+n choose r]_q = S(m,n,r) where S(m,n,r) = ∑_{k=0}^{r} q^{k(m+k−r)} [m choose r−k]_q [n choose k]_q. Because the binomial argument m+n is symmetric in m and n, evaluating the parent identity at the swapped arguments (n,m,r) yields the same left-hand side, hence S(m,n,r) = S(n,m,r): the m↔n-swapped sum — whose q-exponent is k(n+k−r) and whose binomial factors are exchanged — equals the original. Independently, reflecting the summation index k ↦ r−k (an involution on the range {0,…,r}) re-expresses S(m,n,r) with the q-exponent in the dual shape (r−k)(m−k) and the binomial factors index-reflected. Both re-indexings produce identities whose q-weighted summands look different term by term yet sum to the same Gaussian binomial.",
+    "proofStrategy": "Each result is a short corollary of the parent's qVandermonde. (1) qVandermonde_swap rewrites m+n = n+m (Nat.add_comm) and applies qVandermonde at (n,m,r). (2) qVandermonde_sum_symm chains qVandermonde and qVandermonde_swap through the common value [m+n choose r]_q. (3) qVandermonde_reflect rewrites the parent sum by Finset.sum_range_reflect (the involution k ↦ (r+1)−1−k = r−k on Finset.range (r+1)) and simplifies the resulting ℕ subtractions r−(r−k)=k and m+(r−k)−r=m−k (omega) for indices k ≤ r. (4) qVandermonde_reflect_sum_symm chains qVandermonde and qVandermonde_reflect.",
+    "keyInsights": [
+      "The m↔n symmetry of the q-Vandermonde sum is forced purely by the symmetry of the binomial argument m+n; no property of the q-binomial beyond the parent identity is needed, so qVandermonde_swap is a one-line rewrite.",
+      "The non-trivial content is qVandermonde_sum_symm / qVandermonde_reflect_sum_symm: two q-weighted sums with structurally different exponents (k(m+k−r) vs k(n+k−r), and k(m+k−r) vs (r−k)(m−k)) are equal as ring elements. The equality is invisible term by term and only emerges through the shared closed value [m+n choose r]_q.",
+      "Finset.sum_range_reflect supplies the k↦r−k involution cleanly; the only care needed is the truncated ℕ subtraction, where for in-range indices k ≤ r one has r−(r−k)=k and m+(r−k)−r=m−k, both discharged by omega.",
+      "These corollary forms are deliberately lightweight: they add no new spectral or analytic machinery, only re-index the established convolution. Their value is conceptual — pinning down, as machine-checked statements, the two involutive symmetries that the single algebraic form of the q-Vandermonde identity obscures."
+    ],
+    "prerequisites": [
+      "q-Vandermonde identity: arithmetic-series-oq-02-oq-01-oq-01 (qVandermonde)",
+      "q-binomial coefficients: arithmetic-series-oq-02-oq-01 (qBinom, q-Pascal rule)",
+      "Finset.sum_range_reflect (reflection involution on a finite range)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The q-Vandermonde convolution is recast under the two involutions m↔n and k↦r−k, and the resulting dual / reflected sums are proved equal to the original as ring elements. Four theorems, all corollaries of the parent qVandermonde via Nat.add_comm and Finset.sum_range_reflect. Fully verified: 0 axioms, 0 sorries.",
+    "implications": "Records, as machine-checked identities, the hidden symmetry of the q-exponent k(m+k−r): different-looking q-weighted convolution sums compute the same Gaussian binomial. This is the symmetry that becomes manifest at q=1 (classical Vandermonde) but is obscured by the q-deformation, and it underlies the standard combinatorial (subspace-counting) interpretation where exchanging the two factor spaces or complementing the chosen dimension leaves the count invariant.",
+    "openQuestions": [
+      "Prove the reflection symmetry of the Gaussian binomial itself, [n choose k]_q = [n choose n−k]_q (the 'second q-Pascal recursion'), and use it to derive the full r ↦ m+n−r reflected form of the q-Vandermonde identity as a fifth equivalent shape.",
+      "Combine the two involutions (m↔n then k↦r−k) to exhibit the dihedral symmetry group acting on the family of equivalent q-Vandermonde sums, and identify the orbit structure of the q-exponent."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.ArithmeticSeriesOQ02OQ01OQ01"
+    ],
+    "opens": [
+      "GaussianBinomial",
+      "qVandermondeProof",
+      "Finset",
+      "BigOperators"
+    ],
+    "namespace": "qVandermondeDual",
+    "lineCount": 106,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "arithmetic-series-oq-02-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the q-Vandermonde Identity, from which all four dual/reflected forms are derived"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Grandparent: q-Pascal rule and qBinom (Gaussian binomial) infrastructure"
+    },
+    {
+      "targetId": "binomial-theorem-oq-04",
+      "relationship": "related",
+      "description": "Classical Vandermonde Identity: the q=1 specialization where the m↔n and k↦r−k symmetries are manifest"
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Symmetry Overview",
+      "startLine": 4,
+      "endLine": 49,
+      "summary": "Documents the two involutions (m↔n swap and k↦r−k reflection), the four results, and that all are corollaries of the parent qVandermonde via add_comm and Finset.sum_range_reflect."
+    },
+    {
+      "id": "sec-swap",
+      "title": "Dual Form (m↔n Swap)",
+      "startLine": 60,
+      "endLine": 69,
+      "summary": "qVandermonde_swap: rewriting m+n = n+m and applying qVandermonde at (n,m,r) yields the swapped convolution with q-exponent k(n+k−r) and exchanged binomial factors."
+    },
+    {
+      "id": "sec-sum-symm",
+      "title": "Symmetry of the Convolution Sum",
+      "startLine": 71,
+      "endLine": 80,
+      "summary": "qVandermonde_sum_symm: the original and m↔n-swapped sums are equal ring elements, both equal to [m+n choose r]_q — the precise statement of the q-exponent symmetry k(m+k−r) ↔ k(n+k−r)."
+    },
+    {
+      "id": "sec-reflect",
+      "title": "Reflected-Index Form (k↦r−k)",
+      "startLine": 82,
+      "endLine": 96,
+      "summary": "qVandermonde_reflect: applying Finset.sum_range_reflect to the parent sum, then simplifying the ℕ subtractions r−(r−k)=k and m+(r−k)−r=m−k (omega), gives the dual-shape q-exponent (r−k)(m−k)."
+    },
+    {
+      "id": "sec-reflect-sum-symm",
+      "title": "Symmetry of the Reflected Sum",
+      "startLine": 98,
+      "endLine": 105,
+      "summary": "qVandermonde_reflect_sum_symm: the original and k↦r−k-reflected sums are equal ring elements via the shared value [m+n choose r]_q."
+    }
+  ]
+}

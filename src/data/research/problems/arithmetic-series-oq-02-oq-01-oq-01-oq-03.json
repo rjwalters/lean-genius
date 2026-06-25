@@ -1,0 +1,449 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-01-oq-01-oq-03",
+  "title": "Dual and Symmetric Forms of the q-Vandermonde Identity",
+  "problemStatement": {
+    "formal": "qVandermonde_swap : qBinom q (m+n) r = ∑ k ∈ Finset.range (r+1), q ^ (k * (n + k - r)) * qBinom q n (r - k) * qBinom q m k ; and qVandermonde_sum_symm / qVandermonde_reflect / qVandermonde_reflect_sum_symm establishing equality of the re-indexed convolution sums.",
+    "plain": "Derive the dual/symmetric forms of the q-Vandermonde identity (swap m↔n, reflect k↦r−k) and prove they are equivalent within Lean, exposing the hidden symmetry of the q-exponent q^{k(m+k−r)}.",
+    "whyMatters": [
+      "Pins down, as machine-checked statements, the two involutive symmetries (m↔n and k↦r−k) that the single algebraic form of the q-Vandermonde identity obscures",
+      "The q-deformation hides the symmetry that is manifest at q=1 (classical Vandermonde); the equality of structurally different q-weighted sums is the precise content recovered",
+      "Underlies the subspace-counting interpretation: exchanging the two factor spaces or complementing the chosen dimension leaves the F_q-subspace count invariant"
+    ]
+  },
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 5,
+  "started": "2026-06-24T00:00:00-07:00",
+  "path": "full",
+  "tags": [
+    "combinatorics",
+    "q-analogs",
+    "gaussian-binomial",
+    "vandermonde",
+    "quantum-calculus",
+    "symmetry"
+  ],
+  "references": {
+    "papers": [
+      "V. Kac, P. Cheung, 'Quantum Calculus' (Springer, 2002), Chapter 10"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient#q-Vandermonde_identity"
+    ],
+    "mathlib": [
+      "Finset.sum_range_reflect (reflection involution on a finite range)",
+      "qVandermondeProof.qVandermonde from ArithmeticSeriesOQ02OQ01OQ01.lean"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "qVandermonde_swap: dual form via Nat.add_comm + parent qVandermonde at (n,m,r)",
+      "qVandermonde_sum_symm: original and m↔n-swapped sums equal as ring elements (shared value [m+n choose r]_q)",
+      "qVandermonde_reflect: reflected-index form via Finset.sum_range_reflect + omega simplification of ℕ subtractions (r−(r−k)=k, m+(r−k)−r=m−k for k≤r)",
+      "qVandermonde_reflect_sum_symm: original and k↦r−k-reflected sums equal as ring elements"
+    ],
+    "open": [
+      "Reflection symmetry of the Gaussian binomial itself, [n choose k]_q = [n choose n−k]_q (the 'second q-Pascal recursion'), which would unlock the full r↦m+n−r reflected form"
+    ],
+    "goal": "Dual/symmetric forms derived and proved equivalent; the r↦m+n−r form additionally requires qBinom reflection symmetry (deferred)."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Four dual/reflected forms verified, 0 sorries, 0 axioms",
+    "blockers": [],
+    "nextAction": "Optional: prove qBinom_symm ([n choose k]_q = [n choose n−k]_q) to add the r↦m+n−r reflected form as a fifth equivalent shape.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: dual (m↔n) and reflected-index (k↦r−k) forms of q-Vandermonde derived and proved equivalent; 0 axioms, 0 sorries.",
+    "insights": [
+      "The m↔n symmetry of the q-Vandermonde sum is forced purely by the symmetry of the binomial argument m+n; qVandermonde_swap is a one-line rewrite needing no q-binomial property beyond the parent identity.",
+      "The substantive content is the sum-equivalence theorems: two q-weighted sums with structurally different exponents (k(m+k−r) vs k(n+k−r), and k(m+k−r) vs (r−k)(m−k)) are equal as ring elements — invisible term by term, emerging only through the shared closed value [m+n choose r]_q.",
+      "Finset.sum_range_reflect cleanly supplies the k↦r−k involution; the only care is truncated ℕ subtraction, where for in-range indices k≤r one has r−(r−k)=k and m+(r−k)−r=m−k (omega).",
+      "The full r↦m+n−r reflection (rather than the k↦r−k index reflection) requires the Gaussian-binomial reflection symmetry [n choose k]_q = [n choose n−k]_q, which is NOT a corollary of the single q-Pascal recursion (rule A) used to define qBinom — it needs the alternate recursion (rule B) and an intertwined induction, deferred as a follow-up."
+    ],
+    "builtItems": [
+      "qVandermonde_swap in Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean:60",
+      "qVandermonde_sum_symm in Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean:71",
+      "qVandermonde_reflect in Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean:82",
+      "qVandermonde_reflect_sum_symm in Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean:98"
+    ],
+    "mathlibGaps": [
+      "This file's qBinom (parent's own definition) has no reflection-symmetry lemma; Mathlib's own Gaussian binomial API is not used by the parent chain, so qBinom_symm must be proved in-house if the r↦m+n−r form is wanted."
+    ],
+    "nextSteps": [
+      "Prove qBinom_symm: [n choose k]_q = [n choose n−k]_q via the second q-Pascal recursion, then derive the r↦m+n−r reflected q-Vandermonde form.",
+      "Compose the m↔n and k↦r−k involutions to exhibit the dihedral symmetry group on the family of equivalent q-Vandermonde sums."
+    ],
+    "markdown": "## Session 2026-06-24 (Session 1) - Dual/symmetric q-Vandermonde forms\n\n**Mode**: FRESH\n**Outcome**: completed\n\n### What I Did\n- Derived the dual (m↔n swap) and reflected-index (k↦r−k) forms of the parent q-Vandermonde convolution.\n- Proved both re-indexed convolution sums equal the original as ring elements (qVandermonde_sum_symm, qVandermonde_reflect_sum_symm).\n- All four results are corollaries of the parent qVandermonde via Nat.add_comm and Finset.sum_range_reflect.\n\n### Key Findings\n- m↔n symmetry is forced by symmetry of m+n; the sum-equivalence is the real content (term-by-term invisible).\n- k↦r−k reflection via Finset.sum_range_reflect; truncated ℕ subtraction handled by omega for in-range k≤r.\n- The full r↦m+n−r reflection needs Gaussian-binomial reflection symmetry [n choose k]_q=[n choose n−k]_q, which requires the alternate q-Pascal recursion (not a corollary of rule A) — deferred.\n\n### Files Modified\n- proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean (new, 106 lines, 4 theorems, 0 sorries, 0 axioms)\n- src/data/proofs/arithmetic-series-oq-02-oq-01-oq-01-oq-03/meta.json (new)\n\n### Next Steps\n- Prove qBinom_symm to unlock the r↦m+n−r form."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/ArithmeticSeries.lean",
+      "filename": "ArithmeticSeries.lean",
+      "lineCount": 181,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeries.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00.lean",
+      "filename": "ArithmeticSeriesOQ00.lean",
+      "lineCount": 161,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
+      "filename": "ArithmeticSeriesOQ00OQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ02.lean",
+      "filename": "ArithmeticSeriesOQ00OQ02.lean",
+      "lineCount": 121,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ00OQ02OQ01.lean",
+      "lineCount": 140,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ02OQ02.lean",
+      "filename": "ArithmeticSeriesOQ00OQ02OQ02.lean",
+      "lineCount": 135,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02.lean",
+      "filename": "ArithmeticSeriesOQ02.lean",
+      "lineCount": 210,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01.lean",
+      "lineCount": 174,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01OQ01.lean",
+      "lineCount": 218,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ01OQ01OQ03.lean",
+      "lineCount": 107,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ03.lean",
+      "lineCount": 208,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ03OQ01.lean",
+      "lineCount": 508,
+      "theoremCount": 27,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ02OQ03OQ02.lean",
+      "lineCount": 244,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ03.lean",
+      "lineCount": 164,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean",
+      "filename": "ArithmeticSeriesOQ02OQ03Aristotle.lean",
+      "lineCount": 40,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04.lean",
+      "lineCount": 157,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01.lean",
+      "lineCount": 170,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ01.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ01.lean",
+      "lineCount": 150,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ01OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ01OQ02.lean",
+      "lineCount": 221,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03.lean",
+      "lineCount": 79,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean",
+      "lineCount": 119,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "lineCount": 564,
+      "theoremCount": 21,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04.lean",
+      "filename": "ArithmeticSeriesOQ04.lean",
+      "lineCount": 198,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04OQ01.lean",
+      "filename": "ArithmeticSeriesOQ04OQ01.lean",
+      "lineCount": 306,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04OQ02.lean",
+      "filename": "ArithmeticSeriesOQ04OQ02.lean",
+      "lineCount": 164,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ04OQ03.lean",
+      "filename": "ArithmeticSeriesOQ04OQ03.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ04OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "arithmetic-series",
+    "arithmetic-series-oq-00",
+    "arithmetic-series-oq-00-oq-02",
+    "arithmetic-series-oq-00-oq-02-oq-01",
+    "arithmetic-series-oq-00-oq-02-oq-02",
+    "arithmetic-series-oq-02",
+    "arithmetic-series-oq-02-oq-01",
+    "arithmetic-series-oq-02-oq-01-oq-01",
+    "arithmetic-series-oq-02-oq-01-oq-01-oq-03",
+    "arithmetic-series-oq-02-oq-02",
+    "arithmetic-series-oq-02-oq-02-oq-01",
+    "arithmetic-series-oq-02-oq-02-oq-02",
+    "arithmetic-series-oq-02-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-01",
+    "arithmetic-series-oq-02-oq-02-oq-03-oq-02",
+    "arithmetic-series-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-04",
+    "arithmetic-series-oq-02-oq-04-oq-01",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-01",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-01-oq-02",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+    "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02",
+    "arithmetic-series-oq-04",
+    "arithmetic-series-oq-04-oq-01",
+    "arithmetic-series-oq-04-oq-02",
+    "arithmetic-series-oq-04-oq-03"
+  ]
+}
