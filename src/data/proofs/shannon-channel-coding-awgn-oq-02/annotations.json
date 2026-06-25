@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "shannon-channel-coding-awgn-oq-02",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "context",
+    "title": "Deriving the Output-Power Hypothesis hvar",
+    "content": "The docstring states OQ-02. The parent ShannonChannelCodingAWGN proves the AWGN capacity $C(P,N)=\\tfrac12\\log(1+P/N)$, but its converse `awgn_capacity_upper_bound` takes the output-power relation $\\mathbb{E}[Y^2]=P+N$ as a bare hypothesis `hvar`. That relation is the variance-of-a-sum fact: for $Y=X+Z$ with $X\\perp Z$ and zero means, $\\mathbb{E}[Y^2]=\\mathbb{E}[X^2]+2\\mathbb{E}[XZ]+\\mathbb{E}[Z^2]=\\mathbb{E}[X^2]+\\mathbb{E}[Z^2]$, since independence kills the cross term. This file discharges it axiom-free from Mathlib's probability API, with $X,Z$ merely square-integrable (MemLp · 2), independent, and centered — no Gaussian assumption.",
+    "mathContext": "$Y=X+Z,\\ X\\perp Z,\\ \\mathbb{E}[X]=\\mathbb{E}[Z]=0 \\Rightarrow \\mathbb{E}[Y^2]=\\mathbb{E}[X^2]+\\mathbb{E}[Z^2]=P+N$",
+    "significance": "context",
+    "relatedConcepts": ["AWGN channel", "channel capacity", "variance of a sum", "independence", "second moment"],
+    "prerequisites": ["probability theory", "information theory basics"]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "shannon-channel-coding-awgn-oq-02",
+    "range": { "startLine": 33, "endLine": 39 },
+    "type": "definition",
+    "title": "Probability-Space Setup",
+    "content": "Imports Mathlib and opens MeasureTheory and ProbabilityTheory. The ambient context is an arbitrary measurable space $\\Omega$ with a probability measure $\\mu$ (`IsProbabilityMeasure`). All random variables are real-valued ($\\Omega\\to\\mathbb{R}$), and the notation $\\mu[X]$ denotes the Bochner integral $\\int X\\,d\\mu$ = expectation. Working on an arbitrary probability space (rather than a concrete Gaussian one) is what makes the result fully general.",
+    "mathContext": "$\\mu[X] := \\int_\\Omega X\\,d\\mu = \\mathbb{E}[X]$",
+    "significance": "technical",
+    "relatedConcepts": ["probability measure", "Bochner integral", "expectation", "measurable space"],
+    "prerequisites": ["measure theory"]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "shannon-channel-coding-awgn-oq-02",
+    "range": { "startLine": 41, "endLine": 48 },
+    "type": "technique",
+    "title": "Second Moment = Variance for Centered Variables",
+    "content": "`secondMoment_eq_variance_of_mean_zero`: for square-integrable $X$ with $\\mathbb{E}[X]=0$, the second moment $\\mathbb{E}[X^2]$ equals $\\mathrm{Var}[X]$. The proof rewrites by `variance_eq_sub` ($\\mathrm{Var}[X]=\\mathbb{E}[X^2]-\\mathbb{E}[X]^2$), substitutes $\\mathbb{E}[X]=0$, and closes with `ring`. This is the bridge between the channel's notion of 'power' (the raw second moment $\\mathbb{E}[X^2]$) and Mathlib's `variance` (the centered second moment) — the two coincide exactly under zero mean.",
+    "mathContext": "$\\mathbb{E}[X]=0 \\Rightarrow \\mathbb{E}[X^2]=\\mathrm{Var}[X]$",
+    "significance": "supporting",
+    "relatedConcepts": ["variance_eq_sub", "centered random variable", "power as second moment"],
+    "prerequisites": ["variance definition"]
+  },
+  {
+    "id": "ann-cross-moment",
+    "proofId": "shannon-channel-coding-awgn-oq-02",
+    "range": { "startLine": 50, "endLine": 59 },
+    "type": "insight",
+    "title": "Independence Kills the Cross Moment",
+    "content": "`indep_cross_moment_zero`: for independent centered $X,Z$, the cross moment $\\mathbb{E}[X\\cdot Z]=\\mathbb{E}[X]\\cdot\\mathbb{E}[Z]=0$. The proof applies `IndepFun.integral_mul_eq_mul_integral` (the product rule for independent variables), then substitutes the zero means and `mul_zero`. This is the SINGLE point where independence enters the whole development — everything else is linearity of the integral. Note the `omit [IsProbabilityMeasure μ]` annotation: the statement is purely about an integral of a product, so the probability-measure instance is honestly dropped from the hypotheses.",
+    "mathContext": "$X\\perp Z,\\ \\mathbb{E}[X]=\\mathbb{E}[Z]=0 \\Rightarrow \\mathbb{E}[XZ]=0$",
+    "significance": "key",
+    "relatedConcepts": ["IndepFun.integral_mul_eq_mul_integral", "product rule", "independence", "hypothesis scoping (omit)"],
+    "prerequisites": ["independence of random variables", "product of expectations"]
+  },
+  {
+    "id": "ann-additivity",
+    "proofId": "shannon-channel-coding-awgn-oq-02",
+    "range": { "startLine": 61, "endLine": 80 },
+    "type": "technique",
+    "title": "Second-Moment Additivity via Variance of a Sum",
+    "content": "`awgn_second_moment_sum`: $\\mathbb{E}[(X+Z)^2]=\\mathbb{E}[X^2]+\\mathbb{E}[Z^2]$. The mean of the sum vanishes (`integral_add` on the integrable parts, after `simp [Pi.add_apply]`). Then `IndepFun.variance_add` gives $\\mathrm{Var}[X+Z]=\\mathrm{Var}[X]+\\mathrm{Var}[Z]$; rewriting all three variances by `variance_eq_sub` and substituting the three vanishing means ($X$, $Z$, and $X+Z$) collapses every $\\mathbb{E}[\\cdot]^2$ correction, leaving the second-moment identity. `simpa` finishes. Note: `MemLp.integrable (by norm_num)` supplies integrability from $1\\le 2$.",
+    "mathContext": "$\\mathrm{Var}[X+Z]=\\mathrm{Var}[X]+\\mathrm{Var}[Z] \\xrightarrow{\\text{means}=0} \\mathbb{E}[(X+Z)^2]=\\mathbb{E}[X^2]+\\mathbb{E}[Z^2]$",
+    "significance": "key",
+    "relatedConcepts": ["IndepFun.variance_add", "variance_eq_sub", "integral_add", "MemLp.integrable"],
+    "prerequisites": ["additivity of variance", "linearity of expectation"]
+  },
+  {
+    "id": "ann-output-power",
+    "proofId": "shannon-channel-coding-awgn-oq-02",
+    "range": { "startLine": 82, "endLine": 108 },
+    "type": "insight",
+    "title": "The Output Power E[Y²] = P + N",
+    "content": "`awgn_output_power` is the headline: substituting the named powers $P=\\mathbb{E}[X^2]$, $N=\\mathbb{E}[Z^2]$ into the additivity lemma yields $\\mathbb{E}[(X+Z)^2]=P+N$ — exactly the quantity the parent converse assumes as `hvar`, now derived. `awgn_output_variance` restates it through Mathlib's `variance`: $\\mathrm{Var}[X+Z]=P+N$, obtained by applying the centered second-moment bridge to $X+Z$ (whose mean vanishes). The conceptual payoff: the converse's variance budget $\\le P+N$ is the genuine power accounting of an additive channel, not an external hypothesis, and the identity holds for any additive-noise channel — Gaussianity is needed only for the entropy half of the capacity.",
+    "mathContext": "$\\mathbb{E}[Y^2]=P+N,\\quad \\mathrm{Var}[Y]=P+N\\quad(Y=X+Z)$",
+    "significance": "key",
+    "relatedConcepts": ["output power", "converse hypothesis hvar", "AWGN capacity", "additive-noise channels"],
+    "prerequisites": ["the parent AWGN capacity converse"]
+  }
+]
