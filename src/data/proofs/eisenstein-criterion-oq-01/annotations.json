@@ -3,44 +3,60 @@
     "id": "eisenstein-criterion-oq-01-module-header",
     "proofId": "eisenstein-criterion-oq-01",
     "type": "concept",
-    "range": {
-      "startLine": 1,
-      "endLine": 34
-    },
+    "range": { "startLine": 1, "endLine": 29 },
     "title": "Module Header: Eisenstein's Criterion",
-    "content": "**Eisenstein's criterion** is the most-used elementary irreducibility test. Over an integral domain with a prime ideal $P$, a primitive polynomial $f$ of positive degree is irreducible whenever\n\n- its **leading** coefficient lies *outside* $P$,\n- all **lower** coefficients lie *inside* $P$,\n- its **constant** coefficient lies *outside* $P^2$.\n\nThe archetypal consequence over $\\mathbb{Z}$: $X^n - p$ is irreducible for every prime $p$ and $n \\ge 1$. Taking $P = (p)$, the coefficients $1, 0, \\dots, 0, -p$ satisfy the three conditions, so $\\sqrt[n]{p}$ has minimal polynomial of degree exactly $n$ — algebraic numbers of every degree, on demand."
+    "content": "**Eisenstein's criterion** is the most-used elementary irreducibility test. Over an integral domain with a prime ideal $P$, a primitive polynomial $f$ of positive degree is irreducible whenever\n\n- its **leading** coefficient lies *outside* $P$,\n- all **lower** coefficients lie *inside* $P$,\n- its **constant** coefficient lies *outside* $P^2$.\n\nThe archetypal consequence over $\\mathbb{Z}$: $X^n - p$ is irreducible for every prime $p$ and $n \\ge 1$. Taking $P = (p)$, the coefficients $1, 0, \\dots, 0, -p$ satisfy the three conditions, so $\\sqrt[n]{p}$ has minimal polynomial of degree exactly $n$ — algebraic numbers of every degree, on demand.",
+    "mathContext": "$f$ primitive, $\\deg f > 0$, $f_{\\deg}\\notin P$, $f_k\\in P\\ (k<\\deg)$, $f_0\\notin P^2\\Rightarrow f$ irreducible. Over $\\mathbb{Z}$ with $P=(p)$: $X^n-p$ irreducible.",
+    "significance": "context",
+    "relatedConcepts": ["irreducibility criterion", "prime ideal", "minimal polynomial", "algebraic numbers of every degree"],
+    "prerequisites": ["integral domains", "prime ideals", "primitive polynomials"]
   },
   {
     "id": "eisenstein-criterion-oq-01-general",
     "proofId": "eisenstein-criterion-oq-01",
     "type": "theorem",
-    "range": {
-      "startLine": 38,
-      "endLine": 53
-    },
+    "range": { "startLine": 38, "endLine": 49 },
     "title": "The General Criterion",
-    "content": "`irreducible_of_eisenstein`: the criterion in clean ideal-theoretic form, over a commutative integral domain $R$ with a prime ideal $P$. The hypotheses are named — `hlead` (leading coefficient $\\notin P$), `hlow` (every coefficient below the degree $\\in P$), `hdeg` (positive degree), `hconst` (constant coefficient $\\notin P^2$), `hprim` (primitive) — and the conclusion is `Irreducible f`. It is a direct restatement of Mathlib's `Polynomial.irreducible_of_eisenstein_criterion`, packaged for the application that follows."
+    "content": "`irreducible_of_eisenstein`: the criterion in clean ideal-theoretic form, over a commutative integral domain $R$ with a prime ideal $P$. The hypotheses are named — `hlead` (leading coefficient $\\notin P$), `hlow` (every coefficient below the degree $\\in P$), `hdeg` (positive degree), `hconst` (constant coefficient $\\notin P^2$), `hprim` (primitive) — and the conclusion is `Irreducible f`. It is a direct restatement of Mathlib's `Polynomial.irreducible_of_eisenstein_criterion`, packaged for the application that follows.",
+    "mathContext": "Hypotheses use $\\deg$ in $\\mathrm{WithBot}\\,\\mathbb{N}$; $\\mathrm{hlow}: \\forall k,\\ (k:\\mathrm{WithBot}\\,\\mathbb{N}) < \\deg f \\Rightarrow f_k\\in P$.",
+    "significance": "key",
+    "relatedConcepts": ["irreducible_of_eisenstein_criterion", "ideal-theoretic formulation", "WithBot degree", "Irreducible"],
+    "prerequisites": ["polynomial degree in WithBot ℕ", "ideal membership"]
   },
   {
     "id": "eisenstein-criterion-oq-01-xn-minus-p",
     "proofId": "eisenstein-criterion-oq-01",
-    "type": "theorem",
-    "range": {
-      "startLine": 55,
-      "endLine": 92
-    },
-    "title": "Xⁿ − p Is Irreducible over ℤ",
-    "content": "`irreducible_X_pow_sub_C_prime`: the flagship family. With $P = (p) = $ `Ideal.span {p}` (prime by `Ideal.span_singleton_prime`), the polynomial $X^n - p$ is monic of degree $n$. Its coefficients are computed once,\n$$\\mathrm{coeff}\\,k = [k = n] \\cdot 1 - [k = 0]\\cdot p,$$\nso the five Eisenstein conditions become elementary divisibility facts: the leading $1 \\notin (p)$ (else $p \\mid 1$); each lower coefficient is $0$ or $-p$, both in $(p)$; the degree is $n > 0$; and the constant $-p \\notin (p^2)$ — because $p^2 \\mid p$ would force $p \\mid 1$ after cancelling one factor of $p$ (`mul_dvd_mul_iff_left`). Primitivity comes from `Monic.isPrimitive`."
+    "type": "technique",
+    "range": { "startLine": 55, "endLine": 78 },
+    "title": "Xⁿ − p: setup and coefficient bookkeeping",
+    "content": "`irreducible_X_pow_sub_C_prime`: the flagship family. Take $P = (p) = $ `Ideal.span {p}`, prime by `Ideal.span_singleton_prime`. $X^n - p$ is monic of degree $n$ (`monic_X_pow_sub_C`, `degree_X_pow_sub_C`). The coefficients are computed once via `coeff_sub`/`coeff_X_pow`/`coeff_C`: $\\mathrm{coeff}\\,k = [k=n] - [k=0]\\cdot p$. The five Eisenstein obligations then reduce to elementary facts: leading $1 \\notin (p)$ (else $p\\mid 1$); each lower coefficient ($0$ or $-p$) lies in $(p)$; degree $n > 0$; primitivity from `Monic.isPrimitive`.",
+    "mathContext": "$\\mathrm{coeff}_k(X^n - p) = [k=n]\\cdot 1 - [k=0]\\cdot p$; leading $1\\notin(p)$, lower coeffs $\\in(p)$, $\\deg = n > 0$.",
+    "significance": "key",
+    "relatedConcepts": ["Ideal.span_singleton_prime", "coeff_X_pow", "Monic.isPrimitive", "monic_X_pow_sub_C"],
+    "prerequisites": ["polynomial coefficients", "span of a singleton ideal"]
+  },
+  {
+    "id": "eisenstein-criterion-oq-01-const-p2",
+    "proofId": "eisenstein-criterion-oq-01",
+    "type": "insight",
+    "range": { "startLine": 79, "endLine": 86 },
+    "title": "The crux: constant coefficient −p ∉ (p²)",
+    "content": "The one nontrivial Eisenstein condition. The constant coefficient is $-p$, and $-p \\notin (p^2)$ is exactly the requirement that $p^2 \\nmid p$. Suppose $p^2 \\mid p$; rewriting $p = p\\cdot 1$ gives $p\\cdot p \\mid p\\cdot 1$, and cancelling one factor of $p$ (`mul_dvd_mul_iff_left`, valid since $p \\neq 0$ in the domain) yields $p \\mid 1$, making $p$ a unit — contradicting primality. This is precisely the Eisenstein condition that fails for, e.g., $X^2 - p^2$, which is why the $P^2$ hypothesis cannot be dropped.",
+    "mathContext": "$p^2\\mid p \\Rightarrow p\\cdot p\\mid p\\cdot 1 \\Rightarrow p\\mid 1$ (cancel $p$), contradicting $p$ prime. Hence $-p\\notin(p^2)$.",
+    "significance": "key",
+    "relatedConcepts": ["mul_dvd_mul_iff_left", "square of an ideal", "why P² is necessary", "unit obstruction"],
+    "prerequisites": ["divisibility cancellation in a domain", "Ideal.span_singleton_pow"]
   },
   {
     "id": "eisenstein-criterion-oq-01-instances",
     "proofId": "eisenstein-criterion-oq-01",
-    "type": "theorem",
-    "range": {
-      "startLine": 94,
-      "endLine": 102
-    },
+    "type": "technique",
+    "range": { "startLine": 90, "endLine": 100 },
     "title": "Concrete Instances",
-    "content": "Specializing the family gives `irreducible_X_sq_sub_two` ($X^2 - 2$, the minimal polynomial of $\\sqrt 2$), `irreducible_X_cube_sub_two` ($X^3 - 2$, for $\\sqrt[3]{2}$), and `irreducible_X_pow_five_sub_three` ($X^5 - 3$). Each is a one-line application of `irreducible_X_pow_sub_C_prime` to `Int.prime_two` or `Int.prime_three` with the relevant exponent — concrete witnesses that the criterion runs end-to-end."
+    "content": "Specializing the family gives `irreducible_X_sq_sub_two` ($X^2 - 2$, the minimal polynomial of $\\sqrt 2$), `irreducible_X_cube_sub_two` ($X^3 - 2$, for $\\sqrt[3]{2}$), and `irreducible_X_pow_five_sub_three` ($X^5 - 3$). Each is a one-line application of `irreducible_X_pow_sub_C_prime` to `Int.prime_two` or `Int.prime_three` with the relevant exponent — concrete witnesses that the criterion runs end-to-end and a direct certificate that $\\sqrt 2,\\ \\sqrt[3]{2},\\ \\sqrt[5]{3}$ are algebraic of degrees $2, 3, 5$.",
+    "mathContext": "$X^2-2,\\ X^3-2,\\ X^5-3$ irreducible $\\Rightarrow [\\mathbb{Q}(\\sqrt2):\\mathbb{Q}]=2,\\ [\\mathbb{Q}(\\sqrt[3]2):\\mathbb{Q}]=3,\\ [\\mathbb{Q}(\\sqrt[5]3):\\mathbb{Q}]=5$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Int.prime_two", "Int.prime_three", "minimal polynomial degree", "field extension degree"],
+    "prerequisites": ["primality of small integers", "specialization of a general theorem"]
   }
 ]

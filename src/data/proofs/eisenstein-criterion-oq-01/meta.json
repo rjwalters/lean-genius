@@ -69,6 +69,40 @@
       "Basic divisibility in ℤ: p ∣ 1 ↔ IsUnit p, and cancelling a factor of p (mul_dvd_mul_iff_left)"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Docstring stating Eisenstein's criterion (leading coeff ∉ P, lower coeffs ∈ P, constant coeff ∉ P²) over an integral domain with a prime ideal, and the flagship consequence that Xⁿ − p is irreducible over ℤ for every prime p and n ≥ 1, giving ⁿ√p minimal polynomials of degree n. Fully verified (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "$f_{\\deg}\\notin P,\\ f_k\\in P\\ (k<\\deg),\\ f_0\\notin P^2\\Rightarrow f$ irreducible; over $\\mathbb{Z}$, $X^n-p$ irreducible."
+    },
+    {
+      "id": "sec-general",
+      "title": "Eisenstein's Criterion (General Form)",
+      "startLine": 36,
+      "endLine": 49,
+      "summary": "irreducible_of_eisenstein: the criterion in ideal-theoretic form over a commutative integral domain R with prime ideal P, with named hypotheses (hlead, hlow, hdeg, hconst, hprim). A packaged restatement of Mathlib's irreducible_of_eisenstein_criterion.",
+      "mathContext": "Conclusion $\\mathrm{Irreducible}\\,f$ from the five Eisenstein hypotheses; degree compared in $\\mathrm{WithBot}\\,\\mathbb{N}$."
+    },
+    {
+      "id": "sec-xn",
+      "title": "The Eisenstein Polynomials Xⁿ − p over ℤ",
+      "startLine": 51,
+      "endLine": 86,
+      "summary": "irreducible_X_pow_sub_C_prime: applies the criterion with P = (p). Computes coeff k = [k=n] − [k=0]·p once, then discharges the five conditions — leading 1 ∉ (p), lower coeffs ∈ (p), degree n > 0, primitivity from Monic, and the crux constant coeff −p ∉ (p²) via cancelling a factor of p (mul_dvd_mul_iff_left).",
+      "mathContext": "$\\mathrm{coeff}_k = [k=n] - [k=0]p$; the only subtle condition $-p\\notin(p^2)$ reduces to $p^2\\nmid p$."
+    },
+    {
+      "id": "sec-instances",
+      "title": "Concrete Instances",
+      "startLine": 88,
+      "endLine": 102,
+      "summary": "One-line specializations: irreducible_X_sq_sub_two (X²−2), irreducible_X_cube_sub_two (X³−2), irreducible_X_pow_five_sub_three (X⁵−3), via Int.prime_two / Int.prime_three — certifying √2, ∛2, ⁵√3 algebraic of degrees 2, 3, 5.",
+      "mathContext": "$X^2-2,\\ X^3-2,\\ X^5-3$ irreducible over $\\mathbb{Z}$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "cyclotomic-polynomials-oq-01",
