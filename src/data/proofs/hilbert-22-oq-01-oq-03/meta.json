@@ -19,7 +19,7 @@
     "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 204,
+    "lineCount": 263,
     "assumptions": "0 axioms, 0 sorries. Depends only on Mathlib's foundational axioms (propext, Classical.choice, Quot.sound) — confirmed via #print axioms; no sorryAx, no Lean.ofReduceBool, no native_decide. The atomic-cost symmetry and diagonal-vanishing hypotheses are explicit arguments to the theorems, not structure-encoded assumptions.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
@@ -29,9 +29,13 @@
       "chainCost_reverse: chain reversal preserves cost for symmetric atomic costs — the combinatorial heart of symmetry",
       "chainDist: the abstract Kobayashi chain pseudometric d(p,q) = ⨅ over finite chains of total cost, valued in ℝ≥0∞ (junk-free infima)",
       "chainPseudoEMetricSpace: packages d into a genuine Mathlib PseudoEMetricSpace from a symmetric, diagonal-vanishing atomic cost",
-      "chainDist_mono: functoriality — a cost-contracting map is distance-non-increasing, the order-theoretic shadow of 'holomorphic maps are non-expanding for the Kobayashi metric'"
+      "chainDist_mono: functoriality — a cost-contracting map is distance-non-increasing, the order-theoretic shadow of 'holomorphic maps are non-expanding for the Kobayashi metric'",
+      "chainDist_le_atomic: the chain pseudometric never exceeds the atomic cost (the single-edge chain is admissible) — chainDist c ≤ c",
+      "le_chainDist_of_triangle: the universal property — chainDist c is the GREATEST pseudometric dominated by c; any candidate cost that is edge-wise below c and obeys the triangle inequality lies below chainDist c, characterising the chain construction as the pseudometric coreflection of c",
+      "chainDist_eq_of_triangle: idempotence — if the atomic cost is already subadditive (a pseudometric cost), the chain construction recovers it exactly, chainDist c = c",
+      "chainDist_idem: chainDist (chainDist c) = chainDist c — the closure-operator face of the coreflection"
     ],
-    "theoremCount": 11,
+    "theoremCount": 16,
     "definitionCount": 3
   },
   "overview": {
@@ -44,7 +48,8 @@
       "The triangle inequality is exactly chain concatenation; symmetry is exactly chain reversal; reflexivity is exactly the empty chain. The geometry is faithfully reflected in list operations.",
       "Valuing the infimum in ℝ≥0∞ is essential: the complete-lattice structure gives junk-free infima (an empty chain-set yields ⊤, never a spurious 0) and the dedicated lemmas ENNReal.iInf_add / ENNReal.add_iInf push the two infima of d(p,q)+d(q,r) together cleanly.",
       "Functoriality — the property that makes the Kobayashi metric a holomorphic invariant — is captured abstractly by chainDist_mono: any map contracting the atomic cost is distance-non-increasing. Holomorphic maps contract the disk Poincaré metric (Schwarz–Pick), so this is the exact place the analysis would plug in.",
-      "The construction is honest about its boundary: it assumes nothing about the disk Poincaré metric, Schwarz–Pick, d_𝔻 = ρ, or Picard's theorem — all of which require infrastructure absent from Mathlib 4.26 — and verifies only what follows from the abstract atomic cost."
+      "The construction is honest about its boundary: it assumes nothing about the disk Poincaré metric, Schwarz–Pick, d_𝔻 = ρ, or Picard's theorem — all of which require infrastructure absent from Mathlib 4.26 — and verifies only what follows from the abstract atomic cost.",
+      "The chain construction is not an arbitrary choice but is forced: chainDist c is the GREATEST pseudometric dominated by the atomic cost c (its pseudometric coreflection). chainDist c ≤ c always (the single-edge chain), and any pseudometric below c is below chainDist c (telescoping by the triangle inequality). This universal property is the order-theoretic reason the infimum-over-chains definition is canonical — and it makes chainDist an idempotent closure operator that fixes any cost already subadditive."
     ]
   },
   "sections": [
@@ -84,13 +89,21 @@
       "id": "functoriality",
       "title": "Functoriality — The Defining Invariance",
       "startLine": 181,
-      "endLine": 204,
+      "endLine": 203,
       "summary": "Proves chainDist_mono: a map f with cY (f a) (f b) ≤ cX a b is distance-non-increasing, d_Y(f p, f q) ≤ d_X(p, q), with chainDist_mono_self the endomorphism case. This is the order-theoretic shadow of the holomorphic non-expansion theorem that makes the Kobayashi metric an invariant.",
       "mathContext": "If $f:X\\to Y$ contracts the atomic cost ($c_Y(f a,f b)\\le c_X(a,b)$), then pushing any chain forward by $f$ contracts its cost (\\texttt{chainCost\\_map}), so $d_Y(f p, f q)\\le d_X(p,q)$. Holomorphic maps contract the disk Poincaré metric by Schwarz-Pick, so this abstract lemma is exactly where the analytic input would enter to recover the classical Kobayashi non-expansion."
+    },
+    {
+      "id": "universal-property",
+      "title": "The Universal Property — Pseudometric Coreflection",
+      "startLine": 205,
+      "endLine": 263,
+      "summary": "Proves chainDist_le_atomic (chainDist c ≤ c, the single-edge chain), then the universal property le_chainDist_of_triangle: any candidate cost d that is edge-wise below c and satisfies the triangle inequality lies below chainDist c. Hence chainDist c is the greatest pseudometric dominated by c — its pseudometric coreflection. Corollaries: chainDist_eq_of_triangle (idempotence: chainDist c = c when c is already subadditive) and chainDist_idem (chainDist (chainDist c) = chainDist c).",
+      "mathContext": "Two bounds pin chainDist down. Above: $d(p,q)\\le c\\,p\\,q$ since the empty chain is admissible. Below: for any $d$ with $d\\le c$ edge-wise and $d(p,r)\\le d(p,q)+d(q,r)$, telescoping a chain $p,\\,\\mathit{mid}\\ldots,\\,q$ by repeated triangle steps with each edge bounded under $c$ gives $d(p,q)\\le\\texttt{chainCost}\\;c\\;p\\;\\mathit{mid}\\;q$, so $d(p,q)\\le d(p,q)$ taking the infimum yields $d\\le\\texttt{chainDist}\\;c$. Since chainDist c is itself such a pseudometric, it is the GREATEST one $\\le c$: the pseudometric coreflection. In particular chainDist is an idempotent closure operator, and it fixes any cost that is already subadditive."
     }
   ],
   "conclusion": {
-    "summary": "This entry constructs the abstract Kobayashi chain pseudometric d(p,q) = ⨅ over finite chains of total atomic cost, valued in ℝ≥0∞, and fully machine-verifies its defining structural properties: it is a genuine PseudoEMetricSpace (reflexivity, symmetry, triangle inequality) and it is functorial — distance-non-increasing under any map contracting the atomic cost. These are exactly properties (1)–(2) of the Kobayashi pseudometric that the parent hilbert-22-oq-01 entry described only informally. The proof is entirely order-theoretic and combinatorial, depends only on Mathlib's foundational axioms (no sorries, no extra axioms, no native_decide), and isolates precisely where complex analysis would enter.",
+    "summary": "This entry constructs the abstract Kobayashi chain pseudometric d(p,q) = ⨅ over finite chains of total atomic cost, valued in ℝ≥0∞, and fully machine-verifies its defining structural properties: it is a genuine PseudoEMetricSpace (reflexivity, symmetry, triangle inequality), it is functorial — distance-non-increasing under any map contracting the atomic cost — and it satisfies a universal property: it is the GREATEST pseudometric dominated by the atomic cost (its pseudometric coreflection), hence an idempotent closure operator that recovers any already-subadditive cost exactly. These cover and extend properties (1)–(2) of the Kobayashi pseudometric that the parent hilbert-22-oq-01 entry described only informally. The proof is entirely order-theoretic and combinatorial, depends only on Mathlib's foundational axioms (no sorries, no extra axioms, no native_decide), and isolates precisely where complex analysis would enter.",
     "implications": "The skeleton is reusable: instantiating the atomic cost c with the unit-disk Poincaré/pseudohyperbolic distance would yield the genuine Kobayashi pseudometric, and chainDist_mono would then specialise — via Schwarz–Pick — to the classical theorem that holomorphic maps are non-expanding, the source of the metric's holomorphic invariance. The functoriality lemma marks the exact interface for that analytic input. Building chainDist over ℝ≥0∞ also makes it immediately compatible with Mathlib's PseudoEMetricSpace API.",
     "openQuestions": [
       "Formalize the unit-disk Poincaré / pseudohyperbolic metric and the two-point Schwarz–Pick contraction in Mathlib, then instantiate chainPseudoEMetricSpace to obtain the genuine Kobayashi pseudometric d_𝔻 and prove d_𝔻 = ρ.",
@@ -115,9 +128,9 @@
       "Mathlib"
     ],
     "namespace": "Hilbert22OQ01OQ03",
-    "lineCount": 204,
+    "lineCount": 263,
     "axiomCount": 0,
-    "theoremCount": 11,
+    "theoremCount": 16,
     "definitionCount": 3,
     "path": "Proofs/Hilbert22OQ01OQ03.lean",
     "sorries": 0

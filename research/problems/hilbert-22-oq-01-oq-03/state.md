@@ -4,12 +4,20 @@
 **Phase**: DELIVERED (partial)
 **Path**: full
 **Since**: 2026-06-25T08:41:59-07:00
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
-Item 1 of the Session-1 decomposition is DONE and machine-verified: the abstract
-Kobayashi chain pseudometric skeleton (`Proofs/Hilbert22OQ01OQ03.lean`, 204 lines,
-0 sorries, 0 axioms, only foundational propext/Classical.choice/Quot.sound).
+Item 1 + the universal-property layer are DONE and machine-verified: the abstract
+Kobayashi chain pseudometric skeleton (`Proofs/Hilbert22OQ01OQ03.lean`, now 263
+lines, 16 theorems, 0 sorries, 0 axioms, only foundational
+propext/Classical.choice/Quot.sound).
+
+Session-3 addition (verified, EXIT 0 + `#print axioms` clean): `chainDist c` is the
+**pseudometric coreflection** of the atomic cost `c` — `chainDist_le_atomic`
+(`chainDist c ≤ c`), `le_chainDist_of_triangle` (greatest pseudometric ≤ c via
+telescoping), `chainDist_eq_of_triangle` (idempotent recovery of subadditive
+costs), `chainDist_idem`. This is the order-theoretic proof that the
+infimum-over-chains definition is canonical/forced, not chosen.
 
 ## Active Approach
 Abstract the one-disk Poincaré distance to a symmetric atomic cost
@@ -19,8 +27,8 @@ prove the pseudometric axioms (reflexivity/symmetry/triangle) and functoriality
 infimum arithmetic. Verified via `lake env lean` (EXIT 0) and `#print axioms`.
 
 ## Attempt Count
-- Total attempts: 1
-- Current approach attempts: 1 (succeeded)
+- Total attempts: 2
+- Current approach attempts: 2 (both succeeded)
 - Approaches tried: 1
 
 ## Blockers
