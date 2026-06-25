@@ -24,9 +24,11 @@
     term vanishes, so the `range (n+1)` and `Icc 1 n` sums agree).
 -/
 
-import Mathlib
+import Mathlib.Data.Nat.Factorial.Basic
+import Mathlib.Algebra.BigOperators.Intervals
+import Mathlib.Tactic
 
-open Finset
+open Finset Nat
 
 namespace FactorialTelescopingSum
 
@@ -41,12 +43,12 @@ theorem sum_mul_factorial_add_one (n : ℕ) :
   induction n with
   | zero => simp
   | succ n ih =>
-      rw [Finset.sum_range_succ]
-      -- Regroup so the inductive hypothesis `(∑) + 1 = (n+1)!` applies.
-      have key : (∑ k ∈ range (n + 1), k * k !) + (n + 1) * (n + 1)! + 1
-          = ((∑ k ∈ range (n + 1), k * k !) + 1) + (n + 1) * (n + 1)! := by ring
-      rw [key, ih, Nat.factorial_succ (n + 1)]
-      ring
+      rw [Finset.sum_range_succ, Nat.factorial_succ (n + 1)]
+      -- Expand `(n+2)·(n+1)!` so the goal becomes linear in the atoms
+      -- `∑`, `(n+1)!`, and `(n+1)·(n+1)!`; then `omega` closes it using `ih`.
+      have hexp : (n + 1 + 1) * (n + 1)! = (n + 1)! + (n + 1) * (n + 1)! := by ring
+      rw [hexp]
+      omega
 
 /-- **Headline identity (ℕ-subtraction form).**  `∑_{k=0}^{n} k·k! = (n+1)! − 1`.
 
@@ -75,8 +77,7 @@ theorem sum_Icc_mul_factorial (n : ℕ) :
 
 /-- Pointwise telescoping identity behind the proof: `k·k! = (k+1)! − k!`. -/
 theorem mul_factorial_eq (k : ℕ) : k * k ! = (k + 1)! - k ! := by
-  rw [Nat.factorial_succ]
-  have : k ! ≤ (k + 1) * k ! := Nat.le_mul_of_pos_left _ (by omega)
+  rw [Nat.factorial_succ, add_one_mul]
   omega
 
 -- Sanity checks (small concrete values).
