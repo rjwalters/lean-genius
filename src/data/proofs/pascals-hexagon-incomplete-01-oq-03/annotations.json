@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-anisotropic-isotropic",
+    "proofId": "pascals-hexagon-incomplete-01-oq-03",
+    "range": { "startLine": 3, "endLine": 36 },
+    "type": "context",
+    "title": "Anisotropic vs Isotropic: Why No Equivalence Can Exist",
+    "content": "The docstring frames the obstruction in the language of Sylvester's law of inertia. A non-degenerate real ternary quadratic form is, up to projective equivalence, either definite (signature (3,0) — vanishing only at the origin) or indefinite (signature (2,1) — the standard conic, with a whole cone of real zeros). A determinant-nonzero matrix is a linear bijection of ℝ³, so it carries zeros to zeros bijectively; it can never match a form whose zero set is a single point against one whose zero set is a cone. The parent proved this for the single witness diag(1,1,1); OQ-03 asks for it across the entire positive-definite cone, which is what this file delivers.",
+    "mathContext": "Definite (zero set $=\\{0\\}$) vs isotropic (zero set a cone): no $M\\in GL_3(\\mathbb{R})$ intertwines them.",
+    "significance": "context",
+    "relatedConcepts": ["Sylvester's law of inertia", "signature of a quadratic form", "anisotropic form", "projective equivalence"],
+    "prerequisites": ["quadratic forms", "projective geometry", "Pascal's hexagon theorem"]
+  },
+  {
+    "id": "ann-conic-api",
+    "proofId": "pascals-hexagon-incomplete-01-oq-03",
+    "range": { "startLine": 48, "endLine": 67 },
+    "type": "definition",
+    "title": "The Minimal Conic API",
+    "content": "A self-contained conic vocabulary (reproduced locally because the shared PascalsHexagon.lean is bit-rotted): ProjPoint = Fin 3 → ℝ, Conic = a 3×3 real matrix, conicQuadraticForm C p = ∑ᵢⱼ Cᵢⱼ pᵢ pⱼ (the form pᵀCp), pointOnConic p C := the form vanishes, stdConic = diag(1,1,−1) (i.e. x₀²+x₁²−x₂²=0), projTransform M p = M.mulVec p (projective action by an invertible matrix), and isotropicPoint = (1,0,1). These mirror the parent's definitions exactly so that the OQ-03 generalization slots into the same framework.",
+    "mathContext": "$Q_C(p)=\\sum_{i,j} C_{ij} p_i p_j,\\quad \\mathrm{stdConic}=\\mathrm{diag}(1,1,-1),\\quad p\\mapsto Mp.$",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetric matrices", "quadratic form pᵀCp", "homogeneous coordinates", "diagonal conic"],
+    "prerequisites": ["matrices over ℝ", "matrix-vector multiplication"]
+  },
+  {
+    "id": "ann-bridge-dotproduct",
+    "proofId": "pascals-hexagon-incomplete-01-oq-03",
+    "range": { "startLine": 80, "endLine": 87 },
+    "type": "technique",
+    "title": "Bridge: The File-Local Form IS p ⬝ᵥ (C *ᵥ p)",
+    "content": "conicQuadraticForm_eq_dotProduct identifies the ad-hoc double sum ∑ᵢⱼ Cᵢⱼ pᵢ pⱼ with the bilinear expression p ⬝ᵥ (C *ᵥ p) that appears in Mathlib's Matrix.PosDef. The proof unfolds dotProduct and mulVec, distributes with Finset.mul_sum, and matches the summands termwise (sum_congr twice, then ring). This one lemma is what lets the entire Mathlib positive-definite-matrix API apply verbatim to the file's hand-rolled conic form — without it, the bespoke definition and the library infrastructure would never connect.",
+    "mathContext": "$\\sum_{i,j} C_{ij} p_i p_j = p \\cdot (C\\,p) = p^{\\mathsf T} C p.$",
+    "significance": "key",
+    "relatedConcepts": ["dot product", "matrix-vector product", "bilinear forms", "Finset.mul_sum", "API bridging"],
+    "prerequisites": ["double summation", "distributivity over finite sums"]
+  },
+  {
+    "id": "ann-posdef-trivial-zero",
+    "proofId": "pascals-hexagon-incomplete-01-oq-03",
+    "range": { "startLine": 89, "endLine": 103 },
+    "type": "insight",
+    "title": "A Positive-Definite Conic Vanishes Only at the Origin",
+    "content": "pointOnConic_posDef_iff is the anisotropy lemma: for C positive definite, p lies on C iff p = 0. The forward direction is by contradiction — if p ≠ 0, Matrix.PosDef.dotProduct_mulVec_pos gives 0 < star p ⬝ᵥ (C *ᵥ p); over ℝ star p = p (complex conjugation is the identity), so 0 < p ⬝ᵥ (C *ᵥ p), contradicting the vanishing hypothesis. The reverse direction is trivial (the form is 0 at 0). This converts positive-definiteness into the geometric statement that the conic's real zero set is exactly {0}.",
+    "mathContext": "$C \\succ 0 \\Rightarrow (p^{\\mathsf T} C p = 0 \\iff p = 0)$; over $\\mathbb{R}$, $\\mathrm{star}\\,p = p$.",
+    "significance": "key",
+    "relatedConcepts": ["positive-definite matrices", "anisotropy", "Matrix.PosDef.dotProduct_mulVec_pos", "proof by contradiction", "real star ring"],
+    "prerequisites": ["positive-definiteness", "star/conjugation on ℝ"]
+  },
+  {
+    "id": "ann-main-contradiction",
+    "proofId": "pascals-hexagon-incomplete-01-oq-03",
+    "range": { "startLine": 105, "endLine": 128 },
+    "type": "insight",
+    "title": "The Pullback Contradiction",
+    "content": "posDef_not_projEquiv_stdConic assumes a determinant-nonzero M intertwining the two on-conic predicates and derives a contradiction. Take stdConic's nonzero point q = (1,0,1) and form its preimage p = M⁻¹·q; then projTransform M p = (M·M⁻¹)·q = q via Matrix.mul_nonsing_inv (using IsUnit M.det from M.det ≠ 0), Matrix.mulVec_mulVec, and Matrix.one_mulVec. The intertwining hypothesis turns q ∈ stdConic into p ∈ C, so pointOnConic_posDef_iff forces p = 0 — but then q = M·0 = 0, contradicting q ≠ 0. The invertibility of M is essential: it is exactly what guarantees the preimage exists and transports back faithfully.",
+    "mathContext": "$p=M^{-1}q,\\ Mp=q\\in\\mathrm{stdConic}\\Rightarrow p\\in C\\Rightarrow p=0\\Rightarrow q=M0=0,\\ \\bot.$",
+    "significance": "key",
+    "relatedConcepts": ["nonsingular inverse", "preimage under invertible map", "contradiction", "isotropic point", "intertwining predicates"],
+    "prerequisites": ["invertible matrices", "matrix inverse identities"]
+  },
+  {
+    "id": "ann-recover-parent",
+    "proofId": "pascals-hexagon-incomplete-01-oq-03",
+    "range": { "startLine": 130, "endLine": 135 },
+    "type": "concept",
+    "title": "The Parent's Witness as a Special Case",
+    "content": "one_not_projEquiv_stdConic recovers the parent entry's diag(1,1,1) theorem in one line: apply posDef_not_projEquiv_stdConic to Matrix.PosDef.one (the identity matrix is positive definite). This exhibits the parent's single concrete witness not as an isolated computation but as one point of a uniform phenomenon spanning the whole positive-definite cone — the hallmark of a successful generalization, where the original result drops out by instantiation rather than re-proof.",
+    "mathContext": "$\\mathrm{diag}(1,1,1)=I \\succ 0 \\Rightarrow I \\not\\sim_{\\mathrm{proj}} \\mathrm{stdConic}$, a corollary of the general theorem.",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "Matrix.PosDef.one", "generalization", "identity conic"],
+    "prerequisites": ["the general theorem above"]
+  }
+]
