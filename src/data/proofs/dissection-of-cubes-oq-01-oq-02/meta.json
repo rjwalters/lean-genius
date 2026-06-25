@@ -90,6 +90,40 @@
    "DissectionOfCubesOQ01OQ01 (achievability witness, cube constructions)"
   ]
  },
+ "sections": [
+  {
+   "id": "sec-docstring",
+   "title": "Question, Answer, and Caveat",
+   "startLine": 7,
+   "endLine": 48,
+   "summary": "Docstring framing the parent OQ-01 item 2 (the actual minimum of collidingCubes.card), stating the answer 2 as IsLeast, naming the lower-bound and achievability ingredients, promising a third witness for nontriviality, and recording the combinatorial caveat that covers_unit_cube is the True placeholder so the lower-bound half inherits one base axiom.",
+   "mathContext": "$\\min\\{|\\mathrm{collidingCubes}(d)|\\} = 2$, i.e. $\\mathrm{IsLeast}\\;\\mathrm{collisionSpectrum}\\;2$."
+  },
+  {
+   "id": "sec-spectrum",
+   "title": "The Collision Spectrum",
+   "startLine": 56,
+   "endLine": 73,
+   "summary": "Defines collisionSpectrum := { n | ∃ nonempty dissection with collidingCubes.card = n }. Proves 2 ∈ spectrum via the OQ-01-OQ-01 achievability witness, and that every spectrum element is ≥ 2 via the OQ-01 lower bound at_least_two_colliding_cubes.",
+   "mathContext": "$\\mathrm{collisionSpectrum} = \\{n \\mid \\exists d,\\ d.\\mathrm{cubes}\\ne\\emptyset \\wedge |\\mathrm{collidingCubes}(d)| = n\\}$."
+  },
+  {
+   "id": "sec-minimum",
+   "title": "The Minimum is Exactly 2",
+   "startLine": 75,
+   "endLine": 111,
+   "summary": "isLeast_collisionSpectrum = ⟨membership, lower bound⟩; sInf_collisionSpectrum via IsLeast.csInf_eq; minimum_collision_count_is_two as the bare attainable+bounded form; zero_not_mem and one_not_mem ruling out 0 and 1 by omega against the ≥ 2 bound.",
+   "mathContext": "$\\mathrm{IsLeast}\\;S\\;2 \\equiv (2\\in S)\\wedge(\\forall x\\in S,\\ 2\\le x) \\Rightarrow \\inf S = 2$; $0,1 \\notin S$."
+  },
+  {
+   "id": "sec-third-witness",
+   "title": "A Third Witness — The Spectrum is Nontrivial",
+   "startLine": 113,
+   "endLine": 263,
+   "summary": "Adds cubeD at (1/4,0,0) side 1/4 between cubeA and cubeB, with containment, distinctness and interior-disjointness lemmas; assembles triDissection = {A,B,D}; shows all three collide (equal size 1/4), computes card = 3 via card_insert_of_not_mem + card_pair, gives 3 ∈ collisionSpectrum, and concludes collisionSpectrum_nontrivial: {2,3} ⊆ spectrum with 2 least.",
+   "mathContext": "Three cubes of side $1/4$ at $x=0,\\tfrac14,\\tfrac12$ all collide $\\Rightarrow |\\mathrm{collidingCubes}|=3$, so $\\{2,3\\}\\subseteq\\mathrm{collisionSpectrum}$."
+  }
+ ],
  "conclusion": {
   "summary": "The minimum collision number over all nonempty (combinatorial) cube dissections is exactly 2: IsLeast collisionSpectrum 2, equivalently sInf collisionSpectrum = 2. Neither 0 nor 1 is attainable. A second three-cube construction shows 3 is also attainable, so 2 is the genuine bottom of a nontrivial spectrum rather than its only value.",
   "implications": "**Sharp answer to OQ-01 item 2**: the parent left the minimum collidingCubes.card open with only a lower bound of 2; combining the sibling achievability result yields the exact value via the canonical IsLeast/sInf packaging. **Combinatorial vs geometric**: the achievability half is fully axiom-free, isolating the single inherited base axiom (all_different_implies_long_chains_axiom) as the only place where the unformalized 3D covering argument enters. The genuine geometric minimum — whether Littlewood's cascade forces strictly more than 2 once covers_unit_cube is replaced by a real covering predicate — remains open.",

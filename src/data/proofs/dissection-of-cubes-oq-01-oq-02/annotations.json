@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 7, "endLine": 48 },
+    "type": "context",
+    "title": "Question, answer, and the combinatorial caveat",
+    "content": "The docstring frames the parent's second open question — the actual minimum of collidingCubes.card — and answers it: exactly 2, as an IsLeast statement. It records the two ingredients (the OQ-01 lower bound ≥ 2 and the OQ-01-OQ-01 achievability witness = 2), promises a third three-cube witness to show the spectrum is nontrivial, and states the honesty caveat: because CubeDissection carries `covers_unit_cube : True` as a placeholder for the real 3D tiling constraint, every result is about the COMBINATORIAL model (containment + interior-disjointness), and the lower-bound half inherits one base axiom.",
+    "mathContext": "Goal: $\\min \\{\\,|\\mathrm{collidingCubes}(d)| : d \\text{ nonempty}\\,\\} = 2$, i.e. $\\mathrm{IsLeast}\\;\\mathrm{collisionSpectrum}\\;2$.",
+    "significance": "context",
+    "relatedConcepts": ["squaring the square", "Wiedijk #82", "combinatorial vs geometric model", "interior-disjointness"],
+    "prerequisites": ["cube dissection model", "Littlewood cascade argument"]
+  },
+  {
+    "id": "ann-spectrum-def",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 60, "endLine": 64 },
+    "type": "definition",
+    "title": "The collision spectrum",
+    "content": "Defines collisionSpectrum ⊆ ℕ as the set of collision counts realized by some nonempty cube dissection. Phrasing the 'set of attainable values' as an explicit subset of ℕ is the move that lets the minimum be expressed order-theoretically as a least element / infimum, rather than as an ad-hoc pair of inequalities.",
+    "mathContext": "$\\mathrm{collisionSpectrum} = \\{\\, n \\mid \\exists d,\\ d.\\mathrm{cubes} \\ne \\emptyset \\wedge |\\mathrm{collidingCubes}(d)| = n \\,\\}$.",
+    "significance": "key",
+    "relatedConcepts": ["attainable set", "subset of ℕ", "extremal combinatorics"],
+    "prerequisites": ["set-builder notation", "Finset cardinality"]
+  },
+  {
+    "id": "ann-membership-lower",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 73 },
+    "type": "technique",
+    "title": "2 is attained; every value is ≥ 2",
+    "content": "Two halves of the IsLeast claim. `two_mem_collisionSpectrum` packages the sibling achievability witness (exampleDissection of OQ-01-OQ-01) as a spectrum membership. `collisionSpectrum_lower_bound` destructs an arbitrary spectrum element with `rintro ⟨d, hne, rfl⟩` and applies the OQ-01 base lemma `at_least_two_colliding_cubes`. The `rfl` pattern substitutes n by the actual card, so the goal becomes the lower bound directly.",
+    "mathContext": "$2 \\in \\mathrm{collisionSpectrum}$ via the explicit witness; $\\forall n \\in \\mathrm{collisionSpectrum},\\ 2 \\le n$ via $|\\mathrm{collidingCubes}(d)| \\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["lower bound", "existential witness", "rintro destructuring"],
+    "prerequisites": ["at_least_two_colliding_cubes (OQ-01)", "achievability witness (OQ-01-OQ-01)"]
+  },
+  {
+    "id": "ann-isleast",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 79, "endLine": 99 },
+    "type": "insight",
+    "title": "The minimum is exactly 2 — IsLeast and sInf",
+    "content": "The headline. `isLeast_collisionSpectrum` is just the pair ⟨membership, lower bound⟩ — the literal definition of IsLeast (the value lies in the set and bounds it below). `sInf_collisionSpectrum` then converts the least element into the infimum via `IsLeast.csInf_eq`, valid because ℕ is a conditionally complete lattice. `minimum_collision_count_is_two` restates the same content without the order-theory vocabulary — useful for readers who want the bare 'attainable + bounded' form.",
+    "mathContext": "$\\mathrm{IsLeast}\\;S\\;2 \\equiv (2 \\in S) \\wedge (\\forall x \\in S,\\ 2 \\le x)$; hence $\\inf S = 2$.",
+    "significance": "key",
+    "relatedConcepts": ["IsLeast", "infimum", "conditionally complete lattice", "least element"],
+    "prerequisites": ["order theory", "sInf in ℕ"]
+  },
+  {
+    "id": "ann-exclusions",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 101, "endLine": 111 },
+    "type": "technique",
+    "title": "0 and 1 are impossible",
+    "content": "Corollaries that 0 and 1 are not in the spectrum: assume membership, derive the ≥ 2 lower bound for that value, and let `omega` close the arithmetic contradiction (0 ≥ 2 and 1 ≥ 2 are both false). This makes the sharpness of the minimum explicit — collisions genuinely come in pairs, so a single colliding cube can never occur.",
+    "mathContext": "$0 \\notin S$ and $1 \\notin S$ because $n \\in S \\Rightarrow n \\ge 2$, contradicting $n \\in \\{0,1\\}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["proof by contradiction", "omega", "sharpness"],
+    "prerequisites": ["linear arithmetic over ℕ"]
+  },
+  {
+    "id": "ann-cubeD-construction",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 128, "endLine": 194 },
+    "type": "definition",
+    "title": "A third cube: building the three-cube dissection",
+    "content": "To prove the spectrum is more than the singleton {2}, a new cube `cubeD` at (1/4,0,0) with side 1/4 is dropped between the existing cubeA (x=0) and cubeB (x=1/2). The block establishes its containment, distinctness (differing x-coordinates), and pairwise interior-disjointness — boundary-touching is allowed, so A|D meet at x=1/4 and D|B at x=1/2 without overlapping interiors. `triDissection` then assembles {A,B,D} into a valid CubeDissection, discharging `covers_unit_cube` trivially since it is the `True` placeholder.",
+    "mathContext": "Three equal cubes of side $1/4$ at $x = 0, \\tfrac14, \\tfrac12$: $A.x + A.\\mathrm{side} = \\tfrac14 \\le D.x$ and $D.x + D.\\mathrm{side} = \\tfrac12 \\le B.x$ give interior-disjointness.",
+    "significance": "supporting",
+    "relatedConcepts": ["explicit construction", "interior-disjointness", "boundary touching", "structure instance"],
+    "prerequisites": ["Cube/CubeDissection definitions", "norm_num"]
+  },
+  {
+    "id": "ann-three-collisions",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 206, "endLine": 250 },
+    "type": "technique",
+    "title": "All three collide ⟹ card 3 ⟹ 3 in the spectrum",
+    "content": "Each of A, B, D has an equal-size (1/4) partner among the others, so all three lie in collidingCubes (via the filter characterization `mem_collidingCubes_tri_iff`). `colliding_eq_tri` proves collidingCubes triDissection = {A,B,D} by antisymmetric subset inclusion, and `tri_has_three_collisions` computes the cardinality 3 using `Finset.card_insert_of_not_mem` + `Finset.card_pair` (the distinctness lemmas feed the not-mem side conditions). `three_mem_collisionSpectrum` then witnesses 3 ∈ spectrum.",
+    "mathContext": "$\\mathrm{collidingCubes}(\\mathrm{triDissection}) = \\{A,B,D\\}$, $|\\{A,B,D\\}| = 3$ (all distinct), so $3 \\in \\mathrm{collisionSpectrum}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.card_insert_of_not_mem", "Finset.card_pair", "antisymmetry of subset", "filter membership"],
+    "prerequisites": ["Finset cardinality", "collidingCubes filter definition"]
+  },
+  {
+    "id": "ann-nontrivial",
+    "proofId": "dissection-of-cubes-oq-01-oq-02",
+    "range": { "startLine": 252, "endLine": 261 },
+    "type": "insight",
+    "title": "2 is the bottom of a genuine spectrum",
+    "content": "The closing theorem combines everything: {2,3} ⊆ collisionSpectrum AND IsLeast collisionSpectrum 2. This certifies that 2 is not the only attainable value — it is the genuine minimum of a set that also contains 3 — so the 'minimum is 2' result is a real extremal boundary rather than a degenerate single-point set. The first open question (whether every n ≥ 2 is attainable) is left for future work.",
+    "mathContext": "$\\{2,3\\} \\subseteq \\mathrm{collisionSpectrum} \\wedge \\mathrm{IsLeast}\\;\\mathrm{collisionSpectrum}\\;2$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal value", "nontrivial spectrum", "subset inclusion"],
+    "prerequisites": ["IsLeast", "set membership"]
+  }
+]
