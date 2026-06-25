@@ -3,32 +3,48 @@
     "id": "ann-fiboq0301-1",
     "proofId": "fibonacci-identities-oq-03-oq-01",
     "range": { "startLine": 3, "endLine": 33 },
-    "type": "context",
+    "type": "concept",
     "title": "Iterating the Doubling to Reach 4n+3",
-    "content": "**Module framing.** The parent entry records the odd fast-doubling identity $F_{2n+1} = F_{n+1}^2 + F_n^2$ (a sum of two squares) and the even one $F_{2n+2} = F_{n+1}(2F_n + F_{n+1})$ (product form). This entry **iterates the doubling**: writing $4n+3 = 2(2n+1)+1$, the odd-doubling identity applied at index $2n+1$ gives $F_{4n+3} = F_{2n+2}^2 + F_{2n+1}^2$, and substituting the parent identities for the inner terms yields a closed sum of two squares in the base values $F_n, F_{n+1}$. This answers the parent's first open question."
+    "content": "**Module framing.** The parent entry records the odd fast-doubling identity $F_{2n+1} = F_{n+1}^2 + F_n^2$ (a sum of two squares) and the even one $F_{2n+2} = F_{n+1}(2F_n + F_{n+1})$ (product form). This entry **iterates the doubling**: writing $4n+3 = 2(2n+1)+1$, the odd-doubling identity applied at index $2n+1$ gives $F_{4n+3} = F_{2n+2}^2 + F_{2n+1}^2$, and substituting the parent identities for the inner terms yields a closed sum of two squares in the base values $F_n, F_{n+1}$. This answers the parent's first open question.",
+    "mathContext": "$4n+3 = 2(2n+1)+1 \\;\\Rightarrow\\; F_{4n+3} = F_{2n+2}^2 + F_{2n+1}^2$.",
+    "significance": "key",
+    "relatedConcepts": ["fast-doubling identities", "sum of two squares", "index recurrence", "Fibonacci numbers"],
+    "prerequisites": ["Fibonacci recurrence", "elementary number theory"]
   },
   {
     "id": "ann-fiboq0301-2",
     "proofId": "fibonacci-identities-oq-03-oq-01",
     "range": { "startLine": 38, "endLine": 46 },
-    "type": "key-step",
+    "type": "theorem",
     "title": "Outer Layer: F(4n+3) = F(2n+2)² + F(2n+1)²",
-    "content": "**The only doubling ingredient.** Applying `Nat.fib_two_mul_add_one` at index $2n+1$ turns $F_{2(2n+1)+1}$ into $F_{(2n+1)+1}^2 + F_{2n+1}^2$. The two index identities $2(2n+1)+1 = 4n+3$ and $(2n+1)+1 = 2n+2$ are pure arithmetic, discharged by `ring` and rewritten into the matched form. The even term $F_{2n+2}$ appears only as the base of an outer square, so no difference-of-squares step is needed and the result stays an honest sum of two squares — unlike the parent's even identity it never leaves $\\mathbb{N}$."
+    "content": "**The only doubling ingredient.** Applying `Nat.fib_two_mul_add_one` at index $2n+1$ turns $F_{2(2n+1)+1}$ into $F_{(2n+1)+1}^2 + F_{2n+1}^2$. The two index identities $2(2n+1)+1 = 4n+3$ and $(2n+1)+1 = 2n+2$ are pure arithmetic, discharged by `ring` and rewritten into the matched form. The even term $F_{2n+2}$ appears only as the base of an outer square, so no difference-of-squares step is needed and the result stays an honest sum of two squares — unlike the parent's even identity it never leaves $\\mathbb{N}$.",
+    "mathContext": "$F_{4n+3} = F_{2n+2}^2 + F_{2n+1}^2$, with $F_{2n+2}$ entering only as a squared base — no truncated subtraction.",
+    "significance": "critical",
+    "relatedConcepts": ["odd doubling identity", "ring tactic", "index normalization", "natural-number arithmetic"],
+    "prerequisites": ["Nat.fib_two_mul_add_one", "rewriting in Lean"]
   },
   {
     "id": "ann-fiboq0301-3",
     "proofId": "fibonacci-identities-oq-03-oq-01",
     "range": { "startLine": 53, "endLine": 57 },
-    "type": "key-step",
+    "type": "theorem",
     "title": "Inner Layer: Closed Form in F(n), F(n+1)",
-    "content": "**Substitute and you are done.** A single `rw` chain replaces $F_{2n+2}$ by `Nat.fib_two_mul_add_two` ($= F_{n+1}(2F_n+F_{n+1})$) and $F_{2n+1}$ by `Nat.fib_two_mul_add_one` ($= F_{n+1}^2+F_n^2$), giving $F_{4n+3} = (F_{n+1}(2F_n+F_{n+1}))^2 + (F_{n+1}^2+F_n^2)^2$. With $a = F_n$, $b = F_{n+1}$ this is $(b(2a+b))^2 + (b^2+a^2)^2$ — a fully explicit sum of two squares, not merely an existence claim."
+    "content": "**Substitute and you are done.** A single `rw` chain replaces $F_{2n+2}$ by `Nat.fib_two_mul_add_two` ($= F_{n+1}(2F_n+F_{n+1})$) and $F_{2n+1}$ by `Nat.fib_two_mul_add_one` ($= F_{n+1}^2+F_n^2$), giving $F_{4n+3} = (F_{n+1}(2F_n+F_{n+1}))^2 + (F_{n+1}^2+F_n^2)^2$. With $a = F_n$, $b = F_{n+1}$ this is $(b(2a+b))^2 + (b^2+a^2)^2$ — a fully explicit sum of two squares, not merely an existence claim.",
+    "mathContext": "$F_{4n+3} = (b(2a+b))^2 + (b^2+a^2)^2$ where $a=F_n,\\ b=F_{n+1}$.",
+    "significance": "key",
+    "relatedConcepts": ["substitution", "closed form", "polynomial in base values", "even doubling identity"],
+    "prerequisites": ["Nat.fib_two_mul_add_two", "algebraic substitution"]
   },
   {
     "id": "ann-fiboq0301-4",
     "proofId": "fibonacci-identities-oq-03-oq-01",
     "range": { "startLine": 61, "endLine": 74 },
-    "type": "key-step",
+    "type": "theorem",
     "title": "Existential and Integer Forms",
-    "content": "**Packaging.** `fib_four_mul_add_three_isSumSq` gives $\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$ over $\\mathbb{N}$ with the explicit witnesses; `fib_four_mul_add_three_iterated_int` casts the decomposition to $\\mathbb{Z}$. The three `decide` checks that follow ($F_3=2$, $F_7=13$, $F_{11}=89$) confirm the $n=0,1,2$ instances by kernel reduction — `decide`, not `native_decide`, so no `Lean.ofReduceBool` and the entry stays 0-axiom."
+    "content": "**Packaging.** `fib_four_mul_add_three_isSumSq` gives $\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$ over $\\mathbb{N}$ with the explicit witnesses; `fib_four_mul_add_three_iterated_int` casts the decomposition to $\\mathbb{Z}$. The three `decide` checks that follow ($F_3=2$, $F_7=13$, $F_{11}=89$) confirm the $n=0,1,2$ instances by kernel reduction — `decide`, not `native_decide`, so no `Lean.ofReduceBool` and the entry stays 0-axiom.",
+    "mathContext": "$\\exists a\\,b,\\ F_{4n+3} = a^2 + b^2$; integer form via `exact_mod_cast`. Checks: $F_3=2,\\ F_7=13,\\ F_{11}=89$.",
+    "significance": "supporting",
+    "relatedConcepts": ["existential quantifier", "ℕ→ℤ cast", "decide vs native_decide", "axiom hygiene"],
+    "prerequisites": ["exact_mod_cast", "kernel reduction (decide)"]
   }
 ]
