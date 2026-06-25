@@ -1,0 +1,114 @@
+{
+  "id": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+  "title": "The Zolotarev Reciprocity Headline — the Legendre Product IS the Grid-Transpose Sign",
+  "slug": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+  "description": "Milestone 2 of the parent's permutation-sign (Zolotarev) route to quadratic reciprocity ended with sign_gridTranspose: the grid-transpose permutation of Fin (p*q) has sign (-1)^((p-1)/2 · (q-1)/2), computed from first principles via its inversion count C(p,2)·C(q,2). That sign is purely combinatorial and primality-free. This follow-up supplies the capstone the parent's open questions flagged as 'not yet in Lean': for distinct odd primes p, q the product of Legendre symbols legendreSym q p · legendreSym p q equals (sign (gridTranspose p q) : ℤ). It thereby exhibits the quadratic-reciprocity factor concretely as the sign of a single explicit permutation — the goal the whole Zolotarev line was built toward. The bridge has exactly two elementary steps: odd_div_two_eq (for odd n, n/2 = (n-1)/2, reconciling Mathlib's exponent form with Milestone 2's) and the ℤˣ → ℤ cast of (-1)^k. HONESTY: this does NOT re-derive reciprocity independently of Mathlib — the arithmetic equality of the two ±1 factors is Mathlib's legendreSym.quadratic_reciprocity. The new content the line contributes is Milestone 2's sign computation; this entry ties that combinatorial invariant to the Legendre product.",
+  "meta": {
+    "author": "Lean Genius researcher-1",
+    "status": "verified",
+    "proofRepoPath": "Proofs/QuadraticReciprocityAlgorithmOQ03M2Capstone.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 72,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "assumptions": "None beyond Mathlib. Fully machine-checked (0 sorries, 0 axiom declarations, 0 structure-encoded hypotheses; no native_decide). #print axioms reports only propext, Classical.choice, Quot.sound. The headline leans on Mathlib's legendreSym.quadratic_reciprocity for the arithmetic equality of the two ±1 factors — disclosed in mathlibDependencies — so the entry is badged 'mathlib', not 'original'; the genuinely-new content of the Zolotarev line is the parent Milestone-2 sign computation sign_gridTranspose (entry quadratic-reciprocity-algorithm-oq-03), which this capstone consumes.",
+    "tags": [
+      "number-theory",
+      "quadratic-reciprocity",
+      "zolotarev",
+      "permutation-sign",
+      "legendre-symbol",
+      "grid-transpose"
+    ],
+    "dateAdded": "2026-06-25",
+    "originalContributions": [
+      "legendreSym_mul_eq_sign_gridTranspose: for distinct odd primes p, q, legendreSym q p · legendreSym p q = (sign (gridTranspose p q) : ℤ) — the Zolotarev reciprocity headline, realizing the quadratic-reciprocity factor as the sign of a single explicit permutation; the statement the parent's open questions flagged as not-yet-in-Lean",
+      "odd_div_two_eq: for odd n, n / 2 = (n - 1) / 2 — the elementary exponent bridge reconciling Mathlib's quadratic_reciprocity (which uses p/2) with Milestone 2's sign formula (which uses (p-1)/2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "legendreSym.quadratic_reciprocity",
+        "description": "legendreSym q p * legendreSym p q = (-1)^(p/2 * (q/2)) for distinct odd primes — the arithmetic side of the headline. The entry does NOT re-derive this; it equates Mathlib's ±1 factor with the combinatorial grid-transpose sign.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "Nat.Prime.eq_two_or_odd'",
+        "description": "an odd prime is Odd — supplies the Odd p, Odd q hypotheses that sign_gridTranspose and odd_div_two_eq require.",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Units.val_pow_eq_pow_val",
+        "description": "((u ^ n : Mˣ) : M) = (↑u)^n — casts the ℤˣ-valued sign formula (-1)^k to the ℤ-valued Legendre product.",
+        "module": "Mathlib.Algebra.Group.Units.Basic"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/QuadraticReciprocityAlgorithmOQ03M2Capstone.lean",
+    "namespace": "QuadraticReciprocityAlgorithmOQ03M2",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 72,
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Zolotarev's 1872 proof of the Law of Quadratic Reciprocity reads the Legendre symbol (a/p) as the sign of the permutation x ↦ a·x of the nonzero residues, and then derives reciprocity by computing the sign of a single 'grid-transpose' permutation in two ways. Milestone 1 of this line (the parent entry quadratic-reciprocity-algorithm-oq-03) formalized the first half: Zolotarev's lemma legendreSym p a = sign(mulLeft a), in both units and field form. Milestone 2 computed the grid-transpose sign sign(gridTranspose p q) = (-1)^((p-1)/2·(q-1)/2) from its inversion count — a primality-free combinatorial fact Mathlib lacks. What remained was the capstone joining the two: that this combinatorial sign is exactly the reciprocity factor carried by the product of Legendre symbols.",
+    "problemStatement": "Open Question OQ-03-OQ-01 (child of quadratic-reciprocity-algorithm-oq-03): the parent's verified Milestone-2 lemma gives the grid-transpose sign as (-1)^((p-1)/2·(q-1)/2), but never ties that sign to the product of Legendre symbols (p/q)·(q/p) — the actual content of reciprocity in grid-transpose form. Supply that capstone in Lean: legendreSym q p · legendreSym p q = (sign (gridTranspose p q) : ℤ) for distinct odd primes.",
+    "proofStrategy": "Each odd prime is Odd via Nat.Prime.eq_two_or_odd'. Rewriting the goal's left side by Mathlib's legendreSym.quadratic_reciprocity turns it into (-1)^(p/2·(q/2)); rewriting the right side by the parent's sign_gridTranspose turns it into the ℤˣ-cast of (-1)^((p-1)/2·((q-1)/2)). The supporting lemma odd_div_two_eq (proved by destructuring Odd n into n = 2k+1 and discharging with omega, which reasons about division by the literal 2) reconciles the two exponent forms p/2 = (p-1)/2 and q/2 = (q-1)/2. Finally Units.val_pow_eq_pow_val pushes the ℤˣ → ℤ coercion through the power, and norm_num collapses ((-1 : ℤˣ) : ℤ) = -1, closing the goal.",
+    "keyInsights": [
+      "Reciprocity, in the Zolotarev framing, is an equality between an arithmetic object (the product of Legendre symbols) and a combinatorial one (the sign of an explicit permutation). The parent computed the combinatorial side outright; this capstone records that the arithmetic side is the same ±1.",
+      "The grid-transpose sign is primality-free: sign_gridTranspose holds for all odd p, q. Only the *identification* of that sign with (p/q)·(q/p) needs primality, and that identification is exactly where Mathlib's quadratic_reciprocity is consumed.",
+      "The only friction between the two halves is bookkeeping: Mathlib writes the reciprocity exponent as p/2·(q/2) while the inversion count produces (p-1)/2·((q-1)/2). For odd n these agree (n/2 = (n-1)/2), a one-line omega fact once n is written as 2k+1.",
+      "Honesty matters for the originality claim: because the arithmetic side is Mathlib's, this entry is badged 'mathlib', and the genuinely-new content of the line stays located in the parent's sign computation — this capstone is the connecting statement, not an independent proof of reciprocity."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Scope",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "States the Milestone-2 capstone goal and is explicit about scope: the arithmetic equality of the ±1 factors is Mathlib's quadratic_reciprocity; the new content is the parent's grid-transpose sign, which this file ties to the Legendre product."
+    },
+    {
+      "id": "exponent-bridge",
+      "title": "The Odd-Exponent Bridge",
+      "startLine": 44,
+      "endLine": 51,
+      "summary": "odd_div_two_eq: for odd n, n / 2 = (n - 1) / 2, reconciling Mathlib's p/2 exponent with Milestone 2's (p-1)/2; proved by writing n = 2k+1 and discharging with omega."
+    },
+    {
+      "id": "capstone",
+      "title": "The Zolotarev Reciprocity Headline",
+      "startLine": 52,
+      "endLine": 72,
+      "summary": "legendreSym_mul_eq_sign_gridTranspose: legendreSym q p · legendreSym p q = (sign (gridTranspose p q) : ℤ) for distinct odd primes, assembled from Mathlib's quadratic_reciprocity, the parent's sign_gridTranspose, the exponent bridge, and the ℤˣ → ℤ cast."
+    }
+  ],
+  "conclusion": {
+    "summary": "2 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. For distinct odd primes p, q the product of Legendre symbols legendreSym q p · legendreSym p q equals (sign (gridTranspose p q) : ℤ), the sign of the parent's explicit grid-transpose permutation — the Zolotarev reciprocity headline in grid-transpose form. The arithmetic equality of the two ±1 factors is Mathlib's quadratic_reciprocity; the new content is the parent's combinatorial sign, which this entry ties to the Legendre product.",
+    "implications": "Closes the Lean gap flagged in the parent's open questions: Milestone 2's grid-transpose sign is now connected to reciprocity itself. The result exhibits the reciprocity factor (p/q)·(q/p) as a single, concretely computable permutation sign, completing the conceptual arc of the Zolotarev route within the gallery (modulo an independent, Mathlib-free derivation, which remains open).",
+    "openQuestions": [
+      "Can reciprocity be derived in the grid-transpose form WITHOUT invoking Mathlib's quadratic_reciprocity — i.e. by identifying gridTranspose with a product of multiplication permutations under the CRT iso Fin (p*q) ≃ ZMod p × ZMod q and applying Milestone 1's Zolotarev lemma to each factor? That would make the permutation-sign route fully self-contained.",
+      "Does the inline G →* Perm G monoid hom and a mulLeft_zpow lemma from Milestone 1, plus the grid-transpose sign here, package cleanly as an upstream Mathlib contribution closing the producer gap for future users of Zolotarev's method?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-03",
+      "relationship": "parent — formalized Milestone 1 (Zolotarev's lemma) and Milestone 2's grid-transpose sign sign_gridTranspose; this entry supplies the capstone tying that sign to the Legendre product"
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-02-oq-01",
+      "relationship": "sibling — another development of the quadratic-reciprocity algorithm line (the Solovay–Strassen compositeness witness)"
+    },
+    {
+      "targetId": "quadratic-reciprocity-algorithm-oq-01",
+      "relationship": "grandparent — the verified recursive Legendre/Jacobi algorithm jacobiAlgo"
+    }
+  ],
+  "sorries": 0
+}
