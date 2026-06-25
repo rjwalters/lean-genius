@@ -25,7 +25,7 @@
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified against Lean v4.26.0 + Mathlib. Every theorem depends only on [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool (no native_decide; the Fin 3 example uses `decide` for ≠).",
     "lineCount": 246,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 1,
     "originalContributions": [
       "multinomial_aggregate_pgf: the aggregation/lumping property — for any block A ⊆ s, E[t^{X_A}] = Σ_k P(X=k)·t^{Σ_{i∈A} k(i)} = (p_A·t + (1−p_A))^n, the Binomial(n, p_A) generating function. This is the multinomial family's defining closure property and the genuine generalization of the single-coordinate marginal.",
@@ -69,7 +69,7 @@
     "namespace": "BinomialTheoremOQ03OQ03",
     "lineCount": 246,
     "axiomCount": 0,
-    "theoremCount": 9,
+    "theoremCount": 8,
     "definitionCount": 1,
     "path": "Proofs/BinomialTheoremOQ03OQ03.lean",
     "sorries": 0
