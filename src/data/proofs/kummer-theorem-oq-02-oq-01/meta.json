@@ -1,0 +1,165 @@
+{
+  "id": "kummer-theorem-oq-02-oq-01",
+  "title": "q-Kummer Theorem for q-Multinomial Coefficients",
+  "slug": "kummer-theorem-oq-02-oq-01",
+  "description": "The q-multinomial coefficient [k1+...+kr ; k1,...,kr]_q factors as a product of cyclotomic polynomials, Phi_d^E_d, where E_d = floor((sum ki)/d) - sum floor(ki/d) counts the total carries when adding k1,...,kr in base d. This lifts the parent's two-part q-Kummer theorem to arbitrarily many parts via the telescoping chain of q-binomials, answering the parent's first open question.",
+  "meta": {
+    "author": "Gauss (q-binomials, 1808), Kummer (carries, 1852); q-multinomial extension formalized here",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Gaussian_binomial_coefficient",
+    "date": "2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/KummerTheoremOQ02OQ01.lean",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "q-analogs",
+      "cyclotomic-polynomials",
+      "multinomial-coefficients",
+      "polynomial-algebra",
+      "extension",
+      "research"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 3,
+    "assumptions": "3 axioms, 0 sorries. The three axioms — qBinomial_factorial (the q-binomial quotient formula), qKummer (the two-part q-Kummer cyclotomic factorization), and qFactorial_eval_one (q-factorial at q=1 equals n!) — are exactly the established theorems of the parent entry kummer-theorem-oq-02 (KummerTheoremOQ02.lean). They are stated here as axioms rather than imported because the parent source uses the pre-Mathlib-`∈` big-operator notation `∑ … in` and several since-renamed Nat/Finset lemmas, so it no longer compiles under the current Mathlib v4.26.0 toolchain (a repository-wide bit-rot affecting the legacy `∑ … in` files). All q-multinomial results in this file (Part XI) are proved from these axioms with no sorries; #print axioms confirms the only non-foundational dependencies are these three axioms (no sorryAx, no Lean.ofReduceBool).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.cyclotomic",
+        "description": "Cyclotomic polynomials over Z, the factors in the q-Kummer factorization",
+        "module": "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+      },
+      {
+        "theorem": "Finset.prod_subset",
+        "description": "Extends the tail's cyclotomic product to a larger index range (new factors have exponent 0)",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.le_div_iff_mul_le",
+        "description": "Subadditivity of floor division, iterated to bound the sum of part deficiencies",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "qMultinomial: q-multinomial coefficient defined over a list of parts via the telescoping chain of q-binomials, no polynomial division",
+      "qMultinomial_factorial: the q-analog of multinomial * prod(ki!) = (sum ki)!, proved by induction along the chain with linear_combination",
+      "multiDeficiency / multiDeficiency_cons: the multinomial carry-count exponent and its chain recursion onto the parent's two-part floorDeficiency, via iterated subadditivity of floor division",
+      "qMultinomial_cyclotomic: THE q-KUMMER THEOREM FOR q-MULTINOMIALS — qMultinomial ks = prod Phi_d^multiDeficiency(ks,d), by inducting along the chain and merging per-factor q-Kummer factorizations",
+      "qMultinomial_eval_one: specialization at q=1 recovering the ordinary multinomial identity multinomial * prod(ki!) = (sum ki)!"
+    ],
+    "dateAdded": "2026-06-25",
+    "lineCount": 237,
+    "prerequisites": [
+      "q-analogs: q-numbers, q-factorials, and Gaussian (q-)binomial coefficients",
+      "Cyclotomic polynomials over Z and their nonvanishing",
+      "The two-part q-Kummer theorem (parent entry kummer-theorem-oq-02)",
+      "Floor-division arithmetic and Finset product manipulations",
+      "Structural recursion / induction over lists"
+    ],
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Gauss introduced q-binomial (Gaussian binomial) coefficients in 1808; they count subspaces of vector spaces over finite fields and specialize to ordinary binomials at q=1. Kummer's 1852 theorem expresses the p-adic valuation of a binomial coefficient as a carry count. The parent entry kummer-theorem-oq-02 unified these into a q-Kummer theorem: the q-binomial factors into cyclotomic polynomials with carry-count exponents valid in ALL bases d >= 2. A natural next question — explicitly raised as the parent's first open question — is whether the same holds for q-MULTINOMIAL coefficients, which count flags of subspaces over F_q.",
+    "problemStatement": "**Open Question (parent OQ-01)**: Can the q-Kummer theorem be extended to q-multinomial coefficients?\n\n**Answer**: Yes. Writing the q-multinomial as the telescoping product of q-binomials [k1+...+kr ; k1,...,kr]_q = prod_i [k1+...+ki choose ki]_q, the parent's two-part q-Kummer factorization applies to each factor and the exponents add, giving\n  [k1+...+kr ; k1,...,kr]_q = prod_{d>=2} Phi_d(q)^{E_d},   E_d = floor((sum ki)/d) - sum_i floor(ki/d).",
+    "text": "The q-multinomial coefficient factors into cyclotomic polynomials whose exponents count the total carries when adding all the parts in base d, generalizing the two-part q-Kummer theorem to arbitrarily many parts.",
+    "proofStrategy": "**Definition**: qMultinomial is defined on a list of parts by the chain recursion qMultinomial (k::ks) = qBinomial (k + sum ks) k * qMultinomial ks.\n\n**Quotient form**: qMultinomial ks * prod (qFactorial ki) = qFactorial (sum ki), by list induction; the cons step combines the inductive hypothesis with the parent's qBinomial_factorial via linear_combination.\n\n**Carry-count exponent**: multiDeficiency(ks,d) = floor((sum ki)/d) - sum floor(ki/d). Its chain recursion multiDeficiency(k::ks,d) = floorDeficiency(k+sum ks, k, d) + multiDeficiency(ks,d) follows from iterated subadditivity of floor division (so all natural-number subtractions are genuine).\n\n**Cyclotomic factorization**: by list induction. The head q-binomial is factored by the parent's qKummer over Icc 2 (k+sum ks); the tail's factorization (inductive hypothesis) is extended from Icc 2 (sum ks) to the same range (new factors have exponent 0); the two products merge factor-by-factor, and multiDeficiency_cons identifies the summed exponents.\n\n**q=1 specialization**: evaluating the quotient form at q=1 (using qFactorial_eval_one) recovers the ordinary multinomial identity.",
+    "keyInsights": [
+      "The q-multinomial telescopes into a chain of q-binomials, so the two-part q-Kummer theorem propagates multiplicatively — no new cyclotomic input is needed beyond the parent's",
+      "The right exponent is the MULTINOMIAL floor deficiency floor((sum ki)/d) - sum floor(ki/d), the total carry count across all parts in base d",
+      "Subadditivity of floor division (sum of floors <= floor of sum), iterated over the list, is exactly what makes the natural-number subtraction in the exponent recursion lossless",
+      "Extending the tail product to the larger index range is sound because factors with d > sum(tail) have exponent 0",
+      "At q=1 the factorization degenerates to the classical multinomial coefficient identity"
+    ],
+    "prerequisites": [
+      "q-analogs and Gaussian (q-)binomial coefficients",
+      "The two-part q-Kummer theorem (parent)",
+      "Cyclotomic polynomials over Z",
+      "Floor-division arithmetic"
+    ]
+  },
+  "sections": [],
+  "conclusion": {
+    "summary": "The q-Kummer theorem extends from q-binomials to q-multinomials: the q-multinomial coefficient of any list of parts factors into cyclotomic polynomials whose exponents are the total base-d carry counts. The proof telescopes the q-multinomial into a chain of q-binomials and propagates the parent's two-part factorization multiplicatively, with the carry-count exponents adding via subadditivity of floor division.",
+    "implications": "1. **All bases, all parts**: the carry-count factorization holds for every base d >= 2 and any number of parts.\n2. **Multiplicativity**: the q-multinomial inherits its cyclotomic structure entirely from its q-binomial factors.\n3. **q=1 recovery**: degenerates to the ordinary multinomial identity multinomial * prod(ki!) = (sum ki)!.",
+    "openQuestions": [
+      "Does the cyclotomic factorization refine to a representation-theoretic statement about flags of subspaces over F_q?",
+      "Can the multinomial carry-count exponents be read off a single mixed-radix carry process?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset",
+      "Nat"
+    ],
+    "namespace": "KummerTheoremOQ02OQ01",
+    "lineCount": 237,
+    "axiomCount": 3,
+    "theoremCount": 8,
+    "definitionCount": 6,
+    "path": "Proofs/KummerTheoremOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "kummer-theorem-oq-02",
+      "relationship": "extends",
+      "description": "Parent: the two-part q-Kummer theorem (cyclotomic factorization of q-binomials). This entry answers its first open question by lifting the result to q-multinomial coefficients; the parent's qBinomial_factorial, qKummer, and qFactorial_eval_one are the three axioms consumed here."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Gauss, Carl Friedrich",
+      "title": "Summatio quarumdam serierum singularium",
+      "year": "1808",
+      "venue": "Commentationes Societatis Regiae Scientiarum Gottingensis",
+      "note": "Introduction of Gaussian binomial coefficients"
+    },
+    {
+      "authors": "Kummer, Ernst Eduard",
+      "title": "Über die Ergänzungssätze zu den allgemeinen Reciprocitätsgesetzen",
+      "year": "1852",
+      "venue": "Journal für die reine und angewandte Mathematik 44, 93-146",
+      "note": "Classical Kummer's theorem: carries in base-p addition"
+    },
+    {
+      "authors": "Konvalinka, Matjaž; Pak, Igor",
+      "title": "Non-commutative extensions of the MacMahon Master Theorem",
+      "year": "2007",
+      "venue": "Advances in Mathematics",
+      "note": "q-analogs of classical combinatorial identities"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "qMultinomial_cyclotomic",
+      "type": "core",
+      "description": "The q-multinomial factors as a product of cyclotomic polynomials with multinomial carry-count exponents",
+      "leanType": "qMultinomial ks = prod (Icc 2 ks.sum) (fun d => (cyclotomic d Z) ^ multiDeficiency ks d)"
+    },
+    {
+      "name": "qMultinomial_factorial",
+      "type": "supporting",
+      "description": "Quotient form: qMultinomial ks * prod (map qFactorial ks) = qFactorial ks.sum",
+      "leanType": "qMultinomial ks * (ks.map qFactorial).prod = qFactorial ks.sum"
+    },
+    {
+      "name": "multiDeficiency_cons",
+      "type": "supporting",
+      "description": "Chain recursion of the multinomial carry count onto the two-part floor deficiency",
+      "leanType": "multiDeficiency (k :: ks) d = floorDeficiency (k + ks.sum) k d + multiDeficiency ks d"
+    },
+    {
+      "name": "qMultinomial_eval_one",
+      "type": "supporting",
+      "description": "At q=1 recovers the ordinary multinomial identity",
+      "leanType": "(qMultinomial ks).eval 1 * (ks.map (fun k => (k ! : Z))).prod = ((ks.sum)! : Z)"
+    }
+  ],
+  "sorries": 0
+}
