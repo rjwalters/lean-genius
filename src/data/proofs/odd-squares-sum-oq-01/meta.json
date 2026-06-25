@@ -1,0 +1,87 @@
+{
+  "id": "odd-squares-sum-oq-01",
+  "title": "Sum of Squares of the First n Odd Numbers: ∑(2k−1)² = n(2n−1)(2n+1)/3",
+  "slug": "odd-squares-sum-oq-01",
+  "description": "A fully machine-checked, self-contained proof that the sum of the squares of the first n odd numbers has the closed form n(2n−1)(2n+1)/3: ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3. The result is established both as a division-free exact identity over ℕ — 3·∑(2k+1)² + n = 4n³, phrased additively so the inductive step has no truncated subtraction and closes by `ring` alone — and as the classical rational closed form over ℚ. This is the odd-indexed companion of the square-pyramidal identity ∑k² = n(n+1)(2n+1)/6, which Mathlib has; this variant it does not.",
+  "meta": {
+    "author": "Classical; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Square_pyramidal_number",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "combinatorics",
+      "power-sums",
+      "odd-numbers",
+      "closed-form",
+      "induction",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/OddSquaresSum.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_succ",
+        "description": "Peels the top term off a range-sum: ∑_{i<n+1} f i = (∑_{i<n} f i) + f n. The engine of both inductive steps.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "The closed form ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3 for the sum of squares of the first n odd numbers, machine-checked over ℚ with 0 axioms and 0 sorries (Mathlib has the square-pyramidal ∑k² identity but not this odd-indexed companion)",
+      "The division-free exact ℕ identity 3·∑_{k<n} (2k+1)² + n = 4n³: stated additively it contains no truncated natural subtraction, so the entire inductive step is closed by a single `ring` after one reassociation — the whole development stays inside ℕ with no integer casts",
+      "A clean two-line rational proof: `sum_range_succ` peels the top odd square and `push_cast; ring` discharges the resulting polynomial identity over ℚ, with the ℕ→ℚ cast of n+1 normalized automatically"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 74,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "integer-form",
+      "title": "Division-free integer form (subtraction-free step)",
+      "startLine": 46,
+      "endLine": 62,
+      "summary": "The exact ℕ identity 3·∑_{k<n} (2k+1)² + n = 4n³, proved by induction. Phrased additively it contains no truncated subtraction. The step peels the top odd square with sum_range_succ, reassociates so the inductive hypothesis 3·∑ + m = 4m³ appears verbatim, and a single `ring` closes the branch. The whole proof lives in ℕ — no casts to ℤ or ℚ."
+    },
+    {
+      "id": "rational-closed-form",
+      "title": "Rational closed form n(2n−1)(2n+1)/3",
+      "startLine": 64,
+      "endLine": 72,
+      "summary": "The classical closed form ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3 over ℚ. Base case is `simp` (empty sum). The inductive step peels the top term, rewrites by the hypothesis, and `push_cast; ring` discharges the polynomial identity — verifying (m(2m−1)(2m+1)/3) + (2m+1)² = (m+1)(2m+1)(2m+3)/3 in the field ℚ where division is genuine."
+    }
+  ],
+  "overview": {
+    "historicalContext": "**Odd-indexed power sums**\n\nThe squares of the odd numbers $1^2, 3^2, 5^2, \\dots$ sum to a strikingly clean closed form. Writing the $k$-th odd number as $2k+1$ for $k = 0, 1, \\dots, n-1$,\n$$1^2 + 3^2 + 5^2 + \\cdots + (2n-1)^2 = \\frac{n(2n-1)(2n+1)}{3}.$$\nThis is the odd-indexed sibling of the *square-pyramidal* identity $\\sum_{k\\le n} k^2 = \\tfrac{n(n+1)(2n+1)}{6}$. Indeed, summing all squares up to $2n-1$ and subtracting the even squares $\\sum (2k)^2 = 4\\sum k^2$ recovers exactly this formula. Mathlib provides the square-pyramidal identity but not this odd variant; this entry supplies it.",
+    "problemStatement": "**Sum of squares of the first $n$ odd numbers**\n\nFor every natural number $n$,\n$$\\sum_{k<n} (2k+1)^2 = \\frac{n(2n-1)(2n+1)}{3}.$$\nThe goal is a fully machine-checked proof with no axioms and no sorries, in a form that avoids artifacts of natural-number division.",
+    "proofStrategy": "**Two complementary statements**\n\nFirst the result is captured *exactly in $\\mathbb{N}$* by clearing the denominator and moving the linear term to the left:\n$$3\\sum_{k<n} (2k+1)^2 + n = 4n^3.$$\nAdditive and with no subtraction, this is ideal for `ring`: the inductive step peels the top term, and after one reassociation the hypothesis $3\\sum + m = 4m^3$ appears verbatim and `ring` finishes. Then the **rational closed form** $\\sum (2k+1)^2 = n(2n-1)(2n+1)/3$ is proved directly over $\\mathbb{Q}$, where the division is genuine and `push_cast; ring` discharges the step.",
+    "keyInsights": [
+      "**Clear the denominator additively.** Rewriting $\\sum = (4n^3 - n)/3$ as $3\\sum + n = 4n^3$ removes both the division *and* the subtraction, so the entire inductive step is a single `ring` call with no case split and no truncation hazard.",
+      "**The step is one cubic identity.** After substituting the hypothesis, the goal collapses to $4m^3 + 3(2m+1)^2 + 1 = 4(m+1)^3$ — a fact about the single number $m$, independent of the sum.",
+      "**Use ℚ for the headline form.** Division by $3$ is only honest in a field, so the classical $n(2n-1)(2n+1)/3$ form is stated and proved over $\\mathbb{Q}$, where `push_cast; ring` handles the casts and the cubic algebra in one stroke.",
+      "**Relation to the square-pyramidal sum.** The identity is exactly $\\sum_{j<2n} j^2 - 4\\sum_{k<n} k^2$, tying the odd-square sum to Mathlib's even-indexed power-sum machinery."
+    ],
+    "prerequisites": [
+      "Mathematical induction",
+      "Finite sums over `Finset.range`",
+      "Polynomial identities over ℚ"
+    ]
+  },
+  "conclusion": {
+    "summary": "The sum of the squares of the first $n$ odd numbers, $\\sum_{k<n}(2k+1)^2$, equals $n(2n-1)(2n+1)/3$. This is proved twice: as the division-free exact ℕ identity $3\\sum(2k+1)^2 + n = 4n^3$, whose additive phrasing lets the inductive step close by `ring` with no truncated subtraction, and as the classical rational closed form over $\\mathbb{Q}$. Both depend on the single Mathlib lemma `sum_range_succ`. 0 axioms, 0 sorries.",
+    "implications": [
+      "Supplies the odd-indexed sum-of-squares closed form that Mathlib's power-sum library does not provide, complementing the square-pyramidal identity.",
+      "Demonstrates the 'clear the denominator additively' technique: replacing a closed form $f(n)/c$ by the subtraction-free $c\\cdot\\sum + (\\text{linear}) = (\\text{polynomial})$ keeps power-sum proofs entirely inside ℕ and reduces the inductive step to a single `ring`.",
+      "The rational form `sum_odd_squares_rat` packages the result for downstream reuse where genuine division is wanted."
+    ],
+    "openQuestions": [
+      "Does the same 'clear the denominator additively' pattern give equally clean ℕ proofs for the sum of cubes of odd numbers ∑(2k+1)³ = n²(2n²−1) and higher odd-power sums?",
+      "Can the odd-square sum be derived inside Lean as the explicit difference ∑_{j<2n} j² − 4∑_{k<n} k² from Mathlib's square-pyramidal identity, rather than re-proved by induction?"
+    ]
+  }
+}

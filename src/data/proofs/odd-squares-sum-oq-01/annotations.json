@@ -1,0 +1,37 @@
+[
+  {
+    "id": "ann-integer-form",
+    "proofId": "odd-squares-sum-oq-01",
+    "range": { "startLine": 46, "endLine": 62 },
+    "type": "theorem",
+    "title": "Division-free integer form: 3·∑(2k+1)² + n = 4n³",
+    "content": "The exact identity over $\\mathbb{N}$. Clearing the denominator in $\\sum (2k+1)^2 = (4n^3-n)/3$ and moving the linear term left gives $3\\sum(2k+1)^2 + n = 4n^3$ — additive, with no subtraction, so `ring` never meets a truncated $\\mathbb{N}$ difference. The base case is `simp` (empty sum). In the step, `sum_range_succ` peels off $(2m+1)^2$; a single `have key` reassociates the goal so the inductive hypothesis $3\\sum + m = 4m^3$ appears verbatim, after which `rw [key, ih]; ring` verifies $4m^3 + 3(2m+1)^2 + 1 = 4(m+1)^3$.",
+    "mathContext": "$3\\sum_{k<n}(2k+1)^2 + n = 4n^3$.",
+    "significance": "critical",
+    "prerequisites": ["Mathematical induction", "Finset.sum_range_succ"],
+    "relatedConcepts": ["Power sums", "Truncated natural subtraction", "ring tactic", "Denominator clearing"]
+  },
+  {
+    "id": "ann-reassociation",
+    "proofId": "odd-squares-sum-oq-01",
+    "range": { "startLine": 53, "endLine": 61 },
+    "type": "insight",
+    "title": "Reassociating so the hypothesis appears verbatim",
+    "content": "After `sum_range_succ` the goal is $3(\\sum_{k<m} + (2m+1)^2) + (m+1) = 4(m+1)^3$. The inductive hypothesis is about the *clustered* term $3\\sum_{k<m} + m$, which is not yet syntactically present. The `key` step regroups the left side by `ring` into $(3\\sum_{k<m} + m) + (3(2m+1)^2 + 1)$, exposing the hypothesis cluster exactly; rewriting by `ih` replaces it with $4m^3$ and a final `ring` finishes. This 'shape the goal to fit the hypothesis' move is what keeps the proof to two `ring` calls.",
+    "mathContext": "$3\\sum_{k<m+1}(2k+1)^2 + (m+1) = (3\\sum_{k<m}(2k+1)^2 + m) + (3(2m+1)^2 + 1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Inductive hypothesis matching", "Associativity", "ring tactic"]
+  },
+  {
+    "id": "ann-rational-form",
+    "proofId": "odd-squares-sum-oq-01",
+    "range": { "startLine": 64, "endLine": 72 },
+    "type": "theorem",
+    "title": "Rational closed form: ∑(2k+1)² = n(2n−1)(2n+1)/3",
+    "content": "The classical closed form, stated over $\\mathbb{Q}$ where division by $3$ is genuine. The base case is `simp`. The inductive step peels the top term with `sum_range_succ`, rewrites the sum by the hypothesis, and then `push_cast` normalizes the cast $\\uparrow(m+1) = \\uparrow m + 1$ while `ring` verifies the field identity $\\frac{m(2m-1)(2m+1)}{3} + (2m+1)^2 = \\frac{(m+1)(2m+1)(2m+3)}{3}$. Proving it directly over $\\mathbb{Q}$ avoids any natural-number division artifact.",
+    "mathContext": "$\\sum_{k<n}(2k+1)^2 = \\frac{n(2n-1)(2n+1)}{3}$ over $\\mathbb{Q}$.",
+    "significance": "critical",
+    "prerequisites": ["Mathematical induction", "Field arithmetic over ℚ", "push_cast"],
+    "relatedConcepts": ["Closed-form power sums", "Square-pyramidal number", "ℕ→ℚ casting"]
+  }
+]
