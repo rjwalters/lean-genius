@@ -1,0 +1,103 @@
+[
+  {
+    "id": "ann-pell-oq03-defs",
+    "proofId": "pell-equation-oq-01-oq-04-oq-03",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "definition",
+    "title": "The Pell Norm and Regulator (pellNorm, pellRegulator)",
+    "content": "pellNorm d x y = x + y√d is the real embedding of a Pell solution a ∈ Solution₁ d (a pair (x,y) with x² − d·y² = 1) into ℝ under ℤ[√d] ↪ ℝ; pellRegulator d a = log(pellNorm d a.x a.y) is its logarithm. These match the grandparent's definitions and set up both goals of this entry: the multiplicative law pellNorm(a·b) = pellNorm(a)·pellNorm(b) is exactly the data of a MonoidHom, and the logarithm converts it into the additive regulator whose minimal positive value is the regulator of the field.",
+    "mathContext": "$\\|a\\| = x + y\\sqrt d,\\qquad R(a) = \\log\\|a\\|$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Pell's equation x² − d·y² = 1 and Mathlib's Solution₁ d",
+      "The real embedding ℤ[√d] ↪ ℝ",
+      "Logarithm turning products into sums"
+    ],
+    "relatedConcepts": [
+      "Pell's equation",
+      "real quadratic field",
+      "regulator",
+      "fundamental solution"
+    ]
+  },
+  {
+    "id": "ann-pell-oq03-infra",
+    "proofId": "pell-equation-oq-01-oq-04-oq-03",
+    "range": { "startLine": 69, "endLine": 122 },
+    "type": "lemma",
+    "title": "Restated grandparent infrastructure (homomorphism and power laws)",
+    "content": "pellNorm_one (the identity has norm 1), pellNorm_mul (Brahmagupta's identity / multiplicativity, proved by a linear_combination against (√d)² = d), pellNorm_mul_inv and pellNorm_ne_zero (the norm of the conjugate inverts it, so the norm never vanishes), pellRegulator_mul (additivity via Real.log_mul), pellNorm_pow and pellRegulator_pow (R(aⁿ) = n·R(a) via Real.log_pow). Restated verbatim from the grandparent so the file is self-contained; these are exactly the facts the bundled homomorphisms and the minimality theorem consume.",
+    "mathContext": "$\\mathrm{pellNorm}(a\\cdot b) = \\mathrm{pellNorm}(a)\\,\\mathrm{pellNorm}(b),\\qquad R(a^n) = n\\,R(a)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Brahmagupta's composition identity",
+      "(√d)² = d for d ≥ 0 (Real.sq_sqrt)",
+      "Logarithm laws log(xy) = log x + log y, log(xⁿ) = n log x"
+    ],
+    "relatedConcepts": [
+      "Brahmagupta identity",
+      "norm multiplicativity",
+      "regulator additivity"
+    ]
+  },
+  {
+    "id": "ann-pell-oq03-bundled",
+    "proofId": "pell-equation-oq-01-oq-04-oq-03",
+    "range": { "startLine": 124, "endLine": 169 },
+    "type": "definition",
+    "title": "The norm and regulator as bundled homomorphisms",
+    "content": "The new packaging layer. pellNormHom : Solution₁ d →* ℝ takes pellNorm_one and pellNorm_mul as its map_one'/map_mul' fields — the grandparent's bare lemmas ARE a monoid homomorphism. Because pellNorm_ne_zero holds, Units.mk0 lifts it to pellNormUnitsHom : Solution₁ d →* ℝˣ, landing in the multiplicative group of real units rather than just the monoid. Finally pellRegulatorHom : Solution₁ d →* Multiplicative ℝ views the additive regulator (R(1)=0, R(a·b)=R(a)+R(b)) as a homomorphism into the additive group (ℝ,+) presented multiplicatively via Multiplicative.ofAdd. Three @[simp] lemmas expose the underlying values.",
+    "mathContext": "$N : \\mathrm{Solution}_1 d \\to^* \\mathbb{R}^\\times,\\qquad R : \\mathrm{Solution}_1 d \\to^* (\\mathbb{R}, +)$.",
+    "significance": "central",
+    "prerequisites": [
+      "MonoidHom structure (map_one', map_mul')",
+      "Units.mk0 for a nonzero element of a field",
+      "Multiplicative ℝ and Multiplicative.ofAdd"
+    ],
+    "relatedConcepts": [
+      "monoid homomorphism",
+      "unit group ℝˣ",
+      "additive vs multiplicative groups"
+    ]
+  },
+  {
+    "id": "ann-pell-oq03-bound",
+    "proofId": "pell-equation-oq-01-oq-04-oq-03",
+    "range": { "startLine": 171, "endLine": 190 },
+    "type": "lemma",
+    "title": "Norm bound and positivity of the fundamental regulator",
+    "content": "one_lt_pellNorm: a nontrivial positive solution (1 < x, 0 < y, d > 0) has ‖a‖ = x + y√d > 1, since x > 1 and y√d > 0. pellRegulator_fundamental_pos: a fundamental solution a₁ — which by definition has 1 < a₁.x, 0 < a₁.y, and forces d > 0 (IsFundamental.d_pos) — therefore has R(a₁) = log‖a₁‖ > 0 by Real.log_pos. This strict positivity is the only inequality the minimality argument needs: it is the floor below which no positive regulator can fall.",
+    "mathContext": "$1 < a.x,\\; 0 < a.y \\;\\Rightarrow\\; \\|a\\| > 1,\\qquad R(a_1) > 0$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Real.sqrt_pos: 0 < √d for d > 0",
+      "Real.log_pos: 1 < x ⟹ 0 < log x",
+      "IsFundamental.d_pos"
+    ],
+    "relatedConcepts": [
+      "fundamental solution",
+      "logarithm positivity"
+    ]
+  },
+  {
+    "id": "ann-pell-oq03-minimality",
+    "proofId": "pell-equation-oq-01-oq-04-oq-03",
+    "range": { "startLine": 192, "endLine": 240 },
+    "type": "theorem",
+    "title": "The regulator as a minimal positive value (IsLeast)",
+    "content": "The headline result. pellRegulator_fundamental_le: for any nontrivial positive solution a, Mathlib's IsFundamental.eq_pow_of_nonneg writes a = a₁ⁿ; the exponent satisfies n ≥ 1 (n = 0 would give a = 1, contradicting 1 < a.x), so R(a) = n·R(a₁) ≥ R(a₁) because R(a₁) > 0. pellRegulator_fundamental_lt sharpens this to strict inequality for a ≠ a₁ (then n ≥ 2), so a₁ is the unique minimiser. isLeast_pellRegulator assembles membership (a₁ is itself a nontrivial positive solution) and the lower-bound property into IsLeast {R(a) : 1 < a.x, 0 < a.y} (R(a₁)) — a faithful, machine-checked rendering of the textbook regulator as the smallest positive value of log‖a‖ on the solution group. isLeast_pellRegulator_pos records that this minimum is itself positive.",
+    "mathContext": "$\\mathrm{IsLeast}\\,\\{\\,R(a) : 1 < a.x,\\, 0 < a.y\\,\\}\\;\\bigl(R(a_1)\\bigr),\\qquad R(a_1) > 0$.",
+    "significance": "central",
+    "prerequisites": [
+      "Pell.IsFundamental.eq_pow_of_nonneg (every nonnegative solution is a₁ⁿ)",
+      "The scaling law R(aⁿ) = n·R(a)",
+      "IsLeast and lowerBounds"
+    ],
+    "relatedConcepts": [
+      "regulator of a real quadratic field",
+      "fundamental unit",
+      "minimal positive value",
+      "structure theorem for Pell solutions"
+    ]
+  }
+]
