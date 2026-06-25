@@ -344,9 +344,9 @@ f(4) = 9
 f(5) = 16
 ...
 -/
-theorem f_1 : f 1 = 2 := by native_decide
-theorem f_2 : f 2 = 3 := by native_decide
-theorem f_3 : f 3 = 6 := by native_decide
+theorem f_1 : f 1 = 2 := by decide
+theorem f_2 : f 2 = 3 := by decide
+theorem f_3 : f 3 = 6 := by decide
 
 /-
 ## Part IX: Summary
@@ -382,5 +382,67 @@ theorem erdos_748_summary :
 **Erdős Problem #748: PROVED**
 -/
 theorem erdos_748 : cameronErdosConjecture := cameron_erdos_proved
+
+/-
+## Part X: Unconditional Two-Sided Bounds
+
+The deep content of #748 — that the upper constant equals `1` (in units of
+`n/2`) — lives in `green_upper_bound`/`precise_asymptotic`. The bounds below
+make explicit exactly what Lean certifies *without* those axioms: the crude
+sandwich `2^{⌊n/2⌋} ≤ f(n) ≤ 2^n`, i.e. the growth exponent of `f` lies in
+`[n/2, n]`. `trivial_lower_bound` supplies the left half; the right half was
+previously missing and is the natural companion proved here.
+-/
+
+/--
+**Positivity:** `f(n) ≥ 1` for every `n`, witnessed by the empty set, which is
+sum-free and a subset of `{1,…,n}`.
+-/
+theorem f_pos (n : ℕ) : 1 ≤ f n := by
+  rw [f]
+  apply Finset.card_pos.mpr
+  refine ⟨∅, ?_⟩
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+  exact ⟨Finset.empty_subset _, empty_sumFree⟩
+
+/--
+**Trivial upper bound (unconditional):**
+`f(n) ≤ 2^n`. The sum-free subsets of `{1,…,n}` form a sub-family of the full
+powerset of `{1,…,n}` (the codomain of the `filter`), which has exactly `2^n`
+elements. No appeal to Green/Sapozhenko is needed — this is the crude companion
+to `trivial_lower_bound`.
+-/
+theorem trivial_upper_bound (n : ℕ) : f n ≤ 2 ^ n := by
+  have h1 : f n ≤ (Finset.Icc 1 n).powerset.card := by
+    rw [f, sumFreeSubsets]
+    exact Finset.card_filter_le _ _
+  have h2 : (Finset.Icc 1 n).powerset.card = 2 ^ n := by
+    rw [Finset.card_powerset, Nat.card_Icc, Nat.add_sub_cancel]
+  omega
+
+/--
+**Unconditional sandwich:** `2^{⌊n/2⌋} ≤ f(n) ≤ 2^n` for `n ≥ 2`.
+Combines `trivial_lower_bound` and `trivial_upper_bound`; both halves are
+axiom-free.
+-/
+theorem f_sandwich (n : ℕ) (hn : n ≥ 2) :
+    2 ^ (n / 2) ≤ f n ∧ f n ≤ 2 ^ n :=
+  ⟨trivial_lower_bound n hn, trivial_upper_bound n⟩
+
+/--
+**Unconditional exponent bound:** `log₂ f(n) ≤ n`.
+Without Green/Sapozhenko, the growth exponent of `f` is pinned only to the
+interval `[⌊n/2⌋, n]`. This is the upper companion to the lower-bound branch of
+`cameron_erdos_proved`; Green's axiom is precisely what sharpens the upper
+constant from `2` to `1` (in units of `n/2`).
+-/
+theorem log_f_le (n : ℕ) : Real.log (f n) / Real.log 2 ≤ n := by
+  have hlog2_pos : (0 : ℝ) < Real.log 2 := Real.log_pos (by norm_num)
+  have hfpos : (0 : ℝ) < f n := by exact_mod_cast f_pos n
+  have hub : (f n : ℝ) ≤ 2 ^ n := by exact_mod_cast trivial_upper_bound n
+  have hlog : Real.log (f n) ≤ Real.log (2 ^ n) := Real.log_le_log hfpos hub
+  rw [Real.log_pow] at hlog
+  rw [div_le_iff₀ hlog2_pos]
+  exact hlog
 
 end Erdos748

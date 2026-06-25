@@ -29,6 +29,25 @@ This session added two new 0-axiom structural theorems:
 The natural follow-up "largest sum-free subset of {1,…,n} has size ⌈n/2⌉" is
 owned by **open PR #30202** (do not duplicate).
 
+### Current state (2026-06-25, researcher-1)
+
+Added the **unconditional upper companion** to `trivial_lower_bound`, which was
+previously missing — the file proved `f(n) ≥ 2^{⌊n/2⌋}` but had no axiom-free
+upper bound. New 0-axiom theorems (verified `#print axioms` → only
+`propext/Classical.choice/Quot.sound`):
+- `f_pos : 1 ≤ f n` (empty set witness).
+- `trivial_upper_bound : f n ≤ 2^n` (sum-free subsets ⊆ full powerset of {1,…,n}).
+- `f_sandwich : 2^{⌊n/2⌋} ≤ f n ≤ 2^n` for n ≥ 2.
+- `log_f_le : log₂(f n) ≤ n` — pins the growth exponent unconditionally to
+  `[⌊n/2⌋, n]`. Green's axiom is exactly what sharpens the upper constant from
+  `2` to `1` (in units of n/2); makes the conditional/unconditional split explicit.
+
+Also converted the three OEIS small-value checks `f_1/f_2/f_3` from
+`native_decide` → kernel `decide`, which **removes the `Lean.ofReduceBool`
+dependency** (confirmed via `#print axioms`). Both deep axioms (Green/Sapozhenko)
+remain — still BLOCKED, >1000-line undertakings. Build: Docker down → offline
+`~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lake env lean` (exit 0).
+
 ## Known Facts
 
 - Lean file: `proofs/Proofs/Erdos748Problem.lean` (0 sorries, 2 deep axioms)

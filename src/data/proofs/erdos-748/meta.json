@@ -54,12 +54,16 @@
       "green_upper_bound axiom: f(n) ≪ 2^{n/2}",
       "precise_asymptotic axiom: f(n) ~ c_n · 2^{n/2}",
       "oddNumbers_sumFree theorem: odds form sum-free set",
+      "f_pos theorem (PROVED, 0 axioms): f(n) ≥ 1, witnessed by the empty set",
+      "trivial_upper_bound theorem (PROVED, 0 axioms): f(n) ≤ 2^n — the unconditional companion to trivial_lower_bound; sum-free subsets are a sub-family of the full powerset of {1,...,n}",
+      "f_sandwich theorem (PROVED, 0 axioms): unconditional two-sided bound 2^{⌊n/2⌋} ≤ f(n) ≤ 2^n for n ≥ 2",
+      "log_f_le theorem (PROVED, 0 axioms): log₂ f(n) ≤ n — pins the growth exponent to [⌊n/2⌋, n] without the deep axioms; Green's axiom is what sharpens the upper constant from 2 to 1 (in units of n/2)",
       "erdos_748_summary: combining all results"
     ],
     "axiomCount": 2,
-    "lineCount": 386,
-    "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The trivial lower bound f(n) ≥ 2^{⌊n/2⌋} is now fully proved (no longer an axiom). See the Lean source for details.",
-    "theoremCount": 14,
+    "lineCount": 448,
+    "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The trivial lower bound f(n) ≥ 2^{⌊n/2⌋} and the unconditional upper bound f(n) ≤ 2^n (giving the axiom-free sandwich 2^{⌊n/2⌋} ≤ f(n) ≤ 2^n, i.e. log₂ f(n) ∈ [⌊n/2⌋, n]) are fully proved. Small OEIS values f(1)=2, f(2)=3, f(3)=6 use kernel `decide` (no Lean.ofReduceBool). See the Lean source for details.",
+    "theoremCount": 18,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"
@@ -143,10 +147,10 @@
     {
       "id": "oeis",
       "title": "OEIS A007865",
-      "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by `native_decide`, matching OEIS A007865. These are fully machine-checked results, not axioms.",
-      "startLine": 274,
-      "endLine": 289,
-      "mathContext": "Verified by `native_decide`: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
+      "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by kernel `decide`, matching OEIS A007865. These are fully machine-checked (no `Lean.ofReduceBool`), not axioms.",
+      "startLine": 338,
+      "endLine": 349,
+      "mathContext": "Verified by kernel `decide` (foundational axioms only — no `Lean.ofReduceBool`): $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
     },
     {
       "id": "summary",
@@ -155,6 +159,14 @@
       "startLine": 291,
       "endLine": 325,
       "mathContext": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$."
+    },
+    {
+      "id": "unconditional-bounds",
+      "title": "Unconditional Two-Sided Bounds",
+      "summary": "Axiom-free companions to the lower bound: `f_pos` ($f(n) \\ge 1$), `trivial_upper_bound` ($f(n) \\le 2^n$), `f_sandwich` ($2^{\\lfloor n/2 \\rfloor} \\le f(n) \\le 2^n$ for $n \\ge 2$), and `log_f_le` ($\\log_2 f(n) \\le n$). These pin the growth exponent of $f$ to $[\\lfloor n/2 \\rfloor, n]$ using only Mathlib — no Green/Sapozhenko axioms. Green's axiom is precisely what sharpens the upper constant from $2$ to $1$ (in units of $n/2$).",
+      "startLine": 388,
+      "endLine": 446,
+      "mathContext": "Verified (0 axioms): `trivial_upper_bound` shows $f(n) \\le 2^n$ since sum-free subsets are a sub-family of the full powerset of $\\{1,\\ldots,n\\}$; combined with `trivial_lower_bound` this gives the unconditional sandwich $2^{\\lfloor n/2 \\rfloor} \\le f(n) \\le 2^n$ and hence $\\log_2 f(n) \\in [\\lfloor n/2 \\rfloor, n]$."
     }
   ],
   "conclusion": {
@@ -173,15 +185,16 @@
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Data.Finset.Card",
       "Mathlib.Data.Finset.Powerset",
-      "Mathlib.Data.Nat.Basic"
+      "Mathlib.Data.Nat.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
     ],
     "opens": [
       "Finset"
     ],
     "namespace": "Erdos748",
-    "lineCount": 386,
+    "lineCount": 448,
     "axiomCount": 2,
-    "theoremCount": 14,
+    "theoremCount": 18,
     "definitionCount": 5,
     "path": "Proofs/Erdos748Problem.lean",
     "sorries": 0,
