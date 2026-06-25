@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
+    "range": { "startLine": 4, "endLine": 43 },
+    "type": "context",
+    "title": "From Exact Value to Asymptotic Decay",
+    "content": "The parent entry proved the exact diagonal value B(n+1,n+1) = 1/((2n+1)·C(2n,n)). Here we determine how fast it decays. Because the (2n+1) factor is elementary, the whole question reduces to the asymptotic size of the central binomial coefficient, C(2n,n) ~ 4ⁿ/√(πn) — the classical Wallis/Stirling estimate. Mathlib provides Stirling's formula for the factorial but not this central binomial asymptotic, so we derive it and obtain B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ). Since B(n+1,n+1) is the total mass of the symmetric Beta(n+1,n+1) density on [0,1], this quantifies the rate at which that density concentrates toward a Gaussian.",
+    "mathContext": "$B(n{+}1,n{+}1) \\sim \\dfrac{\\sqrt{\\pi n}}{(2n+1)\\,4^{n}}.$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Wallis product",
+      "Stirling's formula",
+      "central binomial coefficient",
+      "Beta distribution concentration"
+    ],
+    "prerequisites": [
+      "the parent diagonal value B(n+1,n+1) = 1/((2n+1)·C(2n,n))",
+      "asymptotic equivalence of sequences"
+    ]
+  },
+  {
+    "id": "ann-centralBinom-cast",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
+    "range": { "startLine": 50, "endLine": 62 },
+    "type": "technique",
+    "title": "Central Binomial as a Factorial Quotient",
+    "content": "centralBinom_cast establishes the real identity C(2n,n) = (2n)!/(n!·n!). This is the bridge that lets Stirling's factorial equivalence be transported to the central binomial coefficient: once C(2n,n) is written as a quotient of factorials, the factorial asymptotic can be applied term by term. The proof comes from Mathlib's Nat.choose_mul_factorial_mul_factorial (C(2n,n)·n!·n! = (2n)!), cast to ℝ and divided.",
+    "mathContext": "$\\binom{2n}{n} = \\dfrac{(2n)!}{(n!)^2}.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "Nat.choose_mul_factorial_mul_factorial"
+    ],
+    "prerequisites": [
+      "factorials and binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-ratio-identity",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 88 },
+    "type": "technique",
+    "title": "Where the 4ⁿ Comes From",
+    "content": "stirling_ratio_identity is the algebraic heart: it collapses the Stirling quotient √(2·2m·π)·(2m/e)^{2k} / (√(2mπ)·(m/e)^k)² to exactly 4ᵏ/√(πm). Three things happen — √(2·2m·π) = 2√(πm); the exponential ratio (2m/e)^{2k}/(m/e)^{2k} = 2^{2k} = 4ᵏ (the SOLE source of the 4ᵏ); and the leftover √(πm)/(πm) = 1/√(πm). All dependence on √π and e cancels exactly. The square roots are handled by div_eq_div_iff followed by linear_combination over the self-products √x·√x = x.",
+    "mathContext": "$\\dfrac{\\sqrt{2\\cdot 2m\\,\\pi}\\,(2m/e)^{2k}}{\\big(\\sqrt{2m\\pi}\\,(m/e)^k\\big)^2} = \\dfrac{4^{k}}{\\sqrt{\\pi m}}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling's formula",
+      "Wallis ratio",
+      "linear_combination",
+      "real square-root algebra"
+    ],
+    "prerequisites": [
+      "Real.sqrt_mul, Real.sqrt_sq, Real.mul_self_sqrt",
+      "natural-number power identities (mul_pow, pow_mul)"
+    ]
+  },
+  {
+    "id": "ann-centralBinom-asymptotic",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
+    "range": { "startLine": 90, "endLine": 112 },
+    "type": "key-step",
+    "title": "The Central Binomial Asymptotic (new in Mathlib's ecosystem)",
+    "content": "centralBinom_isEquivalent proves C(2n,n) ~ 4ⁿ/√(πn), a result Mathlib does not state. The derivation is pure asymptotic algebra over Mathlib's Stirling.factorial_isEquivalent_stirling: compose it with n ↦ 2n (IsEquivalent.comp_tendsto) to get the asymptotic of (2n)!, square it (.mul) for (n!)², divide (.div), rewrite the left side as C(2n,n) using centralBinom_cast, and collapse the right side with stirling_ratio_identity on the eventual range n ≥ 1. This lemma is reusable for Catalan, Wallis, and random-walk return-probability asymptotics.",
+    "mathContext": "$\\binom{2n}{n} \\sim \\dfrac{4^{n}}{\\sqrt{\\pi n}}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling.factorial_isEquivalent_stirling",
+      "Asymptotics.IsEquivalent.comp_tendsto",
+      "IsEquivalent.mul / div",
+      "central binomial asymptotic"
+    ],
+    "prerequisites": [
+      "asymptotic equivalence and its combinators",
+      "Filter.atTop and eventual statements"
+    ]
+  },
+  {
+    "id": "ann-beta-decay",
+    "proofId": "beta-integral-recurrence-oq-01-oq-01-oq-01",
+    "range": { "startLine": 114, "endLine": 146 },
+    "type": "key-step",
+    "title": "Decay of the Diagonal Beta Value",
+    "content": "betaDiag_isEquivalent assembles the answer: reciprocating the central binomial asymptotic (IsEquivalent.inv) and multiplying by the eventually-equal scalar (2n+1)⁻¹ gives B(n+1,n+1) ~ √(πn)/((2n+1)·4ⁿ). betaIntegral_diag_eq then identifies the real sequence betaDiag with the value of the complex Euler Beta integral on the diagonal, via the parent's betaIntegral_diag_centralBinom, so the asymptotic is genuinely a statement about Complex.betaIntegral. This answers the parent entry's open question oq-01.",
+    "mathContext": "$B(n{+}1,n{+}1) = \\dfrac{1}{(2n+1)\\binom{2n}{n}} \\sim \\dfrac{\\sqrt{\\pi n}}{(2n+1)\\,4^{n}}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "IsEquivalent.inv",
+      "Complex.betaIntegral",
+      "Beta distribution normalization"
+    ],
+    "prerequisites": [
+      "asymptotic equivalence under reciprocal and scaling",
+      "the parent diagonal value"
+    ]
+  }
+]
