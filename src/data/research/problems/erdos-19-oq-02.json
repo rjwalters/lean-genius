@@ -1,8 +1,8 @@
 {
   "slug": "erdos-19-oq-02",
   "title": "Extensions to k-wise intersections (Erdős-Füredi generalization)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -18,12 +18,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-05-29T19:14:09.204Z",
+    "phase": "COMPLETED",
+    "since": "2026-06-25",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Done: k-wise intersecting families verified, 0-axiom.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,11 +31,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Formalized k-wise intersecting families (Boolean-algebra setting) as the large-intersection companion to EFL: antitone in k, reduction to Mathlib Set.Intersecting (k>=2), half bound 2|A|<=|alpha| (2|A|<=2^n for subsets), and sharpness via principal up-sets. Verified, 0 axioms, 9 thms/2 defs.",
+    "builtItems": [
+      "KWiseIntersecting definition",
+      "KWiseIntersecting.subfamily, .antitone, .mem_ne_bot",
+      "KWiseIntersecting.intersecting (reduction to pairwise Set.Intersecting)",
+      "KWiseIntersecting.card_le and kWiseIntersecting_subsets_card_le (half bound)",
+      "principalUp + principalUp_kWiseIntersecting + exists_kWiseIntersecting (sharpness/existence)"
+    ],
+    "insights": [
+      "k-wise intersection (k>=2) reduces to pairwise for cardinality: control of all 2-subfamilies already gives Kleitman's half bound.",
+      "{a,b}.inf id = a ⊓ b makes 'meet != bot' definitionally ¬Disjoint a b, the bridge into Mathlib's intersecting-family API.",
+      "Working over a general Boolean algebra reuses Set.Intersecting.card_le verbatim; specialize to subsets only at the end via Fintype.card_finset.",
+      "A single principal up-set is k-wise intersecting for every k, so the pairwise reduction is sharp."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove principal up-set attains 2|A|=2^n (exact extremality).",
+      "Formalize Frankl's k>=3 structure theorem.",
+      "k-wise t-intersecting refinement."
+    ]
   },
   "tags": [
     "seeker-selected",

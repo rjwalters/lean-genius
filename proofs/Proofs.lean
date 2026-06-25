@@ -1669,6 +1669,7 @@ import Proofs.Erdos197Problem
 import Proofs.Erdos198Problem
 import Proofs.Erdos199Problem
 import Proofs.Erdos19OQ01Problem
+import Proofs.Erdos19OQ02Problem
 import Proofs.Erdos19Problem
 import Proofs.Erdos1OQ01
 import Proofs.Erdos1OQ02
