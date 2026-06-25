@@ -1,0 +1,156 @@
+{
+  "id": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+  "title": "The Sharp k = 3 Birthday Threshold: n = (6d²ln2)^(1/3) + 1 + o(1)",
+  "slug": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+  "description": "Sharpens the parent's k=3 birthday threshold from an O(1) error band to an asymptotically exact constant. Writing c = (6d²ln2)^(1/3), the n ≥ 2 solving the expected-triple balance n(n-1)(n-2) = 6d²ln2 satisfies c + 1 ≤ n ≤ c + 1 + 1/(3c), i.e. n = (6d²ln2)^(1/3) + 1 + o(1): the lower-order term is the explicit constant 1, with a remainder bounded by 1/(3c) = O(d^(-2/3)) that vanishes as d → ∞. Improves the parent's c ≤ n ≤ c + 2 (additive error 2). Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "asymptotics",
+      "sharp-threshold",
+      "depressed-cubic",
+      "cube-root",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 163,
+    "assumptions": "None. Fully machine-verified: the Docker Lean build of Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for birthday_triple_threshold_sharp and birthday_triple_threshold_const_one. The file imports only Mathlib and is self-contained. Scope note: as in the parent, this proves the threshold from the expected-count balance equation; it does not re-derive that balance equation from a probabilistic limit theorem (Poisson approximation), which is the heuristic modeling input.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pow_rpow_inv_natCast",
+        "description": "(x ^ n) ^ (n⁻¹ : ℝ) = x for 0 ≤ x, n ≠ 0 — the cube-root identity (x³)^(1/3) = x used for the lower bound",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      },
+      {
+        "theorem": "Real.rpow_natCast",
+        "description": "x ^ (↑n : ℝ) = x ^ n — converts the natural cube to a real power so that (L^(1/3))³ = L^((1/3)·3) = L can be computed via rpow_mul",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_mul",
+        "description": "x ^ (y·z) = (x^y)^z for 0 ≤ x — collapses (L^(1/3))³ to L, giving c³ = L for the depressed-cubic balance",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow",
+        "description": "monotonicity of t ↦ t^z on the nonnegatives for z ≥ 0 — passes the cube root through L ≤ m³ to obtain c ≤ m",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Real.log_pos",
+        "description": "0 < log x for 1 < x — positivity of ln 2, hence of c = (6d²ln2)^(1/3)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Sharpens the k=3 birthday threshold from the parent's O(1) band c ≤ n ≤ c + 2 to the asymptotically exact n = (6d²ln2)^(1/3) + 1 + o(1), pinning the lower-order term to the explicit constant 1",
+      "Identifies the centered cube identity n(n-1)(n-2) = (n-1)³ - (n-1) as the mechanism: it turns the balance equation into the depressed cubic m³ - m = c³ (m = n-1)",
+      "birthday_triple_threshold_sharp: c + 1 ≤ n ≤ c + 1 + 1/(3c) for n solving the balance equation — the lower bound from m³ ≥ c³, the upper bound collapsing to (m-c)² ≥ 0 after multiplying 3c(m-c) ≤ 1 by m² + mc + c² > 0",
+      "birthday_triple_threshold_const_one: the packaged statement |n − ((6d²ln2)^(1/3) + 1)| ≤ 1/(3(6d²ln2)^(1/3)), with remainder O(d^(-2/3)) → 0"
+    ],
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The k=3 birthday problem asks when three of n people are likely to share a day among d equally likely days; the folklore threshold is n ≈ (6d²ln2)^(1/3). The parent entry (birthday-problem-oq-03-oq-01-oq-01-oq-03) proves this to leading order with an explicit additive error of at most 2, via the corner-cube sandwich (n-2)³ ≤ n(n-1)(n-2) ≤ n³, and its open questions ask to 'sharpen the additive O(1) error: locate n within a smaller window'. This entry answers that question for k=3.",
+    "problemStatement": "Sharpen the additive O(1) error in the k=3 birthday threshold: locate the balance-equation solution n within a window smaller than [(6d²ln2)^(1/3), (6d²ln2)^(1/3)+2].",
+    "text": "Shows that the n ≥ 2 solving n(n-1)(n-2) = 6d²ln2 satisfies (6d²ln2)^(1/3) + 1 ≤ n ≤ (6d²ln2)^(1/3) + 1 + 1/(3(6d²ln2)^(1/3)), so n = (6d²ln2)^(1/3) + 1 + o(1) — the lower-order term is exactly 1.",
+    "proofStrategy": "Replace the parent's corner cube n³ with the centered cube (n-1)³. The exact identity n(n-1)(n-2) = (n-1)³ - (n-1) turns the balance n(n-1)(n-2) = 6d²ln2 =: c³ into the depressed cubic m³ - m = c³ with m := n - 1. Lower bound: m³ = c³ + m ≥ c³ (since m ≥ 0), so taking cube roots (Real.rpow_le_rpow with (x³)^(1/3) = x) gives m ≥ c, i.e. n ≥ c + 1. Upper bound: the target 3c(m-c) ≤ 1, multiplied by the positive quantity m² + mc + c² and using m³ - c³ = m, collapses to the trivial (m-c)² ≥ 0 (verified by linear_combination and nlinarith); hence m ≤ c + 1/(3c), i.e. n ≤ c + 1 + 1/(3c). The identity c³ = (6d²ln2)^((1/3)·3) = 6d²ln2 is established by Real.rpow_natCast and Real.rpow_mul.",
+    "keyInsights": [
+      "The centered cube (n-1)³ touches the falling factorial to within the bounded correction (n-1): n(n-1)(n-2) = (n-1)³ - (n-1). This is what upgrades the parent's O(1) error to the exact constant 1 + o(1) — the corner cubes (n-2)³ and n³ are a fixed distance 2 apart and can only pin n to within 2.",
+      "Substituting m = n - 1 turns the balance into the depressed cubic m³ - m = c³, where c = (6d²ln2)^(1/3); the depressed (no quadratic term) form is exactly what makes the centered analysis clean.",
+      "The upper bound is not an analytic estimate but an algebraic identity: 3c(m-c) ≤ 1 is equivalent, after clearing the positive factor m² + mc + c², to (m-c)² ≥ 0. The remainder 1/(3c) is therefore sharp for this argument.",
+      "The remainder 1/(3c) = O(d^(-2/3)) vanishes as d → ∞, so the constant term is genuinely exactly 1 in the limit — a strict refinement, not merely a smaller constant in an O(1) bound.",
+      "The sharpening is special to k = 3: for general k the centered monomial (n - (k-1)/2)^k does not divide the falling factorial exactly, which is why the sibling general-k entry retains the loose ±(k-1) band."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-cuberoot",
+      "title": "Problem Statement and the Cube-Root Identity",
+      "summary": "Module docstring explaining the centered-cube sharpening and the depressed cubic m³ - m = c³; cubeRoot_cube: (x³)^(1/3) = x for x ≥ 0 via Real.pow_rpow_inv_natCast",
+      "startLine": 1,
+      "endLine": 65
+    },
+    {
+      "id": "sharp-threshold",
+      "title": "The Sharp Two-Sided Bound",
+      "summary": "birthday_triple_threshold_sharp: c + 1 ≤ n ≤ c + 1 + 1/(3c). Establishes c³ = L via rpow, recasts the balance as m³ - m = c³, derives the lower bound from m³ ≥ c³ and the upper bound by collapsing 3c(m-c) ≤ 1 to (m-c)² ≥ 0",
+      "startLine": 67,
+      "endLine": 116
+    },
+    {
+      "id": "const-one",
+      "title": "The Exact Lower-Order Constant",
+      "summary": "birthday_triple_threshold_const_one: |n − (c + 1)| ≤ 1/(3c), exhibiting the exact constant term 1 and the vanishing remainder O(d^(-2/3))",
+      "startLine": 118,
+      "endLine": 140
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the k=3 birthday-coincidence threshold is (6d²ln2)^(1/3) + 1 + o(1). The n ≥ 2 solving the expected-triple balance n(n-1)(n-2) = 6d²ln2 satisfies (6d²ln2)^(1/3) + 1 ≤ n ≤ (6d²ln2)^(1/3) + 1 + 1/(3(6d²ln2)^(1/3)), via the centered cube identity n(n-1)(n-2) = (n-1)³ - (n-1) and the depressed cubic m³ - m = c³.",
+    "implications": "Answers the parent's open question on sharpening the O(1) error for k=3: the lower-order term is the explicit constant 1, not merely a bounded quantity. The centered-cube technique — trading a corner power for a centered power to expose an exact lower-order constant — transfers to other expected-count thresholds governed by falling factorials with a usable centered factorization.",
+    "openQuestions": [
+      "Is the constant 1 itself the start of an exact asymptotic series n = (6d²ln2)^(1/3) + 1 + a/(d^(2/3)) + ...? Compute the next coefficient from the depressed cubic m³ - m = c³.",
+      "Derive the balance equation n(n-1)(n-2) = 6d²ln2 from a Poisson approximation for the number of triples, upgrading the heuristic input to a theorem.",
+      "Does a centered factorization yield a sharp constant term for any specific small k beyond 3 (e.g. k=4 via (n - 3/2) shifts), or is k=3 genuinely exceptional?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01-oq-03",
+      "relationship": "parent-problem",
+      "description": "Parent: the k=3 threshold to leading order with O(1) error (c ≤ n ≤ c + 2); its open question asks to sharpen this band, which this entry does to c + 1 ≤ n ≤ c + 1 + 1/(3c)"
+    },
+    {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+      "relationship": "related",
+      "description": "Sibling: the general-k threshold (k!·d^(k-1)·ln2)^(1/k) with loose ±(k-1) band; for k=3 it recovers the parent's ±2, which this entry sharpens using the k=3-specific centered cube"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "E. H. McKinney"
+      ],
+      "title": "Generalized Birthday Problem",
+      "year": "1966",
+      "venue": "American Mathematical Monthly 73, 385–387",
+      "note": "Multiple-coincidence birthday problem"
+    },
+    {
+      "authors": [
+        "Anirban DasGupta"
+      ],
+      "title": "The matching, birthday and the strong birthday problem: a contemporary review",
+      "year": "2005",
+      "venue": "Journal of Statistical Planning and Inference 130, 377–389",
+      "note": "Asymptotics of k-fold birthday coincidences"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "BirthdayProblemOQ03OQ01OQ01OQ03OQ01",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
