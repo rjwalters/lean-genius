@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "minkowski-fundamental-theorem-oq-05",
+    "range": { "startLine": 1, "endLine": 59 },
+    "type": "context",
+    "title": "The open question and the Minkowski construction",
+    "content": "The header records exactly the parent entry's Open Question #5 — can simultaneous Dirichlet approximation be derived from minkowski_fundamental? — and answers it affirmatively. The explicit construction is laid out: work in ℝ^{d+1}, use the unipotent shear matrix (determinant 1, so covolume 1) whose integer lattice points are (q, p₀−α₀q, …, p_{d-1}−α_{d-1}q), and place a symmetric box of half-width Nᵈ+½ in coordinate 0 and 1/N elsewhere. Mathlib has only the one-dimensional Dirichlet theorem (pigeonhole); the simultaneous version and its geometry-of-numbers derivation are the new content.",
+    "mathContext": "Goal: $\\forall\\,\\alpha:\\mathrm{Fin}\\,d\\to\\mathbb{R},\\ N\\ge1,\\ \\exists\\,q\\in[1,N^d],\\,p:\\mathrm{Fin}\\,d\\to\\mathbb{Z}$ with $|\\alpha_i q - p_i|\\le 1/N$.",
+    "significance": "context",
+    "relatedConcepts": ["Diophantine approximation", "geometry of numbers", "Minkowski convex body theorem", "lattices"],
+    "prerequisites": ["lattices and covolume", "convex bodies"]
+  },
+  {
+    "id": "ann-shear",
+    "proofId": "minkowski-fundamental-theorem-oq-05",
+    "range": { "startLine": 71, "endLine": 109 },
+    "type": "definition",
+    "title": "The shear matrix and its covolume-1 lattice",
+    "content": "shearMatrix is the unipotent (d+1)×(d+1) matrix that is the identity except for row 0, whose off-diagonal entries are −αⱼ. Because it is upper triangular (shearMatrix_blockTriangular), its determinant is the product of the diagonal, namely 1 (shearMatrix_det via Matrix.det_of_upperTriangular). Packaged as dirichletLattice, this gives a lattice of covolume |det| = 1 — the key normalization that makes the critical Minkowski volume exactly 2^{d+1}. Applying an integer coefficient vector to the rows produces precisely the approximation vector (q, p₀−α₀q, …).",
+    "mathContext": "$\\det(\\text{shear}) = 1 \\Rightarrow \\mathrm{covolume}(\\mathrm{dirichletLattice}) = 1$; lattice point $= (q,\\,p_0-\\alpha_0 q,\\dots)$.",
+    "significance": "key",
+    "relatedConcepts": ["unipotent matrix", "upper-triangular determinant", "covolume", "lattice basis"],
+    "prerequisites": ["determinant of triangular matrices", "lattice from a basis matrix"]
+  },
+  {
+    "id": "ann-box-volume",
+    "proofId": "minkowski-fundamental-theorem-oq-05",
+    "range": { "startLine": 111, "endLine": 196 },
+    "type": "technique",
+    "title": "The symmetric box and its volume exceeding the critical value",
+    "content": "dirichletBox is the symmetric convex body Icc(−boxHi, boxHi) with half-widths Nᵈ+½ in coordinate 0 and 1/N in the rest. Because the box is axis-aligned, its Lebesgue volume is a plain product of side-lengths via Real.volume_Icc_pi: boxVolume = (2Nᵈ+1)(2/N)ᵈ = 2^{d+1} + 2ᵈ/Nᵈ. Since the lattice has covolume 1, the critical Minkowski volume is 2^{d+1}, and boxVolume_gt_critical shows the box strictly exceeds it (the surplus 2ᵈ/Nᵈ > 0). The slight enlargement of coordinate 0 by ½ is exactly what buys the strict inequality, so the easy strict Minkowski theorem suffices rather than the boundary/compactness version.",
+    "mathContext": "$\\mathrm{vol} = 2^{d+1} + 2^d/N^d > 2^{d+1} = 2^{d+1}\\cdot\\mathrm{covolume}$.",
+    "significance": "key",
+    "relatedConcepts": ["axis-aligned box volume", "Real.volume_Icc_pi", "critical volume", "convex symmetric body"],
+    "prerequisites": ["Lebesgue volume of a product box", "ConvexBody / HasVolume API"]
+  },
+  {
+    "id": "ann-core",
+    "proofId": "minkowski-fundamental-theorem-oq-05",
+    "range": { "startLine": 197, "endLine": 281 },
+    "type": "insight",
+    "title": "Minkowski core: reading off the approximating point",
+    "content": "dirichlet_minkowski_core applies the parent minkowski_fundamental to obtain a nonzero lattice point, then extracts the approximation. Helper lemmas (shear_col0, shear_row0_succ, shear_succ_succ) evaluate the matrix entries so that coordinate 0 of the point is the integer q = coeffs 0 and coordinate k+1 is coeffs(k+1) − αₖ·q. Box membership bounds each coordinate by boxHi; for q this gives |q| < Nᵈ+1, sharpened to |q| ≤ Nᵈ by integrality (omega), and for the rest gives the |αₖq − pₖ| ≤ 1/N bound. Nonvanishing of the point transfers to 'q ≠ 0 or some pₖ ≠ 0'. This is the heart of the reduction.",
+    "mathContext": "From a nonzero lattice point: $|q|\\le N^d$ (integrality sharpens $|q| < N^d+1$) and $|\\alpha_k q - p_k|\\le 1/N$.",
+    "significance": "key",
+    "relatedConcepts": ["lattice point extraction", "integrality sharpening", "coordinate evaluation", "minkowski_fundamental"],
+    "prerequisites": ["the parent Minkowski theorem", "omega for integer bounds"]
+  },
+  {
+    "id": "ann-dirichlet",
+    "proofId": "minkowski-fundamental-theorem-oq-05",
+    "range": { "startLine": 283, "endLine": 326 },
+    "type": "concept",
+    "title": "The simultaneous theorem: sign fix and the N=1 base case",
+    "content": "dirichlet_simultaneous upgrades the core point to the clean statement with 0 < q ≤ Nᵈ. For N = 1 the core is bypassed entirely: take q = 1 and pᵢ = round(αᵢ), with abs_sub_round giving |αᵢ − round αᵢ| ≤ ½ = 1/N. For N ≥ 2 the case q = 0 is impossible (it would force some integer pᵢ with 1 ≤ |pᵢ| ≤ 1/N ≤ ½), so q ≠ 0; a sign flip on (q, p) makes q positive while preserving the symmetric bound (abs_neg). This delivers Dirichlet's simultaneous approximation theorem as a genuine corollary of the geometry of numbers.",
+    "mathContext": "$\\exists\\,q,\\ 0<q\\le N^d,\\ |\\alpha_i q - p_i|\\le 1/N$; $N=1$ by rounding, $N\\ge2$ by the core + sign flip.",
+    "significance": "key",
+    "relatedConcepts": ["sign normalization", "rounding base case", "abs_sub_round", "simultaneous approximation"],
+    "prerequisites": ["dirichlet_minkowski_core", "case analysis on N"]
+  }
+]
