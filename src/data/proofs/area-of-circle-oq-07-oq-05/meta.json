@@ -24,6 +24,34 @@
     "sorries": 0
   },
   "title": "The Second Moment of the Gaussian ∫ x² e^{-x²} = √π/2",
+  "description": "Adds the first nontrivial weighted moment to the Gaussian family: ∫_ℝ x² e^{-x²} dx = √π/2, exactly half the parent's zeroth moment √π. The value is obtained by integration by parts on the whole line — writing x² e^{-x²} = x·(x e^{-x²}), where x e^{-x²} is the derivative of -½ e^{-x²}; the boundary term x·(-½ e^{-x²}) vanishes at ±∞ by Gaussian decay, leaving ½∫ e^{-x²} = ½√π. Equivalently ½·Γ(3/2)·2 = √π/2, the variance integral of the unnormalized Gaussian.",
+  "overview": {
+    "historicalContext": "The moments ∫_ℝ x^{2n} e^{-x²} dx = (2n−1)!!·√π/2ⁿ encode the variance and higher cumulants of the normal distribution and are foundational to probability, statistical mechanics (equipartition), and the Hermite-polynomial theory of the Gaussian. The second moment n = 1, giving √π/2, is the variance integral of the unnormalized standard Gaussian and the first case where a polynomial weight must be carried through the integral — naturally handled by integration by parts, the same recursion that generates all even moments.",
+    "problemStatement": "Evaluate the second moment of the Gaussian weight, $\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\dfrac{\\sqrt{\\pi}}{2}$, building on the parent's zeroth moment $\\int_{\\mathbb{R}} e^{-x^2}\\,dx = \\sqrt{\\pi}$.",
+    "proofStrategy": "Integration by parts on (−∞, ∞) via MeasureTheory.integral_mul_deriv_eq_deriv_mul with u = x (u' = 1) and v = −½ e^{-x²} (v' = x e^{-x²}, built from hasDerivAt_pow, HasDerivAt.exp, HasDerivAt.const_mul). The integrand factors as u·v' = x² e^{-x²}, so the IBP formula gives ∫ x² e^{-x²} = 0 − 0 − ∫ 1·(−½ e^{-x²}) = ½∫ e^{-x²} = ½√π. The boundary term x e^{-x²} → 0 at ±∞ comes from tendsto_mul_gaussian_cocompact (repackaged from tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact); the two integrability side-conditions use integrable_rpow_mul_exp_neg_mul_sq and integrable_exp_neg_mul_sq; the residual ∫ e^{-x²} = √π is the parent value integral_gaussian 1.",
+    "keyInsights": [
+      "The value √π/2 being exactly half the zeroth moment √π is not a coincidence: integration by parts with u = x trades the x² weight for the antiderivative of x e^{-x²}, and because u' = 1 the residual is precisely the bare zeroth moment scaled by ½.",
+      "The boundary term vanishes because Gaussian decay e^{-x²} dominates the linear factor x; on ℝ the cocompact filter equals atBot ⊔ atTop, so a single cocompact limit packages both one-sided boundary terms the IBP lemma needs.",
+      "The same single IBP step, iterated, yields the double-factorial recursion ∫ x^{2n} e^{-x²} = (2n−1)!!·√π/2ⁿ for all even moments; here one application suffices because the polynomial weight is only x².",
+      "Equivalently the result is the Gamma special value ½·Γ(3/2)·2 = √π/2, exhibiting the moment as a shadow of the Gamma function — the analytic object that unifies all Gaussian moments."
+    ]
+  },
+  "sections": [
+    {
+      "id": "boundary-decay",
+      "title": "The Boundary Term Vanishes",
+      "startLine": 41,
+      "endLine": 52,
+      "summary": "tendsto_mul_gaussian_cocompact: x e^{-x²} → 0 at both ends of ℝ, repackaged from tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact via tendsto_zero_iff_norm_tendsto_zero — the boundary product that vanishes in the IBP computation."
+    },
+    {
+      "id": "integration-by-parts",
+      "title": "The Second Moment by Integration by Parts",
+      "startLine": 53,
+      "endLine": 118,
+      "summary": "gaussian_second_moment: ∫ x² e^{-x²} = √π/2 via integral_mul_deriv_eq_deriv_mul with u = x, v = −½ e^{-x²}, discharging the derivative, integrability, and boundary obligations, leaving ½∫ e^{-x²} = ½√π (integral_gaussian)."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
