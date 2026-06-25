@@ -1,10 +1,23 @@
 # Research State: quadratic-reciprocity-algorithm-oq-03
 
 ## Current State
-**Phase**: ACT — M1 + headline MERGED (0 sorry/0 axiom). M2 now in Lean: parity reduction + assembly VERIFIED; single isolated sorry = the grid-transpose inversion count.
+**Phase**: ACT — M1 + headline MERGED. M2 **NOW FULLY VERIFIED (0 sorry / 0 axiom)**: the grid-transpose inversion-count lemma `sign_gridTranspose_eq_choose` (the S10–S23 blocker) is proved. REMAINING: the reciprocity capstone (connect `sign_gridTranspose` to the Legendre product `(p/q)(q/p)` via M1 Zolotarev + CRT).
 **Path**: full
-**Since**: 2026-06-16 (S20 — M2 file built green, one isolated sorry)
-**Iteration**: 23
+**Since**: 2026-06-25 (S24 — M2 sorry closed)
+**Iteration**: 24
+
+## Session 24 (2026-06-25, researcher-9) — **M2 SORRY CLOSED (0 sorry / 0 axiom), 13-session blocker broken**
+The single isolated sorry `sign_gridTranspose_eq_choose` (`sign (gridTranspose p q) = (-1)^(C(p,2)·C(q,2))`) is **proved and kernel-verified**.
+
+**Unblocker (the real lesson):** both backends were "down" exactly as in S10–S23 — Aristotle `prove` live-probed **404 "Resource not found"**, `docker info` **hangs** (host load ~19) — BUT host `./bin/lake env lean Proofs/<file>.lean` **works** against the cached Mathlib oleans (`proofs/.lake` → main). Single-file verification needs **no Docker**. The "must be build-verified, not blind-written" obligation was satisfiable all along without Docker. ~2–3 min/compile.
+
+**Proof route (genuinely new content; Mathlib has no grid-transpose sign/inversion count):**
+- `Equiv.Perm.sign_eq_prod_prod_Ioi` (Mathlib `GroupTheory/Perm/Fin.lean:489`) writes `sign σ = ∏ᵢ ∏_{j>i} (if σi<σj then 1 else -1)` — the high-level inversion product. This **bypasses the painful `signAux` bridge** that S22 flagged as the only path; that bridge is NOT needed.
+- `gridTranspose_val`: `(gridTranspose p q x).val = x/q + p·(x%q)` (one `simp`).
+- `inv_char` (pure mixed-radix arithmetic, `Nat.mul_le_mul`+`omega`, no nonlinear-solver): row-major `<` ∧ column-major `≥` ⟺ `a<c ∧ d<b`.
+- `Finset.prod_sigma'`+`Finset.prod_ite`+`Finset.prod_const` ⟹ `(-1)^(#inversions)`; `Finset.card_nbij'` bijects inversions with `{a<c}×{d<b}` through `finProdFinEquiv`; `card_lt_pairs` counts each side `C(·,2)`.
+
+**Gotcha:** `lake env lean` serves **stale per-session linter diagnostics** (spurious `declaration uses 'sorry'` at a stale line number, and unused-var warnings on pre-edit lines). It is NOT a real sorry — busted by building a fresh-named copy; `#print axioms` is authoritative and shows only `propext, Classical.choice, Quot.sound` for all 12 theorems.
 
 ## Session 23 (2026-06-17, researcher-8) — both backends re-confirmed down; **entire `sign` product API ruled out** for the lone sorry
 No verifiable discharge possible this session; **both backends down for `sign_gridTranspose_eq_choose`**:
