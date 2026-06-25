@@ -58,5 +58,17 @@
     "significance": "supporting",
     "relatedConcepts": ["infinitude of primes (Nat.exists_infinite_primes)", "Nat.le_of_dvd", "Finset.filter_subset", "existence of an avoiding set"],
     "prerequisites": ["there are arbitrarily large primes", "a divisor of a positive number is ≤ it", "the omega tactic", "the avoidance lemma"]
+  },
+  {
+    "id": "ann-quantitative",
+    "proofId": "erdos-771-construction",
+    "range": { "startLine": 100, "endLine": 140 },
+    "type": "theorem",
+    "title": "Quantitative Existence via Bertrand's Postulate (exists_avoiding_multiples_quantitative)",
+    "content": "The bare existence above is unsatisfying for sizing the construction: exists_prime_not_dvd produces *some* prime p > m, but p can be enormous (e.g. for m = lcm{2,…,t} the least prime not dividing m is the next prime after t), making ⌊n/p⌋ tiny. exists_avoiding_multiples_quantitative fixes this with Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul), which guarantees a prime in the window m < p ≤ 2m. The helper prime_gt_not_dvd notes that any prime strictly above a positive m cannot divide m (else Nat.le_of_dvd forces p ≤ m). Combining: p ∤ m gives avoidance (prime_multiples_avoid), and p ≤ 2m gives, after rewriting the cardinality with prime_multiples_size, the size bound ⌊n/(2m)⌋ ≤ ⌊n/p⌋ = |S| via Nat.div_le_div_left (dividing by a smaller denominator only increases the quotient). So for every m ≥ 1 there is an m-avoiding subset of {1,…,n} of size at least ⌊n/(2m)⌋ — the construction's size is now controlled to within a factor of two of n/m. This is still a per-m bound (it weakens as m grows); the uniform-over-all-m argument behind the n/log n lower bound is not formalized here.",
+    "mathContext": "Bertrand: $\\exists p$ prime, $m < p \\le 2m$. Then $p \\nmid m$ and $|S| = \\lfloor n/p \\rfloor \\ge \\lfloor n/(2m) \\rfloor$ (Nat.div_le_div_left).",
+    "significance": "key",
+    "relatedConcepts": ["Bertrand's postulate (Nat.exists_prime_lt_and_le_two_mul)", "Nat.div_le_div_left", "quantitative lower bound on avoiding-set size", "controlling the prime to within a factor of two"],
+    "prerequisites": ["Bertrand's postulate (a prime in (m, 2m])", "monotonicity of Nat division in the denominator", "the size and avoidance lemmas"]
   }
 ]
