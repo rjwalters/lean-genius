@@ -3569,6 +3569,7 @@ import Proofs.ParallelPostulateIndependenceOQ02
 import Proofs.PartitionTheorem
 import Proofs.PartitionTheoremOQ01
 import Proofs.PartitionTheoremOQ01OQ01
+import Proofs.PartitionTheoremOQ02
 import Proofs.PartitionTheoremOQ03
 import Proofs.PartitionTheoremOQ04
 import Proofs.PartitionTheoremOQ04Aristotle
