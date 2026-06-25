@@ -1,35 +1,62 @@
 [
   {
-    "id": "ann-lower-bound",
+    "id": "pelloq02-header",
     "proofId": "pell-equation-oq-02",
-    "range": {
-      "startLine": 41,
-      "endLine": 56
-    },
+    "range": { "startLine": 3, "endLine": 31 },
+    "type": "context",
+    "title": "The Size of the Fundamental Solution",
+    "content": "Pell's equation $x^2 - Dy^2 = 1$ (for $D > 0$ non-square) has infinitely many integer solutions, all powers of a single **fundamental** solution $(x_1, y_1)$. Heuristically $\\log(x_1 + y_1\\sqrt{D}) \\approx \\sqrt{D}$, but the true distribution of $x_1$ is poorly understood and its link to the continued-fraction period of $\\sqrt{D}$ is subtle. This file rigorously pins the elementary *lower* bound and the extremal (minimality) characterization, leaving the deep upper-bound/distribution questions honestly open.",
+    "mathContext": "$x^2 - D y^2 = 1$, fundamental solution $(x_1,y_1)$, heuristic $\\log(x_1 + y_1\\sqrt D) \\approx \\sqrt D$",
+    "significance": "context",
+    "relatedConcepts": ["Pell's equation", "fundamental solution", "continued fractions", "units in ℤ[√D]"],
+    "prerequisites": ["quadratic Diophantine equations", "Pell.Solution₁ in Mathlib"]
+  },
+  {
+    "id": "pelloq02-lower-bound",
+    "proofId": "pell-equation-oq-02",
+    "range": { "startLine": 39, "endLine": 50 },
     "type": "insight",
     "title": "x > √D, Rigorously",
-    "content": "`x_sq_ge_d_add_one` proves every nontrivial solution satisfies x² ≥ D + 1. The argument is the Pell relation itself: a solution with x > 1 must have y ≠ 0 (Mathlib's y_ne_zero_of_one_lt_x), so the integer y² ≥ 1, and x² = 1 + Dy² ≥ 1 + D with D > 0. This is the rigorous floor under the heuristic log(x₁ + y₁√D) ≈ √D — the fundamental solution can never be smaller than √D in its x-coordinate."
+    "content": "`x_sq_ge_d_add_one` proves every nontrivial solution ($x > 1$) satisfies $x^2 \\ge D + 1$. The argument is the Pell relation itself: $x > 1$ forces $y \\ne 0$ (`Solution₁.y_ne_zero_of_one_lt_x`), so the integer $y^2 \\ge 1$, and with $D > 0$ the relation $x^2 = 1 + D y^2 \\ge 1 + D$ closes by `nlinarith`. This is the rigorous floor under the heuristic $x_1 \\approx \\sqrt{D}$ — a fundamental solution's $x$-coordinate can never dip below $\\sqrt{D}$.",
+    "mathContext": "$x^2 = 1 + D y^2 \\ge 1 + D$ since $y^2 \\ge 1$ and $D > 0 \\;\\Rightarrow\\; x > \\sqrt{D}$",
+    "significance": "key",
+    "relatedConcepts": ["Pell relation", "nlinarith", "Solution₁.prop_x", "lower bound"],
+    "prerequisites": ["integer inequalities", "y_ne_zero_of_one_lt_x"]
   },
   {
-    "id": "ann-minimal",
+    "id": "pelloq02-minimal",
     "proofId": "pell-equation-oq-02",
-    "range": {
-      "startLine": 58,
-      "endLine": 67
-    },
+    "range": { "startLine": 52, "endLine": 62 },
     "type": "concept",
     "title": "The Fundamental Solution Is the Smallest",
-    "content": "`IsFundamental.is_minimal` (from Mathlib's IsFundamental.x_le_x) records that the fundamental solution minimizes x among all nontrivial solutions. This is why 'the size of the fundamental solution' is a well-posed extremal quantity: it is the smallest a Pell solution can be, and the open question asks how that minimum grows with D."
+    "content": "`IsFundamental.x_sq_ge_d_add_one` applies the lower bound to the fundamental solution, and `IsFundamental.is_minimal` (restating Mathlib's `IsFundamental.x_le_x`) records that the fundamental solution **minimizes** $x$ among all nontrivial solutions. Together these make 'the size of the fundamental solution' a well-posed extremal quantity: it is the smallest $x$ any Pell solution can have, and the open question asks precisely how that minimum grows with $D$.",
+    "mathContext": "$x_1 = \\min\\{\\,x : (x,y) \\text{ nontrivial solution}\\,\\}$, and $x_1^2 \\ge D + 1$",
+    "significance": "key",
+    "relatedConcepts": ["IsFundamental", "extremal characterization", "minimal solution", "IsFundamental.x_le_x"],
+    "prerequisites": ["fundamental solution theory", "ordering of solutions"]
   },
   {
-    "id": "ann-concrete",
+    "id": "pelloq02-concrete",
     "proofId": "pell-equation-oq-02",
-    "range": {
-      "startLine": 71,
-      "endLine": 100
-    },
-    "type": "concept",
+    "range": { "startLine": 64, "endLine": 87 },
+    "type": "technique",
     "title": "Irregular Growth at Small D",
-    "content": "The explicit fundamental solutions (3,2) for D=2, (2,1) for D=3, and (9,4) for D=5 already display the erratic behavior of x₁: it jumps 3 → 2 → 9 as D goes 2 → 3 → 5, with no monotonicity. (For D = 61 the fundamental x₁ is 1766319049.) `concrete_bounds` verifies each satisfies x² ≥ D+1. This irregularity is precisely the 'poorly understood distribution' the open question highlights."
+    "content": "The explicit fundamental solutions $(3,2)$ for $D=2$, $(2,1)$ for $D=3$, and $(9,4)$ for $D=5$ display the erratic behavior of $x_1$: it jumps $3 \\to 2 \\to 9$ as $D$ runs $2 \\to 3 \\to 5$, with no monotonicity (for $D=61$ the fundamental $x_1 = 1{,}766{,}319{,}049$). Each is built by `Solution₁.mk` with a `norm_num` proof of the Pell relation; `concrete_bounds` then verifies $x^2 \\ge D+1$ for all three. This irregularity is exactly the 'poorly understood distribution' the open question highlights.",
+    "mathContext": "$x_1(D) = 3,\\,2,\\,9$ for $D = 2,\\,3,\\,5$ — non-monotone; $x_1(61) = 1766319049$",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "Solution₁.mk", "norm_num", "non-monotone growth"],
+    "prerequisites": ["constructing explicit solutions"]
+  },
+  {
+    "id": "pelloq02-summary",
+    "proofId": "pell-equation-oq-02",
+    "range": { "startLine": 91, "endLine": 104 },
+    "type": "context",
+    "title": "Scope: What Remains Open",
+    "content": "The closing summary delimits the contribution honestly: the elementary lower bound $x^2 \\ge D+1$, the fundamental solution's minimality, and the concrete small-$D$ data are fully verified. The genuinely hard content — an *upper* bound on or the distribution of $x_1$, and its connection to the continued-fraction period of $\\sqrt{D}$ — remains open and is not claimed here.",
+    "mathContext": "Open: upper bound / distribution of $x_1$, and the continued-fraction-period link",
+    "significance": "context",
+    "relatedConcepts": ["open problem scoping", "continued-fraction period", "regulator"],
+    "prerequisites": ["analytic number theory of Pell equations"]
   }
 ]
