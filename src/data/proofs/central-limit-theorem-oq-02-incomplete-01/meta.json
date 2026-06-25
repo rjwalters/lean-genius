@@ -1,0 +1,175 @@
+{
+  "id": "central-limit-theorem-oq-02-incomplete-01",
+  "slug": "central-limit-theorem-oq-02-incomplete-01",
+  "title": "Bienaymé's Identity with the Covariance Correction",
+  "description": "For a finite family of square-integrable random variables {Xᵢ} over a probability space, the variance of the sum splits exactly into the diagonal variance term and the off-diagonal dependence correction: Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ] + 2·∑_{i<j} Cov[Xᵢ, Xⱼ]. Mathlib supplies only the unsymmetrised double sum Var[∑ᵢ Xᵢ] = ∑ᵢ∑ⱼ Cov[Xᵢ, Xⱼ] (variance_sum'); this entry isolates the diagonal ∑ᵢ Var[Xᵢ] and folds the off-diagonal into twice the strict upper triangle. The covariance correction is exactly the term that vanishes in the uncorrelated/i.i.d. case (giving the √n scaling behind the classical CLT) and that persists for dependent sequences, accumulating into the long-run variance σ²∞ = Var[X₁] + 2·∑_{k≥1} Cov[X₁, X_{k+1}] driving the dependent CLT. Fully machine-checked: 0 axioms, 0 sorries.",
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization of Bienaymé's variance identity in its explicit symmetrised form Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ] + 2·∑_{i<j} Cov[Xᵢ, Xⱼ] for a finite family of L² random variables over a probability space. The mathematical content is the symmetrisation step: Mathlib's variance_sum' gives only the full double sum over all index pairs; here the diagonal is extracted as ∑ᵢ Var[Xᵢ] (using covariance_self) and the off-diagonal is collapsed to twice the strict upper triangle via the Prod.swap involution and the symmetry covariance_comm. Two specialisations are derived: the uncorrelated case (covariance correction vanishes, recovering additivity of variance) and the partial-sum form Var[Sₙ] = ∑_{k<n} Var[Yₖ] + 2·∑_{i<j<n} Cov[Yᵢ, Yⱼ] for a sequence.",
+    "implications": "This is the exact finite-n identity that the central limit theorem for dependent random variables rests on. Dividing the partial-sum form by n for a stationary sequence and taking n → ∞ produces the long-run variance σ²∞ = Var[X₁] + 2·∑_{k≥1} Cov[X₁, X_{k+1}]: the diagonal contributes Var[X₁] and the off-diagonal contributes the autocovariance series. The same identity makes transparent why pairwise uncorrelatedness (in particular pairwise independence) is exactly the hypothesis under which Var[Sₙ] = ∑ Var[Xₖ] and the √n normalisation of the classical CLT is correct.",
+    "openQuestions": [
+      "Can the partial-sum identity be combined with a summable-autocovariance hypothesis ∑_{k} |Cov[X₁, X_{k+1}]| < ∞ to prove Var[Sₙ]/n → σ²∞ for a (weakly) stationary sequence, the variance-normalisation step of the dependent CLT?",
+      "Does the off-diagonal symmetrisation lemma generalise from a linear order on the index set to an arbitrary fixed involution-free pairing, giving the same diagonal/off-diagonal split for the covariance matrix of any finite L² family without choosing an order?"
+    ]
+  },
+  "overview": "{\"historicalContext\":\"Bienaymé's identity (1853) — that the variance of a sum of uncorrelated random variables is the sum of the variances — is one of the oldest results of probability theory and the structural reason behind the √n scaling of sample means. Its general form, valid for correlated variables, carries an explicit covariance-correction term. For dependent sequences this correction does not vanish but accumulates into the long-run (asymptotic) variance, the central object of the central limit theorems for dependent data developed by Ibragimov (1962) and McLeish (1974).\",\"problemStatement\":\"Let {Xᵢ : i ∈ s} be a finite family of square-integrable (L²) random variables on a probability space, with s a finite subset of a linearly ordered index set. Prove the symmetrised variance decomposition Var[∑_{i∈s} Xᵢ] = ∑_{i∈s} Var[Xᵢ] + 2·∑_{(i,j)∈s×s, i<j} Cov[Xᵢ, Xⱼ], and deduce (a) additivity of variance when the family is pairwise uncorrelated and (b) the partial-sum specialisation Var[∑_{k<n} Yₖ] = ∑_{k<n} Var[Yₖ] + 2·∑_{i<j<n} Cov[Yᵢ, Yⱼ].\",\"proofStrategy\":\"Start from Mathlib's variance_sum', which gives Var[∑ᵢ Xᵢ] = ∑_{(i,j)∈s×s} Cov[Xᵢ, Xⱼ] as a sum over the full product s×s. Split s×s = diag ∪ offDiag (Finset.diag_union_offDiag, a disjoint union). On the diagonal, Cov[Xᵢ, Xᵢ] = Var[Xᵢ] (covariance_self), giving ∑ᵢ Var[Xᵢ]. On the off-diagonal, the key lemma sum_offDiag_covariance_eq_two_mul shows ∑_{offDiag} Cov[Xᵢ,Xⱼ] = 2·∑_{i<j} Cov[Xᵢ,Xⱼ]: split the off-diagonal by the predicate i<j versus i>j and pair the two halves by the Prod.swap involution (Finset.sum_nbij'), which maps {i>j} bijectively onto {i<j} and preserves the summand by covariance_comm. The uncorrelated case follows by showing the upper-triangle sum is termwise zero; the partial-sum form is the s = range n instance.\",\"keyInsights\":[\"The entire content beyond Mathlib's variance_sum' is bookkeeping symmetry: the off-diagonal of a symmetric kernel over a linearly ordered set is twice its strict upper triangle, realised by the swap involution on pairs.\",\"Separating the diagonal variance term from the off-diagonal covariance correction is precisely the decomposition that makes the dependent-CLT long-run variance σ²∞ = Var[X₁] + 2·∑_{k≥1} Cov[X₁,X_{k+1}] visible — the diagonal becomes Var[X₁], the upper triangle becomes the autocovariance series.\",\"Pairwise uncorrelatedness is exactly the hypothesis that kills the upper-triangle sum, so the classical additivity Var[Sₙ] = ∑ Var[Xₖ] (and hence the √n normalisation) drops out as the zero-correction special case of one general identity.\"],\"prerequisites\":[\"Variance and covariance of L² random variables (MemLp _ 2)\",\"Mathlib's variance_sum', covariance_self, covariance_comm\",\"Finset off-diagonal/diagonal decomposition and bijective reindexing of sums (Finset.sum_nbij')\"],\"text\":\"This entry refines Mathlib's variance_sum' — which expresses the variance of a finite sum as the full double sum of pairwise covariances — into the classical symmetrised form of Bienaymé's identity, Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ] + 2·∑_{i<j} Cov[Xᵢ, Xⱼ]. The work is the symmetrisation: the diagonal of the covariance double sum is identified with the sum of variances, and the off-diagonal is collapsed to twice the strict upper triangle using the swap involution and the symmetry of covariance. Two corollaries are proved — additivity of variance for pairwise-uncorrelated families, and the partial-sum form whose n→∞ limit yields the long-run variance behind the central limit theorem for dependent random variables. Everything is machine-checked with 0 axioms and 0 sorries.\"}",
+  "mainTheorems": [
+    {
+      "name": "sum_offDiag_covariance_eq_two_mul",
+      "type": "supporting",
+      "description": "Off-diagonal symmetrisation: for a finite set with a linear order, summing the symmetric covariance kernel over the whole off-diagonal equals twice the sum over the strict upper triangle {(i,j) : i<j}. Proved by pairing each lower-triangular term with its upper mirror via Prod.swap.",
+      "leanType": "∑ p ∈ s.offDiag, cov[X p.1, X p.2; μ] = 2 * ∑ p ∈ s.offDiag with p.1 < p.2, cov[X p.1, X p.2; μ]"
+    },
+    {
+      "name": "variance_sum_eq_diag_add_two_mul_offDiag",
+      "type": "main",
+      "description": "Bienaymé's identity with the covariance correction: for a finite family of L² random variables, Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ] + 2·∑_{i<j} Cov[Xᵢ, Xⱼ]. Refines Mathlib's variance_sum' by extracting the diagonal variance and folding the off-diagonal into the explicit dependence correction.",
+      "leanType": "Var[∑ i ∈ s, X i; μ] = ∑ i ∈ s, Var[X i; μ] + 2 * ∑ p ∈ s.offDiag with p.1 < p.2, cov[X p.1, X p.2; μ]"
+    },
+    {
+      "name": "variance_sum_of_pairwise_uncorrelated",
+      "type": "main",
+      "description": "Uncorrelated case: if the family is pairwise uncorrelated (Cov[Xᵢ,Xⱼ] = 0 for i ≠ j) — in particular if pairwise independent — the covariance correction vanishes and Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ]. The identity underpinning the √n normalisation of the classical CLT.",
+      "leanType": "Var[∑ i ∈ s, X i; μ] = ∑ i ∈ s, Var[X i; μ]"
+    },
+    {
+      "name": "variance_partialSum_eq",
+      "type": "main",
+      "description": "Partial-sum specialisation: for a sequence Y : ℕ → Ω → ℝ of L² variables, Var[Sₙ] = ∑_{k<n} Var[Yₖ] + 2·∑_{i<j<n} Cov[Yᵢ, Yⱼ]. The finite-n exact identity whose n→∞ limit produces the long-run variance σ²∞ for stationary sequences.",
+      "leanType": "Var[∑ k ∈ Finset.range n, Y k; μ] = ∑ k ∈ Finset.range n, Var[Y k; μ] + 2 * ∑ p ∈ (Finset.range n).offDiag with p.1 < p.2, cov[Y p.1, Y p.2; μ]"
+    }
+  ],
+  "sections": [
+    {
+      "id": "offdiag-symmetrisation",
+      "title": "Off-Diagonal Symmetrisation",
+      "startLine": 46,
+      "endLine": 73,
+      "summary": "Proves that summing the symmetric covariance kernel over the full off-diagonal of a linearly ordered finite set equals twice the sum over the strict upper triangle, by splitting on i<j vs i>j and pairing the halves via the Prod.swap involution (Finset.sum_nbij').",
+      "mathContext": "The combinatorial heart. The symmetry covariance_comm makes the swap-conjugate summand agree, so the lower triangle reindexes exactly onto the upper triangle."
+    },
+    {
+      "id": "bienayme-identity",
+      "title": "Bienaymé's Identity with the Covariance Correction",
+      "startLine": 75,
+      "endLine": 97,
+      "summary": "Starts from Mathlib's variance_sum', splits the product s×s into diagonal and off-diagonal, identifies the diagonal with ∑ᵢ Var[Xᵢ] via covariance_self, and applies the symmetrisation lemma to obtain Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ] + 2·∑_{i<j} Cov.",
+      "mathContext": "The main result. The only nontrivial steps are the diagonal/off-diagonal disjoint union and the covariance_self rewrite identifying Cov[Xᵢ,Xᵢ] with Var[Xᵢ]."
+    },
+    {
+      "id": "specialisations",
+      "title": "Uncorrelated and Partial-Sum Specialisations",
+      "startLine": 99,
+      "endLine": 135,
+      "summary": "Derives additivity of variance for pairwise-uncorrelated families (the upper-triangle sum is termwise zero) and the partial-sum form over Finset.range n as the s = range n instance.",
+      "mathContext": "The corollaries connecting the abstract identity to the classical √n scaling and to the n→∞ long-run variance of dependent sequences."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "central-limit-theorem-oq-02",
+      "relationship": "extends",
+      "description": "The parent entry is the (axiomatized) central limit theorem for dependent random variables; this entry supplies the exact finite-n variance decomposition Var[Sₙ] = ∑ Var[Yₖ] + 2·∑_{i<j} Cov[Yᵢ,Yⱼ] whose n→∞ limit is the long-run variance σ²∞ driving that CLT."
+    },
+    {
+      "targetId": "central-limit-theorem",
+      "relationship": "related",
+      "description": "The uncorrelated special case Var[∑ Xᵢ] = ∑ Var[Xᵢ] is the variance identity behind the √n normalisation in the classical i.i.d. central limit theorem."
+    }
+  ],
+  "references": [
+    {
+      "title": "Bienaymé's identity (Wikipedia: Variance — Sum of correlated variables)",
+      "url": "https://en.wikipedia.org/wiki/Variance#Sum_of_correlated_variables"
+    },
+    {
+      "title": "Ibragimov & Linnik, Independent and Stationary Sequences of Random Variables",
+      "url": "https://en.wikipedia.org/wiki/Central_limit_theorem#Dependent_processes"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory",
+      "Finset",
+      "scoped ProbabilityTheory"
+    ],
+    "namespace": "CentralLimitTheoremOQ02Incomplete01",
+    "lineCount": 136,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/CentralLimitTheoremOQ02Incomplete01.lean",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "meta": {
+    "author": "Classical result (Bienaymé, 1853), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Variance#Sum_of_correlated_variables",
+    "date": "1853",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CentralLimitTheoremOQ02Incomplete01.lean",
+    "tags": [
+      "probability-theory",
+      "variance",
+      "covariance",
+      "bienayme-identity",
+      "central-limit-theorem",
+      "dependent-random-variables",
+      "long-run-variance",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext, Classical.choice, Quot.sound). The random variables are assumed square-integrable (MemLp _ 2 μ) over a probability measure, which is the standing hypothesis for variance/covariance to be defined.",
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.variance_sum'",
+        "description": "Var[∑ᵢ Xᵢ] = ∑_{(i,j)} Cov[Xᵢ, Xⱼ] over the full product index set; the starting point that this entry symmetrises.",
+        "module": "Mathlib.Probability.Variance"
+      },
+      {
+        "theorem": "ProbabilityTheory.covariance_self",
+        "description": "Cov[X, X; μ] = Var[X; μ]; identifies the diagonal of the covariance double sum with the variance term.",
+        "module": "Mathlib.Probability.Covariance"
+      },
+      {
+        "theorem": "ProbabilityTheory.covariance_comm",
+        "description": "Cov[X, Y; μ] = Cov[Y, X; μ]; the symmetry making the swap-conjugate off-diagonal summand agree.",
+        "module": "Mathlib.Probability.Covariance"
+      },
+      {
+        "theorem": "Finset.sum_nbij'",
+        "description": "Reindexes a sum along a bijection with explicit two-sided inverse; used with Prod.swap to fold the lower triangle onto the upper triangle.",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.diag_union_offDiag",
+        "description": "s ×ˢ s = s.diag ∪ s.offDiag as a disjoint union; splits the full double sum into diagonal and off-diagonal parts.",
+        "module": "Mathlib.Data.Finset.Prod"
+      }
+    ],
+    "originalContributions": [
+      "Symmetrised form of Bienaymé's identity Var[∑ᵢ Xᵢ] = ∑ᵢ Var[Xᵢ] + 2·∑_{i<j} Cov[Xᵢ, Xⱼ], extracting the diagonal variance and the explicit off-diagonal dependence correction from Mathlib's unsymmetrised variance_sum'.",
+      "The reusable off-diagonal symmetrisation lemma: the sum of any symmetric kernel over the off-diagonal of a linearly ordered finite set equals twice its strict upper triangle, via the Prod.swap involution.",
+      "The partial-sum specialisation Var[Sₙ] = ∑_{k<n} Var[Yₖ] + 2·∑_{i<j<n} Cov[Yᵢ, Yⱼ] — the exact finite-n identity whose n→∞ limit is the long-run variance σ²∞ of the central limit theorem for dependent random variables.",
+      "Explicit identification of the pairwise-uncorrelated case as the zero-correction specialisation that recovers additivity of variance and the √n normalisation of the classical CLT."
+    ],
+    "prerequisites": [
+      "Variance and covariance of L² random variables",
+      "Mathlib's variance_sum', covariance_self, covariance_comm",
+      "Finset off-diagonal decomposition and bijective reindexing of sums"
+    ],
+    "difficulty": "intermediate",
+    "category": "probability",
+    "parentSlug": "central-limit-theorem-oq-02",
+    "dateAdded": "2026-06-25",
+    "lineCount": 136,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "mathlib_version": "v4.26"
+  }
+}

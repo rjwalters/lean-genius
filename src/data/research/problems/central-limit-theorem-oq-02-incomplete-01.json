@@ -1,8 +1,8 @@
 {
   "slug": "central-limit-theorem-oq-02-incomplete-01",
   "title": "central-limit-theorem-oq-02-incomplete-01",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -16,30 +16,43 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-02T22:27:21-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Completed: Bienaymé identity with covariance correction, verified 0-axiom in Lean.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Gallery entry created; consider stationary long-run-variance limit as follow-up.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proved the symmetrised Bienaymé identity Var[∑Xᵢ] = ∑Var[Xᵢ] + 2∑_{i<j}Cov[Xᵢ,Xⱼ] (refining Mathlib variance_sum), plus the uncorrelated-additivity and partial-sum specialisations. 4 theorems, 0 axioms, 0 sorries. Gallery entry added.",
+    "builtItems": [
+      "sum_offDiag_covariance_eq_two_mul in CentralLimitTheoremOQ02Incomplete01.lean (off-diagonal = 2× strict upper triangle via Prod.swap)",
+      "variance_sum_eq_diag_add_two_mul_offDiag (Bienaymé identity with covariance correction)",
+      "variance_sum_of_pairwise_uncorrelated (additivity of variance in uncorrelated case)",
+      "variance_partialSum_eq (partial-sum form Var[Sₙ] = ∑Var[Yₖ] + 2∑_{i<j<n}Cov)"
+    ],
+    "insights": [
+      "Mathlib provides variance_sum (full double sum ∑ᵢ∑ⱼ Cov) but not the symmetrised diagonal/off-diagonal split; the gap is pure bookkeeping symmetry handled by Finset.sum_nbij with Prod.swap.",
+      "The diagonal/off-diagonal split is exactly the decomposition exposing the dependent-CLT long-run variance σ²∞ = Var[X₁] + 2∑_{k≥1}Cov[X₁,X_{k+1}].",
+      "covariance_self identifies Cov[X,X] with Var[X]; covariance_comm gives off-diagonal symmetry."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Add summable-autocovariance hypothesis to prove Var[Sₙ]/n → σ²∞ for stationary sequences.",
+      "Generalise off-diagonal symmetrisation from a linear order to an arbitrary fixed pairing."
+    ],
     "markdown": "# Knowledge Base: central-limit-theorem-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
   "relatedProofs": [
     "central-limit-theorem",
-    "central-limit-theorem-oq-02"
+    "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-02-incomplete-01"
   ],
   "references": {
     "papers": [],
@@ -47,5 +60,5 @@
     "mathlib": []
   },
   "started": "2026-04-03T05:48:10.158Z",
-  "lastUpdate": "2026-04-03T05:48:10.171Z"
+  "lastUpdate": "2026-06-25T13:10:00.000Z"
 }

@@ -1,25 +1,22 @@
 # Research State: central-limit-theorem-oq-02-incomplete-01
 
 ## Current State
-**Phase**: OBSERVE
+**Phase**: COMPLETED
 **Path**: full
-**Since**: 2026-04-02T22:27:21-07:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Completed. Bienaymé's identity with the covariance correction, fully verified.
 
 ## Active Approach
-None yet.
+Refine Mathlib's variance_sum' by symmetrising the off-diagonal covariance sum.
 
-## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+## Outcome
+4 theorems, 0 axioms, 0 sorries. Gallery entry created at
+src/data/proofs/central-limit-theorem-oq-02-incomplete-01/.
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+Follow-up (optional): stationary long-run-variance limit Var[Sₙ]/n → σ²∞.
