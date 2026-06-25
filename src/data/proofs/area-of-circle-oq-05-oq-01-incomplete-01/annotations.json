@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-inc01-overview",
+    "proofId": "area-of-circle-oq-05-oq-01-incomplete-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 31
+    },
+    "type": "concept",
+    "title": "Carrying the Explicit Polar Proof Through for an Arbitrary Scale a > 0",
+    "content": "This file answers the open question left by AreaOfCircleOQ05OQ01: that parent makes every step of the polar-coordinate proof of (∫ e^{-x²})² = π explicit, but only for the unit Gaussian (a = 1). The scaled formula ∫ e^{-a x²} = √(π/a) is otherwise available in the gallery only through Mathlib's integral_gaussian black box. Here the explicit derivation is generalized to arbitrary a > 0: (∫ e^{-a x²})² = ∫∫ e^{-a(x²+y²)} [Fubini] = ∫_polar r·e^{-a r²} [polar change of variables] = (1/(2a))·(2π) = π/a [radial × angular]. The only step that genuinely changes with a is the radial integral, which becomes 1/(2a); the angular factor 2π is geometric and scale-independent.",
+    "mathContext": "$(\\int_{-\\infty}^\\infty e^{-a x^2} dx)^2 = \\int\\int_{\\mathbb{R}^2} e^{-a(x^2+y^2)} = \\int_0^\\infty\\int_{-\\pi}^\\pi r e^{-a r^2}\\,d\\theta\\,dr = \\tfrac{1}{2a}\\cdot 2\\pi = \\tfrac{\\pi}{a}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gaussian integral",
+      "polar coordinates",
+      "Fubini's theorem",
+      "scale generalization",
+      "integral_comp_polarCoord_symm"
+    ],
+    "prerequisites": [
+      "Lebesgue integration in Mathlib",
+      "polarCoord PartialHomeomorph",
+      "Fubini-Tonelli"
+    ]
+  },
+  {
+    "id": "ann-inc01-fubini-scaled",
+    "proofId": "area-of-circle-oq-05-oq-01-incomplete-01",
+    "range": {
+      "startLine": 46,
+      "endLine": 60
+    },
+    "type": "concept",
+    "title": "gaussian_sq_eq_double_integral_scaled: Fubini for the Scaled Gaussian (0 sorry)",
+    "content": "Proves (∫ e^{-a x²})² = ∫∫ e^{-a(x²+y²)}. The integrability of x ↦ e^{-a x²} comes from integrable_exp_neg_mul_sq ha; the product integrand factors as e^{-a x²}·e^{-a y²} via Integrable.mul_prod. After rewriting -(a(x²+y²)) = -(a x²) + -(a y²) and applying Real.exp_add, integral_prod followed by integral_mul_left/right and ring closes the goal. This mirrors the parent's a = 1 Fubini step with the scale carried through every factor.",
+    "mathContext": "$(\\int e^{-a x^2})^2 = (\\int e^{-a x^2})(\\int e^{-a y^2}) = \\int\\int e^{-a(x^2+y^2)}$ by Fubini.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integrable_exp_neg_mul_sq",
+      "Integrable.mul_prod",
+      "integral_prod",
+      "Real.exp_add"
+    ],
+    "prerequisites": [
+      "Product measures and Fubini in Mathlib",
+      "Integrability of the Gaussian"
+    ]
+  },
+  {
+    "id": "ann-inc01-polar-cov",
+    "proofId": "area-of-circle-oq-05-oq-01-incomplete-01",
+    "range": {
+      "startLine": 64,
+      "endLine": 82
+    },
+    "type": "concept",
+    "title": "Polar Change of Variables for the Scaled Integrand",
+    "content": "polar_sum_sq proves (r·cos θ)²+(r·sin θ)² = r² via Real.cos_sq_add_sin_sq and a calc chain. double_integral_eq_polar_scaled then applies integral_comp_polarCoord_symm to convert ∫∫ e^{-a(x²+y²)} to ∫_{polarCoord.target} r·e^{-a r²}: after set_integral_congr over the open polar target and polarCoord_symm_apply, polar_sum_sq simplifies the exponent -a((r cos θ)²+(r sin θ)²) to -a r². The Jacobian factor r is supplied by the change-of-variables theorem and is independent of the scale a.",
+    "mathContext": "$\\int_{\\mathbb{R}^2} e^{-a(x^2+y^2)} = \\int_{r>0,\\theta\\in(-\\pi,\\pi)} r\\, e^{-a r^2}$ with Jacobian $r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral_comp_polarCoord_symm",
+      "polarCoord",
+      "polar_sum_sq",
+      "set_integral_congr"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.SpecialFunctions.PolarCoord",
+      "PartialHomeomorph change of variables"
+    ]
+  },
+  {
+    "id": "ann-inc01-radial-scaled",
+    "proofId": "area-of-circle-oq-05-oq-01-incomplete-01",
+    "range": {
+      "startLine": 90,
+      "endLine": 127
+    },
+    "type": "insight",
+    "title": "radial_integral_scaled: The a-Dependent Radial Integral 1/(2a) (0 sorry)",
+    "content": "This is the heart of the generalization: ∫₀^∞ r·e^{-a r²} dr = 1/(2a). The proof builds the antiderivative F(r) = -(1/(2a))·e^{-a r²} explicitly. Its derivative is assembled by composing HasDerivAt facts — hasDerivAt_pow 2 for r², .const_mul a, .neg, .exp, then .const_mul (-(1/(2a))) — and congr_deriv + field_simp + ring confirm F'(r) = r·e^{-a r²}: differentiating e^{-a r²} yields a factor -2a·r, and the prefactor -(1/(2a)) is chosen precisely to cancel the -2a. The boundary limit lim_{r→∞} e^{-a r²} = 0 comes from tendsto_exp_atBot ∘ (a r² → ∞), and integral_Ioi_of_hasDerivAt_of_tendsto' evaluates the improper integral as 0 - F(0) = 1/(2a). At a = 1 this recovers the parent's radial value 1/2.",
+    "mathContext": "$\\int_0^\\infty r\\, e^{-a r^2} dr = \\left[-\\tfrac{1}{2a} e^{-a r^2}\\right]_0^\\infty = 0 - (-\\tfrac{1}{2a}) = \\tfrac{1}{2a}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasDerivAt",
+      "integral_Ioi_of_hasDerivAt_of_tendsto'",
+      "tendsto_exp_atBot",
+      "Fundamental Theorem of Calculus"
+    ],
+    "prerequisites": [
+      "HasDerivAt composition lemmas",
+      "Improper integrals on Ioi in Mathlib",
+      "Limits of exp at atBot"
+    ]
+  },
+  {
+    "id": "ann-inc01-factorization",
+    "proofId": "area-of-circle-oq-05-oq-01-incomplete-01",
+    "range": {
+      "startLine": 131,
+      "endLine": 157
+    },
+    "type": "concept",
+    "title": "polar_integral_factorization_scaled: Radial × Angular Separation (0 sorry)",
+    "content": "Proves ∫_{polarCoord.target} r·e^{-a r²} = (∫₀^∞ r·e^{-a r²})·(∫_{-π}^π 1). polarCoord_target rewrites the domain as Ioi 0 ×ˢ Ioo(-π,π); Measure.restrict_prod_eq_prod_restrict splits the restricted product measure. Integrability of the radial factor is obtained by contradiction — if it were not integrable, integral_undef would force its integral to 0, contradicting radial_integral_scaled = 1/(2a) > 0. With IsFiniteMeasure on the angular interval and Integrable.comp_fst lifting the radial integrability to the product, integral_prod + set_integral_const + the verified angular_integral complete the factorization.",
+    "mathContext": "$\\int_{r>0,\\theta\\in(-\\pi,\\pi)} r\\, e^{-a r^2} = \\left(\\int_0^\\infty r\\, e^{-a r^2}\\right)\\left(\\int_{-\\pi}^\\pi d\\theta\\right)$ since the integrand is independent of $\\theta$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Measure.restrict_prod_eq_prod_restrict",
+      "integral_prod",
+      "Integrable.comp_fst",
+      "integral_undef"
+    ],
+    "prerequisites": [
+      "Fubini for restricted product measures",
+      "IsFiniteMeasure instances"
+    ]
+  },
+  {
+    "id": "ann-inc01-main",
+    "proofId": "area-of-circle-oq-05-oq-01-incomplete-01",
+    "range": {
+      "startLine": 159,
+      "endLine": 203
+    },
+    "type": "insight",
+    "title": "Main Theorems: √(π/a) via the Explicit Polar Route, with a = 1 Consistency Check",
+    "content": "two_dim_gaussian_scaled chains the polar change of variables, factorization, radial (1/(2a)), and angular (2π) to get ∫_{ℝ²} e^{-a(x²+y²)} = π/a (field_simp + ring close the arithmetic). gaussian_integral_sq_via_polar_scaled combines this with the Fubini step for (∫ e^{-a x²})² = π/a, and gaussian_integral_via_polar_scaled takes the square root via integral_nonneg + Real.sqrt_sq to obtain ∫ e^{-a x²} = √(π/a) — recovering AreaOfCircleOQ05.scaled_gaussian through first principles rather than the integral_gaussian black box. unit_case_recovers_sqrt_pi specializes a = 1 to ∫ e^{-x²} = √π, confirming consistency with the parent.",
+    "mathContext": "$(\\int e^{-a x^2})^2 = \\tfrac{1}{2a}\\cdot 2\\pi = \\tfrac{\\pi}{a} \\Rightarrow \\int_{-\\infty}^\\infty e^{-a x^2} dx = \\sqrt{\\pi/a}$; at $a=1$, $\\sqrt{\\pi}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "integral_nonneg",
+      "Real.sqrt_sq",
+      "scaled_gaussian",
+      "ring / field_simp"
+    ],
+    "prerequisites": [
+      "All section theorems",
+      "Real.sqrt_sq for nonnegative values"
+    ]
+  }
+]
