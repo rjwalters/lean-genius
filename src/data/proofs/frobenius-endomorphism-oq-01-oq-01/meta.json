@@ -90,6 +90,43 @@
       "GaloisField.finrank (ZMod p) (GaloisField p n) = n for n ≠ 0, and ZMod.card (|ZMod p| = p)"
     ]
   },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Frobenius generates the Galois group",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Docstring framing the parent's first open question: for 𝔽_{pⁿ}/𝔽_p the Frobenius x ↦ x^p has order exactly n, generates Gal, and the group is cyclic of order n. The contribution is specializing Mathlib's frobeniusAlgEquivOfAlgebraic to the canonical degree-n model."
+    },
+    {
+      "id": "frob-definition",
+      "title": "The Frobenius automorphism and its powers",
+      "startLine": 48,
+      "endLine": 65,
+      "summary": "Defines frob = frobeniusAlgEquivOfAlgebraic (ZMod p) (GaloisField p n); frob_apply gives frob x = x^p (since |ZMod p| = p) and frob_pow_apply gives frob^k x = x^{p^k}."
+    },
+    {
+      "id": "order-exactly-n",
+      "title": "Order exactly n, with sharpness",
+      "startLine": 70,
+      "endLine": 88,
+      "summary": "orderOf_frob: ord(frob) = n via orderOf_frobeniusAlgEquivOfAlgebraic and GaloisField.finrank = n. frob_pow_card gives frob^n = 1; frob_pow_ne_one gives sharpness for 0 < k < n (since frob^k = 1 ⟹ n ∣ k), i.e. 𝔽_{pⁿ} ⊄ 𝔽_{p^k}."
+    },
+    {
+      "id": "frob-generates",
+      "title": "The Frobenius generates the Galois group",
+      "startLine": 90,
+      "endLine": 113,
+      "summary": "frob_generates: every σ is a power of frob (surjectivity from bijective_frobeniusAlgEquivOfAlgebraic_pow); zpowers_frob_eq_top: ⟨frob⟩ = ⊤. Together with order n this exhibits frob as a genuine generator."
+    },
+    {
+      "id": "cardinality-cyclicity",
+      "title": "Cardinality, cyclicity, and a concrete instance",
+      "startLine": 114,
+      "endLine": 127,
+      "summary": "card_aut: |Gal| = n via IsGalois.card_aut_eq_finrank; galois_group_cyclic: the group is cyclic; frob_fixed_iff: a Frobenius fixed point is a Fermat fixed point x^p = x; orderOf_frob_two_three: the Frobenius of 𝔽_8 = 𝔽_{2³} has order exactly 3."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "frobenius-endomorphism-oq-01",
