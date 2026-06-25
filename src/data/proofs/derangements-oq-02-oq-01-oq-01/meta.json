@@ -1,0 +1,219 @@
+{
+  "id": "derangements-oq-02-oq-01-oq-01",
+  "title": "The Poisson(1) Limiting Distribution of Fixed Points",
+  "slug": "derangements-oq-02-oq-01-oq-01",
+  "description": "Extracts the asymptotic content of the partial derangement count S(n,k) = C(n,k)·D(n-k). Writing prob(n,k) for the probability that a uniformly random permutation of n letters fixes exactly k points, the exact count collapses to prob(n,k) = (1/k!)·(D(n-k)/(n-k)!), and Mathlib's derangement limit D(m)/m! → e⁻¹ gives prob(n,k) → e⁻¹/k! as n → ∞. This is the Poisson(1) limiting distribution: the number of fixed points of a random permutation converges in distribution to a Poisson random variable of mean 1.",
+  "meta": {
+    "author": "Classical combinatorics (Montmort, Euler); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Random_permutation_statistics#Number_of_fixed_points",
+    "date": "classical",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DerangementsOQ02OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "tags": [
+      "combinatorics",
+      "permutations",
+      "derangements",
+      "fixed-points",
+      "asymptotics",
+      "poisson",
+      "limiting-distribution",
+      "probability",
+      "research",
+      "open-problem"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "numDerangements_tendsto_inv_e",
+        "description": "The classical derangement limit D(m)/m! → e⁻¹ (the probability a random permutation is a derangement tends to 1/e)",
+        "module": "Mathlib.Combinatorics.Derangements.Exponential"
+      },
+      {
+        "theorem": "Nat.choose_mul_factorial_mul_factorial",
+        "description": "The factorial identity n.choose k · k! · (n-k)! = n! used to cancel the binomial coefficient",
+        "module": "Mathlib.Data.Nat.Choose.Factorization"
+      },
+      {
+        "theorem": "Filter.Tendsto.const_mul",
+        "description": "Scaling a convergent sequence by a constant preserves convergence (used to multiply by 1/k!)",
+        "module": "Mathlib.Topology.Algebra.Monoid"
+      },
+      {
+        "theorem": "Filter.Tendsto.comp",
+        "description": "Composition of limits: composing D(m)/m! → e⁻¹ with the cofinal map n ↦ n-k",
+        "module": "Mathlib.Order.Filter.Basic"
+      },
+      {
+        "theorem": "tendsto_atTop_atTop",
+        "description": "Characterization of cofinal monotone maps used to show n ↦ n-k tends to infinity",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      }
+    ],
+    "originalContributions": [
+      "kFixedCount_eq: the parent partial-derangement formula specialized to Fin n, kFixedCount n k = C(n,k)·D(n-k)",
+      "kfixed_prob_eq: the key collapse prob(n,k) = (1/k!)·(D(n-k)/(n-k)!), cancelling the binomial coefficient against n! = C(n,k)·k!·(n-k)!",
+      "kfixed_prob_sum: for every n the prob(n,·) form a genuine probability distribution (they sum to 1)",
+      "kfixed_prob_tendsto: the headline Poisson(1) limit prob(n,k) → e⁻¹/k! as n → ∞"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 131,
+    "assumptions": "0 axioms (only propext / Classical.choice / Quot.sound), 0 sorries. Built on the parent's exact partial-derangement count (Proofs.DerangementsOQ02OQ01) and Mathlib's scalar derangement limit numDerangements_tendsto_inv_e. Scope note: this proves the LIMITING DISTRIBUTION (the probabilistic/asymptotic content). It does not formalize the formal-power-series exponential generating function e^{-x}/(1-x)·x^k/k! literally named by the parent's open question, because Mathlib lacks the formal derangement power series; that formal EGF is recorded as a remaining open question.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "**From the problème des rencontres to a Poisson law**\n\nMontmort's *problème des rencontres* (1708) and Euler's analysis (1753) gave the derangement count $D(n) = n!\\sum_{k=0}^n (-1)^k/k!$ and, as a corollary, the famous limit that a uniformly random permutation is a derangement with probability tending to $1/e$.\n\nThe finer question concerns the *full distribution* of the number of fixed points. The partial derangement count $S(n,k) = \\binom{n}{k} D(n-k)$ (formalized in the parent entry) records, for each $k$, how many permutations of $n$ letters fix exactly $k$ points. Dividing by $n!$ turns these counts into a probability distribution on $\\{0,1,\\dots,n\\}$.\n\nA classical result of random permutation theory states that as $n \\to \\infty$ this distribution converges to a **Poisson distribution of mean 1**: the probability of exactly $k$ fixed points tends to $e^{-1}/k!$. Intuitively, in a large random permutation the events 'point $i$ is fixed' become asymptotically independent rare events, each of probability $1/n$, and their number is approximately Poisson with mean $n \\cdot (1/n) = 1$. This entry makes that limit rigorous, deriving it cleanly from the exact partial-derangement count and Mathlib's scalar derangement limit.",
+    "problemStatement": "**Open Question (derangements-oq-02-oq-01, OQ[0])**: extract further theory from the partial derangement count $S(n,k) = \\binom{n}{k} D(n-k)$.\n\n**Result formalized here**: for each fixed $k$, let $\\mathrm{prob}(n,k) = S(n,k)/n!$ be the probability that a uniformly random permutation of $n$ letters fixes exactly $k$ points. Then\n$$\\mathrm{prob}(n,k) \\;\\xrightarrow[n\\to\\infty]{}\\; \\frac{e^{-1}}{k!},$$\nthe point masses of a Poisson$(1)$ random variable.",
+    "text": "Derives the Poisson(1) limiting distribution of the number of fixed points of a random permutation: prob(n,k) = S(n,k)/n! → e⁻¹/k! as n → ∞, from the exact partial derangement count and Mathlib's derangement limit D(m)/m! → e⁻¹.",
+    "proofStrategy": "**Cancel, then pass to the limit**\n\nThe proof is a clean two-step reduction.\n\n**Step 1 — algebraic collapse** (`kfixed_prob_eq`). Specializing the parent's count to $\\mathrm{Fin}\\,n$ gives $\\mathrm{prob}(n,k) = \\binom{n}{k} D(n-k)/n!$. The factorial identity $n! = \\binom{n}{k}\\,k!\\,(n-k)!$ cancels the binomial coefficient, leaving\n$$\\mathrm{prob}(n,k) = \\frac{1}{k!}\\cdot\\frac{D(n-k)}{(n-k)!}.$$\n\n**Step 2 — pass to the limit** (`kfixed_prob_tendsto`). For fixed $k$, the map $n \\mapsto n-k$ is cofinal (tends to $\\infty$), so composing with Mathlib's $D(m)/m! \\to e^{-1}$ gives $D(n-k)/(n-k)! \\to e^{-1}$. Multiplying by the constant $1/k!$ yields $\\mathrm{prob}(n,k) \\to e^{-1}/k!$, with the eventual agreement (valid once $k \\le n$) handled by `Tendsto.congr'`.\n\n**Consistency check** (`kfixed_prob_sum`). For every $n$, $\\sum_{k=0}^{n} \\mathrm{prob}(n,k) = 1$, since the partial-derangement counts partition $S_n$ ($\\sum_k S(n,k) = n!$). This confirms the $\\mathrm{prob}(n,\\cdot)$ are genuine probability distributions — matching the total mass $\\sum_k e^{-1}/k! = e^{-1}\\cdot e = 1$ of the Poisson(1) limit.",
+    "keyInsights": [
+      "**The binomial coefficient cancels exactly**: dividing the count C(n,k)·D(n-k) by n! = C(n,k)·k!·(n-k)! eliminates the n-dependence in the binomial factor, isolating the derangement ratio D(n-k)/(n-k)! that carries all the asymptotics.",
+      "**Reindex, don't re-prove**: the derangement limit D(m)/m! → e⁻¹ is already in Mathlib; the whole limiting distribution follows by composing it with the cofinal shift n ↦ n-k, rather than redoing any series analysis.",
+      "**Poisson(1) emerges with mean 1**: the limit masses e⁻¹/k! are exactly the Poisson(1) point probabilities. The mean is 1 because the expected number of fixed points of any random permutation is exactly 1 for every n.",
+      "**Genuine distributions at every scale**: the finite identity ∑ₖ prob(n,k) = 1 (from ∑ₖ S(n,k) = n!) shows the pre-limit objects are probability distributions, and their total mass is preserved in the e⁻¹/k! limit since ∑ₖ 1/k! = e.",
+      "**Limiting distribution vs formal EGF**: the probabilistic limit captures the asymptotic behaviour directly; the formal-power-series EGF e^{-x}/(1-x)·xᵏ/k! is a separate (algebraic) object not yet available in Mathlib."
+    ],
+    "prerequisites": [
+      "Combinatorics (permutations, derangements, binomial coefficients)",
+      "Probability theory (random permutations, distributions, the Poisson law)",
+      "Analysis (limits of sequences, the constant e, filter-based convergence)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-setup",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "Documents the result (the Poisson(1) limiting distribution of fixed points), imports the parent partial-derangement count (DerangementsOQ02OQ01) and Mathlib, and opens Filter, Topology, Finset and the Nat factorial notation.",
+      "mathContext": "Reuses the parent's count S(α,k) = C(|α|,k)·D(|α|-k) and Mathlib's D(m)/m! → e⁻¹ (numDerangements_tendsto_inv_e)."
+    },
+    {
+      "id": "count-and-prob",
+      "title": "The Count and the Probability",
+      "startLine": 53,
+      "endLine": 68,
+      "summary": "kFixedCount n k counts permutations of Fin n with exactly k fixed points; kFixedCount_eq specializes the parent formula to Fin n (= C(n,k)·D(n-k)); prob n k is the normalized probability (count / n!).",
+      "mathContext": "$\\mathrm{kFixedCount}(n,k) = \\binom{n}{k} D(n-k)$ and $\\mathrm{prob}(n,k) = \\mathrm{kFixedCount}(n,k)/n!$."
+    },
+    {
+      "id": "collapse",
+      "title": "The Algebraic Collapse",
+      "startLine": 70,
+      "endLine": 85,
+      "summary": "kfixed_prob_eq: for k ≤ n, prob(n,k) = (1/k!)·(D(n-k)/(n-k)!). The binomial coefficient cancels against n! = C(n,k)·k!·(n-k)! via Nat.choose_mul_factorial_mul_factorial; field_simp closes the cast arithmetic.",
+      "mathContext": "$\\mathrm{prob}(n,k) = \\dfrac{1}{k!}\\cdot\\dfrac{D(n-k)}{(n-k)!}$ for $k \\le n$."
+    },
+    {
+      "id": "sum-one",
+      "title": "Probabilities Sum to One",
+      "startLine": 87,
+      "endLine": 101,
+      "summary": "kfixed_prob_sum: ∑_{k=0}^{n} prob(n,k) = 1, from the parent's ∑_k S(n,k) = n! and division by n!. Confirms prob(n,·) is a genuine probability distribution.",
+      "mathContext": "$\\sum_{k=0}^{n} \\mathrm{prob}(n,k) = n!/n! = 1$, since $\\sum_k S(n,k) = n!$ partitions $S_n$ by fixed-point count."
+    },
+    {
+      "id": "poisson-limit",
+      "title": "The Poisson(1) Limit",
+      "startLine": 103,
+      "endLine": 131,
+      "summary": "kfixed_prob_tendsto: prob(n,k) → e⁻¹/k! as n → ∞. The cofinal shift n ↦ n-k composes with Mathlib's derangement limit to give D(n-k)/(n-k)! → e⁻¹; scaling by 1/k! and an eventual congruence (k ≤ n) finish the proof.",
+      "mathContext": "$\\mathrm{prob}(n,k) \\to e^{-1}/k!$: the Poisson(1) point masses, the limiting law of the number of fixed points."
+    }
+  ],
+  "conclusion": {
+    "summary": "The number of fixed points of a uniformly random permutation of n letters converges in distribution, as n → ∞, to a Poisson random variable of mean 1: the probability of exactly k fixed points tends to e⁻¹/k!. The Lean proof (0 sorries, 0 axioms beyond the foundational propext/Classical.choice/Quot.sound) reduces the exact partial-derangement count S(n,k) = C(n,k)·D(n-k) to (1/k!)·(D(n-k)/(n-k)!) by cancelling the binomial coefficient against n!, then composes Mathlib's scalar derangement limit D(m)/m! → e⁻¹ with the cofinal shift n ↦ n-k. A companion identity shows the pre-limit objects are genuine probability distributions (∑ₖ prob(n,k) = 1).",
+    "implications": "**Significance**\n\n1. **The full limiting law, not just the mean**: classical accounts often stop at 'the probability of a derangement tends to 1/e' (the k=0 case). This entry formalizes the entire limiting distribution — every point mass e⁻¹/k! — exhibiting the Poisson(1) law in full.\n\n2. **A reusable asymptotic-from-exact pattern**: the proof shows how to turn an exact enumerative formula into an asymptotic statement by isolating the n-dependent ratio and reindexing an existing Mathlib limit, with no new analysis. The same recipe applies to other permutation statistics with known exact counts.\n\n3. **Bridges enumeration and probability in Mathlib**: it connects Mathlib's combinatorial derangement machinery to a probabilistic limit theorem that Mathlib does not currently state.",
+    "openQuestions": [
+      "Formalize the literal exponential generating function for partial derangements, e^{-x}/(1-x)·xᵏ/k!, as a formal power series — this requires first building the formal derangement EGF ∑ D(m) xᵐ/m! = e^{-x}/(1-x) in Mathlib.",
+      "Prove convergence in the total-variation or factorial-moment sense (not just pointwise), quantifying the Poisson approximation error (e.g. the Chen–Stein bound).",
+      "Establish that the joint distribution of cycle counts of given lengths converges to independent Poisson variables (the Goncharov / Arratia–Tavaré limit), generalizing the fixed-point (1-cycle) case proved here."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "derangements-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: provides the exact partial-derangement count S(α,k) = C(|α|,k)·D(|α|-k) for arbitrary finite types and the sum identity ∑_k S(n,k) = n!, both used here to build the probability distribution and pass to the limit."
+    },
+    {
+      "targetId": "derangements-oq-02",
+      "relationship": "foundational",
+      "description": "The Fin n partial-derangement formula underlying the parent generalization and this asymptotic refinement."
+    },
+    {
+      "targetId": "derangements",
+      "relationship": "foundational",
+      "description": "The base derangement count D(n) and its limit D(n)/n! → 1/e — the k=0 special case of the Poisson(1) law proved here."
+    },
+    {
+      "targetId": "combinations-formula",
+      "relationship": "foundational",
+      "description": "The identity n! = C(n,k)·k!·(n-k)! is the algebraic engine of the proof: it cancels the binomial coefficient and isolates the derangement ratio that carries the asymptotics."
+    },
+    {
+      "targetId": "stirling-formula-oq-03-oq-02",
+      "relationship": "related",
+      "description": "A sibling 'asymptotics-from-exact-identity' entry: the central binomial coefficient asymptotic C(2n,n) ~ 4ⁿ/√(πn), assembled from an exact Wallis identity and a Mathlib limit, mirrors the method used here."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Arratia, Richard; Tavaré, Simon",
+      "title": "The cycle structure of random permutations",
+      "year": "1992",
+      "venue": "The Annals of Probability, vol. 20, pp. 1567–1591",
+      "note": "Establishes that cycle counts of random permutations converge to independent Poisson variables; the fixed-point (1-cycle) case is the Poisson(1) law formalized here."
+    },
+    {
+      "authors": "Flajolet, Philippe; Sedgewick, Robert",
+      "title": "Analytic Combinatorics",
+      "year": "2009",
+      "venue": "Cambridge University Press",
+      "note": "Chapter III treats the exponential generating function of permutations by number of fixed points, e^{u z}·e^{-z}/(1-z), whose limiting coefficients are the Poisson(1) masses."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 1",
+      "year": "2011",
+      "venue": "Cambridge University Press, 2nd edition",
+      "note": "Chapter 2 develops partial derangements and the rencontres distribution via generating functions and inclusion-exclusion."
+    },
+    {
+      "authors": "P. R. de Montmort",
+      "title": "Essay d'Analyse sur les Jeux de Hazard",
+      "year": "1708",
+      "venue": "Quillau, Paris",
+      "note": "First study of the problème des rencontres (matching problem), the origin of derangement counting."
+    },
+    {
+      "authors": "L. Euler",
+      "title": "Calcul de la probabilité dans le jeu de rencontre",
+      "year": "1753",
+      "venue": "Mémoires de l'Académie des Sciences de Berlin",
+      "note": "Derived D(n) = n! Σ (-1)^k/k! and, implicitly, the 1/e limit — the k=0 case of the Poisson(1) law."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DerangementsOQ02OQ01"
+    ],
+    "opens": [
+      "Filter",
+      "Topology",
+      "Finset"
+    ],
+    "namespace": "DerangementsOQ02OQ01OQ01",
+    "lineCount": 131,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "path": "Proofs/DerangementsOQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
