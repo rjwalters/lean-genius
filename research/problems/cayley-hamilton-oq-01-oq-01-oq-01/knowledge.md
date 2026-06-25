@@ -35,41 +35,63 @@ minpoly).
 - Non-derogatory ⇒ full degree: `Matrix.charpoly_natDegree_eq_dim` +
   `Fintype.card_fin` give `(minpoly K M).natDegree = n` from `minpoly = charpoly`.
 
-## Status (Session 2, 2026-06-25)
+## Status (Session 3, 2026-06-25) — COMPLETE, fully verified
 
-- **VERIFIED scaffold built** in `proofs/Proofs/CayleyHamiltonOQ01OQ01OQ01.lean`,
-  compiles via host `lake env lean` with the **single** `sorry` being
-  `exists_vecAnnIdeal_eq_minpoly` (line ~103). Both main theorems
-  (`exists_cyclicVector_of_minpoly_natDegree_eq`,
-  `exists_cyclicVector_of_minpoly_eq_charpoly`) type-check modulo that one lemma.
-- Aristotle MCP is **DOWN** this session ("Resource not found" on both
-  `prove_file` and `prove`). Could not delegate the hard lemma.
-- No PR opened (file carries a `sorry`; gallery requires verified).
+- **DONE.** `proofs/Proofs/CayleyHamiltonOQ01OQ01OQ01.lean` (141 lines, 5 theorems,
+  0 defs) compiles via host `lake env lean` with **0 sorries**. `#print axioms` on
+  all three main theorems returns only `[propext, Classical.choice, Quot.sound]`
+  — no `sorryAx`, no `Lean.ofReduceBool`. Status = verified, badge = original.
+- The outstanding lemma `exists_vecAnnIdeal_eq_minpoly` was discharged **directly
+  from Mathlib**, NOT by the hand-built combination route below: there IS a Mathlib
+  counterpart after all.
+- Gallery integration added: `src/data/proofs/cayley-hamilton-oq-01-oq-01-oq-01/`
+  (meta.json + annotations.json). Added to `proofs/Proofs.lean` aggregator.
 
-## Proof strategy for the outstanding lemma (next session / Aristotle)
+## How the maximal-order lemma was actually proved
 
-`exists_vecAnnIdeal_eq_minpoly` via *maximal-order vector*:
-1. **Order arithmetic** in a cyclic `K[X]`-submodule: for the order `f = ord(u)`,
-   `ord(p • u) = f / gcd(f, p)`.
-2. **Coprime combination (CRT)**: if `ord(u)=f`, `ord(w)=g`, `gcd(f,g)=1`, then
-   `ord(u+w) = f·g`.
-3. **Pairwise lcm**: combine (1)+(2) to get, from `u` (order `f`) and `w` (order
-   `g`), a vector of order `lcm(f,g)` (split `f,g` into coprime parts whose product
-   is `lcm`).
-4. **Iterate over the standard basis** `e₁,…,eₙ`: `minpoly K M = lcm_i ord(eᵢ)`
-   (minpoly = lcm of orders of a generating set), so folding the pairwise
-   combination yields a vector of order `minpoly`, i.e. `vecAnnIdeal = span{minpoly}`.
-   Use `minpoly_ideal_le_vecAnnIdeal` for the `≤` half; the constructed order gives `≥`.
+The key Mathlib lemma (found by deeper search, Session 3):
 
-No direct Mathlib counterpart was found (searched `LinearAlgebra/FreeModule/PID`,
-`AnnihilatingPolynomial`, `Matrix/Charpoly/*`). Mathlib's PID structure theorem
-(`Mathlib/Algebra/Module/PID`) gives the decomposition existentially but extracting
-a concrete maximal-order vector is itself work; the combination route above is more
-direct in the parent's `vecAnnIdeal` language.
+  `Module.exists_ker_toSpanSingleton_eq_annihilator [Module.Finite R M] :`
+  `  ∃ x : M, LinearMap.ker (LinearMap.toSpanSingleton R _ x) = Module.annihilator R M`
+  (in `Mathlib/Algebra/Module/PID.lean`, a corollary of the PID structure theorem).
+
+Apply it with `R := K[X]`, `M := Module.AEval' M.mulVecLin` (finite via the
+instance `Module.Finite R[X] (AEval' φ)` at `Mathlib/.../Module/AEval.lean:211`).
+Transport the element `x` back via `(Module.AEval'.of M.mulVecLin).symm` to a
+concrete `v : Fin n → K`. Then:
+- `vecAnnIdeal M v = annihilator K[X] (AEval' M.mulVecLin)` because both ideals are
+  `{r | r • x = 0}` — the cyclic-submodule annihilator (parent's `mem_vecAnnIdeal_iff`)
+  vs `ker (toSpanSingleton x)` (`mem_ker` + `toSpanSingleton ... r = r • x` by `rfl`).
+  After `rw [mem_vecAnnIdeal_iff, LinearEquiv.apply_symm_apply, LinearMap.mem_ker]`
+  the goal closes by `rfl`.
+- `annihilator K[X] (AEval' M.mulVecLin) = span{minpoly K M}` by the parent's
+  `kn_module_annihilator_eq_minpoly` (rewritten forward, NOT `←`).
+
+Proof body (the whole lemma):
+```
+obtain ⟨x, hx⟩ := Module.exists_ker_toSpanSingleton_eq_annihilator
+  (R := K[X]) (M := Module.AEval' M.mulVecLin)
+refine ⟨(Module.AEval'.of M.mulVecLin).symm x, ?_⟩
+rw [kn_module_annihilator_eq_minpoly M, ← hx]
+ext r
+rw [mem_vecAnnIdeal_iff, LinearEquiv.apply_symm_apply, LinearMap.mem_ker]
+rfl
+```
+
+## Strategy NOT needed (the hand-built combination route, kept for reference)
+
+The order-arithmetic / coprime-combination / pairwise-lcm construction
+(`ord(p•u)=f/gcd(f,p)`, CRT for coprime orders, fold over the basis) is a valid
+but unnecessary ~150-line alternative. Mathlib's `exists_ker_toSpanSingleton_eq_annihilator`
+gives the maximal-order element directly.
 
 ---
 
-## Dead Ends
+## Lessons
 
-- No Mathlib lemma for "cyclic vector exists" / "vector of maximal order" /
-  "minpoly = charpoly ⟺ cyclic". Must be built (≈150–250 lines) or delegated.
+- The "no Mathlib counterpart" claim in Session 2 was WRONG. `Module.exists_
+  ker_toSpanSingleton_eq_annihilator` is exactly the maximal-order-vector lemma.
+  Search `Mathlib/Algebra/Module/PID.lean` and `Mathlib/.../FieldTheory/Galois/
+  NormalBasis.lean` (which applies it) before concluding a structure fact is absent.
+- `rw [← kn_module_annihilator_eq_minpoly]` fails (pattern not in goal); the
+  forward direction is correct since the lemma reads `span{minpoly} = annihilator`.

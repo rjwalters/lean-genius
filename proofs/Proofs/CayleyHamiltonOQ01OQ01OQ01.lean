@@ -31,22 +31,25 @@ The whole statement reduces to a single **general** module-theoretic fact
 
 This is the classical *existence of a vector of maximal order* — a vector whose
 annihilator ideal is exactly the minimal polynomial (the module's exponent). It
-holds in any finitely generated module over the PID `K[X]`.
+holds in any finitely generated module over the PID `K[X]`, and is supplied by
+Mathlib's `Module.exists_ker_toSpanSingleton_eq_annihilator` (a corollary of the
+PID structure theorem) applied to the finite `K[X]`-module `Module.AEval' M.mulVecLin`.
 
 Given such a `v`, the reduction is elementary: if a polynomial `p` with
 `p.natDegree < n` kills `v`, then `p ∈ vecAnnIdeal M v = span {minpoly K M}`, so
 `minpoly K M ∣ p`; but `(minpoly K M).natDegree = n > p.natDegree` forces `p = 0`.
 Hence `v` is cyclic.
 
-`exists_vecAnnIdeal_eq_minpoly` carries no Mathlib counterpart and is left as the
-one outstanding lemma (delegated to Aristotle / future work). Everything else is
-machine-checked here against the parent's annihilator infrastructure.
+The whole development is fully machine-checked (no `sorry`, no extra axioms) against
+the parent's annihilator infrastructure.
 
 ## Depends on
-`Proofs.CayleyHamiltonOQ01OQ01` (the `vecAnnIdeal` / `IsCyclicVector` framework).
+`Proofs.CayleyHamiltonOQ01OQ01` (the `vecAnnIdeal` / `IsCyclicVector` framework) and
+Mathlib's `Module.exists_ker_toSpanSingleton_eq_annihilator` (PID structure theorem).
 -/
 
 import Proofs.CayleyHamiltonOQ01OQ01
+import Mathlib.Algebra.Module.PID
 
 open Matrix Polynomial Module BigOperators
 open CayleyHamiltonOQ01OQ01
@@ -93,16 +96,30 @@ theorem isCyclicVector_of_vecAnnIdeal_eq_minpoly (M : Matrix (Fin n) (Fin n) K)
   rw [hM] at hle
   exact absurd hp (not_lt.mpr hle)
 
-/-! ## III. The outstanding general lemma (maximal-order vector) -/
+/-! ## III. Existence of a vector of maximal order -/
 
 /-- **Existence of a vector of maximal order.** For every `M`, some vector `v`
 has annihilator ideal exactly `Ideal.span {minpoly K M}` — i.e. its order is the
 minimal polynomial.  This is the classical structure-theoretic fact that a
 finitely generated `K[X]`-module contains an element whose order equals the
-module exponent.  No direct Mathlib counterpart; delegated as the sole open lemma. -/
+module exponent.
+
+Proof: Mathlib's `Module.exists_ker_toSpanSingleton_eq_annihilator` (the PID
+structure theorem applied to the finite `K[X]`-module `Module.AEval' M.mulVecLin`)
+hands us a single `x` whose cyclic-submodule annihilator equals the whole module's
+annihilator.  The parent's `kn_module_annihilator_eq_minpoly` identifies that module
+annihilator with `Ideal.span {minpoly K M}`; transporting `x` back along the
+`Module.AEval'.of` equivalence and unwinding `vecAnnIdeal` (= the annihilator of the
+cyclic submodule, both characterised by `r • x = 0`) closes the goal. -/
 theorem exists_vecAnnIdeal_eq_minpoly (M : Matrix (Fin n) (Fin n) K) :
     ∃ v : Fin n → K, vecAnnIdeal M v = Ideal.span {minpoly K M} := by
-  sorry
+  obtain ⟨x, hx⟩ := Module.exists_ker_toSpanSingleton_eq_annihilator
+    (R := K[X]) (M := Module.AEval' M.mulVecLin)
+  refine ⟨(Module.AEval'.of M.mulVecLin).symm x, ?_⟩
+  rw [kn_module_annihilator_eq_minpoly M, ← hx]
+  ext r
+  rw [mem_vecAnnIdeal_iff, LinearEquiv.apply_symm_apply, LinearMap.mem_ker]
+  rfl
 
 /-! ## IV. Main theorems -/
 

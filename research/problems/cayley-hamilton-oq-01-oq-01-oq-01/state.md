@@ -1,29 +1,27 @@
 # Research State: cayley-hamilton-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: DONE
 **Path**: fast
 **Since**: 2026-06-25T02:20:00-07:00
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
-Closing `exists_vecAnnIdeal_eq_minpoly` (existence of a vector of maximal order),
-the sole outstanding lemma. The full reduction is verified.
+COMPLETE. `exists_vecAnnIdeal_eq_minpoly` discharged directly from Mathlib's
+`Module.exists_ker_toSpanSingleton_eq_annihilator`. Whole file is 0-sorry,
+0-axiom (propext/Classical.choice/Quot.sound only), verified.
 
-## Active Approach
-Maximal-order vector via pairwise lcm/coprime-combination folded over the standard
-basis. See knowledge.md "Proof strategy for the outstanding lemma".
+## Resolution
+- `proofs/Proofs/CayleyHamiltonOQ01OQ01OQ01.lean`: 141 lines, 5 theorems, 0 sorries.
+- Gallery entry added (meta.json + annotations.json); aggregator updated.
+- See knowledge.md "How the maximal-order lemma was actually proved".
 
 ## Attempt Count
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1
+- Total attempts: 2
+- Approaches tried: 2 (Session 2 reduction scaffold; Session 3 Mathlib discharge)
 
 ## Blockers
-- Aristotle MCP down this session (could not delegate the hard lemma).
-- The outstanding lemma has no Mathlib counterpart (must be built or delegated).
+- None remaining.
 
 ## Next Action
-Either (a) retry Aristotle on CayleyHamiltonOQ01OQ01OQ01.lean when the MCP is back
-up, or (b) build the combination-lemma chain (steps 1–4 in knowledge.md) manually.
-Then verify 0-sorry/0-axiom and ship the gallery entry.
+Ship: commit + PR to main (research label, no loom:review-requested).
