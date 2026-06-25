@@ -1,0 +1,153 @@
+[
+  {
+    "id": "ann-comparison-series",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 63
+    },
+    "type": "theorem",
+    "title": "The Convergent Comparison Series ∑_p 1/p²",
+    "content": "prime_sq_reciprocal_summable establishes that the prime square-reciprocal series converges, drawn from Mathlib's Nat.Primes.summable_rpow (∑_p p^r converges iff r < −1) at exponent r = −2. The rpow form is converted to 1/p² by rpow_neg + rpow_two. This is the dominating series for the whole convergence argument — the Mertens correction will be compared term-by-term against a scalar multiple of it.",
+    "mathContext": "$\\sum_{p\\ \\text{prime}} \\frac{1}{p^2} < \\infty,\\quad\\text{from } \\sum_p p^r \\text{ summable} \\iff r < -1.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "prime zeta function",
+      "Nat.Primes.summable_rpow",
+      "p-series"
+    ],
+    "prerequisites": [
+      "summability over Nat.Primes",
+      "Real.rpow"
+    ]
+  },
+  {
+    "id": "ann-term-bound",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 67,
+      "endLine": 98
+    },
+    "type": "theorem",
+    "title": "Sharp Per-Term Taylor Bound",
+    "content": "abs_log_term_le proves |log(1−1/p)+1/p| ≤ 2/p² for every prime p. The bracket is exactly the order-1 Taylor remainder of x ↦ log(1−x) at x = 1/p, and Mathlib's Real.abs_log_sub_add_sum_range_le gives |x + log(1−x)| ≤ |x|²/(1−|x|). Since p ≥ 2 forces x = 1/p ≤ 1/2, the denominator 1−x ≥ 1/2, turning the remainder into the clean bound x²/(1−x) ≤ 2x² = 2/p² (closed by nlinarith). This Θ(1/p²) decay is the whole reason the correction series converges.",
+    "mathContext": "$\\bigl|\\log(1-\\tfrac1p)+\\tfrac1p\\bigr| \\le \\frac{(1/p)^2}{1-1/p} \\le \\frac{2}{p^2}\\quad(p\\ge 2).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Taylor remainder of log(1−x)",
+      "Real.abs_log_sub_add_sum_range_le",
+      "asymptotic Θ(1/p²)"
+    ],
+    "prerequisites": [
+      "order-1 Taylor remainder",
+      "one_div_le_one_div_of_le",
+      "nlinarith"
+    ]
+  },
+  {
+    "id": "ann-absolute-convergence",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "Absolute Convergence of the Correction Series",
+    "content": "summable_mertens_correction concludes that ∑_p (log(1−1/p)+1/p) is summable, by the comparison test Summable.of_norm_bounded: the per-term bound abs_log_term_le dominates the correction by 2/p², whose sum converges (prime_sq_reciprocal_summable.mul_left 2). This is the central result — it is exactly what makes the identity M = γ + ∑_p[…] from the open question a well-defined real number rather than a formal symbol.",
+    "mathContext": "$\\sum_p \\bigl(\\log(1-\\tfrac1p)+\\tfrac1p\\bigr)\\ \\text{converges absolutely (dominated by } \\sum_p 2/p^2).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "comparison test",
+      "absolute convergence",
+      "Summable.of_norm_bounded"
+    ],
+    "prerequisites": [
+      "abs_log_term_le",
+      "prime_sq_reciprocal_summable"
+    ]
+  },
+  {
+    "id": "ann-nonpositivity",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 117,
+      "endLine": 132
+    },
+    "type": "theorem",
+    "title": "Every Correction Term Is Non-Positive",
+    "content": "log_term_nonpos shows log(1−1/p)+1/p ≤ 0 in one line: log y ≤ y−1 (Real.log_le_sub_one_of_pos) at y = 1−1/p gives log(1−1/p) ≤ −1/p, so the term is ≤ 0. tsum_mertens_correction_nonpos lifts this to the whole sum via tsum_nonpos. The sign analysis is independent of the convergence strand and delivers the qualitative fact that the prime correction only ever subtracts from γ.",
+    "mathContext": "$\\log(1-\\tfrac1p) \\le -\\tfrac1p \\Rightarrow \\log(1-\\tfrac1p)+\\tfrac1p \\le 0;\\quad \\sum_p(\\cdots) \\le 0.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "log y ≤ y − 1",
+      "tsum_nonpos",
+      "sign of the correction"
+    ],
+    "prerequisites": [
+      "Real.log_le_sub_one_of_pos"
+    ]
+  },
+  {
+    "id": "ann-definition",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 136,
+      "endLine": 142
+    },
+    "type": "definition",
+    "title": "The Meissel–Mertens Constant",
+    "content": "meisselMertens defines M = γ + ∑_p (log(1−1/p)+1/p), exactly the expression the open question quotes, with γ = Real.eulerMascheroniConstant. The definition is well-posed precisely because summable_mertens_correction guarantees the tsum is a genuine real number. M ≈ 0.2615 appears in Mertens' second theorem ∑_{p≤n} 1/p = ln ln n + M + o(1).",
+    "mathContext": "$M = \\gamma + \\sum_{p\\ \\text{prime}}\\bigl(\\log(1-\\tfrac1p)+\\tfrac1p\\bigr) \\approx 0.2615.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Meissel–Mertens constant",
+      "Euler–Mascheroni constant",
+      "Mertens' second theorem"
+    ],
+    "prerequisites": [
+      "summable_mertens_correction",
+      "tsum"
+    ]
+  },
+  {
+    "id": "ann-le-gamma",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 144,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "M ≤ γ",
+    "content": "meisselMertens_le_eulerMascheroni: since the correction sum is ≤ 0 (tsum_mertens_correction_nonpos), M = γ + (non-positive) ≤ γ. The qualitative comparison of the constant with the Euler–Mascheroni constant falls out of the sign analysis with a single linarith.",
+    "mathContext": "$M = \\gamma + (\\le 0) \\Rightarrow M \\le \\gamma.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "monotone bound",
+      "Euler–Mascheroni constant"
+    ],
+    "prerequisites": [
+      "tsum_mertens_correction_nonpos"
+    ]
+  },
+  {
+    "id": "ann-lt-two-thirds",
+    "proofId": "prime-reciprocal-divergence-oq-02",
+    "range": {
+      "startLine": 152,
+      "endLine": 158
+    },
+    "type": "theorem",
+    "title": "Unconditional Bound M < 2/3",
+    "content": "meisselMertens_lt_two_thirds chains M ≤ γ with Mathlib's Real.eulerMascheroniConstant_lt_two_thirds (γ < 2/3) to box the constant from above by a known rational: M < 2/3, consistent with M ≈ 0.2615. This is a verified, axiom-free numerical statement about a constant whose closed form remains an open question.",
+    "mathContext": "$M \\le \\gamma < \\tfrac23 \\Rightarrow M < \\tfrac23.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rational bounds on constants",
+      "transitivity of <"
+    ],
+    "prerequisites": [
+      "meisselMertens_le_eulerMascheroni",
+      "Real.eulerMascheroniConstant_lt_two_thirds"
+    ]
+  }
+]
