@@ -3576,6 +3576,7 @@ import Proofs.MinkowskiFundamentalTheoremOQ01OQ01
 import Proofs.MinkowskiFundamentalTheoremOQ01OQ02
 import Proofs.MinkowskiFundamentalTheoremOQ02
 import Proofs.MinkowskiFundamentalTheoremOQ04
+import Proofs.MinkowskiFundamentalTheoremOQ05
 import Proofs.MinkowskiTheoremOQ02
 import Proofs.MinkowskiTheoremOQ02OQ01
 import Proofs.MinkowskiTheoremOQ02OQ03
