@@ -1,0 +1,157 @@
+{
+  "id": "cantors-theorem-oq-01-oq-04",
+  "title": "|𝒫(𝒫(ℝ))| = ℶ₃: The Third Beth Number",
+  "slug": "cantors-theorem-oq-01-oq-04",
+  "description": "Open question #4 of cantors-theorem-oq-01 ('The Cardinality of 𝒫(ℝ)', which proved |𝒫(ℝ)| = ℶ₂) asks for the next rung of the beth tower: is |𝒫(𝒫(ℝ))| = ℶ₃? The answer is yes, provable outright in ZFC, and this entry gives a fully machine-checked Lean 4 proof. Applying Cantor's power-set cardinality law (Cardinal.mk_set : #(Set α) = 2^#α) twice gives |𝒫(𝒫(ℝ))| = 2^|𝒫(ℝ)| = 2^(2^|ℝ|) = 2^(2^(2^ℵ₀)), and unfolding the beth successor function (Cardinal.beth_succ : ℶ_(o+1) = 2^ℶ_o) twice from ℶ₁ = 𝔠 = |ℝ| identifies this with ℶ₃. The contrast with the parent's open question is the point: the ALEPH-index of these iterated power sets is independent of ZFC (Easton's theorem), but the BETH-index is pinned down by definition — every iterated power set of ℝ lands exactly on a beth number. The entry also records the strict Cantor tower |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| and the strictly increasing beth tower ℶ₁ < ℶ₂ < ℶ₃.",
+  "meta": {
+    "author": "Georg Cantor (1891); beth hierarchy: Felix Hausdorff (1908)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CantorsTheoremOQ01OQ04.lean",
+    "tags": [
+      "set-theory",
+      "cardinal-arithmetic",
+      "beth-numbers",
+      "power-set",
+      "cantor-theorem",
+      "continuum",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 102,
+    "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib 4.29 (single-file elaboration via `lake env lean Proofs/CantorsTheoremOQ01OQ04.lean`, exit 0; `#print axioms CantorsTheoremOQ01OQ04.card_powerSet_powerSet_real_eq_beth_three` and the summary theorem list only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). The proof is built entirely from standard Mathlib cardinal-arithmetic lemmas: Cardinal.mk_set (#(Set α) = 2^#α), Cardinal.mk_real (#ℝ = 𝔠), Cardinal.beth_one (ℶ₁ = 𝔠), Cardinal.beth_succ (ℶ_(succ o) = 2^ℶ_o), Cardinal.cantor (κ < 2^κ), and Cardinal.beth_strictMono. The result |𝒫(𝒫(ℝ))| = ℶ₃ is NOT in Mathlib and is assembled here; the file is self-contained (re-deriving the ℶ₁/ℶ₂ rungs) and does not import the parent entry.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.29",
+    "originalContributions": [
+      "A complete, axiom-free Lean 4 proof that |𝒫(𝒫(ℝ))| = ℶ₃, the third beth number — advancing the beth tower of cantors-theorem-oq-01 by one rung from |𝒫(ℝ)| = ℶ₂.",
+      "The explicit beth-successor unfoldings beth_two_eq (ℶ₂ = 2^ℶ₁) and beth_three_eq (ℶ₃ = 2^ℶ₂) at concrete ordinal indices, together with card_real_eq_beth_one (|ℝ| = ℶ₁), giving a self-contained derivation of the whole tower ℶ₁, ℶ₂, ℶ₃ as iterated power sets of ℝ.",
+      "The strict Cantor tower |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| (card_real_lt_powerSet, card_powerSet_real_lt_powerSet_powerSet) and the strictly increasing beth tower ℶ₁ < ℶ₂ < ℶ₃ (beth_tower_strictMono), packaged with the main identity in cantors_theorem_oq01oq04_summary."
+    ],
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Cantor's theorem (1891) — that no set surjects onto its power set, hence κ < 2^κ for every cardinal κ — generates an unbounded tower of cardinalities by iteration. Hausdorff later organized these into the beth hierarchy ℶ₀ = ℵ₀, ℶ_{α+1} = 2^{ℶ_α} (with suprema at limits), the canonical 'powers of two' scale of infinity. The parent entry cantors-theorem-oq-01 established |𝒫(ℝ)| = ℶ₂ and highlighted that while the beth-index of 2^𝔠 is determined, its aleph-index is independent of ZFC (Gödel 1938, Cohen 1963, Easton 1970). This entry takes the next deterministic step: the second power set of ℝ is exactly ℶ₃.",
+    "problemStatement": "Show that the power set of the power set of the reals has cardinality the third beth number: $|\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))| = \\beth_3 = 2^{2^{2^{\\aleph_0}}}$.",
+    "text": "The main theorem `card_powerSet_powerSet_real_eq_beth_three : #(Set (Set ℝ)) = beth 3`, supported by the beth-successor unfoldings and lower-rung identities, plus the strict Cantor and beth towers and a summary theorem `cantors_theorem_oq01oq04_summary`.",
+    "proofStrategy": "Two applications of the power-set law. Cardinal.mk_set gives #(Set (Set ℝ)) = 2^#(Set ℝ); the parent-style lemma card_powerSet_real_eq_beth_two (re-derived here as #(Set ℝ) = 2^#ℝ = 2^ℶ₁ = ℶ₂) gives #(Set ℝ) = ℶ₂; so #(Set (Set ℝ)) = 2^ℶ₂. Unfolding the beth tower. beth_three_eq rewrites ℶ₃ as 2^ℶ₂ by expressing the ordinal 3 as succ 2 and applying Cardinal.beth_succ; matching the two yields the identity. The lower rungs use Cardinal.mk_real (#ℝ = 𝔠) and Cardinal.beth_one (ℶ₁ = 𝔠) for #ℝ = ℶ₁, and beth_two_eq (3 ↦ succ, beth_succ) for ℶ₂ = 2^ℶ₁. Strict towers. The Cantor inequalities are direct instances of Cardinal.cantor (κ < 2^κ) after rewriting each power set by mk_set; the beth tower ℶ₁ < ℶ₂ < ℶ₃ follows from Cardinal.beth_strictMono applied to 1 < 2 and 2 < 3.",
+    "keyInsights": [
+      "Iterated power sets of ℝ march up the beth tower one rung at a time: |ℝ| = ℶ₁, |𝒫(ℝ)| = ℶ₂, |𝒫(𝒫(ℝ))| = ℶ₃, because each power set doubles the exponent and the beth function is defined by exactly that doubling, ℶ_{α+1} = 2^{ℶ_α}.",
+      "The beth-index is absolute where the aleph-index is not. Whether |𝒫(𝒫(ℝ))| equals ℵ₃ (or any particular aleph) is independent of ZFC, but that it equals ℶ₃ is a definitional certainty — this is the cleanest illustration of why set theorists use the beth scale to name 2^κ-style cardinals.",
+      "Pinning the beth successor to a concrete numeral requires only the tiny ordinal fact 3 = succ 2 (and 2 = succ 1); once Cardinal.beth_succ is applied the cardinal computation is purely formal.",
+      "Cantor's strict inequality κ < 2^κ, applied at κ = #ℝ and κ = #(Set ℝ), gives the strict containment chain |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| for free, matching the strict monotonicity of the beth function."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic in Mathlib: #, the cardinality of a type, and cardinal exponentiation 2^κ",
+      "The power-set cardinality law |𝒫(α)| = 2^|α| (Cardinal.mk_set)",
+      "The beth function ℶ on ordinals: ℶ₀ = ℵ₀, ℶ_{α+1} = 2^{ℶ_α}, and ℶ₁ = 𝔠 (Cardinal.beth_one)",
+      "Cantor's theorem κ < 2^κ (Cardinal.cantor) and strict monotonicity of beth (Cardinal.beth_strictMono)",
+      "The cardinality of the reals #ℝ = 𝔠 = 2^ℵ₀ (Cardinal.mk_real)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Statement and the Beth Tower",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Module docstring framing open question #4 of cantors-theorem-oq-01: extend |𝒫(ℝ)| = ℶ₂ to |𝒫(𝒫(ℝ))| = ℶ₃, noting that the beth-index is ZFC-determined whereas the aleph-index is independent. Imports Mathlib and opens Cardinal in namespace CantorsTheoremOQ01OQ04.",
+      "mathContext": "The beth tower ℶ₀ = ℵ₀, ℶ₁ = 𝔠 = |ℝ|, ℶ₂ = |𝒫(ℝ)|, ℶ₃ = |𝒫(𝒫(ℝ))|, each level the power set of the previous one."
+    },
+    {
+      "id": "beth-successors",
+      "title": "§1: Beth Successor Unfoldings",
+      "startLine": 43,
+      "endLine": 55,
+      "summary": "beth_two_eq (ℶ₂ = 2^ℶ₁) and beth_three_eq (ℶ₃ = 2^ℶ₂), each proved by writing the ordinal index as a successor (2 = succ 1, 3 = succ 2 via Order.succ_eq_add_one + norm_num) and applying Cardinal.beth_succ.",
+      "mathContext": "$\\beth_{o+1} = 2^{\\beth_o}$; specializing at $o = 1, 2$ gives the two doublings used to climb the tower."
+    },
+    {
+      "id": "lower-rungs",
+      "title": "§2: Lower Rungs |ℝ| = ℶ₁ and |𝒫(ℝ)| = ℶ₂",
+      "startLine": 56,
+      "endLine": 67,
+      "summary": "card_real_eq_beth_one (#ℝ = ℶ₁ via Cardinal.mk_real and Cardinal.beth_one) and card_powerSet_real_eq_beth_two (#(Set ℝ) = 2^#ℝ = 2^ℶ₁ = ℶ₂ via mk_set + beth_two_eq), re-deriving the parent result so the file stands alone.",
+      "mathContext": "$|\\mathbb{R}| = \\mathfrak{c} = \\beth_1$ and $|\\mathcal{P}(\\mathbb{R})| = 2^{\\beth_1} = \\beth_2$."
+    },
+    {
+      "id": "main-theorem",
+      "title": "§3: Main Result |𝒫(𝒫(ℝ))| = ℶ₃",
+      "startLine": 68,
+      "endLine": 72,
+      "summary": "card_powerSet_powerSet_real_eq_beth_three: #(Set (Set ℝ)) = 2^#(Set ℝ) = 2^ℶ₂ = ℶ₃, applying Cardinal.mk_set to the second power set, then card_powerSet_real_eq_beth_two and beth_three_eq.",
+      "mathContext": "$|\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))| = 2^{\\beth_2} = \\beth_3 = 2^{2^{2^{\\aleph_0}}}$."
+    },
+    {
+      "id": "cantor-tower",
+      "title": "§4: Strict Cantor and Beth Towers",
+      "startLine": 74,
+      "endLine": 92,
+      "summary": "card_real_lt_powerSet (|ℝ| < |𝒫(ℝ)|) and card_powerSet_real_lt_powerSet_powerSet (|𝒫(ℝ)| < |𝒫(𝒫(ℝ))|), each from Cardinal.cantor after rewriting the relevant power set by mk_set; beth_tower_strictMono (ℶ₁ < ℶ₂ < ℶ₃) from Cardinal.beth_strictMono on 1 < 2 and 2 < 3.",
+      "mathContext": "Cantor's $\\kappa < 2^\\kappa$ gives the strict chain $|\\mathbb{R}| < |\\mathcal{P}(\\mathbb{R})| < |\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))|$, mirrored by the strict monotonicity $\\beth_1 < \\beth_2 < \\beth_3$."
+    },
+    {
+      "id": "summary",
+      "title": "§5: Summary",
+      "startLine": 93,
+      "endLine": 102,
+      "summary": "cantors_theorem_oq01oq04_summary bundles the three facts: |𝒫(𝒫(ℝ))| = ℶ₃, the Cantor tower |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))|, and the beth tower ℶ₁ < ℶ₂ < ℶ₃.",
+      "mathContext": "A single conjunction recording the ZFC-provable structure of the second power set of ℝ."
+    }
+  ],
+  "conclusion": {
+    "summary": "|𝒫(𝒫(ℝ))| = ℶ₃ is established for the reals, fully machine-checked and axiom-free (only propext / Classical.choice / Quot.sound), advancing the parent entry's beth tower by one rung. The proof is two applications of |𝒫(α)| = 2^|α| matched against two unfoldings of the beth successor, and it records the accompanying strict Cantor and beth towers.",
+    "openQuestions": [
+      "Generalize to a single theorem |𝒫^{(n)}(ℝ)| = ℶ_{n+1} for all n by induction on n, formalizing the n-fold iterated power set (e.g. via a recursively defined type family) — turning the n = 1, 2 (parent) and n = 2 (this entry) cases into a uniform statement of the beth tower over ℝ.",
+      "The aleph-index of ℶ₃ (whether |𝒫(𝒫(ℝ))| = ℵ₃) is independent of ZFC, the higher-level analogue of the parent's open question; formalizing the Easton-theorem obstruction that prevents pinning it down would be a substantially deeper set-theoretic project."
+    ],
+    "implications": "Completes the third rung of the explicit beth tower over ℝ in the gallery (ℶ₁ = |ℝ|, ℶ₂ = |𝒫(ℝ)|, ℶ₃ = |𝒫(𝒫(ℝ))|), and supplies reusable concrete beth-successor unfoldings (beth_two_eq, beth_three_eq) and the cardinality identities for iterated power sets of ℝ. It sharpens the parent's central contrast — beth-index determined, aleph-index independent — by exhibiting the next deterministic level."
+  },
+  "crossReferences": [
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "parent-problem",
+      "description": "Direct parent: proves |𝒫(ℝ)| = ℶ₂ and poses, as its open question #4, whether |𝒫(𝒫(ℝ))| = ℶ₃ (answered yes here). This entry re-derives the parent's ℶ₂ rung so as to stand alone."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "ancestor",
+      "description": "Cantor's theorem κ < 2^κ is the engine generating the entire tower; each rung is one application of it, here instantiated twice for ℝ and 𝒫(ℝ)."
+    }
+  ],
+  "references": [
+    {
+      "author": "Cantor, G.",
+      "title": "Über eine elementare Frage der Mannigfaltigkeitslehre",
+      "year": 1891,
+      "note": "Cantor's theorem: no set surjects onto its power set, so κ < 2^κ"
+    },
+    {
+      "author": "Hausdorff, F.",
+      "title": "Grundzüge einer Theorie der geordneten Mengen",
+      "year": 1908,
+      "note": "Develops the beth/aleph cardinal hierarchies used to name 2^κ-style cardinals"
+    },
+    {
+      "author": "Jech, T.",
+      "title": "Set Theory, 3rd Millennium ed.",
+      "year": 2003,
+      "note": "Standard reference for the beth hierarchy, Cantor's theorem, and the ZFC-independence of the aleph-indices (Easton's theorem)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "CantorsTheoremOQ01OQ04",
+    "lineCount": 102,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CantorsTheoremOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
