@@ -3543,6 +3543,7 @@ import Proofs.PascalsHexagonOQ03
 import Proofs.PellEquation
 import Proofs.PellEquationOQ01
 import Proofs.PellEquationOQ01OQ04
+import Proofs.PellEquationOQ01OQ04OQ02OQ02
 import Proofs.PellEquationOQ04OQ01
 import Proofs.PellEquationOQ02
 import Proofs.PellEquationOQ04
