@@ -3367,6 +3367,7 @@ import Proofs.IsoperimetricTheoremOQ02OQ03OQ01
 import Proofs.IsoscelesTriangle
 import Proofs.IsoscelesTriangleOQ01
 import Proofs.IsoscelesTriangleOQ02
+import Proofs.IsoscelesTriangleOQ02OQ01
 import Proofs.JacobiSumDiagonalIntegral
 import Proofs.JacobiSymbolOQ01
 import Proofs.JacobiSymbolOQ0101
