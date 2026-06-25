@@ -1,0 +1,162 @@
+{
+  "id": "inclusion-exclusion-oq-03-oq-01",
+  "slug": "inclusion-exclusion-oq-03-oq-01",
+  "title": "Fast Zeta Transform Correctness: Folding the SOS Step Computes the Subset Sum",
+  "description": "Proves that iterating the parent's single-element sum-over-subsets (SOS) update step over every element of a finite ground type reproduces the full zeta transform — the correctness theorem of the O(n·2ⁿ) fast subset-sum dynamic program. The key device is a partial-sweep invariant: after folding the step over a duplicate-free list l, the running value at S is the sum of f over exactly the subsets of S that agree with S outside l. Directly answers the parent's open question #1.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InclusionExclusionOQ0301.lean",
+    "tags": [
+      "combinatorics",
+      "inclusion-exclusion",
+      "zeta-transform",
+      "subset-lattice",
+      "dynamic-programming",
+      "algorithm-correctness",
+      "fast-subset-sum",
+      "sos-dp"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Splits a sum over a finset by a decidable predicate; used to break the target subset-sum at S into the keep-a and drop-a branches, mirroring the SOS recurrence f(S) = f(S) + f(S\\{a}).",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sdiff_insert",
+        "description": "s \\ insert a t = (s \\ t).erase a; relates the partial-sweep constraint before and after processing one more element a.",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.insert_erase",
+        "description": "Re-inserts the just-processed element a into the constraint set to identify the keep-a branch with the previous-step index set.",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.nodup_toList",
+        "description": "univ.toList is duplicate-free, the hypothesis the partial-sweep invariant needs so each element is absorbed exactly once.",
+        "module": "Mathlib.Data.Finset.Basic"
+      }
+    ],
+    "originalContributions": [
+      "zetaFoldList / zetaFold: the fast subset-sum DP as a fold of the parent's single-element step zetaStep over a list (resp. all) of the ground elements",
+      "zetaFoldList_apply: the partial-sweep invariant — after folding over a duplicate-free list l, the value at S equals ∑_{T : S \\ l.toFinset ⊆ T ⊆ S} f(T), the subsets of S that agree with S outside the processed elements. Proved by list induction; the a∈S step is exactly the SOS recurrence, split by membership of a via sum_filter_add_sum_filter_not",
+      "zetaFold_eq_zetaTransform: fast SOS correctness — folding zetaStep over every element equals the full zeta transform ζf(S) = ∑_{T⊆S} f(T); the constraint collapses because S \\ univ = ∅",
+      "mobius_inverts_zetaFold: the fast fold and the parent's Möbius transform form an inverse transform pair (μ ∘ zetaFold = id), giving a fully verified forward-and-inverse fast transform"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 174,
+    "assumptions": "None. Fully machine-verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound). No decide/native_decide. Builds on the parent inclusion-exclusion-oq-03 (zetaStep and its pointwise laws, zetaTransform, mobiusTransform, mobius_inverts_zeta).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 2,
+    "sourceUrl": ""
+  },
+  "overview": {
+    "historicalContext": "The sum-over-subsets (SOS) dynamic program — also called the fast zeta transform or Yates's algorithm — computes, for a function f on the 2ⁿ subsets of an n-element ground set, all values of the zeta transform ζf(S) = ∑_{T⊆S} f(T) in O(n·2ⁿ) arithmetic operations rather than the naive O(3ⁿ). It sweeps the n elements one at a time: when processing element a, every set S containing a absorbs the value currently stored at S\\{a}. The technique is the Boolean-lattice analogue of the FFT butterfly and underlies fast subset convolution and the Björklund–Husfeldt–Kaski–Koivisto 'Fourier meets Möbius' framework (STOC 2007), itself the engine behind many exponential-time exact algorithms (graph coloring, Hamiltonicity, Steiner tree). The parent gallery entry inclusion-exclusion-oq-03 defines the one-element step and proves its two pointwise update laws, but explicitly left the correctness of iterating the step — that the whole sweep computes the transform — as its first open question.",
+    "problemStatement": "The parent defines the single-element SOS step (ζ_a f)(S) = f(S) + f(S\\{a}) if a ∈ S, else f(S), and proves its pointwise laws, but stops short of proving that composing the step once for every element reproduces the full zeta transform. Prove the fast SOS / fast zeta transform correctness theorem: folding ζ_a over all elements a of the finite ground type equals ζ, i.e. zetaFold f = zetaTransform f as functions Finset α → ℤ.",
+    "text": "Folding the parent's one-element SOS update over every element of the ground type computes the full zeta transform ζf(S) = ∑_{T⊆S} f(T). The proof goes through a partial-sweep invariant that pins down the running array after any prefix of elements has been processed.",
+    "proofStrategy": "Define zetaFoldList l f = l.foldr zetaStep f and zetaFold f = zetaFoldList univ.toList f. The crux is the partial-sweep invariant zetaFoldList_apply: for any duplicate-free list l and every S, the running value at S equals ∑ over T with S \\ l.toFinset ⊆ T ⊆ S of f(T) — the subsets of S that have not yet been allowed to differ from S on the unprocessed coordinates. Induct on l. Base case l = []: the constraint S ⊆ T ⊆ S forces T = S, leaving f(S). Inductive step l = a :: rest with a ∉ rest (from Nodup): if a ∉ S the step leaves S untouched and the constraint is unchanged (S \\ insert a rest.toFinset = S \\ rest.toFinset since a ∉ S); if a ∈ S the step gives f-value(S) + f-value(S.erase a), and the target index set {T : (S \\ rest.toFinset).erase a ⊆ T ⊆ S} splits by membership of a into exactly the keep-a set (= the previous index set at S, since a is forced in by insert_erase) and the drop-a set (= the previous index set at S.erase a), so the recurrence matches the sum split by sum_filter_add_sum_filter_not. Specializing to l = univ.toList makes S \\ univ = ∅, dropping the constraint to T ⊆ S and yielding the full transform.",
+    "keyInsights": [
+      "The right strengthening is a partial-sweep invariant: tracking the running array after a prefix of elements, expressed as a sum over the subsets of S that still agree with S on the not-yet-processed coordinates (S \\ l.toFinset ⊆ T). The full theorem is the special case l = univ.toList, where S \\ univ = ∅ removes the constraint.",
+      "The duplicate-freeness of univ.toList is essential and is exactly what the induction consumes: each element must be absorbed once, so the cons step needs a ∉ rest.toFinset to keep the keep-a / drop-a split disjoint.",
+      "The SOS recurrence f(S) = f(S) + f(S\\{a}) for a ∈ S is, after the IH rewrite, the statement that the index set {T : (S\\rest).erase a ⊆ T ⊆ S} partitions by 'does T contain a' into the S-index set and the (S.erase a)-index set. Finset.sum_filter_add_sum_filter_not turns that partition into the additive recurrence with no arithmetic.",
+      "sdiff_insert (s \\ insert a t = (s \\ t).erase a) and insert_erase are the two algebraic identities that move the constraint set across one processing step: erasing a coordinate from the difference is the same as relaxing the membership constraint on a by one.",
+      "Composed with the parent's mobius_inverts_zeta, the result upgrades to mobius_inverts_zetaFold: the fast fold is exactly inverted by the Möbius transform, giving a verified forward/inverse fast transform pair."
+    ],
+    "prerequisites": [
+      "Parent inclusion-exclusion-oq-03: zetaStep, zetaStep_mem, zetaStep_not_mem, zetaTransform, mobiusTransform, mobius_inverts_zeta",
+      "List.foldr and List.Nodup / List.toFinset API",
+      "Finset.powerset, Finset.filter, Finset.sdiff, Finset.erase",
+      "Finset.sum_filter_add_sum_filter_not (sum partition by a predicate)",
+      "Finset.sdiff_insert, Finset.insert_erase, Finset.subset_erase"
+    ]
+  },
+  "sections": [
+    {
+      "id": "fold-definitions",
+      "title": "The fold of the single-element SOS step",
+      "startLine": 49,
+      "endLine": 61,
+      "summary": "Defines zetaFoldList l f = l.foldr zetaStep f (process the elements of a list one at a time) and zetaFold f = zetaFoldList univ.toList f (the full fast subset-sum sweep over the ground type).",
+      "mathContext": "$\\mathrm{zetaFold}\\,f = \\zeta_{a_1}(\\zeta_{a_2}(\\cdots \\zeta_{a_n} f))$"
+    },
+    {
+      "id": "partial-sweep-invariant",
+      "title": "The partial-sweep invariant",
+      "startLine": 63,
+      "endLine": 143,
+      "summary": "zetaFoldList_apply: by induction on a duplicate-free list l, the value at S after folding equals ∑_{T : S\\l.toFinset ⊆ T ⊆ S} f(T). The a∈S inductive step is the SOS recurrence, with the target index set split by membership of a via sum_filter_add_sum_filter_not.",
+      "mathContext": "$(\\,l.\\mathrm{foldr}\\,\\zeta_\\bullet\\,f\\,)(S) = \\sum_{S\\setminus l \\subseteq T \\subseteq S} f(T)$"
+    },
+    {
+      "id": "correctness",
+      "title": "Correctness of the fast zeta transform",
+      "startLine": 145,
+      "endLine": 174,
+      "summary": "zetaFold_eq_zetaTransform: folding over every element equals the full zeta transform (S \\ univ = ∅ collapses the constraint). zetaFold_apply gives the pointwise form, and mobius_inverts_zetaFold combines with the parent's Möbius inversion to invert the fast fold.",
+      "mathContext": "$\\mathrm{zetaFold}\\,f = \\zeta f,\\qquad \\mu(\\mathrm{zetaFold}\\,f) = f$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves 4 theorems and 2 definitions (0 axioms, 0 sorries) establishing the correctness of the O(n·2ⁿ) fast subset-sum dynamic program: folding the parent's single-element SOS step over every element of a finite ground type reproduces the full zeta transform. The proof rests on a partial-sweep invariant proved by list induction, with the SOS recurrence emerging as a sum partition by the membership of the currently-processed element.",
+    "implications": "Turns the parent's definition-with-local-lemmas into a verified algorithm. Combined with the parent's mobius_inverts_zeta, it yields a fully verified forward-and-inverse fast transform pair (the same fold, inverted by the Möbius transform). It is also a clean, reusable instance of a recurring formal-verification pattern: proving that a fold of a local rewrite computes a global closed form, with the right partial invariant doing all the work.",
+    "openQuestions": [
+      "Prove the fast Möbius (inverse) transform directly: a signed single-element step whose fold computes μ in O(n·2ⁿ), and show it is the literal inverse fold of zetaFold.",
+      "Establish the analogous foldl correctness (processing elements left-to-right) and that any processing order yields the same result, since the per-coordinate steps commute."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "inclusion-exclusion-oq-03",
+      "relationship": "parent",
+      "description": "Parent entry: defines zetaStep and its pointwise laws (zetaStep_mem, zetaStep_not_mem), the zeta/Möbius transforms, and Möbius inversion. This entry proves the parent's open question #1 — that folding zetaStep over all elements computes the transform."
+    },
+    {
+      "targetId": "inclusion-exclusion",
+      "relationship": "ancestor",
+      "description": "Root inclusion–exclusion principle; the zeta transform being computed here is its algebraic engine."
+    }
+  ],
+  "references": [
+    {
+      "authors": "F. Yates",
+      "title": "The Design and Analysis of Factorial Experiments",
+      "year": "1937",
+      "venue": "Imperial Bureau of Soil Science",
+      "note": "Origin of the sum-over-subsets sweep (Yates's algorithm)"
+    },
+    {
+      "authors": "A. Björklund, T. Husfeldt, P. Kaski, M. Koivisto",
+      "title": "Fourier Meets Möbius: Fast Subset Convolution",
+      "year": "2007",
+      "venue": "STOC 2007",
+      "note": "O(n·2ⁿ) fast subset convolution; the fast zeta transform proved correct here is its core subroutine"
+    },
+    {
+      "authors": "D. E. Knuth",
+      "title": "The Art of Computer Programming, Vol. 4A",
+      "year": "2011",
+      "venue": "Addison-Wesley, §7.1.3",
+      "note": "Textbook treatment of the SOS / fast subset-sum transform"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/InclusionExclusionOQ0301.lean",
+    "filename": "InclusionExclusionOQ0301.lean",
+    "lineCount": 174,
+    "theoremCount": 4,
+    "axiomCount": 0,
+    "defCount": 2,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InclusionExclusionOQ0301.lean",
+    "sorries": 0,
+    "definitionCount": 2
+  }
+}
