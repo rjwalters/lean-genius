@@ -1,92 +1,98 @@
 [
   {
-    "id": "ann-header",
+    "id": "dilworth-hard-header",
     "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 1,
-      "endLine": 89
-    },
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "context",
+    "title": "The hard direction of Dilworth's theorem — not in Mathlib",
+    "content": "The companion files supply the easy direction (an antichain is no larger than any chain cover, width ≤ min chain cover) and the hard direction of Mirsky's theorem. The hard direction of Dilworth's theorem — that a chain cover whose size equals the maximum antichain width actually exists — is the genuinely deep combinatorial content and is not available in Mathlib. This file proves it in full via the Galvin/Perles down-set/up-set decomposition, organised around a maximum antichain.",
+    "mathContext": "Dilworth (1950): in a finite poset, $\\min(\\text{chain cover}) = \\max(\\text{antichain})$. This file proves the hard $\\ge$ inequality.",
+    "significance": "context",
+    "relatedConcepts": ["Dilworth's theorem", "Galvin–Perles proof", "chain cover", "antichain width", "min–max duality"],
+    "prerequisites": ["partial orders", "chains and antichains"]
+  },
+  {
+    "id": "dilworth-hard-chainpartition-def",
+    "proofId": "dilworth-theorem-oq-01-oq-02",
+    "range": { "startLine": 75, "endLine": 83 },
     "type": "definition",
-    "title": "The Chain-Partition Predicate",
-    "content": "After importing Mathlib and the parent file Proofs.DilworthTheoremOQ01 (reusing IsChainOn/IsAntichainOn and the chain ∩ antichain subsingleton lemma), the file defines IsChainPartition 𝒞 s: a family 𝒞 of chains, each ⊆ s, that covers s DISJOINTLY — every element of s lies in a unique part. The disjointness clause is not cosmetic: the induction needs to match chains to antichain elements bijectively, and a mere cover (with overlaps) would break the gluing step. Proving the partition form is strictly more than proving the cover form, and is what makes the recursion go through.",
-    "mathContext": "A chain partition of $s$: each $C \\in \\mathcal{C}$ is a chain $\\subseteq s$, the parts cover $s$, and each $x \\in s$ lies in exactly one part.",
+    "title": "Chain partition: a disjoint covering chain family",
+    "content": "IsChainPartition strengthens a chain cover with a disjointness clause: every element of s lies in a unique member chain. This is exactly what the Dilworth induction needs — disjointness lets the gluing step match each chain to the unique element of the maximum antichain it contains, so down-parts and up-parts can be welded bijectively. Proving the partition form (not just a cover) is essential to the induction; the cover form is recovered at the end by forgetting disjointness.",
+    "mathContext": "$\\mathcal{C}$ a family of chains $\\subseteq s$ that covers $s$ with each $x \\in s$ in a unique $C \\in \\mathcal{C}$.",
+    "significance": "key",
+    "relatedConcepts": ["partition", "chain cover", "disjointness", "unique membership"],
+    "prerequisites": ["Finset families", "covers"]
+  },
+  {
+    "id": "dilworth-hard-downup-def",
+    "proofId": "dilworth-theorem-oq-01-oq-02",
+    "range": { "startLine": 89, "endLine": 119 },
+    "type": "definition",
+    "title": "Down-set / up-set of an antichain",
+    "content": "downSet A s collects the elements of s below some element of A; upSet A s those above some element of A. Both are subsets of s, and (when A ⊆ s) both contain A itself (each a ∈ A witnesses its own membership by reflexivity). These two sets are the stage on which the whole Galvin/Perles argument plays out — the maximum antichain A sits in their intersection.",
+    "mathContext": "$\\mathrm{downSet}\\,A\\,s = \\{x\\in s : \\exists y\\in A,\\ x\\le y\\}$, $\\ \\mathrm{upSet}\\,A\\,s = \\{x\\in s : \\exists y\\in A,\\ y\\le x\\}$.",
     "significance": "supporting",
-    "relatedConcepts": ["chain partition", "disjoint cover", "Dilworth's theorem", "antichain width"],
-    "prerequisites": ["chains and antichains in a poset", "Finset partitions", "the parent's subsingleton lemma"]
+    "relatedConcepts": ["down-set", "up-set", "order ideal", "order filter"],
+    "prerequisites": ["order ideals and filters"]
   },
   {
-    "id": "ann-decomposition",
+    "id": "dilworth-hard-chain-confinement",
     "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 89,
-      "endLine": 200
-    },
-    "type": "concept",
-    "title": "The Down-set / Up-set Decomposition of a Maximum Antichain",
-    "content": "downSet A s and upSet A s collect the elements of s that are ≤ (resp. ≥) some element of the antichain A. The structural lemmas: le_of_mem_chain_downSet / ge_of_mem_chain_upSet say a chain inside the down-set (resp. up-set) passing through a'∈A lies entirely below (resp. above) a' — the comparability is forced through the antichain element. downSet_inter_upSet shows the two sets meet exactly in A (an element both ≤ some a and ≥ some a' must equal them, as A is an antichain). downSet_union_upSet shows that for a MAXIMUM antichain the two sets cover s — any element comparable to none would extend A, contradicting maximality. This decomposition splits the comparability structure cleanly around A.",
-    "mathContext": "$\\mathrm{down}(A) \\cap \\mathrm{up}(A) = A$; for a maximum antichain, $\\mathrm{down}(A) \\cup \\mathrm{up}(A) = s$.",
-    "significance": "key",
-    "relatedConcepts": ["down-set / up-set", "maximum antichain", "comparability", "order ideals and filters"],
-    "prerequisites": ["antichain maximality", "comparability in a partial order", "Finset membership lemmas"]
-  },
-  {
-    "id": "ann-glue",
-    "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 199,
-      "endLine": 216
-    },
-    "type": "technique",
-    "title": "The Gluing Step",
-    "content": "glue_isChain welds a down-side chain C and an up-side chain C', both passing through the same a'∈A, into a single chain C ∪ C'. The verification is local: every member of C is ≤ a' (le_of_mem_chain_downSet) and every member of C' is ≥ a' (ge_of_mem_chain_upSet), so any cross-pair x∈C, y∈C' is comparable through a' (x ≤ a' ≤ y). Within C and within C' comparability is given. Thus the union is totally ordered. This is how chains computed recursively on the two halves are reassembled into chains of the whole poset.",
-    "mathContext": "(down-chain through $a'$, all $\\le a'$) $\\cup$ (up-chain through $a'$, all $\\ge a'$) is a chain, glued at $a'$.",
-    "significance": "key",
-    "relatedConcepts": ["chain gluing", "transitivity through a pivot", "chain concatenation", "down/up chains"],
-    "prerequisites": ["the down/up-chain bounding lemmas", "transitivity of ≤", "chains as totally ordered subsets"]
-  },
-  {
-    "id": "ann-saturation",
-    "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 218,
-      "endLine": 285
-    },
+    "range": { "startLine": 121, "endLine": 142 },
     "type": "insight",
-    "title": "The Saturation Pigeonhole: Chains ↔ Antichain in Bijection",
-    "content": "chain_meets_antichain_of_card_le is the combinatorial engine. If a family 𝒞 of ≤ |A| chains covers the antichain A, then every chain meets A (necessarily exactly once, since a chain and an antichain share at most one point). Proof: the map a ↦ (the chain of 𝒞 containing a) is injective (two antichain elements in one chain would be comparable), so its image has cardinality |A| ≥ |𝒞|, forcing image = 𝒞 (Finset.eq_of_subset_of_card_le) — every chain is some a's chain. This tightness turns the antichain-into-chains injection into a bijection, which is exactly what makes the gluing well-defined: each down-part and up-part carries a unique element of A to glue at.",
-    "mathContext": "A cover of antichain $A$ by $\\le |A|$ chains is tight: each chain meets $A$ exactly once, giving a bijection $\\mathcal{C} \\leftrightarrow A$.",
+    "title": "A chain through a' ∈ A is confined below (resp. above) a'",
+    "content": "le_of_mem_chain_downSet: in a chain C ⊆ downSet A s containing a' ∈ A, every element x lies below a'. If x is not already ≤ a' by chain comparability, then a' ≤ x ≤ (witness y), so the antichain forces a' = y and hence x = a'. ge_of_mem_chain_upSet is the dual. These confinement facts are what make gluing valid: a down-chain stays under its antichain element and an up-chain stays over it.",
+    "mathContext": "$C \\subseteq \\mathrm{downSet}\\,A\\,s,\\ a'\\in A\\cap C \\Rightarrow \\forall x\\in C,\\ x\\le a'.$",
     "significance": "key",
-    "relatedConcepts": ["pigeonhole principle", "saturation", "injective ⟹ bijective on equal cardinalities", "chain ∩ antichain ≤ 1"],
-    "prerequisites": ["Finset.eq_of_subset_of_card_le", "injectivity from antichain incomparability", "the easy direction of Dilworth"]
+    "relatedConcepts": ["chain comparability", "antichain incomparability", "confinement", "antisymmetry"],
+    "prerequisites": ["chains", "antichains"]
   },
   {
-    "id": "ann-main-partition",
+    "id": "dilworth-hard-inter-union-glue",
     "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 267,
-      "endLine": 519
-    },
-    "type": "insight",
-    "title": "Dilworth's Hard Direction (Partition Form)",
-    "content": "dilworth_chainPartition is the main theorem, by strong induction on the ground Finset s (Finset.strongInductionOn, strict-subset). Empty case is trivial. Otherwise select a maximum antichain A of size m (Finset.exists_max_image), then split on whether a NON-EXTREME maximum antichain exists (one whose down-set and up-set are both proper subsets of s). Non-extreme (gluing case): down-set and up-set cover s and meet in A; antichains in each are bounded by m, so induction partitions each into ≤ m chains; the saturation pigeonhole indexes both partitions by A; glue_isChain welds matching down/up parts into ≤ m chains covering s — disjointly, since two glued chains sharing a point share their A-element. Extreme (chain-removal case): if every maximum antichain is all-minimal or all-maximal, pick a minimal x ≤ y maximal, delete the chain {x,y}; every maximum antichain contains x or y so s\\{x,y} has width ≤ m−1; induction gives ≤ m−1 chains, reinsert {x,y} for ≤ m.",
-    "mathContext": "Width $\\le w \\Rightarrow$ chain partition into $\\le w$ parts, by strong induction on $|s|$ with a gluing case and an extreme chain-removal case.",
+    "range": { "startLine": 144, "endLine": 216 },
+    "type": "theorem",
+    "title": "Decomposition: meet in A, cover s, and glue",
+    "content": "Three structural pillars. downSet_inter_upSet: the two sets meet exactly in A (an element in both is squeezed y₂ ≤ x ≤ y₁ between antichain elements, forcing it into A). downSet_union_upSet: for a maximum antichain they cover all of s — an element missed by both is incomparable to all of A, so A ∪ {x} would be a strictly larger antichain, contradicting maximality. glue_isChain: a down-chain and an up-chain through the same a' ∈ A union to a chain, since any cross-pair is comparable through a' (x ≤ a' ≤ y).",
+    "mathContext": "$\\mathrm{downSet}\\cap\\mathrm{upSet}=A;\\quad \\mathrm{downSet}\\cup\\mathrm{upSet}=s\\ (A\\text{ maximum});\\quad C\\cup C' \\text{ is a chain}.$",
     "significance": "key",
-    "relatedConcepts": ["strong induction on Finsets", "maximum antichain", "extreme vs non-extreme case", "minimal-to-maximal chain removal"],
-    "prerequisites": ["the decomposition, gluing, and saturation lemmas", "Finset.exists_max_image / exists_minimal", "strong induction by strict subset"]
+    "relatedConcepts": ["maximum antichain", "covering", "gluing chains", "comparability through a pivot"],
+    "prerequisites": ["antichain maximality", "chain unions"]
   },
   {
-    "id": "ann-cover",
+    "id": "dilworth-hard-saturation",
     "proofId": "dilworth-theorem-oq-01-oq-02",
-    "range": {
-      "startLine": 520,
-      "endLine": 538
-    },
-    "type": "concept",
-    "title": "Dilworth's Hard Direction (Cover Form) and the Min–Max Duality",
-    "content": "dilworth_chainCover is the headline statement: a finite poset of width w is covered by ≤ w chains, obtained from the partition form by forgetting disjointness. Combined with the parent entry's easy direction (no chain family smaller than an antichain it covers), this completes the full Dilworth min–max equality: the minimum number of chains covering a finite poset equals the maximum antichain width. Dilworth's theorem is classically equivalent to König's bipartite matching theorem and underlies the perfection of comparability graphs and the Gallai–Milgram theorem; this axiom-free formalization (absent from Mathlib) is reusable infrastructure for those and for applications such as Erdős–Szekeres.",
-    "mathContext": "$\\min(\\text{chain cover}) = \\max(\\text{antichain})$: the cover $\\le$ width half (proved here) plus the easy $\\ge$ half (parent) give the equality.",
+    "range": { "startLine": 218, "endLine": 263 },
+    "type": "theorem",
+    "title": "Saturation pigeonhole: every chain meets the antichain",
+    "content": "chain_meets_antichain_of_card_le. If a chain family 𝒞 covers an antichain A and |𝒞| ≤ |A|, then every chain of 𝒞 meets A. The map a ↦ (a chain containing a) is injective on A (two antichain elements in the same chain would coincide, by chain∩antichain ≤ 1), so its image has card |A| ≤ |𝒞| and, by equal cardinalities, equals 𝒞 — i.e. the map is onto, so every chain is hit. This bridges the easy bound to the gluing step: it guarantees the inductive down/up sub-covers are indexed by A.",
+    "mathContext": "$|\\mathcal{C}| \\le |A|$ and $\\mathcal{C}$ covers $A$ $\\Rightarrow$ every $C\\in\\mathcal{C}$ contains exactly one element of $A$.",
     "significance": "key",
-    "relatedConcepts": ["min–max duality", "König's theorem", "comparability graphs (perfection)", "Gallai–Milgram theorem", "Dilworth equality"],
-    "prerequisites": ["the partition form", "the parent's easy direction", "chain covers vs partitions"]
+    "relatedConcepts": ["pigeonhole principle", "injective-then-bijective", "saturation", "chain–antichain intersection"],
+    "prerequisites": ["pigeonhole", "card-le forcing equality"]
+  },
+  {
+    "id": "dilworth-hard-induction",
+    "proofId": "dilworth-theorem-oq-01-oq-02",
+    "range": { "startLine": 267, "endLine": 518 },
+    "type": "theorem",
+    "title": "Dilworth's hard direction by strong induction: glue or chain-removal",
+    "content": "dilworth_chainPartition. Strong induction on s (strict subset). Fix a maximum antichain A of size m. Either some maximum antichain B is NON-EXTREME (downSet B s ≠ s and upSet B s ≠ s) — then both are proper subsets, induction partitions each into ≤ m chains, saturation indexes both partitions by B, and glue_isChain welds the down-part and up-part through their shared element of B (the long hcross argument verifies the welded parts are pairwise disjoint). Or every maximum antichain is EXTREME (the set of all minimal or all maximal elements) — then delete a minimal-to-maximal chain {x, y}; every maximum antichain contains x or y, so s ∖ {x,y} has width ≤ m−1, and induction plus reinserting {x,y} gives ≤ m chains.",
+    "mathContext": "width $\\le w$ $\\Rightarrow$ $s$ partitions into $\\le w$ chains; the case split is on existence of a non-extreme maximum antichain.",
+    "significance": "critical",
+    "relatedConcepts": ["strong induction", "Galvin–Perles", "case analysis", "minimal and maximal elements", "chain removal"],
+    "prerequisites": ["strong induction on finsets", "the decomposition and saturation lemmas"]
+  },
+  {
+    "id": "dilworth-hard-cover",
+    "proofId": "dilworth-theorem-oq-01-oq-02",
+    "range": { "startLine": 520, "endLine": 538 },
+    "type": "theorem",
+    "title": "Cover form and the min–max equality",
+    "content": "dilworth_chainCover. The headline cover form — width ≤ w implies s is covered by ≤ w chains — obtained immediately from the partition by forgetting disjointness. Combined with the companion easy direction antichain_card_le_of_chainCover, taking w to be the maximum antichain width yields the classical Dilworth equality: the minimum number of chains needed to cover a finite poset equals the maximum size of an antichain.",
+    "mathContext": "$\\min(\\text{chain cover}) = \\max(\\text{antichain width}).$",
+    "significance": "key",
+    "relatedConcepts": ["Dilworth equality", "chain cover", "duality", "Mirsky's theorem (transpose)"],
+    "prerequisites": ["the partition form", "the easy direction"]
   }
 ]

@@ -1,0 +1,131 @@
+{
+  "id": "combinations-formula-oq-01-oq-02",
+  "title": "The Terminating Gauss ₂F₁ Summation (Chu–Vandermonde)",
+  "slug": "combinations-formula-oq-01-oq-02",
+  "description": "Gauss's terminating hypergeometric summation ₂F₁(−n, b; c; 1) = (c−b)_n/(c)_n, proved as a polynomial Chu–Vandermonde identity over an arbitrary commutative ring and as the classical quotient form over a field. Generalizes the parent's natural-number Vandermonde convolution to rising factorials and the Gauss hypergeometric series.",
+  "meta": {
+    "author": "Lean Genius Research Team",
+    "date": "2026-06-24",
+    "dateAdded": "2026-06-24",
+    "status": "verified",
+    "badge": "original",
+    "tags": [
+      "combinatorics",
+      "hypergeometric",
+      "gauss-2f1",
+      "chu-vandermonde",
+      "pochhammer",
+      "rising-factorial",
+      "binomial-coefficients",
+      "special-functions"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 203,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "proofRepoPath": "Proofs/CombinationsFormulaOQ01OQ02.lean",
+    "originalContributions": [
+      "gauss_terminating_ring: the terminating Gauss ₂F₁ summation ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ (c+i)ⱼ = (c−b)_n, denominator-cleared and valid over ANY commutative ring (no positivity/division/convergence hypotheses) — Gauss's second theorem absent from Mathlib",
+      "gauss_terminating_field: the classical quotient form ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ/(c)ᵢ = (c−b)_n/(c)_n over a field, i.e. ₂F₁(−n,b;c;1) = (c−b)_n/(c)_n, under the single hypothesis (c)_n ≠ 0",
+      "ascPochhammer_eval_vandermonde: the rising-factorial Chu–Vandermonde convolution (x+y)_n = ∑_{i+j=n} C(n,i) (x)ᵢ (y)ⱼ in .eval form over a commutative ring — the generalization of the parent's binomial Vandermonde",
+      "descPochhammer_eval_vandermonde: the falling-factorial Vandermonde convolution in .eval form over a commutative ring (the polynomial backbone), proved by antidiagonal induction",
+      "ascPochhammer_eval_eq_descPochhammer': the rising/falling bridge (z)_m = (z+m−1)^{≤m}",
+      "neg_one_pow_mul_ascPochhammer_eval: the sign bridge (−1)ⁱ (b)ᵢ = (−b)^{≤i} casting a signed rising factorial as a falling factorial at the negated base",
+      "ascPochhammer_eval_split: the multiplicative split (c)_{k+m} = (c)_k (c+k)_m used to clear denominators in the quotient form"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Carl Friedrich Gauss introduced the hypergeometric series ₂F₁(a,b;c;z) = ∑ (a)_n(b)_n/((c)_n n!) zⁿ in his 1812 memoir 'Disquisitiones generales circa seriem infinitam', where he proved the celebrated summation ₂F₁(a,b;c;1) = Γ(c)Γ(c−a−b)/(Γ(c−a)Γ(c−b)) for Re(c−a−b) > 0. When the upper parameter a = −n is a non-positive integer the series terminates and Gauss's theorem specializes to the purely algebraic identity ₂F₁(−n,b;c;1) = (c−b)_n/(c)_n, which is equivalent to the Chu–Vandermonde convolution. The convolution itself predates Gauss: Zhu Shijie (朱世杰) recorded it in his 1303 'Jade Mirror of the Four Unknowns' (the 'Zhu Vandermonde' identity), and Alexandre-Théophile Vandermonde rediscovered the binomial case in 1772. The terminating ₂F₁ summation is the gateway to the entire theory of summation and transformation formulas for hypergeometric series (Pfaff–Saalschütz, Dixon, Watson, Whipple), which underpins the modern algorithmic theory of Zeilberger and Petkovšek.",
+    "problemStatement": "Generalize the parent's natural-number Vandermonde convolution C(m+n,r) = ∑_k C(m,k) C(n,r−k) to the Gauss hypergeometric series ₂F₁. Concretely, establish Gauss's terminating summation: for the rising factorial (z)_m = z(z+1)⋯(z+m−1), prove ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ (c+i)ⱼ = (c−b)_n over an arbitrary commutative ring (the denominator-cleared form), and the classical quotient ₂F₁(−n,b;c;1) = ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ/(c)ᵢ = (c−b)_n/(c)_n over a field.",
+    "proofStrategy": "Although Mathlib provides `descPochhammer_smeval_add` (a Vandermonde convolution for descending Pochhammer symbols via `smeval`) and `ordinaryHypergeometric` (notation `₂F₁`), it contains NO summation theorem for ₂F₁. We first reprove the Vandermonde convolution in clean evaluated (`.eval`) form over a commutative ring by an antidiagonal induction, using the Pascal split `Finset.sum_antidiagonal_choose_succ_mul` together with the Pochhammer recurrences `ascPochhammer_succ_eval` / `descPochhammer_succ_eval`. The key insight reduces Gauss's terminating identity to this convolution: because (z)_m = (z+m−1)^{≤m} (rising = shifted falling, via Mathlib's `descPochhammer_eval_eq_ascPochhammer`) and (−1)ⁱ(b)ᵢ = (−b)^{≤i} (via Mathlib's `ascPochhammer_eval_neg_eq_descPochhammer`), each summand of the alternating sum collapses to a FALLING Pochhammer with a base independent of the summation index i: (−1)ⁱ(b)ᵢ·(c+i)_{n−i} = (−b)^{≤i}·(c+n−1)^{≤(n−i)}. Hence the whole sum is the falling Vandermonde convolution evaluated at α = −b, β = c+n−1, whose value (−b+c+n−1)^{≤n} equals (c−b)_n. The quotient (field) form follows by clearing (c)_n with the multiplicative split (c)_n = (c)ᵢ·(c+i)_{n−i}; note (c)_n ≠ 0 forces every (c)ᵢ ≠ 0 since (c)ᵢ divides (c)_n.",
+    "keyInsights": [
+      "**Vandermonde is the terminating ₂F₁**: Gauss's hypergeometric summation, normally an analytic theorem about an infinite series with a Gamma-function value, becomes a finite algebraic identity precisely when the upper parameter is a non-positive integer −n. In that regime it IS the Chu–Vandermonde convolution — the parent's binomial identity is the integer specialization.",
+      "**Index-independent base trick**: The seemingly index-dependent summand (−1)ⁱ(b)ᵢ·(c+i)_{n−i} hides a falling-factorial structure with a FIXED base. Rewriting via (z)_m = (z+m−1)^{≤m} and (−1)ⁱ(b)ᵢ = (−b)^{≤i} turns it into (−b)^{≤i}·(c+n−1)^{≤(n−i)} — both bases (−b and c+n−1) are independent of i, so the alternating sum is an ordinary Vandermonde convolution. This is what makes the elementary reduction possible without generating-function machinery.",
+      "**Denominator-clearing buys full generality**: Stating the identity as ∑ (−1)ⁱ C(n,i) (b)ᵢ (c+i)ⱼ = (c−b)_n (rather than the quotient ₂F₁(−n,b;c;1) = (c−b)_n/(c)_n) removes every hypothesis: the ring form holds over an arbitrary commutative ring, with no nonvanishing, positivity, or convergence assumption. The classical quotient form is then recovered over a field under the single hypothesis (c)_n ≠ 0.",
+      "**One nonvanishing hypothesis suffices**: For the quotient form, only (c)_n ≠ 0 is needed — not (c)ₖ ≠ 0 for each k — because the multiplicative split (c)_n = (c)ₖ·(c+k)_{n−k} exhibits each (c)ₖ as a factor of the nonzero (c)_n.",
+      "**Mathlib gap**: Mathlib has the analytic ₂F₁ object and a Pochhammer Vandermonde convolution, but no closed-form *evaluation* of ₂F₁ at any point. This entry supplies the cornerstone terminating case, the springboard for the classical summation/transformation hierarchy (Pfaff–Saalschütz, Dixon, …)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "desc-vandermonde",
+      "title": "Part I: The Falling-Pochhammer Vandermonde Convolution",
+      "startLine": 56,
+      "endLine": 89,
+      "summary": "descPochhammer_eval_vandermonde proves (α+β)^{≤n} = ∑_{i+j=n} C(n,i) α^{≤i} β^{≤j} over any commutative ring, by an antidiagonal induction using the Pascal split sum_antidiagonal_choose_succ_mul and descPochhammer_succ_eval.",
+      "mathContext": "The polynomial backbone. For falling factorials z^{≤m} = z(z−1)⋯(z−m+1), the convolution (α+β)^{≤n} = ∑_{i+j=n} \\binom{n}{i} α^{≤i} β^{≤j} holds over an arbitrary commutative ring."
+    },
+    {
+      "id": "bridges",
+      "title": "Part II: Rising/Falling and Sign Bridges",
+      "startLine": 90,
+      "endLine": 114,
+      "summary": "ascPochhammer_eval_eq_descPochhammer' gives (z)_m = (z+m−1)^{≤m}; neg_one_pow_mul_ascPochhammer_eval gives (−1)ⁱ (b)ᵢ = (−b)^{≤i}. Together they turn each alternating summand into a falling factorial with index-independent base.",
+      "mathContext": "(z)_m = (z+m−1)^{\\underline m} and (−1)^i (b)_i = (−b)^{\\underline i}. The latter is the reflection (−b)(−b−1)⋯(−b−i+1) = (−1)^i b(b+1)⋯(b+i−1)."
+    },
+    {
+      "id": "asc-vandermonde",
+      "title": "Part III: The Rising-Pochhammer Chu–Vandermonde Convolution",
+      "startLine": 115,
+      "endLine": 148,
+      "summary": "ascPochhammer_eval_vandermonde proves (x+y)_n = ∑_{i+j=n} C(n,i) (x)ᵢ (y)ⱼ over any commutative ring — the rising-factorial Chu–Vandermonde identity generalizing the parent's binomial convolution.",
+      "mathContext": "For rising factorials (z)_m = z(z+1)⋯(z+m−1): (x+y)_n = ∑_{i+j=n} \\binom{n}{i} (x)_i (y)_j. The parent's C(m+n,r) = ∑_k C(m,k)C(n,r−k) is the integer specialization."
+    },
+    {
+      "id": "gauss-ring",
+      "title": "Part IV: The Terminating Gauss ₂F₁ Summation (Ring Form)",
+      "startLine": 149,
+      "endLine": 168,
+      "summary": "gauss_terminating_ring proves ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ (c+i)ⱼ = (c−b)_n over any commutative ring, by rewriting each summand into falling factorials with index-independent bases and applying descPochhammer_eval_vandermonde at α=−b, β=c+n−1.",
+      "mathContext": "Gauss's second theorem, denominator-cleared: ∑_{i+j=n} (−1)^i \\binom{n}{i} (b)_i (c+i)_j = (c−b)_n, valid over an arbitrary commutative ring."
+    },
+    {
+      "id": "gauss-field",
+      "title": "Part V: The Classical Quotient Form over a Field",
+      "startLine": 169,
+      "endLine": 203,
+      "summary": "ascPochhammer_eval_split gives (c)_{k+m} = (c)_k (c+k)_m; gauss_terminating_field then derives ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ/(c)ᵢ = (c−b)_n/(c)_n over a field under the single hypothesis (c)_n ≠ 0.",
+      "mathContext": "₂F₁(−n,b;c;1) = ∑_{i+j=n} (−1)^i \\binom{n}{i} (b)_i/(c)_i = (c−b)_n/(c)_n, the standard statement of Gauss's terminating theorem, requiring only (c)_n ≠ 0."
+    }
+  ],
+  "conclusion": {
+    "summary": "Gauss's terminating hypergeometric summation ₂F₁(−n,b;c;1) = (c−b)_n/(c)_n is formalized both as a denominator-cleared polynomial identity over an arbitrary commutative ring and as the classical quotient form over a field. The proof reduces the alternating hypergeometric sum to an ordinary Vandermonde convolution via two factorial bridges that expose an index-independent falling-factorial structure, requiring no generating-function or analytic machinery.",
+    "implications": "This is the cornerstone closed-form evaluation of the Gauss hypergeometric series — the first such summation theorem on top of Mathlib's analytic ₂F₁ definition. The terminating Chu–Vandermonde is the base case of the classical hierarchy of hypergeometric summation and transformation identities (Pfaff–Saalschütz, Dixon, Watson, Whipple) and the algebraic engine behind the Gosper–Zeilberger algorithmic theory of binomial-sum identities. The ring-level form, free of any nonvanishing hypothesis, is directly reusable as a polynomial identity in symbolic computations.",
+    "openQuestions": [
+      "Can the terminating identity be connected to Mathlib's analytic `ordinaryHypergeometric` by proving that, for a non-positive integer upper parameter, the series sum equals the finite Chu–Vandermonde sum?",
+      "Does the same index-independent-base reduction prove the Pfaff–Saalschütz theorem (the terminating balanced ₃F₂ summation)?",
+      "Can the q-analogue (the terminating q-Chu–Vandermonde / q-Gauss summation) be proved by an analogous antidiagonal induction over a commutative ring with a q-Pochhammer symbol?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "combinations-formula-oq-01",
+      "relationship": "parent",
+      "description": "Extended Binomial Coefficient Identities — provides the natural-number Vandermonde convolution that this entry generalizes to ₂F₁"
+    },
+    {
+      "targetId": "arithmetic-series-oq-02-oq-01-oq-01-oq-03",
+      "relationship": "related",
+      "description": "The q-Vandermonde (Gaussian-binomial) identity — a q-deformation of the same convolution"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/CombinationsFormulaOQ01OQ02.lean",
+    "namespace": "CombinationsFormulaOQ01OQ02",
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Polynomial"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 203,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "additionalFiles": []
+  },
+  "sorries": 0
+}

@@ -1,77 +1,86 @@
 [
   {
-    "id": "ann-max-antichain",
+    "id": "dilworth-es-header",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
-    "range": {
-      "startLine": 49,
-      "endLine": 75
-    },
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "A common min–max framework from Mirsky to Erdős–Szekeres",
+    "content": "The companion files supply the two halves of the Dilworth/Mirsky picture: the easy directions (a chain meets an antichain in ≤ 1 point) and Mirsky's hard direction (the height decomposition covers the poset by maxChainLen antichains). This file ties them together through a single counting inequality card α ≤ maxChainLen · maxAntichainLen, whose contrapositive is the Erdős–Szekeres dichotomy, and specialises it to sequence positions to recover the classical Erdős–Szekeres theorem.",
+    "mathContext": "$|\\alpha| \\le \\mathrm{maxChainLen}\\cdot\\mathrm{maxAntichainLen}$; contrapositive $\\Rightarrow$ a long chain or a long antichain.",
+    "significance": "context",
+    "relatedConcepts": ["Mirsky's theorem", "Dilworth's theorem", "Erdős–Szekeres theorem", "min–max duality", "poset height and width"],
+    "prerequisites": ["partial orders", "chains and antichains"]
+  },
+  {
+    "id": "dilworth-es-maxantichain",
+    "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 49, "endLine": 75 },
     "type": "definition",
-    "title": "The Dual Width Invariant maxAntichainLen",
-    "content": "maxAntichainLen is defined as the sup of antichain cardinalities (over allAntichains, the filtered powerset of the finite poset) — the transpose of the imported maxChainLen. antichain_card_le_maxAntichainLen records that every antichain is bounded by it (Finset.le_sup), and exists_antichain_card_eq_maxAntichainLen shows the bound is attained. Nonemptiness of the index set is free: the empty set is vacuously an antichain, so the sup is over a nonempty family. This dual invariant is the second factor in the product bound that follows.",
-    "mathContext": "$\\mathrm{maxAntichainLen} = \\sup\\{|A| : A \\text{ an antichain}\\}$, the order-theoretic dual of $\\mathrm{maxChainLen}$.",
+    "title": "The dual width invariant: maxAntichainLen",
+    "content": "maxAntichainLen is defined as the supremum of cardinalities over allAntichains — the finite set of antichains, carved out of the powerset by the IsAntichainOn predicate. Two facts are recorded: every antichain has card ≤ maxAntichainLen (Finset.le_sup), and the sup is attained by an actual antichain (Finset.exists_mem_eq_sup, using that the empty set is vacuously an antichain so the family is nonempty). This is the width of the poset, dual to the chain-length (height) invariant maxChainLen from the companion file.",
+    "mathContext": "$\\mathrm{maxAntichainLen} = \\max\\{|A| : A \\text{ an antichain}\\}$ — the width of the poset.",
     "significance": "supporting",
-    "relatedConcepts": ["antichain", "width of a poset", "Finset.sup", "Mirsky's theorem", "Dilworth duality"],
-    "prerequisites": ["partial orders, chains and antichains", "Finset.sup and attainment of a finite sup"]
+    "relatedConcepts": ["antichain", "poset width", "Finset.sup", "supremum attained", "powerset filter"],
+    "prerequisites": ["finite suprema", "Finset operations"]
   },
   {
-    "id": "ann-product-bound",
+    "id": "dilworth-es-counting",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
-    "range": {
-      "startLine": 77,
-      "endLine": 118
-    },
-    "type": "insight",
-    "title": "The Common Min–Max Counting Bound and Its Contrapositive",
-    "content": "card_le_maxChainLen_mul_maxAntichainLen is the bridge inequality: Mirsky's mirsky_antichain_cover supplies ≤ maxChainLen antichains covering the poset, the universe injects into their union, and a calc chain bounds card ≤ Σ(antichain sizes) ≤ (number of antichains)·maxAntichainLen ≤ maxChainLen·maxAntichainLen (Finset.card_biUnion_le, Finset.sum_le_sum, Finset.sum_const). exists_long_chain_or_antichain is its contrapositive by by_contra/push_neg: if every chain ≤ r and every antichain ≤ s then maxChainLen ≤ r and maxAntichainLen ≤ s, so card ≤ r·s, contradicting r·s < card. This single dichotomy is the abstract Erdős–Szekeres, with all the hard content already in Mirsky.",
-    "mathContext": "$|P| \\le \\mathrm{maxChainLen}\\cdot\\mathrm{maxAntichainLen}$; contrapositive: $rs < |P| \\Rightarrow$ a chain of size $>r$ or an antichain of size $>s$.",
+    "range": { "startLine": 79, "endLine": 98 },
+    "type": "theorem",
+    "title": "The common min–max counting bound",
+    "content": "card_le_maxChainLen_mul_maxAntichainLen. The keystone: a finite poset has at most maxChainLen · maxAntichainLen elements. Mirsky's cover 𝒜 (mirsky_antichain_cover) consists of at most maxChainLen antichains whose union is the whole poset; bounding |univ| ≤ |⋃𝒜| ≤ ∑_{A∈𝒜}|A| ≤ |𝒜|·maxAntichainLen ≤ maxChainLen·maxAntichainLen via Finset.card_biUnion_le and Finset.sum_le_sum gives the product bound. This is the multiplicative analogue of the additive Dilworth/Mirsky equalities.",
+    "mathContext": "$|\\alpha| \\le |\\textstyle\\bigcup\\mathcal{A}| \\le \\sum_{A\\in\\mathcal{A}}|A| \\le |\\mathcal{A}|\\cdot\\mathrm{maxAntichainLen} \\le \\mathrm{maxChainLen}\\cdot\\mathrm{maxAntichainLen}.$",
     "significance": "key",
-    "relatedConcepts": ["min–max duality", "pigeonhole principle", "Finset.card_biUnion_le", "contrapositive", "Erdős–Szekeres dichotomy"],
-    "prerequisites": ["Mirsky's antichain cover (sibling entry)", "cardinality of finite unions", "the maxAntichainLen bound"]
+    "relatedConcepts": ["Mirsky antichain cover", "biUnion cardinality", "covering bound", "pigeonhole"],
+    "prerequisites": ["antichain cover", "cardinality of unions"]
   },
   {
-    "id": "ann-seqpos",
+    "id": "dilworth-es-dichotomy",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
-    "range": {
-      "startLine": 122,
-      "endLine": 171
-    },
+    "range": { "startLine": 100, "endLine": 118 },
+    "type": "theorem",
+    "title": "The Erdős–Szekeres dichotomy (poset form)",
+    "content": "exists_long_chain_or_antichain. The contrapositive of the counting bound: if a poset has more than r·s elements, it has a chain of size > r or an antichain of size > s. Proved by by_contra + push_neg — if every chain had ≤ r and every antichain ≤ s elements, then maxChainLen ≤ r and maxAntichainLen ≤ s (using that both invariants are attained), so card α ≤ r·s by the bound, contradicting r·s < card α. The pure pigeonhole core of Erdős–Szekeres.",
+    "mathContext": "$r\\cdot s < |\\alpha| \\Rightarrow (\\exists\\text{ chain } |C| > r) \\vee (\\exists\\text{ antichain } |A| > s).$",
+    "significance": "key",
+    "relatedConcepts": ["contrapositive", "dichotomy", "pigeonhole principle", "extremal combinatorics"],
+    "prerequisites": ["proof by contradiction", "the counting bound"]
+  },
+  {
+    "id": "dilworth-es-seqpos",
+    "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
+    "range": { "startLine": 122, "endLine": 171 },
     "type": "definition",
-    "title": "The Dominance Order on Sequence Positions",
-    "content": "SeqPos f is a one-field structure wrapping Fin N, equipped with the dominance partial order a ≤ b ↔ a.pos ≤ b.pos ∧ f a.pos ≤ f b.pos. Antisymmetry holds because equal positions force the points to coincide (SeqPos.ext on the position equality). Wrapping Fin N in a fresh structure is the key design move: it avoids any clash with Fin N's native linear order, so the dominance order can be installed as the PartialOrder instance. equivFin gives a Fintype borrowed from Fin N and card_eq : card (SeqPos f) = N; pos_injective records that the position map is injective — both needed to transport the dichotomy and preserve sizes.",
-    "mathContext": "$a \\preccurlyeq b \\iff a_{\\mathrm{pos}} \\le b_{\\mathrm{pos}} \\wedge f(a_{\\mathrm{pos}}) \\le f(b_{\\mathrm{pos}})$, a finite poset of cardinality $N$.",
+    "title": "The dominance order on sequence positions",
+    "content": "SeqPos f wraps a position i ∈ Fin N and carries the product (dominance) order i ≼ j ↔ i ≤ j ∧ f i ≤ f j. Antisymmetry holds because equal positions force equal SeqPos (the wrapper is essentially Fin N, hence equivFin : SeqPos f ≃ Fin N and card_eq : card (SeqPos f) = N). This poset is the bridge: ordering sequence positions by both index and value turns subsequence structure into chain/antichain structure.",
+    "mathContext": "$i \\preccurlyeq j \\iff i \\le j \\wedge f_i \\le f_j$, with $\\mathrm{SeqPos}\\,f \\simeq \\mathrm{Fin}\\,N$.",
     "significance": "key",
-    "relatedConcepts": ["product order", "dominance order", "PartialOrder instance", "Fintype.ofEquiv", "structure wrapping"],
-    "prerequisites": ["partial order axioms (antisymmetry)", "Fintype transport via an equivalence", "Lean instance resolution"]
+    "relatedConcepts": ["product order", "dominance order", "Fin N", "poset on indices"],
+    "prerequisites": ["partial order axioms", "product of orders"]
   },
   {
-    "id": "ann-transport",
+    "id": "dilworth-es-chains-subseq",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
-    "range": {
-      "startLine": 173,
-      "endLine": 205
-    },
+    "range": { "startLine": 173, "endLine": 204 },
     "type": "insight",
-    "title": "Chains ↔ Non-decreasing, Antichains ↔ Strictly Decreasing",
-    "content": "The dictionary that makes the poset dichotomy mean something about sequences. image_pos_nondecr: the positions of a chain form a non-decreasing index set — comparable positions a, b with i ≤ j move the value the same way, and the boundary case where positions coincide is handled by antisymmetry. image_pos_strictdecr: the positions of an antichain form a strictly decreasing index set — for i < j the positions are unequal hence incomparable in the dominance order, and ¬(a ≤ b) unfolds (push_neg) to exactly f j < f i. card_image_pos preserves cardinalities via injectivity of the position map. So a 'long chain' becomes a long non-decreasing run and a 'long antichain' a long strictly-decreasing run.",
-    "mathContext": "Chain $\\Rightarrow$ $i \\le j \\Rightarrow f_i \\le f_j$ (non-decreasing); antichain $\\Rightarrow$ $i < j \\Rightarrow f_j < f_i$ (strictly decreasing); sizes preserved.",
+    "title": "Chains ↔ non-decreasing, antichains ↔ strictly decreasing",
+    "content": "The translation lemmas. image_pos_nondecr: a chain's positions form a non-decreasing subsequence — comparable positions with i ≤ j satisfy f i ≤ f j (the off-diagonal case b ≤ a collapses by antisymmetry of indices). image_pos_strictdecr: an antichain's positions form a strictly decreasing subsequence — incomparable positions with i < j must have f j < f i, since i ≤ j in index but ¬(a ≼ b) forces the value to drop. card_image_pos records that the position map is injective so cardinalities transfer. This is exactly where the two-dimensional dominance order pays off.",
+    "mathContext": "chain $\\Rightarrow$ ($i\\le j \\Rightarrow f_i \\le f_j$);  antichain $\\Rightarrow$ ($i < j \\Rightarrow f_j < f_i$).",
     "significance": "key",
-    "relatedConcepts": ["monotone subsequence", "incomparability = descent", "Finset.card_image_of_injective", "order isomorphism"],
-    "prerequisites": ["chains and antichains in the dominance order", "image cardinality under injection", "case analysis on comparability"]
+    "relatedConcepts": ["non-decreasing subsequence", "strictly decreasing subsequence", "incomparability", "monotone subsequences"],
+    "prerequisites": ["antisymmetry", "antichain incomparability"]
   },
   {
-    "id": "ann-erdos-szekeres",
+    "id": "dilworth-es-classical",
     "proofId": "dilworth-theorem-oq-01-oq-01-oq-03",
-    "range": {
-      "startLine": 207,
-      "endLine": 227
-    },
-    "type": "concept",
-    "title": "The Classical Erdős–Szekeres Theorem",
-    "content": "erdos_szekeres_seq assembles the pieces: for f : Fin N → β over a linear order with r·s < N, apply the poset dichotomy to SeqPos f (whose cardinality is N by card_eq), then push the resulting chain or antichain through the position map using image_pos_nondecr / image_pos_strictdecr and card_image_pos. The conclusion is a non-decreasing run on > r positions or a strictly decreasing run on > s positions. Taking N = r·s + 1 recovers the classical 1935 statement that a sequence of r·s + 1 terms has a monotone subsequence of length r+1 (non-decreasing) or s+1 (strictly decreasing). The result holds over any LinearOrder codomain, not just the reals, and Erdős–Szekeres is absent from Mathlib, so the file fills a concrete gap.",
-    "mathContext": "$rs < N \\Rightarrow$ a non-decreasing run of length $>r$ or a strictly decreasing run of length $>s$; with $N = rs+1$, the classical theorem.",
+    "range": { "startLine": 208, "endLine": 226 },
+    "type": "theorem",
+    "title": "Erdős–Szekeres for sequences",
+    "content": "erdos_szekeres_seq. Transporting the poset dichotomy through the position map: any sequence of length N > r·s over a linear order has a non-decreasing run on more than r positions or a strictly decreasing run on more than s positions. Taking N = r·s + 1 recovers the classical 1935 statement — a sequence of r·s + 1 terms has a monotone subsequence of length r+1 or s+1. The proof rewrites card (SeqPos f) = N, applies the dichotomy, and maps the resulting chain/antichain to its position set with cardinality preserved.",
+    "mathContext": "$N > r\\cdot s \\Rightarrow$ non-decreasing run of length $> r$ or strictly decreasing run of length $> s$;  $N = rs+1$ gives the classical bound.",
     "significance": "key",
-    "relatedConcepts": ["Erdős–Szekeres theorem", "monotone subsequences", "pigeonhole principle", "Ramsey-type results"],
-    "prerequisites": ["the poset dichotomy exists_long_chain_or_antichain", "the chain/antichain transport lemmas", "card_eq for SeqPos"]
+    "relatedConcepts": ["Erdős–Szekeres theorem", "monotone subsequence", "Ramsey-type theorem", "1935 result"],
+    "prerequisites": ["linear orders", "the poset dichotomy"]
   }
 ]

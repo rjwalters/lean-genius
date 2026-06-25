@@ -534,6 +534,7 @@ import Proofs.BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01
 import Proofs.BuffonsNeedleOQ01OQ01OQ04OQ01OQ01OQ01OQ02
 import Proofs.BuffonsNeedleOQ01OQ02
 import Proofs.BuffonsNeedleOQ01OQ04
+import Proofs.BuffonsNeedleOQ01OQ04OQ01
 import Proofs.BuffonsNeedleOQ02
 import Proofs.BuffonsNeedleOQ02OQ01
 import Proofs.BuffonsNeedleOQ02OQ02
@@ -791,6 +792,7 @@ import Proofs.ChebyshevPNTBridgeOQ01Aristotle
 import Proofs.ChebyshevPNTBridgeOQ01OQ02
 import Proofs.ChebyshevPNTBridgeOQ02
 import Proofs.ChebyshevPNTBridgeOQ03
+import Proofs.ChebyshevPNTBridgeOQ05
 import Proofs.ChebyshevPolynomialsOQ01
 import Proofs.ChebyshevPolynomialsOQ01OQ01OQ01
 import Proofs.ChebyshevSumMonotoneOQ01
@@ -839,6 +841,7 @@ import Proofs.CombinationsFormulaOQ01OQ01
 import Proofs.CombinationsFormulaOQ01OQ01OQ01
 import Proofs.CombinationsFormulaOQ01OQ01OQ01OQ02
 import Proofs.CombinationsFormulaOQ01OQ01OQ02
+import Proofs.CombinationsFormulaOQ01OQ02
 import Proofs.CombinationsFormulaOQ01OQ04
 import Proofs.CombinationsFormulaOQ02
 import Proofs.CombinationsFormulaOQ02Aristotle
@@ -984,6 +987,7 @@ import Proofs.DescartesRuleOfSigns
 import Proofs.DescartesRuleOfSignsOQ01
 import Proofs.DescartesRuleOfSignsOQ01OQ01
 import Proofs.DescartesRuleOfSignsOQ01OQ02
+import Proofs.DescartesRuleOfSignsOQ01OQ04OQ03
 import Proofs.DescartesRuleOfSignsOQ02
 import Proofs.DescartesRuleOfSignsOQ02OQ03
 import Proofs.DescartesRuleOfSignsOQ02OQ04
@@ -1525,6 +1529,7 @@ import Proofs.Erdos129Problem
 import Proofs.Erdos12Problem
 import Proofs.Erdos12ProblemAPNPartI
 import Proofs.Erdos12ProblemAPNPartII
+import Proofs.Erdos12WIP01
 import Proofs.Erdos130Problem
 import Proofs.Erdos130WIP01
 import Proofs.Erdos131DavenportPower
@@ -3090,6 +3095,8 @@ import Proofs.GreensTheoremOQ01OQ01OQ02OQ02
 import Proofs.GreensTheoremOQ01OQ01OQ02OQ03
 import Proofs.GreensTheoremOQ01OQ01OQ03
 import Proofs.GreensTheoremOQ01OQ02
+import Proofs.GreensTheoremOQ01OQ03
+import Proofs.GreensTheoremOQ01OQ03OQ02
 import Proofs.GreensTheoremOQ02
 import Proofs.GreensTheoremOQ02Corrected
 import Proofs.GreensTheoremOQ02Counterexample
@@ -3802,6 +3809,7 @@ import Proofs.SpernerSimplicialInstanceOQ03Tower
 import Proofs.SpernerSimplicialInstanceOQ04
 import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
+import Proofs.SphericalExcessGirard
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ03
 import Proofs.SphericalLawOfCosinesOQ03Bidual
