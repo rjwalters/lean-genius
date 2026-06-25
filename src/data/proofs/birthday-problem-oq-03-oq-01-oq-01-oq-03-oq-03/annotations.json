@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 3, "endLine": 51 },
+    "type": "context",
+    "title": "The General k-fold Threshold and Its Heuristic",
+    "content": "The docstring frames OQ-03: generalize the parent's k=3 cube-root threshold to arbitrary k. The Poisson/expected-count heuristic: with d equally likely days, a fixed set of k people all share a day with probability 1/d^{k-1}, so the expected number of k-wise coincidences is C(n,k)/d^{k-1} = n^{\\underline{k}}/(k!\\,d^{k-1}), where n^{\\underline{k}}=∏_{i<k}(n-i) is the falling factorial. The 50%-chance threshold sets this to ln2, giving the balance ∏_{i<k}(n-i)=k!\\,d^{k-1}\\ln2. This file proves rigorously that the solving n satisfies (k!\\,d^{k-1}\\ln2)^{1/k} ≤ n ≤ (k!\\,d^{k-1}\\ln2)^{1/k}+(k-1), so n = threshold + O(1) with d-independent error.",
+    "mathContext": "$\\prod_{i<k}(n-i)=k!\\,d^{k-1}\\ln 2 \\;\\Rightarrow\\; n=(k!\\,d^{k-1}\\ln 2)^{1/k}+O(1)$",
+    "significance": "context",
+    "relatedConcepts": ["birthday problem", "k-fold coincidence", "Poisson approximation", "falling factorial", "threshold asymptotics"],
+    "prerequisites": ["probability heuristics", "asymptotics"]
+  },
+  {
+    "id": "ann-kthroot",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 57, "endLine": 61 },
+    "type": "technique",
+    "title": "The k-th-Root Identity",
+    "content": "`kthRoot_pow`: $(x^k)^{1/k}=x$ for $x\\ge 0$, $k\\ne 0$, directly from Mathlib's `Real.pow_rpow_inv_natCast`. Treating the k-th root uniformly as the real power $t\\mapsto t^{1/k}$ — rather than developing a bespoke nth-root — is the key simplification: it is monotone on the nonnegatives and inverse to k-th powering there. This generalizes the parent's `cubeRoot_cube` ($k=3$) and is what lets a single sandwich argument cover all k.",
+    "mathContext": "$(x^k)^{1/k}=x \\quad (x\\ge 0,\\ k\\ne 0)$",
+    "significance": "supporting",
+    "relatedConcepts": ["rpow", "k-th root", "Real.pow_rpow_inv_natCast", "monotone power"],
+    "prerequisites": ["real powers (rpow)"]
+  },
+  {
+    "id": "ann-upper-sandwich",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 63, "endLine": 77 },
+    "type": "technique",
+    "title": "Upper Sandwich: ∏(n−i) ≤ nᵏ",
+    "content": "`falling_le_pow`: every factor $n-i$ ($i<k$) is $\\le n$ and nonnegative (since $n\\ge k-1$ and $i<k$ ⟹ $i+1\\le k$), so by `Finset.prod_le_prod` the falling factorial is bounded above by the constant product $\\prod_{i<k} n = n^k$ (`Finset.prod_const` + `Finset.card_range`). No induction on k is needed — the comparison is factor-by-factor against a constant. The nonnegativity side-goal and the factor bound are both discharged by `linarith` after casting $i<k$ to $\\mathbb{R}$.",
+    "mathContext": "$\\prod_{i<k}(n-i) \\le \\prod_{i<k} n = n^k$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_le_prod", "Finset.prod_const", "falling factorial", "factor-by-factor bound"],
+    "prerequisites": ["finite products", "monotonicity of products"]
+  },
+  {
+    "id": "ann-lower-sandwich",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 79, "endLine": 93 },
+    "type": "technique",
+    "title": "Lower Sandwich: (n−(k−1))ᵏ ≤ ∏(n−i)",
+    "content": "`pow_le_falling`: every factor $n-i$ is $\\ge n-(k-1)\\ge 0$ (since $i\\le k-1$), so the constant product $(n-(k-1))^k$ is bounded above by the falling factorial — again one `Finset.prod_le_prod`. Together with the upper sandwich this traps $\\prod_{i<k}(n-i)$ between two consecutive perfect k-th powers $[(n-(k-1))^k,\\ n^k]$, which is exactly what makes a single k-th-root sandwich pin n to within an additive $k-1$.",
+    "mathContext": "$(n-(k-1))^k = \\prod_{i<k}(n-(k-1)) \\le \\prod_{i<k}(n-i)$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_le_prod", "consecutive perfect powers", "sandwich bound"],
+    "prerequisites": ["finite products"]
+  },
+  {
+    "id": "ann-threshold",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 95, "endLine": 142 },
+    "type": "insight",
+    "title": "The Threshold and Its O(1) Gap",
+    "content": "`birthday_kfold_threshold` assembles the result. Setting $L=k!\\,d^{k-1}\\ln 2$ (positive via `Real.log_pos` + `positivity`), the lower bound comes from $L\\le n^k$ (upper sandwich + balance) and `Real.rpow_le_rpow` with exponent $1/k$, giving $L^{1/k}\\le (n^k)^{1/k}=n$. The upper bound comes from $(n-(k-1))^k\\le L$ (lower sandwich), so $n-(k-1)=((n-(k-1))^k)^{1/k}\\le L^{1/k}$, then `linarith`. `birthday_kfold_threshold_gap` repackages this as $|n-L^{1/k}|\\le k-1$ via `abs_le`. The error $k-1$ is the gap between the k-th roots of the two bounding powers — independent of d.",
+    "mathContext": "$L^{1/k}\\le n\\le L^{1/k}+(k-1),\\quad |n-L^{1/k}|\\le k-1,\\quad L=k!\\,d^{k-1}\\ln 2$",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow_le_rpow", "rpow monotonicity", "leading-order asymptotics", "explicit error bound"],
+    "prerequisites": ["monotonicity of real powers", "absolute value bounds"]
+  },
+  {
+    "id": "ann-k3-check",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 144, "endLine": 170 },
+    "type": "insight",
+    "title": "k = 3 Consistency Check Against the Parent",
+    "content": "`birthday_kfold_threshold_k3` machine-checks that the general theorem specializes faithfully to the parent's k=3 result. It expands $\\prod_{i<3}(n-i)=n(n-1)(n-2)$ (`Finset.prod_range_succ` + `ring`), rewrites the balance into the general form with $3!=6$ and $d^{3-1}=d^2$ (`norm_num [Nat.factorial]`), invokes the general theorem, and simplifies the constants to recover $(6d^2\\ln 2)^{1/3}\\le n\\le (6d^2\\ln 2)^{1/3}+2$. This in-file regression test confirms the generalization is exact, not merely analogous.",
+    "mathContext": "$k=3:\\ (6d^2\\ln 2)^{1/3}\\le n\\le (6d^2\\ln 2)^{1/3}+2$",
+    "significance": "supporting",
+    "relatedConcepts": ["specialization", "consistency check", "Finset.prod_range_succ", "parent result"],
+    "prerequisites": ["the parent k=3 threshold"]
+  }
+]
