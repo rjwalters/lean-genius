@@ -1,0 +1,170 @@
+{
+  "id": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+  "title": "The Off-Diagonal Real Euler Beta Integral ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!, proved two ways",
+  "slug": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+  "description": "Answers the parent leaf's first open question: generalize the diagonal real Beta integral to the full off-diagonal value ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!. The result is proved two independent ways. Route 1 (integral_offdiag_eq_factorial) generalizes the parent's ℂ→ℝ bridge: the real integral cast into ℂ is Complex.betaIntegral (m+1)(n+1) — the complex powers (x:ℂ)^((m+1)-1), (1-x)^((n+1)-1) collapse to monoid powers via Complex.cpow_natCast on [0,1], the integral descends through intervalIntegral.integral_ofReal — and the closed form is read off the parent's betaIntegral_nat_nat. Route 2 (integral_offdiag_via_ibp) is a self-contained real-analysis proof that never leaves ℝ: the single integration-by-parts recurrence ∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ (integral_recurrence, via integral_mul_deriv_eq_deriv_mul with both boundary terms vanishing) plus induction on n down to the base ∫₀¹ xᵐ⁺ⁿ = 1/(m+n+1) gives the closed form independently of Mathlib's Complex.Gamma. integral_offdiag_symm records the m↔n symmetry. Neither the off-diagonal real integral nor the recurrence is in Mathlib. Fully verified: 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean",
+    "tags": [
+      "special-functions",
+      "beta-function",
+      "interval-integral",
+      "integration-by-parts",
+      "measure-theory",
+      "factorial",
+      "euler-integral"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Complex.betaIntegral",
+        "description": "B(u,v) = ∫ x:ℝ in 0..1, (x:ℂ)^(u-1)·(1-x)^(v-1); recognized as the off-diagonal real integrand cast into ℂ at u=m+1, v=n+1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Beta"
+      },
+      {
+        "theorem": "Complex.cpow_natCast",
+        "description": "z^(n:ℂ) = z^n; collapses the complex powers (x:ℂ)^((m+1)-1), (1-x)^((n+1)-1) to the monoid powers (x:ℂ)^m, (1-x)^n on [0,1]",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Complex"
+      },
+      {
+        "theorem": "intervalIntegral.integral_ofReal",
+        "description": "∫ x in a..b, (f x : ℂ) = ↑(∫ x in a..b, f x); descends the complex Beta integral to the real integral once the integrand is a cast real function",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "intervalIntegral.integral_mul_deriv_eq_deriv_mul",
+        "description": "Integration by parts ∫ u·v' = u·v |ₐᵇ − ∫ u'·v for functions with HasDerivAt everywhere; the engine of the self-contained real recurrence with u=(1-x)ⁿ⁺¹, v=xᵐ⁺¹/(m+1)",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.IntegrationByParts"
+      },
+      {
+        "theorem": "intervalIntegral.integral_pow",
+        "description": "∫ x in a..b, xᵏ = (bᵏ⁺¹−aᵏ⁺¹)/(k+1); supplies the induction base ∫₀¹ xᵏ = 1/(k+1) for the IBP route",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      },
+      {
+        "theorem": "HasDerivAt.pow",
+        "description": "(d/dx) f(x)ᵏ = k·f(x)ᵏ⁻¹·f'(x); used to differentiate (1-x)ⁿ⁺¹ for the integration-by-parts setup",
+        "module": "Mathlib.Analysis.Calculus.Deriv.Pow"
+      },
+      {
+        "theorem": "BetaIntegralRecurrence.betaIntegral_nat_nat",
+        "description": "Parent (grandparent leaf): B(m+1,n+1) = m!·n!/(m+n+1)! over ℂ; supplies the closed-form value reused after the ℂ→ℝ bridge in Route 1",
+        "module": "Proofs.BetaIntegralRecurrence"
+      }
+    ],
+    "originalContributions": [
+      "integral_offdiag_eq_factorial: the off-diagonal real Euler Beta integral ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! — the m ≠ n generalization of the parent leaf's diagonal integral, and exactly the parent's first open question. Mathlib has only the ℂ-valued Complex.betaIntegral; this is the real integral of the polynomial integrand for independent m, n.",
+      "ofReal_integral_offdiag: the off-diagonal ℂ→ℝ bridge ↑(∫₀¹ xᵐ(1-x)ⁿ) = Complex.betaIntegral (m+1)(n+1), generalizing the parent's diagonal bridge by collapsing each complex power separately via Complex.cpow_natCast.",
+      "integral_recurrence: a self-contained real integration-by-parts recurrence ∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ, proved directly over ℝ (integral_mul_deriv_eq_deriv_mul, both boundary terms vanishing). This is not in Mathlib and is the key new technical ingredient of the alternative route.",
+      "integral_offdiag_via_ibp: a second, fully independent proof of the closed form by induction on n via integral_recurrence and the base ∫₀¹ xᵐ⁺ⁿ = 1/(m+n+1) — deriving the off-diagonal Beta value without leaving ℝ and without invoking Mathlib's Complex.Gamma at all.",
+      "integral_offdiag_symm: the m↔n symmetry ∫₀¹ xᵐ(1-x)ⁿ = ∫₀¹ xⁿ(1-x)ᵐ, read off the closed form (the substitution x ↦ 1-x at the level of values)."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. #print axioms reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) for integral_offdiag_eq_factorial, integral_offdiag_via_ibp, and integral_recurrence. No native_decide, so no Lean.ofReduceBool dependency. Route 1 imports the grandparent BetaIntegralRecurrence to reuse the complex closed form; Route 2 is independent of it. Kernel-verified on Mathlib 4.26.0.",
+    "lineCount": 169,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Euler Beta integral B(u,v) = ∫₀¹ x^(u-1)(1-x)^(v-1) dx at integer arguments gives the rational value m!·n!/(m+n+1)!, a staple of combinatorics, probability (the Beta distribution), and Bayesian statistics (the Beta–Binomial conjugacy). Mathlib develops the Beta function analytically as the ℂ-valued Complex.betaIntegral and relates it to Gamma, but it does not record the real-variable integer integral, and it has no integration-by-parts recurrence for it. The parent gallery leaf brought the diagonal value B(n+1,n+1) = (n!)²/(2n+1)! down to ℝ; its first open question asks whether the descent generalizes to the off-diagonal integral. This entry answers that question, and then proves the same value a second time by a self-contained real argument.",
+    "problemStatement": "Prove the off-diagonal real Euler Beta integral ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! for all naturals m, n, generalizing the parent's diagonal case, ideally by the elementary integration-by-parts recurrence (m,n) ↦ reduce n.",
+    "proofStrategy": "Two independent routes. Route 1 (complex bridge): ofReal_integral_offdiag unfolds Complex.betaIntegral (m+1)(n+1); the exponents (m+1)-1, (n+1)-1 are the naturals m, n, so Complex.cpow_natCast turns the complex powers into monoid powers and the integrand equals ↑(xᵐ(1-x)ⁿ); intervalIntegral.integral_ofReal (via integral_congr on [0,1]) descends the integral. integral_offdiag_eq_factorial then rewrites with the grandparent's betaIntegral_nat_nat and transfers to ℝ by exact_mod_cast. Route 2 (pure real): integral_recurrence integrates ∫₀¹ xᵐ(1-x)ⁿ⁺¹ by parts with u = (1-x)ⁿ⁺¹, v = xᵐ⁺¹/(m+1); u(1) = 0 and v(0) = 0 kill both boundary terms, leaving ∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ. integral_offdiag_via_ibp inducts on n: the base case ∫₀¹ xᵐ⁺⁰ = 1/(m+1) (integral_base, from integral_pow) matches m!·0!/(m+1)!, and the inductive step applies the recurrence and ih(m+1), closing with factorial arithmetic (Nat.factorial_succ, field_simp). integral_offdiag_symm reads the m↔n symmetry off the closed form.",
+    "keyInsights": [
+      "**The off-diagonal integrand is still a cast real polynomial.** For u = m+1, v = n+1 the cpow exponents (m+1)-1 = m and (n+1)-1 = n are naturals, so each complex power (x:ℂ)^(m:ℂ) is the monoid power (x:ℂ)^m (Complex.cpow_natCast) — no branch cuts. The whole complex integrand is ↑(xᵐ(1-x)ⁿ), so the descent that worked on the diagonal works verbatim off-diagonal; only the exponents differ.",
+      "**One integration by parts is the entire content of the real route.** Writing the integrand as (1-x)ⁿ⁺¹ · d/dx(xᵐ⁺¹/(m+1)), integration by parts moves one factor of (1-x) onto x: both endpoint contributions vanish (xᵐ⁺¹ at 0, (1-x)ⁿ⁺¹ at 1), giving the clean recurrence ((n+1)/(m+1)) that decrements the second exponent. The Beta value is then forced by induction and the trivial base ∫₀¹ xᵏ = 1/(k+1).",
+      "**Two independent proofs pin the same rational value.** Route 1 routes through Mathlib's analytic Gamma/Beta theory over ℂ; Route 2 uses nothing beyond the fundamental theorem of calculus over ℝ. That a purely real, elementary argument reproduces the value obtained from the complex special-function machinery is a useful cross-check and makes the result robust to either dependency.",
+      "**Boundary terms vanish by exponent positivity.** In integral_recurrence the surviving exponents are n+1 ≥ 1 and m+1 ≥ 1, so (1-1)ⁿ⁺¹ = 0 and 0ᵐ⁺¹ = 0 (zero_pow on a successor); this is exactly why integration by parts produces a pure recurrence with no leftover constant.",
+      "**Factorial bookkeeping is the only arithmetic.** The inductive step reduces to ((n+1)/(m+1))·((m+1)!·n!/(m+1+n+1)!) = m!·(n+1)!/(m+(n+1)+1)!, which Nat.factorial_succ + field_simp discharge after recording factorial positivity for the nonzero denominators."
+    ],
+    "prerequisites": [
+      "The Euler Beta integral and its integer closed form m!·n!/(m+n+1)!",
+      "Complex powers (cpow) versus monoid powers, and Complex.cpow_natCast",
+      "Integration by parts for interval integrals (integral_mul_deriv_eq_deriv_mul) and HasDerivAt for polynomials",
+      "Induction with a strengthened parameter (generalizing m while inducting on n)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "complex-bridge",
+      "title": "Route 1 — the complex bridge",
+      "startLine": 42,
+      "endLine": 72,
+      "summary": "ofReal_integral_offdiag casts the real integral ∫₀¹ xᵐ(1-x)ⁿ into ℂ and identifies it with Complex.betaIntegral (m+1)(n+1): the exponents (m+1)-1, (n+1)-1 reduce to m, n, Complex.cpow_natCast collapses the complex powers to monoid powers, and intervalIntegral.integral_ofReal descends the integral. integral_offdiag_eq_factorial rewrites the right side with the grandparent's betaIntegral_nat_nat and transfers the equality to ℝ by exact_mod_cast, giving ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!.",
+      "mathContext": "↑(∫₀¹ xᵐ(1-x)ⁿ) = Complex.betaIntegral (m+1)(n+1) = m!·n!/(m+n+1)!."
+    },
+    {
+      "id": "ibp-recurrence",
+      "title": "Route 2 — integration-by-parts recurrence",
+      "startLine": 73,
+      "endLine": 131,
+      "summary": "integral_base gives the induction base ∫₀¹ xᵏ(1-x)⁰ = 1/(k+1) from integral_pow. integral_recurrence integrates ∫₀¹ xᵐ(1-x)ⁿ⁺¹ by parts with u = (1-x)ⁿ⁺¹ and v = xᵐ⁺¹/(m+1) (derivatives via HasDerivAt.pow and hasDerivAt_pow.div_const); both boundary terms vanish because (1-1)ⁿ⁺¹ = 0 and 0ᵐ⁺¹ = 0, leaving the pure recurrence ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ after pulling the constant out (integral_const_mul).",
+      "mathContext": "∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ."
+    },
+    {
+      "id": "induction-and-symmetry",
+      "title": "Closed form by induction, and symmetry",
+      "startLine": 132,
+      "endLine": 169,
+      "summary": "integral_offdiag_via_ibp inducts on n (generalizing m): the base case matches m!·0!/(m+1)! and the successor case applies integral_recurrence and the induction hypothesis ih(m+1), closing with Nat.factorial_succ and field_simp — a proof of the closed form that never leaves ℝ. integral_offdiag_symm reads the m↔n symmetry ∫₀¹ xᵐ(1-x)ⁿ = ∫₀¹ xⁿ(1-x)ᵐ off the closed form.",
+      "mathContext": "∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! = ∫₀¹ xⁿ(1-x)ᵐ."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Whittaker, E. T.; Watson, G. N.",
+      "title": "A Course of Modern Analysis",
+      "year": "1927",
+      "note": "The Euler Beta integral B(u,v) = ∫₀¹ x^(u-1)(1-x)^(v-1) dx and its reduction to Gamma; integer arguments give m!·n!/(m+n+1)!."
+    },
+    {
+      "authors": "Artin, E.",
+      "title": "The Gamma Function",
+      "year": "1964",
+      "note": "Elementary development of the Beta and Gamma functions, including the integration-by-parts recurrence underlying the integer evaluation."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Parent leaf 'The Symmetric Beta Density on [0,1]'. Its first open question asks whether the diagonal ℂ→ℝ descent generalizes to the off-diagonal integral ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!; this entry answers it and adds an independent real integration-by-parts proof."
+    },
+    {
+      "targetId": "beta-integral-recurrence-oq-01",
+      "relationship": "related",
+      "description": "Grandparent entry establishing the integer Beta closed form B(m+1,n+1) = m!·n!/(m+n+1)! over ℂ (betaIntegral_nat_nat), reused as the value in Route 1."
+    }
+  ],
+  "conclusion": {
+    "summary": "The off-diagonal real Euler Beta integral ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! is established for all naturals m, n, two independent ways: by descending Mathlib's Complex.betaIntegral to ℝ and reusing the grandparent's complex closed form (integral_offdiag_eq_factorial), and by a self-contained real proof — one integration by parts (integral_recurrence) plus induction on n from the base ∫₀¹ xᵏ = 1/(k+1) (integral_offdiag_via_ibp) — that never invokes Complex.Gamma. The m↔n symmetry follows (integral_offdiag_symm). All six theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Completes the parent's first open question and supplies the integer Beta value in the form combinatorics and probability use, with a fully elementary real derivation alongside the analytic one. The integration-by-parts recurrence ∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))∫₀¹ xᵐ⁺¹(1-x)ⁿ is reusable for Beta-related moment computations.",
+    "openQuestions": [
+      "Does the integration-by-parts recurrence extend to the real Beta integral B(a,b) = ∫₀¹ x^(a-1)(1-x)^(b-1) for real a, b > 0 using Mathlib's real rpow, recovering the functional equation a·B(a+1,b) = ... ?",
+      "Can the mean ∫₀¹ x·xᵐ(1-x)ⁿ/B = (m+1)/(m+n+2) of the Beta(m+1,n+1) distribution be derived as a one-line corollary by shifting m ↦ m+1?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.BetaIntegralRecurrence",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Complex",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "BetaIntegralRecurrenceOQ01OQ03OQ01",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}

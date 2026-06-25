@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "concept",
+    "title": "The off-diagonal real Beta integral, two ways",
+    "content": "The parent leaf brought the diagonal Beta value ∫₀¹ xⁿ(1-x)ⁿ = (n!)²/(2n+1)! down to ℝ. This entry answers its first open question: the full off-diagonal value ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! for independent m, n. It is proved two independent ways — Route 1 reuses Mathlib's complex Beta theory via a ℂ→ℝ bridge; Route 2 is a self-contained real proof using a single integration by parts and induction, invoking no complex analysis at all."
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 44, "endLine": 57 },
+    "type": "theorem",
+    "title": "Route 1: the off-diagonal ℂ → ℝ bridge",
+    "content": "ofReal_integral_offdiag: ↑(∫ x in 0..1, xᵐ(1-x)ⁿ) = Complex.betaIntegral (m+1)(n+1). The complex integrand is (x:ℂ)^((m+1)-1)·(1-x)^((n+1)-1); each exponent reduces to a natural (m, n), so Complex.cpow_natCast turns the complex powers into monoid powers with no positivity side condition, and the integrand becomes ↑(xᵐ(1-x)ⁿ). intervalIntegral.integral_ofReal (via integral_congr on [0,1]) descends the integral. This generalizes the parent's diagonal bridge by treating the two exponents separately."
+  },
+  {
+    "id": "ann-value",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 59, "endLine": 71 },
+    "type": "theorem",
+    "title": "The closed form from the complex value",
+    "content": "integral_offdiag_eq_factorial: ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!. Rewrite the bridge's right side with the grandparent's betaIntegral_nat_nat (= m!·n!/(m+n+1)! over ℂ), recognize the real and complex casts agree (push_cast), and transfer the equality back to ℝ by injectivity of the ℝ→ℂ cast (exact_mod_cast). This is the parent's open question, answered."
+  },
+  {
+    "id": "ann-recurrence",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 82, "endLine": 130 },
+    "type": "theorem",
+    "title": "Route 2: the integration-by-parts recurrence",
+    "content": "integral_recurrence: ∫₀¹ xᵐ(1-x)ⁿ⁺¹ = ((n+1)/(m+1))·∫₀¹ xᵐ⁺¹(1-x)ⁿ. Apply integral_mul_deriv_eq_deriv_mul with u = (1-x)ⁿ⁺¹ (derivative via HasDerivAt.pow) and v = xᵐ⁺¹/(m+1) (derivative via hasDerivAt_pow.div_const, value x^m). Both boundary terms vanish: at x=1, (1-1)ⁿ⁺¹ = 0; at x=0, 0ᵐ⁺¹ = 0 (zero_pow on a successor). Pulling the constant out with integral_const_mul leaves the pure recurrence. This recurrence is not in Mathlib and is the engine of the independent real proof."
+  },
+  {
+    "id": "ann-induction",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 132, "endLine": 159 },
+    "type": "theorem",
+    "title": "Closed form without leaving ℝ",
+    "content": "integral_offdiag_via_ibp: the same closed form m!·n!/(m+n+1)!, proved by induction on n with m generalized. Base case: ∫₀¹ xᵐ = 1/(m+1) (integral_base) matches m!·0!/(m+1)!. Successor: apply integral_recurrence and the induction hypothesis ih(m+1), then close with factorial arithmetic (Nat.factorial_succ, field_simp). This route uses only the fundamental theorem of calculus over ℝ — no Complex.Gamma — giving an independent confirmation of the value from Route 1."
+  },
+  {
+    "id": "ann-symmetry",
+    "proofId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+    "range": { "startLine": 161, "endLine": 169 },
+    "type": "theorem",
+    "title": "The m ↔ n symmetry",
+    "content": "integral_offdiag_symm: ∫₀¹ xᵐ(1-x)ⁿ = ∫₀¹ xⁿ(1-x)ᵐ. Both sides equal m!·n!/(m+n+1)! (commutativity of m+n in the denominator), so the symmetry — geometrically the substitution x ↦ 1-x — is read directly off the closed form."
+  }
+]
