@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-e1204-imports",
+    "proofId": "erdos-1204",
+    "range": {
+      "startLine": 1,
+      "endLine": 30
+    },
+    "type": "concept",
+    "title": "Header and Imports",
+    "content": "**Erdős Problem #1204: Admissible Sequences**\n\nA finite set of naturals is *admissible* if it misses a residue class modulo every prime. This is the admissible-tuple notion from the Hardy–Littlewood prime k-tuples conjecture and bounded-gaps work.\n\nImports `Mathlib` for `ZMod`, `Finset`, and prime infrastructure.",
+    "mathContext": "Admissibility is the only local obstruction to a tuple being simultaneously prime infinitely often.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Admissible tuples",
+      "Prime k-tuples",
+      "Residue classes"
+    ],
+    "prerequisites": [
+      "Finite sets",
+      "Modular arithmetic",
+      "Prime numbers"
+    ]
+  },
+  {
+    "id": "ann-e1204-def",
+    "proofId": "erdos-1204",
+    "range": {
+      "startLine": 36,
+      "endLine": 40
+    },
+    "type": "definition",
+    "title": "Admissible",
+    "content": "**Admissible: The Main Definition**\n\n```lean\ndef Admissible (a : Finset ℕ) : Prop :=\n  ∀ p : ℕ, p.Prime → ∃ r : ZMod p, ∀ x ∈ a, (x : ZMod p) ≠ r\n```\n\nFor every prime p there is a residue class r mod p that no element of a hits.",
+    "mathContext": "Equivalently, the image of a in ZMod p is never all of ZMod p.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Residue classes",
+      "ZMod"
+    ],
+    "prerequisites": [
+      "ZMod",
+      "Finset"
+    ]
+  },
+  {
+    "id": "ann-e1204-reduction",
+    "proofId": "erdos-1204",
+    "range": {
+      "startLine": 56,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Reduction to small primes",
+    "content": "**The key structural fact.**\n\n`missing_class_of_card_lt`: if |a| < p then a misses a class mod p, because its image in ZMod p has at most |a| < p elements and so cannot be surjective.\n\n`admissible_iff_card`: therefore admissibility is equivalent to missing a class modulo every prime **p ≤ |a|** — larger primes impose no constraint.",
+    "mathContext": "This pigeonhole reduction is what makes admissibility a finite check and underlies all constructions of admissible tuples.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Pigeonhole principle",
+      "Counting in ZMod"
+    ],
+    "prerequisites": [
+      "Finset.card",
+      "ZMod.card"
+    ]
+  },
+  {
+    "id": "ann-e1204-examples",
+    "proofId": "erdos-1204",
+    "range": {
+      "startLine": 88,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "Worked examples",
+    "content": "`∅`, `{0}`, and `{0,2}` are admissible; `{0,1}` is **not** admissible because it occupies both residue classes mod 2. The contrast `{0,2}` vs `{0,1}` shows why admissible patterns must avoid covering a small prime's classes.",
+    "mathContext": "{0,2} is the smallest nontrivial admissible 2-tuple.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Admissible tuples"
+    ],
+    "prerequisites": [
+      "ZMod 2"
+    ]
+  }
+]

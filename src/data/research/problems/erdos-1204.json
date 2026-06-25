@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1204",
   "title": "Erdős #1204",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-04-16T17:08:10.942Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Formalized admissibility framework + reduction-to-small-primes lemma; asymptotic A(k),B(k) remain open.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Attempt to formalize bounds/constructions for A(k) (e.g. explicit admissible tuples) or relate B(k) to A(k).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEY/BUILD: defined Admissible (Finset ℕ misses a residue class mod every prime); proved missing_class_of_card_lt and the key reduction admissible_iff_card (only primes p ≤ |a| matter); verified examples ∅,{0},{0,2} admissible and {0,1} not. 6 thm/1 def, 0 axioms/0 sorries, fully verified. Headline A(k)∼k log k and B(k) estimates remain OPEN.",
+    "builtItems": [
+      "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
+      "Erdos1204.missing_class_of_card_lt",
+      "Erdos1204.admissible_iff_card (key reduction)",
+      "Erdos1204.admissible_zero_two / not_admissible_zero_one (examples)"
+    ],
+    "insights": [
+      "Admissibility is purely local: only the residue pattern mod each prime matters.",
+      "Reduction: for primes p > k, k elements cannot cover all p classes, so admissibility only constrains primes p ≤ k.",
+      "{0,2} is the minimal nontrivial admissible 2-tuple; {0,1} fails because it covers both classes mod 2."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize explicit admissible-tuple constructions to bound A(k) above.",
+      "Investigate a lower-bound argument toward A(k) ≳ k log k."
+    ],
     "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
   "tags": [
@@ -50,7 +62,7 @@
     "mathlib": []
   },
   "started": "2026-04-16T17:08:10.942Z",
-  "lastUpdate": "2026-04-21T11:09:40.249Z",
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
   "significance": 7,
   "tractability": 5
 }
