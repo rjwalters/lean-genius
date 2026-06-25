@@ -1,0 +1,122 @@
+{
+  "id": "viviani-theorem-oq-01-oq-01-oq-01",
+  "title": "Viviani for Convex n-gons: Constant Distance-Sum iff Outward Normals Sum to Zero",
+  "slug": "viviani-theorem-oq-01-oq-01-oq-01",
+  "description": "The convex n-gon generalization of Viviani's theorem. For a polygon whose edge i lies on the line {x : ⟪x,νᵢ⟫ = cᵢ} with outward unit normal νᵢ, the signed distance-sum S(x) = ∑ᵢ(cᵢ − ⟪x,νᵢ⟫) is an affine function of x with gradient −∑ᵢνᵢ, so it is constant over the whole plane if and only if the outward normals sum to the zero vector (∑ᵢ νᵢ = 0). The headline corollary: every regular n-gon (n ≥ 2) has the Viviani property because its outward unit normals are the n-th roots of unity ζᵏ (ζ = exp(2πi/n)), which cancel. Proved in the plane ℂ over an arbitrary finite index set with the parent's real inner product rdot; no triangle non-degeneracy or equilaterality hypothesis is needed. The characterisation captures a strictly larger class than the regular polygons. Verified, 0 axioms. Answers the first openQuestion of viviani-theorem-oq-01-oq-01.",
+  "meta": {
+    "author": "Robb Walters (researcher-7)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VivianiTheoremOQ01OQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "viviani",
+      "n-gon",
+      "regular-polygon",
+      "inner-product",
+      "normals",
+      "roots-of-unity",
+      "affine-functional",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 152,
+    "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified via #print axioms. The affine-reduction characterisation holds with no hypothesis at all; the regular n-gon corollary carries only n ≥ 2 (a standard mathematical hypothesis, not an axiom).",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "The convex n-gon Viviani characterisation distSum_const_iff_normalSum_zero / viviani_ngon_characterisation: over an arbitrary finite index set s, the signed distance-sum x ↦ ∑ᵢ(cᵢ − ⟪x,νᵢ⟫) is constant on the whole plane ℂ if and only if ∑ᵢ νᵢ = 0 — the genuinely general phenomenon, with no triangle non-degeneracy and no equilaterality",
+      "The affine/gradient identity distSum_sub: S(x) − S(y) = ⟪∑ᵢ νᵢ, y − x⟫, isolating the normal sum as the gradient of the distance functional, proved by reducing to a finite sum of per-edge identities",
+      "The roots-of-unity closing lemma regularNormal_sum_zero: the outward unit normals of a regular n-gon (n ≥ 2), realised as the n-th roots of unity ζ⁰,…,ζⁿ⁻¹ with ζ = exp(2πi/n), sum to zero — obtained from Complex.isPrimitiveRoot_exp and IsPrimitiveRoot.geom_sum_eq_zero",
+      "The headline corollary regular_ngon_distSum_const: every regular n-gon with n ≥ 2 has the Viviani property, by feeding the roots-of-unity cancellation into the affine reduction",
+      "rdot_sum_left: additivity of the real inner product over a finite Finset sum, bundled via an AddMonoidHom rdotHom and map_sum, generalising the parent's two-term bilinearity to n terms"
+    ],
+    "theoremCount": 11,
+    "definitionCount": 4
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "VivianiTheoremOQ01OQ01OQ01",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 4,
+    "path": "Proofs/VivianiTheoremOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Viviani's theorem (1659) states that inside an equilateral triangle the sum of the perpendicular distances from any interior point to the three sides is constant. The gallery's parent entries proved the triangle forward direction (viviani-theorem-oq-01) and the triangle converse (viviani-theorem-oq-01-oq-01), which characterised constant distance-sum by equilaterality. That converse, however, mixed two phenomena: a purely linear-algebraic affine reduction (constant ⇔ normals cancel) and a triangle-specific normal-vector lemma (normals cancel ⇔ equal sides). This leaf isolates the first phenomenon at full generality. The real invariant of the Viviani property is not equilaterality but the closing-up condition ∑ᵢ νᵢ = 0 on the edge normals — a statement about the gradient of an affine functional. Regular n-gons satisfy it because their outward normals are the n-th roots of unity, the prototypical family of unit vectors that sum to zero.",
+    "problemStatement": "Let P be a convex n-gon whose edge i lies on the line {x : ⟪x,νᵢ⟫ = cᵢ} with outward unit normal νᵢ. For an interior point x the signed distance to edge i is dᵢ(x) = cᵢ − ⟪x,νᵢ⟫ and the total distance-sum is S(x) = ∑ᵢ dᵢ(x). Prove that S is the same for every point of the plane if and only if ∑ᵢ νᵢ = 0, and deduce that every regular n-gon (n ≥ 2) has this constant-distance-sum (Viviani) property.",
+    "text": "The plane is modeled as ℂ with the parent's self-contained real inner product rdot z w = z.re·w.re + z.im·w.im. The distance-sum is the Finset sum ∑ᵢ∈s (cᵢ − rdot (νᵢ) x). Additivity of rdot over the finite index set is packaged as an AddMonoidHom so that map_sum collapses ∑ᵢ rdot(νᵢ)x to rdot(∑ᵢνᵢ)x; the difference S(x) − S(y) is then exactly rdot(∑ᵢνᵢ)(y−x). Constancy forces rdot V V = 0 (with V the normal sum) hence V = 0 by positive-definiteness; conversely V = 0 makes every difference vanish. For the regular n-gon, the outward normals are ζᵏ with ζ = exp(2πi/n) a primitive n-th root of unity, and their range-n geometric sum is zero.",
+    "proofStrategy": "1. rdot and rdotHom: the real inner product and its bundling as an AddMonoidHom in the first slot, giving rdot_sum_left (additivity over a Finset via map_sum). 2. distSum: the signed distance-sum ∑ᵢ∈s (cᵢ − rdot(νᵢ)x). 3. distSum_sub: S(x) − S(y) = rdot(∑ᵢνᵢ)(y−x), proved by sum_sub_distrib and a per-edge rdot_sub_right. 4. distSum_const_iff_normalSum_zero: (⇒) instantiate at x = V := ∑ᵢνᵢ, y = 0 to get rdot V V = 0, then positive-definiteness; (⇐) rewrite with the zero normal sum and rdot_zero_left. 5. regularNormal_sum_zero: Complex.isPrimitiveRoot_exp n gives ζ a primitive n-th root, and IsPrimitiveRoot.geom_sum_eq_zero (1 < n) makes ∑ₖ ζᵏ = 0. 6. regular_ngon_distSum_const: apply the (⇐) direction of the characterisation to the roots-of-unity cancellation.",
+    "keyInsights": [
+      "The Viviani property is an affine/gradient statement: S(x) = (∑ᵢ cᵢ) − ⟪x, ∑ᵢ νᵢ⟫ is an affine functional whose gradient is −∑ᵢ νᵢ, so 'constant' is literally 'zero gradient', i.e. ∑ᵢ νᵢ = 0 — independent of how many edges there are or whether the polygon is regular.",
+      "Generalising from 3 normals to n normals only needs additivity of the inner product over a finite sum; bundling rdot as an AddMonoidHom and invoking map_sum makes this a one-liner instead of an induction.",
+      "Positive-definiteness rdot V V = 0 ↔ V = 0 is exactly the lever that converts the scalar statement 'distance-sum is constant' into the vector equation ∑ᵢ νᵢ = 0, by testing the two endpoints x = ∑ᵢνᵢ and y = 0.",
+      "The regular n-gon's outward unit normals are the n-th roots of unity ζ⁰,…,ζⁿ⁻¹; their cancellation is the standard geometric-series fact for a primitive root, supplied by Mathlib's IsPrimitiveRoot.geom_sum_eq_zero.",
+      "The characterisation is sharp and strictly broader than regularity: any family of unit normals closing to zero (e.g. equiangular polygons) has the Viviani property, while the triangle converse's equilateral conclusion is a phenomenon special to n = 3."
+    ],
+    "prerequisites": [
+      "The plane ℂ and a real inner product (bilinearity, positive-definiteness, gradient of an affine functional)",
+      "Finset sums and map_sum for an AddMonoidHom",
+      "Roots of unity: primitive n-th roots and the vanishing of their geometric sum (IsPrimitiveRoot.geom_sum_eq_zero, Complex.isPrimitiveRoot_exp)",
+      "Lean 4 tactics Finset.sum_congr, Finset.sum_sub_distrib, linarith"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part1-rdot",
+      "title": "Part I: The Real Inner Product and its Additivity over Finite Sums",
+      "startLine": 28,
+      "endLine": 76,
+      "summary": "rdot z w = z.re·w.re + z.im·w.im with its bilinearity simp lemmas and positive-definiteness rdot z z = 0 ↔ z = 0; rdotHom bundles the first slot as an AddMonoidHom so that rdot_sum_left (rdot of a Finset sum is the sum of rdots) follows from map_sum — the n-term generalisation of the parent's two-term bilinearity."
+    },
+    {
+      "id": "part2-affine",
+      "title": "Part II: The Distance-Sum and the Affine Reduction",
+      "startLine": 78,
+      "endLine": 122,
+      "summary": "distSum s ν c x = ∑ᵢ∈s (cᵢ − rdot(νᵢ)x); distSum_sub gives S(x) − S(y) = rdot(∑ᵢνᵢ)(y−x); distSum_const_iff_normalSum_zero proves the headline equivalence — the distance-sum is constant on the whole plane iff the outward normals sum to zero — using positive-definiteness for the forward direction."
+    },
+    {
+      "id": "part3-regular",
+      "title": "Part III: The Regular n-gon Corollary via Roots of Unity",
+      "startLine": 124,
+      "endLine": 152,
+      "summary": "regularNormal realises the outward unit normals as the n-th roots of unity ζᵏ (ζ = exp(2πi/n)); regularNormal_sum_zero proves they cancel for n ≥ 2 via Complex.isPrimitiveRoot_exp and IsPrimitiveRoot.geom_sum_eq_zero; regular_ngon_distSum_const feeds this into the affine reduction, and viviani_ngon_characterisation restates the sharp characterisation."
+    }
+  ],
+  "conclusion": {
+    "summary": "Viviani's theorem is generalised from the equilateral triangle to the convex n-gon and, in fact, to an arbitrary finite family of edges: the signed distance-sum from a point to the edges is the same for every point of the plane if and only if the outward unit normals sum to the zero vector. The regular n-gon is the headline corollary, its normals being the n-th roots of unity. The proof is pure linear algebra over the plane ℂ — an affine/gradient reduction plus positive-definiteness of a real inner product — with the roots-of-unity cancellation supplied by Mathlib's primitive-root API. Verified, 0 axioms, 0 sorries. Answers the first openQuestion of viviani-theorem-oq-01-oq-01 verbatim.",
+    "openQuestions": [
+      "The interior-restricted statement: prove the signed distance-sum equals the genuine perpendicular-distance sum on the interior of a convex n-gon (where all signed distances are positive), so the characterisation transfers from the whole plane to the geometric interior, as it does in the triangle case.",
+      "A converse-by-construction for the non-closing case: given ∑ᵢ νᵢ = V ≠ 0, exhibit the explicit pair of interior points realising the maximal distance-sum gap |⟪V, x−y⟫|, quantifying how far a non-Viviani polygon is from the constant-sum property."
+    ],
+    "implications": "Pins down the exact invariant behind the Viviani property — the closing-up condition ∑ᵢ νᵢ = 0 on the edge normals — and shows it governs a strictly larger class of polygons than the regular ones (e.g. equiangular polygons). The affine-functional / closing-normal mechanism is the reusable core for barycentric and distance-functional arguments throughout Euclidean geometry, and the roots-of-unity corollary connects classical polygon geometry to the primitive-root machinery of Mathlib."
+  },
+  "crossReferences": [
+    {
+      "targetId": "viviani-theorem-oq-01-oq-01",
+      "relationship": "parent-problem",
+      "description": "Directly answers the parent's first openQuestion (the regular-polygon / n-gon generalization). The parent proved the triangle converse (constant distance-sum ⇔ equilateral); this entry isolates and generalises the affine half to arbitrary convex n-gons, characterising the Viviani property as the closing-up condition ∑ᵢ νᵢ = 0 and deducing the regular n-gon case from roots of unity."
+    },
+    {
+      "targetId": "viviani-theorem-oq-01",
+      "relationship": "ancestor-problem",
+      "description": "The original forward direction of Viviani's theorem for the equilateral triangle; this entry is the n-gon generalization two levels down its open-question tree."
+    }
+  ],
+  "references": [
+    {
+      "author": "Vincenzo Viviani",
+      "title": "Viviani's theorem (constant sum of distances to the sides of an equilateral triangle)",
+      "year": 1659,
+      "note": "Classical triangle case; this entry establishes the convex n-gon characterisation."
+    }
+  ]
+}
