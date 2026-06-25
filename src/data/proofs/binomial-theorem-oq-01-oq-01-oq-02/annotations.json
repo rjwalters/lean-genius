@@ -5,7 +5,11 @@
     "range": { "startLine": 37, "endLine": 43 },
     "type": "theorem",
     "title": "Pointwise derivative d/dx (1+x)^α = α(1+x)^(α-1)",
-    "content": "The closed-form derivative for x > -1. The inner map `y ↦ 1+y` has derivative `1` everywhere (`(hasDerivAt_id x).const_add 1`), and `1+x ≠ 0` follows from `-1 < x`. Mathlib's `HasDerivAt.rpow_const` then gives derivative `1·α·(1+x)^(α-1)`, and `simpa` collapses `1·α` to `α`. The exponent `α` is supplied explicitly as `(p := α)` because it cannot be inferred from the goal's elaboration order."
+    "content": "The closed-form derivative for x > -1. The inner map `y ↦ 1+y` has derivative `1` everywhere (`(hasDerivAt_id x).const_add 1`), and `1+x ≠ 0` follows from `-1 < x`. Mathlib's `HasDerivAt.rpow_const` then gives derivative `1·α·(1+x)^(α-1)`, and `simpa` collapses `1·α` to `α`. The exponent `α` is supplied explicitly as `(p := α)` because it cannot be inferred from the goal's elaboration order.",
+    "mathContext": "$\\frac{d}{dx}(1+x)^\\alpha = \\alpha(1+x)^{\\alpha-1}$ for $x > -1$. By the chain rule on $u(x) = 1+x$ with $u'(x) = 1$: $\\frac{d}{dx}\\,u^\\alpha = u' \\cdot \\alpha\\, u^{\\alpha-1} = \\alpha(1+x)^{\\alpha-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["real power function (rpow)", "chain rule", "HasDerivAt", "domain restriction x > -1"],
+    "prerequisites": ["differential calculus", "real exponentiation of positive reals"]
   },
   {
     "id": "ann-deriv-coeff-eq-absorption",
@@ -13,7 +17,35 @@
     "range": { "startLine": 50, "endLine": 53 },
     "type": "theorem",
     "title": "Absorption identity as the derivative coefficient",
-    "content": "The coefficient of x^k in d/dx Σ C(α,j) x^j is (k+1)·C(α,k+1); the coefficient of x^k in α(1+x)^(α-1) = α Σ C(α-1,j) x^j is α·C(α-1,k). The parent proof's `absorption` says these agree, so this theorem is just `(BinomialTheoremOQ01OQ01.absorption α k).symm`, presenting the identity in the suggestive 'coefficient of derivative' direction."
+    "content": "The coefficient of x^k in d/dx Σ C(α,j) x^j is (k+1)·C(α,k+1); the coefficient of x^k in α(1+x)^(α-1) = α Σ C(α-1,j) x^j is α·C(α-1,k). The parent proof's `absorption` says these agree, so this theorem is just `(BinomialTheoremOQ01OQ01.absorption α k).symm`, presenting the identity in the suggestive 'coefficient of derivative' direction.",
+    "mathContext": "$(k+1)\\binom{\\alpha}{k+1} = \\alpha\\binom{\\alpha-1}{k}$. The left side is the $x^k$ coefficient of $\\frac{d}{dx}\\sum_j \\binom{\\alpha}{j}x^j$ (differentiating the $x^{k+1}$ term); the right side is $\\alpha$ times the $x^k$ coefficient of $(1+x)^{\\alpha-1}$. Their equality is precisely term-by-term differentiation read off one coefficient at a time.",
+    "significance": "key",
+    "relatedConcepts": ["generalized binomial coefficient", "absorption identity", "Pascal-type recurrence", "formal power series coefficients"],
+    "prerequisites": ["binomial coefficients", "the parent proof's absorption lemma"]
+  },
+  {
+    "id": "ann-hasderivat-one-add-rpow-zero",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 58, "endLine": 61 },
+    "type": "theorem",
+    "title": "Derivative at the basepoint equals the linear coefficient α",
+    "content": "Specializing the pointwise derivative to x = 0 gives d/dx (1+x)^α |₀ = α·(1+0)^(α-1) = α. This matches genBinom α 1 = α, the linear (k=1) coefficient of the binomial series — a sanity check linking the analytic derivative to the k=0 case of the absorption identity. Proof: `hasDerivAt_one_add_rpow α 0` followed by `simpa` to evaluate (1+0)^(α-1) = 1.",
+    "mathContext": "$\\frac{d}{dx}(1+x)^\\alpha\\Big|_{x=0} = \\alpha$, equal to $\\binom{\\alpha}{1} = \\alpha$, the slope of the binomial series at the origin.",
+    "significance": "supporting",
+    "relatedConcepts": ["Taylor coefficient at 0", "linear approximation", "genBinom α 1"],
+    "prerequisites": ["differential calculus", "evaluation of rpow at 1"]
+  },
+  {
+    "id": "ann-deriv-one-add-rpow",
+    "proofId": "binomial-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 65, "endLine": 67 },
+    "type": "theorem",
+    "title": "The pointwise derivative restated as a deriv value",
+    "content": "Converts the `HasDerivAt` statement into the functional `deriv` form `deriv (fun y => (1+y)^α) x = α(1+x)^(α-1)` for x > -1, via `(hasDerivAt_one_add_rpow α x hx).deriv`. This `deriv`-level restatement is the bridge used by `fderiv_one_add_rpow_apply_one`: it is what `fderiv_deriv` rewrites the Fréchet derivative into.",
+    "mathContext": "$\\operatorname{deriv}(\\lambda y.\\,(1+y)^\\alpha)(x) = \\alpha(1+x)^{\\alpha-1}$. `HasDerivAt f f' x` carries a uniqueness witness, so `deriv f x = f'` follows immediately.",
+    "significance": "technical",
+    "relatedConcepts": ["deriv vs HasDerivAt", "uniqueness of the derivative", "fderiv_deriv bridge"],
+    "prerequisites": ["differential calculus", "Mathlib deriv/HasDerivAt API"]
   },
   {
     "id": "ann-binomial-derivseries-analytic",
@@ -21,7 +53,11 @@
     "range": { "startLine": 78, "endLine": 81 },
     "type": "theorem",
     "title": "Term-by-term differentiation of the binomial power series (headline)",
-    "content": "Applying `HasFPowerSeriesOnBall.fderiv` to the parent's `binomial_series_analytic` shows that the formal `derivSeries` of `binomialSeries ℝ α` is the power series of the Fréchet derivative `fderiv ℝ (fun y => (1+y)^α)` on the *same* open unit ball. This is the literal term-by-term differentiation that the parent proof listed as an open question: no new convergence work is required because `derivSeries` inherits the radius. ℝ being complete supplies the `CompleteSpace` instance the lemma needs."
+    "content": "Applying `HasFPowerSeriesOnBall.fderiv` to the parent's `binomial_series_analytic` shows that the formal `derivSeries` of `binomialSeries ℝ α` is the power series of the Fréchet derivative `fderiv ℝ (fun y => (1+y)^α)` on the *same* open unit ball. This is the literal term-by-term differentiation that the parent proof listed as an open question: no new convergence work is required because `derivSeries` inherits the radius. ℝ being complete supplies the `CompleteSpace` instance the lemma needs.",
+    "mathContext": "$\\frac{d}{dx}\\sum_{k\\ge 0}\\binom{\\alpha}{k}x^k = \\sum_{k\\ge 0}(k+1)\\binom{\\alpha}{k+1}x^k$, realized as `(binomialSeries ℝ α).derivSeries` representing $\\operatorname{fderiv}\\,\\mathbb{R}\\,(\\lambda y.\\,(1+y)^\\alpha)$ on the unit ball $\\{|x| < 1\\}$. The differentiated series converges on the same ball because $\\limsup |(k+1)a_{k+1}|^{1/k} = \\limsup |a_k|^{1/k}$.",
+    "significance": "key",
+    "relatedConcepts": ["HasFPowerSeriesOnBall", "formal derivSeries", "radius of convergence invariance under differentiation", "Fréchet derivative", "analyticity"],
+    "prerequisites": ["power series in Banach spaces", "complex/real analysis of convergence radii", "the parent proof's binomial_series_analytic"]
   },
   {
     "id": "ann-fderiv-apply-one",
@@ -29,6 +65,10 @@
     "range": { "startLine": 88, "endLine": 91 },
     "type": "theorem",
     "title": "Series derivative agrees with the closed form",
-    "content": "Closes the loop between the series side and the closed-form side. `fderiv_deriv` rewrites `fderiv ℝ f x 1` to `deriv f x`, and `deriv_one_add_rpow` (itself `(hasDerivAt_one_add_rpow …).deriv`) evaluates it to `α(1+x)^(α-1)`. So the Fréchet derivative produced by term-by-term differentiation, applied to the tangent vector 1, returns exactly the pointwise binomial derivative."
+    "content": "Closes the loop between the series side and the closed-form side. `fderiv_deriv` rewrites `fderiv ℝ f x 1` to `deriv f x`, and `deriv_one_add_rpow` (itself `(hasDerivAt_one_add_rpow …).deriv`) evaluates it to `α(1+x)^(α-1)`. So the Fréchet derivative produced by term-by-term differentiation, applied to the tangent vector 1, returns exactly the pointwise binomial derivative.",
+    "mathContext": "$\\operatorname{fderiv}\\,\\mathbb{R}\\,(\\lambda y.\\,(1+y)^\\alpha)(x)\\,[1] = \\operatorname{deriv}(\\lambda y.\\,(1+y)^\\alpha)(x) = \\alpha(1+x)^{\\alpha-1}$. In one real dimension the Fréchet derivative is the linear map $t \\mapsto t\\cdot f'(x)$, so evaluating at the tangent vector $1$ recovers the scalar derivative.",
+    "significance": "key",
+    "relatedConcepts": ["fderiv_deriv", "Fréchet vs one-dimensional derivative", "tangent vector evaluation", "consistency of series and closed-form derivatives"],
+    "prerequisites": ["Fréchet derivative", "the equivalence fderiv f x 1 = deriv f x in 1D"]
   }
 ]
