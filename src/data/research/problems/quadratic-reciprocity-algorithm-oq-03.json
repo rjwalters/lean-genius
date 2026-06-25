@@ -16,15 +16,13 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-16 (S20 — M2 file built green, one isolated sorry)",
+    "phase": "COMPLETED",
+    "since": "2026-06-25 (S24 — FieldBridge VERIFIED, the OQ-pinned field-form statement)",
     "iteration": 23,
-    "focus": "Zolotarev's lemma as the formalization spine: `legendreSym p a = Perm.sign (mulLeft a)` on",
+    "focus": "Field-form Zolotarev legendreSym p a.val = sign(mulLeft₀ a) now machine-checked (0 sorry/0 axiom).",
     "activeApproach": "Permutation-sign (Zolotarev) proof. Milestone 1 = the Zolotarev lemma itself (cyclic units +",
-    "blockers": [
-      "- Dual blackout (reconfirmed live S15): Aristotle `prove` 404; Docker 7-container saturated on an"
-    ],
-    "nextAction": "**M1, the crux, and the Zolotarev headline are all DONE, verified, and merged (#24903) — do not redo them.**",
+    "blockers": [],
+    "nextAction": "COMPLETE. The exact OQ-pinned statement (field-form Zolotarev) is verified and registered. Units-form headline, crux, M2 grid-transpose sign, and M2 capstone all previously verified+merged. Optional outward follow-up: an independent (non-Mathlib) QR derivation via CRT decomposition of the grid-transpose sign into two Zolotarev signs.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -32,13 +30,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: M2 core combinatorial lemma sign_gridTranspose_eq_choose now VERIFIED (0 sorry/0 axiom) -- closes the S10-S23 blocker. sign_gridTranspose (sign of the Zolotarev-Frobenius shuffle = (-1)^((p-1)/2*(q-1)/2) for odd p,q) is fully proved. REMAINING: the reciprocity capstone -- connect sign_gridTranspose to the Legendre/Jacobi product (p/q)(q/p) via M1 (Zolotarev) + CRT (Zolotarev-Frobenius assembly).",
+    "progressSummary": "VERIFIED (S24, researcher-1, 2026-06-25): QuadraticReciprocityAlgorithmOQ03FieldBridge.lean now machine-checked via host `lake env lean` off cached Mathlib oleans (Docker down). `#print axioms legendreSym_eq_sign_mulLeft₀` = [propext, Classical.choice, Quot.sound] only (0 sorry / 0 axiom / no native_decide). This is the EXACT OQ-pinned statement: legendreSym p a.val = sign(Equiv.mulLeft₀ a ha) on the field ZMod p (fixing 0), derived from the verified units-form headline via sign_subtypePerm + unitsEquivNeZero intertwining (sign_eq_sign_of_equiv). The S18/S21 blind transcription was sound except for ONE repair: the two subtypePerm call sites needed the subtype predicate supplied explicitly (p := fun x => x ≠ 0) — HOU left it a metavariable and the term silently collapsed to sorryAx. With M1 (units Zolotarev), the crux, M2 (grid-transpose sign), and the M2 capstone all previously verified+merged, this CLOSES Milestone 1 in its exact pinned form. PRIOR: PROGRESS: M2 core combinatorial lemma sign_gridTranspose_eq_choose now VERIFIED (0 sorry/0 axiom) -- closes the S10-S23 blocker. sign_gridTranspose (sign of the Zolotarev-Frobenius shuffle = (-1)^((p-1)/2*(q-1)/2) for odd p,q) is fully proved. REMAINING: the reciprocity capstone -- connect sign_gridTranspose to the Legendre/Jacobi product (p/q)(q/p) via M1 (Zolotarev) + CRT (Zolotarev-Frobenius assembly).",
     "builtItems": [
-      "Proved sign_gridTranspose_eq_choose in QuadraticReciprocityAlgorithmOQ03M2.lean (was sorry); added helpers gridTranspose_val, coe_divNat, coe_modNat, fpfe_divNat_modNat, divNat_modNat_fpfe, card_lt_pairs, inv_char. File now 0 sorry / 0 axiom, 12 theorems + 1 def, 271 lines."
+      "Proved sign_gridTranspose_eq_choose in QuadraticReciprocityAlgorithmOQ03M2.lean (was sorry); added helpers gridTranspose_val, coe_divNat, coe_modNat, fpfe_divNat_modNat, divNat_modNat_fpfe, card_lt_pairs, inv_char. File now 0 sorry / 0 axiom, 12 theorems + 1 def, 271 lines.",
+      "VERIFIED legendreSym_eq_sign_mulLeft₀ (field-form Zolotarev, the OQ-pinned statement) in QuadraticReciprocityAlgorithmOQ03FieldBridge.lean — single repair: explicit subtypePerm predicate (p := fun x => x ≠ 0). lake env lean, 0 sorry/0 axiom. File already registered in Proofs.lean."
     ],
     "insights": [
       "M2 core combinatorial lemma sign_gridTranspose_eq_choose PROVED (researcher-9, 2026-06-25): the single isolated sorry that blocked sessions S10-S23. Route: Equiv.Perm.sign_eq_prod_prod_Ioi expresses sign as (-1)^(#inversions); gridTranspose_val computes the action x -> x/q + p*(x%q); inv_char (pure mixed-radix arithmetic) characterises inverted pairs as {a<c}x{d<b}; a Finset.card_nbij' bijection through finProdFinEquiv counts them as C(p,2)*C(q,2) (card_lt_pairs). #print axioms: only propext/Classical.choice/Quot.sound (no sorryAx).",
-      "KEY UNBLOCKER: host `lake env lean` works with cached Mathlib oleans (proofs/.lake symlink to main) even when Docker is down and Aristotle returns 404 -- single-file verification needs no Docker. The S10-S23 'no backend' blocker was avoidable. Gotcha: lake env lean serves STALE per-session linter/sorry diagnostics (spurious 'declaration uses sorry' at stale line numbers); bust via a fresh-named copy and trust `#print axioms`."
+      "KEY UNBLOCKER: host `lake env lean` works with cached Mathlib oleans (proofs/.lake symlink to main) even when Docker is down and Aristotle returns 404 -- single-file verification needs no Docker. The S10-S23 'no backend' blocker was avoidable. Gotcha: lake env lean serves STALE per-session linter/sorry diagnostics (spurious 'declaration uses sorry' at stale line numbers); bust via a fresh-named copy and trust `#print axioms`.",
+      "GOTCHA (researcher-1, 2026-06-25): Equiv.Perm.subtypePerm f h leaves the implicit subtype predicate p as a metavariable when h is a bare bi-implication ∀ x, (P (f x)) ↔ (P x) with no expected type to pin p — the elaborator does NOT solve the higher-order unification and the whole declaration silently elaborates to sorryAx (the only error is a downstream type-mismatch at the subtypePerm app). Fix: pass (p := fun x => …) explicitly. This was the SOLE blocker on the field-form Zolotarev bridge that sat \"build-pending\" across sessions S18–S23.",
+      "METHOD (confirms prior S23 insight): a registered-but-never-compiled Lean file can sit in Proofs.lean indefinitely because the gallery deploy builds the website from JSON, not from `lake build` — registration ≠ verification. Single-file `lake env lean` off the cached main `.lake` oleans verifies such files with no Docker, by inlining the (already-verified) parent body into one Mathlib-only file to dodge the missing Proofs.* oleans."
     ],
     "mathlibGaps": [],
     "nextSteps": [],

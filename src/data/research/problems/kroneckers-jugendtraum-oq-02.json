@@ -1,7 +1,7 @@
 {
   "slug": "kroneckers-jugendtraum-oq-02",
   "title": "Stark Units: Effective Computation for Specific Number Fields",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-22T12:51:58.077Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Rank-one regulator collapse — shipped and verified",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done; effectivity of Stark units remains open",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Machine-checked the linear-algebra fact underpinning the rank-one abelian Stark conjecture: when a number field K has unit rank 1, its regulator collapses from an (r×r) determinant of logarithms to a single archimedean logarithm mult(w)·|log(w ε)| of the fundamental (Stark) unit ε. Shipped Proofs/KroneckersJugendtraumStarkRankOne.lean (2 theorems, 0 axioms, 0 sorries, verified). Also characterized the rank-one hypothesis as 'exactly two infinite places'. Does not address the open problem of computing Stark units effectively.",
+    "builtItems": [
+      "rank_eq_one_iff_card_infinitePlace_eq_two: rank K = 1 ⟺ #(InfinitePlace K) = 2 (Dirichlet rank formula + omega over nat subtraction)",
+      "regulator_eq_single_log_of_rank_eq_one: rank K = 1 ⟹ ∃ place w, unit ε, regulator K = mult(w)·|log(w ε)| (Matrix.det_unique on equivFinRank-transported Unique instance)",
+      "Proofs/KroneckersJugendtraumStarkRankOne.lean — verified, 0-axiom (propext/Classical.choice/Quot.sound only), 79 lines, original"
+    ],
+    "insights": [
+      "The rank-one Stark hypothesis is the geometric condition #(InfinitePlace K)=2, not a property of any single L-function — it picks out exactly the real quadratic fields (r1,r2)=(2,0) and mixed-signature cubics (r1,r2)=(1,1).",
+      "Mathlib's regulator (regulator_eq_det) is an |det| of (mult w · log w(uᵢ)) indexed by places ≠ w₀; the rank-one case is precisely where this matrix is 1×1, so Matrix.det_unique reduces it to a single entry once Unique is transported along equivFinRank.",
+      "The positive multiplicity mult(w) factors cleanly out of the absolute value via abs_mul + Nat.abs_cast, yielding regulator = mult(w)·|log(w ε)| with the |·| on the logarithm alone.",
+      "This formalizes why 'L'(0,χ) is one logarithm of one Stark unit' is even a well-posed statement, but is orthogonal to the open effectivity problem (computing the unit)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Connect the single-logarithm regulator to the Artin L-function derivative L'(0,χ) (requires Stark L-function infrastructure not yet in Mathlib).",
+      "Specialize further to real quadratic fields where ε is the fundamental unit of a real quadratic order (Pell)."
+    ]
   },
   "tags": [
     "algebraic-number-theory",
