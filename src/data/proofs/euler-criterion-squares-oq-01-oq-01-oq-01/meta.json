@@ -1,0 +1,213 @@
+{
+  "id": "euler-criterion-squares-oq-01-oq-01-oq-01",
+  "title": "Counting k-th Power Residues: Exactly (p−1)/k Nonzero Residues when k ∣ p−1",
+  "slug": "euler-criterion-squares-oq-01-oq-01-oq-01",
+  "description": "For an exponent k dividing p−1, an odd prime p has exactly (p−1)/k nonzero k-th power residues in ZMod p. This generalizes the quadratic count (k=2 → (p−1)/2) of the parent entry to arbitrary k ∣ p−1. The mechanism is the k-th power endomorphism u ↦ u^k of the cyclic unit group (ZMod p)ˣ: since (ZMod p)ˣ is cyclic of order p−1, its kernel (the k-th roots of unity) has size gcd(p−1, k) = k and its image (the k-th power residues among units) has size (p−1)/gcd(p−1, k) = (p−1)/k. A subtype-equivalence chain transports the image count to Nat.card {a : ZMod p // a ≠ 0 ∧ ∃ x, x^k = a} = (p−1)/k. The quadratic case is recovered as a corollary, and the cubic count mod 7 (2 residues {1,6}) is confirmed by specialization. 8 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Power_residue_symbol",
+    "date": "Classical (Euler/Gauss; cyclic structure of (ℤ/pℤ)ˣ)",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "power-residues",
+      "euler-criterion",
+      "finite-fields",
+      "cyclic-groups",
+      "group-theory",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/EulerCriterionSquaresOQ01OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 8 theorems fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count). The concrete cubic check modulo 7 reuses the general theorem applied at p = 7, k = 3, so no native_decide and no Lean.ofReduceBool is introduced.",
+    "originalContributions": [
+      "card_nonzero_kth_power_residues: the headline count — for k ∣ p − 1, an odd prime p has exactly (p−1)/k nonzero k-th power residues, Nat.card {a : ZMod p // a ≠ 0 ∧ ∃ x, x^k = a} = (p−1)/k",
+      "card_kHom_ker: the kernel of the k-th power map u ↦ u^k on (ZMod p)ˣ — the k-th roots of unity — has cardinality exactly k (= gcd(p−1, k) when k ∣ p−1), and card_kHom_range: its image has cardinality (p−1)/k, both via Mathlib's cyclic-group lemmas IsCyclic.card_powMonoidHom_ker / card_powMonoidHom_range applied to the cyclic group (ZMod p)ˣ of order p−1",
+      "isKthPower_coe_iff_mem_range: bridges the unit-group image to field k-th powers — for a unit u, ↑u is a k-th power in ZMod p iff u lies in the image of the unit power map (requires k ≠ 0 so that 0^k = 0 forces nonzero roots)",
+      "card_nonzero_quadratic_residues: recovers the parent's (p−1)/2 quadratic count as the case k = 2, with 2 ∣ p − 1 derived from p being an odd prime",
+      "card_cubic_residues_mod_seven: concrete confirmation that ZMod 7 has (7−1)/3 = 2 nonzero cubic residues {1, 6}, obtained by applying the general theorem at p = 7, k = 3 (no native_decide)"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 117,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The number of k-th power residues mod a prime is a classical refinement of the quadratic-residue count. When k divides p − 1, the k-th powers form the unique subgroup of index k inside the cyclic group (ℤ/pℤ)ˣ, so there are exactly (p−1)/k of them. The quadratic case k = 2 — exactly (p−1)/2 residues — is the oldest instance, implicit in Euler's and Legendre's work; the general statement is the multiplicative backbone of higher reciprocity laws (cubic, quartic) and the theory of power-residue symbols. The structural derivation taken here counts the image of the k-th power homomorphism, whose fibres all have size gcd(p−1, k) because the group is cyclic.",
+    "problemStatement": "**Open Question (OQ-01-01-01, from euler-criterion-squares-oq-01-oq-01)**: Count k-th power residues for k ∣ p − 1 — the map u ↦ u^k on (ZMod p)ˣ has kernel of size gcd(k, p−1) = k, so there are (p−1)/k nonzero k-th power residues. Formalize this generalization of the quadratic count.\n\n**Formalized**: card_nonzero_kth_power_residues, Nat.card {a : ZMod p // a ≠ 0 ∧ ∃ x, x^k = a} = (p−1)/k for k ∣ p − 1, via the kernel/image decomposition of the k-th power map on the cyclic unit group (ZMod p)ˣ.",
+    "text": "A 117-line, self-contained formalization (imports only Mathlib). The k-th power map powMonoidHom k on (ZMod p)ˣ is a group homomorphism. The decisive structural input is that (ZMod p)ˣ is cyclic — Mathlib supplies the instance IsCyclic Rˣ for the units of a finite integral domain — so its k-th power map has, by IsCyclic.card_powMonoidHom_ker and IsCyclic.card_powMonoidHom_range, kernel of size gcd(p−1, k) and image of size (p−1)/gcd(p−1, k). Since |(ZMod p)ˣ| = p − 1 (ZMod.card_units) and gcd(p−1, k) = k when k ∣ p − 1 (gcd_eq), the kernel — the k-th roots of unity — has size exactly k (card_kHom_ker) and the image — the k-th power residues among units — has size (p−1)/k (card_kHom_range). isKthPower_coe_iff_mem_range identifies the image with the nonzero field k-th powers, and a chain of Equiv (subtypeEquiv via unitsEquivNeZero, subtypeSubtypeEquivSubtypeInter) transports the count to Nat.card {a : ZMod p // a ≠ 0 ∧ ∃ x, x^k = a} = (p−1)/k. The quadratic count is recovered at k = 2 and the cubic count mod 7 by specialization; everything compiles with 0 sorries and 0 axioms.",
+    "proofStrategy": "**card_units_eq**: |(ZMod p)ˣ| = p − 1 via ZMod.card_units.\n\n**gcd_eq**: for k ∣ p − 1, gcd(p−1, k) = k (Nat.gcd_comm then Nat.gcd_eq_left).\n\n**card_kHom_ker**: IsCyclic.card_powMonoidHom_ker gives |ker(·^k)| = gcd(|(ZMod p)ˣ|, k); substitute |(ZMod p)ˣ| = p − 1 and gcd(p−1, k) = k to get exactly k.\n\n**card_kHom_range**: IsCyclic.card_powMonoidHom_range gives |range(·^k)| = |(ZMod p)ˣ| / gcd(|(ZMod p)ˣ|, k) = (p−1)/k by the same substitutions.\n\n**isKthPower_coe_iff_mem_range**: a field k-th power ↑u = x^k with x ≠ 0 (forced by k ≠ 0 and ↑u ≠ 0, via zero_pow) lifts x to a unit w with w^k = u; conversely an image element v^k maps to a field k-th power. Uses isUnit_iff_ne_zero, powMonoidHom_apply, Units.val_pow_eq_pow_val.\n\n**card_nonzero_kth_power_residues**: assemble Equiv (ZMod p)ˣ-with-(∃x,x^k=↑u) ≃ {a ≠ 0 ∧ ∃x, x^k = a} from unitsEquivNeZero and subtypeSubtypeEquivSubtypeInter, then Nat.card_congr transports |range| = (p−1)/k.\n\n**card_nonzero_quadratic_residues**: instantiate at k = 2, with 2 ∣ p − 1 from p odd (Nat.Prime.odd_of_ne_two).\n\n**card_cubic_residues_mod_seven**: instantiate at p = 7, k = 3 (3 ∣ 6).",
+    "keyInsights": [
+      "**Cyclicity is the whole game**: once (ZMod p)ˣ is known to be cyclic, every fibre of the k-th power map has exactly gcd(p−1, k) elements, so |residues| = |units| / gcd(p−1, k). The parent computed the k = 2 kernel by hand ({1, −1}); the general k uses Mathlib's cyclic-group lemmas instead of a bespoke root-counting argument.",
+      "**gcd(p−1, k) = k is the divisibility hypothesis in disguise**: the count (p−1)/gcd(p−1, k) holds for every k, but only collapses to the clean (p−1)/k when k ∣ p − 1. For k ∤ p − 1 the residues number (p−1)/gcd(p−1, k) — the same machinery, a coarser partition.",
+      "**The kernel is exactly the k-th roots of unity**: card_kHom_ker = k says a finite field ZMod p contains exactly k solutions of x^k = 1 precisely when k ∣ p − 1 — the existence of a full set of k-th roots of unity, recovered as a cardinality statement.",
+      "**Units vs field elements**: k-th power residues are counted in the unit group (where the power map is a homomorphism) and transported to the field's nonzero k-th powers by unitsEquivNeZero, with no recomputation. The hypothesis k ≠ 0 enters only to rule out 0 as a spurious root.",
+      "**0-axiom, including the numerics**: the cubic mod-7 confirmation is the general theorem applied at p = 7, k = 3, not a decide computation, so the file depends only on propext / Classical.choice / Quot.sound — no native_decide, no Lean.ofReduceBool."
+    ],
+    "prerequisites": [
+      "The unit group (ZMod p)ˣ of a finite field, its cardinality p − 1 (ZMod.card_units), and its cyclicity (IsCyclic Rˣ for finite integral domains)",
+      "The k-th power monoid homomorphism powMonoidHom k and the cyclic-group cardinality lemmas IsCyclic.card_powMonoidHom_ker / card_powMonoidHom_range",
+      "Greatest common divisors: gcd(p−1, k) = k when k ∣ p − 1 (Nat.gcd_eq_left)",
+      "k-th power residues, and the equivalence between nonzero field elements and units (isUnit_iff_ne_zero, unitsEquivNeZero)",
+      "Cardinality transport along equivalences (Nat.card_congr) and subtype equivalences (Equiv.subtypeEquiv, Equiv.subtypeSubtypeEquivSubtypeInter)"
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "euler-criterion-squares-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The parent counts quadratic residues — (p−1)/2 — via the squaring map's explicit kernel {1, −1}. This entry answers its first open question by generalizing to the k-th power map for any k ∣ p − 1, replacing the hand kernel computation with the cyclic structure of (ZMod p)ˣ; the quadratic count is recovered here as the case k = 2."
+    },
+    {
+      "proofId": "euler-criterion-squares-oq-01",
+      "relationship": "ancestor",
+      "description": "The root entry establishes Euler's criterion a^((p−1)/2) = ±1. The k-th power count generalizes the residue/non-residue dichotomy to the index-k subgroup of k-th powers."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "Introduction",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Docstring framing the k-th power generalization via the cyclic structure of (ZMod p)ˣ, plus imports and the (p, k) parameters.",
+      "mathContext": "$|\\{\\text{nonzero } k\\text{-th power residues}\\}| = |(\\mathbb{Z}/p)^\\times| / \\gcd(p-1, k) = (p-1)/k$ when $k \\mid p-1$."
+    },
+    {
+      "id": "cardinality-and-gcd",
+      "title": "Unit Count and the gcd Collapse",
+      "startLine": 31,
+      "endLine": 41,
+      "summary": "card_units_eq gives |(ZMod p)ˣ| = p − 1; gcd_eq shows gcd(p−1, k) = k whenever k ∣ p − 1.",
+      "mathContext": "$|(\\mathbb{Z}/p)^\\times| = p-1$ and $\\gcd(p-1,k) = k$ for $k \\mid p-1$."
+    },
+    {
+      "id": "kernel-and-image",
+      "title": "Kernel and Image of the k-th Power Map",
+      "startLine": 43,
+      "endLine": 53,
+      "summary": "card_kHom_ker: the kernel (k-th roots of unity) has size k; card_kHom_range: the image has size (p−1)/k — both from Mathlib's cyclic-group lemmas applied to (ZMod p)ˣ.",
+      "mathContext": "$|\\ker(u \\mapsto u^k)| = k,\\quad |\\operatorname{range}(u \\mapsto u^k)| = (p-1)/k$."
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Field k-th Powers",
+      "startLine": 55,
+      "endLine": 77,
+      "summary": "isKthPower_coe_iff_mem_range identifies, for a unit u, '↑u is a k-th power in ZMod p' with 'u lies in the image of the unit power map', using k ≠ 0 to discard the zero root.",
+      "mathContext": "$(\\exists x,\\ x^k = \\uparrow u) \\iff u \\in \\operatorname{range}(u \\mapsto u^k)$."
+    },
+    {
+      "id": "main-count",
+      "title": "The Main Count and Quadratic Corollary",
+      "startLine": 79,
+      "endLine": 105,
+      "summary": "card_nonzero_kth_power_residues transports the image cardinality to the headline (p−1)/k via an Equiv chain; card_nonzero_quadratic_residues recovers the parent's (p−1)/2 at k = 2.",
+      "mathContext": "$\\mathrm{Nat.card}\\,\\{a \\ne 0 \\wedge \\exists x,\\ x^k = a\\} = (p-1)/k$."
+    },
+    {
+      "id": "mod-seven",
+      "title": "Concrete Check: Cubic Residues Modulo 7",
+      "startLine": 107,
+      "endLine": 117,
+      "summary": "card_cubic_residues_mod_seven specializes the general theorem at p = 7, k = 3, giving 2 nonzero cubic residues {1, 6} with no native_decide.",
+      "mathContext": "$\\#\\{a \\in \\mathbb{Z}/7 : a \\ne 0 \\wedge \\exists x,\\ x^3 = a\\} = 2$, namely $\\{1, 6\\}$."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "EulerCriterionSquaresOQ01OQ01OQ01",
+    "lineCount": 117,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/EulerCriterionSquaresOQ01OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "card_nonzero_kth_power_residues",
+      "type": "core",
+      "statement": "$k \\mid p-1 \\Rightarrow \\#\\{a \\in \\mathbb{Z}/p : a \\ne 0 \\wedge \\exists x,\\ x^k = a\\} = (p-1)/k$",
+      "significance": "The headline count: for k dividing p − 1, an odd prime has exactly (p−1)/k nonzero k-th power residues. Obtained by transporting the cardinality of the k-th power map's image to the nonzero field k-th powers.",
+      "description": "There are exactly (p−1)/k nonzero k-th power residues mod p when k ∣ p − 1."
+    },
+    {
+      "name": "card_kHom_range",
+      "type": "core",
+      "statement": "$k \\mid p-1 \\Rightarrow \\#\\,\\mathrm{range}(u \\mapsto u^k) = (p-1)/k$ in $(\\mathbb{Z}/p)^\\times$",
+      "significance": "The k-th power residues among the units number (p−1)/k, since the cyclic k-th power map has image of size |units| / gcd(p−1, k) = (p−1)/k. The structural heart of the count.",
+      "description": "The image of the k-th power map on the unit group has cardinality (p−1)/k."
+    },
+    {
+      "name": "card_kHom_ker",
+      "type": "core",
+      "statement": "$k \\mid p-1 \\Rightarrow \\#\\,\\ker(u \\mapsto u^k) = k$ in $(\\mathbb{Z}/p)^\\times$",
+      "significance": "The k-th power map is exactly k-to-1: its kernel is the set of k-th roots of unity, of size gcd(p−1, k) = k. This factor of k is what divides the unit count. Equivalently, ZMod p has exactly k solutions of x^k = 1 when k ∣ p − 1.",
+      "description": "The kernel of the k-th power map — the k-th roots of unity — has cardinality k."
+    },
+    {
+      "name": "isKthPower_coe_iff_mem_range",
+      "type": "supporting",
+      "statement": "for a unit $u$ and $k \\ne 0$, $(\\exists x,\\ x^k = \\uparrow u) \\iff u \\in \\mathrm{range}(u \\mapsto u^k)$",
+      "significance": "Bridges the unit-group image to field k-th powers, so the cardinality count on the unit group transfers to the nonzero k-th power residues of ZMod p. The hypothesis k ≠ 0 rules out 0 as a spurious k-th root of a nonzero element.",
+      "description": "A unit is a field k-th power iff it lies in the image of the k-th power map."
+    },
+    {
+      "name": "card_nonzero_quadratic_residues",
+      "type": "supporting",
+      "statement": "$\\#\\{a \\in \\mathbb{Z}/p : a \\ne 0 \\wedge \\exists x,\\ x^2 = a\\} = (p-1)/2$",
+      "significance": "Recovers the parent entry's quadratic-residue count as the case k = 2, with 2 ∣ p − 1 supplied by p being an odd prime. Confirms the generalization specializes correctly.",
+      "description": "An odd prime has (p−1)/2 nonzero quadratic residues — the k = 2 instance."
+    },
+    {
+      "name": "card_units_eq",
+      "type": "supporting",
+      "statement": "$\\mathrm{Nat.card}\\,(\\mathbb{Z}/p)^\\times = p - 1$",
+      "significance": "The order of the cyclic group whose index-k subgroup is being counted.",
+      "description": "The unit group of ZMod p has p − 1 elements."
+    },
+    {
+      "name": "gcd_eq",
+      "type": "supporting",
+      "statement": "$k \\mid p-1 \\Rightarrow \\gcd(p-1, k) = k$",
+      "significance": "Turns the general cyclic count (p−1)/gcd(p−1, k) into the clean (p−1)/k exactly under the divisibility hypothesis k ∣ p − 1.",
+      "description": "gcd(p−1, k) = k when k divides p − 1."
+    },
+    {
+      "name": "card_cubic_residues_mod_seven",
+      "type": "supporting",
+      "statement": "$\\#\\{a \\in \\mathbb{Z}/7 : a \\ne 0 \\wedge \\exists x,\\ x^3 = a\\} = 2$",
+      "significance": "Concrete confirmation at p = 7, k = 3: (7−1)/3 = 2 cubic residues, namely {1, 6}. Obtained by specializing the general theorem, so it adds no axioms.",
+      "description": "ZMod 7 has exactly 2 nonzero cubic residues."
+    }
+  ],
+  "references": [
+    {
+      "text": "Power residue symbol — when k ∣ p − 1 the k-th powers form the index-k subgroup of (ℤ/pℤ)ˣ, so there are (p−1)/k of them.",
+      "url": "https://en.wikipedia.org/wiki/Power_residue_symbol"
+    },
+    {
+      "text": "Ireland, K. & Rosen, M. A Classical Introduction to Modern Number Theory. k-th power residues and the cyclic structure of (ℤ/pℤ)ˣ.",
+      "url": "https://en.wikipedia.org/wiki/Multiplicative_group_of_integers_modulo_n"
+    },
+    {
+      "text": "Mathlib4: IsCyclic.card_powMonoidHom_ker, IsCyclic.card_powMonoidHom_range, ZMod.card_units, Nat.gcd_eq_left, unitsEquivNeZero, Equiv.subtypeSubtypeEquivSubtypeInter.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Proves that for k ∣ p − 1, an odd prime p has exactly (p−1)/k nonzero k-th power residues (card_nonzero_kth_power_residues). The argument is structural and rests on the cyclicity of (ZMod p)ˣ: the k-th power map has kernel of size gcd(p−1, k) = k (card_kHom_ker, the k-th roots of unity) and image of size (p−1)/k (card_kHom_range), via Mathlib's IsCyclic.card_powMonoidHom_ker / card_powMonoidHom_range; isKthPower_coe_iff_mem_range identifies that image with the nonzero field k-th powers, and an equivalence transports the count. The quadratic count is recovered at k = 2 and the cubic count confirmed at p = 7. All 8 theorems verified with 0 sorries and 0 axioms, no native_decide.",
+    "implications": "The result pins down the k-th powers as the index-k subgroup of (ℤ/pℤ)ˣ — the structural fact underlying power-residue symbols, the equal distribution of the gcd(p−1, k) cosets, and the counting used in higher (cubic, quartic) reciprocity. The kernel count card_kHom_ker = k is equivalently the statement that ZMod p contains a full set of k k-th roots of unity exactly when k ∣ p − 1.",
+    "openQuestions": [
+      "Drop the divisibility hypothesis: for arbitrary k, the count is (p−1)/gcd(p−1, k); formalize this and the induced gcd(p−1, k)-to-1 fibre structure (each k-th power residue has exactly gcd(p−1, k) k-th roots).",
+      "Identify the k-th power residues with the kernel of a^((p−1)/k) ↦ 1 (the higher Euler criterion: a is a k-th power iff a^((p−1)/k) = 1), giving the analytic counterpart to this structural count."
+    ]
+  },
+  "sorries": 0
+}
