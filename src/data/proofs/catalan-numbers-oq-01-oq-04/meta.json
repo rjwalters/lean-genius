@@ -1,0 +1,161 @@
+{
+  "id": "catalan-numbers-oq-01-oq-04",
+  "title": "Strict Log-Convexity of the Catalan Numbers (a Turán-Type Inequality)",
+  "slug": "catalan-numbers-oq-01-oq-04",
+  "description": "For every n the Catalan numbers satisfy the strict Turán inequality catalan(n+1)² < catalan n · catalan(n+2); equivalently the sequence n ↦ catalan n is strictly log-convex. The proof is pointwise (no induction): it derives the first-order Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n over ℤ from Mathlib's central-binomial API (succ_mul_catalan_eq_centralBinom and Nat.succ_mul_centralBinom_succ, cancelling the positive factor n+1), takes the two consecutive instances at n and n+1, and combines them by a single linear_combination into the surplus identity D·(A·C) = D·B² + 3·(B·C) with D = 2(2n+1)(2n+3) > 0, where A = catalan n, B = catalan(n+1), C = catalan(n+2). The strict gap comes from (2n+3)(n+2) − (2n+1)(n+3) = 3 > 0 and the positivity of B, C; the multiplicative gap is exactly (2n²+7n+6)/(2n²+7n+3) > 1. All arithmetic is carried over ℤ and transferred back to ℕ. Fully verified over ℕ with 0 axioms, 0 sorries, no decide/native_decide. Mathlib has the Catalan API but no Turán-type / log-convexity inequality for it. This is the leaf oq-01-oq-04 of catalan-numbers-oq-01.",
+  "meta": {
+    "author": "Classical (log-convexity of Catalan numbers); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://oeis.org/A000108",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "catalan",
+      "log-convexity",
+      "turan-inequality",
+      "inequality",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CatalanNumbersOQ01OQ04.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.succ_mul_catalan_eq_centralBinom",
+        "description": "(n+1)·catalan n = centralBinom n. Bridges the Catalan numbers to the central binomial coefficients; used (cast to ℤ) to convert the central-binomial recurrence into the Catalan recurrence.",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      },
+      {
+        "theorem": "Nat.succ_mul_centralBinom_succ",
+        "description": "(n+1)·centralBinom(n+1) = 2(2n+1)·centralBinom n. The standard one-step recurrence for central binomial coefficients — the sole quantitative input from Mathlib, turned into the Catalan recurrence by cancelling n+1.",
+        "module": "Mathlib.Combinatorics.Enumerative.CentralBinom"
+      },
+      {
+        "theorem": "Nat.centralBinom_pos",
+        "description": "0 < centralBinom n. Used to recover positivity of the Catalan numbers from (n+1)·catalan n = centralBinom n.",
+        "module": "Mathlib.Combinatorics.Enumerative.CentralBinom"
+      },
+      {
+        "theorem": "mul_left_cancel₀ / lt_of_mul_lt_mul_left",
+        "description": "Cancellation of a nonzero/positive left factor in an equality (to extract the Catalan recurrence after cancelling n+1) and in a strict inequality (to pass from D·B² < D·(A·C) to B² < A·C).",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "catalan_recurrence: ((n:ℤ)+2)·catalan(n+1) = 2(2n+1)·catalan n — the first-order linear recurrence for the Catalan numbers, derived over ℤ from the central-binomial recurrence by cancelling the positive factor n+1 (Mathlib states the central-binomial recurrence but not this Catalan form)",
+      "catalan_pos: 0 < catalan n — positivity, recovered from (n+1)·catalan n = centralBinom n > 0",
+      "catalan_turan: catalan(n+1)² < catalan n · catalan(n+2) — the strict Turán inequality / strict log-convexity of the Catalan numbers, which Mathlib does not record"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 114,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used.",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The Catalan numbers C n = 1, 1, 2, 5, 14, 42, 132, … (OEIS A000108) count Dyck paths, triangulations, binary trees, and a hundred other families. A sequence (a n) is log-convex when a(n+1)² ≤ a n · a(n+2); log-convexity is the discrete analogue of convexity of log a and underlies unimodality and Turán-type inequalities throughout combinatorics. For the Catalan numbers the inequality is strict, reflecting that the ratio C(n+1)/C n = 2(2n+1)/(n+2) is itself strictly increasing.",
+    "problemStatement": "**Open Question (catalan-numbers-oq-01, follow-up oq-04)**: catalan-numbers-oq-01 studied the holonomic / recurrence structure of the Catalan and related sequences. This leaf asks for the log-convexity (Turán-type) inequality of the Catalan numbers themselves.\n\n**Result**: catalan(n+1)² < catalan n · catalan(n+2) for every n — strict log-convexity — proved pointwise from two instances of the first-order Catalan recurrence, which is itself derived here from Mathlib's central-binomial API.",
+    "text": "For every natural number n, catalan(n+1)² < catalan n · catalan(n+2). The strictness is uniform: the multiplicative gap catalan n · catalan(n+2) / catalan(n+1)² equals (2n²+7n+6)/(2n²+7n+3) = 1 + 3/(2n²+7n+3) > 1.",
+    "proofStrategy": "**Proof Strategy (pointwise, no induction).**\n\n1. **Catalan recurrence** (catalan_recurrence): cast the two Mathlib identities (n+1)·catalan n = centralBinom n and (n+1)·centralBinom(n+1) = 2(2n+1)·centralBinom n to ℤ, substitute, and cancel the positive factor n+1 with mul_left_cancel₀, closing by linear_combination. This yields (n+2)·catalan(n+1) = 2(2n+1)·catalan n over ℤ.\n\n2. **Positivity** (catalan_pos): from (n+1)·catalan n = centralBinom n > 0, a zero value of catalan n would force centralBinom n = 0, contradiction.\n\n3. **Turán inequality** (catalan_turan): take the recurrence at n and at n+1, giving (n+2)B = 2(2n+1)A and (n+3)C = 2(2n+3)B with A = catalan n, B = catalan(n+1), C = catalan(n+2). A single linear_combination of these two facts (scaled by (2n+1)B and (2n+3)C) produces the surplus identity D·(A·C) = D·B² + 3·(B·C) with D = 2(2n+1)(2n+3). Since B, C > 0 the term 3·(B·C) is strictly positive, so D·B² < D·(A·C); cancelling the positive D (lt_of_mul_lt_mul_left) gives B² < A·C over ℤ, transferred back to ℕ by exact_mod_cast.",
+    "keyInsights": [
+      "**The Catalan recurrence is not a Mathlib lemma — it is reconstructed.** Mathlib records the central-binomial recurrence (n+1)·centralBinom(n+1) = 2(2n+1)·centralBinom n and the bridge (n+1)·catalan n = centralBinom n, but not the first-order Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n. Cancelling the common factor n+1 derives it cleanly over ℤ.",
+      "**Log-convexity is pointwise here, not inductive.** Because the recurrence is first-order, two consecutive instances determine the three relevant Catalan values' cross-ratio exactly; no induction is needed. The whole inequality collapses to the integer fact (2n+3)(n+2) − (2n+1)(n+3) = 3 > 0.",
+      "**The surplus is exactly 3.** Multiplying out by D = 2(2n+1)(2n+3) > 0 turns the inequality B² < A·C into the equality D·(A·C) = D·B² + 3·(B·C), where the constant surplus 3·(B·C) > 0 makes the inequality strict for every n. The multiplicative gap (2n²+7n+6)/(2n²+7n+3) → 1 as n → ∞, so log-convexity tightens but never degenerates to equality.",
+      "**Working over ℤ avoids truncated subtraction.** All cancellations and the linear_combination are performed over ℤ, where ring arithmetic is available; the final B² < A·C is cast back to ℕ at the end."
+    ],
+    "prerequisites": [
+      "The Catalan numbers and the central binomial coefficients with their one-step recurrence",
+      "Cancellation of positive factors in equalities and strict inequalities over an ordered ring",
+      "The linear_combination tactic for closing polynomial identities over ℤ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 43,
+      "summary": "Module docstring stating the strict Turán inequality, the pointwise (no-induction) proof idea via two instances of the first-order Catalan recurrence, and the central-binomial API it is derived from; imports Mathlib and opens Nat.",
+      "mathContext": "$C(n{+}1)^2 < C(n)\\,C(n{+}2)$; recurrence $(n{+}2)C(n{+}1) = 2(2n{+}1)C(n)$."
+    },
+    {
+      "id": "recurrence",
+      "title": "First-Order Catalan Recurrence",
+      "startLine": 44,
+      "endLine": 60,
+      "summary": "catalan_recurrence: ((n:ℤ)+2)·catalan(n+1) = 2(2n+1)·catalan n, derived from the central-binomial recurrence and the catalan↔centralBinom bridge by cancelling the positive factor n+1 (mul_left_cancel₀, linear_combination).",
+      "mathContext": "$(n{+}2)\\,C(n{+}1) = 2(2n{+}1)\\,C(n)$ over $\\mathbb{Z}$."
+    },
+    {
+      "id": "positivity",
+      "title": "Positivity of the Catalan Numbers",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "catalan_pos: 0 < catalan n, recovered from (n+1)·catalan n = centralBinom n > 0.",
+      "mathContext": "$0 < C(n)$."
+    },
+    {
+      "id": "turan",
+      "title": "Strict Turán Inequality",
+      "startLine": 73,
+      "endLine": 114,
+      "summary": "catalan_turan: catalan(n+1)² < catalan n · catalan(n+2). Two consecutive recurrence instances combine by one linear_combination into D·(A·C) = D·B² + 3·(B·C) with D = 2(2n+1)(2n+3) > 0; positivity of B, C makes the surplus 3·(B·C) strictly positive, giving B² < A·C after cancelling D, then cast back to ℕ.",
+      "mathContext": "$D\\,(A C) = D\\,B^2 + 3\\,(BC)$, $D = 2(2n{+}1)(2n{+}3) > 0 \\Rightarrow B^2 < AC$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "catalan-numbers-oq-01",
+      "relationship": "Parent open question on the holonomic / recurrence structure of the Catalan and related sequences; this leaf supplies the strict log-convexity (Turán) inequality of the Catalan numbers themselves."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) strict log-convexity of the Catalan numbers: catalan(n+1)² < catalan n · catalan(n+2) for all n, proved pointwise from two instances of the first-order Catalan recurrence (n+2)·catalan(n+1) = 2(2n+1)·catalan n, itself derived from Mathlib's central-binomial API.",
+    "implications": "Supplies a Turán-type inequality that Mathlib's Catalan development lacks, and as a byproduct records the first-order Catalan recurrence and positivity over ℤ/ℕ. Strict log-convexity gives, for instance, that the ratio sequence C(n+1)/C n is strictly increasing.",
+    "openQuestions": [
+      "Prove the sharp two-sided Turán bound: catalan n · catalan(n+2) / catalan(n+1)² = (2n²+7n+6)/(2n²+7n+3), which both proves strictness and exhibits the gap → 1.",
+      "Establish log-concavity of the shifted/normalized Catalan sequence or the analogous strict Turán inequalities for the Motzkin and Schröder numbers, where the first-order shortcut is unavailable and an order-two recurrence is needed."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "CatalanNumbersOQ01OQ04",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanNumbersOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "OEIS Foundation",
+      "title": "A000108: Catalan numbers",
+      "year": "2024",
+      "venue": "The On-Line Encyclopedia of Integer Sequences",
+      "note": "Values, the ratio recurrence C(n+1) = 2(2n+1)/(n+2)·C(n), and log-convexity"
+    },
+    {
+      "authors": "Richard P. Stanley",
+      "title": "Catalan Numbers",
+      "year": "2015",
+      "venue": "Cambridge University Press",
+      "note": "Comprehensive reference on the Catalan numbers and their inequalities"
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.Combinatorics.Enumerative.Catalan",
+      "year": "2025",
+      "venue": "Mathlib4",
+      "note": "Source of Nat.catalan, Nat.succ_mul_catalan_eq_centralBinom, and the central-binomial recurrence Nat.succ_mul_centralBinom_succ"
+    }
+  ],
+  "sorries": 0
+}
