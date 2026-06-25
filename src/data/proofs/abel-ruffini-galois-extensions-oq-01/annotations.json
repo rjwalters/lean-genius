@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-arge-oq01-docstring",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 1, "endLine": 77 },
+    "type": "concept",
+    "title": "Constructing a concrete quintic with Galois group S₅",
+    "content": "The parent `AbelRuffiniGaloisExtensions` proves the abstract Abel–Ruffini obstruction (Sₙ solvable iff n ≤ 4; A₅ simple; non-solvable Galois group ⟹ no radical formula) but leaves open the constructive direction: exhibit a SPECIFIC polynomial whose Galois group is S₅. This file does so with q = X⁵ − 4X + 2. The decisive choice is the witness: X⁵ − 4X + 2 has exactly two non-real roots (three real, two complex-conjugate), so complex conjugation acts as a genuine transposition and Mathlib's prime-degree theorem pins the group to all of S₅. The sibling Selmer witness X⁵ − X − 1 has four non-real roots, so its conjugation is a double transposition — which is why `AbelRuffiniOQ07NotSolvable` can only ASSUME Gal ≅ S₅, whereas this file PROVES it (0 sorries, 0 axioms).",
+    "mathContext": "$\\mathrm{Gal}_{\\mathbb{Q}}(X^5 - 4X + 2) \\cong S_5$, exhibited as an explicit `MulEquiv`.",
+    "significance": "critical",
+    "relatedConcepts": ["Abel–Ruffini theorem", "Galois group", "symmetric group", "solvability by radicals"],
+    "prerequisites": ["Galois theory", "splitting fields"]
+  },
+  {
+    "id": "ann-arge-oq01-irreducible",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 113, "endLine": 133 },
+    "type": "lemma",
+    "title": "Irreducibility via Eisenstein's criterion",
+    "content": "`irreducible_Phi` proves Φ ℚ a b irreducible whenever a prime p divides a and b but p² does not divide b. For q = Φ ℚ 4 2 this is Eisenstein at p = 2: 2 ∣ 4, 2 ∣ 2, and 4 ∤ 2. The proof maps to ℤ, applies `irreducible_of_eisenstein_criterion`, and dispatches the coefficient divisibility obligations by `interval_cases` over the degree. Irreducibility is what forces 5 ∣ |Gal|, hence a 5-cycle in the group.",
+    "mathContext": "Eisenstein at 2 ⟹ $X^5 - 4X + 2$ irreducible over $\\mathbb{Q}$.",
+    "significance": "key",
+    "relatedConcepts": ["Eisenstein's criterion", "irreducible polynomial", "primitive polynomial"],
+    "prerequisites": ["polynomial rings", "prime ideals"]
+  },
+  {
+    "id": "ann-arge-oq01-rootcounts",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 134, "endLine": 184 },
+    "type": "lemma",
+    "title": "Exactly three real roots (two complex)",
+    "content": "`real_roots_Phi_le` bounds the real roots by 3 using `card_rootSet_le_derivative` twice (the second derivative 20X³ has a single real root, so the chain of Rolle bounds gives ≤ 3). `real_roots_Phi_ge` produces 2 distinct real roots via the intermediate value theorem (`intermediate_value_Icc`/`Ioc`) using sign changes of x⁵ − ax + b. `complex_roots_Phi` gives 5 complex roots (separable + splits in ℂ). Three real plus five total forces exactly two non-real, complex-conjugate roots — the condition the prime-degree theorem needs.",
+    "mathContext": "$\\#\\{\\text{real roots}\\} = 3$, $\\#\\{\\text{complex roots}\\} = 5$, hence two non-real conjugate roots.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "Rolle's theorem", "real roots", "complex conjugation"],
+    "prerequisites": ["real analysis", "continuity of polynomials"]
+  },
+  {
+    "id": "ann-arge-oq01-galPhi",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 186, "endLine": 198 },
+    "type": "theorem",
+    "title": "Full symmetric action via the prime-degree theorem",
+    "content": "`gal_Phi` feeds the root counts (degree 5 prime, two non-real roots) into Mathlib's `galActionHom_bijective_of_prime_degree'`, yielding `Bijective (galActionHom (Φ ℚ a b) ℂ)`. This single Mathlib lemma packages the entire classical argument: complex conjugation is a transposition, irreducibility gives a 5-cycle, and a transposition with a 5-cycle generate S₅. Bijectivity of the (always faithful) action homomorphism is exactly 'the Galois group is the full symmetric group on the roots'.",
+    "mathContext": "$\\mathrm{galActionHom}\\,q\\,\\mathbb{C} : q.\\mathrm{Gal} \\to \\mathrm{Perm}(q.\\mathrm{rootSet}\\,\\mathbb{C})$ is bijective.",
+    "significance": "critical",
+    "relatedConcepts": ["galActionHom", "transposition", "p-cycle", "generation of Sₚ"],
+    "prerequisites": ["Galois group action on roots", "permutation groups"]
+  },
+  {
+    "id": "ann-arge-oq01-permCongr",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 222, "endLine": 234 },
+    "type": "definition",
+    "title": "permCongrMulEquiv — relabelling as a group isomorphism",
+    "content": "Mathlib's `Equiv.permCongr e` (for e : α ≃ β) is a bare `Equiv` between permutation groups, not a `MulEquiv`. `permCongrMulEquiv` adds the `map_mul'` field (proved by `ext` + `simp` on `Equiv.Perm.mul_apply`/`Equiv.permCongr_apply`), promoting it to a group isomorphism `Equiv.Perm α ≃* Equiv.Perm β`. This is the multiplicative-equivalence layer needed to carry S₅-on-the-roots over to S₅-on-Fin-5.",
+    "mathContext": "$e : \\alpha \\simeq \\beta \\;\\Rightarrow\\; \\mathrm{Perm}\\,\\alpha \\cong \\mathrm{Perm}\\,\\beta$ as groups.",
+    "significance": "supporting",
+    "relatedConcepts": ["MulEquiv", "Equiv.permCongr", "group isomorphism"],
+    "prerequisites": ["permutation groups", "multiplicative equivalences"]
+  },
+  {
+    "id": "ann-arge-oq01-galEquivS5",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 236, "endLine": 247 },
+    "type": "definition",
+    "title": "galEquivS5 — the headline isomorphism Gal ≃* S₅",
+    "content": "Composes `MulEquiv.ofBijective (galActionHom q ℂ) q_galActionHom_bijective` (turning the bijective action homomorphism into an iso onto Perm of the 5-element root set) with `permCongrMulEquiv (Fintype.equivFinOfCardEq q_card_complex_roots)` (relabelling the roots as Fin 5). The result is `q.Gal ≃* Equiv.Perm (Fin 5)` — the explicit object the parent and sibling entries reference but do not build. This is the constructive core of OQ-01.",
+    "mathContext": "$\\mathrm{galEquivS5} : (X^5 - 4X + 2).\\mathrm{Gal} \\cong S_5$.",
+    "significance": "critical",
+    "relatedConcepts": ["MulEquiv.ofBijective", "Fintype.equivFinOfCardEq", "symmetric group S₅"],
+    "prerequisites": ["bijective homomorphisms", "finite cardinality equivalences"]
+  },
+  {
+    "id": "ann-arge-oq01-unconditional",
+    "proofId": "abel-ruffini-galois-extensions-oq-01",
+    "range": { "startLine": 248, "endLine": 272 },
+    "type": "theorem",
+    "title": "Unconditional consequences: order 120, non-solvable, no radical roots",
+    "content": "`gal_card` reads |Gal| = 5! = 120 off the iso. `gal_not_solvable` transports `Equiv.Perm.fin_5_not_solvable` across `galEquivS5` (solvability passes to surjective images). `root_not_solvableByRad` is the contrapositive of Mathlib's `solvableByRad.isSolvable'` applied to the irreducible q: no complex root is solvable by radicals — UNCONDITIONALLY, since the iso is constructed, not assumed. `exists_root_not_solvableByRad` packages a concrete non-radical algebraic number (a complex root of X⁵ − 4X + 2).",
+    "mathContext": "$|Gal| = 120$; $Gal$ not solvable; no root of $X^5 - 4X + 2$ is solvable by radicals.",
+    "significance": "critical",
+    "relatedConcepts": ["solvable group", "IsSolvableByRad", "Abel–Ruffini theorem"],
+    "prerequisites": ["solvability of groups", "radical extensions"]
+  }
+]
