@@ -3644,6 +3644,7 @@ import Proofs.NthRootIrrationalOQ01OQ01CosRational
 import Proofs.NthRootIrrationalOQ01OQ01Degree
 import Proofs.NthRootIrrationalOQ01OQ01Real
 import Proofs.NthRootIrrationalOQ02
+import Proofs.OddCubesSum
 import Proofs.OnePlusOne
 import Proofs.OnePlusOneOQ01
 import Proofs.OnePlusOneOQ04
