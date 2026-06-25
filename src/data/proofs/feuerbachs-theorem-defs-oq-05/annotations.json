@@ -1,0 +1,62 @@
+[
+  {
+    "id": "feuerbach05-ann-bridge",
+    "proofId": "feuerbachs-theorem-defs-oq-05",
+    "range": { "startLine": 62, "endLine": 71 },
+    "type": "technique",
+    "title": "Distance bridge: from root-distance to squared distance",
+    "content": "Two small lemmas that let the proof move between the parent's sqrt-based membership statements (dist2 Q P = ρ) and the polynomial form (dist2_sq Q P) on which linear_combination and ring operate. dist2_sq_eq_dist2_sq squares the root distance via Real.sq_sqrt (legal since the radicand is nonnegative), and dist2_sq_of_dist2_eq lifts an equality of root distances to an equality of squared distances. This is the interface that connects the geometric hypotheses to the algebraic core.",
+    "mathContext": "$\\mathrm{dist2\\_sq}\\,Q\\,P = (\\mathrm{dist2}\\,Q\\,P)^2$ since $\\mathrm{dist2} = \\sqrt{\\cdot}$ of a nonnegative quantity; hence equal radii give equal squared distances.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean distance", "Real.sq_sqrt", "squared distance"],
+    "prerequisites": ["square roots", "coordinate geometry"]
+  },
+  {
+    "id": "feuerbach05-ann-center-unique",
+    "proofId": "feuerbachs-theorem-defs-oq-05",
+    "range": { "startLine": 78, "endLine": 108 },
+    "type": "insight",
+    "title": "equidistant_center_unique — circle uniqueness is linear algebra",
+    "content": "The algebraic heart. For two centres Q, Q' each equidistant (squared) from three non-collinear points P₁P₂P₃, subtracting the squared-distance equations cancels the quadratic |·|² terms, leaving two linear equations e1, e2 in the difference (Q − Q'). Multiplying by the orientation determinant (Cramer's rule, encoded as linear_combination with explicit cofactor coefficients) gives (Q.1−Q'.1)·det = 0 and (Q.2−Q'.2)·det = 0; since det ≠ 0 (non-collinearity), mul_eq_zero forces each coordinate difference to vanish, so Q = Q'. No matrix machinery — the perpendicular-bisector system is solved by hand over the coordinate API.",
+    "mathContext": "Subtracting $\\|Q-P_i\\|^2 = \\|Q-P_j\\|^2$ pairs kills the $\\|Q\\|^2$ term, giving a $2\\times 2$ linear system in $Q-Q'$ whose determinant is the orientation determinant $\\det(P_2-P_1, P_3-P_1)$. Nonzero ⟹ $Q=Q'$.",
+    "significance": "key",
+    "relatedConcepts": ["perpendicular bisector", "Cramer's rule", "orientation determinant", "linear system", "linear_combination"],
+    "prerequisites": ["linear algebra", "determinants", "coordinate geometry"]
+  },
+  {
+    "id": "feuerbach05-ann-noncollinear",
+    "proofId": "feuerbachs-theorem-defs-oq-05",
+    "range": { "startLine": 113, "endLine": 119 },
+    "type": "technique",
+    "title": "midpoints_noncollinear — the determinant is ¼ of the triangle's",
+    "content": "Supplies the non-degeneracy hypothesis the core lemma needs. Because M_b − M_a = (A − B)/2 and M_c − M_a = (A − C)/2, the orientation determinant of the three side midpoints is exactly 1/4 of the triangle's own non-degeneracy determinant. The proof unfolds the midpoint definitions and closes with linear_combination 4*h against T.nondegenerate. The point: no new geometric assumption is introduced — the midpoints' non-collinearity is a constant multiple of the assumption already baked into the Triangle structure.",
+    "mathContext": "$\\det(M_b-M_a, M_c-M_a) = \\tfrac14\\det(B-A, C-A) \\ne 0$ for a non-degenerate triangle.",
+    "significance": "supporting",
+    "relatedConcepts": ["midpoint", "non-degenerate triangle", "orientation determinant", "collinearity"],
+    "prerequisites": ["midpoints", "determinants"]
+  },
+  {
+    "id": "feuerbach05-ann-uniqueness",
+    "proofId": "feuerbachs-theorem-defs-oq-05",
+    "range": { "startLine": 127, "endLine": 168 },
+    "type": "insight",
+    "title": "ninePointCircle_unique — assembling the uniqueness theorem",
+    "content": "The payoff. Any circle-centre Q through the three side midpoints is equidistant from them; so is the nine-point centre N, by the parent's membership theorems (midpoint_a/b/c_on_ninePointCircle) routed through the distance bridge. Both are equidistant centres through three non-collinear points (midpoints_noncollinear), so equidistant_center_unique forces Q = N; the radius is then the common distance dist2 N M_a = R/2. ninePointCircle_unique_of_nine restates this against a circle through all nine points but consumes only the three midpoint memberships — explicitly witnessing that three of the nine points already pin the circle down.",
+    "mathContext": "$Q$ and $N$ are both equidistant from $M_a, M_b, M_c$ (non-collinear), so $Q = N$ and $\\rho = \\mathrm{dist2}\\,N\\,M_a = R/2$. The nine-point circle is the unique circle through the nine points.",
+    "significance": "key",
+    "relatedConcepts": ["nine-point circle", "uniqueness", "circumcircle", "Feuerbach's theorem"],
+    "prerequisites": ["nine-point circle", "circle through three points"]
+  },
+  {
+    "id": "feuerbach05-ann-example",
+    "proofId": "feuerbachs-theorem-defs-oq-05",
+    "range": { "startLine": 172, "endLine": 182 },
+    "type": "context",
+    "title": "3-4-5 sanity check",
+    "content": "A concrete instantiation: the unique circle through the side midpoints of the 3-4-5 right triangle is centred at (3/4, 1) with radius 5/4. It specializes ninePointCircle_unique to triangle_345 and rewrites with the parent's precomputed ninePointCenter and ninePointRadius, confirming the abstract theorem agrees with an explicit numerical case.",
+    "mathContext": "For the 3-4-5 triangle, $N = (3/4, 1)$ and $R/2 = 5/4$ (the circumradius of a right triangle is half the hypotenuse, so $R = 5/2$).",
+    "significance": "context",
+    "relatedConcepts": ["worked example", "right triangle", "circumradius"],
+    "prerequisites": ["nine-point circle"]
+  }
+]
