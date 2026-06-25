@@ -2,7 +2,10 @@
   {
     "id": "ann-aoc07oq04-context",
     "proofId": "area-of-circle-oq-07-oq-04",
-    "range": { "startLine": 4, "endLine": 30 },
+    "range": {
+      "startLine": 4,
+      "endLine": 30
+    },
     "type": "concept",
     "title": "Squaring Removes the Branch Cut",
     "content": "The sibling `area-of-circle-oq-07-oq-01` evaluates the complex Gaussian `∫_ℝ e^{-b x²} dx = (π/b)^{1/2}`, a genuine complex principal `(1/2)`-power. This entry observes that its **square** is far simpler: `(∫_ℝ e^{-b x²} dx)² = π/b`, with no fractional power. Over the right half-plane `{b : ℂ | re b > 0}` the base `π/b` is nonzero, so the two half-powers add cleanly. This is the complex-parameter form of the classical two-dimensional identity `(∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} = π` that computes the Gaussian (and, in the parent, the area of a circle).",
@@ -23,25 +26,47 @@
   {
     "id": "ann-aoc07oq04-sq",
     "proofId": "area-of-circle-oq-07-oq-04",
-    "range": { "startLine": 34, "endLine": 45 },
+    "range": {
+      "startLine": 34,
+      "endLine": 45
+    },
     "type": "technique",
     "title": "Collapsing the Power via Complex.cpow_add",
     "content": "`gaussian_integral_complex_sq` rewrites the integral to `(π/b)^{1/2}` (Mathlib's `integral_gaussian_complex`), expands the square with `pow_two` to `(π/b)^{1/2} · (π/b)^{1/2}`, then applies `Complex.cpow_add` in reverse to fuse the exponents into `(π/b)^{1/2 + 1/2}`. The side condition of `cpow_add` is `π/b ≠ 0`, supplied by `div_ne_zero` from `Real.pi_ne_zero` and `b ≠ 0` (which follows from `0 < re b`). A final `norm_num` evaluates `1/2 + 1/2 = 1` and discharges `(π/b)^1 = π/b`.",
     "mathContext": "The additive law $x^{y+z} = x^y\\,x^z$ for complex principal powers holds precisely when $x \\neq 0$; this is the single hypothesis that the right half-plane guarantees. Without it (e.g. crossing to $b$ with $\\pi/b$ a negative real) the half-powers would not add and the square would pick up a sign from the branch cut.",
-    "significance": "important",
-    "relatedConcepts": ["Complex.cpow_add", "pow_two", "div_ne_zero", "right half-plane re b > 0"],
-    "prerequisites": ["integral_gaussian_complex", "Complex.cpow_add"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Complex.cpow_add",
+      "pow_two",
+      "div_ne_zero",
+      "right half-plane re b > 0"
+    ],
+    "prerequisites": [
+      "integral_gaussian_complex",
+      "Complex.cpow_add"
+    ]
   },
   {
     "id": "ann-aoc07oq04-recover",
     "proofId": "area-of-circle-oq-07-oq-04",
-    "range": { "startLine": 47, "endLine": 64 },
+    "range": {
+      "startLine": 47,
+      "endLine": 64
+    },
     "type": "technique",
     "title": "Recovering π as the b = 1 Case",
     "content": "`gaussian_integral_sq_eq_pi` derives the parent's real value `(∫_ℝ e^{-x²} dx)² = π` from the complex result at `b = 1`. The cast `hLcast` identifies the real integral with its complex image: since the integrand is real-valued, `integral_complex_ofReal` moves the `ℂ`-coercion outside the integral, and pointwise `↑(e^{-x²}) = e^{-1·(↑x)²}` by `Complex.ofReal_exp` plus `push_cast; ring`. With `π/1` simplified to `π` by `div_one`, rewriting the hypothesis and `exact_mod_cast` finishes.",
     "mathContext": "The squared statement is what the parent `area-of-circle-oq-07` actually computes en route to `√π`: the two-dimensional Gaussian integral equals `π` directly, and the square root is extracted afterward. Recovering `π` (rather than `√π`) at `b = 1` makes this entry the faithful complex lift of the parent's central computation.",
-    "significance": "important",
-    "relatedConcepts": ["integral_complex_ofReal", "Complex.ofReal_exp", "div_one", "exact_mod_cast"],
-    "prerequisites": ["gaussian_integral_complex_sq", "Complex.ofReal_exp"]
+    "significance": "supporting",
+    "relatedConcepts": [
+      "integral_complex_ofReal",
+      "Complex.ofReal_exp",
+      "div_one",
+      "exact_mod_cast"
+    ],
+    "prerequisites": [
+      "gaussian_integral_complex_sq",
+      "Complex.ofReal_exp"
+    ]
   }
 ]

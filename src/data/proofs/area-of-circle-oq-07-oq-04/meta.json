@@ -20,6 +20,34 @@
     "sorries": 0
   },
   "title": "The Squared Complex Gaussian Integral (∫ e^{-b x²})² = π/b",
+  "description": "Squares the complex Gaussian integral of the sibling area-of-circle-oq-07-oq-01: for every b : ℂ with 0 < re b, (∫_ℝ e^{-b x²} dx)² = π/b. Squaring removes the branch-cut subtlety of the principal (1/2)-power — (π/b)^{1/2}·(π/b)^{1/2} = (π/b)^1 via Complex.cpow_add, valid because π/b ≠ 0 on the right half-plane. This is the complex-parameter form of the classical two-dimensional trick (∫ e^{-x²})² = ∫∫ e^{-(x²+y²)} = π; the parent's real value (∫ e^{-x²})² = π is recovered as the b = 1 case.",
+  "overview": {
+    "historicalContext": "The two-dimensional squaring trick — writing (∫ e^{-x²})² as a planar integral ∫∫ e^{-(x²+y²)} and evaluating it in polar coordinates to get π — is the standard derivation of the Gaussian integral and the place where the area-of-a-circle Jacobian r dr dθ of the parent entry appears. Stated for a complex parameter b over the right half-plane, the squared identity (∫ e^{-b x²})² = π/b is single-valued and rational in b, in contrast to the integral itself, whose value (π/b)^{1/2} carries the principal branch that governs the Fresnel phase on the imaginary axis.",
+    "problemStatement": "For the complex Gaussian $\\int_{\\mathbb{R}} e^{-b x^2}\\,dx = (\\pi/b)^{1/2}$ (sibling area-of-circle-oq-07-oq-01), prove that its square is the clean rational value $\\left(\\int_{\\mathbb{R}} e^{-b x^2}\\,dx\\right)^2 = \\pi/b$ for every $b : \\mathbb{C}$ with $0 < \\operatorname{re} b$, and recover the real $(\\int e^{-x^2})^2 = \\pi$ as the $b = 1$ case.",
+    "proofStrategy": "gaussian_integral_complex_sq rewrites the integral to (π/b)^{1/2} (integral_gaussian_complex), expands the square with pow_two, and fuses the exponents via Complex.cpow_add in reverse to (π/b)^{1/2+1/2}; its side condition π/b ≠ 0 comes from div_ne_zero (Real.pi_ne_zero and b ≠ 0, the latter from 0 < re b), and norm_num evaluates 1/2+1/2 = 1. The bridge gaussian_integral_sq_eq_pi recovers the real value at b = 1: hLcast identifies the real integral with its ℂ-image (integral_complex_ofReal + Complex.ofReal_exp + push_cast/ring), div_one simplifies π/1, and exact_mod_cast transfers back to ℝ.",
+    "keyInsights": [
+      "Squaring removes the branch-cut subtlety: the integral itself is the single-valued-only-after-fixing-a-branch power (π/b)^{1/2}, but its square π/b is a single-valued rational function of b on the half-plane — which is why downstream normalization constants are stated via the square.",
+      "The additive law x^{y+z} = x^y·x^z for complex principal powers holds precisely when x ≠ 0; the right half-plane re b > 0 is exactly the region guaranteeing π/b ≠ 0, so the two half-powers add without picking up a sign from the branch cut.",
+      "Recovering π (not √π) at b = 1 makes this the faithful complex lift of the parent's central computation: the two-dimensional Gaussian integral equals π directly, and the square root is extracted only afterward.",
+      "As in the rest of the family, the hard analysis is inherited from Mathlib's integral_gaussian_complex; the contribution is the clean squared identity and the correctly-cast parent recovery — honestly badged 'mathlib'."
+    ]
+  },
+  "sections": [
+    {
+      "id": "squared-complex",
+      "title": "The Squared Complex Gaussian Integral",
+      "startLine": 34,
+      "endLine": 45,
+      "summary": "gaussian_integral_complex_sq: for 0 < re b, (∫ e^{-b x²})² = π/b, by rewriting to (π/b)^{1/2}, expanding with pow_two, and fusing exponents via Complex.cpow_add (side condition π/b ≠ 0) then norm_num."
+    },
+    {
+      "id": "parent-recovery",
+      "title": "Recovering π as the b = 1 Case",
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "gaussian_integral_sq_eq_pi: the real (∫ e^{-x²})² = π from the complex result at b = 1, via hLcast (integral_complex_ofReal) and div_one, finished by exact_mod_cast."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
