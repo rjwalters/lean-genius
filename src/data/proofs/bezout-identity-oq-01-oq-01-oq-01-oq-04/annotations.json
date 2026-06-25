@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-bezoutoq010101oq04-header",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "context",
+    "title": "Is the step-count constant 2 tight? — answer: no, it is 1",
+    "content": "The parent entry proves binaryGcdSteps a b ≤ 2·(log₂ a + log₂ b) + 2. Its fourth open question asks whether the constant 2 is asymptotically tight. This file answers no: the sharp constant is 1. It proves binaryGcdSteps a b ≤ log₂ a + log₂ b + 1 and shows this is attained with equality by the explicit family (1, 2^k). So the worst-case step count is exactly M + 1 with M = log₂ a + log₂ b, and the parent's 2·M + 2 overcounts by a factor of 2.",
+    "mathContext": "Parent: $\\mathrm{steps}(a,b) \\le 2(\\log_2 a + \\log_2 b) + 2$. Here: $\\mathrm{steps}(a,b) \\le \\log_2 a + \\log_2 b + 1$, tight at $(1, 2^k)$.",
+    "significance": "context",
+    "relatedConcepts": ["binary GCD", "step count", "tight bound", "matching lower bound"],
+    "prerequisites": ["asymptotic analysis", "Nat.log"]
+  },
+  {
+    "id": "ann-bezoutoq010101oq04-helpers",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 54, "endLine": 85 },
+    "type": "definition",
+    "title": "Log-monotonicity helpers for the sharp induction",
+    "content": "The sharp induction needs the same Nat.log facts the parent used, but the parent declared its analogues private, so they are restated here: log_div_two (Nat.log 2 (n/2) = Nat.log 2 n − 1 for n ≥ 2, from Nat.log_div_base), log_mono (monotonicity, from Nat.log_mono_right), and the two both-odd subtraction drops log_odd_sub_half / log_odd_sub_half_left ((b−a)/2 ≤ b/2 with a halving of log).",
+    "mathContext": "$\\log_2(n/2) = \\log_2 n - 1$ for $n \\ge 2$; $\\log_2((b-a)/2) + 1 \\le \\log_2 b$ for $1 \\le a < b$, $b$ odd.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nat.log_div_base", "monotonicity", "floor logarithm"],
+    "prerequisites": ["integer logarithm", "omega"]
+  },
+  {
+    "id": "ann-bezoutoq010101oq04-sharp",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 87, "endLine": 177 },
+    "type": "key-step",
+    "title": "Sharp upper bound: constant 1, not 2",
+    "content": "binaryGcdSteps_le_log_sharp proves binaryGcdSteps a b ≤ log₂ a + log₂ b + 1. This is the parent's strong induction on a + b, but with the tight target log₂ a + log₂ b + 1 instead of 2·(log₂ a + log₂ b) + 2. The key observation: the measure M = log₂ a + log₂ b already drops by ≥ 1 in every recursive branch (both-even drops it by 2; each single-even and both-odd-subtract branch drops it by ≥ 1), so the +1 envelope survives every branch's omega goal — the parent's factor of 2 was pure inductive slack. sharp_refines_parent then notes log₂ a + log₂ b + 1 ≤ 2·(log₂ a + log₂ b) + 2, recovering the parent's bound.",
+    "mathContext": "Each step decreases $M = \\log_2 a + \\log_2 b$ by at least 1; with base case contributing $+1$, $\\mathrm{steps} \\le M + 1$.",
+    "significance": "central",
+    "relatedConcepts": ["strong induction", "measure/variant", "amortized bound", "omega"],
+    "prerequisites": ["well-founded recursion", "induction on a + b"]
+  },
+  {
+    "id": "ann-bezoutoq010101oq04-family",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 179, "endLine": 211 },
+    "type": "key-step",
+    "title": "The extremal family (1, 2^k): step count exactly k + 1",
+    "content": "binaryGcdSteps_one_pow proves binaryGcdSteps 1 (2^k) = k + 1 by induction on k. With a = 1 (odd) and b = 2^k (even), the recursion always falls into the 'a odd, b even' branch and halves b — peeling exactly one bit per step for k steps down to binaryGcdSteps 1 1 = 1. sharp_bound_tight rewrites this as log₂ 1 + log₂ (2^k) + 1, so the family attains the sharp bound with equality: the leading constant 1 is best possible and cannot be lowered.",
+    "mathContext": "$\\mathrm{steps}(1, 2^k) = 1 + \\mathrm{steps}(1, 2^{k-1}) = \\dots = k + 1 = \\log_2 1 + \\log_2 2^k + 1$.",
+    "significance": "central",
+    "relatedConcepts": ["worst-case input", "matching lower bound", "closed-form recurrence", "extremal family"],
+    "prerequisites": ["induction on k", "powers of two"]
+  },
+  {
+    "id": "ann-bezoutoq010101oq04-not-tight",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 213, "endLine": 229 },
+    "type": "key-step",
+    "title": "Conclusion: the parent's constant 2 overcounts by a factor of 2",
+    "content": "parent_constant_not_tight packages the comparison: on (1, 2^k) the true step count is k + 1, while the parent's envelope evaluates to 2k + 2. The ratio bound/actual → 2, so the parent's constant 2 is not asymptotically tight; the sharp bound's constant 1 is. This makes precise the sense in which the parent's bound, while correct, is loose by a constant factor.",
+    "mathContext": "$\\dfrac{2k + 2}{k + 1} = 2$ for all $k$ — the parent's bound is exactly twice the truth on the extremal family.",
+    "significance": "central",
+    "relatedConcepts": ["tightness", "constant factor", "asymptotic optimality"],
+    "prerequisites": ["ratio of bounds"]
+  },
+  {
+    "id": "ann-bezoutoq010101oq04-examples",
+    "proofId": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+    "range": { "startLine": 231, "endLine": 247 },
+    "type": "context",
+    "title": "Worked examples — axiom-free",
+    "content": "The worked instances are discharged by the proven theorems, not by native_decide, so the file pulls in no Lean.ofReduceBool: binaryGcdSteps 1 (2^5) = 6 and 1 (2^10) = 11 follow from binaryGcdSteps_one_pow; equality with the sharp bound at k = 7 from sharp_bound_tight; and the sharp bound beating the parent's at k = 10 (11 vs 22) from binaryGcdSteps_le_log_sharp.",
+    "mathContext": "$\\mathrm{steps}(1, 2^{10}) = 11$, sharp bound $= 11$, parent bound $= 22$.",
+    "significance": "supporting",
+    "relatedConcepts": ["worked example", "verification without native_decide"],
+    "prerequisites": []
+  }
+]

@@ -366,6 +366,7 @@ import Proofs.BezoutIdentityOQ01
 import Proofs.BezoutIdentityOQ01Aristotle
 import Proofs.BezoutIdentityOQ01OQ01
 import Proofs.BezoutIdentityOQ01OQ01OQ01
+import Proofs.BezoutIdentityOQ01OQ01OQ01OQ04
 import Proofs.BezoutIdentityOQ01OQ01OQ02
 import Proofs.BezoutIdentityOQ01OQ01OQ02OQ01
 import Proofs.BezoutIdentityOQ02

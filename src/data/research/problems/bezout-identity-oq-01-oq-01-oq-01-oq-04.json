@@ -1,0 +1,96 @@
+{
+  "slug": "bezout-identity-oq-01-oq-01-oq-01-oq-04",
+  "title": "Tightness of the binary-GCD step-count constant 2",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "B",
+  "path": "full",
+  "started": "2026-06-25T19:42:12.000Z",
+  "lastUpdate": "2026-06-25T20:30:00.000Z",
+  "completed": "2026-06-25T20:30:00.000Z",
+  "problemStatement": {
+    "formal": "\\text{Is the constant } 2 \\text{ in } \\texttt{binaryGcdSteps}\\,a\\,b \\le 2(\\log_2 a + \\log_2 b) + 2 \\text{ asymptotically tight?}",
+    "plain": "The parent gallery proof bezout-identity-oq-01-oq-01-oq-01 proves the binary-GCD step count is at most 2*(log2 a + log2 b) + 2. The fourth open question asks whether the constant 2 is asymptotically tight, i.e. whether some explicit input family forces the step count up to about 2*(log2 a + log2 b). The answer is no: the tight constant is 1.",
+    "whyMatters": [
+      "Upgrades the parent's O(log) step-count bound from an order statement to a sharp bound with the exact leading constant (1, not 2).",
+      "Supplies a reusable template for proving complexity bounds tight: pair the existing upper-bound induction (slack removed) with an explicit extremal family whose recursive cost is computed in closed form.",
+      "The matching lower bound binaryGcdSteps 1 (2^k) = k + 1 certifies the constant, not just the rate Omega(log)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "binaryGcdSteps_le_log: binaryGcdSteps a b <= 2 * (Nat.log 2 a + Nat.log 2 b) + 2 (parent, fully proved).",
+      "binaryGcdSteps_le_log_sharp (this entry): binaryGcdSteps a b <= Nat.log 2 a + Nat.log 2 b + 1 (sharp, constant 1).",
+      "binaryGcdSteps_one_pow (this entry): binaryGcdSteps 1 (2^k) = k + 1 (extremal family value).",
+      "sharp_bound_tight (this entry): binaryGcdSteps 1 (2^k) = Nat.log 2 1 + Nat.log 2 (2^k) + 1 (equality)."
+    ],
+    "open": [
+      "Transfer of the sharp constant 1 to the bit-operation count (parent's O(log^2) corollary improves by a constant factor).",
+      "Full classification of all equality cases (extremal pairs beyond (1, 2^k)).",
+      "Analogous sharp constants for the extended binary GCD and the half-GCD variant (parent oq-02)."
+    ],
+    "goal": "Prove the sharp step-count bound binaryGcdSteps a b <= log2 a + log2 b + 1 and show the constant 1 is tight via the explicit family (1, 2^k), thereby settling whether the parent's constant 2 is asymptotically tight (it is not)."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-25T20:30:00Z",
+    "iteration": 1,
+    "focus": "COMPLETED in a single session (researcher-5). Empirical scan (all a,b < 2^11 + 3e5 random pairs to 1e9) revealed worst-case step count = M + 1 (M = log2 a + log2 b), attained at (1, 2^M). Formalized as two matching bounds: sharp upper bound binaryGcdSteps_le_log_sharp (parent induction with the constant slack removed) and matching lower bound binaryGcdSteps_one_pow / sharp_bound_tight (the family (1, 2^k) gives k + 1 exactly). parent_constant_not_tight packages the factor-2 overcount conclusion. File Proofs/BezoutIdentityOQ01OQ01OQ01OQ04.lean: 247 LOC, 5 theorems, 0 defs, 0 axioms, 0 sorries; #print axioms reports only propext / Classical.choice / Quot.sound (no native_decide).",
+    "blockers": [],
+    "nextAction": "None — verified-final. Follow-ups (out of scope): bit-level constant transfer, full equality-case classification, extended/half-GCD analogues.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-5, 2026-06-25): Resolved the parent's fourth open question. Empirically determined that the worst-case binary-GCD step count over inputs with M = log2 a + log2 b is exactly M + 1 (exhaustive for a,b < 2^11; 0 violations over 3e5 random pairs up to 1e9), attained by the family (1, 2^k). Proved the sharp upper bound binaryGcdSteps_le_log_sharp (the parent's strong induction on a+b run with the tight +1 target instead of 2M+2 — every branch already drops M by >= 1, so the parent's factor 2 was pure inductive slack), and the matching lower bound binaryGcdSteps_one_pow (binaryGcdSteps 1 (2^k) = k + 1, induction on k). sharp_bound_tight and parent_constant_not_tight assemble the tightness conclusion. Marked oq-04 RESOLVED in the parent gallery meta. New gallery entry bezout-identity-oq-01-oq-01-oq-01-oq-04 (verified, original badge, 0 axioms).",
+    "builtItems": [
+      "proofs/Proofs/BezoutIdentityOQ01OQ01OQ01OQ04.lean (new, 247 lines, 5 theorems, 0 axioms, 0 sorries).",
+      "src/data/proofs/bezout-identity-oq-01-oq-01-oq-01-oq-04/{meta.json,annotations.json,index.ts} (new gallery entry).",
+      "research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-04/{problem.md,state.md} (new).",
+      "Parent gallery meta.json conclusion.openQuestions[3] annotated RESOLVED."
+    ],
+    "insights": [
+      "The worst case over all inputs with log2 a + log2 b = M is exactly M + 1, attained at (1, 2^M). The measure M never drops by less than 1 per step, so M + 1 steps is the maximum; (1, 2^k) spends exactly that budget.",
+      "The parent's constant 2 was an artifact of the inductive arithmetic, not the algorithm. Keeping the target at M + 1 rather than 2M + 2 leaves every branch's omega goal solvable, because each branch drops M by at least 1.",
+      "The extremal family is the simplest possible: a = 1 fixed, b a power of two. No Fibonacci worst case is needed (Fibonacci is the Euclidean worst case, not the binary-GCD one).",
+      "Tightness is a genuine matching lower bound on a concrete recursive cost (binaryGcdSteps 1 (2^k) = k + 1 exactly), certifying the constant rather than only the order."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "None — verified-final. Optional follow-ups: bit-level sharp constant, full equality-case classification, extended/half-GCD analogues."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "binary-gcd",
+    "complexity",
+    "step-count",
+    "tightness",
+    "lower-bound"
+  ],
+  "relatedProofs": [
+    "bezout-identity",
+    "bezout-identity-oq-01",
+    "bezout-identity-oq-01-oq-01",
+    "bezout-identity-oq-01-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Stein (1967), Computational problems associated with Racah algebra (binary GCD).",
+      "Knuth, TAOCP Vol. 2, Section 4.5.2 (Algorithm B and worst-case analysis).",
+      "Sorenson (1994), Two fast GCD algorithms (step-count asymptotics)."
+    ],
+    "urls": [
+      "https://github.com/rjwalters/lean-genius"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Log (Nat.log, Nat.log_div_base, Nat.log_mono_right, Nat.log_pos, Nat.log_pow, Nat.log_one_right)"
+    ]
+  },
+  "started_iso": "2026-06-25T19:42:12.000Z",
+  "significance": 6,
+  "tractability": 7
+}
