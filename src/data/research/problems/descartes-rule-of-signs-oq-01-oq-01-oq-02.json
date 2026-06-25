@@ -1,0 +1,90 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+  "title": "Can a Budan–Fourier formalization be built on the complex-root parity framework?",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "For p : ℝ[X] of degree n, the Fourier sequence is (p, p', …, p⁽ⁿ⁾); V(x) counts sign variations of the value sequence. Budan–Fourier: #roots of p in (a,b] (with multiplicity) ≤ V(a) − V(b), defect even. Formalize the endpoint backbone and the whole-line case.",
+    "plain": "The Budan–Fourier theorem generalizes Descartes' rule from coefficient signs to the signs of the derivative sequence at the endpoints of an interval. The parent file asked whether this can be formalized on its framework.",
+    "whyMatters": [
+      "Budan–Fourier is the interval generalization of Descartes' rule and the parent's parity result.",
+      "Its endpoint analysis cleanly explains why real-root count and degree share parity."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "leadingCoeff (derivative^[k] p) = (n.descFactorial k)·leadingCoeff p for k ≤ n",
+      "V(+∞) = 0, V(−∞) = n, and V(−∞) − V(+∞) = deg p"
+    ],
+    "open": [
+      "Finite-interval bound #roots in (a,b] ≤ V(a) − V(b) (needs Rolle interleaving + multiplicity)"
+    ],
+    "goal": "Formalize the whole-line Budan–Fourier identity and the reusable derivative-sequence backbone."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 1,
+    "focus": "Endpoint sign variations of the Fourier sequence",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: 11 theorems, 3 defs, 0 axioms, 0 sorries. Formalized the Fourier (iterated-derivative) sequence's leading-coefficient law via descending factorials, the endpoint sign-variation counts V(+∞)=0 and V(−∞)=n, the whole-line identity V(−∞)−V(+∞)=deg p (recovering the parent's parity result), and analytic anchoring of the +∞ sign.",
+    "builtItems": [
+      "coeff_iterate_derivative_natDegree_sub / leadingCoeff_iterate_derivative: descending-factorial leading-coefficient law for iterated derivatives",
+      "natDegree_iterate_derivative_eq: exact degree n−k of the k-th derivative",
+      "sv + sv_eq_zero + sv_eq_self: a sign-variation counter for ℝ-valued sequences with its two counting lemmas",
+      "signVarTop_eq_zero, signVarBot_eq_natDegree, budan_fourier_whole_line: V(+∞)=0, V(−∞)=n, V(−∞)−V(+∞)=deg p",
+      "eval_mul_leadingCoeff_eventually_pos: q(x)·leadingCoeff q eventually positive at +∞ (anchors topSign)"
+    ],
+    "insights": [
+      "Polynomial.coeff_iterate_derivative gives the whole leading-coefficient theory in one step: coeff at n−k is (n.descFactorial k)·leadingCoeff p, positive multiple ⇒ all derivatives share the sign of leadingCoeff p.",
+      "V(−∞)=n falls out of an odd-exponent (−1) computation: consecutive degrees n−k and n−k−1 differ by 1, so the alternating factors multiply to −1 and the product of consecutive −∞ signs is negative.",
+      "The whole-line Budan–Fourier identity V(−∞)−V(+∞)=deg p is exactly the parent's parity statement, giving a second, analytic explanation alongside the parent's complex-conjugate pairing.",
+      "Endpoint signs reduce to leading coefficients (topSign) and leadingCoeff·(−1)^deg (botSign); only the +∞ side needs real-analysis anchoring, handled by Mathlib's tendsto_atTop/atBot asymptotics with a degree-zero special case."
+    ],
+    "mathlibGaps": [
+      "No direct leadingCoeff_derivative or exact natDegree_derivative_eq for iterated derivatives over ℝ — derived here from coeff_iterate_derivative.",
+      "No x→−∞ (atBot input) polynomial-sign lemma; only x→+∞ asymptotics exist, so the −∞ anchoring is left documented."
+    ],
+    "nextSteps": [
+      "Formalize interior sign-change bookkeeping (Rolle interleaving of roots of p⁽ʲ⁾ and p⁽ʲ⁺¹⁾) toward the finite-interval bound.",
+      "Connect V(a)−V(b) to Polynomial.roots restricted to (a,b] for the multiplicity-counted form."
+    ],
+    "markdown": ""
+  },
+  "tags": ["algebra", "polynomials", "real analysis", "Descartes rule", "Budan-Fourier"],
+  "relatedProofs": [
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01OQ02.lean",
+      "lineCount": 247,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01OQ02.lean"
+    }
+  ]
+}
