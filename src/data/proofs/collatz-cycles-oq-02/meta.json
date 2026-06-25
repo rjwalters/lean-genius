@@ -1,0 +1,121 @@
+{
+  "id": "collatz-cycles-oq-02",
+  "title": "Collatz Cycles OQ-02: General Logarithmic Lower Bound on Cycle Length",
+  "slug": "collatz-cycles-oq-02",
+  "description": "Generalizes the finite ladder of minimal-halving bounds in CollatzCycles.lean to a single quantitative result valid for every J. From the cycle halving constraint 3^J < 2^M (established in collatz-cycles-oq-04), taking base-2 logarithms gives the sharp growth rate M > J·log₂3, hence M ≥ ⌈J·log₂3⌉, and the total cycle length L = M + J satisfies L > J·log₂6 ≈ 2.585·J. This is the elementary logarithmic core of Eliahou's theorem; the full numerical bound (length ≥ 17,087,915) requires continued-fraction Diophantine machinery not formalized here.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "proofs/Proofs/CollatzCyclesOQ02.lean",
+    "tags": [
+      "number-theory",
+      "collatz",
+      "dynamical-systems",
+      "logarithm",
+      "diophantine",
+      "cycle-length",
+      "eliahou"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Base (logb_lt_logb, logb_pow, logb_self_eq_one, logb_mul)",
+      "Mathlib.Algebra.Order.Floor (Nat.ceil_le)"
+    ],
+    "originalContributions": [
+      "halvings_gt_logb: from 3^J < 2^M, the sharp bound M > J·log₂3 for all J (generalizing the specific min_halvings ladder for J = 1..4)",
+      "halvings_ge_ceil: integer form M ≥ ⌈J·log₂3⌉₊, recovering each ladder entry as a special case",
+      "cycle_length_gt: total cycle length L = M + J satisfies L > J·log₂6 ≈ 2.585·J",
+      "halvings_gt_odd_steps: elementary (log-free) bound M > J from 2^J ≤ 3^J < 2^M",
+      "cycle_length_ge_two_mul: elementary cycle-length bound L ≥ 2J + 1"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 93,
+    "mathlib_version": "v4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Eliahou (1993) proved that any non-trivial cycle of the Collatz map has length at least 17,087,915, by analyzing the continued-fraction expansion of log₂3 to bound how closely 2^M can approximate 3^J. CollatzCycles.lean in this gallery establishes the underlying halving constraint 3^J < 2^M (generalized in collatz-cycles-oq-04) and a finite ladder of minimal-halving bounds for J = 1, 2, 3, 4. This entry supplies the general quantitative bound underlying that ladder.",
+    "problemStatement": "Establish, for every J, a lower bound on the number of halvings M (and hence on the total cycle length L = M + J) of a hypothetical non-trivial Collatz cycle with J odd steps, given the halving constraint 3^J < 2^M.",
+    "keyInsight": "Taking base-2 logarithms of the halving constraint 3^J < 2^M and using strict monotonicity of logb (base 2 > 1) gives J·log₂3 < M directly: logb 2 (3^J) = J·logb 2 3 and logb 2 (2^M) = M·logb 2 2 = M. The ceiling bound M ≥ ⌈J·log₂3⌉₊ follows from Nat.ceil_le, and L > J·log₂6 from log₂6 = 1 + log₂3."
+  },
+  "sections": [
+    {
+      "id": "log-bound",
+      "title": "The Sharp Logarithmic Halving Bound",
+      "startLine": 39,
+      "endLine": 52,
+      "summary": "halvings_gt_logb: M > J·log₂3, proved by casting 3^J < 2^M to ℝ and applying logb_lt_logb, logb_pow, and logb_self_eq_one."
+    },
+    {
+      "id": "ceiling",
+      "title": "Integer Halving Bound",
+      "startLine": 54,
+      "endLine": 60,
+      "summary": "halvings_ge_ceil: M ≥ ⌈J·log₂3⌉₊ via Nat.ceil_le, recovering the specific ladder values (J=1→2, J=2→4, J=3→5, J=4→7)."
+    },
+    {
+      "id": "length",
+      "title": "General Cycle-Length Bound",
+      "startLine": 62,
+      "endLine": 80,
+      "summary": "cycle_length_gt: L = M + J > J·log₂6 ≈ 2.585·J, using log₂6 = 1 + log₂3."
+    },
+    {
+      "id": "elementary",
+      "title": "Elementary Log-Free Corollaries",
+      "startLine": 82,
+      "endLine": 93,
+      "summary": "halvings_gt_odd_steps (M > J from 2^J ≤ 3^J < 2^M) and cycle_length_ge_two_mul (L ≥ 2J + 1) — weaker but fully elementary bounds."
+    }
+  ],
+  "conclusion": {
+    "summary": "A non-trivial Collatz cycle with J odd steps and M even steps has M > J·log₂3, M ≥ ⌈J·log₂3⌉₊, and total length L = M + J > J·log₂6 ≈ 2.585·J — a clean general bound that subsumes the specific minimal-halving ladder of CollatzCycles.lean.",
+    "implications": "**1. From a finite ladder to a uniform bound.** CollatzCycles.lean bounded halvings only for J = 1..4; this entry covers all J with the exact asymptotic constant log₂3.\n\n**2. Linear growth in odd steps.** The length grows at least like log₂6 · J, the elementary growth rate behind Eliahou's analysis.\n\n**3. Honest scope.** This is NOT Eliahou's full numerical bound (length ≥ 17,087,915), which sharpens the constant via the continued-fraction expansion of log₂3. That Diophantine-approximation step is not formalized here.",
+    "openQuestions": [
+      "Formalize the continued-fraction expansion of log₂3 to obtain Eliahou's sharp numerical constant.",
+      "Combine with a lower bound on the number of odd steps J in any non-trivial cycle to obtain an absolute length bound.",
+      "Connect to the 2-adic / Diophantine obstruction ruling out small cycles entirely."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "collatz-cycles",
+      "relationship": "extends",
+      "description": "Generalizes the specific min_halvings ladder (J = 1..4) of CollatzCycles.lean to all J."
+    },
+    {
+      "targetId": "collatz-cycles-oq-04",
+      "relationship": "depends-on",
+      "description": "Uses the general halving constraint 3^J < 2^M established in collatz-cycles-oq-04 as the hypothesis of the logarithmic bound."
+    }
+  ],
+  "references": [
+    {
+      "title": "The 3x+1 problem: new lower bounds on nontrivial cycle lengths",
+      "author": "Eliahou, S.",
+      "year": "1993",
+      "description": "Proves any non-trivial Collatz cycle has length ≥ 17,087,915 via the continued-fraction expansion of log₂3 (Discrete Mathematics 118)."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real"
+    ],
+    "namespace": "CollatzCyclesOQ02",
+    "lineCount": 93,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CollatzCyclesOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": []
+}
