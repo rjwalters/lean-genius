@@ -1,0 +1,53 @@
+{
+  "slug": "fibonacci-identities-oq-04-oq-02",
+  "title": "Fibonacci Q-Matrix: det(Qⁿ) = (−1)ⁿ and Vajda by Determinants",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 9,
+  "significance": 6,
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "tags": [
+    "number-theory",
+    "fibonacci",
+    "q-matrix",
+    "determinant",
+    "cassini",
+    "vajda",
+    "linear-algebra"
+  ],
+  "problemStatement": "Formalize the matrix form det([[1,1],[1,0]]ⁿ) = (−1)ⁿ and deduce Vajda's identity from the multiplicativity of determinants — the second open question of fibonacci-identities-oq-04.",
+  "significanceText": "Provides the conceptual (determinant) proof of Cassini's identity and the matrix-multiplicativity proof of the Fibonacci addition law and Vajda's identity, both flagged as open by the parent entry. The Fibonacci Q-matrix and det(Qⁿ) = (−1)ⁿ are absent from Mathlib.",
+  "currentState": "SOLVED. proofs/Proofs/FibonacciIdentitiesOQ04OQ02.lean compiles with 0 sorries and 0 axioms (only propext/Classical.choice/Quot.sound). The Q-matrix closed form, det(Qⁿ) = (−1)ⁿ, Cassini, the addition law, Vajda, and Catalan are all proved.",
+  "knownResults": [
+    "Mathlib records Nat.fib_add (addition formula) and Int.fib Cassini/Catalan, but no matrix encoding of the Fibonacci numbers.",
+    "Parent fibonacci-identities-oq-04 proved Vajda over Int.fib by the Int.fib_add/ring route."
+  ],
+  "knowledge": {
+    "insights": [
+      "The alternating sign (−1)ⁿ in Cassini's identity is literally det(Qⁿ) = (det Q)ⁿ with det Q = −1; the determinant proof is the cleanest possible derivation of Cassini.",
+      "Writing the bottom-right entry of Qⁿ as F(n+1) − F n (rather than F(n−1)) makes the closed form subtraction-free in the indices and valid at n = 0 (identity matrix), so a single induction covers all n with no case split.",
+      "The Q-matrix supplies two engines: det(Qⁿ) = (−1)ⁿ gives the sign (Cassini), and Qᵃ⁺ᵇ = Qᵃ·Qᵇ gives the addition law (the (0,1) entry). Vajda needs nothing Fibonacci-specific beyond these two matrix facts.",
+      "Vajda closes by linear_combination (F i · F j)·(Cassini-in-determinant-form): after expanding every shifted term with the addition law, the F(x+1)F x cross-terms and the F x² terms each collapse to exactly −F i F j, matching the Cassini coefficient."
+    ],
+    "builtItems": [
+      "Q : Matrix (Fin 2) (Fin 2) ℤ := !![1,1;1,0] and det_Q : Q.det = −1 (FibonacciIdentitiesOQ04OQ02.lean)",
+      "Q_pow : Q ^ n = !![F(n+1), F n; F n, F(n+1) − F n] — closed form by induction",
+      "det_Q_pow : det (Q ^ n) = (−1)ⁿ — the open-question headline, via Matrix.det_pow",
+      "fib_cassini : F(n+1)² − F n·F(n+2) = (−1)ⁿ — read off the determinant",
+      "fib_add' : F(a+b) = F(a+1)·F b + F a·(F(b+1) − F b) — from the (0,1) entry of Qᵃ⁺ᵇ = Qᵃ·Qᵇ",
+      "fib_vajda : F(x+i)·F(x+j) − F x·F(x+i+j) = (−1)ˣ·(F i·F j) — deduced from determinant + multiplicativity",
+      "fib_catalan : F(x+a)² − F x·F(x+2a) = (−1)ˣ·F a² — i = j case of Vajda"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no Fibonacci Q-matrix and no det(Qⁿ) = (−1)ⁿ; only Nat.fib_add and the Int.fib Cassini/Catalan lemmas exist."
+    ],
+    "nextSteps": [
+      "Generalize to a companion matrix [[p,q],[1,0]] for Lucas/Gibonacci sequences, where det = −q.",
+      "Derive d'Ocagne and the Honsberger doubling identities F₂ₙ, F₂ₙ₊₁ from Q²ⁿ = (Qⁿ)²."
+    ],
+    "progressSummary": "COMPLETE: matrix form det(Qⁿ) = (−1)ⁿ formalized (0 sorries, 0 axioms); Cassini from the determinant, the addition law from matrix multiplicativity, and Vajda/Catalan deduced from both. Gallery entry fibonacci-identities-oq-04-oq-02 added."
+  },
+  "path": "proofs/Proofs/FibonacciIdentitiesOQ04OQ02.lean"
+}
