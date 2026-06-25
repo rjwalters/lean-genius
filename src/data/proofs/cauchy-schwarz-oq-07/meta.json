@@ -104,22 +104,22 @@
   ],
   "crossReferences": [
     {
-      "targetId": "cauchy-schwarz",
+      "proofId": "cauchy-schwarz",
       "relationship": "extends",
       "description": "Both are foundational inner-product-space identities; the parallelogram law and Cauchy-Schwarz together underpin Hilbert-space geometry"
     },
     {
-      "targetId": "cauchy-schwarz-oq-04",
+      "proofId": "cauchy-schwarz-oq-04",
       "relationship": "related",
       "description": "OQ-04 uses the Pythagorean norm decomposition (orthogonality); the parallelogram law here is the polarization-dual companion identity in the same inner-product-space family"
     },
     {
-      "targetId": "pythagorean-theorem",
+      "proofId": "pythagorean-theorem",
       "relationship": "foundational",
       "description": "The parallelogram law specializes to the Pythagorean theorem when ⟪x,y⟩ = 0: then ‖x+y‖² = ‖x‖² + ‖y‖² and ‖x−y‖² = ‖x‖² + ‖y‖², averaging to the parallelogram identity"
     },
     {
-      "targetId": "triangle-inequality",
+      "proofId": "triangle-inequality",
       "relationship": "related",
       "description": "Another norm identity/inequality in normed spaces; the parallelogram law is the equality that singles out inner-product norms among those satisfying the triangle inequality"
     }
