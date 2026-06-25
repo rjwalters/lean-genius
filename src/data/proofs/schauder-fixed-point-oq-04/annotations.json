@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-closed",
+    "proofId": "schauder-fixed-point-oq-04",
+    "range": { "startLine": 39, "endLine": 43 },
+    "type": "theorem",
+    "title": "The Fixed-Point Set is Closed",
+    "content": "For a continuous map $f$ into a Hausdorff space, the fixed-point set $\\{x \\mid f(x) = x\\}$ is **closed** — it is the equaliser of $f$ and the identity, and equalisers into $T_2$ spaces are closed (`isClosed_eq f id`). This is the topological backbone: closed sets inside compacta are compact.",
+    "mathContext": "$\\mathrm{IsClosed}\\,\\{x \\mid f(x) = x\\}$ for continuous $f$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Equaliser", "Hausdorff space", "Closed set", "Fixed point"]
+  },
+  {
+    "id": "ann-brouwer-1d",
+    "proofId": "schauder-fixed-point-oq-04",
+    "range": { "startLine": 54, "endLine": 69 },
+    "type": "theorem",
+    "title": "One-Dimensional Brouwer via IVT",
+    "content": "A continuous self-map $f:[a,b]\\to[a,b]$ has a fixed point. The trick: $g(x) = f(x) - x$ is continuous with $g(a) = f(a) - a \\ge 0$ and $g(b) = f(b) - b \\le 0$ (since $f$ lands in $[a,b]$). The intermediate value theorem (`intermediate_value_Icc'`, decreasing direction) puts $0$ in the image of $g$, i.e. some $c$ with $f(c) = c$. This is the axiom-free, one-dimensional shadow of Brouwer's theorem.",
+    "mathContext": "$\\exists c \\in [a,b],\\ f(c) = c$ for continuous $f:[a,b]\\to[a,b]$.",
+    "significance": "key",
+    "relatedConcepts": ["Brouwer fixed-point theorem", "Intermediate value theorem", "Continuity"]
+  },
+  {
+    "id": "ann-nonempty-compact",
+    "proofId": "schauder-fixed-point-oq-04",
+    "range": { "startLine": 71, "endLine": 79 },
+    "type": "theorem",
+    "title": "Nonempty Compact Fixed-Point Set",
+    "content": "Combining the two: the fixed-point set of a continuous self-map of $[a,b]$ is **nonempty** (1D Brouwer) and **compact** (closed subset of the compact interval). Where the base Schauder entry stops at existence, this records the full topological shape of the solution set — a nonempty compactum, so e.g. it has a least and greatest fixed point.",
+    "mathContext": "$([a,b] \\cap \\{x \\mid f(x)=x\\})$ is nonempty and compact.",
+    "significance": "key",
+    "relatedConcepts": ["Compactness", "Fixed-point set", "Brouwer", "Extreme value theorem"]
+  }
+]

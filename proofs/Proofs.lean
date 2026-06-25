@@ -3862,6 +3862,7 @@ import Proofs.SchauderFixedPoint
 import Proofs.SchauderFixedPointOQ01
 import Proofs.SchauderFixedPointOQ03
 import Proofs.SchauderFixedPointOQ03OQ01
+import Proofs.SchauderFixedPointOQ04
 import Proofs.SchroderNumbersOQ01
 import Proofs.SchroederBernstein
 import Proofs.SchroederBernsteinOQ01

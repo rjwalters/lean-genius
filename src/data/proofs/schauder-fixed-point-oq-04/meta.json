@@ -1,0 +1,82 @@
+{
+  "id": "schauder-fixed-point-oq-04",
+  "title": "The Topology of the Fixed-Point Set: Nonempty and Compact for Self-Maps of [a,b]",
+  "slug": "schauder-fixed-point-oq-04",
+  "description": "A fully elementary, axiom-free complement to the Schauder fixed-point lineage, whose existence theorems (Brouwer, Schauder, Kakutani) rest on deep axioms. Instead of existence, this entry studies the STRUCTURE of the fixed-point set itself. For a continuous map f, the fixed-point set {x | f x = x} is the equaliser of f and the identity, hence closed in any Hausdorff space (isClosed_fixedPoints); its intersection with a compact set is therefore compact (isCompact_fixedPoints_inter). For a continuous self-map of a closed interval [a,b], the one-dimensional Brouwer theorem (exists_fixedPoint_Icc) — proved from the intermediate value theorem applied to g(x) = f(x) − x, with g(a) ≥ 0 ≥ g(b) — gives nonemptiness. Combining, the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set (fixedPoints_Icc_nonempty_isCompact). The base entry proves only existence; the closed/compact structure is new. 0 axioms, 0 sorries; imports only Mathlib.",
+  "meta": {
+    "author": "Brouwer (1911), IVT (Bolzano/Cauchy); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brouwer_fixed-point_theorem",
+    "date": "1911",
+    "status": "verified",
+    "tags": [
+      "topology",
+      "fixed-point-theory",
+      "brouwer",
+      "intermediate-value-theorem",
+      "compactness",
+      "real-analysis",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SchauderFixedPointOQ04.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "isClosed_eq",
+        "description": "If f and g are continuous into a T2 space then {x | f x = g x} is closed. With g = id this makes the fixed-point set closed.",
+        "module": "Mathlib.Topology.Separation"
+      },
+      {
+        "theorem": "IsCompact.inter_right",
+        "description": "A compact set intersected with a closed set is compact. Gives compactness of the fixed-point set inside [a,b].",
+        "module": "Mathlib.Topology.Compactness.Compact"
+      },
+      {
+        "theorem": "intermediate_value_Icc'",
+        "description": "For a ≤ b and g continuous on [a,b], the interval [g b, g a] is contained in the image g '' [a,b]. Applied to g(x) = f(x) − x to locate a fixed point (decreasing-direction IVT).",
+        "module": "Mathlib.Topology.Order.IntermediateValue"
+      },
+      {
+        "theorem": "isCompact_Icc",
+        "description": "A closed real interval [a,b] is compact. The ambient compact set for the fixed-point set.",
+        "module": "Mathlib.Topology.Order.Compact"
+      }
+    ],
+    "originalContributions": [
+      "isClosed_fixedPoints: the fixed-point set {x | f x = x} of a continuous map into a Hausdorff space is closed, as the equaliser of f and the identity (isClosed_eq f id)",
+      "exists_fixedPoint_Icc: the one-dimensional Brouwer fixed-point theorem — a continuous self-map of [a,b] has a fixed point — proved directly from the intermediate value theorem on g(x) = f(x) − x, using g(a) ≥ 0 ≥ g(b) because f maps into [a,b]",
+      "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty AND compact — combining 1D Brouwer (nonemptiness) with closedness-in-a-compact (compactness). The base Schauder entry proves only existence; the topological structure of the solution set is the new content",
+      "isCompact_fixedPoints_inter: a general lemma that the fixed-point set of a continuous map, intersected with any compact set, is compact"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 80,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on fixedPoints_Icc_nonempty_isCompact and exists_fixedPoint_Icc reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses. Imports only Mathlib — deliberately NOT the axiom-bearing base file SchauderFixedPoint.lean (which carries brouwer/mazur axioms).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 1
+  },
+  "sections": [
+    {
+      "id": "closed-compact",
+      "title": "The Fixed-Point Set is Closed and Compact",
+      "startLine": 31,
+      "endLine": 52,
+      "summary": "fixedPoints f := {x | f x = x}. isClosed_fixedPoints: closed for continuous f into a T2 space (equaliser of f and id, via isClosed_eq). isCompact_fixedPoints_inter: its intersection with any compact set is compact."
+    },
+    {
+      "id": "brouwer-1d",
+      "title": "One-Dimensional Brouwer",
+      "startLine": 54,
+      "endLine": 69,
+      "summary": "exists_fixedPoint_Icc: a continuous f:[a,b]→[a,b] has a fixed point. g(x) = f(x) − x is continuous with g(a) = f(a) − a ≥ 0 and g(b) = f(b) − b ≤ 0; intermediate_value_Icc' places 0 in the image of g, giving a fixed point."
+    },
+    {
+      "id": "nonempty-compact",
+      "title": "Nonempty Compact Fixed-Point Set",
+      "startLine": 71,
+      "endLine": 79,
+      "summary": "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty (1D Brouwer) and compact (closed ∩ compact)."
+    }
+  ]
+}
