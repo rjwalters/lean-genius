@@ -1,0 +1,136 @@
+{
+  "id": "buffons-needle-oq-01-oq-01-oq-05",
+  "title": "Buffon–Barbier: Discharging the Integrability Hypothesis from C¹ Smoothness",
+  "slug": "buffons-needle-oq-01-oq-01-oq-05",
+  "description": "Removes the explicit integrability side condition (hInnerInt) from the Buffon–Barbier smooth-curve theorem. The inner angular integral t ↦ ∫₀^π |γ'₁(t)·sin θ + γ'₂(t)·cos θ| dθ is shown continuous in t whenever the velocity is continuous — via Mathlib's parametric interval-integral continuity theorem — hence interval-integrable on the compact parameter interval. Feeding this into the parent's buffon_smooth_full yields the Buffon–Barbier identity for an arbitrary C¹ planar curve with no integrability hypothesis left.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "proofs/Proofs/BuffonsNeedleOQ01OQ01OQ05.lean",
+    "tags": [
+      "integral-geometry",
+      "buffon-barbier",
+      "measure-theory",
+      "parametric-integral",
+      "continuity",
+      "integrability",
+      "interval-integral"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      "Mathlib.MeasureTheory.Integral.DominatedConvergence (continuous_parametric_intervalIntegral_of_continuous')",
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral (Continuous.intervalIntegrable)"
+    ],
+    "originalContributions": [
+      "innerAngular: the inner angular integral t ↦ ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ as a function of the coefficient functions",
+      "innerAngular_continuous: continuity of the inner angular integral in t from continuity of A, B (joint continuity of the integrand over the fixed compact interval [0, π])",
+      "innerAngular_intervalIntegrable: interval-integrability on [a, b] via continuity",
+      "hInnerInt_of_continuous_deriv: specialisation supplying the parent's exact hInnerInt hypothesis from continuity of the two velocity components",
+      "buffon_smooth_C1: Buffon–Barbier for an arbitrary C¹ curve with the integrability hypothesis eliminated"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 114,
+    "mathlib_version": "v4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The parent entry buffons-needle-oq-01-oq-01 proves the Buffon–Barbier smooth-curve formula E[crossings] = 2L/(πd) from the angular-average identity, but packages the analytic regularity as hypotheses of buffon_smooth_full: differentiability of the coordinate functions (hdx, hdy) and interval-integrability of the inner angular integral (hInnerInt). Its fifth open question asks to 'prove the co-area formula in Mathlib to eliminate the Fubini hypothesis'.\n\nThe general co-area formula is not in Mathlib, and remains an open target. This entry resolves the concrete, Buffon-specific residue of that question: it discharges the integrability hypothesis hInnerInt directly from continuity of the velocity field, leaving only the bare C¹ differentiability assumptions.",
+    "problemStatement": "**Open question (buffons-needle-oq-01-oq-01, #2 and #5):** prove the integrability hypothesis hInnerInt from smoothness of γ, eliminating the analytic side condition on the inner angular integral t ↦ ∫₀^π |γ'₁(t)·sin θ + γ'₂(t)·cos θ| dθ.",
+    "keyInsight": "The integrand (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ| is jointly continuous when A and B are continuous, and the interval of integration [0, π] is fixed and compact. Mathlib's continuous_parametric_intervalIntegral_of_continuous' then gives continuity of t ↦ ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ, and continuity on the compact parameter interval [a, b] upgrades to interval-integrability. No closed form, dominated-convergence bookkeeping, or co-area machinery is required."
+  },
+  "sections": [
+    {
+      "id": "inner-angular",
+      "title": "The Inner Angular Integral",
+      "startLine": 48,
+      "endLine": 52,
+      "summary": "innerAngular A B t := ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ — the integrand of the outer integral in concreteSmoothExpectedCrossings, with A = γ'₁, B = γ'₂."
+    },
+    {
+      "id": "continuity",
+      "title": "Continuity of the Parametric Integral",
+      "startLine": 54,
+      "endLine": 73,
+      "summary": "innerAngular_continuous: from continuity of A, B and joint continuity of (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ|, continuous_parametric_intervalIntegral_of_continuous' gives continuity of the inner angular integral in t."
+    },
+    {
+      "id": "integrability",
+      "title": "Interval-Integrability",
+      "startLine": 75,
+      "endLine": 95,
+      "summary": "innerAngular_intervalIntegrable and hInnerInt_of_continuous_deriv: continuity on the compact interval [a, b] yields interval-integrability — exactly the hInnerInt hypothesis required by the parent's buffon_smooth_full."
+    },
+    {
+      "id": "capstone",
+      "title": "Buffon–Barbier with the Integrability Hypothesis Removed",
+      "startLine": 97,
+      "endLine": 114,
+      "summary": "buffon_smooth_C1: applies buffon_smooth_full with hInnerInt derived from continuity of the velocity, giving the Buffon–Barbier identity for an arbitrary C¹ curve with no integrability assumption."
+    }
+  ],
+  "conclusion": {
+    "summary": "The integrability side condition hInnerInt of the Buffon–Barbier smooth-curve theorem is discharged from continuity of the velocity field. The capstone buffon_smooth_C1 states the Buffon–Barbier identity for an arbitrary C¹ planar curve with only differentiability hypotheses remaining and no integrability assumption.",
+    "implications": "**1. One analytic hypothesis eliminated.** The parent's buffon_smooth_full carried two analytic side conditions beyond differentiability: a Fubini swap (already discharged inside the parent via the angular average) and the integrability of the inner integral. This entry removes the latter, leaving only the bare C¹ assumption.\n\n**2. Continuity, not the closed form.** The argument does not use the closed form 2‖γ'(t)‖ of the inner integral; it uses only joint continuity of the integrand and the fixed compact integration interval. This keeps the result robust and self-contained on Mathlib's parametric-integral API.\n\n**3. Honest scope.** This is not the general co-area / Cauchy–Crofton formula, which remains absent from Mathlib. It resolves exactly the integrability residue of the parent's fifth open question.",
+    "openQuestions": [
+      "Discharge the differentiability hypotheses hdx/hdy from a single ContDiff/C¹ assumption on γ, giving a Buffon–Barbier statement with one clean smoothness hypothesis.",
+      "Weaken Continuous to ContinuousOn (Set.uIcc a b) for the velocity, matching the natural C¹-on-[a,b] hypothesis.",
+      "Formalize the general 1-dimensional co-area (Banach indicatrix) formula in Mathlib.",
+      "Higher-dimensional co-area / Cauchy–Crofton for hyperplane arrangements."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-needle-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Discharges the hInnerInt integrability hypothesis of buffon_smooth_full and supplies the capstone buffon_smooth_C1; addresses open questions #2 and #5 of the parent entry."
+    },
+    {
+      "targetId": "buffons-needle-oq-01",
+      "relationship": "extends",
+      "description": "Continues the program of replacing the axiomatic smooth Buffon–Barbier case by a concrete verified theorem with minimal hypotheses."
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "extends",
+      "description": "Part of the Buffon's needle / noodle integral-geometry family."
+    }
+  ],
+  "references": [
+    {
+      "title": "Note sur un problème de calcul des probabilités",
+      "author": "Barbier, É.",
+      "year": "1860",
+      "description": "Original generalization of Buffon's needle to arbitrary smooth curves: E[crossings] = 2L/(πd)."
+    },
+    {
+      "title": "mathlib4: MeasureTheory.Integral.DominatedConvergence",
+      "author": "The Mathlib Community",
+      "year": "2024",
+      "description": "Source of continuous_parametric_intervalIntegral_of_continuous', the parametric interval-integral continuity theorem used here."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.BuffonsNeedleOQ01OQ01"
+    ],
+    "opens": [
+      "Real",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "BuffonsNeedleOQ01OQ01OQ05",
+    "lineCount": 114,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/BuffonsNeedleOQ01OQ01OQ05.lean",
+    "sorries": 0
+  },
+  "sorries": []
+}
