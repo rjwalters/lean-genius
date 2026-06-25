@@ -19,7 +19,7 @@
       "regularity-method"
     ],
     "badge": "axiom",
-    "sorries": 3,
+    "sorries": 0,
     "erdosNumber": 72,
     "erdosUrl": "https://erdosproblems.com/72",
     "erdosProblemStatus": "solved",
@@ -71,8 +71,8 @@
       "hasControlledGrowth: predicate for sets with logarithmic growth of even numbers"
     ],
     "axiomCount": 1,
-    "lineCount": 221,
-    "assumptions": "1 axiom: liu_montgomery_powers_of_two. 3 sorries.",
+    "lineCount": 379,
+    "assumptions": "1 axiom: liu_montgomery_powers_of_two (the Liu–Montgomery 2020 theorem that powers of 2 are strongly unavoidable — a deep result, legitimately axiomatized). 0 sorries: the three density lemmas (powers of 2 and perfect squares have density 0; arithmetic progressions have positive density) are now fully proved from Mathlib.",
     "theoremCount": 6,
     "definitionCount": 17,
     "additionalFiles": [
@@ -261,13 +261,7 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Combinatorics.SimpleGraph.Connectivity.WalkCounting",
-      "Mathlib.Combinatorics.SimpleGraph.Subgraph",
-      "Mathlib.Data.Finset.Card",
-      "Mathlib.Analysis.Asymptotics.Asymptotics",
-      "Mathlib.Topology.Instances.Real",
-      "Mathlib.Tactic"
+      "Mathlib"
     ],
     "opens": [
       "SimpleGraph",
@@ -275,15 +269,15 @@
       "Filter"
     ],
     "namespace": "Erdos72",
-    "lineCount": 221,
+    "lineCount": 379,
     "axiomCount": 1,
     "theoremCount": 6,
     "definitionCount": 17,
     "path": "Proofs/Erdos72Problem.lean",
-    "sorries": 3,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos72Aristotle.lean"
     ]
   },
-  "sorries": 3
+  "sorries": 0
 }
