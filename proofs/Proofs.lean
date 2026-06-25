@@ -290,6 +290,8 @@ import Proofs.BallotProblemOQ03OQ01OQ02Helpers
 import Proofs.BallotProblemOQ03OQ01OQ04
 import Proofs.BallotProblemOQ03OQ02
 import Proofs.BallotProblemOQ03OQ03
+import Proofs.BallotProblemOQ04
+import Proofs.BallotProblemOQ04OQ02
 import Proofs.BanachFixedPointOQ01
 import Proofs.BanachPerturbationIdentityOQ01OQ02
 import Proofs.BanachPicardInverseOQ01OQ02OQ01
