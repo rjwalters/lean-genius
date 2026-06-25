@@ -1,0 +1,213 @@
+{
+  "id": "szemeredi-hypergraph-core-oq-02",
+  "title": "The Energy-Increment Engine of the Hypergraph Regularity Lemma",
+  "slug": "szemeredi-hypergraph-core-oq-02",
+  "description": "A fully verified (0-sorry, 0-axiom) formalization of the combinatorial engine behind the hypergraph regularity lemma: the partition-energy potential bounded in [0,1], the energy-increment iteration that reaches an ε-regular state within ⌈1/δ⌉ steps, and the resulting explicit, ground-set-independent bound parts₀·f^⌈1/δ⌉ on the number of parts. This is exactly the bookkeeping that turns a Cauchy–Schwarz density increment into 'a bounded number of parts'. The deep hypergraph-specific analytic input (the density-increment inequality) is isolated as the file's single hypothesis and documented as the remaining open direction — the file makes no claim to prove the full Gowers/Rödl–Skokan lemma.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://annals.math.princeton.edu/2007/166-3/p02",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "szemeredi",
+      "hypergraph-theory",
+      "regularity",
+      "energy-increment",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/SzemerediHypergraphCoreOQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.le_ceil",
+        "description": "1/δ ≤ ⌈1/δ⌉₊, the ceiling upper-bounds its argument",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Finset.sum_le_sum",
+        "description": "Termwise comparison of finite sums",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Nat.pow_le_pow_right",
+        "description": "Monotonicity of b^n in the exponent for 1 ≤ b",
+        "module": "Mathlib.Algebra.Order.Monoid.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "partitionEnergy: the weighted mean-square density potential ∑ᵢ wᵢ·dᵢ², the bounded monotone quantity every regularity proof increments",
+      "partitionEnergy_le_one: energy ≤ 1 for a probability weight and densities in [0,1] — the upper barrier that forces M(ε) to be finite",
+      "energy_ge_of_steps: after m irregular steps the energy is at least E₀ + m·δ (the increment accumulation lemma)",
+      "energy_increment_bounded_steps: a [0,1]-valued energy boosted by ≥δ at every irregular step reaches a regular state within ⌈1/δ⌉ steps — the abstract pigeonhole behind regularity termination",
+      "parts_le_pow: a per-step ×f part-count blow-up gives parts n ≤ parts₀·fⁿ",
+      "hypergraph_regularity_engine: combining the above, an ε-regular partition is reached with the explicit ground-set-independent bound parts₀·f^⌈1/δ⌉ on the number of parts — the headline 'bounded number of parts' guarantee, conditional on the documented density-increment input"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 245,
+    "assumptions": "None as Lean axioms (verified with #print axioms → only propext/Classical.choice/Quot.sound). The hypergraph density-increment inequality (Gowers 2007 / Rödl–Skokan 2004) — that an irregular k-graph admits a complex refinement multiplying parts by ≤f and boosting partitionEnergy by ≥δ — is NOT proved here; it enters hypergraph_regularity_engine as an explicit hypothesis (hstep, hf) and is documented in PART IV as the remaining open analytic core. The file therefore does not claim the full hypergraph regularity lemma, only its verified iteration engine.",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Szemerédi's graph regularity lemma (1978) proves every dense graph has, for each ε>0, an ε-regular partition into a bounded number of parts — bounded by a function of ε alone, independent of the graph's size. The proof is an energy-increment argument: a mean-square density index lying in [0,1] strictly increases (by Cauchy–Schwarz) whenever the current partition is irregular, so the irregular phase ends after boundedly many refinement steps. Extending this to k-uniform hypergraphs (needed for k≥4 arithmetic progressions in the multidimensional Szemerédi theorem) was achieved independently by Gowers (2007) and Rödl–Skokan (2004). The hypergraph proof keeps the same outer skeleton — a bounded energy that increments under irregularity — but the increment step becomes a far harder Cauchy–Schwarz argument relative to an underlying (k-1)-complex, and the resulting part-count bound is a wowzer-type tower of towers (shown essentially necessary by Gowers).\n\nThis entry isolates and fully verifies the *outer skeleton* — the part that is identical in spirit across graph and hypergraph regularity — while being explicit that the inner analytic increment (the genuinely hypergraph-specific, still-unformalized core) is consumed as a hypothesis rather than proved. It complements szemeredi-hypergraph-core-oq-01 (which builds the SimplicialComplex / relativeDensity infrastructure where that increment would be proved) and szemeredi-hypergraph-core (the naive density definitions).",
+    "problemStatement": "**Open Question OQ-02 from SzemerediHypergraphCore.lean**: 'Prove the hypergraph regularity lemma: every k-graph admits an ε-regular partition with a bounded number of parts.'\n\nThe full lemma is a deep, wowzer-bounded analytic theorem not present in Mathlib and out of reach of a single self-contained file. This entry makes honest, verified progress on the *structural* half of the question: it proves, unconditionally, that the energy-increment mechanism delivers a regular partition with an explicit ground-set-independent part bound, reducing the full lemma to a single precisely-stated density-increment inequality.",
+    "proofStrategy": "Three verified ingredients assembled into one engine.\n\n1. **Bounded potential** (`partitionEnergy`, `partitionEnergy_nonneg`, `partitionEnergy_le_one`): the weighted mean-square of cell densities lies in [0,1] whenever the weights are a probability distribution and the densities lie in [-1,1]. The [0,1] bound is the ceiling the increment cannot cross.\n\n2. **Bounded iteration** (`energy_ge_of_steps`, `energy_increment_bounded_steps`): if the energy jumps by ≥δ>0 at every irregular step, an induction shows the energy after m all-irregular steps is ≥E₀+m·δ; since it is ≤1, the number of consecutive irregular steps is at most ⌈1/δ⌉. Hence a regular index exists within ⌈1/δ⌉ steps — and that bound depends only on δ, never on the vertex set.\n\n3. **Part-count blow-up** (`parts_le_pow`): if each refinement multiplies the number of parts by at most f (with f≥1), then after n steps there are at most parts₀·fⁿ parts.\n\n**Capstone** (`hypergraph_regularity_engine`): feeding (2) into (3) yields a regular partition reached at some step n ≤ ⌈1/δ⌉ with at most parts₀·f^⌈1/δ⌉ parts — the 'bounded number of parts' guarantee, with the bound a function of the starting partition, δ=δ(ε), and f=f(ε) only.\n\nThe single deep input the engine consumes is the hypothesis `hstep` (an irregular state's next refinement boosts energy by ≥δ) together with `hf` (parts grow by ≤f). Supplying these for the relative `kPartiteDensity` of szemeredi-hypergraph-core-oq-01 is exactly the Gowers/Rödl–Skokan density-increment theorem, stated in PART IV as the remaining direction.",
+    "keyInsights": [
+      "The 'bounded number of parts' — the hard, size-independent content of any regularity lemma — comes entirely from a soft pigeonhole: a [0,1]-valued quantity that increases by a fixed δ at each bad step can have at most ⌈1/δ⌉ bad steps. This is fully formalizable independently of any hypergraph analysis.",
+      "Separating the engine from the increment makes the formalization boundary precise: everything in this file is verified, and the exact missing input is one explicitly-typed hypothesis (hstep), not a vague gap.",
+      "The statement parts_le_pow genuinely requires 1 ≤ f: with f=0 the claimed bound parts₀·f^⌈1/δ⌉ would be 0 while parts at step 0 can be positive — a reminder that 'refinement factor ≥ 1' is a real hypothesis, not cosmetic.",
+      "partitionEnergy is stated for an abstract finite index of cells with rational weights/densities, so it instantiates equally to graph regularity, naive hypergraph regularity, and the relative Gowers density — the engine is uniform across all of them.",
+      "The bound ⌈1/δ⌉ on the number of increment steps is tight for the abstract engine; the wowzer tower in the true hypergraph lemma arises entirely from how small δ(ε) and how large f(ε) are in the analytic increment step — not from the iteration counting formalized here."
+    ],
+    "prerequisites": [
+      "SzemerediHypergraphCoreOQ01.lean (SimplicialComplex, relativeDensity, IsGowersRegular — where the density increment would be proved)",
+      "SzemerediHypergraphCore.lean (UHypergraph, kPartiteDensity, naive regularity)",
+      "SzemerediCore.lean / Mathlib SzemerediRegularity (graph energy-increment for comparison)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 56,
+      "summary": "An extensive docstring stating exactly what is and is not proved: the file verifies the energy-increment engine (PARTS I–III) and documents the remaining analytic density-increment input (PART IV), explicitly NOT claiming the full Gowers/Rödl–Skokan lemma. Single `import Mathlib`, namespace `Szemeredi.Hypergraph.OQ02`, `open Finset`.",
+      "mathContext": "Sets the honesty boundary up front: this is the structural half of the regularity lemma, the half that is uniform across graph and hypergraph settings."
+    },
+    {
+      "id": "partition-energy",
+      "title": "PART I: Partition Energy",
+      "startLine": 58,
+      "endLine": 109,
+      "summary": "partitionEnergy s w d = ∑ᵢ∈s wᵢ·(dᵢ)². partitionEnergy_nonneg (weights ≥0 ⇒ energy ≥0) and partitionEnergy_le_one (probability weights + densities in [-1,1] ⇒ energy ≤1).",
+      "mathContext": "The mean-square density index — the bounded monotone potential of the regularity proof. The [0,1] bound is what makes the increment terminate."
+    },
+    {
+      "id": "energy-increment",
+      "title": "PART II: Energy-Increment Iteration",
+      "startLine": 111,
+      "endLine": 167,
+      "summary": "energy_ge_of_steps: induction giving E m ≥ E₀+m·δ while all steps are irregular. energy_increment_bounded_steps: a [0,1] energy boosted by ≥δ at every irregular step has a regular index n ≤ ⌈1/δ⌉ (by contradiction: otherwise E(N+1) > 1).",
+      "mathContext": "The core pigeonhole: a bounded potential cannot increment forever. This is why M(ε) is finite and independent of the ground set."
+    },
+    {
+      "id": "bounded-parts",
+      "title": "PART III: Bounded Number of Parts",
+      "startLine": 169,
+      "endLine": 224,
+      "summary": "parts_le_pow: per-step ×f blow-up ⇒ parts n ≤ parts₀·fⁿ. hypergraph_regularity_engine: combines the step bound and the blow-up to produce a regular partition with ≤ parts₀·f^⌈1/δ⌉ parts.",
+      "mathContext": "Converts 'few increment steps' into 'few parts' — the headline guarantee, with an explicit size-independent constant."
+    },
+    {
+      "id": "remaining",
+      "title": "PART IV: The Remaining Analytic Input",
+      "startLine": 226,
+      "endLine": 245,
+      "summary": "Documents the single deep hypothesis the engine consumes: the Gowers/Rödl–Skokan hypergraph density-increment inequality (irregular ⇒ a complex refinement boosts partitionEnergy by ≥δ multiplying parts by ≤f). Identifies this as the genuinely open, still-unformalized core.",
+      "mathContext": "Names the precise gap to the full lemma — a Cauchy–Schwarz/martingale increment over the (k-1)-skeleton, not in Mathlib even for the graph case in this energy formulation."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "szemeredi-hypergraph-core-oq-01",
+      "relationship": "extends",
+      "description": "OQ-01 builds the SimplicialComplex / relativeDensity / IsGowersRegular infrastructure and states the full regularity lemma as a sorry. This entry supplies the verified iteration engine that would discharge that sorry once the density-increment step is proved on relativeDensity."
+    },
+    {
+      "targetId": "szemeredi-hypergraph-core",
+      "relationship": "extends",
+      "description": "The parent defines UHypergraph, kPartiteDensity and the naive IsHypergraphRegular and lists the full regularity lemma as a follow-up. partitionEnergy here is the energy potential for exactly that density."
+    },
+    {
+      "targetId": "szemeredi-regularity",
+      "relationship": "analogizes",
+      "description": "Graph regularity uses the identical energy-increment skeleton. The abstract energy_increment_bounded_steps here is the graph proof's termination argument with the hypergraph-specific increment abstracted into a hypothesis."
+    },
+    {
+      "targetId": "szemeredi-core",
+      "relationship": "generalizes",
+      "description": "SzemerediCore's graph IsEpsilonRegular and edge density are the k=2 instance of the abstract partitionEnergy / regularity engine formalized here."
+    },
+    {
+      "targetId": "szemeredi-full",
+      "relationship": "foundational",
+      "description": "The full Szemerédi theorem assembly axiomatizes the k≥4 case; discharging it needs the hypergraph regularity lemma, whose structural half is verified here and whose analytic half is the documented PART IV input."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verifies (0 sorries, 0 axioms beyond propext/Classical.choice/Quot.sound) the energy-increment engine of the hypergraph regularity lemma: a [0,1]-bounded partition-energy potential, an iteration reaching an ε-regular state within ⌈1/δ⌉ steps, and the explicit ground-set-independent bound parts₀·f^⌈1/δ⌉ on the number of parts. The deep hypergraph density-increment inequality is isolated as a single explicit hypothesis and documented as the remaining open direction. The file deliberately does NOT claim the full Gowers/Rödl–Skokan lemma — it proves precisely the structural half and pins the analytic half to one named inequality.",
+    "implications": [
+      "**Honest reduction**: reduces the open question 'every k-graph has a bounded ε-regular partition' to a single precisely-typed density-increment inequality, with the surrounding iteration/part-counting fully machine-checked.",
+      "**Reusable engine**: partitionEnergy and energy_increment_bounded_steps are stated abstractly over a finite cell index, so the same verified engine applies to graph regularity, naive hypergraph regularity, and Gowers relative regularity alike.",
+      "**Sharp formalization boundary**: unlike a sorry'd lemma or an axiom, the gap to the full theorem is now a concrete hypothesis (hstep) of a verified theorem — a machine-checked statement of exactly what remains to prove.",
+      "**Tower bounds localized**: the wowzer-type part bound of the true hypergraph lemma is shown to live entirely in the size of δ(ε) and f(ε) in the analytic increment, not in the iteration counting, clarifying where the extreme growth originates."
+    ],
+    "openQuestions": [
+      "Prove the hypergraph density-increment inequality on relativeDensity (szemeredi-hypergraph-core-oq-01): an irregular k-graph admits a complex refinement boosting partitionEnergy by ≥δ(ε) while multiplying parts by ≤f(ε). Discharging this hypothesis turns hypergraph_regularity_engine into the full regularity lemma.",
+      "Instantiate partitionEnergy with the concrete kPartiteDensity / relativeDensity and verify the [0,1] and probability-weight hypotheses hold for genuine vertex partitions.",
+      "Quantify δ(ε) and f(ε) for the Gowers increment and recover the wowzer-type tower-of-towers part bound from hypergraph_regularity_engine, comparing to Gowers' lower bound.",
+      "Formalize the graph (k=2) density increment first — the same engine then yields a fully verified graph regularity lemma in the partitionEnergy formulation, a stepping stone to the hypergraph case."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Szemeredi.Hypergraph.OQ02",
+    "lineCount": 245,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "substantiveTheoremCount": 6,
+    "duplicateTheorems": 0,
+    "definitionCount": 1,
+    "path": "Proofs/SzemerediHypergraphCoreOQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Gowers, W.T.",
+      "title": "Hypergraph regularity and the multidimensional Szemerédi theorem",
+      "year": "2007",
+      "note": "Annals of Mathematics 166(3), 897–946. The energy-increment proof of hypergraph regularity whose engine is formalized here."
+    },
+    {
+      "authors": "Rödl, V. and Skokan, J.",
+      "title": "Regularity lemma for k-uniform hypergraphs",
+      "year": "2004",
+      "note": "Random Structures & Algorithms 25(1), 1–42. Independent proof of hypergraph regularity."
+    },
+    {
+      "authors": "Szemerédi, E.",
+      "title": "Regular partitions of graphs",
+      "year": "1978",
+      "note": "Colloq. Internat. CNRS 260, 399–401. The original graph energy-increment regularity lemma."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "hypergraph_regularity_engine",
+      "type": "core",
+      "description": "Given a [0,1] energy boosted by ≥δ at every irregular step and a per-step ×f part blow-up (f≥1), there is a regular partition with ≤ parts₀·f^⌈1/δ⌉ parts — the 'bounded number of parts' guarantee conditional on the density-increment input.",
+      "leanType": "(E : ℕ → ℚ) → (Irregular : ℕ → Prop) → (parts : ℕ → ℕ) → (δ : ℚ) → (f : ℕ) → 0 < δ → 0 ≤ E 0 → (∀ n, E n ≤ 1) → (∀ n, Irregular n → E n + δ ≤ E (n+1)) → 1 ≤ f → (∀ n, parts (n+1) ≤ parts n * f) → ∃ n, ¬ Irregular n ∧ parts n ≤ parts 0 * f ^ ⌈1/δ⌉₊"
+    },
+    {
+      "name": "energy_increment_bounded_steps",
+      "type": "core",
+      "description": "A [0,1]-valued energy boosted by ≥δ>0 at every irregular step reaches a non-irregular state within ⌈1/δ⌉ steps — the abstract pigeonhole behind regularity termination.",
+      "leanType": "(E : ℕ → ℚ) → (Irregular : ℕ → Prop) → (δ : ℚ) → 0 < δ → 0 ≤ E 0 → (∀ n, E n ≤ 1) → (∀ n, Irregular n → E n + δ ≤ E (n+1)) → ∃ n ≤ ⌈1/δ⌉₊, ¬ Irregular n"
+    },
+    {
+      "name": "partitionEnergy_le_one",
+      "type": "supporting",
+      "description": "The weighted mean-square density potential is ≤1 for a probability weight and densities in [-1,1] — the upper barrier forcing the increment to terminate.",
+      "leanType": "(s : Finset ι) → (w d : ι → ℚ) → (∀ i ∈ s, 0 ≤ w i) → (∑ i ∈ s, w i = 1) → (∀ i ∈ s, |d i| ≤ 1) → partitionEnergy s w d ≤ 1"
+    }
+  ],
+  "sorries": 0
+}
