@@ -1,0 +1,120 @@
+{
+  "id": "binomial-theorem-oq-03-oq-03",
+  "title": "The Multinomial Distribution from the Multinomial Theorem: Category Aggregation",
+  "slug": "binomial-theorem-oq-03-oq-03",
+  "description": "Derives the structural backbone of the multinomial distribution directly from the multinomial theorem. The centerpiece is the aggregation (lumping) property: for ANY union of categories A ⊆ s, the aggregated count X_A = Σ_{i∈A} X_i of a Multinomial(n, p) vector is Binomial(n, p_A) with p_A = Σ_{i∈A} p_i. Proved via the probability generating function: feeding the block indicator g(i) = if i∈A then t else 1 into the multinomial generating identity collapses E[t^{X_A}] to (p_A·t + (1−p_A))^n, exactly the Binomial(n, p_A) PGF. The single-coordinate marginal is the special case A = {i₀}; full aggregation A = s recovers the deterministic total X_s = n; and the complement block is Binomial(n, 1−p_A). 9 theorems, 1 definition, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BinomialTheoremOQ03OQ03.lean",
+    "tags": [
+      "probability",
+      "multinomial-distribution",
+      "binomial-distribution",
+      "multinomial-theorem",
+      "generating-functions",
+      "aggregation",
+      "marginals",
+      "combinatorics",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified against Lean v4.26.0 + Mathlib. Every theorem depends only on [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool (no native_decide; the Fin 3 example uses `decide` for ≠).",
+    "lineCount": 246,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "originalContributions": [
+      "multinomial_aggregate_pgf: the aggregation/lumping property — for any block A ⊆ s, E[t^{X_A}] = Σ_k P(X=k)·t^{Σ_{i∈A} k(i)} = (p_A·t + (1−p_A))^n, the Binomial(n, p_A) generating function. This is the multinomial family's defining closure property and the genuine generalization of the single-coordinate marginal.",
+      "multinomial_aggregate_pgf_eq_binomial: identifies the aggregation PGF with the explicit Binomial(n, p_A) PMF expansion Σ_j C(n,j)·p_A^j·(1−p_A)^{n−j}·t^j via the binomial theorem.",
+      "multinomial_marginal_pgf_of_aggregate: recovers the classical single-coordinate marginal (X_{i₀} ~ Binomial(n, p_{i₀})) as the special case A = {i₀}.",
+      "multinomial_aggregate_compl_pgf: the complement block s\\A aggregates to Binomial(n, 1−p_A) — the canonical two-outcome 'in A vs not in A' lumping.",
+      "multinomial_aggregate_univ: full aggregation A = s collapses to the deterministic total X_s = n (PGF t^n), since p_s = 1.",
+      "aggregate_fin3_example: a concrete three-category instance on Fin 3 lumping {0,1}, giving Binomial(n, p₀+p₁) with PGF ((p₀+p₁)·t + p₂)^n.",
+      "multinomial_mgf_real, multinomialProb_sum_one: self-contained multinomial generating identity and PMF normalization underpinning the PGF method."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The multinomial distribution models the counts of outcomes when n independent trials each fall into one of r categories with probabilities p₁,…,p_r. It is the natural multivariate generalization of the binomial (the r = 2 case), and its normalization is literally the multinomial theorem: Σ_{Σkᵢ=n} multinomial(n; k)·∏ pᵢ^{kᵢ} = (Σ pᵢ)^n = 1. The parent thread (binomial-theorem-oq-03) builds the binomial distribution and its properties — normalization, moments, convolution, Poisson limit — directly from the binomial theorem. This entry carries the same program to the multinomial setting, isolating the property that most sharply distinguishes the multinomial family: closure under category aggregation.",
+    "problemStatement": "Derive the multinomial distribution and its key structural properties directly from the multinomial theorem. In particular, establish the aggregation (lumping) property: when several categories are merged into one super-category, the resulting count is again binomial, with success probability the sum of the merged categories' probabilities.",
+    "text": "The file is self-contained over Mathlib (matching the convention of the sibling files BinomialTheoremOQ02OQ01OQ02/OQ03). It first records the multinomial PMF multinomialProb(s,p,n,k) = multinomial(s,k)·∏_{i∈s} p(i)^{k(i)}, the generating identity multinomial_mgf_real ((Σᵢ p(i)·g(i))^n = Σ_k P(X=k)·∏ᵢ g(i)^{k(i)}), and normalization multinomialProb_sum_one. The main theorem multinomial_aggregate_pgf then computes the PGF of the aggregated block count X_A by specializing the generating identity to the block indicator g(i) = if i∈A then t else 1: the product collapses to t^{Σ_{i∈A} k(i)} and the base of the n-th power simplifies, using Σ_{i∈s} p(i) = 1, to p_A·t + (1−p_A). Four corollaries follow immediately — the binomial-PMF identification, the single-coordinate marginal (A = {i₀}), the complement block (s\\A), and full aggregation (A = s) — together with a concrete Fin 3 worked example.",
+    "proofStrategy": "Probability generating functions. Two distributions on {0,…,n} with equal PGF are identical, so it suffices to compute E[t^{X_A}]. The block indicator g(i) = if i∈A then t else 1 makes ∏_{i∈s} g(i)^{k(i)} = ∏_{i∈A} t^{k(i)} = t^{Σ_{i∈A} k(i)} (via Finset.prod_ite_mem, inter_eq_right for A ⊆ s, and prod_pow_eq_pow_sum), while Σ_{i∈s} p(i)·g(i) = p_A·t + (1−p_A) (splitting off the (t−1)-weighted block sum with sum_ite_mem and using Σ p = 1). Substituting into multinomial_mgf_real yields (p_A·t + (1−p_A))^n. The single-coordinate marginal is the singleton case; the complement uses Finset.sum_sdiff to get p_{s\\A} = 1 − p_A; full aggregation uses Σ_{i∈s} k(i) = n on the support and p_s = 1.",
+    "keyInsights": [
+      "Aggregation is essentially free once the problem is phrased through generating functions: the ONLY change from the single-coordinate marginal proof is replacing the equality indicator (if i = i₀) with the membership indicator (if i ∈ A). The membership form is exactly what Finset.prod_ite_mem and sum_ite_mem are built for, so the whole argument transfers verbatim.",
+      "The lumping property is the multinomial's signature: collapsing any set of categories returns a binomial whose success probability is the merged total p_A. This single theorem subsumes the single-coordinate marginal (A = {i₀}), the two-outcome split (A vs s\\A), and the degenerate total (A = s, deterministically n).",
+      "Working at the PGF level sidesteps the heavy piAntidiag bijection needed for the explicit block PMF: the generating identity already encodes the entire distribution, and the binomial theorem reads off the coefficients on demand (multinomial_aggregate_pgf_eq_binomial).",
+      "Keeping the file self-contained over Mathlib (re-deriving multinomial_mgf_real and normalization) makes the entry robust to refactors in sibling files while still mirroring the established generating-function method of the binomial-theorem thread."
+    ],
+    "prerequisites": [
+      "Finset.sum_pow_eq_sum_piAntidiag (the multinomial theorem in Mathlib)",
+      "Finset.prod_ite_mem / Finset.sum_ite_mem (collapsing a block indicator over a Finset to an intersection)",
+      "Finset.prod_pow_eq_pow_sum (∏ t^{f i} = t^{Σ f i})",
+      "Finset.inter_eq_right and Finset.sum_sdiff (block / complement bookkeeping)",
+      "add_pow (binomial theorem expansion of the resulting PGF)"
+    ]
+  },
+  "conclusion": {
+    "summary": "Machine-verified aggregation property of the multinomial distribution: for any union of categories A ⊆ s, the aggregated count X_A of a Multinomial(n, p) vector is Binomial(n, p_A) with p_A = Σ_{i∈A} p_i, proved from the multinomial theorem via probability generating functions. The single-coordinate marginal, the complement-block split, and the deterministic total are all special cases. 9 theorems, 1 definition, 0 axioms, 246 lines.",
+    "implications": "The lumping property is the operational reason multinomial models are robust to re-categorization: merging outcome categories never leaves the binomial/multinomial family and simply adds the corresponding probabilities. The generating-function proof gives all marginals and aggregates uniformly, and the binomial-coefficient identification makes the explicit PMF available whenever needed.",
+    "openQuestions": [
+      "Promote the PGF-level aggregation to a full joint statement: the vector of block counts (X_{A₁},…,X_{A_m}) for a partition s = A₁ ⊔ … ⊔ A_m is itself Multinomial(n, p_{A₁},…,p_{A_m}), via a multinomial factorization over disjoint unions.",
+      "Extract the explicit block PMF P(X_A = j) = C(n,j)·p_A^j·(1−p_A)^{n−j} from the PGF by a coefficient-extraction / polynomial-identity argument, generalizing the single-coordinate multinomial_marginal_pmf.",
+      "Derive the conditional distribution of the within-block counts given the block total X_A = j (again multinomial, with renormalized probabilities) from the same generating identity."
+    ]
+  },
+  "leanFile": {
+    "namespace": "BinomialTheoremOQ03OQ03",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 1,
+    "path": "Proofs/BinomialTheoremOQ03OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "binomial-theorem-oq-03",
+      "relationship": "extends",
+      "description": "parent: builds the binomial distribution and its properties directly from the binomial theorem; this entry carries the same program to the multinomial distribution, focusing on category aggregation."
+    },
+    {
+      "targetId": "binomial-theorem-oq-02-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "sibling: proves single-coordinate marginals of the multinomial are binomial via the PGF; this entry generalizes that to arbitrary unions of categories (the lumping property), recovering the single-coordinate case as A = {i₀}."
+    }
+  ],
+  "sections": [
+    {
+      "id": "sec-mult-agg-setup",
+      "title": "Setup: Multinomial PMF and Generating Identity",
+      "startLine": 1,
+      "endLine": 110,
+      "summary": "Header documenting the aggregation property and PGF strategy. Defines multinomialProb and proves the multinomial generating identity multinomial_mgf_real and normalization multinomialProb_sum_one (self-contained over Mathlib)."
+    },
+    {
+      "id": "sec-mult-agg-main",
+      "title": "Main Theorem: the Aggregation PGF",
+      "startLine": 111,
+      "endLine": 165,
+      "summary": "multinomial_aggregate_pgf: for any block A ⊆ s, E[t^{X_A}] = (p_A·t + (1−p_A))^n. The block indicator g(i) = if i∈A then t else 1 collapses the generating product to t^{Σ_{i∈A} k(i)} and simplifies the PGF base to p_A·t + (1−p_A)."
+    },
+    {
+      "id": "sec-mult-agg-corollaries",
+      "title": "Corollaries: Binomial Identification, Marginal, Complement, Total",
+      "startLine": 166,
+      "endLine": 215,
+      "summary": "multinomial_aggregate_pgf_eq_binomial (PMF expansion), multinomial_marginal_pgf_of_aggregate (single-coordinate special case A = {i₀}), multinomial_aggregate_compl_pgf (complement block ~ Binomial(n, 1−p_A)), multinomial_aggregate_univ (full aggregation gives deterministic total n)."
+    },
+    {
+      "id": "sec-mult-agg-example",
+      "title": "Concrete Instance and Summary",
+      "startLine": 216,
+      "endLine": 246,
+      "summary": "aggregate_fin3_example: a three-category multinomial on Fin 3 with categories {0,1} lumped, giving Binomial(n, p₀+p₁) with PGF ((p₀+p₁)·t + p₂)^n. Closing summary table of the five aggregation theorems."
+    }
+  ],
+  "sorries": 0
+}
