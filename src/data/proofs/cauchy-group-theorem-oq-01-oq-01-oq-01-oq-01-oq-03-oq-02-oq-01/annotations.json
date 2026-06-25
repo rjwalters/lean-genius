@@ -1,0 +1,75 @@
+[
+  {
+    "id": "ann-pow-eq-one-iff-gcd-exponent",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 65,
+      "endLine": 72
+    },
+    "type": "insight",
+    "title": "The exponent is the right modulus: xⁿ = 1 ⇔ x^gcd(n, exp G) = 1 (pow_eq_one_iff_pow_gcd_exponent)",
+    "content": "The parent used the group order m; once cyclicity is dropped, m is the wrong invariant (in (ℤ/p)² the p-th power map kills everything despite m = p²). The correct uniform modulus is the exponent exp G — the lcm of element orders — because orderOf x ∣ exp G holds for EVERY x (Monoid.order_dvd_exponent), whereas only orderOf x ∣ m and that is too coarse. The proof rewrites both sides through orderOf_dvd_iff_pow_eq_one to reduce xⁿ = 1 ⇔ x^gcd = 1 to orderOf x ∣ n ⇔ orderOf x ∣ gcd(n, exp G): forward by Nat.dvd_gcd (combining the hypothesis with order_dvd_exponent), backward by transitivity through Nat.gcd_dvd_left. This holds in any finite group, not just abelian ones.",
+    "mathContext": "$x^n = 1 \\iff \\mathrm{orderOf}\\,x \\mid n \\iff \\mathrm{orderOf}\\,x \\mid \\gcd(n,\\exp G) \\iff x^{\\gcd(n,\\exp G)} = 1$, using $\\mathrm{orderOf}\\,x \\mid \\exp G$.",
+    "significance": "key",
+    "prerequisites": [
+      "Monoid.order_dvd_exponent: orderOf g ∣ exp G",
+      "orderOf_dvd_iff_pow_eq_one: orderOf a ∣ n ↔ aⁿ = 1",
+      "Nat.dvd_gcd and Nat.gcd_dvd_left"
+    ],
+    "relatedConcepts": [
+      "group exponent",
+      "order of an element",
+      "power map",
+      "torsion subgroup"
+    ]
+  },
+  {
+    "id": "ann-range-pow-eq-gcd-exponent",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 92,
+      "endLine": 119
+    },
+    "type": "technique",
+    "title": "Image equality without cyclicity, via the first isomorphism theorem (range_pow_eq_range_pow_gcd_exponent)",
+    "content": "This is the substance of the generalization. The inclusion range(·ⁿ) ≤ range(·^gcd) is the parent's elementary argument: gcd ∣ n gives n = gcd·n', so aⁿ = (a^n')^gcd (← pow_mul, mul_comm, ← hn'). The reverse inclusion is where cyclicity was used in the parent (the unique-subgroup-per-divisor lattice and IsCyclic.card_powMonoidHom_range), and it must be replaced. The key realization: the image equality is really a kernel statement. Noether's first isomorphism theorem QuotientGroup.quotientKerEquivRange identifies |range(·ⁿ)| = |G ⧸ ker(·ⁿ)| and |range(·^gcd)| = |G ⧸ ker(·^gcd)|; since the kernels are equal (ker_pow_eq_ker_pow_gcd_exponent), the two quotients — and hence the two images — have the same cardinality. An inclusion of equal-cardinality finite subgroups is an equality (Subgroup.eq_of_le_of_card_ge). The proof rewrites both range cardinalities to quotient cardinalities with ← Nat.card_congr eᵢ.toEquiv, then collapses them with the kernel equality. Nothing beyond the homomorphism property is used.",
+    "mathContext": "$|\\mathrm{range}(\\cdot^n)| = |G/\\ker(\\cdot^n)| = |G/\\ker(\\cdot^{\\gcd})| = |\\mathrm{range}(\\cdot^{\\gcd})|$; with $\\mathrm{range}(\\cdot^n)\\le\\mathrm{range}(\\cdot^{\\gcd})$ this forces equality.",
+    "significance": "key",
+    "prerequisites": [
+      "QuotientGroup.quotientKerEquivRange: G ⧸ ker φ ≃* range φ",
+      "ker_pow_eq_ker_pow_gcd_exponent: the shared kernel",
+      "Subgroup.eq_of_le_of_card_ge: inclusion + equal card ⟹ equality",
+      "Nat.card_congr and Nat.gcd_dvd_left"
+    ],
+    "relatedConcepts": [
+      "first isomorphism theorem",
+      "kernel and image",
+      "Lagrange's theorem",
+      "power residues"
+    ]
+  },
+  {
+    "id": "ann-card-range-pow-mul-card-ker",
+    "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 131
+    },
+    "type": "insight",
+    "title": "The constant-fibre partition #(n-th powers)·|ker| = |G| (card_range_pow_mul_card_ker)",
+    "content": "Because x ↦ xⁿ is a homomorphism, its non-empty fibres are exactly the cosets of the kernel, all of the same size |ker(·ⁿ)|. The group is therefore partitioned into #(n-th powers) blocks of size |ker|, giving #(n-th powers)·|ker| = |G|. The proof is Lagrange's theorem Subgroup.card_eq_card_quotient_mul_card_subgroup applied to the kernel (Nat.card G = Nat.card(G⧸ker)·Nat.card ker), with the quotient re-identified as the range by Nat.card_congr of the first-isomorphism equivalence. Crucially the fibre size here is |ker|, the n-torsion count — NOT gcd(n, exp G). The parent's clean gcd(n,m) per fibre was a cyclic accident; in general (e.g. (ℤ/p)², n = p) the fibres are much larger. card_range_pow then divides through to give #(n-th powers) = |G|/|ker(·ⁿ)|.",
+    "mathContext": "Fibres are kernel cosets of size $|\\ker(\\cdot^n)|$, so $\\#(n\\text{-th powers})\\cdot|\\ker(\\cdot^n)| = |G|$; in the cyclic case $|\\ker| = \\gcd(n,|G|)$.",
+    "significance": "useful",
+    "prerequisites": [
+      "Subgroup.card_eq_card_quotient_mul_card_subgroup: Lagrange's theorem",
+      "QuotientGroup.quotientKerEquivRange and Nat.card_congr",
+      "Nat.card_pos and Nat.div_eq_of_eq_mul_left for the count"
+    ],
+    "relatedConcepts": [
+      "coset partition",
+      "Lagrange's theorem",
+      "fibre of a homomorphism",
+      "n-th power residues"
+    ]
+  }
+]

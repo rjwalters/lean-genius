@@ -1,0 +1,208 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+  "title": "The Power Map over an Arbitrary Finite Abelian Group: range(x↦xⁿ) = range(x↦x^gcd(n,exp G)) and the constant-fibre partition",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02-oq-01",
+  "description": "Removes the cyclicity hypothesis from the parent's analysis of the power map x ↦ xⁿ. Over ANY finite abelian group G the map is structurally the gcd(n, exp G)-th power map, where exp G = Monoid.exponent G is the group exponent — the modulus that controls xⁱ = 1 uniformly, since orderOf x ∣ exp G for every x. Same kernel (any finite group): pow_eq_one_iff_pow_gcd_exponent gives xⁿ = 1 ⇔ x^gcd(n,exp G) = 1, and ker_pow_eq_ker_pow_gcd_exponent lifts it to equality of the kernel subgroups. Same image (any finite abelian group): range_pow_eq_range_pow_gcd_exponent proves range(x↦xⁿ) = range(x↦x^gcd(n,exp G)) — the genuine generalization, where the parent's cyclic proof used the unique-subgroup-per-divisor structure, here equality follows from Noether's first isomorphism theorem (equal kernels ⟹ equal-cardinality images) plus the divisibility inclusion. Constant-fibre partition: card_range_pow_mul_card_ker gives #(n-th powers)·|ker(x↦xⁿ)| = |G| (the fibres are cosets of the kernel, all of size |ker|), and card_range_pow gives #(n-th powers) = |G|/|ker(x↦xⁿ)|. In the cyclic case |ker| = gcd(n,|G|), recovering the parent's count; in general the fibre size is the n-torsion count, which equals gcd(n,exp G) only when G is cyclic. 5 theorems, 0 sorries, 0 axioms, no native_decide.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Exponent_of_a_group",
+    "date": "Classical group theory (Lagrange / Noether)",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "abelian-groups",
+      "power-map",
+      "group-exponent",
+      "gcd",
+      "kernel",
+      "image",
+      "fibre-partition",
+      "open-question"
+    ],
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. All 5 theorems are fully verified with 0 sorries and 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound, which do not count — confirmed by #print axioms on ker_pow_eq_ker_pow_gcd_exponent, range_pow_eq_range_pow_gcd_exponent, and card_range_pow_mul_card_ker). No native_decide, so no Lean.ofReduceBool. The machinery (Monoid.order_dvd_exponent, QuotientGroup.quotientKerEquivRange, Subgroup.card_eq_card_quotient_mul_card_subgroup, Subgroup.eq_of_le_of_card_ge) is supplied by Mathlib; the new content is the cyclicity-free generalization: identifying the exponent as the correct uniform modulus, deriving the kernel equality from orderOf ∣ exp G, and obtaining the image equality from the first isomorphism theorem (equal kernels force equal-cardinality images) rather than from the cyclic group's divisor-indexed subgroup lattice, plus the coset-partition count #(n-th powers)·|ker| = |G|.",
+    "originalContributions": [
+      "pow_eq_one_iff_pow_gcd_exponent: in ANY finite group, xⁿ = 1 ⇔ x^gcd(n, exp G) = 1, because orderOf x ∣ exp G (Monoid.order_dvd_exponent), so orderOf x ∣ n ⇔ orderOf x ∣ gcd(n, exp G). Replaces the parent's group-order m by the exponent — the modulus that genuinely controls xⁱ = 1 across all elements when the group is not cyclic",
+      "ker_pow_eq_ker_pow_gcd_exponent: the kernel subgroups of x ↦ xⁿ and x ↦ x^gcd(n, exp G) coincide in any finite commutative group, the subgroup-level form of the element identity",
+      "range_pow_eq_range_pow_gcd_exponent: THE GENERALIZATION — range(x↦xⁿ) = range(x↦x^gcd(n, exp G)) over any finite abelian group. The inclusion ⊆ is elementary (gcd ∣ n ⟹ every n-th power is a gcd-th power); equality comes from Noether's first isomorphism theorem: equal kernels give equal quotients G⧸ker, hence equal-cardinality images, and an inclusion of equal-cardinality subgroups is an equality (Subgroup.eq_of_le_of_card_ge). The parent's cyclic proof leaned on IsCyclic.card_powMonoidHom_range and the divisor-indexed subgroup lattice; this proof uses only that the power map is a homomorphism",
+      "card_range_pow_mul_card_ker: the constant-fibre partition #(n-th powers)·|ker(x↦xⁿ)| = |G|. The power map is a homomorphism, so its non-empty fibres are the cosets of the kernel, all of size |ker|; Lagrange (Subgroup.card_eq_card_quotient_mul_card_subgroup) plus the first isomorphism theorem count the group as #(n-th powers) blocks of size |ker|",
+      "card_range_pow: the count #(n-th powers) = |G|/|ker(x↦xⁿ)| in any finite abelian group, by dividing the partition identity by the common fibre size. Recovers the parent's |G|/gcd(n,|G|) in the cyclic case, where |ker| = gcd(n,|G|)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Monoid.order_dvd_exponent",
+        "description": "orderOf g ∣ Monoid.exponent G for every g. The fact that makes the exponent the correct uniform modulus: it lets xⁿ = 1 ⇔ x^gcd(n, exp G) = 1 be read off orderOf x ∣ exp G.",
+        "module": "Mathlib.GroupTheory.Exponent"
+      },
+      {
+        "theorem": "QuotientGroup.quotientKerEquivRange",
+        "description": "Noether's first isomorphism theorem, the explicit isomorphism G ⧸ ker φ ≃* range φ. Identifies the cardinality of each image with that of the quotient by the (shared) kernel, the engine of the cyclicity-free image equality.",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.card_eq_card_quotient_mul_card_subgroup",
+        "description": "Lagrange's theorem: Nat.card G = Nat.card (G ⧸ s) · Nat.card s. Applied to the kernel, with the quotient re-identified as the range, it gives the partition count #(n-th powers)·|ker| = |G|.",
+        "module": "Mathlib.GroupTheory.Coset.Card"
+      },
+      {
+        "theorem": "Subgroup.eq_of_le_of_card_ge",
+        "description": "An inclusion H ≤ K of subgroups with Nat.card K ≤ Nat.card H is an equality. Upgrades the elementary inclusion range(·ⁿ) ≤ range(·^gcd) to equality once the cardinalities are shown equal.",
+        "module": "Mathlib.Algebra.Group.Subgroup.Finite"
+      },
+      {
+        "theorem": "powMonoidHom",
+        "description": "The n-th power map x ↦ xⁿ packaged as a monoid homomorphism on a commutative monoid (powMonoidHom_apply: powMonoidHom n x = xⁿ). Its kernel and range are the subgroups studied here.",
+        "module": "Mathlib.Algebra.Group.Hom.Defs"
+      }
+    ],
+    "parentDependencies": [
+      {
+        "theorem": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.range_pow_eq_range_pow_gcd",
+        "description": "The cyclic special case range(x↦xⁿ) = range(x↦x^gcd(n,m)) over a cyclic group of order m, which this entry generalizes to arbitrary finite abelian groups with the exponent in place of the order.",
+        "module": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean"
+      }
+    ],
+    "dateAdded": "2026-06-25",
+    "lineCount": 146,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The behaviour of the power map x ↦ xⁿ is a recurring theme from Cauchy's theorem through the structure theory of finite abelian groups. In a cyclic group of order m everything is governed by gcd(n, m): the n-th powers are the gcd(n,m)-th powers, and each non-empty fibre has gcd(n,m) elements. The parent entry formalized exactly this cyclic picture. But cyclicity is a crutch: in a general finite abelian group the order m is the wrong invariant — the n-th power map can collapse very differently (in (ℤ/p)² the p-th power map kills everything). The right invariant is the EXPONENT exp G, the lcm of element orders, because orderOf x ∣ exp G holds for every x. This entry rebuilds the kernel/image/partition picture over an arbitrary finite abelian group with exp G in place of m, using the first isomorphism theorem rather than the cyclic subgroup lattice.",
+    "problemStatement": "**Open Question (parent CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02)**: Generalize the cyclic-case n-th power map image equality range(xⁿ) = range(x^gcd(n,m)) and the constant-fibre partition to an arbitrary finite abelian group, with the gcd taken against the exponent.\n\n**Formalized**: pow_eq_one_iff_pow_gcd_exponent and ker_pow_eq_ker_pow_gcd_exponent (kernel recovery against exp G); range_pow_eq_range_pow_gcd_exponent (image equality over any finite abelian group, via the first isomorphism theorem); card_range_pow_mul_card_ker (the coset partition #(n-th powers)·|ker| = |G|); card_range_pow (the count |G|/|ker|).",
+    "text": "A 146-line formalization removing the cyclicity hypothesis from the parent. The kernel statements are immediate from Monoid.order_dvd_exponent: xⁿ = 1 ⇔ orderOf x ∣ n ⇔ orderOf x ∣ gcd(n, exp G) ⇔ x^gcd(n, exp G) = 1 (pow_eq_one_iff_pow_gcd_exponent), promoted to subgroup equality of kernels (ker_pow_eq_ker_pow_gcd_exponent). The image equality range_pow_eq_range_pow_gcd_exponent is the substance: the inclusion range(·ⁿ) ≤ range(·^gcd) holds because gcd ∣ n writes aⁿ = (a^(n/gcd))^gcd; equality cannot use the cyclic subgroup lattice, so instead Noether's first isomorphism theorem QuotientGroup.quotientKerEquivRange identifies |range(·ⁿ)| = |G⧸ker(·ⁿ)| and |range(·^gcd)| = |G⧸ker(·^gcd)|, and since the kernels are equal these cardinalities agree, whence Subgroup.eq_of_le_of_card_ge closes the inclusion to an equality. Finally the partition: card_range_pow_mul_card_ker reads Lagrange Nat.card G = Nat.card(G⧸ker)·Nat.card ker and re-identifies the quotient with the range to get #(n-th powers)·|ker| = |G|; card_range_pow divides through. All 5 theorems verified with 0 sorries, 0 axioms, no native_decide.",
+    "proofStrategy": "**Kernel**: pow_eq_one_iff_pow_gcd_exponent rewrites both sides through orderOf_dvd_iff_pow_eq_one and proves orderOf x ∣ n ⇔ orderOf x ∣ gcd(n, exp G): forward by Nat.dvd_gcd with Monoid.order_dvd_exponent, backward by transitivity through Nat.gcd_dvd_left. ker_pow_eq_ker_pow_gcd_exponent is an ext + MonoidHom.mem_ker + powMonoidHom_apply wrapper.\n\n**Image**: range_pow_eq_range_pow_gcd_exponent. The inclusion hle is the parent's elementary argument: from gcd ∣ n (Nat.gcd_dvd_left giving n = gcd·n'), aⁿ = (a^n')^gcd via ← pow_mul, mul_comm, ← hn'. For equality, refine Subgroup.eq_of_le_of_card_ge hle (le_of_eq ?_) and prove the card equality: introduce hker (the kernel equality) and the two first-isomorphism equivalences e1, e2, then rw [← Nat.card_congr e1.toEquiv, ← Nat.card_congr e2.toEquiv, hker] turns both ranges into the same quotient cardinality.\n\n**Partition**: card_range_pow_mul_card_ker rewrites Nat.card α by Subgroup.card_eq_card_quotient_mul_card_subgroup at the kernel and then Nat.card_congr of the first-isomorphism equivalence to replace the quotient by the range. card_range_pow divides through with Nat.div_eq_of_eq_mul_left, using Nat.card_pos for the positivity of |ker|.",
+    "keyInsights": [
+      "**The exponent, not the order, is the uniform modulus.** In a cyclic group of order m the two coincide (exp = m), which is why the parent could use m. In general exp G ∣ |G| can be strictly smaller, and it is exp G — the lcm of element orders — that makes xⁿ = 1 ⇔ x^gcd(n, exp G) = 1 hold for every x simultaneously, because orderOf x ∣ exp G is the only divisibility available across all elements.",
+      "**The image equality is a kernel statement in disguise.** Cyclicity gave a formula for |range| directly; without it, the first isomorphism theorem reroutes the image through the kernel: |range(·ⁿ)| = |G ⧸ ker(·ⁿ)|. Since the kernels of ·ⁿ and ·^gcd are equal, their images automatically have equal cardinality, and a containment of equal-size finite subgroups is an equality. The whole difficulty is exported to the (easy) kernel equality.",
+      "**The fibre size is |ker|, not gcd(n, exp G).** The parent's clean count gcd(n,m) per fibre is a cyclic accident. In general the constant fibre size is the n-torsion count |ker(·ⁿ)| = |{x : xⁿ = 1}|, which can be much larger (e.g. p² in (ℤ/p)² for n = p). The honest general statement is the coset partition #(n-th powers)·|ker| = |G|, with gcd(n, exp G) reappearing as |ker| only in the cyclic case.",
+      "**Homomorphism, not lattice.** The parent's machinery (unique subgroup per divisor, IsCyclic.card_powMonoidHom_range) is replaced wholesale by the single fact that x ↦ xⁿ is a group homomorphism. Kernel, image, and fibres then come from Noether's first isomorphism theorem and Lagrange — structure that survives the loss of cyclicity."
+    ],
+    "prerequisites": [
+      "The parent entry CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02: the cyclic-case kernel/image/fibre analysis governed by gcd(n, m)",
+      "The group exponent: Monoid.exponent, Monoid.order_dvd_exponent (orderOf g ∣ exp G), and exp G as the lcm of element orders",
+      "Noether's first isomorphism theorem QuotientGroup.quotientKerEquivRange and Lagrange's theorem Subgroup.card_eq_card_quotient_mul_card_subgroup",
+      "The power homomorphism powMonoidHom and its kernel/range, and orderOf_dvd_iff_pow_eq_one relating powers to the order"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module docstring explaining why the exponent replaces the order once cyclicity is dropped. Imports Mathlib.Tactic and the parent cyclic entry.",
+      "mathContext": "Finite abelian $G$, power map $x\\mapsto x^n$; the controlling modulus is $\\exp G = \\mathrm{lcm}$ of element orders, with $\\mathrm{orderOf}\\,x \\mid \\exp G$ for all $x$."
+    },
+    {
+      "id": "kernel",
+      "title": "Same kernel — the n-torsion is the gcd(n, exp G)-torsion",
+      "startLine": 61,
+      "endLine": 90,
+      "summary": "pow_eq_one_iff_pow_gcd_exponent: xⁿ = 1 ⇔ x^gcd(n, exp G) = 1 in any finite group, via orderOf x ∣ exp G. ker_pow_eq_ker_pow_gcd_exponent: equality of the kernel subgroups in any finite commutative group.",
+      "mathContext": "$x^n = 1 \\iff x^{\\gcd(n,\\exp G)} = 1$; $\\ker(x\\mapsto x^n) = \\ker(x\\mapsto x^{\\gcd(n,\\exp G)})$."
+    },
+    {
+      "id": "image",
+      "title": "Same image — the n-th powers are the gcd(n, exp G)-th powers",
+      "startLine": 91,
+      "endLine": 119,
+      "summary": "range_pow_eq_range_pow_gcd_exponent: range(x↦xⁿ) = range(x↦x^gcd(n, exp G)) over any finite abelian group. The inclusion is elementary (gcd ∣ n); equality is the first isomorphism theorem applied to the shared kernel, then Subgroup.eq_of_le_of_card_ge.",
+      "mathContext": "$\\mathrm{range}(x\\mapsto x^n) = \\mathrm{range}(x\\mapsto x^{\\gcd(n,\\exp G)})$, via $G/\\ker \\cong \\mathrm{range}$."
+    },
+    {
+      "id": "partition",
+      "title": "Constant-fibre partition and the number of n-th powers",
+      "startLine": 120,
+      "endLine": 146,
+      "summary": "card_range_pow_mul_card_ker: #(n-th powers)·|ker(x↦xⁿ)| = |G| (Lagrange + first isomorphism theorem). card_range_pow: #(n-th powers) = |G|/|ker(x↦xⁿ)|.",
+      "mathContext": "$\\#(n\\text{-th powers})\\cdot|\\ker(x\\mapsto x^n)| = |G|$, so $\\#(n\\text{-th powers}) = |G|/|\\ker(x\\mapsto x^n)|$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
+      "relationship": "extends",
+      "description": "The parent analyses the power map x ↦ xⁿ in a CYCLIC group of order m: same kernel, same image range(xⁿ) = range(x^gcd(n,m)), and a fibre partition with uniform fibre size gcd(n,m). This entry drops cyclicity, replacing m by the exponent exp G and the divisor-indexed subgroup lattice by Noether's first isomorphism theorem, so the image equality and the coset partition hold over any finite abelian group."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Proofs.CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02"
+    ],
+    "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02OQ01",
+    "lineCount": 146,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "range_pow_eq_range_pow_gcd_exponent",
+      "type": "core",
+      "statement": "$\\mathrm{range}(x\\mapsto x^n) = \\mathrm{range}(x\\mapsto x^{\\gcd(n,\\exp G)})$ in any finite abelian group",
+      "significance": "The genuine generalization: the n-th powers are the gcd(n, exp G)-th powers over ANY finite abelian group, proved from the first isomorphism theorem (equal kernels ⟹ equal-cardinality images) rather than the parent's cyclic subgroup lattice.",
+      "description": "Image equality against the exponent, cyclicity removed."
+    },
+    {
+      "name": "pow_eq_one_iff_pow_gcd_exponent",
+      "type": "core",
+      "statement": "$x^n = 1 \\iff x^{\\gcd(n,\\exp G)} = 1$ in any finite group",
+      "significance": "The kernel recovery against the exponent: identifies exp G as the correct uniform modulus for xⁱ = 1, because orderOf x ∣ exp G for every x. The foundation for the kernel and image equalities.",
+      "description": "xⁿ = 1 ⇔ x^gcd(n, exp G) = 1."
+    },
+    {
+      "name": "card_range_pow_mul_card_ker",
+      "type": "core",
+      "statement": "$\\#(n\\text{-th powers})\\cdot|\\ker(x\\mapsto x^n)| = |G|$ in any finite abelian group",
+      "significance": "The constant-fibre partition: the power map's non-empty fibres are the cosets of its kernel, all of size |ker|, so the group splits into #(n-th powers) equal blocks. Lagrange + the first isomorphism theorem.",
+      "description": "Coset partition #(n-th powers)·|ker| = |G|."
+    },
+    {
+      "name": "ker_pow_eq_ker_pow_gcd_exponent",
+      "type": "supporting",
+      "statement": "$\\ker(x\\mapsto x^n) = \\ker(x\\mapsto x^{\\gcd(n,\\exp G)})$ in any finite abelian group",
+      "significance": "The subgroup-level kernel equality, the input that makes the two images equal-cardinality in the first-isomorphism-theorem argument.",
+      "description": "Equality of the kernel subgroups."
+    },
+    {
+      "name": "card_range_pow",
+      "type": "supporting",
+      "statement": "$\\#(n\\text{-th powers}) = |G|/|\\ker(x\\mapsto x^n)|$ in any finite abelian group",
+      "significance": "The count of n-th powers, dividing the partition identity by the fibre size. Recovers the parent's |G|/gcd(n,|G|) in the cyclic case, where |ker| = gcd(n,|G|).",
+      "description": "#(n-th powers) = |G| / |ker(x↦xⁿ)|."
+    }
+  ],
+  "references": [
+    {
+      "text": "Exponent of a group — the lcm of the orders of all elements; orderOf g divides exp G for every g, and exp G divides |G| with equality iff the group has an element of order |G| (e.g. cyclic).",
+      "url": "https://en.wikipedia.org/wiki/Exponent_of_a_group"
+    },
+    {
+      "text": "Isomorphism theorems — Noether's first isomorphism theorem G/ker φ ≅ im φ, the tool that turns the kernel equality into the image equality.",
+      "url": "https://en.wikipedia.org/wiki/Isomorphism_theorems"
+    },
+    {
+      "text": "Mathlib4: Monoid.order_dvd_exponent, QuotientGroup.quotientKerEquivRange, Subgroup.card_eq_card_quotient_mul_card_subgroup, Subgroup.eq_of_le_of_card_ge.",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
+  "conclusion": {
+    "summary": "Generalizes the parent's cyclic analysis of the power map x ↦ xⁿ to an arbitrary finite abelian group, with the group exponent exp G in place of the order. Same kernel xⁿ = 1 ⇔ x^gcd(n, exp G) = 1 (pow_eq_one_iff_pow_gcd_exponent, ker_pow_eq_ker_pow_gcd_exponent); same image range(xⁿ) = range(x^gcd(n, exp G)) via the first isomorphism theorem (range_pow_eq_range_pow_gcd_exponent); and the coset partition #(n-th powers)·|ker(xⁿ)| = |G| with count |G|/|ker(xⁿ)| (card_range_pow_mul_card_ker, card_range_pow). 5 theorems, 0 sorries and 0 axioms, no native_decide. The cyclic count gcd(n,|G|) reappears as |ker| only when the group is cyclic.",
+    "implications": "The result isolates exactly what cyclicity contributed to the parent: a closed-form gcd count for the fibre size. The kernel/image/partition structure itself survives in any finite abelian group, carried by the homomorphism property and Noether's theorems alone. The framework applies verbatim to the n-th power residues in (ℤ/m)ˣ and other concrete finite abelian groups, where exp((ℤ/m)ˣ) is the Carmichael function λ(m).",
+    "openQuestions": [
+      "Express the fibre size |ker(x↦xⁿ)| explicitly via the invariant-factor decomposition G ≅ ∏ ℤ/dᵢ: show |ker(x↦xⁿ)| = ∏ gcd(n, dᵢ), generalizing the cyclic |ker| = gcd(n, |G|) and giving #(n-th powers) = ∏ dᵢ/gcd(n, dᵢ)",
+      "Specialize to G = (ℤ/m)ˣ: identify exp G with the Carmichael function λ(m) and read off the number of n-th power residues modulo m as φ(m)/|{x : xⁿ = 1}|"
+    ]
+  },
+  "sorries": 0
+}
