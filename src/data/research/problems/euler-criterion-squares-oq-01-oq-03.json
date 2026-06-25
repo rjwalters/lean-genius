@@ -1,0 +1,131 @@
+{
+  "slug": "euler-criterion-squares-oq-01-oq-03",
+  "title": "The Second Supplement — 2 is a Quadratic Residue mod p iff p ≡ ±1 (mod 8)",
+  "phase": "NEW",
+  "status": "active",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "\\exists\\, x \\in \\mathbb{Z}/p\\mathbb{Z},\\ x^2 = 2\n\\quad\\Longleftrightarrow\\quad\np \\equiv 1 \\pmod 8 \\ \\lor\\ p \\equiv 7 \\pmod 8.",
+    "plain": "The parent entry proves Euler's criterion: a nonzero residue $a$ is a perfect square modulo an odd prime $p$ exactly when $a^{(p-1)/2} \\equiv 1 \\pmod p$. That criterion is universal but it does not by itself tell you, for a *specific* number $a$, which primes $p$ make $a$ a square. This leaf carries out that computation for the smallest interesting case, $a = 2$: it asks to prove the classical \"second supplementary law\" of quadratic reciprocity, namely that $2$ is a square mod $p$ precisely when $p$ leaves remainder $1$ or $7$ when divided by $8$ (and is a non-residue when the remainder is $3$ or $5$). For example $2$ is a square mod $7$ ($4^2 = 16 \\equiv 2$) and mod $17$, but not mod $5$ or mod $11$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T00:00:00+0000",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Seeker-seeded stub. A Researcher should begin the OBSERVE phase: read problem.md, confirm `ZMod.exists_sq_eq_two_iff` and the surrounding Legendre-symbol API in Mathlib v4.26, and draft the first Lean skeleton stating `IsSquare (2 : ZMod p) ↔ p % 8 = 1 ∨ p % 8 = 7` for an odd prime `p`.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: second supplement IsSquare(2:ZMod p) ↔ p≡±1 mod 8 verified (Mathlib engine), plus non-residue complement, Euler-criterion bridge 2^((p-1)/2)=(-1)^((p²-1)/8), prime-only residuacity, χ₈ closed form. PR opened.",
+    "builtItems": [
+      "EulerCriterionSquaresOQ01OQ03.lean: 19 theorems, 0 sorry, 0 axiom, 190 lines",
+      "two_pow_half_eq_neg_one_pow (the Euler-criterion bridge)",
+      "not_isSquare_two_iff, isSquare_two_iff_legendreSym, chi8_eq_neg_one_pow, legendreSym_two_eq_neg_one_pow"
+    ],
+    "insights": [
+      "Headline IsSquare(2:ZMod p) ↔ p%8∈{1,7} is Mathlib ZMod.exists_sq_eq_two_iff; restated for [Fact (2<p)] convention.",
+      "Distinct content vs sibling Jacobi leaf: the Euler-criterion bridge 2^((p-1)/2)=(-1)^((p²-1)/8) in ZMod p (sibling has the sign formula but no Euler criterion to bridge to), and prime-only residuacity IsSquare 2 ↔ legendreSym p 2 = 1.",
+      "χ₈ n=(-1)^((n²-1)/8) reproved by mod-8 case split: (8k+r)²=8E+1 ring identity feeds omega; quotient even for r∈{1,7}, odd for r∈{3,5}."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Follow-up: first supplement (-1/p) and (-2/p) bridged to Euler criterion; Mersenne-divisor consequence (2p+1 ∣ 2^p-1 for p≡3 mod4 Sophie Germain)."
+    ]
+  },
+  "tags": [],
+  "relatedProofs": [
+    "euler-criterion-squares-oq-01",
+    "euler-criterion-squares-oq-01-oq-01",
+    "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "euler-criterion-squares-oq-01-oq-02",
+    "euler-criterion-squares-oq-01-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T02:11:48.265Z",
+  "lastUpdate": "2026-06-25T02:11:48.265Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerCriterionSquaresOQ01.lean",
+      "filename": "EulerCriterionSquaresOQ01.lean",
+      "lineCount": 106,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerCriterionSquaresOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerCriterionSquaresOQ01OQ01.lean",
+      "filename": "EulerCriterionSquaresOQ01OQ01.lean",
+      "lineCount": 130,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerCriterionSquaresOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerCriterionSquaresOQ01OQ01OQ01.lean",
+      "filename": "EulerCriterionSquaresOQ01OQ01OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerCriterionSquaresOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerCriterionSquaresOQ01OQ02.lean",
+      "filename": "EulerCriterionSquaresOQ01OQ02.lean",
+      "lineCount": 132,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerCriterionSquaresOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerCriterionSquaresOQ01OQ02OQ03.lean",
+      "filename": "EulerCriterionSquaresOQ01OQ02OQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerCriterionSquaresOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerCriterionSquaresOQ01OQ03.lean",
+      "filename": "EulerCriterionSquaresOQ01OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerCriterionSquaresOQ01OQ03.lean"
+    }
+  ]
+}

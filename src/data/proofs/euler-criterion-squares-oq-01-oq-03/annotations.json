@@ -1,0 +1,83 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "euler-criterion-squares-oq-01-oq-03",
+    "range": { "startLine": 2, "endLine": 46 },
+    "type": "context",
+    "title": "Specializing Euler's Criterion to the Base 2",
+    "content": "The parent entry proves Euler's criterion: a nonzero residue a is a square mod an odd prime p exactly when a^((p−1)/2) = 1. That test is universal but does not say, for a fixed a, which primes p make a a square. This leaf carries out that computation for the smallest interesting case a = 2, recovering the classical second supplementary law of quadratic reciprocity: 2 is a quadratic residue mod p iff p ≡ 1 or 7 (mod 8). Beyond restating Mathlib's headline equivalence for the parent's odd-prime convention, the file supplies the non-residue complement, the prime-only residuacity interpretation, and — its distinctive content — the explicit bridge from the parent's exponential test 2^((p−1)/2) to the mod-8 Gauss-sum sign (−1)^((p²−1)/8).",
+    "mathContext": "$\\exists x\\in\\mathbb{Z}/p\\mathbb{Z},\\ x^2 = 2 \\iff p\\equiv\\pm1\\pmod 8$, equivalently $2^{(p-1)/2}\\equiv(-1)^{(p^2-1)/8}\\pmod p$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euler's criterion",
+      "second supplementary law of quadratic reciprocity",
+      "Legendre symbol",
+      "Dirichlet character χ₈"
+    ],
+    "prerequisites": [
+      "modular arithmetic",
+      "quadratic residues",
+      "the Legendre symbol"
+    ]
+  },
+  {
+    "id": "ann-issquare-two-iff",
+    "proofId": "euler-criterion-squares-oq-01-oq-03",
+    "range": { "startLine": 72, "endLine": 82 },
+    "type": "key-step",
+    "title": "Residue / Non-Residue Characterization",
+    "content": "isSquare_two_iff is Mathlib's ZMod.exists_sq_eq_two_iff, restated for the parent's [Fact (2 < p)] convention via p ≠ 2. The non-residue complement not_isSquare_two_iff is then the complement across the four reduced residue classes: an odd prime satisfies p % 8 ∈ {1,3,5,7}, so the negation of 'p ≡ 1 or 7' is exactly 'p ≡ 3 or 5', closed by omega.",
+    "mathContext": "$\\text{IsSquare}(2:\\mathbb{Z}/p) \\iff p\\bmod 8\\in\\{1,7\\}$; complement $\\iff p\\bmod 8\\in\\{3,5\\}$.",
+    "significance": "central",
+    "relatedConcepts": ["quadratic residues", "residue classes mod 8"],
+    "prerequisites": ["quadratic residues", "case analysis mod 8"]
+  },
+  {
+    "id": "ann-chi8-closed-form",
+    "proofId": "euler-criterion-squares-oq-01-oq-03",
+    "range": { "startLine": 87, "endLine": 118 },
+    "type": "key-step",
+    "title": "The Closed Form χ₈ n = (−1)^((n²−1)/8)",
+    "content": "Mathlib provides the (−1)-power form of χ₄ (χ₄_eq_neg_one_pow) but no analogue for χ₈. This lemma fills that gap by a case analysis on n mod 8: writing n = 8k + r with r ∈ {1,3,5,7}, a single `ring` identity (8k+r)² = 8·E + 1 lets omega evaluate (n²−1)/8 = E. The quotient is even (2·…) for r ∈ {1,7} — sign +1 — and odd (2·…+1) for r ∈ {3,5} — sign −1 — exactly matching χ₈'s residue-class values. (The sibling Jacobi leaf reproves the same identity for the composite-modulus setting.)",
+    "mathContext": "For odd $n$: $8\\mid n^2-1$ and $(n^2-1)/8$ is even $\\iff n\\bmod 8\\in\\{1,7\\}$.",
+    "significance": "central",
+    "relatedConcepts": ["quadratic Dirichlet character χ₈", "Gauss-sum sign", "parity"],
+    "prerequisites": ["modular arithmetic", "parity of integer divisions"]
+  },
+  {
+    "id": "ann-euler-bridge",
+    "proofId": "euler-criterion-squares-oq-01-oq-03",
+    "range": { "startLine": 128, "endLine": 149 },
+    "type": "insight",
+    "title": "The Euler-Criterion Bridge",
+    "content": "two_pow_half_eq_neg_one_pow is the leaf's headline contribution: (2 : ZMod p)^((p−1)/2) = (−1 : ZMod p)^((p²−1)/8). It chains Mathlib's legendreSym.eq_pow ((legendreSym p 2 : ZMod p) = 2^(p/2)), rewritten via p/2 = (p−1)/2, with the exponent form legendreSym p 2 = (−1)^((p²−1)/8), then casts the right-hand sign into ZMod p. This equates the parent's universal exponential test, evaluated at 2, with the concrete mod-8 Gauss-sum sign — the link the sibling Jacobi leaf cannot form, having no Euler criterion for composite moduli.",
+    "mathContext": "$2^{(p-1)/2}\\equiv(-1)^{(p^2-1)/8}\\pmod p$, the textbook Euler-criterion form of the second supplement.",
+    "significance": "central",
+    "relatedConcepts": ["Euler's criterion", "Gauss sums", "Legendre symbol as a power"],
+    "prerequisites": ["Euler's criterion", "the Legendre symbol congruence"]
+  },
+  {
+    "id": "ann-residuacity",
+    "proofId": "euler-criterion-squares-oq-01-oq-03",
+    "range": { "startLine": 151, "endLine": 168 },
+    "type": "insight",
+    "title": "Symbol Value +1 Means Residue — for Primes Only",
+    "content": "isSquare_two_iff_legendreSym records IsSquare (2 : ZMod p) ↔ legendreSym p 2 = 1, via Mathlib's legendreSym.eq_one_iff at a = 2 (which needs 2 ≠ 0 mod p, supplied by two_ne_zero). For a prime modulus the symbol value +1 genuinely detects quadratic residuacity — exactly the interpretation the sibling Jacobi leaf must drop, since for composite moduli the Jacobi symbol can equal +1 at a non-residue.",
+    "mathContext": "$\\text{IsSquare}(2:\\mathbb{Z}/p)\\iff\\left(\\tfrac{2}{p}\\right)=1$ (prime $p$ only).",
+    "significance": "supporting",
+    "relatedConcepts": ["Legendre symbol", "quadratic residuacity", "Jacobi symbol contrast"],
+    "prerequisites": ["the Legendre symbol", "quadratic residues"]
+  },
+  {
+    "id": "ann-numerics",
+    "proofId": "euler-criterion-squares-oq-01-oq-03",
+    "range": { "startLine": 170, "endLine": 189 },
+    "type": "context",
+    "title": "Concrete Checks (decide, no native_decide)",
+    "content": "Worked corollaries confirm the criterion in both directions: 2 is a residue mod 7 (3²=2), mod 17 (6²=36=2), and mod 23 (5²=25=2) — the classes p ≡ 7, 1, 7 (mod 8) — and a non-residue mod 5, 11, 13 — the classes p ≡ 5, 3, 5 (mod 8). All checks use decide, keeping the entry free of native_decide and the Lean.ofReduceBool axiom.",
+    "mathContext": "$2$ a residue mod $7,17,23$; non-residue mod $5,11,13$.",
+    "significance": "supporting",
+    "relatedConcepts": ["decidable quadratic residues", "worked examples"],
+    "prerequisites": ["ZMod arithmetic"]
+  }
+]
