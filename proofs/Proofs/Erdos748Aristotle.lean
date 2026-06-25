@@ -29,21 +29,18 @@ open Erdos748
 
 /-- f(1) = 2: The sum-free subsets of {1} are {} and {1}.
     Strategy: decide (or native_decide) — finite computation. -/
-theorem f_1 : f 1 = 2 := by
-  sorry
+theorem f_1 : f 1 = 2 := by decide
 
 /-- f(2) = 3: The sum-free subsets of {1,2} are {}, {1}, {2}.
     (Note: {1,2} is not sum-free since 1+1=2, but {1,2} requires 1+1=2 with repeated use;
     IsSumFree allows repetition, so {2} is fine but {1,2}: 1 ∈ A ∧ 1 ∈ A ∧ 2 ∈ A ∧ 1+1=2 fails.)
     Strategy: decide (or native_decide) — finite computation. -/
-theorem f_2 : f 2 = 3 := by
-  sorry
+theorem f_2 : f 2 = 3 := by decide
 
 /-- f(3) = 6: The sum-free subsets of {1,2,3} are {}, {1}, {2}, {3}, {1,3}, {2,3}.
     ({1,3} is not sum-free: 1+3=4 ∉ {1,3}, 1+1=2 ∉ {1,3}, 3+3=6 ∉ {1,3} — wait, it IS sum-free.
      {1,2}: 1+1=2 ∈ {1,2} — not sum-free. {1,2,3}: 1+2=3 ∈ set — not sum-free.)
     Strategy: decide (or native_decide) — finite computation. -/
-theorem f_3 : f 3 = 6 := by
-  sorry
+theorem f_3 : f 3 = 6 := by decide
 
 end Erdos748Aristotle
