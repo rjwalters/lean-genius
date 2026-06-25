@@ -1,0 +1,76 @@
+{
+  "id": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+  "title": "Two-Sided Sandwich for the p-Series Tail",
+  "slug": "antitone-integral-sum-comparison-oq-01-oq-01-oq-02-oq-01",
+  "description": "Answers the parent's open question by proving the matching LOWER bound for the p-series tail and assembling the two-sided sandwich. Where the parent bounded the remainder from above via the right Riemann sum (∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} dx = N^{1−p}/(p−1)), this entry runs the antitone integral test in its LEFT-Riemann form (AntitoneOn.integral_le_sum): a decreasing function over-estimates its integral on left endpoints, so ∑_{n>N} 1/nᵖ ≥ ∫_{N+1}^∞ x^{−p} dx = (N+1)^{1−p}/(p−1). Passing the uniform partial-sum lower bound to the limit (le_of_tendsto', with the subtracted endpoint term (N+1+m)^{1−p} → 0 by tendsto_rpow_neg_atTop) gives the tail floor, and combining with the parent's ceiling yields (N+1)^{1−p}/(p−1) ≤ ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1). Both flanks have leading order N^{1−p}, pinning the remainder's exact asymptotic order. For the Basel exponent p=2 the sandwich is 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 worked witnesses, 0 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Integral_test_for_convergence",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "integral-test",
+      "p-series",
+      "remainder-bound",
+      "rate-of-convergence",
+      "tail-estimate",
+      "sandwich",
+      "tsum",
+      "convergence"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (only the foundational propext / Classical.choice / Quot.sound).",
+    "lineCount": 194,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "originalContributions": [
+      "pseries_tail_partial_ge: every finite tail ∑_{i<m} 1/(N+1+i)ᵖ dominates the integral ∫_{N+1}^{N+1+m} x^{−p} dx = ((N+1)^{1−p} − (N+1+m)^{1−p})/(p−1) — the antitone integral test in its LEFT-Riemann form (AntitoneOn.integral_le_sum) applied to 1/xᵖ on [N+1, N+1+m], with the integral computed by integral_rpow",
+      "pseries_tail_tsum_ge: passing the uniform partial-sum lower bound to the limit via le_of_tendsto' gives (N+1)^{1−p}/(p−1) ≤ ∑'_{i} 1/(N+1+i)ᵖ; the subtracted endpoint term (N+1+m)^{1−p} → 0 because 1−p < 0 (tendsto_rpow_neg_atTop), and each partial sum is ≤ the tsum (Summable.sum_le_tsum)",
+      "pseries_tail_ge_explicit: rewrites the floor in the textbook form 1/((p−1)·(N+1)^{p−1}), exhibiting the matching O(N^{1−p}) order from below",
+      "pseries_tail_sandwich: the two-sided bound (N+1)^{1−p}/(p−1) ≤ ∑'_{i} 1/(N+1+i)ᵖ ≤ N^{1−p}/(p−1), combining the new lower bound with the parent's pseries_tail_tsum_le — the remainder is pinned between two consecutive values of the same primitive x ↦ x^{1−p}/(p−1)",
+      "Worked witnesses: the Basel-exponent sandwich 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N for all N ≥ 1, and the concrete floor 1/11 ≤ ∑_{n>10} 1/n²"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The integral test pins a tail between two integrals of the same monotone integrand. The parent entry used only the upper half — the right Riemann sum under-estimates the integral, giving ∑_{n>N} 1/nᵖ ≤ ∫_N^∞ x^{−p} = N^{1−p}/(p−1). The classical 'integral remainder' estimate is genuinely TWO-sided: the left Riemann sum over-estimates the integral, so the same tail is bounded BELOW by ∫_{N+1}^∞ x^{−p} = (N+1)^{1−p}/(p−1). The two bounds straddle the tail with the same leading order N^{1−p}, which is what certifies that N^{1−p}/(p−1) is the true asymptotic size of the remainder, not merely an upper estimate. This sandwich is the standard tool for both truncating ζ(p) = ∑ 1/nᵖ to N terms AND certifying the truncation is not wasteful.",
+    "problemStatement": "Derive the matching lower bound for the p-series tail and assemble the two-sided sandwich: for p > 1 and N ≥ 1, (N+1)^{1−p}/(p−1) ≤ ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1).",
+    "text": "Apply the antitone integral test to f(x) = 1/xᵖ on [N+1, N+1+m], but now in its left-Riemann form: AntitoneOn.integral_le_sum says ∫_{N+1}^{N+1+m} x^{−p} dx ≤ ∑_{i<m} 1/(N+1+i)ᵖ (left endpoints of a decreasing function over-estimate the integral). The integral equals ((N+1)^{1−p} − (N+1+m)^{1−p})/(p−1). As m → ∞ the subtracted term (N+1+m)^{1−p} → 0 (since 1−p < 0), so the partial-sum lower bounds increase up to (N+1)^{1−p}/(p−1); since each partial sum is ≤ the full tail tsum, the limit (N+1)^{1−p}/(p−1) is ≤ the tail. Pairing this floor with the parent's ceiling N^{1−p}/(p−1) gives the sandwich. The textbook form 1/((p−1)·(N+1)^{p−1}) follows from (N+1)^{1−p} = 1/(N+1)^{p−1}.",
+    "proofStrategy": "pseries_tail_partial_ge mirrors the parent's pseries_tail_partial_le but starts the comparison at base N+1 and uses AntitoneOn.integral_le_sum (left Riemann sum) instead of AntitoneOn.sum_le_integral: 1/xᵖ is antitone on [N+1, N+1+m] (one_div_le_one_div_of_le with Real.rpow_le_rpow), the integral is evaluated by integral_rpow after rewriting 1/xᵖ = x^{−p} (intervalIntegral.integral_congr), and the value is matched to ((N+1)^{1−p} − (N+1+m)^{1−p})/(p−1) (field_simp; ring). pseries_tail_tsum_ge defines u m = that integral value and shows (i) u m ≤ tsum for all m, via the partial bound followed by Summable.sum_le_tsum (summability of the shifted series from summable_nat_add_iff applied to Real.summable_one_div_nat_rpow), and (ii) u m → (N+1)^{1−p}/(p−1), via tendsto_rpow_neg_atTop composed with the divergence of N+1+m and Tendsto.sub / Tendsto.div_const; le_of_tendsto' then gives the floor. pseries_tail_ge_explicit rewrites (N+1)^{1−p}/(p−1) = 1/((p−1)·(N+1)^{p−1}) via Real.rpow_neg and field_simp. pseries_tail_sandwich pairs the floor with the parent's pseries_tail_tsum_le. Two example witnesses specialize to p=2.",
+    "keyInsights": [
+      "Symmetry of the integral test: the SAME antitone integrand gives an upper bound from the right Riemann sum (base N) and a lower bound from the left Riemann sum (base N+1)",
+      "AntitoneOn.integral_le_sum is the missing left-endpoint half: a decreasing function over-estimates its integral when sampled at left endpoints, so the integral underestimates the tail partial sum",
+      "Passing a one-sided LOWER bound to the limit needs le_of_tendsto' (each partial sum ≤ tsum, and the lower bounds converge UP to the floor) — the dual of the parent's Real.tsum_le_of_sum_range_le",
+      "The subtracted far-endpoint term (N+1+m)^{1−p} vanishes precisely because p > 1 makes the exponent 1−p negative (tendsto_rpow_neg_atTop), the same hypothesis that makes the series converge",
+      "Both flanks of the sandwich are consecutive values N^{1−p}/(p−1) and (N+1)^{1−p}/(p−1) of one primitive, so the remainder's leading order is exactly N^{1−p} — pinned, not merely bounded",
+      "For p = 2 the sandwich collapses to 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N, the textbook two-sided rate for truncating the Basel series"
+    ],
+    "prerequisites": [
+      "The antitone integral-test sandwich (AntitoneOn.integral_le_sum and AntitoneOn.sum_le_integral) from the parent entries",
+      "Interval integrals of real powers (integral_rpow) and real powers (rpow, Real.rpow_neg)",
+      "Limits at infinity of negative powers (tendsto_rpow_neg_atTop) and passing inequalities through limits (le_of_tendsto')",
+      "Partial sums bounded by the tsum (Summable.sum_le_tsum) and the shifted p-series summability criterion (summable_nat_add_iff, Real.summable_one_div_nat_rpow)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The p-series tail is sandwiched: for p > 1 and N ≥ 1, (N+1)^{1−p}/(p−1) ≤ ∑_{n>N} 1/nᵖ ≤ N^{1−p}/(p−1). The lower bound is the antitone integral test in left-Riemann form (∫_{N+1}^∞) passed to the limit; the upper bound is the parent's right-Riemann estimate (∫_N^∞). The Basel exponent gives 1/(N+1) ≤ ∑_{n>N} 1/n² ≤ 1/N. 4 theorems, 2 witnesses, 0 definitions, 194 lines, 0 sorries, 0 axioms.",
+    "implications": "Upgrades the parent's one-sided remainder bound to a two-sided estimate, certifying that N^{1−p}/(p−1) is the exact leading order of the truncation error of ζ(p), not just an upper bound. The base-shift technique (run the left-Riemann comparison from x = N+1) produces matching lower bounds for any antitone summand whose integral can be evaluated.",
+    "openQuestions": [
+      "Refine the sandwich to a leading-order asymptotic ∑_{n>N} 1/nᵖ = N^{1−p}/(p−1) + O(N^{−p}) by also estimating the gap between the two integrals (an Euler–Maclaurin first-order correction)",
+      "Specialize at integer p to explicit rational two-sided error bounds for ζ(2), ζ(4), … and compare against the exact values π²/6, π⁴/90"
+    ]
+  },
+  "leanFile": {
+    "namespace": "AntitoneIntegralSumComparisonOQ01OQ01OQ02OQ01",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/AntitoneIntegralSumComparisonOQ01OQ01OQ02OQ01.lean",
+    "sorries": 0
+  }
+}
