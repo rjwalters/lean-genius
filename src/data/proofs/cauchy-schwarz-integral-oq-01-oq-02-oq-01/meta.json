@@ -74,7 +74,32 @@
       "Mathlib's Complex.HadamardThreeLines API"
     ]
   },
-  "sections": [],
+  "sections": [
+    {
+      "id": "strip-geometry",
+      "title": "Strip Geometry and the Interpolated Bound",
+      "startLine": 52,
+      "endLine": 65,
+      "summary": "Five definitions reproducing the parent entry's conventions verbatim: closedStrip {0 ≤ Re z ≤ 1}, openStrip {0 < Re z < 1}, leftBoundary {Re z = 0}, rightBoundary {Re z = 1}, and interpNorm θ M₀ M₁ = M₀^(1-θ)·M₁^θ. Using identical definitions is what lets the theorem below replace the parent's axiom verbatim.",
+      "mathContext": "$\\mathrm{interpNorm}(\\theta, M_0, M_1) = M_0^{1-\\theta} M_1^{\\theta}$ on the strip $0 \\le \\operatorname{Re} z \\le 1$."
+    },
+    {
+      "id": "three-lines-theorem",
+      "title": "Hadamard Three-Lines as a Theorem",
+      "startLine": 67,
+      "endLine": 119,
+      "summary": "hadamard_three_lines: the parent's axiom, now proved. Given F continuous on the closed strip, holomorphic and uniformly bounded on the open strip, with ‖F‖ ≤ M₀ on Re z = 0 and ≤ M₁ on Re z = 1, then ‖F(t+iy)‖ ≤ M₀^(1-t)·M₁^t. The body is hypothesis translation to Mathlib's verticalStrip API (closedStrip = verticalClosedStrip 0 1; DiffContOnCl from continuity+holomorphy via closure_preimage_re + closure_Ioo; uniform bound ⇒ BddAbove; boundary bounds in re⁻¹'{0}/re⁻¹'{1} form), then norm_le_interp_of_mem_verticalClosedStrip₀₁'.",
+      "mathContext": "$\\|F(t+iy)\\| \\le M_0^{1-t} M_1^{t}$ for $0 \\le t \\le 1$ (maximum-modulus principle on the strip)."
+    },
+    {
+      "id": "log-convexity-form",
+      "title": "Logarithmic Convexity Form",
+      "startLine": 121,
+      "endLine": 142,
+      "summary": "hadamard_three_lines_log: taking logs of the multiplicative bound gives log‖F(t+iy)‖ ≤ (1-t)·log M₀ + t·log M₁ (when F(t+iy) ≠ 0), via Real.log_le_log on the main bound and Real.log_mul/Real.log_rpow to expand log(interpNorm). This convexity-of-log‖F‖ form is the statement actually used to interpolate operator norms in Riesz–Thorin.",
+      "mathContext": "$\\log\\|F(t+iy)\\| \\le (1-t)\\log M_0 + t\\log M_1$ — convexity of $t \\mapsto \\log\\|F\\|$ along the strip."
+    }
+  ],
   "conclusion": {
     "summary": "The Hadamard three-lines lemma — assumed as an axiom in the parent Riesz–Thorin-from-Hölder entry — is proved here as a fully machine-checked theorem (0 axioms, 0 sorries) by deriving it from Mathlib's Complex.HadamardThreeLines, with a statement identical to the parent's axiom so it can replace it verbatim. The logarithmic convexity form used for operator-norm interpolation is also provided.",
     "implications": [
