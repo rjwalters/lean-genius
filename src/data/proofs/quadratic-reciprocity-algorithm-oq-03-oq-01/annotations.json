@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-docstring-scope",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "The Zolotarev Headline and an Honest Scope Note",
+    "content": "The module docstring frames this file as the capstone of the permutation-sign (Zolotarev) route to quadratic reciprocity. The parent Milestone 2 (entry quadratic-reciprocity-algorithm-oq-03) proved the primality-free combinatorial fact $\\mathrm{sign}(\\mathrm{gridTranspose}\\,p\\,q) = (-1)^{((p-1)/2)\\cdot((q-1)/2)}$ from its inversion count $\\binom{p}{2}\\binom{q}{2}$ — a closed form Mathlib lacks. This file records the headline: that this sign *is* the reciprocity factor, $\\mathrm{legendreSym}\\,q\\,p \\cdot \\mathrm{legendreSym}\\,p\\,q = (\\mathrm{sign}(\\mathrm{gridTranspose}\\,p\\,q):\\mathbb{Z})$. The docstring is scrupulous about scope: the *arithmetic* equality of the two $\\pm 1$ factors is Mathlib's `legendreSym.quadratic_reciprocity`, so this is NOT an independent re-derivation of reciprocity — hence the 'mathlib' badge.",
+    "mathContext": "$\\left(\\tfrac{q}{p}\\right)\\left(\\tfrac{p}{q}\\right) = \\mathrm{sign}(\\mathrm{gridTranspose}\\,p\\,q)$",
+    "significance": "context",
+    "relatedConcepts": ["Zolotarev's lemma", "quadratic reciprocity", "permutation sign", "Legendre symbol", "grid transpose"],
+    "prerequisites": ["quadratic reciprocity", "permutations and sign"]
+  },
+  {
+    "id": "ann-imports",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+    "range": { "startLine": 35, "endLine": 40 },
+    "type": "context",
+    "title": "Imports: Mathlib and the Parent Milestone",
+    "content": "`import Mathlib` brings in `legendreSym`, `legendreSym.quadratic_reciprocity`, the `Equiv.Perm.sign` homomorphism, and the `Units` coercion lemmas. `import Proofs.QuadraticReciprocityAlgorithmOQ03M2` supplies the parent's two key objects reused here: the explicit permutation `gridTranspose p q` of `Fin (p*q)` and its computed sign `sign_gridTranspose`. Reopening `namespace QuadraticReciprocityAlgorithmOQ03M2` places this capstone in the same namespace as the parent's lemmas so `gridTranspose` and `sign_gridTranspose` resolve unqualified; `open Equiv` brings `Perm.sign` into scope.",
+    "mathContext": "$\\mathrm{gridTranspose}\\,p\\,q : \\mathrm{Perm}(\\mathrm{Fin}(pq))$",
+    "significance": "technical",
+    "relatedConcepts": ["module dependencies", "namespace reuse", "Equiv.Perm", "Legendre symbol in Mathlib"],
+    "prerequisites": ["Lean 4 module system"]
+  },
+  {
+    "id": "ann-exponent-bridge",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+    "range": { "startLine": 42, "endLine": 47 },
+    "type": "technique",
+    "title": "The Odd-Exponent Bridge: n/2 = (n−1)/2",
+    "content": "The only real friction between the two halves is a bookkeeping mismatch in how the reciprocity exponent is written: Mathlib's `quadratic_reciprocity` produces $(-1)^{(p/2)\\cdot(q/2)}$ while Milestone 2's inversion count yields $(-1)^{((p-1)/2)\\cdot((q-1)/2)}$. `odd_div_two_eq` reconciles them: for odd $n$, integer division satisfies $n/2 = (n-1)/2$. The proof destructures `Odd n` into $n = 2k+1$ and closes with `omega`, which reasons natively about integer (floor) division by the literal 2. This is a small but essential lemma — without it the two exponent forms would not be syntactically rewritable into one another.",
+    "mathContext": "$n \\text{ odd} \\;\\Rightarrow\\; \\lfloor n/2\\rfloor = \\lfloor (n-1)/2\\rfloor$",
+    "significance": "supporting",
+    "relatedConcepts": ["integer division", "odd numbers", "omega tactic", "exponent normalization"],
+    "prerequisites": ["natural-number division", "omega decision procedure"]
+  },
+  {
+    "id": "ann-capstone-statement",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+    "range": { "startLine": 49, "endLine": 63 },
+    "type": "definition",
+    "title": "The Capstone Statement",
+    "content": "`legendreSym_mul_eq_sign_gridTranspose` states the headline for distinct odd primes $p, q$ (encoded as `[Fact p.Prime]`, `[Fact q.Prime]` plus $p\\neq 2$, $q\\neq 2$, $p\\neq q$): the product $\\mathrm{legendreSym}\\,q\\,p \\cdot \\mathrm{legendreSym}\\,p\\,q$ equals the grid-transpose sign cast from $\\mathbb{Z}^\\times$ to $\\mathbb{Z}$. The double coercion `((Perm.sign (gridTranspose p q) : ℤˣ) : ℤ)` matters: `Perm.sign` lands in the units $\\mathbb{Z}^\\times = \\{\\pm 1\\}$, and the Legendre product lives in $\\mathbb{Z}$, so the units value must be pushed into $\\mathbb{Z}$. The hypotheses are exactly those `sign_gridTranspose` and `odd_div_two_eq` need (oddness) and those Mathlib's reciprocity needs (distinct odd primes).",
+    "mathContext": "$\\mathrm{legendreSym}\\,q\\,p \\cdot \\mathrm{legendreSym}\\,p\\,q = \\big((\\mathrm{sign}\\,(\\mathrm{gridTranspose}\\,p\\,q):\\mathbb{Z}^\\times):\\mathbb{Z}\\big)$",
+    "significance": "key",
+    "relatedConcepts": ["Legendre symbol", "Fact typeclass", "units coercion", "permutation sign"],
+    "prerequisites": ["Legendre symbols for odd primes", "ℤˣ vs ℤ"]
+  },
+  {
+    "id": "ann-proof-assembly",
+    "proofId": "quadratic-reciprocity-algorithm-oq-03-oq-01",
+    "range": { "startLine": 64, "endLine": 71 },
+    "type": "technique",
+    "title": "Assembling the Two Halves",
+    "content": "The proof is a single rewrite chain. First `Nat.Prime.eq_two_or_odd'` (via `.resolve_left`) turns each `p ≠ 2` into `Odd p`. Then the goal is rewritten on both sides: `legendreSym.quadratic_reciprocity` collapses the left side to $(-1)^{(p/2)\\cdot(q/2)}$, while `sign_gridTranspose` rewrites the right side to the $\\mathbb{Z}^\\times$-cast of $(-1)^{((p-1)/2)\\cdot((q-1)/2)}$. Two applications of `odd_div_two_eq` align the exponents, `Units.val_pow_eq_pow_val` pushes the $\\mathbb{Z}^\\times \\to \\mathbb{Z}$ coercion through the power, and `norm_num` collapses $((-1:\\mathbb{Z}^\\times):\\mathbb{Z}) = -1$ to close the goal. The conceptual payoff: the reciprocity factor is now a single, concretely computable permutation sign.",
+    "mathContext": "$(-1)^{p/2\\cdot q/2} \\;\\xrightarrow{\\text{odd}}\\; (-1)^{((p-1)/2)((q-1)/2)} = \\mathrm{sign}(\\mathrm{gridTranspose}\\,p\\,q)$",
+    "significance": "key",
+    "relatedConcepts": ["rewrite tactics", "norm_num", "Units.val_pow_eq_pow_val", "quadratic reciprocity factor"],
+    "prerequisites": ["Lean rewriting", "units in ℤ"]
+  }
+]
