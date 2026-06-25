@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "herons-formula-oq-06-oq-02",
+    "range": { "startLine": 1, "endLine": 44 },
+    "type": "context",
+    "title": "Gerretsen's Inequality and the Ravi-SOS Engine",
+    "content": "Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² (J. C. H. Gerretsen, 1953) sharpens Euler's R ≥ 2r and, with its companion s² ≥ 16Rr − 5r² and Blundon's bounds, pins down the fundamental constraints among a triangle's semi-perimeter s, circumradius R and inradius r. This entry answers the parent Euler-inequality entry's open question: does the same Ravi-substitution sum-of-squares engine extend to Gerretsen? With x = s−a, y = s−b, z = s−c (all positive for a nondegenerate triangle), a = y+z, b = z+x, c = x+y, Area² = s·xyz, the whole inequality reduces to the area-free 0 ≤ gerretsenPoly x y z. Equality holds at x=y=z (equilateral), matching the classical sharpness.",
+    "mathContext": "$s^2 \\le 4R^2 + 4Rr + 3r^2$, with $R = \\frac{abc}{4\\,\\mathrm{Area}}$, $r = \\frac{\\mathrm{Area}}{s}$, and the Ravi variables $x=s-a,\\ y=s-b,\\ z=s-c > 0$.",
+    "significance": "context",
+    "relatedConcepts": ["Gerretsen's inequality", "Euler's inequality", "Ravi substitution", "Blundon's inequality", "fundamental triangle inequalities"],
+    "prerequisites": ["triangle geometry", "circumradius and inradius", "Heron's formula"]
+  },
+  {
+    "id": "ann-gerretsen-poly",
+    "proofId": "herons-formula-oq-06-oq-02",
+    "range": { "startLine": 52, "endLine": 63 },
+    "type": "definition",
+    "title": "The Area-Free Polynomial gerretsenPoly",
+    "content": "gerretsenPoly x y z = ((x+y)(y+z)(z+x))² + 4xyz·(x+y)(y+z)(z+x) + 12(xyz)² − 4(x+y+z)³·xyz is the polynomial whose nonnegativity IS Gerretsen's inequality: the geometric slack (4R²+4Rr+3r²) − s² equals gerretsenPoly(s−a,s−b,s−c)/(4·Area²). Reducing a geometric inequality to a single symmetric polynomial in the Ravi variables is the central move — it removes R, r, and the area entirely.",
+    "mathContext": "$\\mathrm{gerretsenPoly}(x,y,z) = ((x{+}y)(y{+}z)(z{+}x))^2 + 4xyz(x{+}y)(y{+}z)(z{+}x) + 12(xyz)^2 - 4(x{+}y{+}z)^3 xyz$.",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetric polynomial", "Ravi substitution", "polynomial certificate"],
+    "prerequisites": ["multivariate polynomials", "symmetric functions"]
+  },
+  {
+    "id": "ann-ordered-core",
+    "proofId": "herons-formula-oq-06-oq-02",
+    "range": { "startLine": 65, "endLine": 86 },
+    "type": "insight",
+    "title": "The Schur-Type Core Under a WLOG Ordering",
+    "content": "gerretsen_core_ordered proves 0 ≤ gerretsenPoly under z ≤ y ≤ x via the explicit certificate gerretsenPoly = Σ x⁴(y−z)² + 2[x²(y−z)²(xy+xz−yz) + y²z²(x−y)(x−z)]. The genuinely Schur-type ingredient is xy+xz−yz: it is NEGATIVE for some signed inputs, so unlike the parent's pure AM-GM Euler core, positivity of x,y,z is mathematically essential here. The ordering makes it manifestly nonnegative because xy+xz−yz = y² + (x−y)(y+z) ≥ 0 and (x−y)(x−z) ≥ 0; nlinarith then combines the nonnegative summands. This Schur step is the new mathematical content distinguishing Gerretsen from Euler.",
+    "mathContext": "$xy+xz-yz = y^2 + (x-y)(y+z) \\ge 0$ when $y \\le x$; certificate $\\sum x^4(y-z)^2 + 2x^2(y-z)^2(xy{+}xz{-}yz) + 2y^2z^2(x-y)(x-z)$.",
+    "significance": "key",
+    "relatedConcepts": ["Schur's inequality", "sum of squares", "WLOG ordering", "nlinarith", "positivity certificate"],
+    "prerequisites": ["Schur-type inequalities", "SOS decompositions"]
+  },
+  {
+    "id": "ann-core-symmetry",
+    "proofId": "herons-formula-oq-06-oq-02",
+    "range": { "startLine": 88, "endLine": 111 },
+    "type": "technique",
+    "title": "Symmetry Closes All Six Orderings",
+    "content": "gerretsen_core lifts the ordered lemma to all nonnegative x,y,z: since gerretsenPoly is symmetric, every one of the 3! = 6 orderings of {x,y,z} is handled by feeding the appropriately-permuted hypotheses into gerretsen_core_ordered (le_total dichotomies enumerate the cases, nlinarith discharges each). This is the standard 'WLOG by symmetry' pattern made fully explicit, avoiding any unproven appeal to symmetry.",
+    "mathContext": "$\\mathrm{gerretsenPoly}$ is symmetric in $x,y,z$, so $0 \\le \\mathrm{gerretsenPoly}$ on all of $\\mathbb{R}_{\\ge 0}^3$ follows from the single ordered case $z \\le y \\le x$.",
+    "significance": "supporting",
+    "relatedConcepts": ["symmetry", "case analysis", "le_total", "WLOG reduction"],
+    "prerequisites": ["symmetric polynomials", "total order trichotomy"]
+  },
+  {
+    "id": "ann-area-free-rewrites",
+    "proofId": "herons-formula-oq-06-oq-02",
+    "range": { "startLine": 113, "endLine": 143 },
+    "type": "technique",
+    "title": "Eliminating the Area: Only Area² Appears",
+    "content": "circumradius_sq (R² = (abc)²/(16·Area²)), inradius_sq (r² = Area²/s²) and circumradius_mul_inradius (the area-free cross term R·r = abc/(4s)) rewrite all three terms so that only the SQUARE Area² ever occurs — never a bare Area. This is the crucial structural fact: substituting Heron's Area² = heronProduct (via the parent's area_sq) clears every square root in one step, turning the transcendental-looking inequality into a rational/polynomial one.",
+    "mathContext": "$R^2 = \\frac{(abc)^2}{16\\,\\mathrm{Area}^2},\\quad r^2 = \\frac{\\mathrm{Area}^2}{s^2},\\quad Rr = \\frac{abc}{4s}$ — only $\\mathrm{Area}^2$ appears, so Heron removes all roots.",
+    "significance": "key",
+    "relatedConcepts": ["Heron's formula", "circumradius formula", "inradius formula", "square-root elimination"],
+    "prerequisites": ["radius formulas", "Heron's identity"]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "herons-formula-oq-06-oq-02",
+    "range": { "startLine": 145, "endLine": 183 },
+    "type": "theorem",
+    "title": "Gerretsen's Inequality via the Slack Identity",
+    "content": "gerretsen assembles the pieces: the exact closed-form slack identity (4R²+4Rr+3r²) − s² = gerretsenPoly(s−a,s−b,s−c)/(4·heronProduct) is established by rewriting the three radius terms and closing with field_simp + ring; nonnegativity of the numerator (gerretsen_core) and positivity of the denominator (heronProduct > 0) then give the inequality by linarith. The transparent slack identity also exposes the equality case directly: equality ⟺ gerretsenPoly = 0 ⟺ x = y = z ⟺ the triangle is equilateral.",
+    "mathContext": "$(4R^2 + 4Rr + 3r^2) - s^2 = \\dfrac{\\mathrm{gerretsenPoly}(s-a,s-b,s-c)}{4\\,\\mathrm{heronProduct}} \\ge 0$, equality iff equilateral.",
+    "significance": "key",
+    "relatedConcepts": ["slack identity", "field_simp", "equality case", "equilateral triangle"],
+    "prerequisites": ["the algebraic core", "the area-free rewrites", "Heron's formula"]
+  }
+]
