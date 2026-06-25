@@ -3763,6 +3763,7 @@ import Proofs.VietaGeneralOQ030505OQ01
 import Proofs.SolutionOfCubicOQ05
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ01
+import Proofs.SophieGermainOQ01OQ02
 import Proofs.SophieGermainOQ02
 import Proofs.SophieGermainOQ03
 import Proofs.SophieGermainOQ04
