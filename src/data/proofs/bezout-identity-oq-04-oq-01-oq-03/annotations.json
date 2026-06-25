@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-diag-core",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-03",
+    "range": { "startLine": 93, "endLine": 127 },
+    "type": "technique",
+    "title": "The diagonal core: solvability is entrywise divisibility",
+    "content": "**`diag_solvable_iff`**: for a rectangular *diagonal* `D`, the system `D ·ᵥ y = c` is solvable over `ℤ` iff `dEntry D i ∣ c i` for every row `i`.\n\nOver `ℤ` a single divisibility already encodes both branches of the classical criterion: when `dEntry D i ≠ 0` it is ordinary divisibility, and when `dEntry D i = 0` it is exactly `c i = 0` (since `0 ∣ x ↔ x = 0`). The **forward** direction reads divisibility off a given solution; the **backward** direction builds the witness column vector entrywise, choosing `y` on each in-range column by integer division `c / d` and closing the divisibility equation with `Int.mul_ediv_cancel'`. Out-of-range rows and columns (the rectangular slack when `m ≠ n`) carry diagonal entry `0`, where `0 ∣ c` forces `c = 0` and the contribution vanishes."
+  },
+  {
+    "id": "ann-derive-criterion",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-03",
+    "range": { "startLine": 146, "endLine": 172 },
+    "type": "insight",
+    "title": "Deriving snf_solvability_criterion from snf_exists",
+    "content": "**`diophantine_solvable_iff`**: assuming only the decomposition `A = U · D · V` (the content of the parent's `snf_exists` axiom), the solvability criterion is a *theorem*, not a second axiom.\n\nThe reduction is three reversible moves: (1) `A ·ᵥ x = b ↔ U ·ᵥ (D ·ᵥ (V ·ᵥ x)) = b` by associativity (`mulVec_mulVec`); (2) strip `U` by left-multiplying with `U⁻¹` (`nonsing_inv_mul`, valid over `ℤ` because `det U = ±1` is a unit), turning the right side into `U⁻¹ ·ᵥ b`; (3) strip `V` by the change of variable `y = V ·ᵥ x`, a bijection of `ℤⁿ` since `V` is invertible. What remains is the diagonal system handled by `diag_solvable_iff`. **Consequence:** the parent entry's honest axiom count drops from 2 to 1 — only matrix-form SNF *existence* still needs to be assumed."
+  },
+  {
+    "id": "ann-convention",
+    "proofId": "bezout-identity-oq-04-oq-01-oq-03",
+    "range": { "startLine": 188, "endLine": 201 },
+    "type": "insight",
+    "title": "Convention correction: U⁻¹·b, not U·b",
+    "content": "**`diophantine_solvable_iff_branches`** restates the criterion in the parent axiom's exact two-pronged shape `(d ≠ 0 → d ∣ c) ∧ (d = 0 → c = 0)` (shown equal to `d ∣ c` over `ℤ` by `int_dvd_iff_branches`), so the comparison with `snf_solvability_criterion` is line-for-line.\n\nCarrying the proof through pins the transformed right-hand side to the *genuine inverse* `U⁻¹ ·ᵥ b` for the convention `A = U · D · V`. The parent's axiom writes `snf.U ·ᵥ b`; under `A = U·D·V` that is the `U⁻¹` of this convention, so the axiom as stated is convention-inconsistent. The derived theorem is the corrected form."
+  }
+]
