@@ -1,0 +1,216 @@
+{
+  "id": "hilbert-17-oq-02",
+  "title": "Hilbert's 17th: Quantifying the PSD/SOS Gap — the Choi–Lam Form and Its Degree-2 Denominator Certificate",
+  "slug": "hilbert-17-oq-02",
+  "description": "The Choi–Lam form CL(x,y,z) = x⁴y² + y⁴z² + z⁴x² − 3x²y²z² (Choi–Lam, 1977) is the genuine homogeneous member of the positive-semidefinite (PSD) / sum-of-squares (SOS) gap on ℝ³: it is non-negative everywhere yet is not a sum of squares of polynomials (no degree-6 SOS certificate exists, precisely because the underlying inequality x⁴y² + y⁴z² + z⁴x² ≥ 3x²y²z² is the three-term AM–GM, which has no polynomial SOS proof). The gallery's existing canonical gap members are the affine Motzkin polynomial and Robinson's form; this entry adds the homogeneous ternary form and, more importantly, QUANTIFIES the gap with a sharp, fully explicit certificate. By Artin's theorem CL is a sum of squares of rational functions; the complexity of that certificate is pinned down here by an explicit DEGREE-2 DENOMINATOR: multiplying CL by the single quadratic x² + y² + z² yields an honest polynomial sum of squares — (x²+y²+z²)·CL = (x³y−xyz²)² + (y³z−x²yz)² + (z³x−xy²z)² + ½[(x²y²−y²z²)² + (y²z²−z²x²)² + (z²x²−x²y²)²] — verified by ring. So the PSD/SOS gap for CL is bridged by a multiplier of degree exactly 2, the minimal possible since CL is not SOS. From the identity we deduce PSD-ness (dividing by the strictly-positive multiplier off the origin) and the sharp threshold: x⁴y² + y⁴z² + z⁴x² − c·x²y²z² is PSD on ℝ³ ⟺ c ≤ 3, in both real-function and MvPolynomial (Fin 3) ℝ forms. Everything is 0-axiom. The non-SOS-ness itself is the classical Choi–Lam fact established for the sibling Motzkin/Robinson forms by the Gram-matrix technique and is cited, not re-derived.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert17OQ02.lean",
+    "tags": [
+      "real-algebraic-geometry",
+      "sum-of-squares",
+      "hilbert-17",
+      "positive-polynomials",
+      "choi-lam-form",
+      "motzkin-polynomial",
+      "psd-sos-gap",
+      "positivstellensatz",
+      "am-gm-inequality",
+      "sharp-threshold",
+      "elementary-proof"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.eval",
+        "description": "Evaluation of a multivariate polynomial at a real point; bridges the polynomial object choiLamPoly to the real three-variable function choiLam via the ring-homomorphism simp lemmas (map_add, map_sub, map_mul, map_pow, eval_X, eval_C).",
+        "module": "Mathlib.Algebra.MvPolynomial.Eval"
+      },
+      {
+        "theorem": "mul_neg_of_pos_of_neg",
+        "description": "From 0 < x²+y²+z² and a hypothetical CL < 0 deduce (x²+y²+z²)·CL < 0, contradicting the SOS identity; this is the off-origin division step that transfers non-negativity from the product to CL itself.",
+        "module": "Mathlib.Algebra.Order.Ring.Defs"
+      },
+      {
+        "theorem": "sq_nonneg",
+        "description": "0 ≤ x² for all real x; combined with le_antisymm it pins x² = 0 in the origin case (x²+y²+z² = 0), where every monomial of CL then vanishes by ring.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "An explicit, machine-checked DEGREE-2 denominator certificate quantifying the PSD/SOS gap for the Choi–Lam form: (x²+y²+z²)·(x⁴y²+y⁴z²+z⁴x²−3x²y²z²) is written as an exact sum of six squares (three degree-4 squares plus a half-sum of three degree-4 squares), proved by ring. Since the form itself is not a sum of squares, this multiplier degree (2) is minimal — an explicit, sharp instance of Artin's rational-SOS theorem for the canonical homogeneous gap member.",
+      "Adds the genuine HOMOGENEOUS ternary member of the PSD/SOS gap to the gallery (the Choi–Lam cyclic form x⁴y²+y⁴z²+z⁴x²−3x²y²z²), complementing the existing affine Motzkin polynomial and Robinson's form, and proves it PSD on all of ℝ³ from the multiplier certificate rather than via the AM–GM inequality directly (which has no polynomial SOS proof).",
+      "Proves the SHARP PSD threshold of the homogeneous Choi–Lam family x⁴y²+y⁴z²+z⁴x²−c·x²y²z²: PSD on ℝ³ ⟺ c ≤ 3, so c = 3 is the extremal PSD coefficient — the genuine homogeneous analogue of the affine Motzkin threshold (sibling hilbert-17-oq-03-oq-05), in both real-function (choiLam_psd_iff) and MvPolynomial (choiLamPoly_psd_iff) forms."
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "Hilbert's 17th problem: positive-semidefinite (PSD) polynomials versus sums of squares (SOS), and Artin's theorem (every PSD polynomial is a sum of squares of rational functions).",
+      "The PSD/SOS gap for n ≥ 2 variables and the canonical counterexamples (Motzkin, Robinson, Choi–Lam).",
+      "Positivstellensatz / denominator certificates: multiplying a PSD form by a suitable SOS denominator to obtain a polynomial SOS.",
+      "The three-term AM–GM inequality and the fact that it has no polynomial sum-of-squares proof.",
+      "Evaluation of multivariate polynomials and the PSD predicate ∀ v, 0 ≤ eval v p."
+    ],
+    "lineCount": 195,
+    "relatedProblems": [
+      {
+        "id": "hilbert-17-oq-03-oq-05",
+        "relationship": "Sibling (affine threshold): proves the sharp PSD threshold c ≤ 3 for the AFFINE Motzkin family x⁴y²+x²y⁴+1−c·x²y². This entry is its genuine HOMOGENEOUS counterpart on ℝ³, where the AM–GM core has no polynomial SOS proof and a degree-2 multiplier is needed."
+      },
+      {
+        "id": "hilbert-17-oq-03-oq-02",
+        "relationship": "Sibling (non-SOS technique): proves the Motzkin polynomial is PSD but not a sum of squares via the Gram-matrix argument. The same technique establishes the non-SOS-ness of the Choi–Lam form cited (not re-derived) here, which is exactly what forces the multiplier degree to be ≥ 1."
+      },
+      {
+        "id": "hilbert-17-oq-03-oq-03",
+        "relationship": "Sibling (homogeneous ternary counterexample): Robinson's form on ℝ³, PSD but not SOS. The Choi–Lam form here is the other canonical homogeneous ternary gap member, with an explicit minimal denominator certificate."
+      },
+      {
+        "id": "hilbert-17-oq-03-oq-01",
+        "relationship": "Sibling (rational SOS side): an explicit rational-function SOS certificate for the affine Motzkin polynomial. This entry gives the analogous certificate for the homogeneous Choi–Lam form in the cleanest form — a single degree-2 polynomial multiplier."
+      },
+      {
+        "id": "hilbert-17",
+        "relationship": "Grandparent: states Artin's theorem and frames the open questions on deciding SOS membership and quantifying the PSD/SOS gap. This entry quantifies the gap for the canonical homogeneous example by an explicit minimal (degree-2) denominator certificate plus the sharp PSD threshold."
+      }
+    ],
+    "assumptions": "0 axioms. #print axioms reports only propext, Classical.choice, Quot.sound for the main results (multiplier_sos_identity, choiLam_three_nonneg, choiLam_psd_iff, choiLamPoly_psd_iff). No sorryAx, no native_decide / Lean.ofReduceBool. The non-SOS-ness of the Choi–Lam form is NOT asserted as a Lean theorem here (it is the classical Choi–Lam result, established for the sibling Motzkin/Robinson forms); only PSD-ness, the sharp threshold, and the explicit multiplier-SOS identity are machine-checked. The MvPolynomial PSD predicate IsPSDMv matches the parent entry's IsPositiveSemidefiniteMv definitionally.",
+    "theoremCount": 10,
+    "definitionCount": 3,
+    "additionalFiles": []
+  },
+  "leanFile": {
+    "lineCount": 195,
+    "namespace": "Hilbert17OQ02",
+    "opens": [
+      "MvPolynomial"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "substantiveTheoremCount": 5,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib"
+    ],
+    "path": "Proofs/Hilbert17OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 3,
+    "additionalFiles": []
+  },
+  "sorries": 0,
+  "mainTheorems": [
+    {
+      "name": "multiplier_sos_identity",
+      "type": "theorem",
+      "description": "The degree-2 denominator certificate (the heart): (x²+y²+z²)·CL equals an explicit sum of six squares — three degree-4 squares (x³y−xyz²)², (y³z−x²yz)², (z³x−xy²z)² plus the half-sum ½[(x²y²−y²z²)²+(y²z²−z²x²)²+(z²x²−x²y²)²]. Proved by ring. This quantifies the PSD/SOS gap: a single quadratic multiplier turns the non-SOS Choi–Lam form into a polynomial sum of squares.",
+      "leanType": "(x²+y²+z²) * choiLam 3 x y z = (x³y−xyz²)² + (y³z−x²yz)² + (z³x−xy²z)² + ((x²y²−y²z²)² + (y²z²−z²x²)² + (z²x²−x²y²)²)/2"
+    },
+    {
+      "name": "choiLam_psd_iff",
+      "type": "theorem",
+      "description": "Sharp PSD threshold (real form): the homogeneous Choi–Lam family x⁴y²+y⁴z²+z⁴x²−c·x²y²z² is non-negative on all of ℝ³ if and only if c ≤ 3. Thus c = 3 (the classical Choi–Lam form) is the extremal PSD member — the homogeneous analogue of the affine Motzkin threshold.",
+      "leanType": "(∀ x y z : ℝ, 0 ≤ choiLam c x y z) ↔ c ≤ 3"
+    },
+    {
+      "name": "choiLam_three_nonneg",
+      "type": "theorem",
+      "description": "The classical Choi–Lam form (c = 3) is PSD on all of ℝ³. Off the origin the strictly-positive multiplier x²+y²+z² divides out of the SOS identity; at the origin CL vanishes.",
+      "leanType": "0 ≤ choiLam 3 x y z"
+    },
+    {
+      "name": "choiLamPoly_psd_iff",
+      "type": "theorem",
+      "description": "Sharp PSD threshold (polynomial form): the trivariate polynomial choiLamPoly c is PSD (under IsPSDMv, matching the parent's IsPositiveSemidefiniteMv) if and only if c ≤ 3.",
+      "leanType": "IsPSDMv (choiLamPoly c) ↔ c ≤ 3"
+    },
+    {
+      "name": "multiplier_mul_nonneg",
+      "type": "theorem",
+      "description": "The product (x²+y²+z²)·CL is non-negative everywhere — it is a sum of squares by multiplier_sos_identity (closed by positivity).",
+      "leanType": "0 ≤ (x²+y²+z²) * choiLam 3 x y z"
+    },
+    {
+      "name": "three_is_sharp",
+      "type": "theorem",
+      "description": "Sharpness: 3 is the largest coefficient for which the Choi–Lam family is PSD — any PSD member has c ≤ 3 (the contrapositive fails at (1,1,1), where the value is 3 − c).",
+      "leanType": "(∀ x y z : ℝ, 0 ≤ choiLam c x y z) → c ≤ 3"
+    }
+  ],
+  "overview": {
+    "historicalContext": "Hilbert's 17th problem asks whether every polynomial non-negative on ℝⁿ is a sum of squares — of polynomials, or at least of rational functions. For n ≥ 2 the polynomial answer is no: Motzkin (1967) gave the first explicit counterexample, and Choi & Lam (1977) gave the clean cyclic homogeneous form CL(x,y,z) = x⁴y² + y⁴z² + z⁴x² − 3x²y²z², which is non-negative everywhere by the three-term AM–GM (x⁴y²·y⁴z²·z⁴x² = (x²y²z²)³) yet is not a sum of squares of polynomials. Artin (1927) had already proved every PSD polynomial is a sum of squares of RATIONAL functions; the modern quantitative question — central to semidefinite-programming approaches to polynomial optimization — is how complex the certificate must be, i.e. the degree of the denominator one must multiply by to reach a polynomial SOS. For the Choi–Lam form the answer is the minimum possible: degree 2.",
+    "problemStatement": "Quantify the PSD/SOS gap for the canonical homogeneous Choi–Lam form: exhibit an explicit minimal-degree denominator that certifies non-negativity, and determine exactly which coefficients c make the family x⁴y²+y⁴z²+z⁴x²−c·x²y²z² positive-semidefinite. The answers, all 0-axiom: (x²+y²+z²)·CL is an explicit sum of squares (degree-2 denominator, minimal since CL is not SOS), and the family is PSD on ℝ³ if and only if c ≤ 3.",
+    "proofStrategy": "The centerpiece is the ring identity multiplier_sos_identity expressing (x²+y²+z²)·CL as a sum of six squares; it is found by the standard decomposition into the three cyclic squares (x³y−xyz²)², (y³z−x²yz)², (z³x−xy²z)² (which collapse Σx⁶y² and the cross terms) leaving the remainder Σx⁴y⁴ − Σx⁴y²z² = ½Σ(x²y²−y²z²)², a Schur-type SOS. From it, positivity gives multiplier_mul_nonneg. PSD-ness of CL (choiLam_three_nonneg) follows by cases on x²+y²+z²: off the origin the multiplier is strictly positive so a hypothetical CL < 0 would make the product negative (mul_neg_of_pos_of_neg), contradicting the identity; at the origin x = y = z = 0 and CL = 0. The sharp threshold then follows: for c ≤ 3, choiLam c = choiLam 3 + (3−c)·x²y²z² ≥ 0; conversely evaluating at (1,1,1) gives 3 − c, forcing c ≤ 3. The MvPolynomial form is transported via an eval lemma identifying eval v (choiLamPoly c) with choiLam c (v 0) (v 1) (v 2).",
+    "keyInsights": [
+      "The PSD/SOS gap is QUANTIFIED by a denominator degree: a single quadratic multiplier x²+y²+z² (degree 2) converts the non-SOS Choi–Lam form into an explicit polynomial sum of squares. This degree is minimal because the form is not itself a sum of squares.",
+      "Unlike the affine Motzkin form (whose dehomogenization admits a direct nlinarith SOS certificate), the homogeneous Choi–Lam form has NO polynomial SOS proof of non-negativity — the multiplier is genuinely necessary, which is exactly what makes the certificate an honest quantification of the gap.",
+      "The explicit SOS decomposition is structurally transparent: three cyclic squares of cubics handle the x⁶y² and mixed terms, and a Schur-type half-sum ½Σ(x²y²−y²z²)² handles the remaining biquadratic deficit.",
+      "The Motzkin coefficient phenomenon recurs homogeneously: the family x⁴y²+y⁴z²+z⁴x²−c·x²y²z² is PSD exactly for c ≤ 3, the three-term AM–GM bound, so c = 3 is the extremal PSD member and the boundary at which SOS membership fails.",
+      "The result plugs directly into the hilbert-17 framing: it is stated both pointwise (choiLam_psd_iff) and as a polynomial statement under the parent's PSD predicate (choiLamPoly_psd_iff), via an explicit eval bridge."
+    ]
+  },
+  "conclusion": {
+    "summary": "A 195-line, 0-sorry, 0-axiom formalization that quantifies the PSD/SOS gap for the canonical homogeneous Choi–Lam form x⁴y²+y⁴z²+z⁴x²−3x²y²z²: an explicit ring-checked sum-of-squares identity for (x²+y²+z²)·CL exhibits a minimal degree-2 denominator certificate (Artin's theorem made concrete), from which PSD-ness and the sharp PSD threshold c ≤ 3 follow, in both real-function and MvPolynomial forms.",
+    "implications": "The entry gives, for a canonical homogeneous element of the PSD/SOS gap, an explicit and minimal answer to the quantitative form of Hilbert's 17th problem: degree-2 denominator suffices and is necessary. This complements the gallery's non-SOS results (Motzkin, Robinson) and the affine Motzkin threshold by supplying the genuine homogeneous member together with its certificate, and it locates the gap boundary exactly at the AM–GM coefficient c = 3."
+  },
+  "references": [
+    {
+      "title": "Hilbert's seventeenth problem — Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Hilbert%27s_seventeenth_problem"
+    },
+    {
+      "title": "M. D. Choi and T. Y. Lam, Extremal positive semidefinite forms (1977)",
+      "url": "https://link.springer.com/article/10.1007/BF01420249"
+    },
+    {
+      "title": "B. Reznick, Some concrete aspects of Hilbert's 17th problem (1996)",
+      "url": "https://www.ams.org/books/conm/253/"
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "hilbert-17-oq-03-oq-05",
+      "relationship": "complements",
+      "description": "Sibling (affine threshold): the sharp PSD threshold c ≤ 3 for the affine Motzkin family. This entry is the homogeneous counterpart, where a degree-2 multiplier is genuinely required because the AM–GM core has no polynomial SOS proof."
+    },
+    {
+      "proofId": "hilbert-17-oq-03-oq-03",
+      "relationship": "complements",
+      "description": "Sibling (homogeneous ternary counterexample): Robinson's PSD-but-not-SOS form on ℝ³. The Choi–Lam form here is the other canonical homogeneous ternary gap member, supplied with an explicit minimal denominator certificate."
+    },
+    {
+      "proofId": "hilbert-17",
+      "relationship": "extends",
+      "description": "Grandparent: frames Artin's theorem and the open question of quantifying the PSD/SOS gap. This entry gives an explicit, minimal (degree-2) denominator certificate for the canonical homogeneous example, plus the sharp PSD threshold."
+    }
+  ],
+  "sections": [
+    {
+      "id": "form-and-certificate",
+      "title": "The Choi–Lam Form and the Degree-2 Multiplier Certificate",
+      "startLine": 56,
+      "endLine": 85,
+      "summary": "Defines choiLam c x y z = x⁴y² + y⁴z² + z⁴x² − c·x²y²z² and proves the centerpiece multiplier_sos_identity: (x²+y²+z²)·choiLam 3 equals an explicit sum of six squares (proved by ring), hence multiplier_mul_nonneg: the product is non-negative (positivity). This is the explicit, minimal-degree denominator certificate quantifying the gap."
+    },
+    {
+      "id": "psd-and-threshold",
+      "title": "Positive-Semidefiniteness and the Sharp Threshold",
+      "startLine": 87,
+      "endLine": 161,
+      "summary": "choiLam_three_nonneg (CL is PSD on ℝ³, by dividing the identity by x²+y²+z² off the origin and handling the origin), choiLam_nonneg_of_le (c ≤ 3 ⟹ PSD via the deficit (3−c)·x²y²z² ≥ 0), choiLam_neg_of_gt (c > 3 ⟹ value 3 − c < 0 at (1,1,1)), the equivalence choiLam_psd_iff (PSD on ℝ³ ⟺ c ≤ 3), and three_is_sharp."
+    },
+    {
+      "id": "polynomial-form",
+      "title": "The Family as a Genuine MvPolynomial (Fin 3) ℝ",
+      "startLine": 163,
+      "endLine": 195,
+      "summary": "Defines choiLamPoly c : MvPolynomial (Fin 3) ℝ and the PSD predicate IsPSDMv (matching the parent's IsPositiveSemidefiniteMv), proves eval_choiLamPoly bridging the polynomial to choiLam, and transports the threshold: choiLamPoly_psd_iff (IsPSDMv (choiLamPoly c) ⟺ c ≤ 3) and choiLamPoly_three_psd (the Choi–Lam form is PSD)."
+    }
+  ]
+}
