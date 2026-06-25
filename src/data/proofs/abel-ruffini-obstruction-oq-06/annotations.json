@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-symmetric-not-solvable",
+    "proofId": "abel-ruffini-obstruction-oq-06",
+    "range": { "startLine": 55, "endLine": 61 },
+    "type": "theorem",
+    "title": "Sₙ Unsolvable for n ≥ 5",
+    "content": "The symmetric group on $n$ symbols is **not solvable** for every $n \\ge 5$. Mathlib supplies only the single case `Equiv.Perm.fin_5_not_solvable` (for `Fin 5`); here it is generalized to the whole range by invoking `Equiv.Perm.not_solvable`, whose hypothesis is a *cardinal* bound $5 \\le \\#X$. Rewriting $\\#(\\mathrm{Fin}\\ n) = n$ with `Cardinal.mk_fin` and casting $5 \\le n$ closes it. The mathematical reason it cannot be solvable: any such group contains $S_5$, and the alternating group $A_5$ is a nonabelian simple group equal to its own commutator subgroup, so the derived series stalls and never reaches the trivial subgroup.",
+    "mathContext": "$\\neg\\,\\mathrm{IsSolvable}(S_n)$ for all $n \\ge 5$.",
+    "significance": "key",
+    "relatedConcepts": ["Solvable group", "Derived series", "Simple group A₅", "Symmetric group"]
+  },
+  {
+    "id": "ann-s2-solvable",
+    "proofId": "abel-ruffini-obstruction-oq-06",
+    "range": { "startLine": 68, "endLine": 69 },
+    "type": "theorem",
+    "title": "S₂ Solvable (Abelian Endpoint)",
+    "content": "The low endpoint of the threshold: $S_2$ is cyclic of order two, hence abelian, hence solvable, via `isSolvable_of_comm` with commutativity discharged by `decide`. Together with the $n \\ge 5$ result this pins both ends of the Abel–Ruffini frontier — solvability of $S_n$ is *exactly* what separates the radically-solvable low degrees (1–4) from the unsolvable ones.",
+    "mathContext": "$\\mathrm{IsSolvable}(S_2)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Abelian group", "Solvable group", "Decidability"]
+  },
+  {
+    "id": "ann-radical-criterion",
+    "proofId": "abel-ruffini-obstruction-oq-06",
+    "range": { "startLine": 103, "endLine": 107 },
+    "type": "theorem",
+    "title": "Abel–Ruffini Criterion",
+    "content": "The Galois bridge from groups to equations: if $\\alpha$ is a root of an **irreducible** polynomial $q \\in F[X]$ whose Galois group $\\mathrm{Gal}(q)$ is **not solvable**, then $\\alpha$ is **not solvable by radicals** over $F$. This is the contrapositive of Mathlib's `solvableByRad.isSolvable'` (radicals $\\Rightarrow$ solvable Galois group) and is the precise implication used to certify a concrete unsolvable quintic: exhibit an irreducible degree-5 polynomial with Galois group $S_5$ (unsolvable by the theorem above), and its roots provably cannot be written with radicals.",
+    "mathContext": "$\\neg\\,\\mathrm{IsSolvable}(q.\\mathrm{Gal}) \\Rightarrow \\neg\\,\\mathrm{IsSolvableByRad}\\ F\\ \\alpha$ for irreducible $q$ with $q(\\alpha)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["Galois group", "Solvability by radicals", "Irreducible polynomial", "Contrapositive"]
+  }
+]
