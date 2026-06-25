@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-norm-and-products",
+    "proofId": "hurwitz-theorem-oq-03-incomplete-01",
+    "range": {
+      "startLine": 39,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "The Norm and the Four Multiplication Tables",
+    "content": "Over a generic `CommRing R`, `normSq v = ∑ i, (v i)^2` is the squared norm of an n-vector. The four bilinear products oneMul, twoMul, fourMul, eightMul are exactly the multiplication tables of the real numbers ℝ (n=1), the complex numbers ℂ (n=2), the quaternions ℍ (n=4), and the octonions 𝕆 (n=8). Crucially, every coefficient in these tables is ±1, an integer — so the products, and the identities they satisfy, are formal expressions valid over any commutative ring, with no appeal to ℝ or to a division-algebra structure."
+  },
+  {
+    "id": "ann-universal-identities",
+    "proofId": "hurwitz-theorem-oq-03-incomplete-01",
+    "range": {
+      "startLine": 85,
+      "endLine": 116
+    },
+    "type": "proof-technique",
+    "title": "One `ring` Call per Identity",
+    "content": "Each identity normSq a * normSq b = normSq (nMul a b) is proved by expanding the finite sum (Fin.sum_univ_two / four, or a helper for Fin 8) and the matrix literals (Matrix.cons_val_*), then invoking `ring`. Because `ring` is a decision procedure for commutative-ring equalities, a successful call is a complete machine-checked proof — and it certifies the (sign-sensitive) Degen 8-square identity just as readily as the simpler n=2 case. The n=8 expansion has hundreds of monomials on each side, so it needs a raised `maxHeartbeats`, but it remains a single decision-procedure call with no case analysis."
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "hurwitz-theorem-oq-03-incomplete-01",
+    "range": {
+      "startLine": 117,
+      "endLine": 163
+    },
+    "type": "key-insight",
+    "title": "Norm-Multiplicativity = Closure of Sums of Squares",
+    "content": "Define `IsSumOfSquares n r := ∃ v : Fin n → R, normSq v = r`. The identity normSq a * normSq b = normSq (nMul a b) says precisely that if x and y are each sums of n squares then so is x·y — the witness for the product is nMul of the two witnesses. This gives isSumOfSquares_two_mul / four_mul / eight_mul in any commutative ring. The set also always contains 0 (the zero vector) and 1 (a standard basis vector), so for n ∈ {1,2,4,8} the sums of n squares form a multiplicative submonoid of R."
+  },
+  {
+    "id": "ann-integers",
+    "proofId": "hurwitz-theorem-oq-03-incomplete-01",
+    "range": {
+      "startLine": 164,
+      "endLine": 195
+    },
+    "type": "concept",
+    "title": "The Classical Arithmetic Corollary over ℤ",
+    "content": "Specialising R := ℤ recovers the elementary multiplicative steps behind two classical theorems: int_sumTwoSq_mul (a product of two sums of two squares is a sum of two squares — the Brahmagupta–Fibonacci step in Fermat's two-square theorem) and int_sumFourSq_mul (the Euler step that reduces Lagrange's four-square theorem to primes). The worked witnesses 3 = 1²+1²+1²+0² and 5 = 2²+1²+0²+0² combine through Euler's identity to exhibit 15 = 3·5 as a sum of four squares — a concrete instance of the abstract closure lemma."
+  }
+]
