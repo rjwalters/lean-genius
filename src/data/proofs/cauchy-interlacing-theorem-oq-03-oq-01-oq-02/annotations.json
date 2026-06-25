@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-parseval",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 64
+    },
+    "type": "technique",
+    "title": "Parseval via the Coordinate Isometry",
+    "content": "parseval establishes ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖². Rather than re-deriving Parseval by hand, the proof leans on the fact that an orthonormal basis b induces a linear isometry b.repr from E onto EuclideanSpace (Fin n) 𝕜. Norm is preserved (LinearIsometryEquiv.norm_map), EuclideanSpace.norm_sq_eq expands the ℓ² norm as a sum of squared coordinates, and repr_apply_apply identifies the i-th coordinate b.repr v i with the inner product ⟪bᵢ, v⟫. This single identity supplies two things downstream: the normalisation ∑|cᵢ|² = ‖x‖² = 1 and the residual energy decomposition.",
+    "mathContext": "$\\|v\\|^2 = \\sum_i |\\langle b_i, v\\rangle|^2$, since $b.\\mathrm{repr}$ is a linear isometry onto $\\ell^2$ and coordinates are inner products.",
+    "significance": "supporting",
+    "relatedConcepts": ["Parseval's identity", "orthonormal basis", "linear isometry", "EuclideanSpace", "Bessel's inequality"],
+    "prerequisites": ["inner product spaces", "orthonormal bases and ℓ² coordinates", "isometries preserve norm"]
+  },
+  {
+    "id": "ann-inner-eigen",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 66,
+      "endLine": 89
+    },
+    "type": "insight",
+    "title": "No Adjoint Needed: the Eigen-Coordinate Identity",
+    "content": "inner_eigen proves ⟪bᵢ, T x⟫ = μᵢ·⟪bᵢ, x⟫ for arbitrary x. The proof expands x in the eigenbasis (sum_repr'), pushes the continuous linear map T through the finite sum (map_sum, map_smul) using T bⱼ = μⱼ bⱼ, then collapses the resulting double sum to its diagonal by orthonormality (Finset.sum_eq_single with orthonormal_iff_ite giving ⟪bᵢ, bⱼ⟫ = δᵢⱼ). Crucially, T is never moved across the inner product — no adjoint, no self-adjointness. This is the structural heart of the entry: the bound holds for ANY operator orthonormally diagonalised with real eigenvalues, which is exactly the spectral content of a Hermitian operator taken as input.",
+    "mathContext": "$\\langle b_i, Tx\\rangle = \\mu_i\\,\\langle b_i, x\\rangle$, from $x = \\sum_j \\langle b_j,x\\rangle b_j$, $T b_j = \\mu_j b_j$, and $\\langle b_i, b_j\\rangle = \\delta_{ij}$.",
+    "significance": "key",
+    "relatedConcepts": ["spectral theorem", "eigenbasis expansion", "orthonormality (Kronecker delta)", "diagonalisable operators", "Hermitian operators"],
+    "prerequisites": ["continuous linear maps", "expansion in an orthonormal basis", "linearity of the inner product"]
+  },
+  {
+    "id": "ann-coord-energy",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 110,
+      "endLine": 129
+    },
+    "type": "technique",
+    "title": "Residual as a Weighted Energy Sum",
+    "content": "The core of dist_to_spectrum_le_residual converts the analytic residual into algebra. The coordinate identity hcoord gives ⟪bᵢ, T x − λ·x⟫ = (μᵢ − λ)·⟪bᵢ, x⟫ (from inner_eigen and inner_sub_right/inner_smul_right). Squaring each coordinate norm (norm_mul, mul_pow, RCLike.norm_ofReal turning the real scalar's 𝕜-norm into an absolute value, sq_abs) yields ‖⟪bᵢ, residual⟫‖² = (μᵢ − λ)²·|cᵢ|². Two applications of Parseval then give ∑|cᵢ|² = 1 (from ‖x‖ = 1) and ∑(μᵢ − λ)²|cᵢ|² = ε² where ε = ‖T x − λ·x‖. The residual squared is now a convex combination of squared eigenvalue gaps with weights summing to 1.",
+    "mathContext": "$\\|Tx - \\lambda x\\|^2 = \\sum_i (\\mu_i - \\lambda)^2 |c_i|^2$ with $\\sum_i |c_i|^2 = 1$, where $c_i = \\langle b_i, x\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": ["residual vector", "convex combination", "weighted average", "Parseval energy", "squared eigenvalue gaps"],
+    "prerequisites": ["norm of a scalar multiple", "RCLike scalar norms", "the eigen-coordinate identity"]
+  },
+  {
+    "id": "ann-minimiser",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 130,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "The Minimiser Witnesses the Bound",
+    "content": "A weighted average is at least its minimum: choosing k to minimise (μᵢ − λ)² (Finset.exists_min_image over the nonempty index set — Fin n is nonempty because a unit vector cannot live in a 0-dimensional space, established from ∑|cᵢ|² = 1) gives (μ k − λ)² = (μ k − λ)²·∑|cᵢ|² ≤ ∑(μᵢ − λ)²|cᵢ|² = ε². The middle inequality is Finset.sum_le_sum after factoring the constant out (Finset.mul_sum). A final monotone square-root step (Real.sqrt_le_sqrt, sqrt_sq_eq_abs, sqrt_sq) delivers |μ k − λ| ≤ ε. The witness k is explicit, making the existential constructive in the index.",
+    "mathContext": "$(\\mu_k - \\lambda)^2 = (\\mu_k - \\lambda)^2\\sum_i |c_i|^2 \\le \\sum_i (\\mu_i - \\lambda)^2 |c_i|^2 = \\varepsilon^2$, then take $\\sqrt{\\cdot}$.",
+    "significance": "key",
+    "relatedConcepts": ["argmin selection", "weighted average ≥ minimum", "monotonicity of square root", "constructive existential", "distance to spectrum"],
+    "prerequisites": ["a finite nonempty set attains its minimum", "monotone square root", "sum inequalities"]
+  },
+  {
+    "id": "ann-corollaries",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": {
+      "startLine": 153,
+      "endLine": 190
+    },
+    "type": "context",
+    "title": "ε-Form, Spectral Gap, and Sharpness",
+    "content": "Three downstream results frame the bound for use. residual_eigenvalue_bound replaces the exact residual by any computed upper bound ε (‖T x − λ·x‖ ≤ ε ⟹ some eigenvalue within ε of λ) — the form a solver actually checks, by one transitivity step. residual_gt_of_spectral_gap is its contrapositive: if λ is more than ε from every eigenvalue, no unit vector can have residual ≤ ε, so a spectral gap forces a large residual — exactly how an iterative method rejects a spurious candidate. The closing example confirms sharpness: an exact eigenvector x = bⱼ has residual 0 and the bound reads |μⱼ − μⱼ| = 0 ≤ 0. Together this is the Hermitian Bauer–Fike a-posteriori error estimate, the basis of stopping criteria for Lanczos, Davidson, and inverse iteration.",
+    "mathContext": "$\\|Tx-\\lambda x\\|\\le\\varepsilon \\Rightarrow \\exists k,\\,|\\mu_k-\\lambda|\\le\\varepsilon$; contrapositive: $(\\forall i,\\ |\\mu_i-\\lambda|>\\varepsilon)\\Rightarrow \\|Tx-\\lambda x\\|>\\varepsilon$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Bauer–Fike theorem", "a-posteriori error estimate", "spectral gap", "stopping criteria", "Lanczos / Davidson iteration"],
+    "prerequisites": ["transitivity of ≤", "contraposition (by_contra / push_neg)", "numerical eigenvalue algorithms"]
+  }
+]
