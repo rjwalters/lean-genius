@@ -3365,6 +3365,7 @@ import Proofs.JensenInequalityOQ01
 import Proofs.JensenInequalityOQ01OQ01
 import Proofs.JensenInequalityOQ01OQ01OQ01OQ01
 import Proofs.JensenInequalityOQ01OQ01OQ01OQ03
+import Proofs.JensenInequalityOQ01OQ02
 import Proofs.KaprekarConstantOQ01
 import Proofs.KeithNumberOQ01
 import Proofs.KeithNumberOQ01OQ02

@@ -1,0 +1,26 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "jensen-inequality-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "concept",
+    "title": "Goal: power-mean monotonicity in the exponent, a gap in Mathlib",
+    "content": "The weighted power mean M_r(z; w) = (∑ᵢ wᵢ·zᵢ^r)^(1/r) interpolates the harmonic (r = -1), geometric (r → 0), arithmetic (r = 1), and quadratic (r = 2) means. Its monotonicity in r — the generalized-mean / Hölder inequality — is classical, but Mathlib packages only the underlying convex-power Jensen inequality (Real.rpow_arith_mean_le_arith_mean_rpow), not the monotonicity of M_r. This file proves the positive-exponent case: 0 < p ≤ q ⟹ (∑ wᵢ zᵢ^p)^(1/p) ≤ (∑ wᵢ zᵢ^q)^(1/q), for nonnegative data and nonnegative weights summing to 1. The strategy is a change of variable: raise the data to the ratio exponent t = q/p ≥ 1 so a single Jensen application does the work."
+  },
+  {
+    "id": "ann-power-mean-monotone",
+    "proofId": "jensen-inequality-oq-01-oq-02",
+    "range": { "startLine": 40, "endLine": 77 },
+    "type": "theorem",
+    "title": "Weighted power-mean monotonicity (0 < p ≤ q)",
+    "content": "powerMean_le_powerMean is the main result. Write A = ∑ wᵢ zᵢ^p, B = ∑ wᵢ zᵢ^q and set t = q/p ≥ 1 (from le_div_iff₀ hp and p ≤ q). Because t ≥ 1, Mathlib's Real.rpow_arith_mean_le_arith_mean_rpow applied to the data yᵢ = zᵢ^p (nonnegative via rpow_nonneg) gives A^t ≤ ∑ wᵢ (zᵢ^p)^t. The pointwise identity (zᵢ^p)^t = zᵢ^{p·t} (Real.rpow_mul, valid since zᵢ ≥ 0) together with p·t = q rewrites the right side to B, so A^t ≤ B. Both sums are nonnegative, so Real.rpow_le_rpow raises the bound to the power 1/q: (A^t)^{1/q} ≤ B^{1/q}. Finally (A^t)^{1/q} = A^{t·(1/q)} = A^{1/p}, using t·(1/q) = (q/p)·(1/q) = 1/p, which yields M_p = A^{1/p} ≤ B^{1/q} = M_q."
+  },
+  {
+    "id": "ann-am-le-qm",
+    "proofId": "jensen-inequality-oq-01-oq-02",
+    "range": { "startLine": 79, "endLine": 87 },
+    "type": "theorem",
+    "title": "Arithmetic mean ≤ quadratic mean (specialization)",
+    "content": "weighted_am_le_qm instantiates the monotonicity theorem at (p, q) = (1, 2) to obtain the weighted arithmetic-mean ≤ quadratic-mean inequality ∑ wᵢ zᵢ ≤ (∑ wᵢ zᵢ²)^(1/2). The only work is normalizing the M₁ side: zᵢ^{(1:ℝ)} = zᵢ (Real.rpow_one) and the outer exponent 1/1 = 1 collapse the left power mean to the plain weighted average, discharged by simp. This shows how the single monotonicity theorem subsumes the named two-rung inequalities for free."
+  }
+]
