@@ -1,0 +1,105 @@
+[
+  {
+    "id": "ann-overview",
+    "title": "Verified Scaffolding Around an Open Question",
+    "type": "concept",
+    "startLine": 1,
+    "endLine": 48,
+    "mathContext": "Erdős #1021 OQ-01 asks whether ex(n, G_k) = o(n^{3/2}) for k ≥ 4 — open for every such k. The parent survey Erdos1021OQ01.lean axiomatizes the two deep bounds (KST upper, probabilistic lower) and leaves several mechanical facts as `sorry`. This file isolates exactly the unconditionally provable content and proves it with 0 axioms and 0 sorries.",
+    "significance": "key",
+    "relatedConcepts": [
+      "extremal numbers",
+      "Kővári-Sós-Turán bound",
+      "probabilistic lower bound",
+      "open problem boundary"
+    ],
+    "prerequisites": [
+      "asymptotic notation O and o",
+      "extremal graph theory (Turán-type problems)"
+    ],
+    "content": "The value here is honesty: rather than dressing up the open question, the file machine-checks only what is genuinely provable around it — the o⟹O collapse and the complete structure of the exponent gap — while explicitly leaving OQ-01 and the two deep external bounds unassumed.",
+    "proofId": "erdos-1021-oq-01-incomplete-01",
+    "range": { "startLine": 1, "endLine": 48 }
+  },
+  {
+    "id": "ann-littleo-collapse",
+    "title": "o(g) ⟹ O(g): Take ε = 1",
+    "type": "proof_technique",
+    "startLine": 61,
+    "endLine": 67,
+    "mathContext": "isLittleO f g := ∀ ε>0, ∃N, ∀n≥N, f n ≤ ε·g n. isAsympBounded f g := ∃C>0, ∃N, ∀n≥N, f n ≤ C·g n. Instantiating the little-o definition at ε = 1 yields C = 1 with the same N. This is the n=0-free core of the parent's `oq01_strictly_beyond_kst` placeholder.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "little-o",
+      "big-O",
+      "asymptotic class collapse"
+    ],
+    "prerequisites": [
+      "definitions of O and o for nonnegative sequences"
+    ],
+    "content": "OQ-01 (`ex(n,G_k) = o(n^{3/2})`) is therefore strictly stronger than the KST bound (`ex(n,G_k) = O(n^{3/2})`): the o-claim sits properly inside the O-class.",
+    "proofId": "erdos-1021-oq-01-incomplete-01",
+    "range": { "startLine": 61, "endLine": 67 }
+  },
+  {
+    "id": "ann-converse-fails",
+    "title": "O(g) ⇏ o(g): The Separation",
+    "type": "proof_technique",
+    "startLine": 69,
+    "endLine": 86,
+    "mathContext": "With f = g = n^{3/2}, f is trivially O(g) (constant 1) but f/g = 1 ↛ 0, so f is not o(g). Concretely, the o-hypothesis at ε = 1/2 forces n^{3/2} ≤ (1/2)·n^{3/2} for large n, impossible once n^{3/2} > 0.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "asymptotic separation",
+      "rpow positivity"
+    ],
+    "prerequisites": [
+      "Real.rpow_pos_of_pos"
+    ],
+    "content": "This shows the KST trivial bound alone can never resolve OQ-01: O and o are genuinely distinct classes here.",
+    "proofId": "erdos-1021-oq-01-incomplete-01",
+    "range": { "startLine": 69, "endLine": 86 }
+  },
+  {
+    "id": "ann-gap-structure",
+    "title": "The Exponent Gap 1/(k-1): Positive, Shrinking, Vanishing",
+    "type": "concept",
+    "startLine": 88,
+    "endLine": 117,
+    "mathContext": "gap k = 1/(k-1) is the difference between the KST upper exponent 3/2 and the probabilistic lower exponent 3/2 - 1/(k-1). For k ≥ 2: gap k > 0 (gap_pos) and gap k ≠ 0 (gap_ne_zero); for 2 ≤ k₁ < k₂, gap k₂ < gap k₁ (gap_strictly_decreasing via one_div_lt_one_div_of_lt).",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponent gap",
+      "monotonicity of reciprocals",
+      "extremal exponent"
+    ],
+    "prerequisites": [
+      "one_div_lt_one_div_of_lt",
+      "positivity of reciprocals"
+    ],
+    "content": "The entire 'how open is OQ-01 for each k' story compresses into one elementary function 1/(k-1): strictly positive for every finite k (the bounds never coincide) yet monotonically shrinking as k grows.",
+    "proofId": "erdos-1021-oq-01-incomplete-01",
+    "range": { "startLine": 88, "endLine": 117 }
+  },
+  {
+    "id": "ann-tendsto",
+    "title": "gap → 0 and lowerExp → 3/2",
+    "type": "proof_technique",
+    "startLine": 119,
+    "endLine": 134,
+    "mathContext": "gap_tendsto_zero: (k:ℝ)-1 → atTop (natCast atTop shifted by -1), then Filter.Tendsto.inv_tendsto_atTop gives 1/(k-1) → 0. lowerExp_tendsto: subtract from the constant 3/2 via Tendsto.const_sub, so 3/2 - 1/(k-1) → 3/2. This discharges the parent's `lower_bound_exponent_tendsto` sorry.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Filter.Tendsto",
+      "inv_tendsto_atTop",
+      "tendsto_natCast_atTop_atTop"
+    ],
+    "prerequisites": [
+      "filters: atTop, nhds",
+      "limit of reciprocals to zero"
+    ],
+    "content": "The probabilistic lower exponent climbs toward the KST upper exponent 3/2 as k → ∞ but, by lowerExp_lt_upper, never reaches it for any finite k — the gap closes only in the limit.",
+    "proofId": "erdos-1021-oq-01-incomplete-01",
+    "range": { "startLine": 119, "endLine": 134 }
+  }
+]
