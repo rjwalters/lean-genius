@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header-def",
+    "proofId": "erdos-1021-wip-01",
+    "range": { "startLine": 1, "endLine": 70 },
+    "type": "definition",
+    "title": "The Pair Graph G_k (self-contained definition)",
+    "content": "Erdős #1021 asks whether ex(n, G_k) ≪ n^{3/2−c_k} for some c_k > 0 — open, and untouched here. This file instead pins down the actual graph object. The header explains the design choice: G_k is re-declared locally rather than imported from the parent Erdos1021Problem.lean, whose Gk_bipartite has an ↔-vs-→ precedence bug and whose cycleGraph loopless proof no longer compiles. The vertex type Gk_vertex k = Fin k ⊕ {p : Fin k × Fin k // p.1 < p.2} is a disjoint sum of k primary vertices and the C(k,2) pair vertices (unordered pairs encoded as ordered (a,b) with a < b). The graph Gk k makes a pair vertex ⟨(a,b)⟩ adjacent to exactly the two primary vertices a and b (and nothing on the same side), with symmetry and looplessness both discharged by case analysis on the Sum constructors. This encoding matches the intended Erdos1021.Gk.",
+    "mathContext": "$V(G_k) = \\mathrm{Fin}\\,k \\sqcup \\{\\{a,b\\} \\subset \\mathrm{Fin}\\,k\\}$; $z_{\\{a,b\\}} \\sim y_a, y_b$ only.",
+    "significance": "key",
+    "relatedConcepts": ["bipartite pair graph", "Zarankiewicz problem", "SimpleGraph structure", "Sum/subtype vertex encoding", "self-contained re-declaration"],
+    "prerequisites": ["SimpleGraph (Adj, symm, loopless)", "Sum types and subtypes in Lean", "unordered pairs as ordered a < b"]
+  },
+  {
+    "id": "ann-adjacency",
+    "proofId": "erdos-1021-wip-01",
+    "range": { "startLine": 72, "endLine": 104 },
+    "type": "theorem",
+    "title": "Exact Adjacency on Each Side (Gk_pair_adj_iff, Gk_primary_adj_iff)",
+    "content": "Two iff-lemmas characterise adjacency exactly, by case analysis on the Sum constructor of the second vertex. Gk_pair_adj_iff: a pair vertex ⟨(a,b)⟩ is adjacent to w iff w = Sum.inl a or w = Sum.inl b — the inr/inr (same-side) case is impossible (False.elim one way, Sum.inr_ne_inl the other). Gk_primary_adj_iff: a primary vertex y_i is adjacent to w iff w is a pair vertex Sum.inr q whose pair contains i (i = q.1 or i = q.2); the inl/inl case is again vacuous. These are the structural lemmas every later neighbor-set computation rewrites through — they translate the match-defined Adj into clean membership conditions.",
+    "mathContext": "$z_{\\{a,b\\}} \\sim w \\iff w \\in \\{y_a, y_b\\}$;  $y_i \\sim w \\iff w = z_q,\\ i \\in q$.",
+    "significance": "supporting",
+    "relatedConcepts": ["adjacency characterization", "case analysis on Sum", "Sum.inr_ne_inl / inl_ne_inr", "neighbor conditions"],
+    "prerequisites": ["the Gk definition", "pattern-matching on Sum constructors", "iff proofs by constructor"]
+  },
+  {
+    "id": "ann-pair-degree",
+    "proofId": "erdos-1021-wip-01",
+    "range": { "startLine": 106, "endLine": 122 },
+    "type": "theorem",
+    "title": "The Pair Side is 2-Regular — the Cherry (Gk_pair_neighborSet, Gk_pair_degree)",
+    "content": "Gk_pair_neighborSet computes the neighbor set of a pair vertex as exactly {Sum.inl a, Sum.inl b}, by rewriting membership through Gk_pair_adj_iff. Gk_pair_degree then concludes its ncard is 2 via Set.ncard_pair, whose hypothesis Sum.inl a ≠ Sum.inl b follows from a < b (so a ≠ b, and Sum.inl is injective). Hence every pair vertex has degree exactly 2 — the pair side of G_k is 2-regular. Each z_j is a 'cherry' (a path of length 2 joining two primary vertices), and this 2-regularity is precisely the local structure that makes n^{3/2} the natural Kővári–Sós–Turán exponent for ex(n, G_k): cherries are the configurations KST counts.",
+    "mathContext": "$N(z_{\\{a,b\\}}) = \\{y_a, y_b\\}$, so $|N(z_{\\{a,b\\}})| = 2$ (via `Set.ncard_pair`, $a \\ne b$).",
+    "significance": "key",
+    "relatedConcepts": ["2-regularity", "cherry (path of length 2)", "Kővári–Sós–Turán exponent n^{3/2}", "Set.ncard_pair", "neighbor set"],
+    "prerequisites": ["the adjacency lemma Gk_pair_adj_iff", "Set.ncard of a two-element set", "injectivity of Sum.inl"]
+  },
+  {
+    "id": "ann-primary-degree",
+    "proofId": "erdos-1021-wip-01",
+    "range": { "startLine": 124, "endLine": 189 },
+    "type": "theorem",
+    "title": "The Primary Side has Degree k−1 via an Explicit Bijection (Gk_primary_neighborSet, mkPair, Gk_primary_degree)",
+    "content": "Gk_primary_neighborSet describes y_i's neighbor set as the pair vertices whose pair contains i. The count Gk_primary_degree = k−1 is the most substantial proof in the file: it builds an explicit bijection from the k−1 'other primaries' {j : Fin k // j ≠ i} onto that neighbor set. The map is j ↦ Sum.inr (mkPair i j), where the private definition mkPair i j orders the unordered pair {i, j} so the smaller index comes first (a dif on i < j). Surjectivity (himg) is shown by sending a neighbor ⟨(a,b)⟩ with i ∈ {a,b} back to the other element, checking both i = a and i = b branches against mkPair's two cases. Injectivity (hinj) is a four-way by_cases on i < j₁ and i < j₂ that recovers j₁ = j₂ from the ordered pair, the cross cases ruled out by hj₁/hj₂ (j ≠ i). Then Set.ncard_image_of_injective transports the count, and Fintype.card_subtype_compl gives |{j ≠ i}| = k−1. So the primary side has uniform degree k−1: each y_i meets exactly the pairs containing i.",
+    "mathContext": "$N(y_i) \\leftrightarrow \\{j : j \\ne i\\}$ via $j \\mapsto \\{i,j\\}$, so $|N(y_i)| = k - 1$ (`Fintype.card_subtype_compl`).",
+    "significance": "key",
+    "relatedConcepts": ["explicit bijection / counting", "Set.ncard_image_of_injective", "Fintype.card_subtype_compl", "ordering an unordered pair (mkPair)", "uniform degree"],
+    "prerequisites": ["counting a set via an injection from a known finite type", "dif / by_cases on a decidable order", "the adjacency lemma Gk_primary_adj_iff"]
+  },
+  {
+    "id": "ann-handshake",
+    "proofId": "erdos-1021-wip-01",
+    "range": { "startLine": 191, "endLine": 203 },
+    "type": "theorem",
+    "title": "Handshake Consistency 2·C(k,2) = k·(k−1) (Gk_handshake)",
+    "content": "Gk_handshake records the degree-sum consistency between the two sides: the C(k,2) pair vertices each contribute degree 2 (total 2·C(k,2)) and the k primary vertices each contribute degree k−1 (total k·(k−1)), and these agree. The proof rewrites C(k,2) = k·(k−1)/2 via Nat.choose_two_right, then cancels the division by 2 using Nat.mul_div_cancel' once 2 ∣ k·(k−1) is established (one of k, k−1 is even — a parity case split). This confirms |E(G_k)| = k(k−1) computed either way, the finite-combinatorial sanity check that the two degree computations are mutually consistent (the handshake lemma specialised to G_k).",
+    "mathContext": "$2\\binom{k}{2} = 2\\cdot\\frac{k(k-1)}{2} = k(k-1) = |E(G_k)|$.",
+    "significance": "supporting",
+    "relatedConcepts": ["handshake lemma", "Nat.choose_two_right", "Nat divisibility 2 ∣ k(k−1)", "edge count of a bipartite graph"],
+    "prerequisites": ["the degree counts on both sides", "binomial coefficient C(k,2)", "Nat division and divisibility"]
+  }
+]
