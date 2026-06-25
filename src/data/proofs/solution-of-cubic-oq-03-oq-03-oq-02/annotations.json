@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-quartic-factor",
+    "proofId": "solution-of-cubic-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 73,
+      "endLine": 91
+    },
+    "type": "insight",
+    "title": "Division-Free Ferrari Factorization via linear_combination",
+    "content": "The heart of Ferrari's method is stated with abstract constant terms C₁, C₂ constrained by three scalar equations (C₁+C₂ = 2m+2p, s(C₁−C₂) = q, C₁C₂ = r) plus s² = 2m+p. Because no division appears, the entire quartic-into-two-quadratics factorization is closed by a single linear_combination over ℂ. Pushing the divisions (the q/(2s) terms) out of the central identity and into separate field_simp lemmas keeps the ring-normalization step robust.",
+    "mathContext": "$x^4+px^2+qx+r=(x^2-sx+C_1)(x^2+sx+C_2)$, since the product expands to $x^4+(C_1+C_2-s^2)x^2+s(C_1-C_2)x+C_1C_2$ and the hypotheses collapse the coefficients to $p, q, r$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Ferrari's method",
+      "polynomial factorization",
+      "linear_combination tactic",
+      "difference of squares"
+    ],
+    "prerequisites": [
+      "linear_combination tactic",
+      "polynomial algebra over ℂ"
+    ]
+  },
+  {
+    "id": "ann-constant-term-iff",
+    "proofId": "solution-of-cubic-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 113,
+      "endLine": 134
+    },
+    "type": "insight",
+    "title": "Constant Term Equals r EXACTLY When m Is a Resolvent Root",
+    "content": "With the concrete Ferrari constant terms C₁,C₂ = (m+p) ± q/(2s) and s² = 2m+p, the sum and split equations hold automatically; the only nontrivial requirement is C₁·C₂ = r. Clearing the denominator 4(2m+p) turns this into 4(2m+p)(m+p)² − q² = 4r(2m+p), which expands to precisely the parent's resolvent cubic 8m³ + 20pm² + (16p² − 8r)m + (4p³ − 4pr − q²) = 0. This is the structural payoff: Ferrari's factorization closes if and only if m solves the resolvent cubic. The Lean proof clears the denominator deterministically with div_eq_iff (over the common denominator (2s)²) and finishes with a linear_combination using the resolvent hypothesis.",
+    "mathContext": "$C_1C_2=r \\iff (m+p)^2-\\tfrac{q^2}{4(2m+p)}=r \\iff 4(2m+p)(m+p)^2-q^2-4r(2m+p)=8m^3+20pm^2+(16p^2-8r)m+(4p^3-4pr-q^2)=0$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "resolvent cubic",
+      "Ferrari method",
+      "field_simp",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "resolvent cubic (parent file)",
+      "field_simp",
+      "linear_combination tactic"
+    ]
+  },
+  {
+    "id": "ann-quadratic-formula",
+    "proofId": "solution-of-cubic-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 156,
+      "endLine": 168
+    },
+    "type": "technique",
+    "title": "Quadratic-Formula Roots Closed by One linear_combination",
+    "content": "Each Ferrari quadratic is solved by the classical quadratic formula. Substituting x = (s ± d)/2 (with d² = s² − 4C) into x² − sx + C and multiplying out gives (d² − s² + 4C)/4 = 0 by the discriminant relation. Both root branches are handled at once by rcases on the disjunction and a single linear_combination hd/4. The second factor x² + sx + C uses the mirror roots (−s ± d)/2.",
+    "mathContext": "$\\left(\\tfrac{s+d}{2}\\right)^2-s\\cdot\\tfrac{s+d}{2}+C=\\tfrac{d^2-s^2+4C}{4}=0$ when $d^2=s^2-4C$.",
+    "significance": "useful",
+    "relatedConcepts": [
+      "quadratic formula",
+      "discriminant",
+      "linear_combination tactic"
+    ],
+    "prerequisites": [
+      "quadratic formula",
+      "linear_combination tactic"
+    ]
+  },
+  {
+    "id": "ann-four-roots-existence",
+    "proofId": "solution-of-cubic-oq-03-oq-03-oq-02",
+    "range": {
+      "startLine": 199,
+      "endLine": 260
+    },
+    "type": "insight",
+    "title": "The Four Roots Exist Over the Algebraically Closed Field ℂ",
+    "content": "Combining the factorization with the quadratic-formula roots yields the four closed-form Ferrari expressions (s ± d₁)/2 and (−s ± d₂)/2, each a genuine root of the quartic. The capstone ferrari_roots_exist discharges the existence of the three square roots s, d₁, d₂ using IsAlgClosed.exists_pow_nat_eq — over ℂ every element has a square root. The single genericity assumption 2m + p ≠ 0 ensures s ≠ 0, the standard non-degenerate Ferrari branch where the division by 2s is valid.",
+    "mathContext": "Roots: $\\tfrac{s\\pm d_1}{2}$ (from $x^2-sx+C_1$) and $\\tfrac{-s\\pm d_2}{2}$ (from $x^2+sx+C_2$), with $d_1^2=s^2-4C_1$, $d_2^2=s^2-4C_2$, $s^2=2m+p$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "algebraically closed field",
+      "existence of square roots",
+      "Ferrari closed-form roots",
+      "quartic solvability"
+    ],
+    "prerequisites": [
+      "algebraically closed fields",
+      "IsAlgClosed.exists_pow_nat_eq"
+    ]
+  }
+]

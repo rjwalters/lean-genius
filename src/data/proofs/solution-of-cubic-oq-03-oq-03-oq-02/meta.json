@@ -1,0 +1,175 @@
+{
+  "id": "solution-of-cubic-oq-03-oq-03-oq-02",
+  "title": "Ferrari's Closed-Form Quartic Roots Are Genuine Roots",
+  "slug": "solution-of-cubic-oq-03-oq-03-oq-02",
+  "description": "Takes any root of the parent's resolvent cubic, forms Ferrari's two quadratic factors of the depressed quartic, and verifies that the four resulting closed-form Ferrari expressions are genuine roots — with the factorization holding exactly when the resolvent cubic vanishes.",
+  "category": "algebra",
+  "status": "verified",
+  "badge": "original",
+  "difficulty": "intermediate",
+  "leanFile": {
+    "path": "Proofs/SolutionOfCubicOQ03OQ03OQ02.lean",
+    "imports": [
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [],
+    "namespace": "FerrariQuarticRoots",
+    "lineCount": 261,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 4,
+    "theoremCount": 11
+  },
+  "lineCount": 261,
+  "theoremCount": 11,
+  "axiomCount": 0,
+  "assumptions": [],
+  "meta": {
+    "author": "Ferrari (formalized in Lean 4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quartic_equation#Ferrari's_solution",
+    "date": "1540",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "quartic-equations",
+      "ferrari-method",
+      "closed-form-roots",
+      "algebraically-closed-field",
+      "intermediate"
+    ],
+    "proofRepoPath": "Proofs/SolutionOfCubicOQ03OQ03OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "linear_combination",
+        "description": "Closes polynomial identities modulo hypotheses (the Ferrari factorization)",
+        "module": "Mathlib.Tactic.LinearCombination"
+      },
+      {
+        "theorem": "mul_zero / zero_mul",
+        "description": "A vanishing quadratic factor makes the quartic product vanish",
+        "module": "Mathlib.Algebra.GroupWithZero.Basic"
+      },
+      {
+        "theorem": "IsAlgClosed.exists_pow_nat_eq",
+        "description": "Square roots exist over the algebraically closed field ℂ",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Division-free abstract Ferrari factorization closed by a single linear_combination (quartic_factor)",
+      "Constant-term match shown to be EQUIVALENT to the parent's resolvent cubic vanishing (ferrariC1C2_eq_r)",
+      "Concrete factorization of the depressed quartic for any resolvent root (ferrari_factorization)",
+      "Quadratic-formula roots of each Ferrari factor verified by linear_combination (root_left, root_right)",
+      "The four closed-form Ferrari roots verified to be genuine quartic roots (ferrari_four_roots)",
+      "Existence of all required square roots over the algebraically closed field ℂ (ferrari_roots_exist)"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 261,
+    "mathlib_version": "4.26.0",
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The existence theorem assumes the non-degenerate case 2m+p ≠ 0 (equivalently s ≠ 0), the generic Ferrari branch. Self-contained: the single resolvent-cubic predicate (isResolventRoot) is inlined, so the file depends only on Mathlib.",
+    "theoremCount": 11,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Lodovico Ferrari (1522–1565), a student of Gerolamo Cardano, solved the general quartic around 1540 by introducing a resolvent cubic. Cardano published the method in *Ars Magna* (1545). The parent file (solution-of-cubic-oq-03-oq-03) showed Ferrari's resolvent cubic reduces, via the substitution m = t − 5p/6, to Cardano's depressed form. What remained was to run the method forward: given a resolvent root, produce the four explicit quartic roots and prove they really are roots. That is what this file does, working over the algebraically closed field ℂ where the needed square roots are guaranteed to exist.",
+    "problemStatement": "**Are Ferrari's four closed-form expressions genuine roots of the depressed quartic?**\n\nGiven the depressed quartic x⁴ + p·x² + q·x + r and any root m of the resolvent cubic 8m³ + 20pm² + (16p² − 8r)m + (4p³ − 4pr − q²) = 0, choose s with s² = 2m + p. Ferrari's factorization is (x² − s·x + C₁)(x² + s·x + C₂) with C₁,C₂ = (m+p) ± q/(2s).\n\n**Answer**: YES. The factorization is valid exactly when m is a resolvent root, and solving each quadratic by the quadratic formula gives the four roots (s ± d₁)/2 and (−s ± d₂)/2, each verified to satisfy the quartic.",
+    "text": "Verifies the four closed-form Ferrari quartic roots arising from a resolvent cubic root, over an algebraically closed field.",
+    "proofStrategy": "The core is a division-free factorization identity (quartic_factor) closed by a single linear_combination, parametrized by abstract constant terms C₁, C₂ constrained by C₁+C₂ = 2m+2p, s(C₁−C₂) = q, and C₁C₂ = r. The concrete constant terms C₁,C₂ = (m+p) ± q/(2s) satisfy the first two by ring/field_simp, and the third (C₁C₂ = r) is shown to be EQUIVALENT to the parent's resolvent cubic vanishing (ferrariC1C2_eq_r) — this is the precise sense in which Ferrari's method requires a resolvent root. Each quadratic factor is solved by the quadratic formula (root_left, root_right), a vanishing factor kills the product (ferrari_root_of_left/right), and finally the four roots are assembled (ferrari_four_roots). The capstone (ferrari_roots_exist) obtains s, d₁, d₂ via algebraic closedness of ℂ.",
+    "keyInsights": [
+      "Ferrari's factorization can be stated division-free with abstract constant terms C₁, C₂, so the central identity is closed by one linear_combination — no nested radicals appear inside the ring step.",
+      "The constant-term equation C₁·C₂ = r is EXACTLY equivalent to the resolvent cubic vanishing: clearing denominators gives 8m³ + 20pm² + (16p² − 8r)m + (4p³ − 4pr − q²) = 0 verbatim. This pins down why the resolvent root is the right object.",
+      "With s² = 2m + p and c = m + p, the difference-of-squares (x²+c)² − (s·x − q/(2s))² makes the x² and x coefficients match automatically; only the constant term carries the resolvent condition.",
+      "Over an algebraically closed field the three square roots s, d₁, d₂ always exist (IsAlgClosed.exists_pow_nat_eq), so the closed-form roots are genuinely available — the only genericity assumption is 2m + p ≠ 0.",
+      "Each Ferrari root reduces to the elementary quadratic-formula identity ((s±d)/2)² ∓ s((s±d)/2) + C = 0, closed by linear_combination with d² = s² − 4C."
+    ],
+    "prerequisites": [
+      "Algebra (quartic equations, Ferrari's method, resolvent cubic, quadratic formula)",
+      "Algebraically closed fields (existence of square roots)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "factor-core",
+      "title": "The Abstract Ferrari Factorization",
+      "startLine": 73,
+      "endLine": 91,
+      "summary": "The division-free factorization of the quartic into two quadratics, closed by linear_combination.",
+      "mathContext": "$x^4+px^2+qx+r=(x^2-sx+C_1)(x^2+sx+C_2)$ when $s^2=2m+p$, $C_1+C_2=2m+2p$, $s(C_1-C_2)=q$, $C_1C_2=r$."
+    },
+    {
+      "id": "constant-terms",
+      "title": "Constant Terms ⟺ Resolvent Root",
+      "startLine": 92,
+      "endLine": 134,
+      "summary": "Defines C₁,C₂ = (m+p) ± q/(2s) and proves C₁C₂ = r is equivalent to the resolvent cubic vanishing.",
+      "mathContext": "$C_1C_2=r \\iff (m+p)^2-\\tfrac{q^2}{4(2m+p)}=r \\iff 8m^3+20pm^2+(16p^2-8r)m+(4p^3-4pr-q^2)=0$."
+    },
+    {
+      "id": "factorization",
+      "title": "Factorization for a Resolvent Root",
+      "startLine": 135,
+      "endLine": 151,
+      "summary": "Assembles the concrete factorization from the three constant-term lemmas.",
+      "mathContext": "For a resolvent root $m$ and $s^2=2m+p$, $s\\neq0$, the quartic factors into Ferrari's two quadratics."
+    },
+    {
+      "id": "quadratic-roots",
+      "title": "Quadratic-Formula Roots of Each Factor",
+      "startLine": 152,
+      "endLine": 189,
+      "summary": "The values (s ± d)/2 and (−s ± d)/2 are roots of the two quadratics, given d² = s² − 4C.",
+      "mathContext": "$((s\\pm d)/2)^2-s((s\\pm d)/2)+C=0$ when $d^2=s^2-4C$."
+    },
+    {
+      "id": "four-roots",
+      "title": "The Four Ferrari Roots",
+      "startLine": 190,
+      "endLine": 260,
+      "summary": "Each of the four closed-form expressions is a genuine root of the quartic, with existence over ℂ.",
+      "mathContext": "$(s\\pm d_1)/2$ and $(-s\\pm d_2)/2$ are roots of $x^4+px^2+qx+r$; square roots exist over $\\mathbb{C}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "solution-of-cubic-oq-03-oq-03",
+      "relationship": "extends",
+      "description": "Parent: reduces the resolvent cubic to Cardano's form. This file consumes a resolvent root to produce and verify the four quartic roots."
+    },
+    {
+      "targetId": "solution-of-cubic-oq-03",
+      "relationship": "foundational",
+      "description": "Vieta's formulas for Cardano's roots, supplying the resolvent root used here."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Cardano, Gerolamo",
+      "title": "Ars Magna",
+      "year": "1545",
+      "venue": "Nuremberg",
+      "note": "Original publication of Ferrari's quartic method and Cardano's cubic formula"
+    }
+  ],
+  "parentProof": "solution-of-cubic-oq-03-oq-03",
+  "openQuestion": "Verify the explicit Ferrari quartic root formula",
+  "tags": [
+    "algebra",
+    "polynomials",
+    "quartic-equations",
+    "ferrari-method"
+  ],
+  "conclusion": {
+    "summary": "Complete verification that Ferrari's four closed-form expressions are genuine roots of the depressed quartic, with the factorization holding exactly when the resolvent cubic vanishes. 11 theorems, 4 definitions, 0 sorries, 0 axioms.",
+    "implications": "Closes the constructive quartic chain: given a Cardano root of the resolvent cubic, the four quartic roots are now explicitly produced and machine-verified over ℂ, answering the parent's open question 'Can the explicit quartic roots be computed and verified?'",
+    "openQuestions": [
+      "Can the four roots be shown to exhaust all roots (a complete factorization / multiplicity statement)?",
+      "Can the degenerate branch 2m + p = 0 be handled by selecting an alternative resolvent root?"
+    ]
+  },
+  "sorries": 0
+}
