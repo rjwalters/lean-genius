@@ -791,6 +791,7 @@ import Proofs.ChebyshevPNTBridgeOQ01Aristotle
 import Proofs.ChebyshevPNTBridgeOQ01OQ02
 import Proofs.ChebyshevPNTBridgeOQ02
 import Proofs.ChebyshevPNTBridgeOQ03
+import Proofs.ChebyshevPNTBridgeOQ05
 import Proofs.ChebyshevPolynomialsOQ01
 import Proofs.ChebyshevPolynomialsOQ01OQ01OQ01
 import Proofs.ChebyshevSumMonotoneOQ01
