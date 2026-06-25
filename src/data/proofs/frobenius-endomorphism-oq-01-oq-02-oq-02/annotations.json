@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02-oq-02",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "The Other Side of the Perfect-Field Dichotomy",
+    "content": "A field is perfect when its Frobenius x ↦ x^p is surjective; every finite field is perfect. The parent entry characterized the fixed field of the Frobenius on a perfect field. This file answers the parent's open question from the opposite direction: it exhibits the simplest explicit IMPERFECT field, 𝔽ₚ(X), where the Frobenius misses the indeterminate X. The polynomial ring 𝔽ₚ[X] is the imperfect-ring stepping stone. In both settings the Frobenius stays injective (the rings are reduced) but loses surjectivity, the property that finiteness — not characteristic — forced on finite fields.",
+    "mathContext": "Perfect ⇔ Frobenius surjective. Finite fields are perfect; $\\mathbb{F}_p(X)$ is not.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Frobenius endomorphism",
+      "perfect and imperfect fields",
+      "separability",
+      "function fields"
+    ],
+    "prerequisites": [
+      "characteristic p",
+      "the Frobenius map x ↦ x^p"
+    ]
+  },
+  {
+    "id": "ann-polynomial-ring",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02-oq-02",
+    "range": { "startLine": 46, "endLine": 88 },
+    "type": "technique",
+    "title": "𝔽ₚ[X] Is an Imperfect Ring: a Degree Obstruction",
+    "content": "On the polynomial ring (ZMod p)[X] — a domain, hence reduced — the Frobenius is injective by Mathlib's frobenius_inj. It is not surjective because X has no p-th root: if f^p = X, then Polynomial.natDegree_pow gives p · natDegree f = natDegree X = 1, so p ∣ 1, contradicting p ≥ 2. Reading this through frobenius_def shows the Frobenius misses X, and a PerfectRing would force it surjective, so 𝔽ₚ[X] is an explicit imperfect ring.",
+    "mathContext": "$f^p = X \\Rightarrow p\\cdot\\deg f = 1 \\Rightarrow p \\mid 1$, impossible.",
+    "significance": "high",
+    "relatedConcepts": [
+      "reduced rings",
+      "polynomial degree",
+      "PerfectRing"
+    ],
+    "prerequisites": [
+      "natDegree of a power over a domain",
+      "frobenius injectivity on reduced rings"
+    ]
+  },
+  {
+    "id": "ann-intdegree",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02-oq-02",
+    "range": { "startLine": 89, "endLine": 104 },
+    "type": "technique",
+    "title": "Lifting Degree to the Function Field via intDegree",
+    "content": "In the fraction field 𝔽ₚ(X) = RatFunc (ZMod p) the degree becomes ℤ-valued (numerator degree minus denominator degree). The lemma intDegree_pow shows it is multiplicative under powers of a nonzero element, intDegree (r^n) = n · intDegree r, by a short induction on the exponent using RatFunc.intDegree_mul. This is exactly the tool that lets the polynomial-ring obstruction carry over to the field.",
+    "mathContext": "$\\operatorname{intDegree}(r^n) = n\\cdot\\operatorname{intDegree}(r)$ for $r \\neq 0$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "rational function field",
+      "integer degree (valuation)",
+      "multiplicativity"
+    ],
+    "prerequisites": [
+      "RatFunc.intDegree_mul",
+      "induction on exponents"
+    ]
+  },
+  {
+    "id": "ann-imperfect-field",
+    "proofId": "frobenius-endomorphism-oq-01-oq-02-oq-02",
+    "range": { "startLine": 105, "endLine": 138 },
+    "type": "concept",
+    "title": "𝔽ₚ(X) Is an Explicit Imperfect Field",
+    "content": "The same X has no p-th root in the field: f^p = X would give (p : ℤ) · intDegree f = intDegree X = 1, so (p : ℤ) ∣ 1, impossible for a prime. Hence the Frobenius is not surjective on 𝔽ₚ(X). Since a PerfectField is, through the PerfectField.toPerfectRing instance, a PerfectRing on which the Frobenius is surjective, 𝔽ₚ(X) cannot be a PerfectField. This is the headline result and the sharp counterpoint to the finite-field case, where every field is perfect.",
+    "mathContext": "$\\neg\\, \\mathrm{PerfectField}\\,\\mathbb{F}_p(X)$ — the simplest imperfect field.",
+    "significance": "central",
+    "relatedConcepts": [
+      "PerfectField",
+      "imperfect fields",
+      "Frobenius surjectivity"
+    ],
+    "prerequisites": [
+      "PerfectField ⇒ PerfectRing",
+      "surjective_frobenius"
+    ]
+  }
+]
