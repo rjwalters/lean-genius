@@ -8,7 +8,11 @@
     },
     "type": "context",
     "title": "What this entry verifies — and the dividing line it draws",
-    "content": "The parent entry abel-ruffini-galois-extensions-oq-05 records Shafarevich's theorem (every finite solvable group is Gal(L/ℚ)) as an axiom, because its proof needs class field theory, embedding problems and Brauer groups. This file isolates the genuinely elementary part of the inverse Galois story — Artin's fixed-field theorem — and proves it with zero axioms. The framing is the contribution: realizing a finite group as a Galois group is unconditional and easy over an AUXILIARY base field built from the group itself (the fixed field of a faithful action), and the entire difficulty of Shafarevich and the open inverse Galois problem is the demand that the base be ℚ. This is the first axiom-free realizability result in the abel-ruffini-galois family; all sibling corollaries are derived from the Shafarevich axiom."
+    "content": "The parent entry abel-ruffini-galois-extensions-oq-05 records Shafarevich's theorem (every finite solvable group is Gal(L/ℚ)) as an axiom, because its proof needs class field theory, embedding problems and Brauer groups. This file isolates the genuinely elementary part of the inverse Galois story — Artin's fixed-field theorem — and proves it with zero axioms. The framing is the contribution: realizing a finite group as a Galois group is unconditional and easy over an AUXILIARY base field built from the group itself (the fixed field of a faithful action), and the entire difficulty of Shafarevich and the open inverse Galois problem is the demand that the base be ℚ. This is the first axiom-free realizability result in the abel-ruffini-galois family; all sibling corollaries are derived from the Shafarevich axiom.",
+    "mathContext": "Inverse Galois problem: which finite $G$ arise as $\\mathrm{Gal}(L/\\mathbb{Q})$? Artin answers the auxiliary-base version completely; the $\\mathbb{Q}$-version is Shafarevich (solvable case) and open in general.",
+    "significance": "context",
+    "relatedConcepts": ["inverse Galois problem", "Shafarevich's theorem", "Artin's fixed-field theorem", "axiom-free vs axiomatized realizability"],
+    "prerequisites": ["Galois theory", "finite group actions on fields"]
   },
   {
     "id": "arar-oq0502-ann-structural",
@@ -17,20 +21,43 @@
       "startLine": 54,
       "endLine": 60
     },
-    "type": "key-step",
+    "type": "theorem",
     "title": "Artin, structural half: F/F^G is Galois for ANY finite action",
-    "content": "extension_isGalois packages Mathlib's IsGalois.of_fixed_field: whenever a finite group G acts on a field F by ring automorphisms (MulSemiringAction G F), the extension F over the fixed field F^G = FixedPoints.subfield G F is Galois. Crucially no faithfulness is needed here — normality and separability of F/F^G hold for any finite group action, because F^G is by construction the field fixed by every element of G. This is the backbone on which the realization statement is built."
+    "content": "extension_isGalois packages Mathlib's IsGalois.of_fixed_field: whenever a finite group G acts on a field F by ring automorphisms (MulSemiringAction G F), the extension F over the fixed field F^G = FixedPoints.subfield G F is Galois. Crucially no faithfulness is needed here — normality and separability of F/F^G hold for any finite group action, because F^G is by construction the field fixed by every element of G. This is the backbone on which the realization statement is built. The Lean proof is literally `inferInstance`: Mathlib registers the IsGalois instance for fixed-field extensions.",
+    "mathContext": "$F/F^G$ is Galois, where $F^G = \\{x \\in F : g\\cdot x = x\\ \\forall g\\in G\\}$, for any finite $G \\curvearrowright F$ by ring automorphisms.",
+    "significance": "key",
+    "relatedConcepts": ["fixed field F^G", "Galois extension (normal + separable)", "IsGalois.of_fixed_field", "MulSemiringAction"],
+    "prerequisites": ["normal and separable extensions", "group actions on fields"]
   },
   {
-    "id": "arar-oq0502-ann-realization",
+    "id": "arar-oq0502-ann-galoisgroupequiv",
     "proofId": "abel-ruffini-galois-extensions-oq-05-oq-02",
     "range": {
       "startLine": 62,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Artin, realization half: G IS the Galois group",
+    "content": "galoisGroupEquiv packages Mathlib's FixedPoints.toAlgAutMulEquiv: when the action is FAITHFUL, the canonical map G → (F ≃ₐ[F^G] F) sending a group element to the automorphism it induces is a group isomorphism — so G is literally the Galois group Gal(F/F^G), not merely a quotient of it. Faithfulness is exactly what makes this map injective; Artin's degree bound supplies surjectivity. It is noncomputable because the inverse of the equiv is extracted nonconstructively.",
+    "mathContext": "$G \\;\\simeq^*\\; (F \\simeq_{\\mathrm{alg}[F^G]} F) = \\mathrm{Gal}(F/F^G)$ for a faithful finite action; injective by faithfulness, surjective by the order count $|G| = [F:F^G]$.",
+    "significance": "key",
+    "relatedConcepts": ["FixedPoints.toAlgAutMulEquiv", "FaithfulSMul", "AlgEquiv / Galois group", "group isomorphism"],
+    "prerequisites": ["the Galois group as F ≃ₐ[K] F", "faithful group actions"]
+  },
+  {
+    "id": "arar-oq0502-ann-degree",
+    "proofId": "abel-ruffini-galois-extensions-oq-05-oq-02",
+    "range": {
+      "startLine": 70,
       "endLine": 75
     },
-    "type": "key-step",
-    "title": "Artin, realization half: G IS the Galois group, degree |G|",
-    "content": "galoisGroupEquiv packages Mathlib's FixedPoints.toAlgAutMulEquiv: when the action is FAITHFUL, the canonical map G → (F ≃ₐ[F^G] F) sending a group element to the automorphism it induces is a group isomorphism — so G is literally the Galois group Gal(F/F^G), not merely a quotient of it. degree_eq_card records the matching numerical fact [F : F^G] = |G| (FixedPoints.finrank_eq_card). Faithfulness is exactly what upgrades the structural half to a tight realization: it makes G → Aut(F/F^G) injective, and Artin's degree bound makes it surjective."
+    "type": "theorem",
+    "title": "Degree formula: [F : F^G] = |G|",
+    "content": "degree_eq_card packages Mathlib's FixedPoints.finrank_eq_card: the fixed-field extension has degree exactly the order of the acting group. Combined with galoisGroupEquiv this makes the realization tight — the Galois group has order |G| and the extension degree matches, the quantitative core of Artin's theorem (the orbit/fixed-field counting that underlies linear independence of characters).",
+    "mathContext": "$[F : F^G] = |G|$, i.e. $\\dim_{F^G} F = \\#G$ — Artin's theorem on the degree of a fixed-field extension.",
+    "significance": "supporting",
+    "relatedConcepts": ["FixedPoints.finrank_eq_card", "extension degree / finrank", "linear independence of field automorphisms (Dedekind/Artin)", "order of the Galois group"],
+    "prerequisites": ["module rank / extension degree", "Artin's lemma on independence of characters"]
   },
   {
     "id": "arar-oq0502-ann-realizability",
@@ -39,8 +66,12 @@
       "startLine": 77,
       "endLine": 97
     },
-    "type": "key-step",
+    "type": "insight",
     "title": "Bundled realizability and the inverse-Galois shape",
-    "content": "artin_realizability bundles the three facts — F/F^G Galois, G ≃* Gal(F/F^G), and [F : F^G] = |G| — into a single verified statement, the axiom-free mirror of the parent's Shafarevich axiom. realizable_over_some_subfield restates it existentially: a finite group acting faithfully on F is the Galois group of F over SOME subfield k ⊆ F with [F:k] = |G|. This is exactly the inverse-Galois shape 'G is a Galois group over the base', with the base an auxiliary subfield. Universally: G ↪ Sym(G) (Cayley) acts faithfully on a rational function field K(x_g : g ∈ G) by permuting variables, so every finite group is a Galois group over some field — the docstring spells this out; only that faithful-action construction is left unformalized."
+    "content": "artin_realizability bundles the three facts — F/F^G Galois, G ≃* Gal(F/F^G), and [F : F^G] = |G| — into a single verified statement, the axiom-free mirror of the parent's Shafarevich axiom. realizable_over_some_subfield restates it existentially: a finite group acting faithfully on F is the Galois group of F over SOME subfield k ⊆ F with [F:k] = |G|. This is exactly the inverse-Galois shape 'G is a Galois group over the base', with the base an auxiliary subfield. Universally: G ↪ Sym(G) (Cayley) acts faithfully on a rational function field K(x_g : g ∈ G) by permuting variables, so every finite group is a Galois group over some field — the docstring spells this out; only that faithful-action construction is left unformalized.",
+    "mathContext": "$\\exists\\, k \\subseteq F\\ \\text{subfield},\\ F/k\\ \\text{Galois},\\ G \\simeq^* \\mathrm{Gal}(F/k),\\ [F:k] = |G|$. With the Cayley action this gives: every finite group is a Galois group over some field.",
+    "significance": "key",
+    "relatedConcepts": ["existence-form realizability", "Cayley embedding G ↪ Sym(G)", "permutation action on a rational function field", "auxiliary base field vs ℚ"],
+    "prerequisites": ["the three Artin lemmas above", "Cayley's theorem", "subfields and Subfield F"]
   }
 ]
