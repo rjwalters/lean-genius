@@ -8,7 +8,11 @@
     },
     "type": "insight",
     "title": "Powers of Two: λ Is Half the Totient",
-    "content": "carmichael_two_pow is the OQ's target: λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3. The reason is structural — for k ≥ 3 the unit group (ℤ/2ᵏℤ)ˣ is NOT cyclic; it is ℤ/2 × ℤ/2ᵏ⁻², whose exponent is lcm(2, 2ᵏ⁻²) = 2ᵏ⁻², exactly half of φ(2ᵏ) = 2ᵏ⁻¹. two_mul_carmichael_two_pow records this as 2·λ(2ᵏ) = φ(2ᵏ). This is the cleanest example of the Carmichael function being a strict divisor of the totient."
+    "content": "carmichael_two_pow is the OQ's target: λ(2ᵏ) = 2ᵏ⁻² for k ≥ 3. The reason is structural — for k ≥ 3 the unit group (ℤ/2ᵏℤ)ˣ is NOT cyclic; it is ℤ/2 × ℤ/2ᵏ⁻², whose exponent is lcm(2, 2ᵏ⁻²) = 2ᵏ⁻², exactly half of φ(2ᵏ) = 2ᵏ⁻¹. two_mul_carmichael_two_pow records this as 2·λ(2ᵏ) = φ(2ᵏ). This is the cleanest example of the Carmichael function being a strict divisor of the totient.",
+    "mathContext": "$\\lambda(2^k) = 2^{k-2} = \\tfrac{1}{2}\\varphi(2^k) \\;(k \\ge 3), \\qquad (\\mathbb{Z}/2^k\\mathbb{Z})^\\times \\cong \\mathbb{Z}/2 \\times \\mathbb{Z}/2^{k-2}$",
+    "significance": "key",
+    "relatedConcepts": ["Carmichael function", "exponent of a group", "non-cyclic unit group", "least common multiple", "Euler's totient"],
+    "prerequisites": ["unit group (ℤ/nℤ)ˣ", "structure of (ℤ/2ᵏℤ)ˣ", "exponent of a direct product of cyclic groups"]
   },
   {
     "id": "ann-odd-primes",
@@ -19,7 +23,11 @@
     },
     "type": "concept",
     "title": "Odd Prime Powers Are Cyclic, So λ = φ",
-    "content": "carmichael_odd_prime_pow shows the opposite behaviour: for an odd prime p, the unit group (ℤ/pᵏℤ)ˣ is cyclic, so its exponent equals its order and λ(pᵏ) = φ(pᵏ). carmichael_dvd_totient records the general fact λ(n) ∣ φ(n), and pow_carmichael the universal-exponent property a^{λ(n)} = 1 — the sharp form of Euler's theorem. Together with the lcm formula over prime factors, these prime-power values determine λ everywhere."
+    "content": "carmichael_odd_prime_pow shows the opposite behaviour: for an odd prime p, the unit group (ℤ/pᵏℤ)ˣ is cyclic, so its exponent equals its order and λ(pᵏ) = φ(pᵏ). carmichael_dvd_totient records the general fact λ(n) ∣ φ(n), and pow_carmichael the universal-exponent property a^{λ(n)} = 1 — the sharp form of Euler's theorem. Together with the lcm formula over prime factors, these prime-power values determine λ everywhere.",
+    "mathContext": "$\\lambda(p^k) = \\varphi(p^k)\\ (p\\text{ odd prime}), \\qquad \\lambda(n) \\mid \\varphi(n), \\qquad a^{\\lambda(n)} = 1\\ \\text{in}\\ (\\mathbb{Z}/n\\mathbb{Z})^\\times$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic group", "primitive root", "Euler's theorem", "universal exponent", "order of the unit group"],
+    "prerequisites": ["cyclicity of (ℤ/pᵏℤ)ˣ for odd p", "group exponent vs order", "Euler's theorem aᵠ⁽ⁿ⁾ = 1"]
   },
   {
     "id": "ann-concrete",
@@ -28,8 +36,12 @@
       "startLine": 68,
       "endLine": 73
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Concrete Values λ(8) = 2, λ(16) = 4",
-    "content": "carmichael_eight and carmichael_sixteen instantiate the formula at k = 3, 4: λ(8) = 2³⁻² = 2 and λ(16) = 2⁴⁻² = 4. Note φ(8) = 4 and φ(16) = 8, so in each case λ is exactly half of φ — the non-cyclic doubling is visible numerically. These follow from carmichael_two_pow by simplifying the power with norm_num (no native_decide), so they remain kernel-checked and axiom-free."
+    "content": "carmichael_eight and carmichael_sixteen instantiate the formula at k = 3, 4: λ(8) = 2³⁻² = 2 and λ(16) = 2⁴⁻² = 4. Note φ(8) = 4 and φ(16) = 8, so in each case λ is exactly half of φ — the non-cyclic doubling is visible numerically. They are obtained by specializing carmichael_two_pow and simplifying the exponent with norm_num (no native_decide), so they remain kernel-checked and axiom-free.",
+    "mathContext": "$\\lambda(8) = 2^{3-2} = 2 = \\tfrac{1}{2}\\varphi(8), \\qquad \\lambda(16) = 2^{4-2} = 4 = \\tfrac{1}{2}\\varphi(16)$",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "norm_num", "kernel-checked evaluation", "totient values φ(8)=4, φ(16)=8"],
+    "prerequisites": ["the λ(2ᵏ) = 2ᵏ⁻² formula", "norm_num arithmetic simplification"]
   }
 ]
