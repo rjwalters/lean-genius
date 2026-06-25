@@ -1,0 +1,126 @@
+{
+  "slug": "beta-integral-recurrence-oq-01-oq-03-oq-01-oq-02",
+  "id": "beta-integral-recurrence-oq-01-oq-03-oq-01-oq-02",
+  "title": "Low-Order Moments of the Integer Beta(m+1,n+1) Distribution: Mean, Second Moment, and Variance",
+  "description": "Answers the parent leaf's second open question — derive the mean ∫₀¹ x·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)/(m+n+2) of the Beta(m+1,n+1) distribution as a one-line corollary by shifting m ↦ m+1 — and then pushes through the full low-order moment structure from the same single parent integral ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!. Each moment E[Xʲ] is a ratio of weighted integrals ∫₀¹ xʲ·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ; the polynomial weight xʲ is absorbed by the index shift m ↦ m+j so the parent's closed form applies to both numerator and denominator, and the factorial bookkeeping collapses to elementary algebra. Results: mean_eq (E[X] = (m+1)/(m+n+2)), second_moment_eq (E[X²] = (m+1)(m+2)/((m+n+2)(m+n+3))), variance_eq (Var(X) = E[X²] − E[X]² = (m+1)(n+1)/((m+n+2)²(m+n+3))), with normalising_pos certifying the denominator is strictly positive so every ratio is a genuine division. Specialising α = m+1, β = n+1 recovers the textbook Beta(α,β) moments α/(α+β), α(α+1)/((α+β)(α+β+1)), αβ/((α+β)²(α+β+1)). Fully verified: 0 axioms, 0 sorries.",
+  "leanFile": {
+    "imports": [
+      "Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "namespace": "BetaIntegralRecurrenceOQ01OQ03OQ01OQ02",
+    "lineCount": 122,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BetaIntegralRecurrenceOQ01OQ03OQ01OQ02.lean",
+    "tags": [
+      "special-functions",
+      "beta-function",
+      "beta-distribution",
+      "interval-integral",
+      "moments",
+      "variance",
+      "factorial",
+      "probability"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "intervalIntegral.integral_congr",
+        "description": "Equality of interval integrals from pointwise equality of integrands on [0,1]; absorbs each polynomial weight x·xᵐ(1-x)ⁿ = xᵐ⁺¹(1-x)ⁿ and x²·xᵐ(1-x)ⁿ = xᵐ⁺²(1-x)ⁿ so the parent closed form applies after the index shift",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_succ",
+        "description": "(k+1)! = (k+1)·k!; the only number-theoretic input — peels (m+1)!, (m+2)!, and (m+n+2)!, (m+n+3)! down to m! and (m+n+1)! so the factorial ratios collapse to the rational moment formulas",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "Nat.factorial_pos",
+        "description": "0 < k!; supplies strict positivity of the normalising integral (normalising_pos) and the nonzero denominators for field_simp",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "BetaIntegralRecurrenceOQ01OQ03OQ01.integral_offdiag_eq_factorial",
+        "description": "Parent leaf: ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! — the single integral identity this entry is built on, applied at indices m, m+1, m+2 for the three moments",
+        "module": "Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01"
+      }
+    ],
+    "originalContributions": [
+      "mean_eq: the mean of the integer Beta(m+1,n+1) distribution, ∫₀¹ x·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)/(m+n+2), exactly the parent leaf's second open question — obtained as the index shift m ↦ m+1 forces (m+1)!·(m+n+1)!/(m!·(m+n+2)!) = (m+1)/(m+n+2).",
+      "second_moment_eq: the second raw moment ∫₀¹ x²·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)(m+2)/((m+n+2)(m+n+3)), via the weight x² shifting m ↦ m+2.",
+      "variance_eq: the variance Var(X) = E[X²] − E[X]² = (m+1)(n+1)/((m+n+2)²(m+n+3)), combining the two moments — the algebraic cancellation (m+2)(m+n+2) − (m+1)(m+n+3) = n+1 is what produces the (m+1)(n+1) numerator.",
+      "normalising_pos: the normalising constant ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! is strictly positive, certifying every moment is a genuine ratio (division by a nonzero Beta value) rather than a vacuous x/0."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. #print axioms reports only the standard foundational axioms (propext, Classical.choice, Quot.sound) for mean_eq, second_moment_eq, variance_eq, and normalising_pos. No native_decide, so no Lean.ofReduceBool dependency. The entry imports only the parent leaf BetaIntegralRecurrenceOQ01OQ03OQ01 (for its integer Beta integral) and Mathlib.Tactic. Kernel-verified on Mathlib 4.26.0.",
+    "lineCount": 122,
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Beta(α,β) distribution has density x^(α-1)(1-x)^(β-1)/B(α,β) on [0,1] and is the conjugate prior for the binomial proportion. Its moments are textbook: E[X] = α/(α+β), E[X²] = α(α+1)/((α+β)(α+β+1)), Var(X) = αβ/((α+β)²(α+β+1)). At integer shape parameters α = m+1, β = n+1 the normalising Beta value is the rational m!·n!/(m+n+1)!, which the parent gallery leaf established over ℝ. The parent's second open question asked specifically whether the mean drops out as a one-line corollary by shifting m ↦ m+1. This entry confirms that and, with the same mechanism, records the second moment and the variance — the complete low-order moment structure of the integer Beta distribution — without any new integral.",
+    "problemStatement": "From the parent identity ∫ x in 0..1, xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!, derive the mean, second raw moment, and variance of the Beta(m+1,n+1) distribution as ratios of weighted integrals, in closed rational form in m and n.",
+    "proofStrategy": "Each moment E[Xʲ] is the ratio (∫₀¹ xʲ·xᵐ(1-x)ⁿ)/(∫₀¹ xᵐ(1-x)ⁿ). The numerator integrand xʲ·xᵐ(1-x)ⁿ equals xᵐ⁺ʲ(1-x)ⁿ pointwise on [0,1] (integral_congr with ring), so the parent's closed form integral_offdiag_eq_factorial applies at index m+j to the numerator and at index m to the denominator. For the mean (j=1) the ratio is (m+1)!·n!/(m+n+2)! over m!·n!/(m+n+1)!; index normalisation m+1+n+1 = (m+n+1)+1 plus Nat.factorial_succ peels (m+1)! = (m+1)·m! and (m+n+2)! = (m+n+2)·(m+n+1)!, and field_simp closes (m+1)/(m+n+2). For the second moment (j=2) the same peeling applied twice gives (m+2)(m+1)·m! and (m+n+3)(m+n+2)·(m+n+1)!, yielding (m+1)(m+2)/((m+n+2)(m+n+3)). The variance rewrites E[X²] and E[X] by the two proven moments and reduces E[X²] − E[X]² by field_simp and ring, the cancellation (m+2)(m+n+2) − (m+1)(m+n+3) = n+1 producing the numerator (m+1)(n+1). normalising_pos rewrites the denominator to m!·n!/(m+n+1)! and concludes positivity from Nat.factorial_pos.",
+    "keyInsights": [
+      "**The polynomial weight is just an index shift.** Multiplying the density by xʲ turns the moment integral ∫₀¹ xʲ·xᵐ(1-x)ⁿ into ∫₀¹ xᵐ⁺ʲ(1-x)ⁿ — the *same* family of integrals at parameter m+j. So the single parent identity, applied at m, m+1, m+2, supplies the numerator and denominator of every low-order moment; no new integration is needed.",
+      "**Every moment ratio is a telescoping factorial quotient.** The j-th raw moment is (m+j)!·(m+n+1)! / (m!·(m+n+j+1)!), a ratio that cancels to a product of j ascending factors over j ascending factors: (m+1)···(m+j) / ((m+n+2)···(m+n+j+1)). Nat.factorial_succ is the only arithmetic lemma required.",
+      "**The variance numerator is a one-line cancellation.** Var = E[X²] − E[X]² = (m+1)/(m+n+2)·[(m+2)/(m+n+3) − (m+1)/(m+n+2)], and the bracket's numerator (m+2)(m+n+2) − (m+1)(m+n+3) collapses to exactly n+1, giving the symmetric form (m+1)(n+1)/((m+n+2)²(m+n+3)) = αβ/((α+β)²(α+β+1)).",
+      "**Positivity makes the ratios meaningful.** Because the normalising integral equals m!·n!/(m+n+1)! > 0 (normalising_pos), each E[Xʲ] is a genuine quotient by a nonzero value — the moments are not vacuously asserting facts about division by zero."
+    ],
+    "prerequisites": [
+      "The integer Euler Beta integral ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)! (the parent leaf)",
+      "The Beta(α,β) distribution and its moments E[X] = α/(α+β), Var = αβ/((α+β)²(α+β+1))",
+      "Nat.factorial_succ and factorial positivity",
+      "Pointwise rewriting of interval integrands (integral_congr) and field_simp/ring arithmetic"
+    ]
+  },
+  "conclusion": {
+    "summary": "From the single parent identity ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!, the low-order moments of the integer Beta(m+1,n+1) distribution are established in closed rational form: the mean E[X] = (m+1)/(m+n+2) (mean_eq, the parent's second open question), the second raw moment E[X²] = (m+1)(m+2)/((m+n+2)(m+n+3)) (second_moment_eq), and the variance Var(X) = (m+1)(n+1)/((m+n+2)²(m+n+3)) (variance_eq), with normalising_pos certifying the denominator is strictly positive. All four theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "Confirms the parent's conjecture that the mean is a one-line corollary of the integer Beta value via the index shift m ↦ m+1, and shows the same shift mechanism delivers the entire low-order moment structure. Specialising α = m+1, β = n+1 these match the standard Beta(α,β) moments, so the entry connects the gallery's elementary real Beta integral to the probabilistic moment formulas. The index-shift technique generalises directly to higher raw moments E[Xᵏ] = ∏_{i<k}(m+1+i)/∏_{i<k}(m+n+2+i).",
+    "openQuestions": [
+      "Do the same index shifts give the closed form for every raw moment E[Xᵏ] = (m+k)!·(m+n+1)!/(m!·(m+n+k+1)!), expressed as a ratio of Pochhammer symbols (m+1)_k/(m+n+2)_k, by induction on k?",
+      "Does the variance formula (m+1)(n+1)/((m+n+2)²(m+n+3)) reproduce, after the substitution m ↦ a-1, n ↦ b-1, Mathlib's real Beta-distribution variance for integer a, b, and can the equality be stated against a Mathlib pdf if one is added?"
+    ]
+  },
+  "references": [
+    {
+      "authors": "Johnson, N. L.; Kotz, S.; Balakrishnan, N.",
+      "title": "Continuous Univariate Distributions, Volume 2",
+      "year": "1995",
+      "note": "Chapter 25: the Beta distribution and its moments E[X] = α/(α+β), Var = αβ/((α+β)²(α+β+1))."
+    },
+    {
+      "authors": "Whittaker, E. T.; Watson, G. N.",
+      "title": "A Course of Modern Analysis",
+      "year": "1927",
+      "note": "The Euler Beta integral at integer arguments, m!·n!/(m+n+1)!, the normalising constant underlying these moments."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-03-oq-01",
+      "relationship": "extends",
+      "description": "Parent leaf 'The Off-Diagonal Real Euler Beta Integral'. Its second open question asks whether the mean (m+1)/(m+n+2) of the Beta(m+1,n+1) distribution follows as a one-line corollary by shifting m ↦ m+1; this entry answers it and adds the second moment and variance via the same mechanism."
+    },
+    {
+      "targetId": "beta-integral-recurrence-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Grandparent leaf 'The Symmetric Beta Density on [0,1]', the origin of the Beta-distribution framing whose integer-parameter moments this entry computes."
+    }
+  ]
+}

@@ -216,6 +216,7 @@ import Proofs.AreaOfCircleOQ07OQ04
 import Proofs.AreaOfCircleOQ07OQ05
 import Proofs.AreaOfCircleOQ07OQ05OQ01
 import Proofs.AreaOfCircleOQ07OQ05OQ01OQ02
+import Proofs.AreaOfCircleOQ07OQ05OQ02
 import Proofs.ArithmeticSeries
 import Proofs.ArithmeticSeriesOQ00
 import Proofs.ArithmeticSeriesOQ00OQ01
@@ -344,6 +345,8 @@ import Proofs.BertrandsPostulateOQ03OQ04OQ03
 import Proofs.BetaCentralBinomial
 import Proofs.BetaIntegralHalfValue
 import Proofs.BetaIntegralRecurrence
+import Proofs.BetaIntegralRecurrenceOQ01OQ02OQ01
+import Proofs.BetaIntegralRecurrenceOQ01OQ02OQ01OQ01
 import Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01
 import Proofs.BezoutIdentity
 import Proofs.BezoutIdentityOQ01
@@ -374,6 +377,7 @@ import Proofs.BezoutIdentityOQ03OQ01OQ01
 import Proofs.BezoutIdentityOQ03OQ01OQ01OQ01
 import Proofs.BezoutIdentityOQ03OQ01OQ01OQ02
 import Proofs.BezoutIdentityOQ03OQ01OQ02
+import Proofs.BezoutIdentityOQ03OQ01OQ02OQ01
 import Proofs.BezoutIdentityOQ03OQ02
 import Proofs.BezoutIdentityOQ03OQ02OQ01
 import Proofs.BezoutIdentityOQ03OQ03
@@ -729,6 +733,7 @@ import Proofs.CayleyHamiltonMinpolyOQ07
 import Proofs.CayleyHamiltonMinpolyOQ07OQ01
 import Proofs.CayleyHamiltonOQ01
 import Proofs.CayleyHamiltonOQ01OQ01
+import Proofs.CayleyHamiltonOQ01OQ01OQ01
 import Proofs.CayleyHamiltonOQ01OQ03
 import Proofs.CayleyHamiltonOQ01OQ04
 import Proofs.CayleyHamiltonOQ02
@@ -3254,6 +3259,7 @@ import Proofs.IntermediateValueTheoremOQ03
 import Proofs.InverseGalois
 import Proofs.InverseGaloisA5
 import Proofs.InverseGaloisA5Dedekind
+import Proofs.InverseGaloisA5DedekindInstantiation
 import Proofs.InverseGaloisA5OQ02
 import Proofs.InverseGaloisA5OQ03
 import Proofs.InverseGaloisA5Resultant
