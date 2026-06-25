@@ -1,0 +1,126 @@
+{
+  "id": "greens-theorem-oq-01-oq-03",
+  "title": "Green's Theorem is Additive Under Subdivision",
+  "slug": "greens-theorem-oq-01-oq-03",
+  "description": "Both sides of the concrete Green's-theorem identity — the boundary line integral and the double integral of curl — are additive when a rectangle is cut by a vertical or horizontal line. The contribution of the shared interior edge cancels by orientation, so Green's theorem proved cell-by-cell glues into the identity on the whole tiled region.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Green%27s_theorem",
+    "date": "formalized 2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/GreensTheoremOQ01OQ03.lean",
+    "tags": [
+      "analysis",
+      "multivariable-calculus",
+      "integration",
+      "greens-theorem",
+      "additivity"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No axioms. 0 sorries. All six theorems fully machine-checked. #print axioms reports only propext / Classical.choice / Quot.sound (the standard foundational axioms). Built on intervalIntegral.integral_add_adjacent_intervals and intervalIntegral.integral_add from Mathlib.",
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      {
+        "theorem": "intervalIntegral.integral_add_adjacent_intervals",
+        "description": "∫_a^b f + ∫_b^c f = ∫_a^c f for f interval-integrable on both pieces (sign-aware, no ordering required)",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "intervalIntegral.integral_add",
+        "description": "∫(f+g) = ∫f + ∫g for interval-integrable f, g — lifts inner additivity through the outer integral",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      },
+      {
+        "theorem": "intervalIntegral.integral_congr",
+        "description": "Pointwise equality of integrands on the interval implies equality of integrals",
+        "module": "Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Vertical subdivision additivity for the boundary line integral (rectLineIntegral_vsplit): the shared edge x=e cancels by ring, outer edges glue via integral_add_adjacent_intervals",
+      "Vertical subdivision additivity for the double integral of curl (rectDoubleIntegral_vsplit)",
+      "Horizontal subdivision additivity for both sides (rectLineIntegral_hsplit, rectDoubleIntegral_hsplit)",
+      "Capstone gluing theorem (greens_additive_vertical): if Green's theorem holds on two sub-rectangles meeting along an interior edge, it holds on their union — the inductive step for proving Green's theorem on rectangle-tiled regions",
+      "Isolation of the orientation cancellation ∫Q(e,·) − ∫Q(e,·) = 0 as a reusable algebraic fact; no a≤e≤b ordering hypotheses needed"
+    ],
+    "lineCount": 219,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The standard textbook route from Green's theorem on a single rectangle to Green's theorem on a general region is to approximate the region by a union of rectangles (a grid or 'staircase' region) and add the rectangle-wise identities. The crucial — and often hand-waved — observation is that the contributions along the interior edges shared by adjacent rectangles cancel, because each interior edge is traversed once in each direction. This file formalizes exactly that cancellation for the concrete intervalIntegral formulation of Green's theorem introduced in greens-theorem-oq-01.",
+    "problemStatement": "Open Question (greens-theorem-oq-01-oq-03): Are the two sides of the concrete Green identity — rectLineIntegral and rectDoubleIntegral — additive under subdivision of the rectangle, with shared interior edges canceling by orientation? Answer: YES, and the cancellation is exact and hypothesis-free.",
+    "text": "Cutting a rectangle [a,b]×[c,d] by a vertical line x=e (or horizontal line y=g) splits both the boundary line integral and the double integral of curl additively into the two sub-rectangles. The interior edge contributes with opposite orientation to the two cells and cancels identically; only the outer boundary edges need gluing, via Mathlib's adjacent-interval additivity. Adding the two facts yields the capstone: Green's theorem proved cell-by-cell glues into the identity on the union.",
+    "proofStrategy": "For the LINE integral under a vertical cut: expand rectLineIntegral on each cell. The shared right/left edge at x=e contributes +∫_c^d Q(e,y) to the left cell and −∫_c^d Q(e,y) to the right cell, cancelling by pure ring/linarith arithmetic with no hypothesis. The outer edges P(·,c), P(·,d) integrated in x glue via integral_add_adjacent_intervals (hence four integrability hypotheses). For the DOUBLE integral under a vertical cut: inner additivity ∫_a^e f(·,y)+∫_e^b f(·,y)=∫_a^b f(·,y) (pointwise in y, via integral_add_adjacent_intervals) is lifted through the outer y-integral using integral_add and integral_congr. Horizontal cuts are symmetric (shared edge y=g cancels the P(·,g) terms; the double-integral split is a single adjacent-interval additivity on the outer integral). The capstone greens_additive_vertical rewrites both sides with the vertical-split lemmas and substitutes the two cell-wise Green identities.",
+    "keyInsights": [
+      "Orientation is what makes regions tile: each interior edge is traversed once upward and once downward, so its two line-integral contributions are exact negatives and cancel with no analytic input.",
+      "The cancellation needs no integrability or ordering hypothesis — it is pure algebra (ring/linarith). Only the *outer* edges, which genuinely combine into a longer integral, require interval-integrability.",
+      "Both sides of Green's identity decompose the same way, so the identity is subdivision-invariant: proving it on a partition into cells proves it on the whole, and vice versa.",
+      "integral_add_adjacent_intervals is sign-aware, so the additivity holds for signed/overlapping cuts as well — no a≤e≤b is assumed.",
+      "greens_additive_vertical is precisely the inductive step for extending Green's theorem from one rectangle to any rectangle-tiled (staircase) region."
+    ],
+    "prerequisites": [
+      "Green's theorem for a rectangle via concrete intervalIntegrals (greens-theorem-oq-01)",
+      "Additivity of the interval integral over adjacent intervals",
+      "Orientation conventions for boundary line integrals"
+    ]
+  },
+  "conclusion": {
+    "summary": "The concrete Green's-theorem identity is additive under subdivision: both the boundary line integral and the double integral of curl split into adjacent sub-rectangles, with the shared interior edge cancelling by orientation. The capstone greens_additive_vertical shows Green's theorem glues across a cut, giving the inductive step toward Green's theorem on rectangle-tiled regions.",
+    "implications": "This isolates the structural ingredient — orientation-driven edge cancellation — that lets the single-rectangle result (OQ-01) extend to general regions. Combined with the discharged-Fubini siblings (OQ-01-OQ-01, OQ-01-OQ-02), it points toward an axiom-free Green's theorem on staircase domains.",
+    "futureDirections": [
+      "Iterate greens_additive_vertical over a finite grid to obtain Green's theorem on an arbitrary rectangle-tiled region by induction (Finset.sum form).",
+      "Combine horizontal and vertical splits to handle 2D grids of cells.",
+      "Quantify the staircase approximation error to reach Green's theorem on regions with curved boundary."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.GreensTheoremOQ01"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "intervalIntegral",
+      "GreensTheoremOQ01"
+    ],
+    "namespace": "GreensTheoremOQ01OQ03",
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/GreensTheoremOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "greens-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Proves the concrete Green identity from OQ-01 is additive under subdivision, supplying the inductive step toward general regions"
+    },
+    {
+      "targetId": "greens-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Complements the Fubini-elimination sibling: that removes the hFubini hypothesis on one rectangle; this tiles the result across many"
+    },
+    {
+      "targetId": "greens-theorem",
+      "relationship": "related",
+      "description": "Edge-cancellation under subdivision is the structural mechanism behind Green's theorem on general regions"
+    }
+  ],
+  "references": [
+    {
+      "title": "Green's theorem",
+      "url": "https://en.wikipedia.org/wiki/Green%27s_theorem"
+    },
+    {
+      "title": "Mathlib: intervalIntegral.integral_add_adjacent_intervals",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/MeasureTheory/Integral/IntervalIntegral/Basic.html"
+    }
+  ],
+  "sorries": 0
+}
