@@ -70,7 +70,7 @@ theorem reflPerm_involutive (i : ZMod n) : Function.Involutive (reflPerm i) := b
   intro p; simp only [reflPerm_apply]; ring
 
 @[simp] theorem reflPerm_symm (i : ZMod n) : (reflPerm i).symm = reflPerm i :=
-  Equiv.ext fun p => (reflPerm_involutive i).injective (by simp [(reflPerm_involutive i) p])
+  Equiv.ext fun p => (reflPerm_involutive i).injective (by simp)
 
 /-- A position `p` is fixed by `σᵢ` exactly when `2p = -i`. -/
 theorem reflPerm_fixed_iff (i p : ZMod n) : reflPerm i p = p ↔ 2 * p = -i := by
@@ -91,7 +91,7 @@ theorem reflPerm_ne_one [NeZero n] (hn : 3 ≤ n) (i : ZMod n) : reflPerm i ≠ 
     linear_combination -this
   -- 2 = 0 in ZMod n means n ∣ 2, contradicting n ≥ 3
   have hdvd : (n : ℕ) ∣ 2 := by
-    have := (ZMod.natCast_zmod_eq_zero_iff_dvd 2 n).mp (by exact_mod_cast h2)
+    have := (ZMod.natCast_eq_zero_iff 2 n).mp (by exact_mod_cast h2)
     exact this
   have := Nat.le_of_dvd (by norm_num) hdvd
   omega
@@ -99,7 +99,7 @@ theorem reflPerm_ne_one [NeZero n] (hn : 3 ≤ n) (i : ZMod n) : reflPerm i ≠ 
 /-- `orderOf σᵢ = 2` for `n ≥ 3`. -/
 theorem orderOf_reflPerm [NeZero n] (hn : 3 ≤ n) (i : ZMod n) : orderOf (reflPerm i) = 2 := by
   apply orderOf_eq_prime
-  · ext p; simp [pow_two, (reflPerm_involutive i) p]
+  · ext p; simp [pow_two]
   · exact reflPerm_ne_one hn i
 
 /-! ## Part II: unfolding the reflection action on colourings -/
@@ -128,23 +128,20 @@ theorem fixed_iff_reflection (i : ZMod n) (c : Coloring n) :
 /-- A `σᵢ`-symmetric colouring is invariant under every integer power of `σᵢ`. -/
 theorem reflection_zpow (i : ZMod n) {c : Coloring n} (hc : ∀ p, c (reflPerm i p) = c p) :
     ∀ (k : ℤ) (a : ZMod n), c ((reflPerm i ^ k) a) = c a := by
-  -- σᵢ is an involution, so it suffices to handle the single step in both directions.
   have hstep : ∀ a, c (reflPerm i a) = c a := hc
-  intro k
-  induction k using Int.induction_on with
-  | hz => intro a; simp
-  | hp k ih =>
-    intro a
-    have : (reflPerm i ^ (k + 1 : ℤ)) a = reflPerm i ((reflPerm i ^ (k : ℤ)) a) := by
-      rw [zpow_add, zpow_one]; rfl
-    rw [this, hstep]; exact ih a
-  | hn k ih =>
-    intro a
-    have hinv : (reflPerm i)⁻¹ = reflPerm i := by
-      rw [Equiv.Perm.inv_def, reflPerm_symm]
-    have : (reflPerm i ^ (-(k : ℤ) - 1)) a = reflPerm i ((reflPerm i ^ (-(k : ℤ))) a) := by
-      rw [sub_eq_add_neg, zpow_add, zpow_neg, zpow_one, hinv]; rfl
-    rw [this, hstep]; exact ih a
+  -- `σᵢ² = 1`, so every natural power of `σᵢ` is self-inverse and preserves a `σᵢ`-symmetric `c`.
+  have hsq : reflPerm i ^ 2 = 1 := by ext p; simp [pow_two]
+  have hpow : ∀ (m : ℕ) (a : ZMod n), c ((reflPerm i ^ m) a) = c a := by
+    intro m
+    induction m with
+    | zero => intro a; simp
+    | succ m ih => intro a; rw [pow_succ, Equiv.Perm.mul_apply, ih (reflPerm i a)]; exact hstep a
+  have hself : ∀ m : ℕ, (reflPerm i ^ m)⁻¹ = reflPerm i ^ m := fun m =>
+    inv_eq_of_mul_eq_one_right (by rw [← pow_add, ← two_mul, pow_mul, hsq, one_pow])
+  intro k a
+  obtain ⟨m, rfl | rfl⟩ := Int.eq_nat_or_neg k
+  · rw [zpow_natCast]; exact hpow m a
+  · rw [zpow_neg, zpow_natCast, hself m]; exact hpow m a
 
 /-! ## Part III: fixed colourings ≃ functions on the orbit quotient -/
 
@@ -153,6 +150,11 @@ variable [NeZero n]
 /-- The cyclic group `⟨σᵢ⟩ ≤ Equiv.Perm (ZMod n)` acts on positions; its orbit quotient indexes
 the cycles of the reflection. -/
 abbrev ReflOrbit (i : ZMod n) := orbitRel.Quotient (Subgroup.zpowers (reflPerm i)) (ZMod n)
+
+/-- The orbit quotient `ReflOrbit i` is a `Fintype` (a quotient of the finite type `ZMod n`). -/
+noncomputable instance reflOrbitFintype (i : ZMod n) : Fintype (ReflOrbit i) := by
+  classical
+  exact Fintype.ofFinite _
 
 /-- **Fixed colourings ≃ functions on the reflection orbit quotient.**  A colouring fixed by
 `sr i` is constant on the `⟨σᵢ⟩`-orbits, so it descends to a function on `ReflOrbit i`; any
@@ -163,12 +165,12 @@ def fixedReflectionEquiv (i : ZMod n) :
     intro a b hab
     have hsym : ∀ p, c.1 (reflPerm i p) = c.1 p :=
       (fixed_iff_reflection i c.1).mp ((mem_fixedBy).mp c.2)
-    -- a ≈ b means ∃ g ∈ ⟨σᵢ⟩, g • a = b
-    obtain ⟨g, hg⟩ := (orbitRel_apply ..).mp hab.symm
+    -- `a ≈ b` means `∃ g ∈ ⟨σᵢ⟩, g • b = a`
+    obtain ⟨g, hg⟩ := (orbitRel_apply ..).mp hab
     obtain ⟨k, hk⟩ := Subgroup.mem_zpowers_iff.mp g.2
-    have hb : b = (reflPerm i ^ k) a := by
-      rw [← hg]; show _ = (g : Equiv.Perm (ZMod n)) a; rw [← hk]; rfl
-    rw [hb, reflection_zpow i hsym k a])
+    have ha : a = (reflPerm i ^ k) b := by
+      rw [← hg]; show (g : Equiv.Perm (ZMod n)) b = _; rw [← hk]
+    rw [ha, reflection_zpow i hsym k b])
   invFun f :=
     ⟨fun p => f (Quotient.mk'' p), by
       rw [mem_fixedBy, fixed_iff_reflection]
@@ -211,9 +213,34 @@ theorem card_reflOrbit (hn : 3 ≤ n) :
   -- The Cauchy–Frobenius sum over `⟨σᵢ⟩ = {1, σᵢ}` is `|Fix(1)| + |Fix(σᵢ)| = n + reflFix i`.
   have hsum : ∑ g : Subgroup.zpowers (reflPerm i),
       Fintype.card (fixedBy (ZMod n) g) = n + reflFix i := by
-    sorry
+    -- The group `⟨σᵢ⟩` has exactly the two distinct elements `1` and `σᵢ`.
+    set σ : ↥(Subgroup.zpowers (reflPerm i)) := ⟨reflPerm i, Subgroup.mem_zpowers _⟩ with hσ
+    have hne : (1 : ↥(Subgroup.zpowers (reflPerm i))) ≠ σ := by
+      intro h
+      apply reflPerm_ne_one hn i
+      have hval : (1 : Equiv.Perm (ZMod n)) = reflPerm i := congrArg Subtype.val h
+      exact hval.symm
+    have huniv : (Finset.univ : Finset ↥(Subgroup.zpowers (reflPerm i))) = {1, σ} := by
+      apply (Finset.eq_of_subset_of_card_le (Finset.subset_univ _) ?_).symm
+      rw [Finset.card_pair hne, Finset.card_univ, hcardG]
+    -- `|Fix(1)| = n` (the identity fixes every position).
+    have hf1 : Fintype.card (fixedBy (ZMod n) (1 : ↥(Subgroup.zpowers (reflPerm i)))) = n := by
+      have huniv' : fixedBy (ZMod n) (1 : ↥(Subgroup.zpowers (reflPerm i))) = Set.univ :=
+        fixedBy_one_eq_univ (ZMod n) _
+      rw [Fintype.card_congr (Equiv.setCongr huniv'),
+        Fintype.card_congr (Equiv.Set.univ (ZMod n)), ZMod.card]
+    -- `|Fix(σᵢ)| = f i` (the positions fixed by the reflection involution).
+    have hfσ : Fintype.card (fixedBy (ZMod n) σ) = reflFix i := by
+      rw [reflFix]
+      exact Fintype.card_congr (Equiv.subtypeEquivRight (fun p => Iff.rfl))
+    rw [huniv, Finset.sum_pair hne, hf1, hfσ]
   rw [hcardG, hsum] at hburn
-  -- `hburn : n + reflFix i = Fintype.card (ReflOrbit i) * 2`.
+  -- `hburn : n + reflFix i = Fintype.card (ReflOrbit i) * 2`.  The `Fintype` instance Burnside
+  -- synthesised for the orbit quotient need not be defeq to `reflOrbitFintype`, so we pass through
+  -- the instance-independent `Nat.card` to let `omega` finish.
+  rw [← Nat.card_eq_fintype_card] at hburn ⊢
+  -- Unfold the orbit-quotient abbreviation so the goal's `Nat.card` atom matches `hburn`'s.
+  show Nat.card (Quotient (orbitRel (Subgroup.zpowers (reflPerm i)) (ZMod n))) = (n + reflFix i) / 2
   omega
 
 /-! ## Part V: the per-reflection fixed-colouring count -/
@@ -232,7 +259,7 @@ theorem card_fixedBy_reflection (hn : 3 ≤ n) :
 `2p = -i` has a unique solution). -/
 theorem reflFix_odd (hodd : Odd n) : reflFix i = 1 := by
   have h2 : IsUnit (2 : ZMod n) := by
-    have hcop : Nat.Coprime 2 n := (Nat.coprime_two_left_iff_odd).mpr hodd
+    have hcop : Nat.Coprime 2 n := (Nat.coprime_two_left).mpr hodd
     simpa using (ZMod.isUnit_iff_coprime 2 n).mpr hcop
   rw [reflFix_eq i, Fintype.card_eq_one_iff]
   obtain ⟨u, hu⟩ := h2
@@ -249,9 +276,71 @@ theorem reflFix_odd (hodd : Odd n) : reflFix i = 1 := by
 theorem reflFix_even (heven : Even n) :
     reflFix i = if Even i.val then 2 else 0 := by
   rw [reflFix_eq i]
-  -- Count solutions of `2p = -i` in `ZMod n` (n even): the doubling map `p ↦ 2p` has kernel
-  -- `{0, n/2}` and image the even residues, so a fibre is empty (`i.val` odd) or has size `2`.
-  sorry
+  obtain ⟨kk, hkk⟩ := heven
+  have hn2 : 2 * (n / 2) = n := by omega
+  have h2n : 2 ≤ n := by have := NeZero.ne n; omega
+  -- `n/2` is a nonzero element with `2·(n/2) = 0`: the nontrivial element of the kernel.
+  have hc_mem : (2 : ZMod n) * ((n / 2 : ℕ) : ZMod n) = 0 := by
+    have h : (2 : ZMod n) * ((n / 2 : ℕ) : ZMod n) = ((2 * (n / 2) : ℕ) : ZMod n) := by
+      push_cast; ring
+    rw [h, hn2, ZMod.natCast_self]
+  have hc0 : ((n / 2 : ℕ) : ZMod n) ≠ 0 := by
+    rw [Ne, ZMod.natCast_eq_zero_iff]
+    intro hdvd; have := Nat.le_of_dvd (by omega) hdvd; omega
+  by_cases h : Even i.val
+  · rw [if_pos h]
+    -- `p₀ := -(i.val / 2)` solves `2·p₀ = -i`, so the solution set is a coset of the kernel.
+    have hp₀ : 2 * (-(((i.val / 2 : ℕ)) : ZMod n)) = -i := by
+      rw [mul_neg]; congr 1
+      have h2 : 2 * (i.val / 2) = i.val := by obtain ⟨m, hm⟩ := h; omega
+      calc (2 : ZMod n) * ((i.val / 2 : ℕ) : ZMod n)
+          = ((2 * (i.val / 2) : ℕ) : ZMod n) := by push_cast; ring
+        _ = ((i.val : ℕ) : ZMod n) := by rw [h2]
+        _ = i := ZMod.natCast_zmod_val i
+    set p₀ : ZMod n := -(((i.val / 2 : ℕ)) : ZMod n)
+    have e : {p : ZMod n // 2 * p = -i} ≃ {q : ZMod n // 2 * q = 0} :=
+      { toFun := fun p => ⟨p.1 - p₀, by rw [mul_sub, p.2, hp₀, sub_self]⟩
+        invFun := fun q => ⟨q.1 + p₀, by rw [mul_add, q.2, hp₀, zero_add]⟩
+        left_inv := fun p => by ext; simp
+        right_inv := fun q => by ext; simp }
+    rw [Fintype.card_congr e, ← Nat.card_eq_fintype_card, Nat.card_eq_two_iff]
+    refine ⟨⟨0, by ring⟩, ⟨((n / 2 : ℕ) : ZMod n), hc_mem⟩, ?_, ?_⟩
+    · intro hcontra; exact hc0 (Subtype.ext_iff.mp hcontra).symm
+    · rw [Set.eq_univ_iff_forall]
+      rintro ⟨q, hq⟩
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff, Subtype.ext_iff]
+      -- `2q = 0` forces `n ∣ 2·q.val`, so `q.val ∈ {0, n/2}`.
+      have hdvd : n ∣ 2 * q.val := by
+        have hz : ((2 * q.val : ℕ) : ZMod n) = 0 := by
+          push_cast; rw [ZMod.natCast_zmod_val]; exact hq
+        rwa [ZMod.natCast_eq_zero_iff] at hz
+      have hqlt : q.val < n := q.val_lt
+      obtain ⟨c, hc⟩ := hdvd
+      rcases c with _ | _ | c
+      · left
+        simp only [Nat.mul_zero] at hc
+        exact (ZMod.val_eq_zero q).mp (by omega)
+      · right
+        rw [Nat.mul_one] at hc
+        have hqv : q.val = n / 2 := by omega
+        rw [← ZMod.natCast_zmod_val q, hqv]
+      · exfalso
+        have hge : n * 2 ≤ n * (c + 1 + 1) := by gcongr; omega
+        omega
+  · rw [if_neg h, Fintype.card_eq_zero_iff]
+    refine ⟨fun p => ?_⟩
+    obtain ⟨p, hp⟩ := p
+    apply h
+    -- `2p = -i` ⇒ `i = 2·(-p)`; reducing mod `2` shows `i.val` is even.
+    have hdvd2 : (2 : ℕ) ∣ n := ⟨n / 2, hn2.symm⟩
+    set φ : ZMod n →+* ZMod 2 := ZMod.castHom hdvd2 (ZMod 2) with hφ
+    have hi2q : i = 2 * (-p) := by linear_combination hp
+    have key : ((i.val : ℕ) : ZMod 2) = 0 := by
+      have h1 : ((i.val : ℕ) : ZMod 2) = φ i := by
+        rw [← map_natCast φ i.val, ZMod.natCast_zmod_val]
+      have hφ2 : φ (2 : ZMod n) = 0 := by rw [map_ofNat]; decide
+      rw [h1, hi2q, map_mul, hφ2, zero_mul]
+    exact (ZMod.natCast_eq_zero_iff_even).mp key
 
 /-! ## Part VII: the reflection half of the Burnside sum, by parity -/
 
@@ -281,14 +370,48 @@ theorem reflection_sum_even (hn : 3 ≤ n) (heven : Even n) :
     rw [card_fixedBy_reflection i hn, reflFix_even i heven]
     by_cases h : Even i.val
     · rw [if_pos h, if_pos h]; congr 1; omega
-    · rw [if_neg h, if_neg h]; congr 1; omega
+    · rw [if_neg h, if_neg h]; congr 1
   rw [Finset.sum_congr rfl (fun i _ => hterm i)]
-  -- There are exactly `n/2` residues with even `val` and `n/2` with odd `val` (n even), so the
-  -- parity-split sum is `(n/2)·2^{n/2+1} + (n/2)·2^{n/2}`.
-  sorry
+  have hn2 : 2 * (n / 2) = n := by obtain ⟨k, hk⟩ := heven; omega
+  -- Exactly `n/2` residues have even `val`: map by `val` to `range n`, then `j ↦ 2j` to `range (n/2)`.
+  have hcard : (Finset.univ.filter (fun i : ZMod n => Even i.val)).card = n / 2 := by
+    rw [← Finset.card_image_of_injective _ (ZMod.val_injective n)]
+    have himg : (Finset.univ.filter (fun i : ZMod n => Even i.val)).image ZMod.val
+        = (Finset.range n).filter (fun k => Even k) := by
+      ext k
+      simp only [Finset.mem_image, Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_range]
+      constructor
+      · rintro ⟨i, hi, rfl⟩; exact ⟨i.val_lt, hi⟩
+      · rintro ⟨hk, hek⟩
+        exact ⟨(k : ZMod n), by rw [ZMod.val_natCast_of_lt hk]; exact hek,
+          ZMod.val_natCast_of_lt hk⟩
+    rw [himg]
+    have hbij : (Finset.range n).filter (fun k => Even k)
+        = (Finset.range (n / 2)).image (fun j => 2 * j) := by
+      ext k
+      simp only [Finset.mem_filter, Finset.mem_range, Finset.mem_image]
+      constructor
+      · rintro ⟨hk, m, rfl⟩; exact ⟨m, by omega, by omega⟩
+      · rintro ⟨j, hj, rfl⟩; exact ⟨by omega, ⟨j, by ring⟩⟩
+    rw [hbij, Finset.card_image_of_injective _ (fun a b h => by omega), Finset.card_range]
+  -- Split the sum by the parity of `val` and evaluate both constant pieces.
+  rw [← Finset.sum_filter_add_sum_filter_not Finset.univ (fun i : ZMod n => Even i.val)]
+  rw [Finset.sum_congr rfl (fun i hi => if_pos (Finset.mem_filter.mp hi).2),
+    Finset.sum_congr rfl (fun i hi => if_neg (Finset.mem_filter.mp hi).2),
+    Finset.sum_const, Finset.sum_const, smul_eq_mul, smul_eq_mul, hcard]
+  have hcardN : (Finset.univ.filter (fun i : ZMod n => ¬ Even i.val)).card = n / 2 := by
+    have htot := Finset.filter_card_add_filter_neg_card_eq_card
+      (s := (Finset.univ : Finset (ZMod n))) (p := fun i => Even i.val)
+    rw [hcard, Finset.card_univ, ZMod.card] at htot
+    omega
+  rw [hcardN]; ring
 
 end BurnsideCountingOQ04OQ02OQ02
 
 -- Axiom audit: only the standard foundational axioms — no `Lean.ofReduceBool`
 -- (no `native_decide`) and no `sorryAx`.
 #print axioms BurnsideCountingOQ04OQ02OQ02.card_fixedBy_reflection
+#print axioms BurnsideCountingOQ04OQ02OQ02.card_reflOrbit
+#print axioms BurnsideCountingOQ04OQ02OQ02.reflFix_even
+#print axioms BurnsideCountingOQ04OQ02OQ02.reflection_sum_odd
+#print axioms BurnsideCountingOQ04OQ02OQ02.reflection_sum_even
