@@ -3138,6 +3138,7 @@ import Proofs.GodelFirstIncompletenessOQ01OQ01
 import Proofs.GodelFirstIncompletenessOQ01OQ03
 import Proofs.GodelFirstIncompletenessOQ01OQ04
 import Proofs.GodelIncompleteness
+import Proofs.GodelIncompletenessOQ02
 import Proofs.GodelSecondIncompletenessOQ02
 import Proofs.GodelSecondIncompletenessOQ02Companion
 import Proofs.GodelSecondIncompletenessOQ02GLSyntax
