@@ -1,0 +1,57 @@
+[
+  {
+    "id": "arar-oq03-ann-header",
+    "proofId": "abel-ruffini-oq-03",
+    "range": {
+      "startLine": 3,
+      "endLine": 51
+    },
+    "type": "context",
+    "title": "The abelian case is a theorem — this verifies its arithmetic core",
+    "content": "The inverse Galois problem (which finite groups are Gal(L/ℚ)?) is open in general and is Shafarevich's theorem for solvable groups (axiomatized in the sibling abel-ruffini-galois-extensions-oq-05). For ABELIAN groups it is a theorem, classically derived from Kronecker–Weber plus Dirichlet's theorem on primes in arithmetic progressions. This file isolates the part Mathlib supports in full and proves it with zero axioms: for every n ≥ 1 the n-th cyclotomic field ℚ(ζₙ) is an abelian Galois extension of ℚ with Galois group (ZMod n)ˣ. That family of groups is precisely the building block of the Kronecker–Weber realization of an arbitrary finite abelian group; the two remaining classical reductions are named in the closing docstring but not asserted."
+  },
+  {
+    "id": "arar-oq03-ann-galois-group",
+    "proofId": "abel-ruffini-oq-03",
+    "range": {
+      "startLine": 52,
+      "endLine": 66
+    },
+    "type": "key-step",
+    "title": "Gal(ℚ(ζₙ)/ℚ) ≅ (ZMod n)ˣ for all n",
+    "content": "cyclotomicField_isGalois packages IsCyclotomicExtension.isGalois: ℚ(ζₙ)/ℚ is a Galois extension. autEquivUnitsZMod is the arithmetic heart: Mathlib's IsCyclotomicExtension.autEquivPow produces Gal(L/K) ≃* (ZMod n)ˣ whenever the n-th cyclotomic polynomial is irreducible over the base field K. Over K = ℚ that irreducibility is cyclotomic.irreducible_rat, which holds for EVERY n ≥ 1 — so the isomorphism Gal(ℚ(ζₙ)/ℚ) ≃* (ZMod n)ˣ is unconditional. This is the single deep fact behind the abelian inverse Galois problem; everything else is transport of structure."
+  },
+  {
+    "id": "arar-oq03-ann-abelian",
+    "proofId": "abel-ruffini-oq-03",
+    "range": {
+      "startLine": 67,
+      "endLine": 80
+    },
+    "type": "key-step",
+    "title": "The extension is abelian (and finite) by transport",
+    "content": "galois_mul_comm proves ℚ(ζₙ)/ℚ is an ABELIAN extension without any hand computation on automorphisms: apply the isomorphism e = autEquivUnitsZMod to σ·τ and τ·σ, use map_mul and mul_comm on the commutative unit group (ZMod n)ˣ, and conclude σ·τ = τ·σ by injectivity of e. galois_finite likewise transports finiteness of (ZMod n)ˣ across e.symm. Both are clean instances of the principle that a group isomorphism carries group-theoretic properties (commutativity, finiteness) between its two sides."
+  },
+  {
+    "id": "arar-oq03-ann-realization",
+    "proofId": "abel-ruffini-oq-03",
+    "range": {
+      "startLine": 81,
+      "endLine": 110
+    },
+    "type": "key-step",
+    "title": "Realizability bundle: (ZMod n)ˣ is Gal(L/ℚ)",
+    "content": "RealizationOverRat G bundles the data witnessing that a finite group G is a Galois group over ℚ: a carrier field L (with its Field and Algebra ℚ instances packaged as instance fields so that L ≃ₐ[ℚ] L type-checks), a proof IsGalois ℚ L, and an isomorphism (L ≃ₐ[ℚ] L) ≃* G. unitsZModRealization instantiates the bundle with L = CyclotomicField n ℚ, and unitsZMod_realizableOverRat states the existence form: Nonempty (RealizationOverRat (ZMod n)ˣ). This is exactly the inverse-Galois shape 'G = Gal(L/ℚ)', proved for the cyclotomic family over the fixed arithmetic base ℚ."
+  },
+  {
+    "id": "arar-oq03-ann-target",
+    "proofId": "abel-ruffini-oq-03",
+    "range": {
+      "startLine": 111,
+      "endLine": 131
+    },
+    "type": "context",
+    "title": "What is left to reach an arbitrary abelian group",
+    "content": "The closing docstring records the full Kronecker–Weber realization target — every finite abelian group A is Gal(L/ℚ) — and names the two classical inputs that bridge from the verified family (ZMod n)ˣ: (1) Dirichlet's theorem on primes in arithmetic progressions, used to choose n so that A is a quotient of (ZMod n)ˣ (e.g. distinct primes pᵢ ≡ 1 mod the invariant factors mᵢ of A); and (2) the Galois correspondence for abelian extensions, by which a quotient G/N of an abelian Galois group is realized by the fixed field L^N, itself Galois over ℚ with group G/N. These are provable but out of scope here, and are deliberately NOT introduced as axioms."
+  }
+]
