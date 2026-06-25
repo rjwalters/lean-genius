@@ -1,35 +1,62 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "stars-and-bars-weak-compositions",
+    "range": { "startLine": 4, "endLine": 39 },
+    "type": "context",
+    "title": "The bijective idea and the Mathlib gap",
+    "content": "The header states the theorem and the strategy. A weak composition f : Fin k → ℕ summing to n carries exactly the same information as a size-n multiset over the k indices — the multiset containing index i with multiplicity f(i) — so the two are in bijection with Sym (Fin k) n. Mathlib already proves the multiset form of stars and bars (Sym.card_sym_eq_choose) but never records the equivalent, more familiar tuple/function form C(n+k−1, n); supplying that form and the bijection that bridges to it is the original content of this entry. The 'stars and bars' mnemonic — n stars split into k groups by k−1 bars, choosing n of n+(k−1) positions — names the count.",
+    "mathContext": "$\\#\\{f : \\mathrm{Fin}\\,k \\to \\mathbb{N} \\mid \\sum_i f(i) = n\\} = \\binom{n+k-1}{n}$; the count of nonnegative solutions of $x_1+\\cdots+x_k = n$.",
+    "significance": "context",
+    "relatedConcepts": ["stars and bars", "weak composition", "multichoose", "symmetric power Sym"],
+    "prerequisites": ["binomial coefficients", "multisets"]
+  },
+  {
     "id": "ann-multiset-of-a-weak-composition",
     "proofId": "stars-and-bars-weak-compositions",
-    "range": {
-      "startLine": 49,
-      "endLine": 65
-    },
+    "range": { "startLine": 47, "endLine": 65 },
     "type": "definition",
     "title": "The Multiset Attached to a Weak Composition (toMultiset, count_toMultiset, card_toMultiset)",
-    "content": "toMultiset f = ∑ i, Multiset.replicate (f i) i packages a weak composition f : Fin k → ℕ as the multiset over the index set Fin k in which index i appears with multiplicity f(i). This is the concrete realisation of the slogan 'a weak composition is a multiset of indices'. Two bookkeeping lemmas pin the construction down. count_toMultiset proves Multiset.count j (toMultiset f) = f j: Multiset.count_sum' distributes the count over the Finset sum, Multiset.count_replicate turns each summand into the indicator (if i = j then f i else 0), and Fintype.sum_ite_eq' collapses the sum over Fin k to the single surviving term f j. card_toMultiset proves Multiset.card (toMultiset f) = ∑ i, f i: Multiset.card_sum distributes the cardinality over the Finset sum and Multiset.card_replicate evaluates card (replicate (f i) i) = f i. Together these are the two facts that make toMultiset both injective-recoverable and size-correct."
+    "content": "toMultiset f = ∑ i, Multiset.replicate (f i) i packages a weak composition f : Fin k → ℕ as the multiset over the index set Fin k in which index i appears with multiplicity f(i). This is the concrete realisation of the slogan 'a weak composition is a multiset of indices'. Two bookkeeping lemmas pin the construction down. count_toMultiset proves Multiset.count j (toMultiset f) = f j: Multiset.count_sum' distributes the count over the Finset sum, Multiset.count_replicate turns each summand into the indicator (if i = j then f i else 0), and Fintype.sum_ite_eq' collapses the sum over Fin k to the single surviving term f j. card_toMultiset proves Multiset.card (toMultiset f) = ∑ i, f i: Multiset.card_sum distributes the cardinality over the Finset sum and Multiset.card_replicate evaluates card (replicate (f i) i) = f i. Together these are the two facts that make toMultiset both injective-recoverable and size-correct.",
+    "mathContext": "$\\mathrm{toMultiset}\\,f = \\sum_i \\mathrm{replicate}\\,(f(i))\\,i$, with $\\mathrm{count}_j = f(j)$ and $\\#(\\mathrm{toMultiset}\\,f) = \\sum_i f(i)$.",
+    "significance": "key",
+    "relatedConcepts": ["multiset multiplicity", "Multiset.replicate", "indicator collapse", "Fintype.sum_ite_eq'"],
+    "prerequisites": ["Multiset.count / replicate calculus", "finite sums over Fin k"]
   },
   {
     "id": "ann-the-bijection",
     "proofId": "stars-and-bars-weak-compositions",
-    "range": {
-      "startLine": 67,
-      "endLine": 97
-    },
-    "type": "theorem",
-    "title": "The Bijection to Size-n Multisets (weakCompositionEquivSym, instFintypeWeakComposition)",
-    "content": "weakCompositionEquivSym k n is the explicit equivalence {f : Fin k → ℕ // ∑ i, f i = n} ≃ Sym (Fin k) n. The forward map sends f to toMultiset f, which lands in Sym (Fin k) n because card_toMultiset gives card (toMultiset f) = ∑ i, f i = n. The inverse sends a multiset s to the multiplicity function i ↦ Multiset.count i s, whose values sum to n because Multiset.sum_count_eq_card gives ∑ i, count i s = card s = n over the Fintype index Fin k. left_inv is count_toMultiset applied pointwise (count j (toMultiset f) = f j). right_inv is the identity ∑ i, replicate (count i s) i = s: rewrite each replicate (count i s) i as count i s • {i} (Multiset.nsmul_singleton), shrink the sum over all of Fin k to the sum over the support s.toFinset — the dropped indices have count 0, so their terms vanish (Finset.sum_subset with Multiset.count_eq_zero_of_notMem) — and close with Multiset.toFinset_sum_count_nsmul_eq, the standard fact that a multiset is the support-sum of count-many copies of each element. The companion instance instFintypeWeakComposition builds Fintype {f : Fin k → ℕ // ∑ i, f i = n} by Fintype.ofEquiv through this bijection; the instance is genuinely needed because Lean cannot synthesise a Fintype for a subtype of Fin k → ℕ directly (the codomain ℕ is infinite), even though the summing subtype is finite."
+    "range": { "startLine": 65, "endLine": 90 },
+    "type": "technique",
+    "title": "The Bijection to Size-n Multisets (weakCompositionEquivSym)",
+    "content": "weakCompositionEquivSym k n is the explicit equivalence {f : Fin k → ℕ // ∑ i, f i = n} ≃ Sym (Fin k) n. The forward map sends f to toMultiset f, which lands in Sym (Fin k) n because card_toMultiset gives card (toMultiset f) = ∑ i, f i = n. The inverse sends a multiset s to the multiplicity function i ↦ Multiset.count i s, whose values sum to n because Multiset.sum_count_eq_card gives ∑ i, count i s = card s = n over the Fintype index Fin k. left_inv is count_toMultiset applied pointwise (count j (toMultiset f) = f j). right_inv is the identity ∑ i, replicate (count i s) i = s: rewrite each replicate (count i s) i as count i s • {i} (Multiset.nsmul_singleton), shrink the sum over all of Fin k to the sum over the support s.toFinset — the dropped indices have count 0, so their terms vanish (Finset.sum_subset with Multiset.count_eq_zero_of_notMem) — and close with Multiset.toFinset_sum_count_nsmul_eq, the standard fact that a multiset is the support-sum of count-many copies of each element.",
+    "mathContext": "$\\mathrm{weakCompositionEquivSym} : \\{f : \\mathrm{Fin}\\,k \\to \\mathbb{N} \\mid \\sum_i f(i)=n\\} \\simeq \\mathrm{Sym}\\,(\\mathrm{Fin}\\,k)\\,n$.",
+    "significance": "key",
+    "relatedConcepts": ["explicit equivalence", "mutual inverses", "support sum", "toFinset_sum_count_nsmul_eq"],
+    "prerequisites": ["Equiv construction (toFun/invFun/left_inv/right_inv)", "Sym α n", "count_toMultiset"]
+  },
+  {
+    "id": "ann-fintype-instance",
+    "proofId": "stars-and-bars-weak-compositions",
+    "range": { "startLine": 91, "endLine": 95 },
+    "type": "technique",
+    "title": "The Fintype instance transported across the bijection",
+    "content": "instFintypeWeakComposition builds Fintype {f : Fin k → ℕ // ∑ i, f i = n} by Fintype.ofEquiv through weakCompositionEquivSym (Sym (Fin k) n is finite). This instance is genuinely necessary, not bookkeeping: Lean cannot synthesise a Fintype for a subtype of Fin k → ℕ directly because the codomain ℕ is infinite, even though the summing subtype is in fact finite. Establishing finiteness via the bijection is what makes the subsequent Fintype.card statement well-posed.",
+    "mathContext": "$\\mathrm{Fintype}\\,\\{f : \\mathrm{Fin}\\,k \\to \\mathbb{N} \\mid \\sum_i f(i)=n\\}$ via $\\mathrm{Fintype.ofEquiv}\\,(\\mathrm{Sym}\\,(\\mathrm{Fin}\\,k)\\,n)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Fintype.ofEquiv", "finiteness from a bijection", "infinite codomain subtype"],
+    "prerequisites": ["typeclass instance synthesis", "weakCompositionEquivSym"]
   },
   {
     "id": "ann-the-count",
     "proofId": "stars-and-bars-weak-compositions",
-    "range": {
-      "startLine": 99,
-      "endLine": 104
-    },
-    "type": "theorem",
+    "range": { "startLine": 97, "endLine": 104 },
+    "type": "insight",
     "title": "The Count C(n+k−1, n) (card_weakComposition)",
-    "content": "card_weakComposition k n is the headline stars-and-bars count: Fintype.card {f : Fin k → ℕ // ∑ i, f i = n} = (n + k − 1).choose n. Fintype.card_congr transports the cardinality along weakCompositionEquivSym to card (Sym (Fin k) n), Sym.card_sym_eq_choose evaluates this to (card (Fin k) + n − 1).choose n, and a final simp with Fintype.card_fin and Nat.add_comm rewrites card (Fin k) = k and reorders the addition to the stated (n + k − 1).choose n. This is the function/tuple form of stars and bars that Mathlib leaves unstated — Mathlib records only the multiset form Sym.card_sym_eq_choose."
+    "content": "card_weakComposition k n is the headline stars-and-bars count: Fintype.card {f : Fin k → ℕ // ∑ i, f i = n} = (n + k − 1).choose n. Fintype.card_congr transports the cardinality along weakCompositionEquivSym to card (Sym (Fin k) n), Sym.card_sym_eq_choose evaluates this to (card (Fin k) + n − 1).choose n, and a final simp with Fintype.card_fin and Nat.add_comm rewrites card (Fin k) = k and reorders the addition to the stated (n + k − 1).choose n. This is the function/tuple form of stars and bars that Mathlib leaves unstated — Mathlib records only the multiset form Sym.card_sym_eq_choose.",
+    "mathContext": "$\\mathrm{Fintype.card}\\,\\{f : \\mathrm{Fin}\\,k \\to \\mathbb{N} \\mid \\sum_i f(i)=n\\} = \\binom{n+k-1}{n}$.",
+    "significance": "key",
+    "relatedConcepts": ["Fintype.card_congr", "Sym.card_sym_eq_choose", "cardinality transport", "binomial coefficient"],
+    "prerequisites": ["the bijection weakCompositionEquivSym", "Sym.card_sym_eq_choose"]
   }
 ]
