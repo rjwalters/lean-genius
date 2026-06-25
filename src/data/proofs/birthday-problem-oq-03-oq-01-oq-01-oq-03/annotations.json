@@ -1,0 +1,38 @@
+[
+  {
+    "id": "bday-oq03010103-ann-overview",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 49 },
+    "type": "concept",
+    "title": "The k = 3 Threshold and the Cube-Root Identity",
+    "content": "The header frames the parent's OQ-03: for triple birthday coincidences among d days, the threshold group size is n ≈ (6 d² ln2)^(1/3). The heuristic is the expected-count balance — the expected number of triples C(n,3)/d² = n(n-1)(n-2)/(6d²) equals ln2 at the 50%-chance point, i.e. n(n-1)(n-2) = 6 d² ln2. The proof treats cube roots as the real power t ↦ t^(1/3); cubeRoot_cube establishes the needed identity (x³)^(1/3) = x for x ≥ 0 via Real.pow_rpow_inv_natCast (rewriting 1/3 = (3:ℕ)⁻¹).",
+    "mathContext": "Balance: $\\binom{n}{3}/d^2 = \\ln 2 \\iff n(n-1)(n-2) = 6 d^2 \\ln 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["birthday problem", "expected count", "Poisson heuristic", "real powers"],
+    "prerequisites": ["binomial coefficients", "logarithm", "rpow"]
+  },
+  {
+    "id": "bday-oq03010103-ann-threshold",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03",
+    "range": { "startLine": 50, "endLine": 84 },
+    "type": "insight",
+    "title": "The Threshold Sandwich",
+    "content": "birthday_triple_threshold proves (6d²ln2)^(1/3) ≤ n ≤ (6d²ln2)^(1/3) + 2 for any n ≥ 2 solving the balance equation. Writing L = 6d²ln2 (positive, since log 2 > 0), the cubic is sandwiched between consecutive cubes: n(n-1)(n-2) ≤ n³ (difference n(3n-2) ≥ 0) and (n-2)³ ≤ n(n-1)(n-2) (difference (n-2)(3n-4) ≥ 0), each closed by nlinarith with one product hint. Cube-root monotonicity (Real.rpow_le_rpow at exponent 1/3) plus (x³)^(1/3)=x turns L ≤ n³ into L^(1/3) ≤ n and (n-2)³ ≤ L into n-2 ≤ L^(1/3), giving the two-sided bound.",
+    "mathContext": "$(n-2)^3 \\le n(n-1)(n-2) \\le n^3 \\Rightarrow L^{1/3} \\le n \\le L^{1/3}+2$.",
+    "significance": "critical",
+    "relatedConcepts": ["sandwich argument", "monotonicity of roots", "falling factorial"],
+    "prerequisites": ["cube-root identity", "nlinarith"]
+  },
+  {
+    "id": "bday-oq03010103-ann-gap",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03",
+    "range": { "startLine": 85, "endLine": 116 },
+    "type": "insight",
+    "title": "Packaged Threshold Gap",
+    "content": "birthday_triple_threshold_gap restates the result as |n − (6d²ln2)^(1/3)| ≤ 2: the balance-equation solution is within a bounded, d-independent distance 2 of the leading-order threshold (6d²ln2)^(1/3). This is the rigorous form of the asymptotic n ≈ (6d²ln2)^(1/3) — the error term is O(1), uniformly in the number of days d.",
+    "mathContext": "$\\bigl|\\,n - (6 d^2 \\ln 2)^{1/3}\\,\\bigr| \\le 2$.",
+    "significance": "important",
+    "relatedConcepts": ["asymptotic equivalence", "error bound", "absolute value"],
+    "prerequisites": ["two-sided bound", "abs_le"]
+  }
+]
