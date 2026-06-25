@@ -1,0 +1,88 @@
+{
+  "slug": "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01",
+  "title": "Double Factorial Identity from Legendre Duplication",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "(2n)! = (2n-1)!! \\cdot 2^n \\cdot n! \\quad \\text{for all } n \\in \\mathbb{N},",
+    "plain": "Reprove the elementary identity (2n)! = (2n-1)!! · 2^n · n! as a consequence of the Legendre duplication formula for the Gamma function evaluated at half-integers, deriving a combinatorial fact from the analytic duplication identity.",
+    "whyMatters": [
+      "Research value"
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-25T05:03:08-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: (2n)! = (2n-1)‼·2ⁿ·n! reproved analytically two ways — equating the standalone double-factorial Gamma form with the parent central form, and directly from Legendre duplication. 0-axiom, original. Gallery-integrated.",
+    "builtItems": [
+      "gamma_nat_add_half_oddDF: standalone induction for Γ(n+1/2)=(2n-1)‼·√π/2ⁿ (GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean:74)",
+      "two_mul_factorial_eq / two_mul_factorial_eq_real: analytic reproof of (2n)!=(2n-1)‼·2ⁿ·n! via two closed forms (lines 109,132)",
+      "two_mul_factorial_eq_via_duplication: the same identity from Legendre duplication, the open question verbatim (line 155)",
+      "oddDoubleFactorial_succ (line 62), oddDoubleFactorial_eq_factorial_div (line 184)"
+    ],
+    "insights": [
+      "The standalone double-factorial Gamma form Γ(n+1/2)=(2n-1)‼·√π/2ⁿ can be proved by direct induction on Γ(s+1)=s·Γ(s) without routing through the central form, making the recovery of (2n)!=(2n-1)‼·2ⁿ·n! genuinely non-circular.",
+      "The integer identity is exactly the statement that two independent telescopings of the half-integer Gamma recursion (central (2n)!/(4ⁿn!) vs double-factorial (2n-1)‼/2ⁿ) agree.",
+      "Legendre duplication Real.Gamma_mul_Gamma_add_half at s=n+1/2 carries the whole deduction in one analytic identity since all three Gamma factors are elementary half-integer/integer values.",
+      "Over ℝ the only non-formal step is 4ⁿ=2ⁿ·2ⁿ (2^(2n)=2ⁿ·2ⁿ): ring treats the powers as independent atoms so the factorisation must be supplied explicitly before cancelling."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Half-line Gaussian moments ∫₀^∞ x^(2n)e^(-x²)dx = (2n-1)‼·√π/2^(n+1) via u=x² (new follow-up oq-...-oq-01)."
+    ],
+    "markdown": "# Knowledge Base: gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "special-functions",
+    "gamma-function",
+    "double-factorial",
+    "duplication-formula",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "gamma-reflection-formula-oq-01",
+    "gamma-reflection-formula-oq-01-oq-01",
+    "gamma-reflection-formula-oq-01-oq-01-oq-01",
+    "gamma-reflection-formula-oq-01-oq-03",
+    "gamma-reflection-formula-oq-01-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T12:08:08.371Z",
+  "lastUpdate": "2026-06-25T12:08:08.409Z",
+  "significance": 5,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean",
+      "lineCount": 194,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false
+    }
+  ]
+}
