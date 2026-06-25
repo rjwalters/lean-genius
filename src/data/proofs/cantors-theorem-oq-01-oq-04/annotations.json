@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-cantorsoq0104-setup",
+    "proofId": "cantors-theorem-oq-01-oq-04",
+    "range": { "startLine": 1, "endLine": 41 },
+    "type": "concept",
+    "title": "Setup: Extending the Beth Tower over ℝ to ℶ₃",
+    "content": "This file resolves open question #4 of cantors-theorem-oq-01, which had established |𝒫(ℝ)| = ℶ₂: the follow-up asks whether the next iterated power set lands on the next beth number, |𝒫(𝒫(ℝ))| = ℶ₃. It does, and provably in ZFC. The conceptual payoff is the contrast drawn in the docstring: the BETH-index of an iterated power set of ℝ is fixed by definition (the beth function is ℶ_{α+1} = 2^{ℶ_α}, exactly the power-set operation), whereas the ALEPH-index of the same cardinal is independent of ZFC (Easton's theorem). Mathlib has all the cardinal-arithmetic pieces but not this identity."
+  },
+  {
+    "id": "ann-cantorsoq0104-beth-successors",
+    "proofId": "cantors-theorem-oq-01-oq-04",
+    "range": { "startLine": 43, "endLine": 55 },
+    "type": "lemma",
+    "title": "§1 — Beth Successor Unfoldings ℶ₂ = 2^ℶ₁, ℶ₃ = 2^ℶ₂",
+    "content": "beth_two_eq and beth_three_eq unfold the beth function at the concrete indices 2 and 3. The only nontrivial step is recognizing the numeral as an ordinal successor — (2 : Ordinal) = Order.succ 1 and (3 : Ordinal) = Order.succ 2, each discharged by Order.succ_eq_add_one + norm_num — after which Cardinal.beth_succ (ℶ_(succ o) = 2^ℶ_o) gives the doubling. These are the two rungs of the climb |𝒫(𝒫(ℝ))| → 2^|𝒫(ℝ)| → 2^(2^|ℝ|)."
+  },
+  {
+    "id": "ann-cantorsoq0104-lower-rungs",
+    "proofId": "cantors-theorem-oq-01-oq-04",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "lemma",
+    "title": "§2 — Lower Rungs: |ℝ| = ℶ₁ and |𝒫(ℝ)| = ℶ₂",
+    "content": "card_real_eq_beth_one chains Cardinal.mk_real (#ℝ = 𝔠) with Cardinal.beth_one (ℶ₁ = 𝔠) to get #ℝ = ℶ₁. card_powerSet_real_eq_beth_two then re-derives the parent's headline result: Cardinal.mk_set gives #(Set ℝ) = 2^#ℝ, rewriting #ℝ = ℶ₁ and beth_two_eq (ℶ₂ = 2^ℶ₁) matches both sides. Re-deriving these here keeps the file self-contained (no import of the parent entry, whose olean would otherwise be a build dependency)."
+  },
+  {
+    "id": "ann-cantorsoq0104-main",
+    "proofId": "cantors-theorem-oq-01-oq-04",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "theorem",
+    "title": "§3 — Main Result: |𝒫(𝒫(ℝ))| = ℶ₃",
+    "content": "card_powerSet_powerSet_real_eq_beth_three: a three-rewrite proof. Cardinal.mk_set applied to the outer power set gives #(Set (Set ℝ)) = 2^#(Set ℝ); card_powerSet_real_eq_beth_two (§2) rewrites #(Set ℝ) = ℶ₂ to reach 2^ℶ₂; beth_three_eq (§1) rewrites ℶ₃ = 2^ℶ₂, matching the two sides. Numerically this is |𝒫(𝒫(ℝ))| = 2^(2^(2^ℵ₀)) = ℶ₃."
+  },
+  {
+    "id": "ann-cantorsoq0104-towers",
+    "proofId": "cantors-theorem-oq-01-oq-04",
+    "range": { "startLine": 74, "endLine": 92 },
+    "type": "lemma",
+    "title": "§4 — Strict Cantor and Beth Towers",
+    "content": "card_real_lt_powerSet (|ℝ| < |𝒫(ℝ)|) and card_powerSet_real_lt_powerSet_powerSet (|𝒫(ℝ)| < |𝒫(𝒫(ℝ))|) are instances of Cardinal.cantor (κ < 2^κ): rewrite the appropriate power set with mk_set, then apply cantor. (For the second, the rewrite must target the right-hand #(Set (Set ℝ)), supplied via an explicit have, since mk_set would otherwise match the left side first.) beth_tower_strictMono gives ℶ₁ < ℶ₂ < ℶ₃ from Cardinal.beth_strictMono applied to the ordinal inequalities 1 < 2 and 2 < 3."
+  },
+  {
+    "id": "ann-cantorsoq0104-summary",
+    "proofId": "cantors-theorem-oq-01-oq-04",
+    "range": { "startLine": 93, "endLine": 102 },
+    "type": "theorem",
+    "title": "§5 — Summary",
+    "content": "cantors_theorem_oq01oq04_summary packages the three ZFC-provable facts as one conjunction: the main identity |𝒫(𝒫(ℝ))| = ℶ₃, the strict Cantor tower |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))|, and the strict beth tower ℶ₁ < ℶ₂ < ℶ₃. #print axioms confirms only the foundational propext, Classical.choice, Quot.sound."
+  }
+]
