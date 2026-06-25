@@ -1,0 +1,131 @@
+{
+  "id": "erdos-1098-oq-01-oq-03",
+  "title": "Erdős #1098 OQ-01-OQ-03: Neumann's Theorem — ω(Γ(G)) finite ⟺ [G:Z(G)] finite",
+  "slug": "erdos-1098-oq-01-oq-03",
+  "description": "Formalizes B. H. Neumann's theorem (the substance of Erdős #1098): the non-commuting graph Γ(G) has finite clique number ω if and only if the centre Z(G) has finite index in G. The reverse implication is fully proved with the sharp explicit bound ω ≤ [G:Z(G)], by injecting any clique into the [G:Z(G)]-element quotient G/Z(G) (non-commuting elements lie in distinct central cosets). Neumann's deep converse (bounded cliques ⟹ finite centre index) is recorded as a single cited axiom.",
+  "meta": {
+    "author": "B. H. Neumann (1976); formalization by researcher-10",
+    "sourceUrl": "https://erdosproblems.com/1098",
+    "date": "1976-2026",
+    "status": "axiomatized",
+    "proofRepoPath": "Proofs/Erdos1098OQ01OQ03.lean",
+    "tags": [
+      "erdos",
+      "group-theory",
+      "non-commuting-graph",
+      "clique-number",
+      "center",
+      "index",
+      "neumann",
+      "open-question"
+    ],
+    "badge": "axiom",
+    "sorries": 0,
+    "axiomCount": 1,
+    "assumptions": "1 axiom: neumann_hard_direction — if ω(Γ(G)) is finite (a uniform bound on every set of pairwise non-commuting elements) then [G:Z(G)] is finite. This is B. H. Neumann's 1976 theorem, the deep content of Erdős #1098; its proof is a covering / BFC-group argument not available in Mathlib. The reverse implication (finite index ⟹ bounded cliques) is fully proved with the sharp bound ω ≤ [G:Z(G)], including the coset-separation lemma commuting_of_invMul_mem_center and injectivity of the quotient map on cliques.",
+    "erdosNumber": 1098,
+    "erdosUrl": "https://erdosproblems.com/1098",
+    "originalContributions": [
+      "commuting_of_invMul_mem_center: a⁻¹*b central ⟹ a and b commute (coset-separation core)",
+      "nonCommuting_distinct_image: non-commuting elements have distinct images in G/Z(G)",
+      "clique_inj_on_quotient: the quotient map G → G/Z(G) is injective on any clique",
+      "clique_card_le_index: every clique has size ≤ [G:Z(G)] (sharp, fully proved)",
+      "bounded_cliques_of_finite_index: finite centre index ⟹ ω(Γ(G)) finite with explicit bound",
+      "neumann_full_theorem: the equivalence ω(Γ(G)) finite ⟺ [G:Z(G)] finite"
+    ],
+    "lineCount": 181,
+    "theoremCount": 7,
+    "defCount": 3,
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "In 1976 B. H. Neumann answered a question of Paul Erdős (problem #1098): if a group $G$ contains no infinite set of pairwise non-commuting elements, must the centre $Z(G)$ have finite index? Neumann proved yes. Combined with the elementary converse, this gives the clean dichotomy $\\omega(\\Gamma(G)) < \\infty \\iff [G:Z(G)] < \\infty$, where $\\Gamma(G)$ is the non-commuting graph (vertices the elements of $G$, edges joining non-commuting pairs) and $\\omega$ is its clique number. Neumann's theorem underlies the systematic study of $\\Gamma(G)$ by Abdollahi, Akbari, and Maimani (2006) and the entire classification of groups by clique number.",
+    "problemStatement": "Is the non-commuting graph clique number ω(Γ(G)) finite exactly when the centre Z(G) has finite index in G?",
+    "text": "We formalize ω(Γ(G)) finite as `BoundedCliques G`: the existence of a single bound B such that every clique (finite set of pairwise non-commuting elements) has at most B elements. Mathlib encodes [G:Z(G)] finite as `(Subgroup.center G).index ≠ 0`. Neumann's theorem is the equivalence `BoundedCliques G ↔ (Subgroup.center G).index ≠ 0`.",
+    "proofStrategy": "The reverse implication is fully proved. Distinct clique elements lie in distinct cosets of Z(G): if a⁻¹*b were central then b = a*(a⁻¹*b) commutes with a, contradicting the edge. Hence the quotient map G → G/Z(G) is injective on any clique, so the clique injects into the finite (size [G:Z(G)]) quotient and ω ≤ [G:Z(G)]. The forward implication is Neumann's theorem, recorded as the axiom neumann_hard_direction.",
+    "keyInsights": [
+      "Coset separation: a*b ≠ b*a forces a and b into distinct Z(G)-cosets, i.e. distinct points of G/Z(G)",
+      "A clique therefore injects into G/Z(G), so its size is at most [G:Z(G)] — the bound is sharp",
+      "Mathlib's `Subgroup.index = 0` convention cleanly expresses 'infinite index', so 'finite index' is `index ≠ 0`",
+      "Finite index makes G/Z(G) a finite type (Nat.card_pos_iff), the only ingredient needed to turn injectivity into a cardinality bound",
+      "Only the converse (bounded cliques ⟹ finite index) needs Neumann's deep covering argument; the bounding direction is elementary and fully machine-checked"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions",
+      "startLine": 60,
+      "endLine": 75,
+      "summary": "nonCommuting, IsClique, and BoundedCliques (ω(Γ(G)) finite as a uniform clique-size bound).",
+      "mathContext": "BoundedCliques G := ∃ B, ∀ S, IsClique S → S.card ≤ B"
+    },
+    {
+      "id": "coset-separation",
+      "title": "Cosets of the centre separate non-commuting elements",
+      "startLine": 76,
+      "endLine": 110,
+      "summary": "commuting_of_invMul_mem_center, nonCommuting_distinct_image, and clique_inj_on_quotient: the quotient map G → G/Z(G) is injective on any clique.",
+      "mathContext": "a⁻¹*b ∈ Z(G) ⟹ a*b = b*a; contrapositive gives distinct images in G/Z(G)"
+    },
+    {
+      "id": "easy-direction",
+      "title": "Easy direction — finite index bounds the clique number",
+      "startLine": 111,
+      "endLine": 150,
+      "summary": "clique_card_le_index (every clique has size ≤ [G:Z(G)], sharp) and bounded_cliques_of_finite_index, both fully proved.",
+      "mathContext": "Inject clique into finite quotient G/Z(G); S.card ≤ Nat.card(G/Z(G)) = (center G).index"
+    },
+    {
+      "id": "neumann-axiom",
+      "title": "Hard direction — Neumann's theorem (axiom)",
+      "startLine": 151,
+      "endLine": 170,
+      "summary": "neumann_hard_direction: bounded cliques ⟹ finite centre index (Neumann 1976), stated as a cited axiom.",
+      "mathContext": "BoundedCliques G → (Subgroup.center G).index ≠ 0"
+    },
+    {
+      "id": "full-theorem",
+      "title": "Neumann's full theorem",
+      "startLine": 171,
+      "endLine": 181,
+      "summary": "neumann_full_theorem (the equivalence) and abelian_bounded_cliques (sanity check via center_eq_top).",
+      "mathContext": "BoundedCliques G ↔ (Subgroup.center G).index ≠ 0"
+    }
+  ],
+  "conclusion": {
+    "summary": "Neumann's theorem ω(Γ(G)) finite ⟺ [G:Z(G)] finite is formalized as an iff. The bounding direction (finite index ⟹ bounded cliques, with the sharp bound ω ≤ [G:Z(G)]) is fully machine-checked via injectivity of the central-quotient map on cliques; Neumann's deep converse is recorded as a single cited axiom.",
+    "implications": "This supplies the Neumann backdrop referenced by the ω = 2 and ω = 3 classifications (OQ-01, OQ-01-OQ-01): the coset-separation bound ω ≤ [G:Z(G)] is exactly the elementary half, and the iff pins down precisely when finite cliques occur. The sharp bound also yields ω(Γ(G)) ≤ [G:Z(G)] for all groups unconditionally (vacuously when the index is infinite).",
+    "openQuestions": [
+      "Formalize Neumann's covering argument to discharge neumann_hard_direction and obtain a 0-axiom proof",
+      "Quantitative refinement: bound [G:Z(G)] explicitly in terms of ω (the BFC function)",
+      "Relate the sharp bound ω ≤ [G:Z(G)] to the exact clique numbers of S₃, D₈, A₄ from the ω = 3 classification"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Open question nested inside OQ-01 (groups with small clique number)",
+      "targetId": "erdos-1098-oq-01"
+    },
+    {
+      "relationship": "related-to",
+      "description": "Provides the Neumann theorem backdrop used by the ω = 3 classification",
+      "targetId": "erdos-1098-oq-01-oq-01"
+    },
+    {
+      "relationship": "child-of",
+      "description": "Sub-problem of the Erdős #1098 non-commuting graph problem",
+      "targetId": "erdos-1098"
+    }
+  ],
+  "leanFile": {
+    "lineCount": 181,
+    "path": "Proofs/Erdos1098OQ01OQ03.lean",
+    "axiomCount": 1,
+    "sorries": 0,
+    "definitionCount": 3,
+    "theoremCount": 7
+  },
+  "sorries": 0
+}
