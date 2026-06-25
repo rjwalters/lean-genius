@@ -76,12 +76,12 @@
   },
   "crossReferences": [
     {
-      "targetId": "binomial-theorem-oq-03",
+      "proofId": "binomial-theorem-oq-03",
       "relationship": "extends",
       "description": "parent: builds the binomial distribution and its properties directly from the binomial theorem; this entry carries the same program to the multinomial distribution, focusing on category aggregation."
     },
     {
-      "targetId": "binomial-theorem-oq-02-oq-01-oq-02",
+      "proofId": "binomial-theorem-oq-02-oq-01-oq-02",
       "relationship": "extends",
       "description": "sibling: proves single-coordinate marginals of the multinomial are binomial via the PGF; this entry generalizes that to arbitrary unions of categories (the lumping property), recovering the single-coordinate case as A = {i₀}."
     }
