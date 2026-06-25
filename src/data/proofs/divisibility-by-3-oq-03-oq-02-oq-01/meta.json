@@ -2,30 +2,20 @@
   "id": "divisibility-by-3-oq-03-oq-02-oq-01",
   "slug": "divisibility-by-3-oq-03-oq-02-oq-01",
   "title": "The Iterative Digital Root Equals its Closed Form",
+  "description": "Formalizes the schoolbook iterative digital root — repeatedly replace n by the sum of its base-b digits until a single digit remains — by well-founded recursion, and proves it computes the closed form dr_b(n) = 1 + ((n-1) mod (b-1)) for every base b ≥ 2. The crux is the strict bound (digits b n).sum < n for n ≥ b, which serves both as the termination measure and as the descent step of the strong-induction equivalence proof. Base 10 recovers the decimal digital root and casting out nines. 0 axioms, 0 sorries.",
   "parent": "divisibility-by-3-oq-03-oq-02",
   "openQuestion": "Can Lean 4 formalize the iterative digital root (repeatedly sum the base-b digits until a single digit remains) and prove that it computes the closed form dr_b(n) = 1 + ((n-1) mod (b-1))?",
-  "significance": "The parent entry defined the base-b digital root only by its closed form dr_b(n) = 1 + ((n-1) mod (b-1)). This leaf supplies the missing half: a faithful formalization of the actual schoolbook *process* — keep replacing n by the sum of its base-b digits until one digit is left — together with a machine-checked proof that the process always terminates and computes exactly that closed form, for every base b >= 2. The crux is the strict bound (digits b n).sum < n for n >= b, which is both the well-founded termination measure for the iterative definition and the engine of the strong-induction equivalence proof. The result turns the informal 'digital root algorithm' into a verified function and recovers casting out nines (base 10) as the b = 10 instance.",
   "status": "verified",
   "badge": "original",
   "axiomCount": 0,
   "sorries": 0,
-  "overview": "We define digitalRootIter b n by well-founded recursion: if n is already a single digit (n < b) return n, otherwise recurse on the digit sum. Termination is justified by digitSum_lt: for 2 <= b <= n the base-b digit sum strictly decreases. We then prove the headline digitalRootIter_eq_base: digitalRootIter b n = digitalRootBase b n for all b >= 2, by strong induction. Each digit-sum step preserves the residue mod (b-1) (sumDigits_modEq, from Mathlib's Nat.modEq_digits_sum) and keeps the value positive (sumDigits_pos, from getLast_digit_ne_zero), while the closed form depends only on that residue (digitalRootBase_modEq_eq). Corollaries: the iterate is always a single digit (digitalRootIter_lt_base), is congruent to its input mod (b-1) (digitalRootIter_modEq), and base-10 specializes to the decimal digital root with casting out nines (digitalRootIter_ten_nine_mul).",
-  "conclusion": "The iterative digital root is a total, terminating function that provably computes the closed form 1 + ((n-1) mod (b-1)) in every base b >= 2. The single ingredient making both the definition and the proof go through is the strict digit-sum drop (digits b n).sum < n for n >= b. Everything is kernel-checked and axiom-free (no native_decide; only the standard propext / Classical.choice / Quot.sound).",
-  "leanFile": {
-    "path": "Proofs/DivisibilityBy3OQ03OQ02OQ01.lean",
-    "lineCount": 203,
-    "axiomCount": 0,
-    "theoremCount": 15,
-    "definitionCount": 2,
-    "imports": ["Mathlib"],
-    "opens": ["Nat"],
-    "namespace": "DivisibilityBy3OQ03OQ02OQ01",
-    "sorries": 0
-  },
   "meta": {
+    "author": "Lean Genius",
     "status": "verified",
     "badge": "original",
     "proofRepoPath": "Proofs/DivisibilityBy3OQ03OQ02OQ01.lean",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Digital_root",
+    "date": "2026",
     "tags": [
       "number-theory",
       "divisibility",
@@ -41,6 +31,7 @@
     "theoremCount": 15,
     "definitionCount": 2,
     "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
         "theorem": "Nat.digit_sum_le",
@@ -75,7 +66,93 @@
       "Single-digit range (digitalRootIter_lt_base) and residue invariant (digitalRootIter_modEq)",
       "Base-10 specialization including the casting-out-nines law digitalRootIter_ten_nine_mul"
     ],
-    "assumptions": []
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries. The two decide calls (digitalRootIter_ten_12345, the final step of digitalRootIter_ten_nine_mul) use kernel decidability, NOT native_decide, so #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx). The closure-preserving digit-sum facts are invoked from Mathlib; the iterative definition, termination measure, and equivalence are proved here.",
+    "prerequisites": [
+      "Positional (base-b) number systems and digit sums",
+      "Modular arithmetic and residues mod (b-1)",
+      "Well-founded recursion and termination measures",
+      "Strong induction on the natural numbers"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The digital root — repeatedly sum the digits of a number until one digit is left — is among the oldest pieces of recreational and computational arithmetic. Its base-10 shadow, casting out nines, was popularized in the West by Fibonacci's Liber Abaci (1202) as a check on hand calculation, and rests on the congruence n ≡ (digit sum) mod 9. In an arbitrary base b the same mechanism gives n ≡ (digit sum) mod (b-1), so iterating the digit sum lands on the residue of n modulo b-1, shifted into the range {1, …, b-1}: the closed form dr_b(n) = 1 + ((n-1) mod (b-1)) for n > 0. The parent entry defined the base-b digital root only by this closed form; this leaf supplies the missing operational half — a verified version of the actual schoolbook process and a proof that the two agree.",
+    "problemStatement": "Formalize the iterative digital root digitalRootIter b n (keep replacing n by the sum of its base-b digits until n < b) as a total, terminating function, and prove digitalRootIter b n = digitalRootBase b n = 1 + ((n-1) mod (b-1)) for every base b ≥ 2. Establish the single-digit range and the residue invariant, and recover the decimal digital root and casting out nines as the b = 10 instance.",
+    "proofStrategy": "The whole development turns on one inequality, digitSum_lt: for 2 ≤ b ≤ n the base-b digit sum strictly decreases, (digits b n).sum < n. Writing the one-step recursion (digits b n).sum = n % b + (digits b (n/b)).sum and bounding the tail by Nat.digit_sum_le gives (digits b n).sum ≤ n % b + n/b, which is < n because (b-1)·(n/b) ≥ 1; omega closes it. This bound (i) justifies the well-founded definition of digitalRootIter (its decreasing_by obligation) and (ii) drives the strong-induction proof of the headline digitalRootIter_eq_base: a single digit-sum step preserves the residue mod (b-1) (sumDigits_modEq, from Nat.modEq_digits_sum) and stays positive (sumDigits_pos, from getLast_digit_ne_zero), while the closed form depends only on that residue (digitalRootBase_modEq_eq), so the iterate and the closed form coincide. The decimal corollaries instantiate b = 10.",
+    "keyInsights": [
+      "A single inequality does all the work: the strict digit-sum drop (digits b n).sum < n is simultaneously the well-founded termination measure for the iterative definition and the descent step in the strong-induction equivalence proof.",
+      "The iteration is a residue-preserving contraction: each digit-sum step keeps n's residue mod (b-1) fixed (n ≡ digit sum) and keeps the value positive, while the closed form sees only that residue — so the process cannot change the answer, only shrink the representative to a single digit.",
+      "The degenerate bases b < 2 are guarded explicitly (there the digit sum does not decrease), keeping digitalRootIter total without sacrificing the b ≥ 2 theorem.",
+      "Casting out nines is not a separate fact but the b = 10 instance: a positive multiple of 9 satisfies 9k ≡ 9 (mod 9), so digitalRootBase_modEq_eq collapses its digital root to dr_10(9) = 9.",
+      "Restating the closed form digitalRootBase locally makes the file self-contained: the equivalence is proved against an explicit definition rather than an imported opaque one, and the parent file is left unchanged."
+    ],
+    "prerequisites": [
+      "Base-b digit expansions and digit sums",
+      "Modular arithmetic; the congruence n ≡ (digit sum) mod (b-1)",
+      "Well-founded recursion with a termination measure",
+      "Strong induction on ℕ"
+    ]
+  },
+  "sections": [
+    {
+      "id": "digit-sum-bound",
+      "title": "Part I: Strict Digit-Sum Bound (Termination Measure)",
+      "startLine": 49,
+      "endLine": 64,
+      "summary": "digitSum_lt: for 2 ≤ b ≤ n the base-b digit sum strictly decreases, (digits b n).sum < n. Proved from the one-step recursion (digits b n).sum = n % b + (digits b (n/b)).sum, the tail bound Nat.digit_sum_le, n = b·(n/b) + n%b, and 2·(n/b) ≤ b·(n/b) with n/b ≥ 1, closed by omega.",
+      "mathContext": "$(\\text{digits}_b\\,n).\\text{sum} \\le n\\bmod b + \\lfloor n/b\\rfloor < n$ whenever $2 \\le b \\le n$."
+    },
+    {
+      "id": "iterative-def",
+      "title": "Part II: The Iterative Digital Root",
+      "startLine": 66,
+      "endLine": 90,
+      "summary": "digitalRootIter: defined by well-founded recursion on n — recurse on the digit sum while 2 ≤ b ≤ n, otherwise return n — with digitSum_lt discharging decreasing_by. The defining equations digitalRootIter_of_lt (single-digit fixed point) and digitalRootIter_of_ge (one unfolding step) expose the recursion.",
+      "mathContext": "$\\mathrm{dr}^{\\text{iter}}_b(n) = n$ if $n < b$, else $\\mathrm{dr}^{\\text{iter}}_b\\big((\\text{digits}_b\\,n).\\text{sum}\\big)$."
+    },
+    {
+      "id": "step-invariants",
+      "title": "Part III: Invariants of One Digit-Sum Step",
+      "startLine": 92,
+      "endLine": 114,
+      "summary": "sumDigits_modEq: a digit-sum step preserves the residue mod (b-1) (from Nat.modEq_digits_sum, with the b=2 case handled separately since the modulus is 1). sumDigits_pos: the digit sum of a positive number is positive, via the nonzero leading digit (Nat.getLast_digit_ne_zero).",
+      "mathContext": "$(\\text{digits}_b\\,n).\\text{sum} \\equiv n \\pmod{b-1}$ and $(\\text{digits}_b\\,n).\\text{sum} > 0$ for $n > 0$."
+    },
+    {
+      "id": "equivalence",
+      "title": "Part IV: The Closed Form and the Equivalence",
+      "startLine": 116,
+      "endLine": 181,
+      "summary": "digitalRootBase (closed form, restated locally) and its lemmas: digitalRootBase_of_lt (identity on single digits) and digitalRootBase_modEq_eq (depends only on the residue mod b-1). The headline digitalRootIter_eq_base proves iterative = closed form by strong induction; digitalRootIter_modEq and digitalRootIter_lt_base give the residue invariant and single-digit range.",
+      "mathContext": "$\\mathrm{dr}^{\\text{iter}}_b(n) = \\mathrm{dr}_b(n) = 1 + ((n-1)\\bmod(b-1))$ for all $n$ when $b \\ge 2$."
+    },
+    {
+      "id": "decimal",
+      "title": "Part V: The Decimal Specialization",
+      "startLine": 183,
+      "endLine": 201,
+      "summary": "digitalRootIter_ten (b = 10 instance), the worked example digitalRootIter_ten_12345 = 6, and the casting-out-nines law digitalRootIter_ten_nine_mul: every positive multiple of 9 has decimal digital root 9, since 9k ≡ 9 (mod 9) and digitalRootBase_modEq_eq collapses dr_10(9k) to dr_10(9) = 9.",
+      "mathContext": "$9 \\mid n \\Rightarrow \\mathrm{dr}_{10}(n) = 9$ for $n > 0$ (casting out nines)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The iterative digital root is formalized as a total, terminating function digitalRootIter and proved to compute the closed form 1 + ((n-1) mod (b-1)) for every base b ≥ 2. The single ingredient making both the definition and the proof go through is the strict digit-sum drop (digits b n).sum < n for n ≥ b. Corollaries give the single-digit range, the residue invariant mod (b-1), and the base-10 decimal digital root with casting out nines.",
+    "implications": "This converts the informal 'digital root algorithm' into a verified function whose correctness is machine-checked and axiom-free (kernel decide only, no native_decide). The residue invariant mod (b-1) is the algebraic mechanism behind digit-sum divisibility tests, and the b = 10 case recovers casting out nines — historically the most widely used hand-calculation check. The strict digit-sum bound is a reusable termination measure for any digit-collapsing recursion.",
+    "openQuestions": [
+      "Bound the number of iterations to a single digit (the additive persistence of n in base b) and relate it to log_b log_b n.",
+      "Generalize to digit-based functions that are not residue-preserving (e.g. alternating digit sums for divisibility by b+1) and characterize their fixed points.",
+      "Formalize the multiplicative digital root (iterate the product of digits) and its qualitatively different, non-modular behavior."
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/DivisibilityBy3OQ03OQ02OQ01.lean",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 15,
+    "definitionCount": 2,
+    "imports": ["Mathlib"],
+    "opens": ["Nat"],
+    "namespace": "DivisibilityBy3OQ03OQ02OQ01",
+    "sorries": 0
   },
   "crossReferences": [
     {

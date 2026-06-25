@@ -48,7 +48,7 @@
     "title": "Closed Form Depends Only on the Residue mod (b-1)",
     "content": "`digitalRootBase_modEq_eq`: if $m, n > 0$ and $m \\equiv n \\pmod{b-1}$ then $\\mathrm{dr}_b(m) = \\mathrm{dr}_b(n)$. The proof peels a successor off each positive input and cancels it with `Nat.ModEq.add_right_cancel'`, reducing $m \\equiv n$ to $(m-1) \\equiv (n-1)$ and hence $(m-1)\\bmod(b-1) = (n-1)\\bmod(b-1)$. This is the bridge that lets a residue-preserving digit-sum step leave the closed form unchanged.",
     "mathContext": "$\\mathrm{dr}_b(n) = 1 + ((n-1)\\bmod(b-1))$ for $n>0$, so equal residues mod $b-1$ force equal digital roots.",
-    "significance": "important",
+    "significance": "key",
     "prerequisites": [
       "Nat.ModEq",
       "Nat.ModEq.add_right_cancel'",
