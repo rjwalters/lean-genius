@@ -106,9 +106,17 @@
       "id": "duality",
       "title": "Section IV: The Ceva–Menelaus Duality",
       "startLine": 122,
-      "endLine": 143,
-      "summary": "ceva_menelaus_duality: the signed Menelaus product is the negative of the signed Ceva product of the same feet. ceva_menelaus_exclusive: feet with Ceva value +1 automatically have Menelaus value −1, so the criteria are mutually exclusive.",
-      "mathContext": "Makes precise why Ceva and Menelaus share one unsigned product law yet describe opposite configurations: concurrence (+1) versus collinearity (−1)."
+      "endLine": 131,
+      "summary": "ceva_menelaus_duality: a purely algebraic identity (one line of ring) — the signed Menelaus product is the negative of the signed Ceva product of the same three feet, valid for every κ.",
+      "mathContext": "Menelaus product = −(Ceva product), identically in κ."
+    },
+    {
+      "id": "exclusive",
+      "title": "Section V: Mutual Exclusivity",
+      "startLine": 132,
+      "endLine": 145,
+      "summary": "ceva_menelaus_exclusive: feet with Ceva value +1 automatically have Menelaus value −1, so the two criteria can never hold with the same signed value — concurrence and collinearity are exclusive.",
+      "mathContext": "Ceva product = 1 ⟹ Menelaus product = −1; the structural reason for one unsigned law, two opposite configurations."
     }
   ],
   "conclusion": {
