@@ -2,11 +2,11 @@
   "id": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-01",
   "title": "Converse Edge: Centralizer = K[M] ⟹ Cyclic Vector",
   "slug": "cayley-hamilton-cyclic-vector-all-fields-oq-02-oq-01",
-  "description": "Closes the triple equivalence for a single matrix M over an arbitrary field: if the centralizer C(M) coincides with the polynomial algebra K[M], then M is nonderogatory (minpoly = charpoly) and hence has a cyclic vector. The reduction is fully machine-checked — dim K[M] = deg(minpoly), deg(minpoly) ≤ n, and the squeeze n ≤ dim C(M) = deg(minpoly) ≤ n — leaving exactly one classical input, the Frobenius bound dim C(M) ≥ n, as a single transparently-disclosed axiom. Status: axiomatized (axiomCount = 1).",
+  "description": "Closes the triple equivalence for a single matrix M over an arbitrary field: if the centralizer C(M) coincides with the polynomial algebra K[M], then M is nonderogatory (minpoly = charpoly) and hence has a cyclic vector. Fully machine-checked with no axioms — dim K[M] = deg(minpoly), deg(minpoly) ≤ n, and the squeeze n ≤ dim C(M) = deg(minpoly) ≤ n. The one classical input, the Frobenius bound dim C(M) ≥ n, is now proved in Lean from Mathlib's PID structure theorem. Status: verified (axiomCount = 0).",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-06-25",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean",
     "parentProofId": "cayley-hamilton-cyclic-vector-all-fields-oq-02",
     "additionalFiles": [
@@ -27,23 +27,26 @@
       "research",
       "open-question"
     ],
-    "badge": "axiom",
+    "badge": "original",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 197,
-    "theoremCount": 4,
+    "axiomCount": 0,
+    "lineCount": 330,
+    "theoremCount": 8,
     "definitionCount": 0,
-    "assumptions": "One explicit axiom: `finrank_centralizer_ge` — the Frobenius dimension bound dim_K C(M) ≥ n for the centralizer of an n×n matrix. This is a classical theorem (Frobenius, 1878), but its standard proof requires the invariant-factor / rational-canonical-form packaging of the K[X]-module Kⁿ, together with the identification of C(M) with End_{K[X]}(Kⁿ) — neither of which is available in Mathlib v4.26.0. Everything else in the file (the dimension bookkeeping, the degree squeeze, and the descent to a cyclic vector) is fully machine-checked and depends only on Mathlib's Polynomial, Matrix, Module, and Algebra.adjoin APIs. `#print axioms` on the main theorems lists `finrank_centralizer_ge` alongside the standard `propext`, `Classical.choice`, `Quot.sound`.",
+    "assumptions": "None. Fully machine-checked, 0 axioms, 0 sorries. The Frobenius dimension bound dim_K C(M) ≥ n — formerly the entry's single axiom — is now proved (finrank_centralizer_ge) from Mathlib's PID structure theorem Module.equiv_directSum_of_isTorsion via the algebra equivalence Matrix.toLinAlgEquiv', the identification of the centralizer with the K[X]-endomorphisms of AEval' φ, and the multiplication embedding Algebra.lmul of the decomposed module. #print axioms finrank_centralizer_ge reports only propext, Classical.choice, Quot.sound.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
     "originalContributions": [
-      "centralizer_eq_adjoin_implies_nonderogatory: the converse edge (iii)⟹(ii) — if Subalgebra.centralizer K {M} = Algebra.adjoin K {M}, then minpoly K M = charpoly M. Reduces the entire converse to the single Frobenius dimension bound via a degree squeeze.",
-      "centralizer_eq_adjoin_implies_cyclic: the capstone (iii)⟹(i) — centralizer = K[M] forces a cyclic vector, obtained by composing the converse edge with the parent biconditional nonderogatory ⟺ cyclic.",
-      "finrank_adjoin_eq_natDegree_minpoly: dim_K K[M] = deg(minpoly K M), proven via the first-isomorphism theorem K[M] ≅ K[X]/(minpoly) (Algebra.adjoin_singleton_eq_range_aeval + minpoly.ker_aeval_eq_span_minpoly + finrank_quotient_span_eq_natDegree), sidestepping the noncommutative PowerBasis obstruction.",
+      "finrank_centralizer_ge: the Frobenius dimension bound dim_K C(M) ≥ n (Frobenius, 1878), proved in Lean with 0 axioms — a result with no rational-canonical-form prerequisite available in Mathlib v4.26.0. Routes the matrix centralizer through Matrix.toLinAlgEquiv' to the operator centralizer, identifies it with the K[X]-endomorphisms of Module.AEval' φ, decomposes via Module.equiv_directSum_of_isTorsion, and lower-bounds the dimension by the multiplication embedding Algebra.lmul.",
+      "endK_centralizer_bound: operator form — for φ : End K V over finite-dimensional V, dim_K (centralizer of φ) ≥ dim_K V, via a K-linear injection of End_{K[X]}(AEval' φ) into the centralizer.",
+      "aeval_end_bound / lmul_finrank_bound: reusable module-level lemmas bounding dim_K End_{K[X]}(AEval' φ) ≥ dim_K V through the PID decomposition and the lmul embedding of a finite commutative K[X]-algebra.",
+      "centralizer_eq_adjoin_implies_nonderogatory: the converse edge (iii)⟹(ii) — if Subalgebra.centralizer K {M} = Algebra.adjoin K {M}, then minpoly K M = charpoly M, via a degree squeeze using the proved Frobenius bound.",
+      "centralizer_eq_adjoin_implies_cyclic: the capstone (iii)⟹(i) — centralizer = K[M] forces a cyclic vector, composing the converse edge with the parent biconditional nonderogatory ⟺ cyclic.",
+      "finrank_adjoin_eq_natDegree_minpoly: dim_K K[M] = deg(minpoly K M), via the first-isomorphism theorem K[M] ≅ K[X]/(minpoly), sidestepping the noncommutative PowerBasis obstruction.",
       "natDegree_minpoly_le: deg(minpoly K M) ≤ n via minpoly ∣ charpoly (Cayley–Hamilton) and deg(charpoly) = n."
     ],
     "historicalContext": "A matrix M ∈ Kⁿˣⁿ is nonderogatory when minpoly = charpoly. Three classical conditions are equivalent (Hoffman & Kunze §7.5, Roman §10.4): (i) M has a cyclic vector; (ii) minpoly = charpoly; (iii) the centralizer C(M) = {N : NM = MN} equals K[M]. The parent biconditional settles (i)⟺(ii) over arbitrary fields, and the sibling entry oq-02 proves the forward commutant edge (i)⟹(iii). This entry supplies the remaining converse edge (iii)⟹(ii), explicitly answering the open question posed by oq-02 ('if the centralizer of M equals K[M], does M necessarily have a cyclic vector?'). The dimension argument is uniform across all fields. Its one classical input — the Frobenius bound that the commutant of any n×n matrix has dimension at least n — dates to Frobenius's 1878 memoir on the theory of matrices.",
-    "proofStrategy": "Both K[M] = Algebra.adjoin K {M} and C(M) = Subalgebra.centralizer K {M} are finite-dimensional K-subalgebras of the matrix algebra. Three facts combine into a squeeze: (a) dim K[M] = deg(minpoly), via K[M] ≅ K[X]/(minpoly); (b) dim C(M) ≥ n (the Frobenius bound, the sole axiom); (c) deg(minpoly) ≤ n, via minpoly ∣ charpoly. If C(M) = K[M] then dim C(M) = dim K[M] = deg(minpoly), so n ≤ deg(minpoly) ≤ n, forcing deg(minpoly) = n. Two monic polynomials of equal degree, one dividing the other (Polynomial.eq_of_monic_of_dvd_of_natDegree_le), are equal: minpoly = charpoly. The parent biconditional then yields a cyclic vector."
+    "proofStrategy": "Both K[M] = Algebra.adjoin K {M} and C(M) = Subalgebra.centralizer K {M} are finite-dimensional K-subalgebras of the matrix algebra. Three facts combine into a squeeze: (a) dim K[M] = deg(minpoly), via K[M] ≅ K[X]/(minpoly); (b) dim C(M) ≥ n, the Frobenius bound, now PROVED from Mathlib's PID structure theorem (Matrix.toLinAlgEquiv' transfers C(M) to the operator centralizer; that contains the K[X]-endomorphisms of Module.AEval' φ; the structure theorem decomposes AEval' φ into a finite product of cyclic K[X]-modules whose multiplication embedding Algebra.lmul gives dim ≥ n); (c) deg(minpoly) ≤ n, via minpoly ∣ charpoly. If C(M) = K[M] then dim C(M) = dim K[M] = deg(minpoly), so n ≤ deg(minpoly) ≤ n, forcing deg(minpoly) = n. Two monic polynomials of equal degree, one dividing the other (Polynomial.eq_of_monic_of_dvd_of_natDegree_le), are equal: minpoly = charpoly. The parent biconditional then yields a cyclic vector."
   },
   "overview": {
     "problemStatement": "**Open question from cayley-hamilton-cyclic-vector-all-fields-oq-02**: The forward commutant edge shows a cyclic vector forces the centralizer of $M \\in K^{n\\times n}$ to equal $K[M]$. Does the converse hold — if $C(M) = K[M]$, must $M$ have a cyclic vector?\n\nFormally: assuming $\\mathrm{centralizer}_K(\\{M\\}) = \\mathrm{adjoin}_K(\\{M\\})$, show $\\mathrm{minpoly}_K M = \\mathrm{charpoly}\\,M$ (nonderogatory), hence $\\exists v,\\ \\mathrm{IsCyclicVector}\\,M\\,v$.",
@@ -55,7 +58,7 @@
       "Given C(M) = K[M], the three facts squeeze n ≤ dim C(M) = dim K[M] = deg(minpoly) ≤ n, so deg(minpoly) = n = deg(charpoly).",
       "Two monic polynomials of equal degree, one dividing the other, are equal — so minpoly = charpoly, and the parent biconditional converts nonderogatory into a cyclic vector."
     ],
-    "proofStrategy": "**Section I** — `finrank_adjoin_eq_natDegree_minpoly`: K[M] = range(aeval M) ≅ K[X]/ker(aeval M) = K[X]/(minpoly) via `Algebra.adjoin_singleton_eq_range_aeval`, `minpoly.ker_aeval_eq_span_minpoly`, `Ideal.quotientKerEquivRange`, and `finrank_quotient_span_eq_natDegree`.\n\n**Section II** — `finrank_centralizer_ge`: the Frobenius bound dim C(M) ≥ n, stated as the file's single axiom (the invariant-factor packaging and the C(M) ≅ End_{K[X]}(Kⁿ) bridge are absent from Mathlib v4.26.0).\n\n**Section III** — `natDegree_minpoly_le`: deg(minpoly) ≤ n via `minpoly.dvd` (Cayley–Hamilton) + `Polynomial.natDegree_le_of_dvd` + `charpoly_natDegree_eq_dim`.\n\n**Section IV** — `centralizer_eq_adjoin_implies_nonderogatory` runs the squeeze and finishes with `Polynomial.eq_of_monic_of_dvd_of_natDegree_le`; `centralizer_eq_adjoin_implies_cyclic` composes with the parent biconditional `nonderogatory_iff_has_cyclic_vector`.",
+    "proofStrategy": "**Section I** — `finrank_adjoin_eq_natDegree_minpoly`: K[M] = range(aeval M) ≅ K[X]/ker(aeval M) = K[X]/(minpoly) via `Algebra.adjoin_singleton_eq_range_aeval`, `minpoly.ker_aeval_eq_span_minpoly`, `Ideal.quotientKerEquivRange`, and `finrank_quotient_span_eq_natDegree`.\n\n**Section II** — `finrank_centralizer_ge`: the Frobenius bound dim C(M) ≥ n, now PROVED (0 axioms). `Matrix.toLinAlgEquiv'` transfers C(M) to the operator centralizer; `endK_centralizer_bound` injects the K[X]-endomorphisms of `Module.AEval' φ` into it; `aeval_end_bound` decomposes `AEval' φ` via `Module.equiv_directSum_of_isTorsion` and bounds dim ≥ n through the `Algebra.lmul` embedding (`lmul_finrank_bound`).\n\n**Section III** — `natDegree_minpoly_le`: deg(minpoly) ≤ n via `minpoly.dvd` (Cayley–Hamilton) + `Polynomial.natDegree_le_of_dvd` + `charpoly_natDegree_eq_dim`.\n\n**Section IV** — `centralizer_eq_adjoin_implies_nonderogatory` runs the squeeze and finishes with `Polynomial.eq_of_monic_of_dvd_of_natDegree_le`; `centralizer_eq_adjoin_implies_cyclic` composes with the parent biconditional `nonderogatory_iff_has_cyclic_vector`.",
     "prerequisites": [
       "Algebra.adjoin_singleton_eq_range_aeval: K[M] = adjoin K {M} equals the range of aeval M",
       "minpoly.ker_aeval_eq_span_minpoly: ker(aeval M) = (minpoly K M) as an ideal",
@@ -66,7 +69,6 @@
       "CyclicVectorBiconditional.nonderogatory_iff_has_cyclic_vector: the parent biconditional (ii)⟺(i)"
     ],
     "openQuestions": [
-      "Discharge the axiom finrank_centralizer_ge inside Lean: build the bridge Subalgebra.centralizer K {M} ≅ Module.End K[X] (Module.AEval' M), then bound dim_K End_{K[X]}(Kⁿ) ≥ n using Module.equiv_directSum_of_isTorsion and finrank_directSum. Estimated several hundred lines of PID-module infrastructure.",
       "Formalize the exact Frobenius dimension formula dim_K C(M) = Σ_{i,j} deg gcd(fᵢ, fⱼ) over the invariant factors, of which dim C(M) ≥ n (with equality iff nonderogatory) is the immediate corollary.",
       "Lift the whole triple equivalence from concrete matrices to Module.End over a finite-dimensional vector space, for reuse across the gallery's linear-algebra entries."
     ]
@@ -78,9 +80,9 @@
       "Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ02"
     ],
     "namespace": "CyclicCommutantConverse",
-    "lineCount": 197,
-    "axiomCount": 1,
-    "theoremCount": 4,
+    "lineCount": 330,
+    "axiomCount": 0,
+    "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/CayleyHamiltonCyclicVectorAllFieldsOQ02OQ01.lean",
     "sorries": 0,
@@ -96,7 +98,7 @@
       "title": "Header: the triple equivalence and the converse edge",
       "startLine": 1,
       "endLine": 65,
-      "summary": "States the three classical conditions (cyclic vector ⟺ minpoly = charpoly ⟺ centralizer = K[M]), locates the sibling forward edge and parent biconditional, and lays out the dimension-squeeze proof of the converse edge. The Status note flags the single Frobenius-bound axiom and confirms everything else is axiom-free."
+      "summary": "States the three classical conditions (cyclic vector ⟺ minpoly = charpoly ⟺ centralizer = K[M]), locates the sibling forward edge and parent biconditional, and lays out the dimension-squeeze proof of the converse edge. The Status note confirms the entry is fully verified with 0 axioms, including the now-proved Frobenius bound."
     },
     {
       "id": "dim-adjoin",
@@ -107,10 +109,10 @@
     },
     {
       "id": "frobenius-bound",
-      "title": "Section II — the Frobenius bound (isolated axiom): finrank_centralizer_ge",
+      "title": "Section II — the Frobenius bound (now proved, 0 axioms): finrank_centralizer_ge",
       "startLine": 101,
       "endLine": 130,
-      "summary": "The sole assumption: dim_K C(M) ≥ n. Documented as the classical Frobenius bound whose invariant-factor / rational-canonical-form proof and the C(M) ≅ End_{K[X]}(Kⁿ) bridge are not yet in Mathlib v4.26.0, hence recorded as one transparently-disclosed axiom."
+      "summary": "dim_K C(M) ≥ n, the classical Frobenius bound, proved in Lean from Mathlib's PID primary-decomposition structure theorem. The matrix centralizer is transferred along the algebra equivalence Matrix.toLinAlgEquiv' to the operator centralizer, identified with the K[X]-endomorphisms of Module.AEval' φ, and lower-bounded by dim_K V = n via the multiplication embedding of the decomposed module (Algebra.lmul). Supporting lemmas: lmul_finrank_bound, aeval_end_bound, endK_centralizer_bound."
     },
     {
       "id": "deg-minpoly-le",
@@ -128,11 +130,10 @@
     }
   ],
   "conclusion": {
-    "summary": "If the centralizer of M equals the polynomial algebra K[M], then M is nonderogatory (minpoly = charpoly) and therefore admits a cyclic vector. The entire converse edge is reduced — by a transparent three-fact dimension squeeze — to the single classical Frobenius bound dim C(M) ≥ n, which is isolated as one disclosed axiom. The reduction itself is fully machine-checked.",
+    "summary": "If the centralizer of M equals the polynomial algebra K[M], then M is nonderogatory (minpoly = charpoly) and therefore admits a cyclic vector, closing the triple equivalence cyclic ⟺ nonderogatory ⟺ centralizer = K[M]. The full argument is now machine-checked with no axioms: the classical Frobenius bound dim_K C(M) ≥ n is proved from Mathlib's PID primary-decomposition structure theorem.",
     "implications": "Combined with the sibling forward edge (cyclic ⟹ centralizer = K[M]) and the parent biconditional (nonderogatory ⟺ cyclic), this closes the triple equivalence cyclic vector ⟺ minpoly = charpoly ⟺ centralizer = K[M] over an arbitrary field. It directly answers the open question recorded by oq-02. The only remaining work to make the triangle fully axiom-free is to discharge the Frobenius bound inside Lean.",
     "openQuestions": [
-      "Discharge finrank_centralizer_ge in Lean via the C(M) ≅ End_{K[X]}(Kⁿ) bridge and the structure theorem, removing the last axiom and turning the triple equivalence fully verified.",
-      "Formalize the full Frobenius dimension formula dim C(M) = Σ deg gcd(fᵢ, fⱼ) over invariant factors.",
+      "Formalize the full Frobenius dimension formula dim C(M) = Σ deg gcd(fᵢ, fⱼ) over invariant factors (the bound dim C(M) ≥ n proved here is the n-from-below corollary).",
       "Recast the triple equivalence for Module.End over a finite-dimensional vector space."
     ]
   },
