@@ -1,0 +1,32 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-04-oq-03",
+  "name": "Nine-point circle theorem contributed to Mathlib (coordinate-free)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The nine-point circle is translation-covariant, so the circumcenter can be normalised to the origin: with a = A−O, b = B−O, c = C−O and ‖a‖=‖b‖=‖c‖=R, the nine-point centre is (a+b+c)/2 and the radius is R/2. Every membership reduces to a statement about a,b,c.",
+      "Six of the nine points are essentially free: N − (side midpoint) and N − (vertex-orthocenter midpoint) are each ±(1/2)·(one of a,b,c), so their distance to N is exactly R/2 with no inner-product computation and no nondegeneracy hypothesis — they lie on the circle even for collinear triangles.",
+      "Only the three altitude feet use the inner-product structure. The foot of the altitude from a onto line bc is F = b + t·(c−b), t = ⟪a−b,c−b⟫/⟪c−b,c−b⟫; a direct expansion gives ‖N−F‖² = R²/4, with the cancellation resting on ⟪a−b+c,a−b+c⟫ = R²+2⟪a−b,c−b⟫ and ⟪a−b+c,c−b⟫ = ⟪a−b,c−b⟫ + (1/2)⟪c−b,c−b⟫.",
+      "Substituting the denominator value ⟪c−b,c−b⟫ = 2R²−2⟪b,c⟫ BEFORE expanding lets field_simp clear the single division (needing R²−⟪b,c⟫ ≠ 0) and reduces the goal to a polynomial identity ring closes — geometry becomes algebra.",
+      "All three altitude feet follow from a single core lemma: lift to general circumcenter by translation (dist_sub_right) and permute the vertices using that the nine-point centre is symmetric in A,B,C (ninePointCenter_rotate).",
+      "Axiom hygiene: #print axioms ninePoints_mem_sphere = [propext, Classical.choice, Quot.sound] only — 0 axioms, no sorryAx, no Lean.ofReduceBool (no native_decide). Mathlib has no nine-point circle, so this is new infrastructure."
+    ],
+    "builtItems": [
+      "NinePointCircle.orthocenter / ninePointCenter / ninePointRadius / foot (Proofs/FeuerbachsTheoremDefsOQ04OQ03.lean:67-77) — coordinate-free constructions in any InnerProductSpace ℝ V",
+      "NinePointCircle.foot_core (:90) — altitude foot lies at distance R/2 from (a+b+c)/2 when ‖a‖=‖b‖=‖c‖=R, b≠c (analytic heart)",
+      "NinePointCircle.dist_midpoint_BC/CA/AB/AH/BH/CH (:138-167) — the six midpoint-type memberships",
+      "NinePointCircle.dist_foot / dist_foot_A/B/C (:175-205) — the three altitude-foot memberships via translation + rotation",
+      "NinePointCircle.ninePoints_mem_sphere (:215) — headline: all nine points lie on one Metric.sphere of radius R/2 for an arbitrary triangle with distinct vertices"
+    ],
+    "mathlibGaps": [
+      "Mathlib has no nine-point circle / Feuerbach circle and no orthocenter-as-A+B+C−2O identity packaged for general inner product spaces; this file supplies a self-contained coordinate-free version."
+    ],
+    "nextSteps": [
+      "Prove the Feuerbach tangency itself (nine-point sphere internally tangent to the incircle, externally tangent to the three excircles) in this abstract setting.",
+      "Recast in Mathlib's affine EuclideanGeometry framework (EuclideanGeometry.sphere, Affine.Simplex.circumcenter / orthocenter) so O is the genuine circumcenter rather than a hypothesis.",
+      "Show the nine-point centre lies on the Euler line and is the circumcentre of the medial triangle, coordinate-free."
+    ],
+    "progressSummary": "COMPLETE: coordinate-free nine-point circle theorem in any real InnerProductSpace. For an arbitrary triangle A B C with common circumcenter O (dist O A = dist O B = dist O C = R), the three side midpoints, three vertex-orthocenter midpoints, and three altitude feet all lie on Metric.sphere ((A+B+C−O)/2) (R/2). 14 theorems / 4 defs, verified 0 sorries / 0 axioms (only propext/Classical.choice/Quot.sound; no native_decide). Generalises the gallery's coordinate (Point = ℝ×ℝ) Feuerbach proofs and the single-triangle sphere bridge of feuerbachs-theorem-defs-oq-04. Verified offline via lake env lean (EXIT 0, #print axioms clean). PR opened."
+  }
+}
