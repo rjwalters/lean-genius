@@ -84,6 +84,57 @@
       "neg_one_pow_eq_one_iff_even and Even/Odd.neg_one_pow for reading (-1)^k by parity"
     ]
   },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module header: J(a|n) = 1 as a parity count",
+      "startLine": 1,
+      "endLine": 34,
+      "summary": "Docstring framing the parent's open question — when is J(a|n) = 1 even though a is a non-residue? — and the answer: J(a|n) = ∏_{p∣n} (a|p) with multiplicity, so for coprime a,n it is a sign (−1)^k where k counts non-residue prime factors with multiplicity; J(a|n) = 1 ⇔ k even. Notes the Solovay–Strassen 'false witness' connection and that multiplicity is essential (45 = 3²·5). Imports Mathlib, opens Nat and ZMod, opens the JacobiSymbolOQ0103 namespace."
+    },
+    {
+      "id": "legvals-def",
+      "title": "The Legendre-symbol list",
+      "startLine": 36,
+      "endLine": 47,
+      "summary": "legVals a n is the list of Legendre symbols (a|p) over n.primeFactorsList (the prime factorization as a list, carrying multiplicity). jacobiSym_eq_legVals_prod states jacobiSym a n = (legVals a n).prod, true by rfl from Mathlib's definition — the definitional bridge turning the Jacobi symbol into a counting problem."
+    },
+    {
+      "id": "each-sign",
+      "title": "Coprimality makes each factor a genuine sign",
+      "startLine": 49,
+      "endLine": 71,
+      "summary": "legVals_mem_eq_one_or_neg_one: when gcd(a,n) = 1, every entry (a|p) is ±1, never 0. A Legendre symbol vanishes iff p ∣ a (ZMod.intCast_zmod_eq_zero_iff_dvd); but p ∣ n, so p ∣ a would force p ∣ gcd(a,n) = 1, impossible. This is the hypothesis enabling the product-of-signs argument."
+    },
+    {
+      "id": "product-sign",
+      "title": "Product of ±1's is (−1) to the count of −1's",
+      "startLine": 73,
+      "endLine": 90,
+      "summary": "prod_eq_neg_one_pow_count: for any list of integers each ±1, ∏L = (−1)^(L.count (−1)). A one-line induction — a head +1 leaves product and count unchanged (List.count_cons_of_ne), a head −1 multiplies by −1 and increments the count (List.count_cons_self, pow_succ). Number-theory-independent, reusable sign-counting infrastructure."
+    },
+    {
+      "id": "sign-formula",
+      "title": "The sign formula J(a|n) = (−1)^k",
+      "startLine": 92,
+      "endLine": 103,
+      "summary": "numNonResidueFactors a n := (legVals a n).count (−1) = k, and jacobiSym_eq_neg_one_pow combines the two preceding lemmas to give J(a|n) = (−1)^k for coprime a,n: the Jacobi symbol is determined entirely by how many prime factors of n (with multiplicity) see a as a non-residue."
+    },
+    {
+      "id": "parity-main",
+      "title": "The parity characterization (main result)",
+      "startLine": 105,
+      "endLine": 124,
+      "summary": "jacobiSym_eq_one_iff_even: via neg_one_pow_eq_one_iff_even, J(a|n) = 1 ⇔ k is even — the exact answer to the parent's open question. Dually jacobiSym_eq_neg_one_iff_odd: J(a|n) = −1 ⇔ k is odd, recovering the classical one-sided obstruction as the odd-parity case."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Worked examples: multiplicity matters",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "even_numNonResidue_two_fifteen: J(2|15) = 1 ⇒ k even (k = 2, primes 3 and 5) — the parent's puzzle explained. odd_numNonResidue_two_fortyfive: J(2|45) = −1 ⇒ the multiplicity-aware k = 3 (list [3,3,5]) is odd, whereas the distinct-prime count {3,5} = 2 (even) would predict the wrong sign. Both read off kernel-checked norm_num Jacobi values, so no native_decide."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "jacobi-symbol-oq-01",
