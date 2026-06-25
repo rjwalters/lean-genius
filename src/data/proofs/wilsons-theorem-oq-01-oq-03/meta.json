@@ -119,5 +119,54 @@
       "description": "The base Wilson's theorem entry; Clement's criterion is its canonical two-modulus application."
     }
   ],
-  "sections": []
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Statement, Strategy, and Scope",
+      "startLine": 4,
+      "endLine": 35,
+      "summary": "Docstring stating Clement's 1949 criterion (odd n ≥ 3: (n, n+2) both prime ↔ n·(n+2) ∣ 4·((n-1)!+1)+n), the proof plan (Wilson at moduli n and n+2 fused by CRT), the two original contributions (the factorial bridge and the full biconditional), and the scope note that oddness is used only for the two unit cancellations and the coprimality.",
+      "mathContext": "Mathlib has the single-modulus Wilson biconditional but no twin-prime criterion; this entry assembles one."
+    },
+    {
+      "id": "sec-value",
+      "title": "The Criterion Quantity",
+      "startLine": 37,
+      "endLine": 38,
+      "summary": "def clementValue n = 4·((n-1)!+1)+n — the single integer whose divisibility by n·(n+2) characterizes twin-primality.",
+      "mathContext": "C(n) = 4·((n-1)!+1)+n bundles both Wilson congruences into one quantity."
+    },
+    {
+      "id": "sec-factorial-expand",
+      "title": "Factorial Expansion",
+      "startLine": 40,
+      "endLine": 43,
+      "summary": "factorial_succ_eq: (n+1)! = (n+1)·n·(n-1)! for n ≥ 1, via Nat.factorial_succ and Nat.mul_factorial_pred — the algebraic substrate for the modular bridge.",
+      "mathContext": "(n+1)! = (n+1)·n·(n-1)! exposes the (n-1)! shared with Wilson at modulus n."
+    },
+    {
+      "id": "sec-bridge",
+      "title": "The Modular Bridge",
+      "startLine": 45,
+      "endLine": 57,
+      "summary": "factorial_succ_succ_cast: (n+1)! ≡ 2·(n-1)! (mod n+2), from n+1 ≡ -1 and n ≡ -2 in ZMod (n+2). The key device letting one factorial (n-1)! carry Wilson's congruence at both moduli.",
+      "mathContext": "In ZMod (n+2): (n+1)! ≡ (-1)·(-2)·(n-1)! = 2·(n-1)!."
+    },
+    {
+      "id": "sec-criterion",
+      "title": "Clement's Biconditional",
+      "startLine": 59,
+      "endLine": 123,
+      "summary": "clement_twin_prime: the full criterion. Establishes 4 a unit mod n and 2 a unit mod n+2 (oddness), the two single-modulus bridges hA/hB identifying each divisibility with a Wilson congruence (unit cancellation), Wilson's biconditional at each modulus, the coprimality CRT split hsplit, and a calc chaining primality ↔ congruences ↔ divisibilities ↔ the product divisibility.",
+      "mathContext": "(Prime n ∧ Prime (n+2)) ↔ n·(n+2) ∣ C(n), assembled from Wilson at two moduli via CRT."
+    },
+    {
+      "id": "sec-example",
+      "title": "Worked Twin Pair (3, 5)",
+      "startLine": 125,
+      "endLine": 129,
+      "summary": "example: the smallest twin pair instantiates the criterion, C(3) = 4·(2!+1)+3 = 15 = 3·5.",
+      "mathContext": "C(3) = 15 = 3·5 confirms the constants align for the base case."
+    }
+  ]
 }
