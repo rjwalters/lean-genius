@@ -71,3 +71,42 @@ Build environment was under sustained concurrent-agent cache churn (≈3000 olea
 - Item 2 (`d_ℂ ≡ 0`): tractable once a concrete disk atomic cost exists; not yet built.
 - Item 3 (two-point Schwarz–Pick via Blaschke conjugation): the natural next deliverable — supplies the concrete cost to instantiate `chainPseudoEMetricSpace`.
 - Item 4 (Picard, `d_𝔻 = ρ`): still BLOCKED on the modular λ universal cover (absent from Mathlib).
+
+---
+
+## Session 2026-06-25 (Session 3) — BUILT the universal property (verified)
+
+**Mode**: continuation · **Outcome**: coreflection layer delivered, machine-verified.
+
+### What I did
+- Extended `Proofs/Hilbert22OQ01OQ03.lean` (204 → 263 lines, 11 → 16 theorems, still
+  0 sorry / 0 axiom) with **Part V: the universal property** — `chainDist c` is the
+  *greatest pseudometric dominated by* the atomic cost `c` (its pseudometric
+  coreflection).
+- Verified: `lake env lean Proofs/Hilbert22OQ01OQ03.lean` → EXIT 0; `#print axioms`
+  on all four new theorems → only `propext, Classical.choice, Quot.sound`.
+- Updated the gallery entry (meta.json sections/counts/contributions, annotations.json).
+
+### Key insight (why this, not Schwarz–Pick, this session)
+- Items 2/3 (`d_ℂ ≡ 0`, Schwarz–Pick) both require the **concrete disk Poincaré /
+  pseudohyperbolic cost** and Blaschke automorphism machinery, absent from Mathlib
+  4.26 and genuine multi-hundred-line complex-analysis builds — high risk under the
+  still-degraded build env (Docker down; `lake env lean` only, ~8 concurrent compilers).
+- The universal property is **pure ℝ≥0∞ order theory + one list induction**, fully
+  in-scope and low-risk, and answers a deeper question: *why* the infimum-over-chains
+  definition is canonical. It is forced — `chainDist c` is the unique largest
+  pseudometric below `c`.
+
+### Proof technique (all short, robust)
+- `chainDist_le_atomic`: `simpa using chainDist_le c p q []` (empty/single-edge chain).
+- `le_chainCost_of_triangle` (the engine): induction on `mid`; cons step is a 3-line
+  `calc d p q ≤ d p x + d x q ≤ c p x + chainCost c x xs q = chainCost c p (x::xs) q`
+  via `htri`, `add_le_add (hdc p x) (ih x)`, `(chainCost_cons …).symm`.
+- `le_chainDist_of_triangle`: `le_iInf` over the engine.
+- `chainDist_eq_of_triangle`: `le_antisymm chainDist_le_atomic (le_chainDist_of_triangle … (fun _ _ => le_rfl) …)`.
+- `chainDist_idem`: instantiate `chainDist_eq_of_triangle` at `chainDist c`, whose
+  triangle inequality is `chainDist_triangle`.
+
+### Status update
+- Universal property / coreflection (new): **DONE, verified.**
+- Items 2/3/4: unchanged — still gated on the disk Poincaré metric / modular cover.

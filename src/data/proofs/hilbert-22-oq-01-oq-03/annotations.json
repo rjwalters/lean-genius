@@ -94,7 +94,7 @@
     "proofId": "hilbert-22-oq-01-oq-03",
     "range": {
       "startLine": 181,
-      "endLine": 204
+      "endLine": 203
     },
     "type": "theorem",
     "title": "Functoriality: The Defining Holomorphic Invariance",
@@ -111,5 +111,17 @@
       "monotonicity of infima",
       "the chainCost_map contraction lemma"
     ]
+  },
+  {
+    "id": "ann-universal-property",
+    "proofId": "hilbert-22-oq-01-oq-03",
+    "range": {
+      "startLine": 205,
+      "endLine": 263
+    },
+    "type": "theorem",
+    "title": "The Universal Property: Pseudometric Coreflection",
+    "content": "This section shows the infimum-over-chains definition is not arbitrary but forced. `chainDist_le_atomic` records the upper bound `chainDist c p q ≤ c p q` (the single-edge chain with empty intermediate list is always admissible). `le_chainCost_of_triangle` then telescopes: if a candidate cost `d` lies edge-wise below `c` (`d a b ≤ c a b`) and satisfies the triangle inequality, then `d p q` bounds the cost of every chain `p, mid…, q` — each triangle step is absorbed and each edge is bounded under `c`. Taking the infimum gives the universal property `le_chainDist_of_triangle`: `d p q ≤ chainDist c p q`. Since `chainDist c` is itself a pseudometric (`chainPseudoEMetricSpace`) lying below `c`, it is the GREATEST such pseudometric — the pseudometric coreflection of `c`. The corollaries `chainDist_eq_of_triangle` (chaining recovers any already-subadditive cost exactly, `chainDist c = c`) and `chainDist_idem` (`chainDist (chainDist c) = chainDist c`) exhibit `chainDist` as an idempotent closure operator.",
+    "mathContext": "$\\texttt{chainDist}\\;c$ is sandwiched: $\\texttt{chainDist}\\;c\\le c$ (empty chain), and any pseudometric $d\\le c$ satisfies $d\\le\\texttt{chainDist}\\;c$ (telescoping). Hence $\\texttt{chainDist}\\;c=\\max\\{d\\ \\text{pseudometric}: d\\le c\\}$, the coreflection. As a closure operator it is idempotent and fixes every already-subadditive cost. This is the abstract reason the Kobayashi metric's infimum-over-chains formula is canonical."
   }
 ]

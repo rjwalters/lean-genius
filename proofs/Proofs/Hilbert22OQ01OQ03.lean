@@ -201,4 +201,63 @@ theorem chainDist_mono_self (c : X → X → ℝ≥0∞) (f : X → X)
     chainDist c (f p) (f q) ≤ chainDist c p q :=
   chainDist_mono c c f hf p q
 
+-- ============================================================
+-- Part V: The universal property — chainDist is the pseudometric coreflection
+-- ============================================================
+
+/-- **Lower bound by the atomic cost.** The chain pseudometric never exceeds the
+atomic cost itself: the single-edge chain `p ⇝ q` (empty intermediate list) is
+already admissible. -/
+theorem chainDist_le_atomic (c : X → X → ℝ≥0∞) (p q : X) :
+    chainDist c p q ≤ c p q := by
+  simpa using chainDist_le c p q []
+
+/-- If a candidate cost `d` is dominated edge-wise by the atomic cost `c` and
+satisfies the triangle inequality, then `d p q` bounds the total cost of *every*
+chain from `p` to `q`. Telescoping a chain by repeated triangle steps, each edge
+bounded below `c`, recovers `d p q` as a lower bound. -/
+theorem le_chainCost_of_triangle (c d : X → X → ℝ≥0∞)
+    (hdc : ∀ a b, d a b ≤ c a b)
+    (htri : ∀ a b r, d a r ≤ d a b + d b r) (q : X) (mid : List X) :
+    ∀ p, d p q ≤ chainCost c p mid q := by
+  induction mid with
+  | nil => intro p; simpa using hdc p q
+  | cons x xs ih =>
+      intro p
+      calc d p q ≤ d p x + d x q := htri p x q
+        _ ≤ c p x + chainCost c x xs q := add_le_add (hdc p x) (ih x)
+        _ = chainCost c p (x :: xs) q := (chainCost_cons c p x q xs).symm
+
+/-- **Universal property.** `chainDist c` is the *greatest* pseudometric dominated
+by the atomic cost `c`: any `d` that lies edge-wise below `c` and obeys the
+triangle inequality also lies below `chainDist c`. Together with
+`chainPseudoEMetricSpace` (which makes `chainDist c` itself such a pseudometric)
+and `chainDist_le_atomic` (`chainDist c ≤ c`), this characterises the chain
+construction as the **pseudometric coreflection** of the atomic cost — the
+canonical largest pseudometric refining `c`. It is the order-theoretic reason the
+Kobayashi chain metric is the *right* definition: it is forced, not chosen. -/
+theorem le_chainDist_of_triangle (c d : X → X → ℝ≥0∞)
+    (hdc : ∀ a b, d a b ≤ c a b)
+    (htri : ∀ a b r, d a r ≤ d a b + d b r) (p q : X) :
+    d p q ≤ chainDist c p q :=
+  le_iInf fun mid => le_chainCost_of_triangle c d hdc htri q mid p
+
+/-- **Idempotence.** If the atomic cost already satisfies the triangle inequality
+(i.e. it is itself a pseudometric cost), the chain construction recovers it
+exactly: `chainDist c = c`. The chaining adds nothing once subadditivity already
+holds. -/
+theorem chainDist_eq_of_triangle (c : X → X → ℝ≥0∞)
+    (htri : ∀ a b r, c a r ≤ c a b + c b r) (p q : X) :
+    chainDist c p q = c p q :=
+  le_antisymm (chainDist_le_atomic c p q)
+    (le_chainDist_of_triangle c c (fun _ _ => le_rfl) htri p q)
+
+/-- **`chainDist` is idempotent.** Applying the chain construction to an
+already-chained cost changes nothing: `chainDist (chainDist c) = chainDist c`.
+This is the closure-operator face of the coreflection — a direct corollary of
+idempotence (the inner `chainDist c` is a pseudometric, hence subadditive). -/
+theorem chainDist_idem (c : X → X → ℝ≥0∞) (p q : X) :
+    chainDist (chainDist c) p q = chainDist c p q :=
+  chainDist_eq_of_triangle (chainDist c) (chainDist_triangle c) p q
+
 end Hilbert22OQ01OQ03
