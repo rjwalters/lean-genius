@@ -1,0 +1,116 @@
+{
+  "id": "sylow-theorems-oq-01-oq-02-oq-01",
+  "slug": "sylow-theorems-oq-01-oq-02-oq-01",
+  "title": "Groups of Order pq: the Cyclic (Unique) Case when q ∤ (p−1)",
+  "description": "For distinct primes p > q, a finite group of order p·q with q ∤ (p−1) is cyclic, and hence there is exactly one isomorphism class of such groups (all are ℤ/pq). This settles one direction of the biprimal isomorphism-class count: the parent open question asks for exactly 2 classes when q ∣ (p−1) and 1 otherwise; this entry proves the '1 class' case completely. The Sylow counting (n_r = 1 for every prime r) is done by hand, and cyclicity is obtained by routing through Mathlib's Z-group + nilpotency theory.",
+  "meta": {
+    "author": "Lean Genius (researcher-4)",
+    "sourceUrl": "https://erdosproblems.com",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/SylowTheoremOQ01OQ02OQ01.lean",
+    "tags": [
+      "group-theory",
+      "sylow-theorems",
+      "classification",
+      "groups-of-order-pq",
+      "cyclic-groups",
+      "z-groups",
+      "nilpotent-groups"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "lineCount": 151,
+    "mathlib_version": "4.26.0",
+    "assumptions": "0 axioms, 0 sorries. Fully machine-checked; all results depend only on Lean's foundational axioms (propext, Classical.choice, Quot.sound). Verified via #print axioms. The argument relies on Mathlib's Sylow theory, Z-group theory (IsZGroup.of_squarefree), the finite-group nilpotency TFAE (isNilpotent_of_finite_tfae), and the instance deriving cyclicity from a finite nilpotent Z-group; this reliance is disclosed.",
+    "originalContributions": [
+      "card_sylow_eq_one_of_card_pq: for every prime r, the number of Sylow r-subgroups of a group of order p·q (p>q, q∤(p−1)) equals 1 — proved by hand from n_r ∣ p·q, r ∤ n_r, n_r ≡ 1 [MOD r], plus the structural triviality of Sylow subgroups for primes not dividing the order.",
+      "isCyclic_of_card_pq: a finite group of order p·q with q ∤ (p−1) is cyclic — the '1 isomorphism class' direction of the biprimal classification, obtained by combining the Sylow count (all Sylows normal ⇒ nilpotent) with the squarefree Z-group structure.",
+      "unique_isoclass_of_card_pq: any two such groups are isomorphic (both ≅ ℤ/pq), via mulEquivOfCyclicCardEq."
+    ]
+  },
+  "overview": {
+    "historicalContext": "The classification of groups of order pq is a classical application of the Sylow theorems: when q ∤ (p−1) the group is forced to be cyclic, and when q ∣ (p−1) there is in addition a unique nonabelian semidirect product ℤ/p ⋊ ℤ/q. The parent entry (sylow-theorems-oq-01-oq-02) formalized the squarefree-order structure (every such group is a semidirect product of cyclic groups) but explicitly left the count of isomorphism classes open. This entry settles the cyclic (q ∤ p−1) direction of the biprimal count.",
+    "problemStatement": "Prove that a finite group of order p·q (p > q primes) with q ∤ (p−1) is cyclic, establishing that there is exactly one isomorphism class of groups of this order.",
+    "keyInsights": [
+      "Sylow's third theorem gives n_r ≡ 1 [MOD r] and r ∤ n_r; together with n_r ∣ p·q this forces n_p = 1 (using q < p) and, when q ∤ (p−1), n_q = 1.",
+      "For a prime r not dividing |G|, every Sylow r-subgroup is trivial, so there is a unique (hence normal) one — this handles the universal quantifier over all primes needed by the nilpotency criterion.",
+      "All Sylow subgroups normal ⇒ G is nilpotent (Mathlib's isNilpotent_of_finite_tfae).",
+      "|G| = p·q is squarefree, so G is a Z-group (all Sylow subgroups cyclic); a finite nilpotent Z-group is cyclic.",
+      "Two cyclic groups of equal order are isomorphic, giving uniqueness of the isomorphism class."
+    ],
+    "prerequisites": [
+      "Sylow theorems and Sylow counting (card_sylow_modEq_one, not_dvd_card_sylow, card_dvd_index)",
+      "Z-groups (groups with cyclic Sylow subgroups) and the finite-group nilpotency TFAE",
+      "Cyclic groups and isomorphism of equal-order cyclic groups"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sylow-count",
+      "title": "Sylow count is one for every prime",
+      "summary": "card_sylow_eq_one_of_card_pq: the arithmetic core. Case split on whether r divides |G|; modular/divisibility reasoning for r ∈ {p,q}, structural triviality otherwise.",
+      "startLine": 49,
+      "endLine": 114
+    },
+    {
+      "id": "cyclic",
+      "title": "Cyclic case",
+      "summary": "isCyclic_of_card_pq: squarefree ⇒ Z-group; all Sylows normal ⇒ nilpotent; finite nilpotent Z-group ⇒ cyclic.",
+      "startLine": 116,
+      "endLine": 140
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of the isomorphism class",
+      "summary": "unique_isoclass_of_card_pq: any two such groups are isomorphic.",
+      "startLine": 142,
+      "endLine": 151
+    }
+  ],
+  "conclusion": {
+    "summary": "A finite group of order p·q with p > q prime and q ∤ (p−1) is cyclic, so exactly one isomorphism class of groups of that order exists. This is the '1 class' half of the biprimal isomorphism-class count, proved as a fully verified (0-axiom) result. The Sylow count n_r = 1 for every prime r is established by hand; cyclicity then follows from the squarefree Z-group structure together with nilpotency.",
+    "openQuestions": [
+      "The complementary case q ∣ (p−1): prove there are exactly 2 isomorphism classes (cyclic ℤ/pq and a unique nonabelian semidirect product ℤ/p ⋊ ℤ/q). This requires an isomorphism classification of semidirect products, not yet available in Mathlib.",
+      "Generalize the explicit count to squarefree order n = p₁···pₖ in terms of the divisibility relations pᵢ ∣ (pⱼ − 1)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "sylow-theorems-oq-01-oq-02",
+      "relationship": "parent",
+      "description": "Parent entry: squarefree-order classification as a semidirect product of cyclic groups. Its first open question asks for the explicit isomorphism-class count in the biprimal case; this entry answers the q ∤ (p−1) direction."
+    },
+    {
+      "targetId": "sylow-theorems",
+      "relationship": "related",
+      "description": "Foundational Sylow theorems underlying the counting arguments."
+    }
+  ],
+  "references": [
+    {
+      "key": "DummitFoote",
+      "authors": ["D. S. Dummit", "R. M. Foote"],
+      "title": "Abstract Algebra",
+      "venue": "Wiley",
+      "year": "2004",
+      "note": "Section 4.5 classifies groups of order pq using the Sylow theorems (the q ∤ p−1 case yields the cyclic group)."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/SylowTheoremOQ01OQ02OQ01.lean",
+    "filePath": "Proofs/SylowTheoremOQ01OQ02OQ01.lean",
+    "imports": ["Mathlib"],
+    "opens": ["Classical"],
+    "namespace": "SylowOrderPQ",
+    "lineCount": 151,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "sorries": 0
+  },
+  "sorries": 0
+}
