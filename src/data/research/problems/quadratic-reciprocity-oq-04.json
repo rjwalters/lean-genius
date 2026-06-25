@@ -1,8 +1,8 @@
 {
   "slug": "quadratic-reciprocity-oq-04",
   "title": "Jacobi symbol generalization of quadratic reciprocity",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Formalized (verified, 0-axiom) that the Jacobi-symbol generalization of quadratic reciprocity LOSES residue-detection for composite moduli: J(2|15)=1 yet 2 is not a square mod 15 (smallest Euler liar). Reciprocity/computability retained; only J=-1 ⟹ non-square survives. Gallery quadratic-reciprocity-oq-04 / Proofs/QuadraticReciprocityOQ04.lean.",
+    "builtItems": [
+      "jacobi_one_not_isSquare_of_composite (headline Euler-liar counterexample) in Proofs/QuadraticReciprocityOQ04.lean",
+      "jacobiSym_two_fifteen, jacobiSym_two_fifteen_factor, two_nonsquare_mod_fifteen, jacobiSym_neg_one_imp_nonsquare"
+    ],
+    "insights": [
+      "Jacobi J(a|b)=1 arises from an EVEN number of Legendre -1 factors, so for composite b it does not certify a square; J(2|15)=(2|3)(2|5)=(-1)(-1)=1 is minimal.",
+      "Mathlib has the residue iff only for PRIME moduli (isSquare_of_jacobiSym_eq_one); the composite converse genuinely fails — this entry shows it is sharp.",
+      "Jacobi values evaluate axiom-clean via Mathlib reciprocity norm_num extension (not native_decide)."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: quadratic-reciprocity-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
