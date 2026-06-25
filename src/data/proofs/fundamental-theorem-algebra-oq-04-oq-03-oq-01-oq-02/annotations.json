@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+    "range": { "startLine": 4, "endLine": 50 },
+    "type": "context",
+    "title": "Pinning Down a Choice-Built Generator by Rigidity",
+    "content": "The docstring frames OQ[2]. The parent built, by hand and with the generator named, the iso $\\mathrm{galoisGroupEquivZMod2}:(\\mathbb{C}\\simeq_{\\mathbb{R}}\\mathbb{C})\\simeq^* \\mathrm{Multiplicative}(\\mathbb{Z}/2)$ sending complex conjugation to $\\mathrm{ofAdd}\\,1$. Mathlib's generic $\\mathrm{zmodCyclicMulEquiv}$ produces such an iso for any cyclic group, but only after `Classical.choice`-ing a generator — so it is opaque about which automorphism the nontrivial element hits. The resolution is a rigidity theorem: for an order-two group there is a UNIQUE isomorphism from $\\mathrm{Multiplicative}(\\mathbb{Z}/2)$, so the generic construction's choice is forced to agree with the explicit one.",
+    "mathContext": "$\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})\\cong \\mathbb{Z}/2;\\quad \\text{unique iso} \\Rightarrow \\text{generic} = \\text{explicit}$",
+    "significance": "context",
+    "relatedConcepts": ["Galois group ℂ/ℝ", "complex conjugation", "cyclic group of order 2", "rigidity", "Classical.choice"],
+    "prerequisites": ["Galois theory", "group isomorphisms"]
+  },
+  {
+    "id": "ann-cyclic",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+    "range": { "startLine": 57, "endLine": 62 },
+    "type": "technique",
+    "title": "Gal(ℂ/ℝ) Is Cyclic of Prime Order",
+    "content": "`galoisGroup_isCyclic` registers $\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})$ as cyclic, via `isCyclic_of_prime_card` applied to the parent's `card_galoisGroup_eq_two` (|Gal| = 2). A group of prime order is automatically cyclic. This `IsCyclic` instance is exactly the hypothesis Mathlib's `zmodCyclicMulEquiv` consumes to produce its generic isomorphism, so it must be in scope before the specialisation step.",
+    "mathContext": "$|\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})| = 2 \\text{ prime} \\Rightarrow \\text{IsCyclic}$",
+    "significance": "supporting",
+    "relatedConcepts": ["cyclic group", "prime order", "isCyclic_of_prime_card", "typeclass instance"],
+    "prerequisites": ["group order", "cyclic groups"]
+  },
+  {
+    "id": "ann-any-equiv",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 77 },
+    "type": "insight",
+    "title": "Every Iso Sends the Generator to Conjugation",
+    "content": "`any_equiv_ofAdd_one` is the heart of the rigidity. For an arbitrary iso $e$, the value $e(\\mathrm{ofAdd}\\,1)$ is either $1$ or $\\mathrm{conjAe}$ by the parent's `eq_one_or_conjAe` (Gal has exactly those two elements). It cannot be $1$: that would give $e(\\mathrm{ofAdd}\\,1)=e(1)$, and injectivity would force $\\mathrm{ofAdd}\\,1 = 1$, contradicting `ofAdd_one_ne_one`. So it must be $\\mathrm{conjAe}$. The non-identity element is forced onto the unique non-identity automorphism.",
+    "mathContext": "$e(\\mathrm{ofAdd}\\,1)\\in\\{1,\\mathrm{conjAe}\\},\\ e(\\mathrm{ofAdd}\\,1)\\neq 1 \\Rightarrow e(\\mathrm{ofAdd}\\,1)=\\mathrm{conjAe}$",
+    "significance": "key",
+    "relatedConcepts": ["injectivity", "order-two group", "complex conjugation", "map_one", "unique non-identity element"],
+    "prerequisites": ["group homomorphism properties", "injective maps"]
+  },
+  {
+    "id": "ann-uniqueness",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+    "range": { "startLine": 79, "endLine": 88 },
+    "type": "insight",
+    "title": "Uniqueness: Every Iso Equals the Explicit One",
+    "content": "`eq_galoisGroupEquivZMod2_symm` upgrades the generator fact to a full equality of maps. By `MulEquiv` extensionality (`ext x`) it suffices to check the two elements of $\\mathrm{Multiplicative}(\\mathbb{Z}/2)$, which `zmod2_eq_one_or` enumerates: at $1$ both sides give $1$ (`simp`); at $\\mathrm{ofAdd}\\,1$ both give $\\mathrm{conjAe}$ — the arbitrary $e$ by `any_equiv_ofAdd_one`, the explicit map by the parent's `galoisGroupEquivZMod2_symm_ofAdd_one`. Hence there is only ONE isomorphism $\\mathrm{Multiplicative}(\\mathbb{Z}/2)\\simeq^*\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})$ at all.",
+    "mathContext": "$\\forall e,\\ e = \\mathrm{galoisGroupEquivZMod2.symm}$",
+    "significance": "key",
+    "relatedConcepts": ["MulEquiv.ext", "extensionality", "uniqueness of isomorphism", "case enumeration"],
+    "prerequisites": ["extensionality of homomorphisms"]
+  },
+  {
+    "id": "ann-specialise",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+    "range": { "startLine": 90, "endLine": 110 },
+    "type": "technique",
+    "title": "Specialising to Mathlib's Generic Iso — No Choice Unfolding",
+    "content": "`mathlibGaloisIso` is `zmodCyclicMulEquiv` transported along $\\mathrm{Nat.card}(\\mathbb{C}\\simeq_{\\mathbb{R}}\\mathbb{C})=2$ (the `card_galoisGroup_eq_two ▸ ...` cast). The payoff: `mathlibGaloisIso_eq` is just `eq_galoisGroupEquivZMod2_symm mathlibGaloisIso`, and `mathlibGaloisIso_ofAdd_one` is `any_equiv_ofAdd_one mathlibGaloisIso`. Because the rigidity lemmas quantify over an ARBITRARY $e$, the generic iso is fed in as an opaque term — the `Classical.choice`-built generator and the type-transport cast never need to reduce. So Mathlib's hidden generator is identified with conjugation without ever computing it.",
+    "mathContext": "$\\mathrm{mathlibGaloisIso} = \\mathrm{galoisGroupEquivZMod2.symm},\\quad \\mathrm{mathlibGaloisIso}(\\mathrm{ofAdd}\\,1)=\\mathrm{conjAe}$",
+    "significance": "key",
+    "relatedConcepts": ["zmodCyclicMulEquiv", "type transport (▸)", "Classical.choice opacity", "specialisation"],
+    "prerequisites": ["dependent type casts", "noncomputable definitions"]
+  }
+]
