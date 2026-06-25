@@ -1,0 +1,135 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-04",
+  "id": "descartes-rule-of-signs-oq-01-oq-04",
+  "title": "A Constructive (Computable) Sign-Variation Count for Descartes' Rule",
+  "description": "Answers the open question of whether Descartes' Rule can be made constructive. Mathlib's Polynomial.signVariations is noncomputable as a function of the polynomial. This file isolates the genuinely computable core — a sign-variation count on an explicit list of rational coefficients — proves it agrees with the abstract Mathlib definition, transports Descartes' bound to the computable side, and derives a decidable sound certificate that a polynomial has no positive roots. Includes worked examples discharged by kernel decide (0 axioms).",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ04.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "Descartes rule",
+      "constructive",
+      "computability",
+      "decidability"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 134,
+    "assumptions": "None. All results proved from Mathlib. The worked examples are discharged by kernel `decide` (not `native_decide`), so the only axioms are the foundational propext / Classical.choice / Quot.sound.",
+    "theoremCount": 4,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.signVariations",
+        "description": "The abstract (noncomputable over ℝ/ℚ) sign-variation count whose computable mirror is built and certified here"
+      },
+      {
+        "theorem": "Polynomial.roots_countP_pos_le_signVariations",
+        "description": "Mathlib's Descartes upper bound — positive roots ≤ sign variations — transported to the computable list-level count"
+      },
+      {
+        "theorem": "Polynomial.coeffList",
+        "description": "The (noncomputable) coefficient list of a polynomial, the bridge between the abstract count and the computable list function"
+      },
+      {
+        "theorem": "List.destutter",
+        "description": "Removes consecutive duplicates; underlies both the Mathlib definition and the computable signVarList"
+      },
+      {
+        "theorem": "SignType.sign",
+        "description": "The three-valued sign function; computable on ℚ (decidable order), the key to constructivity"
+      }
+    ],
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.RuleOfSigns",
+      "Mathlib.Algebra.Polynomial.Roots",
+      "Mathlib.Tactic"
+    ],
+    "namespace": "DescartesConstructive",
+    "lineCount": 134,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 1,
+    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "problemStatement": "Can Descartes' Rule of Signs be made constructive — can the sign-variation bound be turned into something a machine actually computes, with decidable instances — given that Mathlib's Polynomial.signVariations is noncomputable as a function of the polynomial?",
+    "historicalContext": "Descartes stated his rule in La Géométrie (1637): the number of positive real roots of a polynomial is at most the number of sign changes in its coefficient sequence, and differs from it by an even number. The rule is fundamentally algorithmic — Descartes' own statement is a finite recipe on the coefficient signs — yet a faithful formalization in a proof assistant runs into a subtlety: over the real numbers (and even over ℚ via the polynomial type) the relevant quantities are noncomputable. Polynomial.coeffList is built from P.degree and P.coeff, which pass through the Finsupp representation and do not reduce; over ℝ the sign function itself is noncomputable because ℝ has no decidable order constructively. Exact real root counting is the province of Sturm's theorem (1829), not Descartes. This file separates the computable half (the bound) from the noncomputable half (the roots), recovering the algorithmic spirit of Descartes' original.",
+    "keyInsights": [
+      "The noncomputability is entirely on the polynomial side: Polynomial.coeffList and SignType.sign over ℝ do not reduce. The sign-variation count is, however, a finite combinatorial function of the *coefficient list*, and over ℚ (a field with decidable order) that list function is fully computable.",
+      "signVarList : List ℚ → ℕ mirrors the Mathlib definition operation-for-operation (map SignType.sign, filter (· ≠ 0), destutter (· ≠ ·), length - 1). Because every step is decidable on ℚ, the whole function reduces in the kernel and is provable by `decide`.",
+      "The bridge signVarList P.coeffList = P.signVariations holds by `rfl`: the computable function is *definitionally* the abstract one once fed the coefficient list. This is what certifies the algorithm computes the right quantity rather than a lookalike.",
+      "Transporting Mathlib's bound gives posRoots_le_signVarList: positive roots ≤ a number you can actually compute from the coefficients, with no root finding. This is the constructive content of Descartes' Rule.",
+      "signVarList l = 0 is a decidable test that, when l is a polynomial's coefficient list, soundly certifies that the polynomial has no positive roots — a checkable witness about the otherwise-noncomputable root multiset."
+    ],
+    "proofStrategy": "(1) Define signVarList : List ℚ → ℕ, a computable mirror of Polynomial.signVariations. (2) Prove signVarList P.coeffList = P.signVariations by rfl, certifying correctness. (3) Transport Mathlib's roots_countP_pos_le_signVariations to posRoots_le_signVarList. (4) Derive the decidable certificate no_pos_roots_of_signVarList_zero and its contrapositive signVarList_pos_of_pos_roots. (5) Discharge a battery of explicit coefficient-list examples by kernel `decide`, demonstrating the algorithm runs.",
+    "prerequisites": [
+      "Polynomial.signVariations and its defining pipeline (coeffList, SignType.sign, List.filter, List.destutter)",
+      "Polynomial.roots_countP_pos_le_signVariations (Mathlib's Descartes upper bound)",
+      "Decidability of the order on ℚ (so SignType.sign and the filter/destutter predicates compute)",
+      "Nat.le_zero for the no-positive-roots certificate"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module: Constructive Sign-Variation Count",
+      "summary": "Module docstring framing the OQ: Mathlib's signVariations is noncomputable over ℝ/ℚ (coeffList and the real sign map do not reduce). Spells out which half of Descartes' Rule is constructive (the bound) and which is not (the root count, needing Sturm)."
+    },
+    {
+      "id": "computable-count",
+      "title": "Part 1: The Computable Core",
+      "summary": "signVarList : List ℚ → ℕ, a decidable mirror of Polynomial.signVariations on an explicit rational coefficient list. Every operation reduces in the kernel, so the function #evals and is provable by decide."
+    },
+    {
+      "id": "bridge-and-bound",
+      "title": "Part 2: Correctness Bridge and Transported Bound",
+      "summary": "signVarList_coeffList: signVarList P.coeffList = P.signVariations by rfl, certifying the algorithm. posRoots_le_signVarList: Mathlib's Descartes bound restated with the computable count on the right."
+    },
+    {
+      "id": "decidable-certificate",
+      "title": "Part 3: Decidable Certificate of No Positive Roots",
+      "summary": "no_pos_roots_of_signVarList_zero: the decidable test signVarList P.coeffList = 0 soundly proves P has no positive roots. signVarList_pos_of_pos_roots: the contrapositive — a positive root forces a positive variation count."
+    },
+    {
+      "id": "worked-examples",
+      "title": "Part 4: Worked Computable Examples",
+      "summary": "Seven explicit coefficient lists discharged by kernel decide: [1,-1,-1,1]→2, [1,3,2]→0 (certificate fires), [1,0,-1]→1, interior zeros never count, fully alternating lists realise the maximum, and the empty/singleton lists give 0."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs-oq-01",
+      "relationship": "extends",
+      "description": "Answers OQ-04 of the parent: can the proof be made constructive using decidable instances?"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "foundational",
+      "description": "The classical Descartes rule of signs — root of the OQ chain studied here"
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling OQ exploring the complex-root-theory route to the parity result; this file instead pursues constructivity"
+    }
+  ],
+  "conclusion": {
+    "summary": "YES, the bound side of Descartes' Rule can be made constructive. Mathlib's signVariations is noncomputable as a function of the polynomial, but its combinatorial core is a computable function on the coefficient list. This file builds that function (signVarList over ℚ), proves by rfl that it agrees with the abstract count, transports Descartes' upper bound to it, and extracts a decidable sound certificate of no positive roots — all with 0 axioms, examples checked by kernel decide.",
+    "implications": "Separates the genuinely algorithmic part of Descartes' Rule (counting sign variations) from the genuinely noncomputable part (locating real roots, which needs Sturm). The signVarList / signVarList_coeffList pattern — a computable list mirror certified by rfl against a noncomputable polynomial-level definition — is reusable for other coefficient-driven polynomial invariants. The decidable no-positive-roots certificate is a small but genuinely constructive decision procedure: sound, terminating, and checkable.",
+    "openQuestions": [
+      "Can an exact constructive root-count certificate be built by combining signVarList with a formalization of Sturm's theorem over ℚ?",
+      "Does the parity refinement (signVariations ≡ positive roots mod 2, proved over ℝ in the parent chain) lift to give a computable exact count when signVarList returns 0 or 1?",
+      "Can signVarList be generalized from ℚ to an arbitrary computable LinearOrderedField (e.g. computable algebraic reals) while keeping the rfl bridge?"
+    ]
+  },
+  "sorries": 0
+}

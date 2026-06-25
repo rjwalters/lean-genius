@@ -1,8 +1,8 @@
 {
   "slug": "descartes-rule-of-signs-oq-01-oq-04",
   "title": "Can the proof be made constructive (using decidable instances for Polynomial",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T05:50:14-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Shipped constructive computable sign-variation count; OQ-04 answered.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None — entry shipped to gallery.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Built DescartesRuleOfSignsOQ01OQ04.lean (verified, 0-axiom, original). Answers OQ-04 (constructivity). Mathlib Polynomial.signVariations is noncomputable as a function of the polynomial (coeffList via Finsupp does not reduce; SignType.sign over ℝ is noncomputable). Isolated the computable core: signVarList : List ℚ → ℕ, a decide-able mirror of signVariations. Proved the rfl bridge signVarList P.coeffList = P.signVariations, transported Mathlib roots_countP_pos_le_signVariations to posRoots_le_signVarList, and derived a decidable sound certificate no_pos_roots_of_signVarList_zero. 7 worked examples by kernel decide (no native_decide → axiom-free).",
+    "builtItems": [
+      "signVarList : List ℚ → ℕ — computable mirror of Polynomial.signVariations (DescartesRuleOfSignsOQ01OQ04.lean:65)",
+      "signVarList_coeffList : signVarList P.coeffList = P.signVariations, by rfl (DescartesRuleOfSignsOQ01OQ04.lean:73)",
+      "posRoots_le_signVarList : P.roots.countP (0<·) ≤ signVarList P.coeffList (DescartesRuleOfSignsOQ01OQ04.lean:81)",
+      "no_pos_roots_of_signVarList_zero : decidable sound certificate of no positive roots (DescartesRuleOfSignsOQ01OQ04.lean:93)",
+      "signVarList_pos_of_pos_roots : contrapositive certificate (DescartesRuleOfSignsOQ01OQ04.lean:100)"
+    ],
+    "insights": [
+      "signVariations noncomputability is on the polynomial side (coeffList = (range degree.succ).reverse.map coeff, both noncomputable via Finsupp), not the combinatorics; the list-level count is computable over any decidable-order field.",
+      "The correctness bridge is rfl: signVarList (coeffList P) unfolds definitionally to signVariations P, so all Mathlib signVariations lemmas transfer for free.",
+      "Descartes splits cleanly into a constructive half (the bound, computable) and a noncomputable half (locating real roots, which is Sturm territory).",
+      "decide (kernel) suffices for ℚ sign-variation examples and keeps the file axiom-free; native_decide would have added Lean.ofReduceBool."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Combine signVarList with a Sturm-theorem formalization over ℚ for an exact constructive root-count certificate.",
+      "Lift the parity refinement to a computable exact count when signVarList returns 0 or 1.",
+      "Generalize signVarList from ℚ to an arbitrary computable LinearOrderedField, preserving the rfl bridge."
+    ],
     "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
