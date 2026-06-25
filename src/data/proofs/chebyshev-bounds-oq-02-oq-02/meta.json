@@ -1,0 +1,100 @@
+{
+  "id": "chebyshev-bounds-oq-02-oq-02",
+  "title": "ψ and θ Share the Same Main Term: ψ(n) − θ(n) = ∑_{k≥2} θ(n^{1/k}) = O(√n·log n)",
+  "slug": "chebyshev-bounds-oq-02-oq-02",
+  "description": "Compares the second Chebyshev function ψ(n) = ∑_{m≤n} Λ(m) (from the parent ChebyshevBoundsOQ02, a self-contained ℕ-indexed development) with the first Chebyshev function θ(n) = ∑_{p≤n} log p, and shows the two share the same main term. Directly proves the structural decomposition ψ(n) − θ(n) = ∑_{m≤n, ¬ m prime} Λ(m) — the difference is supported entirely on the higher prime powers p^k (k ≥ 2). It then bridges the parent's elementary chebyshevPsi to Mathlib's Chebyshev.psi/theta and transports two results to the gallery's functions: the exact identity ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}) and the sharp quantitative bound |ψ(n) − θ(n)| ≤ 2·√n·log n = O(√n·log n). The deep analytic content of the last two is Mathlib's (Chebyshev.psi_eq_theta_add_sum_theta, abs_psi_sub_theta_le_sqrt_mul_log); the contribution here is the formal bridge that lets the gallery's self-contained ψ inherit them. Answers chebyshev-bounds-oq-02's openQuestion on the ψ−θ comparison.",
+  "meta": {
+    "author": "Pafnuty Chebyshev (1852); formalized in Lean 4",
+    "date": "1852",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ChebyshevBoundsOQ02OQ02.lean",
+    "tags": [
+      "number-theory",
+      "primes",
+      "chebyshev",
+      "von-mangoldt",
+      "prime-counting",
+      "analytic-number-theory"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 146,
+    "assumptions": "0 literal `axiom` declarations, 0 sorries, no `native_decide`. `#print axioms` on the headline results reports only the three ordinary foundational axioms (propext, Classical.choice, Quot.sound), which are not counted under the project's axiom-integrity policy. The substantive analytic number theory behind the two quantitative results — the identity ψ(x) = θ(x) + ∑_{k≥2} θ(x^{1/k}) and the bound |ψ(x) − θ(x)| ≤ 2√x·log x — is supplied by Mathlib's `Mathlib.NumberTheory.Chebyshev` (theorems `psi_eq_theta_add_sum_theta` and `abs_psi_sub_theta_le_sqrt_mul_log`); this entry's own contribution is the bridge `chebyshevPsi n = Chebyshev.psi n` (and the θ analogue) plus the direct decomposition `ψ − θ = ∑_{¬prime} Λ`. Badge is `verified` (not `original`) precisely because the deep bound is Mathlib's, not new here. All results are fully machine-checked.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Chebyshev.abs_psi_sub_theta_le_sqrt_mul_log",
+        "description": "|ψ(x) − θ(x)| ≤ 2·√x·log x — the sharp O(√x·log x) same-main-term bound, transported to the gallery's ψ via the bridge",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "Chebyshev.psi_eq_theta_add_sum_theta",
+        "description": "ψ(x) = θ(x) + ∑_{k=2}^{⌊log₂ x⌋} θ(x^{1/k}) — the exact ψ = ∑_{k≥1} θ(x^{1/k}) decomposition, giving ψ − θ = ∑_{k≥2} θ(x^{1/k})",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "ArithmeticFunction.vonMangoldt_apply_prime",
+        "description": "Λ(p) = log p for prime p — identifies the prime part of ψ with θ",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt"
+      },
+      {
+        "theorem": "ArithmeticFunction.vonMangoldt_eq_zero_iff",
+        "description": "Λ(n) = 0 ↔ ¬ IsPrimePow n — pins the support of ψ − θ to the proper prime powers",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.VonMangoldt"
+      },
+      {
+        "theorem": "Nat.floor_natCast",
+        "description": "⌊(n : ℝ)⌋₊ = n — aligns the parent's Icc 1 n indexing with Mathlib's Ioc 0 ⌊x⌋₊",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "dateAdded": "2026-06-25",
+    "theoremCount": 9,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Chebyshev's two functions are θ(x) = ∑_{p ≤ x} log p (first) and ψ(x) = ∑_{p^k ≤ x} log p (second). They agree to leading order — both are asymptotic to x, which is the content of the Prime Number Theorem — because ψ counts the contribution of every prime power p^k while θ counts only the primes p themselves (k = 1). The extra mass in ψ comes from squares, cubes, … of primes, and is tiny: collecting prime powers by exponent gives the classical identity ψ(x) = ∑_{k ≥ 1} θ(x^{1/k}), whose tail ∑_{k ≥ 2} θ(x^{1/k}) is O(√x·log x). So θ and ψ may be used interchangeably as the 'main term' in elementary proofs toward the PNT — the substitution that turns bounds on ψ into bounds on θ and on the prime-counting function π.",
+    "problemStatement": "**Open Question (parent chebyshev-bounds-oq-02)**: Relate the second Chebyshev function ψ to the first, θ, and quantify their difference.\n\n**Result**: With θ(n) = ∑_{p ≤ n} log p, the difference ψ(n) − θ(n) is proved equal to ∑_{m ≤ n, ¬ m prime} Λ(m) — supported on the proper prime powers (k ≥ 2). Bridging the parent's elementary ℕ-indexed ψ to Mathlib's Chebyshev API then yields the exact identity ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}) and the sharp bound |ψ(n) − θ(n)| ≤ 2·√n·log n.",
+    "text": "A 146-line, fully verified (0 sorries, 0 axioms, no native_decide) file in three parts. Part I defines chebyshevTheta n = ∑_{p ∈ [1,n], p prime} log p and shows it equals the prime part of ψ in von Mangoldt form (chebyshevTheta_eq_sum_vonMangoldt), using Λ(p) = log p. Part II proves, directly over the parent's chebyshevPsi, the structural decomposition psi_sub_theta: ψ(n) − θ(n) = ∑_{m ∈ [1,n]} (if m prime then 0 else Λ m) — i.e. the difference is exactly the contribution of the m that are prime powers but not primes — together with nonnegativity (psi_sub_theta_nonneg), θ ≤ ψ (theta_le_psi), and an explicit restatement of the difference as a sum over {m ∈ [1,n] : IsPrimePow m ∧ ¬ m prime} (psi_sub_theta_eq_proper_prime_powers). Part III bridges to Mathlib: chebyshevPsi_eq_mathlib (chebyshevPsi n = Chebyshev.psi n) and chebyshevTheta_eq_mathlib are one-line Finset.sum_congr arguments lining up [1,n] with (0,⌊n⌋]. With the bridge in hand, psi_sub_theta_eq_sum_theta transports Mathlib's ψ = θ + ∑_{k≥2} θ(x^{1/k}) to give ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}), and abs_psi_sub_theta_le transports Mathlib's |ψ − θ| ≤ 2√x·log x to give |ψ(n) − θ(n)| ≤ 2·√n·log n.",
+    "proofStrategy": "The decomposition psi_sub_theta is a termwise split: ψ(n) − θ(n) = ∑_{m∈[1,n]} (Λ m − [m prime]·Λ m) = ∑_{m∈[1,n]} [¬ m prime]·Λ m, closed by case-splitting on m.Prime. psi_sub_theta_eq_proper_prime_powers further uses Λ(m) = 0 ↔ ¬IsPrimePow m (vonMangoldt_eq_zero_iff) to drop the m that are not prime powers, exposing the k ≥ 2 support. The bridges chebyshevPsi_eq_mathlib / chebyshevTheta_eq_mathlib unfold both sides and apply Finset.sum_congr along Icc 1 n = Ioc 0 n (after Nat.floor_natCast turns ⌊(n:ℝ)⌋₊ into n). The two quantitative theorems are then `rw` of the bridges followed by `exact`/`rw` of the corresponding Mathlib lemma (psi_eq_theta_add_sum_theta with add_sub_cancel_left; abs_psi_sub_theta_le_sqrt_mul_log), with the real hypotheses discharged by exact_mod_cast.",
+    "keyInsights": [
+      "ψ − θ is supported precisely on the proper prime powers: writing both functions in von Mangoldt form, ψ = ∑ Λ and θ = ∑ [prime]·Λ, so the difference is ∑ [¬prime]·Λ, and Λ(m) ≠ 0 forces m to be a prime power — hence m = p^k with k ≥ 2.",
+      "Grouping prime powers by exponent gives ψ(x) = ∑_{k≥1} θ(x^{1/k}); the k = 1 term is θ(x), so ψ − θ = ∑_{k≥2} θ(x^{1/k}), a sum of only ⌊log₂ x⌋ − 1 terms.",
+      "Each tail term θ(x^{1/k}) ≤ θ(√x) for k ≥ 2, so the whole tail is O(√x·log x): ψ and θ are interchangeable as the main term in elementary prime-counting estimates.",
+      "The parent's self-contained ℕ-indexed ψ (∑ over [1,n]) and Mathlib's ℝ-argument Chebyshev.psi (∑ over (0,⌊x⌋]) coincide at integer x once [1,n] is identified with (0,n]; this one-line bridge imports Mathlib's full Chebyshev development into the gallery's thread."
+    ],
+    "prerequisites": [
+      "The von Mangoldt function Λ (Λ(p^k) = log p, else 0) and its support being the prime powers",
+      "First and second Chebyshev functions θ and ψ",
+      "Finset summation congruence and case analysis in Lean 4/Mathlib",
+      "Mathlib's Mathlib.NumberTheory.Chebyshev development (psi, theta, the ψ = ∑θ identity, and the √x·log x bound)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "theta-def",
+      "title": "The First Chebyshev Function θ",
+      "startLine": 54,
+      "endLine": 73,
+      "summary": "chebyshevTheta n = ∑_{p∈[1,n] prime} log p, and its von Mangoldt form θ(n) = ∑_{m≤n} [m prime]·Λ(m) via Λ(p) = log p.",
+      "mathContext": "θ(x) = ∑_{p ≤ x} log p — the prime part of ψ."
+    },
+    {
+      "id": "decomposition",
+      "title": "Same Main Term: ψ − θ on the Higher Prime Powers",
+      "startLine": 75,
+      "endLine": 111,
+      "summary": "psi_sub_theta: ψ(n) − θ(n) = ∑_{m≤n, ¬ m prime} Λ(m); nonnegativity; θ ≤ ψ; and the explicit proper-prime-power (IsPrimePow ∧ ¬prime) restatement.",
+      "mathContext": "The difference of the two Chebyshev functions is exactly the contribution of the prime powers p^k with k ≥ 2."
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Mathlib and the Quantitative Bound",
+      "startLine": 113,
+      "endLine": 145,
+      "summary": "chebyshevPsi_eq_mathlib / chebyshevTheta_eq_mathlib identify the gallery functions with Mathlib's Chebyshev.psi/theta; psi_sub_theta_eq_sum_theta and abs_psi_sub_theta_le transport Mathlib's ψ = ∑θ(x^{1/k}) identity and |ψ − θ| ≤ 2√x·log x bound.",
+      "mathContext": "ψ(n) − θ(n) = ∑_{k≥2} θ(n^{1/k}) and |ψ(n) − θ(n)| ≤ 2√n·log n = O(√n log n)."
+    }
+  ]
+}
