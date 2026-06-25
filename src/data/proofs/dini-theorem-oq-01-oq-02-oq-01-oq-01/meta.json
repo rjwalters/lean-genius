@@ -1,0 +1,180 @@
+{
+  "id": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+  "title": "Optimality of the Dini Modulus ⌈log ε / log(1−δ)⌉",
+  "slug": "dini-theorem-oq-01-oq-02-oq-01-oq-01",
+  "description": "Answers the parent's open question OQ-01: the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ is not merely sufficient but OPTIMAL — the SMALLEST natural number N with (1−δ)^N ≤ ε. The crux is a sharp two-sided characterisation (1−δ)ⁿ ≤ ε ⟺ log ε / log(1−δ) ≤ n ⟺ ⌈log ε / log(1−δ)⌉₊ ≤ n, where the parent proved only the ⟸ direction; the new ⟹ direction yields minimality. Packaged as IsLeast {n | (1−δ)ⁿ ≤ ε} N, plus the explicit off-by-one (1−δ)^{N-1} > ε that the parent left open. Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "dini",
+      "uniform-convergence",
+      "modulus",
+      "optimality",
+      "isleast",
+      "sharp-bound",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 186,
+    "assumptions": "None. Fully machine-verified: lake env lean of Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for pow_le_iff_log_div, pow_le_iff_ceil_le, isLeast_modulus, lt_pow_of_lt_modulus, one_le_modulus, and lt_pow_pred_modulus. The file imports only Mathlib and is self-contained.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.exp_le_exp",
+        "description": "exp a ≤ exp b ↔ a ≤ b — the order-isomorphism that makes the power inequality equivalent to the exponent inequality with NO slack, giving both directions of the characterisation",
+        "module": "Mathlib.Analysis.SpecialFunctions.Exp"
+      },
+      {
+        "theorem": "Real.exp_log",
+        "description": "exp (log x) = x for x > 0 — rewrites (1−δ)ⁿ and ε into exponential form so exp-monotonicity applies",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Real.log_pow",
+        "description": "log(rⁿ) = n · log r — linearizes the geometric power into the log-threshold",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "div_le_iff_of_neg",
+        "description": "dividing by the negative quantity log(1−δ) reverses the inequality EXACTLY (an iff), turning n·log(1−δ) ≤ log ε into the sharp threshold log ε / log(1−δ) ≤ n",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "Nat.ceil_le",
+        "description": "⌈a⌉₊ ≤ n ↔ a ≤ n — the defining property of the ceiling, converting the real threshold into the integer modulus N = ⌈log ε / log(1−δ)⌉₊",
+        "module": "Mathlib.Algebra.Order.Floor"
+      },
+      {
+        "theorem": "Nat.ceil_pos",
+        "description": "0 < ⌈a⌉₊ ↔ 0 < a — used with div_pos to show the modulus is ≥ 1 when ε ∈ (0,1), legitimizing the predecessor N−1",
+        "module": "Mathlib.Algebra.Order.Floor"
+      }
+    ],
+    "originalContributions": [
+      "pow_le_iff_log_div: the SHARP two-sided characterisation (1−δ)ⁿ ≤ ε ↔ log ε / log(1−δ) ≤ n — the parent file proved only the ⟸ (sufficiency) direction; the ⟹ direction, obtained by exp-monotonicity and the order-reversing division by log(1−δ) < 0, is what supplies minimality",
+      "pow_le_iff_ceil_le: the natural-number characterisation (1−δ)ⁿ ≤ ε ↔ ⌈log ε / log(1−δ)⌉₊ ≤ n, fusing the parent's sufficiency with the new minimality into a single biconditional",
+      "isLeast_modulus: THE optimality theorem — N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ is the LEAST n with (1−δ)ⁿ ≤ ε (IsLeast), upgrading the parent's pow_lt_of_ceil_modulus from 'N works' to 'N is smallest'",
+      "lt_pow_of_lt_modulus: strict minimality — every exponent below the modulus fails, n < N ⟹ (1−δ)ⁿ > ε",
+      "one_le_modulus / lt_pow_pred_modulus: the explicit off-by-one the parent left open — for ε ∈ (0,1), N ≥ 1 and the predecessor already fails, (1−δ)^{N−1} > ε, the matching lower bound proving N cannot be reduced"
+    ],
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dini's theorem guarantees uniform convergence of a monotone sequence of continuous functions with continuous pointwise limit on a COMPACT set. The lineage dini-theorem-oq-01 → oq-01-oq-02 → oq-01-oq-02-oq-01 traced the witness fₙ(x) = xⁿ from the failure of uniform convergence on [0,1) (unattained supremum 1) to its recovery on the compact [0,1−δ], where the parent produced the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ such that n ≥ N ⟹ (1−δ)ⁿ ≤ ε. That was a one-sided guarantee. This entry (OQ-01) closes the loop by proving the modulus is exactly optimal — the smallest N that works — making the threshold sharp on both sides.",
+    "problemStatement": "Is N = ⌈log ε / log(1−δ)⌉₊ the SMALLEST N with (1−δ)^N ≤ ε for every ε, δ ∈ (0,1), or only the smallest under the particular log-threshold derivation? Pin down the off-by-one from Nat.ceil exactly by establishing the matching minimality (1−δ)^{N−1} > ε alongside the parent's (1−δ)^N ≤ ε.",
+    "text": "Proves the sharp characterisation (1−δ)ⁿ ≤ ε ↔ ⌈log ε / log(1−δ)⌉₊ ≤ n, packages the modulus as the least element of the solution set {n | (1−δ)ⁿ ≤ ε}, and exhibits the explicit off-by-one (1−δ)^{N−1} > ε for ε ∈ (0,1).",
+    "proofStrategy": "Everything rests on one sharp equivalence, pow_le_iff_log_div: for r = 1−δ ∈ (0,1), (1−δ)ⁿ ≤ ε ⟺ log ε / log(1−δ) ≤ n. Writing rⁿ = exp(n·log r) and ε = exp(log ε), the strict monotone bijection t ↦ exp(t) gives rⁿ ≤ ε ⟺ n·log r ≤ log ε with NO loss (Real.exp_le_exp, both directions). Dividing by log r < 0 (Real.log_neg) reverses the inequality EXACTLY — div_le_iff_of_neg is an iff, not a one-way bound — yielding log ε / log r ≤ n. The parent had only the ⟸ half (exponentiate); the new ⟹ half (take logs) is the source of minimality. Nat.ceil_le (⌈a⌉₊ ≤ n ↔ a ≤ n) lifts this to pow_le_iff_ceil_le, whose two sides are exactly '(1−δ)ⁿ ≤ ε' and 'n reaches the modulus N'. IsLeast then follows mechanically: N works (evaluate the iff at n = N via le_refl), and N is a lower bound (apply the iff ⟹ to any working m). The predecessor bound takes the contrapositive (lt_pow_of_lt_modulus: n < N ⟹ ε < (1−δ)ⁿ) at n = N−1, valid because N ≥ 1: for ε ∈ (0,1) both log ε and log(1−δ) are negative so the threshold log ε / log(1−δ) > 0 (div_pos_iff) and its ceiling is ≥ 1 (Nat.ceil_pos).",
+    "keyInsights": [
+      "The parent's modulus bound was one-sided (n ≥ N ⟹ (1−δ)ⁿ ≤ ε); optimality requires the converse direction of the SAME chain of equivalences, which is available precisely because every step — exp-monotonicity and division by the negative log(1−δ) — is an iff, not a lossy estimate.",
+      "div_le_iff_of_neg being a biconditional is the technical heart: the order-reversal carries no slack, so the integer ceiling ⌈log ε / log(1−δ)⌉₊ lands exactly on the least working exponent rather than overshooting.",
+      "IsLeast {n | (1−δ)ⁿ ≤ ε} N is the clean categorical statement of optimality: it simultaneously encodes 'N works' (membership) and 'nothing smaller works' (lower bound), and both halves reduce to a single biconditional pow_le_iff_ceil_le.",
+      "The explicit off-by-one (1−δ)^{N−1} > ε is the concrete face of minimality and only makes sense once N ≥ 1 is established — itself a sign computation (negative/negative > 0) that quietly uses ε < 1, the regime where the modulus is non-trivial.",
+      "Sharpness here is structural, not numerical: there is no rounding waste in passing from the real threshold log ε / log(1−δ) to the integer modulus, because the ceiling is by definition the least integer above it and the power inequality tracks the real threshold exactly."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header-and-setup",
+      "title": "Problem Statement and Setup",
+      "summary": "Module docstring framing OQ-01 (optimality vs the parent's mere sufficiency), the modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊, and the namespace/imports (Mathlib; open Set)",
+      "startLine": 1,
+      "endLine": 60
+    },
+    {
+      "id": "sharp-characterisation",
+      "title": "The Sharp Characterisation — No Slack in Either Direction",
+      "summary": "pow_le_iff_log_div (the two-sided equivalence (1−δ)ⁿ ≤ ε ↔ log ε / log(1−δ) ≤ n via exp-monotonicity and the order-reversing division by log(1−δ) < 0) and pow_le_iff_ceil_le (its natural-number form via Nat.ceil_le)",
+      "startLine": 61,
+      "endLine": 105
+    },
+    {
+      "id": "optimality-isleast",
+      "title": "Optimality — N is the Least Working Exponent",
+      "summary": "isLeast_modulus (N is the least element of {n | (1−δ)ⁿ ≤ ε}, the headline optimality result) and lt_pow_of_lt_modulus (strict minimality: every n < N fails)",
+      "startLine": 106,
+      "endLine": 132
+    },
+    {
+      "id": "explicit-off-by-one",
+      "title": "The Explicit Off-by-One (1−δ)^{N−1} > ε",
+      "summary": "one_le_modulus (N ≥ 1 for ε ∈ (0,1) via a sign computation) and lt_pow_pred_modulus (the predecessor already fails, (1−δ)^{N−1} > ε — the matching lower bound the parent left open)",
+      "startLine": 133,
+      "endLine": 186
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the explicit Dini modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ is OPTIMAL — IsLeast {n | (1−δ)ⁿ ≤ ε} N — and sharp, with the predecessor already failing, (1−δ)^{N−1} > ε for ε ∈ (0,1). The crux is the two-sided characterisation (1−δ)ⁿ ≤ ε ↔ ⌈log ε / log(1−δ)⌉₊ ≤ n, whose ⟹ direction the parent lacked.",
+    "implications": "This converts the parent's one-sided modulus guarantee into a tight two-sided threshold: N is not just large enough, it is the exact integer at which (1−δ)ⁿ first crosses below ε, with no rounding waste. The IsLeast packaging is a reusable template for proving optimality of any monotone geometric-decay modulus, and the exp-monotonicity ⊕ div_le_iff_of_neg pattern shows how to recover the converse direction of a log-threshold bound for free. Together with the parent (the modulus exists and works) it gives the complete sharp story for the witness xⁿ on [0,1−δ].",
+    "openQuestions": [
+      "Closed form for the modulus growth: as δ → 0, N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ ~ −log ε / δ (since log(1−δ) ~ −δ); make this asymptotic precise with explicit error terms, interpolating to the parent's non-uniformity at δ = 0.",
+      "Optimality for general antitone families: for a continuous antitone-in-n family fₙ ↓ 0 on [0,1) with uniform error fₙ(1−δ) on [0,1−δ], is the least N with fₙ(1−δ) ≤ ε always given by the analogous f-inverse ceiling, and when is that ceiling sharp?",
+      "Two-sided sandwich constant: combine (1−δ)^N ≤ ε < (1−δ)^{N−1} into an explicit bound ε·(1−δ) < (1−δ)^N ≤ ε locating (1−δ)^N within a factor (1−δ) of ε, and study how tight this sandwich is as a function of δ."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "dini-theorem-oq-01-oq-02-oq-01",
+      "relationship": "parent-problem",
+      "description": "Parent: the explicit modulus N(ε,δ) = ⌈log ε / log(1−δ)⌉₊ of uniform convergence of xⁿ on [0,1−δ] (one-sided sufficiency); this entry answers its OQ[0] by proving the modulus is optimal and sharp"
+    },
+    {
+      "targetId": "dini-theorem-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Grandparent: the sharp NON-uniform convergence of xⁿ on the non-compact [0,1) (unattained supremum 1), the δ → 0 limit of the present sharp modulus"
+    },
+    {
+      "targetId": "dini-theorem-oq-01",
+      "relationship": "related",
+      "description": "The sharpness of Dini's compactness hypothesis via the witness xⁿ"
+    },
+    {
+      "targetId": "dini-theorem",
+      "relationship": "related",
+      "description": "The base Dini's theorem (uniform convergence of monotone sequences on compact sets) whose quantitative content this lineage makes fully explicit and optimal"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Ulisse Dini"
+      ],
+      "title": "Fondamenti per la teorica delle funzioni di variabili reali",
+      "year": "1878",
+      "venue": "Pisa",
+      "note": "Origin of Dini's theorem"
+    },
+    {
+      "authors": [
+        "Walter Rudin"
+      ],
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "venue": "McGraw-Hill",
+      "note": "Theorem 7.13 (Dini) and the xⁿ counterexample; uniform convergence and explicit moduli on compact subintervals"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Set"
+    ],
+    "namespace": "DiniTheoremOQ01OQ02OQ01OQ01",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
