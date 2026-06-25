@@ -1,10 +1,116 @@
 [
   {
-    "id": "key-group-lemma",
-    "startLine": 37,
-    "endLine": 78,
+    "id": "ann-statement",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-04",
+    "range": {
+      "startLine": 33,
+      "endLine": 41
+    },
     "type": "theorem",
-    "title": "Key Group Theory Lemma",
-    "body": "For α with a prime number of elements, a transitive subgroup G ≤ S_α containing a transposition equals ⊤. Proof: transitivity + orbit–stabilizer give card α | |G|; Cauchy yields an element g of order card α; on a card-α set g is a full-support card-α-cycle (isCycle_of_prime_order, IsCycle.orderOf); with the transposition τ, closure_prime_cycle_swap gives ⟨g,τ⟩ = ⊤; since g,τ ∈ G, G = ⊤. This is the classical lemma the parent concrete-quintic entry documented but left unproven."
+    "title": "The Key Group Theory Lemma",
+    "content": "The single theorem of the file: if α has a prime number of elements and G ≤ S_α acts transitively (the `[IsPretransitive G α]` instance) and contains a transposition τ, then G is the whole symmetric group. The hypotheses are exactly the data available in a Galois-group computation — the action on the roots is transitive when the polynomial is irreducible, and a transposition appears when the discriminant analysis or a real-root count forces a complex-conjugation swap. This is the classical generation theorem the parent concrete-quintic entry stated in a comment but discharged only by ad-hoc Sylow case-elimination.",
+    "mathContext": "$G \\le S_\\alpha,\\ |\\alpha| = p$ prime, $G$ transitive, $\\tau \\in G$ a transposition $\\implies G = S_\\alpha$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "symmetric group",
+      "transitive permutation group",
+      "transposition",
+      "Galois group of a quintic"
+    ],
+    "prerequisites": [
+      "MulAction.IsPretransitive",
+      "Equiv.Perm",
+      "Subgroup ⊤"
+    ]
+  },
+  {
+    "id": "ann-orbit-stabilizer",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-04",
+    "range": {
+      "startLine": 44,
+      "endLine": 53
+    },
+    "type": "technique",
+    "title": "Transitivity ⟹ p Divides |G|",
+    "content": "The first ingredient. Because the cardinality of α is a prime p ≥ 2, α is nonempty; pick a point a. Transitivity means the orbit of a is all of α, so |orbit a| = p. The orbit–stabilizer theorem (card_orbit_mul_card_stabilizer_eq_card_group) gives |orbit a|·|stab a| = |G|, hence p = |orbit a| divides |G|. This divisibility is what lets Cauchy's theorem produce an element of order exactly p in the next step.",
+    "mathContext": "$|G| = |G\\cdot a|\\cdot|G_a| = p\\cdot|G_a| \\implies p \\mid |G|.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "orbit–stabilizer theorem",
+      "transitive action",
+      "Lagrange's theorem"
+    ],
+    "prerequisites": [
+      "MulAction.orbit_eq_univ",
+      "card_orbit_mul_card_stabilizer_eq_card_group"
+    ]
+  },
+  {
+    "id": "ann-cauchy",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-04",
+    "range": {
+      "startLine": 54,
+      "endLine": 57
+    },
+    "type": "technique",
+    "title": "Cauchy's Theorem: an Element of Order p",
+    "content": "With p | |G| established, Cauchy's theorem (exists_prime_orderOf_dvd_card) yields an element g ∈ G whose order is exactly p. The cast lemma orderOf_coe transfers the order from the subgroup element to the underlying permutation, giving orderOf (g : Perm α) = p. Cauchy's theorem is the converse of Lagrange's divisibility for the prime case, and is precisely what is needed to manufacture a p-cycle out of nothing but the divisibility fact.",
+    "mathContext": "$p \\mid |G| \\implies \\exists\\, g \\in G,\\ \\operatorname{ord}(g) = p.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Cauchy's theorem",
+      "order of an element",
+      "Sylow theory"
+    ],
+    "prerequisites": [
+      "exists_prime_orderOf_dvd_card",
+      "orderOf_coe"
+    ]
+  },
+  {
+    "id": "ann-pcycle-full-support",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-04",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "type": "insight",
+    "title": "An Order-p Permutation of a p-Set is a Full p-Cycle",
+    "content": "The crux that uses primality of p twice. A permutation whose order is the prime p must be a single cycle (isCycle_of_prime_order) — if it split into several disjoint cycles their lengths would all divide p, forcing a non-prime order or a fixed point. Then IsCycle.orderOf says the order of a cycle equals the cardinality of its support, so the support has exactly p elements; since the whole set α has p elements, the support is all of α (Finset.eq_univ_of_card). Thus g is a p-cycle moving every point — the strongest possible single permutation.",
+    "mathContext": "$\\operatorname{ord}(g) = p$ prime $\\implies g$ is a $p$-cycle, and $|\\operatorname{supp}(g)| = p = |\\alpha| \\implies \\operatorname{supp}(g) = \\alpha.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "cycle type",
+      "support of a permutation",
+      "disjoint cycle decomposition"
+    ],
+    "prerequisites": [
+      "isCycle_of_prime_order",
+      "IsCycle.orderOf",
+      "Finset.eq_univ_of_card"
+    ]
+  },
+  {
+    "id": "ann-generation",
+    "proofId": "abel-ruffini-oq-04-oq-01-oq-04",
+    "range": {
+      "startLine": 69,
+      "endLine": 78
+    },
+    "type": "technique",
+    "title": "Generation: a p-Cycle and a Transposition Generate S_p",
+    "content": "The final ingredient and the conclusion. The classical fact that a p-cycle together with any transposition generates the full symmetric group when p is prime is supplied by Mathlib as closure_prime_cycle_swap — primality is essential, since for composite n a single n-cycle and a single transposition need not generate S_n. Applying it to the full-support p-cycle g and the given transposition τ shows ⟨g, τ⟩ = ⊤. Both generators lie in G (g by construction, τ by hypothesis), so ⊤ = closure{g,τ} ≤ G, forcing G = ⊤. The proof closes by the antisymmetry eq_top_iff together with closure_le and a two-case membership check.",
+    "mathContext": "$\\langle g, \\tau\\rangle = S_\\alpha$ and $g,\\tau \\in G \\implies S_\\alpha = \\langle g,\\tau\\rangle \\le G \\implies G = S_\\alpha.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "subgroup generation / closure",
+      "generators of the symmetric group",
+      "closure_prime_cycle_swap"
+    ],
+    "prerequisites": [
+      "Subgroup.closure_le",
+      "eq_top_iff",
+      "Equiv.Perm.closure_prime_cycle_swap"
+    ]
   }
 ]
