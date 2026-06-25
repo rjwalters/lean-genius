@@ -1,7 +1,7 @@
 {
   "slug": "erdos-117-oq-01-incomplete-01",
   "title": "Complete proof of Exponential Growth Rate of the Abelian Covering Number",
-  "phase": "NEW",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-03T08:10:05.552Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Discharged the lone sorry in Erdos117OQ01.base_implies_behavior; restored #117-OQ-01 family to 0-sorry on Lean 4.26.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — entry verified (0 sorries, 3 structural axioms).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Discharged the lone sorry in the parent gallery entry Erdos117OQ01.lean (base_implies_behavior) and restored the whole Erdős #117-OQ-01 file family to a fully machine-checked state on Lean 4.26. The sorry sat on a FALSE statement: ExponentialBehavior c was quantified over all ε > 0, but for ε ≥ c the lower base c−ε ≤ 0 and (c−ε)ⁿ at even n can exceed h(n). Corrected the definition to ε ∈ (0,c) and proved the convergence ⇒ exponential-behavior implication via Metric.tendsto_atTop + exp∘log monotonicity. Result: 0 sorries, only the 3 structural axioms (h, h_pos, pyber_bounds), no sorryAx, no Lean.ofReduceBool.",
+    "builtItems": [
+      "Erdos117OQ01.base_implies_behavior — proved (was sorry): convergence to log c ⇒ ExponentialBehavior c for ε ∈ (0,c)",
+      "Erdos117OQ01.ExponentialBehavior — corrected statement to ε ∈ (0,c) (unrestricted ∀ε>0 form is false)",
+      "Lean 4.26 bit-rot repair of Erdos117OQ01.lean and Erdos117OQ01OQ01.lean (div/le_div iff₀ renames, le_liminf_of_le, two-IsBoundedUnder liminf_le_limsup, log_pow arg order, one_lt_exp_iff)"
+    ],
+    "insights": [
+      "The 'exponential behavior at base c' notion is only a theorem for ε ∈ (0,c): the lower bound (c−ε)ⁿ ≤ h(n) fails for ε ≥ c because (ε−c)ⁿ at even n outgrows h(n) ≤ c₂ⁿ.",
+      "Convergence of log(h n)/n → log c converts to two-sided power bounds via δ = min(log(c+ε)−log c, log c−log(c−ε)) and exp∘log monotonicity (Real.exp_log + Real.exp_le_exp).",
+      "Mathlib 4.26: div/le_div/lt_div iff lemmas are now the *_₀ GroupWithZero variants; Filter.liminf_le_limsup takes two IsBoundedUnder (≤ and ≥) args; Real.log_pow has signature (x : ℝ) (n : ℕ)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "The underlying convergence question for #117 (does lim log(h(n))/n exist? Pyber's c₁<c₂ gap) remains open and is out of scope."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -54,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:10:05.551Z",
-  "lastUpdate": "2026-04-03T08:10:05.551Z",
+  "lastUpdate": "2026-06-25",
   "significance": 7,
   "tractability": 5
 }
