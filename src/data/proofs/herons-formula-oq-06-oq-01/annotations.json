@@ -1,0 +1,86 @@
+[
+  {
+    "id": "herons-formula-oq-06-oq-01-header",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "concept",
+    "range": { "startLine": 1, "endLine": 45 },
+    "title": "Euler's formula, geometrically",
+    "content": "Euler's 1765 relation $OI^2 = R^2 - 2Rr$ between the circumcenter $O$, incenter $I$, circumradius $R$ and inradius $r$. The parent entry `oq-06` proved Euler's inequality $R \\ge 2r$ purely in the side-length algebraic model; this file upgrades it to the **genuine geometric** statement, with $O$, $I$, and the vertices $A,B,C$ honest points of a real inner-product space and $OI^2$ their honest squared Euclidean distance. The strategy: place $O$ anywhere, work with position vectors $u=A-O$, $v=B-O$, $w=C-O$ of common length $R$, and reduce everything to one Gram-matrix expansion.",
+    "mathContext": "$OI^2 = R^2 - 2Rr,\\quad OI^2 \\ge 0 \\Rightarrow R \\ge 2r.$",
+    "significance": "context",
+    "relatedConcepts": ["Euler's theorem in geometry", "circumcenter", "incenter", "Euler's inequality", "inner-product space"],
+    "prerequisites": ["triangle geometry", "circumradius and inradius", "inner-product spaces"]
+  },
+  {
+    "id": "herons-formula-oq-06-oq-01-setup",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "definition",
+    "range": { "startLine": 46, "endLine": 55 },
+    "title": "Setup: an arbitrary real inner-product space",
+    "content": "Imports the inner-product basics, the tactic library, and the parent `Proofs.HeronsFormulaOQ06` (reusing its `circumradius`, `inradius`, `area`, `semiperimeter` definitions). The work is carried out over an arbitrary `F` with `[NormedAddCommGroup F] [InnerProductSpace ℝ F]` — so the result is dimension-free, holding in the plane, in space, or in any real Hilbert space.",
+    "mathContext": "$F$ a real inner-product space; $\\langle\\cdot,\\cdot\\rangle_{\\mathbb{R}}$ the real inner product.",
+    "significance": "supporting",
+    "relatedConcepts": ["InnerProductSpace ℝ", "NormedAddCommGroup", "dimension-free geometry"],
+    "prerequisites": ["inner-product spaces", "norms"]
+  },
+  {
+    "id": "herons-formula-oq-06-oq-01-gram-core",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 61, "endLine": 95 },
+    "title": "The Gram-expansion core",
+    "content": "`weighted_sum_norm_sq` is the entire geometric content. For three vectors $u,v,w$ of common norm $R$ with pairwise distances $a=\\|v-w\\|$, $b=\\|w-u\\|$, $c=\\|u-v\\|$, it proves $\\|a\\,u + b\\,v + c\\,w\\|^2 = R^2(a+b+c)^2 - abc(a+b+c)$. The three Gram inner products are read off from the polarization identity (`norm_sub_sq_real`) as $\\langle u,v\\rangle = R^2 - c^2/2$ and cyclic variants; expanding the squared norm via `inner_add/smul` lemmas, normalizing reversed entries with `real_inner_comm`, and substituting leaves a polynomial identity that `ring` closes — the cross terms collapsing to $-abc(a+b+c)$ by symmetric cancellation.",
+    "mathContext": "$\\langle u,v\\rangle = R^2 - \\tfrac{c^2}{2};\\quad \\|a u + b v + c w\\|^2 = R^2(a{+}b{+}c)^2 - abc(a{+}b{+}c).$",
+    "significance": "critical",
+    "relatedConcepts": ["Gram matrix", "polarization identity", "norm_sub_sq_real", "real_inner_comm", "ring tactic"],
+    "prerequisites": ["inner product expansion", "polarization identity", "bilinearity of the inner product"]
+  },
+  {
+    "id": "herons-formula-oq-06-oq-01-euler-core",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 101, "endLine": 138 },
+    "title": "The Euler core: OI² = R² − abc/(a+b+c)",
+    "content": "`incenter_dist_circumcenter_sq` passes from points to position vectors $u=A-O$, $v=B-O$, $w=C-O$ (each of norm $R$ since $\\mathrm{dist}\\,O\\,\\cdot = R$), translates the side lengths into vector norms, and shows the key affine cancellation $I - O = (a+b+c)^{-1}\\,(a\\,u + b\\,v + c\\,w)$ — proved by the `module` tactic after noting the weights sum to $a+b+c$. Then $OI^2 = \\|I-O\\|^2$ is computed with `norm_smul` and the Gram core, and `field_simp` yields the area-free, square-root-free identity $OI^2 = R^2 - abc/(a+b+c)$.",
+    "mathContext": "$I - O = \\dfrac{a u + b v + c w}{a+b+c},\\qquad OI^2 = R^2 - \\dfrac{abc}{a+b+c}.$",
+    "significance": "critical",
+    "relatedConcepts": ["barycentric coordinates", "position vectors", "module tactic", "norm_smul", "Euclidean distance"],
+    "prerequisites": ["barycentric coordinates of the incenter", "distance as a norm", "scalar multiplication in modules"]
+  },
+  {
+    "id": "herons-formula-oq-06-oq-01-bridge",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 144, "endLine": 154 },
+    "title": "The algebraic bridge 2Rr = abc/(a+b+c)",
+    "content": "`two_circumradius_mul_inradius`: in the side-length model, $2 \\cdot R \\cdot r = abc/(a+b+c)$. Unfolding $R = abc/(4\\,\\mathrm{Area})$, $r = \\mathrm{Area}/s$ and $s = (a+b+c)/2$, the area cancels — `field_simp` (using $\\mathrm{Area} > 0$ from `area_pos`) and `ring` finish. This is the only place the area appears, and it disappears immediately; it is the bridge between the geometric core and the named $R^2 - 2Rr$ form.",
+    "mathContext": "$2Rr = 2\\cdot\\dfrac{abc}{4\\,\\mathrm{Area}}\\cdot\\dfrac{\\mathrm{Area}}{s} = \\dfrac{abc}{a+b+c}.$",
+    "significance": "key",
+    "relatedConcepts": ["circumradius formula", "inradius formula", "Heron's area", "field_simp"],
+    "prerequisites": ["R = abc/(4·Area)", "r = Area/s", "positivity of the area"]
+  },
+  {
+    "id": "herons-formula-oq-06-oq-01-euler-formula",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "theorem",
+    "range": { "startLine": 156, "endLine": 171 },
+    "title": "Euler's triangle formula OI² = R² − 2Rr",
+    "content": "`euler_OI_sq` is the headline: with $O,I,A,B,C$ honest points, $R = $ `circumradius a b c`, and $I$ the barycentric incenter, $OI^2 = R^2 - 2Rr$. The proof simply chains the Euler core (`incenter_dist_circumcenter_sq`) with the bridge (`two_circumradius_mul_inradius`), substituting $abc/(a+b+c) = 2Rr$ into $R^2 - abc/(a+b+c)$.",
+    "mathContext": "$\\mathrm{dist}(O,I)^2 = R^2 - 2\\,R\\,r.$",
+    "significance": "critical",
+    "relatedConcepts": ["Euler's theorem in geometry", "circumradius", "inradius", "squared distance"],
+    "prerequisites": ["the Euler core identity", "the 2Rr bridge"]
+  },
+  {
+    "id": "herons-formula-oq-06-oq-01-inequality",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "type": "insight",
+    "range": { "startLine": 173, "endLine": 193 },
+    "title": "Euler's inequality as a sign of distance",
+    "content": "`euler_inequality_of_dist`: since $OI^2 \\ge 0$ (it is a squared distance, `sq_nonneg`) and $R > 0$ (`positivity` after unfolding `circumradius`), Euler's formula $OI^2 = R^2 - 2Rr$ forces $R \\ge 2r$ — closed by `nlinarith`. This is the geometric content Euler gave the inequality in 1765: $R \\ge 2r$ is not an algebraic estimate but the manifest nonnegativity of an actual squared distance, with equality exactly when $O = I$ (the equilateral case).",
+    "mathContext": "$0 \\le OI^2 = R^2 - 2Rr,\\ R>0 \\;\\Rightarrow\\; 2r \\le R.$",
+    "significance": "key",
+    "relatedConcepts": ["Euler's inequality", "sq_nonneg", "nlinarith", "equilateral triangle", "positivity"],
+    "prerequisites": ["nonnegativity of squares", "Euler's formula"]
+  }
+]
