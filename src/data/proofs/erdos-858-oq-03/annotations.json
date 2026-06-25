@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-erdos858oq03-header",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 1, "endLine": 40 },
+    "type": "context",
+    "title": "OQ-03 Contribution and Self-Containment",
+    "content": "The docstring sets up the contribution toward Erdős #858 OQ-03 (structure of extremal sets). The parent axiomatizes Alexander's (1966) deep o(1) estimate for the WEIGHTED sum (1/log N)·Σ 1/n; this leaf instead proves an elementary, 0-axiom fact: an explicit valid family whose BARE reciprocal sum stays ≥ 1/2 for all N. The takeaway is that the o(1) decay is a normalization effect — the reciprocal sum of a valid set need not vanish, so any refinement of #858 must extract smallness from the 1/log N denominator. The parent's definitions are restated here because Erdos858Problem.lean does not compile against pinned Mathlib v4.26 (it imports the now-split Mathlib.Algebra.BigOperators.Group.Finset).",
+    "mathContext": "Weighted sum $\\frac{1}{\\log N}\\sum_{n\\in A}\\frac1n \\to 0$ (Alexander), yet $\\sum_{n\\in A}\\frac1n \\ge \\frac12$ for a valid $A$ — decay localizes to $1/\\log N$.",
+    "significance": "context",
+    "relatedConcepts": ["Erdős problem #858", "primitive sets", "reciprocal sums", "Alexander 1966"],
+    "prerequisites": ["analytic number theory background", "Finset sums"]
+  },
+  {
+    "id": "ann-erdos858oq03-condition",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 56, "endLine": 66 },
+    "type": "definition",
+    "title": "The #858 Multiplicative Condition and Primitivity",
+    "content": "SatisfiesCondition A forbids a·t = b with a, b ∈ A, t > 1, and smallestPrimeFactor t > a — a weakening of primitivity. IsPrimitive A is the stronger 'no element divides another'. The whole strategy rests on the implication primitive ⟹ condition (for positive sets): if a ∣ b is forbidden, then certainly the more constrained multiplicative relation is.",
+    "mathContext": "$\\mathrm{SatisfiesCondition}(A)$: no $a t = b$ with $a,b\\in A,\\ t>1,\\ \\mathrm{spf}(t) > a$. $\\mathrm{IsPrimitive}(A)$: $a\\mid b \\Rightarrow a = b$.",
+    "significance": "supporting",
+    "relatedConcepts": ["primitive set", "smallest prime factor", "divisibility"],
+    "prerequisites": ["divisibility in ℕ", "Finset membership"]
+  },
+  {
+    "id": "ann-erdos858oq03-primitive-condition",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 68, "endLine": 83 },
+    "type": "insight",
+    "title": "Corrected Lemma: Positivity Is Genuinely Needed",
+    "content": "primitive_satisfies_condition: a primitive set of POSITIVE integers satisfies #858's condition. The parent omitted the positivity hypothesis ∀ a ∈ A, 0 < a and is therefore FALSE at 0 ∈ A — the singleton {0} is primitive (0 ∣ 0 trivially, no two distinct elements), yet 0·t = 0 ∈ A would require smallestPrimeFactor t ≤ 0, impossible for t > 1. This entry repairs that latent bug. The proof: from a·t = b derive a ∣ b, so primitivity gives a = b, then a·t = a with t > 1 and a > 0 is a contradiction (nlinarith).",
+    "mathContext": "Counterexample to the parent: $\\{0\\}$ is primitive but $0\\cdot t = 0$ violates the condition. Fix: require $0 < a$ for all $a\\in A$.",
+    "significance": "key",
+    "relatedConcepts": ["primitivity", "edge case", "bug correction", "positivity hypothesis"],
+    "prerequisites": ["divisibility", "nlinarith"]
+  },
+  {
+    "id": "ann-erdos858oq03-tophalf-def",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 89, "endLine": 102 },
+    "type": "definition",
+    "title": "reciprocalSum and the Top-Half Interval",
+    "content": "reciprocalSum A = Σ_{n∈A, n>0} 1/n (over reals), and topHalf N = Finset.Ioc (N/2) N = (⌊N/2⌋, N], the explicit family at the center of the entry. The top half of an interval is the cleanest source of a primitive set: its elements are pairwise within a factor < 2, so none can be a proper multiple of another.",
+    "mathContext": "$A = (\\lfloor N/2\\rfloor, N]$; $\\mathrm{reciprocalSum}(A) = \\sum_{n\\in A,\\,n>0}\\frac1n$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.Ioc", "interval", "reciprocal sum"],
+    "prerequisites": ["Finset intervals", "real-valued Finset sums"]
+  },
+  {
+    "id": "ann-erdos858oq03-primitive",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 104, "endLine": 119 },
+    "type": "insight",
+    "title": "The Top Half Is Primitive",
+    "content": "topHalf_primitive: no element of (⌊N/2⌋, N] divides another. If a ∣ b write b = a·k. The case split is on k < 2 vs k ≥ 2: for k ∈ {0,1}, interval_cases + omega closes it (k=0 contradicts b > N/2 ≥ 0; k=1 gives a = b); for k ≥ 2, b = a·k ≥ 2a, but a > N/2 forces 2a > N ≥ b (nlinarith gives 2a ≤ b, then omega contradicts). This is the classical reason the top half of any interval is primitive.",
+    "mathContext": "$a\\mid b,\\ a\\ne b \\Rightarrow b \\ge 2a > 2\\lfloor N/2\\rfloor \\ge N \\ge b$, contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["primitive set", "interval arithmetic", "proper multiple"],
+    "prerequisites": ["divisibility", "interval_cases", "omega / nlinarith"]
+  },
+  {
+    "id": "ann-erdos858oq03-satisfies-range",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 121, "endLine": 134 },
+    "type": "technique",
+    "title": "Condition and Range from Primitivity",
+    "content": "topHalf_satisfies: the interval satisfies #858's condition, by feeding topHalf_primitive and the membership-derived positivity (n > N/2 ≥ 0 ⇒ n ≥ 1) into the corrected primitive_satisfies_condition. topHalf_in_range: Ioc membership N/2 < n ≤ N gives 1 ≤ n ≤ N directly by omega. Together they certify the family is a valid set for #858 inside {1,…,N}.",
+    "mathContext": "Membership $N/2 < n \\le N$ supplies both positivity ($n\\ge 1$) and the range bound.",
+    "significance": "supporting",
+    "relatedConcepts": ["multiplicative condition", "range constraint", "Finset.mem_Ioc"],
+    "prerequisites": ["Finset.Ioc membership", "omega"]
+  },
+  {
+    "id": "ann-erdos858oq03-reciprocal-bound",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 136, "endLine": 170 },
+    "type": "insight",
+    "title": "The Constant Lower Bound Σ 1/n ≥ 1/2",
+    "content": "reciprocalSum_topHalf_ge_half is the mathematically interesting result. All elements are positive, so the filter (· > 0) is the identity (hfilter). The interval has card = N − N/2 = ⌈N/2⌉ elements (Nat.card_Ioc). Each term is bounded below by 1/N (one_div_le_one_div_of_le, since n ≤ N), so Σ 1/n ≥ ⌈N/2⌉ · (1/N) = ⌈N/2⌉/N; finally 2·⌈N/2⌉ ≥ N (omega) yields ⌈N/2⌉/N ≥ 1/2. The bound is uniform in N and uses only counting and a per-term estimate — no analytic input.",
+    "mathContext": "$\\sum_{n\\in A}\\frac1n \\ge \\frac{|A|}{N} = \\frac{\\lceil N/2\\rceil}{N} \\ge \\frac12$ since $2\\lceil N/2\\rceil \\ge N$.",
+    "significance": "key",
+    "relatedConcepts": ["counting bound", "Nat.card_Ioc", "Finset.sum_le_sum", "uniform lower bound"],
+    "prerequisites": ["Finset cardinality of intervals", "monotonicity of 1/x", "sum bounds"]
+  },
+  {
+    "id": "ann-erdos858oq03-summary",
+    "proofId": "erdos-858-oq-03",
+    "range": { "startLine": 172, "endLine": 185 },
+    "type": "concept",
+    "title": "Packaged OQ-03 Statement",
+    "content": "topHalf_valid_with_large_reciprocal_sum bundles the three facts — condition-satisfying, in-range, reciprocal sum ≥ 1/2 — into one theorem for every N ≥ 1. This is the formal data point toward OQ-03: a concrete valid family with non-vanishing reciprocal sum, demonstrating that the o(1) decay of the weighted sum is forced entirely by the 1/log N normalization rather than by the reciprocal sum shrinking.",
+    "mathContext": "$\\forall N\\ge 1$: $\\mathrm{SatisfiesCondition}(A) \\wedge \\mathrm{InRange}(A,N) \\wedge \\sum_{n\\in A}\\frac1n \\ge \\frac12$.",
+    "significance": "supporting",
+    "relatedConcepts": ["extremal sets", "Erdős #858 OQ-03", "normalization effect"],
+    "prerequisites": ["the preceding lemmas"]
+  }
+]
