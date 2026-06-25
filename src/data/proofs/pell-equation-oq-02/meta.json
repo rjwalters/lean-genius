@@ -65,20 +65,36 @@
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Setup: The Open Question on Solution Size",
+      "startLine": 3,
+      "endLine": 37,
+      "summary": "Module docstring: the parent's open questions on the size of the fundamental solution (heuristic log(x₁+y₁√D) ≈ √D), the honest scope (elementary lower bound + minimality only), namespace, and opens (Pell, Pell.Solution₁).",
+      "mathContext": "x² − Dy² = 1; the size of the fundamental solution x₁ and its distribution."
+    },
+    {
       "id": "lower-bound",
-      "title": "The Size Lower Bound",
+      "title": "The Size Lower Bound and Minimality",
       "startLine": 38,
-      "endLine": 67,
-      "summary": "x_sq_ge_d_add_one (x²≥D+1 for x>1), IsFundamental.x_sq_ge_d_add_one, IsFundamental.is_minimal.",
+      "endLine": 62,
+      "summary": "x_sq_ge_d_add_one (x²≥D+1, i.e. x>√D, for x>1), IsFundamental.x_sq_ge_d_add_one, and IsFundamental.is_minimal (the fundamental solution minimizes x).",
       "mathContext": "Every nontrivial solution has x > √D; the fundamental solution is the smallest."
     },
     {
       "id": "concrete",
       "title": "Concrete Fundamental Solutions",
-      "startLine": 69,
-      "endLine": 100,
-      "summary": "sol2 = (3,2), sol3 = (2,1), sol5 = (9,4) and concrete_bounds verifying the lower bound.",
-      "mathContext": "Explicit small-D fundamental solutions illustrating the irregular growth of x₁."
+      "startLine": 64,
+      "endLine": 87,
+      "summary": "sol2 = (3,2), sol3 = (2,1), sol5 = (9,4) and concrete_bounds verifying x²≥D+1; the jumps 3→2→9 illustrate the irregular growth of x₁.",
+      "mathContext": "Explicit small-D fundamental solutions illustrating the non-monotone growth of x₁."
+    },
+    {
+      "id": "summary",
+      "title": "Summary and Open Directions",
+      "startLine": 91,
+      "endLine": 104,
+      "summary": "Closing docstring recapping the lower bound, minimality, and small-D data, and noting that the upper bound / distribution of x₁ and its continued-fraction-period link remain open.",
+      "mathContext": "Open: upper bound / distribution of x₁ and the continued-fraction-period connection."
     }
   ],
   "conclusion": {
