@@ -1,0 +1,144 @@
+{
+  "id": "partition-theorem-oq-02",
+  "title": "Modulus-Monotonicity of Divisibility-Restricted Partition Counts",
+  "slug": "partition-theorem-oq-02",
+  "description": "The number of partitions of n with no part divisible by m is monotonically non-decreasing in m, even though the divisibility-restricted families are pairwise incomparable as sets. The monotonicity is invisible on the divisibility side and recovered by transporting through Glaisher's theorem to the repetition-restricted families, which are genuinely nested. Formalized in Lean 4 over Mathlib's Nat.Partition API.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PartitionTheoremOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "partitions",
+      "euler-partition-theorem",
+      "glaisher",
+      "monotonicity",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 152,
+    "assumptions": "None. Fully machine-verified: `lake env lean` builds Proofs/PartitionTheoremOQ02.lean to exit 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for card_restricted_not_dvd_mono and card_distincts_le_card_not_dvd_three. The file imports only Mathlib and is self-contained, building directly on Mathlib's Nat.Partition.card_restricted_eq_card_countRestricted (Glaisher's theorem) and Nat.Partition.card_odds_eq_card_distincts (Euler's theorem).",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Partition.card_restricted_eq_card_countRestricted",
+        "description": "Glaisher's theorem: #(partitions with no part divisible by m) = #(partitions with each part used < m times). The essential bridge that transports each divisibility count to the repetition side.",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.Glaisher"
+      },
+      {
+        "theorem": "Nat.Partition.card_odds_eq_card_distincts",
+        "description": "Euler's partition theorem: #(partitions into odd parts) = #(partitions into distinct parts). Used to restate the m=3 bound on the distinct-parts side.",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.Glaisher"
+      },
+      {
+        "theorem": "Nat.Partition.countRestricted",
+        "description": "The finset of partitions in which every part is used fewer than m times; its definition by a filter makes the m=monotonicity of the family immediate.",
+        "module": "Mathlib.Combinatorics.Enumerative.Partition.Basic"
+      },
+      {
+        "theorem": "Finset.card_le_card",
+        "description": "Monotonicity of cardinality under finset inclusion — converts the nesting countRestricted n m ⊆ countRestricted n m' into the count inequality.",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "card_restricted_not_dvd_mono: for 0 < m ≤ m', #(partitions of n with no part divisible by m) ≤ #(partitions of n with no part divisible by m') — a monotonicity that holds between two families with NO direct set containment, since the divisibility-restricted families are pairwise incomparable",
+      "Identifies Glaisher's theorem as the indispensable bridge: the monotonicity is invisible on the divisibility side and becomes a one-line consequence of finset nesting only after transporting both counts to the repetition-restricted family countRestricted, which IS nested in its bound",
+      "countRestricted_mono: the supporting nesting countRestricted n m ⊆ countRestricted n m' for m ≤ m'",
+      "card_not_dvd_three_eq_card_lt_three_repeats: names the m=3 Glaisher case (no part divisible by 3 ≍ no part used three+ times), the first classical generalization of Euler beyond the gallery's existing m=2 entry",
+      "card_odds_le_card_not_dvd_three and card_distincts_le_card_not_dvd_three: Euler's odd/distinct partition count is at most the number of partitions with no part divisible by 3"
+    ],
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Euler's partition theorem (#odd = #distinct) was generalized by J. W. L. Glaisher in 1883: for any modulus m, the number of partitions with no part divisible by m equals the number in which no part is repeated m or more times. Mathlib records both Euler (Nat.Partition.card_odds_eq_card_distincts) and the general Glaisher form (card_restricted_eq_card_countRestricted). This entry uses Glaisher as a tool rather than a target: it asks how the count A_m(n) = #(partitions with no part divisible by m) varies with the modulus m.",
+    "problemStatement": "How does the number of partitions of n with no part divisible by m depend on m? The divisibility-restricted families {no part divisible by m} are pairwise incomparable as sets — avoiding multiples of m neither implies nor is implied by avoiding multiples of m' — so any monotonicity of their counts cannot be read off by inclusion.",
+    "text": "Writing A_m(n) for the number of partitions of n with no part divisible by m and B_m(n) for the number in which each part is used fewer than m times, Glaisher's theorem gives A_m(n) = B_m(n). The repetition families B_m are manifestly nested in m (used < m times implies used < m' times when m ≤ m'), so B_m(n) ≤ B_{m'}(n). Transporting through the two Glaisher equalities yields the main result A_m(n) ≤ A_{m'}(n): the divisibility-restricted count is monotone in the modulus. Specializing to 2 ≤ 3 and using that odd parts are exactly parts avoiding multiples of 2, the number of partitions into odd parts (equivalently, by Euler, into distinct parts) is at most the number with no part divisible by 3."
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "The Two Families and Glaisher's Bridge",
+      "summary": "Recalls Mathlib's restricted n (¬ m ∣ ·) (no part divisible by m) and countRestricted n m (each part used < m times), and Glaisher's theorem equating their cardinalities. The repetition family countRestricted is nested in its bound m, which countRestricted_mono records.",
+      "startLine": 70,
+      "endLine": 84
+    },
+    {
+      "id": "main-monotonicity",
+      "title": "Modulus Monotonicity via Glaisher",
+      "summary": "card_restricted_not_dvd_mono: for 0 < m ≤ m', #(restricted n (¬ m ∣ ·)) ≤ #(restricted n (¬ m' ∣ ·)). Proved by rewriting both sides through Glaisher's equality to the nested repetition family and applying card_le_card. The divisibility families themselves are incomparable, so Glaisher is essential.",
+      "startLine": 87,
+      "endLine": 95
+    },
+    {
+      "id": "consequences",
+      "title": "The m = 3 Case and Euler Corollaries",
+      "summary": "Names the m=3 Glaisher identity, then specializes the monotonicity at 2 ≤ 3 to bound Euler's odd-part count, and restates it on the distinct-parts side via Euler's theorem.",
+      "startLine": 97,
+      "endLine": 122
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the number of partitions of n with no part divisible by m is monotonically non-decreasing in m. Although the divisibility-restricted families are pairwise incomparable as sets, their counts are monotone because Glaisher's theorem identifies each with a count over the repetition-restricted families {each part used < m times}, which ARE nested in m. Specializations give #(odd-part partitions) = #(distinct-part partitions) ≤ #(partitions with no part divisible by 3).",
+    "implications": "Demonstrates Glaisher's theorem operating as a structural bridge rather than a counting endpoint: a monotonicity with no direct combinatorial witness on the divisibility side becomes a one-line inclusion argument on the repetition side. The same transport principle applies to any comparison of divisibility-restricted partition counts whose repetition-side reformulation is monotone or otherwise tractable.",
+    "openQuestions": [
+      "Is the monotonicity strict for n large enough, i.e. A_m(n) < A_{m'}(n) for m < m' once n exceeds a threshold depending on m, m'?",
+      "Find a direct, bijective injection {partitions of n with no part divisible by m} ↪ {partitions with no part divisible by m'} that realizes the inequality without passing through the repetition side.",
+      "Quantify the gap A_{m'}(n) − A_m(n) asymptotically as n → ∞ for fixed m < m'."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "partition-theorem",
+      "relationship": "parent-problem",
+      "description": "Parent: Euler's partition theorem (#odd = #distinct), the m=2 case of Glaisher. This entry studies how the more general divisibility-restricted count varies with the modulus m."
+    },
+    {
+      "targetId": "partition-theorem-oq-03",
+      "relationship": "related",
+      "description": "Sibling: overpartitions and their Euler-type identities — another generalization of the parent's odd/distinct equinumerosity."
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "J. W. L. Glaisher"
+      ],
+      "title": "A theorem in partitions",
+      "year": "1883",
+      "venue": "Messenger of Mathematics 12, 158-170",
+      "note": "The general modulus-m generalization of Euler's odd/distinct partition theorem"
+    },
+    {
+      "authors": [
+        "George E. Andrews"
+      ],
+      "title": "The Theory of Partitions",
+      "year": "1976",
+      "venue": "Encyclopedia of Mathematics and its Applications, Addison-Wesley",
+      "note": "Standard reference; Euler's and Glaisher's theorems, Chapter 1-2"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat.Partition",
+      "Finset"
+    ],
+    "namespace": "PartitionTheoremOQ02",
+    "lineCount": 152,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "path": "Proofs/PartitionTheoremOQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
