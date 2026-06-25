@@ -1,0 +1,191 @@
+{
+  "id": "dilworth-theorem-oq-01-oq-01-oq-03",
+  "title": "From Mirsky to Erdős–Szekeres: the common min–max framework",
+  "slug": "dilworth-theorem-oq-01-oq-01-oq-03",
+  "description": "Ties Mirsky's antichain-cover theorem to Erdős–Szekeres through one counting inequality. From Mirsky's hard direction (a finite poset is covered by maxChainLen antichains) we derive the product bound card ≤ maxChainLen · maxAntichainLen, whose contrapositive is the Erdős–Szekeres dichotomy: a poset with more than r·s elements has a chain of size > r or an antichain of size > s. Specialised to the dominance order on positions of a sequence f : Fin N → β, this yields the classical Erdős–Szekeres theorem (a sequence of length > r·s has a non-decreasing run of length > r or a strictly decreasing run of length > s). Fully verified, 0 axioms; Erdős–Szekeres is not in Mathlib.",
+  "meta": {
+    "author": "L. Mirsky (1971), P. Erdős & G. Szekeres (1935); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Erd%C5%91s%E2%80%93Szekeres_theorem",
+    "date": "1935",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "order-theory",
+      "poset",
+      "mirsky",
+      "erdos-szekeres",
+      "antichain",
+      "min-max-duality",
+      "pigeonhole",
+      "monotone-subsequence"
+    ],
+    "proofRepoPath": "Proofs/DilworthErdosSzekeresOQ010103.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_biUnion_le",
+        "description": "The cardinality of a finite union is at most the sum of cardinalities; turns the Mirsky antichain cover into the product bound",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.sum_le_sum / Finset.sum_const",
+        "description": "Termwise comparison and the constant-sum identity, used to bound the sum of antichain sizes by (number of antichains) · maxAntichainLen",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_of_injective",
+        "description": "An injective image preserves cardinality; the position map on SeqPos is injective, so chains/antichains keep their size when transported to index sets",
+        "module": "Mathlib.Data.Finset.Image"
+      },
+      {
+        "theorem": "Fintype.ofEquiv / Fintype.card_congr",
+        "description": "Transports the Fintype structure and cardinality of Fin N to the sequence-position poset SeqPos f",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "maxAntichainLen and antichain_card_le_maxAntichainLen: the dual width invariant to the imported maxChainLen, with attainment exists_antichain_card_eq_maxAntichainLen",
+      "card_le_maxChainLen_mul_maxAntichainLen: the common min–max bound — multiplying Mirsky's antichain cover (maxChainLen antichains) by the maxAntichainLen size bound caps the poset cardinality",
+      "exists_long_chain_or_antichain: the poset-level Erdős–Szekeres dichotomy, the contrapositive of the product bound",
+      "SeqPos: the dominance order i ≼ j ↔ i ≤ j ∧ f i ≤ f j on positions of a sequence, packaged as a finite PartialOrder",
+      "image_pos_nondecr / image_pos_strictdecr: chains of SeqPos are non-decreasing index sets, antichains are strictly decreasing index sets",
+      "erdos_szekeres_seq: the classical Erdős–Szekeres theorem for sequences over an arbitrary linear order, obtained by transporting the dichotomy through the position map"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 226,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext, Classical.choice, Quot.sound are used, none of which count as assumptions). The abstract results hold for any finite PartialOrder; the sequence form holds for any LinearOrder codomain.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 11,
+    "definitionCount": 6
+  },
+  "overview": {
+    "historicalContext": "Mirsky's theorem (1971) is the chain/antichain transpose of Dilworth's: the minimum number of antichains covering a finite poset equals the longest chain. Erdős and Szekeres (1935) proved that any sequence of more than r·s real numbers contains a monotone subsequence — a non-decreasing one of length r+1 or a strictly decreasing one of length s+1. The two are linked by a classical observation: order the positions of a sequence by the dominance order (i precedes j when i ≤ j and the value does not decrease); chains become non-decreasing subsequences and antichains become strictly decreasing ones, so Erdős–Szekeres is the pigeonhole consequence of covering the poset by chains-worth of antichains. This entry makes that bridge precise on top of the imported Mirsky decomposition.",
+    "problemStatement": "**Common min–max framework (OQ-01 → OQ-01 → OQ-03).** Tie Mirsky's antichain-cover theorem to a single counting inequality and obtain Erdős–Szekeres as an application. Concretely: prove card ≤ maxChainLen · maxAntichainLen for a finite poset, deduce the chain-or-antichain dichotomy, and specialise it to sequence positions to recover the classical monotone-subsequence theorem (absent from Mathlib).",
+    "text": "Mirsky's antichain cover times the maximum antichain size bounds the poset; the contrapositive is Erdős–Szekeres, both abstractly and for sequences.",
+    "proofStrategy": "**Strategy (counting then specialisation).**\n\n1. Define maxAntichainLen as the sup of antichain sizes (dual to the imported maxChainLen) and show every antichain is bounded by it, with the bound attained.\n2. **Product bound.** Mirsky's `mirsky_antichain_cover` gives a family of ≤ maxChainLen antichains covering the poset. The universe injects into their union, so card ≤ Σ (antichain sizes) ≤ (number of antichains) · maxAntichainLen ≤ maxChainLen · maxAntichainLen (`Finset.card_biUnion_le`, `Finset.sum_const`).\n3. **Dichotomy.** Contrapositive: if every chain has size ≤ r and every antichain ≤ s then maxChainLen ≤ r, maxAntichainLen ≤ s, so card ≤ r·s; hence r·s < card forces a long chain or a long antichain.\n4. **Sequence poset.** Wrap Fin N as `SeqPos f` with the dominance partial order i ≼ j ↔ i ≤ j ∧ f i ≤ f j (antisymmetry holds because equal positions force equal points); give it the Fintype of Fin N, so its cardinality is N.\n5. **Transport.** The position map is injective; a chain's positions form a non-decreasing index set and an antichain's positions a strictly decreasing one. Applying the dichotomy at r·s < N and pushing the resulting chain/antichain through the position map yields `erdos_szekeres_seq`.",
+    "keyInsights": [
+      "Mirsky already supplies the hard content; the bridge to Erdős–Szekeres is purely a counting step — multiply the number of covering antichains by the largest antichain size.",
+      "Mirsky and Dilworth are genuine transposes, not order-duals: reversing the order keeps chains as chains and antichains as antichains, so deriving one from the other goes through the shared product bound rather than a poset involution.",
+      "The dominance order on sequence positions converts the chain/antichain dichotomy verbatim into the non-decreasing/strictly-decreasing subsequence dichotomy: incomparable positions i < j are exactly the descents f i > f j.",
+      "Packaging the sequence poset as a one-field structure SeqPos makes the dominance order a clean PartialOrder instance with a Fintype borrowed from Fin N, avoiding any clash with Fin N's native linear order.",
+      "The result needs only a LinearOrder codomain, so Erdős–Szekeres here covers sequences valued in any totally ordered type, not just the reals."
+    ],
+    "prerequisites": [
+      "Partial orders: chains, antichains, the dominance / product order",
+      "Mirsky's hard direction (the height/level antichain cover) from the sibling entry",
+      "Finset cardinality, images, unions, and the pigeonhole principle",
+      "Monotone subsequences and the statement of Erdős–Szekeres"
+    ]
+  },
+  "sections": [
+    {
+      "id": "max-antichain",
+      "title": "The dual width invariant",
+      "summary": "Defines allAntichains and maxAntichainLen (sup of antichain cardinalities), the transpose of the imported maxChainLen. antichain_card_le_maxAntichainLen bounds each antichain, and exists_antichain_card_eq_maxAntichainLen shows the bound is attained (the empty set witnesses nonemptiness).",
+      "startLine": 47,
+      "endLine": 78,
+      "mathContext": "$\\mathrm{maxAntichainLen} = \\max\\{|A| : A\\text{ an antichain}\\}$, dual to $\\mathrm{maxChainLen}$."
+    },
+    {
+      "id": "product-bound",
+      "title": "The common min–max bound and dichotomy",
+      "summary": "card_le_maxChainLen_mul_maxAntichainLen: Mirsky's cover by ≤ maxChainLen antichains, each of size ≤ maxAntichainLen, caps the cardinality via card_biUnion_le and a constant sum. exists_long_chain_or_antichain: its contrapositive — r·s < card yields a chain of size > r or an antichain of size > s.",
+      "startLine": 80,
+      "endLine": 118,
+      "mathContext": "$|P| \\le \\mathrm{maxChainLen}\\cdot\\mathrm{maxAntichainLen}$; hence $rs<|P|\\Rightarrow$ a chain $>r$ or an antichain $>s$."
+    },
+    {
+      "id": "seqpos",
+      "title": "The dominance order on sequence positions",
+      "summary": "SeqPos f wraps Fin N with the partial order i ≼ j ↔ i ≤ j ∧ f i ≤ f j; antisymmetry follows from position antisymmetry. equivFin gives the Fintype and card_eq : card (SeqPos f) = N. pos_injective records that the position map is injective.",
+      "startLine": 120,
+      "endLine": 172,
+      "mathContext": "Positions ordered by $i\\preccurlyeq j \\iff i\\le j \\wedge f_i\\le f_j$, a finite poset of size $N$."
+    },
+    {
+      "id": "transport",
+      "title": "Chains ↔ non-decreasing, antichains ↔ strictly decreasing",
+      "summary": "image_pos_nondecr: the positions of a chain form a non-decreasing index set (comparable positions move the value the same way; equal positions are equal). image_pos_strictdecr: the positions of an antichain form a strictly decreasing index set (i < j incomparable means f j < f i). card_image_pos preserves sizes.",
+      "startLine": 174,
+      "endLine": 205,
+      "mathContext": "Chain $\\Rightarrow$ non-decreasing run; antichain $\\Rightarrow$ strictly decreasing run, with sizes preserved."
+    },
+    {
+      "id": "erdos-szekeres",
+      "title": "Erdős–Szekeres for sequences",
+      "summary": "erdos_szekeres_seq: for f : Fin N → β over a linear order with r·s < N, there is a non-decreasing subsequence on > r positions or a strictly decreasing subsequence on > s positions. Proof: apply the dichotomy to SeqPos f (card = N) and transport through the position map.",
+      "startLine": 207,
+      "endLine": 226,
+      "mathContext": "$rs < N \\Rightarrow$ non-decreasing run of length $>r$ or strictly decreasing run of length $>s$; with $N=rs+1$ this is the classical theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "Building on the imported Mirsky antichain cover, this file proves the common min–max counting bound card ≤ maxChainLen · maxAntichainLen for a finite poset and its contrapositive chain-or-antichain dichotomy, then specialises to the dominance order on sequence positions to obtain the classical Erdős–Szekeres theorem for sequences over an arbitrary linear order. Fully machine-checked, 0 sorries and 0 axioms.",
+    "implications": "The entry closes the Dilworth/Mirsky arc by exhibiting a single inequality from which the canonical application, Erdős–Szekeres, drops out, and provides a reusable finite poset (SeqPos) translating sequence monotonicity into order theory. Since Mathlib has neither the product bound nor Erdős–Szekeres, the file fills a concrete gap.",
+    "openQuestions": [
+      "Extract an explicit StrictMono index map Fin (r+1) ↪ Fin N from the non-decreasing position set, giving Erdős–Szekeres in subsequence-function form.",
+      "Sharpen to the strict Erdős–Szekeres variant (strictly increasing vs non-increasing) by using the lexicographic dominance order, and prove the bound r·s is tight.",
+      "Derive the dual product bound from Dilworth's chain cover and compare the two routes to the same dichotomy."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "dilworth-theorem-oq-01-oq-01",
+      "relationship": "Supplies the Mirsky decomposition",
+      "description": "The parent entry proves Mirsky's hard direction (a finite poset is covered by maxChainLen antichains via the height/level decomposition); this file imports that cover and multiplies it against the maximum antichain size."
+    },
+    {
+      "proofId": "dilworth-theorem-oq-01-oq-02",
+      "relationship": "Sibling hard direction (Dilworth)",
+      "description": "The sibling proves Dilworth's hard direction (chain cover attains the antichain width); together with Mirsky it frames the min–max duality whose counting consequence is used here."
+    },
+    {
+      "proofId": "dilworth-theorem-oq-01",
+      "relationship": "Common easy-direction infrastructure",
+      "description": "Provides IsChainOn / IsAntichainOn and the chain ∩ antichain subsingleton lemma reused throughout the Dilworth/Mirsky files this entry builds on."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.DilworthMirskyHardOQ01"
+    ],
+    "opens": [
+      "Classical",
+      "DilworthTheoremOQ01"
+    ],
+    "namespace": "DilworthTheoremOQ01 / SeqPos",
+    "lineCount": 226,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "path": "Proofs/DilworthErdosSzekeresOQ010103.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "P. Erdős, G. Szekeres",
+      "title": "A combinatorial problem in geometry",
+      "year": "1935",
+      "venue": "Compositio Mathematica 2: 463–470",
+      "note": "Original monotone-subsequence theorem obtained here as an application of Mirsky"
+    },
+    {
+      "authors": "L. Mirsky",
+      "title": "A dual of Dilworth's decomposition theorem",
+      "year": "1971",
+      "venue": "American Mathematical Monthly 78 (8): 876–877",
+      "note": "Antichain-cover / longest-chain duality supplying the cover used in the product bound"
+    },
+    {
+      "authors": "J. Michael Steele",
+      "title": "Variations on the monotone subsequence theme of Erdős and Szekeres",
+      "year": "1995",
+      "venue": "in Discrete Probability and Algorithms, IMA Vol. 72: 111–131",
+      "note": "Survey of proofs of Erdős–Szekeres, including the Dilworth/Mirsky pigeonhole route formalized here"
+    }
+  ],
+  "sorries": 0
+}
