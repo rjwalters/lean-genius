@@ -56,6 +56,18 @@
     "theoremCount": 5,
     "definitionCount": 1
   },
+  "overview": {
+    "historicalContext": "Fixed-point theory begins with Brouwer's 1911 theorem that every continuous self-map of a closed ball has a fixed point — a result whose higher-dimensional proofs are genuinely topological (degree theory, homology, or Sperner's lemma) and, in Lean, rest on deep machinery. Schauder (1930) extended it to compact convex subsets of Banach spaces and Kakutani (1941) to set-valued maps, foundations of modern analysis and game theory (Nash's equilibrium proof uses Kakutani). The base gallery entries formalize these *existence* statements. This entry steps back to the simplest case — the interval [a,b] — where Brouwer's theorem is a one-line consequence of the intermediate value theorem (Bolzano/Cauchy, early 19th century), and asks a different question: not whether a fixed point exists, but what the *set* of all fixed points looks like as a topological object.",
+    "problemStatement": "For a continuous self-map $f$ of a closed interval $[a,b]$, describe the topology of the fixed-point set $\\{x \\mid f(x) = x\\}$: show it is closed in any Hausdorff space, hence compact when intersected with a compactum, and combine with the 1D Brouwer theorem to conclude the fixed-point set of $f:[a,b]\\to[a,b]$ is a nonempty compact set — all with $0$ axioms.",
+    "proofStrategy": "Three elementary steps. (1) The fixed-point set is the equaliser $\\{x \\mid f(x) = \\mathrm{id}(x)\\}$, closed in a $T_2$ space by isClosed_eq. (2) A closed subset of a compact set is compact (IsCompact.inter_right), so the fixed-point set meets every compactum in a compact set. (3) Nonemptiness on $[a,b]$ is the 1D Brouwer theorem: apply the intermediate value theorem (decreasing form, intermediate_value_Icc') to $g(x) = f(x) - x$, which satisfies $g(a) \\ge 0 \\ge g(b)$ because $f$ lands in $[a,b]$. Combining (1)–(3) gives a nonempty compact fixed-point set.",
+    "keyInsights": [
+      "Fixed-point *sets* are equalisers: $\\{x \\mid f(x)=x\\} = \\{x \\mid f(x) = \\mathrm{id}(x)\\}$, so all of point-set topology's equaliser machinery applies for free — closedness in Hausdorff spaces is immediate and needs no analysis.",
+      "The structural question is orthogonal to the existence question: closedness/compactness hold for *any* continuous self-map on *any* Hausdorff space, with no axioms, whereas existence (Brouwer/Schauder/Kakutani) is where the deep, axiom-bearing content lives.",
+      "In dimension one Brouwer collapses to the IVT: the substitution $g = f - \\mathrm{id}$ turns 'has a fixed point' into 'a sign-changing continuous function has a zero', the cleanest possible proof and entirely constructive in spirit.",
+      "Nonempty + compact is strictly more than nonempty: a nonempty compact subset of ℝ has a least and a greatest element, so the theorem secretly yields a smallest and largest fixed point — useful for monotone-iteration and order-theoretic refinements.",
+      "The entry is deliberately import-disciplined: it imports only Mathlib and pointedly NOT the axiom-bearing base file SchauderFixedPoint.lean, so #print axioms stays at the foundational propext/Classical.choice/Quot.sound and the 0-axiom claim is honest."
+    ]
+  },
   "sections": [
     {
       "id": "closed-compact",
@@ -77,6 +89,32 @@
       "startLine": 71,
       "endLine": 79,
       "summary": "fixedPoints_Icc_nonempty_isCompact: the fixed-point set of a continuous self-map of [a,b] is nonempty (1D Brouwer) and compact (closed ∩ compact)."
+    }
+  ],
+  "conclusion": {
+    "summary": "An 80-line, axiom-free, sorry-free file describing the topology of the fixed-point set rather than merely its nonemptiness. It shows {x | f x = x} is closed for any continuous map into a Hausdorff space (as an equaliser), hence compact inside any compactum; proves the one-dimensional Brouwer theorem for self-maps of [a,b] directly from the intermediate value theorem; and combines the two to conclude the fixed-point set of a continuous self-map of [a,b] is a nonempty compact set.",
+    "implications": "Knowing the solution set is a nonempty compactum is qualitatively stronger than knowing a solution exists: it guarantees extremal fixed points (least and greatest), supports continuity/perturbation arguments via compactness, and isolates the purely point-set-topological content (closedness, compactness) that needs no axioms from the genuinely deep existence theorems (Brouwer/Schauder/Kakutani) that do. The closedness and 'compact inside a compactum' lemmas are stated generally enough to be reused for fixed-point sets of any continuous self-map on a Hausdorff space.",
+    "openQuestions": [
+      "Connectedness: for a continuous self-map of [a,b] the fixed-point set is nonempty and compact, but is it connected? (It need not be — f can cross the diagonal repeatedly — so characterise exactly which compact subsets of [a,b] arise as fixed-point sets.)",
+      "Higher dimensions: extend the structural result to continuous self-maps of a compact convex set in ℝⁿ, where closedness/compactness of the fixed-point set still hold elementarily but nonemptiness now requires the full (axiom-bearing) Brouwer theorem from the base entries.",
+      "Order-theoretic refinement: formalize that the nonempty compact fixed-point set has a least and greatest element, connecting to the Knaster–Tarski fixed-point theorem for monotone maps on complete lattices."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "schauder-fixed-point",
+      "relationship": "extends",
+      "description": "Base entry proving existence of fixed points (Schauder/Brouwer/Kakutani lineage), several resting on deep axioms. This file complements it by describing the topological structure (nonempty + compact) of the fixed-point set, axiom-free, and deliberately does not import the axiom-bearing base file."
+    },
+    {
+      "targetId": "brouwer-fixed-point",
+      "relationship": "related",
+      "description": "The full Brouwer fixed-point theorem in general dimension. exists_fixedPoint_Icc here is its one-dimensional special case, proved elementarily from the intermediate value theorem rather than via degree/homology."
+    },
+    {
+      "targetId": "intermediate-value-theorem",
+      "relationship": "depends-on",
+      "description": "The engine behind exists_fixedPoint_Icc: applying the IVT (intermediate_value_Icc') to g(x) = f(x) − x, whose sign change g(a) ≥ 0 ≥ g(b) forces a zero, i.e. a fixed point."
     }
   ]
 }
