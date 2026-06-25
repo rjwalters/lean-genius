@@ -5,7 +5,11 @@
     "range": { "startLine": 1, "endLine": 32 },
     "type": "concept",
     "title": "Moments of the integer Beta distribution from one integral",
-    "content": "The parent leaf established ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!, the normalising constant B(m+1,n+1) of the Beta(m+1,n+1) distribution with density xᵐ(1-x)ⁿ/B on [0,1]. This entry answers the parent's second open question — the mean is a one-line corollary of an index shift — and then derives the full low-order moment structure (mean, second moment, variance) from that single identity, with no new integration. Each moment E[Xʲ] is a ratio ∫₀¹ xʲ·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ in which the weight xʲ merely shifts m ↦ m+j."
+    "content": "The parent leaf established ∫₀¹ xᵐ(1-x)ⁿ = m!·n!/(m+n+1)!, the normalising constant B(m+1,n+1) of the Beta(m+1,n+1) distribution with density xᵐ(1-x)ⁿ/B on [0,1]. This entry answers the parent's second open question — the mean is a one-line corollary of an index shift — and then derives the full low-order moment structure (mean, second moment, variance) from that single identity, with no new integration. Each moment E[Xʲ] is a ratio ∫₀¹ xʲ·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ in which the weight xʲ merely shifts m ↦ m+j.",
+    "mathContext": "$B(m+1,n+1)=\\int_0^1 x^m(1-x)^n\\,dx = \\dfrac{m!\\,n!}{(m+n+1)!}$; $\\;E[X^j]=\\dfrac{\\int_0^1 x^{m+j}(1-x)^n}{\\int_0^1 x^m(1-x)^n}$.",
+    "significance": "key",
+    "relatedConcepts": ["Beta distribution", "Euler Beta function", "raw moments", "conjugate prior", "index shift"],
+    "prerequisites": ["the integer Euler Beta integral (parent leaf)", "definition of distribution moments"]
   },
   {
     "id": "ann-normalising",
@@ -13,7 +17,11 @@
     "range": { "startLine": 39, "endLine": 51 },
     "type": "theorem",
     "title": "The normalising constant is positive",
-    "content": "normalising_pos: 0 < ∫₀¹ xᵐ(1-x)ⁿ. Rewrite the integral to its closed form m!·n!/(m+n+1)! via the parent's integral_offdiag_eq_factorial, then positivity follows from Nat.factorial_pos on numerator and denominator. This certifies every moment below is a genuine quotient by a nonzero Beta value rather than a vacuous division by zero."
+    "content": "normalising_pos: 0 < ∫₀¹ xᵐ(1-x)ⁿ. Rewrite the integral to its closed form m!·n!/(m+n+1)! via the parent's integral_offdiag_eq_factorial, then positivity follows from Nat.factorial_pos on numerator and denominator. This certifies every moment below is a genuine quotient by a nonzero Beta value rather than a vacuous division by zero.",
+    "mathContext": "$0 < \\dfrac{m!\\,n!}{(m+n+1)!}$ since $k! > 0$ for all $k$ (Nat.factorial_pos).",
+    "significance": "supporting",
+    "relatedConcepts": ["positivity of factorials", "well-defined ratios", "Nat.factorial_pos"],
+    "prerequisites": ["the parent closed-form Beta integral", "positivity of a quotient of positives"]
   },
   {
     "id": "ann-mean",
@@ -21,7 +29,11 @@
     "range": { "startLine": 53, "endLine": 77 },
     "type": "theorem",
     "title": "The mean (parent's open question)",
-    "content": "mean_eq: ∫₀¹ x·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)/(m+n+2). The numerator integrand x·xᵐ(1-x)ⁿ equals xᵐ⁺¹(1-x)ⁿ (integral_congr with ring), so the parent's closed form applies at index m+1 to the numerator and m to the denominator. Index normalisation m+1+n+1 = (m+n+1)+1 plus Nat.factorial_succ peels (m+1)! = (m+1)·m! and (m+n+2)! = (m+n+2)·(m+n+1)!; field_simp leaves (m+1)/(m+n+2). This is exactly the parent leaf's second open question, confirmed as the index shift m ↦ m+1."
+    "content": "mean_eq: ∫₀¹ x·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)/(m+n+2). The numerator integrand x·xᵐ(1-x)ⁿ equals xᵐ⁺¹(1-x)ⁿ (integral_congr with ring), so the parent's closed form applies at index m+1 to the numerator and m to the denominator. Index normalisation m+1+n+1 = (m+n+1)+1 plus Nat.factorial_succ peels (m+1)! = (m+1)·m! and (m+n+2)! = (m+n+2)·(m+n+1)!; field_simp leaves (m+1)/(m+n+2). This is exactly the parent leaf's second open question, confirmed as the index shift m ↦ m+1.",
+    "mathContext": "$E[X]=\\dfrac{(m+1)!\\,n!/(m+n+2)!}{m!\\,n!/(m+n+1)!}=\\dfrac{m+1}{m+n+2}=\\dfrac{\\alpha}{\\alpha+\\beta}$ at $\\alpha=m+1,\\beta=n+1$.",
+    "significance": "critical",
+    "relatedConcepts": ["expected value", "index shift m ↦ m+1", "Nat.factorial_succ", "intervalIntegral.integral_congr"],
+    "prerequisites": ["the parent Beta integral", "pointwise rewriting of integrands", "field_simp / ring arithmetic"]
   },
   {
     "id": "ann-second-moment",
@@ -29,7 +41,11 @@
     "range": { "startLine": 79, "endLine": 104 },
     "type": "theorem",
     "title": "The second raw moment",
-    "content": "second_moment_eq: ∫₀¹ x²·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)(m+2)/((m+n+2)(m+n+3)). The weight x² shifts m ↦ m+2; applying Nat.factorial_succ twice peels (m+2)! = (m+2)(m+1)·m! and (m+n+3)! = (m+n+3)(m+n+2)·(m+n+1)!, and field_simp produces the ascending-factor ratio E[X²] = α(α+1)/((α+β)(α+β+1)) at α = m+1, β = n+1."
+    "content": "second_moment_eq: ∫₀¹ x²·xᵐ(1-x)ⁿ / ∫₀¹ xᵐ(1-x)ⁿ = (m+1)(m+2)/((m+n+2)(m+n+3)). The weight x² shifts m ↦ m+2; applying Nat.factorial_succ twice peels (m+2)! = (m+2)(m+1)·m! and (m+n+3)! = (m+n+3)(m+n+2)·(m+n+1)!, and field_simp produces the ascending-factor ratio E[X²] = α(α+1)/((α+β)(α+β+1)) at α = m+1, β = n+1.",
+    "mathContext": "$E[X^2]=\\dfrac{(m+1)(m+2)}{(m+n+2)(m+n+3)}=\\dfrac{\\alpha(\\alpha+1)}{(\\alpha+\\beta)(\\alpha+\\beta+1)}$.",
+    "significance": "key",
+    "relatedConcepts": ["second raw moment", "Pochhammer / ascending factorials", "index shift m ↦ m+2"],
+    "prerequisites": ["the mean computation", "repeated use of Nat.factorial_succ"]
   },
   {
     "id": "ann-variance",
@@ -37,6 +53,10 @@
     "range": { "startLine": 106, "endLine": 122 },
     "type": "theorem",
     "title": "The variance",
-    "content": "variance_eq: E[X²] − E[X]² = (m+1)(n+1)/((m+n+2)²(m+n+3)). Rewriting by the two proven moments, the difference is (m+1)/(m+n+2)·[(m+2)/(m+n+3) − (m+1)/(m+n+2)]; the bracket numerator (m+2)(m+n+2) − (m+1)(m+n+3) collapses to exactly n+1 (field_simp, ring), giving the symmetric Beta variance αβ/((α+β)²(α+β+1)) at α = m+1, β = n+1."
+    "content": "variance_eq: E[X²] − E[X]² = (m+1)(n+1)/((m+n+2)²(m+n+3)). Rewriting by the two proven moments, the difference is (m+1)/(m+n+2)·[(m+2)/(m+n+3) − (m+1)/(m+n+2)]; the bracket numerator (m+2)(m+n+2) − (m+1)(m+n+3) collapses to exactly n+1 (field_simp, ring), giving the symmetric Beta variance αβ/((α+β)²(α+β+1)) at α = m+1, β = n+1.",
+    "mathContext": "$\\operatorname{Var}(X)=\\dfrac{(m+1)(n+1)}{(m+n+2)^2(m+n+3)}=\\dfrac{\\alpha\\beta}{(\\alpha+\\beta)^2(\\alpha+\\beta+1)}$; the key cancellation is $(m+2)(m+n+2)-(m+1)(m+n+3)=n+1$.",
+    "significance": "critical",
+    "relatedConcepts": ["variance", "E[X²] − E[X]²", "algebraic cancellation", "symmetry in (m,n)"],
+    "prerequisites": ["the mean and second-moment theorems", "field_simp / ring"]
   }
 ]
