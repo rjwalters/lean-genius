@@ -1,0 +1,87 @@
+{
+  "id": "birthday-problem-oq-02-oq-01-oq-03",
+  "title": "The Monotone Birthday Paradox: Collision Probability is Non-Decreasing in Group Size",
+  "slug": "birthday-problem-oq-02-oq-01-oq-03",
+  "description": "A fully machine-checked proof that the birthday-problem collision probability is monotone in the number of people: with d equally likely birthdays, P(at least two share a birthday) never decreases as the group grows. The all-distinct probability P(all distinct) = ∏_{i<k}(1 − i/d) satisfies the recurrence P(k+1) = P(k)·(1 − k/d); since the new factor lies in [0,1] and P(k) ≥ 0, P(all distinct) is non-increasing in k for k ≤ d (birthdayProduct_antitone), so its complement collisionProb k d = 1 − P(all distinct) is non-decreasing (collisionProb_monotone). This is the formal content of the paradox's defining intuition — more people can only make a shared birthday more likely — which the classic two-sided exponential estimates (sibling OQ-02-OQ-01) never state. Also: collisionProb 1 d = 0 (no collision with one person) and 0 ≤ collisionProb ≤ 1 (a genuine probability). 0 axioms, 0 sorries, self-contained.",
+  "meta": {
+    "author": "Classical (birthday problem, von Mises 1939); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Birthday_problem",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "probability",
+      "combinatorics",
+      "birthday-problem",
+      "monotonicity",
+      "falling-factorial",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/BirthdayProblemOQ02OQ01OQ03.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod_range_succ",
+        "description": "Peels the top factor off a range-product: ∏_{i<k+1} f i = (∏_{i<k} f i)·f k. Gives the birthday recurrence P(k+1) = P(k)·(1 − k/d).",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.prod_nonneg",
+        "description": "A product of nonnegative terms is nonnegative. Establishes P(all distinct) ≥ 0.",
+        "module": "Mathlib.Algebra.Order.BigOperators.Ring"
+      },
+      {
+        "theorem": "Finset.prod_le_one",
+        "description": "A product of terms in [0,1] is at most 1. Establishes P(all distinct) ≤ 1, hence collisionProb ≥ 0.",
+        "module": "Mathlib.Algebra.Order.BigOperators.Ring"
+      },
+      {
+        "theorem": "mul_le_mul_of_nonneg_left",
+        "description": "From b ≤ c and 0 ≤ a, deduce a·b ≤ a·c. With c = 1 this is the one-step monotonicity P(k)·(1 − k/d) ≤ P(k).",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "collisionProb_monotone: the birthday collision probability 1 − ∏_{i<k}(1 − i/d) is non-decreasing in the number of people k (for j ≤ k ≤ d) — the formal statement of the paradox's core intuition that more people can only raise the chance of a shared birthday, never lower it; not stated by the lineage's exponential estimates",
+      "birthdayProduct_antitone: P(all distinct) = ∏_{i<k}(1 − i/d) is non-increasing in k for k ≤ d, proved by Nat.le_induction from the one-step bound birthdayProduct_step_le, which uses the recurrence P(k+1) = P(k)·(1 − k/d) and that the new factor lies in [0,1]",
+      "collisionProb_one / collisionProb_nonneg / collisionProb_le_one: collisionProb 1 d = 0 (one person, no collision) and 0 ≤ collisionProb k d ≤ 1, certifying it is a genuine probability"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 136,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on collisionProb_monotone and birthdayProduct_antitone reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses. Self-contained: imports only Mathlib and restates the standard birthdayProduct of the OQ-02-OQ-01 lineage (whose source predates current Mathlib API), so it does not depend on any other project file.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 2
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Birthday Product and Collision Probability",
+      "startLine": 41,
+      "endLine": 55,
+      "summary": "birthdayProduct k d = ∏_{i<k}(1 − i/d), the probability all k birthdays are distinct among d equally likely days (the falling factorial d^{underline k}/d^k); collisionProb k d = 1 − birthdayProduct k d."
+    },
+    {
+      "id": "recurrence-bounds",
+      "title": "Recurrence and Factor Bounds",
+      "startLine": 50,
+      "endLine": 86,
+      "summary": "birthdayProduct_succ: P(k+1) = P(k)·(1 − k/d) via Finset.prod_range_succ. factor_nonneg / factor_le_one: each factor 1 − i/d lies in [0,1] for i ≤ d. birthdayProduct_nonneg / birthdayProduct_le_one: P(all distinct) ∈ [0,1] for k ≤ d+1."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity of the Paradox",
+      "startLine": 88,
+      "endLine": 117,
+      "summary": "birthdayProduct_step_le: P(k+1) ≤ P(k) (multiply a nonneg quantity by a factor ≤ 1). birthdayProduct_antitone: P(k) ≤ P(j) for j ≤ k ≤ d by Nat.le_induction. collisionProb_monotone: hence 1 − P is non-decreasing — the monotone birthday paradox."
+    },
+    {
+      "id": "probability-facts",
+      "title": "Collision Probability is a Probability",
+      "startLine": 119,
+      "endLine": 134,
+      "summary": "collisionProb_one: collisionProb 1 d = 0 (no collision with a single person). collisionProb_nonneg / collisionProb_le_one: 0 ≤ collisionProb k d ≤ 1 for k ≤ d+1."
+    }
+  ]
+}
