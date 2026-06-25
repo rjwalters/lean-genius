@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-comp-def",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 69,
+      "endLine": 79
+    },
+    "type": "definition",
+    "title": "Composition of Two Weighted Path Systems",
+    "content": "`comp W₁ W₂` builds a composite weighted-path configuration: a composite path from source $i$ to sink $j$ is a dependent triple — an intermediate sink $k$, a first-layer path $i \\to k$ of $W_1$, and a second-layer path $k \\to j$ of $W_2$ — so the path type is $\\Sigma_k\\, (W_1.\\text{Path}\\, i\\, k) \\times (W_2.\\text{Path}\\, k\\, j)$. Its weight is the product $W_1.\\text{weight}(p) \\cdot W_2.\\text{weight}(q)$ of the two constituent weights. This is the generating-function abstraction of 'concatenate a path through an intermediate lattice layer', the operation underlying every multi-layer LGV product formula. The infix notation is `∘w`."
+  },
+  {
+    "id": "ann-comp-matrix",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 95
+    },
+    "type": "theorem",
+    "title": "(★) The Generating-Function Matrix is Multiplicative",
+    "content": "`comp_matrix`: the matrix of a composite path system is the ordinary matrix product of the two layers' generating-function matrices, $H(W_1 \\circ W_2) = H(W_1)\\cdot H(W_2)$. Entrywise this is the distributive law $\\left(\\sum_p w_1(p)\\right)\\left(\\sum_q w_2(q)\\right) = \\sum_{(p,q)} w_1(p)\\,w_2(q)$, summed over the choice of intermediate sink $k$. The Lean proof rewrites with `Matrix.mul_apply`, regroups the composite sum with `Fintype.sum_sigma` (over $k$) and `Fintype.sum_prod_type` (over $(p,q)$), and collapses the inner double sum with `Fintype.sum_mul_sum`. The dependent sum over intermediate sinks is exactly the matrix-product contraction index."
+  },
+  {
+    "id": "ann-det-comp",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 114
+    },
+    "type": "theorem",
+    "title": "(★★) Multiplicativity of the LGV Determinant",
+    "content": "`det_comp`: the determinant of the composite generating-function matrix is the product of the two layers' determinants, $\\det H(W_1 \\circ W_2) = \\det H(W_1) \\cdot \\det H(W_2)$ — an immediate consequence of (★) `comp_matrix` and the Cauchy–Binet law `Matrix.det_mul`. This is the algebraic engine behind the LGV product formulas (Schur polynomials via Jacobi–Trudi, MacMahon's box formula, Aztec-diamond tilings): a multi-layer non-intersecting-path count factors as a product of single-layer determinants. `det_comp_comm` records that the determinant is the same in either stacking order (the matrices need not commute, but their determinants do)."
+  },
+  {
+    "id": "ann-det-comp-list",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 116,
+      "endLine": 130
+    },
+    "type": "theorem",
+    "title": "Iterated Multiplicativity for a Stack of Layers",
+    "content": "`det_comp_list`: folding composition over a list of layers $W_s$ with a base layer $W_0$ yields $\\det H(W_1 \\circ \\cdots \\circ W_n \\circ W_0) = \\left(\\prod_i \\det H(W_i)\\right)\\cdot \\det H(W_0)$. This is the transfer-matrix viewpoint: a length-$n$ stack of path layers is a product of $n$ transfer matrices, and its LGV determinant factors as the product of its $n$ single-step determinants — the structural reason multi-layer enumeration problems have product formulas. Proved by `List.foldr` induction (base case `simp`; cons step is `det_comp` + the inductive hypothesis + `ring`)."
+  },
+  {
+    "id": "ann-bridges",
+    "proofId": "ballot-problem-oq-03-oq-02-oq-01",
+    "range": {
+      "startLine": 132,
+      "endLine": 153
+    },
+    "type": "theorem",
+    "title": "Unweighted Specialisation and Signed Family-Sum Bridge",
+    "content": "`comp_card_matrix`: setting every weight to $1$, the composite matrix entry counts length-two concatenated paths, $H(W_1 \\circ W_2)_{ij} = \\#\\left(\\Sigma_k\\, \\text{Path}_1\\, i\\, k \\times \\text{Path}_2\\, k\\, j\\right)$. `det_comp_signed_family_sum`: combining multiplicativity with the sibling entry's Leibniz/family expansion `det_matrix_eq_signed_family_sum`, the composite determinant is the PRODUCT of two signed family sums, $\\left(\\sum_\\sigma \\operatorname{sign}(\\sigma)\\sum_f W_1.\\text{familyWeight}(f)\\right)\\left(\\sum_\\tau \\operatorname{sign}(\\tau)\\sum_g W_2.\\text{familyWeight}(g)\\right)$ — making explicit that each layer contributes its own signed sum over path families."
+  }
+]

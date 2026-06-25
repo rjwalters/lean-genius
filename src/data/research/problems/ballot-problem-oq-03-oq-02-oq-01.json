@@ -1,0 +1,33 @@
+{
+  "id": "ballot-problem-oq-03-oq-02-oq-01",
+  "title": "Product Structure of Weighted LGV Determinants",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The parent/sibling open question 'connect to applications via the product structure of LGV determinants' reduces to ONE algebraic fact: the weighted LGV generating-function determinant is multiplicative under composition (stacking) of path systems. Schur-function products (Jacobi–Trudi), MacMahon's box formula, and the Aztec-diamond 2^{n(n+1)/2} count are all instances of det H(stack) = ∏ det H(layer).",
+      "Composition of weighted path systems (concatenating paths through an intermediate sink with multiplicative weights) corresponds EXACTLY to matrix multiplication of the generating-function matrices: the dependent sum Σ_k over intermediate sinks is the matrix-product contraction index, and Fintype.sum_mul_sum is precisely the distributive law turning concatenated-path weights into the product of layer generating functions.",
+      "Multiplicativity needs NO Gessel–Viennot involution and NO non-intersection hypothesis — it is a determinant identity (via Cauchy–Binet / Matrix.det_mul) sitting one level above the combinatorial collapse to non-intersecting families.",
+      "The iterated stack law det_comp_list is the transfer-matrix viewpoint: a length-n layer stack is a product of n transfer matrices whose LGV determinant factors as the product of n single-layer determinants — the structural reason multi-layer enumeration problems have product formulas."
+    ],
+    "builtItems": [
+      "comp (Proofs/BallotProblemOQ03OQ02OQ01.lean:74): composition of two weighted path systems, path type Σ k, W₁.Path i k × W₂.Path k j with multiplicative weight",
+      "comp_matrix (Proofs/BallotProblemOQ03OQ02OQ01.lean:88): (★) H(W₁∘W₂) = H(W₁)·H(W₂), VERIFIED 0-axiom",
+      "det_comp (Proofs/BallotProblemOQ03OQ02OQ01.lean:105): (★★) det H(W₁∘W₂) = det H(W₁)·det H(W₂) via Matrix.det_mul, VERIFIED 0-axiom",
+      "det_comp_comm (Proofs/BallotProblemOQ03OQ02OQ01.lean:112): determinant-level commutativity of composition",
+      "det_comp_list (Proofs/BallotProblemOQ03OQ02OQ01.lean:123): iterated product law over a list of layers via List.foldr induction",
+      "comp_card_matrix (Proofs/BallotProblemOQ03OQ02OQ01.lean:136): unweighted specialisation counting length-two concatenated paths",
+      "det_comp_signed_family_sum (Proofs/BallotProblemOQ03OQ02OQ01.lean:148): composite determinant as a product of two signed family sums, bridging to the sibling's det_matrix_eq_signed_family_sum"
+    ],
+    "mathlibGaps": [
+      "Mathlib has Matrix.det_mul (square Cauchy–Binet) but no LGV-specific path-composition or transfer-matrix product abstraction; this entry supplies it over the sibling's WeightedLGV.",
+      "No non-square Cauchy–Binet minors expansion was needed here (the square det_mul suffices for equal-rank layers); the rectangular Σ-over-m-subsets form remains a future extension."
+    ],
+    "nextSteps": [
+      "Instantiate comp with the parent's concrete grid lattice paths to recover the classical transfer-matrix product for non-intersecting families, then specialise to the Jacobi–Trudi determinant for a Schur polynomial.",
+      "Combine det_comp_list with the sibling's open weighted Gessel–Viennot collapse to derive a machine-checked product formula for a specific multi-layer model (e.g. MacMahon's box formula).",
+      "Generalise comp_matrix to a non-square Cauchy–Binet form (rectangular layers) giving det H(W₁∘W₂) = Σ_S det H(W₁)_{·,S}·det H(W₂)_{S,·} over m-subsets S of the intermediate layer."
+    ],
+    "progressSummary": "COMPLETE: proved multiplicativity of the weighted LGV determinant under path-system composition (comp_matrix ★ and det_comp ★★) plus iterated stack law, determinant commutativity, unweighted specialisation, and signed-family-sum bridge. 6 theorems, 1 definition, 0 axioms, 0 sorries, kernel-verified [propext, Classical.choice, Quot.sound] only. Answers the parent/sibling open question on the product structure of LGV determinants."
+  }
+}
