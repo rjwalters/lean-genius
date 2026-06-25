@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1209",
   "title": "Erdős #1209",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Formalized Erdős's trivial counterexample. Built (verified, 0-axiom) Erdos1209Problem.lean: strictly increasing prime sequences of arbitrarily fast growth with aₖ+k never prime, and a squarefree variant where aₖ+k is never squarefree. Key input: Mathlib Dirichlet theorem on primes in AP.",
+    "builtItems": [
+      "exists_prime_add_not_prime in Proofs/Erdos1209Problem.lean",
+      "exists_prime_add_not_squarefree in Proofs/Erdos1209Problem.lean",
+      "exists_strictMono_forall (reusable sequence builder) in Proofs/Erdos1209Problem.lean",
+      "erdos1209_prime_counterexample, erdos1209_squarefree_counterexample in Proofs/Erdos1209Problem.lean"
+    ],
+    "insights": [
+      "A single congruence aₖ+k ≡ 0 (mod qₖ) with qₖ a prime > k destroys primality of every shift; qₖ ∤ k makes the residue a unit so Dirichlet supplies arbitrarily large prime aₖ.",
+      "Squaring the modulus (qₖ²) upgrades non-prime to non-squarefree shifts at no extra cost.",
+      "Arbitrary growth is free via a recursive builder choosing each term above both the previous term and a prescribed bound g k."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Determine the slowest growth rate of A for which prime/squarefree avoidance still succeeds.",
+      "Compare with the related sequence problems #429 and #1102."
+    ],
     "markdown": "# Erdős #1209 - Knowledge Base\n\n## Problem Statement\n\nLet $A=\\{a_1[Er80] wrote 'unless I overlook a trivial way of getting a counterexample these questions are quite hopeless'. There is indeed a trivial counterexample (a variant of the construction in [429]): define $a_1=2$ and for $k\\geq 2$ let $a_k>a_{k-1}$ be a prime such that $a_k+k\\equiv \\pmod{q_k}$, where $q_k$ is some prime not dividing $k$. This sequence can be made to grow arbitrarily fast. A similar construction with $\\pmod{q_k^2}$ provides a counterexample to the squarefree question. See also [429] and [1102].## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #429\n- Problem #1102\n- Problem #1208\n- Problem #1210\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
   "tags": [
