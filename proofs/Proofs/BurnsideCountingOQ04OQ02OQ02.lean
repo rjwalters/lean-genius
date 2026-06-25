@@ -10,7 +10,7 @@ half**
 
       ∑_{i ∈ ZMod n} |Fix(sr i)|
 
-for **odd** `n`, completing the closed form `b(n) = (rotations + reflections)/(2n)` in that case.
+for **both parities** of `n`, completing the closed form `b(n) = (rotations + reflections)/(2n)`.
 
 ## The reflection involution
 
@@ -31,9 +31,14 @@ reflection fixes `2^{(n+1)/2}` colourings and
 
       ∑_{i ∈ ZMod n} |Fix(sr i)|  =  n · 2^{(n+1)/2}            (`reflection_sum_odd`).
 
-The even-`n` count (`2^{n/2+1}` and `2^{n/2}` over the two reflection classes) is the documented
-follow-up; the general per-reflection count `card_fixedBy_reflection` below applies uniformly and
-is the single ingredient that remains to be specialised by parity.
+For **even** `n`, doubling has the two-element kernel `{0, n/2}`, so `reflFix i ∈ {0, 2}`; since
+`∑_i reflFix i = n` (each position is the unique fixed point of one axis), exactly `n/2` of the
+reflections carry a fixed pair, giving
+
+      ∑_{i ∈ ZMod n} |Fix(sr i)|  =  3 · (n/2) · 2^{n/2}            (`reflection_sum_even`).
+
+The general per-reflection count `card_fixedBy_reflection` below applies uniformly and is the
+single ingredient specialised by parity (`reflFix_odd` / `reflFix_even`).
 
 `#print axioms` on the headlines confirms only `propext, Classical.choice, Quot.sound`.
 -/
@@ -261,6 +266,166 @@ theorem reflection_sum_odd [NeZero n] (hn : Odd n) :
   rw [Finset.sum_congr rfl (fun i _ => h1 i), Finset.sum_const, Finset.card_univ, ZMod.card,
     smul_eq_mul]
 
+/-! ### Even `n`: reflections split by parity
+
+For even `n = 2m` (`m := n/2`), doubling `p ↦ 2p` on `ZMod n` has the two-element kernel
+`{0, m}`, so `2p = -i` has either `0` or exactly `2` solutions: `reflFix i ∈ {0, 2}`.  The
+*total* `∑_i reflFix i = n` (each position `p` is the unique fixed point of exactly one axis
+`i = -2p`), which forces exactly `n/2` of the reflections to be the "even" ones with
+`reflFix = 2`.  Hence
+
+      ∑_{i} |Fix(sr i)|  =  (n/2)·2^{n/2+1} + (n/2)·2^{n/2}  =  3·(n/2)·2^{n/2}.
+-/
+
+/-- For even `n = 2m`, doubling on `ZMod n` has kernel exactly `{0, (m : ZMod n)}`. -/
+theorem two_mul_eq_zero_iff [NeZero n] (hn : Even n) (p : ZMod n) :
+    (2 : ZMod n) * p = 0 ↔ p = 0 ∨ p = ((n / 2 : ℕ) : ZMod n) := by
+  obtain ⟨m, hm⟩ := hn                       -- n = m + m
+  have hn2 : n = 2 * m := by omega
+  have hmpos : 0 < m := by
+    have := NeZero.pos n; omega
+  have hhalf : n / 2 = m := by omega
+  constructor
+  · intro h
+    -- 2 * p = 0  ⇒  n ∣ 2 * p.val  ⇒  m ∣ p.val  ⇒  p.val ∈ {0, m}
+    have hp : ((2 * p.val : ℕ) : ZMod n) = 0 := by
+      push_cast
+      rw [ZMod.natCast_rightInverse p]; exact h
+    rw [ZMod.natCast_eq_zero_iff] at hp
+    have hdvd : m ∣ p.val := by
+      -- `n = 2m` and `n ∣ 2·p.val` give `2·p.val = 2·(m·c)`, so `p.val = m·c`.
+      obtain ⟨c, hc⟩ := hp
+      refine ⟨c, ?_⟩
+      have h2 : 2 * p.val = 2 * (m * c) := by rw [hc, hn2]; ring
+      omega
+    have hlt : p.val < n := ZMod.val_lt p
+    obtain ⟨k, hk⟩ := hdvd
+    have hk2 : k < 2 := by
+      rw [hk, hn2] at hlt
+      by_contra hcon
+      push_neg at hcon
+      have : 2 * m ≤ m * k := by nlinarith
+      omega
+    have hinv := ZMod.natCast_rightInverse (n := n) p   -- ↑(p.val) = p
+    interval_cases k
+    · left
+      have h0 : p.val = 0 := by omega
+      rw [← hinv, h0, Nat.cast_zero]
+    · right
+      have h1 : p.val = m := by omega
+      rw [← hinv, h1, hhalf]
+  · rintro (h | h)
+    · rw [h, mul_zero]
+    · rw [h, hhalf]
+      have : (2 : ZMod n) * (m : ZMod n) = ((2 * m : ℕ) : ZMod n) := by push_cast; ring
+      rw [this, ← hn2, ZMod.natCast_self]
+
+/-- For even `n`, the involution `refl i` has either `0` or exactly `2` fixed points: the
+solution set of `2p = -i` is empty or a coset of the kernel `{0, n/2}`. -/
+theorem reflFix_even [NeZero n] (hn : Even n) (i : ZMod n) :
+    reflFix i = 0 ∨ reflFix i = 2 := by
+  classical
+  rw [reflFix]
+  by_cases hne : (univ.filter (fun p : ZMod n => refl i p = p)).Nonempty
+  · right
+    obtain ⟨p₀, hp₀⟩ := hne
+    rw [mem_filter] at hp₀
+    have hp₀eq : (2 : ZMod n) * p₀ = -i := by
+      have h := hp₀.2; simp only [refl] at h; linear_combination -h
+    have hmne : ((n / 2 : ℕ) : ZMod n) ≠ 0 := by
+      rw [Ne, ZMod.natCast_eq_zero_iff]
+      intro hdvd
+      have hpos := NeZero.pos n
+      obtain ⟨k, hk⟩ := hn
+      have h1 : 0 < n / 2 := by omega
+      have h2 : n / 2 < n := by omega
+      exact absurd (Nat.le_of_dvd h1 hdvd) (by omega)
+    have hm2 : (2 : ZMod n) * ((n / 2 : ℕ) : ZMod n) = 0 :=
+      (two_mul_eq_zero_iff hn _).2 (Or.inr rfl)
+    have hset : (univ.filter (fun p : ZMod n => refl i p = p))
+        = {p₀, p₀ + ((n / 2 : ℕ) : ZMod n)} := by
+      ext p
+      simp only [mem_filter, mem_univ, true_and, mem_insert, mem_singleton, refl]
+      constructor
+      · intro hp
+        have h2p : (2 : ZMod n) * (p - p₀) = 0 := by linear_combination -hp - hp₀eq
+        rcases (two_mul_eq_zero_iff hn _).1 h2p with h | h
+        · left; linear_combination h
+        · right; linear_combination h
+      · rintro (h | h)
+        · subst h; linear_combination -hp₀eq
+        · subst h; linear_combination -hp₀eq - hm2
+    rw [hset, Finset.card_insert_of_notMem (by
+          simp only [mem_singleton]
+          intro hc
+          exact hmne (by linear_combination -hc)), Finset.card_singleton]
+  · left
+    rw [Finset.not_nonempty_iff_eq_empty.1 hne, Finset.card_empty]
+
+/-- The total of all fixed-point counts is `n`: each position `p` is the unique fixed point of
+the single reflection axis `i = -2p`.  (Holds for every `n`; we use it for even `n`.) -/
+theorem reflFix_sum [NeZero n] : ∑ i : ZMod n, reflFix i = n := by
+  classical
+  have hcard : ∑ i : ZMod n, reflFix i
+      = ∑ i : ZMod n, ∑ p : ZMod n, (if refl i p = p then (1 : ℕ) else 0) := by
+    simp only [reflFix, Finset.card_filter]
+  rw [hcard, Finset.sum_comm]
+  have hp : ∀ p : ZMod n, ∑ i : ZMod n, (if refl i p = p then (1 : ℕ) else 0) = 1 := by
+    intro p
+    have hset : (univ.filter (fun i : ZMod n => refl i p = p)) = {-(2 * p)} := by
+      ext i
+      simp only [mem_filter, mem_univ, true_and, mem_singleton, refl]
+      constructor
+      · intro h; linear_combination -h
+      · intro h; rw [h]; ring
+    rw [← Finset.card_filter, hset, Finset.card_singleton]
+  rw [Finset.sum_congr rfl (fun p _ => hp p), Finset.sum_const, Finset.card_univ, ZMod.card,
+    smul_eq_mul, mul_one]
+
+/-- For even `n`, exactly `n/2` of the reflections have a (doubled) fixed pair, because
+`∑_i reflFix i = n` and every `reflFix i ∈ {0, 2}`. -/
+theorem card_even_reflections [NeZero n] (hn : Even n) :
+    (univ.filter (fun i : ZMod n => reflFix i = 2)).card = n / 2 := by
+  classical
+  have heq : ∑ i : ZMod n, reflFix i
+      = ∑ i : ZMod n, (if reflFix i = 2 then (2 : ℕ) else 0) := by
+    apply Finset.sum_congr rfl
+    intro i _
+    rcases reflFix_even hn i with h | h <;> simp [h]
+  have h2 : ∑ i : ZMod n, (if reflFix i = 2 then (2 : ℕ) else 0)
+      = 2 * (univ.filter (fun i : ZMod n => reflFix i = 2)).card := by
+    rw [← Finset.sum_filter, Finset.sum_const, smul_eq_mul, mul_comm]
+  have hkey : 2 * (univ.filter (fun i : ZMod n => reflFix i = 2)).card = n := by
+    rw [← h2, ← heq, reflFix_sum]
+  omega
+
+/-- **The reflection half for even `n`.**
+
+      ∑_{i ∈ ZMod n} |Fix(sr i)|  =  3 · (n/2) · 2^{n/2}. -/
+theorem reflection_sum_even [NeZero n] (hn : Even n) :
+    ∑ i : ZMod n, Fintype.card (fixedBy (Coloring n) (DihedralGroup.sr i))
+      = 3 * (n / 2) * 2 ^ (n / 2) := by
+  classical
+  -- Write each term additively so only the *positive* filter `{i : reflFix i = 2}` appears.
+  have hterm : ∀ i : ZMod n, Fintype.card (fixedBy (Coloring n) (DihedralGroup.sr i))
+      = 2 ^ (n / 2) + (if reflFix i = 2 then 2 ^ (n / 2) else 0) := by
+    intro i
+    rw [card_fixedBy_reflection]
+    rcases reflFix_even hn i with h | h
+    · rw [h, if_neg (by norm_num)]
+      simp                                             -- 2^((n+0)/2) = 2^(n/2) + 0
+    · rw [h, if_pos rfl, show (n + 2) / 2 = n / 2 + 1 by omega, pow_succ]
+      ring                                             -- 2^(n/2)*2 = 2^(n/2) + 2^(n/2)
+  rw [Finset.sum_congr rfl (fun i _ => hterm i), Finset.sum_add_distrib, Finset.sum_const,
+    ← Finset.sum_filter, Finset.sum_const, Finset.card_univ, ZMod.card,
+    card_even_reflections hn, smul_eq_mul, smul_eq_mul]
+  -- goal: n * 2^(n/2) + (n/2) * 2^(n/2) = 3 * (n/2) * 2^(n/2)
+  obtain ⟨k, hk⟩ := hn
+  have hsum : n + n / 2 = 3 * (n / 2) := by omega
+  calc n * 2 ^ (n / 2) + n / 2 * 2 ^ (n / 2)
+      = (n + n / 2) * 2 ^ (n / 2) := by ring
+    _ = 3 * (n / 2) * 2 ^ (n / 2) := by rw [hsum]
+
 end BurnsideCountingOQ04OQ02OQ02
 
 -- Axiom audit: only the standard foundational axioms — no `Lean.ofReduceBool`
@@ -268,3 +433,4 @@ end BurnsideCountingOQ04OQ02OQ02
 #print axioms BurnsideCountingOQ04OQ02OQ02.card_invariant_colorings_involutive
 #print axioms BurnsideCountingOQ04OQ02OQ02.card_fixedBy_reflection
 #print axioms BurnsideCountingOQ04OQ02OQ02.reflection_sum_odd
+#print axioms BurnsideCountingOQ04OQ02OQ02.reflection_sum_even

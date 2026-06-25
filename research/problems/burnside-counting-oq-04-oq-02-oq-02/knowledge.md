@@ -39,22 +39,37 @@ Finset.card_nbij', Finset.filter_or, Finset.card_union_of_disjoint, lt_trichotom
 - reflFix_odd API: ZMod.isUnit_iff_coprime, Nat.coprime_two_left.mpr, Units.mulLeft_bijective,
   Bijective.existsUnique, Finset.card_eq_one, linear_combination for refl i p = p ↔ 2p = -i.
 
-## !! BLOCKER — UNVERIFIED !!
-Docker Desktop daemon was DOWN host-wide this entire session ("ERROR: Docker daemon is not
-running"); the whole researcher fleet's builds were gridlocked (docker info → 0 containers,
-docker version server unreachable). `./proofs/scripts/docker-build.sh` could not run.
-The file is written and carefully reviewed but HAS NOT BEEN BUILT/VERIFIED.
-Do NOT open a PR or claim "verified" until a build passes and `#print axioms` shows only
-propext/Classical.choice/Quot.sound. Aristotle MCP was also down ("Resource not found").
+## Session 2 — 2026-06-25 — COMPLETE & VERIFIED (both parities)
+- Odd case built clean as written (no errors). Added the EVEN-n case:
+  - two_mul_eq_zero_iff: doubling kernel on ZMod (2m) is exactly {0, m}.
+  - reflFix_even: reflFix i ∈ {0, 2} (solution set of 2p=-i is empty or a {0,n/2}-coset).
+  - reflFix_sum: Σ_i reflFix i = n for every n, by a fiberwise Finset.sum_comm count
+    (each bead is the unique fixed point of one axis i=-2p).
+  - card_even_reflections: #{i : reflFix i = 2} = n/2 (omega from 2·#=n and each term∈{0,2}).
+  - reflection_sum_even: Σ_i |Fix(sr i)| = 3·(n/2)·2^(n/2), via an ADDITIVE split of the term
+    (2^(n/2) + if reflFix i=2 then 2^(n/2) else 0) that uses only the positive filter and
+    dodges the un-beta-reduced negated filter from Finset.sum_ite.
+- n=6 sanity: 3·3·8 = 72 (parent `decide`: Dihedral 6 total = 156).
 
-## Next steps (for a session with Docker up)
-1. Build proofs/Proofs/BurnsideCountingOQ04OQ02OQ02.lean; fix any errors (likely spots:
-   Equiv.subtypeEquivRight defeq for refl vs -i-p; the `show` lines in the Equiv; card_nbij'
-   MapsTo simp set; linear_combination signs in hcond).
-2. Add the EVEN-n case: reflFix_even (0 or 2 by parity of i.val), count #{i : even val}=n/2,
-   reflection_sum_even = (3n/2)·2^(n/2). Even count needs the doubling-map kernel {0,n/2}.
-3. Combine with parent rotation sum for the full b(n) closed form (optional follow-up).
-4. Gallery entry src/data/proofs/burnside-counting-oq-04-oq-02-oq-02/ + meta.json, then PR.
+## VERIFICATION (Docker down → single-file lake env)
+Docker Desktop VM was hung host-wide again (`docker info` HANGS; whole fleet piled up zombie
+docker info; `open -a Docker` did not revive in time). Verified anyway WITHOUT docker-build:
+  cd /Users/rwalters/GitHub/lean-genius/proofs && lake env lean <worktree-abs-path>
+`lake env` is an explicit SAFE pass-through in proofs/bin/lake (only `lake build` is blocked);
+it elaborates ONE file against main's prebuilt .lake oleans (parent + Mathlib), bounded memory,
+and runs the `#print axioms` lines. RESULT: all four headlines
+(card_invariant_colorings_involutive, card_fixedBy_reflection, reflection_sum_odd,
+reflection_sum_even) depend only on [propext, Classical.choice, Quot.sound] — no sorryAx, no
+Lean.ofReduceBool. 0 axioms, 0 sorries, 12 thm / 2 def / 436 lines.
+
+Lean fixes: `rw [hn2] at hp` (hp:n∣2*p.val) fails motive (p.val type depends on n) → obtain
+the witness and finish with omega; `congr 1; omega` → "No goals" (congr already closed defeq)
+→ `simp`; deprecations natCast_zmod_eq_zero_iff_dvd→natCast_eq_zero_iff,
+card_insert_of_not_mem→card_insert_of_notMem.
+
+## Status: registered in Proofs.lean; gallery entry
+src/data/proofs/burnside-counting-oq-04-oq-02-oq-02/ (meta.json + annotations.json) created;
+status verified / badge original / axiomCount 0. PR opened.
 
 ## Branch
-WIP committed to branch `research/burnside-reflection-half-oq04020202` (NO PR — unverified).
+`research/burnside-reflection-half-oq04020202`.
