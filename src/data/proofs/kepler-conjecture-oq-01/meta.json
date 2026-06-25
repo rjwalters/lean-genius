@@ -1,0 +1,142 @@
+{
+  "id": "kepler-conjecture-oq-01",
+  "title": "Kepler Conjecture OQ-01: Best-known packing densities in dimensions 4-23",
+  "slug": "kepler-conjecture-oq-01",
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.KeplerConjecture"
+    ],
+    "opens": [
+      "Real",
+      "KeplerConjecture"
+    ],
+    "namespace": "KeplerConjectureOQ01",
+    "lineCount": 305,
+    "axiomCount": 0,
+    "theoremCount": 27,
+    "definitionCount": 10,
+    "path": "Proofs/KeplerConjectureOQ01.lean",
+    "sorries": 0
+  },
+  "description": "Open-question follow-up to the gallery's `kepler-conjecture` entry. The parent settles the OPTIMAL congruent-sphere packing density in ℝ³ (the FCC value π/(3√2) ≈ 0.7405). OQ-01 turns to higher dimensions, where optimal sphere packing is one of the deepest open problems in discrete geometry: the optimum is known only in dimensions 1, 2, 3, 8 (Viazovska 2016, the E₈ lattice) and 24 (CKMRV 2017, the Leech lattice). For every dimension 4 ≤ n ≤ 23 except n = 8 the optimum is OPEN; the best constructions are specific lattices. Following the sibling entry `kepler-conjecture-oq-04`, this file takes the best-known lattice packing densities from the literature (Conway–Sloane, SPLAG) as named real constants and proves rigorous, axiom-free relationships. It focuses on the root-lattice champions in dimensions 4–8: D₄ (Δ₄ = π²/16 ≈ 0.61685), D₅ (Δ₅ = π²√2/30 ≈ 0.46526), E₆ (Δ₆ = π³√3/144 ≈ 0.37295), E₇ (Δ₇ = π³/105 ≈ 0.29530) and E₈ (Δ₈ = π⁴/384 ≈ 0.25367, the proven optimum). Each Δₙ = δₙ·Vₙ is the lattice center density δₙ times the unit n-ball volume Vₙ. The HEADLINE `density_strictly_decreasing_4_to_8` proves Δ₄ > Δ₅ > Δ₆ > Δ₇ > Δ₈, quantifying the principle that sphere packing thins out as dimension grows — even the densest known arrangements. Supporting results: every champion is a genuine density (0 < Δₙ < 1), each Δₙ is bracketed between explicit rationals (`dimNDensity_bounds`), and the five champions are bundled into the parent's `PackingDensity` structure with the existence corollary `exists_dimension_8_optimal` (a PackingDensity realising the proven optimum π⁴/384). The numbers are CONSTRUCTIONS (lower bounds on the true optimum), so nothing here claims to resolve the open problem — it organises the best-known data and proves the monotonicity that motivates it. 0 sorries, 0 axioms; every result is nlinarith/norm_num-discharged from Mathlib's π bounds (`Real.pi_gt_d6`/`Real.pi_lt_d6`).",
+  "meta": {
+    "author": "researcher-4",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KeplerConjectureOQ01.lean",
+    "tags": [
+      "packing",
+      "kepler",
+      "sphere-packing",
+      "lattices",
+      "root-lattices",
+      "E8",
+      "discrete-geometry",
+      "higher-dimensions",
+      "open-question",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 305,
+    "theoremCount": 27,
+    "definitionCount": 10,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pi_gt_d6",
+        "description": "Numerical bound 3.141592 < π, the lower input to `pi_sq_bounds`/`pi_cube_bounds`/`pi_quart_bounds` from which all density brackets are derived.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.pi_lt_d6",
+        "description": "Numerical bound π < 3.141593, the upper input to the π-power brackets; combined with the explicit cross-product hint `mul_pos Real.pi_pos (sub_pos.mpr Real.pi_lt_d6)` so `nlinarith` can bound π² above.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
+      },
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "(√x)² = x for 0 ≤ x, used to prove the rational brackets `sqrt2_bounds` (1.41421 < √2 < 1.41422) and `sqrt3_bounds` (1.73205 < √3 < 1.73206) via `nlinarith`.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      }
+    ],
+    "assumptions": "0 sorries, 0 axioms. Every theorem is discharged by `nlinarith`/`norm_num`/`linarith`/`positivity` from Mathlib's rational π bounds `Real.pi_gt_d6` (3.141592 < π) and `Real.pi_lt_d6` (π < 3.141593), plus two-sided √2/√3 brackets proved from `Real.sq_sqrt`. The five density constants Δ₄..Δ₈ are taken from the published literature (Conway–Sloane, *Sphere Packings, Lattices and Groups*) as the best-known lattice packing densities; D₅, E₆, E₇ are the densest lattices known in their dimensions (the true optimum is open), D₄ is conjecturally optimal, and only E₈ (Δ₈ = π⁴/384) is a theorem (Viazovska 2016). `#print axioms` on the three headline theorems lists only `propext, Classical.choice, Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`. The parent `Proofs/KeplerConjecture.lean` separately axiomatizes the 2D/3D optimality results; this file adds NO new assumptions and reuses only the parent's `PackingDensity` structure."
+  },
+  "overview": {
+    "historicalContext": "Kepler's 1611 conjecture concerned spheres in ℝ³ — that the face-centered cubic packing is optimal for congruent balls. Hales' 1998 proof, formally verified by the Flyspeck project (2014), settled the case at density π/(3√2) ≈ 0.7405. The natural and far harder question is the optimal density of congruent-sphere packings in higher dimensions. Remarkably, after centuries of work the optimum is rigorously known in only FIVE dimensions: n = 1, 2, 3 (classical), n = 8 (Maryna Viazovska 2016, via a magic modular-form interpolation realising the Cohn–Elkies linear-programming bound exactly at the E₈ lattice), and n = 24 (Cohn–Kumar–Miller–Radchenko–Viazovska 2017, the Leech lattice). For every dimension in the band 4 ≤ n ≤ 23 except n = 8 the optimal density remains OPEN; the densest packings known are specific lattices, and only conjecturally optimal. In dimensions 4–8 these champions are the celebrated root lattices D₄, D₅, E₆, E₇, E₈ (Korkine–Zolotareff, Blichfeldt), whose packing densities Δₙ = δₙ·Vₙ combine integer/surd center densities δₙ with the unit n-ball volumes Vₙ = π²/2, 8π²/15, π³/6, 16π³/105, π⁴/24. A basic but important feature of this data is that the densities DECREASE with dimension — even the best known arrangements become sparse — a phenomenon dramatised by the Minkowski–Hlawka lower bound and the exponential gap to the Kabatiansky–Levenshtein upper bound.",
+    "keyInsight": "Although the OPTIMAL densities in dimensions 4–7 are open, the best-known champions D₄, D₅, E₆, E₇ together with the proven optimum E₈ are explicit closed-form reals in π and small surds, so their pairwise ordering is a finitary inequality verifiable in Lean. Cancelling the common power of π reduces each comparison Δₙ > Δₙ₊₁ to a low-degree statement about π and a single surd; bracketing every Δₙ in a rational interval then makes the entire monotone chain Δ₄ > Δ₅ > Δ₆ > Δ₇ > Δ₈ fall out of `linarith`. The result quantifies, in fully verified form, the heuristic that sphere packing gets harder as dimension grows.",
+    "significance": "Organises the best-known higher-dimensional sphere-packing data into a single verified, axiom-free Lean artifact and proves the monotone-decrease structure that motivates the open problem, without overclaiming any resolution. It also exhibits the parent's abstract `PackingDensity` type populated by five higher-dimensional witnesses, including the dimension-8 proven optimum, extending the gallery's Kepler cluster from ℝ³ into the 4–23 band that OQ-01 targets."
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module docstring: dimensions 4-23 survey and scope",
+      "startLine": 1,
+      "endLine": 59,
+      "summary": "Surveys the higher-dimensional sphere-packing problem: optimum known only in n = 1,2,3,8,24; open for 4 ≤ n ≤ 23, n ≠ 8. Tabulates the five root-lattice champions D₄..E₈ with their densities Δₙ = δₙ·Vₙ and center densities. States the headline `density_strictly_decreasing_4_to_8` and the honesty caveat that the constants are best-known constructions (lower bounds), not a resolution of the open problem. Records the 0-sorry / 0-axiom status."
+    },
+    {
+      "id": "densities",
+      "title": "The five best-known champions Δ₄..Δ₈",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "Defines `dim4Density = π²/16` (D₄), `dim5Density = π²√2/30` (D₅), `dim6Density = π³√3/144` (E₆), `dim7Density = π³/105` (E₇), `dim8Density = π⁴/384` (E₈, Viazovska-optimal) as noncomputable reals."
+    },
+    {
+      "id": "numeric-infra",
+      "title": "Numeric infrastructure: π-power and surd brackets",
+      "startLine": 86,
+      "endLine": 127,
+      "summary": "Proves the rational brackets `pi_sq_bounds` (9.8695 < π² < 9.8697), `pi_cube_bounds` (31.006 < π³ < 31.008), `pi_quart_bounds` (97.40 < π⁴ < 97.42) by chaining `Real.pi_gt_d6`/`Real.pi_lt_d6` through explicit cross-product hints, and `sqrt2_bounds`/`sqrt3_bounds` from `Real.sq_sqrt`. These five lemmas are the sole numerical inputs to everything downstream."
+    },
+    {
+      "id": "genuine-density",
+      "title": "Each champion is a genuine density 0 < Δₙ < 1",
+      "startLine": 128,
+      "endLine": 176,
+      "summary": "Positivity (`dimNDensity_pos`, via `positivity`) and the upper bound `dimNDensity_lt_one` (each Δₙ < 1, since π² < 16, π²√2 < 30, π³√3 < 144, π³ < 105, π⁴ < 384) — confirming every champion is a valid packing density."
+    },
+    {
+      "id": "rational-brackets",
+      "title": "Rational brackets for each champion",
+      "startLine": 178,
+      "endLine": 216,
+      "summary": "Brackets each density between explicit rationals: 0.6168 < Δ₄ < 0.6169, 0.4652 < Δ₅ < 0.4653, 0.3729 < Δ₆ < 0.3730, 0.2952 < Δ₇ < 0.2954, 0.2536 < Δ₈ < 0.2537 — propagating the π-power and surd brackets through `linarith`/`nlinarith`."
+    },
+    {
+      "id": "headline-chain",
+      "title": "Headline: the champions strictly decrease in dimensions 4-8",
+      "startLine": 218,
+      "endLine": 254,
+      "summary": "The four pairwise comparisons `dim4_gt_dim5`..`dim7_gt_dim8` each follow from the disjoint rational brackets (e.g. Δ₅ < 0.4653 < 0.6168 < Δ₄) by `linarith`, assembled into `density_strictly_decreasing_4_to_8 : Δ₄ > Δ₅ > Δ₆ > Δ₇ > Δ₈`."
+    },
+    {
+      "id": "packing-bundling",
+      "title": "Bundling into PackingDensity + dimension-8 optimum",
+      "startLine": 256,
+      "endLine": 305,
+      "summary": "Bundles the five champions into the parent's `PackingDensity` structure (`dimNPacking`, supplying `nonneg`/`le_one` from the positivity and less-than-one lemmas), proves `exists_dimension_8_optimal` (a PackingDensity realising the proven optimum π⁴/384), and the final aggregation `best_known_density_hierarchy_4_to_8` collecting all genuineness and monotonicity facts."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-01 extends the gallery's Kepler cluster from ℝ³ into the open 4–23 band by formalising the best-known lattice packing densities in dimensions 4–8 (D₄, D₅, E₆, E₇, E₈) as explicit reals and proving, axiom-free, that they strictly decrease: Δ₄ ≈ 0.6169 > Δ₅ ≈ 0.4653 > Δ₆ ≈ 0.3730 > Δ₇ ≈ 0.2953 > Δ₈ ≈ 0.2537. Each is shown to be a genuine density (0 < Δₙ < 1) and bracketed in a rational interval; the five are bundled into the parent's `PackingDensity` type, with the dimension-8 case witnessing the Viazovska (2016) proven optimum. The monotone-decrease theorem quantifies the principle that motivates the entire open problem — sphere packing becomes sparser in higher dimensions — while the honesty caveat is explicit: these constants are best-known constructions (lower bounds on the true optimum), so the entry organises and certifies the known data rather than resolving the open question for 4 ≤ n ≤ 23.",
+    "futureWork": "Natural extensions: (i) add the higher-dimensional champions K₁₂ (Coxeter–Todd), Λ₁₆ (Barnes–Wall) and Λ₂₄ (Leech) to push the monotone chain through dimension 24; (ii) formalise the elementary Minkowski–Hlawka lower bound Δₙ ≥ ζ(n)/2ⁿ⁻¹ to bracket the champions from below by a provable existence bound; (iii) formalise a classical upper bound (Blichfeldt or Rogers) to sandwich the true optimum and make the open-ness quantitative; (iv) connect to a Lean development of the Cohn–Elkies linear-programming bound, whose dimension-8 sharpness is the content of Viazovska's theorem."
+  },
+  "crossReferences": [
+    {
+      "proofId": "kepler-conjecture",
+      "title": "Kepler Conjecture: Sphere Packing (parent)",
+      "relationship": "Parent gallery entry. Provides the `PackingDensity` structure and the ℝ³ Kepler–Hales axiomatization at density π/(3√2). OQ-01 reuses `PackingDensity` to bundle five higher-dimensional champions (D₄..E₈) and carries the cluster from the solved n = 3 case into the open 4–23 band.",
+      "description": "Parent entry supplying the `PackingDensity` structure reused here; OQ-01 populates it with dimension 4–8 lattice densities including the dimension-8 proven optimum."
+    },
+    {
+      "proofId": "kepler-conjecture-oq-04",
+      "title": "Kepler Conjecture OQ-04: Non-spherical packing in ℝ³",
+      "relationship": "Sibling open-question entry. OQ-04 varies the BODY (tetrahedra, ellipsoids, symmetric convex bodies) in fixed dimension 3; OQ-01 varies the DIMENSION (4–8) for fixed congruent spheres. Both follow the same methodology: take literature densities as named real constants and prove rigorous axiom-free comparisons via Mathlib's π bounds.",
+      "description": "Sibling entry treating non-spherical packing in ℝ³; shares the constant-and-compare methodology used here for higher dimensions."
+    }
+  ],
+  "theoremCount": 27,
+  "definitionCount": 10
+}
