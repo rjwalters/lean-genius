@@ -19,12 +19,12 @@
     "erdosUrl": "https://erdosproblems.com/574",
     "axiomCount": 0,
     "badge": "wip",
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
+    "assumptions": "0 axioms, 0 sorries. The headline Erdős–Simonovits conjecture (#574) remains OPEN and is stated only as commentary, not as a proven theorem — hence the 'axiomatized' status. The file now contributes three machine-checked theorems formalizing the unconditional lower-bound core: a bipartite graph has no cycle of odd length (bipartite_not_hasCycle_odd), hence contains no C_{2k−1} (bipartite_no_odd_consecutive), hence a bipartite C_{2k}-free graph is automatically {C_{2k−1}, C_{2k}}-free (bipartite_evenFree_consecutiveFree). This is the structural reason the lower bound for ex(n; {C_{2k−1}, C_{2k}}) transfers with no loss from ex(n; C_{2k}); the only open content is the matching upper bound.",
     "proofRepoPath": "Proofs/Erdos574Problem.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 78,
-    "theoremCount": 0,
-    "definitionCount": 5
+    "lineCount": 188,
+    "theoremCount": 3,
+    "definitionCount": 6
   },
   "sections": [
     {
@@ -101,21 +101,25 @@
     "https://erdosproblems.com/574"
   ],
   "leanFile": {
-    "lineCount": 78,
+    "lineCount": 188,
     "structureCount": 1,
     "axiomCount": 0,
-    "theoremCount": 0,
-    "lemmaCount": 0,
+    "theoremCount": 3,
+    "lemmaCount": 1,
     "imports": [
       "Mathlib.Data.Nat.Basic",
+      "Mathlib.Algebra.Ring.Parity",
       "Mathlib.Data.Real.Basic",
       "Mathlib.Data.Finset.Basic",
+      "Mathlib.Logic.Function.Iterate",
       "Mathlib.Tactic"
     ],
-    "opens": [],
+    "opens": [
+      "Classical"
+    ],
     "path": "Proofs/Erdos574Problem.lean",
     "sorries": 0,
-    "definitionCount": 5
+    "definitionCount": 6
   },
   "crossReferences": [
     {
