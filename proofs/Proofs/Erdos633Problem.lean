@@ -64,9 +64,62 @@ noncomputable def Triangle.area (T : Triangle) : ℝ :=
   let s := (T.a + T.b + T.c) / 2
   Real.sqrt (s * (s - T.a) * (s - T.b) * (s - T.c))
 
-/-! ## Dissection Definitions -/
+/-- Scaling all side lengths of a triangle by a positive factor `t`.
+    The result is a triangle similar to `T` with linear scale `t`. -/
+noncomputable def Triangle.scale (T : Triangle) (t : ℝ) (ht : 0 < t) : Triangle where
+  a := t * T.a
+  b := t * T.b
+  c := t * T.c
+  ha := mul_pos ht T.ha
+  hb := mul_pos ht T.hb
+  hc := mul_pos ht T.hc
+  hab := by
+    have h := mul_lt_mul_of_pos_left T.hab ht
+    rw [mul_add] at h; linarith
+  hbc := by
+    have h := mul_lt_mul_of_pos_left T.hbc ht
+    rw [mul_add] at h; linarith
+  hca := by
+    have h := mul_lt_mul_of_pos_left T.hca ht
+    rw [mul_add] at h; linarith
 
-/-- A dissection of triangle T into n congruent copies of triangle S -/
+/-- **Heron's area is homogeneous of degree 2 in the side lengths.**
+    Scaling a triangle's sides by `t > 0` scales its area by `t²`.
+
+    This is the genuine geometric fact underlying Erdős #633's background result
+    that "every triangle dissects into `n²` congruent copies": a copy similar to
+    `T` with linear scale `1/n` has area `T.area / n²`, so `n²` of them match `T`'s
+    area exactly. The proof factors `(t²)²` out of all four Heron factors and pulls
+    it through the square root. -/
+theorem Triangle.area_scale (T : Triangle) (t : ℝ) (ht : 0 < t) :
+    (T.scale t ht).area = t ^ 2 * T.area := by
+  have ht2 : (0:ℝ) ≤ t ^ 2 := le_of_lt (pow_pos ht 2)
+  simp only [Triangle.area, Triangle.scale]
+  rw [← Real.sqrt_sq ht2, ← Real.sqrt_mul (sq_nonneg (t ^ 2))]
+  congr 1
+  ring
+
+/-! ## Dissection Definitions
+
+  NOTE ON THE MODEL: `CongruentDissection` below captures only the two
+  *necessary* numeric conditions for a congruent dissection — area
+  compatibility (`area T = n · area S`) and shared side ratios (`S` similar to
+  `T`). It does NOT encode an actual geometric tiling. As a consequence this
+  simplified model OVER-counts: by `Triangle.area_scale`, the scaled copy
+  `T.scale (1/√n)` satisfies both conditions for *every* `n ≥ 1`, so in this
+  model `DissectionCounts T = {n | n ≥ 1}` for all `T`.
+
+  The theorems proved against this model (`universal_square_dissection`,
+  `equilateral_dissects_to_3`, `right_isoceles_dissects_to_2`) are therefore
+  genuine *area-compatibility* statements, not full geometric dissection
+  results. The square-only theorems (`soifer_square_only`,
+  `soifer_family_square_only`, …) are FALSE in this over-counting model and
+  remain `sorry`: capturing them faithfully requires a real geometric
+  dissection predicate (the open, hard content of Erdős #633). -/
+
+/-- A dissection of triangle T into n congruent copies of triangle S.
+    (Simplified model: area compatibility + similarity only — see the note
+    above; this is a necessary condition for, not a witness of, a tiling.) -/
 structure CongruentDissection (T S : Triangle) (n : ℕ) where
   -- The n copies tile T exactly
   covers : T.area = n * S.area
@@ -97,10 +150,27 @@ def SquareOnlyTriangles : Set Triangle :=
 
 /-! ## Universal Dissection into Squares -/
 
-/-- Every triangle can be dissected into n² congruent triangles for any n ≥ 1 -/
+/-- Every triangle can be dissected into n² congruent triangles for any n ≥ 1.
+
+    Witnessed by the similar copy `S = T.scale (1/n)`: by area-homogeneity
+    (`Triangle.area_scale`) it has area `T.area / n²`, so `n²` copies of `S`
+    match `T`'s area, and `S` shares `T`'s side ratios. This is the
+    area-compatibility ("necessary condition") form of the classical grid
+    construction, in the simplified dissection model used in this file. -/
 theorem universal_square_dissection (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
     CanDissectInto T (n^2) := by
-  sorry
+  have hn0 : (0:ℝ) < (n:ℝ) := by exact_mod_cast (show 0 < n by omega)
+  have hne : (n:ℝ) ≠ 0 := ne_of_gt hn0
+  refine ⟨T.scale (1 / (n:ℝ)) (one_div_pos.mpr hn0), ⟨⟨?_, ?_, ?_⟩⟩⟩
+  · rw [Triangle.area_scale]
+    push_cast
+    rw [div_pow, one_pow, ← mul_assoc, mul_one_div, div_self (pow_ne_zero 2 hne), one_mul]
+  · simp only [Triangle.scale]
+    rw [mul_div_assoc, div_self (ne_of_gt T.ha), mul_one,
+        mul_div_assoc, div_self (ne_of_gt T.hb), mul_one]
+  · simp only [Triangle.scale]
+    rw [mul_div_assoc, div_self (ne_of_gt T.hb), mul_one,
+        mul_div_assoc, div_self (ne_of_gt T.hc), mul_one]
 
 /-- This means every triangle has all square numbers in its dissection set -/
 theorem squares_always_achievable (T : Triangle) :
@@ -168,15 +238,61 @@ theorem integral_independence_implies_square_only (T : TriangleByAngles)
 def HasNonSquareDissection (T : Triangle) : Prop :=
   ∃ n : ℕ, n ∈ DissectionCounts T ∧ ¬IsSquare n
 
-/-- Equilateral triangles can be dissected into 3 congruent triangles -/
+/-- The unit equilateral triangle (all sides 1). -/
+noncomputable def unitEquilateral : Triangle :=
+  ⟨1, 1, 1, one_pos, one_pos, one_pos, by norm_num, by norm_num, by norm_num⟩
+
+/-- The unit right isosceles triangle (legs 1, hypotenuse √2). -/
+noncomputable def unitRightIso : Triangle :=
+  ⟨1, 1, Real.sqrt 2, one_pos, one_pos, Real.sqrt_pos.mpr (by norm_num),
+    by nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 2 by norm_num),
+                  Real.sqrt_nonneg 2, sq_nonneg (Real.sqrt 2 - 2)],
+    by linarith [Real.sqrt_pos.mpr (show (0:ℝ) < 2 by norm_num)],
+    by linarith [Real.sqrt_pos.mpr (show (0:ℝ) < 2 by norm_num)]⟩
+
+/-- Equilateral triangles can be dissected into 3 congruent triangles.
+
+    In the area-compatibility model: the similar copy `scale (1/√3)` has area
+    `area/3`, so 3 copies match — a *non-square* count, witnessing that the
+    equilateral triangle does NOT have the square-only property. -/
 theorem equilateral_dissects_to_3 : ∃ T : Triangle,
     T.a = T.b ∧ T.b = T.c ∧ 3 ∈ DissectionCounts T := by
-  sorry
+  refine ⟨unitEquilateral, rfl, rfl, ?_⟩
+  simp only [DissectionCounts, Set.mem_setOf_eq]
+  refine ⟨by norm_num, ?_⟩
+  have h3 : (0:ℝ) < Real.sqrt 3 := Real.sqrt_pos.mpr (by norm_num)
+  refine ⟨unitEquilateral.scale (1 / Real.sqrt 3) (one_div_pos.mpr h3), ⟨⟨?_, ?_, ?_⟩⟩⟩
+  · rw [Triangle.area_scale, div_pow, one_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 3)]
+    push_cast; ring
+  · simp only [Triangle.scale]
+    rw [mul_div_assoc, div_self (ne_of_gt unitEquilateral.ha), mul_one,
+        mul_div_assoc, div_self (ne_of_gt unitEquilateral.hb), mul_one]
+  · simp only [Triangle.scale]
+    rw [mul_div_assoc, div_self (ne_of_gt unitEquilateral.hb), mul_one,
+        mul_div_assoc, div_self (ne_of_gt unitEquilateral.hc), mul_one]
 
-/-- Right isoceles triangles can be dissected into 2 congruent triangles -/
+/-- Right isoceles triangles can be dissected into 2 congruent triangles.
+
+    In the area-compatibility model: the similar copy `scale (1/√2)` has area
+    `area/2`, so 2 copies match — a *non-square* count, witnessing that the
+    right isosceles triangle does NOT have the square-only property. -/
 theorem right_isoceles_dissects_to_2 : ∃ T : Triangle,
     T.a = T.b ∧ T.c = T.a * Real.sqrt 2 ∧ 2 ∈ DissectionCounts T := by
-  sorry
+  refine ⟨unitRightIso, rfl, ?_, ?_⟩
+  · show Real.sqrt 2 = (1:ℝ) * Real.sqrt 2
+    rw [one_mul]
+  · simp only [DissectionCounts, Set.mem_setOf_eq]
+    refine ⟨by norm_num, ?_⟩
+    have h2 : (0:ℝ) < Real.sqrt 2 := Real.sqrt_pos.mpr (by norm_num)
+    refine ⟨unitRightIso.scale (1 / Real.sqrt 2) (one_div_pos.mpr h2), ⟨⟨?_, ?_, ?_⟩⟩⟩
+    · rw [Triangle.area_scale, div_pow, one_pow, Real.sq_sqrt (by norm_num : (0:ℝ) ≤ 2)]
+      push_cast; ring
+    · simp only [Triangle.scale]
+      rw [mul_div_assoc, div_self (ne_of_gt unitRightIso.ha), mul_one,
+          mul_div_assoc, div_self (ne_of_gt unitRightIso.hb), mul_one]
+    · simp only [Triangle.scale]
+      rw [mul_div_assoc, div_self (ne_of_gt unitRightIso.hb), mul_one,
+          mul_div_assoc, div_self (ne_of_gt unitRightIso.hc), mul_one]
 
 /-! ## Similar vs Congruent Dissections -/
 
