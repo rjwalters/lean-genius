@@ -1,0 +1,178 @@
+{
+  "id": "schroeder-bernstein-oq-02-oq-01",
+  "title": "The Greatest Fixed Point Variant of Schroeder–Bernstein",
+  "slug": "schroeder-bernstein-oq-02-oq-01",
+  "description": "The Knaster–Tarski proof of Schroeder–Bernstein (entry schroeder-bernstein-oq-02) builds the bijection from the LEAST fixed point of the monotone operator T(S) = (range g)ᶜ ∪ g''(f''S). Its open question asks whether the GREATEST fixed point gfp(T) is equally useful, and what gfp(T) ∖ lfp(T) is geometrically. Answer: every fixed point of T yields a Schroeder–Bernstein bijection by the same piecewise formula (the parent's lemmas used only the fixed-point equation, never minimality), so lfp and gfp are two instances of one theorem; and the difference D = gfp ∖ lfp is exactly the set on which φ = g∘f acts bijectively (no sources, no sinks) — the union of the bi-infinite φ-chains.",
+  "meta": {
+    "author": "Knaster–Tarski (1928/1955); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SchroederBernsteinOQ02OQ01.lean",
+    "tags": [
+      "set-theory",
+      "order-theory",
+      "fixed-points",
+      "knaster-tarski",
+      "schroeder-bernstein",
+      "lattice-theory",
+      "bijection"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "OrderHom.lfp",
+        "description": "The Knaster–Tarski least fixed point of a monotone self-map of a complete lattice (the parent's choice S*)",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "OrderHom.gfp",
+        "description": "The Knaster–Tarski greatest fixed point (this entry's choice S**)",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "OrderHom.map_gfp",
+        "description": "gfp is a fixed point: T(gfp T) = gfp T — what makes the gfp route a valid Schroeder–Bernstein proof",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "OrderHom.le_gfp",
+        "description": "Any post-fixed point lies below gfp; used to show lfp ⊆ gfp",
+        "module": "Mathlib.Order.FixedPoints"
+      },
+      {
+        "theorem": "Equiv.ofBijective",
+        "description": "Packages the piecewise bijection as an equivalence α ≃ β",
+        "module": "Mathlib.Logic.Equiv.Defs"
+      }
+    ],
+    "originalContributions": [
+      "equivFP: EVERY fixed point S of the CBS operator (cbsOp f g S = S) yields a Schroeder–Bernstein bijection α ≃ β by the piecewise formula a ↦ (f a if a∈S else g⁻¹ a). The parent's lemmas are re-derived from the fixed-point equation alone, with no appeal to minimality — generalizing the whole OQ-02 construction",
+      "lfpSet / gfpSet, lfpSet_fp / gfpSet_fp: both the least and greatest Knaster–Tarski fixed points are fixed points, hence both feed equivFP",
+      "gfp_equiv / gfp_schroeder_bernstein: the greatest-fixed-point Schroeder–Bernstein bijection — a genuinely different but equally valid proof (answering the open question's first half)",
+      "lfp_equiv: the parent's least-fixed-point bijection re-exhibited as the lfp instance of equivFP, so lfp and gfp are visibly two specializations of one theorem",
+      "lfpSet_subset_gfpSet, gfpSet_eq_lfp_union_diff: gfp = lfp ∪ D where D = gfp ∖ lfp",
+      "diffSet_subset_range: D contains no sources — (range g)ᶜ lies entirely inside lfp",
+      "diffSet_gf_mem: φ = g∘f maps D into D",
+      "diffSet_has_pred: every point of D has a φ-predecessor inside D (forced by the two fixed-point equations alone, no injectivity needed) — D has no sinks",
+      "diffSet_gf_bijOn: φ = g∘f restricts to a BIJECTION of D (Set.BijOn) — the geometric answer to the open question: gfp ∖ lfp is the maximal set on which g∘f acts bijectively, the union of the bi-infinite chains",
+      "lfpSet_eq_gfpSet_iff_diff_empty: lfp = gfp iff there are no bi-infinite φ-chains"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries, no native_decide. Uses Classical for the piecewise definition; depends only on the foundational axioms propext, Classical.choice, Quot.sound via standard Mathlib lemmas.",
+    "lineCount": 266,
+    "theoremCount": 21,
+    "definitionCount": 9
+  },
+  "overview": {
+    "historicalContext": "The Knaster–Tarski fixed point theorem (Knaster 1928, Tarski 1955) states that a monotone self-map of a complete lattice has both a least and a greatest fixed point. The standard Knaster–Tarski proof of Schroeder–Bernstein uses the least fixed point of the operator T(S) = (range g)ᶜ ∪ g''(f''S) to partition the domain. But the greatest fixed point is just as good a partition, and the gap between them illuminates the classical orbit decomposition: the bi-infinite (ℤ-indexed) orbits of g∘f, which the least fixed point resolves 'towards A' and the greatest resolves 'towards B'.",
+    "problemStatement": "Entry schroeder-bernstein-oq-02 formalizes the Knaster–Tarski proof using lfp(T). Its open question: is the greatest fixed point gfp(T) equally useful, and what is gfp(T) ∖ lfp(T) geometrically?\n\n**Answer:** Yes, and more — every fixed point works. The parent's bijection lemmas use only T(S) = S, so they apply verbatim to gfp. The difference D = gfp ∖ lfp is precisely the set on which φ = g∘f acts as a bijection (no sources since D ⊆ range g, no sinks since every point has a φ-predecessor in D): the union of the bi-infinite chains.",
+    "text": "Every fixed point of the Knaster–Tarski CBS operator — least, greatest, or any in between — yields a Schroeder–Bernstein bijection by the same piecewise formula. The greatest fixed point gives an equally valid proof, and gfp ∖ lfp is exactly the set on which g∘f acts bijectively: the bi-infinite chains. Verified in Lean with no axioms.",
+    "proofStrategy": "1. Re-introduce the operator cbsOp, its monotonicity, and the bundled OrderHom cbsHom (as in OQ-02).\n2. Generalize the parent's construction to an arbitrary fixed point: for any S with cbsOp f g S = S, prove (range g)ᶜ ⊆ S, S-complement ⊆ range g, g''(f''S) ⊆ S, and g b ∈ S → b ∈ f''S; then define the piecewise map bijFP and prove it injective (needs only f injective) and surjective (needs only g injective), packaged as equivFP : α ≃ β.\n3. Instantiate at lfp and gfp: lfpSet_fp = map_lfp, gfpSet_fp = map_gfp give both as fixed points; gfp_equiv / gfp_schroeder_bernstein are the gfp instances, lfp_equiv the parent's lfp instance.\n4. Order: lfpSet ⊆ gfpSet via le_gfp, so gfp = lfp ∪ D with D = gfp ∖ lfp.\n5. Geometry of D: D ⊆ range g (no sources, since (range g)ᶜ ⊆ lfp); φ = g∘f maps D into D (closure on gfp, plus g b ∈ lfp → b ∈ f''lfp rules out landing in lfp); every point of D has a φ-predecessor in D (it lies in g''(f''gfp) and the predecessor cannot be in lfp). Combined with injectivity of f and g, φ restricts to a bijection D → D (diffSet_gf_bijOn).\n6. lfp = gfp iff D = ∅ (no bi-infinite chains).",
+    "keyInsights": [
+      "**Minimality was never used**: the parent's entire bijection argument rests on the single equation T(S) = S, injectivity of f, and injectivity of g. Abstracting the fixed point S turns one proof into a theorem schema with lfp and gfp as two instances — the cleanest possible answer to 'is gfp equally useful?'.",
+      "**The difference is a dynamical object**: gfp ∖ lfp is not an arbitrary set — φ = g∘f acts on it as a bijection. There are no sources (every point is in range g, so has a φ-image landing back in D) and no sinks (every point has a φ-preimage in D). That is exactly the structure of a disjoint union of bi-infinite chains.",
+      "**Sources live in the least fixed point**: (range g)ᶜ — the points with no g-preimage, the 'A-stoppers' of the orbit decomposition — are forced into lfp by the fixed-point equation, so they can never appear in the difference. lfp captures the chains that start at a source; gfp adds the chains that have no start.",
+      "**Predecessors need no injectivity**: that every point of D has a φ-predecessor in D follows purely from the two fixed-point equations (for lfp and gfp); injectivity is needed only to upgrade 'has a predecessor' to 'acts bijectively'."
+    ],
+    "prerequisites": [
+      "The Knaster–Tarski fixed point theorem (least and greatest fixed points on a complete lattice)",
+      "The Knaster–Tarski proof of Schroeder–Bernstein (entry schroeder-bernstein-oq-02)",
+      "Set operations: image, range, complement, difference in Mathlib",
+      "Injective/surjective/bijective functions; Set.BijOn"
+    ]
+  },
+  "sections": [
+    {
+      "id": "operator",
+      "title": "The Monotone Operator",
+      "startLine": 1,
+      "endLine": 70,
+      "summary": "File docstring framing the open question and answer. Re-introduces cbsOp T(S) = (range g)ᶜ ∪ g''(f''S), its monotonicity, and the bundled OrderHom cbsHom enabling both lfp and gfp.",
+      "mathContext": "The CBS operator on the complete lattice Set α, as in OQ-02."
+    },
+    {
+      "id": "any-fixed-point",
+      "title": "A Bijection from Any Fixed Point",
+      "startLine": 72,
+      "endLine": 165,
+      "summary": "The crux generalization: for any S with cbsOp f g S = S, the parent's lemmas (compl_range_subset_fp, mem_range_of_not_mem_fp, gf_image_subset_fp, gf_mem_fp, mem_fimage_of_gb_mem_fp, gb_not_mem_fp) are re-derived from the fixed-point equation alone. The piecewise map bijFP is injective (needs only f injective) and surjective (needs only g injective), packaged as equivFP : α ≃ β.",
+      "mathContext": "Every fixed point of T yields a Schroeder–Bernstein bijection — minimality is not used."
+    },
+    {
+      "id": "lfp-gfp",
+      "title": "The Least and Greatest Fixed Points",
+      "startLine": 167,
+      "endLine": 199,
+      "summary": "lfpSet = lfp(T), gfpSet = gfp(T); both are fixed points (map_lfp, map_gfp), so both feed equivFP. gfp_equiv / gfp_schroeder_bernstein are the greatest-fixed-point bijection; lfp_equiv re-exhibits the parent's least-fixed-point bijection — two instances of one theorem.",
+      "mathContext": "lfp and gfp are both Knaster–Tarski fixed points, hence both give the bijection."
+    },
+    {
+      "id": "geometry",
+      "title": "The Geometry of gfp ∖ lfp",
+      "startLine": 201,
+      "endLine": 266,
+      "summary": "D = gfp ∖ lfp, and gfp = lfp ∪ D. D ⊆ range g (no sources); φ = g∘f maps D into D; every point of D has a φ-predecessor in D; hence φ restricts to a bijection of D (diffSet_gf_bijOn) — the bi-infinite chains. lfp = gfp iff D = ∅.",
+      "mathContext": "gfp ∖ lfp is the maximal set on which g∘f acts bijectively: the union of bi-infinite chains."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Tarski, Alfred",
+      "title": "A lattice-theoretical fixpoint theorem and its applications",
+      "year": "1955",
+      "note": "Pacific J. Math. 5, 285–309 — least and greatest fixed points of monotone maps on complete lattices"
+    },
+    {
+      "authors": "Knaster, Bronisław",
+      "title": "Un théorème sur les fonctions d'ensembles",
+      "year": "1928",
+      "note": "Ann. Soc. Polon. Math. 6, 133–134 — the original set-theoretic fixed point theorem"
+    },
+    {
+      "authors": "Hinkis, Arie",
+      "title": "Proofs of the Cantor–Bernstein Theorem",
+      "year": "2013",
+      "note": "Birkhäuser — survey of Schroeder–Bernstein proofs, including the fixed-point and orbit-decomposition variants"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "schroeder-bernstein-oq-02",
+      "relation": "Parent entry: the Knaster–Tarski (least fixed point) proof whose open question — is gfp equally useful, and what is gfp ∖ lfp — this entry answers."
+    },
+    {
+      "slug": "schroeder-bernstein",
+      "relation": "The base Schroeder–Bernstein gallery entry."
+    }
+  ],
+  "conclusion": {
+    "summary": "Every fixed point of the Knaster–Tarski CBS operator T(S) = (range g)ᶜ ∪ g''(f''S) yields a Schroeder–Bernstein bijection by the piecewise formula, since the construction uses only the fixed-point equation and injectivity of f and g — so the greatest fixed point gives an equally valid proof (gfp_equiv, gfp_schroeder_bernstein), with the parent's least-fixed-point bijection re-exhibited as the lfp instance. The difference D = gfp ∖ lfp is exactly the set on which φ = g∘f acts bijectively (diffSet_gf_bijOn): no sources (D ⊆ range g) and no sinks (every point has a φ-predecessor in D) — the union of the bi-infinite chains. All results verified with 0 axioms and 0 sorries.",
+    "implications": "Recasts the Knaster–Tarski proof as a theorem schema parametrized by the fixed point, with lfp and gfp as two instances, and gives the precise dynamical meaning of the gap between them — the bi-infinite g∘f-orbits of the classical Schroeder–Bernstein orbit decomposition.",
+    "openQuestions": [
+      "Can the in-between fixed points (between lfp and gfp) be parametrized by subsets of the set of bi-infinite chains, exhibiting the full lattice of CBS bijections?",
+      "Does the bijection D ≃ D induced by φ = g∘f decompose D canonically into its ℤ-indexed chains, recovering the orbit decomposition proof of Schroeder–Bernstein from the fixed-point proof?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Order.FixedPoints",
+      "Mathlib.Data.Set.Lattice",
+      "Mathlib.Logic.Equiv.Defs",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Classical",
+      "Function"
+    ],
+    "namespace": "KnasterTarskiGFP",
+    "lineCount": 266,
+    "axiomCount": 0,
+    "theoremCount": 21,
+    "definitionCount": 9,
+    "path": "Proofs/SchroederBernsteinOQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
