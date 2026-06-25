@@ -1,0 +1,152 @@
+{
+  "id": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+  "title": "Necklace Burnside Sum in Divisor Form: ∑ k^{gcd(n,r)} = ∑_{d∣n} φ(n/d)·k^d",
+  "slug": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+  "description": "Pushes the parent's integer-form cyclic Burnside total ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n to the standard number-theoretic divisor form ∑_{d∣n} φ(n/d)·k^d by grouping the n rotations according to their cycle count. The mechanism is fiber-counting along r ↦ gcd(n,r): each value d is a divisor of n (Nat.gcd_dvd_left), the residues r ∈ [0,n) with gcd(n,r) = d are exactly the multiples d·s with gcd(n/d, s) = 1, and there are φ(n/d) of them — Mathlib's Nat.totient_div_of_dvd, the same combinatorial input that underlies Gauss's ∑_{d∣n} φ(d) = n. (D) Range form ∑_{r∈range n} k^{gcd(n,r)} = ∑_{d∣n} φ(n/d)·k^d via Finset.sum_fiberwise_of_maps_to' (each fiber constant k^d, cardinality φ(n/d)); (E) the same over ZMod n via the bijection ZMod.val : ZMod n ≃ range n; (F) combining (E) with the parent's (C) gives the textbook (#necklaces)·n = ∑_{d∣n} φ(n/d)·k^d.",
+  "meta": {
+    "author": "Cauchy–Frobenius–Burnside / Gauss (totient divisor sum); formalized via Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Necklace_(combinatorics)",
+    "date": "1887",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BurnsideCountingOQ03OQ02OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "group-theory",
+      "number-theory",
+      "necklaces",
+      "burnside",
+      "orbit-counting",
+      "cyclic-group",
+      "gcd",
+      "totient",
+      "divisor-sum",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 sorries, 0 literal `axiom` declarations, 0 structure-encoded assumptions. Fully machine-checked: all three theorems (sum_range_pow_gcd_eq_sum_divisors, sum_pow_gcd_eq_sum_divisors_totient, card_necklaces_mul_eq_sum_divisors) depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). No native_decide is used.",
+    "dateAdded": "2026-06-25",
+    "lineCount": 105,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.totient_div_of_dvd",
+        "description": "For d ∣ n, φ(n/d) = #{k ∈ range n | gcd(n,k) = d}; supplies the cardinality of each gcd-fiber — the combinatorial heart of the divisor form and of Gauss's ∑_{d∣n} φ(d) = n",
+        "module": "Mathlib.Data.Nat.Totient"
+      },
+      {
+        "theorem": "Finset.sum_fiberwise_of_maps_to'",
+        "description": "∑_{j∈t} ∑_{i∈s, g i = j} f j = ∑_{i∈s} f(g i); regroups range n along g = gcd(n,·) into divisor-indexed fibers on which the summand k^{g i} is the constant k^d",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_bij'",
+        "description": "Reindexes a finite sum along an explicit bijection with inverse; used with ZMod.val / Nat.cast to transport the range-n identity to a sum over ZMod n",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Defs"
+      },
+      {
+        "theorem": "ZMod.val_natCast_of_lt / ZMod.natCast_zmod_val",
+        "description": "The mutually-inverse maps witnessing ZMod n ≃ range n for NeZero n: (↑(r.val)) = r and (↑i).val = i for i < n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "BurnsideCountingOQ03OQ02OQ01.sum_pow_gcd_eq_card_necklaces_mul",
+        "description": "The parent's integer-form Burnside total ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n, combined with the divisor identity to obtain the necklace count in closed divisor form (F)",
+        "module": "Proofs.BurnsideCountingOQ03OQ02OQ01"
+      }
+    ],
+    "originalContributions": [
+      "sum_range_pow_gcd_eq_sum_divisors (D): ∑_{r∈range n} k^{gcd(n,r)} = ∑_{d∣n} φ(n/d)·k^d — regroup range n along r ↦ gcd(n,r) (values in n.divisors via Nat.gcd_dvd_left) with Finset.sum_fiberwise_of_maps_to', collapse each constant fiber by Finset.sum_const, and read its cardinality off Nat.totient_div_of_dvd",
+      "sum_pow_gcd_eq_sum_divisors_totient (E): the divisor identity over ZMod n, transported from (D) by Finset.sum_bij' along the bijection ZMod.val : ZMod n ≃ range n (inverse Nat.cast, with ZMod.val_lt / val_natCast_of_lt / natCast_zmod_val)",
+      "card_necklaces_mul_eq_sum_divisors (F): (#necklaces up to rotation)·n = ∑_{d∣n} φ(n/d)·k^d — combine (E) with the parent's integer-form Burnside total, yielding the textbook cyclic necklace count (1/n)·∑_{d∣n} φ(n/d) k^d as a divisor sum rather than a sum over all n rotations"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The number of k-colored n-bead necklaces up to rotation is the canonical first application of Burnside's lemma, (1/n)·Σ_{r∈Z/n} k^{gcd(n,r)}. Collecting the n rotations by their cycle count d = gcd(n,r) rewrites this in the closed divisor form (1/n)·Σ_{d∣n} φ(n/d) k^d, the version found in every combinatorics text. The reindexing rests on a single number-theoretic fact: among the residues 0,…,n−1, exactly φ(n/d) have gcd d with n — the same counting Gauss used to prove Σ_{d∣n} φ(d) = n. The parent entry burnside-counting-oq-03-oq-02-oq-01 proved the cyclic cycle-count cyc(rotation r) = gcd(n,r) and assembled the integer-form total Σ_r k^{gcd(n,r)} = (#necklaces)·n, and explicitly asked (openQuestions[1]) to push it to the divisor form. This entry supplies that step.",
+    "problemStatement": "Prove (D) Σ_{r∈range n} k^{gcd(n,r)} = Σ_{d∣n} φ(n/d)·k^d; (E) the same identity with the sum taken over r : ZMod n via r.val; and (F) that the parent's Burnside total equals the divisor sum, i.e. (#necklaces up to rotation)·n = Σ_{d∣n} φ(n/d)·k^d.",
+    "proofStrategy": "**(D) Range form.** The map g : r ↦ gcd(n,r) sends range n into n.divisors (gcd(n,r) ∣ n by Nat.gcd_dvd_left, and gcd ≠ 0 since n > 0). Apply Finset.sum_fiberwise_of_maps_to' with this g and the weight f d = k^d: it rewrites Σ_{r∈range n} k^{gcd(n,r)} = Σ_{r∈range n} f(g r) as Σ_{d∈n.divisors} Σ_{r∈range n, gcd(n,r)=d} k^d. The inner sum is over a fiber on which the summand is the constant k^d, so Finset.sum_const turns it into #(fiber)·k^d, and Nat.totient_div_of_dvd identifies #{r∈range n | gcd(n,r)=d} = φ(n/d). Each term becomes φ(n/d)·k^d.\n\n**(E) ZMod form.** For NeZero n, ZMod.val is a bijection from univ : Finset (ZMod n) onto range n with inverse Nat.cast. Finset.sum_bij' with forward map r ↦ r.val (membership ZMod.val_lt), inverse i ↦ (↑i) (membership trivial), the two round-trips ZMod.natCast_zmod_val and ZMod.val_natCast_of_lt, and value-equality by rfl transports (D) to Σ_{r:ZMod n} k^{gcd(n,r.val)} = Σ_{d∣n} φ(n/d)·k^d.\n\n**(F) Necklace count.** Rewrite the parent's sum_pow_gcd_eq_card_necklaces_mul (Σ_{r:ZMod n} k^{gcd(n,r.val)} = (#necklaces)·n) backwards and apply (E) to its left-hand side.",
+    "keyInsights": [
+      "**The divisor form is pure fiber-counting.** Σ_r k^{gcd(n,r)} = Σ_{d∣n} (#{r : gcd(n,r)=d})·k^d is just the partition of range n by the value of gcd(n,·); the only non-formal ingredient is that each fiber has φ(n/d) elements.",
+      "**Gauss's lemma is the engine.** Nat.totient_div_of_dvd (#{k<n : gcd(n,k)=d} = φ(n/d) for d∣n) is exactly the fiber count that proves Σ_{d∣n} φ(d) = n; here it converts the Burnside sum into the textbook totient-weighted divisor sum.",
+      "**ZMod n ≃ range n bridges the two phrasings.** The parent works over ZMod n (residues r.val), the number theory is cleanest over range n; Finset.sum_bij' along ZMod.val moves the identity between them with no recomputation.",
+      "**One reduction subsumes n separate terms.** Where the integer-form total sums over all n rotations, the divisor form sums over only the divisors of n, weighting by totients — the closed expression used in practice."
+    ],
+    "prerequisites": [
+      "The parent entry's cyc(rotation r) = gcd(n,r) and integer-form Burnside total (burnside-counting-oq-03-oq-02-oq-01)",
+      "Euler's totient and the gcd-fiber count Nat.totient_div_of_dvd (the core of Gauss's Σ_{d∣n} φ(d) = n)",
+      "Finite-sum fiberwise regrouping (Finset.sum_fiberwise_of_maps_to') and constant-summand collapse (Finset.sum_const)",
+      "Reindexing a finite sum along a bijection (Finset.sum_bij') and the ZMod n ≃ range n maps (ZMod.val, ZMod.val_natCast_of_lt, ZMod.natCast_zmod_val)"
+    ],
+    "what": "The closed divisor-sum form of the cyclic necklace count: Σ_{r} k^{gcd(n,r)} = Σ_{d∣n} φ(n/d)·k^d, both over range n and over ZMod n, and the resulting (#necklaces up to rotation)·n = Σ_{d∣n} φ(n/d)·k^d.",
+    "how": "Group the residues by the value of gcd(n,·) into divisor-indexed fibers (Finset.sum_fiberwise_of_maps_to'), collapse each constant fiber to #(fiber)·k^d, count the fiber by Nat.totient_div_of_dvd = φ(n/d), transport to ZMod n via Finset.sum_bij' along ZMod.val, and combine with the parent's Burnside total.",
+    "significance": "Answers the parent entry's openQuestions[1] verbatim — converting the integer-form cyclic Burnside total into the standard closed expression Σ_{d∣n} φ(n/d) k^d that appears in every treatment of necklace counting. It grounds the textbook formula in the same Burnside machinery the parent chain built, exhibiting it as a totient-reindexing of one orbit-count rather than a separate derivation, and ties the gallery's group-theoretic necklace count to Gauss's divisor-sum identity for the totient."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Results",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module docstring: the parent's request to push the integer-form Burnside total to divisor form, and the three results — (D) the range-form identity Σ_{r<n} k^{gcd(n,r)} = Σ_{d∣n} φ(n/d) k^d, (E) its ZMod n version, and (F) the necklace count (#necklaces)·n = Σ_{d∣n} φ(n/d) k^d.",
+      "mathContext": "$\\sum_{r} k^{\\gcd(n,r)} = \\sum_{d\\mid n} \\varphi(n/d)\\,k^d$"
+    },
+    {
+      "id": "divisor-form",
+      "title": "Section I: (D) The Divisor-Sum Identity over range n",
+      "startLine": 47,
+      "endLine": 65,
+      "summary": "sum_range_pow_gcd_eq_sum_divisors: regroup range n along r ↦ gcd(n,r) (values in n.divisors) with Finset.sum_fiberwise_of_maps_to', collapse each constant fiber by Finset.sum_const, and identify the cardinality #{r∈range n | gcd(n,r)=d} = φ(n/d) via Nat.totient_div_of_dvd.",
+      "mathContext": "$\\sum_{r\\in[0,n)} k^{\\gcd(n,r)} = \\sum_{d\\mid n} \\varphi(n/d)\\,k^d$"
+    },
+    {
+      "id": "zmod-form",
+      "title": "Section II: (E) The Identity over ZMod n",
+      "startLine": 67,
+      "endLine": 86,
+      "summary": "sum_pow_gcd_eq_sum_divisors_totient: transport (D) along the bijection ZMod.val : ZMod n ≃ range n using Finset.sum_bij' (forward r.val with ZMod.val_lt, inverse Nat.cast, round-trips ZMod.natCast_zmod_val and ZMod.val_natCast_of_lt).",
+      "mathContext": "$\\sum_{r:\\mathbb{Z}/n} k^{\\gcd(n,r.\\mathrm{val})} = \\sum_{d\\mid n} \\varphi(n/d)\\,k^d$"
+    },
+    {
+      "id": "necklace-divisor-form",
+      "title": "Section III: (F) Necklace Count in Divisor Form",
+      "startLine": 88,
+      "endLine": 105,
+      "summary": "card_necklaces_mul_eq_sum_divisors: combine (E) with the parent's integer-form Burnside total sum_pow_gcd_eq_card_necklaces_mul to obtain (#necklaces up to rotation)·n = Σ_{d∣n} φ(n/d)·k^d, the textbook cyclic necklace count as a divisor sum.",
+      "mathContext": "$\\#\\text{necklaces}\\cdot n = \\sum_{d\\mid n} \\varphi(n/d)\\,k^d$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Converts the parent's integer-form cyclic Burnside total Σ_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n into the standard closed divisor form Σ_{d∣n} φ(n/d)·k^d. The range-form identity (D) groups range n by the value of gcd(n,·) into divisor-indexed fibers (Finset.sum_fiberwise_of_maps_to'), each constant k^d with cardinality φ(n/d) (Nat.totient_div_of_dvd); (E) transports it to ZMod n via the bijection ZMod.val (Finset.sum_bij'); (F) combines (E) with the parent's total to give (#necklaces)·n = Σ_{d∣n} φ(n/d)·k^d. Fully verified with 0 sorries and 0 axioms.",
+    "implications": "Answers the parent entry's openQuestions[1] verbatim — the textbook divisor-sum formula for k-colored necklaces, (1/n)·Σ_{d∣n} φ(n/d) k^d, now a totient-reindexing of the parent's single orbit-count rather than a separate computation. It links the gallery's group-theoretic necklace machinery to Gauss's classical divisor-sum identity for Euler's totient through the shared fiber-counting lemma Nat.totient_div_of_dvd.",
+    "openQuestions": [
+      "Specialize the divisor form at k = 1 (and combine with the parent chain) to recover Gauss's identity Σ_{d∣n} φ(d) = n as a corollary of the necklace count, closing the loop between Burnside averaging and the totient divisor sum.",
+      "Establish the Möbius-inverse aperiodic-necklace (Lyndon word) count (1/n)·Σ_{d∣n} μ(d) k^{n/d} alongside the totient form, exhibiting both classical closed expressions within the same Burnside framework."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "xref-burnside-oq030201-parent",
+      "targetId": "burnside-counting-oq-03-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent's openQuestions[1]: push the integer-form cyclic Burnside total Σ_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n to the divisor form Σ_{d∣n} φ(n/d)·k^d. Reuses the parent's sum_pow_gcd_eq_card_necklaces_mul directly for result (F)."
+    },
+    {
+      "id": "xref-burnside-oq0302",
+      "targetId": "burnside-counting-oq-03-oq-02",
+      "relationship": "specializes",
+      "description": "Grandparent's group-agnostic master formula |Fix(g)| = k^{cyc(g)} drives the whole chain; this entry expresses its cyclic Burnside average in the closed totient-divisor form used in textbooks."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 105,
+    "path": "Proofs/BurnsideCountingOQ03OQ02OQ01OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 3
+  },
+  "sorries": 0
+}
