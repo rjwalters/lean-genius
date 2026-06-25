@@ -1,0 +1,195 @@
+{
+  "id": "erdos-1168-oq-01",
+  "title": "ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀}: the elementary ZFC lower bound on the singular-cardinal power",
+  "slug": "erdos-1168-oq-01",
+  "description": "König's theorem gives the elementary half of Shelah's famous pcf bound on ℵ_ω^{ℵ₀}: the ZFC inequalities ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, isolating the general singular cardinal inequality κ⁺ ≤ κ^{cf κ}. Follow-up oq-01 of Erdős #1168 (encode pcf theory in Lean 4). 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "König / Shelah (context)",
+    "sourceUrl": "https://erdosproblems.com/1168",
+    "erdosUrl": "https://erdosproblems.com/1168",
+    "date": "1905",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1168OQ01.lean",
+    "tags": [
+      "set-theory",
+      "cardinal-arithmetic",
+      "pcf-theory",
+      "singular-cardinals",
+      "koenig-theorem",
+      "cofinality",
+      "open-conjecture-followup"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 169,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "assumptions": "0 axioms, 0 sorries. Self-contained: rebuilds the small ℵ_ω cardinal infrastructure it needs (the parent Erdos1168Problem.lean has API drift under Mathlib 4.26). Uses only Mathlib's König cofinality consequences (Cardinal.lt_power_cof, Cardinal.lt_cof_power) and standard cardinal arithmetic.",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-24",
+    "prerequisites": [
+      "Cardinal arithmetic and cardinal exponentiation",
+      "Cofinality of ordinals/cardinals (Cardinal.cof)",
+      "König's theorem for cardinals (sum < product)",
+      "The aleph hierarchy and successor cardinals",
+      "Singular vs regular cardinals (cf ℵ_ω = ℵ₀)"
+    ],
+    "originalContributions": [
+      "succ_le_power_cof: the general singular cardinal inequality κ⁺ ≤ κ^{cf κ} for every infinite cardinal, the elementary engine underlying pcf theory (not packaged in Mathlib as a successor bound).",
+      "aleph_omega_succ_le_power: the headline ZFC lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} — the elementary half of Shelah's pcf bound ℵ_ω^{ℵ₀} < ℵ_{ω₄}, specialized from König at the first singular cardinal.",
+      "power_le_two_pow_aleph_omega: the matching upper bound ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω} via cardinal absorption ℵ_ω · ℵ₀ = ℵ_ω.",
+      "aleph_omega_power_interval: traps ℵ_ω^{ℵ₀} in the explicit ZFC interval [ℵ_{ω+1}, 2^{ℵ_ω}] that pcf theory refines from above.",
+      "aleph0_lt_cof_power: cf(ℵ_ω^{ℵ₀}) > ℵ₀ — the countable power of ℵ_ω itself has uncountable cofinality (König via Cardinal.lt_cof_power).",
+      "Fully axiom-free: a sibling gallery file (CantorDiagonalizationOQ01) axiomatizes König's continuum cofinality bound; this entry uses the provable Mathlib form instead."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.lt_power_cof",
+        "description": "König's theorem consequence: ℵ₀ ≤ c → c < c ^ c.ord.cof. The source of the strict singular inequality.",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Cardinal.lt_cof_power",
+        "description": "König's theorem consequence: a < (b ^ a).ord.cof for ℵ₀ ≤ a, 1 < b. Gives uncountable cofinality of the power.",
+        "module": "Mathlib.SetTheory.Cardinal.Cofinality"
+      },
+      {
+        "theorem": "Cardinal.aleph_succ",
+        "description": "ℵ_(succ o) = succ (ℵ_o): the successor cardinal identity, used to rewrite ℵ_{ω+1} as Order.succ ℵ_ω.",
+        "module": "Mathlib.SetTheory.Cardinal.Aleph"
+      },
+      {
+        "theorem": "Cardinal.mul_eq_max",
+        "description": "ℵ₀ ≤ a, ℵ₀ ≤ b → a * b = max a b: cardinal absorption used for ℵ_ω · ℵ₀ = ℵ_ω.",
+        "module": "Mathlib.SetTheory.Cardinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.cantor",
+        "description": "a < 2 ^ a: Cantor's theorem, giving ℵ_ω ≤ 2^{ℵ_ω} for the upper bound.",
+        "module": "Mathlib.SetTheory.Cardinal.Order"
+      }
+    ],
+    "relatedProblems": [
+      {
+        "id": "erdos-1168",
+        "relationship": "**Parent problem — the conceptual source, whose cardinal infrastructure this entry independently re-derives and extends.** Erdős #1168 asks for a ZFC (non-GCH) proof of the negative partition relation ℵ_{ω+1} ↛ (ℵ_{ω+1}, 3, …)²_{ℵ₀}, a problem whose difficulty is exactly the singular-cardinal nature of ℵ_ω. The parent file states cf(ℵ_ω) = ℵ₀, ℵ_ω < ℵ_{ω+1}, and that ℵ_{ω+1} is regular. This follow-up re-derives the needed facts (aleph_omega, aleph_omega_succ, cf ℵ_ω = ℵ₀) self-contained — the parent currently has API drift under Mathlib 4.26 — and uses them to pin the cardinal arithmetic of ℵ_ω^{ℵ₀}, the quantity pcf theory bounds. Where the parent documents 'pcf theory (Shelah) provides powerful ZFC tools' in prose, this entry formalizes the first concrete pcf-relevant ZFC bound."
+      },
+      {
+        "id": "cantor-diagonalization-oq-01-oq-01-oq-03",
+        "relationship": "**Sibling König application — same theorem, axiom-free here.** That entry's continuum analysis uses an `axiom konig_cofinality_bound : ℵ₀ < (2^{ℵ₀}).ord.cof` to rule out 2^{ℵ₀} = ℵ_ω. The present entry shows that the very same König cofinality fact is provable in Mathlib (`Cardinal.lt_cof_power`, `Cardinal.lt_power_cof`) and uses the provable form throughout, giving a 0-axiom companion that closes the same cofinality gap at the singular cardinal ℵ_ω."
+      },
+      {
+        "id": "continuum-hypothesis-oq-01",
+        "relationship": "**Cardinal exponentiation under cofinality constraints.** CH-adjacent entries study the value of 2^{ℵ₀} subject to König's constraint cf(2^{ℵ₀}) > ℵ₀. This entry studies the dual quantity ℵ_ω^{ℵ₀} (power of a singular base by ℵ₀ rather than power of 2 by a regular base), where König forces strict growth ℵ_ω < ℵ_ω^{ℵ₀} because the *exponent* equals the cofinality of the base."
+      }
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Arithmetic",
+      "Mathlib.SetTheory.Cardinal.Aleph",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Cardinal",
+      "Ordinal"
+    ],
+    "namespace": "Erdos1168OQ01",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 2,
+    "path": "Proofs/Erdos1168OQ01.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "König's theorem (Julius König, 1905) — that the sum of a strictly increasing sequence of cardinals is strictly less than their product — has as its central corollary the cofinality inequality κ < κ^{cf κ}, equivalently cf(2^κ) > κ. This was the first nontrivial ZFC constraint on infinite cardinal exponentiation and remains the only general one for regular cardinals. The arithmetic of *singular* cardinals — those κ with cf(κ) < κ, the first being ℵ_ω with cf(ℵ_ω) = ℵ₀ — turned out to be far richer and far harder. For decades it was unknown whether ZFC alone bounds ℵ_ω^{ℵ₀} above; under GCH it equals ℵ_{ω+1}, but GCH-free the question was wide open. Saharon Shelah's pcf theory (possible cofinalities, developed across the 1970s–1990s) produced the celebrated ZFC bound ℵ_ω^{ℵ₀} < ℵ_{ω₄}, one of the deepest results in modern set theory. The lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀}, by contrast, has always been the easy half — it is immediate from König's 1905 theorem applied at ℵ_ω. This entry formalizes that elementary half, locating the bottom of the interval [ℵ_{ω+1}, 2^{ℵ_ω}] inside which Shelah's machinery operates.",
+    "problemStatement": "Open question oq-01 of Erdős #1168 asks to encode pcf theory in Lean 4 using Mathlib's ordinal/cardinal infrastructure. As a concrete, verifiable first step, this entry formalizes the elementary cardinal-arithmetic bounds on the canonical pcf object ℵ_ω^{ℵ₀}: prove in ZFC (no GCH) that ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, together with the general singular cardinal inequality κ⁺ ≤ κ^{cf κ} it specializes, and the König corollary cf(ℵ_ω^{ℵ₀}) > ℵ₀.",
+    "proofStrategy": "The whole development hangs off Mathlib's König consequence `Cardinal.lt_power_cof : ℵ₀ ≤ c → c < c ^ c.ord.cof`. (1) Generalized inequality: `succ_le_power_cof` applies `Order.succ_le_of_lt` to König to get κ⁺ ≤ κ^{cf κ} for any infinite κ. (2) Specialization: cf(ℵ_ω) = ℵ₀ (parent's `aleph_omega_cof`) rewrites König at ℵ_ω into ℵ_ω < ℵ_ω^{ℵ₀}; identifying ℵ_{ω+1} = Order.succ ℵ_ω (via `Cardinal.aleph_succ`) yields the headline ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀}. (3) Upper bound: monotonicity ℵ_ω^{ℵ₀} ≤ (2^{ℵ_ω})^{ℵ₀} = 2^{ℵ_ω·ℵ₀} = 2^{ℵ_ω}, the last step by the absorption ℵ_ω·ℵ₀ = ℵ_ω (`Cardinal.mul_eq_max` + `max_eq_left`). (4) Cofinality corollary: `Cardinal.lt_cof_power` at base ℵ_ω, exponent ℵ₀ gives cf(ℵ_ω^{ℵ₀}) > ℵ₀.",
+    "keyInsights": [
+      "The exponent ℵ₀ in ℵ_ω^{ℵ₀} equals the cofinality of the base ℵ_ω — this is exactly the hypothesis König's theorem needs to force *strict* growth κ < κ^{cf κ}. The strictness is what makes singular cardinal arithmetic nontrivial: a singular cardinal is never closed under exponentiation by its own cofinality.",
+      "The famous pcf bound is a sandwich: ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω} in ZFC, with Shelah's deep theorem ℵ_ω^{ℵ₀} < ℵ_{ω₄} sharpening the right end. This entry formalizes both elementary ends; only the ℵ_{ω₄} refinement requires the full pcf machinery.",
+      "The lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} is GCH-free, while the *value* ℵ_ω^{ℵ₀} = ℵ_{ω+1} requires GCH. The gap between 'ℵ_{ω+1} is a lower bound' (a 1905 theorem) and 'ℵ_{ω+1} is the value' (independent of ZFC) is precisely where pcf theory lives.",
+      "The successor bound κ⁺ ≤ κ^{cf κ} is the cleanest way to state the elementary content: for regular κ it degenerates to κ⁺ ≤ κ^κ = 2^κ, but for singular κ it is a genuine and sharp constraint linking the successor cardinal to a *small* power (exponent cf κ < κ).",
+      "cf(ℵ_ω^{ℵ₀}) > ℵ₀ shows the power is not merely large but structurally constrained: it can never be a cardinal of countable cofinality. In particular ℵ_ω^{ℵ₀} ≠ ℵ_{ω·2}, ≠ ℵ_{ω²}, ≠ ℵ_{ω^ω}, etc. — any aleph with a countable cofinal sequence is excluded.",
+      "Axiom hygiene matters at the set-theoretic frontier: the same König cofinality fact that a sibling gallery file took as an axiom is in fact a Mathlib theorem. Replacing the axiom with `Cardinal.lt_power_cof`/`Cardinal.lt_cof_power` keeps this entry honestly 0-axiom while covering strictly more (the singular base ℵ_ω, not just the continuum)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "imports-context",
+      "title": "Imports and pcf Context",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Module docstring framing the entry as the elementary half of Shelah's ℵ_ω^{ℵ₀} < ℵ_{ω₄} pcf bound, and imports of Mathlib cofinality/arithmetic/aleph modules. Self-contained (the parent Erdős #1168 file has API drift).",
+      "mathContext": "pcf theory studies the cardinal arithmetic of singular cardinals; its flagship result bounds ℵ_ω^{ℵ₀} above by ℵ_{ω₄} in ZFC. This file imports `Mathlib.SetTheory.Cardinal.Cofinality` (for `lt_power_cof`, `lt_cof_power`), `Cardinal.Aleph`, and `Ordinal.Arithmetic`, and rebuilds the small ℵ_ω infrastructure it needs."
+    },
+    {
+      "id": "cardinal-infrastructure",
+      "title": "Part 0: Cardinal Infrastructure for ℵ_ω",
+      "startLine": 49,
+      "endLine": 79,
+      "summary": "Defines aleph_omega = ℵ_ω and aleph_omega_succ = ℵ_{ω+1}, and proves aleph_omega_succ_eq_succ (ℵ_{ω+1} = succ ℵ_ω), aleph0_lt_aleph_omega (ℵ₀ < ℵ_ω), and the singularity aleph_omega_cof (cf ℵ_ω = ℵ₀).",
+      "mathContext": "cf(ℵ_ω) = ℵ₀ is proved via `Cardinal.ord_aleph` ((ℵ_o).ord = ω_o), `Cardinal.cof_omega` ((ω_o).cof = o.cof at a limit), and `Cardinal.cof_omega0` (cof ω = ℵ₀). The successor identity uses `Cardinal.aleph_succ`."
+    },
+    {
+      "id": "general-inequality",
+      "title": "Part I: The General Singular Cardinal Inequality",
+      "startLine": 81,
+      "endLine": 100,
+      "summary": "Records König's inequality κ < κ^{cf κ} (lt_power_cof_of_aleph0_le) and derives the successor form κ⁺ ≤ κ^{cf κ} (succ_le_power_cof) for every infinite cardinal.",
+      "mathContext": "`Cardinal.lt_power_cof` is König's theorem in cofinality form: ℵ₀ ≤ c ⟹ c < c^{cf c}. Applying `Order.succ_le_of_lt` (the defining property of the successor cardinal) yields succ c ≤ c^{cf c}. For regular c this is c⁺ ≤ 2^c; for singular c it is the basic constraint of pcf theory."
+    },
+    {
+      "id": "specialization",
+      "title": "Part II: Specialization to ℵ_ω",
+      "startLine": 102,
+      "endLine": 122,
+      "summary": "Specializes to ℵ_ω: aleph_omega_lt_power (ℵ_ω < ℵ_ω^{ℵ₀}) and the headline aleph_omega_succ_le_power (ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀}).",
+      "mathContext": "Rewriting cf(ℵ_ω) = ℵ₀ (`aleph_omega_cof`) into König's inequality gives ℵ_ω < ℵ_ω^{ℵ₀}. The identity ℵ_{ω+1} = Order.succ ℵ_ω (`aleph_omega_succ_eq_succ`) combined via `Order.succ_le_of_lt` delivers the main ZFC lower bound."
+    },
+    {
+      "id": "upper-bound-interval",
+      "title": "Part III: Upper Bound and the pcf Interval",
+      "startLine": 124,
+      "endLine": 154,
+      "summary": "Proves ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω} (power_le_two_pow_aleph_omega), assembles the interval ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω} (aleph_omega_power_interval), and the strictness corollary ℵ_ω^{ℵ₀} ≠ ℵ_ω.",
+      "mathContext": "ℵ_ω^{ℵ₀} ≤ (2^{ℵ_ω})^{ℵ₀} = 2^{ℵ_ω·ℵ₀} = 2^{ℵ_ω} by `power_le_power_right`, `power_mul`, and the absorption ℵ_ω·ℵ₀ = max(ℵ_ω, ℵ₀) = ℵ_ω. The interval [ℵ_{ω+1}, 2^{ℵ_ω}] is exactly the ZFC bracket that Shelah's ℵ_ω^{ℵ₀} < ℵ_{ω₄} refines."
+    },
+    {
+      "id": "cofinality-power",
+      "title": "Part IV: König Cofinality of the Power",
+      "startLine": 156,
+      "endLine": 169,
+      "summary": "Proves cf(ℵ_ω^{ℵ₀}) > ℵ₀ (aleph0_lt_cof_power) via Cardinal.lt_cof_power, so the power itself has uncountable cofinality.",
+      "mathContext": "`Cardinal.lt_cof_power : ℵ₀ ≤ a → 1 < b → a < (b^a).ord.cof`. With a = ℵ₀, b = ℵ_ω this gives ℵ₀ < cf(ℵ_ω^{ℵ₀}), so ℵ_ω^{ℵ₀} is never a cardinal of countable cofinality."
+    }
+  ],
+  "crossReferences": [
+    {
+      "type": "mathlib",
+      "reference": "Cardinal.lt_power_cof",
+      "description": "König's cofinality inequality c < c^{cf c}, the engine of every bound in this file."
+    },
+    {
+      "type": "mathlib",
+      "reference": "Cardinal.lt_cof_power",
+      "description": "König's bound a < cf(b^a), giving uncountable cofinality of ℵ_ω^{ℵ₀}."
+    },
+    {
+      "type": "literature",
+      "reference": "S. Shelah, Cardinal Arithmetic (Oxford, 1994)",
+      "description": "pcf theory and the deep ZFC upper bound ℵ_ω^{ℵ₀} < ℵ_{ω₄} that refines this entry's elementary interval."
+    },
+    {
+      "type": "literature",
+      "reference": "J. König, 'Zum Kontinuum-Problem' (1905)",
+      "description": "Original source of the cofinality inequality underlying the lower bound."
+    }
+  ],
+  "conclusion": "The entry formalizes the elementary, GCH-free brackets on the canonical pcf object ℵ_ω^{ℵ₀}: the ZFC interval ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, the general singular cardinal inequality κ⁺ ≤ κ^{cf κ} it specializes, and the König corollary cf(ℵ_ω^{ℵ₀}) > ℵ₀. All eleven results are machine-checked with 0 axioms and 0 sorries, in a self-contained file using only Mathlib's König cofinality consequences and standard cardinal arithmetic. This is the natural first verifiable brick toward Erdős #1168's open question of encoding pcf theory: it pins the bottom of the interval that Shelah's deep ℵ_ω^{ℵ₀} < ℵ_{ω₄} theorem squeezes from above, and it does so axiom-free where a sibling gallery file had taken the same König fact as an axiom.",
+  "sorries": []
+}
