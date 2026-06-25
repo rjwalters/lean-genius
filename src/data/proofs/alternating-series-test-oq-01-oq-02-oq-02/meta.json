@@ -1,0 +1,199 @@
+{
+  "id": "alternating-series-test-oq-01-oq-02-oq-02",
+  "title": "The Quantitative Abstract Dirichlet Test: Total-Variation Error Bounds for Arbitrary Factor Sequences",
+  "slug": "alternating-series-test-oq-01-oq-02-oq-02",
+  "description": "Answers the parent entry's open question verbatim: does the Abel-summation error bound extend from the sign sequence (-1)^i to a general Dirichlet weight b_i with uniformly bounded partial sums, recovering the full Dirichlet test with explicit constants? The parent (alternating-series-test-oq-01-oq-02) and its sibling are both specialized to the single factor sequence (-1)^i, whose partial sums lie in {0,1}. But Abel summation never uses the value (-1)^i — only that the factor has bounded partial sums. This entry removes the specialization: for ANY real factor sequence b with |∑_{i<k} b_i| ≤ B and ANY real coefficient sequence a, |∑_{j<n} b_j·a_j| ≤ B·|a(n−1)| + B·∑_{j<n−1} |a(j+1) − a(j)| (the quantitative abstract Dirichlet test, range form). Over an arbitrary window [N,M) the shifted partial sums are bounded by 2B (difference of two B-bounded prefix sums), giving |∑_{j∈[N,M)} b_j·a_j| ≤ 2B·|a(M−1)| + 2B·∑_{j∈[N,M−1)} |a(j+1) − a(j)|. Three consequences: (1) taking b = (-1)^i, B = 1 recovers the parent's alternating bound (range form) — so the abstract estimate CONTAINS the classical one; (2) for antitone a ≥ 0 the boundary term and total variation telescope and collapse the window bound to the clean Dirichlet remainder |S_M − S_N| ≤ 2B·a_N; (3) passing M → ∞ for a convergent Dirichlet series bounds the genuine truncation error |S_N − l| ≤ 2B·a_N. The contrast with Mathlib is the point: Mathlib's Antitone.cauchySeq_series_mul_of_tendsto_zero_of_bounded proves the Dirichlet test only QUALITATIVELY (partial sums are Cauchy, hence converge) and requires monotonicity of a throughout — it gives no rate. The bounds here are quantitative: an explicit total-variation estimate valid for non-monotone a, and an explicit 2B·a_N remainder in the monotone case, neither of which is in Mathlib.",
+  "meta": {
+    "author": "Abel/Dirichlet (summation by parts); quantitative abstract Dirichlet test formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlternatingSeriesTestOQ01OQ02OQ02.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "dirichlet-test",
+      "error-bound",
+      "summation-by-parts",
+      "abel-summation",
+      "bounded-variation",
+      "total-variation",
+      "alternating-series"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_range_by_parts",
+        "description": "Summation by parts (Abel transformation): rewrites ∑ b_j a_j as a boundary term minus a sum of coefficient-differences weighted by factor partial sums — the engine of the whole estimate",
+        "module": "Mathlib.Algebra.BigOperators.Module"
+      },
+      {
+        "theorem": "Finset.sum_range_add_sum_Ico",
+        "description": "∑_{i<N} f + ∑_{i∈[N,N+k)} f = ∑_{i<N+k} f: expresses a shifted prefix sum ∑_{i<k} b(N+i) as a difference of two B-bounded prefix sums, yielding the 2B window bound",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_Ico_eq_sum_range",
+        "description": "Reindexes the window [N,M) to range (M−N) via the shifted sequences a(N+·), b(N+·)",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.sum_Ico_eq_sub",
+        "description": "∑_{i∈[N,M)} f = (∑_{i<M} f) − (∑_{i<N} f): converts the window sum into the partial-sum difference S_M − S_N",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "neg_one_geom_sum",
+        "description": "∑_{i<n} (-1)^i = if Even n then 0 else 1 — supplies the partial-sum bound 1 for the sign specialization that recovers the parent",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      },
+      {
+        "theorem": "Finset.sum_range_sub'",
+        "description": "Telescoping identity, collapsing the total variation to a_N − a(M−1) in the antitone remainder",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.abs_sum_le_sum_abs",
+        "description": "Triangle inequality for finite sums |∑ f| ≤ ∑ |f|, applied to the variation term",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "le_of_tendsto",
+        "description": "Limits preserve ≤: passes the finite 2B·a_N bound through M → ∞ to bound the genuine remainder |S_N − l|",
+        "module": "Mathlib.Order.Topology.Basic"
+      }
+    ],
+    "originalContributions": [
+      "abs_dirichlet_range_le: the quantitative abstract Dirichlet test (range form) — for any factor sequence b with |∑_{i<k} b_i| ≤ B and any coefficient sequence a, |∑_{j<n} b_j a_j| ≤ B·|a(n−1)| + B·∑_{j<n−1} |a(j+1) − a(j)|. Generalizes the parent's (-1)^i specialization to an ARBITRARY bounded-partial-sum factor; absent from Mathlib",
+      "abs_dirichlet_Ico_le: the window form |∑_{j∈[N,M)} b_j a_j| ≤ 2B·|a(M−1)| + 2B·∑_{j∈[N,M−1)} |a(j+1) − a(j)|, where the 2B arises because shifted prefix sums are differences of two B-bounded prefix sums",
+      "abs_alternating_range_le: the b = (-1)^i, B = 1 specialization recovering the parent's alternating bound — exhibiting the classical estimate as a special case of the abstract one",
+      "abs_dirichlet_diff_le_of_antitone: the quantitative Dirichlet remainder |S_M − S_N| ≤ 2B·a_N for antitone a ≥ 0 — the explicit rate that Mathlib's qualitative Dirichlet test omits",
+      "abs_dirichlet_sub_limit_le: the limit-error bound |S_N − l| ≤ 2B·a_N for a convergent Dirichlet series, obtained by passing M → ∞ — Mathlib proves convergence but supplies no rate; this is the rate"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. #print axioms reports only the standard foundational axioms propext, Classical.choice, Quot.sound on all five headline theorems.",
+    "lineCount": 187,
+    "theoremCount": 6,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Dirichlet's test (Dirichlet, 1862; Rudin, Theorem 3.42) generalises the Leibniz alternating series test: ∑ b_i a_i converges whenever the partial sums of b are uniformly bounded and a is of bounded variation tending to 0. Its proof is summation by parts (Abel's transformation). The alternating series test is the special case b_i = (-1)^i, whose partial sums lie in {0,1}. What is rarely packaged is the QUANTITATIVE form: an explicit error bound, with the boundedness constant B of the factor sequence appearing explicitly, that survives the loss of monotonicity of the coefficients. Abel summation trades the oscillation of the factor for its uniform partial-sum bound, leaving the total variation of the coefficients as the controlling quantity.",
+    "problemStatement": "The parent entry alternating-series-test-oq-01-oq-02 asks (open question 2): does the Abel-summation error bound extend from the sign sequence (-1)^i to a general Dirichlet weight b_i with uniformly bounded partial sums, recovering the full Dirichlet test with explicit constants?\n\n**Answer: yes.** For any real factor sequence b with |∑_{i<k} b_i| ≤ B and any real coefficient sequence a, |∑_{j<n} b_j a_j| ≤ B·|a(n−1)| + B·∑_{j<n−1} |a(j+1) − a(j)|, and over a window [N,M), |∑_{j∈[N,M)} b_j a_j| ≤ 2B·|a(M−1)| + 2B·∑_{j∈[N,M−1)} |a(j+1) − a(j)|. The sign case b = (-1)^i, B = 1 recovers the parent; for antitone a ≥ 0 the window bound collapses to the explicit Dirichlet remainder |S_M − S_N| ≤ 2B·a_N, and its M → ∞ limit bounds |S_N − l| ≤ 2B·a_N.",
+    "text": "Summation by parts only ever uses that the factor sequence has bounded partial sums, not its specific values. Replacing (-1)^i by an arbitrary bounded-partial-sum weight b yields the quantitative abstract Dirichlet test: the weighted sum is controlled by the factor's uniform bound B times the total variation of the coefficients, recovering the classical alternating estimate and supplying the explicit remainder rate that Mathlib's qualitative Dirichlet test omits.",
+    "proofStrategy": "Apply Finset.sum_range_by_parts to ∑_{j<n} a_j b_j, producing a boundary term a(n−1)·(∑_{i<n} b_i) minus a sum of coefficient-differences (a(j+1) − a(j)) each weighted by a factor partial sum ∑_{i<j+1} b_i. Bound every factor partial sum by B (hypothesis), apply the triangle inequality, and collect: B·|a(n−1)| + B·∑ |a(j+1) − a(j)| (abs_dirichlet_range_le). For the window form, reindex [N,M) to range (M−N) via Finset.sum_Ico_eq_sum_range; the shifted factor's prefix sum ∑_{i<k} b(N+i) equals (∑_{i<N+k} b_i) − (∑_{i<N} b_i) by Finset.sum_range_add_sum_Ico, so its absolute value is ≤ 2B by the triangle inequality; feed this 2B bound into the range form (abs_dirichlet_Ico_le). The sign specialization plugs b = (-1)^i with the partial-sum bound 1 from neg_one_geom_sum (abs_alternating_range_le). For the antitone remainder, each |a(j+1) − a(j)| = a(j) − a(j+1), so the variation telescopes (Finset.sum_range_sub') to a_N − a(M−1) and combines with the boundary 2B·a(M−1) to give exactly 2B·a_N (abs_dirichlet_diff_le_of_antitone). The limit form takes the continuous M → ∞ limit of the partial-sum difference and applies le_of_tendsto (abs_dirichlet_sub_limit_le).",
+    "keyInsights": [
+      "Abel summation is indifferent to the factor's values: it uses ONLY the uniform bound B on the factor's partial sums, so the entire alternating-series machinery generalises to an arbitrary Dirichlet weight with no extra work",
+      "A window [N,M) costs a factor of 2 in the constant: the shifted prefix sum ∑_{i<k} b(N+i) is a difference of two B-bounded prefix sums, hence bounded by 2B rather than B",
+      "The abstract bound CONTAINS the classical alternating estimate: setting b = (-1)^i with B = 1 reproduces the parent's range-form bound exactly",
+      "The quantitative gap with Mathlib: Mathlib's Dirichlet test proves only that the partial sums are Cauchy (qualitative convergence) and needs monotone coefficients; the explicit 2B·a_N truncation-error rate and the non-monotone total-variation estimate are new"
+    ],
+    "prerequisites": [
+      "Convergence of sequences and series in ℝ",
+      "Summation by parts (Abel's transformation) and the Dirichlet/Abel convergence tests",
+      "Total variation of a sequence and the notion of bounded variation",
+      "The parent entry's sign-weighted total-variation error bound"
+    ]
+  },
+  "sections": [
+    {
+      "id": "abstract-dirichlet-range",
+      "title": "The Quantitative Abstract Dirichlet Test (Range Form)",
+      "startLine": 59,
+      "endLine": 88,
+      "summary": "abs_dirichlet_range_le: for any factor b with |∑_{i<k} b_i| ≤ B, |∑_{j<n} b_j a_j| ≤ B·|a(n−1)| + B·∑_{j<n−1} |a(j+1) − a(j)|. Summation by parts, then bound each factor partial sum by B and triangle-inequality the rest.",
+      "mathContext": "$\\left|\\sum_{j<n} b_j a_j\\right| \\le B\\,|a_{n-1}| + B\\sum_{j<n-1}|a_{j+1}-a_j|$."
+    },
+    {
+      "id": "window-form",
+      "title": "Window Form with the 2B Constant",
+      "startLine": 89,
+      "endLine": 128,
+      "summary": "abs_dirichlet_Ico_le: over [N,M) the shifted prefix sums are differences of two B-bounded prefix sums (Finset.sum_range_add_sum_Ico), hence bounded by 2B; reindexing to range and applying the range form gives the window estimate with constant 2B.",
+      "mathContext": "$\\left|\\sum_{j=N}^{M-1} b_j a_j\\right| \\le 2B\\,|a_{M-1}| + 2B\\sum_{j=N}^{M-2}|a_{j+1}-a_j|$."
+    },
+    {
+      "id": "recovers-alternating",
+      "title": "Sign Specialization Recovers the Parent",
+      "startLine": 130,
+      "endLine": 139,
+      "summary": "abs_alternating_range_le: taking b = (-1)^i (partial sums bounded by 1 via neg_one_geom_sum) and B = 1 collapses the abstract range bound to the parent file's alternating-series estimate.",
+      "mathContext": "$\\left|\\sum_{j<n}(-1)^j a_j\\right| \\le |a_{n-1}| + \\sum_{j<n-1}|a_{j+1}-a_j|$."
+    },
+    {
+      "id": "antitone-remainder",
+      "title": "Quantitative Dirichlet Remainder (Monotone Case)",
+      "startLine": 141,
+      "endLine": 166,
+      "summary": "abs_dirichlet_diff_le_of_antitone: for antitone a ≥ 0 the total variation telescopes to a_N − a(M−1) and combines with the boundary 2B·a(M−1) to give the explicit rate |S_M − S_N| ≤ 2B·a_N — the quantitative content Mathlib's qualitative test omits.",
+      "mathContext": "antitone $a \\ge 0 \\Rightarrow |S_M - S_N| \\le 2B\\,a_N$."
+    },
+    {
+      "id": "limit-remainder",
+      "title": "Quantitative Remainder at the Limit",
+      "startLine": 168,
+      "endLine": 186,
+      "summary": "abs_dirichlet_sub_limit_le: if the Dirichlet series S_n → l with a antitone ≥ 0, then |S_N − l| ≤ 2B·a_N, obtained by passing the finite difference bound through the continuous M → ∞ limit (le_of_tendsto). Mathlib proves convergence but supplies no rate; this is the rate.",
+      "mathContext": "$S_n \\to l,\\ a \\text{ antitone} \\ge 0 \\Rightarrow |S_N - l| \\le 2B\\,a_N$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Abel, N. H.",
+      "title": "Untersuchungen über die Reihe ...",
+      "year": "1826",
+      "note": "Summation by parts (Abel's transformation)"
+    },
+    {
+      "authors": "Dirichlet, P. G. L.",
+      "title": "Sur la convergence des séries trigonométriques",
+      "year": "1862",
+      "note": "The Dirichlet convergence test: ∑ b_i a_i converges when the partial sums of b are bounded and a is of bounded variation → 0"
+    },
+    {
+      "authors": "Rudin, W.",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "note": "Summation by parts (Theorem 3.41), Dirichlet and Abel tests (Theorem 3.42), alternating series test (Theorem 3.43)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "alternating-series-test-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Parent entry: the sign-weighted (b = (-1)^i) total-variation error bound. This entry answers that entry's open question 2 verbatim, generalising the factor (-1)^i to an arbitrary weight b with bounded partial sums and recovering the parent as the B = 1 special case."
+    },
+    {
+      "targetId": "alternating-series-test-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Sibling entry: a two-sided Jordan-decomposition trap, also specialized to (-1)^i. This entry instead generalises the factor sequence, giving the abstract Dirichlet test with explicit constants."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Abel-summation error bound depends only on the factor sequence having bounded partial sums, not on its being (-1)^i. Replacing (-1)^i by an arbitrary weight b with |∑_{i<k} b_i| ≤ B yields the quantitative abstract Dirichlet test |∑_{j<n} b_j a_j| ≤ B·|a(n−1)| + B·(total variation of a), proved with 0 axioms. The sign case b = (-1)^i, B = 1 recovers the parent; for antitone a ≥ 0 the window bound collapses to the explicit Dirichlet remainder |S_M − S_N| ≤ 2B·a_N, whose M → ∞ limit bounds |S_N − l| ≤ 2B·a_N.",
+    "implications": "Lifts the gallery's alternating-series error theory to the full Dirichlet setting with explicit constants. Where Mathlib's Antitone.cauchySeq_series_mul_of_tendsto_zero_of_bounded establishes only qualitative convergence under monotonicity, this entry supplies the quantitative truncation-error rate 2B·a_N and a non-monotone total-variation estimate, unifying the alternating series test (b = (-1)^i) and the Dirichlet test (general bounded-partial-sum b) under one quantitative bound.",
+    "openQuestions": [
+      "Is the window constant 2B sharp, or can a careful choice of basepoint reduce it back toward B for symmetric factor sequences?",
+      "Does the same Abel-summation argument deliver a quantitative Abel test (factor b summable, coefficients a monotone bounded) with an explicit error rate, complementing the Dirichlet test proved here?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "AlternatingSeriesTestOQ01OQ02OQ02",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/AlternatingSeriesTestOQ01OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
