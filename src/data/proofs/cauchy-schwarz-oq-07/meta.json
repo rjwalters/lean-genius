@@ -60,7 +60,9 @@
     "keyInsights": [
       "**Cross terms cancel on addition, survive on subtraction.** The single expansion ‖x±y‖² = ‖x‖² ± 2⟪x,y⟩ + ‖y‖² yields both the parallelogram law (sum, cross terms cancel) and the polarization identity (difference, cross terms double). They are two faces of the same computation.",
       "**Parallelogram law characterizes inner-product norms.** By Jordan–von Neumann, a norm comes from an inner product iff it satisfies this identity — so the law is not just a consequence of having an inner product but is equivalent to it.",
-      "**Field-agnostic packaging.** Stating `parallelogram_norm_sq` with the scalar field `𝕜` explicit lets the same lemma serve real and complex inner-product spaces, recovering both classical forms from one statement."
+      "**Field-agnostic packaging.** Stating `parallelogram_norm_sq` with the scalar field `𝕜` explicit lets the same lemma serve real and complex inner-product spaces, recovering both classical forms from one statement.",
+      "**The norm is the only data needed.** Both diagonals ‖x+y‖ and ‖x−y‖ and the sides ‖x‖, ‖y‖ are pure norm quantities — the parallelogram law is an identity *within the normed structure*, which is exactly why it can serve as the criterion (Jordan–von Neumann) for an inner product to exist at all, without presupposing one.",
+      "**Squared vs. unsquared form is not cosmetic.** Mathlib states the law with `*self`; the open question (and most analysis texts) want the `^2` form. Bridging them needs `pow_two` plus `linarith`, a reminder that `a^2` and `a*a` are definitionally distinct in Lean and downstream lemmas must match the chosen form."
     ],
     "prerequisites": [
       "Inner product spaces (InnerProductSpace 𝕜 E in Mathlib, 𝕜 = ℝ or ℂ)",
