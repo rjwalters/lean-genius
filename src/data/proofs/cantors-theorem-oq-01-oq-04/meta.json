@@ -29,7 +29,7 @@
       "The explicit beth-successor unfoldings beth_two_eq (ℶ₂ = 2^ℶ₁) and beth_three_eq (ℶ₃ = 2^ℶ₂) at concrete ordinal indices, together with card_real_eq_beth_one (|ℝ| = ℶ₁), giving a self-contained derivation of the whole tower ℶ₁, ℶ₂, ℶ₃ as iterated power sets of ℝ.",
       "The strict Cantor tower |ℝ| < |𝒫(ℝ)| < |𝒫(𝒫(ℝ))| (card_real_lt_powerSet, card_powerSet_real_lt_powerSet_powerSet) and the strictly increasing beth tower ℶ₁ < ℶ₂ < ℶ₃ (beth_tower_strictMono), packaged with the main identity in cantors_theorem_oq01oq04_summary."
     ],
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0
   },
   "overview": {
@@ -148,7 +148,7 @@
     "namespace": "CantorsTheoremOQ01OQ04",
     "lineCount": 102,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 0,
     "path": "Proofs/CantorsTheoremOQ01OQ04.lean",
     "sorries": 0
