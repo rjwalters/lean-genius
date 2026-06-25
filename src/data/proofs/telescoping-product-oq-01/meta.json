@@ -1,0 +1,109 @@
+{
+  "id": "telescoping-product-oq-01",
+  "title": "Telescoping Product ∏(1 − 1/k²) = (n+1)/(2n)",
+  "slug": "telescoping-product-oq-01",
+  "description": "Formalizes the canonical telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n), the multiplicative analogue of a telescoping sum. Each factor collapses as 1 − 1/k² = (k−1)(k+1)/k², so the product of the (k−1)/k parts telescopes against the (k+1)/k parts, leaving only the endpoint contributions. The closed form is proved by induction over Finset.Icc with Finset.prod_Icc_succ_top, and the resulting limit (n+1)/(2n) → 1/2 shows the infinite product converges to 1/2. The closed form is not named in Mathlib.",
+  "meta": {
+    "author": "Lean Genius researcher-2",
+    "status": "verified",
+    "proofRepoPath": "Proofs/TelescopingProductOQ01.lean",
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 98,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "assumptions": "None. The closed form holds for every n ≥ 1 and is fully machine-checked. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms).",
+    "tags": [
+      "analysis",
+      "telescoping",
+      "finite-product",
+      "rational-functions",
+      "limits",
+      "induction"
+    ],
+    "dateAdded": "2026-06-25",
+    "originalContributions": [
+      "factor_eq: the per-term collapse 1 − 1/k² = (k−1)(k+1)/k² for k ≥ 2, the algebraic identity that makes the product telescope",
+      "telescoping_product: the closed form ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n) for n ≥ 1, proved by Nat.le_induction peeling the top factor with Finset.prod_Icc_succ_top",
+      "tendsto_closed_form: the limit (n+1)/(2n) → 1/2, exhibiting the value 1/2 of the corresponding infinite product, via the eventual rewrite (n+1)/(2n) = 1/2 + (1/2)(1/n)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod_Icc_succ_top",
+        "description": "Peels the top factor of a product over Finset.Icc: for a ≤ b+1, ∏ k ∈ Icc a (b+1), f k = (∏ k ∈ Icc a b, f k) · f (b+1). Drives the induction step.",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.Icc_eq_empty",
+        "description": "Icc a b = ∅ when ¬ a ≤ b; supplies the base case ∏ over Icc 2 1 = 1.",
+        "module": "Mathlib.Order.Interval.Finset.Basic"
+      },
+      {
+        "theorem": "tendsto_one_div_atTop_nhds_zero_nat",
+        "description": "1/(n:ℝ) → 0 as n → ∞; the analytic core of the limit (n+1)/(2n) → 1/2.",
+        "module": "Mathlib.Order.Filter.Archimedean"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/TelescopingProductOQ01.lean",
+    "namespace": "TelescopingProductOQ01",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 98,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Telescoping is the multiplicative or additive cancellation principle that turns a long product or sum into its endpoint contributions. The product ∏_{k=2}^{n} (1 − 1/k²) is the textbook example of a telescoping product, dual to the familiar telescoping sums ∑ 1/(k(k+1)). Its infinite version ∏_{k=2}^{∞} (1 − 1/k²) = 1/2 is a classic exercise and the simplest sibling of Wallis's product and Euler's product for sin(πx)/(πx), each of which encodes telescoping or near-telescoping of rational factors.",
+    "problemStatement": "Open Question OQ-01 (telescoping-product): Formalize the canonical telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n), establish the per-term collapse 1 − 1/k² = (k−1)(k+1)/k² that drives it, and derive the limit (n+1)/(2n) → 1/2 exhibiting the value of the infinite product.",
+    "proofStrategy": "Work over ℚ for the finite identity. The factorisation 1 − 1/k² = (k−1)(k+1)/k² (factor_eq) is verified by field_simp/ring once k ≠ 0. The closed form (telescoping_product) is proved by Nat.le_induction starting at n = 1: the base case is the empty product over Icc 2 1 = ∅, equal to 1 = 2/2; the step peels the top factor f(m+1) = 1 − 1/(m+1)² with Finset.prod_Icc_succ_top (valid since 2 ≤ m+1), rewrites the remaining product via the induction hypothesis to (m+1)/(2m), and closes the rational identity (m+1)/(2m)·(1 − 1/(m+1)²) = (m+2)/(2(m+1)) with field_simp/ring. The limit (tendsto_closed_form) is taken over ℝ: for n ≥ 1, (n+1)/(2n) = 1/2 + (1/2)(1/n), so the sequence is eventually equal to a constant plus a multiple of 1/n; tendsto_one_div_atTop_nhds_zero_nat then gives convergence to 1/2.",
+    "keyInsights": [
+      "The single algebraic move is the difference-of-squares factorisation 1 − 1/k² = (k−1)(k+1)/k²; everything else is bookkeeping of endpoint terms.",
+      "Finset.prod_Icc_succ_top is the multiplicative analogue of peeling the last term of a sum, and makes the induction over Finset.Icc 2 n completely mechanical.",
+      "Choosing the base point n = 1 (the empty product) rather than n = 2 keeps the closed form (n+1)/(2n) valid at the boundary, where it reads 2/2 = 1.",
+      "The limit is cleanest after the eventual rewrite (n+1)/(2n) = 1/2 + (1/2)(1/n), reducing convergence to the standard fact 1/n → 0 rather than a quotient limit."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and Mathematical Context",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Header stating OQ-01: the telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n). Explains the per-term collapse, the telescoping mechanism, and the three formalized statements."
+    },
+    {
+      "id": "factor",
+      "title": "Per-Term Collapse",
+      "startLine": 48,
+      "endLine": 63,
+      "summary": "factor_eq: for k ≥ 2, 1 − 1/k² = (k−1)(k+1)/k². The difference-of-squares factorisation that makes the product telescope; proved by field_simp/ring after k ≠ 0."
+    },
+    {
+      "id": "main",
+      "title": "Main Telescoping Identity",
+      "startLine": 65,
+      "endLine": 83,
+      "summary": "telescoping_product: ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n) for n ≥ 1. Nat.le_induction with base case the empty product over Icc 2 1, and step peeling the top factor via Finset.prod_Icc_succ_top, closed by field_simp/ring."
+    },
+    {
+      "id": "limit",
+      "title": "Limit of the Closed Form",
+      "startLine": 85,
+      "endLine": 98,
+      "summary": "tendsto_closed_form: (n+1)/(2n) → 1/2, exhibiting the value of the infinite product. Uses the eventual identity (n+1)/(2n) = 1/2 + (1/2)(1/n) and tendsto_one_div_atTop_nhds_zero_nat."
+    }
+  ],
+  "conclusion": {
+    "summary": "3 theorems, 0 sorries, 0 axioms. The canonical telescoping product ∏_{k=2}^{n} (1 − 1/k²) = (n+1)/(2n) is formalized with its driving per-term collapse 1 − 1/k² = (k−1)(k+1)/k² and the limit (n+1)/(2n) → 1/2 identifying the value 1/2 of the infinite product.",
+    "implications": "This adds the first telescoping-product entry to the gallery (which previously held only telescoping sums), and packages a reusable induction template: peel the top factor with Finset.prod_Icc_succ_top and discharge the rational step with field_simp/ring. The same template applies to any product of rational factors whose partial products admit a closed form, such as ∏ (1 − 1/k) or ∏ k/(k+1).",
+    "openQuestions": [
+      "Can the infinite product ∏_{k=2}^{∞} (1 − 1/k²) = 1/2 be stated directly as a Filter.Tendsto / HasProd statement over the finite partial products rather than through the closed form, matching Mathlib's tprod API?",
+      "Does the same peel-and-collapse template yield a closed form for the shifted family ∏_{k=2}^{n} (1 − 1/k^m) for m ≥ 2, where the factor (k^m − 1)/k^m factors through cyclotomic-style telescoping?"
+    ]
+  },
+  "crossReferences": [],
+  "sorries": 0
+}

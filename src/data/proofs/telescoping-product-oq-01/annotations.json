@@ -1,0 +1,38 @@
+[
+  {
+    "id": "telescoping-product-context",
+    "proofId": "telescoping-product-oq-01",
+    "range": { "startLine": 1, "endLine": 46 },
+    "type": "concept",
+    "title": "Telescoping Products and the Difference of Squares",
+    "content": "A telescoping product is the multiplicative analogue of a telescoping sum: most factors cancel against neighbours, leaving only endpoint contributions. For ∏_{k=2}^{n} (1 − 1/k²), the difference-of-squares factorisation 1 − 1/k² = (k−1)(k+1)/k² splits each factor into a (k−1)/k part and a (k+1)/k part. The (k−1)/k parts telescope downward and the (k+1)/k parts telescope upward, leaving the bottom contribution 1/2 and the top contribution (n+1)/n, whose product is (n+1)/(2n).",
+    "mathContext": "Writing $1 - \\frac{1}{k^2} = \\frac{(k-1)(k+1)}{k^2}$, the partial product is $\\prod_{k=2}^{n}\\frac{k-1}{k}\\cdot\\prod_{k=2}^{n}\\frac{k+1}{k} = \\frac{1}{n}\\cdot\\frac{n+1}{2} = \\frac{n+1}{2n}$, where each one-sided product telescopes to its endpoints. The infinite product is therefore $\\prod_{k=2}^{\\infty}\\left(1-\\frac{1}{k^2}\\right) = \\lim_{n\\to\\infty}\\frac{n+1}{2n} = \\frac{1}{2}$."
+  },
+  {
+    "id": "factor-collapse",
+    "proofId": "telescoping-product-oq-01",
+    "range": { "startLine": 48, "endLine": 63 },
+    "type": "technique",
+    "title": "Per-Term Collapse 1 − 1/k² = (k−1)(k+1)/k²",
+    "content": "factor_eq records the single algebraic identity that drives the whole proof. After establishing (k:ℚ) ≠ 0 from k ≥ 2, field_simp clears the denominators and ring verifies the resulting polynomial identity. This is the only place difference-of-squares is used; the rest of the proof is endpoint bookkeeping handled automatically by the induction.",
+    "mathContext": "The factorisation $1 - \\frac{1}{k^2} = \\frac{k^2 - 1}{k^2} = \\frac{(k-1)(k+1)}{k^2}$ is the multiplicative seed of the telescope: the numerator factor $k-1$ matches the denominator of the term two steps below, and $k+1$ matches the term two steps above."
+  },
+  {
+    "id": "induction-peel",
+    "proofId": "telescoping-product-oq-01",
+    "range": { "startLine": 65, "endLine": 83 },
+    "type": "technique",
+    "title": "Induction by Peeling the Top Factor",
+    "content": "telescoping_product is proved by Nat.le_induction starting at n = 1. The base case is the empty product over Finset.Icc 2 1 = ∅, which equals 1 = 2/2. The inductive step uses Finset.prod_Icc_succ_top (valid because 2 ≤ m+1) to split off the top factor 1 − 1/(m+1)², rewrites the remaining product to (m+1)/(2m) via the induction hypothesis, and discharges the rational identity (m+1)/(2m)·(1 − 1/(m+1)²) = (m+2)/(2(m+1)) with field_simp and ring.",
+    "mathContext": "The step verifies $\\frac{m+1}{2m}\\left(1-\\frac{1}{(m+1)^2}\\right) = \\frac{m+1}{2m}\\cdot\\frac{m(m+2)}{(m+1)^2} = \\frac{m+2}{2(m+1)}$, which is the closed form at $n=m+1$. Basing the induction at $n=1$ (the empty product) keeps $(n+1)/(2n)$ valid at the boundary."
+  },
+  {
+    "id": "limit-onehalf",
+    "proofId": "telescoping-product-oq-01",
+    "range": { "startLine": 85, "endLine": 98 },
+    "type": "concept",
+    "title": "The Infinite Product Equals 1/2",
+    "content": "tendsto_closed_form shows the closed form converges: (n+1)/(2n) → 1/2 as n → ∞, so the infinite product ∏_{k≥2} (1 − 1/k²) equals 1/2. The proof rewrites (n+1)/(2n) = 1/2 + (1/2)(1/n) for n ≥ 1 (an eventual equality via filter_upwards), reducing the limit to the standard fact tendsto_one_div_atTop_nhds_zero_nat that 1/n → 0.",
+    "mathContext": "Since $\\frac{n+1}{2n} = \\frac12 + \\frac{1}{2n}$ and $\\frac1n \\to 0$, the partial products increase to $\\frac12$. This is the simplest member of the family of infinite products of rational factors that Wallis's product $\\frac{\\pi}{2} = \\prod \\frac{(2k)^2}{(2k-1)(2k+1)}$ and Euler's product for $\\frac{\\sin \\pi x}{\\pi x}$ generalize."
+  }
+]
