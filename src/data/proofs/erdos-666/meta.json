@@ -18,7 +18,7 @@
       "disproved"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "erdosNumber": 666,
     "erdosUrl": "https://erdosproblems.com/666",
     "erdosProblemStatus": "disproved",
@@ -26,19 +26,19 @@
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
-        "theorem": "SimpleGraph.Basic",
-        "description": "Basic graph definitions and properties",
-        "module": "Mathlib.Combinatorics.SimpleGraph.Basic"
+        "theorem": "SimpleGraph",
+        "description": "Simple graphs, adjacency, edgeFinset for edge counts",
+        "module": "Mathlib.Combinatorics.SimpleGraph.Finite"
       },
       {
-        "theorem": "Nat.popcount",
-        "description": "Population count for XOR-based adjacency",
-        "module": "Mathlib.Data.Nat.Basic"
+        "theorem": "Nat.xor",
+        "description": "Bitwise XOR on naturals (^^^) used for hypercube adjacency (power-of-two difference)",
+        "module": "Mathlib.Data.Nat.Bitwise"
       },
       {
-        "theorem": "Fin",
-        "description": "Finite types for hypercube vertices",
-        "module": "Mathlib.Data.Fin.Basic"
+        "theorem": "Real",
+        "description": "Real numbers for the ε-density threshold",
+        "module": "Mathlib.Data.Real.Basic"
       }
     ],
     "originalContributions": [
@@ -49,13 +49,13 @@
       "HasC4, HasC6, HasC2k cycle predicates",
       "EpsilonDenseSubgraph: subgraph with ε-fraction of edges",
       "ErdosConjecture: original (disproved) conjecture",
-      "erdos_conjecture_false: stated disproof theorem (proof body sorry; reduces to chung_1992)",
-      "chung_1992 axiom: 4-partition into C₆-free subgraphs",
+      "erdos_conjecture_false: disproof theorem, fully proved from chung_1992 (instantiate ε = 1/4, take n ≥ max N 3, the dense C₆-free witness contradicts the conjecture)",
+      "chung_1992 axiom (density form): for n ≥ 3, Qₙ has a subgraph with ≥ 1/4 of its edges and no C₆ (pigeonhole consequence of Chung's 4-partition; the sole assumption)",
       "GeneralizedConjecture: open question for C_{2k}"
     ],
     "axiomCount": 1,
-    "lineCount": 263,
-    "assumptions": "1 axiom: chung_1992. 1 sorries.",
+    "lineCount": 282,
+    "assumptions": "1 axiom: chung_1992 (density form of Chung's 1992 edge-partition theorem: for n ≥ 3, Qₙ has a C₆-free subgraph carrying ≥ 1/4 of its edges). 0 sorries.",
     "theoremCount": 4,
     "definitionCount": 11
   },
@@ -63,7 +63,7 @@
     "historicalContext": "**Erdős Problem #666**\n\nErdős posed this problem in 1991, asking whether dense subgraphs of the n-dimensional hypercube must contain 6-cycles. The hypercube Qₙ has 2ⁿ vertices (binary strings of length n) and n·2ⁿ⁻¹ edges (vertices adjacent iff they differ in exactly one coordinate).\n\n**Resolution (1992-1993):**\nThe answer is NO, disproved independently by two groups:\n- **Chung (1992):** Constructed an explicit 4-partition of Qₙ's edges into C₆-free subgraphs\n- **Brouwer-Dejter-Thomassen (1993):** Independent 4-coloring construction avoiding C₄ and C₆\n\n**Further Improvement:**\nConder (1993) showed that only 3 colors suffice - the edges of Qₙ can be 3-colored with no monochromatic C₄ or C₆. This means subgraphs with 1/3 of all edges need not contain C₆.",
     "problemStatement": "**Problem Statement (Disproved)**\n\nLet Qₙ be the n-dimensional hypercube (2ⁿ vertices, n·2ⁿ⁻¹ edges).\n\n**Conjecture:** For every ε > 0, if n is sufficiently large, every subgraph of Qₙ with ≥ ε·n·2ⁿ⁻¹ edges contains C₆.\n\n**Answer:** NO\n\n**Counterexamples:**\n- ε = 1/4: Chung's 4-partition (1992)\n- ε = 1/3: Conder's 3-coloring (1993)\n\n**Generalized Conjecture (OPEN):** For C_{2k}, ∃ c > 0 and aₖ < 1 such that ≥ c·n^{aₖ}·2ⁿ edges forces C_{2k}, with aₖ → 0 as k → ∞.",
     "text": "Does every ε-dense subgraph of the n-hypercube Qₙ contain C₆? Answer: NO. Chung (1992) and Brouwer-Dejter-Thomassen (1993) showed Qₙ can be 4-partitioned into C₆-free subgraphs.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Hypercube Definition:** Qₙ defined via XOR popcount - vertices in Fin(2ⁿ) are adjacent iff their XOR has exactly one 1-bit (Hamming distance 1)\n\n2. **Cycle Definitions:**\n   - HasCycle G k: injective k-sequence with cyclic adjacency\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\n\n3. **Density:**\n   - EpsilonDenseSubgraph: at least ε·n·2ⁿ⁻¹ edges\n\n4. **Main Results:**\n   - ErdosConjecture: the (false) original conjecture\n   - erdos_conjecture_false: theorem showing it's false\n   - chung_1992 axiom: 4-partition exists\n   - conder_1993 axiom: 3-coloring exists\n\n5. **Why Axioms:** The partition constructions are combinatorial and not in Mathlib",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Hypercube Definition:** Qₙ defined on Fin(2ⁿ) - vertices x, y are adjacent iff their bitwise XOR is a power of two (exactly one differing bit, i.e. Hamming distance 1). Symmetry and looplessness are discharged from Nat.xor_comm and Nat.xor_self.\n\n2. **Cycle Definitions:**\n   - HasCycle G k: injective k-sequence with cyclic adjacency\n   - HasC4, HasC6, HasC2k: specific even cycle predicates\n\n3. **Density:**\n   - EpsilonDenseSubgraph: at least ε·n·2ⁿ⁻¹ edges\n\n4. **Main Results:**\n   - ErdosConjecture: the (false) original conjecture\n   - erdos_conjecture_false: theorem showing it is false, fully proved (no sorry) from the single axiom\n   - chung_1992 axiom (density form): for n ≥ 3, Qₙ has a C₆-free subgraph carrying ≥ 1/4 of its edges. This is the pigeonhole consequence of Chung's 4-partition and is exactly what the disproof consumes\n   - chung_counterexample / conder_better_bound: ε = 1/4 and ε = 1/3 C₆-free witnesses, both derived from chung_1992\n\n5. **Why an Axiom:** Chung's explicit 4-partition construction is combinatorial and not available in Mathlib, so its density consequence is the sole assumption (1 axiom, 0 sorries).",
     "keyInsights": [
       "**Hypercube Structure:** Qₙ vertices are binary strings, adjacent iff Hamming distance = 1",
       "**Size:** |V| = 2ⁿ, |E| = n·2ⁿ⁻¹, degree = n (n-regular)",
@@ -163,21 +163,19 @@
   },
   "leanFile": {
     "imports": [
-      "Mathlib.Data.Nat.Basic",
-      "Mathlib.Combinatorics.SimpleGraph.Basic",
-      "Mathlib.Data.Fin.Basic"
+      "Mathlib"
     ],
     "opens": [
       "Nat",
       "SimpleGraph"
     ],
     "namespace": "Erdos666",
-    "lineCount": 263,
+    "lineCount": 282,
     "axiomCount": 1,
     "theoremCount": 4,
     "definitionCount": 11,
     "path": "Proofs/Erdos666Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
@@ -196,5 +194,5 @@
       "description": "Related Erdős problem sharing themes: disproved, extremal-graph-theory, graph-theory"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
