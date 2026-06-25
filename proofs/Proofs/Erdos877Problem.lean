@@ -23,14 +23,10 @@ References:
 - [BLST18]: Balogh et al. "Sharp bound on maximal sum-free subsets" (2018)
 -/
 
-import Mathlib.Data.Nat.Basic
-import Mathlib.Data.Finset.Basic
-import Mathlib.Data.Finset.Card
-import Mathlib.Data.Set.Basic
-import Mathlib.Order.Partition.Finpartition
-import Mathlib.Analysis.Asymptotics.Asymptotics
+import Mathlib
 
 open Nat Finset
+open scoped Classical
 
 namespace Erdos877
 
@@ -94,17 +90,60 @@ def isMaximalSumFree (n : ℕ) (A : Finset ℕ) : Prop :=
 
 /--
 **Property of maximal sum-free sets:**
-For a maximal sum-free A ⊆ {1,...,n}, every x ∉ A either:
+For a maximal sum-free A ⊆ {1,...,n}, every positive x ∉ A either:
 - Has x = a + b for some a, b ∈ A, or
-- Has a = x + b or b = x + a for some a, b ∈ A
+- Has a = x + b for some a, b ∈ A, or
+- Has x + x = a for some a ∈ A.
+
+The positivity hypothesis `0 < x` is necessary: for `x = 0`, the trivial
+sum `0 = 0 + 0` witnesses `¬ isSumFree (insert 0 A)` for *any* maximal `A`
+(indeed any sum-free `A`, since `0 ∉ A`), so none of the three structural
+conclusions need hold (e.g. `A = ∅` is maximal sum-free for `n = 0`).
 -/
 theorem maximal_criterion (n : ℕ) (A : Finset ℕ)
     (hmax : isMaximalSumFree n A) (x : ℕ) (hx : x ∈ Finset.range (n + 1))
-    (hxA : x ∉ A) :
+    (hxpos : 0 < x) (hxA : x ∉ A) :
     (∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ x = a + b) ∨
     (∃ a b : ℕ, a ∈ A ∧ b ∈ A ∧ a = x + b) ∨
     (∃ a : ℕ, a ∈ A ∧ x + x = a) := by
-  sorry
+  obtain ⟨hsub, hsf, hmaximal⟩ := hmax
+  have hns := hmaximal x hx hxA
+  -- `A` is sum-free, hence `0 ∉ A` (else `0 = 0 + 0` is a forbidden sum).
+  have h0 : (0 : ℕ) ∉ A := fun h => hsf 0 0 0 h h h rfl
+  unfold isSumFree at hns
+  push_neg at hns
+  obtain ⟨a, b, c, ha, hb, hc, heq⟩ := hns
+  simp only [Finset.mem_insert] at ha hb hc
+  -- A genuine sum `a = b + c` in `insert x A` must involve the new element `x`,
+  -- since `A` itself is sum-free.
+  rcases ha with rfl | ha
+  · -- a = x
+    rcases hb with rfl | hb
+    · -- b = x, so x = x + c forces c = 0, impossible (c = x > 0 or 0 ∈ A)
+      exfalso
+      rcases hc with rfl | hc
+      · omega
+      · have : c = 0 := by omega
+        exact h0 (this ▸ hc)
+    · -- b ∈ A, x = b + c
+      rcases hc with rfl | hc
+      · -- c = x ⇒ b = 0 ∈ A, contradiction
+        have hb0 : b = 0 := by omega
+        exact absurd (hb0 ▸ hb) h0
+      · exact Or.inl ⟨b, c, hb, hc, heq⟩
+  · -- a ∈ A
+    rcases hb with rfl | hb
+    · -- b = x, a = x + c
+      rcases hc with rfl | hc
+      · -- c = x, a = x + x
+        exact Or.inr (Or.inr ⟨a, ha, heq.symm⟩)
+      · exact Or.inr (Or.inl ⟨a, c, ha, hc, heq⟩)
+    · -- b ∈ A
+      rcases hc with rfl | hc
+      · -- c = x, a = b + x = x + b
+        exact Or.inr (Or.inl ⟨a, b, ha, hb, by omega⟩)
+      · -- c ∈ A: a = b + c with a,b,c ∈ A contradicts sum-freeness
+        exact absurd heq (hsf a b c ha hb hc)
 
 /-
 ## Part III: Counting Functions
@@ -157,7 +196,19 @@ theorem odds_construction (n : ℕ) : ∃ A : Finset ℕ,
     A ⊆ Finset.range (n + 1) ∧
     isSumFree A ∧
     A.card ≥ n / 2 := by
-  sorry
+  -- The upper half {⌊n/2⌋+1, ..., n} is sum-free (smallest sum exceeds n)
+  -- and has cardinality n - ⌊n/2⌋ = ⌈n/2⌉ ≥ ⌊n/2⌋.
+  refine ⟨Finset.Ioc (n / 2) n, ?_, ?_, ?_⟩
+  · intro x hx
+    rw [Finset.mem_Ioc] at hx
+    rw [Finset.mem_range]
+    omega
+  · apply upper_half_sum_free n
+    intro x hx
+    rw [Finset.mem_Ioc] at hx
+    omega
+  · rw [Nat.card_Ioc]
+    omega
 
 /-
 ## Part V: The Łuczak-Schoen Upper Bound (2001)
@@ -169,14 +220,14 @@ There exists c < 1/2 such that f_m(n) < 2^{cn}.
 This proves f_m(n) = o(2^{n/2}).
 -/
 axiom luczak_schoen_theorem :
-    ∃ c : ℚ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℚ) < 2 ^ (c * n)
+    ∃ c : ℝ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℝ) < (2 : ℝ) ^ (c * n)
 
 /--
 **Main question resolved:**
 f_m(n) = o(2^{n/2}) is TRUE by Łuczak-Schoen.
 -/
 theorem main_question_resolved :
-    ∃ c : ℚ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℚ) < 2 ^ (c * n) :=
+    ∃ c : ℝ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℝ) < (2 : ℝ) ^ (c * n) :=
   luczak_schoen_theorem
 
 /-
@@ -190,21 +241,20 @@ and f_m(n) < 2^{c'n} for c' < 1/2, this is also resolved.
 ## Part VI: The BLST Sharp Bounds (2015, 2018)
 -/
 
-/--
+/-
 **BLST 2015 Result:**
 f_m(n) = 2^{(1/4 + o(1))n}.
 This pins down the exponent as 1/4.
--/
-/--
+
 **BLST 2018 Sharp Bound:**
 f_m(n) = (C_n + o(1)) · 2^{n/4},
 where C_n is an explicit constant depending only on n mod 4.
--/
-/--
+
 **The four cases of C_n:**
 The constant C_n depends on n mod 4, reflecting the structure of
 maximal sum-free sets in each residue class.
 -/
+
 /-
 ## Part VII: Structure of Maximal Sum-Free Sets
 -/
@@ -273,7 +323,7 @@ The answer is YES: f_m(n) grows like 2^{n/4}, which is o(2^{n/2}).
 -/
 theorem erdos_877_solved :
     -- The main question is resolved
-    (∃ c : ℚ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℚ) < 2 ^ (c * n)) ∧
+    (∃ c : ℝ, c < 1/2 ∧ ∀ n : ℕ, n ≥ 1 → (f_m n : ℝ) < (2 : ℝ) ^ (c * n)) ∧
     -- And the sharp asymptotics are known
     (∀ n : ℕ, n ≥ 4 → f_m n > 2 ^ (n / 4)) := by
   exact ⟨luczak_schoen_theorem, cameron_erdos_lower_bound⟩
