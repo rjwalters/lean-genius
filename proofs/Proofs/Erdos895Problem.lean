@@ -8,7 +8,9 @@
   For all sufficiently large n, if G is a triangle-free graph on {1,...,n},
   must there exist three independent vertices a, b, a+b?
 
-  Answer: YES, for all n ≥ 18.
+  Answer: YES, for all m ≥ 18 (vertices {1,…,m}). Under the `Fin n` model used here
+  (vertices {0,…,n-1}, vertex 0 inert) this is the threshold n ≥ 19; the sharp
+  counterexample lives on {1,…,17}.
 
   This problem beautifully connects two areas:
   - Graph theory: triangle-free graphs and independent sets
@@ -17,7 +19,8 @@
   Historical Context:
   - Posed by Erdős and Hajnal
   - Solved by Ben Barber using SAT solver verification
-  - Threshold: n = 18 is the smallest value where the result holds
+  - Threshold: m = 18 is the smallest value where the result holds on {1,…,m}
+    (equivalently n = 19 in the `Fin n` model); m = 17 admits a counterexample
 
   The Key Insight:
   In a triangle-free graph, the neighborhood of any vertex is an independent set.
@@ -51,9 +54,11 @@ def IsTriangleFree {n : ℕ} (G : GraphOnInterval n) : Prop :=
 
 /- ## Additive Triples -/
 
-/-- An additive triple (a, b, a+b) where all three are in {1,...,n} -/
+/-- An additive triple of three *distinct* vertices (a, b, a+b), all in {1,...,n}.
+    Distinctness (`a ≠ b`) is required: Barber's theorem is about three distinct
+    vertices, and `c = a+b` is automatically distinct from `a, b` since `a, b > 0`. -/
 def IsAdditiveTriple {n : ℕ} (a b c : Fin n) : Prop :=
-  (a.val : ℕ) + b.val = c.val ∧ a.val > 0 ∧ b.val > 0
+  (a.val : ℕ) + b.val = c.val ∧ a.val > 0 ∧ b.val > 0 ∧ a ≠ b
 
 /-- Check if there exists an independent additive triple -/
 def HasIndependentAdditiveTriple {n : ℕ} (G : GraphOnInterval n) : Prop :=
@@ -67,33 +72,104 @@ def erdos895Conjecture : Prop :=
   ∃ N : ℕ, ∀ n ≥ N, ∀ G : GraphOnInterval n,
     IsTriangleFree G → HasIndependentAdditiveTriple G
 
-/-- The threshold is n = 18 -/
+/-- Barber's threshold on {1,…,m}: the result holds for all m ≥ 18 (sharp).
+    In the `Fin n` model this corresponds to n ≥ 19. -/
 def erdos895Threshold : ℕ := 18
+
+/-
+  ✅ FORMALIZATION CORRECTNESS — RESOLVED (researcher-1 analysis, researcher-6 fix, 2026-06-25)
+
+  An earlier version of this file was internally inconsistent with Barber's theorem.
+  Two issues, both verified by exhaustive SAT search (Z3, sound UNSAT) plus pure-Python
+  checking of every witness graph (scripts in `research/problems/erdos-895-incomplete-01/`):
+
+  ISSUE 1 — `IsAdditiveTriple` omitted `a ≠ b`.
+    The old definition admitted the degenerate triple (a, a, 2a). Since
+    `IsIndependentTriple` makes `¬G.Adj a a` vacuously true, a non-edge `a — 2a` would
+    already count. Barber's theorem is about THREE DISTINCT vertices a, b, a+b.
+    FIX: `IsAdditiveTriple` now requires `a ≠ b`.
+
+  ISSUE 2 — off-by-one in the `Fin n` ↔ {1,…,m} indexing.
+    `GraphOnInterval n = SimpleGraph (Fin n)` has value-set {0,…,n-1} (vertex 0 is
+    inert: never part of an additive triple). So `Fin n` models {1,…,n-1}; Barber's
+    threshold "m = 18 for {1,…,m}" lands at `Fin 19`.
+    FIX: the positive direction is stated for `n ≥ 19`; the sharp counterexample
+    lives on `Fin 18` (= {1,…,17}).
+
+  RESULTING (consistent) STATEMENTS, with the distinct-vertex definition:
+    • `barber_theorem` (∀ n ≥ 19): TRUE. Barber's proof is a large SAT/case
+      computation; recorded here as an `axiom` with provenance (not reformalized).
+    • `counterexample` (∃ G on `Fin 18`): TRUE and machine-checked by `native_decide`
+      over the explicit 42-edge witness graph `cexGraph` below.
+    • `threshold_sharp`: the threshold n = 19 is sharp (positive at 19, counterexample
+      at 18) — now provable from the two above.
+-/
 
 /- ## Barber's Theorem (2015) -/
 
-/-- Ben Barber's result: the conjecture holds with threshold 18 -/
-theorem barber_theorem : ∀ n ≥ 18, ∀ G : GraphOnInterval n,
-    IsTriangleFree G → HasIndependentAdditiveTriple G := by
-  sorry
+/-- Ben Barber's result (2015): every triangle-free graph on {1,…,m} with m ≥ 18 has
+    three distinct, pairwise non-adjacent vertices a, b, a+b. In the `Fin n` model
+    ({0,…,n-1}, vertex 0 inert) this is the threshold `n ≥ 19`.
+
+    Barber's proof is a large SAT / case computation (Barber, "Independent sets in
+    triangle-free graphs", 2015). We record it as an `axiom` with provenance rather
+    than reformalize the SAT certificate; the sharp counterexample at n = 18 is proved
+    below (`counterexample`), so the threshold 19 is exact. -/
+axiom barber_theorem : ∀ n ≥ 19, ∀ G : GraphOnInterval n,
+    IsTriangleFree G → HasIndependentAdditiveTriple G
 
 /-- The main result: Erdős Problem #895 is TRUE -/
 theorem erdos_895 : erdos895Conjecture := by
-  use 18
+  use 19
   exact barber_theorem
 
-/- ## Small Cases -/
+/- ## Small Cases: the sharp counterexample at n = 18 (= {1,…,17}) -/
 
-/-- For n = 17, there exists a triangle-free graph with no independent additive triple -/
-theorem counterexample_17 : ∃ G : GraphOnInterval 17,
+/-- The 42 edges of Barber's sharp counterexample on {1,…,17} (vertex 0 isolated).
+    Validated independently by exhaustive SAT search (Z3) and a pure-Python check of
+    the exact Lean predicates; scripts in `research/problems/erdos-895-incomplete-01/`. -/
+private def cexEdges : List (Fin 18 × Fin 18) :=
+  [(1,3),(1,5),(1,10),(1,12),(1,14),(1,16),(2,5),(2,6),(2,9),(2,12),(2,13),(2,16),
+   (3,7),(3,9),(3,11),(3,13),(3,15),(4,5),(4,11),(4,12),(4,13),(4,14),(5,8),(5,15),
+   (6,7),(6,10),(6,11),(6,14),(6,15),(7,8),(7,12),(7,16),(8,9),(8,10),(8,13),(9,14),
+   (10,17),(11,16),(12,17),(14,17),(15,17),(16,17)]
+
+/-- Symmetric adjacency Boolean: `i ~ j` iff `{i,j}` is one of the 42 edges. -/
+private def cexAdj (i j : Fin 18) : Bool :=
+  cexEdges.contains (i, j) || cexEdges.contains (j, i)
+
+/-- The explicit triangle-free graph on `Fin 18` with no independent additive triple
+    on three distinct vertices. -/
+def cexGraph : GraphOnInterval 18 where
+  Adj i j := cexAdj i j = true
+  symm := by
+    intro i j h
+    simp only [cexAdj, Bool.or_eq_true] at h ⊢
+    tauto
+  loopless := by
+    intro i
+    fin_cases i <;> decide
+
+instance : DecidableRel cexGraph.Adj :=
+  fun i j => inferInstanceAs (Decidable (cexAdj i j = true))
+
+/-- For the corrected (distinct-vertex) statement, there exists a triangle-free graph
+    on {1,…,17} (= `Fin 18`) with no independent additive triple. This makes threshold
+    19 sharp. Checked by `native_decide` over the explicit 42-edge graph. -/
+theorem counterexample : ∃ G : GraphOnInterval 18,
     IsTriangleFree G ∧ ¬HasIndependentAdditiveTriple G := by
-  sorry
+  refine ⟨cexGraph, ?_, ?_⟩
+  · unfold IsTriangleFree
+    native_decide
+  · unfold HasIndependentAdditiveTriple IsAdditiveTriple IsIndependentTriple
+    native_decide
 
-/-- The threshold 18 is sharp -/
-theorem threshold_sharp : (∀ n ≥ 18, ∀ G : GraphOnInterval n,
+/-- The threshold n = 19 is sharp: the positive result holds for all n ≥ 19, and
+    there is a counterexample at n = 18. -/
+theorem threshold_sharp : (∀ n ≥ 19, ∀ G : GraphOnInterval n,
     IsTriangleFree G → HasIndependentAdditiveTriple G) ∧
-    (∃ G : GraphOnInterval 17, IsTriangleFree G ∧ ¬HasIndependentAdditiveTriple G) := by
-  exact ⟨barber_theorem, counterexample_17⟩
+    (∃ G : GraphOnInterval 18, IsTriangleFree G ∧ ¬HasIndependentAdditiveTriple G) :=
+  ⟨barber_theorem, counterexample⟩
 
 /- ## Connection to Ramsey Theory -/
 
@@ -152,7 +228,7 @@ theorem ramsey_3_3 : ∀ c : Fin 6 → Fin 6 → Fin 2,
     an independent subset I with I.card * k ≥ S.card.
     Proof: take a vertex v, remove v and its S-neighbors (at most k vertices), recurse. -/
 private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (Fin n))
-    [DecidableRel G.Adj] {k : ℕ} (hk : 0 < k)
+    [DecidableRel G.Adj] {k : ℕ} (_hk : 0 < k)
     (hdeg : ∀ v : Fin n, G.degree v < k) :
     ∃ I : Finset (Fin n), n ≤ I.card * k ∧
       ∀ a b : Fin n, a ∈ I → b ∈ I → a ≠ b → ¬G.Adj a b := by
@@ -167,24 +243,27 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
   | H S ih =>
     intro hdeg_S
     by_cases hS : S = ∅
-    · exact ⟨∅, Finset.empty_subset _, by simp [hS], fun _ _ ha _ _ _ => absurd ha (by simp [hS])⟩
+    · exact ⟨∅, Finset.empty_subset _, by simp [hS], fun _ _ ha _ _ _ => absurd ha (by simp)⟩
     · obtain ⟨v, hv⟩ := Finset.nonempty_iff_ne_empty.mpr hS
       let Nv := G.neighborFinset v ∩ S
       let removed := Nv ∪ {v}
       let S' := S \ removed
       have hS'_subs : S' ⊂ S := by
-        apply Finset.ssubset_of_subset_of_ne Finset.sdiff_subset
+        rw [Finset.ssubset_iff_subset_ne]
+        refine ⟨Finset.sdiff_subset, ?_⟩
         intro heq
-        have : v ∈ removed := Finset.mem_union_right _ (Finset.mem_singleton_self v)
-        exact absurd this (Finset.mem_sdiff.mp (heq ▸ hv)).2
+        have hvS' : v ∈ S' := heq.symm ▸ hv
+        exact (Finset.mem_sdiff.mp hvS').2
+          (Finset.mem_union.mpr (Or.inr (Finset.mem_singleton_self v)))
       have hrem_card : removed.card ≤ k := by
         have hv_loop : v ∉ Nv := by
-          simp [Nv, SimpleGraph.mem_neighborFinset, G.loopless]
+          simp [Nv, SimpleGraph.mem_neighborFinset]
         rw [Finset.card_union_of_disjoint (Finset.disjoint_singleton_right.mpr hv_loop),
             Finset.card_singleton]
         have hNv_le : Nv.card ≤ G.degree v := by
           rw [← SimpleGraph.card_neighborFinset_eq_degree]
           exact Finset.card_le_card Finset.inter_subset_left
+        have hdv : G.degree v < k := hdeg_S v hv
         omega
       have hS'_card : S.card ≤ S'.card + k := by
         have hdisj : Disjoint S' (S ∩ removed) :=
@@ -198,16 +277,16 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
         have hSI_le : (S ∩ removed).card ≤ k :=
           (Finset.card_le_card Finset.inter_subset_right).trans hrem_card
         omega
-      obtain ⟨I, hI_sub, hI_card, hI_indep⟩ := ih S' hS'_subs (fun u hu => hdeg_S u (Finset.mem_of_mem_sdiff hu))
+      obtain ⟨I, hI_sub, hI_card, hI_indep⟩ := ih S' hS'_subs (fun u hu => hdeg_S u (Finset.mem_sdiff.mp hu).1)
       have hv_notin_I : v ∉ I := by
         intro hv_I
-        exact absurd (Finset.mem_union_right Nv (Finset.mem_singleton_self v))
+        exact absurd (Finset.mem_union.mpr (Or.inr (Finset.mem_singleton_self v)))
                      (Finset.mem_sdiff.mp (hI_sub hv_I)).2
       refine ⟨insert v I, ?_, ?_, ?_⟩
       · intro u hu
         simp only [Finset.mem_insert] at hu
-        exact hu.elim (fun h => h ▸ hv) (fun h => Finset.mem_of_mem_sdiff (hI_sub h))
-      · rw [Finset.card_insert_of_not_mem hv_notin_I]
+        exact hu.elim (fun h => h ▸ hv) (fun h => (Finset.mem_sdiff.mp (hI_sub h)).1)
+      · rw [Finset.card_insert_of_notMem hv_notin_I]
         calc S.card ≤ S'.card + k := hS'_card
           _ ≤ I.card * k + k := Nat.add_le_add_right hI_card k
           _ = (I.card + 1) * k := by ring
@@ -217,13 +296,13 @@ private lemma exists_large_indep_of_bounded_degree {n : ℕ} (G : SimpleGraph (F
         · exact absurd rfl hab
         · intro hadj
           have hb_S' := hI_sub hb
-          exact absurd (Finset.mem_union_left {v} (Finset.mem_inter.mpr
-            ⟨SimpleGraph.mem_neighborFinset.mpr (G.symm hadj), Finset.mem_of_mem_sdiff hb_S'⟩))
+          exact absurd (Finset.mem_union.mpr (Or.inl (Finset.mem_inter.mpr
+            ⟨(G.mem_neighborFinset a b).mpr hadj, (Finset.mem_sdiff.mp hb_S').1⟩)))
             (Finset.mem_sdiff.mp hb_S').2
         · intro hadj
           have ha_S' := hI_sub ha
-          exact absurd (Finset.mem_union_left {v} (Finset.mem_inter.mpr
-            ⟨SimpleGraph.mem_neighborFinset.mpr hadj, Finset.mem_of_mem_sdiff ha_S'⟩))
+          exact absurd (Finset.mem_union.mpr (Or.inl (Finset.mem_inter.mpr
+            ⟨(G.mem_neighborFinset b a).mpr (G.symm hadj), (Finset.mem_sdiff.mp ha_S').1⟩)))
             (Finset.mem_sdiff.mp ha_S').2
         · exact hI_indep a b ha hb hab
 
@@ -242,16 +321,13 @@ theorem triangleFree_independence_bound {n : ℕ} (G : GraphOnInterval n) (hG : 
   · -- Case 2: all degrees < √n; greedy gives large independent set
     push_neg at h
     by_cases hn : n = 0
-    · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (by simp [hn])⟩
+    · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (by simp)⟩
     · have hsqrt_pos : 0 < Nat.sqrt n := Nat.sqrt_pos.mpr (Nat.pos_of_ne_zero hn)
       obtain ⟨I, hI_card, hI_indep⟩ := exists_large_indep_of_bounded_degree G hsqrt_pos h
       refine ⟨I, ?_, hI_indep⟩
       -- From n ≤ I.card * √n and (√n)² ≤ n, deduce √n ≤ I.card.
       -- (√n)² ≤ n: by contradiction, if n < √n * √n then Nat.sqrt_lt' gives √n < √n.
-      have hn_sq : Nat.sqrt n * Nat.sqrt n ≤ n := by
-        by_contra h
-        push_neg at h
-        exact lt_irrefl _ (Nat.sqrt_lt'.mpr h)
+      have hn_sq : Nat.sqrt n * Nat.sqrt n ≤ n := Nat.sqrt_le n
       have hchain : Nat.sqrt n * Nat.sqrt n ≤ I.card * Nat.sqrt n := hn_sq.trans hI_card
       exact Nat.le_of_mul_le_mul_right hchain hsqrt_pos
 
@@ -299,8 +375,7 @@ theorem schur_2 : schurNumber 2 = 4 := by
     have ha5 : a < 5 := by omega
     have hb5 : b < 5 := by omega
     have hab5 : a + b < 5 := by omega
-    rw [dif_pos ha5, dif_pos hb5] at h1
-    rw [dif_pos hb5, dif_pos hab5] at h2
+    simp only [dif_pos ha5, dif_pos hb5, dif_pos hab5] at h1 h2
     exact hf ⟨a, ha5⟩ ⟨b, hb5⟩ ⟨a + b, hab5⟩ ha1 hb1 rfl ⟨h1, h2⟩
   -- 5 ∉ S: any supposed coloring yields a mono triple from schur_5_forced
   have hS5 : 5 ∉ S := by
@@ -322,18 +397,9 @@ theorem schur_2 : schurNumber 2 = 4 := by
     (csSup_le ⟨4, hmem4⟩ hSle4)
     (le_csSup ⟨4, hSle4⟩ hmem4)
 
-/-- Erdős 895 implies a Schur-like result for graph colorings:
-    Every 2-coloring of {1,...,n} either has a same-colored additive pair (a,b with a+b in range)
-    or a fully same-colored Schur triple (a, b, a+b all the same color). -/
-theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) :
-    ∀ c : Fin n → Fin 2,
-    (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b) ∨
-    (∃ a b d : Fin n, IsAdditiveTriple a b d ∧ c a = c b ∧ c b = c d) := by
-  intro c
-  left
-  -- The triple (1, 1, 2) satisfies IsAdditiveTriple and the same vertex a=b gives c a = c b trivially.
-  exact ⟨⟨1, by omega⟩, ⟨1, by omega⟩, ⟨2, by omega⟩,
-         ⟨by norm_num, by omega, by omega⟩, rfl⟩
+/- The former `erdos895_implies_schur_variant` was removed: its proof relied on the
+   degenerate triple (1,1,2), which is no longer an `IsAdditiveTriple` now that the
+   definition (correctly) requires the two summands to be distinct (`a ≠ b`). -/
 
 /- ## Hajnal's Generalization (OPEN) -/
 
@@ -394,11 +460,11 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
   -- Strategy: find max-degree vertex v; its neighborhood is independent (triangle-free),
   -- and deg(v) ≥ 2*|E|/n ≥ 2*(n²/5)/n ≥ n/3.
   by_cases hn : n = 0
-  · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (Finset.not_mem_empty _)⟩
+  · exact ⟨∅, by simp [hn], fun _ _ ha _ _ _ => absurd ha (Finset.notMem_empty _)⟩
   have hpos : 0 < n := Nat.pos_of_ne_zero hn
   -- Get the max-degree vertex
   have hne : (Finset.univ : Finset (Fin n)).Nonempty := ⟨⟨0, hpos⟩, Finset.mem_univ _⟩
-  obtain ⟨v, -, hv_max⟩ := Finset.exists_max_image Finset.univ G.degree hne
+  obtain ⟨v, -, hv_max⟩ := Finset.exists_max_image Finset.univ (fun w => G.degree w) hne
   -- Handshake: Σ deg = 2|E|
   have hsum : ∑ w : Fin n, G.degree w = 2 * G.edgeFinset.card :=
     SimpleGraph.sum_degrees_eq_twice_card_edges G
@@ -416,8 +482,7 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
   have hdeg : G.degree v ≥ n / 3 := by
     -- Use: n*(n/3) ≤ 2*(n²/5) ≤ n*deg(v); cancel n to get n/3 ≤ deg(v)
     apply Nat.le_of_mul_le_mul_left _ hpos
-    -- Goal: n/3 * n ≤ G.degree v * n  (after rw of mul_comm)
-    rw [mul_comm (n / 3) n, mul_comm (G.degree v) n]
+    -- Goal: n * (n / 3) ≤ n * G.degree v
     have hfloor3 : n / 3 * 3 ≤ n := Nat.div_mul_le_self n 3
     have hmod5 : n ^ 2 ≤ n ^ 2 / 5 * 5 + 4 := by omega
     by_cases hn5 : n < 5
@@ -440,22 +505,24 @@ theorem dense_triangleFree_independence {n : ℕ} (G : GraphOnInterval n) [Decid
 
 /- ## Computational Verification -/
 
-/-- The result was verified computationally via SAT solver -/
+/-- A bounded restatement of Barber's theorem (corrected threshold n ≥ 19),
+    obtained directly from `barber_theorem`. -/
 theorem erdos895_sat_verified :
-    ∀ n : Fin 100, n.val ≥ 18 → ∀ G : GraphOnInterval n.val,
-      IsTriangleFree G → HasIndependentAdditiveTriple G := by
-  sorry
+    ∀ n : Fin 100, n.val ≥ 19 → ∀ G : GraphOnInterval n.val,
+      IsTriangleFree G → HasIndependentAdditiveTriple G :=
+  fun n hn G hG => barber_theorem n.val hn G hG
 
 /- ## Main Results Summary -/
 
 /-- Erdős Problem #895: SOLVED
-    Answer: Yes, for n ≥ 18, every triangle-free graph on {1,...,n}
-    contains an independent additive triple a, b, a+b. -/
+    Answer: Yes — for every triangle-free graph on {1,...,m} with m ≥ 18 (i.e. `Fin n`
+    with n ≥ 19) there exist three distinct, pairwise non-adjacent vertices a, b, a+b.
+    `erdos895Threshold = 18` records Barber's threshold on {1,…,m}. -/
 theorem erdos_895_summary :
-    (∀ n ≥ 18, ∀ G : GraphOnInterval n,
+    (∀ n ≥ 19, ∀ G : GraphOnInterval n,
       IsTriangleFree G → HasIndependentAdditiveTriple G) ∧
-    erdos895Threshold = 18 := by
-  exact ⟨barber_theorem, rfl⟩
+    erdos895Threshold = 18 :=
+  ⟨barber_theorem, rfl⟩
 
 #check erdos_895
 #check barber_theorem
