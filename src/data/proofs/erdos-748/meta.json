@@ -49,15 +49,17 @@
       "upperHalf_sumFree theorem: upper half is always sum-free",
       "trivial_lower_bound theorem (PROVED, formerly an axiom): f(n) ≥ 2^{⌊n/2⌋} via the powerset of the upper half embedding into the sum-free subsets",
       "cameronErdosConjecture definition: formal statement",
+      "sumFreeSubsets_subset_succ theorem (PROVED, 0 axioms): sum-free subsets of {1,...,n} embed into those of {1,...,n+1} — sum-freeness is intrinsic, so enlarging the ambient range preserves it",
+      "f_monotone theorem (PROVED, 0 axioms): the counting function f is monotone (Monotone f), the structural fact underlying the trivial lower bound",
       "green_upper_bound axiom: f(n) ≪ 2^{n/2}",
       "precise_asymptotic axiom: f(n) ~ c_n · 2^{n/2}",
       "oddNumbers_sumFree theorem: odds form sum-free set",
       "erdos_748_summary: combining all results"
     ],
     "axiomCount": 2,
-    "lineCount": 362,
+    "lineCount": 386,
     "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The trivial lower bound f(n) ≥ 2^{⌊n/2⌋} is now fully proved (no longer an axiom). See the Lean source for details.",
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"
@@ -177,9 +179,9 @@
       "Finset"
     ],
     "namespace": "Erdos748",
-    "lineCount": 362,
+    "lineCount": 386,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 14,
     "definitionCount": 5,
     "path": "Proofs/Erdos748Problem.lean",
     "sorries": 0,
