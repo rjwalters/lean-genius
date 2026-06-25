@@ -3,44 +3,60 @@
     "id": "frobenius-endomorphism-oq-01-module-header",
     "proofId": "frobenius-endomorphism-oq-01",
     "type": "concept",
-    "range": {
-      "startLine": 1,
-      "endLine": 35
-    },
+    "range": { "startLine": 1, "endLine": 29 },
     "title": "Module Header: The Frobenius Endomorphism",
-    "content": "In a commutative ring of prime characteristic $p$, the map $x \\mapsto x^p$ is a **ring homomorphism**, the Frobenius endomorphism. Its only non-trivial property is additivity — the **freshman's dream**\n$$(x+y)^p = x^p + y^p,$$\ntrue because $p \\mid \\binom{p}{k}$ for $0 < k < p$. Two characterizations pin it down on the basic fields: over $\\mathbb{Z}/p$ the Frobenius is the **identity** ($x^p = x$ for all $x$ — Fermat's little theorem), and over a finite field $K$ with $|K| = q$ the $q$-power map and all its iterates are the identity, $x^{q^n} = x$. The file packages these and checks $\\mathbb{Z}/5$, $\\mathbb{Z}/3$ by `decide`."
+    "content": "In a commutative ring of prime characteristic $p$, the map $x \\mapsto x^p$ is a **ring homomorphism**, the Frobenius endomorphism. Its only non-trivial property is additivity — the **freshman's dream**\n$$(x+y)^p = x^p + y^p,$$\ntrue because $p \\mid \\binom{p}{k}$ for $0 < k < p$. Two characterizations pin it down on the basic fields: over $\\mathbb{Z}/p$ the Frobenius is the **identity** ($x^p = x$ for all $x$ — Fermat's little theorem), and over a finite field $K$ with $|K| = q$ the $q$-power map and all its iterates are the identity, $x^{q^n} = x$. The file packages these and checks $\\mathbb{Z}/5$, $\\mathbb{Z}/3$ by `decide`.",
+    "mathContext": "$\\mathrm{frobenius}_p : R \\to R,\\ x \\mapsto x^p$ is a ring endomorphism when $\\mathrm{char}\\,R = p$; over $\\mathbb{Z}/p$ it is $\\mathrm{id}$, over $\\mathbb{F}_q$ it generates $\\mathrm{Gal}(\\mathbb{F}_q/\\mathbb{F}_p)$.",
+    "significance": "context",
+    "relatedConcepts": ["prime characteristic", "freshman's dream", "Fermat's little theorem", "Galois group of finite fields"],
+    "prerequisites": ["commutative rings", "characteristic of a ring", "finite fields"]
   },
   {
     "id": "frobenius-endomorphism-oq-01-ringhom",
     "proofId": "frobenius-endomorphism-oq-01",
-    "type": "theorem",
-    "range": {
-      "startLine": 39,
-      "endLine": 58
-    },
+    "type": "technique",
+    "range": { "startLine": 40, "endLine": 52 },
     "title": "The Frobenius Ring Homomorphism",
-    "content": "`frobenius_apply`: the Frobenius is $x \\mapsto x^p$ (definitionally, `rfl`).\n\n`freshmans_dream`: $(x+y)^p = x^p + y^p$ — the substantive additivity, supplied by `add_pow_expChar` (every binomial coefficient $\\binom{p}{k}$, $0 < k < p$, vanishes mod $p$, killing all cross-terms).\n\n`frobenius_mul`: $(xy)^p = x^p y^p$, automatic from commutativity (`mul_pow`, characteristic-independent — hence the `omit [ExpChar R p]`). Together these say $x \\mapsto x^p$ is a genuine ring endomorphism."
+    "content": "`frobenius_apply`: the Frobenius is $x \\mapsto x^p$ (definitionally, `rfl`).\n\n`freshmans_dream`: $(x+y)^p = x^p + y^p$ — the substantive additivity, supplied by `add_pow_expChar` (every binomial coefficient $\\binom{p}{k}$, $0 < k < p$, vanishes mod $p$, killing all cross-terms).\n\n`frobenius_mul`: $(xy)^p = x^p y^p$, automatic from commutativity (`mul_pow`, characteristic-independent — hence the `omit [ExpChar R p]`). Together these say $x \\mapsto x^p$ is a genuine ring endomorphism.",
+    "mathContext": "$(x+y)^p = \\sum_{k=0}^{p}\\binom{p}{k}x^k y^{p-k} = x^p + y^p$ since $p \\mid \\binom{p}{k}$ for $0<k<p$; $(xy)^p = x^p y^p$ by commutativity.",
+    "significance": "key",
+    "relatedConcepts": ["binomial theorem mod p", "add_pow_expChar", "ring homomorphism", "ExpChar typeclass"],
+    "prerequisites": ["binomial coefficients", "divisibility of binom(p,k) by p", "ring homomorphisms"]
   },
   {
     "id": "frobenius-endomorphism-oq-01-fermat",
     "proofId": "frobenius-endomorphism-oq-01",
-    "type": "theorem",
-    "range": {
-      "startLine": 60,
-      "endLine": 78
-    },
+    "type": "insight",
+    "range": { "startLine": 62, "endLine": 70 },
     "title": "Frobenius over ZMod p = Fermat's Little Theorem",
-    "content": "`frobenius_zmod_eq_id`: over $\\mathbb{Z}/p$ the Frobenius is the **identity** ring homomorphism (`ZMod.frobenius_zmod`).\n\n`fermat_little`: equivalently, $a^p = a$ for **every** $a \\in \\mathbb{Z}/p$ (`ZMod.pow_card`). This is Fermat's little theorem in its all-elements form (it holds even for $a = 0$, stronger than the usual $a^{p-1} = 1$ for units) — and it is exactly the statement that the Frobenius fixes every element of the prime field."
+    "content": "`frobenius_zmod_eq_id`: over $\\mathbb{Z}/p$ the Frobenius is the **identity** ring homomorphism (`ZMod.frobenius_zmod`).\n\n`fermat_little`: equivalently, $a^p = a$ for **every** $a \\in \\mathbb{Z}/p$ (`ZMod.pow_card`). This is Fermat's little theorem in its all-elements form (it holds even for $a = 0$, stronger than the usual $a^{p-1} = 1$ for units) — and it is exactly the statement that the Frobenius fixes every element of the prime field.",
+    "mathContext": "$a^p = a$ for all $a \\in \\mathbb{Z}/p$; equivalently $\\mathrm{frobenius}_p = \\mathrm{id}_{\\mathbb{Z}/p}$. For units this gives the familiar $a^{p-1} = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Fermat's little theorem", "prime field", "fixed points of Frobenius", "ZMod.pow_card"],
+    "prerequisites": ["the field Z/p", "multiplicative group of a finite field"]
   },
   {
-    "id": "frobenius-endomorphism-oq-01-finite-and-concrete",
+    "id": "frobenius-endomorphism-oq-01-finite-field",
     "proofId": "frobenius-endomorphism-oq-01",
     "type": "theorem",
-    "range": {
-      "startLine": 80,
-      "endLine": 101
-    },
-    "title": "Finite Fields and Concrete Checks",
-    "content": "`finite_field_pow_card`: over a finite field $K$ with $q = |K|$, every element satisfies $x^q = x$ — a root of $X^q - X$ (`FiniteField.pow_card`). `finite_field_iterate`: every iterate $x^{q^n} = x$ (`FiniteField.pow_card_pow`), the cyclic structure of the Frobenius generating $\\mathrm{Gal}(K/\\mathbb{F}_p)$.\n\nConcrete `decide`-checks: `frobenius_fixes_zmod_five` ($\\forall a \\in \\mathbb{Z}/5,\\ a^5 = a$) and `freshmans_dream_zmod_three` ($\\forall x,y \\in \\mathbb{Z}/3,\\ (x+y)^3 = x^3 + y^3$) — verified by kernel reduction over the finite types, so no `native_decide`."
+    "range": { "startLine": 80, "endLine": 89 },
+    "title": "Finite Fields: q-power map and its iterates",
+    "content": "`finite_field_pow_card`: over a finite field $K$ with $q = |K|$, every element satisfies $x^q = x$ — i.e. every element is a root of $X^q - X$ (`FiniteField.pow_card`). `finite_field_iterate`: every iterate $x^{q^n} = x$ (`FiniteField.pow_card_pow`). These encode the cyclic structure of the Frobenius: over $\\mathbb{F}_q$ with $q = p^m$ the Frobenius $x\\mapsto x^p$ has order $m$ and generates the cyclic Galois group $\\mathrm{Gal}(\\mathbb{F}_q/\\mathbb{F}_p)$.",
+    "mathContext": "$X^q - X = \\prod_{a\\in K}(X-a)$, so $x^q = x$ for all $x\\in K$; iterating, $x^{q^n}=x$. The $q$-power map is $\\mathrm{frob}_p^{\\,m}$ where $q=p^m$.",
+    "significance": "supporting",
+    "relatedConcepts": ["finite field", "splitting field of X^q - X", "Galois group", "FiniteField.pow_card"],
+    "prerequisites": ["finite fields of order p^m", "roots of polynomials"]
+  },
+  {
+    "id": "frobenius-endomorphism-oq-01-concrete",
+    "proofId": "frobenius-endomorphism-oq-01",
+    "type": "technique",
+    "range": { "startLine": 93, "endLine": 99 },
+    "title": "Concrete decidable checks (no native_decide)",
+    "content": "`frobenius_fixes_zmod_five`: $\\forall a \\in \\mathbb{Z}/5,\\ a^5 = a$, and `freshmans_dream_zmod_three`: $\\forall x,y \\in \\mathbb{Z}/3,\\ (x+y)^3 = x^3 + y^3$. Both are closed by `decide` — kernel reduction over the finite types $\\mathbb{Z}/5$ and $\\mathbb{Z}/3$ — deliberately NOT `native_decide`, so the proofs remain axiom-free (no `Lean.ofReduceBool`). They serve as executable sanity checks of the two headline facts on the smallest nontrivial primes.",
+    "mathContext": "Over $\\mathbb{Z}/5$: $0^5{=}0,1^5{=}1,2^5{=}32{\\equiv}2,3^5{\\equiv}3,4^5{\\equiv}4$. Over $\\mathbb{Z}/3$: freshman's dream $(x+y)^3 = x^3+y^3$ for all $9$ pairs.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide vs native_decide", "kernel reduction", "axiom-free verification", "finite enumeration"],
+    "prerequisites": ["decidable propositions over finite types"]
   }
 ]
