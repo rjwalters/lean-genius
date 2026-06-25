@@ -120,6 +120,70 @@ theorem not_admissible_zero_one : ¬ Admissible ({0, 1} : Finset ℕ) := by
   · exact (hr 0 (by decide)) (by decide)
   · exact (hr 1 (by decide)) (by decide)
 
+/- ## Structural properties
+
+Admissibility is closed downward and is invariant under translation, and admissible
+`k`-tuples exist for every `k` — so the extremal quantity `A(k)` is well-defined. -/
+
+/-- **Downward closure.** Any subset of an admissible set is admissible: a residue class
+missed by `a` mod `p` is still missed by any subset of `a`. -/
+theorem Admissible.subset {a b : Finset ℕ} (ha : Admissible a) (hba : b ⊆ a) :
+    Admissible b := by
+  intro p hp
+  obtain ⟨r, hr⟩ := ha p hp
+  exact ⟨r, fun x hx => hr x (hba hx)⟩
+
+/-- **Translation invariance.** Translating every element by a fixed `t` preserves
+admissibility: if `a` misses class `r` modulo `p`, then `a + t` misses class `r + t`.
+Admissibility depends only on the *pattern* of a tuple, not its position. -/
+theorem admissible_image_add {a : Finset ℕ} (t : ℕ) (ha : Admissible a) :
+    Admissible (a.image (· + t)) := by
+  intro p hp
+  obtain ⟨r, hr⟩ := ha p hp
+  refine ⟨r + (t : ZMod p), fun y hy => ?_⟩
+  obtain ⟨x, hx, rfl⟩ := Finset.mem_image.mp hy
+  have hx' := hr x hx
+  push_cast
+  exact fun h => hx' (add_right_cancel h)
+
+/-- Translation by a fixed `t` is injective, so it preserves cardinality: it sends
+admissible `k`-tuples to admissible `k`-tuples. -/
+theorem card_image_add (a : Finset ℕ) (t : ℕ) :
+    (a.image (· + t)).card = a.card :=
+  Finset.card_image_of_injective _ (add_left_injective t)
+
+/-- **Existence / well-definedness of `A(k)`.** For every `k` there is an admissible set of
+size exactly `k`, so the extremal value `A(k) = min a_k` is taken over a nonempty family.
+
+Construction: the multiples `0, N, 2N, …, (k-1)N` of the primorial
+`N = ∏_{p ≤ k, p prime} p`. Modulo each prime `p ≤ k` every element is `≡ 0` (since `p ∣ N`),
+so the class `1` is missed; primes `p > k = card` are automatic by `missing_class_of_card_lt`.
+This also gives the explicit (weak) upper bound `A(k) ≤ (k-1)·∏_{p ≤ k} p`. -/
+theorem exists_admissible_card (k : ℕ) :
+    ∃ a : Finset ℕ, a.card = k ∧ Admissible a := by
+  classical
+  -- An `N > 0` divisible by every prime `p ≤ k` (the primorial works).
+  obtain ⟨N, hNpos, hNdvd⟩ : ∃ N : ℕ, 0 < N ∧ ∀ p, p.Prime → p ≤ k → p ∣ N := by
+    refine ⟨((Finset.range (k + 1)).filter Nat.Prime).prod id, ?_, ?_⟩
+    · exact Finset.prod_pos (fun q hq => (Finset.mem_filter.mp hq).2.pos)
+    · intro p hp hpk
+      exact Finset.dvd_prod_of_mem id
+        (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp⟩)
+  have hinj : Function.Injective (fun x : ℕ => x * N) :=
+    fun x y h => Nat.eq_of_mul_eq_mul_right hNpos h
+  refine ⟨(Finset.range k).image (fun x => x * N), ?_, ?_⟩
+  · rw [Finset.card_image_of_injective _ hinj, Finset.card_range]
+  · rw [admissible_iff_card, Finset.card_image_of_injective _ hinj, Finset.card_range]
+    intro p hp hpk
+    haveI : Fact p.Prime := ⟨hp⟩
+    have hp0 : (N : ZMod p) = 0 :=
+      (CharP.cast_eq_zero_iff (ZMod p) p N).mpr (hNdvd p hp hpk)
+    refine ⟨1, fun x hx => ?_⟩
+    obtain ⟨i, _, rfl⟩ := Finset.mem_image.mp hx
+    push_cast
+    rw [hp0, mul_zero]
+    exact zero_ne_one
+
 /- ## Open Problems
 
 The asymptotic behaviour of the extremal quantities is OPEN:
