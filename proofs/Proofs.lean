@@ -1982,6 +1982,7 @@ import Proofs.Erdos393Problem
 import Proofs.Erdos394Problem
 import Proofs.Erdos395OQ01
 import Proofs.Erdos395OQ01Incomplete01
+import Proofs.Erdos395OQ02
 import Proofs.Erdos395Problem
 import Proofs.Erdos396OQ04
 import Proofs.Erdos396OQ04OQ01
