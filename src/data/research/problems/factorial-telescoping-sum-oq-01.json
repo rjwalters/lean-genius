@@ -1,0 +1,28 @@
+{
+  "id": "factorial-telescoping-sum-oq-01",
+  "name": "Factorial Telescoping Sum: ∑ k·k! = (n+1)! − 1",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The summand telescopes pointwise: k·k! = (k+1)! − k!, so ∑_{k=1}^{n} k·k! collapses to (n+1)! − 1! = (n+1)! − 1.",
+      "Over ℕ the clean statement uses truncated subtraction; proving the subtraction-free form (∑_{k=0}^{n} k·k!) + 1 = (n+1)! first makes the induction trivial and lets omega discharge the subtraction step exactly (valid since (n+1)! ≥ 1).",
+      "After expanding (n+2)! = (n+2)·(n+1)! and rewriting (n+2)·(n+1)! = (n+1)! + (n+1)·(n+1)!, the inductive step is linear in the three opaque atoms ∑, (n+1)!, (n+1)·(n+1)! — omega closes it; no nonlinear reasoning needed.",
+      "The lower limit k = 1 is cosmetic: the k = 0 term 0·0! = 0, so the Finset.Icc 1 n sum equals the Finset.range (n+1) sum, proved by an induction matching sum_Icc_succ_top against sum_range_succ.",
+      "Mathlib has the factorial recurrence and the Finset sum lemmas but not this specific telescoping identity as a named result; it is built here from primitives."
+    ],
+    "builtItems": [
+      "FactorialTelescopingSum.sum_mul_factorial_add_one (Proofs/FactorialTelescopingSumOQ01.lean:41) — (∑_{k=0}^{n} k·k!) + 1 = (n+1)!, the subtraction-free engine",
+      "FactorialTelescopingSum.sum_mul_factorial (:58) — ∑_{k=0}^{n} k·k! = (n+1)! − 1, headline form",
+      "FactorialTelescopingSum.sum_Icc_eq_sum_range (:65) — bridges Finset.Icc 1 n to Finset.range (n+1)",
+      "FactorialTelescopingSum.sum_Icc_mul_factorial (:74) — ∑_{k=1}^{n} k·k! = (n+1)! − 1, literal lower-limit-1 form",
+      "FactorialTelescopingSum.mul_factorial_eq (:79) — k·k! = (k+1)! − k!, the pointwise telescoping identity"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Generalize the engine to ∑_{k} (a_{k+1} − a_k) = a_{n+1} − a_1 over a commutative monoid and recover this identity as the factorial instance a_k = k!.",
+      "Formalize the factoradic (factorial number system) representation that ∑_{k=1}^{n} k·k! = (n+1)! − 1 underlies, and related rising/falling-factorial telescoping sums."
+    ],
+    "progressSummary": "COMPLETE: ∑_{k=1}^{n} k·k! = (n+1)! − 1 formalized and verified — 5 theorems, 0 sorries, 0 axioms, no native_decide (#print axioms = [propext, Classical.choice, Quot.sound]). Compiled against Mathlib v4.26.0. Elementary/classical identity; routine difficulty. PR opened."
+  }
+}
