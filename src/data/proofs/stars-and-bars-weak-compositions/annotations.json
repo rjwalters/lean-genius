@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-multiset-of-a-weak-composition",
+    "proofId": "stars-and-bars-weak-compositions",
+    "range": {
+      "startLine": 49,
+      "endLine": 65
+    },
+    "type": "definition",
+    "title": "The Multiset Attached to a Weak Composition (toMultiset, count_toMultiset, card_toMultiset)",
+    "content": "toMultiset f = ∑ i, Multiset.replicate (f i) i packages a weak composition f : Fin k → ℕ as the multiset over the index set Fin k in which index i appears with multiplicity f(i). This is the concrete realisation of the slogan 'a weak composition is a multiset of indices'. Two bookkeeping lemmas pin the construction down. count_toMultiset proves Multiset.count j (toMultiset f) = f j: Multiset.count_sum' distributes the count over the Finset sum, Multiset.count_replicate turns each summand into the indicator (if i = j then f i else 0), and Fintype.sum_ite_eq' collapses the sum over Fin k to the single surviving term f j. card_toMultiset proves Multiset.card (toMultiset f) = ∑ i, f i: Multiset.card_sum distributes the cardinality over the Finset sum and Multiset.card_replicate evaluates card (replicate (f i) i) = f i. Together these are the two facts that make toMultiset both injective-recoverable and size-correct."
+  },
+  {
+    "id": "ann-the-bijection",
+    "proofId": "stars-and-bars-weak-compositions",
+    "range": {
+      "startLine": 67,
+      "endLine": 97
+    },
+    "type": "theorem",
+    "title": "The Bijection to Size-n Multisets (weakCompositionEquivSym, instFintypeWeakComposition)",
+    "content": "weakCompositionEquivSym k n is the explicit equivalence {f : Fin k → ℕ // ∑ i, f i = n} ≃ Sym (Fin k) n. The forward map sends f to toMultiset f, which lands in Sym (Fin k) n because card_toMultiset gives card (toMultiset f) = ∑ i, f i = n. The inverse sends a multiset s to the multiplicity function i ↦ Multiset.count i s, whose values sum to n because Multiset.sum_count_eq_card gives ∑ i, count i s = card s = n over the Fintype index Fin k. left_inv is count_toMultiset applied pointwise (count j (toMultiset f) = f j). right_inv is the identity ∑ i, replicate (count i s) i = s: rewrite each replicate (count i s) i as count i s • {i} (Multiset.nsmul_singleton), shrink the sum over all of Fin k to the sum over the support s.toFinset — the dropped indices have count 0, so their terms vanish (Finset.sum_subset with Multiset.count_eq_zero_of_notMem) — and close with Multiset.toFinset_sum_count_nsmul_eq, the standard fact that a multiset is the support-sum of count-many copies of each element. The companion instance instFintypeWeakComposition builds Fintype {f : Fin k → ℕ // ∑ i, f i = n} by Fintype.ofEquiv through this bijection; the instance is genuinely needed because Lean cannot synthesise a Fintype for a subtype of Fin k → ℕ directly (the codomain ℕ is infinite), even though the summing subtype is finite."
+  },
+  {
+    "id": "ann-the-count",
+    "proofId": "stars-and-bars-weak-compositions",
+    "range": {
+      "startLine": 99,
+      "endLine": 104
+    },
+    "type": "theorem",
+    "title": "The Count C(n+k−1, n) (card_weakComposition)",
+    "content": "card_weakComposition k n is the headline stars-and-bars count: Fintype.card {f : Fin k → ℕ // ∑ i, f i = n} = (n + k − 1).choose n. Fintype.card_congr transports the cardinality along weakCompositionEquivSym to card (Sym (Fin k) n), Sym.card_sym_eq_choose evaluates this to (card (Fin k) + n − 1).choose n, and a final simp with Fintype.card_fin and Nat.add_comm rewrites card (Fin k) = k and reorders the addition to the stated (n + k − 1).choose n. This is the function/tuple form of stars and bars that Mathlib leaves unstated — Mathlib records only the multiset form Sym.card_sym_eq_choose."
+  }
+]
