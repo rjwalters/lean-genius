@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ng6-overview",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "Newton–Girard k=6: the sixth rung, first with a cube and a square",
+    "content": "The module docstring states the target identity p₆ = e₁⁶ − 6e₁⁴e₂ + 9e₁²e₂² − 2e₂³ + 6e₁³e₃ − 12e₁e₂e₃ + 3e₃² − 6e₁²e₄ + 6e₂e₄ + 6e₁e₅ − 6e₆ and situates it in a lineage (k=2 → recurrence → k=3 → k=4 → k=5 → k=6). Newton's identities relate the power sums pₖ = Σxᵢᵏ to the elementary symmetric polynomials eₖ; the k=6 rung is the first whose reduced expression carries a pure cube (−2e₂³) and a pure square (+3e₃²), alongside the new e₆ term. The file delivers two complementary forms — a universal MvPolynomial statement and a concrete Finset statement over an arbitrary CommRing — each 0-sorry, 0-axiom.",
+    "mathContext": "$p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$",
+    "significance": "context",
+    "prerequisites": ["elementary symmetric polynomials", "power sums", "the lower closed forms p₁..p₅"],
+    "relatedConcepts": ["Newton–Girard identities", "symmetric function theory", "Vieta's formulas"]
+  },
+  {
+    "id": "ng6-recurrence",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 101 },
+    "type": "theorem",
+    "title": "psum_six_recurrence — extracting the k=6 Newton recurrence",
+    "content": "Specialises Mathlib's general Newton identity `MvPolynomial.psum_eq_mul_esymm_sub_sum` at n=6 to get p₆ = e₁p₅ − e₂p₄ + e₃p₃ − e₄p₂ + e₅p₁ − 6e₆. The work is purely combinatorial: the antidiagonal filter {a : a.1+a.2=6, 0<a.1<6} is shown by `ext`+`omega` to equal {(1,5),(2,4),(3,3),(4,2),(5,1)}, the five-term sum is unfolded with `Finset.sum_insert` (non-membership by `decide`) and `Finset.sum_singleton`, and `ring` evaluates the alternating (−1)ᵏ coefficients and the lead term (−1)⁷·6·e₆ = −6·e₆. This mirrors the k=2/3/4/5 derivations exactly, with the sign of the lead term now negative.",
+    "mathContext": "$p_6 = e_1 p_5 - e_2 p_4 + e_3 p_3 - e_4 p_2 + e_5 p_1 - 6 e_6$, with lead term $(-1)^{7}\\cdot 6\\, e_6 = -6 e_6$.",
+    "significance": "key",
+    "prerequisites": ["MvPolynomial.psum_eq_mul_esymm_sub_sum", "Finset.antidiagonal / sum_insert", "omega, decide, ring"],
+    "relatedConcepts": ["Newton recurrence", "antidiagonal", "alternating signs"]
+  },
+  {
+    "id": "ng6-closed",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 103, "endLine": 117 },
+    "type": "theorem",
+    "title": "psum_six_closed — the universal reduced closed form",
+    "content": "The headline universal identity in MvPolynomial σ R: substitute the proven lower closed forms — `psum_five_closed` (p₅), `psum_four_closed` (p₄), `psum_three_closed` (p₃), `psum_two_eq` (p₂ = e₁² − 2e₂), and `psum_one_eq_esymm_one` (p₁ = e₁) — into the recurrence and let `ring` normalise. The result expresses p₆ purely in e₁,…,e₆, and is the first rung to display a pure cube −2e₂³ and a pure square +3e₃². Because it lives at the level of polynomial coefficients (before any evaluation), it holds in every commutative ring with no characteristic hypothesis.",
+    "mathContext": "$p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$ in $\\mathrm{MvPolynomial}\\,\\sigma\\,R$",
+    "significance": "critical",
+    "prerequisites": ["psum_six_recurrence", "the lower closed forms p₁..p₅", "ring"],
+    "relatedConcepts": ["closed form", "universal symmetric-function identity", "characteristic independence"]
+  },
+  {
+    "id": "ng6-defs",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 134, "endLine": 137 },
+    "type": "definition",
+    "title": "e₆ and p₆ — concrete powersetCard / power-sum definitions",
+    "content": "e6 s f = Σ over 6-element subsets t ⊆ s of ∏_{i∈t} f i (the sixth elementary symmetric polynomial of the values f over s), and p6 s f = Σ_{i∈s} (f i)⁶ (the sixth power sum). These are the concrete, evaluation-side counterparts of the universal MvPolynomial esymm/psum, defined via Finset.powersetCard.",
+    "mathContext": "$e_6 = \\sum_{t \\subseteq s,\\ |t|=6} \\prod_{i \\in t} f_i$, $\\quad p_6 = \\sum_{i \\in s} f_i^6$",
+    "significance": "supporting",
+    "prerequisites": ["Finset.powersetCard", "Finset.prod / Finset.sum"],
+    "relatedConcepts": ["elementary symmetric polynomial", "power sum"]
+  },
+  {
+    "id": "ng6-bridges",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 141, "endLine": 155 },
+    "type": "theorem",
+    "title": "e6_bridge / p6_bridge — degree-6 instances of the n-general aeval bridge",
+    "content": "e6_bridge := aeval_esymm_subtype s f 6 and p6_bridge := aeval_psum_subtype s f 6. These are simply the degree-6 instantiations of the k=3 entry's already-degree-general aeval bridge, identifying aeval (fun i : {x // x ∈ s} => f i.1) of the universal esymm/psum at degree 6 with the concrete e₆/p₆. No new bridge machinery is built — a third confirmation (after k=4, k=5) that the bridge is degree-uniform.",
+    "mathContext": "$\\mathrm{aeval}\\,(\\mathrm{esymm}\\,\\{x // x\\in s\\}\\,R\\,6) = e_6$, $\\quad \\mathrm{aeval}\\,(\\mathrm{psum}\\,\\{x // x\\in s\\}\\,R\\,6) = p_6$",
+    "significance": "key",
+    "prerequisites": ["aeval_esymm_subtype", "aeval_psum_subtype (both n-general, from the k=3 entry)"],
+    "relatedConcepts": ["aeval transport", "subtype evaluation", "degree-uniform bridge"]
+  },
+  {
+    "id": "ng6-finset",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 158, "endLine": 168 },
+    "type": "theorem",
+    "title": "newton_girard_six_finset — the concrete identity over any CommRing",
+    "content": "Transports the universal psum_six_closed across the aeval bridges onto the membership subtype {x // x ∈ s}: take congrArg of aeval applied to the universal identity, then simp with map_add/map_sub/map_mul/map_pow/map_ofNat and the seven bridge lemmas (e1..e6, p6). The result is the fully reduced k=6 closed form for the concrete e₁,…,e₆ and p₆ over an arbitrary commutative ring. Because the transport occurs at the level of polynomial coefficients, there is no characteristic restriction.",
+    "mathContext": "Over any CommRing $R$: $p_6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$",
+    "significance": "critical",
+    "prerequisites": ["psum_six_closed", "e1..e6 / p6 bridges", "congrArg, aeval, map_* simp lemmas"],
+    "relatedConcepts": ["transport of identities", "characteristic independence", "Finset symmetric functions"]
+  },
+  {
+    "id": "ng6-explicit",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-03-oq-01-oq-01-oq-02",
+    "range": { "startLine": 186, "endLine": 217 },
+    "type": "theorem",
+    "title": "sixth_power_sum_six — explicit 6-variable instance and coefficient check",
+    "content": "The smallest nondegenerate Finset instance, with the six elementary symmetric polynomials written out in six explicit variables a,b,c,d,e,g: a⁶+b⁶+c⁶+d⁶+e⁶+g⁶ = e₁⁶ − 6e₁⁴e₂ + 9e₁²e₂² − 2e₂³ + 6e₁³e₃ − 12e₁e₂e₃ + 3e₃² − 6e₁²e₄ + 6e₂e₄ + 6e₁e₅ − 6e₆, closed by `ring`. This is an independent, fully expanded confirmation of every coefficient in the closed form (the ring normaliser would reject any incorrect coefficient).",
+    "mathContext": "$a^6+b^6+c^6+d^6+e^6+g^6 = e_1^6 - 6 e_1^4 e_2 + 9 e_1^2 e_2^2 - 2 e_2^3 + 6 e_1^3 e_3 - 12 e_1 e_2 e_3 + 3 e_3^2 - 6 e_1^2 e_4 + 6 e_2 e_4 + 6 e_1 e_5 - 6 e_6$",
+    "significance": "supporting",
+    "prerequisites": ["ring"],
+    "relatedConcepts": ["explicit symmetric polynomials", "independent verification"]
+  }
+]
