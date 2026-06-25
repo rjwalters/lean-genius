@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-docstring-problem",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 5, "endLine": 42 },
+    "type": "context",
+    "title": "The Axiom and the Bridge It Reduces To",
+    "content": "The module docstring frames the whole entry. The parent `InverseGaloisA5` realizes $A_5$ as a Galois group over $\\mathbb{Q}$ via $q = X^5 - 5X^4 + 10X^3 - 10X^2 + 25X - 5$, but leaves one `axiom`: $3 \\mid |\\mathrm{Gal}(q/\\mathbb{Q})|$. Informally this is Dedekind's theorem at $p = 7$: $q \\bmod 7 = (X-5)(X-6)\\cdot(\\text{irreducible cubic})$, so the Frobenius at a prime over 7 has cycle type $(1,1,3)$ and order 3. The genuine Mathlib gap — that the arithmetic Frobenius at an unramified prime has order equal to the inertia degree — was already closed abstractly (0 axioms) in `DedekindFrobeniusBridge`. This file connects that abstract bridge to the concrete A₅ splitting field.",
+    "mathContext": "$q \\bmod 7 = (X-5)(X-6)(\\text{irred. cubic}) \\;\\Rightarrow\\; \\text{Frob}_7 \\text{ has cycle type }(1,1,3) \\;\\Rightarrow\\; 3 \\mid |\\mathrm{Gal}|$",
+    "significance": "context",
+    "relatedConcepts": ["inverse Galois problem", "Dedekind's theorem", "Frobenius element", "cycle type", "A₅"],
+    "prerequisites": ["Galois theory", "factorization mod p"]
+  },
+  {
+    "id": "ann-residual-gap",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 43, "endLine": 55 },
+    "type": "insight",
+    "title": "The Residual Gap: A Single Inertia-Degree Fact",
+    "content": "The 'Residual gap' note pins down exactly what remains after this instantiation: $3 \\mid \\mathrm{inertiaDegIn}(7)$ for $\\mathcal{O}_{q.\\text{SplittingField}}$. The docstring records the concrete three-step Kummer–Dedekind route that would discharge it: (1) `inertiaDeg_primesOverSpanEquivMonicFactorsMod_symm_apply` gives a prime of $\\mathcal{O}_{\\mathbb{Q}(\\alpha)}$ of inertia degree 3 from the irreducible cubic factor of $q \\bmod 7$ (valid since $7 \\nmid \\mathrm{disc}\\,q = 32000^2$); (2) `inertiaDeg_algebra_tower` lifts the divisibility multiplicatively through the tower (no normality needed on the middle field $\\mathbb{Q}(\\alpha)$); (3) `inertiaDegIn_eq_inertiaDeg` (Galois) equates the inertia degrees of all primes of the splitting field over 7. This converts a vague 'theorem missing' blocker into one named, standard computation.",
+    "mathContext": "$3 \\mid \\mathrm{inertiaDeg}(\\mathbb{Q}(\\alpha)\\,|\\,7) \\;\\xrightarrow{\\text{tower}}\\; 3 \\mid \\mathrm{inertiaDeg}(Q\\,|\\,7) \\;\\xrightarrow{\\text{Galois}}\\; 3 \\mid \\mathrm{inertiaDegIn}(7)$",
+    "significance": "key",
+    "relatedConcepts": ["Kummer–Dedekind theorem", "inertia degree", "ramification tower", "discriminant"],
+    "prerequisites": ["Dedekind domains", "ramification and inertia degrees", "Kummer–Dedekind factorization"]
+  },
+  {
+    "id": "ann-numberfield-instance",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 64, "endLine": 65 },
+    "type": "technique",
+    "title": "NumberField Instance for the Splitting Field",
+    "content": "`instance : NumberField q.SplittingField := ⟨⟩` registers that the splitting field of $q$ is a number field — a finite extension of $\\mathbb{Q}$ in characteristic 0. The anonymous constructor `⟨⟩` works because Mathlib can already infer the `CharZero` and `FiniteDimensional ℚ` instances from the ambient setup, so `NumberField` (their conjunction) is assembled automatically. This is the first of three instances that make the abstract bridge — stated for a general Dedekind domain $S$ over $R$ — applicable to $S = \\mathcal{O}_{q.\\text{SplittingField}}$.",
+    "mathContext": "$[\\,q.\\text{SplittingField} : \\mathbb{Q}\\,] < \\infty \\;\\wedge\\; \\mathrm{char} = 0 \\;\\Rightarrow\\; \\text{NumberField}$",
+    "significance": "technical",
+    "relatedConcepts": ["number field", "ring of integers", "finite extension", "typeclass inference"],
+    "prerequisites": ["algebraic number theory", "Lean typeclass system"]
+  },
+  {
+    "id": "ann-isgalois-instance",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 67, "endLine": 72 },
+    "type": "technique",
+    "title": "Assembling IsGalois from Normal + Separable",
+    "content": "`instance : IsGalois ℚ q.SplittingField := ⟨⟩` builds the Galois-extension instance. `IsGalois` is definitionally the conjunction of `Normal` and `Algebra.IsSeparable`: the splitting field is normal (it splits $q$ — the parent registers the `Normal` instance) and, being characteristic zero, separable (the parent also registers `Algebra.IsSeparable`). The anonymous constructor assembles `IsGalois` from those two ambient instances. This is exactly what unlocks `IsGaloisGroup.of_isGalois` on the next line.",
+    "mathContext": "$\\text{IsGalois}\\,\\mathbb{Q}\\,L \\;\\equiv\\; \\text{Normal}\\,\\mathbb{Q}\\,L \\;\\wedge\\; \\text{IsSeparable}\\,\\mathbb{Q}\\,L$",
+    "significance": "supporting",
+    "relatedConcepts": ["Galois extension", "normal extension", "separable extension", "characteristic zero"],
+    "prerequisites": ["Galois theory", "splitting fields"]
+  },
+  {
+    "id": "ann-isgaloisgroup-instance",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 74, "endLine": 81 },
+    "type": "insight",
+    "title": "Bridging Polynomial.Gal to IsGaloisGroup",
+    "content": "The crux of the plumbing: `Polynomial.Gal q` is *definitionally* the AlgEquiv group $q.\\text{SplittingField} \\simeq_{\\mathbb{Q}} q.\\text{SplittingField}$, so Mathlib's `IsGaloisGroup.of_isGalois` — stated for the notation $\\mathrm{Gal}(L/K)$ — applies on the nose via `inferInstanceAs`. The two `MulSemiringAction`s (the one carried by `q.Gal` and the canonical one on the AlgEquiv group) agree because `Polynomial.Gal.applyMulSemiringAction` *is* AlgEquiv application. Identifying these definitional equalities is precisely where such instance transfers usually break, so getting it to typecheck is the real content of the entry.",
+    "mathContext": "$\\text{Polynomial.Gal}\\,q \\;\\equiv\\; (q.\\text{SplittingField} \\simeq_{\\mathbb{Q}} q.\\text{SplittingField}) \\;=\\; \\mathrm{Gal}(q.\\text{SplittingField}/\\mathbb{Q})$",
+    "significance": "key",
+    "relatedConcepts": ["Galois group", "AlgEquiv", "definitional equality", "MulSemiringAction", "typeclass transfer"],
+    "prerequisites": ["Galois groups in Mathlib", "definitional vs propositional equality"]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 83, "endLine": 97 },
+    "type": "definition",
+    "title": "The Reduction Statement: three_dvd_gal_card_of_bridge",
+    "content": "The main theorem's hypotheses encode exactly the residual assumption. Given an unramified prime $Q$ of $\\mathcal{O}_{q.\\text{SplittingField}}$ (`ramificationIdxIn = 1`) over a nonzero rational prime ($Q.\\text{under}\\,\\mathbb{Z} \\ne \\bot$) whose inertia degree is divisible by 3, the conclusion is $3 \\mid |q.\\text{Gal}|$. The separability and maximality side-instances on the residue field $\\mathbb{Z}/(Q\\cap\\mathbb{Z})$ → $\\mathcal{O}/Q$ are what the abstract bridge requires. Nothing here is assumed beyond the single sharp fact $3 \\mid \\mathrm{inertiaDegIn}(7)$ — making the theorem a *verified reduction* of the parent axiom rather than a fresh axiom.",
+    "mathContext": "$Q \\text{ unramified over } p,\\; 3 \\mid \\mathrm{inertiaDegIn}(p) \\;\\Longrightarrow\\; 3 \\mid |q.\\text{Gal}|$",
+    "significance": "key",
+    "relatedConcepts": ["inertia degree", "ramification index", "unramified prime", "divisibility of group order"],
+    "prerequisites": ["prime decomposition in number fields", "ramification theory"]
+  },
+  {
+    "id": "ann-frobenius-witness",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 98, "endLine": 108 },
+    "type": "technique",
+    "title": "The Arithmetic Frobenius as Explicit Witness",
+    "content": "The proof body is three lines but carries the conceptual payoff. `orderOf_arithFrobAt_eq_inertiaDegIn` (the abstract bridge) gives $\\mathrm{orderOf}(\\mathrm{arithFrobAt}\\,\\mathbb{Z}\\,q.\\text{Gal}\\,Q) = \\mathrm{inertiaDegIn}(Q.\\text{under}\\,\\mathbb{Z})$. Rewriting the hypothesis $3 \\mid \\mathrm{inertiaDegIn}$ through this equality gives $3 \\mid \\mathrm{orderOf}(\\text{Frob})$, and `orderOf_dvd_card` (Lagrange) transports it to $3 \\mid |q.\\text{Gal}|$. Crucially the arithmetic Frobenius `arithFrobAt ℤ q.Gal Q` is produced as an *explicit* group element of order divisible by 3 — matching the informal $(1,1,3)$ cycle type with a concrete Mathlib term rather than a bare existence claim.",
+    "mathContext": "$3 \\mid \\mathrm{inertiaDegIn} = \\mathrm{orderOf}(\\mathrm{arithFrobAt}\\,Q) \\;\\xrightarrow{\\text{Lagrange}}\\; 3 \\mid |q.\\text{Gal}|$",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic Frobenius", "order of an element", "Lagrange's theorem", "orderOf_dvd_card"],
+    "prerequisites": ["Frobenius elements", "group order and element order"]
+  }
+]
