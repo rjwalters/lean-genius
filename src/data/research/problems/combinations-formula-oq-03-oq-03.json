@@ -1,0 +1,71 @@
+{
+  "slug": "combinations-formula-oq-03-oq-03",
+  "title": "Rogers-Ramanujan identities via q-Gaussian binomial coefficients",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "S_n(q) = \\sum_{j} q^{j^2} \\binom{n-j}{j}_q \\implies S_{n+2}(q) = S_{n+1}(q) + q^{n+1} S_n(q)",
+    "plain": "Can the Rogers-Ramanujan identities be formalized in Lean 4 using the q-Gaussian binomial library as a foundation? Formalized the finite polynomial core (Schur 1917): the Schur sum and its two-term recurrence, with q=1 Fibonacci specializations.",
+    "whyMatters": [
+      "Rogers-Ramanujan is a landmark of partition theory, modular forms, and statistical mechanics",
+      "The finite Schur polynomials are the rigorous, machine-checkable heart of the identity",
+      "Demonstrates the q-binomial library suffices for serious q-series combinatorics"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "schurSum_recurrence: S_{n+2} = S_{n+1} + q^{n+1} S_n (over arbitrary CommRing)",
+      "schurSum_at_one_eq_fib: S_n(1) = Fibonacci(n+1)",
+      "sum_choose_eq_fib: sum of C(n-j,j) = Fibonacci(n+1)"
+    ],
+    "open": [
+      "Full analytic Rogers-Ramanujan identity (infinite product over Z[[q]])",
+      "Second Rogers-Ramanujan polynomial sum_j q^{j^2+j} [n-j choose j]_q"
+    ],
+    "goal": "Formalize the finite Rogers-Ramanujan / Schur recurrence on top of the q-binomial library."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-25T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Finite Rogers-Ramanujan (Schur) recurrence formalized and verified.",
+    "blockers": [],
+    "nextAction": "Done; optional follow-up on the second RR polynomial.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED 2026-06-25: 7 theorems, 1 def, 0 sorries, 0 axioms (verified/original). PR #29963. Formalized Schur's recurrence S_{n+2}=S_{n+1}+q^{n+1} S_n for S_n(q)=sum_j q^{j^2}[n-j choose j]_q, the finite core of Rogers-Ramanujan; q=1 gives Fibonacci. Built via lake env lean v4.26.0.",
+    "builtItems": [
+      "schurSum: the Schur sum definition over CommRing (CombinationsFormulaOQ03OQ03.lean)",
+      "schurSum_recurrence: Schur's finite Rogers-Ramanujan recurrence",
+      "schurSum_at_one_eq_fib + sum_choose_eq_fib: q=1 Fibonacci specializations",
+      "qBinom_pascal'_all: hypothesis-free second q-Pascal identity"
+    ],
+    "insights": [
+      "The entire recurrence is one application of the second q-Pascal identity summed against the weight q^{j^2}, plus reindexing",
+      "Truncated N-subtraction in the exponent identity (i+1)^2+(n-i)-i=i^2+(n+1) is harmless because the surviving q-binomial vanishes exactly where the identity fails",
+      "Schur polynomials are a q-deformation of the Fibonacci sequence; the RR series is their q-analytic limit"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Companion sum_j q^{j^2+j} [n-j choose j]_q for the second Rogers-Ramanujan identity",
+      "Formal Z[[q]] limit connecting S_n to the series side sum_j q^{j^2}/(q;q)_j"
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted",
+    "q-analogs",
+    "rogers-ramanujan"
+  ],
+  "relatedProofs": [
+    "combinations-formula-oq-03",
+    "combinations-formula-oq-03-oq-06"
+  ]
+}
