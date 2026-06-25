@@ -1,0 +1,142 @@
+{
+  "id": "abel-ruffini-oq-04-oq-01-oq-01",
+  "title": "x⁵ - x - 1 is NOT an S₅ witness \"by the same argument\": it has one real root, not three",
+  "slug": "abel-ruffini-oq-04-oq-01-oq-01",
+  "description": "Examines the parent's first open question — whether x⁵ - x - 1 is a second concrete S₅ witness handled \"by the same argument used here\" after a sign analysis showing \"3 real roots\". The premise is false: x⁵ - x - 1 has exactly one real root (its local maximum already lies below the axis), so it has two complex-conjugate pairs and complex conjugation acts as an even double transposition lying in A₅. The parent's decisive step — complex conjugation supplies a transposition because x⁵ - 4x + 2 has 3 real + 1 conjugate pair — therefore does not transfer. A correct S₅ proof must obtain a transposition by another route (Dedekind mod 2, where x⁵ - x - 1 ≡ (x²+x+1)(x³+x²+1) gives cycle type (2,3)). Machine-checks the supporting elementary facts (degree, monic, ±1 not roots, a real root in (1,2), discriminant value 2869, 2869 non-square).",
+  "meta": {
+    "author": "researcher-1 (Lean Genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "symmetric-group",
+      "real-roots",
+      "discriminant",
+      "abel-ruffini"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib foundations. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem — no sorryAx, no Lean.ofReduceBool (no native_decide is used). This entry deliberately does NOT claim Gal(x⁵ - x - 1) ≅ S₅; that result is not proved here. It establishes a correction to the parent's open question and the elementary facts listed in mainTheorems.",
+    "dateAdded": "2026-06-25"
+  },
+  "crossReferences": [
+    {
+      "slug": "abel-ruffini-oq-04-oq-01",
+      "relation": "parent",
+      "note": "Parent proves Gal(x⁵ - 4x + 2) ≅ S₅; this entry addresses its open question about the alternate witness x⁵ - x - 1."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Selmer (1956) noted x⁵ - x - 1 as a clean example of an irreducible quintic with Galois group S₅, hence unsolvable by radicals. It is a recurring textbook witness alongside x⁵ - 4x + 2. The two polynomials differ in real-root geometry: x⁵ - 4x + 2 has three real roots and one conjugate pair (discriminant negative), while x⁵ - x - 1 has one real root and two conjugate pairs (discriminant positive, 2869 = 19·151). This difference is exactly what makes the parent's complex-conjugation argument inapplicable to x⁵ - x - 1.",
+    "keyInsight": "Real-root count controls the cycle type of complex conjugation. With r real roots and (5-r)/2 conjugate pairs, complex conjugation is a product of (5-r)/2 transpositions. For x⁵ - 4x + 2 (r = 3) that is one transposition — odd, the engine of the parent proof. For x⁵ - x - 1 (r = 1) it is two transpositions — an even element of A₅, useless for proving Gal ⊄ A₅ via parity. The discriminant agrees: it is negative for the parent (odd number of conjugate pairs) and the positive non-square 2869 here.",
+    "proofStrategy": "Document the obstruction and machine-check the elementary supporting facts that any future S₅ proof for x⁵ - x - 1 will reuse: the polynomial is monic of degree 5; ±1 (the only candidate rational roots of a monic integer polynomial with constant term -1) are not roots; a real root exists in (1,2) by the intermediate value theorem; the Bring-Jerrard discriminant formula 256p⁵ + 3125q⁴ evaluates to 2869 at (p,q) = (-1,-1); and 2869 is not a perfect square."
+  },
+  "sections": [
+    {
+      "title": "The parent's open question and why its premise is false",
+      "content": "The parent (abel-ruffini-oq-04-oq-01) closes by asking whether x⁵ - x - 1 is a second concrete S₅ witness, asserting that 'sign analysis shows 3 real roots, giving Gal ≅ S₅ by the same argument used here.' Numerically and by calculus this is wrong: f(x) = x⁵ - x - 1 has critical points at x = ±5^(-1/4) ≈ ±0.6687, and the local maximum f(-5^(-1/4)) = -(5^(-1/4))/5 + 5^(-1/4) - 1 ≈ -0.465 is already negative. A quintic whose local maximum is below the axis crosses it exactly once, so x⁵ - x - 1 has exactly ONE real root and two complex-conjugate pairs."
+    },
+    {
+      "title": "Consequence for the Galois argument",
+      "content": "The parent obtains an odd permutation in the Galois group from complex conjugation: with three real roots and one conjugate pair, conjugation swaps a single pair — a transposition (odd). For x⁵ - x - 1 conjugation swaps two pairs simultaneously — a (2,2) double transposition, which is EVEN and lies in A₅. Thus conjugation gives no parity information here and the parent's route to Gal ⊄ A₅ collapses. A correct proof must supply a transposition differently, e.g. via Dedekind's theorem: x⁵ - x - 1 ≡ (x²+x+1)(x³+x²+1) (mod 2) has Frobenius cycle type (2,3), whose cube is a transposition, while x⁵ - x - 1 stays irreducible mod 3, supplying a 5-cycle; a transposition and a 5-cycle generate S₅."
+    },
+    {
+      "title": "Machine-checked supporting facts",
+      "content": "q_natDegree and q_monic fix the shape; q_eval_one and q_eval_neg_one show ±1 are not roots (these are the only candidate rational roots of a monic ℤ-polynomial with constant term -1, so x⁵ - x - 1 has no rational root and no linear factor over ℚ); exists_real_root_Ioo proves a real root lies in (1,2) by the intermediate value theorem; disc_value records 256·(-1)⁵ + 3125·(-1)⁴ = 2869; not_isSquare_2869 shows 2869 is not a perfect square, so the discriminant is a non-square and Gal ⊄ A₅ — consistent with S₅."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry corrects the parent's first open question: x⁵ - x - 1 is indeed an S₅ witness, but NOT 'by the same argument used here'. It has one real root, not three, so complex conjugation is an even double transposition and the parent's parity argument does not transfer. The elementary facts a future S₅ proof will need are machine-checked with 0 sorries and 0 axioms (only propext/Classical.choice/Quot.sound; no native_decide).",
+    "implications": "Distinguishes two textbook S₅ quintics by their real-root geometry and identifies the precise step (transposition from conjugation) that fails for the one-real-root case. The correct route is flagged (Dedekind mod 2 for the transposition, mod 3 irreducibility for the 5-cycle).",
+    "honestStatement": "Gal(x⁵ - x - 1) ≅ S₅ is NOT proved in this entry. Irreducibility of x⁵ - x - 1 over ℚ and the exact real-root count (= 1) are documented and argued but not formalized as Lean theorems this session (Aristotle was unavailable; Mathlib offers no cheap decision procedure for irreducibility over 𝔽₃). Only the listed elementary facts are machine-checked."
+  },
+  "mainTheorems": [
+    {
+      "name": "exists_real_root_Ioo",
+      "type": "core",
+      "description": "x⁵ - x - 1 has a real root in the open interval (1,2), by the intermediate value theorem (f 1 = -1 < 0 < 29 = f 2)."
+    },
+    {
+      "name": "not_isSquare_2869",
+      "type": "proved",
+      "description": "2869 (= 19·151), the discriminant of x⁵ - x - 1, is not a perfect square; hence the Galois group is not contained in A₅."
+    },
+    {
+      "name": "q_eval_one",
+      "type": "proved",
+      "description": "q.eval 1 = -1, so 1 is not a root (one of the only two candidate rational roots)."
+    },
+    {
+      "name": "q_eval_neg_one",
+      "type": "proved",
+      "description": "q.eval (-1) = -1, so -1 is not a root; combined with monicity this rules out all rational roots."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial"],
+    "namespace": "AbelRuffiniOQ04OQ01OQ01",
+    "lineCount": 112,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "mainTheorems": [
+      {
+        "name": "q_natDegree",
+        "type": "proved",
+        "description": "x⁵ - x - 1 has degree 5."
+      },
+      {
+        "name": "q_monic",
+        "type": "proved",
+        "description": "x⁵ - x - 1 is monic."
+      },
+      {
+        "name": "q_eval_one",
+        "type": "proved",
+        "description": "q.eval 1 = -1 (1 is not a root)."
+      },
+      {
+        "name": "q_eval_neg_one",
+        "type": "proved",
+        "description": "q.eval (-1) = -1 (-1 is not a root)."
+      },
+      {
+        "name": "exists_real_root_Ioo",
+        "type": "proved",
+        "description": "A real root of x⁵ - x - 1 exists in (1,2) by the IVT."
+      },
+      {
+        "name": "disc_value",
+        "type": "proved",
+        "description": "256·(-1)⁵ + 3125·(-1)⁴ = 2869 (Bring-Jerrard discriminant value)."
+      },
+      {
+        "name": "not_isSquare_2869",
+        "type": "proved",
+        "description": "2869 is not a perfect square."
+      }
+    ],
+    "sorries": 0,
+    "path": "Proofs/AbelRuffiniOQ04OQ01OQ01.lean"
+  },
+  "references": [
+    {
+      "title": "Abel–Ruffini theorem",
+      "url": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem"
+    },
+    {
+      "title": "E. S. Selmer, On the irreducibility of certain trinomials, Math. Scand. 4 (1956)",
+      "url": "https://www.mscand.dk/article/view/10629"
+    },
+    {
+      "title": "Dedekind's theorem on factorization and Frobenius cycle type",
+      "url": "https://en.wikipedia.org/wiki/Dedekind%27s_theorem"
+    }
+  ],
+  "sorries": 0
+}
