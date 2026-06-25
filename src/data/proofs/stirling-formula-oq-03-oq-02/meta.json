@@ -131,6 +131,11 @@
       "targetId": "stirling-formula",
       "relationship": "supports",
       "description": "Both rest on Wallis' product; the central binomial asymptotic is the combinatorial face of the same √π constant that fixes the Stirling factor"
+    },
+    {
+      "targetId": "stirling-formula-oq-03-oq-02-oq-01",
+      "relationship": "extended-by",
+      "description": "Child: derives the Catalan asymptotic Cₙ ~ 4ⁿ/(√π·n^{3/2}) by multiplying this entry's centralBinom_asymptotic by the elementary ratio n/(n+1) → 1, using catalan n = C(2n,n)/(n+1) — exactly the route proposed in this entry's second open question."
     }
   ],
   "conclusion": {
