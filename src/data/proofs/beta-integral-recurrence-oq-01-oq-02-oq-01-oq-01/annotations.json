@@ -1,0 +1,94 @@
+[
+  {
+    "id": "betadiagasymp-ann-header",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 5,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "Correcting the Naive Asymptotic of the Half-Integer Beta Diagonal",
+    "content": "Establishes the large-n behaviour of the diagonal half-integer Euler Beta value: B(n+1/2,n+1/2) ~ √(π/n)·4^(-n). The parent entry's follow-up question conjectured the rate √(π/n); that is FALSE. The central binomial coefficient C(2n,n) grows only like 4^n, while the exact value B(n+1/2,n+1/2)=π·C(2n,n)/4^(2n) divides by 4^(2n); the surplus power leaves an exponentially decaying factor 4^(-n). So the Beta value vanishes geometrically, not at the polynomial rate n^(-1/2). The corrected rate matches the classical diagonal law B(x,x) ~ 2^(1-2x)·√(π/x) at x=n+1/2, where 2^(1-2x)=4^(-n).",
+    "mathContext": "$B(n+\\tfrac12,n+\\tfrac12) \\sim \\sqrt{\\tfrac{\\pi}{n}}\\cdot 4^{-n}$, contradicting the naive $\\sqrt{\\pi/n}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Euler Beta function diagonal",
+      "central binomial coefficient C(2n,n)",
+      "Stirling asymptotics",
+      "Asymptotics.IsEquivalent",
+      "classical law B(x,x)~2^(1-2x)√(π/x)"
+    ],
+    "prerequisites": [
+      "the Beta function and its half-integer diagonal value",
+      "asymptotic equivalence f ~ g of sequences"
+    ]
+  },
+  {
+    "id": "betadiagasymp-ann-realform",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 59,
+      "endLine": 79
+    },
+    "type": "technique",
+    "title": "Real Closed Form and the Beta-Integral Bridge",
+    "content": "betaDiag n := π·C(2n,n)/4^(2n) repackages the parent's complex closed form as a real sequence, the object whose asymptotic is studied. betaIntegral_eq_betaDiag proves the complex Euler Beta integral Complex.betaIntegral (n+1/2) (n+1/2) equals (betaDiag n : ℂ) by rewriting with the parent's betaIntegral_diag_half_centralBinom and a push_cast/ring cleanup, so the asymptotic describes the genuine Beta value rather than an abstract sequence. betaDiag_pos records strict positivity from Nat.centralBinom_pos.",
+    "mathContext": "$\\mathrm{betaDiag}(n)=\\dfrac{\\pi\\binom{2n}{n}}{4^{2n}}$ and $B(n+\\tfrac12,n+\\tfrac12)=\\mathrm{betaDiag}(n)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "real vs complex Beta value",
+      "central binomial coefficient",
+      "coercion ℝ → ℂ"
+    ],
+    "prerequisites": [
+      "the parent's exact closed form",
+      "casting between ℝ and ℂ"
+    ]
+  },
+  {
+    "id": "betadiagasymp-ann-normalized",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 81,
+      "endLine": 97
+    },
+    "type": "technique",
+    "title": "The Normalized Limit as a Pure Field Identity",
+    "content": "betaDiag_normalized_tendsto proves B(n+1/2,n+1/2)·4^n·√(πn)/π → 1 by transporting StirlingFormulaOQ03OQ02.centralBinom_asymptotic (C(2n,n)·√(πn)/4^n → 1) along Filter.Tendsto.congr. The required pointwise identity C(2n,n)·√(πn)/4^n = betaDiag n·4^n·√(πn)/π is PURE FIELD ALGEBRA: after unfolding betaDiag and rewriting 4^(2n)=4^n·4^n, the π's cancel and the common factor √(πn) survives untouched, so field_simp closes it with no square-root reasoning at all. The normalizing factor 4^n·√(πn)/π is deliberately the exact reciprocal of the equivalent √(π/n)·4^(-n).",
+    "mathContext": "$B(n+\\tfrac12,n+\\tfrac12)\\cdot 4^{n}\\cdot\\dfrac{\\sqrt{\\pi n}}{\\pi}\\to 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "central binomial asymptotic",
+      "Filter.Tendsto.congr",
+      "reciprocal normalization",
+      "field_simp"
+    ],
+    "prerequisites": [
+      "the central binomial asymptotic C(2n,n)~4^n/√(πn)",
+      "limits of products and quotients"
+    ]
+  },
+  {
+    "id": "betadiagasymp-ann-equivalence",
+    "proofId": "beta-integral-recurrence-oq-01-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 99,
+      "endLine": 138
+    },
+    "type": "insight",
+    "title": "Upgrading to IsEquivalent and the Corrected Rate",
+    "content": "betaDiag_isEquivalent states B(n+1/2,n+1/2) ~ √(π/n)·4^(-n) as an Asymptotics.IsEquivalent over atTop. The equivalent is eventually nonzero (n≥1), so isEquivalent_iff_tendsto_one reduces the claim to Tendsto (betaDiag n / (√(π/n)·4^(-n))) → 1, which equals the already-proven normalized limit once √(π/n) is rewritten as √(πn)/n (an identity proved with Real.sqrt_div, Real.sqrt_mul and Real.mul_self_sqrt) and a final (√(πn))²=πn step (Real.sq_sqrt). The surviving 4^(-n) in the equivalent is precisely the exponential factor the naive guess omitted; reading B(x,x)~2^(1-2x)√(π/x) at x=n+1/2 confirms it.",
+    "mathContext": "$\\bigl(n\\mapsto B(n+\\tfrac12,n+\\tfrac12)\\bigr)\\sim_{\\mathrm{atTop}}\\bigl(n\\mapsto \\sqrt{\\pi/n}/4^{n}\\bigr)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Asymptotics.isEquivalent_iff_tendsto_one",
+      "ratio criterion for ~",
+      "Real.sqrt identities",
+      "exponential vs polynomial decay"
+    ],
+    "prerequisites": [
+      "the IsEquivalent ratio characterization",
+      "elementary square-root algebra"
+    ]
+  }
+]
