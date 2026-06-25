@@ -3405,6 +3405,7 @@ import Proofs.KnightsTourObliqueOQ03
 import Proofs.Konigsberg
 import Proofs.KonigsbergOQ01
 import Proofs.KonigsbergOQ01OQ02
+import Proofs.KonigsbergOQ01OQ02Incomplete01
 import Proofs.KonigsbergOQ01OQ02Recipe
 import Proofs.KonigsbergOQ02
 import Proofs.KonigsbergOQ02OQ01
