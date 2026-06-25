@@ -1,0 +1,136 @@
+{
+  "id": "ramsey-r4k-extensions-oq-01",
+  "title": "Erdős Probabilistic Lower Bound for Diagonal Ramsey Numbers: R(k,k) > 2^(k/2)",
+  "slug": "ramsey-r4k-extensions-oq-01",
+  "description": "A fully machine-checked, axiom-free formalization of Erdős's 1947 probabilistic lower bound for diagonal Ramsey numbers, the very first application of the probabilistic method. The headline result erdos_probabilistic_lower_bound proves that for k ≥ 3 and any n ≤ 2^⌊k/2⌋ there is a symmetric, irreflexive 2-colouring of K_n with no monochromatic k-clique of either colour — i.e. R(k,k) > 2^⌊k/2⌋. This is exactly the statement that the parent file Proofs/RamseyR4kExtensions.lean had stated as an `axiom`; it is now proved with 0 axioms via the counting (first-moment) form of the probabilistic method, with no measure theory. The general criterion erdos_ramsey_criterion shows R(k,k) > n whenever 2·C(n,k) < 2^C(k,2), and the reusable abstract lemma exists_avoiding_coloring captures the union-bound counting core.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ErdosRamseyLowerBound.lean",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "probabilistic-method",
+      "first-moment-method",
+      "graph-theory",
+      "counting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 329,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "assumptions": "None. The proof uses only the standard foundational axioms of Lean/Mathlib (propext, Classical.choice, Quot.sound), which are not counted as assumptions. There are no `axiom` declarations, no structure-encoded hypotheses, no `sorry`, and no `native_decide`. Verified by `#print axioms erdos_probabilistic_lower_bound`.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fintype.card_piFinset",
+        "description": "Cardinality of a product Finset ∏ (t a).card — used to count colourings constant on a fixed edge set",
+        "module": "Mathlib.Data.Fintype.BigOperators"
+      },
+      {
+        "theorem": "Finset.card_biUnion_le",
+        "description": "Union bound: |⋃ Wᵢ| ≤ Σ|Wᵢ| — the first-moment / union step over all k-cliques",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Sym2.card_image_offDiag",
+        "description": "#(s.offDiag.image Sym2.mk) = C(#s, 2): a k-clique has exactly C(k,2) edges",
+        "module": "Mathlib.Data.Sym.Card"
+      },
+      {
+        "theorem": "Nat.descFactorial_eq_factorial_mul_choose",
+        "description": "n.descFactorial k = k!·C(n,k); combined with descFactorial_le_pow gives k!·C(n,k) ≤ n^k",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.choose_two_right",
+        "description": "C(k,2) = k·(k-1)/2 — used in the exponent comparison ⌊k/2⌋·k ≤ C(k,2)+⌊k/2⌋",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      }
+    ],
+    "originalContributions": [
+      "De-axiomatizes erdos_probabilistic_lower_bound — previously an `axiom` in Proofs/RamseyR4kExtensions.lean — proving the exact same statement (symmetric, irreflexive colouring of K_n, n ≤ 2^⌊k/2⌋, no monochromatic k-clique of either colour) with 0 axioms.",
+      "exists_avoiding_coloring: a reusable abstract first-moment counting lemma over an arbitrary finite edge type E — if Σ_{W∈bad} 2·2^(|E|−|W|) < 2^|E| then a colouring non-constant on every W exists. This is the combinatorial heart of the probabilistic method and applies to any monochromatic-avoidance problem (Ramsey, Schur, van der Waerden).",
+      "card_const_on: exact count 2^(|E|−|W|) of Boolean colourings constant on a fixed edge set, via a clean piFinset bijection — no measure theory.",
+      "erdos_ramsey_criterion: the sharp Erdős criterion R(k,k) > n whenever 2·C(n,k) < 2^C(k,2), stated directly on Fin n → Fin n → Bool colourings.",
+      "erdos_diagonal_numeric: the elementary ℕ-only estimate that n ≤ 2^⌊k/2⌋ (k ≥ 3) implies the criterion, via k!·C(n,k) ≤ n^k, the exponent bound ⌊k/2⌋·k ≤ C(k,2)+⌊k/2⌋, and factorial growth 2^(⌊k/2⌋+1) < k!."
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "The probabilistic / first-moment method (Erdős 1947)",
+      "Diagonal Ramsey numbers R(k,k) and monochromatic cliques",
+      "Finite counting in Lean 4 Mathlib (Finset, piFinset, Sym2)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "In 1947 Paul Erdős gave a one-page proof that the diagonal Ramsey number satisfies R(k,k) > 2^(k/2), introducing what is now called the probabilistic method. The argument is strikingly simple: colour the edges of the complete graph K_n red/blue uniformly at random; the expected number of monochromatic k-cliques is C(n,k)·2^(1−C(k,2)); if this is below 1 then some colouring has none, so R(k,k) > n. Choosing n ≈ 2^(k/2) makes the expectation small. This was the first non-constructive existence proof in combinatorics and launched a vast field. The lower bound 2^(k/2) and the corresponding upper bound R(k,k) ≤ 4^k (Erdős–Szekeres) have barely been improved in 75 years — the constant in the exponent of the diagonal Ramsey number remains one of the most famous open problems in combinatorics (recently 4^k was improved to (4−ε)^k by Campos–Griffiths–Morris–Sahasrabudhe, 2023).",
+    "problemStatement": "The gallery problem ramsey-r4k-extensions-oq-01 asks to formalize the probabilistic lower bound for Ramsey numbers. The parent file Proofs/RamseyR4kExtensions.lean states the diagonal case as `axiom erdos_probabilistic_lower_bound (k : ℕ) (hk : k ≥ 3) : ∀ n ≤ 2^(k/2), ∃ colouring of K_n with no monochromatic k-clique`. This entry proves that exact statement with no axioms. (The off-diagonal, biased-coin bound R(4,k) ≥ c·k²/log k requested in the original problem note — which needs a non-uniform random colouring and real-valued expectations — remains open; this entry settles the foundational symmetric case, which the problem's own 'Why this matters' section calls 'one of the cleanest examples of Erdős's probabilistic combinatorics technique'.)",
+    "proofStrategy": "The whole argument is recast as exact counting in the finite space of all 2^(#edges) colourings, so no probability measure is needed. (1) card_const_on counts the colourings c : E → Bool that are constant on a fixed edge set W: identifying such colourings with the product Finset that pins the |W| coordinates of W and frees the rest gives exactly 2^(|E|−|W|). (2) exists_avoiding_coloring runs the union bound: the colourings monochromatic on some W ∈ bad number at most Σ_W 2·2^(|E|−|W|) (factor 2 for the two colours); if this is below 2^(|E|) the bad colourings form a proper subset and a good colouring exists. (3) The Ramsey specialisation takes E = Sym2 (Fin n) and bad = the edge sets of all k-subsets; each has C(k,2) edges (Sym2.card_image_offDiag) and there are at most C(n,k) of them, so the |E|-dependent factors cancel and the hypothesis collapses to exactly 2·C(n,k) < 2^C(k,2). (4) erdos_diagonal_numeric supplies the elementary estimate that n ≤ 2^⌊k/2⌋ implies this for k ≥ 3, combining k!·C(n,k) ≤ n^k with the exponent comparison ⌊k/2⌋·k ≤ C(k,2)+⌊k/2⌋ and the factorial growth 2^(⌊k/2⌋+1) < k! (a clean induction).",
+    "keyInsights": [
+      "The probabilistic method here is pure counting. 'Expected number of monochromatic k-cliques < 1' is literally '#(bad colourings) < #(all colourings)', a statement about finite cardinalities. Replacing the random colouring by counting eliminates all measure theory and keeps the proof axiom-free.",
+      "The size of the edge set never matters. Working over E = Sym2 (Fin n) — which even includes harmless diagonal 'loops' — the factor 2^|E| appears on both sides of the union bound and cancels exactly, leaving the clean integer criterion 2·C(n,k) < 2^C(k,2). One never has to compute |E| = C(n,2).",
+      "The counting core is reusable. exists_avoiding_coloring is stated for an arbitrary finite edge type and an arbitrary family of forbidden monochromatic sets, so the same lemma proves lower bounds for Schur numbers, van der Waerden numbers, and other Ramsey-type problems — only the family `bad` changes.",
+      "The floor in 2^⌊k/2⌋ makes the numeric estimate uniform. For odd k the bound ⌊k/2⌋·k = C(k,2) is tight and the criterion holds with room k! > 2; for even k there is an extra factor 2^(k/2) absorbed by k! ≫ 2^(k/2+1). A single inequality 2^(⌊k/2⌋+1) < k! covers both parities."
+    ],
+    "prerequisites": [
+      "Ramsey numbers R(k,k) and the notion of a monochromatic clique",
+      "The probabilistic / first-moment method (Erdős 1947)",
+      "Binomial coefficients, factorials, and finite counting in Lean 4 Mathlib"
+    ]
+  },
+  "sections": [
+    {
+      "id": "counting-core",
+      "title": "The abstract first-moment counting lemma",
+      "startLine": 42,
+      "endLine": 122,
+      "summary": "card_const_on counts colourings constant on a fixed edge set as 2^(|E|−|W|) via a piFinset bijection. exists_avoiding_coloring runs the union bound over an arbitrary family `bad`: if Σ 2·2^(|E|−|W|) < 2^|E| then a colouring non-constant on every W ∈ bad exists."
+    },
+    {
+      "id": "ramsey-specialisation",
+      "title": "Specialisation to K_n and the Erdős criterion",
+      "startLine": 124,
+      "endLine": 243,
+      "summary": "exists_good_coloring_sym2 instantiates E = Sym2 (Fin n), with `bad` the C(k,2)-element edge sets of the k-cliques; the |E|-factors cancel to the criterion 2·C(n,k) < 2^C(k,2). erdos_ramsey_criterion repackages this on symmetric, irreflexive Fin n → Fin n → Bool colourings: R(k,k) > n."
+    },
+    {
+      "id": "diagonal-bound",
+      "title": "The classical R(k,k) > 2^(k/2) bound",
+      "startLine": 244,
+      "endLine": 326,
+      "summary": "erdos_diagonal_numeric is the elementary ℕ estimate that n ≤ 2^⌊k/2⌋ implies 2·C(n,k) < 2^C(k,2) for k ≥ 3. erdos_probabilistic_lower_bound assembles the headline result, exactly matching the statement axiomatized in the parent RamseyR4kExtensions file, now with 0 axioms."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry gives an axiom-free, sorry-free formalization of Erdős's 1947 probabilistic lower bound R(k,k) > 2^⌊k/2⌋, de-axiomatizing erdos_probabilistic_lower_bound from the parent RamseyR4kExtensions file. The probabilistic method is realised as exact counting in the finite space of 2-colourings, so the whole proof — abstract union-bound lemma, Sym2 specialisation, and the elementary 2^(k/2) numeric estimate — is fully machine-checked with no measure theory and no assumptions.",
+    "implications": "The reusable lemma exists_avoiding_coloring isolates the combinatorial heart of the first-moment method and can be applied to other Ramsey-type lower bounds. The sharp criterion R(k,k) > n ⟸ 2·C(n,k) < 2^C(k,2) is available for direct use. The off-diagonal biased-coin bound R(4,k) ≥ c·k²/log k (which requires a non-uniform random colouring and real-valued expectations) remains open and is the natural next target."
+  },
+  "crossReferences": [
+    {
+      "targetId": "ramsey-r4k-extensions",
+      "relationship": "parent",
+      "description": "Stated erdos_probabilistic_lower_bound as an `axiom`; this entry proves that exact statement with 0 axioms"
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "related",
+      "description": "Existence of Ramsey numbers R(r,s); this entry provides the matching probabilistic lower bound for the diagonal case"
+    },
+    {
+      "targetId": "ramsey-r4k-oq-01",
+      "relationship": "related",
+      "description": "Sibling: off-diagonal R(4,k) = Θ(k³/(log k)^c) bounds (AKS upper, Mattheus-Verstraëte lower)"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/ErdosRamseyLowerBound.lean",
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "lineCount": 329,
+    "sorries": 0
+  }
+}
