@@ -1,6 +1,7 @@
 {
   "id": "lucas-lehmer-test-oq-01",
   "slug": "lucas-lehmer-test-oq-01",
+  "description": "The Lucas–Lehmer primality test for Mersenne numbers, assembled as the full biconditional (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p from Mathlib's separately-stated sufficiency and necessity halves. The recurrence s₀ = 4, s_{i+1} = s_i² − 2 is spelled out and identified with the vanishing of the residue s_{p-2} mod 2^p − 1. Four Mersenne primes (M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071) are decided through the test, and a composite witness (p = 11, where the test fails so M₁₁ = 2047 = 23·89 is not prime) exercises the converse. Every witness is discharged by norm_num's kernel-reducing extension — no native_decide, hence no Lean.ofReduceBool — keeping the entry axiom-free.",
   "leanFile": {
     "imports": [
       "Mathlib"
@@ -115,6 +116,65 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Édouard Lucas introduced primality criteria for Mersenne numbers via second-order recurrences in 1878 and famously used them to certify M₁₂₇ = 2¹²⁷ − 1 prime by hand — the largest prime found by hand calculation, a record that stood until the computer era. Derrick Lehmer rigorised and simplified the criterion in 1930 into the modern test: M_p = 2^p − 1 is prime iff the residue s_{p-2} vanishes mod M_p, where s₀ = 4 and s_{i+1} = s_i² − 2. The test underlies the Great Internet Mersenne Prime Search (GIMPS) and the discovery of every record prime for decades. Its theoretical backbone is that the sequence lives in the ring ℤ[√3], where divisibility of M_p by s_{p-2} is equivalent to a unit having the right multiplicative order modulo M_p.",
+    "problemStatement": "Package the Lucas–Lehmer test as a usable biconditional and demonstrate it on concrete instances: prove (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p, exhibit the recurrence and its identification with the residue, and decide several Mersenne numbers — prime and composite — purely through the test, all axiom-free.",
+    "proofStrategy": "Combine Mathlib's lucas_lehmer_necessity (needs 3 ≤ p) and lucas_lehmer_sufficiency (needs 1 < p) under the single hypothesis 3 ≤ p (weakened to 1 < p by omega for the sufficiency direction) to obtain the biconditional mersenne_prime_iff_lucasLehmerTest. The recurrence theorems s_zero/s_succ are rfl; s_one/s_two/s_three unfold by norm_num; lucasLehmerTest_iff_residue is Iff.rfl. Each concrete Mersenne number is settled by rewriting (mersenne p).Prime along the biconditional and discharging LucasLehmerTest p with norm_num's evalLucasLehmerTest extension, which kernel-reduces the tail-recursive residue sModNatTR (no native_decide). The composite case p = 11 negates the test (lucasLehmerTest_eleven_false) and rewrites to non-primality, with an explicit 23·89 factorization.",
+    "keyInsights": [
+      "Mathlib carries the two implications of the criterion separately under mismatched hypotheses; the textbook biconditional under one hypothesis is genuinely new content, and it is the form every witness actually uses.",
+      "The test is an effective algorithm, not just an abstract equivalence: norm_num's evalLucasLehmerTest decides each instance by kernel reduction of a tail-recursive residue, so M₅/M₇/M₁₃/M₁₇ are certified prime by computation through the criterion.",
+      "Using kernel reduction (rfl) rather than native_decide keeps the development axiom-free — no Lean.ofReduceBool — which is the conservative, fully-trusted reading of 'verified' for a computational primality certificate.",
+      "The same biconditional reads in both directions: the failing test at p = 11 certifies compositeness of M₁₁ = 2047 = 23·89, demonstrating the criterion as a true decision procedure rather than a one-sided sufficient condition."
+    ],
+    "prerequisites": [
+      "Mathlib's lucas_lehmer_sufficiency and lucas_lehmer_necessity",
+      "The norm_num extension evalLucasLehmerTest (kernel reduction, no native_decide)",
+      "The recurrence LucasLehmer.s and residue lucasLehmerResidue",
+      "Mersenne numbers and ZMod (2^p − 1) arithmetic"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Scope: the Missing Biconditional and Witnesses",
+      "startLine": 3,
+      "endLine": 31,
+      "summary": "States the test, what Mathlib already provides (the two one-directional theorems and the deciding norm_num extension), and what this entry assembles: the bundled biconditional and worked prime/composite instances, all axiom-free (no native_decide / Lean.ofReduceBool).",
+      "mathContext": "$M_p$ prime $\\iff s_{p-2}\\equiv 0\\pmod{M_p}$, $s_0=4$, $s_{i+1}=s_i^2-2$."
+    },
+    {
+      "id": "recurrence",
+      "title": "The Recurrence sᵢ and the Test's Definition",
+      "startLine": 37,
+      "endLine": 57,
+      "summary": "s_zero/s_succ give the two defining clauses (rfl); s_one/s_two/s_three compute 14, 194, 37634; lucasLehmerTest_iff_residue (Iff.rfl) identifies the test with the vanishing of s_{p-2} in ZMod (2^p − 1).",
+      "mathContext": "$s_0=4,\\ s_1=14,\\ s_2=194,\\ s_3=37634$; test $\\iff$ residue $=0$."
+    },
+    {
+      "id": "biconditional",
+      "title": "The Biconditional Criterion",
+      "startLine": 59,
+      "endLine": 69,
+      "summary": "mersenne_prime_iff_lucasLehmerTest: bundles lucas_lehmer_necessity (3 ≤ p) and lucas_lehmer_sufficiency (1 < p, reached by omega) into (mersenne p).Prime ↔ LucasLehmerTest p for 3 ≤ p.",
+      "mathContext": "$3\\le p \\Rightarrow ((2^p-1)\\text{ prime} \\iff \\mathrm{LucasLehmerTest}(p))$."
+    },
+    {
+      "id": "prime-witnesses",
+      "title": "Four Mersenne Primes via the Test",
+      "startLine": 71,
+      "endLine": 91,
+      "summary": "M₅ = 31, M₇ = 127, M₁₃ = 8191, M₁₇ = 131071 are each certified prime by rewriting along the biconditional and discharging the test with norm_num's kernel-reducing evalLucasLehmerTest.",
+      "mathContext": "$M_5{=}31,\\ M_7{=}127,\\ M_{13}{=}8191,\\ M_{17}{=}131071$ prime."
+    },
+    {
+      "id": "composite-witness",
+      "title": "A Composite Witness at p = 11",
+      "startLine": 93,
+      "endLine": 109,
+      "summary": "The test fails at p = 11 (lucasLehmerTest_eleven_false), so M₁₁ is not prime (mersenne_eleven_not_prime), confirmed by the explicit factorization M₁₁ = 2047 = 23·89.",
+      "mathContext": "$M_{11} = 2047 = 23\\cdot 89$, test fails."
+    }
+  ],
   "openQuestions": [
     {
       "id": "lucas-lehmer-test-oq-01-oq-01",
