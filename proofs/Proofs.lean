@@ -3995,6 +3995,7 @@ import Proofs.Sqrt2MinpolyOQ01OQ02PrimePow
 import Proofs.Sqrt2MinpolyOQ02
 import Proofs.Sqrt2MinpolyOQ03
 import Proofs.Sqrt2OQ01
+import Proofs.Sqrt2OQ01OQ01
 import Proofs.Sqrt2PlusSqrt3Irrational
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ02
 import Proofs.Sqrt2PlusSqrt3IrrationalOQ03
