@@ -184,6 +184,94 @@ theorem exists_admissible_card (k : ℕ) :
     rw [hp0, mul_zero]
     exact zero_ne_one
 
+/- ## The extremal quantity `A(k)`
+
+The headline question of Problem #1204 concerns `A(k) = min a_k`, the minimal possible
+*largest element* of an admissible `k`-set. We now make this object precise. Because
+admissible `k`-sets exist for every `k` (`exists_admissible_card`), the set of achievable
+maxima is nonempty, so its infimum (`A k`) is attained. We bracket it between the trivial
+packing bound `k - 1` and the primorial bound, and compute the first values exactly. The
+exact value `A(2) = 2 > 1 = k - 1` is the first place where admissibility is *binding*:
+the densest 2-set `{0,1}` is inadmissible, forcing the max strictly above the packing bound. -/
+
+/-- The largest element (`a.sup id`) of any `k`-element finset of `ℕ` is at least `k - 1`:
+the `k` distinct elements all lie in `{0, 1, …, a.sup id}`, which has `a.sup id + 1`
+members. -/
+theorem card_le_sup_succ (a : Finset ℕ) : a.card ≤ a.sup id + 1 := by
+  have hsub : a ⊆ Finset.range (a.sup id + 1) := by
+    intro x hx
+    rw [Finset.mem_range]
+    have : x ≤ a.sup id := Finset.le_sup (f := id) hx
+    omega
+  calc a.card ≤ (Finset.range (a.sup id + 1)).card := Finset.card_le_card hsub
+    _ = a.sup id + 1 := Finset.card_range _
+
+/-- **`A(k)`**, the minimal largest element over admissible `k`-element sets. We use
+`a.sup id` (the maximum, with the empty set giving `0`) so that `A` is total; for `k ≥ 1`
+this is exactly `min a_k`. The minimization is over a nonempty family
+(`exists_admissible_card`), so the infimum is attained (`A_mem`). -/
+noncomputable def A (k : ℕ) : ℕ :=
+  sInf { m | ∃ a : Finset ℕ, a.card = k ∧ Admissible a ∧ a.sup id = m }
+
+/-- The family of achievable maxima is nonempty (an admissible `k`-set always exists). -/
+theorem A_set_nonempty (k : ℕ) :
+    { m | ∃ a : Finset ℕ, a.card = k ∧ Admissible a ∧ a.sup id = m }.Nonempty := by
+  obtain ⟨a, hcard, ha⟩ := exists_admissible_card k
+  exact ⟨a.sup id, a, hcard, ha, rfl⟩
+
+/-- The infimum defining `A(k)` is **attained**: there is an admissible `k`-set whose
+largest element equals `A(k)`. -/
+theorem A_mem (k : ℕ) :
+    ∃ a : Finset ℕ, a.card = k ∧ Admissible a ∧ a.sup id = A k :=
+  Nat.sInf_mem (A_set_nonempty k)
+
+/-- `A(k)` is a lower bound: any admissible `k`-set has largest element at least `A(k)`. -/
+theorem A_le {k : ℕ} {a : Finset ℕ} (hcard : a.card = k) (ha : Admissible a) :
+    A k ≤ a.sup id :=
+  Nat.sInf_le ⟨a, hcard, ha, rfl⟩
+
+/-- **Trivial lower bound.** `A(k) ≥ k - 1`, since any `k` distinct naturals have maximum
+at least `k - 1`. -/
+theorem sub_one_le_A (k : ℕ) : k - 1 ≤ A k := by
+  obtain ⟨a, hcard, _, hsup⟩ := A_mem k
+  have := card_le_sup_succ a
+  rw [hcard, hsup] at this
+  omega
+
+/-- `A(0) = 0` (the only admissible `0`-set is `∅`). -/
+theorem A_zero : A 0 = 0 :=
+  Nat.le_zero.mp (by simpa using A_le (a := (∅ : Finset ℕ)) Finset.card_empty admissible_empty)
+
+/-- `A(1) = 0` (the singleton `{0}` is admissible with maximum `0`). -/
+theorem A_one : A 1 = 0 := by
+  refine Nat.le_zero.mp ?_
+  simpa using A_le (a := ({0} : Finset ℕ)) (by simp) (admissible_singleton 0)
+
+/-- **`A(2) = 2`.** The upper bound comes from the admissible set `{0, 2}`. The lower
+bound `A(2) ≥ 2` is where admissibility first bites: the only `2`-set with maximum `1` is
+`{0, 1}`, which is *not* admissible, so the minimal maximum jumps from the packing value
+`k - 1 = 1` to `2`. -/
+theorem A_two : A 2 = 2 := by
+  apply le_antisymm
+  · have h := A_le (k := 2) (a := ({0, 2} : Finset ℕ)) (by decide) admissible_zero_two
+    have hs : ({0, 2} : Finset ℕ).sup id = 2 := by decide
+    rwa [hs] at h
+  · by_contra hlt
+    push_neg at hlt
+    have hlb := sub_one_le_A 2
+    have hA1 : A 2 = 1 := by omega
+    obtain ⟨a, hcard, ha, hsup⟩ := A_mem 2
+    have hsub : a ⊆ ({0, 1} : Finset ℕ) := by
+      intro x hx
+      have hle : x ≤ a.sup id := Finset.le_sup (f := id) hx
+      rw [hsup, hA1] at hle
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      omega
+    have heq : a = ({0, 1} : Finset ℕ) :=
+      Finset.eq_of_subset_of_card_le hsub (by rw [hcard]; decide)
+    rw [heq] at ha
+    exact not_admissible_zero_one ha
+
 /- ## Open Problems
 
 The asymptotic behaviour of the extremal quantities is OPEN:
