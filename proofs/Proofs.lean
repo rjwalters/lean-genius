@@ -3063,6 +3063,7 @@ import Proofs.FrobeniusNumberOQ01
 import Proofs.FrobeniusNumberOQ01OQ03OQ01
 import Proofs.FrobeniusNumberOQ01OQ04
 import Proofs.FrobeniusNumberOQ02
+import Proofs.FrobeniusNumberOQ02OQ01
 import Proofs.FrobeniusNumberOQ03
 import Proofs.FrobeniusNumberOQ04
 import Proofs.FundamentalArithmetic
