@@ -1264,9 +1264,12 @@
       "agentId": "auditor-agent",
       "auditCount": 4,
       "lastAudited": "2026-06-19T08:07:38Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issue": 26061,
-      "notes": "Re-audit: meta.json accurate (axiomatized/axiom, 1 axiom tucker_2d_grid, sorries 0, lineCount 2633, theoremCount 123, definitionCount 36 all match; main result borsuk_ulam_2d_corrected honestly axiomatized). Found 3 non-load-bearing auxiliary True-stub theorems with 'PROVED' docstrings (#26061, LOW severity; mechanic fix PR #26062)."
+      "notes": "Re-audit: meta.json accurate (axiomatized/axiom, 1 axiom tucker_2d_grid, sorries 0, lineCount 2633, theoremCount 123, definitionCount 36 all match; main result borsuk_ulam_2d_corrected honestly axiomatized). Found 3 non-load-bearing auxiliary True-stub theorems with 'PROVED' docstrings (#26061, LOW severity; mechanic fix PR #26062).",
+      "issues": [
+        "Resolved: 3 True-stub theorems (gridEdgesTriFin_from_triangles, boundary_edge_one_triangle, interior_edge_two_triangles) relabeled from \"**PROVED:**\" to \"**Stated (not formalized):**\" per #26061 (CLOSED). Comment-only, build-neutral; meta fields already accurate."
+      ]
     },
     "borsuk-ulam-oq-04": {
       "auditCount": 6,
@@ -15897,9 +15900,10 @@
     "erdos-1-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-06-17T00:00:00Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "#25373: native_decide/ofReduceBool axiomCount convention"
+        "#25373: native_decide/ofReduceBool axiomCount convention",
+        "Resolved: meta now status=axiomatized, badge=axiom, axiomCount=1 with Lean.ofReduceBool disclosed in assumptions per CLAUDE.md native_decide convention. (#25373 Part 1 left open as a gallery-wide policy question, but this entry already carries the correct treatment.)"
       ]
     },
     "feuerbachs-theorem-oq-02-murakami": {
@@ -15941,9 +15945,10 @@
     "sqrt2-minpoly-oq-01-oq-02-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-06-17T00:00:00Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "#25373: Mathlib-bridge badged original"
+        "#25373: Mathlib-bridge badged original",
+        "Resolved: re-badged original->mathlib by #25383 (CLOSED); main-result irreducibility is a directly-called Mathlib theorem. meta now status=verified, badge=mathlib, axiomCount=0."
       ]
     },
     "chebyshev-bounds-oq-04-oq-01-oq-01": {
@@ -21623,8 +21628,10 @@
     "frobenius-number-oq-01-oq-03-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-24T14:20:07Z",
-      "result": "issues-found",
-      "issues": []
+      "result": "issues-fixed",
+      "issues": [
+        "Resolved: re-verified against origin/main -- 285 lines, 13 theorems, 4 defs, 0 axioms, 0 sorries all match meta; imported in Proofs.lean (line 2974). No discrepancy; flag was spurious (no issue text recorded)."
+      ]
     },
     "bernoulli-inequality-oq-01-oq-01-oq-02": {
       "auditCount": 2,
@@ -21749,9 +21756,10 @@
     "compactness-finite-subcover-oq-01-oq-01-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-24T15:11:29Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "#29127: OQ/Oq casing mismatch breaks case-sensitive (Docker/Linux) build; fix PR #29131 open"
+        "#29127: OQ/Oq casing mismatch breaks case-sensitive (Docker/Linux) build; fix PR #29131 open",
+        "Resolved: OQ/Oq casing normalized; source file CompactnessFiniteSubcoverOq01Oq01Oq01.lean imported at Proofs.lean line 869. Fix PR #29131 MERGED, issue #29127 CLOSED."
       ]
     },
     "gamma-reflection-formula-oq-01-oq-03-oq-01": {
