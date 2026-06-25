@@ -1,0 +1,144 @@
+{
+  "id": "collatz-structured-oq-02-oq-02",
+  "title": "The Algebraic Engine of Eliahou's Collatz Cycle Bound",
+  "slug": "collatz-structured-oq-02-oq-02",
+  "description": "Addresses OQ-02 of the Collatz cycle non-existence problem: can Eliahou's 17-billion lower bound on non-trivial cycle lengths be formalized, or does it resist formalization? Rather than axiomatizing the bound (as the sibling OQ-01 file does), this entry removes the algebraic core from the axiom budget: it DERIVES the Lagarias constraint 2^L > 3^j directly from the Syracuse cycle equation via a telescoping-product argument, proves L ≥ j+1 and period N ≥ 2j+1, records the continued-fraction near-misses of log₂3 that drive Eliahou's amplification, and isolates the residual obstacle (a large finite verification, not an analytic estimate). Fully machine-verified, 0 axioms.",
+  "meta": {
+    "author": "Research formalization 2026",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Collatz_conjecture#Cycle_length",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CollatzStructuredOQ02OQ02.lean",
+    "tags": [
+      "number-theory",
+      "collatz",
+      "cycles",
+      "diophantine",
+      "continued-fractions"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 232,
+    "assumptions": "None. Fully machine-verified with 0 axioms and 0 sorries (depends only on the standard foundational axioms propext / Classical.choice / Quot.sound). The 17-billion bound itself is NOT claimed; this entry formalizes its axiom-free algebraic core and identifies the remaining obstacle.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Collatz conjecture is equivalent to the non-existence of non-trivial cycles. Lagarias (1985) systematized the algebraic constraint 2^L > 3^j on a hypothetical cycle with j odd steps and L halvings; Eliahou (1993) combined this constraint with the continued-fraction approximation of log₂3 and a finite range verification to prove any non-trivial cycle has length exceeding 1.7 × 10^10. The natural formalization question (OQ-02) is whether this bound can be carried into Lean. Eliahou's argument splits cleanly into an elementary algebraic core and a large finite computation — and it is exactly this split that determines what can be formalized today.",
+    "problemStatement": "**OQ-02**: Is it possible to formalize Eliahou's full bound (cycle length > 17 billion) in Lean, or does the proof require analytic estimates that resist formalization?",
+    "text": "We formalize, axiom-free, the algebraic engine underlying Eliahou's bound: the Syracuse cycle equation is shown to force the Lagarias constraint 3^j < 2^L by a telescoping product over the cycle, yielding L ≥ j+1 and minimum Collatz period 2j+1. We then record the continued-fraction convergents of log₂3 whose near-equalities (2^19<3^12, 2^26<3^17, 2^64<3^41) make 2^L − 3^j small, the lever Eliahou amplifies. Finally we isolate the residual obstacle as a finite verification, not an analytic estimate.",
+    "proofStrategy": "The centerpiece is the telescoping-product derivation of 2^L > 3^j. Modelling a cycle abstractly as positive odd elements x : Fin n → ℕ with halving exponents l : Fin n → ℕ satisfying 2^(lᵢ)·x_{i+1} = 3xᵢ+1, we multiply all n relations: ∏(3xᵢ+1) = (∏2^(lᵢ))·(∏x_{i+1}) = 2^(Σlᵢ)·∏xᵢ since i↦i+1 permutes Fin n. Because each 3xᵢ+1 > 3xᵢ and all factors are positive, ∏(3xᵢ+1) > 3^n·∏xᵢ, and cancelling the positive ∏xᵢ gives 3^n < 2^(Σlᵢ). The halving bound L ≥ n+1 follows from 2^n ≤ 3^n < 2^L. The continued-fraction near-misses are machine-checked numeric facts (norm_num). The final reduction packages the conclusion and names the missing input.",
+    "keyInsights": [
+      "The Lagarias constraint 2^L > 3^j is not an assumption: it is FORCED by the Syracuse cycle equation, and falls out of a single telescoping product over the cycle.",
+      "i ↦ i+1 permutes Fin n, so the shifted product ∏x_{i+1} equals ∏xᵢ — this cyclic cancellation is what turns the n local relations into one global inequality.",
+      "L ≥ j+1 and Collatz period N = j + L ≥ 2j+1 are immediate corollaries, since 2^j ≤ 3^j < 2^L forces L > j.",
+      "The minimal L solving 3^j < 2^L jumps at the continued-fraction convergent denominators of log₂3 (1,2,5,12,17,41,…); convergents 19/12, 27/17, 65/41 give near-equalities that make 2^L − 3^j small — Eliahou's amplification lever.",
+      "The obstacle to the full 17-billion bound is the finite range verification (Barina's n < 2^68) plus circuit counting — a finite but decide-infeasible computation, NOT an essentially analytic estimate."
+    ],
+    "prerequisites": [
+      "The Collatz / Syracuse map and the notion of a cycle",
+      "The 2^M > 3^j algebraic constraint (from parent CollatzCycles.lean)",
+      "Finite products over Fintypes and cyclic permutations of Fin n",
+      "Continued fractions of log₂3 (background for the near-miss section)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "cycle-product",
+      "title": "The Syracuse Cycle Equation Forces 2^L > 3^j",
+      "startLine": 70,
+      "endLine": 125,
+      "summary": "Models a cycle abstractly as x, l : Fin n → ℕ with 2^(lᵢ)·x_{i+1} = 3xᵢ+1. Proves the telescoping identity ∏(3xᵢ+1) = 2^(Σlᵢ)·∏xᵢ (using that i↦i+1 permutes Fin n) and derives the Lagarias constraint 3^n < 2^(Σlᵢ).",
+      "mathContext": "$\\prod_i (3x_i+1) = \\prod_i 2^{l_i}x_{i+1} = 2^{\\sum l_i}\\prod_i x_i > 3^n \\prod_i x_i \\Rightarrow 3^n < 2^{\\sum l_i}$."
+    },
+    {
+      "id": "halving-bound",
+      "title": "Halving Lower Bound and Minimum Period",
+      "startLine": 127,
+      "endLine": 149,
+      "summary": "From 3^n < 2^L and 2^n ≤ 3^n, derives L ≥ n+1 (syracuse_halvings_gt) and Collatz period N = n + L ≥ 2n+1 (min_collatz_period).",
+      "mathContext": "$2^n \\le 3^n < 2^L \\Rightarrow L > n \\Rightarrow N = n + L \\ge 2n + 1$."
+    },
+    {
+      "id": "near-misses",
+      "title": "Continued-Fraction Near-Misses of log₂3",
+      "startLine": 150,
+      "endLine": 186,
+      "summary": "Machine-checked near-equalities at the convergents 19/12, 27/17, 65/41: 2^19<3^12<2^20, 2^26<3^17<2^27, 2^64<3^41<2^65, plus a minimal-halving table for j=1,2,5,12,17. These small gaps are Eliahou's amplification lever.",
+      "mathContext": "$2^{64} < 3^{41} < 2^{65}$ with $2^{65}-3^{41} \\approx 4.2\\times10^{17}$ (~1.1% of $2^{65}$)."
+    },
+    {
+      "id": "obstacle",
+      "title": "Locating the Obstacle (Answer to OQ-02)",
+      "startLine": 187,
+      "endLine": 212,
+      "summary": "oq02_reduction packages the axiom-free conclusion (3^n < 2^L and N ≥ 2n+1) and names the only missing input: the finite verification over 2^68 numbers plus Eliahou's circuit count — a finite, decide-infeasible computation, not an analytic estimate.",
+      "mathContext": "Answer: the algebraic core formalizes cleanly and axiom-free; the residual obstacle is a large finite verification, not an analytic estimate that resists formalization."
+    }
+  ],
+  "conclusion": {
+    "summary": "Every hypothetical non-trivial Collatz cycle is forced, axiom-free, into the lattice {(j,L) : 3^j < 2^L, L ≥ j+1}, with minimum period 2j+1. This Lagarias constraint is DERIVED from the Syracuse cycle equation by a telescoping product, rather than assumed (as in the sibling OQ-01 file, which axiomatizes Eliahou's bound outright). The continued-fraction convergents of log₂3 governing the lattice are recorded as machine-checked near-misses.",
+    "implications": "The answer to OQ-02 is concrete: the algebraic core of Eliahou's argument formalizes cleanly with zero axioms; the obstacle to the full 1.7×10^10 bound is the finite range verification (Barina's n < 2^68) together with Eliahou's circuit/level counting — a finite computation beyond Lean's kernel decide budget, NOT an essentially analytic estimate. This sharpens the parent's axiom into a small, well-identified computational residue.",
+    "openQuestions": [
+      "Can Barina's 2^68 range verification be certified in Lean (e.g. via a verified interval-checker) to eliminate the residual computation?",
+      "Can Eliahou's circuit/level counting that amplifies the range check to 17 billion be formalized once the range check is available?",
+      "Can Tao's 2019 almost-all result be formalized using Mathlib measure theory?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "collatz-structured-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Sibling: extends k-cycle exclusion via case analysis (axiomatizes the Eliahou bound this entry partially de-axiomatizes)"
+    },
+    {
+      "targetId": "collatz-structured-oq-02",
+      "relationship": "extends",
+      "description": "Parent: Collatz Cycles — Non-Existence of Small Cycles (CollatzCycles.lean)"
+    },
+    {
+      "targetId": "collatz-structured",
+      "relationship": "related",
+      "description": "Grandparent: Collatz for structured starting values (powers of 2)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Eliahou, S.",
+      "title": "The 3x+1 problem: new lower bounds on nontrivial cycle lengths",
+      "year": "1993",
+      "venue": "Discrete Mathematics 118(1-3):45–56",
+      "note": "Proves any non-trivial cycle has length > 1.7 × 10^10 via the algebraic constraint, continued fractions of log₂3, and a finite verification"
+    },
+    {
+      "authors": "Lagarias, J.C.",
+      "title": "The 3x+1 problem and its generalizations",
+      "year": "1985",
+      "venue": "The American Mathematical Monthly 92(1):3–23",
+      "note": "Foundational survey; the 2^M > 3^j algebraic constraint framework"
+    },
+    {
+      "authors": "Barina, D.",
+      "title": "Convergence verification of the Collatz problem",
+      "year": "2021",
+      "venue": "The Journal of Supercomputing 77:2681–2688",
+      "note": "Computational verification of the Collatz conjecture for n < 2^68"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "CollatzEliahouEngine",
+    "lineCount": 232,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "path": "Proofs/CollatzStructuredOQ02OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 0
+  },
+  "sorries": 0
+}
