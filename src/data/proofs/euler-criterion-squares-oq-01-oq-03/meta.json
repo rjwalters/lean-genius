@@ -1,0 +1,134 @@
+{
+  "id": "euler-criterion-squares-oq-01-oq-03",
+  "slug": "euler-criterion-squares-oq-01-oq-03",
+  "title": "The Second Supplement — 2 is a Quadratic Residue mod p iff p ≡ ±1 (mod 8)",
+  "meta": {
+    "author": "classical number theory; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/EulerCriterionSquaresOQ01OQ03.lean",
+    "tags": [
+      "number-theory",
+      "quadratic-residues",
+      "legendre-symbol",
+      "euler-criterion",
+      "second-supplement",
+      "quadratic-reciprocity",
+      "ZMod",
+      "classic"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "ZMod.exists_sq_eq_two_iff",
+        "description": "For [Fact p.Prime] and p ≠ 2, IsSquare (2 : ZMod p) ↔ p % 8 = 1 ∨ p % 8 = 7 — the headline second-supplement equivalence, which the entry restates for the parent's odd-prime convention [Fact (2 < p)] and complements.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "legendreSym.at_two",
+        "description": "For p ≠ 2, legendreSym p 2 = χ₈ p — evaluates the Legendre symbol at 2 via the mod-8 Dirichlet character; the input to the (-1)-power closed form and the Euler-criterion bridge.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity"
+      },
+      {
+        "theorem": "legendreSym.eq_pow",
+        "description": "(legendreSym p a : ZMod p) = (a : ZMod p)^(p/2) — the Legendre symbol congruent to the Euler-criterion exponential; rewritten via p/2 = (p-1)/2 to identify legendreSym p 2 with 2^((p-1)/2) and build the bridge.",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "legendreSym.eq_one_iff",
+        "description": "For (a : ZMod p) ≠ 0, legendreSym p a = 1 ↔ IsSquare (a : ZMod p) — the prime-only residuacity ⟺ symbol-value-+1 bridge, used for isSquare_two_iff_legendreSym (this is exactly the equivalence that fails for composite Jacobi moduli).",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.Basic"
+      },
+      {
+        "theorem": "ZMod.χ₈_nat_eq_if_mod_eight",
+        "description": "χ₈ n = if n%2=0 then 0 else if n%8 ∈ {1,7} then 1 else -1 — the explicit residue-class value of χ₈, the starting point for the closed-form lemma chi8_eq_neg_one_pow (Mathlib supplies only the χ₄ analogue χ₄_eq_neg_one_pow).",
+        "module": "Mathlib.NumberTheory.LegendreSymbol.ZModChar"
+      }
+    ],
+    "originalContributions": [
+      "two_pow_half_eq_neg_one_pow: the Euler-criterion bridge (2 : ZMod p)^((p-1)/2) = (-1 : ZMod p)^((p²-1)/8) — connects the parent's universal exponential test a^((p-1)/2) to the concrete mod-8 Gauss-sum sign for a = 2. This is the piece distinct from the sibling Jacobi leaf, which states the sign formula but has no Euler criterion to bridge to.",
+      "not_isSquare_two_iff: the explicit non-residue complement ¬ IsSquare (2 : ZMod p) ↔ p % 8 = 3 ∨ p % 8 = 5, obtained as the complement of the headline equivalence across the four odd residue classes mod 8.",
+      "isSquare_two_iff_legendreSym: residuacity ⟺ symbol value +1 at the prime modulus — the interpretation that holds only for primes, contrasting the sibling Jacobi leaf where +1 no longer signals quadratic residuacity.",
+      "legendreSym_two_eq_neg_one_pow: the second supplement in exponent form legendreSym p 2 = (-1)^((p²-1)/8), composing legendreSym.at_two with the closed-form χ₈ identity.",
+      "Honest framing: the headline equivalence IsSquare (2 : ZMod p) ↔ p ≡ ±1 (mod 8) is Mathlib's ZMod.exists_sq_eq_two_iff (restated for the [Fact (2 < p)] convention), and the χ₈ value / Euler-criterion exponential are Mathlib results; the original work is the non-residue complement, the residuacity bridge, and especially the Euler-criterion bridge 2^((p-1)/2) = (-1)^((p²-1)/8) tying the parent's criterion to the mod-8 sign. The closed-form χ₈ n = (-1)^((n²-1)/8) (absent from Mathlib) is reproved here for self-containment; the analogous lemma also appears in the sibling Jacobi leaf."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries; depends only on the standard foundational axioms propext, Classical.choice, Quot.sound (no sorry, no native_decide / Lean.ofReduceBool — concrete numerical checks use decide). Honest scope: the headline residue equivalence (ZMod.exists_sq_eq_two_iff), the Legendre symbol's value at 2 (legendreSym.at_two), its Euler-criterion congruence (legendreSym.eq_pow), and the residuacity bridge (legendreSym.eq_one_iff) are Mathlib results; the original contributions are the non-residue complement, the Euler-criterion bridge 2^((p-1)/2) = (-1)^((p²-1)/8), the prime-only residuacity ⟺ symbol-value characterization, and the reproved closed form χ₈ n = (-1)^((n²-1)/8).",
+    "lineCount": 190,
+    "theoremCount": 19,
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "ZMod"
+    ],
+    "namespace": "EulerCriterionSquaresOQ01OQ03",
+    "lineCount": 190,
+    "axiomCount": 0,
+    "theoremCount": 19,
+    "definitionCount": 0,
+    "path": "Proofs/EulerCriterionSquaresOQ01OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "description": "Specializes the parent's Euler criterion (IsSquare a ⟺ a^((p-1)/2) = 1) to the fixed base a = 2, proving the classical second supplementary law of quadratic reciprocity: for an odd prime p, 2 is a quadratic residue mod p iff p ≡ 1 or 7 (mod 8), and a non-residue iff p ≡ 3 or 5 (mod 8). The headline equivalence is Mathlib's ZMod.exists_sq_eq_two_iff, restated for the parent's [Fact (2 < p)] convention. The substantive new content is the Euler-criterion bridge (2 : ZMod p)^((p-1)/2) = (-1 : ZMod p)^((p²-1)/8), which ties the parent's universal exponential test to the concrete mod-8 Gauss-sum sign, together with the non-residue complement and the prime-only residuacity ⟺ symbol-value-+1 characterization (the interpretation that fails for the composite Jacobi moduli of the sibling leaf). Includes the reproved closed form χ₈ n = (-1)^((n²-1)/8) and worked numerical corollaries (2 is a residue mod 7, 17, 23; a non-residue mod 5, 11, 13).",
+  "overview": {
+    "historicalContext": "The two supplementary laws — the value of (-1/p) governed by p mod 4 and the value of (2/p) governed by p mod 8 — are, alongside the main law of quadratic reciprocity, the complete toolkit for evaluating Legendre symbols by hand. The second supplement, that 2 is a quadratic residue mod an odd prime p exactly when p ≡ ±1 (mod 8), goes back to Euler and Lagrange and was given its definitive proof by Gauss (via his lemma counting sign changes of {2, 4, …, p−1} folded into (−p/2, p/2), or equivalently via the Gauss-sum identity (2/p) = (−1)^((p²−1)/8)). It is the canonical first worked example of turning Euler's abstract exponentiation test a^((p−1)/2) into a decidable congruence condition on a single residue class.",
+    "problemStatement": "For an odd prime p, prove IsSquare (2 : ZMod p) ↔ p ≡ 1 ∨ 7 (mod 8) together with the non-residue complement p ≡ 3 ∨ 5 (mod 8), and record the explicit bridge from the parent's Euler-criterion form 2^((p−1)/2) to the mod-8 sign (−1)^((p²−1)/8) as a reusable lemma.",
+    "keyResults": [
+      "Second supplementary law: IsSquare (2 : ZMod p) ↔ p % 8 = 1 ∨ p % 8 = 7 for an odd prime p.",
+      "Non-residue complement: ¬ IsSquare (2 : ZMod p) ↔ p % 8 = 3 ∨ p % 8 = 5.",
+      "Euler-criterion bridge: (2 : ZMod p)^((p−1)/2) = (−1 : ZMod p)^((p²−1)/8).",
+      "Exponent form of the symbol: legendreSym p 2 = (−1)^((p²−1)/8), and the closed form χ₈ n = (−1)^((n²−1)/8) for odd n.",
+      "Prime-only residuacity: IsSquare (2 : ZMod p) ↔ legendreSym p 2 = 1.",
+      "Worked checks: 2 is a residue mod 7, 17, 23 and a non-residue mod 5, 11, 13 (decide)."
+    ],
+    "proofStrategy": "The headline equivalence isSquare_two_iff is Mathlib's ZMod.exists_sq_eq_two_iff, applied with p ≠ 2 (from [Fact (2 < p)]). The complement not_isSquare_two_iff follows by omega after recording that an odd prime satisfies p % 8 ∈ {1,3,5,7}. For the exponent side, chi8_eq_neg_one_pow proves χ₈ n = (−1)^((n²−1)/8) for odd n by a case split on n mod 8: writing n = 8k + r with r ∈ {1,3,5,7}, a single `ring` identity (8k+r)² = 8·E + 1 lets omega evaluate (n²−1)/8 = E, whose parity (even for r ∈ {1,7}, odd for r ∈ {3,5}) is read off by pow_mul / pow_succ with neg_one_sq. Composing legendreSym.at_two (legendreSym p 2 = χ₈ p) with this gives legendreSym_two_eq_neg_one_pow. The bridge two_pow_half_eq_neg_one_pow rewrites legendreSym.eq_pow (legendreSym p 2 ≡ 2^(p/2)) with p/2 = (p−1)/2, then substitutes the exponent form and casts (−1)^((p²−1)/8) into ZMod p. Residuacity isSquare_two_iff_legendreSym is Mathlib's legendreSym.eq_one_iff at a = 2 (needing 2 ≠ 0 mod p).",
+    "keyInsights": [
+      "**The fixed-base specialization is where Euler's abstract test becomes a decidable congruence.** The parent characterizes residues by a^((p−1)/2) = 1 for variable a; this leaf pins a = 2 down to a condition on p mod 8 that needs no exponentiation at all.",
+      "**The Euler-criterion bridge is the leaf's distinctive content.** Equating 2^((p−1)/2) with (−1)^((p²−1)/8) inside ZMod p is exactly the link from the parent's universal exponential to the Gauss-sum sign; the sibling Jacobi leaf can state the same (−1)^((n²−1)/8) sign formula but, lacking a notion of Euler's criterion for composite moduli, has nothing to bridge it to.",
+      "**For prime moduli, symbol value +1 means quadratic residue; for composite moduli it does not.** isSquare_two_iff_legendreSym records the prime-only equivalence IsSquare 2 ⟺ legendreSym p 2 = 1, the residue interpretation that the Jacobi sibling explicitly cannot claim.",
+      "**The exponent (p²−1)/8 is a parity in disguise.** For odd p, 8 ∣ p²−1, and writing p = 8k + r the quotient is even exactly when r ∈ {1,7} — the same period-8 sign extracted by one `ring` identity per residue class feeding omega's division reasoning."
+    ]
+  },
+  "conclusion": {
+    "summary": "Carries out the parent's Euler criterion for the smallest fixed base, a = 2, recovering the classical second supplementary law of quadratic reciprocity: 2 is a quadratic residue mod an odd prime p iff p ≡ ±1 (mod 8), and a non-residue iff p ≡ ±3 (mod 8). The headline equivalence is Mathlib's ZMod.exists_sq_eq_two_iff; the original work is the non-residue complement, the prime-only residuacity ⟺ symbol-value characterization, and the Euler-criterion bridge (2)^((p−1)/2) = (−1)^((p²−1)/8) tying the parent's universal exponential test to the mod-8 Gauss-sum sign. The closed form χ₈ n = (−1)^((n²−1)/8) (absent from Mathlib) is reproved for self-containment. 19 theorems, 0 sorries, 0 axioms.",
+    "implications": [
+      "Turns the parent's universal but abstract residue test a^((p−1)/2) = 1 into a concrete, decidable congruence condition for the base 2, reusable in downstream entries (Gauss sums, reciprocity algorithms, Mersenne-style primality, quadratic-form representability).",
+      "Records the explicit bridge from Euler's criterion to the (−1)^((p²−1)/8) Gauss-sum form, the standard textbook identity, as a machine-checked reusable lemma.",
+      "Sharpens the prime/composite contrast: the residue interpretation of symbol value +1 (here) is exactly what the sibling Jacobi leaf must drop for composite moduli."
+    ],
+    "openQuestions": [
+      "Prove the first supplement and the half-base case in matching style: (-1/p) = (−1)^((p−1)/2) governing p mod 4, and the value of (−2/p) governing p mod 8, packaged as residue/non-residue dichotomies bridged to Euler's criterion.",
+      "Derive a concrete consequence for Mersenne/Fermat-style numbers: e.g. use the second supplement to show that for a prime p ≡ 3 (mod 4) with 2p+1 also prime, 2p+1 divides the Mersenne number 2^p − 1 (the Euler/Lagrange criterion for Mersenne divisors)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "euler-criterion-squares-oq-01",
+      "relationship": "extends",
+      "description": "The direct parent: Euler's criterion IsSquare a ⟺ a^((p−1)/2) = 1 for an odd prime p. This leaf specializes it to the fixed base a = 2 and bridges the exponential test to the p mod 8 sign."
+    },
+    {
+      "proofId": "euler-criterion-squares-oq-01-oq-02-oq-03",
+      "relationship": "related",
+      "description": "The sibling Jacobi leaf, which proves the same (−1)^((n²−1)/8) sign formula for arbitrary odd composite moduli but, lacking Euler's criterion, has no residuacity interpretation and no Euler-criterion bridge — exactly the prime-only content supplied here."
+    },
+    {
+      "proofId": "euler-criterion-squares-oq-01-oq-01",
+      "relationship": "related",
+      "description": "A sibling leaf of the same Euler-criterion parent, counting the (p−1)/2 nonzero quadratic residues mod an odd prime."
+    },
+    {
+      "proofId": "elementary-quadratic-reciprocity",
+      "relationship": "related",
+      "description": "The main reciprocity law the supplements accompany; together they form the complete by-hand Legendre-symbol evaluation toolkit."
+    }
+  ],
+  "sections": []
+}
