@@ -1,26 +1,62 @@
 [
   {
-    "id": "ann-perstep-law",
+    "id": "ann-lfs-context",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
-    "range": {
-      "startLine": 52,
-      "endLine": 79
-    },
-    "type": "concept",
-    "title": "The Per-Step Residue Law as a Reusable Lemma",
-    "content": "delta is defined as a genuine function of the residue, delta r = ⌊(r+3)/4⌋ − r, taking the eight values 0,0,−1,−2,−3,−3,−4,−5. error_step then proves the per-step law E(N) = E(⌈N/4⌉) + delta (N mod 8) for every N: it rewrites the imported excludedCount_rec, push_casts to ℤ, and closes the residual division/remainder identity by omega (which natively understands N/8, ⌈N/4⌉ = (N+3)/4, and N mod 8). The parent did this telescoping inline for one family; here it is a standalone tool.",
-    "mathContext": "E(N) = 6·excludedCount N − N; the increment delta (N mod 8) depends only on the residue."
+    "range": { "startLine": 4, "endLine": 43 },
+    "type": "context",
+    "title": "Isolating the Per-Step Law of the Density Error",
+    "content": "This file is a direct sequel to oq-03-oq-05-oq-01, which proved the density error E(N) = 6·excludedCount N − N is one-sided and unbounded of order Θ(log N). That parent did its telescoping of the excludedCount recursion inline, for a single extremal family. Here the per-step increment is isolated as a reusable lemma and the structure of the worst case is pinned down, answering: why is the extremal descent rate 4 per step (residue 6) and not 5 (residue 7), even though a single step can cost as much as 5? All results reuse the merged oq-03-oq-05 recursion verbatim and are axiom-free.",
+    "mathContext": "$E(N) = 6\\cdot\\mathrm{excludedCount}(N) - N$; each $\\lceil N/4\\rceil$ descent step changes $E$ by $\\delta(N \\bmod 8) \\in \\{0,0,-1,-2,-3,-3,-4,-5\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["Lagrange four squares", "Waring's problem", "density error", "descent recursion", "log-order growth"],
+    "prerequisites": ["the parent excludedCount recursion", "asymptotic order Θ(log N)"]
   },
   {
-    "id": "ann-sustainability",
+    "id": "ann-lfs-perstep-law",
     "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
-    "range": {
-      "startLine": 109,
-      "endLine": 125
-    },
+    "range": { "startLine": 50, "endLine": 68 },
+    "type": "concept",
+    "title": "The Per-Step Residue Law as a Reusable Lemma",
+    "content": "delta is defined as a genuine function of the residue, delta r = ⌊(r+3)/4⌋ − r, taking the eight values 0,0,−1,−2,−3,−3,−4,−5 over r = 0..7. error_step then proves the per-step law E(N) = E(⌈N/4⌉) + delta (N mod 8) for every N: it rewrites the imported excludedCount_rec, push_casts to ℤ, and closes the residual division/remainder identity by omega, which natively understands N/8, the ceiling ⌈N/4⌉ = (N+3)/4, and N mod 8. The parent did this telescoping inline for one family; here it is a standalone tool decoupled from any particular N.",
+    "mathContext": "$\\delta(r) = \\lfloor (r+3)/4\\rfloor - r$, and $E(N) = E(\\lceil N/4\\rceil) + \\delta(N \\bmod 8)$ for all $N$.",
+    "significance": "key",
+    "relatedConcepts": ["telescoping recursion", "residue function", "omega tactic", "floor division", "push_cast"],
+    "prerequisites": ["the excludedCount_rec recursion", "integer/Nat casting in Lean"]
+  },
+  {
+    "id": "ann-lfs-residue-dictionary",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 90 },
+    "type": "technique",
+    "title": "Per-Step Bounds and the Residue Dictionary",
+    "content": "Five short omega-closed lemmas pin down every possible step value. delta_nonpos and neg_five_le_delta bracket every increment: −5 ≤ delta (N%8) ≤ 0, so the error only ever decreases and never by more than 5 in one step. The exact characterisations then form a residue dictionary: delta = 0 ⟺ N%8 ∈ {0,1} (free steps), delta = −4 ⟺ N%8 = 6, delta = −5 ⟺ N%8 = 7. Each is `simp only [delta]; omega` — once delta is unfolded to ⌊(r+3)/4⌋ − r, omega decides the finite residue arithmetic outright.",
+    "mathContext": "$-5 \\le \\delta(N\\bmod 8) \\le 0$; $\\delta = 0 \\iff N\\bmod 8\\in\\{0,1\\}$, $\\delta = -4 \\iff N\\bmod 8 = 6$, $\\delta = -5 \\iff N\\bmod 8 = 7$.",
+    "significance": "supporting",
+    "relatedConcepts": ["residue classes mod 8", "omega decision procedure", "one-sided error bound"],
+    "prerequisites": ["modular arithmetic mod 8", "omega on linear integer arithmetic"]
+  },
+  {
+    "id": "ann-lfs-sustainability",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": { "startLine": 92, "endLine": 105 },
     "type": "insight",
     "title": "Why δ = −5 Cannot Sustain (Residue 7 → Even Quotient)",
-    "content": "The maximal step cost 5 occurs only at residue 7 (delta_eq_neg_five_iff). quot_even_of_mod_seven shows that N ≡ 7 (mod 8) forces ⌈N/4⌉ = (N+3)/4 to be even (N = 8q+7 gives ⌈N/4⌉ = 2q+2), so the next term is not ≡ 7 (mod 8) and the next step costs at most 4. Thus a −5 step is structurally isolated. By contrast mod6_chains shows residue 6 (cost 4) chains to itself, which is exactly the mechanism of the parent's all-(−4) extremal family. The sustainable extremal RATE is therefore 4, not 5 — even though larger single steps exist.",
-    "mathContext": "The residue-7/residue-6 contrast pins the structure of the worst case behind the Θ(log N) order."
+    "content": "The maximal step cost 5 occurs only at residue 7 (delta_eq_neg_five_iff). quot_even_of_mod_seven shows that N ≡ 7 (mod 8) forces ⌈N/4⌉ = (N+3)/4 to be even (N = 8q+7 gives ⌈N/4⌉ = 2q+2), so the next term is not ≡ 7 (mod 8) and the next step costs at most 4. Thus a −5 step is structurally isolated — it can never be immediately followed by another −5. By contrast mod6_chains shows residue 6 (cost 4), when N/8 ≡ 2 (mod 4), maps to another residue-6 term, so the cost-4 step repeats indefinitely. This is exactly the mechanism of the parent's all-(−4) extremal family: the sustainable extremal RATE is 4, not 5, even though larger single steps exist.",
+    "mathContext": "$N\\equiv 7\\!\\pmod 8 \\Rightarrow \\lceil N/4\\rceil$ even $\\Rightarrow$ not $\\equiv 7$; whereas $N\\equiv 6\\!\\pmod 8$ chains to $\\lceil N/4\\rceil \\equiv 6$. Extremal rate $= 4$.",
+    "significance": "key",
+    "relatedConcepts": ["extremal family", "sustainable rate", "residue chaining", "worst-case analysis"],
+    "prerequisites": ["modular descent", "ceiling division parity"]
+  },
+  {
+    "id": "ann-lfs-gap-descent",
+    "proofId": "lagrange-four-squares-waring-g2-oq-03-oq-05-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 134 },
+    "type": "technique",
+    "title": "The Per-Step Descent Inequality Behind Θ(log N)",
+    "content": "The nonnegative gap gap N = N − 6·excludedCount N is the sign-flipped error. gap_step restates the per-step law as gap N = gap ⌈N/4⌉ − delta (N%8) (a linarith from error_step), and gap_step_le weakens it to gap N ≤ gap ⌈N/4⌉ + 5 using neg_five_le_delta. gap_nonneg_and_step finally pairs this with nonnegativity gap N ≥ 0 (from the parent's six_excludedCount_le, cast to ℤ): the gap is nonnegative and grows by at most 5 per ⌈·/4⌉ step. Since N reaches 0 in O(log N) descent steps, this is the structural content of the one-sided O(log N) bound on the density error.",
+    "mathContext": "$0 \\le \\mathrm{gap}(N) \\le \\mathrm{gap}(\\lceil N/4\\rceil) + 5$, with $\\sim\\log_4 N$ steps, giving the one-sided $O(\\log N)$ bound.",
+    "significance": "key",
+    "relatedConcepts": ["descent inequality", "logarithmic bound", "six_excludedCount_le", "linarith", "gap function"],
+    "prerequisites": ["telescoping inequalities", "logarithmic depth of ⌈·/4⌉ descent"]
   }
 ]
