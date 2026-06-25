@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-dirichlet-oq04-header",
+    "proofId": "dirichlet-approximation-theorem-oq-04",
+    "range": {
+      "startLine": 1,
+      "endLine": 39
+    },
+    "type": "context",
+    "title": "Kronecker Density as the Topological Seed of the Family",
+    "content": "The docstring positions this entry within the dirichlet-approximation family. The parent and siblings study the EXISTENCE and COUNTING of good rational approximations (oq-01 counts ~1/q², oq-03 uses Minkowski's geometry of numbers, oq-05 proves sharpness for the golden ratio). This file proves the underlying TOPOLOGICAL fact: the orbit {n·a} is dense mod 1 exactly when a is irrational (equivalently, the irrational rotation x ↦ x + a is minimal). From density at 0 it derives the homogeneous one-sided Dirichlet bound. The proof reduces everything to Mathlib's AddCircle API — no new axioms — and the key device is feeding density a PUNCTURED ball so the extracted witness multiplier is genuinely nonzero.",
+    "mathContext": "Irrational rotation minimal $\\iff a \\notin \\mathbb{Q}$; the circle norm $\\|(x:\\mathbb{R}/\\mathbb{Z})\\| = |x - \\operatorname{round} x|$ turns a metric statement into a Diophantine one.",
+    "prerequisites": [
+      "The circle ℝ/ℤ = AddCircle 1 and irrational rotations",
+      "Density of orbits in a compact topological group"
+    ],
+    "relatedConcepts": [
+      "Kronecker's theorem",
+      "equidistribution",
+      "topological dynamics",
+      "minimal systems"
+    ],
+    "significance": "Frames the qualitative orbit-density statement as the precursor that every other dirichlet-approximation entry quantifies, and previews the punctured-ball technique that makes the corollary's witness nonzero."
+  },
+  {
     "id": "ann-kronecker-density",
     "proofId": "dirichlet-approximation-theorem-oq-04",
     "range": {
