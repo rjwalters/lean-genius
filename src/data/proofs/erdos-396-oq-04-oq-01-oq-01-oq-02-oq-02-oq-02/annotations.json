@@ -1,39 +1,108 @@
 [
   {
+    "id": "ann-e396oq04oq01oq01oq02oq02oq02-rec",
+    "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
+    "range": { "startLine": 60, "endLine": 73 },
+    "type": "definition",
+    "title": "The central-binomial recurrence over ℝ (cb_rec)",
+    "content": "Everything is driven by one identity. Mathlib's $\\texttt{Nat.succ\\_mul\\_centralBinom\\_succ}$ states the two-term recurrence $(n+1)\\,C(2(n+1),n+1) = 2(2n+1)\\,C(2n,n)$ in $\\mathbb{N}$; $\\texttt{cb\\_rec}$ casts it once to $\\mathbb{R}$ (via $\\texttt{congrArg (Nat.cast)}$, $\\texttt{push\\_cast}$, $\\texttt{linarith}$) so all later inductions are pure real-arithmetic polynomial identities. Read multiplicatively, the step has limiting rate $4$ (since $2(2n+1)/(n+1)\\to 4$), and the whole entry is a careful accounting of its $O(1/n)$ deficit — exactly the deficit whose harmonic sum the parent exponentiated to get the $1/2$ critical exponent.",
+    "mathContext": "$(n+1)\\,C(2(n+1),n+1) = 2(2n+1)\\,C(2n,n)$.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Mathlib's Nat.succ_mul_centralBinom_succ",
+      "Casting ℕ identities to ℝ (congrArg, push_cast)",
+      "The central binomial coefficient C(2n,n) = centralBinom n"
+    ],
+    "relatedConcepts": [
+      "central binomial coefficient",
+      "two-term recurrence",
+      "limiting growth rate",
+      "deficit accounting"
+    ]
+  },
+  {
     "id": "ann-e396oq04oq01oq01oq02oq02oq02-recsq",
     "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
     "range": { "startLine": 77, "endLine": 84 },
-    "type": "key-step",
-    "title": "Squaring the recurrence",
-    "content": "Mathlib's $\\texttt{Nat.succ\\_mul\\_centralBinom\\_succ}$ gives $(n+1)\\,C(2(n+1),n+1) = 2(2n+1)\\,C(2n,n)$ over $\\mathbb{R}$ (lemma $\\texttt{cb\\_rec}$). Squaring both sides removes the linear factors into squares: $(n+1)^2\\,C(2(n+1),n+1)^2 = 4(2n+1)^2\\,C(2n,n)^2$. This single squared identity, proved with one $\\texttt{linear\\_combination}$, drives every induction below — the square is what lets a $\\sqrt n$ asymptotic become an integer relation.",
-    "mathContext": "$(n+1)^2\\,C(2(n+1),n+1)^2 = 4(2n+1)^2\\,C(2n,n)^2$."
+    "type": "technique",
+    "title": "Squaring the recurrence (cb_rec_sq)",
+    "content": "Squaring $\\texttt{cb\\_rec}$ removes the linear factors into squares: $(n+1)^2\\,C(2(n+1),n+1)^2 = 4(2n+1)^2\\,C(2n,n)^2$, proved with one $\\texttt{linear\\_combination}$. This single squared identity drives every induction below — the square is what lets a $\\sqrt n$ asymptotic (an irrational growth $4^n/\\sqrt{\\pi n}$) be captured by an exact integer relation, since $C(2n,n)^2$ and the integer coefficients live in $\\mathbb{Z}$ while $C(2n,n)/4^n$ does not. Working with squares throughout postpones every square root to the very last step.",
+    "mathContext": "$(n+1)^2\\,C(2(n+1),n+1)^2 = 4(2n+1)^2\\,C(2n,n)^2$.",
+    "significance": "key",
+    "prerequisites": [
+      "The base recurrence cb_rec",
+      "linear_combination for polynomial identities over ℝ",
+      "Squaring to clear linear factors"
+    ],
+    "relatedConcepts": [
+      "squared recurrence",
+      "integer-valued invariants",
+      "rationality of squared bounds",
+      "avoiding square roots"
+    ]
   },
   {
     "id": "ann-e396oq04oq01oq01oq02oq02oq02-upper",
     "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
     "range": { "startLine": 90, "endLine": 117 },
-    "type": "key-step",
+    "type": "technique",
     "title": "Upper squared bound (3n+1)·C(2n,n)² ≤ 16ⁿ",
-    "content": "Induction on $n$. The step pre-multiplies the squared recurrence by the linear factor $3n+4$, after which $\\texttt{nlinarith}$ need only verify the polynomial nonnegativity $16(3n+1)(n+1)^2 - 4(3n+4)(2n+1)^2 = 4n \\ge 0$. The base case is the equality $1\\cdot 1 = 1$. This is the squared form of the parent's $1/2$-deficit; the deficit appears here as the integer $4n$.",
-    "mathContext": "$(3n+1)\\,C(2n,n)^2 \\le 16^n$, equivalently $C(2n,n)/4^n \\le 1/\\sqrt{3n+1}$."
+    "content": "Induction on $n$. The step pre-multiplies the squared recurrence by the linear factor $3n+4$, after which $\\texttt{nlinarith}$ need only verify the polynomial nonnegativity $16(3n+1)(n+1)^2 - 4(3n+4)(2n+1)^2 = 4n \\ge 0$. The base case is the equality $1\\cdot 1 = 1$. This is the squared form of the parent's $1/2$-deficit; the deficit appears here as the integer $4n$. Choosing the multiplier $3n+4$ (the next value of the $3n+1$ coefficient) is what makes the cross-term telescope cleanly.",
+    "mathContext": "$(3n+1)\\,C(2n,n)^2 \\le 16^n$, equivalently $C(2n,n)/4^n \\le 1/\\sqrt{3n+1}$.",
+    "significance": "key",
+    "prerequisites": [
+      "The squared recurrence cb_rec_sq",
+      "Induction on ℕ and nlinarith for polynomial nonnegativity",
+      "The factor-matching multiplier 3n+4"
+    ],
+    "relatedConcepts": [
+      "induction with a multiplier",
+      "polynomial certificate",
+      "upper bound on C(2n,n)",
+      "deficit as 4n"
+    ]
   },
   {
     "id": "ann-e396oq04oq01oq01oq02oq02oq02-lower",
     "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
     "range": { "startLine": 119, "endLine": 149 },
-    "type": "key-step",
+    "type": "technique",
     "title": "Lower squared bound 16ⁿ ≤ 4n·C(2n,n)²",
-    "content": "$\\texttt{Nat.le\\_induction}$ from base $n=1$ (where $C(2,1)=2$ gives $16 \\le 16$). The step pre-multiplies the squared recurrence by $4(n+1)$, reducing the goal to the polynomial nonnegativity $(2n+1)^2 - 4n(n+1) = 1 \\ge 0$. The bound genuinely fails at $n=0$ (right side $0$), so the hypothesis $n \\ge 1$ is essential.",
-    "mathContext": "$16^n \\le 4n\\,C(2n,n)^2$, equivalently $C(2n,n)/4^n \\ge 1/(2\\sqrt n)$."
+    "content": "$\\texttt{Nat.le\\_induction}$ from base $n=1$ (where $C(2,1)=2$ gives $16 \\le 16$). The step pre-multiplies the squared recurrence by $4(n+1)$, reducing the goal to the polynomial nonnegativity $(2n+1)^2 - 4n(n+1) = 1 \\ge 0$. The residual is the constant $1$ — the lower bound is tight to within a bounded factor, in contrast to the upper bound's linearly growing $4n$ slack. The bound genuinely fails at $n=0$ (right side $0$), so the hypothesis $n \\ge 1$ is essential and $\\texttt{Nat.le\\_induction}$ (which starts at the base) is the right induction principle.",
+    "mathContext": "$16^n \\le 4n\\,C(2n,n)^2$, equivalently $C(2n,n)/4^n \\ge 1/(2\\sqrt n)$.",
+    "significance": "key",
+    "prerequisites": [
+      "The squared recurrence cb_rec_sq",
+      "Nat.le_induction from a nonzero base case",
+      "nlinarith with the multiplier 4(n+1)"
+    ],
+    "relatedConcepts": [
+      "lower bound on C(2n,n)",
+      "tightness of a bound",
+      "base-case sensitivity",
+      "induction from n ≥ 1"
+    ]
   },
   {
     "id": "ann-e396oq04oq01oq01oq02oq02oq02-bracket",
     "proofId": "erdos-396-oq-04-oq-01-oq-01-oq-02-oq-02-oq-02",
     "range": { "startLine": 159, "endLine": 215 },
-    "type": "key-step",
+    "type": "concept",
     "title": "Taking square roots: the explicit constants 1/2 and 1/√3",
-    "content": "Each squared bound becomes a bound on $C(2n,n)$ by comparing squares of nonnegative reals: from $16^n = (4^n)^2$ and the integer bounds, $\\tfrac12\\,4^n/\\sqrt n \\le C(2n,n) \\le \\tfrac{1}{\\sqrt3}\\,4^n/\\sqrt n$. The upper constant uses $\\sqrt{3n+1} \\ge \\sqrt 3\\,\\sqrt n$. These are the explicit constants $c_1 = 1/2$, $c_2 = 1/\\sqrt3$ requested by the parent's open question — produced directly from the recurrence, with no Stirling.",
-    "mathContext": "$\\dfrac{1}{2}\\cdot\\dfrac{4^n}{\\sqrt n} \\le C(2n,n) \\le \\dfrac{1}{\\sqrt 3}\\cdot\\dfrac{4^n}{\\sqrt n}$."
+    "content": "Each squared bound becomes a bound on $C(2n,n)$ by comparing squares of nonnegative reals: from $16^n = (4^n)^2$ ($\\texttt{pow16\\_eq}$) and the integer bounds, $\\tfrac12\\,4^n/\\sqrt n \\le C(2n,n) \\le \\tfrac{1}{\\sqrt3}\\,4^n/\\sqrt n$ ($\\texttt{centralBinom\\_lower\\_const}$, $\\texttt{centralBinom\\_upper\\_const}$, assembled in $\\texttt{centralBinom\\_bracket}$). The upper constant uses $\\sqrt{3n+1} \\ge \\sqrt 3\\,\\sqrt n$; positivity $\\texttt{cb\\_pos}$ guarantees the square-root comparison is valid. These are the explicit constants $c_1 = 1/2$, $c_2 = 1/\\sqrt3$ requested by the parent's open question — produced directly from the recurrence, with no Stirling formula.",
+    "mathContext": "$\\dfrac{1}{2}\\cdot\\dfrac{4^n}{\\sqrt n} \\le C(2n,n) \\le \\dfrac{1}{\\sqrt 3}\\cdot\\dfrac{4^n}{\\sqrt n}$.",
+    "significance": "key",
+    "prerequisites": [
+      "Both squared integer bounds (upper and lower)",
+      "Square-root monotonicity and comparison of nonnegative reals",
+      "Positivity cb_pos and pow16_eq (16^n = (4^n)^2)"
+    ],
+    "relatedConcepts": [
+      "explicit asymptotic constants",
+      "Stirling-free estimate",
+      "two-sided bracket",
+      "square-root extraction"
+    ]
   },
   {
     "id": "ann-e396oq04oq01oq01oq02oq02oq02-wallis",
@@ -41,7 +110,20 @@
     "range": { "startLine": 221, "endLine": 249 },
     "type": "insight",
     "title": "The Wallis constant 1/√π is bracketed — and that is just 3 < π < 4",
-    "content": "The genuine asymptotic constant of $C(2n,n) \\sim 4^n/\\sqrt{\\pi n}$ is $1/\\sqrt\\pi \\approx 0.564$. It lies strictly inside the elementary bracket: $\\tfrac12 < 1/\\sqrt\\pi < 1/\\sqrt3$. By monotonicity of $\\sqrt{\\cdot}$ this is exactly $3 < \\pi < 4$, supplied by $\\texttt{Real.pi\\_gt\\_three}$ and $\\texttt{Real.pi\\_lt\\_four}$. So the recurrence pins the constant to $(1/2, 1/\\sqrt3) \\approx (0.500, 0.577)$, and identifying it as precisely $1/\\sqrt\\pi$ is the single step that requires an analytic (Wallis/Stirling) input — the dichotomy the parent's open question anticipated.",
-    "mathContext": "$\\tfrac12 < \\tfrac{1}{\\sqrt\\pi} < \\tfrac{1}{\\sqrt3} \\iff 3 < \\pi < 4$."
+    "content": "The genuine asymptotic constant of $C(2n,n) \\sim 4^n/\\sqrt{\\pi n}$ is $1/\\sqrt\\pi \\approx 0.564$. It lies strictly inside the elementary bracket: $\\tfrac12 < 1/\\sqrt\\pi < 1/\\sqrt3$. By monotonicity of $\\sqrt{\\cdot}$ this is exactly $3 < \\pi < 4$, supplied by $\\texttt{Real.pi\\_gt\\_three}$ and $\\texttt{Real.pi\\_lt\\_four}$. So the recurrence pins the constant to $(1/2, 1/\\sqrt3) \\approx (0.500, 0.577)$, and identifying it as precisely $1/\\sqrt\\pi$ is the single step that requires an analytic (Wallis/Stirling) input — the dichotomy the parent's open question anticipated: elementary methods bracket the constant, but only analysis names it.",
+    "mathContext": "$\\tfrac12 < \\tfrac{1}{\\sqrt\\pi} < \\tfrac{1}{\\sqrt3} \\iff 3 < \\pi < 4$.",
+    "significance": "key",
+    "prerequisites": [
+      "The explicit bracket constants 1/2 and 1/√3",
+      "Real.pi_gt_three and Real.pi_lt_four",
+      "The Wallis asymptotic C(2n,n) ~ 4^n/√(πn)"
+    ],
+    "relatedConcepts": [
+      "Wallis product",
+      "Stirling's approximation",
+      "asymptotic constant 1/√π",
+      "elementary vs analytic methods",
+      "bounds on π"
+    ]
   }
 ]
