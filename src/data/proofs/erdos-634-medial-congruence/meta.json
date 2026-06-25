@@ -68,7 +68,8 @@
       "The four medial pieces are congruent via genuinely elementary isometries: three are translations and only one (the central piece) requires a non-translation — a 180° rotation realized as a point reflection.",
       "No inner-product or Euclidean-specific machinery is needed: translations and point reflections are isometries in ANY normed space, so the congruence holds in arbitrary real normed spaces and specialises to the plane.",
       "Side lengths halve exactly (midpoint_vsub_midpoint_same_left gives the shared-vertex midpoint difference (1/2)(b-c)), so the subdivision is the k = 2 square reptiling: 4 = 2^2 congruent half-copies.",
-      "The `module` tactic cleanly discharges every vertex-image identity once midpoints are written in smul form, keeping the geometric proof short and robust."
+      "The `module` tactic cleanly discharges every vertex-image identity once midpoints are written in smul form, keeping the geometric proof short and robust.",
+      "Defining congruence as an *equivalence relation* pays off combinatorially: only three congruences to the reference piece T1 need explicit isometries, and transitivity then delivers all six pairwise congruences for free."
     ],
     "prerequisites": [
       "Isometries of normed spaces (translations, negation, point reflections)",
@@ -104,6 +105,27 @@
       "startLine": 176,
       "endLine": 194,
       "summary": "medial_sides_halved: each medial triangle's side lengths are exactly half those of A B C, exhibiting the 4 = 2^2 square reptiling base case."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully machine-checked, axiom-free formalization (0 sorries; only propext/Classical.choice/Quot.sound) over an arbitrary real normed space that the medial subdivision of any triangle ABC into four pieces — three corner triangles and one central triangle — yields four mutually congruent triangles, each a half-scale copy of ABC. Congruence is the genuine isometry notion (an equivalence relation that preserves side lengths), witnessed by explicit isometries: three translations and one point reflection (a 180° rotation). The side-length computation exhibits the construction as the k = 2 base case of the k² square reptiling.",
+    "implications": "This is the geometric heart of the 'always achievable' tiling counts N = k² in Erdős #634: iterating the medial subdivision (or its k-fold generalization) realizes any perfect-square number of congruent sub-triangles. Because the argument uses only translations and point reflections — isometries available in any normed space — it is coordinate-free and avoids inner-product machinery, making it a reusable building block for further reptiling formalizations. The equivalence-relation packaging of congruence is what reduces the six pairwise congruences to three explicit isometries.",
+    "openQuestions": [
+      "Generalize from k = 2 to arbitrary k: subdividing each side into k equal parts produces k² congruent 1/k-scale copies. Formalizing this for all k would give the full square reptiling underlying #634.",
+      "Add the covering and interior-disjointness (measure/area) conditions to upgrade the congruence statement to a genuine tiling, completing the dissection claim rather than only the congruence of pieces.",
+      "Characterize, as Erdős #634 asks, exactly which counts N are achievable for tilings of a triangle T by congruent copies of a triangle R, beyond the square values N = k² supplied by reptiling."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "erdos-634",
+      "relationship": "relatedTo",
+      "description": "Companion entry modeling Erdős #634 dissection in an abstract side-length framework with an area-only Dissection condition. This geometric entry is independent and supplies genuine isometry-congruence of the medial pieces."
+    },
+    {
+      "targetId": "erdos-633",
+      "relationship": "relatedTo",
+      "description": "Closely related Erdős problem #633 on triangles admitting non-square tilings (into a non-square number of congruent triangles); the square reptiling formalized here is the complementary 'always achievable' N = k² construction."
     }
   ]
 }
