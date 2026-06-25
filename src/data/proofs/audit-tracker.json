@@ -23523,6 +23523,20 @@
       "lastAudited": "2026-06-25T08:00:00Z",
       "result": "clean",
       "notes": "verified/mathlib/0-axiom/0-sorry all accurate. 9 theorems + 0 defs, 124 lines, 0 sorry/admit/axiom/native_decide/True-stub. Squarefree-order classification assembled from Mathlib IsZGroup theory (of_squarefree, isZGroup_iff_exists_mulEquiv, Schur-Zassenhaus). Badge=mathlib CORRECT; docstring has explicit Honest scope section + overview discloses routing through Mathlib Z-group theory. Counts match meta; deeper iso-class-count remains open (disclosed)."
+    },
+    "hilbert-9-reciprocity-oq-04": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:05:00Z",
+      "result": "clean",
+      "notes": "Constant reciprocity slice (a/P)=chi_q(a)^deg P; verified/original/0-ax/0-sorry, 5 theorems match meta. Mathlib Euler-criterion reliance disclosed in overview+assumptions; original assembly of constant-reciprocity statement. CLEAN."
+    },
+    "ptolemys-theorem-oq-01-oq-01-oq-03-oq-01": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:05:00Z",
+      "result": "clean",
+      "notes": "Inversion carries circle-through-centre to a line (cospherical iff images on hyperplane); verified/original/0-ax/0-sorry, 5 theorems match meta. Original. CLEAN."
     }
   },
   "version": 1,
