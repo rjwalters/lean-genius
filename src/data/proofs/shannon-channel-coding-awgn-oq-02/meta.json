@@ -1,177 +1,171 @@
 {
-    "id": "shannon-channel-coding-awgn-oq-02",
-    "title": "AWGN Output Power E[Y²] = P + N from Variance of a Sum",
-    "slug": "shannon-channel-coding-awgn-oq-02",
-    "description": "Discharges the output-power relation E[Y²] = P + N for the additive white Gaussian noise channel Y = X + Z, the relation that appears only as the bare converse hypothesis (hvar) in the parent AWGN capacity proof ShannonChannelCodingAWGN. The random variables X (signal, power P = E[X²]) and Z (noise, power N = E[Z²]) live on an arbitrary probability space and are assumed only square-integrable (MemLp · 2), independent, and centered (E[X] = E[Z] = 0). From Mathlib's variance/independence API the second moment of the sum splits, E[(X+Z)²] = E[X²] + E[Z²] = P + N, because independence forces the cross moment E[X·Z] = E[X]·E[Z] = 0. Answers open question OQ02 of the parent entry — deriving the variance-of-a-sum relation rather than assuming it — verified and axiom-free.",
-    "meta": {
-        "author": "Claude Shannon (1948), formalized in Lean 4",
-        "sourceUrl": "https://en.wikipedia.org/wiki/Shannon%E2%80%93Hartley_theorem",
-        "date": "1948",
-        "status": "verified",
-        "proofRepoPath": "Proofs/ShannonChannelCodingAWGNOQ02.lean",
-        "tags": [
-            "information-theory",
-            "probability",
-            "measure-theory",
-            "variance",
-            "independence",
-            "channel-capacity",
-            "awgn",
-            "advanced"
-        ],
-        "badge": "original",
-        "sorries": 0,
-        "mathlibDependencies": [
-            {
-                "theorem": "ProbabilityTheory.IndepFun.variance_add",
-                "description": "Var[X + Z] = Var[X] + Var[Z] for independent square-integrable X, Z — the variance-of-a-sum law that supplies second-moment additivity once the means are subtracted",
-                "module": "Mathlib.Probability.Moments.Variance"
-            },
-            {
-                "theorem": "ProbabilityTheory.variance_eq_sub",
-                "description": "Var[X] = E[X²] - E[X]² for a square-integrable X under a probability measure — converts between the variance API and the second moment E[X²] used as the channel power",
-                "module": "Mathlib.Probability.Moments.Variance"
-            },
-            {
-                "theorem": "ProbabilityTheory.IndepFun.integral_mul_eq_mul_integral",
-                "description": "E[X·Z] = E[X]·E[Z] for independent integrable X, Z — kills the cross moment so the second moment of the sum splits",
-                "module": "Mathlib.Probability.Independence.Integration"
-            },
-            {
-                "theorem": "MeasureTheory.MemLp.integrable",
-                "description": "MemLp X 2 μ ⟹ Integrable X μ (under a finite measure, via 1 ≤ 2), used to add the means of X and Z",
-                "module": "Mathlib.MeasureTheory.Function.LpSpace.Basic"
-            }
-        ],
-        "originalContributions": [
-            "awgn_output_power: the headline identity E[(X+Z)²] = P + N with P = E[X²] the signal power and N = E[Z²] the noise power, derived from independence and zero mean — exactly the quantity assumed as the converse hypothesis hvar in the parent ShannonChannelCodingAWGN",
-            "awgn_second_moment_sum: second-moment additivity E[(X+Z)²] = E[X²] + E[Z²] for independent, centered, square-integrable inputs, obtained from the variance-of-a-sum law by subtracting the (vanishing) means",
-            "indep_cross_moment_zero: the cross moment E[X·Z] = E[X]·E[Z] = 0 — the single point where independence enters — stated without the probability-measure assumption (omit)",
-            "secondMoment_eq_variance_of_mean_zero: the bridge E[X²] = Var[X] for a centered variable, connecting the channel 'power' to Mathlib's variance",
-            "awgn_output_variance: the same output power read in variance form, Var[X+Z] = P + N"
-        ],
-        "assumptions": "0 axioms, 0 sorries (only the standard foundational axioms propext, Classical.choice, Quot.sound; no sorryAx, no Lean.ofReduceBool). The result is fully general: X and Z are arbitrary square-integrable (MemLp · 2), independent, centered real random variables on any probability space — no Gaussian assumption is used, the identity is purely the variance of a sum of independent variables. 'Power' means second moment: P = E[X²], N = E[Z²]; under the zero-mean hypothesis these coincide with the variances. This entry derives the relation E[Y²] = P + N that the parent AWGN capacity proof takes as the bare hypothesis hvar, answering its open question OQ02.",
-        "dateAdded": "2026-06-25",
-        "axiomCount": 0,
-        "lineCount": 109,
-        "prerequisites": [
-            "Variance of a real random variable and its additivity for independent variables (Mathlib.Probability.Moments.Variance)",
-            "Independence of random variables and the product rule E[XZ] = E[X]E[Z] (Mathlib.Probability.Independence.Integration)",
-            "Lp spaces and MemLp/Integrable for the Bochner integral (Mathlib.MeasureTheory)",
-            "The parent AWGN capacity entry, whose converse hypothesis hvar this discharges (ShannonChannelCodingAWGN.lean)"
-        ],
-        "mathlib_version": "4.26.0",
-        "theoremCount": 5,
-        "definitionCount": 0
-    },
-    "overview": {
-        "historicalContext": "The AWGN channel Y = X + Z is the central continuous model of physical communication. Its capacity C = ½ log(1 + P/N) is proved in the parent entry as an entropy difference, and the converse there bounds any output density of variance ≤ P + N. The number P + N is the output power: the second moment E[Y²] of the channel output. For an input of power P and independent noise of power N this equals P + N exactly — the elementary but foundational variance-of-a-sum fact E[(X+Z)²] = E[X²] + 2E[XZ] + E[Z²] with the cross term annihilated by independence. The parent proof simply assumes this as the hypothesis hvar; this entry derives it from Mathlib's probability API so the output-power relation is no longer taken on faith.",
-        "problemStatement": "**Output power of the additive channel.** Let $X, Z$ be independent, square-integrable, centered real random variables on a probability space, with signal power $P = \\mathbb{E}[X^2]$ and noise power $N = \\mathbb{E}[Z^2]$. For the channel output $Y = X + Z$,\n$$\\mathbb{E}[Y^2] = P + N.$$\nEquivalently $\\operatorname{Var}[X + Z] = \\operatorname{Var}[X] + \\operatorname{Var}[Z] = P + N$, since the means vanish.",
-        "text": "Derives E[Y²] = P + N for Y = X + Z with independent, centered, square-integrable X, Z, from Mathlib's variance/independence API — discharging the bare converse hypothesis of the parent AWGN capacity proof.",
-        "proofStrategy": "The identity is the variance of a sum, assembled in four short steps:\n\n1. **Cross moment vanishes** (indep_cross_moment_zero): by IndepFun.integral_mul_eq_mul_integral, E[X·Z] = E[X]·E[Z], and the zero-mean hypotheses make this 0. This is the only use of independence.\n\n2. **Second moment = variance for centered variables** (secondMoment_eq_variance_of_mean_zero): variance_eq_sub gives Var[X] = E[X²] - E[X]², so with E[X] = 0 the power E[X²] equals Var[X].\n\n3. **Variance is additive** (awgn_second_moment_sum): IndepFun.variance_add gives Var[X+Z] = Var[X] + Var[Z]. Rewriting all three variances via variance_eq_sub and using that the means of X, Z, and X+Z all vanish collapses every mean-square term, yielding E[(X+Z)²] = E[X²] + E[Z²].\n\n4. **Name the powers** (awgn_output_power): substitute P = E[X²], N = E[Z²] to read off E[(X+Z)²] = P + N. The variance-form restatement (awgn_output_variance) follows from step 2 applied to X + Z.",
-        "keyInsights": [
-            "The output-power relation is not special to Gaussians: it holds for ANY independent, centered, square-integrable signal and noise — it is purely the variance of a sum of independent variables.",
-            "Independence enters at exactly one point: it forces the cross moment E[X·Z] = E[X]·E[Z], which the zero-mean hypothesis then sends to 0. Everything else is linearity of the integral.",
-            "'Power' in the channel sense is the second moment E[X²]; under zero mean it coincides with the variance, which is why Mathlib's variance API (built for Var, i.e. centered second moment) applies directly.",
-            "Subtracting the means is the bookkeeping that turns Mathlib's Var[X+Z] = Var[X] + Var[Z] into the second-moment statement E[(X+Z)²] = E[X²] + E[Z²]; since all three means vanish, the E[·]² corrections are all zero.",
-            "The cross-moment lemma needs no probability-measure assumption (it is about integrals of a product), so it is stated with that instance omitted — a small but honest scoping of hypotheses."
-        ]
-    },
-    "sections": [
-        {
-            "id": "second-moment-variance-bridge",
-            "title": "Second Moment = Variance for Centered Variables",
-            "startLine": 41,
-            "endLine": 49,
-            "description": "secondMoment_eq_variance_of_mean_zero: for a square-integrable X with E[X] = 0, the second moment E[X²] equals the variance Var[X], via variance_eq_sub. This is the bridge between the channel 'power' E[X²] and Mathlib's variance API.",
-            "summary": "E[X²] = Var[X] when E[X] = 0."
-        },
-        {
-            "id": "cross-moment-zero",
-            "title": "Independence Kills the Cross Moment",
-            "startLine": 50,
-            "endLine": 59,
-            "description": "indep_cross_moment_zero: for independent, centered, square-integrable X and Z, E[X·Z] = E[X]·E[Z] = 0 via IndepFun.integral_mul_eq_mul_integral. The probability-measure instance is omitted since the statement is purely about an integral of a product.",
-            "summary": "E[X·Z] = E[X]·E[Z] = 0 — the only place independence is used."
-        },
-        {
-            "id": "second-moment-additivity",
-            "title": "Second-Moment Additivity",
-            "startLine": 60,
-            "endLine": 81,
-            "description": "awgn_second_moment_sum: E[(X+Z)²] = E[X²] + E[Z²] for independent, centered, square-integrable inputs. Obtained from IndepFun.variance_add (Var[X+Z] = Var[X] + Var[Z]) by rewriting each variance via variance_eq_sub and collapsing every mean term — the means of X, Z, and X+Z all vanish.",
-            "summary": "E[(X+Z)²] = E[X²] + E[Z²] — variance of a sum, in second-moment form."
-        },
-        {
-            "id": "output-power",
-            "title": "AWGN Output Power E[Y²] = P + N",
-            "startLine": 82,
-            "endLine": 92,
-            "description": "awgn_output_power: substituting the signal power P = E[X²] and noise power N = E[Z²] gives E[(X+Z)²] = P + N — the headline identity that discharges the bare hypothesis hvar of the parent converse ShannonAWGN.awgn_capacity_upper_bound.",
-            "summary": "E[Y²] = P + N for Y = X + Z — the output-power relation, derived not assumed."
-        },
-        {
-            "id": "output-power-variance",
-            "title": "Output Power in Variance Form",
-            "startLine": 93,
-            "endLine": 109,
-            "description": "awgn_output_variance: the same output power read through Mathlib's variance, Var[X+Z] = P + N, using the centered second-moment bridge applied to X + Z.",
-            "summary": "Var[X+Z] = P + N — the variance-form restatement."
-        }
+  "id": "shannon-channel-coding-awgn-oq-02",
+  "slug": "shannon-channel-coding-awgn-oq-02",
+  "title": "AWGN Output Power E[Y²] = P + N from the Variance-of-a-Sum (Discharging the Converse Hypothesis)",
+  "description": "Discharges the input/output power relation E[Y²] = P + N that the parent AWGN capacity proof took as the converse hypothesis `hvar`. For an additive channel Y = X + Z with independent, zero-mean, square-integrable input X (power P = E[X²]) and noise Z (power N = E[Z²]), the output second moment adds: E[(X+Z)²] = E[X²] + E[Z²] = P + N. The proof is the variance-of-a-sum fact (ProbabilityTheory.IndepFun.variance_add, where independence kills the covariance) specialized to zero mean via E[W²] = Var[W] (ProbabilityTheory.variance_eq_sub). 96 lines, 4 theorems, 0 axioms, 0 sorries.",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
     ],
-    "crossReferences": [
-        {
-            "targetId": "shannon-channel-coding-awgn",
-            "relationship": "extends",
-            "description": "Discharges the converse hypothesis hvar (E[Y²] ≤ P + N) of the parent AWGN capacity proof by deriving the exact output-power relation E[Y²] = P + N from independence and zero mean — answering the parent's open question OQ02."
-        },
-        {
-            "targetId": "shannon-entropy-oq-01",
-            "relationship": "related",
-            "description": "Supplies the probabilistic companion to the parent's differential-entropy package: where ShannonEntropyOQ01 grounds the Gaussian entropies, this grounds the output-power relation that pins the converse's variance bound."
-        }
+    "opens": [
+      "MeasureTheory",
+      "ProbabilityTheory"
     ],
-    "conclusion": {
-        "summary": "This entry derives the AWGN output-power relation E[Y²] = P + N for Y = X + Z, where X is an independent, centered signal of power P = E[X²] and Z an independent, centered noise of power N = E[Z²]. The proof is the variance of a sum of independent variables: independence kills the cross moment E[X·Z] = E[X]·E[Z] = 0, and Mathlib's IndepFun.variance_add plus variance_eq_sub then give E[(X+Z)²] = E[X²] + E[Z²] = P + N. The result is verified, axiom-free (propext/Classical.choice/Quot.sound only), and fully general — no Gaussian assumption — answering open question OQ02 of the parent capacity proof by replacing its bare hypothesis hvar with a derived fact.",
-        "implications": "The parent AWGN capacity converse bounds any output density of variance ≤ P + N; this entry certifies that for an independent additive channel the output power is exactly P + N, so the converse's variance constraint is the genuine power budget rather than an external assumption. Because the identity uses only independence and finite second moments, it applies to every additive-noise channel, not just the Gaussian one — the Gaussian special structure is needed only for the entropy half of the capacity, not for the power accounting.",
-        "openQuestions": [
-            "Assemble the full converse end-to-end: feed awgn_output_power into ShannonAWGN.awgn_capacity_upper_bound to obtain a converse that takes the input power constraint E[X²] ≤ P directly, with no standalone hvar hypothesis.",
-            "Generalize to a sum of finitely many independent centered components, E[(∑ Xᵢ)²] = ∑ E[Xᵢ²], for multi-tap or parallel-channel power accounting."
-        ]
-    },
-    "mainTheorems": [
-        {
-            "name": "awgn_output_power",
-            "type": "core",
-            "description": "The output power of the additive channel Y = X + Z is the sum of the signal and noise powers: E[Y²] = P + N, for independent, centered, square-integrable X (power P) and Z (power N).",
-            "leanType": "μ[(X + Z) ^ 2] = P + N"
-        },
-        {
-            "name": "awgn_second_moment_sum",
-            "type": "core",
-            "description": "Second-moment additivity for independent centered inputs: E[(X+Z)²] = E[X²] + E[Z²].",
-            "leanType": "μ[(X + Z) ^ 2] = μ[X ^ 2] + μ[Z ^ 2]"
-        },
-        {
-            "name": "indep_cross_moment_zero",
-            "type": "supporting",
-            "description": "Independence sends the cross moment to zero: E[X·Z] = E[X]·E[Z] = 0 for centered X, Z.",
-            "leanType": "μ[X * Z] = 0"
-        },
-        {
-            "name": "awgn_output_variance",
-            "type": "corollary",
-            "description": "The output power read through Mathlib's variance: Var[X+Z] = P + N.",
-            "leanType": "variance (X + Z) μ = P + N"
-        }
-    ],
-    "leanFile": {
-        "axiomCount": 0,
-        "lineCount": 109,
-        "path": "Proofs/ShannonChannelCodingAWGNOQ02.lean",
-        "sorries": 0,
-        "definitionCount": 0,
-        "theoremCount": 5
-    },
+    "namespace": "ShannonAWGNSecondMoment",
+    "lineCount": 96,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "path": "Proofs/ShannonChannelCodingAWGNOQ02.lean",
     "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ShannonChannelCodingAWGNOQ02.lean",
+    "tags": [
+      "probability",
+      "information-theory",
+      "variance",
+      "independence",
+      "second-moment",
+      "awgn",
+      "shannon",
+      "channel-capacity",
+      "measure-theory",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 96,
+    "theoremCount": 4,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "awgn_second_moment: E[(X+Z)²] = E[X²] + E[Z²] — the heart of the entry. For independent, zero-mean, square-integrable X and Z, the output second moment splits as the sum of the input and noise second moments. The proof combines variance additivity for the independent sum (IndepFun.variance_add) with the fact that the sum X+Z is again zero-mean (integral_add on the integrable parts), so every squared-mean term in Var[W] = E[W²] − (E[W])² vanishes and the variance identity collapses onto second moments.",
+      "awgn_output_power: E[(X+Z)²] = P + N — the parent-facing restatement. With the powers named P = E[X²] and N = E[Z²], the output power of the additive Gaussian channel is exactly P + N. This is the relation the parent file (ShannonChannelCodingAWGN.lean) exposes as the converse hypothesis `hvar` encoding the average-power constraint at the output; this entry supplies it from Mathlib's probability layer rather than assuming it.",
+      "second_moment_eq_variance: E[X²] = Var[X] for a zero-mean variable — the bridge identifying the engineering notion of 'power' with the probabilistic variance. It is the rewrite that turns the variance-of-a-sum law into a second-moment law once the means are zero.",
+      "awgn_output_variance: Var[X+Z] = Var[X] + Var[Z] for independent X, Z — the variance-of-a-sum fact recorded in the channel notation Y = X + Z (a direct application of IndepFun.variance_add), making explicit the step where independence eliminates the covariance cross-term."
+    ],
+    "prerequisites": [
+      "Variance of a sum of independent variables: ProbabilityTheory.IndepFun.variance_add (Var[X+Y] = Var[X] + Var[Y])",
+      "Variance as second moment minus squared mean: ProbabilityTheory.variance_eq_sub (Var[X] = E[X²] − (E[X])²)",
+      "Square-integrability gives integrability on a probability space: MemLp.integrable with 1 ≤ 2",
+      "Linearity of the expectation: MeasureTheory.integral_add",
+      "Parent: shannon-channel-coding-awgn (the AWGN capacity C = ½ log(1 + P/N) and its converse bound)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "ProbabilityTheory.IndepFun.variance_add",
+        "description": "For independent square-integrable X, Y the variance of the sum is the sum of the variances: Var[X+Y] = Var[X] + Var[Y]. This is the substantive probabilistic input; independence is exactly what makes the covariance cross-term vanish.",
+        "module": "Mathlib.Probability.Moments.Variance"
+      },
+      {
+        "theorem": "ProbabilityTheory.variance_eq_sub",
+        "description": "On a probability measure, Var[X] = E[X²] − (E[X])² for X ∈ L². Applied to X, Z and X+Z it reduces the variance law to a second-moment law once the means are zero.",
+        "module": "Mathlib.Probability.Moments.Variance"
+      },
+      {
+        "theorem": "MeasureTheory.integral_add",
+        "description": "Linearity of the integral, used to show the sum X+Z of two integrable variables is again zero-mean: E[X+Z] = E[X] + E[Z] = 0.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.MemLp.integrable",
+        "description": "On a finite measure, L² membership implies integrability (1 ≤ 2), supplying the integrability hypotheses for integral_add.",
+        "module": "Mathlib.MeasureTheory.Function.LpSpace.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Shannon's capacity formula for the additive white Gaussian noise channel, C = ½ log(1 + P/N), rests on the output Y = X + Z being Gaussian of variance P + N when the input is Gaussian of power P and the noise has power N. The output-power relation E[Y²] = P + N is the elementary probabilistic fact underneath: the variance (equivalently, for zero-mean signals, the power) of a sum of independent contributions is the sum of their variances, because independence annihilates the covariance cross-term. The parent formalization assembled the capacity from the differential-entropy layer and left this relation as an explicit hypothesis `hvar` on the converse bound; this entry closes that gap by deriving it directly from Mathlib's variance/independence API.",
+    "problemStatement": "Derive E[Y²] = P + N for the additive channel output Y = X + Z, where the input X and the noise Z are independent, both zero-mean and square-integrable, with powers P = E[X²] and N = E[Z²]. Remove this relation as an assumed converse hypothesis in the parent AWGN capacity proof.",
+    "proofStrategy": "Two standard facts compose. (1) Variance additivity under independence: IndepFun.variance_add gives Var[X+Z] = Var[X] + Var[Z], the step where independence kills the covariance. (2) Power = variance for zero-mean signals: variance_eq_sub gives Var[W] = E[W²] − (E[W])², so for any zero-mean W the second moment equals the variance. The sum X+Z is itself zero-mean (E[X+Z] = E[X] + E[Z] = 0 by linearity of expectation, using square-integrability ⟹ integrability on the probability space), so applying variance_eq_sub to X, Z and X+Z and dropping the vanishing squared-mean terms yields E[(X+Z)²] = E[X²] + E[Z²]. Naming P = E[X²], N = E[Z²] gives the output power P + N (awgn_output_power), exactly the parent's `hvar`.",
+    "keyInsights": [
+      "Independence enters in exactly one place. The whole content of 'powers add' is that the covariance cross-term 2·Cov[X,Z] in Var[X+Z] = Var[X] + 2·Cov[X,Z] + Var[Z] vanishes under independence; Mathlib packages this as IndepFun.variance_add.",
+      "Zero mean is what turns 'variance' into 'power'. The engineering quantity E[W²] equals the probabilistic variance Var[W] only after the squared-mean term (E[W])² is dropped — which is legitimate precisely because the signals are zero-mean. The same observation applied to the sum X+Z (also zero-mean) is what lets the variance law be read as a second-moment law.",
+      "The sum stays zero-mean for free. E[X+Z] = E[X] + E[Z] = 0 follows from linearity of expectation and needs only integrability, which square-integrability supplies on a probability (finite) measure.",
+      "This discharges an assumption rather than adding one. The parent's converse bound carried E[Y²] = P + N as the hypothesis `hvar`; here it is a theorem, so the AWGN converse no longer needs to assume the output-power relation — it is a consequence of independence and the power constraints on X and Z.",
+      "Honest 'mathlib' badge: the substantive lemma (variance of a sum of independent variables) is Mathlib's IndepFun.variance_add; the original content is the zero-mean reduction to second moments and the channel-facing assembly that matches the parent's `hvar`. The proof is 0-axiom (propext / Classical.choice / Quot.sound only)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Open Question and Strategy",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "States the open question — discharge the parent's converse hypothesis E[Y²] = P + N — and outlines the answer: variance additivity under independence (covariance vanishes) combined with the zero-mean identification E[W²] = Var[W]. Notes the file is axiom-free and assembled from IndepFun.variance_add and variance_eq_sub.",
+      "mathContext": "$\\mathbb{E}[(X+Z)^2] = \\mathbb{E}[X^2] + \\mathbb{E}[Z^2] = P + N$"
+    },
+    {
+      "id": "power-eq-variance",
+      "title": "Part I: Power Equals Variance for Zero-Mean Signals",
+      "startLine": 41,
+      "endLine": 47,
+      "summary": "theorem second_moment_eq_variance: E[X²] = Var[X] for a zero-mean X ∈ L². Rewrites Var[X] = E[X²] − (E[X])² (variance_eq_sub) and drops the squared-mean term using E[X] = 0, closed by ring. This is the bridge from 'power' to 'variance'.",
+      "mathContext": "$\\mathbb{E}[X^2] = \\operatorname{Var}[X]\\quad(\\mathbb{E}[X]=0)$"
+    },
+    {
+      "id": "variance-add",
+      "title": "Part II: Variances Add Under Independence",
+      "startLine": 49,
+      "endLine": 53,
+      "summary": "theorem awgn_output_variance: Var[X+Z] = Var[X] + Var[Z] for independent X, Z. A direct application of IndepFun.variance_add, recorded in the channel notation Y = X + Z; this is the step where independence eliminates the covariance cross-term.",
+      "mathContext": "$\\operatorname{Var}[X+Z] = \\operatorname{Var}[X] + \\operatorname{Var}[Z]$"
+    },
+    {
+      "id": "second-moment",
+      "title": "Part III: The Second Moment Adds",
+      "startLine": 55,
+      "endLine": 87,
+      "summary": "theorem awgn_second_moment: E[(X+Z)²] = E[X²] + E[Z²]. Establishes that X+Z is zero-mean (integral_add on the integrable parts), applies variance_eq_sub to X, Z and X+Z, and uses variance additivity (IndepFun.variance_add) so that the three squared-mean terms drop and the second moments add.",
+      "mathContext": "$\\mathbb{E}[(X+Z)^2] = \\mathbb{E}[X^2] + \\mathbb{E}[Z^2]$"
+    },
+    {
+      "id": "output-power",
+      "title": "Part IV: Output Power P + N (the Parent's hvar)",
+      "startLine": 89,
+      "endLine": 94,
+      "summary": "theorem awgn_output_power: with P = E[X²] and N = E[Z²], the output power is E[(X+Z)²] = P + N. This is the relation the parent AWGN converse exposes as the hypothesis `hvar`; the entry supplies it as a theorem.",
+      "mathContext": "$\\mathbb{E}[Y^2] = P + N,\\quad Y = X + Z$"
+    }
+  ],
+  "conclusion": {
+    "summary": "The AWGN output-power relation E[Y²] = P + N is derived from Mathlib's probability layer rather than assumed. The variance-of-a-sum law for independent variables (IndepFun.variance_add) gives Var[X+Z] = Var[X] + Var[Z], and for zero-mean signals the second moment equals the variance (variance_eq_sub), so E[(X+Z)²] = E[X²] + E[Z²] (awgn_second_moment); naming the powers yields P + N (awgn_output_power). 96 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This closes the gap the parent AWGN capacity proof left open: its converse bound carried the output-power relation as the hypothesis `hvar`, and that hypothesis is now a theorem provable from independence and the power constraints on the input and noise. It isolates the single role of independence (annihilating the covariance) and of the zero-mean assumption (identifying power with variance), and provides reusable channel-notation lemmas for any additive-noise formalization.",
+    "openQuestions": [
+      "Drop the zero-mean hypotheses and track the mean: prove E[(X+Z)²] = (E[X²] + E[Z²]) + 2·E[X]·E[Z] for independent X, Z, recovering the present identity as the centered special case and exhibiting the cross-term that the zero-mean assumption removes.",
+      "Extend to a finite sum of pairwise-independent contributions via IndepFun.variance_sum, giving E[(∑ Xᵢ)²] = ∑ E[Xᵢ²] for zero-mean Xᵢ — the multi-antenna / multi-symbol output-power identity."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "shannon-channel-coding-awgn",
+      "relationship": "extends",
+      "description": "Parent. Its converse bound takes the output-power relation E[Y²] = P + N as the hypothesis `hvar` (encoding the average-power constraint at the output); this entry derives that relation from Mathlib's variance/independence API, so it need no longer be assumed."
+    },
+    {
+      "targetId": "shannon-channel-coding-oq-01",
+      "relationship": "related",
+      "description": "Grandparent context. Computes capacities for concrete channels (BSC, BEC, AWGN); the AWGN value C = ½ log(1 + P/N) rests on the output variance P + N supplied here."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Probability.Moments.Variance",
+      "author": "Mathlib Community",
+      "year": "2026",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of IndepFun.variance_add (variance of a sum of independent variables) and variance_eq_sub (Var[X] = E[X²] − (E[X])²), the two lemmas this entry composes."
+    },
+    {
+      "title": "Elements of Information Theory",
+      "author": "Thomas M. Cover and Joy A. Thomas",
+      "year": "2006",
+      "venue": "Wiley-Interscience",
+      "description": "Standard reference for the AWGN channel capacity C = ½ log(1 + P/N) and the output-power relation E[Y²] = P + N for additive independent noise."
+    }
+  ],
+  "sorries": 0
 }
