@@ -19,6 +19,34 @@
     "sorries": 0
   },
   "title": "The Gaussian Integral Equals √π",
+  "description": "Answers open question 7 of the area-of-circle parent: the total integral of the Gaussian bell curve e^{-x²} over all of ℝ equals √π. Rather than redo the classical squaring-and-polar-coordinates evaluation, the proof specializes Mathlib's parametrized Gaussian integral integral_gaussian at b = 1, and a short corollary squares the result to (∫ e^{-x²})² = π — the algebraic heart of the polar argument, where the parent's circle-area Jacobian r dr dθ appears.",
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫_ℝ e^{-x²} dx = √π is one of the most celebrated definite integrals in analysis. It has no elementary antiderivative, yet its value over the whole line is exactly √π. The standard evaluation — squaring the integral and passing to polar coordinates — is usually credited to Laplace (Théorie analytique des probabilités, 1812) and Poisson, and the result is foundational to probability: √π (more precisely √(2π)) is the normalization constant of the normal distribution. In the gallery it is the natural companion to area-of-circle, because the factor of π it produces enters through exactly the circle-area Jacobian of the polar substitution.",
+    "problemStatement": "Prove that $\\int_{-\\infty}^{\\infty} e^{-x^2}\\, dx = \\sqrt{\\pi}$, the b = 1 case of the parametrized Gaussian integral $\\int_{\\mathbb{R}} e^{-b x^2}\\,dx = \\sqrt{\\pi/b}$, and record the squared identity $\\left(\\int_{\\mathbb{R}} e^{-x^2}\\,dx\\right)^2 = \\pi$.",
+    "proofStrategy": "Both theorems are short specializations of existing Mathlib results, not from-scratch analysis. gaussian_integral_eq_sqrt_pi instantiates integral_gaussian at b = 1: the integrand exp(-1·x²) normalizes to exp(-x²) via neg_one_mul and the value √(π/1) normalizes to √π via div_one, closed by `simpa only [neg_one_mul, div_one]`. gaussian_integral_sq then squares the value with Real.sq_sqrt Real.pi_nonneg, since (√π)² = π for π ≥ 0. The measure-theoretic content (the actual polar-coordinate evaluation) is inherited wholesale from integral_gaussian.",
+    "keyInsights": [
+      "The Gaussian integral has no elementary antiderivative, so the integral I itself cannot be evaluated by the fundamental theorem of calculus; only its square I² — a genuine planar integral — admits a clean polar evaluation, which is why the squared identity is stated separately.",
+      "Squaring and switching to polar coordinates produces the factor π through the Jacobian r dr dθ — exactly the circle-area object of the parent entry — so the appearance of π here is not coincidental but the same geometric fact in analytic disguise.",
+      "Formalization-wise this is an honest, routine specialization: Mathlib's integral_gaussian already encapsulates the hard analytic work, so the entry's value is curatorial (the iconic b = 1 case) rather than a new proof. The badge 'mathlib' reflects this honestly.",
+      "The b = 1 value √π is the seed from which the standard-normal normalization √(2π) (the b = 1/2 case) and the whole normal-distribution density follow — flagged as the first open question."
+    ]
+  },
+  "sections": [
+    {
+      "id": "main",
+      "title": "The Gaussian Integral Equals √π",
+      "startLine": 31,
+      "endLine": 35,
+      "summary": "gaussian_integral_eq_sqrt_pi specializes Mathlib's integral_gaussian at b = 1: exp(-1·x²) → exp(-x²) by neg_one_mul and √(π/1) → √π by div_one, closed in one `simpa`."
+    },
+    {
+      "id": "squared",
+      "title": "The Squared Identity (∫ e^{-x²})² = π",
+      "startLine": 37,
+      "endLine": 41,
+      "summary": "gaussian_integral_sq squares the value to π via Real.sq_sqrt — the algebraic value the classical polar-coordinate computation produces, linking back to the parent's circle-area Jacobian."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
