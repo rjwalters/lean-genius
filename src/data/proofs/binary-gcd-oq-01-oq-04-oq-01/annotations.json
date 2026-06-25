@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-bgcd-oq04oq01-docstring",
+    "proofId": "binary-gcd-oq-01-oq-04-oq-01",
+    "range": { "startLine": 1, "endLine": 48 },
+    "type": "concept",
+    "title": "From a single worst-case family to the whole a = 1 slice",
+    "content": "The module docstring states the goal: the parent only showed (1, 2^n - 1) takes n steps, but which inputs are actually worst-case? This file answers it completely for the a = 1 slice with an exact closed form binaryGcdSteps 1 b = Nat.log 2 b + 1 (the binary bit-length), driven by a uniform one-step reduction that holds in both parities.",
+    "mathContext": "Imports the parent BinaryGcdOQ01OQ04 and BinaryGcdOQ01 (for binaryGcdSteps and its equation lemma binaryGcdSteps.eq_3) plus Mathlib's Nat.Log API.",
+    "significance": "Upgrades a single-family tightness witness to an exact, complete characterisation of an entire slice of inputs.",
+    "relatedConcepts": ["binary GCD", "bit-length", "worst-case analysis"],
+    "prerequisites": ["binaryGcdSteps definition", "Nat.log"]
+  },
+  {
+    "id": "ann-bgcd-oq04oq01-onestep",
+    "proofId": "binary-gcd-oq-01-oq-04-oq-01",
+    "range": { "startLine": 50, "endLine": 71 },
+    "type": "theorem",
+    "title": "Uniform one-step lemma (both parities collapse to a halving)",
+    "content": "binaryGcdSteps_one_succ: binaryGcdSteps 1 (b+1) = 1 + binaryGcdSteps 1 ((b+1)/2). The parent needed only the odd case because 2^n - 1 is always odd; here BOTH parities matter. After unfolding binaryGcdSteps.eq_3, the a-even guard fails (a = 1), and a by_cases on (b+1) % 2 closes both branches: even → the b-even branch halves b+1; odd → 1 > b+1 is false so the subtract-then-halve branch yields (b+1-1)/2 = ⌊(b+1)/2⌋, settled by congr + omega.",
+    "mathContext": "(1, b+1) → (1, ⌊(b+1)/2⌋) in one step, regardless of parity — the a = 1 algorithm is a pure bit-shift loop.",
+    "significance": "This is the crux: making the one-step reduction parity-uniform is exactly what extends the analysis from b = 2^n - 1 to all b.",
+    "relatedConcepts": ["Stein's algorithm branches", "parity", "bit shift"],
+    "prerequisites": ["binaryGcdSteps.eq_3"]
+  },
+  {
+    "id": "ann-bgcd-oq04oq01-closedform",
+    "proofId": "binary-gcd-oq-01-oq-04-oq-01",
+    "range": { "startLine": 73, "endLine": 100 },
+    "type": "theorem",
+    "title": "Main closed form: step count = binary bit-length",
+    "content": "binaryGcdSteps_one_eq_log_succ: for b ≥ 1, binaryGcdSteps 1 b = Nat.log 2 b + 1. Proved by strong induction. Base b = 1: one-step lemma + Nat.log_one_right. Step b ≥ 2 (write b = b'+1): apply the one-step lemma, then the IH at ⌊b/2⌋ < b, then Nat.log_div_base (log₂⌊b/2⌋ = log₂ b - 1) and Nat.log_pos (log₂ b ≥ 1), closing by omega.",
+    "mathContext": "Each step strips one binary digit, so the step count equals the number of bits of b, i.e. ⌊log₂ b⌋ + 1.",
+    "significance": "An exact formula for the entire a = 1 slice — the central result of the entry.",
+    "relatedConcepts": ["strong induction", "Nat.log", "bit-length"],
+    "prerequisites": ["binaryGcdSteps_one_succ", "Nat.log_div_base"]
+  },
+  {
+    "id": "ann-bgcd-oq04oq01-worstcase",
+    "proofId": "binary-gcd-oq-01-oq-04-oq-01",
+    "range": { "startLine": 102, "endLine": 123 },
+    "type": "theorem",
+    "title": "Worst case is a whole dyadic block; monotonicity",
+    "content": "binaryGcdSteps_one_eq_dyadic: every b ∈ [2^n, 2^(n+1)) takes exactly n+1 steps (via Nat.log_eq_of_pow_le_of_lt_pow). So the cost depends only on the magnitude class and the worst case below 2^N is the entire top block [2^(N-1), 2^N), not a single input. binaryGcdSteps_one_mono: the count is non-decreasing in b, from Nat.log_mono_right.",
+    "mathContext": "Constant step count on each dyadic interval — qualitatively unlike Euclid's unique Fibonacci worst case.",
+    "significance": "Directly answers 'characterise the worst-case inputs': for the a = 1 slice it is exactly the top dyadic block.",
+    "relatedConcepts": ["dyadic blocks", "monotonicity", "Lamé / Fibonacci contrast"],
+    "prerequisites": ["binaryGcdSteps_one_eq_log_succ"]
+  },
+  {
+    "id": "ann-bgcd-oq04oq01-recovery",
+    "proofId": "binary-gcd-oq-01-oq-04-oq-01",
+    "range": { "startLine": 125, "endLine": 155 },
+    "type": "theorem",
+    "title": "Recovering the parent (1, 2^n - 1) as a corollary",
+    "content": "log_two_pow_sub_one: Nat.log 2 (2^n - 1) = n - 1 for n ≥ 1 (2^n - 1 lies in [2^(n-1), 2^n)). binaryGcdSteps_one_pow2_sub_one: binaryGcdSteps 1 (2^n - 1) = n — now a one-line corollary of the closed form, demonstrating that the new result strictly generalises the parent.",
+    "mathContext": "2^n - 1 = 0b11…1 has exactly n bits, so its bit-length step count is n.",
+    "significance": "Shows the closed form subsumes the parent's headline theorem.",
+    "relatedConcepts": ["Mersenne numbers", "corollary"],
+    "prerequisites": ["binaryGcdSteps_one_eq_log_succ", "Nat.log_eq_of_pow_le_of_lt_pow"]
+  },
+  {
+    "id": "ann-bgcd-oq04oq01-crosschecks",
+    "proofId": "binary-gcd-oq-01-oq-04-oq-01",
+    "range": { "startLine": 157, "endLine": 173 },
+    "type": "concept",
+    "title": "Axiom-free symbolic cross-checks (no native_decide)",
+    "content": "Two examples confirm the formulas symbolically: binaryGcdSteps 1 4 = binaryGcdSteps 1 7 (the whole 3-bit block {4,5,6,7} is equal, via binaryGcdSteps_one_eq_dyadic) and binaryGcdSteps 1 7 = 3 (via binaryGcdSteps_one_pow2_sub_one). Deliberately NOT discharged by native_decide, so the file introduces no Lean.ofReduceBool — the entry is fully verified/0-axiom.",
+    "mathContext": "Spot checks derived from the proved theorems rather than the kernel evaluator, keeping #print axioms clean.",
+    "significance": "Demonstrates the closed form on concrete inputs while preserving the 0-axiom status.",
+    "relatedConcepts": ["native_decide vs symbolic", "axiom hygiene"],
+    "prerequisites": ["binaryGcdSteps_one_eq_dyadic", "binaryGcdSteps_one_pow2_sub_one"]
+  }
+]
