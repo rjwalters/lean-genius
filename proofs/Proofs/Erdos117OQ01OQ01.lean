@@ -109,13 +109,15 @@ theorem base_implies_behavior_correct (c : ℝ) (hc : c > 1)
     have hlt : Real.log ↑(h n) / ↑n < Real.log (c + ε) := by
       linarith [min_le_left (Real.log (c + ε) - Real.log c)
                             (Real.log c - Real.log (c - ε))]
-    linarith [(div_lt_iff hn_pos).mp hlt]
+    have := (div_lt_iff₀ hn_pos).mp hlt
+    linarith [mul_comm (Real.log (c + ε)) (n : ℝ)]
   -- Lower bound: (c - ε)^n ≤ h n
   have hlog_l : n * Real.log (c - ε) ≤ Real.log ↑(h n) := by
     have hge : Real.log (c - ε) ≤ Real.log ↑(h n) / ↑n := by
       linarith [min_le_right (Real.log (c + ε) - Real.log c)
                              (Real.log c - Real.log (c - ε))]
-    linarith [(le_div_iff hn_pos).mp hge]
+    have := (le_div_iff₀ hn_pos).mp hge
+    linarith [mul_comm (Real.log (c - ε)) (n : ℝ)]
   -- Now convert via exp ∘ log
   have hpow_u : 0 < (c + ε) ^ n := by positivity
   have hpow_l : 0 < (c - ε) ^ n := by positivity
@@ -151,23 +153,21 @@ theorem abelian_covering_exponential_if_submultiplicative
   obtain ⟨c₁, _, hc₁_gt_1, _, hbounds⟩ := pyber_bounds
   -- L ≥ log c₁ > 0 since the sequence is eventually ≥ log c₁
   have hL_pos : 0 < L := by
-    apply lt_of_lt_of_le (Real.log_pos hc₁_gt_1)
-    apply ge_of_tendsto hL
-    apply Filter.eventually_atTop.mpr
-    refine ⟨1, fun n hn => ?_⟩
-    rw [growthRate_eq' n (by omega)]
-    have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
-    rw [ge_iff_le, le_div_iff hn_pos]
-    have hcpow : (c₁ : ℝ) ^ n ≤ (h n : ℝ) := by
-      exact_mod_cast (hbounds n (by omega)).1
-    calc Real.log c₁ * ↑n = ↑n * Real.log c₁ := mul_comm _ _
-      _ = Real.log (c₁ ^ n) := (Real.log_pow n c₁).symm
-      _ ≤ Real.log ↑(h n) := Real.log_le_log (by positivity) hcpow
+    have hev : ∀ᶠ n : ℕ in atTop, Real.log c₁ ≤ growthRate n := by
+      apply Filter.eventually_atTop.mpr
+      refine ⟨1, fun n hn => ?_⟩
+      have hn_pos : (0 : ℝ) < n := Nat.cast_pos.mpr (by omega)
+      rw [growthRate_eq' n hn, le_div_iff₀ hn_pos]
+      have hcpow : (c₁ : ℝ) ^ n ≤ (h n : ℝ) := by
+        exact_mod_cast (hbounds n hn).1
+      calc Real.log c₁ * ↑n = ↑n * Real.log c₁ := mul_comm _ _
+        _ = Real.log (c₁ ^ n) := (Real.log_pow c₁ n).symm
+        _ ≤ Real.log ↑(h n) := Real.log_le_log (by positivity) hcpow
+    exact lt_of_lt_of_le (Real.log_pos hc₁_gt_1) (ge_of_tendsto hL hev)
   -- Use c = exp(L) > 1
   refine ⟨Real.exp L, Real.exp_pos L, ?_⟩
   have hexpL_gt_1 : 1 < Real.exp L := Real.one_lt_exp_iff.mpr hL_pos
-  -- log(exp L) = L, so hL : Tendsto growthRate atTop (𝓝 (log (exp L)))
-  rw [show Real.log (Real.exp L) = L from Real.log_exp L] at hL
-  exact base_implies_behavior_correct (Real.exp L) hexpL_gt_1 hL
+  -- base_implies_behavior_correct wants the limit as log (exp L) = L
+  exact base_implies_behavior_correct (Real.exp L) hexpL_gt_1 (by rwa [Real.log_exp])
 
 end Erdos117OQ01OQ01
