@@ -1,0 +1,84 @@
+{
+  "slug": "combinations-formula-oq-01-oq-02",
+  "title": "Zhu-Vandermonde identity generalized to 2F1 hypergeometric",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "completed": "2026-06-24T23:40:00.000Z",
+  "started": "2026-06-24T23:00:00.000Z",
+  "lastUpdate": "2026-06-24T23:40:00.000Z",
+  "significance": 5,
+  "tractability": 5,
+  "tier": "B",
+  "path": "fast",
+  "problemStatement": {
+    "summary": "Generalize the parent's Zhu/Chu-Vandermonde convolution identity to the Gauss hypergeometric series 2F1, with Vandermonde as the terminating special case.",
+    "formal": "Prove Gauss's terminating summation ₂F₁(−n, b; c; 1) = (c−b)_n/(c)_n, where (z)_m is the rising factorial. Equivalently, the denominator-cleared polynomial identity ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ (c+i)ⱼ = (c−b)_n over an arbitrary commutative ring."
+  },
+  "currentState": {
+    "summary": "COMPLETE. Proved both the ring-level (denominator-cleared) and field-level (quotient) forms of Gauss's terminating ₂F₁ summation, plus the rising/falling Vandermonde convolutions in .eval form over a commutative ring. Verified, 0 axioms, 0 sorries.",
+    "lastApproach": "Reduce the alternating hypergeometric sum to an ordinary Vandermonde convolution via two factorial bridges that expose an index-independent falling-factorial base."
+  },
+  "knownResults": {
+    "mathlib": "Mathlib provides descPochhammer_smeval_add (a Pochhammer Vandermonde convolution via smeval) and ordinaryHypergeometric (notation ₂F₁) but NO summation theorem evaluating ₂F₁ at any point. The rising/falling and sign bridges (descPochhammer_eval_eq_ascPochhammer, ascPochhammer_eval_neg_eq_descPochhammer) and the Pascal split (Finset.sum_antidiagonal_choose_succ_mul) are available.",
+    "literature": "Gauss (1812) hypergeometric summation; Chu-Vandermonde convolution (Zhu Shijie 1303, Vandermonde 1772); the terminating ₂F₁ is the base case of the Pfaff-Saalschütz / Dixon / Watson / Whipple hierarchy."
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: proved the terminating Gauss ₂F₁ summation ₂F₁(−n,b;c;1) = (c−b)_n/(c)_n (ring + field forms) and the rising/falling Vandermonde convolutions over a commutative ring. Verified, 0-axiom, original (7 theorems, 203 lines).",
+    "insights": [
+      "Gauss's hypergeometric summation, normally an analytic theorem with a Gamma-function value, becomes a finite algebraic Chu-Vandermonde identity exactly when the upper parameter is a non-positive integer −n; the parent's binomial Vandermonde is the integer specialization.",
+      "The index-dependent summand (−1)ⁱ(b)ᵢ·(c+i)_{n−i} hides a falling-factorial structure with an index-INDEPENDENT base: via (z)_m=(z+m−1)^{≤m} and (−1)ⁱ(b)ᵢ=(−b)^{≤i} it becomes (−b)^{≤i}·(c+n−1)^{≤(n−i)}, so the alternating sum is an ordinary Vandermonde convolution at α=−b, β=c+n−1.",
+      "Stating the identity in denominator-cleared form removes ALL hypotheses (no positivity/division/convergence), giving a polynomial identity over an arbitrary commutative ring; the classical quotient form is recovered over a field.",
+      "For the quotient form only (c)_n ≠ 0 is needed (not (c)ₖ ≠ 0 for each k), because the multiplicative split (c)_n = (c)ₖ·(c+k)_{n−k} exhibits each (c)ₖ as a factor of the nonzero (c)_n.",
+      "Mathlib has the analytic ₂F₁ object but no closed-form evaluation of it at any point; this entry supplies the cornerstone terminating case."
+    ],
+    "builtItems": [
+      "gauss_terminating_ring (CombinationsFormulaOQ01OQ02.lean:150): ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ (c+i)ⱼ = (c−b)_n over any CommRing",
+      "gauss_terminating_field (CombinationsFormulaOQ01OQ02.lean:184): ∑_{i+j=n} (−1)ⁱ C(n,i) (b)ᵢ/(c)ᵢ = (c−b)_n/(c)_n over a field, hypothesis (c)_n ≠ 0",
+      "ascPochhammer_eval_vandermonde (CombinationsFormulaOQ01OQ02.lean:116): rising Chu-Vandermonde (x+y)_n = ∑_{i+j=n} C(n,i)(x)ᵢ(y)ⱼ over a CommRing",
+      "descPochhammer_eval_vandermonde (CombinationsFormulaOQ01OQ02.lean:65): falling Vandermonde convolution over a CommRing (antidiagonal induction)",
+      "ascPochhammer_eval_eq_descPochhammer' (line 91), neg_one_pow_mul_ascPochhammer_eval (line 99), ascPochhammer_eval_split (line 170): the bridge lemmas"
+    ],
+    "mathlibGaps": [
+      "Mathlib's ordinaryHypergeometric (₂F₁) has no summation theorem — no closed form for the value of ₂F₁ at any point (e.g. z=1).",
+      "No ascending-Pochhammer Vandermonde convolution in clean .eval form over a general commutative ring (only the descending smeval version descPochhammer_smeval_add)."
+    ],
+    "nextSteps": [
+      "Connect to Mathlib's analytic ordinaryHypergeometric by showing that, for a non-positive integer upper parameter, the series sum equals this finite Chu-Vandermonde sum.",
+      "Prove the Pfaff-Saalschütz theorem (terminating balanced ₃F₂) by the same index-independent-base reduction.",
+      "Prove the q-analogue (terminating q-Chu-Vandermonde / q-Gauss) by an analogous antidiagonal induction with a q-Pochhammer symbol."
+    ],
+    "markdown": ""
+  },
+  "references": {
+    "papers": [
+      "C. F. Gauss, Disquisitiones generales circa seriem infinitam (1812)",
+      "Andrews, Askey, Roy, Special Functions (1999), Ch. 2-3 (Gauss summation, Chu-Vandermonde)"
+    ]
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/CombinationsFormulaOQ01OQ02.lean",
+      "filename": "CombinationsFormulaOQ01OQ02.lean",
+      "lineCount": 203,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CombinationsFormulaOQ01OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "combinations-formula-oq-01",
+    "combinations-formula-oq-01-oq-04",
+    "arithmetic-series-oq-02-oq-01-oq-01-oq-03"
+  ],
+  "tags": [
+    "combinatorics",
+    "hypergeometric",
+    "gauss-2f1",
+    "chu-vandermonde",
+    "pochhammer",
+    "special-functions"
+  ]
+}
