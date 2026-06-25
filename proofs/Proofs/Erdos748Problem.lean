@@ -150,6 +150,30 @@ theorem trivial_lower_bound (n : ℕ) (hn : n ≥ 2) :
   calc 2 ^ (n / 2) ≤ 2 ^ U.card := Nat.pow_le_pow_right (by norm_num) hexp
     _ ≤ f n := hcard
 
+/--
+**Monotonicity, ground step:**
+Every sum-free subset of {1,...,n} is also a sum-free subset of {1,...,n+1}.
+Sum-freeness is a property of the set itself (no `a = b + c` among its own
+elements), so enlarging the ambient range cannot break it; the only change is
+that the subset is now allowed to live in the larger box.
+-/
+theorem sumFreeSubsets_subset_succ (n : ℕ) :
+    sumFreeSubsets n ⊆ sumFreeSubsets (n + 1) := by
+  intro A hA
+  rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset] at hA ⊢
+  exact ⟨hA.1.trans (Finset.Icc_subset_Icc (le_refl 1) (Nat.le_succ n)), hA.2⟩
+
+/--
+**The counting function `f` is monotone.**
+Since the family of sum-free subsets only grows as the ambient range grows
+(`sumFreeSubsets_subset_succ`), its cardinality `f n` is non-decreasing in `n`.
+This is the structural fact underlying the trivial lower bound: the supply of
+sum-free sets never shrinks.
+-/
+theorem f_monotone : Monotone f :=
+  monotone_nat_of_le_succ fun n =>
+    Finset.card_le_card (sumFreeSubsets_subset_succ n)
+
 /-
 ## Part IV: The Cameron-Erdős Conjecture
 -/
