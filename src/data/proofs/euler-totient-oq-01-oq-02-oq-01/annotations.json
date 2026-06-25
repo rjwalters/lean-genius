@@ -8,7 +8,11 @@
     },
     "type": "insight",
     "title": "The Cyclic Mechanism: Exponent = Order",
-    "content": "isCyclic_units_odd_prime_pow is Gauss's primitive-root theorem in Mathlib form: for an odd prime p, the unit group (ℤ/pᵏℤ)ˣ is cyclic. exponent_units_odd_prime_pow then applies IsCyclic.iff_exponent_eq_card — in a finite cyclic group the exponent equals the cardinality. Since the Carmichael function λ is by definition the exponent of (ℤ/nℤ)ˣ and φ is its cardinality, this single equality is the entire reason λ(pᵏ) = φ(pᵏ). It is the sharp opposite of the parent's 2-power case, where the non-cyclic ℤ/2 × ℤ/2ᵏ⁻² forces λ = φ/2."
+    "content": "isCyclic_units_odd_prime_pow is Gauss's primitive-root theorem in Mathlib form: for an odd prime p, the unit group (ℤ/pᵏℤ)ˣ is cyclic. exponent_units_odd_prime_pow then applies IsCyclic.iff_exponent_eq_card — in a finite cyclic group the exponent equals the cardinality. Since the Carmichael function λ is by definition the exponent of (ℤ/nℤ)ˣ and φ is its cardinality, this single equality is the entire reason λ(pᵏ) = φ(pᵏ). It is the sharp opposite of the parent's 2-power case, where the non-cyclic ℤ/2 × ℤ/2ᵏ⁻² forces λ = φ/2.",
+    "mathContext": "$(\\mathbb{Z}/p^k\\mathbb{Z})^\\times\\ \\text{cyclic} \\;\\Longrightarrow\\; \\exp = |\\cdot|, \\quad\\text{so}\\quad \\lambda(p^k) = \\exp\\big((\\mathbb{Z}/p^k\\mathbb{Z})^\\times\\big) = \\varphi(p^k)$",
+    "significance": "key",
+    "relatedConcepts": ["cyclic group", "group exponent vs order", "primitive root theorem (Gauss)", "Carmichael function", "Euler's totient"],
+    "prerequisites": ["cyclicity of (ℤ/pᵏℤ)ˣ for odd p", "IsCyclic.iff_exponent_eq_card", "λ as the unit-group exponent"]
   },
   {
     "id": "ann-closed-form",
@@ -19,7 +23,11 @@
     },
     "type": "insight",
     "title": "The Closed Form λ(pᵏ) = pᵏ⁻¹(p − 1) and a Primitive Root",
-    "content": "carmichael_odd_prime_pow is the open question's target: combine λ(pᵏ) = φ(pᵏ) (carmichael_eq_totient, the cyclic coincidence) with φ(pᵏ) = pᵏ⁻¹(p − 1) (Nat.totient_prime_pow) to turn the implicit value φ(pᵏ) into an explicit polynomial in p and k. carmichael_odd_prime is the k = 1 corollary λ(p) = p − 1. exists_primitiveRoot_odd_prime_pow makes cyclicity constructive: it names an actual unit of order exactly pᵏ⁻¹(p − 1) — a primitive root mod pᵏ — obtained from IsCyclic.exists_ofOrder_eq_natCard by transporting the generator's order through #(ℤ/pᵏℤ)ˣ = φ(pᵏ)."
+    "content": "carmichael_odd_prime_pow is the open question's target: combine λ(pᵏ) = φ(pᵏ) (carmichael_eq_totient, the cyclic coincidence) with φ(pᵏ) = pᵏ⁻¹(p − 1) (Nat.totient_prime_pow) to turn the implicit value φ(pᵏ) into an explicit polynomial in p and k. carmichael_odd_prime is the k = 1 corollary λ(p) = p − 1. exists_primitiveRoot_odd_prime_pow makes cyclicity constructive: it names an actual unit of order exactly pᵏ⁻¹(p − 1) — a primitive root mod pᵏ — obtained from IsCyclic.exists_ofOrder_eq_natCard by transporting the generator's order through #(ℤ/pᵏℤ)ˣ = φ(pᵏ).",
+    "mathContext": "$\\lambda(p^k) = \\varphi(p^k) = p^{k-1}(p-1), \\qquad \\lambda(p) = p - 1, \\qquad \\exists\\,g \\in (\\mathbb{Z}/p^k\\mathbb{Z})^\\times,\\ \\mathrm{ord}(g) = p^{k-1}(p-1)$",
+    "significance": "key",
+    "relatedConcepts": ["closed-form totient φ(pᵏ) = pᵏ⁻¹(p−1)", "primitive root", "cyclic generator", "order of a unit", "multiplicative group of a finite field"],
+    "prerequisites": ["carmichael_pow_of_prime_ne_two", "Nat.totient_prime_pow", "IsCyclic.exists_ofOrder_eq_natCard", "ZMod.card_units_eq_totient"]
   },
   {
     "id": "ann-concrete",
@@ -28,8 +36,12 @@
       "startLine": 92,
       "endLine": 121
     },
-    "type": "concept",
+    "type": "technique",
     "title": "Concrete Values Across Two Odd Primes",
-    "content": "The five evaluations instantiate the closed form: λ(9) = 3¹·2 = 6, λ(27) = 3²·2 = 18, λ(25) = 5¹·4 = 20, λ(7) = 7 − 1 = 6, λ(49) = 7¹·6 = 42. In each case λ(pᵏ) = φ(pᵏ) (full totient), the visible numerical signature of the cyclic regime — contrast λ(8) = 2 = φ(8)/2 in the parent. All follow from carmichael_odd_prime_pow by reducing the power with norm_num (no native_decide), so they stay kernel-checked and axiom-free."
+    "content": "The five evaluations instantiate the closed form: λ(9) = 3¹·2 = 6, λ(27) = 3²·2 = 18, λ(25) = 5¹·4 = 20, λ(7) = 7 − 1 = 6, λ(49) = 7¹·6 = 42. In each case λ(pᵏ) = φ(pᵏ) (full totient), the visible numerical signature of the cyclic regime — contrast λ(8) = 2 = φ(8)/2 in the parent. All follow from carmichael_odd_prime_pow by reducing the power with norm_num (no native_decide), so they stay kernel-checked and axiom-free.",
+    "mathContext": "$\\lambda(9)=3\\cdot 2=6,\\ \\lambda(27)=3^2\\cdot 2=18,\\ \\lambda(25)=5\\cdot 4=20,\\ \\lambda(7)=6,\\ \\lambda(49)=7\\cdot 6=42$",
+    "significance": "supporting",
+    "relatedConcepts": ["worked examples", "norm_num", "cyclic vs non-cyclic numerical signature", "totient values"],
+    "prerequisites": ["the λ(pᵏ) = pᵏ⁻¹(p−1) closed form", "norm_num arithmetic"]
   }
 ]
