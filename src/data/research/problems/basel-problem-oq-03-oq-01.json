@@ -1,0 +1,75 @@
+{
+  "id": null,
+  "title": "Basel OQ-03 oq-01: Prove the stuffle relation ζ(2)² = ζ(4) + 2·ζ(2,2) from the double sum via the Fubini diagonal split",
+  "slug": "basel-problem-oq-03-oq-01",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 8,
+  "significance": 6,
+  "started": "2026-06-24T00:00:00.000Z",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
+  "path": "Proofs/BaselProblemOQ03OQ01.lean",
+  "leanFiles": [
+    "Proofs/BaselProblemOQ03OQ01.lean"
+  ],
+  "problemStatement": "Open question oq-01 of Basel OQ-03 (Multiple Zeta Values vs Single Zeta Values): the parent entry records ζ(2,2) = π⁴/120 via the value (ζ(2)²−ζ(4))/2 forced by the stuffle relation ζ(2)² = ζ(4) + 2·ζ(2,2), but never forms the double sum ∑_{m>n≥1} 1/(m²n²) and never proves the relation. Prove the stuffle relation directly from the honest double sum via a Fubini/diagonal split, upgrading ζ(2,2) from 'value forced by stuffle' to a fully derived theorem.",
+  "knownResults": "ζ(2,2) = ∑_{m>n≥1} 1/(m²n²) = π⁴/120 = (3/4)ζ(4) is the simplest multiple zeta value; the stuffle (harmonic) product gives ζ(2)² = ζ(4) + 2·ζ(2,2). Mathlib has no multiple zeta values, but has the product-of-tsums formula Summable.tsum_mul_tsum, p-series summability Real.summable_one_div_nat_pow, summable-indicator and tsum_subtype machinery, and Equiv.tsum_eq for reindexing — enough to assemble the diagonal split.",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Proved the simplest stuffle relation from scratch by decomposing the square of the ζ(2) series over the diagonal of ℕ×ℕ.",
+    "blockers": [],
+    "nextAction": "Extend the diagonal-split template to the asymmetric stuffle relation ζ(2)·ζ(4) = ζ(6) + ζ(2,4) + ζ(4,2), where the two triangles are no longer equal.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Shipped Proofs/BaselProblemOQ03OQ01.lean: 10 theorems, 8 definitions, 188 lines, 0 axioms (only propext / Classical.choice / Quot.sound), 0 sorries, no native_decide. Defines ζ(2,2) as the genuine double sum over the strict lower triangle of ℕ×ℕ and proves the stuffle relation ζ(2)² = ζ(4) + 2·ζ(2,2) by the Fubini diagonal split, closing the parent entry's first open question. Created gallery entry basel-problem-oq-03-oq-01.",
+    "builtItems": [
+      "zeta22 (def): ζ(2,2) = ∑'_{(m,n): n<m} 1/(m²n²), the honest double sum over the strict lower triangle of ℕ×ℕ.",
+      "zeta_two_sq_eq_zeta_four_add_two_zeta22: the stuffle relation (∑' 1/n²)² = (∑' 1/n⁴) + 2·ζ(2,2), proved from first principles with no closed form.",
+      "tsum_diag: the diagonal sum ∑'_{(n,n)} 1/(m²n²) = ∑'_n 1/n⁴ = ζ(4), via the equivalence ℕ ≃ {(n,n)} and Equiv.tsum_eq.",
+      "tsum_upper_eq_lower: the upper and lower triangle sums are equal via the coordinate-swap equivalence Lower ≃ Upper and the symmetry of the summand.",
+      "tsum_F_split: the three-way partition ∑' F = (diagonal) + (lower) + (upper) via the pointwise indicator identity F_indicator_split, Summable.indicator and tsum_subtype.",
+      "zeta22_eq (corollary): ζ(2,2) = (ζ(2)²−ζ(4))/2, the exact quantity the parent entry evaluated to π⁴/120, now a derived theorem."
+    ],
+    "insights": [
+      "Squaring an absolutely convergent series ∑ a m equals the double sum ∑_{(m,n)} a m·a n over ℕ×ℕ; the stuffle product is this double sum re-sorted by the order relation between the two indices.",
+      "The diagonal of the square carries the single-zeta term: F (n,n) = 1/(n²·n²) = 1/n⁴, so ∑_{m=n} = ζ(4).",
+      "The factor of 2 on ζ(2,2) is forced by symmetry, not arithmetic: (m,n) ↦ (n,m) is a bijection between the triangles and the summand 1/(m²n²) is invariant under it, so the two off-diagonal sums are equal.",
+      "A three-way partition of an index type is cleanest as a pointwise indicator identity over a trichotomy (Set.indicator + Summable.indicator + tsum_subtype), avoiding nested subtype-complement bookkeeping.",
+      "The whole relation is established without any value of ζ(2) or π — it is an identity between the actual infinite series, valid at the level of absolute convergence alone."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no multiple zeta values: no ζ(s₁,…,s_r), no shuffle/stuffle products, no double-sum MZV definitions. The double zeta value and its stuffle relation are built from scratch here.",
+      "No packaged 'diagonal split of a product of tsums' lemma; the three-way partition is assembled by hand from Summable.tsum_mul_tsum, Summable.indicator, tsum_subtype, and Equiv.tsum_eq."
+    ],
+    "nextSteps": [
+      "Prove the asymmetric stuffle relation ζ(2)·ζ(4) = ζ(6) + ζ(2,4) + ζ(4,2) by the same diagonal split, the first case where the two triangles differ.",
+      "Formalize Euler's reflection ζ(2,1) = ζ(3), the first MZV relation expressing a weight-3 double value through a single odd zeta value (beyond the reach of the diagonal split alone).",
+      "State the general stuffle product ζ(a)·ζ(b) = ζ(a+b) + ζ(a,b) + ζ(b,a) for a,b ≥ 2 on the double-sum level."
+    ]
+  },
+  "references": [
+    "D. Zagier, Values of zeta functions and their applications, in First European Congress of Mathematics (1994)",
+    "M. E. Hoffman, Multiple harmonic series, Pacific J. Math. 152 (1992)",
+    "https://en.wikipedia.org/wiki/Multiple_zeta_function"
+  ],
+  "relatedProofs": [
+    "basel-problem-oq-03",
+    "basel-problem"
+  ],
+  "tags": [
+    "number-theory",
+    "zeta-function",
+    "multiple-zeta-values",
+    "stuffle-product",
+    "infinite-series",
+    "fubini"
+  ]
+}
