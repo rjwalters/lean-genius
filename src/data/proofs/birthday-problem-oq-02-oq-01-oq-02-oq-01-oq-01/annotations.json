@@ -3,17 +3,25 @@
     "id": "ann-birthday-oq0201020101-header",
     "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 3, "endLine": 54 },
-    "type": "context",
+    "type": "concept",
     "title": "From the local transfer to global Schur-convexity",
-    "content": "The parent isolated a single Robin-Hood transfer (averaging two coordinates weakly lowers ∑pᵢ²). Its open question asks to globalize this into 'p majorized by q ⟹ ∑pᵢ² ≤ ∑qᵢ²'. By the Hardy–Littlewood–Pólya / Birkhoff–von Neumann theorem, majorization p ≺ q is equivalent to p = Dq for a doubly stochastic D, so the substantive content is the operator inequality ∑(Dq)ᵢ² ≤ ∑qᵢ² proved here."
+    "content": "The parent isolated a single Robin-Hood transfer (averaging two coordinates weakly lowers ∑pᵢ²). Its open question asks to globalize this into 'p majorized by q ⟹ ∑pᵢ² ≤ ∑qᵢ²'. By the Hardy–Littlewood–Pólya / Birkhoff–von Neumann theorem, majorization p ≺ q is equivalent to p = Dq for a doubly stochastic D, so the substantive content is the operator inequality ∑(Dq)ᵢ² ≤ ∑qᵢ² proved here.",
+    "mathContext": "$p \\prec q \\iff p = Dq$ for some doubly stochastic $D$ (Birkhoff–von Neumann); Schur-convexity of $\\sum x_i^2$ becomes $\\sum (Dq)_i^2 \\le \\sum q_i^2$.",
+    "significance": "key",
+    "relatedConcepts": ["majorization", "Schur-convexity", "doubly stochastic matrices", "Birkhoff–von Neumann theorem", "Hardy–Littlewood–Pólya"],
+    "prerequisites": ["majorization order", "doubly stochastic matrices"]
   },
   {
     "id": "ann-birthday-oq0201020101-jensen",
     "proofId": "birthday-problem-oq-02-oq-01-oq-02-oq-01-oq-01",
     "range": { "startLine": 76, "endLine": 86 },
-    "type": "technique",
+    "type": "insight",
     "title": "Per-row Jensen: each output is a convex combination",
-    "content": "Row i of a doubly stochastic matrix has nonnegative entries summing to 1, so (Dq)ᵢ = ∑ⱼ Dᵢⱼ qⱼ is a genuine convex combination of the qⱼ. Convexity of x ↦ x² (Even.convexOn_pow) plus Jensen's inequality (ConvexOn.map_sum_le) gives the per-row bound (Dq)ᵢ² ≤ ∑ⱼ Dᵢⱼ qⱼ². This is the only analytic input."
+    "content": "Row i of a doubly stochastic matrix has nonnegative entries summing to 1, so (Dq)ᵢ = ∑ⱼ Dᵢⱼ qⱼ is a genuine convex combination of the qⱼ. Convexity of x ↦ x² (Even.convexOn_pow) plus Jensen's inequality (ConvexOn.map_sum_le) gives the per-row bound (Dq)ᵢ² ≤ ∑ⱼ Dᵢⱼ qⱼ². This is the only analytic input.",
+    "mathContext": "Jensen: $\\bigl(\\sum_j D_{ij} q_j\\bigr)^2 \\le \\sum_j D_{ij} q_j^2$ since $\\sum_j D_{ij} = 1$, $D_{ij}\\ge 0$ and $x\\mapsto x^2$ is convex.",
+    "significance": "critical",
+    "relatedConcepts": ["Jensen's inequality", "convexity of x²", "convex combination", "ConvexOn.map_sum_le"],
+    "prerequisites": ["convex functions", "Jensen's inequality"]
   },
   {
     "id": "ann-birthday-oq0201020101-collapse",
@@ -21,7 +29,11 @@
     "range": { "startLine": 87, "endLine": 94 },
     "type": "insight",
     "title": "Column-stochasticity collapses the double sum",
-    "content": "Summing the per-row bound and swapping the order of summation gives ∑ᵢ(Dq)ᵢ² ≤ ∑ⱼ(∑ᵢ Dᵢⱼ)qⱼ². The two stochasticity constraints play complementary roles: row sums = 1 made each output a convex combination, while column sums = 1 make ∑ᵢ Dᵢⱼ = 1, collapsing the bound back to ∑ⱼ qⱼ²."
+    "content": "Summing the per-row bound and swapping the order of summation gives ∑ᵢ(Dq)ᵢ² ≤ ∑ⱼ(∑ᵢ Dᵢⱼ)qⱼ². The two stochasticity constraints play complementary roles: row sums = 1 made each output a convex combination, while column sums = 1 make ∑ᵢ Dᵢⱼ = 1, collapsing the bound back to ∑ⱼ qⱼ².",
+    "mathContext": "$\\sum_i (Dq)_i^2 \\le \\sum_i \\sum_j D_{ij} q_j^2 = \\sum_j \\bigl(\\sum_i D_{ij}\\bigr) q_j^2 = \\sum_j q_j^2$, using column sums $\\sum_i D_{ij} = 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["double sum / Fubini swap", "column-stochasticity", "doubly stochastic constraints"],
+    "prerequisites": ["the per-row Jensen bound", "interchange of finite sums"]
   },
   {
     "id": "ann-birthday-oq0201020101-endpoint",
@@ -29,6 +41,10 @@
     "range": { "startLine": 108, "endLine": 133 },
     "type": "insight",
     "title": "Uniform minimizer as one instance of the global inequality",
-    "content": "The all-1/d matrix J is doubly stochastic and sends any probability vector to the constant uniform vector 1/d. Applying the global inequality to J yields 1/d = ∑ᵢ(Jq)ᵢ² ≤ ∑ᵢ qᵢ², recovering the parent chain's sharp lower bound — the uniform vector is exhibited as the bottom of the majorization order rather than via a separate variance computation."
+    "content": "The all-1/d matrix J is doubly stochastic and sends any probability vector to the constant uniform vector 1/d. Applying the global inequality to J yields 1/d = ∑ᵢ(Jq)ᵢ² ≤ ∑ᵢ qᵢ², recovering the parent chain's sharp lower bound — the uniform vector is exhibited as the bottom of the majorization order rather than via a separate variance computation.",
+    "mathContext": "$J_{ij} = 1/d$ doubly stochastic, $Jq = (1/d,\\dots,1/d)$, so $\\sum_i (Jq)_i^2 = 1/d \\le \\sum_i q_i^2$ for any probability vector $q$.",
+    "significance": "key",
+    "relatedConcepts": ["uniform distribution", "sharp lower bound", "endpoint of majorization order", "collision probability"],
+    "prerequisites": ["the global Schur-convexity inequality", "probability vectors"]
   }
 ]
