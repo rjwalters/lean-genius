@@ -1198,6 +1198,7 @@ import Proofs.Erdos1004OQ03
 import Proofs.Erdos1004OQ04
 import Proofs.Erdos1004Problem
 import Proofs.Erdos1005Problem
+import Proofs.Erdos1005ProblemOQ02
 import Proofs.Erdos1005ProblemOQ03
 import Proofs.Erdos1005ProblemOQ03OQ01
 import Proofs.Erdos1005ProblemProvable
