@@ -1,8 +1,8 @@
 {
   "slug": "feuerbachs-theorem-defs-oq-02",
   "title": "Nine-Point Circle Uniqueness",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOLVED. Nine-point circle uniqueness proven and shipped under gallery slug feuerbachs-theorem-defs-oq-05 (FeuerbachsTheoremDefsOQ05.lean, PR #29810) because the oq-02 slug was already taken by Euler's triangle formula. Verified, 0 axioms, 0 sorries, 6 theorems.",
+    "builtItems": [
+      "equidistant_center_unique: uniqueness of a point equidistant (squared) from three non-collinear points, via 2x2 linear system + Cramer (linear_combination)",
+      "midpoints_noncollinear: side-midpoint orientation determinant = 1/4 of the triangle non-degeneracy determinant",
+      "ninePointCircle_unique / ninePointCircle_unique_of_nine: any circle through the 3 side midpoints is the nine-point circle (centre N, radius R/2)"
+    ],
+    "insights": [
+      "Circle-through-three-points uniqueness is linear after cancelling the common quadratic terms; the system determinant IS the orientation/twice-signed-area determinant.",
+      "The Triangle structure's built-in non-degeneracy is exactly sufficient: the midpoints' determinant is a constant (1/4) multiple of it, so no new geometric hypothesis is introduced.",
+      "Only 3 of the 9 special points (the side midpoints) are needed for uniqueness; the altitude feet and Euler midpoints are redundant.",
+      "dist2_sq Q P = (dist2 Q P)^2 (Real.sq_sqrt) bridges the parent's sqrt-based membership statements to the polynomial form linear_combination/ring operate on."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Transport ninePointCircle_unique across the toEuclidean bridge (oq-04) to Mathlib Metric.sphere.",
+      "Generalize equidistant_center_unique to a reusable 'three non-collinear points determine a unique circle' lemma and apply to the circumcircle."
+    ],
     "markdown": "# Knowledge Base: feuerbachs-theorem-defs-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
