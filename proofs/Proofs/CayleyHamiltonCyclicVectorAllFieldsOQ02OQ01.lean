@@ -44,16 +44,21 @@
 
   ## Status
 
-  The reduction is fully machine-checked.  The single structural input
-  `finrank_centralizer_ge` (the Frobenius dimension bound `dim C(M) ≥ n`, whose
-  standard proof passes through the rational canonical form / invariant-factor
-  decomposition of `M`) is **isolated as one explicit `axiom`** — it is a
-  classical theorem (Frobenius, 1878) but the invariant-factor / rational-
-  canonical-form packaging it requires is not yet available in Mathlib v4.26.0.
-  Everything else — the dimension bookkeeping (`dim K[M] = deg minpoly`), the
-  degree equality, and the descent to a cyclic vector — is complete and
-  axiom-free, so the entry is `axiomatized` with `axiomCount = 1` and the
-  Frobenius bound transparently disclosed.
+  **Fully machine-checked, 0 axioms, 0 sorries.**  The Frobenius dimension bound
+  `dim C(M) ≥ n` — previously isolated as a single `axiom` because Mathlib has no
+  rational-canonical-form / invariant-factor packaging — is now **proved** below
+  (`finrank_centralizer_ge`) directly from Mathlib's PID primary-decomposition
+  structure theorem `Module.equiv_directSum_of_isTorsion`.  The argument routes
+  the matrix centralizer through the algebra equivalence
+  `Matrix.toLinAlgEquiv'` to the operator centralizer, identifies that with the
+  `K[X]`-endomorphisms of the module `AEval' φ`, and lower-bounds their dimension
+  by `n` via the multiplication embedding (`Algebra.lmul`) of the decomposed
+  module.  Combined with the dimension bookkeeping (`dim K[M] = deg minpoly`),
+  the degree squeeze, and the descent to a cyclic vector, the whole converse edge
+  is verified.  The three supporting lemmas (`lmul_finrank_bound`,
+  `aeval_end_bound`, `endK_centralizer_bound`) are field-/module-general and
+  reusable.  `#print axioms finrank_centralizer_ge` reports only
+  `propext, Classical.choice, Quot.sound`.
 -/
 import Mathlib
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01
@@ -102,32 +107,160 @@ theorem finrank_adjoin_eq_natDegree_minpoly
   exact finrank_quotient_span_eq_natDegree
 
 -- ============================================================
--- SECTION II: The Frobenius dimension bound (ISOLATED CRUX)
+-- SECTION II: The Frobenius dimension bound (NOW PROVED, 0 axioms)
 -- ============================================================
 
-/-- **Frobenius dimension bound (isolated crux, stated as an axiom).** The
-    centralizer `C(M) = {N : NM = MN}` of an `n × n` matrix has `K`-dimension at
+/-
+  The Frobenius dimension bound `dim_K C(M) ≥ n` is no longer an axiom: it is
+  proved below from the Mathlib PID structure theorem.  The argument runs
+
+      C(M)  ≅ₐ  C(φ)        (φ := `Matrix.toLinAlgEquiv' M`, via the algebra
+                            equivalence `Matrix ≃ₐ End K (Fin n → K)`)
+      C(φ)  ⊇  End_{K[X]}(AEval' φ)   (every K[X]-linear endomorphism of the
+                            module `Fin n → K` with `X` acting as `φ` commutes
+                            with `φ`; this gives a K-linear injection)
+      AEval' φ ≅ₗ[K[X]] ⊕ᵢ K[X]/(pᵢ^eᵢ) ≅ₗ[K[X]] Πᵢ K[X]/(pᵢ^eᵢ) =: S
+                            (`Module.equiv_directSum_of_isTorsion`; finite torsion)
+      n = dim_K S ≤ dim_K End_{K[X]} S        (multiplication embedding
+                            `Algebra.lmul` is K-linear injective on the
+                            commutative algebra `S`).
+
+  Transporting `End_{K[X]} S` back along the structure isomorphism to
+  `End_{K[X]}(AEval' φ)` and chaining the three steps yields `n ≤ dim_K C(M)`.
+  This is the classical theorem of Frobenius (1878); the three supporting
+  lemmas below are general-purpose and contain no matrix-specific content.
+-/
+
+/-- For a commutative `K[X]`-algebra `S` that is finite-dimensional over `K`,
+    the multiplication embedding `S ↪ End_{K[X]} S` (left multiplication,
+    `Algebra.lmul`) is a `K`-linear injection, so `dim_K S ≤ dim_K End_{K[X]} S`. -/
+theorem lmul_finrank_bound (S : Type*) [CommRing S] [Algebra (K[X]) S]
+    [Module K S] [IsScalarTower K (K[X]) S] [Module.Finite K S] :
+    Module.finrank K S ≤ Module.finrank K (Module.End (K[X]) S) := by
+  let f : S →ₗ[K] Module.End (K[X]) S :=
+    (Algebra.lmul (K[X]) S).toLinearMap.restrictScalars K
+  have hinj : Function.Injective f :=
+    fun a b hab => Algebra.lmul_injective (R := K[X]) (A := S) hab
+  exact LinearMap.finrank_le_finrank_of_injective hinj
+
+/-- **Operator form of the Frobenius bound.**  For a linear endomorphism `φ` of a
+    finite-dimensional `K`-vector space `V`, the `K[X]`-endomorphisms of the
+    `K[X]`-module `AEval' φ` (i.e. the endomorphisms of `V` commuting with `φ`)
+    span a `K`-space of dimension at least `dim_K V`.
+
+    Proof: `AEval' φ` is a finite torsion `K[X]`-module; the PID structure
+    theorem decomposes it as `⊕ᵢ K[X]/(pᵢ^eᵢ)`, isomorphic (finite index) to the
+    commutative `K[X]`-algebra `S := Πᵢ K[X]/(pᵢ^eᵢ)`, and
+    `dim_K V = dim_K S ≤ dim_K End_{K[X]} S = dim_K End_{K[X]}(AEval' φ)` by
+    `lmul_finrank_bound`. -/
+theorem aeval_end_bound {V : Type*} [AddCommGroup V] [Module K V]
+    [FiniteDimensional K V] (φ : V →ₗ[K] V) :
+    Module.finrank K V ≤ Module.finrank K (Module.End (K[X]) (Module.AEval' φ)) := by
+  have htor : Module.IsTorsion (K[X]) (Module.AEval' φ) :=
+    Module.AEval.isTorsion_of_finiteDimensional K V φ
+  obtain ⟨ι, _, p, _, e, ⟨iso⟩⟩ := Module.equiv_directSum_of_isTorsion htor
+  let Q : ι → Type _ := fun i => K[X] ⧸ (K[X] ∙ p i ^ e i)
+  let isoS : Module.AEval' φ ≃ₗ[K[X]] (∀ i, Q i) :=
+    iso.trans (DirectSum.linearEquivFunOnFintype K[X] ι Q)
+  haveI hFinS : Module.Finite K (∀ i, Q i) :=
+    Module.Finite.equiv (isoS.restrictScalars K)
+  calc Module.finrank K V
+      = Module.finrank K (Module.AEval' φ) := ((Module.AEval'.of φ).symm.finrank_eq)
+    _ = Module.finrank K (∀ i, Q i) := ((isoS.restrictScalars K).finrank_eq)
+    _ ≤ Module.finrank K (Module.End (K[X]) (∀ i, Q i)) := lmul_finrank_bound (∀ i, Q i)
+    _ = Module.finrank K (Module.End (K[X]) (Module.AEval' φ)) :=
+          ((isoS.conj.restrictScalars K).finrank_eq).symm
+
+/-- **The bridge (operator form).**  For `φ : End K V` over a finite-dimensional
+    `V`, the centralizer of `φ` inside `End K V` has `K`-dimension at least
+    `dim_K V`.  The `K[X]`-endomorphisms of `AEval' φ` inject `K`-linearly into
+    the centralizer (a `K[X]`-linear map commutes with the `X`-action `= φ`),
+    and `aeval_end_bound` lower-bounds their dimension by `dim_K V`. -/
+theorem endK_centralizer_bound {V : Type*} [AddCommGroup V] [Module K V]
+    [FiniteDimensional K V] (φ : Module.End K V) :
+    Module.finrank K V ≤
+      Module.finrank K (Subalgebra.centralizer K ({φ} : Set (Module.End K V))) := by
+  let ι0 : Module.End (K[X]) (Module.AEval' φ) →ₗ[K] Module.End K (Module.AEval' φ) :=
+    LinearMap.restrictScalarsₗ K (K[X]) (Module.AEval' φ) (Module.AEval' φ) K
+  let toEnd : Module.End (K[X]) (Module.AEval' φ) →ₗ[K] Module.End K V :=
+    ((Module.AEval'.of φ).conj.symm.toLinearMap) ∘ₗ ι0
+  have hval : ∀ (T : Module.End (K[X]) (Module.AEval' φ)) (x : V),
+      toEnd T x = (Module.AEval'.of φ).symm (T (Module.AEval'.of φ x)) := fun T x => rfl
+  have hmem : ∀ T, toEnd T ∈ Subalgebra.centralizer K ({φ} : Set (Module.End K V)) := by
+    intro T
+    rw [Subalgebra.mem_centralizer_iff]
+    intro g hg
+    simp only [Set.mem_singleton_iff] at hg
+    subst hg
+    ext x
+    simp only [Module.End.mul_apply, hval]
+    rw [← Module.AEval'.X_smul_of, map_smul, Module.AEval'.of_symm_X_smul]
+  have htoEnd_inj : Function.Injective toEnd := by
+    have h1 : Function.Injective (⇑(Module.AEval'.of φ).conj.symm) :=
+      (Module.AEval'.of φ).conj.symm.injective
+    have h2 : Function.Injective ι0 :=
+      fun a b hab => LinearMap.restrictScalars_injective K hab
+    intro a b hab
+    exact h2 (h1 hab)
+  let L : Module.End (K[X]) (Module.AEval' φ) →ₗ[K]
+      ↥(Subalgebra.toSubmodule (Subalgebra.centralizer K ({φ} : Set (Module.End K V)))) :=
+    LinearMap.codRestrict _ toEnd hmem
+  have hLinj : Function.Injective L := by
+    intro a b hab
+    apply htoEnd_inj
+    have := congrArg Subtype.val hab
+    simpa [L, LinearMap.codRestrict] using this
+  calc Module.finrank K V
+      ≤ Module.finrank K (Module.End (K[X]) (Module.AEval' φ)) := aeval_end_bound φ
+    _ ≤ Module.finrank K ↥(Subalgebra.toSubmodule
+          (Subalgebra.centralizer K ({φ} : Set (Module.End K V)))) :=
+          LinearMap.finrank_le_finrank_of_injective hLinj
+    _ = Module.finrank K (Subalgebra.centralizer K ({φ} : Set (Module.End K V))) := rfl
+
+/-- **Frobenius dimension bound (Frobenius, 1878).**  The centralizer
+    `C(M) = {N : NM = MN}` of an `n × n` matrix over a field has `K`-dimension at
     least `n`.
 
-    This is the only ingredient of the converse edge not yet in Mathlib.  It is
-    a classical theorem (Frobenius, 1878): factor `K^n` as a `K[X]`-module into
-    its invariant factors `K[X]/(f_1) ⊕ ⋯ ⊕ K[X]/(f_k)` (rational canonical
-    form); the centralizer is the ring of `K[X]`-module endomorphisms, and the
-    block-diagonal scalar multiplications already span a `K`-subspace of
-    dimension `Σ_i deg f_i = n` (in fact `dim C(M) = Σ_{i,j} deg gcd(f_i, f_j)`,
-    with equality to `n` iff `M` is nonderogatory).
-
-    Mathlib v4.26.0 provides the primary-decomposition structure theorem
-    (`Module.equiv_directSum_of_isTorsion`) and the `Module.AEval'` `K[X]`-module
-    structure, but **not** the bridge identifying `Subalgebra.centralizer K {M}`
-    with `Module.End K[X] (AEval' M)`, nor the invariant-factor packaging needed
-    to count dimensions.  Building both is on the order of several hundred lines
-    of PID-module infrastructure, so the bound is recorded here as a single,
-    transparently-disclosed `axiom` (the entry's only assumption). -/
-axiom finrank_centralizer_ge
+    Transferred from `endK_centralizer_bound` along the algebra equivalence
+    `Matrix.toLinAlgEquiv' : Matrix (Fin n) (Fin n) K ≃ₐ[K] End K (Fin n → K)`,
+    which carries `C(M)` isomorphically onto `C(φ)` for `φ := toLinAlgEquiv' M`. -/
+theorem finrank_centralizer_ge
     (M : Matrix (Fin n) (Fin n) K) :
     Fintype.card (Fin n)
-      ≤ Module.finrank K ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+      ≤ Module.finrank K
+          ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) := by
+  classical
+  let e : Matrix (Fin n) (Fin n) K ≃ₐ[K] Module.End K (Fin n → K) := Matrix.toLinAlgEquiv'
+  let φ : Module.End K (Fin n → K) := e M
+  have hsymm : e.symm φ = M := by simp [φ]
+  have hmap : (Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))).map e.toAlgHom
+            = Subalgebra.centralizer K ({φ} : Set (Module.End K (Fin n → K))) := by
+    apply le_antisymm
+    · rintro y ⟨z, hz, rfl⟩
+      show (e z) ∈ Subalgebra.centralizer K ({φ} : Set (Module.End K (Fin n → K)))
+      rw [Subalgebra.mem_centralizer_iff]
+      intro g hg; simp only [Set.mem_singleton_iff] at hg; subst hg
+      have hz' : z ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)) := hz
+      rw [Subalgebra.mem_centralizer_iff] at hz'
+      have hzM : M * z = z * M := hz' M (by simp)
+      have := congrArg e hzM
+      simpa [map_mul, φ] using this
+    · intro y hy
+      rw [Subalgebra.mem_centralizer_iff] at hy
+      refine ⟨e.symm y, ?_, by simp⟩
+      show e.symm y ∈ Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))
+      rw [Subalgebra.mem_centralizer_iff]
+      intro g hg; simp only [Set.mem_singleton_iff] at hg; subst hg
+      have hyφ : φ * y = y * φ := hy φ (by simp)
+      have := congrArg e.symm hyφ
+      simpa [map_mul, hsymm] using this
+  have hfin1 : Module.finrank K
+        ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
+      = Module.finrank K
+        ↥((Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))).map e.toAlgHom) :=
+    (Subalgebra.equivMapOfInjective _ e.toAlgHom e.injective).toLinearEquiv.finrank_eq
+  rw [hfin1, hmap, ← Module.finrank_fintype_fun_eq_card (R := K) (η := Fin n)]
+  exact endK_centralizer_bound φ
 
 -- ============================================================
 -- SECTION III: deg(minpoly M) ≤ n
