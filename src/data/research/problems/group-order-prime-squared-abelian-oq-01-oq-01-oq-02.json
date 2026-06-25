@@ -1,0 +1,45 @@
+{
+  "id": "group-order-prime-squared-abelian-oq-01-oq-01-oq-02",
+  "name": "Explicit Isomorphisms for Groups of Order p² (ZMod p² vs (ZMod p)²)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 5,
+  "tags": [
+    "algebra",
+    "group-theory",
+    "structure-theorem",
+    "classification"
+  ],
+  "knowledge": {
+    "progressSummary": "COMPLETE: proved the explicit isomorphism classification — every group of order p² is isomorphic to Multiplicative (ZMod p²) or Multiplicative (ZMod p × ZMod p). Verified, 0 axioms, 0 sorries.",
+    "insights": [
+      "Mathlib's CommGroup.equiv_prod_multiplicative_zmod_of_finite already decomposes any finite abelian group as a finite product ∏ i, Multiplicative (ZMod (n i)) with each n i > 1; the entire order-p² classification is a specialisation of this single theorem, not a fresh structural argument.",
+      "The order constraint becomes the arithmetic fact ∏ i, n i = p² (obtained by computing cardinalities through the isomorphism). Each n i divides the product hence divides p², and with n i > 1 the only options are p and p² (Nat.dvd_prime_pow).",
+      "The two isomorphism classes fall out of a counting case split: if any factor equals p² the rest multiply to 1 and (each being > 1) the index set is a singleton (cyclic); otherwise every factor equals p and p^(Fintype.card ι) = p² forces exactly two factors (elementary abelian), via Nat.pow_right_injective.",
+      "Index-set reindexing (abstract two-element fintype onto Fin 2 onto a binary product) is cleanest on the additive side: precomposition (arrowCongrLeftAddEquiv) and evaluation (finTwoArrowAddEquiv) are definitionally additive, so route through Multiplicative of an additive equivalence rather than the multiplicative type-tag plumbing, which lacks a MulEquiv.piCongrLeft."
+    ],
+    "builtItems": [
+      "mulEquiv_classification_of_card_eq_prime_sq in Proofs/GroupOrderPrimeSquaredAbelianClassificationOQ01OQ01OQ02.lean: Nat.card G = p² ⟹ Nonempty (G ≃* Multiplicative (ZMod (p^2))) ∨ Nonempty (G ≃* Multiplicative (ZMod p × ZMod p)).",
+      "finTwoArrowAddEquiv (M : Type*) [AddCommMonoid M] : (Fin 2 → M) ≃+ M × M — evaluation isomorphism, additive by definitional pointwise computation.",
+      "arrowCongrLeftAddEquiv (M) (e : ι ≃ ι') : (ι → M) ≃+ (ι' → M) — constant-codomain reindexing as an additive isomorphism."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the general finite-abelian structure theorem but no classification specialised to order p² (or any fixed small order) naming the model groups ZMod p² and ZMod p × ZMod p.",
+      "There is no MulEquiv.piCongrLeft (only Equiv/RingEquiv/LinearEquiv/AlgEquiv versions); constant-codomain reindexing of a product of multiplicative groups must be built by hand or routed through the additive side."
+    ],
+    "nextSteps": [
+      "Prove the two model groups are non-isomorphic (element of order p² vs exponent p) to make the dichotomy a genuine normal form with exactly two classes.",
+      "Specialise the structure theorem to order p³ (three abelian types) reusing finTwoArrowAddEquiv / arrowCongrLeftAddEquiv-style helpers."
+    ]
+  },
+  "sessions": [
+    {
+      "date": "2026-06-24",
+      "mode": "FRESH",
+      "outcome": "completed",
+      "summary": "Claimed the leaf, applied Mathlib's multiplicative finite-abelian structure theorem, pinned the resulting product to p² (each factor in {p, p²}), and assembled explicit isomorphisms to ZMod p² (cyclic, via MulEquiv.piUnique) and ZMod p × ZMod p (elementary abelian, via additive reindexing onto Fin 2). Builds clean, 0 axioms (propext/Classical.choice/Quot.sound only), 0 sorries."
+    }
+  ]
+}
