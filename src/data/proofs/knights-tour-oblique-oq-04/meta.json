@@ -1,0 +1,206 @@
+{
+  "id": "knights-tour-oblique-oq-04",
+  "title": "Knight's Tour Oblique Angles: 2-regular structure of the oblique turn graph",
+  "slug": "knights-tour-oblique-oq-04",
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "KnightsTourObliqueOQ04",
+    "lineCount": 148,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 4,
+    "path": "Proofs/KnightsTourObliqueOQ04.lean",
+    "sorries": 0
+  },
+  "description": "Open question OQ-04 asks for the MAXIMUM number of oblique (obtuse) turns in a closed knight's tour — a search-heavy question over the ~1.3×10¹³ closed tours of the 8×8 board, which is genuinely open. This entry does not resolve it; instead it pins down, by finite enumeration over the eight knight directions, the local and global structure of the oblique relation that any oblique count is built from. The headline result is 2-REGULARITY: legal_oblique_successors_card proves every knight direction has exactly two legal (non-reversal) oblique successors, isolated from oblique_successors_card (three oblique successors overall) and legal_successors_card (seven legal successors). dot_neg shows the third, forbidden, oblique successor is the antipode (dot = -5, the reversal). oblique_iff_dot sharpens the oblique characterization to dot ∈ {-3,-4} on legal turns; dot_legal_spectrum gives the reduced spectrum {-4,-3,0,3,4,5}. Globally, oblique_pairs_card / legal_oblique_pairs_card give the exact densities 24/64 = 3/8 (all pairs) and 16/56 = 2/7 (legal pairs). The file is self-contained (imports only Mathlib, like sibling OQ-01): all 10 theorems are machine-checked, 0 axioms, 0 sorries, no native_decide (confirmed by #print axioms: only propext / Classical.choice / Quot.sound).",
+  "meta": {
+    "author": "Lean Genius researchers (2026)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/KnightsTourObliqueOQ04.lean",
+    "tags": [
+      "knights-tour",
+      "combinatorics",
+      "graph-theory",
+      "chessboard",
+      "enumeration",
+      "dot-product",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 148,
+    "assumptions": "None. The file is self-contained — it imports only Mathlib (mirroring the self-contained sibling OQ-01) and reconstructs the eight knight directions as Fin 8 with their dot product, so it does not depend on the lineage base file (which uses native_decide and an enumeration axiom). All ten theorems are proved by `decide` / `fin_cases` over the finite index set and depend only on Lean's foundational axioms propext, Classical.choice, Quot.sound — confirmed via #print axioms. No axiom declarations, no native_decide (no Lean.ofReduceBool), no sorries.",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.filter / Finset.card",
+        "description": "Cardinality of filtered subsets of Finset.univ over Fin 8 (and Fin 8 × Fin 8) — the form of the successor-count and pair-count theorems, evaluated by decide",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Fintype.decidableForallFintype",
+        "description": "Decidability of ∀ over a Fintype, making the per-direction statements decidable and closing them by `decide`",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "additionalFiles": [],
+    "originalContributions": [
+      "legal_oblique_successors_card: 2-REGULARITY — every knight direction has exactly two legal (non-reversal) oblique successors. This is the uniform local constraint underlying any count of oblique turns: at each step a tour may turn obliquely into at most two of its seven legal continuations.",
+      "oblique_successors_card / legal_successors_card / dot_neg: the unconstrained oblique out-degree is 3 (dot < 0), the legal out-degree is 7 (all but the antipode), and dot_neg pins the third oblique successor as the antipode with dot product -5 (the reversal); together these isolate the single forbidden reversal among the oblique successors.",
+      "oblique_iff_dot: on legal turns, oblique ⇔ dot ∈ {-3,-4}, sharpening the base file's oblique_iff_large_turn ({3,4,5}) by deleting the reversal value -5, consistent with no_turn_angle_4_all. dot_legal_spectrum gives the matching reduced spectrum {-4,-3,0,3,4,5}.",
+      "oblique_pairs_card / legal_oblique_pairs_card: exact global oblique densities 24/64 = 3/8 over all ordered direction pairs and 16/56 = 2/7 over legal pairs — the global shadow of 2-regularity."
+    ],
+    "theoremCount": 10,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Donald Knuth's 29th Annual Christmas Lecture (December 4, 2025), 'The Knight's Adventure', proved that every closed knight's tour on the 8×8 board has at least 4 oblique (obtuse) turns, achieved uniquely up to the board's dihedral symmetry D₄. The base Lean formalization (KnightsTourOblique.lean) captures that lower bound and the uniqueness (the latter as an axiom backed by enumeration). The open follow-ups study the full histogram of oblique counts; OQ-04 asks for its right endpoint — the maximum oblique count.",
+    "problemStatement": "What is the maximum number of oblique turns in a closed knight's tour? The exact value is a search question over ~1.3×10¹³ tours and is open. This entry instead establishes the local/global structure of the oblique relation on the eight knight directions — the substrate from which any oblique count is assembled — as fully machine-checked enumeration facts.",
+    "proofStrategy": "The eight knight directions are reconstructed as Fin 8 with vector vec, dot product dot, oblique predicate isOblique (dot < 0), and antipode neg i = i + 4 (mod 8). Every statement about the oblique relation is then a finite check. neg_neg / vec_neg / dot_neg fix the antipode as the reversal (dot -5). The per-turn refinement oblique_iff_dot and the reduced spectrum dot_legal_spectrum are 64-case decide computations (the reversal hypothesis discharges the antipodal case). The successor counts filter Finset.univ by the relevant predicate and evaluate the cardinality by decide for each of the 8 directions; the global counts decide over the 64 ordered pairs directly.",
+    "keyInsights": [
+      "**2-regularity is the heart.** Of a direction's seven legal continuations, exactly two are oblique. This uniform local out-degree (legal_oblique_successors_card) is the structural fact any oblique-count argument must respect, and it explains the 2/7 global legal density combinatorially rather than empirically.",
+      "**The reversal is the third, forbidden, oblique successor.** Unconstrained there are three oblique successors (dot < 0); one is the antipode neg i, whose turn has dot -5 (dot_neg) — the reversal that revisits the previous square and so never occurs in a tour (base file's no_turn_angle_4_all). Deleting it leaves exactly two and sharpens the dot spectrum to {-3,-4} on legal turns.",
+      "**Honest scope.** The maximum oblique count is a genuine search question with no known elementary closed form; this entry deliberately does not claim it. What is contributed is verified structure, not an inflated bound.",
+      "**Local structure does not bound the global maximum.** 2-regularity constrains choices, not forced counts: a tour could in principle turn obliquely at every step it is free to, so the local data alone gives no maximum below the trivial 64. Pinning the true maximum needs the global tour constraints (closure Σ move vectors = 0, simplicity, board geometry), which is why OQ-04 stays open."
+    ],
+    "prerequisites": [
+      "Knight moves and the eight move directions (base entry knights-tour-oblique)",
+      "The dot product of move vectors and the oblique predicate (turn with dot product < 0)",
+      "Finset.filter / Finset.card over a Fintype, and decision by `decide` / `fin_cases`",
+      "The notion that the reversal turn (antipodal direction) never occurs in a tour"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "legal_oblique_successors_card",
+      "type": "theorem",
+      "description": "(univ.filter (fun j => j ≠ neg i ∧ isOblique i j)).card = 2: every knight direction has exactly two legal (non-reversal) oblique successors — the oblique relation is 2-regular on legal turns."
+    },
+    {
+      "name": "oblique_successors_card",
+      "type": "theorem",
+      "description": "(univ.filter (fun j => isOblique i j)).card = 3: every direction has exactly three oblique successors overall (dot product < 0), one of which is the forbidden reversal."
+    },
+    {
+      "name": "legal_successors_card",
+      "type": "theorem",
+      "description": "(univ.filter (fun j => j ≠ neg i)).card = 7: every direction has exactly seven legal successors — all directions except its own antipode."
+    },
+    {
+      "name": "dot_neg",
+      "type": "theorem",
+      "description": "dot i (neg i) = -5: the turn to the antipode is the reversal, with the unique most-negative dot product; this is the always-forbidden oblique successor."
+    },
+    {
+      "name": "oblique_iff_dot",
+      "type": "theorem",
+      "description": "For j ≠ neg i, isOblique i j ⇔ dot i j = -3 ∨ dot i j = -4: a legal turn is oblique iff its dot product is exactly -3 or -4 (the reversal value -5 cannot occur)."
+    },
+    {
+      "name": "oblique_pairs_card",
+      "type": "theorem",
+      "description": "Exactly 24 of the 64 ordered direction pairs are oblique: global oblique density 24/64 = 3/8."
+    },
+    {
+      "name": "legal_oblique_pairs_card",
+      "type": "theorem",
+      "description": "Exactly 16 of the 56 legal (non-reversal) ordered pairs are oblique: legal oblique density 16/56 = 2/7."
+    }
+  ],
+  "references": [
+    {
+      "type": "lecture",
+      "citation": "Knuth, D. E. (2025). 29th Annual Christmas Lecture: 'The Knight's Adventure'. Stanford University, December 4, 2025.",
+      "relevance": "Source of the oblique-turn problem; OQ-04 asks for the maximum of the oblique-count histogram introduced there."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Data.Finset.Card\", \"Mathlib.Data.Fintype.Basic\". (accessed 2026)",
+      "relevance": "Finset cardinality and Fintype decidability lemmas underlying the enumeration counts proved by `decide`."
+    }
+  ],
+  "sections": [
+    {
+      "id": "header",
+      "title": "File Header and Scope",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring stating OQ-04 (the maximum oblique count), declaring that the exact maximum is open and not claimed here, and listing the structural results: the antipode/reversal facts, the per-turn refinement, the successor counts (2-regularity), and the global densities. The file is self-contained, importing only Mathlib.",
+      "mathContext": "Maximum oblique count is open; this file proves the local/global structure of the oblique relation on the 8 directions."
+    },
+    {
+      "id": "definitions",
+      "title": "The eight directions, dot product, oblique predicate, antipode",
+      "startLine": 53,
+      "endLine": 74,
+      "summary": "vec : Fin 8 → ℤ×ℤ enumerates the eight knight directions counterclockwise (matching allMoveVectors in the base file); dot is their integer dot product; isOblique i j := dot i j < 0; neg i := i + 4 (mod 8) is the antipode.",
+      "mathContext": "Directions indexed $0..7$; $\\mathrm{neg}\\,i = i+4 \\pmod 8$ is the antipode."
+    },
+    {
+      "id": "antipode",
+      "title": "The antipode is the reversal",
+      "startLine": 75,
+      "endLine": 96,
+      "summary": "neg_neg: neg is an involution; vec_neg: vec (neg i) = -vec i; dot_neg: dot i (neg i) = -5, the unique most-negative dot product. The antipode is therefore the reversal turn, which never occurs in a tour.",
+      "mathContext": "$\\mathrm{dot}\\,i\\,(\\mathrm{neg}\\,i) = -5$; the antipodal turn is the forbidden reversal."
+    },
+    {
+      "id": "per-turn",
+      "title": "Per-turn refinement on legal moves",
+      "startLine": 97,
+      "endLine": 111,
+      "summary": "oblique_iff_dot: a legal (non-reversal) turn is oblique iff its dot product is -3 or -4; dot_legal_spectrum: the legal dot spectrum is {-4,-3,0,3,4,5}. Both are 64-case decide checks, the reversal hypothesis discharging the antipodal case.",
+      "mathContext": "On legal turns the oblique values are exactly $\\{-3,-4\\}$; the reversal value $-5$ is removed."
+    },
+    {
+      "id": "successor-counts",
+      "title": "Local successor counts and 2-regularity",
+      "startLine": 112,
+      "endLine": 134,
+      "summary": "legal_successors_card = 7 (all but the antipode), oblique_successors_card = 3 (dot < 0), and legal_oblique_successors_card = 2 (the 2-regularity result). Each filters Finset.univ over Fin 8 and evaluates the cardinality by decide for all 8 directions.",
+      "mathContext": "Out-degrees in the direction graph: legal $7$, oblique $3$, legal-oblique $2$."
+    },
+    {
+      "id": "global-counts",
+      "title": "Global oblique densities",
+      "startLine": 135,
+      "endLine": 148,
+      "summary": "oblique_pairs_card = 24 (of 64) and legal_oblique_pairs_card = 16 (of 56): the exact oblique densities 3/8 and 2/7, decided over all ordered pairs of directions.",
+      "mathContext": "$24/64 = 3/8$ over all pairs; $16/56 = 2/7$ over legal pairs."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-04 (the maximum oblique count of a closed knight's tour) is open. This entry contributes the verified local and global structure of the oblique relation on the eight knight directions: every direction has exactly two legal oblique successors (2-regularity), three oblique successors overall (the third being the reversal, dot -5), and seven legal successors; on legal turns oblique ⇔ dot ∈ {-3,-4}; and the global oblique densities are 3/8 over all pairs and 2/7 over legal pairs. All ten results are self-contained, axiom-free, and native_decide-free.",
+    "implications": "The 2-regularity and density facts quantify the per-step combinatorics that any oblique-count argument is built on, and the spectrum refinement aligns the dot-product and turn-angle views of obliqueness with the base file's no-reversal theorem. They mark the honest local starting point for the open maximum.",
+    "openQuestions": [
+      "Determine the exact maximum oblique count over all closed 8×8 knight's tours (OQ-04 proper) — currently only bounded by the trivial 64.",
+      "Find a non-trivial upper bound below 64 from the global tour constraints (closure Σ move vectors = 0, simplicity, board geometry), beyond the local 2-regularity.",
+      "Exhibit an explicit high-oblique tour to certify a strong lower bound on the maximum, complementing the minimal 4-oblique tour of the base file."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "knights-tour-oblique",
+      "relationship": "ancestor",
+      "description": "The base file, whose oblique predicate, dot product, and no_turn_angle_4_all (the reversal turn never occurs) this entry reconstructs self-containedly and quantifies."
+    },
+    {
+      "targetId": "knights-tour-oblique-oq-01",
+      "relationship": "complementary",
+      "description": "Sibling on the n×n generalization of the oblique MINIMUM (lower bound 4), also self-contained; this entry concerns the structure behind the MAXIMUM."
+    },
+    {
+      "targetId": "knights-tour-oblique-oq-02",
+      "relationship": "complementary",
+      "description": "The OQ-02 histogram/distribution skeleton; OQ-04 is the right endpoint (maximum) of that histogram, whose local substrate is quantified here."
+    }
+  ]
+}
