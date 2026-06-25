@@ -64,6 +64,91 @@
  },
  "overview": {
   "historicalContext": "The Erdős divisibility pigeonhole — popularized by Paul Erdős, who reportedly posed it to the young Lajos Pósa — guarantees a divisible pair among any n+1 elements of {1,…,2n}. A natural follow-up, recorded as the parent's open question, asks how much *more* structure is forced: a single pair, or an ever-longer divisibility chain? The answer is that only a pair is forced. The block {n,…,2n} adds the smallest element n to the maximal antichain {n+1,…,2n}, creating exactly one divisibility relation (n ∣ 2n) and no chain of length 3. Meanwhile the interval {1,…,2n} as a whole contains the powers-of-two chain 1,2,4,…, whose length ~log₂(2n) grows without bound — so the divisibility poset is deep, but its forced collisions among threshold subsets are shallow.",
-  "significance": "Separates two distinct combinatorial quantities for the divisibility poset on {1,…,2n}: the size of the largest forced collision (a pair, length 2) versus the depth of the poset (chains of length ~log n). It makes precise the intuition that the pigeonhole gem is a statement about pairs, not chains, and exhibits an explicit (n+1)-element 'pair-only' witness alongside an explicit family of long ambient chains."
- }
+  "significance": "Separates two distinct combinatorial quantities for the divisibility poset on {1,…,2n}: the size of the largest forced collision (a pair, length 2) versus the depth of the poset (chains of length ~log n). It makes precise the intuition that the pigeonhole gem is a statement about pairs, not chains, and exhibits an explicit (n+1)-element 'pair-only' witness alongside an explicit family of long ambient chains.",
+  "proofStrategy": "Two contrasting constructions answer the dichotomy. (1) Confinement: the witness block T = Icc n (2n) is shown to contain no 3-term chain via a doubling argument — any proper divisor relation a ∣ b inside [n,2n] forces b ≥ 2a ≥ 2n, pinning a=n, b=2n, after which a third element c ≥ 2b = 4n exceeds the block. Combined with the explicit pair n ∣ 2n and the cardinality |Icc n (2n)| = n+1, this realizes a threshold subset whose forced structure is exactly a pair. (2) Contrast: the powers of two {2^0,…,2^k} are exhibited as a totally ∣-ordered subset of {1,…,2n} of size k+1 (injectivity of i ↦ 2^i for cardinality, pow_dvd_pow for the chain), so ambient chain length grows like log₂(2n). The parent pigeonhole is reused verbatim to certify the pair is unavoidable.",
+  "keyInsights": [
+   "The pigeonhole gem is fundamentally a statement about *pairs*, not chains: the threshold n+1 forces one divisibility relation but never a longer chain among (n+1)-subsets.",
+   "Adjoining the single smallest element n to the maximal antichain {n+1,…,2n} produces an 'antichain-plus-one' set whose only relation is n ∣ 2n — minimal *and* maximal forced structure simultaneously.",
+   "The doubling bound b ≥ 2a is the entire engine: in [n,2n] a divisor must at least double its divisor, so two stacked relations would need a factor of 4 and overflow the block.",
+   "Poset depth and forced-collision size are genuinely different parameters: {1,…,2n} has chains of length ~log₂(2n) (the powers of two) even though nothing past a pair is forced at the threshold.",
+   "Resolving an open question by extremal example: the witness block converts the parent's existence statement (some pair exists) into an exact value (longest forced chain = 2)."
+  ]
+ },
+ "sections": [
+  {
+   "id": "chain-predicate",
+   "title": "The 3-term chain predicate",
+   "startLine": 49,
+   "endLine": 52,
+   "summary": "Defines HasDivChain3 S — three elements a ∣ b ∣ c with a ≠ b, b ≠ c — the reusable 'length ≥ 3' obstruction that the refinement rules out."
+  },
+  {
+   "id": "no-chain3",
+   "title": "No 3-term chain in the witness block",
+   "startLine": 54,
+   "endLine": 83,
+   "summary": "block_no_chain3: the doubling argument b ≥ 2a forces a=n, b=2n, after which b ∣ c with c ≤ 2n is impossible, so Icc n (2n) holds no length-3 chain."
+  },
+  {
+   "id": "block-pair",
+   "title": "The witness block has a pair",
+   "startLine": 85,
+   "endLine": 92,
+   "summary": "block_has_pair: exhibits n ∣ 2n with n ≠ 2n, both in Icc n (2n) — the single divisibility relation created by adjoining n to the antichain."
+  },
+  {
+   "id": "pair-forced",
+   "title": "The pair is unavoidable",
+   "startLine": 94,
+   "endLine": 100,
+   "summary": "every_threshold_set_has_pair re-exports the parent pigeonhole: every (n+1)-subset of {1,…,2n} contains a pair, fixing the lower bound the witness matches."
+  },
+  {
+   "id": "main-confinement",
+   "title": "Collisions confined to pairs",
+   "startLine": 102,
+   "endLine": 112,
+   "summary": "collisions_confined_to_pairs: the headline theorem assembling the (n+1)-element witness with a pair but no 3-term chain — longest forced chain has length exactly 2."
+  },
+  {
+   "id": "ambient-chain",
+   "title": "Powers of two as a long ambient chain",
+   "startLine": 114,
+   "endLine": 144,
+   "summary": "ambient_has_long_chain: whenever 2^k ≤ 2n, the powers {2^0,…,2^k} form a size-(k+1) subset of {1,…,2n} totally ordered by divisibility."
+  },
+  {
+   "id": "ambient-unbounded",
+   "title": "Ambient chain length is unbounded",
+   "startLine": 146,
+   "endLine": 156,
+   "summary": "ambient_chain_length_unbounded: for any k, taking n = 2^k yields a chain of length ≥ k in {1,…,2n} — the second horn making the dichotomy real."
+  },
+  {
+   "id": "axiom-audit",
+   "title": "Axiom audit",
+   "startLine": 158,
+   "endLine": 162,
+   "summary": "#print axioms confirms both headline theorems depend only on propext, Classical.choice, Quot.sound — no native_decide, no sorry."
+  }
+ ],
+ "conclusion": {
+  "summary": "For n ≥ 1 the explicit (n+1)-element block {n,…,2n} contains a divisibility pair (forced, by the parent pigeonhole) but no 3-term divisibility chain, so the longest divisibility chain that the threshold n+1 can force among subsets of {1,…,2n} has length exactly 2. The contrasting construction — the powers of two inside {1,…,2n} — shows chain lengths in the interval itself grow like log₂(2n), so the parent's chain-versus-pair dichotomy is genuine: forced collisions are shallow even though the divisibility poset is deep.",
+  "implications": "The result cleanly separates two combinatorial quantities that the original pigeonhole statement conflates: the size of the largest *forced* collision (a pair) and the depth of the divisibility poset (logarithmic). It certifies that the Erdős gem is intrinsically a theorem about pairs, and supplies a tight extremal witness — the antichain-plus-one block — that any sharper quantitative refinement must respect. Methodologically it illustrates resolving an open question by exhibiting a matching extremal example rather than strengthening the existence proof.",
+  "openQuestions": [
+   "If one forbids the extremal block {n,…,2n} (or more generally bounds how close a subset may sit to the top of the interval), is a 3-term chain then forced, and at what cardinality threshold?",
+   "Over {1,…,kn} with an (n+1)-element subset, how does the longest forced divisibility chain grow with the multiplier k — does relaxing the 2n ceiling reintroduce forced chains?",
+   "What is the extremal count of (n+1)-subsets that achieve the 'pair-only' bound, and is {n,…,2n} the unique such witness up to obvious symmetries?"
+  ]
+ },
+ "crossReferences": [
+  {
+   "proofId": "erdos-divisibility-pigeonhole",
+   "relationship": "Parent. Supplies the verified pigeonhole theorem this entry reuses (every_threshold_set_has_pair) and poses the chain-refinement open question answered here."
+  },
+  {
+   "proofId": "erdos-divisibility-pigeonhole-oq-01",
+   "relationship": "Sibling extremal form. Where oq-01 measures the largest divisibility antichain (max size n), this entry measures the longest forced chain (length 2) — complementary facets of the same divisibility poset on {1,…,2n}."
+  }
+ ]
 }
