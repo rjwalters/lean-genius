@@ -1,0 +1,137 @@
+[
+  {
+    "id": "ann-collatz-oq02-imports",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "Setup: From the Halving Constraint to a Uniform Bound",
+    "content": "The file opens with `import Mathlib` and `open Real`, then enters the `CollatzCyclesOQ02` namespace. The docstring frames the goal precisely: `CollatzCycles.lean` proves the halving constraint `3 ^ J < 2 ^ M` for a hypothetical non-trivial cycle (generalised to all `J` in `collatz-cycles-oq-04`) but only converts it to an explicit halving lower bound for `J = 1, 2, 3, 4` via a hand-built ladder (`min_halvings_one_odd … four_odd`). This file replaces that finite ladder with one uniform inequality valid for every `J`, obtained by taking base-2 logarithms of the constraint. Crucially, the constraint `3 ^ J < 2 ^ M` is taken as a *hypothesis* here — the cyclic-product machinery that establishes it lives in the dependency `collatz-cycles-oq-04`.",
+    "mathContext": "A non-trivial Collatz cycle with $J$ odd (tripling) steps and $M$ even (halving) steps must satisfy $3^J < 2^M$. The whole file studies the quantitative consequences of this single arithmetic inequality, treating $J$ and $M$ as free naturals related only by it.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Collatz conjecture",
+      "non-trivial cycle",
+      "halving constraint"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.SpecialFunctions.Log.Base",
+      "base-2 logarithm logb"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq02-logb",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 37,
+      "endLine": 51
+    },
+    "type": "insight",
+    "title": "The Sharp Logarithmic Halving Bound: M > J·log₂3",
+    "content": "`halvings_gt_logb` is the heart of the file: from `3 ^ J < 2 ^ M` it derives `(J : ℝ) * logb 2 3 < M`. The proof has four moves: (1) cast the natural-number inequality to ℝ with `Nat.cast_lt` and `push_cast`, giving `(3:ℝ)^J < (2:ℝ)^M`; (2) apply `Real.logb_lt_logb` (strict monotonicity of base-2 log, valid since base `2 > 1` and `3^J > 0`); (3) rewrite both sides with `Real.logb_pow` to pull exponents out as `J * logb 2 3` and `M * logb 2 2`; (4) collapse `logb 2 2 = 1` via `Real.logb_self_eq_one`. The result is the *exact* asymptotic growth rate — `log₂3 ≈ 1.585` is the best possible constant, since the constraint becomes equality in the limit.",
+    "mathContext": "Applying the strictly increasing function $\\log_2$ to $3^J < 2^M$: $\\log_2(3^J) = J\\log_2 3$ and $\\log_2(2^M) = M\\log_2 2 = M$, so $J\\log_2 3 < M$. The constant $\\log_2 3 = 1.58496\\ldots$ is irrational (else $2^a = 3^b$), so the strict inequality never degenerates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "halvings_gt_logb",
+      "Real.logb_lt_logb",
+      "Real.logb_pow",
+      "Real.logb_self_eq_one"
+    ],
+    "prerequisites": [
+      "strict monotonicity of logarithm",
+      "Nat.cast_lt / push_cast",
+      "logb of a power"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq02-ceil",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 53,
+      "endLine": 58
+    },
+    "type": "technique",
+    "title": "Integer Halving Bound: M ≥ ⌈J·log₂3⌉₊",
+    "content": "`halvings_ge_ceil` upgrades the real-valued bound to a sharp *integer* statement: since `M` is a natural number and `M > J·log₂3`, we get `M ≥ ⌈J·log₂3⌉₊`. The proof is a single application of `Nat.ceil_le` to `(halvings_gt_logb h).le`. The power of this form is that it mechanically reproduces every entry of the original ad-hoc ladder: `J=1 → ⌈1.585⌉ = 2`, `J=2 → ⌈3.170⌉ = 4`, `J=3 → ⌈4.755⌉ = 5`, `J=4 → ⌈6.340⌉ = 7` — exactly the four values `CollatzCycles.lean` proved one at a time by `interval_cases`.",
+    "mathContext": "For a natural $M$, $x < M \\iff \\lceil x \\rceil \\le M$ when $x \\ge 0$ (`Nat.ceil_le`). Thus $J\\log_2 3 < M$ gives $\\lceil J\\log_2 3\\rceil_+ \\le M$, the tightest integer bound the inequality can yield.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "halvings_ge_ceil",
+      "Nat.ceil_le",
+      "min_halvings ladder"
+    ],
+    "prerequisites": [
+      "Nat.ceil (⌈·⌉₊)",
+      "ceiling–order Galois connection"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq02-length",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 60,
+      "endLine": 75
+    },
+    "type": "insight",
+    "title": "General Cycle-Length Bound: L > J·log₂6 ≈ 2.585·J",
+    "content": "`cycle_length_gt` converts the halving bound into a bound on the *total* cycle length `L = M + J`. The key algebraic fact is `logb 2 6 = logb 2 3 + 1`, proved by writing `6 = 3 * 2`, applying `Real.logb_mul`, and collapsing `logb 2 2 = 1`. Then `J·log₂6 = J·log₂3 + J`, and adding `J` to both sides of `J·log₂3 < M` (after `push_cast` to handle the `(M + J : ℕ)` cast) yields `J·log₂6 < M + J = L`, discharged by `linarith`. Since `log₂6 = 2.585…`, the cycle length grows at least linearly in `J` with this slope.",
+    "mathContext": "$L = M + J$ and $M > J\\log_2 3$, so $L > J\\log_2 3 + J = J(\\log_2 3 + 1) = J\\log_2 6$. Here $\\log_2 6 = \\log_2 3 + \\log_2 2 = 1.585\\ldots + 1 = 2.585\\ldots$. This $2.585J$ slope is the elementary linear core of Eliahou's growth estimate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cycle_length_gt",
+      "Real.logb_mul",
+      "halvings_gt_logb"
+    ],
+    "prerequisites": [
+      "logarithm of a product",
+      "linarith",
+      "cast arithmetic (push_cast)"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq02-elementary-halvings",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 77,
+      "endLine": 83
+    },
+    "type": "technique",
+    "title": "Elementary Log-Free Halving Bound: M > J",
+    "content": "`halvings_gt_odd_steps` gives a weaker but completely elementary version of the main bound that avoids real numbers entirely: there are strictly more halvings than triplings, `J < M`. The chain is `2^J ≤ 3^J` (from `Nat.pow_le_pow_left` since `2 ≤ 3`) followed by `3^J < 2^M` (the hypothesis), giving `2^J < 2^M`; strict monotonicity of `2^·` (`Nat.pow_lt_pow_iff_right`, base `2 > 1`) then yields `J < M`. This is strictly weaker than `halvings_gt_logb` — it only recovers the slope `1` rather than the sharp `log₂3 ≈ 1.585` — but it needs no analysis, only natural-number power monotonicity.",
+    "mathContext": "$2^J \\le 3^J < 2^M \\Rightarrow 2^J < 2^M \\Rightarrow J < M$. The middle step replaces $3$ by the smaller base $2$, sacrificing the factor $\\log_2 3$ for a purely combinatorial argument.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "halvings_gt_odd_steps",
+      "Nat.pow_le_pow_left",
+      "Nat.pow_lt_pow_iff_right"
+    ],
+    "prerequisites": [
+      "monotonicity of n ↦ bⁿ on ℕ",
+      "transitivity of <"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq02-elementary-length",
+    "proofId": "collatz-cycles-oq-02",
+    "range": {
+      "startLine": 85,
+      "endLine": 93
+    },
+    "type": "technique",
+    "title": "Elementary Cycle-Length Bound: L ≥ 2J + 1",
+    "content": "`cycle_length_ge_two_mul` is the log-free companion to `cycle_length_gt`: for `J ≥ 1`, the total length `L = M + J` satisfies `2J + 1 ≤ M + J`. It follows immediately from `halvings_gt_odd_steps` (`J < M`, i.e. `M ≥ J + 1`) by `omega`. The conclusion says a non-trivial cycle is more than twice as long as its number of odd steps. The analytic `cycle_length_gt` improves the slope from `2` to `log₂6 ≈ 2.585`; this version trades that sharpness for a one-line `omega` proof requiring no real analysis.",
+    "mathContext": "From $M \\ge J + 1$, $L = M + J \\ge (J+1) + J = 2J + 1$. For the known cycle $\\{1,2,4\\}$ ($J=1$) this gives $L \\ge 3$, attained exactly. The sharp version $L > 2.585J$ would give $L > 2.585$ for $J=1$, also consistent with $L = 3$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "cycle_length_ge_two_mul",
+      "halvings_gt_odd_steps",
+      "omega"
+    ],
+    "prerequisites": [
+      "linear arithmetic over ℕ",
+      "omega decision procedure"
+    ]
+  }
+]

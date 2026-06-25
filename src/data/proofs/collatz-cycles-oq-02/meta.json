@@ -41,7 +41,14 @@
   "overview": {
     "historicalContext": "Eliahou (1993) proved that any non-trivial cycle of the Collatz map has length at least 17,087,915, by analyzing the continued-fraction expansion of log₂3 to bound how closely 2^M can approximate 3^J. CollatzCycles.lean in this gallery establishes the underlying halving constraint 3^J < 2^M (generalized in collatz-cycles-oq-04) and a finite ladder of minimal-halving bounds for J = 1, 2, 3, 4. This entry supplies the general quantitative bound underlying that ladder.",
     "problemStatement": "Establish, for every J, a lower bound on the number of halvings M (and hence on the total cycle length L = M + J) of a hypothetical non-trivial Collatz cycle with J odd steps, given the halving constraint 3^J < 2^M.",
-    "keyInsight": "Taking base-2 logarithms of the halving constraint 3^J < 2^M and using strict monotonicity of logb (base 2 > 1) gives J·log₂3 < M directly: logb 2 (3^J) = J·logb 2 3 and logb 2 (2^M) = M·logb 2 2 = M. The ceiling bound M ≥ ⌈J·log₂3⌉₊ follows from Nat.ceil_le, and L > J·log₂6 from log₂6 = 1 + log₂3."
+    "proofStrategy": "Take the halving constraint 3^J < 2^M as the hypothesis and apply the strictly increasing function log₂ to both sides. Since log₂(3^J) = J·log₂3 (logb_pow) and log₂(2^M) = M (logb_self_eq_one), monotonicity (logb_lt_logb, valid because base 2 > 1) yields the sharp real bound M > J·log₂3. Casting to a natural via Nat.ceil_le gives M ≥ ⌈J·log₂3⌉₊, and adding J using log₂6 = log₂3 + 1 (logb_mul) gives the length bound L > J·log₂6. Two log-free corollaries (M > J and L ≥ 2J+1) fall out of natural-number power monotonicity and omega, providing weaker but fully elementary versions.",
+    "keyInsights": [
+      "A single application of the strictly increasing log₂ to 3^J < 2^M turns the multiplicative cycle constraint into the linear bound M > J·log₂3 — the exact growth rate, since log₂3 ≈ 1.585 is the best possible constant.",
+      "The ceiling form M ≥ ⌈J·log₂3⌉₊ mechanically reproduces the entire ad-hoc ladder of CollatzCycles.lean (J=1→2, J=2→4, J=3→5, J=4→7) that was previously proved one value at a time by interval_cases.",
+      "Total cycle length obeys L = M + J > J·log₂6 ≈ 2.585·J because log₂6 = log₂3 + 1; the length grows at least linearly in the number of odd steps.",
+      "The same constraint admits a purely elementary route — 2^J ≤ 3^J < 2^M forces J < M and hence L ≥ 2J + 1 — recovering the linear growth with slope 2 using only ℕ power monotonicity and omega, no real analysis.",
+      "This is the elementary logarithmic core of Eliahou's theorem; sharpening the constant to his numerical bound (length ≥ 17,087,915) requires the continued-fraction expansion of log₂3, a Diophantine-approximation step deliberately left unformalized here."
+    ]
   },
   "sections": [
     {
