@@ -78,6 +78,15 @@ We axiomatize this enumeration.
 axiom smoothEnum (P : Set ℕ) : ℕ → ℕ
 
 /--
+**Enumeration is strictly increasing:**
+By definition, an enumeration of the P-smooth numbers in increasing order
+is strictly monotone. In particular the values are unbounded
+(`StrictMono` on `ℕ → ℕ` gives `i ≤ smoothEnum P i`), which is the
+property the limit argument below relies on.
+-/
+axiom smoothEnum_strictMono (P : Set ℕ) : StrictMono (smoothEnum P)
+
+/-
 **Enumeration properties:**
 -/
 
@@ -85,7 +94,7 @@ axiom smoothEnum (P : Set ℕ) : ℕ → ℕ
 **Gap function:**
 The gap between consecutive P-smooth numbers.
 -/
-def gap (P : Set ℕ) (i : ℕ) : ℕ :=
+noncomputable def gap (P : Set ℕ) (i : ℕ) : ℕ :=
   smoothEnum P (i + 1) - smoothEnum P i
 
 /-
@@ -110,13 +119,13 @@ def erdos240Question : Prop :=
 ## Part IV: Pólya's Theorem (1918)
 -/
 
-/--
+/-
 **Pólya's Theorem:**
 If f(n) is a quadratic integer polynomial without repeated roots,
 then the largest prime factor of f(n) → ∞ as n → ∞.
 -/
 
-/--
+/-
 **Corollary: f(n) = n(n+k) has large prime factors:**
 -/
 
@@ -136,7 +145,7 @@ by Pólya's theorem, contradiction.
 axiom finite_P_unbounded_gaps (P : Finset ℕ) (hP : ∀ p ∈ P, Nat.Prime p) :
   gapsTendToInfinity (↑P : Set ℕ)
 
-/--
+/-
 **Tijdeman's quantitative bound for finite P (1973):**
 For finite P, the gaps satisfy:
 aᵢ₊₁ - aᵢ ≫ aᵢ / (log aᵢ)^C
@@ -168,10 +177,50 @@ Yes, such an infinite P exists.
 -/
 theorem erdos240_answer : erdos240Question := by
   obtain ⟨P, hPrime, hInf, c, hc, hgap⟩ := tijdeman_main_theorem (1/2) (by norm_num)
-  use P, hPrime, hInf
+  refine ⟨P, hPrime, hInf, ?_⟩
   intro M
-  -- Gaps grow like a^{1/2}, so eventually exceed M
-  sorry
+  -- The enumeration is strictly increasing, hence `i ≤ smoothEnum P i`.
+  have hmono : StrictMono (smoothEnum P) := smoothEnum_strictMono P
+  have hle : ∀ j, j ≤ smoothEnum P j := by
+    intro j
+    induction j with
+    | zero => exact Nat.zero_le _
+    | succ k ih =>
+      have hlt : smoothEnum P k < smoothEnum P (k + 1) := hmono (Nat.lt_succ_self k)
+      omega
+  -- Pick `i` with `smoothEnum P i > (M/c)²`, so that `c · √(smoothEnum P i) > M`.
+  obtain ⟨n, hn⟩ := exists_nat_gt (((M : ℝ) / c) ^ 2)
+  set i : ℕ := max n 2 with hi_def
+  have hi2 : 2 ≤ i := le_max_right _ _
+  have hin : n ≤ i := le_max_left _ _
+  -- `smoothEnum P i ≥ i ≥ 2`, so it is `> 1` and Tijdeman's bound applies.
+  have ha_ge : i ≤ smoothEnum P i := hle i
+  have ha_gt_one : smoothEnum P i > 1 := by omega
+  have hgapi := hgap i ha_gt_one
+  -- Real-analytic core: `(M/c)² < smoothEnum P i`.
+  have hcpos : (0 : ℝ) < c := hc
+  have hMc_nonneg : 0 ≤ (M : ℝ) / c := by positivity
+  have hB : ((M : ℝ) / c) ^ 2 < (smoothEnum P i : ℝ) := by
+    have h1 : ((M : ℝ) / c) ^ 2 < (n : ℝ) := hn
+    have h2 : (n : ℝ) ≤ (i : ℝ) := by exact_mod_cast hin
+    have h3 : (i : ℝ) ≤ (smoothEnum P i : ℝ) := by exact_mod_cast ha_ge
+    linarith
+  -- `M/c < √(smoothEnum P i)`.
+  have hsqrt : (M : ℝ) / c < Real.sqrt (smoothEnum P i : ℝ) := by
+    rw [show (M : ℝ) / c = Real.sqrt (((M : ℝ) / c) ^ 2) from (Real.sqrt_sq hMc_nonneg).symm]
+    exact Real.sqrt_lt_sqrt (by positivity) hB
+  -- Hence `M < c · √(smoothEnum P i) = c · (smoothEnum P i)^{1-1/2}`.
+  have hMeq : c * ((M : ℝ) / c) = (M : ℝ) := by field_simp
+  have hlt : (M : ℝ) < c * Real.sqrt (smoothEnum P i : ℝ) := by
+    have := mul_lt_mul_of_pos_left hsqrt hcpos
+    rwa [hMeq] at this
+  have hrw : (smoothEnum P i : ℝ) ^ (1 - 1 / 2 : ℝ) = Real.sqrt (smoothEnum P i : ℝ) := by
+    rw [show (1 - 1 / 2 : ℝ) = 1 / 2 by norm_num, ← Real.sqrt_eq_rpow]
+  -- Combine with Tijdeman's lower bound on the gap.
+  have hfinal : (M : ℝ) < (gap P i : ℝ) := by
+    have : (M : ℝ) < c * (smoothEnum P i : ℝ) ^ (1 - 1 / 2 : ℝ) := by rw [hrw]; exact hlt
+    linarith [hgapi]
+  exact ⟨i, by exact_mod_cast hfinal⟩
 
 /-
 ## Part VII: Construction Ideas
@@ -198,15 +247,20 @@ More generally, for P = {p} a singleton, P-smooth numbers are
 -/
 theorem singleton_large_gaps (p : ℕ) (hp : p.Prime) :
     gapsTendToInfinity {p} := by
-  intro M
-  -- Gaps between consecutive powers of p grow to infinity
-  sorry
+  -- `{p}` is a finite set of primes, so the finite-`P` result applies directly.
+  have h : gapsTendToInfinity (↑({p} : Finset ℕ) : Set ℕ) :=
+    finite_P_unbounded_gaps {p} (by
+      intro q hq
+      rw [Finset.mem_singleton] at hq
+      subst hq
+      exact hp)
+  simpa using h
 
 /-
 ## Part VIII: Related Results
 -/
 
-/--
+/-
 **Størmer's Theorem:**
 For any finite P, only finitely many consecutive integers
 can both be P-smooth.
@@ -238,16 +292,14 @@ theorem erdos_240_summary :
     -- Finite P: gaps → ∞
     (∀ P : Finset ℕ, (∀ p ∈ P, Nat.Prime p) → gapsTendToInfinity (↑P : Set ℕ)) ∧
     -- Tijdeman's main theorem (infinite P)
-    (∀ ε > 0, ∃ P : Set ℕ, (∀ p ∈ P, Nat.Prime p) ∧ P.Infinite ∧
+    (∀ ε : ℝ, ε > 0 → ∃ P : Set ℕ, (∀ p ∈ P, Nat.Prime p) ∧ P.Infinite ∧
       ∃ c : ℝ, c > 0 ∧ ∀ i : ℕ, smoothEnum P i > 1 →
         (gap P i : ℝ) ≥ c * (smoothEnum P i : ℝ)^(1 - ε)) ∧
     -- Answer is YES
     erdos240Question := by
-  constructor
-  · exact finite_P_unbounded_gaps
-  constructor
-  · exact tijdeman_main_theorem
-  · exact erdos240_answer
+  refine ⟨finite_P_unbounded_gaps, ?_, erdos240_answer⟩
+  intro ε hε
+  exact tijdeman_main_theorem ε hε
 
 /--
 **Erdős Problem #240: SOLVED**

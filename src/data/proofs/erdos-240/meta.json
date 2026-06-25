@@ -7,7 +7,7 @@
     "author": "Wintner (problem), Pólya (1918), Tijdeman (1973)",
     "sourceUrl": "https://erdosproblems.com/240",
     "date": "1973",
-    "status": "formalized",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/Erdos240Problem.lean",
     "tags": [
       "erdos",
@@ -17,8 +17,8 @@
       "gaps",
       "solved"
     ],
-    "badge": "wip",
-    "sorries": 2,
+    "badge": "axiom",
+    "sorries": 0,
     "erdosNumber": 240,
     "erdosUrl": "https://erdosproblems.com/240",
     "erdosProblemStatus": "solved",
@@ -51,15 +51,17 @@
       "smoothNumbers set: all P-smooth numbers",
       "one_isPSmooth theorem: 1 is always P-smooth",
       "smoothEnum axiom: ordered enumeration of P-smooth numbers",
+      "smoothEnum_strictMono axiom: enumeration is strictly increasing (hence unbounded)",
       "gap definition: difference between consecutive smooths",
       "gapsTendToInfinity predicate: gaps are unbounded",
       "erdos240Question: formal problem statement",
       "finite_P_unbounded_gaps axiom: finite P implies gaps → ∞",
       "tijdeman_main_theorem axiom: gaps ≫ aᵢ^{1-ε} for infinite P",
-      "erdos240_answer theorem: YES answer",
+      "erdos240_answer theorem: YES answer (sorry-free: Tijdeman's a^{1/2} bound + strict monotonicity ⟹ gaps unbounded, via rpow/sqrt limit argument)",
+      "singleton_large_gaps theorem: sorry-free derivation from finite_P_unbounded_gaps for P = {p}",
       "erdos_240 theorem: main result"
     ],
-    "axiomCount": 3,
+    "axiomCount": 4,
     "prerequisites": [
       "Prime numbers and prime factorization",
       "Divisibility and smooth numbers",
@@ -68,8 +70,8 @@
       "Polynomial arithmetic (quadratic forms)",
       "Pólya's theorem on prime factors of polynomials"
     ],
-    "lineCount": 264,
-    "assumptions": "3 axioms: smoothEnum, finite_P_unbounded_gaps, tijdeman_main_theorem. 2 sorries.",
+    "lineCount": 316,
+    "assumptions": "4 axioms: smoothEnum (opaque enumeration), smoothEnum_strictMono (enumeration strictly increasing), finite_P_unbounded_gaps (Pólya-type finite case), tijdeman_main_theorem (Tijdeman 1973 gap bound). 0 sorries — all derivation lemmas (erdos240_answer, singleton_large_gaps, erdos_240_summary) are machine-checked from these axioms.",
     "theoremCount": 5,
     "definitionCount": 5,
     "additionalFiles": [
@@ -81,7 +83,7 @@
     "historicalContext": "Aurel Wintner posed this question to Erdős: given an infinite set P of primes, must the gaps between consecutive P-smooth numbers (integers whose prime factors all lie in P) tend to infinity? The finite case was already understood through Pólya's 1918 theorem, which showed that the largest prime factor of an irreducible quadratic polynomial f(n) grows without bound. Since consecutive P-smooth numbers n, n+k yield n(n+k) as P-smooth, and Pólya guarantees this product eventually has prime factors outside any finite P, gaps must grow for finite P. Størmer had shown in 1897 that for finite P, only finitely many consecutive integers can both be P-smooth, connecting to Pell equations. Tijdeman resolved the full question in his landmark 1973 paper 'On integers with many small prime factors': for any ε > 0, one can construct an infinite set of primes P such that gaps between consecutive P-smooth numbers grow at least as fast as $a_i^{1-\\varepsilon}$. The key insight is that if the primes in P grow sufficiently rapidly, then P-smooth numbers become sparse enough to force large gaps, even though P is infinite. This result connects to the ABC conjecture, which would give even stronger gap bounds, and to the broader theory of smooth numbers central to modern cryptography and factorization algorithms.",
     "problemStatement": "**Problem Statement (Solved)**\n\nIs there an infinite set of primes P such that if {a₁ < a₂ < ···} are the P-smooth numbers, then lim(aᵢ₊₁ - aᵢ) = ∞?\n\n**Answer: YES**\n\nTijdeman (1973) proved: For any ε > 0, there exists an infinite set of primes P such that gaps satisfy aᵢ₊₁ - aᵢ ≫ aᵢ^{1-ε}.\n\n**Key insight:** Making P 'sparse' (primes grow fast) makes P-smooth numbers sparse, hence large gaps.",
     "text": "Is there an infinite set of primes P such that gaps between consecutive P-smooth numbers → ∞? YES - Tijdeman (1973) proved for any ε > 0, exists infinite P with gaps ≫ aᵢ^{1-ε}.",
-    "proofStrategy": "The formalization builds up from definitions to the main result in layers. First, isPSmooth P n defines P-smoothness as positivity plus all prime factors lying in P, and smoothEnum axiomatizes the ordered enumeration of P-smooth numbers. The gap function measures consecutive differences. The main question erdos240Question asks for an infinite P with unbounded gaps. The proof chain proceeds: Pólya's theorem (prime factors of quadratics grow) implies finite_P_unbounded_gaps (finite P forces gap divergence), and then Tijdeman's main theorem constructs an infinite P achieving gaps $\\ge c \\cdot a_i^{1-\\varepsilon}$. The final theorem erdos240_answer applies Tijdeman with ε = 1/2 to yield a YES answer. Two sorries remain in the limit arguments converting the gap growth rate to the unboundedness predicate.",
+    "proofStrategy": "The formalization builds up from definitions to the main result in layers. First, isPSmooth P n defines P-smoothness as positivity plus all prime factors lying in P, and smoothEnum axiomatizes the ordered enumeration of P-smooth numbers. The gap function measures consecutive differences. The main question erdos240Question asks for an infinite P with unbounded gaps. The proof chain proceeds: Pólya's theorem (prime factors of quadratics grow) implies finite_P_unbounded_gaps (finite P forces gap divergence), and then Tijdeman's main theorem constructs an infinite P achieving gaps $\\ge c \\cdot a_i^{1-\\varepsilon}$. The final theorem erdos240_answer applies Tijdeman with ε = 1/2 to yield a YES answer. The two former sorries are now fully machine-checked: erdos240_answer converts the gap growth rate aᵢ^{1/2} into the unboundedness predicate via a real-analytic rpow/sqrt argument, using a new smoothEnum_strictMono axiom that records the enumeration is strictly increasing (so smoothEnum P i ≥ i → ∞); and singleton_large_gaps is derived directly from finite_P_unbounded_gaps since {p} is a finite prime set.",
     "keyInsights": [
       "Pólya's 1918 theorem on prime factors of quadratics is the foundation: n(n+k) eventually has prime factors outside any finite P, so consecutive P-smooth numbers n, n+k cannot persist",
       "The finite P case follows by contradiction: bounded gaps would force infinitely many consecutive P-smooth pairs, violating Pólya",
@@ -168,8 +170,8 @@
       "id": "summary",
       "title": "Summary",
       "summary": "erdos_240_summary, erdos_240 main theorem",
-      "startLine": 255,
-      "endLine": 264,
+      "startLine": 284,
+      "endLine": 316,
       "mathContext": "Verified: erdos_240_summary, erdos_240 main theorem"
     }
   ],
@@ -261,16 +263,16 @@
       "Set"
     ],
     "namespace": "Erdos240",
-    "lineCount": 264,
-    "axiomCount": 3,
+    "lineCount": 316,
+    "axiomCount": 4,
     "theoremCount": 5,
     "definitionCount": 5,
     "path": "Proofs/Erdos240Problem.lean",
-    "sorries": 2,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos240ProblemAristotle.lean",
       "Proofs/Erdos240Aristotle.lean"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }
