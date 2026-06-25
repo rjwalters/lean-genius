@@ -3395,6 +3395,7 @@ import Proofs.KonigsbergOQ02
 import Proofs.KonigsbergOQ02OQ01
 import Proofs.KonigsbergOQ02OQ01Aristotle
 import Proofs.KonigsbergOQ03
+import Proofs.KonigsbergOQ03OQ01
 import Proofs.KonigsbergOQ03OQ02
 import Proofs.KonigsbergOQ04
 import Proofs.KonigsbergOQ04OQ01MatrixTree

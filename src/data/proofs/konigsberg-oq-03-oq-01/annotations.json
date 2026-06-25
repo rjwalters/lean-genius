@@ -1,0 +1,90 @@
+[
+  {
+    "id": "ann-konigsb-oq03-oq01-header",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "concept",
+    "title": "Module Header: Verified Instances of Erdős–Grünwald–Weiszfeld",
+    "content": "The docstring states the open question (an Euler path for any locally finite, countable, connected, even-degree graph, built by compactness) and is explicit about scope: the general theorem is NOT proved and is NOT axiomatized. Instead the file verifies the theorem's full content — hypotheses and conclusion — for the two canonical locally finite graphs (the one-way ray on ℕ and the bi-infinite line on ℤ), the only two shapes an infinite Euler object can take.",
+    "mathContext": "EGW (1936) extends Euler's finite parity criterion to countable graphs. The standard proof realizes the infinite Euler path as a limit of finite Euler paths over an exhaustion of finite subgraphs — a König's-lemma / compactness argument, which is the genuine obstacle to a full formalization.",
+    "significance": "supporting",
+    "relatedConcepts": ["Erdős–Grünwald–Weiszfeld theorem", "Eulerian path", "compactness", "König's infinity lemma"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-defs",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 55, "endLine": 123 },
+    "type": "definition",
+    "title": "Self-Contained Infinite-Walk Semantics",
+    "content": "InfiniteGraph (undirected, loopless), InfiniteWalk (vertex : ℕ → V with step_adj), and the Euler conditions: sameEdge / IsEdgeInjective (at most once), CoversDirArc / CoversEdge (at least once), IsEulerWalk (= both), HasOneWayInfiniteEulerPath, plus the ℤ-indexed BiInfiniteWalk and IsBiInfiniteEulerWalk. These mirror konigsberg-oq-03-oq-02 verbatim and are reproduced so the file is independent of the parent module's known build issues.",
+    "mathContext": "An Euler walk traverses every edge exactly once; here 'exactly once' is split into the covering condition (every adjacent pair appears as some step) and edge-injectivity (no two steps traverse the same undirected edge), avoiding the ∃! quantifier at the definitional level.",
+    "significance": "supporting",
+    "relatedConcepts": ["infinite walk", "edge-injectivity", "undirected edge", "bi-infinite path"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-degree",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 125, "endLine": 139 },
+    "type": "definition",
+    "title": "Local Finiteness and Vertex Degree",
+    "content": "neighbors v = {u | G.adj v u} as a Set; LocallyFinite G means every neighbour set is finite; degree v = (neighbors v).ncard. For locally finite graphs ncard returns the honest finite degree, so parity statements (Even / Odd of the degree) become provable arithmetic facts once the neighbour set is identified explicitly.",
+    "mathContext": "EGW's hypotheses are stated in terms of vertex degrees, so a degree API for infinite graphs is a prerequisite. Using Set.ncard lets a vertex with an explicit finite neighbour set get a concrete numeric degree.",
+    "significance": "supporting",
+    "relatedConcepts": ["local finiteness", "vertex degree", "Set.ncard", "degree parity"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-exactly-once",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 141, "endLine": 169 },
+    "type": "theorem",
+    "title": "Every Edge Is Traversed at a Unique Step",
+    "content": "IsEulerWalk.existsUnique_step proves ∃! n, stepPair n = (u,v) ∨ stepPair n = (v,u) for each edge {u,v}. Existence comes from the covering condition; uniqueness from edge-injectivity. The crux is a four-way case analysis: each of the two steps lies in one of the two orientations {(u,v),(v,u)}, and in every combination the two indices are sameEdge, so injectivity forces them equal. This is the precise meaning of 'exactly once'.",
+    "mathContext": "Combining 'at least once' and 'at most once' yields 'exactly once' as a genuine ∃!-statement, recovering the quantifier that the definitions deliberately avoided.",
+    "significance": "central",
+    "relatedConcepts": ["exists-unique", "covering condition", "edge-injectivity", "orientation"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-ray-degree",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 171, "endLine": 217 },
+    "type": "theorem",
+    "title": "The Ray's Euler-Path Parity Profile",
+    "content": "rayGraphN is the ray 0—1—2—3—… on ℕ. It is locally finite (every neighbour set sits inside {v+1, v-1}). Its endpoint has degree 0 = 1 because the candidate neighbour 0 = u+1 is impossible in ℕ, leaving only {1}; every interior vertex v+1 has neighbour set {v, v+2}, so degree 2. rayGraphN_degree_parity packages this as: exactly one odd-degree vertex, all others even — the classical Euler-PATH signature.",
+    "mathContext": "A finite graph has an Euler path (open trail) iff it has exactly two odd-degree vertices; the one-way infinite ray is the infinite analogue with a single odd-degree endpoint and a single 'end at infinity'.",
+    "significance": "central",
+    "relatedConcepts": ["infinite ray", "odd-degree vertex", "Euler path", "Set.ncard_pair"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-ray-euler",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 219, "endLine": 237 },
+    "type": "theorem",
+    "title": "EGW Conclusion for the Ray",
+    "content": "rayEulerWalk is the identity walk vertex n = n; rayGraphN_hasEulerPath proves it is an Euler walk. Covering: an adjacent pair satisfies u = v+1 or v = u+1, traversed (backwards or forwards) at an explicit step. Edge-injectivity: sameEdge m n unfolds to a small arithmetic disjunction closed by omega (the reversal case n+1+1 = n is impossible in ℕ). No compactness is needed because the witness is explicit.",
+    "mathContext": "This is a fully verified instance of the EGW conclusion: a locally finite graph with the Euler-path degree profile that genuinely admits a one-way infinite Euler path.",
+    "significance": "central",
+    "relatedConcepts": ["identity walk", "explicit witness", "omega", "one-way Euler path"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-line",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 239, "endLine": 290 },
+    "type": "theorem",
+    "title": "The Bi-Infinite Line and Its Euler Circuit Profile",
+    "content": "lineGraphZ is the line …—(-1)—0—1—… on ℤ. lineGraphZ_neighbors computes every neighbour set as the pair {v-1, v+1}, giving local finiteness and degree v = 2 — so every vertex is even (lineGraphZ_degree_even), the classical Euler-CIRCUIT signature. lineEulerWalk (vertex n = n on ℤ) is then proven a bi-infinite Euler walk by the same covering + no-repeat argument, with omega discharging the ℤ arithmetic.",
+    "mathContext": "On ℤ there is no odd-degree vertex and no endpoint; the Euler object is bi-infinite rather than one-way, matching the all-even-degree case of EGW.",
+    "significance": "central",
+    "relatedConcepts": ["bi-infinite line", "even degree", "Euler circuit", "ℤ-indexed walk"]
+  },
+  {
+    "id": "ann-konigsb-oq03-oq01-summary",
+    "proofId": "konigsberg-oq-03-oq-01",
+    "range": { "startLine": 291, "endLine": 313 },
+    "type": "concept",
+    "title": "Summary: Verified Core, Open General Theorem",
+    "content": "A table recaps the two instances (ray: locally finite, one odd vertex, one-way Euler path; line: locally finite, all even, bi-infinite Euler walk) and states plainly that the general theorem — existence for an arbitrary locally finite connected even-degree graph — is left open and is NOT axiomatized, since it requires the König/compactness argument at the heart of this problem.",
+    "mathContext": "The honest separation of verified instances from the open general statement is the gallery's standard practice for hard open problems.",
+    "significance": "supporting",
+    "relatedConcepts": ["open problem", "compactness", "honest formalization"]
+  }
+]
