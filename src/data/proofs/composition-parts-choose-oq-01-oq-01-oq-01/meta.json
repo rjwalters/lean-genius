@@ -104,10 +104,29 @@
       "summary": "variance expands ∑_c (length − μ)² = ∑ length² − 2μ∑ length + (card)·μ² over ℚ with μ = (n+1)/2 (Finset.mul_sum, sum_sub_distrib, sum_add_distrib), substitutes the second moment (divided by 4), the parent's first moment total_parts, and composition_card for the count, then clears denominators with field_simp and closes by ring after substituting n = M + 2 — yielding exactly (n−1)/4, the Binomial(n−1, 1/2) variance."
     }
   ],
-  "conclusion": "The second moment and variance of the number of parts of a composition are formalised sorry-free and axiom-free. Across all 2^(n−1) compositions of n ≥ 2, the total of the squared part-counts is 4·∑ c.length² = n(n+3)2^(n−1) (second_moment) and the variance of the number of parts under the uniform distribution is exactly (n−1)/4 (variance) — the variance of 1 + Binomial(n−1, 1/2), reflecting that each of the n−1 internal gaps is cut independently. The content beyond Mathlib is the second-moment binomial identity 4∑ k²C(m,k) = m(m+1)2^m (sum_choose_mul_sq) — proved by a single application of the absorption rule reducing it to the parent's first-moment sum — and its assembly, via the gap bijection, into the second moment and variance of the part-count statistic. This completes the first- and second-moment description of the part-count distribution begun by the parent. A natural follow-up is the analogous moments of the part-size (rather than the part-count), or higher moments / the full moment generating function of the Binomial(n−1, 1/2) part-count.",
+  "conclusion": {
+    "summary": "Across all $2^{n-1}$ compositions of $n \\ge 2$, the second moment and variance of the number of parts are formalised sorry-free and axiom-free: the total of the squared part-counts is $4\\sum_c (c.\\mathrm{length})^2 = n(n+3)2^{n-1}$ (`second_moment`), and the variance under the uniform distribution on compositions is exactly $(n-1)/4$ (`variance`) — precisely the variance of $1 + \\mathrm{Binomial}(n-1, 1/2)$, reflecting that each of the $n-1$ internal gaps is cut independently.",
+    "implications": "The content beyond Mathlib is the second-moment binomial identity $4\\sum_k k^2\\binom{m}{k} = m(m+1)2^m$ (`sum_choose_mul_sq`), proved by a single application of the absorption rule that reduces it to the parent's first-moment sum, and its assembly via the gap bijection into the second moment and variance of the part-count statistic. Together with the grandparent's count $2^{n-1}$, the grandparent's graded count $\\binom{n-1}{k-1}$, and the parent's first moment, this completes the mean-and-variance description of the part-count distribution by purely combinatorial transport — no probability theory — recovering the shifted-Binomial statistics that the symmetry of the distribution about $(n+1)/2$ already foreshadows.",
+    "openQuestions": [
+      "What are the analogous moments of the *part-size* (rather than the part-count) of a random composition, and do they admit a comparably elementary gap-bijection treatment?",
+      "Can the higher moments — the third moment / skewness, or the full moment generating function of the $\\mathrm{Binomial}(n-1, 1/2)$ part-count — be derived from the same absorption-rule reduction applied to $\\sum_k k^r\\binom{m}{k}$?"
+    ]
+  },
   "crossReferences": [
-    "composition-parts-choose-oq-01-oq-01",
-    "composition-parts-choose-oq-01",
-    "composition-card-2pow-oq-01"
+    {
+      "proofId": "composition-parts-choose-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Direct parent: that entry computes the first moment of the number of parts (total (n+1)·2^(n−2), mean (n+1)/2). This entry computes the second moment 4·∑ length² = n(n+3)2^(n−1) and the variance (n−1)/4, reusing the same gap bridge length = (gaps).card + 1 and the subset-sum reduction, and feeding the parent's total_parts and mean into the variance computation."
+    },
+    {
+      "proofId": "composition-parts-choose-oq-01",
+      "relationship": "builds-on",
+      "description": "Grandparent: the part-graded count C(n−1, k−1) of compositions of n into exactly k parts — the distribution whose second moment and variance are computed here."
+    },
+    {
+      "proofId": "composition-card-2pow-oq-01",
+      "relationship": "foundational",
+      "description": "Great-grandparent: the ungraded total card (Composition n) = 2^(n−1), used as the count of compositions (the 2^(n−1) term in the second-moment expansion) and the denominator of the variance."
+    }
   ]
 }
