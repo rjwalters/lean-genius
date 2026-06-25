@@ -1,0 +1,135 @@
+{
+  "id": "viviani-theorem-oq-01-oq-01",
+  "title": "Converse of Viviani's Theorem: Constant Distance-Sum Characterizes Equilateral Triangles",
+  "slug": "viviani-theorem-oq-01-oq-01",
+  "description": "The converse of Viviani's theorem: for a non-degenerate planar triangle, the sum of the (signed) perpendicular distances from a point to the three sides is independent of the point if and only if the triangle is equilateral. Proved in the plane ℂ via two crisp parts — an affine/gradient reduction (the distance sum is constant ⇔ the sum of the three inward unit normals is zero) and a normal-vector lemma (n_a+n_b+n_c=0 ⇔ a=b=c, from the closing-normal identity and linear independence of two normals). Verified, 0 axioms. Answers the openQuestion of viviani-theorem-oq-01.",
+  "meta": {
+    "author": "Robb Walters (researcher-6)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VivianiTheoremOQ01OQ01.lean",
+    "tags": [
+      "geometry",
+      "viviani",
+      "converse",
+      "equilateral-triangle",
+      "metric-geometry",
+      "inner-product",
+      "normals",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 219,
+    "assumptions": "No axioms or sorries. Theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (the Lean/Mathlib standard, which do not count as assumptions). Verified via #print axioms. The converse carries a non-degeneracy hypothesis (the edge determinant / signed area is non-zero) — a standard mathematical hypothesis on the triangle, not an axiom.",
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Converse of Viviani's theorem for a general (non-coordinate-fixed) planar triangle: the signed distance-sum is constant ⇔ the triangle is equilateral, proved in the plane ℂ",
+      "The normal-vector heart normalSum_zero_iff_equilateral: for inward normals with the closing identity Na+Nb+Nc=0 and two of them linearly independent, the unit-normal sum a⁻¹•Na+b⁻¹•Nb+c⁻¹•Nc vanishes iff a=b=c",
+      "The affine/gradient reduction const_iff_normalSum_zero: the signed distance-sum P ↦ ∑⟪nᵢ,P−vᵢ⟫ is constant on the whole plane iff n_a+n_b+n_c=0, via a self-contained real inner product rdot on ℂ",
+      "Closing-normal identity obtained for free: the inward normals are the directed edges rotated by 90° (multiplication by I), whose vector sum is zero — so Na+Nb+Nc = I·(edge sum) = 0 by ring",
+      "indep_of_det: two plane vectors with non-zero determinant are ℝ-linearly independent, the algebraic encoding of triangle non-degeneracy"
+    ],
+    "theoremCount": 10,
+    "definitionCount": 5
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "VivianiTheoremOQ01OQ01",
+    "lineCount": 219,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 5,
+    "path": "Proofs/VivianiTheoremOQ01OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "overview": {
+    "historicalContext": "Viviani's theorem (1659) states that inside an equilateral triangle the sum of the perpendicular distances from any interior point to the three sides is constant, equal to the altitude. The parent gallery entry viviani-theorem-oq-01 proves this forward direction with explicit coordinates. The natural converse — that equilateral is the only triangle shape with the constant-sum property — turns the theorem from an isolated identity into a full characterization. The mechanism is that each perpendicular distance is an affine functional whose gradient is the side's inward unit normal, so the distance-sum is constant exactly when the three normals cancel; and three unit normals of a triangle cancel exactly when the triangle is equilateral. This pattern (affine distance functionals, normal-vector identities, the polygon closing-normal relation) recurs throughout Euclidean geometry.",
+    "problemStatement": "Let $T$ be a non-degenerate planar triangle with vertices $A,B,C$, side lengths $a=\\lVert C-B\\rVert$, $b=\\lVert A-C\\rVert$, $c=\\lVert B-A\\rVert$, and inward unit normals $n_a,n_b,n_c$. For a point $P$ let $S(P)$ be the sum of the (signed) perpendicular distances from $P$ to the three sides. Prove that $S$ is independent of $P$ if and only if $a=b=c$ (the triangle is equilateral).",
+    "text": "The plane is modeled as ℂ so that rotation by 90° is multiplication by I. The inward unit normals are the directed edges rotated by I and normalized; the signed distance sum is built from a self-contained real inner product rdot on ℂ. The converse is proved by chaining two equivalences: constancy ⇔ vanishing normal sum (affine reduction) and vanishing normal sum ⇔ equilateral (normal-vector lemma).",
+    "proofStrategy": "1. rdot: define the real inner product z₁w₁+z₂w₂ on ℂ with its bilinearity and positive-definiteness (rdot z z = 0 ↔ z = 0). 2. indep_of_det: two plane vectors with non-zero determinant are ℝ-linearly independent (eliminate via the 2×2 determinant with linear_combination). 3. normalSum_zero_iff_equilateral: from the closing identity Na+Nb+Nc=0, subtract c⁻¹·(closing) to reduce a⁻¹•Na+b⁻¹•Nb+c⁻¹•Nc=0 to (a⁻¹−c⁻¹)•Na+(b⁻¹−c⁻¹)•Nb=0 (module tactic), apply linear independence to get a⁻¹=c⁻¹, b⁻¹=c⁻¹, hence a=b=c via inv_inj; the converse collects a⁻¹•(Na+Nb+Nc)=0. 4. sumDist_sub / const_iff_normalSum_zero: S(P)−S(Q)=⟪n_a+n_b+n_c, P−Q⟫, so constancy forces rdot w w = 0 hence w = 0 (choosing P−Q=w). 5. viviani_converse: instantiate the heart at the rotated edges (closing identity by ring, independence from the non-zero edge determinant) and chain with the affine reduction.",
+    "keyInsights": [
+      "Modeling the plane as ℂ makes the closing-normal identity completely free: the inward normals are the directed edges rotated by I, and the directed edges sum to zero, so Na+Nb+Nc = I·((C−B)+(A−C)+(B−A)) = I·0 = 0, closed by ring.",
+      "The entire converse reduces to two linear-algebra facts: an affine functional ⟪w,·⟫+const is constant on an open set iff w=0, and three vectors satisfying a·n_a+b·n_b+c·n_c=0 with two of them independent have n_a+n_b+n_c=0 iff a=b=c.",
+      "The ⇒ direction of the heart is a one-step elimination: subtracting c⁻¹ times the closing identity kills the third normal, leaving (a⁻¹−c⁻¹)•Na+(b⁻¹−c⁻¹)•Nb=0, which linear independence collapses to a⁻¹=b⁻¹=c⁻¹.",
+      "Positive-definiteness of the real inner product is exactly what converts 'constant distance-sum' into the vector equation w=0: picking the two test points so that P−Q=w forces rdot w w = 0.",
+      "Non-degeneracy is encoded as a non-zero edge determinant (twice the signed area); it is a genuine mathematical hypothesis on the triangle, so the result remains fully verified and 0-axiom."
+    ],
+    "prerequisites": [
+      "The plane ℂ, the imaginary unit as a 90° rotation, and (C−B)+(A−C)+(B−A)=0",
+      "Real inner products: bilinearity, positive-definiteness, and the gradient of an affine distance functional",
+      "Linear independence via a 2×2 determinant; the closing-normal identity for a triangle",
+      "Lean 4 tactics module, linear_combination, and the lemma inv_inj"
+    ]
+  },
+  "sections": [
+    {
+      "id": "part1-rdot",
+      "title": "Part I: A Real Inner Product on the Plane ℂ",
+      "startLine": 43,
+      "endLine": 71,
+      "summary": "rdot z w = z.re·w.re + z.im·w.im with its bilinearity simp lemmas and positive-definiteness rdot z z = 0 ↔ z = 0, providing the gradient/inner-product machinery for the signed distances."
+    },
+    {
+      "id": "part2-indep",
+      "title": "Part II: Linear Independence from a Non-Zero Determinant",
+      "startLine": 73,
+      "endLine": 98,
+      "summary": "indep_of_det: two plane vectors u, v with uₓvy − uy vₓ ≠ 0 are ℝ-linearly independent — the algebraic form of triangle non-degeneracy, proved by eliminating the 2×2 system with linear_combination."
+    },
+    {
+      "id": "part3-heart",
+      "title": "Part III: The Normal-Vector Heart",
+      "startLine": 100,
+      "endLine": 133,
+      "summary": "normalSum_zero_iff_equilateral: given the closing identity Na+Nb+Nc=0 and independence of two normals, the unit-normal sum a⁻¹•Na+b⁻¹•Nb+c⁻¹•Nc vanishes iff a=b=c."
+    },
+    {
+      "id": "part4-affine",
+      "title": "Part IV: The Affine / Gradient Reduction",
+      "startLine": 135,
+      "endLine": 165,
+      "summary": "sumDist_sub expresses S(P)−S(Q) = ⟪n_a+n_b+n_c, P−Q⟫; const_iff_normalSum_zero deduces that the signed distance-sum is constant iff the normal sum is zero, using positive-definiteness of rdot."
+    },
+    {
+      "id": "part5-converse",
+      "title": "Part V: The Converse of Viviani's Theorem",
+      "startLine": 167,
+      "endLine": 218,
+      "summary": "The inward unit normals nA, nB, nC and the signed distance-sum sumDist are defined from the vertices; viviani_converse instantiates the heart at the rotated edges (closing identity free by ring) and chains with the affine reduction to prove constancy ⇔ equilateral."
+    }
+  ],
+  "conclusion": {
+    "summary": "The converse of Viviani's theorem is proved for a general non-degenerate planar triangle: the signed perpendicular-distance sum is independent of the point if and only if the triangle is equilateral. The proof factors through an affine reduction (constant ⇔ normal sum zero) and a normal-vector lemma (normal sum zero ⇔ equal sides), both elementary linear algebra over the plane ℂ. Verified, 0 axioms, 0 sorries. Answers the openQuestion of viviani-theorem-oq-01 verbatim.",
+    "openQuestions": [
+      "The regular-polygon / n-gon generalization: for a convex n-gon the perpendicular-distance sum is constant iff the n outward unit normals sum to zero; characterize exactly which n-gons (beyond the regular ones) have this property in terms of their edge-length / normal data.",
+      "An interior-only statement: prove directly that for a non-equilateral triangle there exist two interior points with different distance-sums (the contrapositive localized to the open interior), constructing the witnesses from the non-zero normal sum n_a+n_b+n_c."
+    ],
+    "implications": "Completes the logical picture around Viviani's theorem, upgrading it from an identity special to equilateral triangles to a characterization of them. It also exposes the underlying mechanism — the constant-sum property is a statement about the gradient of an affine functional and the polygon closing-normal identity — a reusable pattern for barycentric, distance-functional, and normal-vector arguments in Euclidean geometry."
+  },
+  "crossReferences": [
+    {
+      "targetId": "viviani-theorem-oq-01",
+      "relationship": "parent-problem",
+      "description": "Directly answers the parent's openQuestion. The parent proves the forward direction (inside an equilateral triangle the perpendicular-distance sum is constant, the altitude); this entry proves the converse, that equilateral is the only triangle with the constant-sum property, completing the characterization."
+    },
+    {
+      "targetId": "law-of-cosines",
+      "relationship": "related",
+      "description": "Side/length and normal relations underlying the closing-normal identity a·n_a+b·n_b+c·n_c=0 used in the normal-vector heart."
+    }
+  ],
+  "references": [
+    {
+      "author": "Vincenzo Viviani",
+      "title": "Viviani's theorem (constant sum of distances to the sides of an equilateral triangle)",
+      "year": 1659,
+      "note": "Classical forward direction; this entry establishes the converse characterization."
+    }
+  ]
+}
