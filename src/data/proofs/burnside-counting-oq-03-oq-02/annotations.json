@@ -1,0 +1,74 @@
+[
+  {
+    "id": "burnside-oq0302-header",
+    "proofId": "burnside-counting-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 38 },
+    "type": "context",
+    "title": "The unweighted Cauchy–Frobenius / Burnside count for arbitrary finite groups",
+    "content": "The header states the parent's open question — generalize the cyclic necklace orbit-count to an arbitrary finite group — and the two results delivered: (A) the per-element fixed-point count |Fix(g)| = k^cyc(g), where cyc(g) is the number of orbits of the cyclic subgroup ⟨g⟩ on the positions X, and (B) the averaging identity ∑_g k^cyc(g) = (#distinct colorings)·|G|. This is the group-agnostic master formula behind every concrete necklace/bracelet count in the gallery: the cyclic k^gcd(r,n) and the dihedral reflection counts are all instances of k^cyc(g). The full weighted Pólya cycle-index theorem is explicitly out of scope (Mathlib lacks cycle-index machinery); this leaf proves the honest unweighted generalization. Verified: 0 sorries, 0 axioms (only the foundational propext / Classical.choice / Quot.sound, no native_decide).",
+    "mathContext": "$|\\mathrm{Fix}(g)| = k^{\\mathrm{cyc}(g)},\\quad \\#\\text{orbits} = \\frac{1}{|G|}\\sum_{g \\in G} k^{\\mathrm{cyc}(g)}$",
+    "significance": "context",
+    "relatedConcepts": ["Burnside's lemma", "Cauchy–Frobenius lemma", "Pólya enumeration", "orbit counting", "necklace counting"],
+    "prerequisites": ["group actions", "orbits and stabilizers", "Burnside's lemma"]
+  },
+  {
+    "id": "burnside-oq0302-action",
+    "proofId": "burnside-counting-oq-03-oq-02",
+    "range": { "startLine": 54, "endLine": 68 },
+    "type": "definition",
+    "title": "coloringAction: the domain-permutation action (g • c) x = c(g⁻¹ • x)",
+    "content": "`coloringAction` makes G act on colorings c : X → Fin k by permuting the domain, (g • c) x = c (g⁻¹ • x). The inverse on the argument is exactly what makes this a genuine LEFT action: one_smul uses inv_one, and mul_smul needs mul_inv_rev so that (g·h)⁻¹ = h⁻¹·g⁻¹ composes correctly. Crucially there is no clash with Mathlib's Pi.mulAction because the codomain Fin k carries no G-action, so the orbit / fixedBy / stabilizer API applies directly. The simp lemma coloring_smul_apply unfolds the action by rfl.",
+    "mathContext": "$(g \\cdot c)(x) = c(g^{-1} \\cdot x); \\quad ((gh)^{-1}) = h^{-1} g^{-1} \\implies \\text{left action}$",
+    "significance": "key",
+    "relatedConcepts": ["MulAction", "left vs right action", "mul_inv_rev", "Pi.mulAction"],
+    "prerequisites": ["group inverse identities", "function types as G-sets"]
+  },
+  {
+    "id": "burnside-oq0302-fixed-const",
+    "proofId": "burnside-counting-oq-03-oq-02",
+    "range": { "startLine": 72, "endLine": 86 },
+    "type": "technique",
+    "title": "Fixed by g ⟹ constant on ⟨g⟩-orbits",
+    "content": "The conceptual heart: a coloring fixed by g is fixed by the entire cyclic subgroup ⟨g⟩. `zpowers_smul_eq_of_fixed` observes that the stabilizer of c is a subgroup containing g, so by Subgroup.zpowers_le it contains all of ⟨g⟩ = Subgroup.zpowers g — upgrading 'fixed by g' to 'fixed by every h ∈ ⟨g⟩' in one step. `const_on_zpowers` then evaluates this invariance pointwise: from h • c = c, applying congrFun at h • x and simplifying with inv_smul_smul gives c (h • x) = c x, i.e. c is constant along each ⟨g⟩-orbit.",
+    "mathContext": "$g \\cdot c = c \\implies \\forall h \\in \\langle g\\rangle,\\ h \\cdot c = c \\implies c(h \\cdot x) = c(x)$",
+    "significance": "key",
+    "relatedConcepts": ["stabilizer is a subgroup", "Subgroup.zpowers_le", "cyclic subgroup", "inv_smul_smul"],
+    "prerequisites": ["mem_stabilizer_iff", "Subgroup.zpowers"]
+  },
+  {
+    "id": "burnside-oq0302-equiv",
+    "proofId": "burnside-counting-oq-03-oq-02",
+    "range": { "startLine": 92, "endLine": 126 },
+    "type": "theorem",
+    "title": "fixedColoringEquiv: bijection with functions on the orbit quotient",
+    "content": "`cyc g` is defined as Nat.card of CycQuot g, the orbit quotient of ⟨g⟩ acting on X. `fixedColoringEquiv` is the explicit bijection {c // g • c = c} ≃ (CycQuot g → Fin k). The forward map is Quotient.lift c, well-defined precisely because const_on_zpowers makes c constant on orbits (the descent obligation is discharged via mem_orbit_iff). The inverse pulls a function on the quotient back through Quotient.mk, and is automatically g-invariant because g⁻¹ ∈ ⟨g⟩ keeps each point in its orbit (Quotient.sound). Both round-trips reduce to rfl after Quotient.inductionOn.",
+    "mathContext": "$\\{c : X \\to \\mathrm{Fin}\\,k \\mid g \\cdot c = c\\} \\;\\simeq\\; (X/\\langle g\\rangle \\to \\mathrm{Fin}\\,k)$",
+    "significance": "key",
+    "relatedConcepts": ["Quotient.lift", "Quotient.sound", "orbit quotient", "Equiv construction"],
+    "prerequisites": ["const_on_zpowers", "mem_orbit_iff", "quotients by equivalence relations"]
+  },
+  {
+    "id": "burnside-oq0302-A",
+    "proofId": "burnside-counting-oq-03-oq-02",
+    "range": { "startLine": 129, "endLine": 135 },
+    "type": "theorem",
+    "title": "card_fixedBy_eq_pow_cyc (A): |Fix(g)| = k^cyc(g)",
+    "content": "Result (A): the number of colorings fixed by g is k^cyc(g). The proof composes Equiv.subtypeEquivRight (rewriting the fixedBy predicate to g • c = c via mem_fixedBy) with fixedColoringEquiv, transporting to functions on the cyc(g)-element orbit quotient. Then Nat.card_fun gives |Fix(g)| = (Nat.card (Fin k))^cyc(g), and Fintype.card_fin reduces Nat.card (Fin k) to k. This holds for an arbitrary element g of an arbitrary finite group acting on a finite X.",
+    "mathContext": "$\\mathrm{Nat.card}(\\mathrm{fixedBy}(X \\to \\mathrm{Fin}\\,k)\\,g) = k^{\\mathrm{cyc}(g)}$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.card_fun", "Equiv.subtypeEquivRight", "Fintype.card_fin", "fixedBy"],
+    "prerequisites": ["fixedColoringEquiv", "cardinality of function types"]
+  },
+  {
+    "id": "burnside-oq0302-B",
+    "proofId": "burnside-counting-oq-03-oq-02",
+    "range": { "startLine": 142, "endLine": 154 },
+    "type": "theorem",
+    "title": "sum_pow_cyc_eq_card_orbits_mul_card (B): the averaging identity",
+    "content": "Result (B): ∑_{g:G} k^cyc(g) = (#distinct colorings)·|G|, the integer form of Burnside's #orbits = (1/|G|)∑_g |Fix(g)|. It applies Mathlib's Burnside identity MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group to the coloring action (with Fintype instances supplied via Fintype.ofFinite), converts Fintype.card to Nat.card, and then rewrites each summand using result (A) via Finset.sum_congr. ColorOrbits is the orbit quotient of the full G-action on colorings — the distinct colorings up to symmetry.",
+    "mathContext": "$\\sum_{g \\in G} k^{\\mathrm{cyc}(g)} = \\mathrm{Nat.card}(\\mathrm{ColorOrbits}) \\cdot |G|$",
+    "significance": "key",
+    "relatedConcepts": ["MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group", "Finset.sum_congr", "Fintype.ofFinite", "orbit quotient"],
+    "prerequisites": ["card_fixedBy_eq_pow_cyc", "Burnside's lemma in Mathlib"]
+  }
+]
