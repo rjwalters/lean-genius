@@ -52,13 +52,17 @@
       "missing_class_of_card_lt: a set of size < p always misses a class mod p (image into ZMod p cannot be surjective)",
       "admissible_iff_card: KEY REDUCTION — admissibility ⟺ missing a class modulo every prime p ≤ |a|; all larger primes are automatic",
       "Worked examples: ∅, {0}, and {0,2} are admissible; {0,1} is NOT (it covers both classes mod 2)",
-      "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)"
+      "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)",
+      "A(k) defined in Lean for the first time: A k = sInf of the largest elements (a.sup id) over admissible k-sets — makes the headline question A(k)∼k log k expressible",
+      "A_mem / A_le: the infimum defining A(k) is attained (nonempty family via exists_admissible_card) and is a genuine lower bound",
+      "card_le_sup_succ + sub_one_le_A: trivial packing lower bound A(k) ≥ k-1",
+      "A_zero=0, A_one=0, and A_two=2 computed exactly; A(2)=2 > 1=k-1 is the first place admissibility is binding ({0,1} inadmissible forces the max above the packing bound)"
     ],
     "axiomCount": 0,
-    "lineCount": 201,
-    "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved (#print axioms shows only propext/Classical.choice/Quot.sound — no native_decide, no Lean.ofReduceBool). Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. The formalization here is the admissibility framework plus the standard reduction to small primes.",
-    "theoremCount": 10,
-    "definitionCount": 1
+    "lineCount": 289,
+    "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved. Proofs use only kernel `decide` (no `native_decide`) and `Nat.sInf`; #print axioms shows only propext/Classical.choice/Quot.sound — no Lean.ofReduceBool, no sorryAx. Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. Formalized here: the admissibility framework, the reduction to small primes, existence/well-definedness of A(k), two-sided bounds k-1 ≤ A(k) ≤ (k-1)·primorial, and the exact values A(0)=A(1)=0, A(2)=2.",
+    "theoremCount": 18,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1204**\n\nThe notion of an *admissible* sequence (or k-tuple) is central to the Hardy–Littlewood prime k-tuples conjecture and to modern work on bounded gaps between primes (Zhang 2013, Maynard 2015, Polymath8). A k-tuple is admissible precisely when it does not occupy every residue class modulo some prime — the only local obstruction to all shifts being simultaneously prime infinitely often.\n\nErdős asks for the size of the minimal *diameter* A(k) of an admissible k-tuple, conjecturally A(k) ∼ k log k, and for the minimal average B(k).",
@@ -69,7 +73,8 @@
       "**Local obstructions only:** admissibility is a purely local (mod-p) condition; a tuple fails iff some prime sees every residue.",
       "**Only small primes matter:** for p > k there are more classes than elements, so a class is always free — admissibility reduces to primes p ≤ k.",
       "**Minimal example:** {0,2} is admissible but {0,1} is not, because {0,1} hits both classes mod 2 (this is why twin-prime-like patterns must avoid such coverage).",
-      "**Connection:** this is exactly the admissible-tuple notion underlying bounded gaps between primes (Zhang, Maynard)."
+      "**Connection:** this is exactly the admissible-tuple notion underlying bounded gaps between primes (Zhang, Maynard).",
+      "**A(k) is now defined and pinned in the trivial regime:** k-1 ≤ A(k), with A(0)=A(1)=0 and A(2)=2 — the value A(2)=2>1 shows admissibility first becomes binding at k=2."
     ],
     "prerequisites": [
       "Number theory",
@@ -124,10 +129,10 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 201,
+    "lineCount": 289,
     "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 1,
+    "theoremCount": 18,
+    "definitionCount": 2,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
   },
