@@ -1,0 +1,74 @@
+[
+  {
+    "id": "tan-narg-header",
+    "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 5, "endLine": 43 },
+    "type": "context",
+    "title": "The general n-argument tangent addition law",
+    "content": "The header states the parent's first open question and how this entry answers it. The parent established the three-argument law tan(x+y+z) = (e₁−e₃)/(1−e₂) in the elementary symmetric polynomials of the tangents; here the genuinely general statement is proved for an arbitrary finite family of angles (none a right angle, sum not a right angle): tan(∑xⱼ) = (e₁−e₃+e₅−…)/(e₀−e₂+e₄−…). Neither statement nor proof is in Mathlib. The method avoids induction on the two-argument formula: instead it uses the complex exponential, factoring ∏(cos xⱼ + sin xⱼ·I) = exp((∑xⱼ)·I), pulling out the cosines to reach ∏(1 + tan xⱼ·I), and expanding that product by Vieta's formulas into ∑ₖ Iᵏ eₖ whose real/imaginary parts are the alternating elementary symmetric sums.",
+    "mathContext": "$\\tan\\!\\Big(\\sum_j x_j\\Big) = \\frac{e_1 - e_3 + e_5 - \\cdots}{e_0 - e_2 + e_4 - \\cdots}$",
+    "significance": "context",
+    "relatedConcepts": ["tangent addition", "elementary symmetric polynomials", "Vieta's formulas", "complex exponential", "trigonometric identities"],
+    "prerequisites": ["complex exponential exp(θI) = cosθ + sinθI", "the parent three-argument law"]
+  },
+  {
+    "id": "tan-narg-exp-identity",
+    "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 61 },
+    "type": "theorem",
+    "title": "prod_cos_add_sin_mul_I: the complex exponential identity",
+    "content": "`prod_cos_add_sin_mul_I` is the engine: ∏ⱼ (cos xⱼ + sin xⱼ·I) = cos S + sin S·I with S = ∑xⱼ. Each factor is exp(xⱼ·I) (Complex.exp_mul_I with ofReal_cos/ofReal_sin), so the product telescopes through Complex.exp_sum into exp((∑xⱼ)·I), which re-expands to cos S + sin S·I. This converts a product of per-angle factors into a single function of the angle sum.",
+    "mathContext": "$\\prod_j(\\cos x_j + \\sin x_j\\,I) = \\exp\\!\\Big(\\Big(\\sum_j x_j\\Big)I\\Big) = \\cos S + \\sin S\\,I$",
+    "significance": "key",
+    "relatedConcepts": ["Complex.exp_mul_I", "Complex.exp_sum", "telescoping product"],
+    "prerequisites": ["exp(θI) = cosθ + sinθI"]
+  },
+  {
+    "id": "tan-narg-factor-cosines",
+    "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 63, "endLine": 91 },
+    "type": "theorem",
+    "title": "Factoring the cosines out: the tangent product identity",
+    "content": "`prod_eq_prod_cos_mul_prod_one_add_tan` rewrites each factor cos xⱼ + sin xⱼ·I = cos xⱼ·(1 + tan xⱼ·I) (legitimate as cos xⱼ ≠ 0; via tan = sin/cos and field_simp), so the whole product is (∏cos xⱼ)·∏(1 + tan xⱼ·I). Combining with the exponential identity gives `prod_one_add_tan_mul_I`: ∏(1 + tan xⱼ·I) = (cos S + sin S·I)/∏cos xⱼ, i.e. cos S/C + (sin S/C)·I with C = ∏cos xⱼ. This isolates the pure-tangent product on the left.",
+    "mathContext": "$\\prod_j(1 + \\tan x_j\\,I) = \\frac{\\cos S + \\sin S\\,I}{\\prod_j \\cos x_j}$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_mul_distrib", "Real.tan_eq_sin_div_cos", "field_simp", "linear_combination"],
+    "prerequisites": ["prod_cos_add_sin_mul_I", "nonvanishing cosines"]
+  },
+  {
+    "id": "tan-narg-ratio",
+    "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 93, "endLine": 109 },
+    "type": "theorem",
+    "title": "tan_sum_eq_im_div_re: the addition law in ratio form",
+    "content": "`tan_sum_eq_im_div_re`: tan S = Im P / Re P where P = ∏ⱼ(1 + tan xⱼ·I), for angles with nonvanishing cosines and cos S ≠ 0. Taking real and imaginary parts of the tangent product identity (P = cos S/C + (sin S/C)·I) gives Re P = cos S/C and Im P = sin S/C, whose ratio is tan S = sin S/cos S. This is the addition law before the elementary-symmetric expansion.",
+    "mathContext": "$\\tan S = \\frac{\\mathrm{Im}\\,P}{\\mathrm{Re}\\,P},\\quad P = \\prod_j(1 + \\tan x_j\\,I)$",
+    "significance": "key",
+    "relatedConcepts": ["real and imaginary parts", "Complex.add_re/add_im", "tan = sin/cos"],
+    "prerequisites": ["prod_one_add_tan_mul_I"]
+  },
+  {
+    "id": "tan-narg-esymm-expansion",
+    "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 111, "endLine": 150 },
+    "type": "theorem",
+    "title": "prod_one_add_tan_mul_I_eq_sum_esymm: Vieta expansion",
+    "content": "`prod_one_add_tan_mul_I_eq_sum_esymm` expands the tangent product by Vieta: ∏ⱼ(1 + tan xⱼ·I) = ∑ₖ Iᵏ·eₖ, with eₖ the k-th elementary symmetric polynomial of the tangents. The proof rewrites the finite product as ∏(1 + c) over the I-scaled multiset (Step A), recognises it as Polynomial.eval 1 of ∏(X + C r) (Step B), applies Multiset.prod_X_add_C_eq_sum_esymm, and pulls Iᵏ out of the k-th term via Multiset.pow_smul_esymm. Since Iᵏ cycles 1, I, −1, −I, the real part is e₀−e₂+e₄−… and the imaginary part is e₁−e₃+e₅−….",
+    "mathContext": "$\\prod_j(1 + \\tan x_j\\,I) = \\sum_{k} I^k\\,e_k(\\tan x_1,\\dots,\\tan x_n)$",
+    "significance": "key",
+    "relatedConcepts": ["Vieta's formulas", "Multiset.prod_X_add_C_eq_sum_esymm", "Multiset.pow_smul_esymm", "Polynomial.eval"],
+    "prerequisites": ["elementary symmetric polynomials", "multiset / polynomial API"]
+  },
+  {
+    "id": "tan-narg-esymm-ratio",
+    "proofId": "tangent-addition-formula-oq-01-oq-01-oq-01",
+    "range": { "startLine": 152, "endLine": 167 },
+    "type": "theorem",
+    "title": "tan_sum_eq_esymm_ratio: the open question, settled",
+    "content": "`tan_sum_eq_esymm_ratio` is the parent's first open question: tan(∑xⱼ) = Im(∑ₖ Iᵏ eₖ)/Re(∑ₖ Iᵏ eₖ). It simply chains the ratio form (tan_sum_eq_im_div_re) with the Vieta expansion (prod_one_add_tan_mul_I_eq_sum_esymm). Because Iᵏ cycles, the imaginary part is the alternating odd sum e₁−e₃+e₅−… and the real part the alternating even sum e₀−e₂+e₄−… — the general n-argument tangent addition law, not in Mathlib.",
+    "mathContext": "$\\tan S = \\frac{\\mathrm{Im}\\sum_k I^k e_k}{\\mathrm{Re}\\sum_k I^k e_k} = \\frac{e_1 - e_3 + \\cdots}{e_0 - e_2 + \\cdots}$",
+    "significance": "key",
+    "relatedConcepts": ["alternating elementary symmetric sums", "general addition law"],
+    "prerequisites": ["tan_sum_eq_im_div_re", "prod_one_add_tan_mul_I_eq_sum_esymm"]
+  }
+]
