@@ -3284,6 +3284,7 @@ import Proofs.Hilbert21RiemannHilbert
 import Proofs.Hilbert22OQ01
 import Proofs.Hilbert22OQ01OQ03
 import Proofs.Hilbert22OQ01OQ03Universal
+import Proofs.Hilbert22OQ01OQ03Pseudohyperbolic
 import Proofs.Hilbert22Uniformization
 import Proofs.Hilbert23CalculusVariations
 import Proofs.Hilbert23CalculusVariationsOQ01
