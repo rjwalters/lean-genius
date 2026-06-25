@@ -79,5 +79,24 @@
       "sum_descFactorial_mul_choose_succ",
       "Finset.sum_add_distrib"
     ]
+  },
+  {
+    "id": "sanity-checks",
+    "proofId": "binomial-theorem-oq-03-oq-01",
+    "range": { "startLine": 139, "endLine": 145 },
+    "type": "technique",
+    "title": "Axiom-Free Numeric Sanity Checks",
+    "content": "Three concrete `decide` checks confirm the closed forms against direct enumeration: Σ k·C(4,k) = 32 = 4·2³, Σ k²·C(4,k) = 80 = 4·5·2², and Σ k(k-1)·C(5,k) = 160 = 5·4·2³. Crucially these use the kernel `decide` rather than `native_decide`, so they introduce no `Lean.ofReduceBool` dependency and keep the file axiom-free — the proof rests only on propext, Classical.choice, and Quot.sound. The checks guard against transcription errors in the closed-form constants, a common failure mode when a formula is correct in spirit but off by a factor.",
+    "mathContext": "$\\sum_k k\\binom{4}{k} = 32 = 4\\cdot 2^3$, $\\sum_k k^2\\binom{4}{k} = 80 = 4\\cdot 5\\cdot 2^2$, $\\sum_k k(k-1)\\binom{5}{k} = 160 = 5\\cdot 4\\cdot 2^3$.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "kernel decide vs native_decide",
+      "axiom-free verification",
+      "regression sanity checks"
+    ],
+    "prerequisites": [
+      "the decide tactic",
+      "Lean.ofReduceBool and the axiom-integrity policy"
+    ]
   }
 ]
