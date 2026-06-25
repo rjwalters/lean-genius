@@ -203,12 +203,12 @@
     "id": "ann-e798-o-n",
     "proofId": "erdos-798",
     "range": {
-      "startLine": 190,
-      "endLine": 203
+      "startLine": 191,
+      "endLine": 237
     },
     "type": "concept",
     "title": "t(n) = o(n)",
-    "content": "**t_is_o_n:**\n\nThe answer to Erdos's question is YES.\n\n**Proof outline:**\nt(n) <= C * n^{2/3} * log n\n\nFor any epsilon > 0, eventually:\nC * n^{2/3} * log n < epsilon * n\n\nThis holds because n^{2/3} * log n = o(n) (since 2/3 < 1).",
+    "content": "**t_is_o_n:**\n\nThe answer to Erdos's question is YES — now fully proven (no `sorry`) from the Alon upper-bound axiom.\n\n**Proof:**\nt(n) <= C * n^{2/3} * log n, and the majorant C * x^{2/3} * log x = o(x):\nsince log x = o(x^{1/3}) (`isLittleO_log_rpow_atTop`), multiplying by x^{2/3} gives\nx^{2/3} * log x = o(x^{2/3} * x^{1/3}) = o(x). Hence for every epsilon > 0, eventually\nC * n^{2/3} * log n < epsilon * n, so t(n) < epsilon * n. The o(x) estimate is\ntransferred from the real variable to the naturals via tendsto_natCast_atTop_atTop.\nDepends only on the Alon upper-bound axiom (no sorry).",
     "significance": "key",
     "mathContext": "See annotation content for formal details of t(n) = o(n)",
     "relatedConcepts": [
