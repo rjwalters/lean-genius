@@ -869,6 +869,7 @@ import Proofs.CollatzCyclesOQ03
 import Proofs.CollatzCyclesOQ04
 import Proofs.CollatzStructured
 import Proofs.CollatzStructuredOQ02OQ01
+import Proofs.CollatzStructuredOQ02OQ02
 import Proofs.CollatzStructuredOQ03
 import Proofs.CombinationsFormula
 import Proofs.CombinationsFormulaOQ01

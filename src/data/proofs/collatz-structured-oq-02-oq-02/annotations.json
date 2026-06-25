@@ -1,0 +1,139 @@
+[
+  {
+    "id": "prod-succ-eq-prod",
+    "proofId": "collatz-structured-oq-02-oq-02",
+    "range": {
+      "startLine": 87,
+      "endLine": 92
+    },
+    "type": "insight",
+    "title": "The Cyclic Shift Permutes the Index Set",
+    "content": "The map i ↦ i + 1 is a permutation of Fin n (it is Equiv.addRight 1), so reindexing a finite product by this shift leaves it unchanged: ∏ x(i+1) = ∏ x(i). This single fact — Equiv.prod_comp applied to the additive shift — is what allows the n local Syracuse relations to telescope into one global inequality. Without the cyclic cancellation of ∏ x(i+1) against ∏ x(i), the product argument would not close.",
+    "mathContext": "$$\\prod_{i\\in\\mathbb{Z}/n} x_{i+1} = \\prod_{i\\in\\mathbb{Z}/n} x_i$$\nbecause $i \\mapsto i+1$ is a bijection of $\\mathbb{Z}/n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclic permutation",
+      "Equiv.addRight",
+      "Equiv.prod_comp",
+      "reindexing finite products"
+    ],
+    "prerequisites": [
+      "Fin n additive group",
+      "Finset.prod over Fintype"
+    ]
+  },
+  {
+    "id": "cycle-prod-identity",
+    "proofId": "collatz-structured-oq-02-oq-02",
+    "range": {
+      "startLine": 94,
+      "endLine": 105
+    },
+    "type": "insight",
+    "title": "Telescoping the Cycle into a Product Identity",
+    "content": "Multiplying the n Syracuse relations 2^(lᵢ)·x_{i+1} = 3xᵢ+1 over the whole cycle gives ∏(3xᵢ+1) = (∏ 2^(lᵢ))·(∏ x_{i+1}). The first factor collapses to 2^(Σlᵢ) by Finset.prod_pow_eq_pow_sum, and the second equals ∏ xᵢ by the cyclic-shift permutation. The result is the clean identity ∏(3xᵢ+1) = 2^(Σlᵢ)·∏xᵢ, the algebraic heart of the cycle theory.",
+    "mathContext": "$$\\prod_i (3x_i+1) = \\Big(\\prod_i 2^{l_i}\\Big)\\Big(\\prod_i x_{i+1}\\Big) = 2^{\\sum_i l_i}\\prod_i x_i$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping product",
+      "Finset.prod_pow_eq_pow_sum",
+      "Finset.prod_mul_distrib",
+      "Syracuse cycle equation"
+    ],
+    "prerequisites": [
+      "Finset.prod_congr",
+      "prod_mul_distrib"
+    ]
+  },
+  {
+    "id": "syracuse-cycle-growth",
+    "proofId": "collatz-structured-oq-02-oq-02",
+    "range": {
+      "startLine": 107,
+      "endLine": 125
+    },
+    "type": "insight",
+    "title": "Deriving the Lagarias Constraint 2^L > 3^j",
+    "content": "The Lagarias constraint is not assumed but derived. From the product identity, since each 3xᵢ+1 > 3xᵢ and every factor is positive, ∏(3xᵢ+1) > ∏(3xᵢ) = 3^n·∏xᵢ. Combining with ∏(3xᵢ+1) = 2^(Σlᵢ)·∏xᵢ yields 3^n·∏xᵢ < 2^(Σlᵢ)·∏xᵢ, and cancelling the positive ∏xᵢ gives 3^n < 2^(Σlᵢ). The strict product inequality uses Finset.prod_lt_prod_of_nonempty (nonemptiness from NeZero n).",
+    "mathContext": "$$3^n \\prod_i x_i = \\prod_i 3x_i < \\prod_i (3x_i+1) = 2^{\\sum l_i}\\prod_i x_i \\;\\Rightarrow\\; 3^n < 2^{\\sum l_i}$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Lagarias (1985) constraint",
+      "Eliahou algebraic core",
+      "Finset.prod_lt_prod_of_nonempty",
+      "lt_of_mul_lt_mul_right"
+    ],
+    "prerequisites": [
+      "Finset.prod_pos",
+      "Finset.prod_const",
+      "strict product inequality"
+    ]
+  },
+  {
+    "id": "halving-and-period",
+    "proofId": "collatz-structured-oq-02-oq-02",
+    "range": {
+      "startLine": 134,
+      "endLine": 149
+    },
+    "type": "insight",
+    "title": "Halving Lower Bound and Minimum Collatz Period",
+    "content": "Because 2^n ≤ 3^n (Nat.pow_le_pow_left) and 3^n < 2^L, transitivity gives 2^n < 2^L, hence n < L by strict monotonicity of base-2 powers (Nat.pow_lt_pow_iff_right). So L ≥ n+1. Since one odd element contributes one 3x+1 step plus lᵢ halvings, the Collatz period is N = n + L, giving N ≥ 2n+1.",
+    "mathContext": "$$2^n \\le 3^n < 2^L \\Rightarrow n < L \\Rightarrow N = n + L \\ge 2n + 1$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.pow_lt_pow_iff_right",
+      "Nat.pow_le_pow_left",
+      "minimum cycle length"
+    ],
+    "prerequisites": [
+      "omega",
+      "monotonicity of powers"
+    ]
+  },
+  {
+    "id": "near-misses",
+    "proofId": "collatz-structured-oq-02-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 185
+    },
+    "type": "insight",
+    "title": "Continued-Fraction Near-Misses of log₂3",
+    "content": "The minimal L solving 3^j < 2^L equals ⌈j·log₂3⌉ and jumps at the continued-fraction convergent denominators of log₂3 = [1;1,1,2,2,3,1,5,…], namely 1,2,5,12,17,41,53,…. At a convergent, 2^L − 3^j is small relative to 2^L. The machine-checked near-equalities 2^19<3^12<2^20, 2^26<3^17<2^27, and 2^64<3^41<2^65 (the last with gap only ~1.1% of 2^65) are exactly the small slacks Eliahou amplifies into the 17-billion bound. A minimal-halving table for j=1,2,5,12,17 is also verified by norm_num.",
+    "mathContext": "$$2^{64} < 3^{41} < 2^{65},\\qquad 2^{65} - 3^{41} \\approx 4.2\\times10^{17}\\ (\\sim 1.1\\%\\text{ of }2^{65})$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "continued fractions",
+      "convergents of log₂3",
+      "Eliahou (1993) amplification",
+      "norm_num"
+    ],
+    "prerequisites": [
+      "rational approximation",
+      "norm_num on large naturals"
+    ]
+  },
+  {
+    "id": "oq02-reduction",
+    "proofId": "collatz-structured-oq-02-oq-02",
+    "range": {
+      "startLine": 208,
+      "endLine": 212
+    },
+    "type": "insight",
+    "title": "Locating the Obstacle (Answer to OQ-02)",
+    "content": "oq02_reduction packages the axiom-free conclusion — every non-trivial cycle satisfies 3^n < 2^L and has period N ≥ 2n+1 — as a pure implication, exhibiting the only missing input: a finite verification (Barina's n < 2^68 range check) plus Eliahou's circuit/level counting. This is a finite, decide-infeasible computation, NOT an essentially analytic estimate. Hence the answer to OQ-02: the algebraic core formalizes cleanly and axiom-free; the residual obstacle is computational, not analytic.",
+    "mathContext": "Reduction: $\\text{(non-trivial cycle)} \\Rightarrow 3^n < 2^L \\wedge N \\ge 2n+1$; the gap to $N > 1.7\\times10^{10}$ is a finite range check, not an analytic bound.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "axiom-free reduction",
+      "computational verification",
+      "Barina (2021)",
+      "formalization obstacle"
+    ],
+    "prerequisites": [
+      "the algebraic core above"
+    ]
+  }
+]
