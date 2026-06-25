@@ -1,0 +1,256 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-03",
+  "title": "signVarList over an arbitrary computable LinearOrderedField (keeping the rfl bridge)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Generalize } \\mathrm{signVarList} \\text{ from } \\mathbb{Q} \\text{ to any computable } \\mathrm{LinearOrderedField}\\ K,",
+    "plain": "The parent built a constructive, computable count of sign variations of a coefficient list over the rationals, with a definitional bridge (provable by rfl) to the abstract sign-variation count used in Descartes' rule. This problem asks whether the same construction works over an arbitrary computable linearly ordered field — for instance the computable algebraic reals — rather than being tied to the rationals, while keeping the rfl bridge intact.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T23:20:00-07:00",
+    "iteration": 2,
+    "focus": "Solved: generalized signVarList to any ordered field; proved signVariations map-invariance under strict-mono ring homs; bridged Q to R.",
+    "blockers": [],
+    "nextAction": "Complete - PR opened.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: signVarList generalized to [Field F][LinearOrder F][IsStrictOrderedRing F] with rfl bridge intact; new theorem signVariations_map (invariance under StrictMono ring homs, not in Mathlib); Q->R bridge upgrades the constructive Descartes bound from rational to REAL positive roots. Verified, 0 axioms.",
+    "builtItems": [
+      "DescartesConstructiveGeneral.signVarList : List F -> N generalized to arbitrary ordered field (Proofs/DescartesRuleOfSignsOQ01OQ04OQ03.lean:74)",
+      "signVarList_coeffList - rfl bridge preserved over any ordered field (line 80)",
+      "coeffList_map_of_injective - (P.map phi).coeffList = P.coeffList.map phi for injective phi (line 108)",
+      "sign_map_of_strictMono - sign (phi x) = sign x for StrictMono ring hom (line 116)",
+      "signVariations_map - HEADLINE: (P.map phi).signVariations = P.signVariations for StrictMono ring hom; not in Mathlib (line 134)",
+      "signVarList_eq_signVariations_ratCast - computable Q count = sign variations of the real polynomial (line 161)",
+      "realRoots_countP_pos_le_signVarList - Descartes bound for positive REAL roots from rational coefficients (line 170)"
+    ],
+    "insights": [
+      "Mathlib signVariations is already defined for [Semiring R][LinearOrder R], so the Q-pinned parent generalizes verbatim; the rfl bridge survives because signVarList (coeffList P) is definitionally signVariations P.",
+      "The count reads only coefficient SIGNS, so it is invariant under any sign-preserving, length-preserving map - precisely a strictly monotone (hence injective) ring hom. This is the conceptual key (signVariations_map).",
+      "The parent bound was secretly only about RATIONAL roots (P.roots for P:Q[X] lives in Q). x^2-2 exposes the gap: signVarList=1 but zero rational positive roots. Map-invariance along Q->R repairs this to a bound on positive REAL roots.",
+      "LinearOrderedField is deprecated in Mathlib v4.26 -> use [Field F][LinearOrder F][IsStrictOrderedRing F]. Computability is a property of F's instances, not of the definition.",
+      "Q division literals like 3/2 do not reduce under kernel decide; use integer-coefficient lists for decide examples."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks invariance of Polynomial.signVariations under ring homomorphisms (provided here as signVariations_map).",
+      "Mathlib lacks coeffList_map (commutation of Polynomial.coeffList with an injective map); derived from degree_map_eq_of_injective + coeff_map."
+    ],
+    "nextSteps": [
+      "Combine realRoots_countP_pos_le_signVarList with a Q-Sturm formalization for an exact computable real-root count.",
+      "Characterize exactly which (non-injective) ring homs preserve signVariations."
+    ],
+    "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-01-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "polynomials",
+    "descartes-rule",
+    "sign-variations",
+    "computable",
+    "linear-ordered-field"
+  ],
+  "relatedProofs": [
+    "descartes-rule-of-signs",
+    "descartes-rule-of-signs-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01",
+    "descartes-rule-of-signs-oq-01-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-01-oq-01-oq-03",
+    "descartes-rule-of-signs-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-01-oq-04",
+    "descartes-rule-of-signs-oq-02",
+    "descartes-rule-of-signs-oq-02-oq-01",
+    "descartes-rule-of-signs-oq-02-oq-01-oq-02",
+    "descartes-rule-of-signs-oq-02-oq-03",
+    "descartes-rule-of-signs-oq-02-oq-04",
+    "descartes-rule-of-signs-oq-03",
+    "descartes-rule-of-signs-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T06:24:55.409Z",
+  "lastUpdate": "2026-06-25T06:24:55.449Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/DescartesRuleOfSigns.lean",
+      "filename": "DescartesRuleOfSigns.lean",
+      "lineCount": 577,
+      "theoremCount": 35,
+      "axiomCount": 8,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSigns.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01.lean",
+      "lineCount": 1100,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01OQ02.lean",
+      "lineCount": 248,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ01OQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ01OQ03.lean",
+      "lineCount": 148,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ02.lean",
+      "lineCount": 318,
+      "theoremCount": 13,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ01OQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ01OQ04.lean",
+      "lineCount": 135,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02.lean",
+      "lineCount": 699,
+      "theoremCount": 30,
+      "axiomCount": 3,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01.lean",
+      "lineCount": 258,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
+      "lineCount": 585,
+      "theoremCount": 29,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ03.lean",
+      "lineCount": 94,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02OQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ02OQ04.lean",
+      "lineCount": 286,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ02Parity.lean",
+      "filename": "DescartesRuleOfSignsOQ02Parity.lean",
+      "lineCount": 91,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ02Parity.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ03.lean",
+      "filename": "DescartesRuleOfSignsOQ03.lean",
+      "lineCount": 441,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ03.lean"
+    },
+    {
+      "path": "Proofs/DescartesRuleOfSignsOQ04.lean",
+      "filename": "DescartesRuleOfSignsOQ04.lean",
+      "lineCount": 496,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesRuleOfSignsOQ04.lean"
+    }
+  ]
+}
