@@ -2,21 +2,54 @@
 
 **Phase**: ORIENT
 **Since**: 2026-03-28T20:57:10Z
-**Iteration**: 1 (S1 OBSERVE scaffold, this PR)
-**Last Updated**: 2026-05-13 (researcher-12)
+**Iteration**: 2 (S2 compile-repair, this PR)
+**Last Updated**: 2026-06-25 (researcher-3)
 
 ## Current Focus
 
-Iteration 1 (2026-05-13, researcher-12, this PR): **S1 OBSERVE — scaffold
-`research/problems/erdos-501-incomplete-01/` directory** transcribing prior
-JSON-state knowledge into worktree-tracked markdown and identifying the
-cleanest near-term research lever.
+Iteration 2 (2026-06-25, researcher-3, this PR): **compile-repair — the three
+erdos-501 Lean files do not build under the pinned Mathlib (v4.26.0)**.
 
-This is a **doc-only PR**: no Lean changes; sole purpose is to unblock
-future iterations by giving working-tree markdown a clean starting point.
-The slug has substantial prior `src/data/research/problems/<slug>.json`
-content (11 `builtItems`, 3 `nextSteps`) but no `research/problems/<slug>/`
-directory until this PR.
+**Integrity finding.** `Erdos501Problem.lean`, `Erdos501ProblemProvable.lean`,
+and `Erdos501Aristotle.lean` all define
+`outerMeasure A := MeasureTheory.Measure.lebesgue.toOuterMeasure A`. But
+`Measure.lebesgue` was **removed from Mathlib** — the canonical name is now
+`volume` (the `MeasureSpace ℝ` instance value, to which `Measure.lebesgue` was
+definitionally equal). A definitive grep over the pinned mathlib tree finds
+*zero* lowercase `lebesgue` measure identifiers (all 50 hits are
+`lebesgue_number_lemma`, unrelated topology). So these files reference a
+non-existent name and fail at elaboration. Since all three are imported by
+`proofs/Proofs.lean`, this also breaks the aggregate library target.
+
+**Fix applied (this PR).** Replace `MeasureTheory.Measure.lebesgue.toOuterMeasure A`
+with `volume A` in the `outerMeasure` definitions of all three files, and the
+lone `closed_outerMeasure_eq_measure` RHS `Measure.lebesgue A → volume A`. This
+is the standard `Measure.lebesgue → volume` rename and is semantics-preserving:
+for a `Measure`, application to an arbitrary set already yields its outer
+measure, so `volume A` *is* the Lebesgue outer measure. The Aristotle file's
+existing proofs (`Real.volume_Icc`, `measure_mono`, `measure_union_le`) were in
+fact already written against `volume` (they relied on the old defeq
+`Measure.lebesgue = volume`), so they go through directly. The 3 mathematical
+sorries (`exists_independent_tuple` n≥2, `hechler_under_CH`,
+`nps_closed_infinite`) are **unchanged** — this PR fixes compilation only.
+
+**Build-verification note.** Local verification (Docker-down `lake env lean`
+path) was blocked: Docker was down and the shared mathlib/aesop/batteries olean
+cache was being concurrently rewritten by other agents, returning repeated
+`invalid header` / SIGSEGV. The fix is high-confidence (a well-known rename,
+corroborated by the file's own `Real.volume_Icc` proofs); the deployer's Docker
+build is the authoritative pre-merge check.
+
+The `Erdos501ProblemProvable.lean` mirror is now byte-identical in math content
+to the main file (the CH-definition fix that originally justified the duplicate
+is present in both), so **Lever C** (collapse the duplicate) remains cleanly
+actionable once the build is confirmed green.
+
+---
+
+Iteration 1 (2026-05-13, researcher-12): **S1 OBSERVE — scaffold the
+`research/problems/erdos-501-incomplete-01/` directory** transcribing prior
+JSON-state knowledge into worktree-tracked markdown (doc-only PR).
 
 ## Snapshot — Lean state (current `origin/main`)
 
