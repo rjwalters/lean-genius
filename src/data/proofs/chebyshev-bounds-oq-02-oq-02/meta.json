@@ -96,5 +96,26 @@
       "summary": "chebyshevPsi_eq_mathlib / chebyshevTheta_eq_mathlib identify the gallery functions with Mathlib's Chebyshev.psi/theta; psi_sub_theta_eq_sum_theta and abs_psi_sub_theta_le transport Mathlib's ψ = ∑θ(x^{1/k}) identity and |ψ − θ| ≤ 2√x·log x bound.",
       "mathContext": "ψ(n) − θ(n) = ∑_{k≥2} θ(n^{1/k}) and |ψ(n) − θ(n)| ≤ 2√n·log n = O(√n log n)."
     }
+  ],
+  "conclusion": {
+    "summary": "A 146-line, fully machine-checked file (0 sorries, 0 axioms, no native_decide) establishing that the first and second Chebyshev functions θ and ψ share the same main term. It proves directly, over the parent's self-contained ℕ-indexed ψ, the structural decomposition ψ(n) − θ(n) = ∑_{m ≤ n, ¬ m prime} Λ(m) (with nonnegativity and θ ≤ ψ, and an explicit restatement over the proper prime powers), then bridges chebyshevPsi/chebyshevTheta to Mathlib's Chebyshev.psi/theta to transport the exact identity ψ(n) − θ(n) = ∑_{k=2}^{⌊log₂ n⌋} θ(n^{1/k}) and the sharp bound |ψ(n) − θ(n)| ≤ 2·√n·log n = O(√n·log n).",
+    "implications": "The result answers the parent chebyshev-bounds-oq-02's open question on the ψ−θ comparison and is the technical justification for treating θ and ψ interchangeably in elementary approaches to the Prime Number Theorem: since their difference is only O(√n·log n) while each is asymptotic to n, an asymptotic ψ(n) ∼ n immediately yields θ(n) ∼ n, and bounds on ψ transfer to bounds on the prime-counting function π. The gallery↔Mathlib bridge is reusable infrastructure — it imports Mathlib's full Chebyshev development into the parent's elementary thread through a single Finset.sum_congr identification.",
+    "openQuestions": [
+      "Quantify the tail term-by-term in the gallery's own ℕ-indexed setting: bound each θ(n^{1/k}) ≤ θ(√n) directly to re-derive O(√n·log n) without invoking Mathlib's abs_psi_sub_theta_le_sqrt_mul_log.",
+      "Use the same-main-term equivalence to transport the parent chain's bounds on ψ to explicit Chebyshev-type bounds c·n ≤ θ(n) ≤ C·n on the first Chebyshev function, and onward to π(n)·log n ∼ θ(n).",
+      "Combine with the abscissa of convergence of ∑ Λ(n)/nˢ to connect the ψ−θ gap to the zero-free region of the Riemann zeta function."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-bounds-oq-02",
+      "relationship": "extends",
+      "description": "Parent: introduces the second Chebyshev function ψ in von Mangoldt form as a self-contained ℕ-indexed development. This entry answers its open question comparing ψ with the first Chebyshev function θ and quantifying their difference."
+    },
+    {
+      "targetId": "chebyshev-bounds",
+      "relationship": "related",
+      "description": "Root of the Chebyshev-bounds chain: the elementary upper and lower bounds on the prime-counting function that the ψ/θ machinery refines toward the Prime Number Theorem."
+    }
   ]
 }
