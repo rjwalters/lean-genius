@@ -3959,6 +3959,7 @@ import Proofs.SphericalLawOfCosinesOQ03OQ01
 import Proofs.SphericalLawOfCosinesOQ03Primal
 import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines
+import Proofs.SphericalLawOfSinesOQ01
 import Proofs.SphericalLawOfSinesOQ03
 import Proofs.Sqrt2
 import Proofs.Sqrt2FromAxiomsOQ01
