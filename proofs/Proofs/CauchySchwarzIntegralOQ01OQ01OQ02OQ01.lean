@@ -663,9 +663,14 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     ae_of_all μ fun a => by
       simp only [h_n, Real.norm_eq_abs, abs_mul]
       rw [abs_of_nonneg (Real.rpow_nonneg (abs_nonneg (g_n a)) (q.toReal - 1))]
+      have habs_sign : |Real.sign (g_n a)| ≤ 1 := by
+        rcases lt_trichotomy (g_n a) 0 with h | h | h
+        · rw [Real.sign_of_neg h]; norm_num
+        · rw [h, Real.sign_zero]; norm_num
+        · rw [Real.sign_of_pos h]; norm_num
       calc |Real.sign (g_n a)| * |g_n a| ^ (q.toReal - 1)
           ≤ 1 * |g_n a| ^ (q.toReal - 1) := by
-            apply mul_le_mul_of_nonneg_right (Real.abs_sign_le_one _) (by positivity)
+            apply mul_le_mul_of_nonneg_right habs_sign (by positivity)
         _ = |g_n a| ^ (q.toReal - 1) := one_mul _
         _ ≤ (n : ℝ) ^ (q.toReal - 1) :=
             Real.rpow_le_rpow (abs_nonneg _) (hgn_bound a)
@@ -726,7 +731,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
             E.indicator (fun _ => c) a := fun a => by
           by_cases h : a ∈ E <;>
             simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
-                  Set.indicator_apply, Set.piecewise_apply, h]
+                  Set.indicator_apply, Set.piecewise_eq_of_mem, Set.piecewise_eq_of_not_mem, h]
         have hE_fin : μ E ≠ ⊤ := measure_ne_top μ E
         have hind : MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
           indicator_memLp hE hE_fin p (le_of_lt hp1) hptop
