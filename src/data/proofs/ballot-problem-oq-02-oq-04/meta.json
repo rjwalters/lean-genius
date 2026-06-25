@@ -1,0 +1,77 @@
+{
+  "id": "ballot-problem-oq-02-oq-04",
+  "slug": "ballot-problem-oq-02-oq-04",
+  "title": "The Arcsine Distribution: verified core of Lévy's Arcsine Law",
+  "description": "A self-contained, axiom-free Lean formalization of the arcsine distribution on [0,1] — the cumulative distribution function F(x) = (2/π)·arcsin(√x) that governs Lévy's Arcsine Law for Brownian motion. Proves the endpoints (total mass 1), the median at 1/2, monotonicity, the signature reflection symmetry F(x)+F(1-x)=1, and the U-shaped density. The full probabilistic derivation 'via Brownian motion local times' is documented as future work (Mathlib v4.26.0 has no local-time theory).",
+  "meta": {
+    "author": "Lévy (1939); formalization: Lean Genius researcher",
+    "sourceUrl": "http://www.numdam.org/item/CM_1940__7__283_0/",
+    "date": "1939",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/BallotProblemOQ02OQ04.lean",
+    "tags": [
+      "probability",
+      "arcsine-law",
+      "brownian-motion",
+      "ballot-problem",
+      "distribution",
+      "real-analysis",
+      "research"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "scope": "Formalizes the arcsine DISTRIBUTION (the quantitative content of the law). The probabilistic statement 'the occupation time of the positive half-line is arcsine-distributed', derived via Brownian local times, is NOT proved here: Mathlib v4.26.0 contains no Brownian motion, no stochastic local time, and no arcsine-distribution object. The parent entry ballot-problem-oq-02 axiomatizes the Brownian facts; this entry instead proves the underlying real-analytic CDF axiom-free."
+  },
+  "overview": {
+    "text": "Lévy's Arcsine Law (1939) is the continuous-time culmination of the ballot problem. For a standard Brownian motion W on [0,1], three a priori different statistics — the occupation time of the positive half-line {t : W_t > 0}, the time of the maximum argmax_t W_t, and the time of the last zero sup{t : W_t = 0} — all share the same distribution on [0,1]: the arcsine law, with CDF F(x) = (2/π)·arcsin(√x) and density f(x) = 1/(π√(x(1-x))). The 'via local times' route obtains this through the occupation density (local time) of W at level 0. Because Mathlib has no local-time theory, this entry formalizes the verifiable heart of the law — the arcsine CDF F itself as a real-analytic object — proving its defining CDF properties and its signature reflection symmetry F(x)+F(1-x)=1, which is the formal expression of the counterintuitive 'arcsine' phenomenon: a Brownian path is least likely to spend half its time positive and most likely to spend nearly all or nearly none."
+  },
+  "references": [
+    {
+      "title": "Sur certains processus stochastiques homogènes",
+      "author": "Paul Lévy",
+      "year": "1939",
+      "note": "Original arcsine law for Brownian motion occupation/last-zero/argmax times."
+    },
+    {
+      "title": "Brownian Motion and Stochastic Calculus, §6.3",
+      "author": "Karatzas, Shreve",
+      "year": "1991",
+      "note": "Arcsine laws via local times and the reflection principle."
+    },
+    {
+      "title": "Brownian Motion, §5.2 & Thm 5.28",
+      "author": "Mörters, Peres",
+      "year": "2010",
+      "note": "Local times and the arcsine law derivation."
+    }
+  ],
+  "crossReferences": [
+    "ballot-problem-oq-02"
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Real"],
+    "namespace": "ArcsineLaw",
+    "lineCount": 153,
+    "mainTheorems": [
+      "arcsineCDF_zero",
+      "arcsineCDF_one",
+      "arcsineCDF_half",
+      "arcsineCDF_mono",
+      "arcsineCDF_symm",
+      "arcsineDensity_symm",
+      "arcsineDensity_half"
+    ],
+    "mainDefinitions": [
+      "arcsineCDF",
+      "arcsineDensity"
+    ],
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 2,
+    "path": "Proofs/BallotProblemOQ02OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
