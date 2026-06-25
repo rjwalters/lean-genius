@@ -3700,6 +3700,7 @@ import Proofs.QuadraticReciprocityAlgorithmOQ02OQ01
 import Proofs.QuadraticReciprocityAlgorithmOQ03
 import Proofs.QuadraticReciprocityAlgorithmOQ03FieldBridge
 import Proofs.QuadraticReciprocityAlgorithmOQ03M2
+import Proofs.QuadraticReciprocityAlgorithmOQ03M2Capstone
 import Proofs.QuadraticReciprocityOQ03
 import Proofs.QuadraticReciprocityOQ03OQ01
 import Proofs.QuadraticReciprocityOQ03OQ01Exp
