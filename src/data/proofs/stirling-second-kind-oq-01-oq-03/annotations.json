@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "The Second Subdiagonal of the Stirling Triangle",
+    "content": "Mathlib records the diagonal S(n,n)=1 and the first subdiagonal S(n+1,n)=C(n+1,2) of the Stirling numbers of the second kind, but stops there. This file proves the next entry, the second subdiagonal S(n,n−2) = C(n,3) + 3·C(n,4). Combinatorially, a partition of an n-set into n−2 blocks must be one triple plus singletons (C(n,3) ways) or two doubletons plus singletons (C(n,4) ways to pick the four paired elements, times the 3 perfect matchings of four elements). The proof is a single induction on m for the form S(m+2,m) = C(m+2,3) + 3·C(m+2,4).",
+    "mathContext": "$S(n,n-2) = \\binom{n}{3} + 3\\binom{n}{4}$, splitting partitions into one-triple and two-doubleton shapes.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "set partitions",
+      "subdiagonal closed forms",
+      "perfect matchings of four elements"
+    ],
+    "prerequisites": [
+      "set partitions",
+      "binomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-absorption",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 53, "endLine": 65 },
+    "type": "technique",
+    "title": "The Absorption Identity m·C(m+2,2) = 3·C(m+2,3)",
+    "content": "This is the only arithmetic fact the induction step needs beyond linear bookkeeping. It is the n=m+2, k=2 instance of Nat.choose_succ_right_eq, which states C(n,k+1)·(k+1) = C(n,k)·(n−k); here it reads C(m+2,3)·3 = C(m+2,2)·((m+2)−2), and Nat.add_sub_cancel collapses (m+2)−2 to m. Reorienting by commutativity gives m·C(m+2,2) = 3·C(m+2,3). Isolating it as a named lemma lets the main step finish with omega once it is substituted.",
+    "mathContext": "$m\\binom{m+2}{2} = 3\\binom{m+2}{3}$, from $\\binom{n}{k+1}(k+1) = \\binom{n}{k}(n-k)$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binomial absorption",
+      "Pascal-triangle arithmetic"
+    ],
+    "prerequisites": [
+      "binomial coefficient identities"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 67, "endLine": 86 },
+    "type": "theorem",
+    "title": "The Second Subdiagonal Closed Form",
+    "content": "stirlingSecond_sub_two proves S(m+2,m) = C(m+2,3) + 3·C(m+2,4) by induction on m. The base m=0 is decide (both sides are 0). The successor step applies the Pascal recurrence Nat.stirlingSecond_succ_succ exactly once to get S(m+3,m+1) = (m+1)·S(m+2,m+1) + S(m+2,m); it rewrites the first subdiagonal term S(m+2,m+1)=C(m+2,2) via Nat.stirlingSecond_succ_self_left and the second via the induction hypothesis. Two instances of Pascal's rule Nat.choose_succ_succ' expand the target's C(m+3,3) and C(m+3,4) over the column m+2; add_one_mul splits (m+1)·C(m+2,2); the absorption identity is substituted; and omega closes the now-linear goal in the three binomials.",
+    "mathContext": "$S(m+2,m) = \\binom{m+2}{3} + 3\\binom{m+2}{4}$ for all $m \\in \\mathbb{N}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Pascal recurrence for Stirling numbers",
+      "first subdiagonal S(n+1,n)=C(n+1,2)",
+      "induction on n",
+      "omega for linear closure"
+    ],
+    "prerequisites": [
+      "Stirling Pascal recurrence",
+      "Pascal's rule for binomials"
+    ]
+  },
+  {
+    "id": "ann-shifted-form",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 88, "endLine": 98 },
+    "type": "theorem",
+    "title": "Index-Shifted Form and Numeric Checks",
+    "content": "stirlingSecond_sub_two' re-indexes the result to the symmetric statement S(n,n−2) = C(n,3) + 3·C(n,4) for n ≥ 2, writing n = m+2 via Nat.exists_eq_add_of_le and simplifying n−2 = m. Five decide-checked examples verify the formula against directly computed Stirling values: S(2,0)=0, S(3,1)=1, S(4,2)=7, S(5,3)=25, S(6,4)=65. These use kernel-reduction decide (not native_decide), so they introduce no Lean.ofReduceBool dependency.",
+    "mathContext": "$S(n,n-2) = \\binom{n}{3} + 3\\binom{n}{4}$ for $n \\ge 2$; verified numerically through $n=6$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "index shifting",
+      "kernel-reduction decide",
+      "numeric verification"
+    ],
+    "prerequisites": [
+      "natural-number subtraction"
+    ]
+  }
+]
