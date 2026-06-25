@@ -3065,6 +3065,7 @@ import Proofs.GcdAlgorithmOQ04
 import Proofs.GcdAlgorithmOQ04OQ01
 import Proofs.GCDAlgorithmOQ05
 import Proofs.GelfondSchneider
+import Proofs.GelfondSchneiderOQ04
 import Proofs.GeneralQuartic
 import Proofs.GeneralQuarticAxiomsDischarge
 import Proofs.GeometricSeries
