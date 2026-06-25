@@ -3250,8 +3250,8 @@ import Proofs.Hilbert16
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17MotzkinRationalSOS
 import Proofs.Hilbert17OQ01
-import Proofs.Hilbert17OQ02
 import Proofs.Hilbert17OQ01OQ04
+import Proofs.Hilbert17OQ02
 import Proofs.Hilbert17OQ03OQ05
 import Proofs.Hilbert17QuadraticGram
 import Proofs.Hilbert17RobinsonNotSOS
@@ -3493,6 +3493,7 @@ import Proofs.LHopitalOQ02Incomplete01
 import Proofs.LHopitalOQ03
 import Proofs.LHopitalOQ05
 import Proofs.LHopitalOQ05OQ01
+import Proofs.LHopitalOQ05OQ02
 import Proofs.LiftingTheExponentOQ01
 import Proofs.LiftingTheExponentOQ01OQ01
 import Proofs.LiftingTheExponentOQ02
