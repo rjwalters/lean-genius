@@ -1,0 +1,200 @@
+{
+  "id": "cauchy-schwarz-oq-01-oq-05",
+  "title": "Quantitative Cauchy-Schwarz via the Lagrange Defect Identity",
+  "slug": "cauchy-schwarz-oq-01-oq-05",
+  "description": "An exact, division-free Lagrange identity for the Cauchy-Schwarz defect over complex (RCLike) inner product spaces: ‖⟪x,x⟫•y − ⟪x,y⟫•x‖² = ‖x‖²·(‖x‖²·‖y‖² − ‖⟪x,y⟫‖²). The inequality and its equality characterization both fall out directly, without invoking Mathlib's Cauchy-Schwarz or any projection coefficient.",
+  "meta": {
+    "author": "Lagrange (1773), Cauchy (1821), Schwarz (1885); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lagrange%27s_identity",
+    "date": "1773",
+    "status": "verified",
+    "tags": [
+      "analysis",
+      "linear-algebra",
+      "inner-product-spaces",
+      "complex-analysis",
+      "functional-analysis",
+      "classic",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ05.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "inner_self_eq_norm_sq_to_K",
+        "description": "Self-inner product as a field element: ⟪x, x⟫_𝕜 = (‖x‖:𝕜)²",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_conj_symm",
+        "description": "Conjugate symmetry: conj ⟪x,y⟫_𝕜 = ⟪y,x⟫_𝕜",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_self_eq_zero",
+        "description": "Positive-definiteness: ⟪x, x⟫_𝕜 = 0 ↔ x = 0",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "RCLike.mul_conj",
+        "description": "z · conj z = ↑(‖z‖²) for an RCLike field element z",
+        "module": "Mathlib.Analysis.RCLike.Basic"
+      },
+      {
+        "theorem": "RCLike.ofReal_injective",
+        "description": "The real-to-𝕜 coercion is injective, lifting a 𝕜-identity to a real one",
+        "module": "Mathlib.Analysis.RCLike.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Scalar Gram vector w := ⟪x,x⟫•y − ⟪x,y⟫•x — division-free, defined for all x (including x = 0)",
+      "𝕜-valued Gram identity ⟪w,w⟫ = ⟪x,x⟫·(⟪x,x⟫⟪y,y⟫ − ⟪x,y⟫⟪y,x⟫), proved by one sesquilinear expansion + ring",
+      "Real Lagrange defect identity ‖w‖² = ‖x‖²·(‖x‖²·‖y‖² − ‖⟪x,y⟫‖²) over an arbitrary RCLike field",
+      "Cauchy-Schwarz (squared and norm forms) recovered from the identity WITHOUT calling inner_mul_le_norm_mul_norm / norm_inner_le_norm",
+      "Equality characterization ‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ ⟪x,x⟫•y = ⟪x,y⟫•x, with the forward direction needing no case split",
+      "Linear-dependence corollary: for x ≠ 0, equality ↔ ∃ c, y = c•x",
+      "ℝ and ℂ specializations of the defect identity and the inequality"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 212,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only propext, Classical.choice, Quot.sound.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "**The Lagrange Identity Behind Cauchy-Schwarz**\n\nLong before Cauchy's 1821 sum inequality, Joseph-Louis Lagrange recorded (1773) an algebraic *identity* whose nonnegativity instantly yields the inequality for finite sums:\n$$\\Big(\\sum a_i^2\\Big)\\Big(\\sum b_i^2\\Big) - \\Big(\\sum a_i b_i\\Big)^2 = \\sum_{i<j} (a_i b_j - a_j b_i)^2 \\ge 0.$$\nThe abstract inner-product-space version replaces the right-hand sum of squares with a single squared norm — the norm of the *residual* of $y$ after removing its component along $x$. Schwarz's 1885 proof used exactly this orthogonal residual, but divided by $\\langle v,v\\rangle$ to form the projection coefficient.\n\nThe entry here keeps the spirit of Lagrange's identity but **avoids division entirely**: it scales the Gram vector by $\\langle x,x\\rangle$ rather than dividing by it, so the identity\n$$\\big\\|\\,\\langle x,x\\rangle\\, y - \\langle x,y\\rangle\\, x\\,\\big\\|^2 = \\|x\\|^2\\big(\\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2\\big)$$\nholds for *every* pair $x, y$, including $x = 0$ where both sides vanish. Over a complex (or general RCLike) field, the only subtlety is sesquilinear bookkeeping: the inner product is conjugate-linear in its first slot, so the cross term cancels precisely because $\\overline{\\langle x,x\\rangle} = \\langle x,x\\rangle$ and $\\overline{\\langle x,y\\rangle} = \\langle y,x\\rangle$.",
+    "problemStatement": "**Quantitative Cauchy-Schwarz (Complex / RCLike)**\n\nFor vectors x, y in an inner product space over an RCLike field 𝕜:\n$$\\big\\|\\,\\langle x,x\\rangle\\, y - \\langle x,y\\rangle\\, x\\,\\big\\|^2 = \\|x\\|^2\\Big(\\|x\\|^2\\,\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2\\Big).$$\n\nSince the left side is a square and $\\|x\\|^2 \\ge 0$, the Cauchy-Schwarz defect $\\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2$ is nonnegative, and equality holds iff the scaled Gram vector $\\langle x,x\\rangle y - \\langle x,y\\rangle x$ is zero.",
+    "text": "An exact, division-free Lagrange identity for the Cauchy-Schwarz defect over complex (RCLike) inner product spaces, from which both the inequality and its equality characterization follow directly.",
+    "proofStrategy": "**Proof via the Scaled Gram Vector**\n\n1. **Set** w = ⟪x,x⟫•y − ⟪x,y⟫•x (scalars in 𝕜; no division).\n2. **Expand** ⟪w,w⟫ by sesquilinearity. The conjugates simplify via conj⟪x,x⟫ = ⟪x,x⟫ and conj⟪x,y⟫ = ⟪y,x⟫; the cross term aⁿb − bⁿa cancels, leaving ⟪w,w⟫ = ⟪x,x⟫·(⟪x,x⟫⟪y,y⟫ − ⟪x,y⟫⟪y,x⟫).\n3. **Cast to reals** via inner_self_eq_norm_sq_to_K and RCLike.mul_conj, then lift the 𝕜-identity to ℝ by injectivity of the coercion, giving the Lagrange defect identity.\n4. **Inequality**: the left side is a square ≥ 0; cancel the positive ‖x‖² for x ≠ 0 (the x = 0 case is trivial), and take square roots.\n5. **Equality**: equality makes the defect 0, so ‖w‖² = ‖x‖²·0 = 0, forcing w = 0 — no case split. Conversely w = 0 gives ‖x‖²·defect = 0, hence the defect vanishes (x ≠ 0) or both sides are 0 (x = 0).",
+    "keyInsights": [
+      "**Scale, don't divide**: Using the coefficient ⟪x,x⟫ (a scalar) instead of dividing by it makes the identity hold for *all* x, eliminating the v ≠ 0 hypothesis that the projection approach requires at the identity level.",
+      "**The defect is literally a squared norm**: ‖x‖²·(‖x‖²‖y‖² − ‖⟪x,y⟫‖²) = ‖w‖² exhibits the Cauchy-Schwarz gap as ‖x‖² times the squared length of y's component orthogonal to x.",
+      "**Sesquilinear cancellation**: Over ℂ the cross term survives only as a − b·b̄ structure; it cancels because conj⟪x,x⟫ = ⟪x,x⟫ and the residual is orthogonal to x. A single `ring` closes the 𝕜-identity once conjugates are rewritten.",
+      "**Self-contained inequality**: Cauchy-Schwarz is re-derived purely from nonnegativity of a square, never invoking Mathlib's norm_inner_le_norm — the identity is logically upstream of the inequality.",
+      "**Forward equality needs no case split**: Because ‖w‖² = ‖x‖²·defect, vanishing defect forces ‖w‖² = 0 directly, regardless of whether x is zero."
+    ],
+    "prerequisites": [
+      "Mathematical analysis",
+      "Linear algebra",
+      "Complex analysis"
+    ]
+  },
+  "sections": [
+    {
+      "id": "gram-identity",
+      "title": "The 𝕜-Valued Gram Identity",
+      "summary": "⟪w,w⟫ = ⟪x,x⟫·(⟪x,x⟫⟪y,y⟫ − ⟪x,y⟫⟪y,x⟫) for w = ⟪x,x⟫•y − ⟪x,y⟫•x, by one sesquilinear expansion plus ring.",
+      "startLine": 72,
+      "endLine": 77,
+      "mathContext": "Expanding the self inner product of the scaled Gram vector and simplifying the conjugates $\\overline{\\langle x,x\\rangle} = \\langle x,x\\rangle$, $\\overline{\\langle x,y\\rangle} = \\langle y,x\\rangle$ collapses the cross term, leaving the Gram determinant scaled by $\\langle x,x\\rangle$."
+    },
+    {
+      "id": "lagrange-identity",
+      "title": "The Real Lagrange Defect Identity (★)",
+      "summary": "‖w‖² = ‖x‖²·(‖x‖²·‖y‖² − ‖⟪x,y⟫‖²), obtained from the 𝕜-identity by casting via inner_self_eq_norm_sq_to_K and RCLike.mul_conj and lifting through ofReal injectivity.",
+      "startLine": 89,
+      "endLine": 99,
+      "mathContext": "The exact, division-free Lagrange identity: the squared norm of the residual equals $\\|x\\|^2$ times the Cauchy-Schwarz defect. Valid for all $x, y$, including $x = 0$."
+    },
+    {
+      "id": "cauchy-schwarz",
+      "title": "Cauchy-Schwarz, Recovered from (★)",
+      "summary": "Squared form ‖⟪x,y⟫‖² ≤ ‖x‖²‖y‖² (from nonnegativity of ‖w‖²), the norm form via √-monotonicity, and nonnegativity of the Gram determinant.",
+      "startLine": 109,
+      "endLine": 137,
+      "mathContext": "Because $\\|w\\|^2 \\ge 0$ and $\\|x\\|^2 \\ge 0$, the defect is nonnegative, giving $\\|\\langle x,y\\rangle\\| \\le \\|x\\|\\,\\|y\\|$ — the headline of the parent problem — without using Mathlib's Cauchy-Schwarz lemma."
+    },
+    {
+      "id": "equality",
+      "title": "Equality Characterization",
+      "summary": "‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ ⟪x,x⟫•y = ⟪x,y⟫•x, and the linear-dependence corollary ∃ c, y = c•x for x ≠ 0.",
+      "startLine": 150,
+      "endLine": 186,
+      "mathContext": "Equality holds iff the residual vanishes. For $x \\ne 0$ this is exactly $y = (\\langle x,y\\rangle/\\langle x,x\\rangle)\\,x$, i.e. $y$ is a scalar multiple of $x$."
+    },
+    {
+      "id": "specializations",
+      "title": "Specializations to ℝ and ℂ",
+      "summary": "The defect identity over real inner product spaces, over complex inner product spaces, and complex Cauchy-Schwarz, all as direct instantiations of the RCLike results.",
+      "startLine": 192,
+      "endLine": 210,
+      "mathContext": "Instantiating $\\mathbb{k} = \\mathbb{R}$ and $\\mathbb{k} = \\mathbb{C}$ recovers the classical real and complex statements from the single uniform RCLike development."
+    }
+  ],
+  "conclusion": {
+    "summary": "The open question is answered affirmatively: there is an exact, division-free Lagrange identity for the Cauchy-Schwarz defect over any RCLike inner product space. All 10 theorems are proved with 0 sorries and 0 axioms; the inequality and its equality condition both follow from a single squared-norm identity.",
+    "implications": "**Theoretical Significance**\n\n1. **Quantitative refinement**: The identity exposes the Cauchy-Schwarz gap as an exact squared norm, not just a bound — useful wherever the *sharpness* of Cauchy-Schwarz matters (least squares, stability estimates).\n2. **Logical independence from Mathlib's CS**: The inequality is derived from the identity alone, demonstrating that Cauchy-Schwarz is downstream of an elementary algebraic identity even over complex fields.\n3. **Contrast with cauchy-schwarz-oq-01-oq-01**: That sibling proves the equality condition via the projection coefficient ⟪v,u⟫/⟪v,v⟫ and Pythagoras; here the same conclusion is reached division-free, with the forward equality direction requiring no case split.",
+    "openQuestions": [
+      "Can the Lagrange identity be packaged as the squared norm of an explicit orthogonal residual to connect with Mathlib's orthogonalProjection?",
+      "Does the scaled Gram-vector identity generalize to a Gram-matrix determinant identity for n vectors (Gram determinant ≥ 0)?",
+      "Can the same division-free technique give a quantitative reverse Cauchy-Schwarz (Pólya–Szegő) bound?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Analysis.RCLike.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "RCLike"
+    ],
+    "namespace": "CauchySchwarzOQ01OQ05",
+    "lineCount": 212,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 0,
+    "path": "Proofs/CauchySchwarzOQ01OQ05.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "J.-L. Lagrange",
+      "title": "Solutions analytiques de quelques problèmes sur les pyramides triangulaires",
+      "year": "1773",
+      "venue": "Nouveaux mémoires de l'Académie de Berlin",
+      "note": "Original algebraic identity underlying the inequality"
+    },
+    {
+      "authors": "A.-L. Cauchy",
+      "title": "Cours d'Analyse",
+      "year": "1821",
+      "venue": "Imprimerie Royale, Paris",
+      "note": "Finite sum form of the inequality"
+    },
+    {
+      "authors": "H. A. Schwarz",
+      "title": "Über ein die Flächen kleinsten Flächeninhalts betreffendes Problem",
+      "year": "1885",
+      "venue": "Acta Societatis Scientiarum Fennicae",
+      "note": "Inner product space formulation via orthogonal residual"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01",
+      "relationship": "extends",
+      "description": "Parent problem (complex Cauchy-Schwarz); this entry re-derives the inequality from an exact defect identity rather than from Mathlib's bound"
+    },
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Sibling equality characterization via the projection coefficient and Pythagoras; this entry reaches the same equality condition division-free"
+    },
+    {
+      "targetId": "cauchy-schwarz",
+      "relationship": "extends",
+      "description": "Base Cauchy-Schwarz inequality; quantified here as an exact squared-norm identity"
+    },
+    {
+      "targetId": "pythagorean-theorem",
+      "relationship": "related",
+      "description": "The defect identity is the orthogonal-decomposition Pythagoras relation in disguise, scaled by ‖x‖²"
+    }
+  ],
+  "sorries": 0
+}
