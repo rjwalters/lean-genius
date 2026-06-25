@@ -1,0 +1,50 @@
+[
+  {
+    "id": "q-form-def",
+    "startLine": 40,
+    "endLine": 43,
+    "type": "definition",
+    "title": "The form Q(x,y)=x²+2y²",
+    "body": "The binary quadratic form whose represented integers are the squared distances in the Moree–Osburn lattice, together with the predicate `IsRepresented n := ∃ x y, n = Q x y`. Q is the norm form of the ring ℤ[√-2]."
+  },
+  {
+    "id": "q-mul",
+    "startLine": 48,
+    "endLine": 51,
+    "type": "theorem",
+    "title": "Brahmagupta composition law (D=2)",
+    "body": "(a²+2b²)(c²+2d²) = (ac−2bd)² + 2(ad+bc)². A pure `ring` identity expressing that the form Q is multiplicative — the algebraic backbone of the sparse distance spectrum."
+  },
+  {
+    "id": "q-eq-norm",
+    "startLine": 54,
+    "endLine": 57,
+    "type": "theorem",
+    "title": "Q is the ℤ√(-2) norm",
+    "body": "`Zsqrtd.norm ⟨x,y⟩ = x²+2y²` for ℤ√(-2). Connects the elementary form to Mathlib's algebraic number theory (`Zsqrtd`), where multiplicativity is `Zsqrtd.norm_mul`."
+  },
+  {
+    "id": "represented-mul",
+    "startLine": 76,
+    "endLine": 82,
+    "type": "theorem",
+    "title": "Multiplicative closure",
+    "body": "The product of two integers represented by Q is again represented, obtained constructively from the composition law. This is the mechanism that makes the distance set sparse."
+  },
+  {
+    "id": "represented-submonoid",
+    "startLine": 83,
+    "endLine": 92,
+    "type": "definition",
+    "title": "Represented integers form a submonoid",
+    "body": "Packages `isRepresented_one` and `isRepresented_mul` into a `Submonoid ℤ`, with finite-product closure `isRepresented_prod` following by induction."
+  },
+  {
+    "id": "dist-sq-lattice",
+    "startLine": 111,
+    "endLine": 125,
+    "type": "theorem",
+    "title": "Squared distance equals Q of differences",
+    "body": "For lattice points P(x,y)=(x, y·√2) ∈ ℝ², the squared Euclidean distance |P(x₁,y₁)−P(x₂,y₂)|² equals (x₁−x₂)²+2(y₁−y₂)² = Q(x₁−x₂, y₁−y₂). Uses (√2)²=2 (`Real.sq_sqrt`). Hence the lattice's squared distances are exactly the integers represented by Q."
+  }
+]

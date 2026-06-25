@@ -1,0 +1,73 @@
+{
+  "id": "erdos-659-oq-05",
+  "title": "Erdős #659 OQ: Multiplicative Structure of the x²+2y² Distance Form",
+  "slug": "erdos-659-oq-05",
+  "description": "Erdős #659 (Moree–Osburn 2006): n-point sets in ℝ² where every 4 points determine ≥3 distances, with only O(n/√log n) distinct distances. Open question oq-05 asks whether the construction can be formalized in Lean WITHOUT axioms, by proving Landau's density theorem for integers of the form x²+2y² purely in Mathlib. Landau's analytic theorem is not yet in Mathlib, so the full program remains open. This entry contributes a verified, axiom-free algebraic layer: the binary quadratic form Q(x,y)=x²+2y² (the norm form of ℤ[√-2]) satisfies the Brahmagupta composition law, so the integers it represents form a multiplicative submonoid of ℤ; and these represented integers are exactly the squared distances occurring in the Moree–Osburn lattice {(x, y√2)}. The multiplicativity is the algebraic engine behind the sparse distance spectrum that Landau's theorem quantifies.",
+  "meta": {
+    "author": "Brahmagupta (composition law), Moree–Osburn (2006); formalization by researcher-10",
+    "sourceUrl": "https://erdosproblems.com/659",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/Erdos659OQ05.lean",
+    "tags": [
+      "erdos",
+      "distance-problems",
+      "four-point-property",
+      "quadratic-forms",
+      "binary-quadratic-forms",
+      "Zsqrtd",
+      "norm-form",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Every result is machine-checked with 0 axioms and 0 sorries (depends only on the foundational propext/Classical.choice/Quot.sound). NOTE: this entry does NOT close the open question oq-05 — the full Landau density theorem for x²+2y² is not yet in Mathlib and remains open. This is a verified foundational ingredient (the multiplicative norm-form structure), not the complete axiom-free formalization that oq-05 ultimately requests.",
+    "erdosNumber": 659,
+    "erdosUrl": "https://erdosproblems.com/659",
+    "originalContributions": [
+      "Q(x,y)=x²+2y²: the binary quadratic form and its represented-integer predicate IsRepresented",
+      "Q_mul: Brahmagupta composition law (a²+2b²)(c²+2d²)=(ac-2bd)²+2(ad+bc)² (pure ring identity)",
+      "Q_eq_zsqrtd_norm: Q is exactly the norm of ℤ√(-2), connecting to Mathlib's Zsqrtd theory",
+      "isRepresented_mul + representedSubmonoid: represented integers are closed under × (submonoid of ℤ)",
+      "isRepresented_prod: closure under arbitrary finite products",
+      "isRepresented_nonneg: represented integers are nonnegative (valid squared distances)",
+      "dist_sq_lattice: squared distance between lattice points (x,y√2) equals Q of coordinate differences — ties the number theory to the actual Moree–Osburn geometry"
+    ],
+    "lineCount": 125,
+    "theoremCount": 9,
+    "definitionCount": 4
+  },
+  "leanFile": {
+    "path": "Proofs/Erdos659OQ05.lean",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 4,
+    "theoremCount": 9
+  },
+  "conclusion": {
+    "summary": "The squared distances of the Moree–Osburn lattice {(x, y√2) : x,y ∈ ℤ} are exactly the integers represented by Q(x,y)=x²+2y². Via the Brahmagupta composition law (equivalently, multiplicativity of the ℤ√(-2) norm), these represented integers form a multiplicative submonoid of ℤ. This multiplicative structure is the algebraic reason the distance spectrum is sparse — the phenomenon Landau's density theorem quantifies asymptotically as O(n/√log n).",
+    "implications": [
+      "Verifies, axiom-free, the algebraic backbone of the Moree–Osburn distance count.",
+      "Reduces the remaining gap in oq-05 to the purely analytic Landau density theorem."
+    ],
+    "openQuestions": [
+      "Prove Landau's theorem in Mathlib: #{n ≤ N : n = x²+2y²} ~ C·N/√log N, with C the Landau–Ramanujan-type constant. This is the genuinely open, analytic part of oq-05.",
+      "Characterize which integers are represented by x²+2y² (primes p with p=2 or p ≡ 1,3 mod 8), requiring class field theory / genus theory not yet in Mathlib."
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Formalization-without-axioms question for the parent Erdős #659 distance problem",
+      "targetId": "erdos-659"
+    },
+    {
+      "relationship": "sibling-of",
+      "description": "Shares the x²+2y² / Landau-theorem machinery with the sharpness question",
+      "targetId": "erdos-659-oq-01"
+    }
+  ],
+  "sorries": 0
+}
