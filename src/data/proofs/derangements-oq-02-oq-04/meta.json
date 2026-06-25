@@ -1,0 +1,77 @@
+{
+  "id": "derangements-oq-02-oq-04",
+  "title": "Low-Codimension Fixed-Point Counts: S(n,n−2) = C(n,2) and S(n,n−3) = 2·C(n,3)",
+  "slug": "derangements-oq-02-oq-04",
+  "description": "Closed forms for the top of the fixed-point distribution of permutations of Fin n. The parent (derangements-oq-02) proved the partial-derangement count S(n,k) = C(n,k)·D(n−k) — permutations with exactly k fixed points — together with the two extreme cases S(n,n) = 1 (the identity) and S(n,n−1) = 0 (impossible). This entry evaluates the next two cases by specialising the main formula at the small derangement numbers D(2) = 1 and D(3) = 2: S(n,n−2) = C(n,2) for n ≥ 2 (exactly the transpositions — choose the 2 moved points, with the unique swap as their derangement) and S(n,n−3) = 2·C(n,3) for n ≥ 3 (choose the 3 moved points, each admitting the two 3-cycles). Together with the parent this gives the complete top of the distribution: 1, 0, C(n,2), 2·C(n,3), … for k = n, n−1, n−2, n−3, …. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Classical (partial derangements / rencontres numbers); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Rencontres_numbers",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "combinatorics",
+      "derangements",
+      "permutations",
+      "fixed-points",
+      "rencontres-numbers",
+      "binomial-coefficients",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/DerangementsOQ02OQ04.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "PartialDerangements.card_perms_with_kfixed",
+        "description": "The parent's main theorem S(n,k) = C(n,k)·D(n−k): the number of permutations of Fin n with exactly k fixed points. Specialised here at k = n−2 and k = n−3.",
+        "module": "Proofs.DerangementsOQ02"
+      },
+      {
+        "theorem": "Nat.choose_symm",
+        "description": "n.choose (n − k) = n.choose k for k ≤ n. Converts C(n,n−2), C(n,n−3) to C(n,2), C(n,3).",
+        "module": "Mathlib.Data.Nat.Choose.Basic"
+      },
+      {
+        "theorem": "Nat.numDerangements",
+        "description": "The derangement-count function D(m); D(2) = 1 and D(3) = 2 are evaluated by kernel `decide`.",
+        "module": "Mathlib.Combinatorics.Derangements.Finite"
+      }
+    ],
+    "originalContributions": [
+      "card_perms_n_minus_two_fixed: S(n,n−2) = C(n,2) for n ≥ 2 — the permutations of Fin n with exactly n−2 fixed points are precisely the C(n,2) transpositions, obtained from the parent's S(n,k) = C(n,k)·D(n−k) at D(2) = 1 and C(n,n−2) = C(n,2)",
+      "card_perms_n_minus_three_fixed: S(n,n−3) = 2·C(n,3) for n ≥ 3 — choose the three moved points (C(n,3) ways), each admitting the two 3-cycles (D(3) = 2)",
+      "numDerangements_two (D(2) = 1) and numDerangements_three (D(3) = 2), the small derangement values feeding the two counts, by kernel decide",
+      "Completes the top of the fixed-point distribution begun by the parent's extreme cases: 1, 0, C(n,2), 2·C(n,3), … for codimensions 0, 1, 2, 3"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 59,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on card_perms_n_minus_two_fixed and card_perms_n_minus_three_fixed reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). The two `decide`s (D(2)=1, D(3)=2) are kernel decidability, not native_decide, so no Lean.ofReduceBool. Builds on the project file DerangementsOQ02 (itself 0-axiom).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "small-derangements",
+      "title": "Small Derangement Values",
+      "startLine": 33,
+      "endLine": 38,
+      "summary": "numDerangements_two: D(2) = 1 (the unique swap); numDerangements_three: D(3) = 2 (the two 3-cycles), both by kernel decide. These feed the codimension counts below."
+    },
+    {
+      "id": "codim-two",
+      "title": "Codimension 2: the Transpositions",
+      "startLine": 42,
+      "endLine": 50,
+      "summary": "card_perms_n_minus_two_fixed: S(n,n−2) = C(n,2) for n ≥ 2. From the parent's S(n,k) = C(n,k)·D(n−k) with n − (n−2) = 2, D(2) = 1, and Nat.choose_symm turning C(n,n−2) into C(n,2)."
+    },
+    {
+      "id": "codim-three",
+      "title": "Codimension 3",
+      "startLine": 52,
+      "endLine": 57,
+      "summary": "card_perms_n_minus_three_fixed: S(n,n−3) = 2·C(n,3) for n ≥ 3, similarly with D(3) = 2 and Nat.choose_symm."
+    }
+  ]
+}
