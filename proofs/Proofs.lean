@@ -1653,6 +1653,7 @@ import Proofs.Erdos158Problem
 import Proofs.Erdos159Problem
 import Proofs.Erdos15Problem
 import Proofs.Erdos160Aristotle
+import Proofs.Erdos160Incomplete01
 import Proofs.Erdos160Problem
 import Proofs.Erdos160ProblemAristotle
 import Proofs.Erdos161Problem
