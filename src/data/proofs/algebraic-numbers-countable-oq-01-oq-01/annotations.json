@@ -1,0 +1,62 @@
+[
+  {
+    "id": "algnum-ann-upgrade",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01",
+    "range": { "startLine": 67, "endLine": 88 },
+    "type": "definition",
+    "title": "Upgrading the subfield to an intermediate field",
+    "content": "algebraicIntermediateField K L promotes the parent's algebraicSubfield K L (closed under +, −, ×, ⁻¹) to an IntermediateField K L. Subfield.toIntermediateField needs exactly one extra fact — that the image of K is contained — and that is supplied by isAlgebraic_algebraMap: every constant algebraMap K L k is algebraic over K (it satisfies X − k). The simp lemma mem_algebraicIntermediateField records the defining membership x ∈ A ↔ IsAlgebraic K x, and the instance algebraicIntermediateField_isAlgebraic certifies A/K is an algebraic extension — the hypothesis the transitivity step will consume.",
+    "mathContext": "An intermediate field is a subfield $A$ of $L$ with $K \\subseteq A \\subseteq L$. The only datum beyond subfield closure is $K \\subseteq A$, i.e. each $\\mathrm{algebraMap}\\,K\\,L\\,k$ is algebraic over $K$ — true in any extension since $k$ is a root of $X - k$.",
+    "significance": "supporting",
+    "relatedConcepts": ["intermediate field", "subfield", "algebraic element", "isAlgebraic_algebraMap"],
+    "prerequisites": ["field extensions", "subfields"]
+  },
+  {
+    "id": "algnum-ann-mathlib-agreement",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01",
+    "range": { "startLine": 78, "endLine": 81 },
+    "type": "context",
+    "title": "Agreement with Mathlib's relative algebraic closure",
+    "content": "algebraicIntermediateField_eq_algebraicClosure shows the hand-built field equals Mathlib's algebraicClosure K L (the maximal algebraic subextension, defined as the integral closure upgraded to an intermediate field). The proof is a one-line ext + rewrite, since both sides are characterized by the same membership predicate IsAlgebraic K x. This confirms the parent's elementary construction recovers the standard library object and inherits its API.",
+    "mathContext": "$\\mathrm{algebraicIntermediateField}\\,K\\,L = \\mathrm{algebraicClosure}\\,K\\,L$: both consist of exactly the $x \\in L$ with $\\mathrm{IsAlgebraic}\\,K\\,x$.",
+    "significance": "context",
+    "relatedConcepts": ["relative algebraic closure", "integral closure", "algebraicClosure"],
+    "prerequisites": ["algebraic closure", "Mathlib field theory"]
+  },
+  {
+    "id": "algnum-ann-transitivity",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01",
+    "range": { "startLine": 101, "endLine": 106 },
+    "type": "insight",
+    "title": "mem_of_isAlgebraic_over — transitivity of algebraicity",
+    "content": "The crux of the file. If z ∈ L is algebraic over A = algebraicIntermediateField K L, then z is already algebraic over the base K — hence already in A. The proof is two steps: z algebraic over the field A means z is integral over A (hz.isIntegral), and since A/K is algebraic, IsIntegral.trans_isAlgebraic transports algebraicity down to K. This is exactly the closure property that distinguishes the algebraic closure from an arbitrary subfield: A cannot acquire new algebraic elements.",
+    "mathContext": "Transitivity of algebraicity: if $A/K$ is algebraic and $z$ is integral over $A$, then $z$ is algebraic over $K$. So $\\mathrm{IsAlgebraic}\\,A\\,z \\Rightarrow z \\in A$.",
+    "significance": "key",
+    "relatedConcepts": ["transitivity of algebraicity", "integral element", "IsIntegral.trans_isAlgebraic", "algebraic extension"],
+    "prerequisites": ["integral elements", "algebraic extensions", "transitivity"]
+  },
+  {
+    "id": "algnum-ann-algclosed",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01",
+    "range": { "startLine": 121, "endLine": 142 },
+    "type": "technique",
+    "title": "isAlgClosed_algebraicIntermediateField — closedness via 'root upstairs, lives downstairs'",
+    "content": "The main theorem: when L is algebraically closed, A is algebraically closed too. Strategy via IsAlgClosed.of_exists_root: given a monic irreducible p over A, it has positive degree (degree_pos_of_irreducible), so the closed L yields a root w ∈ L (exists_aeval_eq_zero). Because p is monic, w is integral over A; by the transitivity step §2, w ∈ A. Finally the L-root aeval w p = 0 is transported back to a root inside A along the injective inclusion A ↪ L, using aeval_algebraMap_apply_eq_algebraMap_eval and FaithfulSMul.algebraMap_injective. Deliberately self-contained — it never invokes Mathlib's packaged IsAlgClosure instance.",
+    "mathContext": "For monic irreducible $p \\in A[X]$: $L$ closed gives a root $w \\in L$; monicity makes $w$ integral over $A$; transitivity puts $w \\in A$; injectivity of $A \\hookrightarrow L$ pulls $\\mathrm{aeval}\\,w\\,p = 0$ back to a root in $A$. Hence $A$ is algebraically closed.",
+    "significance": "key",
+    "relatedConcepts": ["algebraically closed field", "IsAlgClosed.of_exists_root", "monic polynomial", "injective inclusion", "relative algebraic closure"],
+    "prerequisites": ["algebraically closed fields", "polynomial roots", "integral elements"]
+  },
+  {
+    "id": "algnum-ann-rationals",
+    "proofId": "algebraic-numbers-countable-oq-01-oq-01",
+    "range": { "startLine": 151, "endLine": 173 },
+    "type": "concept",
+    "title": "Specialization: the algebraic numbers ℚ̄ ⊆ ℂ",
+    "content": "algebraicNumbersField : IntermediateField ℚ ℂ instantiates the construction at K = ℚ, L = ℂ. Since ℂ is algebraically closed, the IsAlgClosed instance follows immediately from the main theorem: the algebraic numbers form an algebraically closed field — an algebraic closure of ℚ realized concretely inside ℂ. Combined with the grandparent's countability result, ℚ̄ is a countable algebraically closed field strictly contained in the uncountable algebraically closed ℂ — concretely separating cardinality from algebraic closedness. algebraicNumbersField_eq identifies it with algebraicClosure ℚ ℂ; the examples restate membership and the closure step.",
+    "mathContext": "$\\overline{\\mathbb{Q}} = \\mathrm{algebraicNumbersField} = \\{z \\in \\mathbb{C} : \\mathrm{IsAlgebraic}\\,\\mathbb{Q}\\,z\\}$ is a countable algebraically closed field inside the uncountable algebraically closed $\\mathbb{C}$, and equals $\\mathrm{algebraicClosure}\\,\\mathbb{Q}\\,\\mathbb{C}$.",
+    "significance": "key",
+    "relatedConcepts": ["algebraic numbers", "algebraic closure of ℚ", "countability", "complex numbers"],
+    "prerequisites": ["algebraic numbers", "countability", "algebraically closed fields"]
+  }
+]
