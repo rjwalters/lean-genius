@@ -1,8 +1,8 @@
 {
   "id": "dissection-of-cubes-oq-02-oq-02",
-  "title": "Dehn-Sydler Completeness: Tensor Product Dehn Invariant",
+  "title": "Hilbert's Third Problem via the Tensor-Product Dehn Invariant",
   "slug": "dissection-of-cubes-oq-02-oq-02",
-  "description": "Formalizes the proper algebraic Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) using Mathlib's tensor product infrastructure. Proves rational angle vanishing (edges with rational×π dihedral angles contribute 0), cube D=0, tetrahedron D≠0, and Hilbert's Third Problem. States the Dehn-Sydler completeness theorem.",
+  "description": "Formalizes the proper algebraic Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) using Mathlib's tensor product infrastructure. Proves rational angle vanishing (edges with rational×π dihedral angles contribute 0), cube D=0, tetrahedron D≠0, and Hilbert's Third Problem. The Dehn-Sydler completeness theorem (sufficiency direction, Sydler 1965) is included only as a `True`-valued placeholder — it is stated as classical background, not formalized here.",
   "meta": {
     "author": "Dehn (1900), Sydler (1965), Jessen (1968)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn%E2%80%93Sydler_theorem",
@@ -51,11 +51,11 @@
       "tet_dehn_ne_zero: tetrahedron Dehn invariant is nonzero (arccos(1/3)/π irrational)",
       "hilbert_third_problem: D(cube) ≠ D(tetrahedron)",
       "octAngle_class: [arccos(-1/3)] = -[arccos(1/3)] in ℝ/πℤ",
-      "Dehn-Sydler completeness theorem statement",
+      "Dehn-Sydler completeness theorem stated as a `True`-valued placeholder (sufficiency direction not formalized)",
       "tmul_infinite_order_ne_zero: proved via Module.Flat (ℝ flat over ℤ as Bézout + NoZeroSMulDivisors) — lTensor ℝ f injective for injective f : ℤ →ₗ AngleQuot"
     ],
     "lineCount": 454,
-    "assumptions": "0 axioms. All assumptions eliminated. tmul_infinite_order_ne_zero proved via Module.Flat: ℝ is flat over ℤ (Bézout domain + NoZeroSMulDivisors ℤ ℝ), so lTensor ℝ f is injective for any injective f : ℤ →ₗ[ℤ] AngleQuot, giving r⊗x≠0 when r≠0 and x has infinite order. Previously 6 axioms; all eliminated across sessions.",
+    "assumptions": "0 axioms, 0 sorries. The genuinely proved headline (Hilbert's Third Problem: D(cube) ≠ D(tetrahedron)) is axiom-free — tmul_infinite_order_ne_zero is proved via Module.Flat (ℝ is flat over ℤ as a Bézout domain + NoZeroSMulDivisors ℤ ℝ), so lTensor ℝ f is injective for any injective f : ℤ →ₗ[ℤ] AngleQuot, giving r⊗x≠0 when r≠0 and x has infinite order (previously 6 axioms, all eliminated). NOTE: the Dehn-Sydler completeness direction is NOT formalized — `dehn_preserved_by_scissors` (`True → d₁ = d₁`) and `volume_preserved_by_scissors` (`True → v₁ = v₁`) are inert `True`-valued placeholder theorems carrying no geometric content; no proved result depends on them.",
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
