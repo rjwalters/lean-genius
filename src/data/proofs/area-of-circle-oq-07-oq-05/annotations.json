@@ -2,7 +2,7 @@
   {
     "id": "ann-aoc07oq05-context",
     "proofId": "area-of-circle-oq-07-oq-05",
-    "range": { "startLine": 4, "endLine": 52 },
+    "range": { "startLine": 5, "endLine": 35 },
     "type": "concept",
     "title": "The Second Moment of the Gaussian",
     "content": "The parent `area-of-circle-oq-07` evaluates the zeroth moment of the Gaussian weight, `∫_ℝ e^{-x²} dx = √π`. This entry adds the first nontrivial weighted moment: `∫_ℝ x² e^{-x²} dx = √π/2`. Where the siblings oq-01…oq-04 vary the parameter, the domain (half-line), or square the value — all still the zeroth moment — here the integrand carries the genuine polynomial weight `x²`. The value √π/2 is exactly half the parent's √π, a coincidence explained by integration by parts: the x² weight is `traded` for a derivative that recovers the bare Gaussian.",
@@ -22,12 +22,12 @@
   {
     "id": "ann-aoc07oq05-decay",
     "proofId": "area-of-circle-oq-07-oq-05",
-    "range": { "startLine": 54, "endLine": 67 },
+    "range": { "startLine": 41, "endLine": 51 },
     "type": "technique",
     "title": "The Boundary Term Vanishes: Gaussian Decay",
     "content": "`tendsto_mul_gaussian_cocompact` proves `x e^{-x²} → 0` at both ends of the real line — the boundary product of the integration by parts. It is repackaged from Mathlib's `tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact` (with exponent s = 1, rate a = 1), which gives `|x|^1 e^{-x²} → 0` along the cocompact filter. Stripping the absolute value uses `tendsto_zero_iff_norm_tendsto_zero` together with `‖x e^{-x²}‖ = |x| e^{-x²}` (the Gaussian factor is positive). The single cocompact statement is later split into the `atBot` and `atTop` limits the IBP lemma requires, via `cocompact_eq_atBot_atTop` and `le_sup_left/right`.",
     "mathContext": "On $\\mathbb R$ the cocompact filter equals $\\text{atBot} \\sqcup \\text{atTop}$, so a single cocompact limit packages both one-sided boundary terms. Gaussian decay $e^{-x^2}$ dominates every polynomial, so $x^k e^{-x^2}\\to 0$ at $\\pm\\infty$ for all $k$.",
-    "significance": "important",
+    "significance": "supporting",
     "relatedConcepts": [
       "cocompact filter",
       "tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact",
@@ -42,7 +42,7 @@
   {
     "id": "ann-aoc07oq05-ibp",
     "proofId": "area-of-circle-oq-07-oq-05",
-    "range": { "startLine": 69, "endLine": 118 },
+    "range": { "startLine": 53, "endLine": 118 },
     "type": "technique",
     "title": "Integration by Parts on the Whole Line",
     "content": "`gaussian_second_moment` applies `MeasureTheory.integral_mul_deriv_eq_deriv_mul` with `u = x` (derivative 1) and `v = -½ e^{-x²}` (derivative `v' = x e^{-x²}`, built from `hasDerivAt_pow`, `HasDerivAt.exp`, and `HasDerivAt.const_mul`). The integrand factors as `u·v' = x·(x e^{-x²}) = x² e^{-x²}`, so the formula `∫ u v' = b' - a' - ∫ u' v` becomes `∫ x² e^{-x²} = 0 - 0 - ∫ 1·(-½ e^{-x²}) = ½∫ e^{-x²} = ½√π`. The two integrability side-conditions use `integrable_rpow_mul_exp_neg_mul_sq` (for x² e^{-x²}, identifying `x^(2:ℝ)` with `x²` via `Real.rpow_natCast`) and `integrable_exp_neg_mul_sq` (for the bare Gaussian); the boundary limits come from `tendsto_mul_gaussian_cocompact`. The final `∫ e^{-x²} = √π` is the parent value `integral_gaussian 1`.",
