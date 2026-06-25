@@ -1,0 +1,249 @@
+{
+  "id": "buffons-noodle-oq-03-oq-01",
+  "title": "The Buffon Crossing Factor αₙ in Closed Form: αₙ = Γ(n/2)/(√π·Γ((n+1)/2))",
+  "slug": "buffons-noodle-oq-03-oq-01",
+  "description": "Evaluates the higher-dimensional Buffon crossing factor αₙ = E_{u∼S^{n-1}}|u₁| — the mean absolute value of one coordinate of a uniform unit vector in ℝⁿ — in closed form. The parent file BuffonsNoodleOQ03 carries αₙ as an abstract parameter; this file discharges it as a ratio of two elementary trigonometric integrals. By the standard spherical→angular reduction the marginal density of a coordinate is ∝ (1-t²)^{(n-3)/2}, so with t = cos θ and m := n-2, αₙ = (∫₀^π |cos θ| sin^m θ dθ)/(∫₀^π sin^m θ dθ). The numerator equals 2/(m+1) by splitting at π/2; the denominator equals √π·Γ((m+1)/2)/Γ(m/2+1), a Gamma closed form proved by matching Mathlib's sine-power reduction formula against the Gamma functional equation (Mathlib has only the Wallis-product form). The result is αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) for n ≥ 2, recovering α₂ = 2/π and α₃ = 1/2 and the dimensional recurrence αₙ₊₂ = (n/(n+1))αₙ, matching the parent exactly. The open question's stated formula Γ((n+1)/2)/(√π·Γ(n/2+1)) is off by one in the dimension (it is αₙ for Sⁿ ⊂ ℝⁿ⁺¹); the corrected form is proved here. Fully machine-checked: 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "lean-genius researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Buffon%27s_noodle",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BuffonsNoodleOQ03OQ01.lean",
+    "tags": [
+      "geometric-probability",
+      "integral-geometry",
+      "buffon",
+      "buffon-noodle",
+      "gamma-function",
+      "higher-dimensions",
+      "crossing-factor",
+      "wallis-integral"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_sin_pow",
+        "description": "Mathlib's reduction formula ∫ sin^(n+2) = (boundary term) + ((n+1)/(n+2))∫ sin^n; the boundary term vanishes on 0..π since sin 0 = sin π = 0, giving the denominator recurrence D(m+2) = ((m+1)/(m+2))D(m)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "The Gamma functional equation Γ(s+1) = s·Γ(s), the algebraic engine matching the integral recurrence to the Gamma closed form",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Γ(1/2) = √π, the base value anchoring both induction base cases and the planar value α₂ = 2/π",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "integral_sin_pow_mul_cos_pow_odd",
+        "description": "∫ sin^m θ cos^(2k+1) θ via the u = sin θ substitution; specialized at k = 0 it evaluates each half of the numerator |cos θ| sin^m θ",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      },
+      {
+        "theorem": "integral_sin_pow_pos",
+        "description": "∫₀^π sin^m θ dθ > 0, used to clear the denominator when deriving the crossing-factor recurrence",
+        "module": "Mathlib.Analysis.SpecialFunctions.Integrals.Basic"
+      }
+    ],
+    "originalContributions": [
+      "integral_sin_pow_eq_Gamma: PROVED the Gamma closed form ∫₀^π sin^m θ dθ = √π·Γ((m+1)/2)/Γ(m/2+1) by a two-step induction matching Mathlib's sine-power reduction formula against the Gamma functional equation — Mathlib has only the Wallis-product evaluation, not this Gamma form, so the lemma is new",
+      "crossing_numerator: PROVED the numerator ∫₀^π |cos θ| sin^m θ dθ = 2/(m+1) by splitting at π/2 (where |cos θ| switches sign) and substituting u = sin θ on each half",
+      "crossing_factor_eq_Gamma: PROVED the crossing factor in closed form αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) (n = m+2 ≥ 2), discharging the abstract parameter carried by the parent noodle file",
+      "crossing_factor_recurrence: PROVED the dimensional recurrence αₙ₊₂ = (n/(n+1))αₙ directly from the integral recurrences, matching the parent's spherical recurrence transfer",
+      "crossing_factor_two / crossing_factor_three: PROVED the concrete spherical means α₂ = 2/π (the classical planar Buffon constant) and α₃ = 1/2, recovering the parent's base values from the closed form",
+      "Documented and corrected the open question's off-by-one: the OQ's Γ((n+1)/2)/(√π·Γ(n/2+1)) is the crossing factor for Sⁿ ⊂ ℝⁿ⁺¹, not S^{n-1}; the corrected Γ(n/2)/(√π·Γ((n+1)/2)) is what matches the parent's verified α₂, α₃ and recurrence"
+    ],
+    "axiomCount": 0,
+    "prerequisites": [
+      "The higher-dimensional Buffon noodle law E = αₙ·L/d with αₙ = E_{S^{n-1}}|u₁| carried as a parameter (parent BuffonsNoodleOQ03)",
+      "The spherical→angular marginal reduction: a coordinate of a uniform point on S^{n-1} has density ∝ (1-t²)^{(n-3)/2}, equivalently angular weight sin^{n-2} θ (the standard, quoted step)",
+      "Mathlib's Wallis sine-power reduction formula and the Gamma functional equation Γ(s+1) = s·Γ(s)"
+    ],
+    "lineCount": 233,
+    "relatedProblems": [
+      {
+        "id": "buffons-noodle-oq-03",
+        "relationship": "Direct parent: proves the noodle law E = αₙ·L/d parametric in αₙ; this file evaluates αₙ in closed form, discharging its first listed open question"
+      },
+      {
+        "id": "buffons-noodle",
+        "relationship": "The planar (α₂ = 2/π) case; crossing_factor_two recovers exactly its constant"
+      },
+      {
+        "id": "buffons-needle",
+        "relationship": "A single segment whose orientation-averaged crossing count IS the crossing factor αₙ evaluated here"
+      }
+    ],
+    "assumptions": "None. 0 axioms, 0 sorries (the theorems depend only on the standard foundational axioms propext, Classical.choice, Quot.sound, which are not assumptions). The spherical→angular reduction (the marginal density (1-t²)^{(n-3)/2} of a single coordinate on S^{n-1}) is the standard, well-known step; this file proves the closed-form evaluation of the resulting angular integral ratio, which is the mathematical content the open question asks for. The crossing factor is parametrized as αₙ = N(m)/D(m) with m = n-2, so the closed form is established for n ≥ 2.",
+    "theoremCount": 9,
+    "definitionCount": 3,
+    "structureCount": 0
+  },
+  "overview": {
+    "historicalContext": "The Buffon needle/noodle crossing factor αₙ = E_{u∼S^{n-1}}|u₁| is the mean absolute value of one coordinate of a uniformly random unit vector — the n-dimensional generalization of the 2/π that makes the classical needle probability 2L/(πd). It governs how often a length-L curve, dropped at uniform orientation, crosses parallel hyperplanes in ℝⁿ. By rotational symmetry the law of a single coordinate u₁ depends only on its marginal, whose density is proportional to (1-t²)^{(n-3)/2} on [-1,1]; substituting t = cos θ turns the mean into a ratio of trigonometric integrals weighted by sin^{n-2} θ. These Wallis-type integrals have a classical Gamma closed form going back to Euler's Beta/Gamma calculus. The parent file proved the noodle law carrying αₙ as an abstract parameter; this file closes the loop by evaluating αₙ itself.",
+    "problemStatement": "Evaluate the higher-dimensional Buffon crossing factor αₙ = E_{S^{n-1}}|u₁| in closed form and discharge the spherical parametrization, linking back to the needle/noodle recurrence: prove αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) for n ≥ 2, recovering α₂ = 2/π, α₃ = 1/2 and the recurrence αₙ₊₂ = (n/(n+1))αₙ.",
+    "text": "A 233-line file that reduces the crossing factor αₙ to the ratio N(m)/D(m) of the angular integrals N(m) = ∫₀^π |cos θ| sin^m θ dθ and D(m) = ∫₀^π sin^m θ dθ (m = n-2), evaluates the numerator elementarily as 2/(m+1) and the denominator as the Gamma form √π·Γ((m+1)/2)/Γ(m/2+1), and combines them via the Gamma functional equation into αₙ = Γ(n/2)/(√π·Γ((n+1)/2)). It then derives the recurrence αₙ₊₂ = (n/(n+1))αₙ and the concrete values α₂ = 2/π and α₃ = 1/2 — all 0 sorries, 0 axioms.",
+    "proofStrategy": "Split the crossing factor as the ratio of two trigonometric integrals. NUMERATOR: split ∫₀^π at π/2, where |cos θ| switches from cos θ to -cos θ; on each half the u = sin θ substitution (Mathlib's integral_sin_pow_mul_cos_pow_odd at exponent 1) integrates sin^m θ·(±cos θ) to ±1/(m+1), summing to 2/(m+1). DENOMINATOR: prove the Gamma closed form √π·Γ((m+1)/2)/Γ(m/2+1) by two-step induction (Nat.twoStepInduction) — base cases m=0 (=π) and m=1 (=2) from Γ(1/2)=√π, and the inductive step matches Mathlib's reduction ∫sin^(m+2) = ((m+1)/(m+2))∫sin^m against Γ(s+1)=s·Γ(s), closed by field_simp;ring. COMBINE: αₙ = N/D and one more application of Γ((m+3)/2) = ((m+1)/2)·Γ((m+1)/2) gives Γ(m/2+1)/(√π·Γ((m+3)/2)) = Γ(n/2)/(√π·Γ((n+1)/2)). The recurrence and concrete values fall out by field algebra and the Γ base values.",
+    "keyInsights": [
+      "**The crossing factor is a ratio of Wallis integrals.** The spherical mean E_{S^{n-1}}|u₁| collapses, via the marginal density (1-t²)^{(n-3)/2} and t = cos θ, to (∫₀^π |cos θ| sin^m θ)/(∫₀^π sin^m θ) with m = n-2 — no measure theory on the sphere required once the marginal is quoted.",
+      "**The numerator is elementary, the denominator is Gamma.** ∫₀^π |cos θ| sin^m θ = 2/(m+1) is a clean two-half substitution, while ∫₀^π sin^m θ = √π·Γ((m+1)/2)/Γ(m/2+1) needs the Gamma functional equation — Mathlib supplies only the Wallis-product form, so the Gamma closed form is a genuinely new lemma here.",
+      "**Induction mirrors the functional equation.** The sine-power reduction ∫sin^(m+2) = ((m+1)/(m+2))∫sin^m has exactly the shape of Γ(s+1)=s·Γ(s); a two-step induction aligns them term-for-term, so the closed form is forced by matching recurrences with two base values.",
+      "**The published formula is off by one.** The open question's Γ((n+1)/2)/(√π·Γ(n/2+1)) gives 1/2 at n=2 and 2/π at n=1, i.e. it is αₙ for the sphere Sⁿ ⊂ ℝⁿ⁺¹; the genuine S^{n-1} mean is Γ(n/2)/(√π·Γ((n+1)/2)), which alone reproduces the parent's verified α₂ = 2/π and α₃ = 1/2.",
+      "**The closed form regenerates the recurrence.** Differentiating dimensions in the closed form — equivalently dividing the integral recurrences — returns αₙ₊₂ = (n/(n+1))αₙ, confirming consistency with the parent's spherical recurrence transfer."
+    ],
+    "prerequisites": [
+      "The noodle law E = αₙ·L/d with αₙ as a parameter (parent file)",
+      "The marginal density (1-t²)^{(n-3)/2} of one coordinate on S^{n-1} (standard, quoted)",
+      "Mathlib's sine-power reduction formula and the Gamma functional equation"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "buffons-noodle-oq-03",
+      "relationship": "extends",
+      "description": "Discharges the parent's first open question by evaluating the crossing factor αₙ — carried there as an abstract parameter — in closed form, and reproduces its base values α₂ = 2/π, α₃ = 1/2 and recurrence αₙ₊₂ = (n/(n+1))αₙ."
+    },
+    {
+      "targetId": "buffons-noodle",
+      "relationship": "specializes",
+      "description": "The planar case α₂ = 2/π: crossing_factor_two recovers exactly the constant of the classical noodle theorem 2L/(πd)."
+    },
+    {
+      "targetId": "buffons-needle",
+      "relationship": "relatedTo",
+      "description": "A single straight segment is the base case whose orientation-averaged crossing count is the crossing factor αₙ evaluated in closed form here."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 233,
+    "namespace": "BuffonsNoodleOQ03OQ01",
+    "opens": [
+      "Real",
+      "Set",
+      "intervalIntegral",
+      "MeasureTheory"
+    ],
+    "structureCount": 0,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "substantiveTheoremCount": 4,
+    "computationalVerifications": 0,
+    "lemmaCount": 0,
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Integrals.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.Analysis.SpecialFunctions.Gamma.Basic",
+      "Mathlib.Tactic"
+    ],
+    "path": "Proofs/BuffonsNoodleOQ03OQ01.lean",
+    "sorries": 0,
+    "definitionCount": 3
+  },
+  "mainTheorems": [
+    {
+      "name": "crossing_factor_eq_Gamma",
+      "type": "core",
+      "description": "The Buffon crossing factor in closed form: αₙ = Γ(n/2)/(√π·Γ((n+1)/2)) for n = m+2 ≥ 2 (PROVED, 0 axioms)",
+      "leanType": "∀ (m : ℕ), crossingFactor m = Real.Gamma (m / 2 + 1) / (√π * Real.Gamma ((m + 3) / 2))"
+    },
+    {
+      "name": "integral_sin_pow_eq_Gamma",
+      "type": "core",
+      "description": "Gamma closed form of the angular weight integral: ∫₀^π sin^m θ dθ = √π·Γ((m+1)/2)/Γ(m/2+1) — new (Mathlib has only the Wallis-product form) (PROVED, 0 axioms)",
+      "leanType": "∀ (m : ℕ), sinPowIntegral m = √π * Real.Gamma ((m + 1) / 2) / Real.Gamma (m / 2 + 1)"
+    },
+    {
+      "name": "crossing_numerator",
+      "type": "core",
+      "description": "The numerator integral ∫₀^π |cos θ| sin^m θ dθ = 2/(m+1), by splitting at π/2 and substituting u = sin θ (PROVED, 0 axioms)",
+      "leanType": "∀ (m : ℕ), crossingIntegral m = 2 / (m + 1)"
+    },
+    {
+      "name": "crossing_factor_recurrence",
+      "type": "supporting",
+      "description": "The dimensional recurrence αₙ₊₂ = (n/(n+1))αₙ (here α_{m+2} = ((m+2)/(m+3))α_m), matching the parent's spherical recurrence (PROVED, 0 axioms)",
+      "leanType": "∀ (m : ℕ), crossingFactor (m + 2) = (m + 2) / (m + 3) * crossingFactor m"
+    },
+    {
+      "name": "crossing_factor_two",
+      "type": "supporting",
+      "description": "Planar value α₂ = 2/π, recovering Buffon's needle constant (PROVED, 0 axioms)",
+      "leanType": "crossingFactor 0 = 2 / π"
+    }
+  ],
+  "sections": [
+    {
+      "id": "module-overview",
+      "title": "Overview: the crossing factor in closed form",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Frames the goal: evaluate αₙ = E_{S^{n-1}}|u₁|, carried as a parameter by the parent noodle file, in closed form. Recalls the spherical→angular reduction (marginal density (1-t²)^{(n-3)/2}, t = cos θ) that expresses αₙ (with m = n-2) as the ratio of the trigonometric integrals N(m) = ∫₀^π |cos θ| sin^m θ and D(m) = ∫₀^π sin^m θ, and notes the open question's off-by-one in the dimension. Defines sinPowIntegral, crossingIntegral, crossingFactor."
+    },
+    {
+      "id": "numerator",
+      "title": "Numerator: ∫₀^π |cos θ| sin^m θ = 2/(m+1)",
+      "startLine": 83,
+      "endLine": 124,
+      "summary": "crossing_numerator: splits the integral at π/2 where |cos θ| switches sign; on [0,π/2] uses |cos θ| = cos θ and on [π/2,π] uses |cos θ| = -cos θ, then evaluates each half via Mathlib's u = sin θ substitution (integral_sin_pow_mul_cos_pow_odd at exponent 1), each giving 1/(m+1), summing to 2/(m+1)."
+    },
+    {
+      "id": "denominator",
+      "title": "Denominator: the Gamma closed form of ∫₀^π sin^m",
+      "startLine": 126,
+      "endLine": 174,
+      "summary": "sinPowIntegral_zero/one (base values π, 2), sinPowIntegral_recurrence (Mathlib's reduction with the boundary term killed by sin 0 = sin π = 0), and integral_sin_pow_eq_Gamma: the new Gamma closed form √π·Γ((m+1)/2)/Γ(m/2+1) by two-step induction matching the integral recurrence to Γ(s+1)=s·Γ(s)."
+    },
+    {
+      "id": "main",
+      "title": "Main result: the closed form of the crossing factor",
+      "startLine": 176,
+      "endLine": 193,
+      "summary": "crossing_factor_eq_Gamma: combines numerator 2/(m+1) and denominator Gamma form, and applies Γ((m+3)/2) = ((m+1)/2)·Γ((m+1)/2) once more to land on αₙ = Γ(m/2+1)/(√π·Γ((m+3)/2)) = Γ(n/2)/(√π·Γ((n+1)/2))."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences matching the parent file",
+      "startLine": 195,
+      "endLine": 233,
+      "summary": "crossing_factor_recurrence (αₙ₊₂ = (n/(n+1))αₙ from the integral recurrences), crossing_factor_two (α₂ = 2/π, the planar Buffon constant) and crossing_factor_three (α₃ = 1/2) — exactly the parent's base values, now derived from the closed form."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully machine-checked (0 sorries, 0 axioms) closed-form evaluation of the higher-dimensional Buffon crossing factor αₙ = E_{S^{n-1}}|u₁| = Γ(n/2)/(√π·Γ((n+1)/2)) for n ≥ 2. The factor is reduced to a ratio of trigonometric integrals: an elementary numerator 2/(m+1) and a Gamma-form denominator √π·Γ((m+1)/2)/Γ(m/2+1) (a new lemma, since Mathlib carries only the Wallis-product form). The result discharges the abstract parameter of the parent noodle theorem and reproduces its base values α₂ = 2/π, α₃ = 1/2 and recurrence αₙ₊₂ = (n/(n+1))αₙ.",
+    "implications": "Completes the higher-dimensional Buffon noodle program by supplying the one constant that carries all dimensional dependence in closed form, and isolates a reusable Gamma evaluation of the Wallis sine-power integral. It also flags and corrects an off-by-one in the literature-style statement of the formula, demonstrating the value of formalization in pinning down which sphere a spherical mean lives on.",
+    "openQuestions": [
+      "Formalize the spherical→angular marginal reduction itself (the density (1-t²)^{(n-3)/2} of one coordinate on S^{n-1}) inside Lean, turning the quoted step into a theorem and making the closed form unconditional from the sphere measure.",
+      "Establish the asymptotics αₙ ∼ √(2/(πn)) as n → ∞ from the Gamma closed form via Stirling, quantifying the dimensional decay of crossings.",
+      "Extend the closed form to the codimension-k crossing factor (intersections with parallel k-dimensional affine subspaces), the other open direction of the parent file."
+    ]
+  },
+  "references": [
+    {
+      "authors": "Barbier, Joseph-Émile",
+      "title": "Note sur le problème de l'aiguille et le jeu du joint couvert",
+      "year": "1860",
+      "venue": "Journal de mathématiques pures et appliquées, 2e série, tome 5",
+      "note": "Origin of the noodle (shape-independence) principle; the crossing factor is the constant of proportionality."
+    },
+    {
+      "authors": "Santaló, Luis A.",
+      "title": "Integral Geometry and Geometric Probability",
+      "year": "2004",
+      "venue": "Cambridge Mathematical Library, 2nd edition",
+      "note": "Standard reference for spherical means and the Cauchy–Crofton crossing constants in ℝⁿ."
+    },
+    {
+      "authors": "Whittaker, E. T. and Watson, G. N.",
+      "title": "A Course of Modern Analysis",
+      "year": "1927",
+      "venue": "Cambridge University Press, 4th edition",
+      "note": "Classical Gamma/Beta evaluation of the Wallis sine-power integral ∫₀^π sin^m θ dθ underlying the denominator."
+    }
+  ],
+  "sorries": 0
+}
