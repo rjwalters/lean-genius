@@ -224,13 +224,13 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
     have sup_min : ∀ (x : ℝ≥0∞), ⨆ n : ℕ, min x n = x := fun x => by
       rcases eq_or_ne x ⊤ with rfl | hx
       · simp [min_eq_right le_top, ENNReal.iSup_natCast]
-      · apply le_antisymm (iSup_le fun n => min_le_left x n)
+      · apply le_antisymm (iSup_le fun n : ℕ => min_le_left x (n : ℝ≥0∞))
         obtain ⟨N, hN⟩ := ENNReal.exists_nat_gt hx
-        calc x = min x N := (min_eq_left (le_of_lt hN)).symm
-          _ ≤ ⨆ n : ℕ, min x n := le_iSup _ N
+        calc x = min x (N : ℝ≥0∞) := (min_eq_left (le_of_lt hN)).symm
+          _ ≤ ⨆ n : ℕ, min x n := le_iSup (fun n : ℕ => min x (n : ℝ≥0∞)) N
     have norm_gn_eq : ∀ (a : α) (n : ℕ), (‖gn n a‖₊ : ℝ≥0∞) = min (‖g a‖₊ : ℝ≥0∞) n := by
       intro a n
-      rw [← ENNReal.coe_min]; congr 1; apply NNReal.coe_injective
+      rw [← ENNReal.coe_natCast, ← ENNReal.coe_min]; congr 1; apply NNReal.coe_injective
       push_cast [Real.norm_eq_abs]; simp only [gn]; exact abs_clamp (g a) n
     have ptwise_eq : ∀ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal =
         ⨆ n : ℕ, (min (‖g a‖₊ : ℝ≥0∞) n) ^ q.toReal := by
@@ -247,7 +247,7 @@ theorem rn_deriv_memLq_from_trunc (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p �
             (min_le_min_left _ (Nat.cast_le.mpr hmn)) (le_of_lt hq_pos))]
     simp_rw [← norm_gn_eq]
   -- Conclude MemLp: eLpNorm g q μ ≤ ENNReal.ofReal M < ⊤
-  refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ ENNReal.ofReal_lt_top⟩
+  refine ⟨hg_meas.aestronglyMeasurable, lt_of_le_of_lt ?_ (ENNReal.ofReal_lt_top (r := M))⟩
   rw [eLpNorm_eq_lintegral_rpow_enorm hq0 hqtop]
   calc (∫⁻ a, (‖g a‖₊ : ℝ≥0∞) ^ q.toReal ∂μ) ^ (1 / q.toReal)
       ≤ ((ENNReal.ofReal M) ^ q.toReal) ^ (1 / q.toReal) := by
@@ -285,7 +285,7 @@ theorem integrable_mul_of_memLp (p q : ℝ≥0∞)
   rw [← memLp_one_iff_integrable]
   refine ⟨hf.aestronglyMeasurable.mul hg.aestronglyMeasurable, ?_⟩
   calc eLpNorm (fun a => f a * g a) 1 μ
-      = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm']
+      = ∫⁻ a, ‖f a * g a‖₊ ∂μ := by simp [eLpNorm, eLpNorm', enorm_eq_nnnorm]
     _ ≤ eLpNorm f p μ * eLpNorm g q μ :=
         lintegral_mul_le_of_memLp p q hpq hp hptop hf hg
     _ < ⊤ := ENNReal.mul_lt_top hf.eLpNorm_lt_top hg.eLpNorm_lt_top
@@ -311,13 +311,16 @@ noncomputable def integrationCLM (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p �
       map_add' := fun f₁ f₂ => by
         have h1 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memLp f₁) hg
         have h2 := integrable_mul_of_memLp p q hpq hp hptop (Lp.memLp f₂) hg
-        simp only [Lp.coeFn_add, Pi.add_apply, add_mul]
-        exact integral_add h1 h2
+        rw [← integral_add h1 h2]
+        apply integral_congr_ae
+        filter_upwards [Lp.coeFn_add f₁ f₂] with a ha
+        simp only [ha, Pi.add_apply, add_mul]
       map_smul' := fun c f => by
-        simp only [Lp.coeFn_smul, Pi.smul_apply, smul_eq_mul, RingHom.id_apply]
-        rw [show (fun a => c * (f : α → ℝ) a * g a) = (fun a => c * ((f : α → ℝ) a * g a))
-            from by ext a; ring]
-        exact integral_const_mul c _ }
+        simp only [RingHom.id_apply, smul_eq_mul]
+        rw [← integral_const_mul c (fun a => (f : α → ℝ) a * g a)]
+        apply integral_congr_ae
+        filter_upwards [Lp.coeFn_smul c f] with a ha
+        simp only [ha, Pi.smul_apply, smul_eq_mul]; ring }
   · -- Bound: ‖∫ fg‖ ≤ ‖g‖_Lq * ‖f‖_Lp
     intro f
     -- Chain: ‖∫ fg‖ ≤ ∫ ‖fg‖ ≤ (∫⁻ ‖fg‖₊).toReal ≤ (eLpNorm f p * eLpNorm g q).toReal
@@ -325,7 +328,7 @@ noncomputable def integrationCLM (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p �
     calc ‖∫ a, (f : α → ℝ) a * g a ∂μ‖
         ≤ ∫ a, ‖(f : α → ℝ) a * g a‖ ∂μ := norm_integral_le_integral_norm _
       _ ≤ (eLpNorm (f : α → ℝ) p μ * eLpNorm g q μ).toReal := by
-          rw [← integral_norm_eq_lintegral_enorm hint.aestronglyMeasurable]
+          rw [integral_norm_eq_lintegral_enorm hint.aestronglyMeasurable]
           · apply ENNReal.toReal_mono
             · exact ENNReal.mul_ne_top (Lp.memLp f).eLpNorm_lt_top.ne hg.eLpNorm_lt_top.ne
             · exact lintegral_mul_le_of_memLp p q hpq hp hptop (Lp.memLp f) hg
@@ -375,13 +378,14 @@ theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ 
     (motive := fun f => ψ f = 0)
   -- Case 1: c · 1_E (indicator constant)
   · intro c s hs hμs
+    classical
     simp only [ψ, ContinuousLinearMap.sub_apply, sub_eq_zero]
     rw [Lp.simpleFunc.coe_indicatorConst]
     -- Step A: indicatorConstLp c = c • (1_s in Lp), proved by a.e. equality
     have heq : indicatorConstLp p hs hμs.ne c =
         c • (indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop).toLp _ := by
       rw [Lp.ext_iff]
-      filter_upwards [indicatorConstLp_coeFn,
+      filter_upwards [indicatorConstLp_coeFn (c := c),
         Lp.coeFn_smul c ((indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop).toLp _),
         (indicator_memLp hs hμs.ne p (le_of_lt hp1) hptop).coeFn_toLp] with x hxc hxsmul hx1
       rw [hxc, hxsmul, Pi.smul_apply, hx1, smul_eq_mul,
@@ -443,7 +447,8 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
       indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ) := fun i =>
     Lp.ext (by
       filter_upwards [(indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).coeFn_toLp,
-                      indicatorConstLp_coeFn (hs := hf_meas i) (hμs := measure_ne_top μ _)]
+                      indicatorConstLp_coeFn (hs := hf_meas i) (hμs := measure_ne_top μ _)
+                        (c := (1 : ℝ))]
         with x h1 h2; exact h1.trans h2.symm)
   have hgUnion_eq :
       (indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).toLp _ =
@@ -452,7 +457,7 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
       filter_upwards
           [(indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).coeFn_toLp,
            indicatorConstLp_coeFn (hs := MeasurableSet.iUnion hf_meas)
-             (hμs := measure_ne_top μ _)]
+             (hμs := measure_ne_top μ _) (c := (1 : ℝ))]
         with x h1 h2; exact h1.trans h2.symm)
   simp_rw [hg_eq, hgUnion_eq]
   -- Total measure of the disjoint union is finite
@@ -467,12 +472,13 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
     | empty =>
       filter_upwards [Lp.coeFn_zero (E := ℝ) p μ] with x hx
       simp only [Finset.sum_empty, hx, Pi.zero_apply]
-    | insert ha ih =>
+    | @insert a s ha ih =>
       simp only [Finset.sum_insert ha]
       filter_upwards [Lp.coeFn_add
                         (indicatorConstLp p (hf_meas _) (measure_ne_top μ _) (1 : ℝ))
                         (∑ i ∈ _, indicatorConstLp p (hf_meas i) (measure_ne_top μ _) (1 : ℝ)),
-                      indicatorConstLp_coeFn (hs := hf_meas _) (hμs := measure_ne_top μ _), ih]
+                      indicatorConstLp_coeFn (hs := hf_meas _) (hμs := measure_ne_top μ _)
+                        (c := (1 : ℝ)), ih]
         with x hadd h1 hS
       simp only [Pi.add_apply]
       rw [hadd, h1, hS]
@@ -483,7 +489,8 @@ private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
         (measure_ne_top μ _) (1 : ℝ) := fun S =>
     Lp.ext (by
       filter_upwards [hcoe_sum S, indicatorConstLp_coeFn
-          (hs := S.measurableSet_biUnion (fun i _ => hf_meas i)) (hμs := measure_ne_top μ _)]
+          (hs := S.measurableSet_biUnion (fun i _ => hf_meas i)) (hμs := measure_ne_top μ _)
+          (c := (1 : ℝ))]
         with x hS hU
       rw [hS, hU]
       exact (Finset.indicator_biUnion_apply S f (fun i _ j _ hij => hf_disj hij) x).symm)
