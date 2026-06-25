@@ -1,0 +1,95 @@
+[
+  {
+    "id": "cvd0103-ann-01",
+    "proofId": "circumference-via-differentiation-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "concept",
+    "title": "The effective-formula question and its three-step answer",
+    "content": "The parent entry proves the surface-area constant $C_n = \\text{nSphereSurfaceConst } n = 2\\pi^{n/2}/\\Gamma(n/2)$. Its open question #3 asks for an *effective* evaluation of $C_{2k+1}$: Mathlib supplies $\\Gamma(1/2)=\\sqrt\\pi$ and the functional equation $\\Gamma(s+1)=s\\,\\Gamma(s)$, but not the half-integer values $\\Gamma(k+1/2)$ they iterate to. The answer here is three steps. (1) Prove the missing value $\\Gamma(k+1/2) = (2k)!/(4^k k!)\\cdot\\sqrt\\pi$ by induction off exactly those two lemmas. (2) Feed it into the parent's $C_n = 2\\pi^{n/2}/\\Gamma(n/2)$ at $n=2k+1$, where $\\pi^{k+1/2}=\\pi^k\\sqrt\\pi$ cancels the $\\sqrt\\pi$ from $\\Gamma$. (3) Read off the surd-free closed form $C_{2k+1} = 2\\,(4\\pi)^k k!/(2k)!$, the recursion $C_{2k+3}=C_{2k+1}\\cdot 2\\pi/(2k+1)$, and the values $C_1=2,\\,C_3=4\\pi,\\,C_5=8\\pi^2/3,\\,C_7=16\\pi^3/15$.",
+    "mathContext": "$C_n = 2\\pi^{n/2}/\\Gamma(n/2)$; $n=2k+1 \\Rightarrow \\Gamma(k+1/2)$; target $C_{2k+1} = 2(4\\pi)^k k!/(2k)!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Gamma function half-integer values",
+      "n-sphere surface area constant",
+      "double factorial",
+      "induction on the Gamma functional equation"
+    ],
+    "prerequisites": [
+      "the Gamma function: $\\Gamma(1/2)=\\sqrt\\pi$ and $\\Gamma(s+1)=s\\Gamma(s)$",
+      "the parent identity $C_n = 2\\pi^{n/2}/\\Gamma(n/2)$"
+    ]
+  },
+  {
+    "id": "cvd0103-ann-02",
+    "proofId": "circumference-via-differentiation-oq-01-oq-03",
+    "range": {
+      "startLine": 54,
+      "endLine": 105
+    },
+    "type": "theorem",
+    "title": "The half-integer Gamma value, by induction",
+    "content": "`gamma_nat_add_half`: $\\Gamma(k+1/2) = (2k)!/(4^k k!)\\cdot\\sqrt\\pi$ for every $k:\\mathbb{N}$. This is the genuinely new content — Mathlib v4.26 has the base case and the functional equation but not their iterate. The base case $k=0$ is `Real.Gamma_one_half_eq` ($\\Gamma(1/2)=\\sqrt\\pi$). The step rewrites $\\Gamma((k+1/2)+1) = (k+1/2)\\,\\Gamma(k+1/2)$ via `Real.Gamma_add_one` (legal since $k+1/2\\ne 0$), substitutes the induction hypothesis, and reduces to the rational identity $(k+\\tfrac12)\\cdot\\frac{(2k)!}{4^k k!} = \\frac{(2k+2)!}{4^{k+1}(k+1)!}$. That identity is closed by lifting `Nat.factorial_succ` for $(k+1)!$ and $(2k+2)!=(2k+2)(2k+1)(2k)!$ to $\\mathbb{R}$, then `field_simp; ring`. The non-vanishing side conditions ($k!\\ne 0$, $(2k)!\\ne 0$, $4^k\\ne 0$) come from `Nat.factorial_ne_zero` and `positivity`.",
+    "mathContext": "$\\Gamma(1/2)=\\sqrt\\pi$; $\\Gamma(s+1)=s\\Gamma(s)$; $(k+\\tfrac12)\\frac{(2k)!}{4^k k!}=\\frac{(2k+2)!}{4^{k+1}(k+1)!}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Real.Gamma_one_half_eq",
+      "Real.Gamma_add_one",
+      "Nat.factorial_succ",
+      "induction"
+    ],
+    "prerequisites": [
+      "induction on ℕ",
+      "the Gamma functional equation",
+      "casting Nat factorials to ℝ"
+    ]
+  },
+  {
+    "id": "cvd0103-ann-03",
+    "proofId": "circumference-via-differentiation-oq-01-oq-03",
+    "range": {
+      "startLine": 106,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Odd-dimensional closed form and recursion",
+    "content": "`nSphereSurfaceConst_odd`: $C_{2k+1} = 2\\,(4\\pi)^k k!/(2k)!$. The proof rewrites the parent's `nSphereSurfaceConst_eq_gamma` at $n=2k+1$ (so the exponent and Gamma argument become $k+1/2$), splits $\\pi^{k+1/2} = \\pi^k\\sqrt\\pi$ via `Real.rpow_add` and `Real.sqrt_eq_rpow`, substitutes `gamma_nat_add_half`, and lets the two $\\sqrt\\pi$ factors cancel under `field_simp; ring` — note $(4\\pi)^k$ expands to $4^k\\pi^k$ automatically. `nSphereSurfaceConst_odd_succ`: $C_{2k+3} = C_{2k+1}\\cdot 2\\pi/(2k+1)$, the first-order recurrence making the evaluation 'programmatic'; it is derived from the closed form by the same factorial arithmetic as the Gamma step.",
+    "mathContext": "$C_{2k+1}=2\\pi^{k+1/2}/\\Gamma(k+1/2)=2(4\\pi)^k k!/(2k)!$; $C_{2k+3}/C_{2k+1}=2\\pi/(2k+1)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "nSphereSurfaceConst_eq_gamma (parent)",
+      "Real.rpow_add",
+      "Real.sqrt_eq_rpow",
+      "first-order recurrence"
+    ],
+    "prerequisites": [
+      "the half-integer Gamma value gamma_nat_add_half",
+      "rpow arithmetic",
+      "the parent lemma C_n = 2π^(n/2)/Γ(n/2)"
+    ]
+  },
+  {
+    "id": "cvd0103-ann-04",
+    "proofId": "circumference-via-differentiation-oq-01-oq-03",
+    "range": {
+      "startLine": 149,
+      "endLine": 217
+    },
+    "type": "theorem",
+    "title": "Concrete values and the even-dimensional formula",
+    "content": "The special values $C_1=2$ (the 0-sphere, two points of total measure 2), $C_3=4\\pi$ (unit 2-sphere, matching the parent's `nSphereSurfaceConst_three`), $C_5=8\\pi^2/3$ (unit 4-sphere), and $C_7=16\\pi^3/15$ (unit 6-sphere) are each obtained by specializing `nSphereSurfaceConst_odd` and evaluating the factorials with `norm_num`, then closing with `linear_combination` — independent checks on the general formula. `nSphereSurfaceConst_even`: $C_{2m}=2\\pi^m/(m-1)!$ for $m\\ge 1$, which needs only the integer Gamma value $\\Gamma(m)=(m-1)!$ (`Gamma_nat_eq_factorial`), since the even argument $n/2=m$ is a positive integer. A worked example confirms $\\Gamma(5/2)=3\\sqrt\\pi/4$ from `gamma_nat_add_half`.",
+    "mathContext": "$C_1=2,\\;C_3=4\\pi,\\;C_5=8\\pi^2/3,\\;C_7=16\\pi^3/15$; $C_{2m}=2\\pi^m/(m-1)!$; $\\Gamma(5/2)=3\\sqrt\\pi/4$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Gamma_nat_eq_factorial",
+      "even vs odd dimension split",
+      "norm_num on factorials"
+    ],
+    "prerequisites": [
+      "the odd closed form nSphereSurfaceConst_odd",
+      "the integer Gamma value Γ(n+1)=n!"
+    ]
+  }
+]

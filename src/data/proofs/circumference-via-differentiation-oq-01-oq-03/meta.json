@@ -1,0 +1,156 @@
+{
+  "id": "circumference-via-differentiation-oq-01-oq-03",
+  "title": "Effective Closed Form for the n-Sphere Surface Constant",
+  "slug": "circumference-via-differentiation-oq-01-oq-03",
+  "description": "Answers the parent's open question on an effective evaluation of the surface-area constant C_n = nSphereSurfaceConst n. The crux is the half-integer Gamma value Γ(k+1/2) = (2k)!/(4^k·k!)·√π, which Mathlib lacks; it is proved here by a short induction off Real.Gamma_one_half_eq and Real.Gamma_add_one — exactly the two lemmas the question pointed at. Feeding it into the parent's C_n = 2π^(n/2)/Γ(n/2) collapses the √π and yields the fully effective ODD-dimensional closed form C_{2k+1} = 2·(4π)^k·k!/(2k)!, with the first-order recursion C_{2k+3} = C_{2k+1}·2π/(2k+1) and the derived values C_1=2, C_3=4π, C_5=8π²/3, C_7=16π³/15. The even case C_{2m} = 2π^m/(m-1)! (via Gamma_nat_eq_factorial) is recorded for completeness. 8 theorems, 0 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CircumferenceViaDifferentiationOQ01OQ03.lean",
+    "tags": [
+      "geometry",
+      "calculus",
+      "n-dimensional",
+      "surface-area",
+      "gamma-function",
+      "factorial",
+      "verified"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 217,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "assumptions": "None. Every result is proved from Mathlib (Real.Gamma_one_half_eq, Real.Gamma_add_one, Gamma_nat_eq_factorial, Real.rpow_add, Real.sqrt_eq_rpow) and the verified parent's nSphereSurfaceConst_eq_gamma. #print axioms reports only the standard foundational axioms propext / Classical.choice / Quot.sound on every theorem — no domain assumptions, no native_decide.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "Γ(1/2) = √π (the base case of the half-integer induction)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "Functional equation Γ(s+1) = s·Γ(s) for s ≠ 0 (the induction step)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_nat_eq_factorial",
+        "description": "Γ(n+1) = n! (the integer Gamma value used for the even-dimensional formula)",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.sqrt_eq_rpow",
+        "description": "√x = x^(1/2), used to split π^(k+1/2) = π^k·√π so the √π cancels",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Half-integer Gamma value gamma_nat_add_half: Γ(k+1/2) = (2k)!/(4^k·k!)·√π for all k, proved by induction from Γ(1/2)=√π and the Γ(s+1)=s·Γ(s) functional equation — a closed form Mathlib v4.26 does not provide",
+      "Odd-dimensional surface constant closed form nSphereSurfaceConst_odd: C_{2k+1} = 2·(4π)^k·k!/(2k)!, obtained by combining the half-integer Gamma value with the parent's C_n = 2π^(n/2)/Γ(n/2)",
+      "First-order recursion nSphereSurfaceConst_odd_succ: C_{2k+3} = C_{2k+1}·2π/(2k+1), the recurrence that makes the 'programmatic' evaluation explicit",
+      "Even-dimensional formula nSphereSurfaceConst_even: C_{2m} = 2π^m/(m-1)!, and the four derived special values C_1=2, C_3=4π, C_5=8π²/3, C_7=16π³/15"
+    ],
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0"
+  },
+  "overview": {
+    "historicalContext": "The surface area of the unit (n-1)-sphere, S_{n-1} = 2π^(n/2)/Γ(n/2), is the Euler–Legendre Gamma-function form of the classical sphere-measure constant (Euler 1729; the n-dimensional volume and surface formulae are usually credited to the 19th-century work running through Dirichlet's integral and Liouville 1836). For the ODD dimensions n = 2k+1 the argument of Γ is the half-integer k+1/2, and the value Γ(k+1/2) = (2k)!/(4^k·k!)·√π is the standard 'double-factorial' Gamma identity going back to Euler's reflection/duplication work and recorded in every special-functions reference (Abramowitz & Stegun 6.1.12). Mathlib v4.26 formalizes the two ingredients — Γ(1/2)=√π (Gaussian integral) and the functional equation Γ(s+1)=s·Γ(s) — but not their iterate, so the half-integer values had to be derived here.",
+    "problemStatement": "The parent entry's open question #3 asks: for practical computation C_n values are needed for many n; Mathlib has Gamma_one_half_eq and Gamma_add_one — can the file be extended with an explicit recursive evaluation nSphereSurfaceConst (2k+1) = ... derived programmatically from the half-integer Gamma values?",
+    "proofStrategy": "Three steps. (1) Prove the missing half-integer Gamma value Γ(k+1/2) = (2k)!/(4^k·k!)·√π by induction on k: the base case is Real.Gamma_one_half_eq and the step rewrites Γ((k+1/2)+1) = (k+1/2)·Γ(k+1/2) via Real.Gamma_add_one, then clears the resulting factorial identity with field_simp; ring after lifting Nat.factorial_succ to ℝ. (2) Feed this into the verified parent lemma nSphereSurfaceConst_eq_gamma (C_n = 2π^(n/2)/Γ(n/2)) at n = 2k+1: split π^(k+1/2) = π^k·√π with Real.rpow_add and Real.sqrt_eq_rpow, cancel the √π, and the closed form C_{2k+1} = 2·(4π)^k·k!/(2k)! falls out by ring. (3) Derive the recursion and the concrete values C_1, C_3, C_5, C_7 from the closed form, and record the even-dimensional formula C_{2m} = 2π^m/(m-1)! via Gamma_nat_eq_factorial.",
+    "keyInsights": [
+      "**The whole question reduces to one missing Mathlib lemma.** The parent already proves C_n = 2π^(n/2)/Γ(n/2); the only obstruction to an 'effective' formula in odd dimensions is the half-integer Gamma value. Once Γ(k+1/2) = (2k)!/(4^k·k!)·√π is in hand, everything is algebra.",
+      "**The half-integer Gamma value is a one-line induction off exactly the two lemmas the question named.** Base: Γ(1/2)=√π (Gamma_one_half_eq). Step: Γ((k+1/2)+1) = (k+1/2)·Γ(k+1/2) (Gamma_add_one). The inductive bookkeeping is a pure factorial identity ((k+1/2)·(2k)!/(4^k·k!) = (2k+2)!/(4^(k+1)·(k+1)!)) discharged by field_simp; ring.",
+      "**The √π cancels, leaving a manifestly rational-times-power-of-π constant.** Writing π^(k+1/2) = π^k·√π makes the √π in the numerator (from the rpow) cancel the √π in the denominator (from Γ), so C_{2k+1} = 2·(4π)^k·k!/(2k)! has no surd — the right form for 'practical computation'.",
+      "**Odd vs even split is exactly the half-integer vs integer Gamma split.** Even dimensions n=2m need only Γ(m)=(m-1)! (Gamma_nat_eq_factorial), an integer value Mathlib already has; the genuinely new content is entirely in the odd case.",
+      "**Every special value is derived, not assumed.** C_1=2, C_3=4π (matching the parent's nSphereSurfaceConst_three), C_5=8π²/3, C_7=16π³/15 all fall out of the closed form by norm_num on the factorials, providing independent sanity checks on the general formula."
+    ],
+    "prerequisites": [
+      "The Gamma function: the value Γ(1/2)=√π and the functional equation Γ(s+1)=s·Γ(s)",
+      "Induction on ℕ and factorial arithmetic (Nat.factorial_succ), lifted to ℝ via casts",
+      "rpow basics: Real.rpow_add and √x = x^(1/2)",
+      "The parent entry circumference-via-differentiation-oq-01 (the surface constant C_n = 2π^(n/2)/Γ(n/2))"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-header",
+      "title": "Header: the open question and the plan",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Docstring stating the parent's open question — an effective recursive/closed-form evaluation of nSphereSurfaceConst (2k+1) from the half-integer Gamma values — and the three-step answer: prove Γ(k+1/2) by induction off Gamma_one_half_eq and Gamma_add_one, feed it into the parent's C_n = 2π^(n/2)/Γ(n/2), and read off the closed form, recursion, and special values.",
+      "mathContext": "C_n = nSphereSurfaceConst n = 2π^(n/2)/Γ(n/2); odd case n=2k+1 ⇒ Γ(k+1/2); target C_{2k+1} = 2·(4π)^k·k!/(2k)!."
+    },
+    {
+      "id": "section-gamma-half",
+      "title": "The half-integer Gamma value (the missing Mathlib lemma)",
+      "startLine": 54,
+      "endLine": 105,
+      "summary": "gamma_nat_add_half: Γ(k+1/2) = (2k)!/(4^k·k!)·√π, by induction on k. Base case is Gamma_one_half_eq (Γ(1/2)=√π); the step rewrites Γ((k+1/2)+1) = (k+1/2)·Γ(k+1/2) via Gamma_add_one, lifts Nat.factorial_succ for (k+1)! and (2k+2)! to ℝ, and closes the factorial identity with field_simp; ring.",
+      "mathContext": "Γ(1/2)=√π; Γ(s+1)=s·Γ(s); (k+1/2)·(2k)!/(4^k·k!) = (2k+2)!/(4^(k+1)·(k+1)!)."
+    },
+    {
+      "id": "section-odd",
+      "title": "Effective closed form and recursion for odd dimensions",
+      "startLine": 106,
+      "endLine": 148,
+      "summary": "nSphereSurfaceConst_odd: C_{2k+1} = 2·(4π)^k·k!/(2k)!, by rewriting the parent's nSphereSurfaceConst_eq_gamma at n=2k+1, splitting π^(k+1/2)=π^k·√π, and cancelling √π. nSphereSurfaceConst_odd_succ: the first-order recursion C_{2k+3} = C_{2k+1}·2π/(2k+1), derived from the closed form by factorial arithmetic.",
+      "mathContext": "C_{2k+1} = 2π^(k+1/2)/Γ(k+1/2) = 2·(4π)^k·k!/(2k)!; C_{2k+3}/C_{2k+1} = 2π/(2k+1)."
+    },
+    {
+      "id": "section-values",
+      "title": "Concrete values, all derived from the closed form",
+      "startLine": 149,
+      "endLine": 178,
+      "summary": "C_1=2 (the 0-sphere pair of points), C_3=4π (unit 2-sphere), C_5=8π²/3 (unit 4-sphere), C_7=16π³/15 (unit 6-sphere) — each obtained by specializing nSphereSurfaceConst_odd and evaluating the factorials with norm_num.",
+      "mathContext": "C_1=2, C_3=4π, C_5=8π²/3, C_7=16π³/15."
+    },
+    {
+      "id": "section-even",
+      "title": "Even dimensions (recorded for completeness)",
+      "startLine": 179,
+      "endLine": 217,
+      "summary": "nSphereSurfaceConst_even: C_{2m} = 2π^m/(m-1)! for m ≥ 1, needing only the integer Gamma value Γ(m)=(m-1)! (Gamma_nat_eq_factorial). A worked example computes the half-integer value Γ(5/2)=3√π/4 from gamma_nat_add_half.",
+      "mathContext": "C_{2m} = 2π^m/Γ(m) = 2π^m/(m-1)!; Γ(5/2)=3√π/4."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent's open question #3 is fully resolved. The obstruction to an effective surface-constant formula in odd dimensions was the half-integer Gamma value, absent from Mathlib v4.26; it is proved here as gamma_nat_add_half: Γ(k+1/2) = (2k)!/(4^k·k!)·√π, by a short induction off the exact two lemmas the question named (Gamma_one_half_eq, Gamma_add_one). Combining it with the verified parent's C_n = 2π^(n/2)/Γ(n/2) gives the surd-free closed form C_{2k+1} = 2·(4π)^k·k!/(2k)!, the recursion C_{2k+3} = C_{2k+1}·2π/(2k+1), the even-case formula C_{2m} = 2π^m/(m-1)!, and the derived values C_1=2, C_3=4π, C_5=8π²/3, C_7=16π³/15. 8 theorems, 0 definitions, 0 sorries, 0 axioms.",
+    "implications": "The half-integer Gamma value is reusable well beyond this entry — it appears in the volume and surface constants of every odd-dimensional ball, in the normalization of the chi/Student-t distributions, and in Wallis-type products — so gamma_nat_add_half is a small but genuinely missing piece of Mathlib's special-functions library that this entry supplies with a self-contained proof. On the geometry side it makes the surface constants computable as exact rationals times powers of π, the form actually needed for evaluation, and exposes the clean structural split: odd dimensions carry the √π (half-integer Gamma), even dimensions are pure π-powers over factorials (integer Gamma).",
+    "openQuestions": [
+      "**Upstream the half-integer Gamma value.** gamma_nat_add_half (Γ(k+1/2) = (2k)!/(4^k·k!)·√π) is a clean, general, Mathlib-style lemma absent from v4.26; package it (perhaps alongside a double-factorial restatement Γ(k+1/2) = (2k-1)!!/2^k·√π) for upstream submission.",
+      "**Double-factorial form.** Restate C_{2k+1} = 2·(4π)^k·k!/(2k)! as C_{2k+1} = 2^(k+1)·π^k/(2k-1)!! using (2k)! = 2^k·k!·(2k-1)!!, the form most common in physics references.",
+      "**Unify with the even case via a single ⌊·⌋ formula.** Express C_n for general n with a single statement keyed on the parity of n, recovering both branches as specializations.",
+      "**Asymptotics of C_n.** Use Stirling on the closed forms to make precise the decay C_n → 0 and locate the maximizing dimension of the unit-sphere surface constant."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "circumference-via-differentiation-oq-01",
+      "relationship": "parent",
+      "description": "Provides nSphereSurfaceConst and the lemma C_n = 2π^(n/2)/Γ(n/2); this entry answers its open question #3 on an effective evaluation"
+    },
+    {
+      "targetId": "circumference-via-differentiation-oq-01-oq-02",
+      "relationship": "sibling",
+      "description": "The L^p generalization of the same parent; this entry is the half-integer-Gamma evaluation branch"
+    },
+    {
+      "targetId": "circumference-via-differentiation",
+      "relationship": "uses",
+      "description": "The original 2D identity C = dA/dr that the whole family generalizes"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/CircumferenceViaDifferentiationOQ01OQ03.lean",
+    "filename": "CircumferenceViaDifferentiationOQ01OQ03.lean",
+    "lineCount": 217,
+    "theoremCount": 8,
+    "axiomCount": 0,
+    "definitionCount": 0,
+    "sorries": 0,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CircumferenceViaDifferentiationOQ01OQ03.lean"
+  },
+  "sorries": 0
+}
