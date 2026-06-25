@@ -45,6 +45,21 @@
         "theorem": "Nat.Prime",
         "description": "Prime number predicate",
         "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_factorial",
+        "description": "0 < m → m ≤ n → m ∣ n! ; shows every prime p ≤ k divides k!, so the AP elements vanish mod p",
+        "module": "Mathlib.Data.Nat.Factorial.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(↑a : ZMod b) = 0 ↔ b ∣ a ; turns p ∣ k! into the AP elements being ≡ 0 mod p",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Finset.card_image_of_injective",
+        "description": "card of an injective image equals the source card; gives card of the k!-spaced AP = k",
+        "module": "Mathlib.Data.Finset.Image"
       }
     ],
     "originalContributions": [
@@ -52,12 +67,15 @@
       "missing_class_of_card_lt: a set of size < p always misses a class mod p (image into ZMod p cannot be surjective)",
       "admissible_iff_card: KEY REDUCTION — admissibility ⟺ missing a class modulo every prime p ≤ |a|; all larger primes are automatic",
       "Worked examples: ∅, {0}, and {0,2} are admissible; {0,1} is NOT (it covers both classes mod 2)",
-      "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)"
+      "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)",
+      "Admissible.subset: admissibility is downward closed (any subset of an admissible set is admissible)",
+      "admissible_image_add: TRANSLATION INVARIANCE — shifting all elements by a constant preserves admissibility; justifies normalizing sequences to start at 0",
+      "exists_admissible_card: for every k the arithmetic progression {0, k!, 2·k!, …, (k-1)·k!} is an admissible k-tuple, so A(k) is WELL DEFINED and A(k) ≤ (k-1)·k! (an explicit, very weak, upper bound; the conjectured A(k)∼k log k is far sharper and remains OPEN)"
     ],
     "axiomCount": 0,
-    "lineCount": 137,
-    "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved (#print axioms shows only propext/Classical.choice/Quot.sound — no native_decide, no Lean.ofReduceBool). Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. The formalization here is the admissibility framework plus the standard reduction to small primes.",
-    "theoremCount": 6,
+    "lineCount": 213,
+    "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved (#print axioms shows only propext/Classical.choice/Quot.sound — no native_decide, no Lean.ofReduceBool). Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. The formalization here is the admissibility framework, the reduction to small primes, translation invariance, and an explicit upper-bound construction giving A(k) ≤ (k-1)·k!.",
+    "theoremCount": 9,
     "definitionCount": 1
   },
   "overview": {
@@ -80,7 +98,7 @@
   },
   "sections": [],
   "conclusion": {
-    "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the standard reduction showing only primes p ≤ k impose constraints, and small worked examples. The asymptotic questions themselves remain open and are not asserted.",
+    "summary": "Erdős Problem #1204 asks for the asymptotics of the minimal diameter A(k) and minimal average B(k) of admissible k-tuples, conjecturally A(k) ∼ k log k. This entry formalizes the admissibility framework: the definition, the reduction showing only primes p ≤ k impose constraints, small worked examples, the structural facts that admissibility is downward closed and translation invariant, and an explicit construction proving admissible k-tuples exist for every k (hence A(k) is well defined, with the weak bound A(k) ≤ (k-1)·k!). The asymptotic questions themselves remain open and are not asserted.",
     "openQuestions": [
       "Is A(k) ∼ k log k?",
       "What is the correct order of B(k) = min (a₁+⋯+a_k)/k?"
@@ -124,9 +142,9 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 137,
+    "lineCount": 213,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 9,
     "definitionCount": 1,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
