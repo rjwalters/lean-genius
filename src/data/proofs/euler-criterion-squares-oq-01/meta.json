@@ -54,6 +54,40 @@
       "Decidability of IsSquare and equality over the finite type ZMod 7 (decide)"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 25,
+      "summary": "Docstring stating Euler's criterion (a a square ⟺ a^((p−1)/2) ≡ 1, non-residue ⟺ ≡ −1), the ±1 dichotomy from Fermat, and the Legendre symbol (a|p) ≡ a^((p−1)/2) with its multiplicativity. Notes Mathlib's exponent is p/2 = (p−1)/2 for odd p, and that everything is checked mod 7. Fully verified (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "$a^{(p-1)/2}\\equiv\\pm1\\pmod p$ decides residuosity; $\\left(\\tfrac{a}{p}\\right)\\equiv a^{(p-1)/2}$."
+    },
+    {
+      "id": "sec-criterion",
+      "title": "The Criterion and the ±1 Dichotomy",
+      "startLine": 32,
+      "endLine": 53,
+      "summary": "half_eq (p/2 = (p−1)/2 for odd primes), isSquare_iff_pow (Euler's criterion: IsSquare a ⟺ a^((p−1)/2) = 1 via ZMod.euler_criterion), and pow_half_eq_one_or_neg_one (the value is ±1, since its square is a^(p−1) = 1 by Fermat in the field Z/p).",
+      "mathContext": "$\\mathrm{IsSquare}\\,a\\iff a^{(p-1)/2}=1$; $a^{(p-1)/2}\\in\\{1,-1\\}$."
+    },
+    {
+      "id": "sec-nonresidue",
+      "title": "Non-residues and the Legendre Symbol",
+      "startLine": 55,
+      "endLine": 88,
+      "summary": "one_ne_neg_one (1 ≠ −1 in Z/p for odd p, else p ∣ 2), not_isSquare_iff_pow (non-residue ⟺ a^((p−1)/2) = −1, from the dichotomy + separation), legendreSym_eq_pow ((a|p) ≡ a^((p−1)/2)), and legendreSym_mul (complete multiplicativity (ab|p) = (a|p)(b|p), dropping the oddness hypothesis).",
+      "mathContext": "$\\neg\\mathrm{IsSquare}\\,a\\iff a^{(p-1)/2}=-1$; $\\left(\\tfrac{ab}{p}\\right)=\\left(\\tfrac{a}{p}\\right)\\left(\\tfrac{b}{p}\\right)$."
+    },
+    {
+      "id": "sec-mod7",
+      "title": "Concrete Checks Modulo 7 (decide)",
+      "startLine": 90,
+      "endLine": 105,
+      "summary": "isSquare_two_mod_seven (2 = 3² mod 7) with two_pow_three_mod_seven (2³ = 1), and not_isSquare_three_mod_seven with three_pow_three_mod_seven (3³ = −1). All closed by kernel `decide` over Z/7 — no native_decide.",
+      "mathContext": "$2\\equiv3^2$, $2^3=1$; $3$ non-residue, $3^3\\equiv-1$ in $\\mathbb{Z}/7$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "primitive-roots-oq-03",
