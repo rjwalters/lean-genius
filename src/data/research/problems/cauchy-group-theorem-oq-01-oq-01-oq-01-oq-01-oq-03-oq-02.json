@@ -1,0 +1,181 @@
+{
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
+  "title": "Fibre Multiset of the Power Map in a Cyclic Group — gcd(n,m) Recovers the Map",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "ker(x↦xⁿ) = ker(x↦x^{gcd(n,m)}) (finite group); range(x↦xⁿ) = range(x↦x^{gcd(n,m)}) (cyclic); #{n-th powers}·gcd(n,m) = m; #{n-th powers} = m/gcd(n,m).",
+    "plain": "The parent leaf (oq-…-oq-03) proved that the power map x ↦ xⁿ in a cyclic group of order m has each non-empty fibre of size exactly gcd(n, m). This leaf makes the structural slogan precise: the n-th power map IS the gcd(n,m)-th power map — same kernel (any finite group), same image (cyclic case) — and the uniform fibres assemble into the partition identity #(n-th powers)·gcd(n, m) = m, so a cyclic group of order m has exactly m/gcd(n, m) distinct n-th powers.",
+    "whyMatters": [
+      "Reduces the exponent n to gcd(n,m) throughout the power map: kernel and image depend only on gcd(n,m).",
+      "Supplies the structural data the parent asked for in reading the exponent gcd off the fibre multiset."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "xⁿ = 1 ⟺ x^{gcd(n,m)} = 1 in any finite group (pow_eq_one_iff_pow_gcd)",
+      "ker(x↦xⁿ) = ker(x↦x^{gcd(n,m)}) as subgroups (ker_pow_eq_ker_pow_gcd)",
+      "range(x↦xⁿ) = range(x↦x^{gcd(n,m)}) in a finite cyclic group (range_pow_eq_range_pow_gcd)",
+      "#{n-th powers}·gcd(n,m) = m (card_image_pow_mul_gcd)",
+      "#{n-th powers} = m/gcd(n,m) (card_image_pow)"
+    ],
+    "open": [],
+    "goal": "Show gcd(n,m) determines the kernel, image, and fibre partition of the power map; verified, 0-axiom."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00-07:00",
+    "iteration": 1,
+    "focus": "Solved: gcd(n,m) recovers the power map (kernel, image, fibre partition). PR opened.",
+    "blockers": [],
+    "nextAction": "Merged via deployer; gallery entry live.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: verified, 0-axiom, original. 6 theorems, 165 lines. gcd(n,m) recovers the power map — kernel (any finite group), image (cyclic), and the fibre partition #(n-th powers)·gcd(n,m)=m.",
+    "builtItems": [
+      "pow_eq_one_iff_pow_gcd — xⁿ=1 ⟺ x^{gcd(n,m)}=1 in any finite group (Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean:65)",
+      "solutions_pow_one_eq_gcd — Finset equality of the two torsion solution sets (:76)",
+      "ker_pow_eq_ker_pow_gcd — kernel subgroups coincide (:86)",
+      "range_pow_eq_range_pow_gcd — n-th powers = gcd(n,m)-th powers, cyclic (:100)",
+      "card_fiber_pow — each non-empty fibre has gcd(n,m) elements (:126)",
+      "card_image_pow_mul_gcd — partition identity #image·gcd(n,m)=m (:135)",
+      "card_image_pow — #image = m/gcd(n,m) (:156)"
+    ],
+    "insights": [
+      "Only gcd(n,m) matters: kernel (any finite group) and image (cyclic) of x↦xⁿ depend solely on gcd(n,m).",
+      "Kernel equality is pure arithmetic: orderOf x ∣ m forces orderOf x ∣ n ⟺ orderOf x ∣ gcd(n,m); needs no commutativity.",
+      "Image inclusion range(·ⁿ) ≤ range(·^gcd) is trivial (gcd ∣ n); equality is a cardinality count via IsCyclic.card_powMonoidHom_range and gcd absorption gcd(m,gcd(n,m))=gcd(n,m).",
+      "card_eq_sum_card_image + uniform fibre size gcd(n,m) gives the partition #image·gcd(n,m)=m in one step.",
+      "#image = m/gcd(n,m) is the image-side complement of the kernel size gcd(n,m); product = m (first iso theorem made arithmetic)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has IsCyclic.card_powMonoidHom_range/ker but no packaged statement that exponent n is interchangeable with gcd(n,|G|) for the power map kernel/image, nor the fibre-partition count #{n-th powers}=|G|/gcd(n,|G|)."
+    ],
+    "nextSteps": [
+      "General finite abelian case: is range(x↦xⁿ)=range(x↦x^{gcd(n,exp G)}) with gcd against the exponent? Partition when fibre size ≠ gcd(n,|G|).",
+      "Invert over products of cyclic groups: which residues of n mod the invariant factors are determined by the fibre-size multiset?"
+    ]
+  },
+  "tags": [
+    "algebra",
+    "group-theory",
+    "cyclic-groups",
+    "power-map",
+    "linear-congruence",
+    "gcd",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "cauchy-group-theorem-oq-01",
+    "cauchy-group-theorem-oq-01-oq-01",
+    "cauchy-group-theorem-oq-01-oq-01-oq-01",
+    "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+    "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03",
+    "cauchy-group-theorem-oq-01-oq-02",
+    "cauchy-group-theorem-oq-01-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T02:11:48.263Z",
+  "lastUpdate": "2026-06-24T21:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01.lean",
+      "filename": "CauchyGroupTheoremOQ01.lean",
+      "lineCount": 146,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ01.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 161,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean",
+      "lineCount": 166,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03.lean",
+      "lineCount": 189,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ02.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ02.lean",
+      "lineCount": 204,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ02OQ03.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ02OQ03.lean",
+      "lineCount": 177,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean",
+      "filename": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean",
+      "lineCount": 165,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean"
+    }
+  ]
+}
