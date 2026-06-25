@@ -1,0 +1,31 @@
+{
+  "id": "chebyshev-bounds-oq-06",
+  "name": "Two-Sided Central Binomial Bound: 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "The central binomial coefficient C(2n,n) = Nat.centralBinom n is the largest entry of row 2n of Pascal's triangle, which sums to 2^(2n) = 4ⁿ.",
+      "Upper bound C(2n,n) ≤ 4ⁿ is a one-line corollary of Nat.choose_le_two_pow (C(m,k) ≤ 2^m) at row m = 2n, since 2^(2n) = 4ⁿ.",
+      "Lower bound 4ⁿ ≤ (2n+1)·C(2n,n) IS Mathlib's Nat.four_pow_le_two_mul_add_one_mul_central_binom (expand 4ⁿ = Σ_m C(2n,m), bound each of the 2n+1 terms by the central one). My lemma just restates it in centralBinom notation (definitionally equal via centralBinom_eq_two_mul_choose).",
+      "Mathlib has choose_middle_le_pow for the ODD row C(2n+1,n) ≤ 4ⁿ but not the even-row C(2n,n) ≤ 4ⁿ; that even-row lemma is the only genuinely new packaging here.",
+      "The ℕ-quotient form 4ⁿ/(2n+1) ≤ C(2n,n) follows from the multiplicative bound via Nat.div_le_of_le_mul (divisor is the left factor, so the goal matches the lemma verbatim).",
+      "The real-valued sandwich (cast via Nat.cast_le + push_cast, closed by linarith/div_le_iff₀) gives genuine division rather than ℕ-truncation."
+    ],
+    "builtItems": [
+      "ChebyshevBoundsOQ06.centralBinom_le_four_pow (Proofs/ChebyshevBoundsOQ06.lean:41) — C(2n,n) ≤ 4ⁿ (even-row upper bound, new named lemma)",
+      "ChebyshevBoundsOQ06.four_pow_le_succ_two_mul_mul_centralBinom (:51) — 4ⁿ ≤ (2n+1)·C(2n,n) (restatement of Mathlib lemma)",
+      "ChebyshevBoundsOQ06.four_pow_div_succ_two_mul_le_centralBinom (:58) — 4ⁿ/(2n+1) ≤ C(2n,n) over ℕ",
+      "ChebyshevBoundsOQ06.centralBinom_sandwich (:65) — unified two-sided ℕ statement",
+      "ChebyshevBoundsOQ06.centralBinom_real_sandwich (:72) — real-valued sandwich with genuine division"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the odd-row upper bound choose_middle_le_pow (C(2n+1,n) ≤ 4ⁿ) and the lower bound four_pow_le_two_mul_add_one_mul_central_binom, but no named even-row upper bound C(2n,n) ≤ 4ⁿ and no unified two-sided central-binomial sandwich lemma."
+    ],
+    "nextSteps": [
+      "Sharpen the upper bound to the Stirling form C(2n,n) ≤ 4ⁿ/√(πn) for the matching asymptotic C(2n,n) ~ 4ⁿ/√(πn).",
+      "Use this sandwich to discharge the axiomatized θ(n) ≤ n·log 4 upper bound in the parent chebyshev-bounds."
+    ],
+    "progressSummary": "COMPLETE (honest low-novelty assembly): the two-sided central binomial bound 4ⁿ/(2n+1) ≤ C(2n,n) ≤ 4ⁿ packaged from Mathlib primitives — 5 theorems, 0 sorries, 0 axioms, no native_decide (#print axioms = [propext, Classical.choice, Quot.sound]). Compiled against Mathlib v4.26.0. Neither bound is new (lower = Nat.four_pow_le_two_mul_add_one_mul_central_binom; upper = corollary of Nat.choose_le_two_pow); contribution is the even-row upper bound as a named lemma plus the unified sandwich and real-valued/quotient forms as an axiom-free building block for the axiomatized parent chebyshev-bounds. PR opened."
+  }
+}
