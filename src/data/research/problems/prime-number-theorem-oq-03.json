@@ -2,7 +2,7 @@
   "slug": "prime-number-theorem-oq-03",
   "title": "Elementary PNT with Error Bounds",
   "phase": "NEW",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Shipped a verified, axiom-free leaf: the von Mangoldt summatory identity ∑_{m≤N} Λ(m)⌊N/m⌋ = log(N!), the cornerstone of the elementary (Chebyshev–Mertens) approach to PNT, plus log(N!)=∑_{n≤N} log n and the Mertens-direction bound log(N!) ≤ N·∑_{m≤N} Λ(m)/m. Gallery slug prime-number-theorem-oq-03, PR #29656.",
+    "builtItems": [
+      "vonMangoldt_summatory : ∑_{m≤N} Λ(m)⌊N/m⌋ = log(N!) (exact, 0-axiom)",
+      "log_factorial_eq_sum_log : log(N!) = ∑_{n≤N} log n",
+      "log_factorial_le : log(N!) ≤ N·∑_{m≤N} Λ(m)/m (easy half of Mertens I)"
+    ],
+    "insights": [
+      "The floor-weighted summatory von Mangoldt function is absent from Mathlib's Chebyshev file, which only develops the unweighted ψ(x)=∑_{n≤x}Λ(n); the floor weights ⌊N/m⌋ are what tie it to log(N!).",
+      "Proof is Dirichlet double-counting: log n = ∑_{d∣n} Λ(d) (vonMangoldt_sum) summed over n≤N, then Finset.sum_comm' swaps to ∑_{d≤N} Λ(d)·#{n≤N:d∣n}, and Nat.Ioc_filter_dvd_card_eq_div evaluates the count to ⌊N/d⌋.",
+      "This identity is the entry point for error bounds in elementary PNT: equating it with Stirling's log(N!)=N log N−N+O(log N) yields Chebyshev ψ(x)≍x and Mertens ∑Λ(m)/m=log N+O(1)."
+    ],
+    "mathlibGaps": [
+      "No floor-weighted von Mangoldt summatory identity in Mathlib.NumberTheory.Chebyshev.",
+      "No Lean Stirling error bound log(N!)=N log N−N+O(log N) wired to this summatory framework yet."
+    ],
+    "nextSteps": [
+      "Combine with a Lean Stirling bound to derive ∑Λ(m)⌊N/m⌋ = N log N − N + O(log N) with explicit constants.",
+      "Prove full Mertens first theorem ∑_{m≤N}Λ(m)/m = log N + O(1) via Chebyshev ψ(N)=O(N).",
+      "Build the Selberg symmetry formula on top of this summatory framework toward elementary PNT."
+    ]
   },
   "tags": [
     "analytic-number-theory",
