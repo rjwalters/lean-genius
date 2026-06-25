@@ -1,0 +1,10 @@
+[
+  {
+    "id": "key-group-lemma",
+    "startLine": 37,
+    "endLine": 78,
+    "type": "theorem",
+    "title": "Key Group Theory Lemma",
+    "body": "For α with a prime number of elements, a transitive subgroup G ≤ S_α containing a transposition equals ⊤. Proof: transitivity + orbit–stabilizer give card α | |G|; Cauchy yields an element g of order card α; on a card-α set g is a full-support card-α-cycle (isCycle_of_prime_order, IsCycle.orderOf); with the transposition τ, closure_prime_cycle_swap gives ⟨g,τ⟩ = ⊤; since g,τ ∈ G, G = ⊤. This is the classical lemma the parent concrete-quintic entry documented but left unproven."
+  }
+]
