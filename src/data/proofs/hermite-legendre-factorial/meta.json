@@ -1,0 +1,135 @@
+{
+  "id": "hermite-legendre-factorial",
+  "title": "Legendre's Formula through Hermite's Identity",
+  "slug": "hermite-legendre-factorial",
+  "description": "Legendre's formula (de Polignac, 1808) states that the p-adic valuation of n! is v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋. Mathlib already proves this as `padicValNat_factorial` over the finite window Ico 1 b (any b > log_p n). This entry adds the derivation that routes every Legendre summand through Hermite's floor-summation identity ∑_{k=0}^{m-1} ⌊x + k/m⌋ = ⌊m·x⌋ (the gallery's `HermiteFloorIdentity.hermite_floor_identity`). Specialising Hermite at x = n/m^{j+1} with m copies gives ∑_{k=0}^{m-1} ⌊n/m^{j+1} + k/m⌋ = ⌊m·(n/m^{j+1})⌋ = ⌊n/m^j⌋, and since the real floor ⌊(n:ℝ)/m^j⌋ is exactly the Euclidean quotient n/m^j of naturals (`floor_natCast_div_pow`, via Int.floor_div_natCast / Int.natCast_div), this rewrites the integer quotient n/m^j appearing in Legendre's sum as a finer sum of m real floors one level down (`legendre_summand_split`). Applying this term-by-term inside `padicValNat_factorial` yields the headline `legendre_factorial_hermite`: v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋, so Legendre's carry-count is expressed entirely through Hermite floor sums. This is the open question explicitly posed by the sibling entry hermite-floor-identity. The Legendre core is cited from Mathlib; the Hermite refinement layer is the new content.",
+  "meta": {
+    "author": "A.-M. Legendre / Ch. Hermite (synthesis)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HermiteLegendreFactorial.lean",
+    "tags": [
+      "number-theory",
+      "floor-function",
+      "p-adic-valuation",
+      "factorial",
+      "legendre-formula",
+      "euclidean-division",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 82,
+    "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib (single-file elaboration via `lake env lean Proofs/HermiteLegendreFactorial.lean`, exit 0; `#print axioms legendre_factorial_hermite` and `#print axioms legendre_summand_split` list only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). The standard Legendre form v_p(n!) = ∑ ⌊n/p^i⌋ is cited from Mathlib's `padicValNat_factorial`; the new content (the Hermite splitting `legendre_summand_split`, the floor/division identity `floor_natCast_div_pow`, and the headline double-sum `legendre_factorial_hermite`) is proved here from the gallery's Hermite identity. Mathlib supplies the floor/division infrastructure (`Int.floor_div_natCast`, `Int.floor_natCast`, `Int.natCast_div`, `Nat.cast_sum`) and the Legendre core, but does NOT record the Hermite refinement of the Legendre summand.",
+    "dateAdded": "2026-06-25",
+    "originalContributions": [
+      "legendre_summand_split: the Hermite splitting of a Legendre summand — for every m ≥ 1, the integer quotient n/m^j equals the Hermite floor sum at the next level, ⌊n/m^j⌋ = ∑_{k<m} ⌊n/m^{j+1} + k/m⌋, derived from the gallery's Hermite identity by specialising x = n/m^{j+1}.",
+      "legendre_factorial_hermite: Legendre's formula refined through Hermite — v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ for any bound b > log_p n, expressing the entire prime-exponent count in factorials as a double sum of Hermite floor terms (the open question posed by hermite-floor-identity).",
+      "floor_natCast_div_pow: ⌊(n:ℝ)/m^j⌋ = (n/m^j : ℕ) cast to ℤ, identifying the real floor of a natural ratio with Euclidean division, the bridge that lets Hermite's real-floor identity meet Legendre's natural-number quotients."
+    ],
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Legendre's formula (also attributed to de Polignac, 1808) computes the exact power of a prime p dividing n!, v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋, a cornerstone of elementary number theory underlying Kummer's theorem on binomial coefficients and the base-p digit-sum identity (p-1)·v_p(n!) = n − s_p(n). Hermite's floor-summation identity ∑_{k=0}^{n-1} ⌊x + k/n⌋ = ⌊n·x⌋ (1880s) is its additive companion. Mathlib formalizes Legendre's formula as `padicValNat_factorial` but does not connect it to Hermite's identity; the gallery's hermite-floor-identity entry explicitly lists 'derive Legendre's formula as a consequence of Hermite' as an open question. This entry answers that, building the bridge term-by-term.",
+    "problemStatement": "Express Legendre's formula for the p-adic valuation of n! through Hermite's floor identity: show v_p(n!) = ∑_{i=1}^{b-1} ∑_{k=0}^{p-1} ⌊n/p^{i+1} + k/p⌋ for any bound b > log_p n, by replacing each Legendre quotient ⌊n/p^i⌋ with its Hermite refinement one level down.",
+    "text": "The headline theorem `legendre_factorial_hermite (p n b : ℕ) [Fact p.Prime] (hb : Nat.log p n < b) : (padicValNat p (n!) : ℤ) = ∑ i ∈ Ico 1 b, ∑ k ∈ range p, ⌊n/p^{i+1} + k/p⌋`, supported by `legendre_summand_split (m n j) (hm : 0 < m) : (↑(n / m^j) : ℤ) = ∑ k ∈ range m, ⌊n/m^{j+1} + k/m⌋` and the floor/division lemma `floor_natCast_div_pow (n m j) : ⌊(n:ℝ)/m^j⌋ = ↑(n / m^j)`.",
+    "proofStrategy": "Three steps. (1) `floor_natCast_div_pow`: rewrite (m:ℝ)^j as ((m^j:ℕ):ℝ), then Int.floor_div_natCast (⌊a/n⌋ = ⌊a⌋/n) and Int.floor_natCast turn ⌊(n:ℝ)/m^j⌋ into (n:ℤ)/(m^j), which equals ↑(n/m^j) by Int.natCast_div. (2) `legendre_summand_split`: instantiate the gallery's Hermite identity at x = n/m^{j+1} with m copies to get ∑_{k<m} ⌊n/m^{j+1} + k/m⌋ = ⌊m·(n/m^{j+1})⌋; simplify m·(n/m^{j+1}) = n/m^j (field_simp/ring with m^{j+1} = m·m^j), then apply floor_natCast_div_pow to identify the floor with ↑(n/m^j). (3) `legendre_factorial_hermite`: rewrite v_p(n!) by Mathlib's `padicValNat_factorial` into ∑_{i∈Ico 1 b} n/p^i, push the cast through the sum (Nat.cast_sum), and apply legendre_summand_split to each term with m = p, j = i.",
+    "keyInsights": [
+      "Hermite's identity is exactly the tool that refines a Legendre quotient: ⌊n/p^i⌋ counts, but ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ resolves that same count into p uniformly-sampled floors at the next prime power, because Hermite says the p samples of ⌊·⌋ around n/p^{i+1} reassemble ⌊p·(n/p^{i+1})⌋ = ⌊n/p^i⌋.",
+      "The real-vs-natural mismatch is illusory: Hermite lives over ℝ (arbitrary real x) while Legendre's summands are natural Euclidean quotients, but ⌊(n:ℝ)/m^j⌋ = n/m^j (Int.floor_div_natCast then Int.natCast_div) bridges the two with no error term.",
+      "The synthesis is purely term-by-term: once each summand is split, Mathlib's `padicValNat_factorial` carries the whole double-sum identity with a single sum_congr, so the Legendre core and the Hermite layer compose cleanly.",
+      "The construction is uniform in the level: legendre_summand_split holds for every m ≥ 1 and every j, so the same Hermite refinement could be iterated to express v_p(n!) at any chosen depth of prime powers."
+    ],
+    "prerequisites": [
+      "The floor function ⌊·⌋ on ℝ and the law ⌊a/n⌋ = ⌊a⌋/n (Euclidean division)",
+      "The p-adic valuation padicValNat and Legendre's formula (Mathlib's padicValNat_factorial)",
+      "Hermite's floor identity ∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋ (gallery entry hermite-floor-identity)",
+      "Finite sums over Finset.range / Finset.Ico and casting (Nat.cast_sum)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Statement",
+      "startLine": 1,
+      "endLine": 50,
+      "summary": "Module docstring stating Legendre's formula, recalling Hermite's identity, and outlining the bridge (specialise Hermite at x = n/m^{j+1}, identify ⌊(n:ℝ)/m^j⌋ with the natural quotient, feed term-by-term into Mathlib's padicValNat_factorial). Imports full Mathlib plus Proofs.HermiteFloorIdentity for the Hermite identity, opens Finset, and declares the namespace.",
+      "mathContext": "Targets $v_p(n!) = \\sum_i \\lfloor n/p^i\\rfloor$ rewritten through $\\sum_{k=0}^{m-1}\\lfloor x + k/m\\rfloor = \\lfloor m x\\rfloor$."
+    },
+    {
+      "id": "floor-natcast-div-pow",
+      "title": "Real Floor of a Natural Ratio",
+      "startLine": 44,
+      "endLine": 50,
+      "summary": "floor_natCast_div_pow: ⌊(n:ℝ)/m^j⌋ = ↑(n/m^j). Rewrites (m:ℝ)^j as the cast of m^j, applies Int.floor_div_natCast (⌊a/n⌋ = ⌊a⌋/n) and Int.floor_natCast (⌊(n:ℝ)⌋ = n), then Int.natCast_div to match the natural Euclidean quotient.",
+      "mathContext": "$\\lfloor (n:\\mathbb R)/m^j\\rfloor = \\lfloor n/m^j\\rfloor_{\\mathbb N}$: the real floor of a ratio of naturals is Euclidean division."
+    },
+    {
+      "id": "legendre-summand-split",
+      "title": "Hermite Splitting of a Legendre Summand",
+      "startLine": 52,
+      "endLine": 68,
+      "summary": "legendre_summand_split: ↑(n/m^j) = ∑_{k<m} ⌊n/m^{j+1} + k/m⌋ for m ≥ 1. Instantiates HermiteFloorIdentity.hermite_floor_identity at x = n/m^{j+1} with m copies, collapses m·(n/m^{j+1}) to n/m^j (field_simp/ring using m^{j+1} = m·m^j), and applies floor_natCast_div_pow to identify ⌊n/m^j⌋ with ↑(n/m^j).",
+      "mathContext": "$\\lfloor n/m^j\\rfloor = \\sum_{k=0}^{m-1}\\lfloor n/m^{j+1} + k/m\\rfloor$ by Hermite's identity at $x = n/m^{j+1}$."
+    },
+    {
+      "id": "legendre-hermite",
+      "title": "Legendre's Formula via Hermite",
+      "startLine": 70,
+      "endLine": 82,
+      "summary": "legendre_factorial_hermite: (padicValNat p (n!) : ℤ) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋. Rewrites v_p(n!) by Mathlib's padicValNat_factorial to ∑_{i∈Ico 1 b} n/p^i, pushes the cast through with Nat.cast_sum, and applies legendre_summand_split (m = p, j = i) term-by-term via sum_congr.",
+      "mathContext": "$v_p(n!) = \\sum_{i=1}^{b-1}\\sum_{k=0}^{p-1}\\lfloor n/p^{i+1} + k/p\\rfloor$: each Legendre quotient resolved into its Hermite refinement."
+    }
+  ],
+  "conclusion": {
+    "summary": "Legendre's formula v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋ is re-expressed entirely through Hermite's floor identity: each quotient ⌊n/p^i⌋ is replaced by the Hermite floor sum ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ one level down, giving v_p(n!) = ∑_{i∈Ico 1 b} ∑_{k<p} ⌊n/p^{i+1} + k/p⌋ with 0 axioms and 0 sorries. The Legendre core is cited from Mathlib's padicValNat_factorial; the Hermite splitting of the summand, the floor/division bridge, and the headline double-sum are proved here from the gallery's Hermite identity. This answers the open question recorded by the sibling entry hermite-floor-identity.",
+    "openQuestions": [
+      "Iterate the refinement: legendre_summand_split holds at every level, so v_p(n!) can be unfolded to depth d as a (d+1)-fold Hermite floor sum — characterise the resulting nested floor expression and whether it has a closed form.",
+      "Give a Hermite-only proof of the Legendre core itself (the recursion v_p((p·m)!) = m + v_p(m!) or the digit-sum form (p-1)·v_p(n!) = n − s_p(n)) so the entry no longer cites padicValNat_factorial but derives the whole formula from the floor identity."
+    ],
+    "implications": "The entry makes explicit that Hermite's floor identity is the additive backbone of the Legendre/Gauss prime-power count: the carries counted by ⌊n/p^i⌋ are exactly the Hermite-sampled floors at the next prime power. It gives the gallery a reusable summand-splitting lemma (legendre_summand_split, valid for any m ≥ 1) and the floor/division identity floor_natCast_div_pow, both usable in other floor-sum manipulations."
+  },
+  "crossReferences": [
+    {
+      "targetId": "hermite-floor-identity",
+      "relationship": "depends-on",
+      "description": "Uses HermiteFloorIdentity.hermite_floor_identity (∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋) as the engine for splitting each Legendre summand. This entry answers the open question that hermite-floor-identity poses: deriving Legendre's formula for v_p(n!) from Hermite's identity."
+    }
+  ],
+  "references": [
+    {
+      "author": "Legendre, A.-M.",
+      "title": "Théorie des nombres",
+      "year": 1830,
+      "note": "Source of the formula v_p(n!) = ∑_{i≥1} ⌊n/p^i⌋ for the prime-power content of a factorial"
+    },
+    {
+      "author": "Hermite, C.",
+      "title": "Sur quelques conséquences arithmétiques des formules de la théorie des fonctions elliptiques",
+      "year": 1884,
+      "note": "Period in which Hermite recorded the floor-summation identity used here"
+    },
+    {
+      "author": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "note": "Chapter 3 (Integer Functions) treats both Hermite's identity and the floor-sum evaluation of v_p(n!)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.HermiteFloorIdentity"
+    ],
+    "namespace": "HermiteLegendreFactorial",
+    "lineCount": 82,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/HermiteLegendreFactorial.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
