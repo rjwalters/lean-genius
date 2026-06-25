@@ -149,3 +149,61 @@ not needed here since we only reference it through lemma names.)
    Erdős's combinatorial lemma (Iter 5c–5d).
 3. The two parent axioms in `ChebyshevBoundsOQ04.lean` remain (deep PNT);
    do NOT touch the frozen `ChebyshevBoundsOQ04OQ01.lean`.
+
+## This session (2026-06-25, Researcher-10) — ACT, Iter 5a-β-2 COMPLETE (weak Mertens proven)
+
+**Outcome**: progress (discharged all 6 sorries in the Mertens scaffold; build-verified
+via `lake env lean` against prebuilt v4.26.0 oleans — docker daemon was down, but the
+`.lake` symlink now resolves and a single-file elaboration is memory-safe).
+
+### Result
+
+`proofs/Proofs/ChebyshevBoundsOQ04OQ01Mertens.lean` is now **fully proven**
+(0 sorries, 0 axioms; `#print axioms mertensRecip_abs_le_one` ⇒ only
+`propext, Classical.choice, Quot.sound`). It was a 6-sorry scaffold on `main`;
+this session completed every step. This realizes **openQuestion #1** of the
+`chebyshev-bounds-oq-04-oq-01-oq-01` gallery entry: the real-valued weak Mertens
+reciprocal bound
+
+    |M₁(N)| = |∑_{d=1}^{N} μ(d)/d| ≤ 1     (all N).
+
+### Theorems discharged (all 6)
+
+1. `card_multiples_Icc N d : #{m ∈ Icc 1 N : d ∣ m} = N / d`
+   — `Icc 1 N = Ioc 0 N` (ext+omega) then `Nat.Ioc_filter_dvd_card_eq_div`.
+2. `sum_moebius_divisors m _hm : ∑_{d∣m} μ d = if m=1 then 1 else 0`
+   — `← coe_mul_zeta_apply ; moebius_mul_coe_zeta ; one_apply` (m≥1 not even needed).
+3. `sum_moebius_mul_floor N hN : ∑_{d∈Icc 1 N} μ(d)·↑(N/d) = 1`
+   — the floor identity, reusing the verified hyperbola-swap recipe from
+     `…WeakMertensStatementOnly.lean` but now factored through (1) and (2).
+4. `mul_mertensRecip_eq N hN : (N:ℝ)·M₁(N) = 1 + ∑ μ(d)·fract(N/d)`
+   — per-term split `(N:ℝ)/d = ↑(N/d) + fract` via the floor-cast helper, then cast
+     the integer identity (3) into ℝ.
+5. `fract_sum_abs_le N hN : |∑ μ(d)·fract(N/d)| ≤ N − 1`
+   — drop the d=1 term (`fract(N/1)=fract N=0`), triangle-ineq, each remaining
+     term ≤ 1, with `card((Icc 1 N).erase 1) = N−1`.
+6. `mertensRecip_abs_le_one N : |M₁(N)| ≤ 1`
+   — `|1+S| ≤ N` from (4)+(5), divide by N>0 (`nlinarith`).
+
+### GOTCHAs (recorded for reuse)
+
+- **Floor-of-real to nat-division**: `⌊(N:ℝ)/(d:ℝ)⌋ = (↑(N/d):ℤ)` via
+  `Int.floor_div_natCast ; Int.floor_natCast ; Int.natCast_div`. Then cast helper
+  `(⌊…⌋:ℝ) = ((N/d:ℕ):ℝ)` by `rw [hz]; norm_cast`. `Int.natCast_div` is NOT a
+  norm_cast lemma, so `push_cast` does NOT split it — but a careless `push_cast; ring`
+  on the cast-of-sum goal still mangled it; use explicit `Int.cast_sum` then per-term
+  `Int.cast_mul, Int.cast_natCast` instead.
+- **`abs_add` does not exist** in v4.26.0 (only `abs_add'`, `abs_add_self`). For
+  `|1+S| ≤ N` use `rw [abs_le]; rw [abs_le] at hbound; constructor <;> linarith`.
+- **fract = self − floor**: `Int.self_sub_floor a : a - ↑⌊a⌋ = fract a` (rewrite `←`).
+- **Build path**: docker down, but `proofs/.lake → main/.lake` symlink resolves and
+  7382 mathlib oleans + 624 Proofs oleans are present, so
+  `ulimit -v 16000000; LAKE_UNSAFE=1 ./bin/lake env lean Proofs/<file>.lean`
+  type-checks one file memory-safely (no mathlib rebuild). This is the offline route.
+
+### Next Steps (downstream, unchanged)
+
+1. Selberg's symmetry formula `S₂(N) = 2N·log N + O(N)` (Iter 5b).
+2. Tauberian self-reference + Erdős's combinatorial lemma (Iter 5c–5d).
+3. The two deep parent axioms in `ChebyshevBoundsOQ04.lean` remain (full PNT);
+   do NOT touch the frozen `ChebyshevBoundsOQ04OQ01.lean`.
