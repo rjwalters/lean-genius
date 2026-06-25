@@ -1,0 +1,56 @@
+[
+  {
+    "id": "erdos211-inc01-ann-header",
+    "proofId": "erdos-211-incomplete-01",
+    "range": { "startLine": 1, "endLine": 60 },
+    "type": "context",
+    "title": "Erdős #211 and the Extremal 1/6 Constant",
+    "content": "Erdős Problem #211 ($100, awarded) asks how many lines n points in the plane determine when at most n-k lie on any line; Beck (1983) and Szemerédi–Trotter (1983) proved the count is ≫ k·n. Erdős conjectured the sharp constant is 1/6, attained when every determined line carries exactly three points. Such a configuration is a Steiner triple system S(2,3,n): a family of 3-point lines on V in which every pair of points lies on exactly one line. IsLineCover V L packages exactly this — an honest antecedent (a predicate), not an assumed existence — so every theorem below is conditional on it and the file remains 0-axiom.",
+    "mathContext": "$\\mathrm{IsLineCover}\\,V\\,L:\\ (\\forall l\\in L,\\ |l|=3)\\ \\wedge\\ (\\forall l\\in L,\\ l\\subseteq V)\\ \\wedge\\ (\\forall p\\subseteq V,\\ |p|=2\\Rightarrow \\exists!\\,l\\in L,\\ p\\subseteq l)$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Steiner triple system S(2,3,n)",
+      "incidence geometry",
+      "Beck's theorem",
+      "Szemerédi–Trotter theorem",
+      "extremal configurations"
+    ],
+    "prerequisites": ["Finset basics", "powersetCard", "binomial coefficients"]
+  },
+  {
+    "id": "erdos211-inc01-ann-local",
+    "proofId": "erdos-211-incomplete-01",
+    "range": { "startLine": 61, "endLine": 110 },
+    "type": "technique",
+    "title": "The Two Fiber Counts: 3 Pairs per Line, 1 Line per Pair",
+    "content": "The double count rests on two elementary fiber cardinalities. card_pairs_of_line: a 3-element line contains exactly C(3,2)=3 pairs, via Finset.card_powersetCard. powersetCard_two_eq_filter: for a line l ⊆ V, the pairs inside l are exactly the pairs of V that l contains, l.powersetCard 2 = (V.powersetCard 2).filter (· ⊆ l) — proved by set extensionality using that p ⊆ l and l ⊆ V give p ⊆ V. card_lines_through_pair: the unique-cover hypothesis (∃! line through each pair) makes the filter of lines through a fixed pair a singleton, so its cardinality is 1, via Finset.card_eq_one.",
+    "mathContext": "$|\\{p:\\ p\\subseteq l,\\ |p|=2\\}| = \\binom{3}{2} = 3,\\qquad |\\{l\\in L:\\ p\\subseteq l\\}| = 1$",
+    "significance": "key",
+    "relatedConcepts": ["fiber counting", "Finset.card_powersetCard", "Finset.card_eq_one", "ExistsUnique"],
+    "prerequisites": ["powersetCard", "Finset.filter"]
+  },
+  {
+    "id": "erdos211-inc01-ann-doublecount",
+    "proofId": "erdos-211-incomplete-01",
+    "range": { "startLine": 111, "endLine": 140 },
+    "type": "key-step",
+    "title": "Counting Incidences Both Ways",
+    "content": "incidence_double_count is the symmetric heart of the argument. The flags are pairs (l, p) with l ∈ L, p a pair of V, and p ⊆ l. Grouped by line, the count is ∑_{l∈L} |pairs of l|; grouped by pair, it is ∑_{p} |lines through p|. The proof rewrites the line-grouped sum into a double indicator sum (using powersetCard_two_eq_filter and Finset.card_filter), applies Finset.sum_comm to interchange the order of summation, and re-folds into the pair-grouped filter cardinalities. This single swap is the whole content of 'counting two ways'.",
+    "mathContext": "$\\sum_{l\\in L}\\binom{3}{2} = |\\{(l,p): p\\subseteq l\\}| = \\sum_{p}1$",
+    "significance": "critical",
+    "relatedConcepts": ["double counting", "Finset.sum_comm", "Fubini for finite sums", "bipartite incidence"],
+    "prerequisites": ["Finset.sum_comm", "Finset.card_filter"]
+  },
+  {
+    "id": "erdos211-inc01-ann-main",
+    "proofId": "erdos-211-incomplete-01",
+    "range": { "startLine": 141, "endLine": 176 },
+    "type": "result",
+    "title": "Exactly n(n-1)/6 Lines, and the Forced Divisibility",
+    "content": "Combining the two fiber counts through the double count gives the main theorem three_mul_card_lines: 3·L.card = C(n,2). Two corollaries follow immediately: three_dvd_choose_two reads off the necessary divisibility 3 ∣ C(n,2) (one half of the classical n ≡ 1,3 mod 6 existence condition for Steiner triple systems), and card_lines_real converts the count to the explicit real value (L.card : ℝ) = n(n-1)/6 — Erdős's 1/6 constant made literal — using Nat.choose_two_right and the parity of n(n-1). Numerical checks confirm the identity for the Fano plane (n=7, 7 lines), the affine plane AG(2,3) (n=9, 12 lines), and S(2,3,13) (n=13, 26 lines).",
+    "mathContext": "$3\\,|L| = \\binom{n}{2}\\ \\Longrightarrow\\ |L| = \\frac{n(n-1)}{6}\\quad\\text{and}\\quad 3\\mid\\binom{n}{2}$",
+    "significance": "critical",
+    "relatedConcepts": ["Steiner triple system", "necessary divisibility condition", "Kirkman's condition", "Fano plane", "affine plane AG(2,3)"],
+    "prerequisites": ["Nat.choose_two_right", "binomial coefficients"]
+  }
+]

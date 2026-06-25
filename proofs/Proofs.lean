@@ -1637,6 +1637,7 @@ import Proofs.Erdos209Problem
 import Proofs.Erdos20Problem
 import Proofs.Erdos210Problem
 import Proofs.Erdos211Problem
+import Proofs.Erdos211SteinerLineCount
 import Proofs.Erdos212Problem
 import Proofs.Erdos213Problem
 import Proofs.Erdos214Problem
