@@ -1,0 +1,67 @@
+{
+  "id": "sylow-theorem-oq-02-oq-02",
+  "title": "Large-Prime-Factor Normality: |G| = p^a·m with m < p ⟹ Sylow p-subgroup normal",
+  "slug": "sylow-theorem-oq-02-oq-02",
+  "description": "A clean cofactor-below-the-prime normality criterion for finite groups. If |G| = p^a · m with p prime, p ∤ m (so p^a is the full p-part and m the p'-cofactor), and the cofactor satisfies m < p, then the Sylow p-subgroup of G is unique and therefore normal. The proof is the elementary divisibility/congruence pinch on the Sylow count n_p = #(Sylow p G): Sylow's second theorem gives n_p ∣ [G : P] = m, so n_p ≤ m < p, while Sylow's third theorem gives n_p ≡ 1 (mod p); the only value below p that is ≡ 1 (mod p) is 1, forcing n_p = 1, and a unique Sylow subgroup is normal (Sylow.normal_of_subsingleton). No restriction is placed on the p-power exponent a. This is the single-prime cofactor slice of the Sylow normality landscape, distinct from the parent sibling oq-02-oq-01 (which characterises global nilpotency by n_p = 1 for every prime) and from oq-01 (the n_p analysis specialised to order pq).",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SylowTheoremOQ02OQ02.lean",
+    "tags": [
+      "group-theory",
+      "sylow",
+      "normal-subgroup",
+      "finite-groups",
+      "sylow-counting",
+      "divisibility"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 125,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "assumptions": "None beyond the stated hypotheses on a finite group. The whole file assumes only [Group G] [Finite G] together with the per-theorem antecedents |G| = p^a·m, p prime (as [Fact p.Prime]), p ∤ m, and m < p. No axioms, no sorries; #print axioms reports only propext, Classical.choice, Quot.sound. Builds against Mathlib 4.26.0.",
+    "originalContributions": [
+      "sylow_normal: the headline criterion — for a finite group with Nat.card G = p^a·m, p ∤ m and m < p, every Sylow p-subgroup P satisfies (P : Subgroup G).Normal. Mathlib supplies the pillars but not this packaged m<p ⟹ normal statement.",
+      "card_sylow_eq_one: the count collapse Nat.card (Sylow p G) = 1, proved by combining n_p ∣ m (from Sylow.card_dvd_index after computing the index) with the congruence n_p ≡ 1 (mod p) (card_sylow_modEq_one) and reading both modular facts off below p via Nat.mod_eq_of_lt.",
+      "sylow_index_eq: the auxiliary [G : P] = m, obtained from Subgroup.card_mul_index after pinning |P| = p^a and cancelling the (positive) p-power.",
+      "sylow_card_eq: |P| = p^a via Sylow.card_eq_multiplicity together with the prime-power factorization (p^a·m).factorization p = a (using p ∤ m to kill the cofactor's contribution).",
+      "exists_normal_sylow: existence packaging — such a group has a normal Sylow p-subgroup."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Sylow.card_dvd_index",
+        "description": "Nat.card (Sylow p G) ∣ P.index for a Sylow p-subgroup P; supplies n_p ∣ m once the index is computed to be the cofactor m",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "card_sylow_modEq_one",
+        "description": "Sylow's third theorem: Nat.card (Sylow p G) ≡ 1 [MOD p]; the congruence half of the pinch",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.card_eq_multiplicity",
+        "description": "Nat.card P = p ^ (Nat.card G).factorization p for a Sylow p-subgroup; pins the Sylow order to the full p-part p^a",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Sylow.normal_of_subsingleton",
+        "description": "if Sylow p G is a subsingleton then the unique Sylow p-subgroup is normal; converts n_p = 1 into normality",
+        "module": "Mathlib.GroupTheory.Sylow"
+      },
+      {
+        "theorem": "Subgroup.card_mul_index",
+        "description": "Nat.card H * H.index = Nat.card G; used to extract the index [G : P] = m from the order computation",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "Nat.factorization_mul",
+        "description": "factorization of a product splits additively over the factors (for nonzero arguments); computes (p^a·m).factorization p = a",
+        "module": "Mathlib.NumberTheory.Padics.PadicVal"
+      }
+    ]
+  }
+}
