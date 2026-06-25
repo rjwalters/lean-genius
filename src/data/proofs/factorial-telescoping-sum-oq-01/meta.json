@@ -70,7 +70,23 @@
       "type": "book"
     }
   ],
-  "crossReferences": [],
+  "crossReferences": [
+    {
+      "targetId": "sum-of-kth-powers",
+      "relationship": "relatedTo",
+      "description": "Another closed-form finite-sum identity proved by induction; both reduce a structured ∑ to a boundary expression, here via telescoping rather than Faulhaber polynomials."
+    },
+    {
+      "targetId": "nicomachus-sum-of-cubes-oq-01",
+      "relationship": "relatedTo",
+      "description": "A companion 'sum equals a clean closed form' identity (∑ k³ = (∑ k)²) in the gallery, also established by elementary induction over ℕ."
+    },
+    {
+      "targetId": "legendre-factorial-formula-oq-01",
+      "relationship": "relatedTo",
+      "description": "A neighbouring factorial-arithmetic entry; shares the factorial recurrence (n+1)! = (n+1)·n! that drives the telescoping collapse here."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Factorial.Basic",

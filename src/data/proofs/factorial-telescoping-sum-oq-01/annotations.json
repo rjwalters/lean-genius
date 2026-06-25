@@ -8,7 +8,11 @@
     },
     "type": "insight",
     "title": "The Subtraction-Free Engine",
-    "content": "sum_mul_factorial_add_one is the genuine content of the identity, stated to dodge ℕ truncated subtraction: (∑_{k=0}^{n} k·k!) + 1 = (n+1)!. The induction is short. Base: 0·0! + 1 = 1 = 1!. Step: Finset.sum_range_succ peels the top term (n+1)·(n+1)!, Nat.factorial_succ expands (n+2)! = (n+2)·(n+1)!, and after rewriting (n+2)·(n+1)! = (n+1)! + (n+1)·(n+1)! the goal is linear in the three atoms ∑, (n+1)!, and (n+1)·(n+1)!, so omega finishes it using the inductive hypothesis. This is the multiplicative-factorial analogue of arithmetic telescoping."
+    "content": "sum_mul_factorial_add_one is the genuine content of the identity, stated to dodge ℕ truncated subtraction: (∑_{k=0}^{n} k·k!) + 1 = (n+1)!. The induction is short. Base: 0·0! + 1 = 1 = 1!. Step: Finset.sum_range_succ peels the top term (n+1)·(n+1)!, Nat.factorial_succ expands (n+2)! = (n+2)·(n+1)!, and after rewriting (n+2)·(n+1)! = (n+1)! + (n+1)·(n+1)! the goal is linear in the three atoms ∑, (n+1)!, and (n+1)·(n+1)!, so omega finishes it using the inductive hypothesis. This is the multiplicative-factorial analogue of arithmetic telescoping.",
+    "mathContext": "$\\Bigl(\\sum_{k=0}^{n} k\\cdot k!\\Bigr) + 1 = (n+1)!$. Inductive step uses $(n+2)! = (n+2)(n+1)! = (n+1)! + (n+1)(n+1)!$.",
+    "significance": "critical",
+    "relatedConcepts": ["mathematical induction", "telescoping sum", "truncated subtraction in ℕ", "Finset.sum_range_succ", "omega tactic"],
+    "prerequisites": ["induction on natural numbers", "factorial recurrence", "finite sums"]
   },
   {
     "id": "ann-headline",
@@ -19,7 +23,11 @@
     },
     "type": "concept",
     "title": "The Headline Subtraction Form",
-    "content": "sum_mul_factorial is the identity as usually quoted: ∑_{k=0}^{n} k·k! = (n+1)! − 1 (and since the k=0 term vanishes, this is ∑_{k=1}^{n} k·k!). It is read straight off the engine: from (∑)+1 = (n+1)! with (n+1)! ≥ 1, omega discharges the ℕ truncated subtraction exactly. Proving the additive form first is the standard trick that keeps the subtraction honest."
+    "content": "sum_mul_factorial is the identity as usually quoted: ∑_{k=0}^{n} k·k! = (n+1)! − 1 (and since the k=0 term vanishes, this is ∑_{k=1}^{n} k·k!). It is read straight off the engine: from (∑)+1 = (n+1)! with (n+1)! ≥ 1, omega discharges the ℕ truncated subtraction exactly. Proving the additive form first is the standard trick that keeps the subtraction honest.",
+    "mathContext": "$\\sum_{k=1}^{n} k\\cdot k! = (n+1)! - 1$. Exact over ℕ because $(n+1)! \\ge 1$, so the truncated subtraction loses nothing.",
+    "significance": "key",
+    "relatedConcepts": ["telescoping", "factorial number system", "natural-number subtraction", "boundary term"],
+    "prerequisites": ["factorial", "ℕ subtraction semantics"]
   },
   {
     "id": "ann-literal-form",
@@ -28,9 +36,13 @@
       "startLine": 63,
       "endLine": 76
     },
-    "type": "proof-step",
+    "type": "theorem",
     "title": "The Literal ∑_{k=1}^{n} Form",
-    "content": "sum_Icc_eq_sum_range proves that the literal lower-limit-1 sum over Finset.Icc 1 n equals the range (n+1) sum, by an induction whose step matches Finset.sum_Icc_succ_top against Finset.sum_range_succ term by term; the only extra index, k = 0, contributes 0·0! = 0. sum_Icc_mul_factorial then states the identity with the customary lower limit k = 1, showing that limit is purely cosmetic."
+    "content": "sum_Icc_eq_sum_range proves that the literal lower-limit-1 sum over Finset.Icc 1 n equals the range (n+1) sum, by an induction whose step matches Finset.sum_Icc_succ_top against Finset.sum_range_succ term by term; the only extra index, k = 0, contributes 0·0! = 0. sum_Icc_mul_factorial then states the identity with the customary lower limit k = 1, showing that limit is purely cosmetic.",
+    "mathContext": "$\\sum_{k\\in \\mathrm{Icc}\\,1\\,n} k\\cdot k! = \\sum_{k\\in \\mathrm{range}\\,(n+1)} k\\cdot k!$, since the extra index $k=0$ gives $0\\cdot 0! = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.Icc vs Finset.range", "sum_Icc_succ_top", "reindexing a sum", "vanishing boundary term"],
+    "prerequisites": ["finite sums over intervals", "induction"]
   },
   {
     "id": "ann-pointwise",
@@ -41,6 +53,10 @@
     },
     "type": "insight",
     "title": "Why It Telescopes: k·k! = (k+1)! − k!",
-    "content": "mul_factorial_eq isolates the per-term collapse that makes the whole sum telescope. From the factorial recurrence (k+1)! = (k+1)·k! = k·k! + k! (via add_one_mul), subtracting k! recovers k·k!; omega handles the ℕ subtraction. Summing this identity over k = 1..n gives a difference of consecutive factorials that collapses to (n+1)! − 1! = (n+1)! − 1 — the conceptual one-line proof behind the formal induction."
+    "content": "mul_factorial_eq isolates the per-term collapse that makes the whole sum telescope. From the factorial recurrence (k+1)! = (k+1)·k! = k·k! + k! (via add_one_mul), subtracting k! recovers k·k!; omega handles the ℕ subtraction. Summing this identity over k = 1..n gives a difference of consecutive factorials that collapses to (n+1)! − 1! = (n+1)! − 1 — the conceptual one-line proof behind the formal induction.",
+    "mathContext": "$k\\cdot k! = (k+1)! - k!$, so $\\sum_{k=1}^{n}\\bigl((k+1)! - k!\\bigr) = (n+1)! - 1!$ telescopes to $(n+1)! - 1$.",
+    "significance": "key",
+    "relatedConcepts": ["telescoping identity", "factorial recurrence", "difference of consecutive terms", "add_one_mul"],
+    "prerequisites": ["factorial", "elementary algebra over ℕ"]
   }
 ]
