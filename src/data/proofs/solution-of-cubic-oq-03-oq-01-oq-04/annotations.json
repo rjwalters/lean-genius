@@ -1,0 +1,112 @@
+[
+  {
+    "id": "ann-gen-discriminant-def",
+    "proofId": "solution-of-cubic-oq-03-oq-01-oq-04",
+    "range": {
+      "startLine": 44,
+      "endLine": 64
+    },
+    "type": "definition",
+    "title": "Discriminant of the General Cubic and Vieta Data",
+    "content": "`genDiscriminant a b c = 18·a·b·c − 4·a³·c + a²·b² − 4·b³ − 27·c²` is the discriminant of the general monic cubic x³+ax²+bx+c. `depressedDiscriminant p q = −4p³ − 27q²` recalls the parent's depressed formula locally, and `rootDiscriminant x₁ x₂ x₃ = (x₁−x₂)²(x₁−x₃)²(x₂−x₃)²` is the root-separation form. `IsGenRootTriple a b c x₁ x₂ x₃` is a structure bundling Vieta's three relations for the general cubic. Keeping the definitions local makes the file self-contained over an arbitrary commutative ring R.",
+    "mathContext": "$\\Delta(a,b,c) = 18abc - 4a^3c + a^2b^2 - 4b^3 - 27c^2$; Vieta: $x_1+x_2+x_3 = -a$, $x_1x_2+x_1x_3+x_2x_3 = b$, $x_1x_2x_3 = -c$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "discriminant",
+      "Vieta's formulas",
+      "monic cubic"
+    ],
+    "prerequisites": [
+      "commutative ring",
+      "polynomial roots"
+    ]
+  },
+  {
+    "id": "ann-gen-root-form",
+    "proofId": "solution-of-cubic-oq-03-oq-01-oq-04",
+    "range": {
+      "startLine": 72,
+      "endLine": 88
+    },
+    "type": "theorem",
+    "title": "General-Cubic Discriminant Equals the Root-Separation Product",
+    "content": "`genDiscriminant_eq_root_form`: under Vieta's formulas, 18abc − 4a³c + a²b² − 4b³ − 27c² = (x₁−x₂)²(x₁−x₃)²(x₂−x₃)². The proof solves the Vieta relations for a, b, c — a = −(x₁+x₂+x₃), b = x₁x₂+x₁x₃+x₂x₃, c = −(x₁x₂x₃) — using `linear_combination` (an algebraic certificate valid over any commutative ring, unlike `linarith` which needs an order), `subst`s them, and closes the polynomial identity in the three roots by `ring`. This is the core result: the parent's depressed identity is its a = 0 slice.",
+    "mathContext": "A single `ring` identity in x₁,x₂,x₃ after eliminating a,b,c via Vieta. Holds over an arbitrary commutative ring.",
+    "significance": "central",
+    "relatedConcepts": [
+      "discriminant",
+      "root-separation product",
+      "ring identity"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "linear_combination",
+      "ring tactic"
+    ]
+  },
+  {
+    "id": "ann-recover-depressed",
+    "proofId": "solution-of-cubic-oq-03-oq-01-oq-04",
+    "range": {
+      "startLine": 89,
+      "endLine": 112
+    },
+    "type": "theorem",
+    "title": "Recovering the Parent's Depressed Discriminant",
+    "content": "`genDiscriminant_zero_lead`: setting a = 0 gives genDiscriminant 0 p q = −4p³ − 27q² = depressedDiscriminant p q (one `ring` step). `depressedDiscriminant_eq_root_form`: when the roots sum to zero (e₁ = 0), the depressed discriminant equals the root form — the parent's exact statement, here obtained as the a = 0 instance of the general theorem. Together they certify that the general result subsumes the depressed-cubic discriminant.",
+    "mathContext": "$\\Delta(0,p,q) = -4p^3 - 27q^2$; with $x_1+x_2+x_3 = 0$ this equals $(x_1-x_2)^2(x_1-x_3)^2(x_2-x_3)^2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "depressed cubic",
+      "specialization"
+    ],
+    "prerequisites": [
+      "depressed cubic discriminant"
+    ]
+  },
+  {
+    "id": "ann-translation-invariance",
+    "proofId": "solution-of-cubic-oq-03-oq-01-oq-04",
+    "range": {
+      "startLine": 113,
+      "endLine": 156
+    },
+    "type": "theorem",
+    "title": "Depression Invariance of the Discriminant",
+    "content": "Three results establish that translating the roots — the depression substitution x ↦ x + t — preserves the discriminant. `rootDiscriminant_translation_invariant`: shifting all roots by t leaves the product of squared differences unchanged (pure `ring`, since each x_i − x_j is shift-invariant). `isGenRootTriple_translate`: the shifted roots satisfy Vieta for the explicit coefficients (a−3t, b−2at+3t², c−bt+at²−t³), each field proved by `linear_combination`. `genDiscriminant_translation_invariant`: chaining these through the root form gives genDiscriminant of the shifted coefficients = genDiscriminant of the original. This is the precise justification for computing a cubic's discriminant from its depressed form.",
+    "mathContext": "Under $x_i \\mapsto x_i + t$ the coefficients become $(a-3t,\\,b-2at+3t^2,\\,c-bt+at^2-t^3)$ while $\\prod_{i<j}(x_i-x_j)^2$ is unchanged.",
+    "significance": "central",
+    "relatedConcepts": [
+      "depression substitution",
+      "translation invariance",
+      "Tschirnhaus transformation"
+    ],
+    "prerequisites": [
+      "Vieta's formulas",
+      "change of variable"
+    ]
+  },
+  {
+    "id": "ann-separability",
+    "proofId": "solution-of-cubic-oq-03-oq-01-oq-04",
+    "range": {
+      "startLine": 157,
+      "endLine": 190
+    },
+    "type": "theorem",
+    "title": "Characteristic-Free Separability Criterion",
+    "content": "`genDiscriminant_eq_zero_iff`: over an integral domain, Δ(a,b,c) = 0 ⟺ x₁ = x₂ ∨ x₁ = x₃ ∨ x₂ = x₃. The forward direction rewrites to the root form and repeatedly applies `mul_eq_zero` and `pow_eq_zero_iff` (both needing no zero divisors) to isolate a vanishing factor, then `sub_eq_zero` turns it into an equality of roots; the reverse direction `simp`s with the vanishing difference. `genDiscriminant_ne_zero_iff`: the `push_neg` contrapositive — Δ ≠ 0 ⟺ the roots are pairwise distinct. This replaces the parent's real-sign analysis with an ordering-free squarefree/separability test usable in any characteristic.",
+    "mathContext": "Over an integral domain a product of squares vanishes iff a factor does, so $\\Delta = 0 \\iff$ two roots coincide. No ordering or sign is used.",
+    "significance": "central",
+    "relatedConcepts": [
+      "separable polynomial",
+      "integral domain",
+      "repeated roots"
+    ],
+    "prerequisites": [
+      "integral domain",
+      "mul_eq_zero",
+      "pow_eq_zero_iff"
+    ]
+  }
+]
