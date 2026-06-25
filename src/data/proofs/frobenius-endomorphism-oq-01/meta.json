@@ -87,6 +87,48 @@
       "Decidability of universally-quantified statements over finite types (decide)"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Docstring stating the Frobenius x ↦ x^p is a ring homomorphism in prime characteristic p, the freshman's dream (x+y)^p = x^p + y^p as its only non-trivial content, and the two characterizations: identity over ZMod p (Fermat) and x^q = x over a finite field K of order q. Notes the file is fully verified (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "$\\mathrm{frobenius}_p(x) = x^p$; $(x+y)^p = x^p + y^p$ since $p\\mid\\binom{p}{k}$ for $0<k<p$."
+    },
+    {
+      "id": "sec-ringhom",
+      "title": "The Frobenius Ring Homomorphism",
+      "startLine": 34,
+      "endLine": 54,
+      "summary": "frobenius_apply (x ↦ x^p, rfl), freshmans_dream ((x+y)^p = x^p + y^p via add_pow_expChar), and frobenius_mul ((xy)^p = x^p y^p via mul_pow, characteristic-independent so ExpChar is omitted). Together they establish the ring-endomorphism structure.",
+      "mathContext": "$(x+y)^p = x^p + y^p$ and $(xy)^p = x^p y^p$."
+    },
+    {
+      "id": "sec-fermat",
+      "title": "Frobenius over ZMod p = Fermat's Little Theorem",
+      "startLine": 56,
+      "endLine": 72,
+      "summary": "frobenius_zmod_eq_id (the Frobenius is the identity ring hom on ZMod p) and fermat_little (a^p = a for every a ∈ ZMod p, the all-elements form of Fermat's little theorem including a = 0).",
+      "mathContext": "$\\mathrm{frobenius}_p = \\mathrm{id}_{\\mathbb{Z}/p}$, equivalently $a^p = a$ for all $a\\in\\mathbb{Z}/p$."
+    },
+    {
+      "id": "sec-finite-field",
+      "title": "Frobenius over a Finite Field",
+      "startLine": 74,
+      "endLine": 89,
+      "summary": "finite_field_pow_card (x^q = x for all x in a finite field of order q) and finite_field_iterate (x^{q^n} = x for every iterate), encoding the cyclic structure of the Frobenius generating Gal(F_q/F_p).",
+      "mathContext": "$x^q = x$ (root of $X^q - X$) and $x^{q^n} = x$; the $q$-power map is $\\mathrm{frob}_p^{\\,m}$ with $q = p^m$."
+    },
+    {
+      "id": "sec-concrete",
+      "title": "Concrete Checks (decide, no native_decide)",
+      "startLine": 91,
+      "endLine": 99,
+      "summary": "frobenius_fixes_zmod_five (∀ a ∈ ZMod 5, a^5 = a) and freshmans_dream_zmod_three (∀ x y ∈ ZMod 3, (x+y)^3 = x^3 + y^3), both closed by kernel `decide` (not native_decide), keeping the file axiom-free.",
+      "mathContext": "Sanity checks of Fermat and the freshman's dream on the smallest nontrivial primes $p=5,3$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "euler-criterion-squares-oq-01",
