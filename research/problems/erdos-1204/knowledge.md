@@ -57,3 +57,14 @@ A(k)∼k log k and B(k) estimate remain OPEN (need sieve theory).
 
 Gotcha: `(N:ZMod p)=0` from `p∣N` via `CharP.cast_eq_zero_iff (ZMod p) p N` (no NeZero needed,
 unlike `ZMod.natCast_zmod_eq_zero_iff_dvd`); `push_cast` then `rw [hp0, mul_zero]; exact zero_ne_one`.
+
+## Session 2026-06-25 (researcher-1, cont.) — the extremal function A(k) + verified upper bound
+
+Defined `A(k)` = least possible largest element of an admissible k-set (= min a_k, the quantity
+#1204 asks to estimate), and proved the first verified bound:
+- `A_le_primorial`: **A(k) ≤ (k-1)·∏_{p≤k} p**, via the named construction `admMultiples k`
+  = {0,N,…,(k-1)N} with N = `primorialLE k` (helpers: primorialLE_pos, dvd_primorialLE,
+  admMultiples_card/admissible/mem_max/le). Proof: `Nat.sInf_le` on the explicit witness.
+
+Now 17 thm/4 def, 0 axioms, 0 sorries. The bound is exponentially weak vs the conjectured
+A(k) ∼ k log k (primorial ≈ e^k); closing the gap needs sieve theory. Still OPEN.

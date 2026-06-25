@@ -55,10 +55,10 @@
       "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)"
     ],
     "axiomCount": 0,
-    "lineCount": 201,
+    "lineCount": 271,
     "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved (#print axioms shows only propext/Classical.choice/Quot.sound — no native_decide, no Lean.ofReduceBool). Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. The formalization here is the admissibility framework plus the standard reduction to small primes.",
-    "theoremCount": 10,
-    "definitionCount": 1
+    "theoremCount": 17,
+    "definitionCount": 4
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1204**\n\nThe notion of an *admissible* sequence (or k-tuple) is central to the Hardy–Littlewood prime k-tuples conjecture and to modern work on bounded gaps between primes (Zhang 2013, Maynard 2015, Polymath8). A k-tuple is admissible precisely when it does not occupy every residue class modulo some prime — the only local obstruction to all shifts being simultaneously prime infinitely often.\n\nErdős asks for the size of the minimal *diameter* A(k) of an admissible k-tuple, conjecturally A(k) ∼ k log k, and for the minimal average B(k).",
@@ -124,10 +124,10 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 201,
+    "lineCount": 271,
     "axiomCount": 0,
-    "theoremCount": 10,
-    "definitionCount": 1,
+    "theoremCount": 17,
+    "definitionCount": 4,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
   },

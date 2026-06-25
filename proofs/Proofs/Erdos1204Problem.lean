@@ -184,6 +184,76 @@ theorem exists_admissible_card (k : ℕ) :
     rw [hp0, mul_zero]
     exact zero_ne_one
 
+/- ## The extremal function A(k)
+
+With admissible `k`-sets shown to exist, the extremal quantity `A(k) = min a_k` is
+well-defined, and the primorial construction gives an explicit (weak) upper bound. -/
+
+/-- The primorial of the primes `≤ k`: the product of all primes at most `k`. -/
+def primorialLE (k : ℕ) : ℕ := ((Finset.range (k + 1)).filter Nat.Prime).prod id
+
+/-- The primorial of primes `≤ k` is positive. -/
+theorem primorialLE_pos (k : ℕ) : 0 < primorialLE k :=
+  Finset.prod_pos (fun _q hq => (Finset.mem_filter.mp hq).2.pos)
+
+/-- Every prime `p ≤ k` divides the primorial `primorialLE k`. -/
+theorem dvd_primorialLE {p k : ℕ} (hp : p.Prime) (hpk : p ≤ k) : p ∣ primorialLE k :=
+  Finset.dvd_prod_of_mem id (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp⟩)
+
+/-- The explicit admissible `k`-set `{0, N, 2N, …, (k-1)N}` with `N = primorialLE k`. -/
+def admMultiples (k : ℕ) : Finset ℕ := (Finset.range k).image (· * primorialLE k)
+
+/-- The explicit set has exactly `k` elements. -/
+theorem admMultiples_card (k : ℕ) : (admMultiples k).card = k := by
+  unfold admMultiples
+  rw [Finset.card_image_of_injective _
+        (fun x y h => Nat.eq_of_mul_eq_mul_right (primorialLE_pos k) h),
+      Finset.card_range]
+
+/-- The explicit set is admissible (every prime `p ≤ k` divides `N`, so the class `1` is missed). -/
+theorem admMultiples_admissible (k : ℕ) : Admissible (admMultiples k) := by
+  classical
+  rw [admissible_iff_card, admMultiples_card]
+  intro p hp hpk
+  haveI : Fact p.Prime := ⟨hp⟩
+  have hp0 : (primorialLE k : ZMod p) = 0 :=
+    (CharP.cast_eq_zero_iff (ZMod p) p _).mpr (dvd_primorialLE hp hpk)
+  refine ⟨1, fun x hx => ?_⟩
+  rw [admMultiples, Finset.mem_image] at hx
+  obtain ⟨i, _, rfl⟩ := hx
+  push_cast
+  rw [hp0, mul_zero]
+  exact zero_ne_one
+
+/-- The largest element `(k-1)·N` is in the explicit set. -/
+theorem admMultiples_mem_max (k : ℕ) (hk : 1 ≤ k) :
+    (k - 1) * primorialLE k ∈ admMultiples k := by
+  rw [admMultiples, Finset.mem_image]
+  exact ⟨k - 1, Finset.mem_range.mpr (by omega), rfl⟩
+
+/-- Every element of the explicit set is at most `(k-1)·N`. -/
+theorem admMultiples_le (k : ℕ) : ∀ x ∈ admMultiples k, x ≤ (k - 1) * primorialLE k := by
+  intro x hx
+  rw [admMultiples, Finset.mem_image] at hx
+  obtain ⟨i, hi, rfl⟩ := hx
+  rw [Finset.mem_range] at hi
+  gcongr
+  omega
+
+/-- `A(k)`: the least possible largest element of an admissible `k`-element subset of `ℕ`.
+For sequences `0 ≤ a₁ < ⋯ < a_k` this is exactly `min a_k`, the quantity Erdős #1204 asks to
+estimate (conjecturally `A(k) ∼ k log k`). -/
+noncomputable def A (k : ℕ) : ℕ :=
+  sInf {m | ∃ a : Finset ℕ, a.card = k ∧ Admissible a ∧ m ∈ a ∧ ∀ x ∈ a, x ≤ m}
+
+/-- **Explicit upper bound on A(k).** `A(k) ≤ (k-1)·∏_{p ≤ k} p`, witnessed by the admissible
+set `{0, N, 2N, …, (k-1)N}`. (This is far from the conjectured `A(k) ∼ k log k` — the primorial
+is exponentially large — but it is a fully verified bound on the extremal function.) -/
+theorem A_le_primorial (k : ℕ) (hk : 1 ≤ k) :
+    A k ≤ (k - 1) * primorialLE k :=
+  Nat.sInf_le ⟨admMultiples k, admMultiples_card k, admMultiples_admissible k,
+    admMultiples_mem_max k hk, admMultiples_le k⟩
+
 /- ## Open Problems
 
 The asymptotic behaviour of the extremal quantities is OPEN:

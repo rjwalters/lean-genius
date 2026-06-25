@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ORIENT/BUILD (session 2): added 4 verified structural theorems to Erdos1204Problem.lean — Admissible.subset (downward closure), admissible_image_add (translation invariance) + card_image_add, and exists_admissible_card (an admissible k-set exists for every k via primorial multiples 0,N,2N,...,(k-1)N ⇒ A(k) well-defined, with explicit weak bound A(k) ≤ (k-1)·∏_{p≤k}p). Now 10 thm/1 def, 0 axioms/0 sorries, fully verified. Headline A(k)∼k log k and B(k) remain OPEN.",
+    "progressSummary": "ORIENT/BUILD (session 3): defined the extremal function A(k) = least largest element of an admissible k-set, and proved the explicit verified upper bound A_le_primorial: A(k) ≤ (k-1)·∏_{p≤k}p (via the named primorial construction admMultiples). Now 17 thm/4 def, 0 axioms/0 sorries. Headline A(k)∼k log k still OPEN.",
     "builtItems": [
       "Erdos1204.Admissible (def) in Proofs/Erdos1204Problem.lean",
       "Erdos1204.missing_class_of_card_lt",
@@ -38,21 +38,26 @@
       "Admissible.subset (downward closure) in Erdos1204Problem.lean:130",
       "admissible_image_add (translation invariance) in Erdos1204Problem.lean:140",
       "card_image_add (translation preserves card) in Erdos1204Problem.lean:152",
-      "exists_admissible_card (∃ admissible k-set ⇒ A(k) well-defined) in Erdos1204Problem.lean:165"
+      "exists_admissible_card (∃ admissible k-set ⇒ A(k) well-defined) in Erdos1204Problem.lean:165",
+      "A (def): A(k)=sInf of largest-elements of admissible k-sets, in Erdos1204Problem.lean",
+      "primorialLE / admMultiples (named construction) in Erdos1204Problem.lean",
+      "A_le_primorial: A(k) ≤ (k-1)·∏_{p≤k}p [verified] in Erdos1204Problem.lean"
     ],
     "insights": [
       "Admissibility is purely local: only the residue pattern mod each prime matters.",
       "Reduction: for primes p > k, k elements cannot cover all p classes, so admissibility only constrains primes p ≤ k.",
       "{0,2} is the minimal nontrivial admissible 2-tuple; {0,1} fails because it covers both classes mod 2.",
       "Admissibility is downward-closed and translation-invariant: it is a property of the *pattern* of a tuple, not its position.",
-      "An admissible k-tuple exists for every k: take multiples 0,N,2N,...,(k-1)N of the primorial N=∏_{p≤k}p; mod each prime p≤k all are ≡0 so class 1 is missed, larger primes auto by size bound. This makes A(k) well-defined and gives the explicit weak upper bound A(k) ≤ (k-1)·∏_{p≤k}p."
+      "An admissible k-tuple exists for every k: take multiples 0,N,2N,...,(k-1)N of the primorial N=∏_{p≤k}p; mod each prime p≤k all are ≡0 so class 1 is missed, larger primes auto by size bound. This makes A(k) well-defined and gives the explicit weak upper bound A(k) ≤ (k-1)·∏_{p≤k}p.",
+      "A(k) is now a Lean function (sInf of largest elements of admissible k-sets) with a verified explicit upper bound A(k) ≤ (k-1)·primorial(k); the gap to the conjectured k log k is exponential (primorial ≈ e^k) and closing it needs sieve theory."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Formalize explicit admissible-tuple constructions to bound A(k) above.",
       "Investigate a lower-bound argument toward A(k) ≳ k log k.",
       "Define A(k) (and B(k)) as Lean functions (sInf over admissible k-sets) and prove the weak upper bound A(k) ≤ (k-1)·primorial(k) formally.",
-      "The headline A(k)∼k log k needs sieve theory / prime distribution — remains OPEN."
+      "The headline A(k)∼k log k needs sieve theory / prime distribution — remains OPEN.",
+      "Improve the upper bound from primorial toward k log k (use smallest prime / Jacobsthal-type estimates); prove a lower bound on A(k)."
     ],
     "markdown": "# Erdős #1204 - Knowledge Base\n\n## Problem Statement\n\nWe call a sequence of integers $0\\leq a_1<\\cdots <a_k$ admissible if it is missing at least one congruence class modulo every prime $p$. Let $A(k)=\\min a_k$. Estimate $A(k)$ - in particular, is it true that\\[A(k)\\sim k\\log k?\\]Estimate\\[B(k)=\\min \\frac{a_1+\\cdots+a_k}{k}.\\]\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #2\n- Problem #855\n- Problem #1203\n- Problem #1205\n- Problem #39\n- Problem #1\n\n## References\n\n- Er80\n- HeRi73\n- Po14c\n- El65\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-04-16*\n"
   },
