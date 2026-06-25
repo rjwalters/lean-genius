@@ -3984,6 +3984,7 @@ import Proofs.SylowTheoremOQ03B
 import Proofs.SylowTheoremOQ03OQ02
 import Proofs.SylowTheoremOQ04
 import Proofs.SylowTheoremSchurZassenhausOQ03
+import Proofs.SylowTheoremsOQ05
 import Proofs.SylvesterGallaiOQ01
 import Proofs.SylvesterSequenceOQ01
 import Proofs.SylvesterSequenceOQ01OQ01
