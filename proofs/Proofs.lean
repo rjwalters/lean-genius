@@ -3733,6 +3733,7 @@ import Proofs.PrimitiveRootsOQ04
 import Proofs.ProbMethodAlteration
 import Proofs.ProbMethodAlterationOQ02
 import Proofs.ProbMethodApplications
+import Proofs.ProbMethodApplicationsOQ03
 import Proofs.ProbMethodExpectation
 import Proofs.ProbMethodExpectationOQ01
 import Proofs.ProbMethodLovaszLocalOQ02
