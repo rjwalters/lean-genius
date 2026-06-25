@@ -992,6 +992,7 @@ import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DescartesRuleOfSignsOQ04
 import Proofs.DetConjugateTransposeOQ01
 import Proofs.DiamondImpliesCH
+import Proofs.DilworthErdosSzekeresOQ010103
 import Proofs.DilworthHardOQ01OQ02
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
@@ -3763,6 +3764,7 @@ import Proofs.VietaGeneralOQ030505OQ01
 import Proofs.SolutionOfCubicOQ05
 import Proofs.SophieGermain
 import Proofs.SophieGermainOQ01
+import Proofs.SophieGermainOQ01OQ02
 import Proofs.SophieGermainOQ02
 import Proofs.SophieGermainOQ03
 import Proofs.SophieGermainOQ04
@@ -4074,6 +4076,7 @@ import Proofs.VietasFormulasOQ03OQ01
 import Proofs.VietasFormulasOQ03OQ05
 import Proofs.VietasFormulasOQ04
 import Proofs.VivianiTheorem
+import Proofs.VivianiTheoremOQ01OQ01OQ02
 import Proofs.WeakGoldbach
 import Proofs.WeitzenbockInequalityOQ01
 import Proofs.WeitzenbockInequalityOQ01OQ01

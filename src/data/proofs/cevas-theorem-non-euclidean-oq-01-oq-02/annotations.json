@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-cevas-noneuclidean-oq0102-00-preamble",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-02",
+    "range": { "startLine": 5, "endLine": 49 },
+    "type": "context",
+    "title": "Why Menelaus is not a relabelling of Ceva",
+    "content": "The docstring frames the open question: formalise the curvature-κ Menelaus (collinearity) theorem in the parent's sin_κ framework. The crucial point is that Ceva and Menelaus share the same UNSIGNED product relation sin_κ(BD)·sin_κ(CE)·sin_κ(AF) = sin_κ(DC)·sin_κ(EA)·sin_κ(FB); what distinguishes them is the parity of external divisions. A transversal meets the three extended sides in an odd number of external points, so its SIGNED ratio product is −1, whereas concurrent cevians give +1. Faithfully formalising Menelaus therefore means working with signed ratios and the value −1 — a genuinely different statement, not a rename. The file opens `Real` and the parent namespace `CevasNonEuclideanOQ01` to reuse sinKappa and ceva_unified_principle.",
+    "mathContext": "Ceva: signed product $= +1$ (concurrence). Menelaus: signed product $= -1$ (collinear transversal). Same unsigned relation; the sign encodes the configuration.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Ceva–Menelaus duality",
+      "signed ratios",
+      "projective geometry",
+      "curvature sine sin_κ"
+    ],
+    "prerequisites": [
+      "Menelaus's theorem",
+      "Ceva's theorem",
+      "directed ratios"
+    ]
+  },
+  {
+    "id": "ann-cevas-noneuclidean-oq0102-01-unified-principle",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 67 },
+    "type": "key-step",
+    "title": "The sign-distinguished unified Menelaus principle",
+    "content": "menelaus_unified_principle is the curvature-free signed twin of the grandparent's ceva_unified_principle. For an abstract positive ratio function ρ, a transversal is modelled by flipping the sign of the BC-division ratio (one external division). The signed product (−ρ(BD)/ρ(DC))·(ρ(CE)/ρ(EA))·(ρ(AF)/ρ(FB)) equals −1 iff the unsigned cross relation holds. The proof pulls the transversal sign out front with a single `ring` rewrite, rewrites −1 as −(1), applies `neg_inj` to reduce to the unsigned statement, and discharges it with ceva_unified_principle. The sign is orthogonal to ρ, so this works for any ratio function at once.",
+    "mathContext": "$(-\\rho_{BD}/\\rho_{DC})(\\rho_{CE}/\\rho_{EA})(\\rho_{AF}/\\rho_{FB}) = -1 \\iff \\rho_{BD}\\rho_{CE}\\rho_{AF} = \\rho_{DC}\\rho_{EA}\\rho_{FB}$, via $-X = -1 \\iff X = 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ceva_unified_principle",
+      "neg_inj",
+      "ring tactic",
+      "external division"
+    ],
+    "prerequisites": [
+      "field arithmetic of ratios",
+      "the unified Ceva principle"
+    ]
+  },
+  {
+    "id": "ann-cevas-noneuclidean-oq0102-02-kappa-menelaus",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-02",
+    "range": { "startLine": 69, "endLine": 83 },
+    "type": "technique",
+    "title": "The unified curvature-κ Menelaus theorem",
+    "content": "kappa_menelaus instantiates menelaus_unified_principle at ρ = sinKappa κ, yielding a single collinearity criterion valid at every curvature κ — the Menelaus counterpart of the parent's kappa_ceva. Three points D ∈ BC, E ∈ CA, F ∈ AB lie on a common geodesic transversal iff the signed curvature-sine product of the six sub-segments equals −1, equivalently the unsigned cross relation holds. The proof is a direct application: no new geometric content beyond the instantiation, since the unified principle already carries the sign logic.",
+    "mathContext": "One statement subsuming spherical (κ>0), hyperbolic (κ<0), and Euclidean (κ=0) Menelaus, with the geometry encoded in $\\sin_\\kappa$ and the configuration in the sign.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sinKappa",
+      "kappa_ceva",
+      "constant curvature",
+      "geodesic transversal"
+    ],
+    "prerequisites": [
+      "curvature sine sin_κ",
+      "non-Euclidean geometry"
+    ]
+  },
+  {
+    "id": "ann-cevas-noneuclidean-oq0102-03-classical-cases",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-02",
+    "range": { "startLine": 85, "endLine": 120 },
+    "type": "concept",
+    "title": "Recovering the three classical Menelaus laws",
+    "content": "kappa_menelaus_spherical (κ = 1, ordinary sine), kappa_menelaus_hyperbolic (κ = −1, hyperbolic sine), and kappa_menelaus_euclidean (κ = 0, plain segment lengths). Each specializes kappa_menelaus and rewrites sinKappa via the parent's specialization lemmas (sinKappa_one, sinKappa_neg_one, sinKappa_zero) with `simp only`, then applies the positivity hypotheses. The √κ normalization inside sin_κ cancels in every ratio, so the criterion keeps the same shape across all three geometries — only the function applied to the arc lengths changes.",
+    "mathContext": "$\\kappa=1$: $\\sin$; $\\kappa=-1$: $\\sinh$; $\\kappa=0$: identity (lengths). The signed product $= -1$ condition is identical in form across all three.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "spherical geometry",
+      "hyperbolic geometry",
+      "Euclidean geometry",
+      "sinKappa specialization lemmas"
+    ],
+    "prerequisites": [
+      "spherical/hyperbolic trigonometry"
+    ]
+  },
+  {
+    "id": "ann-cevas-noneuclidean-oq0102-04-duality",
+    "proofId": "cevas-theorem-non-euclidean-oq-01-oq-02",
+    "range": { "startLine": 122, "endLine": 143 },
+    "type": "insight",
+    "title": "The Ceva–Menelaus duality and mutual exclusivity",
+    "content": "ceva_menelaus_duality is a pure `ring` identity: for the same three feet, the signed Menelaus product (BC division external) is literally the negative of the signed Ceva product (all internal), valid at every κ. ceva_menelaus_exclusive then substitutes the Ceva concurrence value +1 into the duality to conclude the Menelaus collinearity value −1. Since 1 ≠ −1, a single configuration can never satisfy both criteria with the same value — concurrence and collinearity are the +1 and −1 facets of one unsigned product relation.",
+    "mathContext": "$M = -C$ where $C$ is the signed Ceva product and $M$ the signed Menelaus product; $C = 1 \\Rightarrow M = -1$, so the criteria are mutually exclusive.",
+    "significance": "key",
+    "relatedConcepts": [
+      "projective duality",
+      "concurrence vs collinearity",
+      "ring tactic",
+      "signed product"
+    ],
+    "prerequisites": [
+      "algebraic identities over ℝ"
+    ]
+  }
+]

@@ -1,0 +1,96 @@
+{
+  "slug": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+  "title": "Residual (a-posteriori) eigenvalue bound: ‖Tx−λx‖ ≤ ε ⟹ some eigenvalue within ε of λ (Hermitian Bauer–Fike)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "tractability": 7,
+  "started": "2026-06-24T22:30:00.000Z",
+  "lastUpdate": "2026-06-24T23:30:00.000Z",
+  "path": "full",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T22:30:00.000Z",
+    "iteration": 1,
+    "focus": "Proved the residual / a-posteriori eigenvalue bound (converse of Weyl stability) via Parseval expansion + minimising index; verified 0-axiom.",
+    "blockers": [],
+    "nextAction": "Done — PR opened.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "significance": 6,
+  "tags": [
+    "linear-algebra",
+    "spectral-theory",
+    "eigenvalues",
+    "perturbation",
+    "a-posteriori-bound",
+    "bauer-fike",
+    "numerical-linear-algebra",
+    "extension",
+    "seeker-selected"
+  ],
+  "tractability_notes": "All Mathlib pieces present (OrthonormalBasis.sum_repr', EuclideanSpace.norm_sq_eq, repr_apply_apply, orthonormal_iff_ite, Finset.exists_min_image, RCLike.norm_ofReal). Single-session proof.",
+  "problemStatement": {
+    "formal": "\\lVert Tx-\\lambda x\\rVert \\le \\varepsilon \\ \\wedge\\ \\lVert x\\rVert=1 \\ \\Rightarrow\\ \\exists k,\\ |\\mu(k)-\\lambda| \\le \\varepsilon",
+    "plain": "If a unit vector x and scalar λ have small residual ‖Tx − λx‖ for a Hermitian operator T, then some genuine eigenvalue μ(k) lies within the residual of λ (Bauer–Fike for the Hermitian case). Converse / a-posteriori direction of Weyl stability, used to certify computed eigenpairs.",
+    "whyMatters": [
+      "A-posteriori error estimate underlying stopping criteria for iterative eigensolvers (Lanczos, Davidson, inverse iteration).",
+      "Converse to the parent's a-priori Weyl perturbation bound; closes the parent's lead open question."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "dist_to_spectrum_le_residual: ∃ k, |μ(k)−λ| ≤ ‖Tx−λx‖ for any unit vector x (0-axiom)",
+      "residual_eigenvalue_bound: ‖Tx−λx‖ ≤ ε ⟹ ∃ k, |μ(k)−λ| ≤ ε (0-axiom)",
+      "residual_gt_of_spectral_gap: (∀ i, ε < |μ(i)−λ|) ⟹ ε < ‖Tx−λx‖ (contrapositive, 0-axiom)"
+    ],
+    "open": [],
+    "goal": "Certify a computed eigenpair (λ, x) from its residual: small residual ⟹ true eigenvalue nearby."
+  },
+  "relatedProofs": [
+    "cauchy-interlacing-theorem",
+    "cauchy-interlacing-theorem-oq-03",
+    "cauchy-interlacing-theorem-oq-03-oq-01"
+  ],
+  "knowledge": {
+    "progressSummary": "COMPLETE: residual a-posteriori eigenvalue bound ∃ k, |μ(k)−λ| ≤ ‖Tx−λx‖ proved 0-axiom by Parseval expansion in the eigenbasis + selection of the minimising index. Plus the ε-form and the contrapositive spectral-gap lower bound.",
+    "builtItems": [
+      "dist_to_spectrum_le_residual in Proofs/CauchyInterlacingOQ030102Residual.lean — sharp residual bound ∃ k, |μ(k)−λ| ≤ ‖Tx−λx‖ for unit x",
+      "residual_eigenvalue_bound — ε-form: ‖Tx−λx‖ ≤ ε ⟹ ∃ k, |μ(k)−λ| ≤ ε",
+      "residual_gt_of_spectral_gap — contrapositive: a spectral gap forces a large residual",
+      "inner_eigen — ⟪bᵢ, Tx⟫ = μᵢ·⟪bᵢ, x⟫ for arbitrary x (eigenbasis expansion + orthonormality; no adjoint)",
+      "parseval — ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖² from the isometry b.repr onto EuclideanSpace"
+    ],
+    "insights": [
+      "The eigenbasis presentation T(bᵢ)=μᵢbᵢ alone suffices: ⟪bᵢ,Tx⟫=μᵢ⟪bᵢ,x⟫ comes from expanding x and using orthonormality, NOT from self-adjointness / moving T across the inner product. So the result holds for any orthonormally diagonalisable operator with real spectrum.",
+      "Parseval turns the residual into a convex combination: ‖Tx−λx‖² = ∑ᵢ(μᵢ−λ)²|cᵢ|² with ∑|cᵢ|²=1, so the residual² is a weighted average of squared eigenvalue gaps and is ≥ their minimum.",
+      "Selecting the minimiser k (Finset.exists_min_image) gives a CONSTRUCTIVE index and the sharp distance-to-spectrum form; the ε-version is one transitivity step.",
+      "Fin n is nonempty because x is a unit vector (∑|cᵢ|²=1>0 forces the index set nonempty) — handled by isEmpty_or_nonempty + simp on the empty sum."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Subspace / Davis–Kahan sin Θ: small subspace residual ‖TX−XM‖ ⟹ subspace close to an invariant subspace (certify computed eigenspaces).",
+      "Matching lower bound ‖Tx−λx‖ ≥ dist(λ,spectrum)·‖x‖ to make the estimate two-sided / exact."
+    ]
+  },
+  "references": {
+    "papers": [
+      "Bauer, F.L.; Fike, C.T. — Norms and exclusion theorems, Numer. Math. 2 (1960) 137–141",
+      "Parlett, B.N. — The Symmetric Eigenvalue Problem, SIAM (1998), §4",
+      "Trefethen, L.N.; Bau, D. — Numerical Linear Algebra, SIAM (1997), Lecture 26"
+    ],
+    "urls": [],
+    "mathlib": [
+      "OrthonormalBasis.sum_repr'",
+      "EuclideanSpace.norm_sq_eq",
+      "OrthonormalBasis.repr_apply_apply",
+      "orthonormal_iff_ite",
+      "Finset.exists_min_image",
+      "RCLike.norm_ofReal"
+    ]
+  }
+}
