@@ -1,0 +1,28 @@
+{
+  "id": "mean-value-theorem-oq-04-oq-03",
+  "title": "Trapezoidal Rule Error Bound via the Peano Kernel",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "progressSummary": "COMPLETE: exact Peano-kernel trapezoidal error identity verified (0-axiom, 0-sorry), plus convex/concave sign corollaries. Answers parent OQ-04's trapezoidal-quadrature open question.",
+    "insights": [
+      "The trapezoidal error ∫f − (b-a)/2(f a + f b) equals exactly ∫ K·f'' with Peano kernel K(x)=(x-a)(x-b)/2 — an exact equality, no intermediate ξ, stronger than the MVT ξ-form.",
+      "Two integrations by parts suffice: K(a)=K(b)=0 kills the first boundary term; K'(a)=-(b-a)/2, K'(b)=(b-a)/2 reproduce the trapezoidal weights in the second.",
+      "K ≤ 0 on [a,b] gives the convexity sign for free: convex f overestimated, concave f underestimated by the trapezoid rule.",
+      "A global C² hypothesis (HasDerivAt everywhere + Continuous f'') discharges every ContinuousOn / IntervalIntegrable side condition of Mathlib's IBP lemma immediately."
+    ],
+    "builtItems": [
+      "trapezoidal_peano_kernel in Proofs/MeanValueTheoremOQ04OQ03.lean — exact error identity",
+      "trapezoid_overestimates_of_convex / trapezoid_underestimates_of_concave — sign corollaries",
+      "hasDerivAt_kernel, hasDerivAt_kernelDeriv, kernel_nonpos — supporting lemmas"
+    ],
+    "mathlibGaps": [
+      "Mathlib has integration by parts and intervalIntegral but no trapezoidal/Simpson quadrature error identity."
+    ],
+    "nextSteps": [
+      "Derive |error| ≤ (b-a)^3/12·M from the identity by computing ∫|K| = (b-a)^3/12.",
+      "Composite trapezoidal rule: sum per-panel identities for the global O(h^2) bound.",
+      "Simpson's rule via a degree-3 Peano kernel for the O(h^4) bound (parent OQ-04 Simpson half)."
+    ]
+  }
+}
