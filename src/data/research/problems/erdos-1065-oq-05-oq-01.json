@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1065-oq-05-oq-01",
   "title": "Prove formA_decomposition_unique from Nat.multiplicity",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
@@ -29,11 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOLVED (target already eliminated upstream). The axiom this problem asked to remove — formA_decomposition_unique — is already a proven theorem (0 sorry) in Erdos1065BatemanHorn.lean, proved via the padicValNat route this problem suggested. Contribution this session: extracted the load-bearing 2-adic valuation fact as a standalone, generalized, reusable lemma padicValNat_pow_mul_of_not_dvd (p.Prime → q≠0 → ¬p∣q → padicValNat p (p^k*q)=k), strictly more general than Mathlib padicValNat_mul_pow_left. Build verified offline; depends only on propext/Classical.choice/Quot.sound (no sorry).",
+    "builtItems": [
+      "padicValNat_pow_mul_of_not_dvd in proofs/Proofs/Erdos1065BatemanHorn.lean (generalized 2-adic valuation lemma, reusable; refactors formA_decomposition_unique to use it)"
+    ],
+    "insights": [
+      "formA_decomposition_unique is ALREADY a theorem, not an axiom — the gallery gap this problem targeted was closed in a prior commit. Only remaining axiom in the file is the genuinely open Bateman-Horn density result batemanHorn_formAWithK_infinite.",
+      "Mathlib padicValNat_mul_pow_left requires BOTH factors to be prime powers (p^n * q^m). For p^k * q with q merely coprime to p (¬p∣q), use padicValNat.eq_zero_of_not_dvd on the cofactor instead — strictly more general."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "No further work on the stated target (already solved). Optional: upstream padicValNat_pow_mul_of_not_dvd to Mathlib as a generalization of padicValNat_mul_pow_left."
+    ],
     "markdown": "# Knowledge Base: erdos-1065-oq-05-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
