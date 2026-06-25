@@ -5,7 +5,11 @@
     "range": { "startLine": 4, "endLine": 41 },
     "type": "concept",
     "title": "Rank-One Stark Units: the Regulator is One Logarithm",
-    "content": "Hilbert's 12th problem seeks explicit generators of abelian extensions of a number field K. Beyond ℚ (roots of unity) and imaginary quadratic fields (complex multiplication), the conjectural answer is governed by the **Stark conjectures**. Their simplest instance — the *rank-one abelian Stark conjecture* — applies exactly when the relevant unit rank is 1, and predicts that L'(0, χ) is a rational multiple of a single logarithm log|ε| of one algebraic unit ε, the **Stark unit**.\n\nThis entry machine-checks the structural fact that makes that statement meaningful: in unit rank 1, the regulator of K collapses from a determinant to a single logarithm of the fundamental unit. It does not attempt the open problem of computing Stark units effectively."
+    "content": "Hilbert's 12th problem seeks explicit generators of abelian extensions of a number field K. Beyond ℚ (roots of unity) and imaginary quadratic fields (complex multiplication), the conjectural answer is governed by the **Stark conjectures**. Their simplest instance — the *rank-one abelian Stark conjecture* — applies exactly when the relevant unit rank is 1, and predicts that L'(0, χ) is a rational multiple of a single logarithm log|ε| of one algebraic unit ε, the **Stark unit**.\n\nThis entry machine-checks the structural fact that makes that statement meaningful: in unit rank 1, the regulator of K collapses from a determinant to a single logarithm of the fundamental unit. It does not attempt the open problem of computing Stark units effectively.",
+    "mathContext": "Rank-one abelian Stark: $L'(0,\\chi) = \\tfrac{1}{w}\\sum_{\\sigma} \\chi(\\sigma)\\log|\\varepsilon^\\sigma|$ for a Stark unit $\\varepsilon$; this entry formalizes the regulator side, $R_K = \\mathrm{mult}(w)\\,|\\log w(\\varepsilon)|$ when $\\mathrm{rank}\\,K = 1$.",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert's 12th problem", "Kronecker's Jugendtraum", "Stark conjectures", "Stark units", "abelian extensions"],
+    "prerequisites": ["algebraic number theory", "class field theory", "Artin L-functions"]
   },
   {
     "id": "ann-rank-characterization",
@@ -13,7 +17,11 @@
     "range": { "startLine": 50, "endLine": 56 },
     "type": "technique",
     "title": "Rank One ⟺ Two Infinite Places",
-    "content": "By Dirichlet's unit theorem, the unit rank of K is r₁ + r₂ − 1 = #(InfinitePlace K) − 1. Hence `rank K = 1` is equivalent to K having exactly two infinite places. Concretely these are the **real quadratic fields** (r₁,r₂)=(2,0) and the **mixed-signature cubic fields** (r₁,r₂)=(1,1) — exactly the fields where the rank-one abelian Stark conjecture lives. The proof is `rw [rank]` followed by `omega`, using `Fintype.card_pos` (there is always at least one infinite place) to pin down the natural-number subtraction."
+    "content": "By Dirichlet's unit theorem, the unit rank of K is r₁ + r₂ − 1 = #(InfinitePlace K) − 1. Hence `rank K = 1` is equivalent to K having exactly two infinite places. Concretely these are the **real quadratic fields** (r₁,r₂)=(2,0) and the **mixed-signature cubic fields** (r₁,r₂)=(1,1) — exactly the fields where the rank-one abelian Stark conjecture lives. The proof is `rw [rank]` followed by `omega`, which resolves the natural-number subtraction #(InfinitePlace K) − 1 = 1 ⟺ #(InfinitePlace K) = 2 (there is always at least one infinite place).",
+    "mathContext": "$\\mathrm{rank}\\,K = r_1 + r_2 - 1 = \\#(\\mathrm{InfinitePlace}\\,K) - 1$, so $\\mathrm{rank}\\,K = 1 \\iff \\#(\\mathrm{InfinitePlace}\\,K) = 2$.",
+    "significance": "key",
+    "relatedConcepts": ["Dirichlet's unit theorem", "infinite places", "real quadratic fields", "signature (r₁,r₂)", "unit rank"],
+    "prerequisites": ["Dirichlet's unit theorem", "infinite places of a number field"]
   },
   {
     "id": "ann-regulator-collapse",
@@ -21,6 +29,10 @@
     "range": { "startLine": 58, "endLine": 77 },
     "type": "technique",
     "title": "Collapsing the Regulator Determinant via Matrix.det_unique",
-    "content": "Mathlib defines the regulator as the covolume of the unit lattice, and `regOfFamily_eq_det` expresses it as the absolute value of the determinant of the (rank × rank) matrix (mult w · log w(uᵢ))_{i,w} of logarithms of a fundamental system of units, with rows/columns indexed by the infinite places other than the distinguished place w₀.\n\nWhen `rank K = 1`, both index types are singletons. Transporting the `Unique (Fin (rank K))` instance along `equivFinRank` gives `Unique {w // w ≠ w₀}`, so `Matrix.det_unique` reduces the determinant to its single diagonal entry `mult(w) · log(w ε)`. Factoring out the positive multiplicity (`abs_of_nonneg`) yields `regulator K = mult(w) · |log(w ε)|` — the regulator as a single archimedean logarithm of the fundamental (Stark) unit ε = fundSystem K."
+    "content": "Mathlib defines the regulator as the covolume of the unit lattice, and `regOfFamily_eq_det` expresses it as the absolute value of the determinant of the (rank × rank) matrix (mult w · log w(uᵢ))_{i,w} of logarithms of a fundamental system of units, with rows/columns indexed by the infinite places other than the distinguished place w₀.\n\nWhen `rank K = 1`, both index types are singletons. Transporting the `Unique (Fin (rank K))` instance along `equivFinRank` gives `Unique {w // w ≠ w₀}`, so `Matrix.det_unique` reduces the determinant to its single diagonal entry `mult(w) · log(w ε)`. Factoring the absolute value over the product (abs_mul) and using that the multiplicity is a nonnegative cast (Nat.abs_cast) yields `regulator K = mult(w) · |log(w ε)|` — the regulator as a single archimedean logarithm of the fundamental (Stark) unit ε = fundSystem K.",
+    "mathContext": "$R_K = \\bigl|\\det\\,(\\mathrm{mult}\\,w \\cdot \\log w(u_i))_{i,w}\\bigr| \\xrightarrow{\\;\\mathrm{rank}=1\\;} \\mathrm{mult}(w)\\,|\\log w(\\varepsilon)|$ via $\\det$ of a $1\\times1$ matrix.",
+    "significance": "key",
+    "relatedConcepts": ["regulator", "unit lattice covolume", "Matrix.det_unique", "equivFinRank", "fundamental system of units", "logarithmic embedding"],
+    "prerequisites": ["determinant of a 1×1 matrix", "the regulator as a determinant of logarithms", "Unique type instances"]
   }
 ]
