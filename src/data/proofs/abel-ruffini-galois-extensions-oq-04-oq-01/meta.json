@@ -56,6 +56,54 @@
     "definitionCount": 1,
     "theoremCount": 4
   },
+  "overview": {
+    "historicalContext": "The Jordan–Hölder theorem (Camille Jordan, 1870; Otto Hölder, 1889) states that any two composition series of a finite group have the same length and, up to permutation and isomorphism, the same simple composition factors. It underlies the modern proof of the Abel–Ruffini theorem: a polynomial is solvable by radicals iff its Galois group is solvable, and solvability is detected by the composition factors all being abelian (equivalently cyclic of prime order). A composition series is a maximal chain of normal subgroups, and the link between 'maximal step' and 'simple quotient' is the correspondence (fourth isomorphism) theorem: normal subgroups of G containing N correspond bijectively, preserving order, to normal subgroups of G ⧸ N. Mathlib models composition series abstractly through a JordanHolderLattice typeclass; open question oq-01 of the parent entry asks whether Subgroup G can be made an instance, the obstacle being to relate the parent's combinatorial IsMaxNorm predicate to IsSimpleGroup of the quotient. This entry proves precisely that equivalence in the case K = ⊤.",
+    "problemStatement": "Let $G$ be a group and $N \\lhd G$ a normal subgroup. Prove that the quotient group $G/N$ is simple if and only if $N$ is a proper, maximal normal subgroup of $G$ — i.e. $N \\ne G$ and every normal subgroup $M$ with $N \\le M$ satisfies $M = N$ or $M = G$.",
+    "proofStrategy": "Unfold IsSimpleGroup via isSimpleGroup_iff (nontrivial + no proper nontrivial normal subgroup) and prove both directions through the canonical projection π = mk' N. Forward (simple ⟹ maximal): a normal M ⊇ N maps to a normal subgroup of the simple G/N, hence ⊥ or ⊤; comap_map_mk' rewrites the pullback as N ⊔ M = M, yielding M = N or M = ⊤. Reverse (maximal ⟹ simple): a normal H' ≤ G/N pulls back to comap π H' ⊇ N, normal, so = N or ⊤ by maximality; the order isomorphism comapMk'OrderIso (the correspondence theorem) is injective, so transferring comap π H' = N (= comap ⊥) or = ⊤ (= comap ⊤) forces H' = ⊥ or ⊤. Nontriviality of G/N follows from N ≠ ⊤. The result is then packaged with the IsMaximalNormal predicate and split into two dot-notation lemmas.",
+    "keyInsights": [
+      "The correspondence (fourth isomorphism) theorem is the entire engine: it turns the lattice of normal subgroups of G ⧸ N into the interval of normal subgroups of G between N and G, so 'no proper nontrivial normal subgroup of the quotient' becomes 'no proper normal subgroup strictly between N and G'.",
+      "Routing through Mathlib's comapMk'OrderIso, rather than re-deriving the lattice correspondence by hand, is what keeps the proof short and robust — its injectivity does the work of identifying pulled-back subgroups with their quotient originals.",
+      "comap_map_mk' (comap ∘ map = N ⊔ ·) is the precise lemma that lets the forward direction recover M from its image: because N ≤ M the join collapses to M, so the dichotomy on the image transfers cleanly to M.",
+      "Restricting to K = ⊤ (a genuine quotient G ⧸ N rather than the subtype quotient ↥K ⧸ H.subgroupOf K) sidesteps exactly the 'quotient typeclass issues' the open question flags, isolating the mathematical content of the IsMaxNorm ↔ IsSimpleGroup bridge.",
+      "Splitting the equivalence into named one-directional lemmas mirrors how composition-series arguments consume it — usually one implication at a time — and threads the normality instance so a bare IsMaximalNormal hypothesis is enough."
+    ],
+    "prerequisites": [
+      "Normal subgroups, quotient groups, and the canonical projection mk'",
+      "Simple groups and IsSimpleGroup / isSimpleGroup_iff",
+      "The correspondence (fourth isomorphism) theorem and Subgroup.map / comap",
+      "Composition series and the Jordan–Hölder theorem (motivation)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "predicate",
+      "title": "The Maximal-Normal Predicate",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "IsMaximalNormal N: normal, proper, and maximal among proper normal subgroups — the K = ⊤ instance of the parent's IsMaxNorm."
+    },
+    {
+      "id": "main-equivalence",
+      "title": "Simple Quotient ⇔ Maximal Normal",
+      "startLine": 50,
+      "endLine": 102,
+      "summary": "IsSimpleGroup (G ⧸ N) ↔ N maximal normal; forward pushes M into the quotient (comap_map_mk'), reverse pulls back via injectivity of comapMk'OrderIso."
+    },
+    {
+      "id": "packaged",
+      "title": "Packaged with IsMaximalNormal",
+      "startLine": 104,
+      "endLine": 108,
+      "summary": "The same equivalence stated with the IsMaximalNormal predicate, folding in the ambient normality instance."
+    },
+    {
+      "id": "directions",
+      "title": "The Two Directions as Lemmas",
+      "startLine": 110,
+      "endLine": 119,
+      "summary": "isSimpleGroup_quotient and of_isSimpleGroup_quotient: each implication as a reusable dot-notation lemma."
+    }
+  ],
   "conclusion": {
     "summary": "The combinatorial maximality predicate IsMaxNorm and the categorical simplicity predicate IsSimpleGroup of the quotient are equivalent, for K = ⊤: G ⧸ N is simple iff N is a maximal normal subgroup. The forward direction pushes a normal M ⊇ N into the quotient (it must be ⊥ or ⊤, giving M = N or M = ⊤); the reverse pulls a normal subgroup of G ⧸ N back through mk' and uses injectivity of the correspondence map. This is the bridge the parent entry asserted but did not prove.",
     "implications": [
