@@ -1,0 +1,42 @@
+[
+  {
+    "id": "ivt-oq0301-ann-header",
+    "proofId": "intermediate-value-theorem-oq-03-oq-01",
+    "range": { "startLine": 3, "endLine": 55 },
+    "type": "context",
+    "title": "What this entry discharges — and what it does not",
+    "content": "The parent entry intermediate-value-theorem-oq-03 proves 1D Brouwer from the IVT and then posits the 2D case as the axiom brouwer_2d, naming 'Sperner's lemma + simplicial approximation' as one route to remove it. That route has two halves: a combinatorial half (Sperner's lemma produces arbitrarily fine approximate fixed points) and an analytic half (compactness upgrades them to an exact fixed point). This file supplies the analytic half with full machine verification and states 2D Brouwer as a theorem conditional only on the combinatorial half. It is therefore a verified IMPLICATION, not an unconditional proof — the docstring says so explicitly. The combinatorial half is the verified content of SpernerNDim.lean; assembling it for d = 2 is the next open question."
+  },
+  {
+    "id": "ivt-oq0301-ann-compactness",
+    "proofId": "intermediate-value-theorem-oq-03-oq-01",
+    "range": { "startLine": 67, "endLine": 96 },
+    "type": "key-step",
+    "title": "The compactness discharge — the analytic core",
+    "content": "exists_fixed_of_approx is the mathematical heart of Sperner ⟹ Brouwer beyond the combinatorics. The displacement g(x) = dist(f x) x is continuous, so on the compact set K it attains a minimum at x₀ (extreme value theorem, IsCompact.exists_isMinOn). The contradiction is the whole point: if dist(f x₀) x₀ > 0, instantiate the ε-approximate hypothesis at ε = dist(f x₀) x₀ to get y ∈ K with dist(f y) y < dist(f x₀) x₀, contradicting that x₀ minimises g. Hence the minimum is 0, i.e. f x₀ = x₀. The lemma is stated for arbitrary dimension d and any nonempty compact K, so it is the approximate-to-exact step for Brouwer in every dimension."
+  },
+  {
+    "id": "ivt-oq0301-ann-simplex",
+    "proofId": "intermediate-value-theorem-oq-03-oq-01",
+    "range": { "startLine": 102, "endLine": 131 },
+    "type": "technique",
+    "title": "The simplex compactly, with elementary topology only",
+    "content": "InSimplex d collects the two defining inequalities (all coordinates ≥ 0, total ≤ 1). simplex_isCompact realises the simplex as a closed subset of the compact cube [0,1]^d: it is the intersection of the closed half-spaces {x | 0 ≤ x i} with {x | ∑ x i ≤ 1}, and any simplex point has each coordinate ≤ its total ≤ 1, so it lies in the cube. Compactness then follows from IsCompact.of_isClosed_subset. No manifold structure or degree theory is used — the analytic half of Brouwer needs only that the domain is compact."
+  },
+  {
+    "id": "ivt-oq0301-ann-brouwer2d",
+    "proofId": "intermediate-value-theorem-oq-03-oq-01",
+    "range": { "startLine": 137, "endLine": 173 },
+    "type": "key-step",
+    "title": "Conditional 2D Brouwer: reducing the axiom to Sperner",
+    "content": "brouwer_2d_of_sperner_approx is the axiom discharge. Its hypothesis happrox — for every ε > 0 a simplex point with each coordinate moved less than ε — is exactly the output of the Sperner displacement colouring. The proof converts that coordinatewise bound into the sup-metric statement dist(f x) x < ε using dist_pi_lt_iff (the metric on Fin 2 → ℝ is the sup metric), then applies exists_fixed_of_approx on the compact, nonempty 2-simplex. The result is a genuine fixed point, with the parent's brouwer_2d axiom now reduced to the combinatorial Sperner property."
+  },
+  {
+    "id": "ivt-oq0301-ann-brouwer1d",
+    "proofId": "intermediate-value-theorem-oq-03-oq-01",
+    "range": { "startLine": 179, "endLine": 200 },
+    "type": "context",
+    "title": "Why dimension 1 is different",
+    "content": "brouwer_1d_via_ivt obtains the 1D fixed point with no Sperner lemma at all: g(x) = f(x) − x satisfies g(1) ≤ 0 ≤ g(0), so intermediate_value_Icc' places 0 in the image of g over [0,1], giving c with f(c) = c. The IVT detects sign changes — a one-dimensional phenomenon — which is precisely why it suffices in 1D but fails from dimension 2, where the combinatorial detour of the rest of this file becomes necessary."
+  }
+]
