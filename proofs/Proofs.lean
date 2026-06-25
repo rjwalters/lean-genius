@@ -1010,6 +1010,7 @@ import Proofs.DilworthTheoremOQ01
 import Proofs.DilworthTheoremOQ01OQ01OQ02
 import Proofs.DiniTheorem
 import Proofs.DiniTheoremOQ01OQ01
+import Proofs.DiniTheoremOQ01OQ02
 import Proofs.DirichletApproximation
 import Proofs.DirichletApproximationOQ01
 import Proofs.DirichletApproximationOQ01OQ01
