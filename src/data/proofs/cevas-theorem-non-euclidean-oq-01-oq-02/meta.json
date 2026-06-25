@@ -1,0 +1,172 @@
+{
+  "id": "cevas-theorem-non-euclidean-oq-01-oq-02",
+  "title": "Menelaus's Theorem at Arbitrary Curvature κ, and the Ceva–Menelaus Duality",
+  "slug": "cevas-theorem-non-euclidean-oq-01-oq-02",
+  "description": "The parent (cevas-theorem-non-euclidean-oq-01) defines the curvature sine sin_κ and instantiates the grandparent's ceva_unified_principle at ρ = sin_κ to obtain a single curvature-parametrised Ceva (concurrence) theorem. This entry answers its OQ-02: formalise the curvature-κ Menelaus (collinearity) theorem in the same sin_κ framework. The key point is that Menelaus is NOT a relabelling of Ceva: the two share the same UNSIGNED product relation, but a transversal meets the sides in an odd number of external points, so its SIGNED ratio product is −1 versus Ceva's +1. We prove a sign-distinguished unified Menelaus principle, the curvature-κ Menelaus theorem and its spherical/hyperbolic/Euclidean instances, and the Ceva–Menelaus duality: the signed Ceva and Menelaus products of the same three feet are negatives of one another, so the two criteria are mutually exclusive.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Menelaus%27s_theorem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CevasTheoremNonEuclideanOQ01OQ02.lean",
+    "tags": [
+      "geometry",
+      "non-euclidean-geometry",
+      "menelaus",
+      "ceva",
+      "curvature",
+      "spherical-geometry",
+      "hyperbolic-geometry",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "neg_inj",
+        "description": "−a = −b ↔ a = b, used to strip the transversal sign from the signed Menelaus product",
+        "module": "Mathlib.Algebra.Group.Basic"
+      }
+    ],
+    "originalContributions": [
+      "menelaus_unified_principle: the sign-distinguished twin of the grandparent's ceva_unified_principle — for positive ρ-magnitudes the SIGNED product (one external division on BC) equals −1 iff the unsigned cross-multiplied relation holds; the −1 is the algebraic signature of a transversal",
+      "kappa_menelaus: the single curvature-parametrised Menelaus theorem, instantiating menelaus_unified_principle at ρ = sin_κ for arbitrary κ",
+      "kappa_menelaus_spherical / kappa_menelaus_hyperbolic / kappa_menelaus_euclidean: the classical sin / sinh / length Menelaus collinearity conditions recovered as the cases κ = 1, −1, 0",
+      "ceva_menelaus_duality: the signed Menelaus product (BC division external) of three feet is the negative of their signed Ceva product (all internal) — a pure algebraic identity valid at every curvature",
+      "ceva_menelaus_exclusive: feet satisfying Ceva's concurrence value +1 automatically satisfy Menelaus' collinearity value −1, so the two criteria are mutually exclusive — the structural reason Ceva and Menelaus share one unsigned product law"
+    ],
+    "axiomCount": 0,
+    "lineCount": 145,
+    "assumptions": "None. All seven theorems are fully proved with 0 axioms and 0 sorries (no native_decide). #print axioms reports only [propext, Classical.choice, Quot.sound] for every result. The proof builds on the parent's verified sinKappa and the grandparent's ceva_unified_principle.",
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "prerequisites": [
+      "Menelaus's theorem and the collinearity-of-points (transversal) condition",
+      "Ceva's theorem and the distinction between concurrence and collinearity",
+      "Signed/directed ratios and the parity of external divisions",
+      "Constant-curvature geometries and the curvature sine sin_κ (from the parent entry)"
+    ],
+    "relatedProblems": [
+      {
+        "id": "cevas-theorem-non-euclidean-oq-01",
+        "relationship": "Parent: defines sin_κ and the curvature-κ Ceva (concurrence) theorem kappa_ceva. This entry supplies the collinearity counterpart kappa_menelaus and the duality between them."
+      },
+      {
+        "id": "cevas-theorem-non-euclidean",
+        "relationship": "Grandparent: the unified ceva_unified_principle for an arbitrary positive distance function ρ, reused here to discharge the unsigned core of Menelaus."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Menelaus's theorem (1st century AD) is the projective companion of Ceva's theorem. Where Ceva characterizes when three cevians AD, BE, CF are concurrent — (BD/DC)·(CE/EA)·(AF/FB) = 1 with signed ratios giving +1 — Menelaus characterizes when three points D, E, F on the (extended) sides of a triangle are collinear, lying on a single transversal line: the signed ratio product is −1. The two theorems are dual and share the same unsigned product relation; what separates them is the parity of external divisions, a transversal cutting an odd number of sides externally.\n\nBoth admit spherical and hyperbolic analogues with segment lengths replaced by their (hyperbolic) sines, unified by the curvature sine sin_κ of constant-curvature geometry. The parent gallery entry built sin_κ and the curvature-κ Ceva theorem by instantiating the grandparent's abstract ceva_unified_principle at ρ = sin_κ. This entry completes the picture with the curvature-κ Menelaus theorem and makes the Ceva–Menelaus sign duality precise.",
+    "problemStatement": "Formalise the curvature-κ Menelaus theorem in the sin_κ framework: three points D ∈ BC, E ∈ CA, F ∈ AB lie on a common geodesic transversal (one external division) iff the signed curvature-sine product (−sin_κ(BD)/sin_κ(DC))·(sin_κ(CE)/sin_κ(EA))·(sin_κ(AF)/sin_κ(FB)) equals −1, equivalently the unsigned cross relation sin_κ(BD)·sin_κ(CE)·sin_κ(AF) = sin_κ(DC)·sin_κ(EA)·sin_κ(FB). Recover the spherical, hyperbolic, and Euclidean Menelaus laws at κ = 1, −1, 0, and prove the Ceva–Menelaus duality.",
+    "proofStrategy": "The signed Menelaus product −X (X the unsigned Ceva product) equals −1 iff X = 1 (by neg_inj), which the grandparent's ceva_unified_principle equates to the unsigned cross relation. So menelaus_unified_principle factors through ceva_unified_principle after pulling out the transversal sign with a single ring rewrite and neg_inj. kappa_menelaus instantiates this at ρ = sin_κ; the three classical cases rewrite sin_κ via the parent's specialization lemmas (sinKappa_one/_neg_one/_zero). The duality ceva_menelaus_duality is the ring identity (−a/b)·(c/d)·(e/f) = −(a/b·c/d·e/f); ceva_menelaus_exclusive substitutes the Ceva value 1 into it.",
+    "keyInsights": [
+      "Menelaus is faithfully formalised, not relabelled: the deliverable is the SIGNED value −1, a genuinely different algebraic statement from Ceva's +1. Copying ceva_unified_principle verbatim with '= 1' would be a rename; using '= −1' with signed ratios is the actual theorem.",
+      "Ceva and Menelaus share one unsigned product relation. The geometric difference — concurrence versus collinearity — lives entirely in the SIGN, i.e. the parity of external divisions of the sides.",
+      "The whole signed theory reduces to the grandparent's unsigned principle by factoring out the transversal sign: −X = −1 ↔ X = 1. The sign is orthogonal to the curvature, so one ring rewrite plus neg_inj handles every κ at once.",
+      "The Ceva–Menelaus duality is a pointwise algebraic identity: the signed Menelaus product is literally the negative of the signed Ceva product for the same feet. Hence a configuration can never satisfy both criteria with the same value — concurrence and collinearity are mutually exclusive (1 ≠ −1).",
+      "As with the parent's Ceva theorem, the √κ normalization in sin_κ cancels inside every ratio, so the Menelaus criterion has the same shape in spherical, Euclidean, and hyperbolic geometry — only the function applied to the arc lengths changes."
+    ],
+    "prerequisites": [
+      "Menelaus's theorem and the transversal/collinearity condition",
+      "The Ceva–Menelaus projective duality and signed ratios",
+      "Curvature sine sin_κ and constant-curvature geometries (parent entry)",
+      "The abstract unified Ceva principle of the grandparent entry"
+    ]
+  },
+  "sections": [
+    {
+      "id": "unified-menelaus",
+      "title": "Section I: The Sign-Distinguished Unified Menelaus Principle",
+      "startLine": 51,
+      "endLine": 67,
+      "summary": "menelaus_unified_principle: for positive ρ-magnitudes, the signed product (BC division external) equals −1 iff the unsigned cross relation holds, proved by factoring out the transversal sign (ring + neg_inj) and applying the grandparent's ceva_unified_principle.",
+      "mathContext": "The −1 value is the algebraic signature distinguishing a transversal (Menelaus) from concurrent cevians (Ceva, value +1)."
+    },
+    {
+      "id": "kappa-menelaus",
+      "title": "Section II: The Unified Curvature-κ Menelaus Theorem",
+      "startLine": 69,
+      "endLine": 83,
+      "summary": "kappa_menelaus: instantiates menelaus_unified_principle at ρ = sin_κ, giving a single collinearity criterion valid at every curvature κ — the Menelaus counterpart of the parent's kappa_ceva.",
+      "mathContext": "One statement valid at every curvature, with the geometry encoded entirely in the curvature sine and the configuration in the sign."
+    },
+    {
+      "id": "classical-cases",
+      "title": "Section III: Recovering the Three Classical Menelaus Laws",
+      "startLine": 85,
+      "endLine": 120,
+      "summary": "kappa_menelaus_spherical (κ=1, sin), kappa_menelaus_hyperbolic (κ=−1, sinh), kappa_menelaus_euclidean (κ=0, lengths): each rewrites sin_κ via its specialization lemma to recover the classical Menelaus condition.",
+      "mathContext": "The classical spherical, hyperbolic, and planar Menelaus theorems emerge as the cases κ = 1, −1, 0."
+    },
+    {
+      "id": "duality",
+      "title": "Section IV: The Ceva–Menelaus Duality",
+      "startLine": 122,
+      "endLine": 143,
+      "summary": "ceva_menelaus_duality: the signed Menelaus product is the negative of the signed Ceva product of the same feet. ceva_menelaus_exclusive: feet with Ceva value +1 automatically have Menelaus value −1, so the criteria are mutually exclusive.",
+      "mathContext": "Makes precise why Ceva and Menelaus share one unsigned product law yet describe opposite configurations: concurrence (+1) versus collinearity (−1)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) extension, in 145 lines with 7 theorems, of the unified non-Euclidean Ceva framework to the dual Menelaus (collinearity) theorem at arbitrary curvature κ. The sign-distinguished menelaus_unified_principle factors through the grandparent's ceva_unified_principle; kappa_menelaus instantiates it at ρ = sin_κ; the classical spherical, hyperbolic, and Euclidean Menelaus laws are recovered at κ = 1, −1, 0; and the Ceva–Menelaus duality shows the two signed products are negatives, making the criteria mutually exclusive.",
+    "implications": "This answers the parent's OQ-02 faithfully: the unified sin_κ framework carries the Menelaus collinearity theorem, distinguished from Ceva by a sign rather than relabelled. The Ceva–Menelaus duality formalises a classical projective fact — concurrence and collinearity are the +1 and −1 facets of a single product relation — uniformly across all constant-curvature geometries. The signed-ratio pattern is reusable for further non-Euclidean transversal/concurrence results (e.g. a curvature-κ Desargues or Pappus configuration).",
+    "openQuestions": [
+      "Formalise a curvature-κ Desargues or Pappus configuration in the same signed-ratio framework, where Menelaus and Ceva products appear together.",
+      "Track the transversal sign combinatorially for an arbitrary number of external divisions, recovering the even/odd parity criterion that separates Ceva-type from Menelaus-type configurations."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Proofs.CevasTheoremNonEuclidean",
+      "Proofs.CevasTheoremNonEuclideanOQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "CevasNonEuclideanOQ01"
+    ],
+    "namespace": "CevasNonEuclideanOQ01OQ02",
+    "lineCount": 145,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/CevasTheoremNonEuclideanOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cevas-theorem-non-euclidean-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the curvature sine sin_κ and the curvature-κ Ceva (concurrence) theorem. This entry adds the dual curvature-κ Menelaus (collinearity) theorem and the Ceva–Menelaus duality."
+    },
+    {
+      "targetId": "cevas-theorem-non-euclidean",
+      "relationship": "extends",
+      "description": "Grandparent: the abstract ceva_unified_principle for an arbitrary positive distance function ρ, reused to discharge the unsigned core of the signed Menelaus principle."
+    }
+  ],
+  "references": [
+    {
+      "key": "Me100",
+      "citation": "Menelaus of Alexandria, Sphaerica (c. 100 AD).",
+      "type": "book"
+    },
+    {
+      "key": "Gre93",
+      "citation": "Greenberg, M.J., Euclidean and Non-Euclidean Geometries: Development and History, 3rd ed., W. H. Freeman (1993).",
+      "type": "book"
+    },
+    {
+      "key": "Cox69",
+      "citation": "Coxeter, H.S.M., Introduction to Geometry, 2nd ed., Wiley (1969).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}
