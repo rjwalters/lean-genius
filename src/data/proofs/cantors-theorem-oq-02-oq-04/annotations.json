@@ -1,0 +1,66 @@
+[
+  {
+    "id": "has-fpp-def",
+    "startLine": 45,
+    "endLine": 45,
+    "type": "definition",
+    "title": "Unrestricted fixed-point property",
+    "body": "`HasFPP B` holds when every self-map `f : B → B` has a fixed point. This is the property Lawvere's theorem delivers, and the one Cantor's theorem obstructs for power types."
+  },
+  {
+    "id": "lawvere-fpp",
+    "startLine": 56,
+    "endLine": 63,
+    "type": "theorem",
+    "title": "Lawvere's fixed-point theorem (FPP form)",
+    "body": "If φ : A → (A → B) is point-surjective then B has the FPP. Given f : B → B, diagonalize: pick a with φ a = (x ↦ f (φ x x)); then φ a a is a fixed point of f. The diagonal source of fixed points."
+  },
+  {
+    "id": "not-fpp-bool",
+    "startLine": 66,
+    "endLine": 71,
+    "type": "theorem",
+    "title": "Bool lacks the FPP",
+    "body": "`not : Bool → Bool` is fixed-point-free (!true=false, !false=true), so Bool has no universal fixed point — the Cantor obstruction at the type level."
+  },
+  {
+    "id": "not-fpp-prop",
+    "startLine": 73,
+    "endLine": 78,
+    "type": "theorem",
+    "title": "Prop lacks the FPP",
+    "body": "Negation Not : Prop → Prop is fixed-point-free: a fixed point would give p ↔ ¬p, refuted by `iff_not_self`. This is the engine of Cantor/Russell/Tarski diagonal arguments."
+  },
+  {
+    "id": "has-monotone-fpp-def",
+    "startLine": 83,
+    "endLine": 85,
+    "type": "definition",
+    "title": "Monotone fixed-point property",
+    "body": "`HasMonotoneFPP B` holds when every MONOTONE self-map has a fixed point. This is the order-theoretic property satisfied by complete lattices and (a version of) pointed dcpos via Scott continuity."
+  },
+  {
+    "id": "knaster-tarski",
+    "startLine": 90,
+    "endLine": 92,
+    "type": "theorem",
+    "title": "Knaster–Tarski: complete lattices have the monotone FPP",
+    "body": "Every complete lattice has the monotone FPP, via Mathlib's least fixed point `OrderHom.lfp` with `map_lfp : f f.lfp = f.lfp`. The order-theoretic counterpart of Lawvere's theorem; the form a pointed dcpo satisfies through Scott–Kleene iteration."
+  },
+  {
+    "id": "bool-discriminator",
+    "startLine": 107,
+    "endLine": 111,
+    "type": "theorem",
+    "title": "The discriminating example: Bool",
+    "body": "Bool is a complete lattice (monotone FPP holds) yet lacks the unrestricted FPP. The two properties are genuinely independent — `not` is antitone, not monotone, so it escapes the order-completeness route. This is the precise answer to oq-04: which fixed-point theorem applies depends on the class of maps."
+  },
+  {
+    "id": "cantor-recovered",
+    "startLine": 121,
+    "endLine": 126,
+    "type": "theorem",
+    "title": "Cantor's theorem recovered",
+    "body": "Since Prop lacks the FPP, Lawvere's theorem (contrapositive) gives: there is no point-surjection A → (A → Prop). The classical Cantor power-type theorem as a corollary of the fixed-point framework."
+  }
+]
