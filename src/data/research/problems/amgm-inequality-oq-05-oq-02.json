@@ -1,0 +1,63 @@
+{
+  "slug": "amgm-inequality-oq-05-oq-02",
+  "title": "The Equality Case of the Weighted AM-GM Inequality (n Terms)",
+  "problemStatement": "For strictly positive weights w summing to 1 over a finite index set t and strictly positive reals x, prove that the weighted geometric mean ∏ xᵢ^{wᵢ} equals the weighted arithmetic mean ∑ wᵢxᵢ if and only if every xⱼ equals their common mean, equivalently iff all the xⱼ are equal. Use the strict convexity of exp / strict concavity of log, as posed in the parent Young-inequality entry's open questions.",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 7,
+  "status": "completed",
+  "phase": "COMPLETED",
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
+  "path": "Proofs/AmgmInequalityOQ05OQ02.lean",
+  "leanFiles": [
+    "proofs/Proofs/AmgmInequalityOQ05OQ02.lean"
+  ],
+  "relatedProofs": [
+    "amgm-inequality-oq-05",
+    "amgm-inequality"
+  ],
+  "tags": [
+    "analysis",
+    "inequalities",
+    "amgm",
+    "weighted-amgm",
+    "convexity",
+    "jensen",
+    "equality-case"
+  ],
+  "knowledge": {
+    "insights": [
+      "The equality case of weighted AM-GM is exactly the equality case of Jensen's inequality for the strictly concave logarithm: Mathlib's StrictConcaveOn.map_sum_eq_iff, applied to strictConcaveOn_log_Ioi, gives that log(∑ wᵢ•xᵢ) = ∑ wᵢ•log xᵢ iff every xⱼ equals the center of mass.",
+      "Taking logs linearises the multiplicative geometric mean: log(∏ xᵢ^{wᵢ}) = ∑ wᵢ·log xᵢ via Real.log_prod + Real.log_rpow, converting the AM-GM equality into an additive Jensen equality.",
+      "Injectivity of log on (0,∞) (Real.log_injOn_pos) is what transports equality across the bridge: both means are strictly positive, so the multiplicative equality and the equality of their logs are interchangeable.",
+      "The 'every xⱼ equals the mean' and 'all xⱼ pairwise equal' phrasings coincide precisely because the weights sum to 1 — the weighted mean of a constant sequence is that constant.",
+      "This is the dual of the parent entry's route: exp strictly convex ⟺ log strictly concave, so the n-term weighted AM-GM equality case can be obtained from log-concavity instead of exp-convexity, and Mathlib packages the strict-Jensen equality case directly."
+    ],
+    "builtItems": [
+      "log_prod_rpow (Proofs/AmgmInequalityOQ05OQ02.lean:44): log(∏ xᵢ^{wᵢ}) = ∑ wᵢ·log xᵢ for positive xᵢ.",
+      "prod_rpow_pos (Proofs/AmgmInequalityOQ05OQ02.lean:52): positivity of the weighted geometric mean.",
+      "mean_pos (Proofs/AmgmInequalityOQ05OQ02.lean:58): positivity of the weighted arithmetic mean over a nonempty index set.",
+      "weighted_amgm_eq_iff (Proofs/AmgmInequalityOQ05OQ02.lean:68): headline — equality iff every xⱼ equals the weighted mean.",
+      "weighted_amgm_eq_iff_pairwise (Proofs/AmgmInequalityOQ05OQ02.lean:90): equality iff all xⱼ are pairwise equal.",
+      "weighted_amgm_eq_of_const (Proofs/AmgmInequalityOQ05OQ02.lean:107): the trivial forward direction."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the weighted AM-GM inequality and a full suite of strict-Jensen equality lemmas (StrictConcaveOn.map_sum_eq_iff), but does not package the multiplicative equality characterisation ∏ xᵢ^{wᵢ} = ∑ wᵢxᵢ ↔ constant data."
+    ],
+    "nextSteps": [
+      "Specialise to equal weights wᵢ = 1/n to state the classical AM-GM equality case over Fin n as a standalone corollary.",
+      "Use the equality case as the base of a smoothing/mixing induction to give an independent proof of the weighted AM-GM inequality, tracking the strict gain at each unequal pair."
+    ],
+    "progressSummary": "COMPLETE: weighted AM-GM equality case proved for n terms, 0 axioms / 0 sorries, 6 theorems / 114 lines. Verified via lake env lean; #print axioms reports only propext/Classical.choice/Quot.sound. Answers the parent Young-inequality entry's second open question."
+  },
+  "currentState": "Completed and verified. The headline equivalence ∏ xᵢ^{wᵢ} = ∑ wᵢxᵢ ↔ all xⱼ equal is machine-checked from Mathlib's strict-Jensen equality case for the logarithm, with no axioms beyond Lean's foundational three.",
+  "knownResults": [
+    "Weighted AM-GM inequality (classical; Mathlib has the inequality direction).",
+    "Equality in Jensen's inequality for a strictly concave function forces all evaluation points equal (Mathlib: StrictConcaveOn.map_sum_eq_iff)."
+  ],
+  "references": [
+    "Hardy, Littlewood, Pólya, Inequalities (1934), Theorem 9.",
+    "J. M. Steele, The Cauchy–Schwarz Master Class (2004)."
+  ]
+}
