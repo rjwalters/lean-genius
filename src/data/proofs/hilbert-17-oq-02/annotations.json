@@ -1,0 +1,98 @@
+[
+  {
+    "id": "h17g-choilam-def",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 54, "endLine": 55 },
+    "type": "definition",
+    "title": "The Choi–Lam Family",
+    "content": "choiLam c x y z = x⁴y² + y⁴z² + z⁴x² − c·x²y²z² is the cyclic homogeneous Choi–Lam family. At c = 3 it is the classical Choi–Lam form (Choi–Lam 1977): non-negative on all of ℝ³ yet not a sum of squares of polynomials — the genuine homogeneous member of the PSD/SOS gap, complementing the gallery's affine Motzkin and Robinson forms.",
+    "mathContext": "$\\mathrm{CL}_c(x,y,z) = x^4y^2 + y^4z^2 + z^4x^2 - c\\,x^2y^2z^2$",
+    "significance": "key",
+    "prerequisites": ["positive-semidefinite polynomials", "Choi–Lam form"],
+    "relatedConcepts": ["Hilbert's 17th problem", "PSD/SOS gap", "homogeneous forms"]
+  },
+  {
+    "id": "h17g-multiplier-sos",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 63, "endLine": 74 },
+    "type": "theorem",
+    "title": "Degree-2 Multiplier SOS Certificate",
+    "content": "The heart of the entry. Multiplying the non-SOS Choi–Lam form by the single quadratic x²+y²+z² yields an explicit polynomial sum of squares: (x²+y²+z²)·CL = (x³y−xyz²)² + (y³z−x²yz)² + (z³x−xy²z)² + ½[(x²y²−y²z²)² + (y²z²−z²x²)² + (z²x²−x²y²)²], proved by ring. Since CL itself is not a sum of squares, this multiplier degree (2) is the minimal possible — an explicit, sharp instance of Artin's rational-SOS theorem that QUANTIFIES the PSD/SOS gap by the degree of the required denominator.",
+    "mathContext": "$(x^2+y^2+z^2)\\,\\mathrm{CL} = (x^3y-xyz^2)^2 + (y^3z-x^2yz)^2 + (z^3x-xy^2z)^2 + \\tfrac12\\sum_{\\mathrm{cyc}}(x^2y^2-y^2z^2)^2$",
+    "significance": "critical",
+    "prerequisites": ["Positivstellensatz / denominator certificates", "sum-of-squares decomposition", "ring tactic"],
+    "relatedConcepts": ["Artin's theorem", "Hilbert's 17th problem", "minimal denominator degree"]
+  },
+  {
+    "id": "h17g-mul-nonneg",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 76, "endLine": 79 },
+    "type": "theorem",
+    "title": "The Product Is Non-Negative",
+    "content": "An immediate consequence of the SOS identity: (x²+y²+z²)·CL ≥ 0 everywhere, closed by positivity since the right-hand side is a sum of squares.",
+    "mathContext": "$0 \\le (x^2+y^2+z^2)\\,\\mathrm{CL}(x,y,z)$",
+    "significance": "supporting",
+    "prerequisites": ["positivity tactic"],
+    "relatedConcepts": ["sum of squares"]
+  },
+  {
+    "id": "h17g-psd",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 86, "endLine": 115 },
+    "type": "theorem",
+    "title": "The Choi–Lam Form Is PSD",
+    "content": "CL = choiLam 3 is non-negative on all of ℝ³. Off the origin the multiplier x²+y²+z² is strictly positive, so a hypothetical CL < 0 would make the product negative (mul_neg_of_pos_of_neg), contradicting the SOS identity; at the origin x²+y²+z² = 0 forces x² = y² = z² = 0 (each square ≤ the zero sum, via le_antisymm with sq_nonneg) so every monomial of CL vanishes (by ring). This deduces PSD-ness from the certificate rather than from the AM–GM inequality directly — which has no polynomial SOS proof.",
+    "mathContext": "$0 \\le \\mathrm{CL}(x,y,z)\\ \\text{for all}\\ (x,y,z)\\in\\mathbb{R}^3$",
+    "significance": "key",
+    "prerequisites": ["case analysis", "mul_neg_of_pos_of_neg", "le_antisymm with sq_nonneg"],
+    "relatedConcepts": ["positive-semidefinite", "AM–GM inequality"]
+  },
+  {
+    "id": "h17g-nonneg-of-le",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 117, "endLine": 128 },
+    "type": "theorem",
+    "title": "Non-Negativity for c ≤ 3",
+    "content": "For c ≤ 3 the family stays PSD: choiLam c = choiLam 3 + (3−c)·x²y²z², and both summands are non-negative (the boundary member by the previous theorem, the deficit since 3 − c ≥ 0 and x²y²z² ≥ 0).",
+    "mathContext": "$c \\le 3 \\implies 0 \\le \\mathrm{CL}_c(x,y,z)$",
+    "significance": "supporting",
+    "prerequisites": ["monotonicity of multiplication"],
+    "relatedConcepts": ["one-parameter family", "deficit decomposition"]
+  },
+  {
+    "id": "h17g-neg-of-gt",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 130, "endLine": 132 },
+    "type": "theorem",
+    "title": "Failure Above the Threshold",
+    "content": "For c > 3 the value at (1,1,1) is 3 − c < 0, so the family leaves the PSD cone once c exceeds 3. A single test point detects the boundary.",
+    "mathContext": "$3 < c \\implies \\mathrm{CL}_c(1,1,1) = 3 - c < 0$",
+    "significance": "supporting",
+    "prerequisites": ["evaluation"],
+    "relatedConcepts": ["test point", "sharp threshold"]
+  },
+  {
+    "id": "h17g-psd-iff",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 137, "endLine": 147 },
+    "type": "theorem",
+    "title": "Sharp PSD Threshold (Real Form)",
+    "content": "The Choi–Lam family is non-negative on all of ℝ³ if and only if c ≤ 3. Thus c = 3 (the classical Choi–Lam form) is the extremal PSD member — the genuine homogeneous analogue of the affine Motzkin threshold (sibling hilbert-17-oq-03-oq-05). The boundary is the three-term AM–GM coefficient.",
+    "mathContext": "$(\\forall x\\,y\\,z,\\ 0 \\le \\mathrm{CL}_c(x,y,z)) \\iff c \\le 3$",
+    "significance": "critical",
+    "prerequisites": ["if-and-only-if", "AM–GM threshold"],
+    "relatedConcepts": ["sharp threshold", "extremal PSD member", "PSD/SOS gap"]
+  },
+  {
+    "id": "h17g-poly-iff",
+    "proofId": "hilbert-17-oq-02",
+    "range": { "startLine": 176, "endLine": 190 },
+    "type": "theorem",
+    "title": "Sharp PSD Threshold (MvPolynomial Form)",
+    "content": "The same threshold transported to the genuine polynomial object choiLamPoly c : MvPolynomial (Fin 3) ℝ, under the PSD predicate IsPSDMv (matching the parent's IsPositiveSemidefiniteMv), via an explicit eval bridge eval_choiLamPoly. IsPSDMv (choiLamPoly c) ⟺ c ≤ 3.",
+    "mathContext": "$\\mathrm{IsPSDMv}(\\mathrm{choiLamPoly}\\ c) \\iff c \\le 3$",
+    "significance": "key",
+    "prerequisites": ["MvPolynomial evaluation", "ring-homomorphism simp lemmas"],
+    "relatedConcepts": ["multivariate polynomials", "PSD predicate"]
+  }
+]
