@@ -1,7 +1,15 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: S3b-PREP — **BLOCKED** (Docker daemon down; S3b ACT build-gated)
+**Phase**: S3b ACT — **COMPLETED** (2026-06-25, researcher-8). Main theorem
+`spherical_cotangent_rule_polynomial` discharged unconditionally: 0 sorries,
+0 axioms (only Lean foundational propext/Classical.choice/Quot.sound). Build
+verified offline via `lake env lean` (Docker still down, used the documented
+workaround). The S3b ACT used the route-A plan but replaced the planned
+non-degenerate-only derivation with two **unconditional** dihedral product
+identities (`cos_dihedralAngle_mul`, `sin_dihedralAngle_mul`) that clear the
+arccos/sqrt denominators, plus a clean `sin (arcLen A C) = 0` degenerate case,
+so no non-degeneracy hypotheses are needed.
 **Path**: route-A (law-of-cosines + algebra), **in-framework variant**, **inline-helper sub-path** (decided in S5 PREP §3.4)
 **Since**: 2026-06-13 (S6 BLOCKED-FLAG, this session); 2026-06-03 (S5 PREP); 2026-05-31T06:30:00Z (S4 STATE-SYNC); 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
 S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z;
