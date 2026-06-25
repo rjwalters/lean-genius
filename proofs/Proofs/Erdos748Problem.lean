@@ -151,6 +151,41 @@ theorem trivial_lower_bound (n : ℕ) (hn : n ≥ 2) :
     _ ≤ f n := hcard
 
 /--
+**Sharp Trivial Lower Bound:**
+`f(n) ≥ 2^{⌈n/2⌉}`.
+
+The upper half `U = {⌊n/2⌋+1, …, n}` has *exactly* `⌈n/2⌉ = n − ⌊n/2⌋` elements,
+and by `upperHalf_sumFree` **all** `2^{⌈n/2⌉}` of its subsets are sum-free. This
+sharpens `trivial_lower_bound`, which only extracted the weaker exponent `⌊n/2⌋`:
+for odd `n`, `⌈n/2⌉ = ⌊n/2⌋ + 1`, so the bound here is a full factor of `2`
+(i.e. `√2` per element) larger. It is the largest power of two the upper-half
+construction can yield. In `ℕ`, the ceiling `⌈n/2⌉` is written `(n + 1) / 2`.
+-/
+theorem sharp_lower_bound (n : ℕ) :
+    f n ≥ 2 ^ ((n + 1) / 2) := by
+  -- Same upper half U = {⌊n/2⌋+1, …, n}, but we keep its full cardinality.
+  set U : Finset ℕ := Finset.Icc (n / 2 + 1) n with hU
+  have hsub : U.powerset ⊆ sumFreeSubsets n := by
+    intro A hAmem
+    rw [Finset.mem_powerset] at hAmem
+    rw [sumFreeSubsets, Finset.mem_filter, Finset.mem_powerset]
+    refine ⟨hAmem.trans ?_, ?_⟩
+    · rw [hU]; exact Finset.Icc_subset_Icc (by omega) (le_refl n)
+    · apply upperHalf_sumFree n A
+      intro a ha
+      have haU : a ∈ U := hAmem ha
+      rw [hU, Finset.mem_Icc] at haU
+      exact haU
+  have hcard : 2 ^ U.card ≤ f n :=
+    calc 2 ^ U.card = U.powerset.card := (Finset.card_powerset U).symm
+      _ ≤ (sumFreeSubsets n).card := Finset.card_le_card hsub
+      _ = f n := rfl
+  -- |U| = n − ⌊n/2⌋ = ⌈n/2⌉ = (n+1)/2.
+  have hUcard : U.card = (n + 1) / 2 := by rw [hU, Nat.card_Icc]; omega
+  rw [hUcard] at hcard
+  exact hcard
+
+/--
 **Monotonicity, ground step:**
 Every sum-free subset of {1,...,n} is also a sum-free subset of {1,...,n+1}.
 Sum-freeness is a property of the set itself (no `a = b + c` among its own
@@ -365,14 +400,14 @@ More precisely:
 3. f(n) ~ c_n · 2^{n/2} with c_n depending on parity
 -/
 theorem erdos_748_summary :
-    -- Trivial lower bound
-    (∀ n ≥ 2, f n ≥ 2 ^ (n / 2)) ∧
+    -- Sharp trivial lower bound (uses the full ⌈n/2⌉ exponent)
+    (∀ n : ℕ, f n ≥ 2 ^ ((n + 1) / 2)) ∧
     -- Upper bound exists
     (∃ C : ℝ, C > 0 ∧ ∀ n ≥ 1, (f n : ℝ) ≤ C * 2 ^ (n / 2)) ∧
     -- Precise asymptotic exists
     (∃ c_even c_odd : ℝ, c_even > 0 ∧ c_odd > 0) := by
   constructor
-  · exact trivial_lower_bound
+  · exact sharp_lower_bound
   constructor
   · exact green_upper_bound
   · obtain ⟨ce, co, hce, hco, _⟩ := precise_asymptotic

@@ -2,6 +2,17 @@
 
 ## Research Notes
 
+### Sharper trivial lower bound (2026-06-25, researcher-9)
+
+Added `sharp_lower_bound : ∀ n, f n ≥ 2 ^ ((n+1)/2)` — i.e. `f(n) ≥ 2^⌈n/2⌉`,
+0 axioms. The previously-stated `trivial_lower_bound` only extracted the weaker
+exponent `⌊n/2⌋` despite the proof already establishing `2^|U| ≤ f n` for the
+upper half `U = {⌊n/2⌋+1,…,n}`, whose cardinality is `n − ⌊n/2⌋ = ⌈n/2⌉`. The
+sharp version simply keeps `|U|` instead of weakening it to `⌊n/2⌋`. For odd `n`
+this is a full factor of 2 (√2 per element) larger and is the best the upper-half
+construction yields. `erdos_748_summary` now cites the sharp bound (`∀ n`, no
+`n ≥ 2` hypothesis needed). Typechecked clean via `lake env lean` (Docker down).
+
 ### Current state (2026-06-25, researcher-2)
 
 `proofs/Proofs/Erdos748Problem.lean` is in good shape: **0 sorries, 2 axioms**.

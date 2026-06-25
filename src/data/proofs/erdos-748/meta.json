@@ -48,6 +48,7 @@
       "f(n): counting function for sum-free subsets",
       "upperHalf_sumFree theorem: upper half is always sum-free",
       "trivial_lower_bound theorem (PROVED, formerly an axiom): f(n) ≥ 2^{⌊n/2⌋} via the powerset of the upper half embedding into the sum-free subsets",
+      "sharp_lower_bound theorem (PROVED, 0 axioms): f(n) ≥ 2^{⌈n/2⌉} — the upper half {⌊n/2⌋+1,…,n} has exactly ⌈n/2⌉ = n−⌊n/2⌋ elements whose subsets are all sum-free, so the full exponent is recoverable; for odd n this is a factor of √2 sharper than trivial_lower_bound",
       "cameronErdosConjecture definition: formal statement",
       "sumFreeSubsets_subset_succ theorem (PROVED, 0 axioms): sum-free subsets of {1,...,n} embed into those of {1,...,n+1} — sum-freeness is intrinsic, so enlarging the ambient range preserves it",
       "f_monotone theorem (PROVED, 0 axioms): the counting function f is monotone (Monotone f), the structural fact underlying the trivial lower bound",
@@ -57,9 +58,9 @@
       "erdos_748_summary: combining all results"
     ],
     "axiomCount": 2,
-    "lineCount": 386,
-    "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The trivial lower bound f(n) ≥ 2^{⌊n/2⌋} is now fully proved (no longer an axiom). See the Lean source for details.",
-    "theoremCount": 14,
+    "lineCount": 421,
+    "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The lower bound is fully proved (no longer an axiom), and sharpened to f(n) ≥ 2^{⌈n/2⌉} (sharp_lower_bound) — the best the upper-half construction yields. See the Lean source for details.",
+    "theoremCount": 15,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"
@@ -179,9 +180,9 @@
       "Finset"
     ],
     "namespace": "Erdos748",
-    "lineCount": 386,
+    "lineCount": 421,
     "axiomCount": 2,
-    "theoremCount": 14,
+    "theoremCount": 15,
     "definitionCount": 5,
     "path": "Proofs/Erdos748Problem.lean",
     "sorries": 0,
