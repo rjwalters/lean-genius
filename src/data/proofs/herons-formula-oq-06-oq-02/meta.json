@@ -1,0 +1,155 @@
+{
+  "id": "herons-formula-oq-06-oq-02",
+  "slug": "herons-formula-oq-06-oq-02",
+  "title": "Gerretsen's Inequality s² ≤ 4R² + 4Rr + 3r²",
+  "description": "For any nondegenerate triangle with semi-perimeter s, circumradius R and inradius r, Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² holds, with equality iff the triangle is equilateral. Using R = abc/(4·Area), r = Area/s and Heron's Area² = s(s-a)(s-b)(s-c), and the Ravi substitution x = s-a, y = s-b, z = s-c, the whole inequality reduces to the area-free polynomial 4(x+y+z)³xyz ≤ ((x+y)(y+z)(z+x))² + 4xyz(x+y)(y+z)(z+x) + 12(xyz)². The difference of the two sides is exactly gerretsenPoly(s-a,s-b,s-c)/(4·Area²).",
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization of Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r², answering the parent Euler-inequality entry's open question on whether the same Ravi-substitution SOS engine extends to the Gerretsen chain. The geometric inequality is reduced to a single area-free symmetric polynomial inequality 0 ≤ gerretsenPoly(s-a,s-b,s-c), with the exact algebraic identity (4R²+4Rr+3r²) - s² = gerretsenPoly(s-a,s-b,s-c)/(4·Area²) making the reduction transparent.",
+    "implications": "Gerretsen's inequality is the standard sharpening of Euler's R ≥ 2r and a key link in the Euler–Gerretsen–Blundon hierarchy bounding s, R, r for a triangle. The core certificate gerretsenPoly = Σ x⁴(y-z)² + 2x²(y-z)²(xy+xz-yz) + 2y²z²(x-y)(x-z) isolates the one genuinely Schur-type term (negative for some signed inputs, hence requiring positivity), settled by a short WLOG ordering. Unlike Euler's inequality, whose reduction is a pure AM-GM, Gerretsen needs this Schur step — the new mathematical content here.",
+    "openQuestions": [
+      "Can Blundon's inequality s ≤ 2R + (3√3 - 4)r (the sharp upper bound on s) be formalized with the same Ravi-substitution machinery, or does its irrational constant require a genuinely different certificate?",
+      "Is there a uniform SOS-with-positivity (Positivstellensatz) certificate for gerretsenPoly that avoids the WLOG case split, e.g. a single Schur-multiplier representation?"
+    ]
+  },
+  "overview": "{\"historicalContext\":\"Gerretsen's inequalities s² ≤ 4R² + 4Rr + 3r² and s² ≥ 16Rr - 5r² (J. C. H. Gerretsen, 1953) refine Euler's inequality R ≥ 2r and form, together with Blundon's inequalities, the classical fundamental constraints among the semi-perimeter s, circumradius R and inradius r of a triangle. The upper bound proved here is sharp, with equality for the equilateral triangle.\",\"problemStatement\":\"For a triangle with side lengths a, b, c (strict triangle inequalities), let s = (a+b+c)/2, Area = √(s(s-a)(s-b)(s-c)) (Heron), R = abc/(4·Area) and r = Area/s. Prove s² ≤ 4R² + 4Rr + 3r².\",\"proofStrategy\":\"As with the parent Euler bound, avoid constructing O and I; argue algebraically from the radius formulas. The cross term is already area-free: 4Rr = abc/s. The square terms 4R² = (abc)²/(4·Area²) and 3r² = 3·Area²/s² each carry only Area² (never a bare Area), so substituting Heron's Area² = s(s-a)(s-b)(s-c) clears every square root. With the Ravi variables x = s-a, y = s-b, z = s-c (all positive), the difference (4R²+4Rr+3r²) - s² equals gerretsenPoly(x,y,z)/(4·Area²), where gerretsenPoly x y z = ((x+y)(y+z)(z+x))² + 4xyz(x+y)(y+z)(z+x) + 12(xyz)² - 4(x+y+z)³xyz. Nonnegativity of gerretsenPoly is the whole content.\",\"keyInsights\":[\"Only Area² (not Area) appears throughout — the cross term 4Rr = abc/s is area-free — so a single Heron substitution removes every square root and reduces the geometric inequality to an area-free polynomial inequality.\",\"gerretsenPoly admits the certificate Σ x⁴(y-z)² + 2[x²(y-z)²(xy+xz-yz) + y²z²(x-y)(x-z)]. The bracket is Schur-type: it is negative for some signed inputs, so unlike the parent's pure AM-GM core, positivity of x,y,z is mathematically essential.\",\"Under a WLOG ordering z ≤ y ≤ x the Schur term becomes manifestly nonnegative because xy+xz-yz = y² + (x-y)(y+z) ≥ 0 and (x-y)(x-z) ≥ 0; symmetry of gerretsenPoly closes the six orderings.\"],\"prerequisites\":[\"Heron's formula Area² = s(s-a)(s-b)(s-c)\",\"Ravi substitution x = s-a, y = s-b, z = s-c\",\"Schur-type / sum-of-squares positivity with a WLOG ordering\"],\"text\":\"This entry formalizes Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² as an algebraic consequence of Heron's formula, reusing the verified triangle data (semiperimeter, area, circumradius, inradius, Area² = Heron product) from the parent Euler-inequality entry. After substituting the radius formulas and Heron's identity, the inequality becomes the area-free statement 0 ≤ gerretsenPoly(s-a,s-b,s-c), with the exact identity (4R²+4Rr+3r²) - s² = gerretsenPoly(s-a,s-b,s-c)/(4·Area²). The polynomial core is proved from an explicit certificate whose only non-AM-GM ingredient is a Schur-type term handled by a WLOG ordering. The result is machine-checked with 0 axioms and 0 sorries, and directly answers the open question raised by the parent entry.\"}",
+  "mainTheorems": [
+    {
+      "name": "gerretsen_core",
+      "type": "supporting",
+      "description": "Area-free algebraic core: 0 ≤ gerretsenPoly x y z for all x,y,z ≥ 0, reduced to the ordered case by symmetry.",
+      "leanType": "0 ≤ gerretsenPoly x y z"
+    },
+    {
+      "name": "gerretsen_core_ordered",
+      "type": "supporting",
+      "description": "The core inequality under a fixed ordering z ≤ y ≤ x, where the Schur-type term xy+xz-yz = y² + (x-y)(y+z) is manifestly nonnegative.",
+      "leanType": "0 ≤ ((x+y)*(y+z)*(z+x))^2 + 4*(x*y*z)*((x+y)*(y+z)*(z+x)) + 12*(x*y*z)^2 - 4*(x+y+z)^3*(x*y*z)"
+    },
+    {
+      "name": "circumradius_mul_inradius",
+      "type": "supporting",
+      "description": "The cross term is area-free: R·r = abc/(4s).",
+      "leanType": "circumradius a b c * inradius a b c = a * b * c / (4 * semiperimeter a b c)"
+    },
+    {
+      "name": "gerretsen",
+      "type": "main",
+      "description": "Gerretsen's inequality: for any nondegenerate triangle, s² ≤ 4R² + 4Rr + 3r².",
+      "leanType": "semiperimeter a b c ^ 2 ≤ 4 * circumradius a b c ^ 2 + 4 * (circumradius a b c * inradius a b c) + 3 * inradius a b c ^ 2"
+    }
+  ],
+  "sections": [
+    {
+      "id": "algebraic-core",
+      "title": "The Algebraic Core — gerretsenPoly x y z ≥ 0",
+      "startLine": 55,
+      "endLine": 114,
+      "summary": "Defines gerretsenPoly and proves its nonnegativity for nonnegative reals. The ordered lemma uses the certificate Σ x⁴(y-z)² + 2x²(y-z)²(xy+xz-yz) + 2y²z²(x-y)(x-z) (nlinarith on manifestly nonnegative summands); the general case follows by the symmetry of gerretsenPoly over the six orderings.",
+      "mathContext": "The mathematical heart of Gerretsen's inequality, independent of geometry. The Schur-type term requires positivity (it is negative for some signed inputs), so a WLOG ordering — not a pure SOS — is needed, the key difference from the parent Euler core."
+    },
+    {
+      "id": "area-free-rewrites",
+      "title": "Area-free Rewrites of R², R·r, r²",
+      "startLine": 116,
+      "endLine": 148,
+      "summary": "Rewrites circumradius² = (abc)²/(16·Area²), inradius² = Area²/s², and the area-free cross term R·r = abc/(4s), then eliminates Area² via Heron's Area² = heronProduct.",
+      "mathContext": "Isolates the single use of Heron's identity. Because only Area² ever appears, no square root survives these rewrites."
+    },
+    {
+      "id": "gerretsen-inequality",
+      "title": "Gerretsen's Inequality s² ≤ 4R² + 4Rr + 3r²",
+      "startLine": 150,
+      "endLine": 183,
+      "summary": "Combines the area-free rewrites into the exact identity (4R²+4Rr+3r²) - s² = gerretsenPoly(s-a,s-b,s-c)/(4·heronProduct), then concludes by nonnegativity of the numerator (gerretsen_core) and positivity of the denominator.",
+      "mathContext": "The main result. The clean closed-form identity for the slack makes the reduction to the polynomial core transparent and gives the equality case (equilateral) directly."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "herons-formula-oq-06",
+      "relationship": "extends",
+      "description": "Answers the parent Euler-inequality entry's open question on extending the Ravi-substitution SOS technique to Gerretsen; reuses its triangle data (semiperimeter, area, circumradius, inradius, area_sq)."
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "Uses Heron's formula Area² = s(s-a)(s-b)(s-c) to eliminate the area from the radius formulas."
+    }
+  ],
+  "references": [
+    {
+      "title": "Gerretsen's inequality / fundamental triangle inequalities",
+      "url": "https://en.wikipedia.org/wiki/List_of_triangle_inequalities"
+    },
+    {
+      "title": "Euler's theorem in geometry (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Proofs.HeronsFormulaOQ06",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "EulerInequalityHeronOQ06"
+    ],
+    "namespace": "GerretsenHeronOQ06OQ02",
+    "lineCount": 183,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/HeronsFormulaOQ06OQ02.lean",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "meta": {
+    "author": "Classical result (Gerretsen, 1953), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/List_of_triangle_inequalities",
+    "date": "1953",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ06OQ02.lean",
+    "tags": [
+      "geometry",
+      "gerretsen-inequality",
+      "euler-inequality",
+      "triangle",
+      "circumradius",
+      "inradius",
+      "ravi-substitution",
+      "schur-inequality",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext, Classical.choice, Quot.sound).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.sq_sqrt",
+        "description": "sqrt(x)^2 = x for x ≥ 0; used (via the parent's area_sq) to obtain Area² = Heron product.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "Gerretsen's inequality s² ≤ 4R² + 4Rr + 3r² formalized directly from the radius formulas and Heron's identity — no circumcenter/incenter construction needed.",
+      "The exact closed-form slack identity (4R²+4Rr+3r²) - s² = gerretsenPoly(s-a,s-b,s-c)/(4·Area²), reducing the geometric inequality to a single area-free polynomial inequality.",
+      "Explicit certificate gerretsenPoly = Σ x⁴(y-z)² + 2[x²(y-z)²(xy+xz-yz) + y²z²(x-y)(x-z)], identifying the one genuinely Schur-type term that distinguishes Gerretsen from the parent's pure AM-GM Euler bound.",
+      "Reuse of the parent Euler-inequality infrastructure (semiperimeter, area, circumradius, inradius, area_sq) so the new file contributes only the Gerretsen-specific content."
+    ],
+    "prerequisites": [
+      "Heron's formula",
+      "Ravi substitution",
+      "Schur-type / sum-of-squares positivity"
+    ],
+    "difficulty": "intermediate",
+    "category": "geometry",
+    "parentSlug": "herons-formula-oq-06",
+    "dateAdded": "2026-06-25",
+    "lineCount": 183,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "mathlib_version": "v4.26"
+  }
+}
