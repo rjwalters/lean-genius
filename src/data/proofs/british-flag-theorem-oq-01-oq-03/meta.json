@@ -1,0 +1,222 @@
+{
+  "id": "british-flag-theorem-oq-01-oq-03",
+  "title": "Leibniz Parallel-Axis Identity: ∑‖P−Aᵢ‖² = ∑‖G−Aᵢ‖² + n‖P−G‖²",
+  "slug": "british-flag-theorem-oq-01-oq-03",
+  "description": "The complementary identity to the British-Flag branch. The parent entries study the *alternating* signed combination ∑_t (−1)^|t| ‖P − V_t‖² of squared distances and show it is observer-independent. This leaf takes the *total* (unsigned) sum ∑_i ‖P − Aᵢ‖² instead, which is **not** observer-independent: it carries an exact, clean dependence on the observer P through the centroid G. For any finite family of points with centroid G in a real inner product space, ∑_i ‖P − Aᵢ‖² = (∑_i ‖G − Aᵢ‖²) + (card)·‖P − G‖² — the Leibniz / parallel-axis identity. The cross term vanishes precisely because ∑_i (Aᵢ − G) = 0 defines the centroid. Three corollaries follow with no extra work: the headline triangle case with G = ⅓(A+B+C), the fact that the centroid uniquely minimizes the total squared distance, and the Euclidean-plane specialization matching the classical gallery setting.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BritishFlagTheoremOQ0103.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "inner-product-space",
+      "parallel-axis",
+      "centroid",
+      "leibniz-identity",
+      "squared-distance",
+      "british-flag-theorem",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "No assumptions. All five theorems are fully machine-checked, depending only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms; no sorryAx, no Lean.ofReduceBool). The squared-norm expansion reuses Mathlib's norm_add_sq_real and the inner-product linearity lemmas; no geometry-specific Mathlib infrastructure beyond a real inner product space is assumed.",
+    "dateAdded": "2026-06-24",
+    "lineCount": 138,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "originalContributions": [
+      "leibniz_parallel_axis_sum (PROVED, HEADLINE): for any finite family v : ι → V with centroid G (encoded as ∑ i, (v i − G) = 0) in a real inner product space, ∑ i, ‖P − v i‖² = (∑ i, ‖G − v i‖²) + (Fintype.card ι)·‖P − G‖². The total squared-distance sum decomposes into a P-independent part about the centroid plus a single observer term — the parallel-axis (Steiner) theorem for point families, dimension-free.",
+      "leibniz_parallel_axis (PROVED): the three-vertex headline with explicit centroid G = ⅓(A+B+C): ‖P−A‖² + ‖P−B‖² + ‖P−C‖² = (‖G−A‖² + ‖G−B‖² + ‖G−C‖²) + 3‖P−G‖². Proved directly by per-point expansion, with the cross term killed by (G−A)+(G−B)+(G−C) = 0 (`module`).",
+      "centroid_minimizes_sum_sq_dist (PROVED): for every observer P, ∑ i, ‖G − v i‖² ≤ ∑ i, ‖P − v i‖² — the centroid minimizes the total sum of squared distances, an immediate corollary of the identity since (card)·‖P−G‖² ≥ 0.",
+      "eq_centroid_of_sum_sq_dist_eq (PROVED): the minimizer is unique — for a nonempty family, equality ∑‖G−vᵢ‖² = ∑‖P−vᵢ‖² forces P = G. Strict convexity made elementary: the slack term (card)·‖P−G‖² vanishes only when ‖P−G‖ = 0.",
+      "leibniz_parallel_axis_plane (PROVED): specialization of the triangle identity to EuclideanSpace ℝ (Fin 2), the concrete setting of the classical British-Flag / Viviani gallery entries."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_add_sq_real",
+        "description": "‖x + y‖² = ‖x‖² + 2⟪x, y⟫_ℝ + ‖y‖² in a real inner product space. The single expansion lemma behind every per-point identity ‖P − vᵢ‖² = ‖P − G‖² + 2⟪P − G, G − vᵢ⟫ + ‖G − vᵢ‖² (applied to x = P − G, y = G − vᵢ).",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "inner_sum",
+        "description": "⟪x, ∑ i, f i⟫ = ∑ i, ⟪x, f i⟫ — additivity of the inner product in the right argument over a finite sum. Used to push the sum inside the cross term ∑ i, ⟪P − G, G − vᵢ⟫ = ⟪P − G, ∑ i, (G − vᵢ)⟫, which the centroid condition sends to ⟪P − G, 0⟫ = 0.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "Finset.sum_add_distrib",
+        "description": "∑ i, (f i + g i) = ∑ i, f i + ∑ i, g i — splits the summed per-point expansion into its three groups (constant ‖P−G‖² term, cross term, squared term).",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_const / Finset.card_univ",
+        "description": "∑ _i : ι, c = (card ι)·c via nsmul, identifying the constant ‖P − G‖² summand's total as (Fintype.card ι)·‖P − G‖².",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The British Flag Theorem and its generalizations in this gallery all study a *signed* alternating combination of squared distances and exploit its observer-independence. The natural companion question — what happens to the plain, unsigned total ∑ ‖P − Aᵢ‖²? — is the classical Leibniz identity (1700s), the geometric form of the parallel-axis (Steiner) theorem from mechanics: the moment of inertia of a point system about an arbitrary point equals its moment about the centroid plus the total mass times the squared centroid offset. Where the alternating sum is constant in P, the total sum is a perfect 'paraboloid' in P with vertex at the centroid — which is exactly why the centroid is the least-squares center of a point cloud.",
+    "problemStatement": "**OQ-01-OQ-03 of the British Flag Theorem branch.** The branch establishes that the *alternating* signed sum of squared distances to a vertex set is observer-independent. Determine the behaviour of the complementary *total* sum ∑_i ‖P − Aᵢ‖² and give its exact dependence on the observer P.",
+    "text": "For a finite family of points A₁,…,Aₙ with centroid G in a real inner product space, and any observer P, ∑_i ‖P − Aᵢ‖² = (∑_i ‖G − Aᵢ‖²) + n·‖P − G‖². In particular for a triangle with G = ⅓(A+B+C), ‖P−A‖² + ‖P−B‖² + ‖P−C‖² = (‖G−A‖² + ‖G−B‖² + ‖G−C‖²) + 3‖P−G‖².",
+    "proofStrategy": "**Translate to the centroid.** Write P − vᵢ = (P − G) + (G − vᵢ) and expand each squared norm with norm_add_sq_real:\n\n  ‖P − vᵢ‖² = ‖P − G‖² + 2⟪P − G, G − vᵢ⟫ + ‖G − vᵢ‖².\n\n**Sum over i and split into three groups (Finset.sum_add_distrib).** The constant term contributes (Fintype.card ι)·‖P − G‖² (Finset.sum_const); the squared term contributes ∑ᵢ ‖G − vᵢ‖² unchanged.\n\n**Kill the cross term with the centroid condition.** ∑ᵢ 2⟪P − G, G − vᵢ⟫ = 2⟪P − G, ∑ᵢ (G − vᵢ)⟫ by inner_sum and bilinearity; the hypothesis ∑ᵢ (vᵢ − G) = 0 (rewritten to ∑ᵢ (G − vᵢ) = 0) makes the inner product ⟪P − G, 0⟫ = 0.\n\n**Assemble with ring.** The three groups recombine to the stated identity. The three-vertex case is the same expansion done pointwise with the centroid sum (G−A)+(G−B)+(G−C) = 0 discharged by `module`; the minimization corollary is positivity of (card)·‖P−G‖², and uniqueness is sq_eq_zero on the slack term.",
+    "keyInsights": [
+      "Total vs. alternating: the British-Flag branch is built on the *alternating* signed sum being constant in the observer. This leaf is its exact complement — the *total* unsigned sum is emphatically not constant; it is a quadratic in P whose entire P-dependence is the single clean term n·‖P − G‖².",
+      "The centroid is *defined* by what makes the cross term vanish. The condition ∑ᵢ (vᵢ − G) = 0 is precisely the statement that pushes ∑ᵢ ⟪P − G, G − vᵢ⟫ to zero, so the parallel-axis decomposition holds for the centroid and no other reference point.",
+      "Steiner's parallel-axis theorem and the least-squares property of the mean are the *same* identity. Reading n·‖P − G‖² ≥ 0 off the right-hand side instantly gives that the centroid minimizes total squared distance, with equality iff P = G — strict convexity made into one positivity step.",
+      "Dimension-free and coordinate-free: the whole result lives in an abstract real inner product space via one expansion lemma (norm_add_sq_real) and the additivity of the inner product, with every inner product appearing in the same orientation so no symmetry juggling is needed. The Euclidean plane is just a specialization.",
+      "Encoding the centroid as the hypothesis ∑ᵢ (vᵢ − G) = 0 rather than G = (1/n)∑vᵢ keeps the general lemma division-free and valid for any Fintype index, with the explicit G = ⅓(A+B+C) recovered only in the concrete three-vertex corollary."
+    ],
+    "prerequisites": [
+      "Real inner product spaces and the squared-norm polarization identity norm_add_sq_real: ‖x+y‖² = ‖x‖² + 2⟪x,y⟫ + ‖y‖²",
+      "Bilinearity / additivity of the real inner product (inner_sum, inner_add_right, inner_zero_right)",
+      "Finset big-operator manipulation: Finset.sum_add_distrib, Finset.sum_const, Finset.card_univ",
+      "The notion of the centroid of a point family and the parallel-axis (Steiner) theorem"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 44,
+      "summary": "Module docstring contrasting this total-sum identity with the alternating-sum British-Flag entries and stating the four results. Imports Mathlib, opens the InnerProductSpace and BigOperators scopes, and fixes an abstract real inner product space V via a variable declaration.",
+      "mathContext": "Setting: [NormedAddCommGroup V] [InnerProductSpace ℝ V]. The result is stated coordinate-free, making it dimension-free."
+    },
+    {
+      "id": "sec-general",
+      "title": "Leibniz Parallel-Axis Identity (General Finite Family)",
+      "startLine": 46,
+      "endLine": 78,
+      "summary": "leibniz_parallel_axis_sum: for v : ι → V with centroid G (∑ i, (v i − G) = 0), ∑ i, ‖P − v i‖² = (∑ i, ‖G − v i‖²) + (Fintype.card ι)·‖P − G‖². Per-point expansion via norm_add_sq_real; the centroid condition is rewritten to ∑ i,(G − v i) = 0; the cross term vanishes through inner_sum + inner_zero_right; the constant term sums via Finset.sum_const; everything reassembled with sum_add_distrib and ring.",
+      "mathContext": "$\\sum_i \\|P - A_i\\|^2 = \\sum_i \\|G - A_i\\|^2 + n\\,\\|P - G\\|^2$, the parallel-axis (Steiner) theorem for a point family."
+    },
+    {
+      "id": "sec-triangle",
+      "title": "The Three-Vertex Headline Case",
+      "startLine": 80,
+      "endLine": 97,
+      "summary": "leibniz_parallel_axis: with G = ⅓(A+B+C), ‖P−A‖² + ‖P−B‖² + ‖P−C‖² = (‖G−A‖² + ‖G−B‖² + ‖G−C‖²) + 3‖P−G‖². Same per-point expansion, with the cross term ⟪P−G,G−A⟫+⟪P−G,G−B⟫+⟪P−G,G−C⟫ collapsed via inner_add_right to ⟪P−G,(G−A)+(G−B)+(G−C)⟫ and the bracket shown to be 0 by `module`.",
+      "mathContext": "$\\|P-A\\|^2+\\|P-B\\|^2+\\|P-C\\|^2 = \\big(\\|G-A\\|^2+\\|G-B\\|^2+\\|G-C\\|^2\\big)+3\\|P-G\\|^2.$"
+    },
+    {
+      "id": "sec-minimizer",
+      "title": "The Centroid Minimizes Total Squared Distance",
+      "startLine": 99,
+      "endLine": 106,
+      "summary": "centroid_minimizes_sum_sq_dist: ∑ i, ‖G − v i‖² ≤ ∑ i, ‖P − v i‖² for every P. Rewrite by the general identity and observe the slack term (Fintype.card ι)·‖P − G‖² ≥ 0 (positivity), then linarith.",
+      "mathContext": "The centroid is the least-squares center: $\\sum_i \\|G-A_i\\|^2 \\le \\sum_i \\|P-A_i\\|^2$ for all $P$."
+    },
+    {
+      "id": "sec-unique",
+      "title": "Uniqueness of the Minimizer",
+      "startLine": 108,
+      "endLine": 127,
+      "summary": "eq_centroid_of_sum_sq_dist_eq: for a nonempty family, equality of the two sums forces P = G. From the identity, (Fintype.card ι)·‖P − G‖² = 0; since the card is positive (Fintype.card_pos), ‖P − G‖² = 0, hence ‖P − G‖ = 0 (sq_eq_zero_iff) and P = G (norm_eq_zero, sub_eq_zero).",
+      "mathContext": "Strict convexity, elementary: the quadratic $P \\mapsto \\sum_i\\|P-A_i\\|^2$ attains its minimum only at $P = G$."
+    },
+    {
+      "id": "sec-plane",
+      "title": "Specialization to the Euclidean Plane",
+      "startLine": 129,
+      "endLine": 138,
+      "summary": "leibniz_parallel_axis_plane: the three-vertex identity instantiated at V = EuclideanSpace ℝ (Fin 2), the concrete plane of the classical British-Flag and Viviani gallery entries, proved by direct application of leibniz_parallel_axis.",
+      "mathContext": "The triangle Leibniz identity in $\\mathbb{R}^2$, the setting of the classical gallery results."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "british-flag-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Parent branch: the British Flag Theorem, ‖PA‖² + ‖PC‖² = ‖PB‖² + ‖PD‖² for a rectangle. The branch studies the alternating signed sum of squared distances; this leaf supplies the complementary total (unsigned) sum and its observer dependence."
+    },
+    {
+      "targetId": "british-flag-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "The Parallelogram Defect Identity: the alternating sum ‖PA‖²+‖PC‖²−‖PB‖²−‖PD‖² = 2⟪u,v⟫ in any real inner product space. Same translate-and-expand technique (norm_add/sub_sq_real), applied to the alternating combination rather than the total."
+    },
+    {
+      "targetId": "viviani-theorem-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Another centroid/observer geometric identity in the Euclidean plane, sharing the coordinate-free inner-product-expansion style and the EuclideanSpace ℝ (Fin 2) setting of the plane specialization here."
+    }
+  ],
+  "conclusion": {
+    "summary": "Machine-verified (0 sorries, 0 extra axioms): the total sum of squared distances from any observer P to a finite point family decomposes as the sum about the centroid plus (card)·‖P − G‖² — the Leibniz / parallel-axis identity, dimension-free in any real inner product space. The triangle case with G = ⅓(A+B+C), the centroid's least-squares minimality, its uniqueness, and the Euclidean-plane specialization all follow.",
+    "implications": "**Complements the British-Flag branch.** The branch's alternating signed sum is observer-independent; this entry shows the companion total sum is a clean quadratic in the observer with vertex at the centroid — the two halves of the squared-distance story.\n\n**Least-squares geometry for free.** The same identity yields that the centroid uniquely minimizes total squared distance (Steiner / parallel-axis theorem), the geometric foundation of the arithmetic mean as a least-squares estimator.",
+    "openQuestions": [
+      "Weighted Leibniz identity: for positive masses wᵢ with weighted centroid G_w = (∑wᵢAᵢ)/(∑wᵢ), prove ∑ wᵢ‖P − Aᵢ‖² = ∑ wᵢ‖G_w − Aᵢ‖² + (∑wᵢ)‖P − G_w‖² and recover the moment-of-inertia parallel-axis theorem verbatim.",
+      "Pairwise form: relate ∑ᵢ ‖G − Aᵢ‖² to the all-pairs sum (1/2n)∑_{i,j} ‖Aᵢ − Aⱼ‖², giving the centroid scatter directly in terms of inter-point distances."
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "leibniz_parallel_axis_sum",
+      "type": "core",
+      "description": "For a finite family v : ι → V with centroid G (∑ i, (v i − G) = 0) in a real inner product space, ∑ i, ‖P − v i‖² = (∑ i, ‖G − v i‖²) + (Fintype.card ι)·‖P − G‖².",
+      "leanType": "{ι : Type*} → [Fintype ι] → (P G : V) → (v : ι → V) → (∑ i, (v i - G) = 0) → ∑ i, ‖P - v i‖ ^ 2 = (∑ i, ‖G - v i‖ ^ 2) + (Fintype.card ι : ℝ) * ‖P - G‖ ^ 2"
+    },
+    {
+      "name": "leibniz_parallel_axis",
+      "type": "core",
+      "description": "Three-vertex case with explicit centroid G = ⅓(A+B+C): ‖P−A‖² + ‖P−B‖² + ‖P−C‖² = (‖G−A‖² + ‖G−B‖² + ‖G−C‖²) + 3‖P−G‖².",
+      "leanType": "(P A B C G : V) → (G = (3 : ℝ)⁻¹ • (A + B + C)) → ‖P - A‖ ^ 2 + ‖P - B‖ ^ 2 + ‖P - C‖ ^ 2 = (‖G - A‖ ^ 2 + ‖G - B‖ ^ 2 + ‖G - C‖ ^ 2) + 3 * ‖P - G‖ ^ 2"
+    },
+    {
+      "name": "centroid_minimizes_sum_sq_dist",
+      "type": "supporting",
+      "description": "The centroid minimizes the total sum of squared distances: ∑ i, ‖G − v i‖² ≤ ∑ i, ‖P − v i‖² for every observer P.",
+      "leanType": "{ι : Type*} → [Fintype ι] → (P G : V) → (v : ι → V) → (∑ i, (v i - G) = 0) → (∑ i, ‖G - v i‖ ^ 2) ≤ ∑ i, ‖P - v i‖ ^ 2"
+    },
+    {
+      "name": "eq_centroid_of_sum_sq_dist_eq",
+      "type": "supporting",
+      "description": "Uniqueness of the minimizer: for a nonempty family, equality of the two squared-distance sums forces P = G.",
+      "leanType": "{ι : Type*} → [Fintype ι] → [Nonempty ι] → (P G : V) → (v : ι → V) → (∑ i, (v i - G) = 0) → ((∑ i, ‖G - v i‖ ^ 2) = ∑ i, ‖P - v i‖ ^ 2) → P = G"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "InnerProductSpace",
+      "BigOperators"
+    ],
+    "namespace": "BritishFlagTheoremOQ0103",
+    "lineCount": 138,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "substantiveTheoremCount": 5,
+    "duplicateTheorems": 0,
+    "definitionCount": 0,
+    "path": "Proofs/BritishFlagTheoremOQ0103.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Gottfried Wilhelm Leibniz",
+      "title": "Leibniz's identity for the centroid (moment about a point vs. the barycenter)",
+      "year": "c. 1700",
+      "venue": "classical",
+      "note": "The identity ∑ wᵢ‖P − Aᵢ‖² = ∑ wᵢ‖G − Aᵢ‖² + (∑wᵢ)‖P − G‖² bearing Leibniz's name; the unweighted point-family case is formalized here."
+    },
+    {
+      "authors": "Jakob Steiner",
+      "title": "Parallel-axis theorem (Steiner's theorem)",
+      "year": "1840",
+      "venue": "classical mechanics",
+      "note": "The moment of inertia about any axis equals the moment about the parallel axis through the centroid plus M·d²; the geometric (mass-point) form is exactly leibniz_parallel_axis_sum."
+    },
+    {
+      "authors": "Coxeter, H. S. M.; Greitzer, S. L.",
+      "title": "Geometry Revisited",
+      "year": "1967",
+      "venue": "Mathematical Association of America, New Mathematical Library 19",
+      "note": "Classical treatment of distance identities to a triangle's vertices and the centroid's extremal properties."
+    }
+  ]
+}
