@@ -1,0 +1,77 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "baire-category-theorem-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "context",
+    "title": "From Perfect Spaces to Cantor–Bendixson",
+    "content": "The module docstring frames the advance over the parent entry BairePerfectContinuum (OQ-01-OQ-02), which needs the WHOLE space to be perfect — a hypothesis that fails the moment the space has a single isolated point. The Cantor–Bendixson theorem removes it: every closed subset C of a second-countable space splits as C = V ∪ D with V countable and D perfect (exists_countable_union_perfect_of_isClosed). Mathlib's downstream corollary records only that D is nonempty, discarding the remainder V; this file keeps V and pushes two steps further — D is itself uncountable, and 𝔠 ≤ #D. Verified: no sorry, no axiom, no native_decide.",
+    "mathContext": "Cantor–Bendixson: a closed set $C = V \\cup D$ with $V$ countable, $D$ perfect; the perfect kernel of an uncountable $C$ is uncountable and of cardinality $\\mathfrak{c}$.",
+    "significance": "context",
+    "relatedConcepts": ["Cantor–Bendixson theorem", "perfect set", "Polish space", "isolated points", "descriptive set theory"],
+    "prerequisites": ["closed and perfect sets", "second-countable topology", "the parent's perfect-space bound"]
+  },
+  {
+    "id": "ann-kernel-uncountable",
+    "proofId": "baire-category-theorem-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 42,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "The Perfect Kernel Is Uncountable — the New Content",
+    "content": "exists_perfect_not_countable_subset is the heart of the entry and the open question's explicit request. From the decomposition C = V ∪ D (V countable, D perfect), if D were countable then C = V ∪ D would be countable (Countable.union), contradicting C uncountable — so ¬ D.Countable. This is a one-line topological argument that needs no metric or completeness, and its whole power lives in the remainder V that Mathlib's exists_perfect_nonempty_of_isClosed_of_not_countable throws away. exists_perfect_not_countable specialises it to the closed set univ (bridging ¬ Countable α to ¬(univ).Countable via countable_univ_iff), giving the whole-space form: every uncountable second-countable space contains a perfect, uncountable subset.",
+    "mathContext": "$C = V \\cup D$, $V$ countable, $C$ uncountable $\\Rightarrow \\neg\\,D.\\mathrm{Countable}$; the kernel inherits the uncountability of $C$.",
+    "significance": "key",
+    "relatedConcepts": ["uncountable sets", "countable union", "perfect kernel", "second-countability", "countable_univ_iff"],
+    "prerequisites": ["countability of a union of countable sets", "the Cantor–Bendixson decomposition", "type-level vs set-level countability"]
+  },
+  {
+    "id": "ann-scheme",
+    "proofId": "baire-category-theorem-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 88
+    },
+    "type": "technique",
+    "title": "Cardinal Arithmetic and the Cantor-Scheme Bound",
+    "content": "mk_nat_arrow_bool computes #(ℕ → Bool) = 2^ℵ₀ = 𝔠 (mk_arrow, mk_bool, mk_nat, two_power_aleph0). continuum_le_mk_of_perfect reproves the parent's bound inline so the file is self-contained: a nonempty perfect set in a complete metric space admits a continuous injection (ℕ → Bool) ↪ C (Perfect.exists_nat_bool_injection — the Cantor scheme embedding a copy of Cantor space). Corestricting that injection to the subtype C keeps it injective (Subtype.ext_iff), so 𝔠 = #(ℕ → Bool) ≤ #C by mk_le_of_injective. Completeness is exactly what the Cantor scheme needs to turn the perfect kernel into 2^ℵ₀ actual limit points.",
+    "mathContext": "A nonempty perfect set in a complete metric space contains a homeomorphic copy of $2^{\\mathbb N}$, so $\\mathfrak{c} = \\#(\\mathbb{N} \\to \\mathrm{Bool}) \\le \\#C$.",
+    "significance": "key",
+    "relatedConcepts": ["Cantor scheme", "Cantor space 2^ℕ", "continuum 𝔠 = 2^ℵ₀", "cardinal injection", "complete metric space"],
+    "prerequisites": ["cardinal arithmetic (mk_arrow, two_power_aleph0)", "Perfect.exists_nat_bool_injection", "corestriction of an injection to a subtype"]
+  },
+  {
+    "id": "ann-cardinal-form",
+    "proofId": "baire-category-theorem-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 89,
+      "endLine": 105
+    },
+    "type": "insight",
+    "title": "Cardinal Form and the Whole-Space Bound",
+    "content": "exists_perfect_continuum_le_mk assembles the two halves: from exists_perfect_not_countable take the perfect uncountable kernel D, note an uncountable set is nonempty (an empty set is countable, contradicting ¬ D.Countable), then feed the nonempty perfect D into continuum_le_mk_of_perfect to get 𝔠 ≤ #D. The hypotheses MetricSpace + CompleteSpace + SecondCountableTopology are precisely 'uncountable Polish space'. continuum_le_mk then concludes 𝔠 ≤ #α because D injects into α (mk_set_le : #D ≤ #α, transitivity). This realises the open question's 'subset of cardinality 𝔠'.",
+    "mathContext": "Uncountable Polish $\\alpha \\Rightarrow \\exists D$ perfect, $\\neg D.\\mathrm{Countable}$, $\\mathfrak{c} \\le \\#D \\le \\#\\alpha$.",
+    "significance": "key",
+    "relatedConcepts": ["Polish space", "continuum bound", "mk_set_le", "perfect-set property", "cardinality of the whole space"],
+    "prerequisites": ["uncountable ⟹ nonempty", "the Cantor-scheme bound", "monotonicity of cardinality under inclusion"]
+  },
+  {
+    "id": "ann-real-instance",
+    "proofId": "baire-category-theorem-oq-01-oq-02-oq-02",
+    "range": {
+      "startLine": 106,
+      "endLine": 117
+    },
+    "type": "concept",
+    "title": "Motivating Instance: ℝ Needs No Perfect-Space Hypothesis",
+    "content": "exists_perfect_continuum_le_mk_real applies the cardinal form to ℝ, uncountable by not_countable_real (lifted from set to type via countable_univ_iff). ℝ happens to be perfect itself, but the theorem used no such hypothesis — the whole point is that the conclusion applies verbatim to uncountable Polish spaces WITH isolated points, exactly the case the parent's PerfectSpace bound cannot reach. With the matching upper bound #α ≤ 𝔠 for second-countable spaces, the kernel has #D = 𝔠 exactly, giving the perfect-set property: closed (indeed analytic) subsets of Polish spaces are countable or of size continuum, never strictly between — a theorem-level Continuum Hypothesis for closed sets.",
+    "mathContext": "$\\mathbb{R}$ contains a perfect, uncountable subset of cardinality $\\mathfrak{c}$, obtained with no appeal to $\\mathbb{R}$ being perfect.",
+    "significance": "supporting",
+    "relatedConcepts": ["perfect-set property", "Continuum Hypothesis for closed sets", "analytic sets", "not_countable_real", "isolated points"],
+    "prerequisites": ["uncountability of ℝ", "the cardinal form of the theorem", "the perfect-set property statement"]
+  }
+]
