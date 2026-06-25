@@ -1,0 +1,36 @@
+{
+  "slug": "erdos-771",
+  "title": "Subsets Avoiding a Given Sum",
+  "phase": "ORIENT",
+  "status": "in-progress",
+  "tier": "verified",
+  "path": "full",
+  "problemStatement": "f(n) = max k such that for every m ≥ 1 there is S ⊆ {1,…,n}, |S| = k, with no nonempty subset summing to m. Is f(n) = (1/2 + o(1))·n/log n?",
+  "knownResults": "SOLVED: f(n) = (1/2 + o(1))·n/log n (Erdős–Graham lower bound via prime multiples; Alon–Freiman upper bound via LCM).",
+  "currentState": "Verified the elementary Erdős–Graham construction in a new self-contained file; the deep asymptotics remain axiomatized in the companion file.",
+  "knowledge": {
+    "progressSummary": "Created Erdos771Construction.lean (4 thm/4 def, 0 axioms, 0 sorries): multiples of a prime p in {1,…,n} have size ⌊n/p⌋, avoid any m with p ∤ m, and such a prime exists for every m ≥ 1 — the verified construction behind the lower bound. The companion Erdos771Problem.lean (which left these as sorries) no longer compiles under Mathlib 4.26.0.",
+    "builtItems": [
+      "prime_multiples_size in Erdos771Construction.lean:64",
+      "prime_multiples_avoid in Erdos771Construction.lean:78",
+      "exists_prime_not_dvd in Erdos771Construction.lean:95",
+      "exists_avoiding_multiples in Erdos771Construction.lean:102"
+    ],
+    "insights": [
+      "If every element of S is a multiple of p, so is every subset sum, so S avoids any m with p ∤ m — the engine of the Erdős–Graham lower bound. Primality is not even needed for avoidance.",
+      "For every m ≥ 1 a prime above m fails to divide m, so the construction always applies (an m-avoiding set always exists)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Mechanic: repair Erdos771Problem.lean (stale import path; DecidablePred for AvoidSum; inf' nonemptiness; dangling doc-comments).",
+      "Derive the ⌊n/p⌋ size bound for the smallest prime p ∤ m toward the (1/2)·n/log n leading constant."
+    ]
+  },
+  "tags": ["additive-combinatorics", "number-theory", "erdos", "subset-sums", "primes"],
+  "relatedProofs": ["erdos-771", "erdos-771-construction"],
+  "references": ["Erdős–Graham (1980)", "Alon–Freiman (1988)"],
+  "started": "2026-06-25T00:00:00.000Z",
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "significance": "Verifies the combinatorial core of the Erdős–Graham lower bound for f(n).",
+  "tractability": "verified-construction-open-asymptotics"
+}
