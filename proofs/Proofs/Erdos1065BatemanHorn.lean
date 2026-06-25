@@ -66,12 +66,29 @@ theorem safePrime_implies_formA (p : ℕ) :
 
 -- ## Uniqueness of the (k, q) Decomposition
 
+/-- **Exact `p`-adic valuation of `p^k · q` for `p ∤ q`.** For a prime `p`,
+    a nonzero `q` not divisible by `p`, and any exponent `k`, the `p`-adic
+    valuation of `p^k · q` is exactly `k`.
+
+    This is the load-bearing arithmetic fact behind the uniqueness of the
+    Form A decomposition (`erdos-1065-oq-05-oq-01`). It is strictly more
+    general than Mathlib's `padicValNat_mul_pow_left`, which requires the
+    cofactor `q` to itself be a prime power `q'^m`; here `q` need only be
+    coprime to `p` (`¬ p ∣ q`). Specializing to `p = 2` gives
+    `v₂(2^k · q) = k` for odd `q`. -/
+theorem padicValNat_pow_mul_of_not_dvd {p k q : ℕ} (hp : p.Prime)
+    (hq : q ≠ 0) (hdvd : ¬ p ∣ q) :
+    padicValNat p (p ^ k * q) = k := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  rw [padicValNat.mul (pow_ne_zero k hp.ne_zero) hq,
+      padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hdvd, add_zero]
+
 /-- The (k, q) decomposition of a Form A prime is unique when q is odd:
     if 2^k₁ · q₁ = 2^k₂ · q₂ with q₁, q₂ odd, then k₁ = k₂ and q₁ = q₂.
 
-    Proof idea: The 2-adic valuation of 2^k · q with q odd is exactly k.
-    So if 2^k₁ · q₁ = 2^k₂ · q₂ with both q's odd, then k₁ = k₂,
-    and q₁ = q₂ follows by cancellation. -/
+    Proof idea: The 2-adic valuation of 2^k · q with q odd is exactly k
+    (`padicValNat_pow_mul_of_not_dvd`). So if 2^k₁ · q₁ = 2^k₂ · q₂ with
+    both q's odd, then k₁ = k₂, and q₁ = q₂ follows by cancellation. -/
 theorem formA_decomposition_unique {p k₁ k₂ q₁ q₂ : ℕ}
     (hq1 : q₁.Prime) (hq2 : q₂.Prime)
     (hq1_ne2 : q₁ ≠ 2) (hq2_ne2 : q₂ ≠ 2)
@@ -87,13 +104,10 @@ theorem formA_decomposition_unique {p k₁ k₂ q₁ q₂ : ℕ}
     intro h
     exact hq2_ne2 (hq2.eq_one_or_self_of_dvd 2 h |>.resolve_left (by norm_num) |>.symm)
   -- Use 2-adic valuation: v₂(2^k · q) = k when q is odd
-  haveI : Fact (Nat.Prime 2) := ⟨by norm_num⟩
-  have hv1 : padicValNat 2 (2 ^ k₁ * q₁) = k₁ := by
-    rw [padicValNat.mul (pow_ne_zero k₁ two_ne_zero) hq1.ne_zero,
-        padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hq1_odd, add_zero]
-  have hv2 : padicValNat 2 (2 ^ k₂ * q₂) = k₂ := by
-    rw [padicValNat.mul (pow_ne_zero k₂ two_ne_zero) hq2.ne_zero,
-        padicValNat.prime_pow, padicValNat.eq_zero_of_not_dvd hq2_odd, add_zero]
+  have hv1 : padicValNat 2 (2 ^ k₁ * q₁) = k₁ :=
+    padicValNat_pow_mul_of_not_dvd (by norm_num) hq1.ne_zero hq1_odd
+  have hv2 : padicValNat 2 (2 ^ k₂ * q₂) = k₂ :=
+    padicValNat_pow_mul_of_not_dvd (by norm_num) hq2.ne_zero hq2_odd
   have hk : k₁ = k₂ := by
     have hpv := congr_arg (padicValNat 2) heq
     rw [hv1, hv2] at hpv; exact hpv
