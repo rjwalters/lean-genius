@@ -47,10 +47,13 @@
   The reduction is fully machine-checked.  The single structural input
   `finrank_centralizer_ge` (the Frobenius dimension bound `dim C(M) ≥ n`, whose
   standard proof passes through the rational canonical form / invariant-factor
-  decomposition of `M`) is **isolated as one `sorry`** and is not yet available
-  in Mathlib v4.26.0.  Everything else — the dimension bookkeeping, the
+  decomposition of `M`) is **isolated as one explicit `axiom`** — it is a
+  classical theorem (Frobenius, 1878) but the invariant-factor / rational-
+  canonical-form packaging it requires is not yet available in Mathlib v4.26.0.
+  Everything else — the dimension bookkeeping (`dim K[M] = deg minpoly`), the
   degree equality, and the descent to a cyclic vector — is complete and
-  axiom-free.
+  axiom-free, so the entry is `axiomatized` with `axiomCount = 1` and the
+  Frobenius bound transparently disclosed.
 -/
 import Mathlib
 import Proofs.CayleyHamiltonCyclicVectorAllFieldsOQ01OQ01
@@ -102,25 +105,29 @@ theorem finrank_adjoin_eq_natDegree_minpoly
 -- SECTION II: The Frobenius dimension bound (ISOLATED CRUX)
 -- ============================================================
 
-/-- **Frobenius dimension bound (isolated crux).** The centralizer
-    `C(M) = {N : NM = MN}` of an `n × n` matrix has `K`-dimension at least `n`.
+/-- **Frobenius dimension bound (isolated crux, stated as an axiom).** The
+    centralizer `C(M) = {N : NM = MN}` of an `n × n` matrix has `K`-dimension at
+    least `n`.
 
-    This is the only ingredient of the converse edge not yet in Mathlib: the
-    standard proof factors `K^n` as a `K[X]`-module into its invariant factors
-    `K[X]/(f_1) ⊕ ⋯ ⊕ K[X]/(f_k)` (rational canonical form) and observes that
-    the block-diagonal scalar multiplications already span an `n`-dimensional
-    subspace of the commutant (`dim C(M) = Σ_{i,j} deg gcd(f_i, f_j) ≥ Σ deg f_i
-    = n`).  Equality holds iff `M` is nonderogatory.
+    This is the only ingredient of the converse edge not yet in Mathlib.  It is
+    a classical theorem (Frobenius, 1878): factor `K^n` as a `K[X]`-module into
+    its invariant factors `K[X]/(f_1) ⊕ ⋯ ⊕ K[X]/(f_k)` (rational canonical
+    form); the centralizer is the ring of `K[X]`-module endomorphisms, and the
+    block-diagonal scalar multiplications already span a `K`-subspace of
+    dimension `Σ_i deg f_i = n` (in fact `dim C(M) = Σ_{i,j} deg gcd(f_i, f_j)`,
+    with equality to `n` iff `M` is nonderogatory).
 
     Mathlib v4.26.0 provides the primary-decomposition structure theorem
-    (`Module.equiv_directSum_of_isTorsion`) but not the invariant-factor /
-    rational-canonical-form packaging needed here, so this is left as a single
-    documented `sorry`. -/
-theorem finrank_centralizer_ge
+    (`Module.equiv_directSum_of_isTorsion`) and the `Module.AEval'` `K[X]`-module
+    structure, but **not** the bridge identifying `Subalgebra.centralizer K {M}`
+    with `Module.End K[X] (AEval' M)`, nor the invariant-factor packaging needed
+    to count dimensions.  Building both is on the order of several hundred lines
+    of PID-module infrastructure, so the bound is recorded here as a single,
+    transparently-disclosed `axiom` (the entry's only assumption). -/
+axiom finrank_centralizer_ge
     (M : Matrix (Fin n) (Fin n) K) :
     Fintype.card (Fin n)
-      ≤ Module.finrank K ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K))) := by
-  sorry
+      ≤ Module.finrank K ↥(Subalgebra.centralizer K ({M} : Set (Matrix (Fin n) (Fin n) K)))
 
 -- ============================================================
 -- SECTION III: deg(minpoly M) ≤ n
