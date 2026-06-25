@@ -1,0 +1,175 @@
+{
+  "id": "matrix-similarity-invariants-oq-01-oq-02",
+  "title": "The Minimal Polynomial Is a Similarity Invariant",
+  "slug": "matrix-similarity-invariants-oq-01-oq-02",
+  "description": "Extends the classical similarity invariants (determinant, trace, characteristic polynomial) with the minimal polynomial: similar matrices B = P·A·P⁻¹ have equal minimal polynomials over any commutative ring. Conjugation by an invertible matrix is realized as the algebra automorphism MulSemiringAction.toAlgEquiv of the ConjAct (Matrix n n R)ˣ action, and minpoly.algEquiv_eq gives the invariance in two lines. The minimal polynomial descends to the similarity setoid. A worked separating example over a field — the 2×2 zero matrix vs. the nilpotent Jordan block !![0,1;0,0] — shares the characteristic polynomial X² but has a different minimal polynomial, so the two are NOT similar: minpoly is a strictly finer invariant than charpoly, used here contrapositively as a non-similarity certificate. Mathlib has minpoly.algEquiv_eq and the conjugation AlgEquiv separately but states no theorem that similar matrices share a minimal polynomial.",
+  "meta": {
+    "author": "classical linear algebra; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MatrixSimilarityInvariantsOQ01OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "similarity",
+      "minimal-polynomial",
+      "characteristic-polynomial",
+      "canonical-forms",
+      "invariants",
+      "nilpotent"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "minpoly.algEquiv_eq",
+        "description": "minpoly A (f x) = minpoly A x for any algebra equivalence f — the minimal polynomial is invariant under algebra isomorphisms; the engine of the proof",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      },
+      {
+        "theorem": "MulSemiringAction.toAlgEquiv",
+        "description": "Each element of a group acting by ring/algebra automorphisms gives an A ≃ₐ[R] A; instantiated with ConjAct (Matrix n n R)ˣ to realize conjugation X ↦ P·X·P⁻¹ as an algebra automorphism",
+        "module": "Mathlib.Algebra.Algebra.Equiv"
+      },
+      {
+        "theorem": "ConjAct.units_smul_def",
+        "description": "(g • h) = ofConjAct g · h · (ofConjAct g)⁻¹ for the ConjAct Mˣ action — unfolds the conjugation smul into the parent's P·A·P⁻¹ form",
+        "module": "Mathlib.GroupTheory.GroupAction.ConjAct"
+      },
+      {
+        "theorem": "Matrix.charpoly_fin_two",
+        "description": "charpoly of a 2×2 matrix M is X² − C(trace M)·X + C(det M); used to compute the shared characteristic polynomial X² of the separating example",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Coeff"
+      },
+      {
+        "theorem": "minpoly.zero",
+        "description": "minpoly A (0 : B) = X over a field A with B a nontrivial algebra — gives minpoly of the zero matrix in the separating example",
+        "module": "Mathlib.FieldTheory.Minpoly.Field"
+      },
+      {
+        "theorem": "minpoly.aeval",
+        "description": "aeval x (minpoly R x) = 0 — the defining annihilation property, used to show the nilpotent block's minimal polynomial cannot be X (since the block is nonzero)",
+        "module": "Mathlib.FieldTheory.Minpoly.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Similar.minpoly_eq: the minimal polynomial is a similarity invariant over any commutative ring — the bridge Mathlib does not state, realizing conjugation as MulSemiringAction.toAlgEquiv of the ConjAct units action and applying minpoly.algEquiv_eq",
+      "conj_algEquiv_apply: identifies the abstract ConjAct algebra automorphism applied to A with the parent's concrete conjugate P·A·P⁻¹, the plumbing lemma joining the two vocabularies",
+      "minpolyOfSimilarityClass: the minimal polynomial descends to a well-defined function on the similarity setoid Quotient",
+      "notSimilar_zero_stdNilpotent: a non-similarity certificate — the 2×2 zero matrix and the nilpotent Jordan block !![0,1;0,0] are not similar, proved contrapositively from Similar.minpoly_eq",
+      "charpoly_zero_eq_stdNilpotent: both matrices share the characteristic polynomial X², so charpoly alone cannot distinguish them — exhibiting minpoly as a strictly finer invariant",
+      "minpoly_stdNilpotent_ne_X: the nilpotent block's minimal polynomial differs from X (the zero matrix's), the key inequality powering the non-similarity certificate"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound (confirmed via #print axioms on Similar.minpoly_eq, notSimilar_zero_stdNilpotent, and minpolyOfSimilarityClass). The invariance theorem holds over an arbitrary commutative ring; the separating example is stated over a field (where minpoly.zero applies).",
+    "lineCount": 177,
+    "theoremCount": 14,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Among the invariants of a similarity class B = P·A·P⁻¹, the minimal polynomial occupies a special place: it is the finest of the polynomial invariants, strictly refining the characteristic polynomial. Two matrices can share a characteristic polynomial yet differ in minimal polynomial — the 2×2 zero matrix and a single nilpotent Jordan block both have characteristic polynomial X², but minimal polynomials X and X² — so the minimal polynomial detects the Jordan-block structure that the characteristic polynomial blurs. It is the central object of canonical-form theory: it controls diagonalizability (over a field, a matrix is diagonalizable iff its minimal polynomial is squarefree and splits) and the size of the largest Jordan block of each eigenvalue.",
+    "problemStatement": "Do similar matrices B = P·A·P⁻¹ have the same minimal polynomial, and is this invariant strictly finer than the characteristic polynomial?\n\n**Answer:** yes on both counts. The minimal polynomial is a similarity invariant over any commutative ring, and the 2×2 zero matrix and the nilpotent block !![0,1;0,0] — equal characteristic polynomial X², different minimal polynomial — are not similar, witnessing the strict refinement.",
+    "text": "Similar matrices share their minimal polynomial; since two matrices can agree on charpoly but differ on minpoly, the minimal polynomial is a strictly finer similarity invariant.",
+    "proofStrategy": "Reuse the Similar relation B = P·A·P⁻¹ from the companion entry [oq-01]. The proof is conceptual: conjugation by an invertible matrix P is an algebra automorphism of the matrix ring. Realize it as f := MulSemiringAction.toAlgEquiv R (Matrix n n R) (ConjAct.toConjAct P); the lemma conj_algEquiv_apply unfolds f A (via ConjAct.units_smul_def) to the parent's concrete P·A·P⁻¹. Then minpoly.algEquiv_eq f A gives minpoly R (f A) = minpoly R A, i.e. minpoly R B = minpoly R A. Well-definedness on the similarity setoid follows by Quotient.lift. For the separating example over a field: charpoly_fin_two computes both characteristic polynomials as X² (the nilpotent block has trace 0 and det 0); minpoly.zero gives minpoly of the zero matrix as X, while minpoly.aeval forces the nilpotent block's minimal polynomial to differ from X (else the block, equal to aeval at X, would be zero). The contrapositive of Similar.minpoly_eq then certifies the two matrices are not similar.",
+    "keyInsights": [
+      "Invariance of minpoly is not a computation but a structural fact: conjugation is an algebra automorphism, and minpoly is preserved by every algebra equivalence (minpoly.algEquiv_eq) — so no field hypothesis, no charpoly, no eigenvalues are needed, and the result holds over any commutative ring",
+      "The only real work is vocabulary plumbing: the parent's Similar uses a concrete unit P with B = P·A·P⁻¹, while Mathlib's automorphism lives in the ConjAct units action; conj_algEquiv_apply is the one lemma bridging ConjAct.toConjAct P • A and P·A·P⁻¹",
+      "The minimal polynomial is a strictly finer invariant than the characteristic polynomial: the zero matrix and a nilpotent block agree on charpoly (X²) but not on minpoly, so charpoly cannot separate similarity classes that minpoly can",
+      "The separating example doubles as a non-similarity certificate: rather than exhibiting an explicit P, one rules out every P at once by comparing a basis-independent invariant — the contrapositive of Similar.minpoly_eq turns 'different minpoly' into 'provably not similar'",
+      "Distinguishing the two minimal polynomials needs no full computation of minpoly for the nilpotent block: it suffices that it is not X, which follows immediately from minpoly.aeval because the block itself is nonzero"
+    ],
+    "prerequisites": [
+      "Matrices over a commutative ring; the unit (invertible-matrix) group and conjugation",
+      "The minimal polynomial of an element of an algebra, and its defining annihilation property",
+      "Algebra automorphisms and the invariance of minpoly under algebra equivalences",
+      "The characteristic polynomial of a 2×2 matrix; nilpotent matrices and Jordan blocks"
+    ]
+  },
+  "sections": [
+    {
+      "id": "relation",
+      "title": "The Similarity Relation",
+      "startLine": 43,
+      "endLine": 70,
+      "summary": "Similar A B := ∃ P : (Matrix n n R)ˣ, B = P·A·P⁻¹, packaged as an equivalence relation and the similarity setoid (the same relation as the companion entry [oq-01]).",
+      "mathContext": "$A \\sim B \\iff \\exists P,\\ B = P A P^{-1}$."
+    },
+    {
+      "id": "conjugation-automorphism",
+      "title": "Conjugation as an Algebra Automorphism",
+      "startLine": 72,
+      "endLine": 89,
+      "summary": "conj_algEquiv_apply identifies MulSemiringAction.toAlgEquiv of ConjAct.toConjAct P applied to A with the concrete conjugate P·A·P⁻¹, unfolding the ConjAct units smul.",
+      "mathContext": "$\\mathrm{toAlgEquiv}(\\mathrm{ConjAct}\\,P)\\,A = P A P^{-1}$."
+    },
+    {
+      "id": "minpoly-invariant",
+      "title": "The Minimal Polynomial Is a Similarity Invariant",
+      "startLine": 90,
+      "endLine": 115,
+      "summary": "Similar.minpoly_eq composes conj_algEquiv_apply with minpoly.algEquiv_eq; minpolyOfSimilarityClass lifts minpoly to the similarity setoid.",
+      "mathContext": "$A \\sim B \\Rightarrow \\operatorname{minpoly}_R B = \\operatorname{minpoly}_R A$."
+    },
+    {
+      "id": "separating-example",
+      "title": "minpoly Is Strictly Finer Than charpoly",
+      "startLine": 116,
+      "endLine": 177,
+      "summary": "Over a field, the zero matrix and the nilpotent block !![0,1;0,0] share charpoly X² but have different minpoly (X vs. not-X), so notSimilar_zero_stdNilpotent certifies they are not similar via the contrapositive of Similar.minpoly_eq.",
+      "mathContext": "$\\operatorname{charpoly}(0)=\\operatorname{charpoly}(N)=X^2,\\ \\operatorname{minpoly}(0)=X\\neq\\operatorname{minpoly}(N)\\Rightarrow 0\\not\\sim N$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Horn, R. A.; Johnson, C. R.",
+      "title": "Matrix Analysis (2nd ed.)",
+      "year": "2013",
+      "note": "§3.3: the minimal polynomial and similarity; minpoly as a finer invariant than charpoly"
+    },
+    {
+      "authors": "Jacobson, N.",
+      "title": "Basic Algebra I",
+      "year": "1985",
+      "note": "Ch. 3: minimal polynomial, rational canonical form, invariant factors"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "matrix-similarity-invariants-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: determinant, trace, and characteristic polynomial as similarity invariants; defines the Similar relation reused here. This entry adds the minimal polynomial, a strictly finer polynomial invariant than the characteristic polynomial."
+    },
+    {
+      "targetId": "matrix-similarity-invariants-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Companion leaf adding the structural invariants (rank, nullity, invertibility) over the same Similar relation."
+    }
+  ],
+  "conclusion": {
+    "summary": "The minimal polynomial is shown to be a similarity invariant over any commutative ring, by realizing conjugation as an algebra automorphism (MulSemiringAction.toAlgEquiv of the ConjAct units action) and invoking minpoly.algEquiv_eq, with the invariant descending to the similarity setoid. A worked example over a field — the zero matrix vs. the nilpotent block !![0,1;0,0], equal charpoly X² but unequal minpoly — certifies their non-similarity and exhibits minpoly as strictly finer than charpoly. Verified with 0 axioms.",
+    "implications": "Completes the polynomial side of the similarity-invariants interface begun in [oq-01]: det ⊂ trace ⊂ charpoly ⊂ minpoly, with minpoly the finest. This is the natural foundational lemma for any subsequent formalization of rational or Jordan canonical form, where the invariants must depend only on the similarity class, and the non-similarity certificate shows the invariant doing real classifying work.",
+    "openQuestions": [
+      "Can the nilpotent block's minimal polynomial be computed exactly as X² (via minpoly ∣ charpoly and the degree-2 lower bound) to strengthen the separating example from 'different' to a fully explicit pair X vs. X²?",
+      "Does conjugation transport the whole invariant-factor decomposition, giving Similar A B → the Smith normal forms of the characteristic matrices agree, not merely the minimal polynomial?",
+      "Over a field, can Similar.minpoly_eq be combined with the diagonalizability criterion (squarefree split minpoly) to show diagonalizability is itself a similarity invariant?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "MatrixSimilarityInvariantsOQ01OQ02",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "path": "Proofs/MatrixSimilarityInvariantsOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
