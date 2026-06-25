@@ -1,0 +1,27 @@
+{
+  "id": "stars-and-bars-weak-compositions",
+  "name": "Stars and Bars: # weak compositions of n into k parts = C(n+k-1, n)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "A weak composition f : Fin k → ℕ summing to n is the same data as a size-n multiset over Fin k: f records the multiplicity of each index, and Multiset.count recovers it. This is the precise content of the multichoose count C(n+k-1, n).",
+      "Mathlib has only the MULTISET form of stars and bars (Sym.card_sym_eq_choose : card (Sym α k) = C(card α + k - 1, k)); the function/tuple form C(n+k-1, n) and the bijection to it are not in Mathlib.",
+      "The Fintype instance on {f : Fin k → ℕ // ∑ i, f i = n} is NOT auto-derivable (codomain ℕ is infinite) and must be supplied via Fintype.ofEquiv through the bijection to Sym (Fin k) n.",
+      "Both bijection roundtrips reduce to Mathlib's count/replicate calculus: count_sum' + count_replicate + Fintype.sum_ite_eq' one way; nsmul_singleton + Finset.sum_subset + toFinset_sum_count_nsmul_eq the other."
+    ],
+    "builtItems": [
+      "StarsAndBars.toMultiset (Proofs/StarsAndBarsWeakCompositions.lean:49) — f ↦ ∑ i, replicate (f i) i",
+      "StarsAndBars.count_toMultiset (:52), card_toMultiset (:59) — recover multiplicity / size",
+      "StarsAndBars.weakCompositionEquivSym (:67) — the bijection {f // ∑ f = n} ≃ Sym (Fin k) n",
+      "StarsAndBars.instFintypeWeakComposition (:93) — Fintype instance via the bijection",
+      "StarsAndBars.card_weakComposition (:99) — the headline count C(n+k-1, n)"
+    ],
+    "mathlibGaps": [
+      "Mathlib does not record the tuple/function form of stars and bars, only the multiset form Sym.card_sym_eq_choose.",
+      "No Fintype instance for {f : Fin k → ℕ // ∑ i, f i = n} in Mathlib."
+    ],
+    "nextSteps": [],
+    "progressSummary": "COMPLETE: card {f : Fin k → ℕ // ∑ i, f i = n} = C(n+k-1, n) formalized verified, 0 sorries / 0 axioms (only propext/Classical.choice/Quot.sound). PR opened."
+  }
+}
