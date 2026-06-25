@@ -1,0 +1,64 @@
+{
+  "slug": "bezout-identity-oq-02-oq-02-oq-03",
+  "title": "The Univariate Nullstellensatz via Bézout",
+  "path": "Proofs/BezoutIdentityOQ02OQ02OQ03.lean",
+  "problemStatement": "Can isBezout_coprime_iff (the IsRelPrime ↔ IsCoprime equivalence in Bézout rings) be used to prove the Nullstellensatz via Bézout-style reasoning in polynomial rings over algebraically closed fields?",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "tractability": 6,
+  "significance": 6,
+  "started": "2026-06-25T13:00:00.000Z",
+  "lastUpdate": "2026-06-25T14:00:00.000Z",
+  "currentState": "SOLVED. Verified the univariate weak Nullstellensatz over an algebraically closed field via Bézout reasoning: IsCoprime f g ↔ f, g have no common root ↔ 1 ∈ (f,g) ↔ V(f,g) = ∅. Forward direction is pure Bézout (any field); converse uses the fundamental theorem of algebra. Documented and proved the obstruction that the method is intrinsically univariate (k[X,Y] is not Bézout). 5 theorems, 0 sorries, 0 axioms (only foundational propext/Classical.choice/Quot.sound).",
+  "knowledge": {
+    "insights": [
+      "The forward direction (IsCoprime ⇒ no common root) is the entire Bézout idea and needs NO algebraic closure: evaluate u·f + v·g = 1 at a common root to get 0 = 1.",
+      "The Nullstellensatz content enters in exactly one place — the converse — via IsAlgClosed.exists_root applied to a non-unit gcd of positive degree.",
+      "IsCoprime f g is definitionally 1 ∈ Ideal.span {f,g} (Ideal.mem_span_pair), so the arithmetic equivalence and the geometric statement V(f,g)=∅ ⟺ (f,g)=(1) are the same theorem.",
+      "The route is intrinsically univariate: k[X₁,…,Xₙ] for n≥2 is not a PID (e.g. (X,Y) is not principal), so gcd_isUnit_iff does not apply and the gcd argument has no multivariate analogue. Proved X₀,X₁ non-coprime in k[X₀,X₁] as a concrete witness.",
+      "gcd_isUnit_iff requires a GCDMonoid instance on k[X]; over a generic field this needs DecidableEq, supplied locally by `classical`."
+    ],
+    "builtItems": [
+      "coprime_imp_no_common_root (Proofs/BezoutIdentityOQ02OQ02OQ03.lean): IsCoprime f g ⇒ no common root, any field, pure Bézout",
+      "no_common_root_imp_coprime: converse over IsAlgClosed field via FTA + non-unit gcd",
+      "coprime_iff_no_common_root: univariate Nullstellensatz (root form)",
+      "coprime_iff_one_mem_span: IsCoprime f g ↔ 1 ∈ Ideal.span {f,g} in any CommRing",
+      "one_mem_span_iff_no_common_root: ideal form / weak Nullstellensatz V(f,g)=∅ ⟺ (f,g)=(1)",
+      "Examples over ℂ (X & X-1 coprime; X & X not coprime) and multivariate obstruction (X₀,X₁ non-coprime in ℂ[X₀,X₁])"
+    ],
+    "mathlibGaps": [
+      "No single packaged lemma 'coprime ↔ no common root for polynomials over alg. closed field' was found in Mathlib; assembled from gcd_isUnit_iff + IsAlgClosed.exists_root + IsRoot.dvd."
+    ],
+    "nextSteps": [
+      "Generalize to a finite family f₁,…,fₘ ∈ k[X]: 1 ∈ (f₁,…,fₘ) ↔ the fᵢ share no common root.",
+      "Explore a resultant-based / strong-Nullstellensatz refinement relating (f,g) to the radical and root multiplicities in one variable."
+    ],
+    "progressSummary": "COMPLETE: univariate weak Nullstellensatz proved via Bézout (0 sorries, 0 axioms); multivariate obstruction documented and witnessed."
+  },
+  "knownResults": [
+    "Hilbert Nullstellensatz (1893): V(I)=∅ ⟺ I=(1) over algebraically closed fields",
+    "k[X] over a field is a Euclidean domain / PID / Bézout domain",
+    "Fundamental theorem of algebra (IsAlgClosed.exists_root)"
+  ],
+  "leanFiles": ["Proofs/BezoutIdentityOQ02OQ02OQ03.lean"],
+  "relatedProofs": [
+    "bezout-identity-oq-02-oq-02",
+    "bezout-identity-oq-02-oq-02-oq-01",
+    "fundamental-arithmetic"
+  ],
+  "references": [
+    "Hilbert, Ueber die vollen Invariantensysteme, Math. Ann. 42 (1893)",
+    "Atiyah & Macdonald, Introduction to Commutative Algebra (1969), Ch. 7",
+    "Cox, Little & O'Shea, Ideals, Varieties, and Algorithms (2015)"
+  ],
+  "significance_text": "Closes the Nullstellensatz branch of the BezoutIdentity open-question family with an honest scope statement: Bézout reasoning proves exactly the one-variable weak Nullstellensatz and provably cannot reach the multivariate case.",
+  "tags": [
+    "algebraic-geometry",
+    "ring-theory",
+    "bezout",
+    "nullstellensatz",
+    "polynomials",
+    "coprimality"
+  ]
+}
