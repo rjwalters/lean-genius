@@ -17,6 +17,7 @@ import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4
 import Proofs.AbelRuffiniGaloisExtensionsOQ06GaloisDirectionStep4Aristotle
 import Proofs.AbelRuffiniGaloisExtensionsOQ07
 import Proofs.AbelRuffiniGaloisExtensionsOQ11
+import Proofs.AbelRuffiniOQ03
 import Proofs.AbelRuffiniOQ04
 import Proofs.AbelRuffiniOQ04OQ01
 import Proofs.AbelRuffiniOQ04OQ01OQ01
