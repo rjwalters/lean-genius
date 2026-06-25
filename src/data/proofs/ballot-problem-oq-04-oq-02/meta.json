@@ -1,0 +1,165 @@
+{
+  "id": "ballot-problem-oq-04-oq-02",
+  "title": "Non-Crossing Partitions as Finpartitions: a Decidable, Countable Model",
+  "slug": "ballot-problem-oq-04-oq-02",
+  "description": "The parent entry (ballot-problem-oq-04) introduced non-crossing partitions of Fin n as a predicate IsNonCrossing on the same-block setoid, but a bare Setoid (Fin n) is a Prop-valued relation and so not a Fintype — one cannot form Fintype.card {s // IsNonCrossing s}. This entry repairs the defect by porting non-crossing partitions to Mathlib's Finpartition (univ : Finset (Fin n)), which IS a Fintype. It defines the Finpartition non-crossing predicate IsNonCrossingFp via the same-part relation b ∈ P.part a (verbatim the parent's condition with s x y replaced by y ∈ P.part x), supplies its Decidable instance, and proves the two models agree: IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s (immediate from Mathlib's mem_part_ofSetoid_iff_rel). With the Fintype the non-crossing count nonCrossingCount n becomes well-typed. For n ≤ 3 every partition is non-crossing (a crossing needs four increasing indices), so nonCrossingCount n = Fintype.card (Finpartition univ); at n = 4 they first diverge — the parity partition {{0,2},{1,3}} (kernel of ·%2) crosses, giving the strict drop nonCrossingCount 4 < Fintype.card (Finpartition univ), the catalan 4 = 14 < 15 = Bell 4 phenomenon as a theorem about the model. The exact value nonCrossingCount n = catalan n is the explicit Dyck↔partition bijection (sibling ballot-problem-oq-04-oq-01); this entry supplies the countable model and first divergence that make that statement well-typed.",
+  "meta": {
+    "author": "Non-crossing partitions (Kreweras 1972); formalized via Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Noncrossing_partition",
+    "date": "1972",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BallotProblemOQ04OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "non-crossing-partitions",
+      "finpartition",
+      "catalan",
+      "setoid",
+      "fintype",
+      "decidability",
+      "ballot-problem",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 sorries, 0 literal `axiom` declarations, 0 structure-encoded assumptions. Fully machine-checked: all theorems depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). The two `decide` calls in the n=4 crossing witness are KERNEL `decide` (not `native_decide`) — confirmed axiom-free: crossing4_not_isNonCrossing depends only on [propext], and Lean.ofReduceBool does NOT appear.",
+    "dateAdded": "2026-06-25",
+    "lineCount": 152,
+    "theoremCount": 6,
+    "definitionCount": 4,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finpartition.ofSetoid",
+        "description": "With Fintype α, constructs the finpartition of univ whose parts are the equivalence classes of a setoid s (DecidableRel s.r); the bridge from the parent's setoid model to the Fintype-bearing Finpartition model",
+        "module": "Mathlib.Order.Partition.Finpartition"
+      },
+      {
+        "theorem": "Finpartition.mem_part_ofSetoid_iff_rel",
+        "description": "b ∈ (Finpartition.ofSetoid s).part a ↔ s a b; identifies the Finpartition same-part relation with the setoid relation, making the agreement theorem immediate",
+        "module": "Mathlib.Order.Partition.Finpartition"
+      },
+      {
+        "theorem": "Finpartition.instFintype",
+        "description": "Finpartition s is a Fintype for a Finset s over a DecidableEq type; supplies the cardinality treatment the setoid model lacked",
+        "module": "Mathlib.Order.Partition.Finpartition"
+      },
+      {
+        "theorem": "Fintype.card_subtype_lt",
+        "description": "¬ p x → Fintype.card {y // p y} < Fintype.card α; turns the explicit crossing witness at n=4 into the strict cardinality drop",
+        "module": "Mathlib.Data.Fintype.Card"
+      },
+      {
+        "theorem": "Equiv.subtypeUnivEquiv",
+        "description": "(∀ x, p x) → {x // p x} ≃ α; gives nonCrossingCount n = (total partition count) for n ≤ 3 where every partition is non-crossing",
+        "module": "Mathlib.Logic.Equiv.Basic"
+      },
+      {
+        "theorem": "Setoid.ker",
+        "description": "Setoid.ker f relates a, b iff f a = f b; used to build the parity setoid {{0,2},{1,3}} on Fin 4 as the kernel of ·%2",
+        "module": "Mathlib.Data.Setoid.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsNonCrossingFp: the non-crossing predicate ported to Finpartition (univ : Finset (Fin n)) via the same-part relation b ∈ P.part a, mirroring the parent's setoid condition verbatim, with a Decidable instance (all quantifiers over the Fintype Fin n, Finset membership decidable)",
+      "isNonCrossingFp_ofSetoid_iff (agreement): IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s — the parent's setoid model and the Finpartition model describe the same objects; proved in two lines from Mathlib's mem_part_ofSetoid_iff_rel",
+      "nonCrossingCount n := Fintype.card {P : Finpartition univ // IsNonCrossingFp P}: the well-typed cardinality the bare-setoid model could not express, enabled by the Finpartition Fintype",
+      "nonCrossingCount_eq_card_of_n_le_three: for n ≤ 3 every partition is non-crossing, so the non-crossing count equals the total (Bell) partition count — the two families coincide below four points",
+      "crossing4 / crossing4Fp and nonCrossingCount_four_lt: the parity partition {{0,2},{1,3}} on Fin 4 (kernel of ·%2) crosses, yielding the strict drop nonCrossingCount 4 < Fintype.card (Finpartition univ) — n=4 as the first point where non-crossing partitions become a proper subfamily, the catalan 4 = 14 < 15 = Bell 4 discriminator as a theorem"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Non-crossing partitions of a linearly ordered n-element set, introduced by Kreweras (1972), are counted by the Catalan numbers and form one of the canonical Catalan families alongside Dyck words and ballot sequences. The parent gallery entry ballot-problem-oq-04 introduced them to Lean as a predicate on the same-block setoid and developed their structural theory, explicitly flagging (openQuestion[2]) that the setoid presentation cannot be counted directly: an arbitrary Setoid (Fin n) is a Prop-valued relation, hence not a Fintype. Mathlib's Finpartition, by contrast, is a genuine Fintype, and Finpartition.ofSetoid bridges the two presentations. This entry uses that bridge to give non-crossing partitions a countable model and to locate, as a theorem, the first n at which the non-crossing count falls below the total partition (Bell) count: n = 4, where catalan 4 = 14 while Bell 4 = 15.",
+    "problemStatement": "Define non-crossing partitions of Fin n as Finpartitions, prove the setoid and Finpartition formulations agree, equip the non-crossing partitions with a Fintype/cardinality, and exhibit the first n at which the non-crossing count discriminates from the total partition count (n = 4).",
+    "proofStrategy": "**Finpartition model.** For P : Finpartition (univ : Finset (Fin n)), define IsNonCrossingFp P := ∀ a b c d, a<b → b<c → c<d → c ∈ P.part a → d ∈ P.part b → b ∈ P.part a, the parent's setoid condition with s x y replaced by y ∈ P.part x. All quantifiers range over the Fintype Fin n and Finset membership is decidable, so Decidable (IsNonCrossingFp P) is inferred and {P // IsNonCrossingFp P} is a Fintype.\n\n**Agreement.** Mathlib's Finpartition.ofSetoid s turns a setoid (with DecidableRel) into the finpartition of its classes, and mem_part_ofSetoid_iff_rel says b ∈ (ofSetoid s).part a ↔ s a b. Unfolding both predicates and rewriting by this lemma gives IsNonCrossingFp (ofSetoid s) ↔ IsNonCrossing s directly.\n\n**Counting and the n=4 discriminator.** Set nonCrossingCount n := Fintype.card {P // IsNonCrossingFp P}. For n ≤ 3, a crossing needs four strictly increasing indices a<b<c<d which cannot fit (omega), so IsNonCrossingFp holds for every P; Equiv.subtypeUnivEquiv then gives nonCrossingCount n = Fintype.card (Finpartition univ). At n = 4, build the parity setoid crossing4 := Setoid.ker (·%2) (classes {0,2} and {1,3}); it crosses at 0<1<2<3 (0~2, 1~3, ¬0~1), so by agreement crossing4Fp := ofSetoid crossing4 fails IsNonCrossingFp, and Fintype.card_subtype_lt yields nonCrossingCount 4 < Fintype.card (Finpartition univ).",
+    "keyInsights": [
+      "**The setoid model cannot be counted; the Finpartition model can.** A bare Setoid (Fin n) is a Prop-valued relation with no Fintype, so Fintype.card {s // IsNonCrossing s} is ill-typed. Porting to Finpartition — a genuine Fintype — is precisely what makes the Catalan-counting statement well-formed, and Finpartition.ofSetoid makes the port faithful.",
+      "**Agreement is two lines.** Because mem_part_ofSetoid_iff_rel identifies the Finpartition same-part relation b ∈ P.part a with the setoid relation s a b, the non-crossing predicates on the two models are literally the same quantified formula after a single rewrite — no combinatorial re-derivation.",
+      "**Four points are necessary and sufficient for a crossing.** Below n = 4 the defining quadruple a<b<c<d cannot exist, so all partitions are non-crossing and the counts coincide; at n = 4 the parity partition {{0,2},{1,3}} realises the first genuine crossing. This pins the catalan-vs-Bell divergence to an explicit, verified witness rather than a numerical coincidence.",
+      "**Strictness from one witness.** Fintype.card_subtype_lt converts a single failing element into a strict cardinality inequality, so exhibiting one crossing partition suffices to prove the non-crossing partitions are a proper subfamily at n = 4."
+    ],
+    "prerequisites": [
+      "The parent entry's setoid model IsNonCrossing and its structural theory (ballot-problem-oq-04)",
+      "Mathlib's Finpartition, its Fintype instance, and Finpartition.ofSetoid / mem_part_ofSetoid_iff_rel",
+      "Setoid.ker and decidable equivalence relations",
+      "Fintype cardinality of subtypes (Fintype.card_subtype_lt, Equiv.subtypeUnivEquiv)"
+    ],
+    "what": "A countable, decidable model of non-crossing partitions of Fin n: the predicate IsNonCrossingFp on Finpartition (univ : Finset (Fin n)), its agreement with the parent's setoid model, the resulting non-crossing count nonCrossingCount n, and the theorem that n = 4 is the first point at which non-crossing partitions become a proper subfamily of all partitions (catalan 4 = 14 < 15 = Bell 4).",
+    "how": "Phrase non-crossing via the Finpartition same-part relation b ∈ P.part a, derive decidability and hence a Fintype, prove agreement with the setoid model from mem_part_ofSetoid_iff_rel, and locate the first divergence with the explicit parity-partition witness on Fin 4 plus Fintype.card_subtype_lt.",
+    "significance": "Answers the parent entry's openQuestion[2]: it converts the un-countable setoid presentation of non-crossing partitions into a Fintype-bearing Finpartition model, proves the two presentations agree, and so makes the Catalan-counting statement nonCrossingCount n = catalan n well-typed for the first time. It also turns the textbook fact 'non-crossing partitions first differ from all partitions at n = 4' into a verified theorem with an explicit crossing witness, supplying the countable codomain that the explicit Dyck-word bijection (sibling oq-04-oq-01) will count."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Results",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Module docstring: the setoid model's Fintype defect, the Finpartition repair, and the four results — the Finpartition non-crossing predicate, the setoid/Finpartition agreement, the well-typed count, and the strict drop at n=4.",
+      "mathContext": "$\\mathrm{nonCrossingCount}\\,4 < \\mathrm{Bell}\\,4,\\ \\mathrm{catalan}\\,4 = 14 < 15$"
+    },
+    {
+      "id": "finpartition-model",
+      "title": "Section I: The Finpartition Model",
+      "startLine": 53,
+      "endLine": 80,
+      "summary": "IsNonCrossingFp: the non-crossing predicate on Finpartition (univ : Finset (Fin n)) via the same-part relation b ∈ P.part a, plus the Decidable instance (finite quantifiers + decidable Finset membership).",
+      "mathContext": "$\\mathrm{IsNonCrossingFp}\\,P := \\forall a{<}b{<}c{<}d,\\ c\\in P.\\mathrm{part}\\,a \\to d\\in P.\\mathrm{part}\\,b \\to b\\in P.\\mathrm{part}\\,a$"
+    },
+    {
+      "id": "agreement",
+      "title": "Section II: Agreement of the Two Models",
+      "startLine": 81,
+      "endLine": 100,
+      "summary": "isNonCrossingFp_ofSetoid_iff: IsNonCrossingFp (Finpartition.ofSetoid s) ↔ IsNonCrossing s, immediate from Mathlib's mem_part_ofSetoid_iff_rel identifying b ∈ (ofSetoid s).part a with s a b.",
+      "mathContext": "$\\mathrm{IsNonCrossingFp}(\\mathrm{ofSetoid}\\,s) \\leftrightarrow \\mathrm{IsNonCrossing}\\,s$"
+    },
+    {
+      "id": "small-n",
+      "title": "Section III: Every Partition of Fin n (n ≤ 3) is Non-Crossing",
+      "startLine": 101,
+      "endLine": 113,
+      "summary": "isNonCrossingFp_of_n_le_three: for n ≤ 3 a crossing's four increasing indices cannot fit, so every Finpartition is non-crossing (omega).",
+      "mathContext": "$n \\le 3 \\Rightarrow \\forall P,\\ \\mathrm{IsNonCrossingFp}\\,P$"
+    },
+    {
+      "id": "counting-discriminator",
+      "title": "Section IV: Counting and the n=4 Discriminator",
+      "startLine": 114,
+      "endLine": 152,
+      "summary": "nonCrossingCount n := Fintype.card {P // IsNonCrossingFp P}; nonCrossingCount_eq_card_of_n_le_three (equals total count for n ≤ 3 via subtypeUnivEquiv); the parity partition crossing4 = Setoid.ker (·%2) crosses (crossing4_not_isNonCrossing); and nonCrossingCount_four_lt: the strict drop at n=4 via Fintype.card_subtype_lt.",
+      "mathContext": "$\\mathrm{nonCrossingCount}\\,4 < \\mathrm{card}(\\mathrm{Finpartition}\\,\\mathrm{univ})$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Ports the parent's setoid model of non-crossing partitions to Mathlib's Fintype-bearing Finpartition, proving (agreement) IsNonCrossingFp (ofSetoid s) ↔ IsNonCrossing s, equipping the non-crossing partitions with a well-typed cardinality nonCrossingCount n, showing the count equals the total (Bell) count for n ≤ 3, and exhibiting the explicit parity-partition crossing on Fin 4 that gives the strict drop nonCrossingCount 4 < Bell 4 — the catalan 4 = 14 < 15 discriminator as a theorem. Fully verified, 0 sorries, 0 axioms, no native_decide.",
+    "implications": "Answers the parent's openQuestion[2] — the un-countable setoid presentation becomes a countable Finpartition model with a faithful agreement bridge, making the Catalan-count statement nonCrossingCount n = catalan n well-typed. The explicit n=4 crossing witness pins the catalan-vs-Bell divergence to a verified object, providing the countable codomain for the explicit Dyck↔partition bijection of sibling oq-04-oq-01.",
+    "openQuestions": [
+      "Prove the exact value nonCrossingCount n = catalan n by transporting along the explicit Dyck-word ↔ non-crossing-partition bijection (sibling ballot-problem-oq-04-oq-01), giving an equiv {P : Finpartition univ // IsNonCrossingFp P} ≃ {p : DyckWord // p.semilength = n}.",
+      "Establish the Catalan recurrence directly on the Finpartition model — decompose by the block containing the last index (or by first return) to obtain nonCrossingCount (n+1) = ∑ nonCrossingCount i · nonCrossingCount (n−i), matching Mathlib's catalan recurrence without constructing the full bijection."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "xref-ballot-oq04-parent",
+      "targetId": "ballot-problem-oq-04",
+      "relationship": "extends",
+      "description": "Answers the parent's openQuestion[2]: ports the parent's setoid predicate IsNonCrossing to the Fintype-bearing Finpartition model and proves the two agree, enabling the cardinality treatment the setoid model could not express. Reuses the parent's IsNonCrossing directly via the agreement theorem."
+    },
+    {
+      "id": "xref-ballot-oq0401-sibling",
+      "targetId": "ballot-problem-oq-04-oq-01",
+      "relationship": "relatedTo",
+      "description": "Sibling open question: the explicit Dyck-word ↔ non-crossing-partition bijection that would pin the exact value nonCrossingCount n = catalan n. This entry supplies the countable codomain (the Finpartition model and its Fintype) that the bijection counts."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 152,
+    "path": "Proofs/BallotProblemOQ04OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 4,
+    "theoremCount": 6
+  },
+  "sorries": 0
+}
