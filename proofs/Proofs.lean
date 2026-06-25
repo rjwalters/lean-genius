@@ -342,6 +342,7 @@ import Proofs.BertrandsPostulateOQ03OQ04OQ03
 import Proofs.BetaCentralBinomial
 import Proofs.BetaIntegralHalfValue
 import Proofs.BetaIntegralRecurrence
+import Proofs.BetaIntegralRecurrenceOQ01OQ03OQ01
 import Proofs.BezoutIdentity
 import Proofs.BezoutIdentityOQ01
 import Proofs.BezoutIdentityOQ01Aristotle
