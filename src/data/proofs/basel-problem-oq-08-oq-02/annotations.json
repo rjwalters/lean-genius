@@ -8,7 +8,11 @@
     },
     "type": "concept",
     "title": "Module Header and Problem Setup",
-    "content": "The open question, posed by the parent $\\zeta(4)$ entry, asks for $\\sum_{n=1}^\\infty 1/n^6 = \\pi^6/945$, the degree-6 even-zeta value, plus the ratio chain $\\zeta(2k)/\\pi^{2k}$. Euler's 1740 formula $\\zeta(2k) = (-1)^{k+1} B_{2k}(2\\pi)^{2k}/(2(2k)!)$ gives this at $k=3$ using $B_6 = 1/42$. Mathlib formalizes the underlying Hurwitz-zeta computation as `hasSum_zeta_nat`, but stops its packaged Bernoulli evaluations at $B_4$ — so the entry must first compute $B_6$."
+    "content": "The open question, posed by the parent $\\zeta(4)$ entry, asks for $\\sum_{n=1}^\\infty 1/n^6 = \\pi^6/945$, the degree-6 even-zeta value, plus the ratio chain $\\zeta(2k)/\\pi^{2k}$. Euler's 1740 formula $\\zeta(2k) = (-1)^{k+1} B_{2k}(2\\pi)^{2k}/(2(2k)!)$ gives this at $k=3$ using $B_6 = 1/42$. Mathlib formalizes the underlying Hurwitz-zeta computation as `hasSum_zeta_nat`, but stops its packaged Bernoulli evaluations at $B_4$ — so the entry must first compute $B_6$.",
+    "mathContext": "$\\zeta(2k) = (-1)^{k+1}\\dfrac{B_{2k}(2\\pi)^{2k}}{2(2k)!}$; at $k=3$, $\\zeta(6) = \\pi^6/945$.",
+    "significance": "key",
+    "relatedConcepts": ["Riemann zeta function", "even-argument zeta values", "Bernoulli numbers", "Basel problem", "hasSum_zeta_nat"],
+    "prerequisites": ["infinite series / tsum", "the zeta function"]
   },
   {
     "id": "baseloq08oq02-bernoulli-six",
@@ -19,7 +23,11 @@
     },
     "type": "theorem",
     "title": "The Sixth Bernoulli Number B₆ = 1/42",
-    "content": "`bernoulli_six` proves $B_6 = 1/42$. Mathlib packages `bernoulli'_two` $(=1/6)$ and `bernoulli'_four` $(=-1/30)$ but no `bernoulli'_six`, so we expand the defining recurrence $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$ over the range $k = 0,\\dots,5$. The odd term $B_5 = 0$ comes from `bernoulli'_eq_zero_of_odd`, and the explicit binomials $\\binom{6}{1},\\dots,\\binom{6}{5} = 6,15,20,15,6$ are supplied to `norm_num`. This is the one computational step the gallery adds over a pure Mathlib lookup."
+    "content": "`bernoulli_six` proves $B_6 = 1/42$. Mathlib packages `bernoulli'_two` $(=1/6)$ and `bernoulli'_four` $(=-1/30)$ but no `bernoulli'_six`, so we expand the defining recurrence $B_n = 1 - \\sum_{k<n}\\binom{n}{k}B_k/(n+1-k)$ over the range $k = 0,\\dots,5$. The odd term $B_5 = 0$ comes from `bernoulli'_eq_zero_of_odd`, and the explicit binomials $\\binom{6}{1},\\dots,\\binom{6}{5} = 6,15,20,15,6$ are supplied to `norm_num`. This is the one computational step the gallery adds over a pure Mathlib lookup.",
+    "mathContext": "$B_6 = 1/42$, from $B_n = 1 - \\sum_{k<n}\\binom{n}{k}\\dfrac{B_k}{n+1-k}$ with $B_5 = 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["Bernoulli numbers", "recurrence relations", "bernoulli'_eq_zero_of_odd", "binomial coefficients"],
+    "prerequisites": ["the Bernoulli-number recurrence", "vanishing of odd Bernoulli numbers"]
   },
   {
     "id": "baseloq08oq02-zeta-six",
@@ -30,7 +38,11 @@
     },
     "type": "theorem",
     "title": "The Value ζ(6) = π⁶/945",
-    "content": "`tsum_one_div_nat_pow_six` is the headline result $\\sum' n,\\ 1/n^6 = \\pi^6/945$. It comes from `hasSum_one_div_nat_pow_six`, the $k=3$ instance of `hasSum_zeta_nat`: substituting $B_6 = 1/42$ and $6! = 720$ into $(-1)^4\\cdot 2^5\\cdot\\pi^6\\cdot B_6/6!$ gives $32\\cdot(1/42)/720 = 1/945$. `riemannZeta_six_eq` records the same value for the analytically continued zeta, $\\zeta(6) = \\pi^6/945$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`."
+    "content": "`tsum_one_div_nat_pow_six` is the headline result $\\sum' n,\\ 1/n^6 = \\pi^6/945$. It comes from `hasSum_one_div_nat_pow_six`, the $k=3$ instance of `hasSum_zeta_nat`: substituting $B_6 = 1/42$ and $6! = 720$ into $(-1)^4\\cdot 2^5\\cdot\\pi^6\\cdot B_6/6!$ gives $32\\cdot(1/42)/720 = 1/945$. `riemannZeta_six_eq` records the same value for the analytically continued zeta, $\\zeta(6) = \\pi^6/945$ over $\\mathbb{C}$, via `riemannZeta_two_mul_nat`.",
+    "mathContext": "$\\sum_{n\\ge1} 1/n^6 = \\dfrac{2^5\\pi^6\\cdot(1/42)}{720} = \\dfrac{\\pi^6}{945}$; also $\\zeta(6) = \\pi^6/945$ over $\\mathbb{C}$.",
+    "significance": "critical",
+    "relatedConcepts": ["ζ(6)", "even-zeta formula", "riemannZeta_two_mul_nat", "analytic continuation"],
+    "prerequisites": ["B₆ = 1/42", "the even-argument zeta formula"]
   },
   {
     "id": "baseloq08oq02-ratio",
@@ -41,6 +53,10 @@
     },
     "type": "theorem",
     "title": "Euler's π-free Ratio ζ(6)/ζ(2)³ = 8/35",
-    "content": "`tsum_six_div_tsum_two_cube` divides the even-zeta values: $\\zeta(6)/\\zeta(2)^3 = (\\pi^6/945)/(\\pi^2/6)^3 = (\\pi^6/945)/(\\pi^6/216) = 216/945 = 8/35$. The $\\pi$ cancels entirely, leaving a rational determined only by the Bernoulli numbers $B_2 = 1/6$ and $B_6 = 1/42$. This generalises the parent's $\\zeta(4)/\\zeta(2)^2 = 2/5$ and is the degree-6 link of the requested ratio chain."
+    "content": "`tsum_six_div_tsum_two_cube` divides the even-zeta values: $\\zeta(6)/\\zeta(2)^3 = (\\pi^6/945)/(\\pi^2/6)^3 = (\\pi^6/945)/(\\pi^6/216) = 216/945 = 8/35$. The $\\pi$ cancels entirely, leaving a rational determined only by the Bernoulli numbers $B_2 = 1/6$ and $B_6 = 1/42$. This generalises the parent's $\\zeta(4)/\\zeta(2)^2 = 2/5$ and is the degree-6 link of the requested ratio chain.",
+    "mathContext": "$\\dfrac{\\zeta(6)}{\\zeta(2)^3} = \\dfrac{\\pi^6/945}{\\pi^6/216} = \\dfrac{216}{945} = \\dfrac{8}{35}$ — $\\pi$-independent.",
+    "significance": "key",
+    "relatedConcepts": ["dimensionless ratio", "cancellation of π", "ζ(4)/ζ(2)² = 2/5", "transcendence of π"],
+    "prerequisites": ["ζ(6) and ζ(2) values", "field_simp / ring"]
   }
 ]
