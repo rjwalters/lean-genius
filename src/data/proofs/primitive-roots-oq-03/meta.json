@@ -54,6 +54,40 @@
       "Finset.filter cardinality and Finset.sum_congr"
     ]
   },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module Header and Statement",
+      "startLine": 1,
+      "endLine": 39,
+      "summary": "Frames the result as the all-d strengthening of the base primitive-roots entry: for every divisor d of p−1, (ℤ/pℤ)ˣ has exactly φ(d) elements of order d, and summing tiles the group to recover Gauss's identity ∑_{d∣p−1} φ(d) = p−1. Engine: Mathlib's IsCyclic.card_orderOf_eq_totient.",
+      "mathContext": "$\\#\\{g:\\mathrm{ord}(g)=d\\}=\\varphi(d)$ for $d\\mid p-1$; $\\sum_{d\\mid p-1}\\varphi(d)=p-1$."
+    },
+    {
+      "id": "setup",
+      "title": "Cyclicity and Order of (ℤ/pℤ)ˣ",
+      "startLine": 41,
+      "endLine": 53,
+      "summary": "Provides the cyclic instance (finite multiplicative subgroup of the field ℤ/pℤ via isCyclic_of_subgroup_isDomain) and card_units : |(ℤ/pℤ)ˣ| = p−1 (ZMod.card_units_eq_totient + Nat.totient_prime). These feed every later theorem by turning d ∣ p−1 into d ∣ |group|.",
+      "mathContext": "$(\\mathbb{Z}/p\\mathbb{Z})^\\times$ cyclic, $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p-1$."
+    },
+    {
+      "id": "order-distribution",
+      "title": "The Full Order Distribution and Existence",
+      "startLine": 55,
+      "endLine": 89,
+      "summary": "card_orderOf_eq_totient: φ(d) elements of order d for each d ∣ p−1, by specializing IsCyclic.card_orderOf_eq_totient. exists_orderOf_eq: an element of each order exists (φ(d) > 0). card_generators: the d = p−1 case recovers the classical #generators = φ(p−1).",
+      "mathContext": "$\\#\\{g:\\mathrm{ord}(g)=d\\}=\\varphi(d)$; $\\exists g,\\ \\mathrm{ord}(g)=d$; $d=p-1\\Rightarrow\\varphi(p-1)$ generators."
+    },
+    {
+      "id": "tiling-gauss",
+      "title": "Tiling and Gauss's Divisor Sum",
+      "startLine": 91,
+      "endLine": 117,
+      "summary": "sum_card_orderOf: the order classes tile the group, summing to p−1 (each summand φ(d) by the distribution theorem, then Nat.sum_totient). gauss_divisor_sum: states ∑_{d∣p−1} φ(d) = p−1 in the primitive-root setting — the group-theoretic reading of Gauss's classical identity.",
+      "mathContext": "$\\sum_{d\\mid p-1}\\#\\{g:\\mathrm{ord}(g)=d\\}=\\sum_{d\\mid p-1}\\varphi(d)=p-1$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "primitive-roots",
