@@ -3188,6 +3188,7 @@ import Proofs.Hilbert4Geodesics
 import Proofs.Hilbert5LieGroups
 import Proofs.Hilbert5OQ02
 import Proofs.Hilbert6PhysicsAxioms
+import Proofs.Hilbert9ConstantReciprocity
 import Proofs.Hilbert9Reciprocity
 import Proofs.HodgeConjecture
 import Proofs.HurwitzOnlyIf
