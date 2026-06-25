@@ -1,0 +1,177 @@
+{
+  "id": "herons-formula-oq-06-oq-01",
+  "slug": "herons-formula-oq-06-oq-01",
+  "title": "Euler's Triangle Formula OI² = R² − 2Rr",
+  "description": "For a triangle with circumcenter O, incenter I, circumradius R and inradius r, the squared distance between the two centers is OI² = R² − 2Rr (Euler, 1765). Here O, I and the vertices A, B, C are honest points of a real inner-product space and OI² is their honest squared Euclidean distance — upgrading the parent entry's purely side-length proof of Euler's inequality to the genuine geometric identity. The heart is a pure inner-product identity ‖a·u + b·v + c·w‖² = R²(a+b+c)² − abc(a+b+c) (no area, no square roots), giving OI² = R² − abc/(a+b+c); the bridge 2Rr = abc/(a+b+c) then yields OI² = R² − 2Rr, and OI² ≥ 0 recovers Euler's inequality R ≥ 2r.",
+  "conclusion": {
+    "summary": "A complete, axiom-free formalization of Euler's triangle formula OI² = R² − 2Rr with O the circumcenter and I the incenter as actual points of a real inner-product space. The circumcenter is any point equidistant (distance R) from the three vertices; the incenter is the barycentric combination I = (a·A + b·B + c·C)/(a+b+c) of the vertices weighted by the opposite side lengths. The geometric heart is the area-free, square-root-free inner-product identity ‖a·u + b·v + c·w‖² = R²(a+b+c)² − abc(a+b+c) for position vectors u, v, w of common norm R, which gives the 'Euler core' OI² = R² − abc/(a+b+c). Combined with the elementary algebraic bridge 2·R·r = abc/(a+b+c) (the area cancels) this is exactly Euler's formula.",
+    "implications": "Euler's formula is the structural source of Euler's inequality: the parent entry oq-06 proved R ≥ 2r by a purely algebraic side-length argument, whereas here R ≥ 2r drops out as the manifest nonnegativity OI² ≥ 0 of an actual squared distance, exactly as Euler intended in 1765. The reusable core — that the squared distance from the circumcenter to the barycentric (a:b:c) point has the closed form R² − abc/(a+b+c) purely from Gram expansion — is independently useful for other triangle-center distance identities (e.g. distances to the centroid or to excenters via signed weights).",
+    "openQuestions": [
+      "Can the barycentric incenter I = (a·A + b·B + c·C)/(a+b+c) be identified with Mathlib's Affine.Simplex.incenter (defined via inverse-height excenter weights), closing the gap between the side-length and the bisector characterizations of the incenter?",
+      "Does the same Gram-expansion technique give the companion power-of-a-point formula OI² − R² = −2Rr as the power of the incenter with respect to the circumcircle, and the excenter analogue OIₐ² = R² + 2Rrₐ?"
+    ]
+  },
+  "overview": "{\"historicalContext\":\"Leonhard Euler proved in 1765 that the distance d between the circumcenter O and incenter I of a triangle satisfies d² = R(R − 2r), where R is the circumradius and r the inradius. Because d² ≥ 0 this immediately gives Euler's inequality R ≥ 2r, with equality exactly when O = I, i.e. the triangle is equilateral. The formula is the cornerstone of the theory of triangle-center distances and the prototype for a whole family of such identities (the excenter relations OIₐ² = R² + 2Rrₐ, Feuerbach's theorem, etc.).\",\"problemStatement\":\"Let A, B, C be the vertices of a triangle in a real inner-product space, O a circumcenter (a point with dist O A = dist O B = dist O C = R), and let a = |BC|, b = |CA|, c = |AB| be the side lengths. Take the incenter to be the barycentric combination I = (a·A + b·B + c·C)/(a+b+c). With r the inradius (Area/s, s = (a+b+c)/2) and R = abc/(4·Area) the circumradius, prove OI² = R² − 2Rr, and deduce Euler's inequality R ≥ 2r.\",\"proofStrategy\":\"Translate to position vectors u = A−O, v = B−O, w = C−O, all of norm R since the vertices lie on the circumcircle. Since the incenter weights sum to 1, I − O = (a·u + b·v + c·w)/(a+b+c), so OI² = ‖a·u + b·v + c·w‖² / (a+b+c)². Expanding the squared norm as a Gram sum and using ⟪u,v⟫ = R² − c²/2 (from |u−v|² = ‖u‖² − 2⟪u,v⟫ + ‖v‖²) and its cyclic variants, the three cross terms telescope to give ‖a·u + b·v + c·w‖² = R²(a+b+c)² − abc(a+b+c). Dividing by (a+b+c)² yields the area-free identity OI² = R² − abc/(a+b+c). Finally the elementary algebra 2·R·r = 2·(abc/(4·Area))·(Area/s) = abc/(a+b+c) — in which the area cancels — converts this to OI² = R² − 2Rr; nonnegativity of OI² then gives R ≥ 2r.\",\"keyInsights\":[\"The entire geometric content is a single Gram-matrix expansion: the only inputs are ‖u‖ = ‖v‖ = ‖w‖ = R and the polarization ⟪u,v⟫ = R² − c²/2, after which the cross terms collapse to −abc(a+b+c) by symmetric cancellation.\",\"No area and no square roots ever enter the geometric core: OI² = R² − abc/(a+b+c) is an exact rational identity in the side lengths and R. The area appears only in the one-line algebraic bridge 2Rr = abc/(a+b+c), where it cancels.\",\"Euler's inequality R ≥ 2r is recovered not by an inequality argument but as the sign of an actual squared distance OI² ≥ 0 — the geometric meaning Euler gave it in 1765.\"],\"prerequisites\":[\"Inner-product spaces and the polarization identity ‖x−y‖² = ‖x‖² − 2⟪x,y⟫ + ‖y‖²\",\"Barycentric coordinates of the incenter (weights the opposite side lengths)\",\"The circumradius formula R = abc/(4·Area) and inradius r = Area/s\"],\"text\":\"This entry upgrades the parent oq-06 (Euler's inequality proved in the pure side-length model) to the genuine geometric statement: the circumcenter O, incenter I and vertices A, B, C are honest points of a real inner-product space and OI² is their honest squared Euclidean distance. Working with the position vectors u, v, w of common length R, a Gram-matrix expansion using ⟪u,v⟫ = R² − c²/2 yields the area-free, square-root-free identity OI² = R² − abc/(a+b+c). The elementary algebraic bridge 2Rr = abc/(a+b+c) (where the area cancels) converts this into Euler's classical formula OI² = R² − 2Rr, from which Euler's inequality R ≥ 2r follows as the nonnegativity OI² ≥ 0. Everything is machine-checked with 0 axioms and 0 sorries.\"}",
+  "mainTheorems": [
+    {
+      "name": "weighted_sum_norm_sq",
+      "type": "supporting",
+      "description": "Gram-expansion core: for three vectors of common norm R with pairwise distances a = |v−w|, b = |w−u|, c = |u−v|, ‖a·u + b·v + c·w‖² = R²(a+b+c)² − abc(a+b+c). This is the entire geometric content of Euler's theorem.",
+      "leanType": "‖a • u + b • v + c • w‖ ^ 2 = R ^ 2 * (a + b + c) ^ 2 - a * b * c * (a + b + c)"
+    },
+    {
+      "name": "incenter_dist_circumcenter_sq",
+      "type": "main",
+      "description": "Euler core (point form): for a triangle inscribed in a circle of centre O and radius R with incenter I = (a·A+b·B+c·C)/(a+b+c), the squared circumcenter–incenter distance is OI² = R² − abc/(a+b+c). Area-free and square-root-free.",
+      "leanType": "dist O I ^ 2 = R ^ 2 - a * b * c / (a + b + c)"
+    },
+    {
+      "name": "two_circumradius_mul_inradius",
+      "type": "supporting",
+      "description": "The algebraic bridge 2·R·r = abc/(a+b+c) in the side-length model; the area cancels between R = abc/(4·Area) and r = Area/s.",
+      "leanType": "2 * circumradius a b c * inradius a b c = a * b * c / (a + b + c)"
+    },
+    {
+      "name": "euler_OI_sq",
+      "type": "main",
+      "description": "Euler's triangle formula: OI² = R² − 2Rr, with O, I, A, B, C honest points and OI² their honest squared distance, R = abc/(4·Area) the circumradius and r the inradius.",
+      "leanType": "dist O I ^ 2 = R ^ 2 - 2 * R * inradius a b c"
+    },
+    {
+      "name": "euler_inequality_of_dist",
+      "type": "main",
+      "description": "Euler's inequality recovered geometrically: since OI² ≥ 0, the circumradius is at least twice the inradius, 2r ≤ R.",
+      "leanType": "2 * inradius a b c ≤ R"
+    }
+  ],
+  "sections": [
+    {
+      "id": "inner-product-core",
+      "title": "The Inner-Product Core",
+      "startLine": 58,
+      "endLine": 96,
+      "summary": "Proves the Gram-expansion identity ‖a·u + b·v + c·w‖² = R²(a+b+c)² − abc(a+b+c) for three vectors of common norm R, using the polarization ⟪u,v⟫ = R² − c²/2 and its cyclic variants followed by ring.",
+      "mathContext": "The mathematical heart of Euler's theorem. All of the geometry lives here; the cross terms 2ab⟪u,v⟫ + 2bc⟪v,w⟫ + 2ca⟪u,w⟫ collapse to −abc(a+b+c) by symmetric cancellation."
+    },
+    {
+      "id": "euler-core",
+      "title": "The Euler Core — OI² = R² − abc/(a+b+c)",
+      "startLine": 98,
+      "endLine": 139,
+      "summary": "Passes to position vectors u = A−O, v = B−O, w = C−O of norm R, rewrites the incenter as I − O = (a·u + b·v + c·w)/(a+b+c) (the weights sum to 1), and applies the core identity to obtain the area-free formula OI² = R² − abc/(a+b+c).",
+      "mathContext": "Connects the abstract Gram identity to actual points and Euclidean distances. The only nontrivial plumbing is the affine cancellation I − O = (a+b+c)⁻¹•(a·u+b·v+c·w), handled by the module tactic."
+    },
+    {
+      "id": "euler-formula",
+      "title": "Bridge to R² − 2Rr and Euler's Inequality",
+      "startLine": 141,
+      "endLine": 192,
+      "summary": "Proves the algebraic bridge 2Rr = abc/(a+b+c) (the area cancels), substitutes it to get Euler's formula OI² = R² − 2Rr, and deduces Euler's inequality 2r ≤ R from OI² ≥ 0.",
+      "mathContext": "The named results. euler_OI_sq combines the geometric core with the side-length bridge; euler_inequality_of_dist reads off R ≥ 2r as the sign of a squared distance via nlinarith."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "herons-formula-oq-06",
+      "relationship": "extends",
+      "description": "The parent entry proves Euler's inequality R ≥ 2r purely in the side-length algebraic model; this entry upgrades it to the genuine geometric formula OI² = R² − 2Rr with O, I actual points, recovering R ≥ 2r as OI² ≥ 0. Reuses the parent's circumradius, inradius and area definitions."
+    },
+    {
+      "targetId": "herons-formula",
+      "relationship": "related",
+      "description": "The bridge 2Rr = abc/(a+b+c) uses the circumradius/inradius formulas R = abc/(4·Area), r = Area/s built on Heron's area."
+    }
+  ],
+  "references": [
+    {
+      "title": "Euler's theorem in geometry (Wikipedia)",
+      "url": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry"
+    },
+    {
+      "title": "Euler's theorem in geometry — proof via the power of a point",
+      "url": "https://en.wikipedia.org/wiki/Power_of_a_point"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.InnerProductSpace.Basic",
+      "Mathlib.Tactic",
+      "Proofs.HeronsFormulaOQ06"
+    ],
+    "opens": [
+      "scoped InnerProductSpace",
+      "EulerInequalityHeronOQ06"
+    ],
+    "namespace": "EulerTriangleFormulaHeronOQ0601",
+    "lineCount": 193,
+    "axiomCount": 0,
+    "sorries": 0,
+    "path": "Proofs/HeronsFormulaOQ0601.lean",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "meta": {
+    "author": "Classical result (Euler, 1765), formalized in Lean 4",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Euler%27s_theorem_in_geometry",
+    "date": "1765",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HeronsFormulaOQ0601.lean",
+    "tags": [
+      "geometry",
+      "euclidean-geometry",
+      "euler-triangle-formula",
+      "circumcenter",
+      "incenter",
+      "inner-product-space",
+      "triangle",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only propext, Classical.choice, Quot.sound). The circumcenter is taken as any point equidistant from the three vertices and the incenter as the (a:b:c) barycentric combination of the vertices; the circumradius hypothesis R = abc/(4·Area) (extended law of sines) relates the given radius to the side-length model.",
+    "mathlibDependencies": [
+      {
+        "theorem": "norm_sub_sq_real",
+        "description": "‖x − y‖² = ‖x‖² − 2⟪x,y⟫_ℝ + ‖y‖²; the polarization identity giving ⟪u,v⟫ = R² − c²/2.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_self_eq_norm_sq",
+        "description": "⟪x,x⟫_ℝ = ‖x‖²; converts the squared norm to an inner product for the Gram expansion.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "real_inner_comm",
+        "description": "⟪y,x⟫_ℝ = ⟪x,y⟫_ℝ; normalizes the reversed Gram entries.",
+        "module": "Mathlib.Analysis.InnerProductSpace.Basic"
+      },
+      {
+        "theorem": "norm_smul",
+        "description": "‖r • x‖ = ‖r‖ * ‖x‖; pulls the normalization scalar out of the incenter distance.",
+        "module": "Mathlib.Analysis.NormedSpace.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Genuine geometric formalization of Euler's triangle formula OI² = R² − 2Rr with O, I, A, B, C honest points of a real inner-product space and OI² their honest squared Euclidean distance — upgrading the parent's pure side-length proof.",
+      "The area-free, square-root-free Euler core OI² = R² − abc/(a+b+c), an exact rational identity proved by a single Gram-matrix expansion (weighted_sum_norm_sq).",
+      "The algebraic bridge 2·R·r = abc/(a+b+c) showing the area cancels between the circumradius and inradius formulas.",
+      "Euler's inequality R ≥ 2r recovered as the nonnegativity OI² ≥ 0 of an actual squared distance, as Euler intended in 1765.",
+      "A dimension-free statement: the result holds in any real inner-product space, not just the Euclidean plane."
+    ],
+    "prerequisites": [
+      "Inner-product spaces and the polarization identity",
+      "Barycentric coordinates of the incenter",
+      "Circumradius R = abc/(4·Area) and inradius r = Area/s"
+    ],
+    "difficulty": "intermediate",
+    "category": "geometry",
+    "parentSlug": "herons-formula-oq-06",
+    "dateAdded": "2026-06-25",
+    "lineCount": 193,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "mathlib_version": "v4.26"
+  }
+}

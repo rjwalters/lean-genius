@@ -3181,6 +3181,7 @@ import Proofs.HeronsFormulaOQ01
 import Proofs.HeronsFormulaOQ03
 import Proofs.HeronsFormulaOQ04
 import Proofs.HeronsFormulaOQ06
+import Proofs.HeronsFormulaOQ0601
 import Proofs.HeronsFormulaOQ06OQ02
 import Proofs.HierholzerAlgorithm
 import Proofs.Hilbert10
