@@ -5,7 +5,19 @@
     "range": { "startLine": 1, "endLine": 38 },
     "type": "concept",
     "title": "Goal: power-mean monotonicity in the exponent, a gap in Mathlib",
-    "content": "The weighted power mean M_r(z; w) = (∑ᵢ wᵢ·zᵢ^r)^(1/r) interpolates the harmonic (r = -1), geometric (r → 0), arithmetic (r = 1), and quadratic (r = 2) means. Its monotonicity in r — the generalized-mean / Hölder inequality — is classical, but Mathlib packages only the underlying convex-power Jensen inequality (Real.rpow_arith_mean_le_arith_mean_rpow), not the monotonicity of M_r. This file proves the positive-exponent case: 0 < p ≤ q ⟹ (∑ wᵢ zᵢ^p)^(1/p) ≤ (∑ wᵢ zᵢ^q)^(1/q), for nonnegative data and nonnegative weights summing to 1. The strategy is a change of variable: raise the data to the ratio exponent t = q/p ≥ 1 so a single Jensen application does the work."
+    "content": "The weighted power mean M_r(z; w) = (∑ᵢ wᵢ·zᵢ^r)^(1/r) interpolates the harmonic (r = -1), geometric (r → 0), arithmetic (r = 1), and quadratic (r = 2) means. Its monotonicity in r — the generalized-mean / Hölder inequality — is classical, but Mathlib packages only the underlying convex-power Jensen inequality (Real.rpow_arith_mean_le_arith_mean_rpow), not the monotonicity of M_r. This file proves the positive-exponent case: 0 < p ≤ q ⟹ (∑ wᵢ zᵢ^p)^(1/p) ≤ (∑ wᵢ zᵢ^q)^(1/q), for nonnegative data and nonnegative weights summing to 1. The strategy is a change of variable: raise the data to the ratio exponent t = q/p ≥ 1 so a single Jensen application does the work.",
+    "mathContext": "$M_r(z;w) = \\left(\\sum_i w_i z_i^r\\right)^{1/r}$; goal: $0 < p \\le q \\Rightarrow M_p \\le M_q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "power means",
+      "Hölder inequality",
+      "generalized mean inequality",
+      "convexity"
+    ],
+    "prerequisites": [
+      "rpow (real power) on nonnegatives",
+      "weighted Jensen inequality"
+    ]
   },
   {
     "id": "ann-power-mean-monotone",
@@ -13,7 +25,77 @@
     "range": { "startLine": 40, "endLine": 77 },
     "type": "theorem",
     "title": "Weighted power-mean monotonicity (0 < p ≤ q)",
-    "content": "powerMean_le_powerMean is the main result. Write A = ∑ wᵢ zᵢ^p, B = ∑ wᵢ zᵢ^q and set t = q/p ≥ 1 (from le_div_iff₀ hp and p ≤ q). Because t ≥ 1, Mathlib's Real.rpow_arith_mean_le_arith_mean_rpow applied to the data yᵢ = zᵢ^p (nonnegative via rpow_nonneg) gives A^t ≤ ∑ wᵢ (zᵢ^p)^t. The pointwise identity (zᵢ^p)^t = zᵢ^{p·t} (Real.rpow_mul, valid since zᵢ ≥ 0) together with p·t = q rewrites the right side to B, so A^t ≤ B. Both sums are nonnegative, so Real.rpow_le_rpow raises the bound to the power 1/q: (A^t)^{1/q} ≤ B^{1/q}. Finally (A^t)^{1/q} = A^{t·(1/q)} = A^{1/p}, using t·(1/q) = (q/p)·(1/q) = 1/p, which yields M_p = A^{1/p} ≤ B^{1/q} = M_q."
+    "content": "powerMean_le_powerMean is the main result. Write A = ∑ wᵢ zᵢ^p, B = ∑ wᵢ zᵢ^q and set t = q/p ≥ 1 (from le_div_iff₀ hp and p ≤ q). Because t ≥ 1, Mathlib's Real.rpow_arith_mean_le_arith_mean_rpow applied to the data yᵢ = zᵢ^p (nonnegative via rpow_nonneg) gives A^t ≤ ∑ wᵢ (zᵢ^p)^t. The pointwise identity (zᵢ^p)^t = zᵢ^{p·t} (Real.rpow_mul, valid since zᵢ ≥ 0) together with p·t = q rewrites the right side to B, so A^t ≤ B. Both sums are nonnegative, so Real.rpow_le_rpow raises the bound to the power 1/q: (A^t)^{1/q} ≤ B^{1/q}. Finally (A^t)^{1/q} = A^{t·(1/q)} = A^{1/p}, using t·(1/q) = (q/p)·(1/q) = 1/p, which yields M_p = A^{1/p} ≤ B^{1/q} = M_q.",
+    "mathContext": "$A^{q/p} \\le B \\Rightarrow A^{1/p} = (A^{q/p})^{1/q} \\le B^{1/q}$, with $A = \\sum_i w_i z_i^p$, $B = \\sum_i w_i z_i^q$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "change of variable",
+      "Real.rpow_arith_mean_le_arith_mean_rpow",
+      "monotonicity in the exponent",
+      "Real.rpow_le_rpow"
+    ],
+    "prerequisites": [
+      "weighted Jensen for convex power maps",
+      "rpow monotonicity in the base"
+    ]
+  },
+  {
+    "id": "ann-ratio-exponent",
+    "proofId": "jensen-inequality-oq-01-oq-02",
+    "range": { "startLine": 51, "endLine": 63 },
+    "type": "technique",
+    "title": "The Ratio Exponent t = q/p ≥ 1 and the Identity p·t = q",
+    "content": "The heart of the change of variable is the single number t = q/p. Two facts about it carry the proof. First, 1 ≤ t (proved by `le_div_iff₀ hp` and `linarith` from p ≤ q) is exactly the hypothesis that y ↦ y^t is convex, which is what Jensen needs. Second, p·t = q (`field_simp`, since p ≠ 0) is the bookkeeping identity that lets (zᵢ^p)^t collapse to zᵢ^q: by `Real.rpow_mul` (valid because zᵢ ≥ 0) one has (zᵢ^p)^t = zᵢ^{p·t} = zᵢ^q. So applying Jensen to the *re-based* data yᵢ = zᵢ^p reproduces the q-th powers on the right exactly. This is why no new convexity theorem is needed — the convexity is the same y^t map, only the data has been raised to the p-th power.",
+    "mathContext": "$t = q/p$, $1 \\le t$ (since $p \\le q$), and $p\\cdot t = q$ so $(z_i^p)^t = z_i^{pt} = z_i^q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "exponent bookkeeping",
+      "Real.rpow_mul",
+      "convex power map y ↦ yᵗ",
+      "le_div_iff₀"
+    ],
+    "prerequisites": [
+      "rpow_mul on nonnegative base",
+      "field_simp with nonzero denominators"
+    ]
+  },
+  {
+    "id": "ann-nonneg-side-conditions",
+    "proofId": "jensen-inequality-oq-01-oq-02",
+    "range": { "startLine": 54, "endLine": 57 },
+    "type": "technique",
+    "title": "Nonnegativity Is the Only Side Condition That Matters",
+    "content": "Every rpow manipulation in the proof is licensed by nonnegativity, not by p ≥ 1 or any normalization of the data. `rpow_nonneg (hz i hi) p` gives 0 ≤ zᵢ^p (so the re-based data is admissible input to Jensen and to rpow_mul), and `sum_nonneg` lifts this to 0 ≤ A for the whole weighted sum. These are precisely the hypotheses needed so that (a) Jensen applies to yᵢ = zᵢ^p, (b) Real.rpow_mul may split the iterated power, and (c) Real.rpow_le_rpow may raise A^t ≤ B to the 1/q power while preserving direction. The argument therefore needs only 0 < p ≤ q and zᵢ, wᵢ ≥ 0 — the weight normalization ∑ wᵢ = 1 is inherited solely from Jensen.",
+    "mathContext": "$z_i \\ge 0 \\Rightarrow z_i^p \\ge 0$ and $A = \\sum_i w_i z_i^p \\ge 0$; these license every $\\mathrm{rpow}$ rewrite.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "rpow_nonneg",
+      "sum_nonneg",
+      "side conditions of rpow lemmas"
+    ],
+    "prerequisites": [
+      "nonnegativity of real powers",
+      "finite-sum nonnegativity"
+    ]
+  },
+  {
+    "id": "ann-final-exponent-collapse",
+    "proofId": "jensen-inequality-oq-01-oq-02",
+    "range": { "startLine": 70, "endLine": 77 },
+    "type": "insight",
+    "title": "Closing the Loop: (Aᵗ)^{1/q} = A^{1/p}",
+    "content": "After Jensen yields A^t ≤ B, the proof raises both sides to 1/q via `Real.rpow_le_rpow` (both bases nonnegative, exponent 1/q ≥ 0). The left side then needs to become the actual power mean M_p = A^{1/p}. The key identity is t·(1/q) = (q/p)·(1/q) = 1/p (`hexp`, by field_simp), so by `Real.rpow_mul` (Aᵗ)^{1/q} = A^{t·(1/q)} = A^{1/p}. This is the second and final exponent collapse — the first (p·t = q) produced the q-th powers, this one recovers the 1/p outer exponent — and together they are the entire arithmetic content of the theorem.",
+    "mathContext": "$t\\cdot\\tfrac1q = \\tfrac{q}{p}\\cdot\\tfrac1q = \\tfrac1p$, so $(A^t)^{1/q} = A^{1/p} = M_p$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Real.rpow_mul",
+      "exponent arithmetic",
+      "rpow monotonicity (Real.rpow_le_rpow)"
+    ],
+    "prerequisites": [
+      "iterated real powers",
+      "field_simp identities"
+    ]
   },
   {
     "id": "ann-am-le-qm",
@@ -21,6 +103,18 @@
     "range": { "startLine": 79, "endLine": 87 },
     "type": "theorem",
     "title": "Arithmetic mean ≤ quadratic mean (specialization)",
-    "content": "weighted_am_le_qm instantiates the monotonicity theorem at (p, q) = (1, 2) to obtain the weighted arithmetic-mean ≤ quadratic-mean inequality ∑ wᵢ zᵢ ≤ (∑ wᵢ zᵢ²)^(1/2). The only work is normalizing the M₁ side: zᵢ^{(1:ℝ)} = zᵢ (Real.rpow_one) and the outer exponent 1/1 = 1 collapse the left power mean to the plain weighted average, discharged by simp. This shows how the single monotonicity theorem subsumes the named two-rung inequalities for free."
+    "content": "weighted_am_le_qm instantiates the monotonicity theorem at (p, q) = (1, 2) to obtain the weighted arithmetic-mean ≤ quadratic-mean inequality ∑ wᵢ zᵢ ≤ (∑ wᵢ zᵢ²)^(1/2). The only work is normalizing the M₁ side: zᵢ^{(1:ℝ)} = zᵢ (Real.rpow_one) and the outer exponent 1/1 = 1 collapse the left power mean to the plain weighted average, discharged by `simpa`. This shows how the single monotonicity theorem subsumes the named two-rung inequalities for free — AM ≤ QM is not proved separately but read off as a corollary.",
+    "mathContext": "$\\sum_i w_i z_i = M_1 \\le M_2 = \\left(\\sum_i w_i z_i^2\\right)^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "arithmetic mean",
+      "quadratic mean (root mean square)",
+      "specialization of a general inequality",
+      "Cauchy–Schwarz (weighted form)"
+    ],
+    "prerequisites": [
+      "Real.rpow_one",
+      "instantiating a quantified theorem"
+    ]
   }
 ]
