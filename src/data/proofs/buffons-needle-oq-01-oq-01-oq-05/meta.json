@@ -41,7 +41,13 @@
   "overview": {
     "historicalContext": "The parent entry buffons-needle-oq-01-oq-01 proves the Buffon–Barbier smooth-curve formula E[crossings] = 2L/(πd) from the angular-average identity, but packages the analytic regularity as hypotheses of buffon_smooth_full: differentiability of the coordinate functions (hdx, hdy) and interval-integrability of the inner angular integral (hInnerInt). Its fifth open question asks to 'prove the co-area formula in Mathlib to eliminate the Fubini hypothesis'.\n\nThe general co-area formula is not in Mathlib, and remains an open target. This entry resolves the concrete, Buffon-specific residue of that question: it discharges the integrability hypothesis hInnerInt directly from continuity of the velocity field, leaving only the bare C¹ differentiability assumptions.",
     "problemStatement": "**Open question (buffons-needle-oq-01-oq-01, #2 and #5):** prove the integrability hypothesis hInnerInt from smoothness of γ, eliminating the analytic side condition on the inner angular integral t ↦ ∫₀^π |γ'₁(t)·sin θ + γ'₂(t)·cos θ| dθ.",
-    "keyInsight": "The integrand (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ| is jointly continuous when A and B are continuous, and the interval of integration [0, π] is fixed and compact. Mathlib's continuous_parametric_intervalIntegral_of_continuous' then gives continuity of t ↦ ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ, and continuity on the compact parameter interval [a, b] upgrades to interval-integrability. No closed form, dominated-convergence bookkeeping, or co-area machinery is required."
+    "proofStrategy": "Abstract the inner integral as innerAngular A B t = ∫₀^π |A(t)·sin θ + B(t)·cos θ| dθ in two coefficient functions A, B. (1) The integrand (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ| is jointly continuous when A, B are continuous (fun_prop, after uncurrying); since the integration interval [0, π] is fixed and compact, Mathlib's continuous_parametric_intervalIntegral_of_continuous' yields continuity of t ↦ innerAngular A B t (innerAngular_continuous). (2) Continuity on the compact parameter interval [a, b] upgrades to interval-integrability via Continuous.intervalIntegrable (innerAngular_intervalIntegrable). (3) Specialising A = γ'₁, B = γ'₂ produces exactly the hInnerInt hypothesis shape (hInnerInt_of_continuous_deriv). (4) Feeding this into the parent's buffon_smooth_full discharges the integrability side condition, leaving the capstone buffon_smooth_C1 with only the C¹ differentiability hypotheses hdx, hdy and continuity of the velocity.",
+    "keyInsights": [
+      "The integrand (t, θ) ↦ |A(t)·sin θ + B(t)·cos θ| is jointly continuous when A and B are continuous, and the interval of integration [0, π] is fixed and compact — so continuous_parametric_intervalIntegral_of_continuous' applies directly with no dominated-convergence bookkeeping.",
+      "Continuity is enough: the proof never uses the closed form 2‖γ'(t)‖ of the inner integral, only joint continuity of the integrand and the fixed compact interval. This keeps the result robust and self-contained on Mathlib's parametric-integral API.",
+      "Continuity on a compact parameter interval [a, b] immediately gives interval-integrability (Continuous.intervalIntegrable), turning the analytic side condition into a one-line consequence of regularity.",
+      "Honest scope: this discharges exactly the Buffon-specific integrability residue (hInnerInt), not the general co-area / Cauchy–Crofton formula, which remains absent from Mathlib."
+    ]
   },
   "sections": [
     {
@@ -85,17 +91,17 @@
   },
   "crossReferences": [
     {
-      "targetId": "buffons-needle-oq-01-oq-01",
+      "proofId": "buffons-needle-oq-01-oq-01",
       "relationship": "extends",
       "description": "Discharges the hInnerInt integrability hypothesis of buffon_smooth_full and supplies the capstone buffon_smooth_C1; addresses open questions #2 and #5 of the parent entry."
     },
     {
-      "targetId": "buffons-needle-oq-01",
+      "proofId": "buffons-needle-oq-01",
       "relationship": "extends",
       "description": "Continues the program of replacing the axiomatic smooth Buffon–Barbier case by a concrete verified theorem with minimal hypotheses."
     },
     {
-      "targetId": "buffons-needle",
+      "proofId": "buffons-needle",
       "relationship": "extends",
       "description": "Part of the Buffon's needle / noodle integral-geometry family."
     }
