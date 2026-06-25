@@ -55,9 +55,9 @@
       "Open asymptotic questions A(k)∼k log k and B(k) documented (not asserted)"
     ],
     "axiomCount": 0,
-    "lineCount": 137,
+    "lineCount": 201,
     "assumptions": "0 axiom declarations and 0 sorries; every stated lemma is fully proved (#print axioms shows only propext/Classical.choice/Quot.sound — no native_decide, no Lean.ofReduceBool). Status is 'axiomatized' because the headline asymptotic questions of Problem #1204 — whether A(k) ∼ k log k and the estimate for B(k) — remain OPEN and are documented but not formalized as theorems. The formalization here is the admissibility framework plus the standard reduction to small primes.",
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 1
   },
   "overview": {
@@ -124,9 +124,9 @@
       "Finset"
     ],
     "namespace": "Erdos1204",
-    "lineCount": 137,
+    "lineCount": 201,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 1,
     "path": "Proofs/Erdos1204Problem.lean",
     "sorries": 0
