@@ -6,42 +6,57 @@
       "startLine": 1,
       "endLine": 52
     },
-    "type": "insight",
+    "type": "concept",
     "title": "Header: The 2D Permutation-Matrix View of Derangements",
-    "content": "The module realises the 'random n×n permutation matrix' framing of the derangement 1/e law. A uniformly random permutation matrix is P_σ for a uniformly random σ ∈ Sym(n); it is a derangement matrix — has a zero diagonal — exactly when σ has no fixed point. The four Mathlib imports supply the permutation-matrix API (LinearAlgebra.Matrix.Permutation: Equiv.Perm.permMatrix and trace_permutation), the derangement counting (Combinatorics.Derangements.Finite: numDerangements), the derangement definition (Combinatorics.Derangements.Basic), and tactics. The file is deliberately self-contained on Mathlib — it does not import the parent analytic entry, so the bridge stands on its own."
+    "content": "The module realises the 'random n×n permutation matrix' framing of the derangement 1/e law. A uniformly random permutation matrix is P_σ for a uniformly random σ ∈ Sym(n); it is a derangement matrix — has a zero diagonal — exactly when σ has no fixed point. The four Mathlib imports supply the permutation-matrix API (LinearAlgebra.Matrix.Permutation: Equiv.Perm.permMatrix and trace_permutation), the derangement counting (Combinatorics.Derangements.Finite: numDerangements), the derangement definition (Combinatorics.Derangements.Basic), and tactics. The file is deliberately self-contained on Mathlib — it does not import the parent analytic entry, so the bridge stands on its own.",
+    "mathContext": "$P_\\sigma$ a derangement matrix $\\iff \\mathrm{diag}(P_\\sigma) = 0 \\iff \\sigma \\in \\mathrm{derangements}(\\mathrm{Fin}\\,n)$; $P(\\text{derangement matrix}) = D_n/n!$.",
+    "significance": "context",
+    "relatedConcepts": ["permutation matrix", "derangement", "fixed-point-free permutation", "1/e law", "trace"],
+    "prerequisites": ["permutations Sym(n)", "permutation matrices", "derangements"]
   },
   {
     "id": "ann-derangements-oq03-oq03-entry",
     "proofId": "derangements-oq-03-oq-03",
     "range": {
-      "startLine": 54,
-      "endLine": 75
+      "startLine": 56,
+      "endLine": 70
     },
-    "type": "proof-step",
+    "type": "theorem",
     "title": "Entry Formula and the Diagonal",
-    "content": "permMatrix_apply computes (σ.permMatrix ℝ) i j = if σ i = j then 1 else 0 by unfolding Equiv.Perm.permMatrix = σ.toPEquiv.toMatrix and simplifying with PEquiv.toMatrix_apply and Equiv.toPEquiv_apply (the eq_comm flips the membership j ∈ some (σ i) into σ i = j). Specialising to j = i gives permMatrix_diag, and a case split on σ i = i yields permMatrix_diag_eq_zero_iff: the (i,i) entry is 0 iff i is not a fixed point. This is the local heart of the bridge — a single 1 sits in row i at column σ i, so it lands on the diagonal precisely at fixed points."
+    "content": "permMatrix_apply computes $(\\sigma.\\mathrm{permMatrix}\\,\\mathbb{R})_{ij} = [\\sigma i = j]$ by unfolding Equiv.Perm.permMatrix = σ.toPEquiv.toMatrix and simplifying with PEquiv.toMatrix_apply and Equiv.toPEquiv_apply (the eq_comm flips the membership j ∈ some (σ i) into σ i = j). Specialising to j = i gives permMatrix_diag, and a case split on σ i = i yields permMatrix_diag_eq_zero_iff: the (i,i) entry is 0 iff i is not a fixed point. This is the local heart of the bridge — a single 1 sits in row i at column σ i, so it lands on the diagonal precisely at fixed points.",
+    "mathContext": "$(P_\\sigma)_{ij} = \\begin{cases}1 & \\sigma i = j\\\\ 0 & \\text{else}\\end{cases};\\quad (P_\\sigma)_{ii} = 0 \\iff \\sigma i \\neq i.$",
+    "significance": "key",
+    "relatedConcepts": ["Equiv.Perm.permMatrix", "PEquiv.toMatrix", "fixed point", "diagonal entry"],
+    "prerequisites": ["permutation matrices", "PEquiv API", "if-then-else simplification"]
   },
   {
     "id": "ann-derangements-oq03-oq03-bridge",
     "proofId": "derangements-oq-03-oq-03",
     "range": {
-      "startLine": 77,
-      "endLine": 107,
-      "endLineExclusive": false
+      "startLine": 72,
+      "endLine": 98
     },
-    "type": "insight",
+    "type": "theorem",
     "title": "Two Characterizations: Zero Diagonal and Zero Trace",
-    "content": "hasZeroDiagonal_iff_mem_derangements quantifies permMatrix_diag_eq_zero_iff over all i and unfolds the definition derangements (Fin n) = {σ | ∀ x, σ x ≠ x}, giving the pointwise bridge. trace_permMatrix_eq_zero_iff gives the global form: Mathlib's trace_permutation says the trace equals the fixed-point count (fixedPoints σ).ncard; casting to ℝ and using Set.ncard_eq_zero (the set is finite) plus mem_derangements_iff_fixedPoints_eq_empty shows the trace vanishes iff σ is a derangement. zeroDiagonal_setOf_eq_derangements packages the pointwise version as a set equality."
+    "content": "hasZeroDiagonal_iff_mem_derangements quantifies permMatrix_diag_eq_zero_iff over all i and unfolds derangements (Fin n) = {σ | ∀ x, σ x ≠ x}, giving the pointwise bridge. trace_permMatrix_eq_zero_iff gives the global form: Mathlib's trace_permutation says the trace equals the fixed-point count (fixedPoints σ).ncard; casting to ℝ and using Set.ncard_eq_zero (the set is finite) plus mem_derangements_iff_fixedPoints_eq_empty shows the trace vanishes iff σ is a derangement. zeroDiagonal_setOf_eq_derangements packages the pointwise version as a set equality.",
+    "mathContext": "$\\big(\\forall i,\\ (P_\\sigma)_{ii} = 0\\big) \\iff \\sigma \\in D;\\quad \\mathrm{tr}(P_\\sigma) = |\\mathrm{Fix}(\\sigma)| = 0 \\iff \\sigma \\in D.$",
+    "significance": "critical",
+    "relatedConcepts": ["trace_permutation", "fixed-point count", "Set.ncard_eq_zero", "pointwise vs global characterization"],
+    "prerequisites": ["trace of a matrix", "derangements definition", "fixed-point set"]
   },
   {
     "id": "ann-derangements-oq03-oq03-count",
     "proofId": "derangements-oq-03-oq-03",
     "range": {
-      "startLine": 109,
+      "startLine": 100,
       "endLine": 132
     },
-    "type": "proof-step",
+    "type": "theorem",
     "title": "Counting and the Probability in [0,1]",
-    "content": "card_derangement_permMatrices re-exports card_derangements_fin_eq_numDerangements: there are numDerangements n derangement matrices of size n. numDerangements_le_factorial bounds this by n! through the subtype-cardinality chain card (derangements (Fin n)) ≤ card (Perm (Fin n)) = n! (Fintype.card_subtype_le, Fintype.card_perm, Fintype.card_fin). Finally derangementMatrixProb n := numDerangements n / n! is shown to lie in [0,1] (positivity for the lower bound, div_le_one with the factorial bound for the upper). The sharp 1/e convergence rate of this probability is the companion analytic entry derangements-oq-03."
+    "content": "card_derangement_permMatrices re-exports card_derangements_fin_eq_numDerangements: there are numDerangements n derangement matrices of size n. numDerangements_le_factorial bounds this by n! through the subtype-cardinality chain card (derangements (Fin n)) ≤ card (Perm (Fin n)) = n! (Fintype.card_subtype_le, Fintype.card_perm, Fintype.card_fin). Finally derangementMatrixProb n := numDerangements n / n! is shown to lie in [0,1] (positivity for the lower bound, div_le_one with the factorial bound for the upper). The sharp 1/e convergence rate of this probability is the companion analytic entry derangements-oq-03.",
+    "mathContext": "$|D_n| = $ numDerangements $n \\le n!$, so $0 \\le \\dfrac{D_n}{n!} \\le 1$, with $\\dfrac{D_n}{n!} \\to \\dfrac{1}{e}$.",
+    "significance": "key",
+    "relatedConcepts": ["numDerangements", "Fintype.card_subtype_le", "probability in [0,1]", "1/e limit"],
+    "prerequisites": ["cardinality of subtypes", "factorial", "div_le_one / positivity"]
   }
 ]
