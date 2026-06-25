@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "range": { "startLine": 4, "endLine": 49 },
+    "type": "context",
+    "title": "From Abstract Cyclicity to a Named Isomorphism",
+    "content": "The parent entry proved Gal(ℂ/ℝ) is cyclic of order 2 — abstractly ≅ ℤ/2ℤ — but cyclicity is an existence statement that does not name which automorphism is the generator. Mathlib's zmodCyclicMulEquiv even produces an isomorphism Multiplicative (ZMod 2) ≃* G, but only by Classical.choice-ing some generator. This file answers the parent's first open question by constructing the isomorphism explicitly: every component is spelled out, and complex conjugation Complex.conjAe is named as the image of the nontrivial element ofAdd 1.",
+    "mathContext": "$\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R}) \\;\\simeq^*\\; \\mathrm{Multiplicative}(\\mathbb{Z}/2\\mathbb{Z})$, sending $\\mathrm{conjAe} \\mapsto \\mathrm{ofAdd}\\,1$ and $\\mathrm{id} \\mapsto 1$.",
+    "significance": "context",
+    "relatedConcepts": ["Galois theory", "group isomorphism", "complex conjugation", "cyclic groups", "Multiplicative (ZMod 2)"],
+    "prerequisites": ["Galois group of ℂ/ℝ", "MulEquiv", "complex conjugation"]
+  },
+  {
+    "id": "ann-card-two",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "range": { "startLine": 51, "endLine": 68 },
+    "type": "theorem",
+    "title": "The Galois Group Has Order 2",
+    "content": "After re-establishing IsAlgClosure ℝ ℂ and IsGalois ℝ ℂ self-contained (as in the parent), card_galoisGroup_eq_two computes |Gal(ℂ/ℝ)| = 2 from IsGalois.card_aut_eq_finrank (for a Galois extension the automorphism group has order equal to the degree) and Complex.finrank_real_complex ([ℂ:ℝ] = 2). This cardinality is the only input the rest of the file needs about ℂ.",
+    "mathContext": "$|\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})| = [\\mathbb{C}:\\mathbb{R}] = 2$.",
+    "significance": "key",
+    "relatedConcepts": ["IsGalois.card_aut_eq_finrank", "Complex.finrank_real_complex", "IsGalois"],
+    "prerequisites": ["Galois extensions", "automorphism groups"]
+  },
+  {
+    "id": "ann-two-automorphisms",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "range": { "startLine": 70, "endLine": 108 },
+    "type": "theorem",
+    "title": "The Only Automorphisms Are Identity and Conjugation",
+    "content": "conjAe_ne_one shows complex conjugation is nontrivial (it sends I to -I, so -I = I would force I = 0). conjAe_mul_self records the involution conjAe * conjAe = 1 (Complex.conj_conj). The structure theorem eq_one_or_conjAe then proves the only ℝ-automorphisms of ℂ are 1 and conjAe: a third distinct automorphism g would make {1, conjAe, g} three distinct elements inside a group of cardinality 2 (Fintype.card = 2), a contradiction by Finset.card_le_univ. This pure cardinality count, not the abstract cyclic structure, is what pins down the group.",
+    "mathContext": "$g = 1 \\ \\vee\\ g = \\mathrm{conjAe}$ for every $g \\in \\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})$; $\\mathrm{conjAe} \\neq 1$ and $\\mathrm{conjAe}^2 = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["complex conjugation", "involution", "Fintype.card", "counting argument", "Complex.conj_conj"],
+    "prerequisites": ["finite groups", "complex conjugation as an automorphism"]
+  },
+  {
+    "id": "ann-zmod2-helpers",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "range": { "startLine": 110, "endLine": 117 },
+    "type": "technique",
+    "title": "The Target Group Has Two Elements",
+    "content": "ofAdd_one_ne_one (the nontrivial element ofAdd 1 is not the unit) and zmod2_eq_one_or (every element of Multiplicative (ZMod 2) is 1 or ofAdd 1) are the mirror facts on the target side, both discharged by kernel `decide` over the finite type — not `native_decide`, so no Lean.ofReduceBool axiom is introduced.",
+    "mathContext": "$\\mathrm{Multiplicative}(\\mathbb{Z}/2\\mathbb{Z}) = \\{1, \\mathrm{ofAdd}\\,1\\}$, $\\mathrm{ofAdd}\\,1 \\neq 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Multiplicative (ZMod 2)", "decide", "finite types"],
+    "prerequisites": ["ZMod n", "Multiplicative"]
+  },
+  {
+    "id": "ann-explicit-iso",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "range": { "startLine": 119, "endLine": 163 },
+    "type": "insight",
+    "title": "The Explicit Isomorphism and Its Generator",
+    "content": "galoisGroupEquivZMod2 is the hand-built MulEquiv: g ↦ (if g = 1 then 1 else ofAdd 1), with inverse x ↦ (if x = 1 then 1 else conjAe). The two inverse laws and map_mul each reduce to a finite case split over {1, conjAe} (resp. {1, ofAdd 1}); the only nontrivial multiplication, conjAe·conjAe = 1 ↦ ofAdd 1 · ofAdd 1 = 1, closes by decide. The characterizing lemmas galoisGroupEquivZMod2_conjAe (conjAe ↦ ofAdd 1), galoisGroupEquivZMod2_one (1 ↦ 1), and galoisGroupEquivZMod2_symm_ofAdd_one (ofAdd 1 ↦ conjAe) make the iso canonical by naming the generator — the content the open question asked for.",
+    "mathContext": "$\\varphi(g) = \\begin{cases}1 & g = 1\\\\ \\mathrm{ofAdd}\\,1 & g = \\mathrm{conjAe}\\end{cases}$, $\\varphi(\\mathrm{conjAe}) = \\mathrm{ofAdd}\\,1$, $\\varphi^{-1}(\\mathrm{ofAdd}\\,1) = \\mathrm{conjAe}$.",
+    "significance": "key",
+    "relatedConcepts": ["MulEquiv", "group isomorphism", "complex conjugation as generator", "case analysis"],
+    "prerequisites": ["MulEquiv construction", "finite group multiplication tables"]
+  }
+]
