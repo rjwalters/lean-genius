@@ -1,0 +1,96 @@
+[
+  {
+    "id": "ann-hermitesawtooth-setup",
+    "proofId": "hermite-sawtooth-identity",
+    "range": {
+      "startLine": 1,
+      "endLine": 35
+    },
+    "type": "concept",
+    "title": "Setup: The Fractional-Part Twin of Hermite's Identity",
+    "content": "The file proves the companion sawtooth identity ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2 for real x and integer n ≥ 1, where {y} = y − ⌊y⌋ is Mathlib's Int.fract. It is the fractional-part counterpart of the parent gallery entry's floor identity ∑_{k=0}^{n-1} ⌊x + k/n⌋ = ⌊n·x⌋. The key framing, stated in the docstring, is that summing the real numbers x + k/n over k = 0, …, n−1 gives the exact value n·x + (n-1)/2, which splits into a floor side (⌊n·x⌋, Hermite) and a sawtooth side ({n·x} + (n-1)/2, proved here). The file imports full Mathlib for the Int.fract and Finset.range APIs, and imports Proofs.HermiteFloorIdentity to reuse the parent's verified theorem rather than reprove it.",
+    "mathContext": "For real $x$ and $n \\ge 1$: $\\sum_{k=0}^{n-1}\\{x + k/n\\} = \\{n x\\} + \\tfrac{n-1}{2}$. The two faces $\\lfloor\\cdot\\rfloor$ and $\\{\\cdot\\}$ partition the exact sum $nx + \\tfrac{n-1}{2}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Int.fract",
+      "Int.floor",
+      "Finset.range",
+      "Hermite's identity"
+    ],
+    "prerequisites": [
+      "the floor function and fractional part on ℝ",
+      "the parent Hermite floor identity",
+      "finite sums over Finset.range"
+    ]
+  },
+  {
+    "id": "ann-hermitesawtooth-sum-sample",
+    "proofId": "hermite-sawtooth-identity",
+    "range": {
+      "startLine": 37,
+      "endLine": 53
+    },
+    "type": "technique",
+    "title": "The Exact Sampled Sum n·x + (n-1)/2",
+    "content": "sum_sample proves ∑_{k<n}(x + k/n) = n·x + (n-1)/2 — the exact, floor-free value of the uniformly sampled points. The summand is split with Finset.sum_add_distrib: the constant term contributes ∑_{k<n} x = n·x (via Finset.sum_const, Finset.card_range, nsmul_eq_mul), and the linear term contributes (∑_{k<n} k)/n. The Gauss sum ∑_{k<n} k = n(n−1)/2 over ℝ is the only non-trivial ingredient: it is obtained by casting the ℕ lemma Finset.sum_range_id_mul_two (which states (∑_{k<n} k)·2 = n·(n−1)) to ℝ with push_cast and Nat.cast_sub hn (so ↑(n−1) becomes ↑n − 1), then closed by linear_combination hc / 2 to avoid any nonlinear-atom mismatch. A final field_simp clears the 1/n and finishes (n·(n−1)/2)/n = (n-1)/2.",
+    "mathContext": "$\\sum_{k=0}^{n-1}(x + k/n) = nx + \\tfrac1n\\sum_{k<n}k = nx + \\tfrac1n\\cdot\\tfrac{n(n-1)}{2} = nx + \\tfrac{n-1}{2}$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Finset.sum_range_id_mul_two",
+      "Finset.sum_add_distrib",
+      "Nat.cast_sub",
+      "linear_combination"
+    ],
+    "prerequisites": [
+      "the Gauss sum ∑_{k<n} k = n(n−1)/2",
+      "casting ℕ identities to ℝ",
+      "Finset.sum_const and nsmul_eq_mul"
+    ]
+  },
+  {
+    "id": "ann-hermitesawtooth-identity",
+    "proofId": "hermite-sawtooth-identity",
+    "range": {
+      "startLine": 55,
+      "endLine": 72
+    },
+    "type": "key-step",
+    "title": "Subtracting Hermite from the Exact Sum",
+    "content": "hermite_sawtooth_identity is the headline result, proved as a one-line subtraction once the pieces are in place. Each Int.fract (x + k/n) is rewritten to (x + k/n) − ⌊x + k/n⌋ using the definitional unfolding rw [Int.fract]. Finset.sum_sub_distrib then separates the sum into the exact sampled sum minus the floor sum. The floor sum's integer casts are collected with ← Int.cast_sum, after which the parent theorem HermiteFloorIdentity.hermite_floor_identity rewrites ∑_{k<n} ⌊x + k/n⌋ to ⌊n·x⌋. Substituting sum_sample for the exact sum leaves n·x + (n-1)/2 − ⌊n·x⌋; unfolding Int.fract on n·x once more and ring concludes (n·x − ⌊n·x⌋) + (n-1)/2 = {n·x} + (n-1)/2. No fractional-part periodicity or residue counting is needed — the parent identity does all the analytic work.",
+    "mathContext": "$\\sum_{k<n}\\{x+k/n\\} = \\sum_{k<n}(x+k/n) - \\sum_{k<n}\\lfloor x+k/n\\rfloor = (nx + \\tfrac{n-1}{2}) - \\lfloor nx\\rfloor = \\{nx\\} + \\tfrac{n-1}{2}$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Int.fract",
+      "Finset.sum_sub_distrib",
+      "Int.cast_sum",
+      "HermiteFloorIdentity.hermite_floor_identity"
+    ],
+    "prerequisites": [
+      "Int.fract y = y − ⌊y⌋ definitionally",
+      "the parent Hermite floor identity",
+      "splitting a finite sum of differences"
+    ]
+  },
+  {
+    "id": "ann-hermitesawtooth-decomposition",
+    "proofId": "hermite-sawtooth-identity",
+    "range": {
+      "startLine": 74,
+      "endLine": 84
+    },
+    "type": "concept",
+    "title": "The Explicit Floor + Sawtooth Decomposition",
+    "content": "floor_add_sawtooth records the floor↔fractional equivalence directly: ∑_{k<n}(x + k/n) = ⌊n·x⌋ + ∑_{k<n}{x + k/n}. It is proved by rewriting the sawtooth sum with hermite_sawtooth_identity, the left side with sum_sample, and Int.fract on n·x, then closing with ring. This makes explicit the decomposition principle behind the whole file — the exact sampled sum is the Hermite floor side plus the sawtooth side — and packages the two halves into a single reusable lemma for counting arguments that must track both ⌊n·x⌋ and {n·x}.",
+    "mathContext": "$\\sum_{k<n}(x + k/n) = \\lfloor nx\\rfloor + \\sum_{k<n}\\{x + k/n\\}$: the exact sum partitions into floor and fractional halves.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "floor + fractional decomposition",
+      "Int.fract",
+      "Int.floor"
+    ],
+    "prerequisites": [
+      "the sawtooth identity",
+      "the exact sampled sum"
+    ]
+  }
+]
