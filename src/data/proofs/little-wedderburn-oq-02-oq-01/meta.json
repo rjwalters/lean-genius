@@ -1,0 +1,186 @@
+{
+  "id": "little-wedderburn-oq-02-oq-01",
+  "slug": "little-wedderburn-oq-02-oq-01",
+  "title": "The Subfield Lattice of a Finite Field: GF(p^m) ⊆ GF(p^n) ⟺ m ∣ n",
+  "description": "Formalizes the first open question of the finite-field classification: the subfields of GF(p^n) are exactly the GF(p^m) for divisors m ∣ n. On the abstract level there is a ZMod p-algebra embedding GF(p^m) ↪ GF(p^n) iff m ∣ n (embeds_iff_dvd, via FiniteField.nonempty_algHom_iff_finrank_dvd and the dimension finrank = exponent). On the concrete level, inside any finite field K of order p^n, the fixed points of the m-fold Frobenius {x : x^(p^m) = x} form a genuine Subfield K (subfieldFix) that has exactly p^m elements for each m ∣ n (card_subfieldFix), and these subfields are nested by divisibility (subfieldFix_mono). The cardinality count — GF(p^n) contains a subfield of order p^m for every m ∣ n — is the new content beyond Mathlib's abstract algHom form.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LittleWedderburnSubfieldLatticeOQ020101.lean",
+    "tags": [
+      "algebra",
+      "field-theory",
+      "finite-field",
+      "galois-field",
+      "subfield-lattice",
+      "frobenius",
+      "divisibility",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 142,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "badge": "mathlib",
+    "originalContributions": [
+      "embeds_iff_dvd: there is a ZMod p-algebra embedding GaloisField p m →ₐ GaloisField p n iff m ∣ n — the divisor lattice of exponents as the embeddability poset of canonical finite fields — obtained by combining FiniteField.nonempty_algHom_iff_finrank_dvd with GaloisField.finrank p = (the exponent) on both sides",
+      "subfieldFix: the concrete subfield of fixed points of the m-fold Frobenius x ↦ x^(p^m) inside an arbitrary finite field K, realised as the equaliser locus (iterateFrobenius K p m).eqLocusField (RingHom.id K), with membership x ∈ subfieldFix p m ↔ x^(p^m) = x definitionally (mem_subfieldFix)",
+      "card_subfieldFix: in a finite field K of order p^n, the fixed subfield subfieldFix p m has exactly p^m elements for every divisor m ∣ n — i.e. GF(p^n) contains a subfield of order p^m for each m ∣ n. This is the genuinely new content: Mathlib records the existence of an order-p^m subfield only abstractly (as an algHom), not as a concrete Subfield with a cardinality. The count is assembled from separability of X^(p^m) - X (galois_poly_separable), its divisibility into X^(p^n) - X = X^|K| - X (dvd_pow_pow_sub_self_of_dvd, since m ∣ n), the splitting of the latter in K (roots_X_pow_card_sub_X), and root counting (card_rootSet_eq_natDegree)",
+      "subfieldFix_mono: the subfield lattice is ordered by divisibility — a ∣ b ⟹ subfieldFix p a ≤ subfieldFix p b — proved elementarily from dvd_pow_pow_sub_self_of_dvd: x^(p^a) - x divides x^(p^b) - x, so x^(p^a) = x forces x^(p^b) = x",
+      "gf4_embeds_gf64 and gf4_not_embeds_gf8: concrete instances — GF(4) embeds into GF(64) (2 ∣ 6) but not into GF(8) (2 ∤ 3) — exhibiting the divisor obstruction"
+    ],
+    "prerequisites": [
+      "FiniteField.nonempty_algHom_iff_finrank_dvd: for finite extensions K, L of a finite field F, there is an F-algebra hom K →ₐ L iff finrank F K ∣ finrank F L",
+      "GaloisField.finrank: [GaloisField p n : ZMod p] = n for n ≠ 0",
+      "Algebra.CharP iterateFrobenius: the iterated Frobenius ring map x ↦ x^(p^n), and RingHom.eqLocusField packaging its agreement set with the identity as a Subfield",
+      "FiniteField.galois_poly_separable: X^q - X is separable when char ∣ q; FiniteField.roots_X_pow_card_sub_X: X^|K| - X has all field elements as its simple roots",
+      "Polynomial.card_rootSet_eq_natDegree: a separable polynomial that splits has exactly deg distinct roots",
+      "GeomSum.dvd_pow_pow_sub_self_of_dvd: a ∣ b ⟹ r^(p^a) - r ∣ r^(p^b) - r in any commutative ring"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "FiniteField.nonempty_algHom_iff_finrank_dvd",
+        "description": "There is an F-algebra embedding K →ₐ L between finite extensions of a finite field iff finrank F K ∣ finrank F L. The engine for embeds_iff_dvd.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "GaloisField.finrank",
+        "description": "[GaloisField p n : ZMod p] = n for n ≠ 0; turns the finrank-divisibility condition into m ∣ n.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "FiniteField.galois_poly_separable",
+        "description": "X^q - X is separable over a ring of characteristic p whenever p ∣ q; gives separability of X^(p^m) - X.",
+        "module": "Mathlib.FieldTheory.Finite.GaloisField"
+      },
+      {
+        "theorem": "FiniteField.roots_X_pow_card_sub_X",
+        "description": "X^|K| - X has root multiset equal to the universe of K — every element is a simple root — so it splits in K with |K| distinct roots.",
+        "module": "Mathlib.FieldTheory.Finite.Basic"
+      },
+      {
+        "theorem": "Polynomial.card_rootSet_eq_natDegree",
+        "description": "A separable polynomial that splits over K has exactly natDegree distinct roots in K; counts the fixed points of the m-fold Frobenius as p^m.",
+        "module": "Mathlib.FieldTheory.Separable"
+      },
+      {
+        "theorem": "dvd_pow_pow_sub_self_of_dvd",
+        "description": "If a ∣ b then r^(p^a) - r ∣ r^(p^b) - r in any commutative ring; supplies both the polynomial divisibility X^(p^m)-X ∣ X^(p^n)-X and the element-level monotonicity of the fixed subfields.",
+        "module": "Mathlib.Algebra.Ring.GeomSum"
+      }
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial"
+    ],
+    "namespace": "LittleWedderburnOQ02OQ01",
+    "lineCount": 142,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/LittleWedderburnSubfieldLatticeOQ020101.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "historicalContext": "The structure of finite fields, due to Galois and codified by E. H. Moore (1893), is the most rigid in algebra: for each prime power q = p^n there is exactly one field of order q, and its subfields are governed entirely by arithmetic. Precisely, GF(p^n) has one subfield of order p^m for each divisor m ∣ n and no others, and these subfields are nested exactly as the divisors are: GF(p^a) ⊆ GF(p^b) iff a ∣ b. This is the field-theoretic shadow of the Galois correspondence for the cyclic extension GF(p^n)/F_p — the subfield lattice is anti-isomorphic to the subgroup lattice of the cyclic Galois group ℤ/nℤ, which is itself the divisor lattice of n. The single map controlling everything is the Frobenius φ : x ↦ x^p: the unique subfield of order p^m is exactly the fixed field of φ^m, the set of solutions of x^(p^m) = x.",
+    "problemStatement": "Formalize the subfield lattice of a finite field. (1) Abstract form: there is a ZMod p-algebra embedding GaloisField p m → GaloisField p n iff m ∣ n. (2) Concrete form: inside an arbitrary finite field K of order p^n, the set of fixed points of the m-fold Frobenius {x : x^(p^m) = x} is a subfield, it has exactly p^m elements for every divisor m ∣ n, and these subfields are nested according to divisibility.",
+    "proofStrategy": "The abstract embedding statement is read off Mathlib's FiniteField.nonempty_algHom_iff_finrank_dvd — an F-algebra embedding between finite extensions exists iff the degrees divide — by rewriting the finranks of GaloisField p m and GaloisField p n as m and n via GaloisField.finrank. The concrete subfield is built as the equaliser locus subfieldFix p m := (iterateFrobenius K p m).eqLocusField (RingHom.id K), whose membership x ∈ subfieldFix p m ↔ x^(p^m) = x holds by definitional unfolding (iterateFrobenius_def). The cardinality is the crux: the fixed points are exactly the roots of f = X^(p^m) - X, which is separable (galois_poly_separable, as p ∣ p^m) and divides X^(p^n) - X = X^|K| - X because m ∣ n (dvd_pow_pow_sub_self_of_dvd); the big polynomial splits in K with all |K| elements as simple roots (roots_X_pow_card_sub_X), so the divisor f splits too, and card_rootSet_eq_natDegree gives exactly deg f = p^m roots. Transporting along the equaliser-locus/root-set equivalence yields Nat.card (subfieldFix p m) = p^m. Monotonicity a ∣ b ⟹ subfieldFix p a ≤ subfieldFix p b is again dvd_pow_pow_sub_self_of_dvd at the element level: x^(p^a) - x ∣ x^(p^b) - x, so the left vanishing forces the right.",
+    "keyInsights": [
+      "The subfield lattice of GF(p^n) is the divisor lattice of n. The abstract embeds_iff_dvd realises this as a poset isomorphism between {GF(p^k)} under embeddability and the naturals under divisibility — purely a degree (finrank) divisibility condition.",
+      "Every subfield is a Frobenius fixed field. Realising the order-p^m subfield as {x : x^(p^m) = x} = (iterateFrobenius p m).eqLocusField id makes the subfield concrete and its membership definitional, and reduces counting it to counting roots of X^(p^m) - X.",
+      "Counting via separability + splitting. The order-p^m subfield has exactly p^m elements because X^(p^m) - X is separable and splits in GF(p^n) (it divides X^|K| - X, every element of K being a simple root of the latter). This is the content Mathlib does not package: existence-with-cardinality of a concrete subfield, as opposed to the abstract algHom.",
+      "Divisibility drives nesting. The single ring-theoretic fact a ∣ b ⟹ r^(p^a) - r ∣ r^(p^b) - r supplies both the polynomial divisibility behind the count and the element-level monotonicity of the lattice, so subfieldFix_mono needs no Galois machinery.",
+      "The 'mathlib' badge is honest: the headline embedding criterion is a direct specialisation of nonempty_algHom_iff_finrank_dvd, and the ingredients for the count (separability, splitting, root counting) are all Mathlib's; the new content is the concrete fixed-point subfield together with its exact cardinality and its divisibility ordering, which Mathlib does not record as named results."
+    ]
+  },
+  "conclusion": {
+    "summary": "The subfield lattice of a finite field is formalized on two levels. Abstractly, there is a ZMod p-algebra embedding GaloisField p m → GaloisField p n iff m ∣ n (embeds_iff_dvd), with the constructive direction nonempty_algHom_of_dvd and the worked instances GF(4) ↪ GF(64) but GF(4) ⋪ GF(8). Concretely, inside any finite field K of order p^n the fixed points of the m-fold Frobenius form a subfield subfieldFix p m (membership x^(p^m) = x by definition) that has exactly p^m elements for every divisor m ∣ n (card_subfieldFix), and the subfields are nested by divisibility, a ∣ b ⟹ subfieldFix p a ≤ subfieldFix p b (subfieldFix_mono). 142 lines, 7 theorems, 1 definition, 0 axioms, 0 sorries.",
+    "implications": "The headline embedding criterion specialises Mathlib's nonempty_algHom_iff_finrank_dvd (hence the mathlib badge); the new content is the concrete Frobenius-fixed subfield with its exact cardinality p^m and its divisibility ordering — i.e. GF(p^n) contains a subfield of order p^m for each m ∣ n — which Mathlib records only abstractly. This closes the first open question of the finite-field classification (LittleWedderburnOQ02) and is the field side of the Galois correspondence whose group side is developed in the sibling Frobenius–Galois entry.",
+    "openQuestions": [
+      "Prove the converse nesting and uniqueness: subfieldFix p a ≤ subfieldFix p b ⟹ a ∣ b (for a, b ∣ n), and that subfieldFix p m is the UNIQUE subfield of order p^m, completing the lattice anti-isomorphism with the divisors of n.",
+      "Match the subfield lattice to the subgroup lattice of the cyclic Galois group via the Galois correspondence, identifying subfieldFix p m as the fixed field of the m-th power of Frobenius."
+    ]
+  },
+  "openQuestions": [
+    {
+      "id": "little-wedderburn-oq-02-oq-01-oq-01",
+      "question": "Prove that subfieldFix p m is the UNIQUE subfield of GF(p^n) of order p^m and that the nesting is iff: subfieldFix p a ≤ subfieldFix p b ⟺ a ∣ b for a, b ∣ n, completing the anti-isomorphism between the subfield lattice and the divisor lattice of n.",
+      "significance": "medium"
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: FieldTheory.Finite.GaloisField",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of nonempty_algHom_iff_finrank_dvd, GaloisField.finrank, and galois_poly_separable."
+    },
+    {
+      "title": "Mathlib4: FieldTheory.Finite.Basic",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of roots_X_pow_card_sub_X and the X^|K| - X degree/nonvanishing lemmas underlying the root count."
+    },
+    {
+      "title": "A doubly-infinite system of simple groups",
+      "author": "Eliakim Hastings Moore",
+      "year": "1893",
+      "venue": "Bulletin of the New York Mathematical Society 3: 73–78",
+      "description": "Classification of finite fields by prime-power order, the foundation for the divisor description of their subfield lattice."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "little-wedderburn-oq-02",
+      "relationship": "extends",
+      "description": "The parent classifies finite fields by order (existence and uniqueness of GF(p^n)). This entry answers its first open question: the subfield lattice of GF(p^n) is the divisor lattice of n, both abstractly (embedding iff m ∣ n) and concretely (a Frobenius-fixed subfield of order p^m for each m ∣ n)."
+    },
+    {
+      "targetId": "little-wedderburn-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The sibling develops the group side of the Galois correspondence — Aut(GF(p^n)) is cyclic of order n generated by Frobenius. This entry develops the field side — the subfield lattice — with the same Frobenius the controlling map."
+    }
+  ],
+  "sections": [
+    {
+      "id": "embedding-lattice",
+      "title": "Abstract Embedding Lattice: GF(p^m) ↪ GF(p^n) ⟺ m ∣ n",
+      "startLine": 48,
+      "endLine": 62,
+      "summary": "embeds_iff_dvd characterises the existence of a ZMod p-algebra embedding GaloisField p m → GaloisField p n by m ∣ n, specialising FiniteField.nonempty_algHom_iff_finrank_dvd with GaloisField.finrank on both sides. nonempty_algHom_of_dvd is the constructive direction.",
+      "mathContext": "$\\mathrm{GF}(p^m) \\hookrightarrow \\mathrm{GF}(p^n) \\iff m \\mid n$, equivalently $[\\,\\mathrm{GF}(p^m):\\mathbb{F}_p\\,] \\mid [\\,\\mathrm{GF}(p^n):\\mathbb{F}_p\\,]$."
+    },
+    {
+      "id": "fixed-subfield",
+      "title": "The Frobenius-Fixed Subfield and Its Lattice",
+      "startLine": 64,
+      "endLine": 92,
+      "summary": "subfieldFix p m is the subfield of fixed points of the m-fold Frobenius, x ↦ x^(p^m), realised as an equaliser locus; mem_subfieldFix records that membership is x^(p^m) = x by definition. subfieldFix_mono proves a ∣ b ⟹ subfieldFix p a ≤ subfieldFix p b from r^(p^a) - r ∣ r^(p^b) - r.",
+      "mathContext": "$\\mathrm{subfieldFix}\\,m = \\{x \\in K : x^{p^m} = x\\}$, and $a \\mid b \\Rightarrow \\mathrm{subfieldFix}\\,a \\subseteq \\mathrm{subfieldFix}\\,b$."
+    },
+    {
+      "id": "cardinality",
+      "title": "Cardinality: GF(p^n) Has a Subfield of Order p^m for Each m ∣ n",
+      "startLine": 94,
+      "endLine": 125,
+      "summary": "card_subfieldFix proves Nat.card (subfieldFix p m) = p^m for m ∣ n. The fixed points are the roots of f = X^(p^m) - X, which is separable and divides X^|K| - X (as m ∣ n); the latter splits with all |K| elements as simple roots, so f splits with exactly deg f = p^m distinct roots, transported along the equaliser-locus/root-set equivalence.",
+      "mathContext": "$\\#\\{x \\in K : x^{p^m} = x\\} = p^m$ for every divisor $m \\mid n$, where $|K| = p^n$."
+    },
+    {
+      "id": "instances",
+      "title": "Worked Instances",
+      "startLine": 127,
+      "endLine": 141,
+      "summary": "gf4_embeds_gf64 exhibits GF(4) ↪ GF(64) since 2 ∣ 6; gf4_not_embeds_gf8 shows GF(4) does not embed into GF(8) since 2 ∤ 3 — the divisor obstruction made concrete.",
+      "mathContext": "$\\mathrm{GF}(4) \\hookrightarrow \\mathrm{GF}(64)$ but $\\mathrm{GF}(4) \\not\\hookrightarrow \\mathrm{GF}(8)$."
+    }
+  ],
+  "sorries": 0
+}
