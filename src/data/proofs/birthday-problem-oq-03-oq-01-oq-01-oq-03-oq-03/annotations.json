@@ -1,0 +1,50 @@
+[
+  {
+    "id": "bday-oq0301010303-ann-falling",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 1, "endLine": 71 },
+    "type": "concept",
+    "title": "The Falling Factorial and the k-th-Root Identity",
+    "content": "The header frames the parent's OQ-03: for k-fold birthday coincidences among d days, the threshold group size is n ≈ (k!·d^{k-1}·ln2)^{1/k}, from the expected-count balance C(n,k)/d^{k-1} = n^{underline k}/(k!·d^{k-1}) = ln2 at the 50%-chance point, i.e. n^{underline k} = k!·d^{k-1}·ln2. The falling factorial is carried as an explicit product fallingR n k = ∏_{i<k}(n-i); fallingR_three checks it equals the parent's cubic n(n-1)(n-2) at k=3. k-th roots are the real power t ↦ t^{1/k}; kthRoot_pow gives the identity (x^k)^{1/k} = x for x ≥ 0, k ≥ 1 via Real.pow_rpow_inv_natCast (rewriting 1/k = (k:ℕ)⁻¹).",
+    "mathContext": "Balance: $\\binom{n}{k}/d^{k-1} = \\ln 2 \\iff n^{\\underline{k}} = k!\\,d^{k-1}\\ln 2$, with $n^{\\underline{k}} = \\prod_{i<k}(n-i)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["birthday problem", "falling factorial", "expected count", "Poisson heuristic", "real powers"],
+    "prerequisites": ["binomial coefficients", "logarithm", "rpow", "finite products"]
+  },
+  {
+    "id": "bday-oq0301010303-ann-sandwich",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 72, "endLine": 104 },
+    "type": "insight",
+    "title": "The Falling-Factorial Sandwich",
+    "content": "falling_sandwich proves (n-(k-1))^k ≤ n^{underline k} ≤ n^k whenever n ≥ k-1. The key observation: for each i ∈ range k we have 0 ≤ i ≤ k-1, hence 0 ≤ n-(k-1) ≤ n-i ≤ n. The upper bound replaces every factor n-i by its maximum n (so ∏ ≤ n^k via Finset.prod_const and card_range); the lower bound replaces every factor by its minimum n-(k-1) (so (n-(k-1))^k ≤ ∏). Both directions are a single Finset.prod_le_prod with the per-factor bound — the uniform-in-k replacement for the parent's two nlinarith cubic calculations.",
+    "mathContext": "$\\forall i<k:\\ n-(k-1)\\le n-i\\le n\\ \\Rightarrow\\ (n-(k-1))^k \\le \\prod_{i<k}(n-i) \\le n^k$.",
+    "significance": "critical",
+    "relatedConcepts": ["sandwich argument", "monotonicity of products", "falling factorial"],
+    "prerequisites": ["Finset.prod_le_prod", "Finset.prod_const", "nonnegativity"]
+  },
+  {
+    "id": "bday-oq0301010303-ann-threshold",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 105, "endLine": 158 },
+    "type": "insight",
+    "title": "The Threshold Sandwich and Packaged Gap",
+    "content": "birthday_kfold_threshold turns the falling-factorial sandwich into the threshold bound. Writing L = k!·d^{k-1}·ln2 (positive since log 2 > 0), the balance gives n^{underline k} = L, so the sandwich reads (n-(k-1))^k ≤ L ≤ n^k. k-th-root monotonicity (Real.rpow_le_rpow at exponent 1/k ≥ 0) with (x^k)^{1/k}=x turns L ≤ n^k into L^{1/k} ≤ n, and (n-(k-1))^k ≤ L into n-(k-1) ≤ L^{1/k}; together L^{1/k} ≤ n ≤ L^{1/k} + (k-1). birthday_kfold_threshold_gap restates this as |n − (k!·d^{k-1}·ln2)^{1/k}| ≤ k-1: a bounded, d-independent O(1) error, the rigorous form of n ≈ (k!·d^{k-1}·ln2)^{1/k}.",
+    "mathContext": "$(n-(k-1))^k \\le L \\le n^k \\Rightarrow L^{1/k} \\le n \\le L^{1/k}+(k-1)$, i.e. $\\bigl|n - (k!\\,d^{k-1}\\ln 2)^{1/k}\\bigr| \\le k-1$.",
+    "significance": "critical",
+    "relatedConcepts": ["asymptotic equivalence", "error bound", "monotonicity of roots", "rpow"],
+    "prerequisites": ["k-th-root identity", "Real.rpow_le_rpow", "abs_le"]
+  },
+  {
+    "id": "bday-oq0301010303-ann-k3",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+    "range": { "startLine": 159, "endLine": 203 },
+    "type": "insight",
+    "title": "Consistency with the k = 3 Parent",
+    "content": "birthday_kfold_threshold_k3 instantiates the general theorem at k=3 and checks it reproduces the parent verbatim: from n(n-1)(n-2) = 6d²ln2 it recovers (6d²ln2)^{1/3} ≤ n ≤ (6d²ln2)^{1/3} + 2. The bridge is fallingR_three (n^{underline 3} = n(n-1)(n-2)) and factorial 3 = 6, d^{3-1} = d², k-1 = 2 — so the parent's additive slack 2 is exactly the general k-1 at k=3. This confirms the generalization is a faithful lift, not a divergent restatement.",
+    "mathContext": "$k=3:\\ (6 d^2 \\ln 2)^{1/3} \\le n \\le (6 d^2 \\ln 2)^{1/3} + 2$, the parent's bound, with $2 = k-1$.",
+    "significance": "important",
+    "relatedConcepts": ["specialization", "consistency check", "parent recovery"],
+    "prerequisites": ["the general threshold", "factorial evaluation"]
+  }
+]

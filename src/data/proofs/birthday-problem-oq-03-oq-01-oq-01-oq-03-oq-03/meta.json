@@ -1,0 +1,160 @@
+{
+  "id": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+  "title": "The General k-Fold Birthday-Coincidence Threshold n ≈ (k!·d^{k-1}·ln2)^{1/k}",
+  "slug": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-03",
+  "description": "Generalizes the parent's k=3 cube-root threshold to arbitrary k. For k ≥ 1, d > 0, and n ≥ k-1 solving the expected-k-tuple balance n^{underline k} = k!·d^{k-1}·ln2 (expected coincident k-tuples = ln2, the 50%-chance criterion), proves (k!·d^{k-1}·ln2)^{1/k} ≤ n ≤ (k!·d^{k-1}·ln2)^{1/k} + (k-1), i.e. n = (k!·d^{k-1}·ln2)^{1/k} + O(1) with d-independent additive error at most k-1. Proved by the falling-factorial sandwich (n-k+1)^k ≤ n^{underline k} ≤ n^k and rpow monotonicity — the exact k-fold lift of the parent's cube-root sandwich. Verified, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean",
+    "tags": [
+      "probability",
+      "birthday-problem",
+      "asymptotics",
+      "threshold",
+      "falling-factorial",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 203,
+    "assumptions": "None. Fully machine-verified: lake env lean of Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean exits 0 against the pinned Mathlib (v4.26.0), and #print axioms reports only the foundational propext / Classical.choice / Quot.sound (no Lean.ofReduceBool, no sorryAx) for birthday_kfold_threshold and birthday_kfold_threshold_gap. The file imports only Mathlib and is self-contained. Scope note: this proves the threshold to leading order with an explicit additive O(1) bound (≤ k-1, independent of d) from the expected-count balance equation; it does not re-derive the balance equation from a probabilistic limit theorem (Poisson approximation for the number of coincident k-tuples), which is the heuristic input — exactly as in the k=3 parent.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Real.pow_rpow_inv_natCast",
+        "description": "(x ^ n) ^ (n⁻¹ : ℝ) = x for 0 ≤ x, n ≠ 0 — the k-th-root identity (x^k)^{1/k} = x underlying kthRoot_pow",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow",
+        "description": "monotonicity of t ↦ t^z on the nonnegatives for z ≥ 0 — passes the k-th root through the sandwich inequalities at exponent 1/k",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Finset.prod_le_prod",
+        "description": "monotonicity of finite products of nonnegatives — both directions of the falling-factorial sandwich (replace each factor n-i by its min n-(k-1) or its max n)",
+        "module": "Mathlib.Algebra.Order.BigOperators.Ring"
+      },
+      {
+        "theorem": "Real.log_pos",
+        "description": "0 < log x for 1 < x — positivity of ln 2, hence of k!·d^{k-1}·ln2",
+        "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Rigorous leading-order proof of the general k-fold birthday-coincidence threshold (k!·d^{k-1}·ln2)^{1/k} with an explicit, d-independent additive error bound of at most k-1, generalizing the parent's k=3 result",
+      "fallingR: the real falling factorial n^{underline k} = ∏_{i<k}(n-i), with fallingR_three recovering the parent's cubic product n(n-1)(n-2)",
+      "kthRoot_pow: the k-th-root identity (x^k)^{1/k} = x for x ≥ 0, k ≥ 1",
+      "falling_sandwich: (n-(k-1))^k ≤ n^{underline k} ≤ n^k for n ≥ k-1, by monotonicity of finite products (each factor n-i trapped in [n-(k-1), n])",
+      "birthday_kfold_threshold: (k!·d^{k-1}·ln2)^{1/k} ≤ n ≤ (k!·d^{k-1}·ln2)^{1/k} + (k-1) for n solving the balance equation, via the falling-factorial sandwich and rpow monotonicity",
+      "birthday_kfold_threshold_gap: the packaged statement |n − (k!·d^{k-1}·ln2)^{1/k}| ≤ k-1",
+      "birthday_kfold_threshold_k3: the k=3 specialization recovers the parent's (6d²ln2)^{1/3} ≤ n ≤ (6d²ln2)^{1/3} + 2 verbatim"
+    ],
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The classical birthday problem (k=2) has threshold n ≈ √(2d ln2); the k-fold coincidence problem — when are k people likely to share a day among d days? — has folklore threshold n ≈ (k!·d^{k-1}·ln2)^{1/k}, obtained from the expected number of coincident k-tuples. The parent (birthday-problem-oq-03-oq-01-oq-01-oq-03) proved the k=3 case rigorously by a cube-root sandwich and asked, in its OQ-03, for the general-k lift. This entry supplies it: the same sandwich, now over the k-fold falling factorial, with the additive slack 2 of the parent reappearing as the general k-1.",
+    "problemStatement": "Generalize the k=3 coincidence threshold to general k: show the k-fold birthday-coincidence threshold is n = (k!·d^{k-1}·ln2)^{1/k} + O(1) via the falling-factorial sandwich (n-k+1)^k ≤ n^{underline k} ≤ n^k combined with rpow monotonicity.",
+    "text": "Shows that, for k ≥ 1 and d > 0, the n ≥ k-1 solving the expected-k-tuple balance n^{underline k} = k!·d^{k-1}·ln2 satisfies (k!·d^{k-1}·ln2)^{1/k} ≤ n ≤ (k!·d^{k-1}·ln2)^{1/k} + (k-1), the rigorous form of n ≈ (k!·d^{k-1}·ln2)^{1/k}.",
+    "proofStrategy": "The 50%-chance heuristic sets the expected number of coincident k-tuples C(n,k)/d^{k-1} = n^{underline k}/(k!·d^{k-1}) equal to ln2, i.e. n^{underline k} = k!·d^{k-1}·ln2 =: L, where n^{underline k} = ∏_{i<k}(n-i) is the real falling factorial fallingR. The sandwich falling_sandwich traps it between perfect k-th powers: for n ≥ k-1 every factor n-i (i < k) lies in [n-(k-1), n], so by monotonicity of finite products of nonnegatives (Finset.prod_le_prod) (n-(k-1))^k ≤ n^{underline k} ≤ n^k. Taking k-th roots — monotone on the nonnegatives (Real.rpow_le_rpow at exponent 1/k) with the identity (x^k)^{1/k} = x (kthRoot_pow, from Real.pow_rpow_inv_natCast) — turns L ≤ n^k into L^{1/k} ≤ n and (n-(k-1))^k ≤ L into n-(k-1) ≤ L^{1/k}. Hence L^{1/k} ≤ n ≤ L^{1/k} + (k-1). Specializing k=3 (fallingR_three, factorial 3 = 6) reproduces the parent verbatim.",
+    "keyInsights": [
+      "The k-fold threshold n is trapped between two consecutive perfect k-th powers, n^{underline k} ∈ [(n-(k-1))^k, n^k], so a single k-th-root sandwich pins it to (k!·d^{k-1}·ln2)^{1/k} within an additive k-1.",
+      "The error bound k-1 is the gap between the k-th roots of the two bounding powers and is independent of d — so the asymptotic n ∼ (k!·d^{k-1}·ln2)^{1/k} holds with an explicit, uniform lower-order term, recovering the parent's slack 2 = k-1 at k=3.",
+      "The cube-root sandwich of the parent generalizes verbatim once the cubic is recast as a product ∏_{i<k}(n-i): the two endpoint replacements n-i ↦ n and n-i ↦ n-(k-1) are exactly two applications of Finset.prod_le_prod, replacing the parent's two nlinarith calls.",
+      "k-th roots are handled uniformly as the real power t ↦ t^{1/k}: monotone on the nonnegatives and inverse to the k-th power there, avoiding any bespoke nth-root development for varying k.",
+      "Carrying the falling factorial as an explicit Finset product (fallingR) makes the argument uniform in k, where the parent could expand the k=3 product into a fixed cubic and call nlinarith."
+    ]
+  },
+  "sections": [
+    {
+      "id": "falling-and-roots",
+      "title": "The Falling Factorial and the k-th-Root Identity",
+      "summary": "Module docstring framing OQ-03 (the general-k threshold and the expected-count balance); fallingR (n^{underline k} = ∏_{i<k}(n-i)) with fallingR_three recovering n(n-1)(n-2); kthRoot_pow: (x^k)^{1/k} = x for x ≥ 0, k ≥ 1, via Real.pow_rpow_inv_natCast",
+      "startLine": 1,
+      "endLine": 71
+    },
+    {
+      "id": "sandwich",
+      "title": "The Falling-Factorial Sandwich",
+      "summary": "falling_sandwich: for n ≥ k-1, (n-(k-1))^k ≤ n^{underline k} ≤ n^k, by monotonicity of finite products — each factor n-i (i < k) lies in [n-(k-1), n], two applications of Finset.prod_le_prod",
+      "startLine": 72,
+      "endLine": 104
+    },
+    {
+      "id": "threshold",
+      "title": "The Threshold Sandwich and Packaged Gap",
+      "summary": "birthday_kfold_threshold: (k!·d^{k-1}·ln2)^{1/k} ≤ n ≤ (k!·d^{k-1}·ln2)^{1/k} + (k-1) from L ≤ n^k and (n-(k-1))^k ≤ L via k-th-root monotonicity; birthday_kfold_threshold_gap: |n − (k!·d^{k-1}·ln2)^{1/k}| ≤ k-1",
+      "startLine": 105,
+      "endLine": 158
+    },
+    {
+      "id": "k3-consistency",
+      "title": "Consistency with the k = 3 Parent",
+      "summary": "birthday_kfold_threshold_k3: instantiating k=3 recovers the parent's statement (6d²ln2)^{1/3} ≤ n ≤ (6d²ln2)^{1/3} + 2 verbatim, with slack 2 = k-1",
+      "startLine": 159,
+      "endLine": 203
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalized in Lean 4 (0 axioms, 0 sorries; self-contained, imports only Mathlib): the general k-fold birthday-coincidence threshold is (k!·d^{k-1}·ln2)^{1/k} to leading order, with explicit additive error at most k-1 (independent of d). For k ≥ 1, d > 0, the n ≥ k-1 solving the expected-k-tuple balance n^{underline k} = k!·d^{k-1}·ln2 satisfies (k!·d^{k-1}·ln2)^{1/k} ≤ n ≤ (k!·d^{k-1}·ln2)^{1/k} + (k-1), by the falling-factorial sandwich (n-k+1)^k ≤ n^{underline k} ≤ n^k. The k=3 specialization recovers the parent verbatim.",
+    "implications": "Lifts the parent's rigorous, machine-checked k=3 threshold to all k, cleanly separating the proved algebraic/analytic core (the falling-factorial sandwich) from the probabilistic balance heuristic. The falling-factorial-sandwich technique transfers to any expected-count threshold where a k-fold falling factorial is trapped between consecutive perfect k-th powers; the additive error k-1 is sharp for the sandwich (achieved at the endpoints).",
+    "openQuestions": [
+      "Derive the balance equation n^{underline k} = k!·d^{k-1}·ln2 from a probabilistic limit theorem (Poisson approximation for the number of coincident k-tuples), closing the gap between heuristic and theorem uniformly in k.",
+      "Sharpen the additive O(1) error below k-1: locate n within a smaller window via a second-order expansion of the falling factorial n^{underline k} = n^k - C(k,2)·n^{k-1} + ⋯, refining the leading term to (k!·d^{k-1}·ln2)^{1/k} − (k-1)/2 + o(1)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "birthday-problem-oq-03-oq-01-oq-01-oq-03",
+      "relationship": "parent-problem",
+      "description": "Parent: the rigorous k=3 cube-root threshold (6d²ln2)^{1/3} + O(1); its OQ-03 asks for the general-k lift proved here, with the parent's slack 2 reappearing as k-1"
+    },
+    {
+      "targetId": "birthday-problem",
+      "relationship": "related",
+      "description": "The base birthday problem (k=2 coincidence, threshold n ≈ √(2d ln2)); this is the general k-fold analogue"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "E. H. McKinney"
+      ],
+      "title": "Generalized Birthday Problem",
+      "year": "1966",
+      "venue": "American Mathematical Monthly 73, 385–387",
+      "note": "Multiple-coincidence birthday problem"
+    },
+    {
+      "authors": [
+        "Anirban DasGupta"
+      ],
+      "title": "The matching, birthday and the strong birthday problem: a contemporary review",
+      "year": "2005",
+      "venue": "Journal of Statistical Planning and Inference 130, 377–389",
+      "note": "Asymptotics of k-fold birthday coincidences, including the (k!·d^{k-1}·ln2)^{1/k} threshold"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Real",
+      "Finset"
+    ],
+    "namespace": "BirthdayProblemOQ03OQ01OQ01OQ03OQ03",
+    "lineCount": 203,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "path": "Proofs/BirthdayProblemOQ03OQ01OQ01OQ03OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
