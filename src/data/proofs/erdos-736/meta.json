@@ -7,7 +7,7 @@
     "author": "Walter Taylor (conjecture), Komjáth-Shelah (consistency result)",
     "sourceUrl": "https://erdosproblems.com/736",
     "date": "2005",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/Erdos736Problem.lean",
     "tags": [
       "erdos",
@@ -17,8 +17,8 @@
       "set-theory",
       "independence"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "verified",
+    "sorries": 0,
     "erdosNumber": 736,
     "erdosUrl": "https://erdosproblems.com/736",
     "erdosProblemStatus": "open",
@@ -55,27 +55,31 @@
       "Formal statement of Taylor's conjecture using cardinals",
       "Generalized conjecture for arbitrary uncountable κ",
       "Machine-checked de Bruijn–Erdős coloring theorem (compactness form) via Mathlib's nonempty_hom_of_forall_finite_subgraph_hom",
-      "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph"
+      "Machine-checked contrapositive: a non-n-colorable graph has a finite non-n-colorable subgraph",
+      "Bridge lemmas matching the custom Cardinal-valued chromatic number to Mathlib's Colorable predicate (the defining cardinal infimum is attained because cardinals are well-ordered)",
+      "Original discrete intermediate-value theorem (exists_induce_chiN_eq): in a finite graph, every chromatic value 0..χ is realized exactly by an induced subgraph; proved by Finset induction via a one-vertex extension lemma (adding a vertex raises χ by at most one)",
+      "Fully machine-checked finite_case: for finite χ(G)=k, every m ≤ k is realized as the chromatic number of an induced subgraph of G, giving automatic finite-subgraph inheritance (the last sorry is now discharged)"
     ],
     "dateAdded": "2026-01-19",
     "axiomCount": 0,
-    "assumptions": "0 axiom declarations. The de Bruijn–Erdős coloring theorem and its contrapositive are fully machine-checked (depend only on propext/Quot.sound/Classical.choice). 1 sorry remains in finite_case (a self-contained discrete intermediate-value side lemma, not part of the open conjecture). The open conjecture itself (Taylor's conjecture) is stated as a definition and is independent of ZFC (Komjáth–Shelah 2005).",
-    "lineCount": 248,
-    "theoremCount": 3,
+    "assumptions": "0 axiom declarations, 0 sorries. All 17 theorems are fully machine-checked and depend only on the standard foundational axioms propext/Quot.sound/Classical.choice (verified via #print axioms; no sorryAx, no Lean.ofReduceBool). This includes the de Bruijn–Erdős coloring theorem, its induced-subgraph contrapositive, and the now-complete finite_case via an original discrete intermediate-value theorem for chromatic number. The open conjecture itself (Taylor's conjecture) is only stated as a Lean definition — it is NOT proved or assumed here, and is independent of ZFC (Komjáth–Shelah 2005).",
+    "lineCount": 444,
+    "theoremCount": 17,
     "prerequisites": [
       "Set-theoretic graph theory: infinite chromatic numbers (ℵ₁, ℵ₂)",
       "De Bruijn-Erdős theorem: compactness for finite chromatic numbers",
       "ZFC independence: forcing and consistency results",
-      "Subgraph containment and finite approximation"
+      "Subgraph containment and finite approximation",
+      "Discrete intermediate value principle for vertex deletion"
     ],
-    "definitionCount": 9,
-    "lastUpdated": "2026-06-19"
+    "definitionCount": 10,
+    "lastUpdated": "2026-06-24"
   },
   "overview": {
     "historicalContext": "Walter Taylor conjectured that if a graph G has chromatic number ℵ₁, then its finite subgraphs are 'rich enough' to build graphs of any chromatic number. Komjáth and Shelah (2005) proved this is independent of ZFC, showing in some models there exists a counterexample where the bound is ℵ₂. The background to this problem lies in the De Bruijn-Erdős theorem (1951), which established that for finite chromatic numbers, colorability is determined entirely by finite subgraphs. Erdős was fascinated by whether similar compactness principles extend to uncountable chromatic numbers, and Taylor's conjecture was one attempt to make that precise at the ℵ₁ level. The Komjáth-Shelah independence result places this question firmly at the boundary between combinatorics and set-theoretic forcing.",
     "problemStatement": "Let G be a graph with chromatic number ℵ₁. Is there, for every cardinal m, some graph G_m of chromatic number m such that every finite subgraph of G_m is a subgraph of G?",
     "text": "Taylor's conjecture: If G has chromatic number ℵ₁, can we build graphs of any chromatic number using only finite subgraphs of G? Komjáth-Shelah showed this is independent of ZFC - it can fail in some models.",
-    "proofStrategy": "The formalization defines chromatic number for infinite graphs, states Taylor's conjecture formally, and axiomatizes the Komjáth-Shelah consistency result showing independence from ZFC.",
+    "proofStrategy": "The formalization defines a Cardinal-valued chromatic number for infinite graphs and states Taylor's conjecture formally (as a definition, not proved — it is independent of ZFC). It then machine-checks the supporting infrastructure: the de Bruijn–Erdős compactness theorem, its induced-subgraph contrapositive, and the finite case. The finite case is discharged by an original discrete intermediate-value theorem — adding one vertex changes the chromatic number by at most one, so a finite graph of chromatic number k contains induced subgraphs of every chromatic number m ≤ k — together with bridge lemmas matching the custom cardinal chromatic number to Mathlib's Colorable predicate. The Komjáth-Shelah independence result is documented in comments, not assumed as an axiom.",
     "keyInsights": [
       "The problem connects finite combinatorics to infinite graph theory",
       "Independence from ZFC means the answer depends on set-theoretic axioms",
@@ -172,12 +176,12 @@
       "SimpleGraph"
     ],
     "namespace": "Erdos736",
-    "lineCount": 248,
+    "lineCount": 444,
     "axiomCount": 0,
-    "theoremCount": 3,
-    "definitionCount": 9,
+    "theoremCount": 17,
+    "definitionCount": 10,
     "path": "Proofs/Erdos736Problem.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "crossReferences": [
     {
