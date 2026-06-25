@@ -1,0 +1,127 @@
+[
+  {
+    "id": "ann-ar040702-bjpoly",
+    "proofId": "abel-ruffini-oq-04-oq-07-oq-02",
+    "range": { "startLine": 69, "endLine": 72 },
+    "type": "definition",
+    "title": "The Bring–Jerrard Quintic over ℚ",
+    "content": "bjPoly t = X^5 + X + C t is the algebraic object the whole file is about: the principal (Bring–Jerrard) quintic with the quadratic, cubic, and quartic terms eliminated. Every quintic can be reduced to this one-parameter form by a Tschirnhaus transformation, so the solvability question for the general quintic reduces to this family. Its unique real root for a given t is exactly the Bring radical BR(t) constructed analytically in the parent entry. Working over ℚ (rather than ℝ) is essential: radical-solvability and the Galois group are properties of the polynomial relative to its coefficient field, and ℚ is where the arithmetic obstruction lives.",
+    "mathContext": "$$\\mathrm{bjPoly}(t) = X^{5} + X + C\\,t \\in \\mathbb{Q}[X].$$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Bring–Jerrard normal form",
+      "Tschirnhaus transformation",
+      "principal quintic",
+      "coefficient field"
+    ],
+    "prerequisites": [
+      "polynomial ring ℚ[X]",
+      "Polynomial.C (constant coefficient)"
+    ]
+  },
+  {
+    "id": "ann-ar040702-bridge",
+    "proofId": "abel-ruffini-oq-04-oq-07-oq-02",
+    "range": { "startLine": 74, "endLine": 85 },
+    "type": "theorem",
+    "title": "The Analytic–Algebraic Bridge (bringRadical_aeval)",
+    "content": "This is the genuinely new content of the file. The parent entry builds BR(t) analytically — as the unique real zero of x^5 + x + t produced by the intermediate value theorem and pinned down by strict monotonicity — so a priori it is just a real number with an order-theoretic characterization. bringRadical_aeval reinterprets that defining equation algebraically: it shows aeval (BR ↑t) (bjPoly t) = 0, i.e. BR(↑t) is a root of the rational polynomial under the ℚ-algebra evaluation map into ℝ. The proof unfolds bjPoly, pushes aeval through map_add/map_pow/aeval_X/aeval_C, and closes with linear_combination on the parent's bringRadical_spec. This single equality is what lets an analytically-defined real number be fed into Mathlib's purely algebraic Abel–Ruffini machinery.",
+    "mathContext": "$$\\operatorname{aeval}_{\\mathbb{Q}\\to\\mathbb{R}}\\bigl(\\mathrm{BR}(t)\\bigr)\\,(X^5+X+Ct) = \\mathrm{BR}(t)^5 + \\mathrm{BR}(t) + t = 0.$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "aeval / algebra evaluation",
+      "ℚ-algebra structure on ℝ",
+      "root of a polynomial",
+      "analytic vs algebraic definition"
+    ],
+    "prerequisites": [
+      "Polynomial.aeval",
+      "intermediate value theorem (parent construction)",
+      "linear_combination tactic"
+    ]
+  },
+  {
+    "id": "ann-ar040702-notsolvable",
+    "proofId": "abel-ruffini-oq-04-oq-07-oq-02",
+    "range": { "startLine": 87, "endLine": 99 },
+    "type": "theorem",
+    "title": "No Solvability by Radicals — the Contrapositive of Abel–Ruffini",
+    "content": "bringRadical_not_solvableByRad is the faithful replacement for the parent's degenerate axiom. Mathlib's solvableByRad.isSolvable' states the positive direction of Abel–Ruffini: if an irreducible polynomial has a root that is solvable by radicals, then its Galois group is solvable. The theorem here is its one-line contrapositive — assuming irreducibility of bjPoly t and non-solvability of its Galois group, a radically-solvable BR(↑t) would yield a solvable Gal, contradiction. The term fun h => hns (solvableByRad.isSolvable' hirr (bringRadical_aeval t) h) packages exactly this, with bringRadical_aeval supplying the required 'is a root' input. Crucially the two hypotheses (irreducible, ¬solvable Gal) are honest, openly-stated conditions, not a hidden True.",
+    "mathContext": "$$\\bigl(\\text{Irreducible} \\wedge \\neg\\,\\mathrm{IsSolvable}\\,\\mathrm{Gal}\\bigr) \\;\\Rightarrow\\; \\neg\\,\\mathrm{IsSolvableByRad}_{\\mathbb{Q}}\\bigl(\\mathrm{BR}(t)\\bigr).$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Abel–Ruffini theorem",
+      "solvability by radicals",
+      "solvable group",
+      "contrapositive"
+    ],
+    "prerequisites": [
+      "solvableByRad.isSolvable'",
+      "IsSolvableByRad",
+      "Polynomial.Gal (Galois group)"
+    ]
+  },
+  {
+    "id": "ann-ar040702-converse",
+    "proofId": "abel-ruffini-oq-04-oq-07-oq-02",
+    "range": { "startLine": 101, "endLine": 110 },
+    "type": "theorem",
+    "title": "The Unconditional Converse Content",
+    "content": "bringRadical_solvableByRad_imp_gal_solvable records the forward implication of Mathlib's theorem directly, without taking a contrapositive: granting irreducibility, radical-solvability of BR(↑t) forces IsSolvable (bjPoly t).Gal. It is definitionally the same invocation of solvableByRad.isSolvable' that powers the non-solvability statement, exposed in its natural 'engine' form. Stating both directions makes explicit that the only thing standing between this file and an unconditional Abel–Ruffini for the Bring radical is the arithmetic input Gal ≃ S₅ — everything connecting radicals, roots, and group solvability is already formal here.",
+    "mathContext": "$$\\text{Irreducible} \\;\\Rightarrow\\; \\bigl(\\mathrm{IsSolvableByRad}_{\\mathbb{Q}}(\\mathrm{BR}(t)) \\Rightarrow \\mathrm{IsSolvable}\\,(\\mathrm{bjPoly}\\,t).\\mathrm{Gal}\\bigr).$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Galois correspondence",
+      "solvable Galois group",
+      "radical tower",
+      "Abel–Ruffini engine"
+    ],
+    "prerequisites": [
+      "solvableByRad.isSolvable'",
+      "IsSolvable",
+      "Galois theory basics"
+    ]
+  },
+  {
+    "id": "ann-ar040702-s5",
+    "proofId": "abel-ruffini-oq-04-oq-07-oq-02",
+    "range": { "startLine": 112, "endLine": 121 },
+    "type": "theorem",
+    "title": "S₅ Is Not Solvable — Transport Across the Isomorphism",
+    "content": "gal_not_solvable_of_iso_S5 turns the standard structural witness Gal ≃* S₅ into ¬ IsSolvable Gal. The non-solvability of the symmetric group on 5 letters (Equiv.Perm.fin_5_not_solvable) is the group-theoretic root cause of the whole Abel–Ruffini phenomenon: S₅ has the simple non-abelian composition factor A₅, so its derived series never reaches the trivial group. Solvability is preserved by quotients/surjections (solvable_of_surjective), and a multiplicative iso is surjective, so a solvable Gal would make S₅ solvable — contradiction. This is the bridge from the abstract 'Galois group not solvable' hypothesis to the concrete, fully-formalized fact about S₅.",
+    "mathContext": "$$\\mathrm{Gal} \\cong S_5,\\quad S_5\\ \\text{not solvable}\\ (A_5 \\trianglelefteq S_5\\ \\text{simple}) \\;\\Rightarrow\\; \\neg\\,\\mathrm{IsSolvable}\\,\\mathrm{Gal}.$$",
+    "significance": "key",
+    "relatedConcepts": [
+      "symmetric group S₅",
+      "alternating group A₅ simplicity",
+      "solvable group (derived series)",
+      "solvable_of_surjective"
+    ],
+    "prerequisites": [
+      "Equiv.Perm.fin_5_not_solvable",
+      "solvable_of_surjective",
+      "MulEquiv (group isomorphism)"
+    ]
+  },
+  {
+    "id": "ann-ar040702-capstone",
+    "proofId": "abel-ruffini-oq-04-oq-07-oq-02",
+    "range": { "startLine": 123, "endLine": 139 },
+    "type": "theorem",
+    "title": "Capstone — Abel–Ruffini for the Bring Radical, Reduced to Its Open Input",
+    "content": "bringRadical_not_solvableByRad_of_iso_S5 assembles the pieces into the headline conclusion: given irreducibility and the standard symmetric-group witness Gal ≃* S₅, the Bring radical BR(↑t) is not solvable by radicals over ℚ. It is bringRadical_not_solvableByRad fed the non-solvability produced by gal_not_solvable_of_iso_S5. The honest framing matters: the two hypotheses are exactly the genuinely-open inputs (irreducibility, and the Dedekind–Frobenius bridge giving Gal ≃ S₅) that block the rest of the Abel–Ruffini family in Mathlib v4.26 — and nothing else. Everything downstream is machine-checked with no axioms and no sorries, replacing the parent's degenerate True-predicate placeholder with a correct conditional theorem.",
+    "mathContext": "$$\\bigl(\\text{Irreducible}(X^5+X+Ct)\\ \\wedge\\ \\mathrm{Gal}\\cong S_5\\bigr)\\;\\Rightarrow\\;\\neg\\,\\mathrm{IsSolvableByRad}_{\\mathbb{Q}}\\bigl(\\mathrm{BR}(t)\\bigr).$$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Abel–Ruffini theorem",
+      "Dedekind–Frobenius reduction mod p",
+      "axiom elimination",
+      "conditional formalization"
+    ],
+    "prerequisites": [
+      "bringRadical_not_solvableByRad",
+      "gal_not_solvable_of_iso_S5",
+      "irreducibility of the Bring–Jerrard quintic"
+    ]
+  }
+]
