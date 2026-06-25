@@ -8,7 +8,8 @@
     "content": "For $m \\ge 2$, $\\;(\\log 2 / 3)\\,m - 2\\sqrt{m}\\,\\log m \\le \\theta(m)$. The identity $\\theta(m) = \\psi(m) - (\\psi(m) - \\theta(m))$ reduces this to two ingredients: the project's elementary $\\psi$ lower bound $(\\log 2/3)\\,m \\le \\psi(m)$ (from the central binomial coefficient — the substantive estimate Mathlib lacks) and the closeness bound $\\psi(m) - \\theta(m) \\le |\\psi(m) - \\theta(m)| \\le 2\\sqrt{m}\\,\\log m$. A single `linarith` combines them. The correction $2\\sqrt{m}\\,\\log m$ is lower order, so the bound is asymptotically $(\\log 2/3)\\,m$.",
     "mathContext": "$\\theta(m) \\ge \\tfrac{\\log 2}{3}\\,m - 2\\sqrt{m}\\,\\log m$ for $m \\ge 2$.",
     "significance": "key",
-    "relatedConcepts": ["Chebyshev theta function", "Chebyshev psi function", "Central binomial coefficient", "Prime number theorem"]
+    "relatedConcepts": ["Chebyshev theta function", "Chebyshev psi function", "Central binomial coefficient", "Prime number theorem"],
+    "prerequisites": ["Chebyshev functions θ and ψ", "asymptotic order notation", "linarith / linear arithmetic"]
   },
   {
     "id": "ann-theta-upper",
@@ -19,7 +20,8 @@
     "content": "$\\theta(n) \\le \\log 4 \\cdot n$, Mathlib's `Chebyshev.theta_le_log4_mul_x` carried through the project bridge `chebyshevTheta_eq_mathlib`. This is the side Mathlib already provides; pairing it with the lower bound yields the two-sided estimate.",
     "mathContext": "$\\theta(n) \\le (\\log 4)\\,n$.",
     "significance": "supporting",
-    "relatedConcepts": ["Chebyshev theta function", "Explicit bounds"]
+    "relatedConcepts": ["Chebyshev theta function", "Explicit bounds"],
+    "prerequisites": ["Chebyshev theta function", "central binomial coefficient upper bound"]
   },
   {
     "id": "ann-theta-two-sided",
@@ -30,6 +32,7 @@
     "content": "The headline: $(\\log 2/3)\\,m - 2\\sqrt{m}\\,\\log m \\le \\theta(m) \\le (\\log 4)\\,m$ for $m \\ge 2$. Both endpoints are explicit, confirming the first Chebyshev function is of exact linear order — the elementary heart of the prime number theorem. The lower endpoint is new; the upper is Mathlib's.",
     "mathContext": "$\\tfrac{\\log 2}{3}\\,m - 2\\sqrt{m}\\,\\log m \\le \\theta(m) \\le (\\log 4)\\,m$, $m \\ge 2$.",
     "significance": "key",
-    "relatedConcepts": ["Big-Theta order", "Chebyshev function", "Elementary prime number theorem"]
+    "relatedConcepts": ["Big-Theta order", "Chebyshev function", "Elementary prime number theorem"],
+    "prerequisites": ["asymptotic Θ notation", "Chebyshev functions"]
   }
 ]

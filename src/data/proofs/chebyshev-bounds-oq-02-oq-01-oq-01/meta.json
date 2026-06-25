@@ -55,6 +55,23 @@
     "theoremCount": 3,
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "In 1852, decades before the prime number theorem (PNT) was proved by Hadamard and de la Vallée Poussin (1896), Chebyshev established that π(n) — and equivalently the functions θ(n) = ∑_{p ≤ n} log p and ψ(n) = ∑_{p^k ≤ n} log p — grow linearly in n, i.e. θ(n), ψ(n) = Θ(n). His elementary argument, built from the prime factorization of the central binomial coefficient C(2n, n), gave explicit constants bracketing the true asymptotic θ(n) ∼ n (the PNT in θ-form). These Chebyshev-type bounds were the strongest unconditional results on the distribution of primes for nearly half a century and remain the elementary backbone of the subject: Bertrand's postulate, Mertens' theorems, and the elementary (Erdős–Selberg) proof of the PNT all rest on them. Mathlib formalizes only the upper bound θ(n) ≤ (log 4)·n and has no lower bound for either θ or ψ; this entry supplies the missing explicit lower bound for θ.",
+    "problemStatement": "Establish an explicit two-sided bound (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ (log 4)·m for m ≥ 2, where θ(m) = ∑_{p ≤ m} log p is the first Chebyshev function — pinning θ(m) = Θ(m) with both constants explicit. The new content is the lower bound, which Mathlib does not provide for θ or ψ.",
+    "proofStrategy": "The upper bound is Mathlib's Chebyshev.theta_le_log4_mul_x, transported through the identification chebyshevTheta_eq_mathlib. For the lower bound, write θ(m) = ψ(m) − (ψ(m) − θ(m)). The second Chebyshev function ψ satisfies the project's elementary linear lower bound (log 2 / 3)·m ≤ ψ(m) (chebyshevPsi_lower_linear, derived from the central binomial coefficient), and ψ and θ differ only by the prime-power tail, bounded by |ψ(m) − θ(m)| ≤ 2·√m·log m (abs_psi_sub_theta_le). Subtracting the (lower-order) excess from the linear ψ bound, a single linarith yields (log 2 / 3)·m − 2·√m·log m ≤ θ(m). Pairing the two sides gives the two-sided statement chebyshevTheta_bounds.",
+    "keyInsights": [
+      "θ and ψ share the same main term: ψ(m) − θ(m) counts only prime powers p^k with k ≥ 2 and is O(√m·log m), so any linear bound on one transfers to the other up to a √m·log m correction.",
+      "The substantive estimate is the ψ lower bound (log 2 / 3)·m ≤ ψ(m), an elementary consequence of the prime factorization of C(2m, m); the θ lower bound is then almost free.",
+      "The √m·log m correction is genuinely lower order, so for large m the bound is effectively (log 2 / 3)·m — the same linear order as the (log 4)·m upper bound, establishing θ(m) = Θ(m).",
+      "Chebyshev's 1852 constants (here log 2 / 3 ≈ 0.231 below, log 4 ≈ 1.386 above) bracket the true asymptotic density θ(m) ∼ m without any complex analysis — the elementary precursor to the prime number theorem."
+    ],
+    "prerequisites": [
+      "The Chebyshev functions θ(n) = ∑_{p ≤ n} log p and ψ(n) = ∑_{p^k ≤ n} log p",
+      "The central binomial coefficient C(2n, n) and its role in elementary prime bounds",
+      "Asymptotic order notation Θ(·) and lower-order terms",
+      "The relation ψ(n) − θ(n) = ∑_{k ≥ 2} θ(n^{1/k}) and its O(√n·log n) size"
+    ]
+  },
   "sections": [
     {
       "id": "lower-bound",
@@ -76,6 +93,32 @@
       "startLine": 77,
       "endLine": 81,
       "summary": "chebyshevTheta_bounds: pairs the new lower bound with Mathlib's upper bound to give (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2 — the explicit θ(m) = Θ(m)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 axioms, 0 sorries, no native_decide) explicit two-sided bound (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ (log 4)·m for m ≥ 2 on the first Chebyshev function θ(m) = ∑_{p ≤ m} log p, establishing θ(m) = Θ(m) with explicit constants. The upper bound is Mathlib's; the lower bound — which neither Mathlib nor this project previously had for θ — is the new content, descended from the project's elementary ψ lower bound across the O(√m·log m) gap between ψ and θ.",
+    "implications": "This completes the elementary Chebyshev programme for θ in the gallery: combined with the existing ψ bounds and the ψ−θ closeness estimate, it gives explicit linear two-sided control of the first Chebyshev function — the elementary precursor to the prime number theorem θ(m) ∼ m. Such explicit θ bounds are exactly what downstream elementary results (Bertrand's postulate, Mertens' estimates ∑_{p ≤ x} (log p)/p = log x + O(1), bounds on π(x)) consume. Because the lower bound is obtained by transferring the ψ estimate, it inherits ψ's elementary, complex-analysis-free character.",
+    "openQuestions": [
+      "Tighten the lower constant toward the true asymptotic θ(m) ∼ m: the elementary central-binomial method caps the lower constant near log 2, well below 1, whereas the PNT gives constant 1.",
+      "Remove or shrink the √m·log m correction term, e.g. by bounding ψ(m) − θ(m) more tightly (the dominant √m contribution comes from squares of primes).",
+      "Derive explicit bounds on π(x) = ∑_{p ≤ x} 1 from these θ bounds via Abel summation, recovering Chebyshev-type bounds on the prime-counting function itself."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "chebyshev-bounds-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Supplies the substantive ingredient: the elementary ψ lower bound (log 2 / 3)·m ≤ ψ(m) from the central binomial coefficient. This entry descends that bound from ψ to θ."
+    },
+    {
+      "targetId": "chebyshev-bounds-oq-02-oq-02",
+      "relationship": "extends",
+      "description": "Provides the bridge |ψ(m) − θ(m)| ≤ 2·√m·log m (ψ and θ share the same main term), the closeness estimate that carries the ψ lower bound across to θ."
+    },
+    {
+      "targetId": "chebyshev-bounds-oq-02",
+      "relationship": "relatedTo",
+      "description": "The parent strand: the second Chebyshev function ψ and Legendre's identity log(n!) = ∑ Λ(d)⌊n/d⌋, the foundation on which the ψ — and now θ — bounds are built."
     }
   ]
 }
