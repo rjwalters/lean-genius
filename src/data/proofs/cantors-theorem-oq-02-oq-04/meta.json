@@ -1,0 +1,74 @@
+{
+  "id": "cantors-theorem-oq-02-oq-04",
+  "title": "Cantor/Lawvere OQ: Which Types Admit Fixed-Point Theorems?",
+  "slug": "cantors-theorem-oq-02-oq-04",
+  "description": "Open question oq-04 from the Lawvere fixed-point branch of Cantor's theorem: which types admit a Lawvere-style fixed-point theorem, and how does the diagonal (Lawvere) source of fixed points relate to the order-theoretic (Knaster–Tarski / Scott–Kleene) one satisfied by pointed dcpos? This formalization isolates two distinct fixed-point properties — the unrestricted FPP (every self-map has a fixed point, Lawvere's target) and the monotone FPP (every monotone self-map has a fixed point, the order/dcpo form) — and shows they are genuinely different: Bool is a complete lattice (so has the monotone FPP via Knaster–Tarski) yet lacks the unrestricted FPP, because the fixed-point-free map `not` is antitone, not monotone. The answer to oq-04 is therefore property-dependent: surjectivity (Lawvere) and order-completeness (Scott/Tarski) are incomparable routes to fixed points.",
+  "meta": {
+    "author": "Lawvere (1969), Knaster–Tarski, Scott–Kleene; formalization by researcher-10",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Lawvere%27s_fixed-point_theorem",
+    "date": "2026",
+    "status": "verified",
+    "badge": "original",
+    "proofRepoPath": "Proofs/CantorsTheoremOQ02OQ04.lean",
+    "tags": [
+      "cantor",
+      "lawvere",
+      "fixed-point-theorem",
+      "diagonal-argument",
+      "knaster-tarski",
+      "scott-continuity",
+      "dcpo",
+      "order-theory",
+      "open-question"
+    ],
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Every result is machine-checked with 0 axioms and 0 sorries (foundational propext/Classical.choice/Quot.sound only). Leverages Mathlib's OrderHom.lfp (Knaster–Tarski). This entry answers the classification question oq-04 by exhibiting the precise gap between the unrestricted and monotone fixed-point properties; it does not attempt the larger Gödel-coding or full dcpo/Scott-continuity development mentioned in sibling open questions.",
+    "erdosNumber": null,
+    "originalContributions": [
+      "HasFPP: the unrestricted fixed-point property (every self-map has a fixed point) — Lawvere's target",
+      "hasFPP_of_pointSurjective: Lawvere's fixed-point theorem in FPP form (point-surjective A→(A→B) ⟹ B has FPP)",
+      "not_hasFPP_bool / not_hasFPP_prop: Bool and Prop lack the unrestricted FPP (Cantor obstruction via fixed-point-free negation)",
+      "HasMonotoneFPP + hasMonotoneFPP_completeLattice: Knaster–Tarski — every complete lattice has the monotone FPP (order-theoretic counterpart of Lawvere, via OrderHom.lfp)",
+      "bool_monotoneFPP_but_not_FPP: the discriminating example — Bool has the monotone FPP but not the unrestricted FPP",
+      "not_not_monotone: `not : Bool→Bool` is antitone, the structural reason Bool escapes the order-completeness route",
+      "no_pointSurjection_to_powerProp: Cantor's theorem recovered — no point-surjection A→(A→Prop)"
+    ],
+    "lineCount": 126,
+    "theoremCount": 8,
+    "definitionCount": 2
+  },
+  "leanFile": {
+    "path": "Proofs/CantorsTheoremOQ02OQ04.lean",
+    "lineCount": 126,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 8
+  },
+  "conclusion": {
+    "summary": "Two fixed-point properties must be distinguished. The *unrestricted* FPP (every self-map has a fixed point) is what Lawvere's theorem delivers from a point-surjection A→(A→B); it fails for Bool and Prop, the Cantor obstruction. The *monotone* FPP (every monotone self-map has a fixed point) is delivered by order completeness via Knaster–Tarski (Mathlib's OrderHom.lfp), and is the form a pointed dcpo satisfies through Scott–Kleene iteration. Bool witnesses that these are independent: it has the monotone FPP but not the unrestricted one, since the fixed-point-free `not` is antitone.",
+    "significance": "Gives a precise, verified answer to 'which types admit Lawvere fixed-point theorems': it depends on the class of maps. Surjectivity (Lawvere) and order-completeness (Scott/Tarski) are incomparable sufficient conditions, reconciled by monotonicity.",
+    "implications": [
+      "Clarifies that the diagonal and order-theoretic fixed-point theorems are complementary, not nested.",
+      "Bool/Prop are the canonical separating examples between the two properties."
+    ],
+    "openQuestions": [
+      "Formalize the full Scott–Kleene least-fixed-point theorem for ωScott-continuous endomaps of a pointed ω-CPO (Mathlib has the ωSup machinery in Order.OmegaCompletePartialOrder).",
+      "Characterize exactly the types with the unrestricted FPP (beyond subsingletons and Lawvere-surjective targets)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Classification follow-up to the Lawvere fixed-point theorem branch",
+      "targetId": "cantors-theorem-oq-02"
+    },
+    {
+      "relationship": "related-to",
+      "description": "Shares the diagonal-argument core of Cantor's theorem",
+      "targetId": "cantors-theorem"
+    }
+  ],
+  "sorries": 0
+}
