@@ -29,14 +29,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Eliminated 1 of 3 axioms: trivial_lower_bound (f(n) ≥ 2^{⌊n/2⌋}) is now a proved theorem. Also repaired ~7 pre-existing breakages so the file compiles against mathlib v4.26.0. 2 deep axioms remain (Green/Sapozhenko upper bound + precise asymptotic).",
+    "progressSummary": "Eliminated 1 of 3 axioms: trivial_lower_bound (f(n) ≥ 2^{⌊n/2⌋}) is now a proved theorem. Also repaired ~7 pre-existing breakages so the file compiles against mathlib v4.26.0. 2 deep axioms remain (Green/Sapozhenko upper bound + precise asymptotic). | Session 2: discharged all 3 sorries in the Erdos748Aristotle companion (f_1,f_2,f_3) via kernel decide — axiom-free; companion now 0 code sorries.",
     "builtItems": [
       "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
-      "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)"
+      "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)",
+      "f_1 : f 1 = 2 (decide, axiom-free) in Erdos748Aristotle.lean:32",
+      "f_2 : f 2 = 3 (decide, axiom-free) in Erdos748Aristotle.lean:38",
+      "f_3 : f 3 = 6 (decide, axiom-free) in Erdos748Aristotle.lean:44"
     ],
     "insights": [
       "The trivial lower bound needs no analysis: every subset of the upper half {⌊n/2⌋+1,…,n} is sum-free (upperHalf_sumFree), giving 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋} distinct sum-free sets",
-      "File was broken against mathlib v4.26.0: stale Asymptotics import, .1/.2 mixups in upperHalf_sumFree and sumFree_iff, missing DecidablePred IsSumFree, le_div_iff→le_div_iff₀, orphan /-- doc comments"
+      "File was broken against mathlib v4.26.0: stale Asymptotics import, .1/.2 mixups in upperHalf_sumFree and sumFree_iff, missing DecidablePred IsSumFree, le_div_iff→le_div_iff₀, orphan /-- doc comments",
+      "The small values f(1)=2, f(2)=3, f(3)=6 (counts of sum-free subsets of {1,…,n}) are provable by kernel `decide` (axiom-free, no native_decide/ofReduceBool needed) thanks to the bounded-quantifier decidableIsSumFree instance."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -55,7 +59,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T08:27:10.084Z",
-  "lastUpdate": "2026-04-03T08:27:10.084Z",
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
   "significance": 8,
   "tractability": 5
 }
