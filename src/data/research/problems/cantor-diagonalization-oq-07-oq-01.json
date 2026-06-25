@@ -1,0 +1,31 @@
+{
+  "id": "cantor-diagonalization-oq-07-oq-01",
+  "name": "Cardinal Arithmetic of ℝⁿ and ℕ→ℝ: #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = 𝔠",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "Modelling ℝⁿ as (Fin n → ℝ) turns the geometric 'dimension does not raise cardinality' into a single cardinal-power computation: #(Fin n → ℝ) = #ℝ ^ #(Fin n) = 𝔠 ^ n via Cardinal.mk_arrow + mk_fin.",
+      "The finite and countable cases use two distinct but parallel absorption lemmas, both descending from κ·κ=κ: Cardinal.power_nat_eq (ℵ₀ ≤ c, 1 ≤ n ⊢ c^n = c) for 𝔠^n = 𝔠, and Cardinal.continuum_power_aleph0 (𝔠 ^ ℵ₀ = 𝔠) for the sequence space.",
+      "Cardinal.mk_arrow returns lift #β ^ lift #α; in a single universe the two lifts must be cleared with lift_id (twice) before mk_real / mk_fin / mk_nat apply.",
+      "The cardinal exponent ↑n (Nat cast into Cardinal) must be bridged to the monoid power n via Cardinal.power_natCast before power_nat_eq fires.",
+      "n ≥ 1 is sharp: #(Fin 0 → ℝ) = 1 (the empty tuple), so the absorption law genuinely needs a positive exponent."
+    ],
+    "builtItems": [
+      "CantorDiagonalizationOQ07OQ01.continuum_pow_eq (Proofs/CantorDiagonalizationOQ07OQ01.lean:39) — 𝔠^n = 𝔠 for n ≥ 1",
+      "CantorDiagonalizationOQ07OQ01.mk_pi_real_eq_continuum (:45) — #(Fin n → ℝ) = 𝔠",
+      "CantorDiagonalizationOQ07OQ01.mk_pi_real (:52) — #(Fin n → ℝ) = #ℝ, main finite result",
+      "CantorDiagonalizationOQ07OQ01.nonempty_equiv_pi_real (:57) — bijection (Fin n → ℝ) ≃ ℝ",
+      "CantorDiagonalizationOQ07OQ01.mk_nat_arrow_real_eq_continuum (:64) — #(ℕ → ℝ) = 𝔠",
+      "CantorDiagonalizationOQ07OQ01.mk_nat_arrow_real (:69) — #(ℕ → ℝ) = #ℝ, main countable result",
+      "CantorDiagonalizationOQ07OQ01.nonempty_equiv_nat_arrow_real (:75) — bijection (ℕ → ℝ) ≃ ℝ",
+      "CantorDiagonalizationOQ07OQ01.mk_pi_two_real (:80) — #(Fin 2 → ℝ) = #ℝ, recovers the parent"
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Formalize the uncountable power #(ℝ → ℝ) = 2^𝔠 — the first place dimension does raise cardinality, separating the 𝔠-sized spaces here from the function space on ℝ.",
+      "Exhibit a concrete digit-interleaving bijection (Fin n → ℝ) ≃ ℝ instead of routing through cardinal arithmetic."
+    ],
+    "progressSummary": "COMPLETE: #(Fin n → ℝ) = #ℝ for n ≥ 1 and #(ℕ → ℝ) = 𝔠 formalized verified, 0 sorries / 0 axioms (only propext/Classical.choice/Quot.sound). All cardinal-arithmetic levers present in Mathlib. PR opened."
+  }
+}
