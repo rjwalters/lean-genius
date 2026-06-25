@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-total-face-angle",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 33,
+      "endLine": 49
+    },
+    "type": "concept",
+    "title": "Total Face Angle = (Σ sizes)·π − 2π·F",
+    "content": "A planar n-gon has interior angles summing to (n−2)π. `totalFaceAngle` sums this over the multiset of all face sizes; the closed form totalFaceAngle = (Σ sizes)·π − 2π·F is obtained by a one-line induction over the multiset (`Multiset.induction_on`, then `push_cast; ring`). This is the crucial reorganisation: it replaces the unknown per-vertex angles by the known per-face angle sums, which only depend on how many sides each face has."
+  },
+  {
+    "id": "ann-surface-model",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 51,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "The Combinatorial Polyhedral Surface",
+    "content": "`PolyhedralSurface` packages the data needed for Descartes' theorem: vertex/edge/face counts V,E,F, the multiset of face sizes (each ≥ 3), the face–edge handshake Σ(face sizes) = 2E (every edge borders exactly two faces), and Euler's formula V−E+F=2. No embedding into ℝ³ is assumed — only the combinatorial incidence data and the angle bookkeeping it determines."
+  },
+  {
+    "id": "ann-gauss-bonnet",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 80,
+      "endLine": 116
+    },
+    "type": "key-insight",
+    "title": "Discrete Gauss–Bonnet: totalDefect = 2π·χ",
+    "content": "The total angular defect is 2π per vertex minus the total face angle. Substituting the closed form and the handshake Σ sizes = 2E gives totalDefect = 2π·V − (2E·π − 2π·F) = 2π·(V − E + F) — the discrete Gauss–Bonnet identity, total defect equals 2π times the Euler characteristic. Note this step uses ONLY the handshake, not Euler's formula. Descartes' constant 4π then drops out by evaluating χ = 2 for a sphere (`exact_mod_cast` from the ℤ-valued Euler field, then `linear_combination`/`ring`). The proof is linear in the symbol π, so no analytic property of π is invoked."
+  },
+  {
+    "id": "ann-platonic",
+    "proofId": "euler-polyhedral-formula-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 118,
+      "endLine": 161
+    },
+    "type": "concept",
+    "title": "The Five Platonic Solids Realise 4π",
+    "content": "Each Platonic solid is built as a PolyhedralSurface whose faces are all congruent — a single replicated face size (e.g. the cube is six squares, `Multiset.replicate 6 4`). The handshake and Euler fields are discharged by `decide`. `platonic_defects` then derives total defect 4π for all five from the general `descartes` theorem. A formula-free `cube_defect_direct` cross-checks the cube directly: 8 vertices each of defect 2π − 3·(π/2) = π/2, totalling 4π."
+  }
+]
