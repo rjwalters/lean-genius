@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "hilbert-9-reciprocity-oq-04",
+    "range": { "startLine": 1, "endLine": 35 },
+    "type": "context",
+    "title": "Constant Reciprocity in Function Fields",
+    "content": "Hilbert's Ninth Problem sought the most general reciprocity law; the parent gallery entry closes by asking what reciprocity phenomena exist in function fields. In F_q[T] (q an odd prime power), the monic irreducibles P play the role of the primes and the quadratic residue symbol (a/P) is computed in the residue field F_q[T]/(P) ≅ F_{q^{deg P}}. For a CONSTANT a ∈ F_q^× the classical constant reciprocity law says (a/P) = χ_q(a)^{deg P} — equivalently, a constant that is a nonsquare in F_q becomes a square in F_{q^d} exactly when d is even. This file formalizes that as a relation between the quadratic characters of a finite field F and any finite extension K.",
+    "mathContext": "$\\left(\\tfrac{a}{P}\\right) = \\chi_q(a)^{\\deg P}$, formalized as $\\mathrm{quadraticChar}_K(\\mathrm{algebraMap}\\,a) = (\\mathrm{quadraticChar}_F\\,a)^{[K:F]}$.",
+    "significance": "context",
+    "relatedConcepts": ["quadratic reciprocity", "function fields", "quadratic residue symbol", "Hilbert's Ninth Problem", "Carlitz reciprocity"],
+    "prerequisites": ["finite fields", "quadratic residues", "polynomial rings F_q[T]"]
+  },
+  {
+    "id": "ann-helpers",
+    "proofId": "hilbert-9-reciprocity-oq-04",
+    "range": { "startLine": 45, "endLine": 63 },
+    "type": "technique",
+    "title": "Characteristic Transfer and {±1}-Cast Injectivity",
+    "content": "Two helper lemmas make the descent rigorous. cast_pm_inj: integers drawn from {1,−1} that agree after casting into a field of characteristic ≠ 2 are equal — this is exactly the injectivity needed to pass from an equality of character VALUES in K back to an equality of integers (using Ring.neg_one_ne_one_of_char_ne_two). ringChar_extension_ne_two: the algebra map F → K is injective (FaithfulSMul.algebraMap_injective), so charP_of_injective_algebraMap transfers F's characteristic to K; hence odd characteristic of F passes to K, letting Euler's criterion be applied in K.",
+    "mathContext": "$\\mathrm{ringChar}\\,K = \\mathrm{ringChar}\\,F \\ne 2$, and $1 \\ne -1$ in $K$ forces $\\{\\pm 1\\}$-valued casts to be injective.",
+    "significance": "supporting",
+    "relatedConcepts": ["characteristic of a field", "algebra map injectivity", "charP_of_injective_algebraMap", "sign casting"],
+    "prerequisites": ["field characteristic", "ring homomorphisms"]
+  },
+  {
+    "id": "ann-euler-exponents",
+    "proofId": "hilbert-9-reciprocity-oq-04",
+    "range": { "startLine": 90, "endLine": 123 },
+    "type": "insight",
+    "title": "Reconciling the Two Euler Exponents via the Geometric Sum",
+    "content": "Euler's criterion gives χ_F(a) = a^{q/2} in F and χ_K(A) = A^{(q^d)/2} in K, where q = |F|, A = algebraMap a, d = [K:F]. The exponents are reconciled by the Nat identity card K / 2 = (q/2)·S with S = 1 + q + … + q^{d−1}: from |K| = q^d, the geometric factorization (q−1)·S = q^d − 1 (Nat.geomSum_eq + Nat.sub_dvd_pow_sub_pow), and 2·(q/2) = q − 1 for odd q. So A^{|K|/2} = (A^{q/2})^S. Since (A^{q/2})² = A^{q−1} = 1 (Fermat in a finite field), the value A^{q/2} is a sign whose power depends only on the exponent's parity.",
+    "mathContext": "$\\frac{|K|}{2} = \\frac{q}{2}\\cdot S,\\quad S = \\sum_{i=0}^{d-1} q^i,\\quad (q-1)S = q^d - 1,\\quad (A^{q/2})^2 = A^{q-1} = 1.$",
+    "significance": "key",
+    "relatedConcepts": ["Euler's criterion", "geometric series", "Fermat's little theorem", "Nat.geomSum_eq", "finite field cardinality"],
+    "prerequisites": ["Euler's criterion", "geometric sums", "finite field arithmetic"]
+  },
+  {
+    "id": "ann-parity-collapse",
+    "proofId": "hilbert-9-reciprocity-oq-04",
+    "range": { "startLine": 124, "endLine": 149 },
+    "type": "insight",
+    "title": "The Sign Is the Parity of the Degree",
+    "content": "The whole reciprocity sign collapses to deg-parity. Because q is odd, every q^i is odd, so S = Σ q^i ≡ d (mod 2) (Finset.sum_nat_mod). For a unit u with u² = 1, uⁿ depends only on n mod 2, giving (A^{q/2})^S = (A^{q/2})^d. Casting back and using cast_pm_inj plus the quadratic-character dichotomy (χ values lie in {±1}) descends the K-equality to the integer identity χ_K(A) = χ_F(a)^d. The final case split handles χ_F(a) = 1 (any power is 1) and χ_F(a) = −1 (the power is (−1)^d, by even/odd d).",
+    "mathContext": "$S \\equiv d \\pmod 2$ since each $q^i$ is odd, so $(A^{q/2})^S = (A^{q/2})^d$ and $\\chi_K(A) = \\chi_F(a)^d$.",
+    "significance": "key",
+    "relatedConcepts": ["parity argument", "quadraticChar_dichotomy", "sum modulo 2", "sign of a power"],
+    "prerequisites": ["parity", "quadratic character values in {±1}"]
+  },
+  {
+    "id": "ann-square-criterion",
+    "proofId": "hilbert-9-reciprocity-oq-04",
+    "range": { "startLine": 150, "endLine": 186 },
+    "type": "theorem",
+    "title": "Square Criterion and the Even-Degree Corollary",
+    "content": "isSquare_algebraMap_iff reads the reciprocity law through quadraticChar_one_iff_isSquare: a nonzero constant a is a square in K iff a is already a square in F (χ_F(a) = 1) or [K:F] is even — because a nonsquare (χ_F(a) = −1) has χ_K(A) = (−1)^d = 1 exactly when d is even. In F_q[T] terms: a constant is a quadratic residue mod a monic irreducible P iff it is a square in F_q or deg P is even. isSquare_algebraMap_of_even_finrank specializes: every constant (including 0) becomes a square in any even-degree extension — in particular all of F_q is a square in the quadratic extension F_{q²}.",
+    "mathContext": "$\\mathrm{IsSquare}(a \\text{ in } K) \\iff \\mathrm{IsSquare}(a \\text{ in } F) \\vee 2 \\mid [K:F]$; nonsquare $a$ becomes a square in $F_{q^d} \\iff 2 \\mid d$.",
+    "significance": "key",
+    "relatedConcepts": ["quadratic residue", "IsSquare", "even-degree extension", "F_{q^2}"],
+    "prerequisites": ["the reciprocity law", "quadratic character and squares"]
+  }
+]
