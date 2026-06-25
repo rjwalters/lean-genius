@@ -1,0 +1,82 @@
+{
+  "id": "abel-ruffini-oq-04-oq-01-oq-04",
+  "title": "Key Group Theory Lemma: a transitive subgroup of S_p with a transposition is S_p",
+  "slug": "abel-ruffini-oq-04-oq-01-oq-04",
+  "description": "Open question oq-04 of the concrete-quintic entry (Gal(x^5-4x+2) ≅ S_5) records that the file documents — but does not prove — the classical Key Group Theory Lemma: a transitive subgroup of the symmetric group S_p (p prime) that contains a transposition is all of S_p. The parent proof avoided it via repetitive Sylow case-elimination. This formalization supplies the missing proof, axiom-free, by assembling standard Mathlib results: transitivity + orbit–stabilizer gives p | |G|; Cauchy's theorem produces an element of order p; an order-p permutation of a p-element set is a p-cycle with full support; and a p-cycle together with any transposition generates S_p (closure_prime_cycle_swap). Hence ⟨σ,τ⟩ = ⊤ ≤ G, so G = ⊤. This is the general lemma underlying the concrete S_5 computation.",
+  "meta": {
+    "author": "Galois / classical; Lean formalization original (researcher-10)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01OQ04.lean",
+    "tags": [
+      "group-theory",
+      "symmetric-group",
+      "permutation-group",
+      "transitive-action",
+      "transposition",
+      "p-cycle",
+      "galois-theory",
+      "abel-ruffini",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Machine-checked with 0 axioms and 0 sorries (foundational propext/Classical.choice/Quot.sound only). Assembles Mathlib's orbit–stabilizer theorem, Cauchy's theorem (exists_prime_orderOf_dvd_card), isCycle_of_prime_order, IsCycle.orderOf, and closure_prime_cycle_swap. Transitivity is taken as the MulAction.IsPretransitive hypothesis.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.closure_prime_cycle_swap",
+        "description": "A p-cycle and a transposition generate S_p when card is prime",
+        "module": "Mathlib.GroupTheory.Perm.Closure"
+      },
+      {
+        "theorem": "exists_prime_orderOf_dvd_card",
+        "description": "Cauchy's theorem: p | |G| gives an element of order p",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      },
+      {
+        "theorem": "MulAction.card_orbit_mul_card_stabilizer_eq_card_group",
+        "description": "Orbit–stabilizer theorem",
+        "module": "Mathlib.GroupTheory.GroupAction.Quotient"
+      },
+      {
+        "theorem": "Equiv.Perm.isCycle_of_prime_order",
+        "description": "An order-p permutation of a p-set is a cycle",
+        "module": "Mathlib.GroupTheory.Perm.Cycle.Type"
+      }
+    ],
+    "originalContributions": [
+      "eq_top_of_isPretransitive_of_mem_isSwap: the Key Group Theory Lemma — for prime card α, a transitive subgroup G ≤ S_α containing a transposition equals ⊤. The classical result the parent entry documented but left unproven."
+    ],
+    "lineCount": 80,
+    "theoremCount": 1,
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "path": "Proofs/AbelRuffiniOQ04OQ01OQ04.lean",
+    "lineCount": 80,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 1
+  },
+  "conclusion": {
+    "summary": "A transitive subgroup G of S_p (p prime) containing a transposition is all of S_p. Transitivity forces p | |G| (orbit–stabilizer); Cauchy yields an element σ of order p, which on a p-element set is a full-support p-cycle; with the given transposition τ, closure_prime_cycle_swap gives ⟨σ,τ⟩ = ⊤; since σ,τ ∈ G, we get G = ⊤.",
+    "significance": "This is the classical lemma (transitive + transposition ⟹ full symmetric, prime degree) that powers Galois-group computations such as Gal(x^5-4x+2) ≅ S_5. Formalizing it replaces the parent's ad-hoc Sylow case-elimination with the general result.",
+    "implications": [
+      "Provides a reusable lemma for proving specific quintics (and prime-degree polynomials) have full symmetric Galois group.",
+      "Demonstrates the Mathlib permutation/group-action library suffices for this classical generation theorem."
+    ],
+    "openQuestions": [
+      "Use this lemma to replace the parent's gal_card_ne_10/20/40 Sylow arguments with a single transposition-detection step.",
+      "Generalize to: a primitive (not merely transitive) subgroup of S_n containing a transposition is S_n (Jordan's theorem)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Proves the Key Group Theory Lemma documented but not proven in the concrete-quintic entry",
+      "targetId": "abel-ruffini-oq-04-oq-01"
+    }
+  ],
+  "sorries": 0
+}
