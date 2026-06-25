@@ -1,0 +1,138 @@
+{
+  "id": "erdos-12-wip-01",
+  "title": "Erdős #12: Local Divisibility Obstruction in Divisibility-Free Sets",
+  "slug": "erdos-12-wip-01",
+  "description": "The elementary local obstruction behind the sparsity of divisibility-free sets (Erdős #12): for each element a, at most one larger element of the set is a multiple of a, and no two larger elements are antipodal mod a.",
+  "meta": {
+    "author": "Paul Erdős",
+    "sourceUrl": "https://erdosproblems.com/12",
+    "date": "1970",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos12WIP01.lean",
+    "tags": [
+      "erdos",
+      "number-theory",
+      "combinatorics",
+      "divisibility",
+      "additive-combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "dvd_add",
+        "description": "Divisibility is preserved under addition: a ∣ b → a ∣ c → a ∣ (b + c)",
+        "module": "Mathlib.Algebra.Divisibility.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_of_mod_eq_zero",
+        "description": "n % m = 0 → m ∣ n",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "IsDivisibilityFree: the Erdős #12 divisibility-free predicate (matching the gallery erdos-12 definition), kept local for a self-contained leaf",
+      "no_two_larger_multiples: for a in A, no two distinct larger elements are both multiples of a (the core local obstruction)",
+      "unique_larger_multiple & largerMultiples_subsingleton: each a has at most one larger multiple in A",
+      "no_antipodal_pair: no two distinct larger elements are antipodal mod a (the residue-level statement)",
+      "IsDivisibilityFree.mono: the property is inherited by subsets",
+      "divFree_456: a concrete nonempty witness {4, 5, 6} (non-vacuous satisfiability)"
+    ],
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "lineCount": 90,
+    "assumptions": "0 axioms, 0 sorries. All six theorems are fully machine-checked; #print axioms reports only the standard foundational axioms (propext, Quot.sound) — no sorryAx, no Lean.ofReduceBool. The divisibility-free predicate is reproduced locally to keep the file self-contained (it matches the definition in the erdos-12 gallery entry).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #12 asks how large a 'divisibility-free' set A ⊆ ℕ can be — one with no distinct a, b, c ∈ A such that b, c > a and a ∣ (b + c). Erdős–Sárközy (1970) proved such sets have density 0. The two principal density questions (positive liminf of |A ∩ [1,N]| / √N, and whether |A ∩ [1,N]| < N^{1-c} infinitely often) were resolved in 2026; the reciprocal-sum question Σ 1/n < ∞ remains open. This leaf does not touch the hard density theorems: it isolates the elementary LOCAL obstruction that is the combinatorial seed of all of them.",
+    "problemStatement": "A set A ⊆ ℕ is divisibility-free when for all distinct a, b, c ∈ A with a < b and a < c, a ∤ (b + c). Establish the local divisibility structure such a set must have around each of its elements.",
+    "proofStrategy": "All results are direct consequences of the defining property. If two distinct larger elements b, c are both multiples of a, then a ∣ b and a ∣ c give a ∣ (b + c) (dvd_add), contradicting divisibility-freeness — this yields 'at most one larger multiple' and the subsingleton statement. The residue version rephrases a ∣ (b + c) as (b + c) % a = 0. Subset closure is immediate. The concrete witness {4, 5, 6} is dispatched by a finite case split plus omega (the only live constraint is 4 ∤ 11).",
+    "keyInsights": [
+      "The defining property is exactly a constraint on residues mod a: among elements of A larger than a, no two are antipodal mod a (sum ≡ 0).",
+      "Specializing antipodality to the residue 0 gives the cleanest consequence: at most one larger element of A is a multiple of a.",
+      "This is the local reason divisibility-free sets are sparse — each element forbids a positive fraction of residues for its larger neighbours — and is the elementary core beneath the (hard) global density theorems.",
+      "The obstruction is purely a one-line application of dvd_add; the value is in naming and packaging the structure, not in proof depth."
+    ]
+  },
+  "sections": [
+    {
+      "id": "definition",
+      "title": "The Divisibility-Free Predicate",
+      "startLine": 39,
+      "endLine": 46,
+      "summary": "IsDivisibilityFree A: no distinct a, b, c ∈ A with a < b, a < c and a ∣ (b + c). Matches the erdos-12 gallery definition.",
+      "mathContext": "$A$ is divisibility-free iff $\\forall a,b,c \\in A$ distinct with $a < b, a < c$, $a \\nmid (b+c)$."
+    },
+    {
+      "id": "obstruction",
+      "title": "The Local Obstruction",
+      "startLine": 47,
+      "endLine": 78,
+      "summary": "no_two_larger_multiples (two distinct larger multiples of a are impossible), unique_larger_multiple, largerMultiples_subsingleton, and the residue form no_antipodal_pair; plus subset closure IsDivisibilityFree.mono.",
+      "mathContext": "If $a \\mid b$ and $a \\mid c$ with $b, c > a$ distinct, then $a \\mid (b+c)$ — forbidden. Hence the larger multiples of $a$ in $A$ form a subsingleton, and no two larger elements satisfy $b + c \\equiv 0 \\pmod a$."
+    },
+    {
+      "id": "witness",
+      "title": "A Concrete Witness",
+      "startLine": 79,
+      "endLine": 90,
+      "summary": "divFree_456: {4, 5, 6} is divisibility-free, shown by a finite case split (the only nontrivial check is 4 ∤ 5 + 6 = 11).",
+      "mathContext": "$\\{4,5,6\\}$ is divisibility-free: the single live constraint is $4 \\nmid 11$."
+    }
+  ],
+  "conclusion": {
+    "summary": "For any divisibility-free set A and any a ∈ A, at most one element of A larger than a is a multiple of a, and no two larger elements are antipodal mod a. These elementary structural facts are fully machine-checked with 0 axioms and 0 sorries, with a concrete witness {4, 5, 6}.",
+    "implications": "This packages the local combinatorial obstruction that makes divisibility-free sets sparse: each element forbids antipodal residue pairs (in particular, repeated multiples) among its larger neighbours. It is the elementary seed of the Erdős–Sárközy density-zero theorem and of the 2026 resolutions of the two density questions, all of which remain far deeper than this local statement.",
+    "openQuestions": [
+      "Can the residue obstruction be sharpened into a quantitative local density bound (≈ at most half the residues mod a are available to larger elements), as a first step toward a self-contained density-zero proof?",
+      "Question (iii) of Erdős #12 — whether Σ(1/n : n ∈ A) converges for every divisibility-free A — remains open.",
+      "Does the antipodal-pair obstruction extend usefully to k-fold sums a ∣ (b₁ + ⋯ + b_k)?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "no_two_larger_multiples",
+      "type": "core",
+      "description": "For a ∈ A in a divisibility-free set, no two distinct elements of A larger than a are both multiples of a."
+    },
+    {
+      "name": "unique_larger_multiple",
+      "type": "core",
+      "description": "Each a ∈ A has at most one larger multiple in A (any two coincide)."
+    },
+    {
+      "name": "no_antipodal_pair",
+      "type": "supporting",
+      "description": "No two distinct elements of A larger than a sum to 0 mod a — the residue-level form of the obstruction."
+    },
+    {
+      "name": "divFree_456",
+      "type": "supporting",
+      "description": "The concrete set {4, 5, 6} is divisibility-free, witnessing non-vacuous satisfiability."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-12",
+      "relationship": "extends",
+      "description": "Isolates the elementary local divisibility obstruction underlying the Erdős #12 density results; reuses the divisibility-free predicate of the parent gallery entry."
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": [],
+    "namespace": "Erdos12WIP01",
+    "lineCount": 90,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "sorries": 0,
+    "path": "Proofs/Erdos12WIP01.lean",
+    "additionalFiles": []
+  }
+}

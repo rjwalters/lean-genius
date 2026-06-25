@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ann-divfree-def",
+    "proofId": "erdos-12-wip-01",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "definition",
+    "title": "Divisibility-Free Predicate",
+    "content": "`IsDivisibilityFree A` says no distinct a, b, c ∈ A with a < b and a < c satisfy a ∣ (b + c). This reproduces the predicate of the Erdős #12 gallery entry, kept local so this leaf is self-contained. The `a < b`, `a < c` hypotheses make `a` the smallest of the three and encode 'b, c larger than a'.",
+    "mathContext": "$\\forall a,b,c \\in A$ distinct, $a < b \\wedge a < c \\Rightarrow a \\nmid (b+c)$",
+    "significance": "key",
+    "relatedConcepts": ["divisibility-free set", "sum-free set", "Erdős–Sárközy theorem"],
+    "prerequisites": ["divisibility on ℕ"]
+  },
+  {
+    "id": "ann-no-two-larger-multiples",
+    "proofId": "erdos-12-wip-01",
+    "range": { "startLine": 51, "endLine": 60 },
+    "type": "theorem",
+    "title": "Core Local Obstruction: No Two Larger Multiples",
+    "content": "If a ∈ A and two distinct elements b, c ∈ A larger than a were both multiples of a, then a ∣ b and a ∣ c give a ∣ (b + c) via `dvd_add`, contradicting divisibility-freeness. This is the one-line heart of the file; everything else specializes it.",
+    "mathContext": "$a \\mid b,\\ a \\mid c \\Rightarrow a \\mid (b+c)$, contradicting $a \\nmid (b+c)$.",
+    "significance": "critical",
+    "relatedConcepts": ["divisibility", "local density obstruction"],
+    "prerequisites": ["dvd_add"]
+  },
+  {
+    "id": "ann-no-antipodal-pair",
+    "proofId": "erdos-12-wip-01",
+    "range": { "startLine": 73, "endLine": 78 },
+    "type": "theorem",
+    "title": "Residue-Level Obstruction: No Antipodal Pair mod a",
+    "content": "Rephrasing a ∣ (b + c) as (b + c) % a = 0, no two distinct larger elements are antipodal mod a. This is the residue picture: around each a ∈ A, the larger elements avoid complementary residue pairs mod a — the local reason these sets are sparse.",
+    "mathContext": "No distinct $b, c > a$ in $A$ with $b + c \\equiv 0 \\pmod a$.",
+    "significance": "important",
+    "relatedConcepts": ["residues mod a", "additive combinatorics", "complementary residue pairs"],
+    "prerequisites": ["Nat.dvd_of_mod_eq_zero"]
+  }
+]
