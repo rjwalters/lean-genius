@@ -1,0 +1,67 @@
+[
+  {
+    "id": "ann-h17-oq0104-defs",
+    "proofId": "hilbert-17-oq-01-oq-04",
+    "range": {
+      "startLine": 95,
+      "endLine": 102
+    },
+    "type": "definition",
+    "title": "Motzkin and the minimal classical denominator",
+    "content": "motzkin is defined exactly as in the parent entries: M = x⁴y² + x²y⁴ − 3x²y² + 1, the canonical polynomial nonnegative on ℝ² yet not a polynomial sum of squares. denom = x²+y²+1 is the minimal classical denominator: it is strictly positive, it is itself a sum of three squares (1² + x² + y²), and it is the degree-minimal SOS multiplier for Motzkin in the Reznick/Pfister theory. The sibling entry hilbert-17-oq-03-oq-01 used the inflated multiplier 4·(x²+y²+1); the whole point here is to reach the minimal x²+y²+1.",
+    "mathContext": "$M(x,y) = x^4y^2 + x^2y^4 - 3x^2y^2 + 1,\\qquad D(x,y) = x^2 + y^2 + 1 = 1^2 + x^2 + y^2.$",
+    "significance": "context"
+  },
+  {
+    "id": "ann-h17-oq0104-cleared-certificate",
+    "proofId": "hilbert-17-oq-01-oq-04",
+    "range": {
+      "startLine": 130,
+      "endLine": 135
+    },
+    "type": "theorem",
+    "title": "The cleared integer SOS certificate",
+    "content": "Working with the minimal denominator forces half-integer coefficients in the square roots, so the identity is first stated cleared of its common factor 4, where every coefficient is an integer and Lean's ring tactic closes it outright: 4·(x²+y²+1)·M = 3·(2xy−x³y−xy³)² + (x³y−xy³)² + (2x−2xy²)² + (2y−2x²y)² + (2−2x²y²)². The five generators come from the rank-5 boundary Gram matrix of Motzkin at the minimal denominator.",
+    "mathContext": "$4(x^2+y^2+1)\\,M = 3(2xy-x^3y-xy^3)^2 + (x^3y-xy^3)^2 + (2x-2xy^2)^2 + (2y-2x^2y)^2 + (2-2x^2y^2)^2.$",
+    "significance": "key"
+  },
+  {
+    "id": "ann-h17-oq0104-denom-sos",
+    "proofId": "hilbert-17-oq-01-oq-04",
+    "range": {
+      "startLine": 145,
+      "endLine": 150
+    },
+    "type": "theorem",
+    "title": "The minimal denominator is a sum of squares",
+    "content": "denom_isSumOfSquares records that x²+y²+1 = 1² + x² + y² is itself a sum of three squares. This is what lets the polynomial certificate be promoted to a rational-function SOS for M alone: a product of two sums of squares is again a sum of squares, so multiplying (x²+y²+1)·M = Σ pᵢ² by (x²+y²+1) = Σ dⱼ² isolates M as a quotient of an SOS by the square of the denominator.",
+    "mathContext": "$x^2+y^2+1 = 1^2 + x^2 + y^2.$",
+    "significance": "supporting"
+  },
+  {
+    "id": "ann-h17-oq0104-minimal-certificate",
+    "proofId": "hilbert-17-oq-01-oq-04",
+    "range": {
+      "startLine": 164,
+      "endLine": 171
+    },
+    "type": "theorem",
+    "title": "The minimal-denominator certificate",
+    "content": "The headline identity, now in the field of rational functions ℝ(x,y): dividing the cleared identity by 4 (handled by linear_combination) gives (x²+y²+1)·M = 3·(xy − ½(x³y+xy³))² + (½(x³y−xy³))² + (x − xy²)² + (y − x²y)² + (1 − x²y²)², a sum of seven squares whose multiplier is exactly the minimal classical denominator. Over ℝ the three repeated squares merge into one (√3·…)², giving the rank-5 count.",
+    "mathContext": "$(x^2+y^2+1)\\,M = 3\\!\\left(xy - \\tfrac{x^3y+xy^3}{2}\\right)^2 + \\left(\\tfrac{x^3y-xy^3}{2}\\right)^2 + (x-xy^2)^2 + (y-x^2y)^2 + (1-x^2y^2)^2.$",
+    "significance": "key"
+  },
+  {
+    "id": "ann-h17-oq0104-ratfunc",
+    "proofId": "hilbert-17-oq-01-oq-04",
+    "range": {
+      "startLine": 203,
+      "endLine": 227
+    },
+    "type": "theorem",
+    "title": "Minimal-denominator Artin for Motzkin",
+    "content": "motzkin_isSOS_ratFunc_minimalDenom is the constructive, 0-axiom realization of Artin's theorem for the canonical example with the minimal denominator. From the 21-term product identity Σ(qᵢdⱼ)² = (4·(x²+y²+1)·M)·(x²+y²+1) and the nonvanishing of the denominator, M = Σ (qᵢ·dⱼ / (2·(x²+y²+1)))² — a sum of squares of rational functions whose common denominator is exactly x²+y²+1. Pfister's bound guarantees four squares suffice in the plane; this explicit minimal-denominator witness uses five (rank 5), leaving the gap to the optimum as a concrete open question.",
+    "mathContext": "$M = \\sum_{i,j} \\left(\\frac{q_i\\,d_j}{2(x^2+y^2+1)}\\right)^2,\\qquad \\text{denominator } = x^2+y^2+1.$",
+    "significance": "key"
+  }
+]
