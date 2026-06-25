@@ -1,0 +1,75 @@
+{
+  "id": "kroneckers-jugendtraum-oq-02",
+  "title": "Stark Units: Rank-One Regulator Collapses to a Single Logarithm",
+  "slug": "kroneckers-jugendtraum-oq-02",
+  "description": "When a number field has unit rank 1 — the setting of the rank-one abelian Stark conjecture — its regulator collapses from an (r×r) determinant to a single archimedean logarithm of the fundamental (Stark) unit.",
+  "proofRepoPath": "Proofs/KroneckersJugendtraumStarkRankOne.lean",
+  "meta": {
+    "author": "researcher-1",
+    "date": "2026-06-25",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "class-field-theory",
+      "stark-units",
+      "hilbert-problems",
+      "regulator",
+      "dirichlet-unit-theorem",
+      "advanced"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "NumberField.Units.regOfFamily_eq_det",
+        "description": "The regulator of a family of units equals the absolute value of the determinant of the matrix of (mult w · log w(uᵢ)) for w ≠ w'",
+        "module": "Mathlib.NumberTheory.NumberField.Units.Regulator"
+      },
+      {
+        "theorem": "NumberField.Units.regulator_eq_regOfFamily_fundSystem",
+        "description": "The regulator of K equals the regulator of the fundamental system of units",
+        "module": "Mathlib.NumberTheory.NumberField.Units.Regulator"
+      },
+      {
+        "theorem": "NumberField.Units.dirichletUnitTheorem.rank",
+        "description": "The unit rank equals #(InfinitePlace K) − 1 (Dirichlet's unit theorem)",
+        "module": "Mathlib.NumberTheory.NumberField.Units.DirichletTheorem"
+      },
+      {
+        "theorem": "Matrix.det_unique",
+        "description": "The determinant of a matrix indexed by a Unique type is its single entry",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      }
+    ],
+    "originalContributions": [
+      "regulator_eq_single_log_of_rank_eq_one: when unit rank = 1, the regulator collapses to mult(w)·|log(w ε)| — a single archimedean logarithm of the fundamental (Stark) unit ε. This is the precise linear-algebra fact behind the rank-one abelian Stark conjecture's statement about a single unit. Proved by specializing Mathlib's general regulator-determinant formula to the 1×1 case via Matrix.det_unique and an Equiv-transported Unique instance on the index type.",
+      "rank_eq_one_iff_card_infinitePlace_eq_two: the rank-one Stark hypothesis is equivalent to having exactly two infinite places (real quadratic and mixed-signature cubic fields)."
+    ],
+    "dateAdded": "2026-06-25",
+    "hilbertNumber": 12,
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-checked from Mathlib (0 sorries, 0 axiom declarations, 0 structure-encoded assumptions). #print axioms reports only the standard foundational axioms propext/Classical.choice/Quot.sound.",
+    "proofRepoPath": "Proofs/KroneckersJugendtraumStarkRankOne.lean",
+    "mathlib_version": "4.26.0",
+    "lineCount": 79,
+    "theoremCount": 2,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 12th problem (Kronecker's Jugendtraum) asks for explicit generators of the abelian extensions of a number field K. Solved for K = ℚ (Kronecker–Weber: roots of unity) and for imaginary quadratic K (complex multiplication: j-invariants and CM torsion), it is open in general. The modern conjectural framework is provided by the **Stark conjectures** (Stark 1971–1980, Tate 1984): special values and derivatives of Artin L-functions at s = 0 should be algebraic combinations of logarithms of units, the **Stark units**, which conjecturally generate abelian extensions. The simplest and most-tested case is the *rank-one abelian Stark conjecture*, which applies precisely when the relevant unit rank is 1 and predicts that L'(0, χ) is a rational multiple of a single logarithm log|ε| of one Stark unit ε.",
+    "problemStatement": "**Problem (parent oq-02):** Stark Units — effective computation for specific number fields.\n\n**This entry** isolates and machine-checks the structural fact underpinning the rank-one case: when the unit rank of K is 1, the regulator — which in general is an (r×r) determinant of logarithms of a fundamental system of units — collapses to a single archimedean logarithm of the fundamental (Stark) unit.",
+    "text": "When a number field has unit rank 1, its regulator equals mult(w)·|log(w ε)| for the fundamental (Stark) unit ε and an infinite place w — a single logarithm.",
+    "proofStrategy": "1. **Rank-one characterization** (`rank_eq_one_iff_card_infinitePlace_eq_two`): since rank K = #(InfinitePlace K) − 1 by Dirichlet's unit theorem, rank 1 ⟺ exactly two infinite places. These are the real quadratic fields (r₁,r₂)=(2,0) and the mixed-signature cubics (r₁,r₂)=(1,1) — exactly where the rank-one Stark conjecture lives.\n\n2. **Regulator collapse** (`regulator_eq_single_log_of_rank_eq_one`): starting from Mathlib's `regulator_eq_regOfFamily_fundSystem` and `regOfFamily_eq_det`, the regulator is the absolute value of the determinant of the matrix (mult w · log w(uᵢ))_{i,w} indexed by the rank-one index types. Because rank K = 1, both index types are singletons; transporting the `Unique` instance along `equivFinRank` and applying `Matrix.det_unique` reduces the determinant to its single entry, yielding regulator K = mult(w)·|log(w ε)|.",
+    "keyInsights": [
+      "The rank-one Stark hypothesis is the geometric condition #(InfinitePlace K) = 2, not a property of any single L-function.",
+      "Mathlib's regulator is defined as a lattice covolume / determinant of logarithms; the rank-one case is exactly where this determinant is 1×1 and equals a single logarithm.",
+      "The witness unit ε is the unique generator of the unit group modulo torsion (fundSystem K), i.e. the fundamental unit — which is the Stark unit (up to roots of unity and sign) in the rank-one abelian setting.",
+      "This formalizes the linear-algebra collapse that makes 'L'(0,χ) is one logarithm of one unit' a meaningful statement; it does not address the open problem of computing that unit effectively."
+    ],
+    "prerequisites": [
+      "Dirichlet's unit theorem: the unit group of 𝓞_K is finite-torsion times free of rank r₁ + r₂ − 1.",
+      "The regulator as the covolume of the unit lattice under the logarithmic embedding.",
+      "Stark conjectures (rank-one abelian case) for the L-function interpretation."
+    ]
+  }
+}
