@@ -21,6 +21,42 @@
     "sorries": 0
   },
   "title": "The Anisotropic n-Dimensional Gaussian Integral: ∫_{ℝⁿ} e^{-∑ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ) = π^{n/2}/√(∏ bᵢ)",
+  "description": "Generalizes the isotropic n-dimensional Gaussian of the parent (a single common weight b) to the anisotropic, diagonal-covariance case where each coordinate xᵢ carries its own weight bᵢ: ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ) = π^{n/2}/√(∏ᵢ bᵢ). The product ∏ᵢ bᵢ is exactly det diag(b₁,…,bₙ), so this is the diagonal case of the general positive-definite quadratic-form Gaussian π^{n/2}/√(det A). The separable integrand ∏ᵢ e^{-bᵢ xᵢ²} factors under general n-variable Fubini into a product of distinct line integrals, each Mathlib's integral_gaussian; setting all bᵢ = c recovers the parent's (π/c)^{n/2}.",
+  "overview": {
+    "historicalContext": "The multivariate Gaussian integral ∫_{ℝⁿ} e^{-⟨Ax,x⟩} dx = π^{n/2}/√(det A) for a positive-definite A is the cornerstone of multivariate probability (the normalization of the n-dimensional normal density) and of Gaussian measures in analysis and physics. The diagonal case A = diag(b₁,…,bₙ) treated here is the natural step between the isotropic single-weight Gaussian (parent) and the full quadratic form, separating cleanly along the coordinate axes; it is the formalization-friendly heart of the general result, since any positive-definite A is orthogonally diagonalizable.",
+    "problemStatement": "Prove the anisotropic n-dimensional Gaussian integral $\\int_{\\mathbb{R}^n} e^{-\\sum_i b_i x_i^2}\\,dx = \\prod_i \\sqrt{\\pi/b_i} = \\dfrac{\\pi^{n/2}}{\\sqrt{\\prod_i b_i}}$ over $\\mathbb{R}^n = (\\mathrm{Fin}\\,n \\to \\mathbb{R})$ with the product Lebesgue measure, and recover the parent's isotropic $(\\pi/c)^{n/2}$ as the constant-weight case.",
+    "proofStrategy": "gaussian_anisotropic_eq_prod proves ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ) for every real b (no positivity needed): an auxiliary `key` collapses the separable product integral ∫ ∏ᵢ e^{-bᵢ xᵢ²} = ∏ᵢ ∫ e^{-bᵢ x²} via integral_fintype_prod_volume_eq_prod, evaluating each factor by integral_gaussian (bᵢ); the goal is reduced by `← key` to the pointwise identity e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ e^{-bᵢ xᵢ²} (integral_congr_ae + Real.exp_sum + sum_neg_distrib + neg_mul). gaussian_anisotropic_closed_form (bᵢ > 0) re-packages the product into π^{n/2}/√(∏ᵢ bᵢ) by factoring √(π/bᵢ) = √π/√bᵢ, collapsing (√π)ⁿ = π^{n/2}, and collecting ∏ᵢ √bᵢ = √(∏ᵢ bᵢ) (Real.finset_prod_rpow). gaussian_isotropic_recover specializes bᵢ = c.",
+    "keyInsights": [
+      "Unlike the isotropic case where ∫_{ℝⁿ} ∏ᵢ f(xᵢ) = (∫ f)ⁿ uses a single integral, the per-axis factors e^{-bᵢ x²} now differ, so the proof requires the general n-variable Fubini lemma ∫ ∏ᵢ fᵢ(xᵢ) = ∏ᵢ ∫ fᵢ rather than the power form.",
+      "The product-Fubini step holds for EVERY real weight vector b — no positivity or integrability hypothesis — because the closed value of each factor is supplied by integral_gaussian, which is itself unconditional; positivity is needed only later to write the determinant under a single square root.",
+      "The product of weights ∏ᵢ bᵢ is exactly the determinant of the diagonal matrix diag(b₁,…,bₙ), so the closed form π^{n/2}/√(∏ᵢ bᵢ) is literally the diagonal instance of the general quadratic-form Gaussian π^{n/2}/√(det A).",
+      "The two algebraic identities that assemble the determinant form — ∏ᵢ √bᵢ = √(∏ᵢ bᵢ) (multiplicativity of the square root on nonnegatives, via rpow at exponent 1/2) and (√π)ⁿ = π^{n/2} — are handled uniformly through Real.sqrt_eq_rpow and the rpow power laws.",
+      "Setting bᵢ = c collapses the product back to a power and recovers the parent's (π/c)^{n/2}, certifying this entry as a strict generalization rather than a parallel result."
+    ]
+  },
+  "sections": [
+    {
+      "id": "product-fubini",
+      "title": "The Anisotropic Product–Fubini Step",
+      "startLine": 51,
+      "endLine": 72,
+      "summary": "gaussian_anisotropic_eq_prod: for every real weight vector b, ∫_{ℝⁿ} e^{-∑ᵢ bᵢ xᵢ²} = ∏ᵢ √(π/bᵢ), via separable factoring (Real.exp_sum), general n-variable Fubini (integral_fintype_prod_volume_eq_prod), and per-axis integral_gaussian."
+    },
+    {
+      "id": "determinant-closed-form",
+      "title": "The Determinant Closed Form",
+      "startLine": 74,
+      "endLine": 99,
+      "summary": "gaussian_anisotropic_closed_form (bᵢ > 0): re-packages ∏ᵢ √(π/bᵢ) into π^{n/2}/√(∏ᵢ bᵢ) — the diagonal case of π^{n/2}/√(det A) — using ∏ᵢ √bᵢ = √(∏ᵢ bᵢ) (Real.finset_prod_rpow) and (√π)ⁿ = π^{n/2}."
+    },
+    {
+      "id": "isotropic-recovery",
+      "title": "Isotropic Recovery",
+      "startLine": 100,
+      "endLine": 113,
+      "summary": "gaussian_isotropic_recover: the constant weight bᵢ = c collapses the product to a power, recovering the parent's isotropic (π/c)^{n/2} and certifying this as a strict generalization."
+    }
+  ],
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
