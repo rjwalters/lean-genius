@@ -1,35 +1,113 @@
 [
   {
+    "id": "ann-overview-generality",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 4,
+      "endLine": 26
+    },
+    "type": "concept",
+    "title": "Newton–Girard in arbitrary arity, as a formal identity",
+    "content": "The open question asks for the full Newton–Girard recurrence $p_k = \\sum_i (-1)^{i-1} e_i p_{k-i}$ expressing power sums through elementary symmetric polynomials, for *any* number of variables. A gallery sibling proved the three-variable case by hand; this entry instead packages Mathlib's general development over $\\mathrm{MvPolynomial}\\,\\sigma\\,R$ for any `Fintype σ` and commutative ring $R$. The key conceptual point is that these are *formal/combinatorial* identities in the polynomial ring — not facts about complex roots — so they hold over $\\mathbb{Z}$, any commutative ring, and any finite variable set, with 0 axioms.",
+    "mathContext": "$p_k = \\sum_i (-1)^{i-1} e_i\\, p_{k-i}$ as an identity in $\\mathrm{MvPolynomial}\\,\\sigma\\,R$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton's identities",
+      "elementary symmetric polynomials",
+      "power sums",
+      "roots–coefficients dictionary"
+    ],
+    "prerequisites": [
+      "symmetric polynomials",
+      "multivariate polynomial rings",
+      "Vieta's formulas"
+    ]
+  },
+  {
+    "id": "ann-esymm-recurrence",
+    "proofId": "amgm-inequality-oq-02-oq-01-oq-01",
+    "range": {
+      "startLine": 34,
+      "endLine": 41
+    },
+    "type": "insight",
+    "title": "The eₖ recurrence (k·eₖ from lower-degree data)",
+    "content": "`newton_esymm_recurrence` states $k\\cdot e_k = (-1)^{k+1}\\sum_{i+j=k,\\,i<k}(-1)^i e_i p_j$, expressing $k\\,e_k$ through strictly lower-degree elementary symmetric polynomials and power sums. The summation ranges over the antidiagonal $\\{(i,j): i+j=k\\}$ filtered to $i<k$, which is the exact bookkeeping of the cross terms $e_i p_{k-i}$. In Lean this is a one-line wrapper around Mathlib's `mul_esymm_eq_sum`, itself proved by a sign-reversing (Zeilberger-style) involution on pairs.",
+    "mathContext": "$k\\,e_k = (-1)^{k+1}\\sum_{i+j=k,\\,i<k}(-1)^i e_i p_j$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "antidiagonal summation",
+      "sign-reversing involution",
+      "mul_esymm_eq_sum"
+    ],
+    "prerequisites": [
+      "elementary symmetric polynomials",
+      "finite sums over antidiagonals"
+    ]
+  },
+  {
     "id": "ann-psum-recurrence",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 45,
-      "endLine": 56
+      "startLine": 43,
+      "endLine": 52
     },
     "type": "insight",
-    "title": "The General Newton–Girard Power-Sum Recurrence",
-    "content": "newton_psum_recurrence is the OQ's target in full generality: pₖ = (−1)^{k+1} k eₖ − Σ_{i+j=k, 0<i<k} (−1)ⁱ eᵢ pⱼ, the recurrence computing every power sum from the elementary symmetric polynomials and lower power sums. It holds over MvPolynomial σ R for ANY finite index type σ and ANY commutative ring R — the identity is formal/combinatorial, not a fact about complex roots. The antidiagonal filter {i + j = k, 0 < i < k} is the exact bookkeeping of the cross terms eᵢ pₖ₋ᵢ. This is Mathlib's psum_eq_mul_esymm_sub_sum, proved via Zeilberger's sign-reversing involution on pairs."
+    "title": "The power-sum recurrence — the open question's target",
+    "content": "`newton_psum_recurrence` is the OQ's target in full generality: for $k>0$, $p_k = (-1)^{k+1}k\\,e_k - \\sum_{i+j=k,\\,0<i<k}(-1)^i e_i p_j$, the recurrence that computes every power sum from the elementary symmetric polynomials and the lower power sums. It is the solved-for-$p_k$ rearrangement of the $e_k$ recurrence, with the antidiagonal filter now $0<i<k$ excluding both endpoints. Wrapping Mathlib's `psum_eq_mul_esymm_sub_sum`, it holds over any finite index type and any commutative ring.",
+    "mathContext": "$p_k = (-1)^{k+1}k\\,e_k - \\sum_{i+j=k,\\,0<i<k}(-1)^i e_i p_j$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton–Girard recurrence",
+      "power sums from symmetric functions",
+      "psum_eq_mul_esymm_sub_sum"
+    ],
+    "prerequisites": [
+      "elementary symmetric polynomials",
+      "recurrence relations"
+    ]
   },
   {
-    "id": "ann-esymm-closure",
+    "id": "ann-closure",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-01",
     "range": {
-      "startLine": 33,
+      "startLine": 54,
       "endLine": 60
     },
     "type": "concept",
-    "title": "The eₖ Recurrence and Its Closure",
-    "content": "newton_esymm_recurrence gives the dual form k·eₖ = (−1)^{k+1} Σ_{i+j=k, i<k} (−1)ⁱ eᵢ pⱼ, expressing k·eₖ through lower-degree symmetric data. newton_sum_zero records that when k reaches the number of variables |σ|, the full alternating sum Σ_{i+j=k} (−1)ⁱ eᵢ pⱼ vanishes — because eᵢ = 0 for i > |σ|, the recurrence terminates there. Together these bound how the symmetric-function and power-sum data determine one another."
+    "title": "Termination at k = number of variables",
+    "content": "`newton_sum_zero` records that when $k$ reaches $|\\sigma|$ (the number of variables), the full alternating sum $\\sum_{i+j=k}(-1)^i e_i p_j$ vanishes. Beyond degree $|\\sigma|$ the elementary symmetric polynomials are identically zero, so the recurrence terminates there: it is exactly the structural reason the roots↔coefficients dictionary is finite. This is the multivariate generalization of the fact that a degree-$n$ characteristic polynomial has only $n+1$ coefficients.",
+    "mathContext": "At $k=|\\sigma|$: $\\sum_{i+j=k}(-1)^i e_i p_j = 0$, since $e_i = 0$ for $i>|\\sigma|$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "degree bound on symmetric polynomials",
+      "termination of recurrences",
+      "characteristic polynomial degree"
+    ],
+    "prerequisites": [
+      "vanishing of high-degree esymm",
+      "finite variable sets"
+    ]
   },
   {
-    "id": "ann-general-vs-cubic",
+    "id": "ann-base-case",
     "proofId": "amgm-inequality-oq-02-oq-01-oq-01",
     "range": {
       "startLine": 62,
       "endLine": 65
     },
-    "type": "concept",
-    "title": "General MvPolynomial Form Supersedes the Hand Proof",
-    "content": "The gallery sibling solution-of-cubic-oq-03-oq-04 proved Newton–Girard for three quantities by hand (multiply each root's cubic by xⁿ and sum). This entry instead invokes Mathlib's general development, valid for any number of variables, with the base case psum_one_eq_esymm_one (p₁ = e₁, both equal to Σᵢ Xᵢ). Seeded by p₁ = e₁ and run via newton_psum_recurrence, every power sum is computed from the elementary symmetric polynomials — the computational core of the roots↔coefficients dictionary, now in arbitrary arity."
+    "type": "definition",
+    "title": "The base case p₁ = e₁",
+    "content": "`psum_one_eq_esymm_one` proves $p_1 = e_1$ — both equal $\\sum_i X_i$, the sum of the variables. This is the seed that, together with `newton_psum_recurrence`, computes every power sum from the elementary symmetric polynomials by induction on $k$. The proof is the one-liner `rw [psum_one, esymm_one]`. Without a base case the recurrence would determine the $p_k$ only up to the $k=1$ datum; supplying it makes the whole power-sum sequence explicit.",
+    "mathContext": "$p_1 = e_1 = \\sum_i X_i$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "induction base case",
+      "psum_one",
+      "esymm_one"
+    ],
+    "prerequisites": [
+      "first power sum and first symmetric polynomial"
+    ]
   }
 ]
