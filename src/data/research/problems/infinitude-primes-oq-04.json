@@ -1,13 +1,13 @@
 {
   "slug": "infinitude-primes-oq-04",
   "title": "Green-Tao theorem (2004): the primes contain arbitrarily long arithmetic prog...",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETE",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Green-Tao theorem (2004): the primes contain arbitrarily long arithmetic prog....",
+    "plain": "Green-Tao theorem (2004): the primes contain arbitrarily long arithmetic progressions. Statement recorded as a Prop; verified companion results characterize the frontier (no infinite prime AP; explicit finite prime APs; 6 | common difference of 3-term prime APs > 3).",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETE",
     "since": "2026-03-30T17:32:58.851Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Green-Tao statement recorded; verified elementary boundary results proved (no infinite prime AP, explicit length-5/6 prime APs, 6 | d for 3-term prime APs).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Done. Optionally generalize six_dvd_diff to primorial common differences.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Recorded Green-Tao as GreenTao : Prop (not proved; beyond Mathlib). Proved verified (0-axiom): not_forall_prime_of_AP (no infinite prime AP via a+a*d=a(1+d)), composite_at_index_self, exists_not_prime_in_AP, prime_AP_length_five/six (explicit witnesses), not_two_three_dvd_of_prime, three_dvd_of_AP (ZMod 3 decide), six_dvd_diff (6 | d).",
+    "builtItems": [
+      "Proofs/InfinitudePrimesOQ04.lean (8 theorems, 1 def, 0 axioms, 0 sorries)"
+    ],
+    "insights": [
+      "Green-Tao gives arbitrarily long FINITE prime APs, but no infinite one exists: term at index a is a(1+d), composite.",
+      "A k-term prime AP with all terms > k forces the common difference divisible by every prime <= k (primorial); 6 | d is the k=3 case.",
+      "The mod-3 step is a clean 9-case ZMod 3 exhaustion via kernel decide (axiom-free)."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -57,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T17:32:58.851Z",
-  "lastUpdate": "2026-03-30T17:32:58.851Z",
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

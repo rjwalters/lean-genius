@@ -1,0 +1,194 @@
+{
+  "id": "infinitude-primes-oq-04",
+  "title": "Infinitude of Primes OQ-04: Arithmetic Progressions of Primes (Green–Tao)",
+  "slug": "infinitude-primes-oq-04",
+  "description": "The Green–Tao theorem (2004) states the primes contain arbitrarily long arithmetic progressions; its proof is beyond current formalization, so its statement is recorded as a Prop. The verified content is the sharp elementary frontier around it: no arithmetic progression is entirely prime (so 'arbitrarily long' cannot become 'infinite'), explicit prime progressions of length 5 and 6, and the structural fact that a 3-term progression of primes > 3 has common difference divisible by 6.",
+  "meta": {
+    "author": "Formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/InfinitudePrimesOQ04.lean",
+    "tags": [
+      "number-theory",
+      "prime-numbers",
+      "arithmetic-progressions",
+      "green-tao",
+      "infinitude-of-primes"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.Prime.eq_one_or_self_of_dvd",
+        "description": "A divisor of a prime is either 1 or the prime itself",
+        "module": "Mathlib.Data.Nat.Prime.Basic"
+      },
+      {
+        "theorem": "dvd_mul_right",
+        "description": "a ∣ a * b, exhibiting the composite term a·(1+d)",
+        "module": "Mathlib.Algebra.Divisibility.Basic"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(↑a : ZMod n) = 0 ↔ n ∣ a, transferring divisibility to residues mod 3",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.Coprime.mul_dvd_of_dvd_of_dvd",
+        "description": "Coprime k l with k ∣ m and l ∣ m gives k·l ∣ m, combining 2 ∣ d and 3 ∣ d into 6 ∣ d",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "Nat.dvd_of_mod_eq_zero",
+        "description": "n % m = 0 → m ∣ n, used to read off parity of the common difference",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "Formal statement of the Green–Tao theorem as a Prop (GreenTao): for every length k there is a k-term arithmetic progression of primes",
+      "not_forall_prime_of_AP: no arithmetic progression a, a+d, a+2d, … (d ≥ 1) is entirely prime — the term at index a equals a·(1+d), a nontrivial product",
+      "composite_at_index_self: the explicit composite term sits at index n = a",
+      "exists_not_prime_in_AP: contrapositive form — every nonconstant progression contains a composite term",
+      "prime_AP_length_five and prime_AP_length_six: explicit verified prime progressions 5,11,17,23,29 (d=6) and 7,37,67,97,127,157 (d=30)",
+      "six_dvd_diff: in a 3-term progression of primes all exceeding 3, the common difference is divisible by 6 (proved via a 9-case ZMod 3 exhaustion for the mod-3 part)"
+    ],
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "axiomCount": 0,
+    "lineCount": 164,
+    "assumptions": "0 axioms, 0 sorries (only propext, Classical.choice, Quot.sound — Lean's foundational axioms). The Green–Tao theorem itself is recorded only as a Prop (GreenTao) and is NOT proved; all theorems in the file are the verified elementary results surrounding it. The mod-3 step uses kernel-checked `decide` over ZMod 3 (not native_decide).",
+    "theoremCount": 8,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "In 2004 Ben Green and Terence Tao proved one of the landmark theorems of modern number theory: the prime numbers contain arithmetic progressions of every finite length. (For example 5, 11, 17, 23, 29 is a 5-term progression of primes.) Whether such progressions existed for all lengths had been open for centuries; the proof combines Szemerédi's theorem with a transference principle to a pseudorandom majorant of the primes, and earned Tao part of his 2006 Fields Medal. The full proof is far beyond what Lean/Mathlib can currently formalize, so this entry records the Green–Tao statement as a proposition and instead proves the *sharp elementary boundaries* that frame it — results that explain exactly why the theorem says 'arbitrarily long' and not 'infinite', and why long prime progressions are forced to have large common differences.",
+    "problemStatement": "**Open Question (Green–Tao, 2004)**: Do the primes contain arbitrarily long arithmetic progressions?\n\n**Answer (Green–Tao)**: Yes — for every k there is a k-term arithmetic progression of primes. This is recorded here as the proposition `GreenTao`. Its proof is not formalized.\n\n**What is proved here**: The exact frontier of that statement. (1) No single arithmetic progression is entirely prime: if a, a+d, a+2d, … were all prime with d ≥ 1, the term at index a is a·(1+d), composite. (2) Explicit prime progressions of length 5 and 6. (3) Any 3-term progression of primes exceeding 3 has common difference divisible by 6.",
+    "text": "The Green–Tao theorem (statement only) together with the verified elementary results that bound it: no infinite prime progression, explicit finite ones, and the divisibility-by-6 constraint on common differences.",
+    "proofStrategy": "Four parts:\n1. **Statement of Green–Tao** as `GreenTao : Prop` — ∀ k, ∃ a d ≥ 1, all of a + i·d (i < k) prime. Recorded, not proved.\n2. **No infinite progression of primes** (`not_forall_prime_of_AP`): if every term a + n·d (d ≥ 1) were prime, then index 0 makes a prime (so a ≥ 2), and index n = a gives a + a·d = a·(1+d). Since a divides this supposed prime, `Nat.Prime.eq_one_or_self_of_dvd` forces a = 1 (false) or a = a·(1+d) (forcing d = 0, false). Hence some term is composite.\n3. **Explicit finite progressions** (`prime_AP_length_five`, `prime_AP_length_six`): `interval_cases` + `norm_num` verify 5,11,17,23,29 (d=6) and 7,37,67,97,127,157 (d=30) are prime.\n4. **Structural constraint** (`six_dvd_diff`): a prime > 3 avoids residues 0 mod 2 and 0 mod 3. From the parities of p and p+d, d is even; a 9-case `decide` over ZMod 3 (`three_dvd_of_AP`) shows the three terms avoiding 0 mod 3 forces 3 ∣ d; coprimality of 2 and 3 then gives 6 ∣ d.",
+    "keyInsights": [
+      "Green–Tao gives arbitrarily long *finite* progressions, but `not_forall_prime_of_AP` shows no progression is *infinite* — 'arbitrarily long' is best possible and cannot be upgraded to 'infinite'",
+      "The composite term is completely explicit: in a + n·d with a prime, index n = a always lands on a·(1+d), a product of two factors ≥ 2 (this is essentially Euclid's observation applied to a single progression)",
+      "Long prime progressions are forced to have highly divisible common differences: a k-term progression of primes > k must have d divisible by every prime ≤ k; six_dvd_diff is the first nontrivial case (k = 3 ⇒ 6 ∣ d), explaining why the witnesses use d = 6 and d = 30",
+      "The mod-3 argument is a clean finite check: among p, p+d, p+2d, if 3 ∤ d the three residues are distinct mod 3, hence cover {0,1,2}, so one term is divisible by 3 — verified by exhausting the 9 residue pairs in ZMod 3 with kernel `decide`",
+      "Recording Green–Tao as a Prop keeps the entry honest: the deep theorem is stated, not claimed proved, while every accompanying result is fully machine-checked"
+    ],
+    "prerequisites": [
+      "Divisibility and primality in ℕ (Nat.Prime, divisors of a prime)",
+      "Arithmetic progressions a + n·d",
+      "Residues mod n and the ring ZMod 3",
+      "Coprimality and the combine-divisors lemma 2 ∣ d ∧ 3 ∣ d ⇒ 6 ∣ d"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble and Problem Statement",
+      "summary": "Module docstring: the Green–Tao theorem, why its proof is beyond formalization, and the elementary boundaries proved instead",
+      "startLine": 1,
+      "endLine": 38,
+      "mathContext": "Green–Tao: primes contain arbitrarily long arithmetic progressions; this file records the statement and proves the surrounding elementary facts."
+    },
+    {
+      "id": "greentao-statement",
+      "title": "Part I: The Green–Tao Statement (statement only)",
+      "summary": "GreenTao : Prop — for every length k there exist a, d ≥ 1 with a + i·d prime for all i < k. Recorded, not proved.",
+      "startLine": 44,
+      "endLine": 51,
+      "mathContext": "GreenTao := ∀ k, ∃ a d, 1 ≤ d ∧ ∀ i < k, (a + i·d).Prime."
+    },
+    {
+      "id": "no-infinite-ap",
+      "title": "Part II: No Progression Is Entirely Prime",
+      "summary": "not_forall_prime_of_AP (no infinite prime progression), exists_not_prime_in_AP (contrapositive), composite_at_index_self (the explicit composite term a·(1+d) at index a)",
+      "startLine": 53,
+      "endLine": 98,
+      "mathContext": "If all a + n·d (d ≥ 1) were prime, the term at n = a is a·(1+d), a nontrivial product — contradiction."
+    },
+    {
+      "id": "explicit-progressions",
+      "title": "Part III: Explicit Finite Progressions of Primes",
+      "summary": "prime_AP_length_five (5,11,17,23,29; d=6) and prime_AP_length_six (7,37,67,97,127,157; d=30) verified by interval_cases + norm_num",
+      "startLine": 100,
+      "endLine": 112,
+      "mathContext": "Concrete witnesses of the finite content of Green–Tao for lengths 5 and 6."
+    },
+    {
+      "id": "structural-constraint",
+      "title": "Part IV: Common Differences Are Divisible by 6",
+      "summary": "not_two_three_dvd_of_prime (a prime > 3 avoids 2 and 3), three_dvd_of_AP (ZMod 3 exhaustion ⇒ 3 ∣ d), six_dvd_diff (6 ∣ d for a 3-term progression of primes > 3)",
+      "startLine": 114,
+      "endLine": 164,
+      "mathContext": "Primes > 3 are coprime to 6; parities force 2 ∣ d and a mod-3 argument forces 3 ∣ d, so 6 ∣ d."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry pairs the Green–Tao theorem (the primes contain arbitrarily long arithmetic progressions, recorded as a proposition) with the verified elementary results that sharpen it: no arithmetic progression is entirely prime, explicit prime progressions of length 5 and 6, and the structural constraint that a 3-term progression of primes exceeding 3 has common difference divisible by 6. All proved results are machine-checked with 0 sorries and 0 axioms beyond Lean's foundations.",
+    "implications": "Clarifies the precise content of Green–Tao for a gallery audience: 'arbitrarily long' is optimal (there is no infinite prime progression), and the deep existence theorem is constrained by elementary divisibility (long prime progressions need common differences divisible by every small prime). Complements the gallery's other infinitude-of-primes entries (Euclid, Goldbach/Fermat, 4k±1) with the arithmetic-progression perspective.",
+    "openQuestions": [
+      "Formalize the Green–Tao theorem itself (currently far beyond Mathlib; would require Szemerédi's theorem and the transference principle)",
+      "Generalize six_dvd_diff: a k-term progression of primes all exceeding k has common difference divisible by every prime ≤ k (i.e. by the primorial)",
+      "Formalize the easier Dirichlet-type statement that there are infinitely many 3-term progressions of primes"
+    ]
+  },
+  "relatedProblems": [
+    {
+      "id": "infinitude-primes",
+      "relationship": "Parent theorem: the infinitude of primes (Euclid's proof); the composite-term argument here is Euclid's observation applied to a single progression"
+    },
+    {
+      "id": "infinitude-primes-oq-05",
+      "relationship": "Sibling: Goldbach's Fermat-number proof of the infinitude of primes"
+    },
+    {
+      "id": "infinitude-primes-4k1",
+      "relationship": "Sibling: infinitely many primes ≡ 1 (mod 4) — primes within a fixed arithmetic progression"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "InfinitudePrimesOQ04",
+    "lineCount": 164,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 1,
+    "path": "Proofs/InfinitudePrimesOQ04.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Ben Green, Terence Tao",
+      "title": "The primes contain arbitrarily long arithmetic progressions",
+      "year": "2008",
+      "venue": "Annals of Mathematics 167, 481–547 (announced 2004)"
+    },
+    {
+      "authors": "Endre Szemerédi",
+      "title": "On sets of integers containing no k elements in arithmetic progression",
+      "year": "1975",
+      "venue": "Acta Arithmetica 27, 199–245"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "extends",
+      "description": "Applies Euclid's composite-term idea to a single arithmetic progression to show no progression is entirely prime."
+    },
+    {
+      "targetId": "infinitude-primes-oq-05",
+      "relationship": "sibling",
+      "description": "Another perspective on primes; Goldbach's Fermat-number infinitude proof versus the arithmetic-progression structure here."
+    },
+    {
+      "targetId": "infinitude-primes-4k1",
+      "relationship": "sibling",
+      "description": "Primes inside one fixed arithmetic progression (≡ 1 mod 4); this entry studies progressions whose terms are all prime."
+    }
+  ],
+  "sorries": 0
+}
