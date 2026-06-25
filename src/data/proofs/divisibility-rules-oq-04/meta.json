@@ -1,6 +1,7 @@
 {
   "id": "divisibility-rules-oq-04",
   "slug": "divisibility-rules-oq-04",
+  "description": "Three fully verified (0-axiom) digit rules for divisibility by 11, each keyed to a different residue of a power of 10 modulo 11: the new two-digit block-sum rule (100 ≡ 1), the classical single-digit alternating rule recorded as a clean axiom-free biconditional (10 ≡ -1), and the three-digit block-alternating rule (1000 ≡ -1, the shared 1001 = 7·11·13 grouping that also tests 7 and 13). All three are uniform specializations of Mathlib's base-b digit machinery; the entry upgrades the sibling's native_decide-based, congruence-only treatment to axiom-free iffs.",
   "leanFile": {
     "imports": [
       "Mathlib.Data.Nat.Digits.Div",
@@ -70,6 +71,57 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "Divisibility rules are among the oldest pieces of elementary number theory taught in schools: the digit-sum tests for 3 and 9 and the alternating-sum test for 11 appear in Fibonacci's Liber Abaci (1202) and were folklore long before. Their modern explanation is uniform — a base-b digit rule for a modulus m exists exactly when b is congruent to a simple residue (±1) modulo m, propagated through b^k ≡ (±1)^k. For 11 the decimal base gives 10 ≡ -1 (alternating digits); grouping digits in pairs gives 100 ≡ 1 (block sum); grouping in triples gives 1000 ≡ -1, and the factorization 1001 = 7·11·13 is the classical reason a single three-digit alternating test simultaneously detects 7, 11, and 13. Mathlib's Data.Nat.Digits.Div packages this base-b machinery; this entry specializes it to record all three rules for 11 as clean, axiom-free biconditionals.",
+    "problemStatement": "Determine the base-b digit rules that detect divisibility by 11, and derive them uniformly from the residues of powers of 10 modulo 11. Specifically, prove (with 0 axioms) the block-sum rule 11 ∣ n ↔ 11 ∣ (digits 100 n).sum, the single-digit alternating rule, and the three-digit block-alternating rule, each as a biconditional rather than a mere congruence.",
+    "proofStrategy": "Each rule is a one-residue specialization of Mathlib. The block-sum rule is `Nat.dvd_iff_dvd_digits_sum 11 100` whose hypothesis 100 % 11 = 1 is closed by norm_num. The single-digit alternating rule is `Nat.eleven_dvd_iff` verbatim. The three-digit block-alternating rule is `Nat.dvd_iff_dvd_ofDigits 11 1000 (-1)`, whose side condition (11:ℤ) ∣ 1001 is closed by norm_num, then rewritten from ofDigits form to an explicit alternatingSum via `Nat.ofDigits_neg_one`. A fourth theorem, `eleven_modEq_alternating`, records the underlying congruence n ≡ altSum [ZMOD 11] that all three rules are the divisibility shadow of.",
+    "keyInsights": [
+      "All digit divisibility rules for 11 are the same theorem at different bases: choosing the base b' in digits b' n selects the residue r = b' mod 11 (r = 1 → block sum, r = -1 → alternating sum).",
+      "The two-digit block-sum rule (base 100) and three-digit block-alternating rule (base 1000) are genuine specializations absent from Mathlib and the sibling entries, which treat only single digits.",
+      "1001 = 7·11·13 is the arithmetic heart of the three-digit rule and explains why one alternating block test works for all three primes at once — the simultaneous 7-11-13 divisibility test.",
+      "Provenance matters: the sibling oq-01 proves only the congruence form and relies on native_decide (hence the Lean.ofReduceBool axiom); recording the biconditionals straight from the digit machinery yields the same facts with zero axioms beyond the kernel triple."
+    ],
+    "prerequisites": [
+      "Nat.digits in an arbitrary base and Nat.ofDigits",
+      "Mathlib's base-b divisibility machinery (dvd_iff_dvd_digits_sum, dvd_iff_dvd_ofDigits)",
+      "Residues of powers of 10 modulo 11 (10 ≡ -1, 100 ≡ 1, 1000 ≡ -1)",
+      "List.alternatingSum and Nat.ofDigits_neg_one"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Open Question and the Residue Principle",
+      "startLine": 5,
+      "endLine": 28,
+      "summary": "States the open question and the unifying principle: each rule for 11 corresponds to a power of 10's residue mod 11 (10 ≡ -1, 100 ≡ 1, 1000 ≡ -1). Contrasts with the sibling oq-01's congruence-only, native_decide treatment.",
+      "mathContext": "$b'^k \\equiv (b' \\bmod 11)^k$, so the base selects digit-sum vs alternating-sum form."
+    },
+    {
+      "id": "block-sum",
+      "title": "Two-Digit Block-Sum Rule (100 ≡ 1)",
+      "startLine": 34,
+      "endLine": 40,
+      "summary": "eleven_dvd_iff_block_sum: 11 ∣ n ↔ 11 ∣ (digits 100 n).sum, a direct application of Nat.dvd_iff_dvd_digits_sum since 100 % 11 = 1. A new specialization not in Mathlib or the siblings.",
+      "mathContext": "$100 \\equiv 1 \\pmod{11} \\Rightarrow 11 \\mid n \\iff 11 \\mid \\sum(\\text{2-digit blocks})$."
+    },
+    {
+      "id": "single-alternating",
+      "title": "Classical Single-Digit Alternating Rule (10 ≡ -1)",
+      "startLine": 42,
+      "endLine": 50,
+      "summary": "eleven_dvd_iff_alternating: the schoolbook rule 11 ∣ n ↔ (11:ℤ) ∣ (d₀ - d₁ + d₂ - ⋯), recorded as a clean axiom-free biconditional via Nat.eleven_dvd_iff, upgrading the sibling's native_decide congruence form.",
+      "mathContext": "$10 \\equiv -1 \\pmod{11} \\Rightarrow 11 \\mid n \\iff 11 \\mid (d_0 - d_1 + d_2 - \\cdots)$."
+    },
+    {
+      "id": "block-alternating",
+      "title": "Three-Digit Block-Alternating Rule (1000 ≡ -1)",
+      "startLine": 52,
+      "endLine": 66,
+      "summary": "eleven_dvd_iff_block_alternating: 11 ∣ n ↔ (11:ℤ) ∣ alternatingSum of three-digit blocks, via Nat.dvd_iff_dvd_ofDigits (side condition 11 ∣ 1001 = 7·11·13) and Nat.ofDigits_neg_one. The closing eleven_modEq_alternating records the underlying congruence n ≡ altSum [ZMOD 11].",
+      "mathContext": "$1000 \\equiv -1 \\pmod{11}$ (since $1001 = 7\\cdot11\\cdot13$) $\\Rightarrow$ alternating sum of 3-digit blocks; the same grouping tests 7 and 13."
+    }
+  ],
   "openQuestions": [
     {
       "id": "divisibility-rules-oq-04-oq-01",
@@ -107,7 +159,7 @@
   ],
   "sorries": 0,
   "conclusion": {
-    "summary": "Three fully verified (0-axiom) divisibility rules for 11, each keyed to a residue of a power of 10 modulo 11: the two-digit block-sum rule 11 ∣ n ↔ 11 ∣ (digits 100 n).sum (100 ≡ 1, via Nat.dvd_iff_dvd_digits_sum), the classical single-digit alternating rule 11 ∣ n ↔ (11:ℤ) ∣ (d₀ - d₁ + d₂ - ⋯) (10 ≡ -1, via Nat.eleven_dvd_iff), and the three-digit block alternating rule (1000 ≡ -1, 1001 = 7·11·13, via Nat.dvd_iff_dvd_ofDigits and Nat.ofDigits_neg_one). 68 lines, 5 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "summary": "Three fully verified (0-axiom) divisibility rules for 11, each keyed to a residue of a power of 10 modulo 11: the two-digit block-sum rule 11 ∣ n ↔ 11 ∣ (digits 100 n).sum (100 ≡ 1, via Nat.dvd_iff_dvd_digits_sum), the classical single-digit alternating rule 11 ∣ n ↔ (11:ℤ) ∣ (d₀ - d₁ + d₂ - ⋯) (10 ≡ -1, via Nat.eleven_dvd_iff), and the three-digit block alternating rule (1000 ≡ -1, 1001 = 7·11·13, via Nat.dvd_iff_dvd_ofDigits and Nat.ofDigits_neg_one), plus the underlying congruence n ≡ altSum [ZMOD 11]. 68 lines, 4 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
     "implications": "The block-sum (base 100) and block-alternating (base 1000) rules are new specializations not in Mathlib or the sibling entries, and the entry upgrades the sibling's native_decide-based, congruence-only treatment of the single-digit rule to a clean axiom-free biconditional. The three-digit grouping exposes the shared 1001 = 7·11·13 mechanism behind the simultaneous 7-11-13 divisibility test.",
     "openQuestions": [
       "Prove the unified 7-11-13 rule from the single base-1000 grouping."
