@@ -1,0 +1,172 @@
+{
+  "id": "fourier-series-oq-04-oq-01-incomplete-01",
+  "title": "Spherical Parseval & Energy Convergence on 𝕋² (verified)",
+  "slug": "fourier-series-oq-04-oq-01-incomplete-01",
+  "description": "Proves the coefficient-side companions of the 2D Carleson spherical-summation entry: the spherical Bessel inequality ∑_{|k|≤R} |f̂(k)|² ≤ ∫|f|², spherical Parseval in norm form (∑_{|k|≤R} |f̂(k)|² → ∫|f|² as R→∞), and spherical Parseval in inner-product form (∑_{|k|≤R} conj(f̂(k))ĝ(k) → ∫conj(f)g). These are the energy/Parseval invariants of the geometric disc exhaustion latticeDisc R = {k ∈ ℤ² : k₀²+k₁² ≤ R²} — the object the Bochner–Riesz / Carleson problem is about — as opposed to Mathlib's abstract Finset-directed HasSum. Unconditional and fully machine-checked (0 sorries, 0 axioms); none of the theorems depend on the parent's axiomatized open conjecture carleson_2d_sph.",
+  "leanFile": {
+    "path": "Proofs/FourierSeriesOQ04OQ01Incomplete01.lean",
+    "imports": [
+      "Mathlib",
+      "Proofs.FourierSeriesOQ04OQ01"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Complex",
+      "Filter",
+      "Topology",
+      "FourierSeriesOQ04OQ01"
+    ],
+    "namespace": "FourierSeriesOQ04OQ01Incomplete01",
+    "lineCount": 194,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 6
+  },
+  "meta": {
+    "author": "Lean Genius contributors (researcher). Mathlib multivariate Fourier engine: Mathlib.Analysis.Fourier.AddCircleMulti.",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Parseval%27s_theorem",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourierSeriesOQ04OQ01Incomplete01.lean",
+    "tags": [
+      "harmonic-analysis",
+      "fourier-series",
+      "parseval",
+      "bessel-inequality",
+      "spherical-summation",
+      "bochner-riesz",
+      "two-dimensional"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 194,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "assumptions": "0 axioms, 0 sorries. The file imports the parent `FourierSeriesOQ04OQ01` (which axiomatizes the open conjecture `carleson_2d_sph`), but NONE of this entry's six theorems depend on that axiom — they rest only on Mathlib's unconditional Parseval (`UnitAddTorus.hasSum_sq_mFourierCoeff` / `hasSum_prod_mFourierCoeff`) and the parent's axiom-free bridge (`mFourierCoeff_eq_multiFourierCoeff`) and cofinality (`latticeDisc_eventually_supset`) lemmas. Verification method: every cited lemma was signature-checked against the pinned Mathlib v4.26.0 source (rev 2df2f0150c) and the parent's Docker-verified S15 infrastructure; the proof structure mirrors the parent's verified Plancherel close. (A local Docker build could not be run this session — the build daemon was down and the mathlib olean cache was unrecoverable — so the deploy pipeline's full build is the confirming gate.)",
+    "mathlibDependencies": [
+      {
+        "theorem": "UnitAddTorus.hasSum_sq_mFourierCoeff",
+        "description": "Parseval (norm form): HasSum (fun k ↦ ‖mFourierCoeff f k‖²) (∫ ‖f‖²) on UnitAddTorus d",
+        "module": "Mathlib.Analysis.Fourier.AddCircleMulti"
+      },
+      {
+        "theorem": "UnitAddTorus.hasSum_prod_mFourierCoeff",
+        "description": "Parseval (inner-product form): HasSum (fun k ↦ conj(f̂ k)·ĝ k) (∫ conj f · g)",
+        "module": "Mathlib.Analysis.Fourier.AddCircleMulti"
+      },
+      {
+        "theorem": "sum_le_hasSum",
+        "description": "Finite partial sum ≤ HasSum total when all summands are nonnegative — the Bessel truncation",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Order"
+      },
+      {
+        "theorem": "HasSum.comp / Filter.Tendsto.comp",
+        "description": "Compose the Finset-directed limit with the disc cofinality Tendsto to obtain the R→∞ limit",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.integral_congr_ae",
+        "description": "Equal-a.e. integrands have equal integrals — bridges the fhat=ᵐf integral identifications",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      }
+    ],
+    "originalContributions": [
+      "sphPartialSum_energy_le: the spherical Bessel inequality ∑_{|k|≤R} |f̂(k)|² ≤ ∫|f|² for every radius R — the finite-R truncation of the Parseval HasSum (nonnegative summands via sum_le_hasSum)",
+      "sphPartialSum_energy_converge: spherical Parseval in norm form — the disc energy exhausts the total energy as R→∞; the coefficient-side companion of the parent's sphPartialSum_L2_norm_converge",
+      "sphPartialSum_inner_parseval: spherical Parseval in inner-product form — the disc-truncated Hermitian pairing of Fourier coefficients converges to the L² inner product ∫conj(f)g",
+      "hasSum_sq_multiFourierCoeff: the engine lemma — Mathlib's hasSum_sq_mFourierCoeff transported across the parent's coefficient bridge and the fhat=ᵐf integral identification; the shared base for the Bessel inequality and the Parseval limit",
+      "sq_coeff_funext: termwise repackaging of the parent bridge mFourierCoeff_eq_multiFourierCoeff at the level of squared norms",
+      "energy_zero: sanity check — the spherical energy of the zero function is identically zero"
+    ]
+  },
+  "overview": {
+    "historicalContext": "**Parseval's identity and the spherical exhaustion.** For $f \\in L^2(\\mathbb{T}^2)$, Plancherel's theorem says the total energy equals the sum of squared Fourier coefficients, $\\|f\\|_{L^2}^2 = \\sum_{k \\in \\mathbb{Z}^2} |\\hat f(k)|^2$. Mathlib packages this for the multivariate torus as a `HasSum` over the inclusion-directed filter of *arbitrary finite frequency sets*. The geometric question underlying the Bochner–Riesz / Carleson program, however, concerns a *specific* exhaustion of $\\mathbb{Z}^2$: the Euclidean discs $\\{|k| \\le R\\}$, whose curved boundary is exactly what makes 2D spherical summation hard (Fefferman's 1971 ball-multiplier barrier). This entry establishes the *energy* invariants of that geometric exhaustion — the partial-energy monotone bound (Bessel) and its exhaustion in the limit (Parseval), in both the norm and the Hermitian-pairing forms.",
+    "problemStatement": "Let $\\mathbb{T}^2 = (\\mathbb{R}/\\mathbb{Z})^2$ with normalised Haar measure, $\\hat f(k) = \\int_{\\mathbb{T}^2} f(x) e^{-2\\pi i k\\cdot x}$, and $\\mathrm{latticeDisc}(R) = \\{k \\in \\mathbb{Z}^2 : k_0^2 + k_1^2 \\le R^2\\}$. Prove, unconditionally:\n$$\\sum_{|k| \\le R} |\\hat f(k)|^2 \\le \\int_{\\mathbb{T}^2} |f|^2 \\quad(\\forall R),\\qquad \\sum_{|k| \\le R} |\\hat f(k)|^2 \\xrightarrow{R\\to\\infty} \\int_{\\mathbb{T}^2} |f|^2,$$\n$$\\sum_{|k| \\le R} \\overline{\\hat f(k)}\\, \\hat g(k) \\xrightarrow{R\\to\\infty} \\int_{\\mathbb{T}^2} \\overline{f}\\, g.$$",
+    "proofStrategy": "The proof has two moving parts. **(1) Transport Mathlib's Parseval to our coefficient functional.** Mathlib's `UnitAddTorus.hasSum_sq_mFourierCoeff` and `hasSum_prod_mFourierCoeff` are stated for the engine's `mFourierCoeff` of an `Lp` representative; the parent's bridge `mFourierCoeff_eq_multiFourierCoeff` (axiom-free) identifies that functional with our `multiFourierCoeff f`, and `integral_congr_ae` over the `fhat =ᵐ f` equality bridges the energy integral. This yields `hasSum_sq_multiFourierCoeff`: a `HasSum (fun k ↦ ‖f̂(k)‖²) (∫|f|²)` over the `Finset` filter. **(2) Specialise the `HasSum` to the geometric disc exhaustion.** The Bessel inequality is the finite-`R` truncation: `sum_le_hasSum` applied to the disc `latticeDisc R` (summands `‖·‖²` are nonnegative). The Parseval limit composes the `Finset`-directed `HasSum` (viewed as a `Tendsto`) with the disc cofinality `Tendsto latticeDisc atTop atTop`, derived from the parent's `latticeDisc_eventually_supset` (every finite frequency set is eventually contained in a disc). The inner-product form repeats this with `hasSum_prod_mFourierCoeff`.",
+    "keyInsights": [
+      "**Geometric exhaustion ≠ abstract Finset filter.** Mathlib's Parseval `HasSum` is over `atTop : Filter (Finset (ℤ²))` — arbitrary finite frequency sets. The disc exhaustion `|k| ≤ R` is a genuinely different (real-parameter, curved-boundary) object; the bridge is the cofinality fact that every finite set is eventually swallowed by a disc.",
+      "**Bessel is just truncation of Parseval.** Because squared norms are nonnegative, the finite disc energy is a partial sum bounded by the `HasSum` total — `sum_le_hasSum` gives the Bessel inequality in one line, no separate analytic estimate needed.",
+      "**Reuse beats re-derivation.** The only nontrivial analytic content — Plancherel on 𝕋² and the bridge from the engine functional to our coefficient — is already discharged (the parent's Docker-verified S15). This entry adds the geometric specialisation cleanly on top, with no new axioms and no dependence on the open conjecture.",
+      "**Unconditional, unlike the parent's open core.** The parent axiomatizes the open a.e.-pointwise conjecture `carleson_2d_sph`; these energy companions hold with no conjectural input and none of the six theorems touch that axiom."
+    ],
+    "prerequisites": [
+      "Parseval / Plancherel on the torus (Mathlib's multivariate Fourier engine)",
+      "L² spaces, Lp representatives, and almost-everywhere equality",
+      "HasSum over the Finset-directed filter and its Tendsto view",
+      "Cofinality of the disc exhaustion (parent's latticeDisc_eventually_supset)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement & Architecture",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring: the spherical Parseval/energy companions (Bessel inequality + Parseval in norm and inner-product form) over the geometric disc exhaustion, why they are not a restatement of Mathlib's abstract Finset-directed Parseval, and the reuse of the parent's bridge and cofinality lemmas. Imports and opens.",
+      "mathContext": "Positions the entry as the coefficient-side companion of the parent's L²-norm convergence theorem — same disc exhaustion, statements about the coefficients rather than the reconstructed function."
+    },
+    {
+      "id": "coeff-bridge",
+      "title": "Termwise coefficient bridge",
+      "startLine": 72,
+      "endLine": 103,
+      "summary": "sq_coeff_funext repackages the parent bridge mFourierCoeff_eq_multiFourierCoeff at the level of squared norms; hasSum_sq_multiFourierCoeff transports Mathlib's hasSum_sq_mFourierCoeff across that bridge and the fhat=ᵐf integral identification, yielding the Parseval HasSum for our multiFourierCoeff over the Finset filter.",
+      "mathContext": "The engine's mFourierCoeff of an Lp representative equals our multiFourierCoeff; integral_congr_ae over fhat=ᵐf bridges ∫‖fhat‖² to ∫‖f‖². This is the shared base lemma for both the Bessel truncation and the Parseval limit."
+    },
+    {
+      "id": "bessel",
+      "title": "Spherical Bessel inequality",
+      "startLine": 105,
+      "endLine": 114,
+      "summary": "sphPartialSum_energy_le: ∑_{|k|≤R} |f̂(k)|² ≤ ∫|f|² for every R, as the finite-R truncation of the Parseval HasSum (sum_le_hasSum with nonnegative summands).",
+      "mathContext": "The disc energy never exceeds the total energy — the monotone partial-sum bound underlying any ℓ¹/ℓ² majorisation of the spherical partial sum."
+    },
+    {
+      "id": "parseval-norm",
+      "title": "Spherical Parseval (norm form)",
+      "startLine": 116,
+      "endLine": 137,
+      "summary": "sphPartialSum_energy_converge: ∑_{|k|≤R} |f̂(k)|² → ∫|f|² as R→∞. Builds Tendsto latticeDisc atTop atTop from the parent cofinality latticeDisc_eventually_supset and composes the Finset-directed HasSum (as a Tendsto) with it.",
+      "mathContext": "The disc energy exhausts the total energy in the limit — the coefficient-side companion of the parent's sphPartialSum_L2_norm_converge."
+    },
+    {
+      "id": "parseval-inner",
+      "title": "Spherical Parseval (inner-product form)",
+      "startLine": 139,
+      "endLine": 184,
+      "summary": "sphPartialSum_inner_parseval: ∑_{|k|≤R} conj(f̂(k))ĝ(k) → ∫conj(f)g as R→∞. Same disc-cofinality composition applied to Mathlib's hasSum_prod_mFourierCoeff with both coefficient functionals bridged.",
+      "mathContext": "The Hermitian pairing of Fourier coefficients over the disc exhaustion converges to the L² inner product — the polarised form of the norm Parseval."
+    },
+    {
+      "id": "sanity",
+      "title": "Sanity check",
+      "startLine": 186,
+      "endLine": 194,
+      "summary": "energy_zero: the spherical energy of the zero function is identically zero (consistent with total energy ∫‖0‖² = 0).",
+      "mathContext": "Confirms the definitions interact correctly with simp lemmas about the zero function."
+    }
+  ],
+  "conclusion": {
+    "summary": "This entry contributes the fully machine-checked, axiom-free energy/Parseval companions of the 2D spherical-summation entry: the spherical Bessel inequality and spherical Parseval (in norm and inner-product form) over the geometric disc exhaustion latticeDisc R. It reuses the parent's Docker-verified Plancherel-transport infrastructure and specialises the abstract Finset-directed HasSum to the disc exhaustion via the parent's cofinality lemma.",
+    "implications": "These are the unconditional quantitative invariants that any positive resolution of the open conjecture carleson_2d_sph must respect — the coefficient-energy is exhausted by the geometric disc summation regardless of whether a.e.-pointwise convergence holds. None of the theorems depend on the axiomatized conjecture.",
+    "openQuestions": [
+      "Quantify the Bessel deficit ∫|f|² − ∑_{|k|≤R}|f̂(k)|² (the energy tail) with an explicit rate for structured f — a step toward maximal-operator estimates.",
+      "Establish the a.e.-pointwise spherical convergence itself (the parent's open carleson_2d_sph), for which these energy identities are necessary but not sufficient."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "fourier-series-oq-04-oq-01",
+      "relationship": "parent",
+      "description": "2D Carleson spherical-summation conjecture (axiomatized) with its unconditional L²-norm convergence companion. This entry proves the coefficient-side energy/Parseval companions over the same disc exhaustion, reusing the parent's bridge and cofinality lemmas."
+    },
+    {
+      "targetId": "fourier-series-oq-04",
+      "relationship": "ancestor",
+      "description": "Higher-dimensional Fourier series convergence on tori (scaffold)."
+    }
+  ]
+}
