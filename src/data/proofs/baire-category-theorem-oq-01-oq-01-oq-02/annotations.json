@@ -1,1 +1,62 @@
-[]
+[
+  {
+    "id": "baire-oq010102-header",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "context",
+    "title": "From resonance to divergence: the engine of du Bois-Reymond",
+    "content": "The header explains the file's role in the Baire → Banach–Steinhaus chain. The parent BaireCategoryTheoremOQ01OQ01 derives the Uniform Boundedness Principle and its contrapositive exists_resonance_of_not_uniformly_bounded: a family of bounded operators with unbounded operator norms has a resonance point x where sup_i ‖g i x‖ = ∞. This file turns resonance into divergence — a convergent sequence has bounded range, so a resonance point is automatically one where the orbit n ↦ T n x fails to converge. Specialized to scalar functionals this is the abstract form of du Bois-Reymond's theorem (1873): a continuous function whose Fourier series diverges. The honesty note is crucial — the file proves the Banach–Steinhaus reduction in full, taking 'the partial-sum functionals have unbounded operator norms' (the Lebesgue-constant growth Lₙ ∼ (4/π²)log n) as an explicit hypothesis, since Mathlib lacks the Dirichlet-kernel development. So the unconditional existence of a divergent-Fourier function is NOT claimed; the conditional reduction is.",
+    "mathContext": "$\\sup_n \\|S_n\\| = \\infty \\implies \\exists f,\\ S_n f \\not\\to;\\quad \\|S_n\\| = L_n \\sim \\tfrac{4}{\\pi^2}\\log n$",
+    "significance": "context",
+    "relatedConcepts": ["Banach–Steinhaus theorem", "uniform boundedness principle", "Baire category theorem", "du Bois-Reymond", "Lebesgue constants"],
+    "prerequisites": ["normed spaces", "operator norm", "the parent resonance theorem"]
+  },
+  {
+    "id": "baire-oq010102-bound",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "technique",
+    "title": "exists_bound_of_tendsto: convergent ⟹ norm-bounded",
+    "content": "`exists_bound_of_tendsto` is the elementary bridge that converts resonance into divergence: a sequence y converging to L has bounded range (Metric.isBounded_range_of_tendsto), and isBounded_iff_forall_norm_le extracts a uniform bound C with ‖y n‖ ≤ C for all n. Contrapositively, an orbit with no uniform bound cannot converge — exactly the link between the parent's unbounded-orbit resonance and the non-convergence needed for divergence statements.",
+    "mathContext": "$y_n \\to L \\implies \\exists C,\\ \\forall n,\\ \\|y_n\\| \\le C$",
+    "significance": "key",
+    "relatedConcepts": ["bounded range of a convergent sequence", "Metric.isBounded_range_of_tendsto", "isBounded_iff_forall_norm_le"],
+    "prerequisites": ["convergence in a normed space", "bornology / bounded sets"]
+  },
+  {
+    "id": "baire-oq010102-divergence",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "theorem",
+    "title": "exists_divergent_orbit_of_unbounded_opNorm: the divergence principle",
+    "content": "The central result: if T : ℕ → E →L[𝕜] F (E a Banach space) has unbounded operator norms, there is a single x at which the orbit n ↦ T n x does not converge. It takes the parent's resonance point x (where the orbit is unbounded), and rules out any limit L: a limit would force a uniform bound via exists_bound_of_tendsto, contradicting unboundedness at x. This upgrades 'unbounded orbit' to 'no limit' — the form needed for divergent Fourier series.",
+    "mathContext": "$\\neg(\\exists C,\\,\\forall n,\\ \\|T_n\\| \\le C) \\implies \\exists x,\\ \\neg\\,\\exists L,\\ T_n x \\to L$",
+    "significance": "key",
+    "relatedConcepts": ["resonance point", "exists_resonance_of_not_uniformly_bounded", "contrapositive of convergence ⟹ bounded"],
+    "prerequisites": ["exists_bound_of_tendsto", "the parent UBP contrapositive"]
+  },
+  {
+    "id": "baire-oq010102-unbounded",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "theorem",
+    "title": "exists_divergent_orbit_unbounded: the strong witness",
+    "content": "`exists_divergent_orbit_unbounded` strengthens the conclusion: at the resonance point x the orbit is not merely non-convergent but genuinely unbounded — for every C some term exceeds it (∀ C, ∃ n, C < ‖T n x‖). The proof is a direct by_contra/push_neg: if the orbit were bounded by some C, that would contradict the resonance property hx. This is the 'no finite envelope' form of divergence.",
+    "mathContext": "$\\exists x,\\ \\forall C\\in\\mathbb{R},\\ \\exists n,\\ C < \\|T_n x\\|$",
+    "significance": "supporting",
+    "relatedConcepts": ["unbounded orbit", "by_contra / push_neg", "resonance"],
+    "prerequisites": ["exists_resonance_of_not_uniformly_bounded"]
+  },
+  {
+    "id": "baire-oq010102-fourier",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 114, "endLine": 130 },
+    "type": "theorem",
+    "title": "exists_divergent_partialSums: the scalar du Bois-Reymond reduction",
+    "content": "`exists_divergent_partialSums` specializes the divergence principle to scalar functionals S : ℕ → V →L[ℂ] ℂ on a complex Banach space V: unbounded operator norms give a vector f at which the scalars S n f do not converge. It is literally exists_divergent_orbit_of_unbounded_opNorm at F = ℂ. Reading V = C(𝕋) and S n f = ∑_{|k|≤n} f̂(k) (the n-th Fourier partial sum at 0), the operator norms are the Lebesgue constants Lₙ ∼ (4/π²)log n → ∞, so the hypothesis hUnbdd is the classical Lebesgue-constant growth and the conclusion is a continuous function with Fourier series diverging at 0. Mathlib lacks the Lebesgue-constant development, so this faithful conditional statement is the Banach–Steinhaus half of du Bois-Reymond's theorem.",
+    "mathContext": "$V = C(\\mathbb{T}),\\ S_n f = \\!\\!\\sum_{|k|\\le n}\\! \\hat f(k);\\quad \\|S_n\\| = L_n \\to \\infty \\implies \\exists f,\\ S_n f \\not\\to$",
+    "significance": "key",
+    "relatedConcepts": ["du Bois-Reymond theorem", "Dirichlet kernel", "Lebesgue constants", "Fourier partial sums", "continuous linear functionals"],
+    "prerequisites": ["exists_divergent_orbit_of_unbounded_opNorm", "Fourier series basics"]
+  }
+]
