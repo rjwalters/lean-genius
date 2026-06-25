@@ -1,0 +1,72 @@
+{
+  "id": "spherical-law-of-sines-oq-01",
+  "title": "Unsquared Spherical Law of Sines: the True Proportion",
+  "slug": "spherical-law-of-sines-oq-01",
+  "description": "Upgrades the parent's SQUARED spherical law of sines (sin²a/sin²α = sin²b/sin²β = sin²c/sin²γ) to the honest textbook proportion sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ). The squared form is one square-root short: an equality of squares x²=y² only forces x=±y. The sign ambiguity is eliminated by a geometric fact about the vector model — every side arc-length is an arccos and every dihedral angle is either 0 or an arccos, so all lie in [0,π] and every sine appearing is non-negative (sin(arccos t) = √(1−t²) ≥ 0). Taking square roots of non-negative quantities is unambiguous, so the squared law upgrades to the genuine proportion. 6 theorems (incl. the non-negativity lemmas sin_arcLen_nonneg, sin_dihedralAngle_nonneg), 0 definitions, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Spherical_law_of_sines",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SphericalLawOfSinesOQ01.lean",
+    "tags": [
+      "geometry",
+      "spherical-geometry",
+      "trigonometry",
+      "law-of-sines",
+      "non-euclidean-geometry",
+      "arccos",
+      "square-root"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully machine-verified (only the foundational propext / Classical.choice / Quot.sound). The non-degeneracy hypotheses (sides and triple product nonzero) are the standard genuine-triangle assumptions inherited from the parent's squared law.",
+    "lineCount": 119,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "originalContributions": [
+      "sin_arcLen_nonneg: the sine of any side arc-length is non-negative, since arcLen u v = arccos(u·v) ∈ [0,π] and sin(arccos t) = √(1−t²) ≥ 0",
+      "sin_dihedralAngle_nonneg: the sine of any dihedral angle is non-negative, splitting on the model's degenerate branch (sin 0 = 0) and the generic arccos branch (√(1−t²) ≥ 0)",
+      "ratio_of_sq_ratio: the square-root step — for non-negative x,p,y,q, x²/p² = y²/q² implies x/p = y/q (via Real.sqrt_sq on each non-negative ratio)",
+      "spherical_law_of_sines: the full unsquared law of sines, sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ), obtained by applying the square-root step to the parent's spherical_law_of_sines_all_sq with the non-negativity lemmas",
+      "spherical_law_of_sines_two and spherical_law_of_sines_ac: the two-ratio and first-vs-third convenience forms"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The spherical law of sines is classically stated as a proportion of plain sines, sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C), the spherical analogue of the planar law of sines and a workhorse of celestial navigation and geodesy. A determinant/cross-product derivation in ℝ³ (as in the parent file) most naturally produces the SQUARED identity, because the quantities that appear are squared norms of projections and a squared triple product. Recovering the textbook proportion from the squared identity is exactly the step where one must know the signs: in the standard convention a spherical triangle's sides and angles all lie strictly between 0 and π, so their sines are positive and the proportion is unambiguous. This entry makes that final, often-glossed square-root step explicit and rigorous.",
+    "problemStatement": "From the parent's squared spherical law of sines, derive the genuine (unsquared) proportion sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ).",
+    "text": "The parent proves sin²(a)/sin²(α) = sin²(b)/sin²(β) = sin²(c)/sin²(γ) for unit-vector vertices A,B,C, with a = arcLen B C the side opposite A and α = dihedralAngle A B C the interior angle at A. To remove the squares, observe each sine is non-negative: arcLen u v = arccos(u·v) has range [0,π], and dihedralAngle A B C is by definition either 0 (degenerate) or arccos(·); since sin(arccos t) = √(1−t²) ≥ 0 and sin 0 = 0, all of sin(a), sin(α), … are ≥ 0. For non-negative x,p,y,q, the equality x²/p² = y²/q² rewrites as (x/p)² = (y/q)² (div_pow), and applying Real.sqrt_sq to each non-negative ratio gives x/p = √((x/p)²) = √((y/q)²) = y/q. Applying this to each pair of squared ratios yields the unsquared law of sines.",
+    "proofStrategy": "sin_arcLen_nonneg unfolds arcLen to arccos, rewrites sin(arccos) = √(1−·²) (Real.sin_arccos), and concludes by Real.sqrt_nonneg. sin_dihedralAngle_nonneg unfolds dihedralAngle and split_ifs: the degenerate branch is sin 0 = 0; the generic branch is again sin(arccos) ≥ 0. ratio_of_sq_ratio packages the square-root step using div_pow and Real.sqrt_sq (which needs the non-negativity of each ratio, supplied by div_nonneg). spherical_law_of_sines destructures the parent's spherical_law_of_sines_all_sq into its two squared-ratio equalities and feeds each, together with the matching non-negativity facts, to ratio_of_sq_ratio. The two-ratio and first-vs-third corollaries follow by projection and transitivity.",
+    "keyInsights": [
+      "The square-root step is where a clean determinant derivation meets the textbook statement: the squared law is sign-blind, the unsquared law is not",
+      "Non-negativity of every sine is forced purely by the model's definitions — arcLen and dihedralAngle are arccos-valued (or 0), hence valued in [0,π]",
+      "sin(arccos t) = √(1 − t²) ≥ 0 is the single identity that supplies all the non-negativity; no case analysis on the geometry is needed",
+      "For non-negative ratios, x²/p² = y²/q² ⇒ x/p = y/q is just Real.sqrt_sq applied twice — division-by-zero degeneracies are harmless because √ and / are total in Lean",
+      "Removing the squares loses no hypotheses: the proportion holds under exactly the parent's non-degeneracy assumptions (nonzero sides and triple product)"
+    ],
+    "prerequisites": [
+      "The parent's squared spherical law of sines (spherical_law_of_sines_all_sq) and its vector model (arcLen, dihedralAngle, projPerp, tripleProduct)",
+      "sin(arccos t) = √(1 − t²) (Real.sin_arccos) and non-negativity of the square root",
+      "√(x²) = x for x ≥ 0 (Real.sqrt_sq) and (a/b)² = a²/b² (div_pow)"
+    ]
+  },
+  "conclusion": {
+    "summary": "The spherical law of sines holds in its true unsquared form sin(a)/sin(α) = sin(b)/sin(β) = sin(c)/sin(γ), recovered from the parent's squared identity by taking square roots — unambiguous because every sine in the vector model is non-negative (arcLen and dihedralAngle are arccos-valued, hence in [0,π]). 6 theorems, 0 definitions, 119 lines, 0 sorries, 0 axioms.",
+    "implications": "Completes the spherical law of sines to its standard textbook statement, making it directly usable for spherical-trigonometry computations (navigation, geodesy) without carrying squares. The same square-root-of-non-negative-sines pattern upgrades any squared spherical identity derived in the vector model.",
+    "openQuestions": [
+      "Express the common ratio explicitly as |det[A,B,C]| / (sin(a)·sin(b)·sin(c)), tying the proportion to the volume of the parallelepiped on the three vertices",
+      "Combine with the dual spherical law of cosines to derive the four-parts (cotangent) formula in the same vector framework"
+    ]
+  },
+  "leanFile": {
+    "namespace": "SphericalLawOfSinesOQ01",
+    "lineCount": 119,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/SphericalLawOfSinesOQ01.lean",
+    "sorries": 0
+  }
+}
