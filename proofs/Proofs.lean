@@ -982,6 +982,7 @@ import Proofs.DescartesRuleOfSigns
 import Proofs.DescartesRuleOfSignsOQ01
 import Proofs.DescartesRuleOfSignsOQ01OQ01
 import Proofs.DescartesRuleOfSignsOQ01OQ02
+import Proofs.DescartesRuleOfSignsOQ01OQ04OQ03
 import Proofs.DescartesRuleOfSignsOQ02
 import Proofs.DescartesRuleOfSignsOQ02OQ03
 import Proofs.DescartesRuleOfSignsOQ02OQ04
