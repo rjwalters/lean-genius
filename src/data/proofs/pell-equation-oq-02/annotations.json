@@ -1,35 +1,62 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "pell-equation-oq-02",
+    "range": { "startLine": 3, "endLine": 32 },
+    "type": "context",
+    "title": "The Size of the Fundamental Pell Solution",
+    "content": "Pell's equation x² − Dy² = 1 (D > 0 non-square) has infinitely many solutions, all generated from a unique smallest positive one, the fundamental solution (x₁, y₁). Its size is famously erratic — for D = 61 the fundamental x₁ is 1766319049 — and its distribution as a function of D is poorly understood, governed by the continued-fraction period of √D. This entry pins down the elementary, rigorous part: a lower bound on how small the fundamental solution can be.",
+    "mathContext": "Heuristically $\\log(x_1 + y_1\\sqrt D) \\approx \\sqrt D$; this entry proves the rigorous floor $x^2 \\ge D+1$.",
+    "significance": "context",
+    "relatedConcepts": ["Pell's equation", "fundamental solution", "continued fractions", "quadratic fields"],
+    "prerequisites": ["Diophantine equations", "Pell.Solution₁"]
+  },
+  {
     "id": "ann-lower-bound",
     "proofId": "pell-equation-oq-02",
-    "range": {
-      "startLine": 41,
-      "endLine": 56
-    },
+    "range": { "startLine": 39, "endLine": 51 },
     "type": "insight",
     "title": "x > √D, Rigorously",
-    "content": "`x_sq_ge_d_add_one` proves every nontrivial solution satisfies x² ≥ D + 1. The argument is the Pell relation itself: a solution with x > 1 must have y ≠ 0 (Mathlib's y_ne_zero_of_one_lt_x), so the integer y² ≥ 1, and x² = 1 + Dy² ≥ 1 + D with D > 0. This is the rigorous floor under the heuristic log(x₁ + y₁√D) ≈ √D — the fundamental solution can never be smaller than √D in its x-coordinate."
+    "content": "x_sq_ge_d_add_one proves every nontrivial solution satisfies x² ≥ D + 1. The argument is the Pell relation itself: a solution with x > 1 must have y ≠ 0 (Mathlib's y_ne_zero_of_one_lt_x), so the integer y² ≥ 1, and x² = 1 + Dy² ≥ 1 + D with D > 0 (nlinarith with the hint D·(y²−1) ≥ 0). This is the rigorous floor under the heuristic log(x₁ + y₁√D) ≈ √D — the fundamental solution can never be smaller than √D in its x-coordinate.",
+    "mathContext": "$y \\ne 0 \\Rightarrow y^2 \\ge 1$, and $x^2 = 1 + Dy^2 \\ge 1 + D$, i.e. $x > \\sqrt D$.",
+    "significance": "key",
+    "relatedConcepts": ["Pell relation prop_x", "y_ne_zero_of_one_lt_x", "nlinarith", "lower bound"],
+    "prerequisites": ["the Pell relation x² = 1 + Dy²", "integer inequalities"]
   },
   {
     "id": "ann-minimal",
     "proofId": "pell-equation-oq-02",
-    "range": {
-      "startLine": 58,
-      "endLine": 67
-    },
+    "range": { "startLine": 52, "endLine": 63 },
     "type": "concept",
     "title": "The Fundamental Solution Is the Smallest",
-    "content": "`IsFundamental.is_minimal` (from Mathlib's IsFundamental.x_le_x) records that the fundamental solution minimizes x among all nontrivial solutions. This is why 'the size of the fundamental solution' is a well-posed extremal quantity: it is the smallest a Pell solution can be, and the open question asks how that minimum grows with D."
+    "content": "IsFundamental.x_sq_ge_d_add_one specializes the bound to the fundamental solution; IsFundamental.is_minimal (from Mathlib's IsFundamental.x_le_x) records that the fundamental solution minimizes x among all nontrivial solutions. This is why 'the size of the fundamental solution' is a well-posed extremal quantity: it is the smallest a Pell solution can be, and the open question asks how that minimum grows with D.",
+    "mathContext": "$\\forall$ nontrivial $b$, $x_1 \\le b.x$; so $x_1$ is the extremal size the open question concerns.",
+    "significance": "key",
+    "relatedConcepts": ["IsFundamental", "minimality", "extremal quantity", "Pell.IsFundamental.x_le_x"],
+    "prerequisites": ["fundamental solution of Pell's equation"]
   },
   {
-    "id": "ann-concrete",
+    "id": "ann-concrete-defs",
     "proofId": "pell-equation-oq-02",
-    "range": {
-      "startLine": 71,
-      "endLine": 100
-    },
-    "type": "concept",
+    "range": { "startLine": 64, "endLine": 81 },
+    "type": "definition",
+    "title": "Concrete Fundamental Solutions for Small D",
+    "content": "sol2 = (3,2), sol3 = (2,1), sol5 = (9,4) are the fundamental solutions for D = 2, 3, 5, each built as Solution₁.mk with the Pell equation discharged by norm_num. The accessor lemmas sol2_x, sol3_x, sol5_x expose the x-coordinates by simp. These are the data points for the irregularity observation that follows.",
+    "mathContext": "$3^2 - 2\\cdot 2^2 = 1$, $2^2 - 3\\cdot 1^2 = 1$, $9^2 - 5\\cdot 4^2 = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Solution₁.mk", "norm_num", "explicit solutions"],
+    "prerequisites": ["constructing Pell solutions"]
+  },
+  {
+    "id": "ann-concrete-bounds",
+    "proofId": "pell-equation-oq-02",
+    "range": { "startLine": 82, "endLine": 100 },
+    "type": "insight",
     "title": "Irregular Growth at Small D",
-    "content": "The explicit fundamental solutions (3,2) for D=2, (2,1) for D=3, and (9,4) for D=5 already display the erratic behavior of x₁: it jumps 3 → 2 → 9 as D goes 2 → 3 → 5, with no monotonicity. (For D = 61 the fundamental x₁ is 1766319049.) `concrete_bounds` verifies each satisfies x² ≥ D+1. This irregularity is precisely the 'poorly understood distribution' the open question highlights."
+    "content": "concrete_bounds verifies each fundamental solution satisfies x² ≥ D+1. More tellingly, the explicit x-coordinates already display the erratic behavior of x₁: it jumps 3 → 2 → 9 as D goes 2 → 3 → 5, with no monotonicity. (For D = 61 the fundamental x₁ is 1766319049.) This irregularity is precisely the 'poorly understood distribution' the open question highlights — the lower bound holds uniformly, but the actual value resists a simple formula.",
+    "mathContext": "$x_1(D)$: $3, 2, 9, \\ldots$ for $D = 2, 3, 5$ — non-monotone, no closed form known.",
+    "significance": "supporting",
+    "relatedConcepts": ["distribution of x₁", "norm_num verification", "irregular growth"],
+    "prerequisites": ["the size lower bound", "the concrete solutions"]
   }
 ]

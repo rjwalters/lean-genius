@@ -65,20 +65,44 @@
   },
   "sections": [
     {
-      "id": "lower-bound",
-      "title": "The Size Lower Bound",
-      "startLine": 38,
-      "endLine": 67,
-      "summary": "x_sq_ge_d_add_one (x²≥D+1 for x>1), IsFundamental.x_sq_ge_d_add_one, IsFundamental.is_minimal.",
-      "mathContext": "Every nontrivial solution has x > √D; the fundamental solution is the smallest."
+      "id": "header",
+      "title": "The Size Question",
+      "startLine": 3,
+      "endLine": 32,
+      "summary": "Docstring: the fundamental Pell solution's size is erratic and its distribution poorly understood; this entry pins down the rigorous lower bound on how small it can be.",
+      "mathContext": "Heuristic log(x₁+y₁√D) ≈ √D; rigorous floor x² ≥ D+1."
     },
     {
-      "id": "concrete",
+      "id": "lower-bound",
+      "title": "The Size Lower Bound x² ≥ D+1",
+      "startLine": 39,
+      "endLine": 51,
+      "summary": "x_sq_ge_d_add_one: every nontrivial solution (x>1) satisfies x² ≥ D+1, from y ≠ 0 ⟹ y² ≥ 1 and the Pell relation x² = 1 + Dy².",
+      "mathContext": "x > √D for every nontrivial solution."
+    },
+    {
+      "id": "fundamental",
+      "title": "The Fundamental Solution Is the Smallest",
+      "startLine": 52,
+      "endLine": 63,
+      "summary": "IsFundamental.x_sq_ge_d_add_one and IsFundamental.is_minimal: the fundamental solution obeys the bound and minimizes x among nontrivial solutions.",
+      "mathContext": "x₁ ≤ b.x for every nontrivial b — x₁ is the extremal size."
+    },
+    {
+      "id": "concrete-defs",
       "title": "Concrete Fundamental Solutions",
-      "startLine": 69,
+      "startLine": 64,
+      "endLine": 81,
+      "summary": "sol2 = (3,2), sol3 = (2,1), sol5 = (9,4) for D = 2, 3, 5, built by Solution₁.mk with norm_num.",
+      "mathContext": "3²−2·2²=1, 2²−3·1²=1, 9²−5·4²=1."
+    },
+    {
+      "id": "concrete-bounds",
+      "title": "Irregular Growth and the Bound Verified",
+      "startLine": 82,
       "endLine": 100,
-      "summary": "sol2 = (3,2), sol3 = (2,1), sol5 = (9,4) and concrete_bounds verifying the lower bound.",
-      "mathContext": "Explicit small-D fundamental solutions illustrating the irregular growth of x₁."
+      "summary": "concrete_bounds verifies each fundamental solution satisfies x² ≥ D+1; the x-coordinates 3, 2, 9 show the non-monotone, irregular growth of x₁.",
+      "mathContext": "x₁(D): 3, 2, 9 for D = 2, 3, 5 — no monotonicity."
     }
   ],
   "conclusion": {
