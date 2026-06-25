@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-coloring-defs",
+    "proofId": "erdos-1029-oq-01",
+    "range": { "startLine": 9, "endLine": 30 },
+    "type": "concept",
+    "title": "Colorings as Functions on Edges",
+    "content": "A 2-coloring is modelled as `c : Sym2 (Fin n) → Bool`, a function on unordered pairs of vertices. `IsMono c S b` asserts that every edge between two distinct vertices of S receives color b, and `HasMonoClique c k` that some k-vertex set is monochromatic. The key auxiliary object is `edgesWithin S = S.offDiag.image Sym2.mk`, the set of edges spanned by S; for |S| = k it has exactly C(k,2) elements. Because the whole argument is a finite count, the diagonal of Sym2 is harmless — it never appears among the constrained edges and cancels out of every ratio."
+  },
+  {
+    "id": "ann-counting-lemma",
+    "proofId": "erdos-1029-oq-01",
+    "range": { "startLine": 32, "endLine": 60 },
+    "type": "technique",
+    "title": "Counting Colorings Constant on an Edge Set",
+    "content": "constOn_card_le bounds the number of colorings that are constant equal to b on a fixed edge set T by 2^(N − |T|), where N is the total number of edges. The trick is a restriction map ρ sending a coloring to its values on the complement Tᶜ. On the set of colorings constant on T this map is injective: two such colorings already agree on T (both equal b), so agreeing on Tᶜ makes them equal. Hence their count is at most the number of functions Tᶜ → Bool, which Fintype.card_fun evaluates to 2^(N − |T|). This is the heart of the 'first moment' estimate, done with cardinalities rather than a probability measure."
+  },
+  {
+    "id": "ann-union-bound",
+    "proofId": "erdos-1029-oq-01",
+    "range": { "startLine": 62, "endLine": 150 },
+    "type": "proof-step",
+    "title": "The Union Bound and the Cancelling Free-Edge Factor",
+    "content": "Assume for contradiction that every coloring has a monochromatic K_k. Then the universe of all 2^N colorings is covered by the union, over the C(n,k) candidate k-sets S, of the colorings monochromatic on S (in either color). Each such set has at most 2·2^(N − C(k,2)) colorings by the counting lemma applied with T = edgesWithin S. The union bound gives 2^N ≤ 2·C(n,k)·2^(N − C(k,2)). But the hypothesis 2·C(n,k) < 2^{C(k,2)}, multiplied by the positive free-edge factor 2^(N − C(k,2)) and using 2^{C(k,2)}·2^(N − C(k,2)) = 2^N (valid since C(k,2) ≤ N), forces 2^N < 2^N — a contradiction. So a coloring with no monochromatic K_k exists, i.e. R(k) > n."
+  },
+  {
+    "id": "ann-scope-and-consequences",
+    "proofId": "erdos-1029-oq-01",
+    "range": { "startLine": 152, "endLine": 169 },
+    "type": "concept",
+    "title": "What This Proves — and What Stays Open",
+    "content": "Instantiating the threshold gives concrete lower bounds such as R(3) > 3 and, asymptotically, R(k) ≳ 2^{k/2}. This is the elementary Erdős (1947) bound (exponential base √2), strictly weaker than Spencer's √2/e refinement via the Lovász Local Lemma, and far weaker than would be needed to settle Erdős #1029. The open conjecture R(k)/(k·2^{k/2}) → ∞ — whether the probabilistic lower bound is far from tight — is untouched here; the gap between this base √2 and the upper bound's base 4 is exactly its content. The contribution is to replace an assumed lower bound (the parent's spencer_lower_bound axiom) with a fully machine-checked, 0-axiom counting proof of its elementary form."
+  }
+]
