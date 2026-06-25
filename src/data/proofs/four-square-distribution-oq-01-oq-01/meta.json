@@ -1,0 +1,102 @@
+{
+  "id": "four-square-distribution-oq-01-oq-01",
+  "title": "Jacobi's σ*(n): A Complete Reduction to the Ordinary Divisor Sum",
+  "slug": "four-square-distribution-oq-01-oq-01",
+  "description": "The parent entry four-square-distribution-oq-01 states Jacobi's four-square formula r4(n) = 8·σ*(n) as `axiom jacobi_r4_formula`, where σ*(n) = Σ_{d|n, 4∤d} d is Jacobi's modified divisor sum. The full modular-forms proof (identifying θ^4 as a weight-2 Eisenstein combination on Γ0(4)) is beyond current Mathlib. This entry makes unconditional, axiom-free progress on the arithmetic side: it pins down exactly how σ* relates to the ordinary divisor sum σ(n) = Σ_{d|n} d — precisely the relation underlying the Eisenstein decomposition. Main results: σ*(n) = σ(n) whenever 4 ∤ n (covering n ≡ 1,2,3 mod 4); and for 4 | n, σ*(n) plus the sum of the 4-divisible divisors recovers σ(n), isolating the entire σ*-vs-σ deviation into the dropped part. Fully machine-checked, 0 axioms (only foundational propext/Classical.choice/Quot.sound; the sanity-check examples use kernel `decide`, not native_decide).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FourSquareDistributionOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "sums-of-squares",
+      "jacobi",
+      "divisor-sum",
+      "modular-forms",
+      "axiom-reduction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 114,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "assumptions": "None. All results are unconditional theorems about σ*. #print axioms reports only propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool: the three example sanity checks use kernel `decide`, not native_decide).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.divisors",
+        "description": "The finite set of divisors of n, over which σ and σ* are summed",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Nat.dvd_of_mem_divisors",
+        "description": "Membership in n.divisors gives divisibility; used to propagate 4 ∤ n to 4 ∤ d",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum_filter_add_sum_filter_not",
+        "description": "Splits σ(n) into the 4-divisible and non-4-divisible divisor sums (the 4 | n correction)",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Finset.sum_filter",
+        "description": "Rewrites the filtered divisor sum as a sum of an if-then-else, matching the σ* definition",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset"
+      }
+    ],
+    "originalContributions": [
+      "sigmaStar_eq_filter: σ*(n) equals the sum of the divisors of n not divisible by 4 (recasting the if-then-else definition as a genuine filtered sum).",
+      "sigmaStar_of_not_four_dvd: the key reduction — when 4 ∤ n, no divisor of n is divisible by 4, so σ*(n) = σ(n). Covers three of the four residue classes mod 4.",
+      "sigmaStar_odd and sigmaStar_two_mul_odd: the n odd and n ≡ 2 (mod 4) corollaries, discharged via Nat.odd_iff + omega.",
+      "sigmaStar_add_four_part: the 4 | n correction — σ*(n) + Σ_{d|n, 4|d} d = σ(n), isolating the entire deviation of σ* from σ into the dropped 4-divisible part (so σ*(n) = σ(n) − Σ_{4|d} d).",
+      "sigmaStar_le_sigma: σ*(n) ≤ σ(n) for all n, an immediate consequence of the additive split."
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Mathlib divisor API (Nat.divisors, Nat.dvd_of_mem_divisors)",
+      "Finset big-operator filter splits (Finset.sum_filter, Finset.sum_filter_add_sum_filter_not)",
+      "Jacobi's four-square formula and the definition of σ* (from FourSquareDistributionOQ01.lean)"
+    ],
+    "relatedNote": "Does NOT replace axiom jacobi_r4_formula (the deep θ^4 = Eisenstein identity, which needs modular-forms machinery absent from Mathlib). It establishes the σ* ↔ σ arithmetic that the Eisenstein decomposition expresses."
+  },
+  "overview": {
+    "historicalContext": "Jacobi (1834) proved that the number of representations of n as an ordered sum of four squares is r4(n) = 8·σ*(n), where σ*(n) drops from the divisor sum every divisor divisible by 4. The modern proof identifies the theta series θ^4 with a weight-2 Eisenstein series on the congruence subgroup Γ0(4): the weight-2 Eisenstein space there is spanned by E2(τ) − 2E2(2τ) and E2(τ) − 4E2(4τ), whose q-coefficients are divisor sums with the 4 | d terms removed — exactly σ*. The parent Lean entry states the r4 = 8σ* formula as an axiom; this entry formalizes the σ* ↔ σ arithmetic at the heart of the Eisenstein identification.",
+    "problemStatement": "OQ01-OQ01 asks to replace axiom jacobi_r4_formula with a proof identifying θ^4 as a Γ0(4) weight-2 Eisenstein combination. Lacking Mathlib modular-forms infrastructure for the full identity, this entry resolves the arithmetic component: an exact, axiom-free closed-form relation between Jacobi's σ* and the ordinary divisor sum σ.",
+    "proofStrategy": "σ*(n) is first recast (sigmaStar_eq_filter) as the sum over divisors d with 4 ∤ d. If 4 ∤ n then any divisor d | n with 4 | d would give 4 | n, a contradiction; hence the filter is vacuous and σ*(n) = σ(n) (sigmaStar_of_not_four_dvd), giving the odd and 2-mod-4 corollaries. For 4 | n, Finset.sum_filter_add_sum_filter_not splits σ(n) into its 4-divisible and non-4-divisible parts; the latter is σ*(n), so σ*(n) + Σ_{4|d} d = σ(n). Monotonicity σ*(n) ≤ σ(n) follows.",
+    "keyInsights": [
+      "Jacobi's modification only ever acts when 4 | n: for the other three residue classes mod 4, σ* coincides exactly with the ordinary divisor sum.",
+      "The full deviation of σ* from σ is concentrated in the dropped 4-divisible divisors, captured by the clean additive identity σ*(n) + Σ_{d|n, 4|d} d = σ(n).",
+      "This σ* ↔ σ relation is precisely what the weight-2 Eisenstein decomposition on Γ0(4) encodes: the 'level-4 correction' E2(τ) − 4E2(4τ) removes the 4 | d divisors.",
+      "Everything is elementary divisor combinatorics — no native_decide, so the result is genuinely axiom-free (the numeric sanity checks use kernel decide)."
+    ],
+    "prerequisites": [
+      "Divisor sums and Jacobi's σ*",
+      "Finset big operators and filter splits",
+      "Eisenstein series on Γ0(4) (for context)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "σ* and σ",
+      "startLine": 56,
+      "endLine": 70,
+      "summary": "Jacobi's modified divisor sum σ*(n) (verbatim from the parent) and the ordinary divisor sum σ(n); sigmaStar_eq_filter recasts σ* as a filtered divisor sum."
+    },
+    {
+      "id": "reduction",
+      "title": "σ*(n) = σ(n) when 4 ∤ n",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "sigmaStar_of_not_four_dvd and the odd / 2-mod-4 corollaries: outside the residue class 0 mod 4, Jacobi's modification is inert."
+    },
+    {
+      "id": "correction",
+      "title": "The 4 | n correction and the bound",
+      "startLine": 97,
+      "endLine": 114,
+      "summary": "sigmaStar_add_four_part isolates the σ*-vs-σ deviation into the 4-divisible divisor sum; sigmaStar_le_sigma gives σ*(n) ≤ σ(n); kernel-decide sanity checks at n = 8, 12."
+    }
+  ]
+}
