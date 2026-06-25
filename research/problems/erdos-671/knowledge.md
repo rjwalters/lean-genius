@@ -15,6 +15,27 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-06-25 (Session 5) — numerical confirmation of `equidistant_diverges` + dominant-index refinement
+
+**Mode**: REVISIT (no Lean changes; local build unavailable — Docker down + olean header mismatch vs prebuilt cache, so NO Lean verification possible this session).
+**Outcome**: no sorries eliminated, but the one tractable sorry is de-risked.
+
+Added `verify-equidistant-bound.py` (numpy). For equidistant nodes on [-1,1], computed
+the Lebesgue constant Λ_n by fine sampling and compared to the target `2^(n-1)/n²`:
+
+- **The bound HOLDS for all n = 2..25** — so `equidistant_diverges` is a TRUE statement
+  (worth confirming before investing ~300 lines proving it; cf. the erdos-895 case where
+  a sorry turned out FALSE).
+- At the roadmap point `x* = -1 + h/2` (h = 2/(n-1)), `λ_n(x*)` already exceeds
+  `2^(n-1)/n²` and grows exponentially, confirming step-3's single-point lower-bound plan.
+- **Refinement**: the dominant Lagrange basis index at `x*` is `≈ ⌊(n-2)/2⌋ = n/2 − 1`
+  (numerically: n=18→8, n=20→9, n=24→11), NOT `⌊n/2⌋` as written below. This matches the
+  earlier "crossing near i ≈ (n-2)/2" analysis; use `m = ⌊(n-2)/2⌋` (or `(n-1)/2` for odd n)
+  in the factorial lower bound. Picking the wrong m by one weakens the constant.
+
+Recommendation unchanged: implement step 3 in an UNREGISTERED orphan file and build it
+when Docker is available; do not push unverifiable edits to the registered file.
+
 ## Session 2026-06-16 (Session 4) — Triage of remaining 7 sorries + concrete decomposition of `equidistant_diverges`
 
 **Mode**: REVISIT (assessment; no Lean changes pushed)
