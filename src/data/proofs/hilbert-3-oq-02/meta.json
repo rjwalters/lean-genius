@@ -1,0 +1,231 @@
+{
+  "id": "hilbert-3-oq-02",
+  "slug": "hilbert-3-oq-02",
+  "title": "Hilbert's 3rd Problem: the Tensor-Product Dehn Invariant Group",
+  "description": "A genuine Mathlib `TensorProduct` construction of the Dehn invariant target group D = ℝ ⊗_ℤ (ℝ / πℚ), replacing the parent entry's crude list surrogate. Two facts that carry the whole geometric argument are proved rigorously: rational multiples of π vanish (so the cube — and every rational-angle polyhedron — has Dehn invariant 0), and supplementary angles cancel, l ⊗ θ + l ⊗ (π − θ) = 0 — the algebraic heart of 'cutting preserves the Dehn invariant', which the parent could only state as `:= trivial`. Axiom-free and sorry-free. Does NOT claim the full Sydler completeness theorem.",
+  "overview": {
+    "historicalContext": "Hilbert's Third Problem (1900) asks whether two polyhedra of equal volume are always scissors congruent. Max Dehn answered no the same year by introducing the Dehn invariant, an element of ℝ ⊗_ℤ (ℝ/πℚ) summing length ⊗ (dihedral angle) over edges: it is preserved under scissors congruence, yet the cube (angles π/2) gives 0 while the regular tetrahedron (angle arccos(1/3)) does not. In 1965 Sydler proved the deep converse: volume together with the Dehn invariant is a complete invariant. The parent gallery entry `hilbert-3` formalizes Dehn's obstruction but models the invariant with a list-of-pairs surrogate and leaves the structural lemmas `cutting_preserves_dehn` and `isometry_preserves_dehn` as `:= trivial`. Its open question OQ-02 asks to formalize Sydler's theorem via Mathlib's tensor-product machinery.",
+    "problemStatement": "Open question OQ-02 asks to build the Dehn invariant inside genuine tensor-product machinery (toward Sydler's completeness theorem). Sydler's full 1965 theorem rests on transcendence theory and a hard surjectivity ('if') direction and is out of reach of a single session; this entry deliberately does not claim it. Instead it constructs the actual target group D = ℝ ⊗_ℤ (ℝ / πℚ) with Mathlib's `TensorProduct` and proves the algebraic facts on which both Dehn's obstruction and Sydler's theorem are phrased.",
+    "text": "The Dehn invariant lives in D = ℝ ⊗_ℤ (ℝ / πℚ). Tensoring a length with a rational multiple of π gives 0, and supplementary angles cancel: l ⊗ θ + l ⊗ (π − θ) = 0.",
+    "proofStrategy": "The angle group A = ℝ / πℚ is the quotient of ℝ by the subgroup πℚ, realized as the range of the additive homomorphism q ↦ q·π : ℚ →+ ℝ. The class map angleClass = QuotientAddGroup.mk' is additive, and an angle q·π is 0 in A by `QuotientAddGroup.eq_zero_iff`. The Dehn target group is D = ℝ ⊗[ℤ] A and a single edge contributes dehnTerm l θ = l ⊗ₜ angleClass θ. Rational-angle vanishing is then `angleClass_eq_zero_of_ratPi` followed by `TensorProduct.tmul_zero`; additivity in length and angle are `TensorProduct.add_tmul` / `tmul_add`; and supplementary-angle cancellation follows from angleClass(θ) + angleClass(π−θ) = angleClass(π) = 0 via `tmul_add` and `tmul_zero`. The whole-polyhedron Dehn invariant is a Finset.sum of edge terms, and `Finset.sum_eq_zero` gives D = 0 whenever every dihedral angle is a rational multiple of π — specializing to angle π/2 yields the cube.",
+    "keyInsights": [
+      "**The honest target group, not a surrogate**: D = ℝ ⊗_ℤ (ℝ/πℚ) is built with Mathlib's real `TensorProduct`, so the Dehn invariant is an element of an actual abelian group with genuine bilinearity — the structure Sydler's theorem is a statement about — rather than the parent's list-of-pairs with an ad-hoc `isZero` predicate",
+      "**Rational angles vanish for the right reason**: l ⊗ (q·π) = 0 because the *angle class* q·π is literally 0 in ℝ/πℚ (a quotient computation), after which `tmul_zero` finishes — this is the exact mechanism making D(cube) = 0 and, more generally, making every rational-angle polyhedron (e.g. the 2D Bolyai–Gerwien world) Dehn-trivial",
+      "**Supplementary cancellation is the cutting lemma**: a planar cut through an edge of dihedral angle θ replaces it with angles θ and π−θ on the two new pieces; l ⊗ θ + l ⊗ (π−θ) = l ⊗ π = 0 because θ + (π−θ) = π ≡ 0 in ℝ/πℚ — this single tensor identity is why cutting preserves the Dehn invariant, replacing the parent's `cutting_preserves_dehn := trivial`",
+      "**Bilinearity replaces hand-waving**: additivity in length (`add_tmul`) and in angle (`tmul_add`) are now theorems of the construction, not informal remarks, giving the Dehn invariant the additive-functional structure required to even state the scissors-congruence homomorphism",
+      "**Scope honesty**: this is the tensor-product *foundation* toward Sydler, not Sydler. The tetrahedron's nonvanishing (Niven's transcendence theorem) and the hard 'if' direction of Sydler are explicitly out of scope and not assumed here"
+    ],
+    "prerequisites": [
+      "Tensor product of ℤ-modules (abelian groups): M ⊗_ℤ N and the simple tensor m ⊗ₜ n",
+      "Bilinearity of the tensor product: add_tmul, tmul_add, tmul_zero",
+      "Quotient of an abelian group by a subgroup: ℝ / πℚ and QuotientAddGroup.mk'",
+      "Range of an additive homomorphism as a subgroup, and eq_zero_iff for the quotient",
+      "The Dehn invariant Σ length ⊗ (dihedral angle) and its role in Hilbert's Third Problem"
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry grounds the Dehn invariant in Mathlib's genuine tensor-product machinery, constructing the target group D = ℝ ⊗_ℤ (ℝ / πℚ) and proving the two algebraic facts that carry Dehn's obstruction: rational multiples of π vanish (`dehnTerm_eq_zero_of_ratPi`), so the cube and every rational-angle polyhedron have Dehn invariant 0 (`cube_dehnSum_zero`, `dehnSum_eq_zero_of_ratPi`); and supplementary angles cancel (`dehnTerm_supplementary`), the algebraic heart of cutting-invariance that the parent left as `:= trivial`. Additivity in length and angle are also derived. All results are axiom-free and sorry-free (verified via `#print axioms`: only propext / Classical.choice / Quot.sound).",
+    "implications": "Replacing the parent's list surrogate with the real group ℝ ⊗_ℤ (ℝ/πℚ) puts the Dehn invariant on the footing Sydler's completeness theorem actually requires, and turns two previously-`trivial` placeholders into honest tensor identities. The supplementary-angle cancellation is exactly the local computation behind 'cutting preserves the Dehn invariant', so this is genuine progress on the structural half of OQ-02, even though the full Sydler theorem remains open.",
+    "openQuestions": [
+      "Prove the tetrahedron's Dehn term is nonzero in D: with l ≠ 0 and angleClass(arccos(1/3)) ≠ 0, show l ⊗ angleClass(arccos(1/3)) ≠ 0 by exhibiting a ℚ-linear functional on ℝ/πℚ separating the coset (using that ℝ and ℝ/πℚ are ℚ-vector spaces, so ℝ ⊗_ℤ (ℝ/πℚ) ≅ ℝ ⊗_ℚ (ℝ/πℚ) has nonvanishing simple tensors) — this needs Niven's theorem only to know the coset is nonzero",
+      "Assemble cutting-invariance: define a dissection of a polyhedron and prove the sum of pieces' Dehn invariants equals the whole, with internal cut edges cancelling via `dehnTerm_supplementary`, upgrading the parent's `cutting_preserves_dehn := trivial` to a real theorem",
+      "Formalize the Dehn invariant as an additive homomorphism on a scissors-congruence group, the homomorphism whose kernel Sydler's 'if' direction controls — the entry point to the full completeness theorem"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "dehnTerm_eq_zero_of_ratPi",
+      "type": "core",
+      "description": "Rational-angle vanishing: a length tensored with a rational multiple of π is 0 in D = ℝ ⊗_ℤ (ℝ/πℚ) — the algebraic reason D(cube) = 0",
+      "leanType": "(l θ : ℝ) (q : ℚ) → θ = q * Real.pi → dehnTerm l θ = 0"
+    },
+    {
+      "name": "dehnTerm_supplementary",
+      "type": "core",
+      "description": "Supplementary-angle cancellation: l ⊗ θ + l ⊗ (π − θ) = 0, the algebraic heart of 'cutting preserves the Dehn invariant'",
+      "leanType": "(l θ : ℝ) → dehnTerm l θ + dehnTerm l (Real.pi - θ) = 0"
+    },
+    {
+      "name": "cube_dehnSum_zero",
+      "type": "core",
+      "description": "The cube has Dehn invariant 0 in the genuine tensor-product group: every edge carries dihedral angle π/2 = (1/2)·π",
+      "leanType": "(s : Finset ι) (len : ι → ℝ) → dehnSum s len (fun _ => Real.pi / 2) = 0"
+    },
+    {
+      "name": "dehnSum_eq_zero_of_ratPi",
+      "type": "core",
+      "description": "A polyhedron all of whose dihedral angles are rational multiples of π has Dehn invariant 0",
+      "leanType": "(s : Finset ι) (len ang : ι → ℝ) → (∀ i ∈ s, ∃ q : ℚ, ang i = q * Real.pi) → dehnSum s len ang = 0"
+    },
+    {
+      "name": "dehnTerm_add_angle",
+      "type": "supporting",
+      "description": "Additivity of the Dehn term in the angle: l ⊗ (θ₁ + θ₂) = l ⊗ θ₁ + l ⊗ θ₂",
+      "leanType": "(l θ₁ θ₂ : ℝ) → dehnTerm l (θ₁ + θ₂) = dehnTerm l θ₁ + dehnTerm l θ₂"
+    },
+    {
+      "name": "angleClass_eq_zero_of_ratPi",
+      "type": "supporting",
+      "description": "An angle that is a rational multiple of π is 0 in the angle group A = ℝ / πℚ",
+      "leanType": "(θ : ℝ) (q : ℚ) → θ = q * Real.pi → angleClass θ = 0"
+    }
+  ],
+  "sections": [
+    {
+      "id": "docs-imports",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Module docstring framing the entry as the tensor-product foundation for the Dehn invariant toward Sydler's theorem, with an explicit honesty note that the full Sydler completeness theorem is out of scope. Five Mathlib imports (Tactic, Real.Basic, Real.Pi.Bounds, TensorProduct.Basic, QuotientGroup.Defs).",
+      "mathContext": "Sets scope: build the genuine target group ℝ ⊗_ℤ (ℝ/πℚ) and prove the rational-angle and supplementary-angle facts; does not claim Sydler or the tetrahedron's nonvanishing."
+    },
+    {
+      "id": "definitions",
+      "title": "The Dehn Target Group",
+      "startLine": 62,
+      "endLine": 110,
+      "summary": "piRatHom : ℚ →+ ℝ (q ↦ q·π) and its range piRat = πℚ; the angle group A = ℝ / πℚ; the Dehn target group D = ℝ ⊗[ℤ] A; angleClass (the quotient map), dehnTerm l θ = l ⊗ₜ angleClass θ, and dehnSum (the Finset.sum over edges).",
+      "mathContext": "Constructs the honest Dehn invariant codomain with Mathlib's TensorProduct, replacing the parent's list-of-pairs surrogate."
+    },
+    {
+      "id": "angle-group",
+      "title": "Rational Multiples of π Vanish in A",
+      "startLine": 112,
+      "endLine": 130,
+      "summary": "angleClass_eq_zero_of_ratPi (q·π is 0 in ℝ/πℚ via QuotientAddGroup.eq_zero_iff and membership in piRatHom.range), angleClass_pi, and additivity angleClass_add.",
+      "mathContext": "The quotient computations that make rational dihedral angles trivial."
+    },
+    {
+      "id": "dehn-term",
+      "title": "Linearity and the Key Vanishing Facts",
+      "startLine": 132,
+      "endLine": 162,
+      "summary": "dehnTerm_eq_zero_of_ratPi (rational-angle vanishing), additivity in length (add_tmul) and angle (tmul_add), and dehnTerm_supplementary — l ⊗ θ + l ⊗ (π−θ) = 0, the cutting-invariance core.",
+      "mathContext": "The algebraic heart: why D(cube)=0 and why cutting preserves the Dehn invariant."
+    },
+    {
+      "id": "polyhedron",
+      "title": "Whole-Polyhedron Consequences",
+      "startLine": 164,
+      "endLine": 172,
+      "summary": "dehnSum_eq_zero_of_ratPi (every angle rational multiple of π ⟹ D = 0 via Finset.sum_eq_zero) and cube_dehnSum_zero (specialize to angle π/2).",
+      "mathContext": "Lifts the single-edge facts to the Dehn invariant of an entire polyhedron, recovering Dehn's cube computation in the real group."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Dehn, Max",
+      "title": "Ueber den Rauminhalt",
+      "year": "1901",
+      "venue": "Mathematische Annalen",
+      "note": "Original solution of Hilbert's Third Problem and definition of the Dehn invariant"
+    },
+    {
+      "authors": "Sydler, Jean-Pierre",
+      "title": "Conditions nécessaires et suffisantes pour l'équivalence des polyèdres de l'espace euclidien à trois dimensions",
+      "year": "1965",
+      "venue": "Commentarii Mathematici Helvetici",
+      "note": "Completeness of volume + Dehn invariant for scissors congruence — the theorem OQ-02 ultimately targets"
+    },
+    {
+      "authors": "Dupont, Johan L.",
+      "title": "Scissors Congruences, Group Homology and Characteristic Classes",
+      "year": "2001",
+      "venue": "World Scientific",
+      "note": "The tensor-product / group-homology framework in which the Dehn invariant and Sydler's theorem are properly phrased"
+    }
+  ],
+  "crossReferences": [
+    {
+      "relationship": "Direct continuation of the parent entry: builds the genuine tensor-product Dehn invariant group ℝ ⊗_ℤ (ℝ/πℚ) that replaces the parent's list-of-pairs surrogate, and proves rigorously the cutting-cancellation the parent stated as `cutting_preserves_dehn := trivial`. Answers the structural half of the parent's open question OQ-02.",
+      "sharedConcepts": [
+        "dehn-invariant",
+        "scissors-congruence",
+        "tensor-products",
+        "hilbert-problems"
+      ],
+      "targetId": "hilbert-3"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "path": "Proofs/Hilbert3OQ02.lean",
+    "lineCount": 172,
+    "theoremCount": 9,
+    "axiomCount": 0,
+    "definitionCount": 7,
+    "sorries": 0,
+    "imports": [
+      "import Mathlib.Tactic",
+      "import Mathlib.Data.Real.Basic",
+      "import Mathlib.Analysis.Real.Pi.Bounds",
+      "import Mathlib.LinearAlgebra.TensorProduct.Basic",
+      "import Mathlib.GroupTheory.QuotientGroup.Defs"
+    ],
+    "namespace": "Hilbert3OQ02"
+  },
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dehn_invariant",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert3OQ02.lean",
+    "tags": [
+      "geometry",
+      "hilbert-problems",
+      "dehn-invariant",
+      "scissors-congruence",
+      "tensor-products",
+      "formalization"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "TensorProduct",
+        "description": "The tensor product M ⊗[ℤ] N of ℤ-modules, used to build the genuine Dehn target group ℝ ⊗_ℤ (ℝ/πℚ)",
+        "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
+      },
+      {
+        "theorem": "TensorProduct.tmul_zero",
+        "description": "m ⊗ₜ 0 = 0; combined with the vanishing of rational angle classes, gives rational-angle Dehn vanishing",
+        "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
+      },
+      {
+        "theorem": "TensorProduct.add_tmul",
+        "description": "(m₁ + m₂) ⊗ₜ n = m₁ ⊗ₜ n + m₂ ⊗ₜ n; additivity of the Dehn term in the edge length",
+        "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
+      },
+      {
+        "theorem": "TensorProduct.tmul_add",
+        "description": "m ⊗ₜ (n₁ + n₂) = m ⊗ₜ n₁ + m ⊗ₜ n₂; additivity in the angle, behind supplementary-angle cancellation",
+        "module": "Mathlib.LinearAlgebra.TensorProduct.Basic"
+      },
+      {
+        "theorem": "QuotientAddGroup.eq_zero_iff",
+        "description": "mk x = 0 ↔ x ∈ N for the quotient ℝ / πℚ; proves a rational multiple of π is 0 in the angle group",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Defs"
+      },
+      {
+        "theorem": "Finset.sum_eq_zero",
+        "description": "A finite sum vanishes when every summand does; lifts edge-wise vanishing to the whole-polyhedron Dehn invariant",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Constructs the genuine Dehn invariant target group D = ℝ ⊗_ℤ (ℝ / πℚ) with Mathlib's real `TensorProduct`, replacing the parent entry's list-of-pairs surrogate and its ad-hoc `isZero` predicate",
+      "`dehnTerm_eq_zero_of_ratPi`: rigorous proof that a length tensored with a rational multiple of π is 0 in D — the actual algebraic mechanism behind D(cube) = 0, where the parent merely defined `isZero` to assert it",
+      "`dehnTerm_supplementary`: l ⊗ θ + l ⊗ (π − θ) = 0, the supplementary-angle cancellation that is the algebraic heart of 'cutting preserves the Dehn invariant'; the parent left the corresponding statement as `cutting_preserves_dehn := trivial`",
+      "Additivity of the Dehn term in both length (`dehnTerm_add_length`, via `add_tmul`) and angle (`dehnTerm_add_angle`, via `tmul_add`), giving the invariant its honest bilinear structure",
+      "`dehnSum_eq_zero_of_ratPi` and `cube_dehnSum_zero`: the whole-polyhedron Dehn invariant vanishes for any polyhedron with all dihedral angles rational multiples of π, recovering Dehn's cube computation inside the real tensor-product group",
+      "Entirely axiom-free and sorry-free (verified via `#print axioms`: only propext / Classical.choice / Quot.sound); honestly scoped as the tensor-product foundation toward Sydler, explicitly NOT a proof of the full Sydler completeness theorem"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 172,
+    "assumptions": "None. All results are axiom-free and sorry-free (verified via `#print axioms`: the theorems depend only on the foundational propext / Classical.choice / Quot.sound). The file is self-contained and Mathlib-only. Scope is honest: this entry builds the genuine tensor-product Dehn invariant group and proves the rational-angle and supplementary-angle facts toward Sydler's theorem; it does NOT prove Sydler's completeness theorem, nor the regular tetrahedron's Dehn nonvanishing (which requires Niven's transcendence theorem). Those remain open and are listed as open questions.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 9,
+    "definitionCount": 7
+  }
+}
