@@ -1,0 +1,152 @@
+{
+  "id": "alternating-series-test-oq-01-oq-01-oq-02",
+  "title": "Two-Sided Error Trap for Eventually-Antitone Alternating Series",
+  "slug": "alternating-series-test-oq-01-oq-01-oq-02",
+  "description": "Answers the parent entry's open question (index 1): does the two-sided two-term error trap f N − f (N+1) ≤ |S_N − l| ≤ f N survive when the coefficients are only eventually antitone — antitone on [M, ∞) rather than on all of ℕ? Yes, verbatim, for every N ≥ M. The proof is a shift reduction: write the tail from index M as its own alternating series with coefficients g j = f (j+M), which is globally antitone and tends to 0, so the parent theorem applies to g. The two series are linked by the exact splitting S_{n+M} = S_M + (-1)^M T_n, so the errors coincide up to a sign of modulus one: |S_N − l| = |T_{N-M} − t|. Feeding the parent trap for g back through g(N-M) = f N and g(N-M+1) = f(N+1) reproduces the original trap from the threshold M onward. Two further results: convergence of S_N is derived (not assumed) from eventual antitonicity plus f → 0; and the hypothesis is shown strictly weaker via an explicit bumped sequence (b 0 = 0, b i = 1/(i+1)) that is antitone only from M = 1 on, so the parent theorem cannot cover it while this one does.",
+  "meta": {
+    "author": "Shift-reduction extension formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlternatingSeriesTestOQ01OQ01OQ02.lean",
+    "tags": [
+      "analysis",
+      "series",
+      "convergence",
+      "alternating-series",
+      "error-bound",
+      "sharpness",
+      "eventually-monotone",
+      "shift-reduction"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Antitone.tendsto_alternating_series_of_tendsto_zero",
+        "description": "Convergence of the alternating series for the shifted (globally antitone) coefficients g → 0 — supplies the tail limit t and forces convergence of the full series",
+        "module": "Mathlib.Analysis.SpecificLimits.Normed"
+      },
+      {
+        "theorem": "Filter.tendsto_add_atTop_iff_nat",
+        "description": "Tendsto of a shifted sequence (fun n => u (n + M)) is equivalent to Tendsto of u — transports the limit of the index-shifted partial sums back to the original series",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "Filter.tendsto_add_atTop_nat",
+        "description": "(fun n => n + M) tends to atTop — shows the shifted coefficients g j = f (j+M) still tend to 0",
+        "module": "Mathlib.Order.Filter.AtTopBot"
+      },
+      {
+        "theorem": "tendsto_one_div_add_atTop_nhds_zero_nat",
+        "description": "1/(n+1) → 0 — drives the bumped witness sequence to 0",
+        "module": "Mathlib.Analysis.SpecificLimits.Basic"
+      }
+    ],
+    "originalContributions": [
+      "antitone_shift / tendsto_shift_zero: the tail coefficients g j = f (j+M) inherit global antitonicity and convergence to 0 from f's eventual antitonicity, enabling the reduction to the parent theorem",
+      "partialSum_shift: the exact shift splitting S_{n+M} = S_M + (-1)^M T_n linking the full series to its tail (proved by induction)",
+      "tendsto_partialSum_of_eventually_antitone: convergence of the alternating series is DERIVED from eventual antitonicity plus f → 0, with explicit limit l = S_M + (-1)^M t — it need not be assumed",
+      "abs_partialSum_sub_limit_trapped_eventually: the two-sided two-term trap f N − f (N+1) ≤ |S_N − l| ≤ f N holds for every N ≥ M when f is antitone only on [M, ∞), answering the parent's open question",
+      "sub_le_abs_partialSum_sub_limit_eventually / abs_partialSum_sub_limit_le_eventually: the lower and upper halves extracted as standalone lemmas",
+      "bumped + antitoneOn_bumped + not_antitone_bumped + bumped_error_trapped: an explicit witness (b 0 = 0, b i = 1/(i+1)) antitone only on [1, ∞), proving the eventual hypothesis is strictly weaker than the parent's global one and that the trap genuinely applies where the parent cannot"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound.",
+    "lineCount": 206,
+    "theoremCount": 11,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "The Leibniz alternating series test, and its parent two-term sharpening f N − f (N+1) ≤ |S_N − l| ≤ f N, both require the coefficient sequence to be antitone on all of ℕ. In practice coefficients are frequently antitone only eventually — a finite initial segment may misbehave (transients, a startup bump, reindexing artifacts) before the monotone tail sets in. The parent entry flagged exactly this as an open question. The classical resolution is a shift: throw away the finite head and apply the monotone theory to the tail. Packaging that reduction formally shows the entire two-sided trap survives, valid from the antitonicity threshold onward, with the same two-term bounds and no loss.",
+    "problemStatement": "Suppose f : ℕ → ℝ is antitone only on [M, ∞) (AntitoneOn f (Set.Ici M)) and f → 0. Does the parent's two-term trap still hold?\n\n**Answer: yes, for every N ≥ M:** f N − f (N+1) ≤ |S_N − l| ≤ f N, where S_N = ∑_{i<N} (-1)^i f i. Moreover the limit l exists by virtue of the hypotheses alone (it equals S_M + (-1)^M t with t the Leibniz limit of the tail), so convergence need not be assumed. The eventual hypothesis is strictly weaker: the bumped sequence b 0 = 0, b i = 1/(i+1) is antitone on [1,∞) but not on ℕ, so the parent theorem does not apply to it while this one does.",
+    "text": "The two-sided two-term Leibniz error trap holds for alternating series whose coefficients are antitone only eventually, valid from the antitonicity threshold M onward — proved by shifting the monotone tail into the parent theorem.",
+    "proofStrategy": "Reduce to the parent theorem by a shift. Set g j = f (j+M); from AntitoneOn f (Ici M) deduce Antitone g, and from f → 0 deduce g → 0. The partial sums split exactly as S_{n+M} = S_M + (-1)^M T_n (induction on n, each new term matching via (-1)^{n+M} = (-1)^M (-1)^n), where T_n = ∑_{j<n} (-1)^j g j. By Mathlib's Leibniz convergence g has a limit t, and the splitting plus tendsto_add_atTop_iff_nat forces S_N → l = S_M + (-1)^M t. Writing N = m + M, the splitting gives S_N − l = (-1)^M (T_m − t), so |S_N − l| = |T_m − t|. The parent trap for g at index m reads g m − g (m+1) ≤ |T_m − t| ≤ g m, and g m = f N, g (m+1) = f (N+1), reproducing the trap. The strict-weakening witness is verified directly: antitoneOn_bumped (the if-branch is uniform on [1,∞)), tendsto_bumped_zero, and not_antitone_bumped (b 0 = 0 < 1/2 = b 1).",
+    "keyInsights": [
+      "A finite non-monotone head is irrelevant to the asymptotic error: shifting the index past the threshold M turns the eventually-antitone problem into the globally-antitone parent problem on the tail",
+      "The exact splitting S_{n+M} = S_M + (-1)^M T_n means the truncation errors of the full and shifted series are literally equal in modulus, |S_N − l| = |T_{N-M} − t|, so the parent's bounds transfer with no slack",
+      "Convergence is a consequence, not a hypothesis: eventual antitonicity plus f → 0 already supplies the limit l = S_M + (-1)^M t",
+      "The eventual hypothesis is strictly more general — the bumped witness antitone only from index 1 is covered here but not by the parent theorem"
+    ],
+    "prerequisites": [
+      "Convergence of sequences and series in ℝ",
+      "Monotone/antitone sequences and the alternating series (Leibniz) test",
+      "The parent entry's two-term trap f N − f (N+1) ≤ |S_N − l| ≤ f N",
+      "Finite sums and index shifts: Finset.sum_range_succ, Filter.tendsto_add_atTop_iff_nat"
+    ]
+  },
+  "sections": [
+    {
+      "id": "shift-reduction",
+      "title": "The Shift Reduction",
+      "startLine": 47,
+      "endLine": 76,
+      "summary": "The tail coefficients g j = f (j+M) are globally antitone and tend to 0, and the partial sums split exactly as S_{n+M} = S_M + (-1)^M T_n.",
+      "mathContext": "$S_{n+M} = S_M + (-1)^M \\sum_{j<n} (-1)^j f(j+M)$."
+    },
+    {
+      "id": "convergence-and-trap",
+      "title": "Derived Convergence and the Eventual Trap",
+      "startLine": 78,
+      "endLine": 148,
+      "summary": "Convergence S_N → l = S_M + (-1)^M t is derived from the hypotheses; then |S_N − l| = |T_{N-M} − t| feeds the parent trap to give f N − f (N+1) ≤ |S_N − l| ≤ f N for all N ≥ M.",
+      "mathContext": "$f_N - f_{N+1} \\le |S_N - l| \\le f_N \\quad (N \\ge M)$."
+    },
+    {
+      "id": "strictly-weaker-witness",
+      "title": "The Hypothesis Is Strictly Weaker",
+      "startLine": 150,
+      "endLine": 205,
+      "summary": "The bumped sequence b 0 = 0, b i = 1/(i+1) is antitone on [1,∞) but not on ℕ; the eventual trap applies to it with M = 1, witnessing genuine generalization beyond the parent.",
+      "mathContext": "$b_0 = 0 < \\tfrac12 = b_1$, yet $b$ is antitone on $[1,\\infty)$."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Leibniz, G. W.",
+      "title": "Letter to Johann Bernoulli",
+      "year": "1714",
+      "note": "The alternating series convergence criterion"
+    },
+    {
+      "authors": "Rudin, W.",
+      "title": "Principles of Mathematical Analysis",
+      "year": "1976",
+      "note": "Alternating series test and the truncation error bound (Theorem 3.43)"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "alternating-series-test-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: proves the two-term trap f N − f (N+1) ≤ |S_N − l| ≤ f N for globally antitone f and asks (open question index 1) whether it survives for eventually-antitone coefficients. This entry answers yes, valid for all N ≥ M, by shifting the monotone tail into the parent theorem."
+    }
+  ],
+  "conclusion": {
+    "summary": "The parent's two-sided two-term Leibniz trap f N − f (N+1) ≤ |S_N − l| ≤ f N extends verbatim to coefficients that are antitone only on [M, ∞), valid for every N ≥ M, proved with 0 axioms by a shift reduction: the tail g j = f (j+M) is globally antitone, S_{n+M} = S_M + (-1)^M T_n links the series, and |S_N − l| = |T_{N-M} − t| transfers the parent bounds. Convergence is derived from the hypotheses, and an explicit bumped witness shows the eventual hypothesis is strictly weaker than the global one.",
+    "implications": "Removes the global-monotonicity restriction from the sharp Leibniz error estimate, covering the common situation of a transient initial segment followed by a monotone tail; the same two-term bounds hold from the threshold M onward with no degradation.",
+    "openQuestions": [
+      "Can the trap be pushed below the threshold to all N (not just N ≥ M) with an explicit correction term accounting for the finite non-monotone head?",
+      "Does an analogous shift reduction yield two-sided bounds for coefficients of bounded variation (not eventually monotone) via Abel summation, as the parent's second open question hints?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.AlternatingSeriesTestOQ01OQ01"
+    ],
+    "opens": [
+      "Finset",
+      "Filter",
+      "Topology"
+    ],
+    "namespace": "AlternatingSeriesTestOQ01OQ01OQ02",
+    "lineCount": 206,
+    "axiomCount": 0,
+    "theoremCount": 11,
+    "definitionCount": 1,
+    "path": "Proofs/AlternatingSeriesTestOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
