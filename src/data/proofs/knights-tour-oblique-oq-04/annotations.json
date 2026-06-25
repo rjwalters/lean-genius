@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-ktoq04-header",
+    "proofId": "knights-tour-oblique-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 74
+    },
+    "title": "OQ-04: the maximum oblique count, and what is provable about it",
+    "content": "Open question OQ-04 of the parent entry asks for the MAXIMUM number of oblique (obtuse) turns in a closed knight's tour. Unlike the minimum (exactly 4, proved in the base file and generalized in OQ-01), the maximum is a search-heavy question over the ~1.3×10¹³ closed tours of the 8×8 board and is genuinely open — no elementary closed form is known. This file is deliberately honest about that: it does NOT claim to resolve OQ-04. Instead it pins down, by finite enumeration over the eight knight directions, the local and global structure of the oblique relation that any oblique count is assembled from. To stay assumption-free it is self-contained (imports only Mathlib, like the self-contained sibling OQ-01): the eight directions are reconstructed as vec : Fin 8 → ℤ×ℤ (counterclockwise, matching allMoveVectors in the base file), with dot product dot, oblique predicate isOblique i j := dot i j < 0, and antipode neg i := i + 4 (mod 8). Every result is then a finite `decide` check depending only on propext / Classical.choice / Quot.sound — no native_decide, no enumeration axiom.",
+    "mathContext": "Maximum oblique count over $\\sim 1.3\\times10^{13}$ tours is open; this file proves the structure of the oblique relation on the 8 directions, with $\\mathrm{neg}\\,i = i+4 \\pmod 8$ the antipode.",
+    "significance": "key",
+    "relatedConcepts": [
+      "oblique turn (obtuse angle, dot product < 0)",
+      "knight move directions as Fin 8",
+      "finite enumeration / decide",
+      "open combinatorial maximum"
+    ],
+    "prerequisites": [
+      "knight moves and their dot product",
+      "the oblique predicate (dot < 0)",
+      "the reversal turn (antipodal direction)"
+    ]
+  },
+  {
+    "id": "ann-ktoq04-antipode",
+    "proofId": "knights-tour-oblique-oq-04",
+    "type": "theorem",
+    "range": {
+      "startLine": 75,
+      "endLine": 96
+    },
+    "title": "The antipode is the reversal (dot product -5)",
+    "content": "neg_neg proves neg is an involution (neg (neg i) = i); vec_neg proves vec (neg i) = -vec i, so neg i genuinely points the opposite way; and dot_neg proves dot i (neg i) = -5 — the unique most-negative dot product among the seven non-trivial values. The antipodal turn is therefore the reversal: going to the antipode means the next move undoes the previous one, returning to the square just left, which is impossible in a Hamiltonian tour (the base file proves exactly this as no_turn_angle_4_all). Identifying the antipode with the dot=-5 reversal is what lets the next sections separate the always-forbidden oblique successor from the two that a tour may actually use. All three are `decide` checks over the 8 directions.",
+    "mathContext": "$\\mathrm{vec}(\\mathrm{neg}\\,i) = -\\mathrm{vec}\\,i$ and $\\mathrm{dot}\\,i\\,(\\mathrm{neg}\\,i) = -5$: the antipodal turn is the forbidden reversal.",
+    "significance": "important",
+    "relatedConcepts": [
+      "antipodal direction",
+      "reversal turn",
+      "involution",
+      "no-reversal in a tour"
+    ],
+    "prerequisites": [
+      "the dot product of move vectors",
+      "Fin 8 arithmetic (mod 8)",
+      "Hamiltonian cycle (no immediate backtrack)"
+    ]
+  },
+  {
+    "id": "ann-ktoq04-per-turn",
+    "proofId": "knights-tour-oblique-oq-04",
+    "type": "theorem",
+    "range": {
+      "startLine": 97,
+      "endLine": 111
+    },
+    "title": "Per-turn refinement on legal moves: oblique ⇔ dot ∈ {-3,-4}",
+    "content": "oblique_iff_dot proves that for a legal (non-reversal) turn — j ≠ neg i — the turn is oblique iff its dot product is exactly -3 or -4. The base file's oblique_iff_large_turn classifies oblique turns by turn angle ∈ {3,4,5} (dot ∈ {-3,-4,-5}); here the reversal value -5 (the antipode) is deleted, because the reversal never occurs in a tour. dot_legal_spectrum records the companion fact that the full legal dot-product spectrum is {-4,-3,0,3,4,5} rather than the unconstrained {-5,-4,-3,0,3,4,5}. Both are 64-case decide computations over Fin 8 × Fin 8: with i and j ranging over all directions, the dot product and inequality reduce to closed integer arithmetic, and the hypothesis j ≠ neg i discharges the single antipodal case.",
+    "mathContext": "On legal turns the oblique dot values are exactly $\\{-3,-4\\}$; the antipodal value $-5$ is excluded, matching $\\mathrm{no\\_turn\\_angle\\_4\\_all}$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "dot product spectrum",
+      "turn angle in ℤ/8",
+      "no-reversal in a tour",
+      "decide over Fin 8 × Fin 8"
+    ],
+    "prerequisites": [
+      "the antipode = reversal (dot -5)",
+      "isOblique = (dot < 0)",
+      "case analysis by decide"
+    ]
+  },
+  {
+    "id": "ann-ktoq04-successor-counts",
+    "proofId": "knights-tour-oblique-oq-04",
+    "type": "theorem",
+    "range": {
+      "startLine": 112,
+      "endLine": 134
+    },
+    "title": "2-regularity of the legal oblique relation",
+    "content": "The structural heart of the entry. In the direction graph on the eight knight directions: legal_successors_card proves every direction has exactly 7 legal successors (all but its own antipode); oblique_successors_card proves every direction has exactly 3 oblique successors (those with dot product < 0); and legal_oblique_successors_card combines them — exactly 2 legal oblique successors per direction. So the legal oblique relation is 2-REGULAR: at each step a tour may turn obliquely into precisely two of its seven legal continuations, the third oblique direction being the forbidden antipode (dot -5). Each theorem filters Finset.univ over Fin 8 by the relevant decidable predicate and evaluates the cardinality by decide for all 8 directions via fin_cases. This uniform local out-degree is the combinatorial constraint any oblique-count argument must respect, and it explains the global legal density 2/7 structurally rather than by tabulation. Note it does NOT by itself bound the global maximum: a tour can in principle take an oblique successor at every free step.",
+    "mathContext": "Out-degrees in the direction graph: legal $7$, oblique $3$, legal-oblique $2$ — uniform over all 8 directions (2-regular).",
+    "significance": "critical",
+    "relatedConcepts": [
+      "regular graph / uniform out-degree",
+      "Finset.card by decide",
+      "antipodal direction excluded",
+      "local structure of oblique turns"
+    ],
+    "prerequisites": [
+      "Fintype Fin 8",
+      "Finset.filter and Finset.card",
+      "decidability of the oblique predicate"
+    ]
+  },
+  {
+    "id": "ann-ktoq04-global-counts",
+    "proofId": "knights-tour-oblique-oq-04",
+    "type": "theorem",
+    "range": {
+      "startLine": 135,
+      "endLine": 148
+    },
+    "title": "Global oblique densities 3/8 and 2/7",
+    "content": "oblique_pairs_card and legal_oblique_pairs_card give the exact global oblique densities by deciding over all ordered pairs of directions: 24 of the 64 pairs are oblique (3/8), and 16 of the 56 legal (non-reversal) pairs are oblique (2/7). These are the global shadow of the per-direction 2-regularity: 8 directions × 3 oblique successors = 24, and 8 × 2 legal oblique successors = 16. The densities quantify how 'often' an unconstrained or legality-constrained turn is oblique, the local statistic against which the (open) global maximum over actual tours must be compared. The entry stops here: it does not claim any tour-level bound beyond the trivial 64 turns, and flags the global tour constraints (closure, simplicity, board geometry) as the missing ingredient for the true maximum.",
+    "mathContext": "$24/64 = 3/8$ over all pairs, $16/56 = 2/7$ over legal pairs — the global form of 2-regularity.",
+    "significance": "important",
+    "relatedConcepts": [
+      "global oblique density",
+      "Finset.card over a product Fintype",
+      "2-regularity (global shadow)",
+      "open global maximum"
+    ],
+    "prerequisites": [
+      "Finset.card over Fin 8 × Fin 8",
+      "the per-direction successor counts",
+      "decide on a finite product"
+    ]
+  }
+]
