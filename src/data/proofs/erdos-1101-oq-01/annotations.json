@@ -1,0 +1,134 @@
+[
+  {
+    "id": "ann-e1101oq01-header",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 33
+    },
+    "type": "concept",
+    "title": "Scope: Necessary Preconditions for a Good Sequence",
+    "content": "Erdős #1101 calls a pairwise-coprime sequence u with Σ 1/uᵢ < ∞ 'good' if the gaps in its sieved survivors are bounded by the sieve product formula. The strong form of Problem #208 asks whether the prime squares pᵢ² are good — an OPEN question.\n\nThis file factors goodness into three elementary necessary preconditions (strictly increasing, pairwise coprime, convergent reciprocal series) plus the genuinely hard gap bound, and proves the prime squares satisfy all three preconditions. The gap bound is left open, exactly as in the literature.",
+    "mathContext": "Separating necessary conditions from the hard analytic core pins the open content of the strong form of #208 to precisely the gap condition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "sieve theory",
+      "good sequences",
+      "Problem #208",
+      "prime squares"
+    ],
+    "prerequisites": [
+      "elementary number theory",
+      "p-series convergence",
+      "Nat.nth enumeration"
+    ]
+  },
+  {
+    "id": "ann-e1101oq01-core-defs",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 34,
+      "endLine": 60
+    },
+    "type": "definition",
+    "title": "Mirroring the Parent #1101 Objects",
+    "content": "We redeclare the sieved set **ASet u** (integers divisible by no uᵢ), its increasing enumeration **A u** via Nat.nth, the index **t u x** (how many initial terms have product ≤ x), and the full **IsGood** predicate combining strict monotonicity, pairwise coprimality, reciprocal-series convergence, and the gap bound.\n\nReusing these objects ensures the leaf reasons about the genuine #1101 notion of goodness, not a weakened proxy.",
+    "mathContext": "IsGood u ≡ StrictMono u ∧ (pairwise coprime) ∧ Summable (1/uₙ) ∧ (gap bound). The fourth conjunct carries all the open difficulty.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth",
+      "Summable",
+      "sieved set",
+      "gap bound"
+    ]
+  },
+  {
+    "id": "ann-e1101oq01-candidate",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 73
+    },
+    "type": "theorem",
+    "title": "The Necessary Core and Its Necessity",
+    "content": "**IsGoodCandidate u** names the first three conjuncts of IsGood: strictly increasing, pairwise coprime, convergent reciprocal series. **isGood_imp_candidate** proves every good sequence is a candidate — these conditions are genuinely necessary for goodness, so verifying them for a concrete sequence is real progress toward showing it is good.",
+    "mathContext": "isGood_imp_candidate is the projection ⟨h.1, h.2.1, h.2.2.1⟩ extracting the first three conjuncts.",
+    "significance": "key",
+    "relatedConcepts": [
+      "necessary conditions",
+      "predicate factoring"
+    ]
+  },
+  {
+    "id": "ann-e1101oq01-strictmono",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 75,
+      "endLine": 86
+    },
+    "type": "theorem",
+    "title": "Prime Squares Are Strictly Increasing",
+    "content": "**primeSquares n = (Nat.nth Nat.Prime n)²**. Since there are infinitely many primes, **Nat.nth_strictMono** makes the prime-indexing map strictly increasing, so pₐ < p_b for a < b; squaring (Nat.pow_lt_pow_left) preserves the strict inequality.",
+    "mathContext": "StrictMono primeSquares — the monotonicity precondition of IsGoodCandidate.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.nth_strictMono",
+      "infinitely many primes",
+      "monotonicity"
+    ]
+  },
+  {
+    "id": "ann-e1101oq01-coprime",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 100
+    },
+    "type": "theorem",
+    "title": "Distinct Prime Squares Are Coprime",
+    "content": "For i ≠ j, the primes pᵢ and pⱼ are distinct (**Nat.nth_injective**, primes infinite) and hence coprime (**Nat.coprime_primes**: two primes are coprime iff distinct). Coprimality survives exponentiation (**Nat.Coprime.pow**), so pᵢ² and pⱼ² are coprime.",
+    "mathContext": "∀ i j, i ≠ j → Coprime (primeSquares i) (primeSquares j) — the pairwise-coprimality precondition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "coprime_primes",
+      "Coprime.pow",
+      "nth_injective"
+    ]
+  },
+  {
+    "id": "ann-e1101oq01-summable",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 113
+    },
+    "type": "theorem",
+    "title": "The Reciprocal Series ∑ 1/pₙ² Converges",
+    "content": "The p-series **∑ 1/k² converges** (Real.summable_one_div_nat_pow, since 1 < 2). The prime-indexing map n ↦ pₙ is injective, so **Summable.comp_injective** pulls the convergent series back to **∑ 1/pₙ²**; push_cast/ring match 1/(pₙ²) to 1/(pₙ)².\n\nNo delicate prime-counting estimate is needed — convergence is pure reindexing of a known convergent series.",
+    "mathContext": "Summable (fun n => 1/(primeSquares n : ℝ)) — the reciprocal-series-convergence precondition.",
+    "significance": "key",
+    "relatedConcepts": [
+      "p-series",
+      "Summable.comp_injective",
+      "reindexing"
+    ]
+  },
+  {
+    "id": "ann-e1101oq01-main",
+    "proofId": "erdos-1101-oq-01",
+    "range": {
+      "startLine": 114,
+      "endLine": 121
+    },
+    "type": "theorem",
+    "title": "Main Result: Prime Squares Clear Every Necessary Hurdle",
+    "content": "**primeSquares_isGoodCandidate** bundles the three properties: the prime squares are strictly increasing, pairwise coprime, and have a convergent reciprocal series — every necessary condition for being a good sequence in Erdős #1101.\n\nThe only remaining obstruction to the prime squares being good (the strong form of Problem #208) is the gap bound, which this file makes no claim about. The open conjecture stays faithfully open.",
+    "mathContext": "IsGoodCandidate primeSquares, proved with 0 axioms (only propext / Classical.choice / Quot.sound).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Problem #208",
+      "good sequences",
+      "open conjecture"
+    ]
+  }
+]

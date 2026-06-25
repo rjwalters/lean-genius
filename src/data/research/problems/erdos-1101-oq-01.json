@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1101-oq-01",
   "title": "Erdos 1101: good sequences with polynomial growth O(n^k)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "ACT",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -31,11 +31,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Shipped a verified, 0-axiom, original leaf (Proofs/Erdos1101OQ01.lean, gallery slug erdos-1101-oq-01). Factored the #1101 notion of a 'good' sequence into three elementary necessary preconditions (strictly increasing, pairwise coprime, convergent reciprocal series) plus the hard gap bound, proved the preconditions are genuinely necessary (isGood_imp_candidate), and proved the prime squares pᵢ² satisfy all three (primeSquares_isGoodCandidate). The open content of the strong form of Problem #208 is thereby pinned to exactly the gap bound, which is left open.",
+    "builtItems": [
+      "IsGoodCandidate predicate isolating the three necessary preconditions for goodness",
+      "isGood_imp_candidate: every good sequence satisfies the candidate preconditions (necessity)",
+      "primeSquares_strictMono: prime squares are strictly increasing (nth_strictMono + pow_lt_pow_left)",
+      "primeSquares_coprime: distinct prime squares are coprime (nth_injective + coprime_primes + Coprime.pow)",
+      "primeSquares_summable: ∑ 1/pₙ² converges by pulling the p-series ∑ 1/k² back along the injective prime-indexing map",
+      "primeSquares_isGoodCandidate: prime squares clear every necessary hurdle to being good"
+    ],
+    "insights": [
+      "Goodness factors cleanly: IsGood = (strict mono) ∧ (pairwise coprime) ∧ (summable reciprocals) ∧ (gap bound); only the last conjunct carries open difficulty.",
+      "Pairwise coprimality of prime squares reduces to coprime_primes (primes coprime iff distinct) lifted through Coprime.pow — no factorization argument needed.",
+      "Convergence ∑ 1/pᵢ² < ∞ needs no prime-counting estimate: it is the convergent p-series ∑ 1/k² reindexed by the injective map n ↦ pₙ (Summable.comp_injective).",
+      "Verifying all necessary preconditions for the prime squares pins the strong form of Problem #208 to exactly the gap bound, sharpening what remains to be proved."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no notion of Erdős 'good sequence' or the sieve gap bound; the gap condition (open) is not addressable with current library results."
+    ],
+    "nextSteps": [
+      "Attempt the gap bound for prime squares (strong form of Problem #208) — requires a sieve-theoretic gap estimate for integers free of all prime-square divisors.",
+      "Formalize the sieve lower bound gaps ≥ (1+o(1))·tₓ·∏(1-1/uᵢ)⁻¹ as a companion necessary direction."
+    ]
   },
   "tags": [
     "seeker-selected",
