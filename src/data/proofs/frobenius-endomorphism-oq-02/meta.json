@@ -93,6 +93,43 @@
       "The parent entry FrobeniusEndomorphismOQ01 (the Frobenius as a ring endomorphism, x^q = x over a finite field)"
     ]
   },
+  "sections": [
+    {
+      "id": "frobenius-automorphism",
+      "title": "The Frobenius as a Galois automorphism",
+      "startLine": 43,
+      "endLine": 56,
+      "summary": "Defines frob = FiniteField.frobeniusAlgEquivOfAlgebraic (ZMod p) K as an element of Gal(K/𝔽_p), and frob_apply shows that over the prime base it acts as the honest prime Frobenius x ↦ x^p (since |𝔽_p| = p)."
+    },
+    {
+      "id": "order-cyclicity",
+      "title": "Order, cardinality, and cyclicity",
+      "startLine": 60,
+      "endLine": 69,
+      "summary": "orderOf_frob (order of the Frobenius = finrank n), card_galoisGroup (|Gal(K/𝔽_p)| = n via IsGalois.card_aut_eq_finrank), and isCyclic_galoisGroup (the Galois group is cyclic)."
+    },
+    {
+      "id": "generation",
+      "title": "Frobenius generates the Galois group",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "zpowers_frob_eq_top proves ⟨frob⟩ = ⊤ by matching |⟨frob⟩| = orderOf(frob) = n = |Gal|; mem_zpowers_frob and exists_pow_frob express that every automorphism is a power of the Frobenius."
+    },
+    {
+      "id": "order-exactly-n",
+      "title": "The order is exactly n",
+      "startLine": 88,
+      "endLine": 113,
+      "summary": "frob_pow_finrank (frob^n = 1), frob_iterate_finrank (pointwise x ↦ x^(p^n) = x since p^n = |K|), and frob_pow_ne_one (no positive power below n is the identity)."
+    },
+    {
+      "id": "structure-theorem",
+      "title": "Structure theorem: Gal ≅ ℤ/n",
+      "startLine": 115,
+      "endLine": 121,
+      "summary": "galoisGroupMulEquivZMod: an explicit isomorphism Multiplicative (ZMod n) ≃* Gal(K/𝔽_p) obtained by transporting zmodCyclicMulEquiv along card_galoisGroup — the complete cyclic structure of the Galois group."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "frobenius-endomorphism-oq-01",
