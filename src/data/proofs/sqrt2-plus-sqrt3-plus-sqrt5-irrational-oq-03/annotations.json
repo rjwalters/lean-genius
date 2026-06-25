@@ -1,0 +1,121 @@
+[
+  {
+    "id": "ann-sqrt235-setup",
+    "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 76
+    },
+    "type": "concept",
+    "title": "Setting: The Candidate Octic and the Galois-Conjugate Product",
+    "content": "The header fixes the candidate minimal polynomial p(X) = X⁸ − 40X⁶ + 352X⁴ − 960X² + 576 and explains where it comes from: it is the product over the eight sign-conjugates ∏_{ε∈{±1}³}(X − ε₁√2 − ε₂√3 − ε₃√5). Because the conjugate set is closed under flipping all signs, the roots come in ± pairs, forcing p(X)=p(−X) and hence only even powers of X. The coefficients (−40, 352, −960, 576) are the elementary symmetric functions of the eight roots, equivalently obtained from the power sums via Newton's identities. The header is deliberately explicit about scope: it lists what is unconditionally verified (the root family, monicity, degree, integrality, divisibility) and what is left conditional (irreducibility, equivalent to the degree-8 field fact).",
+    "mathContext": "For distinct primes the field $\\mathbb{Q}(\\sqrt2,\\sqrt3,\\sqrt5)$ is multiquadratic of degree $2^3=8$ with Galois group $(\\mathbb{Z}/2\\mathbb{Z})^3$ acting by independent sign flips; $\\sqrt2+\\sqrt3+\\sqrt5$ is a primitive element, so $\\deg\\,\\mathrm{minpoly}_{\\mathbb{Q}}=8$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "minimal polynomial",
+      "multiquadratic field extension",
+      "Galois conjugates",
+      "Newton's identities",
+      "Polynomial.aeval"
+    ],
+    "prerequisites": [
+      "polynomial rings over fields",
+      "minimal polynomial theory",
+      "symmetric functions of roots"
+    ]
+  },
+  {
+    "id": "ann-sqrt235-conjugate-roots",
+    "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "range": {
+      "startLine": 77,
+      "endLine": 107
+    },
+    "type": "technique",
+    "title": "The Sign-Independent Isolate-and-Square Computation",
+    "content": "`conjugates_are_roots` is the heart of the file. It takes arbitrary reals a, b, c with a²=2, b²=3, c²=5 and proves p(a+b+c)=0. The chain: set t=bc (so t²=15 by `mul_pow`); prove the isolating identity (a+b+c)²−6−2t = 2a(a+b+c) by `linear_combination -ha + hb + hc`; square it to get ((a+b+c)²−6−2t)² = 8(a+b+c)² (the √2 is now squared away); finally a single `linear_combination` with explicit polynomial multipliers of this relation and of t²=15 collapses the degree-8 goal to 0. The decisive point is that NO step references the signs of a, b, c — only their squares — so the very same proof certifies every one of the eight conjugates ε₁√2+ε₂√3+ε₃√5 (take a∈{±√2}, etc.). This is the computational realization of the Galois-conjugate product.",
+    "mathContext": "Isolate √2: $(a+b+c)^2-2a(a+b+c)=b^2+c^2-a^2+2bc=6+2\\sqrt{15}$. Square: $((a+b+c)^2-6-2\\sqrt{15})^2=8(a+b+c)^2$. Eliminating $\\sqrt{15}$ via $t^2=15$ yields $p(a+b+c)=0$, where $p=X^8-40X^6+352X^4-960X^2+576$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "linear_combination",
+      "field norm / conjugates",
+      "nested radical elimination",
+      "resultant"
+    ],
+    "prerequisites": [
+      "linear_combination tactic",
+      "manipulation of square roots",
+      "Galois conjugacy of sign flips"
+    ]
+  },
+  {
+    "id": "ann-sqrt235-root-witness",
+    "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "range": {
+      "startLine": 108,
+      "endLine": 120
+    },
+    "type": "concept",
+    "title": "Specializing to α = √2 + √3 + √5",
+    "content": "`aeval_minpoly_candidate` transports the real-number identity into the polynomial-algebra setting. It introduces (√2)²=2, (√3)²=3, (√5)²=5 via `Real.sq_sqrt`, unfolds `Polynomial.aeval` of the candidate octic with a targeted `simp only` (`map_sub`, `map_add`, `map_mul`, `map_pow`, `map_ofNat`, `aeval_X`), and then closes by applying `conjugates_are_roots` to the principal square roots. The polynomial's rational coefficients pass through the ℚ→ℝ algebra map cleanly, so no `push_cast` is needed.",
+    "mathContext": "$\\mathrm{aeval}_{\\sqrt2+\\sqrt3+\\sqrt5}(X^8-40X^6+352X^4-960X^2+576)=0$ over $\\mathbb{Q}$ — the principal conjugate is a root.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Polynomial.aeval",
+      "Real.sq_sqrt",
+      "algebra map ℚ → ℝ"
+    ],
+    "prerequisites": [
+      "Mathlib Polynomial API",
+      "aeval as a ring homomorphism"
+    ]
+  },
+  {
+    "id": "ann-sqrt235-monic-degree-integral",
+    "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "range": {
+      "startLine": 121,
+      "endLine": 138
+    },
+    "type": "concept",
+    "title": "Monicity, Degree 8, and Integrality",
+    "content": "Three short structural facts. `cand_monic` proves the octic is monic with the `monicity!` tactic; `cand_natDegree` proves it has degree 8 with `compute_degree!` — both automate what in the sister n=2 entry required an explicit `natDegree` computation. `sqrt_sum_isIntegral` then packages the monic polynomial with the root witness into Mathlib's `IsIntegral` anonymous constructor ⟨p, cand_monic, aeval_minpoly_candidate⟩, certifying that √2+√3+√5 is integral (algebraic) over ℚ.",
+    "mathContext": "A monic polynomial of degree 8 with $\\alpha$ as a root shows $\\alpha$ is integral over $\\mathbb{Q}$ of degree at most 8.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Polynomial.Monic",
+      "Polynomial.natDegree",
+      "IsIntegral",
+      "monicity!",
+      "compute_degree!"
+    ],
+    "prerequisites": [
+      "monic polynomials",
+      "integral / algebraic elements"
+    ]
+  },
+  {
+    "id": "ann-sqrt235-minpoly",
+    "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational-oq-03",
+    "range": {
+      "startLine": 139,
+      "endLine": 162
+    },
+    "type": "concept",
+    "title": "Divisibility and the Conditional Minimal-Polynomial Identity",
+    "content": "`minpoly_dvd_cand` records the unconditional fact minpoly ℚ (√2+√3+√5) ∣ p, via `minpoly.dvd` applied to the root witness — the minimal polynomial always divides any annihilator. `minpoly_eq_of_irreducible` then states the headline identity minpoly ℚ α = p, but with irreducibility of p over ℚ as an EXPLICIT HYPOTHESIS, discharged through `minpoly.eq_of_irreducible_of_monic`. This is an honest formulation: irreducibility is equivalent to [ℚ(√2+√3+√5):ℚ]=8, the multiquadratic field-degree fact recorded as the parent entry's oq-04. Mathlib v4.26.0 lacks the multi-quadratic API needed to prove it, and — unlike the n=2 quartic, whose irreducibility is a finite coefficient analysis — the degree-8 brute force does not scale, so the assumption is hypothesized rather than asserted as an axiom (keeping the file genuinely axiom-free).",
+    "mathContext": "$\\mathrm{minpoly}_{\\mathbb{Q}}(\\alpha)\\mid p$ always; and $\\mathrm{minpoly}_{\\mathbb{Q}}(\\alpha)=p$ iff $p$ is irreducible over $\\mathbb{Q}$ iff $[\\mathbb{Q}(\\alpha):\\mathbb{Q}]=8$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minpoly.dvd",
+      "minpoly.eq_of_irreducible_of_monic",
+      "Irreducible",
+      "field extension degree"
+    ],
+    "prerequisites": [
+      "minimal polynomial characterization",
+      "irreducibility over ℚ",
+      "tower law for field extensions"
+    ]
+  }
+]
