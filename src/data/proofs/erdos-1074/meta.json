@@ -45,36 +45,50 @@
         "theorem": "Set.Infinite",
         "description": "Infinite set predicate",
         "module": "Mathlib.Data.Set.Finite.Basic"
+      },
+      {
+        "theorem": "ZMod.wilsons_lemma",
+        "description": "Wilson's theorem: (p-1)! = -1 in ZMod p",
+        "module": "Mathlib.NumberTheory.Wilson"
+      },
+      {
+        "theorem": "ZMod.natCast_eq_zero_iff",
+        "description": "(a : ZMod b) = 0 ↔ b ∣ a",
+        "module": "Mathlib.Data.ZMod.Basic"
       }
     ],
     "originalContributions": [
       "EHSNumbers definition: {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1}",
-      "PillaiPrimes definition: {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1}",
+      "PillaiPrimes definition (corrected): {p prime | ∃ m ≥ 1 with p ≢ 1 (mod m) and p | m! + 1}",
+      "Definitional fix: added the missing `1 ≤ m` constraint to PillaiPrimes. Without it, m=0 made the modulus-0 congruence degenerate to equality and admitted the spurious member 2 (0!+1=2, 2|2, ¬(2=1)), contradicting OEIS A063980 (smallest Pillai prime is 23).",
+      "Parse fix: converted four dangling doc-comments (left after earlier axiom removal) into block comments so the file actually compiles.",
       "Verified: 23 is a Pillai prime (Chowla's example via 14! + 1)",
-      "Verified: 8 is the first EHS number (via prime 61)",
-      "Verified: 9 is an EHS number (via prime 71)",
-      "Axiom: EHSNumbers are infinite (Erdős-Hardy-Subbarao)",
-      "Axiom: PillaiPrimes are infinite (Erdős-Hardy-Subbarao)",
-      "Open density conjectures formalized"
+      "Verified: 8 is the first EHS number (via prime 61); 9 is an EHS number (via prime 71)",
+      "Theorem prime_dvd_pred_factorial_add_one: Wilson connection p | (p-1)! + 1 for all primes p",
+      "Theorem wilson_witness_excluded: the canonical witness m=p-1 gives p|(p-1)!+1 but also p≡1 [MOD p-1], so it is always excluded — this is exactly why EHS/Pillai are nontrivial",
+      "Theorem mem_pillai_iff: EHS/Pillai duality — the Pillai primes are exactly the primes witnessing some EHS number",
+      "Open density conjectures documented (not asserted)"
     ],
-    "axiomCount": 0,
-    "lineCount": 146,
-    "assumptions": "0 axioms, 0 sorries. Previously cited axiom names have been removed from the Lean source. The 'axiomatized' status reflects that the main result is not yet fully formalized in Lean.",
-    "theoremCount": 6,
+    "axiomCount": 1,
+    "lineCount": 206,
+    "assumptions": "0 axiom declarations and 0 sorries in the Lean source. The verified numeric examples (23 is a Pillai prime; 8, 9 are EHS numbers) are discharged by `native_decide`, so they depend on `Lean.ofReduceBool` (and `Lean.trustCompiler`); meta.axiomCount=1 records this per the project's axiom-integrity policy (leanFile.axiomCount remains 0 as there are no literal `axiom` declarations). The newly added structural theorems (Wilson connection, Wilson-witness exclusion, and the EHS/Pillai duality `mem_pillai_iff`) are fully proved and use only the foundational propext/Classical.choice/Quot.sound. The 'axiomatized' status reflects that the headline density questions remain OPEN and are not formalized as theorems.",
+    "theoremCount": 10,
     "definitionCount": 2
   },
   "overview": {
     "historicalContext": "**Erdős Problem #1074**\n\nThis problem concerns special relationships between factorials and prime divisors.\n\n**Key History:**\n- Pillai (1930): First asked whether any primes p exist with p | m! + 1 and p ≢ 1 (mod m)\n- Chowla: Answered Pillai by showing 23 | 14! + 1 and 23 ≢ 1 (mod 14)\n- Erdős, Hardy, Subbarao: Named these sets 'EHS numbers' and 'Pillai primes', proved both infinite\n- Hardy-Subbarao: Computed EHS numbers up to 2^10, conjectured density is 1\n\n**Mathematical Setting:**\n- m! + 1 has prime factors that satisfy Wilson's theorem conditions\n- The condition p ≢ 1 (mod m) excludes the 'trivial' case where p - 1 | m\n- EHS numbers tend to occur in long consecutive runs",
     "problemStatement": "**Problem Statement (Partially Open)**\n\nLet S = {m ≥ 1 | ∃ prime p ≢ 1 (mod m) with p | m! + 1} (EHS numbers).\nLet P = {p prime | ∃ m with p ≢ 1 (mod m) and p | m! + 1} (Pillai primes).\n\n**Questions:**\n1. Does lim |S ∩ [1,x]| / x exist? If so, what is it?\n2. Does lim |P ∩ [1,x]| / π(x) exist? If so, what is it?\n\n**Known Results:**\n- Both S and P are infinite (Erdős-Hardy-Subbarao)\n- S begins: 8, 9, 13, 14, 15, 16, 17, ... (OEIS A064164)\n- P begins: 23, 29, 59, 61, 67, 71, ... (OEIS A063980)\n\n**Conjectures:**\n- Hardy-Subbarao: Density of S is 1\n- Density of P may be between 0.5 and 1",
     "text": "Do the asymptotic densities of EHS numbers and Pillai primes exist? Both sets are infinite (Erdős-Hardy-Subbarao), but density questions remain OPEN.",
-    "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** Define EHSNumbers and PillaiPrimes as subsets of ℕ\n\n2. **Verified Examples:**\n   - 23 ∈ PillaiPrimes via 14! + 1 ≡ 0 (mod 23) (Chowla)\n   - 8 ∈ EHSNumbers via 61 | 8! + 1 (first EHS number)\n   - 9 ∈ EHSNumbers via 71 | 9! + 1\n\n3. **Infinitude Results:** State as axioms (deep number theory)\n\n4. **Open Problems:** State density conjectures formally\n\nThe verified examples use native_decide to computationally check divisibility and congruence conditions.",
+    "proofStrategy": "**Formalization Approach**\n\n1. **Set Definitions:** Define EHSNumbers and PillaiPrimes as subsets of ℕ\n\n2. **Verified Examples:**\n   - 23 ∈ PillaiPrimes via 14! + 1 ≡ 0 (mod 23) (Chowla)\n   - 8 ∈ EHSNumbers via 61 | 8! + 1 (first EHS number)\n   - 9 ∈ EHSNumbers via 71 | 9! + 1\n\n3. **Structural Results:** Wilson connection p|(p-1)!+1, the exclusion of the Wilson witness m=p-1, and the EHS/Pillai duality (mem_pillai_iff). Infinitude (EHS, Pillai) is documented but not asserted (deep number theory)\n\n4. **Open Problems:** State density conjectures formally\n\nThe verified examples use native_decide to computationally check divisibility and congruence conditions.",
     "keyInsights": [
       "**Wilson's Theorem Connection:** For prime p, (p-1)! ≡ -1 (mod p), so p | (p-1)! + 1",
       "**EHS Condition:** Requires p ≢ 1 (mod m), excluding the Wilson case",
       "**Consecutive Runs:** EHS numbers often appear in long sequences",
       "**First EHS:** 8 is first because 1-7 fail the p ≢ 1 (mod m) condition",
       "**Chowla's Example:** 14! + 1 = 87,178,291,201 has factor 23, and 23 ≢ 1 (mod 14)",
-      "**Density Mystery:** Why would EHS numbers have density 1? The condition seems restrictive"
+      "**Density Mystery:** Why would EHS numbers have density 1? The condition seems restrictive",
+      "**EHS/Pillai duality:** Pillai primes are exactly the primes that witness EHS numbers (mem_pillai_iff)",
+      "**Definition pitfall:** dropping `m ≥ 1` lets m=0 (modulus 0 ≡ equality) spuriously admit 2; the corrected definition matches OEIS A063980"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -214,6 +228,8 @@
       "Mathlib.Data.Nat.ModEq",
       "Mathlib.Data.Set.Basic",
       "Mathlib.Data.Set.Finite.Basic",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.NumberTheory.Wilson",
       "Mathlib.Tactic"
     ],
     "opens": [
@@ -221,9 +237,9 @@
       "Set"
     ],
     "namespace": "Erdos1074",
-    "lineCount": 146,
+    "lineCount": 206,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 10,
     "definitionCount": 2,
     "path": "Proofs/Erdos1074Problem.lean",
     "sorries": 0
