@@ -1,0 +1,109 @@
+{
+  "id": "erdos-634-medial-congruence",
+  "title": "Erdős #634: The Medial Reptiling — Every Triangle Splits Into Four Congruent Halves",
+  "slug": "erdos-634-medial-congruence",
+  "description": "Erdős Problem #634 asks to understand all (T, R, N) such that triangle T can be tiled by N congruent copies of triangle R. A foundational constructive ingredient is the square reptiling: every triangle dissects into k^2 congruent half/(1/k)-scale copies. This entry formalizes the base case k=2 — the medial subdivision — fully and unconditionally over an arbitrary real normed space: joining the side midpoints of any triangle A B C produces four triangles that are pairwise congruent, witnessed by EXPLICIT isometries (three translations and one point reflection). Congruence is genuine isometry-congruence (an equivalence relation), and the four pieces have side lengths exactly half the original, exhibiting 4 = 2^2 congruent half-copies. Fully machine-checked, 0 axioms (only foundational propext/Classical.choice/Quot.sound).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos634MedialCongruence.lean",
+    "tags": [
+      "geometry",
+      "erdos",
+      "dissection",
+      "congruence",
+      "isometry",
+      "reptile"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 194,
+    "theoremCount": 11,
+    "definitionCount": 6,
+    "assumptions": "None. Results are unconditional theorems over an arbitrary real normed space (NormedAddCommGroup V, NormedSpace ℝ V), specialising to the Euclidean plane. #print axioms reports only propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool).",
+    "mathlibDependencies": [
+      {
+        "theorem": "IsometryEquiv.constVAdd",
+        "description": "Translation by a constant vector as an isometry equivalence; witnesses the corner-triangle congruences",
+        "module": "Mathlib.Topology.MetricSpace.IsometricSMul"
+      },
+      {
+        "theorem": "LinearIsometryEquiv.neg",
+        "description": "Negation as a linear isometry equivalence; composed with a translation to build the central point reflection",
+        "module": "Mathlib.Analysis.Normed.Operator.LinearIsometry"
+      },
+      {
+        "theorem": "midpoint_vsub_midpoint_same_left",
+        "description": "midpoint(x,b) - midpoint(x,c) = (1/2)(b-c): the shared-vertex midpoint computation behind the halved side lengths",
+        "module": "Mathlib.Linear.Algebra.AffineSpace.Midpoint"
+      },
+      {
+        "theorem": "dist_left_midpoint",
+        "description": "Distance from a vertex to a midpoint is half the side; used in medial_sides_halved",
+        "module": "Mathlib.Analysis.Normed.Affine.AddTorsor"
+      }
+    ],
+    "originalContributions": [
+      "TriCongruent: isometry-congruence of ordered triangles (∃ ambient isometry mapping vertices in order), proved to be an equivalence relation (refl/symm/trans) and to imply equal corresponding side lengths.",
+      "medial_four_congruent: the main theorem — the four medial triangles of any triangle A B C are pairwise congruent, over an arbitrary real normed space.",
+      "Explicit isometry witnesses: cong_T1_T2 / cong_T1_T3 by translations (by (B-A)/2, (C-A)/2) and cong_T1_T4 by the point reflection x ↦ (A + midpoint B C) - x (a 180° rotation), with all vertex images discharged by the `module` tactic.",
+      "pointRefl: the point reflection x ↦ w - x packaged as an isometry equivalence (negation composed with a translation), with its action computed.",
+      "medial_sides_halved: each medial triangle has side lengths exactly dist A B / 2, dist B C / 2, dist C A / 2, exhibiting the dissection as 4 = 2^2 congruent half-copies (the k=2 square reptiling base case)."
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Mathlib isometry API (IsometryEquiv, LinearIsometryEquiv.neg, IsometryEquiv.constVAdd)",
+      "Mathlib midpoint API in affine/normed spaces (midpoint, midpoint_vsub_midpoint_same_left, dist_left_midpoint)",
+      "The `module` tactic for ℝ-linear vector identities"
+    ],
+    "relatedNote": "The pre-existing companion entry erdos-634 (Proofs/Erdos634Problem.lean) models dissection in an abstract side-length framework with an area-only Dissection condition; this geometric entry is independent and provides genuine isometry-congruence of the medial pieces."
+  },
+  "overview": {
+    "historicalContext": "Erdős Problem #634 (a $25 problem) asks for an understanding of all triples (T, R, N) such that a triangle T can be tiled by N congruent copies of a triangle R, with emphasis on the achievable counts N. It is closely related to the recently resolved #633, which classifies triangles admitting non-square tilings (tilings into a non-square number of congruent triangles). The constructive backbone common to all of this is the square reptiling: subdividing each side of a triangle into k equal parts cuts it into k^2 triangles, each similar to the original at ratio 1/k and all mutually congruent.",
+    "problemStatement": "Formalize the base case k = 2 of the square reptiling — the medial subdivision — and prove that the four resulting triangles are mutually congruent. This is the geometric heart of every square reptiling and hence of the 'always achievable' counts N = k^2 in #634.",
+    "proofStrategy": "Work over an arbitrary real normed space V (specialising to the plane). For vertices A, B, C, set mAB, mBC, mCA to the side midpoints and form the four medial triangles T1 (corner A), T2 (corner B), T3 (corner C), T4 (central). Define congruence as the existence of an ambient isometry carrying one ordered vertex triple to the other. Each corner triangle is a translate of T1 (by (B-A)/2 and (C-A)/2), and the central triangle is the image of T1 under the point reflection x ↦ (A + mBC) - x. Each isometry's three vertex images reduce to ℝ-linear vector identities discharged by `module` after unfolding midpoints. Congruence is shown to be an equivalence relation, yielding all six pairwise congruences from the three relative to T1, and to preserve side lengths, which are computed to be exactly half the original via the midpoint distance lemmas.",
+    "keyInsights": [
+      "The four medial pieces are congruent via genuinely elementary isometries: three are translations and only one (the central piece) requires a non-translation — a 180° rotation realized as a point reflection.",
+      "No inner-product or Euclidean-specific machinery is needed: translations and point reflections are isometries in ANY normed space, so the congruence holds in arbitrary real normed spaces and specialises to the plane.",
+      "Side lengths halve exactly (midpoint_vsub_midpoint_same_left gives the shared-vertex midpoint difference (1/2)(b-c)), so the subdivision is the k = 2 square reptiling: 4 = 2^2 congruent half-copies.",
+      "The `module` tactic cleanly discharges every vertex-image identity once midpoints are written in smul form, keeping the geometric proof short and robust."
+    ],
+    "prerequisites": [
+      "Isometries of normed spaces (translations, negation, point reflections)",
+      "Midpoints and distances in affine/normed spaces",
+      "Triangle reptiling / dissection background for Erdős #634"
+    ]
+  },
+  "sections": [
+    {
+      "id": "congruence",
+      "title": "Triangle congruence by isometry",
+      "startLine": 57,
+      "endLine": 100,
+      "summary": "TriCongruent: existence of an ambient isometry mapping ordered vertex triples; proved reflexive/symmetric/transitive and distance-preserving (the SSS direction)."
+    },
+    {
+      "id": "isometries",
+      "title": "The explicit isometries",
+      "startLine": 102,
+      "endLine": 128,
+      "summary": "Translation action (constVAdd) and the point reflection x ↦ w - x (negation composed with a translation), with their actions on points computed."
+    },
+    {
+      "id": "medial-congruence",
+      "title": "The medial triangles and their congruence",
+      "startLine": 130,
+      "endLine": 175,
+      "summary": "The four medial triangles T1..T4; cong_T1_T2 / cong_T1_T3 (translations), cong_T1_T4 (point reflection), and medial_four_congruent assembling all six pairwise congruences."
+    },
+    {
+      "id": "half-scale",
+      "title": "The pieces are half-scale copies",
+      "startLine": 176,
+      "endLine": 194,
+      "summary": "medial_sides_halved: each medial triangle's side lengths are exactly half those of A B C, exhibiting the 4 = 2^2 square reptiling base case."
+    }
+  ]
+}
