@@ -76,6 +76,14 @@
   },
   "sections": [
     {
+      "id": "principle-and-mathlib-gap",
+      "title": "The Stars-and-Bars Principle and the Mathlib Gap",
+      "startLine": 4,
+      "endLine": 39,
+      "mathContext": "$\\#\\{f : \\mathrm{Fin}\\ k \\to \\mathbb{N} \\mid \\sum_i f(i) = n\\} = \\binom{n + k - 1}{n}$, the multichoose count.",
+      "summary": "The module docstring fixes the object of study (weak compositions f : Fin k → ℕ with ∑ᵢ f(i) = n, parts allowed to be zero), states the headline count C(n+k−1, n) with the stars-and-bars mnemonic that names it, and lays out the bijective plan: a weak composition is the same data as a size-n multiset over Fin k. It records the precise Mathlib gap — Mathlib has the multiset form Sym.card_sym_eq_choose but never the function/tuple form — which is the content this entry contributes."
+    },
+    {
       "id": "multiset-of-a-weak-composition",
       "title": "The Multiset Attached to a Weak Composition",
       "startLine": 49,
@@ -87,9 +95,17 @@
       "id": "the-bijection",
       "title": "The Bijection to Size-n Multisets",
       "startLine": 67,
-      "endLine": 97,
+      "endLine": 90,
       "mathContext": "$\\mathrm{weakCompositionEquivSym} : \\{f : \\mathrm{Fin}\\ k \\to \\mathbb{N} \\mid \\sum_i f(i) = n\\} \\simeq \\mathrm{Sym}\\,(\\mathrm{Fin}\\ k)\\ n$.",
-      "summary": "weakCompositionEquivSym is the explicit equivalence: forward, f ↦ toMultiset f (size n by card_toMultiset); backward, s ↦ (i ↦ count i s) (sum n by Multiset.sum_count_eq_card). left_inv is count_toMultiset applied pointwise; right_inv is the identity ∑ i, replicate (count i s) i = s, obtained by rewriting replicate as count i s • {i} (nsmul_singleton), shrinking the universal sum to the support sum (absent indices have count 0), and applying Multiset.toFinset_sum_count_nsmul_eq. The companion Fintype instance is then Fintype.ofEquiv through this bijection, since the subtype's Fintype is not otherwise synthesisable."
+      "summary": "weakCompositionEquivSym is the explicit equivalence: forward, f ↦ toMultiset f (size n by card_toMultiset); backward, s ↦ (i ↦ count i s) (sum n by Multiset.sum_count_eq_card). left_inv is count_toMultiset applied pointwise; right_inv is the identity ∑ i, replicate (count i s) i = s, obtained by rewriting replicate as count i s • {i} (nsmul_singleton), shrinking the universal sum to the support sum (absent indices have count 0), and applying Multiset.toFinset_sum_count_nsmul_eq."
+    },
+    {
+      "id": "fintype-instance",
+      "title": "Finiteness Transported Across the Bijection",
+      "startLine": 91,
+      "endLine": 96,
+      "mathContext": "$\\mathrm{Fintype}\\,\\{f : \\mathrm{Fin}\\ k \\to \\mathbb{N} \\mid \\sum_i f(i) = n\\}$ via $\\mathrm{Fintype.ofEquiv}\\,(\\mathrm{Sym}\\,(\\mathrm{Fin}\\ k)\\ n)$.",
+      "summary": "instFintypeWeakComposition supplies the Fintype instance on the summing subtype by Fintype.ofEquiv through weakCompositionEquivSym. It is genuinely necessary: Lean cannot synthesise a Fintype for a subtype of Fin k → ℕ on its own, because the codomain ℕ is infinite, so the bijection to the manifestly finite Sym (Fin k) n is the certificate of finiteness — and only with this instance in scope does the headline Fintype.card statement typecheck."
     },
     {
       "id": "the-count",
