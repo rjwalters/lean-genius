@@ -1,0 +1,148 @@
+{
+  "id": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+  "title": "The Dedekind mod-2 route for x⁵ - x - 1: factorization (x²+x+1)(x³+x²+1) into distinct irreducibles, cycle type (2,3)",
+  "slug": "abel-ruffini-oq-04-oq-01-oq-01-oq-01",
+  "description": "Formalizes the transposition route the parent flagged but did not prove. The parent (abel-ruffini-oq-04-oq-01-oq-01) showed that for x⁵ - x - 1 complex conjugation acts as an even double transposition in A₅, so the parent's parity argument fails and a transposition must be supplied another way. This entry machine-checks that other way for the prime 2: over 𝔽₂, x⁵ - x - 1 = (x²+x+1)(x³+x²+1) identically (the cross terms collect into 2·(x⁴+x³+x²+x+1), which vanishes in characteristic two), the two factors are irreducible (degree ≤ 3 with no root in 𝔽₂, via Polynomial.irreducible_of_degree_le_three_of_not_isRoot), and they are not associate (different degrees). This is exactly the squarefree factorization into distinct irreducibles that Dedekind's theorem reads as Frobenius cycle type (2,3); the cube of a (2,3)-element is a transposition.",
+  "meta": {
+    "author": "researcher-9 (Lean Genius)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Dedekind%27s_theorem",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniOQ04OQ01OQ01OQ01.lean",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "symmetric-group",
+      "finite-fields",
+      "irreducibility",
+      "dedekind",
+      "abel-ruffini"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None beyond Lean/Mathlib foundations. #print axioms reports only propext, Classical.choice, Quot.sound for every theorem — no sorryAx, no Lean.ofReduceBool (decide is kernel decision, not native_decide). Dedekind's theorem itself (Frobenius cycle type = degrees of irreducible factors mod p) is not formalized in Mathlib; this entry supplies its concrete hypotheses for p = 2 only and does NOT claim Gal(x⁵ - x - 1) ≅ S₅.",
+    "dateAdded": "2026-06-25"
+  },
+  "crossReferences": [
+    {
+      "slug": "abel-ruffini-oq-04-oq-01-oq-01",
+      "relation": "parent",
+      "note": "Parent shows complex conjugation is an even double transposition for x⁵ - x - 1 (one real root) and flags the Dedekind mod-2 route as the correct way to obtain a transposition; this entry formalizes that route for p = 2."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Dedekind's theorem (1878) links the factorization of an integer polynomial modulo an unramified prime p to the cycle type of the corresponding Frobenius element in the Galois group acting on the roots: the degrees of the distinct irreducible factors mod p are the cycle lengths. For x⁵ - x - 1 the prime p = 2 is the smallest convenient prime: the reduction factors as a quadratic times a cubic, both irreducible, giving cycle type (2,3). This is the standard textbook computation (Selmer 1956; van der Waerden) used to certify the Galois group is S₅.",
+    "keyInsight": "Over 𝔽₂ the additive bookkeeping is trivial: expanding (x²+x+1)(x³+x²+1) produces x⁵ + 2x⁴ + 2x³ + 2x² + x + 1, and the three coefficient-2 cross terms vanish in characteristic two, leaving x⁵ + x + 1 = x⁵ - x - 1. Both factors avoid the only two field elements 0 and 1 as roots, so — being of degree ≤ 3 over a field — they are irreducible. Because the factors have different degrees they are not associate, so the factorization is squarefree: the precise input Dedekind's theorem needs to declare the cycle type (2,3) for Frobenius at 2.",
+    "proofStrategy": "Work entirely inside (ZMod 2)[X]. (1) Prove the factorization by subtracting the two sides, observing the difference is 2·(x⁴+x³+x²+x+1) by ring, and killing the factor 2 with CharTwo.two_eq_zero. (2) Pin both factor degrees with compute_degree!. (3) Show neither factor has a root by case-splitting on the two elements of ZMod 2 (fin_cases) and reducing eval with the standard simp lemmas, then decide. (4) Conclude irreducibility via Polynomial.irreducible_of_degree_le_three_of_not_isRoot. (5) Rule out associate factors by comparing degrees (degree_eq_degree_of_associated)."
+  },
+  "sections": [
+    {
+      "title": "The factorization in characteristic two",
+      "content": "factor_mod2 proves a·b = q2 in (ZMod 2)[X], where a = x²+x+1, b = x³+x²+1 and q2 = x⁵-x-1. The proof subtracts the sides: (x²+x+1)(x³+x²+1) − (x⁵-x-1) = 2·(x⁴+x³+x²+x+1) as a ring identity over any commutative ring, and the leading factor 2 is zero in characteristic two (CharTwo.two_eq_zero, available because (ZMod 2)[X] inherits CharP _ 2 from ZMod 2). So the difference is 0 and the two polynomials agree. Equivalently x⁵-x-1 ≡ x⁵+x+1 mod 2."
+    },
+    {
+      "title": "Both factors are irreducible over 𝔽₂",
+      "content": "quadratic_natDegree and cubic_natDegree fix the degrees (2 and 3) via compute_degree!. quadratic_no_roots and cubic_no_roots check, by fin_cases over the two elements of ZMod 2, that each factor evaluates to 1 (never 0) — so neither has a root. For a polynomial of degree 2 or 3 over a field, having no root is equivalent to irreducibility, which Mathlib packages as Polynomial.irreducible_of_degree_le_three_of_not_isRoot; quadratic_irreducible and cubic_irreducible apply it."
+    },
+    {
+      "title": "Distinct factors and the Dedekind conclusion",
+      "content": "factors_not_associated shows the quadratic and cubic are not associate: associate polynomials have equal degree (degree_eq_degree_of_associated), but 2 ≠ 3. So x⁵-x-1 mod 2 is a product of two DISTINCT irreducible factors — a squarefree factorization. Dedekind's theorem (not itself formalized in Mathlib) then reads the degrees off as the Frobenius cycle type (2,3). The cube of an element of cycle type (2,3) is a transposition: this supplies the odd permutation the parent's complex-conjugation argument could not, and together with a 5-cycle (from the mod-3 reduction, a separate entry) it generates S₅."
+    }
+  ],
+  "conclusion": {
+    "summary": "Formalizes the prime-2 half of the Dedekind certificate for Gal(x⁵ - x - 1) ≅ S₅: the mod-2 factorization (x²+x+1)(x³+x²+1) into two distinct irreducibles, hence Frobenius cycle type (2,3). All six theorems are machine-checked with 0 sorries and 0 axioms (only propext/Classical.choice/Quot.sound; no native_decide).",
+    "implications": "Turns the parent's documented sketch into checked Lean: the transposition route via Dedekind mod 2 now has its concrete hypotheses verified. The remaining gaps toward the full S₅ statement are Dedekind's theorem itself (absent from Mathlib) and the mod-3 5-cycle.",
+    "honestStatement": "Gal(x⁵ - x - 1) ≅ S₅ is NOT proved here. Dedekind's theorem is invoked only at the level of its concrete inputs for p = 2; the theorem itself, the mod-3 reduction giving a 5-cycle, and irreducibility of x⁵ - x - 1 over ℚ are not formalized in this entry."
+  },
+  "mainTheorems": [
+    {
+      "name": "factor_mod2",
+      "type": "core",
+      "description": "Over 𝔽₂, x⁵ - x - 1 = (x²+x+1)(x³+x²+1) identically; the cross terms collect into 2·(x⁴+x³+x²+x+1), which vanishes in characteristic two."
+    },
+    {
+      "name": "quadratic_irreducible",
+      "type": "proved",
+      "description": "x²+x+1 is irreducible over 𝔽₂ (degree 2 with no root)."
+    },
+    {
+      "name": "cubic_irreducible",
+      "type": "proved",
+      "description": "x³+x²+1 is irreducible over 𝔽₂ (degree 3 with no root)."
+    },
+    {
+      "name": "factors_not_associated",
+      "type": "proved",
+      "description": "The quadratic and cubic factors are not associate (different degrees), so the mod-2 factorization is into distinct irreducibles — the squarefree input Dedekind's theorem needs for cycle type (2,3)."
+    }
+  ],
+  "leanFile": {
+    "imports": ["Mathlib"],
+    "opens": ["Polynomial"],
+    "namespace": "AbelRuffiniOQ04OQ01OQ01OQ01",
+    "lineCount": 116,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 3,
+    "mainTheorems": [
+      {
+        "name": "factor_mod2",
+        "type": "proved",
+        "description": "a·b = q2 in (ZMod 2)[X]: x⁵-x-1 = (x²+x+1)(x³+x²+1) over 𝔽₂."
+      },
+      {
+        "name": "quadratic_natDegree",
+        "type": "proved",
+        "description": "x²+x+1 has degree 2 over 𝔽₂."
+      },
+      {
+        "name": "cubic_natDegree",
+        "type": "proved",
+        "description": "x³+x²+1 has degree 3 over 𝔽₂."
+      },
+      {
+        "name": "quadratic_no_roots",
+        "type": "proved",
+        "description": "x²+x+1 has no root in 𝔽₂ (evaluates to 1 at 0 and 1)."
+      },
+      {
+        "name": "cubic_no_roots",
+        "type": "proved",
+        "description": "x³+x²+1 has no root in 𝔽₂ (evaluates to 1 at 0 and 1)."
+      },
+      {
+        "name": "quadratic_irreducible",
+        "type": "proved",
+        "description": "x²+x+1 is irreducible over 𝔽₂."
+      },
+      {
+        "name": "cubic_irreducible",
+        "type": "proved",
+        "description": "x³+x²+1 is irreducible over 𝔽₂."
+      },
+      {
+        "name": "factors_not_associated",
+        "type": "proved",
+        "description": "The two irreducible factors are not associate (degrees 2 ≠ 3)."
+      }
+    ],
+    "sorries": 0,
+    "path": "Proofs/AbelRuffiniOQ04OQ01OQ01OQ01.lean"
+  },
+  "references": [
+    {
+      "title": "Dedekind's theorem on factorization and Frobenius cycle type",
+      "url": "https://en.wikipedia.org/wiki/Dedekind%27s_theorem"
+    },
+    {
+      "title": "Abel–Ruffini theorem",
+      "url": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem"
+    },
+    {
+      "title": "E. S. Selmer, On the irreducibility of certain trinomials, Math. Scand. 4 (1956)",
+      "url": "https://www.mscand.dk/article/view/10629"
+    }
+  ],
+  "sorries": 0
+}
