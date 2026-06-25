@@ -1,0 +1,157 @@
+[
+  {
+    "id": "ann-eval-map",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 48,
+      "endLine": 60
+    },
+    "type": "theorem",
+    "title": "Evaluation at the Nodes",
+    "content": "interp_mem_degreeLT records that the Lagrange interpolant of n distinct nodes has degree < n (Lagrange.degree_interpolate_lt), so it lands in degreeLT F n. evalNodes packages the evaluation map p ↦ (j ↦ p.eval(v j)) as an F-linear map degreeLT F n →ₗ[F] (Fin n → F), built from leval composed with the submodule inclusion. This is the forward direction of the interpolation problem (a polynomial determines its node values).",
+    "mathContext": "$\\mathrm{evalNodes}(v)(p) = (j \\mapsto p(v_j)) : \\mathrm{degreeLT}_F n \\to (\\mathrm{Fin}\\,n \\to F).$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "polynomial evaluation",
+      "degreeLT submodule",
+      "Lagrange.degree_interpolate_lt"
+    ],
+    "prerequisites": [
+      "Polynomial.degreeLT",
+      "LinearMap.pi / leval"
+    ]
+  },
+  {
+    "id": "ann-interp-iso",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 62,
+      "endLine": 86
+    },
+    "type": "definition",
+    "title": "The Interpolation Isomorphism",
+    "content": "interpLT is the Lagrange interpolant as a linear map (Fin n → F) →ₗ[F] degreeLT F n, and evalEquiv assembles it with evalNodes into a linear isomorphism evalEquiv : degreeLT F n ≃ₗ[F] (Fin n → F) via LinearEquiv.ofLinear. The two round-trips are exactly the existence/uniqueness halves of interpolation: eval_interpolate_at_node (the interpolant hits the prescribed values) and eq_interpolate (a degree-< n polynomial equals the interpolant of its own values). This self-contained rebuild mirrors the companion entry so the basis result is checkable in isolation.",
+    "mathContext": "$\\mathrm{evalEquiv} : \\mathrm{degreeLT}_F n \\xrightarrow{\\sim} (\\mathrm{Fin}\\,n \\to F),\\ \\text{inverse} = \\text{Lagrange interpolant}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange interpolation",
+      "LinearEquiv.ofLinear",
+      "existence + uniqueness"
+    ],
+    "prerequisites": [
+      "evalNodes",
+      "Lagrange.eq_interpolate",
+      "Lagrange.eval_interpolate_at_node"
+    ]
+  },
+  {
+    "id": "ann-lagrange-basis",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 88,
+      "endLine": 99
+    },
+    "type": "definition",
+    "title": "The Lagrange Basis",
+    "content": "lagrangeBasis is the image of the standard basis of Fin n → F under the inverse evaluation isomorphism: (Pi.basisFun F (Fin n)).map (evalEquiv hv).symm. Transporting a basis across a linear isomorphism yields a basis, so this is automatically a Basis (Fin n) F (degreeLT F n) — no linear-independence or spanning proof needed by hand. The j-th vector is the interpolant of the standard unit vector Pi.single j 1.",
+    "mathContext": "$\\mathrm{lagrangeBasis} = (\\text{std basis of } F^n)\\ \\text{transported by}\\ \\mathrm{evalEquiv}^{-1}.$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "basis transport",
+      "Basis.map",
+      "Pi.basisFun"
+    ],
+    "prerequisites": [
+      "evalEquiv",
+      "Module.Basis"
+    ]
+  },
+  {
+    "id": "ann-basis-coe",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 101,
+      "endLine": 110
+    },
+    "type": "theorem",
+    "title": "Identification with Mathlib's Lagrange Basis",
+    "content": "lagrangeBasis_coe proves the transported basis vectors are exactly Mathlib's Lagrange basis polynomials Lagrange.basis univ v j. The interpolant of Pi.single j 1 is the single-term sum (Finset.sum_eq_single) picking out the j-th Lagrange polynomial. This pins the abstract basis-transport construction to the familiar concrete polynomials, confirming the two notions agree.",
+    "mathContext": "$(\\mathrm{lagrangeBasis}\\,j) = \\mathrm{Lagrange.basis}\\ \\mathrm{univ}\\ v\\ j \\in F[X].$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Lagrange.basis",
+      "Finset.sum_eq_single"
+    ],
+    "prerequisites": [
+      "lagrangeBasis_apply",
+      "Lagrange.interpolate_apply"
+    ]
+  },
+  {
+    "id": "ann-kronecker",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 112,
+      "endLine": 120
+    },
+    "type": "theorem",
+    "title": "The Kronecker-Delta Property",
+    "content": "eval_lagrangeBasis: the j-th Lagrange basis polynomial evaluates to 1 at node v j and 0 at every other node (Lagrange.eval_basis_self / eval_basis_of_ne). This δ_{jk} property is the defining feature of the basis — it exhibits the Lagrange polynomials as the dual basis to the evaluation functionals p ↦ p(v k), which is precisely why coordinates in this basis are node values.",
+    "mathContext": "$(\\mathrm{lagrangeBasis}\\,j)(v_k) = [j = k] = \\delta_{jk}.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "Kronecker delta",
+      "dual basis",
+      "evaluation functionals"
+    ],
+    "prerequisites": [
+      "lagrangeBasis_coe",
+      "Lagrange.eval_basis_self / eval_basis_of_ne"
+    ]
+  },
+  {
+    "id": "ann-coords",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 122,
+      "endLine": 134
+    },
+    "type": "theorem",
+    "title": "Coordinates Are Node Values",
+    "content": "lagrangeBasis_repr is the structural payoff: the coordinate of a degree-< n polynomial p in the Lagrange basis is simply its value p(v j) at the j-th node — the basis change is the evaluation map itself (Basis.map_repr). degreeLT_eq_node_sum restates this as p = ∑_j p(v j)·(lagrangeBasis j): every such polynomial is the interpolation sum of its own node values, the coordinate-free form of Lagrange interpolation.",
+    "mathContext": "$\\mathrm{repr}_{\\mathrm{lagrangeBasis}}(p)_j = p(v_j);\\quad p = \\sum_j p(v_j)\\,(\\mathrm{lagrangeBasis}\\,j).$",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Basis.repr",
+      "interpolation formula",
+      "coordinates as node values"
+    ],
+    "prerequisites": [
+      "lagrangeBasis",
+      "Basis.map_repr",
+      "Basis.sum_repr"
+    ]
+  },
+  {
+    "id": "ann-dimension",
+    "proofId": "vandermonde-interpolation-oq-01-oq-02-oq-01",
+    "range": {
+      "startLine": 136,
+      "endLine": 148
+    },
+    "type": "theorem",
+    "title": "Basis Consequences: dim = n",
+    "content": "lagrangeBasis_linearIndependent and lagrangeBasis_span are immediate from the Basis structure, and finrank_degreeLT concludes dim_F(degreeLT F n) = n (finrank_eq_card_basis + Fintype.card_fin). The n Lagrange basis polynomials give a concrete witnessing basis for the dimension of the degree-< n polynomial space — the decategorified shadow of the interpolation isomorphism.",
+    "mathContext": "$\\dim_F \\mathrm{degreeLT}_F n = |\\mathrm{Fin}\\,n| = n.$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "dimension",
+      "Module.finrank_eq_card_basis",
+      "linear independence / span"
+    ],
+    "prerequisites": [
+      "lagrangeBasis",
+      "Module.finrank"
+    ]
+  }
+]
