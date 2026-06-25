@@ -1,13 +1,13 @@
 {
   "slug": "erdos-165-oq-05",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Formalize the PGM-conjecture refutation for R(3,k)",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
     "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "plain": "The erdos-165 gallery entry CLAIMED (in prose and keyInsight PGM-Conjecture-Disproved) that the Pontiveros-Griffiths-Morris conjecture R(3,k) ~ (1/4)k^2/log k is refuted by the HHKP lower bound (c >= 1/2), but no theorem proved it. The original oq-05 task (close a sorry in R3_asymptotic_order) is stale: that sorry no longer exists. This session formalizes the refutation and repairs a latent build breakage.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-04T02:41:26-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
@@ -29,11 +29,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proved pgm_conjecture_refuted : not pgmConjecture, backed by the axiom-free incompatibility lemma asymptotic_constant_le and the general obstruction R3_upper_constant_ge_half. Added 0 new axioms. Also repaired a pre-existing Mathlib-drift build failure in erdos_165 (line 161): linarith could not widen 5/4 to 2 without k^2/log k >= 0; fixed by threading log-positivity via max k0 2 and mul_div_assoc.",
+    "builtItems": [
+      "asymptotic_constant_le in Erdos165Problem.lean (axiom-free incompatibility lemma)",
+      "R3_upper_constant_ge_half in Erdos165Problem.lean (HHKP obstruction)",
+      "pgm_conjecture_refuted in Erdos165Problem.lean (not pgmConjecture)",
+      "Repaired erdos_165 proof (Mathlib-drift fix)"
+    ],
+    "insights": [
+      "The erdos-165 file on origin/main did NOT compile (linarith failure in erdos_165) despite meta claiming 0 sorries / axiomatized -- latent Mathlib drift.",
+      "linarith treats c*k^2/log k as opaque unless mul_div_assoc factors out k^2/log k as a single atom; supplying 0 <= k^2/log k then lets it scale constants.",
+      "The mathematical core of conjectured-constant-refuted-by-a-better-bound is a pure real-analysis fact (asymptotic_constant_le), fully axiom-free; only hhkp_bound is Ramsey input.",
+      "oq-05 (complete sorry in R3_asymptotic_order) was stale: no such sorry exists in the current file."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Consider an analogous obstruction ruling out any conjectured constant > 1 against shearer_upper_bound."
+    ],
     "markdown": "# Knowledge Base: erdos-165-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -52,7 +64,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T09:42:47.007Z",
-  "lastUpdate": "2026-04-04T09:42:47.024Z",
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos165Problem.lean",
