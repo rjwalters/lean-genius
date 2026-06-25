@@ -43,9 +43,15 @@ def SetFamily := ℝ → Set ℝ
 def IsBoundedSet (A : Set ℝ) : Prop :=
   ∃ M : ℝ, A ⊆ Set.Icc (-M) M
 
-/-- The outer measure of a set (Lebesgue). -/
+/-- The outer measure of a set (Lebesgue). For a `Measure`, applying it to an
+    arbitrary (possibly non-measurable) set yields its outer measure, so the
+    Lebesgue outer measure of `A` is simply `volume A`.
+
+    Note: this previously read `MeasureTheory.Measure.lebesgue.toOuterMeasure A`,
+    but `Measure.lebesgue` was removed from Mathlib (the canonical name is now
+    `volume`, with `Measure.lebesgue` having been definitionally equal to it). -/
 noncomputable def outerMeasure (A : Set ℝ) : ℝ≥0∞ :=
-  MeasureTheory.Measure.lebesgue.toOuterMeasure A
+  volume A
 
 /-- A family satisfies the bounded outer measure condition. -/
 def BoundedOuterMeasureFamily (A : SetFamily) : Prop :=
