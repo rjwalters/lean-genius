@@ -1,0 +1,167 @@
+{
+  "id": "erdos-1029-oq-01",
+  "title": "Erdős #1029 (oq-01): The Elementary First-Moment Lower Bound for Ramsey Numbers, by Exact Counting",
+  "slug": "erdos-1029-oq-01",
+  "description": "A self-contained, 0-axiom formalization of the Erdős (1947) probabilistic lower bound for the diagonal Ramsey number: if 2·C(n,k) < 2^{C(k,2)} then some 2-coloring of K_n has no monochromatic K_k, so R(k) > n. Proved by an exact union-bound count of colorings — no probability measure, no Lovász Local Lemma. This is the foundational lower bound that the parent entry erdos-1029 only assumed (as the stronger Spencer axiom); it does NOT resolve the open conjecture R(k)/(k·2^{k/2}) → ∞.",
+  "meta": {
+    "author": "Lean formalization original (lower bound: Erdős 1947, 'Some remarks on the theory of graphs')",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos1029LowerBound.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "probabilistic-method",
+      "counting",
+      "union-bound",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Sym2.card_image_offDiag",
+        "description": "#(S.offDiag.image Sym2.mk) = (#S).choose 2 — the number of edges spanned by a k-set is C(k,2); this is the exact exponent in the per-set counting bound",
+        "module": "Mathlib.Data.Sym.Card"
+      },
+      {
+        "theorem": "Sym2.card",
+        "description": "Fintype.card (Sym2 α) = (Fintype.card α + 1).choose 2 — the total edge count C(n+1,2) bounding C(k,2) ≤ N",
+        "module": "Mathlib.Data.Sym.Card"
+      },
+      {
+        "theorem": "Fintype.card_fun",
+        "description": "Fintype.card (α → β) = (Fintype.card β) ^ (Fintype.card α) — counts the 2^N colorings and the 2^(N−|T|) colorings free off an edge set T",
+        "module": "Mathlib.Data.Fintype.Pi"
+      },
+      {
+        "theorem": "Finset.card_le_card_of_injOn",
+        "description": "Cardinality bound via an injection on a subset; restriction-to-complement injects monochromatic colorings into functions on the un-constrained edges",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_biUnion_le",
+        "description": "(s.biUnion t).card ≤ ∑ a ∈ s, (t a).card — the union bound over all k-subsets",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.card_powersetCard",
+        "description": "(powersetCard k s).card = s.card.choose k — there are C(n,k) candidate cliques to union over",
+        "module": "Mathlib.Data.Finset.Powerset"
+      }
+    ],
+    "originalContributions": [
+      "First Lean formalization of the elementary Erdős (1947) Ramsey lower bound, proved by exact finite counting rather than a probability measure or the Lovász Local Lemma",
+      "The counting lemma constOn_card_le: at most 2^(N − |T|) colorings are constant on a fixed edge set T, via a restriction-to-complement injection",
+      "A clean union-bound assembly giving the threshold 2·C(n,k) < 2^{C(k,2)} ⟹ ∃ good coloring, with the free-edge factor 2^(N−C(k,2)) cancelling exactly",
+      "Strengthens the parent entry erdos-1029, which assumed the (stronger) lower bound as the axiom spencer_lower_bound; here the elementary version is discharged with 0 axioms"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. 0 axioms (only Lean's foundational propext / Classical.choice / Quot.sound), 0 sorries. The result is the elementary lower bound and is deliberately weaker than Spencer's √2/e constant; it does not resolve Erdős #1029.",
+    "lineCount": 169,
+    "theoremCount": 4,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "In his 1947 paper 'Some remarks on the theory of graphs', Erdős gave one of the first applications of the probabilistic method: color the edges of K_n at random and show the expected number of monochromatic k-cliques is < 1, so a coloring avoiding all of them must exist. This proves R(k) > n whenever C(n,k)·2^{1−C(k,2)} < 1, i.e. roughly R(k) ≳ 2^{k/2}. The argument is purely a counting argument — the 'probability' is just normalized cardinality — and it underlies the entire lower-bound side of problem #1029. Spencer (1975) later refined the constant to √2/e using the Lovász Local Lemma; the present formalization proves the original 1947 version directly, as an exact count of finite sets, which is what makes it 0-axiom and self-contained.",
+    "problemStatement": "Erdős #1029 asks whether R(k)/(k·2^{k/2}) → ∞ (OPEN, $100 proof / $1000 disproof). This entry does NOT resolve that question. It formalizes the foundational lower bound on which the problem rests: if 2·C(n,k) < 2^{C(k,2)} then there is a 2-coloring of the edges of K_n with no monochromatic K_k, hence the diagonal Ramsey number satisfies R(k) > n.",
+    "proofStrategy": "Count colorings c : Sym2(Fin n) → Bool. There are 2^N of them, N = C(n+1,2). For a fixed k-set S, a coloring monochromatic on S is constant on the C(k,2) edges spanned by S, so it is free only on the remaining N − C(k,2) edges; by a restriction-to-complement injection, at most 2^(N−C(k,2)) such colorings exist, times 2 for the two colors. Union-bounding over the C(n,k) candidate cliques, the number of colorings containing some monochromatic K_k is at most 2·C(n,k)·2^(N−C(k,2)). When 2·C(n,k) < 2^{C(k,2)} this is strictly below the total 2^N (the free-edge factor 2^(N−C(k,2)) cancels exactly), so a good coloring must exist.",
+    "keyInsights": [
+      "The probabilistic method here is literally counting: 'probability < 1' = 'bad colorings < total colorings'",
+      "Per-clique count: fixing the C(k,2) interior edges to one color leaves N − C(k,2) edges free, giving exactly 2^(N−C(k,2)) colorings (bounded via an injection into functions on the complementary edge set)",
+      "The threshold 2·C(n,k) < 2^{C(k,2)} is the clean integer form of Erdős's inequality C(n,k)·2^{1−C(k,2)} < 1",
+      "The free-edge factor cancels: 2^{C(k,2)}·2^{N−C(k,2)} = 2^N exactly because C(k,2) ≤ N",
+      "This is the elementary bound (base √2); the huge gap to the upper bound (base 4) is precisely what #1029 conjectures is real"
+    ],
+    "prerequisites": [
+      "Ramsey theory (diagonal Ramsey numbers, monochromatic cliques)",
+      "The probabilistic / first-moment method in combinatorics",
+      "Finite cardinality arguments (union bound, counting functions on finite sets)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Colorings and Monochromatic Cliques",
+      "summary": "Coloring n := Sym2 (Fin n) → Bool; IsMono c S b; HasMonoClique c k; edgesWithin S",
+      "startLine": 1,
+      "endLine": 36,
+      "mathContext": "A 2-coloring is a function on unordered pairs. `IsMono c S b` says every edge between distinct vertices of S has color b; `HasMonoClique c k` says some k-set is monochromatic. `edgesWithin S = S.offDiag.image Sym2.mk` is the C(k,2) edges spanned by S."
+    },
+    {
+      "id": "counting-lemma",
+      "title": "The Counting Lemma",
+      "summary": "constOn_card_le: at most 2^(N − |T|) colorings are constant equal to b on a fixed edge set T",
+      "startLine": 38,
+      "endLine": 67,
+      "mathContext": "Restriction to the complement of T is injective on the set of colorings constant on T (their values on T are all forced to b), so their number is at most the number of functions on the complement, namely 2^(Fintype.card (Sym2 (Fin n)) − T.card)."
+    },
+    {
+      "id": "main-bound",
+      "title": "Erdős's First-Moment Lower Bound",
+      "summary": "exists_good_coloring: 2·C(n,k) < 2^{C(k,2)} ⟹ ∃ coloring with no monochromatic K_k",
+      "startLine": 69,
+      "endLine": 150,
+      "mathContext": "The union bound over all k-subsets, each contributing ≤ 2·2^(N−C(k,2)) monochromatic colorings, is strictly below the total 2^N under the hypothesis; the existence of a coloring outside the bad set follows."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences",
+      "summary": "exists_good_coloring_three (R(3) > 3) and the asymptotic R(k) ≳ 2^{k/2}",
+      "startLine": 152,
+      "endLine": 169,
+      "mathContext": "Instantiating the threshold yields concrete Ramsey lower bounds. The bound is elementary and weaker than Spencer's; the conjecture #1029 asserts the true ratio is unbounded."
+    }
+  ],
+  "references": [
+    {
+      "citation": "Erdős, P. (1947). 'Some remarks on the theory of graphs.' Bulletin of the American Mathematical Society 53, 292–294.",
+      "url": "https://doi.org/10.1090/S0002-9904-1947-08785-1"
+    },
+    {
+      "citation": "Spencer, J. (1975). 'Ramsey's theorem — a new lower bound.' Journal of Combinatorial Theory, Series A 18, 108–115.",
+      "url": "https://doi.org/10.1016/0097-3165(75)90071-0"
+    },
+    {
+      "citation": "Erdős, P., Szekeres, G. (1935). 'A combinatorial problem in geometry.' Compositio Mathematica 2, 463–470.",
+      "url": "https://erdosproblems.com/1029"
+    },
+    {
+      "citation": "Erdős Problem #1029.",
+      "url": "https://erdosproblems.com/1029"
+    }
+  ],
+  "crossReferences": [
+    {
+      "slug": "erdos-1029",
+      "relevance": "Parent entry: states the open conjecture R(k)/(k·2^{k/2}) → ∞ and assumes the lower bound as the axiom spencer_lower_bound. This entry discharges the elementary version of that lower bound with 0 axioms."
+    }
+  ],
+  "conclusion": {
+    "summary": "A 0-axiom, self-contained Lean proof of Erdős's 1947 first-moment lower bound for Ramsey numbers: if 2·C(n,k) < 2^{C(k,2)} then K_n admits a 2-coloring with no monochromatic K_k, so R(k) > n. The proof is an exact count — total colorings 2^N, at most 2·C(n,k)·2^(N−C(k,2)) of them bad — with the free-edge factor cancelling precisely. The parent entry erdos-1029 only assumed this bound (in the stronger Spencer form) as an axiom.",
+    "implications": "Replaces an assumed lower bound by a machine-checked counting argument, isolating exactly which finite-combinatorial facts the Ramsey lower bound needs (a per-clique injection plus a union bound). The result is deliberately the elementary bound (exponential base √2) and does not touch the open conjecture; the gap between this base and the upper bound's base 4 is the content of #1029.",
+    "openQuestions": [
+      "Does R(k)/(k·2^{k/2}) → ∞? (Erdős #1029, OPEN — this entry does not address it.)",
+      "Can the formalization be sharpened from the elementary base √2 to Spencer's √2/e constant by formalizing the Lovász Local Lemma deletion step?",
+      "Can the abstract coloring count here be bridged to the parent's Nat.find-based R(k) to turn 'R(k) > n' into a theorem about the parent's definition once that file builds against pinned Mathlib?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "Erdos1029LB",
+    "lineCount": 169,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos1029LowerBound.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
