@@ -1,0 +1,182 @@
+{
+  "id": "lebesgue-measure-oq-06-oq-01",
+  "title": "Hausdorff's Free Subgroup of SO(3), as an Honest Subgroup",
+  "slug": "lebesgue-measure-oq-06-oq-01",
+  "description": "Upgrades the parent's Hausdorff theorem (the rotation group of ℝ³ contains a free group of rank 2, proved through the underlying linear equivalences ≃ₗ) into a statement internal to the isometry group ℝ³ ≃ₗᵢ[ℝ] ℝ³ (the orthogonal group O(3); the two generators are rotations, hence lie in SO(3)). Packages the result the way group theory wants it: a forgetful monoid hom (ℝ³ ≃ₗᵢ ℝ³) →* (ℝ³ ≃ₗ ℝ³), an injective FreeGroup Bool →* (ℝ³ ≃ₗᵢ ℝ³), a subgroup S with FreeGroup Bool ≃* S (a literal copy of F₂ inside SO(3)), and a concrete pair of non-commuting rotations. Fully verified, 0 axioms, 0 sorries — none of the results depend on the parent's banach_tarski axiom.",
+  "meta": {
+    "author": "Hausdorff, F. (1914), formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hausdorff_paradox",
+    "date": "1914",
+    "status": "verified",
+    "tags": [
+      "measure-theory",
+      "banach-tarski",
+      "paradox",
+      "free-group",
+      "SO(3)",
+      "group-theory",
+      "rotation-group",
+      "axiom-of-choice",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ06OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "LinearIsometryEquiv.toLinearEquiv_trans",
+        "description": "(e.trans e').toLinearEquiv = e.toLinearEquiv.trans e'.toLinearEquiv — multiplicativity of the forgetful map from isometric to linear equivalences, the heart of toLinearEquivHom",
+        "module": "Mathlib.Analysis.Normed.Operator.LinearIsometry"
+      },
+      {
+        "theorem": "LinearEquiv.mul_eq_trans",
+        "description": "f * g = g.trans f in the automorphism group M ≃ₗ[R] M — fixes the composition convention so the forgetful map is a monoid hom",
+        "module": "Mathlib.Algebra.Module.Equiv.Basic"
+      },
+      {
+        "theorem": "MonoidHom.mk'",
+        "description": "Bundles a multiplicative map between groups into a MonoidHom (map_one is derived) — builds toLinearEquivHom from just multiplicativity",
+        "module": "Mathlib.Algebra.Group.Hom.Defs"
+      },
+      {
+        "theorem": "FreeGroup.lift",
+        "description": "(α → G) ≃ (FreeGroup α →* G) — the universal property of the free group; every choice of two rotations extends to a homomorphism F₂ →* O(3)",
+        "module": "Mathlib.GroupTheory.FreeGroup.Basic"
+      },
+      {
+        "theorem": "FreeGroup.ext_hom",
+        "description": "Two homomorphisms out of a free group agreeing on generators are equal — proves the factorisation lift g' = toLinearEquivHom ∘ lift g that transports injectivity",
+        "module": "Mathlib.GroupTheory.FreeGroup.Basic"
+      },
+      {
+        "theorem": "MonoidHom.ofInjective",
+        "description": "An injective group hom f gives G ≃* f.range — turns the free embedding into a literal copy FreeGroup Bool ≃* S of F₂ inside the isometry group",
+        "module": "Mathlib.Algebra.Group.Subgroup.Ker"
+      }
+    ],
+    "originalContributions": [
+      "toLinearEquivHom: the forgetful monoid homomorphism (ℝ³ ≃ₗᵢ[ℝ] ℝ³) →* (ℝ³ ≃ₗ[ℝ] ℝ³) — the bridge that moves Hausdorff freeness from the linear-equivalence world (where the parent proves it) into the isometry group",
+      "hausdorff_free_subgroup_isometry: Hausdorff's theorem internal to the isometry group — FreeGroup.lift (b ↦ if b then φ else ψ) is injective as a map into ℝ³ ≃ₗᵢ[ℝ] ℝ³ (strengthens the parent, which states injectivity only for the underlying linear equivalences)",
+      "isometryGroup_contains_freeGroup: an injective group homomorphism FreeGroup Bool →* (ℝ³ ≃ₗᵢ[ℝ] ℝ³) — O(3) (hence SO(3)) contains a free group of rank 2",
+      "exists_freeGroup_mulEquiv_rotationSubgroup: a subgroup S of the isometry group with FreeGroup Bool ≃* S — SO(3) contains a literal isomorphic copy of F₂",
+      "freeGroup_of_true_false_ne: in FreeGroup Bool the two generators do not commute (a·b ≠ b·a), proved by a decidable map into S₃ = Perm (Fin 3)",
+      "exists_noncommuting_rotations: two non-commuting rotations of ℝ³ — a concrete witness that SO(3) is non-abelian, extracted from the free generators"
+    ],
+    "dateAdded": "2026-06-25",
+    "lineCount": 157,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The file imports the parent LebesgueMeasureOQ06.lean (which declares one axiom, banach_tarski, for the full ball decomposition), but #print axioms confirms every result here depends only on hausdorff_free_subgroup — itself a fully proved theorem declared before that axiom — together with the foundational propext / Classical.choice / Quot.sound. No sorryAx and no Lean.ofReduceBool (the decide call is kernel reduction, not native_decide).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 6,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "Felix Hausdorff's 1914 *Grundzüge der Mengenlehre* contained the algebraic discovery that powers the Banach–Tarski paradox: the rotation group SO(3) contains a free subgroup of rank 2. Two rotations by arccos(1/3) about perpendicular axes generate a free group — no nontrivial reduced word in them is the identity — proved by an algebraic-number-theoretic argument (a nontrivial word applied to a test vector produces coordinates in ℤ[√2] whose residues mod 3 can never return to the start). This single fact, that F₂ embeds in SO(3), is what makes the sphere paradoxical: the paradoxical self-decomposition of the free group is transported, via the embedding, to a paradoxical decomposition of S². Tarski's 1938 theorem then frames the conceptual chain F₂ ↪ SO(3) ⟹ SO(3) non-amenable ⟹ B³ paradoxical. The parent gallery entry (lebesgue-measure-oq-06) proves Hausdorff's theorem, but records freeness through the *underlying linear equivalences*, forgetting that the generators are isometries. This entry restores that information and packages the embedding as group theory uses it — an injective homomorphism and an honest isomorphic subgroup — so the phrase 'SO(3) contains a copy of F₂' becomes a literal Lean statement.",
+    "problemStatement": "**Open Question (lebesgue-measure-oq-06-oq-01)**: Formalize Hausdorff's free subgroup theorem in SO(3) — i.e. realise the rank-2 free embedding internally to the three-dimensional rotation/isometry group, and package it as an injective homomorphism and an isomorphic subgroup.\n\n**Result**: toLinearEquivHom (the forgetful monoid hom O(3) →* GL bridging the two settings); hausdorff_free_subgroup_isometry (FreeGroup.lift into ℝ³ ≃ₗᵢ[ℝ] ℝ³ is injective); isometryGroup_contains_freeGroup (an injective FreeGroup Bool →* O(3)); exists_freeGroup_mulEquiv_rotationSubgroup (a subgroup S with FreeGroup Bool ≃* S); and exists_noncommuting_rotations (a concrete non-abelian witness).",
+    "text": "The rotation group of ℝ³ contains a free group of rank 2 — stated inside the isometry group ℝ³ ≃ₗᵢ[ℝ] ℝ³ rather than through its underlying linear equivalences — and therefore contains a literal isomorphic copy of F₂ and a pair of non-commuting rotations.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `toLinearEquivHom`: build the monoid hom (ℝ³ ≃ₗᵢ[ℝ] ℝ³) →* (ℝ³ ≃ₗ[ℝ] ℝ³), e ↦ e.toLinearEquiv. Multiplicativity is exactly `LinearIsometryEquiv.toLinearEquiv_trans`: both groups compose on the underlying maps (a * b = b.trans a), so `MonoidHom.mk'` needs only `map_mul` and derives `map_one`.\n2. `hausdorff_free_subgroup_isometry`: extract φ, ψ from the parent's `hausdorff_free_subgroup`. The parent's lift into linear equivalences factors as `toLinearEquivHom ∘ (our lift into isometries)` — proved by `FreeGroup.ext_hom`, since both monoid homs agree on the two generators. Injectivity of the parent lift then forces injectivity of ours: if `lift g x = lift g y` apply `toLinearEquivHom` to both sides.\n3. `isometryGroup_contains_freeGroup`: `FreeGroup.lift (b ↦ if b then φ else ψ)` *is* a homomorphism FreeGroup Bool →* O(3), and step 2 gives its injectivity.\n4. `exists_freeGroup_mulEquiv_rotationSubgroup`: feed that injective hom to `MonoidHom.ofInjective`, yielding FreeGroup Bool ≃* f.range — a subgroup of the isometry group isomorphic to F₂.\n5. `freeGroup_of_true_false_ne`: the generators a, b of FreeGroup Bool satisfy a·b ≠ b·a — map into S₃ = Perm (Fin 3) sending them to the transpositions (0 1), (1 2), whose products differ by `decide`.\n6. `exists_noncommuting_rotations`: if φψ = ψφ then the injective hom would force a·b = b·a in F₂, contradicting step 5.",
+    "keyInsights": [
+      "**Freeness is forgetful-stable.** A linear *isometry* is in particular a linear *equivalence*, and that forgetful map is an injective group homomorphism. Injectivity of a homomorphism out of F₂ is detected after any further homomorphism, so freeness proved in the ≃ₗ world is automatically freeness in the ≃ₗᵢ world — no orbit argument is reproved.",
+      "**The composition convention is the whole content of the bridge.** `M ≃ₗᵢ[R] M` and `M ≃ₗ[R] M` both define a * b = b.trans a; matching those conventions is exactly what makes e ↦ e.toLinearEquiv multiplicative (`LinearIsometryEquiv.toLinearEquiv_trans`), so `MonoidHom.mk'` suffices.",
+      "**'Contains a copy of F₂' is `MonoidHom.ofInjective`.** An injective hom is the same data as an isomorphism onto its range; that is the precise Lean meaning of SO(3) ⊇ F₂, and it is the structural fact the Banach–Tarski paradox actually consumes.",
+      "**Non-abelianness for free.** Two distinct free generators never commute, and this transfers along any injective hom — so the abstract freeness immediately yields concrete non-commuting rotations, the geometric obstruction that SO(2) (abelian) lacks."
+    ],
+    "prerequisites": [
+      "The parent entry's Hausdorff free subgroup theorem (lebesgue-measure-oq-06)",
+      "Free groups and their universal property in Mathlib (FreeGroup.lift, FreeGroup.ext_hom)",
+      "The group structures on M ≃ₗ[R] M and M ≃ₗᵢ[R] M and the forgetful map between them",
+      "MonoidHom.ofInjective (an injective hom is an isomorphism onto its range)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 60,
+      "summary": "Imports the parent LebesgueMeasureOQ06 (for hausdorff_free_subgroup), states the goal — upgrading Hausdorff's theorem into the isometry group and packaging it as an honest subgroup — and introduces the abbreviations Rot3 = ℝ³ ≃ₗᵢ[ℝ] ℝ³ (the rotation/isometry group O(3)) and Lin3 = ℝ³ ≃ₗ[ℝ] ℝ³.",
+      "mathContext": "$\\mathrm{Rot3} = \\mathbb{R}^3 \\simeq_{\\ell i} \\mathbb{R}^3 = O(3)$, $\\mathrm{Lin3} = \\mathbb{R}^3 \\simeq_{\\ell} \\mathbb{R}^3$."
+    },
+    {
+      "id": "bridge",
+      "title": "The Forgetful Bridge O(3) →* GL",
+      "startLine": 62,
+      "endLine": 77,
+      "summary": "toLinearEquivHom: the monoid homomorphism (ℝ³ ≃ₗᵢ[ℝ] ℝ³) →* (ℝ³ ≃ₗ[ℝ] ℝ³), e ↦ e.toLinearEquiv, built with MonoidHom.mk' from multiplicativity (LinearIsometryEquiv.toLinearEquiv_trans + LinearEquiv.mul_eq_trans). toLinearEquivHom_apply records the defining equation.",
+      "mathContext": "A linear isometry is a linear equivalence: the forgetful map is a group homomorphism $O(3) \\to \\mathrm{GL}(\\mathbb{R}^3)$."
+    },
+    {
+      "id": "internal",
+      "title": "Hausdorff's Theorem, Internal to O(3)",
+      "startLine": 79,
+      "endLine": 112,
+      "summary": "hausdorff_free_subgroup_isometry: the parent's lift into linear equivalences factors through toLinearEquivHom (proved by FreeGroup.ext_hom), so injectivity transfers to the lift into the isometry group. isometryGroup_contains_freeGroup repackages it as an injective FreeGroup Bool →* ℝ³ ≃ₗᵢ[ℝ] ℝ³.",
+      "mathContext": "$\\langle \\varphi, \\psi \\rangle \\le O(3)$ is free of rank 2: $\\mathrm{FreeGroup}\\,\\mathrm{Bool} \\hookrightarrow O(3)$."
+    },
+    {
+      "id": "subgroup",
+      "title": "A Literal Copy of F₂ in SO(3)",
+      "startLine": 114,
+      "endLine": 122,
+      "summary": "exists_freeGroup_mulEquiv_rotationSubgroup: applying MonoidHom.ofInjective to the free embedding gives a subgroup S of the isometry group together with a group isomorphism FreeGroup Bool ≃* S.",
+      "mathContext": "$\\exists\\, S \\le O(3),\\ \\mathrm{FreeGroup}\\,\\mathrm{Bool} \\cong S$ — $SO(3)$ contains a copy of $F_2$."
+    },
+    {
+      "id": "noncomm",
+      "title": "Non-Commuting Rotations",
+      "startLine": 124,
+      "endLine": 157,
+      "summary": "freeGroup_of_true_false_ne: the two generators of FreeGroup Bool do not commute (via a decidable map to S₃ = Perm (Fin 3)). exists_noncommuting_rotations: transports this along the injective hom to produce two rotations φ, ψ with φψ ≠ ψφ — a concrete non-abelian witness for SO(3).",
+      "mathContext": "$\\exists\\, \\varphi, \\psi \\in SO(3),\\ \\varphi\\psi \\ne \\psi\\varphi$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-06",
+      "relationship": "extends",
+      "description": "The parent proves Hausdorff's free subgroup theorem with injectivity stated for the underlying linear equivalences; this entry lifts it into the isometry group O(3) and packages it as an injective homomorphism, an isomorphic subgroup FreeGroup Bool ≃* S, and non-commuting rotations"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) realisation of Hausdorff's free subgroup of SO(3) internal to the isometry group: a forgetful bridge O(3) →* GL, the injective free embedding FreeGroup Bool →* (ℝ³ ≃ₗᵢ[ℝ] ℝ³), the isomorphic subgroup FreeGroup Bool ≃* S, and explicit non-commuting rotations. None of the results depend on the parent's banach_tarski axiom.",
+    "implications": "Turns the parent's existence statement into the structural fact the Banach–Tarski paradox consumes: SO(3) contains a literal copy of the rank-2 free group F₂. The forgetful-stability argument (freeness in ≃ₗ ⟹ freeness in ≃ₗᵢ) is reusable for any representation that factors through a faithful homomorphism, and the non-abelian witness marks exactly where the 2-dimensional case (SO(2) abelian, amenable) fails to produce a paradox.",
+    "openQuestions": [
+      "Show the generators have determinant +1, placing the free subgroup in SO(3) (special orthogonal) rather than merely O(3) at the Lean level.",
+      "Derive non-amenability of the isometry group directly: any group containing F₂ is non-amenable, closing the chain to the parent's free_group_not_amenable.",
+      "Transport the free group's paradoxical decomposition along the embedding to a paradoxical decomposition of S² minus a countable set (the full Hausdorff paradox)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Proofs.LebesgueMeasureOQ06"
+    ],
+    "opens": [
+      "Function"
+    ],
+    "namespace": "BanachTarski",
+    "lineCount": 157,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 1,
+    "path": "Proofs/LebesgueMeasureOQ06OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Hausdorff, Felix",
+      "title": "Grundzüge der Mengenlehre",
+      "year": "1914",
+      "venue": "Veit & Comp., Leipzig",
+      "note": "Introduces the free subgroup of rank 2 in SO(3) (two rotations by arccos(1/3)) and the paradoxical decomposition of S² minus a countable set"
+    },
+    {
+      "authors": "Wagon, Stan",
+      "title": "The Banach–Tarski Paradox",
+      "year": "1985",
+      "venue": "Cambridge University Press, Encyclopedia of Mathematics and its Applications 24",
+      "note": "Standard reference; Chapter 2 develops Hausdorff's free subgroup and the role of F₂ ↪ SO(3)"
+    }
+  ],
+  "sorries": 0
+}
