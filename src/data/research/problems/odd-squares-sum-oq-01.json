@@ -1,0 +1,27 @@
+{
+  "id": "odd-squares-sum-oq-01",
+  "name": "Sum of Squares of the First n Odd Numbers: ∑(2k−1)² = n(2n−1)(2n+1)/3",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "knowledge": {
+    "insights": [
+      "Writing the k-th odd number as 2k+1 (k = 0,…,n−1), ∑_{k<n} (2k+1)² = n(2n−1)(2n+1)/3 = (4n³ − n)/3.",
+      "Clearing the denominator and moving the linear term left gives the subtraction-free exact ℕ identity 3·∑(2k+1)² + n = 4n³; phrased additively the inductive step has no truncated ℕ subtraction and closes by a single `ring` after one reassociation.",
+      "After substituting the hypothesis 3·∑ + m = 4m³, the inductive step is the scalar cubic identity 4m³ + 3(2m+1)² + 1 = 4(m+1)³ — independent of the sum.",
+      "The headline division form n(2n−1)(2n+1)/3 is proved directly over ℚ (where division by 3 is genuine): sum_range_succ + push_cast + ring discharges it in two lines.",
+      "The identity equals ∑_{j<2n} j² − 4∑_{k<n} k² (all squares up to 2n−1 minus the even squares), tying it to Mathlib's square-pyramidal sum-of-squares identity."
+    ],
+    "builtItems": [
+      "OddSquaresSum.three_mul_sum_odd_squares (Proofs/OddSquaresSum.lean:46) — 3·∑_{k<n}(2k+1)² + n = 4n³, the division-free exact ℕ engine",
+      "OddSquaresSum.sum_odd_squares_rat (:64) — ∑_{k<n}(2k+1)² = n(2n−1)(2n+1)/3 over ℚ, the classical closed form"
+    ],
+    "mathlibGaps": [
+      "Mathlib has the square-pyramidal ∑k² = n(n+1)(2n+1)/6 identity but no named odd-indexed power-sum closed forms (∑(2k+1)², ∑(2k+1)³)."
+    ],
+    "nextSteps": [
+      "Apply the same 'clear the denominator additively' pattern to the sum of cubes of odd numbers ∑(2k+1)³ = n²(2n²−1) (RHS already ℕ-integral, no division needed) and higher odd-power sums.",
+      "Derive the odd-square sum inside Lean as the explicit difference ∑_{j<2n} j² − 4∑_{k<n} k² from Mathlib's square-pyramidal identity, instead of re-proving by induction."
+    ],
+    "progressSummary": "COMPLETE: ∑_{k<n}(2k+1)² = n(2n−1)(2n+1)/3 formalized and verified — 2 theorems, 0 sorries, 0 axioms, no native_decide (#print axioms = [propext, Classical.choice, Quot.sound]). Compiled against Mathlib v4.26.0. Elementary/classical power-sum identity; routine difficulty. PR opened."
+  }
+}
