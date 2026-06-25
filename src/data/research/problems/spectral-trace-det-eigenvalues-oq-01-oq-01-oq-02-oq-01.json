@@ -1,0 +1,145 @@
+{
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+  "title": "Newton's Fourth Power Sum — tr(A⁴) and the Emergence of e₄ = det",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\operatorname{tr}(A^4) \\;=\\; e_1^4 - 4e_1^2 e_2 + 2e_2^2 + 4e_1 e_3 - 4e_4\n\\;=\\; \\lambda_1^4 + \\lambda_2^4 + \\lambda_3^4 + \\lambda_4^4.",
+    "plain": "The parent (`spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02`) proved Newton's **third** power",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-24T23:07:30-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: Verified, 0-axiom, 0-sorry Lean 4 formalization of Newton fourth power sum tr(A⁴)=Σλᵢ⁴ for 4×4 matrices, settling parent oq-01-oq-01-oq-02 openQuestions[0].",
+    "builtItems": [
+      "trace_quartic_fin_four (Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean): matrix-side Newton p₄ over any CommRing",
+      "det_fin_four / trace_fin_four: the Fin 4 determinant (cofactor) and trace expansions Mathlib lacks",
+      "charpoly_fin_four / charpoly_coeff_two_eq_e2 / charpoly_coeff_one_eq_neg_e3: 4×4 charpoly in elementary-symmetric form X⁴−e₁X³+e₂X²−e₃X+e₄",
+      "trace_quartic_eq_sum_fourth_eigenvalues: spectral form tr(A⁴)=λ₁⁴+λ₂⁴+λ₃⁴+λ₄⁴ over an algebraically closed field"
+    ],
+    "insights": [
+      "The quartic p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ is the first Newton power sum to involve ALL FOUR elementary symmetric functions, including the new e₃ (sum of principal 3×3 minors) and the determinant e₄ as an independent term.",
+      "Mathlib provides trace_fin_three / det_fin_three but NO Fin 4 analogues; det_fin_four must be built via Matrix.det_succ_row_zero (cofactor expansion along row 0) + ring, and trace_fin_four from the trace/diag definition + Fin.sum_univ_four.",
+      "The heavy 16-variable ring identity tr(A⁴)=(trA)⁴−4(trA)²e₂+2e₂²+4(trA)e₃−4detA (expanding (A⁴).trace into 256 monomials via mul_apply + Fin.sum_univ_four) compiles in ~10s within DEFAULT heartbeats — no maxHeartbeats bump needed.",
+      "e₂ and e₃ are each identified with charpoly coefficients (X²-coeff = e₂; X¹-coeff = −e₃) via charpoly_fin_four = det(charmatrix) expanded by det_fin_four; this is the bridge from minor sums to the eigenvalue symmetric functions via Vieta and Multiset.card_eq_four."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no Matrix.det_fin_four or Matrix.trace_fin_four (entrywise expansions stop at dimension three); built locally here.",
+      "No general multiset spectral-mapping (A^k).charpoly.roots = A.charpoly.roots.map(·^k), so each fixed-dimension trace power sum is still a brute-force ring identity."
+    ],
+    "nextSteps": [
+      "Generalize to tr(Aᵏ)=Σλᵢᵏ for all n,k via Schur triangulation or a charpoly-coefficient-to-power-sum Newton recursion, replacing the per-dimension ring identities.",
+      "Formalize the full Newton recursion pₖ = e₁pₖ₋₁ − e₂pₖ₋₂ + … + (−1)ᵏ⁻¹ k·eₖ."
+    ],
+    "markdown": "# Knowledge Base: spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "linear-algebra",
+    "matrix-theory",
+    "newton-identities",
+    "symmetric-functions",
+    "trace",
+    "determinant"
+  ],
+  "relatedProofs": [
+    "spectral-trace-det-eigenvalues-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "spectral-trace-det-eigenvalues-oq-02",
+    "spectral-trace-det-eigenvalues-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T06:14:37.639Z",
+  "lastUpdate": "2026-06-25T06:14:37.672Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01.lean",
+      "lineCount": 133,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01.lean",
+      "lineCount": 156,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean",
+      "lineCount": 172,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 247,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "ann-spectral-trace-oq01010201-00-header",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 4, "endLine": 56 },
+    "type": "context",
+    "title": "The open question: Newton's fourth power sum in dimension four",
+    "content": "The docstring states the goal carried over from the parent oq-01-oq-01-oq-02, which reached tr(A³) = λ₁³ + λ₂³ + λ₃³ for 3×3 matrices via Newton's p₃ = e₁³ − 3e₁e₂ + 3e₃. This file extends to the next power sum and dimension: tr(A⁴) = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄, read spectrally as tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴ for 4×4 matrices. The honesty note flags why the quartic is qualitatively harder: it is the first power sum whose Newton expansion involves ALL FOUR elementary symmetric functions — including the genuinely new e₃ (sum of principal 3×3 minors) and the determinant e₄ as its own independent term. The file imports Mathlib and the grandparent, opens Matrix/Polynomial, and reuses the grandparent's `eigenvalues` abbreviation.",
+    "mathContext": "Newton's identities: $p_3 = e_1^3 - 3e_1e_2 + 3e_3$, $p_4 = e_1^4 - 4e_1^2e_2 + 2e_2^2 + 4e_1e_3 - 4e_4$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Newton's identities",
+      "power sums",
+      "elementary symmetric functions",
+      "spectral mapping theorem"
+    ],
+    "prerequisites": [
+      "characteristic polynomial",
+      "eigenvalues with multiplicity"
+    ]
+  },
+  {
+    "id": "ann-spectral-trace-oq01010201-01-fin-four",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 63, "endLine": 90 },
+    "type": "key-step",
+    "title": "4×4 trace and determinant expansions Mathlib does not provide",
+    "content": "Mathlib's entrywise matrix expansions stop at dimension three (trace_fin_three, det_fin_three). The file first builds their Fin 4 analogues. `trace_fin_four` proves trace = A 0 0 + A 1 1 + A 2 2 + A 3 3 by unfolding the trace/diag definitions with Fin.sum_univ_four. `det_fin_four` proves the full cofactor (Laplace) expansion of the 4×4 determinant along the top row, using Matrix.det_succ_row_zero to recurse to four 3×3 minors and closing by `ring`. These supply the explicit sixteen-entry building blocks every later result needs.",
+    "mathContext": "$\\det A = \\sum_{j} (-1)^j A_{0j} \\det(\\widehat{A}_{0j})$, the Laplace expansion along row 0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cofactor expansion",
+      "Laplace expansion",
+      "determinant"
+    ],
+    "prerequisites": [
+      "Matrix.det_succ_row_zero",
+      "Fin.sum_univ_four"
+    ]
+  },
+  {
+    "id": "ann-spectral-trace-oq01010201-02-matrix-newton",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 92, "endLine": 137 },
+    "type": "key-step",
+    "title": "The matrix-side Newton identity over any commutative ring",
+    "content": "`e2` defines the second elementary symmetric function of a 4×4 matrix as the sum of its six principal 2×2 minors; `e3` defines the third as the sum of its four principal 3×3 minors (on index sets {0,1,2}, {0,1,3}, {0,2,3}, {1,2,3}). `trace_quartic_fin_four` then proves tr(A⁴) = (tr A)⁴ − 4(tr A)²·e₂(A) + 2·e₂(A)² + 4(tr A)·e₃(A) − 4·det A. The proof unfolds A⁴ as a quadruple product (pow_succ), expands trace, det, and the matrix multiplications entrywise via trace_fin_four, det_fin_four, Matrix.mul_apply, Fin.sum_univ_four, then closes by `ring`. This is a polynomial identity in the sixteen entries — no field, no algebraic closure, no eigenvalues.",
+    "mathContext": "$\\operatorname{tr}(A^4) = (\\operatorname{tr}A)^4 - 4(\\operatorname{tr}A)^2 e_2(A) + 2e_2(A)^2 + 4(\\operatorname{tr}A)e_3(A) - 4\\det A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton's identities",
+      "principal minors",
+      "elementary symmetric functions",
+      "polynomial identity"
+    ],
+    "prerequisites": [
+      "Matrix.mul_apply",
+      "trace of a power"
+    ]
+  },
+  {
+    "id": "ann-spectral-trace-oq01010201-03-charpoly",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 139, "endLine": 167 },
+    "type": "key-step",
+    "title": "The characteristic polynomial in elementary-symmetric form",
+    "content": "`charpoly_fin_four` proves charpoly = X⁴ − (tr A)X³ + e₂(A)X² − e₃(A)X + det A, expanding det(X·I − A) entrywise with charmatrix and det_fin_four and ring-normalising. Reading off coefficients gives `charpoly_coeff_two_eq_e2` (the X²-coefficient is e₂(A)) and `charpoly_coeff_one_eq_neg_e3` (the X¹-coefficient is −e₃(A)). These are the two bridges identifying the principal-minor sums with the second and third elementary symmetric functions of the eigenvalues via Vieta.",
+    "mathContext": "$\\chi_A(X) = X^4 - (\\operatorname{tr}A)X^3 + e_2(A)X^2 - e_3(A)X + \\det A$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "characteristic polynomial",
+      "Vieta's formulas",
+      "charmatrix"
+    ],
+    "prerequisites": [
+      "Matrix.charmatrix",
+      "polynomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-spectral-trace-oq01010201-04-spectral",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 169, "endLine": 227 },
+    "type": "key-step",
+    "title": "The spectral form tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴",
+    "content": "`card_eigenvalues_fin_four` shows a 4×4 matrix has exactly four eigenvalues (from the grandparent's card_eigenvalues_eq_dim); `charpoly_eq_prod_eigenvalues` factors charpoly = Π(X − λᵢ) (Vieta). `trace_quartic_eq_sum_fourth_eigenvalues` then proves, over an algebraically closed field, tr(A⁴) = Σλᵢ⁴. The four elementary symmetric functions of the eigenvalues a,b,c,d are read from trace (grandparent), the X²- and X¹-coefficients of the charpoly (via charpoly_coeff_two_eq_e2 and charpoly_coeff_one_eq_neg_e3 against the explicit quartic factorisation), and det = abcd (grandparent). Substituting into the matrix-side identity and matching against a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ closes by `ring`.",
+    "mathContext": "$\\operatorname{tr}(A^4) = \\lambda_1^4 + \\lambda_2^4 + \\lambda_3^4 + \\lambda_4^4$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral mapping theorem",
+      "Vieta's formulas",
+      "algebraically closed field"
+    ],
+    "prerequisites": [
+      "IsAlgClosed.splits",
+      "Multiset.card_eq_four"
+    ]
+  },
+  {
+    "id": "ann-spectral-trace-oq01010201-05-example",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 229, "endLine": 246 },
+    "type": "observation",
+    "title": "A concrete 4×4 rational illustration",
+    "content": "`trace_quartic_example`: for !![1,2,0,1; 0,3,1,0; 4,0,2,1; 1,1,0,2] over ℚ the matrix-side identity recovers tr(A⁴) from tr A, the two minor sums e₂(A) and e₃(A), and det A, without computing the (generically irrational/complex) eigenvalues — a rational invariant of an unknowable spectrum. The closing #print axioms audit confirms the three headline theorems depend only on the foundational propext/Classical.choice/Quot.sound, with no Lean.ofReduceBool (no native_decide) and no sorryAx.",
+    "mathContext": "$\\operatorname{tr}(A^4)$ forced by $\\operatorname{tr}A,\\ e_2(A),\\ e_3(A),\\ \\det A$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "worked example",
+      "axiom audit"
+    ],
+    "prerequisites": []
+  }
+]

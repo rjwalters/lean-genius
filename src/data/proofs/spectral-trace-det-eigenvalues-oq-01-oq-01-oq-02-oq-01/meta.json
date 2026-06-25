@@ -1,0 +1,194 @@
+{
+  "id": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+  "title": "Newton's Fourth Power Sum: tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴ for 4×4 Matrices",
+  "slug": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+  "description": "Settles the open question posed by spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02 (openQuestions[0]): carry the matrix-side-then-spectral template to the fourth power sum, tr(A⁴) = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄, read spectrally as tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴ for 4×4 matrices. This is the first Newton power sum in which the top elementary symmetric function e₄ = det finally emerges as an independent term, and the first whose expansion involves ALL FOUR elementary symmetric functions e₁, e₂, e₃, e₄ simultaneously — including the genuinely new e₃, the sum of the four principal 3×3 minors. Four results: (1) trace_quartic_fin_four — the matrix-side Newton identity tr(A⁴) = (tr A)⁴ − 4(tr A)²·e₂(A) + 2·e₂(A)² + 4(tr A)·e₃(A) − 4·det A over ANY commutative ring, a polynomial identity in the sixteen entries closed by ring, with no field, no algebraic closure, and no eigenvalues; (2) det_fin_four / trace_fin_four — the explicit 4×4 determinant (cofactor expansion along the top row) and trace expansions, the Fin 4 analogues of Mathlib's det_fin_three / trace_fin_three which stop at dimension three; (3) charpoly_fin_four / charpoly_coeff_two_eq_e2 / charpoly_coeff_one_eq_neg_e3 — the 4×4 characteristic polynomial in elementary-symmetric form X⁴ − (tr A)X³ + e₂(A)X² − e₃(A)X + det A, identifying e₂(A) as its X²-coefficient and e₃(A) as the negative of its X¹-coefficient; (4) trace_quartic_eq_sum_fourth_eigenvalues — the spectral form tr(A⁴) = Σλᵢ⁴ over an algebraically closed field, matching the matrix-side identity to the multiset identity a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ via Vieta. A concrete rational 4×4 example reads tr(A⁴) off from trace, the two minor sums, and determinant without computing eigenvalues. Fully verified, 0 axioms, 0 sorries, no decide/native_decide.",
+  "meta": {
+    "author": "Classical (Newton's identities; spectral mapping theorem); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Newton%27s_identities",
+    "date": "classical",
+    "status": "verified",
+    "tags": [
+      "linear-algebra",
+      "eigenvalues",
+      "characteristic-polynomial",
+      "trace",
+      "determinant",
+      "power-sums",
+      "newtons-identities",
+      "spectral-mapping",
+      "symmetric-functions",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.det_succ_row_zero",
+        "description": "Laplace (cofactor) expansion of a determinant along the top row, recursively reducing the 4×4 determinant to four 3×3 minors. Drives det_fin_four, the explicit 16-entry determinant Mathlib does not provide beyond dimension three.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.charmatrix",
+        "description": "the matrix X·I − A whose determinant is the characteristic polynomial; charmatrix_apply_eq and charmatrix_apply_ne expand the 4×4 charpoly entrywise so that det_fin_four yields the elementary-symmetric form X⁴ − (tr A)X³ + e₂(A)X² − e₃(A)X + det A.",
+        "module": "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic"
+      },
+      {
+        "theorem": "IsAlgClosed.splits_codomain",
+        "description": "over an algebraically closed field every polynomial splits; combined with eq_prod_roots_of_monic and the monic charpoly it factors A.charpoly = Π(X − λᵢ) over the eigenvalue multiset (Vieta), supplying the spectral identification of e₂ with ab+ac+ad+bc+bd+cd and e₃ with abc+abd+acd+bcd.",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Multiset.card_eq_four",
+        "description": "a multiset has cardinality four iff it equals {a, b, c, d}. Reduces the 4×4 spectral trace power sum to the four-variable Newton identity a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄.",
+        "module": "Mathlib.Data.Multiset.ZeroCons"
+      },
+      {
+        "theorem": "Fin.sum_univ_four",
+        "description": "expands a sum over Fin 4 into four explicit terms; together with Matrix.mul_apply it unfolds (A⁴).trace into the 256-monomial polynomial in the sixteen entries that the matrix-side Newton identity normalises by ring.",
+        "module": "Mathlib.Algebra.BigOperators.Fin"
+      }
+    ],
+    "originalContributions": [
+      "trace_quartic_fin_four: the matrix-side Newton identity tr(A⁴) = (tr A)⁴ − 4(tr A)²·e₂(A) + 2·e₂(A)² + 4(tr A)·e₃(A) − 4·det A over ANY commutative ring — a polynomial identity in the sixteen entries closed by ring, needing no field, no algebraic closure, and no eigenvalues; the fourth power sum p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ at the matrix level, the first to make the determinant e₄ an independent term",
+      "det_fin_four: the explicit 4×4 determinant as a cofactor expansion along the top row in the sixteen entries — the Fin 4 analogue of Mathlib's det_fin_three, which stops at dimension three",
+      "trace_fin_four: the 4×4 trace as the sum of the four diagonal entries, the Fin 4 analogue of Mathlib's trace_fin_three",
+      "e3: the third elementary symmetric function of a 4×4 matrix as the sum of its four principal 3×3 minors, the genuinely new symmetric function appearing for the first time at the fourth power sum (neither trace, nor minor-pair sum, nor determinant)",
+      "charpoly_fin_four: the 4×4 characteristic polynomial in elementary-symmetric form X⁴ − (tr A)X³ + e₂(A)X² − e₃(A)X + det A, derived entrywise from charmatrix and det_fin_four",
+      "charpoly_coeff_two_eq_e2 / charpoly_coeff_one_eq_neg_e3: e₂(A) is the X²-coefficient and e₃(A) the negative of the X¹-coefficient of the characteristic polynomial, the bridges that identify the two minor sums with the spectral symmetric functions ab+ac+ad+bc+bd+cd and abc+abd+acd+bcd via Vieta",
+      "trace_quartic_eq_sum_fourth_eigenvalues: the spectral form tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴ over an algebraically closed field — the first power sum whose Newton expansion involves all four elementary symmetric functions including the new e₄ = det, settling the parent entry's open question",
+      "trace_quartic_example: for the rational matrix !![1,2,0,1; 0,3,1,0; 4,0,2,1; 1,1,0,2] the matrix-side identity recovers tr(A⁴) from tr A, the two minor sums e₂(A), e₃(A), and det A without ever computing the eigenvalues"
+    ],
+    "dateAdded": "2026-06-24",
+    "lineCount": 246,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only Mathlib's foundational propext/Classical.choice/Quot.sound, which do not count). No decide/native_decide is used; #print axioms confirms the three headline theorems depend on no Lean.ofReduceBool or sorryAx. The matrix-side identity trace_quartic_fin_four and the charpoly form charpoly_fin_four hold over any commutative ring; the spectral form trace_quartic_eq_sum_fourth_eigenvalues requires an algebraically closed field (so the characteristic polynomial splits and the eigenvalue multiset has exactly four elements). SCOPE: this entry proves the k=4 power sum in dimension n=4. The general trace power sum tr(Aᵏ) = Σλᵢᵏ for all n and k remains the standing open question (it requires the full multiset spectral mapping, absent from the Mathlib snapshot used here).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Newton's identities (Isaac Newton, c. 1666; also Girard) express the power sums pₖ = Σλᵢᵏ through the elementary symmetric functions eⱼ: p₁ = e₁, p₂ = e₁² − 2e₂, p₃ = e₁³ − 3e₁e₂ + 3e₃, p₄ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄. For the eigenvalues of a matrix the eⱼ are (up to sign) the coefficients of the characteristic polynomial — e₁ = trace, eₙ = determinant, and the intermediate eⱼ the sums of principal j×j minors. The power sums pₖ are the traces tr(Aᵏ), the trace half of the spectral mapping theorem spec(p(A)) = p(spec(A)). The grandparent oq-01 pinned down e₁ = trace and eₙ = det; oq-01-oq-01 settled p₂ for 2×2 matrices; the parent oq-01-oq-01-oq-02 settled the cube p₃ for 3×3 matrices, the first power sum to need the middle symmetric function e₂. The fourth power p₄ in dimension four is the first to involve all four elementary symmetric functions at once, and the first in which the determinant e₄ appears as its own term rather than as the top symmetric function of a smaller matrix.",
+    "problemStatement": "**Open Question (spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02, openQuestions[0])**: Carry the same matrix-side-then-spectral template to tr(A⁴) = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ in dimension four, the first power sum to involve all four elementary symmetric functions including the new e₄ = det.\n\n**Result**: trace_quartic_fin_four establishes the matrix-side identity tr(A⁴) = (tr A)⁴ − 4(tr A)²·e₂(A) + 2·e₂(A)² + 4(tr A)·e₃(A) − 4·det A over any commutative ring; trace_quartic_eq_sum_fourth_eigenvalues upgrades it to the spectral statement tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴ over an algebraically closed field, with e₂(A) and e₃(A) identified as both principal-minor sums and (signed) coefficients of the characteristic polynomial.",
+    "text": "Let A be a 4×4 matrix. Write e₁(A) = tr A, e₂(A) for the sum of the six principal 2×2 minors, e₃(A) for the sum of the four principal 3×3 minors, and e₄(A) = det A. Newton's fourth identity gives tr(A⁴) = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ as a polynomial identity in the sixteen entries, valid over any commutative ring. Over an algebraically closed field the characteristic polynomial X⁴ − e₁X³ + e₂X² − e₃X + e₄ splits as Π(X − λᵢ), so e₁ = Σλᵢ, e₂ = Σλᵢλⱼ, e₃ = Σλᵢλⱼλₖ, e₄ = λ₁λ₂λ₃λ₄, and the identity becomes the spectral power sum tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. Fin-4 expansions (any commutative ring): Mathlib's matrix expansions stop at dimension three, so the file first supplies trace_fin_four (trace = sum of four diagonal entries, from the definition and Fin.sum_univ_four) and det_fin_four (cofactor expansion along the top row via Matrix.det_succ_row_zero, closed by ring).\n\n2. Matrix-side identity (any commutative ring): define e₂(A) as the sum of the six principal 2×2 minors and e₃(A) as the sum of the four principal 3×3 minors. Expand (A⁴).trace via trace_fin_four, Matrix.mul_apply, and Fin.sum_univ_four into a polynomial in the sixteen entries; the identity tr(A⁴) = (tr A)⁴ − 4(tr A)²e₂ + 2e₂² + 4(tr A)e₃ − 4 det A then closes by ring. No eigenvalues, no field.\n\n3. Characteristic polynomial in elementary-symmetric form: expand charpoly = det(X·I − A) entrywise with charmatrix and det_fin_four, then ring-normalise to X⁴ − (tr A)X³ + e₂(A)X² − e₃(A)X + det A. Reading off coefficients gives charpoly_coeff_two_eq_e2 (X²-coefficient is e₂) and charpoly_coeff_one_eq_neg_e3 (X¹-coefficient is −e₃).\n\n4. Spectral upgrade (algebraically closed field): the eigenvalue multiset has exactly four elements (card_eigenvalues_fin_four, from the grandparent's card_eigenvalues_eq_dim). Vieta (charpoly = Π(X − λᵢ)) identifies the four elementary symmetric functions of the eigenvalues a,b,c,d with tr A (grandparent), e₂(A) and e₃(A) (from the coefficient bridges and the explicit quartic factorisation), and det A = abcd (grandparent). Substituting into the matrix-side identity and matching against a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ yields tr(A⁴) = a⁴+b⁴+c⁴+d⁴.\n\n5. Example: instantiate trace_quartic_fin_four at !![1,2,0,1; 0,3,1,0; 4,0,2,1; 1,1,0,2] over ℚ, recovering tr(A⁴) from tr A, the two minor sums, and det A.",
+    "keyInsights": [
+      "**The fourth power is the first in which the determinant emerges as its own term.** At p₂ the determinant is e₂ (the top symmetric function of a 2×2 matrix); at p₃ it is e₃. Only at p₄ in dimension four does e₄ = det appear as a genuinely independent coefficient alongside e₁, e₂, e₃, and only here does the brand-new e₃ (sum of principal 3×3 minors) enter. The quartic is the first power sum whose Newton expansion uses all four elementary symmetric functions simultaneously.",
+      "**Mathlib's matrix expansions stop at dimension three.** Mathlib provides trace_fin_three and det_fin_three but no Fin 4 analogues. The proof therefore builds det_fin_four (cofactor expansion along the top row via det_succ_row_zero) and trace_fin_four from scratch — reusable infrastructure for any 4×4 entrywise computation, not just this power sum.",
+      "**e₂ and e₃ each wear two hats: minor sum and charpoly coefficient.** The proof identifies e₂(A) — the sum of the six principal 2×2 minors — with the X²-coefficient of the characteristic polynomial, and e₃(A) — the sum of the four principal 3×3 minors — with the negative X¹-coefficient. These are the bridges that turn the matrix-side identity into a spectral one: by Vieta the X²- and X¹-coefficients are the second and third elementary symmetric functions of the eigenvalues.",
+      "**The matrix-side identity is ring-universal; algebraic closure enters only for the spectral reading.** tr(A⁴) = (tr A)⁴ − 4(tr A)²e₂ + 2e₂² + 4(tr A)e₃ − 4 det A is a polynomial identity in the sixteen entries, true over ℤ, ℚ, any commutative ring — provable by ring with no eigenvalues. A field and algebraic closure are needed only to factor the characteristic polynomial and rewrite the same quantity as λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴."
+    ],
+    "prerequisites": [
+      "The characteristic polynomial and its roots as eigenvalues with algebraic multiplicity (spectral-trace-det-eigenvalues-oq-01)",
+      "Newton's third power sum tr(A³) = λ₁³ + λ₂³ + λ₃³ and the matrix-side-then-spectral template (spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02)",
+      "Newton's identities relating power sums to elementary symmetric functions; Vieta's formulas for a monic quartic; cofactor expansion of determinants"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and the Open Question",
+      "startLine": 4,
+      "endLine": 56,
+      "summary": "Module docstring stating the goal carried over from the parent oq-01-oq-01-oq-02: extend the cube power sum to tr(A⁴) = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ and its spectral reading tr(A⁴) = Σλᵢ⁴ for 4×4 matrices, with the honesty note that the quartic is the first power sum involving all four elementary symmetric functions including the new e₄ = det; imports Mathlib and the grandparent file, opens Matrix/Polynomial, reuses the grandparent's eigenvalues abbreviation.",
+      "mathContext": "$p_4 = e_1^4 - 4e_1^2e_2 + 2e_2^2 + 4e_1e_3 - 4e_4$."
+    },
+    {
+      "id": "fin-four-expansions",
+      "title": "4×4 Trace and Determinant Expansions (the Fin 4 analogues Mathlib lacks)",
+      "startLine": 63,
+      "endLine": 90,
+      "summary": "trace_fin_four (trace = A 0 0 + A 1 1 + A 2 2 + A 3 3, from the trace/diag definition and Fin.sum_univ_four) and det_fin_four (cofactor expansion along the top row via Matrix.det_succ_row_zero, closed by ring) — the dimension-four analogues of Mathlib's trace_fin_three / det_fin_three, which stop at dimension three.",
+      "mathContext": "$\\det A$ as a Laplace expansion along the top row in the sixteen entries."
+    },
+    {
+      "id": "matrix-newton",
+      "title": "The Elementary Symmetric Functions and the Matrix-Side Newton Identity",
+      "startLine": 92,
+      "endLine": 137,
+      "summary": "e2 (sum of the six principal 2×2 minors), e3 (sum of the four principal 3×3 minors), and trace_quartic_fin_four: tr(A⁴) = (tr A)⁴ − 4(tr A)²·e₂(A) + 2·e₂(A)² + 4(tr A)·e₃(A) − 4·det A, a polynomial identity in the sixteen entries over any commutative ring, expanded by trace_fin_four/det_fin_four/mul_apply/Fin.sum_univ_four and closed by ring.",
+      "mathContext": "$\\operatorname{tr}(A^4) = (\\operatorname{tr}A)^4 - 4(\\operatorname{tr}A)^2 e_2 + 2e_2^2 + 4(\\operatorname{tr}A)e_3 - 4\\det A$."
+    },
+    {
+      "id": "charpoly",
+      "title": "The Characteristic Polynomial in Elementary-Symmetric Form",
+      "startLine": 139,
+      "endLine": 167,
+      "summary": "charpoly_fin_four (charpoly = X⁴ − (tr A)X³ + e₂(A)X² − e₃(A)X + det A, expanded entrywise from charmatrix and det_fin_four), charpoly_coeff_two_eq_e2 (e₂(A) is the X²-coefficient), and charpoly_coeff_one_eq_neg_e3 (e₃(A) is the negative X¹-coefficient), the bridges identifying the two minor sums with the second and third symmetric functions of the eigenvalues.",
+      "mathContext": "$\\chi_A(X) = X^4 - (\\operatorname{tr}A)X^3 + e_2(A)X^2 - e_3(A)X + \\det A$."
+    },
+    {
+      "id": "spectral",
+      "title": "The Spectral Form tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴",
+      "startLine": 169,
+      "endLine": 227,
+      "summary": "card_eigenvalues_fin_four (a 4×4 matrix has exactly four eigenvalues), charpoly_eq_prod_eigenvalues (Vieta), and trace_quartic_eq_sum_fourth_eigenvalues: over an algebraically closed field tr(A⁴) = Σλᵢ⁴, matching the matrix-side identity to a⁴+b⁴+c⁴+d⁴ = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ with e₁,e₂,e₃,e₄ read from trace, the X²- and X¹-coefficients, and det.",
+      "mathContext": "$\\operatorname{tr}(A^4) = \\lambda_1^4 + \\lambda_2^4 + \\lambda_3^4 + \\lambda_4^4$."
+    },
+    {
+      "id": "example",
+      "title": "A Concrete 4×4 Rational Illustration",
+      "startLine": 229,
+      "endLine": 246,
+      "summary": "trace_quartic_example: for !![1,2,0,1; 0,3,1,0; 4,0,2,1; 1,1,0,2] over ℚ the matrix-side identity recovers tr(A⁴) from tr A, the two minor sums e₂(A), e₃(A), and det A, without computing the eigenvalues; #print axioms audit confirms only the foundational axioms.",
+      "mathContext": "$\\operatorname{tr}(A^4)$ from $\\operatorname{tr}A,\\ e_2(A),\\ e_3(A),\\ \\det A$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+      "relationship": "Direct parent: settled the 3×3 cube power sum tr(A³) = λ₁³ + λ₂³ + λ₃³ via Newton's p₃ = e₁³ − 3e₁e₂ + 3e₃ and explicitly posed (openQuestions[0]) the extension to tr(A⁴) = e₁⁴ − 4e₁²e₂ + 2e₂² + 4e₁e₃ − 4e₄ in dimension four that this entry takes up, reusing the same matrix-side-then-spectral template."
+    },
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-01",
+      "relationship": "Grandparent: establishes trace = Σλ, determinant = Πλ, the eigenvalue count (card_eigenvalues_eq_dim), and the Vieta correspondence reused here to identify e₁ and e₄ of the spectrum with trace and determinant."
+    },
+    {
+      "id": "spectral-trace-det-eigenvalues-oq-02",
+      "relationship": "Sibling on cyclic invariance of the trace and similarity-invariance of the eigenvalue multiset; the fourth power sum tr(A⁴) is similarity-invariant for the same reason (conjugation preserves the characteristic polynomial)."
+    }
+  ],
+  "conclusion": {
+    "summary": "Fully verified (0 sorries, 0 axioms) formalization of Newton's fourth power sum in dimension four: the matrix-side identity tr(A⁴) = (tr A)⁴ − 4(tr A)²·e₂(A) + 2·e₂(A)² + 4(tr A)·e₃(A) − 4·det A over any commutative ring, and its spectral upgrade tr(A⁴) = λ₁⁴ + λ₂⁴ + λ₃⁴ + λ₄⁴ over an algebraically closed field, with the minor sums e₂ and e₃ identified as the X²- and (negated) X¹-coefficients of the characteristic polynomial. Supplies det_fin_four and trace_fin_four, the dimension-four matrix expansions Mathlib lacks.",
+    "implications": "Settles the parent entry's open question by carrying Newton's identities to the first power sum (p₄, dimension 4) whose expansion uses all four elementary symmetric functions, including the new e₃ and the determinant e₄ as an independent term. The clean separation — a ring-universal matrix-side identity closed by ring, then an algebraic-closure-only spectral reading via Vieta — extends the parent's reusable template, and det_fin_four/trace_fin_four fill a concrete Mathlib gap at dimension four. The remaining obstruction to the all-dimensions trace power sum tr(Aᵏ) = Σλᵢᵏ is unchanged: the full multiset spectral mapping (A^k).charpoly.roots = A.charpoly.roots.map(·^k), absent from the Mathlib snapshot.",
+    "openQuestions": [
+      "Prove the general trace power sum tr(Aᵏ) = Σλᵢᵏ for all dimensions n, equivalently the multiset spectral mapping (A^k).charpoly.roots = A.charpoly.roots.map(·^k), by building Schur triangulation or a uniform Newton-identity bridge from charpoly coefficients to root power sums — replacing the fixed-dimension brute-force ring identities by a dimension-general argument.",
+      "Formalize the full Newton recursion pₖ = e₁pₖ₋₁ − e₂pₖ₋₂ + ⋯ + (−1)ᵏ⁻¹k·eₖ relating successive power sums and elementary symmetric functions, from which every fixed-dimension identity (p₂, p₃, p₄, …) would follow uniformly rather than being re-derived by ring at each level."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.SpectralTraceDetEigenvaluesOQ01"
+    ],
+    "opens": [
+      "Matrix",
+      "Polynomial"
+    ],
+    "namespace": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01",
+    "lineCount": 246,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Roger A. Horn and Charles R. Johnson",
+      "title": "Matrix Analysis",
+      "year": "2012",
+      "venue": "Cambridge University Press",
+      "note": "Standard reference for Newton's identities relating trace power sums to characteristic-polynomial coefficients, and the trace/determinant/minor sums as elementary symmetric functions of the eigenvalues."
+    },
+    {
+      "authors": "leanprover-community",
+      "title": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic and Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "year": "2024",
+      "venue": "Mathlib4",
+      "note": "Source of det_succ_row_zero (cofactor expansion), the charmatrix construction for the characteristic polynomial, and the splitting of polynomials over an algebraically closed field used for the spectral form."
+    }
+  ],
+  "sorries": 0
+}
