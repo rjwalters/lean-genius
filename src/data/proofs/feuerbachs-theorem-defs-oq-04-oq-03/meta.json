@@ -1,0 +1,121 @@
+{
+  "id": "feuerbachs-theorem-defs-oq-04-oq-03",
+  "title": "Nine-Point Circle in an Abstract Inner Product Space",
+  "slug": "feuerbachs-theorem-defs-oq-04-oq-03",
+  "description": "A coordinate-free nine-point circle theorem in any real InnerProductSpace. For any triangle A B C with a common circumcenter O, the three side midpoints, three vertex-orthocenter midpoints, and three altitude feet all lie on a single Metric.sphere of radius R/2 about the nine-point centre. Generalises the gallery's coordinate (ℝ×ℝ) Feuerbach proofs and is Mathlib-ready (Mathlib has no nine-point circle). 14 theorems, 4 defs, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FeuerbachsTheoremDefsOQ04OQ03.lean",
+    "additionalFiles": [],
+    "tags": [
+      "geometry",
+      "feuerbach",
+      "nine-point-circle",
+      "inner-product-space",
+      "coordinate-free",
+      "mathlib",
+      "euclidean-geometry",
+      "sphere"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound, which do not count as assumptions). No native_decide. Self-contained: imports only Mathlib, not the gallery's coordinate Feuerbach files.",
+    "lineCount": 243,
+    "theoremCount": 14,
+    "definitionCount": 4,
+    "originalContributions": [
+      "ninePoints_mem_sphere: the full nine-point circle theorem for an arbitrary triangle in any real inner product space V — all nine special points lie on a single Metric.sphere of radius R/2, with O an arbitrary common circumcenter (dist O A = dist O B = dist O C = R)",
+      "foot_core: the analytic heart — the foot of the altitude from a onto line bc lies at distance R/2 from (a+b+c)/2 whenever ‖a‖=‖b‖=‖c‖=R, proved by a direct inner-product expansion closed with field_simp + ring",
+      "Coordinate-free constructions orthocenter / ninePointCenter / ninePointRadius / foot valid in any InnerProductSpace ℝ V, not the gallery's Point = ℝ × ℝ model",
+      "Six midpoint-type memberships proved hypothesis-free in the degenerate sense: side midpoints and vertex-orthocenter midpoints lie on the circle even for collinear A B C; only the three altitude feet require the corresponding side to be a genuine line",
+      "ninePointCenter_rotate: vertex-permutation symmetry of the nine-point centre, used to derive the three altitude-foot memberships from a single core lemma by translation (dist_sub_right)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Feuerbach's theorem (1822) concerns the nine-point circle of a triangle — the circle through the three side midpoints, the three feet of the altitudes, and the three midpoints of the segments from each vertex to the orthocenter (Euler 1765 identified these nine concyclic points; Feuerbach added the tangency to the incircle and excircles). The gallery already formalises the nine concyclic points in a fixed coordinate model (FeuerbachsTheoremDefs.lean, Point = ℝ × ℝ) and bridges them to Mathlib's Metric.sphere for one specific coordinate triangle (FeuerbachsTheoremDefsOQ04.lean). The open question OQ-04 → OQ-03 asked to take the final step toward a Mathlib contribution: discard coordinates and prove the theorem for an arbitrary triangle in an abstract inner product space.",
+    "problemStatement": "Let V be a real inner product space and A, B, C, O points of V with a common circumradius: dist O A = dist O B = dist O C = R. Define the orthocenter H = A + B + C − 2·O, the nine-point centre N = (A + B + C − O)/2 (the midpoint of O and H), and the nine-point radius R/2. Prove that all nine classical points — midpoint BC, midpoint CA, midpoint AB; midpoint AH, midpoint BH, midpoint CH; and the feet of the three altitudes — lie on Metric.sphere N (R/2).",
+    "text": "A 243-line, fully coordinate-free development in a general InnerProductSpace ℝ V. Four definitions (orthocenter, ninePointCenter, ninePointRadius, foot) build the configuration; fourteen theorems establish the nine memberships and package them into the headline ninePoints_mem_sphere. The proof normalises the circumcenter to the origin via translation: writing a = A−O, b = B−O, c = C−O with ‖a‖=‖b‖=‖c‖=R, the six midpoint-type points satisfy N−P = ±(1/2)·x for x ∈ {a,b,c}, giving dist N P = R/2 immediately. The three altitude feet are handled by the core lemma foot_core, where the foot F = b + t·(c−b) with t = ⟪a−b,c−b⟫/⟪c−b,c−b⟫ is shown to satisfy ‖N−F‖² = R²/4 by a direct inner-product expansion that field_simp + ring discharges once the radius identities ⟪x,x⟫ = R² are substituted; the general feet follow by translation (dist_sub_right) and the vertex symmetry ninePointCenter_rotate.",
+    "proofStrategy": "1. Constructions: orthocenter, ninePointCenter, ninePointRadius, foot as coordinate-free terms. 2. Core foot lemma (circumcenter at origin): reduce dist (N) (foot) = R/2 to ‖N−foot‖² = (R/2)² via Real.sqrt_sq, rewrite ‖·‖² = ⟪·,·⟫_ℝ, expand the inner product with bilinearity + symmetry, substitute ⟪a,a⟫ = ⟪b,b⟫ = ⟪c,c⟫ = R² and the denominator value ⟪c−b,c−b⟫ = 2R² − 2⟪b,c⟫, then field_simp + ring. 3. Midpoint helper: a single lemma dist_eq_of_diff handles all six midpoint-type points, each via a one-line module-proved vector identity N−P = (1/2)·Y with ‖Y‖ = R. 4. General feet: lift foot_core to arbitrary circumcenter O by subtracting O (dist_sub_right) and rotate the vertices (ninePointCenter_rotate) to cover all three altitudes from one lemma. 5. Headline: assemble the nine Metric.sphere memberships via Metric.mem_sphere + dist_comm.",
+    "keyInsights": [
+      "Translation normalisation: every statement reduces to the circumcenter being the origin, where a = A−O, b = B−O, c = C−O satisfy ‖a‖=‖b‖=‖c‖=R. The altitude-foot parameter t = ⟪A−B,C−B⟫/⟪C−B,C−B⟫ is translation-invariant (differences cancel O), so the same core lemma serves the general case.",
+      "The six midpoint-type points need no inner-product computation at all: N − (midpoint BC) = (1/2)(A−O), N − (midpoint AH) = (1/2)(O−A), and cyclically, so each distance is exactly ‖A−O‖/2 = R/2. Consequently they lie on the circle even for collinear (degenerate) triangles.",
+      "The altitude foot is the only place where the inner-product structure is used. The clean cancellation ‖N−F‖² = R²/4 relies on two identities, ⟪a−b+c, a−b+c⟫ = R² + 2⟪a−b,c−b⟫ and ⟪a−b+c, c−b⟫ = ⟪a−b,c−b⟫ + (1/2)⟪c−b,c−b⟫, both consequences of ‖a‖=‖b‖=‖c‖.",
+      "Substituting the denominator's value ⟪c−b,c−b⟫ = 2R² − 2⟪b,c⟫ BEFORE expanding lets field_simp clear the single division and reduces the goal to a polynomial identity that ring closes — turning a geometry problem into pure algebra.",
+      "Mathlib has no nine-point circle or Feuerbach circle, so the abstract statement is genuinely new infrastructure; phrasing membership via Metric.sphere keeps it directly Mathlib-compatible."
+    ],
+    "prerequisites": [
+      "InnerProductSpace ℝ V — abstract real inner product space",
+      "real_inner_self_eq_norm_sq — ⟪x,x⟫_ℝ = ‖x‖²",
+      "inner_sub_left / inner_add_left / real_inner_smul_left and symmetry real_inner_comm — bilinearity of the real inner product",
+      "Metric.sphere and Metric.mem_sphere — abstract sphere via the metric",
+      "the module and field_simp tactics — for the linear vector identities and the final algebraic cancellation"
+    ]
+  },
+  "sections": [
+    {
+      "id": "constructions",
+      "title": "Coordinate-Free Constructions",
+      "startLine": 62,
+      "endLine": 82,
+      "summary": "Defines orthocenter, ninePointCenter, ninePointRadius, and the altitude foot in a general inner product space, plus the vertex-permutation symmetry of the nine-point centre.",
+      "mathContext": "orthocenter A B C O = A+B+C−2·O; ninePointCenter = (A+B+C−O)/2 (midpoint of O and the orthocenter); ninePointRadius = dist O A / 2; foot P Q S = Q + (⟪P−Q,S−Q⟫/⟪S−Q,S−Q⟫)·(S−Q) is the orthogonal projection of P onto line QS."
+    },
+    {
+      "id": "foot-core",
+      "title": "Core Lemma: Altitude Foot (Circumcenter at Origin)",
+      "startLine": 83,
+      "endLine": 118,
+      "summary": "Proves ‖N − F‖ = R/2 for the altitude foot F when ‖a‖=‖b‖=‖c‖=R and b ≠ c, the analytic heart of the theorem.",
+      "mathContext": "Reduces to ‖N−F‖² = R²/4 via Real.sqrt_sq, rewrites to ⟪N−F,N−F⟫_ℝ, substitutes the denominator ⟪c−b,c−b⟫ = 2R²−2⟪b,c⟫ and the radius identities, then closes with field_simp + ring."
+    },
+    {
+      "id": "midpoints",
+      "title": "The Six Midpoint-Type Memberships",
+      "startLine": 120,
+      "endLine": 167,
+      "summary": "A single helper dist_eq_of_diff plus six one-line corollaries place the three side midpoints and three vertex-orthocenter midpoints on the sphere.",
+      "mathContext": "Each difference N−P equals ±(1/2)·(X−O) with ‖X−O‖ = R, proved by the module tactic; the side-BC and AH midpoints need no circumradius hypothesis."
+    },
+    {
+      "id": "feet",
+      "title": "The Three Altitude Feet (Translation + Rotation)",
+      "startLine": 169,
+      "endLine": 205,
+      "summary": "Lifts foot_core to an arbitrary circumcenter O by translation (dist_sub_right) and covers all three altitudes via the vertex symmetry ninePointCenter_rotate.",
+      "mathContext": "dist_foot proves the general A-altitude foot; dist_foot_A/B/C specialise by rotating the vertices, using that the nine-point centre is symmetric in A, B, C."
+    },
+    {
+      "id": "headline",
+      "title": "Headline: All Nine Points on One Sphere",
+      "startLine": 207,
+      "endLine": 241,
+      "summary": "ninePoints_mem_sphere assembles the nine memberships into a single Metric.sphere statement for an arbitrary triangle with distinct vertices.",
+      "mathContext": "Each conjunct is discharged by Metric.mem_sphere + dist_comm and the corresponding distance lemma; the radius is R/2 with R the common circumradius."
+    }
+  ],
+  "conclusion": {
+    "summary": "Establishes the nine-point circle theorem in full generality: for any triangle in any real inner product space with a common circumcenter, the nine classical points lie on one Metric.sphere of radius R/2. This removes the coordinate (ℝ×ℝ) restriction of the gallery's earlier Feuerbach formalisations and provides Mathlib-ready infrastructure, since Mathlib currently has no nine-point circle. 14 theorems, 4 definitions, 0 axioms, 0 sorries.",
+    "implications": "Coordinate-free formulation: the result holds in EuclideanSpace ℝ (Fin 2), ℝ³, or any abstract Hilbert space, making it a direct candidate for upstreaming to Mathlib's EuclideanGeometry. The translation-and-rotation proof skeleton (normalise circumcenter to origin, reduce to a single core lemma) is reusable for the remaining open questions — incircle/excircle tangency (Feuerbach's tangency theorem proper) and the affine-space (EuclideanGeometry.sphere) reformulation.",
+    "openQuestions": [
+      "Prove the Feuerbach tangency itself in this abstract setting: the nine-point sphere is internally tangent to the incircle and externally tangent to the three excircles, i.e. dist between centres equals the difference/sum of radii.",
+      "Recast the construction in Mathlib's affine EuclideanGeometry framework (AffineSpace, EuclideanGeometry.sphere, Affine.Simplex.circumcenter / orthocenter) so that O is recovered as the genuine circumcenter rather than supplied as a hypothesis.",
+      "Show the nine-point centre lies on the Euler line and equals the circumcentre of the medial triangle, in the same coordinate-free language."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "feuerbachs-theorem-defs-oq-04",
+      "relationship": "extends",
+      "description": "generalises the parent's single-coordinate-triangle Metric.sphere bridge to an arbitrary triangle in any real inner product space"
+    },
+    {
+      "targetId": "feuerbachs-theorem-defs",
+      "relationship": "related",
+      "description": "the coordinate (Point = ℝ × ℝ) nine-point circle proofs that this file abstracts away from"
+    }
+  ]
+}
