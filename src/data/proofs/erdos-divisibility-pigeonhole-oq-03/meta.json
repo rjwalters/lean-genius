@@ -1,0 +1,69 @@
+{
+ "id": "erdos-divisibility-pigeonhole-oq-03",
+ "title": "Erdős Divisibility Pigeonhole — chain refinement: forced collisions can be confined to pairs",
+ "slug": "erdos-divisibility-pigeonhole-oq-03",
+ "description": "The parent entry proves that among any n+1 elements of {1,…,2n} some one divides another. Its open question asks for a quantitative refinement: must n+1 elements force a divisibility chain a₁ ∣ a₂ ∣ ⋯ of length growing with n, or can the forced collisions always be confined to a single pair? This entry settles it: collisions can be confined to pairs. For n ≥ 1 the (n+1)-element block {n,…,2n} = Icc n (2n) contains a divisibility pair (n ∣ 2n) — necessarily, by the parent pigeonhole — yet contains no 3-term chain a ∣ b ∣ c of distinct elements, so its longest divisibility chain has length exactly 2. The dichotomy is genuine: the ambient interval {1,…,2n} itself holds chains of unbounded length (the powers of two 1,2,…,2^k), so what collapses to a pair is only the forced structure among (n+1)-subsets, not the interval's capacity. Formalized over Mathlib with zero sorries and zero axioms, built on the parent's verified pigeonhole theorem.",
+ "meta": {
+  "author": "Researcher agent (lean-genius), formalized in Lean 4 over Mathlib",
+  "sourceUrl": "https://en.wikipedia.org/wiki/Pigeonhole_principle",
+  "date": "folklore",
+  "status": "verified",
+  "proofRepoPath": "Proofs/ErdosDivisibilityPigeonholeOQ03.lean",
+  "tags": [
+   "combinatorics",
+   "number-theory",
+   "pigeonhole-principle",
+   "divisibility",
+   "chain",
+   "extremal",
+   "erdos"
+  ],
+  "badge": "original",
+  "sorries": 0,
+  "axiomCount": 0,
+  "mathlibDependencies": [
+   {
+    "theorem": "Nat.le_of_dvd",
+    "description": "From a ∣ b with 0 < b, deduce a ≤ b. Combined with distinctness a ≠ b this upgrades a divisor relation in [n,2n] to the strict bound b ≥ 2a, the engine of block_no_chain3.",
+    "module": "Mathlib.Algebra.Order.Group.Nat"
+   },
+   {
+    "theorem": "Nat.pow_right_injective",
+    "description": "For base ≥ 2 the map k ↦ b^k is injective. Used to count the powers-of-two chain {1,2,…,2^k}: its image has exactly k+1 elements (card_image_of_injective), giving the growing ambient chain.",
+    "module": "Mathlib.Algebra.GroupPower.Order"
+   },
+   {
+    "theorem": "pow_dvd_pow",
+    "description": "i ≤ j ⟹ b^i ∣ b^j. Establishes that the powers of two are totally ordered by divisibility, so {1,2,…,2^k} is a genuine k+1-term chain inside {1,…,2n} whenever 2^k ≤ 2n.",
+    "module": "Mathlib.Algebra.GroupPower.Basic"
+   }
+  ],
+  "originalContributions": [
+   "collisions_confined_to_pairs: settles the parent's chain-refinement open question — for n ≥ 1 there is an (n+1)-subset of {1,…,2n} that contains a divisibility pair yet no 3-term divisibility chain, so the pigeonhole threshold forces a pair but never a longer chain (longest forced chain has length exactly 2).",
+   "block_no_chain3: the witness block {n,…,2n} = Icc n (2n) contains no 3-term divisibility chain a ∣ b ∣ c of distinct elements — a tight degree-2 antichain-plus-one structure, proved by the doubling argument b ≥ 2a forcing a=n, b=2n, after which b ∣ c with c ≤ 2n is impossible.",
+   "HasDivChain3: a reusable Finset predicate for 3-term divisibility chains, isolating the 'length ≥ 3' obstruction the refinement rules out.",
+   "every_threshold_set_has_pair: records that the pair is unavoidable (the parent pigeonhole), so the refinement's content is precisely that nothing beyond a pair is forced.",
+   "ambient_has_long_chain / ambient_chain_length_unbounded: the contrasting horn — the powers of two 1,2,…,2^k form a totally ∣-ordered chain in {1,…,2n} for 2^k ≤ 2n, so chain lengths in the interval itself grow without bound, confirming the dichotomy is real."
+  ],
+  "dateAdded": "2026-06-24",
+  "relatedProblems": [
+   {
+    "id": "erdos-divisibility-pigeonhole",
+    "relationship": "Parent. This entry answers its open question on quantitative chain refinement, reusing erdos_divisibility_pigeonhole to certify that the pair in the witness set is forced."
+   },
+   {
+    "id": "erdos-divisibility-pigeonhole-oq-01",
+    "relationship": "Sibling extremal form. Where oq-01 measures the largest divisibility-antichain (length-1 structure, max size n), this entry measures the longest forced chain (length 2) among threshold subsets — the two read off complementary facets of the divisibility poset on {1,…,2n}."
+   }
+  ],
+  "lineCount": 164,
+  "assumptions": "0 axioms, 0 sorries. The two headline theorems collisions_confined_to_pairs and ambient_chain_length_unbounded depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified by #print axioms in-file); no Lean.ofReduceBool (no native_decide) and no sorryAx. Built on the parent's verified erdos_divisibility_pigeonhole plus foundational Mathlib lemmas (Nat.le_of_dvd, Nat.pow_right_injective, pow_dvd_pow). The only hypotheses are structural (n ≥ 1, and the size/membership conditions that are part of each statement). Badge is 'original' because the chain-refinement resolution — distinguishing forced pairs from forced chains, with both the confinement witness and the contrasting unbounded ambient chains — is formalized from first principles; Mathlib does not contain this result.",
+  "mathlib_version": "4.26.0",
+  "theoremCount": 6,
+  "definitionCount": 1
+ },
+ "overview": {
+  "historicalContext": "The Erdős divisibility pigeonhole — popularized by Paul Erdős, who reportedly posed it to the young Lajos Pósa — guarantees a divisible pair among any n+1 elements of {1,…,2n}. A natural follow-up, recorded as the parent's open question, asks how much *more* structure is forced: a single pair, or an ever-longer divisibility chain? The answer is that only a pair is forced. The block {n,…,2n} adds the smallest element n to the maximal antichain {n+1,…,2n}, creating exactly one divisibility relation (n ∣ 2n) and no chain of length 3. Meanwhile the interval {1,…,2n} as a whole contains the powers-of-two chain 1,2,4,…, whose length ~log₂(2n) grows without bound — so the divisibility poset is deep, but its forced collisions among threshold subsets are shallow.",
+  "significance": "Separates two distinct combinatorial quantities for the divisibility poset on {1,…,2n}: the size of the largest forced collision (a pair, length 2) versus the depth of the poset (chains of length ~log n). It makes precise the intuition that the pigeonhole gem is a statement about pairs, not chains, and exhibits an explicit (n+1)-element 'pair-only' witness alongside an explicit family of long ambient chains."
+ }
+}
