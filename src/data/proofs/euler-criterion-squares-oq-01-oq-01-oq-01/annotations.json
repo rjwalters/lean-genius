@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ecsoq010101-ann-overview",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 1, "endLine": 23 },
+    "type": "context",
+    "title": "From Quadratic to k-th Power Residues",
+    "content": "The docstring frames the generalization: the parent counted quadratic residues by computing the squaring map's kernel {1, −1} by hand. Here the exponent is an arbitrary $k$ dividing $p-1$, and the count $(p-1)/k$ is read off the cyclic structure of $(\\mathbb{Z}/p)^\\times$. The $k$-th power map $u \\mapsto u^k$ has kernel of size $\\gcd(p-1,k)=k$ (the $k$-th roots of unity) and image of size $(p-1)/\\gcd(p-1,k)=(p-1)/k$, so there are exactly $(p-1)/k$ nonzero $k$-th power residues."
+  },
+  {
+    "id": "ecsoq010101-ann-params",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 27, "endLine": 33 },
+    "type": "definition",
+    "title": "Parameters and the Unit Count",
+    "content": "Two parameters: the prime $p$ (with $[\\mathrm{Fact}\\,p.\\mathrm{Prime}]$, $[\\mathrm{Fact}\\,(2<p)]$) and the exponent $k$. card_units_eq records $|(\\mathbb{Z}/p)^\\times| = p-1$ via ZMod.card_units — the order of the cyclic group whose index-$k$ subgroup of $k$-th powers we are counting. The omit clause drops the unused $2<p$ hypothesis here."
+  },
+  {
+    "id": "ecsoq010101-ann-gcd",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 36, "endLine": 41 },
+    "type": "proof",
+    "title": "The gcd Collapse",
+    "content": "gcd_eq proves $\\gcd(p-1, k) = k$ whenever $k \\mid p-1$ (Nat.gcd_comm then Nat.gcd_eq_left). This is where the divisibility hypothesis does its work: the general cyclic count is $(p-1)/\\gcd(p-1,k)$, and it collapses to the clean $(p-1)/k$ exactly under $k \\mid p-1$. Needs neither Fact, so both are omitted."
+  },
+  {
+    "id": "ecsoq010101-ann-ker",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 43, "endLine": 49 },
+    "type": "proof",
+    "title": "Kernel = the k-th Roots of Unity",
+    "content": "card_kHom_ker: the kernel of $u \\mapsto u^k$ has cardinality exactly $k$. The proof is a one-line rewrite chaining Mathlib's IsCyclic.card_powMonoidHom_ker (which gives $\\gcd(|G|, k)$ for a finite cyclic group $G$), card_units_eq, and gcd_eq. The cyclic instance $\\mathrm{IsCyclic}\\,R^\\times$ for finite integral-domain units is found automatically. Equivalently: ZMod $p$ has exactly $k$ solutions of $x^k = 1$ when $k \\mid p-1$."
+  },
+  {
+    "id": "ecsoq010101-ann-range",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 51, "endLine": 53 },
+    "type": "proof",
+    "title": "Image = the k-th Power Residues",
+    "content": "card_kHom_range: the image of $u \\mapsto u^k$ has cardinality $(p-1)/k$, again a single rewrite using IsCyclic.card_powMonoidHom_range ($= |G|/\\gcd(|G|,k)$), the unit count, and the gcd collapse. This is the structural heart of the result — the $k$-th power residues among the units number exactly $(p-1)/k$ by the first isomorphism theorem for the cyclic power map."
+  },
+  {
+    "id": "ecsoq010101-ann-bridge",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 55, "endLine": 77 },
+    "type": "proof",
+    "title": "Bridge: Field k-th Powers vs Image Membership",
+    "content": "isKthPower_coe_iff_mem_range shows that for a unit $u$, $\\uparrow u$ is a $k$-th power in the field iff $u$ lies in the image of the unit power map. Forward: a witness $x$ with $x^k = \\uparrow u \\ne 0$ must be nonzero (else $0^k = 0$, using $k \\ne 0$ via zero_pow), so it lifts to a unit $w$ with $w^k = u$. Backward is immediate. This transports the unit-group count to field $k$-th powers."
+  },
+  {
+    "id": "ecsoq010101-ann-main",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 79, "endLine": 98 },
+    "type": "proof",
+    "title": "The Main Count",
+    "content": "card_nonzero_kth_power_residues: $\\mathrm{Nat.card}\\,\\{a \\ne 0 \\wedge \\exists x,\\ x^k = a\\} = (p-1)/k$. After deriving $k \\ne 0$ from $k \\mid p-1$ and $p-1 > 0$, it rewrites the goal to $|\\operatorname{range}|$ and builds an Equiv chain: subtypeEquivRight (via the bridge lemma), subtypeEquiv (via unitsEquivNeZero turning 'unit' into 'nonzero'), and subtypeSubtypeEquivSubtypeInter to merge the two subtype conditions. Nat.card_congr finishes."
+  },
+  {
+    "id": "ecsoq010101-ann-quadratic",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 100, "endLine": 105 },
+    "type": "proof",
+    "title": "Quadratic Corollary (k = 2)",
+    "content": "card_nonzero_quadratic_residues recovers the parent entry's $(p-1)/2$ count by specializing to $k = 2$. The hypothesis $2 \\mid p-1$ comes from $p$ being an odd prime: Nat.Prime.odd_of_ne_two gives $p = 2m+1$, so $p - 1 = 2m$. This confirms the generalization specializes correctly to the classical quadratic case."
+  },
+  {
+    "id": "ecsoq010101-ann-modseven",
+    "proofId": "euler-criterion-squares-oq-01-oq-01-oq-01",
+    "range": { "startLine": 107, "endLine": 117 },
+    "type": "context",
+    "title": "Concrete Check: Cubic Residues Modulo 7",
+    "content": "card_cubic_residues_mod_seven instantiates the general theorem at $p = 7$, $k = 3$ (with $3 \\mid 6$), yielding $(7-1)/3 = 2$ nonzero cubic residues — namely $\\{1, 6\\}$, since $1^3, 3^3 \\equiv 1, 6 \\pmod 7$. Because this is the general theorem specialized rather than a decide computation, the file introduces no native_decide and no Lean.ofReduceBool: it remains 0-axiom."
+  }
+]
