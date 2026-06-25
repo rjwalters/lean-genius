@@ -23,7 +23,7 @@
   {
     "id": "ann-cd-oq01-foldl",
     "proofId": "erdos-1054-construction-d-oq-01",
-    "range": { "startLine": 65, "endLine": 75 },
+    "range": { "startLine": 67, "endLine": 79 },
     "type": "technique",
     "title": "The accumulator identity for scanl",
     "content": "`partialDivisorSums m` is the tail of `scanl (·+·) 0 (sortedDivisors m)`. Batteries' `List.getLast_scanl` says the last entry of a `scanl` is `foldl (·+·) 0 L` — the running total. To identify that total with the list *sum*, we prove the small generalized lemma `foldl_add_acc : L.foldl (·+·) a = a + L.sum` by induction on `L` with the accumulator `a` generalized.\n\nGeneralizing the accumulator is essential: the naive statement `L.foldl (·+·) 0 = L.sum` does not strengthen the induction hypothesis enough, because the recursive call threads a *non-zero* accumulator `0 + d_1`.",
