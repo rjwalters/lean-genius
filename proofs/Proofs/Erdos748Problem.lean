@@ -151,6 +151,107 @@ theorem trivial_lower_bound (n : ℕ) (hn : n ≥ 2) :
     _ ≤ f n := hcard
 
 /-
+## Part III-B: Maximum Size of a Sum-Free Subset (the Schur connection)
+
+The Cameron–Erdős counting bounds concern *how many* sum-free subsets exist.
+A complementary, fully elementary question is *how large* a single sum-free
+subset of `{1,…,n}` can be. The classical answer is `⌈n/2⌉ = (n+1)/2`, and —
+unlike the asymptotic counting result — it admits a short, axiom-free proof.
+
+The structure section of this entry previously stated this maximum only as
+commentary; the theorems below make it rigorous (both directions, no axioms).
+-/
+
+/--
+**Upper bound on the size of a sum-free set (the hard direction):**
+Any sum-free subset `A ⊆ {1,…,n}` satisfies `|A| ≤ (n+1)/2 = ⌈n/2⌉`.
+
+*Proof (Erdős's reflection/difference argument).* Assume `A` is nonempty and let
+`m = max A`. The "reflection" map `x ↦ m - x` is injective on `A` (every element
+is `≤ m`), so its image `B := {m - x : x ∈ A}` has `|B| = |A|`. If some `z` lay in
+both `A` and `B`, say `z = m - x` with `x ∈ A`, then `m = x + z` with
+`m, x, z ∈ A`, contradicting sum-freeness; hence `A` and `B` are disjoint. Both
+`A` and `B` sit inside `{0,1,…,n}` (which has `n+1` elements), so
+`2|A| = |A| + |B| = |A ∪ B| ≤ n+1`, giving `|A| ≤ (n+1)/2`.
+-/
+theorem sumFree_card_le {n : ℕ} {A : Finset ℕ}
+    (hsf : IsSumFree A) (hA : A ⊆ Finset.Icc 1 n) :
+    A.card ≤ (n + 1) / 2 := by
+  rcases A.eq_empty_or_nonempty with rfl | hne
+  · simp
+  -- `m` is the largest element of `A`; every element of `A` is `≤ m`.
+  set m := A.max' hne with hm
+  have hmA : m ∈ A := A.max'_mem hne
+  have hle : ∀ x ∈ A, x ≤ m := fun x hx => A.le_max' x hx
+  -- The reflection image `B = {m - x : x ∈ A}`.
+  set B := A.image (fun x => m - x) with hB
+  -- Injectivity of `x ↦ m - x` on `A` (all elements bounded by `m`).
+  have hinj : Set.InjOn (fun x => m - x) (A : Set ℕ) := by
+    intro x hx y hy h
+    simp only [Finset.mem_coe] at hx hy
+    simp only at h
+    have hx' := hle x hx
+    have hy' := hle y hy
+    omega
+  have hcardB : B.card = A.card := by
+    rw [hB, Finset.card_image_of_injOn hinj]
+  -- `A` and `B` are disjoint: a common element would force `m = x + z` in `A`.
+  have hdisj : Disjoint A B := by
+    rw [Finset.disjoint_left]
+    intro z hzA hzB
+    rw [hB, Finset.mem_image] at hzB
+    obtain ⟨x, hxA, hxz⟩ := hzB
+    have hx' := hle x hxA
+    have hmxz : m = x + z := by omega
+    exact hsf m x z hmA hxA hzA hmxz
+  -- `m ≤ n`, hence both `A` and `B` lie in `{0,…,n}`.
+  have hmn : m ≤ n := by
+    have := hA hmA; rw [Finset.mem_Icc] at this; exact this.2
+  have hAsub : A ⊆ Finset.Icc 0 n := by
+    intro a ha
+    have := hA ha; rw [Finset.mem_Icc] at this ⊢; omega
+  have hBsub : B ⊆ Finset.Icc 0 n := by
+    intro b hb
+    rw [hB, Finset.mem_image] at hb
+    obtain ⟨x, hxA, hxb⟩ := hb
+    rw [Finset.mem_Icc]
+    have hx' := hle x hxA
+    omega
+  have hunion : A ∪ B ⊆ Finset.Icc 0 n := Finset.union_subset hAsub hBsub
+  -- `|A| + |B| = |A ∪ B| ≤ |{0,…,n}| = n+1`, and `|B| = |A|`.
+  have hcard : A.card + B.card ≤ (Finset.Icc 0 n).card := by
+    rw [← Finset.card_union_of_disjoint hdisj]
+    exact Finset.card_le_card hunion
+  rw [hcardB, Nat.card_Icc] at hcard
+  omega
+
+/--
+**The upper half achieves the bound (the easy direction):**
+The set `{⌊n/2⌋+1, …, n}` has exactly `(n+1)/2 = ⌈n/2⌉` elements.
+-/
+theorem upperHalf_card_eq (n : ℕ) :
+    (Finset.Icc (n / 2 + 1) n).card = (n + 1) / 2 := by
+  rw [Nat.card_Icc]; omega
+
+/--
+**Maximum size of a sum-free subset of `{1,…,n}` is exactly `⌈n/2⌉`.**
+
+This packages both directions:
+1. every sum-free `A ⊆ {1,…,n}` has `|A| ≤ (n+1)/2`, and
+2. the upper half `{⌊n/2⌋+1,…,n}` is sum-free with `|A| = (n+1)/2`.
+
+So `max { |A| : A ⊆ {1,…,n} sum-free } = (n+1)/2 = ⌈n/2⌉`, the rigorous form of
+the "Schur connection" noted in the structure commentary. No axioms are used.
+-/
+theorem max_sumFree_card (n : ℕ) :
+    (∀ A : Finset ℕ, IsSumFree A → A ⊆ Finset.Icc 1 n → A.card ≤ (n + 1) / 2) ∧
+      (∃ A : Finset ℕ, IsSumFree A ∧ A ⊆ Finset.Icc 1 n ∧ A.card = (n + 1) / 2) := by
+  refine ⟨fun A hsf hA => sumFree_card_le hsf hA, ?_⟩
+  refine ⟨Finset.Icc (n / 2 + 1) n, ?_, ?_, upperHalf_card_eq n⟩
+  · exact upperHalf_sumFree n _ (fun a ha => by rw [Finset.mem_Icc] at ha; exact ha)
+  · exact Finset.Icc_subset_Icc (by omega) le_rfl
+
+/-
 ## Part IV: The Cameron-Erdős Conjecture
 -/
 

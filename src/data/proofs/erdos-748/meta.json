@@ -52,12 +52,15 @@
       "green_upper_bound axiom: f(n) ≪ 2^{n/2}",
       "precise_asymptotic axiom: f(n) ~ c_n · 2^{n/2}",
       "oddNumbers_sumFree theorem: odds form sum-free set",
+      "sumFree_card_le theorem (PROVED, axiom-free): every sum-free A ⊆ {1,…,n} has |A| ≤ (n+1)/2 = ⌈n/2⌉, via Erdős's reflection map x ↦ max(A) − x onto a disjoint copy inside {0,…,n}",
+      "upperHalf_card_eq theorem (PROVED): the upper half {⌊n/2⌋+1,…,n} has exactly ⌈n/2⌉ elements, achieving the bound",
+      "max_sumFree_card theorem (PROVED, axiom-free): the maximum size of a sum-free subset of {1,…,n} is exactly ⌈n/2⌉ (both directions; the rigorous Schur connection)",
       "erdos_748_summary: combining all results"
     ],
     "axiomCount": 2,
-    "lineCount": 362,
-    "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The trivial lower bound f(n) ≥ 2^{⌊n/2⌋} is now fully proved (no longer an axiom). See the Lean source for details.",
-    "theoremCount": 12,
+    "lineCount": 463,
+    "assumptions": "2 axiom(s): green_upper_bound (Green 2004), precise_asymptotic (Green/Sapozhenko). Both are deep results from the literature. The trivial lower bound f(n) ≥ 2^{⌊n/2⌋} and the maximum sum-free subset size = ⌈n/2⌉ (max_sumFree_card) are both fully proved (no axioms). See the Lean source for details.",
+    "theoremCount": 15,
     "definitionCount": 5,
     "additionalFiles": [
       "Proofs/Erdos748Aristotle.lean"
@@ -70,6 +73,7 @@
     "proofStrategy": "**Formalization Approach**\n\n1. **Sum-Free Sets:** Define IsSumFree predicate and counting function f(n).\n\n2. **Lower Bound:** Prove upperHalf_sumFree showing any subset of [n/2+1, n] is sum-free, giving f(n) ≥ 2^{n/2}.\n\n3. **Upper Bound:** Axiomatize Green's theorem f(n) ≤ C · 2^{n/2}.\n\n4. **Examples:** Prove empty set, singletons, and odd numbers are sum-free.\n\n5. **The Conjecture:** Define cameronErdosConjecture formally and show it holds.",
     "keyInsights": [
       "**Trivial Lower Bound:** Any subset of [n/2+1, n] is sum-free because any sum exceeds n",
+      "**Maximum Single Set (proved, axiom-free):** the largest sum-free subset of [1,n] has exactly ⌈n/2⌉ elements — Erdős's reflection map x ↦ max(A)−x sends A to a disjoint copy in {0,…,n}, forcing 2|A| ≤ n+1; the upper half attains it",
       "**Upper Bound is Tight:** Green/Sapozhenko showed f(n) ≤ C · 2^{n/2}",
       "**Parity Dependence:** The constant c_n in f(n) ~ c_n · 2^{n/2} depends on whether n is even or odd",
       "**Structure Theorem:** Most sum-free sets are subsets of [n/2, n] or odd numbers",
@@ -107,51 +111,59 @@
       "mathContext": "Proves `upperHalf_sumFree`: subsets of $\\{\\lfloor n/2 \\rfloor + 1, \\ldots, n\\}$ are sum-free (sums exceed $n$). Axiomatizes $f(n) \\ge $$2^{{n/2}$}$$."
     },
     {
+      "id": "max-size",
+      "title": "Maximum Size of a Sum-Free Subset",
+      "summary": "Proves the rigorous Schur bound. `sumFree_card_le`: every sum-free $A \\subseteq \\{1,\\ldots,n\\}$ has $|A| \\le \\lceil n/2 \\rceil = (n+1)/2$, via Erdős's reflection map $x \\mapsto \\max(A) - x$ sending $A$ to a disjoint copy in $\\{0,\\ldots,n\\}$. `upperHalf_card_eq`: the upper half attains it. `max_sumFree_card`: the maximum is exactly $\\lceil n/2 \\rceil$. Fully proved, no axioms.",
+      "startLine": 153,
+      "endLine": 253,
+      "mathContext": "Verified, axiom-free: The maximum size of a sum-free subset of $\\{1,\\ldots,n\\}$ is exactly $\\lceil n/2 \\rceil$. Hard direction (`sumFree_card_le`): if $A$ is sum-free with $m = \\max A$, the reflection $x \\mapsto m - x$ is injective on $A$ and its image is disjoint from $A$ (a common element would give $m = x + z$ in $A$); both sit in $\\{0,\\ldots,n\\}$, so $2|A| \\le n+1$. Easy direction (`upperHalf_card_eq`): the upper half $\\{\\lfloor n/2 \\rfloor + 1,\\ldots,n\\}$ has $\\lceil n/2 \\rceil$ elements and is sum-free."
+    },
+    {
       "id": "conjecture",
       "title": "The Cameron-Erdős Conjecture",
       "summary": "Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$.",
-      "startLine": 116,
-      "endLine": 130,
+      "startLine": 255,
+      "endLine": 269,
       "mathContext": "Formal definition: Defines `cameronErdosConjecture`: $\\forall \\varepsilon > 0,\\; \\exists N,\\; \\forall n \\ge N$, $(1-\\varepsilon)n/2 \\le \\log_2 f(n) \\le (1+\\varepsilon)n/2$."
     },
     {
       "id": "solution",
       "title": "The Solution",
       "summary": "Axiomatizes Green's $f(n) \\le C \\cdot 2^{n/2}$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot 2^{n/2}$ with parity-dependent constants. Proves `cameron_erdos_proved`.",
-      "startLine": 132,
-      "endLine": 217,
+      "startLine": 271,
+      "endLine": 356,
       "mathContext": "Axiomatizes Green's $f(n) \\le C \\cdot $$2^{{n/2}$}$$, Sapozhenko's independent result, and the precise $f(n) \\sim c_n \\cdot $$2^{{n/2}$}$$ with parity-dependent constants. Proves `cameron_erdos_proved`."
     },
     {
       "id": "examples",
       "title": "Examples",
       "summary": "Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd).",
-      "startLine": 219,
-      "endLine": 254,
+      "startLine": 358,
+      "endLine": 393,
       "mathContext": "Verified: Proves `empty_sumFree` (vacuous), `singleton_sumFree` ($x \\ne 2x$ for $x > 0$), and `oddNumbers_sumFree` (odd + odd = even $\\ne$ odd)."
     },
     {
       "id": "structure",
       "title": "Structure of Sum-Free Sets",
-      "summary": "Informal docstring commentary on the two dominant types of sum-free sets (subsets of $[n/2+1, n]$ and subsets of odd numbers) and the Schur connection (maximum sum-free subset of $[1,n]$ has size $\\lceil n/2 \\rceil$). No axioms or theorems are declared in this section.",
-      "startLine": 256,
-      "endLine": 272,
-      "mathContext": "Commentary only: Two dominant types of sum-free sets — subsets of the upper half $[n/2+1, n]$ (type 1) and subsets of odd numbers (type 2) — account for essentially all sum-free sets. Schur connection: maximum size of a sum-free subset of $[1,n]$ is $\\lceil n/2 \\rceil$."
+      "summary": "Informal docstring commentary on the two dominant types of sum-free sets (subsets of $[n/2+1, n]$ and subsets of odd numbers). The Schur connection (maximum sum-free subset of $[1,n]$ has size $\\lceil n/2 \\rceil$) is now proved rigorously in the Maximum Size section above. No axioms or theorems are declared in this section.",
+      "startLine": 395,
+      "endLine": 410,
+      "mathContext": "Commentary only: Two dominant types of sum-free sets — subsets of the upper half $[n/2+1, n]$ (type 1) and subsets of odd numbers (type 2) — account for essentially all sum-free sets. The Schur connection (max sum-free subset of $[1,n]$ has size $\\lceil n/2 \\rceil$) is proved in `max_sumFree_card`."
     },
     {
       "id": "oeis",
       "title": "OEIS A007865",
       "summary": "Proves $f(1) = 2$, $f(2) = 3$, $f(3) = 6$ by `native_decide`, matching OEIS A007865. These are fully machine-checked results, not axioms.",
-      "startLine": 274,
-      "endLine": 289,
+      "startLine": 412,
+      "endLine": 427,
       "mathContext": "Verified by `native_decide`: $f(1) = 2$, $f(2) = 3$, $f(3) = 6$. Matches OEIS A007865. The counting function $f(n) = |\\text{sumFreeSubsets}(n)|$ is evaluated computably for small $n$."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$.",
-      "startLine": 291,
-      "endLine": 325,
+      "startLine": 429,
+      "endLine": 463,
       "mathContext": "Combines all results into `erdos_748_summary`: the conjecture $f(n) = 2^{(1+o(1))n/2}$ is TRUE (Green 2004, Sapozhenko 2003). The main theorem `erdos_748` packages the lower bound, upper bound, and precise asymptotic $f(n) \\sim c_n \\cdot 2^{n/2}$."
     }
   ],
@@ -160,7 +172,7 @@
     "implications": "**Theoretical Significance**: **Combinatorial Implications**\n\n1. **Structure Theorem:** Sum-free sets are essentially subsets of [n/2, n] or odd numbers\n\n2. **Additive Combinatorics:** Foundational result for counting sets avoiding arithmetic patterns\n\n**3. Schur Numbers:** Connection to coloring problems and Ramsey theory\n\n4. **Asymptotic Counting:** Model example of precise asymptotic enumeration\n\n5. **OEIS A007865:** Explicit sequence with known asymptotics.",
     "openQuestions": [
       "What are the exact values of c_even and c_odd?",
-      "What is the structure of sum-free sets achieving the maximum size?",
+      "The maximum size of a sum-free subset of [1,n] is now proved to be exactly ⌈n/2⌉ (max_sumFree_card); what is the full structure/classification of the sets achieving it?",
       "Analogous questions for sum-free subsets of other groups?",
       "Connection to Schur numbers and Ramsey theory?",
       "Higher-order analogues (a = b₁ + ... + b_k)?"
@@ -177,9 +189,9 @@
       "Finset"
     ],
     "namespace": "Erdos748",
-    "lineCount": 362,
+    "lineCount": 463,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 5,
     "path": "Proofs/Erdos748Problem.lean",
     "sorries": 0,
