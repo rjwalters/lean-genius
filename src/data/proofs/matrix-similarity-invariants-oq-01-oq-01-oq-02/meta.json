@@ -1,0 +1,174 @@
+{
+  "id": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+  "title": "Functorial Kernel Isomorphism for Similar Matrices",
+  "slug": "matrix-similarity-invariants-oq-01-oq-01-oq-02",
+  "description": "The companion entry [oq-01-oq-01] proves nullity is a similarity invariant: if B = P·A·P⁻¹ then dim(ker B) = dim(ker A). That is an equality of numbers and produces no map between the kernels. This entry upgrades it to an explicit linear isomorphism kerEquiv : ker B.mulVecLin ≃ₗ[K] ker A.mulVecLin, realised by the change of basis itself (x ↦ P⁻¹ ·ᵥ x, with inverse y ↦ P ·ᵥ y), and proves the two functoriality laws — identity conjugation gives the identity isomorphism, composed conjugations compose the isomorphisms — that justify calling the construction functorial. Taking finrank recovers the parent's equality of dimensions as a one-line corollary. Mathlib has the ingredients (Matrix.mulVecLin, Matrix.mulVec_mulVec, LinearEquiv.ofLinear, LinearMap.restrict) but states neither the conjugation-transports-kernels isomorphism nor its functoriality.",
+  "meta": {
+    "author": "classical linear algebra; formalized for lean-genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MatrixSimilarityInvariantsOQ01OQ01OQ02.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "similarity",
+      "kernel",
+      "linear-equiv",
+      "functoriality",
+      "change-of-basis",
+      "invariants"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.mulVecLin",
+        "description": "The linear map (n → K) →ₗ[K] (n → K) associated to a matrix, x ↦ A ·ᵥ x; its kernel is the object being transported",
+        "module": "Mathlib.LinearAlgebra.Matrix.ToLin"
+      },
+      {
+        "theorem": "Matrix.mulVec_mulVec",
+        "description": "M ·ᵥ (N ·ᵥ v) = (M * N) ·ᵥ v — the associativity identity driving every membership and round-trip computation",
+        "module": "Mathlib.Data.Matrix.Mul"
+      },
+      {
+        "theorem": "LinearMap.restrict",
+        "description": "Restricts a linear map to a submodule of the domain and codomain given a maps-into proof; builds the forward and backward kernel maps from P⁻¹.mulVecLin and P.mulVecLin",
+        "module": "Mathlib.Algebra.Module.Submodule.LinearMap"
+      },
+      {
+        "theorem": "LinearEquiv.ofLinear",
+        "description": "Assembles two mutually inverse linear maps into a linear equivalence; turns the restricted maps into kerEquiv",
+        "module": "Mathlib.Algebra.Module.Equiv.Basic"
+      },
+      {
+        "theorem": "LinearEquiv.finrank_eq",
+        "description": "Equivalent spaces have equal finrank; recovers the parent's nullity equality from the isomorphism",
+        "module": "Mathlib.LinearAlgebra.FiniteDimensional"
+      }
+    ],
+    "originalContributions": [
+      "kerEquiv: an explicit linear isomorphism ker B.mulVecLin ≃ₗ[K] ker A.mulVecLin from the conjugation witness B = P·A·P⁻¹, built by restricting the change-of-basis maps P⁻¹·ᵥ· and P·ᵥ· to the kernels",
+      "conj_intertwine_left / conj_intertwine_right: the intertwining identities A·P⁻¹ = P⁻¹·B and B·P = P·A extracted from the conjugation, the algebraic engine of kernel transport",
+      "mapsTo_ker_left / mapsTo_ker_right: P⁻¹ carries ker B into ker A and P carries ker A into ker B",
+      "kerEquiv_apply / kerEquiv_symm_apply: the isomorphism acts as P⁻¹·ᵥ· (inverse P·ᵥ·), certifying it is the genuine change-of-basis map and not an abstract dimension-counting artefact",
+      "kerEquiv_refl: the identity-conjugation witness gives the identity isomorphism (functor-on-identities law)",
+      "kerEquiv_trans: stacked conjugations B = P·A·P⁻¹, C = Q·B·Q⁻¹ compose the kernel isomorphisms (functor-on-composition law)",
+      "nullity_eq_of_conj: taking finrank recovers the parent's equality of kernel dimensions, confirming the isomorphism refines the numeric invariant",
+      "Similar.nonempty_kerEquiv: the basis-free existence form for the Similar relation"
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. Depends only on the standard foundational axioms propext, Classical.choice, Quot.sound. Stated over an arbitrary field K and finite index type n.",
+    "lineCount": 163,
+    "theoremCount": 10,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Equality of dimensions is the shadow that an isomorphism casts on the level of numbers. The companion entry showed that similar matrices have kernels of equal dimension; the natural next question — the one a category theorist asks reflexively — is whether that equality is witnessed by an actual map, and whether the assignment of that map respects identities and composition. Conjugation B = P·A·P⁻¹ is literally a change of basis, so the expectation is that the change of basis itself carries kernel to kernel; making this precise turns a dimension count into a functor from the groupoid of matrices-and-conjugations to vector-spaces-and-isomorphisms.",
+    "problemStatement": "Does the kernel of A.mulVecLin transport functorially under conjugation B = P·A·P⁻¹, giving an explicit linear isomorphism of kernels rather than only equality of dimensions?\n\n**Answer:** yes. The change of basis P⁻¹ restricts to a linear isomorphism kerEquiv : ker B.mulVecLin ≃ₗ[K] ker A.mulVecLin (with inverse the restriction of P), it acts as x ↦ P⁻¹ ·ᵥ x, it sends the identity conjugation to the identity isomorphism, and it composes under stacked conjugations. Taking finrank recovers the equality of dimensions.",
+    "text": "Conjugation transports kernels by an explicit linear isomorphism — the change of basis itself — and this assignment is functorial: identities go to identities and composites to composites.",
+    "proofStrategy": "From B = P·A·P⁻¹ extract the intertwining identities A·P⁻¹ = P⁻¹·B (conj_intertwine_left) and B·P = P·A (conj_intertwine_right) by cancelling the surrounding unit P with Units.inv_mul. These give the maps-into facts: for x ∈ ker B, A ·ᵥ (P⁻¹ ·ᵥ x) = (A·P⁻¹) ·ᵥ x = (P⁻¹·B) ·ᵥ x = P⁻¹ ·ᵥ (B ·ᵥ x) = 0, so P⁻¹ carries ker B into ker A (mapsTo_ker_left), and symmetrically P carries ker A into ker B. Restrict P⁻¹.mulVecLin and P.mulVecLin to the kernels with LinearMap.restrict and assemble them with LinearEquiv.ofLinear; the two round-trip identities reduce, via Matrix.mulVec_mulVec and Units.inv_mul / Units.mul_inv, to 1 ·ᵥ v = v. The action lemmas kerEquiv_apply / kerEquiv_symm_apply hold by rfl. Functoriality: kerEquiv_refl follows because 1⁻¹ ·ᵥ x = x; kerEquiv_trans because (Q·P)⁻¹ = P⁻¹·Q⁻¹ (mul_inv_rev) matches the composite P⁻¹ ·ᵥ (Q⁻¹ ·ᵥ x) (mulVec_mulVec). Finally nullity_eq_of_conj is LinearEquiv.finrank_eq applied to kerEquiv.",
+    "keyInsights": [
+      "The isomorphism is not abstract: it is the change-of-basis map P⁻¹ ·ᵥ · restricted to the kernel, made precise by kerEquiv_apply being true by rfl — the same P that conjugates A into B is the one that moves the solution spaces",
+      "Everything reduces to one matrix identity, mulVec_mulVec (M ·ᵥ (N ·ᵥ v) = (M*N) ·ᵥ v): membership, the two round trips, and the composition law are all instances of pushing a product of matrices through a vector",
+      "The intertwining identities A·P⁻¹ = P⁻¹·B and B·P = P·A are the conceptual core — they say A and B are the same operator read through P, and a single unit cancellation (Units.inv_mul) produces each",
+      "Functoriality is what upgrades 'isomorphic kernels' to 'the kernel is a functor': kerEquiv_refl and kerEquiv_trans verify the identity and composition laws on the groupoid of matrices under conjugation",
+      "The equality of dimensions from the parent entry is recovered for free by LinearEquiv.finrank_eq, exhibiting it as the decategorification of the isomorphism rather than an independent fact"
+    ],
+    "prerequisites": [
+      "Matrices over a field and the associated linear map A.mulVecLin",
+      "Kernels as submodules and restriction of linear maps to submodules",
+      "Linear equivalences and how to build one from two mutually inverse maps (LinearEquiv.ofLinear)",
+      "The unit (invertible-matrix) group and its inverse identities"
+    ]
+  },
+  "sections": [
+    {
+      "id": "intertwine",
+      "title": "The Conjugation Identities",
+      "startLine": 63,
+      "endLine": 79,
+      "summary": "From B = P·A·P⁻¹, cancel the unit P to obtain the intertwining identities A·P⁻¹ = P⁻¹·B and B·P = P·A.",
+      "mathContext": "$A P^{-1} = P^{-1} B,\\qquad B P = P A.$"
+    },
+    {
+      "id": "transport",
+      "title": "Kernel Transport",
+      "startLine": 81,
+      "endLine": 95,
+      "summary": "The change of basis P⁻¹ carries ker B into ker A and P carries ker A into ker B, via the intertwining identities and mulVec_mulVec.",
+      "mathContext": "$x \\in \\ker B \\Rightarrow P^{-1} x \\in \\ker A,\\quad y \\in \\ker A \\Rightarrow P y \\in \\ker B.$"
+    },
+    {
+      "id": "equiv",
+      "title": "The Explicit Kernel Isomorphism",
+      "startLine": 97,
+      "endLine": 124,
+      "summary": "Restricting P⁻¹·ᵥ· and P·ᵥ· to the kernels and assembling with LinearEquiv.ofLinear yields kerEquiv : ker B ≃ₗ ker A; it acts as x ↦ P⁻¹ ·ᵥ x.",
+      "mathContext": "$\\operatorname{kerEquiv} : \\ker B \\xrightarrow{\\ \\sim\\ } \\ker A,\\quad x \\mapsto P^{-1} x.$"
+    },
+    {
+      "id": "functoriality",
+      "title": "Functoriality",
+      "startLine": 126,
+      "endLine": 143,
+      "summary": "Identity conjugation gives the identity isomorphism (kerEquiv_refl); stacked conjugations C = Q·B·Q⁻¹ over B = P·A·P⁻¹ compose the isomorphisms (kerEquiv_trans), using (Q·P)⁻¹ = P⁻¹·Q⁻¹.",
+      "mathContext": "$\\operatorname{kerEquiv}_{1} = \\mathrm{id},\\qquad \\operatorname{kerEquiv}_{QP} = \\operatorname{kerEquiv}_{P} \\circ \\operatorname{kerEquiv}_{Q}.$"
+    },
+    {
+      "id": "recover",
+      "title": "Recovering the Numeric Invariant",
+      "startLine": 145,
+      "endLine": 162,
+      "summary": "Taking finrank of kerEquiv recovers the parent's nullity equality (nullity_eq_of_conj); Similar.nonempty_kerEquiv gives the basis-free existence form.",
+      "mathContext": "$\\dim \\ker B = \\dim \\ker A.$"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Hoffman, K.; Kunze, R.",
+      "title": "Linear Algebra",
+      "year": "1971",
+      "note": "Similarity, change of basis, and the kernel/range of a linear operator"
+    },
+    {
+      "authors": "Mac Lane, S.",
+      "title": "Categories for the Working Mathematician",
+      "year": "1971",
+      "note": "Functoriality: identity and composition laws as the defining structure of a functor"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "matrix-similarity-invariants-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent entry: proves nullity (dimension of ker A.mulVecLin) is a similarity invariant — an equality of numbers. This entry upgrades that equality to an explicit functorial linear isomorphism of the kernels and recovers the dimension equality as a corollary."
+    }
+  ],
+  "conclusion": {
+    "summary": "The kernel of A.mulVecLin transports under conjugation B = P·A·P⁻¹ by an explicit linear isomorphism kerEquiv : ker B ≃ₗ[K] ker A — the change of basis P⁻¹ itself — which acts as x ↦ P⁻¹ ·ᵥ x, sends identity conjugations to identity isomorphisms and composed conjugations to composed isomorphisms, and refines the parent's equality of kernel dimensions (recovered by finrank). Verified with 0 axioms on top of Mathlib's mulVec arithmetic and LinearEquiv.ofLinear.",
+    "implications": "Upgrades the structural similarity invariant from a dimension count to a functor on the groupoid of matrices under conjugation, the categorified form of nullity invariance. The same pattern — restrict the conjugator, assemble with ofLinear, verify identity/composition — applies to eigenspaces, generalized eigenspaces, and invariant-subspace lattices, the natural next layer toward canonical-form theory.",
+    "openQuestions": [
+      "Does the same change of basis transport the full eigenspace and generalized-eigenspace decompositions functorially, assembling into an isomorphism of the invariant-subspace lattices of similar matrices?",
+      "Can kerEquiv be packaged as an honest functor out of a groupoid of matrices-and-conjugations into K-vector spaces, with the refl/trans laws becoming the functor axioms definitionally?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Matrix",
+      "Module"
+    ],
+    "namespace": "MatrixSimilarityInvariantsOQ01OQ01OQ02",
+    "lineCount": 163,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 2,
+    "path": "Proofs/MatrixSimilarityInvariantsOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
