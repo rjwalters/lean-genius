@@ -1,0 +1,197 @@
+{
+  "id": "factor-remainder-theorem-oq-01-oq-01-oq-02",
+  "title": "Newton's Forward-Difference Interpolation: Taylor ↔ Newton Coefficients and Reconstruction from Finite Differences",
+  "slug": "factor-remainder-theorem-oq-01-oq-01-oq-02",
+  "description": "Answers the second open question of factor-remainder-theorem-oq-01-oq-01: derive the divided-difference / Newton-form consequence relating the Taylor coefficients (taylor a p).coeff m to finite differences and the Newton interpolation coefficients of p at a + ℤ. A degree-N polynomial carries two coordinate systems on the shifted line a + r: the Taylor (monomial) coefficients t_j = (taylor a p).coeff j, and the Newton (forward-difference) coefficients c_m = Δᵐ[r ↦ p(a+r)](0). The bridge is the finite-difference-of-monomials kernel K(j,m) = Δᵐ(r ↦ rʲ)(0) = m!·S(j,m) (Stirling numbers of the second kind): the change of basis c_m = Σⱼ t_j·K(j,m) is fully formalized. Its diagonal gives the divided-difference reading of the leading coefficient, c_N = t_N·N! = leadingCoeff p · N!. The forward-difference coefficients then reconstruct p: Newton interpolation holds both at integer nodes (p(a+n) = Σ c_m·(n choose m) for n : ℕ) and as a polynomial identity over ℚ (p(a+x) = Σ c_m·Ring.choose x m for all x), the latter proved by polynomial agreement on ℕ ⊆ ℚ. 0 axioms.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Finite_difference#Newton's_series",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "finite-differences",
+      "newton-interpolation",
+      "taylor-expansion",
+      "binomial-coefficients",
+      "stirling-numbers",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "fwdDiff_iter_eq_factorial",
+        "description": "Δ_[1]^[n] (fun r => r^n) = n! — the n-th forward difference of the n-th power is the constant n!; supplies the diagonal value of the monomial kernel",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "fwdDiff_iter_pow_eq_zero_of_lt",
+        "description": "Δ_[1]^[n] (fun r => r^j) = 0 for j < n — the monomial kernel vanishes below the diagonal, isolating the leading term",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "shift_eq_sum_fwdDiff_iter",
+        "description": "f (y + n•h) = Σ_{k≤n} C(n,k) • Δ_[h]^[k] f y — the shift operator as (1+Δ)ⁿ; specialized to h=1, y=0 it is the discrete Newton expansion at integer nodes",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "Polynomial.fwdDiff_iter_eq_zero_of_degree_lt",
+        "description": "Δ_[1]^[n] P.eval = 0 when P.natDegree < n — the Newton coefficients of a polynomial terminate at its degree",
+        "module": "Mathlib.Algebra.Group.ForwardDiff"
+      },
+      {
+        "theorem": "Polynomial.taylor_eval",
+        "description": "(taylor r f).eval s = f.eval (s + r) — identifies the sampled function r ↦ p(a+r) with the evaluation of the Taylor shift, the link between the two coordinate systems",
+        "module": "Mathlib.Algebra.Polynomial.Taylor"
+      },
+      {
+        "theorem": "Polynomial.leadingCoeff_taylor",
+        "description": "(taylor r f).leadingCoeff = f.leadingCoeff — the Taylor shift preserves the leading coefficient, giving the divided-difference reading of leadingCoeff p",
+        "module": "Mathlib.Algebra.Polynomial.Taylor"
+      },
+      {
+        "theorem": "Ring.choose / Ring.choose_natCast / Ring.descPochhammer_eq_factorial_smul_choose",
+        "description": "The generalized binomial coefficient Ring.choose x m over a binomial ring, its agreement with Nat.choose at naturals, and its descending-Pochhammer form — the Newton (binomial) basis over ℚ",
+        "module": "Mathlib.RingTheory.Binomial"
+      },
+      {
+        "theorem": "Polynomial.eq_of_infinite_eval_eq",
+        "description": "Two polynomials agreeing on an infinite set are equal — upgrades the integer-node interpolation to a polynomial identity over ℚ",
+        "module": "Mathlib.Algebra.Polynomial.Roots"
+      }
+    ],
+    "originalContributions": [
+      "fwdDiff_iter_eval_eq_sum_taylor: the Taylor → Newton change of basis — the m-th forward-difference coefficient c_m = Δᵐ[r ↦ p(a+r)](0) equals Σ_{j ≤ deg p} (taylor a p).coeff j · Δᵐ(r ↦ rʲ)(0), expressing the Newton coordinates as the kernel-weighted Taylor coordinates (the OQ's requested combinatorial route; the kernel is m!·Stirling(j,m))",
+      "fwdDiff_pow_lt / fwdDiff_pow_self: the pointwise values of the finite-difference-of-monomials kernel K(j,m) = Δᵐ(r ↦ rʲ)(0) — zero for j < m and m! on the diagonal j = m",
+      "fwdDiff_iter_natDegree_eval and fwdDiff_iter_natDegree_eval_eq_leadingCoeff: the diagonal corollary c_N = (taylor a p).coeff N · N! = leadingCoeff p · N!, the divided-difference reading of the leading coefficient",
+      "eval_add_natCast_eq_sum_fwdDiff_choose: Newton interpolation at integer nodes — p(a+n) = Σ_{m ≤ deg p} c_m · Ring.choose (n:ℚ) m for every n : ℕ, reconstructing p on the arithmetic progression a + ℕ from the finitely many forward differences c_0,…,c_N",
+      "eval_add_eq_sum_fwdDiff_choose: Newton interpolation as a polynomial identity over ℚ — p(a+x) = Σ_{m ≤ deg p} c_m · Ring.choose x m for ALL x : ℚ, obtained from the integer-node version by polynomial agreement on the infinite set ℕ ⊆ ℚ, with the Newton basis realized as (m!)⁻¹ · descPochhammer ℚ m"
+    ],
+    "axiomCount": 0,
+    "lineCount": 205,
+    "assumptions": "None. All theorems fully proved with 0 axioms and 0 sorries (no native_decide). The base ring is ℚ throughout, used so that the generalized binomial coefficient Ring.choose and the division by m! in the Newton basis are available; #print axioms reports only [propext, Classical.choice, Quot.sound]. The Taylor → Newton change of basis and the diagonal leading-coefficient corollary do not use division and would generalize to any commutative ring, but are stated over ℚ for uniformity with the interpolation theorems.",
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "prerequisites": [
+      "The forward difference operator Δ and its iterates (Mathlib.Algebra.Group.ForwardDiff)",
+      "Taylor expansion of polynomials and Taylor coefficients (Polynomial.taylor)",
+      "Generalized binomial coefficients over a binomial ring (Ring.choose) and descending Pochhammer symbols",
+      "A polynomial over an infinite domain is determined by its values"
+    ],
+    "relatedProblems": [
+      {
+        "id": "factor-remainder-theorem-oq-01-oq-01",
+        "relationship": "Parent: the Taylor-coefficient form of the multiplicity factor theorem. This entry answers its second open question — the divided-difference / Newton-form consequence — relating its Taylor coefficients to forward differences and Newton interpolation."
+      },
+      {
+        "id": "factor-remainder-theorem-oq-01",
+        "relationship": "Grandparent: the multiplicity factor theorem via iterated derivatives over a characteristic-zero field."
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Newton's forward-difference (divided-difference) interpolation predates the calculus of Taylor series: from the sampled values p(a), p(a+1), p(a+2), … one forms the difference table whose leading diagonal c_m = Δᵐ p(a) reconstructs the polynomial as p(a+x) = Σ_m c_m (x choose m). This is the discrete analogue of the Taylor expansion p(a+x) = Σ_m (p⁽ᵐ⁾(a)/m!) xᵐ: the monomial basis {xᵐ} is replaced by the binomial (falling-factorial) basis {(x choose m)}, and the derivative coefficients by finite differences. The parent entry phrased the multiplicity factor theorem through Taylor (Hasse-derivative) coefficients; its open question asked for the divided-difference counterpart and the explicit dictionary between the two coordinate systems.\n\nThe dictionary is governed by the Stirling numbers of the second kind S(j,m), which express the change of basis between monomials and falling factorials: Δᵐ(rʲ)|₀ = m!·S(j,m). This entry formalizes that dictionary as the universal kernel K(j,m), proves the Taylor → Newton change of basis c_m = Σⱼ t_j K(j,m), and then establishes Newton interpolation itself — first at integer nodes, then as a polynomial identity over ℚ.",
+    "problemStatement": "Relate the Taylor coefficient (taylor a p).coeff m to finite differences and to the Newton interpolation coefficients of p sampled along a + ℤ, giving a combinatorial route to the same data. Concretely: express the forward-difference coefficients c_m = Δᵐ[r ↦ p(a+r)](0) in terms of the Taylor coefficients, identify the diagonal case with the leading coefficient, and prove the Newton reconstruction p(a+x) = Σ_m c_m·(x choose m).",
+    "proofStrategy": "Three movements. (1) The kernel: Δᵐ(r ↦ rʲ)(0) is 0 for j < m (fwdDiff_iter_pow_eq_zero_of_lt) and m! for j = m (fwdDiff_iter_eq_factorial). (2) Change of basis: write p(a+r) = (taylor a p).eval r = Σ_{j ≤ N} (taylor a p).coeff j · rʲ (taylor_eval + eval_eq_sum_range + natDegree_taylor), then push the linear operator Δᵐ through the finite sum (fwdDiff_iter_finset_sum, fwdDiff_iter_const_smul) to obtain c_m = Σ_j t_j·K(j,m); the diagonal m = N leaves only the top term, c_N = t_N·N!, and leadingCoeff_taylor rewrites t_N as leadingCoeff p. (3) Interpolation: Mathlib's shift_eq_sum_fwdDiff_iter (the operator identity shiftⁿ = (1+Δ)ⁿ) gives p(a+n) = Σ_{k ≤ n} c_k·(n choose k) at each natural n; padding both index sets to a common range (terms with k > n have (n choose k) = 0, terms with m > N have c_m = 0 by fwdDiff_iter_eq_zero_of_degree_lt) rewrites this over range (N+1). Finally, realizing the Newton basis as the polynomial (m!)⁻¹·descPochhammer ℚ m (whose evaluation is Ring.choose x m), the polynomials taylor a p and Σ_m C(c_m)·(Newton basis) agree at every natural argument, hence everywhere by eq_of_infinite_eval_eq — yielding the identity for all x : ℚ.",
+    "keyInsights": [
+      "Two coordinate systems on the same line: Taylor coefficients are the coordinates of p(a+r) in the monomial basis {rʲ}; Newton coefficients c_m = Δᵐ p(a) are the coordinates in the binomial basis {(r choose m)}. The forward difference is the discrete derivative, and the difference table is the discrete Taylor expansion.",
+      "The change of basis is a single combinatorial kernel: c_m = Σⱼ t_j·K(j,m) with K(j,m) = Δᵐ(rʲ)|₀ = m!·S(j,m), the Stirling numbers of the second kind. Triangularity of the kernel (K(j,m)=0 for j<m) is exactly why the m-th difference sees only coefficients of degree ≥ m.",
+      "The diagonal of the kernel is the leading coefficient: Δᴺ p(a) = leadingCoeff p · N!. This is the divided-difference analogue of 'the N-th derivative of a degree-N polynomial is N!·(leading coefficient)'.",
+      "Finite differences are an operator binomial expansion: the shift S and the difference Δ satisfy S = 1 + Δ, so Sⁿ = (1+Δ)ⁿ = Σ C(n,m) Δᵐ. Evaluating at integer nodes is literally this binomial identity — Newton interpolation needs no analysis, only commuting operators.",
+      "Density promotes sampling to identity: a polynomial over the infinite field ℚ is pinned down by its values on ℕ, so the integer-node reconstruction p(a+n) = Σ c_m (n choose m) automatically upgrades to the polynomial identity p(a+x) = Σ c_m Ring.choose x m for every real x."
+    ],
+    "prerequisites": [
+      "The forward difference operator and its iterates",
+      "Taylor coefficients of a polynomial",
+      "Generalized binomial coefficients and the falling-factorial (Newton) basis",
+      "Identity of polynomials from agreement on an infinite set"
+    ]
+  },
+  "sections": [
+    {
+      "id": "kernel",
+      "title": "Section I: The Finite-Difference-of-Monomials Kernel",
+      "startLine": 57,
+      "endLine": 71,
+      "summary": "fwdDiff_pow_lt and fwdDiff_pow_self compute K(j,m) = Δᵐ(r ↦ rʲ)(0): zero below the diagonal (j < m) and m! on the diagonal (j = m). These are the structure constants of the monomial → binomial change of basis (m!·Stirling numbers).",
+      "mathContext": "The kernel is triangular with diagonal m!, which is precisely what makes the m-th forward difference annihilate low-degree monomials and scale the m-th by m!."
+    },
+    {
+      "id": "change-of-basis",
+      "title": "Section II: Taylor → Newton Change of Basis",
+      "startLine": 72,
+      "endLine": 117,
+      "summary": "fwdDiff_iter_eval_eq_sum_taylor proves c_m = Σ_{j ≤ N} (taylor a p).coeff j · K(j,m), the kernel-weighted dictionary between Taylor and Newton coefficients. Its diagonal, fwdDiff_iter_natDegree_eval(_eq_leadingCoeff), gives c_N = (taylor a p).coeff N · N! = leadingCoeff p · N!.",
+      "mathContext": "Pushing the linear operator Δᵐ through the monomial expansion of p(a+r) realizes the Newton coordinates as a linear image of the Taylor coordinates; the leading case is the divided-difference reading of the leading coefficient."
+    },
+    {
+      "id": "interpolation",
+      "title": "Section III: Newton Interpolation — Integer Nodes and Polynomial Identity",
+      "startLine": 119,
+      "endLine": 205,
+      "summary": "fwdDiff_iter_eval_eq_zero terminates the Newton coefficients at the degree. eval_add_natCast_eq_sum_fwdDiff_choose reconstructs p(a+n) = Σ_{m ≤ N} c_m·(n choose m) at every integer node from the difference table. newtonPoly_eval realizes the binomial basis as (m!)⁻¹·descPochhammer ℚ m, and eval_add_eq_sum_fwdDiff_choose upgrades the reconstruction to a polynomial identity p(a+x) = Σ c_m·Ring.choose x m for all x : ℚ via agreement on ℕ ⊆ ℚ.",
+      "mathContext": "The shift-equals-(1+Δ)ⁿ operator identity gives interpolation at integers with no analysis; density of ℕ in the polynomial ring over ℚ then forces the identity at all points."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 sorries, 0 axioms, no native_decide) file of 205 lines and 9 theorems formalizing Newton's forward-difference interpolation and its dictionary with Taylor coefficients. The finite-difference-of-monomials kernel K(j,m) = Δᵐ(rʲ)|₀ (zero for j<m, m! on the diagonal) drives the Taylor → Newton change of basis c_m = Σⱼ t_j·K(j,m); its diagonal is the divided-difference reading of the leading coefficient, c_N = leadingCoeff p · N!. The forward-difference coefficients reconstruct the polynomial both at integer nodes, p(a+n) = Σ c_m·(n choose m), and as a polynomial identity over ℚ, p(a+x) = Σ c_m·Ring.choose x m, the latter via polynomial agreement on ℕ ⊆ ℚ.",
+    "implications": "This answers the second open question of factor-remainder-theorem-oq-01-oq-01 exactly as posed: it relates (taylor a p).coeff m to finite differences and to the Newton interpolation coefficients of p along a + ℤ, exhibiting the explicit combinatorial (Stirling-number) change of basis. Mathlib already contains the discrete forward-difference machinery (shift_eq_sum_fwdDiff_iter, fwdDiff_iter_eq_factorial) and the generalized binomial coefficient (Ring.choose); the original content here is the polynomial-over-ℚ interpolation identity and the Taylor↔Newton dictionary tying both to (taylor a p).coeff, which are not in Mathlib.",
+    "openQuestions": [
+      "Formalize the kernel as Stirling numbers explicitly: define S(j,m) and prove Δᵐ(rʲ)|₀ = m!·S(j,m) together with the inverse (Newton → Taylor) change of basis via Stirling numbers of the first kind, completing the bidirectional dictionary.",
+      "Generalize the change-of-basis theorems (Sections I–II, which use no division) from ℚ to an arbitrary commutative ring, isolating exactly where characteristic-zero / a binomial-ring structure is needed (only the interpolation theorems of Section III)."
+    ]
+  },
+  "status": "verified",
+  "badge": "original",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Algebra.Polynomial.Taylor",
+      "Mathlib.Algebra.Group.ForwardDiff",
+      "Mathlib.RingTheory.Binomial",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset",
+      "fwdDiff",
+      "Nat"
+    ],
+    "namespace": "FactorRemainderTheoremOQ01OQ01OQ02",
+    "lineCount": 205,
+    "axiomCount": 0,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "path": "Proofs/FactorRemainderTheoremOQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "factor-remainder-theorem-oq-01-oq-01",
+      "relationship": "extends",
+      "description": "Parent: the Taylor-coefficient form of the multiplicity factor theorem. This entry answers its second open question — the divided-difference / Newton-form consequence — relating the Taylor coefficients (taylor a p).coeff m to forward differences and Newton interpolation."
+    },
+    {
+      "targetId": "factor-remainder-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent: the multiplicity factor theorem via iterated derivatives over a characteristic-zero field."
+    }
+  ],
+  "references": [
+    {
+      "key": "WhittakerRobinson",
+      "citation": "Whittaker, E.T. and Robinson, G., The Calculus of Observations: A Treatise on Numerical Mathematics, 4th ed., Dover (1967), Chapter I–II (the difference table and Newton's forward formula).",
+      "type": "book"
+    },
+    {
+      "key": "GrahamKnuthPatashnik",
+      "citation": "Graham, R.L., Knuth, D.E. and Patashnik, O., Concrete Mathematics, 2nd ed., Addison-Wesley (1994), §6.1 (Stirling numbers) and §2.6 (finite calculus and falling factorials).",
+      "type": "book"
+    }
+  ],
+  "sorries": 0
+}
