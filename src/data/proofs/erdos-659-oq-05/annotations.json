@@ -1,50 +1,98 @@
 [
   {
-    "id": "q-form-def",
-    "startLine": 40,
-    "endLine": 43,
+    "id": "erdos659-oq05-ann-qform",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 39, "endLine": 43 },
     "type": "definition",
-    "title": "The form Q(x,y)=x²+2y²",
-    "body": "The binary quadratic form whose represented integers are the squared distances in the Moree–Osburn lattice, together with the predicate `IsRepresented n := ∃ x y, n = Q x y`. Q is the norm form of the ring ℤ[√-2]."
+    "title": "The Form Q(x,y) = x² + 2y² and Its Represented Integers",
+    "content": "Q is the binary quadratic form of discriminant −8 that is the norm form of the ring ℤ[√−2]. The predicate IsRepresented n := ∃ x y, n = Q x y picks out the integers expressible in this shape. Geometrically these are exactly the squared distances arising in the Moree–Osburn lattice {(x, y√2)}: stretching the y-axis by √2 turns Euclidean squared distance into x² + 2y². The entire entry studies the arithmetic of this represented set.",
+    "mathContext": "$Q(x,y) = x^2 + 2y^2,\\qquad \\mathrm{IsRepresented}(n) \\iff \\exists\\, x,y\\in\\mathbb{Z},\\ n = x^2 + 2y^2$",
+    "significance": "key",
+    "relatedConcepts": ["binary quadratic forms", "norm form of ℤ[√−2]", "discriminant −8", "represented integers"],
+    "prerequisites": ["integers", "quadratic forms", "existential predicates"]
   },
   {
-    "id": "q-mul",
-    "startLine": 48,
-    "endLine": 51,
+    "id": "erdos659-oq05-ann-brahmagupta",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 45, "endLine": 50 },
     "type": "theorem",
-    "title": "Brahmagupta composition law (D=2)",
-    "body": "(a²+2b²)(c²+2d²) = (ac−2bd)² + 2(ad+bc)². A pure `ring` identity expressing that the form Q is multiplicative — the algebraic backbone of the sparse distance spectrum."
+    "title": "Brahmagupta Composition Law (D = 2)",
+    "content": "Q_mul is the identity (a²+2b²)(c²+2d²) = (ac−2bd)² + 2(ad+bc)², proved in one line by `ring`. It expresses that Q is multiplicative: the product of two represented integers is represented, with explicit witnesses. This is the D=2 case of Brahmagupta's seventh-century identity (the N=1 case is the classical Diophantus/Fibonacci two-square identity), and it is the same phenomenon as multiplicativity of the field norm on ℤ[√−2]. This single identity is the algebraic engine of the whole entry.",
+    "mathContext": "$(a^2+2b^2)(c^2+2d^2) = (ac-2bd)^2 + 2(ad+bc)^2$",
+    "significance": "key",
+    "relatedConcepts": ["Brahmagupta–Fibonacci identity", "composition of quadratic forms", "multiplicativity of norms", "ring tactic"],
+    "prerequisites": ["polynomial identities", "binary quadratic forms"]
   },
   {
-    "id": "q-eq-norm",
-    "startLine": 54,
-    "endLine": 57,
+    "id": "erdos659-oq05-ann-norm",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 52, "endLine": 56 },
     "type": "theorem",
-    "title": "Q is the ℤ√(-2) norm",
-    "body": "`Zsqrtd.norm ⟨x,y⟩ = x²+2y²` for ℤ√(-2). Connects the elementary form to Mathlib's algebraic number theory (`Zsqrtd`), where multiplicativity is `Zsqrtd.norm_mul`."
+    "title": "Q Is the Norm of ℤ√(−2)",
+    "content": "Q_eq_zsqrtd_norm identifies Q with Mathlib's algebraic norm on the quadratic integer ring: Zsqrtd.norm ⟨x,y⟩ = x² + 2y² for ℤ√(−2). This is the conceptual home of the composition law — multiplicativity of Q is just Zsqrtd.norm_mul, the general theorem that a ring norm is multiplicative. The lemma bridges the elementary `ring` proof of Q_mul to Mathlib's structured theory of quadratic integers, so either viewpoint can be used downstream.",
+    "mathContext": "$N(x + y\\sqrt{-2}) = x^2 + 2y^2,\\qquad N(\\alpha\\beta) = N(\\alpha)N(\\beta)$",
+    "significance": "supporting",
+    "relatedConcepts": ["Zsqrtd.norm", "quadratic integer rings", "field norm", "Zsqrtd.norm_mul"],
+    "prerequisites": ["ring of integers ℤ[√d]", "algebraic norm", "Mathlib Zsqrtd API"]
   },
   {
-    "id": "represented-mul",
-    "startLine": 76,
-    "endLine": 82,
+    "id": "erdos659-oq05-ann-small-nonneg",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 58, "endLine": 70 },
+    "type": "lemma",
+    "title": "Base Cases and Nonnegativity",
+    "content": "isRepresented_zero/one/two record that 0, 1, 2 are represented (Q 0 0, Q 1 0, Q 0 1), each by `decide`. isRepresented_one is the monoid identity needed for the submonoid below. isRepresented_nonneg shows every represented integer is ≥ 0 (a sum of squares, closed by `positivity`) — essential because these integers stand for squared distances, which cannot be negative.",
+    "mathContext": "$Q(1,0)=1,\\ Q(0,1)=2;\\qquad \\mathrm{IsRepresented}(n) \\Rightarrow n \\ge 0$",
+    "significance": "technical",
+    "relatedConcepts": ["sum of squares", "nonnegativity", "positivity tactic", "decide"],
+    "prerequisites": ["nonnegativity of squares"]
+  },
+  {
+    "id": "erdos659-oq05-ann-mul-closure",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 72, "endLine": 80 },
     "type": "theorem",
-    "title": "Multiplicative closure",
-    "body": "The product of two integers represented by Q is again represented, obtained constructively from the composition law. This is the mechanism that makes the distance set sparse."
+    "title": "Multiplicative Closure of Represented Integers",
+    "content": "isRepresented_mul turns the composition law into a closure statement: if m and n are both represented, so is m·n, with the witnesses (ac−2bd, ad+bc) supplied constructively by Q_mul. This is the structural mechanism behind the sparse distance spectrum — because the represented set is closed under multiplication, products of small represented numbers stay represented, so the distance set grows far more slowly than a generic set of integers would.",
+    "mathContext": "$m = a^2+2b^2,\\ n = c^2+2d^2 \\ \\Rightarrow\\ mn = (ac-2bd)^2 + 2(ad+bc)^2$",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative closure", "sparse distance spectrum", "constructive witnesses", "composition law"],
+    "prerequisites": ["the Brahmagupta identity", "existential destructuring"]
   },
   {
-    "id": "represented-submonoid",
-    "startLine": 83,
-    "endLine": 92,
+    "id": "erdos659-oq05-ann-submonoid",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 82, "endLine": 95 },
     "type": "definition",
-    "title": "Represented integers form a submonoid",
-    "body": "Packages `isRepresented_one` and `isRepresented_mul` into a `Submonoid ℤ`, with finite-product closure `isRepresented_prod` following by induction."
+    "title": "The Submonoid of Represented Integers",
+    "content": "representedSubmonoid packages isRepresented_one (identity) and isRepresented_mul (closure) into an honest Submonoid ℤ, with mem_representedSubmonoid as the membership simp-lemma. isRepresented_prod then extends closure from binary products to arbitrary finite products via Finset.prod_induction. Recording the structure as a submonoid (rather than ad hoc lemmas) makes the multiplicative nature first-class and reusable in any monoid-theoretic argument.",
+    "mathContext": "$\\{\\,n : \\mathrm{IsRepresented}(n)\\,\\} \\le (\\mathbb{Z}, \\cdot);\\qquad \\mathrm{IsRepresented}\\Big(\\prod_{i\\in s} f(i)\\Big)$",
+    "significance": "supporting",
+    "relatedConcepts": ["Submonoid", "Finset.prod_induction", "closure under finite products", "algebraic structure"],
+    "prerequisites": ["monoids and submonoids", "finite products", "induction on Finsets"]
   },
   {
-    "id": "dist-sq-lattice",
-    "startLine": 111,
-    "endLine": 125,
+    "id": "erdos659-oq05-ann-lattice",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 97, "endLine": 99 },
+    "type": "definition",
+    "title": "The Moree–Osburn Lattice Point",
+    "content": "latticePoint x y is the point (x, y·√2) ∈ ℝ², the explicit embedding of integer coordinates used in the Moree–Osburn construction. The √2 stretch in the second coordinate is exactly what makes squared Euclidean distances land in the form x² + 2y² rather than x² + y², converting a geometric question about distinct distances into the arithmetic of the represented set.",
+    "mathContext": "$P(x,y) = (x,\\ y\\sqrt{2}) \\in \\mathbb{R}^2$",
+    "significance": "supporting",
+    "relatedConcepts": ["lattices in ℝ²", "anisotropic scaling", "Moree–Osburn construction", "distinct-distance problems"],
+    "prerequisites": ["points in ℝ²", "Real.sqrt"]
+  },
+  {
+    "id": "erdos659-oq05-ann-distsq",
+    "proofId": "erdos-659-oq-05",
+    "range": { "startLine": 101, "endLine": 125 },
     "type": "theorem",
-    "title": "Squared distance equals Q of differences",
-    "body": "For lattice points P(x,y)=(x, y·√2) ∈ ℝ², the squared Euclidean distance |P(x₁,y₁)−P(x₂,y₂)|² equals (x₁−x₂)²+2(y₁−y₂)² = Q(x₁−x₂, y₁−y₂). Uses (√2)²=2 (`Real.sq_sqrt`). Hence the lattice's squared distances are exactly the integers represented by Q."
+    "title": "Squared Distance Equals Q of the Differences",
+    "content": "dist_sq_lattice closes the loop between geometry and number theory: the squared Euclidean distance between two lattice points equals Q(x₁−x₂, y₁−y₂). The proof expands the second coordinate, factors out √2, and collapses (√2)² = 2 via Real.sq_sqrt. Consequently the multiset of squared distances in the lattice is exactly the represented set — and by isRepresented_mul that set is multiplicatively closed, which is the structural reason its growth is governed by Landau's O(N/√log N) density rather than by linear growth.",
+    "mathContext": "$\\lVert P(x_1,y_1) - P(x_2,y_2)\\rVert^2 = (x_1-x_2)^2 + 2(y_1-y_2)^2 = Q(x_1-x_2,\\,y_1-y_2)$",
+    "significance": "key",
+    "relatedConcepts": ["Euclidean distance", "Real.sq_sqrt", "geometry–arithmetic bridge", "Landau density theorem"],
+    "prerequisites": ["Euclidean distance in ℝ²", "properties of √2", "casting ℤ → ℝ"]
   }
 ]
