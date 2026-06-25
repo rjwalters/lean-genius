@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-single",
+    "proofId": "abel-ruffini-oq-11",
+    "range": { "startLine": 43, "endLine": 51 },
+    "type": "theorem",
+    "title": "Pure Equations Are Solvable",
+    "content": "Every pure equation $X^n = a$ has a solvable Galois group (`gal_pow_sub_C_isSolvable`), as do the $n$-th roots of unity $X^n = 1$ (`gal_pow_sub_one_isSolvable`). These are the atoms of the radical-solvable side: a single root extraction never destroys solvability. By Galois' criterion this is exactly why $\\sqrt[n]{a}$ is, tautologically, expressible by radicals.",
+    "mathContext": "$\\mathrm{IsSolvable}((X^n - a).\\mathrm{Gal})$ and $\\mathrm{IsSolvable}((X^n - 1).\\mathrm{Gal})$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Galois group", "Solvable group", "Roots of unity", "Radical extension"]
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "abel-ruffini-oq-11",
+    "range": { "startLine": 58, "endLine": 69 },
+    "type": "theorem",
+    "title": "The Radical-Solvable Closure (new)",
+    "content": "**Any finite product $\\prod_{i\\in s}(X^{n_i} - a_i)$ of pure radical equations has a solvable Galois group.** This is the constructive counterpart to the symmetric-group obstruction — everything one can assemble from root extractions stays solvable. Proved by `Finset.cons_induction`: the empty product is $1$ (solvable), and each new factor $X^{n_i} - a_i$ is glued onto the solvable product with `gal_mul_isSolvable`. Mathlib gives only the single-equation fact and an abstract multiset product; this directly usable indexed finite-product form is new.",
+    "mathContext": "$\\mathrm{IsSolvable}\\bigl((\\textstyle\\prod_{i\\in s}(X^{n_i} - a_i)).\\mathrm{Gal}\\bigr)$.",
+    "significance": "key",
+    "relatedConcepts": ["Galois group", "Solvable group", "Finite product", "Closure property", "Induction"]
+  },
+  {
+    "id": "ann-dichotomy",
+    "proofId": "abel-ruffini-oq-11",
+    "range": { "startLine": 71, "endLine": 76 },
+    "type": "theorem",
+    "title": "The Two Faces of Abel–Ruffini",
+    "content": "The dichotomy in one statement: pure radical equations $X^n = a$ always have solvable Galois groups (radicals succeed), yet $S_m$ is not solvable for $m \\ge 5$ (the obstruction making the general quintic unsolvable). The entire theory of solvability by radicals lives in the gap between these two facts.",
+    "mathContext": "$(\\forall n\\,a,\\ \\mathrm{IsSolvable}((X^n - a).\\mathrm{Gal})) \\wedge (\\forall m \\ge 5,\\ \\neg\\,\\mathrm{IsSolvable}(S_m))$.",
+    "significance": "key",
+    "relatedConcepts": ["Abel–Ruffini theorem", "Solvability by radicals", "Symmetric group", "Dichotomy"]
+  }
+]

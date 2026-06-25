@@ -1,0 +1,81 @@
+{
+  "id": "abel-ruffini-oq-11",
+  "title": "The Radical-Solvable Side of Abel–Ruffini: Pure Equations and Their Products Have Solvable Galois Groups",
+  "slug": "abel-ruffini-oq-11",
+  "description": "The constructive counterpart to the Abel–Ruffini obstruction. The negative side (Sₙ unsolvable for n ≥ 5, so the general quintic is not solvable by radicals) is heavily formalized in this project; this entry formalizes the positive side — why radicals succeed for the cases they do. By Galois' criterion, solvability by radicals corresponds to a solvable Galois group, and the equations one can actually write with radicals always have solvable groups: gal_pow_sub_C_isSolvable (every pure equation Xⁿ = a), gal_pow_sub_one_isSolvable (the n-th roots of unity Xⁿ = 1), and the genuinely new gal_finset_prod_pow_sub_C_isSolvable — ANY finite product ∏ᵢ(X^{nᵢ} − aᵢ) of pure radical equations has a solvable Galois group, the closure capturing 'anything assembled from radicals stays solvable' (Mathlib states only the single-equation case and an abstract multiset product, not a usable finite-product form). The dichotomy abel_ruffini_two_faces packages both faces in one statement: pure radical equations are always solvable, yet Sₘ (m ≥ 5) is not. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Galois (1830s); Abel (1824), Ruffini (1799); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
+    "date": "1830",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "solvability",
+      "radicals",
+      "abel-ruffini",
+      "solvable-group",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/AbelRuffiniOQ11.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "gal_X_pow_sub_C_isSolvable",
+        "description": "The Galois group of Xⁿ − C a is solvable. The single pure-equation fact and the base ingredient of the finite-product closure.",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "gal_X_pow_sub_one_isSolvable",
+        "description": "The Galois group of Xⁿ − 1 (roots of unity) is solvable.",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "gal_mul_isSolvable",
+        "description": "If p.Gal and q.Gal are solvable then (p·q).Gal is solvable. Glues one factor at a time in the finite-product induction.",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "Sₘ is not solvable when 5 ≤ #X. Supplies the negative face of the dichotomy (via Cardinal.mk_fin).",
+        "module": "Mathlib.GroupTheory.Solvable"
+      }
+    ],
+    "originalContributions": [
+      "gal_finset_prod_pow_sub_C_isSolvable: any finite product ∏_{i ∈ s} (X^{n i} − C (a i)) of pure radical equations has a solvable Galois group — the constructive closure 'everything built from radicals stays solvable', proved by Finset.cons_induction gluing factors with gal_mul_isSolvable. Mathlib provides only the single equation gal_X_pow_sub_C_isSolvable and an abstract multiset product gal_prod_isSolvable, not this directly usable indexed finite-product form",
+      "abel_ruffini_two_faces: the Abel–Ruffini dichotomy in one statement — (∀ n a, IsSolvable (Xⁿ − C a).Gal) ∧ (∀ m ≥ 5, ¬ IsSolvable (Sₘ)) — placing the radical-solvable side and the symmetric-group obstruction side by side; the whole theory lives in the gap between them",
+      "gal_pow_sub_C_isSolvable / gal_pow_sub_one_isSolvable: the single pure-equation facts re-exposed as the named building blocks of the radical-solvable side, a positive direction no existing AbelRuffini file in the project had recorded"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 77,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on gal_finset_prod_pow_sub_C_isSolvable and abel_ruffini_two_faces reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses. Imports only Mathlib.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 4,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "single-equations",
+      "title": "Single Pure Equations",
+      "startLine": 42,
+      "endLine": 56,
+      "summary": "gal_pow_sub_C_isSolvable: Xⁿ = a has solvable Galois group (one root extraction never destroys solvability). gal_pow_sub_one_isSolvable: the n-th roots of unity Xⁿ = 1 likewise (abelian, hence solvable)."
+    },
+    {
+      "id": "finite-product-closure",
+      "title": "The Radical-Solvable Closure",
+      "startLine": 57,
+      "endLine": 69,
+      "summary": "gal_finset_prod_pow_sub_C_isSolvable: any finite product ∏ᵢ(X^{nᵢ} − aᵢ) of pure radical equations has solvable Galois group, by Finset.cons_induction — the empty product is 1 (solvable), and each new factor is glued on with gal_mul_isSolvable. The constructive counterpart to the symmetric-group obstruction."
+    },
+    {
+      "id": "dichotomy",
+      "title": "The Two Faces, Side by Side",
+      "startLine": 71,
+      "endLine": 76,
+      "summary": "abel_ruffini_two_faces: pure radical equations Xⁿ = a always have solvable Galois groups, yet Sₘ (m ≥ 5) is not solvable — the dichotomy underlying the unsolvability of the general quintic, in a single statement."
+    }
+  ]
+}
