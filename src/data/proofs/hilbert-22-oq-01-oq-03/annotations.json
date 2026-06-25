@@ -1,0 +1,115 @@
+[
+  {
+    "id": "ann-preamble",
+    "proofId": "hilbert-22-oq-01-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 67
+    },
+    "type": "concept",
+    "title": "Module Preamble: The Kobayashi Pseudometric and Its Analysis-Free Skeleton",
+    "content": "The file opens with `import Mathlib` and a long docblock that states the Kobayashi pseudometric d_M(p,q) = inf over holomorphic chains of disks of the total Poincaré length, explains why its three defining structural properties are independent of complex analysis, and is explicit about which analytic ingredients (unit-disk Poincaré metric, Schwarz–Pick, d_𝔻 = ρ, Picard via the modular λ cover) are deliberately left open and unassumed. The namespace `Hilbert22OQ01OQ03` is opened with two universe-polymorphic variables `X Y`, and `open scoped ENNReal` brings in the ℝ≥0∞ notation. The design choice to work in ℝ≥0∞ is what makes every infimum junk-free.",
+    "mathContext": "$d_M(p,q)=\\inf\\left\\{\\sum_{i=1}^n \\rho(a_i,b_i)\\right\\}$ over holomorphic chains $\\mathbb{D}\\to M$ joining $p$ to $q$. This entry abstracts the one-disk distance $\\rho$ to a symmetric atomic cost $c:X\\to X\\to\\mathbb{R}_{\\ge 0}^\\infty$ with $c\\,x\\,x=0$ and isolates the order-theoretic content of properties (1)-(2) listed informally in the parent gallery entry hilbert-22-oq-01.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Kobayashi pseudometric",
+      "hyperbolic complex geometry",
+      "Poincaré metric on the disk",
+      "extended non-negative reals ℝ≥0∞"
+    ],
+    "prerequisites": [
+      "infimum in a complete lattice",
+      "pseudometric spaces",
+      "basic list operations (append, reverse, map)"
+    ]
+  },
+  {
+    "id": "ann-chain-cost",
+    "proofId": "hilbert-22-oq-01-oq-03",
+    "range": {
+      "startLine": 69,
+      "endLine": 118
+    },
+    "type": "definition",
+    "title": "Cost of a Single Chain and Its Combinatorial Laws",
+    "content": "`chainCost c p mid q` is the total atomic cost of the chain whose vertices are `p`, then the intermediate points `mid`, then `q`, summed from the front: `chainCost c p [] q = c p q` and `chainCost c p (x :: xs) q = c p x + chainCost c x xs q`. Accumulating from the front is the key design move — it never invokes `List.head!` or `List.getLast!`, so no lemma carries a nonemptiness hypothesis. Three workhorse lemmas follow. `chainCost_concat` proves that splicing a chain p ⇝ q to a chain q ⇝ r at the shared vertex q adds their costs (a two-case list induction). `chainCost_reverse` proves that reversing a chain preserves its cost when c is symmetric (induction using the concat law with an empty tail to peel off the final edge). `chainCost_map` proves that a map f contracting the atomic cost contracts every pushed-forward chain's cost (induction with `add_le_add`).",
+    "mathContext": "Concatenation: $\\texttt{chainCost}\\,p\\,(m_1 +\\!\\!+ q::m_2)\\,r = \\texttt{chainCost}\\,p\\,m_1\\,q + \\texttt{chainCost}\\,q\\,m_2\\,r$. Reversal (for $c$ symmetric): $\\texttt{chainCost}\\,p\\,\\mathit{mid}\\,q = \\texttt{chainCost}\\,q\\,\\mathit{mid}.\\mathrm{reverse}\\,p$. Map contraction (for $c_Y(f a,f b)\\le c_X(a,b)$): $\\texttt{chainCost}\\,c_Y\\,(f p)\\,(\\mathit{mid}.\\mathrm{map}\\,f)\\,(f q)\\le \\texttt{chainCost}\\,c_X\\,p\\,\\mathit{mid}\\,q$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "list recursion",
+      "telescoping cost",
+      "monotonicity of addition in ℝ≥0∞"
+    ],
+    "prerequisites": [
+      "structural induction on lists",
+      "List.append and List.reverse identities"
+    ]
+  },
+  {
+    "id": "ann-chain-dist",
+    "proofId": "hilbert-22-oq-01-oq-03",
+    "range": {
+      "startLine": 120,
+      "endLine": 163
+    },
+    "type": "theorem",
+    "title": "The Chain Pseudometric and Its Three Axioms",
+    "content": "`chainDist c p q = ⨅ mid : List X, chainCost c p mid q` is the abstract Kobayashi pseudometric. `chainDist_le` records that it is bounded above by the cost of any particular chain (an `iInf_le`). The three pseudometric axioms then fall out: `chainDist_self` (reflexivity) uses the empty chain, whose cost `c p p = 0`; `chainDist_comm` (symmetry) reverses every chain via `chainCost_reverse`, packaged through a single `key : ∀ a b, chainDist c a b ≤ chainDist c b a`; and `chainDist_triangle` (subadditivity) concatenates a p ⇝ q chain with a q ⇝ r chain, then pushes the two infima of the right-hand side together using the ENNReal arithmetic identities `ENNReal.iInf_add` and `ENNReal.add_iInf`.",
+    "mathContext": "$d(p,q)=\\bigsqcap_{\\mathit{mid}}\\texttt{chainCost}\\,c\\,p\\,\\mathit{mid}\\,q$. The triangle proof rewrites $\\bigl(\\bigsqcap_{m_1} f\\,m_1\\bigr) + \\bigl(\\bigsqcap_{m_2} g\\,m_2\\bigr) = \\bigsqcap_{m_1}\\bigsqcap_{m_2}\\bigl(f\\,m_1 + g\\,m_2\\bigr)$ and bounds each summand below by $d(p,r)$ via the concatenated chain $m_1 +\\!\\!+ q::m_2$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "infimum over chains",
+      "triangle inequality via concatenation",
+      "ENNReal.iInf_add / ENNReal.add_iInf"
+    ],
+    "prerequisites": [
+      "iInf and le_iInf in complete lattices",
+      "infimum arithmetic in ℝ≥0∞"
+    ]
+  },
+  {
+    "id": "ann-pseudo-emetric",
+    "proofId": "hilbert-22-oq-01-oq-03",
+    "range": {
+      "startLine": 165,
+      "endLine": 179
+    },
+    "type": "theorem",
+    "title": "Packaging into a Genuine PseudoEMetricSpace",
+    "content": "`chainPseudoEMetricSpace` assembles the three proved axioms into Mathlib's `PseudoEMetricSpace` structure: from any symmetric atomic cost vanishing on the diagonal, `X` is equipped with `edist := chainDist c` together with `edist_self`, `edist_comm`, and `edist_triangle`. The uniformity and its compatibility are supplied automatically by the structure's default fields. This realises properties (1)–(2) of the Kobayashi pseudometric — the parts the parent entry stated only informally — as a first-class, instance-grade Mathlib object. The symmetry and diagonal-vanishing conditions remain explicit hypotheses, not structure-encoded assumptions, so the construction carries no hidden axioms.",
+    "mathContext": "Mathlib's \\texttt{PseudoEMetricSpace} bundles $\\texttt{edist\\_self}:\\;d(x,x)=0$, $\\texttt{edist\\_comm}:\\;d(x,y)=d(y,x)$, and $\\texttt{edist\\_triangle}:\\;d(x,z)\\le d(x,y)+d(y,z)$, deriving the induced uniform structure from $d$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "PseudoEMetricSpace",
+      "extended-distance structures",
+      "uniformity from a pseudometric"
+    ],
+    "prerequisites": [
+      "Mathlib's metric-space hierarchy",
+      "structure construction with default fields"
+    ]
+  },
+  {
+    "id": "ann-functoriality",
+    "proofId": "hilbert-22-oq-01-oq-03",
+    "range": {
+      "startLine": 181,
+      "endLine": 204
+    },
+    "type": "theorem",
+    "title": "Functoriality: The Defining Holomorphic Invariance",
+    "content": "`chainDist_mono` proves that a map `f : X → Y` contracting the atomic cost (`cY (f a) (f b) ≤ cX a b`) is distance-non-increasing for the chain pseudometric: `chainDist cY (f p) (f q) ≤ chainDist cX p q`. The proof bounds `chainDist cY (f p) (f q)` by the cost of the pushed-forward chain (via `chainDist_le`) and then by the original chain's cost (via `chainCost_map`), for each chain `mid`. `chainDist_mono_self` is the endomorphism specialisation. This is the order-theoretic shadow of the theorem that makes the Kobayashi metric a holomorphic invariant: holomorphic maps contract the disk Poincaré metric (Schwarz–Pick), so plugging that in here recovers the classical non-expansion property.",
+    "mathContext": "If $f$ contracts atoms then $d_Y(f p, f q)\\le d_X(p,q)$. Classically, every holomorphic $f:M\\to N$ satisfies $d_N(f(p),f(q))\\le d_M(p,q)$ — the Kobayashi non-expansion theorem — and is the reason $d_M$ is an invariant of the complex structure; this lemma is exactly that statement at the level of the abstract atomic cost.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "Kobayashi non-expansion theorem",
+      "Schwarz–Pick lemma",
+      "holomorphic invariance",
+      "functoriality of invariant metrics"
+    ],
+    "prerequisites": [
+      "monotonicity of infima",
+      "the chainCost_map contraction lemma"
+    ]
+  }
+]
