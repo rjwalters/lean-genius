@@ -3218,6 +3218,7 @@ import Proofs.Hilbert16
 import Proofs.Hilbert17MotzkinNotSOS
 import Proofs.Hilbert17MotzkinRationalSOS
 import Proofs.Hilbert17OQ01
+import Proofs.Hilbert17OQ01OQ04
 import Proofs.Hilbert17OQ03OQ05
 import Proofs.Hilbert17OQ03OQ06
 import Proofs.Hilbert17QuadraticGram
