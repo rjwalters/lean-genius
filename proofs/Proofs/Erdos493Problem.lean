@@ -46,7 +46,7 @@ theorem erdos_493_nonneg (n : ℤ) (hn : n ≥ 0) : HasProdMinusSum2 n := by
 
 /- ## Part III: Negative Integers -/
 
-/-- For negative integers, we can use a = 2, b = 2 to get 2*2 - (2+2) = 0,
+/- For negative integers, we can use a = 2, b = 2 to get 2*2 - (2+2) = 0,
     or use larger values. Specifically, a = 2, b = n + 2 works when n + 2 ≥ 2,
     i.e., n ≥ 0. For n < 0, we use a = -n + 2, b = 2 giving
     2(-n+2) - ((-n+2)+2) = -2n+4-(-n+4) = -2n+4+n-4 = -n.

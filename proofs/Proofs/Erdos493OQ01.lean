@@ -23,6 +23,7 @@ Reference: https://erdosproblems.com/493
 -/
 
 import Proofs.Erdos493Problem
+import Mathlib.NumberTheory.Divisors
 import Mathlib.Tactic
 
 namespace Erdos493
@@ -86,5 +87,65 @@ theorem hasNontrivialRep_iff_factor (n : ℤ) :
     exact ⟨a - 1, b - 1, by linarith, by linarith, by ring⟩
   · rintro ⟨u, v, hu, hv, huv⟩
     exact ⟨u + 1, v + 1, by linarith, by linarith, by linear_combination -huv⟩
+
+/-! ### (C2) The ordered representation count `= τ(n+1)`
+
+The headline counting result of OQ-01. Working over `ℕ` (where `n ≥ 0` is
+automatic and the truncated subtraction is avoided by the equivalent additive
+form `a*b = n + a + b`), the ordered representations of `n` as `a*b - (a+b)`
+with `a, b ≥ 2` are in bijection — via `(a,b) ↦ (a-1, b-1)` — with the ordered
+factorizations `n + 1 = u*v`, i.e. `Nat.divisorsAntidiagonal (n+1)`. Hence their
+number is `τ(n+1) = (n+1).divisors.card`, the divisor-counting function. -/
+
+/-- The finite set of ordered representations of `n` as `a*b - (a+b)` with
+`a, b ≥ 2`, encoded by the additive form `a*b = n + a + b`. The search box
+`[2, n+2]²` is exactly the right one: `orderedReps_eq_image` below shows every
+factorization of `n+1` lands inside it and conversely, so no representation is
+missed. -/
+def orderedReps (n : ℕ) : Finset (ℕ × ℕ) :=
+  (Finset.Icc 2 (n + 2) ×ˢ Finset.Icc 2 (n + 2)).filter
+    (fun p => p.1 * p.2 = n + p.1 + p.2)
+
+/-- The representation set is the image of `divisorsAntidiagonal (n+1)` under the
+bijection `(u,v) ↦ (u+1, v+1)`. This both identifies the count and certifies the
+`[2, n+2]²` box loses no representation. -/
+theorem orderedReps_eq_image (n : ℕ) :
+    orderedReps n
+      = (Nat.divisorsAntidiagonal (n + 1)).image (fun q => (q.1 + 1, q.2 + 1)) := by
+  ext ⟨a, b⟩
+  simp only [orderedReps, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc,
+    Finset.mem_image, Nat.mem_divisorsAntidiagonal, Prod.mk.injEq, Prod.exists]
+  constructor
+  · rintro ⟨⟨⟨ha2, _⟩, hb2, _⟩, hEq⟩
+    obtain ⟨a', rfl⟩ : ∃ a', a = a' + 1 := ⟨a - 1, by omega⟩
+    obtain ⟨b', rfl⟩ : ∃ b', b = b' + 1 := ⟨b - 1, by omega⟩
+    have hexp : (a' + 1) * (b' + 1) = a' * b' + a' + b' + 1 := by ring
+    rw [hexp] at hEq
+    exact ⟨a', b', ⟨by omega, by omega⟩, rfl, rfl⟩
+  · rintro ⟨u, v, ⟨hprod, _⟩, rfl, rfl⟩
+    have hmem : (u, v) ∈ Nat.divisorsAntidiagonal (n + 1) :=
+      Nat.mem_divisorsAntidiagonal.mpr ⟨hprod, by omega⟩
+    have hu_div := Nat.fst_mem_divisors_of_mem_antidiagonal hmem
+    have hv_div := Nat.snd_mem_divisors_of_mem_antidiagonal hmem
+    have hu1 : 1 ≤ u := Nat.pos_of_mem_divisors hu_div
+    have hv1 : 1 ≤ v := Nat.pos_of_mem_divisors hv_div
+    have huU : u ≤ n + 1 := Nat.divisor_le hu_div
+    have hvU : v ≤ n + 1 := Nat.divisor_le hv_div
+    refine ⟨⟨⟨by omega, by omega⟩, by omega, by omega⟩, ?_⟩
+    have hexp : (u + 1) * (v + 1) = u * v + u + v + 1 := by ring
+    rw [hexp]; omega
+
+/-- **(C2) Ordered representation count.** The number of ordered pairs `(a, b)`
+with `a, b ≥ 2` and `a*b - (a+b) = n` equals `τ(n+1)`, the number of positive
+divisors of `n+1`. Each divisor `u ∣ n+1` yields the representation
+`(a, b) = (u + 1, (n+1)/u + 1)`. -/
+theorem orderedReps_card (n : ℕ) :
+    (orderedReps n).card = (n + 1).divisors.card := by
+  have hinj : Function.Injective (fun q : ℕ × ℕ => (q.1 + 1, q.2 + 1)) := by
+    intro x y h
+    simp only [Prod.mk.injEq, add_left_inj] at h
+    exact Prod.ext h.1 h.2
+  rw [orderedReps_eq_image, Finset.card_image_of_injective _ hinj,
+    ← Nat.map_div_right_divisors, Finset.card_map]
 
 end Erdos493

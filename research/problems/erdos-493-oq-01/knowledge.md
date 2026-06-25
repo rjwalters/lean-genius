@@ -77,6 +77,40 @@ above is already proven:
 - `research/problems/erdos-493-oq-01/verify_prodminussum.py` — durable cert (C1–C4).
 
 ## Session log
+### 2026-06-25 (Session 4, researcher-1) — ACT (C2 counting theorem DONE + parent build-fix)
+- **Mode**: REVISIT. **Outcome**: the deferred **C2 ordered-count theorem is now
+  formalized and machine-checked** (0 axioms, foundational only).
+- **Parent build-fix (prerequisite):** `Erdos493Problem.lean` did **not compile**
+  under Lean 4.26 — a *floating doc-comment* (`/--` documenting nothing, at the
+  old lines 49–54, followed by another `/--`) is a hard parse error in 4.x
+  (verified with a minimal repro). origin/main has the same broken content. Fixed
+  by demoting it to a plain block comment `/-`. Parent now builds (olean OK).
+  *(Likely slipped in during a Mathlib version bump; cf. the analogous
+  "repair file for mathlib 4.26" commits on erdos-748.)*
+- **C2 — `orderedReps_card (n) : (orderedReps n).card = (n+1).divisors.card`.**
+  Approach that worked (much simpler than the S1 `card_bij` plan): avoid `ℤ` and
+  truncated `ℕ`-subtraction by encoding reps in the **additive form**
+  `a*b = n + a + b`, over the box `[2,n+2]²`:
+  - `orderedReps n := ((Icc 2 (n+2)) ×ˢ (Icc 2 (n+2))).filter (p ↦ p.1*p.2 = n+p.1+p.2)`.
+  - `orderedReps_eq_image`: `orderedReps n = (Nat.divisorsAntidiagonal (n+1)).image (q ↦ (q.1+1, q.2+1))`.
+    Forward: substitute `a=a'+1, b=b'+1` (`obtain ⟨a',rfl⟩`), then `ring` to
+    `(a'+1)(b'+1)=a'b'+a'+b'+1` and **`omega` treats `a'*b'` as an atom** to get
+    `a'*b'=n+1`. Reverse: `Nat.fst/snd_mem_divisors_of_mem_antidiagonal` +
+    `Nat.pos_of_mem_divisors` + `Nat.divisor_le` give `1≤u,v≤n+1`, so the box `[2,n+2]`
+    is exactly right (certifies **no representation is missed**).
+  - Card: `Finset.card_image_of_injective` (the `+1` map is injective) then
+    **`Nat.map_div_right_divisors` + `Finset.card_map`** gives
+    `(divisorsAntidiagonal (n+1)).card = (n+1).divisors.card`. No `card_bij` needed.
+  - Numeric check `n=0..7`: `card = τ(n+1)` matches (1,2,2,3,2,4,2,4); `orderedReps 5
+    = {(2,7),(3,4),(4,3),(7,2)}` ✓.
+- **KEY GOTCHA:** Docker still down → built offline with
+  `~/.elan/toolchains/leanprover--lean4---v4.26.0/bin/lake env lean Proofs/<F>.lean`.
+  Imports of *sibling* proof files need their olean: build the parent first with
+  `lake env lean Proofs/Erdos493Problem.lean -o .lake/build/lib/lean/Proofs/Erdos493Problem.olean`.
+- File now: **7 theorems + 1 def, 0 axioms, 0 sorries**; registered in `Proofs.lean`.
+- **Next:** the `Nat.Prime`/`Int.Prime` bridge turning C4's existential into a
+  literal "`n+1` prime ⟺ unique unordered rep", and the unordered count `⌈τ(n+1)/2⌉`.
+
 ### 2026-06-14 (Session 1) — FRESH ORIENT
 - **Mode**: FRESH. **Outcome**: ORIENT + durable verification.
 - Defined OQ-01 (parent had no stated follow-up, empty research dir).
