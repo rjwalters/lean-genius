@@ -23509,8 +23509,22 @@
       "issues": [],
       "lastAudited": "2026-06-25T07:27:00Z",
       "result": "clean"
+    },
+    "stirling-formula-oq-03-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:00:00Z",
+      "result": "clean",
+      "notes": "verified/original/0-axiom/0-sorry all accurate. 7 theorems + 1 def (cb=real central binom), 128 lines, 0 sorry/admit/axiom/native_decide/True-stub. Genuine new result: central binomial asymptotic C(2n,n)~4ⁿ/√(πn) (centralBinom_asymptotic), NOT stated by Mathlib. Reliance on Mathlib Wallis (W_eq_factorial_ratio, tendsto_W_nhds_pi_div_two, choose_mul_factorial_mul_factorial) fully disclosed in docstring, overview AND originalContributions → original badge defensible. #print axioms = propext/Classical.choice/Quot.sound only."
+    },
+    "sylow-theorems-oq-01-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T08:00:00Z",
+      "result": "clean",
+      "notes": "verified/mathlib/0-axiom/0-sorry all accurate. 9 theorems + 0 defs, 124 lines, 0 sorry/admit/axiom/native_decide/True-stub. Squarefree-order classification assembled from Mathlib IsZGroup theory (of_squarefree, isZGroup_iff_exists_mulEquiv, Schur-Zassenhaus). Badge=mathlib CORRECT; docstring has explicit Honest scope section + overview discloses routing through Mathlib Z-group theory. Counts match meta; deeper iso-class-count remains open (disclosed)."
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-25T07:27:00Z"
+  "lastUpdated": "2026-06-25T08:00:00Z"
 }
