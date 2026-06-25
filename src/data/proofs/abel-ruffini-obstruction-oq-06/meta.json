@@ -1,0 +1,76 @@
+{
+  "id": "abel-ruffini-obstruction-oq-06",
+  "title": "The Abel–Ruffini Obstruction: Sₙ is Unsolvable for n ≥ 5, and Non-Solvable Galois Groups Block Radicals",
+  "slug": "abel-ruffini-obstruction-oq-06",
+  "description": "A fully machine-checked formalization of the group-theoretic core of the Abel–Ruffini theorem. The symmetric group Sₙ is solvable for n ≤ 4 (giving the classical radical formulas for degrees 1–4) but not solvable for any n ≥ 5 — the non-solvability is proved for the whole range n ≥ 5 at once (symmetricGroup_not_solvable), generalizing Mathlib's Equiv.Perm.fin_5_not_solvable, which is stated only for Fin 5. The low endpoint S₂ is shown solvable (it is abelian), pinning both ends of the threshold. The bridge to polynomials is the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal: if an algebraic element α is a root of an irreducible q ∈ F[X] whose Galois group is not solvable, then α is not solvable by radicals — the exact contrapositive of Mathlib's solvableByRad.isSolvable', and the engine behind every concrete unsolvable quintic. 0 axioms, 0 sorries. The deep characteristic-p refinements (wild ramification, the Abhyankar conjecture) are explicitly out of scope.",
+  "meta": {
+    "author": "Abel (1824), Ruffini (1799), Galois (1830s); formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Abel%E2%80%93Ruffini_theorem",
+    "date": "1824",
+    "status": "verified",
+    "tags": [
+      "algebra",
+      "galois-theory",
+      "group-theory",
+      "solvability",
+      "symmetric-group",
+      "abel-ruffini",
+      "radicals",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/AbelRuffiniObstructionOQ06.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Equiv.Perm.not_solvable",
+        "description": "If 5 ≤ #X then the permutation group Equiv.Perm X is not solvable. The seed for generalizing fin_5_not_solvable to all n ≥ 5.",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "isSolvable_of_comm",
+        "description": "A group in which every pair of elements commutes is solvable. Used to prove S₂ solvable (it is abelian).",
+        "module": "Mathlib.GroupTheory.Solvable"
+      },
+      {
+        "theorem": "solvableByRad.isSolvable'",
+        "description": "If α is solvable by radicals over F and is a root of an irreducible q, then q.Gal is solvable (Galois' solvable-by-radicals ⟹ solvable-group direction). Its contrapositive is the Abel–Ruffini criterion proved here.",
+        "module": "Mathlib.FieldTheory.AbelRuffini"
+      },
+      {
+        "theorem": "Cardinal.mk_fin",
+        "description": "#(Fin n) = n. Converts the cardinal hypothesis of Equiv.Perm.not_solvable into the natural-number bound 5 ≤ n.",
+        "module": "Mathlib.SetTheory.Cardinal.Finite"
+      }
+    ],
+    "originalContributions": [
+      "symmetricGroup_not_solvable: the symmetric group Sₙ is not solvable for *every* n ≥ 5, proved uniformly in n by reducing to Mathlib's Equiv.Perm.not_solvable via Cardinal.mk_fin — Mathlib itself only states the single case Fin 5",
+      "symmetric_threshold: both endpoints of the Abel–Ruffini threshold in one statement — S₂ is solvable while Sₙ is not solvable for all n ≥ 5, isolating solvability of the symmetric group as the exact frontier between radically-solvable and radically-unsolvable degrees",
+      "not_solvableByRad_of_not_solvable_gal: the Abel–Ruffini criterion as a directly usable lemma — a root of an irreducible polynomial with non-solvable Galois group is not solvable by radicals (the contrapositive of solvableByRad.isSolvable'), which is the precise implication invoked to certify any concrete unsolvable quintic",
+      "solvable_gal_of_solvableByRad: the converse direction re-exposed under a local name so the criterion and its converse stand side by side"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 121,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms reports only the foundational propext, Classical.choice, Quot.sound for all four results (none of which count as assumptions). The single `decide` (for S₂ commutativity) is kernel decidability, not native_decide, so it does not introduce Lean.ofReduceBool. No structure-encoded hypotheses. Scope note: this is the characteristic-independent core; the characteristic-p Abhyankar-conjecture refinements are not formalized.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "symmetric-obstruction",
+      "title": "The Symmetric-Group Obstruction",
+      "startLine": 44,
+      "endLine": 82,
+      "summary": "symmetricGroup_not_solvable: Sₙ is not solvable for all n ≥ 5, obtained from Equiv.Perm.not_solvable by rewriting the cardinal #(Fin n) = n (Cardinal.mk_fin) and casting 5 ≤ n. perm_fin_two_solvable: S₂ is solvable via isSolvable_of_comm (commutativity by `decide`). symmetric_threshold packages both endpoints."
+    },
+    {
+      "id": "radical-criterion",
+      "title": "The Radical-Solvability Criterion",
+      "startLine": 84,
+      "endLine": 120,
+      "summary": "not_solvableByRad_of_not_solvable_gal: a root of an irreducible q with non-solvable Galois group is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. solvable_gal_of_solvableByRad re-exposes the forward direction. Together they are the Galois bridge from the symmetric-group obstruction to actual polynomial equations."
+    }
+  ]
+}
