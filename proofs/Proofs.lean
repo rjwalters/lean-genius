@@ -600,6 +600,7 @@ import Proofs.BurnsideCountingOQ04OQ02
 import Proofs.BurnsideCountingOQ04OQ02OQ02
 import Proofs.BurnsideCountingOQ05
 import Proofs.BurnsideCountingOQ05OQ01
+import Proofs.BurnsideCountingOQ06
 import Proofs.CantorDiagonalization
 import Proofs.CantorDiagonalizationOQ01
 import Proofs.CantorDiagonalizationOQ01OQ01
