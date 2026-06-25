@@ -1,0 +1,47 @@
+[
+  {
+    "id": "ann-cube-lemma",
+    "proofId": "nicomachus-sum-of-cubes-oq-01",
+    "range": { "startLine": 39, "endLine": 46 },
+    "type": "lemma",
+    "title": "The Cube Lemma: m³ = m²·(m−1) + m²",
+    "content": "This is the entire algebraic content of the induction, isolated as a standalone lemma. The expression $m^2(m-1) + m^2$ would be $m^3$ over $\\mathbb{Z}$, but in $\\mathbb{N}$ the subtraction $m-1$ is truncated (it is $0$ when $m = 0$). A `cases m` split sends $m \\mapsto 0$ (closed by `rfl`) and $m \\mapsto p+1$ (where $m-1$ simplifies to $p$ via `Nat.succ_sub_one`), after which `ring` closes the branch because no subtraction remains. This is what lets the whole proof live in $\\mathbb{N}$.",
+    "mathContext": "$m^3 = m^2(m-1) + m^2$, with $m-1$ the truncated natural subtraction.",
+    "significance": "key",
+    "relatedConcepts": ["Truncated natural subtraction", "Case analysis", "ring tactic"]
+  },
+  {
+    "id": "ann-main-induction",
+    "proofId": "nicomachus-sum-of-cubes-oq-01",
+    "range": { "startLine": 49, "endLine": 66 },
+    "type": "theorem",
+    "title": "Nicomachus's Theorem by Induction",
+    "content": "The headline $\\sum_{k<n} k^3 = (\\sum_{k<n} k)^2$. The base case is `simp` (empty sum). In the step, `sum_range_succ` peels the top cube off the left and the top term off the triangular sum on the right, and the inductive hypothesis rewrites $\\sum k^3$ to $(\\sum k)^2$. The goal becomes $S_m^2 + m^3 = (S_m + m)^2$ where $S_m = \\sum_{k<m} k$. Expanding the square (the `expand` step, by `ring`) and substituting both Gauss's identity $2S_m = m(m-1)$ and the cube lemma reduces everything to a `ring` identity in which $m-1$ is treated as an opaque atom.",
+    "mathContext": "$\\sum_{k<n} k^3 = (\\sum_{k<n} k)^2$.",
+    "significance": "critical",
+    "prerequisites": ["Mathematical induction", "Finset.sum_range_succ"],
+    "relatedConcepts": ["Triangular numbers", "Power sums", "Squared triangular number"]
+  },
+  {
+    "id": "ann-gauss-reuse",
+    "proofId": "nicomachus-sum-of-cubes-oq-01",
+    "range": { "startLine": 54, "endLine": 56 },
+    "type": "insight",
+    "title": "Reusing Gauss's Triangular-Number Identity",
+    "content": "Instead of re-deriving the closed form for $\\sum_{k<m} k$, the proof imports Mathlib's `sum_range_id_mul_two`, which states $(\\sum_{i<m} i)\\cdot 2 = m(m-1)$. A one-line `omega` reshapes it into $2\\cdot\\sum_{k<m} k = m(m-1)$, exactly the substitution the inductive step needs. The genuinely new mathematical content of this file is therefore concentrated in the cube lemma — the triangular half is borrowed.",
+    "mathContext": "$2\\sum_{k<m} k = m(m-1)$ (Gauss).",
+    "significance": "supporting",
+    "relatedConcepts": ["Gauss sum", "Lemma reuse"]
+  },
+  {
+    "id": "ann-closed-form",
+    "proofId": "nicomachus-sum-of-cubes-oq-01",
+    "range": { "startLine": 75, "endLine": 84 },
+    "type": "theorem",
+    "title": "Division-Free Closed Form: 4·∑k³ = (n(n−1))²",
+    "content": "A `calc` derivation: substitute Nicomachus to get $4(\\sum k)^2$, regroup as $((\\sum k)\\cdot 2)^2$ by `ring`, then rewrite with Gauss's identity to land on $(n(n-1))^2$. Multiplying by $4$ up front keeps the statement entirely in $\\mathbb{N}$ with no division — the same design choice Mathlib makes for `sum_range_id_mul_two`. This is the form most convenient for downstream reuse.",
+    "mathContext": "$4\\sum_{k<n} k^3 = (n(n-1))^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Closed-form power sums", "Natural-number division avoidance"]
+  }
+]
