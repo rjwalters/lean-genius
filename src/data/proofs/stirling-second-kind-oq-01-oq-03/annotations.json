@@ -1,0 +1,73 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 56 },
+    "type": "concept",
+    "title": "The Second Subdiagonal of the Stirling Triangle",
+    "content": "Reading the triangle of Stirling numbers of the second kind by diagonals, Mathlib knows the diagonal S(n,n)=1 and the first subdiagonal S(n+1,n)=C(n+1,2) but stops there. This file supplies the next diagonal, the classical closed form S(m+2,m) = C(m+2,3) + 3·C(m+2,4) — equivalently S(n,n−2) = C(n,3) + 3·C(n,4) for n ≥ 2. The combinatorial reading: a partition of n elements into n−2 blocks either has one block of three (C(n,3) ways) or two blocks of two (3·C(n,4) ways).",
+    "mathContext": "$S(n,n-2) = \\binom{n}{3} + 3\\binom{n}{4}$ for $n \\ge 2$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling numbers of the second kind",
+      "set partitions",
+      "subdiagonal closed forms",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "set partitions",
+      "Pascal's rule"
+    ]
+  },
+  {
+    "id": "ann-absorption",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 57, "endLine": 67 },
+    "type": "lemma",
+    "title": "The Absorption Identity 3·C(m+2,3) = m·C(m+2,2)",
+    "content": "The single arithmetic fact that powers the inductive step. It is `Nat.choose_succ_right_eq (m+2) 2`, which reads C(m+2,3)·3 = C(m+2,2)·(m+2−2); simplifying m+2−2 = m gives the stated form. This is the binomial analogue of differentiating x^3 into 3x^2: it converts the third-column coefficient into the second-column one with the linear factor m.",
+    "mathContext": "$3\\binom{m+2}{3} = m\\binom{m+2}{2}$, an instance of $\\binom{n}{k+1}(k+1) = \\binom{n}{k}(n-k)$.",
+    "significance": "high",
+    "relatedConcepts": [
+      "absorption identity",
+      "binomial coefficients"
+    ],
+    "prerequisites": [
+      "binomial coefficient identities"
+    ]
+  },
+  {
+    "id": "ann-main-theorem",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 69, "endLine": 100 },
+    "type": "theorem",
+    "title": "Induction Down the Diagonal",
+    "content": "stirlingSecond_add_two_sub_two proves S(m+2,m) = C(m+2,3) + 3·C(m+2,4) by induction on m. The base m=0 is S(2,0)=0, closed by `decide`. For the step, the Pascal recurrence at n=m+2, k=m gives S(m+3,m+1) = (m+1)·S(m+2,m+1) + S(m+2,m): the middle term S(m+2,m+1) is the first subdiagonal C(m+2,2) (Mathlib's stirlingSecond_succ_self_left), and S(m+2,m) is the induction hypothesis. After expanding the target binomials C(m+3,3), C(m+3,4) by Pascal's rule, `zify; linear_combination` against the cast absorption identity closes the goal — the only nonlinear term m·C(m+2,2) being exactly what absorption supplies.",
+    "mathContext": "$S(m+3,m+1) = (m+1)S(m+2,m+1) + S(m+2,m)$, with $S(m+2,m+1) = \\binom{m+2}{2}$.",
+    "significance": "central",
+    "relatedConcepts": [
+      "Stirling recurrence",
+      "first subdiagonal",
+      "induction down a diagonal"
+    ],
+    "prerequisites": [
+      "Stirling recurrence",
+      "induction"
+    ]
+  },
+  {
+    "id": "ann-subdiagonal-form",
+    "proofId": "stirling-second-kind-oq-01-oq-03",
+    "range": { "startLine": 102, "endLine": 118 },
+    "type": "theorem",
+    "title": "Subdiagonal Restatement and Numeric Checks",
+    "content": "stirlingSecond_sub_two reindexes n = 2+m to state the result in its natural form S(n,n−2) = C(n,3) + 3·C(n,4) for n ≥ 2. Three kernel-checked values — S(4,2)=7, S(5,3)=25, S(6,4)=65 — confirm the formula by `decide` (kernel reduction, not native_decide, so no extra axioms).",
+    "mathContext": "$S(4,2)=7,\\ S(5,3)=25,\\ S(6,4)=65$.",
+    "significance": "medium",
+    "relatedConcepts": [
+      "subdiagonal indexing",
+      "sanity checks"
+    ],
+    "prerequisites": []
+  }
+]
