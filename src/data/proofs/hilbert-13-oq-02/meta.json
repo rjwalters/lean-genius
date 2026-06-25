@@ -1,0 +1,134 @@
+{
+  "id": "hilbert-13-oq-02",
+  "title": "Presentation-Invariance of Covering Dimension and KA Superposition Complexity (Hilbert #13, OQ-02)",
+  "slug": "hilbert-13-oq-02",
+  "description": "A fully verified (0-axiom, 0-sorry) account of the provable kernel behind Hilbert #13's open question OQ-02 (how hard is it to compute a Kolmogorov-Arnold superposition?). It proves that Lebesgue covering dimension is a topological invariant — it transports along any homeomorphism in both directions — and concludes that the KA superposition term count 2n+1 is therefore presentation-independent: homeomorphic presentations of a space share the same complexity. It uses a clean, universe-safe covering-dimension definition (finite Fin m covers, Set.ncard order) that sidesteps the DecidablePred/universe issues stopping the companion Hilbert13GeneralSpaces.lean from compiling under the current Mathlib.",
+  "meta": {
+    "author": "Research formalization 2026 (researcher-1)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hilbert%27s_thirteenth_problem",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Hilbert13OQ02.lean",
+    "tags": [
+      "topology",
+      "dimension-theory",
+      "covering-dimension",
+      "hilbert-problems",
+      "kolmogorov-arnold",
+      "topological-invariant"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 174,
+    "assumptions": "None. Every theorem is elementary point-set topology with zero axioms and zero sorries (only the foundational propext/Classical.choice/Quot.sound). The genuinely open OQ-02 — the *computational* complexity of producing a KA representation for an effectively-presented function — is deliberately NOT resolved or assumed; only the well-posedness (topological invariance) of the question is secured.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 5,
+    "additionalFiles": []
+  },
+  "overview": {
+    "historicalContext": "Hilbert's 13th problem concerns whether continuous functions of several variables can be built from functions of fewer variables by superposition. Kolmogorov and Arnold (1957) proved every continuous f on [0,1]^n is a finite superposition; Sternfeld (1985) tied the minimal number of terms to covering dimension, giving 2n+1 for [0,1]^n. OQ-02 asks the *effective* version: given a compactly-presented space and a continuous function, how hard is it to compute such a representation? The classical proof is non-constructive (Baire category), so this is genuinely open. The companion Hilbert13GeneralSpaces.lean builds covering-dimension and superposition infrastructure but no longer compiles under Mathlib 4.26.0.",
+    "problemStatement": "What can be proved unconditionally about the well-posedness of OQ-02? Concretely: is the covering dimension — and hence the 2n+1 Kolmogorov-Arnold superposition term count — an invariant of the homeomorphism type of the presented space, rather than an artifact of the presentation?",
+    "text": "A 0-axiom, 0-sorry proof that covering dimension is a topological invariant, so the 2n+1 KA superposition complexity is presentation-independent.",
+    "proofStrategy": "Self-contained in namespace Hilbert13OQ02, importing only Mathlib. It defines covering dimension covDimLE via finite (Fin m) open covers with order measured by Set.ncard — universe-monomorphic and decidability-free, avoiding the issues in the companion file. Part I proves monotonicity (covDimLE_succ). Part II proves the 0-dimensional base case for subsingleton spaces (covDimLE_of_subsingleton), handling the empty and one-point cases. Part III is the headline: covDimLE_homeo_le pushes a finite open cover of X forward to Y along e.symm, refines it via dim Y ≤ n, and pulls the refinement back along e, with order preserved exactly because x ∈ e⁻¹'S ↔ e x ∈ S; covDimLE_homeo packages both directions into an iff. Part IV defines kaTermCount n = 2n+1 and concludes kaTermCount_invariant: the superposition complexity is a homeomorphism invariant.",
+    "keyInsights": [
+      "**Covering dimension is a topological invariant**: a homeomorphism transports finite open covers and their refinements in both directions, and preserves cover order exactly (since x ∈ e⁻¹'S ↔ e x ∈ S). No compactness or metric assumption is needed for the transport.",
+      "**Complexity is presentation-independent**: because the minimal KA term count is 2·dim+1 and dim is invariant, homeomorphic presentations (different finite approximations, metrics, or embeddings of the same space) all yield the same superposition complexity. This is what makes 'the complexity of the presented space' well-defined.",
+      "**Universe-safe definition matters**: indexing finite covers by Fin m (Type 0) and measuring order with Set.ncard avoids both the DecidablePred synthesis failure and the universe-metavariable problems that prevent the companion Hilbert13GeneralSpaces.lean from compiling — while remaining the standard definition (covering dimension is determined by finite covers).",
+      "**Honest boundary**: only the well-posedness of OQ-02 is secured here; the actual computational/effective complexity of producing a KA representation remains open and is not assumed."
+    ],
+    "prerequisites": [
+      "Lebesgue covering dimension (finite open covers, refinements, order)",
+      "Homeomorphisms and continuity (preimages of open sets)",
+      "Set cardinality (Set.ncard)",
+      "Kolmogorov-Arnold representation theorem and the 2n+1 term count (background)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Universe-Safe Covering Dimension",
+      "startLine": 1,
+      "endLine": 73,
+      "summary": "Docstring framing the file as the verified well-posedness kernel of OQ-02, plus definitions of coverOrderAt (via Set.ncard), coverOrderAtMost, IsRefinement, and covDimLE over finite Fin m covers.",
+      "mathContext": "$\\dim X \\le n$: every finite open cover has a finite open refinement of order $\\le n+1$."
+    },
+    {
+      "id": "monotonicity-base",
+      "title": "Monotonicity and the 0-Dimensional Base Case",
+      "startLine": 74,
+      "endLine": 119,
+      "summary": "covDimLE_succ (dim ≤ n ⟹ dim ≤ n+1) and covDimLE_of_subsingleton (a space with ≤1 point has dimension 0), covering both empty and one-point cases.",
+      "mathContext": "$\\dim X \\le n \\Rightarrow \\dim X \\le n+1$; $|X| \\le 1 \\Rightarrow \\dim X = 0$."
+    },
+    {
+      "id": "invariance",
+      "title": "Topological Invariance (Headline)",
+      "startLine": 120,
+      "endLine": 155,
+      "summary": "covDimLE_homeo_le transports dimension along a homeomorphism by pushing covers forward and pulling refinements back; covDimLE_homeo packages both directions as an iff.",
+      "mathContext": "$X \\simeq_t Y \\Rightarrow (\\dim X \\le n \\iff \\dim Y \\le n)$."
+    },
+    {
+      "id": "complexity",
+      "title": "Presentation-Independence of KA Complexity",
+      "startLine": 156,
+      "endLine": 174,
+      "summary": "kaTermCount n = 2n+1 and kaTermCount_invariant: homeomorphic presentations share the same superposition complexity.",
+      "mathContext": "$X \\simeq_t Y \\Rightarrow$ same $2n+1$ superposition bound."
+    }
+  ],
+  "conclusion": {
+    "summary": "This file verifies, with zero axioms and zero sorries, that Lebesgue covering dimension is a topological invariant — it transports along any homeomorphism in both directions — and therefore that the Kolmogorov-Arnold superposition term count 2n+1 is presentation-independent.",
+    "implications": "It secures the well-posedness of Hilbert #13's OQ-02: the 'complexity' being asked about is an invariant of the homeomorphism type of the space, not an artifact of a particular finite presentation, metric, or embedding. This cleanly separates the provable structural fact from the genuinely open computational question.",
+    "openQuestions": [
+      "What is the computational complexity of producing a KA representation for an effectively-presented continuous function? (still open)",
+      "Is there an efficient (polynomial-time) algorithm in the finite-approximation model?",
+      "Can the non-constructive Baire-category existence proof be made effective with explicit modulus-of-continuity bounds?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "hilbert-13",
+      "relationship": "extends",
+      "description": "Parent Hilbert #13 entry; this file secures the topological-invariance kernel of the open computational-complexity question OQ-02."
+    },
+    {
+      "targetId": "hilbert-13-oq-04",
+      "relationship": "complements",
+      "description": "Sibling open-question formalization for Hilbert #13."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Kolmogorov, A.N.",
+      "title": "On the representation of continuous functions of several variables by superpositions of continuous functions of one variable and addition",
+      "year": "1957",
+      "venue": "Dokl. Akad. Nauk SSSR 114",
+      "note": "The Kolmogorov-Arnold superposition theorem"
+    },
+    {
+      "authors": "Sternfeld, Y.",
+      "title": "Dimension, superposition of functions and separation of points, in compact metric spaces",
+      "year": "1985",
+      "venue": "Israel Journal of Mathematics 50",
+      "note": "Ties the minimal superposition term count to covering dimension (2n+1)"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "Hilbert13OQ02",
+    "lineCount": 174,
+    "axiomCount": 0,
+    "theoremCount": 5,
+    "path": "Proofs/Hilbert13OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 5,
+    "additionalFiles": []
+  },
+  "sorries": 0
+}
