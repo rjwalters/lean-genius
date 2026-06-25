@@ -8,7 +8,11 @@
     },
     "type": "insight",
     "title": "Separable Polynomials Have No Repeated Linear Factor",
-    "content": "sq_dvd_iff_eval_derivative is the parent's characteristic-free double_root_iff: (X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0, valid over any commutative ring with the ordinary derivative and no p ≠ 0 hypothesis. Separable.not_sq_dvd builds on it: if (X − a)² ∣ p then X − a divides both p and p′ via the factor theorem, so coprimality of p and p′ — which is the definition of Separable — forces X − a to be a unit through IsCoprime.isUnit_of_dvd'. But not_isUnit_X_sub_C says a degree-one polynomial is never a unit, a contradiction. The conclusion holds in every characteristic over any nontrivial commutative ring."
+    "content": "sq_dvd_iff_eval_derivative is the parent's characteristic-free double_root_iff: (X − a)² ∣ p ↔ p(a) = 0 ∧ p′(a) = 0, valid over any commutative ring with the ordinary derivative and no p ≠ 0 hypothesis. Separable.not_sq_dvd builds on it: if (X − a)² ∣ p then X − a divides both p and p′ via the factor theorem, so coprimality of p and p′ — which is the definition of Separable — forces X − a to be a unit through IsCoprime.isUnit_of_dvd'. But not_isUnit_X_sub_C says a degree-one polynomial is never a unit, a contradiction. The conclusion holds in every characteristic over any nontrivial commutative ring.",
+    "mathContext": "$\\mathrm{Separable}\\,p :\\!\\iff \\mathrm{IsCoprime}(p, p'); \\qquad (X-a)^2 \\mid p \\;\\Rightarrow\\; (X-a)\\mid p \\,\\wedge\\, (X-a)\\mid p' \\;\\Rightarrow\\; (X-a)\\text{ a unit (false)}$",
+    "significance": "key",
+    "relatedConcepts": ["separable polynomial", "coprimality (IsCoprime)", "Factor Theorem", "formal derivative", "repeated root"],
+    "prerequisites": ["double_root_iff (parent)", "IsCoprime.isUnit_of_dvd'", "X − a is never a unit"]
   },
   {
     "id": "ann-field-iff",
@@ -19,7 +23,11 @@
     },
     "type": "insight",
     "title": "Separable Iff No Repeated Linear Factor, for Split Polynomials",
-    "content": "Over a field, sq_dvd_iff_one_lt_rootMultiplicity identifies (X − a)² ∣ p with a being a multiple root, rewriting the parent's divisibility form through Mathlib's one_lt_rootMultiplicity_iff_isRoot. roots_nodup_iff_forall_not_sq_dvd then converts Multiset.nodup_iff_count_le_one and count_roots into the statement that p has distinct roots iff no (X − a)² divides it. Composing with Mathlib's nodup_roots_iff_of_splits (which supplies Separable ↔ roots.Nodup for split polynomials) yields the headline separable_iff_forall_not_sq_dvd: a nonzero polynomial that splits over a field is separable iff no (X − a)² divides it. This explicit (X − a)²-divisibility form is the elementary classical criterion, assembled from the original bridge and Mathlib's split-polynomial test."
+    "content": "Over a field, sq_dvd_iff_one_lt_rootMultiplicity identifies (X − a)² ∣ p with a being a multiple root, rewriting the parent's divisibility form through Mathlib's one_lt_rootMultiplicity_iff_isRoot. roots_nodup_iff_forall_not_sq_dvd then converts Multiset.nodup_iff_count_le_one and count_roots into the statement that p has distinct roots iff no (X − a)² divides it. Composing with Mathlib's nodup_roots_iff_of_splits (which supplies Separable ↔ roots.Nodup for split polynomials) yields the headline separable_iff_forall_not_sq_dvd: a nonzero polynomial that splits over a field is separable iff no (X − a)² divides it. This explicit (X − a)²-divisibility form is the elementary classical criterion, assembled from the original bridge and Mathlib's split-polynomial test.",
+    "mathContext": "$p\\text{ splits},\\ p\\ne 0 \\;\\Rightarrow\\; \\big(p.\\mathrm{Separable} \\iff \\forall a,\\ \\neg\\,(X-a)^2 \\mid p\\big) \\iff p.\\mathrm{roots}.\\mathrm{Nodup}$",
+    "significance": "key",
+    "relatedConcepts": ["root multiplicity", "Multiset.Nodup of roots", "splitting field", "squarefree polynomial", "discriminant"],
+    "prerequisites": ["one_lt_rootMultiplicity_iff_isRoot", "count_roots / Multiset.nodup_iff_count_le_one", "nodup_roots_iff_of_splits"]
   },
   {
     "id": "ann-char-two",
@@ -30,6 +38,10 @@
     },
     "type": "concept",
     "title": "Characteristic-2 Witnesses: the Ordinary Derivative Still Decides Separability",
-    "content": "The parent's hasseDeriv_detects_char_p warns that the ordinary derivative is blind in characteristic p (derivative (X²) = 0 over ZMod 2). One might fear this breaks Mathlib's separability test, which uses the ordinary derivative. It does not, because separability only needs to detect double roots — a multiplicity-≤-1 condition handled by the ordinary derivative in every characteristic. separable_X_sq_add_X_zmod_two computes derivative (X² + X) = C 2 · X + 1 = 1 (the 2·X term vanishes since 2 = 0), so X² + X is coprime to 1 and hence separable, correctly recording its two distinct roots 0 and 1. not_separable_X_sq_zmod_two computes derivative (X²) = C 2 · X = 0, so X² is coprime to 0 only if it is a unit, which a degree-2 polynomial is not — correctly rejecting X² as inseparable. Both verdicts are right, confirming the ordinary-derivative criterion is sound for squarefreeness even where higher-multiplicity detection would need Hasse derivatives."
+    "content": "The parent's hasseDeriv_detects_char_p warns that the ordinary derivative is blind in characteristic p (derivative (X²) = 0 over ZMod 2). One might fear this breaks Mathlib's separability test, which uses the ordinary derivative. It does not, because separability only needs to detect double roots — a multiplicity-≤-1 condition handled by the ordinary derivative in every characteristic. separable_X_sq_add_X_zmod_two computes derivative (X² + X) = C 2 · X + 1 = 1 (the 2·X term vanishes since 2 = 0), so X² + X is coprime to 1 and hence separable, correctly recording its two distinct roots 0 and 1. not_separable_X_sq_zmod_two computes derivative (X²) = C 2 · X = 0, so X² is coprime to 0 only if it is a unit, which a degree-2 polynomial is not — correctly rejecting X² as inseparable. Both verdicts are right, confirming the ordinary-derivative criterion is sound for squarefreeness even where higher-multiplicity detection would need Hasse derivatives.",
+    "mathContext": "$\\text{over }\\mathbb{F}_2:\\quad (X^2+X)' = 1 \\Rightarrow \\text{separable (roots }0,1); \\qquad (X^2)' = 0 \\Rightarrow \\text{inseparable (double root }0)$",
+    "significance": "supporting",
+    "relatedConcepts": ["positive characteristic", "Hasse derivative", "ZMod 2 / 𝔽₂", "Frobenius", "perfect field"],
+    "prerequisites": ["derivative over ZMod 2", "isCoprime_one_right / isCoprime_zero_right", "natDegree_eq_zero_of_isUnit"]
   }
 ]
