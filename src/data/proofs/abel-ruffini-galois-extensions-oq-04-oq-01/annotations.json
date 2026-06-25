@@ -1,0 +1,34 @@
+[
+  {
+    "id": "is-maximal-normal",
+    "startLine": 47,
+    "endLine": 48,
+    "type": "definition",
+    "title": "Maximal normal subgroup",
+    "body": "IsMaximalNormal N: N is normal, proper (N ≠ ⊤), and not strictly contained in any proper normal subgroup. This is the K = ⊤ instance of the parent entry's combinatorial IsMaxNorm predicate."
+  },
+  {
+    "id": "simple-quotient-iff",
+    "startLine": 55,
+    "endLine": 102,
+    "type": "theorem",
+    "title": "Simple quotient ⇔ maximal normal",
+    "body": "IsSimpleGroup (G ⧸ N) ↔ N is proper and maximal among proper normal subgroups. Forward: push a normal M ⊇ N into the quotient (must be ⊥ or ⊤ by simplicity, giving M = N or M = ⊤, via comap_map_mk'). Reverse: pull a normal subgroup of G ⧸ N back through mk' (normal, contains N, so = N or ⊤), then transfer via injectivity of the correspondence map comapMk'OrderIso. The bridge the parent only asserted."
+  },
+  {
+    "id": "packaged-iff",
+    "startLine": 105,
+    "endLine": 108,
+    "type": "theorem",
+    "title": "Packaged with IsMaximalNormal",
+    "body": "isSimpleGroup_quotient_iff_isMaximalNormal: the same equivalence stated with the IsMaximalNormal predicate, folding in the ambient normality hypothesis."
+  },
+  {
+    "id": "directions",
+    "startLine": 111,
+    "endLine": 119,
+    "type": "theorem",
+    "title": "Both directions as lemmas",
+    "body": "IsMaximalNormal.isSimpleGroup_quotient (maximal normal ⟹ simple quotient) and .of_isSimpleGroup_quotient (simple quotient ⟹ maximal normal), reusable in composition-series arguments."
+  }
+]

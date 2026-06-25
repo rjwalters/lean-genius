@@ -1,0 +1,78 @@
+{
+  "id": "abel-ruffini-galois-extensions-oq-04-oq-01",
+  "title": "Simple quotient ⇔ maximal normal subgroup (the IsMaxNorm/IsSimpleGroup bridge)",
+  "slug": "abel-ruffini-galois-extensions-oq-04-oq-01",
+  "description": "Open question oq-01 of the Jordan-Hölder branch asks to contribute JordanHolderLattice (Subgroup G) to Mathlib, whose 'main challenge' is generalizing the combinatorial IsMaxNorm predicate to IsSimpleGroup (K ⧸ H) directly. The parent entry only ASSERTS (in a comment) that IsMaxNorm H K is equivalent to IsSimpleGroup (K ⧸ H.subgroupOf K) 'by the correspondence theorem'. This formalization PROVES that bridge, axiom-free, in the essential case K = ⊤: a normal subgroup N ◁ G has a simple quotient G ⧸ N if and only if N is a maximal normal subgroup of G. The proof routes through Mathlib's fourth isomorphism / correspondence theorem (QuotientGroup.comapMk'OrderIso) rather than re-deriving the lattice correspondence, giving a short, clean equivalence that settles the crux the open question identifies.",
+  "meta": {
+    "author": "Jordan, Hölder; Lean formalization original (researcher-10)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensionsOQ04OQ01.lean",
+    "tags": [
+      "group-theory",
+      "jordan-holder",
+      "simple-group",
+      "maximal-normal-subgroup",
+      "correspondence-theorem",
+      "quotient-group",
+      "abel-ruffini",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Every result is machine-checked with 0 axioms and 0 sorries (foundational propext/Classical.choice/Quot.sound only). Built on Mathlib's QuotientGroup.comapMk'OrderIso (correspondence theorem), comap_map_mk', normal_comap, ker_mk'. NOTE: this proves the K = ⊤ case (N ◁ G); the fully general K/subgroupOf version — working inside the subtype group ↥K, the 'quotient typeclass issues' the open question flags — and the actual Mathlib upstreaming remain open.",
+    "mathlibDependencies": [
+      {
+        "theorem": "QuotientGroup.comapMk'OrderIso",
+        "description": "Correspondence (fourth isomorphism) theorem: Subgroup (G⧸N) ≃o subgroups containing N",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+      },
+      {
+        "theorem": "QuotientGroup.comap_map_mk'",
+        "description": "comap(mk' N)(map(mk' N) H) = N ⊔ H",
+        "module": "Mathlib.GroupTheory.QuotientGroup.Basic"
+      },
+      {
+        "theorem": "Subgroup.normal_comap",
+        "description": "normality is preserved under comap",
+        "module": "Mathlib.Algebra.Group.Subgroup.Basic"
+      }
+    ],
+    "originalContributions": [
+      "IsMaximalNormal: the K=⊤ instance of the parent's IsMaxNorm predicate (normal, proper, maximal among proper normal subgroups)",
+      "isSimpleGroup_quotient_iff: IsSimpleGroup (G⧸N) ↔ N proper and maximal among proper normal subgroups — the correspondence-theorem bridge, both directions",
+      "isSimpleGroup_quotient_iff_isMaximalNormal: packaged equivalence with the IsMaximalNormal predicate",
+      "IsMaximalNormal.isSimpleGroup_quotient / .of_isSimpleGroup_quotient: the two directions as reusable lemmas"
+    ],
+    "lineCount": 121,
+    "theoremCount": 4,
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "path": "Proofs/AbelRuffiniGaloisExtensionsOQ04OQ01.lean",
+    "lineCount": 121,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 1,
+    "theoremCount": 4
+  },
+  "conclusion": {
+    "summary": "The combinatorial maximality predicate IsMaxNorm and the categorical simplicity predicate IsSimpleGroup of the quotient are equivalent, for K = ⊤: G ⧸ N is simple iff N is a maximal normal subgroup. The forward direction pushes a normal M ⊇ N into the quotient (it must be ⊥ or ⊤, giving M = N or M = ⊤); the reverse pulls a normal subgroup of G ⧸ N back through mk' and uses injectivity of the correspondence map. This is the bridge the parent entry asserted but did not prove.",
+    "implications": [
+      "Confirms IsMaxNorm and IsSimpleGroup carry the same information for K = ⊤, supporting the upstreaming goal.",
+      "The correspondence theorem (comapMk'OrderIso) makes the equivalence a short, robust proof."
+    ],
+    "openQuestions": [
+      "Generalize to arbitrary K via H.subgroupOf K, navigating the subtype-group quotient typeclasses — the part the open question flags as the main obstacle.",
+      "Actually contribute JordanHolderLattice (Subgroup G) and this bridge upstream to Mathlib."
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Proves the IsMaxNorm↔IsSimpleGroup correspondence asserted by the Jordan-Hölder lattice entry",
+      "targetId": "abel-ruffini-galois-extensions-oq-04"
+    }
+  ],
+  "sorries": 0
+}
