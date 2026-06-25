@@ -1,0 +1,36 @@
+{
+  "slug": "brianchon-theorem-oq-01-oq-02",
+  "title": "Brianchon ⟺ Pascal: the Converse Duality Bridge",
+  "path": "Proofs/BrianchonTheoremOQ01OQ02.lean",
+  "problemStatement": "Open question OQ-02 of brianchon-theorem-oq-01: establish the converse of the Pascal–Brianchon correspondence. For a symmetric conic and six contact points, does Brianchon concurrency of the circumscribed hexagon's diagonals imply Pascal collinearity of the inscribed contact hexagon's opposite-side intersections?",
+  "significance": "Completes the Pascal–Brianchon duality to a full equivalence (for nondegenerate conics) at the level of the determinant correspondence, and pins down the exact hypothesis (det C ≠ 0) the converse needs.",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "EMPTY",
+  "tags": ["geometry", "projective", "conic", "duality", "converse", "equivalence"],
+  "tractability": "Tractable via the parent's diag_eq reduction plus Matrix.det_smul; resolved in one session.",
+  "currentState": "Solved and verified (axiom-free, sorry-free). The converse of the duality bridge and the full equivalence are proved for nondegenerate conics; the classical Braikenridge–Maclaurin converse (contact points lie on a conic) remains a stated open follow-up.",
+  "knownResults": "Parent entry proved the forward bridge concurrent_brianchon_of_collinear_pascal. Classically Pascal and Brianchon are dual hence equivalent under projective duality.",
+  "knowledge": {
+    "insights": [
+      "Each Brianchon diagonal equals the fixed linear map det C • C applied to the corresponding Pascal point (parent's diag_eq), so the diagonal coefficient determinant equals det(det C • C) times the Pascal-point determinant.",
+      "For a 3×3 matrix det(det C • C) = (det C)^3 · det C = (det C)^4 (Matrix.det_smul with Fintype.card (Fin 3) = 3); this single factor governs both directions of the correspondence.",
+      "The converse is exactly an invertibility statement: Brianchon concurrency ⟹ Pascal collinearity holds iff the factor (det C)^4 is nonzero, i.e. iff the conic is nondegenerate (det C ≠ 0).",
+      "Nondegeneracy is necessary, not technical: for the zero conic every tangent line and diagonal is the zero covector, so concurrency holds for arbitrary contact points even when the Pascal points are not collinear (zero_conic_concurrent)."
+    ],
+    "builtItems": [
+      "brianchon_concurrency_det_eq — the exact scalar identity det(diagonals) = (det C)^4 · det(Pascal points) (Proofs/BrianchonTheoremOQ01OQ02.lean:195)",
+      "collinear_pascal_of_concurrent_brianchon — converse bridge for det C ≠ 0 (Proofs/BrianchonTheoremOQ01OQ02.lean:247)",
+      "pascal_collinear_iff_brianchon_concurrent — full equivalence for nondegenerate conics (Proofs/BrianchonTheoremOQ01OQ02.lean:272)",
+      "zero_conic_concurrent — necessity witness for the det C ≠ 0 hypothesis (Proofs/BrianchonTheoremOQ01OQ02.lean:313)"
+    ],
+    "nextSteps": [
+      "Prove the classical Braikenridge–Maclaurin converse: the six contact points actually lie on a nondegenerate conic (strictly stronger; needs a genericity hypothesis).",
+      "Characterize the rank-2 degenerate case (det C = 0, C ≠ 0): which contact configurations still force Pascal collinearity.",
+      "Give a constructive converse at the level of the Brianchon point (a common incident point ⟹ collinear Pascal points)."
+    ],
+    "progressSummary": "COMPLETE: converse duality bridge + full Pascal⟺Brianchon equivalence (det C ≠ 0) proved axiom-free and sorry-free via the scalar identity det(diag) = (det C)^4 · det(pascal); 13 theorems, 12 definitions, 0 axioms."
+  },
+  "started": "2026-06-25",
+  "lastUpdate": "2026-06-25"
+}

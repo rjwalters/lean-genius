@@ -1,0 +1,183 @@
+{
+  "id": "cantor-diagonalization-oq-07-oq-01",
+  "title": "Continuum Powers: #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = 𝔠",
+  "slug": "cantor-diagonalization-oq-07-oq-01",
+  "description": "The n-fold and countable extensions of the parent's #(ℝ × ℝ) = #ℝ. For every n ≥ 1 Euclidean n-space ℝⁿ (as Fin n → ℝ) is equinumerous with the line, #(ℝⁿ) = #ℝ, because 𝔠 ^ n = 𝔠 (Cardinal.power_nat_eq). The sequence space ℕ → ℝ stays at the continuum, #(ℕ → ℝ) = 𝔠, via Cardinal.continuum_power_aleph0 (𝔠 ^ ℵ₀ = 𝔠). Each cardinal equality unpacks through Cardinal.eq to an honest bijection ℝⁿ ≃ ℝ and (ℕ → ℝ) ≃ ℝ.",
+  "meta": {
+    "author": "Cantor (formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Cardinality_of_the_continuum",
+    "date": "1878",
+    "status": "verified",
+    "tags": [
+      "set-theory",
+      "cardinality",
+      "cantor",
+      "continuum",
+      "cardinal-arithmetic",
+      "real-numbers",
+      "cardinal-exponentiation",
+      "extension",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/CantorDiagonalizationOQ07OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Cardinal.power_nat_eq",
+        "description": "ℵ₀ ≤ c → 1 ≤ n → c ^ n = c — an infinite cardinal absorbs any positive finite power; the engine behind #(ℝⁿ) = #ℝ",
+        "module": "Mathlib.SetTheory.Cardinal.Arithmetic"
+      },
+      {
+        "theorem": "Cardinal.continuum_power_aleph0",
+        "description": "𝔠 ^ ℵ₀ = 𝔠 — the continuum absorbs the countable power (from 2 ^ ℵ₀ = 𝔠 and ℵ₀ · ℵ₀ = ℵ₀); the engine behind #(ℕ → ℝ) = 𝔠",
+        "module": "Mathlib.SetTheory.Cardinal.Continuum"
+      },
+      {
+        "theorem": "Cardinal.mk_arrow",
+        "description": "#(α → β) = lift #β ^ lift #α — cardinality of a function type; lifts are identities in a single universe (Cardinal.lift_id)",
+        "module": "Mathlib.SetTheory.Cardinal.Defs"
+      },
+      {
+        "theorem": "Cardinal.mk_real",
+        "description": "#ℝ = 𝔠, the reals have cardinality the continuum",
+        "module": "Mathlib.Analysis.Real.Cardinality"
+      },
+      {
+        "theorem": "Cardinal.mk_fin",
+        "description": "#(Fin n) = n — the index set of ℝⁿ has cardinality n, supplying the exponent",
+        "module": "Mathlib.SetTheory.Cardinal.Order"
+      },
+      {
+        "theorem": "Cardinal.mk_nat",
+        "description": "#ℕ = ℵ₀ — the index set of the sequence space has cardinality ℵ₀, supplying the countable exponent",
+        "module": "Mathlib.SetTheory.Cardinal.Defs"
+      },
+      {
+        "theorem": "Cardinal.eq",
+        "description": "#α = #β ↔ Nonempty (α ≃ β) — a cardinal equality is exactly the existence of a bijection",
+        "module": "Mathlib.SetTheory.Cardinal.Defs"
+      }
+    ],
+    "originalContributions": [
+      "continuum_pow_eq: 𝔠 ^ n = 𝔠 for n ≥ 1, the finite-power absorption law specialized to the continuum",
+      "mk_pi_real_eq_continuum: #(ℝⁿ) = 𝔠 for n ≥ 1 (ℝⁿ as Fin n → ℝ)",
+      "mk_pi_real: #(ℝⁿ) = #ℝ for n ≥ 1 — Euclidean n-space is equinumerous with the line (main finite result)",
+      "nonempty_equiv_pi_real: Nonempty (ℝⁿ ≃ ℝ), the finite equality unpacked to a bijection",
+      "mk_nat_arrow_real_eq_continuum: #(ℕ → ℝ) = 𝔠, the sequence space has cardinality the continuum",
+      "mk_nat_arrow_real: #(ℕ → ℝ) = #ℝ — real sequences are equinumerous with the line (main countable result)",
+      "nonempty_equiv_nat_arrow_real: Nonempty ((ℕ → ℝ) ≃ ℝ), the countable equality unpacked to a bijection",
+      "mk_pi_two_real: #(Fin 2 → ℝ) = #ℝ, the n = 2 instance recovering the parent's #(ℝ × ℝ) = #ℝ"
+    ],
+    "dateAdded": "2026-06-25",
+    "lineCount": 83,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries (only the foundational propext / Classical.choice / Quot.sound, which do not count as assumptions).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Cantor's 1878 'Beitrag zur Mannigfaltigkeitslehre' proves the bijection between the line ℝ and the plane ℝ × ℝ, and remarks that the same holds for ℝⁿ for every finite n: dimension does not change cardinality. In modern cardinal arithmetic the finite case is the identity 𝔠 ^ n = 𝔠 (n ≥ 1), and the countable case 𝔠 ^ ℵ₀ = 𝔠 extends stability all the way to the space of real sequences ℕ → ℝ — still no larger than the line. Both are instances of the absorption laws for infinite cardinals (κ ^ n = κ for finite n ≥ 1, and the bound κ ^ ℵ₀ = 2 ^ ℵ₀ when 2 ≤ κ ≤ 𝔠), themselves consequences of the axiom of choice. The parent (oq-07) is exactly the n = 2 case; this entry fills in the rest of Cantor's claim.",
+    "problemStatement": "**Open Question (cantor-diagonalization-oq-07-oq-01)**: Formalize the n-fold and countable versions of #(ℝ × ℝ) = #ℝ — namely #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = 𝔠 — via Mathlib's cardinal exponentiation.\n\n**Result**: mk_pi_real (#(ℝⁿ) = #ℝ for n ≥ 1), mk_pi_real_eq_continuum (#(ℝⁿ) = 𝔠), mk_nat_arrow_real (#(ℕ → ℝ) = #ℝ), mk_nat_arrow_real_eq_continuum (#(ℕ → ℝ) = 𝔠), the bijections nonempty_equiv_pi_real and nonempty_equiv_nat_arrow_real, and the n = 2 sanity check mk_pi_two_real recovering the parent.",
+    "text": "#(ℝⁿ) = #ℝ for every n ≥ 1 and #(ℕ → ℝ) = 𝔠: neither raising the dimension to any finite n nor passing to countably-infinite-dimensional real sequence space increases cardinality beyond the continuum.",
+    "proofStrategy": "**Proof Strategy.**\n\n1. `continuum_pow_eq`: `Cardinal.power_nat_eq` (ℵ₀ ≤ c, 1 ≤ n ⟹ c ^ n = c) at c = 𝔠, using `aleph0_le_continuum`. This is the finite absorption law.\n2. `mk_pi_real_eq_continuum`: `Cardinal.mk_arrow` rewrites #(Fin n → ℝ) to #ℝ ^ #(Fin n) (lifts vanish via `lift_id` in one universe), `mk_real` and `mk_fin` turn this into 𝔠 ^ (n : ℕ) (bridging cardinal and monoid powers with `power_natCast`), and `continuum_pow_eq` collapses it to 𝔠.\n3. `mk_pi_real`: both #(ℝⁿ) and #ℝ equal 𝔠, so they are equal.\n4. `nonempty_equiv_pi_real`: `Cardinal.eq` turns the equality into the existence of a bijection ℝⁿ ≃ ℝ.\n5. `mk_nat_arrow_real_eq_continuum`: `Cardinal.mk_arrow` gives #ℝ ^ #ℕ = 𝔠 ^ ℵ₀ (via `mk_real`, `mk_nat`), and `Cardinal.continuum_power_aleph0` collapses 𝔠 ^ ℵ₀ to 𝔠.\n6. `mk_nat_arrow_real`, `nonempty_equiv_nat_arrow_real`: the countable analogues of steps 3–4.\n7. `mk_pi_two_real`: instantiate `mk_pi_real` at n = 2, recovering the parent's #(ℝ × ℝ) = #ℝ in Fin-indexed form.",
+    "keyInsights": [
+      "**Finite and countable powers both absorb.** The parent's 𝔠 · 𝔠 = 𝔠 is the n = 2 case of 𝔠 ^ n = 𝔠; the same stability persists at the countable power 𝔠 ^ ℵ₀ = 𝔠. Products and countable products do not grow the continuum — only power sets (2 ^ 𝔠 > 𝔠) do.",
+      "**Where it stops.** Stability is exactly at exponents ≤ 𝔠: 𝔠 ^ ℵ₀ = 𝔠 but 𝔠 ^ 𝔠 = 2 ^ 𝔠 > 𝔠. The countable result is the last 'free' power; the next jump up is a strict increase, the diagonal phenomenon of Cantor's theorem.",
+      "**ℝⁿ as a function type.** Modeling ℝⁿ as Fin n → ℝ makes mk_arrow + power_nat_eq do all the work uniformly in n, with the n = 2 case (mk_pi_two_real) matching the parent's product form #(ℝ × ℝ).",
+      "**Cardinal equality is a bijection.** `Cardinal.eq` makes #(ℝⁿ) = #ℝ and #(ℕ → ℝ) = #ℝ literally the existence of bijections ℝⁿ ≃ ℝ and (ℕ → ℝ) ≃ ℝ — Cantor's 'space ≅ line' maps, recovered from the cardinal computation."
+    ],
+    "prerequisites": [
+      "Cardinal arithmetic in Mathlib (Cardinal.mk, ℵ₀, 𝔠, exponentiation)",
+      "The infinite-cardinal power absorption laws (Cardinal.power_nat_eq, Cardinal.continuum_power_aleph0)",
+      "Cardinality of function types and of ℝ (Cardinal.mk_arrow, Cardinal.mk_real)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Module Header and Setup",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Module docstring stating the open question (n-fold and countable continuum powers), the approach via mk_arrow + power_nat_eq + continuum_power_aleph0, the Mathlib import, namespace, and Cardinal open.",
+      "mathContext": "$\\#(\\mathbb{R}^n) = \\#\\mathbb{R}$ for $n \\ge 1$ and $\\#(\\mathbb{N} \\to \\mathbb{R}) = \\mathfrak{c}$."
+    },
+    {
+      "id": "finite",
+      "title": "Finite Powers: #(ℝⁿ) = #ℝ",
+      "startLine": 39,
+      "endLine": 61,
+      "summary": "continuum_pow_eq (𝔠 ^ n = 𝔠 for n ≥ 1), mk_pi_real_eq_continuum (#(ℝⁿ) = 𝔠), mk_pi_real (#(ℝⁿ) = #ℝ, main finite result), and nonempty_equiv_pi_real (the bijection ℝⁿ ≃ ℝ).",
+      "mathContext": "$\\#(\\mathbb{R}^n) = \\mathfrak{c}^n = \\mathfrak{c} = \\#\\mathbb{R}$ for $n \\ge 1$."
+    },
+    {
+      "id": "countable",
+      "title": "Countable Power: #(ℕ → ℝ) = 𝔠",
+      "startLine": 63,
+      "endLine": 77,
+      "summary": "mk_nat_arrow_real_eq_continuum (#(ℕ → ℝ) = 𝔠 via continuum_power_aleph0), mk_nat_arrow_real (#(ℕ → ℝ) = #ℝ), and nonempty_equiv_nat_arrow_real (the bijection (ℕ → ℝ) ≃ ℝ).",
+      "mathContext": "$\\#(\\mathbb{N} \\to \\mathbb{R}) = \\mathfrak{c}^{\\aleph_0} = \\mathfrak{c}$."
+    },
+    {
+      "id": "sanity",
+      "title": "Sanity Check Against the Parent",
+      "startLine": 79,
+      "endLine": 83,
+      "summary": "mk_pi_two_real: the n = 2 instance #(Fin 2 → ℝ) = #ℝ, the Fin-indexed form of the parent's #(ℝ × ℝ) = #ℝ.",
+      "mathContext": "$\\#(\\mathrm{Fin}\\,2 \\to \\mathbb{R}) = \\#\\mathbb{R}$, recovering $\\#(\\mathbb{R} \\times \\mathbb{R}) = \\#\\mathbb{R}$."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "cantor-diagonalization-oq-07",
+      "relationship": "extends",
+      "description": "The parent proves the n = 2 case #(ℝ × ℝ) = #ℝ (𝔠 · 𝔠 = 𝔠); this entry generalizes to all finite n (#(ℝⁿ) = #ℝ) and to the countable power (#(ℕ → ℝ) = 𝔠)"
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Finite and countable powers leave the continuum fixed (𝔠 ^ n = 𝔠, 𝔠 ^ ℵ₀ = 𝔠), whereas Cantor's theorem #A < #𝒫(A) (i.e. 𝔠 ^ 𝔠 = 2 ^ 𝔠 > 𝔠) shows the full power strictly increases it"
+    }
+  ],
+  "conclusion": {
+    "summary": "Complete, fully verified (0 sorries, 0 axioms) formalization of the n-fold and countable continuum powers: #(ℝⁿ) = #ℝ for every n ≥ 1 and #(ℕ → ℝ) = 𝔠, each unpacked to an explicit bijection. The n = 2 case recovers the parent's #(ℝ × ℝ) = #ℝ.",
+    "implications": "Completes Cantor's 1878 observation that finite dimension does not change cardinality, and pushes it to countably-infinite dimension. Marks the sharp boundary of stability: powers up to ℵ₀ are absorbed by 𝔠, while the full power 𝔠 ^ 𝔠 = 2 ^ 𝔠 is a strict increase (the diagonal phenomenon).",
+    "openQuestions": [
+      "Pin down the boundary precisely: prove 𝔠 ^ 𝔠 = 2 ^ 𝔠 > 𝔠, contrasting the absorbed exponents ≤ ℵ₀ with the strict jump at exponent 𝔠.",
+      "Exhibit a concrete interleaving-of-digits bijection ℝⁿ ≃ ℝ rather than routing through cardinal arithmetic."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Cardinal"
+    ],
+    "namespace": "CantorDiagonalizationOQ07OQ01",
+    "lineCount": 83,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/CantorDiagonalizationOQ07OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Cantor, Georg",
+      "title": "Ein Beitrag zur Mannigfaltigkeitslehre",
+      "year": "1878",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 84, pp. 242–258",
+      "note": "Proves the bijection between ℝ and ℝⁿ — finite dimension does not change cardinality"
+    },
+    {
+      "authors": "Jech, Thomas",
+      "title": "Set Theory",
+      "year": "2003",
+      "venue": "Springer Monographs in Mathematics, 3rd ed.",
+      "note": "Cardinal exponentiation and the absorption laws κ ^ n = κ (finite n ≥ 1) and κ ^ ℵ₀ for infinite κ"
+    }
+  ],
+  "sorries": 0
+}
