@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-upper-bound",
+    "proofId": "chebyshev-bounds-oq-06",
+    "range": { "startLine": 38, "endLine": 45 },
+    "type": "theorem",
+    "title": "Upper bound: C(2n,n) ≤ 4ⁿ",
+    "content": "`centralBinom_le_four_pow`. The central binomial coefficient is one term of the row sum $\\sum_k \\binom{2n}{k} = 2^{2n}$, so it cannot exceed it. Formally, `Nat.choose_le_two_pow (2n) n` gives $\\binom{2n}{n} \\le 2^{2n}$; then `centralBinom n = (2n).choose n` (via `Nat.centralBinom_eq_two_mul_choose`) and $2^{2n} = (2^2)^n = 4^n$ by `pow_mul` and `norm_num`. Mathlib records the analogous bound for the odd row, `choose_middle_le_pow : (2n+1).choose n ≤ 4ⁿ`, but not this even-row statement.",
+    "mathContext": "$\\binom{2n}{n} \\le 2^{2n} = 4^n$.",
+    "significance": "critical",
+    "prerequisites": ["Binomial coefficients", "Nat.choose_le_two_pow"],
+    "relatedConcepts": ["Central binomial coefficient", "Row sums of Pascal's triangle", "Pochhammer/binomial bounds"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "chebyshev-bounds-oq-06",
+    "range": { "startLine": 47, "endLine": 54 },
+    "type": "theorem",
+    "title": "Lower bound: 4ⁿ ≤ (2n+1)·C(2n,n)",
+    "content": "`four_pow_le_succ_two_mul_mul_centralBinom`. This is exactly Mathlib's `Nat.four_pow_le_two_mul_add_one_mul_central_binom`, restated with `centralBinom n` in place of `(2n).choose n` (the two are definitionally equal, bridged by `Nat.centralBinom_eq_two_mul_choose`). Mathlib's proof writes $4^n = (1+1)^{2n} = \\sum_{m} \\binom{2n}{m}$ and bounds each of the $2n+1$ terms by the central, maximal one $\\binom{2n}{n}$. Stated multiplicatively to keep everything inside ℕ with no truncated division.",
+    "mathContext": "$4^n \\le (2n+1)\\binom{2n}{n}$.",
+    "significance": "critical",
+    "prerequisites": ["Binomial theorem", "Nat.four_pow_le_two_mul_add_one_mul_central_binom"],
+    "relatedConcepts": ["Central term is largest", "Pigeonhole on row entries", "Erdős prime-counting estimates"]
+  },
+  {
+    "id": "ann-quotient-form",
+    "proofId": "chebyshev-bounds-oq-06",
+    "range": { "startLine": 56, "endLine": 61 },
+    "type": "theorem",
+    "title": "Quotient form: 4ⁿ/(2n+1) ≤ C(2n,n) over ℕ",
+    "content": "`four_pow_div_succ_two_mul_le_centralBinom`. The literal textbook statement with truncated natural-number division. Immediate from the multiplicative lower bound via `Nat.div_le_of_le_mul`, whose goal `4ⁿ ≤ (2n+1)·centralBinom n` matches `four_pow_le_succ_two_mul_mul_centralBinom` verbatim (the divisor `2n+1` is the left factor).",
+    "mathContext": "$\\lfloor 4^n/(2n+1)\\rfloor \\le \\binom{2n}{n}$.",
+    "significance": "supporting",
+    "prerequisites": ["Truncated ℕ-division", "Nat.div_le_of_le_mul"],
+    "relatedConcepts": ["Floor division", "Multiplicative vs quotient phrasing"]
+  },
+  {
+    "id": "ann-real-sandwich",
+    "proofId": "chebyshev-bounds-oq-06",
+    "range": { "startLine": 69, "endLine": 87 },
+    "type": "theorem",
+    "title": "Real-valued sandwich with genuine division",
+    "content": "`centralBinom_real_sandwich`. Lifts both bounds to $\\mathbb{R}$ so the division $4^n/(2n+1)$ is the true quotient, not its ℕ-truncation. For the lower half, `div_le_iff₀` (with positivity of $2n+1$) reduces to $4^n \\le (2n+1)\\binom{2n}{n}$, which is the cast of the ℕ inequality (`Nat.cast_le` then `push_cast`; `linarith` finishes). The upper half is the cast of `centralBinom_le_four_pow`. `centralBinom_sandwich` (lines 63–67) packages the two ℕ bounds together.",
+    "mathContext": "$\\dfrac{4^n}{2n+1} \\le \\binom{2n}{n} \\le 4^n$ in $\\mathbb{R}$.",
+    "significance": "supporting",
+    "prerequisites": ["ℕ→ℝ casting", "div_le_iff₀", "push_cast / linarith"],
+    "relatedConcepts": ["Genuine vs truncated division", "Cast monotonicity", "Reusable packaging"]
+  }
+]

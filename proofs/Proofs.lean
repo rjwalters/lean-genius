@@ -846,6 +846,7 @@ import Proofs.ChebyshevBoundsOQ04Aristotle
 import Proofs.ChebyshevBoundsOQ04OQ01
 import Proofs.ChebyshevBoundsOQ04OQ01Mertens
 import Proofs.ChebyshevBoundsOQ04OQ01OQ01WeakMertensStatementOnly
+import Proofs.ChebyshevBoundsOQ06
 import Proofs.ChebyshevPNTBridge
 import Proofs.ChebyshevPNTBridgeOQ01
 import Proofs.ChebyshevPNTBridgeOQ01Aristotle
