@@ -67,7 +67,9 @@
     "keyInsights": [
       "**Polarization is a rigidity statement in disguise.** The bare identity recovers the inner product from the norm within one space; reading it across two spaces shows that fixing the norm forces fixing the inner product. The structural theorem `inner_map_eq` is the real content the identity is for.",
       "**Additivity suffices — linearity is not needed.** Polarization only references f(x+y) and f(x−y), so the inner-product-preservation theorem holds for any norm-preserving AddMonoidHom; ℝ-linear isometries are merely a special case. This is sharper than the usual textbook statement for linear isometries.",
-      "**Why isometries are unitary, elementarily.** The chain norm-preserving ⟹ inner-product-preserving ⟹ orthogonality-preserving + injective is exactly the reason Hilbert-space isometries are unitary, derived here without the bundled `LinearIsometry.inner_map_map` machinery."
+      "**Why isometries are unitary, elementarily.** The chain norm-preserving ⟹ inner-product-preserving ⟹ orthogonality-preserving + injective is exactly the reason Hilbert-space isometries are unitary, derived here without the bundled `LinearIsometry.inner_map_map` machinery.",
+      "**The proof of `inner_map_eq` is a four-rewrite chain.** Apply polarization to both sides, then `← map_add` and `← map_sub` turn fx±fy into f(x±y), and two applications of the norm hypothesis h collapse the norms — no induction, no case analysis, the whole rigidity theorem is `rw [polarization, polarization, ← map_add, ← map_sub, h, h]`.",
+      "**Rigidity is specific to the real case as stated.** Over ℂ the real-part polarization recovers only Re⟪x,y⟫, so a norm-preserving additive map fixes the real inner product; pinning the full Hermitian product needs the four-term complex polarization. The file works over ℝ, where the single identity already determines the inner product completely."
     ],
     "prerequisites": [
       "Inner product spaces (InnerProductSpace ℝ F in Mathlib)",

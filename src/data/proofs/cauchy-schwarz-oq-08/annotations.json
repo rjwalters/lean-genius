@@ -4,43 +4,59 @@
     "proofId": "cauchy-schwarz-oq-08",
     "range": {
       "startLine": 1,
-      "endLine": 39
+      "endLine": 35
     },
     "type": "concept",
     "title": "Module Header and Problem Setup",
-    "content": "The open question asks for the polarization identity $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ in a real inner-product space. The bare identity already appears in cauchy-schwarz-oq-07; this entry pushes it to its structural payoff — the inner product is uniquely determined by the norm, so any map preserving the norm must preserve the inner product. Two real inner-product spaces $F, F'$ are fixed via `[NormedAddCommGroup F] [InnerProductSpace ℝ F]`."
+    "content": "The open question asks for the polarization identity $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ in a real inner-product space. The bare identity already appears in cauchy-schwarz-oq-07; this entry pushes it to its structural payoff — the inner product is uniquely determined by the norm, so any map preserving the norm must preserve the inner product. Two real inner-product spaces $F, F'$ are fixed via `[NormedAddCommGroup F] [InnerProductSpace ℝ F]`.",
+    "mathContext": "Polarization $\\langle x,y\\rangle=\\tfrac14(\\|x+y\\|^2-\\|x-y\\|^2)$ exhibits $\\langle\\cdot,\\cdot\\rangle$ as a function of $\\|\\cdot\\|$ alone — the source of all rigidity results in the file.",
+    "significance": "context",
+    "relatedConcepts": ["polarization identity", "norm rigidity", "real inner-product space", "isometries"],
+    "prerequisites": ["inner-product spaces", "norms"]
   },
   {
     "id": "csoq08-polarization",
     "proofId": "cauchy-schwarz-oq-08",
     "range": {
-      "startLine": 41,
-      "endLine": 50
+      "startLine": 37,
+      "endLine": 43
     },
     "type": "theorem",
     "title": "The Polarization Identity",
-    "content": "`polarization` proves $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ self-contained: expanding $\\|x+y\\|^2 = \\|x\\|^2 + 2\\langle x,y\\rangle + \\|y\\|^2$ and $\\|x-y\\|^2 = \\|x\\|^2 - 2\\langle x,y\\rangle + \\|y\\|^2$ (via `norm_add_sq_real`/`norm_sub_sq_real`), the difference is $4\\langle x,y\\rangle$. This recovers the inner product from the norm and serves as the engine for the rigidity results below."
+    "content": "`polarization` proves $\\langle x,y\\rangle = (\\|x+y\\|^2 - \\|x-y\\|^2)/4$ self-contained: expanding $\\|x+y\\|^2 = \\|x\\|^2 + 2\\langle x,y\\rangle + \\|y\\|^2$ and $\\|x-y\\|^2 = \\|x\\|^2 - 2\\langle x,y\\rangle + \\|y\\|^2$ (via `norm_add_sq_real`/`norm_sub_sq_real`), the difference is $4\\langle x,y\\rangle$. This recovers the inner product from the norm and serves as the engine for the rigidity results below.",
+    "mathContext": "$\\|x+y\\|^2-\\|x-y\\|^2=(\\dots+2\\langle x,y\\rangle+\\dots)-(\\dots-2\\langle x,y\\rangle+\\dots)=4\\langle x,y\\rangle$, closed by `ring`.",
+    "significance": "key",
+    "relatedConcepts": ["polarization identity", "cross-term cancellation", "norm_add_sq_real / norm_sub_sq_real", "inner product from norm"],
+    "prerequisites": ["real inner-product space", "the ring tactic"]
   },
   {
     "id": "csoq08-rigidity",
     "proofId": "cauchy-schwarz-oq-08",
     "range": {
-      "startLine": 52,
-      "endLine": 71
+      "startLine": 45,
+      "endLine": 68
     },
     "type": "theorem",
     "title": "Norm-Rigidity of the Inner Product",
-    "content": "`inner_map_eq` is the headline result: a norm-preserving **additive** map $f : F \\to_+ F'$ satisfies $\\langle f x, f y\\rangle = \\langle x,y\\rangle$. Rewriting both sides by polarization, additivity gives $f x \\pm f y = f(x \\pm y)$ and the hypothesis $\\|f z\\| = \\|z\\|$ equates the norms — so the inner products coincide. Crucially only additivity is used, not $\\mathbb{R}$-linearity. `inner_map_eq_zero_iff` derives preservation of orthogonality, and `injective_of_norm_preserving` shows such maps are injective (a vector of norm $0$ is $0$)."
+    "content": "`inner_map_eq` is the headline result: a norm-preserving **additive** map $f : F \\to_+ F'$ satisfies $\\langle f x, f y\\rangle = \\langle x,y\\rangle$. Rewriting both sides by polarization, additivity gives $f x \\pm f y = f(x \\pm y)$ and the hypothesis $\\|f z\\| = \\|z\\|$ equates the norms — so the inner products coincide. Crucially only additivity is used, not $\\mathbb{R}$-linearity. `inner_map_eq_zero_iff` derives preservation of orthogonality, and `injective_of_norm_preserving` shows such maps are injective (a vector of norm $0$ is $0$).",
+    "mathContext": "$\\langle fx,fy\\rangle=\\tfrac14(\\|fx+fy\\|^2-\\|fx-fy\\|^2)=\\tfrac14(\\|f(x+y)\\|^2-\\|f(x-y)\\|^2)=\\tfrac14(\\|x+y\\|^2-\\|x-y\\|^2)=\\langle x,y\\rangle$, using only $f(x\\pm y)=fx\\pm fy$ and $\\|f z\\|=\\|z\\|$.",
+    "significance": "key",
+    "relatedConcepts": ["norm rigidity", "additive map (AddMonoidHom)", "orthogonality preservation", "injectivity from norm preservation"],
+    "prerequisites": ["polarization", "map_add / map_sub", "injective_iff_map_eq_zero"]
   },
   {
     "id": "csoq08-isometry",
     "proofId": "cauchy-schwarz-oq-08",
     "range": {
-      "startLine": 73,
+      "startLine": 70,
       "endLine": 83
     },
     "type": "theorem",
     "title": "Linear and Bundled-Isometry Corollaries",
-    "content": "`inner_linearMap_eq` specializes the rigidity theorem to an $\\mathbb{R}$-linear map by forgetting linearity down to its additive structure, recovering the defining property of a linear isometry. `inner_linearIsometry_eq` applies this to a bundled `LinearIsometry` through its `norm_map` field — obtaining $\\langle f x, f y\\rangle = \\langle x,y\\rangle$ without invoking Mathlib's bundled `LinearIsometry.inner_map_map`. This is the elementary reason isometries of Hilbert spaces are unitary."
+    "content": "`inner_linearMap_eq` specializes the rigidity theorem to an $\\mathbb{R}$-linear map by forgetting linearity down to its additive structure, recovering the defining property of a linear isometry. `inner_linearIsometry_eq` applies this to a bundled `LinearIsometry` through its `norm_map` field — obtaining $\\langle f x, f y\\rangle = \\langle x,y\\rangle$ without invoking Mathlib's bundled `LinearIsometry.inner_map_map`. This is the elementary reason isometries of Hilbert spaces are unitary.",
+    "mathContext": "A linear isometry is in particular a norm-preserving additive map, so `inner_map_eq` applies via `f.toAddMonoidHom` / `f.toLinearMap` and the `norm_map` field; hence $\\langle fx,fy\\rangle=\\langle x,y\\rangle$ — the inner-product-preserving (unitary) property.",
+    "significance": "supporting",
+    "relatedConcepts": ["linear isometry", "LinearIsometry (bundled)", "unitary maps", "Hilbert space isometries"],
+    "prerequisites": ["inner_map_eq", "LinearMap.toAddMonoidHom", "LinearIsometry.norm_map"]
   }
 ]
