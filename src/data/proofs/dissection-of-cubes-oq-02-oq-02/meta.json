@@ -2,12 +2,12 @@
   "id": "dissection-of-cubes-oq-02-oq-02",
   "title": "Hilbert's Third Problem via the Tensor-Product Dehn Invariant",
   "slug": "dissection-of-cubes-oq-02-oq-02",
-  "description": "Formalizes the proper algebraic Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) using Mathlib's tensor product infrastructure. Proves rational angle vanishing (edges with rational×π dihedral angles contribute 0), cube D=0, tetrahedron D≠0, and Hilbert's Third Problem. The Dehn-Sydler completeness theorem (sufficiency direction, Sydler 1965) is included only as a `True`-valued placeholder — it is stated as classical background, not formalized here.",
+  "description": "Formalizes the proper algebraic Dehn invariant D(P) ∈ ℝ ⊗_ℤ (ℝ/πℤ) using Mathlib's tensor product infrastructure. Proves rational angle vanishing (edges with rational×π dihedral angles contribute 0), cube D=0, and tetrahedron D≠0 — i.e. the cube and tetrahedron have different Dehn invariants. The bridge from this to scissors-incongruence (Hilbert's Third Problem) relies on two results that are NOT formalized here: the forward direction of Dehn's theorem — scissors congruence preserves the Dehn invariant (`dehn_preserved_by_scissors`, a `True → d = d` placeholder) — and the Dehn–Sydler completeness theorem (sufficiency direction, Sydler 1965, also a `True`-valued placeholder). Both are stated as classical background, so the entry is `axiomatized` (badge `wip`): the genuinely machine-checked content is the Dehn-invariant computation, not the geometric scissors-congruence statements.",
   "meta": {
     "author": "Dehn (1900), Sydler (1965), Jessen (1968)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Dehn%E2%80%93Sydler_theorem",
     "date": "1965",
-    "status": "verified",
+    "status": "axiomatized",
     "proofRepoPath": "Proofs/DissectionOfCubesOQ02OQ02.lean",
     "tags": [
       "geometry",
@@ -17,7 +17,7 @@
       "tensor-products",
       "research"
     ],
-    "badge": "mathlib",
+    "badge": "wip",
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-03-25",
@@ -191,7 +191,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization constructs the proper algebraic Dehn invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ using Mathlib's tensor product infrastructure. The central algebraic insight — that $\\mathbb{R}$ is divisible over $\\mathbb{Z}$, so torsion elements of $\\mathbb{R}/\\pi\\mathbb{Z}$ are killed in the tensor product — gives a clean proof that rational-angle polyhedra have $D = 0$. Combined with Niven's theorem ($\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$), this resolves Hilbert's Third Problem: $D(\\text{cube}) = 0 \\neq D(\\text{tet})$. The full Dehn-Sydler completeness theorem (the converse: equal volume and equal Dehn invariant imply scissors-congruence) is discussed as classical background; it is not formalized as an axiom (the file is axiom-free).",
+    "summary": "This formalization constructs the proper algebraic Dehn invariant $D(P) \\in \\mathbb{R} \\otimes_{\\mathbb{Z}} (\\mathbb{R}/\\pi\\mathbb{Z})$ using Mathlib's tensor product infrastructure. The central algebraic insight — that $\\mathbb{R}$ is divisible over $\\mathbb{Z}$, so torsion elements of $\\mathbb{R}/\\pi\\mathbb{Z}$ are killed in the tensor product — gives a clean proof that rational-angle polyhedra have $D = 0$. Combined with Niven's theorem ($\\arccos(1/3)/\\pi \\notin \\mathbb{Q}$), this establishes $D(\\text{cube}) = 0 \\neq D(\\text{tet})$. Concluding from this that the cube and tetrahedron are not scissors-congruent (Hilbert's Third Problem) requires the forward direction of Dehn's theorem — scissors congruence preserves the Dehn invariant — which is NOT formalized here: `dehn_preserved_by_scissors` and `volume_preserved_by_scissors` are vacuous `True`-valued placeholders (their docstrings describe the intended geometric content, but the statements are trivially $x = x$). The Dehn–Sydler completeness theorem (the converse: equal volume and equal Dehn invariant imply scissors-congruence) is likewise only discussed as classical background. There are no `axiom` declarations in the file, but because the load-bearing geometric statements are placeholder stubs the entry is marked `axiomatized` (badge `wip`) rather than `verified`.",
     "implications": "The tensor product formulation of the Dehn invariant automatically handles the rational-angle vanishing that must be argued case-by-case in elementary treatments. This algebraic perspective generalizes: scissors congruence in higher dimensions connects to algebraic K-theory (Dupont, Sah), where the Dehn invariant lives in $K_3(\\mathbb{C})$. The formalization demonstrates that Mathlib's tensor product API is mature enough for non-trivial applications in geometric algebra.",
     "openQuestions": [
       "RESOLVED: The flatness axiom (tmul_infinite_order_ne_zero) was proved in Lean using Module.Flat, Module.Flat.flat_iff_torsion_eq_bot_of_isBezout, and NoZeroSMulDivisors.iff_algebraMap_injective.",
