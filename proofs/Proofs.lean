@@ -3400,6 +3400,7 @@ import Proofs.LawOfCosinesOQ01OQ01OQ01OQ02
 import Proofs.LawOfCosinesOQ01OQ01OQ03
 import Proofs.LawOfCosinesOQ01OQ02
 import Proofs.LawOfCosinesOQ01OQ04
+import Proofs.HyperbolicLawCosinesModelOQ0301
 import Proofs.LawOfCosinesOQ03
 import Proofs.LawOfCosinesOQ03OQ02
 import Proofs.LawOfCosinesOQ04
