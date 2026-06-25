@@ -76,7 +76,11 @@
   "conclusion": {
     "summary": "Mathlib's generic zmodCyclicMulEquiv, specialised to Gal(ℂ/ℝ), is exactly the parent's explicit hand-built isomorphism galoisGroupEquivZMod2.symm, and its canonical generator ofAdd 1 maps to complex conjugation. This holds because an order-two group admits a unique isomorphism from Multiplicative (ZMod 2): the generic construction's Classical.choice of a generator is therefore forced to agree with the canonical conjugation generator.",
     "implications": "The bespoke isomorphism and the library isomorphism coincide, so results proved with either can be transported to the other for free, and the apparent indeterminacy of zmodCyclicMulEquiv's generator vanishes in the order-two case. The rigidity argument — unique non-identity element forces the generator's image — generalises to identify any order-p (p prime) labelled isomorphism with the generic cyclic one once one nontrivial value is named.",
-    "openQuestions": []
+    "openQuestions": [
+      "Generalise the rigidity beyond order two: for an order-p cyclic Galois group with a named generator g, is zmodCyclicMulEquiv forced to send ofAdd 1 to g? Order two is special because there is a unique non-identity element; for p > 2 the generator is determined only up to the (p−1) automorphisms of ℤ/p, so the statement must fix a primitive root.",
+      "Abstract the argument into a reusable lemma: any two MulEquiv from Multiplicative (ZMod n) into a group agreeing on ofAdd 1 are equal (since ofAdd 1 generates), packaging eq_galoisGroupEquivZMod2_symm as an instance of a general 'agreement on a generator ⟹ equality' principle.",
+      "Quantify the choice-elimination: characterise exactly when a Classical.choice-built Mathlib isomorphism can be pinned to a canonical representative purely by rigidity (finite, prime-order, or rigid-automorphism-group targets) versus when genuine indeterminacy remains."
+    ]
   },
   "crossReferences": [
     {
