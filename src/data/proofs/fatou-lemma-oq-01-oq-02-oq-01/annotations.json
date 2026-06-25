@@ -1,0 +1,38 @@
+[
+  {
+    "id": "dct-add-bracket",
+    "proofId": "fatou-lemma-oq-01-oq-02-oq-01",
+    "range": { "startLine": 77, "endLine": 139 },
+    "type": "theorem",
+    "title": "DCT via Fatou Applied to g + fₙ",
+    "content": "dct_of_dominated is the headline: the dominated convergence theorem for real-valued fₙ, derived from Fatou's bracket on the nonnegative shift g + fₙ. Given |fₙ| ≤ g with g integrable and fₙ → F pointwise, the proof first deduces F measurable (pointwise limit of measurables, measurable_of_tendsto_metrizable) and |F| ≤ g (limit of the bounds, le_of_tendsto), hence fₙ, F integrable by domination (Integrable.mono'). Then g + fₙ ≥ 0 is dominated by the integrable 2g and converges to g + F, so the nonnegative dominated convergence theorem tendsto_lintegral_of_dominated_convergence — itself the forward Fatou (lintegral_liminf_le) plus reverse Fatou (limsup_lintegral_le) squeeze — gives ∫⁻ ofReal (g + fₙ) → ∫⁻ ofReal (g + F). The bridge ofReal_integral_eq_lintegral_ofReal and continuity of ENNReal.toReal transfer this to ∫ (g + fₙ) → ∫ (g + F), and integral_add cancellation of the constant ∫ g isolates ∫ fₙ → ∫ F. The proof never invokes the Bochner DCT, so it is not circular; Mathlib proves the signed DCT via abstract setToFun/L1 machinery, not this explicit g ± fₙ Fatou route.",
+    "mathContext": "$g + f_n \\ge 0$ dominated by $2g$, $g + f_n \\to g + F$; $\\int(g+f_n)\\to\\int(g+F)$, cancel $\\int g$ to get $\\int f_n \\to \\int F$.",
+    "significance": "key",
+    "relatedConcepts": ["dominated convergence theorem", "Fatou's lemma", "Bochner integral", "integrable majorant", "lower Lebesgue integral"],
+    "prerequisites": ["measure theory", "Lebesgue integration", "pointwise convergence", "dominated convergence for nonnegative functions"]
+  },
+  {
+    "id": "bracket-bridge",
+    "proofId": "fatou-lemma-oq-01-oq-02-oq-01",
+    "range": { "startLine": 119, "endLine": 139 },
+    "type": "technique",
+    "title": "Bridging the ℝ≥0∞ Bracket Back to the Real Integral",
+    "content": "The Fatou bracket runs in ℝ≥0∞ via tendsto_lintegral_of_dominated_convergence, so its conclusion must be transported to the signed Bochner integral. Two devices do this. ofReal_integral_eq_lintegral_ofReal rewrites each lower integral ∫⁻ ENNReal.ofReal (g + fₙ) as ENNReal.ofReal (∫ (g + fₙ)), valid because g + fₙ ≥ 0 and is integrable. Then ENNReal.tendsto_toReal (continuity of toReal at the finite limit) and ENNReal.toReal_ofReal (toReal ∘ ofReal = id on nonnegatives) turn the ℝ≥0∞ convergence into ∫ (g + fₙ) → ∫ (g + F) in ℝ. Finally integral_add splits ∫ (g + fₙ) = ∫ g + ∫ fₙ and Tendsto.sub cancels the constant ∫ g. The whole transfer hinges on the integrable majorant making every integral finite.",
+    "mathContext": "$\\int^- \\mathrm{ofReal}(g+f_n) = \\mathrm{ofReal}\\,\\int(g+f_n)$; $\\mathrm{toReal}$ continuous at finite limits; $\\int(g+f_n)=\\int g + \\int f_n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["ofReal_integral_eq_lintegral_ofReal", "ENNReal.toReal", "integral_add", "ℝ≥0∞ to ℝ transfer"],
+    "prerequisites": ["extended nonnegative reals", "lower Lebesgue integral", "Bochner integral additivity"]
+  },
+  {
+    "id": "dct-sub-bracket",
+    "proofId": "fatou-lemma-oq-01-oq-02-oq-01",
+    "range": { "startLine": 148, "endLine": 163 },
+    "type": "theorem",
+    "title": "The Symmetric Bracket g − fₙ",
+    "content": "dct_of_dominated_sub supplies the lower half of the classical Fatou ⇒ DCT argument, applying Fatou's bracket to the second nonnegative sequence g − fₙ ≥ 0 (dominated by 2g, converging to g − F). Rather than repeat the transfer machinery, it instantiates dct_of_dominated at the negated sequence −fₙ: since |−fₙ| = |fₙ| ≤ g and −fₙ → −F, the upper bracket of −fₙ is exactly the lower bracket g − fₙ of the original sequence, and ∫ (−fₙ) → ∫ (−F) gives ∫ fₙ → ∫ F after negation. Presenting both brackets makes the textbook phrase 'apply Fatou to g + fₙ and g − fₙ' a literal pair of theorems rather than a single packaged result.",
+    "mathContext": "$g - f_n = g + (-f_n) \\ge 0$, $g - f_n \\to g - F$; $\\int(-f_n)\\to\\int(-F)$ negates to $\\int f_n \\to \\int F$.",
+    "significance": "key",
+    "relatedConcepts": ["dominated convergence theorem", "Fatou's lemma", "negation symmetry", "two-sided squeeze"],
+    "prerequisites": ["dominated convergence theorem", "linearity of the integral"]
+  }
+]
