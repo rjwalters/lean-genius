@@ -45,3 +45,29 @@ Build item 1 (standalone, fully tractable, no complex analysis) as the first ver
 
 ### Why no Lean this session
 Build environment was under sustained concurrent-agent cache churn (≈3000 oleans/min rewritten; Docker down). Each `lake env lean` compile cost ~30 min and frequently crashed on mmap'd-olean races (SIGBUS/SIGSEGV). Attempting a new nontrivial complex-analysis proof under these conditions risked an unverified/overclaimed result; deferred Lean to a calm window.
+
+---
+
+## Session 2026-06-25 (Session 2) — BUILT Item 1 (verified)
+
+**Mode**: continuation of Session-1 decomposition · **Outcome**: Item 1 delivered, machine-verified.
+
+### What I did
+- Implemented `proofs/Proofs/Hilbert22OQ01OQ03.lean` (204 lines): the abstract Kobayashi chain pseudometric skeleton (Item 1 of the Session-1 plan), exactly as scoped — pure ℝ≥0∞ order theory + list combinatorics, no complex analysis.
+- Verified with `lake env lean Proofs/Hilbert22OQ01OQ03.lean` → EXIT 0 (Docker still down; single-file `lake env lean` against the symlinked prebuilt Mathlib oleans is the safe route and worked despite ~96 concurrent lean procs).
+- Confirmed axiom profile with `#print axioms`: only `propext, Classical.choice, Quot.sound` — no `sorryAx`, no `Lean.ofReduceBool`, no `native_decide`. Genuinely `verified` / 0-axiom.
+- Authored the gallery entry (`src/data/proofs/hilbert-22-oq-01-oq-03/{meta.json,annotations.json}`).
+
+### Key implementation insights
+- **Chain encoding**: represent a chain p⇝q by its *intermediate* vertices `mid : List X`; sum cost from the front via `chainCost c p mid q` (`c p q` for `[]`, `c p x + chainCost c x xs q` for `x::xs`). This avoids `List.head!`/`getLast!` entirely, so **every lemma is free of nonemptiness side-conditions** — the single biggest simplification.
+- **Triangle = concatenation** (`chainCost_concat`, 2-case induction), **symmetry = reversal** (`chainCost_reverse`, uses concat with empty tail to peel the last edge), **reflexivity = empty chain**.
+- `chainCost` MUST be marked `noncomputable` (ENNReal `+`/CommSemiring has no executable code → IR compile error otherwise). Only fix needed after the first compile.
+- The two ENNReal lemmas that close the triangle inequality cleanly: `ENNReal.iInf_add : iInf f + a = ⨅ i, f i + a` and `ENNReal.add_iInf : a + iInf f = ⨅ b, a + f b` (both in `Mathlib/Data/ENNReal/Operations.lean`, namespace `ENNReal`).
+- **Functoriality** (`chainDist_mono`): a cost-contracting map is distance-non-increasing — the order-theoretic shadow of the Kobayashi non-expansion theorem; this is the exact interface where Schwarz–Pick would plug in.
+- `PseudoEMetricSpace` can be built from just `edist` + the 3 axioms (`toUniformSpace`/`uniformity_edist` have autoParam defaults).
+
+### Status of the decomposition
+- Item 1 (abstract pseudometric + functoriality): **DONE, verified.**
+- Item 2 (`d_ℂ ≡ 0`): tractable once a concrete disk atomic cost exists; not yet built.
+- Item 3 (two-point Schwarz–Pick via Blaschke conjugation): the natural next deliverable — supplies the concrete cost to instantiate `chainPseudoEMetricSpace`.
+- Item 4 (Picard, `d_𝔻 = ρ`): still BLOCKED on the modular λ universal cover (absent from Mathlib).
