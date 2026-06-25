@@ -1,0 +1,74 @@
+[
+  {
+    "id": "dini-oq0101-header",
+    "proofId": "dini-theorem-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 34 },
+    "type": "context",
+    "title": "Why monotonicity in n cannot be dropped from Dini's theorem",
+    "content": "Dini's theorem: a monotone sequence of continuous functions on a compact space converging pointwise to a continuous limit converges uniformly. The parent entry re-exports it and shows the necessity of two hypotheses (continuity of the limit, compactness of the domain) using xⁿ. This entry completes the trilogy with the third — monotonicity in n — via a smooth moving bump Fₙ(x) = n·x·e^{−n·x} on [0,1]. Each Fₙ is continuous, the sequence converges pointwise to the continuous 0, the domain is compact — yet convergence is NOT uniform: the bump peaks at x = 1/n with fixed height e⁻¹ that travels left without shrinking, so sup_x |Fₙ(x)| ≥ e⁻¹. Using n·x·e^{−n·x} rather than a piecewise-linear tent makes continuity a one-line fun_prop and reduces the pointwise limit to the standard t·e^{−t} → 0.",
+    "mathContext": "$F_n(x) = n\\,x\\,e^{-n x},\\quad F_n(1/n) = e^{-1},\\quad \\sup_x |F_n(x)| \\ge e^{-1} \\not\\to 0$",
+    "significance": "context",
+    "relatedConcepts": ["Dini's theorem", "uniform convergence", "moving bump", "sharpness witness", "necessity of hypotheses"],
+    "prerequisites": ["pointwise vs uniform convergence", "continuity on compact sets"]
+  },
+  {
+    "id": "dini-oq0101-hypotheses",
+    "proofId": "dini-theorem-oq-01-oq-01",
+    "range": { "startLine": 40, "endLine": 66 },
+    "type": "definition",
+    "title": "The bump satisfies every Dini hypothesis except monotonicity",
+    "content": "`bump n x = n·x·exp(−n·x)` is the moving-bump family. `bump_continuous` is a one-line fun_prop. `bump_tendsto_zero` proves pointwise convergence to 0 for x ≥ 0: at x = 0 the sequence is constantly 0; for x > 0 it substitutes t = n·x → ∞ into Mathlib's Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero (the t·e^{−t} → 0 fact). `zero_continuous` and `domain_isCompact` record that the limit is continuous and [0,1] is compact — so the only Dini hypothesis left to fail is monotonicity.",
+    "mathContext": "$F_n \\text{ continuous};\\ \\forall x \\ge 0,\\ F_n(x) \\to 0;\\ 0 \\text{ continuous};\\ [0,1] \\text{ compact}$",
+    "significance": "key",
+    "relatedConcepts": ["fun_prop", "Real.tendsto_pow_mul_exp_neg_atTop_nhds_zero", "pointwise convergence", "isCompact_Icc"],
+    "prerequisites": ["exponential decay limits"]
+  },
+  {
+    "id": "dini-oq0101-exp-bounds",
+    "proofId": "dini-theorem-oq-01-oq-01",
+    "range": { "startLine": 70, "endLine": 81 },
+    "type": "technique",
+    "title": "Two numeric facts about exp(1/2)",
+    "content": "Two tight exponential estimates feed the non-monotonicity comparison. `exp_half_lt_two`: exp(1/2) < 2, via exp(1/2)² = exp 1 < 2.72 (Real.exp_one_lt_d9) and nlinarith. `three_half_lt_exp_half`: 3/2 < exp(1/2), directly from the convexity bound 1 + x < exp x (Real.add_one_lt_exp). These bracket exp(1/2) ∈ (3/2, 2), enough to order the bump values at x = 1/2.",
+    "mathContext": "$\\tfrac32 < e^{1/2} < 2$",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.exp_one_lt_d9", "Real.add_one_lt_exp", "nlinarith"],
+    "prerequisites": ["exp_add", "convexity bound 1+x < eˣ"]
+  },
+  {
+    "id": "dini-oq0101-non-monotone",
+    "proofId": "dini-theorem-oq-01-oq-01",
+    "range": { "startLine": 85, "endLine": 131 },
+    "type": "theorem",
+    "title": "The bump is non-monotone in n at x = 1/2",
+    "content": "Evaluating at x = 1/2: F₁ = (1/2)e^{−1/2}, F₂ = e^{−1} (the peak, since 1/2 = 1/n at n = 2), F₃ = (3/2)e^{−3/2}. `bump_one_lt_two` shows the sequence RISES 1→2 (F₁ < F₂) and `bump_three_lt_two` shows it FALLS 2→3 (F₃ < F₂); both reduce, after multiplying by a common exp factor, to the bracket exp(1/2) ∈ (3/2,2) and close by nlinarith with exp positivity. `bump_not_monotone` packages this: the sequence n ↦ Fₙ(1/2) is neither monotone (falls 2→3) nor antitone (rises 1→2) — exactly the failing Dini hypothesis.",
+    "mathContext": "$F_1(\\tfrac12) < F_2(\\tfrac12) > F_3(\\tfrac12)\\implies \\text{neither monotone nor antitone}$",
+    "significance": "key",
+    "relatedConcepts": ["non-monotonicity", "exp_add cancellation", "nlinarith", "peak at x = 1/n"],
+    "prerequisites": ["the exp(1/2) brackets"]
+  },
+  {
+    "id": "dini-oq0101-not-uniform",
+    "proofId": "dini-theorem-oq-01-oq-01",
+    "range": { "startLine": 135, "endLine": 165 },
+    "type": "theorem",
+    "title": "bump_not_tendstoUniformlyOn: convergence is not uniform",
+    "content": "The core sharpness result: the bump does not converge uniformly on [0,1]. Via Metric.tendstoUniformlyOn_iff and push_neg, it suffices to exhibit ε = 1/3 such that for arbitrarily large n some point has error ≥ 1/3. For each N, take n = N+1 and the travelling peak x = 1/(N+1) ∈ [0,1]: there bump(N+1, 1/(N+1)) = e^{−1} (the n·x = 1 cancellation), and 1/3 ≤ e^{−1} since exp 1 < 3 (Real.exp_one_lt_d9, nlinarith). So the uniform error never drops below 1/3.",
+    "mathContext": "$\\forall N,\\ \\exists n \\ge N,\\ \\exists x \\in [0,1],\\ |F_n(x) - 0| = e^{-1} \\ge \\tfrac13$",
+    "significance": "key",
+    "relatedConcepts": ["Metric.tendstoUniformlyOn_iff", "Filter.frequently_atTop", "travelling peak", "uniform error"],
+    "prerequisites": ["bump_tendsto_zero", "exp 1 < 3"]
+  },
+  {
+    "id": "dini-oq0101-capstone",
+    "proofId": "dini-theorem-oq-01-oq-01",
+    "range": { "startLine": 169, "endLine": 180 },
+    "type": "theorem",
+    "title": "bump_witness: the complete sharpness witness",
+    "content": "`bump_witness` bundles the entire argument into one conjunction: every Fₙ continuous, pointwise convergence to 0 on [0,1], the limit continuous, the domain compact, the sequence neither monotone nor antitone at x = 1/2, and no uniform convergence. Every Dini hypothesis holds except monotonicity, and the conclusion (uniform convergence) fails — so monotonicity is genuinely necessary.",
+    "mathContext": "$\\text{(all Dini hypotheses} \\setminus \\text{monotonicity)} \\wedge \\neg\\,\\text{uniform}$",
+    "significance": "key",
+    "relatedConcepts": ["complete counterexample", "necessity of monotonicity"],
+    "prerequisites": ["all preceding lemmas"]
+  }
+]
