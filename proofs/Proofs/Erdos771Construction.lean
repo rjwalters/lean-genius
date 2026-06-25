@@ -97,12 +97,44 @@ theorem exists_avoiding_multiples (m n : ℕ) (hm : 1 ≤ m) :
   obtain ⟨p, hp, hpm⟩ := exists_prime_not_dvd m hm
   exact ⟨p, hp, Finset.filter_subset _ _, prime_multiples_avoid p m n hp hpm⟩
 
+/-! ## Quantitative existence via Bertrand's postulate
+
+The bare existence above uses *some* prime `> m`, which may be far larger than `m`
+(so `⌊n/p⌋` could be tiny — for instance the smallest prime not dividing `m = lcm{2,…,t}`
+grows with `t`). Bertrand's postulate supplies a prime `p` with `m < p ≤ 2m`, pinning the
+size of the construction from below: `⌊n/(2m)⌋ ≤ |S|`. -/
+
+/-- A prime `p` strictly larger than a positive `m` cannot divide `m`
+    (otherwise `p ≤ m`). -/
+theorem prime_gt_not_dvd {p m : ℕ} (hm : 1 ≤ m) (hmp : m < p) : ¬ p ∣ m := by
+  intro hdvd
+  have := Nat.le_of_dvd hm hdvd
+  omega
+
+/-- **Quantitative Erdős–Graham construction.** For every `m ≥ 1` and `n`, Bertrand's
+    postulate yields a prime with `m < p ≤ 2m`; the multiples of `p` in `{1,…,n}` then form an
+    `m`-avoiding subset of size `⌊n/p⌋ ≥ ⌊n/(2m)⌋`. This strengthens `exists_avoiding_multiples`
+    from bare existence to an explicit lower bound on the avoiding-set size (with the prime
+    controlled to within a factor of two of `m`). -/
+theorem exists_avoiding_multiples_quantitative (m n : ℕ) (hm : 1 ≤ m) :
+    ∃ p, Nat.Prime p ∧ m < p ∧ p ≤ 2 * m ∧
+      primeMultiples p n ⊆ Icc_n n ∧
+      AvoidSum (primeMultiples p n) m ∧
+      n / (2 * m) ≤ (primeMultiples p n).card := by
+  obtain ⟨p, hp, hmp, hp2m⟩ := Nat.exists_prime_lt_and_le_two_mul m (by omega)
+  refine ⟨p, hp, hmp, hp2m, Finset.filter_subset _ _,
+    prime_multiples_avoid p m n hp (prime_gt_not_dvd hm hmp), ?_⟩
+  rw [prime_multiples_size]
+  exact Nat.div_le_div_left hp2m hp.pos
+
 /-! ## Summary
 
 Verified here (0 axioms, 0 sorries): the elementary Erdős–Graham construction behind the
 lower bound for `f(n)` — the multiples of a prime `p` in `{1,…,n}` have size `⌊n/p⌋`, avoid
-any `m` with `p ∤ m`, and such a prime exists for every `m ≥ 1`. The deep asymptotics
-(the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed here.
+any `m` with `p ∤ m`, and such a prime exists for every `m ≥ 1`; and, via Bertrand's
+postulate, an `m`-avoiding subset of size `≥ ⌊n/(2m)⌋` exists for every `m ≥ 1`. The deep
+asymptotics (the matching `(1/2 + o(1)) n / log n` lower and upper bounds) are not addressed
+here.
 -/
 
 end Erdos771Construction
