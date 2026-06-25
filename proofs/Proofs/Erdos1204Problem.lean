@@ -272,6 +272,121 @@ theorem A_two : A 2 = 2 := by
     rw [heq] at ha
     exact not_admissible_zero_one ha
 
+/- ## The exact value `A(3) = 6`
+
+The next value after `A(2) = 2` is `A(3) = 6`. This is the first place where the
+gap between `A(k)` and the trivial packing bound `k - 1` opens up appreciably
+(`6` versus `2`), and `6` is exactly the Hardy–Littlewood minimal diameter
+`H(3)` of an admissible `3`-tuple.
+
+*Upper bound* `A(3) ≤ 6`: the set `{0, 2, 6}` is admissible (mod `2` all even, so
+the odd class is missed; mod `3` the residues are `{0, 2, 0}`, so class `1` is
+missed) and has largest element `6`.
+
+*Lower bound* `A(3) ≥ 6`: any admissible `3`-set with largest element `≤ 5` lies
+in `{0, …, 5}`. Modulo `2` it must miss a class, hence all three elements share a
+parity, forcing the set to be `{0, 2, 4}` or `{1, 3, 5}`. But each of those covers
+**all** residue classes modulo `3` (`{0,2,4} ≡ {0,2,1}`, `{1,3,5} ≡ {1,0,2}`), so
+neither is admissible — a contradiction. Hence no admissible `3`-set fits below `6`. -/
+
+/-- `{0, 2, 6}` is admissible: even mod `2` (misses the odd class) and `≡ {0,2,0}`
+mod `3` (misses class `1`); larger primes are automatic by the size bound. -/
+theorem admissible_zero_two_six : Admissible ({0, 2, 6} : Finset ℕ) := by
+  rw [admissible_iff_card]
+  intro p hp hcard
+  have hc : ({0, 2, 6} : Finset ℕ).card = 3 := by decide
+  rw [hc] at hcard
+  interval_cases p
+  · exact absurd hp (by decide)   -- p = 0
+  · exact absurd hp (by decide)   -- p = 1
+  · exact ⟨1, by intro x hx; fin_cases hx <;> decide⟩   -- p = 2: miss class 1
+  · exact ⟨1, by intro x hx; fin_cases hx <;> decide⟩   -- p = 3: miss class 1
+
+/-- `{0, 2, 4}` is **not** admissible: modulo `3` the residues `{0, 2, 1}` cover all
+three classes, so no class is missed. -/
+theorem not_admissible_zero_two_four : ¬ Admissible ({0, 2, 4} : Finset ℕ) := by
+  intro h
+  obtain ⟨r, hr⟩ := h 3 (by decide)
+  fin_cases r
+  · exact hr 0 (by decide) (by decide)   -- class 0 occupied by 0
+  · exact hr 4 (by decide) (by decide)   -- class 1 occupied by 4
+  · exact hr 2 (by decide) (by decide)   -- class 2 occupied by 2
+
+/-- `{1, 3, 5}` is **not** admissible: modulo `3` the residues `{1, 0, 2}` cover all
+three classes, so no class is missed. -/
+theorem not_admissible_one_three_five : ¬ Admissible ({1, 3, 5} : Finset ℕ) := by
+  intro h
+  obtain ⟨r, hr⟩ := h 3 (by decide)
+  fin_cases r
+  · exact hr 3 (by decide) (by decide)   -- class 0 occupied by 3
+  · exact hr 1 (by decide) (by decide)   -- class 1 occupied by 1
+  · exact hr 5 (by decide) (by decide)   -- class 2 occupied by 5
+
+/-- **Lower-bound core.** Every admissible `3`-set has largest element at least `6`.
+If the maximum were `≤ 5`, the set would sit in `{0, …, 5}`; missing a class mod `2`
+forces a single parity, pinning the set to `{0,2,4}` or `{1,3,5}`, both inadmissible
+mod `3`. -/
+theorem admissible_three_sup_ge {a : Finset ℕ} (hcard : a.card = 3)
+    (ha : Admissible a) : 6 ≤ a.sup id := by
+  by_contra hlt
+  push_neg at hlt
+  -- every element is ≤ 5
+  have hbound : ∀ x ∈ a, x ≤ 5 := by
+    intro x hx
+    have h1 : id x ≤ a.sup id := Finset.le_sup hx
+    simp only [id_eq] at h1
+    omega
+  -- in ZMod 2 every value is 0 or 1
+  have hy : ∀ y : ZMod 2, y = 0 ∨ y = 1 := by decide
+  -- 2 ∣ x ↔ (x : ZMod 2) = 0
+  have hdvd : ∀ x : ℕ, (x : ZMod 2) = 0 ↔ 2 ∣ x := fun x =>
+    ZMod.natCast_eq_zero_iff x 2
+  -- mod 2 the set misses a class, so all elements share a parity
+  obtain ⟨r2, hr2⟩ := ha 2 (by decide)
+  fin_cases r2
+  · -- misses class 0 ⇒ all elements odd ⇒ a = {1,3,5}
+    have hsub : a ⊆ ({1, 3, 5} : Finset ℕ) := by
+      intro x hx
+      have hx5 := hbound x hx
+      have hne : (x : ZMod 2) ≠ 0 := hr2 x hx
+      have hodd : ¬ 2 ∣ x := fun hd => hne ((hdvd x).mpr hd)
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      omega
+    have : a = ({1, 3, 5} : Finset ℕ) :=
+      Finset.eq_of_subset_of_card_le hsub (by rw [hcard]; decide)
+    rw [this] at ha
+    exact not_admissible_one_three_five ha
+  · -- misses class 1 ⇒ all elements even ⇒ a = {0,2,4}
+    have hsub : a ⊆ ({0, 2, 4} : Finset ℕ) := by
+      intro x hx
+      have hx5 := hbound x hx
+      have hne : (x : ZMod 2) ≠ 1 := hr2 x hx
+      have heven : 2 ∣ x := by
+        rcases hy (x : ZMod 2) with h0 | h1
+        · exact (hdvd x).mp h0
+        · exact absurd h1 hne
+      simp only [Finset.mem_insert, Finset.mem_singleton]
+      omega
+    have : a = ({0, 2, 4} : Finset ℕ) :=
+      Finset.eq_of_subset_of_card_le hsub (by rw [hcard]; decide)
+    rw [this] at ha
+    exact not_admissible_zero_two_four ha
+
+/-- **`A(3) = 6`.** The minimal largest element of an admissible `3`-set is `6`,
+attained by `{0, 2, 6}` (equivalently `{0, 4, 6}`). This matches the
+Hardy–Littlewood minimal diameter `H(3) = 6`. -/
+theorem A_three : A 3 = 6 := by
+  apply le_antisymm
+  · -- upper bound from the witness {0,2,6}
+    have h := A_le (k := 3) (a := ({0, 2, 6} : Finset ℕ)) (by decide)
+      admissible_zero_two_six
+    have hs : ({0, 2, 6} : Finset ℕ).sup id = 6 := by decide
+    rwa [hs] at h
+  · -- lower bound: the attained minimizer also has sup ≥ 6
+    obtain ⟨a, hcard, ha, hsup⟩ := A_mem 3
+    have hge := admissible_three_sup_ge hcard ha
+    omega
+
 /- ## Open Problems
 
 The asymptotic behaviour of the extremal quantities is OPEN:
