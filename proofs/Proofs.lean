@@ -523,6 +523,7 @@ import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
 import Proofs.BrianchonTheorem
 import Proofs.BrianchonTheoremAristotle
+import Proofs.BrianchonTheoremOQ01OQ02
 import Proofs.BritishFlagDefect
 import Proofs.BritishFlagTheorem
 import Proofs.BrouwerFixedPoint
@@ -622,6 +623,7 @@ import Proofs.CantorDiagonalizationOQ04OQ03Aristotle
 import Proofs.CantorDiagonalizationOQ05
 import Proofs.CantorDiagonalizationOQ06
 import Proofs.CantorDiagonalizationOQ07
+import Proofs.CantorDiagonalizationOQ07OQ01
 import Proofs.CantorsTheorem
 import Proofs.CantorsTheoremOQ01
 import Proofs.CantorsTheoremOQ01OQ01
@@ -3638,6 +3640,7 @@ import Proofs.PartitionTheoremOQ01
 import Proofs.PartitionTheoremOQ01OQ01
 import Proofs.PartitionTheoremOQ02
 import Proofs.PartitionTheoremOQ03
+import Proofs.PartitionTheoremOQ03OQ03
 import Proofs.PartitionTheoremOQ04
 import Proofs.PartitionTheoremOQ04Aristotle
 import Proofs.PascalsHexagon

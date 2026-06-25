@@ -1,0 +1,259 @@
+{
+  "id": "brianchon-theorem-oq-01-oq-02",
+  "title": "Brianchon ⟺ Pascal: the Converse Duality Bridge",
+  "slug": "brianchon-theorem-oq-01-oq-02",
+  "description": "The converse direction of the Pascal–Brianchon correspondence. Building on the parent entry's one-way bridge (Pascal collinear ⟹ Brianchon concurrent), this proves the exact scalar identity det(diagonals) = (det C)^4 · det(Pascal points), from which the converse — for a nondegenerate conic, Brianchon concurrency ⟹ Pascal collinearity — and the full equivalence both follow. Axiom-free and sorry-free.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Brianchon%27s_theorem",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BrianchonTheoremOQ01OQ02.lean",
+    "tags": [
+      "geometry",
+      "projective",
+      "conic",
+      "duality",
+      "concurrency",
+      "converse",
+      "equivalence"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Mathlib.LinearAlgebra.CrossProduct",
+        "description": "Cross product in ℝ³ for join (line-through) and meet (line-intersection) operations",
+        "module": "Mathlib.LinearAlgebra.CrossProduct"
+      },
+      {
+        "theorem": "Matrix.adjugate_adjugate",
+        "description": "adjugate (adjugate A) = det A ^ (card - 2) • A; for 3×3 collapses the iterated cofactor map to det C • C",
+        "module": "Mathlib.LinearAlgebra.Matrix.Adjugate"
+      },
+      {
+        "theorem": "Matrix.det_smul",
+        "description": "det (c • A) = c ^ Fintype.card n * det A; for 3×3 gives det (det C • C) = (det C)^4, the invertible factor that powers the converse",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      },
+      {
+        "theorem": "Matrix.det_mul",
+        "description": "Multiplicativity of the determinant, used to transport the vanishing-determinant condition between Pascal and Brianchon configurations",
+        "module": "Mathlib.LinearAlgebra.Matrix.Determinant.Basic"
+      }
+    ],
+    "originalContributions": [
+      "The exact scalar identity `brianchon_concurrency_det_eq`: det(diag₁, diag₂, diag₃) = (det C)^4 · det(p₁, p₂, p₃), making the Pascal–Brianchon determinant correspondence completely explicit and quantitative",
+      "The converse duality bridge `collinear_pascal_of_concurrent_brianchon`: for a nondegenerate symmetric conic (det C ≠ 0), Brianchon concurrency ⟹ Pascal collinearity — the open second question of the parent entry, here resolved at the level of the duality correspondence",
+      "The full equivalence `pascal_collinear_iff_brianchon_concurrent`: Pascal collinear ⟺ Brianchon concurrent for any nondegenerate symmetric conic",
+      "Both forward and converse implications are now derived uniformly as corollaries of one scalar identity, rather than as separate determinant manipulations",
+      "An explicit necessity witness `zero_conic_concurrent`: with the degenerate (zero) conic, Brianchon concurrency holds vacuously for arbitrary contact points, so the converse genuinely requires the det C ≠ 0 hypothesis",
+      "Entirely axiom-free and sorry-free (verified via `#print axioms`: only propext / Classical.choice / Quot.sound); in particular it does NOT depend on the Pascal axiom `conic_implies_pascal`, unlike the parent's unconditional theorem"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 323,
+    "assumptions": "None. All results are axiom-free and sorry-free (verified via `#print axioms`: the main theorems depend only on the foundational propext / Classical.choice / Quot.sound). The file is self-contained and Mathlib-only; it deliberately re-ports the geometric infrastructure from the parent rather than importing the Pascal axiom, so the converse and equivalence are fully verified. The converse and the equivalence require the nondegeneracy hypothesis `det C ≠ 0`, which is a stated mathematical hypothesis of those theorems (and is shown necessary by `zero_conic_concurrent`), not an axiom.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 13,
+    "definitionCount": 12
+  },
+  "overview": {
+    "historicalContext": "Brianchon's theorem (1806) is the projective dual of Pascal's hexagon theorem (1639): Pascal concerns a hexagon inscribed in a conic with collinear opposite-side intersections, Brianchon a circumscribed hexagon with concurrent main diagonals. The parent gallery entry `brianchon-theorem-oq-01` formalized the forward duality bridge — Pascal collinearity forces Brianchon concurrency — but left the converse direction as an open question. Classically the two statements are fully equivalent under projective duality; this entry makes that equivalence precise and machine-checked at the level of the underlying determinant correspondence, identifying exactly the nondegeneracy hypothesis the converse requires.",
+    "problemStatement": "Open question OQ-02 of the parent entry asks to establish the converse of the Pascal–Brianchon correspondence. Concretely: for a symmetric conic matrix $C$ and six contact points, if the three main diagonals of the circumscribed hexagon are concurrent, are the three Pascal points of the inscribed contact hexagon necessarily collinear? This entry answers yes whenever the conic is nondegenerate ($\\det C \\neq 0$), and shows the hypothesis cannot be dropped.",
+    "text": "For a nondegenerate symmetric conic, Brianchon concurrency and Pascal collinearity are equivalent, via the exact identity det(diagonals) = (det C)^4 · det(Pascal points).",
+    "proofStrategy": "The parent's reduction lemma `diag_eq` shows each Brianchon diagonal equals the fixed linear map $\\det C\\cdot C$ applied to the corresponding Pascal point. Feeding this into the determinant-transport identity $\\det(Mu,Mv,Mw)=\\det M\\cdot\\det(u,v,w)$ with $M=\\det C\\cdot C$, and using $\\det(\\det C\\cdot C)=(\\det C)^4$ for a $3\\times3$ matrix (`Matrix.det_smul` with `Fintype.card (Fin 3) = 3`), yields the exact scalar identity $\\det(\\text{diagonals})=(\\det C)^4\\cdot\\det(\\text{Pascal points})$. The forward implication is then 'multiply a zero by $(\\det C)^4$'; the converse is 'divide by the nonzero factor $(\\det C)^4$', valid precisely when $\\det C\\neq0$. The two implications package into an iff. A degenerate witness (the zero conic) makes all diagonals vanish, showing concurrency can hold with non-collinear Pascal points — so nondegeneracy is necessary.",
+    "keyInsights": [
+      "**One identity, both directions**: collapsing the correspondence to the single equation $\\det(\\text{diagonals})=(\\det C)^4\\cdot\\det(\\text{Pascal points})$ makes the forward bridge and its converse mirror corollaries — multiplying by versus dividing by the factor $(\\det C)^4$",
+      "**The converse is exactly an invertibility statement**: Brianchon $\\Rightarrow$ Pascal holds iff the linear map $\\det C\\cdot C$ is invertible on the relevant determinant, i.e. iff $\\det C\\neq0$; the projective-geometric 'nondegenerate conic' condition is precisely the algebraic non-vanishing of $(\\det C)^4$",
+      "**$(\\det C)^4$, not $\\det C$**: the polarity is applied twice (point map then line map), so the diagonal determinant carries the fourth power $\\det(\\det C\\cdot C)=(\\det C)^3\\cdot\\det C$ — visible directly through `Matrix.det_smul` on a $3\\times3$ matrix",
+      "**Nondegeneracy is necessary, not technical**: for the zero conic every tangent line and hence every diagonal is the zero covector, so concurrency holds for *any* contact points while their Pascal points are generically not collinear — `zero_conic_concurrent` exhibits this collapse, ruling out an unconditional converse",
+      "**Self-contained verification**: by re-porting the geometry instead of importing the Pascal axiom, the converse and equivalence are fully axiom-free, depending only on propext / Classical.choice / Quot.sound"
+    ],
+    "prerequisites": [
+      "Projective plane in homogeneous coordinates (points and lines as vectors in ℝ³)",
+      "Cross product as join/meet; determinant as the collinearity/concurrency test",
+      "Adjugate / cofactor matrix and adjugate (adjugate A) = det A ^ (n-2) • A",
+      "det (c • A) = c ^ n · det A for n×n matrices",
+      "Pole–polar duality with respect to a conic"
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry resolves the converse direction of the Pascal–Brianchon correspondence (open question OQ-02 of the parent). The centerpiece is the exact scalar identity `brianchon_concurrency_det_eq`: the coefficient determinant of the three Brianchon diagonals equals $(\\det C)^4$ times the coordinate determinant of the three Pascal points. The forward bridge (Pascal ⟹ Brianchon) and the new converse bridge (Brianchon ⟹ Pascal, for $\\det C\\neq0$) are both immediate corollaries, packaged as the full equivalence `pascal_collinear_iff_brianchon_concurrent`. The necessity of nondegeneracy is witnessed by `zero_conic_concurrent`. All results are axiom-free and sorry-free.",
+    "implications": "Together with the parent entry this gives a complete, machine-checked account of the Pascal–Brianchon duality at the level of the determinant correspondence: the two incidence conditions are literally equivalent for nondegenerate conics. The scalar-identity technique (collapse both directions to one polynomial equation, then read off invertibility) is a reusable template for dualizing and 'inverting' other projective incidence theorems.",
+    "openQuestions": [
+      "Establish the classical Braikenridge–Maclaurin converse: that the six contact points actually lie on a (nondegenerate) conic, not merely that their Pascal determinant vanishes — a strictly stronger statement requiring a genericity hypothesis on the six points",
+      "Quantify degeneracy between the extremes: characterize, for a conic of rank 2 (det C = 0 but C ≠ 0), exactly which configurations of contact points still force Pascal collinearity",
+      "Combine with the parent's `brianchon_point` to give a converse at the level of an honest common point: if three diagonals pass through one point, recover collinearity of the Pascal points constructively"
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "Direct continuation of the parent entry: this proves the converse of its forward duality bridge `concurrent_brianchon_of_collinear_pascal`, answering its second open question and reusing the same homogeneous-coordinate model and `diag_eq` reduction",
+      "sharedConcepts": [
+        "projective-geometry",
+        "conic-sections",
+        "duality",
+        "incidence-theorem"
+      ],
+      "targetId": "brianchon-theorem-oq-01"
+    },
+    {
+      "relationship": "Brianchon's theorem is the projective dual of Pascal's hexagon theorem; the equivalence proved here is the formal expression of that duality for nondegenerate conics",
+      "sharedConcepts": [
+        "projective-geometry",
+        "conic-sections",
+        "duality",
+        "incidence-theorem"
+      ],
+      "targetId": "pascals-hexagon"
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/BrianchonTheoremOQ01OQ02.lean",
+    "lineCount": 323,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 13,
+    "definitionCount": 12,
+    "imports": [
+      "import Mathlib.Data.Real.Basic",
+      "import Mathlib.LinearAlgebra.Matrix.Determinant.Basic",
+      "import Mathlib.LinearAlgebra.CrossProduct",
+      "import Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "import Mathlib.Tactic"
+    ],
+    "opens": [
+      "Matrix"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "brianchon_concurrency_det_eq",
+      "type": "core",
+      "description": "The exact scalar identity behind the whole correspondence: the Brianchon diagonal determinant equals (det C)^4 times the Pascal-point determinant",
+      "leanType": "C.symmetric → det (threeVectorMatrix diag₁ diag₂ diag₃) = (det C)^4 * det (threeVectorMatrix p₁ p₂ p₃)"
+    },
+    {
+      "name": "collinear_pascal_of_concurrent_brianchon",
+      "type": "core",
+      "description": "The converse duality bridge (new content): for a nondegenerate symmetric conic (det C ≠ 0), Brianchon concurrency implies Pascal collinearity",
+      "leanType": "C.symmetric → C.det ≠ 0 → concurrent (brianchon diagonals) → collinear (pascal points)"
+    },
+    {
+      "name": "pascal_collinear_iff_brianchon_concurrent",
+      "type": "core",
+      "description": "The full equivalence Pascal collinear ⟺ Brianchon concurrent for any nondegenerate symmetric conic",
+      "leanType": "C.symmetric → C.det ≠ 0 → (collinear (pascal points) ↔ concurrent (brianchon diagonals))"
+    },
+    {
+      "name": "concurrent_brianchon_of_collinear_pascal",
+      "type": "supporting",
+      "description": "Forward bridge recovered from the scalar identity: Pascal collinearity implies Brianchon concurrency, with no nondegeneracy needed",
+      "leanType": "C.symmetric → collinear (pascal points) → concurrent (brianchon diagonals)"
+    },
+    {
+      "name": "zero_conic_concurrent",
+      "type": "supporting",
+      "description": "Necessity witness for the nondegeneracy hypothesis: with the zero conic, Brianchon concurrency holds for arbitrary contact points, so the converse fails without det C ≠ 0",
+      "leanType": "concurrent (brianchon diagonals of the zero conic) for all A B C' D E F"
+    },
+    {
+      "name": "diag_eq",
+      "type": "supporting",
+      "description": "Ported reduction lemma: each Brianchon diagonal equals the fixed linear map det C • C applied to the corresponding Pascal point",
+      "leanType": "C.symmetric → lineThrough (circVertex C P Q) (circVertex C R S) = (det C • C) *ᵥ lineIntersection (lineThrough P Q) (lineThrough R S)"
+    }
+  ],
+  "sections": [
+    {
+      "id": "docs-imports",
+      "title": "Documentation and Imports",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring framing the entry as the converse of the parent's duality bridge, stating the central scalar identity and the honesty note distinguishing it from the harder Braikenridge–Maclaurin converse. Five Mathlib imports, `open Matrix`, and the `BrianchonConverse` namespace.",
+      "mathContext": "Sets scope: the converse of the determinant correspondence (axiom-free, self-contained), explicitly not the 'contact points lie on a conic' converse."
+    },
+    {
+      "id": "proj-model",
+      "title": "PART 1: Projective model (homogeneous coordinates in ℝ³)",
+      "startLine": 66,
+      "endLine": 105,
+      "summary": "`ProjPoint`/`ProjLine` as `Fin 3 → ℝ`; `lineThrough`/`lineIntersection` as cross products; `threeVectorMatrix`, `collinear`, `concurrent`, `Conic`, `Conic.symmetric`, `mapPoint`.",
+      "mathContext": "The self-dual ℝ³ model in which `collinear` (of points) and `concurrent` (of lines) are the same vanishing-determinant predicate, ported from the parent so the file is self-contained."
+    },
+    {
+      "id": "computational-identities",
+      "title": "PART 2: The two computational identities",
+      "startLine": 107,
+      "endLine": 137,
+      "summary": "`crossProduct_mulMatrix` (cofactor / Binet–Cauchy identity) and `det_threeVectorMatrix_mulMatrix` (applying a fixed matrix to all three rows scales the triple determinant by det M).",
+      "mathContext": "The two degree-3 polynomial identities driving the duality; the determinant-transport identity is what carries the (det C)^4 factor in the scalar identity."
+    },
+    {
+      "id": "symmetric-bookkeeping",
+      "title": "PART 3: Symmetric-conic bookkeeping",
+      "startLine": 138,
+      "endLine": 158,
+      "summary": "`transpose_of_symmetric`, `adjugate_symmetric`, and `dual_matrix_eq` collapsing the iterated cofactor matrix to det C • C via `adjugate_adjugate`.",
+      "mathContext": "Symmetry makes the polarity a self-polarity; `dual_matrix_eq` is the algebraic fact that each diagonal is a single linear image det C • C of a Pascal point."
+    },
+    {
+      "id": "circumscribed-hexagon",
+      "title": "PART 4: The circumscribed hexagon + diagonal reduction",
+      "startLine": 159,
+      "endLine": 180,
+      "summary": "`tangentLine`, `circVertex`, and the ported `diag_eq`: a circumscribed-hexagon diagonal equals (det C • C) applied to the corresponding Pascal point.",
+      "mathContext": "Pole–polar duality realizes the circumscribed hexagon as the dual of the inscribed contact hexagon; `diag_eq` is the bridge between the two determinants."
+    },
+    {
+      "id": "scalar-identity",
+      "title": "PART 5: The exact scalar identity (the crux)",
+      "startLine": 182,
+      "endLine": 209,
+      "summary": "`brianchon_concurrency_det_eq`: det(diag₁, diag₂, diag₃) = (det C)^4 · det(p₁, p₂, p₃), via `diag_eq`, `det_threeVectorMatrix_mulMatrix`, and `Matrix.det_smul` on a 3×3 matrix.",
+      "mathContext": "The single equation from which both the forward bridge and its converse drop out; the fourth power reflects the polarity being applied twice."
+    },
+    {
+      "id": "forward-converse",
+      "title": "PART 6: Forward and converse bridges",
+      "startLine": 211,
+      "endLine": 264,
+      "summary": "`concurrent_brianchon_of_collinear_pascal` (forward, no nondegeneracy), `det_smul_self_ne_zero` ((det C • C).det = (det C)^4 ≠ 0), and `collinear_pascal_of_concurrent_brianchon` (the converse, for det C ≠ 0).",
+      "mathContext": "Forward = multiply the scalar identity through a zero Pascal determinant; converse = divide by the invertible factor (det C)^4, the algebraic content of 'nondegenerate conic'."
+    },
+    {
+      "id": "equivalence",
+      "title": "PART 7: The full equivalence",
+      "startLine": 266,
+      "endLine": 284,
+      "summary": "`pascal_collinear_iff_brianchon_concurrent`: for a nondegenerate symmetric conic, Pascal collinearity ⟺ Brianchon concurrency, packaging the forward and converse bridges.",
+      "mathContext": "The formal statement that the two incidence conditions are equivalent — the complete Pascal–Brianchon correspondence for det C ≠ 0."
+    },
+    {
+      "id": "necessity",
+      "title": "PART 8: Degeneracy is genuine — necessity of nondegeneracy",
+      "startLine": 286,
+      "endLine": 323,
+      "summary": "`zero_conic_diag_eq_zero` (a zero-conic diagonal is the zero covector) and `zero_conic_concurrent` (concurrency holds for arbitrary contact points under the zero conic), witnessing that the converse fails without det C ≠ 0.",
+      "mathContext": "For the degenerate conic the diagonals collapse and concurrency is vacuous, while the Pascal points need not be collinear — so the nondegeneracy hypothesis of the converse is necessary, not a convenience."
+    }
+  ],
+  "sorries": 0,
+  "references": [
+    {
+      "authors": "Brianchon, Charles-Julien",
+      "title": "Sur les surfaces courbes du second degré",
+      "year": "1806",
+      "venue": "Journal de l'École Polytechnique",
+      "note": "Original statement of Brianchon's theorem"
+    },
+    {
+      "authors": "Coxeter, H. S. M.",
+      "title": "Projective Geometry",
+      "year": "1987",
+      "venue": "Springer",
+      "note": "Pascal/Brianchon duality and pole–polar correspondence; context for the converse direction and the Braikenridge–Maclaurin theorem"
+    }
+  ]
+}
