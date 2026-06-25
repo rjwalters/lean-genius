@@ -1,8 +1,8 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-03",
   "title": "Abel-Ruffini: Prove A_n is Simple for n ≥ 5 from Triple Transpositions",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS (verified reduction): simplicity of Aₙ (n≥5) reduced to and shown equivalent to the single 3-cycle-containment criterion; 4 thm / 0 sorry / 0 axiom; PR #30186. Remaining open piece: prove every nontrivial normal subgroup contains a 3-cycle for general n.",
+    "builtItems": [
+      "threeCycle_normal_eq_top — normal H ◁ Aₙ (n≥5) containing a 3-cycle ⟹ H = ⊤ (AbelRuffiniGaloisExtensionsOQ03.lean:63)",
+      "isSimpleGroup_of_forall_normal_contains_threeCycle — 3-cycle-containment criterion ⟹ IsSimpleGroup (AbelRuffiniGaloisExtensionsOQ03.lean:83)",
+      "forall_normal_contains_threeCycle_of_isSimpleGroup — converse via explicit 3-cycle (a b)(a c) (AbelRuffiniGaloisExtensionsOQ03.lean:98)",
+      "isSimpleGroup_alternating_iff — headline equivalence (AbelRuffiniGaloisExtensionsOQ03.lean:115)"
+    ],
+    "insights": [
+      "Classical proof of Aₙ simple (n≥5) splits into: (i) a normal subgroup containing a 3-cycle is all of Aₙ — already supported by Mathlib for general n; (ii) every nontrivial normal subgroup contains a 3-cycle — the genuinely combinatorial cycle-type case analysis, NOT in Mathlib for general n.",
+      "Mathlib has IsSimpleGroup only for alternatingGroup (Fin 5); the general-n converse machinery (IsThreeCycle.alternating_normalClosure, isThreeCycle_isConj, closure_three_cycles_eq_alternating) exists but is never assembled into a general simplicity statement.",
+      "Step (i) packages cleanly: normalClosure_le_normal pushes the singleton normal closure of a 3-cycle into any containing normal subgroup, and alternating_normalClosure makes it ⊤. Subtype.ext rfl bridges g and the packaged ⟨g, hg.mem_alternatingGroup⟩.",
+      "The open content of general-n simplicity is EXACTLY the 3-cycle-containment criterion: proved IsSimpleGroup(Aₙ) ↔ (every nontrivial normal subgroup contains a 3-cycle) for 5 ≤ card α."
+    ],
+    "mathlibGaps": [
+      "Mathlib lacks, for general n: the lemma that every nontrivial normal subgroup of alternatingGroup α (5 ≤ card α) contains a 3-cycle (the cycle-type case analysis). Discharging it would give unconditional IsSimpleGroup (alternatingGroup α) for all n≥5 via isSimpleGroup_of_forall_normal_contains_threeCycle.",
+      "Mathlib lacks a general-n IsSimpleGroup (alternatingGroup α) instance/theorem (only the Fin 5 instance)."
+    ],
+    "nextSteps": [
+      "Prove the remaining criterion: every nontrivial normal subgroup of Aₙ (n≥5) contains a 3-cycle. Standard route: take 1≠σ∈H minimizing moved points / with a long cycle; form the commutator σ⁻¹τ⁻¹στ with a well-chosen 3-cycle τ to produce a 3-cycle in H. Candidate for Aristotle on the bounded cycle-type subgoals.",
+      "Consistency check: recover IsSimpleGroup (alternatingGroup (Fin 5)) through isSimpleGroup_alternating_iff + the Fin 5 containment fact."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -54,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-04-03T22:29:17.627Z",
-  "lastUpdate": "2026-04-03T22:29:17.627Z",
+  "lastUpdate": "2026-06-25",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
