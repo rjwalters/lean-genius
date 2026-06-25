@@ -3884,6 +3884,7 @@ import Proofs.StirlingFormulaOQ02
 import Proofs.StirlingFormulaOQ03
 import Proofs.StirlingFormulaOQ03OQ01
 import Proofs.StirlingFormulaOQ03OQ02
+import Proofs.StirlingFormulaOQ03OQ02OQ01
 import Proofs.StirlingSecondKindOQ01
 import Proofs.StirlingSecondKindOQ01OQ01
 import Proofs.StirlingSecondKindOQ01OQ02
