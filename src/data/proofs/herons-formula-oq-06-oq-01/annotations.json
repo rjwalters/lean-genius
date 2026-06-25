@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-setup",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "context",
+    "title": "Abstract inner-product setting",
+    "content": "Works over an arbitrary real inner-product space F (NormedAddCommGroup + InnerProductSpace ℝ F), not just the Euclidean plane, and opens the parent EulerInequalityHeronOQ06 namespace to reuse its circumradius, inradius, area and semiperimeter definitions. The genuine geometry — points and Euclidean distances — lives in F, distinguishing this entry from the parent's pure side-length model.",
+    "mathContext": "$F$ is any real inner-product space; $\\langle\\cdot,\\cdot\\rangle_{\\mathbb R}$ denotes its real inner product and $\\|x\\|=\\sqrt{\\langle x,x\\rangle}$. The vertices $A,B,C$ and centres $O,I$ are honest points of $F$.",
+    "significance": "context",
+    "relatedConcepts": ["real inner-product space", "Euclidean distance", "barycentric coordinates"],
+    "prerequisites": ["inner-product spaces", "normed groups"]
+  },
+  {
+    "id": "ann-gram-core",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "range": { "startLine": 69, "endLine": 95 },
+    "type": "theorem",
+    "title": "weighted_sum_norm_sq — the Gram-expansion core",
+    "content": "For three vectors u, v, w of common norm R with pairwise distances a = ‖v−w‖, b = ‖w−u‖, c = ‖u−v‖, proves ‖a·u + b·v + c·w‖² = R²(a+b+c)² − abc(a+b+c). First extracts the three Gram inner products ⟪u,v⟫ = R²−c²/2, ⟪v,w⟫ = R²−a²/2, ⟪u,w⟫ = R²−b²/2 from the polarization identity norm_sub_sq_real, then expands ‖·‖² via real_inner_self_eq_norm_sq, normalizes orientations with real_inner_comm, and finishes with ring. This single identity is the entire geometric content of Euler's theorem.",
+    "mathContext": "Polarization: $\\|u-v\\|^2=\\|u\\|^2-2\\langle u,v\\rangle+\\|v\\|^2$ gives $\\langle u,v\\rangle=R^2-\\tfrac{c^2}{2}$ (and cyclically). Expanding $\\|a u+b v+c w\\|^2=\\sum a^2\\|u\\|^2+2\\sum ab\\langle u,v\\rangle$ and substituting, the cross terms $2ab\\langle u,v\\rangle+2bc\\langle v,w\\rangle+2ca\\langle u,w\\rangle$ collapse to $-abc(a+b+c)$, leaving $R^2(a+b+c)^2-abc(a+b+c)$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix", "polarization identity", "law of cosines", "symmetric cancellation"],
+    "prerequisites": ["inner product expansion", "norm_sub_sq_real", "the ring tactic"]
+  },
+  {
+    "id": "ann-euler-core",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "range": { "startLine": 109, "endLine": 138 },
+    "type": "theorem",
+    "title": "incenter_dist_circumcenter_sq — the area-free Euler core",
+    "content": "For a triangle ABC with circumcenter O at distance R from each vertex and incenter I = (a·A+b·B+c·C)/(a+b+c), proves OI² = R² − abc/(a+b+c). Passes to position vectors u = A−O, v = B−O, w = C−O (each of norm R via dist_eq_norm'), rewrites the side lengths as their norms, and crucially shows I − O = (a+b+c)⁻¹·(a·u+b·v+c·w) — valid because the barycentric weights sum to (a+b+c), handled by the module tactic. Then dist O I² = norm_smul · weighted_sum_norm_sq, finished by field_simp. No area, no square roots.",
+    "mathContext": "Since the incenter weights sum to 1, $I-O=(a+b+c)^{-1}(a u+b v+c w)$, so $OI^2=\\dfrac{\\|a u+b v+c w\\|^2}{(a+b+c)^2}=\\dfrac{R^2(a+b+c)^2-abc(a+b+c)}{(a+b+c)^2}=R^2-\\dfrac{abc}{a+b+c}$.",
+    "significance": "key",
+    "relatedConcepts": ["circumcenter", "incenter", "barycentric combination", "position vectors", "module tactic"],
+    "prerequisites": ["dist_eq_norm", "norm_smul", "weighted_sum_norm_sq"]
+  },
+  {
+    "id": "ann-bridge",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "range": { "startLine": 146, "endLine": 154 },
+    "type": "lemma",
+    "title": "two_circumradius_mul_inradius — the algebraic bridge",
+    "content": "Proves 2·R·r = abc/(a+b+c) in the side-length model, where R = circumradius a b c = abc/(4·Area) and r = inradius a b c = Area/s. Unfolds the definitions, uses area_pos (Heron's area is positive for a genuine triangle, from the triangle inequalities), and clears denominators with field_simp; the Area factors cancel and ring closes. This is the sole place the area enters — and it disappears.",
+    "mathContext": "$2Rr=2\\cdot\\dfrac{abc}{4\\,\\mathrm{Area}}\\cdot\\dfrac{\\mathrm{Area}}{s}=\\dfrac{abc}{2s}=\\dfrac{abc}{a+b+c}$, using $s=\\tfrac{a+b+c}{2}$. The $\\mathrm{Area}$ cancels exactly, so the bridge is a pure rational identity in $a,b,c$.",
+    "significance": "supporting",
+    "relatedConcepts": ["circumradius R = abc/(4·Area)", "inradius r = Area/s", "Heron's area", "semiperimeter"],
+    "prerequisites": ["the parent's circumradius/inradius/area definitions", "field_simp"]
+  },
+  {
+    "id": "ann-euler-formula",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "range": { "startLine": 160, "endLine": 171 },
+    "type": "theorem",
+    "title": "euler_OI_sq — Euler's triangle formula OI² = R² − 2Rr",
+    "content": "The headline result: with O, I, A, B, C honest points and R the circumradius, OI² = R² − 2·R·r. The proof simply rewrites with the Euler core incenter_dist_circumcenter_sq to get OI² = R² − abc/(a+b+c), then substitutes the bridge two_circumradius_mul_inradius backwards (via hcirc : R = circumradius a b c) to convert abc/(a+b+c) into 2Rr. The geometric and algebraic halves meet here.",
+    "mathContext": "$OI^2=R^2-\\dfrac{abc}{a+b+c}=R^2-2Rr$ — Euler's 1765 identity $d^2=R(R-2r)$, now as an honest squared Euclidean distance in $F$.",
+    "significance": "key",
+    "relatedConcepts": ["Euler's theorem in geometry", "triangle-center distances", "circumradius", "inradius"],
+    "prerequisites": ["incenter_dist_circumcenter_sq", "two_circumradius_mul_inradius"]
+  },
+  {
+    "id": "ann-euler-inequality",
+    "proofId": "herons-formula-oq-06-oq-01",
+    "range": { "startLine": 175, "endLine": 191 },
+    "type": "theorem",
+    "title": "euler_inequality_of_dist — R ≥ 2r as OI² ≥ 0",
+    "content": "Recovers Euler's inequality 2r ≤ R geometrically. From euler_OI_sq, R² − 2Rr = OI² ≥ 0 (sq_nonneg). With R > 0 (positivity, since the circumradius abc/(4·Area) is positive for a genuine triangle), nlinarith concludes R ≥ 2r. The inequality is thus not an algebraic estimate but the literal nonnegativity of a squared distance — exactly Euler's intended meaning.",
+    "mathContext": "$OI^2\\ge 0$ and $OI^2=R^2-2Rr=R(R-2r)$, with $R>0$, force $R-2r\\ge 0$, i.e. $R\\ge 2r$, with equality iff $O=I$ (the equilateral case).",
+    "significance": "key",
+    "relatedConcepts": ["Euler's inequality", "sq_nonneg", "nlinarith", "equilateral triangle (equality case)"],
+    "prerequisites": ["euler_OI_sq", "positivity of the circumradius"]
+  }
+]
