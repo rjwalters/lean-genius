@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 1, "endLine": 55 },
+    "type": "context",
+    "title": "Hilbert Metric, Birkhoff Contraction, Perron–Frobenius",
+    "content": "Birkhoff's theorem: a positive matrix strictly contracts the Hilbert projective metric, so its normalized power iteration converges geometrically to the Perron (dominant positive) eigenvector. We formalize the 2×2 case, where the cone is one-dimensional: A = !![a,b;c,d] acts on the projective coordinate t = x/y ∈ (0,∞) by the Möbius map φ(t) = (a·t+b)/(c·t+d), and the Hilbert metric is d_H(t₁,t₂) = |log t₁ − log t₂|. Instead of the analytic tanh(Δ/4) estimate we use the exact cross-ratio multiplier ρ = λ₂/λ₁.",
+    "mathContext": "$d_H(t_1,t_2) = |\\log t_1 - \\log t_2|$ on $(0,\\infty)$; $\\varphi(t) = \\frac{at+b}{ct+d}$ is the projective action of $A$.",
+    "significance": "context",
+    "relatedConcepts": ["Hilbert projective metric", "Birkhoff contraction theorem", "Perron–Frobenius theorem", "power iteration", "Möbius transformation"],
+    "prerequisites": ["positive matrices", "projective coordinates", "geometric convergence"]
+  },
+  {
+    "id": "ann-defs",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 62, "endLine": 92 },
+    "type": "definition",
+    "title": "The Projective-Dynamics Setup",
+    "content": "mobius is φ. fpDisc is the discriminant Δ = (d−a)² + 4bc of the fixed-point quadratic c·t² + (d−a)·t − b. perronRatio (t⋆) and subRatio (t†) are its two roots — the eigenvector ratios. contractionRatio is the multiplier ρ = (a+d−√Δ)/(a+d+√Δ). cross is the cross-ratio coordinate g(t) = (t−t⋆)/(t−t†) in which φ will become exact multiplication by ρ.",
+    "mathContext": "$t_\\star, t_\\dagger = \\frac{a-d\\pm\\sqrt{\\Delta}}{2c}$, $\\rho = \\frac{a+d-\\sqrt\\Delta}{a+d+\\sqrt\\Delta}$, $g(t) = \\frac{t-t_\\star}{t-t_\\dagger}$.",
+    "significance": "standard",
+    "relatedConcepts": ["fixed points of a Möbius map", "cross-ratio", "eigenvector ratio", "Möbius multiplier"],
+    "prerequisites": ["quadratic formula", "linear-fractional transformations"]
+  },
+  {
+    "id": "ann-quadratic",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 142, "endLine": 167 },
+    "type": "theorem",
+    "title": "The Fixed-Point Quadratic at Both Roots",
+    "content": "perron_quadratic / sub_quadratic: each fixed point satisfies b = c·t² + (d−a)·t, the eigenvalue quadratic. Proved from the explicit quadratic-formula roots by squaring 2c·t − (a−d) = ±√Δ and using √Δ ^ 2 = Δ, then cancelling 4c. These relations drive every later algebraic identity (the factorizations and the semiconjugacy).",
+    "mathContext": "$c\\,t^2 + (d-a)\\,t - b = 0$ at $t = t_\\star, t_\\dagger$; equivalently $A\\,(t,1)^\\top \\parallel (t,1)^\\top$.",
+    "significance": "key",
+    "relatedConcepts": ["characteristic equation", "eigenvalue quadratic", "fixed-point equation"],
+    "prerequisites": ["Real.sq_sqrt", "quadratic roots"]
+  },
+  {
+    "id": "ann-factor",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 184, "endLine": 205 },
+    "type": "theorem",
+    "title": "Exact Factorizations of φ(t) − t⋆ and φ(t) − t†",
+    "content": "mobius_factor_perron / mobius_factor_sub: φ(t) − t⋆ = (a−c·t⋆)(t−t⋆)/(c·t+d), and the same at t†. The displacement from a fixed point factors as a constant (the local multiplier numerator) times (t − fixed point), over the common denominator c·t+d. This is what makes the cross-ratio collapse to a constant.",
+    "mathContext": "$\\varphi(t) - t_\\star = \\dfrac{(a-c\\,t_\\star)(t-t_\\star)}{c\\,t+d}$.",
+    "significance": "key",
+    "relatedConcepts": ["local linearization", "Möbius fixed-point factorization"],
+    "prerequisites": ["the fixed-point quadratic", "field algebra"]
+  },
+  {
+    "id": "ann-semiconjugacy",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 207, "endLine": 235 },
+    "type": "theorem",
+    "title": "The Semiconjugacy g(φ(t)) = ρ·g(t) — the Birkhoff/Perron Heart",
+    "content": "cross_mobius: dividing the two factorizations cancels the common denominator c·t+d (div_div_div_cancel_right₀), leaving (a−c·t⋆)(t−t⋆) / ((a−c·t†)(t−t†)). The eigenvalue identity a−c·t⋆ = ρ·(a−c·t†) (a_sub_c_perron_eq) turns this into ρ·g(t). So in the cross-ratio coordinate, the Möbius map φ is EXACTLY multiplication by the constant ρ — the exact algebraic form of Birkhoff's strict-contraction theorem, with rate ρ = λ₂/λ₁ instead of the analytic tanh(Δ/4).",
+    "mathContext": "$g(\\varphi(t)) = \\rho\\,g(t)$ with $\\rho = \\lambda_2/\\lambda_1$; $\\varphi$ is conjugate to $w \\mapsto \\rho w$.",
+    "significance": "key",
+    "relatedConcepts": ["semiconjugacy", "Möbius multiplier", "Birkhoff contraction", "spectral gap"],
+    "prerequisites": ["the factorizations", "the eigenvalue identity λ₂ = ρ·λ₁"]
+  },
+  {
+    "id": "ann-contraction",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 237, "endLine": 245 },
+    "type": "theorem",
+    "title": "|ρ| < 1: the Genuine Contraction",
+    "content": "abs_contractionRatio_lt_one: because a+d > 0 and √Δ > 0, one always has |a+d−√Δ| < a+d+√Δ, so |ρ| < 1 for EVERY positive matrix — no determinant hypothesis needed. This is the contraction property that powers geometric convergence.",
+    "mathContext": "$|\\rho| = \\dfrac{|a+d-\\sqrt\\Delta|}{a+d+\\sqrt\\Delta} < 1$.",
+    "significance": "key",
+    "relatedConcepts": ["contraction constant", "spectral gap", "Perron dominance"],
+    "prerequisites": ["absolute value inequalities"]
+  },
+  {
+    "id": "ann-iterate",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 256, "endLine": 311 },
+    "type": "theorem",
+    "title": "Geometric Straightening and the Closed Form",
+    "content": "cross_iterate: iterating the semiconjugacy gives g(φⁿ(t)) = ρⁿ·g(t) — the cross-ratio coordinate decays exactly geometrically. iterate_closed_form inverts this to the explicit rational form φⁿ(t) = t⋆ + ρⁿ·g(t)·(t⋆−t†)/(1 − ρⁿ·g(t)), valid because the iterates stay positive (iterate_pos) and g never hits 1.",
+    "mathContext": "$g(\\varphi^n(t)) = \\rho^n g(t)$; $\\varphi^n(t) = t_\\star + \\dfrac{\\rho^n g(t)\\,(t_\\star - t_\\dagger)}{1 - \\rho^n g(t)}$.",
+    "significance": "key",
+    "relatedConcepts": ["geometric decay", "conjugation to linear map", "orbit closed form"],
+    "prerequisites": ["induction on iterates", "field algebra"]
+  },
+  {
+    "id": "ann-main",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 313, "endLine": 330 },
+    "type": "theorem",
+    "title": "Main: Power Iteration Converges to the Perron Eigenvector",
+    "content": "power_iteration_tendsto: since |ρ| < 1 gives ρⁿ → 0, the closed form tends to t⋆ (Tendsto.div with denominator limit 1). So from ANY positive start, φⁿ(t) → t⋆ geometrically — the Birkhoff → Perron–Frobenius conclusion: the normalized power iteration converges to the dominant positive eigenvector direction.",
+    "mathContext": "$\\varphi^n(t) \\to t_\\star$ as $n \\to \\infty$, geometrically at rate $|\\rho| = \\lambda_2/\\lambda_1$.",
+    "significance": "key",
+    "relatedConcepts": ["Perron–Frobenius convergence", "power method", "contraction-mapping theorem"],
+    "prerequisites": ["tendsto_pow_atTop_nhds_zero_of_abs_lt_one", "Filter.Tendsto.div"]
+  },
+  {
+    "id": "ann-perron",
+    "proofId": "hilbert-4-oq-04",
+    "range": { "startLine": 331, "endLine": 363 },
+    "type": "theorem",
+    "title": "Identifying the Perron Eigenvector and the Rate",
+    "content": "perron_eigenvector: (t⋆, 1) is a genuine eigenvector of A, with eigenvalue λ₁ = c·t⋆+d = (a+d+√Δ)/2 (perron_eigenvalue) — so the limit really is the Perron direction. contractionRatio_eq_eigenvalue_ratio: ρ·λ₁ = λ₂, so the metric contraction rate equals the spectral-gap ratio λ₂/λ₁. The metric and spectral faces of Perron–Frobenius coincide.",
+    "mathContext": "$A\\,(t_\\star,1)^\\top = \\lambda_1\\,(t_\\star,1)^\\top$, $\\lambda_1 = \\tfrac{a+d+\\sqrt\\Delta}{2}$, $\\rho\\lambda_1 = \\lambda_2$.",
+    "significance": "key",
+    "relatedConcepts": ["Perron eigenvector", "dominant eigenvalue", "spectral gap", "convergence rate"],
+    "prerequisites": ["eigenvalue/eigenvector definitions"]
+  }
+]
