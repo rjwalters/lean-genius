@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-api",
+    "proofId": "pascals-hexagon-incomplete-01",
+    "range": {
+      "startLine": 47,
+      "endLine": 69
+    },
+    "type": "definition",
+    "title": "Self-contained minimal conic API",
+    "content": "Because the parent PascalsHexagon.lean is currently bit-rotted under the 4.26.0 toolchain, the file reproduces locally the minimal API it needs: ProjPoint (a vector in ℝ³), Conic (a 3×3 symmetric matrix), conicQuadraticForm (the associated form pᵀ C p), pointOnConic (the form vanishes), stdConic = diag(1,1,-1), and projTransform M p = M *ᵥ p. Mirroring the parent's definitions keeps the necessity result drop-in compatible once the parent is repaired.",
+    "mathContext": "A conic is a symmetric $C \\in \\mathbb{R}^{3\\times 3}$; $p$ lies on it iff $\\sum_{i,j} C_{ij} p_i p_j = 0$. $\\mathrm{stdConic} = \\mathrm{diag}(1,1,-1)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["projective conic", "symmetric matrix", "quadratic form", "projective transformation"],
+    "prerequisites": ["conics as symmetric matrices", "matrix–vector products"]
+  },
+  {
     "id": "ann-identity-conic",
     "proofId": "pascals-hexagon-incomplete-01",
     "range": {
@@ -8,7 +23,11 @@
     },
     "type": "insight",
     "title": "A Positive-Definite Conic Has Only the Origin",
-    "content": "`pointOnConic_one_iff` proves that a point lies on the identity conic diag(1,1,1) — the form x₀²+x₁²+x₂² — exactly when it is the zero vector. The form is a sum of three real squares, each nonnegative, so (Finset.sum_eq_zero_iff_of_nonneg) the sum vanishes only when every coordinate squared is zero, i.e. every coordinate is zero. This is anisotropy: a positive-definite real quadratic form has no nontrivial zero."
+    "content": "`pointOnConic_one_iff` proves that a point lies on the identity conic diag(1,1,1) — the form x₀²+x₁²+x₂² — exactly when it is the zero vector. The form is a sum of three real squares, each nonnegative, so (Finset.sum_eq_zero_iff_of_nonneg) the sum vanishes only when every coordinate squared is zero, i.e. every coordinate is zero. This is anisotropy: a positive-definite real quadratic form has no nontrivial zero.",
+    "mathContext": "$x_0^2+x_1^2+x_2^2 = 0 \\iff x = 0$ over $\\mathbb{R}$ — anisotropy of a positive-definite form.",
+    "significance": "critical",
+    "relatedConcepts": ["positive-definite form", "anisotropic quadratic form", "sum of squares", "Finset.sum_eq_zero_iff_of_nonneg"],
+    "prerequisites": ["nonnegativity of real squares", "definite quadratic forms"]
   },
   {
     "id": "ann-std-point",
@@ -19,7 +38,11 @@
     },
     "type": "concept",
     "title": "The Indefinite Conic Has a Cone of Zeros",
-    "content": "By contrast, the standard conic diag(1,1,-1) — the form x₀²+x₁²−x₂² — is indefinite and has many nonzero zeros, the whole light cone. The file pins down one: isotropicPoint = (1,0,1), with 1²+0²−1² = 0 and clearly nonzero. The mismatch between 'only the origin' and 'a cone of points' is the obstruction the main theorem exploits."
+    "content": "By contrast, the standard conic diag(1,1,-1) — the form x₀²+x₁²−x₂² — is indefinite and has many nonzero zeros, the whole light cone. The file pins down one: isotropicPoint = (1,0,1), with 1²+0²−1² = 0 and clearly nonzero. The mismatch between 'only the origin' and 'a cone of points' is the obstruction the main theorem exploits.",
+    "mathContext": "$(1,0,1)$ satisfies $1^2+0^2-1^2 = 0$ and is nonzero — an isotropic vector of the indefinite form $\\mathrm{diag}(1,1,-1)$.",
+    "significance": "key",
+    "relatedConcepts": ["indefinite form", "isotropic vector", "light cone", "signature (2,1)"],
+    "prerequisites": ["indefinite quadratic forms", "the standard conic"]
   },
   {
     "id": "ann-essential",
@@ -30,6 +53,10 @@
     },
     "type": "insight",
     "title": "Invertibility Cannot Bridge Anisotropic and Isotropic",
-    "content": "`real_point_hypothesis_essential` shows no invertible M relates the identity conic to stdConic. Given such an M, pull the nonzero standard-conic point q = (1,0,1) back to p = M⁻¹·q; then M·p = (M·M⁻¹)·q = q, so the claimed equivalence puts p on the identity conic, forcing p = 0 — whence q = M·0 = 0, contradicting q ≠ 0. An invertible linear map is a bijection and so preserves 'has a nonzero zero', which definite and indefinite conics differ on. This is exactly why the Sylvester reduction sylvester_stdConic_of_isotropic must assume a real point on the conic — a witness the inscribed hexagon supplies."
+    "content": "`real_point_hypothesis_essential` shows no invertible M relates the identity conic to stdConic. Given such an M, pull the nonzero standard-conic point q = (1,0,1) back to p = M⁻¹·q; then M·p = (M·M⁻¹)·q = q, so the claimed equivalence puts p on the identity conic, forcing p = 0 — whence q = M·0 = 0, contradicting q ≠ 0. An invertible linear map is a bijection and so preserves 'has a nonzero zero', which definite and indefinite conics differ on. This is exactly why the Sylvester reduction sylvester_stdConic_of_isotropic must assume a real point on the conic — a witness the inscribed hexagon supplies.",
+    "mathContext": "If $M$ invertible with the equivalence, then $p = M^{-1}q$ gives $Mp = q$, so $p$ is on $\\mathrm{diag}(1,1,1) \\Rightarrow p=0 \\Rightarrow q = M0 = 0$, contradicting $q\\neq 0$.",
+    "significance": "critical",
+    "relatedConcepts": ["projective equivalence", "invertible map preserves isotropy", "Matrix.mul_nonsing_inv", "Sylvester's law of inertia", "proof by contradiction"],
+    "prerequisites": ["nonsingular matrix inverse", "the two preceding lemmas", "projective transformations"]
   }
 ]
