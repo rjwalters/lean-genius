@@ -1,0 +1,63 @@
+{
+  "slug": "bounded-prime-gaps-oq-01-oq-01",
+  "title": "Eliminate Maynard-Tao Sieve Axioms in BoundedPrimeGaps Formalization",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "research/problems/bounded-prime-gaps-oq-01-oq-01",
+  "problemStatement": "The BoundedPrimeGaps formalization carries three axioms encoding the Maynard-Tao sieve: a density axiom (maynard_tao_m_tuples) and two gap-sieve axioms (maynard_tao_sieve for k >= 50, maynard_tao_sieve_eh for k >= 5 under Elliott-Halberstam). Determine whether the sieve axioms can be eliminated by reducing them to a smaller irreducible analytic core.",
+  "knownResults": "Maynard (2015), Tao (2014), Polymath 8b (2014): liminf prime gaps <= 246 unconditionally, <= 12 under Elliott-Halberstam. The deep analytic input is the GPY/Maynard sieve with Bombieri-Vinogradov equidistribution. Mathlib has the prime-counting API (Nat.nth, Nat.count) and infinitude of primes but no sieve machinery.",
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Proved the two gap-sieve axioms redundant given the density axiom via an elementary density-to-gap reduction.",
+    "blockers": [],
+    "nextAction": "Further elimination would require formalizing the GPY/Maynard sieve weights and Bombieri-Vinogradov, i.e. the genuine analytic content behind maynard_tao_m_tuples - a multi-session undertaking.",
+    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Showed the two gap-sieve axioms (maynard_tao_sieve, maynard_tao_sieve_eh) of BoundedPrimeGaps.lean are logically redundant given the density axiom. The passage from 'at least two primes among a diameter-D admissible tuple, infinitely often' to 'infinitely many consecutive prime gaps <= D' is purely arithmetic and is now a fully machine-checked, 0-axiom theorem (density_two_implies_bounded_gaps). The formalization's irreducible sieve input is thus a single density statement, not three.",
+    "builtItems": [
+      "Proofs/BoundedPrimeGapsOQ01OQ01.lean: 207 lines, 5 theorems, 0 axioms, 0 sorries; #print axioms reports only propext/Classical.choice/Quot.sound.",
+      "gap_from_two_primes: arithmetic core bounding the next prime after p by a nearby prime q via Nat.nth monotonicity, and forcing the gap index >= N via Nat.count monotonicity.",
+      "density_two_implies_bounded_gaps: derives the eliminated axioms' exact conclusion (forall N, exists n >= N, primeGap n <= D) from MaynardTaoDensity H 2 plus a diameter bound.",
+      "sieve_conclusion_from_density / sieve_eh_conclusion_from_density: the reduction in the literal k>=50 and k>=5 axiom signatures, with admissibility/cardinality provably unused.",
+      "pair_density_implies_bounded_gaps: the {0,d} specialisation (twin-style reading)."
+    ],
+    "insights": [
+      "The two gap-sieve axioms are not independent assumptions: only one sieve axiom (the density statement) is genuinely irreducible. The gap-extraction step is arithmetic, not analytic.",
+      "Admissibility is irrelevant to the reduction - only the diameter bound forall h in H, h <= D is used. Admissibility matters solely to secure the density antecedent, cleanly localising the analytic difficulty.",
+      "The only technical subtlety is index bookkeeping: relating the analytic shift n to the prime index k via the Nat.nth / Nat.count inverse-and-monotone lemmas over the infinite primes (nth_count, count_nth_of_infinite, nth_monotone, count_monotone).",
+      "At d = 2 the {0,d} corollary shows the twin-prime density statement already entails infinitely many gaps <= 2, with no sieve axiom needed for that final step."
+    ],
+    "mathlibGaps": [
+      "No GPY/Maynard sieve weights or Bombieri-Vinogradov equidistribution in Mathlib, so the remaining density axiom (maynard_tao_m_tuples) cannot yet be eliminated."
+    ]
+  },
+  "tags": ["number-theory", "prime-gaps", "sieve-theory", "axiom-elimination", "maynard-tao"],
+  "relatedProofs": ["bounded-prime-gaps", "bounded-prime-gaps-oq-01", "bounded-prime-gaps-oq-01-oq-02"],
+  "references": [
+    "J. Maynard, Small gaps between primes, Ann. of Math. 181 (2015), 383-413.",
+    "D.H.J. Polymath, Variants of the Selberg sieve, and bounded intervals containing many primes, Res. Math. Sci. 1 (2014).",
+    "Y. Zhang, Bounded gaps between primes, Ann. of Math. 179 (2014), 1121-1174."
+  ],
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "completed": "2026-06-24",
+  "significance": 8,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ01.lean"
+    }
+  ]
+}
