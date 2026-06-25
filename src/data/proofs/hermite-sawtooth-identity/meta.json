@@ -1,0 +1,133 @@
+{
+  "id": "hermite-sawtooth-identity",
+  "title": "Companion Sawtooth Identity for Hermite's Identity",
+  "slug": "hermite-sawtooth-identity",
+  "description": "The fractional-part twin of Hermite's floor identity: for every real x and every integer n ≥ 1, ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2, where {y} = y − ⌊y⌋ is the fractional part (Mathlib's Int.fract). Together with the parent gallery entry hermite-floor-identity (∑_{k=0}^{n-1} ⌊x + k/n⌋ = ⌊n·x⌋), this gives a complete floor + fractional decomposition of the uniformly sampled sum: summing the real numbers x + k/n over k = 0, …, n−1 yields the exact value n·x + (n-1)/2, which splits as the floor side ⌊n·x⌋ (Hermite) plus the sawtooth side {n·x} + (n-1)/2 proved here. The argument is entirely elementary and reuses the parent theorem verbatim. (1) Exact arithmetic sum: ∑_{k<n}(x + k/n) = n·x + (n-1)/2, combining ∑_{k<n} x = n·x with the Gauss sum ∑_{k<n} k = n(n−1)/2 (derived from Finset.sum_range_id_mul_two). (2) Split each fractional part {y} = y − ⌊y⌋, so the sawtooth sum equals the exact sum minus the floor sum. (3) The floor sum is ⌊n·x⌋ by the parent's hermite_floor_identity, leaving n·x + (n-1)/2 − ⌊n·x⌋ = {n·x} + (n-1)/2. The n = 1 case is the trivial {x} = {x}; the n = 2 case is the sawtooth analogue of ⌊x⌋ + ⌊x+1/2⌋ = ⌊2x⌋. This sawtooth identity is the B₁ case of the Bernoulli-polynomial multiplication (Raabe) theorem and the additive backbone behind Gauss/Eisenstein lattice-point counts.",
+  "meta": {
+    "author": "Charles Hermite (1880s); Bernoulli-polynomial multiplication (Raabe)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/HermiteSawtoothIdentity.lean",
+    "tags": [
+      "number-theory",
+      "floor-function",
+      "fractional-part",
+      "real-analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 84,
+    "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib (single-file elaboration via `lake env lean Proofs/HermiteSawtoothIdentity.lean`, exit 0; `#print axioms` on hermite_sawtooth_identity, sum_sample, and floor_add_sawtooth lists only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). The proof imports and reuses the parent entry's verified theorem `HermiteFloorIdentity.hermite_floor_identity`. Mathlib supplies the fractional-part API (`Int.fract`, definitional `Int.fract y = y − ⌊y⌋`) and the Gauss sum (`Finset.sum_range_id_mul_two`), but does NOT contain this companion sawtooth identity ∑_{k<n}{x + k/n} = {n·x} + (n-1)/2.",
+    "dateAdded": "2026-06-25",
+    "originalContributions": [
+      "The companion sawtooth (fractional-part) identity ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2 over ℝ for every n ≥ 1 — the B₁ case of the Bernoulli-polynomial multiplication theorem — proved as a corollary of the parent's Hermite floor identity. Absent from Mathlib.",
+      "The exact sampled-sum lemma sum_sample: ∑_{k=0}^{n-1}(x + k/n) = n·x + (n-1)/2, isolating the uniform-sampling arithmetic that the floor and fractional halves partition.",
+      "The explicit floor↔fractional decomposition floor_add_sawtooth: ∑_{k<n}(x + k/n) = ⌊n·x⌋ + ∑_{k<n}{x + k/n}, making the equivalence with Hermite's identity transparent (floor side + sawtooth side = exact sum)."
+    ],
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Hermite's floor-summation identity (1880s) has a natural fractional-part companion obtained by subtracting it from the exact sum of the sampled values. The fractional-part identity ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2 is precisely the degree-one (B₁) instance of Raabe's multiplication theorem for Bernoulli polynomials, B_m(nx) expressed through B_m sampled at x + k/n, and it is the sawtooth identity underlying Gauss/Eisenstein lattice-point counts and the functional equation of the Hurwitz zeta function. Mathlib formalizes the fractional part Int.fract and a large floor/division API but does not record this identity; the parent gallery entry supplies the floor half, and this entry adds the fractional half plus the explicit decomposition.",
+    "problemStatement": "Prove that for every real number $x$ and every integer $n \\ge 1$, $$\\sum_{k=0}^{n-1} \\left\\{ x + \\frac{k}{n} \\right\\} = \\{n x\\} + \\frac{n-1}{2},$$ where $\\{y\\} = y - \\lfloor y\\rfloor$ is the fractional part, and exhibit it as the fractional-part complement of Hermite's floor identity.",
+    "text": "The headline theorem `hermite_sawtooth_identity (x : ℝ) (n : ℕ) (hn : 0 < n) : ∑ k ∈ range n, Int.fract (x + k/n) = Int.fract (n·x) + (n-1)/2`, supported by `sum_sample` (the exact arithmetic sum n·x + (n-1)/2) and `floor_add_sawtooth` (the floor + sawtooth split of the same sum).",
+    "proofStrategy": "Three steps, all elementary. (1) Exact sampled sum (sum_sample): ∑_{k<n}(x + k/n) = n·x + (n-1)/2. Splitting the summand with Finset.sum_add_distrib, the constant part gives ∑_{k<n} x = n·x (Finset.sum_const, Finset.card_range, nsmul_eq_mul), and the linear part gives (1/n)∑_{k<n} k = (1/n)·n(n−1)/2 = (n-1)/2, where the Gauss sum ∑_{k<n} k = n(n−1)/2 over ℝ is obtained by casting Finset.sum_range_id_mul_two and closing with linear_combination. (2) Split fractional parts: each Int.fract y = y − ⌊y⌋ definitionally, so by Finset.sum_sub_distrib the sawtooth sum equals (∑_{k<n}(x + k/n)) − ∑_{k<n} ⌊x + k/n⌋. (3) Apply the parent: ∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋ by HermiteFloorIdentity.hermite_floor_identity (after collecting the integer casts via Int.cast_sum), so the sawtooth sum is n·x + (n-1)/2 − ⌊n·x⌋ = (n·x − ⌊n·x⌋) + (n-1)/2 = {n·x} + (n-1)/2. The decomposition floor_add_sawtooth re-adds the two halves to recover the exact sum.",
+    "keyInsights": [
+      "The floor identity and the fractional-part identity are two faces of one fact: the exact sum ∑_{k<n}(x + k/n) = n·x + (n-1)/2 partitions into the floor side ⌊n·x⌋ and the sawtooth side {n·x} + (n-1)/2. Proving either one for free gives the other by subtraction.",
+      "The (n-1)/2 constant is purely the Gauss sum of the sampling offsets: ∑_{k<n} (k/n) = (1/n)·n(n−1)/2 = (n-1)/2, independent of x. All the x-dependence is carried by the {n·x} term inherited from Hermite.",
+      "Working from the definitional Int.fract y = y − ⌊y⌋ keeps the proof a one-line subtraction of the parent theorem from the closed-form arithmetic sum — no fractional-part periodicity or residue counting is needed, unlike a direct attack.",
+      "The identity is the B₁ instance of the Bernoulli multiplication theorem: with B₁(t) = {t} − 1/2 the statement rearranges to ∑_{k<n} B₁(x + k/n) = B₁(n·x), the n-fold distribution relation for the sawtooth."
+    ],
+    "prerequisites": [
+      "The floor function ⌊·⌋ and fractional part {·} = Int.fract on ℝ",
+      "The parent Hermite floor identity ∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋",
+      "The Gauss sum ∑_{k<n} k = n(n−1)/2 and finite-sum splitting over Finset.range",
+      "Casting finite integer sums to ℝ (Int.cast_sum)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Statement",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Module docstring stating the companion sawtooth identity ∑_{k<n}{x + k/n} = {n·x} + (n-1)/2, framing it as the fractional-part twin of the parent Hermite floor identity and as the floor + fractional decomposition of the exact sampled sum n·x + (n-1)/2. Imports full Mathlib plus the parent entry Proofs.HermiteFloorIdentity, opens Finset, and enters the namespace.",
+      "mathContext": "Targets $\\sum_{k=0}^{n-1}\\{x + k/n\\} = \\{n x\\} + \\tfrac{n-1}{2}$ for real $x$ and $n \\ge 1$, where $\\{y\\} = y - \\lfloor y\\rfloor$."
+    },
+    {
+      "id": "sum-sample",
+      "title": "The Exact Sampled Sum",
+      "startLine": 37,
+      "endLine": 53,
+      "summary": "sum_sample: ∑_{k<n}(x + k/n) = n·x + (n-1)/2. The Gauss sum ∑_{k<n} k = n(n−1)/2 over ℝ is obtained by casting Finset.sum_range_id_mul_two (with Nat.cast_sub for n−1) and closing with linear_combination. Splitting the summand (Finset.sum_add_distrib) gives the constant part n·x (Finset.sum_const / card_range / nsmul_eq_mul) and the linear part (∑ k)/n = (n-1)/2, finished by field_simp.",
+      "mathContext": "$\\sum_{k=0}^{n-1}(x + k/n) = nx + \\tfrac1n\\sum_{k<n}k = nx + \\tfrac{n-1}{2}$; the offset average $\\tfrac1n\\sum_{k<n}k = \\tfrac{n-1}{2}$ is independent of $x$."
+    },
+    {
+      "id": "sawtooth-identity",
+      "title": "The Companion Sawtooth Identity",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "hermite_sawtooth_identity: each Int.fract (x + k/n) = (x + k/n) − ⌊x + k/n⌋ definitionally; Finset.sum_sub_distrib separates the exact sum from the floor sum; ← Int.cast_sum collects the integer casts and HermiteFloorIdentity.hermite_floor_identity rewrites the floor sum to ⌊n·x⌋; sum_sample supplies the exact sum; Int.fract on n·x and ring finish n·x + (n-1)/2 − ⌊n·x⌋ = {n·x} + (n-1)/2.",
+      "mathContext": "$\\sum_{k<n}\\{x+k/n\\} = \\sum_{k<n}(x+k/n) - \\sum_{k<n}\\lfloor x+k/n\\rfloor = (nx + \\tfrac{n-1}{2}) - \\lfloor nx\\rfloor = \\{nx\\} + \\tfrac{n-1}{2}$."
+    },
+    {
+      "id": "decomposition",
+      "title": "Floor + Sawtooth Decomposition",
+      "startLine": 74,
+      "endLine": 84,
+      "summary": "floor_add_sawtooth: ∑_{k<n}(x + k/n) = ⌊n·x⌋ + ∑_{k<n}{x + k/n}, the explicit floor↔fractional equivalence. Proved by rewriting the sawtooth sum (hermite_sawtooth_identity), the exact sum (sum_sample), and Int.fract on n·x, then ring.",
+      "mathContext": "The exact sampled sum equals the Hermite floor side $\\lfloor nx\\rfloor$ plus the sawtooth side $\\sum_{k<n}\\{x+k/n\\}$, partitioning $nx + \\tfrac{n-1}{2}$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The companion sawtooth identity ∑_{k=0}^{n-1} {x + k/n} = {n·x} + (n-1)/2 is proved for every real x and every n ≥ 1, with 0 axioms and 0 sorries, by subtracting the parent's verified Hermite floor identity from the exact sampled sum ∑_{k<n}(x + k/n) = n·x + (n-1)/2. The explicit decomposition floor_add_sawtooth records the floor + fractional split. Neither the sawtooth identity nor the exact-sum lemma is present in Mathlib.",
+    "openQuestions": [
+      "Prove the full Bernoulli-polynomial multiplication (Raabe) theorem ∑_{k=0}^{n-1} B_m(x + k/n) = n^{1−m} B_m(n·x) for general m, of which this sawtooth identity is the m = 1 case, building on Mathlib's Bernoulli-polynomial API.",
+      "Use the sawtooth identity to derive a lattice-point / Eisenstein count, e.g. a clean formula for ∑_{k<n} {kp/q} (Gauss-sum reciprocity input), exhibiting the (n-1)/2 term as the diagonal contribution."
+    ],
+    "implications": "Pairing the sawtooth identity with the parent floor identity gives the gallery a complete floor + fractional decomposition lemma for uniformly sampled sums, reusable in number-theoretic counting arguments (lattice-point counts, prime-power valuations, quadratic-reciprocity sums) where both the integer and fractional parts of n·x must be tracked."
+  },
+  "crossReferences": [
+    {
+      "targetId": "hermite-floor-identity",
+      "relationship": "extends",
+      "description": "Parent entry: supplies the floor half ∑_{k<n} ⌊x + k/n⌋ = ⌊n·x⌋, reused verbatim here. This entry adds the fractional half ∑_{k<n} {x + k/n} = {n·x} + (n-1)/2 and the explicit floor + sawtooth decomposition."
+    }
+  ],
+  "references": [
+    {
+      "author": "Hermite, C.",
+      "title": "Sur quelques conséquences arithmétiques des formules de la théorie des fonctions elliptiques",
+      "year": 1884,
+      "note": "The floor-summation identity whose fractional-part companion is proved here"
+    },
+    {
+      "author": "Graham, R. L.; Knuth, D. E.; Patashnik, O.",
+      "title": "Concrete Mathematics",
+      "year": 1994,
+      "note": "Chapter 3 (Integer Functions): Hermite's identity, the sawtooth function {x} − 1/2, and floor/fractional-sum manipulations"
+    },
+    {
+      "author": "Raabe, J. L.",
+      "title": "Zurückführung einiger Summen und bestimmten Integrale auf die Jacob-Bernoullische Function",
+      "year": 1851,
+      "note": "Bernoulli-polynomial multiplication theorem; the m = 1 case is this sawtooth identity"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib",
+      "Proofs.HermiteFloorIdentity"
+    ],
+    "namespace": "HermiteSawtoothIdentity",
+    "lineCount": 84,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/HermiteSawtoothIdentity.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
