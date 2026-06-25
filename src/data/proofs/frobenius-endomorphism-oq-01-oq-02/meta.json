@@ -91,6 +91,40 @@
       "Decidability of universally-quantified statements over finite types (decide)"
     ]
   },
+  "sections": [
+    {
+      "id": "sec-header",
+      "title": "Module Header",
+      "startLine": 1,
+      "endLine": 31,
+      "summary": "Docstring framing the open question (which elements does the Frobenius fix?) and the answer: the fixed points are exactly the prime subfield 𝔽ₚ = ⊥, equivalently the roots of Xᵖ − X (exhausted by the p Fermat-fixed elements). Notes the synthesis with perfect fields (Frobenius bijective). Fully verified (0 sorries, 0 axioms, no native_decide).",
+      "mathContext": "$\\mathrm{frob}\\,x = x \\iff x\\in\\bot = \\mathbb{F}_p$; fixed set $= $ roots of $X^p - X$."
+    },
+    {
+      "id": "sec-fixed-bot",
+      "title": "The Fixed Field is the Prime Subfield ⊥",
+      "startLine": 40,
+      "endLine": 57,
+      "summary": "frobenius_fixed_iff_mem_bot (frob x = x ⟺ x ∈ ⊥, via frobenius_def + Subfield.mem_bot_iff_pow_eq_self), pow_eq_self_iff_mem_bot (the bare xᵖ = x ⟺ x ∈ ⊥), and fixedSet_frobenius_eq_bot (the same as a Set equality via Set.ext).",
+      "mathContext": "$\\{x \\mid x^p = x\\} = (\\bot:\\mathrm{Subfield}\\,F)$."
+    },
+    {
+      "id": "sec-primefield",
+      "title": "Explicit 𝔽ₚ Description and Element Count",
+      "startLine": 59,
+      "endLine": 78,
+      "summary": "frobenius_fixed_iff_mem_primeField (fixed ⟺ in the image of ZMod p → F, via fieldRange_castHom_eq_bot + mem_fieldRange), frobenius_fixes_primeField (each ι(a) is fixed by Fermat), and card_fixedField_eq (Nat.card ⊥ = p, via Subfield.card_bot).",
+      "mathContext": "$\\mathrm{frob}\\,x = x \\iff \\exists a:\\mathbb{Z}/p,\\ \\iota(a)=x$; $|\\bot| = p$."
+    },
+    {
+      "id": "sec-perfect",
+      "title": "Perfect Fields and Finite-Field Synthesis",
+      "startLine": 80,
+      "endLine": 116,
+      "summary": "frobenius_bijective_of_perfectField / frobenius_surjective_of_perfectField (the Frobenius is an automorphism on a perfect field, via bijective_frobenius); finiteField_frobenius_automorphism_with_primeField_fixed (on a finite field: automorphism ∧ fixed field = 𝔽ₚ, the Gal generator); and the decide check frobenius_zmod_five_fixes_all (x ↦ x⁵ fixes all of ZMod 5).",
+      "mathContext": "Perfect $\\Rightarrow$ $\\mathrm{frob}$ bijective; on $\\mathbb{F}_{p^n}$, fixed field $=\\mathbb{F}_p$, generator of $\\mathrm{Gal}(\\mathbb{F}_{p^n}/\\mathbb{F}_p)$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "frobenius-endomorphism-oq-01",
