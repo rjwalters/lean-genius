@@ -1,0 +1,62 @@
+[
+  {
+    "id": "burnside-oq03020102-header",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "context",
+    "title": "From rotation-indexed sum to the divisor-sum closed form",
+    "content": "The header states the parent's explicit request (openQuestions[1]): push the cyclic Burnside count from its raw rotation-indexed shape Σ_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n to the classical divisor-sum closed form Σ_{d|n} φ(n/d)·k^d. The mechanism is grouping the n rotations by their order: a rotation r has order n/gcd(n,r), so the rotations with gcd(n,r) = d are exactly the φ(n/d) generators of the cyclic subgroup of index d. Four results follow: (A) the fibre-collapse Σ_r k^{gcd(n,r)} = Σ_{d|n} φ(n/d)·k^d; (B) the same count in divisor form = (#necklaces)·n; (C) the divisor-involution swap to Σ_{d|n} φ(d)·k^{n/d}; and (B′) the textbook count Σ_{d|n} φ(d)·k^{n/d} = (#necklaces)·n. Verified: 0 sorries, 0 axioms (only propext / Classical.choice / Quot.sound, no native_decide).",
+    "mathContext": "$\\sum_{r\\in\\mathbb{Z}/n} k^{\\gcd(n,r)} = \\sum_{d\\mid n}\\varphi(n/d)\\,k^d = \\sum_{d\\mid n}\\varphi(d)\\,k^{n/d} = \\#\\text{necklaces}\\cdot n$",
+    "significance": "context",
+    "relatedConcepts": ["Burnside's lemma", "necklace counting", "Euler totient", "divisor sum", "gcd"],
+    "prerequisites": ["the parent's Σ_r k^{gcd(n,r)} = (#necklaces)·n", "Euler's totient φ", "divisors of n"]
+  },
+  {
+    "id": "burnside-oq03020102-reindex",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 70 },
+    "type": "technique",
+    "title": "sum_zmod_eq_sum_range: ZMod.val bijects ZMod n with range n",
+    "content": "The parent's sum is indexed by ZMod n, but the fibre/divisor machinery (Finset.sum_fiberwise_of_maps_to, Nat.totient_div_of_dvd) lives on Finset.range n. The lemma sum_zmod_eq_sum_range bridges them: ZMod.val is a bijection ZMod n ≃ range n for n ≠ 0. Finset.sum_bij with the map r ↦ r.val discharges the four obligations off the shelf — codomain via ZMod.val_lt (r.val < n), injectivity via ZMod.val_injective, surjectivity onto range n via ZMod.val_cast_of_lt ((↑i).val = i for i < n), and value agreement by rfl since the summand depends only on r.val. The result Σ_{r:ZMod n} k^{gcd(n,r.val)} = Σ_{i∈range n} k^{gcd(n,i)} exposes exactly the range-n form needed for fibring.",
+    "mathContext": "$\\mathbb{Z}/n \\xrightarrow{\\ \\mathrm{val}\\ }\\sim \\mathrm{range}\\,n,\\qquad \\sum_{r} k^{\\gcd(n,r.\\mathrm{val})} = \\sum_{i\\in\\mathrm{range}\\,n} k^{\\gcd(n,i)}$",
+    "significance": "standard",
+    "relatedConcepts": ["ZMod.val", "Finset.sum_bij", "bijection of index sets"],
+    "prerequisites": ["ZMod n as residues 0..n-1", "Finset.range", "reindexing a finite sum"]
+  },
+  {
+    "id": "burnside-oq03020102-fibre-collapse",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 72, "endLine": 96 },
+    "type": "theorem",
+    "title": "(A) sum_pow_gcd_eq_divisor_sum: grouping by gcd value",
+    "content": "The headline identity Σ_{i∈range n} k^{gcd(n,i)} = Σ_{d∈n.divisors} φ(n/d)·k^d. Since gcd(n,i) ∣ n and n ≠ 0, the map i ↦ gcd(n,i) sends range n into n.divisors, so Finset.sum_fiberwise_of_maps_to partitions the sum over the fibres {i ∈ range n | gcd(n,i) = d} indexed by d ∈ n.divisors. On each fibre the summand k^{gcd(n,i)} is the constant k^d (Finset.sum_congr rewriting by the filter membership), so Finset.sum_const collapses the inner sum to (#fibre) • k^d = (#fibre)·k^d. The fibre size is supplied verbatim by Mathlib's Nat.totient_div_of_dvd: for d ∣ n, φ(n/d) = #{k ∈ range n | gcd(n,k) = d} — the same totient-counting fact Mathlib uses to prove Σ_{d|n} φ(d) = n. This single lemma carries the entire arithmetic of the regrouping.",
+    "mathContext": "$\\sum_{i\\in\\mathrm{range}\\,n} k^{\\gcd(n,i)} = \\sum_{d\\mid n} \\#\\{i : \\gcd(n,i)=d\\}\\cdot k^d = \\sum_{d\\mid n}\\varphi(n/d)\\,k^d$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_fiberwise_of_maps_to", "Nat.totient_div_of_dvd", "Finset.sum_const", "fibre partition by gcd"],
+    "prerequisites": ["gcd n i ∣ n", "fibrewise summation", "Euler totient counts residues of fixed gcd"]
+  },
+  {
+    "id": "burnside-oq03020102-divisor-count",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 98, "endLine": 106 },
+    "type": "theorem",
+    "title": "(B) divisor_sum_eq_card_necklaces_mul: the count in divisor form",
+    "content": "Chaining the fibre-collapse (A) with the parent's sum_pow_gcd_eq_card_necklaces_mul (Σ_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n) restates the classical cyclic necklace count directly in divisor form: Σ_{d|n} φ(n/d)·k^d = Nat.card (orbitRel.Quotient (Rot n) (Rot n → Fin k))·n. Dividing by n gives the number of k-colored n-bead necklaces up to rotation as (1/n)·Σ_{d|n} φ(n/d)·k^d — a one-line consequence once (A) is in hand.",
+    "mathContext": "$\\sum_{d\\mid n}\\varphi(n/d)\\,k^d = \\#\\big(\\text{necklaces up to rotation}\\big)\\cdot n$",
+    "significance": "key",
+    "relatedConcepts": ["necklace count", "orbit quotient cardinality", "Burnside average"],
+    "prerequisites": ["fibre-collapse (A)", "the parent's rotation-indexed necklace count"]
+  },
+  {
+    "id": "burnside-oq03020102-textbook-swap",
+    "proofId": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+    "range": { "startLine": 108, "endLine": 123 },
+    "type": "theorem",
+    "title": "(C) divisor_sum_swap and the textbook Σ φ(d)·k^{n/d} form",
+    "content": "The two standard closed forms Σ_{d|n} φ(n/d)·k^d and Σ_{d|n} φ(d)·k^{n/d} are equal by the divisor involution d ↦ n/d. divisor_sum_swap applies Nat.sum_div_divisors to f(d) = φ(d)·k^{n/d}: Σ_{d|n} f(n/d) = Σ_{d|n} f(d), and since n/(n/d) = d for d ∣ n (Nat.div_div_self), the left side is exactly Σ_{d|n} φ(n/d)·k^d. Composing with (B) gives textbook_necklace_count: Σ_{d|n} φ(d)·k^{n/d} = (#necklaces)·n — the familiar (1/n)·Σ_{d|n} φ(d)·k^{n/d} formula quoted in every combinatorics text, now in fully verified integer form.",
+    "mathContext": "$\\sum_{d\\mid n}\\varphi(n/d)\\,k^d = \\sum_{d\\mid n}\\varphi(d)\\,k^{n/d} = \\#\\text{necklaces}\\cdot n$",
+    "significance": "key",
+    "relatedConcepts": ["Nat.sum_div_divisors", "divisor involution d ↦ n/d", "textbook necklace formula"],
+    "prerequisites": ["divisor sums over n.divisors", "n/(n/d) = d for d ∣ n", "divisor-form count (B)"]
+  }
+]
