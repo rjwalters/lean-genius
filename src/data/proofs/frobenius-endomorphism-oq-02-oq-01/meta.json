@@ -103,6 +103,48 @@
       "Group actions on fields: AlgEquiv.mul_apply (composition of automorphisms) and the order/power structure of a finite cyclic group"
     ]
   },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Overview and Setup",
+      "startLine": 1,
+      "endLine": 46,
+      "summary": "Module docstring framing the result as the 'downstairs' half of the Galois correspondence for finite fields, complementing the parent's 'frob generates Gal'. Imports Mathlib and the parent file; opens FrobeniusEndomorphismOQ02; fixes a finite field K of characteristic p over its prime subfield 𝔽_p = ZMod p.",
+      "mathContext": "$K$ a finite field of characteristic $p$, viewed as an extension of $\\mathbb{F}_p = \\mathrm{ZMod}\\,p$; $\\mathrm{frob}\\in\\mathrm{Gal}(K/\\mathbb{F}_p)$ is $x\\mapsto x^p$."
+    },
+    {
+      "id": "generator-to-group",
+      "title": "From the Generator to the Whole Group",
+      "startLine": 47,
+      "endLine": 69,
+      "summary": "frob_pow_fixed: if frob x = x then (frob^k) x = x, by induction on k (pow_succ + AlgEquiv.mul_apply). frob_fixed_iff_forall: frob x = x ↔ ∀ g ∈ Gal(K/𝔽_p), g x = x — the forward direction uses the parent's exists_pow_frob (every g is a power of frob) plus frob_pow_fixed; the backward direction evaluates at frob.",
+      "mathContext": "$\\mathrm{frob}\\,x = x \\iff \\forall g\\in\\mathrm{Gal}(K/\\mathbb{F}_p),\\ g\\,x=x$, collapsing the universal quantifier to the single generator."
+    },
+    {
+      "id": "fixed-points-prime-field",
+      "title": "The Fixed Points Are Exactly 𝔽_p",
+      "startLine": 71,
+      "endLine": 86,
+      "summary": "frob_fixed_iff_mem_bot: frob x = x ↔ x ∈ ⊥, composing frob_fixed_iff_forall with Mathlib's IsGalois.mem_bot_iff_fixed — the fixed field of the Frobenius is the prime subfield. frob_fixed_iff_mem_range: the elementary form x^p = x ↔ x ∈ range(algebraMap (ZMod p) K), via frob_apply and mem_range_algebraMap_iff_fixed.",
+      "mathContext": "$\\mathrm{frob}\\,x = x \\iff x\\in(\\bot:\\mathrm{IntermediateField}\\ \\mathbb{F}_p\\ K)$; elementary form $x^p = x \\iff x\\in\\mathrm{range}(\\mathbb{F}_p\\to K)$."
+    },
+    {
+      "id": "exact-count",
+      "title": "The Exact Count of Fixed Points",
+      "startLine": 88,
+      "endLine": 101,
+      "summary": "A noncomputable Fintype instance on the fixed-point subtype (Fintype.ofFinite), then card_frob_fixedPoints: #{x // frob x = x} = p, via the bijection {x // frob x = x} ≃ ⊥ ≃ₐ ZMod p (Equiv.subtypeEquivRight + IntermediateField.botEquiv) and ZMod.card.",
+      "mathContext": "$\\#\\{x:K \\mid \\mathrm{frob}\\,x = x\\} = p$, pinned by the field isomorphism $\\bot \\simeq \\mathbb{F}_p$."
+    },
+    {
+      "id": "galois-packaging",
+      "title": "Galois Packaging: fixedField ⟨frob⟩ = 𝔽_p",
+      "startLine": 103,
+      "endLine": 117,
+      "summary": "fixedField_zpowers_frob: the field fixed by the cyclic group ⟨frob⟩ is the base field ⊥ = 𝔽_p, by rewriting with the parent's zpowers_frob_eq_top (⟨frob⟩ = ⊤) and IsGalois.fixedField_top (fixedField ⊤ = ⊥) — the d = n base case of the divisor-lattice correspondence.",
+      "mathContext": "$\\mathrm{fixedField}\\,\\langle\\mathrm{frob}\\rangle = (\\bot:\\mathrm{IntermediateField}\\ \\mathbb{F}_p\\ K)$, true because $\\mathrm{frob}$ generates $\\top$."
+    }
+  ],
   "crossReferences": [
     {
       "proofId": "frobenius-endomorphism-oq-02",
