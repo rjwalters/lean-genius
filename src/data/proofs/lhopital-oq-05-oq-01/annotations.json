@@ -2,34 +2,37 @@
   {
     "id": "ann-deviation-bound",
     "proofId": "lhopital-oq-05-oq-01",
-    "range": {
-      "startLine": 38,
-      "endLine": 52
-    },
+    "range": { "startLine": 38, "endLine": 52 },
     "type": "insight",
     "title": "Divide the Taylor Remainder by x²",
-    "content": "abs_sub_le is the quantitative heart of the limit. Mathlib's Real.cos_bound says |cos x − (1 − x²/2)| ≤ |x|⁴·(5/96) for |x| ≤ 1 — the quadratic Maclaurin remainder. Rewriting the deviation as −(cos x − (1 − x²/2))/x² (field_simp; ring), then using |a/b| = |a|/|b| and |x²| = |x|², the deviation equals |cos x − (1 − x²/2)|/|x|². Dividing the degree-4 numerator bound by the degree-2 denominator leaves (5/96)·|x|²: a bound that is quadratic in x and hence visibly vanishes. No differentiation, no L'Hôpital."
+    "content": "abs_sub_le is the quantitative heart of the limit. Mathlib's Real.cos_bound says |cos x − (1 − x²/2)| ≤ |x|⁴·(5/96) for |x| ≤ 1 — the quadratic Maclaurin remainder. Rewriting the deviation as −(cos x − (1 − x²/2))/x² (field_simp; ring), then using |a/b| = |a|/|b| and |x²| = |x|², the deviation equals |cos x − (1 − x²/2)|/|x|². Dividing the degree-4 numerator bound by the degree-2 denominator leaves (5/96)·|x|²: a bound quadratic in x that visibly vanishes. No differentiation, no L'Hôpital — note the bound here is one order higher (|x|²) than the sibling sine limit's (|x|), since the cos remainder degree-4 exceeds the x² denominator by two.",
+    "mathContext": "$\\left|\\dfrac{1-\\cos x}{x^2} - \\dfrac12\\right| = \\dfrac{|\\cos x - (1 - x^2/2)|}{|x|^2} \\le \\dfrac{(5/96)|x|^4}{|x|^2} = \\tfrac{5}{96}|x|^2.$",
+    "significance": "key",
+    "relatedConcepts": ["Taylor remainder", "Maclaurin series of cosine", "error bounds", "Real.cos_bound"],
+    "prerequisites": ["Taylor's theorem with remainder", "absolute value algebra"]
   },
   {
     "id": "ann-the-limit",
     "proofId": "lhopital-oq-05-oq-01",
-    "range": {
-      "startLine": 54,
-      "endLine": 73
-    },
+    "range": { "startLine": 54, "endLine": 73 },
     "type": "insight",
     "title": "One Squeeze Finishes It",
-    "content": "tendsto_cosine_quadratic reduces the limit-to-1/2 to a limit-to-0 (tendsto_sub_nhds_zero_iff) and applies the eventual normed squeeze squeeze_zero_norm' with envelope a x = (5/96)·|x|². The bound |deviation| ≤ a x of abs_sub_le needs |x| ≤ 1, which holds eventually on 𝓝[≠] 0 because the closed unit ball is a neighbourhood of 0 (Metric.closedBall_mem_nhds). The envelope tends to 0 since |x|² → 0 by continuity of absolute value squared. This is the exact even-order mirror of the sibling cubic sine squeeze."
+    "content": "tendsto_cosine_quadratic reduces the limit-to-1/2 to a limit-to-0 (tendsto_sub_nhds_zero_iff) and applies the eventual normed squeeze squeeze_zero_norm' with envelope a x = (5/96)·|x|². The bound |deviation| ≤ a x of abs_sub_le needs |x| ≤ 1, which holds eventually on 𝓝[≠] 0 because the closed unit ball is a neighbourhood of 0 (Metric.closedBall_mem_nhds). The envelope tends to 0 since |x|² → 0 by continuity of absolute value squared (continuous_abs.tendsto then .pow 2). This is the exact even-order mirror of the sibling cubic sine squeeze (lhopital-oq-05).",
+    "mathContext": "$0 \\le \\left|\\tfrac{1-\\cos x}{x^2} - \\tfrac12\\right| \\le \\tfrac{5}{96}|x|^2 \\to 0$ on $\\mathcal{N}_{\\neq}(0)$ (squeeze).",
+    "significance": "key",
+    "relatedConcepts": ["squeeze theorem", "punctured neighbourhood filter", "eventual bounds", "continuity"],
+    "prerequisites": ["squeeze/sandwich theorem", "filters and neighbourhoods"]
   },
   {
     "id": "ann-taylor-coefficient",
     "proofId": "lhopital-oq-05-oq-01",
-    "range": {
-      "startLine": 75,
-      "endLine": 85
-    },
-    "type": "insight",
-    "title": "1/2 Is the Second Taylor Coefficient",
-    "content": "tendsto_cosine_quadratic_factorial restates the limit value 1/2 as 1/2!, exposing it as the second Maclaurin coefficient of 1 − cos x. Paired with the sibling's 1/3! for x − sin x, this makes the Taylor reading explicit: each indeterminate ratio (f(x) − Tₙ₋₁(x))/xⁿ converges to the leading nonvanishing coefficient f⁽ⁿ⁾(0)/n!."
+    "range": { "startLine": 75, "endLine": 85 },
+    "type": "concept",
+    "title": "1/2 Is the Second Taylor Coefficient (1/2!)",
+    "content": "tendsto_cosine_quadratic_factorial restates the limit value 1/2 as 1/2!, exposing it as the second Maclaurin coefficient of 1 − cos x = x²/2 − x⁴/24 + ⋯. Paired with the sibling's 1/3! for x − sin x (lhopital-oq-05), this makes the Taylor reading explicit and uniform: each indeterminate ratio (f(x) − Tₙ₋₁(x))/xⁿ converges to the leading nonvanishing coefficient f⁽ⁿ⁾(0)/n!. The sine (odd) and cosine (even) cases together exhibit both parities of the same higher-order L'Hôpital phenomenon.",
+    "mathContext": "$\\dfrac{1-\\cos x}{x^2} \\to \\dfrac{1}{2!} = \\dfrac12$, the order-2 Maclaurin coefficient of $1-\\cos x$; general pattern $\\dfrac{f(x)-T_{n-1}(x)}{x^n}\\to \\dfrac{f^{(n)}(0)}{n!}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Taylor coefficients", "factorial denominators", "higher-order L'Hôpital", "parity of Maclaurin series"],
+    "prerequisites": ["Maclaurin expansion", "factorials"]
   }
 ]
