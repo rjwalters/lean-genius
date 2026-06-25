@@ -3463,6 +3463,7 @@ import Proofs.LebesgueMeasureOQ01OQ03
 import Proofs.LebesgueMeasureOQ02
 import Proofs.LebesgueMeasureOQ03
 import Proofs.LebesgueMeasureOQ03OQ01
+import Proofs.LebesgueMeasureOQ04
 import Proofs.LebesgueMeasureOQ05
 import Proofs.LebesgueMeasureOQ06
 import Proofs.LebesgueMeasureOQ06Aristotle
