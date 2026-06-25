@@ -1,0 +1,81 @@
+{
+  "id": "chebyshev-bounds-oq-02-oq-01-oq-01",
+  "title": "Explicit Two-Sided Bounds on the Chebyshev θ Function: (log2/3)·m − 2√m·log m ≤ θ(m) ≤ log4·m",
+  "slug": "chebyshev-bounds-oq-02-oq-01-oq-01",
+  "description": "A fully machine-checked, explicit two-sided bound on the first Chebyshev function θ(n) = ∑_{p ≤ n} log p, establishing θ(m) = Θ(m) with both constants explicit: (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2. Mathlib provides only the upper inequality (Chebyshev.theta_le_log4_mul_x), and has no lower bound for either θ or ψ. The new content is the lower bound: it descends this project's elementary ψ lower bound (log 2 / 3)·m ≤ ψ(m) (ChebyshevBoundsOQ02OQ01.chebyshevPsi_lower_linear, from the central binomial coefficient) across the O(√m·log m) gap between ψ and θ, using the closeness estimate |ψ(m) − θ(m)| ≤ 2·√m·log m (ChebyshevBoundsOQ02OQ02.abs_psi_sub_theta_le). Since ψ and θ differ by only a lower-order term, the linear lower bound on ψ transfers to θ up to the √m·log m correction. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Chebyshev (1852), elementary prime-counting bounds; formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Chebyshev_function",
+    "date": "1852",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "analytic-number-theory",
+      "chebyshev-function",
+      "prime-counting",
+      "prime-number-theorem",
+      "explicit-bounds",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/ChebyshevBoundsOQ02OQ01OQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Chebyshev.theta_le_log4_mul_x",
+        "description": "θ(x) ≤ log 4 · x for x ≥ 0. Supplies the explicit upper half of the two-sided bound (the only side Mathlib provides).",
+        "module": "Mathlib.NumberTheory.Chebyshev"
+      },
+      {
+        "theorem": "ChebyshevBoundsOQ02OQ01.chebyshevPsi_lower_linear",
+        "description": "(log 2 / 3)·m ≤ ψ(m) for m ≥ 2 — the project's elementary ψ lower bound from the central binomial coefficient. The substantive estimate Mathlib lacks; the source of the new θ lower bound.",
+        "module": "Proofs.ChebyshevBoundsOQ02OQ01"
+      },
+      {
+        "theorem": "ChebyshevBoundsOQ02OQ02.abs_psi_sub_theta_le",
+        "description": "|ψ(n) − θ(n)| ≤ 2·√n·log n for n ≥ 1 — ψ and θ agree up to O(√n·log n). The bridge that carries the ψ lower bound over to θ.",
+        "module": "Proofs.ChebyshevBoundsOQ02OQ02"
+      },
+      {
+        "theorem": "ChebyshevBoundsOQ02OQ02.chebyshevTheta_eq_mathlib",
+        "description": "Identifies the project's chebyshevTheta with Mathlib's Chebyshev.theta, enabling use of theta_le_log4_mul_x.",
+        "module": "Proofs.ChebyshevBoundsOQ02OQ02"
+      }
+    ],
+    "originalContributions": [
+      "chebyshevTheta_lower: the explicit linear lower bound (log 2 / 3)·m − 2·√m·log m ≤ θ(m) for m ≥ 2 — obtained by writing θ(m) = ψ(m) − (ψ(m) − θ(m)), bounding ψ(m) below by (log 2 / 3)·m and the excess ψ(m) − θ(m) above by 2·√m·log m, then combining linearly. Neither Mathlib nor this project previously had any lower bound on θ",
+      "chebyshevTheta_bounds: the two-sided statement (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2, pinning θ(m) = Θ(m) with explicit constants by pairing the new lower bound with Mathlib's upper bound — the elementary linear order of the first Chebyshev function, the cornerstone of the elementary prime number theorem",
+      "chebyshevTheta_upper: the project-side packaging of Mathlib's θ(n) ≤ log 4 · n through the chebyshevTheta_eq_mathlib bridge"
+    ],
+    "dateAdded": "2026-06-25",
+    "axiomCount": 0,
+    "lineCount": 82,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. #print axioms on chebyshevTheta_bounds reports only the foundational propext, Classical.choice, Quot.sound (none of which count as assumptions). No native_decide, no structure-encoded hypotheses. Builds on the project files ChebyshevBoundsOQ02OQ01 and ChebyshevBoundsOQ02OQ02, both themselves 0-axiom.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "sections": [
+    {
+      "id": "lower-bound",
+      "title": "The θ Lower Bound",
+      "startLine": 46,
+      "endLine": 60,
+      "summary": "chebyshevTheta_lower: (log 2 / 3)·m − 2·√m·log m ≤ θ(m) for m ≥ 2. Writes θ(m) = ψ(m) − (ψ(m) − θ(m)); the ψ lower bound chebyshevPsi_lower_linear and the closeness bound abs_psi_sub_theta_le (via ψ−θ ≤ |ψ−θ|) combine by linarith. The √m·log m correction is lower order, so the bound is ≈ (log 2 / 3)·m for large m."
+    },
+    {
+      "id": "upper-bound",
+      "title": "The θ Upper Bound",
+      "startLine": 62,
+      "endLine": 75,
+      "summary": "chebyshevTheta_upper: θ(n) ≤ log 4 · n, Mathlib's Chebyshev.theta_le_log4_mul_x transported through the chebyshevTheta_eq_mathlib bridge."
+    },
+    {
+      "id": "two-sided",
+      "title": "Two-Sided θ Bounds",
+      "startLine": 77,
+      "endLine": 81,
+      "summary": "chebyshevTheta_bounds: pairs the new lower bound with Mathlib's upper bound to give (log 2 / 3)·m − 2·√m·log m ≤ θ(m) ≤ log 4 · m for m ≥ 2 — the explicit θ(m) = Θ(m)."
+    }
+  ]
+}
