@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "From One Resonance Point to a Comeagre Set",
+    "content": "The parent entry's `resonance` (condensation of singularities) only asserts the resonance set is nonempty: a single point where a family of operators with unbounded norms blows up. The Baire-category proof actually gives more — the resonance set R = {x | ⨆ᵢ ‖gᵢx‖ = ∞} is comeagre (residual), hence dense. Resonance points are topologically generic. This entry answers the open question posed by the parent entry.",
+    "mathContext": "If $\\sup_i\\|g_i\\| = \\infty$ for continuous linear maps out of a Banach space, then $R = \\{x : \\sup_i\\|g_i x\\| = \\infty\\}$ is comeagre.",
+    "significance": "context",
+    "relatedConcepts": ["condensation of singularities", "comeagre set", "residual set", "Baire category theorem", "Banach–Steinhaus theorem"],
+    "prerequisites": ["Banach spaces", "continuous linear maps", "meagre and residual sets"]
+  },
+  {
+    "id": "ann-resonance-set",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 52 },
+    "type": "definition",
+    "title": "The Resonance Set",
+    "content": "`resonanceSet g` is the set of points x at which the values ‖gᵢx‖ are unbounded over i: ∀ C, ∃ i, C < ‖gᵢx‖. Equivalently ⨆ᵢ ‖gᵢx‖ = ∞. The goal is to show this set is comeagre whenever the operator norms are unbounded.",
+    "mathContext": "$R = \\{x : \\forall C,\\ \\exists i,\\ C < \\|g_i x\\|\\} = \\{x : \\sup_i \\|g_i x\\| = \\infty\\}.$",
+    "significance": "key",
+    "relatedConcepts": ["resonance set", "unbounded family", "supremum of norms"],
+    "prerequisites": ["operator norm", "supremum"]
+  },
+  {
+    "id": "ann-sublevel-closed",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
+    "range": { "startLine": 58, "endLine": 62 },
+    "type": "theorem",
+    "title": "Sublevel Sets Are Closed",
+    "content": "The sublevel set {x | ∀i ‖gᵢx‖ ≤ n} is an intersection ⋂ᵢ {x | ‖gᵢx‖ ≤ n} of closed sets, each a sublevel set of the continuous map x ↦ ‖gᵢx‖. Closedness is what lets us identify these sets as nowhere dense (closed + empty interior) later.",
+    "mathContext": "$\\{x : \\forall i,\\ \\|g_i x\\| \\le n\\} = \\bigcap_i \\{x : \\|g_i x\\| \\le n\\}$ is closed.",
+    "significance": "standard",
+    "relatedConcepts": ["closed set", "sublevel set", "continuity of operator evaluation"],
+    "prerequisites": ["continuous functions", "intersections of closed sets"]
+  },
+  {
+    "id": "ann-empty-interior",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
+    "range": { "startLine": 64, "endLine": 112 },
+    "type": "theorem",
+    "title": "Sublevel Sets Have Empty Interior (the Crux)",
+    "content": "Under unbounded operator norms, each sublevel set has empty interior. Suppose not: the interior contains a ball ball x₀ r. For any x, choose a small nonzero scalar c with ‖c‖(‖x‖+1) < r so that x₀ + c•x stays in the ball; then ‖gᵢ(c•x)‖ ≤ ‖gᵢ(x₀+c•x)‖ + ‖gᵢx₀‖ ≤ 2n, and by isometric semilinearity ‖c‖·‖gᵢx‖ ≤ 2n, i.e. ‖gᵢx‖ ≤ 2n/‖c‖ for every i. That is pointwise boundedness; `banach_steinhaus` upgrades it to a uniform norm bound, contradicting the unboundedness hypothesis. This is the only place the Banach–Steinhaus theorem is used.",
+    "mathContext": "A ball $B(x_0,r)$ inside a sublevel set forces $\\|g_i x\\| \\le 2n/\\|c\\|$ for all $i$ at every $x$, hence uniform boundedness — a contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["empty interior", "rescaling argument", "pointwise boundedness", "uniform boundedness principle"],
+    "prerequisites": ["interior and balls", "operator norm scaling", "Banach–Steinhaus theorem"]
+  },
+  {
+    "id": "ann-comeagre",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
+    "range": { "startLine": 114, "endLine": 140 },
+    "type": "theorem",
+    "title": "The Resonance Set Is Comeagre",
+    "content": "The complement of R is contained in the countable union ⋃ₙ {x | ∀i ‖gᵢx‖ ≤ n}. Each sublevel set is closed with empty interior, hence nowhere dense, hence meagre; a countable union of meagre sets is meagre, so Rᶜ is meagre and R is residual (comeagre). This is the main result.",
+    "mathContext": "$R^c \\subseteq \\bigcup_{n} \\{x : \\forall i,\\ \\|g_i x\\| \\le n\\}$, a countable union of nowhere-dense sets, so $R^c$ is meagre and $R$ is comeagre.",
+    "significance": "key",
+    "relatedConcepts": ["comeagre set", "residual filter", "meagre set", "nowhere dense set", "countable union"],
+    "prerequisites": ["meagre and residual sets", "Baire category"]
+  },
+  {
+    "id": "ann-dense-recover",
+    "proofId": "banach-steinhaus-theorem-oq-01-oq-02",
+    "range": { "startLine": 142, "endLine": 162 },
+    "type": "theorem",
+    "title": "Dense, and Recovering the Single Resonance Point",
+    "content": "resonanceSet_compl_isMeagre restates the result as 'the pointwise-bounded set is meagre'. resonanceSet_dense upgrades comeagre to dense: a Banach space is a Baire space, where residual sets are dense. resonance_of_comeagre recovers the parent entry's `resonance` — a dense set is nonempty, so there is a single resonance point — confirming this is a genuine strengthening.",
+    "mathContext": "In a Baire space a residual set is dense, hence nonempty; this recovers the parent's existence of a resonance point.",
+    "significance": "supporting",
+    "relatedConcepts": ["dense set", "Baire space", "density of residual sets", "strengthening"],
+    "prerequisites": ["Baire spaces", "density"]
+  }
+]
