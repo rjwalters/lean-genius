@@ -1,0 +1,85 @@
+{
+  "slug": "pell-equation-oq-01-oq-04-oq-02",
+  "title": "Pell Regulator Faithfully Orders the Powers (norm > 1 ⟹ infinite order)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "A",
+  "path": "fast",
+  "problemStatement": {
+    "formal": "1 < \\lVert a\\rVert \\;\\Rightarrow\\; n \\mapsto a^n \\text{ injective} \\;\\wedge\\; \\operatorname{orderOf} a = 0, \\qquad \\lVert a\\rVert = x + y\\sqrt d.",
+    "plain": "The real embedding of a Pell solution $(x,y)$ is $\\lVert a\\rVert = x + y\\sqrt d$ and its regulator is $R(a) = \\log\\lVert a\\rVert$. The parent showed $R(a^n) = n\\,R(a)$ for every integer $n$. This problem turns that linear scaling law into an order statement: as soon as $\\lVert a\\rVert > 1$, the regulator $R(a)$ is strictly positive, so $n \\mapsto R(a^n)$ is a strictly increasing ruler. Hence the powers $a^n$ are pairwise distinct and $a$ has infinite order — recovering the classical infinitude of the Pell solution group from the sign of a single real number, with no descent argument.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "",
+    "blockers": [],
+    "nextAction": "",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: norm>1 ⟹ infinite order; strict monotonicity of n↦R(aⁿ), injectivity of n↦aⁿ, orderOf a=0; verified/0-axiom/original",
+    "builtItems": [
+      "pellRegulator_one: R(1)=0 via pellNorm_one + Real.log_one (Proofs/PellEquationOQ01OQ04OQ02.lean:122)",
+      "pellRegulator_pos: 1<‖a‖ ⟹ 0<R(a) via Real.log_pos (PellEquationOQ01OQ04OQ02.lean:129)",
+      "pellRegulator_zpow_strictMono: StrictMono (n↦R(aⁿ)) via mul_lt_mul_of_pos_right (PellEquationOQ01OQ04OQ02.lean:138)",
+      "zpow_injective: Injective (n↦aⁿ) via StrictMono.injective ∘ regulator (PellEquationOQ01OQ04OQ02.lean:149)",
+      "orderOf_eq_zero: 1<‖a‖ ⟹ orderOf a=0 via orderOf_eq_zero_iff' (PellEquationOQ01OQ04OQ02.lean:160)",
+      "not_isOfFinOrder: ¬IsOfFinOrder a via orderOf_eq_zero_iff (PellEquationOQ01OQ04OQ02.lean:175)"
+    ],
+    "insights": [
+      "The finite/infinite-order dichotomy collapses to the sign of R(a)=log‖a‖: ‖a‖=1 ⟹ R=0 (torsion/identity), ‖a‖>1 ⟹ R>0 ⟹ infinite order. No descent or minimality argument needed.",
+      "Faithfulness of the cyclic action IS strict monotonicity: R(aⁿ)=n·R(a) with R(a)>0 is an order embedding (ℤ,<)↪(ℝ,<), which cannot identify two exponents — so n↦aⁿ is injective.",
+      "Injectivity factors through a real invariant: aᵐ=aⁿ ⟹ R(aᵐ)=R(aⁿ) ⟹ m=n, detecting equality of powers by the strictly monotone regulator rather than by group theory.",
+      "orderOf=0 is a contradiction at the origin: a positive power equal to 1 would sit at regulator 0 while the linear ruler places it at n·R(a)>0.",
+      "mul_lt_mul_right needed an unavailable instance (MulLeftStrictMono ℝ); mul_lt_mul_of_pos_right is the robust replacement for the strict-mono step.",
+      "zpow_natCast bridges the natural-number power in orderOf_eq_zero_iff' to the integer zpow scaling law pellRegulator_zpow."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Combine with Pell.IsFundamental to show the fundamental solution realizes the minimal positive regulator, pinning the index of ⟨a⟩ as R(a)/R₀.",
+      "Upgrade injectivity to an order isomorphism (ℤ,<) ≃o ⟨a⟩ with the order pulled back from ‖·‖."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "pell"
+  ],
+  "relatedProofs": [
+    "pell-equation",
+    "pell-equation-oq-01",
+    "pell-equation-oq-01-oq-04",
+    "pell-equation-oq-01-oq-04-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-24T00:00:00.000Z",
+  "lastUpdate": "2026-06-24T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/PellEquationOQ01OQ04OQ02.lean",
+      "filename": "PellEquationOQ01OQ04OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PellEquationOQ01OQ04OQ02.lean"
+    }
+  ]
+}
