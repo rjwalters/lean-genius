@@ -1,0 +1,176 @@
+{
+  "id": "fatou-lemma-oq-01-oq-02-oq-01",
+  "slug": "fatou-lemma-oq-01-oq-02-oq-01",
+  "title": "The Elementary Fatou ⇒ Dominated Convergence Derivation via g ± fₙ",
+  "leanFile": {
+    "imports": [
+      "Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence",
+      "Mathlib.MeasureTheory.Integral.Bochner.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "MeasureTheory",
+      "Filter",
+      "Set",
+      "Topology"
+    ],
+    "namespace": "FatouLemmaOQ01OQ02OQ01",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "path": "Proofs/FatouLemmaOQ01OQ02OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/FatouLemmaOQ01OQ02OQ01.lean",
+    "tags": [
+      "analysis",
+      "measure-theory",
+      "integration",
+      "convergence",
+      "real-analysis",
+      "fatou",
+      "dominated-convergence",
+      "lebesgue-integral",
+      "bochner-integral",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 165,
+    "theoremCount": 2,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "dct_of_dominated: the headline — the dominated convergence theorem for real-valued (signed) integrands, DERIVED from Fatou's bracket applied to the nonnegative shift g + fₙ. For measurable fₙ with |fₙ| ≤ g (a fixed integrable majorant) and fₙ → F pointwise, ∫ fₙ → ∫ F. The proof realizes the upper half of the classical Fatou ⇒ DCT argument: g + fₙ ≥ 0 is dominated by the integrable 2g and converges to g + F, so the nonnegative dominated convergence theorem (whose Mathlib proof is exactly the forward Fatou lintegral_liminf_le plus reverse Fatou limsup_lintegral_le squeeze) gives ∫⁻ (g + fₙ) → ∫⁻ (g + F); transferring to real integrals via ofReal_integral_eq_lintegral_ofReal and cancelling the constant ∫ g yields the claim. It does NOT invoke the Bochner DCT, so it is not circular. Mathlib proves the signed DCT through abstract setToFun/L1 machinery, not through this explicit g ± fₙ Fatou reduction.",
+      "dct_of_dominated_sub: the lower half of the classical argument, applying Fatou's bracket to the second nonnegative sequence g − fₙ ≥ 0 (dominated by 2g, converging to g − F), by instantiating dct_of_dominated at the negated sequence −fₙ. Exposing BOTH brackets makes the textbook 'Fatou applied to g + fₙ and g − fₙ' route fully explicit rather than a single packaged invocation."
+    ],
+    "prerequisites": [
+      "MeasureTheory.tendsto_lintegral_of_dominated_convergence: the nonnegative (ℝ≥0∞) dominated convergence theorem, whose Mathlib proof is tendsto_of_le_liminf_of_limsup_le of forward Fatou (lintegral_liminf_le) and reverse Fatou (limsup_lintegral_le) — i.e. the Fatou sandwich, applied here to g ± fₙ",
+      "MeasureTheory.ofReal_integral_eq_lintegral_ofReal: for nonnegative integrable f, ENNReal.ofReal (∫ f) = ∫⁻ ENNReal.ofReal f — the bridge transferring each nonnegative bracket between the real Bochner integral and the lower Lebesgue integral",
+      "MeasureTheory.integral_add: additivity ∫ (g + fₙ) = ∫ g + ∫ fₙ of the Bochner integral, used to cancel the constant ∫ g and isolate ∫ fₙ",
+      "ENNReal.tendsto_toReal: continuity of toReal at finite points, transferring the ℝ≥0∞ convergence of the brackets to convergence of the real integrals",
+      "MeasureTheory.hasFiniteIntegral_iff_ofReal: certifies the bound ∫⁻ ENNReal.ofReal (2g) ≠ ∞ from integrability of the majorant",
+      "MeasureTheory.Integrable.mono': domination |fₙ| ≤ g with g integrable gives integrability of each fₙ and of the limit F"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "MeasureTheory.tendsto_lintegral_of_dominated_convergence",
+        "description": "Dominated convergence for nonnegative ℝ≥0∞ functions. Its proof is tendsto_of_le_liminf_of_limsup_le applied to forward Fatou (lintegral_liminf_le) and reverse Fatou (limsup_lintegral_le), so it IS the Fatou sandwich. Applied here to the nonnegative sequences g ± fₙ to derive the signed DCT, without invoking the Bochner DCT.",
+        "module": "Mathlib.MeasureTheory.Integral.Lebesgue.DominatedConvergence"
+      },
+      {
+        "theorem": "MeasureTheory.ofReal_integral_eq_lintegral_ofReal",
+        "description": "For nonnegative integrable f, ENNReal.ofReal (∫ f) = ∫⁻ ENNReal.ofReal f. The bridge transferring each nonnegative bracket g ± fₙ between the Bochner integral and the lower Lebesgue integral.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "MeasureTheory.integral_add",
+        "description": "Additivity of the Bochner integral, ∫ (g + fₙ) = ∫ g + ∫ fₙ, used to cancel the constant ∫ g from each bracket and recover ∫ fₙ → ∫ F.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner.Basic"
+      },
+      {
+        "theorem": "ENNReal.tendsto_toReal",
+        "description": "toReal is continuous at finite points; composing it with the ℝ≥0∞ convergence of ∫⁻ ofReal (g + fₙ) recovers convergence of the real integrals ∫ (g + fₙ).",
+        "module": "Mathlib.Topology.Instances.ENNReal.Lemmas"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Fatou's lemma, the monotone convergence theorem, and the dominated convergence theorem (DCT) are the three pillars of Lebesgue integration, logically linked MCT ⇒ Fatou ⇒ DCT. The Fatou ⇒ DCT step is the classical textbook derivation (Folland Thm 2.24; Rudin): given |fₙ| ≤ g with g integrable, the shifts g + fₙ and g − fₙ are nonnegative, so Fatou's lemma applied to each gives ∫ F ≤ liminf ∫ fₙ and limsup ∫ fₙ ≤ ∫ F, and the squeeze forces ∫ fₙ → ∫ F. This is exactly why DCT carries the integrable-majorant hypothesis. The sibling entry fatou-lemma-oq-01-oq-02 settled the obstruction side of this story — the parent's escaping-mass sequence has no integrable majorant, so DCT cannot apply there — and explicitly left the positive derivation as its follow-up question oq-01. This entry answers it: the explicit g ± fₙ Fatou ⇒ DCT derivation for signed integrands.",
+    "problemStatement": "Formalize the elementary real-valued Fatou ⇒ DCT derivation directly via the g + fₙ and g − fₙ trick, rather than invoking Mathlib's packaged Bochner dominated convergence theorem: prove that for real measurable fₙ with |fₙ| ≤ g (g integrable) and fₙ → F pointwise, ∫ fₙ → ∫ F, by applying the nonnegative Fatou bracket to the two nonnegative shifts and converting through ENNReal.ofReal.",
+    "proofStrategy": "Two theorems, one per bracket. For dct_of_dominated (g + fₙ): from |fₙ| ≤ g deduce F measurable (pointwise limit of measurables, measurable_of_tendsto_metrizable) and |F| ≤ g (limit of the bounds, le_of_tendsto), hence fₙ, F integrable by Integrable.mono'. The shift g + fₙ ≥ 0 is dominated by the integrable 2g and converges pointwise to g + F, so the nonnegative dominated convergence theorem tendsto_lintegral_of_dominated_convergence (the forward/reverse Fatou squeeze) yields ∫⁻ ofReal (g + fₙ) → ∫⁻ ofReal (g + F). The bridge ofReal_integral_eq_lintegral_ofReal rewrites each lower integral as ofReal of the Bochner integral; ENNReal.tendsto_toReal (finite everywhere) and ENNReal.toReal_ofReal transfer convergence to ∫ (g + fₙ) → ∫ (g + F); integral_add splits the constant and Tendsto.sub cancels ∫ g. dct_of_dominated_sub instantiates dct_of_dominated at −fₙ (still dominated by g, converging to −F): the upper bracket of −fₙ is the lower bracket g − fₙ, and negating ∫ (−fₙ) → ∫ (−F) gives ∫ fₙ → ∫ F.",
+    "keyInsights": [
+      "DCT is Fatou's lemma applied twice. The single hypothesis separating DCT from plain Fatou — an integrable majorant g — is exactly what makes g ± fₙ both nonnegative AND integrable-dominated, so that Fatou's bracket applies to each and the two one-sided inequalities squeeze the integrals together.",
+      "The derivation is genuinely 'via Fatou' and not circular: it uses Mathlib's nonnegative (lintegral) dominated convergence theorem, whose proof is literally tendsto_of_le_liminf_of_limsup_le of forward Fatou (lintegral_liminf_le) and reverse Fatou (limsup_lintegral_le). It never touches the Bochner DCT, so deriving the signed DCT from it on g ± fₙ is the honest realization of the textbook argument.",
+      "The bridge between the signed Bochner integral and the lower Lebesgue integral is the whole technical content: ofReal_integral_eq_lintegral_ofReal converts each nonnegative bracket, ENNReal.tendsto_toReal transports convergence back to ℝ, and integral_add cancels the constant ∫ g. The integrable majorant is what keeps every integral finite so toReal is continuous at the limit.",
+      "Both brackets are exhibited explicitly. The classical proof phrase 'apply Fatou to g + fₙ and g − fₙ' becomes a literal pair of theorems (dct_of_dominated and dct_of_dominated_sub), with the second obtained cleanly by negation symmetry from the first.",
+      "Paired with the sibling's no-majorant obstruction, this completes the Fatou ↔ DCT story: an integrable majorant plus pointwise convergence collapses the liminf/limsup Fatou bracket to equality (this entry), while the escaping mass is excluded from DCT precisely by lacking such a majorant (the sibling)."
+    ]
+  },
+  "conclusion": {
+    "summary": "This entry formalizes the classical Fatou ⇒ dominated convergence derivation for signed integrands via the g ± fₙ trick. dct_of_dominated proves that for real measurable fₙ with |fₙ| ≤ g integrable and fₙ → F pointwise, ∫ fₙ → ∫ F, by applying the nonnegative Fatou bracket (Mathlib's tendsto_lintegral_of_dominated_convergence, itself the forward/reverse Fatou squeeze) to the nonnegative shift g + fₙ, bridging back to the Bochner integral via ofReal_integral_eq_lintegral_ofReal and cancelling the constant ∫ g. dct_of_dominated_sub gives the symmetric g − fₙ bracket by negation, exposing both halves of the textbook argument. The derivation does not invoke the Bochner DCT, so it is not circular. 165 lines, 2 theorems, 0 axioms, 0 sorries.",
+    "implications": "The explicit signed g ± fₙ Fatou ⇒ DCT derivation is new formal content: Mathlib proves the Bochner DCT through abstract L1/setToFun machinery, not through this reduction. The entry answers the follow-up question left open by fatou-lemma-oq-01-oq-02 (which proved the dual no-majorant obstruction) and, together with that sibling, closes the liminf/limsup bracketing narrative opened by the parent fatou-lemma-oq-01 and its reverse-Fatou companion fatou-lemma-oq-01-oq-01.",
+    "openQuestions": [
+      "Strengthen to L¹ convergence: under the same hypotheses, ∫ |fₙ − F| → 0, again via Fatou applied to the nonnegative 2g − |fₙ − F|, and relate it to the collapse of the liminf/limsup bracket.",
+      "Generalize from real-valued to Banach-space-valued fₙ by reducing to the real case through ‖fₙ − F‖ and a separability/strong-measurability argument, recovering the full Bochner DCT along the explicit Fatou route."
+    ]
+  },
+  "references": [
+    {
+      "title": "Real Analysis: Modern Techniques and Their Applications",
+      "author": "Folland",
+      "year": "1999",
+      "venue": "Wiley",
+      "description": "Theorem 2.24 and surrounding discussion: the dominated convergence theorem derived from Fatou's lemma applied to g + fₙ and g − fₙ, and the role of the integrable majorant."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.Lebesgue.DominatedConvergence",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of tendsto_lintegral_of_dominated_convergence, the nonnegative dominated convergence theorem (the forward/reverse Fatou squeeze) applied here to the nonnegative shifts g ± fₙ."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.DominatedConvergence",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Mathlib's Bochner dominated convergence theorem tendsto_integral_of_dominated_convergence, proved via abstract setToFun/L1 machinery rather than the explicit g ± fₙ Fatou reduction formalized here."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "fatou-lemma-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "The sibling proves (on the obstruction side) that the parent's escaping-mass sequence 𝟙_[n,n+1) has no integrable majorant, so DCT cannot apply there, and explicitly leaves the positive g ± fₙ Fatou ⇒ DCT derivation as its follow-up question oq-01. This entry supplies that derivation for signed integrands."
+    },
+    {
+      "targetId": "fatou-lemma-oq-01",
+      "relationship": "extends",
+      "description": "The parent formalizes forward Fatou and the escaping-mass witness showing it is strict. This entry collapses the Fatou bracket into the dominated convergence theorem under an integrable majorant and pointwise convergence, via Fatou applied to the nonnegative shifts g ± fₙ."
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "fatou-lemma-oq-01-oq-02-oq-01-oq-01",
+      "question": "Strengthen the conclusion to L¹ convergence: under the same hypotheses (|fₙ| ≤ g integrable, fₙ → F pointwise), prove ∫ |fₙ − F| → 0 by applying Fatou's lemma to the nonnegative sequence 2g − |fₙ − F|, and connect it to the collapse of the liminf/limsup Fatou bracket.",
+      "significance": "medium"
+    },
+    {
+      "id": "fatou-lemma-oq-01-oq-02-oq-01-oq-02",
+      "question": "Lift the explicit Fatou ⇒ DCT derivation from real-valued to Banach-space-valued integrands, reducing to the real case through the norm ‖fₙ − F‖ and a strong-measurability argument, thereby recovering the full Bochner dominated convergence theorem along the g ± fₙ route.",
+      "significance": "medium"
+    }
+  ],
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Fatou ⇒ DCT via g ± fₙ",
+      "startLine": 7,
+      "endLine": 56,
+      "summary": "States the classical Fatou ⇒ DCT route via the nonnegative shifts g + fₙ and g − fₙ, identifies the nonnegative dominated convergence theorem as the Fatou sandwich (forward lintegral_liminf_le plus reverse limsup_lintegral_le), and notes the derivation avoids the Bochner DCT and so is not circular. Frames the entry as the follow-up oq-01 deferred by fatou-lemma-oq-01-oq-02. Confirms 0 sorries, 0 axioms, no native_decide.",
+      "mathContext": "$|f_n| \\le g$ integrable, $f_n \\to F$ pointwise $\\Rightarrow \\int f_n \\to \\int F$, via Fatou on $g \\pm f_n$."
+    },
+    {
+      "id": "dct-add-bracket",
+      "title": "DCT via the Upper Bracket g + fₙ",
+      "startLine": 66,
+      "endLine": 139,
+      "summary": "dct_of_dominated derives the signed dominated convergence theorem from Fatou applied to g + fₙ. After establishing measurability and integrability of F and fₙ from |fₙ| ≤ g, the nonnegative g + fₙ (dominated by 2g, converging to g + F) is fed to the nonnegative Fatou bracket; ofReal_integral_eq_lintegral_ofReal and ENNReal.toReal transfer the convergence to ∫ (g + fₙ) → ∫ (g + F), and integral_add cancellation of ∫ g gives ∫ fₙ → ∫ F.",
+      "mathContext": "$g + f_n \\ge 0$, $g + f_n \\le 2g$, $g + f_n \\to g + F$; $\\int(g+f_n)\\to\\int(g+F)$, cancel $\\int g$."
+    },
+    {
+      "id": "dct-sub-bracket",
+      "title": "DCT via the Lower Bracket g − fₙ",
+      "startLine": 141,
+      "endLine": 163,
+      "summary": "dct_of_dominated_sub runs the symmetric half of the classical proof, applying Fatou to the nonnegative g − fₙ by instantiating dct_of_dominated at the negated sequence −fₙ (still dominated by g, converging to −F): the upper bracket of −fₙ is the lower bracket g − fₙ, and negating ∫ (−fₙ) → ∫ (−F) gives ∫ fₙ → ∫ F. Exposing both brackets makes the textbook 'Fatou applied to g + fₙ and g − fₙ' route fully explicit.",
+      "mathContext": "$g - f_n = g + (-f_n) \\ge 0$, $g - f_n \\to g - F$; $\\int(-f_n)\\to\\int(-F)$ negates to $\\int f_n \\to \\int F$."
+    }
+  ]
+}
