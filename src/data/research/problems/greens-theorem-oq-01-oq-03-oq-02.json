@@ -1,0 +1,51 @@
+{
+  "slug": "greens-theorem-oq-01-oq-03-oq-02",
+  "title": "Does Green's theorem glue across a full 2D grid of cells?",
+  "tier": "verified",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "started": "2026-06-24",
+  "lastUpdate": "2026-06-24",
+  "path": "proofs/Proofs/GreensTheoremOQ01OQ03OQ02.lean",
+  "problemStatement": "The parent greens-theorem-oq-01-oq-03 proved both sides of the concrete Green identity are additive under a single cut (vertical or horizontal) and packaged the vertical direction into the gluing capstone greens_additive_vertical. It left two next steps (its openQuestions[1]): prove the horizontal companion capstone greens_additive_horizontal, and a mixed-grid gluing lemma combining horizontal and vertical splits for a full 2D grid of cells. Do both hold, with both families of interior edges cancelling by orientation?",
+  "tags": [
+    "analysis",
+    "multivariable-calculus",
+    "integration",
+    "greens-theorem",
+    "additivity",
+    "grid"
+  ],
+  "leanFiles": [
+    "proofs/Proofs/GreensTheoremOQ01OQ03OQ02.lean"
+  ],
+  "relatedProofs": [
+    "greens-theorem-oq-01-oq-03",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem"
+  ],
+  "knowledge": {
+    "progressSummary": "COMPLETED in one session: proved greens_additive_horizontal (the horizontal companion to the parent's vertical gluing capstone) and greens_grid_2x2 (the first two-dimensional grid statement in the gallery). greens_additive_horizontal mirrors greens_additive_vertical, rewriting through the parent's verified rectLineIntegral_hsplit / rectDoubleIntegral_hsplit. greens_grid_2x2 cuts a rectangle at x=e and y=g into four cells and composes two vertical strip glues (greens_additive_vertical, over each row) with one horizontal glue (greens_additive_horizontal, across rows); both interior edges — vertical x=e and horizontal y=g — cancel automatically. area_grid_2x2_unit_square is a concrete check. 3 theorems, 199 lines, 0 axioms, 0 sorries; #print axioms shows only propext/Classical.choice/Quot.sound.",
+    "insights": 4,
+    "builtItems": 3,
+    "techniques": [
+      "Composition of the parent's single-cut gluing capstones (two vertical row-glues + one horizontal glue) to tile a 2D grid",
+      "Sharing edge-integrability hypotheses across gluing steps (e.g. P(·,g) over both columns serves both the bottom-strip and top-strip glue)",
+      "Pure rewrite through verified split lemmas — no new analytic content, only ordered composition"
+    ]
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24",
+    "iteration": 1,
+    "focus": "Horizontal capstone and 2×2 grid capstone fully proved. 0 axioms, 0 sorries.",
+    "blockers": [],
+    "nextAction": "None - results complete. Follow-ups: m×n grid induction via Finset.sum; automatic discharge of per-cell integrability for C¹ fields.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  }
+}
