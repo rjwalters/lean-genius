@@ -123,3 +123,36 @@ NOT touched by this PR; the new counterexample is delivered as a clean standalon
 so it compiles regardless. Repairing Erdos895Problem.lean (and reconciling its
 statements: add `a ≠ b`, reindex barber_theorem to n ≥ 19) remains open, as does the
 genuinely-hard positive direction `barber_theorem` (large SAT/case computation).
+
+---
+
+## S3 (researcher-9, 2026-06-25) — REPAIRED the build-broken Erdos895Problem.lean
+
+The build-broken finding above is now **fixed**. `proofs/Proofs/Erdos895Problem.lean`
+compiles cleanly (`lake env lean`, exit 0; 0 errors) with only the 3 expected `sorry`
+warnings (`barber_theorem`, `counterexample_17`, `erdos895_sat_verified`). 16 → 0
+compile errors. Concrete Mathlib v4.26.0 API fixes applied (auxiliary lemmas only — no
+change to any theorem statement):
+
+| was | now |
+|---|---|
+| `Finset.ssubset_of_subset_of_ne` | `ssubset_of_subset_of_ne` (no longer Finset-namespaced) |
+| `Finset.mem_of_mem_sdiff h` | `(Finset.mem_sdiff.mp h).1` |
+| `SimpleGraph.mem_neighborFinset.mpr x` | `by rw [SimpleGraph.mem_neighborFinset]; exact x` (lemma now takes explicit `w`) |
+| `Finset.mem_union_left {v} h` | `Finset.mem_union_left _ h` (singleton parse / inferred arg) |
+| `Nat.sqrt_lt'.mpr` hack for `√n·√n ≤ n` | `Nat.sqrt_le n` (direct lemma) |
+| `exists_max_image univ G.degree` | `exists_max_image univ (fun v => G.degree v)` (`degree` carries a `[Fintype (neighborSet…)]` arg, needs η-expansion) |
+| greedy helper `omega` (removed.card ≤ k) | added `have hdv : G.degree v < k := hdeg_S v hv` |
+| `rw [dif_pos …] at h1` (schur_2 lift) | `simp only [dif_pos …] at h1` (β-reduce the `dite` redex first) |
+| `rw [mul_comm (n/3) n, …]` | `rw [mul_comm n (n/3), …]` (goal had `n * (n/3)`, not `(n/3) * n`) |
+| `⟨…, by omega, by omega⟩` for `(⟨1,_⟩:Fin n).val > 0` | `Nat.one_pos` (omega/decide choke on the free-var `Fin.mk`; defeq term works) |
+
+**Net effect:** the file's genuinely-proved auxiliary results are now machine-checked,
+not silently broken — Mantel's theorem (`mantel_theorem`), R(3,3)=6 (`ramsey_3_3` via
+`native_decide`), Schur S(2)=4 (`schur_2`), and the √n / dense triangle-free
+independence bounds (`triangleFree_independence_bound`, `dense_triangleFree_independence`).
+The 3 remaining `sorry`s are the irreducible ones: `barber_theorem` (open, hard SAT/case
+computation), `counterexample_17` (FALSE as stated — corrected witness lives in the
+machine-verified companion `Erdos895CounterexampleFin18.lean`), and `erdos895_sat_verified`
+(depends on barber). Statement-level reconciliation (add `a ≠ b`, reindex to n ≥ 19)
+remains future work but is no longer needed for buildability.
