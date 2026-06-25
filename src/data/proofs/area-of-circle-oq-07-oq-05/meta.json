@@ -1,6 +1,7 @@
 {
   "id": "area-of-circle-oq-07-oq-05",
   "slug": "area-of-circle-oq-07-oq-05",
+  "description": "The second moment of the standard Gaussian weight, ∫_ℝ x² e^{-x²} dx = √π/2, evaluated as a real Lebesgue integral. Integration by parts on the whole real line trades the x² weight for a derivative: writing the integrand as x·(x e^{-x²}) and recognizing x e^{-x²} = d/dx(-½ e^{-x²}), the boundary term vanishes by Gaussian decay and the second moment reduces to exactly half the parent's zeroth moment √π. This is the Γ(3/2) = √π/2 moment realized directly, the n = 1 base case of the even-moment double-factorial recursion ∫ x^{2n} e^{-x²} = (2n-1)!!·√π/2^n.",
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
@@ -76,6 +77,49 @@
       }
     ]
   },
+  "overview": {
+    "historicalContext": "The Gaussian integral ∫_ℝ e^{-x²} dx = √π, first evaluated by Laplace and Poisson, is the keystone of probability theory, where e^{-x²/2}/√(2π) is the standard normal density. Its higher moments ∫ x^{2n} e^{-x²} dx encode the variance, kurtosis, and all even cumulants of the Gaussian, and satisfy the double-factorial law (2n-1)!!·√π/2^n. These moments are equivalently values of the Gamma function: ∫_ℝ x^{2n} e^{-x²} dx = Γ(n + ½), and the substitution u = x² turns each into a Beta/Gamma evaluation. This entry computes the n = 1 moment √π/2 = Γ(3/2) directly as a real Lebesgue integral, fitting it into the gallery's Gaussian-integral family alongside the parent zeroth moment.",
+    "problemStatement": "Evaluate the second moment of the standard (unnormalized) Gaussian weight over the whole real line: prove ∫_{-∞}^{∞} x² e^{-x²} dx = √π/2 as a verified Lebesgue integral, reducing it to the parent zeroth moment ∫ e^{-x²} = √π.",
+    "proofStrategy": "Integration by parts on (-∞, ∞) via MeasureTheory.integral_mul_deriv_eq_deriv_mul, with u = x (so u' = 1) and v = -½ e^{-x²} (so v' = x e^{-x²}). Then u·v' = x·(x e^{-x²}) = x² e^{-x²} is the target integrand, and the parts formula ∫ u v' = [u v]_{-∞}^{∞} - ∫ u' v gives ∫ x² e^{-x²} = 0 - ∫ 1·(-½ e^{-x²}) = ½ ∫ e^{-x²} = ½·√π. The two boundary terms x·(-½ e^{-x²}) vanish at ±∞ because the Gaussian factor decays faster than the linear weight (tendsto_mul_gaussian_cocompact, repackaged from Mathlib's cocompact decay lemma and split across atBot/atTop). Integrability of x² e^{-x²} and e^{-x²} is supplied by integrable_rpow_mul_exp_neg_mul_sq and integrable_exp_neg_mul_sq; the final ∫ e^{-x²} = √π is the parent value integral_gaussian 1.",
+    "keyInsights": [
+      "The 'coincidence' √π/2 = ½·√π is no accident: integration by parts with u' = 1 trades the entire x² weight for the bare Gaussian, so the second moment is structurally half the zeroth moment.",
+      "On ℝ the cocompact filter equals atBot ⊔ atTop, so a single cocompact decay statement (x e^{-x²} → 0) discharges both one-sided boundary terms of the integration by parts at once.",
+      "Establishing √π/2 as a genuine real Lebesgue integral — rather than as the Gamma special value Γ(3/2) — gives a self-contained base case for the double-factorial recursion ∫ x^{2n} e^{-x²} = (2n-1)!!·√π/2^n, where each parts step lowers the power by two.",
+      "The badge is 'mathlib': every step is a routine consequence of existing Mathlib results (the IBP lemma, the parent integral_gaussian, and the Gaussian-decay tendsto), assembled rather than newly invented — but the assembly itself is the contribution, since Mathlib does not state the weighted second moment directly."
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ (MeasureTheory)",
+      "Integration by parts on (-∞, ∞)",
+      "The parent zeroth moment ∫ e^{-x²} = √π",
+      "Filters atBot/atTop/cocompact and Gaussian decay of polynomial weights"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem and Strategy",
+      "startLine": 5,
+      "endLine": 35,
+      "summary": "States the open question (the second moment ∫ x² e^{-x²}), the answer √π/2, and the integration-by-parts strategy that reduces it to half the parent zeroth moment √π. Notes the equivalent Gamma form Γ(3/2).",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{2} = \\Gamma(3/2)$."
+    },
+    {
+      "id": "decay",
+      "title": "The Vanishing Boundary Term",
+      "startLine": 41,
+      "endLine": 51,
+      "summary": "tendsto_mul_gaussian_cocompact: x e^{-x²} → 0 along the cocompact filter, repackaged from Mathlib's tendsto_rpow_abs_mul_exp_neg_mul_sq_cocompact by stripping the absolute value. This is the boundary product that vanishes in the integration by parts.",
+      "mathContext": "$x e^{-x^2} \\to 0$ as $x \\to \\pm\\infty$ (Gaussian decay beats the linear factor)."
+    },
+    {
+      "id": "second-moment",
+      "title": "Integration by Parts on the Whole Line",
+      "startLine": 53,
+      "endLine": 118,
+      "summary": "gaussian_second_moment: builds the derivatives u = x, v = -½ e^{-x²}, verifies the two integrability conditions and the two boundary limits, applies integral_mul_deriv_eq_deriv_mul, and evaluates the surviving ½ ∫ e^{-x²} = ½√π via the parent integral_gaussian.",
+      "mathContext": "$\\int u\\,v' = [uv]_{-\\infty}^{\\infty} - \\int u'\\,v = 0 - \\int 1\\cdot(-\\tfrac12 e^{-x^2}) = \\tfrac12\\sqrt\\pi$."
+    }
+  ],
   "openQuestions": [
     {
       "id": "area-of-circle-oq-07-oq-05-oq-01",
