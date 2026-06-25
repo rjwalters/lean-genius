@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 3, "endLine": 56 },
+    "type": "context",
+    "title": "Sharpening the k=3 Threshold via a Centered Cube",
+    "content": "The parent pins the k=3 birthday threshold to (6d²ln2)^{1/3} within an additive 2, using the corner-cube sandwich (n-2)³ ≤ n(n-1)(n-2) ≤ n³. Its open question asks to sharpen this band. The key new idea is the exact centered factorization n(n-1)(n-2) = (n-1)³ - (n-1): substituting m = n-1 turns the balance n(n-1)(n-2) = 6d²ln2 =: c³ into the depressed cubic m³ - m = c³. Because the centered cube (n-1)³ touches the falling factorial to within the bounded correction (n-1), the resulting bound c + 1 ≤ n ≤ c + 1 + 1/(3c) pins the lower-order term to exactly 1, with a remainder O(d^{-2/3}) → 0.",
+    "mathContext": "$n(n-1)(n-2)=(n-1)^3-(n-1)\\;\\Rightarrow\\; m^3-m=c^3,\\quad m=n-1,\\ c=(6d^2\\ln 2)^{1/3}$",
+    "significance": "context",
+    "relatedConcepts": ["birthday problem", "k-fold coincidence", "depressed cubic", "centered cube", "sharp threshold"],
+    "prerequisites": ["probability heuristics", "asymptotics"]
+  },
+  {
+    "id": "ann-cuberoot",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 62, "endLine": 65 },
+    "type": "technique",
+    "title": "The Cube-Root Identity",
+    "content": "`cubeRoot_cube`: $(x^3)^{1/3}=x$ for $x\\ge 0$, from Mathlib's `Real.pow_rpow_inv_natCast` after rewriting $1/3=(3:\\mathbb{N})^{-1}$. The same helper as the parent. Treating the cube root as the real power $t\\mapsto t^{1/3}$ keeps it monotone on the nonnegatives and inverse to cubing there, which is exactly what the lower bound needs.",
+    "mathContext": "$(x^3)^{1/3}=x \\quad (x\\ge 0)$",
+    "significance": "supporting",
+    "relatedConcepts": ["rpow", "cube root", "Real.pow_rpow_inv_natCast"],
+    "prerequisites": ["real powers (rpow)"]
+  },
+  {
+    "id": "ann-c-cubed",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 84, "endLine": 91 },
+    "type": "technique",
+    "title": "c³ = L and the Depressed Cubic",
+    "content": "Writing c = L^{1/3} with L = 6d²ln2, the identity c³ = L is obtained by `Real.rpow_natCast` (turning the natural cube into a real power) and `Real.rpow_mul` (collapsing (L^{1/3})³ = L^{(1/3)·3} = L^1 = L). Combined with the centered identity, this recasts the balance as the depressed cubic m³ - m = c³ — the no-quadratic-term form that makes the centered analysis clean.",
+    "mathContext": "$c=L^{1/3}\\Rightarrow c^3=L^{(1/3)\\cdot 3}=L;\\qquad m^3-m=c^3$",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow_mul", "Real.rpow_natCast", "depressed cubic", "rpow arithmetic"],
+    "prerequisites": ["real powers (rpow)"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "technique",
+    "title": "Lower Bound: c + 1 ≤ n",
+    "content": "From the depressed cubic, m³ = c³ + m ≥ c³ because m ≥ 0. Applying the cube root — monotone via `Real.rpow_le_rpow` and inverse to cubing via `cubeRoot_cube` — gives c = L^{1/3} ≤ (m³)^{1/3} = m. Since m = n - 1, this is the sharpened lower bound n ≥ c + 1, a full unit above the parent's n ≥ c.",
+    "mathContext": "$m^3=c^3+m\\ge c^3 \\;\\Rightarrow\\; c\\le m \\;\\Rightarrow\\; n\\ge c+1$",
+    "significance": "key",
+    "relatedConcepts": ["Real.rpow_le_rpow", "cube-root monotonicity", "depressed cubic"],
+    "prerequisites": ["monotone powers"]
+  },
+  {
+    "id": "ann-upper-bound",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 108, "endLine": 116 },
+    "type": "key-step",
+    "title": "Upper Bound Collapses to (m−c)² ≥ 0",
+    "content": "The target 3c(m-c) ≤ 1 is, after multiplying by the positive quantity m² + mc + c² and using m³ - c³ = m, exactly the trivial inequality (m-c)² ≥ 0. The algebraic identity (m² + mc + c²)(1 - 3c(m-c)) = (m-c)² is proved by `linear_combination (-3c)·(m³ - m = c³)`, and the sign conclusion by `nlinarith` with `sq_nonneg (m-c)` and the positivity of m² + mc + c². Hence m ≤ c + 1/(3c), i.e. n ≤ c + 1 + 1/(3c). The remainder 1/(3c) is sharp for this argument — it is the slack in (m-c)² ≥ 0.",
+    "mathContext": "$(m^2+mc+c^2)\\,(1-3c(m-c))=(m-c)^2\\ge 0 \\;\\Rightarrow\\; 3c(m-c)\\le 1 \\;\\Rightarrow\\; n\\le c+1+\\tfrac{1}{3c}$",
+    "significance": "key",
+    "relatedConcepts": ["linear_combination", "nlinarith", "completing the square", "sharp remainder"],
+    "prerequisites": ["polynomial inequalities"]
+  },
+  {
+    "id": "ann-const-one",
+    "proofId": "birthday-problem-oq-03-oq-01-oq-01-oq-03-oq-01",
+    "range": { "startLine": 118, "endLine": 140 },
+    "type": "context",
+    "title": "The Exact Lower-Order Constant",
+    "content": "`birthday_triple_threshold_const_one` packages the two-sided bound as |n − (c + 1)| ≤ 1/(3c) with c = (6d²ln2)^{1/3}. This exhibits the lower-order term as the explicit constant 1, with a one-sided remainder bounded by 1/(3c) = O(d^{-2/3}) that vanishes as d → ∞. So the threshold is n = (6d²ln2)^{1/3} + 1 + o(1) — a strict refinement of the parent's O(1) band, not merely a smaller constant.",
+    "mathContext": "$\\left|\\,n-\\big((6d^2\\ln 2)^{1/3}+1\\big)\\right|\\le \\frac{1}{3(6d^2\\ln 2)^{1/3}}=O(d^{-2/3})$",
+    "significance": "key",
+    "relatedConcepts": ["asymptotic expansion", "vanishing remainder", "sharp constant"],
+    "prerequisites": ["asymptotics", "absolute value bounds"]
+  }
+]
