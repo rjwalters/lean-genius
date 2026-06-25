@@ -3573,6 +3573,7 @@ import Proofs.PartitionTheoremOQ04
 import Proofs.PartitionTheoremOQ04Aristotle
 import Proofs.PascalsHexagon
 import Proofs.PascalsHexagonIncomplete01
+import Proofs.PascalsHexagonIncomplete01OQ03
 import Proofs.PascalsHexagonOQ02
 import Proofs.PascalsHexagonOQ03
 import Proofs.PellEquation
