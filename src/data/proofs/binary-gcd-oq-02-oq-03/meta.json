@@ -72,6 +72,90 @@
     "theoremCount": 11,
     "definitionCount": 4
   },
+  "overview": {
+    "historicalContext": "The binary GCD algorithm was published by Josef Stein in 1967 as a gcd method using only subtraction, parity tests, and halving — operations that are cheap in binary hardware, avoiding the costly division of the classical Euclidean algorithm (the idea appears even earlier, in a first-century Chinese text and in Roland Silver and John Terzian's unpublished 1962 work). The *extended* Euclidean algorithm additionally returns Bézout coefficients x, y with a·x + b·y = gcd(a,b), the certificate underlying modular inverses and the Chinese Remainder Theorem. Extending the binary algorithm to produce these coefficients is notoriously fiddly: the halving steps must keep the coefficients integral, the classical fix (Handbook of Applied Cryptography, Algorithm 14.61) being to add an odd multiple of the modulus to flip parity before dividing by two. This entry formalizes a fully certified extended binary GCD, with coefficients genuinely computed through Stein's reductions rather than borrowed from the Euclidean algorithm.",
+    "problemStatement": "Build an extended binary GCD binaryXgcd / binaryXgcdInt whose Bézout coefficients are produced through Stein's reductions themselves (halving, parity correction, subtract-and-halve), prove the certified identity a·x + b·y = gcd(a,b), and show the produced identity agrees with Mathlib's Int.gcdA / Int.gcdB — the binary analogue of the sibling Lehmer open question.",
+    "proofStrategy": "Reprove the four Stein GCD-preserving reductions against current Mathlib (gcd_two_mul, gcd_two_mul_odd, gcd_sub_right, gcd_odd_sub_half). Isolate the only non-trivial coefficient step as parity-correcting un-halving helpers hL / hR: from a'·x + b·y = g with b odd, produce integers X, Y with (2a')·X + b·Y = a'·x + b·y by branching on the parity of x (HAC 14.61). Define binaryXgcd by well-founded recursion on a + b following Stein's case split, threading coefficients through each reduction. Prove binaryXgcd_bezout by binaryXgcd.induct, matching each algorithmic case to its Nat.gcd reduction and closing with a single linear_combination plus omega-discharged cast facts. Lift to ℤ via sign adjustment (Int.sign_mul_self_eq_natAbs) and finally show the produced identity equals a·gcdA a b + b·gcdB a b since both certify the same Int.gcd.",
+    "keyInsights": [
+      "The coefficients are produced BY the binary algorithm, not delegated: every Bézout pair is threaded through Stein's halving/subtract-and-halve reductions, so the entry certifies the extended *binary* algorithm rather than re-skinning the Euclidean one.",
+      "The entire difficulty concentrates in one place — the parity-correcting un-halving hL/hR. Because the odd operand b makes exactly one of x, x+b even, adding b before halving keeps the coefficient integral; everything else is bookkeeping that omega and linear_combination discharge mechanically.",
+      "The correctness induction is tight because the algorithm and Nat.gcd obey the *same* four reductions: binaryXgcd.induct rewrites Nat.gcd a b to the reduced gcd in lockstep with the recursion, so each case is a single linear recombination.",
+      "Bézout coefficients are not unique, so equality of the *identities* (a·x + b·y = a·gcdA + b·gcdB) is the right notion of agreement with Mathlib — not equality of the coefficient pairs, which generally differ between the binary and Euclidean algorithms.",
+      "Lifting ℕ → ℤ needs only sign adjustment: Int.gcd a b is definitionally a.natAbs.gcd b.natAbs, and a·a.sign = ↑a.natAbs absorbs the sign, so no new algorithmic content is required for the integer version."
+    ],
+    "prerequisites": [
+      "The binary GCD algorithm (Stein 1967) and its four GCD-preserving reductions",
+      "Bézout's identity and the extended Euclidean algorithm",
+      "Well-founded recursion and the induct principle in Lean 4",
+      "Mathlib's Int.gcd, Int.gcdA / Int.gcdB, and Int.gcd_eq_gcd_ab"
+    ]
+  },
+  "sections": [
+    {
+      "id": "reductions",
+      "title": "Stein's GCD-Preserving Reductions",
+      "startLine": 37,
+      "endLine": 95,
+      "summary": "Self-contained reproofs of the four identities that leave gcd unchanged: gcd(2a,2b)=2gcd(a,b), gcd(2a,b)=gcd(a,b) for odd b, gcd(m-n,n)=gcd(m,n), and the both-odd subtract-and-halve, against current Mathlib."
+    },
+    {
+      "id": "unhalve",
+      "title": "Parity-Correcting Un-halving (hL / hR)",
+      "startLine": 97,
+      "endLine": 130,
+      "summary": "The only non-trivial coefficient step: from a'·x + b·y = g with b odd, produce integer X, Y with (2a')·X + b·Y = a'·x + b·y by branching on the parity of x (HAC 14.61). Specs hL_spec/hR_spec close by linear_combination after omega."
+    },
+    {
+      "id": "definition",
+      "title": "binaryXgcd: the Extended Binary GCD on ℕ",
+      "startLine": 131,
+      "endLine": 170,
+      "summary": "Well-founded recursion on a + b following Stein's case split; both-even scales by 2, even/odd applies one un-halving, both-odd un-halves then linearly recombines. Coefficients computed by the binary algorithm, never delegated."
+    },
+    {
+      "id": "bezout",
+      "title": "Bézout Correctness by Induction",
+      "startLine": 171,
+      "endLine": 273,
+      "summary": "binaryXgcd_bezout: a·x + b·y = Nat.gcd a b, proved by binaryXgcd.induct — each case rewrites Nat.gcd to the reduced gcd and closes with a single linear_combination plus omega-supplied cast facts."
+    },
+    {
+      "id": "integer",
+      "title": "Integer Extension binaryXgcdInt",
+      "startLine": 275,
+      "endLine": 305,
+      "summary": "binaryXgcdInt runs binaryXgcd on |a|,|b| and sign-adjusts; Int.sign_mul_self_eq_natAbs lifts the ℕ certificate to binaryXgcdInt_bezout: a·x + b·y = Int.gcd a b."
+    },
+    {
+      "id": "equivalence",
+      "title": "Equivalence to Mathlib's Int.gcdA / Int.gcdB",
+      "startLine": 306,
+      "endLine": 335,
+      "summary": "binaryXgcdInt_eq_gcdAB: the binary algorithm's Bézout identity equals Mathlib's Euclidean one (both certify the same Int.gcd, though the coefficient pairs may differ). Three decide-checked examples certify concrete instances."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully certified (0 sorries, 0 axioms) extended binary GCD. binaryXgcd / binaryXgcdInt compute Bézout coefficients through Stein's reductions themselves — halving, parity correction (hL/hR), and subtract-and-halve — and binaryXgcd_bezout / binaryXgcdInt_bezout prove the certified identity a·x + b·y = gcd(a,b) on ℕ and ℤ. binaryXgcdInt_eq_gcdAB shows the produced identity agrees with Mathlib's Int.gcdA / Int.gcdB. 335 lines, 11 theorems, 4 definitions.",
+    "implications": "Unlike the gallery's other Bézout entries, which delegate coefficients to Mathlib's extended Euclidean algorithm, this one certifies the extended *binary* algorithm end to end — establishing the division-free Stein method as an equal-footing producer of Bézout witnesses. The isolation of the entire coefficient difficulty into the parity-correcting un-halving step (and its one-line linear_combination spec) is a reusable pattern for verifying other halving-based extended algorithms, and the agreement-of-identities (not coefficients) framing is the correct treatment of Bézout non-uniqueness.",
+    "openQuestions": [
+      "Establish a complexity bound: the binary algorithm runs in O((log max(a,b))²) bit operations — formalize a step-count measure and prove it.",
+      "Verify the analogous extended Lehmer GCD (the sibling open question asks the same agreement-with-gcdAB for lehmerXgcdInt).",
+      "Extract verified executable code (e.g. via Lean's compiler or a C translation) and benchmark the certified binary xGCD against the Euclidean one.",
+      "Generalize the hL/hR parity-correction pattern to a reusable lemma for extended algorithms over Euclidean domains beyond ℤ."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd",
+      "relationship": "extends",
+      "description": "The base entry formalizes the value-only binary GCD (Stein's algorithm). This entry extends it to compute and certify Bézout coefficients through the same reductions."
+    },
+    {
+      "targetId": "binary-gcd-oq-02",
+      "relationship": "extends",
+      "description": "Parent open-question strand on the binary GCD; this leaf supplies the certified extended (Bézout-coefficient) version and its equivalence to Mathlib's Int.gcdA/gcdB."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib.Data.Int.GCD",

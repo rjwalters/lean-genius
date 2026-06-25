@@ -755,6 +755,7 @@ import Proofs.CevasTheorem
 import Proofs.CevasTheoremNonEuclidean
 import Proofs.CevasTheoremNonEuclideanOQ01
 import Proofs.CevasTheoremNonEuclideanOQ01OQ01
+import Proofs.CevasTheoremNonEuclideanOQ01OQ02
 import Proofs.CevasTheoremNonEuclideanOQ02
 import Proofs.CevasTheoremNonEuclideanOQ03
 import Proofs.CevasTheoremNonEuclideanOQ02OQ01
@@ -991,6 +992,7 @@ import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DescartesRuleOfSignsOQ04
 import Proofs.DetConjugateTransposeOQ01
 import Proofs.DiamondImpliesCH
+import Proofs.DilworthHardOQ01OQ02
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
 import Proofs.DilworthTheoremOQ01OQ01OQ02
@@ -1637,6 +1639,7 @@ import Proofs.Erdos209Problem
 import Proofs.Erdos20Problem
 import Proofs.Erdos210Problem
 import Proofs.Erdos211Problem
+import Proofs.Erdos211SteinerLineCount
 import Proofs.Erdos212Problem
 import Proofs.Erdos213Problem
 import Proofs.Erdos214Problem

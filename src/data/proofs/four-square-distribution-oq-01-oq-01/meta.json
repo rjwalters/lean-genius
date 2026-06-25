@@ -68,7 +68,8 @@
       "Jacobi's modification only ever acts when 4 | n: for the other three residue classes mod 4, σ* coincides exactly with the ordinary divisor sum.",
       "The full deviation of σ* from σ is concentrated in the dropped 4-divisible divisors, captured by the clean additive identity σ*(n) + Σ_{d|n, 4|d} d = σ(n).",
       "This σ* ↔ σ relation is precisely what the weight-2 Eisenstein decomposition on Γ0(4) encodes: the 'level-4 correction' E2(τ) − 4E2(4τ) removes the 4 | d divisors.",
-      "Everything is elementary divisor combinatorics — no native_decide, so the result is genuinely axiom-free (the numeric sanity checks use kernel decide)."
+      "Everything is elementary divisor combinatorics — no native_decide, so the result is genuinely axiom-free (the numeric sanity checks use kernel decide).",
+      "The reduction strictly separates the easy arithmetic of σ* (fully formalized here) from the deep analytic identity r4 = 8σ* (still an axiom needing modular forms): the σ* ↔ σ bridge is exactly the part of Jacobi's theorem that does NOT require θ^4 = Eisenstein, so it can be discharged unconditionally while the analytic core waits for Mathlib's modular-forms library."
     ],
     "prerequisites": [
       "Divisor sums and Jacobi's σ*",
@@ -80,23 +81,46 @@
     {
       "id": "definitions",
       "title": "σ* and σ",
-      "startLine": 56,
-      "endLine": 70,
+      "startLine": 55,
+      "endLine": 69,
       "summary": "Jacobi's modified divisor sum σ*(n) (verbatim from the parent) and the ordinary divisor sum σ(n); sigmaStar_eq_filter recasts σ* as a filtered divisor sum."
     },
     {
       "id": "reduction",
       "title": "σ*(n) = σ(n) when 4 ∤ n",
-      "startLine": 72,
-      "endLine": 95,
-      "summary": "sigmaStar_of_not_four_dvd and the odd / 2-mod-4 corollaries: outside the residue class 0 mod 4, Jacobi's modification is inert."
+      "startLine": 71,
+      "endLine": 80,
+      "summary": "sigmaStar_of_not_four_dvd: outside residue class 0 mod 4, no divisor is 4-divisible, so Jacobi's modification is inert and σ* = σ."
+    },
+    {
+      "id": "corollaries",
+      "title": "Odd and 2-mod-4 corollaries",
+      "startLine": 82,
+      "endLine": 94,
+      "summary": "sigmaStar_odd and sigmaStar_two_mul_odd specialize the reduction to odd n and n = 2·(odd), each discharged via Nat.odd_iff + omega."
     },
     {
       "id": "correction",
       "title": "The 4 | n correction and the bound",
-      "startLine": 97,
+      "startLine": 96,
+      "endLine": 106,
+      "summary": "sigmaStar_add_four_part isolates the σ*-vs-σ deviation into the 4-divisible divisor sum; sigmaStar_le_sigma gives σ*(n) ≤ σ(n)."
+    },
+    {
+      "id": "sanity",
+      "title": "Kernel-decide sanity checks",
+      "startLine": 108,
       "endLine": 114,
-      "summary": "sigmaStar_add_four_part isolates the σ*-vs-σ deviation into the 4-divisible divisor sum; sigmaStar_le_sigma gives σ*(n) ≤ σ(n); kernel-decide sanity checks at n = 8, 12."
+      "summary": "Example checks σ*(12)=12, σ(12)=28, σ*(8)=3 using kernel decide (no native_decide), confirming the formulas and keeping the entry axiom-free."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "An axiom-free, fully machine-checked determination of how Jacobi's modified divisor sum σ*(n) = Σ_{d|n, 4∤d} d relates to the ordinary divisor sum σ(n). σ*(n) = σ(n) for n ≡ 1, 2, 3 (mod 4) (sigmaStar_of_not_four_dvd, with odd and 2-mod-4 corollaries), and for 4 | n the deviation is exactly the dropped 4-divisible part: σ*(n) + Σ_{d|n, 4|d} d = σ(n) (sigmaStar_add_four_part), whence σ*(n) ≤ σ(n). 114 lines, 6 theorems, 2 definitions, 0 axioms, 0 sorries; the sanity checks use kernel decide, so no Lean.ofReduceBool.",
+    "implications": "This isolates and discharges the elementary arithmetic component of Jacobi's four-square theorem — precisely the σ* ↔ σ relation that the weight-2 Eisenstein decomposition on Γ0(4) encodes — without touching the deep analytic identity r4(n) = 8σ*(n), which remains an axiom (axiom jacobi_r4_formula) pending Mathlib modular-forms infrastructure. It is a model of honest axiom reduction: the part that can be proved unconditionally is, while the genuinely hard analytic core is left clearly demarcated as the remaining assumption.",
+    "openQuestions": [
+      "Replace axiom jacobi_r4_formula with a proof identifying θ^4 as the Γ0(4) weight-2 Eisenstein combination, once Mathlib has the modular-forms infrastructure (q-expansions of E2(τ), E2(2τ), E2(4τ) and the dimension of M2(Γ0(4))).",
+      "Generalize the σ*-vs-σ split to the analogous modified divisor sums appearing in the r2, r6, r8 sum-of-squares formulas (e.g. the χ-twisted sums for r2 and the σ3-based formula for r8).",
+      "Derive an explicit closed form for Σ_{d|n, 4|d} d = 4·σ(n/4) when 4 | n, turning the additive correction into a multiplicative recursion σ*(n) = σ(n) − 4σ(n/4)."
+    ]
+  }
 }
