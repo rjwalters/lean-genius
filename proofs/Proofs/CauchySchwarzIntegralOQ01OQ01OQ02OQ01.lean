@@ -46,6 +46,8 @@ noncomputable section
 
 open MeasureTheory ENNReal NNReal Set Filter
 
+open scoped Topology
+
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
 namespace RieszLpSurjectivity
@@ -710,15 +712,18 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   have hphi_hn : φ (hhn_memLp.toLp _) = ∫ a, h_n a * g a ∂μ := by
     -- Step 1: For simple functions sf with MemLp, φ(sf as Lp) = ∫ sf * g
     have phi_simple_eq : ∀ (sf : SimpleFunc α ℝ) (hsf : MemLp ⇑sf p μ),
-        φ (hsf.toLp ⇑sf) = ∫ a, ↑sf a * g a ∂μ := by
+        φ (hsf.toLp ⇑sf) = ∫ a, ⇑sf a * g a ∂μ := by
       intro sf
       induction sf using SimpleFunc.induction with
       | @const c E hE =>
         intro hsf
         have hcoe : ∀ a, ⇑(SimpleFunc.piecewise E hE (SimpleFunc.const α c) (SimpleFunc.const α 0)) a =
             E.indicator (fun _ => c) a := fun a => by
-          simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, SimpleFunc.coe_zero,
-                Set.indicator_apply, Set.piecewise_apply]
+          by_cases ha : a ∈ E
+          · simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_const, Set.piecewise_eq_of_mem,
+                  Set.indicator_of_mem, ha]
+          · simp [SimpleFunc.coe_piecewise, SimpleFunc.coe_zero, Set.piecewise_eq_of_notMem,
+                  Set.indicator_of_notMem, ha]
         have hE_fin : μ E ≠ ⊤ := measure_ne_top μ E
         have hind : MemLp (E.indicator (fun _ => (1 : ℝ))) p μ :=
           indicator_memLp hE hE_fin p (le_of_lt hp1) hptop
@@ -779,13 +784,13 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
           simp only [SimpleFunc.coe_add, Pi.add_apply]
         have hsf₁_bdd : ∀ᵐ a ∂μ, ‖(sf₁ : α → ℝ) a‖ ≤ sf₁.range.sum (fun c => ‖c‖) :=
           ae_of_all μ fun a =>
-            Finset.single_le_sum (fun c _ => norm_nonneg c) _ (sf₁.mem_range_self a)
+            Finset.single_le_sum (fun c _ => norm_nonneg c) (sf₁.mem_range_self a)
         have hsf₂_bdd : ∀ᵐ a ∂μ, ‖(sf₂ : α → ℝ) a‖ ≤ sf₂.range.sum (fun c => ‖c‖) :=
           ae_of_all μ fun a =>
-            Finset.single_le_sum (fun c _ => norm_nonneg c) _ (sf₂.mem_range_self a)
-        have hint₁ : Integrable (fun a => ↑sf₁ a * g a) μ :=
+            Finset.single_le_sum (fun c _ => norm_nonneg c) (sf₂.mem_range_self a)
+        have hint₁ : Integrable (fun a => ⇑sf₁ a * g a) μ :=
           hg_int.bdd_mul sf₁.measurable.aestronglyMeasurable hsf₁_bdd
-        have hint₂ : Integrable (fun a => ↑sf₂ a * g a) μ :=
+        have hint₂ : Integrable (fun a => ⇑sf₂ a * g a) μ :=
           hg_int.bdd_mul sf₂.measurable.aestronglyMeasurable hsf₂_bdd
         rw [h12_split, map_add, IH₁ hsf₁, IH₂ hsf₂, ← integral_add hint₁ hint₂]
         congr 1; ext a
@@ -850,10 +855,10 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     have hpw2 : ∀ a, h_n a * g_n a = |g_n a| ^ q.toReal := fun a => by
       simp only [h_n]
       have hsign : Real.sign (g_n a) * g_n a = |g_n a| := by
-        rcases lt_trichotomy (g_n a) 0 with ha | rfl | ha
-        · simp [Real.sign_neg ha, abs_of_neg ha]
-        · simp
-        · simp [Real.sign_pos ha, abs_of_pos ha]
+        rcases lt_trichotomy (g_n a) 0 with ha | heq | ha
+        · simp [Real.sign_of_neg ha, abs_of_neg ha]
+        · simp [heq]
+        · simp [Real.sign_of_pos ha, abs_of_pos ha]
       rw [show Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1) * g_n a =
           |g_n a| ^ (q.toReal - 1) * (Real.sign (g_n a) * g_n a) from by ring,
           hsign, show |g_n a| = |g_n a| ^ (1 : ℝ) from (Real.rpow_one _).symm,
@@ -911,9 +916,9 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
       · have habs_pos : 0 < |g_n a| := abs_pos.mpr ha
         have hsign1 : |Real.sign (g_n a)| = 1 := by
           rcases lt_trichotomy (g_n a) 0 with h | h | h
-          · simp [Real.sign_neg h]
+          · simp [Real.sign_of_neg h]
           · exact absurd h ha
-          · simp [Real.sign_pos h]
+          · simp [Real.sign_of_pos h]
         rw [abs_mul, hsign1, one_mul,
             abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
             ← Real.rpow_mul (abs_nonneg _)]
