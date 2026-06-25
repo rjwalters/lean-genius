@@ -500,6 +500,7 @@ import Proofs.BritishFlagDefect
 import Proofs.BritishFlagTheorem
 import Proofs.BrouwerFixedPoint
 import Proofs.BrouwerFixedPointOQ01
+import Proofs.BrouwerFixedPointOQ01OQ01
 import Proofs.BrouwerFixedPointOQ01OQ02
 import Proofs.BrouwerFixedPointOQ01OQ02G10
 import Proofs.BrouwerFixedPointOQ01OQ02G11
