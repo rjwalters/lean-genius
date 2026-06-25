@@ -2,7 +2,7 @@
   "id": "angle-trisection-oq-05",
   "title": "Origami Constructibility via Huzita-Hatori Axioms (OQ-05)",
   "slug": "angle-trisection-oq-05",
-  "description": "Formalizes the seven Huzita-Hatori axioms of origami as a Lean 4 structure, proves that origami CAN solve cubic and quartic equations via the Beloch fold (HH-6), and establishes that angle trisection and cube doubling ARE possible with paper folding. Proves the Alperin-Lang algebraic equivalence between origami and neusis constructibility, classifies origami-constructible degrees up to 12, and distinguishes single-fold from multi-fold origami power. 695 lines, 0 axioms, 0 sorries.",
+  "description": "Infrastructure formalization of origami constructibility at the algebraic (field-degree) level. Defines the seven Huzita-Hatori axioms as a Lean 4 structure and models origami vs compass constructibility as divisibility predicates on a supplied extension degree d (d | 2^a*3^b for origami, d | 2^n for compass). On this model it captures definitionally that degree-3 numbers (e.g. cos 20 deg, cube-root 2) fall inside origami's 2^a*3^b reach but outside compass's 2^n reach (the trisection / cube-doubling contrast), the Alperin-Lang origami-neusis degree equivalence, a degree classification up to 12, and the single-fold vs multi-fold separation. Note: the constructibility predicates ignore the real number and act on the supplied degree d (they are not derived from each number's minimal polynomial), and the HHAxioms structure is definitional (never instantiated or used to discharge a result); so these are number-theoretic facts about the 2^a*3^b vs 2^n degree sets, not formalized geometric fold constructions. 695 lines, 0 axioms, 0 sorries.",
   "meta": {
     "author": "Huzita (1989), Justin (1991), Alperin-Lang (2006)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Huzita%E2%80%93Hatori_axioms",
@@ -270,13 +270,13 @@
     {
       "name": "angle_trisection_possible_with_origami",
       "type": "core",
-      "description": "Angle trisection IS possible with origami: cos(20 deg) is origami-constructible but not compass-constructible",
+      "description": "Trisection / compass contrast at the degree level: degree 3 satisfies the origami divisibility predicate (3 | 2^a*3^b) but not the compass one (3 does not divide any 2^n). The real argument (cos 20 deg) is not used by the predicate; the degree 3 is supplied, not derived from its minimal polynomial.",
       "leanType": "IsOrigamiConstructible (cos (pi / 9)) 3 AND NOT IsConstructible (cos (pi / 9)) 3"
     },
     {
       "name": "cube_doubling_possible_with_origami",
       "type": "core",
-      "description": "Cube doubling IS possible with origami",
+      "description": "Cube-doubling / compass contrast at the degree level: degree 3 satisfies the origami divisibility predicate but not the compass one. As above, the predicate ignores the real argument (cube-root 2); the degree 3 is supplied, not derived.",
       "leanType": "IsOrigamiConstructible (2 ^ (1/3)) 3 AND NOT IsConstructible (2 ^ (1/3)) 3"
     },
     {
