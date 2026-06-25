@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03",
+    "range": { "startLine": 3, "endLine": 41 },
+    "type": "context",
+    "title": "The Galois Route to No-Intermediate-Fields",
+    "content": "The parent entry proved there are no proper intermediate fields between ℝ and ℂ via the tower law ([ℂ:ℝ] = [ℂ:K]·[K:ℝ] = 2 forces [K:ℝ] ∈ {1,2}). This file answers the parent's third open question with the genuinely different structural argument: ℂ/ℝ is Galois with Gal(ℂ/ℝ) ≅ ℤ/2ℤ, and the fundamental theorem of Galois theory reads the field lattice off the subgroup lattice of a prime-order group. The punchline intermediateField_eq_bot_or_top is STRONGER than the parent's degree count — it pins each intermediate field to ⊥ = ℝ or ⊤ = ℂ, through the subgroup lattice rather than the tower law.",
+    "mathContext": "$\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R}) \\cong \\mathbb{Z}/2\\mathbb{Z}$; the FTGT bijection sends the only two subgroups $\\{\\bot, \\top\\}$ to the only two intermediate fields $\\{\\mathbb{R}, \\mathbb{C}\\}$.",
+    "significance": "context",
+    "relatedConcepts": ["Galois theory", "fundamental theorem of Galois theory", "intermediate fields", "tower law", "complex conjugation"],
+    "prerequisites": ["field extensions", "Galois extensions", "ℂ/ℝ"]
+  },
+  {
+    "id": "ann-setup-galois",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03",
+    "range": { "startLine": 48, "endLine": 69 },
+    "type": "definition",
+    "title": "ℂ/ℝ Is a Galois Extension",
+    "content": "The file re-establishes IsAlgClosure ℝ ℂ self-contained (Complex.isAlgClosed + algebraicity), which supplies Normal ℝ ℂ via IsAlgClosure.normal. Separability Algebra.IsSeparable ℝ ℂ is automatic in characteristic 0. galois_complex_real := IsGalois.mk then bundles finite + separable + normal into IsGalois ℝ ℂ — the structural hypothesis on which the entire correspondence rests. Each ingredient is an instance Mathlib finds by inference; the content is recognizing that an algebraic closure of a char-0 field is automatically Galois over it.",
+    "mathContext": "$\\mathbb{C}/\\mathbb{R}$ is Galois: finite $+$ separable (char $0$) $+$ normal (algebraic closure $\\Rightarrow$ $\\mathrm{Normal}\\,\\mathbb{R}\\,\\mathbb{C}$).",
+    "significance": "key",
+    "relatedConcepts": ["IsGalois", "Normal extension", "separability in char 0", "IsAlgClosure"],
+    "prerequisites": ["normal and separable extensions", "algebraic closures"]
+  },
+  {
+    "id": "ann-order-two",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03",
+    "range": { "startLine": 71, "endLine": 82 },
+    "type": "theorem",
+    "title": "The Galois Group Has Order 2 and Is Cyclic",
+    "content": "card_galoisGroup_eq_two computes |Gal(ℂ/ℝ)| = 2 from IsGalois.card_aut_eq_finrank (for a Galois extension the automorphism group has order equal to the degree) and Complex.finrank_real_complex ([ℂ:ℝ] = 2). galoisGroup_isCyclic then applies isCyclic_of_prime_card: a group whose order is the prime 2 is cyclic, hence ≅ ℤ/2ℤ. Its single nontrivial element is complex conjugation — the only nontrivial ℝ-automorphism of ℂ.",
+    "mathContext": "$|\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R})| = [\\mathbb{C}:\\mathbb{R}] = 2$, and a group of prime order $2$ is cyclic $\\cong \\mathbb{Z}/2\\mathbb{Z}$.",
+    "significance": "key",
+    "relatedConcepts": ["IsGalois.card_aut_eq_finrank", "isCyclic_of_prime_card", "cyclic groups", "complex conjugation"],
+    "prerequisites": ["automorphism groups", "cyclic groups of prime order"]
+  },
+  {
+    "id": "ann-correspondence",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03",
+    "range": { "startLine": 84, "endLine": 97 },
+    "type": "insight",
+    "title": "The Galois Correspondence (Order-Reversing)",
+    "content": "galoisCorrespondence is the fundamental theorem of Galois theory for ℂ/ℝ: the order-reversing bijection IntermediateField ℝ ℂ ≃o (Subgroup Gal(ℂ/ℝ))ᵒᵈ, where the order reversal is encoded by the ᵒᵈ (order dual). card_intermediateField_eq_card_subgroup reads off that intermediate fields and subgroups are equinumerous (Nat.card_congr on the equiv). The order reversal is the conceptual heart: the largest field ⊤ = ℂ corresponds to the smallest subgroup ⊥, and ⊥ = ℝ (the fixed field of everything) to the whole group ⊤.",
+    "mathContext": "$\\mathrm{IntermediateField}\\,\\mathbb{R}\\,\\mathbb{C} \\;\\simeq_o\\; (\\mathrm{Subgroup}\\,\\mathrm{Gal}(\\mathbb{C}/\\mathbb{R}))^{od}$, order-reversing: $\\top \\mapsto \\bot$, $\\bot \\mapsto \\top$.",
+    "significance": "key",
+    "relatedConcepts": ["IsGalois.intermediateFieldEquivSubgroup", "order isomorphism", "order dual", "fixed fields"],
+    "prerequisites": ["fundamental theorem of Galois theory", "order isomorphisms"]
+  },
+  {
+    "id": "ann-subgroups",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03",
+    "range": { "startLine": 99, "endLine": 109 },
+    "type": "technique",
+    "title": "Subgroups of a Prime-Order Group: Lagrange",
+    "content": "subgroup_eq_bot_or_top shows every subgroup of Gal(ℂ/ℝ) is ⊥ or ⊤. By Lagrange (Subgroup.card_subgroup_dvd_card), |H| divides |Gal| = 2; a divisor of the prime 2 is 1 or 2 (Nat.dvd_prime), giving H = ⊥ (Subgroup.eq_bot_of_card_eq) or H = ⊤ (eq_top_of_card_eq). This is the group-side statement of 'no intermediate fields' — a prime-order group simply has no proper nontrivial subgroups.",
+    "mathContext": "$|H| \\mid |\\mathrm{Gal}| = 2 \\Rightarrow |H| \\in \\{1,2\\} \\Rightarrow H = \\bot \\vee H = \\top$ (Lagrange).",
+    "significance": "supporting",
+    "relatedConcepts": ["Lagrange's theorem", "prime-order groups", "Subgroup.card_subgroup_dvd_card", "divisors of a prime"],
+    "prerequisites": ["Lagrange's theorem", "subgroups"]
+  },
+  {
+    "id": "ann-no-intermediate",
+    "proofId": "fundamental-theorem-algebra-oq-04-oq-03",
+    "range": { "startLine": 111, "endLine": 136 },
+    "type": "theorem",
+    "title": "No Intermediate Fields, via the Subgroup Lattice",
+    "content": "intermediateField_eq_bot_or_top is the punchline: every intermediate field K of ℝ ⊆ ℂ equals ⊥ = ℝ or ⊤ = ℂ. Send K through the correspondence e to a subgroup; it is ⊥ or ⊤ (order-2 group); because e is an order-reversing bijection (and injective), ofDual(e K) = ⊥ forces e K = e ⊤ so K = ⊤, and ofDual(e K) = ⊤ forces K = ⊥ (using e.map_top, e.map_bot and OrderDual.toDual injectivity). This is the structural alternative to the parent's tower-law degree count — the field lattice is exactly the (dualized) subgroup lattice.",
+    "mathContext": "$\\forall K,\\ K = \\bot\\,(=\\mathbb{R}) \\vee K = \\top\\,(=\\mathbb{C})$ — transported from $H = \\bot \\vee H = \\top$ through the order-reversing bijection.",
+    "significance": "key",
+    "relatedConcepts": ["order dual", "injectivity of order isos", "map_top", "map_bot", "no proper intermediate fields"],
+    "prerequisites": ["the Galois correspondence", "order-dual arithmetic"]
+  }
+]
