@@ -1,0 +1,136 @@
+{
+  "id": "sperner-ndim-mathlib-oq-03",
+  "title": "Combinatorial Borsuk–Ulam (Tucker's Lemma, 1-D) via the Antipodal Parity Engine",
+  "slug": "sperner-ndim-mathlib-oq-03",
+  "description": "Answers OQ-03 from sperner-ndim-mathlib: does the abstract cell-complex parity framework extend to antipodal colorings (Borsuk–Ulam)? The combinatorial shadow of Borsuk–Ulam is Tucker's lemma. This entry proves the base case n=1 with 0 axioms and 0 sorries, and isolates the reusable 'antipodal parity engine' (signChanges_odd_iff) — the discrete fundamental theorem of calculus mod 2 — which plays for Tucker exactly the role sperner_parity plays for Sperner. It also documents precisely what the higher-dimensional extension needs (an antipodal ℤ/2-action on the boundary subcomplex that the current CellComplex lacks).",
+  "meta": {
+    "author": "Lean Genius Research",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/SpernerNDimMathlibOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "topology",
+      "tucker",
+      "borsuk-ulam",
+      "antipodal",
+      "parity",
+      "sperner",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 156,
+    "assumptions": "None. Fully machine-checked with 0 sorries and 0 axiom declarations; depends only on Mathlib and the foundational logical axioms (propext, Classical.choice, Quot.sound).",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "signChanges: the complementary-edge (sign-change) count of a Bool-labelling along a path 0—1—…—n",
+      "signChanges_succ: peeling the last edge — the recurrence the parity induction runs on",
+      "signChanges_odd_iff: the ANTIPODAL PARITY ENGINE — the sign-change count is odd iff the two endpoints disagree (discrete fundamental theorem of calculus mod 2). This is the Tucker analogue of SpernerAbstract.sperner_parity",
+      "complementary_edges_odd: antipodal boundary (g 0 = ! g n) forces an ODD number of complementary edges",
+      "tucker_one_dim: Tucker's lemma in dimension 1 — mismatched endpoints imply a complementary edge exists",
+      "tucker_one_dim_antipodal: the explicit antipodal phrasing g 0 = ! g n",
+      "tucker_one_dim_int: the {±1}-integer-labelled phrasing lbl 0 = − lbl n ⟹ ∃ edge with lbl i = − lbl (i+1)"
+    ],
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "leanFile": {
+    "path": "Proofs/SpernerNDimMathlibOQ03.lean",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 156,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "isAristotle": false,
+    "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerNDimMathlibOQ03.lean"
+  },
+  "overview": {
+    "historicalContext": "The Borsuk–Ulam theorem (Borsuk, 1933) states that every continuous map Sⁿ → ℝⁿ identifies a pair of antipodal points. Its purely combinatorial shadow is Tucker's lemma (Tucker, 1946): an antipodally symmetric triangulation of the ball Bⁿ, labelled by {±1,…,±n} antisymmetrically on the boundary sphere, must contain a complementary edge — an edge whose endpoints carry opposite labels +k and −k. Tucker's lemma is to Borsuk–Ulam what Sperner's lemma is to Brouwer: a finite parity statement from which the topological theorem follows by a compactness/subdivision limit. The parent entry sperner-ndim-mathlib formalized Sperner's lemma for an abstract cell complex via door-counting parity and asked, as OQ-03, whether that same framework extends to the antipodal (Borsuk–Ulam) setting. This entry answers the base case and pinpoints the structural gap for higher dimensions.",
+    "mathematicalSignificance": "The contribution is to isolate the *antipodal parity engine* rather than merely to prove a small case. The Sperner framework reduces a global panchromatic count to a boundary door count using a fixed-point-free involution on interior doors (even_card_fpf_invol). The 1-D antipodal analogue replaces 'panchromatic cell' with 'complementary edge' and shows that, in dimension one, the entire parity is governed by the two boundary endpoints: signChanges_odd_iff says the number of sign changes along a path is odd iff the endpoints disagree. This is a clean 'discrete fundamental theorem of calculus mod 2' and is exactly the Tucker counterpart of sperner_parity. Antipodal boundary data forces a disagreement, hence an odd — in particular nonzero — complementary-edge count: that is 1-D Tucker, the combinatorial Borsuk–Ulam in dimension one. The entry is honest about scope: the full n-dimensional theorem does NOT follow from the current CellComplex structure, which carries no antipodal involution on its boundary; the engine (even_card_fpf_invol) is reusable verbatim but the boundary bookkeeping is the genuine obstruction.",
+    "problemStatement": "Combinatorial Borsuk–Ulam, dimension 1 (Tucker): let g : ℕ → Bool label the vertices of a path 0—1—…—n by signs. If the boundary labels are antipodal (g 0 = ! g n), then there is a complementary edge: some i < n with g i ≠ g (i+1). Equivalently, with integer ±1 labels: if lbl 0 = − lbl n then ∃ i < n, lbl i = − lbl (i+1). Moreover the number of such complementary edges is odd.",
+    "proofStrategy": "1. Define signChanges g n = #{ i < n : g i ≠ g (i+1) }, the complementary-edge count. 2. Establish the recurrence signChanges g (n+1) = signChanges g n + [g n ≠ g (n+1)] by peeling the last vertex (Finset.range_add_one, filter_insert). 3. Prove the parity engine signChanges_odd_iff by induction on n: the count is odd iff g 0 ≠ g n. The inductive step is a three-Boolean case split (g 0, g n, g (n+1)) discharged by decide for the logical part and omega for the mod-2 arithmetic — adding a sign change flips both the parity and the endpoint-disagreement predicate in lockstep. 4. complementary_edges_odd specializes to antipodal boundary g 0 = ! g n (a Boolean antipode always disagrees). 5. tucker_one_dim extracts an actual edge: an odd count is positive, so the filtered Finset is nonempty (Finset.card_pos). 6. tucker_one_dim_int transports the Bool result to {±1} integer labels through the sign encoding decide (lbl · = 1), with the equivalence (decide (a=1) ≠ decide (b=1)) ↔ a = −b proved for a,b ∈ {±1} by case analysis.",
+    "keyInsights": [
+      "Tucker's lemma is the right combinatorial target for 'Borsuk–Ulam', not the continuous theorem: complementary edge ⟷ antipodal coincidence, antisymmetric boundary labels ⟷ the ℤ/2-equivariance of an odd map. This reframing turns an analytic statement into a finite parity statement, exactly paralleling Sperner ⟷ Brouwer.",
+      "The whole 1-D theorem collapses to a single parity invariant. signChanges_odd_iff is a discrete fundamental theorem of calculus mod 2: ∑ over edges of the local 'derivative' [g i ≠ g (i+1)] telescopes to a pure boundary term [g 0 ≠ g n]. No interior structure survives in dimension one, which is precisely why the door-pairing involution of the Sperner proof degenerates here.",
+      "Parity, not mere existence, is the reusable content. Proving only 'a complementary edge exists' would hide the mechanism; proving the count is ODD mirrors sperner_parity and is what generalizes — in higher dimensions the analogous statement counts boundary complementary simplices with sign and is governed by an antipodal involution.",
+      "The honest higher-dimensional obstruction is structural, not tactical. The abstract CellComplex of the parent entry has adjacency (adj) but no antipodal map α : Simplex → Simplex with α∘α = id compatible with vertices and adj. Tucker needs this free ℤ/2-action on the boundary subcomplex (the discrete analogue of the antipodal map on Sⁿ⁻¹). The parity engine even_card_fpf_invol is reusable verbatim; the missing datum is the equivariant boundary bookkeeping plus the Freund–Todd 'special simplices' labelling argument.",
+      "Encoding ±1 labels as a single sign bit (decide (lbl · = 1)) makes the antipodal condition lbl 0 = − lbl n collapse to Boolean negation g 0 = ! g n, so the integer Tucker statement is a one-line corollary of the Boolean engine. This is the same move that makes signed parity arguments tractable: work in ℤ/2 and read the answer back."
+    ],
+    "prerequisites": [
+      "Finset.filter / Finset.card and the range_add_one recurrence (Mathlib.Data.Finset.Basic)",
+      "Parity of natural numbers (Nat.odd_iff) and mod-2 arithmetic discharged by omega",
+      "Decidability of Boolean and concrete-integer propositions (decide)",
+      "The parent abstract Sperner framework (sperner-ndim-mathlib) for the structural analogy"
+    ]
+  },
+  "sections": [
+    {
+      "id": "section-signchanges",
+      "title": "Complementary-Edge Count and Its Recurrence",
+      "startLine": 81,
+      "endLine": 103,
+      "description": "signChanges counts complementary (sign-change) edges along the path; signChanges_succ peels the last edge into the recurrence the parity induction consumes."
+    },
+    {
+      "id": "section-parity-engine",
+      "title": "The Antipodal Parity Engine",
+      "startLine": 105,
+      "endLine": 130,
+      "description": "signChanges_odd_iff (sign-change count is odd iff endpoints disagree) and complementary_edges_odd (antipodal boundary ⟹ odd count). The Tucker analogue of sperner_parity."
+    },
+    {
+      "id": "section-tucker-1d",
+      "title": "Tucker's Lemma in Dimension One",
+      "startLine": 132,
+      "endLine": 156,
+      "description": "tucker_one_dim (mismatched endpoints ⟹ a complementary edge), its antipodal phrasing, and the {±1}-integer-labelled corollary tucker_one_dim_int."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "signChanges_odd_iff",
+      "statement": "For g : ℕ → Bool, Odd (signChanges g n) ↔ g 0 ≠ g n.",
+      "description": "The antipodal parity engine: the parity of the complementary-edge count along a path equals the boundary mismatch. Discrete fundamental theorem of calculus, mod 2."
+    },
+    {
+      "name": "tucker_one_dim",
+      "statement": "For g : ℕ → Bool with g 0 ≠ g n, ∃ i, i < n ∧ g i ≠ g (i+1).",
+      "description": "Tucker's lemma / combinatorial Borsuk–Ulam in dimension one: mismatched boundary signs force a complementary edge."
+    },
+    {
+      "name": "tucker_one_dim_int",
+      "statement": "For lbl : ℕ → ℤ with every label ±1 and lbl 0 = − lbl n, ∃ i, i < n ∧ lbl i = − lbl (i+1).",
+      "description": "The {±1}-integer-labelled phrasing: antipodal endpoints force a complementary edge (opposite ±k labels)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "sperner-ndim-mathlib",
+      "relationship": "depends-on",
+      "description": "Parent entry: abstract Sperner's lemma via door-counting parity (even_card_fpf_invol, sperner_parity). OQ-03 asks whether this framework extends to antipodal colorings; this entry answers the 1-D case and reuses the same parity philosophy."
+    },
+    {
+      "targetId": "sperner-ndim-mathlib-oq-02",
+      "relationship": "related",
+      "description": "Sibling OQ deriving Brouwer's fixed-point theorem from Sperner. Tucker ⟹ Borsuk–Ulam is the antipodal analogue of Sperner ⟹ Brouwer; this entry is the Borsuk–Ulam-side counterpart."
+    },
+    {
+      "targetId": "borsuk-ulam",
+      "relationship": "related",
+      "description": "The continuous/topological Borsuk–Ulam theorem. Tucker's lemma is its finite combinatorial shadow; the topological theorem follows from Tucker by a subdivision/compactness limit."
+    }
+  ],
+  "sorries": [],
+  "conclusion": {
+    "summary": "OQ-03 of sperner-ndim-mathlib asked whether the abstract cell-complex parity framework extends to antipodal (Borsuk–Ulam) colorings. This entry answers the base case with 0 axioms and 0 sorries: it identifies Tucker's lemma as the correct combinatorial target, proves the 1-dimensional case (tucker_one_dim and its antipodal and {±1}-integer phrasings), and — most importantly — isolates the reusable antipodal parity engine signChanges_odd_iff, the mod-2 discrete fundamental theorem of calculus that is the Tucker analogue of sperner_parity. The complementary-edge count is shown to be odd under antipodal boundary data, the genuine parity content of Borsuk–Ulam in dimension one.",
+    "implications": "First, it confirms the parity philosophy of the parent framework does transfer to the antipodal setting: a global edge count is pinned mod 2 to pure boundary data, exactly as door counts are in Sperner. Second, it sharpens the OQ into a precise next step by exposing the structural obstruction for higher dimensions — the abstract CellComplex lacks an antipodal ℤ/2-action on its boundary subcomplex, which is the extra datum Tucker requires. The parity engine even_card_fpf_invol is reusable verbatim; only the equivariant boundary bookkeeping is missing. Third, the Bool ⟷ ±1 sign encoding shows how antipodal conditions become Boolean negation, a packaging that should carry into the higher-dimensional signed count.",
+    "openQuestions": [
+      "Define an AntipodalCellComplex extending CellComplex with a free involution α : Simplex → Simplex (α∘α = id) compatible with vertices and adj, and an antisymmetric labelling on the boundary subcomplex. Does even_card_fpf_invol then yield an n-dimensional Tucker parity theorem?",
+      "Formalize the 2-dimensional Tucker lemma (antipodal labelling of a symmetric triangulation of the disk) as the first genuinely higher-dimensional test of the antipodal framework, via the Freund–Todd 'special simplices' / constructive path argument.",
+      "Derive the discrete (and then, by subdivision limit, the continuous) Borsuk–Ulam theorem Sⁿ → ℝⁿ from the n-dimensional Tucker parity statement, mirroring the Sperner ⟹ Brouwer route in sperner-ndim-mathlib-oq-02."
+    ]
+  }
+}

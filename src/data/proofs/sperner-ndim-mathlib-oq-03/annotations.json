@@ -1,0 +1,75 @@
+[
+  {
+    "id": "ann-sperner-ndim-mathlib-oq03-context",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 8,
+      "endLine": 78
+    },
+    "type": "concept",
+    "title": "Tucker's Lemma as the Combinatorial Shadow of Borsuk–Ulam (OQ-03)",
+    "content": "**Open question OQ-03** from `sperner-ndim-mathlib`: does the abstract cell-complex *parity* framework extend to **antipodal colorings**, i.e. to the Borsuk–Ulam setting? The combinatorial (discrete) analogue of Borsuk–Ulam is **Tucker's lemma**. Where Sperner colors a triangulation with `Fin (d+1)` colors and finds a *panchromatic* cell, Tucker labels an *antipodally symmetric* triangulation of the ball $B^n$ by signed labels $\\{\\pm 1, \\ldots, \\pm n\\}$ antisymmetric on the boundary sphere, and finds a *complementary edge* — endpoints labelled $+k$ and $-k$. This entry settles the base case $n = 1$ with **0 axioms, 0 sorries**, and isolates the reusable *antipodal parity engine*. The headline is `signChanges_odd_iff`: along a path the number of sign-change edges is odd **iff** the endpoints disagree — a discrete fundamental theorem of calculus mod 2, and the exact Tucker analogue of `SpernerAbstract.sperner_parity`. Antipodal boundary data ($g\\,0 = {!}\\,g\\,n$) forces disagreement, hence an odd — in particular nonzero — complementary-edge count: that is 1-D Tucker.",
+    "mathContext": "**Borsuk–Ulam theorem** (Borsuk, 1933): every continuous $f : S^n \\to \\mathbb{R}^n$ has an antipodal pair $x, -x$ with $f(x) = f(-x)$. **Tucker's lemma** (Tucker, 1946) is its combinatorial core: it is to Borsuk–Ulam what Sperner's lemma is to Brouwer. In dimension one the ball is the interval, its boundary is the two endpoints ($S^0$), and an antisymmetric boundary labelling simply assigns opposite signs to the two ends. The path then has an odd number of sign changes, so at least one — a complementary edge. The proof telescopes the local 'derivative' $[g\\,i \\neq g\\,(i+1)]$ to the boundary term $[g\\,0 \\neq g\\,n]$; the interior door-pairing involution of the Sperner proof degenerates because a 1-D path has no interior faces to pair.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Tucker's lemma (1946)",
+      "Borsuk–Ulam theorem (1933)",
+      "antipodal / free ℤ/2-action",
+      "discrete fundamental theorem of calculus mod 2",
+      "complementary edge",
+      "door-counting parity argument"
+    ],
+    "prerequisites": [
+      "SpernerNDimMathlib (CellComplex, sperner_parity, even_card_fpf_invol)",
+      "Finset.filter / Finset.card and the range_add_one recurrence",
+      "Nat parity (Nat.odd_iff) and mod-2 arithmetic via omega"
+    ]
+  },
+  {
+    "id": "ann-sperner-ndim-mathlib-oq03-parity-engine",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 105,
+      "endLine": 130
+    },
+    "type": "technique",
+    "title": "The Antipodal Parity Engine (signChanges_odd_iff)",
+    "content": "`signChanges_odd_iff` proves, by induction on the path length, that `Odd (signChanges g n) ↔ g 0 ≠ g n`. The inductive step uses the recurrence `signChanges_succ` (peeling the last edge) and a three-Boolean case split on `g 0`, `g n`, `g (n+1)`: the logical equivalence `(g 0 ≠ g (n+1)) ↔ ¬(g 0 ≠ g n)` under `g n ≠ g (n+1)` is discharged by `decide`, while the mod-2 bookkeeping `(s+1) % 2` is handled by `omega` after `Nat.odd_iff`. Adding a complementary edge flips the parity and the endpoint-disagreement predicate *in lockstep* — the heart of the argument. `complementary_edges_odd` then specializes to genuine antipodes (`g 0 = ! g n`), where a Boolean and its negation always disagree. This is the Tucker counterpart of `SpernerAbstract.sperner_parity`: a global count pinned mod 2 to pure boundary data.",
+    "mathContext": "The statement is a $\\mathbb{Z}/2$ telescoping identity: $\\sum_{i<n} [g\\,i \\neq g\\,(i+1)] \\equiv [g\\,0 \\neq g\\,n] \\pmod 2$, the discrete analogue of $\\int_0^n g' = g(n) - g(0)$. Proving the *parity* (count is odd), not merely existence, is what generalizes: in higher dimensions the analogous invariant counts boundary complementary simplices governed by an antipodal involution.",
+    "significance": "key",
+    "relatedConcepts": [
+      "telescoping sum mod 2",
+      "parity invariant",
+      "induction on path length",
+      "decide + omega discharge"
+    ],
+    "prerequisites": [
+      "signChanges_succ recurrence",
+      "Nat.odd_iff",
+      "Boolean case analysis (decide)"
+    ]
+  },
+  {
+    "id": "ann-sperner-ndim-mathlib-oq03-obstruction",
+    "proofId": "sperner-ndim-mathlib-oq-03",
+    "range": {
+      "startLine": 56,
+      "endLine": 70
+    },
+    "type": "concept",
+    "title": "The Honest Higher-Dimensional Obstruction",
+    "content": "The full $n$-dimensional Tucker lemma does **not** follow from the parent `CellComplex` as-is. That structure has adjacency (`adj`) but **no antipodal map** $\\alpha : \\text{Simplex} \\to \\text{Simplex}$ with $\\alpha \\circ \\alpha = \\text{id}$ compatible with `vertices` and `adj` — the discrete analogue of the antipodal map on $S^{n-1}$, which is exactly what Tucker requires. Extending the framework needs an `AntipodalCellComplex` refinement (a free $\\mathbb{Z}/2$-action on the boundary subcomplex) plus the Freund–Todd 'special simplices' labelling argument. Crucially, the parity *engine* `even_card_fpf_invol` is reusable **verbatim**; the genuine obstruction is the equivariant boundary bookkeeping, not the involution machinery. This is the precise next step the OQ has been sharpened into.",
+    "mathContext": "Constructive proofs of Tucker (Freund–Todd, 1981) follow a path of 'almost-complementary' simplices through the triangulation, using the antipodal symmetry on the boundary to pin the path's parity — the higher-dimensional incarnation of the endpoint-disagreement argument proved here in 1-D.",
+    "significance": "important",
+    "relatedConcepts": [
+      "free ℤ/2-action",
+      "equivariant boundary subcomplex",
+      "Freund–Todd special simplices",
+      "even_card_fpf_invol reuse"
+    ],
+    "prerequisites": [
+      "SpernerNDimMathlib CellComplex structure",
+      "antipodal map on the boundary sphere"
+    ]
+  }
+]
