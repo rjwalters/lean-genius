@@ -1,7 +1,7 @@
 {
   "slug": "chinese-remainder-non-coprime-oq-02-oq-01",
   "title": "CRT for 3 Non-Coprime Moduli in PIDs via IsBezout",
-  "phase": "OBSERVE",
+  "phase": "VERIFIED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,24 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21T22:19:23+02:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "VERIFIED",
+    "since": "2026-06-25",
+    "iteration": 2,
+    "focus": "Solved: 3-modulus non-coprime CRT in PIDs via divisibility-lattice distributivity.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Entry complete; optional n-modulus generalization and Mathlib upstreaming.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOLVED. Three-modulus non-coprime CRT in a PID/Bézout domain: crt3_iff shows x ≡ aᵢ (mod mᵢ), i=1,2,3, is solvable iff pairwise compatible (gcd mᵢ mⱼ ∣ aᵢ−aⱼ); crt3_unique gives uniqueness mod lcm(m₁,m₂,m₃). The engine is gcd_lcm_distrib — the distributive law gcd(lcm a b,c) ∣ lcm(gcd a c,gcd b c) — proved by transporting the inequality (A⊔B)⊓C ≤ (A⊓C)⊔(B⊓C) through Associates.factors to the distributive multiset lattice FactorSet R. 14 thm, 0 def, 0 axioms, 0 sorries; instantiated for ℤ. File Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean.",
+    "builtItems": [
+      "gcd_lcm_distrib: gcd(lcm a b,c) ∣ lcm(gcd a c,gcd b c) in a UFD/GCD domain (distributive direction)",
+      "associates_inf_sup_le: distributivity of the Associates lattice via the FactorSet model",
+      "mk_gcd_eq_inf / mk_lcm_eq_sup: gcd/lcm ↔ lattice meet/join bridges on Associates",
+      "crt2_iff / crt2_unique: two-modulus base case via Bézout (gcd_dvd_iff_exists)",
+      "crt3_necessary / crt3_sufficient / crt3_iff: three-modulus characterization",
+      "crt3_unique / crt3_solution_set: uniqueness mod lcm(m₁,m₂,m₃) + combined statement"
+    ],
+    "insights": [
+      "Necessity and uniqueness for 3 moduli hold in any commutative ring; only sufficiency needs the ideal lattice to be distributive.",
+      "The precise obstruction is (I₁⊔I₃)⊓(I₂⊔I₃) ≤ (I₁⊓I₂)⊔I₃; its divisibility form is gcd(lcm a b,c) ∣ lcm(gcd a c,gcd b c).",
+      "The factorization model FactorSet R is a multiset lattice, hence distributive — transporting through Associates.factors avoids ad hoc gcd/lcm cancellation.",
+      "The sibling oq-03-oq-01 proves the same distributive law by a long elementary coprime-cofactor argument; the factorization route here is shorter and holds in any UFD."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Generalize 3 → n moduli by iterating the two-into-one merge (uniqueness mod lcm of all moduli).",
+      "Upstream gcd_lcm_distrib / Associates DistribLattice to Mathlib."
+    ],
     "markdown": "# Knowledge Base: chinese-remainder-non-coprime-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
@@ -50,9 +65,11 @@
     "chinese-remainder-non-coprime-oq-01",
     "chinese-remainder-non-coprime-oq-01-oq-01",
     "chinese-remainder-non-coprime-oq-02",
+    "chinese-remainder-non-coprime-oq-02-oq-01",
     "chinese-remainder-non-coprime-oq-03",
     "chinese-remainder-non-coprime-oq-03-oq-01",
     "chinese-remainder-non-coprime-oq-03-oq-02",
+    "chinese-remainder-non-coprime-oq-03-oq-03",
     "chinese-remainder-non-coprime-oq-04"
   ],
   "references": {
@@ -120,6 +137,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02.lean"
     },
     {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ02OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/ChineseRemainderNonCoprimeOQ03.lean",
       "filename": "ChineseRemainderNonCoprimeOQ03.lean",
       "lineCount": 392,
@@ -162,6 +190,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ChineseRemainderNonCoprimeOQ03OQ03.lean",
+      "filename": "ChineseRemainderNonCoprimeOQ03OQ03.lean",
+      "lineCount": 161,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ChineseRemainderNonCoprimeOQ03OQ03.lean"
     },
     {
       "path": "Proofs/ChineseRemainderNonCoprimeOQ04.lean",
