@@ -706,6 +706,7 @@ import Proofs.CauchySchwarzOQ05
 import Proofs.CauchySchwarzOQ06
 import Proofs.CauchySchwarzOQ06OQ01
 import Proofs.CauchySchwarzOQ07
+import Proofs.CauchySchwarzOQ07OQ01
 import Proofs.CauchySchwarzOQ08
 import Proofs.CayleyHamilton
 import Proofs.CayleyHamiltonCyclicVectorAllFields
