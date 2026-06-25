@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-aeval-fromblocks-diag",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+    "range": { "startLine": 81, "endLine": 94 },
+    "type": "lemma",
+    "title": "aeval Respects Block-Diagonal Direct Sums",
+    "content": "The engine of the file: evaluating a polynomial at a block-diagonal matrix `A ⊕ D` gives the block-diagonal of the evaluations, `aeval (A ⊕ D) f = (aeval A f) ⊕ (aeval D f)`. The proof expands `aeval` as a finite coefficient-weighted sum of powers (`Polynomial.aeval_eq_sum_range`), uses Mathlib's `fromBlocks_diagonal_pow` to push each power inside the blocks, and pulls the scalar multiplications and sums out blockwise (the private helper `fromBlocks_diag_sum`).",
+    "mathContext": "$\\mathrm{aeval}_{A \\oplus D}(f) = \\sum_{k} f_k (A\\oplus D)^k = \\sum_k f_k (A^k \\oplus D^k) = \\left(\\sum_k f_k A^k\\right) \\oplus \\left(\\sum_k f_k D^k\\right) = \\mathrm{aeval}_A(f) \\oplus \\mathrm{aeval}_D(f)$",
+    "significance": "key",
+    "relatedConcepts": ["block-diagonal matrix", "algebra homomorphism", "polynomial evaluation", "direct sum of modules"],
+    "prerequisites": ["Polynomial.aeval_eq_sum_range", "Matrix.fromBlocks_diagonal_pow"]
+  },
+  {
+    "id": "ann-charpoly-companion-block",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+    "range": { "startLine": 99, "endLine": 110 },
+    "type": "theorem",
+    "title": "Characteristic Polynomial Multiplies: charpoly(C(p) ⊕ C(q)) = p·q",
+    "content": "The characteristic-polynomial side of the rational canonical form. Mathlib's `charpoly_fromBlocks_zero₂₁` factors the charpoly of a block-triangular matrix into the product of the diagonal blocks' charpolys; the parent file's `charpoly_companionMatrix` turns each factor into the corresponding polynomial, giving `p · q`.",
+    "mathContext": "$\\operatorname{charpoly}(C(p) \\oplus C(q)) = \\operatorname{charpoly}(C(p)) \\cdot \\operatorname{charpoly}(C(q)) = p \\cdot q$, of degree $d_p + d_q$.",
+    "significance": "critical",
+    "relatedConcepts": ["characteristic polynomial", "invariant factors", "block-triangular determinant", "rational canonical form"],
+    "prerequisites": ["Matrix.charpoly_fromBlocks_zero₂₁", "charpoly_companionMatrix"]
+  },
+  {
+    "id": "ann-aeval-companion-block-mul",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+    "range": { "startLine": 121, "endLine": 132 },
+    "type": "theorem",
+    "title": "Blockwise Annihilation by the Product p·q",
+    "content": "The block-diagonal companion form is killed by the product of its block polynomials. Using `aeval_fromBlocks_diag` and the ring-homomorphism property of `aeval`, `(p·q)(C(p) ⊕ C(q))` splits as `(p·q)(C(p)) ⊕ (p·q)(C(q))`; since `p` kills `C(p)` and `q` kills `C(q)`, both blocks vanish.",
+    "mathContext": "$(p\\cdot q)(C(p) \\oplus C(q)) = \\big(p(C(p))\\,q(C(p))\\big) \\oplus \\big(p(C(q))\\,q(C(q))\\big) = (0\\cdot\\ast) \\oplus (\\ast\\cdot 0) = 0$",
+    "significance": "important",
+    "relatedConcepts": ["Cayley-Hamilton theorem", "annihilating polynomial", "ring homomorphism"],
+    "prerequisites": ["aeval_companionMatrix", "aeval_fromBlocks_diag"]
+  },
+  {
+    "id": "ann-minpoly-companion-block",
+    "proofId": "cayley-hamilton-reduction-oq-02-oq-01-wip-01",
+    "range": { "startLine": 139, "endLine": 178 },
+    "type": "theorem",
+    "title": "Minimal Polynomial is the LCM: minpoly(C(p) ⊕ C(q)) = lcm(p, q)",
+    "content": "The minimal-polynomial side of the rational canonical form, and the capstone. Two divisibilities: (a) `minpoly ∣ lcm` because `lcm p q` annihilates both blocks (`p ∣ lcm`, `q ∣ lcm`); (b) `lcm ∣ minpoly` because `minpoly` annihilates the whole matrix, hence — projecting via `Matrix.fromBlocks_inj` — each block, so `p = minpoly(C(p))` and `q = minpoly(C(q))` both divide `minpoly`. Both polynomials are monic (the lcm is normalized over a field), so mutual divisibility forces equality. The product/lcm contrast is the structural heart of RCF: the form is non-derogatory exactly when `p` and `q` are coprime.",
+    "mathContext": "$\\operatorname{minpoly}(C(p) \\oplus C(q)) = \\operatorname{lcm}(p, q)$; in general $\\operatorname{lcm}(p,q) \\mid p\\cdot q$ strictly, with equality iff $\\gcd(p,q) = 1$.",
+    "significance": "critical",
+    "relatedConcepts": ["minimal polynomial", "least common multiple", "non-derogatory matrix", "monic uniqueness", "rational canonical form"],
+    "prerequisites": ["minpoly_companionMatrix", "Polynomial.eq_of_monic_of_associated", "Matrix.fromBlocks_inj", "normalize_lcm"]
+  }
+]
