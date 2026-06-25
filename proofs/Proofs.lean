@@ -1732,6 +1732,7 @@ import Proofs.Erdos245Problem
 import Proofs.Erdos246Problem
 import Proofs.Erdos247Aristotle
 import Proofs.Erdos247Problem
+import Proofs.Erdos247RatioGrowth
 import Proofs.Erdos248Problem
 import Proofs.Erdos249OQ01
 import Proofs.Erdos249Problem
