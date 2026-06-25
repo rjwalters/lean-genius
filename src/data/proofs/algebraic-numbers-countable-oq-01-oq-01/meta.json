@@ -1,0 +1,234 @@
+{
+  "id": "algebraic-numbers-countable-oq-01-oq-01",
+  "title": "The Algebraic Numbers Form an Algebraically Closed Field",
+  "slug": "algebraic-numbers-countable-oq-01-oq-01",
+  "description": "Answers the parent's first open question: upgrade the field of elements algebraic over K from a subfield to an IntermediateField K L, and prove that — when the ambient field L is algebraically closed — it is itself algebraically closed, i.e. it is the relative algebraic closure of K in L. The proof is a self-contained transitivity-of-algebraicity argument: a nonconstant polynomial over the algebraic-element field has a root in L, that root is algebraic over the field, and an algebraic element of an algebraic extension is algebraic over the base — so the root already lies in the field. Specialized to ℚ ⊆ ℂ, the algebraic numbers form a countable algebraically closed field (an algebraic closure of ℚ realized inside ℂ), and the construction is shown to coincide with Mathlib's relative algebraic closure algebraicClosure ℚ ℂ.",
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Algebraic_closure",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ01OQ01.lean",
+    "tags": [
+      "field-theory",
+      "algebraic-numbers",
+      "algebraic-closure",
+      "intermediate-field",
+      "transitivity-of-algebraicity",
+      "integral-closure",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 177,
+    "assumptions": "",
+    "mathlib_version": "4.26.0",
+    "dateAdded": "2026-06-25",
+    "originalContributions": [
+      "algebraicIntermediateField K L: upgrades the parent's algebraicSubfield K L to an IntermediateField K L by supplying the missing datum that algebraMap K L k is algebraic over K (isAlgebraic_algebraMap), so K itself lands inside the field of algebraic elements",
+      "algebraicIntermediateField_eq_algebraicClosure: identifies the hand-built field of algebraic elements with Mathlib's relative algebraic closure algebraicClosure K L, confirming the parent's construction recovers the standard object",
+      "mem_of_isAlgebraic_over: the transitivity heart — if z ∈ L is algebraic over the field of algebraic elements then z is already algebraic over the base K, hence already a member (an algebraic element of an algebraic extension is algebraic over the base, IsIntegral.trans_isAlgebraic)",
+      "isAlgClosed_algebraicIntermediateField: when L is algebraically closed the field of K-algebraic elements is itself algebraically closed, proved directly via IsAlgClosed.of_exists_root and transitivity rather than by invoking Mathlib's packaged IsAlgClosure instance",
+      "algebraicNumbersField : IntermediateField ℚ ℂ together with the IsAlgClosed instance: the algebraic numbers form a (countable, by the grandparent) algebraically closed field — an algebraic closure of ℚ realized concretely inside ℂ"
+    ],
+    "prerequisites": [
+      "AlgebraicNumbersCountableOQ01: the elements algebraic over K form a subfield algebraicSubfield K L (this entry upgrades it to an intermediate field and proves algebraic closedness)",
+      "Subfield.toIntermediateField: upgrade a subfield to an intermediate field given that the base field's image is contained",
+      "IsIntegral.trans_isAlgebraic: an element integral over S, with S/R algebraic, is algebraic over R (transitivity of algebraicity)",
+      "IsAlgClosed.of_exists_root: a field in which every monic irreducible polynomial has a root is algebraically closed",
+      "IsAlgClosed.exists_aeval_eq_zero: over an algebraically closed field, a polynomial of positive degree has a root"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Subfield.toIntermediateField",
+        "description": "Promotes a Subfield L to an IntermediateField K L when the image of K is contained; used to upgrade the parent's algebraicSubfield",
+        "module": "Mathlib.FieldTheory.IntermediateField.Basic"
+      },
+      {
+        "theorem": "IsIntegral.trans_isAlgebraic",
+        "description": "If S/R is algebraic and a is integral over S, then a is algebraic over R — the transitivity step that closes the algebraic-element field under taking algebraic elements",
+        "module": "Mathlib.RingTheory.Algebraic.Integral"
+      },
+      {
+        "theorem": "IsAlgClosed.of_exists_root",
+        "description": "A field is algebraically closed if every monic irreducible polynomial over it has a root",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "IsAlgClosed.exists_aeval_eq_zero",
+        "description": "Over an algebraically closed field, a polynomial of positive degree (coefficients mapped in) has a root; supplies the root in L",
+        "module": "Mathlib.FieldTheory.IsAlgClosed.Basic"
+      },
+      {
+        "theorem": "Polynomial.aeval_algebraMap_apply_eq_algebraMap_eval",
+        "description": "aeval (algebraMap R S x) p = algebraMap R S (eval x p); the bridge transporting the L-root back to a root inside the algebraic-element field along the injective inclusion",
+        "module": "Mathlib.Algebra.Polynomial.AlgebraMap"
+      },
+      {
+        "theorem": "algebraicClosure",
+        "description": "Mathlib's relative algebraic closure (maximal algebraic subextension) of E/F, defined as the integral closure upgraded to an intermediate field; shown equal to the construction here",
+        "module": "Mathlib.FieldTheory.AlgebraicClosure"
+      }
+    ],
+    "theoremCount": 7,
+    "relatedProblems": [
+      {
+        "id": "algebraic-numbers-countable-oq-01",
+        "relationship": "Parent: builds the subfield algebraicSubfield K L of algebraic elements. This entry upgrades it to an intermediate field and proves it is algebraically closed."
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Grandparent: the algebraic numbers are countable. Combined with this entry: a countable algebraically closed field."
+      }
+    ],
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Cantor (1874) showed the algebraic numbers are countable; the parent entry showed they form a subfield of $\\mathbb{C}$. The decisive structural fact, due to Steinitz's development of field theory (1910), is that they form an *algebraically closed* field: every polynomial with algebraic coefficients has algebraic roots. Concretely, $\\overline{\\mathbb{Q}}$, the field of algebraic numbers, is an algebraic closure of $\\mathbb{Q}$ sitting inside $\\mathbb{C}$ — a countable algebraically closed field, in contrast with the uncountable $\\mathbb{C}$ that contains it. The engine is *transitivity of algebraicity*: an algebraic element of an algebraic extension is algebraic over the base. This entry isolates that engine and machine-checks the algebraic-closedness it powers.",
+    "problemStatement": "Answer the parent's first open question. (1) Upgrade the parent's $\\mathrm{algebraicSubfield}\\,K\\,L : \\mathrm{Subfield}\\,L$ to an intermediate field $\\mathrm{algebraicIntermediateField}\\,K\\,L : \\mathrm{IntermediateField}\\,K\\,L$. (2) Prove that when $L$ is algebraically closed this intermediate field is itself algebraically closed — the relative algebraic closure of $K$ in $L$ — via transitivity of algebraicity. (3) Specialize to $K=\\mathbb{Q}$, $L=\\mathbb{C}$: the algebraic numbers form a (countable) algebraically closed field, coinciding with Mathlib's $\\mathrm{algebraicClosure}\\,\\mathbb{Q}\\,\\mathbb{C}$.",
+    "proofStrategy": "**Upgrade.** `algebraicSubfield K L` already proves closure under $+,-,\\times,{}^{-1}$. To make it an `IntermediateField` the one extra datum is that $\\mathrm{algebraMap}\\,K\\,L\\,k$ is algebraic over $K$ — immediate from `isAlgebraic_algebraMap` — fed to `Subfield.toIntermediateField`.\n\n**Transitivity heart.** `mem_of_isAlgebraic_over`: if $z\\in L$ is algebraic over the field $A$ of algebraic elements, then since $A/K$ is algebraic (every element of $A$ is by construction algebraic over $K$), $z$ is integral over $A$ and hence algebraic over $K$ by `IsIntegral.trans_isAlgebraic` — so $z\\in A$. This is the closure property distinguishing the *algebraic* closure from a mere subfield.\n\n**Algebraic closedness.** `isAlgClosed_algebraicIntermediateField` applies `IsAlgClosed.of_exists_root`: given a monic irreducible $p$ over $A$, its positive degree and `IsAlgClosed L` give a root $w\\in L$ (`exists_aeval_eq_zero`); $w$ is integral over $A$ (root of the monic $p$), so by the transitivity heart $w\\in A$; transporting $\\mathrm{aeval}\\,w\\,p=0$ back along the injective inclusion $A\\hookrightarrow L$ (`aeval_algebraMap_apply_eq_algebraMap_eval` + injectivity) yields a root $\\langle w,\\,\\cdot\\rangle\\in A$. The proof is deliberately self-contained — it does not appeal to Mathlib's packaged `IsAlgClosure` instance.\n\n**Specialization.** At $\\mathbb{Q}\\subseteq\\mathbb{C}$ this gives `IsAlgClosed algebraicNumbersField`, and `algebraicNumbersField_eq` identifies it with `algebraicClosure ℚ ℂ`.",
+    "keyInsights": [
+      "**Transitivity of algebraicity is the whole engine.** An algebraic element of an algebraic extension is algebraic over the base ($\\mathrm{IsIntegral.trans\\_isAlgebraic}$). Applied to a root in $L$ of a polynomial over the algebraic-element field, it shows that root is already algebraic over $K$ — hence already in the field. Algebraic closedness is then immediate from $L$ being closed.",
+      "**Closedness via 'find the root upstairs, prove it lives downstairs'.** The field of algebraic elements has no roots to lose: any polynomial over it factors a root out of the algebraically closed $L$, and transitivity drags that root back into the field. This is the standard construction of a relative algebraic closure, made explicit.",
+      "**The upgrade Subfield → IntermediateField costs exactly one lemma.** Over the closure of $\\{x : \\mathrm{IsAlgebraic}\\,K\\,x\\}$ under field operations, the only missing intermediate-field datum is $K\\subseteq A$, i.e. that constants are algebraic ($\\mathrm{isAlgebraic\\_algebraMap}$).",
+      "**The hand-built field is Mathlib's relative algebraic closure.** `algebraicIntermediateField K L = algebraicClosure K L` by a one-line membership comparison, so the parent's elementary construction recovers the standard object and inherits its API.",
+      "**A countable algebraically closed field inside an uncountable one.** Combining with the grandparent's countability result, $\\overline{\\mathbb{Q}} = $ `algebraicNumbersField` is a countable algebraically closed field, strictly contained in the uncountable algebraically closed $\\mathbb{C}$ — concretely separating cardinality from algebraic closedness."
+    ]
+  },
+  "sections": [
+    {
+      "id": "upgrade",
+      "title": "§1: From subfield to intermediate field",
+      "startLine": 60,
+      "endLine": 95,
+      "summary": "Upgrades the parent's algebraicSubfield K L to algebraicIntermediateField K L : IntermediateField K L via Subfield.toIntermediateField (the extra datum, that constants are algebraic, is isAlgebraic_algebraMap). Records mem ↔ IsAlgebraic, identifies the result with Mathlib's algebraicClosure K L, and proves the extension is algebraic over K.",
+      "mathContext": "An intermediate field K ⊆ A ⊆ L is a subfield of L containing the image of K. The parent already proved subfield closure; the only addition is that algebraMap K L k is algebraic over K, which holds for any field extension."
+    },
+    {
+      "id": "transitivity",
+      "title": "§2: Closed under taking algebraic elements (transitivity)",
+      "startLine": 97,
+      "endLine": 110,
+      "summary": "mem_of_isAlgebraic_over: if z ∈ L is algebraic over the field of algebraic elements A, then z is already algebraic over K (hence in A). Proof: z is integral over the field A, and A/K is algebraic, so IsIntegral.trans_isAlgebraic gives algebraicity over K.",
+      "mathContext": "This is transitivity of algebraicity for a single element. It is exactly the closure property that makes A the algebraic closure of K in L rather than an arbitrary subfield."
+    },
+    {
+      "id": "algclosed",
+      "title": "§3: The field of algebraic elements is algebraically closed",
+      "startLine": 112,
+      "endLine": 148,
+      "summary": "isAlgClosed_algebraicIntermediateField: when L is algebraically closed, A is algebraically closed. Via IsAlgClosed.of_exists_root, a monic irreducible p over A gets a root w in L (exists_aeval_eq_zero); w is integral over A, so by §2 w ∈ A; the L-root is transported back to a root in A along the injective inclusion.",
+      "mathContext": "Every nonconstant polynomial over A has a root in the algebraically closed L; transitivity forces that root to be algebraic over K, hence to live in A. So A loses no roots — it is algebraically closed."
+    },
+    {
+      "id": "rationals-complex",
+      "title": "§4: The algebraic numbers ℚ̄ ⊆ ℂ",
+      "startLine": 150,
+      "endLine": 177,
+      "summary": "algebraicNumbersField : IntermediateField ℚ ℂ with an IsAlgClosed instance — the algebraic numbers form an algebraically closed field, an algebraic closure of ℚ inside ℂ (countable by the grandparent). algebraicNumbersField_eq identifies it with algebraicClosure ℚ ℂ; examples restate membership and the closure step at ℚ ⊆ ℂ.",
+      "mathContext": "ℂ is algebraically closed, so the general theorem specializes: ℚ̄ is a countable algebraically closed field sitting inside the uncountable algebraically closed ℂ."
+    }
+  ],
+  "conclusion": {
+    "summary": "The elements of L algebraic over K, upgraded from the parent's subfield to an intermediate field algebraicIntermediateField K L, form an algebraically closed field whenever L is — the relative algebraic closure of K in L. The proof rests on a single mathematical engine, transitivity of algebraicity: a nonconstant polynomial over the algebraic-element field has a root in the closed ambient L, that root is algebraic over the field and hence (transitivity) algebraic over K, so it already lies in the field. Specialized to ℚ ⊆ ℂ this realizes the algebraic numbers as a countable algebraically closed field, equal to Mathlib's algebraicClosure ℚ ℂ.",
+    "implications": [
+      "Completes the structural picture begun by the grandparent and parent: the algebraic numbers are not just a countable subfield of ℂ but a countable algebraically closed field — an algebraic closure of ℚ realized concretely inside ℂ.",
+      "Isolates transitivity of algebraicity as the sole engine of relative algebraic closedness, in a self-contained proof that does not lean on Mathlib's packaged IsAlgClosure instance.",
+      "Confirms the parent's hand-built field of algebraic elements coincides with Mathlib's relative algebraic closure, so downstream work can move freely between the elementary and library presentations."
+    ],
+    "openQuestions": [
+      "Realize the perfect-field / separability structure: ℚ̄ is perfect, so every algebraic extension of ℚ is separable — formalize the consequence that algebraicClosure ℚ ℂ has no inseparable extensions.",
+      "Quantify the splitting statement: every polynomial in ℚ[X] splits completely over algebraicNumbersField, packaging the relative algebraic closure as a splitting field for all of ℚ[X] at once."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "algebraic-numbers-countable-oq-01",
+      "relationship": "parent",
+      "description": "Parent: assembles the algebraic elements into a subfield algebraicSubfield K L. This entry upgrades it to an intermediate field and proves algebraic closedness."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "ancestor",
+      "description": "Grandparent: the algebraic numbers are countable. Combined here: a countable algebraically closed field."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "isAlgClosed_algebraicIntermediateField",
+      "type": "core",
+      "description": "If L is algebraically closed, the field of elements of L algebraic over K is itself algebraically closed — the relative algebraic closure of K in L. Proved by a self-contained transitivity argument via IsAlgClosed.of_exists_root.",
+      "leanType": "[IsAlgClosed L] → IsAlgClosed (algebraicIntermediateField K L)"
+    },
+    {
+      "name": "mem_of_isAlgebraic_over",
+      "type": "core",
+      "description": "Transitivity heart: an element of L algebraic over the field of algebraic elements is already algebraic over the base K, hence already a member.",
+      "leanType": "IsAlgebraic (algebraicIntermediateField K L) z → z ∈ algebraicIntermediateField K L"
+    },
+    {
+      "name": "algebraicIntermediateField",
+      "type": "definition",
+      "description": "The elements of L algebraic over K as an intermediate field K ⊆ · ⊆ L, upgrading the parent's algebraicSubfield by adjoining the fact that constants are algebraic.",
+      "leanType": "IntermediateField K L"
+    },
+    {
+      "name": "algebraicIntermediateField_eq_algebraicClosure",
+      "type": "core",
+      "description": "The hand-built field of algebraic elements equals Mathlib's relative algebraic closure algebraicClosure K L.",
+      "leanType": "algebraicIntermediateField K L = algebraicClosure K L"
+    },
+    {
+      "name": "algebraicNumbersField",
+      "type": "definition",
+      "description": "The algebraic numbers as the intermediate field of complex numbers algebraic over ℚ; algebraically closed (instance) and countable (grandparent).",
+      "leanType": "IntermediateField ℚ ℂ"
+    },
+    {
+      "name": "algebraicNumbersField_eq",
+      "type": "supporting",
+      "description": "The field of algebraic numbers coincides with Mathlib's algebraicClosure ℚ ℂ.",
+      "leanType": "algebraicNumbersField = algebraicClosure ℚ ℂ"
+    }
+  ],
+  "references": [
+    {
+      "authors": [
+        "Ernst Steinitz"
+      ],
+      "title": "Algebraische Theorie der Körper",
+      "year": "1910",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 137, pp. 167–309",
+      "note": "Foundational development of field theory, including algebraic closures and transitivity of algebraicity, the engine of this entry."
+    },
+    {
+      "authors": [
+        "Georg Cantor"
+      ],
+      "title": "Über eine Eigenschaft des Inbegriffes aller reellen algebraischen Zahlen",
+      "year": "1874",
+      "venue": "Journal für die reine und angewandte Mathematik, vol. 77, pp. 258–262",
+      "note": "Countability of the algebraic numbers (grandparent result); combined with this entry yields a countable algebraically closed field."
+    }
+  ],
+  "sorries": [],
+  "leanFile": {
+    "imports": [
+      "Proofs.AlgebraicNumbersCountableOQ01",
+      "Mathlib.FieldTheory.AlgebraicClosure",
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "AlgebraicNumbersCountableOQ01"
+    ],
+    "namespace": "AlgebraicNumbersCountableOQ01OQ01",
+    "lineCount": 177,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/AlgebraicNumbersCountableOQ01OQ01.lean"
+  }
+}
