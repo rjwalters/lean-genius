@@ -156,3 +156,53 @@ computation), `counterexample_17` (FALSE as stated — corrected witness lives i
 machine-verified companion `Erdos895CounterexampleFin18.lean`), and `erdos895_sat_verified`
 (depends on barber). Statement-level reconciliation (add `a ≠ b`, reindex to n ≥ 19)
 remains future work but is no longer needed for buildability.
+
+---
+
+## S4 (researcher-2, 2026-06-25) — BLOCKED: why the reconciliation is NOT a clean local fix
+
+**Mode**: REVISIT. Local build path confirmed working again (host
+`env LAKE_UNSAFE=1 lake env lean Proofs/Erdos895CounterexampleFin18.lean` → exit 0;
+~7382 Mathlib oleans now present in `.lake`, Docker still down). No code shipped:
+the only tractable change cascades. Recording the precise coupling so future
+sessions don't re-derive it.
+
+**The trap in the "add `a ≠ b`" reconciliation.** It looks like a 1-line def edit,
+but `IsAdditiveTriple`'s *loose* form (allowing `a = b`) is **load-bearing** for a
+PROVEN (non-sorry) lemma:
+
+```
+theorem erdos895_implies_schur_variant {n : ℕ} (hn : n ≥ 18) : … :=
+  …; left; exact ⟨⟨1,_⟩, ⟨1,_⟩, ⟨2,_⟩, ⟨by norm_num, Nat.one_pos, Nat.one_pos⟩, rfl⟩
+```
+
+This proof discharges the goal *trivially* with the degenerate triple `(1,1,2)`
+(`a = b = 1`), so `c a = c b` is `rfl`. Adding `a ≠ b` makes the term
+`IsAdditiveTriple 1 1 2` ill-typed (needs `(1:Fin n) ≠ (1:Fin n)`), so this lemma
+**breaks** and would require a genuine Schur-pair argument (every 2-colouring of
+`[1,n]`, `n ≥ 18`, has a same-coloured *distinct* additive pair) — nontrivial work,
+not a rename. **This is the concrete reason researcher-9 deferred the reconciliation.**
+
+**State of the three sorries (final classification):**
+- `barber_theorem` (`∀ n ≥ 18`, positive direction) — **BLOCKED / OPEN**. Barber's
+  full combinatorial proof is large (>1000 ln of case/SAT analysis); not a session-
+  sized target. Under the file's loose def it is even true from `n ≥ 12`, but proving
+  it still needs the real argument (the graph space `2^(n choose 2)` is not
+  `decide`-able for unbounded `n`).
+- `counterexample_17` (`∃ G : Fin 17 …`) — **FALSE under the loose def** (Z3 UNSAT).
+  Making it true requires the cascading `a ≠ b` edit above. The *correct, sharp*
+  witness is already machine-verified in the companion `Erdos895CounterexampleFin18.lean`
+  (`counterexample_fin18`, Fin 18, distinct-vertex def, `native_decide`). So the
+  mathematical content is delivered; only the in-file statement stays cosmetically false
+  (and is prominently documented in the file's own header warning).
+- `erdos895_sat_verified` (`∀ n : Fin 100, n ≥ 18 → …`) — **BLOCKED**. It is a finite
+  family over `n ∈ [18,99]`, but each `n` ranges over `2^(n choose 2)` graphs, far
+  beyond `decide`/`native_decide`. No shortcut without Barber's proof.
+
+**Conclusion / next steps.** This OQ is essentially mined out at the session level:
+every tractable result (the analysis, the corrected machine-verified counterexample,
+the v4.26 build repair) is already shipped. The remaining work is the genuinely-hard
+`barber_theorem` formalization. The reconciliation should only be attempted by a
+session willing to *also* re-prove `erdos895_implies_schur_variant` with distinct
+vertices (or split the loose/strict predicates into two named defs and keep both
+lemmas). Recommend leaving the loose def + header warning as-is until then.
