@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-diagonal-predicate",
+    "proofId": "godel-incompleteness-oq-02",
+    "range": { "startLine": 62, "endLine": 66 },
+    "type": "definition",
+    "title": "The diagonal predicate D",
+    "content": "D n := (run n n = false) says 'procedure n rejects its own code'. This is the abstract halting-style predicate at the heart of both Turing undecidability and Gödel incompleteness. Modelling run as a total ℕ → ℕ → Bool is harmless: the diagonal obstruction holds for every run, which is exactly why the same argument powers both theorems."
+  },
+  {
+    "id": "ann-decided-by",
+    "proofId": "godel-incompleteness-oq-02",
+    "range": { "startLine": 68, "endLine": 72 },
+    "type": "definition",
+    "title": "Decidability within the family",
+    "content": "DecidedBy P e := ∀ n, (run e n = true ↔ P n) is the abstract notion 'P is computable by code e'. A theory is 'effectively axiomatized' precisely when its provability predicate is DecidedBy some code."
+  },
+  {
+    "id": "ann-d-undecidable",
+    "proofId": "godel-incompleteness-oq-02",
+    "range": { "startLine": 74, "endLine": 88 },
+    "type": "theorem",
+    "title": "Turing's diagonal: D is undecidable",
+    "content": "If run e were the characteristic function of D, then evaluating at n = e forces run e e = true ↔ run e e = false — a Bool with no fixed point. The only foundational dependency is propext. This is the purest form of the halting-problem diagonal."
+  },
+  {
+    "id": "ann-sound-effective-theory",
+    "proofId": "godel-incompleteness-oq-02",
+    "range": { "startLine": 98, "endLine": 117 },
+    "type": "definition",
+    "title": "Sound, effectively axiomatized theory",
+    "content": "SoundEffectiveTheory bundles Provable, Refutable, two soundness fields, and decidable_provable (provability decided by some code). It is the recursion-theoretic stand-in for 'a sound theory whose theorems are recursively enumerable'."
+  },
+  {
+    "id": "ann-godel-via-turing",
+    "proofId": "godel-incompleteness-oq-02",
+    "range": { "startLine": 124, "endLine": 151 },
+    "type": "theorem",
+    "title": "Gödel's First Incompleteness via Turing",
+    "content": "Every sound, effectively axiomatized theory of the D-sentences has an EXPLICIT independent sentence. The witness is e, the code of the theory's own provability decider: the sentence D e ('the prover rejects its own code') is true precisely when unprovable. No Gödel sentence is built by hand — it falls out of diagonalizing against the provability predicate."
+  },
+  {
+    "id": "ann-incompleteness",
+    "proofId": "godel-incompleteness-oq-02",
+    "range": { "startLine": 171, "endLine": 182 },
+    "type": "theorem",
+    "title": "Incompleteness, stated as ¬ Complete",
+    "content": "Restates godel_via_turing: a sound, effectively axiomatized theory of the D-sentences is never complete. Unlike the parent's first_incompleteness (one fixed encoding), this quantifies over ALL such theories."
+  }
+]
