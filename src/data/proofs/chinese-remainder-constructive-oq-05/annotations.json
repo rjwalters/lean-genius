@@ -1,5 +1,20 @@
 [
   {
+    "id": "ann-header",
+    "proofId": "chinese-remainder-constructive-oq-05",
+    "range": {
+      "startLine": 1,
+      "endLine": 24
+    },
+    "type": "context",
+    "title": "Purpose: Remove the Parent's native_decide (Axiom Elimination)",
+    "content": "The parent entry chinese-remainder-constructive proves the structural CRT axiom-free, but discharges its worked examples (Sunzi x=23 mod 105, the four-moduli x=53 mod 210) with native_decide — which trusts the compiler's kernel reduction and pulls in the Lean.ofReduceBool axiom, making the parent 'axiomatized'. This file re-establishes each example WITHOUT native_decide, via a short Chinese-Remainder argument, so #print axioms lists only propext/Classical.choice/Quot.sound. The residue checks use kernel `decide`/`omega`, which do not introduce Lean.ofReduceBool.",
+    "mathContext": "native_decide ⟹ depends on $\\mathsf{Lean.ofReduceBool}$ (axiomatized); kernel `decide`/`omega` ⟹ only the foundational axioms. Goal: the worked examples become genuinely axiom-free.",
+    "significance": "key",
+    "relatedConcepts": ["native_decide vs decide", "Lean.ofReduceBool axiom", "axiom integrity policy", "kernel reduction trust"],
+    "prerequisites": ["the Chinese Remainder Theorem", "Lean's decision procedures and their axiom footprint"]
+  },
+  {
     "id": "ann-sunzi",
     "proofId": "chinese-remainder-constructive-oq-05",
     "range": {
@@ -8,7 +23,11 @@
     },
     "type": "insight",
     "title": "The Sunzi Problem Without native_decide",
-    "content": "sunzi_crt proves (x%3=2 ∧ x%5=3 ∧ x%7=2) ↔ x = 23 over 0 ≤ x < 105. Forward: each residue equation becomes a congruence x ≡ 23 [MOD mᵢ] (Nat.ModEq unfolds to x % mᵢ = 23 % mᵢ, closed by omega). The three pairwise-coprime congruences combine left to right via Nat.modEq_and_modEq_iff_modEq_mul into x ≡ 23 [MOD 105], which the bound x < 105 collapses to x = 23 by omega. The coprimality side conditions are kernel `decide` — not native_decide — so no Lean.ofReduceBool enters."
+    "content": "sunzi_crt proves (x%3=2 ∧ x%5=3 ∧ x%7=2) ↔ x = 23 over 0 ≤ x < 105. Forward: each residue equation becomes a congruence x ≡ 23 [MOD mᵢ] (Nat.ModEq unfolds to x % mᵢ = 23 % mᵢ, closed by omega). The three pairwise-coprime congruences combine left to right via Nat.modEq_and_modEq_iff_modEq_mul into x ≡ 23 [MOD 105], which the bound x < 105 collapses to x = 23 by omega. The coprimality side conditions are kernel `decide` — not native_decide — so no Lean.ofReduceBool enters.",
+    "mathContext": "$x \\equiv 2\\ (3),\\ x \\equiv 3\\ (5),\\ x \\equiv 2\\ (7) \\iff x = 23$ on $0 \\le x < 105$. CRT: coprime moduli ⟹ $x \\equiv 23 \\pmod{3\\cdot5\\cdot7}$.",
+    "significance": "key",
+    "relatedConcepts": ["Sunzi / Sun Tzu problem", "Nat.modEq_and_modEq_iff_modEq_mul", "Nat.ModEq", "omega", "existence ∧ uniqueness as an iff"],
+    "prerequisites": ["modular arithmetic", "pairwise coprimality", "the CRT combination lemma"]
   },
   {
     "id": "ann-shift",
@@ -19,7 +38,11 @@
     },
     "type": "concept",
     "title": "Uniqueness Only Modulo 105",
-    "content": "sunzi_shift records that 128 = 23 + 105 satisfies the very same congruences. This is why sunzi_crt carries the hypothesis x < 105: CRT pins the solution uniquely modulo the product of the moduli, not absolutely. Drop the range bound and the solution set is the full residue class 23 + 105·ℤ."
+    "content": "sunzi_shift records that 128 = 23 + 105 satisfies the very same congruences. This is why sunzi_crt carries the hypothesis x < 105: CRT pins the solution uniquely modulo the product of the moduli, not absolutely. Drop the range bound and the solution set is the full residue class 23 + 105·ℤ.",
+    "mathContext": "Solution set $= \\{23 + 105k : k \\in \\mathbb{N}\\}$; the range bound $x < 105$ selects the unique representative $23$. $128 = 23 + 105$ is the next solution.",
+    "significance": "supporting",
+    "relatedConcepts": ["uniqueness modulo the product", "residue class 23 + 105ℤ", "necessity of the range hypothesis"],
+    "prerequisites": ["the Sunzi congruences", "uniqueness in CRT"]
   },
   {
     "id": "ann-four",
@@ -30,7 +53,11 @@
     },
     "type": "insight",
     "title": "Scaling to Four Moduli",
-    "content": "four_moduli_crt handles x ≡ 1,2,3,4 (mod 2,3,5,7) ↔ x = 53 over x < 210. The same argument simply chains one more application of the coprime-combination lemma: 2·3 = 6, then 6·5 = 30, then 30·7 = 210. Each intermediate coprimality (e.g. Coprime 30 7) is dispatched by kernel decide. The pattern is uniform in the number of moduli — exactly the structure crt_pair_iff abstracts."
+    "content": "four_moduli_crt handles x ≡ 1,2,3,4 (mod 2,3,5,7) ↔ x = 53 over x < 210. The same argument simply chains one more application of the coprime-combination lemma: 2·3 = 6, then 6·5 = 30, then 30·7 = 210. Each intermediate coprimality (e.g. Coprime 30 7) is dispatched by kernel decide. The pattern is uniform in the number of moduli — exactly the structure crt_pair_iff abstracts.",
+    "mathContext": "$x \\equiv 1,2,3,4 \\pmod{2,3,5,7} \\iff x = 53$ on $x < 210$. Iterated combination: $2\\cdot3 \\to 6\\cdot5 \\to 30\\cdot7 = 210$.",
+    "significance": "supporting",
+    "relatedConcepts": ["iterated CRT combination", "telescoping coprime products", "uniformity in the number of moduli"],
+    "prerequisites": ["the two-modulus combination", "the Sunzi argument"]
   },
   {
     "id": "ann-certificate",
@@ -41,6 +68,10 @@
     },
     "type": "concept",
     "title": "The Reusable Certificate",
-    "content": "crt_pair_iff is the structural fact behind every numeric example: for coprime m, n and an in-range witness N with the right residues, the congruence pair holds iff x = N over 0 ≤ x < m·n. The uniqueness step uses Nat.mod_eq_of_lt to turn x ≡ N [MOD m·n] into the equality x = N. Instantiating this lemma — rather than recomputing with native_decide — is the axiom-free way to certify any concrete CRT solution."
+    "content": "crt_pair_iff is the structural fact behind every numeric example: for coprime m, n and an in-range witness N with the right residues, the congruence pair holds iff x = N over 0 ≤ x < m·n. The uniqueness step uses Nat.mod_eq_of_lt to turn x ≡ N [MOD m·n] into the equality x = N. Instantiating this lemma — rather than recomputing with native_decide — is the axiom-free way to certify any concrete CRT solution.",
+    "mathContext": "$\\gcd(m,n)=1,\\ N < mn,\\ N \\bmod m = a,\\ N \\bmod n = b \\;\\Rightarrow\\; \\big((x \\bmod m = a \\wedge x \\bmod n = b) \\iff x = N\\big)$ on $x < mn$.",
+    "significance": "key",
+    "relatedConcepts": ["reusable certificate lemma", "Nat.mod_eq_of_lt", "abstraction over numeric instances", "axiom-free certification"],
+    "prerequisites": ["the CRT combination lemma", "uniqueness via mod_eq_of_lt"]
   }
 ]
