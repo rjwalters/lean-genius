@@ -698,6 +698,7 @@ import Proofs.CauchySchwarzOQ01OQ02
 import Proofs.CauchySchwarzOQ01OQ03
 import Proofs.CauchySchwarzOQ01OQ04
 import Proofs.CauchySchwarzOQ01OQ04OQ04
+import Proofs.CauchySchwarzOQ01OQ05OQ01
 import Proofs.CauchySchwarzOQ02
 import Proofs.CauchySchwarzOQ02OQ01
 import Proofs.CauchySchwarzOQ02OQ02
