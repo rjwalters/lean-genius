@@ -561,8 +561,22 @@ for problem_file in problems_dir.glob("*.json"):
         continue
 
     knowledge = problem.get("knowledge", {})
-    insights = len(knowledge.get("insights", []))
-    built = len(knowledge.get("builtItems", []))
+    if not isinstance(knowledge, dict):
+        knowledge = {}
+
+    # Some problem files store insights/builtItems as a literal count (int)
+    # rather than a list of entries. Tolerate both shapes.
+    def _count(v):
+        if isinstance(v, (list, str, dict)):
+            return len(v)
+        if isinstance(v, bool):
+            return 0
+        if isinstance(v, (int, float)):
+            return int(v)
+        return 0
+
+    insights = _count(knowledge.get("insights", []))
+    built = _count(knowledge.get("builtItems", []))
 
     if insights == 0 and built == 0:
         continue
