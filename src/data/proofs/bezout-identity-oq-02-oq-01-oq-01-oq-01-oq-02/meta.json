@@ -1,0 +1,180 @@
+{
+  "id": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-02",
+  "title": "The Nullstellensatz Fails Over ℤ: the UFD Arithmetic Obstruction",
+  "slug": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-02",
+  "description": "Answers open question #2 of the parent (ℤ[X,Y] is a UFD): can the Nullstellensatz be formalized in the multivariate UFD context? The honest answer is no — Hilbert's Nullstellensatz requires an algebraically closed FIELD, and being a UFD is not enough. The obstruction over ℤ is of a different character than the real one (X²+1, missing root i): it is the failure of being a field. The prime constant 2 ∈ ℤ is a nonzero non-unit, so the ideal (2) ⊆ ℤ[X₁,…,Xₙ] is proper, yet 2 never evaluates to 0, so its zero locus is empty — the weak Nullstellensatz fails. The strong form fails too: I(V(2)) = ⊤ ≠ √(2). The same prime 2 is the witness that (2,X) is non-principal in the sibling proof. Because Mathlib's zeroLocus / vanishingIdeal are defined only over a field, elementary ring-level versions are built here; that the standard definitions do not even apply over ℤ is itself part of the answer.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-25",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ02.lean",
+    "parentProofId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
+    "tags": [
+      "algebra",
+      "polynomial-rings",
+      "nullstellensatz",
+      "UFD",
+      "multivariate",
+      "ideal-theory",
+      "algebraic-geometry",
+      "counterexample",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (confirmed via #print axioms). Built on Mathlib's MvPolynomial.eval, Ideal.span, constantCoeff, and Ideal.radical_eq_top.",
+    "dateAdded": "2026-06-25",
+    "lineCount": 154,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "mathlibDependencies": [
+      {
+        "theorem": "MvPolynomial.eval",
+        "description": "Evaluation ring hom MvPolynomial σ R →+* R at a point x : σ → R, valid over any commutative ring (not just a field)",
+        "module": "Mathlib.Algebra.MvPolynomial.Eval"
+      },
+      {
+        "theorem": "MvPolynomial.constantCoeff",
+        "description": "Ring hom MvPolynomial σ ℤ →+* ℤ; constantCoeff (C 2) = 2, used to show C 2 is not a unit",
+        "module": "Mathlib.Algebra.MvPolynomial.Basic"
+      },
+      {
+        "theorem": "Ideal.span_singleton_eq_top",
+        "description": "span {a} = ⊤ ↔ IsUnit a; converts properness of (C p) to non-unit of C p",
+        "module": "Mathlib.RingTheory.Ideal.Span"
+      },
+      {
+        "theorem": "Ideal.radical_eq_top",
+        "description": "radical I = ⊤ ↔ I = ⊤; used to show √(2) ≠ ⊤ from (2) ≠ ⊤",
+        "module": "Mathlib.RingTheory.Ideal.Operations"
+      },
+      {
+        "theorem": "Int.isUnit_iff",
+        "description": "IsUnit n ↔ n = 1 ∨ n = -1 in ℤ; 2 is not a unit",
+        "module": "Mathlib.Algebra.Order.Ring.Int"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Hilbert's Nullstellensatz (1893) is the cornerstone bridge between algebra and geometry: over an algebraically closed field $k$, the radical of an ideal $I \\subseteq k[X_1,\\ldots,X_n]$ equals the vanishing ideal of its zero locus, $\\sqrt{I} = I(V(I))$. Its weak form says a proper ideal always has a common zero. Two hypotheses are indispensable: the coefficient ring must be (i) a *field* and (ii) *algebraically closed*. The parent entry establishes that $\\mathbb{Z}[X,Y]$, and more generally $R[X_1,\\ldots,X_n]$ over a UFD $R$, is a unique factorization domain — the strongest factorization property short of being a PID. It is natural to ask whether the Nullstellensatz survives in this UFD world. It does not, and the reason is instructive. The real obstruction studied in the sibling $\\texttt{FactorRemainderNullstellensatzOQ01OQ02}$ is the *failure of algebraic closure*: $X^2+1$ has no real root because $i \\notin \\mathbb{R}$. The obstruction here is more basic still — the *failure of being a field*. Over $\\mathbb{Z}$ the constant $2$ is a nonzero non-unit; the ideal $(2)$ is proper, but $2$ vanishes nowhere, so the weak Nullstellensatz collapses already at degree $0$. This is the same prime $2$ that witnesses $(2,X)$ being non-principal in $\\mathbb{Z}[X,Y]$ — a single arithmetic fact ($2$ is a nonzero non-unit of $\\mathbb{Z}$) underlies both the non-PID and non-Nullstellensatz failures.",
+    "problemStatement": "Can the Nullstellensatz be formalized over a multivariate polynomial ring whose coefficients form a UFD (rather than an algebraically closed field)? (Answer: No — the field hypothesis is essential, and the failure is witnessed by the prime constant 2 over ℤ.)",
+    "proofStrategy": "Define ring-level zero locus zeroSet I = {x | ∀ p ∈ I, eval x p = 0} and vanishing ideal vanishingId V over an arbitrary commutative ring (Mathlib's versions require a field). General lemma weakNSS_fails_of_nonunit: for a nonzero non-unit constant C p, the ideal (C p) is proper (span_singleton_eq_top ↔ IsUnit, contradicted by the non-unit hypothesis) and zeroSet (C p) = ∅ (eval x (C p) = p ≠ 0 for every x). Instantiate at R = ℤ, p = 2: not_isUnit_C_two maps C 2 ↦ 2 via constantCoeff and uses Int.isUnit_iff. This yields weak_nullstellensatz_fails_over_int (any σ) and the headline weak_nullstellensatz_fails_over_ZXY (σ = Fin 2). Finally strong_nullstellensatz_fails_over_int: zeroSet (2) = ∅ gives vanishingId ∅ = ⊤, while radical_eq_top gives √(2) ≠ ⊤, so I(V(2)) ≠ √(2).",
+    "keyInsights": [
+      "**Field, not merely UFD**: The weak Nullstellensatz says a proper ideal has a common zero. Over a field, every nonzero element is a unit, so a proper ideal contains no nonzero constant. Over the UFD $\\mathbb{Z}$ this fails immediately: $(2)$ is proper yet contains the nowhere-vanishing constant $2$. UFD factorization theory is orthogonal to the field hypothesis the Nullstellensatz needs.",
+      "**Two obstructions, two characters**: The real-field obstruction ($X^2+1$ over $\\mathbb{R}$) is degree $2$ and disappears over $\\mathbb{C}$ — it is about *algebraic closure*. The integer obstruction ($2$ over $\\mathbb{Z}$) is degree $0$ and disappears only by passing to a *field* (e.g. $\\mathbb{Q}$, where $2$ becomes a unit and $(2)=\\top$). Both are needed to pin the Nullstellensatz hypotheses precisely.",
+      "**One prime, two failures**: The single arithmetic fact that $2$ is a nonzero non-unit of $\\mathbb{Z}$ powers both the sibling's non-principality of $(2,X)$ and this entry's failure of the Nullstellensatz. The witness ideal $(2)$ is in fact maximal-adjacent: $\\mathbb{Z}[X,Y]/(2) \\cong \\mathbb{F}_2[X,Y]$ is nonzero, confirming $(2) \\neq \\top$.",
+      "**The definitions themselves do not transfer**: Mathlib's `MvPolynomial.zeroLocus` and `vanishingIdeal` are defined only with `[Field k]`. Part of the answer to the open question is that one must *re-define* the basic objects over a general commutative ring (here via `MvPolynomial.eval`) before the question can even be stated over $\\mathbb{Z}$.",
+      "**Strong form collapses to ⊤**: With an empty zero locus, the vanishing ideal is forced to all of the ring (every polynomial vanishes vacuously on $\\emptyset$). Since $\\sqrt{(2)} = (2) \\neq \\top$, the correspondence $I(V(J)) = \\sqrt{J}$ breaks maximally — the right-hand side is proper while the left-hand side is everything."
+    ],
+    "prerequisites": [
+      "MvPolynomial evaluation and the ring hom eval : MvPolynomial σ R →+* R",
+      "Ideal.span of a singleton and the unit criterion span {a} = ⊤ ↔ IsUnit a",
+      "Radical of an ideal and radical_eq_top",
+      "Units of ℤ (Int.isUnit_iff)"
+    ]
+  },
+  "sections": [
+    {
+      "title": "Module Header, Imports, and Namespace",
+      "description": "Imports Mathlib; opens MvPolynomial and Ideal; works in a noncomputable section over a commutative ring R and index set σ."
+    },
+    {
+      "title": "Ring-level zero locus and vanishing ideal",
+      "description": "Defines zeroSet I and vanishingId V over any commutative ring (Mathlib's versions require a field), with membership simp lemmas and vanishingId_empty (= ⊤)."
+    },
+    {
+      "title": "The general arithmetic obstruction",
+      "description": "weakNSS_fails_of_nonunit: a nonzero non-unit constant C p gives a proper ideal (C p) with empty zero locus."
+    },
+    {
+      "title": "The UFD case — failure over ℤ and ℤ[X,Y]",
+      "description": "not_isUnit_C_two via constantCoeff and Int.isUnit_iff; weak_nullstellensatz_fails_over_int, weak_nullstellensatz_fails_over_ZXY, and strong_nullstellensatz_fails_over_int."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "The positive result: ℤ[X,Y] and MvPolynomial σ R over a UFD R are UFDs. This entry answers its open question #2 — the Nullstellensatz does NOT transfer to the UFD context, because being a UFD is weaker than being a field."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "ℤ[X,Y] is not a principal ideal ring, witnessed by (2,X). The same prime 2 (a nonzero non-unit of ℤ) drives both the non-principality there and the Nullstellensatz failure here."
+    },
+    {
+      "targetId": "factor-remainder-nullstellensatz-oq-01-oq-02",
+      "relationship": "related",
+      "description": "The complementary obstruction: the Nullstellensatz fails over ℝ via X²+1 (a not-algebraically-closed field). Together the two entries separate the two indispensable hypotheses — being a field (this entry) and being algebraically closed (the ℝ entry)."
+    },
+    {
+      "targetId": "bezout-identity-oq-02-oq-02-oq-03",
+      "relationship": "related",
+      "description": "The univariate Nullstellensatz via Bézout (positive direction over a field). Contrasts with the present negative result over the non-field ℤ."
+    }
+  ],
+  "conclusion": {
+    "summary": "A complete, 0-sorry, 0-axiom resolution of the parent's open question #2: the Nullstellensatz cannot be formalized over the multivariate UFD ℤ[X₁,…,Xₙ]. The prime constant 2 generates a proper ideal (2) whose zero locus over ℤ is empty, so the weak Nullstellensatz fails; the strong form fails because I(V(2)) = ⊤ ≠ √(2). The obstruction is the failure of ℤ to be a field — distinct from the not-algebraically-closed obstruction (X²+1 over ℝ) handled in the sibling.",
+    "implications": "Pins down precisely why the Nullstellensatz lives in the world of algebraically closed fields and not in the broader world of UFDs: factorization theory (UFD) is orthogonal to the field/closure hypotheses the geometry-algebra dictionary requires. Methodologically, the entry shows that even stating the Nullstellensatz over a non-field requires re-developing the zero-locus / vanishing-ideal definitions, since Mathlib's are field-only.",
+    "openQuestions": [
+      "Is there a meaningful Nullstellensatz-type statement over ℤ phrased via maximal ideals and residue fields (an arithmetic / Spec(ℤ[X]) version), rather than naive ℤ-points?",
+      "Over a domain R, does the weak Nullstellensatz (proper ideal ⇒ nonempty R-zero-locus) characterize exactly the algebraically closed fields among all commutative rings?"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "weak_nullstellensatz_fails_over_ZXY",
+      "type": "core",
+      "description": "The Nullstellensatz fails over ℤ[X,Y]: (2) is proper but its zero locus is empty",
+      "leanType": "(Ideal.span {C 2} : Ideal (MvPolynomial (Fin 2) ℤ)) ≠ ⊤ ∧ zeroSet (Ideal.span {C 2}) = ∅"
+    },
+    {
+      "name": "weak_nullstellensatz_fails_over_int",
+      "type": "core",
+      "description": "Weak Nullstellensatz fails over ℤ[X₁,…] for any index set σ",
+      "leanType": "∀ σ, (Ideal.span {C 2} : Ideal (MvPolynomial σ ℤ)) ≠ ⊤ ∧ zeroSet (Ideal.span {C 2}) = ∅"
+    },
+    {
+      "name": "strong_nullstellensatz_fails_over_int",
+      "type": "core",
+      "description": "Strong Nullstellensatz fails over ℤ: I(V(2)) = ⊤ ≠ √(2)",
+      "leanType": "∀ σ, vanishingId (zeroSet (Ideal.span {C 2})) ≠ (Ideal.span {C 2}).radical"
+    },
+    {
+      "name": "weakNSS_fails_of_nonunit",
+      "type": "core",
+      "description": "General obstruction: a nonzero non-unit constant C p gives a proper ideal with empty zero locus",
+      "leanType": "(p : R) → p ≠ 0 → ¬IsUnit (C p) → (Ideal.span {C p} ≠ ⊤ ∧ zeroSet (Ideal.span {C p}) = ∅)"
+    },
+    {
+      "name": "not_isUnit_C_two",
+      "type": "lemma",
+      "description": "C 2 is not a unit in ℤ[X,…]",
+      "leanType": "¬IsUnit (C 2 : MvPolynomial σ ℤ)"
+    },
+    {
+      "name": "vanishingId_empty",
+      "type": "lemma",
+      "description": "The vanishing ideal of the empty set is the whole ring",
+      "leanType": "vanishingId (∅ : Set (σ → R)) = ⊤"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "MvPolynomial",
+      "Ideal"
+    ],
+    "namespace": "BezoutIdentityOQ02OQ01OQ01OQ01OQ02",
+    "lineCount": 154,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/BezoutIdentityOQ02OQ01OQ01OQ01OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
