@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "derange-oq06-header",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 1, "endLine": 43 },
+    "type": "context",
+    "title": "Closing the boundary case: D(n) = round(n!/e) for all n ≥ 1",
+    "content": "The header explains exactly what this entry adds over its siblings. The parent DerangementsConvergence proves |D(n)/n! − e⁻¹| ≤ 1/(n+1)!, which scaled by n! gives |D(n) − n!·e⁻¹| ≤ 1/(n+1); sibling oq-03 used this to get the rounding identity only for n ≥ 2, where 1/(n+1) ≤ 1/3 < 1/2. The soft bound equals 1/2 exactly at n = 1, so the generic nearest-integer argument breaks at that single boundary. This file closes it using e > 2 directly (1/e < 1/2 ⟹ round(1/e) = 0 = D(1)) and re-derives the n ≥ 2 case, giving a self-contained proof for every n ≥ 1. It records both the n!·e⁻¹ and literal n!/e forms and notes the identity FAILS at n = 0 (D(0)=1 but round(1/e)=0), so n ≥ 1 is sharp.",
+    "mathContext": "$D(n) = \\mathrm{round}(n!/e)\\ \\forall n \\ge 1;\\quad |D(n) - n!\\,e^{-1}| \\le \\tfrac{1}{n+1},\\ =\\tfrac12 \\text{ at } n=1$",
+    "significance": "context",
+    "relatedConcepts": ["derangements", "nearest integer", "subfactorial", "alternating series estimate", "boundary case"],
+    "prerequisites": ["numDerangements", "the parent convergence-rate bound"]
+  },
+  {
+    "id": "derange-oq06-round-helper",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 51, "endLine": 60 },
+    "type": "technique",
+    "title": "round_eq_of_abs_lt_half: the nearest-integer characterisation",
+    "content": "`round_eq_of_abs_lt_half`: if |x − m| < 1/2 for an integer m, then round x = m. The proof rewrites round x via round_eq = ⌊x + 1/2⌋ and uses Int.floor_eq_iff (qualified explicitly — under `open Nat`, the bare floor_eq_iff resolves to Nat.floor_eq_iff, a different statement), closing the two-sided bound with linarith. This is the workhorse used to identify D(n) with a specific integer once the distance bound is below 1/2.",
+    "mathContext": "$|x - m| < \\tfrac12 \\implies \\mathrm{round}\\,x = m\\quad(m \\in \\mathbb{Z})$",
+    "significance": "key",
+    "relatedConcepts": ["round_eq", "Int.floor_eq_iff", "name-resolution under open Nat"],
+    "prerequisites": ["floor and round on ℝ"]
+  },
+  {
+    "id": "derange-oq06-abs-sub-le",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 62, "endLine": 80 },
+    "type": "theorem",
+    "title": "abs_sub_le: the integer-scale rate bound",
+    "content": "`abs_sub_le` lifts the parent's rate to integer scale: |D(n) − n!·e⁻¹| ≤ 1/(n+1) for all n. It factors D(n) − n!·e⁻¹ = (D(n)/n! − e⁻¹)·n!, takes absolute values (abs_mul, n! > 0), multiplies the parent bound |D(n)/n! − e⁻¹| ≤ 1/(n+1)! by n!, and simplifies 1/(n+1)!·n! = 1/(n+1) via Nat.factorial_succ and field_simp.",
+    "mathContext": "$|D(n) - n!\\,e^{-1}| = |\\tfrac{D(n)}{n!} - e^{-1}|\\cdot n! \\le \\tfrac{n!}{(n+1)!} = \\tfrac{1}{n+1}$",
+    "significance": "key",
+    "relatedConcepts": ["scaling a bound by n!", "Nat.factorial_succ", "abs_mul", "field_simp"],
+    "prerequisites": ["derangements_convergence_rate (parent)"]
+  },
+  {
+    "id": "derange-oq06-boundary",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 82, "endLine": 94 },
+    "type": "theorem",
+    "title": "Boundary ingredients: 1/e < 1/2 and round(1/e) = 0",
+    "content": "The two facts that make the n = 1 boundary work. `rexp_neg_one_lt_half`: e⁻¹ < 1/2, from e > 2 (Real.exp_one_gt_d9) via exp_neg and one_div_lt_one_div_of_lt. `round_rexp_neg_one`: round(e⁻¹) = 0, applying the nearest-integer helper to the positive quantity e⁻¹ ≈ 0.3679 < 1/2. These bypass the soft bound (which is exactly 1/2 at n = 1) by pinning the value directly.",
+    "mathContext": "$e^{-1} < \\tfrac12 \\implies \\mathrm{round}(e^{-1}) = 0$",
+    "significance": "supporting",
+    "relatedConcepts": ["Real.exp_one_gt_d9", "Real.exp_neg", "one_div_lt_one_div_of_lt"],
+    "prerequisites": ["round_eq_of_abs_lt_half"]
+  },
+  {
+    "id": "derange-oq06-strict",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 96, "endLine": 115 },
+    "type": "theorem",
+    "title": "abs_sub_lt_half: the strict bound including the boundary",
+    "content": "`abs_sub_lt_half`: for every n ≥ 1, |D(n) − n!·e⁻¹| < 1/2. It case-splits on n = 1 vs n ≥ 2. At n = 1 (boundary), D(1) = 0 and the distance is just e⁻¹ < 1/2 by rexp_neg_one_lt_half. For n ≥ 2 the soft bound 1/(n+1) < 1/2 (since n+1 > 2) plus abs_sub_le gives it by linarith. This unifies the two regimes into one strict bound.",
+    "mathContext": "$\\forall n \\ge 1,\\ |D(n) - n!\\,e^{-1}| < \\tfrac12$",
+    "significance": "key",
+    "relatedConcepts": ["case split at the boundary", "one_div_lt_one_div_of_lt", "unified bound"],
+    "prerequisites": ["abs_sub_le", "rexp_neg_one_lt_half"]
+  },
+  {
+    "id": "derange-oq06-main",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 117, "endLine": 134 },
+    "type": "theorem",
+    "title": "Main theorems: the rounding identity and its division form",
+    "content": "`numDerangements_eq_round`: D(n) = round(n!·e⁻¹) for n ≥ 1, immediate from the strict bound via round_eq_of_abs_lt_half (after abs_sub_comm/push_cast). `numDerangements_eq_round_div`: the same with the argument written as the literal quotient n!/e, bridging n!/e = n!·e⁻¹ through exp_neg. Together they give the headline identity in both forms.",
+    "mathContext": "$D(n) = \\mathrm{round}(n!\\,e^{-1}) = \\mathrm{round}(n!/e)\\quad(n \\ge 1)$",
+    "significance": "key",
+    "relatedConcepts": ["rounding identity", "division vs reciprocal form", "Real.exp_neg"],
+    "prerequisites": ["abs_sub_lt_half", "round_eq_of_abs_lt_half"]
+  },
+  {
+    "id": "derange-oq06-sharpness",
+    "proofId": "derangements-convergence-oq-06",
+    "range": { "startLine": 136, "endLine": 145 },
+    "type": "theorem",
+    "title": "round_factorial_div_e_at_zero: sharpness at n = 0",
+    "content": "`round_factorial_div_e_at_zero` shows the identity is sharp: at n = 0 it FAILS — D(0) = 1 (the empty permutation is vacuously a derangement) while round(0!/e) = round(1/e) = 0 (by round_rexp_neg_one). Hence n ≥ 1 is exactly the range of validity, not n ≥ 0.",
+    "mathContext": "$D(0) = 1 \\ne 0 = \\mathrm{round}(0!/e) = \\mathrm{round}(1/e)$",
+    "significance": "supporting",
+    "relatedConcepts": ["sharpness of a range", "empty derangement", "round_rexp_neg_one"],
+    "prerequisites": ["round_rexp_neg_one"]
+  }
+]
