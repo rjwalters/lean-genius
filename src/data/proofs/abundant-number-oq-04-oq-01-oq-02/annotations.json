@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-abund040102-overview",
+    "proofId": "abundant-number-oq-04-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 31 },
+    "type": "context",
+    "title": "From a quantitative gap to structural laws on abundant numbers",
+    "content": "The docstring frames this entry as the structural payoff of the parent abundant-number-oq-04-oq-01, whose strict gap n·σ(d) + d ≤ d·σ(n) measured how fast the abundancy index climbs at a proper multiple. Two consequences are drawn: abundance is contagious upward (a proper multiple of an abundant or perfect number is abundant), and the minimal abundant numbers under divisibility — the primitive abundant numbers — are characterised, shown to have no primitive abundant proper multiple, and pinned down at their least element 20.",
+    "mathContext": "Abundancy index $h(n)=\\sigma(n)/n$. Parent gap: $d\\mid n,\\,d<n\\Rightarrow d\\,\\sigma(n)-n\\,\\sigma(d)\\ge d$. Abundant: $h(n)>2$; perfect: $h(n)=2$; deficient: $h(n)<2$.",
+    "significance": "context",
+    "relatedConcepts": ["abundancy index", "primitive abundant numbers", "perfect / abundant / deficient numbers", "divisor lattice"],
+    "prerequisites": ["divisor functions", "divisibility"]
+  },
+  {
+    "id": "ann-abund040102-decidability",
+    "proofId": "abundant-number-oq-04-oq-01-oq-02",
+    "range": { "startLine": 32, "endLine": 48 },
+    "type": "technique",
+    "title": "Exposing Decidable instances for the factorisation predicates",
+    "content": "Nat.Abundant, Nat.Deficient and Nat.Perfect are plain `def`s, so typeclass search will not look through them to find the underlying Decidable instance on the divisor-sum inequality/equality. Each instance is recovered by `unfold; infer_instance`: after unfolding, the goal is a decidable `<`, `=` or `∧` on a computable Finset sum, for which Lean already has instances. With these in scope, concrete claims like `IsPrimitiveAbundant 20` reduce to kernel `decide` — crucially NOT native_decide, so no Lean.ofReduceBool enters the axiom set.",
+    "mathContext": "Decidability of $n<\\sum_{e\\mid n}e$, $\\sum_{e\\mid n}e<n$, and $\\sum_{e\\in\\mathrm{proper}(n)}e=n\\wedge 0<n$.",
+    "significance": "Makes the finite witness/minimality checks available to the kernel without touching the trusted-compiler `native_decide` path.",
+    "relatedConcepts": ["Decidable instances", "kernel decide vs native_decide", "computable divisor sums"],
+    "prerequisites": ["typeclass resolution", "decidability"]
+  },
+  {
+    "id": "ann-abund040102-propagation",
+    "proofId": "abundant-number-oq-04-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 76 },
+    "type": "insight",
+    "title": "One inequality 2d ≤ σ(d) unifies the abundant and perfect cases",
+    "content": "two_mul_le_sigma_of_abundant_or_perfect packages both hypotheses as the single bound 2·d ≤ σ(d): for abundant d this is the strict 2d < σ(d), for perfect d the equality σ(d) = 2d. In abundant_of_proper_dvd_abundant_or_perfect this bound combines with the parent strict gap n·σ(d) + d ≤ d·σ(n): monotonicity (gcongr) gives n·(2d) ≤ n·σ(d), so d·σ(n) ≥ n·σ(d) + d ≥ 2nd + d > 2nd = d·(2n); cancelling d > 0 yields 2n < σ(n), i.e. n is abundant. The strict '+d' of the parent is exactly what upgrades the non-strict 2nd ≤ d·σ(n) to a strict inequality, so no case analysis on abundant-vs-perfect survives downstream.",
+    "mathContext": "$2d\\le\\sigma(d)$ and $n\\,\\sigma(d)+d\\le d\\,\\sigma(n)$ give $d\\,(2n)<d\\,\\sigma(n)$, hence $2n<\\sigma(n)$.",
+    "significance": "A single uniform bound and the parent's quantitative slack remove the need to split the abundant and perfect cases.",
+    "relatedConcepts": ["abundant_iff_two_mul_lt_sigma", "perfect number σ = 2n", "monotonicity (gcongr)", "nlinarith"],
+    "prerequisites": ["divisor-sum inequalities", "ℕ arithmetic"]
+  },
+  {
+    "id": "ann-abund040102-primitive",
+    "proofId": "abundant-number-oq-04-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 111 },
+    "type": "definition",
+    "title": "Primitive abundant numbers as the trichotomy in disguise",
+    "content": "IsPrimitiveAbundant n is defined as 'n abundant and every proper divisor deficient'. isPrimitiveAbundant_iff rewrites 'every proper divisor deficient' to 'no proper divisor abundant or perfect' by applying Nat.deficient_iff_not_abundant_and_not_perfect to each proper divisor — which is positive by Nat.pos_of_mem_properDivisors — so the characterisation is just the deficient/abundant/perfect trichotomy applied divisor-by-divisor. not_isPrimitiveAbundant_of_proper_multiple then reads off the contrapositive of propagation: a primitive abundant d, being abundant hence not deficient, cannot be the (necessarily deficient) proper divisor of another primitive abundant number.",
+    "mathContext": "$\\mathrm{IsPrimitiveAbundant}(n)\\iff n\\text{ abundant}\\wedge\\forall d\\in\\mathrm{proper}(n),\\ \\neg\\mathrm{Abundant}(d)\\wedge\\neg\\mathrm{Perfect}(d)$.",
+    "significance": "Identifies primitive abundant numbers as the minimal generators of the abundant numbers under divisibility.",
+    "relatedConcepts": ["primitive abundant numbers", "deficient/abundant/perfect trichotomy", "proper divisors", "minimal generators"],
+    "prerequisites": ["Finset properDivisors", "trichotomy lemma"]
+  },
+  {
+    "id": "ann-abund040102-least",
+    "proofId": "abundant-number-oq-04-oq-01-oq-02",
+    "range": { "startLine": 112, "endLine": 128 },
+    "type": "insight",
+    "title": "20 is the least primitive abundant number — and 6 is the obstruction",
+    "content": "isPrimitiveAbundant_twenty checks σ(20)=42>40 with proper divisors 1,2,4,5,10 all deficient; twenty_least_isPrimitiveAbundant verifies ∀ m < 20, ¬IsPrimitiveAbundant m (Nat.decidableBallLT discharges the bounded quantifier). Both are kernel `decide`. The conceptual content of the minimality is that the only abundant numbers below 20 are 12 and 18, and each contains the perfect number 6 as a proper divisor, so by propagation neither is primitive — recorded explicitly as twelve_not_isPrimitiveAbundant. Thus 20 = A091191(1).",
+    "mathContext": "$\\sigma(20)=42>40$; $\\sigma(12)=28,\\sigma(18)=39$ are abundant but $6\\mid 12,\\,6\\mid 18$ with $6$ perfect.",
+    "significance": "A finite, fully kernel-checked extremal certificate identifying the smallest primitive abundant number.",
+    "relatedConcepts": ["OEIS A091191", "Nat.decidableBallLT", "kernel decide", "extremal witness"],
+    "prerequisites": ["bounded decidability", "concrete divisor sums"]
+  }
+]
