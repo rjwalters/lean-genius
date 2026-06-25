@@ -5,7 +5,11 @@
     "range": { "startLine": 1, "endLine": 36 },
     "type": "concept",
     "title": "Two open questions, and how they relate",
-    "content": "Erdős #1013 asks for the asymptotics of h₃(k) — the least number of vertices in a triangle-free graph of chromatic number k — and, separately, whether h₃(k+1)/h₃(k) → 1. The known bounds (log k/log log k)·k² ≪ h₃(k) ≪ (log k)·k² pin the order of growth and conjecturally h₃(k) ~ c·k²·log k with c ∈ [1/2,1], but the exact constant c is unknown. This file does not determine c. It proves a structural fact valid for every c: existence of the asymptotic constant implies ratio convergence, and the constant is unique. The results are stated for an arbitrary candidate h : ℕ → ℝ, so they apply verbatim to the genuine h₃ once its asymptotic is established — and they avoid the parent entry's Mycielski finiteness axiom entirely."
+    "content": "Erdős #1013 asks for the asymptotics of h₃(k) — the least number of vertices in a triangle-free graph of chromatic number k — and, separately, whether h₃(k+1)/h₃(k) → 1. The known bounds (log k/log log k)·k² ≪ h₃(k) ≪ (log k)·k² pin the order of growth and conjecturally h₃(k) ~ c·k²·log k with c ∈ [1/2,1], but the exact constant c is unknown. This file does not determine c. It proves a structural fact valid for every c: existence of the asymptotic constant implies ratio convergence, and the constant is unique. The results are stated for an arbitrary candidate h : ℕ → ℝ, so they apply verbatim to the genuine h₃ once its asymptotic is established — and they avoid the parent entry's Mycielski finiteness axiom entirely.",
+    "mathContext": "$\\frac{\\log k}{\\log\\log k}\\,k^2 \\ll h_3(k) \\ll (\\log k)\\,k^2;\\quad h_3(k) \\sim c\\,k^2\\log k,\\ c \\in [\\tfrac12,1]$",
+    "significance": "context",
+    "relatedConcepts": ["chromatic number", "triangle-free graph", "asymptotic density", "Erdős problem 1013"],
+    "prerequisites": ["graph coloring", "asymptotic notation"]
   },
   {
     "id": "e1013-scale-def",
@@ -13,7 +17,11 @@
     "range": { "startLine": 37, "endLine": 48 },
     "type": "definition",
     "title": "The growth scale and the asymptotic-constant predicate",
-    "content": "`scale k = k²·log k` is the conjectured order of growth of h₃. `HasAsymptoticConstant h c` packages the statement h(k)/(k²·log k) → c as a Filter.Tendsto to the neighbourhood filter 𝓝 c. Phrasing the hypothesis this way lets the reduction theorem consume exactly the asymptotic conjecture and nothing more."
+    "content": "`scale k = k²·log k` is the conjectured order of growth of h₃. `HasAsymptoticConstant h c` packages the statement h(k)/(k²·log k) → c as a Filter.Tendsto to the neighbourhood filter 𝓝 c. Phrasing the hypothesis this way lets the reduction theorem consume exactly the asymptotic conjecture and nothing more.",
+    "mathContext": "$\\mathrm{scale}(k) = k^2 \\log k;\\quad \\mathrm{HasAsymptoticConstant}\\,h\\,c \\iff \\frac{h(k)}{k^2\\log k} \\xrightarrow{k\\to\\infty} c$",
+    "significance": "key",
+    "relatedConcepts": ["Filter.Tendsto", "neighbourhood filter", "growth scale", "limit of a ratio"],
+    "prerequisites": ["limits via filters", "logarithm"]
   },
   {
     "id": "e1013-unique",
@@ -21,7 +29,11 @@
     "range": { "startLine": 46, "endLine": 49 },
     "type": "technique",
     "title": "Uniqueness of the constant",
-    "content": "If h admits asymptotic constants c and d, then c = d. This is a one-liner: limits in ℝ (a Hausdorff space) are unique, so tendsto_nhds_unique applied to the two Tendsto witnesses forces equality. So although the value of c is open, the framework guarantees there is at most one."
+    "content": "If h admits asymptotic constants c and d, then c = d. This is a one-liner: limits in ℝ (a Hausdorff space) are unique, so tendsto_nhds_unique applied to the two Tendsto witnesses forces equality. So although the value of c is open, the framework guarantees there is at most one.",
+    "mathContext": "$\\mathrm{HasAsymptoticConstant}\\,h\\,c \\wedge \\mathrm{HasAsymptoticConstant}\\,h\\,d \\Rightarrow c = d\\ \\ (\\mathbb{R}\\text{ Hausdorff})$",
+    "significance": "supporting",
+    "relatedConcepts": ["uniqueness of limits", "Hausdorff space", "tendsto_nhds_unique"],
+    "prerequisites": ["Hausdorff separation", "limit uniqueness"]
   },
   {
     "id": "e1013-scale-ratio",
@@ -29,7 +41,11 @@
     "range": { "startLine": 50, "endLine": 112 },
     "type": "key-step",
     "title": "Analytic core: ((k+1)²·log(k+1))/(k²·log k) → 1",
-    "content": "The heart of the file. Factor the scale ratio as ((k+1)/k)²·(log(k+1)/log k). The linear factor → 1 because (k+1)/k = 1 + 1/k and 1/k → 0 (squaring is continuous). The logarithmic factor → 1 because log(k+1) = log k + log(1+1/k): the increment log(1+1/k) → log 1 = 0 (continuity of log at 1), while log k → ∞, so their quotient → 0 by Tendsto.div_atTop, and 1 + (that) → 1. Each step is proved as an eventual identity (k ≥ 2, where log k ≠ 0) and transported along the limit with Tendsto.congr'."
+    "content": "The heart of the file. Factor the scale ratio as ((k+1)/k)²·(log(k+1)/log k). The linear factor → 1 because (k+1)/k = 1 + 1/k and 1/k → 0 (squaring is continuous). The logarithmic factor → 1 because log(k+1) = log k + log(1+1/k): the increment log(1+1/k) → log 1 = 0 (continuity of log at 1), while log k → ∞, so their quotient → 0 by Tendsto.div_atTop, and 1 + (that) → 1. Each step is proved as an eventual identity (k ≥ 2, where log k ≠ 0) and transported along the limit with Tendsto.congr'.",
+    "mathContext": "$\\frac{(k+1)^2\\log(k+1)}{k^2\\log k} = \\Big(1+\\tfrac1k\\Big)^2\\Big(1 + \\tfrac{\\log(1+1/k)}{\\log k}\\Big) \\to 1$",
+    "significance": "key",
+    "relatedConcepts": ["limit of products", "Tendsto.div_atTop", "continuity of log", "eventual equality"],
+    "prerequisites": ["limit algebra", "continuity at a point", "Filter.atTop"]
   },
   {
     "id": "e1013-reduction",
@@ -37,7 +53,11 @@
     "range": { "startLine": 113, "endLine": 149 },
     "type": "key-step",
     "title": "The reduction: asymptotic constant ⇒ ratio → 1",
-    "content": "Given h(k)/scale(k) → c with c > 0, factor h(k+1)/h(k) = (h(k+1)/scale(k+1)) · (scale(k+1)/scale(k)) / (h(k)/scale(k)). The first factor → c (the asymptotic, shifted by one via tendsto_add_atTop_nat), the middle → 1 (the analytic core), and the denominator → c, so the whole quotient → c·1/c = 1 (using c ≠ 0). The pointwise factorisation is only valid where scale(k) ≠ 0 (k ≥ 2) and is handled with a case split on whether h(k) = 0, then field_simp; the limit is then obtained by Tendsto.congr'."
+    "content": "Given h(k)/scale(k) → c with c > 0, factor h(k+1)/h(k) = (h(k+1)/scale(k+1)) · (scale(k+1)/scale(k)) / (h(k)/scale(k)). The first factor → c (the asymptotic, shifted by one via tendsto_add_atTop_nat), the middle → 1 (the analytic core), and the denominator → c, so the whole quotient → c·1/c = 1 (using c ≠ 0). The pointwise factorisation is only valid where scale(k) ≠ 0 (k ≥ 2) and is handled with a case split on whether h(k) = 0, then field_simp; the limit is then obtained by Tendsto.congr'.",
+    "mathContext": "$\\frac{h(k+1)}{h(k)} = \\frac{h(k+1)/\\mathrm{scale}(k+1)}{h(k)/\\mathrm{scale}(k)}\\cdot\\frac{\\mathrm{scale}(k+1)}{\\mathrm{scale}(k)} \\to \\frac{c}{c}\\cdot 1 = 1$",
+    "significance": "key",
+    "relatedConcepts": ["limit of a quotient", "index shift (tendsto_add_atTop_nat)", "nonvanishing denominator", "field_simp"],
+    "prerequisites": ["limit algebra", "c ≠ 0 hypothesis"]
   },
   {
     "id": "e1013-applied",
@@ -45,6 +65,10 @@
     "range": { "startLine": 150, "endLine": 162 },
     "type": "concept",
     "title": "Statement for the genuine threshold",
-    "content": "asymptotic_subsumes_ratio restates the reduction directly for the threshold h₃: if h₃(k)/(k²·log k) → c with c > 0, then h₃(k+1)/h₃(k) → 1. This is exactly the claim that the asymptotic-constant question of #1013 subsumes its ratio-convergence question, with the proof a one-line application of ratio_tendsto_one."
+    "content": "asymptotic_subsumes_ratio restates the reduction directly for the threshold h₃: if h₃(k)/(k²·log k) → c with c > 0, then h₃(k+1)/h₃(k) → 1. This is exactly the claim that the asymptotic-constant question of #1013 subsumes its ratio-convergence question, with the proof a one-line application of ratio_tendsto_one.",
+    "mathContext": "$\\frac{h_3(k)}{k^2\\log k} \\to c > 0 \\ \\Rightarrow\\ \\frac{h_3(k+1)}{h_3(k)} \\to 1$",
+    "significance": "supporting",
+    "relatedConcepts": ["subsumption of open questions", "ratio convergence", "specialization"],
+    "prerequisites": ["the reduction theorem", "h₃ threshold function"]
   }
 ]

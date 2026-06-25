@@ -61,6 +61,50 @@
       "Mathlib's Filter.Tendsto API"
     ]
   },
+  "sections": [
+    {
+      "id": "two-questions",
+      "title": "Two open questions, and how they relate",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Header: Erdős #1013 (asymptotics of h₃(k) and whether h₃(k+1)/h₃(k) → 1). This file proves the structural link valid for any constant c, stated for an arbitrary candidate h, avoiding the parent's Mycielski finiteness axiom."
+    },
+    {
+      "id": "scale-and-predicate",
+      "title": "Growth scale and asymptotic-constant predicate",
+      "startLine": 37,
+      "endLine": 48,
+      "summary": "Defines scale k = k²·log k and HasAsymptoticConstant h c (h(k)/scale(k) → c as a Filter.Tendsto), the precise hypothesis the reduction consumes."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of the constant",
+      "startLine": 46,
+      "endLine": 49,
+      "summary": "Limits in the Hausdorff space ℝ are unique (tendsto_nhds_unique), so any asymptotic constant is unique even though its value is open."
+    },
+    {
+      "id": "analytic-core",
+      "title": "Analytic core: scale ratio → 1",
+      "startLine": 50,
+      "endLine": 112,
+      "summary": "Proves ((k+1)²·log(k+1))/(k²·log k) → 1 by factoring into a linear part (1+1/k)² → 1 and a logarithmic part 1 + log(1+1/k)/log k → 1 (increment → 0 over log k → ∞)."
+    },
+    {
+      "id": "reduction",
+      "title": "Reduction: asymptotic constant ⇒ ratio → 1",
+      "startLine": 113,
+      "endLine": 149,
+      "summary": "ratio_tendsto_one: factors h(k+1)/h(k) through the scale ratio so the limit is c·1/c = 1, using c > 0 and a case split on h(k) = 0 with field_simp on k ≥ 2."
+    },
+    {
+      "id": "applied-threshold",
+      "title": "Statement for the genuine threshold h₃",
+      "startLine": 150,
+      "endLine": 162,
+      "summary": "asymptotic_subsumes_ratio specializes the reduction to h₃: an asymptotic constant for h₃ implies its ratio converges to 1 — the asymptotic question subsumes the ratio question."
+    }
+  ],
   "conclusion": {
     "summary": "For the triangle-free chromatic threshold h₃(k) of Erdős #1013, the existence of the asymptotic constant c in h₃(k) ~ c·k²·log k (for any c > 0) implies the separately-posed ratio convergence h₃(k+1)/h₃(k) → 1, and the constant is unique. The result is proved abstractly for any h : ℕ → ℝ, is 0-axiom and 0-sorry, and rests on the verified analytic fact that the growth scale k²·log k has consecutive ratio tending to 1.",
     "implications": "This sharpens the structure of Problem #1013: it shows the ratio-convergence question is strictly subordinate to the asymptotic-constant question, so any future proof that the constant exists (even without pinning down its value in [1/2, 1]) would immediately settle ratio convergence. It cleanly separates the genuinely hard part (existence and value of c, an extremal/probabilistic question) from the soft analytic part (smoothness of the scale).",
