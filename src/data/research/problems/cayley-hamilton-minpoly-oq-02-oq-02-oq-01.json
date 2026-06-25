@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-02-oq-02-oq-01",
   "title": "Rational Canonical Form Determines Similarity Class",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -29,11 +29,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETE: Formalized the structural reduction similarity <=> K[X]-module isomorphism (AEval), the heart of RCF, plus the torsion property enabling the PID structure theorem. 4 thm + 1 def, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "aeval_linearEquiv_of_conj (CayleyHamiltonMinpolyOQ02OQ02OQ01.lean:92): intertwiner => AEval' phi iso AEval' psi over K[X]",
+      "conj_of_aeval_linearEquiv (:105): K[X]-module iso => intertwiner (new, not in Mathlib)",
+      "conj_iff_nonempty_aeval_linearEquiv (:127): full bridge phi~psi iff Nonempty (AEval' phi iso AEval' psi)",
+      "aeval_isTorsion (:141): AEval' phi is a torsion K[X]-module for finite-dim M",
+      "matrix_conj_iff_nonempty_aeval_linearEquiv (:159): matrix-level corollary via Matrix.toLin'"
+    ],
+    "insights": [
+      "Mathlib already builds the forward AEval-module iso from an intertwiner internally inside LinearEquiv.isSemisimple_iff (Semisimple.lean:125), but exposes no standalone bridge; the converse (module iso => similarity) was absent.",
+      "Module.AEval' phi makes X act as phi, so a K[X]-linear map between AEval' phi and AEval' psi is exactly a K-linear intertwiner -- similarity literally equals module isomorphism, not merely is detected by it.",
+      "of_symm_X_smul gives (of psi).symm (X*w) = psi((of psi).symm w), the one rewrite needed for the converse direction.",
+      "Cayley-Hamilton (LinearMap.aeval_self_charpoly) + monic=>nonzero-divisor gives AEval' phi torsion for finite-dim M, the exact hypothesis of Module.equiv_directSum_of_isTorsion (PID structure theorem)."
+    ],
+    "mathlibGaps": [
+      "No packaged similarity<=>AEval-module-iso bridge in Mathlib; only the forward half exists, buried inside LinearEquiv.isSemisimple_iff.",
+      "Remaining for full RCF classification: combine this bridge with Module.equiv_directSum_of_isTorsion plus a uniqueness statement for invariant factors (Mathlib lacks a clean invariant-factor uniqueness API for K[X]-modules)."
+    ],
+    "nextSteps": [
+      "Assemble A~B iff equal invariant factors by composing conj_iff_nonempty_aeval_linearEquiv with the PID structure theorem and an invariant-factor uniqueness lemma.",
+      "Prove minpoly phi generates the annihilator of AEval' phi (= largest invariant factor), pinning down what information the minimal polynomial loses."
+    ],
     "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-02-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe Rational Canonical Form (RCF) theorem states that two n×n matrices over a field F are similar if and only if they have identical invariant factor sequences. This is strictly stronger than sharing the same minimal polynomial (two matrices can share a minimal polynomial but have different invariant factor sequences and thus not be similar).\n\nKey example: The 3×3 matrices with characteristic polynomial (x-1)³ and minimal polynomial (x-1)² — one might have invariant factors [(x-1), (x-1)²] and another [(x-1)³], which are different despite potentially sharing the minimal polynomial.\n\nThe proof strategy is via the Structure Theorem for finitely generated modules over the PID F[x].\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
