@@ -1,0 +1,158 @@
+{
+  "id": "catalan-numbers-oq-01-oq-04",
+  "title": "Strict log-convexity of the Catalan numbers: Cₙ₊₁² < Cₙ·Cₙ₊₂ (a Turán-type inequality)",
+  "slug": "catalan-numbers-oq-01-oq-04",
+  "description": "Proves the strict Turán-type inequality catalan (n+1)² < catalan n · catalan (n+2) for every n — equivalently, the Catalan sequence is strictly log-convex. The proof is pointwise (no induction): it uses only two consecutive instances of the one-step recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n, derived here from Mathlib's central-binomial API (succ_mul_catalan_eq_centralBinom and Nat.succ_mul_centralBinom_succ) by cancelling the positive factor n+1. Writing a = Cₙ, b = Cₙ₊₁, c = Cₙ₊₂, the two recurrences (n+2)b = 2(2n+1)a and (n+3)c = 2(2n+3)b force, after scaling by the positive quantity D = 2(2n+1)(2n+3), the surplus identity D·(a·c) = D·b² + 3·(b·c). The decisive constant 3 is exactly (2n+3)(n+2) − (2n+1)(n+3) = (2n²+7n+6) − (2n²+7n+3); since b, c > 0 the surplus 3·(b·c) is strictly positive, giving b² < a·c. All arithmetic is done over ℤ (where linear_combination and left-cancellation are available) and transferred back to ℕ by exact_mod_cast. Mathlib has the full Catalan/central-binomial API but no Turán inequality or log-convexity statement for the Catalan numbers. Verified with 0 axioms, 0 sorries, no native_decide.",
+  "meta": {
+    "author": "Classical (Turán-type / log-convexity inequality for the Catalan numbers); Lean formalization original",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CatalanNumbersOQ01OQ04.lean",
+    "tags": [
+      "combinatorics",
+      "catalan-numbers",
+      "log-convexity",
+      "turan-inequality",
+      "inequality",
+      "central-binomial",
+      "recurrence",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "succ_mul_catalan_eq_centralBinom",
+        "description": "(n + 1) · catalan n = Nat.centralBinom n. The multiplicative bridge between the Catalan numbers and the central binomial coefficient; used three times (at n, n+1, n+2) to turn the central-binomial recurrence into the Catalan recurrence, and once more to recover positivity of the Catalan numbers.",
+        "module": "Mathlib.Combinatorics.Enumerative.Catalan"
+      },
+      {
+        "theorem": "Nat.succ_mul_centralBinom_succ",
+        "description": "(n + 1) · centralBinom (n + 1) = 2·(2n+1)·centralBinom n. The one-step recurrence of the central binomial coefficient; combined with the bridge above and cancellation of n+1 it yields the Catalan recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n.",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "Nat.centralBinom_pos",
+        "description": "0 < centralBinom n. Together with the bridge (n+1)·catalan n = centralBinom n it gives 0 < catalan n, the strict positivity of b = Cₙ₊₁ and c = Cₙ₊₂ that turns the surplus 3·(b·c) into a strict inequality.",
+        "module": "Mathlib.Data.Nat.Choose.Central"
+      },
+      {
+        "theorem": "mul_left_cancel₀",
+        "description": "a ≠ 0 → a·b = a·c → b = c. Cancels the positive factor (n+1) over ℤ when extracting the Catalan recurrence from the central-binomial recurrence.",
+        "module": "Mathlib.Algebra.Group.Basic"
+      },
+      {
+        "theorem": "lt_of_mul_lt_mul_left",
+        "description": "a·b < a·c → 0 ≤ a → b < c. Cancels the positive scaling factor D = 2(2n+1)(2n+3) to pass from D·b² < D·(a·c) to b² < a·c.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      }
+    ],
+    "originalContributions": [
+      "catalan_turan: catalan (n+1)² < catalan n · catalan (n+2) for every n — the strict Turán-type inequality / strict log-convexity of the Catalan numbers. Mathlib has no Turán inequality or log-convexity statement for the Catalan numbers; this is assembled here from the central-binomial recurrence.",
+      "catalan_recurrence: the division-free Catalan recurrence (n+2)·catalan (n+1) = 2(2n+1)·catalan n over ℤ, obtained by combining succ_mul_catalan_eq_centralBinom with Nat.succ_mul_centralBinom_succ and cancelling n+1 via mul_left_cancel₀ and linear_combination.",
+      "The surplus identity D·(a·c) = D·b² + 3·(b·c) with D = 2(2n+1)(2n+3), discharged by a single linear_combination of the two recurrence instances. The decisive constant 3 = (2n+3)(n+2) − (2n+1)(n+3) is what makes the inequality both true and strict for all n (independent of n)."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified, 0 axioms, 0 sorries. No native_decide and no decide. Depends only on the foundational axioms propext, Classical.choice, Quot.sound (confirmed by #print axioms catalan_turan).",
+    "lineCount": 115,
+    "theoremCount": 3,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "A real sequence (aₙ) is log-convex when aₙ₊₁² ≤ aₙ·aₙ₊₂; Turán's classical inequality Pₙ(x)² ≥ Pₙ₋₁(x)·Pₙ₊₁(x) for Legendre polynomials is the archetype of such two-term concavity/convexity phenomena, and the same shape recurs across combinatorial sequences (binomial coefficients, Bell numbers, Motzkin and Catalan numbers). Log-convexity of the Catalan numbers is a standard fact, usually proved from the closed ratio Cₙ₊₁/Cₙ = 2(2n+1)/(n+2): the consecutive ratios are increasing, which is exactly log-convexity. Here the statement is sharpened to the strict inequality and obtained without ever forming the rational ratio, working entirely with the integer recurrence and a single positive surplus term.",
+    "problemStatement": "The Catalan numbers Cₙ = (1/(n+1))·C(2n,n) satisfy the one-step recurrence (n+2)·Cₙ₊₁ = 2(2n+1)·Cₙ. The Turán-type / log-convexity question asks whether the sequence is (strictly) log-convex, i.e. whether Cₙ₊₁² < Cₙ·Cₙ₊₂ holds for every n. This entry (leaf oq-01-oq-04 of catalan-numbers-oq-01) proves the strict inequality for all n by a uniform pointwise computation, with no induction and no case analysis.",
+    "keyIdea": "Multiply the target Cₙ₊₁² < Cₙ·Cₙ₊₂ by the positive integer D = 2(2n+1)(2n+3). Using the two recurrence instances (n+2)Cₙ₊₁ = 2(2n+1)Cₙ and (n+3)Cₙ₊₂ = 2(2n+3)Cₙ₊₁ to substitute, both D·(Cₙ·Cₙ₊₂) and D·Cₙ₊₁² collapse to a common multiple of Cₙ₊₁·Cₙ₊₂, leaving the exact surplus D·(Cₙ·Cₙ₊₂) − D·Cₙ₊₁² = 3·Cₙ₊₁·Cₙ₊₂. The constant 3 = (2n+3)(n+2) − (2n+1)(n+3) is independent of n, and Cₙ₊₁·Cₙ₊₂ > 0, so the surplus is strictly positive — the inequality is strict everywhere."
+  },
+  "sections": [
+    {
+      "id": "overview-header",
+      "title": "Overview: strict log-convexity from the integer recurrence",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring framing the Turán-type inequality catalan (n+1)² < catalan n · catalan (n+2) as strict log-convexity, and outlining the pointwise (induction-free) route: two instances of the Catalan recurrence plus a single positive surplus term 3·(b·c), with the decisive constant 3 = (2n+3)(n+2) − (2n+1)(n+3)."
+    },
+    {
+      "id": "catalan-recurrence",
+      "title": "The division-free Catalan recurrence",
+      "startLine": 44,
+      "endLine": 60,
+      "summary": "catalan_recurrence: (n+2)·catalan (n+1) = 2(2n+1)·catalan n over ℤ. Casts succ_mul_catalan_eq_centralBinom (at n and n+1) and Nat.succ_mul_centralBinom_succ to ℤ, then cancels the positive factor n+1 via mul_left_cancel₀ and closes with a single linear_combination of the three substituted identities."
+    },
+    {
+      "id": "catalan-positivity",
+      "title": "Positivity of the Catalan numbers",
+      "startLine": 62,
+      "endLine": 71,
+      "summary": "catalan_pos: 0 < catalan n, recovered from (n+1)·catalan n = centralBinom n > 0 (Nat.centralBinom_pos). The strict positivity of catalan (n+1) and catalan (n+2) is what upgrades the nonnegative surplus 3·(b·c) to a strictly positive one."
+    },
+    {
+      "id": "turan-inequality",
+      "title": "The Turán inequality via a positive surplus",
+      "startLine": 73,
+      "endLine": 112,
+      "summary": "catalan_turan: builds the two recurrence instances (R1 at n, R2 at n+1, the latter reindexed n+1+1 = n+2), proves the surplus identity D·(a·c) = D·b² + 3·(b·c) with D = 2(2n+1)(2n+3) by one linear_combination, then uses 3·(b·c) > 0 and left-cancellation of D (lt_of_mul_lt_mul_left) to conclude b² < a·c, transferred back to ℕ by exact_mod_cast."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Turán, Paul",
+      "title": "On the zeros of the polynomials of Legendre",
+      "year": "1950",
+      "note": "Časopis Pěst. Mat. Fys. 75 — the prototype two-term inequality Pₙ² ≥ Pₙ₋₁·Pₙ₊₁ that names this class of log-concavity/convexity results."
+    },
+    {
+      "authors": "Liu, Lily L.; Wang, Yi",
+      "title": "On the log-convexity of combinatorial sequences",
+      "year": "2007",
+      "note": "Adv. in Appl. Math. 39 — systematic criteria establishing log-convexity (the Cₙ₊₁² ≤ Cₙ·Cₙ₊₂ shape) for the Catalan, Motzkin, Bell, and related sequences."
+    },
+    {
+      "authors": "Stanley, Richard P.",
+      "title": "Enumerative Combinatorics, Volume 2",
+      "year": "1999",
+      "note": "Cambridge University Press — the Catalan ratio Cₙ₊₁/Cₙ = 2(2n+1)/(n+2) and the recurrence used here as the sole input."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "catalan-numbers-oq-01",
+      "relationship": "parent",
+      "description": "Parent entry on the Catalan numbers. This leaf (oq-01-oq-04) proves the strict Turán-type log-convexity inequality Cₙ₊₁² < Cₙ·Cₙ₊₂."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01-oq-02-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling leaf on the p-adic valuation of the Catalan numbers; also built on succ_mul_catalan_eq_centralBinom as the bridge to the central binomial coefficient."
+    },
+    {
+      "proofId": "catalan-numbers-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Central-binomial reflection form of the Catalan numbers; shares the Cₙ ↔ centralBinom n correspondence that this entry differentiates twice through the recurrence."
+    }
+  ],
+  "conclusion": {
+    "summary": "catalan_turan establishes catalan (n+1)² < catalan n · catalan (n+2) for every n: the Catalan numbers are strictly log-convex. The proof reduces, after scaling by D = 2(2n+1)(2n+3) > 0, to the exact surplus D·(Cₙ·Cₙ₊₂) = D·Cₙ₊₁² + 3·Cₙ₊₁·Cₙ₊₂, where the n-independent constant 3 and the positivity Cₙ₊₁·Cₙ₊₂ > 0 give strictness. Verified with 0 axioms, 0 sorries, no native_decide.",
+    "implications": "Supplies the gallery's Catalan arithmetic with the Turán/log-convexity inequality (absent from Mathlib), via a uniform pointwise argument that never forms the rational ratio Cₙ₊₁/Cₙ. The same two-recurrence-plus-surplus template applies to other sequences with a first-order rational recurrence (central binomial coefficients, falling/rising factorials).",
+    "openQuestions": [
+      "Quantify the gap: prove the exact multiplicative form Cₙ·Cₙ₊₂ = Cₙ₊₁²·(2n²+7n+6)/(2n²+7n+3), making the ratio of consecutive ratios explicit.",
+      "Establish strict log-concavity of the shifted/derived sequences (e.g. n ↦ Cₙ/(n+1) or the Catalan triangle rows) by the same surplus method."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Nat"
+    ],
+    "namespace": "CatalanNumbersOQ01OQ04",
+    "lineCount": 115,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/CatalanNumbersOQ01OQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
