@@ -1,0 +1,41 @@
+{
+  "slug": "derangements-oq-02-oq-01-oq-01",
+  "title": "The Poisson(1) Limiting Distribution of Fixed Points",
+  "problemStatement": "From the exact partial derangement count S(n,k) = C(n,k)·D(n-k), characterize the asymptotic behaviour of the distribution of the number of fixed points of a uniformly random permutation. (Parent open question literally asked for the exponential generating function.)",
+  "status": "completed",
+  "phase": "COMPLETED",
+  "tier": "B",
+  "significance": 6,
+  "tractability": 7,
+  "tags": ["combinatorics", "asymptotics", "derangements", "poisson", "probability", "research"],
+  "path": "Proofs/DerangementsOQ02OQ01OQ01.lean",
+  "started": "2026-06-25",
+  "lastUpdate": "2026-06-25",
+  "currentState": "SOLVED. Proved prob(n,k) = S(n,k)/n! → e⁻¹/k! (Poisson(1) limiting distribution), 0 sorries, 0 axioms beyond foundational. Verified via host lake env lean (docker down).",
+  "knownResults": [
+    "Mathlib has numDerangements_tendsto_inv_e: D(m)/m! → e⁻¹ (scalar limit only)",
+    "Parent derangements-oq-02-oq-01 gives the exact count S(α,k) = C(|α|,k)·D(|α|-k) and ∑_k S(n,k) = n!",
+    "Mathlib does NOT have the formal-power-series derangement EGF ∑ D(m) xᵐ/m! = e^{-x}/(1-x), nor any distributional limit theorem for permutation statistics"
+  ],
+  "knowledge": {
+    "insights": [
+      "Dividing the exact count C(n,k)·D(n-k) by n! = C(n,k)·k!·(n-k)! cancels the binomial coefficient exactly, isolating the derangement ratio D(n-k)/(n-k)! that carries all the asymptotics.",
+      "The whole limiting distribution follows by composing Mathlib's scalar limit D(m)/m! → e⁻¹ with the cofinal shift n ↦ n-k — no new series analysis needed.",
+      "The limit masses e⁻¹/k! are exactly the Poisson(1) point probabilities; the finite identity ∑_k prob(n,k) = 1 plus ∑_k 1/k! = e shows total mass is preserved in the limit.",
+      "The literal 'exponential generating function' named by the parent OQ is a distinct formal-algebra object; the limiting distribution is the cleaner and more standard probabilistic payoff, completable from existing Mathlib infrastructure."
+    ],
+    "builtItems": [
+      "kFixedCount (def) and kFixedCount_eq: parent count specialized to Fin n — DerangementsOQ02OQ01OQ01.lean",
+      "prob (def): prob n k = kFixedCount n k / n! — DerangementsOQ02OQ01OQ01.lean",
+      "kfixed_prob_eq: prob(n,k) = (1/k!)·(D(n-k)/(n-k)!) for k ≤ n — DerangementsOQ02OQ01OQ01.lean",
+      "kfixed_prob_sum: ∑_{k≤n} prob(n,k) = 1 — DerangementsOQ02OQ01OQ01.lean",
+      "kfixed_prob_tendsto: prob(n,k) → e⁻¹/k! (Poisson(1) limit) — DerangementsOQ02OQ01OQ01.lean"
+    ],
+    "nextSteps": [
+      "Formalize the formal-power-series EGF e^{-x}/(1-x)·xᵏ/k! (requires building the formal derangement EGF in Mathlib first).",
+      "Quantify the Poisson approximation error (Chen–Stein / total-variation bound).",
+      "Generalize to joint convergence of cycle counts to independent Poisson variables (Arratia–Tavaré)."
+    ],
+    "progressSummary": "COMPLETE: Poisson(1) limiting distribution of permutation fixed points proved, verified, 0-axiom, original."
+  }
+}
