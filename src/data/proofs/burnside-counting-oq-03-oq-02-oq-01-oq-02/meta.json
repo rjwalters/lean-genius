@@ -1,0 +1,164 @@
+{
+  "id": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+  "title": "Necklace Divisor-Sum Form: ∑_{d∣n} φ(n/d)·k^d = (#necklaces)·n",
+  "slug": "burnside-counting-oq-03-oq-02-oq-01-oq-02",
+  "description": "Pushes the parent's rotation-indexed cyclic Burnside count ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces up to rotation)·n into the classical divisor-sum form ∑_{d∣n} φ(n/d)·k^d, answering the parent entry's openQuestions[1] verbatim. The bridge is a pure number-theoretic reindexing of the rotation sum, independent of the necklace interpretation: (A) the rotation sum over ZMod n equals the range sum over {0,…,n−1} via the bijection r ↦ r.val (sum_zmod_eq_sum_range); (B) the range sum equals the divisor sum by grouping the integers i < n according to gcd(n,i), whose fibre over each divisor d has exactly φ(n/d) elements (Mathlib's totient_div_of_dvd) and on which the summand is the constant k^d, assembled by fiberwise summation (sum_range_pow_gcd_eq_divisor_sum); (C) combining (A), (B) with the parent's sum_pow_gcd_eq_card_necklaces_mul gives the classical necklace identity ∑_{d∣n} φ(n/d)·k^d = (#necklaces)·n (divisor_sum_eq_card_necklaces_mul), so dividing by n recovers the textbook formula (1/n)∑_{d∣n} φ(n/d) k^d; (D) the symmetric d ↔ n/d reindexing gives the equivalent form ∑_{d∣n} φ(d)·k^{n/d} (divisor_sum_symm, symm_divisor_sum_eq_card_necklaces_mul).",
+  "meta": {
+    "author": "Cauchy–Frobenius–Burnside (cyclic necklace count, divisor form); formalized via Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Necklace_(combinatorics)",
+    "date": "1887",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BurnsideCountingOQ03OQ02OQ01OQ02.lean",
+    "tags": [
+      "combinatorics",
+      "group-theory",
+      "number-theory",
+      "necklaces",
+      "burnside",
+      "orbit-counting",
+      "totient",
+      "divisor-sum",
+      "cyclic-group",
+      "gcd",
+      "research",
+      "open-problem"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 sorries, 0 literal `axiom` declarations, 0 structure-encoded assumptions. Fully machine-checked: all five theorems (sum_zmod_eq_sum_range, sum_range_pow_gcd_eq_divisor_sum, divisor_sum_eq_card_necklaces_mul, divisor_sum_symm, symm_divisor_sum_eq_card_necklaces_mul) depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). No native_decide is used.",
+    "dateAdded": "2026-06-25",
+    "lineCount": 116,
+    "theoremCount": 5,
+    "definitionCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.sum_bij'",
+        "description": "Reindexing a sum along an explicit bijection with stated inverse; used to identify ∑_{r:ZMod n} with ∑_{i<n} along r ↦ r.val and its inverse i ↦ (i : ZMod n)",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Finset.sum_fiberwise_of_maps_to'",
+        "description": "Fiberwise summation: ∑_{i∈s} f i = ∑_{d∈t} ∑_{i∈s, g i = d} f i when g maps s into t; here g i = gcd(n,i) maps range n into n.divisors",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.totient_div_of_dvd",
+        "description": "For d ∣ n, the number of i < n with gcd(n,i) = d equals φ(n/d); supplies the fibre cardinality that turns the constant-k^d fibre sum into φ(n/d)·k^d",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "ZMod.val_natCast_of_lt",
+        "description": "For i < n, (↑i : ZMod n).val = i; together with ZMod.val_lt and ZMod.natCast_zmod_val establishes the bijection between ZMod n and range n",
+        "module": "Mathlib.Data.ZMod.Basic"
+      },
+      {
+        "theorem": "Nat.sum_div_divisors",
+        "description": "∑_{d∣n} f (n/d) = ∑_{d∣n} f d, the d ↔ n/d reindexing of a sum over divisors; used with Nat.div_div_self to derive the symmetric form (D)",
+        "module": "Mathlib.NumberTheory.Divisors"
+      }
+    ],
+    "originalContributions": [
+      "sum_zmod_eq_sum_range (A): ∑_{r:ZMod n} k^{gcd(n,r.val)} = ∑_{i<n} k^{gcd(n,i)}, the rotation-sum/range-sum bridge via Finset.sum_bij' along r ↦ r.val with explicit inverse i ↦ (i:ZMod n)",
+      "sum_range_pow_gcd_eq_divisor_sum (B): ∑_{i<n} k^{gcd(n,i)} = ∑_{d∣n} φ(n/d)·k^d, grouping i < n by the divisor gcd(n,i) (sum_fiberwise_of_maps_to' into n.divisors) where the fibre over d has φ(n/d) elements (totient_div_of_dvd) and the summand is the constant k^d",
+      "divisor_sum_eq_card_necklaces_mul (C): ∑_{d∣n} φ(n/d)·k^d = (#necklaces up to rotation)·n, closing the gap between the parent's gcd-indexed sum and the divisor-sum form quoted in every reference statement of the cyclic necklace theorem",
+      "divisor_sum_symm (D): ∑_{d∣n} φ(d)·k^{n/d} = ∑_{d∣n} φ(n/d)·k^d, the usual d ↔ n/d reindexing via Nat.sum_div_divisors and Nat.div_div_self",
+      "symm_divisor_sum_eq_card_necklaces_mul (D′): the necklace count expressed in the symmetric divisor form ∑_{d∣n} φ(d)·k^{n/d} = (#necklaces)·n"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The textbook formula for the number of k-colored necklaces of n beads up to rotation is (1/n)·∑_{d∣n} φ(n/d)·k^d (equivalently (1/n)·∑_{d∣n} φ(d)·k^{n/d}), a direct application of Burnside's lemma to the cyclic group. The standard derivation groups the n rotations by their order: there are exactly φ(n/d) rotations whose cycle structure consists of d cycles, each fixing k^d colorings. The parent gallery entry burnside-counting-oq-03-oq-02-oq-01 proved the rotation-indexed form ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n and explicitly flagged (openQuestions[1]) the remaining step: push this sum into the classical divisor form by grouping rotations of the same order. This entry supplies that bridge as a pure number-theoretic reindexing, completing the classical necklace-counting identity in the gallery.",
+    "problemStatement": "Starting from the parent's rotation-indexed cyclic Burnside count ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces up to rotation)·n, prove the classical divisor-sum form ∑_{d∣n} φ(n/d)·k^d = (#necklaces)·n, and its symmetric variant ∑_{d∣n} φ(d)·k^{n/d} = (#necklaces)·n, so that dividing by n recovers the textbook necklace formula.",
+    "proofStrategy": "**(A) Rotation sum = range sum.** The map r ↦ r.val is a bijection ZMod n ≃ {0,…,n−1}, with inverse i ↦ (i : ZMod n) (membership via ZMod.val_lt and Finset.mem_range; the round trips via ZMod.natCast_zmod_val and ZMod.val_natCast_of_lt). Finset.sum_bij' transports ∑_{r:ZMod n} k^{gcd(n,r.val)} to ∑_{i<n} k^{gcd(n,i)}.\n\n**(B) Range sum = divisor sum.** The function g i = gcd(n,i) maps range n into n.divisors (gcd(n,i) ∣ n and n ≠ 0). Finset.sum_fiberwise_of_maps_to' regroups ∑_{i<n} k^{gcd(n,i)} as ∑_{d∣n} ∑_{i<n, gcd(n,i)=d} k^d. On each fibre the summand k^d is constant (Finset.sum_const, smul_eq_mul) and the fibre has φ(n/d) elements (Nat.totient_div_of_dvd, valid for d ∣ n), giving ∑_{d∣n} φ(n/d)·k^d.\n\n**(C) Necklace count.** Chain (A) and (B) backwards and apply the parent's sum_pow_gcd_eq_card_necklaces_mul, yielding ∑_{d∣n} φ(n/d)·k^d = Nat.card (orbitRel.Quotient (Rot n) (Rot n → Fin k))·n.\n\n**(D) Symmetric form.** Nat.sum_div_divisors rewrites ∑_{d∣n} φ(n/d)·k^d as ∑_{d∣n} of the same summand at n/d; Nat.div_div_self (for d ∣ n, n ≠ 0) collapses n/(n/d) = d, producing ∑_{d∣n} φ(d)·k^{n/d}. Composing with (C) gives the symmetric necklace identity (D′).",
+    "keyInsights": [
+      "**The divisor form is pure number theory.** The passage from the gcd-indexed rotation sum to ∑_{d∣n} φ(n/d)·k^d needs no necklace or group input — it is a reindexing of ∑_{i<n} k^{gcd(n,i)} by the level sets of gcd(n,·), so the entire bridge factors through Finset.sum_bij' and Finset.sum_fiberwise_of_maps_to'.",
+      "**The fibre count is exactly the totient.** The number of i < n with gcd(n,i) = d is φ(n/d) (Mathlib's totient_div_of_dvd); this single fact converts the fiberwise sum of the constant k^d into the textbook coefficient φ(n/d) and is the crux of the whole identity.",
+      "**ZMod n ≃ range n decouples indexing from algebra.** Summing over the rotation group ZMod n and summing over {0,…,n−1} are interchangeable via r ↦ r.val, so the parent's algebraically-stated count and the number-theorist's range sum are literally the same number.",
+      "**Symmetry is free reindexing.** The two equivalent textbook forms ∑φ(n/d)k^d and ∑φ(d)k^{n/d} differ only by the involution d ↔ n/d on the divisor set (Nat.sum_div_divisors, Nat.div_div_self), so neither is more fundamental — the count is symmetric under it."
+    ],
+    "prerequisites": [
+      "The parent entry's rotation-indexed cyclic count ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n (burnside-counting-oq-03-oq-02-oq-01)",
+      "Euler's totient and the divisor-level identity #{i<n : gcd(n,i)=d} = φ(n/d) (Nat.totient_div_of_dvd)",
+      "Fiberwise summation over the level sets of a map into a finite index set (Finset.sum_fiberwise_of_maps_to')",
+      "The ZMod n ≃ {0,…,n−1} value bijection (ZMod.val_lt, ZMod.val_natCast_of_lt, ZMod.natCast_zmod_val)",
+      "The d ↔ n/d involution on n.divisors (Nat.sum_div_divisors, Nat.div_div_self)"
+    ],
+    "what": "The classical divisor-sum form of the cyclic necklace count: ∑_{d∣n} φ(n/d)·k^d = (#necklaces up to rotation)·n, equivalently ∑_{d∣n} φ(d)·k^{n/d} = (#necklaces)·n, so the number of k-colored n-bead necklaces is (1/n)·∑_{d∣n} φ(n/d) k^d.",
+    "how": "Reindex the parent's gcd-indexed rotation sum: identify ∑_{r:ZMod n} with ∑_{i<n} via r ↦ r.val (Finset.sum_bij'), then group i < n by the divisor gcd(n,i) (Finset.sum_fiberwise_of_maps_to') using that the fibre over d has φ(n/d) elements (Nat.totient_div_of_dvd) and carries the constant summand k^d; the symmetric form follows from the d ↔ n/d involution on divisors.",
+    "significance": "Answers the parent entry's openQuestions[1] verbatim, completing the classical cyclic necklace-counting theorem in the gallery: the abstract Burnside average over rotations is now expressed in the closed divisor-sum form that every reference quotes, and in both standard variants. It demonstrates that the gap between the group-theoretic orbit count and the number-theoretic φ-weighted divisor sum is a clean reindexing — no further group theory — grounding the textbook formula (1/n)∑_{d∣n} φ(n/d) k^d directly in the parent's verified Burnside count.",
+    "significanceMetric": "Closes 1 of the 2 open questions left by the parent entry burnside-counting-oq-03-oq-02-oq-01 (the divisor-form push), expressing the cyclic necklace count in the closed form quoted by every standard reference."
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem Statement and Results",
+      "startLine": 1,
+      "endLine": 38,
+      "summary": "Module docstring: the parent's request to push the rotation-indexed sum to the divisor form, and the four results — (A) rotation sum = range sum, (B) range sum = divisor sum, (C) the classical divisor-form necklace count, and (D) the symmetric d ↔ n/d variant.",
+      "mathContext": "$\\sum_{d \\mid n} \\varphi(n/d)\\,k^d = (\\#\\text{necklaces})\\cdot n$"
+    },
+    {
+      "id": "rotation-range",
+      "title": "Section A: Rotation Sum = Range Sum",
+      "startLine": 51,
+      "endLine": 64,
+      "summary": "sum_zmod_eq_sum_range: the bijection r ↦ r.val between ZMod n and {0,…,n−1} (Finset.sum_bij' with inverse i ↦ (i:ZMod n)) turns ∑_{r:ZMod n} k^{gcd(n,r.val)} into ∑_{i<n} k^{gcd(n,i)}.",
+      "mathContext": "$\\sum_{r:\\mathbb{Z}/n} k^{\\gcd(n,r.\\mathrm{val})} = \\sum_{i<n} k^{\\gcd(n,i)}$"
+    },
+    {
+      "id": "range-divisor",
+      "title": "Section B: Range Sum = Divisor Sum",
+      "startLine": 66,
+      "endLine": 82,
+      "summary": "sum_range_pow_gcd_eq_divisor_sum: group i < n by d = gcd(n,i) ∈ n.divisors (Finset.sum_fiberwise_of_maps_to'); the fibre over d has φ(n/d) elements (Nat.totient_div_of_dvd) and the summand k^d is constant (Finset.sum_const), yielding ∑_{d∣n} φ(n/d)·k^d.",
+      "mathContext": "$\\sum_{i<n} k^{\\gcd(n,i)} = \\sum_{d \\mid n} \\varphi(n/d)\\,k^d$"
+    },
+    {
+      "id": "necklace-count",
+      "title": "Section C: Classical Divisor-Form Necklace Count",
+      "startLine": 84,
+      "endLine": 92,
+      "summary": "divisor_sum_eq_card_necklaces_mul: chaining (A), (B) and the parent's sum_pow_gcd_eq_card_necklaces_mul gives ∑_{d∣n} φ(n/d)·k^d = (#necklaces up to rotation)·n.",
+      "mathContext": "$\\sum_{d \\mid n} \\varphi(n/d)\\,k^d = \\#\\text{necklaces}\\cdot n$"
+    },
+    {
+      "id": "symmetric-form",
+      "title": "Section D: Symmetric d ↔ n/d Form",
+      "startLine": 94,
+      "endLine": 108,
+      "summary": "divisor_sum_symm: the d ↔ n/d involution on n.divisors (Nat.sum_div_divisors, Nat.div_div_self) gives ∑_{d∣n} φ(d)·k^{n/d} = ∑_{d∣n} φ(n/d)·k^d; symm_divisor_sum_eq_card_necklaces_mul expresses the necklace count in this symmetric form.",
+      "mathContext": "$\\sum_{d \\mid n} \\varphi(d)\\,k^{n/d} = \\sum_{d \\mid n} \\varphi(n/d)\\,k^d$"
+    }
+  ],
+  "conclusion": {
+    "summary": "Pushes the parent's rotation-indexed cyclic Burnside count into the classical divisor-sum form by a pure number-theoretic reindexing: (A) ∑_{r:ZMod n} = ∑_{i<n} via r ↦ r.val (Finset.sum_bij'), (B) ∑_{i<n} k^{gcd(n,i)} = ∑_{d∣n} φ(n/d)·k^d by grouping i < n on the level sets of gcd(n,·) (Finset.sum_fiberwise_of_maps_to', Nat.totient_div_of_dvd), (C) ∑_{d∣n} φ(n/d)·k^d = (#necklaces)·n via the parent's count, and (D) the symmetric ∑_{d∣n} φ(d)·k^{n/d} form by the d ↔ n/d involution. Fully verified with 0 sorries and 0 axioms.",
+    "implications": "Completes the classical cyclic necklace-counting theorem in the gallery: the number of k-colored n-bead necklaces up to rotation is (1/n)·∑_{d∣n} φ(n/d) k^d = (1/n)·∑_{d∣n} φ(d) k^{n/d}, both derived as specializations of the parent's verified Burnside average. It shows the bridge from the group-theoretic orbit count to the φ-weighted divisor sum is a clean reindexing requiring no further group theory.",
+    "openQuestions": [
+      "Recover the dihedral reflection counts k^{(n+1)/2}, k^{n/2+1}, k^{n/2} as instances of k^{cyc(g)} and assemble the full dihedral necklace (bracelet) count (1/2n)·(∑_{d∣n} φ(d) k^{n/d} + reflection terms).",
+      "Specialize the divisor-form count to closed expressions for small fixed k (e.g. k = 2, 3) or to the asymptotics of the number of necklaces as n → ∞ for fixed k."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "xref-burnside-oq030201-parent",
+      "targetId": "burnside-counting-oq-03-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Answers the parent's openQuestions[1]: push the rotation-indexed cyclic count ∑_{r:ZMod n} k^{gcd(n,r)} = (#necklaces)·n into the divisor form ∑_{d∣n} φ(n/d) k^d. Reuses the parent's sum_pow_gcd_eq_card_necklaces_mul directly as the final bridge."
+    },
+    {
+      "id": "xref-burnside-oq0302",
+      "targetId": "burnside-counting-oq-03-oq-02",
+      "relationship": "specializes",
+      "description": "The grandparent established the group-agnostic Burnside master formula |Fix(g)| = k^{cyc(g)}; this entry expresses its cyclic specialization in the closed divisor-sum form quoted in standard references, completing the chain from the abstract orbit count to the textbook necklace formula."
+    }
+  ],
+  "leanFile": {
+    "lineCount": 116,
+    "path": "Proofs/BurnsideCountingOQ03OQ02OQ01OQ02.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 5
+  },
+  "sorries": 0
+}
