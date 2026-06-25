@@ -19,13 +19,13 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 3,
-    "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (exponential bounds). 1 sorry: base_implies_behavior (limit → exponential behavior, requires Tendsto with nhds ε-balls). limInf_ge_log_c1 now fully proved.",
+    "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (Pyber 1987 exponential bounds c₁ⁿ ≤ h(n) ≤ c₂ⁿ). 0 sorries: the file is now fully machine-checked relative to these three structural axioms. The former sorry in base_implies_behavior is discharged; its statement ExponentialBehavior was corrected to the provable range ε ∈ (0, c) (the unrestricted ∀ ε > 0 form is false, since for ε ≥ c the lower bound (c−ε)ⁿ can exceed h(n) at even n).",
     "erdosNumber": 117,
     "erdosUrl": "https://erdosproblems.com/117",
     "erdosProblemStatus": "open",
-    "lineCount": 269,
+    "lineCount": 300,
     "theoremCount": 8,
     "definitionCount": 9,
     "additionalFiles": [
@@ -88,9 +88,9 @@
       "id": "open-question",
       "title": "Part IV: The Open Question",
       "startLine": 154,
-      "endLine": 200,
-      "summary": "Part IV block comment (lines 154-157) poses the central open question: does the growth rate converge (liminf = limsup)? Propositions growthRateConverges (line 160), limInfEqLimSup (164), and exponentialBaseExists (168, ∃c>1 with growthRate → log c) state it in three equivalent forms. Theorem limit_determines_base (172-178, proved) constructs the base c = exp(L) from a limit L via Real.log_exp. ExponentialBehavior c (182) defines (c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ eventually, and base_implies_behavior (187-198, the file's single sorry) would derive it from convergence.",
-      "mathContext": "Open: $\\exists c > 1,\\; \\lim r(n) = \\log c$ (i.e., $h(n) = \\Theta(c^n)$). `limit_determines_base` constructs $c = e^L$ from the limit $L$ via `Real.log_exp`. The lone `sorry` is in `base_implies_behavior` (limit $\\to$ exponential $\\varepsilon$-ball behavior); `growthRateConverges`, `limInfEqLimSup`, `exponentialBaseExists` are definitions, not claims."
+      "endLine": 229,
+      "summary": "Part IV poses the central open question: does the growth rate converge (liminf = limsup)? Propositions growthRateConverges, limInfEqLimSup, and exponentialBaseExists (∃c>1 with growthRate → log c) state it in three equivalent forms. Theorem limit_determines_base (proved) constructs the base c = exp(L) from a limit L via Real.log_exp. ExponentialBehavior c is defined for ε ∈ (0, c) as (c-ε)ⁿ ≤ h(n) ≤ (c+ε)ⁿ eventually, and base_implies_behavior now *proves* it from convergence: with δ = min(log(c+ε)−log c, log c−log(c−ε)) > 0, convergence puts log(h n)/n within δ of log c eventually, and exp∘log monotonicity converts the two-sided log bound into the power bounds. The ε < c restriction is essential — the unrestricted ∀ ε > 0 form is false.",
+      "mathContext": "Open: $\\exists c > 1,\\; \\lim r(n) = \\log c$ (i.e., $h(n) = \\Theta(c^n)$). `limit_determines_base` constructs $c = e^L$ from the limit $L$ via `Real.log_exp`. `base_implies_behavior` is now fully proved (no sorry): assuming convergence to $\\log c$, $h$ has `ExponentialBehavior c` for every $\\varepsilon \\in (0, c)$. The restriction $\\varepsilon < c$ keeps the lower base $c-\\varepsilon$ positive; the unrestricted $\\forall \\varepsilon > 0$ statement is genuinely false. `growthRateConverges`, `limInfEqLimSup`, `exponentialBaseExists` remain definitions of the open question, not claims."
     },
     {
       "id": "known-implications",
@@ -146,14 +146,14 @@
       "Filter"
     ],
     "namespace": "Erdos117OQ01",
-    "lineCount": 269,
+    "lineCount": 300,
     "axiomCount": 3,
     "theoremCount": 8,
-    "substantiveTheoremCount": 5,
-    "sorryTheorems": 1,
+    "substantiveTheoremCount": 6,
+    "sorryTheorems": 0,
     "definitionCount": 9,
     "path": "Proofs/Erdos117OQ01.lean",
-    "sorries": 1,
+    "sorries": 0,
     "additionalFiles": [
       "Proofs/Erdos117OQ01Aristotle.lean",
       "Proofs/Erdos117OQ01OQ01.lean"
