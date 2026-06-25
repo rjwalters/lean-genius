@@ -1,0 +1,160 @@
+{
+  "id": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
+  "title": "gcd(n,m) recovers the power map: same kernel, same image, fibre partition #(n-th powers)·gcd(n,m) = m",
+  "slug": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Tactic",
+      "Proofs.CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03"
+    ],
+    "opens": ["Finset"],
+    "namespace": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02",
+    "lineCount": 165,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "description": "The parent leaf showed each non-empty fibre of the power map x ↦ xⁿ in a finite cyclic group of order m has exactly gcd(n, m) elements. This entry makes precise the slogan that count suggests: structurally, the n-th power map IS the gcd(n, m)-th power map. 'Same map' is captured in three independent senses, then assembled into the full fibre partition. (1) Same kernel, in any finite group: xⁿ = 1 ↔ x^gcd(n,m) = 1 (pow_eq_one_iff_pow_gcd), because orderOf x always divides m, so it divides n iff it divides gcd(n, m); as subgroups, ker(x ↦ xⁿ) = ker(x ↦ x^gcd(n,m)) (ker_pow_eq_ker_pow_gcd). No commutativity needed. (2) Same image, in the cyclic case: the set of n-th powers equals the set of gcd(n,m)-th powers, range(x ↦ xⁿ) = range(x ↦ x^gcd(n,m)) (range_pow_eq_range_pow_gcd); the inclusion ⊆ is elementary since gcd(n,m) ∣ n makes every n-th power a gcd(n,m)-th power, and equality follows because both subgroups have order m/gcd(n,m) via Mathlib's IsCyclic.card_powMonoidHom_range. (3) Uniform fibres and partition: every fibre over an actual n-th power has size exactly gcd(n, m) (card_fiber_pow), so counting the group two ways through Finset.card_eq_sum_card_image gives the partition identity #(n-th powers) · gcd(n, m) = m (card_image_pow_mul_gcd), whence a finite cyclic group of order m has exactly m/gcd(n, m) distinct n-th powers (card_image_pow). The map carves the group into m/gcd(n,m) fibres of equal size gcd(n,m), and the single number gcd(n,m) determines kernel, image, and fibre size alike.",
+  "overview": {
+    "historicalContext": "The power map x ↦ xⁿ on a finite abelian group is an endomorphism whose kernel is the n-torsion {x | xⁿ = 1} and whose image is the subgroup of n-th powers; its fibres are the cosets of the kernel and so all have the same size. The parent line of work pinned the cyclic fibre size to gcd(n, |G|), the abelian shadow of Frobenius' 1895 divisibility theorem. A classical refinement, visible already in the theory of n-th power residues modulo a prime, is that only gcd(n, m) matters: replacing the exponent n by d = gcd(n, m) leaves the solution set of xⁱ = 1, the set of i-th powers, and the fibre sizes unchanged. Over the cyclic group ℤ/mℤ this is the statement that the homomorphism 'multiply by n' and the homomorphism 'multiply by gcd(n, m)' have the same kernel and image — the additive face of the gcd reduction nⱼ ≡ d that underlies the Smith-normal-form view of finite cyclic groups. The parent's second open question asks precisely to read the exponent's gcd off the multiset of fibre sizes; this entry supplies the structural identities behind that reading.",
+    "problemStatement": "In a finite group of order m, compare the power map x ↦ xⁿ with the power map x ↦ x^gcd(n,m). Show they have the same kernel (any finite group) and, in the cyclic case, the same image, and that the map partitions the cyclic group into fibres of common size gcd(n, m) — m/gcd(n, m) of them — so that #(n-th powers)·gcd(n, m) = m and the count of n-th powers is m/gcd(n, m).",
+    "proofStrategy": "Kernel: through orderOf_dvd_iff_pow_eq_one the statement xⁿ = 1 ↔ x^gcd(n,m) = 1 reduces to the arithmetic equivalence o ∣ n ↔ o ∣ gcd(n, m) under the standing fact o = orderOf x ∣ m (orderOf_dvd_card); forward is Nat.dvd_gcd, backward is transitivity through Nat.gcd_dvd_left. Lifting elementwise equality through MonoidHom.mem_ker gives the subgroup equality. Image (cyclic): gcd(n, m) ∣ n yields n = gcd(n, m)·n', so aⁿ = (a^n')^gcd(n,m) and range(·ⁿ) ≤ range(·^gcd(n,m)); both subgroups have cardinality m/gcd(m, ·) by IsCyclic.card_powMonoidHom_range, and since gcd(m, gcd(n,m)) = gcd(n, m) = gcd(m, n) these cardinalities agree, so Subgroup.eq_of_le_of_card_ge upgrades the inclusion to equality. Partition: card_eq_sum_card_image writes m = |G| as the sum over the image of the fibre cardinalities; each summand is gcd(n, m) because every image point is an n-th power and the parent's card_pow_eq_cyclic evaluates such a fibre to gcd(n, m); the sum of a constant is (#image)·gcd(n, m), giving the identity, and dividing by the positive gcd yields #image = m/gcd(n, m).",
+    "keyInsights": [
+      "Only gcd(n, m) matters. Passing from exponent n to gcd(n, m) changes neither the kernel nor (in the cyclic case) the image of the power map, so the entire qualitative behaviour of x ↦ xⁿ is a function of gcd(n, m) alone.",
+      "The kernel statement is purely arithmetic and needs no commutativity: it is the equivalence o ∣ n ↔ o ∣ gcd(n, m) applied to o = orderOf x, valid because o ∣ m always holds in a finite group.",
+      "The image-recovery inclusion is the trivial half — gcd(n, m) ∣ n makes every n-th power a gcd(n, m)-th power — and is promoted to equality by a pure cardinality count, the unique-subgroup-per-order property of cyclic groups.",
+      "Uniform fibres turn the abstract 'kernel cosets are equinumerous' into the concrete partition #(n-th powers)·gcd(n, m) = m: m/gcd(n, m) fibres, each of size gcd(n, m), tiling the group.",
+      "The count #(n-th powers) = m/gcd(n, m) is the image side of the kernel size gcd(n, m); their product m is the first isomorphism theorem made arithmetic for the cyclic power map."
+    ]
+  },
+  "sections": [
+    {
+      "id": "kernel-recovery",
+      "title": "Same Kernel — the n-torsion is the gcd-torsion",
+      "startLine": 65,
+      "endLine": 91,
+      "summary": "pow_eq_one_iff_pow_gcd: in any finite group, xⁿ = 1 ↔ x^gcd(n, |G|) = 1, via orderOf_dvd_iff_pow_eq_one and the equivalence orderOf x ∣ n ↔ orderOf x ∣ gcd(n, |G|) (using orderOf x ∣ |G|). solutions_pow_one_eq_gcd records the Finset equality of the two torsion solution sets, and ker_pow_eq_ker_pow_gcd lifts the equivalence to an equality of kernel subgroups of the power homomorphisms.",
+      "mathContext": "xⁿ = 1 ⟺ x^gcd(n,m) = 1, hence ker(x ↦ xⁿ) = ker(x ↦ x^gcd(n,m)); no commutativity required."
+    },
+    {
+      "id": "image-recovery",
+      "title": "Same Image — the n-th powers are the gcd-th powers",
+      "startLine": 93,
+      "endLine": 119,
+      "summary": "range_pow_eq_range_pow_gcd: in a finite cyclic group the subgroup of n-th powers equals the subgroup of gcd(n, m)-th powers. The inclusion range(·ⁿ) ≤ range(·^gcd) holds because gcd(n,m) ∣ n gives aⁿ = (a^n')^gcd(n,m); equality follows since both subgroups have cardinality m/gcd(n, m) by IsCyclic.card_powMonoidHom_range (using gcd(m, gcd(n,m)) = gcd(n, m)), so Subgroup.eq_of_le_of_card_ge applies.",
+      "mathContext": "range(x ↦ xⁿ) = range(x ↦ x^gcd(n,m)); both have order m/gcd(n, m)."
+    },
+    {
+      "id": "fibre-partition",
+      "title": "Uniform Fibres and the Partition Identity",
+      "startLine": 121,
+      "endLine": 164,
+      "summary": "card_fiber_pow restates the parent's count: every fibre of x ↦ xⁿ over an actual n-th power b has exactly gcd(n, m) elements. card_image_pow_mul_gcd counts the group two ways with Finset.card_eq_sum_card_image — each summand collapses to gcd(n, m) — to obtain #(n-th powers)·gcd(n, m) = m. card_image_pow divides by the positive gcd to give #(n-th powers) = m/gcd(n, m): the power map tiles the cyclic group into m/gcd(n,m) fibres of common size gcd(n,m).",
+      "mathContext": "#(n-th powers)·gcd(n, m) = m, so #(n-th powers) = m/gcd(n, m); fibres all have size gcd(n, m)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A single number, gcd(n, m), governs the entire power map x ↦ xⁿ on a finite group of order m. It fixes the kernel — xⁿ = 1 ⟺ x^gcd(n,m) = 1 in any finite group, so the n-torsion and gcd(n,m)-torsion subgroups coincide — and, in the cyclic case, the image — the n-th powers are exactly the gcd(n,m)-th powers, a subgroup of order m/gcd(n, m). The non-empty fibres are uniform of size gcd(n, m), so the map partitions the group into m/gcd(n, m) such fibres, recorded as the arithmetic identity #(n-th powers)·gcd(n, m) = m. This is the structural refinement of the parent's fibre count: not only is each fibre gcd(n, m) elements, but exponent n is interchangeable with gcd(n, m) throughout, directly answering the parent's open question of reading the exponent's gcd off the fibre data.",
+    "implications": [
+      "Reduces the study of x ↦ xⁿ to x ↦ x^gcd(n,m): the kernel coincides in every finite group and the image coincides in every finite cyclic group, so n is replaceable by gcd(n, m) wherever the power map's kernel or image is used.",
+      "Gives the exact count of n-th powers in a finite cyclic group of order m as m/gcd(n, m), the image-side complement to the kernel size gcd(n, m), with product m.",
+      "Packages the parent's pointwise fibre count gcd(n, m) into the global partition #(n-th powers)·gcd(n, m) = m — m/gcd(n, m) fibres of equal size — providing the structural data the parent's second open question requested."
+    ],
+    "openQuestions": [
+      "The kernel equality xⁿ = 1 ⟺ x^gcd(n,m) = 1 holds in every finite group, but the image equality is proved only in the cyclic case; for a general finite abelian group, is range(x ↦ xⁿ) = range(x ↦ x^gcd(n, exp G)) when gcd is taken against the exponent rather than the order, and what is the analogue of the partition identity when fibres still have constant size but that size is no longer gcd(n, |G|)?",
+      "Inverting the map: given the unordered multiset of fibre sizes of x ↦ xⁿ on a cyclic group (all equal to gcd(n, m), with m/gcd(n,m) blocks), one recovers gcd(n, m) exactly; over a product of cyclic groups the fibre-size multiset is more informative — which residues of n modulo the invariant factors are determined by it?"
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Directly answers the parent's second open question — reading the exponent's gcd off the fibre data. The parent counts each non-empty fibre of x ↦ xⁿ as gcd(n, m); this entry shows the whole map (kernel and image) is recovered by gcd(n, m) and assembles the fibres into the partition #(n-th powers)·gcd(n, m) = m."
+    },
+    {
+      "targetId": "cauchy-group-theorem-oq-01-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "The parent-of-parent counts the homogeneous fibre #{x | xⁿ = 1} = gcd(n, |G|) on a cyclic group; that count is the kernel size whose image-side complement m/gcd(n, m) is computed here, the two multiplying to |G| in the first-isomorphism bookkeeping for the power map."
+    }
+  ],
+  "meta": {
+    "author": "Lean formalization original (gcd(n,m) recovers the power map: kernel, image, and fibre partition)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03OQ02.lean",
+    "tags": [
+      "algebra",
+      "group-theory",
+      "finite-groups",
+      "cyclic-groups",
+      "power-map",
+      "gcd",
+      "kernel",
+      "image",
+      "fibre-partition",
+      "n-th-power-residues"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "orderOf_dvd_iff_pow_eq_one",
+        "description": "orderOf a ∣ k ↔ aᵏ = 1; converts both sides of the kernel equivalence xⁿ = 1 ↔ x^gcd(n,m) = 1 into divisibility statements about orderOf x.",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "orderOf_dvd_card",
+        "description": "orderOf x ∣ Fintype.card G in a finite group; the standing fact that makes orderOf x ∣ n equivalent to orderOf x ∣ gcd(n, |G|).",
+        "module": "Mathlib.GroupTheory.OrderOfElement"
+      },
+      {
+        "theorem": "Nat.dvd_gcd",
+        "description": "k ∣ m → k ∣ n → k ∣ gcd(m, n); the forward direction of the kernel equivalence, combining orderOf x ∣ n with orderOf x ∣ |G|.",
+        "module": "Mathlib.Data.Nat.GCD.Basic"
+      },
+      {
+        "theorem": "IsCyclic.card_powMonoidHom_range",
+        "description": "Nat.card (powMonoidHom d).range = |G| / gcd(|G|, d) on a cyclic group; gives both n-th and gcd(n,m)-th power subgroups the common order m/gcd(n, m), forcing the image equality.",
+        "module": "Mathlib.GroupTheory.SpecificGroups.Cyclic"
+      },
+      {
+        "theorem": "Subgroup.eq_of_le_of_card_ge",
+        "description": "H ≤ K and Nat.card K ≤ Nat.card H force H = K for finite subgroups; upgrades range(·ⁿ) ≤ range(·^gcd) to equality once the cardinalities are shown equal.",
+        "module": "Mathlib.Algebra.Group.Subgroup.Finite"
+      },
+      {
+        "theorem": "Finset.card_eq_sum_card_image",
+        "description": "#s = ∑ b ∈ s.image f, #{a ∈ s | f a = b}; the fibrewise count of the whole group that, with the uniform fibre size, yields the partition identity #(n-th powers)·gcd(n, m) = m.",
+        "module": "Mathlib.Algebra.BigOperators.Group.Finset.Basic"
+      },
+      {
+        "theorem": "CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03.card_pow_eq_cyclic",
+        "description": "The parent's count #{x | xⁿ = g} = gcd(n, |G|) for g an n-th power on a cyclic group; supplies the constant value of each non-empty fibre in the partition.",
+        "module": "Proofs.CauchyGroupTheoremOQ01OQ01OQ01OQ01OQ03"
+      }
+    ],
+    "references": [
+      {
+        "authors": "Frobenius, Ferdinand Georg",
+        "title": "Verallgemeinerung des Sylow'schen Satzes",
+        "year": "1895",
+        "note": "Sitzungsberichte der Königlich Preußischen Akademie der Wissenschaften zu Berlin — the divisibility theorem for #{xⁿ = 1}; here the homogeneous count gcd(n, |G|) is shown to control kernel, image, and fibre size of the whole power map."
+      },
+      {
+        "authors": "Ireland, Kenneth; Rosen, Michael",
+        "title": "A Classical Introduction to Modern Number Theory",
+        "year": "1990",
+        "note": "Springer GTM 84 — n-th power residues in the cyclic group (ℤ/pℤ)ˣ: the number of n-th power residues is (p−1)/gcd(n, p−1), the field instance of card_image_pow."
+      },
+      {
+        "authors": "Isaacs, I. Martin",
+        "title": "Finite Group Theory",
+        "year": "2008",
+        "note": "Graduate Studies in Mathematics 92, AMS — kernels, images, and the equinumerous-fibre structure of endomorphisms of finite abelian groups."
+      }
+    ]
+  }
+}
