@@ -57,6 +57,18 @@
     "theoremCount": 5,
     "definitionCount": 0
   },
+  "overview": {
+    "historicalContext": "The impossibility of a general radical formula for the quintic is one of the oldest deep results in algebra. Paolo Ruffini gave a long, incomplete argument in 1799; Niels Henrik Abel produced the first essentially complete proof in 1824, working before the group concept existed. Évariste Galois, in the manuscripts written before his death in 1832, supplied the conceptual explanation that subsumes both: a polynomial is solvable by radicals if and only if its Galois group is a solvable group. The obstruction for n ≥ 5 is then a purely group-theoretic fact — the symmetric group Sₙ fails to be solvable — which Galois traced to the simplicity of the alternating group A₅. Camille Jordan and later authors made the structure theory precise; the modern statement (radical solvability ⟺ solvable Galois group) is the form formalized in Mathlib's FieldTheory.AbelRuffini, on which this file builds.",
+    "problemStatement": "Show, fully machine-checked, the group-theoretic core of Abel–Ruffini: the symmetric group $S_n$ is not solvable for every $n \\ge 5$ (not merely $n = 5$), while $S_2$ is solvable, and convert this into the usable polynomial criterion that a root of an irreducible $q \\in F[X]$ with non-solvable Galois group is not expressible by radicals.",
+    "proofStrategy": "Two moves. (1) Generalize Mathlib's single-case Equiv.Perm.fin_5_not_solvable to all n ≥ 5 by routing through the cardinal-indexed Equiv.Perm.not_solvable: rewrite #(Fin n) = n via Cardinal.mk_fin and cast the bound 5 ≤ n. The low endpoint S₂ is handled by isSolvable_of_comm with commutativity settled by kernel decide. (2) Take the contrapositive of Mathlib's solvableByRad.isSolvable' to obtain not_solvableByRad_of_not_solvable_gal — the bridge that turns the group obstruction into a statement about actual polynomial roots.",
+    "keyInsights": [
+      "Solvability of the symmetric group is the *exact* frontier of radical solvability: Sₙ solvable ⟺ n ≤ 4, so the threshold sits precisely between degree 4 (Ferrari) and degree 5. symmetric_threshold pins both endpoints in a single statement.",
+      "The non-solvability is uniform in n: rather than re-proving each degree, one cardinal argument (Cardinal.mk_fin converting #(Fin n) = n) discharges the entire range n ≥ 5 at once, where Mathlib only ships the Fin 5 instance.",
+      "The deep content is hidden in Mathlib's Equiv.Perm.not_solvable: A₅ is a nonabelian simple group equal to its own commutator subgroup, so the derived series stalls and never reaches the trivial group — that is the irreducible reason no radical formula can exist.",
+      "The Galois bridge is a one-line contrapositive: non-solvable Galois group ⟹ root not solvable by radicals. This abstract criterion is what every concrete unsolvable-quintic certificate (e.g. an irreducible degree-5 polynomial with Galois group S₅) actually invokes.",
+      "Separating the criterion (not_solvableByRad_of_not_solvable_gal) from its converse (solvable_gal_of_solvableByRad) makes the logical structure of Galois' theorem explicit: the two implications are distinct directions of the same equivalence, used for opposite purposes (proving impossibility vs. extracting structure)."
+    ]
+  },
   "sections": [
     {
       "id": "symmetric-obstruction",
@@ -71,6 +83,32 @@
       "startLine": 84,
       "endLine": 120,
       "summary": "not_solvableByRad_of_not_solvable_gal: a root of an irreducible q with non-solvable Galois group is not solvable by radicals — the contrapositive of Mathlib's solvableByRad.isSolvable'. solvable_gal_of_solvableByRad re-exposes the forward direction. Together they are the Galois bridge from the symmetric-group obstruction to actual polynomial equations."
+    }
+  ],
+  "conclusion": {
+    "summary": "This 121-line, axiom-free, sorry-free file isolates the group-theoretic heart of Abel–Ruffini and makes it directly usable. It proves the symmetric group Sₙ is not solvable for every n ≥ 5 (symmetricGroup_not_solvable, a uniform-in-n generalization of Mathlib's Fin-5-only instance), that S₂ is solvable, and packages both endpoints in symmetric_threshold. It then states the Abel–Ruffini criterion not_solvableByRad_of_not_solvable_gal — non-solvable Galois group implies a root not expressible by radicals — as the contrapositive of Mathlib's solvableByRad.isSolvable', with the converse re-exposed alongside it.",
+    "implications": "The criterion is the reusable engine for certifying concrete unsolvable polynomials: any irreducible degree-n polynomial (n ≥ 5) whose Galois group contains a non-solvable symmetric group has roots provably not expressible by radicals. Combined with a route that pins a specific polynomial's Galois group to S₅ — such as the discriminant/Jordan argument for X⁵ − X − 1 — it yields a fully formal proof that a named quintic has no radical solution. The uniform n ≥ 5 statement also means no per-degree re-proof is ever needed downstream.",
+    "openQuestions": [
+      "Formalize a self-contained construction of an irreducible quintic with Galois group exactly S₅ (e.g. via the discriminant being a non-square plus a transposition from a single real pair of complex roots), so an end-to-end 'this specific polynomial is unsolvable by radicals' theorem chains directly off this criterion.",
+      "Extend the solvable side to the full threshold by formalizing solvability of S₃ and S₄ (and hence the existence of the Cardano and Ferrari radical formulas), completing the 'Sₙ solvable ⟺ n ≤ 4' equivalence rather than only its two endpoints.",
+      "Address the characteristic-p story left out of scope: radical solvability in positive characteristic interacts with wild ramification and inseparability, and the Abhyankar conjecture (Raynaud–Harbater) on Galois groups of covers of curves lies far beyond the characteristic-independent core formalized here."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "abel-ruffini-oq-07-discriminant",
+      "relationship": "related",
+      "description": "Supplies a concrete input to this file's criterion: the discriminant/Jordan route showing X⁵ − X − 1 has Galois group S₅. Combined with not_solvableByRad_of_not_solvable_gal and symmetricGroup_not_solvable, it certifies that specific quintic as unsolvable by radicals."
+    },
+    {
+      "targetId": "abel-ruffini",
+      "relationship": "extends",
+      "description": "The base Abel–Ruffini gallery entry. This file sharpens the group-theoretic obstruction to a uniform statement for all n ≥ 5 and exposes the radical-solvability criterion as a standalone reusable lemma."
+    },
+    {
+      "targetId": "abel-ruffini-galois-extensions",
+      "relationship": "related",
+      "description": "Companion development of the surrounding Galois machinery (extensions, fixed fields, the Galois correspondence) that underlies the radical-solvability equivalence invoked here."
     }
   ]
 }
