@@ -1,0 +1,118 @@
+{
+  "slug": "gcd-algorithm-oq-05",
+  "title": "The Gauss–Kuzmin Distribution is a Probability Distribution",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "The Gauss–Kuzmin weights P(k) = log₂(1 + 1/(k(k+2))), k ≥ 1, satisfy P(k) > 0 and ∑_{k≥1} P(k) = 1. Proof via the telescoping identity P(k) = G(k) − G(k+1) with G(k) = log₂((k+2)/(k+1)), giving ∑_{n<N} P(n) = 1 − log₂((N+2)/(N+1)) → 1.",
+    "plain": "The Euclidean-algorithm quotients qᵢ = ⌊r_{i-1}/rᵢ⌋ are the continued-fraction digits of r₀/r₁; their limiting law is the Gauss–Kuzmin distribution P(k) = log₂(1 + 1/(k(k+2))). This formalizes the prerequisite that these weights are a genuine probability distribution (positive, sum to 1).",
+    "whyMatters": [
+      "The normalization ∑ P(k) = 1 is the foundational fact OQ-05's 'are the quotients Gauss–Kuzmin distributed?' presupposes",
+      "Concrete answer to 'what does a formal proof require': the full Gauss–Kuzmin–Lévy theorem needs ergodicity of the Gauss map and invariance of the Gauss measure, absent from Mathlib",
+      "The seemingly transcendental log₂ series telescopes exactly via 1 + 1/(k(k+2)) = (k+1)²/(k(k+2))"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Euclidean algorithm correctness and step bounds (GCDAlgorithm.lean)"
+    ],
+    "open": [],
+    "goal": "Determine whether the Euclidean-algorithm quotients are Gauss–Kuzmin distributed and what a formal proof requires; formalize the normalization of the Gauss–Kuzmin weights."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-25T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Saturated and machine-verified: positivity + telescoping + normalization (∑ P(k) = 1), 0 sorry/0 axiom, registered in Proofs.lean, gallery entry verified/original. Scope boundary documented: full Gauss–Kuzmin–Lévy needs Gauss-map ergodicity (not in Mathlib).",
+    "blockers": [],
+    "nextAction": "None required for the normalization. Full asymptotic distribution requires building Gauss-map ergodic theory in Mathlib first.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "MATH COMPLETE for the foundational prerequisite. Proved the Gauss–Kuzmin weights P(k) = log₂(1 + 1/(k(k+2))) are positive and sum to 1 (genuine probability distribution), via the telescoping identity P(k) = G(k) − G(k+1) and the closed-form partial sum 1 − log₂((N+2)/(N+1)) → 1. Self-contained (imports only Mathlib); lake env lean exits 0; #print axioms reports only propext/Classical.choice/Quot.sound. Gallery meta + annotations written. Status verified/original. The full Gauss–Kuzmin–Lévy theorem is out of reach until Mathlib has Gauss-map ergodicity.",
+    "builtItems": [
+      "gaussKuzmin (def: log₂(1 + 1/((n+1)(n+3))), quotient k = n+1) and G (telescoping antiderivative log₂((n+2)/(n+1)))",
+      "gaussKuzmin_pos (each weight > 0 via Real.logb_pos)",
+      "gaussKuzmin_eq_sub (telescoping identity P(n) = G(n) − G(n+1) via logb_div and 1 + 1/((n+1)(n+3)) = (n+2)²/((n+1)(n+3)))",
+      "gaussKuzmin_partial (∑_{n<N} P(n) = G(0) − G(N) via Finset.sum_range_sub')",
+      "G_zero (G(0) = 1), G_nonneg, G_tendsto_zero (G(N) → 0 via (n+2)/(n+1) → 1 and continuity of log₂ at 1)",
+      "gaussKuzmin_partial_tendsto_one (partial sums → 1)",
+      "gaussKuzmin_summable (summable_of_sum_range_le with bound 1) and gaussKuzmin_tsum (∑' P(k) = 1)"
+    ],
+    "insights": [
+      "1 + 1/(k(k+2)) = (k+1)²/(k(k+2)), so log₂ of it is a second difference of log₂(k): the Gauss–Kuzmin series telescopes exactly.",
+      "Closed-form partial sum ∑_{n<N} P(n) = 1 − log₂((N+2)/(N+1)) makes normalization manifest and exhibits the convergence rate to 1.",
+      "Normalization is exactly the prerequisite OQ-05 presupposes; the asymptotic distribution (Gauss–Kuzmin–Lévy) further needs ergodicity of the Gauss map x ↦ {1/x} and invariance of the Gauss measure dx/((1+x)ln2).",
+      "Real.logb_div needs nonzero numerator/denominator; push_cast then field_simp; ring assembles the argument equality; norm_num closes logb 2 2 = 1.",
+      "summable_of_sum_range_le needs the bound c made explicit (c := 1) or it stays a metavariable and linarith fails."
+    ],
+    "mathlibGaps": [
+      "No formalization of the Gauss map x ↦ {1/x}, its ergodicity, or invariance of the Gauss measure dx/((1+x)ln2) — the measure-theoretic core of Gauss–Kuzmin–Lévy.",
+      "No general transfer-operator / Gauss–Kuzmin–Wirsing operator infrastructure."
+    ],
+    "nextSteps": [
+      "Formalize the Gauss map and prove invariance of the Gauss measure.",
+      "Establish ergodicity and derive the asymptotic Gauss–Kuzmin distribution of continued-fraction digits, then link to the Euclidean-algorithm quotients."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "continued-fractions",
+    "gauss-kuzmin",
+    "euclidean-algorithm",
+    "probability"
+  ],
+  "relatedProofs": [
+    "gcd-algorithm",
+    "gcd-algorithm-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Kuzmin, On a problem of Gauss (1928)",
+      "Lévy, Sur les lois de probabilité ... fraction continue (1929)",
+      "Knuth, TAOCP Vol. 2, Seminumerical Algorithms (1997)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Real.logb_pos",
+      "Real.logb_div",
+      "Finset.sum_range_sub'",
+      "tendsto_one_div_add_atTop_nhds_zero_nat",
+      "summable_of_sum_range_le"
+    ]
+  },
+  "started": "2026-06-25T00:00:00.000Z",
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GCDAlgorithm.lean",
+      "filename": "GCDAlgorithm.lean",
+      "lineCount": 248,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GCDAlgorithm.lean"
+    },
+    {
+      "path": "Proofs/GCDAlgorithmOQ05.lean",
+      "filename": "GCDAlgorithmOQ05.lean",
+      "lineCount": 167,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GCDAlgorithmOQ05.lean"
+    }
+  ]
+}
