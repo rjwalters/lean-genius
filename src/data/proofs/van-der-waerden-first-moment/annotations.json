@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-overview-scope",
+    "proofId": "van-der-waerden-first-moment",
+    "range": { "startLine": 1, "endLine": 39 },
+    "type": "context",
+    "title": "The first-moment bound as Property B for the AP-hypergraph",
+    "content": "Van der Waerden's theorem (1927) guarantees a monochromatic length-k arithmetic progression in any 2-colouring of a long enough interval; W(k) is the least length forcing one. The classical lower bound is a union bound: colour [n] uniformly at random, observe a fixed length-k AP is monochromatic with probability 2·2^{-k} = 2^{1-k}, so if fewer than 2^{k-1} length-k APs fit then the expected number of monochromatic APs is < 1 and some colouring has none — proving W(k) > n. The structural observation that makes this cheap in Lean: a length-k AP is just a k-element subset, so 'monochromatic AP' = 'monochromatic edge' of the hypergraph whose edges are the AP-subsets. The bound is therefore Erdős' 1963 Property B specialised to that hypergraph.",
+    "mathContext": "$\\Pr[\\text{fixed length-}k\\text{ AP monochromatic}] = 2^{1-k};\\quad |\\text{family}| < 2^{k-1} \\Rightarrow \\mathbb{E}[\\#\\text{mono APs}] < 1$",
+    "significance": "context",
+    "relatedConcepts": ["van der Waerden numbers", "first-moment method", "union bound", "Property B", "hypergraph 2-colouring"],
+    "prerequisites": ["probabilistic method", "arithmetic progressions", "Ramsey theory"]
+  },
+  {
+    "id": "ann-vdwAP-def",
+    "proofId": "van-der-waerden-first-moment",
+    "range": { "startLine": 51, "endLine": 54 },
+    "type": "definition",
+    "title": "A length-k AP as a Finset of Fin n",
+    "content": "vdwAP models the progression {a, a+d, …, a+(k-1)d} inside the ground set Fin n as the image of {0,…,k-1} under i ↦ (a + i·d : Fin n), where the natural number a + i·d is reduced modulo n by the Nat.cast into Fin n. Casting into a finite type rather than carrying an explicit bound keeps the definition total — any (a, d, k) yields a Finset — and defers the no-wraparound condition to the cardinality lemma where it is actually needed.",
+    "mathContext": "$\\mathrm{vdwAP}(n,a,d,k) = \\{\\, \\overline{a + i d} : i \\in \\{0,\\dots,k-1\\}\\,\\} \\subseteq \\mathbb{Z}/n\\mathbb{Z}$",
+    "significance": "supporting",
+    "relatedConcepts": ["arithmetic progression", "Finset image", "Fin n", "modular reduction"],
+    "prerequisites": ["finite types", "Finset basics"]
+  },
+  {
+    "id": "ann-card-vdwAP",
+    "proofId": "van-der-waerden-first-moment",
+    "range": { "startLine": 56, "endLine": 79 },
+    "type": "technique",
+    "title": "A fitting positive-step AP has exactly k elements (no wraparound)",
+    "content": "card_vdwAP is the only genuinely AP-specific work. Naively the image could collapse if two indices coincide modulo n, so cardinality < k. The hypothesis a + (k-1)d < n rules this out: every term a + i·d (i < k) is then a natural below n, so Fin.val_cast_of_lt recovers it exactly and distinct indices give distinct residues. Concretely Finset.card_image_of_injOn reduces the claim to injectivity of i ↦ a + i·d on {0,…,k-1}; from a + i·d = a + j·d and d ≥ 1, cancellation (Nat.eq_of_mul_eq_mul_right) gives i = j. So the image has card_range k = k elements.",
+    "mathContext": "$a + (k-1)d < n,\\ d \\ge 1 \\;\\Rightarrow\\; i \\mapsto a + id \\text{ injective on } \\{0,\\dots,k-1\\} \\;\\Rightarrow\\; |\\mathrm{vdwAP}| = k$",
+    "significance": "key",
+    "relatedConcepts": ["injectivity", "wraparound in Fin n", "Fin.val_cast_of_lt", "card_image_of_injOn", "k-uniform hypergraph"],
+    "prerequisites": ["modular arithmetic", "injective functions", "Finset cardinality"]
+  },
+  {
+    "id": "ann-vdwFamily",
+    "proofId": "van-der-waerden-first-moment",
+    "range": { "startLine": 81, "endLine": 95 },
+    "type": "definition",
+    "title": "The family of all fitting APs is k-uniform",
+    "content": "vdwFamily collects every length-k AP that fits in [n], as the image of the (a,d) pairs from {0,…,n-1} × {1,…,n} filtered by a + (k-1)d < n. This is the edge set of the AP-hypergraph. vdwFamily_uniform confirms every member is a genuine k-set by replaying card_vdwAP on the filter's hypotheses (positive step d ≥ 1 and the fitting bound) — exactly the k-uniformity that the Property B engine demands as input.",
+    "mathContext": "$\\mathrm{vdwFamily}(n,k) = \\{\\, \\mathrm{vdwAP}(n,a,d,k) : a<n,\\ 1\\le d\\le n,\\ a+(k-1)d<n \\,\\}$",
+    "significance": "supporting",
+    "relatedConcepts": ["hypergraph edge set", "k-uniform hypergraph", "Finset filter", "product set"],
+    "prerequisites": ["Finset operations", "hypergraphs"]
+  },
+  {
+    "id": "ann-card-family-le",
+    "proofId": "van-der-waerden-first-moment",
+    "range": { "startLine": 97, "endLine": 106 },
+    "type": "technique",
+    "title": "At most n² APs fit — the loose-but-clean union-bound count",
+    "content": "card_vdwFamily_le bounds the family by n² through a short calc: the image has at most as many elements as the filtered (a,d) set (card_image_le), which has at most |{0,…,n-1} × {1,…,n}| = n·n elements (card_filter_le, then card_product). The bound is deliberately loose — it ignores that the step is at most n/(k-1) — but it is clean and already yields the textbook threshold n² < 2^{k-1}, i.e. W(k) ≳ 2^{(k-1)/2}. Sharpening the count would improve only the constant, not the exponent.",
+    "mathContext": "$|\\mathrm{vdwFamily}(n,k)| \\le |\\{0,\\dots,n-1\\}\\times\\{1,\\dots,n\\}| = n^2$",
+    "significance": "supporting",
+    "relatedConcepts": ["counting bound", "card_image_le", "card_product", "union bound threshold"],
+    "prerequisites": ["Finset cardinality", "product cardinality"]
+  },
+  {
+    "id": "ann-lower-bound",
+    "proofId": "van-der-waerden-first-moment",
+    "range": { "startLine": 108, "endLine": 137 },
+    "type": "insight",
+    "title": "Instantiating the verified Property B engine to bound W(k)",
+    "content": "vdw_two_coloring_exists is a one-line application of the gallery's verified property_b_two_colorable to the AP-hypergraph: k-uniform (vdwFamily_uniform) and small (|family| < 2^{k-1}) force a 2-colouring with no monochromatic edge. vdw_lower_bound then packages the user-facing AP form: from n² < 2^{k-1} and card_vdwFamily_le, the family is small, so a good colouring exists; the only remaining work is the membership check that every fitting positive-step AP genuinely lies in the family (a < n because a ≤ a+(k-1)d < n, and d ≤ (k-1)d when k ≥ 2). The probabilistic core is reused verbatim — only the AP combinatorics is new — and the resulting bound W(k) > n whenever n² < 2^{k-1} is fully machine-checked, where the gallery's erdos-138 only axiomatizes it.",
+    "mathContext": "$n^2 < 2^{k-1} \\;\\Rightarrow\\; \\exists\\, c:[n]\\to\\{0,1\\}\\ \\forall \\text{ length-}k\\text{ AP},\\ \\text{not monochromatic} \\;\\Rightarrow\\; W(k) > n$",
+    "significance": "key",
+    "relatedConcepts": ["Property B", "engine reuse", "van der Waerden lower bound", "W(k) ≳ 2^((k-1)/2)", "probabilistic method"],
+    "prerequisites": ["hypergraph colouring", "Property B theorem"]
+  }
+]
