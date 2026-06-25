@@ -4,7 +4,7 @@
   "slug": "isoperimetric-theorem-oq-01-oq-01",
   "description": "Formalizes the Fourier (Hurwitz–Wirtinger) proof of the classical isoperimetric inequality L² ≥ 4πA — the exact technique the open question asks to transport to spherical/hyperbolic surfaces. The algebraic heart is a per-mode sum-of-squares identity: n²(aₙ²+αₙ²+bₙ²+βₙ²) − 2n(aₙβₙ − αₙbₙ) = (n·aₙ−βₙ)² + (n·αₙ+bₙ)² + (n²−1)(βₙ²+bₙ²), nonnegative for every mode n ≥ 1. Summed, it is Wirtinger's inequality (2·Ar ≤ E); under arc-length normalization it is L² ≥ 4πA, with equality iff only the fundamental mode survives (a circle).",
   "category": "analysis",
-  "status": "formalized",
+  "status": "verified",
   "badge": "original",
   "difficulty": "intermediate",
   "leanFile": {
@@ -26,7 +26,7 @@
     "author": "Adolf Hurwitz / Wilhelm Wirtinger (formalized in Lean 4)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Isoperimetric_inequality#The_isoperimetric_inequality_in_the_plane",
     "date": "1901",
-    "status": "formalized",
+    "status": "verified",
     "tags": [
       "analysis",
       "fourier-analysis",
@@ -78,7 +78,7 @@
     "axiomCount": 0,
     "lineCount": 221,
     "mathlib_version": "4.26.0",
-    "assumptions": "0 axioms and 0 sorries by construction over ℝ. BUILD PENDING: machine-check via docker-build.sh was NOT run this session — the Docker engine was down fleet-wide, so status is 'formalized' (not 'verified'). The proof uses only elementary ℝ-algebra tactics (ring, nlinarith, linarith, le_antisymm, Finset.sum_nonneg) and was hand-verified; it should be build-confirmed and promoted to 'verified' before/at merge. The Parseval bridge from the L²-integrals ∮(x'²+y'²) and ∮x dy to the coefficient sums E and Ar is the standard textbook reduction (Stein–Shakarchi, Ch. 4); it is documented, not re-derived — the formalized objects are the Fourier coefficients and the coefficient-level inequality, which is the mathematical heart of the method.",
+    "assumptions": "0 axioms and 0 sorries by construction over ℝ. BUILD-CONFIRMED: machine-checked with `lake env lean` against the prebuilt Mathlib 4.26.0 olean cache (Docker engine was down fleet-wide, so docker-build.sh could not be used; the single file imports only Mathlib and has no sibling-proof dependencies, so a standalone compile is a complete check). Exit 0, no errors; `#print axioms` on isoperimetric_fourier / wirtinger / equality_implies_circle / hurwitzTerm_eq_zero reports only [propext, Classical.choice, Quot.sound] — no sorryAx, no Lean.ofReduceBool. Status promoted to 'verified'. The proof uses only elementary ℝ-algebra tactics (ring, nlinarith, linarith, le_antisymm, Finset.sum_nonneg). The Parseval bridge from the L²-integrals ∮(x'²+y'²) and ∮x dy to the coefficient sums E and Ar is the standard textbook reduction (Stein–Shakarchi, Ch. 4); it is documented, not re-derived — the formalized objects are the Fourier coefficients and the coefficient-level inequality, which is the mathematical heart of the method.",
     "theoremCount": 7,
     "definitionCount": 3
   },

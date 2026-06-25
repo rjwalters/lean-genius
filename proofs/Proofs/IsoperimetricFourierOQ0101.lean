@@ -60,7 +60,7 @@ open Finset
 
 namespace IsoperimetricFourier
 
-/-- Real Fourier data of a closed plane curve: for each mode `n` the four real
+/- Real Fourier data of a closed plane curve: for each mode `n` the four real
 coefficients `a n, α n` (the `x`-component) and `b n, β n` (the `y`-component).
 Only modes `n ≥ 1` are relevant; constant modes are translations and drop out. -/
 variable (a α b β : ℕ → ℝ)
