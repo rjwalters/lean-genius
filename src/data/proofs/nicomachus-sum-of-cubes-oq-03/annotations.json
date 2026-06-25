@@ -1,0 +1,48 @@
+[
+  {
+    "id": "ann-subtraction-free",
+    "proofId": "nicomachus-sum-of-cubes-oq-03",
+    "range": { "startLine": 56, "endLine": 67 },
+    "type": "theorem",
+    "title": "Subtraction-free core: ∑(2k+1)³ + n² = 2n⁴",
+    "content": "The whole development is built on this lemma. The target closed form $n^2(2n^2-1)$ equals $2n^4 - n^2$, and that $-n^2$ is truncated subtraction in $\\mathbb{N}$ — invisible to `ring`. Adding $n^2$ to both sides moves it to $\\sum_{k<n}(2k+1)^3 + n^2 = 2n^4$, where every term is a genuine natural number. The induction's base case is `rfl`; the step uses `sum_range_succ` to expose the top odd cube $(2m+1)^3$, then leans on the standalone polynomial identity proved on the next line.",
+    "mathContext": "$\\sum_{k<n}(2k+1)^3 + n^2 = 2n^4$.",
+    "significance": "critical",
+    "prerequisites": ["Mathematical induction", "Finset.sum_range_succ"],
+    "relatedConcepts": ["Truncated natural subtraction", "Power sums", "Faulhaber identities"]
+  },
+  {
+    "id": "ann-ring-omega-step",
+    "proofId": "nicomachus-sum-of-cubes-oq-03",
+    "range": { "startLine": 63, "endLine": 67 },
+    "type": "insight",
+    "title": "ring for the algebra, omega for the splice",
+    "content": "The inductive step is closed by a clean division of labor. The `key` hypothesis $2m^4 + (2m+1)^3 + (m+1)^2 = 2(m+1)^4 + m^2$ is a fixed, subtraction-free polynomial identity that `ring` verifies outright. Then `omega` finishes: it treats the nonlinear terms $m^4$, $(2m+1)^3$, $(m+1)^2$, $(m+1)^4$ and the sum as opaque atoms and does the purely *linear* algebra needed to combine `key` with the inductive hypothesis $\\sum_{k<m}(2k+1)^3 + m^2 = 2m^4$. Neither tactic does the other's job — `ring` cannot use the hypothesis, `omega` cannot expand the polynomials.",
+    "mathContext": "$2m^4 + (2m+1)^3 + (m+1)^2 = 2(m+1)^4 + m^2$.",
+    "significance": "key",
+    "relatedConcepts": ["ring tactic", "omega tactic", "Atomization of nonlinear terms"]
+  },
+  {
+    "id": "ann-headline-cast",
+    "proofId": "nicomachus-sum-of-cubes-oq-03",
+    "range": { "startLine": 73, "endLine": 82 },
+    "type": "theorem",
+    "title": "Headline form over ℤ: ∑(2k+1)³ = n²(2n²−1)",
+    "content": "The closed form is stated over $\\mathbb{Z}$ so the subtraction in $2n^2-1$ is honest. `congrArg Nat.cast` lifts the ℕ identity, `push_cast` distributes the cast through the sum and powers, and `linarith` isolates $\\sum_{k<n}(2k+1)^3 = 2n^4 - n^2$. A final `ring` recognizes that $n^2(2n^2-1) = 2n^4 - n^2$, closing the goal. The integers are used only to *state* the result — all the inductive work happened in $\\mathbb{N}$.",
+    "mathContext": "$\\sum_{k<n}(2k+1)^3 = n^2(2n^2-1)$ over $\\mathbb{Z}$.",
+    "significance": "critical",
+    "prerequisites": ["Integer casts (push_cast)"],
+    "relatedConcepts": ["Nat.cast", "push_cast", "Closed-form power sums"]
+  },
+  {
+    "id": "ann-scaled-form",
+    "proofId": "nicomachus-sum-of-cubes-oq-03",
+    "range": { "startLine": 88, "endLine": 91 },
+    "type": "theorem",
+    "title": "Scaled multiplicative form: 4·∑(2k+1)³ + 4n² = 8n⁴",
+    "content": "A division-free, ℕ-native packaging of the same content, scaled by 4 and derived in a single `omega` step from the core lemma. Useful for downstream callers that prefer to avoid casting to $\\mathbb{Z}$ entirely; the factor of 4 keeps everything multiplicative and subtraction-free.",
+    "mathContext": "$4\\sum_{k<n}(2k+1)^3 + 4n^2 = 8n^4$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Natural-number division avoidance", "Closed-form power sums"]
+  }
+]
