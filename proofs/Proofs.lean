@@ -4122,6 +4122,7 @@ import Proofs.UrysohnsLemmaOQ01OQ01OQ02OQ01
 import Proofs.UrysohnsLemmaOQ01OQ01OQ02OQ02
 import Proofs.UrysohnsLemmaOQ01OQ02
 import Proofs.VanAubelTheoremOQ01
+import Proofs.VanDerWaerdenFirstMoment
 import Proofs.VandermondeInterpolationOQ01
 import Proofs.VandermondeInterpolationOQ01OQ01
 import Proofs.VandermondeInterpolationOQ01OQ02
