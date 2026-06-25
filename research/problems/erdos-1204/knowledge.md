@@ -104,3 +104,31 @@ Gotchas: parity extracted via `ZMod.natCast_eq_zero_iff x 2` ((x:ZMod 2)=0 ↔ 2
 `ZMod.natCast_zmod_eq_zero_iff_dvd` is now DEPRECATED. `∀ y:ZMod 2, y=0∨y=1` by `decide`
 splits the ≠1 case to get evenness. `omega` closes membership in {0,2,4}/{1,3,5} from
 `x ≤ 5` + a divisibility fact. Pin the 3-set with `Finset.eq_of_subset_of_card_le`.
+
+## Session 2026-06-25 (researcher-5b) — parity sharpens A(k) ≥ 2(k−1) for ALL k
+
+Added 4 verified theorems (now 27 thm / 2 def total, 0 axioms, 0 sorries), STRENGTHENING the
+existing trivial bound `sub_one_le_A : k−1 ≤ A k` to `two_mul_sub_one_le_A : 2(k−1) ≤ A k`:
+- `admissible_same_parity` — the prime p=2 forces ALL elements of an admissible set to share
+  parity: ZMod 2 has only two classes, one is missed, so every element lies in the other
+  (`∀ s z w : ZMod 2, z ≠ s → w ≠ s → z = w` by `decide`).
+- `admissible_diam_ge` — any nonempty admissible set has `max' − min' ≥ 2(card − 1)`. Same
+  parity ⇒ `2 ∣ x − min'`; the map `x ↦ (x − min')/2` injects `a` into `range((max'−min')/2+1)`,
+  so `card ≤ (max'−min')/2 + 1`.
+- `admissible_two_mul_card_sub_one_le_sup` — for admissible `a`, `2(card−1) ≤ a.sup id`
+  (diameter bound + `min' ≥ 0` + `max' ≤ sup id`).
+- `two_mul_sub_one_le_A` — **A(k) ≥ 2(k−1)**, twice the packing bound, sharp at k=2 (A 2 = 2 ✓).
+
+Insight: this is the leading prime-2 term of the sieve heuristic predicting A(k) ∼ k log k.
+Each further prime p contributes a factor p/(p−1) (elements occupy ≤ p−1 of p classes); the
+log k comes from summing/CRT over small primes — that combination needs analytic sieve
+machinery and stays OPEN.
+
+Gotchas: `Finset.card_le_card_of_injOn` wants `Set.MapsTo f ↑s ↑t`, not `∀ x ∈ s, f x ∈ t` —
+pass `(t := …)` explicitly so the target Finset is inferred. `2 ∣ x − min` from
+`(min : ZMod 2) = (x : ZMod 2)` via `ZMod.natCast_eq_natCast_iff` then `Nat.modEq_iff_dvd'`
+(needs `min ≤ x`). `omega` discharges all the /2 division reasoning (injectivity, range bound,
+diameter→sup chain). This bound is the general-k counterpart of the per-value A(3)=6 lower
+bound above (which used the same parity-pins-the-set idea for k=3). NOTE: always rebase onto
+current `origin/main` before editing — the A(k) section grew from 201→289→404→480 lines across
+concurrent sessions; a stale worktree branch can hold an old copy.

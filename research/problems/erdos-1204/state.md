@@ -1,27 +1,32 @@
 # Current State
 
-**Phase**: NEW
-**Since**: 2026-04-16T17:08:10.942Z
-**Iteration**: 1
+**Phase**: ACTIVE
+**Since**: 2026-06-25
+**Iteration**: 4
 
 ## Current Focus
 
-Initial exploration of the problem.
+Verified lower bounds on the extremal quantity A(k) (minimal largest element of an
+admissible k-tuple).
 
 ## Active Approach
 
-None yet.
+Sieve-style lower bounds from individual small primes. The prime 2 gives the parity
+constraint ⇒ A(k) ≥ 2(k−1) (verified this session, doubling the trivial k−1 and sharp
+at k=2). Next candidate: combine primes 2 and 3 (elements occupy ≤ 1 class mod 2 and
+≤ 2 mod 3) for a sharper interval-counting bound toward the k log k heuristic.
 
 ## Blockers
 
-None.
+Combining constraints across multiple primes rigorously needs CRT / sieve counting that
+is not yet formalized. The headline A(k) ∼ k log k and the B(k) estimate remain OPEN.
 
 ## Next Action
 
-Begin problem exploration.
+Explore a mod-2-and-mod-3 combined lower bound (factor 3 over trivial).
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 4
+- Current approach attempts: 1
+- Approaches tried: 2

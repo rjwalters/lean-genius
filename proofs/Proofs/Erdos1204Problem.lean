@@ -184,6 +184,61 @@ theorem exists_admissible_card (k : ℕ) :
     rw [hp0, mul_zero]
     exact zero_ne_one
 
+/- ## The parity constraint and a sharper diameter bound
+
+The trivial packing bound says `k` distinct naturals span at least `k - 1`. The smallest
+prime already doubles this: modulo `2` an admissible set misses a residue class, and `ZMod 2`
+has only two classes, so **every element shares the same parity**. Distinct same-parity
+naturals differ by at least `2`, so an admissible `k`-set has diameter `≥ 2(k-1)`. This is the
+leading term of the sieve heuristic behind the conjecture `A(k) ∼ k log k`. -/
+
+/-- **All elements of an admissible set share parity.** Modulo the prime `2` the set misses a
+residue class, and `ZMod 2` has only two classes, so the remaining class holds every element. -/
+theorem admissible_same_parity {a : Finset ℕ} (ha : Admissible a) {x y : ℕ}
+    (hx : x ∈ a) (hy : y ∈ a) : (x : ZMod 2) = (y : ZMod 2) := by
+  obtain ⟨r, hr⟩ := ha 2 (by norm_num)
+  -- in `ZMod 2`, two elements both `≠ r` must be equal (only two classes)
+  have key : ∀ (s z w : ZMod 2), z ≠ s → w ≠ s → z = w := by decide
+  exact key r _ _ (hr x hx) (hr y hy)
+
+/-- **Parity lower bound on the diameter.** Any nonempty admissible set has diameter
+`max - min ≥ 2(card - 1)`: its elements share parity (`admissible_same_parity`), so the
+map `x ↦ (x - min)/2` injects `a` into `{0, 1, …, (max-min)/2}`, forcing
+`card ≤ (max-min)/2 + 1`. This doubles the trivial packing bound `card - 1`. -/
+theorem admissible_diam_ge {a : Finset ℕ} (ha : Admissible a) (hne : a.Nonempty) :
+    2 * (a.card - 1) ≤ a.max' hne - a.min' hne := by
+  classical
+  -- every element is `≥ min`, `≤ max`, and `≡ min (mod 2)`, hence `2 ∣ x - min`
+  have hdvd : ∀ x ∈ a, 2 ∣ (x - a.min' hne) := by
+    intro x hx
+    have hmx : a.min' hne ≤ x := a.min'_le x hx
+    have hpar : ((a.min' hne : ℕ) : ZMod 2) = (x : ZMod 2) :=
+      admissible_same_parity ha (a.min'_mem hne) hx
+    rw [ZMod.natCast_eq_natCast_iff] at hpar
+    exact (Nat.modEq_iff_dvd' hmx).mp hpar
+  -- `x ↦ (x - min)/2` maps `a` into `range ((max-min)/2 + 1)` ...
+  have hmono : ∀ x ∈ a, (x - a.min' hne) / 2 ∈ Finset.range ((a.max' hne - a.min' hne)/2 + 1) := by
+    intro x hx
+    rw [Finset.mem_range]
+    have hxM : x ≤ a.max' hne := a.le_max' x hx
+    have hmx : a.min' hne ≤ x := a.min'_le x hx
+    omega
+  -- ... and it is injective (distinct same-parity values give distinct halves)
+  have hinj : Set.InjOn (fun x => (x - a.min' hne) / 2) a := by
+    intro x hx y hy hxy
+    simp only at hxy
+    have hmx : a.min' hne ≤ x := a.min'_le x hx
+    have hmy : a.min' hne ≤ y := a.min'_le y hy
+    obtain ⟨u, hu⟩ := hdvd x hx
+    obtain ⟨v, hv⟩ := hdvd y hy
+    omega
+  have hcard : a.card ≤ (a.max' hne - a.min' hne)/2 + 1 := by
+    have h := Finset.card_le_card_of_injOn
+      (f := fun x => (x - a.min' hne) / 2)
+      (t := Finset.range ((a.max' hne - a.min' hne)/2 + 1)) hmono hinj
+    simpa using h
+  omega
+
 /- ## The extremal quantity `A(k)`
 
 The headline question of Problem #1204 concerns `A(k) = min a_k`, the minimal possible
@@ -237,6 +292,27 @@ theorem sub_one_le_A (k : ℕ) : k - 1 ≤ A k := by
   have := card_le_sup_succ a
   rw [hcard, hsup] at this
   omega
+
+/-- **Sharpened lower bound (parity).** Any admissible `k`-set has largest element
+`a.sup id ≥ 2(k-1)`: its diameter is `≥ 2(k-1)` (`admissible_diam_ge`) and its least element
+is `≥ 0`, so the maximum (which is `≤ a.sup id`) is at least `2(k-1)`. -/
+theorem admissible_two_mul_card_sub_one_le_sup {a : Finset ℕ} (ha : Admissible a) :
+    2 * (a.card - 1) ≤ a.sup id := by
+  rcases a.eq_empty_or_nonempty with rfl | hne
+  · simp
+  · have hdiam := admissible_diam_ge ha hne
+    have hmax_le_sup : a.max' hne ≤ a.sup id := Finset.le_sup (f := id) (a.max'_mem hne)
+    omega
+
+/-- **Sharpened lower bound on `A(k)`: `A(k) ≥ 2(k-1)`,** twice the trivial packing bound
+`sub_one_le_A`. The prime `2` forces every admissible set to be single-parity, so its `k`
+distinct elements span at least `2(k-1)`. This is sharp at `k = 2` (`A 2 = 2`) and is the
+leading prime-`2` contribution toward the conjectured `A(k) ∼ k log k`. -/
+theorem two_mul_sub_one_le_A (k : ℕ) : 2 * (k - 1) ≤ A k := by
+  obtain ⟨a, hcard, ha, hsup⟩ := A_mem k
+  have h := admissible_two_mul_card_sub_one_le_sup ha
+  rw [hcard, hsup] at h
+  exact h
 
 /-- `A(0) = 0` (the only admissible `0`-set is `∅`). -/
 theorem A_zero : A 0 = 0 :=
