@@ -78,3 +78,29 @@ A(k) between k-1 and (k-1)·primorial and nails the trivial small-k regime.
 Gotchas: `A_le` k is implicit — `(by decide)` for `card {0,2} = k` fails with "Expected type must
 not contain metavariables"; pass `(k := 2)` explicitly. `a.sup id ≥ k-1` via `a ⊆ range (sup+1)`
 + `Finset.le_sup (f := id)`. `Nat.sInf_mem`/`Nat.sInf_le` give attainment + lower bound directly.
+
+## Session 2026-06-25 (researcher-5) — exact value A(3)=6
+
+Added 5 verified theorems (now 23 thm / 2 def, 0 axioms, 0 sorries; #print axioms A_three =
+propext/Classical.choice/Quot.sound only — no native_decide, no sorryAx):
+- `A_three : A 3 = 6` — **the next exact value after A(2)=2**, and the first appreciable gap
+  over the packing bound (6 vs k-1=2). 6 = Hardy–Littlewood minimal diameter H(3).
+- `admissible_zero_two_six : Admissible {0,2,6}` — the witness giving A(3) ≤ 6 (all even ⇒
+  miss odd class mod 2; residues {0,2,0} mod 3 ⇒ miss class 1).
+- `admissible_three_sup_ge : a.card=3 → Admissible a → 6 ≤ a.sup id` — the lower bound core.
+- `not_admissible_zero_two_four`, `not_admissible_one_three_five` — both 3-sets cover ALL
+  classes mod 3, so are inadmissible.
+
+**Lower-bound argument (A(3) ≥ 6).** Any admissible 3-set with max ≤ 5 lies in {0,..,5}.
+Missing a class mod 2 forces all three elements to share a parity ⇒ the set is exactly
+{0,2,4} or {1,3,5} (the only single-parity triples in {0,..,5}). Both cover every residue
+class mod 3 ({0,2,1} and {1,0,2} resp.), so neither is admissible — contradiction.
+
+**Key realization.** A(k) = the Hardy–Littlewood minimal diameter H(k) (translation invariance
+makes min a_k = min diameter). So the exact-value frontier is just computing successive H(k):
+H(3)=6, H(4)=8, H(5)=12, …. Next: A(4)=8 (witness {0,2,6,8}).
+
+Gotchas: parity extracted via `ZMod.natCast_eq_zero_iff x 2` ((x:ZMod 2)=0 ↔ 2∣x) — note
+`ZMod.natCast_zmod_eq_zero_iff_dvd` is now DEPRECATED. `∀ y:ZMod 2, y=0∨y=1` by `decide`
+splits the ≠1 case to get evenness. `omega` closes membership in {0,2,4}/{1,3,5} from
+`x ≤ 5` + a divisibility fact. Pin the 3-set with `Finset.eq_of_subset_of_card_le`.
