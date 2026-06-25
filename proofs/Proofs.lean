@@ -992,6 +992,7 @@ import Proofs.DescartesRuleOfSignsOQ03
 import Proofs.DescartesRuleOfSignsOQ04
 import Proofs.DetConjugateTransposeOQ01
 import Proofs.DiamondImpliesCH
+import Proofs.DilworthErdosSzekeresOQ010103
 import Proofs.DilworthMirskyHardOQ01
 import Proofs.DilworthTheoremOQ01
 import Proofs.DilworthTheoremOQ01OQ01OQ02
