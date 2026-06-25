@@ -89,6 +89,69 @@
     "definitionCount": 4,
     "theoremCount": 9
   },
+  "overview": {
+    "historicalContext": "Erdős's distinct-distances problem (1946) asks for the minimum number of distinct distances determined by n points in the plane; after seven decades it was essentially settled by Guth and Katz (2015), who proved the near-optimal lower bound Ω(n/log n). Problem #659 concerns a refined variant in which every 4-point subset is required to determine at least 3 distances (forbidding 'too-symmetric' quadruples), yet the whole configuration still realises remarkably few — O(n/√log n) — distinct distances. Pieter Moree and Robert Osburn exhibited such configurations in 'Two-dimensional lattices with few distances' (L'Enseignement Mathématique, 2006) by placing the points on the stretched lattice {(x, y√2) : x, y ∈ ℤ}. A squared distance in this lattice is an integer of the binary quadratic form Q(x,y)=x²+2y² — the norm form of the imaginary quadratic ring ℤ[√−2]. The asymptotic count of integers ≤ N represented by such a form is governed by Landau's 1908 density theorem (#{n ≤ N : n = x²+2y²} ~ C·N/√log N), the same analytic machinery Landau used for sums of two squares with the Landau–Ramanujan constant. The multiplicative structure that makes the represented set so thin goes back much further still: Brahmagupta's identity (Brāhmasphuṭasiddhānta, 628 CE) shows that the values of x²+Ny² are closed under multiplication.",
+    "problemStatement": "Open question oq-05 of Erdős #659 asks whether the Moree–Osburn construction can be formalized in Lean 4 *without axioms*, which in particular requires proving Landau's analytic density theorem for $\\#\\{n \\le N : n = x^2+2y^2\\} \\sim C\\,N/\\sqrt{\\log N}$ inside Mathlib. That analytic statement is not yet available in Mathlib, so the full program is open. This entry isolates and machine-checks (0 axioms, 0 sorries) the *algebraic* core: the form $Q(x,y)=x^2+2y^2$ is the norm of $\\mathbb{Z}[\\sqrt{-2}]$, it satisfies the Brahmagupta composition law, its represented integers form a multiplicative submonoid of $\\mathbb{Z}$, and those integers are exactly the squared distances of the lattice $\\{(x, y\\sqrt2)\\}$.",
+    "proofStrategy": "Work entirely over ℤ and ℝ with elementary, fully-verified tools. (1) Define Q and the predicate IsRepresented. (2) Prove the composition law Q_mul as a single `ring` identity — this is the Brahmagupta identity for D=2. (3) Independently certify that Q is the ℤ[√−2] norm (Q_eq_zsqrtd_norm via Zsqrtd.norm_def), connecting the elementary form to Mathlib's algebraic-number-theory API where the same multiplicativity is Zsqrtd.norm_mul. (4) Read off multiplicative closure isRepresented_mul constructively from Q_mul, then package one_mem/mul_mem into representedSubmonoid and extend to finite products by Finset.prod_induction. (5) Close the geometric loop: dist_sq_lattice shows the squared Euclidean distance between two lattice points (x, y√2) equals Q of the coordinate differences, using (√2)²=2 (Real.sq_sqrt). The squared distance spectrum is therefore exactly the represented set, which is multiplicatively closed — the structural reason it is sparse.",
+    "keyInsights": [
+      "Multiplicativity is the engine of sparsity: because the squared distances are closed under multiplication (Brahmagupta's identity), a few 'prime' distances generate many composite ones, so the represented set grows far slower than the integers — exactly the O(n/√log n) thinning Landau's theorem makes asymptotically precise.",
+      "Q(x,y)=x²+2y² is literally the field norm of ℤ[√−2]: the composition law is not a coincidence but the statement N(αβ)=N(α)N(β) for the multiplicative norm, proved two equivalent ways here (elementary `ring` and Zsqrtd.norm_def) so the gallery entry stands on its own and links to Mathlib's general theory.",
+      "The proof cleanly separates the verified algebra from the open analysis: every algebraic ingredient Landau's theorem needs is here, axiom-free, reducing the remaining gap in oq-05 to the single analytic density statement that Mathlib still lacks.",
+      "The √2 stretch is essential, not cosmetic: it turns the genuinely two-dimensional Euclidean squared distance (x₁−x₂)²+2(y₁−y₂)² into a *single* binary form, so the geometric distance problem becomes a question purely about which integers a quadratic form represents.",
+      "Class-number-1 number theory underlies the represented-set characterisation: ℤ[√−2] is a (norm-Euclidean) PID, so a prime is represented by x²+2y² iff p=2 or p≡1,3 (mod 8); this genus-theoretic fact, not yet in Mathlib, is what would let one pin down the constant C in Landau's asymptotic."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Problem statement and scope",
+      "startLine": 1,
+      "endLine": 37,
+      "summary": "Docstring framing oq-05: the Moree–Osburn lattice, the form Q=x²+2y² as the norm of ℤ[√−2], and the explicit note that the analytic Landau density theorem remains open while this file supplies the axiom-free algebraic layer."
+    },
+    {
+      "id": "form-definition",
+      "title": "The form Q and the represented-integer predicate",
+      "startLine": 39,
+      "endLine": 43,
+      "summary": "Defines Q(x,y)=x²+2y² and IsRepresented n := ∃ x y, n = Q x y, the predicate whose extension is the lattice's squared-distance spectrum."
+    },
+    {
+      "id": "composition-law",
+      "title": "Brahmagupta composition law",
+      "startLine": 45,
+      "endLine": 50,
+      "summary": "Q_mul: (a²+2b²)(c²+2d²) = (ac−2bd)²+2(ad+bc)², the D=2 Brahmagupta identity, proved by a single `ring` call — the multiplicativity at the heart of the entry."
+    },
+    {
+      "id": "norm-identification",
+      "title": "Q as the ℤ[√−2] norm",
+      "startLine": 52,
+      "endLine": 56,
+      "summary": "Q_eq_zsqrtd_norm: Zsqrtd.norm ⟨x,y⟩ = x²+2y² for ℤ√(−2), bridging the elementary form to Mathlib's Zsqrtd theory where multiplicativity is Zsqrtd.norm_mul."
+    },
+    {
+      "id": "base-representations",
+      "title": "Base representations and nonnegativity",
+      "startLine": 58,
+      "endLine": 70,
+      "summary": "Q represents 0, 1 and 2 (the generators 1=Q(1,0), 2=Q(0,1)) and every represented integer is nonnegative (isRepresented_nonneg via positivity) — valid as a squared distance."
+    },
+    {
+      "id": "multiplicative-closure",
+      "title": "Multiplicative closure and the submonoid",
+      "startLine": 72,
+      "endLine": 95,
+      "summary": "isRepresented_mul reads the witnesses off Q_mul; representedSubmonoid packages one_mem/mul_mem into a Submonoid ℤ; isRepresented_prod extends closure to arbitrary finite products via Finset.prod_induction."
+    },
+    {
+      "id": "geometric-link",
+      "title": "Lattice points and the squared-distance identity",
+      "startLine": 97,
+      "endLine": 125,
+      "summary": "latticePoint x y = (x, y√2) and dist_sq_lattice: the squared Euclidean distance between two lattice points equals Q of the coordinate differences, using (√2)²=2, tying the number theory to the actual Moree–Osburn geometry."
+    }
+  ],
   "conclusion": {
     "summary": "The squared distances of the Moree–Osburn lattice {(x, y√2) : x,y ∈ ℤ} are exactly the integers represented by Q(x,y)=x²+2y². Via the Brahmagupta composition law (equivalently, multiplicativity of the ℤ√(-2) norm), these represented integers form a multiplicative submonoid of ℤ. This multiplicative structure is the algebraic reason the distance spectrum is sparse — the phenomenon Landau's density theorem quantifies asymptotically as O(n/√log n).",
     "implications": [
