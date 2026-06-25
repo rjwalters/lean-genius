@@ -180,7 +180,7 @@ theorem density_additive_comm (A B : Set ℕ) (h : DensityAdditive A B) :
 /-- Density additivity with the Plünnecke–Ruzsa bound: additive pairs are
     extremal (they achieve the minimum possible sumset density). -/
 theorem additive_achieves_lower_bound (A B : Set ℕ)
-    (hA : DensityExists A) (hB : DensityExists B) (h : DensityAdditive A B) :
+    (_hA : DensityExists A) (_hB : DensityExists B) (h : DensityAdditive A B) :
     asympDensity (Sumset A B) ≥ min (asympDensity A + asympDensity B) 1 := by
   rw [additive_implies_tight A B h]
 
@@ -324,16 +324,16 @@ theorem density_double_sumset (A : Set ℕ) (h : DensityAdditive A A) :
 /-- Counting function for the whole set ℕ equals N. -/
 private lemma countingFn_univ_eq (N : ℕ) : countingFn Set.univ N = N := by
   unfold countingFn
-  rw [Set.univ_inter, Set.ncard_Icc]
+  rw [Set.univ_inter, ← Finset.coe_Icc, Set.ncard_coe_finset, Nat.card_Icc]
   omega
 
 /-- The whole set ℕ has asymptotic density 1:
     every element of {1,...,N} is in ℕ, so the ratio is N/N = 1. -/
 theorem density_univ_one : DensityExists Set.univ ∧ asympDensity Set.univ = 1 := by
-  have htend : Filter.Tendsto (fun N => (countingFn Set.univ N : ℝ) / N) atTop (nhds 1) :=
-    Filter.Tendsto.congr' tendsto_const_nhds
-      (by filter_upwards [Filter.eventually_ne_atTop 0] with N hN
-          rw [countingFn_univ_eq, div_self (Nat.cast_ne_zero.mpr hN)])
+  have htend : Filter.Tendsto (fun N => (countingFn Set.univ N : ℝ) / N) atTop (nhds 1) := by
+    refine Filter.Tendsto.congr' ?_ tendsto_const_nhds
+    filter_upwards [Filter.eventually_ne_atTop 0] with N hN
+    rw [countingFn_univ_eq, div_self (Nat.cast_ne_zero.mpr hN)]
   exact ⟨⟨1, htend⟩, htend.limUnder_eq⟩
 
 /-- The counting function for a finite set A is bounded by its cardinality. -/
@@ -358,6 +358,57 @@ theorem density_finite_zero (A : Set ℕ) (hA : A.Finite) :
         by exact_mod_cast Nat.lt_of_succ_le hN
       linarith [Nat.le_ceil ((Set.ncard A : ℝ) / ε)]
     calc (countingFn A N : ℝ) / N
-        ≤ (Set.ncard A : ℝ) / N := (div_le_div_right hN_pos).mpr hNA
-      _ < ε := by rwa [div_lt_iff hN_pos, mul_comm, ← div_lt_iff hε]
+        ≤ (Set.ncard A : ℝ) / N := (div_le_div_iff_of_pos_right hN_pos).mpr hNA
+      _ < ε := by rwa [div_lt_iff₀ hN_pos, mul_comm, ← div_lt_iff₀ hε]
   exact ⟨⟨0, htend⟩, htend.limUnder_eq⟩
+
+/- ## Singleton Translates and a Concrete Density-Additive Witness -/
+
+/-- Adding a singleton `{k}` on the left translates `A` by `k`:
+    `{k} + A = (· + k) '' A`. This generalizes `Sumset_zero_left`
+    (the case `k = 0`) and makes the translation structure of singleton
+    sumsets explicit. -/
+theorem Sumset_singleton_left (k : ℕ) (A : Set ℕ) :
+    Sumset {k} A = (· + k) '' A := by
+  ext n
+  constructor
+  · rintro ⟨a, ha, b, hb, rfl⟩
+    rw [Set.mem_singleton_iff] at ha; subst ha
+    exact ⟨b, hb, by ring⟩
+  · rintro ⟨b, hb, rfl⟩
+    exact ⟨k, rfl, b, hb, by ring⟩
+
+/-- Adding a singleton `{k}` on the right translates `A` by `k`:
+    `A + {k} = (· + k) '' A`. -/
+theorem Sumset_singleton_right (A : Set ℕ) (k : ℕ) :
+    Sumset A {k} = (· + k) '' A := by
+  rw [Sumset_comm]; exact Sumset_singleton_left k A
+
+/-- The trivial pair `({0}, A)` is always density-additive whenever `A`
+    has a density: `d({0} + A) = d({0}) + d(A)` holds because `{0}` has
+    density `0` and `{0} + A = A`. This is the degenerate witness for the
+    density-additivity relation (it does not have positive density, so it
+    is not a witness for Erdős #335 proper, but it confirms the relation
+    is non-vacuous). -/
+theorem density_additive_zero_singleton (A : Set ℕ) (hA : DensityExists A) :
+    DensityAdditive {0} A := by
+  have hzero := density_finite_zero ({0} : Set ℕ) (Set.finite_singleton 0)
+  refine ⟨hzero.1, hA, ?_, ?_⟩
+  · rw [Sumset_zero_left]; exact hA
+  · rw [Sumset_zero_left, hzero.2, zero_add]
+
+/-- In a density-additive pair where `B` has positive density, the density
+    of `A` is strictly below `1`: from `d(A) + d(B) ≤ 1` and `d(B) > 0`. -/
+theorem density_additive_lt_one_left (A B : Set ℕ) (h : DensityAdditive A B)
+    (hB : HasPositiveDensity B) : asympDensity A < 1 := by
+  have hsum := additive_sum_le_one A B h
+  have hpos : 0 < asympDensity B := hB
+  linarith
+
+/-- Symmetric strict bound: in a density-additive pair where `A` has positive
+    density, the density of `B` is strictly below `1`. -/
+theorem density_additive_lt_one_right (A B : Set ℕ) (h : DensityAdditive A B)
+    (hA : HasPositiveDensity A) : asympDensity B < 1 := by
+  have hsum := additive_sum_le_one A B h
+  have hpos : 0 < asympDensity A := hA
+  linarith
