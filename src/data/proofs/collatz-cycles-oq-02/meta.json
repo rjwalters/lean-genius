@@ -41,7 +41,14 @@
   "overview": {
     "historicalContext": "Eliahou (1993) proved that any non-trivial cycle of the Collatz map has length at least 17,087,915, by analyzing the continued-fraction expansion of log₂3 to bound how closely 2^M can approximate 3^J. CollatzCycles.lean in this gallery establishes the underlying halving constraint 3^J < 2^M (generalized in collatz-cycles-oq-04) and a finite ladder of minimal-halving bounds for J = 1, 2, 3, 4. This entry supplies the general quantitative bound underlying that ladder.",
     "problemStatement": "Establish, for every J, a lower bound on the number of halvings M (and hence on the total cycle length L = M + J) of a hypothetical non-trivial Collatz cycle with J odd steps, given the halving constraint 3^J < 2^M.",
-    "keyInsight": "Taking base-2 logarithms of the halving constraint 3^J < 2^M and using strict monotonicity of logb (base 2 > 1) gives J·log₂3 < M directly: logb 2 (3^J) = J·logb 2 3 and logb 2 (2^M) = M·logb 2 2 = M. The ceiling bound M ≥ ⌈J·log₂3⌉₊ follows from Nat.ceil_le, and L > J·log₂6 from log₂6 = 1 + log₂3."
+    "keyInsight": "Taking base-2 logarithms of the halving constraint 3^J < 2^M and using strict monotonicity of logb (base 2 > 1) gives J·log₂3 < M directly: logb 2 (3^J) = J·logb 2 3 and logb 2 (2^M) = M·logb 2 2 = M. The ceiling bound M ≥ ⌈J·log₂3⌉₊ follows from Nat.ceil_le, and L > J·log₂6 from log₂6 = 1 + log₂3.",
+    "keyInsights": [
+      "**Logarithm linearizes the halving constraint.** The multiplicative inequality 3^J < 2^M becomes the additive J·log₂3 < M under log₂, turning an exponential comparison into a sharp linear bound with the exact constant log₂3 ≈ 1.585.",
+      "**One theorem subsumes the whole finite ladder.** CollatzCycles.lean proved minimal-halving bounds case-by-case for J = 1,2,3,4; here ⌈J·log₂3⌉₊ reproduces each of those entries (2, 4, 5, 7) and extends to every J at once.",
+      "**The sharp slope is log₂6 ≈ 2.585.** Because log₂6 = 1 + log₂3, the cycle length L = M + J grows at least like 2.585·J — strictly better than the elementary slope-2 bound L ≥ 2J + 1, which uses only 2^J ≤ 3^J.",
+      "**Elementary and analytic bounds coexist.** The same hypothesis yields both a log-free integer bound (M > J via monotonicity of n ↦ 2^n) and the sharp analytic bound; the file keeps both so downstream proofs can pick the appropriate level of machinery.",
+      "**This is the honest elementary core of Eliahou.** The linear-in-J bound is exactly what the halving constraint forces directly; Eliahou's famous numerical bound (length ≥ 17,087,915) sharpens the constant via Diophantine approximation of log₂3, which is deliberately out of scope here."
+    ]
   },
   "sections": [
     {
