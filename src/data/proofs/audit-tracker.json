@@ -23895,8 +23895,42 @@
       "lastAudited": "2026-06-25T13:46:56Z",
       "result": "clean",
       "issues": []
+    },
+    "erdos-divisibility-pigeonhole-oq-03": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T14:08:44Z",
+      "result": "clean"
+    },
+    "hilbert-17-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T14:08:44Z",
+      "result": "clean"
+    },
+    "collatz-structured-oq-02-oq-02": {
+      "auditCount": 1,
+      "issues": [],
+      "lastAudited": "2026-06-25T14:08:44Z",
+      "result": "clean"
+    },
+    "little-wedderburn-oq-01-oq-02": {
+      "auditCount": 1,
+      "issues": [
+        "meta.json was invalid JSON (entire object duplicated/concatenated, committed in #29383); deduplicated to a single valid object"
+      ],
+      "lastAudited": "2026-06-25T14:08:44Z",
+      "result": "issues-fixed"
+    },
+    "abel-ruffini-galois-extensions-oq-05-oq-02": {
+      "auditCount": 1,
+      "issues": [
+        "Tier B bridge file: every theorem is a direct Mathlib re-export (inferInstance / FixedPoints.toAlgAutMulEquiv / FixedPoints.finrank_eq_card). Badge corrected verified -> mathlib per failure-mode #5."
+      ],
+      "lastAudited": "2026-06-25T14:08:44Z",
+      "result": "issues-fixed"
     }
   },
   "version": 1,
-  "lastUpdated": "2026-06-25T10:50:06Z"
+  "lastUpdated": "2026-06-25T14:08:44Z"
 }
