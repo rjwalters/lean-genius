@@ -1,0 +1,83 @@
+{
+  "id": "mellin-power-convergence-oq-01-oq-01",
+  "title": "Mellin transform: general interval (b^s−a^s)/s and power-weighted strip Re s > −c",
+  "slug": "mellin-power-convergence-oq-01-oq-01",
+  "description": "Open question oq-01 of the Mellin-transform entry asks to extend the unit-indicator transform mellin 𝟙_{(0,1]} s = 1/s in two directions: (1) a general interval 𝟙_{(a,b]}, giving (b^s−a^s)/s, and (2) a power-weighted indicator t^c·𝟙_{(0,1]}, which shifts the convergence strip from Re s > 0 to Re s > −c and yields 1/(s+c). This formalization proves both, axiom-free: the general interval via the difference 𝟙_{(a,b]} = 𝟙_{(0,b]} − 𝟙_{(0,a]} (Mellin is linear), the power weight via Mathlib's hasMellin_cpow_Ioc and the shift mellin(t^c·f)(s) = mellin(f)(s+c). The shifted convergence strip is shown sharp (Re s > −c exactly), and a capstone combines both into mellin(t^c·𝟙_{(a,b]}) s = (b^{s+c}−a^{s+c})/(s+c).",
+  "meta": {
+    "author": "Hjalmar Mellin (c. 1900); Lean formalization original (researcher-10)",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MellinPowerConvergenceOQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "complex-analysis",
+      "mellin-transform",
+      "integral-transform",
+      "improper-integral",
+      "convergence",
+      "convergence-strip",
+      "open-question"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "None. Every result is machine-checked with 0 axioms and 0 sorries (foundational propext/Classical.choice/Quot.sound only). Builds on the parent entry's scaling law (hasMellin_indicator_Ioc) and Mathlib's Mellin API (hasMellin_sub, hasMellin_cpow_Ioc, mellin_cpow_smul, MellinConvergent.cpow_smul).",
+    "mathlib_version": "4.x",
+    "mathlibDependencies": [
+      {
+        "theorem": "hasMellin_cpow_Ioc",
+        "description": "Mellin transform of a power restricted to (0,1]",
+        "module": "Mathlib.Analysis.MellinTransform"
+      },
+      {
+        "theorem": "hasMellin_sub",
+        "description": "Mellin transform is linear (difference)",
+        "module": "Mathlib.Analysis.MellinTransform"
+      },
+      {
+        "theorem": "mellin_cpow_smul",
+        "description": "Mellin shift: mellin(t^a·f)(s)=mellin(f)(s+a)",
+        "module": "Mathlib.Analysis.MellinTransform"
+      }
+    ],
+    "originalContributions": [
+      "hasMellin_indicator_interval: mellin 𝟙_{(a,b]} s = (b^s−a^s)/s for 0<a≤b, Re s>0 (general interval via 𝟙_{(a,b]}=𝟙_{(0,b]}−𝟙_{(0,a]} and hasMellin_sub)",
+      "mellin_indicator_interval_one: at s=1 the transform returns the interval length b−a",
+      "hasMellin_powerWeighted_unit: mellin (t^c·𝟙_{(0,1]}) s = 1/(s+c) on the shifted strip Re s>−c",
+      "mellinConvergent_powerWeighted_unit_iff: the shifted strip is SHARP — convergence ⇔ Re s>−c (both directions)",
+      "hasMellin_powerWeighted_interval: capstone — mellin (t^c·𝟙_{(a,b]}) s = (b^{s+c}−a^{s+c})/(s+c)"
+    ],
+    "lineCount": 144,
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "path": "Proofs/MellinPowerConvergenceOQ01OQ01.lean",
+    "lineCount": 144,
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 0,
+    "theoremCount": 7,
+    "additionalFiles": [
+      "Proofs/MellinPowerConvergenceOQ01.lean"
+    ]
+  },
+  "conclusion": {
+    "summary": "Both extensions requested by oq-01 are formalized. Linearity of the Mellin transform turns the general interval into a difference of scaling laws, giving (b^s−a^s)/s; at s=1 this is the interval length b−a. A power weight t^c shifts the spectral variable s↦s+c, so t^c·𝟙_{(0,1]} has transform 1/(s+c) on the strip Re s>−c, which is shown to be exactly the convergence region. The two combine into the power-weighted interval law (b^{s+c}−a^{s+c})/(s+c).",
+    "implications": [
+      "Confirms the Mellin transform's linearity and dilation/shift covariance suffice to compute a broad family of indicator transforms.",
+      "The convergence strip translates rigidly by the weight exponent, Re s > −c, with a sharp boundary."
+    ],
+    "openQuestions": [
+      "Formalize the meromorphic continuation of these transforms (1/s, 1/(s+c)) to the whole plane with their simple poles — parent oq-01 question (2).",
+      "Extend to complex weights c and to half-open/closed interval variants, and to finite sums of weighted indicators (step functions)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "relationship": "child-of",
+      "description": "Answers the first open question (general interval + power weight) of the Mellin unit-indicator entry",
+      "targetId": "mellin-power-convergence-oq-01"
+    }
+  ],
+  "sorries": 0
+}

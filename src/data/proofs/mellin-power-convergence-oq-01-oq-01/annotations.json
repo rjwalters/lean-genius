@@ -1,0 +1,42 @@
+[
+  {
+    "id": "general-interval",
+    "startLine": 45,
+    "endLine": 74,
+    "type": "theorem",
+    "title": "General interval: (b^s − a^s)/s",
+    "body": "For 0 < a ≤ b and Re s > 0, mellin 𝟙_{(a,b]} s = (b^s − a^s)/s. Proof: 𝟙_{(a,b]} = 𝟙_{(0,b]} − 𝟙_{(0,a]} pointwise, then `hasMellin_sub` plus the parent's scaling law mellin 𝟙_{(0,a]} s = a^s/s. The first half of open question oq-01."
+  },
+  {
+    "id": "interval-length",
+    "startLine": 83,
+    "endLine": 86,
+    "type": "theorem",
+    "title": "At s=1: the interval length b − a",
+    "body": "Specializing the general-interval transform to s = 1 gives mellin 𝟙_{(a,b]} 1 = b − a — the Mellin transform recovers Lebesgue length, since the integrand becomes the plain indicator."
+  },
+  {
+    "id": "power-weighted-unit",
+    "startLine": 93,
+    "endLine": 97,
+    "type": "theorem",
+    "title": "Power weight: 1/(s+c), strip Re s > −c",
+    "body": "For real weight c and Re s > −c, mellin (t^c·𝟙_{(0,1]}) s = 1/(s+c). The weight t^c shifts the spectral variable s ↦ s+c, translating the base strip Re s > 0 to Re s > −c. Via Mathlib's hasMellin_cpow_Ioc. The second half of oq-01."
+  },
+  {
+    "id": "sharp-shifted-strip",
+    "startLine": 108,
+    "endLine": 118,
+    "type": "theorem",
+    "title": "The shifted strip is sharp",
+    "body": "MellinConvergent (t^c·𝟙_{(0,1]}) s ⇔ Re s > −c, both directions. Reduces to the parent's sharp strip via the convergence shift MellinConvergent.cpow_smul; the boundary Re s = −c is exactly where ∫₀¹ t^{s+c−1} dt diverges."
+  },
+  {
+    "id": "power-weighted-interval",
+    "startLine": 126,
+    "endLine": 142,
+    "type": "theorem",
+    "title": "Capstone: power-weighted general interval",
+    "body": "Combining both extensions: mellin (t^c·𝟙_{(a,b]}) s = (b^{s+c} − a^{s+c})/(s+c) for 0 < a ≤ b, Re s > −c. The shift s ↦ s+c (mellin_cpow_smul) applied to the general-interval law of Part 1."
+  }
+]
