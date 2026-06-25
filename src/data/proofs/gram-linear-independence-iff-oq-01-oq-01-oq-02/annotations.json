@@ -1,0 +1,50 @@
+[
+  {
+    "id": "gram-col-eq-bridge",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 41, "endLine": 58 },
+    "type": "concept",
+    "title": "The Columns of A and gram(col A) = AᴴA",
+    "content": "The j-th column of A is embedded into EuclideanSpace 𝕜 (Fin n) as col A j = (i ↦ A i j). The single bridge lemma is gram_col_eq: the Gram matrix of this family is the Hermitian product Aᴴ * A. It is a one-line inner-product computation — ⟪col i, col j⟫ = ∑ k, ⟪A k i, A k j⟫_𝕜 = ∑ k, conj(A k i)·A k j (PiLp.inner_apply, RCLike.inner_apply), which is exactly the (i,j) entry of AᴴA, the conjugate transpose supplying the conjugation. This identification is the whole reason the abstract Gramian bound specialises to matrices.",
+    "mathContext": "$\\mathrm{Gram}(\\mathrm{col}\\,A) = A^{\\mathsf H} A$, $\\langle a_i, a_j\\rangle = \\sum_k \\overline{A_{ki}}\\,A_{kj}$.",
+    "significance": "key",
+    "relatedConcepts": ["Gram matrix", "conjugate transpose", "EuclideanSpace inner product"],
+    "prerequisites": ["inner product spaces", "matrix multiplication"]
+  },
+  {
+    "id": "gramian-squared-det",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 60, "endLine": 65 },
+    "type": "technique",
+    "title": "The Column Gramian is ‖det A‖²",
+    "content": "gram_col_det evaluates det(gram 𝕜 (col A)) = det(Aᴴ A) = det(Aᴴ)·det A = conj(det A)·det A = ‖det A‖² using Matrix.det_mul, Matrix.det_conjTranspose, and RCLike.conj_mul (conj z · z = ‖z‖²). This is the precise sense in which the Gramian of the columns is the 'squared determinant', and it is the second ingredient needed to turn the parent's bound on det(gram) into a bound on ‖det A‖.",
+    "mathContext": "$\\det\\mathrm{Gram}(\\mathrm{col}\\,A) = \\overline{\\det A}\\,\\det A = \\lVert\\det A\\rVert^2$.",
+    "significance": "key",
+    "relatedConcepts": ["determinant multiplicativity", "conjugate transpose determinant", "RCLike conjugation"],
+    "prerequisites": ["determinants", "RCLike fields"]
+  },
+  {
+    "id": "matrix-hadamard-corollary",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 67, "endLine": 82 },
+    "type": "insight",
+    "title": "Hadamard's Matrix Form by One Pullback and a Square Root",
+    "content": "Feeding the columns into the parent's hadamard_inequality_euclidean gives det(gram (col A)) ≤ ∏ j, ‖col A j‖²; substituting det(gram (col A)) = ‖det A‖² (and reading off the real inequality via RCLike.ofReal_le_ofReal) yields hadamard_matrix_inequality_sq: ‖det A‖² ≤ ∏ j, ‖col A j‖². Both sides are nonnegative and ∏ ‖col j‖² = (∏ ‖col j‖)², so a single monotone square root gives the classical norm form hadamard_matrix_inequality: ‖det A‖ ≤ ∏ j, ‖col A j‖. No new analysis is performed — the inequality is the parent's Gramian bound transported along gram(col A) = AᴴA.",
+    "mathContext": "$\\lVert\\det A\\rVert^2 \\le \\prod_j \\lVert a_j\\rVert^2 \\Rightarrow \\lVert\\det A\\rVert \\le \\prod_j \\lVert a_j\\rVert$.",
+    "significance": "key",
+    "relatedConcepts": ["Hadamard's inequality", "corollary by specialisation", "monotone square root"],
+    "prerequisites": ["nonnegativity arguments", "Gramian Hadamard bound"]
+  },
+  {
+    "id": "explicit-1893-form",
+    "proofId": "gram-linear-independence-iff-oq-01-oq-01-oq-02",
+    "range": { "startLine": 84, "endLine": 95 },
+    "type": "concept",
+    "title": "Recovering Hadamard's Original 1893 Statement",
+    "content": "norm_col_eq expands the column norm via EuclideanSpace.norm_eq to ‖col A j‖ = √(∑ i, ‖A i j‖²), and hadamard_matrix_inequality_explicit substitutes this to state the bound in the form Hadamard first published: ‖det A‖ ≤ ∏ j, √(∑ i, ‖A i j‖²). Geometrically this is 'volume ≤ product of edge lengths' written entirely in the matrix entries.",
+    "mathContext": "$\\lVert\\det A\\rVert \\le \\prod_j \\sqrt{\\textstyle\\sum_i \\lVert A_{ij}\\rVert^2}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Euclidean norm", "determinant bound", "geometry of the parallelepiped"],
+    "prerequisites": ["Euclidean norms"]
+  }
+]

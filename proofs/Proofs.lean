@@ -3162,6 +3162,7 @@ import Proofs.GodelSecondIncompletenessOQ02GLSyntax
 import Proofs.GodelSecondIncompletenessOQ02Soundness
 import Proofs.GodelSecondIncompletenessOQ02Translate
 import Proofs.GoemansWilliamsonMaxCut
+import Proofs.GramHadamardMatrixOQ01OQ01OQ02
 import Proofs.GramLinearIndependenceOQ01
 import Proofs.GramLinearIndependenceOQ01OQ01
 import Proofs.GramLinearIndependenceOQ01OQ01OQ02OQ01
