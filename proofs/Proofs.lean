@@ -3781,6 +3781,7 @@ import Proofs.SophieGermainOQ02
 import Proofs.SophieGermainOQ03
 import Proofs.SophieGermainOQ04
 import Proofs.SpectralTraceDetEigenvaluesOQ01
+import Proofs.SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01
 import Proofs.SpectralTraceDetEigenvaluesOQ02
 import Proofs.SpernerFreudenthal
 import Proofs.SpernerFreudenthalAristotle
