@@ -1,0 +1,141 @@
+[
+  {
+    "id": "ann-header-openq",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 4,
+      "endLine": 50
+    },
+    "type": "concept",
+    "title": "The cube is the first power sum needing the middle symmetric function",
+    "content": "Newton's identities express the power sums $p_k = \\sum_i \\lambda_i^k$ through the elementary symmetric functions $e_j$: $p_1 = e_1$, $p_2 = e_1^2 - 2e_2$, $p_3 = e_1^3 - 3e_1 e_2 + 3e_3$. The sibling entry settled $p_2$ for $2\\times2$ matrices, where $e_2$ is just the determinant — the *top* symmetric function — so only the two extreme invariants (trace and det) appear. The cube $p_3$ in dimension three is the first power sum whose expansion involves the **middle** symmetric function $e_2$ = sum of principal $2\\times2$ minors, an invariant that is neither trace nor determinant. That is what makes this case qualitatively harder than the square.",
+    "mathContext": "$p_3 = e_1^3 - 3e_1 e_2 + 3e_3$; $e_2$ is the genuinely intermediate symmetric function.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton's identities",
+      "elementary symmetric functions",
+      "power sums",
+      "spectral mapping theorem"
+    ],
+    "prerequisites": [
+      "characteristic polynomial",
+      "eigenvalues",
+      "Vieta's formulas"
+    ]
+  },
+  {
+    "id": "ann-e2-def",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 66
+    },
+    "type": "definition",
+    "title": "e₂: the sum of the three principal 2×2 minors",
+    "content": "The second elementary symmetric function of a $3\\times3$ matrix is defined combinatorially as the sum of the three principal $2\\times2$ minors: $e_2(A) = (A_{00}A_{11} - A_{01}A_{10}) + (A_{00}A_{22} - A_{02}A_{20}) + (A_{11}A_{22} - A_{12}A_{21})$. For a matrix with eigenvalues $a, b, c$ this equals $ab + ac + bc$. Defining $e_2$ purely from the entries (no eigenvalues) is what lets the matrix-side identity below hold over an arbitrary commutative ring.",
+    "mathContext": "$e_2(A) = \\sum_{\\text{principal } 2\\times2} \\det = ab + ac + bc$ on the spectrum.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "principal minors",
+      "second elementary symmetric function",
+      "matrix invariants"
+    ],
+    "prerequisites": [
+      "2×2 determinants",
+      "matrix entries indexing"
+    ]
+  },
+  {
+    "id": "ann-matrix-newton",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 68,
+      "endLine": 79
+    },
+    "type": "technique",
+    "title": "The matrix-side Newton identity over any commutative ring",
+    "content": "`trace_cube_fin_three` proves $\\operatorname{tr}(A^3) = (\\operatorname{tr}A)^3 - 3(\\operatorname{tr}A)\\,e_2(A) + 3\\det A$ as a polynomial identity in the nine entries — valid over $\\mathbb{Z}$, $\\mathbb{Q}$, or any commutative ring, with no field, no algebraic closure, and no eigenvalues. The proof is pure computation: `simp only` expands $(A^3).\\text{trace}$, $A.\\text{trace}$, $e_2(A)$, and $A.\\det$ via `trace_fin_three`, `det_fin_three`, `mul_apply`, and `Fin.sum_univ_three`, after which `ring` discharges the resulting identity in the entries. This is the ring-universal heart of the result; eigenvalues enter only later.",
+    "mathContext": "$\\operatorname{tr}(A^3) = (\\operatorname{tr}A)^3 - 3(\\operatorname{tr}A)\\,e_2(A) + 3\\det A$, closed by `ring`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "ring tactic",
+      "polynomial identity",
+      "trace_fin_three",
+      "det_fin_three"
+    ],
+    "prerequisites": [
+      "commutative rings",
+      "matrix multiplication",
+      "trace and determinant"
+    ]
+  },
+  {
+    "id": "ann-charpoly",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 81,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "e₂ wears two hats: minor sum and charpoly coefficient",
+    "content": "`charpoly_fin_three` expands the characteristic polynomial $\\det(X\\cdot I - A)$ entrywise (via `charmatrix` and `det_fin_three`, normalised by `ring`) into elementary-symmetric form $X^3 - (\\operatorname{tr}A)X^2 + e_2(A)X - \\det A$. `charpoly_coeff_one_eq_e2` then reads off the $X^1$-coefficient: $\\chi_A.\\text{coeff}\\,1 = e_2(A)$. This double identity — $e_2$ defined combinatorially as the minor sum, but appearing as a charpoly coefficient — is the crucial bridge: by Vieta the $X^1$-coefficient is the second elementary symmetric function $ab+ac+bc$ of the eigenvalues, which is exactly what turns the matrix-side identity into a spectral one.",
+    "mathContext": "$\\chi_A(X) = X^3 - (\\operatorname{tr}A)X^2 + e_2(A)X - \\det A$, so $\\chi_A.\\text{coeff}\\,1 = e_2(A)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "characteristic polynomial",
+      "charmatrix",
+      "Vieta's formulas",
+      "coefficient extraction"
+    ],
+    "prerequisites": [
+      "characteristic polynomial as det(XI − A)",
+      "polynomial coefficients"
+    ]
+  },
+  {
+    "id": "ann-spectral-form",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 102,
+      "endLine": 151
+    },
+    "type": "insight",
+    "title": "The spectral upgrade: algebraic closure enters only here",
+    "content": "`trace_cube_eq_sum_cube_eigenvalues` lifts the matrix-side identity to the genuinely spectral $\\operatorname{tr}(A^3) = \\lambda_1^3 + \\lambda_2^3 + \\lambda_3^3$ over an algebraically closed field. Algebraic closure is needed only now, to split the characteristic polynomial. `card_eigenvalues_fin_three` (from the parent's `card_eigenvalues_eq_dim`) gives the eigenvalue multiset exactly three elements $\\{a,b,c\\}$; Vieta (`charpoly_eq_prod_eigenvalues`) then identifies the three symmetric functions with $\\operatorname{tr}A = a+b+c$ and $\\det A = abc$ (inherited from the parent) and $e_2(A) = ab+ac+bc$ (from `charpoly_coeff_one_eq_e2` plus the explicit cubic factorisation). Substituting into `trace_cube_fin_three` and matching against the three-variable identity $a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$ closes it by `ring`.",
+    "mathContext": "$\\operatorname{tr}(A^3) = a^3+b^3+c^3 = (a+b+c)^3 - 3(a+b+c)(ab+ac+bc) + 3abc$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "spectral mapping theorem",
+      "algebraic closure",
+      "eigenvalue multiset",
+      "Multiset.card_eq_three"
+    ],
+    "prerequisites": [
+      "algebraically closed fields",
+      "splitting of polynomials",
+      "eigenvalues with multiplicity"
+    ]
+  },
+  {
+    "id": "ann-example",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 153,
+      "endLine": 171
+    },
+    "type": "context",
+    "title": "A trace power sum of an unknowable spectrum",
+    "content": "`trace_cube_example` instantiates the matrix-side identity at the rational matrix $\\begin{psmallmatrix}1&2&0\\\\0&3&1\\\\4&0&2\\end{psmallmatrix}$ over $\\mathbb{Q}$. Its eigenvalues are not rational, yet $\\operatorname{tr}(A^3)$ is completely forced by $\\operatorname{tr}A = 6$, the minor sum $e_2(A)$, and $\\det A$ — read off without ever solving the cubic. The trailing `#print axioms` calls audit the three headline theorems and confirm they depend only on the foundational `propext`/`Classical.choice`/`Quot.sound`; there is no `native_decide` (no `Lean.ofReduceBool`) and no `sorryAx`, consistent with the entry's 0-axiom claim.",
+    "mathContext": "$\\operatorname{tr}(A^3)$ recovered from $\\operatorname{tr}A=6,\\ e_2(A),\\ \\det A$ alone.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "rational invariants",
+      "axiom audit",
+      "decide vs native_decide"
+    ],
+    "prerequisites": [
+      "matrix literals in Lean",
+      "#print axioms"
+    ]
+  }
+]
