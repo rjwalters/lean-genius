@@ -1,0 +1,142 @@
+{
+  "id": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+  "title": "The Dirichlet Function: nowhere continuous — the Baire-category antipode of Thomae",
+  "slug": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02-oq-02",
+  "description": "The exact opposite of Thomae. The Dirichlet function D = 𝟙_ℚ (1 on the rationals, 0 on the irrationals) is continuous at NO point of ℝ, answering the parent entry's open question verbatim. Because both ℚ and ℝ∖ℚ are dense, every neighbourhood of every real contains a point where D = 1 and a point where D = 0, so D jumps by a full unit everywhere. The entry proves the three-part dichotomy: (1) ¬ ContinuousAt D x for every x; (2) the continuity set equals ∅ and the discontinuity set equals ℝ; (3) the oscillation ω_D(x) = 1 at every point — the sharp quantitative form, contrasting Thomae's pointwise oscillation 1/q at p/q. Framed as the Baire-category antipode: Thomae's continuity set is a dense Gδ (comeagre), whereas Dirichlet's continuity set ∅ is not dense, so the two functions realize opposite ends of the continuity-set theory. 14 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "leanFile": {
+    "namespace": "LebesgueMeasureOQ01OQ01OQ02OQ02OQ02",
+    "lineCount": 182,
+    "axiomCount": 0,
+    "theoremCount": 14,
+    "definitionCount": 1,
+    "path": "Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02OQ02.lean",
+    "sorries": 0
+  },
+  "sorries": 0,
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-24",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ01OQ01OQ02OQ02OQ02.lean",
+    "tags": [
+      "measure-theory",
+      "baire-category",
+      "dirichlet-function",
+      "indicator-function",
+      "nowhere-continuous",
+      "oscillation",
+      "continuity",
+      "real-analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Fully kernel-checked (Lean v4.26.0). `#print axioms` on the headline theorems (dirichlet_not_continuousAt, dirichlet_oscillation_eq_one, dirichlet_continuitySet_not_dense, dirichlet_discontinuitySet_residual) reports only the ordinary foundational axioms propext, Classical.choice, Quot.sound — no `axiom` declarations, no structure-encoded assumptions, no `native_decide` (so no Lean.ofReduceBool), no sorryAx. The file is self-contained: it imports only Mathlib and defines the Dirichlet function as Set.indicator (range ℚ) 1, depending on no other gallery module.",
+    "lineCount": 182,
+    "theoremCount": 14,
+    "definitionCount": 1,
+    "originalContributions": [
+      "dirichlet_not_continuousAt: the Dirichlet function is continuous at no point of ℝ — approaching x through a rational sequence forces the limit to be 1, through an irrational sequence forces it to be 0, and uniqueness of limits gives 1 = 0",
+      "dirichlet_continuitySet_eq_empty / dirichlet_discontinuitySet_eq_univ: the continuity set is ∅ and the discontinuity set is all of ℝ — the exact set-theoretic opposite of Thomae (continuity set = irrationals, discontinuity set = ℚ)",
+      "dirichlet_oscillation_eq_one: the oscillation ω_D(x) = 1 at every point, the sharp quantitative form of nowhere-continuity (the image filter contains range D ⊆ {0,1} of diameter ≤ 1 for the upper bound, and every neighbourhood image contains both 0 and 1 for the lower bound), contrasting Thomae's oscillation 1/q at p/q",
+      "dirichlet_continuitySet_not_dense: Dirichlet's continuity set (∅) is not dense — the Baire-category antipode of Thomae's dense-Gδ continuity set",
+      "dirichlet_discontinuitySet_residual: Dirichlet's discontinuity set is comeagre (residual), indeed all of ℝ — the sharp opposite of Thomae's meagre discontinuity set ℚ"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Dirichlet function 𝟙_ℚ (1841) is the canonical example of a function that is continuous nowhere, the foil to Thomae's popcorn function which is continuous exactly at the irrationals. The parent lineage formalized Thomae's measure-theoretic smallness (discontinuity set ℚ is Lebesgue-null) and its Baire-category structure (continuity set a dense Gδ, comeagre). The parent entry lebesgue-measure-oq-01-oq-01-oq-02-oq-02 explicitly posed, as an open question, stating the analogous category/measure dichotomy for the Dirichlet function. This entry supplies it: Dirichlet realizes the opposite extreme of the continuity-set theory.",
+    "problemStatement": "Determine the continuity set, discontinuity set, and pointwise oscillation of the Dirichlet function D = 𝟙_ℚ, and frame the result as the Baire-category antipode of Thomae's function.",
+    "text": "The Dirichlet function takes value 1 on a dense set (ℚ) and 0 on a dense set (the irrationals). Continuity at a point x would force the value D(x) to equal the limit of D along every sequence converging to x; but there is a rational sequence (along which D = 1) and an irrational sequence (along which D = 0) converging to every x, so continuity is impossible everywhere. Quantitatively the oscillation is identically 1. Where Thomae's continuity set is a dense Gδ (comeagre) and discontinuity set meagre, Dirichlet's continuity set is empty (not dense) and discontinuity set all of ℝ (comeagre).",
+    "proofStrategy": "Define dirichlet := Set.indicator (range ℚ) 1, giving dirichlet_rat (= 1 at rationals), dirichlet_irrational (= 0 at irrationals), and dirichlet_zero_or_one. For nowhere-continuity, extract a rational sequence (mem_closure_iff_seq_limit on Rat.denseRange_cast) and an irrational sequence (on dense_irrational) tending to x; composing continuity with these via tendsto_nhds_unique forces D x = 1 and D x = 0, contradiction. The continuity/discontinuity set equalities follow by ext. For the oscillation: the upper bound uses that range D is in the image filter (𝓝 x).map D with EMetric.diam ≤ 1 since |D s − D t| ≤ 1 on {0,1}; the lower bound finds, in every filter set S, a rational point (D = 1, via exists_rat_near) and an irrational point (D = 0, via exists_irrational_btwn), so edist 1 0 = 1 ≤ EMetric.diam S. The Baire framing: dirichlet_continuitySet_not_dense rewrites the continuity set to ∅, and dirichlet_discontinuitySet_residual rewrites to univ ∈ residual ℝ.",
+    "keyInsights": [
+      "Density on both sides is the whole story. Because ℚ and ℝ∖ℚ are each dense, every point is simultaneously a limit of 1-values and of 0-values; this single fact drives nowhere-continuity, the empty continuity set, and the unit oscillation.",
+      "Oscillation 1 is the sharp quantitative antipode of Thomae's 1/q. Thomae's oscillation shrinks to 0 along the irrationals; Dirichlet's is pinned at the maximum possible jump (1) at every point with no exceptions.",
+      "The Baire-category dichotomy is realized at both extremes. Thomae's continuity set is a dense Gδ (the largest a continuity set can be while excluding a dense countable set); Dirichlet's is ∅ (the smallest), so the two functions bracket the continuity-set theory.",
+      "No Baire machinery is needed for the negative result. Unlike Thomae, where the structure is genuinely Gδ/meagre, Dirichlet's discontinuity set is all of ℝ, so it is trivially comeagre; the content is in the uniform density argument, not in category theorems.",
+      "The oscillation upper bound is a clean diameter argument. Since range D ⊆ {0,1} always sits in the pushed-forward neighbourhood filter, the oscillation is at most diam{0,1} = 1 with no pointwise case analysis."
+    ],
+    "prerequisites": [
+      "The Dirichlet function as an indicator and the density of ℚ and of the irrationals in ℝ (Rat.denseRange_cast, dense_irrational)",
+      "Sequential characterization of closure (mem_closure_iff_seq_limit) and uniqueness of limits (tendsto_nhds_unique)",
+      "ContinuousAt as a filter statement (ContinuousAt.tendsto) and composition of tendsto",
+      "The oscillation as an extended-metric diameter of the image neighbourhood filter (oscillation, EMetric.diam, EMetric.edist_le_diam_of_mem)",
+      "Rational/irrational approximation lemmas exists_rat_near and exists_irrational_btwn"
+    ]
+  },
+  "conclusion": {
+    "summary": "The Dirichlet function D = 𝟙_ℚ is continuous at no point of ℝ: its continuity set is ∅, its discontinuity set is all of ℝ, and its oscillation is identically 1. This is the Baire-category antipode of Thomae — empty (not dense) continuity set versus dense Gδ; comeagre full-ℝ discontinuity set versus meagre ℚ — and answers the parent entry's open question verbatim. 14 theorems, 1 definition, 0 axioms, 182 lines, fully kernel-checked.",
+    "implications": "Completes the Thomae/Dirichlet contrast in the gallery by realizing both extremes of the continuity-set theory with a single uniform device (every point is approached by both a rational and an irrational sequence). Demonstrates the idiom of computing pointwise oscillation as an extended-metric diameter of the pushed-forward neighbourhood filter, usable for any function with a small dense range.",
+    "openQuestions": [
+      "Quantify the failure for the family t·𝟙_ℚ (t ≠ 0): the oscillation becomes |t| everywhere — does the continuity-set/oscillation theory extend uniformly to indicator functions of an arbitrary dense, codense set with arbitrary two values?",
+      "Compare with the Riemann non-integrability of Dirichlet: the unit oscillation on every subinterval forces upper sum − lower sum = (length) for every partition, the measure-theoretic counterpart of the topological nowhere-continuity proved here."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring-imports",
+      "title": "Docstring, Imports, and the Dirichlet Function",
+      "startLine": 1,
+      "endLine": 58,
+      "summary": "States the nowhere-continuity result and the Baire-category antipode framing. Imports Mathlib; opens Set, Filter, Topology, Metric. Defines dirichlet := Set.indicator (range ℚ) 1 and proves dirichlet_rat (= 1), dirichlet_irrational (= 0), dirichlet_zero_or_one (values in {0,1})."
+    },
+    {
+      "id": "sequential-approach",
+      "title": "Approaching Every Point Through Rationals and Irrationals",
+      "startLine": 60,
+      "endLine": 71,
+      "summary": "exists_rat_seq_tendsto and exists_irrational_seq_tendsto: every real is the limit of a rational sequence (where D = 1) and of an irrational sequence (where D = 0), via mem_closure_iff_seq_limit on Rat.denseRange_cast and dense_irrational."
+    },
+    {
+      "id": "nowhere-continuous",
+      "title": "The Dirichlet Function is Nowhere Continuous",
+      "startLine": 72,
+      "endLine": 107,
+      "summary": "dirichlet_not_continuousAt: composing ContinuousAt with the rational and irrational sequences and applying tendsto_nhds_unique forces D x = 1 and D x = 0, a contradiction. dirichlet_continuitySet_eq_empty and dirichlet_discontinuitySet_eq_univ follow by ext."
+    },
+    {
+      "id": "oscillation",
+      "title": "The Oscillation is Identically One",
+      "startLine": 109,
+      "endLine": 161,
+      "summary": "exists_rat_mem_of_nhds / exists_irrational_mem_of_nhds (a neighbourhood of x contains a point with D = 1 and a point with D = 0, via exists_rat_near and exists_irrational_btwn). dirichlet_oscillation_eq_one: upper bound ≤ 1 from diam(range D) on {0,1}; lower bound ≥ 1 since every filter set contains both 0 and 1 so edist 1 0 = 1 ≤ diam."
+    },
+    {
+      "id": "baire-antipode",
+      "title": "The Baire-Category Antipode of Thomae",
+      "startLine": 163,
+      "endLine": 182,
+      "summary": "dirichlet_continuitySet_not_dense (∅ is not dense — opposite of Thomae's dense Gδ) and dirichlet_discontinuitySet_residual (the discontinuity set, = ℝ, is comeagre — opposite of Thomae's meagre ℚ)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-02-oq-02",
+      "relationship": "parent-problem",
+      "description": "Thomae's function and Baire category: continuity set a dense Gδ, discontinuity set meagre ℚ. This entry answers that entry's open question verbatim by stating the antipodal dichotomy for the Dirichlet function."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-01-oq-01-oq-01",
+      "relationship": "related",
+      "description": "Thomae's continuity at the irrationals, the positive-continuity end of the spectrum that Dirichlet's nowhere-continuity contrasts."
+    }
+  ],
+  "references": [
+    {
+      "title": "Dirichlet function",
+      "url": "https://en.wikipedia.org/wiki/Dirichlet_function",
+      "description": "The indicator function of the rationals: continuous nowhere, the canonical nowhere-continuous function."
+    },
+    {
+      "title": "Thomae's function",
+      "url": "https://en.wikipedia.org/wiki/Thomae%27s_function",
+      "description": "The popcorn function: continuous exactly at the irrationals — the Baire-category antipode contrasted in this entry."
+    },
+    {
+      "title": "Oscillation (mathematics)",
+      "url": "https://en.wikipedia.org/wiki/Oscillation_(mathematics)",
+      "description": "Pointwise oscillation of a function; a function is continuous at x iff its oscillation there is 0. Dirichlet's oscillation is 1 everywhere."
+    }
+  ]
+}
