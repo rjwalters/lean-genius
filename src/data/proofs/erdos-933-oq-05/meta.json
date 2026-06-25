@@ -54,7 +54,9 @@
     "sorries": 0
   },
   "crossReferences": [
-    {"targetId": "erdos-933", "relationship": "parent", "description": "Original Erdős #933 formalization (axiomatized: 1 axiom + 3 sorries). This entry answers its open question #5 by discharging all three sorries with 0 axioms and proving the genuine Steinerberger result."}
+    {"targetId": "erdos-933", "relationship": "parent", "description": "Original Erdős #933 formalization (axiomatized: 1 axiom + 3 sorries). This entry answers its open question #5 by discharging all three sorries with 0 axioms and proving the genuine Steinerberger result."},
+    {"targetId": "lifting-the-exponent-oq-01", "relationship": "related", "description": "The general Lifting-the-Exponent lemma as an honest p-adic valuation equation, vₚ(xⁿ−yⁿ) = vₚ(x−y) + vₚ(n) for odd p. This entry's engine lte_core (3^{r+1} ∣ 2^{3^r}+1) is the LTE input v₃(2^{3^r}+1) = r+1 specialized to a sum; open question #2 here asks to recover it as an equality from exactly this Mathlib-style LTE API."},
+    {"targetId": "lifting-the-exponent-oq-02", "relationship": "related", "description": "The p = 2 form of LTE, where an even exponent forces an extra v₂(x+y) correction term. Complements the p = 3 use here and illustrates why the local prime (3, with no exceptional case for the cube map) makes Steinerberger's construction clean."}
   ],
   "overview": {
     "historicalContext": "Write n(n+1) = 2^k·3^l·m with gcd(m,6)=1. Mahler proved 2^k·3^l < n^{1+o(1)} (an upper bound from the theory of S-unit equations). Erdős, in 'Problems and results on consecutive integers' (1976), remarked that 'it is easy to see' that 2^k·3^l > n·log n for infinitely many n. Steinerberger supplied the simple witness: take n = 2^{3^r}, so that the 2-part is exactly k = 3^r and (by lifting the exponent) the 3-part is l = r+1. The parent gallery entry encoded this with one axiom and three sorries; this entry removes them.",
@@ -65,7 +67,8 @@
       "The only nontrivial ingredient is the lifting-the-exponent divisibility 3^{r+1} ∣ 2^{3^r}+1; everything else is bookkeeping with prime valuations.",
       "LTE here needs no special-function machinery — the single identity a^3+1=(a+1)(a^2-a+1) plus '3 ∣ a+1 ⟹ 3 ∣ a^2-a+1' powers the whole induction, and working over ℤ avoids ℕ subtraction pitfalls.",
       "Steinerberger's construction gives a CONSTANT ratio 2^k·3^l/(n·log n) = 3^{r+1}/(3^r·log 2) = 3/log 2 ≈ 4.33, so it proves exactly Erdős's 'infinitely often > n·log n', not limsup = ∞ — a clarification of the parent entry's framing.",
-      "The {2,3}-smooth part factors as 2^{v₂} · 3^{v₃}, so a lower bound on each valuation immediately lower-bounds the smooth part; the 2-part already accounts for the full size of n."
+      "The {2,3}-smooth part factors as 2^{v₂} · 3^{v₃}, so a lower bound on each valuation immediately lower-bounds the smooth part; the 2-part already accounts for the full size of n.",
+      "Discharging the two factorization sorries needs no coprimality of n and n+1: vₚ(n(n+1)) = vₚ(n) + vₚ(n+1) is just additivity of a fixed prime's exponent over any nonzero product (Nat.factorization_mul), so a single uniform lemma factorization_consecutive resolves both power2_consecutive and power3_consecutive at once."
     ],
     "prerequisites": ["Prime factorization / p-adic valuation (Nat.factorization)", "Lifting the Exponent lemma", "Coprimality of consecutive integers", "Basic real logarithm inequalities"]
   },
