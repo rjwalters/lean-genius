@@ -61,22 +61,47 @@
       "**Brahmagupta's identity is precisely norm multiplicativity.** (a.x·b.x + d·a.y·b.y) + (a.x·b.y + a.y·b.x)√d = (a.x + a.y√d)(b.x + b.y√d): the cross terms are the y-component and (√d)² = d turns the d·a.y·b.y term into the a.y·b.y(√d)² term.",
       "**The conjugate identity exhibits the inverse.** Since a⁻¹ = (a.x, −a.y), the relation (x + y√d)(x − y√d) = x² − d·y² = 1 says pellNorm a⁻¹ is the multiplicative inverse of pellNorm a — and in particular the norm never vanishes.",
       "**Multiplicativity ⇒ regulator additivity ⇒ linear scaling.** Taking logs converts the homomorphism to ℝˣ into an additive map; on powers this gives R(aⁿ) = n·R(a), the exact reason a fundamental solution of regulator R(D) generates solutions with regulators R(D), 2R(D), 3R(D), ….",
-      "**Only d ≥ 0 is needed.** The single analytic input is (√d)² = d; everything else is the integer group law and the defining relation, so the results hold for every non-negative d (square or not)."
+      "**Only d ≥ 0 is needed.** The single analytic input is (√d)² = d; everything else is the integer group law and the defining relation, so the results hold for every non-negative d (square or not).",
+      "**The regulator is a discrete additive invariant.** Because R(aⁿ) = n·R(a) and the smallest positive solution has the smallest positive regulator R(D), the image of R is the discrete subgroup R(D)·ℤ of (ℝ, +); the regulator therefore measures the 'logarithmic spacing' of the infinitely many Pell solutions along the real line."
     ]
   },
   "sections": [
     {
-      "id": "homomorphism",
-      "title": "The Pell norm is a multiplicative homomorphism",
+      "id": "definitions",
+      "title": "Pell norm and regulator",
+      "startLine": 43,
+      "endLine": 51,
+      "summary": "Defines pellNorm d x y = x + y√d (the embedding of a Pell solution into ℝ as a unit of ℤ[√d]) and pellRegulator d a = log(pellNorm), matching the parent entry's definitions.",
+      "mathContext": "$\\mathrm{pellNorm}(x,y) = x + y\\sqrt d,\\quad R(a) = \\log\\mathrm{pellNorm}(a)$."
+    },
+    {
+      "id": "identity",
+      "title": "Norm of the identity",
       "startLine": 53,
-      "endLine": 89,
-      "summary": "pellNorm_one: norm of identity = 1. pellNorm_mul: Brahmagupta multiplicativity (linear_combination with (√d)²=d). pellNorm_mul_inv: conjugate identity = 1. pellNorm_ne_zero: norm never vanishes.",
-      "mathContext": "$\\mathrm{pellNorm}(a\\cdot b) = \\mathrm{pellNorm}(a)\\cdot\\mathrm{pellNorm}(b)$; $(x+y\\sqrt d)(x-y\\sqrt d) = 1$."
+      "endLine": 57,
+      "summary": "pellNorm_one: the norm of the group identity (1,0) is 1 — the unit-preserving half of the homomorphism and the base case of pellNorm_pow.",
+      "mathContext": "$\\mathrm{pellNorm}(1,0) = 1$."
+    },
+    {
+      "id": "multiplicativity",
+      "title": "Brahmagupta multiplicativity",
+      "startLine": 59,
+      "endLine": 67,
+      "summary": "pellNorm_mul: the crux. pellNorm(a·b) = pellNorm(a)·pellNorm(b), proved by unfolding the group law and clearing the (√d)²=d discrepancy with linear_combination — Brahmagupta's composition identity as norm multiplicativity.",
+      "mathContext": "$\\mathrm{pellNorm}(a\\cdot b) = \\mathrm{pellNorm}(a)\\cdot\\mathrm{pellNorm}(b)$."
+    },
+    {
+      "id": "conjugate",
+      "title": "Conjugate identity and nonvanishing",
+      "startLine": 69,
+      "endLine": 87,
+      "summary": "pellNorm_mul_inv: (x+y√d)(x−y√d) = x²−d·y² = 1 via a.prop, exhibiting pellNorm(a⁻¹) as the inverse of pellNorm(a). pellNorm_ne_zero: hence the norm is never zero, so the regulator's logarithm is well-defined.",
+      "mathContext": "$(x+y\\sqrt d)(x-y\\sqrt d) = 1,\\quad \\mathrm{pellNorm}(a) \\neq 0$."
     },
     {
       "id": "regulator",
       "title": "The regulator is additive and scales on powers",
-      "startLine": 90,
+      "startLine": 89,
       "endLine": 112,
       "summary": "pellRegulator_mul: R(a·b) = R(a) + R(b) (Real.log_mul). pellNorm_pow: pellNorm(aⁿ) = (pellNorm a)ⁿ (induction). pellRegulator_pow: R(aⁿ) = n·R(a) (Real.log_pow).",
       "mathContext": "$R(a\\cdot b) = R(a) + R(b)$, $R(a^n) = n\\,R(a)$."
