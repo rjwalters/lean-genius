@@ -2,34 +2,49 @@
   {
     "id": "ann-bounds",
     "proofId": "gcd-algorithm-oq-01-oq-01",
-    "range": {
-      "startLine": 35,
-      "endLine": 42
-    },
+    "range": { "startLine": 35, "endLine": 42 },
     "type": "concept",
-    "title": "Two Scalar Facts",
-    "content": "The whole formula rests on two small bounds: √5 > 2 (so 1/√5 < ½), proved by nlinarith from (√5)² = 5; and |ψ| < 1 for the golden conjugate ψ = (1−√5)/2, since −1 < ψ < 0 gives |ψ| = −ψ < 1. These control the size of the error term ψⁿ/√5 in Binet's formula."
+    "title": "Two Scalar Facts: √5 > 2 and |ψ| < 1",
+    "content": "The whole formula rests on two small bounds. First, √5 > 2 (so 1/√5 < ½), proved by nlinarith from (√5)² = 5 and √5 ≥ 0. Second, |ψ| < 1 for the golden conjugate ψ = (1−√5)/2: since −1 < ψ < 0, we have |ψ| = −ψ < 1 (rewriting via abs_of_neg). These two facts control the size of the error term ψⁿ/√5 in Binet's formula — the first makes 1/√5 < ½, the second makes |ψ|ⁿ ≤ 1.",
+    "mathContext": "$\\sqrt5 > 2 \\Rightarrow \\tfrac{1}{\\sqrt5} < \\tfrac12;\\qquad \\psi = \\tfrac{1-\\sqrt5}{2},\\ -1 < \\psi < 0 \\Rightarrow |\\psi| < 1.$",
+    "significance": "supporting",
+    "relatedConcepts": ["golden ratio", "golden conjugate", "quadratic surds", "nlinarith"],
+    "prerequisites": ["real square roots", "absolute value inequalities"]
   },
   {
     "id": "ann-error",
     "proofId": "gcd-algorithm-oq-01-oq-01",
-    "range": {
-      "startLine": 44,
-      "endLine": 54
-    },
+    "range": { "startLine": 44, "endLine": 54 },
     "type": "insight",
-    "title": "The Error Term Never Reaches ½",
-    "content": "Binet's formula fib(n) = (φⁿ − ψⁿ)/√5 means fib(n) − φⁿ/√5 = −ψⁿ/√5 exactly — no inequality is lost. Taking absolute values, |fib(n) − φⁿ/√5| = |ψ|ⁿ/√5 ≤ 1/√5 < ½ (using |ψ|ⁿ ≤ 1 and √5 > 2). The ψⁿ term, which makes Binet's closed form an integer despite involving √5, is precisely what stays below half a unit."
+    "title": "The Binet Error Term Never Reaches ½",
+    "content": "Binet's formula fib(n) = (φⁿ − ψⁿ)/√5 (Mathlib's Real.coe_fib_eq) gives the exact identity fib(n) − φⁿ/√5 = −ψⁿ/√5 — no inequality is lost, the proof is by field_simp + ring. Taking absolute values, |fib(n) − φⁿ/√5| = |ψ|ⁿ/√5 ≤ 1/√5 < ½ (using |ψ|ⁿ ≤ 1 from pow_le_one₀ and √5 > 2, closed by nlinarith). The ψⁿ term — the very thing that makes Binet's closed form an integer despite involving the irrational √5 — is precisely what stays below half a unit.",
+    "mathContext": "$\\mathrm{fib}(n) - \\tfrac{\\varphi^n}{\\sqrt5} = -\\tfrac{\\psi^n}{\\sqrt5},\\quad \\left|\\mathrm{fib}(n) - \\tfrac{\\varphi^n}{\\sqrt5}\\right| = \\tfrac{|\\psi|^n}{\\sqrt5} \\le \\tfrac{1}{\\sqrt5} < \\tfrac12.$",
+    "significance": "key",
+    "relatedConcepts": ["Binet's formula", "golden ratio powers", "Fibonacci numbers", "exact error term"],
+    "prerequisites": ["Binet's formula", "geometric decay", "absolute value"]
   },
   {
     "id": "ann-round",
     "proofId": "gcd-algorithm-oq-01-oq-01",
-    "range": {
-      "startLine": 56,
-      "endLine": 73
-    },
+    "range": { "startLine": 54, "endLine": 63 },
     "type": "insight",
     "title": "Fibonacci as a Rounded Geometric Sequence",
-    "content": "Because the error is below ½, round(φⁿ/√5) = fib(n): the Fibonacci numbers are exactly the nearest integers to the geometric sequence φⁿ/√5. The proof rewrites round as ⌊· + ½⌋ and applies Int.floor_eq_iff, with both bracketing inequalities following from the <½ error by linarith. The sandwich φⁿ/√5 − ½ < fib(n) < φⁿ/√5 + ½ then makes the geometric growth explicit — the engine behind the logarithmic Euclidean worst case: n-step worst-case inputs have size ≈ φⁿ."
+    "content": "Because the error is below ½, round(φⁿ/√5) = fib(n): the Fibonacci numbers are exactly the nearest integers to the geometric sequence φⁿ/√5. The proof rewrites round as ⌊· + ½⌋ (round_eq) and applies Int.floor_eq_iff, with both bracketing inequalities following from the <½ error by linarith. This is the cleanest possible statement of Binet's formula: an irrational closed form whose rounding is an exact integer sequence, with no need to ever compute √5 to finite precision.",
+    "mathContext": "$\\mathrm{round}\\!\\left(\\tfrac{\\varphi^n}{\\sqrt5}\\right) = \\mathrm{fib}(n),\\qquad \\mathrm{round}(x) = \\lfloor x + \\tfrac12 \\rfloor.$",
+    "significance": "key",
+    "relatedConcepts": ["nearest-integer function", "floor function", "Binet's formula", "closed-form sequences"],
+    "prerequisites": ["floor and rounding", "real-to-integer coercions"]
+  },
+  {
+    "id": "ann-sandwich",
+    "proofId": "gcd-algorithm-oq-01-oq-01",
+    "range": { "startLine": 64, "endLine": 73 },
+    "type": "technique",
+    "title": "The Explicit Sandwich and the Lamé Bound",
+    "content": "The two one-sided bounds φⁿ/√5 − ½ < fib(n) < φⁿ/√5 + ½ unpack the absolute-value estimate (abs_lt) into a linear sandwich, each half closed by linarith. This makes the geometric growth of Fibonacci numbers explicit and is the engine behind the logarithmic Euclidean worst case: Lamé's theorem says an n-step gcd computation needs inputs b ≥ fib(n+1) ≈ φⁿ⁺¹/√5, so the number of steps is O(log b) — the n-step worst-case inputs have size ≈ φⁿ.",
+    "mathContext": "$\\tfrac{\\varphi^n}{\\sqrt5} - \\tfrac12 < \\mathrm{fib}(n) < \\tfrac{\\varphi^n}{\\sqrt5} + \\tfrac12;\\quad \\text{Lamé: } b \\ge \\mathrm{fib}(\\text{steps}+1) \\Rightarrow \\text{steps} = O(\\log_\\varphi b).$",
+    "significance": "supporting",
+    "relatedConcepts": ["Lamé's theorem", "Euclidean algorithm complexity", "logarithmic worst case", "Fibonacci growth"],
+    "prerequisites": ["Euclidean algorithm", "asymptotic complexity", "Fibonacci recurrence"]
   }
 ]
