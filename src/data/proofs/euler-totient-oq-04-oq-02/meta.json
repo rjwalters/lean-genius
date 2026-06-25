@@ -87,6 +87,14 @@
   ],
   "sections": [
     {
+      "id": "header",
+      "title": "Overview and Imports",
+      "summary": "Module docstring framing φ = μ ∗ id as the Möbius inverse of the parent's Gauss identity n = Σ_{d|n} φ(d), via Mathlib's abstract Möbius inversion instantiated at f = φ, g = id. Imports the Möbius arithmetic-function and totient APIs; opens Nat / ArithmeticFunction and the μ scope.",
+      "startLine": 1,
+      "endLine": 60,
+      "mathContext": "id = φ ∗ 1 ⟺ φ = μ ∗ id, since μ is the Dirichlet inverse of the constant function 1."
+    },
+    {
       "id": "gauss-identity-cast",
       "title": "Gauss's Identity over ℤ",
       "summary": "sum_totient_int: casts Nat.sum_totient (Σ_{d|n} φ(d) = n) to ℤ, the hypothesis side of Möbius inversion.",
