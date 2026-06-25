@@ -1,0 +1,94 @@
+[
+  {
+    "id": "ann-rdot-sum",
+    "proofId": "viviani-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 38,
+      "endLine": 76
+    },
+    "type": "technique",
+    "title": "From Two-Term Bilinearity to n-Term Additivity via map_sum",
+    "content": "The plane is ℂ with the parent's real inner product rdot z w = z.re·w.re + z.im·w.im. The triangle proof only needed two-term additivity; the n-gon proof needs additivity over an arbitrary finite index set. Rather than an induction, the first slot is bundled as an AddMonoidHom rdotHom w with map_zero' = rdot 0 w = 0 and map_add' = rdot_add_left, and then map_sum (rdotHom w) f s gives rdot (∑ᵢ fᵢ) w = ∑ᵢ rdot fᵢ w in one line. Positive-definiteness rdot z z = 0 ↔ z = 0 is carried over unchanged.",
+    "mathContext": "$\\langle \\sum_i v_i, w\\rangle = \\sum_i \\langle v_i, w\\rangle$; $\\langle z,z\\rangle = 0 \\iff z = 0$.",
+    "significance": "key-technique",
+    "relatedConcepts": [
+      "real inner product",
+      "AddMonoidHom",
+      "map_sum",
+      "positive-definiteness"
+    ],
+    "prerequisites": [
+      "Complex.re / Complex.im",
+      "Finset.sum",
+      "bundled morphisms"
+    ]
+  },
+  {
+    "id": "ann-distsum-sub",
+    "proofId": "viviani-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 84,
+      "endLine": 100
+    },
+    "type": "insight",
+    "title": "The Distance-Sum Difference is the Inner Product with the Normal Sum",
+    "content": "distSum s ν c x = ∑ᵢ∈s (cᵢ − rdot(νᵢ)x) is an affine function of x. The offsets cᵢ cancel in any difference, leaving distSum_sub: S(x) − S(y) = rdot(∑ᵢ νᵢ)(y − x). The proof rewrites with rdot_sum_left, splits the sum with Finset.sum_sub_distrib, and reduces each summand by rdot_sub_right. This identity is the gradient of the distance functional made explicit: the only data that survives is the normal sum ∑ᵢ νᵢ.",
+    "mathContext": "$S(x) = \\big(\\sum_i c_i\\big) - \\langle x, \\sum_i \\nu_i\\rangle,\\quad S(x)-S(y) = \\langle \\sum_i \\nu_i,\\, y-x\\rangle.$",
+    "significance": "core-step",
+    "relatedConcepts": [
+      "affine functional",
+      "gradient",
+      "Finset.sum_sub_distrib"
+    ],
+    "prerequisites": [
+      "linearity of the inner product",
+      "telescoping offsets"
+    ]
+  },
+  {
+    "id": "ann-characterisation",
+    "proofId": "viviani-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 102,
+      "endLine": 122
+    },
+    "type": "insight",
+    "title": "Constant Distance-Sum ⇔ Normals Close Up (the n-gon Viviani heart)",
+    "content": "distSum_const_iff_normalSum_zero is the headline: the distance-sum is constant on the whole plane iff ∑ᵢ νᵢ = 0. Forward — instantiate distSum_sub at x = V := ∑ᵢ νᵢ and y = 0; constancy makes the left side 0, so rdot V 0 − rdot V V = 0, hence rdot V V = 0, and positive-definiteness gives V = 0. Backward — a zero normal sum makes every rdot(∑νᵢ)(y−x) = rdot 0 (y−x) = 0, so all values agree. No triangle non-degeneracy and no equilaterality enter: this is the genuinely general phenomenon.",
+    "mathContext": "$(\\forall x\\,y,\\ S(x)=S(y)) \\iff \\sum_i \\nu_i = 0.$",
+    "significance": "main-result",
+    "relatedConcepts": [
+      "positive-definiteness",
+      "affine reduction",
+      "characterisation"
+    ],
+    "prerequisites": [
+      "distSum_sub",
+      "rdot_self_eq_zero"
+    ]
+  },
+  {
+    "id": "ann-roots-of-unity",
+    "proofId": "viviani-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 124,
+      "endLine": 152
+    },
+    "type": "technique",
+    "title": "The Regular n-gon: Outward Normals are Roots of Unity that Cancel",
+    "content": "regularNormal n k = ζᵏ with ζ = exp(2πi/n) realises the outward unit normals of a regular n-gon as the n-th roots of unity. regularNormal_sum_zero proves they sum to zero for n ≥ 2: Complex.isPrimitiveRoot_exp n (n ≠ 0) makes ζ a primitive n-th root, and IsPrimitiveRoot.geom_sum_eq_zero (1 < n) gives ∑ₖ∈range n ζᵏ = 0. Feeding this into the backward direction of the characterisation yields regular_ngon_distSum_const: every regular n-gon (n ≥ 2) has the Viviani property. The characterisation is sharp and captures more than regular polygons — any unit normals closing to zero, e.g. equiangular polygons.",
+    "mathContext": "$\\sum_{k=0}^{n-1} e^{2\\pi i k/n} = 0\\ (n\\ge 2)\\ \\Rightarrow\\ \\text{regular }n\\text{-gon has constant distance-sum}.$",
+    "significance": "key-corollary",
+    "relatedConcepts": [
+      "roots of unity",
+      "primitive root",
+      "geometric sum",
+      "regular polygon"
+    ],
+    "prerequisites": [
+      "Complex.isPrimitiveRoot_exp",
+      "IsPrimitiveRoot.geom_sum_eq_zero",
+      "the affine characterisation"
+    ]
+  }
+]
