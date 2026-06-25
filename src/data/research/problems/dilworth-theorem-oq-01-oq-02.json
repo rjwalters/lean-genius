@@ -1,12 +1,12 @@
 {
   "slug": "dilworth-theorem-oq-01-oq-02",
   "title": "Dilworth's theorem, hard direction: min chain cover = max antichain, via the down-set/up-set decomposition",
-  "status": "active",
-  "phase": "ACT",
+  "status": "completed",
+  "phase": "COMPLETED",
   "tier": "A",
   "tractability": "hard",
   "started": "2026-06-24T22:00:00-07:00",
-  "lastUpdate": "2026-06-24T22:30:00-07:00",
+  "lastUpdate": "2026-06-24",
   "path": "full",
   "problemStatement": {
     "formal": "For a finite poset on ground Finset s, if every antichain A ⊆ s has A.card ≤ w, then s admits a chain cover by ≤ w chains. With w = max antichain width and the easy direction (antichain_card_le_of_chainCover), this gives min chain cover = max antichain.",
@@ -17,7 +17,13 @@
     ]
   },
   "significance": 8,
-  "tags": ["combinatorics", "order-theory", "dilworth", "chain-cover", "antichain"],
+  "tags": [
+    "combinatorics",
+    "order-theory",
+    "dilworth",
+    "chain-cover",
+    "antichain"
+  ],
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-24T22:30:00-07:00",
@@ -42,7 +48,11 @@
       "Strong form (antichain bound w ⟹ chain cover ≤ w) is the right statement for induction: removing elements only shrinks antichains, so the hypothesis is inherited by sub-posets.",
       "Down-set/up-set of a MAXIMUM antichain A satisfy downSet ∩ upSet = A and downSet ∪ upSet = s (the union needs maximality: a missed element would enlarge A). These are proved unconditionally.",
       "A chain inside downSet through a' ∈ A lies entirely ≤ a' (antichain forces the witness to be a'); dually for upSet. Hence a down-set chain and an up-set chain through the same a' glue into one chain — the inductive assembly step.",
-      "The genuine difficulty (why Dilworth is absent from Mathlib and was a Coq-paper result, Singh–Natarajan arXiv:1703.06133) is the degenerate case downSet A s = A: then upSet = s and the recursion stalls; A is exactly the set of minimal elements. Dual degeneracy (A = maximal elements) is the mirror. Resolving both requires a symmetric/dual argument plus a thin-poset base case (s an antichain ⟹ singleton cover)."
+      "The genuine difficulty (why Dilworth is absent from Mathlib and was a Coq-paper result, Singh–Natarajan arXiv:1703.06133) is the degenerate case downSet A s = A: then upSet = s and the recursion stalls; A is exactly the set of minimal elements. Dual degeneracy (A = maximal elements) is the mirror. Resolving both requires a symmetric/dual argument plus a thin-poset base case (s an antichain ⟹ singleton cover).",
+      "The COVER form cannot be proved by induction directly: gluing needs the down/up sub-solutions to be PARTITIONS so each chain maps to a unique antichain element; proved partition form then forgot disjointness.",
+      "Saturation pigeonhole: a chain family of size <= |A| covering antichain A has every chain meeting A (injection a->its-chain becomes a bijection via eq_of_subset_of_card_le). This makes the gluing well-defined.",
+      "The degenerate case (downSet=s or upSet=s) is exactly when A is the all-maximal or all-minimal element set; handled by deleting one minimal-to-maximal chain {x,y}, which lowers width by 1 because every maximum antichain meets {x,y}.",
+      "Case split must be on EXISTENCE of a non-extreme maximum antichain (not on a fixed A): push_neg gives the implication form downSet!=s -> upSet=s, reassembled into the Or by by_cases."
     ],
     "builtItems": [
       "downSet / upSet definitions (Proofs/DilworthHardOQ01OQ02.lean)",
@@ -51,19 +61,21 @@
       "downSet_union_upSet : for a maximum antichain, downSet A s ∪ upSet A s = s (verified)",
       "le_of_mem_chain_downSet / ge_of_mem_chain_upSet : chain-position lemmas (verified)",
       "glue_isChain : down-set chain ∪ up-set chain through a common a' ∈ A is a chain (verified)",
-      "dilworth_chainCover : main theorem STATED, proof = sorry (Galvin induction pending)"
+      "dilworth_chainCover : main theorem STATED, proof = sorry (Galvin induction pending)",
+      "chain_meets_antichain_of_card_le (saturation pigeonhole) in Proofs/DilworthHardOQ01OQ02.lean",
+      "IsChainPartition predicate + dilworth_chainPartition (full induction) in Proofs/DilworthHardOQ01OQ02.lean",
+      "dilworth_chainCover (headline cover form, replaces former sorry) in Proofs/DilworthHardOQ01OQ02.lean"
     ],
     "mathlibGaps": [
       "Mathlib lacks Dilworth's theorem (chain cover / antichain duality).",
       "Mathlib lacks König's theorem (max matching = min vertex cover) as a directly usable statement, though Hall's theorem and matching API exist."
     ],
     "nextSteps": [
-      "Prove the 'each size-w sub-cover meets the maximum antichain in exactly one element' bijection (follows from the easy direction + pigeonhole).",
-      "Handle the degenerate case downSet A s = A by a dual (minimal-element) decomposition, with the base case 's is an antichain ⟹ cover by singletons'.",
-      "Assemble the strong induction on s.card using glue_isChain to discharge dilworth_chainCover.",
-      "When Aristotle recovers, submit DilworthHardOQ01OQ02.lean (prove_file) for the remaining sorry."
+      "Combine with the parent easy direction into a single explicit min-chain-cover = max-antichain equality statement.",
+      "Derive Konig bipartite matching theorem from the chain-cover form.",
+      "Gallery: meta.json created; consider adding annotations.json (Enricher)."
     ],
-    "progressSummary": "PROGRESS: verified the structural core of Dilworth's hard direction (down-set/up-set decomposition + gluing); main theorem stated, full Galvin induction (degenerate case) remains."
+    "progressSummary": "COMPLETE: full hard direction of Dilworth verified (0 sorries, 0 axioms). dilworth_chainPartition by strong induction (non-extreme gluing + extreme chain-removal); dilworth_chainCover follows; saturation pigeonhole chain_meets_antichain_of_card_le is the linchpin."
   },
   "knownResults": {
     "proven": [

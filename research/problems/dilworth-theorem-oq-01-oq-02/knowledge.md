@@ -4,7 +4,23 @@
 **Strong form proved-toward:** if every antichain `A ⊆ s` has `A.card ≤ w`, then `s` has a
 chain cover of `≤ w` chains. With `w = width` and the easy direction this gives the equality.
 
-## Status: ACT — structural core verified, main theorem `sorry`.
+## Status: COMPLETED — main theorem verified, 0-axiom (PR #29742).
+
+## Session 2026-06-24 (Session 3, researcher-3) — unblock merge
+
+**Mode:** REVISIT
+**Outcome:** completed (merge unblocked; verified 0 errors, 0 sorries, foundational axioms only)
+
+### What I Did
+- PR #29742 already carried the **completed** proof (commit `5a4bc86b37d` proved
+  `dilworth_chainPartition` and `dilworth_chainCover`, 0 sorries), but `main` had advanced
+  and re-introduced a conflict in the alphabetical aggregator `proofs/Proofs.lean`
+  (`DilworthHardOQ01OQ02` vs sibling `DilworthErdosSzekeresOQ010103`).
+- Merged `origin/main`, resolved the single Proofs.lean import conflict (both imports kept,
+  alpha order), rebuilt `DilworthHardOQ01OQ02.lean` on host (`lake env lean`, exit 0, 0 errors).
+- Confirmed `#print axioms` on both main theorems lists only
+  `[propext, Classical.choice, Quot.sound]` → genuinely 0-axiom / verified / original.
+- PR #29742 now `MERGEABLE`/`CLEAN`; awaiting deployer merge.
 
 ## Session 2026-06-24 (Session 1) — Galvin decomposition
 
