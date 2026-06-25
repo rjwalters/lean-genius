@@ -16,9 +16,9 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-04-03T08:27:10.084Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "",
     "blockers": [],
     "nextAction": "",
@@ -29,11 +29,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Eliminated 1 of 3 axioms: trivial_lower_bound (f(n) ≥ 2^{⌊n/2⌋}) is now a proved theorem. Also repaired ~7 pre-existing breakages so the file compiles against mathlib v4.26.0. 2 deep axioms remain (Green/Sapozhenko upper bound + precise asymptotic).",
+    "builtItems": [
+      "Proved trivial_lower_bound in Erdos748Problem.lean: U.powerset ⊆ sumFreeSubsets n ⇒ f n ≥ 2^|U| ≥ 2^{⌊n/2⌋}",
+      "Added decidableIsSumFree instance (sum-free predicate is decidable via bounded ∀∈A form)"
+    ],
+    "insights": [
+      "The trivial lower bound needs no analysis: every subset of the upper half {⌊n/2⌋+1,…,n} is sum-free (upperHalf_sumFree), giving 2^{n-⌊n/2⌋} ≥ 2^{⌊n/2⌋} distinct sum-free sets",
+      "File was broken against mathlib v4.26.0: stale Asymptotics import, .1/.2 mixups in upperHalf_sumFree and sumFree_iff, missing DecidablePred IsSumFree, le_div_iff→le_div_iff₀, orphan /-- doc comments"
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "green_upper_bound and precise_asymptotic are deep results (Green 2004, Sapozhenko 2003); formalizing them is a large project, not a single session"
+    ]
   },
   "tags": [],
   "relatedProofs": [
