@@ -44,7 +44,7 @@ import Mathlib
 
 noncomputable section
 
-open MeasureTheory ENNReal NNReal Set Filter
+open MeasureTheory ENNReal NNReal Set Filter Topology
 
 variable {α : Type*} [MeasurableSpace α] {μ : Measure α}
 
@@ -103,6 +103,7 @@ def functionalSetFn (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p 
     (hfin : μ E ≠ ⊤) : ℝ :=
   φ ((indicator_memLp hE hfin p hp hptop).toLp _)
 
+set_option maxHeartbeats 1000000 in
 /-- The functional-induced set function vanishes on null sets:
     if μ(E) = 0 then φ(1_E) = 0. This is the AC condition. -/
 theorem functionalSetFn_null (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
@@ -110,12 +111,13 @@ theorem functionalSetFn_null (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (h
     (hμE : μ E = 0) :
     functionalSetFn p hp hptop φ E hE (by simp [hμE]) = 0 := by
   unfold functionalSetFn
+  have hfin : μ E ≠ ⊤ := by simp [hμE]
   have hae : E.indicator (fun _ => (1 : ℝ)) =ᵐ[μ] (0 : α → ℝ) := by
     filter_upwards [measure_eq_zero_iff_ae_notMem.mp hμE] with x hx
     simp [indicator_apply, hx]
-  have h0 : (indicator_memLp hE (by simp [hμE]) p hp hptop).toLp _ = 0 := by
+  have h0 : (indicator_memLp hE hfin p hp hptop).toLp (E.indicator fun _ => (1 : ℝ)) = 0 := by
     rw [← MemLp.zero.toLp_zero]
-    exact MemLp.toLp_congr (indicator_memLp hE (by simp [hμE]) p hp hptop) MemLp.zero hae
+    exact MemLp.toLp_congr (indicator_memLp hE hfin p hp hptop) MemLp.zero hae
   rw [h0, map_zero]
 
 /-
@@ -351,7 +353,7 @@ theorem integrationCLM_apply (p q : ℝ≥0∞) (hp : 1 ≤ p) (hptop : p ≠ �
     Remaining sorry: `integrationCLM` construction (~40 lines of Hölder). -/
 theorem integral_representation (p q : ℝ≥0∞) (hp1 : 1 < p) (hptop : p ≠ ⊤)
     (hpq : p.toReal.HolderConjugate q.toReal)
-    [IsFiniteMeasure μ] [SigmaFinite μ]
+    [Fact (1 ≤ p)] [IsFiniteMeasure μ] [SigmaFinite μ]
     (φ : Lp ℝ p μ →L[ℝ] ℝ) (g : α → ℝ) (hg : MemLp g q μ)
     (hagree : ∀ (E : Set α) (hE : MeasurableSet E) (hfin : μ E ≠ ⊤),
       φ ((indicator_memLp hE hfin p (le_of_lt hp1) hptop).toLp _) =
@@ -431,7 +433,7 @@ The main theorem proof below assembles these pieces without sorry.
 private theorem indicator_lp_hasSum [IsFiniteMeasure μ]
     (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
-    (hf_disj : Pairwise (Disjoint on f)) :
+    (hf_disj : Pairwise (Function.onFun Disjoint f)) :
     HasSum
       (fun i => (indicator_memLp (hf_meas i) (measure_ne_top μ _) p hp hptop).toLp _)
       ((indicator_memLp (MeasurableSet.iUnion hf_meas) (measure_ne_top μ _) p hp hptop).toLp _) := by
@@ -521,7 +523,7 @@ private theorem functional_hasSum_parts [IsFiniteMeasure μ]
     (p : ℝ≥0∞) (hp : 1 ≤ p) [Fact (1 ≤ p)] (hptop : p ≠ ⊤)
     (φ : Lp ℝ p μ →L[ℝ] ℝ)
     {f : ℕ → Set α} (hf_meas : ∀ i, MeasurableSet (f i))
-    (hf_disj : Pairwise (Disjoint on f)) :
+    (hf_disj : Pairwise (Function.onFun Disjoint f)) :
     HasSum (fun i => functionalSetFn p hp hptop φ (f i) (hf_meas i) (measure_ne_top μ _))
       (functionalSetFn p hp hptop φ (⋃ i, f i) (MeasurableSet.iUnion hf_meas)
           (measure_ne_top μ _)) := by
@@ -710,7 +712,7 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
   have hphi_hn : φ (hhn_memLp.toLp _) = ∫ a, h_n a * g a ∂μ := by
     -- Step 1: For simple functions sf with MemLp, φ(sf as Lp) = ∫ sf * g
     have phi_simple_eq : ∀ (sf : SimpleFunc α ℝ) (hsf : MemLp ⇑sf p μ),
-        φ (hsf.toLp ⇑sf) = ∫ a, ↑sf a * g a ∂μ := by
+        φ (hsf.toLp ⇑sf) = ∫ a, sf a * g a ∂μ := by
       intro sf
       induction sf using SimpleFunc.induction with
       | @const c E hE =>
@@ -779,13 +781,13 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
           simp only [SimpleFunc.coe_add, Pi.add_apply]
         have hsf₁_bdd : ∀ᵐ a ∂μ, ‖(sf₁ : α → ℝ) a‖ ≤ sf₁.range.sum (fun c => ‖c‖) :=
           ae_of_all μ fun a =>
-            Finset.single_le_sum (fun c _ => norm_nonneg c) _ (sf₁.mem_range_self a)
+            Finset.single_le_sum (fun c _ => norm_nonneg c) (sf₁.mem_range_self a)
         have hsf₂_bdd : ∀ᵐ a ∂μ, ‖(sf₂ : α → ℝ) a‖ ≤ sf₂.range.sum (fun c => ‖c‖) :=
           ae_of_all μ fun a =>
-            Finset.single_le_sum (fun c _ => norm_nonneg c) _ (sf₂.mem_range_self a)
-        have hint₁ : Integrable (fun a => ↑sf₁ a * g a) μ :=
+            Finset.single_le_sum (fun c _ => norm_nonneg c) (sf₂.mem_range_self a)
+        have hint₁ : Integrable (fun a => sf₁ a * g a) μ :=
           hg_int.bdd_mul sf₁.measurable.aestronglyMeasurable hsf₁_bdd
-        have hint₂ : Integrable (fun a => ↑sf₂ a * g a) μ :=
+        have hint₂ : Integrable (fun a => sf₂ a * g a) μ :=
           hg_int.bdd_mul sf₂.measurable.aestronglyMeasurable hsf₂_bdd
         rw [h12_split, map_add, IH₁ hsf₁, IH₂ hsf₂, ← integral_add hint₁ hint₂]
         congr 1; ext a
@@ -850,20 +852,22 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     have hpw2 : ∀ a, h_n a * g_n a = |g_n a| ^ q.toReal := fun a => by
       simp only [h_n]
       have hsign : Real.sign (g_n a) * g_n a = |g_n a| := by
-        rcases lt_trichotomy (g_n a) 0 with ha | rfl | ha
-        · simp [Real.sign_neg ha, abs_of_neg ha]
-        · simp
-        · simp [Real.sign_pos ha, abs_of_pos ha]
-      rw [show Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1) * g_n a =
-          |g_n a| ^ (q.toReal - 1) * (Real.sign (g_n a) * g_n a) from by ring,
-          hsign, show |g_n a| = |g_n a| ^ (1 : ℝ) from (Real.rpow_one _).symm,
-          ← Real.rpow_add (abs_nonneg _)]
-      norm_num
+        rcases lt_trichotomy (g_n a) 0 with ha | ha | ha
+        · simp [Real.sign_of_neg ha, abs_of_neg ha]
+        · simp [ha]
+        · simp [Real.sign_of_pos ha, abs_of_pos ha]
+      have hqsum : q.toReal - 1 + 1 = q.toReal := by ring
+      calc Real.sign (g_n a) * |g_n a| ^ (q.toReal - 1) * g_n a
+          = |g_n a| ^ (q.toReal - 1) * (Real.sign (g_n a) * g_n a) := by ring
+        _ = |g_n a| ^ (q.toReal - 1) * |g_n a| ^ (1 : ℝ) := by rw [hsign, Real.rpow_one]
+        _ = |g_n a| ^ (q.toReal - 1 + 1) :=
+              (Real.rpow_add' (abs_nonneg _) (by rw [hqsum]; exact hq_pos.ne')).symm
+        _ = |g_n a| ^ q.toReal := by rw [hqsum]
     simp_rw [hpw2]
     -- Step 2: |g_n a|^q = ((‖g_n a‖₊ : ℝ≥0∞)^q).toReal
     -- Uses: ENNReal.coe_rpow_of_nonneg (coercion is ≠ ⊤), ENNReal.coe_toReal, NNReal.coe_rpow
     have hpw3 : ∀ a, |g_n a| ^ q.toReal = ((‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal).toReal := fun a => by
-      rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos), ENNReal.coe_toReal, NNReal.coe_rpow]
+      rw [← ENNReal.coe_rpow_of_nonneg _ (le_of_lt hq_pos), ENNReal.coe_toReal, NNReal.coe_rpow]
       simp [Real.norm_eq_abs]
     simp_rw [hpw3]
     -- Step 3: ∫ ((‖g_n‖₊ : ℝ≥0∞)^q).toReal = (∫⁻ (‖g_n‖₊ : ℝ≥0∞)^q).toReal
@@ -871,15 +875,16 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     have hf_meas : AEMeasurable (fun a => (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal) μ :=
       ((hg_meas.min measurable_const).max measurable_const).nnnorm
         |>.coe_nnreal_ennreal |>.pow_const q.toReal |>.aemeasurable
-    have hf_ne_top : ∀ᵐ a ∂μ, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal ≠ ⊤ :=
+    have hf_ne_top : ∀ᵐ a ∂μ, (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal < ⊤ :=
       ae_of_all μ fun a => by
-        rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]; exact ENNReal.coe_ne_top
+        rw [← ENNReal.coe_rpow_of_nonneg _ (le_of_lt hq_pos)]; exact ENNReal.coe_lt_top
     rw [integral_toReal hf_meas hf_ne_top]
     -- Step 4: (∫⁻ (‖g_n‖₊ : ℝ≥0∞)^q).toReal = (eLpNorm g_n q μ ^ q.toReal).toReal
     -- via eLpNorm_eq_lintegral_rpow_enorm + ENNReal.rpow_mul
     congr 1
     rw [eLpNorm_eq_lintegral_rpow_enorm hq_ne_zero hqne_top, ← ENNReal.rpow_mul,
         one_div, inv_mul_cancel₀ hq_pos.ne', ENNReal.rpow_one]
+    simp only [enorm_eq_nnnorm]
   -- SORRY C: the chain gives eLpNorm gₙ q μ ≤ ENNReal.ofReal ‖φ‖
   -- Step C0: setup
   have hp_pos' : 0 < p.toReal :=
@@ -907,13 +912,14 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     have hpw_real : ∀ a, |h_n a| ^ p.toReal = |g_n a| ^ q.toReal := fun a => by
       simp only [h_n]
       rcases eq_or_ne (g_n a) 0 with ha | ha
-      · simp [ha]
+      · rw [ha]
+        simp [Real.zero_rpow (ne_of_gt hp_pos'), Real.zero_rpow (ne_of_gt hq_pos)]
       · have habs_pos : 0 < |g_n a| := abs_pos.mpr ha
         have hsign1 : |Real.sign (g_n a)| = 1 := by
           rcases lt_trichotomy (g_n a) 0 with h | h | h
-          · simp [Real.sign_neg h]
+          · simp [Real.sign_of_neg h]
           · exact absurd h ha
-          · simp [Real.sign_pos h]
+          · simp [Real.sign_of_pos h]
         rw [abs_mul, hsign1, one_mul,
             abs_of_nonneg (Real.rpow_nonneg (abs_nonneg _) _),
             ← Real.rpow_mul (abs_nonneg _)]
@@ -921,8 +927,8 @@ private theorem holder_extremizer_lq_bound [IsFiniteMeasure μ] [SigmaFinite μ]
     -- Lift pointwise equality to ℝ≥0∞ via NNReal coercions
     have hpw_enn : ∀ a, (‖h_n a‖₊ : ℝ≥0∞) ^ p.toReal =
         (‖g_n a‖₊ : ℝ≥0∞) ^ q.toReal := fun a => by
-      rw [ENNReal.coe_rpow_of_nonneg (le_of_lt hp_pos'),
-          ENNReal.coe_rpow_of_nonneg (le_of_lt hq_pos)]
+      rw [← ENNReal.coe_rpow_of_nonneg _ (le_of_lt hp_pos'),
+          ← ENNReal.coe_rpow_of_nonneg _ (le_of_lt hq_pos)]
       norm_cast
       apply NNReal.coe_injective
       simp only [NNReal.coe_rpow, NNReal.coe_nnnorm, Real.norm_eq_abs]
