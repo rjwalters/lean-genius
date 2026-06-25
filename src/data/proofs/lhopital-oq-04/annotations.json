@@ -2,34 +2,37 @@
   {
     "id": "ann-leading-order",
     "proofId": "lhopital-oq-04",
-    "range": {
-      "startLine": 39,
-      "endLine": 53
-    },
+    "range": { "startLine": 39, "endLine": 53 },
     "type": "insight",
-    "title": "The Engine: f(x)/(x-a) → f'(a)",
-    "content": "tendsto_div_sub_of_hasDerivAt is the whole Taylor story in one line. The derivative of f at a IS the limit of slopes (f x - f a)/(x - a) as x → a (HasDerivAt.tendsto_slope). When f a = 0 this slope is exactly f(x)/(x-a), so f(x)/(x-a) → f'(a). This is the order-1 Taylor coefficient extracted as a limit: f(x) = f'(a)(x-a) + o(x-a), divided by (x-a)."
+    "title": "The Engine: f(x)/(x−a) → f′(a)",
+    "content": "tendsto_div_sub_of_hasDerivAt is the whole Taylor story in one line. The derivative of f at a IS the limit of slopes (f x − f a)/(x − a) as x → a (Mathlib's HasDerivAt.tendsto_slope). When f a = 0 this slope is exactly f(x)/(x−a), so f(x)/(x−a) → f′(a). This is the order-1 Taylor coefficient extracted as a limit: f(x) = f′(a)(x−a) + o(x−a), divided by (x−a). The proof just rewrites slope_def_field and substitutes f a = 0 inside the punctured-neighbourhood filter 𝓝[≠] a.",
+    "mathContext": "$f(a)=0 \\Rightarrow \\dfrac{f(x)}{x-a} = \\dfrac{f(x)-f(a)}{x-a} \\xrightarrow[x\\to a]{} f'(a)$, the slope definition of the derivative.",
+    "significance": "key",
+    "relatedConcepts": ["derivative as limit of slopes", "Taylor expansion", "little-o", "punctured neighbourhood filter"],
+    "prerequisites": ["definition of the derivative", "limits along a filter"]
   },
   {
     "id": "ann-main-rule",
     "proofId": "lhopital-oq-04",
-    "range": {
-      "startLine": 55,
-      "endLine": 80
-    },
+    "range": { "startLine": 55, "endLine": 78 },
     "type": "insight",
     "title": "Dividing Leading Terms — No Mean Value Theorem",
-    "content": "lhopital_zero_taylor takes the two leading-order limits f(x)/(x-a) → f'(a) and g(x)/(x-a) → g'(a) and divides them (Filter.Tendsto.div, valid since g'(a) ≠ 0). The bridge back to f(x)/g(x) is the identity f(x)/g(x) = (f(x)/(x-a))/(g(x)/(x-a)) for x ≠ a — the shared (x-a) Taylor factor cancels (div_div_div_cancel_right₀) — transported by Tendsto.congr'. The Cauchy Mean Value Theorem the parent uses never appears; lhopital_zero_taylor_coeff additionally names the value as the ratio of first Taylor coefficients f'(a)/1! and g'(a)/1!."
+    "content": "lhopital_zero_taylor takes the two leading-order limits f(x)/(x−a) → f′(a) and g(x)/(x−a) → g′(a) and divides them (Filter.Tendsto.div, valid since g′(a) ≠ 0). The bridge back to f(x)/g(x) is the identity f(x)/g(x) = (f(x)/(x−a))/(g(x)/(x−a)) for x ≠ a — the shared (x−a) Taylor factor cancels (div_div_div_cancel_right₀) — transported by Tendsto.congr'. The Cauchy Mean Value Theorem the parent uses never appears. lhopital_zero_taylor_coeff repackages the limit as the ratio of first Taylor coefficients f′(a)/1! and g′(a)/1!, making the order-1 reading explicit.",
+    "mathContext": "$\\dfrac{f(x)}{g(x)} = \\dfrac{f(x)/(x-a)}{g(x)/(x-a)} \\xrightarrow[x\\to a]{} \\dfrac{f'(a)}{g'(a)} = \\dfrac{f'(a)/1!}{g'(a)/1!}.$",
+    "significance": "key",
+    "relatedConcepts": ["L'Hôpital's rule", "quotient of limits", "Taylor coefficients", "Cauchy Mean Value Theorem"],
+    "prerequisites": ["limit arithmetic", "L'Hôpital 0/0 form"]
   },
   {
     "id": "ann-examples",
     "proofId": "lhopital-oq-04",
-    "range": {
-      "startLine": 83,
-      "endLine": 99
-    },
+    "range": { "startLine": 80, "endLine": 99 },
     "type": "concept",
-    "title": "sin x / x and a Vanishing Leading Term",
-    "content": "sin x / x → 1 instantiates the rule with f = sin (f'(0) = cos 0 = 1) and g = id (g'(0) = 1), giving cos 0 / 1 = 1. The second example (1 - cos x)/x → 0 shows the f'(a) = 0 case: the numerator's leading Taylor coefficient is sin 0 = 0, so the limit is 0/1 = 0 — the leading-order picture makes this immediate."
+    "title": "sin x / x → 1 and a Vanishing Leading Term",
+    "content": "sin x / x → 1 instantiates the rule with f = sin (f′(0) = cos 0 = 1) and g = id (g′(0) = 1), giving cos 0 / 1 = 1 — the classic limit underlying the derivative of sine itself, here derived without circularity from HasDerivAt.sin. The second example (1 − cos x)/x → 0 shows the f′(a) = 0 case: the numerator's leading Taylor coefficient is sin 0 = 0, so the limit is 0/1 = 0. The leading-order picture makes both immediate, where naïve substitution gives the indeterminate 0/0.",
+    "mathContext": "$\\dfrac{\\sin x}{x}\\to \\dfrac{\\cos 0}{1}=1;\\qquad \\dfrac{1-\\cos x}{x}\\to \\dfrac{\\sin 0}{1}=0.$",
+    "significance": "supporting",
+    "relatedConcepts": ["fundamental trigonometric limit", "indeterminate forms", "derivative of sine"],
+    "prerequisites": ["trigonometric derivatives", "indeterminate forms"]
   }
 ]
