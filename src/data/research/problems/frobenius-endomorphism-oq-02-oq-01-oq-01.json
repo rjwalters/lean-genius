@@ -1,0 +1,163 @@
+{
+  "slug": "frobenius-endomorphism-oq-02-oq-01-oq-01",
+  "title": "Divisor-Lattice Fixed Fields of the Frobenius",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\operatorname{fixedField}\\langle \\varphi^d \\rangle \\;=\\; \\{x : x^{p^d} = x\\} \\;\\cong\\; \\mathbb{F}_{p^d},\n\\qquad \\#\\{x : x^{p^d} = x\\} = p^d.",
+    "plain": "The parent result (`frobenius-endomorphism-oq-02-oq-01`) proved that the field fixed by the",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "frob_pow_apply: (frob^d) x = x^(p^d) for every d (iterated Frobenius)",
+      "finrank_fixedField_frob_pow: [fixedField<frob^d> : F_p] = d for d|n (Artin + tower law)",
+      "card_pow_eq_self: #{x : x^(p^d)=x} = p^d for d|n",
+      "fixedField_frob_pow_injOn_divisors: d -> fixedField<frob^d> injective on divisors of n"
+    ],
+    "open": [],
+    "goal": "For d|n=[K:F_p]: fixedField<frob^d> = {x : x^(p^d)=x} ~= F_{p^d}, with #{x : x^(p^d)=x}=p^d, generalizing the parent d=n count to the whole divisor lattice."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T23:07:30-07:00",
+    "iteration": 1,
+    "focus": "Proved and shipped: divisor-lattice fixed fields fixedField<frob^d> for all d|n.",
+    "blockers": [],
+    "nextAction": "Surjective half of the subfield<->divisor bijection (every intermediate field is some fixedField<frob^d>).",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE: verified/0-axiom/original entry shipped (12 theorems, 219 lines). Whole divisor lattice fixedField<frob^d>=F_{p^d} for d|n, generalizing parent card_frob_fixedPoints (d=n) to all d.",
+    "builtItems": [
+      "frob_pow_apply (FrobeniusEndomorphismOQ02OQ01OQ01.lean:65): (frob^d) x = x^(p^d) by induction generalizing x (pow_succ + AlgEquiv.mul_apply + frob_apply + pow_mul/pow_succ')",
+      "mem_fixedField_zpowers_frob_pow_iff (:91): x in fixedField<frob^d> <-> (frob^d)x=x via mem_fixedField_iff + zpowers->powers reduction + pow_fixed",
+      "orderOf_frob_pow (:128): orderOf(frob^d)=n/d for d|n via orderOf_pow_of_dvd + parent orderOf_frob",
+      "finrank_fixedField_frob_pow (:139): degree drop [fixedField<frob^d>:F_p]=d via finrank_fixedField_eq_card + Module.finrank_mul_finrank tower-cancel",
+      "card_fixedField_frob_pow/card_frob_pow_fixedPoints/card_pow_eq_self (:170-185): point count p^d in three guises via Module.card_eq_pow_finrank + Equiv.subtypeEquivRight",
+      "fixedField_frob_pow_injOn_divisors (:200): injectivity on divisors via Nat.pow_right_injective on p^d"
+    ],
+    "insights": [
+      "The abstract Galois power frob^d is the concrete map x->x^(p^d) (frob_pow_apply); this bridge turns every fixed-field statement into a statement about solutions of x^(p^d)=x.",
+      "The degree drop is not constructed but forced: Artin gives [K:fixedField]=#<frob^d>=n/d, the tower law cancels n/d to leave [fixedField:F_p]=d. The subfield size is a consequence of the subgroup index.",
+      "Restricting to divisors d|n is essential: for a non-divisor, <frob^d> has order n/gcd(n,d) and fixes F_{p^gcd(n,d)}; only d|n makes orderOf(frob^d)=n/d and the degree come out to d.",
+      "Injectivity of d->fixedField<frob^d> is a pure cardinality argument: distinct counts p^d (p>=2) imply distinct subfields - the forward half of the subfield<->divisor bijection."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the general Galois pieces (finrank_fixedField_eq_card, finrank_mul_finrank, card_eq_pow_finrank) but not the assembled finite-field divisor-lattice count fixedField<frob^d>=F_{p^d} / #{x:x^(p^d)=x}=p^d - this entry supplies that assembly."
+    ],
+    "nextSteps": [
+      "Prove the surjective half: every intermediate field F_p <= L <= K equals fixedField<frob^d> for d=[L:F_p], upgrading InjOn to a genuine bijection {subfields of F_{p^n}}~={divisors of n}.",
+      "Recover the lattice (not just set) isomorphism: F_{p^d}<=F_{p^e} <-> <frob^e> <= <frob^d> <-> d|e."
+    ],
+    "markdown": "# Knowledge Base: frobenius-endomorphism-oq-02-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "galois-theory",
+    "finite-fields",
+    "frobenius",
+    "fixed-field",
+    "divisor-lattice"
+  ],
+  "relatedProofs": [
+    "frobenius-endomorphism-oq-01",
+    "frobenius-endomorphism-oq-01-oq-01",
+    "frobenius-endomorphism-oq-01-oq-02",
+    "frobenius-endomorphism-oq-01-oq-02-oq-02",
+    "frobenius-endomorphism-oq-02",
+    "frobenius-endomorphism-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T06:14:37.639Z",
+  "lastUpdate": "2026-06-24T23:30:00-07:00",
+  "leanFiles": [
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ01.lean",
+      "filename": "FrobeniusEndomorphismOQ01.lean",
+      "lineCount": 102,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ01OQ01.lean",
+      "filename": "FrobeniusEndomorphismOQ01OQ01.lean",
+      "lineCount": 129,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ01OQ02.lean",
+      "filename": "FrobeniusEndomorphismOQ01OQ02.lean",
+      "lineCount": 117,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ01OQ02OQ02.lean",
+      "filename": "FrobeniusEndomorphismOQ01OQ02OQ02.lean",
+      "lineCount": 139,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ02.lean",
+      "filename": "FrobeniusEndomorphismOQ02.lean",
+      "lineCount": 124,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ02.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ02OQ01.lean",
+      "filename": "FrobeniusEndomorphismOQ02OQ01.lean",
+      "lineCount": 118,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/FrobeniusEndomorphismOQ02OQ01OQ01.lean",
+      "filename": "FrobeniusEndomorphismOQ02OQ01OQ01.lean",
+      "lineCount": 219,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FrobeniusEndomorphismOQ02OQ01OQ01.lean"
+    }
+  ],
+  "completed": true
+}
