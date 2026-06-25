@@ -1,0 +1,200 @@
+{
+  "id": "newton-inductive-step-oq-01-oq-02",
+  "title": "Maclaurin's Inequality Chain from Newton's Log-Concavity",
+  "slug": "newton-inductive-step-oq-01-oq-02",
+  "description": "Answers the parent's open question to derive the full Maclaurin chain ē₁ ≥ ē₂^{1/2} ≥ ... ≥ ēₙ^{1/n}. Gives the complete, axiom-free reduction Newton ⟹ Maclaurin for an abstract positive log-concave sequence a with a₀ = 1: log-concavity makes the consecutive ratios non-increasing, a telescopes as a product of ratios, and these combine (via Finset.prod_le_prod) to the Maclaurin chain — proved in both the polynomial form a_{k+1}^k ≤ a_k^{k+1} and the genuine radical form a_{k+1}^{1/(k+1)} ≤ a_k^{1/k} (Real.rpow). 0 axioms, 0 sorries; Newton's inequalities are the explicit hypothesis, so instantiating a := ēₖ yields the full chain once the parent's Newton inequality is completed.",
+  "meta": {
+    "author": "Formalized in Lean 4 with Mathlib",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Maclaurin%27s_inequality",
+    "date": "2026-06-24",
+    "status": "verified",
+    "tags": [
+      "inequalities",
+      "symmetric-functions",
+      "maclaurin",
+      "newton-inequality",
+      "log-concavity",
+      "advanced"
+    ],
+    "proofRepoPath": "Proofs/NewtonInductiveStepOQ01OQ02.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 179,
+    "dateAdded": "2026-06-24",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.prod_le_prod",
+        "description": "(∀ i ∈ s, 0 ≤ f i) → (∀ i ∈ s, f i ≤ g i) → ∏ f ≤ ∏ g",
+        "module": "Mathlib.Algebra.Order.BigOperators.Ring"
+      },
+      {
+        "theorem": "Finset.prod_Icc_succ_top",
+        "description": "a ≤ b+1 → ∏ i ∈ Icc a (b+1), f i = (∏ i ∈ Icc a b, f i) * f (b+1)",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.prod_const",
+        "description": "∏ _ ∈ s, c = c ^ s.card",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "div_le_div_iff₀",
+        "description": "0 < b → 0 < d → (a / b ≤ c / d ↔ a * d ≤ c * b)",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
+      },
+      {
+        "theorem": "Real.rpow_natCast",
+        "description": "x ^ (n : ℝ) = x ^ n",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNRpow"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow",
+        "description": "0 ≤ x → x ≤ y → 0 ≤ z → x ^ z ≤ y ^ z",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ],
+    "originalContributions": [
+      "ratioSeq: the consecutive-ratio sequence a k / a (k-1), with positivity",
+      "ratioSeq_step_of_logConcave / ratioSeq_antitone_of_logConcave: log-concavity ⟹ the ratios are non-increasing from index 1",
+      "prod_ratioSeq: a k telescopes as ∏_{j=1}^k (a j / a (j-1)) using a₀ = 1",
+      "lastRatio_pow_le: a k dominates the k-th power of its last ratio, via Finset.prod_le_prod over non-increasing ratios",
+      "maclaurin_pow: Maclaurin's chain in polynomial form a_{k+1}^k ≤ a_k^{k+1} (real-power-free)",
+      "maclaurin_root: Maclaurin's chain in radical form a_{k+1}^{1/(k+1)} ≤ a_k^{1/k} via Real.rpow — the chain exactly as classically stated"
+    ],
+    "assumptions": "None as axioms — the file declares 0 axioms and #print axioms shows only propext / Classical.choice / Quot.sound. The mathematical input (Newton's inequalities, i.e. log-concavity a(k-1)·a(k+1) ≤ a k², together with positivity and a₀ = 1) is an explicit hypothesis of every theorem, NOT a global axiom. The file proves the reduction Newton ⟹ Maclaurin; it does not re-prove Newton's inequalities (the parent's general k ≥ 2 case is still open with a sorry).",
+    "theoremCount": 7,
+    "definitionCount": 1
+  },
+  "overview": {
+    "historicalContext": "For nonnegative reals x₁,…,xₙ, the elementary symmetric means ēₖ = eₖ/C(n,k) interpolate between the arithmetic mean (ē₁) and the geometric mean (ēₙ^{1/n}). Newton's inequality (1707) is the log-concavity ēₖ² ≥ ēₖ₋₁·ēₖ₊₁; Maclaurin's inequality (1729) is the resulting chain ē₁ ≥ ē₂^{1/2} ≥ ⋯ ≥ ēₙ^{1/n}, a refinement of AM–GM. The standard derivation (Hardy–Littlewood–Pólya, Theorem 52) observes that log-concavity makes the ratios ēₖ/ēₖ₋₁ non-increasing, so the running geometric mean of these ratios — which equals ēₖ^{1/k} — is non-increasing. This file formalizes exactly that derivation for an abstract sequence.",
+    "problemStatement": "**Open question from NewtonInductiveStepOQ01 (openQuestions[1])**:\n\n'Derive the full Maclaurin inequality chain ē₁ ≥ ē₂^{1/2} ≥ ... ≥ ēₙ^{1/n}.'",
+    "text": "We prove the chain follows from Newton's log-concavity for any positive sequence with a₀ = 1, in both polynomial and radical (n-th root) form, with 0 axioms. Newton's inequalities themselves are the hypothesis.",
+    "proofStrategy": "Work with the consecutive ratios r k = a k / a (k-1). (1) Log-concavity a(k-1)·a(k+1) ≤ a k² cross-multiplies (div_le_div_iff₀) to r(k+1) ≤ r k, so the ratios are non-increasing (ratioSeq_antitone_of_logConcave, by induction). (2) a k telescopes: ∏_{j=1}^k r j = a k (prod_ratioSeq, induction with Finset.prod_Icc_succ_top and a₀ = 1). (3) Since each r j (j ≤ k) is ≥ r(k+1), Finset.prod_le_prod gives r(k+1)^k ≤ ∏ r j = a k (lastRatio_pow_le). (4) Writing a(k+1) = a k · r(k+1), this yields a(k+1)^k = a k^k · r(k+1)^k ≤ a k^k · a k = a k^{k+1} (maclaurin_pow). (5) Taking real (k(k+1))-th roots via Real.rpow_le_rpow converts the polynomial form to the radical form a(k+1)^{1/(k+1)} ≤ a k^{1/k} (maclaurin_root).",
+    "keyInsights": [
+      "**Log-concavity = non-increasing ratios.** The single inequality a(k-1)·a(k+1) ≤ a k² is, after cross-multiplying, exactly r(k+1) ≤ r k for the ratios r k = a k/a(k-1). The whole Maclaurin phenomenon is monotonicity of these ratios.",
+      "**Maclaurin = monotone running geometric mean.** Because a k = r₁·r₂·⋯·r k (telescoping, using a₀ = 1), ēₖ^{1/k} is the geometric mean of the first k ratios; appending a smaller ratio can only lower it. Formally this is r(k+1)^k ≤ ∏_{j≤k} r j, a Finset.prod_le_prod over a non-increasing sequence.",
+      "**The polynomial form avoids real powers.** a_{k+1}^k ≤ a_k^{k+1} (natural-number powers) is equivalent to the radical chain but needs no Real.rpow, so its proof is clean algebra; the radical form follows by one monotone rpow step.",
+      "**A reduction keeps it honest and axiom-free.** Newton's inequalities (the parent's general k ≥ 2 case is still an open sorry) enter only as an explicit hypothesis. The file is 0-axiom, 0-sorry, and the chain instantiates for the elementary symmetric means the moment Newton's inequality is completed.",
+      "**Equality is geometric.** For equal inputs the means form a geometric sequence a k = t^k, which satisfies log-concavity with equality and makes the whole chain an equality — the extremal case of Maclaurin."
+    ],
+    "prerequisites": [
+      "Newton's inequalities (log-concavity of the elementary symmetric means) — carried as a hypothesis",
+      "Finset.prod over Icc, Finset.prod_le_prod, Finset.prod_const",
+      "Real.rpow basics (rpow_natCast, rpow_le_rpow, rpow_mul) for the radical form"
+    ]
+  },
+  "sections": [
+    {
+      "id": "ratios-antitone",
+      "title": "Log-Concavity ⇒ Ratios Non-Increasing",
+      "startLine": 46,
+      "endLine": 84,
+      "summary": "ratioSeq a k = a k / a (k-1) with ratioSeq_pos. ratioSeq_step_of_logConcave: log-concavity cross-multiplies (div_le_div_iff₀) to r(k+1) ≤ r k. ratioSeq_antitone_of_logConcave: by induction, m ≤ n (1 ≤ m) gives r n ≤ r m.",
+      "mathContext": "$a(k-1)a(k+1) \\le a(k)^2 \\iff a(k+1)/a(k) \\le a(k)/a(k-1)$: the ratios decrease."
+    },
+    {
+      "id": "telescoping",
+      "title": "Telescoping Product",
+      "startLine": 86,
+      "endLine": 101,
+      "summary": "prod_ratioSeq: ∏_{j=1}^k (a j / a (j-1)) = a k, by induction with Finset.prod_Icc_succ_top and a₀ = 1 (mul_div_cancel₀).",
+      "mathContext": "$\\prod_{j=1}^k \\frac{a_j}{a_{j-1}} = a_k$ since the product telescopes and $a_0 = 1$."
+    },
+    {
+      "id": "maclaurin-poly",
+      "title": "Maclaurin's Chain — Polynomial Form",
+      "startLine": 103,
+      "endLine": 142,
+      "summary": "lastRatio_pow_le: r(k+1)^k ≤ a k, since r(k+1)^k = ∏ r(k+1) ≤ ∏ r j (Finset.prod_le_prod, each r j ≥ r(k+1)) = a k. maclaurin_pow: a(k+1)^k = a k^k·r(k+1)^k ≤ a k^k·a k = a k^{k+1}.",
+      "mathContext": "$a_{k+1}^k \\le a_k^{k+1}$, equivalent to $a_{k+1}^{1/(k+1)} \\le a_k^{1/k}$."
+    },
+    {
+      "id": "maclaurin-root",
+      "title": "Maclaurin's Chain — Radical Form",
+      "startLine": 144,
+      "endLine": 179,
+      "summary": "maclaurin_root: a(k+1)^{1/(k+1)} ≤ a k^{1/k} (Real.rpow). The polynomial form is recast with real exponents (Real.rpow_natCast) and both sides raised to the power 1/(k(k+1)) ≥ 0 (Real.rpow_le_rpow); the exponents simplify via Real.rpow_mul and field_simp.",
+      "mathContext": "$\\bar e_1 \\ge \\bar e_2^{1/2} \\ge \\bar e_3^{1/3} \\ge \\cdots$ — the chain exactly as classically stated."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "newton-inductive-step-oq-01",
+      "relationship": "extends",
+      "description": "Answers openQuestions[1] of the parent (derive the full Maclaurin chain): supplies the complete, axiom-free reduction Newton's log-concavity ⟹ Maclaurin's chain, taking Newton's inequalities as the hypothesis."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Maclaurin inequality chain is derived in full from Newton's log-concavity for an abstract positive sequence with a₀ = 1, in both polynomial form (a_{k+1}^k ≤ a_k^{k+1}) and radical form (a_{k+1}^{1/(k+1)} ≤ a_k^{1/k}). The proof is the classical one: non-increasing ratios, telescoping product, and a product comparison. Fully verified, 0 axioms, 0 sorries.",
+    "implications": "The reduction is complete and self-contained: the only input is Newton's inequalities (log-concavity), supplied as a hypothesis. Instantiating the sequence at the elementary symmetric means ēₖ turns the parent's Newton inequality into the full Maclaurin chain — so completing the parent's open k ≥ 2 case immediately yields Maclaurin for symmetric means.",
+    "openQuestions": [
+      "Discharge the parent's open Newton inequality newton_inequality_means for k ≥ 2, then instantiate a := ēₖ here to obtain the unconditional Maclaurin chain for elementary symmetric means.",
+      "Prove the equality case: the chain is an equality iff all xᵢ are equal (the sequence is geometric).",
+      "Extend to the reverse/weighted Maclaurin inequalities and the connection to power means (the full Maclaurin–power-mean hierarchy)."
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": "NewtonMaclaurinChain",
+    "lineCount": 179,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "substantiveTheoremCount": 5,
+    "definitionCount": 1,
+    "path": "Proofs/NewtonInductiveStepOQ01OQ02.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "authors": "Maclaurin, C.",
+      "title": "A second letter to Martin Folkes, Esq.; concerning the roots of equations",
+      "year": "1729",
+      "note": "Philosophical Transactions 36, 59-96. Original source of Maclaurin's inequality."
+    },
+    {
+      "authors": "Hardy, G.H., Littlewood, J.E., Pólya, G.",
+      "title": "Inequalities",
+      "year": "1952",
+      "note": "Cambridge University Press, 2nd ed. §2.22, Theorem 52: Maclaurin from Newton."
+    },
+    {
+      "authors": "Niculescu, C.P.",
+      "title": "A new look at Newton's inequalities",
+      "year": "2000",
+      "note": "J. Inequal. Pure Appl. Math. 1(2), Article 17."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "maclaurin_pow",
+      "type": "core",
+      "description": "Maclaurin's chain, polynomial form: a positive log-concave sequence with a₀=1 satisfies a_{k+1}^k ≤ a_k^{k+1} for k ≥ 1",
+      "leanType": "{a : ℕ → ℝ} → (∀ n, 0 < a n) → a 0 = 1 → (∀ k, 1 ≤ k → a (k-1) * a (k+1) ≤ a k ^ 2) → ∀ {k}, 1 ≤ k → a (k+1) ^ k ≤ a k ^ (k+1)"
+    },
+    {
+      "name": "maclaurin_root",
+      "type": "core",
+      "description": "Maclaurin's chain, radical form: a_{k+1}^{1/(k+1)} ≤ a_k^{1/k} (Real.rpow), the chain exactly as classically stated",
+      "leanType": "{a : ℕ → ℝ} → (∀ n, 0 < a n) → a 0 = 1 → (∀ k, 1 ≤ k → a (k-1) * a (k+1) ≤ a k ^ 2) → ∀ {k}, 1 ≤ k → a (k+1) ^ (1/(k+1) : ℝ) ≤ a k ^ (1/k : ℝ)"
+    },
+    {
+      "name": "ratioSeq_antitone_of_logConcave",
+      "type": "supporting",
+      "description": "Log-concavity makes the consecutive ratios a k / a (k-1) non-increasing from index 1",
+      "leanType": "{a : ℕ → ℝ} → (∀ n, 0 < a n) → (∀ k, 1 ≤ k → a (k-1) * a (k+1) ≤ a k ^ 2) → ∀ n m, 1 ≤ m → m ≤ n → ratioSeq a n ≤ ratioSeq a m"
+    },
+    {
+      "name": "prod_ratioSeq",
+      "type": "supporting",
+      "description": "Telescoping: a k = ∏_{j=1}^k (a j / a (j-1)) using a₀ = 1",
+      "leanType": "{a : ℕ → ℝ} → (∀ n, 0 < a n) → a 0 = 1 → ∀ k, ∏ j ∈ Finset.Icc 1 k, ratioSeq a j = a k"
+    }
+  ],
+  "sorries": 0
+}
