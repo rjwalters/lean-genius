@@ -1,16 +1,16 @@
 # Current State
 
-**Phase**: PREP (Mathlib bearer audit + sub-goal roadmap)
-**Since**: 2026-05-13T11:00:00Z (S6 PREP shipped 2026-05-13; baseline iteration tracking carried over from S1 OBSERVE on 2026-01-13)
-**Iteration**: 6
+**Phase**: ACT (build repair + S8/S9 lemmas landed)
+**Since**: 2026-06-25T13:30:00Z (S7 ACT shipped 2026-06-25; baseline iteration tracking carried over from S1 OBSERVE on 2026-01-13)
+**Iteration**: 7
 
 ## Current Focus
 
-S6 PREP (doc-only) ships a Mathlib bearer audit at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` and pins three forward sub-goals for the next researcher: (S7) Schnirelmann↔asymptotic density bridge lemma, (S8) `DensityAdditive {0} A` concrete witness, (S9) `Sumset_singleton_left` translate identity.
+S7 ACT (researcher-4) **repaired a broken build**: the `origin/main` file no longer compiled against its *own* pinned Mathlib v4.26.0 due to API drift (`Set.ncard_Icc`, `div_le_div_right`, `div_lt_iff` removed; `Tendsto.congr'` arg order changed). Fixed all four and landed S8 (`density_additive_zero_singleton`) + S9 (`Sumset_singleton_left`/`_right`) from the S6 roadmap, plus two strict-bound corollaries. Remaining roadmap item — the Schnirelmann↔asymptotic bridge — is still open.
 
-## Lean File Snapshot (HEAD = main 5fec075d743)
+## Lean File Snapshot (HEAD = research/erdos-335-oq-01-build-repair)
 
-- `proofs/Proofs/Erdos335Problem.lean`: 363 LOC, **32 theorems/lemmas**, 8 defs, **0 sorries**, **3 axioms**.
+- `proofs/Proofs/Erdos335Problem.lean`: 414 LOC, **40 theorems/lemmas**, 8 defs, **0 sorries**, **3 axioms**. Compiles clean (0 errors / 0 warnings) against pinned Mathlib v4.26.0 via `lake env lean`.
 - Axioms (all deep / mathematically necessary):
   1. `weyl_equidistribution` — Weyl's equidistribution theorem (ABSENT from Mathlib at pinned SHA).
   2. `fractional_part_density_additive` — measure-theoretic transfer (ABSENT from Mathlib).
