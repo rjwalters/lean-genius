@@ -1,8 +1,8 @@
 {
   "slug": "descartes-rule-oq-01-oq-01",
   "title": "Descartes Rule of Signs: Extension to Complex Roots",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Formalized multiplicity-aware conjugate root pairing (verified, 0-axiom). For p:ℝ[X] over ℂ, z and z̄ have equal root multiplicity in Polynomial.roots; non-real roots with multiplicity are even; real roots with multiplicity ≡ deg p mod 2. Gallery: descartes-rule-of-signs-oq-01-oq-01-oq-03 / Proofs/DescartesRuleOfSignsOQ01OQ01OQ03.lean.",
+    "builtItems": [
+      "rootMultiplicity_conj, count_roots_conj, roots_map_conj in Proofs/DescartesRuleOfSignsOQ01OQ01OQ03.lean",
+      "roots_filter_neg_im, nonreal_roots_card_even, realRoots_card_parity in Proofs/DescartesRuleOfSignsOQ01OQ01OQ03.lean"
+    ],
+    "insights": [
+      "Complex conjugation is a ring automorphism fixing real-coefficient polynomials, so Mathlib eq_rootMultiplicity_map gives multiplicity equality of z and z̄ with no bespoke bookkeeping.",
+      "Working at the Polynomial.roots multiset level tracks multiplicities the parent set-level pairing could not.",
+      "Upper/lower half-plane split (conj flips im sign) makes the non-real count literally twice a half-plane count, avoiding fixed-point-free involution machinery."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },

@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-drs010101oq03-overview",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-03",
+    "range": { "startLine": 1, "endLine": 47 },
+    "type": "concept",
+    "title": "Multiplicity-Aware Conjugate Pairing",
+    "content": "The parent entry proved the conjugate root theorem and the set-level pairing of non-real roots of a real polynomial, but left open the connection to Mathlib's Polynomial.roots multiset, where roots are counted with multiplicity. This file closes that gap. Writing q = p.map (algebraMap ℝ ℂ), conjugation is a ring automorphism of ℂ that fixes q because p has real coefficients.",
+    "mathContext": "The definition toC sends p : ℝ[X] to its image in ℂ[X]; everything downstream is about the multiset q.roots.",
+    "significance": "key",
+    "relatedConcepts": ["conjugate-root-theorem", "multiplicity", "polynomials", "complex-roots"],
+    "prerequisites": ["Polynomial.map", "complex conjugation as a ring automorphism"]
+  },
+  {
+    "id": "ann-drs010101oq03-core",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-03",
+    "range": { "startLine": 48, "endLine": 90 },
+    "type": "technique",
+    "title": "eq_rootMultiplicity_map Applied to Conjugation",
+    "content": "rootMultiplicity_conj is the crux: applying Mathlib's eq_rootMultiplicity_map to the injective conjugation automorphism gives rootMultiplicity z q = rootMultiplicity z̄ (q.map conj), and since q is fixed by conjugating its coefficients (toC_map_conj), the right side is rootMultiplicity z̄ q. count_roots then restates this at the level of the root multiset.",
+    "mathContext": "rootMult_z(q) = rootMult_{z̄}(q). The injectivity of conjugation is supplied by it being its own inverse (starRingEnd_self_apply).",
+    "significance": "key",
+    "relatedConcepts": ["eq_rootMultiplicity_map", "ring automorphism", "count_roots"],
+    "prerequisites": ["Polynomial.eq_rootMultiplicity_map", "Complex.conj_ofReal"]
+  },
+  {
+    "id": "ann-drs010101oq03-invariance",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-03",
+    "range": { "startLine": 91, "endLine": 116 },
+    "type": "technique",
+    "title": "Conjugation-Invariance and the Half-Plane Bijection",
+    "content": "roots_map_conj shows the multiset q.roots is invariant under conjugation (equal counts everywhere). roots_filter_neg_im then shows conjugation bijects the upper-half-plane roots onto the lower-half-plane roots, because (conj z).im = -z.im. This is the multiplicity-correct replacement for the parent's set-level pairing.",
+    "mathContext": "map conj q.roots = q.roots, and filter (im<0) q.roots = map conj (filter (0<im) q.roots).",
+    "significance": "standard",
+    "relatedConcepts": ["Multiset.map", "Multiset.filter", "Complex.conj_im"],
+    "prerequisites": ["Multiset.count_map_eq_count'", "Multiset.filter_map"]
+  },
+  {
+    "id": "ann-drs010101oq03-parity",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-01-oq-03",
+    "range": { "startLine": 117, "endLine": 147 },
+    "type": "concept",
+    "title": "Even Non-Real Count and Real-Root Parity",
+    "content": "nonreal_roots_card_even splits the non-real roots into the two open half-planes (a clean trichotomy on the imaginary part) and uses the half-plane bijection to show their total is twice a half-plane count, hence even. realRoots_card_parity then uses IsAlgClosed.card_roots_eq_natDegree (the root multiset has cardinality deg p over ℂ) to conclude that the real-root count with multiplicity is congruent to deg p modulo 2.",
+    "mathContext": "#nonreal even ⇒ #real ≡ deg p (mod 2), with all counts taken with multiplicity in q.roots.",
+    "significance": "key",
+    "relatedConcepts": ["parity", "algebraically closed fields", "root counting"],
+    "prerequisites": ["IsAlgClosed.card_roots_eq_natDegree", "Multiset.filter_add_not"]
+  }
+]
