@@ -41,6 +41,7 @@ import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorial.Basic
 import Mathlib.Data.Finset.Basic
 import Mathlib.Data.Set.Basic
+import Mathlib.Algebra.BigOperators.Group.Finset.Basic
 import Mathlib.Tactic
 import Proofs.Erdos1059OQ01
 import Proofs.Erdos1059OQ02
@@ -368,25 +369,67 @@ This decomposition holds because:
 2. Every prime ≤ n! belongs to exactly one I(l) for l < n
 3. Finset.card distributes over the disjoint union
 
-The decomposition requires substantial Finset partition machinery. We state it
-as a theorem and leave the proof as sorry (a candidate for future work).
+This decomposition is now **proved** (previously a sorry): the generic
+`count_decomp` below establishes it for any predicate excluding 0 and 1, by a
+clean one-step induction on `n` (peel off the top interval), avoiding any heavy
+partition machinery.
 -/
+
+/-- **Generic interval decomposition.**  For any (decidable) predicate `P` that
+    excludes `0` and `1`, the count of `P`-elements up to `n!` decomposes as the
+    sum over primorial levels `l < n` of the level-wise `P`-counts.
+
+    Proof by induction on `n`: the single split
+    `range (n!·(n+1)+1) = range (n!+1) ∪ Ioc (n!) ((n+1)!)` peels off exactly the
+    `n`-th interval at each step (the two pieces are disjoint and their union is
+    `range ((n+1)!+1)` since `(n+1)! ≥ n!`). -/
+theorem count_decomp (P : ℕ → Prop) [DecidablePred P]
+    (hP : ∀ x, x < 2 → ¬ P x) (n : ℕ) :
+    ((Finset.range (Nat.factorial n + 1)).filter P).card
+      = ∑ l ∈ Finset.range n,
+          ((Finset.Ioc (Nat.factorial l) (Nat.factorial (l + 1))).filter P).card := by
+  induction n with
+  | zero => simpa using hP
+  | succ m ih =>
+    have hmono : Nat.factorial m ≤ Nat.factorial (m + 1) := Nat.factorial_le (by omega)
+    have hsplit : Finset.range (Nat.factorial (m + 1) + 1)
+        = Finset.range (Nat.factorial m + 1)
+            ∪ Finset.Ioc (Nat.factorial m) (Nat.factorial (m + 1)) := by
+      ext x
+      simp only [Finset.mem_range, Finset.mem_union, Finset.mem_Ioc, Nat.lt_succ_iff]
+      omega
+    have hdisj : Disjoint (Finset.range (Nat.factorial m + 1))
+        (Finset.Ioc (Nat.factorial m) (Nat.factorial (m + 1))) := by
+      rw [Finset.disjoint_left]
+      intro x hx hx'
+      simp only [Finset.mem_range, Finset.mem_Ioc, Nat.lt_succ_iff] at hx hx'
+      omega
+    rw [Finset.sum_range_succ, ← ih, hsplit, Finset.filter_union,
+      Finset.card_union_of_disjoint
+        (hdisj.mono (Finset.filter_subset _ _) (Finset.filter_subset _ _))]
 
 /-- **Interval decomposition for prime count** (cumulative → level sum):
     π(n!) = Σ_{l=0}^{n-1} primesInLevel l.
 
-    Every prime p with 2 ≤ p ≤ n! lies in exactly one primorial interval I(l)
-    for some l with 0 ≤ l < n. The intervals are disjoint (proved in OQ-02)
-    and their union covers {2, ..., n!}. -/
+    Every prime `p` with `2 ≤ p ≤ n!` lies in exactly one primorial interval
+    `I(l)` for some `l < n`; the intervals partition `{2, …, n!}`.  Immediate from
+    `count_decomp` with `P = Prime` (no prime is `< 2`). -/
 theorem primeCount_decomposition (n : ℕ) (hn : n ≥ 1) :
     Erdos1059OQ01.primeCount (Nat.factorial n) =
-    (Finset.range n).sum primesInLevel := by sorry
+    (Finset.range n).sum primesInLevel := by
+  unfold Erdos1059OQ01.primeCount primesInLevel Erdos1059OQ02.PrimorialInterval
+  exact count_decomp (fun m => m.Prime)
+    (fun x hx => by interval_cases x <;> simp [Nat.not_prime_zero, Nat.not_prime_one]) n
 
 /-- **Interval decomposition for qualifying prime count**:
-    C(n!) = Σ_{l=0}^{n-1} qualifyingInLevel l. -/
+    C(n!) = Σ_{l=0}^{n-1} qualifyingInLevel l.  Immediate from `count_decomp`
+    with `P = Prime ∧ AFSC` (a qualifying number is prime, hence `≥ 2`). -/
 theorem qualifyingCount_decomposition (n : ℕ) (hn : n ≥ 1) :
     Erdos1059OQ01.qualifyingPrimeCount (Nat.factorial n) =
-    (Finset.range n).sum qualifyingInLevel := by sorry
+    (Finset.range n).sum qualifyingInLevel := by
+  unfold Erdos1059OQ01.qualifyingPrimeCount qualifyingInLevel Erdos1059OQ02.PrimorialInterval
+  exact count_decomp (fun m => m.Prime ∧ Erdos1059OQ01.AllFactorialSubtractionsComposite m)
+    (fun x hx => by interval_cases x <;> simp [Nat.not_prime_zero, Nat.not_prime_one]) n
 
 /-- **Density one at factorial points**: For every k, there exists N such that
     for all n ≥ N, C(n!) · (k+1) ≥ π(n!) · k.
@@ -417,13 +460,16 @@ theorem density_one_at_factorials (k : ℕ) : ∃ N : ℕ, ∀ n : ℕ, n ≥ N 
 5. levelwise_density_bound — l/(l+1) ≥ k/(k+1) for l ≥ k, applied to counts
 6. levelwise_strict_surplus — per-level surplus ≥ 1 for l ≥ max(3, k+2)
 7. density_at_levels — MAIN THEOREM: level-sum density bound, fully proved
+8. count_decomp — generic interval decomposition (induction; peel top interval)
+9. primeCount_decomposition — π(n!) = Σ primesInLevel  (now proved via count_decomp)
+10. qualifyingCount_decomposition — C(n!) = Σ qualifyingInLevel  (now proved)
+11. density_one_at_factorials — density at factorial points (now proved; combines
+    density_at_levels with the two decompositions)
 
-**Requires sorry** (Finset partition infrastructure):
-8. primeCount_decomposition — π(n!) = Σ primesInLevel
-9. qualifyingCount_decomposition — C(n!) = Σ qualifyingInLevel
-10. density_one_at_factorials — depends on 8, 9
+**This file is now sorry-free** — the previous two `sorry`s (the interval
+decompositions) are discharged by `count_decomp`.
 
-**Axioms** (2 new):
+**Axioms** (2, both disclosed sieve inputs):
 - strong_selberg_density: captures Selberg sieve's quantitative prediction
 - primes_growth_in_levels: weak PNT (p(l) ≥ l for l ≥ 3)
 
