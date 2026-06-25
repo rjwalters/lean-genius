@@ -1,0 +1,130 @@
+{
+  "slug": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+  "id": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+  "title": "Descartes Boundary Exact Count: One Sign Variation Forces Exactly One Positive Root (via IVT, sidestepping parity)",
+  "description": "Addresses the parent's open question of whether the exact positive-root count can be pinned down in the boundary cases signVariations ∈ {0,1}. The textbook route is the parity refinement (#positive roots ≡ signVariations mod 2), but that is the hard FTA-flavoured content of Descartes' Rule and is unavailable in both Mathlib and the gallery (every gallery file takes the parity as a hypothesis). The key observation here is that the boundary cases need only root EXISTENCE, not the full odd-multiplicity parity: signVariations = 0 forces zero positive roots from Descartes' bound alone, and signVariations = 1 forces exactly one positive root because the bound gives ≤ 1 while the Intermediate Value Theorem supplies ≥ 1. The IVT existence argument — deflate by the largest power of X, then cross zero between the trailing-coefficient sign at 0 and the leading-coefficient sign near +∞ — is fully machine-checked. The single combinatorial fact that one sign variation forces opposite leading/trailing signs is taken as an explicit hypothesis (it carries no analytic content), so the entry reduces the open boundary-exact-count to that one bridge plus a verified IVT core, entirely bypassing the open parity refinement. Stated over ℝ, since over ℚ the exact count is false (X²−2 has one sign variation but no rational root).",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ02.lean",
+    "tags": [
+      "algebra",
+      "polynomials",
+      "Descartes rule",
+      "intermediate value theorem",
+      "real analysis",
+      "root counting"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 192,
+    "assumptions": "None beyond Mathlib's foundational axioms (propext / Classical.choice / Quot.sound; verified by #print axioms — no native_decide, no sorryAx). The boundary case signVariations = 1 is proved CONDITIONAL on the explicit hypothesis sign(leadingCoeff) ≠ sign(trailingCoeff): this is the purely combinatorial consequence of a single sign variation (a statement about List.destutter of the coefficient sign-list) and is taken as a hypothesis rather than re-derived. All analytic content — the IVT existence of a positive root, which is what replaces the unavailable parity argument — is fully proved.",
+    "theoremCount": 3,
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.roots_countP_pos_le_signVariations",
+        "description": "Mathlib's Descartes upper bound (positive roots ≤ sign variations); supplies the ≤ 1 half of the boundary count and the entire signVariations = 0 case"
+      },
+      {
+        "theorem": "Polynomial.pow_rootMultiplicity_dvd",
+        "description": "Factoring out the largest power of X at the root 0, deflating P = Xᵐ·Q so the constant term of Q is nonzero"
+      },
+      {
+        "theorem": "Polynomial.tendsto_atTop_of_leadingCoeff_nonneg",
+        "description": "Polynomial tends to +∞ (or −∞ via the nonpos companion) with the sign of its leading coefficient; locates a far point carrying the leading sign"
+      },
+      {
+        "theorem": "intermediate_value_Icc",
+        "description": "The Intermediate Value Theorem; produces the positive root between the trailing-sign endpoint at 0 and the leading-sign endpoint at b"
+      },
+      {
+        "theorem": "Multiset.countP_pos_of_mem",
+        "description": "A positive root in the root multiset gives the ≥ 1 lower bound on the positive-root count"
+      }
+    ],
+    "definitionCount": 0
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "DescartesExactCount",
+    "lineCount": 192,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/DescartesRuleOfSignsOQ01OQ04OQ02.lean",
+    "sorries": 0
+  },
+  "overview": {
+    "problemStatement": "Can the exact number of positive roots be determined in the boundary cases signVariations ∈ {0, 1}, lifting Descartes' bound from an inequality to an equality there — given that the textbook tool, the parity refinement #positive roots ≡ signVariations (mod 2), is unavailable in Mathlib and the gallery?",
+    "historicalContext": "Descartes' Rule of Signs (La Géométrie, 1637) bounds the number of positive real roots by the number of sign changes in the coefficient sequence, and asserts the two differ by an even number — the parity refinement. Mathlib formalizes only the inequality (roots_countP_pos_le_signVariations). The parity half is the genuinely hard, fundamental-theorem-of-algebra-flavoured content: it amounts to 'a sign change of the polynomial across an interval occurs iff an odd number of roots lies inside'. Across the gallery's Descartes development, that parity is consistently assumed as a hypothesis (Even (signVariations + positive roots)) rather than proved. The parent OQ-01-OQ-04 made the sign-variation count computable over ℚ and explicitly asked whether the parity refinement lifts to a computable exact count when the count is 0 or 1. This entry answers the structural part of that question without the parity, by recognizing that the boundary cases need only root existence.",
+    "keyInsights": [
+      "The boundary cases of Descartes' Rule do not need the full parity refinement — they need only EXISTENCE of one positive root. signVariations = 0 gives 0 positive roots from the upper bound directly; signVariations = 1 gives exactly one because the bound forces ≤ 1 and one positive root must exist.",
+      "Existence of a positive root follows from the Intermediate Value Theorem the moment the leading and trailing coefficients have opposite signs: the polynomial carries the trailing sign near 0 and the leading sign near +∞, so it crosses zero in (0, ∞).",
+      "To handle a vanishing constant term cleanly, deflate by the largest power of X: P = Xᵐ·Q with Q.eval 0 = trailingCoeff ≠ 0 and Q.leadingCoeff = P.leadingCoeff. Positive roots of P in (0,∞) coincide with those of Q, and the IVT applies to Q on [0, b].",
+      "The opposite-sign condition itself excludes the degenerate monomial case: a monomial has equal leading and trailing coefficients (same sign), so the hypothesis sign(leadingCoeff) ≠ sign(trailingCoeff) forces the deflated polynomial to have positive degree, which is what makes the ±∞ asymptotics apply.",
+      "The statement is genuinely real (not rational): over ℚ it is false, since X² − 2 has one sign variation but no rational positive root. The exact count is recovered from the completeness of ℝ through the IVT — completeness is doing the work that parity would otherwise do.",
+      "What remains to an unconditional theorem is purely combinatorial: signVariations = 1 ⟹ sign(leadingCoeff) ≠ sign(trailingCoeff), a fact about List.destutter of the coefficient sign-list with no analytic or FTA content. Isolating it as a hypothesis keeps the analytic core — the actual replacement for the missing parity — fully verified."
+    ],
+    "proofStrategy": "(1) no_pos_roots_of_signVariations_zero: signVariations = 0 gives positive roots ≤ 0 from Mathlib's bound, hence = 0. (2) exists_pos_root_of_sign_opposition: given sign(leadingCoeff) ≠ sign(trailingCoeff), factor P = Xᵐ·Q via pow_rootMultiplicity_dvd; show Q.eval 0 = trailingCoeff ≠ 0 (maximality of root multiplicity), Q.leadingCoeff = P.leadingCoeff, and that Q has positive degree (else P is a monomial with equal-sign leading/trailing coefficients). Convert the sign opposition to strict inequalities, use tendsto_atTop/atBot_of_leadingCoeff to find b > 0 carrying the leading sign, and apply intermediate_value_Icc/Icc' to get a root of Q in (0, b); transport it to P. (3) exactly_one_pos_root_of_sign_opposition: combine the ≤ 1 bound with the ≥ 1 existence and finish by omega.",
+    "prerequisites": [
+      "Polynomial.roots_countP_pos_le_signVariations (Mathlib's Descartes upper bound)",
+      "Polynomial.pow_rootMultiplicity_dvd and rootMultiplicity_le_iff (deflation by the largest power of X)",
+      "Polynomial.tendsto_atTop_of_leadingCoeff_nonneg / tendsto_atBot_of_leadingCoeff_nonpos (sign at ±∞)",
+      "intermediate_value_Icc / intermediate_value_Icc' (the IVT on closed intervals)",
+      "SignType.sign and sign_eq_one_iff / sign_eq_neg_one_iff (sign opposition ⟷ strict inequalities)"
+    ]
+  },
+  "sections": [
+    {
+      "id": "module-header",
+      "title": "Module: Boundary Exact Count via IVT",
+      "summary": "Module docstring framing the boundary cases of Descartes' Rule, why the parity refinement is unavailable (hard FTA content, only ever assumed in the gallery), and how root existence — not parity — settles signVariations ∈ {0,1}. Notes the ℝ-only scope (X²−2 counterexample over ℚ)."
+    },
+    {
+      "id": "zero-case",
+      "title": "Part 1: Zero Sign Variations ⟹ No Positive Roots",
+      "summary": "no_pos_roots_of_signVariations_zero: from Mathlib's Descartes bound, signVariations = 0 forces the positive-root count to 0. No parity, no analysis."
+    },
+    {
+      "id": "ivt-existence",
+      "title": "Part 2: Opposite Leading/Trailing Signs Force a Positive Root (IVT)",
+      "summary": "exists_pos_root_of_sign_opposition: the analytic heart. Deflate P = Xᵐ·Q (largest power of X), establish Q.eval 0 = trailingCoeff ≠ 0, Q.leadingCoeff = P.leadingCoeff, and positive degree of Q. Use the ±∞ asymptotics to find a far point carrying the leading sign, then the Intermediate Value Theorem to cross zero in (0, ∞)."
+    },
+    {
+      "id": "boundary-count",
+      "title": "Part 3: One Sign Variation ⟹ Exactly One Positive Root",
+      "summary": "exactly_one_pos_root_of_sign_opposition: combine Descartes' upper bound (≤ 1) with the IVT existence (≥ 1) to pin the count at exactly 1, conditional on the combinatorial sign opposition. No parity refinement used."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "descartes-rule-of-signs-oq-01-oq-04",
+      "relationship": "extends",
+      "description": "Answers the parent's open question on whether the exact count can be recovered in the boundary cases signVarList ∈ {0,1}; does so via IVT existence rather than the (unavailable) parity refinement"
+    },
+    {
+      "targetId": "descartes-rule-of-signs-oq-01-oq-02",
+      "relationship": "related",
+      "description": "Sibling parity-arithmetic file: it assembles the exact count FROM Even(signVariations + positive roots); this entry instead avoids the parity hypothesis by using root existence in the boundary cases"
+    },
+    {
+      "targetId": "descartes-rule-of-signs",
+      "relationship": "foundational",
+      "description": "The classical Descartes Rule of Signs at the root of the OQ chain"
+    }
+  ],
+  "conclusion": {
+    "summary": "In the boundary cases the exact positive-root count is recovered without the parity refinement: signVariations = 0 gives 0 roots from Descartes' bound, and signVariations = 1 gives exactly one root from the bound (≤ 1) together with the Intermediate Value Theorem (≥ 1). The IVT existence argument — deflate by Xᵐ, then cross zero between the trailing sign at 0 and the leading sign at +∞ — is fully machine-checked with 0 sorries and 0 axioms. The only non-analytic input, that one sign variation forces opposite leading/trailing signs, is taken as an explicit combinatorial hypothesis.",
+    "implications": "Shows the boundary cases of Descartes' Rule are strictly easier than the general parity refinement: they require only existence of a sign-change root, a completeness/IVT phenomenon, not the odd-multiplicity FTA argument the gallery has consistently left open. The deflate-then-IVT pattern (P = Xᵐ·Q with nonzero constant term, sign at 0 vs sign at +∞) is reusable for other sign-change root-existence facts. Reduces the open unconditional boundary count to a single, analysis-free combinatorial lemma about List.destutter.",
+    "openQuestions": [
+      "Prove the combinatorial bridge signVariations P = 1 ⟹ sign(leadingCoeff) ≠ sign(trailingCoeff) (the destuttered nonzero-sign list has length 2, so its endpoints differ), making exactly_one_pos_root unconditional.",
+      "Generalize the existence argument from sign-change endpoints to an arbitrary real-closed field, replacing the IVT with the order-completeness available there.",
+      "Combine with a Sturm-style oddness count to extend the exact count beyond the boundary cases signVariations ∈ {0,1}."
+    ]
+  },
+  "sorries": 0
+}

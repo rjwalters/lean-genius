@@ -1,0 +1,57 @@
+[
+  {
+    "id": "ann-descartes-oq010402-zero-case",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+    "range": { "startLine": 69, "endLine": 73 },
+    "type": "concept",
+    "title": "Zero sign variations ⟹ no positive roots",
+    "content": "no_pos_roots_of_signVariations_zero settles the first boundary case directly from Mathlib's Descartes bound roots_countP_pos_le_signVariations: if signVariations P = 0 then the positive-root count is ≤ 0, hence = 0. No parity refinement and no analysis are needed — the upper bound alone is decisive at zero.",
+    "mathContext": "$\\#\\{x>0 : P(x)=0\\} \\le \\operatorname{signVariations}(P) = 0$, so the count is $0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Descartes rule", "sign variations", "root counting"]
+  },
+  {
+    "id": "ann-descartes-oq010402-deflation",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+    "range": { "startLine": 81, "endLine": 117 },
+    "type": "insight",
+    "title": "Deflating by the largest power of X",
+    "content": "To make the Intermediate Value Theorem applicable even when the constant term vanishes, the polynomial is deflated as P = Xᵐ·Q with m = rootMultiplicity 0 P (pow_rootMultiplicity_dvd). Maximality of the root multiplicity (rootMultiplicity_le_iff) forces Q.eval 0 = trailingCoeff ≠ 0, while leadingCoeff is unchanged (leadingCoeff_mul, leadingCoeff_X_pow) and trailingCoeff P is identified with Q.eval 0 via natTrailingDegree bookkeeping. Positive roots of P in (0,∞) coincide with those of Q, since Xᵐ has its only root at 0.",
+    "mathContext": "Write $P = X^m Q$ with $Q(0)\\neq 0$; then $\\operatorname{sign}P(\\text{near }0^+) = \\operatorname{sign}Q(0) = \\operatorname{sign}(\\text{trailingCoeff})$.",
+    "significance": "key",
+    "relatedConcepts": ["root multiplicity", "trailing coefficient", "polynomial deflation"]
+  },
+  {
+    "id": "ann-descartes-oq010402-monomial-excluded",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+    "range": { "startLine": 118, "endLine": 130 },
+    "type": "insight",
+    "title": "Sign opposition excludes the monomial case",
+    "content": "The deflated Q must have positive degree for the ±∞ asymptotics to apply. If Q were constant, then P = c·Xᵐ is a monomial whose leading and trailing coefficients coincide (both c), giving equal signs — contradicting the hypothesis sign(leadingCoeff) ≠ sign(trailingCoeff). Thus the opposite-sign hypothesis is exactly what rules out the degenerate monomial and guarantees 0 < degree Q.",
+    "mathContext": "A monomial $cX^m$ has $\\operatorname{leadingCoeff} = \\operatorname{trailingCoeff} = c$, so opposite signs force $\\deg Q > 0$.",
+    "significance": "supporting",
+    "relatedConcepts": ["monomial", "leading coefficient", "degree"]
+  },
+  {
+    "id": "ann-descartes-oq010402-ivt",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+    "range": { "startLine": 134, "endLine": 165 },
+    "type": "insight",
+    "title": "Intermediate Value Theorem supplies the positive root",
+    "content": "With opposite signs in hand, the proof splits on the sign of the leading coefficient. The ±∞ asymptotics (tendsto_atTop_of_leadingCoeff_nonneg / tendsto_atBot_of_leadingCoeff_nonpos) produce a point b > 0 where Q.eval b carries the leading sign, while Q.eval 0 carries the opposite trailing sign. intermediate_value_Icc (resp. its primed variant) then yields c ∈ [0, b] with Q.eval c = 0; since Q.eval 0 ≠ 0, the root c is strictly positive. This existence-by-IVT is precisely what substitutes for the unavailable parity refinement in the boundary case.",
+    "mathContext": "$Q(0)$ and $Q(b)$ have opposite signs $\\Rightarrow \\exists\\, c\\in(0,b),\\ Q(c)=0$, hence $P(c)=c^m Q(c)=0$.",
+    "significance": "key",
+    "relatedConcepts": ["intermediate value theorem", "completeness of ℝ", "polynomial asymptotics"]
+  },
+  {
+    "id": "ann-descartes-oq010402-boundary-count",
+    "proofId": "descartes-rule-of-signs-oq-01-oq-04-oq-02",
+    "range": { "startLine": 175, "endLine": 188 },
+    "type": "concept",
+    "title": "One sign variation ⟹ exactly one positive root",
+    "content": "exactly_one_pos_root_of_sign_opposition assembles the boundary count: Descartes' bound gives ≤ 1, the IVT existence gives ≥ 1 (a positive root lies in the root multiset, so countP_pos_of_mem), and omega closes it at exactly 1. The only non-analytic input is the combinatorial hypothesis sign(leadingCoeff) ≠ sign(trailingCoeff) — the consequence of a single sign variation — so the open parity refinement is entirely bypassed.",
+    "mathContext": "$\\#\\{x>0:P(x)=0\\} \\le 1$ (Descartes) and $\\ge 1$ (IVT) $\\Rightarrow\\ = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Descartes rule", "boundary case", "root counting"]
+  }
+]
