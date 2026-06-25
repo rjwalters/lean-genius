@@ -1,0 +1,145 @@
+{
+  "id": "mean-value-theorem-oq-04-oq-03",
+  "title": "Trapezoidal Rule Error Bound via the Peano Kernel",
+  "slug": "mean-value-theorem-oq-04-oq-03",
+  "description": "For a C² function f on ℝ, the error of the trapezoidal quadrature rule T(a,b) = (b-a)/2·(f a + f b) as an approximation to ∫ₐᵇ f is given exactly by an integral against the Peano kernel K(x) = (x-a)(x-b)/2: namely ∫ₐᵇ K(x)·f''(x) dx = ∫ₐᵇ f − T(a,b). The identity is obtained by integrating the kernel integral by parts twice; the kernel vanishes at both endpoints and its derivative is the centred linear factor, so the two boundary terms peel off exactly the quadrature weights. No mean value theorem and no intermediate ξ is needed — it is an exact equality, the starting point of every quantitative trapezoidal bound. Two sign consequences follow immediately from K ≤ 0 on [a,b]: convex f (f'' ≥ 0) is overestimated by the trapezoid rule, concave f underestimated. This answers the parent FTC-via-MVT entry's open question on whether Mathlib's intervalIntegral framework supports a verified trapezoidal error analysis; Mathlib has integration by parts but no trapezoidal rule error identity.",
+  "meta": {
+    "author": "Peano kernel method (classical); formalized in Lean 4 (Mathlib)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/MeanValueTheoremOQ04OQ03.lean",
+    "tags": [
+      "calculus",
+      "numerical-analysis",
+      "quadrature",
+      "trapezoidal-rule",
+      "peano-kernel",
+      "integration-by-parts",
+      "mean-value-theorem",
+      "analysis",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 159,
+    "assumptions": "None. Fully machine-checked from Mathlib with 0 sorries and 0 axioms beyond Lean's foundational propext / Classical.choice / Quot.sound (which all Mathlib developments use). #print axioms on trapezoidal_peano_kernel, trapezoid_overestimates_of_convex and trapezoid_underestimates_of_concave reports exactly these three. The hypotheses are a global C² assumption on f (twice differentiable on all of ℝ with continuous second derivative), stated as ∀ x, HasDerivAt f (f' x) x, ∀ x, HasDerivAt f' (f'' x) x, Continuous f''; the two sign corollaries additionally assume a ≤ b and a one-sided bound on f'' over Set.Icc a b. The exact identity is proved from intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt (Mathlib integration by parts) applied twice.",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Trapezoidal_rule#Error_analysis",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 7,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The trapezoidal rule approximates the integral of f over [a,b] by the area of the trapezoid through (a, f a) and (b, f b), namely T(a,b) = (b-a)/2·(f a + f b). Quantifying its error is the prototypical problem of numerical quadrature. The sharp classical statement, ∫ₐᵇ f − T(a,b) = −(b-a)³/12·f''(ξ) for some ξ ∈ (a,b), follows from the mean value theorem for integrals, but its more fundamental and exact form is the Peano kernel representation: the error equals the integral of f'' against the kernel K(x) = (x-a)(x-b)/2. Giuseppe Peano's kernel theorem (1913) expresses the remainder of any linear quadrature or interpolation functional that annihilates polynomials up to a fixed degree as an integral of a derivative against a fixed, problem-independent kernel; the trapezoidal rule, which is exact on linear functions, is its first nontrivial instance. The kernel form is the foundation of every quantitative trapezoidal bound, of the composite (multi-panel) error analysis, and of the Euler–Maclaurin formula, of which the trapezoidal correction is the first term.",
+    "problemStatement": "Let f : ℝ → ℝ be twice continuously differentiable, with f' its derivative and f'' its continuous second derivative. Prove the exact Peano-kernel error identity for the trapezoidal rule: ∫ₐᵇ ((x-a)(x-b)/2)·f''(x) dx = ∫ₐᵇ f(x) dx − (b-a)/2·(f a + f b). Deduce that when a ≤ b and f'' ≥ 0 on [a,b] (f convex) the trapezoidal estimate overestimates the integral, ∫ₐᵇ f ≤ (b-a)/2·(f a + f b), and the reverse when f'' ≤ 0 (f concave).",
+    "text": "The trapezoidal rule error ∫ₐᵇ f − (b-a)/2·(f a + f b) equals ∫ₐᵇ K(x)·f''(x) dx where K(x) = (x-a)(x-b)/2 is the Peano kernel. The proof integrates by parts twice; the boundary terms vanish at the right places and produce the quadrature weights. Since K ≤ 0 on [a,b], convex functions are overestimated and concave functions underestimated.",
+    "proofStrategy": "The identity is two integrations by parts, carried out on the kernel integral ∫ₐᵇ K(x)·f''(x) dx with K(x) = (x-a)(x-b)/2. (1) hasDerivAt_kernel and hasDerivAt_kernelDeriv establish the derivative chain: K'(x) = (2x-a-b)/2 and K''(x) = 1, both by elementary HasDerivAt arithmetic on the polynomial factors. (2) First integration by parts (Mathlib's intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt, with u = K, v' = f''): ∫ K·f'' = K(b)·f'(b) − K(a)·f'(a) − ∫ K'·f'. The boundary terms vanish because K(a) = (a-a)(a-b)/2 = 0 and K(b) = (b-a)(b-b)/2 = 0, so ∫ K·f'' = −∫ K'·f'. (3) Second integration by parts (u = K', v' = f'): ∫ K'·f' = K'(b)·f(b) − K'(a)·f(a) − ∫ 1·f, with K'(b) = (b-a)/2 and K'(a) = (a-b)/2 = −(b-a)/2. Substituting and simplifying with ring gives ∫ K·f'' = ∫ f − (b-a)/2·(f a + f b), the claimed identity. The regularity side conditions (ContinuousOn on the closed interval, IntervalIntegrable of the derivative factors) are immediate from the global C² hypothesis: f, f' are continuous because differentiable everywhere, f'' is continuous by assumption, and the polynomial kernel factors are continuous, hence all are interval integrable. (4) kernel_nonpos shows K ≤ 0 on [a,b] (product of a nonnegative and a nonpositive factor). Feeding this to intervalIntegral.integral_nonneg gives the sign of the kernel integral, which the identity transports to the sign of the error, yielding trapezoid_overestimates_of_convex (f'' ≥ 0 ⟹ K·f'' ≤ 0 ⟹ error ≤ 0) and trapezoid_underestimates_of_concave (f'' ≤ 0 ⟹ K·f'' ≥ 0 ⟹ error ≥ 0).",
+    "keyInsights": [
+      "**The error is an exact integral, not an existence statement.** The familiar textbook form ∫ₐᵇ f − T = −(b-a)³/12·f''(ξ) hides an intermediate ξ and requires the mean value theorem. The Peano-kernel form ∫ₐᵇ K·f'' is an exact equality with no ξ: it is the genuine remainder functional, and every quantitative bound (the (b-a)³/12 constant, composite-rule bounds, asymptotic Euler–Maclaurin corrections) is recovered from it by estimating ∫|K|. Proving the exact form is both stronger and structurally cleaner than the ξ-form.",
+      "**The kernel vanishing at the endpoints is what produces the quadrature weights.** Both integrations by parts succeed precisely because the relevant boundary factors are zero or evaluate to ±(b-a)/2: K(a) = K(b) = 0 kills the first boundary term entirely, and K'(a) = −(b-a)/2, K'(b) = (b-a)/2 are exactly (the negatives of) the trapezoidal weights. The algebra of the trapezoid rule is encoded in the boundary values of the kernel and its derivative; the interior integral against f'' is the leftover error.",
+      "**K ≤ 0 on [a,b] forces the convexity sign of the error.** Because K(x) = (x-a)(x-b)/2 ≤ 0 throughout [a,b] (one factor ≥ 0, the other ≤ 0), the sign of the kernel integral is opposite to the sign of f''. A convex integrand (f'' ≥ 0) therefore has nonpositive error, i.e. the trapezoid rule overestimates — the precise, quantitative refinement of the elementary picture that a chord lies above the graph of a convex function. The concave case is the mirror image.",
+      "**A global C² hypothesis trivialises every regularity obligation.** Stating the hypotheses as differentiability everywhere on ℝ (rather than only on uIcc a b) makes continuity, interval-integrability, and the open-interval HasDerivAt requirements of Mathlib's integration-by-parts lemma immediate, isolating the genuine mathematical content — the two integrations by parts and the boundary cancellations — from analytic bookkeeping. The identity itself never uses a ≤ b; only the sign corollaries do."
+    ],
+    "prerequisites": [
+      "Interval integrals and the Mathlib intervalIntegral framework",
+      "Integration by parts intervalIntegral.integral_mul_deriv_eq_deriv_mul_of_hasDerivAt",
+      "HasDerivAt arithmetic for polynomial functions",
+      "Sign of an interval integral intervalIntegral.integral_nonneg",
+      "Peano's kernel theorem for linear functionals annihilating low-degree polynomials"
+    ]
+  },
+  "mainTheorems": [
+    {
+      "name": "trapezoidal_peano_kernel",
+      "type": "theorem",
+      "description": "The exact Peano-kernel error identity for the trapezoidal rule: for globally C² f, ∫ₐᵇ ((x-a)(x-b)/2)·f''(x) dx = ∫ₐᵇ f(x) dx − (b-a)/2·(f a + f b). Proved by two integrations by parts with the boundary terms cancelling at the endpoints."
+    },
+    {
+      "name": "trapezoid_overestimates_of_convex",
+      "type": "theorem",
+      "description": "If a ≤ b and f'' ≥ 0 on [a,b] (f convex), the trapezoidal estimate is at least the true integral: ∫ₐᵇ f ≤ (b-a)/2·(f a + f b). Follows from the identity and K ≤ 0 on [a,b]."
+    },
+    {
+      "name": "trapezoid_underestimates_of_concave",
+      "type": "theorem",
+      "description": "If a ≤ b and f'' ≤ 0 on [a,b] (f concave), the trapezoidal estimate is at most the true integral: (b-a)/2·(f a + f b) ≤ ∫ₐᵇ f. The concave mirror of the convex over-estimate."
+    },
+    {
+      "name": "hasDerivAt_kernel",
+      "type": "lemma",
+      "description": "The Peano kernel K(x) = (x-a)(x-b)/2 has derivative K'(x) = (2x-a-b)/2 at every point, by elementary HasDerivAt arithmetic."
+    },
+    {
+      "name": "hasDerivAt_kernelDeriv",
+      "type": "lemma",
+      "description": "The centred linear factor (2x-a-b)/2 has constant derivative 1, the second-derivative input to the kernel construction."
+    },
+    {
+      "name": "kernel_nonpos",
+      "type": "lemma",
+      "description": "On [a,b] the Peano kernel K(x) = (x-a)(x-b)/2 is nonpositive, the geometric fact behind the convexity sign of the error."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Peano, Giuseppe",
+      "title": "Resto nelle formule di quadratura espresso con un integrale definito",
+      "year": "1913",
+      "venue": "Atti della Reale Accademia dei Lincei, Rendiconti (5) 22, 562–569",
+      "note": "Original source of the kernel representation of quadrature remainders; the trapezoidal rule is its first nontrivial instance."
+    },
+    {
+      "authors": "Davis, Philip J.; Rabinowitz, Philip",
+      "title": "Methods of Numerical Integration",
+      "year": "1984",
+      "venue": "Academic Press, 2nd ed.",
+      "note": "Standard modern treatment of the Peano kernel theorem and trapezoidal/Simpson error analysis."
+    },
+    {
+      "authors": "Atkinson, Kendall E.",
+      "title": "An Introduction to Numerical Analysis",
+      "year": "1989",
+      "venue": "Wiley, 2nd ed.",
+      "note": "Develops the trapezoidal rule error, the composite rule, and the Euler–Maclaurin connection."
+    }
+  ],
+  "conclusion": {
+    "summary": "The trapezoidal rule error analysis is fully verified via its Peano-kernel form: 7 theorems/lemmas, 0 definitions, 0 axioms, 0 sorries. For a C² function f, the quadrature error ∫ₐᵇ f − (b-a)/2·(f a + f b) equals exactly the integral of f'' against the kernel K(x) = (x-a)(x-b)/2 (trapezoidal_peano_kernel), proved by integrating by parts twice with the boundary terms cancelling at the endpoints. Because K ≤ 0 on [a,b], convex functions are overestimated (trapezoid_overestimates_of_convex) and concave functions underestimated (trapezoid_underestimates_of_concave) by the trapezoid rule. This answers the parent FTC-via-MVT entry's open question on whether Mathlib's intervalIntegral framework supports a verified trapezoidal error analysis.",
+    "implications": "The exact kernel identity is the foundation from which every quantitative trapezoidal estimate is derived: the classical |error| ≤ (b-a)³/12·sup|f''| bound follows by estimating ∫|K| = (b-a)³/12, the composite-rule O(h²) bound follows by summing over panels, and the first Euler–Maclaurin correction term is the same kernel integral. The proof also exhibits the canonical template for quadrature-error formalization — encode the rule's weights in the boundary values of a polynomial kernel, integrate by parts down to the controlling derivative, and read off the sign from the kernel — which transfers directly to Simpson's rule (a degree-3 Peano kernel) and to higher Newton–Cotes formulas.",
+    "openQuestions": [
+      "Derive the quantitative bound |∫ₐᵇ f − (b-a)/2·(f a + f b)| ≤ (b-a)³/12·M from the kernel identity, by computing ∫ₐᵇ |K| = (b-a)³/12 and applying it to a sup bound |f''| ≤ M on [a,b].",
+      "Formalize the composite trapezoidal rule on a uniform partition and sum the per-panel kernel identities to obtain the global O(h²) error, the form actually used in numerical practice.",
+      "Carry the same Peano-kernel template to Simpson's rule: a degree-3 kernel that annihilates cubics yields the exact ∫ₐᵇ f − Simpson(f) = ∫ₐᵇ K₄·f⁽⁴⁾ identity and the O(h⁴) bound, the OQ-04 open question's Simpson half."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "mean-value-theorem-oq-04",
+      "relationship": "extends",
+      "description": "The parent entry (Fundamental Theorem of Calculus via MVT structure) asks in its open questions whether Mathlib's intervalIntegral framework supports a verified trapezoidal/Simpson quadrature error analysis with O(h²)/O(h⁴) bounds. This entry answers the trapezoidal half by establishing the exact Peano-kernel error identity, the foundation of the O(h²) bound."
+    },
+    {
+      "targetId": "mean-value-theorem",
+      "relationship": "related",
+      "description": "The ordinary Mean Value Theorem underlies the classical ξ-form of the trapezoidal error, ∫ₐᵇ f − T = −(b-a)³/12·f''(ξ). The Peano-kernel identity proved here is the exact, ξ-free statement from which that form is recovered via the mean value theorem for integrals applied to the sign-definite kernel."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "intervalIntegral",
+      "MeasureTheory",
+      "Set"
+    ],
+    "namespace": "TrapezoidalPeanoKernel",
+    "lineCount": 159,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 0,
+    "path": "Proofs/MeanValueTheoremOQ04OQ03.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
