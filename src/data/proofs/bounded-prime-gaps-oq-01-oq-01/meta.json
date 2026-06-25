@@ -1,0 +1,118 @@
+{
+  "id": "bounded-prime-gaps-oq-01-oq-01",
+  "title": "Bounded Prime Gaps: The Gap-Sieve Axiom Is Redundant (Density-to-Gap Reduction)",
+  "slug": "bounded-prime-gaps-oq-01-oq-01",
+  "description": "Shows that the two gap-sieve axioms of the BoundedPrimeGaps formalization (maynard_tao_sieve and maynard_tao_sieve_eh) are NOT independent assumptions: their conclusion follows by a purely elementary argument from the Maynard-Tao density statement alone. The reduction from 'at least two primes among {n+h : h in H} for a diameter-D tuple, infinitely often' to 'infinitely many consecutive prime gaps <= D' uses no sieve weights, no Bombieri-Vinogradov, and not even admissibility - only the diameter bound. The headline theorem density_two_implies_bounded_gaps reproduces the eliminated axioms' exact conclusion shape from a MaynardTaoDensity H 2 hypothesis, so the formalization's irreducible sieve input is a single density statement, not three. Fully machine-checked, 0 axioms (only foundational propext/Classical.choice/Quot.sound).",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BoundedPrimeGapsOQ01OQ01.lean",
+    "tags": [
+      "number-theory",
+      "prime-gaps",
+      "sieve-theory",
+      "admissible-tuples",
+      "axiom-elimination",
+      "maynard-tao"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 207,
+    "theoremCount": 5,
+    "definitionCount": 4,
+    "assumptions": "None. The headline results are unconditional implications: they take a MaynardTaoDensity hypothesis as an explicit antecedent rather than asserting it. #print axioms reports only the foundational propext, Classical.choice, Quot.sound (no sorryAx, no Lean.ofReduceBool / native_decide).",
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.nth_count",
+        "description": "nth p (count p n) = n for a prime n: identifies the index of a prime as its prime-counting value",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.count_nth_of_infinite",
+        "description": "count p (nth p n) = n for an infinite predicate: used to force the gap index past N",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.nth_monotone",
+        "description": "Monotonicity of Nat.nth for an infinite predicate: bounds the next prime above p by q",
+        "module": "Mathlib.Data.Nat.Nth"
+      },
+      {
+        "theorem": "Nat.count_monotone",
+        "description": "Monotonicity of the prime-counting function, used both to push the index past N and to bound count(p+1)",
+        "module": "Mathlib.Data.Nat.Count"
+      },
+      {
+        "theorem": "Nat.infinite_setOf_prime",
+        "description": "Infinitude of the primes, the hypothesis for the Nat.nth/Nat.count bridge lemmas",
+        "module": "Mathlib.NumberTheory.PrimeCounting"
+      },
+      {
+        "theorem": "Finset.one_lt_card",
+        "description": "Extracts two distinct elements from a Finset of cardinality > 1 (the two nearby primes)",
+        "module": "Mathlib.Data.Finset.Card"
+      }
+    ],
+    "originalContributions": [
+      "gap_from_two_primes: the arithmetic core. From two primes p = n+x < q = n+y with y <= D, the next prime after p (nthPrime (count p + 1)) cannot exceed q, so the consecutive gap primeGap(count p) <= q - p <= D; pushing the shift past nthPrime N forces the index >= N.",
+      "density_two_implies_bounded_gaps: the headline reduction. MaynardTaoDensity H 2 together with a diameter bound (forall h in H, h <= D) implies forall N, exists n >= N, primeGap n <= D - the EXACT conclusion of the eliminated axioms maynard_tao_sieve / maynard_tao_sieve_eh.",
+      "sieve_conclusion_from_density and sieve_eh_conclusion_from_density: the reduction repackaged in the literal signatures of the two eliminated axioms (k >= 50 and k >= 5 forms), demonstrating their admissibility and cardinality hypotheses are never consulted by the reduction itself.",
+      "Observation that admissibility is irrelevant to the gap-extraction step: only the diameter bound is used. Admissibility is required solely to secure the analytic density input, cleanly separating the combinatorial/analytic content from the elementary arithmetic.",
+      "pair_density_implies_bounded_gaps: the {0,d} specialisation, recovering the twin-style reading that a density of two primes among {n, n+d} certifies infinitely many consecutive gaps <= d."
+    ],
+    "dateAdded": "2026-06-24",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Bounded prime gaps setup (definitions IsAdmissible, nthPrime, primeGap, MaynardTaoDensity reproduced verbatim from BoundedPrimeGaps.lean)",
+      "Mathlib prime-counting API (Nat.nth, Nat.count and their monotonicity/inverse lemmas)",
+      "The Maynard-Tao theorem statement (as the density antecedent, not assumed)"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The bounded prime gaps program (Zhang 2013; Maynard, Tao, and Polymath 8b 2014/2015) proves that liminf (p_{n+1} - p_n) is finite, with the best unconditional bound 246. The Lean formalization in BoundedPrimeGaps.lean encodes the deep analytic machinery as three axioms: a density axiom (maynard_tao_m_tuples) asserting that an admissible k-tuple contains m primes infinitely often, and two gap-sieve axioms (maynard_tao_sieve for k >= 50, maynard_tao_sieve_eh for k >= 5 under Elliott-Halberstam) asserting bounded consecutive gaps. The open question for this branch is how far the sieve axioms can be eliminated.",
+    "problemStatement": "Open question OQ01-OQ01: can the gap-sieve axioms of BoundedPrimeGaps.lean be eliminated, i.e. reduced to a smaller irreducible analytic core? This file answers it for the two gap-sieve axioms: they are logically redundant given the density axiom. Their conclusion - infinitely many consecutive prime gaps <= D - is a theorem provable elementarily from 'two primes among an admissible diameter-D tuple, infinitely often'.",
+    "proofStrategy": "Two primes p = n + h1 < q = n + h2 with h1, h2 in H and h2 <= D satisfy q - p = h2 - h1 <= D. Let k = pi(p) = count Nat.Prime p be the index of p. The next prime nthPrime(k+1) is the least prime strictly above p; since q is a prime above p, monotonicity of Nat.nth gives nthPrime(k+1) <= q. Hence primeGap k = nthPrime(k+1) - p <= q - p <= D. To obtain infinitely many such gaps, apply the density predicate at threshold nthPrime N: the shift n >= nthPrime N forces p >= nthPrime N, so by monotonicity of the prime-counting function k = count(p) >= count(nthPrime N) = N. The two distinct primes are extracted from the density cardinality bound via Finset.one_lt_card, ordered by a single case split.",
+    "keyInsights": [
+      "The gap-sieve axioms are derivable, not primitive: passing from 'two nearby primes' to 'a bounded CONSECUTIVE gap' is arithmetic, not analytic. Only one sieve axiom (the density statement) is truly irreducible.",
+      "Admissibility is a red herring for the reduction. The gap extraction uses solely the diameter bound forall h in H, h <= D; admissibility matters only to make the density antecedent true. This cleanly localises the analytic difficulty.",
+      "The index bookkeeping is the only subtlety: relating the analytic shift n to the prime index k is handled by the Nat.nth / Nat.count inverse-and-monotone API (nth_count, count_nth_of_infinite, nth_monotone, count_monotone) over the infinite set of primes.",
+      "The {0,d} specialisation makes the content concrete: the twin-prime density statement (two primes among {n, n+2} infinitely often) already entails infinitely many consecutive gaps <= 2 - no sieve axiom required for that last step."
+    ],
+    "prerequisites": [
+      "Bounded prime gaps setup (BoundedPrimeGaps.lean definitions)",
+      "Mathlib prime-counting function API (Nat.nth, Nat.count)",
+      "Maynard-Tao / Polymath 8b density statement"
+    ]
+  },
+  "sections": [
+    {
+      "id": "definitions",
+      "title": "Definitions (mirrored from BoundedPrimeGaps)",
+      "startLine": 64,
+      "endLine": 84,
+      "summary": "IsAdmissible, nthPrime, primeGap, and MaynardTaoDensity reproduced verbatim from the parent file, keeping this entry import-light (Mathlib only) while preserving the literal correspondence with the eliminated axioms."
+    },
+    {
+      "id": "arithmetic-core",
+      "title": "The arithmetic core: gap_from_two_primes",
+      "startLine": 98,
+      "endLine": 147,
+      "summary": "Given two primes p = n+x < q = n+y with y <= D and the shift n >= nthPrime N, produces a consecutive prime gap <= D at index >= N. The next prime after p is bounded by q via Nat.nth monotonicity; the index is pushed past N via Nat.count monotonicity and the nth/count inverse lemmas."
+    },
+    {
+      "id": "main-reduction",
+      "title": "Density subsumes the gap-sieve axiom",
+      "startLine": 150,
+      "endLine": 192,
+      "summary": "density_two_implies_bounded_gaps derives the eliminated axioms' exact conclusion from MaynardTaoDensity H 2 plus a diameter bound, extracting two distinct primes via Finset.one_lt_card. sieve_conclusion_from_density and sieve_eh_conclusion_from_density repackage it in the literal axiom signatures, showing admissibility/cardinality are unused."
+    },
+    {
+      "id": "pair-instance",
+      "title": "Concrete pair instance {0, d}",
+      "startLine": 194,
+      "endLine": 205,
+      "summary": "pair_density_implies_bounded_gaps specialises to {0,d}: a density of two primes among {n, n+d} yields infinitely many consecutive gaps <= d, recovering the twin-style reading at d = 2."
+    }
+  ]
+}
