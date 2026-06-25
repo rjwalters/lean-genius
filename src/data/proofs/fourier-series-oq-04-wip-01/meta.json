@@ -154,6 +154,16 @@
       "targetId": "fourier-series-oq-04",
       "relationship": "extends",
       "description": "Parent: multi-dimensional Fourier convergence scaffold whose fourierCoeff is a placeholder := 0. This entry implements that coefficient genuinely on Fin n → AddCircle (1:ℝ) with the product Haar measure, exactly the concrete path the parent's OQ-04 proposed."
+    },
+    {
+      "targetId": "fourier-series-oq-04-wip-01-oq-01",
+      "relationship": "extended-by",
+      "description": "Child: proves the tensor characters e_k = ∏ᵢ fourier(kᵢ) defined here are orthonormal, ∫_{Tⁿ} e_j·conj(e_k) = δ_{j,k} — the next structural step toward Parseval/Plancherel on the n-torus, building directly on this entry's character and coefficient."
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "related",
+      "description": "The classical one-dimensional theory: a periodic function as ∑ₙ f̂(n) e^{2πinx}. This entry is the n-dimensional generalisation, with the kernel assembled as a finite product of the 1D characters that underlie the classical case."
     }
   ],
   "references": [
