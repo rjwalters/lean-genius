@@ -1,0 +1,91 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 6, "endLine": 54 },
+    "type": "context",
+    "title": "The Second Moment, Read Through the Gamma Function",
+    "content": "The parent entry area-of-circle-oq-07-oq-05 computed the Gaussian second moment ∫_ℝ x² e^{-x²} = √π/2 by integration by parts. This file gives the same number its special-function reading: under the substitution u = x², Euler's integral Γ(3/2) = ∫₀^∞ e^{-u} u^{1/2} du becomes the Gaussian second moment, so √π/2 is the value Γ(3/2). Because Euler's integral lives on the half-line, the natural object is the half-line moment ½·Γ(3/2) = √π/4; doubling by even symmetry recovers the parent's full-line √π/2. This is exactly the substitution Mathlib uses to prove Γ(1/2) = √π, carried one half-power higher.",
+    "mathContext": "$\\int_0^\\infty x^2 e^{-x^2} = \\tfrac12\\Gamma(\\tfrac32) = \\tfrac{\\sqrt\\pi}{4},\\quad \\int_{-\\infty}^{\\infty} x^2 e^{-x^2} = \\Gamma(\\tfrac32) = \\tfrac{\\sqrt\\pi}{2}$",
+    "significance": "context",
+    "relatedConcepts": [
+      "Gaussian integral",
+      "Gamma function",
+      "Euler's integral",
+      "change of variables",
+      "moments of a distribution"
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ and Ioi 0",
+      "the parent second moment ∫ x² e^{-x²} = √π/2"
+    ]
+  },
+  {
+    "id": "ann-gamma-value",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 59, "endLine": 65 },
+    "type": "technique",
+    "title": "The Half-Integer Gamma Value",
+    "content": "Γ(3/2) = √π/2 follows in one line from the functional equation Γ(s+1) = s·Γ(s) at s = 1/2 (Real.Gamma_add_one) and the cornerstone Γ(1/2) = √π (Real.Gamma_one_half_eq): Γ(3/2) = ½·Γ(1/2) = ½·√π. This is the special value the Gaussian second moment will be identified with. Mathlib also records it through Real.Gamma_nat_add_half at k = 1; deriving it directly from the functional equation keeps the dependency minimal.",
+    "mathContext": "$\\Gamma(\\tfrac32) = \\tfrac12\\,\\Gamma(\\tfrac12) = \\tfrac{\\sqrt\\pi}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Gamma functional equation", "half-integer Gamma values"],
+    "prerequisites": ["Γ(1/2) = √π", "Γ(s+1) = s·Γ(s)"]
+  },
+  {
+    "id": "ann-euler-integral",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 67, "endLine": 75 },
+    "type": "technique",
+    "title": "Euler's Integral at s = 3/2",
+    "content": "Real.Gamma_eq_integral gives Γ(s) = ∫₀^∞ e^{-x} x^{s-1} dx for s > 0. At s = 3/2 the exponent s - 1 = 1/2, so Γ(3/2) = ∫₀^∞ e^{-x} x^{1/2} dx. The only work is normalizing the exponent 3/2 - 1 to 1/2 under the integral sign (setIntegral_congr_fun + norm_num). This half-line integral is the object the substitution u = x² will transform into the Gaussian second moment.",
+    "mathContext": "$\\Gamma(\\tfrac32) = \\int_0^\\infty e^{-x} x^{1/2}\\,dx$",
+    "significance": "supporting",
+    "relatedConcepts": ["Euler integral", "Gamma function"],
+    "prerequisites": ["Real.Gamma_eq_integral"]
+  },
+  {
+    "id": "ann-substitution",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 77, "endLine": 100 },
+    "type": "key-insight",
+    "title": "The Substitution u = x² Does All the Work",
+    "content": "The heart of the entry. Mathlib's integral_comp_rpow_Ioi_of_pos states ∫₀^∞ (p·x^{p-1})·g(x^p) dx = ∫₀^∞ g(u) du for p > 0 — exactly the change of variables u = x^p. At p = 2, applied (in reverse) to Euler's integral for Γ(3/2) with g(u) = e^{-u} u^{1/2}, the integrand becomes (2·x^{2-1})·(e^{-x²}·(x²)^{1/2}). For x > 0 this collapses: x^{2-1} = x (Real.rpow_one), (x²)^{1/2} = x^{2·(1/2)} = x (Real.rpow_mul), and x^{(2:ℝ)} = x² (Real.rpow_natCast), so the bracket is 2x·(e^{-x²}·x) = 2·x² e^{-x²}. Hence Γ(3/2) = 2·∫₀^∞ x² e^{-x²}, i.e. the half-line second moment is ½·Γ(3/2). The Jacobian 2x of u = x² times the surviving half-power x builds the x² weight for free — no integration by parts, no boundary terms. This is the same lemma and the same substitution Mathlib uses for Γ(1/2) = √π, here pushed one half-power higher to the second moment.",
+    "mathContext": "$\\int_0^\\infty x^2 e^{-x^2}\\,dx = \\tfrac12\\,\\Gamma(\\tfrac32)$",
+    "significance": "high",
+    "relatedConcepts": [
+      "change of variables",
+      "Jacobian",
+      "rpow arithmetic",
+      "Gamma function"
+    ],
+    "prerequisites": [
+      "integral_comp_rpow_Ioi_of_pos",
+      "Real.rpow_mul, Real.rpow_natCast, Real.rpow_one"
+    ]
+  },
+  {
+    "id": "ann-half-line-value",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 102, "endLine": 106 },
+    "type": "result",
+    "title": "The Half-Line Moment in Closed Form",
+    "content": "Substituting Γ(3/2) = √π/2 into ½·Γ(3/2) gives the explicit half-line value ∫₀^∞ x² e^{-x²} = √π/4. Together with the full-line √π/2 this exhibits the factor of two between the half-line and full-line moments concretely.",
+    "mathContext": "$\\int_0^\\infty x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{4}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Gaussian moments"],
+    "prerequisites": ["Γ(3/2) = √π/2"]
+  },
+  {
+    "id": "ann-full-line",
+    "proofId": "area-of-circle-oq-07-oq-05-oq-02",
+    "range": { "startLine": 108, "endLine": 123 },
+    "type": "result",
+    "title": "The Full-Line Moment Is Γ(3/2)",
+    "content": "full_line_second_moment_eq_Gamma answers the open question: combining the parent's full-line value √π/2 (AreaOfCircleOQ07OQ05.gaussian_second_moment) with Γ(3/2) = √π/2 identifies the Gaussian second moment with a value of the Gamma function — the parent's integration-by-parts radical re-read as a special-function table entry. full_line_eq_two_mul_half_line records the even-symmetry doubling Γ(3/2) = 2·(½·Γ(3/2)), the bookkeeping connecting the half-line object Euler's integral produces to the parent's full-line value.",
+    "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2} = \\Gamma(\\tfrac32) = 2\\int_0^\\infty x^2 e^{-x^2}$",
+    "significance": "high",
+    "relatedConcepts": ["Gaussian moments", "even symmetry", "Gamma function"],
+    "prerequisites": ["parent second moment √π/2", "Γ(3/2) = √π/2"]
+  }
+]

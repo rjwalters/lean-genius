@@ -1,0 +1,221 @@
+{
+  "id": "area-of-circle-oq-07-oq-05-oq-02",
+  "slug": "area-of-circle-oq-07-oq-05-oq-02",
+  "title": "The Gaussian Second Moment as a Gamma Special Value ∫ x² e^{-x²} = Γ(3/2)",
+  "description": "Recovers the parent's Gaussian second moment as a value of Euler's Gamma function through the substitution u = x². Mathlib's change-of-variables integral_comp_rpow_Ioi_of_pos (p = 2) applied to Euler's integral Γ(3/2) = ∫₀^∞ e^{-u} u^{1/2} du turns the integrand into 2·x² e^{-x²}, pinning the half-line second moment to ½·Γ(3/2) = √π/4 and the full-line moment to Γ(3/2) = √π/2 — the higher-power analogue of the substitution Mathlib uses for Γ(1/2) = √π. 125 lines, 6 theorems, 0 axioms, 0 sorries.",
+  "leanFile": {
+    "imports": [
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.MeasureTheory.Integral.IntegralEqImproper",
+      "Mathlib.Tactic",
+      "Proofs.AreaOfCircleOQ07OQ05"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory",
+      "Filter",
+      "Topology",
+      "Set"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ05OQ02",
+    "lineCount": 125,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ05OQ02.lean",
+    "sorries": 0
+  },
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ05OQ02.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "gamma-function",
+      "change-of-variables",
+      "special-functions",
+      "measure-theory",
+      "euler-integral",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 125,
+    "theoremCount": 6,
+    "definitionCount": 0,
+    "badge": "original",
+    "originalContributions": [
+      "half_line_second_moment_eq_half_Gamma: ∫₀^∞ x² e^{-x²} dx = ½·Γ(3/2) — the core bridge. Euler's integral Γ(3/2) = ∫₀^∞ e^{-u} u^{1/2} du lives on the half-line; applying Mathlib's change-of-variables integral_comp_rpow_Ioi_of_pos with p = 2 (the map u = x²) sends the integrand e^{-u} u^{1/2} to 2x·(e^{-x²}·x) = 2·x² e^{-x²} for x > 0, so Γ(3/2) = 2·∫₀^∞ x² e^{-x²} dx. This is the exact substitution Mathlib uses to prove Γ(1/2) = √π (Real.Gamma_one_half_eq), carried one half-power higher to land on the Gaussian *second* moment rather than the zeroth. The identity is not recorded in Mathlib.",
+      "full_line_second_moment_eq_Gamma: ∫_ℝ x² e^{-x²} dx = Γ(3/2) — answers the open question directly. Starting from the parent's full-line value √π/2 (area-of-circle-oq-07-oq-05) and the special value Γ(3/2) = √π/2, the second moment is identified with a value of the Gamma function rather than a bare radical, recasting the integration-by-parts result of the parent as a special-function table entry.",
+      "half_line_second_moment_value: ∫₀^∞ x² e^{-x²} dx = √π/4 — the closed-form half-line value, the explicit number behind ½·Γ(3/2); together with the full-line √π/2 it exhibits the even-symmetry doubling concretely.",
+      "Gamma_three_half: Γ(3/2) = √π/2 — the half-integer Gamma special value, obtained from the functional equation Γ(s+1) = s·Γ(s) at s = 1/2 with Γ(1/2) = √π (Real.Gamma_add_one, Real.Gamma_one_half_eq). This is the special value the Gaussian second moment is identified with; Gamma_three_half_integral records its Euler integral representation Γ(3/2) = ∫₀^∞ e^{-x} x^{1/2} dx, the half-line integral the substitution acts on."
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ and over Ioi 0 (MeasureTheory)",
+      "Euler's integral for the Gamma function: Real.Gamma_eq_integral",
+      "The Gamma functional equation and Γ(1/2) = √π: Real.Gamma_add_one, Real.Gamma_one_half_eq",
+      "Change of variables on the half-line: integral_comp_rpow_Ioi_of_pos (the u = x^p substitution)",
+      "Real power arithmetic: Real.rpow_natCast, Real.rpow_mul, Real.rpow_one",
+      "Parent: area-of-circle-oq-07-oq-05 (the full-line second moment ∫ x² e^{-x²} = √π/2)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_comp_rpow_Ioi_of_pos",
+        "description": "Change of variables on the half-line: ∫₀^∞ (p·x^{p-1}) • g(x^p) dx = ∫₀^∞ g(u) du for p > 0. At p = 2 this is the substitution u = x², the engine that turns Euler's integral for Γ(3/2) into the Gaussian second moment. This is the same lemma Mathlib uses to prove Γ(1/2) = √π.",
+        "module": "Mathlib.MeasureTheory.Integral.IntegralEqImproper"
+      },
+      {
+        "theorem": "Real.Gamma_eq_integral",
+        "description": "Euler's integral Γ(s) = ∫₀^∞ e^{-x} x^{s-1} dx for s > 0. At s = 3/2 it provides the half-line integrand e^{-x} x^{1/2} the substitution acts on.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_add_one",
+        "description": "The functional equation Γ(s+1) = s·Γ(s) for s ≠ 0. At s = 1/2 it gives Γ(3/2) = ½·Γ(1/2).",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gamma.Basic"
+      },
+      {
+        "theorem": "Real.Gamma_one_half_eq",
+        "description": "The special value Γ(1/2) = √π, itself proved in Mathlib by the u = x² substitution on the Gaussian. Combined with the functional equation it yields Γ(3/2) = √π/2.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral"
+      },
+      {
+        "theorem": "Real.rpow_mul",
+        "description": "x^{y·z} = (x^y)^z for x ≥ 0. Used to simplify (x²)^{1/2} = x^{2·(1/2)} = x for x > 0 inside the transformed integrand.",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The Gaussian second moment ∫_{-∞}^{∞} x² e^{-x²} dx and Euler's Gamma function meet at the substitution x² = u, the oldest bridge between the bell-curve integrals of Laplace and Gauss (c. 1809) and Euler's interpolation of the factorial (1729). Under u = x² the half-line moment becomes ∫₀^∞ e^{-u} u^{1/2} du = Γ(3/2), and the reflection/duplication theory of the Gamma function fixes Γ(3/2) = ½·Γ(1/2) = √π/2. This is the n = 1 case of the general identity ∫₀^∞ x^{2n} e^{-x²} dx = ½·Γ(n+½): the moments of the Gaussian ARE the half-integer values of the Gamma function. The same substitution is how the Gamma special value Γ(1/2) = √π is most cleanly derived — and how Mathlib derives it. This entry reads the parent's integration-by-parts value of the second moment through that Gamma lens, identifying √π/2 not as an isolated radical but as the special-function value Γ(3/2).",
+    "problemStatement": "Recover the Gaussian second moment as a value of Euler's Gamma function through the substitution u = x²: show ∫₀^∞ x² e^{-x²} dx = ½·Γ(3/2) (= √π/4) and ∫_{-∞}^{∞} x² e^{-x²} dx = Γ(3/2) (= √π/2), identifying the parent's value √π/2 with the half-integer Gamma special value Γ(3/2) rather than computing it afresh by parts.",
+    "proofStrategy": "Four moves. (1) The special value: Γ(3/2) = Γ(1/2 + 1) = ½·Γ(1/2) = ½·√π via the functional equation Real.Gamma_add_one and Real.Gamma_one_half_eq (Gamma_three_half). (2) The Euler integral: Γ(3/2) = ∫₀^∞ e^{-x} x^{1/2} dx is the s = 3/2 instance of Real.Gamma_eq_integral (Gamma_three_half_integral). (3) The substitution (the heart): applying integral_comp_rpow_Ioi_of_pos with p = 2 to that integral rewrites it as ∫₀^∞ (2·x^{2-1})·(e^{-x²}·(x²)^{1/2}) dx; for x > 0 the bracket is 2x·(e^{-x²}·x) = 2·x² e^{-x²}, so Γ(3/2) = 2·∫₀^∞ x² e^{-x²} dx, giving the half-line moment ½·Γ(3/2) (half_line_second_moment_eq_half_Gamma) and its value √π/4 (half_line_second_moment_value). (4) The full line: combining the parent's ∫_ℝ x² e^{-x²} = √π/2 with the special value identifies the full-line moment with Γ(3/2) (full_line_second_moment_eq_Gamma), and the even-symmetry doubling Γ(3/2) = 2·(½·Γ(3/2)) is recorded as full_line_eq_two_mul_half_line.",
+    "keyInsights": [
+      "**The ½ is Euler's integral, not an error.** Euler's Gamma integral runs over the half-line (0, ∞), so the natural object the substitution produces is the *half-line* second moment ½·Γ(3/2) = √π/4. The full-line value √π/2 = Γ(3/2) is twice that by even symmetry — the factor of two is exactly the two tails of the Gaussian.",
+      "**Same substitution as Γ(1/2) = √π, one half-power higher.** Mathlib proves Γ(1/2) = √π by the u = x² change of variables on ∫ e^{-x²}; here the identical lemma integral_comp_rpow_Ioi_of_pos (p = 2) acts on the integrand for Γ(3/2), and the extra factor x from the half-power is precisely what builds the x² of the *second* moment.",
+      "**Two computations of one number meet.** The parent obtained √π/2 by integration by parts on the whole line; this entry obtains the same √π/2 as the table value Γ(3/2). The agreement is the content: an elementary IBP and a special-function evaluation compute the identical Gaussian moment.",
+      "**The substitution does the arithmetic for free.** The Jacobian factor 2x of u = x², times the surviving half-power x from (x²)^{1/2}, supplies exactly the x² weight — no integration by parts, no boundary terms, no decay estimates. The moment falls out of the change of variables as a one-line algebraic identity on the integrand.",
+      "**Honest 'original' badge, 0 axioms.** Every tool — Euler's integral, the functional equation, Γ(1/2) = √π, the half-line change of variables — is Mathlib's; the new content is the assembly identifying the Gaussian second moment with Γ(3/2), a bridge Mathlib does not record. The proof depends only on propext, Classical.choice, and Quot.sound."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Header: The Open Question and the Substitution",
+      "startLine": 6,
+      "endLine": 54,
+      "summary": "Module docstring stating the open question — recover √π/2 as a Gamma value via u = x² — and the answer: the half-line moment is ½·Γ(3/2) = √π/4, the full-line moment is Γ(3/2) = √π/2, and the substitution integral_comp_rpow_Ioi_of_pos (p = 2) is the engine, mirroring Mathlib's proof of Γ(1/2) = √π. Imports the Gaussian-integral, improper-integral, and parent modules.",
+      "mathContext": "$\\int_{0}^{\\infty} x^2 e^{-x^2}\\,dx = \\tfrac12\\Gamma(\\tfrac32),\\quad \\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\Gamma(\\tfrac32) = \\tfrac{\\sqrt\\pi}{2}$"
+    },
+    {
+      "id": "gamma-value",
+      "title": "The Half-Integer Gamma Value Γ(3/2) = √π/2",
+      "startLine": 59,
+      "endLine": 65,
+      "summary": "theorem Gamma_three_half: Γ(3/2) = √π/2, from the functional equation Γ(s+1) = s·Γ(s) at s = 1/2 (Real.Gamma_add_one) together with Γ(1/2) = √π (Real.Gamma_one_half_eq). The special value the second moment is identified with.",
+      "mathContext": "$\\Gamma(\\tfrac32) = \\tfrac12\\,\\Gamma(\\tfrac12) = \\tfrac{\\sqrt\\pi}{2}$"
+    },
+    {
+      "id": "euler-integral",
+      "title": "Euler Integral Representation of Γ(3/2)",
+      "startLine": 67,
+      "endLine": 75,
+      "summary": "theorem Gamma_three_half_integral: Γ(3/2) = ∫₀^∞ e^{-x} x^{1/2} dx, the s = 3/2 instance of Euler's integral Real.Gamma_eq_integral. This is the half-line integral the u = x² substitution acts on.",
+      "mathContext": "$\\Gamma(\\tfrac32) = \\int_0^\\infty e^{-x} x^{1/2}\\,dx$"
+    },
+    {
+      "id": "substitution",
+      "title": "The Substitution u = x²: Half-Line Moment = ½·Γ(3/2)",
+      "startLine": 77,
+      "endLine": 100,
+      "summary": "theorem half_line_second_moment_eq_half_Gamma: ∫₀^∞ x² e^{-x²} = ½·Γ(3/2). Rewrites Γ(3/2) by its Euler integral, applies integral_comp_rpow_Ioi_of_pos (p = 2) to substitute u = x², pulls out the constant 2, and simplifies the transformed integrand pointwise — (2·x^{2-1})·(e^{-x²}·(x²)^{1/2}) = 2·x² e^{-x²} for x > 0 via Real.rpow_one, Real.rpow_mul, Real.rpow_natCast — to read off Γ(3/2) = 2·∫₀^∞ x² e^{-x²}. The core bridge.",
+      "mathContext": "$\\int_0^\\infty x^2 e^{-x^2}\\,dx = \\tfrac12\\,\\Gamma(\\tfrac32)$"
+    },
+    {
+      "id": "half-line-value",
+      "title": "Closed Form of the Half-Line Moment: √π/4",
+      "startLine": 102,
+      "endLine": 106,
+      "summary": "theorem half_line_second_moment_value: ∫₀^∞ x² e^{-x²} = √π/4, combining the substitution result with Γ(3/2) = √π/2.",
+      "mathContext": "$\\int_0^\\infty x^2 e^{-x^2}\\,dx = \\tfrac{\\sqrt\\pi}{4}$"
+    },
+    {
+      "id": "full-line-gamma",
+      "title": "Full-Line Moment as the Gamma Value Γ(3/2)",
+      "startLine": 108,
+      "endLine": 114,
+      "summary": "theorem full_line_second_moment_eq_Gamma: ∫_ℝ x² e^{-x²} = Γ(3/2). Combines the parent's full-line value √π/2 (AreaOfCircleOQ07OQ05.gaussian_second_moment) with Γ(3/2) = √π/2 to identify the second moment with a Gamma special value — the answer to the open question.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2}\\,dx = \\Gamma(\\tfrac32)$"
+    },
+    {
+      "id": "doubling",
+      "title": "Even Symmetry: Full Line = Twice the Half Line",
+      "startLine": 116,
+      "endLine": 123,
+      "summary": "theorem full_line_eq_two_mul_half_line: ∫_ℝ x² e^{-x²} = 2·∫₀^∞ x² e^{-x²}, i.e. Γ(3/2) = 2·(½·Γ(3/2)) — the bookkeeping turning the half-line ½·Γ(3/2) from Euler's integral into the parent's full-line Γ(3/2) = √π/2.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^2 e^{-x^2} = 2\\int_0^\\infty x^2 e^{-x^2}$"
+    }
+  ],
+  "conclusion": {
+    "summary": "The Gaussian second moment is a value of Euler's Gamma function. Via the substitution u = x² (Mathlib's integral_comp_rpow_Ioi_of_pos at p = 2, the same change of variables behind Γ(1/2) = √π), Euler's integral Γ(3/2) = ∫₀^∞ e^{-u} u^{1/2} du becomes 2·∫₀^∞ x² e^{-x²} dx, so the half-line second moment is ½·Γ(3/2) = √π/4 (half_line_second_moment_eq_half_Gamma, half_line_second_moment_value). Combined with the parent's full-line value √π/2 and the special value Γ(3/2) = √π/2 (Gamma_three_half), the full-line second moment is identified with Γ(3/2) (full_line_second_moment_eq_Gamma), the even-symmetry doubling recorded as full_line_eq_two_mul_half_line. 125 lines, 6 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This gives the parent's integration-by-parts value √π/2 its special-function reading: the Gaussian second moment is not a bare radical but the half-integer Gamma value Γ(3/2), the n = 1 case of ∫₀^∞ x^{2n} e^{-x²} = ½·Γ(n+½). The proof packages the substitution route that Mathlib uses for Γ(1/2) = √π and pushes it one half-power further, complementing sibling area-of-circle-oq-07-oq-05-oq-01 which reaches Γ(n+1/2) through the integration-by-parts recursion rather than the change of variables.",
+    "openQuestions": [
+      "Carry the substitution u = x² to the general even moment ∫₀^∞ x^{2n} e^{-x²} = ½·Γ(n+½) for all n, recovering sibling oq-05-oq-01's family through the change of variables instead of integration by parts.",
+      "Prove the even-symmetry doubling ∫_ℝ f = 2·∫₀^∞ f intrinsically for the even integrand x² e^{-x²}, replacing the value-chaining of full_line_eq_two_mul_half_line with a direct symmetry argument."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-05",
+      "relationship": "extends",
+      "description": "Parent. Supplies the full-line second moment ∫_ℝ x² e^{-x²} = √π/2 (by integration by parts); this entry re-reads that value as the Gamma special value Γ(3/2) via the substitution u = x²."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-05-oq-01",
+      "relationship": "related",
+      "description": "Sibling. Reaches the half-integer Gamma value Γ(n+1/2) for the general even moment through the integration-by-parts recursion; this entry reaches Γ(3/2) (the n = 1 case) through the change of variables instead, the two routes to the same special values."
+    },
+    {
+      "targetId": "area-of-circle-oq-07",
+      "relationship": "related",
+      "description": "Grandparent. The zeroth-moment Gaussian integral ∫_ℝ e^{-x²} = √π, whose half-line form is the Γ(1/2) = √π special value that the same substitution produces."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of Real.Gamma_one_half_eq (Γ(1/2) = √π, itself proved by the u = x² substitution) and the Gaussian integrability lemmas. The proof of Gamma_one_half_eq is the direct template for this entry's substitution."
+    },
+    {
+      "title": "Mathlib4: MeasureTheory.Integral.IntegralEqImproper",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_comp_rpow_Ioi_of_pos, the half-line change-of-variables ∫₀^∞ (p·x^{p-1})·g(x^p) = ∫₀^∞ g, used here at p = 2 to realize the substitution u = x²."
+    },
+    {
+      "title": "Special Functions",
+      "author": "George E. Andrews, Richard Askey, Ranjan Roy",
+      "year": "1999",
+      "venue": "Cambridge University Press",
+      "description": "Standard reference for Euler's Gamma integral, the half-integer values Γ(n+1/2), and the x² = u substitution linking the Gaussian moments to the Gamma function."
+    }
+  ],
+  "sorries": 0,
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-05-oq-02-oq-01",
+      "question": "Carry the substitution u = x² to the general even moment ∫₀^∞ x^{2n} e^{-x²} dx = ½·Γ(n+1/2) for every n, deriving sibling oq-05-oq-01's family through the change of variables rather than the integration-by-parts recursion, and compare the two derivations.",
+      "significance": "medium"
+    },
+    {
+      "id": "area-of-circle-oq-07-oq-05-oq-02-oq-02",
+      "question": "Prove the even-symmetry doubling ∫_ℝ x² e^{-x²} = 2·∫₀^∞ x² e^{-x²} intrinsically from the evenness of the integrand (via integral_comp_neg and an Ioi/Iic split), replacing the value-chaining of full_line_eq_two_mul_half_line with a direct argument that does not route through the parent's value.",
+      "significance": "low"
+    }
+  ]
+}
