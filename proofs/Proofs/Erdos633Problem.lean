@@ -136,13 +136,15 @@ def DissectionCounts (T : Triangle) : Set ℕ :=
 
 /-! ## Square Number Property -/
 
-/-- A number is a perfect square -/
-def IsSquare (n : ℕ) : Prop := ∃ k : ℕ, n = k^2
+/-- A number is a perfect square.
+    (Named `IsPerfectSquare` to avoid clashing with Mathlib's `IsSquare`,
+    which was introduced into the root namespace after this file was written.) -/
+def IsPerfectSquare (n : ℕ) : Prop := ∃ k : ℕ, n = k^2
 
 /-- A triangle has the "square-only" property if it can only be dissected
     into square numbers of congruent copies -/
 def HasSquareOnlyProperty (T : Triangle) : Prop :=
-  ∀ n ∈ DissectionCounts T, IsSquare n
+  ∀ n ∈ DissectionCounts T, IsPerfectSquare n
 
 /-- The set of triangles with the square-only property -/
 def SquareOnlyTriangles : Set Triangle :=
@@ -177,7 +179,7 @@ theorem squares_always_achievable (T : Triangle) :
     ∀ k ≥ 1, k^2 ∈ DissectionCounts T := by
   intro k hk
   constructor
-  · positivity
+  · exact Nat.one_le_pow 2 k (by omega)
   · exact universal_square_dissection T k hk
 
 /-! ## Soifer's Example -/
@@ -191,26 +193,22 @@ noncomputable def soiferTriangle : Triangle where
   hb := Real.sqrt_pos.mpr (by norm_num : (3 : ℝ) > 0)
   hc := Real.sqrt_pos.mpr (by norm_num : (4 : ℝ) > 0)
   hab := by
-    simp only [Real.sqrt_four]
+    rw [show (4:ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2)]
     have h1 : Real.sqrt 2 > 1 := by
-      rw [Real.one_lt_sqrt (by norm_num : (0 : ℝ) ≤ 2)]
-      norm_num
+      nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 2 by norm_num), Real.sqrt_nonneg 2]
     have h2 : Real.sqrt 3 > 1 := by
-      rw [Real.one_lt_sqrt (by norm_num : (0 : ℝ) ≤ 3)]
-      norm_num
+      nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 3 by norm_num), Real.sqrt_nonneg 3]
     linarith
   hbc := by
-    simp only [Real.sqrt_four]
+    rw [show (4:ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2)]
     have h : Real.sqrt 2 < 2 := by
-      rw [Real.sqrt_lt' (by norm_num : (2 : ℝ) ≥ 0)]
-      norm_num
+      nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 2 by norm_num), Real.sqrt_nonneg 2]
     have h3 : Real.sqrt 3 > 0 := Real.sqrt_pos.mpr (by norm_num : (3 : ℝ) > 0)
     linarith
   hca := by
-    simp only [Real.sqrt_four]
+    rw [show (4:ℝ) = 2 ^ 2 by norm_num, Real.sqrt_sq (by norm_num : (0:ℝ) ≤ 2)]
     have h3 : Real.sqrt 3 < 2 := by
-      rw [Real.sqrt_lt' (by norm_num : (2 : ℝ) ≥ 0)]
-      norm_num
+      nlinarith [Real.sq_sqrt (show (0:ℝ) ≤ 3 by norm_num), Real.sqrt_nonneg 3]
     have h2 : Real.sqrt 2 > 0 := Real.sqrt_pos.mpr (by norm_num : (2 : ℝ) > 0)
     linarith
 
@@ -236,7 +234,7 @@ theorem integral_independence_implies_square_only (T : TriangleByAngles)
 
 /-- Most triangles can be dissected into non-square numbers -/
 def HasNonSquareDissection (T : Triangle) : Prop :=
-  ∃ n : ℕ, n ∈ DissectionCounts T ∧ ¬IsSquare n
+  ∃ n : ℕ, n ∈ DissectionCounts T ∧ ¬IsPerfectSquare n
 
 /-- The unit equilateral triangle (all sides 1). -/
 noncomputable def unitEquilateral : Triangle :=
