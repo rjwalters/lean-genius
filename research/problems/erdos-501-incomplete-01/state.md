@@ -2,10 +2,53 @@
 
 **Phase**: ORIENT
 **Since**: 2026-03-28T20:57:10Z
-**Iteration**: 2 (S2 compile-repair, this PR)
-**Last Updated**: 2026-06-25 (researcher-3)
+**Iteration**: 3 (S3 obstruction analysis, this PR)
+**Last Updated**: 2026-06-25 (researcher-7)
 
 ## Current Focus
+
+Iteration 3 (2026-06-25, researcher-7, this PR): **ORIENT — correcting the
+Lever A proof strategy. The product-outer-measure section bound it relies on
+is the WRONG DIRECTION and cannot be formalized as stated.**
+
+> ⚠️ **CRITICAL CORRECTION to Lever A below.** Every prior sketch (the file
+> docstring and the Lever A section of this document) asserts that the conflict
+> set `C_{ij} = {f ∈ [0,L]^n : f(i) ∈ A(f(j))}` has product measure
+> `≤ L^(n-1)` because each `A_t` has outer measure `< 1`, and proposes a
+> Mathlib helper `OuterMeasure.le_prod_outer` (outer-measure sub-Fubini). **This
+> helper is mathematically FALSE.** For Lebesgue *outer* measure the inequality
+> `λ*_n(E) ≤ ∫ λ*_1(E_t)` (product outer measure bounded by the integral of
+> section outer measures) does **not** hold; only the reverse
+> `λ*_n(E) ≥ ∫_* λ*_1(E_t)` is valid. **Counterexample:** under CH a Sierpiński
+> set in `[0,L]^2` has every vertical section countable (hence null) yet full
+> planar outer measure `L^2`. So "all sections have outer measure < 1" does NOT
+> bound the product outer measure of `C_{ij}`, and `C_{ij}` can have outer
+> measure `L^n`. The union-bound therefore collapses.
+>
+> **Why this matters:** the *same* non-measurability/Sierpiński phenomenon is
+> what makes the infinite case CH-dependent (Hechler 1972). The finite
+> Erdős–Hajnal result is still a ZFC theorem, but its genuine proof must avoid
+> the product-outer-measure route entirely.
+>
+> **What an honest Lever A would require:** replace each `A_t ∩ [0,L]` by a
+> measurable hull `H_t ⊇ A_t∩[0,L]` with `λ(H_t) = λ*(A_t∩[0,L]) < 1`, then
+> apply *measurable* Fubini (`MeasureTheory.lintegral_prod`). The remaining gap
+> is **joint measurability of the hull family `t ↦ H_t`**, which is NOT
+> automatic for an arbitrary family. This (not a sub-Fubini outer-measure
+> inequality) is the true crux. `n = 2` is already non-trivial for the same
+> reason — there is no elementary shortcut.
+>
+> **Stale-record fix:** `Erdos501Aristotle.lean` now has **0 sorries**
+> (`exists_not_mem_of_outerMeasure_lt_Icc` and `measure_compl_Icc_pos` are both
+> fully proved). The snapshot table below (written at Iteration 1) listing 1
+> sorry in the Aristotle file is outdated. Current aggregate: the only open
+> sorries are the 3 in `Erdos501Problem.lean`.
+>
+> Aristotle async submission of `exists_independent_tuple` was attempted this
+> session but the MCP endpoint returned "Resource not found"; retry when
+> reachable.
+
+### (Historical) Iteration 2 focus follows
 
 Iteration 2 (2026-06-25, researcher-3, this PR): **compile-repair — the three
 erdos-501 Lean files do not build under the pinned Mathlib (v4.26.0)**.

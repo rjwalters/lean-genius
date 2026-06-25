@@ -19,17 +19,17 @@
     "phase": "ORIENT",
     "since": "2026-03-28T20:57:10.258Z",
     "iteration": 6,
-    "focus": "CH-def bug fixed in Provable file. 3 deep sorries remain across both files (Erdos-Hajnal n>=2, Hechler under CH, NPS closed).",
+    "focus": "Identified that the product-outer-measure Fubini section bound (basis of all prior exists_independent_tuple sketches) is the wrong direction for non-measurable A_y; real crux is joint measurability of measurable hulls. Companion file verified complete (0 sorries).",
     "blockers": [],
-    "nextAction": "Either eliminate file duplication (provable now mirrors main exactly), or break Mathlib gap with outer-measure Fubini lemma.",
+    "nextAction": "Pursue joint-measurability hull route or locate original Erdos-Hajnal 1960 argument; submit to Aristotle when endpoint reachable.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed CH definition bug in Erdos501ProblemProvable.lean — old def `∀ S ⊆ ℝ uncountable, ∃ surjection ℝ → S` is trivially provable in ZFC (carries no content). Replaced with `Cardinal.aleph 1 = Cardinal.continuum` matching main file. 0 axioms, 3 sorries remain (exists_independent_tuple n>=2, hechler_under_CH, nps_closed_infinite).",
+    "progressSummary": "BLOCKED (sharpened): 3 sorries remain in Erdos501Problem.lean. Key finding (researcher-7 2026-06-25): the naive product-outer-measure Fubini section bound used in all prior attempt sketches is the FALSE direction for non-measurable families (Sierpinski counterexample), so exists_independent_tuple cannot be proved that way; the real obstruction is joint measurability of a hull family. Companion file confirmed 0 sorries (prior record stale).",
     "builtItems": [
       "Proved max_size_infinite in Erdos501Problem.lean (by_contra + le_iSup₂ + omega)",
       "Proved max_size_infinite in Erdos501ProblemProvable.lean (same proof)",
@@ -63,14 +63,22 @@
       "Product measure proof of Erdos-Hajnal: conflict set C_{ij}={f in [0,L]^n: f(i) in A(f(j))} has measure < L^{n-1} by Fubini section bound. Total < n(n-1)*L^{n-1} < L^n for L > n(n-1), so conflict-free injective tuples exist.",
       "Backward avoidance (x_i not in A_z) cannot be proved by deterministic construction -- requires product measure / counting argument. This is the fundamental difficulty.",
       "Base cases n=0,1 of exists_independent_tuple proved. Combinatorial reduction (tuple to Finset) fully proved.",
-      "BUG (fixed): Provable file had `∀ S ⊆ ℝ uncountable, ∃ f : ℝ → S, Function.Surjective f` as CH. This is trivially True in ZFC: for non-empty S pick s₀ ∈ S and define f(x) := if x ∈ S then x else s₀; every y ∈ S has preimage y. So that def carried no CH content."
+      "BUG (fixed): Provable file had `∀ S ⊆ ℝ uncountable, ∃ f : ℝ → S, Function.Surjective f` as CH. This is trivially True in ZFC: for non-empty S pick s₀ ∈ S and define f(x) := if x ∈ S then x else s₀; every y ∈ S has preimage y. So that def carried no CH content.",
+      "CORRECTION (researcher-7, 2026-06-25): The prior insight that μ(C_ij) < L^{n-1} follows by a Fubini section bound is mathematically UNJUSTIFIED for non-measurable A_y. For Lebesgue outer measure, the inequality lambda*_n(E) <= integral of lambda*_1(E_t) (product <= integral of section outer measures) is the FALSE direction. Counterexample: under CH a Sierpinski set in [0,L]^2 has every vertical section countable (null) yet full planar outer measure L^2. So all-sections-small does NOT bound the product outer measure. The valid outer-measure Fubini direction is the reverse: lambda*_n(E) >= lower-integral of lambda*_1(E_t).",
+      "The naive product-measure/counting proof of exists_independent_tuple FAILS at exactly the non-measurability of the conflict graph {(x,y) : x in A_y}. Measurable-hull repair (replace A_t by a G-delta hull H_t containing A_t cap [0,L] with lambda(H_t)=lambda*(A_t cap [0,L])<1) only works if t -> H_t can be chosen JOINTLY measurable, which is not automatic for an arbitrary family. This joint-measurability gap is the true crux.",
+      "DEEP CONNECTION: the same Sierpinski/non-measurability phenomenon that breaks the naive finite proof is what powers Hechlers CH construction of a family with no infinite independent set. The finite result (ZFC theorem, Erdos-Hajnal 1960) must therefore avoid the product-outer-measure route entirely; its genuine proof is more delicate than the section-bound sketch suggests.",
+      "STALE-RECORD FIX: Erdos501Aristotle.lean now has 0 sorries (exists_not_mem_of_outerMeasure_lt_Icc and measure_compl_Icc_pos are both fully proved). Earlier insights listing them as sorried are outdated. The only remaining sorries are the 3 in Erdos501Problem.lean: exists_independent_tuple (n>=2), hechler_under_CH, nps_closed_infinite.",
+      "n=2 case is already non-trivial for the same reason: finding x!=y with x not in A(y) AND y not in A(x) cannot be done by the symmetric set G={(x,y):x not in A(y)}; inclusion-exclusion lower bounds for lambda*(G cap G^T) are invalid for outer measures, and lambda*(G^c) (sections <1) can be as large as L^2 (Sierpinski). No elementary n=2 shortcut bypasses the joint-measurability obstruction."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Mathlib lacks (and it is genuinely direction-sensitive) an outer-measure Tonelli inequality usable here. The needed direction lambda*_n(E) <= integral of section-outer-measures is FALSE in general; only the reverse holds. Any formal proof of exists_independent_tuple must instead establish joint measurability of a hull family t->H_t and apply standard (measurable) Fubini. Mathlib has measurable Fubini (lintegral_prod) but not the hull-selection joint-measurability lemma.",
+      "No Mathlib infrastructure for Hechler-style transfinite (CH / omega_1) diagonalization constructions of real families, nor for the NPS descriptive-set-theory argument (closed multifunctions / measurable selection on closed families)."
+    ],
     "nextSteps": [
-      "Prove exists_independent_tuple for n>=2: requires outer-measure Tonelli/Cavalieri inequality on product spaces",
-      "Consider proof via measurable cover + Mathlib Fubini, then transfer back to outer measure",
-      "Hechler 1972 (under CH) and NPS 1987 (closed sets) require independent deep formalization efforts (transfinite induction / descriptive set theory)",
-      "Consider unifying main file and Provable file — both now use the same CH def, so structural duplication is closer to elimination"
+      "exists_independent_tuple (n>=2): do NOT retry the product-outer-measure section bound, it is provably the wrong direction. Either (a) formalize joint measurability of a measurable-hull family t->H_t then apply measurable Fubini, or (b) find the actual Erdos-Hajnal 1960 argument (original Acta paper Some Remarks on Set Theory VIII) which sidesteps this.",
+      "Submit exists_independent_tuple to Aristotle for overnight search once the MCP endpoint is reachable again (returned Resource not found this session).",
+      "hechler_under_CH and nps_closed_infinite remain BLOCKED on >1000-line foundational developments (transfinite construction; descriptive set theory). Keep sorried; do not attempt manual proof.",
+      "Consider whether the gallery entry should narrow its verified claims: companion lemmas are fully proved; the three deep results are honestly sorried."
     ]
   },
   "tags": [
@@ -92,7 +100,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.257Z",
-  "lastUpdate": "2026-04-27T00:00:00Z",
+  "lastUpdate": "2026-06-25T00:00:00Z",
   "significance": 6,
   "tractability": 5
 }

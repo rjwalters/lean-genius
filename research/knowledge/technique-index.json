@@ -1,6 +1,6 @@
 {
   "version": "1.0",
-  "last_updated": "",
+  "last_updated": "2026-06-25",
   "description": "Cross-problem technique index tracking which proof techniques have been tried on which problems",
   "techniques": [
     {
@@ -37,6 +37,15 @@
       ],
       "outcome": "success",
       "date": "2026-06-20"
+    },
+    {
+      "name": "Outer-measure obstruction analysis",
+      "used_in_problems": [
+        "erdos-501-incomplete-01"
+      ],
+      "outcome": "blocked",
+      "date": "2026-06-25",
+      "description": "Established that the product-outer-measure Fubini section bound (lambda*_n(E) <= integral of section outer measures) is the FALSE direction for non-measurable families (Sierpinski counterexample), refuting the proposed OuterMeasure.le_prod_outer helper for Erdos-Hajnal finite independence. Real crux is joint measurability of a measurable-hull family."
     }
   ]
 }
