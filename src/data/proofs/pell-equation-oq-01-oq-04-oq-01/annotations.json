@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-overview",
+    "proofId": "pell-equation-oq-01-oq-04-oq-01",
+    "range": { "startLine": 3, "endLine": 51 },
+    "type": "context",
+    "title": "Removing the n ≥ 0 restriction",
+    "content": "The docstring frames the gap: the parent proved pellNorm(aⁿ) = pellNorm(a)ⁿ and R(aⁿ) = n·R(a) only for natural n, truncating the ℤ-indexed orbit {aⁿ : n ∈ ℤ}. The negative exponents are the conjugate/inverse solutions x − y√d, equally part of the unit group. This file extends both laws to all n ∈ ℤ; the only new ingredient is pellNorm(a⁻¹) = pellNorm(a)⁻¹.",
+    "mathContext": "$\\{a^n : n \\in \\mathbb{Z}\\}$ is the full two-sided orbit; $a^{-1} = (x, -y)$ is the conjugate solution.",
+    "significance": "context",
+    "relatedConcepts": ["Pell's equation", "regulator", "fundamental unit", "conjugate", "ℤ-linear character"],
+    "prerequisites": ["Pell equation", "group zpow", "logarithms"]
+  },
+  {
+    "id": "ann-parent-kit",
+    "proofId": "pell-equation-oq-01-oq-04-oq-01",
+    "range": { "startLine": 53, "endLine": 95 },
+    "type": "theorem",
+    "title": "Inherited homomorphism kit",
+    "content": "Re-derives the parent results the integer-power laws stand on: pellNorm_one (unit), pellNorm_mul (Brahmagupta multiplicativity, via linear_combination clearing (√d)²=d), pellNorm_mul_inv (conjugate identity (x+y√d)(x−y√d)=x²−dy²=1 from a.prop), pellNorm_ne_zero, and pellNorm_pow (natural-power law by induction). Including them keeps the entry self-contained and independently verifiable.",
+    "mathContext": "$\\mathrm{pellNorm}(a\\cdot b)=\\mathrm{pellNorm}(a)\\,\\mathrm{pellNorm}(b),\\ \\ \\mathrm{pellNorm}(a)\\,\\mathrm{pellNorm}(a^{-1})=1,\\ \\ \\mathrm{pellNorm}(a^n)=\\mathrm{pellNorm}(a)^n\\,(n\\in\\mathbb N).$",
+    "significance": "key",
+    "relatedConcepts": ["Brahmagupta identity", "norm form", "conjugate identity", "induction"],
+    "prerequisites": ["real square roots", "group law on Pell solutions"]
+  },
+  {
+    "id": "ann-inverse",
+    "proofId": "pell-equation-oq-01-oq-04-oq-01",
+    "range": { "startLine": 97, "endLine": 106 },
+    "type": "theorem",
+    "title": "Norm of the inverse is the reciprocal",
+    "content": "pellNorm_inv: pellNorm(a⁻¹) = pellNorm(a)⁻¹. The conjugate identity pellNorm(a)·pellNorm(a⁻¹) = 1 says, in the field ℝ where the norm is nonzero, that pellNorm(a⁻¹) is the multiplicative inverse of pellNorm(a). Proved by field_simp (using pellNorm_ne_zero) followed by linear_combination on pellNorm_mul_inv. This single lemma is exactly what flips the sign of the exponent in the zpow law.",
+    "mathContext": "$\\mathrm{pellNorm}(a^{-1}) = \\mathrm{pellNorm}(a)^{-1}$.",
+    "significance": "key",
+    "relatedConcepts": ["multiplicative inverse", "conjugate solution", "field arithmetic"],
+    "prerequisites": ["field inverses", "conjugate identity"]
+  },
+  {
+    "id": "ann-zpow",
+    "proofId": "pell-equation-oq-01-oq-04-oq-01",
+    "range": { "startLine": 108, "endLine": 127 },
+    "type": "theorem",
+    "title": "Integer-power norm and regulator laws",
+    "content": "pellNorm_zpow: pellNorm(aⁿ) = pellNorm(a)ⁿ for all n ∈ ℤ. Int.eq_nat_or_neg splits n = ±m; the +m branch is zpow_natCast then pellNorm_pow, the −m branch pushes both the group and real zpow through zpow_neg (Solution₁ d is a group, ℝ a field), rewrites the norm of the inverse with pellNorm_inv, and reduces to pellNorm_pow again. pellRegulator_zpow: take logs with Real.log_zpow — valid for either sign since the norm is nonzero — giving R(aⁿ) = n·R(a) for all n ∈ ℤ, the regulator as a ℤ-linear character.",
+    "mathContext": "$\\mathrm{pellNorm}(a^n) = \\mathrm{pellNorm}(a)^n,\\quad R(a^n) = n\\,R(a)\\qquad (n \\in \\mathbb{Z}).$",
+    "significance": "key",
+    "relatedConcepts": ["group zpow", "Int.eq_nat_or_neg", "Real.log_zpow", "ℤ-linear character", "discrete subgroup"],
+    "prerequisites": ["integer powers in a group", "logarithm of integer powers"]
+  }
+]
