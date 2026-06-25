@@ -58,7 +58,12 @@
     {
       "targetId": "abel-ruffini-oq-07",
       "relationship": "builds-on",
-      "description": "Home of the abstract, 0-axiom Dedekind–Frobenius bridge `orderOf_arithFrobAt_eq_inertiaDegIn` (order of the arithmetic Frobenius at an unramified prime equals the inertia degree). This entry consumes that bridge as its engine, specialised to R = ℤ, S = 𝓞 q.SplittingField, G = q.Gal."
+      "description": "Home of the abstract, 0-axiom Dedekind–Frobenius bridge `orderOf_arithFrobAt_eq_inertiaDegIn` (order of the arithmetic Frobenius at an unramified prime equals the inertia degree). This entry consumes that bridge as its engine, specialised to R = ℤ, S = 𝓞 q.SplittingField, G = q.Gal. The same specialisation applies verbatim to abel-ruffini-oq-07's quintic X⁵ − X − 1 at a Frobenius-cubic prime."
+    },
+    {
+      "targetId": "inverse-galois-a5-oq-03",
+      "relationship": "related",
+      "description": "A complementary route to inverse-Galois realizations: the 'easy half' (every Sₙ and Aₙ is a Galois group over ℚ via Hilbert irreducibility, 1892), which proves existence non-constructively. This entry instead pins down a single explicit quintic and discharges its Frobenius-divisibility obligations one named arithmetic fact at a time — constructive where oq-03 is existential."
     }
   ],
   "sorries": 0,
@@ -70,7 +75,8 @@
       "The abstract R–S–G bridge `orderOf_arithFrobAt_eq_inertiaDegIn` carries all the genuine new content (order of arithmetic Frobenius = inertia degree); the specialisation to A₅ is pure instance plumbing — but that plumbing is exactly where such transfers usually break, so verifying it compiles is the substance of this entry.",
       "`Polynomial.Gal q` is definitionally the AlgEquiv group q.SplittingField ≃ₐ[ℚ] q.SplittingField, so Mathlib's `IsGaloisGroup.of_isGalois` (stated for the notation Gal(L/K)) applies on the nose once `IsGalois ℚ q.SplittingField` is in scope — which the parent's Normal + Separable instances supply via the anonymous constructor.",
       "The reduction turns a vague gap ('Dedekind's theorem is missing') into one sharp, standard, decidable-after-construction fact: 3 ∣ inertiaDegIn(7). This is the difference between an open-ended formalization project and a single named lemma.",
-      "The arithmetic Frobenius `arithFrobAt ℤ q.Gal Q` is produced as the explicit group element of order divisible by 3, matching the informal Dedekind narrative (the (1,1,3) cycle type at 7) with a concrete Mathlib term rather than a mere existence claim."
+      "The arithmetic Frobenius `arithFrobAt ℤ q.Gal Q` is produced as the explicit group element of order divisible by 3, matching the informal Dedekind narrative (the (1,1,3) cycle type at 7) with a concrete Mathlib term rather than a mere existence claim.",
+      "Unramifiedness is not a technicality but the load-bearing hypothesis: the Frobenius automorphism is only well-defined (the decomposition group surjects onto a *cyclic* residue-field Galois group, with trivial inertia) when `ramificationIdxIn = 1`. The choice of p = 7 is forced precisely because 7 ∤ disc q = 32000², which guarantees the prime is unramified — this is why `hunram` appears as an explicit hypothesis feeding the bridge, and why a ramified prime could never serve as the witness."
     ],
     "prerequisites": [
       "Galois theory and splitting fields",
@@ -81,11 +87,25 @@
   },
   "sections": [
     {
+      "id": "imports",
+      "title": "Imports: Tower, Parent, and Abstract Bridge",
+      "startLine": 1,
+      "endLine": 4,
+      "summary": "Pulls in Mathlib (for the NumberField / Dedekind-domain / ramification machinery), the parent Proofs.InverseGaloisA5 (supplying q, q.Gal, and the Normal + Separable instances), and Proofs.DedekindFrobeniusBridge (the abstract 0-axiom order = inertia-degree engine this file specialises)."
+    },
+    {
       "id": "module-docstring",
       "title": "Problem, Bridge, and Residual Gap",
       "startLine": 5,
       "endLine": 55,
       "summary": "States the parent's axiom, the abstract bridge it reduces to, the instantiation's payoff, and the explicit Kummer–Dedekind + inertia-tower route that would discharge the remaining 3 ∣ inertiaDegIn(7) hypothesis."
+    },
+    {
+      "id": "scope-setup",
+      "title": "Scopes and the A₅ Namespace",
+      "startLine": 57,
+      "endLine": 63,
+      "summary": "Opens Polynomial and Ideal (for Gal, SplittingField, inertiaDegIn, ramificationIdxIn) and the NumberField scoped notation 𝓞 for the ring of integers, then enters namespace InverseGaloisA5DedekindInstantiation with open InverseGaloisA5 so the parent's q and its registered instances are in scope."
     },
     {
       "id": "instances",

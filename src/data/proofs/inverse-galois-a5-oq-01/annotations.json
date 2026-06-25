@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-imports",
+    "proofId": "inverse-galois-a5-oq-01",
+    "range": { "startLine": 1, "endLine": 3 },
+    "type": "context",
+    "title": "The Three-Layer Dependency Tower",
+    "content": "The instantiation is the apex of a three-file tower, and the imports make this explicit. `import Mathlib` brings the full algebraic-number-theory stack — `NumberField`, `IsDedekindDomain`, `Ideal.inertiaDegIn`, `Ideal.ramificationIdxIn`, and `IsGaloisGroup`. `import Proofs.InverseGaloisA5` supplies the concrete object of study: the quintic $q$, its Galois group `q.Gal`, the parent's `axiom three_dvd_gal_card`, and — crucially — the already-registered `Normal` and `Algebra.IsSeparable` instances reused below. `import Proofs.DedekindFrobeniusBridge` provides the abstract engine `orderOf_arithFrobAt_eq_inertiaDegIn`. This file's sole job is to weld the second to the third.",
+    "mathContext": "$\\text{(abstract bridge)} \\;+\\; \\text{(concrete A}_5\\text{ tower)} \\;\\xrightarrow{\\text{this file}}\\; \\text{(reduction of the axiom)}$",
+    "significance": "context",
+    "relatedConcepts": ["module dependencies", "code reuse", "Dedekind domain machinery", "instance resolution"],
+    "prerequisites": ["Lean 4 module system", "Mathlib import structure"]
+  },
+  {
     "id": "ann-docstring-problem",
     "proofId": "inverse-galois-a5-oq-01",
     "range": { "startLine": 5, "endLine": 42 },
