@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-docstring",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 8, "endLine": 60 },
+    "type": "context",
+    "title": "The question and its field-theoretic answer",
+    "content": "The header frames the open question — what exactly is the field of origami-constructible numbers — and states the answer proved here: it is the smallest subfield of ℂ closed under both square roots and cube roots. Origami (Huzita–Justin single-fold) does everything straightedge-and-compass does plus one new operation, real cube-root extraction, because a single fold can produce a common tangent to two parabolas. The five deliverables (structure, closure, minimality, cubic-solving, witnesses) are laid out, and the connection to the arithmetic '2^a·3^b' degree criterion of the sibling entries is recorded.",
+    "mathContext": "Origami numbers $=$ closure of $\\mathbb{Q}$ inside $\\mathbb{C}$ under $+,-,\\times,\\div,\\sqrt{\\cdot},\\sqrt[3]{\\cdot}$.",
+    "significance": "context",
+    "relatedConcepts": ["Huzita–Justin axioms", "constructible numbers", "field extensions", "Galois theory"],
+    "prerequisites": ["field theory", "complex numbers"]
+  },
+  {
+    "id": "ann-isorigami-def",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 66, "endLine": 76 },
+    "type": "definition",
+    "title": "IsOrigami: the inductive closure",
+    "content": "The heart of the formalization is to model the origami numbers not analytically but as a generation principle: IsOrigami is the least predicate on ℂ containing every rational and closed under addition, negation, multiplication, inversion, and — the two extraction constructors — any w with w²=a or w³=a of an origami a. Encoding the field as an inductive type is what makes both the minimality theorem (one case per constructor) and Cardano's formula (the √ and ∛ steps are literally the sqrt/cbrt constructors) fall out by structural induction.",
+    "mathContext": "$\\mathrm{IsOrigami}$ is the least predicate with $\\mathbb{Q}\\subseteq$ it, closed under $+,-,\\times,{}^{-1}$ and under $w^2=a,\\,w^3=a$.",
+    "significance": "key",
+    "relatedConcepts": ["inductive predicate", "closure operator", "generation by operations"],
+    "prerequisites": ["inductive types in Lean", "subfield generation"]
+  },
+  {
+    "id": "ann-derived-ops",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 78, "endLine": 90 },
+    "type": "technique",
+    "title": "Derived operations: 0, 1, subtraction, division",
+    "content": "Subtraction and division are not separate constructors but derived: a − b = a + (−b) and a / b = a · b⁻¹, with 0 and 1 coming from rat 0 and rat 1. Keeping the inductive type minimal (only the truly primitive operations) shortens every structural induction later, since there are fewer cases to discharge.",
+    "mathContext": "$a-b := a+(-b)$, $a/b := a\\cdot b^{-1}$; $0,1$ from $\\mathbb{Q}$.",
+    "significance": "technical",
+    "relatedConcepts": ["derived operations", "minimal generating set"],
+    "prerequisites": ["ring operations"]
+  },
+  {
+    "id": "ann-subfield",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 92, "endLine": 102 },
+    "type": "definition",
+    "title": "origamiField: packaging the closure as a Subfield ℂ",
+    "content": "The predicate IsOrigami is bundled into a genuine Subfield ℂ, discharging each field-axiom membership obligation with the corresponding inductive constructor. Membership is definitionally IsOrigami (mem_origamiField is Iff.rfl), so the bundled object and the raw predicate are interchangeable in proofs.",
+    "mathContext": "$\\mathrm{origamiField}\\le\\mathbb{C}$ with $z\\in\\mathrm{origamiField}\\iff\\mathrm{IsOrigami}(z)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Subfield structure", "bundled algebraic structures"],
+    "prerequisites": ["Mathlib Subfield API"]
+  },
+  {
+    "id": "ann-closure",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 104, "endLine": 127 },
+    "type": "technique",
+    "title": "Closure under roots and conjugation",
+    "content": "Closure under square and cube roots is immediate (the sqrt/cbrt constructors). Closure under complex conjugation is the first real induction: conjugation commutes with all four field operations and sends an n-th root of a to an n-th root of conj(a), so each constructor case reproduces itself after conjugating. This conjugation-closedness matches Alperin's characterization, which lists conjugation alongside √ and ∛.",
+    "mathContext": "$a\\in F,\\,w^2=a\\Rightarrow w\\in F$; likewise for $w^3$; and $z\\in F\\Rightarrow\\bar z\\in F$.",
+    "significance": "supporting",
+    "relatedConcepts": ["complex conjugation", "starRingEnd", "induction on a predicate"],
+    "prerequisites": ["ring homomorphisms commuting with operations"]
+  },
+  {
+    "id": "ann-minimality",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 129, "endLine": 162 },
+    "type": "insight",
+    "title": "The exact characterization: origamiField is least",
+    "content": "This is the headline theorem. origamiField_le_of_closed proves that ANY subfield K ⊆ ℂ closed under square and cube roots contains every origami number, by structural induction on IsOrigami: rationals are in K (it's a subfield), the field-operation cases are K's own closure, and the two root cases are exactly the closure hypotheses on K. Combined with origamiField's own closure, origamiField_isLeast packages this as IsLeast — origamiField is the least element of the set of root-closed subfields. This is precisely the field-theoretic object the open question asked to identify.",
+    "mathContext": "$\\mathrm{origamiField} = \\min\\{K\\le\\mathbb{C} \\mid K\\text{ closed under }\\sqrt{\\cdot},\\sqrt[3]{\\cdot}\\}$, an $\\mathrm{IsLeast}$ statement.",
+    "significance": "key",
+    "relatedConcepts": ["least element", "IsLeast", "universal property", "structural induction"],
+    "prerequisites": ["subfield closure", "order theory on subfields"]
+  },
+  {
+    "id": "ann-quadratic",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 164, "endLine": 186 },
+    "type": "technique",
+    "title": "Origami solves quadratics: completing the square",
+    "content": "Every root of an origami-coefficient quadratic r²+br+c=0 is origami. The proof completes the square: 2r+b squares to the discriminant b²−4c (an origami number), so 2r+b is an origami square root, and r = ((2r+b)−b)/2 is recovered by origami field operations. This is the part of origami's power already shared with straightedge-and-compass (only square roots needed).",
+    "mathContext": "$(2r+b)^2 = b^2-4c$, so $r = \\tfrac{(2r+b)-b}{2}\\in\\mathrm{origamiField}$.",
+    "significance": "supporting",
+    "relatedConcepts": ["completing the square", "discriminant", "quadratic formula"],
+    "prerequisites": ["origamiField_sqrt_closed"]
+  },
+  {
+    "id": "ann-cardano",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 188, "endLine": 235 },
+    "type": "insight",
+    "title": "Cardano's formula inside the origami field",
+    "content": "The operational core: every depressed cubic r³+pr+q with origami coefficients has an origami root, by a full formalization of Cardano's formula. A square root s of the discriminant (q/2)²+(p/3)³ and a cube root u of −q/2+s are both origami (the √ and ∛ closures), and r = u − p/(3u) is the Cardano root. A separate p=0 branch handles the degenerate u=0 case (then r³=−q is a direct cube root). The resolvent identity v³=−q/2−s and the cubic vanishing are closed by linear_combination/ring. This is exactly where the cube-root constructor — origami's new power — does work straightedge-and-compass cannot.",
+    "mathContext": "$r = u - \\tfrac{p}{3u}$ with $u^3 = -\\tfrac q2 + \\sqrt{(q/2)^2+(p/3)^3}$ solves $r^3+pr+q=0$.",
+    "significance": "key",
+    "relatedConcepts": ["Cardano's formula", "depressed cubic", "resolvent", "discriminant"],
+    "prerequisites": ["origamiField_cbrt_closed", "cubic equations"]
+  },
+  {
+    "id": "ann-root-cubic",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 237, "endLine": 252 },
+    "type": "technique",
+    "title": "Every root of an origami cubic is origami",
+    "content": "Upgrades 'has an origami root' to 'every root is origami'. Given any root r and the Cardano root r₀, the cubic factors as (r−r₀)(r²+r₀r+(r₀²+p))=0. Either r=r₀, or r is a root of the residual quadratic with origami coefficients (r₀²+p), handled by origamiField_root_quadratic. This closes the gap between existence and the full membership statement needed for the witnesses.",
+    "mathContext": "$r^3+pr+q = (r-r_0)(r^2+r_0 r + (r_0^2+p))$; the quadratic factor has origami coefficients.",
+    "significance": "supporting",
+    "relatedConcepts": ["polynomial factoring", "reduction to quadratic", "root extraction"],
+    "prerequisites": ["origamiField_cubic_has_root", "origamiField_root_quadratic"]
+  },
+  {
+    "id": "ann-witnesses",
+    "proofId": "angle-trisection-oq-04-oq-02",
+    "range": { "startLine": 254, "endLine": 293 },
+    "type": "concept",
+    "title": "Witnesses: i, ∛2 (Delian), and cos 20° (trisection)",
+    "content": "Three concrete origami numbers make the abstract characterization tangible. i is a square root of −1. A cube root of 2 settles the Delian problem of doubling the cube — impossible with straightedge-and-compass, achievable with origami. cos 20° is origami because the triple-angle identity 4cos³θ−3cosθ=cos3θ at θ=π/9 makes it a root of 8x³−6x−1=0 (here written x³−(3/4)x−1/8), an origami-coefficient cubic, so origamiField_root_cubic applies. This is the formal statement that origami trisects the 60° angle — the classical impossibility dissolved by the extra cube-root power.",
+    "mathContext": "$\\cos 20^\\circ$ solves $x^3-\\tfrac34 x-\\tfrac18=0$; $\\sqrt[3]{2}$ solves $x^3-2=0$; both in $\\mathrm{origamiField}$.",
+    "significance": "key",
+    "relatedConcepts": ["angle trisection", "doubling the cube", "triple-angle identity", "Delian problem"],
+    "prerequisites": ["origamiField_root_cubic", "Real.cos_three_mul"]
+  }
+]
