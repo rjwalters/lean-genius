@@ -1,0 +1,110 @@
+[
+  {
+    "id": "cauchy-interlacing-oq030102-header",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 3, "endLine": 47 },
+    "type": "context",
+    "title": "A-posteriori certification of a computed eigenpair",
+    "content": "The file proves the converse of the parent entry's Weyl perturbation bound. Weyl's a-priori bound certifies that the exact eigenvalues of two nearby operators are close; the residual bound here certifies a single approximately-computed eigenpair (λ, x) from data the solver already holds. If the residual ‖T x − λ·x‖ is small, then some genuine eigenvalue μ(k) must lie within that residual of λ. The presentation T(b i) = μ i • b i with b orthonormal and μ real is exactly the spectral content of a Hermitian operator, taken as input rather than derived, so the argument never needs an adjoint.",
+    "mathContext": "$\\operatorname{dist}(\\lambda, \\sigma(T)) \\le \\dfrac{\\lVert T x - \\lambda x\\rVert}{\\lVert x\\rVert}$ — the Hermitian/normal case of the Bauer–Fike theorem (1960).",
+    "significance": "context",
+    "relatedConcepts": ["Bauer–Fike theorem", "a-posteriori error estimate", "residual norm", "spectral theorem", "Weyl perturbation bound"],
+    "prerequisites": ["spectral theory of Hermitian operators", "numerical linear algebra"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-setup",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 49, "endLine": 53 },
+    "type": "definition",
+    "title": "Working over an RCLike scalar field with an inner product space",
+    "content": "The development is stated for an arbitrary scalar field 𝕜 satisfying RCLike (so 𝕜 is ℝ or ℂ) and a complex/real inner product space E. Eigenvalues μ are taken to be real-valued (μ : Fin n → ℝ) and coerced into 𝕜 where needed — reflecting that a Hermitian operator has real spectrum. Keeping 𝕜 abstract means the same proof serves both the real-symmetric and complex-Hermitian cases.",
+    "mathContext": "$\\mathbb{K} \\in \\{\\mathbb{R}, \\mathbb{C}\\}$, $E$ an inner product space over $\\mathbb{K}$, eigenvalues $\\mu_i \\in \\mathbb{R}$.",
+    "significance": "technical",
+    "relatedConcepts": ["RCLike", "inner product space", "real spectrum of self-adjoint operators"],
+    "prerequisites": ["inner product spaces", "complex vs real scalar fields"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-parseval",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 57, "endLine": 64 },
+    "type": "technique",
+    "title": "Parseval's identity from the coordinate isometry",
+    "content": "Parseval's identity ‖v‖² = ∑ᵢ ‖⟪bᵢ, v⟫‖² is obtained, not by re-deriving the orthogonal expansion, but by transporting the norm through the linear isometry b.repr : E ≃ₗᵢ EuclideanSpace. Since b.repr preserves norms (LinearIsometryEquiv.norm_map) and EuclideanSpace.norm_sq_eq says the squared norm is the sum of squared coordinates, identifying the coordinate b.repr v i with ⟪bᵢ, v⟫ (repr_apply_apply) finishes in two rewrites. This single identity supplies both the normalisation ∑|cᵢ|² = 1 and the residual energy decomposition used later.",
+    "mathContext": "$\\lVert v\\rVert^2 = \\sum_i \\lvert\\langle b_i, v\\rangle\\rvert^2$, with $b_i$-coordinate $c_i = \\langle b_i, v\\rangle$.",
+    "significance": "key",
+    "relatedConcepts": ["Parseval's identity", "orthonormal basis", "linear isometry", "EuclideanSpace", "Bessel's inequality"],
+    "prerequisites": ["orthonormal bases", "Hilbert space coordinates"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-inner-eigen",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 68, "endLine": 89 },
+    "type": "insight",
+    "title": "The eigen-coordinate identity needs no adjoint",
+    "content": "The structural heart of the proof: ⟪bᵢ, T x⟫ = μᵢ · ⟪bᵢ, x⟫ for every x. Rather than moving T across the inner product (which would require self-adjointness), x is expanded in the eigenbasis x = ∑ⱼ cⱼ bⱼ (sum_repr'), T is pushed through the finite sum by linearity (map_sum, map_smul) using T bⱼ = μⱼ bⱼ, and the resulting double sum collapses to its diagonal term by orthonormality (Finset.sum_eq_single together with orthonormal_iff_ite, which gives ⟪bᵢ, bⱼ⟫ = δᵢⱼ). The bᵢ-coordinate of T x is therefore exactly μᵢ times the bᵢ-coordinate of x.",
+    "mathContext": "$\\langle b_i, T x\\rangle = \\Big\\langle b_i, \\sum_j c_j \\mu_j b_j\\Big\\rangle = \\sum_j c_j \\mu_j \\langle b_i, b_j\\rangle = \\mu_i c_i.$",
+    "significance": "key",
+    "relatedConcepts": ["eigenbasis expansion", "orthonormality", "linearity of operators", "Kronecker delta", "diagonalization"],
+    "prerequisites": ["eigenvectors and eigenvalues", "linear operators on inner product spaces"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-coordinatewise",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 110, "endLine": 120 },
+    "type": "technique",
+    "title": "Coordinatewise residual and its squared norm",
+    "content": "Combining linearity of the inner product (inner_sub_right) with the eigen-coordinate identity gives the residual's coordinates in closed form: ⟪bᵢ, T x − λ·x⟫ = (μᵢ − λ)·cᵢ. Taking the squared norm and using RCLike.norm_ofReal (‖(↑r : 𝕜)‖ = |r|) together with sq_abs turns the scalar factor into the real number (μᵢ − λ)², yielding ‖⟪bᵢ, T x − λ·x⟫‖² = (μᵢ − λ)²·|cᵢ|². Each squared residual coordinate is a squared eigenvalue gap weighted by the squared coordinate magnitude.",
+    "mathContext": "$\\langle b_i, T x - \\lambda x\\rangle = (\\mu_i - \\lambda)c_i, \\qquad \\lVert\\langle b_i, T x - \\lambda x\\rangle\\rVert^2 = (\\mu_i - \\lambda)^2\\lvert c_i\\rvert^2.$",
+    "significance": "supporting",
+    "relatedConcepts": ["sesquilinearity", "real eigenvalues", "norm of a scalar multiple"],
+    "prerequisites": ["inner product linearity", "norms of complex scalars"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-main",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 93, "endLine": 151 },
+    "type": "concept",
+    "title": "The residual eigenvalue bound: a weighted average dominates its minimum",
+    "content": "The main theorem dist_to_spectrum_le_residual. Parseval converts both quantities into sums over the eigenbasis: ∑ᵢ|cᵢ|² = 1 from ‖x‖ = 1, and ∑ᵢ(μᵢ − λ)²|cᵢ|² = ε² for the residual ε = ‖T x − λ·x‖. The set Fin n is nonempty (an empty index would force ‖x‖ = 0, contradicting the unit constraint), so Finset.exists_min_image selects an index k minimising (μᵢ − λ)². Because the weights |cᵢ|² are nonnegative and sum to 1, the minimum value (μ(k) − λ)² is at most the weighted average ∑ᵢ(μᵢ − λ)²|cᵢ|² = ε². Monotonicity of the square root (sqrt_sq_eq_abs, sqrt_sq) then delivers |μ(k) − λ| ≤ ε. The witness index k makes the result constructive.",
+    "mathContext": "$(\\mu_k - \\lambda)^2 = (\\mu_k-\\lambda)^2\\sum_i|c_i|^2 = \\sum_i (\\mu_k-\\lambda)^2|c_i|^2 \\le \\sum_i (\\mu_i-\\lambda)^2|c_i|^2 = \\lVert T x - \\lambda x\\rVert^2.$",
+    "significance": "key",
+    "relatedConcepts": ["weighted average bound", "minimising index", "convex combination", "distance to spectrum", "constructive witness"],
+    "prerequisites": ["convex combinations", "monotonicity of the square root", "finite sums"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-epsilon-form",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 153, "endLine": 163 },
+    "type": "concept",
+    "title": "Practical ε-form: a computed residual bound suffices",
+    "content": "In practice a solver computes only an upper bound ε on the residual, not its exact value. residual_eigenvalue_bound packages this: if ‖T x − λ·x‖ ≤ ε then some eigenvalue lies within ε of λ. It follows from the main theorem by a single transitivity step (le_trans). This is the form used as a stopping criterion in iterative eigensolvers — once the computed residual drops below a tolerance ε, the algorithm certifies an eigenvalue to within ε.",
+    "mathContext": "$\\lVert T x - \\lambda x\\rVert \\le \\varepsilon \\;\\Longrightarrow\\; \\exists k,\\; \\lvert\\mu_k - \\lambda\\rvert \\le \\varepsilon.$",
+    "significance": "supporting",
+    "relatedConcepts": ["stopping criterion", "Lanczos algorithm", "Davidson method", "inverse iteration", "transitivity"],
+    "prerequisites": ["iterative eigenvalue algorithms"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-gap",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 167, "endLine": 180 },
+    "type": "concept",
+    "title": "Spectral-gap lower bound: rejecting a candidate eigenvalue",
+    "content": "The contrapositive, residual_gt_of_spectral_gap: if λ is strictly more than ε away from every eigenvalue, then no unit vector can have residual ≤ ε. Proved by by_contra + push_neg, feeding the negated hypothesis into the ε-form to contradict the gap assumption. This is the exact statement a solver uses to reject a candidate — a large spectral gap forces a large residual, so an observed small residual rules out the candidate being far from the spectrum.",
+    "mathContext": "$\\big(\\forall i,\\; \\varepsilon < \\lvert\\mu_i - \\lambda\\rvert\\big) \\;\\Longrightarrow\\; \\varepsilon < \\lVert T x - \\lambda x\\rVert.$",
+    "significance": "supporting",
+    "relatedConcepts": ["contrapositive", "spectral gap", "lower bound", "candidate rejection"],
+    "prerequisites": ["proof by contradiction", "logical contraposition"]
+  },
+  {
+    "id": "cauchy-interlacing-oq030102-sharpness",
+    "proofId": "cauchy-interlacing-theorem-oq-03-oq-01-oq-02",
+    "range": { "startLine": 182, "endLine": 192 },
+    "type": "insight",
+    "title": "Sharpness: an exact eigenpair has zero residual",
+    "content": "The closing example certifies sharpness. Taking x = b j (an exact eigenvector, automatically a unit vector by b.orthonormal.1 j) and λ = μ j makes the residual exactly 0, and the bound reads |μ(j) − μ(j)| = 0 ≤ 0 — attained with equality. The estimate therefore cannot be improved in general: there is no slack to remove when the input is an exact eigenpair.",
+    "mathContext": "$x = b_j,\\ \\lambda = \\mu_j \\;\\Rightarrow\\; \\lVert T b_j - \\mu_j b_j\\rVert = 0,\\quad \\lvert\\mu_j - \\mu_j\\rvert = 0 \\le 0.$",
+    "significance": "context",
+    "relatedConcepts": ["sharpness of an inequality", "exact eigenpair", "tightness", "equality case"],
+    "prerequisites": ["eigenvectors"]
+  }
+]
