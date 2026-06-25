@@ -1258,6 +1258,7 @@ import Proofs.Erdos1015OQ05
 import Proofs.Erdos1015Problem
 import Proofs.Erdos1016Problem
 import Proofs.Erdos1017OQ01
+import Proofs.Erdos1017OQ02
 import Proofs.Erdos1017OQ03
 import Proofs.Erdos1017Problem
 import Proofs.Erdos1018Aristotle
