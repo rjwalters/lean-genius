@@ -2,12 +2,12 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 
 Formalized the exact arithmetic of mediant insertion on Farey gaps:
-`proofs/Proofs/Erdos1005ProblemOQ02.lean` (256 lines, 13 theorems, 1 def,
+`proofs/Proofs/Erdos1005ProblemOQ02.lean` (317 lines, 19 theorems, 1 def,
 0 sorries, 0 axioms; #print axioms reports only propext / Classical.choice /
 Quot.sound).
 
@@ -30,6 +30,18 @@ on the longest run of *similarly ordered* Farey fractions — is **not**
 addressed. That constant `c ∈ [1/12, 1/4]` remains open. This session
 formalizes the verified mediant calculus that such constructions rest on, not
 a resolution of the bound.
+
+## Iteration 3 addition (verified)
+
+Added **§5 (strict denominator growth + depth-two refinement)**, 0-sorry /
+0-axiom: `interior_denom_gt_max` (every in-gap fraction has denominator
+> max(b,d) — refinement strictly raises the smallest denominator);
+`denom_ge_left_subgap`/`denom_ge_right_subgap` (each sub-gap is again
+unimodular, giving depth-two bounds q ≥ 2b+d, q ≥ b+2d); and the headline
+`denom_ge_of_between_ne_mediant` — the mediant is the *unique* denominator-(b+d)
+point, and the next admissible denominator jumps by ≥ min(b,d). This is the
+strict-growth step the counting argument rests on; the 1/12 run constant itself
+remains open.
 
 ## Next Action
 
