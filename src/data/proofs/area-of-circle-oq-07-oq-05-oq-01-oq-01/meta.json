@@ -1,0 +1,171 @@
+{
+  "id": "area-of-circle-oq-07-oq-05-oq-01-oq-01",
+  "slug": "area-of-circle-oq-07-oq-05-oq-01-oq-01",
+  "leanFile": {
+    "imports": [
+      "Proofs.AreaOfCircleOQ07OQ05OQ01",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Real",
+      "MeasureTheory"
+    ],
+    "namespace": "AreaOfCircleOQ07OQ05OQ01OQ01",
+    "lineCount": 98,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "path": "Proofs/AreaOfCircleOQ07OQ05OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "title": "Vanishing of the Odd Gaussian Moments and the Full Moment Sequence ∫ x^{2n+1} e^{-x²} = 0",
+  "description": "Completes the moment sequence of the standard Gaussian weight opened by the parent's even moments. For every n the odd moment vanishes, ∫_ℝ x^{2n+1} e^{-x²} dx = 0, by a pure symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant (integral_neg_eq_self), so the integral equals its own negation. The vanishing is genuine, not an artefact of non-integrability — the integrand is Lebesgue integrable. Folding this with the parent's even-moment closed form gives the full moment sequence ∫_ℝ x^k e^{-x²} dx = (k-1)‼·√π/2^{k/2} for even k and 0 for odd k, indexed by a single natural number. 98 lines, 3 theorems, 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/AreaOfCircleOQ07OQ05OQ01OQ01.lean",
+    "tags": [
+      "analysis",
+      "gaussian-integral",
+      "odd-function",
+      "symmetry",
+      "special-functions",
+      "measure-theory",
+      "moments",
+      "research"
+    ],
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 98,
+    "theoremCount": 3,
+    "definitionCount": 0,
+    "badge": "mathlib",
+    "originalContributions": [
+      "gaussian_odd_moment: ∫_ℝ x^{2n+1} e^{-x²} dx = 0 for every n : ℕ — the odd moments of the standard Gaussian weight all vanish. The proof is a pure symmetry argument: setting f x = x^{2n+1} e^{-x²}, oddness of f ((-x)^{2n+1} = -(x^{2n+1}) via Odd.neg_pow, (-x)² = x²) together with negation-invariance of Lebesgue measure (integral_neg_eq_self) gives ∫ f = ∫ f(-x) = ∫ -f = -∫ f, forcing ∫ f = 0. No integrability hypothesis is needed because integral_neg_eq_self and integral_neg are unconditional.",
+      "gaussian_moment: ∫_ℝ x^k e^{-x²} dx = if Even k then (k-1)‼·√π / 2^{k/2} else 0 — the full moment sequence of the standard Gaussian, indexed by a single natural number k. Unifies the parent's even-moment evaluation (AreaOfCircleOQ07OQ05OQ01.gaussian_even_moment) with the odd-moment vanishing above by case-splitting on the parity of k (Nat.even_or_odd), the even branch matching (k/2 = k', (k-1)‼) and the odd branch reducing to gaussian_odd_moment. This is the parent open question's explicit deliverable: the complete moment table in one statement.",
+      "gaussian_first_odd_moment: ∫_ℝ x e^{-x²} dx = 0 — the n = 0 instance, the first odd moment, recorded as a sanity check."
+    ],
+    "prerequisites": [
+      "Lebesgue integration over ℝ (MeasureTheory)",
+      "Negation-invariance of volume on ℝ: integral_neg_eq_self (additive form of integral_inv_eq_self, IsNegInvariant)",
+      "Oddness of integer powers: Odd.neg_pow, neg_sq",
+      "Parity case split: Nat.even_or_odd, Nat.not_even_iff_odd",
+      "Parent: area-of-circle-oq-07-oq-05-oq-01 (the even moments ∫ x^{2n} e^{-x²} = (2n-1)‼·√π/2ⁿ)"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "integral_neg_eq_self",
+        "description": "∫ x, f (-x) ∂μ = ∫ x, f x ∂μ for a negation-invariant measure μ (the additive form, via @[to_additive], of integral_inv_eq_self). Volume on ℝ is IsNegInvariant, so the substitution x ↦ -x leaves the integral unchanged; combined with oddness this is the whole proof of the odd-moment vanishing.",
+        "module": "Mathlib.MeasureTheory.Group.Integral"
+      },
+      {
+        "theorem": "Odd.neg_pow",
+        "description": "(-a)^n = -(a^n) when n is odd. Applied with the odd exponent 2n+1 (witness ⟨n, rfl⟩ : Odd (2n+1)) to show the integrand x^{2n+1} e^{-x²} is odd.",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "integral_neg",
+        "description": "∫ x, -f x = -∫ x, f x, the linearity step that turns the oddness rewrite ∫ f(-x) = ∫ -f into ∫ f(-x) = -∫ f.",
+        "module": "Mathlib.MeasureTheory.Integral.Bochner"
+      },
+      {
+        "theorem": "AreaOfCircleOQ07OQ05OQ01.gaussian_even_moment",
+        "description": "Parent entry: ∫_ℝ x^{2n} e^{-x²} = (2n-1)‼·√π/2ⁿ. Supplies the even branch of the unified full moment sequence gaussian_moment.",
+        "module": "Proofs.AreaOfCircleOQ07OQ05OQ01"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "The moments of the Gaussian weight, ∫_{-∞}^{∞} x^k e^{-x²} dx, are a cornerstone of analysis and probability: the even ones encode the variance, kurtosis, and all higher even cumulants of the normal distribution, while the odd ones all vanish. The vanishing of the odd moments is the prototype of the elementary but powerful principle that the integral of an odd function over a symmetric domain is zero — a fact already used implicitly by Gauss and Laplace and made routine by every subsequent analysis text. In probability it is the statement that a centered symmetric distribution has zero skewness and zero odd central moments E[X^{2n+1}] = 0; in physics it is why the dipole and all odd multipole expectations of a ground-state harmonic oscillator vanish. The parent entry computed the even moments by an integration-by-parts recursion; this entry supplies the complementary odd moments by symmetry, completing the full moment table.",
+    "problemStatement": "Prove that for every natural number $n$, $\\displaystyle\\int_{-\\infty}^{\\infty} x^{2n+1}\\,e^{-x^2}\\,dx = 0$, using the odd symmetry of the integrand, and combine this with the even-moment formula to obtain the full moment sequence $\\displaystyle\\int_{-\\infty}^{\\infty} x^{k}\\,e^{-x^2}\\,dx = \\begin{cases}(k-1)!!\\,\\sqrt{\\pi}/2^{k/2} & k \\text{ even}\\\\ 0 & k \\text{ odd}\\end{cases}$ for all $k \\in \\mathbb{N}$.",
+    "proofStrategy": "The odd-moment vanishing (gaussian_odd_moment) is a three-line symmetry argument. Write f(x) = x^{2n+1} e^{-x²}. (1) f is odd: (-x)^{2n+1} = -(x^{2n+1}) since 2n+1 is odd (Odd.neg_pow) and (-x)² = x² (neg_sq), so f(-x) = -f(x). (2) Lebesgue measure on ℝ is invariant under x ↦ -x, so ∫ f(-x) = ∫ f (integral_neg_eq_self). (3) But ∫ f(-x) = ∫ (-f) = -∫ f (integral_neg). Chaining gives ∫ f = -∫ f, hence ∫ f = 0 (linarith). No integrability hypothesis enters — both Mathlib lemmas hold unconditionally — which is exactly the point: the vanishing is symmetry, not divergence (the integrand is in fact integrable, parent's integrable_pow_mul_gaussian). The full moment sequence (gaussian_moment) case-splits on the parity of k via Nat.even_or_odd: the even branch k = k' + k' reduces, after rewriting k'+k' = 2k' and (k'+k')/2 = k', to the parent's gaussian_even_moment; the odd branch k = 2k'+1 reduces to gaussian_odd_moment with the if-condition discharged by Nat.not_even_iff_odd.",
+    "keyInsights": [
+      "Odd symmetry alone forces the integral to vanish — no value computation is needed. The entire content is that f(-x) = -f(x) and that the measure is negation-invariant, so the integral is its own negative.",
+      "The vanishing is symmetry, not non-integrability. A naive reading might attribute ∫ = 0 to the integral failing to converge, but x^{2n+1} e^{-x²} is genuinely Lebesgue integrable (parent's integrable_pow_mul_gaussian); the integral converges and its value is exactly 0 because positive and negative halves cancel.",
+      "integral_neg_eq_self is the clean encapsulation of the symmetry. Rather than splitting ℝ into (-∞,0] and [0,∞) and substituting, the single negation-invariance lemma (the additive image of integral_inv_eq_self for IsNegInvariant measures) does all the work in one rewrite.",
+      "Even and odd moments assemble into one parity-indexed statement. gaussian_moment puts the parent's combinatorial even formula and this entry's vanishing odd formula under a single if Even k, giving the complete moment table E[X^k]·√π-normalization in one theorem keyed on k."
+    ]
+  },
+  "sections": [
+    {
+      "id": "docstring",
+      "title": "Module Docstring: Open Question and Symmetry Strategy",
+      "startLine": 4,
+      "endLine": 43,
+      "summary": "States the open question — add the vanishing odd moments to complete the Gaussian moment sequence — and outlines the symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant, so the integral equals its own negation and must be zero. Emphasizes that the vanishing is genuine symmetry, not non-integrability, and that folding it with the parent's even moments yields the full parity-indexed sequence.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
+    },
+    {
+      "id": "odd-moment",
+      "title": "The Odd Moments Vanish",
+      "startLine": 50,
+      "endLine": 71,
+      "summary": "theorem gaussian_odd_moment: ∫_ℝ x^{2n+1} e^{-x²} = 0. Sets f x = x^{2n+1} e^{-x²}, proves oddness f(-x) = -f(x) via Odd.neg_pow and neg_sq, then chains integral_neg_eq_self (∫ f(-x) = ∫ f) with the oddness rewrite ∫ f(-x) = -∫ f (integral_neg) to get ∫ f = -∫ f, closed by linarith. Unconditional — no integrability needed.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^{2n+1} e^{-x^2}\\,dx = 0$"
+    },
+    {
+      "id": "first-moment",
+      "title": "Sanity Check: The First Odd Moment",
+      "startLine": 73,
+      "endLine": 77,
+      "summary": "theorem gaussian_first_odd_moment: ∫_ℝ x e^{-x²} = 0, the n = 0 instance, confirming the general formula on the simplest case.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x\\, e^{-x^2}\\,dx = 0$"
+    },
+    {
+      "id": "full-sequence",
+      "title": "The Full Moment Sequence",
+      "startLine": 79,
+      "endLine": 97,
+      "summary": "theorem gaussian_moment: ∫_ℝ x^k e^{-x²} = if Even k then (k-1)‼·√π/2^{k/2} else 0. Case-splits on Nat.even_or_odd k; the even branch k = k'+k' rewrites to the parent's gaussian_even_moment (using (k'+k')/2 = k' and k'+k' = 2k'), the odd branch k = 2k'+1 reduces to gaussian_odd_moment with the parity discharged by Nat.not_even_iff_odd.",
+      "mathContext": "$\\int_{-\\infty}^{\\infty} x^{k} e^{-x^2}\\,dx = \\begin{cases}(k-1)!!\\sqrt{\\pi}/2^{k/2} & k\\text{ even}\\\\ 0 & k\\text{ odd}\\end{cases}$"
+    }
+  ],
+  "openQuestions": [
+    {
+      "id": "area-of-circle-oq-07-oq-05-oq-01-oq-01-oq-01",
+      "question": "Package the entire moment sequence into the Gaussian moment generating function ∫_ℝ e^{tx} e^{-x²} dx = √π·e^{t²/4}, recovering both the even moments (as the even Taylor coefficients) and the odd-moment vanishing (as the absence of odd-degree terms after completing the square) from one closed form.",
+      "significance": "medium"
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "area-of-circle-oq-07-oq-05-oq-01",
+      "relationship": "extends",
+      "description": "Parent. Computed the even moments ∫ x^{2n} e^{-x²} = (2n-1)‼·√π/2ⁿ; this entry supplies the complementary odd moments (all zero) and assembles both into the full parity-indexed moment sequence gaussian_moment."
+    },
+    {
+      "targetId": "area-of-circle-oq-07-oq-05",
+      "relationship": "related",
+      "description": "Grandparent. The second moment ∫ x² e^{-x²} = √π/2 is the first nontrivial even moment; together with the vanishing first odd moment ∫ x e^{-x²} = 0 proved here it illustrates the even/odd dichotomy."
+    },
+    {
+      "targetId": "gaussian-integral",
+      "relationship": "related",
+      "description": "The Gaussian integral family. With the even moments already in the gallery, this entry's odd-moment vanishing completes the full moment table of the standard Gaussian weight."
+    }
+  ],
+  "references": [
+    {
+      "title": "Mathlib4: MeasureTheory.Group.Integral",
+      "author": "Mathlib Community",
+      "year": "2025",
+      "venue": "leanprover-community/mathlib4",
+      "description": "Source of integral_neg_eq_self (the additive, negation-invariant form of integral_inv_eq_self) used to encode the odd symmetry."
+    },
+    {
+      "title": "Fourier Analysis",
+      "author": "Elias M. Stein and Rami Shakarchi",
+      "year": "2003",
+      "venue": "Princeton University Press",
+      "description": "Classical treatment of Gaussian moments and the odd-function symmetry that kills the odd ones."
+    }
+  ],
+  "sorries": 0,
+  "conclusion": {
+    "summary": "For every n : ℕ the odd moment of the standard Gaussian weight vanishes, ∫_ℝ x^{2n+1} e^{-x²} dx = 0 (gaussian_odd_moment), by a pure symmetry argument: the integrand is odd and Lebesgue measure on ℝ is negation-invariant (integral_neg_eq_self), so the integral equals its own negation. Combined with the parent's even-moment closed form, this gives the full moment sequence ∫_ℝ x^k e^{-x²} dx = (k-1)‼·√π/2^{k/2} for even k and 0 for odd k (gaussian_moment). 98 lines, 3 theorems, 0 definitions, 0 axioms, 0 sorries; depends only on propext, Classical.choice, Quot.sound.",
+    "implications": "This completes the moment table of the standard Gaussian weight that the parent's even moments opened: every ∫ x^k e^{-x²} now has a machine-checked value, and the odd cases are handled uniformly by symmetry rather than computation. The key methodological point — that the vanishing is genuine cancellation of an integrable odd function, not a divergence artefact — is made explicit by deriving the result from the unconditional negation-invariance lemma.",
+    "openQuestions": [
+      "Package the entire moment sequence into the Gaussian moment generating function ∫_ℝ e^{tx} e^{-x²} = √π·e^{t²/4}, from which both the even moments and the odd-moment vanishing fall out by completing the square."
+    ]
+  }
+}
