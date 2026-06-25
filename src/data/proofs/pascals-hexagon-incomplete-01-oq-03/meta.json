@@ -1,0 +1,182 @@
+{
+  "id": "pascals-hexagon-incomplete-01-oq-03",
+  "title": "Positive-Definite Conics Are Never Projectively Equivalent to stdConic",
+  "slug": "pascals-hexagon-incomplete-01-oq-03",
+  "description": "The parent entry (pascals-hexagon-incomplete-01) proves the real-point hypothesis of the Pascal's Hexagon Sylvester reduction is essential, using the single positive-definite witness diag(1,1,1). Its OQ-03 asks for the general statement: any positive-definite symmetric conic — not just the identity — fails to be projectively equivalent to the standard conic stdConic = diag(1,1,-1) over ℝ. This entry proves exactly that, for an arbitrary conic C satisfying Mathlib's Matrix.PosDef. A positive-definite quadratic form vanishes at no nonzero real point, whereas stdConic is isotropic (it carries the real point (1,0,1) ≠ 0); pulling that point back through any invertible projective transformation would yield a nonzero real zero of C, a contradiction. The bridge conicQuadraticForm_eq_dotProduct identifies the file-local form ∑ᵢⱼ Cᵢⱼ pᵢ pⱼ with p ⬝ᵥ (C *ᵥ p), connecting to Mathlib's positive-definite matrix API, and the parent's identity-conic result is recovered as the special case Matrix.PosDef.one.",
+  "meta": {
+    "author": "Blaise Pascal (1639, hexagon theorem); James Joseph Sylvester (law of inertia); formalized in Lean 4",
+    "date": "1639",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PascalsHexagonIncomplete01OQ03.lean",
+    "tags": [
+      "projective-geometry",
+      "conics",
+      "pascal-theorem",
+      "quadratic-forms",
+      "linear-algebra",
+      "positive-definite",
+      "sylvester"
+    ],
+    "badge": "original",
+    "axiomCount": 0,
+    "sorries": 0,
+    "lineCount": 153,
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "originalContributions": [
+      "conicQuadraticForm_eq_dotProduct: identifies the file-local quadratic form ∑ᵢⱼ Cᵢⱼ pᵢ pⱼ with the bilinear expression p ⬝ᵥ (C *ᵥ p) underlying Mathlib's Matrix.PosDef, bridging the ad-hoc conic API to standard infrastructure.",
+      "pointOnConic_posDef_iff: a positive-definite symmetric conic has only the trivial zero — a point lies on it iff it is the zero vector — derived from Matrix.PosDef.dotProduct_mulVec_pos.",
+      "posDef_not_projEquiv_stdConic: no positive-definite symmetric conic is projectively equivalent to stdConic, generalizing the parent's single identity-conic witness to the full positive-definite cone (parent OQ-03).",
+      "one_not_projEquiv_stdConic: recovers the parent's diag(1,1,1) result as the special case Matrix.PosDef.one, exhibiting it as one instance of the general phenomenon."
+    ],
+    "prerequisites": [
+      "Conics as symmetric matrices and the associated quadratic form pᵀ C p",
+      "Mathlib's Matrix.PosDef (Hermitian with xᵀ C x > 0 for x ≠ 0) over ℝ",
+      "Projective transformations as invertible matrix-vector maps",
+      "Anisotropic (definite) versus isotropic (indefinite) quadratic forms"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Matrix.PosDef.dotProduct_mulVec_pos",
+        "description": "for a positive-definite M, 0 < star x ⬝ᵥ (M *ᵥ x) when x ≠ 0 — the anisotropy of positive-definite forms",
+        "module": "Mathlib.LinearAlgebra.Matrix.PosDef"
+      },
+      {
+        "theorem": "Matrix.PosDef.one",
+        "description": "the identity matrix is positive definite — instantiates the general result at the parent's witness",
+        "module": "Mathlib.LinearAlgebra.Matrix.PosDef"
+      },
+      {
+        "theorem": "Matrix.mul_nonsing_inv",
+        "description": "M * M⁻¹ = 1 for M with IsUnit det — recovers the preimage of the standard-conic point",
+        "module": "Mathlib.LinearAlgebra.Matrix.NonsingularInverse"
+      },
+      {
+        "theorem": "Matrix.mulVec_mulVec",
+        "description": "associativity of matrix-vector multiplication, used to show M·(M⁻¹·q) = q",
+        "module": "Mathlib.Data.Matrix.Mul"
+      }
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pascal's hexagon theorem (1639) reduces, in the modern proof, an arbitrary non-degenerate conic to a normal form via Sylvester's law of inertia. A non-degenerate ternary real quadratic form is, up to projective equivalence, either definite (signature (3,0) or (0,3)), whose only real zero is the origin, or indefinite (signature (2,1)), projectively the standard conic, with a whole cone of real zeros. Definite and indefinite forms are never projectively equivalent — there is no linear bijection between a single point and a cone. The parent entry established this obstruction for the single representative definite conic diag(1,1,1); this entry proves it for the entire positive-definite cone.",
+    "problemStatement": "**Task (pascals-hexagon-incomplete-01 OQ-03)**: generalize the parent's necessity argument from the identity conic to an arbitrary positive-definite symmetric conic. Show that any C with Matrix.PosDef is not projectively equivalent to stdConic = diag(1,1,-1) over ℝ.\n\n**Result**: proved. A positive-definite form vanishes only at 0, while stdConic carries the nonzero point (1,0,1); no determinant-nonzero matrix can intertwine the two 'lies-on-the-conic' predicates.",
+    "text": "A 153-line, fully verified (0 sorries, 0 axioms, no native_decide) self-contained file. It reproduces the parent's minimal conic API, adds the Mathlib bridge conicQuadraticForm_eq_dotProduct, proves pointOnConic_posDef_iff (a positive-definite conic has only the trivial zero), the headline posDef_not_projEquiv_stdConic, and the corollary one_not_projEquiv_stdConic recovering the parent's identity-conic statement.",
+    "proofStrategy": "conicQuadraticForm_eq_dotProduct unfolds dotProduct and mulVec and rearranges the double sum to identify ∑ᵢⱼ Cᵢⱼ pᵢ pⱼ with p ⬝ᵥ (C *ᵥ p). pointOnConic_posDef_iff then argues by contradiction: if p ≠ 0 then Matrix.PosDef.dotProduct_mulVec_pos gives 0 < star p ⬝ᵥ (C *ᵥ p), and over ℝ star p = p, contradicting the vanishing hypothesis; the converse is the trivial direction. For posDef_not_projEquiv_stdConic, suppose a determinant-nonzero M with the claimed equivalence. The standard conic's nonzero point q = (1,0,1) has preimage p = M⁻¹·q, and M·p = (M·M⁻¹)·q = q (Matrix.mul_nonsing_inv, Matrix.mulVec_mulVec, Matrix.one_mulVec); so p lies on C, forcing p = 0 by pointOnConic_posDef_iff; but then q = M·0 = 0, contradicting q ≠ 0. one_not_projEquiv_stdConic is posDef_not_projEquiv_stdConic applied to Matrix.PosDef.one.",
+    "keyInsights": [
+      "A positive-definite symmetric conic is anisotropic: its quadratic form is strictly positive off the origin, so it vanishes at exactly one real point, the origin.",
+      "The file-local quadratic form ∑ᵢⱼ Cᵢⱼ pᵢ pⱼ is literally p ⬝ᵥ (C *ᵥ p), so Mathlib's positive-definite matrix API applies verbatim once the bridge lemma is in place.",
+      "stdConic is isotropic, carrying the nonzero point (1,0,1); a single point and a cone cannot be matched by an invertible linear map.",
+      "The contradiction is engineered exactly as in the parent — pull the nonzero standard-conic point back through M⁻¹ — but the vanishing-only-at-zero fact now comes from positive-definiteness in general rather than the sum-of-three-squares of the identity conic.",
+      "The parent's identity-conic theorem is the special case Matrix.PosDef.one, so this entry exhibits that result as one instance of a uniform phenomenon over the whole positive-definite cone."
+    ]
+  },
+  "sections": [
+    {
+      "id": "api",
+      "title": "Minimal Conic API",
+      "startLine": 42,
+      "endLine": 77,
+      "summary": "ProjPoint, Conic, conicQuadraticForm, pointOnConic, stdConic, projTransform, isotropicPoint — mirroring the (bit-rotted) parent — plus that (1,0,1) lies on stdConic and is nonzero.",
+      "mathContext": "Conics as symmetric matrices and their quadratic forms."
+    },
+    {
+      "id": "bridge",
+      "title": "Bridge to Mathlib's PosDef",
+      "startLine": 79,
+      "endLine": 104,
+      "summary": "conicQuadraticForm_eq_dotProduct (∑ᵢⱼ Cᵢⱼ pᵢ pⱼ = p ⬝ᵥ C *ᵥ p) and pointOnConic_posDef_iff (a positive-definite conic vanishes only at 0).",
+      "mathContext": "Positive-definite forms are anisotropic over ℝ."
+    },
+    {
+      "id": "main",
+      "title": "No Positive-Definite Conic Equals stdConic",
+      "startLine": 106,
+      "endLine": 135,
+      "summary": "posDef_not_projEquiv_stdConic and the corollary one_not_projEquiv_stdConic recovering the parent's identity case.",
+      "mathContext": "Definite and indefinite non-degenerate conics are not projectively equivalent."
+    }
+  ],
+  "conclusion": {
+    "summary": "Generalizing the parent's single-witness argument, this entry proves that no positive-definite symmetric conic is projectively equivalent to the standard conic over ℝ: a positive-definite form vanishes only at the origin, while stdConic carries the nonzero point (1,0,1). The result is stated against Mathlib's Matrix.PosDef via the bridge conicQuadraticForm_eq_dotProduct, and the parent's diag(1,1,1) theorem is recovered as the special case Matrix.PosDef.one.",
+    "implications": "The entry promotes the parent's concrete obstruction to the full definite half of the Sylvester dichotomy, separating it cleanly from the indefinite case (the remaining sorry). It is a sharp instance of the general principle that an invertible linear map cannot relate an anisotropic quadratic form to an isotropic one.",
+    "openQuestions": [
+      "State and prove the converse half of the dichotomy: every indefinite non-degenerate symmetric conic carrying a real point IS projectively equivalent to stdConic (the remaining sorry sylvester_stdConic_of_isotropic).",
+      "Connect pointOnConic_posDef_iff to Mathlib's QuadraticForm.Anisotropic to phrase the result over an arbitrary real inner product space rather than Fin 3 → ℝ."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "pascals-hexagon-incomplete-01",
+      "relationship": "extends",
+      "description": "Parent: proves the real-point hypothesis essential using the single conic diag(1,1,1). This entry answers its OQ-03 by generalizing to every positive-definite symmetric conic and recovers the parent's theorem as Matrix.PosDef.one."
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Finset",
+      "Matrix"
+    ],
+    "namespace": "PascalsHexagonIncomplete01OQ03",
+    "lineCount": 153,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 7,
+    "mainTheorems": [
+      {
+        "name": "posDef_not_projEquiv_stdConic",
+        "type": "core",
+        "description": "No positive-definite symmetric conic is projectively equivalent to stdConic",
+        "leanType": "{C : Conic} → C.PosDef → ¬ ∃ M : Matrix (Fin 3) (Fin 3) ℝ, M.det ≠ 0 ∧ ∀ p, pointOnConic p C ↔ pointOnConic (projTransform M p) stdConic"
+      },
+      {
+        "name": "pointOnConic_posDef_iff",
+        "type": "key",
+        "description": "A positive-definite conic has only the trivial zero",
+        "leanType": "{C : Conic} → C.PosDef → (p : ProjPoint) → (pointOnConic p C ↔ p = 0)"
+      }
+    ],
+    "path": "Proofs/PascalsHexagonIncomplete01OQ03.lean",
+    "sorries": 0
+  },
+  "mainTheorems": [
+    {
+      "name": "posDef_not_projEquiv_stdConic",
+      "type": "core",
+      "description": "Any positive-definite symmetric conic fails to be projectively equivalent to stdConic over ℝ",
+      "leanType": "{C : Conic} → C.PosDef → ¬ ∃ M : Matrix (Fin 3) (Fin 3) ℝ, M.det ≠ 0 ∧ ∀ p, pointOnConic p C ↔ pointOnConic (projTransform M p) stdConic"
+    },
+    {
+      "name": "pointOnConic_posDef_iff",
+      "type": "key",
+      "description": "A positive-definite symmetric conic has only the trivial zero",
+      "leanType": "{C : Conic} → C.PosDef → (p : ProjPoint) → (pointOnConic p C ↔ p = 0)"
+    },
+    {
+      "name": "conicQuadraticForm_eq_dotProduct",
+      "type": "supporting",
+      "description": "The file-local quadratic form equals p ⬝ᵥ (C *ᵥ p), bridging to Mathlib's Matrix.PosDef",
+      "leanType": "(C : Conic) → (p : ProjPoint) → conicQuadraticForm C p = p ⬝ᵥ (C *ᵥ p)"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Pascal, Blaise",
+      "title": "Essai pour les coniques",
+      "year": "1640",
+      "venue": "Paris",
+      "note": "The hexagon (mystic hexagram) theorem"
+    },
+    {
+      "authors": "Sylvester, James Joseph",
+      "title": "A demonstration of the theorem that every homogeneous quadratic polynomial is reducible by real orthogonal substitutions to the form of a sum of positive and negative squares",
+      "year": "1852",
+      "venue": "Philosophical Magazine 4(23), 138–142",
+      "note": "Sylvester's law of inertia — the classification of real quadratic forms by signature underlying the Sylvester reduction"
+    }
+  ],
+  "sorries": 0
+}
