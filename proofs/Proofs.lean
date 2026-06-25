@@ -808,6 +808,7 @@ import Proofs.CevasTheoremOQ02OQ04OQ01
 import Proofs.CevasTheoremOQ04
 import Proofs.CevasTheoremOQ04OQ01
 import Proofs.CevasTheoremOQ04OQ04
+import Proofs.CevasTheoremOQ04OQ04OQ02
 import Proofs.CevasTheoremSinRatio
 import Proofs.ChebyshevBounds
 import Proofs.ChebyshevBoundsOQ02
