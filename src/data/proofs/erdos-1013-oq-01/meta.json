@@ -61,6 +61,50 @@
       "Mathlib's Filter.Tendsto API"
     ]
   },
+  "sections": [
+    {
+      "id": "header-and-imports",
+      "title": "Problem statement and setup",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Docstring framing Erdős #1013's two open questions — the asymptotic constant c in h₃(k) ~ c·k²·log k (known only to lie in [1/2, 1]) and the ratio convergence h₃(k+1)/h₃(k) → 1 — and stating this file's contribution: a structural reduction proving the second follows from the first, for an arbitrary candidate h : ℕ → ℝ. Imports Real-log asymptotics and the tactic library; opens the Filter and Topology namespaces."
+    },
+    {
+      "id": "scale-and-predicate",
+      "title": "Growth scale and asymptotic-constant predicate",
+      "startLine": 37,
+      "endLine": 42,
+      "summary": "Defines scale k = k²·log k (the conjectured order of growth, noncomputable because Real.log is) and HasAsymptoticConstant h c := Tendsto (fun k => h k / scale k) atTop (𝓝 c), which packages the asymptotic conjecture as a single filter limit so the reduction theorem consumes exactly that hypothesis."
+    },
+    {
+      "id": "uniqueness",
+      "title": "Uniqueness of the constant",
+      "startLine": 44,
+      "endLine": 48,
+      "summary": "constant_unique: if h has asymptotic constants c and d then c = d, a one-line consequence of tendsto_nhds_unique (limits in the Hausdorff space ℝ are unique). Guarantees there is at most one constant even though its value is open."
+    },
+    {
+      "id": "scale-ratio",
+      "title": "Analytic core: the scale ratio tends to 1",
+      "startLine": 50,
+      "endLine": 111,
+      "summary": "scale_ratio_tendsto_one proves ((k+1)²·log(k+1))/(k²·log k) → 1 by factoring the ratio into ((k+1)/k)² → 1 (squaring the limit 1 + 1/k → 1) and log(k+1)/log k → 1. The logarithmic factor uses log(k+1) = log k + log(1+1/k), with the increment → 0 (continuity of log at 1) divided by log k → ∞ via Tendsto.div_atTop. Pointwise identities are transported along the filter with Tendsto.congr' and discharged by field_simp on the eventual region k ≥ 2."
+    },
+    {
+      "id": "main-reduction",
+      "title": "Main reduction: asymptotic constant ⇒ ratio → 1",
+      "startLine": 113,
+      "endLine": 148,
+      "summary": "ratio_tendsto_one: given h(k)/scale(k) → c with c > 0, factor h(k+1)/h(k) = (h(k+1)/scale(k+1))·(scale(k+1)/scale(k))/(h(k)/scale(k)). The shifted asymptotic (via tendsto_add_atTop_nat) gives the first factor → c, the analytic core gives the middle → 1, and the denominator → c, so the quotient → c·1/c = 1 (needing c ≠ 0). The factorisation is valid only where scale(k) ≠ 0 (k ≥ 2), handled by a case split on h(k) = 0 followed by field_simp."
+    },
+    {
+      "id": "threshold-statement",
+      "title": "Statement for the genuine threshold",
+      "startLine": 150,
+      "endLine": 162,
+      "summary": "asymptotic_subsumes_ratio restates ratio_tendsto_one directly for the triangle-free chromatic threshold h₃: if h₃(k)/(k²·log k) → c with c > 0 then h₃(k+1)/h₃(k) → 1. This is the headline claim that #1013's asymptotic-constant question subsumes its ratio-convergence question; the proof is a one-line application of the reduction."
+    }
+  ],
   "conclusion": {
     "summary": "For the triangle-free chromatic threshold h₃(k) of Erdős #1013, the existence of the asymptotic constant c in h₃(k) ~ c·k²·log k (for any c > 0) implies the separately-posed ratio convergence h₃(k+1)/h₃(k) → 1, and the constant is unique. The result is proved abstractly for any h : ℕ → ℝ, is 0-axiom and 0-sorry, and rests on the verified analytic fact that the growth scale k²·log k has consecutive ratio tending to 1.",
     "implications": "This sharpens the structure of Problem #1013: it shows the ratio-convergence question is strictly subordinate to the asymptotic-constant question, so any future proof that the constant exists (even without pinning down its value in [1/2, 1]) would immediately settle ratio convergence. It cleanly separates the genuinely hard part (existence and value of c, an extremal/probabilistic question) from the soft analytic part (smoothness of the scale).",
