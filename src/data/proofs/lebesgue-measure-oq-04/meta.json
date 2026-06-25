@@ -1,0 +1,159 @@
+{
+  "id": "lebesgue-measure-oq-04",
+  "title": "Cantor Set: Uncountable Yet Lebesgue-Null",
+  "slug": "lebesgue-measure-oq-04",
+  "description": "The ternary Cantor set C is the prototypical 'fat-and-thin' set: topologically and cardinally large (uncountable, in fact of the cardinality of the continuum) yet measure-theoretically negligible (Lebesgue measure zero). Building on Mathlib's cantorSet infrastructure (Topology.Instances.CantorSet), this entry proves the two defining paradoxical properties as fresh derivations not present in Mathlib. Measure zero: each stage preCantorSet n is the union of two ratio-1/3 homothety copies of the previous stage, so volume (preCantorSet (n+1)) ≤ (2/3)·volume (preCantorSet n); by induction volume (preCantorSet n) ≤ (2/3)^n, and since C ⊆ preCantorSet n for every n while (2/3)^n → 0, volume C = 0. Uncountability: Mathlib's bijection cantorSetEquivNatToBool : C ≃ (ℕ → Bool) transfers uncountability from ℕ → Bool, which has cardinality 2^ℵ₀ > ℵ₀ (Cardinal.cantor). The combined statement cantorSet_null_and_uncountable exhibits C as an uncountable null set.",
+  "meta": {
+    "author": "Cantor (1883); Lebesgue (1904)",
+    "date": "2026",
+    "status": "verified",
+    "proofRepoPath": "Proofs/LebesgueMeasureOQ04.lean",
+    "tags": [
+      "measure-theory",
+      "cantor-set",
+      "lebesgue-measure",
+      "null-set",
+      "uncountable",
+      "cardinality",
+      "research"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 139,
+    "assumptions": "0 axioms, 0 sorries; kernel-checked at Mathlib 4.26.0 (single-file elaboration via `lake env lean Proofs/LebesgueMeasureOQ04.lean`, exit 0; `#print axioms cantorSet_null_and_uncountable` lists only propext / Classical.choice / Quot.sound, the ordinary foundational axioms, so the entry is axiom-free per the project's axiom-integrity policy). Mathlib's `Topology.Instances.CantorSet` supplies the Cantor set itself (definition, the antitone pre-Cantor stages, and the bijection cantorSetEquivNatToBool : cantorSet ≃ (ℕ → Bool)); the measure-zero theorem and the explicit uncountability statement are NOT in Mathlib and are proved here. Measure zero is assembled from Measure.addHaar_image_homothety (one-dimensional homothety scaling, finrank ℝ ℝ = 1), measure_union_le, an induction bounding volume (preCantorSet n) by (2/3)^n, and a squeeze using tendsto_pow_atTop_nhds_zero_of_lt_one. Uncountability of ℕ → Bool is derived from Cardinal.power_def + Cardinal.cantor (ℵ₀ < 2^ℵ₀) and transferred along the Mathlib equivalence.",
+    "dateAdded": "2026-06-25",
+    "mathlib_version": "4.26.0",
+    "originalContributions": [
+      "Lebesgue measure zero of the ternary Cantor set, proved from Mathlib's cantorSet definition — a result Mathlib's CantorSet file does not contain — via the homothety scaling law for Haar measure plus an induction bounding each stage's measure by (2/3)^n and a squeeze to the limit.",
+      "An explicit uncountability statement for the Cantor set (not_countable_cantorSet / uncountable_cantorSet), obtained by transferring uncountability of ℕ → Bool across Mathlib's cantorSetEquivNatToBool bijection.",
+      "A self-contained Uncountable (ℕ → Bool) instance derived from Cardinal.power_def and Cardinal.cantor (ℵ₀ < 2^ℵ₀).",
+      "The packaged paradox cantorSet_null_and_uncountable: a single set that is simultaneously Lebesgue-null and uncountable."
+    ],
+    "theoremCount": 8,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Georg Cantor introduced the ternary set in 1883 as an example of a perfect, nowhere-dense set. With the advent of Lebesgue's measure theory (1902–1904) it became the canonical illustration that 'size' in the sense of cardinality and 'size' in the sense of measure are independent: the Cantor set has the cardinality of the continuum (the same as the whole interval [0,1]) yet occupies no length at all. The construction also seeds the Cantor function ('devil's staircase'), the standard example of a continuous monotone function that is singular with respect to Lebesgue measure. Mathlib formalizes the Cantor set in Topology.Instances.CantorSet, including its closedness, compactness, ternary-digit description, and homeomorphism with the Cantor space ℕ → Bool, but does not record its Lebesgue measure or an explicit uncountability statement; this entry supplies both.",
+    "problemStatement": "Let $C = \\bigcap_{n} C_n$ be the ternary Cantor set, where $C_0 = [0,1]$ and $C_{n+1}$ removes the open middle third of each interval of $C_n$ (equivalently $C_{n+1} = \\tfrac{1}{3}C_n \\cup (\\tfrac{2}{3} + \\tfrac{1}{3}C_n)$). Show that $C$ has Lebesgue measure zero, yet $C$ is uncountable.",
+    "text": "Two theorems about Mathlib's `cantorSet`: `volume_cantorSet : volume cantorSet = 0` and `not_countable_cantorSet : ¬ cantorSet.Countable`, combined in `cantorSet_null_and_uncountable`. The measure-zero proof exploits the self-similar two-copies-at-ratio-1/3 structure of the construction; the uncountability proof transfers cardinality across Mathlib's bijection with ℕ → Bool.",
+    "proofStrategy": "Measure zero. Both maps in the recursion `preCantorSet (n+1) = (·/3) '' preCantorSet n ∪ ((2+·)/3) '' preCantorSet n` are homotheties of ratio 1/3 (centres 0 and 1), so `Measure.addHaar_image_homothety` gives `volume (f '' s) = ENNReal.ofReal (1/3) * volume s` (using `finrank ℝ ℝ = 1`). With `measure_union_le` this yields `volume (preCantorSet (n+1)) ≤ (2/3)·volume (preCantorSet n)`; the base case `volume [0,1] = 1` and induction give `volume (preCantorSet n) ≤ (2/3)^n`. Since `cantorSet ⊆ preCantorSet n` for all n (it is their intersection) and `(2/3)^n → 0` (`tendsto_pow_atTop_nhds_zero_of_lt_one`), a squeeze (`le_of_tendsto_of_tendsto'`) forces `volume cantorSet ≤ 0`, hence `= 0`. Uncountability. `Cardinal.power_def` rewrites `#(ℕ → Bool)` as `#Bool ^ #ℕ = 2 ^ ℵ₀`, and `Cardinal.cantor` gives `ℵ₀ < 2 ^ ℵ₀`, so via `Cardinal.aleph0_lt_mk_iff` the type `ℕ → Bool` is uncountable. Mathlib's `cantorSetEquivNatToBool` then transfers uncountability to the subtype `cantorSet` (`Function.Injective.uncountable` applied to the equivalence's inverse), and `Set.countable_coe_iff` repackages it as `¬ cantorSet.Countable`.",
+    "keyInsights": [
+      "The Cantor set is self-similar: it is two ratio-1/3 scaled copies of itself, one anchored at 0 and one at 2/3. This single fact drives the measure computation — each construction stage loses exactly a factor 2/3 of its predecessor's length.",
+      "Measure zero is a clean consequence of the homothety scaling law for Haar measure (`addHaar_image_homothety`), which in dimension one reads volume(r·image) = |r|·volume; no explicit interval bookkeeping is needed once the two removal maps are recognized as homotheties.",
+      "C ⊆ preCantorSet n holds for every n because C is the intersection of the stages, so the geometric bound (2/3)^n applies to C directly and the squeeze to 0 is immediate.",
+      "Uncountability is independent of measure: it comes entirely from cardinality. Mathlib already provides the bijection cantorSet ≃ (ℕ → Bool) (binary addresses of the infinite removal tree), so the only missing piece is that ℕ → Bool itself is uncountable — a one-line Cardinal.cantor argument.",
+      "The two properties together are the paradox: the same set is negligible for integration (a null set, so it can be ignored almost everywhere) yet has the full cardinality of the continuum — large and small at once, depending on which notion of size one uses."
+    ],
+    "prerequisites": [
+      "Lebesgue measure on ℝ and ENNReal-valued measures",
+      "Haar measure scaling under affine maps (homotheties)",
+      "The ternary Cantor set construction (iterated middle-third removal)",
+      "Cardinal arithmetic: ℵ₀, 2^ℵ₀, and Cantor's theorem a < 2^a",
+      "Countability of sets versus subtypes"
+    ]
+  },
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "§0: Module Setup and Statement",
+      "startLine": 1,
+      "endLine": 33,
+      "summary": "Module docstring framing the Cantor set as the canonical uncountable null set, imports (full Mathlib, for Topology.Instances.CantorSet and the Haar-measure / Cardinal APIs), and the namespace.",
+      "mathContext": "Targets the ternary Cantor set $C = \\bigcap_n C_n$ from Mathlib, proving $\\mathrm{volume}\\,C = 0$ and $C$ uncountable."
+    },
+    {
+      "id": "homothety-measure",
+      "title": "Homothety Scaling of Lebesgue Measure",
+      "startLine": 35,
+      "endLine": 68,
+      "summary": "volume_homothety_third_image (the measure of a ratio-1/3 homothety image is (1/3)·volume, the 1-D case of addHaar_image_homothety), and its two specializations volume_div_three_image (centre 0) and volume_two_add_div_three_image (centre 1) matching the two removal maps of the Cantor recursion.",
+      "mathContext": "In dimension one, $\\mathrm{volume}(\\mathrm{homothety}_c^{1/3}\\,'' s) = \\tfrac13\\,\\mathrm{volume}\\,s$ because $|r^{\\dim}| = |(1/3)^1| = 1/3$. The maps $x \\mapsto x/3$ and $x \\mapsto (2+x)/3$ are the homotheties centred at $0$ and $1$."
+    },
+    {
+      "id": "stage-bound",
+      "title": "Geometric Bound on the Pre-Cantor Stages",
+      "startLine": 70,
+      "endLine": 91,
+      "summary": "volume_preCantorSet_le: volume (preCantorSet n) ≤ (2/3)^n, by induction. The successor step combines measure_union_le with the two homothety computations to get the factor 2/3, then multiplies through the inductive hypothesis with ENNReal.ofReal arithmetic.",
+      "mathContext": "$\\mathrm{volume}\\,C_n \\le (2/3)^n$: the base case is $\\mathrm{volume}[0,1] = 1$, and each step contributes a factor $\\tfrac13 + \\tfrac13 = \\tfrac23$."
+    },
+    {
+      "id": "measure-zero",
+      "title": "The Cantor Set Has Measure Zero",
+      "startLine": 93,
+      "endLine": 107,
+      "summary": "volume_cantorSet: volume cantorSet = 0. Uses cantorSet ⊆ preCantorSet n (intersection) with the stage bound to get volume cantorSet ≤ (2/3)^n for all n, then squeezes against (2/3)^n → 0 via le_of_tendsto_of_tendsto'.",
+      "mathContext": "Since $C \\subseteq C_n$ for all $n$ and $(2/3)^n \\to 0$, the monotone bound forces $\\mathrm{volume}\\,C = 0$."
+    },
+    {
+      "id": "uncountable-natbool",
+      "title": "ℕ → Bool Is Uncountable",
+      "startLine": 109,
+      "endLine": 118,
+      "summary": "An Uncountable (ℕ → Bool) instance: rewrite #(ℕ → Bool) as 2^ℵ₀ via Cardinal.power_def, mk_bool, mk_nat, then apply Cardinal.cantor (ℵ₀ < 2^ℵ₀) through Cardinal.aleph0_lt_mk_iff.",
+      "mathContext": "$\\#(\\mathbb{N} \\to \\mathrm{Bool}) = 2^{\\aleph_0} = \\mathfrak{c}$, and Cantor's theorem gives $\\aleph_0 < 2^{\\aleph_0}$, so the Cantor space is uncountable."
+    },
+    {
+      "id": "uncountable-cantor",
+      "title": "The Cantor Set Is Uncountable",
+      "startLine": 120,
+      "endLine": 138,
+      "summary": "uncountable_cantorSet transfers uncountability across Mathlib's cantorSetEquivNatToBool (via the inverse equivalence's injectivity); not_countable_cantorSet repackages it as ¬ cantorSet.Countable; cantorSet_null_and_uncountable bundles the two headline results.",
+      "mathContext": "The bijection $C \\simeq (\\mathbb{N} \\to \\mathrm{Bool})$ carries uncountability to $C$. Combined with $\\mathrm{volume}\\,C = 0$, this is the paradox: an uncountable set of measure zero."
+    }
+  ],
+  "conclusion": {
+    "summary": "The ternary Cantor set, as formalized in Mathlib, is shown to be Lebesgue-null (volume_cantorSet) and uncountable (not_countable_cantorSet), and the two are bundled in cantorSet_null_and_uncountable. Measure zero is proved from the self-similar structure: each removal map is a ratio-1/3 homothety, so the homothety scaling law for Haar measure plus measure_union_le bound each construction stage by (2/3)^n, and the intersection C inherits this bound, squeezing to 0. Uncountability transfers across Mathlib's bijection cantorSet ≃ (ℕ → Bool), the latter being uncountable by Cantor's theorem (ℵ₀ < 2^ℵ₀). Neither headline result is present in Mathlib's CantorSet file; both are derived here with 0 axioms and 0 sorries.",
+    "openQuestions": [
+      "Formalize the Cantor function (devil's staircase): a continuous, monotone, surjective F : [0,1] → [0,1] that is constant on each removed middle-third interval, with F' = 0 Lebesgue-a.e. — the canonical singular continuous function, currently absent from Mathlib.",
+      "Compute the Hausdorff dimension of the Cantor set as log 2 / log 3 and show its Hausdorff measure in that dimension is positive and finite, refining 'measure zero' to a precise notion of fractal size.",
+      "Prove the arithmetic / topological corollaries that the standard ternary-digit bijection makes accessible: C + C = [0,2] (the Steinhaus sumset theorem) and that C is homeomorphic to its own square C × C."
+    ],
+    "implications": "The Cantor set is the standard counterexample separating cardinality from measure and the seed of the devil's staircase that separates continuity-plus-monotonicity from absolute continuity. Recording its measure and uncountability gives the gallery a citable anchor for null sets, singular measures, self-similar fractals, and the failure of the naive intuition that 'uncountable' implies 'positive length'."
+  },
+  "crossReferences": [
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "parent-problem",
+      "description": "Supplies the canonical example for the Lebesgue measure formalization: an explicit uncountable set of measure zero, sharpening the meaning of 'null set' in the parent theory."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor diagonalization establishes that ℕ → Bool (equivalently the reals) is uncountable; this entry reuses exactly that cardinality fact (ℵ₀ < 2^ℵ₀) and pins it onto a concrete subset of [0,1] via the ternary-address bijection, connecting the abstract diagonal argument to a geometric object."
+    },
+    {
+      "targetId": "lebesgue-measure-oq-03",
+      "relationship": "related",
+      "description": "Infinite-Dimensional Measure Theory probes where measure-theoretic intuition breaks in high dimension; the Cantor set is the complementary low-dimensional pathology, where an uncountable set still carries no measure. Together they map two different failures of the naive 'big set = big measure' heuristic."
+    }
+  ],
+  "references": [
+    {
+      "author": "Cantor, G.",
+      "title": "Über unendliche, lineare Punktmannigfaltigkeiten V",
+      "year": 1883,
+      "note": "Introduces the ternary set as a perfect, nowhere-dense set"
+    },
+    {
+      "author": "Lebesgue, H.",
+      "title": "Leçons sur l'intégration et la recherche des fonctions primitives",
+      "year": 1904,
+      "note": "Measure theory in which the Cantor set becomes the canonical null set; the Cantor function is the standard singular function"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "namespace": "LebesgueMeasureOQ04",
+    "lineCount": 139,
+    "axiomCount": 0,
+    "theoremCount": 8,
+    "definitionCount": 0,
+    "path": "Proofs/LebesgueMeasureOQ04.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
