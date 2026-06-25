@@ -60,25 +60,50 @@
       "Euler's series is the derivative of Grandi's: differentiating ∑ (−1)ⁿxⁿ = 1/(1+x) term by term gives ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)².",
       "The closed form is obtained without calculus, by adding the two standard sums ∑ n·yⁿ and ∑ yⁿ at y = −x — keeping the proof inside elementary summability.",
       "The Abel sum is the boundary value of 1/(1+x)², continuous at x = 1 with value 1/4.",
-      "The value 1/4 = η(−1) is consistent with the analytic continuation of the Dirichlet eta function, linking this elementary computation to ζ(−1) = −1/12 via η(s) = (1 − 2¹⁻ˢ)ζ(s)."
+      "The value 1/4 = η(−1) is consistent with the analytic continuation of the Dirichlet eta function, linking this elementary computation to ζ(−1) = −1/12 via η(s) = (1 − 2¹⁻ˢ)ζ(s).",
+      "The proof never differentiates: replacing term-by-term differentiation (which would require justifying interchange of limit and sum) with a sum of two known closed forms keeps every step inside elementary, already-formalized summability — a cleaner route than the heuristic 'differentiate the geometric series' that motivates the result."
     ]
   },
   "sections": [
     {
+      "id": "header",
+      "title": "Euler's Series and Abel Summation",
+      "startLine": 3,
+      "endLine": 26,
+      "summary": "Docstring: Euler's 1 − 2 + 3 − 4 + ⋯ is the derivative of Grandi's series; diverges ordinarily but is Abel summable to 1/4 = η(−1), tied to ζ(−1) = −1/12.",
+      "mathContext": "Abel sum of $1 - 2 + 3 - 4 + \\cdots$ is $\\tfrac14 = \\eta(-1)$."
+    },
+    {
       "id": "closed-form",
       "title": "The Differentiated Geometric Series",
-      "startLine": 35,
-      "endLine": 66,
-      "summary": "hasSum_alt_nat / alt_nat_power_series: ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x| < 1.",
-      "mathContext": "Sum of ∑ n·yⁿ = y/(1−y)² and ∑ yⁿ = 1/(1−y) at y = −x gives ∑ (n+1)yⁿ = 1/(1−y)²."
+      "startLine": 31,
+      "endLine": 56,
+      "summary": "hasSum_alt_nat: ∑ (−1)ⁿ(n+1)xⁿ = 1/(1+x)² for |x| < 1, built by adding ∑ n·yⁿ and ∑ yⁿ at y = −x rather than by differentiation.",
+      "mathContext": "$\\sum_n (n+1)y^n = (1-y)^{-2}$ at $y = -x$."
+    },
+    {
+      "id": "tsum",
+      "title": "The tsum Closed Form",
+      "startLine": 57,
+      "endLine": 61,
+      "summary": "alt_nat_power_series: the tsum form ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/(1+x)², enabling the boundary-limit step on a scalar-valued function.",
+      "mathContext": "$\\sum'_n (-1)^n(n+1)x^n = (1+x)^{-2}$."
     },
     {
       "id": "abel-limit",
       "title": "The Abel Limit 1/4",
-      "startLine": 68,
-      "endLine": 91,
-      "summary": "abel_tendsto_quarter: lim_{x→1⁻} ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/4, the boundary value of 1/(1+x)². abel_value_quarter packages it.",
-      "mathContext": "The radial boundary limit of 1/(1+x)² at x = 1 is 1/4, the Abel sum of 1 − 2 + 3 − 4 + ⋯."
+      "startLine": 62,
+      "endLine": 80,
+      "summary": "abel_tendsto_quarter: lim_{x→1⁻} ∑'ₙ (−1)ⁿ(n+1)xⁿ = 1/4, the radial boundary value of 1/(1+x)², via tendsto_congr' on 𝓝[<]1 and Tendsto.inv₀.",
+      "mathContext": "$\\lim_{x\\to 1^-}(1+x)^{-2} = \\tfrac14$."
+    },
+    {
+      "id": "package",
+      "title": "Packaging and η(−1)",
+      "startLine": 81,
+      "endLine": 107,
+      "summary": "abel_value_quarter packages the conclusion; closing remarks connect 1/4 = η(−1) to ζ(−1) = −1/12 via η(s) = (1 − 2¹⁻ˢ)ζ(s).",
+      "mathContext": "$1 - 2 + 3 - 4 + \\cdots \\overset{A}{=} \\tfrac14 = \\eta(-1)$."
     }
   ],
   "conclusion": {
