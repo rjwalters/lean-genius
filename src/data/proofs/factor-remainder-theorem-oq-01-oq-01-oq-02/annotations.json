@@ -1,0 +1,35 @@
+[
+  {
+    "id": "ann-kernel",
+    "proofId": "factor-remainder-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 57,
+      "endLine": 71
+    },
+    "type": "insight",
+    "title": "The Kernel That Translates Taylor Coordinates into Newton Coordinates",
+    "content": "Everything hinges on one family of numbers: K(j,m) = Δᵐ(r ↦ rʲ)(0), the m-th forward difference of the j-th power, evaluated at 0. fwdDiff_pow_lt shows K(j,m) = 0 whenever j < m (Mathlib's fwdDiff_iter_pow_eq_zero_of_lt), and fwdDiff_pow_self shows K(m,m) = m! (Mathlib's fwdDiff_iter_eq_factorial). Combinatorially K(j,m) = m!·S(j,m), where S(j,m) is the Stirling number of the second kind — the number of ways to partition a j-set into m nonempty blocks. The triangularity (zero below the diagonal) is exactly what makes the m-th finite difference of a polynomial depend only on its coefficients of degree ≥ m, and the diagonal value m! is the discrete analogue of differentiating xᵐ down to the constant m!."
+  },
+  {
+    "id": "ann-change-of-basis",
+    "proofId": "factor-remainder-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 72,
+      "endLine": 117
+    },
+    "type": "insight",
+    "title": "Taylor ↔ Newton: the Change-of-Basis Dictionary and the Leading Coefficient",
+    "content": "fwdDiff_iter_eval_eq_sum_taylor is the open question's target. The Newton coefficient c_m = Δᵐ[r ↦ p(a+r)](0) is the m-th entry of the difference table of p sampled along a + ℤ. Writing p(a+r) = (taylor a p).eval r = Σ_{j ≤ N} t_j·rʲ (via taylor_eval and eval_eq_sum_range) and pushing the LINEAR operator Δᵐ through the sum yields c_m = Σ_{j ≤ N} t_j·K(j,m): the Newton coordinates are the kernel-image of the Taylor coordinates. On the diagonal m = N the triangular kernel kills every term but j = N, so fwdDiff_iter_natDegree_eval gives c_N = t_N·N!, and leadingCoeff_taylor rewrites the top Taylor coefficient as leadingCoeff p — the divided-difference reading of the leading coefficient, c_N = leadingCoeff p · N!. This is the discrete counterpart of '(d/dx)ᴺ of a degree-N polynomial is N!·(leading coefficient)'."
+  },
+  {
+    "id": "ann-interpolation",
+    "proofId": "factor-remainder-theorem-oq-01-oq-01-oq-02",
+    "range": {
+      "startLine": 119,
+      "endLine": 205
+    },
+    "type": "insight",
+    "title": "Reconstructing the Polynomial from Its Difference Table",
+    "content": "The forward-difference coefficients c_0,…,c_N are not just data — they rebuild p. The key is the operator identity shift = 1 + Δ, hence shiftⁿ = (1+Δ)ⁿ = Σ C(n,m) Δᵐ (Mathlib's shift_eq_sum_fwdDiff_iter): evaluating at integer nodes gives p(a+n) = Σ_{m ≤ n} c_m·(n choose m) with no analysis, purely from commuting operators. eval_add_natCast_eq_sum_fwdDiff_choose normalizes the index set to range (N+1) — terms with m > n vanish because (n choose m) = 0, and terms with m > N vanish because the difference table terminates at the degree (fwdDiff_iter_eval_eq_zero). Finally, realizing the Newton basis as the genuine polynomial (m!)⁻¹·descPochhammer ℚ m, whose evaluation is the generalized binomial coefficient Ring.choose x m (newtonPoly_eval), the reconstruction polynomial agrees with taylor a p at every natural argument — and a polynomial over the infinite field ℚ is determined by its values on ℕ. So eval_add_eq_sum_fwdDiff_choose promotes the integer-node formula to the polynomial identity p(a+x) = Σ_{m ≤ N} c_m·Ring.choose x m valid for every x : ℚ."
+  }
+]
