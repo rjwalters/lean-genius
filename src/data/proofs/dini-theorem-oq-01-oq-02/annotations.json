@@ -1,0 +1,38 @@
+[
+  {
+    "id": "dini-oq0102-ann-overview",
+    "proofId": "dini-theorem-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 52 },
+    "type": "concept",
+    "title": "The Sharp Modulus Question",
+    "content": "The header frames OQ-02. The parent (dini-theorem-oq-01) uses xⁿ on the non-compact [0,1) as a witness that Dini's compactness hypothesis is necessary: xⁿ is continuous, antitone in n, and converges pointwise to the continuous function 0, yet not uniformly. The parent's non-uniformity bound was the non-sharp 1/2 (a value attained via the intermediate value theorem). This file asks for the exact modulus: the uniform error sup_x |xⁿ| on [0,1), and proves it equals exactly 1.",
+    "mathContext": "$\\sup_{x\\in[0,1)}|x^n-0| = 1$ for every $n\\ge 1$ — sharpening the parent's $1/2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Dini's theorem", "uniform convergence", "compactness", "supremum"],
+    "prerequisites": ["pointwise vs uniform convergence", "supremum / least upper bound"]
+  },
+  {
+    "id": "dini-oq0102-ann-lub",
+    "proofId": "dini-theorem-oq-01-oq-02",
+    "range": { "startLine": 53, "endLine": 105 },
+    "type": "insight",
+    "title": "The Supremum of xⁿ over [0,1) is Exactly 1",
+    "content": "pow_image_Ico_isLUB proves IsLUB { xⁿ : x ∈ [0,1) } 1 for n ≥ 1. Upper bound: x ∈ [0,1) ⟹ xⁿ ≤ 1 (pow_le_one₀). Least: for any upper bound b, the explicit sequence xₖ = 1 − 1/(k+1) lies in [0,1) and tends to 1 (since 1/(k+1) → 0 via tendsto_one_div_add_atTop_nhds_zero_nat), so xₖⁿ → 1ⁿ = 1; each xₖⁿ ≤ b, and le_of_tendsto' passes to the limit to give 1 ≤ b. Hence 1 is the least upper bound and pow_sSup_Ico concludes sSup = 1 (IsLUB.csSup_eq on the nonempty image). Crucially the supremum is never attained — every xⁿ < 1 — which is the analytic signature of the missing compactness.",
+    "mathContext": "$\\operatorname{IsLUB}\\{x^n : x\\in[0,1)\\}\\,1$; approached along $x_k=1-\\tfrac{1}{k+1}\\to 1$, never attained.",
+    "significance": "critical",
+    "relatedConcepts": ["least upper bound", "passing to the limit", "approximating sequence"],
+    "prerequisites": ["limits of sequences", "monotone power functions"]
+  },
+  {
+    "id": "dini-oq0102-ann-modulus",
+    "proofId": "dini-theorem-oq-01-oq-02",
+    "range": { "startLine": 106, "endLine": 172 },
+    "type": "insight",
+    "title": "The Sharp Modulus and Sharpened Non-Uniformity",
+    "content": "pow_uniform_error_Ico reads off the headline: since |xⁿ − 0| = xⁿ on [0,1) (image_congr after abs_of_nonneg), the error-supremum equals the xⁿ-supremum, namely 1 — the exact modulus of non-uniform convergence. pow_exists_gt_of_lt_one unpacks the LUB: any c < 1 fails to be an upper bound, so some x ∈ [0,1) has xⁿ > c. Feeding this into the negated ε-criterion (Metric.tendstoUniformlyOn_iff) gives pow_not_tendstoUniformlyOn_Ico_sharp: the convergence is non-uniform with ANY threshold c ∈ (0,1), not merely the parent's 1/2.",
+    "mathContext": "For all $c\\in(0,1)$ and $N$, some $n\\ge N$ and $x\\in[0,1)$ have $|x^n-0|>c$; taking $c\\uparrow 1$ gives the sharp modulus.",
+    "significance": "critical",
+    "relatedConcepts": ["modulus of convergence", "uniform convergence criterion", "sharpness"],
+    "prerequisites": ["ε-N definition of uniform convergence", "least upper bound"]
+  }
+]
