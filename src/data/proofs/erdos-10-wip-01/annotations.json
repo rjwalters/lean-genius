@@ -3,33 +3,45 @@
     "id": "ann-rep-add",
     "proofId": "erdos-10-wip-01",
     "range": {
-      "startLine": 50,
-      "endLine": 60
+      "startLine": 52,
+      "endLine": 66
     },
     "type": "insight",
     "title": "Representation Cost Is Subadditive",
-    "content": "`repWithAtMost_add` is the structural heart of the file: if a is a sum of at most j powers of two (witness multiset s) and b a sum of at most k (witness t), then the union s + t witnesses that a + b is a sum of at most j + k powers. The term count adds by `Multiset.card_add` and the value adds by the parent's `powSum_add`. No cleverage on the specific exponents is needed — concatenation is the whole argument."
+    "content": "repWithAtMost_add is the structural heart of the file: if a is a sum of at most j powers of two (witness multiset s) and b a sum of at most k (witness t), then the union s + t witnesses that a + b is a sum of at most j + k powers. The term count adds by Multiset.card_add and the value adds by the parent's powSum_add. No cleverness on the specific exponents is needed — concatenation of the two exponent multisets is the whole argument. repWithAtMost_one_pow records the base case that a single power 2^a costs one term.",
+    "mathContext": "$\\mathrm{RepWithAtMost}\\,j\\,a \\wedge \\mathrm{RepWithAtMost}\\,k\\,b \\Rightarrow \\mathrm{RepWithAtMost}\\,(j{+}k)\\,(a{+}b)$, via $s \\uplus t$.",
+    "significance": "key",
+    "relatedConcepts": ["powers of two", "multiset union", "subadditivity", "Erdős–Graham problem"],
+    "prerequisites": ["the RepWithAtMost predicate (parent Erdos10OQ02)", "multiset cardinality (card_add)", "powSum_add"]
   },
   {
     "id": "ann-popcount-subadd",
     "proofId": "erdos-10-wip-01",
     "range": {
-      "startLine": 92,
-      "endLine": 102
+      "startLine": 77,
+      "endLine": 104
     },
     "type": "insight",
     "title": "Popcount Subadditivity, for Free",
-    "content": "`bitIndices_length_add_le` proves popcount(a+b) ≤ popcount(a)+popcount(b) without touching binary digits directly. The popcount representation is the *minimal* one (`repWithAtMost_popcount`), so a is a sum of popcount(a) powers and b of popcount(b); subadditivity of representation combines them into a representation of a+b with popcount(a)+popcount(b) powers; and the minimality direction (`popcount_le_iff`) reads off the bound. The arithmetic content — that carries in binary addition only merge bits (2^a+2^a = 2^{a+1}), never create them — is delivered entirely through the powers-of-2 representation lemma."
+    "content": "bitIndices_length_add_le proves popcount(a+b) ≤ popcount(a)+popcount(b) without touching binary digits directly. The popcount representation is the MINIMAL one (repWithAtMost_popcount: every n is a sum of exactly popcount(n) distinct powers), so a is a sum of popcount(a) powers and b of popcount(b); subadditivity of representation (repWithAtMost_add) combines them into a representation of a+b with popcount(a)+popcount(b) powers; and the minimality direction (popcount_le_iff) reads off the bound. The arithmetic content — that carries in binary addition only merge bits (2^a + 2^a = 2^{a+1}), never create them — is delivered entirely through the powers-of-2 representation lemma. bitIndices_length_sum_le iterates it over a list.",
+    "mathContext": "$\\mathrm{popcount}(a+b) \\le \\mathrm{popcount}(a) + \\mathrm{popcount}(b)$; carries only merge bits.",
+    "significance": "key",
+    "relatedConcepts": ["Hamming weight / popcount", "binary carries", "minimal representation", "subadditivity"],
+    "prerequisites": ["popcount = bitIndices length", "minimality of the binary representation", "repWithAtMost_add"]
   },
   {
     "id": "ann-prime-popcount",
     "proofId": "erdos-10-wip-01",
     "range": {
-      "startLine": 120,
-      "endLine": 138
+      "startLine": 106,
+      "endLine": 146
     },
     "type": "concept",
     "title": "The Erdős #10 Predicate in O(log) Form",
-    "content": "`isPrimePlusKPowers_iff_popcount` rewrites 'n is a prime plus at most k powers of two' as 'there is a prime p ≤ n whose offset n − p has binary popcount at most k'. The powers component m = n − p is the only place the representation cost lives, and it is now an O(log)-evaluable popcount rather than a multiset search. This is the predicate the concrete Granville–Soundararajan witness searches rest on — the smallest even integer needing 3 powers (906) and Grechuk's counterexample 1117175146 to the k = 3 conjecture."
+    "content": "isPrimePlusKPowers_iff_popcount rewrites 'n is a prime plus at most k powers of two' as 'there is a prime p ≤ n whose offset n − p has binary popcount at most k'. The powers component m = n − p is the only place the representation cost lives, and it is now an O(log)-evaluable popcount rather than a multiset search. This is the predicate the concrete Granville–Soundararajan-style witness searches rest on — the smallest even integer needing 3 powers (906) and Grechuk's counterexample 1117175146 to the k = 3 conjecture. The proof is a clean two-way translation: forward strips the powers witness via Nat.add_sub_cancel_left, backward reconstructs it via omega.",
+    "mathContext": "$\\mathrm{IsPrimePlusKPowers}\\,k\\,n \\iff \\exists\\,p\\ \\text{prime},\\ p \\le n \\wedge \\mathrm{popcount}(n-p) \\le k$.",
+    "significance": "key",
+    "relatedConcepts": ["Erdős problem #10", "prime plus powers of two", "computational witness search", "Grechuk's counterexample"],
+    "prerequisites": ["the IsPrimePlusKPowers predicate", "popcount_le_iff", "Nat subtraction (omega)"]
   }
 ]

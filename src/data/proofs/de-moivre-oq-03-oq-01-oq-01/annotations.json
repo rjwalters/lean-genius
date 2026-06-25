@@ -3,33 +3,45 @@
     "id": "ann-principal",
     "proofId": "de-moivre-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 41,
-      "endLine": 48
+      "startLine": 38,
+      "endLine": 46
     },
     "type": "concept",
     "title": "The 'Almost Definitional' Single Value",
-    "content": "principal_value proves (e^{iθ})^α = e^{iαθ} for θ in the principal strip (-π, π]. This is exactly the route the parent's open question proposes: cpow_def_of_ne_zero rewrites the power as exp(α · log(e^{iθ})), and Complex.log_exp — valid because the imaginary part θ lies in (-π, π] — collapses log(e^{iθ}) to iθ. The principal power is therefore a single, well-defined value; cpow is, after all, a function."
+    "content": "principal_value proves (e^{iθ})^α = e^{iαθ} for θ in the principal strip (-π, π]. This is exactly the route the parent's open question proposes: cpow_def_of_ne_zero rewrites the complex power as exp(α · log(e^{iθ})), and Complex.log_exp — valid precisely because the imaginary part θ lies in (-π, π], the domain where the principal logarithm inverts exp — collapses log(e^{iθ}) to iθ. The principal power is therefore a single, well-defined value; cpow is, after all, a function, so 'single-valued' is automatic once the principal branch is fixed.",
+    "mathContext": "$(e^{i\\theta})^\\alpha = e^{i\\alpha\\theta}$ for $\\theta \\in (-\\pi, \\pi]$, via $z^\\alpha = \\exp(\\alpha \\log z)$ and $\\log(e^{i\\theta}) = i\\theta$.",
+    "significance": "key",
+    "relatedConcepts": ["principal branch of log", "complex power cpow", "De Moivre's formula", "Complex.log_exp"],
+    "prerequisites": ["complex exponential and logarithm", "the principal argument strip (-π, π]", "cpow_def_of_ne_zero"]
   },
   {
     "id": "ann-aperiodic",
     "proofId": "de-moivre-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 52,
-      "endLine": 88
+      "startLine": 48,
+      "endLine": 85
     },
     "type": "insight",
     "title": "Why Irrational Exponents Have No Multi-Valuedness",
-    "content": "The real content of 'single-valued' is the absence of a finite cyclic ambiguity. exp_two_pi_ne_one_of_irrational shows e^{2πiαn} ≠ 1 for n ≠ 0: via Complex.exp_eq_one_iff this would force αn = m for integers, but Irrational.intCast_mul makes n·α irrational while m is an integer (Int.not_irrational) — contradiction. branch_injective then upgrades this to: k ↦ e^{2πiαk} is injective. The would-be branch shifts never coincide, so there is no integer q producing q distinct values — exactly the structural difference from the rational p/q case."
+    "content": "The real content of 'single-valued' is the absence of a finite cyclic ambiguity. exp_two_pi_ne_one_of_irrational shows e^{2πiαn} ≠ 1 for n ≠ 0: via Complex.exp_eq_one_iff such an equality would force 2παn = k·2π, i.e. n·α = k for an integer k. But Irrational.intCast_mul makes n·α irrational (for n ≠ 0), while k is an integer (Int.not_irrational) — contradiction. branch_injective then upgrades this to: k ↦ e^{2πiαk} is injective (apply the previous lemma to the difference j − k via exp_eq_exp_iff_exp_sub_eq_one). The would-be branch shifts never coincide, so no integer q produces q distinct values — exactly the structural difference from the rational p/q case, which has exactly q values.",
+    "mathContext": "For irrational $\\alpha$ and $n \\ne 0$: $e^{2\\pi i \\alpha n} \\ne 1$, since $n\\alpha = k \\in \\mathbb{Z}$ would make the irrational $n\\alpha$ an integer; hence $k \\mapsto e^{2\\pi i \\alpha k}$ is injective.",
+    "significance": "key",
+    "relatedConcepts": ["irrationality", "equidistribution / dense orbit", "Complex.exp_eq_one_iff", "injectivity", "rational vs irrational exponents"],
+    "prerequisites": ["e^z = 1 ⟺ z ∈ 2πiℤ", "irrational times nonzero integer is irrational", "an integer is not irrational"]
   },
   {
     "id": "ann-bundle",
     "proofId": "de-moivre-oq-03-oq-01-oq-01",
     "range": {
-      "startLine": 90,
+      "startLine": 87,
       "endLine": 111
     },
     "type": "insight",
     "title": "Replacing the True Stub",
-    "content": "irrational_exponent_single_valued bundles the principal-value formula with branch injectivity — the honest replacement for the parent's `theorem … : True := trivial`. A placeholder proving only True asserts nothing about the actual claim; here the claim has explicit content and a machine-checked proof, answering the parent's first open question. exp_two_pi_eq_one_iff records the clean corollary e^{2πiαn} = 1 ↔ n = 0: the multiplicative orbit {e^{2πiαn}} is a free, infinite family."
+    "content": "irrational_exponent_single_valued bundles the principal-value formula with branch injectivity — the honest replacement for the parent's `theorem … : True := trivial`. A placeholder proving only True asserts nothing about the actual claim; here the claim has explicit content (a single principal value AND no finite cyclic ambiguity) and a machine-checked proof, answering the parent's first open question. exp_two_pi_eq_one_iff records the clean corollary e^{2πiαn} = 1 ↔ n = 0: the multiplicative orbit {e^{2πiαn}} is a free, infinite family — the quantitative reason no q-th-root ambiguity ever arises for irrational exponents.",
+    "mathContext": "$\\big((e^{i\\theta})^\\alpha = e^{i\\alpha\\theta}\\big) \\wedge \\big(k \\mapsto e^{2\\pi i \\alpha k}\\text{ injective}\\big)$; and $e^{2\\pi i \\alpha n} = 1 \\iff n = 0$.",
+    "significance": "key",
+    "relatedConcepts": ["honest formalization vs True-stub", "free orbit", "single-valuedness", "open-question resolution"],
+    "prerequisites": ["the principal-value formula", "branch injectivity", "conjunction of formalized claims"]
   }
 ]
