@@ -3066,6 +3066,7 @@ import Proofs.GramLinearIndependenceOQ01OQ01
 import Proofs.GramLinearIndependenceOQ01OQ01OQ02OQ01
 import Proofs.GramLinearIndependenceOQ01OQ02
 import Proofs.GramLinearIndependenceOQ01OQ03
+import Proofs.GramLinearIndependenceOQ01OQ03OQ01
 import Proofs.GraphCore
 import Proofs.GreensTheorem
 import Proofs.GreensTheoremOQ01
