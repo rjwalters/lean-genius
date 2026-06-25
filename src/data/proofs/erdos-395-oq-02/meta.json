@@ -1,0 +1,157 @@
+{
+  "id": "erdos-395-oq-02",
+  "slug": "erdos-395-oq-02",
+  "sorries": 0,
+  "title": "Higher-Dimensional Reverse Littlewood–Offord: The Orthogonality Obstruction",
+  "description": "Erdős #395 (solved by He–Juškevičius–Narayanan–Spiro 2024) asks, for unit complex vectors z₁,…,zₙ (|zᵢ|=1 in ℂ ≅ ℝ²) and random signs εᵢ∈{±1}, whether P(|ε₁z₁+…+εₙzₙ| ≤ √2) ≥ c/n; the answer is yes. Open question oq-02 asks whether the same phenomenon — a c/n lower bound on the probability of landing within a fixed distance of the origin — persists for unit vectors in higher dimensions ℝ^d. This entry does not resolve the fixed-dimension question (that remains open); instead it isolates the correct shape of any higher-dimensional statement by proving, axiom-free, a sharp obstruction. The engine is the orthogonality identity: for orthonormal unit vectors z₁,…,zₙ (which exist precisely when the ambient dimension d ≥ n, e.g. the standard basis of ℝⁿ), EVERY sign sum satisfies ‖ε₁z₁+…+εₙzₙ‖² = Σεᵢ²‖zᵢ‖² = n deterministically — the cross terms ⟨zᵢ,zⱼ⟩ all vanish. So the sum sits at distance exactly √n from the origin for all 2ⁿ sign choices. Consequently, for any fixed threshold C, once n > C² no sign choice lands within C: the favourable event is empty and its probability is 0, never ≥ c/n. The conclusion (dimensionFree_reverseLO_false) is that the naive dimension-free, fixed-threshold analogue of HJNS is FALSE: any correct higher-dimensional reverse Littlewood–Offord statement must keep the dimension d bounded independently of n (or grow the threshold with d). The genuinely open fixed-dimension form is recorded as an unproven Prop.",
+  "leanFile": {
+    "lineCount": 240,
+    "axiomCount": 0,
+    "path": "Proofs/Erdos395OQ02.lean",
+    "sorries": 0,
+    "definitionCount": 7,
+    "theoremCount": 9
+  },
+  "meta": {
+    "author": "Formalization original to Lean Genius (reverse Littlewood–Offord, higher-dimensional obstruction)",
+    "date": "2024",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos395OQ02.lean",
+    "tags": [
+      "probability",
+      "littlewood-offord",
+      "random-signs",
+      "inner-product-space",
+      "anti-concentration",
+      "combinatorics"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "dateAdded": "2026-06-25",
+    "lineCount": 240,
+    "originalContributions": [
+      "signedSum_norm_sq_of_orthonormal: the orthogonality identity — for an orthonormal family z₁,…,zₙ in any real inner product space and any sign vector ε∈{±1}ⁿ, ‖Σεᵢzᵢ‖² = n exactly, independently of the signs. Proved by expanding ⟪Σεᵢzᵢ, Σεⱼzⱼ⟫ with sum_inner/inner_sum and the bilinearity of the real inner product, collapsing the double sum via orthonormal_iff_ite and εᵢ²=1. This is the engine of the obstruction",
+      "signedSum_norm_of_orthonormal: consequently ‖Σεᵢzᵢ‖ = √n for every sign choice — the sign sum of an orthonormal family is pinned to the sphere of radius √n, deterministically",
+      "orthonormal_smallSum_eq_empty: the obstruction in set form — for a fixed threshold C with C² < n, the set { ε∈{±1}ⁿ : ‖Σεᵢzᵢ‖ ≤ C } of an orthonormal family is empty. No sign choice lands within C of the origin",
+      "orthonormal_smallSumProb_eq_zero: the probability formulation — over the uniform 2ⁿ-point sign space, P(‖Σεᵢzᵢ‖ ≤ C) = 0 exactly when C² < n, in ambient dimension d ≥ n",
+      "dimensionFree_reverseLO_false (headline): the dimension-free, fixed-threshold analogue of HJNS is FALSE — there is no single threshold C and constant c>0 with P(‖Σεᵢzᵢ‖ ≤ C) ≥ c/n holding for all n and all orthonormal configurations in EuclideanSpace ℝ (Fin n). The standard basis in dimension d=n witnesses the failure for every n > C²",
+      "basisFun_orthonormal: the standard basis of EuclideanSpace ℝ (Fin n) realizes the obstruction in ambient dimension d = n, so the orthonormal hypothesis is not vacuous",
+      "ReverseLO_fixedDim: a precise statement of the genuinely open fixed-dimension question (for each d, a threshold C_d and constant c_d>0 giving P(‖Σεᵢzᵢ‖ ≤ C_d) ≥ c_d/n for all unit configurations in ℝ^d), recorded as an unproven Prop to mark the honest boundary"
+    ],
+    "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for the headline theorems (signedSum_norm_sq_of_orthonormal, orthonormal_smallSum_eq_empty, orthonormal_smallSumProb_eq_zero, dimensionFree_reverseLO_false). No native_decide is used (so no Lean.ofReduceBool). This entry does NOT resolve the open higher-dimensional reverse Littlewood–Offord question for fixed dimension d ≥ 3 (recorded as the unproven Prop ReverseLO_fixedDim); it proves the obstruction that any correct statement of that question must respect.",
+    "theoremCount": 9,
+    "definitionCount": 7
+  },
+  "overview": {
+    "historicalContext": "Erdős #395, the reverse Littlewood–Offord problem, asks for a LOWER bound on how often a random sign sum of unit vectors lands near the origin — the mirror image of the classical Littlewood–Offord upper bounds on concentration. Erdős first asked it with threshold 1; Carnielli–Carolino (2011) showed that fails, and the correct threshold is √2. He–Juškevičius–Narayanan–Spiro (arXiv:2408.11034, 2024) proved the √2 version: for unit complex vectors, P(|Σεᵢzᵢ| ≤ √2) ≥ c/n, with the 1/n rate optimal. Complex unit vectors are exactly the 2-dimensional case (ℂ ≅ ℝ²). The natural next question, listed among the problem's open follow-ups, is whether the same c/n concentration persists in higher dimensions ℝ^d.",
+    "problemStatement": "Does a reverse Littlewood–Offord lower bound hold for higher-dimensional unit vectors: is there, for unit vectors z₁,…,zₙ ∈ ℝ^d, a fixed threshold C and constant c>0 with P(‖ε₁z₁+…+εₙzₙ‖ ≤ C) ≥ c/n? This entry asks specifically what happens to the naive 'dimension-free' version in which d is allowed to grow with n.",
+    "proofStrategy": "The obstruction reduces to a single deterministic identity. Writing the squared norm of a sign sum as a real inner product, ‖Σεᵢzᵢ‖² = ⟪Σεᵢzᵢ, Σεⱼzⱼ⟫ = ΣᵢΣⱼ εᵢεⱼ⟪zᵢ,zⱼ⟫. For an orthonormal family ⟪zᵢ,zⱼ⟫ = [i=j], so the double sum collapses to Σᵢ εᵢ²·1 = n (using εᵢ²=1). Thus ‖Σεᵢzᵢ‖² = n for EVERY sign choice — the randomness is irrelevant. To get the obstruction without any square roots, observe that the favourable event ‖S‖ ≤ C (with C ≥ ‖S‖ ≥ 0) is equivalent to ‖S‖² ≤ C²; since ‖S‖² = n, this forces n ≤ C². Hence when C² < n the event is empty and its probability is 0. Picking n > C² with the standard orthonormal basis of ℝⁿ (which exists because the dimension equals n) yields, for any proposed (C,c), a configuration with probability 0 < c/n — refuting the dimension-free statement.",
+    "keyInsights": [
+      "Orthogonality kills the cross terms: for orthonormal unit vectors the squared sign sum is ‖Σεᵢzᵢ‖² = Σεᵢ²‖zᵢ‖² = n, a constant — the same value for all 2ⁿ sign choices. Anti-concentration near the origin becomes impossible because the sum never leaves the sphere of radius √n.",
+      "Dimension is the hidden parameter. Orthonormality of n vectors requires ambient dimension d ≥ n; the complex (2-dimensional) case of HJNS is far from this regime, which is exactly why a c/n bound is possible there but not when d grows with n.",
+      "The obstruction needs no square roots or probability machinery: comparing squared norms (‖S‖ ≤ C ⟺ ‖S‖² ≤ C² for nonnegative C) turns the whole argument into the integer/real inequality n ≤ C², making it elementary and fully constructive.",
+      "This sharpens the open problem rather than solving it: it shows any correct higher-dimensional reverse Littlewood–Offord statement must fix (or bound) the dimension d independently of n, or let the threshold C grow with d. The fixed-dimension question d ≥ 3 remains genuinely open.",
+      "The standard basis of ℝⁿ is the explicit extremal configuration — the cleanest possible witness — so the obstruction is not an abstract non-existence but a concrete family realizing probability exactly 0."
+    ]
+  },
+  "conclusion": {
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (240 lines, 9 theorems, 7 definitions) of the orthogonality obstruction to a dimension-free higher-dimensional reverse Littlewood–Offord theorem. For orthonormal unit vectors z₁,…,zₙ every sign sum has ‖Σεᵢzᵢ‖² = n exactly, so for any fixed threshold C the small-sum event is empty once n > C² and its probability is 0. Therefore the dimension-free, fixed-threshold analogue of HJNS 2024 is FALSE; the genuinely open fixed-dimension question is recorded as an unproven Prop.",
+    "implications": "The result delineates the correct hypotheses for any higher-dimensional reverse Littlewood–Offord statement: the dimension must be controlled relative to n, or the threshold must scale with the dimension. It explains structurally why the 2-dimensional (complex) case of HJNS is special — n unit vectors in a 2-dimensional space are forced into massive linear dependence, which is what permits concentration near zero, whereas orthogonal configurations in growing dimension forbid it. The orthogonality identity ‖Σεᵢzᵢ‖² = n is reusable as the second-moment scaffold for any anti-concentration analysis of Rademacher sums of unit vectors.",
+    "openQuestions": [
+      "The fixed-dimension reverse Littlewood–Offord question (ReverseLO_fixedDim d for d ≥ 3): for each fixed d, is there a threshold C_d and constant c_d > 0 such that for all n and all unit vectors z₁,…,zₙ ∈ ℝ^d, P(‖Σεᵢzᵢ‖ ≤ C_d) ≥ c_d/n? This is the genuine open problem and is left unproven.",
+      "How must the threshold C(d) grow with the dimension for a c/n bound to survive when d is allowed to scale with n? The identity ‖Σεᵢzᵢ‖² = n suggests C(d) ~ √d on orthonormal configurations, but the optimal dependence across all unit configurations is unknown.",
+      "Is there a Paley–Zygmund or Fourier-analytic route, paralleling HJNS, that yields the fixed-d lower bound directly, using ‖Σεᵢzᵢ‖² = n as the second-moment input?"
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Background: HJNS 2024 and the higher-dimensional question",
+      "startLine": 1,
+      "endLine": 48,
+      "summary": "Module docstring framing the parent result (HJNS 2024, the 2-dimensional/complex case) and the open higher-dimensional follow-up. States plainly that the fixed-dimension question is NOT resolved; what is proved is the orthogonality obstruction showing the dimension-free analogue is false."
+    },
+    {
+      "id": "definitions",
+      "title": "§I Sign vectors and signed sums",
+      "startLine": 55,
+      "endLine": 72,
+      "summary": "IsSign ε (each component ±1), signedSum z ε := Σ εᵢ•zᵢ over an arbitrary real inner product space E (so ℝ^d for all d at once, complex case included), and sign_mul_self: εᵢ·εᵢ = 1."
+    },
+    {
+      "id": "orthogonality",
+      "title": "§II The orthogonality identity ‖Σεᵢzᵢ‖² = n",
+      "startLine": 75,
+      "endLine": 101,
+      "summary": "signedSum_norm_sq_of_orthonormal: for an orthonormal family, the squared norm of every sign sum equals n, independent of the signs — proved by expanding the real inner product and collapsing the double sum via orthonormal_iff_ite and εᵢ²=1. signedSum_norm_of_orthonormal: hence ‖Σεᵢzᵢ‖ = √n."
+    },
+    {
+      "id": "obstruction",
+      "title": "§III The obstruction: the small-sum set is empty",
+      "startLine": 103,
+      "endLine": 121,
+      "summary": "orthonormal_smallSum_eq_empty: for a threshold C with C² < n, the set of sign vectors whose orthonormal sign sum has norm ≤ C is empty. Proved by comparing squared norms — ‖S‖ ≤ C forces ‖S‖² ≤ C², but ‖S‖² = n > C², a contradiction (nlinarith)."
+    },
+    {
+      "id": "headline",
+      "title": "§IV Probability formulation and falsity of the dimension-free analogue",
+      "startLine": 123,
+      "endLine": 203,
+      "summary": "Boolean sign space {±1}ⁿ via toSign/signOf; smallSumCount and smallSumProb (= count / 2ⁿ) in EuclideanSpace ℝ (Fin d). orthonormal_smallSumCount_eq_zero / orthonormal_smallSumProb_eq_zero give probability 0 when C² < n. basisFun_orthonormal supplies the standard-basis witness, and dimensionFree_reverseLO_false (headline) refutes any dimension-free, fixed-threshold c/n bound."
+    },
+    {
+      "id": "open-question",
+      "title": "§V The genuine open question (left unproven)",
+      "startLine": 205,
+      "endLine": 222,
+      "summary": "ReverseLO_fixedDim d: the fixed-dimension reverse Littlewood–Offord question for ambient dimension d, recorded as a Prop and deliberately NOT proved — this is the honest boundary with the open problem."
+    },
+    {
+      "id": "summary",
+      "title": "§VI Summary",
+      "startLine": 224,
+      "endLine": 238,
+      "summary": "Recap: parent HJNS gives c/n in dimension 2; this file proves ‖Σεᵢzᵢ‖² = n for orthonormal families, hence the dimension-free analogue is false; the fixed-dimension question remains open."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-395",
+      "relationship": "extends",
+      "description": "Addresses the parent problem's open follow-up #2 ('Does a similar result hold for higher-dimensional vectors?'). The parent records HJNS 2024's c/n bound for unit complex (2-dimensional) vectors with threshold √2; this entry proves that the naive dimension-free generalization to ℝ^d is false, isolating the obstruction (orthonormal configurations force ‖Σεᵢzᵢ‖² = n) without resolving the fixed-dimension question."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "signedSum_norm_sq_of_orthonormal",
+      "type": "core",
+      "description": "The orthogonality identity: for an orthonormal family z₁,…,zₙ in any real inner product space and any sign vector ε∈{±1}ⁿ, ‖ε₁z₁+…+εₙzₙ‖² = n, independent of the signs. The engine of the obstruction.",
+      "leanType": "∀ {n : ℕ} {E : Type*} [inst : NormedAddCommGroup E] [inst : InnerProductSpace ℝ E] (z : Fin n → E), Orthonormal ℝ z → ∀ (ε : Fin n → ℝ), IsSign ε → ‖signedSum z ε‖ ^ 2 = ↑n"
+    },
+    {
+      "name": "dimensionFree_reverseLO_false",
+      "type": "headline",
+      "description": "The dimension-free, fixed-threshold analogue of HJNS is FALSE: no single threshold C and constant c>0 give P(‖ε₁z₁+…+εₙzₙ‖ ≤ C) ≥ c/n for all n and all orthonormal configurations in EuclideanSpace ℝ (Fin n). The standard basis in dimension d=n witnesses the failure for every n > C².",
+      "leanType": "¬ ∃ C c : ℝ, 0 < c ∧ ∀ m : ℕ, 0 < m → ∀ z : Fin m → EuclideanSpace ℝ (Fin m), Orthonormal ℝ z → c / ↑m ≤ smallSumProb z C"
+    },
+    {
+      "name": "orthonormal_smallSum_eq_empty",
+      "type": "core",
+      "description": "The obstruction in set form: for a threshold C with C² < n, the set of sign vectors whose orthonormal sign sum has norm ≤ C is empty — no sign choice lands within C of the origin.",
+      "leanType": "∀ {n : ℕ} {E : Type*} [inst : NormedAddCommGroup E] [inst : InnerProductSpace ℝ E] (z : Fin n → E), Orthonormal ℝ z → ∀ (C : ℝ), C ^ 2 < ↑n → {ε : Fin n → ℝ | IsSign ε ∧ ‖signedSum z ε‖ ≤ C} = ∅"
+    },
+    {
+      "name": "orthonormal_smallSumProb_eq_zero",
+      "type": "core",
+      "description": "The probability formulation: over the uniform 2ⁿ-point sign space, the probability that an orthonormal sign sum lands within C of the origin is exactly 0 whenever C² < n (ambient dimension d ≥ n).",
+      "leanType": "∀ {n d : ℕ} (z : Fin n → EuclideanSpace ℝ (Fin d)), Orthonormal ℝ z → ∀ (C : ℝ), C ^ 2 < ↑n → smallSumProb z C = 0"
+    },
+    {
+      "name": "ReverseLO_fixedDim",
+      "type": "supporting",
+      "description": "The genuinely open fixed-dimension reverse Littlewood–Offord question for ambient dimension d, recorded as an unproven Prop to mark the boundary with the open problem.",
+      "leanType": "ℕ → Prop"
+    }
+  ]
+}
