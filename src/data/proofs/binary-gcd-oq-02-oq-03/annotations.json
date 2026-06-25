@@ -51,7 +51,7 @@
       "startLine": 171,
       "endLine": 273
     },
-    "type": "proof-technique",
+    "type": "technique",
     "title": "Bézout correctness by induction on the algorithm",
     "content": "`binaryXgcd_bezout` proves `a·x + b·y = Nat.gcd a b` by `binaryXgcd.induct`. Each recursive case rewrites `Nat.gcd a b` to the reduced gcd (via the Part I identities), then closes with a single `linear_combination` combining the induction hypothesis, the relevant `hL_spec`/`hR_spec`, the gcd-reduction cast, and an `omega`-supplied cast fact such as `↑(a+1) = 2·↑((a+1)/2)` or `↑(a+1) - ↑(b+1) = 2·↑c`. The integer/natural casts and division facts are discharged uniformly by `omega`.",
     "mathContext": "Because both the algorithm and `Nat.gcd` satisfy the same four reductions, the induction is tight: the coefficient algebra (hL/hR plus a linear recombination) exactly accounts for the difference between the reduced and original Bézout relations.",
@@ -81,7 +81,7 @@
       "startLine": 306,
       "endLine": 335
     },
-    "type": "key-result",
+    "type": "insight",
     "title": "Equivalence to Mathlib's Int.gcdA / Int.gcdB",
     "content": "`binaryXgcdInt_eq_gcdAB` states `a·x + b·y = a·gcdA a b + b·gcdB a b`: the Bézout relation produced by the extended *binary* GCD coincides with the one from Mathlib's extended Euclidean coefficients. Both certify the same `Int.gcd`, so the identities agree even though the coefficient pairs themselves need not (Bézout coefficients are not unique). This answers the binary-GCD analogue of the sibling open question (the Lehmer entry asks the same for `lehmerXgcdInt`). Three `decide`-checked examples (positive, coprime, and negative inputs) certify concrete instances at type-check time.",
     "mathContext": "The result places the binary extended algorithm on equal footing with the Euclidean one as a certified producer of Bézout witnesses, completing the binary-GCD strand's coverage of the extended algorithm.",
