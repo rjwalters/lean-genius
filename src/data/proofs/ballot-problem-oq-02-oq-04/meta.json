@@ -24,7 +24,23 @@
     "scope": "Formalizes the arcsine DISTRIBUTION (the quantitative content of the law). The probabilistic statement 'the occupation time of the positive half-line is arcsine-distributed', derived via Brownian local times, is NOT proved here: Mathlib v4.26.0 contains no Brownian motion, no stochastic local time, and no arcsine-distribution object. The parent entry ballot-problem-oq-02 axiomatizes the Brownian facts; this entry instead proves the underlying real-analytic CDF axiom-free."
   },
   "overview": {
-    "text": "Lévy's Arcsine Law (1939) is the continuous-time culmination of the ballot problem. For a standard Brownian motion W on [0,1], three a priori different statistics — the occupation time of the positive half-line {t : W_t > 0}, the time of the maximum argmax_t W_t, and the time of the last zero sup{t : W_t = 0} — all share the same distribution on [0,1]: the arcsine law, with CDF F(x) = (2/π)·arcsin(√x) and density f(x) = 1/(π√(x(1-x))). The 'via local times' route obtains this through the occupation density (local time) of W at level 0. Because Mathlib has no local-time theory, this entry formalizes the verifiable heart of the law — the arcsine CDF F itself as a real-analytic object — proving its defining CDF properties and its signature reflection symmetry F(x)+F(1-x)=1, which is the formal expression of the counterintuitive 'arcsine' phenomenon: a Brownian path is least likely to spend half its time positive and most likely to spend nearly all or nearly none."
+    "text": "Lévy's Arcsine Law (1939) is the continuous-time culmination of the ballot problem. For a standard Brownian motion W on [0,1], three a priori different statistics — the occupation time of the positive half-line {t : W_t > 0}, the time of the maximum argmax_t W_t, and the time of the last zero sup{t : W_t = 0} — all share the same distribution on [0,1]: the arcsine law, with CDF F(x) = (2/π)·arcsin(√x) and density f(x) = 1/(π√(x(1-x))). The 'via local times' route obtains this through the occupation density (local time) of W at level 0. Because Mathlib has no local-time theory, this entry formalizes the verifiable heart of the law — the arcsine CDF F itself as a real-analytic object — proving its defining CDF properties and its signature reflection symmetry F(x)+F(1-x)=1, which is the formal expression of the counterintuitive 'arcsine' phenomenon: a Brownian path is least likely to spend half its time positive and most likely to spend nearly all or nearly none.",
+    "historicalContext": "The discrete ballot problem (Bertrand 1887, Whitworth) asks for the probability that one candidate stays strictly ahead throughout the count; its reflection-principle solution and the Catalan numbers are the combinatorial seed of fluctuation theory. Paul Lévy, in his 1939 memoir *Sur certains processus stochastiques homogènes* (Compositio Mathematica 7, 283–339), discovered the continuous-time limit: for Brownian motion on [0,1], the fraction of time spent above zero is NOT concentrated near 1/2 as naive fairness would suggest, but follows the arcsine law F(x) = (2/π)·arcsin(√x), whose density 1/(π√(x(1−x))) blows up at the endpoints. The same distribution simultaneously governs the time of the maximum and the time of the last zero — a triple coincidence later given canonical treatments by Karatzas–Shreve (1991, §6.3) and Mörters–Peres (2010, §5.2, Thm 5.28) via local times and the reflection principle. The law is the prototype of the 'unfair fairness' phenomena in random walks: in a long sequence of fair coin tosses, the lead is overwhelmingly likely to belong to one player for most of the game. The name 'arcsine' comes directly from the arcsin in the CDF.",
+    "problemStatement": "Lévy's Arcsine Law states that the occupation time $A^+ = |\\{t \\in [0,1] : W_t > 0\\}|$ of a standard Brownian motion (and equally its argmax time and last-zero time) has cumulative distribution $F(x) = \\tfrac{2}{\\pi}\\arcsin\\sqrt{x}$ on $[0,1]$. A from-primitives proof requires Brownian local times, absent from Mathlib v4.26.0. This entry isolates and proves the verifiable quantitative core: that $F$ is a genuine CDF on $[0,1]$ (endpoints $0,1$, median $1/2$, monotone) with the reflection symmetry $F(x) + F(1-x) = 1$, and that the density $f(x) = 1/(\\pi\\sqrt{x(1-x)})$ is symmetric about $1/2$ with global minimum $2/\\pi$ there.",
+    "proofStrategy": "Everything reduces to real-analytic facts about Real.arcsin and Real.sqrt. The endpoints use arcsin 0 = 0 and arcsin 1 = π/2; the median uses the helper arcsin_sqrt_half (arcsin(√(1/2)) = π/4), obtained by rewriting √(1/2) = √2/2 and inverting sin(π/4). Monotonicity is mul_le_mul_of_nonneg_left applied to Real.arcsin_le_arcsin ∘ Real.sqrt_le_sqrt with the nonnegative coefficient 2/π. The reflection symmetry rests on the complementary-angle identity arcsin(√x) + arcsin(√(1−x)) = π/2, proved by routing through arccos: arccos(√x) = arcsin(√(1−(√x)²)) = arcsin(√(1−x)) (Real.arccos_eq_arcsin) and arccos = π/2 − arcsin (Real.arccos_eq_pi_div_two_sub_arcsin); summing the two arcsin coefficients and clearing 2/π gives 1. The density symmetry is ring_nf on the manifestly symmetric x(1−x); its minimum value 2/π follows from √((1/2)²) = 1/2 and field_simp.",
+    "keyInsights": [
+      "**The arcsin in the name is literal**: the CDF is built directly from Real.arcsin(√x), so every property of the law is a property of a single elementary special function — the formalization needs no measure theory, only real analysis of arcsin and sqrt.",
+      "**Reflection symmetry F(x)+F(1−x)=1 is the heart of the matter**: it says the occupation time is distributed symmetrically about 1/2, yet — because the density is U-shaped — symmetry about 1/2 coexists with mass fleeing AWAY from 1/2. The symmetric median and the anti-concentrated density are not in tension; they are the whole surprise of the arcsine law.",
+      "**The complementary-angle identity arcsin(√x) + arcsin(√(1−x)) = π/2 is the engine**: it is the analytic shadow of the geometric fact that √x and √(1−x) are sine and cosine of complementary angles, and it is what forces the reflection symmetry. The proof routes through arccos to expose this.",
+      "**Honest scoping under a library gap**: Mathlib v4.26.0 has no Brownian motion, no stochastic local time, and no arcsine-distribution object, so the probabilistic 'via local times' derivation cannot be done from primitives. This entry proves exactly the part that IS formalizable — the CDF and density as real-analytic objects — and marks the local-time route as future work rather than axiomatizing it.",
+      "**The U-shaped density's minimum at 2/π quantifies the paradox**: the most 'fair' split (half the time positive) is the single least likely outcome, with density bottoming out at 2/π ≈ 0.637, while the density diverges at the extremes 0 and 1."
+    ],
+    "prerequisites": [
+      "Real.arcsin / Real.arccos and their identities (arcsin_one, arccos_eq_arcsin, arccos_eq_pi_div_two_sub_arcsin)",
+      "Real.sqrt and its monotonicity / square laws (sqrt_le_sqrt, sq_sqrt, sqrt_sq)",
+      "What a cumulative distribution function is (monotone, endpoints 0 and 1)",
+      "Background: Brownian motion, occupation/local time, and the statement of Lévy's arcsine law"
+    ]
   },
   "references": [
     {
@@ -46,6 +62,66 @@
       "note": "Local times and the arcsine law derivation."
     }
   ],
+  "sections": [
+    {
+      "id": "module-doc",
+      "title": "Module Documentation and Scope",
+      "startLine": 3,
+      "endLine": 58,
+      "summary": "States Lévy's Arcsine Law, the three statistics it governs (occupation time, argmax time, last-zero time), the CDF F(x)=(2/π)arcsin√x and density 1/(π√(x(1−x))), and the 'via local times' route. Honestly scopes the entry: Mathlib v4.26.0 has no Brownian motion / local time / arcsine-distribution object, so it formalizes the verifiable real-analytic core (the CDF and density) axiom-free and marks the probabilistic derivation as future work."
+    },
+    {
+      "id": "definitions",
+      "title": "The Arcsine CDF and Density",
+      "startLine": 60,
+      "endLine": 69,
+      "summary": "arcsineCDF x = (2/π)·arcsin(√x) and arcsineDensity x = 1/(π·√(x(1−x))), the two real-analytic objects the rest of the file analyzes. Both are noncomputable (they use Real.arcsin and Real.sqrt)."
+    },
+    {
+      "id": "endpoints",
+      "title": "Endpoints and Total Mass",
+      "startLine": 71,
+      "endLine": 80,
+      "summary": "arcsineCDF_zero: F(0) = 0 (no mass left of 0, via arcsin 0 = 0); arcsineCDF_one: F(1) = 1 (total mass 1, via √1 = 1 and arcsin 1 = π/2 cancelling 2/π). Together they certify F maps [0,1] onto [0,1]."
+    },
+    {
+      "id": "median",
+      "title": "The Median at the Centre",
+      "startLine": 82,
+      "endLine": 99,
+      "summary": "Helper arcsin_sqrt_half proves arcsin(√(1/2)) = π/4 by rewriting √(1/2) = √2/2 and inverting sin(π/4) within arcsin's principal range. arcsineCDF_half then gives F(1/2) = 1/2: the median is the fair value 1/2, even though the law concentrates mass away from it."
+    },
+    {
+      "id": "monotonicity",
+      "title": "Monotonicity — F is a Genuine CDF",
+      "startLine": 101,
+      "endLine": 108,
+      "summary": "arcsineCDF_mono: for 0 ≤ x ≤ y, F(x) ≤ F(y). Proved by mul_le_mul_of_nonneg_left with the nonnegative coefficient 2/π, reducing to Real.arcsin_le_arcsin (Real.sqrt_le_sqrt hxy) — arcsin and sqrt are both monotone."
+    },
+    {
+      "id": "reflection-symmetry",
+      "title": "Reflection Symmetry about 1/2 — the Arcsine Phenomenon",
+      "startLine": 110,
+      "endLine": 135,
+      "summary": "The complementary-angle identity arcsin(√x) + arcsin(√(1−x)) = π/2 (proved via arccos(√x) = arcsin(√(1−x)) and arccos = π/2 − arcsin) drives arcsineCDF_symm: F(x) + F(1−x) = 1 on [0,1]. This is the formal statement of the arcsine law's signature feature — symmetry about 1/2 alongside anti-concentration near it."
+    },
+    {
+      "id": "u-shaped-density",
+      "title": "The U-shaped Density",
+      "startLine": 137,
+      "endLine": 151,
+      "summary": "arcsineDensity_symm: f(x) = f(1−x), immediate from the symmetric x(1−x) (ring_nf). arcsineDensity_half: f(1/2) = 2/π, the bottom of the U and the density's global minimum — the quantitative form of 'the fair split is the least likely outcome', while f diverges at the endpoints."
+    }
+  ],
+  "conclusion": {
+    "summary": "An axiom-free, sorry-free formalization of the quantitative core of Lévy's Arcsine Law: the arcsine CDF F(x) = (2/π)·arcsin(√x) is shown to be a genuine cumulative distribution function on [0,1] — endpoints F(0)=0, F(1)=1, median F(1/2)=1/2, monotone — with the signature reflection symmetry F(x)+F(1−x)=1, and its density 1/(π√(x(1−x))) is symmetric about 1/2 with global minimum 2/π there. 9 theorems, 2 definitions, 0 axioms, depending only on real analysis of Real.arcsin and Real.sqrt.",
+    "implications": "Captures the counterintuitive heart of the arcsine law — symmetry about 1/2 coexisting with a density that flees 1/2 — as a fully checked real-analytic statement, independent of any probability theory. The CDF and density, together with the proven complementary-angle identity arcsin(√x)+arcsin(√(1−x))=π/2, are a reusable building block: once Mathlib gains Brownian motion and stochastic local times, the occupation-time random variable can be tied to this F to complete the probabilistic statement without re-deriving the analytic facts.",
+    "openQuestions": [
+      "Complete the probabilistic derivation 'via local times' once Mathlib has Brownian motion and stochastic local time: identify the occupation time A⁺ of the positive half-line as a random variable and prove ℙ(A⁺ ≤ x) = F(x).",
+      "Prove that the density f integrates to 1 and that F is its antiderivative (F'(x) = f(x) on (0,1)), tying the CDF and density together inside Mathlib's measure/integration framework.",
+      "Establish the joint arcsine law for the other two statistics (argmax time and last-zero time) and the equidistribution that makes all three share F."
+    ]
+  },
   "crossReferences": [
     "ballot-problem-oq-02"
   ],
