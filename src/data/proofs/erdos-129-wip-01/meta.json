@@ -1,0 +1,167 @@
+{
+  "id": "erdos-129-wip-01",
+  "title": "Ramsey Numbers Avoiding Monochromatic Cliques: monotonicity of the avoidance property",
+  "slug": "erdos-129-wip-01",
+  "description": "For Erdős Problem 129's predicate HasRamseyAvoid N n k r ('every r-coloring of K_N admits an n-vertex set with no monochromatic K_k'), this leaf proves the two monotonicity laws the parent entry leaves as deferred 'embedding arguments not yet in Mathlib': monotonicity in N (enlarging the host graph preserves avoidance, HasRamseyAvoid N n k r → N ≤ N' → HasRamseyAvoid N' n k r) and antitonicity in n (requiring fewer clique-free vertices is easier). The N-monotonicity is the substantive direction: an arbitrary coloring of K_{N'} is pulled back along the order embedding Fin.castLE to a coloring of K_N, the hypothesis supplies an avoiding set downstairs, and it is pushed forward by Finset.map; any k-clique upstairs is the image of one downstairs whose non-c witness edge lifts. Equivalently, R(n;k,r) is non-decreasing in n and any N ≥ R(n;k,r) witnesses the property. Fully verified: 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/Erdos129WIP01.lean",
+    "tags": [
+      "erdos",
+      "ramsey-theory",
+      "graph-theory",
+      "combinatorics",
+      "edge-coloring",
+      "monotonicity",
+      "embedding"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "dateAdded": "2026-06-24",
+    "erdosNumber": 129,
+    "erdosUrl": "https://erdosproblems.com/129",
+    "erdosProblemStatus": "open",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "Fin.castLE",
+        "description": "The canonical order-preserving inclusion Fin N → Fin N' for N ≤ N'; used to pull back an r-coloring of K_{N'} to one of K_N (preserving the i < j edge condition)",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Fin.castLE_lt_castLE_iff",
+        "description": "castLE h i < castLE h j ↔ i < j (definitional); supplies the i < j proof obligation for the pulled-back and lifted edges, witnessing that castLE is strictly monotone",
+        "module": "Mathlib.Order.Fin.Basic"
+      },
+      {
+        "theorem": "Fin.castLEEmb",
+        "description": "Fin.castLE packaged as an injective embedding Fin N ↪ Fin N'; used as the Finset.map function that pushes the downstairs avoiding set up to Fin N'",
+        "module": "Mathlib.Data.Fin.Embedding"
+      },
+      {
+        "theorem": "Finset.subset_map_iff",
+        "description": "T' ⊆ S.map f ↔ ∃ T ⊆ S, T' = T.map f; reflects a k-subset of the lifted vertex set back to a k-subset of the original set, where the avoidance hypothesis applies",
+        "module": "Mathlib.Data.Finset.Preimage"
+      },
+      {
+        "theorem": "Finset.exists_subset_card_eq",
+        "description": "m ≤ #S → ∃ T ⊆ S, #T = m; extracts an exactly-m-vertex avoiding subset for the antitonicity-in-n lemma",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Finset.mem_map_of_mem",
+        "description": "a ∈ S → f a ∈ S.map f; places the lifted witness-edge endpoints in the mapped k-subset",
+        "module": "Mathlib.Data.Finset.Image"
+      }
+    ],
+    "originalContributions": [
+      "hasRamseyAvoid_mono_N: monotonicity in N — HasRamseyAvoid N n k r → N ≤ N' → HasRamseyAvoid N' n k r, proved by pulling an r-coloring of K_{N'} back along Fin.castLE, applying the hypothesis, and pushing the avoiding set forward by Finset.map. The parent Erdos129Problem lists this 'larger complete graphs make it easier to find clique-free sets' fact among properties whose proofs 'require embedding arguments not yet in Mathlib'; this supplies the embedding argument.",
+      "hasRamseyAvoid_antitone_n: antitonicity in n — HasRamseyAvoid N n k r → m ≤ n → HasRamseyAvoid N m k r, by restricting any n-vertex avoiding set to an m-vertex subset (NoMonoClique is downward closed). Equivalently R(n;k,r) is non-decreasing in n.",
+      "noMonoClique_subset: NoMonoClique is downward closed in the vertex set (a subset of a monochromatic-K_k-free set is monochromatic-K_k-free), the structural lemma behind antitonicity in n.",
+      "hasRamseyAvoid_mono: the combined law — avoidance is preserved under enlarging the host graph (N ≤ N') and shrinking the required clique-free set (n' ≤ n)."
+    ],
+    "axiomCount": 0,
+    "assumptions": "None. Fully verified: 0 axioms, 0 sorries. #print axioms reports only the standard foundational axioms (propext, Classical.choice, Quot.sound; noMonoClique_subset uses only propext and Quot.sound). No native_decide, so no Lean.ofReduceBool dependency. Kernel-verified on Mathlib 4.26.0.",
+    "lineCount": 137,
+    "theoremCount": 4,
+    "definitionCount": 4
+  },
+  "overview": {
+    "historicalContext": "Erdős and Gyárfás introduced R(n;k,r) — the least N such that every r-coloring of K_N contains an n-vertex set with no monochromatic K_k — in their 1997 paper 'A variant of the classical Ramsey problem', conjecturing growth C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}}. The exponential bounds remain open for k = 3. Long before the asymptotics, however, R(n;k,r) obeys elementary structural laws: it is non-decreasing in n (more required clique-free vertices need a larger graph) and any N at least R(n;k,r) already forces an avoiding set. The parent Lean entry Erdos129Problem formalizes the avoidance predicate HasRamseyAvoid but records these monotonicities only informally, noting their proofs 'require embedding arguments not yet in Mathlib'. This leaf discharges them.",
+    "problemStatement": "Prove from Mathlib that the Erdős-Gyárfás avoidance predicate HasRamseyAvoid N n k r is monotone in the host-graph size N (HasRamseyAvoid N n k r → N ≤ N' → HasRamseyAvoid N' n k r) and antitone in the number of required clique-free vertices n (HasRamseyAvoid N n k r → m ≤ n → HasRamseyAvoid N m k r).",
+    "proofStrategy": "Monotonicity in N is the substantive direction. Given an r-coloring χ' of K_{N'} and N ≤ N', pull χ' back to a coloring χ of K_N: an ordered edge (i,j) of K_N with i < j maps to (castLE i, castLE j), still an edge since castLE is strictly monotone (Fin.castLE_lt_castLE_iff), and χ assigns it χ' of that image. The hypothesis applied to χ yields an avoiding set S ⊆ Fin N with |S| ≥ n. Push it forward by S.map (Fin.castLEEmb _), preserving cardinality (Finset.card_map). For any color c and k-subset T' of the image, Finset.subset_map_iff reflects T' = T.map (castLEEmb _) for a k-subset T ⊆ S; the hypothesis gives an edge e in T with χ e ≠ c, and its castLE-image is an edge of T' with χ' value equal to χ e (by the definitional pull-back) hence ≠ c. Antitonicity in n restricts any n-vertex avoiding set to an exactly-m-vertex subset via Finset.exists_subset_card_eq; NoMonoClique is downward closed (noMonoClique_subset) because every k-subset of the smaller set is a k-subset of the larger.",
+    "keyInsights": [
+      "**Monotonicity in N is a pull-back/push-forward argument, not a probabilistic one.** The Erdős-Gyárfás exponential bounds need the probabilistic method, but the qualitative law 'a bigger complete graph is at least as good' is purely structural: restrict the coloring to N of the N' vertices, find the avoiding set there, and read it back among the original vertices. Fin.castLE provides the order-preserving inclusion that makes both directions canonical.",
+      "**The strict monotonicity of castLE is exactly the edge-condition transport.** The edge type {p : Fin N × Fin N // p.1 < p.2} encodes 'i < j'; pulling back or lifting an edge requires castLE i < castLE j, which is castLE_lt_castLE_iff — a definitional equivalence in Mathlib. Both the pulled-back coloring and the lifted witness edge reuse the same one-line proof obligation.",
+      "**The pulled-back coloring makes the witness transport definitional.** χ is defined so that χ e is literally χ' applied to the castLE-image edge; the lifted witness edge is that very image, so χ' (lifted edge) = χ e holds by rfl (the two i<j proofs are identical), and the non-c property transfers with no rewriting.",
+      "**Antitonicity in n is downward closure plus a cardinality cut.** Because AvoidsMono quantifies over all k-subsets, shrinking the vertex set only removes constraints: any k-subset of S' ⊆ S is already a k-subset of S. Extracting a subset of the exact required cardinality (exists_subset_card_eq) then yields the smaller-n instance, which is precisely monotonicity of R(n;k,r) in n.",
+      "**These laws are prerequisites for the asymptotics.** Monotonicity in N is what makes R(n;k,r) = inf {N : HasRamseyAvoid N n k r} well-behaved (any larger N still works), and antitonicity in n underlies inductive arguments that relate consecutive Ramsey values — the structural scaffolding on which the conjectured exponential bounds would rest."
+    ],
+    "prerequisites": [
+      "Ramsey theory and the Erdős-Gyárfás avoidance problem (R(n;k,r))",
+      "Edge colorings of complete graphs",
+      "Order embeddings of finite types (Fin.castLE) and Finset.map",
+      "Monotonicity arguments by restriction and embedding"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Setup: the avoidance predicate",
+      "startLine": 1,
+      "endLine": 66,
+      "summary": "File docstring framing Erdős Problem 129 and the deferred monotonicity properties, followed by the definitions mirrored from the parent entry: EdgeColoring N r (functions on ordered edges i < j into Fin r), AvoidsMono (a vertex set has a non-c edge in every k-subset), NoMonoClique (avoidance in all colors), and HasRamseyAvoid N n k r (every coloring admits an n-vertex avoiding set).",
+      "mathContext": "HasRamseyAvoid N n k r captures 'N ≥ R(n;k,r)'; the file proves it is monotone in N and antitone in n."
+    },
+    {
+      "id": "antitone-n",
+      "title": "Antitonicity in n",
+      "startLine": 68,
+      "endLine": 89,
+      "summary": "noMonoClique_subset shows NoMonoClique is downward closed in the vertex set (a k-subset of S' ⊆ S is a k-subset of S). hasRamseyAvoid_antitone_n then extracts, from any n-vertex avoiding set, an exactly-m-vertex subset via Finset.exists_subset_card_eq, proving HasRamseyAvoid N n k r → m ≤ n → HasRamseyAvoid N m k r — i.e. R(n;k,r) is non-decreasing in n.",
+      "mathContext": "Fewer required clique-free vertices is easier; the threshold R(n;k,r) is monotone in n."
+    },
+    {
+      "id": "mono-N",
+      "title": "Monotonicity in N (embedding argument)",
+      "startLine": 91,
+      "endLine": 137,
+      "summary": "hasRamseyAvoid_mono_N pulls an arbitrary coloring of K_{N'} back along Fin.castLE to a coloring of K_N (using castLE_lt_castLE_iff for the i < j edge condition), applies the hypothesis to get an avoiding set S, and pushes it forward by Finset.map (Fin.castLEEmb _). Each k-clique upstairs reflects via Finset.subset_map_iff to a k-clique downstairs whose non-c witness edge lifts back with the same color value. hasRamseyAvoid_mono combines this with antitonicity in n.",
+      "mathContext": "Enlarging the host graph preserves avoidance: HasRamseyAvoid N n k r → N ≤ N' → HasRamseyAvoid N' n k r."
+    }
+  ],
+  "references": [
+    {
+      "authors": "Erdős, Paul; Gyárfás, András",
+      "title": "A variant of the classical Ramsey problem",
+      "year": "1997",
+      "note": "Combinatorica 17(4), 459-467. Introduces R(n;k,r) and the conjectured C₁^{n^{1/(k-1)}} < R(n;k,r) < C₂^{n^{1/(k-1)}} bounds."
+    },
+    {
+      "authors": "Erdős problems database",
+      "title": "Problem 129",
+      "year": "2025",
+      "note": "https://erdosproblems.com/129 — current status (open for the k = 3 upper bound)."
+    }
+  ],
+  "crossReferences": [
+    {
+      "targetId": "erdos-129",
+      "relationship": "extends",
+      "description": "Parent entry. It defines HasRamseyAvoid and states the Erdős-Gyárfás conjecture but lists monotonicity in N and antitonicity among the structural facts whose proofs 'require embedding arguments not yet in Mathlib'; this leaf supplies those proofs."
+    },
+    {
+      "targetId": "ramseys-theorem",
+      "relationship": "foundational",
+      "description": "Classical Ramsey theory underlies the avoidance problem; R(n;k,r) generalizes the classical Ramsey number R(n) = R(n;2,2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "The Erdős-Gyárfás avoidance predicate HasRamseyAvoid N n k r is monotone in the host-graph size N (hasRamseyAvoid_mono_N) and antitone in the number of required clique-free vertices n (hasRamseyAvoid_antitone_n), with the combined law hasRamseyAvoid_mono. The N-monotonicity is proved by pulling an r-coloring of K_{N'} back along Fin.castLE, applying the hypothesis, and pushing the avoiding set forward by Finset.map; antitonicity follows from downward closure of NoMonoClique (noMonoClique_subset) and a cardinality cut. All four theorems are verified with 0 axioms and 0 sorries.",
+    "implications": "These are the structural laws the parent entry deferred. Monotonicity in N is what makes R(n;k,r) = inf {N : HasRamseyAvoid N n k r} well-defined as a threshold (every larger N still witnesses the property), and antitonicity in n is monotonicity of that threshold — the scaffolding underlying inductive comparisons of consecutive Ramsey values and, ultimately, the conjectured exponential bounds.",
+    "openQuestions": [
+      "Does R(n;3,r) < C^{√n} hold for some C > 1 depending on r (the open upper bound)?",
+      "Is HasRamseyAvoid antitone in the number of colors r in a usable form, given the parent's color-embedding lemma changes the coloring?",
+      "Can these monotonicities drive an inductive Lean proof relating R(n;k,r) to R(n-1;k,r)?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib.Combinatorics.SimpleGraph.Basic",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Finset"
+    ],
+    "namespace": null,
+    "lineCount": 137,
+    "axiomCount": 0,
+    "theoremCount": 4,
+    "definitionCount": 4,
+    "path": "Proofs/Erdos129WIP01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
