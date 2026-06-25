@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "ann-docstring-honesty",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 1, "endLine": 65 },
+    "type": "context",
+    "title": "What is proved — and the explicit honesty boundary",
+    "content": "The module docstring states the division of labour precisely. The parent file supplies the Uniform Boundedness Principle in its contrapositive 'resonance' form; this file upgrades resonance to genuine divergence and specialises it to scalar functionals. Crucially, the docstring flags that the unconditional du Bois-Reymond theorem is NOT claimed: the growth of the Lebesgue constants L_n = (1/2π)∫|D_n| ∼ (4/π²) log n is absent from Mathlib, so it enters as an ordinary hypothesis rather than being proved. Because the conditionality is a hypothesis (not an axiom), every theorem stated below is an unconditionally true statement.",
+    "mathContext": "Resonance: $\\neg(\\exists C,\\ \\forall i,\\ \\|g_i\\| \\le C) \\Rightarrow \\exists x,\\ \\sup_i \\|g_i x\\| = \\infty$. The Fourier instantiation needs $\\|S_n\\| = L_n = \\tfrac{1}{2\\pi}\\int_{-\\pi}^{\\pi}|D_n(t)|\\,dt \\sim \\tfrac{4}{\\pi^2}\\log n \\to \\infty$.",
+    "significance": "context",
+    "relatedConcepts": ["uniform boundedness principle", "Lebesgue constants", "Dirichlet kernel", "conditional formalization"],
+    "prerequisites": ["Banach–Steinhaus theorem", "Fourier series", "operator norm"]
+  },
+  {
+    "id": "ann-setup",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 66, "endLine": 75 },
+    "type": "definition",
+    "title": "Banach domain, normed codomain",
+    "content": "The imports pull in Mathlib and the parent resonance development, and `open` brings the parent namespace into scope so `exists_resonance_of_not_uniformly_bounded` is available unqualified. The `variable` block fixes the operating context: a complete normed space (Banach space) `E` as the domain — completeness is what makes Baire/Banach–Steinhaus applicable — and a general normed space `F` as the codomain. The field `𝕜` is nontrivially normed so that operator norms behave. Stating the abstract theorems over general `E`, `F` is what makes them reusable for any Banach–Steinhaus divergence argument, not just Fourier series.",
+    "mathContext": "$E$ Banach (`CompleteSpace E`), $F$ normed, $\\mathbb{K}$ a nontrivially normed field; operators live in $E \\to_{L[\\mathbb{K}]} F$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Banach space", "completeness", "continuous linear map", "normed field"],
+    "prerequisites": ["normed vector spaces", "complete metric spaces"]
+  },
+  {
+    "id": "ann-bound-of-tendsto",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 77, "endLine": 85 },
+    "type": "technique",
+    "title": "Convergent ⟹ bounded — the one analytic step",
+    "content": "This lemma is the entire analytic content of the upgrade from resonance to divergence. A sequence with a limit has bounded range (`Metric.isBounded_range_of_tendsto`); `isBounded_iff_forall_norm_le` then converts topological boundedness into a uniform norm bound `C`. The final `fun n => hC _ ⟨n, rfl⟩` simply notes that `y n` lies in the range as the image of `n`. Contrapositively: an orbit with no finite norm bound cannot converge — which is exactly how an unbounded resonance orbit is shown to diverge.",
+    "mathContext": "If $y_n \\to L$ then $\\{y_n\\}$ is bounded, so $\\exists C,\\ \\forall n,\\ \\|y_n\\| \\le C$. Contrapositive: $\\sup_n \\|y_n\\| = \\infty \\Rightarrow (y_n)$ has no limit.",
+    "significance": "key",
+    "relatedConcepts": ["bounded sequence", "convergence implies boundedness", "Bornology.IsBounded", "range of a sequence"],
+    "prerequisites": ["limits in metric spaces", "boundedness"]
+  },
+  {
+    "id": "ann-divergence-principle",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 87, "endLine": 100 },
+    "type": "insight",
+    "title": "The divergence principle: resonance rules out convergence",
+    "content": "The headline theorem. From the parent's resonance result, unbounded operator norms yield a point `x` whose orbit is pointwise unbounded. Suppose, for contradiction, that the orbit converged to some `L`; then `exists_bound_of_tendsto` would give a uniform bound on `‖T n x‖`, directly contradicting the resonance witness `hx`. Hence no limit exists. This is the precise sense in which Banach–Steinhaus produces *divergence* and not merely *largeness*: non-convergence is the property a divergence theorem (e.g. divergent Fourier series) actually requires.",
+    "mathContext": "$\\neg(\\exists C,\\ \\forall n,\\ \\|T_n\\| \\le C) \\Rightarrow \\exists x,\\ \\neg\\exists L,\\ T_n x \\to L$. Proof: resonance gives $\\sup_n\\|T_n x\\|=\\infty$; convergence would force boundedness, a contradiction.",
+    "significance": "key",
+    "relatedConcepts": ["Banach–Steinhaus theorem", "resonance", "proof by contradiction", "divergence"],
+    "prerequisites": ["uniform boundedness principle", "operator norm"]
+  },
+  {
+    "id": "ann-orbit-unbounded",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 102, "endLine": 112 },
+    "type": "technique",
+    "title": "Strong divergence witness: the orbit is unbounded",
+    "content": "A sharper companion: the same resonance point not only fails to converge but has a genuinely unbounded orbit — for every bound `C` some term exceeds it. The proof unfolds the resonance witness by contradiction: assuming `∀ n, ‖T n x‖ ≤ C` (obtained from `push_neg` on the negated goal) reconstructs exactly the bound `⟨C, hcon⟩` that resonance forbids. This gives the explicit ∀C ∃n form of divergence, which is what one cites when constructing the unbounded Fourier partial sums.",
+    "mathContext": "$\\exists x,\\ \\forall C \\in \\mathbb{R},\\ \\exists n,\\ C < \\|T_n x\\|$ — i.e. $\\sup_n \\|T_n x\\| = +\\infty$ with an explicit witnessing index for each level $C$.",
+    "significance": "supporting",
+    "relatedConcepts": ["unbounded sequence", "push_neg", "proof by contradiction", "condensation of singularities"],
+    "prerequisites": ["operator norm", "logic of quantifier negation"]
+  },
+  {
+    "id": "ann-partialSums",
+    "proofId": "baire-category-theorem-oq-01-oq-01-oq-02",
+    "range": { "startLine": 114, "endLine": 132 },
+    "type": "concept",
+    "title": "Scalar form: the faithful du Bois-Reymond reduction",
+    "content": "Specialising the codomain to `F = ℂ` gives the Fourier-shaped statement: for functionals `S : ℕ → V →L[ℂ] ℂ` on a complex Banach space with unbounded norms, some vector `f` has non-convergent values `S n f`. The proof is literally `exists_divergent_orbit_of_unbounded_opNorm hUnbdd` — the abstract principle applied verbatim. Reading `V = C(𝕋)` and `S n f = ∑_{|k|≤n} f̂(k)` (the n-th Fourier partial sum at 0), the hypothesis `hUnbdd` becomes the unboundedness of the Lebesgue constants and the conclusion is a continuous function with a Fourier series divergent at 0. The Fourier-specific work is thereby concentrated entirely in the single scalar quantity ‖S n‖ = L_n.",
+    "mathContext": "$V = C(\\mathbb{T})$, $S_n f = \\sum_{|k|\\le n} \\hat f(k)$, $\\|S_n\\| = L_n \\to \\infty \\Rightarrow \\exists f,\\ (S_n f)$ diverges — du Bois-Reymond (1873).",
+    "significance": "key",
+    "relatedConcepts": ["Fourier partial sums", "continuous linear functional", "Lebesgue constants", "du Bois-Reymond"],
+    "prerequisites": ["Fourier series on the circle", "dual space", "complex Banach space"]
+  }
+]
