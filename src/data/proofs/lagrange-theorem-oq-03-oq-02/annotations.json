@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-a4o6-header",
+    "proofId": "lagrange-theorem-oq-03-oq-02",
+    "range": { "startLine": 1, "endLine": 45 },
+    "type": "concept",
+    "title": "The Converse of Lagrange Fails — Axiom-Free",
+    "content": "A₄, the alternating group on 4 letters, has order 12. Although 6 divides 12, A₄ has no subgroup of order 6 — the smallest counterexample to the naive converse of Lagrange's theorem. The parent gallery entry proves this but discharges its two arithmetic atoms (|A₄| = 12 and a count of squares) with `native_decide`, which trusts the Lean compiler and pulls in the `Lean.ofReduceBool` axiom. This module gives a fully structural, axiom-free proof: `#print axioms` reports only propext, Classical.choice, and Quot.sound.",
+    "mathContext": "Subgroup-existence hierarchy: Lagrange (orders divide $|G|$) $\\subset$ Sylow (prime powers realized) $\\subset$ Hall (coprime 'Hall divisors' realized in solvable groups). The order-6-in-$A_4$ gap is exactly what Sylow and Hall repair: $6 = 2 \\cdot 3$ is not a prime power and $\\gcd(6, 2) = 2 \\neq 1$, so neither theorem guarantees it.",
+    "significance": "key",
+    "relatedConcepts": ["converse of Lagrange", "alternating group", "native_decide", "Lean.ofReduceBool", "axiom-free proof"],
+    "prerequisites": ["finite group theory", "Lagrange's theorem", "subgroup index"]
+  },
+  {
+    "id": "ann-a4o6-card",
+    "proofId": "lagrange-theorem-oq-03-oq-02",
+    "range": { "startLine": 47, "endLine": 51 },
+    "type": "proof-technique",
+    "title": "|A₄| = 12 Without native_decide",
+    "content": "`a4_card` rewrites with Mathlib's `card_alternatingGroup` (|Aₙ| = n!/2) and closes the residual 4!/2 = 12 with kernel `decide`. Kernel `decide` reduces inside the trusted Lean kernel and adds no axioms, unlike `native_decide`, which compiles to native code and depends on `Lean.ofReduceBool`. This single change is what makes the whole file axiom-free.",
+    "mathContext": "$|A_n| = n!/2$, so $|A_4| = 24/2 = 12$. The arithmetic is settled by kernel reduction, not by building and evaluating the group's multiplication table.",
+    "significance": "key",
+    "relatedConcepts": ["card_alternatingGroup", "kernel decide", "factorial"],
+    "prerequisites": ["alternating group cardinality"]
+  },
+  {
+    "id": "ann-a4o6-squares",
+    "proofId": "lagrange-theorem-oq-03-oq-02",
+    "range": { "startLine": 53, "endLine": 63 },
+    "type": "insight",
+    "title": "An Index-2 Subgroup Contains Every Square",
+    "content": "`sq_mem_of_index_two` is the structural lever that eliminates element enumeration. If H is normal of index 2, the quotient A₄/H has order 2, so every element of the quotient squares to the identity. Pushing g through the quotient map and applying `map_pow` shows (mk g)² = mk(g²) = 1, i.e. g² ∈ H, for every g.",
+    "mathContext": "In a group of order 2, $x^2 = 1$ for all $x$. Hence the canonical projection $G \\to G/H$ sends $g^2$ to the identity, placing $g^2 \\in H$. This holds for every $g \\in G$ without inspecting individual elements.",
+    "significance": "key",
+    "relatedConcepts": ["quotient group", "normal subgroup", "pow_card_eq_one", "index 2"],
+    "prerequisites": ["quotient groups", "Lagrange's theorem"]
+  },
+  {
+    "id": "ann-a4o6-index",
+    "proofId": "lagrange-theorem-oq-03-oq-02",
+    "range": { "startLine": 65, "endLine": 73 },
+    "type": "proof-technique",
+    "title": "Order 6 Forces Index 2",
+    "content": "`index_two_of_card_six` applies the Lagrange order equation `Subgroup.card_mul_index` (|H| · [A₄:H] = |A₄|). Substituting |H| = 6 and |A₄| = 12 leaves 6 · [A₄:H] = 12, and `omega` concludes [A₄:H] = 2.",
+    "mathContext": "$|H| \\cdot [G:H] = |G|$ gives $6 \\cdot [A_4 : H] = 12$, so the index is exactly 2 — and index-2 subgroups are automatically normal.",
+    "significance": "important",
+    "relatedConcepts": ["Lagrange order equation", "subgroup index", "normal_of_index_eq_two"],
+    "prerequisites": ["Lagrange's theorem"]
+  },
+  {
+    "id": "ann-a4o6-main",
+    "proofId": "lagrange-theorem-oq-03-oq-02",
+    "range": { "startLine": 75, "endLine": 121 },
+    "type": "key-step",
+    "title": "Generation by 3-Cycles Collapses H Into A₄",
+    "content": "The main theorem chains the pieces. Index 2 ⟹ normal ⟹ every square lies in H. A 3-cycle σ has order 3, so σ = σ⁴ = (σ²)² is a square; thus every 3-cycle lands in the image H.map(subtype). Because the 3-cycles generate A₄ (`closure_three_cycles_eq_alternating`), that image is all of A₄. Transporting |H| across the injective inclusion via `equivMapOfInjective` gives |H| = |A₄| = 12, contradicting |H| = 6.",
+    "mathContext": "Order-3 elements satisfy $\\sigma = (\\sigma^2)^2$, so the 'index 2 contains all squares' property forces every 3-cycle into $H$. Since $\\langle \\text{3-cycles} \\rangle = A_4$, the subgroup would be the whole group: $6 = |H| = |A_4| = 12$, absurd. No element of $A_4$ is ever enumerated.",
+    "significance": "key",
+    "relatedConcepts": ["3-cycles generate alternating group", "orderOf_injective", "equivMapOfInjective", "cardinality transport"],
+    "prerequisites": ["generators of a group", "order of an element", "injective homomorphisms"]
+  },
+  {
+    "id": "ann-a4o6-converse",
+    "proofId": "lagrange-theorem-oq-03-oq-02",
+    "range": { "startLine": 123, "endLine": 130 },
+    "type": "concept",
+    "title": "Statement of the Counterexample",
+    "content": "`lagrange_converse_fails` packages the result: 6 ∣ |A₄| (from `a4_card`, closed by kernel `decide`) together with ¬ ∃ H ≤ A₄ with |H| = 6. This is the precise sense in which Lagrange's theorem has no naive converse.",
+    "mathContext": "Divisibility of $|G|$ by $m$ is necessary but not sufficient for the existence of a subgroup of order $m$. $A_4$ realizes the smallest gap.",
+    "significance": "important",
+    "relatedConcepts": ["converse of Lagrange", "Sylow theory", "Hall's theorem"],
+    "prerequisites": ["Lagrange's theorem"]
+  }
+]
