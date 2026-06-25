@@ -5,12 +5,12 @@
   "title": "Mediant Insertion and the Farey Gap Calculus: The Mediant Is the Unique Smallest-Denominator Fraction in a Gap",
   "description": "A self-contained, axiom-free formalization of the exact arithmetic of mediant insertion — the operation that refines the Farey sequence F_n into F_{n+1} by inserting, between adjacent fractions a/b < c/d, their mediant (a+c)/(b+d). Two threads are proved. First, the gap-splitting calculus: a unimodular gap of size 1/(bd) is split by its mediant into a left sub-gap 1/(b(b+d)) and a right sub-gap 1/(d(b+d)); these sum back to 1/(bd), stand in ratio d:b, and each is strictly smaller than the whole. Second, the headline minimal-denominator theorem: any fraction p/q strictly between two unimodular neighbours has denominator q ≥ b+d, and equality forces p/q = (a+c)/(b+d) exactly. Hence the mediant is the unique fraction of smallest denominator inside any Farey gap, and b+d is a hard lower bound on refining it — no construction can introduce a fraction of smaller denominator. The parent entry (Erdős #1005) records the open lower bound f(n) ≥ (1/12−o(1))n on runs of similarly ordered Farey fractions; that constant remains open and is NOT addressed here. This entry formalizes the verified mediant calculus on which such lower-bound constructions are built.",
   "leanFile": {
-    "lineCount": 256,
+    "lineCount": 317,
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ02.lean",
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 13
+    "theoremCount": 19
   },
   "meta": {
     "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot mediant theory)",
@@ -101,6 +101,13 @@
       "startLine": 152,
       "endLine": 254,
       "summary": "denom_identity (the ℤ kernel q = b·(cq−pd) + d·(pb−aq)); denom_ge_of_between (any in-gap fraction has q ≥ b+d); eq_mediant_of_denom_eq (equality forces p = a+c, the mediant); mediant_is_min_denominator (packaged: the mediant lies in the gap and minimises the denominator)."
+    },
+    {
+      "id": "denominator-growth",
+      "title": "§5 Strict denominator growth and depth-two refinement (toward counting)",
+      "startLine": 255,
+      "endLine": 316,
+      "summary": "mediant_denom_gt_left/_right (b < b+d, d < b+d); interior_denom_gt_max (every in-gap fraction has q > max b d, so refinement strictly raises the smallest denominator); denom_ge_left_subgap/denom_ge_right_subgap (the two sub-gaps are themselves unimodular, giving depth-two bounds q ≥ 2b+d and q ≥ b+2d); denom_ge_of_between_ne_mediant (every in-gap fraction other than the mediant has q ≥ (b+d)+min b d — the mediant is the unique denominator-(b+d) point, and the next admissible denominator jumps by at least min b d)."
     }
   ],
   "crossReferences": [
@@ -145,6 +152,12 @@
       "type": "supporting",
       "description": "The algebraic kernel over ℤ behind the denominator bound: q = b·(cq − pd) + d·(pb − aq), an unconditional identity once bc − ad = 1, verified by linear_combination.",
       "leanType": "∀ {a b c d p q : ℤ}, b * c = a * d + 1 → q = b * (c * q - p * d) + d * (p * b - a * q)"
+    },
+    {
+      "name": "denom_ge_of_between_ne_mediant",
+      "type": "headline",
+      "description": "Second-smallest interior denominator: every fraction p/q strictly inside a unimodular gap a/b < c/d that is NOT the mediant (a+c)/(b+d) lies in one of the two (again unimodular) sub-gaps, hence has q ≥ (b+d)+min b d. So the mediant is the unique fraction of denominator b+d in the gap, and the next admissible denominator is at least min b d larger — the strict-growth step underlying any depth/counting argument toward the 1/12 run bound.",
+      "leanType": "∀ {a b c d p q : ℕ}, 0 < b → 0 < d → 0 < q → Unimodular a b c d → (a:ℚ)/b < (p:ℚ)/q → (p:ℚ)/q < (c:ℚ)/d → (p:ℚ)/q ≠ (↑(a+c):ℚ)/↑(b+d) → (b+d)+min b d ≤ q"
     }
   ]
 }

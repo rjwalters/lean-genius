@@ -252,4 +252,66 @@ theorem mediant_is_min_denominator {a b c d : ℕ} (hb : 0 < b) (hd : 0 < d)
     have hpos : (0 : ℚ) < 1 / (d * (b + d) : ℚ) := by positivity
     linarith [hgap, hpos]
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 5: Strict denominator growth and depth-two refinement (toward counting)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- The mediant denominator strictly exceeds the **left** endpoint denominator. -/
+theorem mediant_denom_gt_left {b d : ℕ} (hd : 0 < d) : b < b + d := by omega
+
+/-- The mediant denominator strictly exceeds the **right** endpoint denominator. -/
+theorem mediant_denom_gt_right {b d : ℕ} (hb : 0 < b) : d < b + d := by omega
+
+/-- **Strict growth of interior denominators.**  Every fraction strictly inside a
+unimodular gap has denominator strictly larger than *both* endpoint denominators:
+`q ≥ b + d > max b d`.  Refinement therefore strictly increases the smallest
+denominator present — the engine of any depth/counting argument. -/
+theorem interior_denom_gt_max {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (a : ℚ) / b < (p : ℚ) / q) (hhi : (p : ℚ) / q < (c : ℚ) / d) :
+    max b d < q := by
+  have hge := denom_ge_of_between hb hd hq h hlo hhi
+  omega
+
+/-- **Depth-two bound, left sub-gap.**  The left sub-gap `(a/b, (a+c)/(b+d))` is
+itself unimodular (`unimodular_left`), so any fraction strictly inside it has
+denominator `≥ b + (b+d) = 2b + d`. -/
+theorem denom_ge_left_subgap {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (a : ℚ) / b < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (↑(a + c) : ℚ) / ↑(b + d)) :
+    b + (b + d) ≤ q := by
+  have hbd : 0 < b + d := by omega
+  exact denom_ge_of_between hb hbd hq (unimodular_left h) hlo hhi
+
+/-- **Depth-two bound, right sub-gap.**  The right sub-gap `((a+c)/(b+d), c/d)` is
+itself unimodular (`unimodular_right`), so any fraction strictly inside it has
+denominator `≥ (b+d) + d = b + 2d`. -/
+theorem denom_ge_right_subgap {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (↑(a + c) : ℚ) / ↑(b + d) < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (c : ℚ) / d) :
+    (b + d) + d ≤ q := by
+  have hbd : 0 < b + d := by omega
+  exact denom_ge_of_between hbd hd hq (unimodular_right h) hlo hhi
+
+/-- **Second-smallest interior denominator.**  Every fraction strictly inside the
+gap *other than the mediant* falls in one of the two sub-gaps, so its denominator
+is `≥ (b+d) + min b d`.  Hence the mediant is the *unique* fraction of denominator
+`b+d` in the gap, and the next admissible denominator jumps by at least `min b d`.
+Iterating this strict growth is precisely the depth/counting route flagged as the
+next step toward the `1/12` run lower bound. -/
+theorem denom_ge_of_between_ne_mediant {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (a : ℚ) / b < (p : ℚ) / q) (hhi : (p : ℚ) / q < (c : ℚ) / d)
+    (hne : (p : ℚ) / q ≠ (↑(a + c) : ℚ) / ↑(b + d)) :
+    (b + d) + min b d ≤ q := by
+  rcases lt_or_gt_of_ne hne with hM | hM
+  · -- p/q lies strictly below the mediant ⇒ inside the left sub-gap
+    have hsub := denom_ge_left_subgap hb hd hq h hlo hM
+    omega
+  · -- p/q lies strictly above the mediant ⇒ inside the right sub-gap
+    have hsub := denom_ge_right_subgap hb hd hq h hM hhi
+    omega
+
 end Erdos1005OQ02
