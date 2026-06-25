@@ -1,0 +1,158 @@
+{
+  "id": "basel-problem-oq-03-oq-01",
+  "title": "The Stuffle Relation ζ(2)² = ζ(4) + 2·ζ(2,2) via the Fubini Diagonal Split",
+  "slug": "basel-problem-oq-03-oq-01",
+  "description": "Proves the harmonic (stuffle) product relation ζ(2)² = ζ(4) + 2·ζ(2,2) from first principles, where ζ(2,2) = ∑_{m>n≥1} 1/(m²n²) is the simplest genuine multiple zeta value, formed honestly as a tsum over the strict lower triangle of ℕ×ℕ. The proof is a pure absolutely-convergent rearrangement: the product of two ζ(2) series equals the double sum ∑_{(m,n)} 1/(m²n²), which splits over the diagonal {m=n}, the upper triangle {m<n}, and the lower triangle {m>n}. The diagonal contributes ζ(4) (since 1/(n²·n²)=1/n⁴) and the two off-diagonal triangles are equal by the coordinate-swap symmetry of the summand, each giving ζ(2,2). This upgrades the value ζ(2,2) = (ζ(2)²−ζ(4))/2 from the parent entry's prose ('value forced by the stuffle relation') to a fully derived theorem, with no appeal to ζ(2)=π²/6 or any closed form. 0 axioms, 0 sorries.",
+  "meta": {
+    "author": "Multiple zeta value theory (Euler; Zagier); diagonal-split formalization",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Multiple_zeta_function",
+    "date": "1740",
+    "status": "verified",
+    "proofRepoPath": "Proofs/BaselProblemOQ03OQ01.lean",
+    "tags": [
+      "number-theory",
+      "zeta-function",
+      "multiple-zeta-values",
+      "stuffle-product",
+      "infinite-series",
+      "fubini",
+      "research"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "Summable.tsum_mul_tsum",
+        "description": "Product of two infinite sums as a single sum over the product index: (∑' a m)(∑' a n) = ∑'_{(m,n)} a m · a n",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Ring"
+      },
+      {
+        "theorem": "Summable.mul_of_nonneg",
+        "description": "Joint summability of the product family (m,n) ↦ a m · a n over ℕ×ℕ from summability and nonnegativity of a",
+        "module": "Mathlib.Analysis.Normed.Ring.InfiniteSum"
+      },
+      {
+        "theorem": "Real.summable_one_div_nat_pow",
+        "description": "p-series summability: ∑ 1/n^p converges iff 1 < p; instantiated at p=2 and p=4",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "tsum_subtype",
+        "description": "Converts between a sum over a set-subtype and a sum of the set indicator over the full type, used to assemble the three-way diagonal partition",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      },
+      {
+        "theorem": "Summable.indicator",
+        "description": "Summability of a set-indicator restriction of a summable family, giving summability of each of the diagonal / lower / upper pieces",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Group"
+      },
+      {
+        "theorem": "Equiv.tsum_eq",
+        "description": "Invariance of tsum under reindexing by an equivalence; applied to ℕ ≃ diagonal and to the coordinate-swap Lower ≃ Upper",
+        "module": "Mathlib.Topology.Algebra.InfiniteSum.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Defines the double zeta value ζ(2,2) honestly as a genuine tsum ∑_{(m,n): n<m} 1/(m²n²) over the strict lower triangle of ℕ×ℕ (terms with n=0 vanish), rather than recording it via its forced value — Mathlib has no multiple zeta values at all",
+      "Proves the stuffle relation ζ(2)² = ζ(4) + 2·ζ(2,2) from first principles by the Fubini diagonal split, closing the exact open question left by the parent entry basel-problem-oq-03 ('upgrade ζ(2,2) from value-forced-by-stuffle to a fully derived theorem')",
+      "Three-way partition of ℕ×ℕ into diagonal / lower / upper triangle via a pointwise indicator identity (Set.indicator over a trichotomy), with the diagonal evaluated by reindexing ℕ ≃ {(n,n)} and the two triangles identified by the coordinate-swap symmetry of the symmetric summand",
+      "The derivation uses no value of ζ(2) (no π): it is a pure absolutely-convergent rearrangement, valid as an identity between the actual infinite series",
+      "0 axioms (only propext / Classical.choice / Quot.sound), 0 sorries, no native_decide"
+    ],
+    "axiomCount": 0,
+    "lineCount": 188,
+    "assumptions": "None — fully verified from Mathlib with 0 axioms (only propext / Classical.choice / Quot.sound) and 0 sorries; no native_decide. The double zeta value is the honest double sum over the strict lower triangle; the stuffle identity is proved, not assumed.",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 10,
+    "definitionCount": 8
+  },
+  "overview": {
+    "historicalContext": "Euler (1740) showed every even zeta value ζ(2k) is a rational multiple of π^{2k}. The modern theory of multiple zeta values ζ(s₁,…,s_r) = ∑_{n₁>…>n_r≥1} ∏ n_i^{-s_i}, revived by Zagier in the 1990s, studies the algebra of relations they satisfy. Two product structures organize this algebra: the shuffle product (from iterated-integral representations) and the stuffle (harmonic) product (from the series representation). The stuffle square of ζ(2) is the very first nontrivial instance: multiplying the Basel series by itself and sorting the resulting double sum by the order of its indices yields ζ(2)² = ζ(4) + 2·ζ(2,2).",
+    "problemStatement": "Prove the stuffle relation ζ(2)² = ζ(4) + 2·ζ(2,2) directly from the double sum ζ(2,2) = ∑_{m>n≥1} 1/(m²n²) via a Fubini/diagonal split, rather than recording ζ(2,2) by the value the relation forces.",
+    "text": "A from-scratch proof of the simplest stuffle relation, treating ζ(2,2) as a genuine double sum and decomposing the product of two ζ(2) series over the diagonal of ℕ×ℕ.",
+    "proofStrategy": "Write a k = 1/k² and F (m,n) = a m · a n = 1/(m²n²). Absolute convergence of the Basel series gives joint summability of F over ℕ×ℕ (Summable.mul_of_nonneg) and the product formula (∑' a)·(∑' a) = ∑'_{(m,n)} F (Summable.tsum_mul_tsum). Partition ℕ×ℕ into the diagonal D = {m=n}, lower triangle L = {m>n}, and upper triangle U = {m<n} via the pointwise indicator identity F = 𝟙_D·F + 𝟙_L·F + 𝟙_U·F (trichotomy on m,n), and split the sum using summability of each indicator piece (Summable.indicator, tsum_subtype). The diagonal reindexes along ℕ ≃ D, n ↦ (n,n), with F (n,n) = a n·a n = 1/n⁴, giving ζ(4). The coordinate swap (m,n) ↦ (n,m) is a bijection L ≃ U under which the symmetric summand is invariant (Equiv.tsum_eq), so the two triangles contribute equally, each ζ(2,2). Hence ζ(2)² = ζ(4) + 2·ζ(2,2).",
+    "keyInsights": [
+      "Squaring an absolutely convergent series ∑ a m is the double sum ∑_{(m,n)} a m·a n over ℕ×ℕ; the stuffle product is exactly this double sum re-sorted by the order relation between the two indices",
+      "The diagonal of the square carries ζ(4): the (n,n) term is 1/(n²·n²) = 1/n⁴, the weight-4 single zeta value",
+      "The two off-diagonal triangles are equal not by computation but by symmetry — the summand 1/(m²n²) is invariant under (m,n) ↦ (n,m), and that swap is a bijection between the triangles",
+      "A three-way partition of an index type is cleanly handled by a pointwise indicator identity over a trichotomy plus Summable.indicator, avoiding nested subtype bookkeeping",
+      "No closed form (no π) is needed anywhere: the relation is an identity between the actual infinite series, true at the level of absolute convergence alone"
+    ],
+    "prerequisites": [
+      "Basel problem ζ(2) = π²/6 and the parent entry on even-zeta product relations (basel-problem-oq-03)",
+      "Absolutely convergent series and unconditional sums (tsum), Fubini for nonnegative double series",
+      "p-series convergence ∑ 1/n^p for p > 1"
+    ]
+  },
+  "sections": [
+    {
+      "id": "setup",
+      "title": "Summand and Summability",
+      "startLine": 42,
+      "endLine": 80,
+      "summary": "Defines a k = 1/k², the product summand F (m,n) = a m·a n = 1/(m²n²), and the strict lower/upper/diagonal sets of ℕ×ℕ. Establishes p-series summability of a (p=2) and a⁴ (p=4) and joint summability of F via Summable.mul_of_nonneg, plus the identity a n·a n = 1/n⁴.",
+      "mathContext": "F (m,n) = 1/(m² n²); ζ(2,2) := ∑'_{(m,n): n<m} F is the honest double sum over the strict lower triangle."
+    },
+    {
+      "id": "diagonal",
+      "title": "The Diagonal Contributes ζ(4)",
+      "startLine": 81,
+      "endLine": 100,
+      "summary": "Builds the equivalence ℕ ≃ Diag, n ↦ (n,n), and uses Equiv.tsum_eq to evaluate the diagonal sum as ∑'_n F (n,n) = ∑'_n 1/n⁴ = ζ(4).",
+      "mathContext": "1/(n²·n²) = 1/n⁴; the diagonal of the square of ζ(2) is exactly ζ(4)."
+    },
+    {
+      "id": "triangles",
+      "title": "The Two Triangles Are Equal by Swap Symmetry",
+      "startLine": 102,
+      "endLine": 117,
+      "summary": "Builds the coordinate-swap equivalence Lower ≃ Upper, (m,n) ↦ (n,m), and uses the symmetry F (n,m) = F (m,n) with Equiv.tsum_eq to prove the upper-triangle sum equals the lower-triangle sum ζ(2,2).",
+      "mathContext": "F is symmetric: 1/(m²n²) = 1/(n²m²); the swap is a bijection between {m<n} and {m>n}."
+    },
+    {
+      "id": "split",
+      "title": "The Diagonal Split and the Stuffle Relation",
+      "startLine": 119,
+      "endLine": 188,
+      "summary": "Proves the pointwise indicator identity F = 𝟙_Diag·F + 𝟙_Lower·F + 𝟙_Upper·F from a trichotomy on (m,n), splits the full double sum into the three pieces (Summable.indicator, tsum_subtype, HasSum.add), combines with the product formula (∑' a)² = ∑' F, and concludes ζ(2)² = ζ(4) + 2·ζ(2,2). A corollary restates ζ(2,2) = (ζ(2)²−ζ(4))/2.",
+      "mathContext": "ζ(2)² = ∑'_{(m,n)} F = (diagonal) + (lower) + (upper) = ζ(4) + ζ(2,2) + ζ(2,2)."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully verified (0 axioms, 0 sorries, no native_decide) from-scratch proof of the stuffle relation ζ(2)² = ζ(4) + 2·ζ(2,2), with ζ(2,2) = ∑_{m>n≥1} 1/(m²n²) treated as a genuine double sum and the relation obtained by the Fubini diagonal split rather than assumed.",
+    "implications": "This is the elementary archetype of the stuffle (harmonic) product that organizes the entire algebra of multiple zeta values: a product of zeta series, sorted by the order of its summation indices, decomposes into a diagonal single-zeta term plus symmetric off-diagonal multiple-zeta terms. Combined with the parent entry's value ζ(2,2) = (ζ(2)²−ζ(4))/2 = π⁴/120, the relation is now a theorem about the double sum itself rather than a defining convention, and the same diagonal-split template extends to higher stuffle relations.",
+    "openQuestions": [
+      "Prove the next stuffle relation ζ(2)·ζ(4) = ζ(6) + ζ(2,4) + ζ(4,2) by the same diagonal split, exhibiting the asymmetric weight case where the two triangles are no longer equal.",
+      "Formalize Euler's reflection ζ(2,1) = ζ(3), the first MZV relation expressing a weight-3 double value through a single odd zeta value (which the diagonal split alone does not reach).",
+      "Establish the general stuffle product on the double-sum level: ζ(a)·ζ(b) = ζ(a+b) + ζ(a,b) + ζ(b,a) for all a,b ≥ 2, with ζ(a,b) = ∑_{m>n≥1} m^{-a} n^{-b}."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "basel-problem-oq-03",
+      "relationship": "parent",
+      "description": "Parent entry that records ζ(2,2) = π⁴/120 via the value (ζ(2)²−ζ(4))/2 forced by the stuffle relation, and lists 'prove the stuffle relation directly from the double sum via a Fubini/diagonal split' as its first open question — exactly what this entry does"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "ancestor",
+      "description": "The Basel problem ζ(2) = π²/6, whose series squared is the object decomposed here"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "BigOperators"
+    ],
+    "namespace": "BaselProblemOQ03OQ01",
+    "lineCount": 188,
+    "axiomCount": 0,
+    "theoremCount": 10,
+    "definitionCount": 8,
+    "path": "Proofs/BaselProblemOQ03OQ01.lean",
+    "sorries": 0
+  },
+  "sorries": 0
+}
