@@ -1,0 +1,58 @@
+[
+  {
+    "id": "ann-spectral-trace-oq01010202-00-header",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 4, "endLine": 63 },
+    "type": "context",
+    "title": "From per-dimension Vieta to a dimension-free spectral mapping",
+    "content": "The parent line proved Newton's power-sum identity one (power, dimension) pair at a time — tr(A²)=Σλ² for 2×2 and tr(A³)=Σλ³ for 3×3 — each by matching a dimension-specific matrix identity (closed by ring on the entries) against a multiset identity via Vieta. That route is intrinsically bounded. This file removes both restrictions at once for diagonalizable matrices: writing A = M·diag(d)·M⁻¹, the power Aᵏ = M·diag(d)ᵏ·M⁻¹ = M·diag(dᵏ)·M⁻¹ is transparent, so conjugation invariance of the trace reads tr(Aᵏ) off the diagonal, while conjugation invariance of the characteristic polynomial identifies the eigenvalue multiset with the diagonal. The honesty note records that the fully general (non-diagonalizable) case still needs matrix triangularization, absent from this Mathlib snapshot."
+  },
+  {
+    "id": "ann-spectral-trace-oq01010202-01-diagpow",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 72, "endLine": 79 },
+    "type": "key-step",
+    "title": "trace_diagonal_pow: the diagonal power sum",
+    "content": "tr(diag(d)ᵏ) = Σᵢ(dᵢ)ᵏ over any commutative ring. The whole proof rests on two Mathlib facts: diagonal_pow (diag(d)ᵏ = diag(dᵏ), since the diagonal embedding is a ring homomorphism) and trace_diagonal (the trace of a diagonal matrix is the sum of its entries). The entrywise power (dᵏ)ᵢ = (dᵢ)ᵏ is Pi.pow_apply. This is the only place a power sum is computed — everything else is conjugation invariance."
+  },
+  {
+    "id": "ann-spectral-trace-oq01010202-02-conjpow",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 83, "endLine": 104 },
+    "type": "key-step",
+    "title": "Conjugation commutes with powers, so the power-trace is similarity-invariant",
+    "content": "units_conj_pow proves (M·N·M⁻¹)ᵏ = M·Nᵏ·M⁻¹ by induction on k: the successor step reassociates and telescopes the interior M⁻¹·M = 1 (Units.inv_mul). trace_pow_units_conj then composes this with the cyclic trace law trace_units_conj to give tr((M·N·M⁻¹)ᵏ) = tr(Nᵏ). This is the trace half of the similarity invariance of the spectrum, and it is what lets a diagonalization A = M·diag(d)·M⁻¹ pass the trace computation down to the diagonal."
+  },
+  {
+    "id": "ann-spectral-trace-oq01010202-03-rootsdiag",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 112, "endLine": 121 },
+    "type": "key-step",
+    "title": "roots_charpoly_diagonal: eigenvalues of a diagonal matrix, with multiplicity",
+    "content": "(diag d).charpoly.roots = univ.val.map d. From charpoly_diagonal the characteristic polynomial is ∏ᵢ(X − dᵢ); rewriting this as a multiset product and applying roots_multiset_prod_X_sub_C gives the multiset of diagonal entries. The MULTISET form (not the Finset form roots_prod_X_sub_C) is essential: a repeated diagonal entry must appear as a repeated eigenvalue, so diag(2,2,3) has eigenvalue multiset {2,2,3}, not the set {2,3}."
+  },
+  {
+    "id": "ann-spectral-trace-oq01010202-04-main",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 134, "endLine": 145 },
+    "type": "key-step",
+    "title": "trace_pow_eq_sum_pow_eigenvalues: the headline, uniform in k and n",
+    "content": "For A = M·diag(d)·M⁻¹ the trace side rewrites via trace_pow_units_conj then trace_diagonal_pow to Σᵢ(dᵢ)ᵏ; the eigenvalue side rewrites via charpoly_units_conj then roots_charpoly_diagonal to give eigenvalues A = univ.val.map d, whose image under (·^k) sums to the same Σᵢ(dᵢ)ᵏ (Multiset.map_map, then both sides are the same Finset sum definitionally). No algebraic closure is used — the characteristic polynomial of a diagonalizable matrix already splits. Specialising k=1 recovers the grandparent's trace = Σλ."
+  },
+  {
+    "id": "ann-spectral-trace-oq01010202-05-card",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 146, "endLine": 151 },
+    "type": "observation",
+    "title": "Exactly n eigenvalues over any field — no algebraic closure",
+    "content": "card_eigenvalues_diagonalizable reads Multiset.card (eigenvalues A) = Fintype.card n directly off eigenvalues A = univ.val.map d (Multiset.card_map, Finset.card_univ). The parent line needed IsAlgClosed for the eigenvalue count; here it is free, because diagonalizability forces the characteristic polynomial to split with the full count of roots."
+  },
+  {
+    "id": "ann-spectral-trace-oq01010202-06-example",
+    "proofId": "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "range": { "startLine": 153, "endLine": 167 },
+    "type": "example",
+    "title": "diag(2,3): both sides equal 2³ + 3³ = 35",
+    "content": "trace_pow_diagonal_example computes tr(diag(2,3)³) = 35 via trace_diagonal_pow, and sum_pow_eigenvalues_example computes the eigenvalue cube sum ((eigenvalues (diag(2,3))).map(·^3)).sum = 35 via roots_charpoly_diagonal, exhibiting the headline identity concretely at k=3."
+  }
+]
