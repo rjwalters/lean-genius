@@ -1,0 +1,114 @@
+{
+  "slug": "cauchy-schwarz-oq-01-oq-05",
+  "title": "Quantitative Cauchy-Schwarz via the Lagrange Defect Identity",
+  "phase": "COMPLETED",
+  "status": "graduated",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\big\\|\\langle x,x\\rangle\\, y - \\langle x,y\\rangle\\, x\\big\\|^2 = \\|x\\|^2\\big(\\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2\\big)",
+    "plain": "For complex (and general RCLike) inner product spaces, is there an exact, division-free algebraic identity for the Cauchy-Schwarz defect ‖x‖²‖y‖² − ‖⟪x,y⟫‖², from which both the inequality and its equality characterization follow directly — without invoking Mathlib's inner_mul_le_norm_mul_norm or an orthogonal-projection coefficient?",
+    "whyMatters": [
+      "Exhibits the Cauchy-Schwarz gap as an exact squared norm rather than a bound, which matters wherever sharpness is needed (least squares, stability estimates).",
+      "Shows the inequality is logically downstream of an elementary algebraic identity, even over complex fields.",
+      "Provides a division-free alternative to the projection-coefficient proof used by the sibling equality-characterization entry."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "𝕜-valued Gram identity ⟪w,w⟫ = ⟪x,x⟫·(⟪x,x⟫⟪y,y⟫ − ⟪x,y⟫⟪y,x⟫) for w = ⟪x,x⟫•y − ⟪x,y⟫•x",
+      "Real Lagrange defect identity ‖w‖² = ‖x‖²·(‖x‖²‖y‖² − ‖⟪x,y⟫‖²)",
+      "Cauchy-Schwarz (squared and norm forms), derived without Mathlib's CS lemma",
+      "Equality characterization ‖⟪x,y⟫‖ = ‖x‖·‖y‖ ↔ ⟪x,x⟫•y = ⟪x,y⟫•x",
+      "Linear-dependence corollary for x ≠ 0: equality ↔ ∃ c, y = c•x",
+      "ℝ and ℂ specializations"
+    ],
+    "open": [],
+    "goal": "Establish and formalize an exact division-free Lagrange identity for the complex Cauchy-Schwarz defect."
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-24T00:00:00Z",
+    "iteration": 1,
+    "focus": "Formalized and verified in Lean 4 (0 axioms, 0 sorries).",
+    "blockers": [],
+    "nextAction": "None — shipped to gallery.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "Fully solved and formalized. The scaled Gram vector w = ⟪x,x⟫•y − ⟪x,y⟫•x (division-free, scalars in 𝕜) satisfies the abstract Lagrange identity ‖w‖² = ‖x‖²·(‖x‖²‖y‖² − ‖⟪x,y⟫‖²) over any RCLike inner product space. Nonnegativity of the left side yields Cauchy-Schwarz directly (no appeal to inner_mul_le_norm_mul_norm), and vanishing of w characterizes equality. The Lean file CauchySchwarzOQ01OQ05.lean has 10 theorems, 212 lines, 0 axioms, 0 sorries; #print axioms reports only propext / Classical.choice / Quot.sound.",
+    "builtItems": [
+      "inner_gram_self — 𝕜-valued Gram identity, proved by sesquilinear expansion + ring after rewriting conjugates",
+      "gram_norm_sq — the real Lagrange defect identity (★), via inner_self_eq_norm_sq_to_K, RCLike.mul_conj and ofReal injectivity",
+      "cauchy_schwarz_sq / cauchy_schwarz — the inequality recovered from (★) without Mathlib's CS lemma",
+      "gram_det_nonneg — nonnegativity of the Gram determinant ‖x‖²‖y‖² − ‖⟪x,y⟫‖²",
+      "cauchy_schwarz_eq_iff — equality ↔ ⟪x,x⟫•y = ⟪x,y⟫•x (forward direction with no case split)",
+      "eq_iff_smul_of_ne_zero — linear-dependence corollary for x ≠ 0",
+      "gram_norm_sq_real / gram_norm_sq_complex / cauchy_schwarz_complex — ℝ and ℂ specializations"
+    ],
+    "insights": [
+      "Scaling the Gram vector by ⟪x,x⟫ instead of dividing by it makes the identity hold for ALL x (including x = 0), removing the v ≠ 0 hypothesis that the projection approach needs.",
+      "The Cauchy-Schwarz defect is literally a squared norm: ‖x‖²·(‖x‖²‖y‖² − ‖⟪x,y⟫‖²) = ‖w‖², so the inequality is just nonnegativity of a square.",
+      "Over a complex/RCLike field the sesquilinear cross term cancels precisely because conj⟪x,x⟫ = ⟪x,x⟫ and conj⟪x,y⟫ = ⟪y,x⟫; a single ring closes the 𝕜-identity once those conjugates are rewritten.",
+      "Lifting a 𝕜-identity whose two sides are both ofReal-coercions down to ℝ via RCLike.ofReal_injective avoids all re/im bookkeeping.",
+      "The forward equality direction needs no case split: equality zeroes the defect, hence ‖w‖² = ‖x‖²·0 = 0 regardless of whether x is zero."
+    ],
+    "mathlibGaps": [
+      "Mathlib has the finite-sum Lagrange identity context but no abstract division-free inner-product-space Lagrange defect identity ‖⟪x,x⟫•y − ⟪x,y⟫•x‖² = ‖x‖²·(defect)."
+    ],
+    "nextSteps": [
+      "Generalize to an n-vector Gram-determinant nonnegativity identity.",
+      "Use the same division-free technique for a reverse Cauchy-Schwarz (Pólya–Szegő) bound.",
+      "Connect the residual to Mathlib's orthogonalProjection."
+    ],
+    "markdown": "# Knowledge Base: cauchy-schwarz-oq-01-oq-05\n\n## Result\n\nThe division-free Lagrange defect identity over RCLike inner product spaces:\n\n  ‖⟪x,x⟫•y − ⟪x,y⟫•x‖² = ‖x‖²·(‖x‖²‖y‖² − ‖⟪x,y⟫‖²)\n\nyields Cauchy-Schwarz (nonnegativity of the LHS) and its equality characterization (LHS = 0) for free, without Mathlib's inner_mul_le_norm_mul_norm and without dividing by ⟪x,x⟫.\n\n## Key technique\n\nScale, don't divide: use the scalar ⟪x,x⟫ as the coefficient so the identity holds for all x. Expand ⟪w,w⟫ sesquilinearly; conj⟪x,x⟫ = ⟪x,x⟫ and conj⟪x,y⟫ = ⟪y,x⟫ make the cross term cancel; ring closes it. Cast to reals via inner_self_eq_norm_sq_to_K + RCLike.mul_conj and lift through ofReal injectivity.\n"
+  },
+  "tags": [
+    "analysis",
+    "linear-algebra",
+    "inner-product-spaces",
+    "complex-analysis",
+    "functional-analysis",
+    "classic"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-01",
+    "cauchy-schwarz-oq-01-oq-01",
+    "cauchy-schwarz-integral"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Lagrange%27s_identity"
+    ],
+    "mathlib": [
+      "inner_self_eq_norm_sq_to_K",
+      "inner_conj_symm",
+      "RCLike.mul_conj",
+      "RCLike.ofReal_injective"
+    ]
+  },
+  "started": "2026-06-24T00:00:00Z",
+  "lastUpdate": "2026-06-24T00:00:00Z",
+  "completed": "2026-06-24T00:00:00Z",
+  "significance": 8,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/CauchySchwarzOQ01OQ05.lean",
+      "filename": "CauchySchwarzOQ01OQ05.lean",
+      "lineCount": 212,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CauchySchwarzOQ01OQ05.lean"
+    }
+  ]
+}

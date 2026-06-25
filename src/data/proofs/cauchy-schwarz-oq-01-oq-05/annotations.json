@@ -1,0 +1,110 @@
+[
+  {
+    "id": "ann-gram-identity",
+    "proofId": "cauchy-schwarz-oq-01-oq-05",
+    "range": {
+      "startLine": 72,
+      "endLine": 77
+    },
+    "type": "insight",
+    "title": "The 𝕜-Valued Gram Identity",
+    "content": "The core algebraic step. For the scaled Gram vector $w = \\langle x,x\\rangle\\,y - \\langle x,y\\rangle\\,x$, expanding $\\langle w,w\\rangle$ by `inner_sub_left`, `inner_sub_right`, `inner_smul_left`, `inner_smul_right` produces conjugates of the scalars. Crucially $\\langle x,x\\rangle$ is self-conjugate and $\\overline{\\langle x,y\\rangle} = \\langle y,x\\rangle$ (`inner_conj_symm`), after which the cross term $\\langle x,x\\rangle\\langle x,y\\rangle - \\langle x,y\\rangle\\langle x,x\\rangle$ cancels and a single `ring` yields $\\langle w,w\\rangle = \\langle x,x\\rangle\\big(\\langle x,x\\rangle\\langle y,y\\rangle - \\langle x,y\\rangle\\langle y,x\\rangle\\big)$.",
+    "mathContext": "$\\langle w,w\\rangle = \\langle x,x\\rangle\\big(\\langle x,x\\rangle\\langle y,y\\rangle - \\langle x,y\\rangle\\langle y,x\\rangle\\big)$",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "sesquilinearity",
+      "Gram determinant",
+      "inner_conj_symm"
+    ],
+    "prerequisites": [
+      "inner product axioms",
+      "conjugate-linearity"
+    ]
+  },
+  {
+    "id": "ann-lagrange-identity",
+    "proofId": "cauchy-schwarz-oq-01-oq-05",
+    "range": {
+      "startLine": 89,
+      "endLine": 99
+    },
+    "type": "insight",
+    "title": "The Real Lagrange Defect Identity (★)",
+    "content": "The 𝕜-valued identity is converted to a statement about real norms. `inner_self_eq_norm_sq_to_K` rewrites each self inner product $\\langle x,x\\rangle$ as $(\\|x\\|:\\mathbb{k})^2$, and `RCLike.mul_conj` turns $\\langle x,y\\rangle\\langle y,x\\rangle = \\langle x,y\\rangle\\,\\overline{\\langle x,y\\rangle}$ into $\\uparrow(\\|\\langle x,y\\rangle\\|^2)$. Both sides are then coercions of reals, so `RCLike.ofReal_injective` lifts the identity down to $\\mathbb{R}$, giving $\\|w\\|^2 = \\|x\\|^2(\\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2)$.",
+    "mathContext": "$\\big\\|\\langle x,x\\rangle y - \\langle x,y\\rangle x\\big\\|^2 = \\|x\\|^2\\big(\\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2\\big)$",
+    "significance": "fundamental",
+    "relatedConcepts": [
+      "Lagrange identity",
+      "ofReal injectivity",
+      "RCLike.mul_conj"
+    ],
+    "prerequisites": [
+      "norm-inner relations",
+      "field coercions"
+    ]
+  },
+  {
+    "id": "ann-cauchy-schwarz",
+    "proofId": "cauchy-schwarz-oq-01-oq-05",
+    "range": {
+      "startLine": 109,
+      "endLine": 132
+    },
+    "type": "concept",
+    "title": "Recovering Cauchy-Schwarz Without Mathlib's Bound",
+    "content": "Since the left side of (★) is a square, $\\|x\\|^2(\\|x\\|^2\\|y\\|^2 - \\|\\langle x,y\\rangle\\|^2) \\ge 0$. For $x \\ne 0$ the factor $\\|x\\|^2 > 0$ cancels (`nlinarith`), giving $\\|\\langle x,y\\rangle\\|^2 \\le \\|x\\|^2\\|y\\|^2$; the $x = 0$ case is closed by `simp`. The norm form follows by monotonicity of `Real.sqrt`. Notably this never invokes `norm_inner_le_norm`, so the inequality is shown to be logically downstream of the elementary identity.",
+    "mathContext": "$\\|\\langle x,y\\rangle\\| \\le \\|x\\| \\cdot \\|y\\|$",
+    "significance": "major",
+    "relatedConcepts": [
+      "Cauchy-Schwarz inequality",
+      "nonnegativity of squares",
+      "sqrt monotonicity"
+    ],
+    "prerequisites": [
+      "ordered fields",
+      "square roots"
+    ]
+  },
+  {
+    "id": "ann-equality",
+    "proofId": "cauchy-schwarz-oq-01-oq-05",
+    "range": {
+      "startLine": 150,
+      "endLine": 186
+    },
+    "type": "insight",
+    "title": "Equality Characterization, Division-Free",
+    "content": "Equality $\\|\\langle x,y\\rangle\\| = \\|x\\|\\|y\\|$ holds iff the residual $w$ vanishes, i.e. $\\langle x,x\\rangle\\,y = \\langle x,y\\rangle\\,x$. The forward direction needs no case split: equality makes the defect $0$, so $\\|w\\|^2 = \\|x\\|^2 \\cdot 0 = 0$ by (★). The backward direction splits on $x = 0$. The corollary `eq_iff_smul_of_ne_zero` packages this for $x \\ne 0$ as the linear-dependence statement $\\exists c,\\ y = c\\,x$.",
+    "mathContext": "$\\|\\langle x,y\\rangle\\| = \\|x\\|\\|y\\| \\iff \\langle x,x\\rangle y = \\langle x,y\\rangle x \\iff (x \\ne 0 \\Rightarrow \\exists c,\\ y = c x)$",
+    "significance": "major",
+    "relatedConcepts": [
+      "linear dependence",
+      "equality conditions",
+      "positive-definiteness"
+    ],
+    "prerequisites": [
+      "inner product axioms",
+      "scalar multiplication"
+    ]
+  },
+  {
+    "id": "ann-specializations",
+    "proofId": "cauchy-schwarz-oq-01-oq-05",
+    "range": {
+      "startLine": 192,
+      "endLine": 210
+    },
+    "type": "concept",
+    "title": "Real and Complex Specializations",
+    "content": "Instantiating the RCLike field at $\\mathbb{k} = \\mathbb{R}$ and $\\mathbb{k} = \\mathbb{C}$ yields the classical real and complex defect identities and the complex Cauchy-Schwarz inequality as immediate corollaries of the single uniform development — no separate proof per field.",
+    "mathContext": "$\\mathbb{k} \\in \\{\\mathbb{R}, \\mathbb{C}\\}$",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "RCLike abstraction",
+      "real vs complex inner products"
+    ],
+    "prerequisites": [
+      "type class instantiation"
+    ]
+  }
+]
