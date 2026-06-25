@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-additive-engine",
+    "proofId": "factorial-telescoping-sum-oq-01",
+    "range": {
+      "startLine": 35,
+      "endLine": 51
+    },
+    "type": "insight",
+    "title": "The Subtraction-Free Engine",
+    "content": "sum_mul_factorial_add_one is the genuine content of the identity, stated to dodge ℕ truncated subtraction: (∑_{k=0}^{n} k·k!) + 1 = (n+1)!. The induction is short. Base: 0·0! + 1 = 1 = 1!. Step: Finset.sum_range_succ peels the top term (n+1)·(n+1)!, Nat.factorial_succ expands (n+2)! = (n+2)·(n+1)!, and after rewriting (n+2)·(n+1)! = (n+1)! + (n+1)·(n+1)! the goal is linear in the three atoms ∑, (n+1)!, and (n+1)·(n+1)!, so omega finishes it using the inductive hypothesis. This is the multiplicative-factorial analogue of arithmetic telescoping."
+  },
+  {
+    "id": "ann-headline",
+    "proofId": "factorial-telescoping-sum-oq-01",
+    "range": {
+      "startLine": 53,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "The Headline Subtraction Form",
+    "content": "sum_mul_factorial is the identity as usually quoted: ∑_{k=0}^{n} k·k! = (n+1)! − 1 (and since the k=0 term vanishes, this is ∑_{k=1}^{n} k·k!). It is read straight off the engine: from (∑)+1 = (n+1)! with (n+1)! ≥ 1, omega discharges the ℕ truncated subtraction exactly. Proving the additive form first is the standard trick that keeps the subtraction honest."
+  },
+  {
+    "id": "ann-literal-form",
+    "proofId": "factorial-telescoping-sum-oq-01",
+    "range": {
+      "startLine": 63,
+      "endLine": 76
+    },
+    "type": "proof-step",
+    "title": "The Literal ∑_{k=1}^{n} Form",
+    "content": "sum_Icc_eq_sum_range proves that the literal lower-limit-1 sum over Finset.Icc 1 n equals the range (n+1) sum, by an induction whose step matches Finset.sum_Icc_succ_top against Finset.sum_range_succ term by term; the only extra index, k = 0, contributes 0·0! = 0. sum_Icc_mul_factorial then states the identity with the customary lower limit k = 1, showing that limit is purely cosmetic."
+  },
+  {
+    "id": "ann-pointwise",
+    "proofId": "factorial-telescoping-sum-oq-01",
+    "range": {
+      "startLine": 78,
+      "endLine": 82
+    },
+    "type": "insight",
+    "title": "Why It Telescopes: k·k! = (k+1)! − k!",
+    "content": "mul_factorial_eq isolates the per-term collapse that makes the whole sum telescope. From the factorial recurrence (k+1)! = (k+1)·k! = k·k! + k! (via add_one_mul), subtracting k! recovers k·k!; omega handles the ℕ subtraction. Summing this identity over k = 1..n gives a difference of consecutive factorials that collapses to (n+1)! − 1! = (n+1)! − 1 — the conceptual one-line proof behind the formal induction."
+  }
+]
