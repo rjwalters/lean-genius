@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-setup",
+    "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02-oq-01",
+    "range": { "startLine": 3, "endLine": 34 },
+    "type": "context",
+    "title": "Multinomial Support and the Degree-One Case",
+    "content": "The parent entry sums multinomial probabilities over Finset.piAntidiag s n — the functions k : ι → ℕ supported on s with ∑_{i∈s} k i = n, i.e. the compositions of n over the category set s. The name generalises the classical antidiagonal {(a,b) : a+b=n}. This file isolates n = 1, where the support degenerates to the index set s itself: a single trial lands in exactly one category. The variable s : Finset ι requires only DecidableEq ι, and scoped Classical is opened for the membership decisions; the whole file rests solely on Mathlib's piAntidiag API and is axiom-free.",
+    "mathContext": "$\\texttt{piAntidiag}\\,s\\,n = \\{k : \\iota \\to \\mathbb{N} \\mid \\operatorname{supp} k \\subseteq s,\\ \\sum_{i \\in s} k_i = n\\}$; the multinomial support. At $n=1$ this is shown to be $\\{e_i : i \\in s\\} \\cong s$.",
+    "significance": "context",
+    "relatedConcepts": ["multinomial distribution", "compositions of an integer", "Finset.piAntidiag", "antidiagonal"],
+    "prerequisites": ["finite sets", "multinomial coefficient", "support of a function"]
+  },
+  {
     "id": "ann-single-mem",
     "proofId": "binomial-theorem-oq-02-oq-01-oq-01-oq-02-oq-01",
     "range": { "startLine": 37, "endLine": 51 },
