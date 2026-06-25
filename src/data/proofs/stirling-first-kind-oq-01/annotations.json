@@ -8,7 +8,20 @@
     },
     "type": "concept",
     "title": "Stirling Numbers of the First Kind",
-    "content": "Nat.stirlingFirst n k is the unsigned Stirling number of the first kind: the number of permutations of an n-element set with exactly k disjoint cycles. Mathlib develops the recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) and the edge values c(n,n) = 1, c(n+1,1) = n! (the single n-cycle), and c(n+1,n) = C(n+1,2), but it omits the row sum ∑ₖ c(n,k) = n! — the aggregate identity proved here."
+    "content": "Nat.stirlingFirst n k is the unsigned Stirling number of the first kind: the number of permutations of an n-element set with exactly k disjoint cycles. Mathlib develops the recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) and the edge values c(n,n) = 1, c(n+1,1) = n! (the single n-cycle), and c(n+1,n) = C(n+1,2), but it omits the row sum ∑ₖ c(n,k) = n! — the aggregate identity proved here.",
+    "mathContext": "$c(n,k) = \\left[{n \\atop k}\\right]$ counts permutations of $n$ with $k$ cycles; recurrence $c(n+1,k+1) = n\\,c(n,k+1) + c(n,k)$; goal $\\sum_k c(n,k) = n!$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Stirling numbers of the first kind",
+      "permutation cycle structure",
+      "row sum identity",
+      "Nat.stirlingFirst"
+    ],
+    "prerequisites": [
+      "permutations and cycles",
+      "the Stirling recurrence",
+      "factorial"
+    ]
   },
   {
     "id": "ann-column-zero",
@@ -19,7 +32,19 @@
     },
     "type": "lemma",
     "title": "The Leftmost Column Collapse",
-    "content": "stirlingFirst_mul_zero_left proves n·c(n,0) = 0 for every n. A case split suffices: for n = 0 the prefactor is 0, and for n = m+1 the value c(m+1,0) = 0 by stirlingFirst_succ_zero (a nonempty permutation has at least one cycle). This single fact is what makes the row-sum recursion match the factorial recursion exactly, with no leftover boundary term."
+    "content": "stirlingFirst_mul_zero_left proves n·c(n,0) = 0 for every n. A case split suffices: for n = 0 the prefactor is 0, and for n = m+1 the value c(m+1,0) = 0 by stirlingFirst_succ_zero (a nonempty permutation has at least one cycle). This single fact is what makes the row-sum recursion match the factorial recursion exactly, with no leftover boundary term.",
+    "mathContext": "$n\\cdot c(n,0) = 0$: $c(0,0)$ prefactored by $0$, and $c(m+1,0) = 0$ since a nonempty set's permutation has $\\ge 1$ cycle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "boundary value c(n,0)",
+      "case split on n",
+      "stirlingFirst_succ_zero",
+      "vanishing boundary term"
+    ],
+    "prerequisites": [
+      "the convention c(n+1,0) = 0",
+      "permutations have at least one cycle"
+    ]
   },
   {
     "id": "ann-row-sum",
@@ -30,7 +55,20 @@
     },
     "type": "theorem",
     "title": "The Row Sum Equals n!",
-    "content": "stirlingFirst_row_sum proves ∑_{k=0}^{n} c(n,k) = n! by induction. The base case R(0) = c(0,0) = 1 = 0! is decide. In the step, Finset.sum_range_succ' peels the (vanishing) k = 0 term; the recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) is applied termwise and the sum splits as n·A + R(n) with A = ∑_{k≤n} c(n,k+1). A second index shift gives the additive identity A + c(n,0) = R(n) (the top term c(n,n+1) vanishes by stirlingFirst_eq_zero_of_lt). Multiplying by n and discharging n·c(n,0) = 0 yields n·A = n·R(n), so R(n+1) = n·R(n) + R(n) = (n+1)·R(n) = (n+1)! via Nat.factorial_succ. Phrasing the shift additively keeps the entire argument in ℕ with no truncated subtraction."
+    "content": "stirlingFirst_row_sum proves ∑_{k=0}^{n} c(n,k) = n! by induction. The base case R(0) = c(0,0) = 1 = 0! is decide. In the step, Finset.sum_range_succ' peels the (vanishing) k = 0 term; the recurrence c(n+1,k+1) = n·c(n,k+1) + c(n,k) is applied termwise and the sum splits as n·A + R(n) with A = ∑_{k≤n} c(n,k+1). A second index shift gives the additive identity A + c(n,0) = R(n) (the top term c(n,n+1) vanishes by stirlingFirst_eq_zero_of_lt). Multiplying by n and discharging n·c(n,0) = 0 yields n·A = n·R(n), so R(n+1) = n·R(n) + R(n) = (n+1)·R(n) = (n+1)! via Nat.factorial_succ. Phrasing the shift additively keeps the entire argument in ℕ with no truncated subtraction.",
+    "mathContext": "$\\sum_{k=0}^{n} c(n,k) = n!$; step: $R(n+1) = n\\,A + R(n) = n\\,R(n) + R(n) = (n+1)\\,R(n) = (n+1)!$.",
+    "significance": "critical",
+    "relatedConcepts": [
+      "row sum of Stirling numbers",
+      "Finset.sum_range_succ'",
+      "index shift / reindexing",
+      "factorial recurrence Nat.factorial_succ"
+    ],
+    "prerequisites": [
+      "induction over ℕ",
+      "the Stirling recurrence termwise",
+      "stirlingFirst_eq_zero_of_lt"
+    ]
   },
   {
     "id": "ann-positivity",
@@ -41,6 +79,19 @@
     },
     "type": "corollary",
     "title": "Positivity and Concrete Checks",
-    "content": "stirlingFirst_row_sum_pos rewrites by the row-sum identity and applies Nat.factorial_pos: the row sum is strictly positive because every finite set admits at least one permutation. Two concrete checks close the file by kernel decide: the fourth row sums to 4! = 24, and c(4,2) = 11 (permutations of a 4-set with exactly two cycles)."
+    "content": "stirlingFirst_row_sum_pos rewrites by the row-sum identity and applies Nat.factorial_pos: the row sum is strictly positive because every finite set admits at least one permutation. Two concrete checks close the file by kernel decide: the fourth row sums to 4! = 24, and c(4,2) = 11 (permutations of a 4-set with exactly two cycles).",
+    "mathContext": "$\\sum_k c(n,k) = n! > 0$ (Nat.factorial_pos); checks: row 4 sums to $4! = 24$, $c(4,2) = 11$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "positivity from factorial",
+      "Nat.factorial_pos",
+      "kernel decide (axiom-free)",
+      "worked numerical checks"
+    ],
+    "prerequisites": [
+      "the row-sum identity",
+      "factorials are positive",
+      "decide on concrete values"
+    ]
   }
 ]
