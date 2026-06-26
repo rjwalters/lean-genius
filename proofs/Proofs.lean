@@ -3379,6 +3379,7 @@ import Proofs.InverseGaloisF20
 import Proofs.InverseGaloisOQ01
 import Proofs.InverseGaloisOQ02
 import Proofs.InverseGaloisOQ02Aristotle
+import Proofs.InverseGaloisOQ03
 import Proofs.InverseGaloisOQ06OQ01
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoperimetricTheoremOQ01
