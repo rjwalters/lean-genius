@@ -39,7 +39,10 @@ fi
 
 # Guard 2 — Same-index repetition: refuse a slug whose tail repeats one OQ index.
 # e.g. ...-oq-01-oq-01-oq-01 is a single question being re-spawned in a loop.
-if echo "$SLUG" | grep -Eq '(-oq-[0-9]+)\1\1'; then
+# Portable + backreference-free (POSIX ERE has no backrefs; the agents' `grep`
+# resolves to ugrep, which errors on `\1`): list each -oq-NN one per line, then
+# flag 3+ consecutive identical indices via `uniq -c` + `awk`.
+if echo "$SLUG" | grep -oE -- '-oq-[0-9]+' | uniq -c | awk '$1>=3{f=1} END{exit !f}'; then
   echo "REJECT $SLUG: repeats the same -oq-NN index 3+ times in a row"
   # skip this candidate
 fi
@@ -189,7 +192,9 @@ jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\")" .lean/state/candidate-poo
 # Step 4e: Initialize research workspace
 # GUARD: re-check OQ chain depth before spawning (never init past depth 3).
 OQ_DEPTH=$(echo "$PROBLEM_ID" | grep -o -- '-oq-[0-9]*' | wc -l | tr -d ' ')
-if [ "$OQ_DEPTH" -gt 3 ] || echo "$PROBLEM_ID" | grep -Eq '(-oq-[0-9]+)\1\1'; then
+# Same-index re-check: backreference-free (ugrep rejects `\1` in ERE). List each
+# -oq-NN one per line, then flag 3+ consecutive identical indices.
+if [ "$OQ_DEPTH" -gt 3 ] || echo "$PROBLEM_ID" | grep -oE -- '-oq-[0-9]+' | uniq -c | awk '$1>=3{f=1} END{exit !f}'; then
   echo "ABORT: $PROBLEM_ID violates OQ-chain guardrails (depth=$OQ_DEPTH). Pick a shallower problem."
   exit 1
 fi
