@@ -3566,6 +3566,7 @@ import Proofs.LucasTheoremOQ01OQ01OQ02
 import Proofs.LucasTheoremOQ01OQ02
 import Proofs.LucasTheoremOQ01OQ02OQ01
 import Proofs.MachinFromAddition
+import Proofs.MaclaurinStepFromNewton
 import Proofs.MantelStabilityOQ01
 import Proofs.MantelTheorem
 import Proofs.MantelTheoremOQ04
