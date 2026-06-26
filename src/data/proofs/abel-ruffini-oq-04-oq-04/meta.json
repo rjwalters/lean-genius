@@ -26,18 +26,19 @@
   },
   "crossReferences": [
     {
-      "slug": "inverse-galois-f20",
-      "relation": "depends-on",
-      "note": "Imports x5_sub_2_gal_card (|Gal(X⁵−2/ℚ)| = 20) and x_fifth_sub_2_irreducible from InverseGaloisF20. This entry adds the solvability fact that InverseGaloisF20 only remarked on, completing the Galois computation of X⁵−2."
+      "proofId": "inverse-galois-f20",
+      "relationship": "depends-on",
+      "description": "Imports x5_sub_2_gal_card (|Gal(X⁵−2/ℚ)| = 20) and x_fifth_sub_2_irreducible from InverseGaloisF20. This entry adds the solvability fact that InverseGaloisF20 only remarked on, completing the Galois computation of X⁵−2."
     },
     {
-      "slug": "abel-ruffini-oq-04",
-      "relation": "complements",
-      "note": "Abel-Ruffini OQ-04 exhibits the S₅ non-solvability obstruction for the general quintic; this entry exhibits the constructive opposite — concrete quintics whose Galois groups ARE solvable."
+      "proofId": "abel-ruffini-oq-04",
+      "relationship": "complements",
+      "description": "Abel-Ruffini OQ-04 exhibits the S₅ non-solvability obstruction for the general quintic; this entry exhibits the constructive opposite — concrete quintics whose Galois groups ARE solvable."
     }
   ],
   "overview": {
     "historicalContext": "The Abel–Ruffini theorem (1799–1824) states there is no general formula in radicals for the roots of a degree-5 polynomial. Galois' refinement explains why: a polynomial is solvable by radicals exactly when its Galois group is a solvable group, and the generic quintic has group S₅, which is not solvable (it contains the simple group A₅). The flip side of this story — that MANY specific quintics are perfectly solvable — is older and more elementary: x⁵ = a is solved by ⁵√a, cyclotomic equations xⁿ = 1 are solved by roots of unity, and reducible quintics inherit solvability from their factors. The classic 'first' nonabelian-but-solvable example is X⁵−2, whose Galois group over ℚ is the Frobenius group F₂₀ = C₅ ⋊ C₄ of order 20.",
+    "problemStatement": "Exhibit specific quintic polynomials over $\\mathbb{Q}$ that ARE solvable by radicals and certify each by its Galois group. Formally, prove: $\\mathrm{Gal}(X^5-2/\\mathbb{Q})$ is solvable with $\\#\\mathrm{Gal} = 20$ (the Frobenius group $F_{20} = C_5 \\rtimes C_4$); $\\mathrm{Gal}(X^5-1/\\mathbb{Q})$ is solvable (cyclotomic, $(\\mathbb{Z}/5)^\\times \\cong C_4$); and $\\mathrm{Gal}((X^2-2)(X^3-2)/\\mathbb{Q})$ is solvable (a genuine quintic, $\\deg = 5$, solvable as a product of radical factors). This is the constructive complement to Abel–Ruffini's statement that the general quintic, with group $S_5$, is not solvable by radicals.",
     "keyInsight": "Solvability of the Galois group is exactly what radical-solvability buys, and Mathlib already packages the relevant radical families: gal_X_pow_sub_C_isSolvable proves IsSolvable (Xⁿ − C a).Gal for every base field (the radical tower C₅ ⋊ … is solvable), gal_X_pow_sub_one_isSolvable handles cyclotomics, and gal_mul_isSolvable propagates solvability across products. So 'exhibit a specific solvable quintic' reduces to choosing concrete a, n and reading off the certificate; the only genuinely new content is connecting X⁵−2's solvability to the separately-computed order 20 to obtain a complete F₂₀ identification.",
     "keyInsights": [
       "A solvable Galois group is the formal certificate that a quintic is solvable by radicals (Galois' criterion). For X⁵−2 the group is F₂₀ = C₅ ⋊ C₄: the normal C₅ permutes the five roots ⁵√2·ζ₅ᵏ cyclically and the C₄ quotient acts as (ℤ/5)ˣ on the fifth roots of unity.",
