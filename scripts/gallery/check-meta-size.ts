@@ -46,10 +46,7 @@ const COLLECTION_CAPS: Record<string, number> = {
 // Known-bloated entries that predate the guardrails. They are exempt from
 // --strict failure until #30348 redistributes their content. Do NOT add new
 // entries here — fix the bloat instead.
-const ALLOWLIST = new Set<string>([
-  'abel-ruffini',
-  'abel-ruffini-galois-extensions',
-])
+const ALLOWLIST = new Set<string>([])
 
 const STRICT = process.argv.includes('--strict')
 const REPORT = process.argv.includes('--report')
