@@ -4101,6 +4101,7 @@ import Proofs.SzemerediHypergraphCoreOQ01
 import Proofs.SzemerediHypergraphGowers
 import Proofs.SzemerediRegularity
 import Proofs.SzemerediRegularityOQ02
+import Proofs.SzemerediRegularityOQ03
 import Proofs.SzemerediTheorem
 import Proofs.SzemerediTheoremOQ01
 import Proofs.TangentAdditionFormula

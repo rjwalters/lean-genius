@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-regularity-oq-03",
   "title": "Can the partition refinement be made algorithmic with polynomial-time guarant...",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-06-09",
     "iteration": 1,
     "focus": "Reading the source gallery proof `szemeredi-regularity` and translating the open question into a precise Lean statement.",
@@ -29,11 +29,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "ACT: Formalized the combinatorial backbone of ADLRY algorithmic regularity (iteration bound => constant rounds; witness-branch soundness; poly-time cost skeleton) in SzemerediRegularityOQ03.lean. Build verification pending (host Docker corrupted).",
+    "builtItems": [
+      "energy_telescope, energy_increment_iteration_bound, roundCount_le, partition_refinement_rounds_bounded in SzemerediRegularityOQ03.lean",
+      "IrregularityWitness, RegularOrWitness, regular_no_witness, no_witness_of_regular, regularOrWitness_holds in SzemerediRegularityOQ03.lean",
+      "polytime_total_cost, total_cost_is_poly in SzemerediRegularityOQ03.lean"
+    ],
+    "insights": [
+      "ADLRY polynomial time = poly-time regular-or-witness subroutine + iteration bound (constant rounds independent of n).",
+      "Iteration bound formalized: energy in [0,1] increasing by delta per round => at most 1/delta rounds (energy_increment_iteration_bound, roundCount_le).",
+      "partition_refinement_rounds_bounded ties the bound to the genuine partitionEnergy via partitionEnergy_nonneg + partitionEnergy_le_one.",
+      "Witness-branch soundness: an eps-regular pair admits no eps-irregularity witness (regular_no_witness); the dichotomy itself is classically free (regularOrWitness_holds), only the constructive poly-time chooser is hard.",
+      "Build verification blocked this session: host Docker containerd content store corrupted (blob I/O errors)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Verify build on a working Docker host",
+      "Prove single-witness => eps^5 energy increment to close Part I/Part II loop",
+      "Formalize a concrete poly-time cost model for the regular-or-witness subroutine"
+    ],
     "markdown": "# Knowledge: szemeredi-regularity-oq-03\n\n## Established Facts\n\n(None yet — populated during OBSERVE.)\n\n## Open Questions Within This Problem\n\n- The main open question (see `problem.md`).\n\n## Failed Approaches\n\n(None yet.)\n\n## Promising Leads\n\n(None yet.)\n"
   },
   "tags": [
