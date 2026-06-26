@@ -271,9 +271,14 @@ assert_main_intact() {
 merge_prs() {
     print_header "Merging Pull Requests"
 
-    # Update main first
+    # Update main first. Retry once and never abort on the benign
+    # "unable to update local ref" race: when a prior merge in this same loop
+    # just advanced origin/main, a concurrent fetch can fail to lock the
+    # remote-tracking ref even though the data is fetched into FETCH_HEAD and
+    # the ref ends up current. Under `set -e` an unguarded fetch would kill the
+    # whole merge step after merging only ~1 PR (see issue: deploy fetch race).
     print_info "Updating main branch..."
-    git fetch origin main
+    git fetch origin main --quiet || git fetch origin main --quiet || true
     # Stash before checkout — dirty files block branch switch
     git stash 2>/dev/null || true
     git checkout main 2>/dev/null || git checkout -b main origin/main 2>/dev/null || true
@@ -395,8 +400,11 @@ merge_prs() {
         (
             cd "$worktree_path"
             git stash 2>/dev/null || true
-            git fetch origin main
-            git fetch origin "$branch"
+            # Tolerate the benign "unable to update local ref" race (a prior
+            # merge in this loop just moved origin/main); FETCH_HEAD is still
+            # populated and the ref ends up current, so don't let set -e abort.
+            git fetch origin main --quiet || git fetch origin main --quiet || true
+            git fetch origin "$branch" --quiet || true
             git reset --hard "origin/$branch" 2>/dev/null || true
 
             if git rebase origin/main 2>/dev/null; then
@@ -517,8 +525,8 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
 
     print_success "Merged $merged PRs ($failed failed/skipped)"
 
-    # Update main again after merges
-    git fetch origin main
+    # Update main again after merges (tolerate the ref-lock race, see above)
+    git fetch origin main --quiet || git fetch origin main --quiet || true
     git reset --hard origin/main
 
     # Safety net: confirm the merges did not collapse main's tree.
