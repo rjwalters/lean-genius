@@ -182,6 +182,82 @@ theorem squares_always_achievable (T : Triangle) :
   · exact Nat.one_le_pow 2 k (by omega)
   · exact universal_square_dissection T k hk
 
+/-! ## Model Adequacy: the simplified model collapses
+
+  The dissection note above observes informally that the simplified
+  area+similarity model OVER-counts: by `Triangle.area_scale` the scaled copy
+  `T.scale (1/√n)` satisfies both numeric conditions for *every* `n ≥ 1`, not
+  just perfect squares. The three theorems below turn that informal remark into
+  proved statements:
+
+  * `all_counts_achievable` / `dissectionCounts_eq` — in this model
+    `DissectionCounts T = {n | n ≥ 1}` for every triangle `T`.
+  * `no_square_only_in_model` — consequently NO triangle has the square-only
+    property here (the non-square count `2` is always achievable).
+
+  This is the precise reason the five square-only `sorry`s
+  (`soifer_square_only`, `soifer_family_square_only`,
+  `integral_independence_implies_square_only`, and the existence claim
+  `erdos_633`) cannot be discharged in the present model: they are not merely
+  unproved, they are *model-false* (refuted by `no_square_only_in_model`).
+  Capturing Soifer's genuine geometric result requires replacing
+  `CongruentDissection` with a faithful tiling predicate — the open, hard
+  content of Erdős #633. -/
+
+/-- Generalisation of `universal_square_dissection` from `n²` to *every* `n ≥ 1`:
+    in the area-compatibility model the similar copy `T.scale (1/√n)` has area
+    `T.area / n`, so `n` copies match `T`'s area exactly. This witnesses the
+    over-counting of the simplified model. -/
+theorem all_counts_achievable (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
+    CanDissectInto T n := by
+  have hnR : (0:ℝ) < (n:ℝ) := by exact_mod_cast hn
+  have hsq : (0:ℝ) < Real.sqrt n := Real.sqrt_pos.mpr hnR
+  refine ⟨T.scale (1 / Real.sqrt n) (one_div_pos.mpr hsq), ⟨⟨?_, ?_, ?_⟩⟩⟩
+  · rw [Triangle.area_scale, div_pow, one_pow, Real.sq_sqrt (le_of_lt hnR),
+        ← mul_assoc, mul_one_div, div_self (ne_of_gt hnR), one_mul]
+  · simp only [Triangle.scale]
+    rw [mul_div_assoc, div_self (ne_of_gt T.ha), mul_one,
+        mul_div_assoc, div_self (ne_of_gt T.hb), mul_one]
+  · simp only [Triangle.scale]
+    rw [mul_div_assoc, div_self (ne_of_gt T.hb), mul_one,
+        mul_div_assoc, div_self (ne_of_gt T.hc), mul_one]
+
+/-- In the simplified model, the achievable dissection counts of *any* triangle
+    are exactly the positive integers — the model retains no square-only
+    information whatsoever. -/
+theorem dissectionCounts_eq (T : Triangle) :
+    DissectionCounts T = {n : ℕ | 1 ≤ n} := by
+  ext n
+  simp only [DissectionCounts, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨hn, _⟩; exact hn
+  · intro hn; exact ⟨hn, all_counts_achievable T n hn⟩
+
+/-- `2` is not a perfect square (helper for `no_square_only_in_model`). -/
+theorem not_isPerfectSquare_two : ¬ IsPerfectSquare 2 := by
+  rintro ⟨k, hk⟩
+  have hk2 : k ^ 2 = 2 := hk.symm
+  have hlt : k < 2 := by
+    by_contra hc
+    push_neg at hc
+    have h4 : 4 ≤ k ^ 2 := by
+      calc (4 : ℕ) = 2 ^ 2 := by norm_num
+        _ ≤ k ^ 2 := Nat.pow_le_pow_left hc 2
+    omega
+  interval_cases k <;> norm_num at hk2
+
+/-- **The simplified model has no square-only triangles.**
+    Since every `n ≥ 1` (in particular the non-square `2`) is an achievable
+    count, no triangle satisfies `HasSquareOnlyProperty` in this model. This
+    refutes — *within the model* — `soifer_square_only`, `erdos_633`, and the
+    other square-only `sorry`s, confirming they require a refined geometric
+    dissection predicate rather than further proof effort in the present model. -/
+theorem no_square_only_in_model (T : Triangle) : ¬ HasSquareOnlyProperty T := by
+  intro h
+  have h2 : (2 : ℕ) ∈ DissectionCounts T := by
+    rw [dissectionCounts_eq, Set.mem_setOf_eq]; norm_num
+  exact not_isPerfectSquare_two (h 2 h2)
+
 /-! ## Soifer's Example -/
 
 /-- Soifer's example: the triangle with sides √2, √3, √4 -/
@@ -212,7 +288,13 @@ noncomputable def soiferTriangle : Triangle where
     have h2 : Real.sqrt 2 > 0 := Real.sqrt_pos.mpr (by norm_num : (2 : ℝ) > 0)
     linarith
 
-/-- Soifer's triangle has the square-only property -/
+/-- Soifer's triangle has the square-only property.
+
+    NOTE (model adequacy): this statement is *model-false* in the simplified
+    area+similarity model — `no_square_only_in_model soiferTriangle` proves its
+    negation. It is retained as an aspirational restatement of Soifer's genuine
+    geometric theorem, dischargeable only after `CongruentDissection` is replaced
+    by a faithful tiling predicate. -/
 theorem soifer_square_only : HasSquareOnlyProperty soiferTriangle := by
   sorry
 
@@ -341,7 +423,13 @@ theorem soifer_family_square_only : soiferFamily ⊆ SquareOnlyTriangles := by
 
 /-- Erdős Problem #633: OPEN
     The complete classification of square-only triangles is unknown.
-    Prize: $25 for a complete characterization. -/
+    Prize: $25 for a complete characterization.
+
+    NOTE (model adequacy): in the simplified area+similarity model this existence
+    claim is *model-false* — by `no_square_only_in_model` no triangle has the
+    square-only property here, so this rests on the model-false `soifer_square_only`
+    sorry. It states Soifer's genuine geometric result, awaiting a faithful
+    tiling predicate. -/
 theorem erdos_633 : ∃ T : Triangle, HasSquareOnlyProperty T := by
   exact ⟨soiferTriangle, soifer_square_only⟩
 
