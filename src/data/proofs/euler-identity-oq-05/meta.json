@@ -95,7 +95,15 @@
       "summary": "isSumFourSq_of_isSumTwoSq pads a two-square sum with two zeros. The examples certify 3 = 1²+1²+1²+0² and 7 = 2²+1²+1²+1², then obtain a four-square representation of 21 = 3·7 by applying IsSumFourSq.mul — witnesses are produced mechanically, not guessed — and a numeric check confirms the resulting forms (0,4,2,1) sum to 21."
     }
   ],
-  "conclusion": "Euler's four-square identity is formalised sorry-free and axiom-free over an arbitrary commutative ring, and — going beyond Mathlib's bare ring identity and Lagrange's theorem — its structural payload is made explicit: the sums of four squares form a multiplicative submonoid (closed under multiplication, finite products, and powers, containing 0, 1, and every square). The multiplicative-closure lemma IsSumFourSq.mul is the faithful four-square analogue of Mathlib's two-square sq_add_sq_mul, with witnesses read straight off the identity, certifying products like 21 = 3·7 = 0²+4²+2²+1² constructively. This is precisely the step by which Euler reduced Lagrange's four-square theorem to the prime case. Strengthening the worked examples to the full prime case (every prime is a sum of four squares) and assembling Lagrange's theorem from closure plus the prime case is the natural follow-up.",
+  "conclusion": {
+    "summary": "Euler's four-square identity is formalised sorry-free and axiom-free over an arbitrary commutative ring, and — going beyond Mathlib's bare ring identity and Lagrange's theorem — its structural payload is made explicit: the sums of four squares form a multiplicative submonoid (closed under multiplication, finite products, and powers, containing 0, 1, and every square). The multiplicative-closure lemma IsSumFourSq.mul reads its product witnesses straight off the identity, certifying products like 21 = 3·7 = 0²+4²+2²+1² constructively.",
+    "implications": "The multiplicative closure is the faithful four-square analogue of Mathlib's two-square sq_add_sq_mul, which previously had no four-square counterpart. Witness-explicit closure is precisely the step by which Euler reduced Lagrange's four-square theorem to the prime case: once every prime is a sum of four squares, the closure under products propagates the property to every integer.",
+    "openQuestions": [
+      "Can the worked examples be strengthened to the full prime case — formalising that every prime is a sum of four squares?",
+      "Can Lagrange's four-square theorem be assembled in-file from the multiplicative closure plus that prime case, reproducing Euler's reduction end to end?",
+      "Does the same submonoid structure extend cleanly to Degen's eight-square (octonion-norm) identity, and how far does Hurwitz's theorem limit such analogues?"
+    ]
+  },
   "crossReferences": [
     "euler-identity"
   ]

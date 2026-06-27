@@ -107,7 +107,15 @@
       "summary": "The examples specialise card_composition_length: compositions of 4 into 2 parts number C(3,1) = 3 (namely 1+3, 2+2, 3+1), compositions of 5 into 3 parts number C(4,2) = 6, and there is a unique composition of n into 1 part (the trivial composition, C(n−1,0) = 1). The small Nat.choose values are closed by the kernel's decide."
     }
   ],
-  "conclusion": "The part-graded enumerative identity 'compositions of n into exactly k parts number C(n−1, k−1)' is formalised sorry-free and axiom-free, refining the total count card(Composition n) = 2^(n−1) of the parent entry. The mathematical content beyond Mathlib is the crux lemma card_compositionAsSetEquiv — the cut-set attached to a composition has cardinality length − 1, proved by identifying its injective image in Fin (n+1) with the boundary set minus its two forced endpoints — together with the graded count card_composition_length it unlocks via Fintype.card_finset_len, and the consistency check sum_choose_eq tying the refinement back to 2^(n−1) through the binomial theorem. Mathlib records the ungraded count and the underlying bijections but neither the cut-count bookkeeping nor the part-graded refinement, which is the original content here. A natural follow-up is the bivariate generating-function form ∑_{n,k} (#compositions of n into k parts) x^n y^k = xy / (1 − x − xy), or the analogous part-graded count for compositions into parts of bounded size.",
+  "conclusion": {
+    "summary": "The part-graded enumerative identity 'compositions of n into exactly k parts number C(n−1, k−1)' is formalised sorry-free and axiom-free. The mathematical content beyond Mathlib is the crux lemma card_compositionAsSetEquiv — the cut-set attached to a composition has cardinality length − 1, proved by identifying its injective image in Fin (n+1) with the boundary set minus its two forced endpoints — together with the graded count card_composition_length it unlocks via Fintype.card_finset_len, and the consistency check sum_choose_eq tying the refinement back to 2^(n−1) through the binomial theorem.",
+    "implications": "The graded count refines the total count card(Composition n) = 2^(n−1) of the parent entry into the finer enumerative information from which the total follows. Mathlib records the ungraded count and the underlying bijections (compositionEquiv, compositionAsSetEquiv) but neither the cut-count bookkeeping nor the part-graded refinement, which is the original content contributed here.",
+    "openQuestions": [
+      "Can the bivariate generating-function form ∑_{n,k} (#compositions of n into k parts) x^n y^k = xy / (1 − x − xy) be formalised, packaging the part-graded counts into a single closed-form series?",
+      "What is the analogous part-graded count for compositions into parts of bounded size (each part at most some fixed m)?",
+      "Does the same cut-set / double-erase technique extend to other graded refinements of Mathlib's ungraded composition cardinalities?"
+    ]
+  },
   "crossReferences": [
     "composition-card-2pow-oq-01",
     "dyck-catalan-count-oq-01"
