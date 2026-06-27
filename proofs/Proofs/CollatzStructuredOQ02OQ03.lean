@@ -35,14 +35,17 @@ algebraic core and isolated the finite-check residue), this file:
   * gives a **precise, machine-checkable statement** of Tao's theorem
     (`tao_2019`) so the open question is no longer informal, and the
     "logarithmic density 1" target is pinned down as `HasLogDensityOne`;
-  * proves, **unconditionally and axiom-free**, that three large explicit families
+  * proves, **unconditionally and axiom-free**, that several large explicit families
     of starting values already satisfy the "drops below itself" conclusion — the
-    even numbers, the powers of two, and the odd residue class `n ≡ 1 (mod 4)`
-    (`n ≥ 5`) — so the elementary part of the almost-all picture is real Lean
-    content, not scaffolding on the axiom.  The even numbers and the class
-    `1 + 4ℕ` together already cover three-quarters of the integers via elementary
-    dynamics, and the `mod 4` family is the first that exercises the non-trivial
-    `3n+1` branch of the map.
+    even numbers, the powers of two, the odd residue class `n ≡ 1 (mod 4)`
+    (`n ≥ 5`), and the odd residue class `n ≡ 3 (mod 16)` — so the elementary part of
+    the almost-all picture is real Lean content, not scaffolding on the axiom.  The
+    evens together with `1 + 4ℕ` and `3 + 16ℕ` cover **thirteen-sixteenths** of the
+    integers via elementary residue dynamics (`attainsBelow_density_lower_16`, a
+    machine-checked `≥ 13/16` lower density), and the `mod 4`/`mod 16` families
+    exercise the non-trivial `3n+1` branch of the map.  Of the odd classes
+    `n ≡ 3 (mod 4)`, `n ≡ 3 (mod 16)` is precisely the one that drops within its
+    residue-determined window; `7, 11, 15 (mod 16)` have `m`-dependent stopping times.
 
 References:
 - Tao, T. (2019). "Almost all orbits of the Collatz map attain almost bounded
@@ -87,12 +90,12 @@ theorem collatz_iterate_pos {n : ℕ} (hn : 0 < n) (k : ℕ) : 0 < collatz^[k] n
     rw [Function.iterate_succ_apply']
     exact collatz_pos ih
 
-/-! ## Part II: Three explicit families that drop below their start
+/-! ## Part II: Explicit residue families that drop below their start
 
 These are the unconditional, axiom-free part of the almost-all picture: whatever
 Tao's analytic argument gives for *almost all* `n`, the even numbers, the powers
-of two, and the odd residue class `n ≡ 1 (mod 4)` (`n ≥ 5`) are handled by
-elementary explicit dynamics. -/
+of two, and the odd residue classes `n ≡ 1 (mod 4)` (`n ≥ 5`) and `n ≡ 3 (mod 16)`
+are handled by elementary explicit dynamics. -/
 
 /-- `n` *attains a value below itself*: some positive number of Collatz steps
 takes `n` to a strictly smaller value.  This is the "finite stopping time"
@@ -145,6 +148,30 @@ theorem mod_four_one_attainsBelow {n : ℕ} (hn : 5 ≤ n) (h : n % 4 = 1) :
       step1, step2, step3]
   omega
 
+/-- Every `n ≡ 3 (mod 16)` drops below itself in exactly six steps:
+`16m+3 ↦ 48m+10 ↦ 24m+5 ↦ 72m+16 ↦ 36m+8 ↦ 18m+4 ↦ 9m+2`, and `9m+2 < 16m+3` for
+every `m ≥ 0`.  All six parities are forced by the residue `mod 16` alone (independent
+of `m`), so this is a genuine residue-class drop, not a per-number accident.  It is the
+*one* new residue that stabilises at level `16`: of the odd classes `n ≡ 3 (mod 4)`
+(i.e. `n mod 16 ∈ {3, 7, 11, 15}`), only `n ≡ 3` drops within its residue-determined
+window — the classes `7, 11, 15 (mod 16)` have `m`-dependent stopping times and require
+a finer modulus.  Adding this class lifts the unconditional density floor from `3/4` to
+`13/16`. -/
+theorem mod_sixteen_three_attainsBelow {n : ℕ} (h : n % 16 = 3) : AttainsBelow n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = 16 * m + 3 := ⟨n / 16, by omega⟩
+  refine ⟨6, by norm_num, ?_⟩
+  have s1 : collatz (16 * m + 3) = 48 * m + 10 := by rw [collatz_odd (by omega)]; ring
+  have s2 : collatz (48 * m + 10) = 24 * m + 5 := by rw [collatz_even (by omega)]; omega
+  have s3 : collatz (24 * m + 5) = 72 * m + 16 := by rw [collatz_odd (by omega)]; ring
+  have s4 : collatz (72 * m + 16) = 36 * m + 8 := by rw [collatz_even (by omega)]; omega
+  have s5 : collatz (36 * m + 8) = 18 * m + 4 := by rw [collatz_even (by omega)]; omega
+  have s6 : collatz (18 * m + 4) = 9 * m + 2 := by rw [collatz_even (by omega)]; omega
+  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6]
+  omega
+
 /-- Packaging: every positive `n` that is **even** or lies in `1 + 4ℕ` (with `n ≥ 5`)
 attains a value below itself.  Together these cover three-quarters of the integers,
 all handled by elementary dynamics with no appeal to Tao's axiom. -/
@@ -153,6 +180,17 @@ theorem even_or_mod_four_one_attainsBelow {n : ℕ} (hn : 1 ≤ n)
   rcases h with he | ⟨h5, h1⟩
   · exact even_attainsBelow hn he
   · exact mod_four_one_attainsBelow h5 h1
+
+/-- Extended packaging: every positive `n` that is **even**, lies in `1 + 4ℕ` (`n ≥ 5`),
+or lies in `3 + 16ℕ` attains a value below itself.  These three elementary families
+together cover thirteen-sixteenths of the integers — the current unconditional floor
+beneath Tao's density-one theorem, with no appeal to the axiom. -/
+theorem even_or_mod_four_one_or_mod_sixteen_three_attainsBelow {n : ℕ} (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3) : AttainsBelow n := by
+  rcases h with he | h1 | h3
+  · exact even_attainsBelow hn he
+  · exact mod_four_one_attainsBelow h1.1 h1.2
+  · exact mod_sixteen_three_attainsBelow h3
 
 /-! ## Part II.5: A quantitative density floor of 3/4
 
@@ -215,6 +253,84 @@ theorem attainsBelow_density_lower (N : ℕ) :
     _ = (E ∪ O).card := (Finset.card_union_of_disjoint hdisj).symm
     _ ≤ _ := Finset.card_le_card hsub
 
+open Classical in
+/-- **Sharpened quantitative density lower bound (`13/16`).**  Adjoining the residue
+class `3 + 16ℕ` to the evens and `1 + 4ℕ` lifts the count: among the integers in
+`[1, 16N]`, at least `13N - 1` already attain a value below themselves — the `8N` evens,
+the `4N - 1` members of `1 + 4ℕ` that are `≥ 5`, and the `N` members of `3 + 16ℕ`.
+The three families are pairwise disjoint (evens by parity; `1 + 4ℕ` vs `3 + 16ℕ` by their
+residues `1` and `3` mod `4`), giving `8N + (4N - 1) + N = 13N - 1` distinct drop-below
+starts.  Dividing by `16N` and letting `N → ∞`, the drop-below set has **lower natural
+density `≥ 13/16`** — strictly above the previous `3/4` floor. -/
+theorem attainsBelow_density_lower_16 (N : ℕ) :
+    13 * N - 1 ≤
+      ((Finset.Icc 1 (16 * N)).filter (fun n => AttainsBelow n)).card := by
+  classical
+  rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+  · subst hN0; simp
+  -- The evens `2, 4, …, 16N`, an injective image of `[1, 8N]`.
+  set E : Finset ℕ := (Finset.Icc 1 (8 * N)).image (fun j => 2 * j) with hE
+  -- The class `1 + 4ℕ` with value `≥ 5`: `5, 9, …, 16N-3`, an image of `[1, 4N-1]`.
+  set O1 : Finset ℕ := (Finset.Icc 1 (4 * N - 1)).image (fun j => 4 * j + 1) with hO1
+  -- The class `3 + 16ℕ`: `3, 19, …, 16N-13`, an image of `[0, N-1]`.
+  set O3 : Finset ℕ := (Finset.Icc 0 (N - 1)).image (fun j => 16 * j + 3) with hO3
+  have hEinj : Function.Injective (fun j : ℕ => 2 * j) :=
+    fun a b h => by have h' : 2 * a = 2 * b := h; omega
+  have hO1inj : Function.Injective (fun j : ℕ => 4 * j + 1) :=
+    fun a b h => by have h' : 4 * a + 1 = 4 * b + 1 := h; omega
+  have hO3inj : Function.Injective (fun j : ℕ => 16 * j + 3) :=
+    fun a b h => by have h' : 16 * a + 3 = 16 * b + 3 := h; omega
+  have hEcard : E.card = 8 * N := by
+    rw [hE, Finset.card_image_of_injective _ hEinj, Nat.card_Icc]; omega
+  have hO1card : O1.card = 4 * N - 1 := by
+    rw [hO1, Finset.card_image_of_injective _ hO1inj, Nat.card_Icc]; omega
+  have hO3card : O3.card = N := by
+    rw [hO3, Finset.card_image_of_injective _ hO3inj, Nat.card_Icc]; omega
+  -- Residues separate the three families.
+  have hEeven : ∀ x ∈ E, x % 2 = 0 := by
+    intro x hx; rw [hE, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show 2 * i % 2 = 0; omega
+  have hO1mod4 : ∀ x ∈ O1, x % 4 = 1 := by
+    intro x hx; rw [hO1, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (4 * i + 1) % 4 = 1; omega
+  have hO3mod4 : ∀ x ∈ O3, x % 4 = 3 := by
+    intro x hx; rw [hO3, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (16 * i + 3) % 4 = 3; omega
+  have hd_E_O1 : Disjoint E O1 :=
+    Finset.disjoint_left.mpr fun a ha hb => by
+      have := hEeven a ha; have := hO1mod4 a hb; omega
+  have hd_E_O3 : Disjoint E O3 :=
+    Finset.disjoint_left.mpr fun a ha hb => by
+      have := hEeven a ha; have := hO3mod4 a hb; omega
+  have hd_O1_O3 : Disjoint O1 O3 :=
+    Finset.disjoint_left.mpr fun a ha hb => by
+      have := hO1mod4 a ha; have := hO3mod4 a hb; omega
+  have hd_EO1_O3 : Disjoint (E ∪ O1) O3 :=
+    Finset.disjoint_union_left.mpr ⟨hd_E_O3, hd_O1_O3⟩
+  have hcard : (E ∪ O1 ∪ O3).card = E.card + O1.card + O3.card := by
+    rw [Finset.card_union_of_disjoint hd_EO1_O3, Finset.card_union_of_disjoint hd_E_O1]
+  -- All three families consist of drop-below starts in range.
+  have hsub : E ∪ O1 ∪ O3 ⊆ (Finset.Icc 1 (16 * N)).filter (fun n => AttainsBelow n) := by
+    intro x hx
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    rw [Finset.mem_union, Finset.mem_union] at hx
+    rcases hx with (hxE | hxO1) | hxO3
+    · rw [hE, Finset.mem_image] at hxE
+      obtain ⟨j, hj, rfl⟩ := hxE; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 2 * j ∧ 2 * j ≤ 16 * N) ∧ AttainsBelow (2 * j)
+      exact ⟨⟨by omega, by omega⟩, even_attainsBelow (by omega) (by omega)⟩
+    · rw [hO1, Finset.mem_image] at hxO1
+      obtain ⟨j, hj, rfl⟩ := hxO1; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 4 * j + 1 ∧ 4 * j + 1 ≤ 16 * N) ∧ AttainsBelow (4 * j + 1)
+      exact ⟨⟨by omega, by omega⟩, mod_four_one_attainsBelow (by omega) (by omega)⟩
+    · rw [hO3, Finset.mem_image] at hxO3
+      obtain ⟨j, hj, rfl⟩ := hxO3; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 16 * j + 3 ∧ 16 * j + 3 ≤ 16 * N) ∧ AttainsBelow (16 * j + 3)
+      exact ⟨⟨by omega, by omega⟩, mod_sixteen_three_attainsBelow (by omega)⟩
+  calc 13 * N - 1 ≤ E.card + O1.card + O3.card := by rw [hEcard, hO1card, hO3card]; omega
+    _ = (E ∪ O1 ∪ O3).card := hcard.symm
+    _ ≤ _ := Finset.card_le_card hsub
+
 /-! ## Part III: The orbit minimum and logarithmic density -/
 
 /-- The **orbit minimum** of `n`: the infimum of the values visited by the
@@ -269,6 +385,17 @@ unconditionally and without Tao's axiom. -/
 theorem even_or_mod_four_one_colMin_lt {n : ℕ} (hn : 1 ≤ n)
     (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1)) : colMin n < n :=
   attainsBelow_colMin_lt (even_or_mod_four_one_attainsBelow hn h)
+
+/-- The new residue class `3 + 16ℕ` likewise has orbit minimum strictly below its start,
+unconditionally and without Tao's axiom. -/
+theorem mod_sixteen_three_colMin_lt {n : ℕ} (h : n % 16 = 3) : colMin n < n :=
+  attainsBelow_colMin_lt (mod_sixteen_three_attainsBelow h)
+
+/-- The full thirteen-sixteenths family — evens, `1 + 4ℕ` (`n ≥ 5`), and `3 + 16ℕ` —
+has orbit minimum strictly below the start. -/
+theorem even_or_mod_four_one_or_mod_sixteen_three_colMin_lt {n : ℕ} (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3) : colMin n < n :=
+  attainsBelow_colMin_lt (even_or_mod_four_one_or_mod_sixteen_three_attainsBelow hn h)
 
 /-- The logarithmic-density partial average of a set `S` up to `N`:
 `(∑_{n≤N, n∈S} 1/n) / (∑_{n≤N} 1/n)`. -/

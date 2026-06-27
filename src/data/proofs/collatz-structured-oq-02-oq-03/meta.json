@@ -2,7 +2,7 @@
   "id": "collatz-structured-oq-02-oq-03",
   "title": "Tao's 2019 Almost-All Collatz Bound — A Feasibility Anchor",
   "slug": "collatz-structured-oq-02-oq-03",
-  "description": "Addresses OQ-03 of the Collatz cycle non-existence problem: can Tao's 2019 almost-all result (logarithmic density 1) be formalized in Lean using Mathlib's measure/ergodic theory? Tao's analytic proof (3-adic transport/concentration estimates) is out of reach today, so — mirroring the sibling OQ-02 entry — this file pins down the open question with a precise machine-checkable statement of Tao's theorem (logarithmic density of {n : Col_min(n) < f n} is 1 for every f → ∞) and proves, axiom-free, that two large explicit families already satisfy the elementary 'drops below itself' conclusion: every positive even number (one step) and every power of two (collapses to 1). Single deep axiom (tao_2019); the proven content does not depend on it.",
+  "description": "Addresses OQ-03 of the Collatz cycle non-existence problem: can Tao's 2019 almost-all result (logarithmic density 1) be formalized in Lean using Mathlib's measure/ergodic theory? Tao's analytic proof (3-adic transport/concentration estimates) is out of reach today, so — mirroring the sibling OQ-02 entry — this file pins down the open question with a precise machine-checkable statement of Tao's theorem (logarithmic density of {n : Col_min(n) < f n} is 1 for every f → ∞) and proves, axiom-free, that several explicit residue families already satisfy the elementary 'drops below itself' conclusion: every positive even number (one step), every power of two (collapses to 1), every n ≡ 1 (mod 4) with n ≥ 5 (three steps, the 3n+1 branch), and every n ≡ 3 (mod 16) (six steps). The evens together with 1+4ℕ and 3+16ℕ give a machine-checked lower natural density of 13/16 (attainsBelow_density_lower_16: at least 13N−1 of [1,16N] drop below themselves), raising the previous 3/4 floor. Of the odd classes n ≡ 3 (mod 4), exactly n ≡ 3 (mod 16) drops within its residue-determined window; 7,11,15 (mod 16) have m-dependent stopping times. Single deep axiom (tao_2019); the proven content does not depend on it.",
   "meta": {
     "author": "Research formalization 2026",
     "sourceUrl": "https://terrytao.wordpress.com/2019/09/10/almost-all-collatz-orbits-attain-almost-bounded-values/",
@@ -133,12 +133,18 @@
       "Mathlib"
     ],
     "namespace": "CollatzStructuredOQ02OQ03",
-    "lineCount": 300,
+    "lineCount": 427,
     "axiomCount": 1,
-    "theoremCount": 17,
+    "theoremCount": 22,
     "path": "Proofs/CollatzStructuredOQ02OQ03.lean",
     "sorries": 0,
     "definitionCount": 5
   },
-  "sorries": 0
+  "sorries": 0,
+  "highlights": [
+    "New residue class n ≡ 3 (mod 16) drops below itself in exactly 6 residue-determined steps (16m+3 → 9m+2 < 16m+3), axiom-free",
+    "Machine-checked density floor raised 3/4 → 13/16: attainsBelow_density_lower_16 shows ≥ 13N−1 of [1,16N] drop below themselves (8N evens + (4N−1) of 1+4ℕ + N of 3+16ℕ, pairwise disjoint)",
+    "n ≡ 3 (mod 16) is precisely the one odd class mod 16 (among 3,7,11,15) that stabilises in its residue-determined window; 7,11,15 need a finer modulus",
+    "Tao 2019 stated precisely (tao_2019 axiom, HasLogDensityOne); deep analytic proof BLOCKED, all elementary content independent of the axiom"
+  ]
 }
