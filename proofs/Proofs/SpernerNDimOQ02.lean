@@ -307,4 +307,54 @@ theorem not_mem_facet_iff (s : CanonSimplex d N) (k j : Fin (d + 1)) :
   · rintro rfl
     exact vertices_not_mem_facet s _
 
+-- ============================================================
+-- SECTION: Facet reconstruction of a canonical cell
+-- ============================================================
+-- `adj` records, for each interior facet of a cell, the neighbouring
+-- cell glued across it together with that neighbour's opposite vertex
+-- index.  For this stored data to be coherent the *cell* must be
+-- recoverable from a single (facet, opposite-vertex) pair.  These
+-- lemmas pin that down: the full vertex set of a canonical cell is its
+-- `k`-facet plus the deleted vertex `vertices s k`, and consequently a
+-- canonical cell is determined by any one facet together with its
+-- opposite vertex (`canon_eq_of_facet_and_vertex`).  This is the
+-- cross-cell companion of `facet_injective` (which handled the
+-- within-cell direction) and the precise statement that makes the
+-- (facet, opposite-vertex) payload of `adj` well defined.  All
+-- 0-sorry, 0-axiom.
+
+/-- The full vertex set of a canonical cell is its `k`-th facet
+together with the deleted vertex `vertices s k`.  Splitting `univ` as
+`insert k (univ.erase k)` and pushing through `vertices s` recovers the
+cell's `d + 1` vertices from the `d`-vertex facet and the one removed
+vertex. -/
+theorem image_univ_eq_insert_facet (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    Finset.univ.image (vertices s) = insert (vertices s k) (facet s k) := by
+  rw [facet, ← Finset.image_insert, Finset.insert_erase (Finset.mem_univ k)]
+
+/-- The Finset vertex set of a canonical cell coerces to the range of
+its vertex map.  Bridges the Finset-level facet algebra above to the
+`Set.range` interface of `canon_eq_of_vertices_range`. -/
+theorem coe_image_univ_vertices (s : CanonSimplex d N) :
+    (↑(Finset.univ.image (vertices s)) : Set (SpernerNDim.Vertex d N))
+      = Set.range (vertices s) := by
+  rw [Finset.coe_image, Finset.coe_univ, Set.image_univ]
+
+/-- **A canonical cell is determined by one facet and its opposite
+vertex.**  If two canonical cells share a facet (`facet s k = facet t l`)
+together with the matching deleted vertex (`vertices s k = vertices t l`),
+then they are equal.  Both cells then have the same full vertex set
+(facet ∪ {opposite vertex}), and `canon_eq_of_vertices_range` collapses
+that to cell equality.  This is the coherence underlying `adj`: the
+(facet, opposite-vertex) pair the adjacency stores pins down the cell
+uniquely, so a glued neighbour cannot be ambiguous. -/
+theorem canon_eq_of_facet_and_vertex {s t : CanonSimplex d N}
+    {k l : Fin (d + 1)}
+    (hface : facet s k = facet t l)
+    (hvert : vertices s k = vertices t l) : s = t := by
+  apply canon_eq_of_vertices_range
+  rw [← coe_image_univ_vertices s, ← coe_image_univ_vertices t,
+    image_univ_eq_insert_facet s k, image_univ_eq_insert_facet t l,
+    hface, hvert]
+
 end SpernerNDimOQ02
