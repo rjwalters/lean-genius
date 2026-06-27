@@ -514,4 +514,125 @@ theorem balanced_depth_log (j n : ℕ) (hcap : Nat.fib (2 * j + 1) ≤ n) :
     2 ^ j ≤ n :=
   le_trans (fib_pow_lower j) hcap
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 8: Mediant chains are similarly ordered — the bridge to f(n)
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+Sections 1–7 develop the *metric* side of mediant insertion (gap sizes,
+denominators, depth). The open problem, however, is about the *ordering* side:
+`f(n)` counts the longest run of consecutive **similarly ordered** Farey
+fractions, where `a/b` and `c/d` are similarly ordered iff
+`(a − c)·(b − d) ≥ 0` (numerator and denominator move the same way).  This
+section is the first link in the file between the two: it shows that mediant
+insertion *automatically produces* similarly ordered families.
+
+The headline is `simOrd_iterate_left_chain` / `_right_chain`: the entire
+one-sided mediant chain of § 6 — of length `Θ(n)` under the order cap (§ 6) —
+is **pairwise** similarly ordered.  This is exactly the combinatorial engine
+behind the linear lower bound `f(n) ≥ c·n`: monotone mediant descent never
+breaks similar ordering.
+
+What this does **not** do — and the honest gap to the open constant — is supply
+*consecutiveness*.  The chain `0/1, 1/2, 1/3, …, 1/n` is similarly ordered but
+its members are **not** adjacent in `F_n` (e.g. `1/2, 1/3` are separated in
+`F_5`).  Turning a similarly ordered mediant chain into a similarly ordered run
+of *consecutive* Farey fractions is precisely where the `1/12`–`1/4` optimization
+lives.  The predicate `SimOrd` below matches `similarlyOrdered` of
+`Erdos1005ProblemProvable.lean` verbatim, so these lemmas plug directly into the
+run definition there.
+-/
+
+/-- **Similar ordering** of `a/b` and `c/d`, as a predicate on the raw integer
+data: the numerator and denominator differences have the same (weak) sign.  This
+is definitionally the `similarlyOrdered` relation of
+`Erdos1005ProblemProvable.lean`. -/
+def SimOrd (a b c d : ℕ) : Prop :=
+  ((a : ℤ) - c ≥ 0 ∧ (b : ℤ) - d ≥ 0) ∨ ((a : ℤ) - c ≤ 0 ∧ (b : ℤ) - d ≤ 0)
+
+/-- Similar ordering is symmetric (swap the two fractions). -/
+theorem simOrd_symm {a b c d : ℕ} (h : SimOrd a b c d) : SimOrd c d a b := by
+  rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact Or.inr ⟨by linarith, by linarith⟩
+  · exact Or.inl ⟨by linarith, by linarith⟩
+
+/-- Similar ordering is reflexive. -/
+theorem simOrd_refl (a b : ℕ) : SimOrd a b a b := Or.inl ⟨by simp, by simp⟩
+
+/-- **Product characterization.**  `SimOrd` holds iff the product of the two
+differences is nonnegative, `(a − c)·(b − d) ≥ 0`.  This is the form most
+convenient for arithmetic and shows `SimOrd` is exactly "same sign". -/
+theorem simOrd_iff_prod {a b c d : ℕ} :
+    SimOrd a b c d ↔ ((a : ℤ) - c) * ((b : ℤ) - d) ≥ 0 := by
+  constructor
+  · rintro (⟨h1, h2⟩ | ⟨h1, h2⟩)
+    · exact mul_nonneg h1 h2
+    · nlinarith [h1, h2]
+  · intro h
+    rcases le_or_gt 0 ((a : ℤ) - c) with ha | ha
+    · rcases le_or_gt 0 ((b : ℤ) - d) with hb | hb
+      · exact Or.inl ⟨ha, hb⟩
+      · -- `(a-c) ≥ 0` and `(b-d) < 0` force `(a-c) = 0` (else product < 0)
+        have : (a : ℤ) - c ≤ 0 := by nlinarith
+        exact Or.inr ⟨this, by linarith⟩
+    · rcases le_or_gt 0 ((b : ℤ) - d) with hb | hb
+      · have : (b : ℤ) - d ≤ 0 := by nlinarith
+        exact Or.inr ⟨by linarith, this⟩
+      · exact Or.inr ⟨by linarith, by linarith⟩
+
+/-- **The mediant is similarly ordered with its left parent.**  Going from `a/b`
+to its mediant `(a+c)/(b+d)` increases both numerator (by `c`) and denominator
+(by `d`), so the two are similarly ordered. -/
+theorem simOrd_mediant_left (a b c d : ℕ) : SimOrd (a + c) (b + d) a b :=
+  Or.inl ⟨by push_cast; linarith, by push_cast; linarith⟩
+
+/-- **The mediant is similarly ordered with its right parent.**  Going from the
+mediant `(a+c)/(b+d)` to `c/d` decreases both numerator (by `a`) and denominator
+(by `b`), so the two are similarly ordered. -/
+theorem simOrd_mediant_right (a b c d : ℕ) : SimOrd (a + c) (b + d) c d :=
+  Or.inl ⟨by push_cast; linarith, by push_cast; linarith⟩
+
+/-- **The one-sided (left) mediant chain is pairwise similarly ordered.**  Along
+the § 6 left chain `eₖ = (k·a + c)/(k·b + d)`, deeper terms have larger numerator
+*and* larger denominator (both grow linearly in the depth `k`), so any two terms
+`eₖ` (`j ≤ k`) are similarly ordered.  Hence the **whole chain is a similarly
+ordered family** — the order-side counterpart of the metric depth bounds of § 6,
+and the engine of the linear lower bound on `f(n)`. -/
+theorem simOrd_iterate_left_chain (a b c d j k : ℕ) (hjk : j ≤ k) :
+    SimOrd (k * a + c) (k * b + d) (j * a + c) (j * b + d) := by
+  have hk : (j : ℤ) ≤ k := by exact_mod_cast hjk
+  refine Or.inl ⟨?_, ?_⟩
+  · have : ((k : ℤ) - j) * a ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+  · have : ((k : ℤ) - j) * b ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+
+/-- **The one-sided (right) mediant chain is pairwise similarly ordered.**
+Symmetric to `simOrd_iterate_left_chain` for the § 6 right chain
+`eₖ = (a + k·c)/(b + k·d)`. -/
+theorem simOrd_iterate_right_chain (a b c d j k : ℕ) (hjk : j ≤ k) :
+    SimOrd (a + k * c) (b + k * d) (a + j * c) (b + j * d) := by
+  have hk : (j : ℤ) ≤ k := by exact_mod_cast hjk
+  refine Or.inl ⟨?_, ?_⟩
+  · have : ((k : ℤ) - j) * c ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+  · have : ((k : ℤ) - j) * d ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+
+/-- **Similarly ordered chain under the order cap.**  Combining the order-side
+fact (`simOrd_iterate_left_chain`) with the metric admissibility from § 6: every
+term `eⱼ = (j·a + c)/(j·b + d)` of the left chain with depth `j ≤ k` has
+denominator `≤ k·b + d`, and all such terms are pairwise similarly ordered.  So
+if `k·b + d ≤ n`, the chain supplies `k + 1` pairwise similarly ordered fractions
+all of order `≤ n`.  Since `k` can be taken `≈ (n − d)/b = Θ(n)`, mediant descent
+produces *linearly long* similarly ordered families under the order-`n` cap.
+(That these are not yet *consecutive* in `F_n` is the remaining open step — see
+the section preamble.) -/
+theorem simOrd_chain_admissible (a b c d k n : ℕ) (hcap : k * b + d ≤ n)
+    {i j : ℕ} (hij : i ≤ j) (hjk : j ≤ k) :
+    SimOrd (j * a + c) (j * b + d) (i * a + c) (i * b + d) ∧ j * b + d ≤ n := by
+  refine ⟨simOrd_iterate_left_chain a b c d i j hij, ?_⟩
+  have : j * b ≤ k * b := Nat.mul_le_mul_right b hjk
+  omega
+
 end Erdos1005OQ02

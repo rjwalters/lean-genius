@@ -5,12 +5,12 @@
   "title": "Mediant Insertion and the Farey Gap Calculus: The Mediant Is the Unique Smallest-Denominator Fraction in a Gap",
   "description": "A self-contained, axiom-free formalization of the exact arithmetic of mediant insertion — the operation that refines the Farey sequence F_n into F_{n+1} by inserting, between adjacent fractions a/b < c/d, their mediant (a+c)/(b+d). Two threads are proved. First, the gap-splitting calculus: a unimodular gap of size 1/(bd) is split by its mediant into a left sub-gap 1/(b(b+d)) and a right sub-gap 1/(d(b+d)); these sum back to 1/(bd), stand in ratio d:b, and each is strictly smaller than the whole. Second, the headline minimal-denominator theorem: any fraction p/q strictly between two unimodular neighbours has denominator q ≥ b+d, and equality forces p/q = (a+c)/(b+d) exactly. Hence the mediant is the unique fraction of smallest denominator inside any Farey gap, and b+d is a hard lower bound on refining it — no construction can introduce a fraction of smaller denominator. The parent entry (Erdős #1005) records the open lower bound f(n) ≥ (1/12−o(1))n on runs of similarly ordered Farey fractions; that constant remains open and is NOT addressed here. This entry formalizes the verified mediant calculus on which such lower-bound constructions are built.",
   "leanFile": {
-    "lineCount": 517,
+    "lineCount": 638,
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ02.lean",
     "sorries": 0,
-    "definitionCount": 1,
-    "theoremCount": 31
+    "definitionCount": 2,
+    "theoremCount": 39
   },
   "meta": {
     "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot mediant theory)",
@@ -41,11 +41,15 @@
       "denom_identity: the algebraic kernel over ℤ — q = b·(cq − pd) + d·(pb − aq), an unconditional identity once bc − ad = 1, verified by linear_combination",
       "mediant_is_min_denominator: a packaged statement — the mediant lies strictly inside the gap and every in-gap fraction has denominator ≥ b + d",
       "unimodular_iterate_left / unimodular_iterate_right: iterating one-sided insertion k times stays unimodular — a/b < c/d becomes a/b < (k·a+c)/(k·b+d) (and symmetrically on the right), with no induction needed since b·c = a·d+1 is invariant under c ↦ k·a+c, d ↦ k·b+d",
-      "denom_ge_iterate_left / denom_ge_iterate_right: the depth-k denominator bound — every fraction inside the k-fold one-sided sub-gap has q ≥ (k+1)·b+d (resp. b+(k+1)·d), LINEAR in the depth k. This corrects a tempting false heuristic: the order-n cap does NOT force O(log n) refinement depth; the one-sided chain 0/1, 1/2, 1/3, …, 1/n already fits Θ(n) levels. Exponential φ^k growth (hence O(log n) depth) is special to balanced/alternating chains, the opposite extreme from this linear worst case"
+      "denom_ge_iterate_left / denom_ge_iterate_right: the depth-k denominator bound — every fraction inside the k-fold one-sided sub-gap has q ≥ (k+1)·b+d (resp. b+(k+1)·d), LINEAR in the depth k. This corrects a tempting false heuristic: the order-n cap does NOT force O(log n) refinement depth; the one-sided chain 0/1, 1/2, 1/3, …, 1/n already fits Θ(n) levels. Exponential φ^k growth (hence O(log n) depth) is special to balanced/alternating chains, the opposite extreme from this linear worst case",
+      "§8 SimOrd + simOrd_iff_prod: the first bridge in the file from the metric mediant calculus to the ORDERING relation that defines f(n). SimOrd a b c d is the raw-integer form of the parent's similarlyOrdered (numerator and denominator differences have the same weak sign), proved equivalent to the product form (a−c)(b−d) ≥ 0",
+      "simOrd_mediant_left / simOrd_mediant_right: the mediant (a+c)/(b+d) is similarly ordered with BOTH parents a/b and c/d — inserting a mediant never breaks similar ordering (numerator and denominator move together by +c,+d on the left and −a,−b on the right)",
+      "simOrd_iterate_left_chain / simOrd_iterate_right_chain: the entire one-sided §6 mediant chain eₖ = (k·a+c)/(k·b+d) is PAIRWISE similarly ordered (deeper terms have larger numerator and larger denominator), so the Θ(n)-long one-sided chain is a similarly ordered family — the order-side engine behind the linear lower bound on f(n). The honest gap to the open constant: chain members are not yet CONSECUTIVE in F_n (e.g. 1/2, 1/3 are separated in F_5); supplying consecutiveness is where the 1/12–1/4 optimization lives",
+      "simOrd_chain_admissible: combines the order-side and metric sides — under the cap k·b+d ≤ n the depth-≤k left-chain terms are pairwise similarly ordered AND all of order ≤ n, so mediant descent yields linearly long similarly ordered families admissible at order n"
     ],
-    "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for the headline theorems (denom_ge_of_between, eq_mediant_of_denom_eq, mediant_is_min_denominator). No native_decide is used (so no Lean.ofReduceBool). This entry does NOT resolve the open Erdős #1005 lower bound f(n) ≥ (1/12 − o(1))n on runs of similarly ordered Farey fractions; that constant remains open.",
-    "theoremCount": 24,
-    "definitionCount": 1
+    "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for the headline theorems (denom_ge_of_between, eq_mediant_of_denom_eq, mediant_is_min_denominator). No native_decide is used (so no Lean.ofReduceBool). This entry does NOT resolve the open Erdős #1005 lower bound f(n) ≥ (1/12 − o(1))n on runs of similarly ordered Farey fractions; that constant remains open. §8 connects the calculus to the similarlyOrdered relation but explicitly does NOT supply consecutiveness in F_n, which is the open step.",
+    "theoremCount": 38,
+    "definitionCount": 2
   },
   "overview": {
     "historicalContext": "The Farey sequence F_n — the reduced fractions in [0,1] with denominator ≤ n, in increasing order — is built recursively by mediant insertion: F_{n+1} is obtained from F_n by inserting between each adjacent pair a/b < c/d their mediant (a+c)/(b+d), which appears precisely when b+d = n+1. The mediant and the unimodular relation bc − ad = 1 organize the entire Stern–Brocot tree. Erdős Problem #1005 asks for the longest run of consecutive 'similarly ordered' Farey fractions, with known bounds (1/12 − o(1))n ≤ f(n) ≤ n/4 + O(1) and the leading constant open. Every lower-bound construction proceeds by tracking how mediant insertion subdivides gaps; this entry makes that subdivision exact and proves the optimality of the mediant.",
@@ -60,12 +64,13 @@
     ]
   },
   "conclusion": {
-    "summary": "A self-contained, 0-axiom, 0-sorry formalization (389 lines, 24 theorems, 1 definition) of mediant insertion on Farey gaps. The mediant splits a unimodular gap 1/(bd) into 1/(b(b+d)) and 1/(d(b+d)) — summing back to the whole, in ratio d:b, each strictly smaller — and, as the headline result, is the unique fraction of smallest denominator b + d inside the gap: every strictly-in-between p/q has q ≥ b + d, with equality forcing p/q = (a+c)/(b+d). A final section iterates one-sided insertion to arbitrary depth (unimodular_iterate_left/right, denom_ge_iterate_left/right), proving the depth-k interior denominator bound is LINEAR, (k+1)·b+d, which corrects a tempting false heuristic: the order-n cap admits Θ(n) one-sided refinement levels (e.g. 0/1, 1/2, …, 1/n), not O(log n) — exponential growth is special to balanced chains.",
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (638 lines, 39 theorems, 2 definitions) of mediant insertion on Farey gaps. The mediant splits a unimodular gap 1/(bd) into 1/(b(b+d)) and 1/(d(b+d)) — summing back to the whole, in ratio d:b, each strictly smaller — and, as the headline result, is the unique fraction of smallest denominator b + d inside the gap: every strictly-in-between p/q has q ≥ b + d, with equality forcing p/q = (a+c)/(b+d). §6–7 iterate insertion to arbitrary depth and prove a depth dichotomy: one-sided chains grow denominators linearly ((k+1)·b+d, Θ(n) admissible levels), balanced chains follow the Fibonacci recurrence and grow exponentially (O(log n) levels, certified by Cassini's identity). §8 finally bridges this metric calculus to the ORDERING relation defining f(n): the mediant is similarly ordered with both parents, and the entire one-sided chain is pairwise similarly ordered — the order-side engine of the linear lower bound — while honestly flagging that consecutiveness in F_n (the open 1/12–1/4 step) is not supplied.",
     "implications": "The minimal-denominator theorem (denom_ge_of_between together with eq_mediant_of_denom_eq) is the exact optimality statement behind Stern–Brocot/continued-fraction best approximation: the same q ≥ b + d bound governs convergent denominators and the 'no better approximation with smaller denominator' property. The gap-splitting identities are reusable infrastructure for any quantitative Farey argument, including the constructions that establish the known lower bound on runs in Erdős #1005.",
     "openQuestions": [
       "Erdős #1005 itself: can iterated mediant insertion plus a counting argument recover, or improve, the known lower bound (1/12 − o(1))n on the longest run of similarly ordered Farey fractions? The constant in [1/12, 1/4] is open and is not addressed by this entry.",
       "Best-approximation corollary: formalize that two consecutive continued-fraction convergents form a unimodular pair, so the minimal-denominator theorem yields the classical statement that no fraction with smaller denominator approximates better — connecting this entry to Diophantine approximation.",
-      "Refinement depth, balanced case: §6 settles the one-sided extreme (linear denominator growth, Θ(n) admissible levels). The complementary balanced/alternating extreme — where denominators follow the Fibonacci recurrence and grow like φ^k, giving O(log n) depth — remains to be formalized (track the alternating mediant chain against Nat.fib). The gap between these two extremes is exactly what a sharp run-length count toward the 1/12 constant must navigate."
+      "Refinement depth, balanced case: §6 settles the one-sided extreme (linear denominator growth, Θ(n) admissible levels) and §7 the balanced extreme (Fibonacci/φ^k growth, O(log n) depth, Cassini-certified). The gap between these two extremes is exactly what a sharp run-length count toward the 1/12 constant must navigate.",
+      "Consecutiveness, the open step (§8): §8 shows mediant chains are similarly ordered families of size Θ(n) under the order cap, but their members are not adjacent in F_n. The missing bridge is to turn a similarly ordered mediant chain into a run of CONSECUTIVE Farey fractions (or to bound how similar ordering can persist across consecutive fractions). Formalizing the three-term Farey recurrence b_{k+1} = ⌊(n+b_{k−1})/b_k⌋·b_k − b_{k−1} and analysing when (a_{k+1}−a_k)(b_{k+1}−b_k) ≥ 0 over a consecutive block is the concrete next target toward van Doorn's (1/12−o(1))n lower bound."
     ]
   },
   "sections": [
@@ -122,8 +127,15 @@
       "id": "balanced-insertion",
       "title": "§7 Balanced (alternating) insertion — exponential denominator growth",
       "startLine": 390,
-      "endLine": 517,
+      "endLine": 515,
       "summary": "Establishes the OTHER extreme of the §6 dichotomy: the balanced Stern–Brocot path (alternating left/right) grows denominators EXPONENTIALLY, not linearly. fib_cassini proves Cassini's identity F_{n+1}² − F_n·F_{n+2} = (−1)ⁿ over ℤ by one-step induction. unimodular_fib_even reads it at even index to certify the consecutive Fibonacci fractions F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2} as genuine unimodular (adjacent Farey) pairs, so the minimal-denominator machinery of §4 applies. fib_two_step_double: 2·F_k ≤ F_{k+2} (two levels at least double the denominator). fib_pow_lower: 2ʲ ≤ F_{2j+1} (exponential lower bound). balanced_mediant_denom: the balanced mediant has denominator F_{2k+1}+F_{2k+2} = F_{2k+3}, the Fibonacci recurrence. denom_ge_balanced specialises denom_ge_of_between to the Fibonacci pair. balanced_depth_log: if F_{2j+1} ≤ n then 2ʲ ≤ n, so only O(log n) balanced levels fit under the order cap — an EXPONENTIAL separation from the Θ(n) one-sided levels of §6. Any run-length count toward the 1/12 constant must distinguish the two descent regimes."
+    },
+    {
+      "id": "similar-ordering-bridge",
+      "title": "§8 Mediant chains are similarly ordered — the bridge to f(n)",
+      "startLine": 517,
+      "endLine": 638,
+      "summary": "The first link in the file between the metric mediant calculus (§1–7) and the ORDERING relation that defines f(n). SimOrd a b c d is the raw-integer form of the parent's similarlyOrdered (numerator and denominator differences share a weak sign); simOrd_iff_prod proves it equivalent to (a−c)(b−d) ≥ 0, with simOrd_symm/simOrd_refl. simOrd_mediant_left/_right: the mediant is similarly ordered with BOTH parents — insertion never breaks similar ordering. simOrd_iterate_left_chain/_right_chain (headline): the entire one-sided §6 chain eₖ = (k·a+c)/(k·b+d) is PAIRWISE similarly ordered, so the Θ(n)-long one-sided chain is a similarly ordered family — the order-side engine of the linear lower bound on f(n). simOrd_chain_admissible packages this with the §6 cap: under k·b+d ≤ n the depth-≤k terms are pairwise similarly ordered and all of order ≤ n. Honest boundary: chain members are NOT yet consecutive in F_n (e.g. 1/2, 1/3 separated in F_5); supplying consecutiveness is exactly where the open 1/12–1/4 optimization lives."
     }
   ],
   "crossReferences": [
@@ -136,6 +148,11 @@
       "targetId": "erdos-1005-oq-03",
       "relationship": "complements",
       "description": "The sibling adjacency entry proves a unimodular pair is F_n-adjacent iff b + d > n, using q ≥ b + d for in-between fractions. This entry sharpens the same bound into an optimality-and-uniqueness statement (the mediant is THE minimal-denominator fraction) and adds the quantitative gap-splitting calculus (sub-gap sizes 1/(b(b+d)), 1/(d(b+d)), ratio d:b, strict refinement)."
+    },
+    {
+      "targetId": "erdos-1005",
+      "relationship": "extends",
+      "description": "§8 connects directly to the parent's similarlyOrdered relation and isSimOrdered/mayerErdosF run definitions (Erdos1005ProblemProvable.lean): the file's SimOrd predicate matches similarlyOrdered verbatim, and the mediant-chain similar-ordering lemmas supply the order-side combinatorics underlying the (1/12−o(1))n lower bound, modulo the open consecutiveness step."
     }
   ],
   "mainTheorems": [
