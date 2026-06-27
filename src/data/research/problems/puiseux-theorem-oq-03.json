@@ -1,7 +1,7 @@
 {
   "slug": "puiseux-theorem-oq-03",
   "title": "Can the Newton-Puiseux algorithm be made efficient enough for computational a...",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "fast",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-05-12T13:53:16-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Shipped combinatorial Newton polygon (S2-A): IsLowerVertex predicate + structure lemmas + Y^2-x example, verified 0-sorry 0-axiom.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "S2-A harder half: Newton polygon theorem (edge slopes = root valuations) once a valuation API on K((x))[Y] exists; then S2-B termination measure.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "Delivered the first Lean file Proofs/PuiseuxTheoremOQ03.lean (145 lines, 7 theorems, 3 defs, verified, 0 sorries, 0 axioms): a combinatorial Newton polygon via the supporting-line lower-vertex predicate IsLowerVertex, with the seed lemma (min-valuation point is a vertex), an existence lemma (List.argmin), and the worked Y^2-x example tying edge slope -1/2 to the parent leadingExponentFromSlope 1 2. Also fixed a parse error in the parent PuiseuxTheorem.lean (dangling /-- doc comment). PR #30757.",
+    "builtItems": [
+      "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
+      "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
+      "exists_lowerVertex: every nonempty support set has a lower vertex (via List.argmin)",
+      "edgeSlope + worked Y^2-x example: both support points are vertices, edge slope -1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
+      "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)"
+    ],
+    "insights": [
+      "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
+      "List.argmin + argmin_mem/le_of_mem_argmin gives vertex existence for nonempty support lists in a few lines.",
+      "Model support points as Prod (N x Q), not a custom structure: fin_cases + norm_num then dispatch example goals cleanly."
+    ],
+    "mathlibGaps": [
+      "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
+      "No valuation API on K((x))[Y] to state/prove the Newton polygon theorem (edge slopes = root valuations).",
+      "No arithmetic-complexity model (Bürgisser-Clausen-Shokrollahi style) to state the Poteaux-Weimann Õ(d·δ) bound."
+    ],
+    "nextSteps": [
+      "Prove the Newton polygon theorem: negatives of lower-hull edge slopes = root valuations in an alg-closed valued extension.",
+      "S2-B: termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases).",
+      "S2-C (moonshot): state and bound arithmetic complexity once an arithmetic-cost model exists."
+    ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [
       {
