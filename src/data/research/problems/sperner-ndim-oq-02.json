@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-27T00:00:00.000Z",
-    "iteration": 7,
-    "focus": "Option C — step-0 bridge now VERIFIED (Session 6). Discovered the merged SpernerNDimOQ02.lean imported the broken SpernerGrid.lean (21 compile errors in the abandoned oriented GridSimplex machinery); extracted the clean BaryPoint API into Proofs/SpernerGridBary.lean and repointed the bridge at it. Both compile via lake env lean; baryEquivVertex/onFace_toVertex/isSperner_iff/toVertex_injective depend only on propext/Classical.choice/Quot.sound (0 sorry, 0 extra axiom). Next: Phase 1 must build its own unoriented cell type on SpernerGridBary.BaryPoint (cannot reuse the broken GridSimplex).",
+    "iteration": 8,
+    "focus": "Option C — step-0 bridge VERIFIED 0-axiom on the clean SpernerGridBase foundation (the shared BaryPoint extraction that landed on main via #30779). Session 7 (researcher-7): Phase-1 cell foundation landed + VERIFIED 0-axiom — SpernerGridCell.lean (own GridSimplex + chain lemmas verts_injective/incDir_surj_complement/miss_coord_ge + BaryPoint.transfer) and SpernerNDimOQ02Cell.lean (cellVertices bridge, onFace_cellVertices, CanonCell subtype + IsCanon/lexLe scaffold). 3/8 SpernerTriangulation fields in hand. Remaining: facet-sharing dual-graph adj + its 5 involution fields and IsCanon per-geometry uniqueness, then assemble freudenthal d N and apply sperner_ndim.",
     "blockers": [
       "SpernerGrid.lean does NOT compile (21 errors in the oriented GridSimplex/gridAdj block, lines ~600-1556, plus 4 sorries). It is the abandoned machinery whose boundary_doors_odd is false. Phase 1 cannot subtype SpernerGrid.GridSimplex; it must define its own cell type on the clean SpernerGridBary.BaryPoint. The end-goal of rerouting SpernerGrid.sperner_grid is gated on that file compiling — better to ship Option C as a standalone result.",
       "Docker build host still corrupt (containerd meta.db I/O errors; zombie containers). Standalone `lake env lean` fallback works for single files with cached/clean deps (used to verify the bridge this session)."

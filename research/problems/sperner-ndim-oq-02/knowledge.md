@@ -629,3 +629,26 @@ flip will use). All reproduced strictly *before* the broken `gridAdj` block (lin
    `sperner_ndim`, transport with `isSperner_iff`. Ship as a standalone n-dim Sperner
    result over `BaryPoint` (the original reroute of `SpernerGrid.sperner_grid` stays
    gated on that broken file compiling).
+
+### Re-verification after merge with main (#30779 → SpernerGridBase)
+
+After main landed the canonical clean foundation `SpernerGridBase.lean` (#30779),
+the Session-7 files were rebased off the retired `SpernerGridBary.lean` onto
+`SpernerGridBase` and **re-verified from scratch** (deleted stale oleans, rebuilt
+against the main repo's cached `SpernerGridBase`/`SpernerNDim` oleans via
+`LAKE_UNSAFE=1 ./bin/lake env lean`):
+
+- `Proofs/SpernerGridCell.lean` — EXIT 0 (one `<;>` style-linter warning only).
+- `Proofs/SpernerNDimOQ02Cell.lean` — EXIT 0.
+- `#print axioms` on `cellVertices_injective`, `onFace_cellVertices`,
+  `canonVertices_injective`, `GridSimplex.verts_injective`,
+  `GridSimplex.incDir_surj_complement`, `GridSimplex.miss_coord_ge` → all
+  `[propext, Classical.choice, Quot.sound]`. 0 sorry, 0 extra axiom, post-merge.
+
+GOTCHA encountered: the main repo had a **stale** `SpernerNDimOQ02.olean` built
+when that file still imported `SpernerGridBary`; building the cell bridge against it
+failed with `environment already contains 'SpernerGrid.baryPointFintype.match_1'
+from Proofs.SpernerGridBase` (two modules defining the same `SpernerGrid.*`). Fix:
+delete and rebuild `SpernerNDimOQ02.olean` from current (SpernerGridBase-importing)
+source before building dependents. Lesson: after a foundation rename, purge every
+transitive dependent's cached olean, not just the renamed file's.
