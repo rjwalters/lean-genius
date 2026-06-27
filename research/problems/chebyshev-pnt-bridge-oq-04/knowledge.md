@@ -39,3 +39,32 @@ via Abel partial summation on Chebyshev-type bounds. Parent: `chebyshev-pnt-brid
 2. Strip the prime-power tail: pass from Σ Λ(d)/d to Σ_{p≤N}(log p)/p (control Σ_{p,k≥2}(log p)/p^k).
 3. Feed M1 into `sum_mul_eq_sub_sub_integral_mul` for M2 (Mertens constant M, O(1/log x)).
 4. Discharge `MertensInputs` in Lean (Chebyshev ψ=O(N) + elementary Stirling) to upgrade the estimate to unconditional.
+
+## Session 2026-06-27 (researcher-2) — REVIEW + verified-hooks scout, no code change
+
+**Mode:** depth-first re-claim (knowledge.db read EMPTY but the OQ04 Lean file + gallery data
+already exist from Session 1). Reviewed the full `ChebyshevPNTBridgeOQ04.lean`: Steps A–C and the
+conditional Λ-weighted M1 (`lambdaRecip_sub_log_le`) are clean and complete.
+
+**Decision: DEFER the next step (prime-power strip), do not add code this session.** Both
+verification channels are DOWN (Docker host containerd `meta.db: input/output error`, `docker images`
+empty/cached image gone — operator restart needed, NOT ENOSPC; Aristotle MCP `404`). The strip and
+Abel-summation steps are substantial *analytic* proofs (convergence of the prime-power tail; an
+integral-form partial summation). Writing them blind, with no build feedback, would risk landing
+broken UNVERIFIED code on top of an already-verified file — net-negative. Honest no-op on code.
+
+**Verified Mathlib hooks for the strip (Step 2), to save the next agent the lookup**
+(`Mathlib/NumberTheory/ArithmeticFunction/VonMangoldt.lean`, notation `Λ`):
+- `vonMangoldt_apply` : `Λ n = if IsPrimePow n then log (minFac n) else 0`.
+- `vonMangoldt_apply_prime (hp : p.Prime)` : `Λ p = Real.log p`  ← turns prime terms into `log p`.
+- `vonMangoldt_apply_pow (hk : k ≠ 0)` : `Λ (n^k) = Λ n`.
+- `vonMangoldt_ne_zero_iff` : `Λ n ≠ 0 ↔ IsPrimePow n` ← Λ vanishes off prime powers (the "not a
+  prime power" filtered terms drop to 0 in any split).
+- `vonMangoldt_le_log` : `Λ n ≤ Real.log n` ← per-term majorant for tail bounds.
+
+**Concrete plan for Step 2 (prime-power strip), once a build is available:**
+Split `lambdaRecip N = Σ_{p≤N prime} (log p)/p + R(N)` via `Finset.sum_filter_add_sum_filter_not`
+on `Nat.Prime`, rewriting the prime block with `vonMangoldt_apply_prime` and noting `IsPrimePow ∧
+¬Prime ⇒ d=p^k, k≥2`. Then bound the tail `R(N) = Σ_{k≥2,p^k≤N} (log p)/p^k ≤ Σ_p (log p)/(p(p−1))`
+by the geometric series `Σ_{k≥2} p^{-k} = 1/(p(p−1))` (per-prime), giving the `O(1)` of M1. The
+geometric-tail step (`tsum`/`Finset` geometric bound) is the only genuinely new analytic content.
