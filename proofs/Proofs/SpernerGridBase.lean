@@ -457,4 +457,75 @@ theorem GridSimplex.last_coord_miss (s : GridSimplex d N) :
     (s.verts 0).coords s.miss - d := by
   simpa using s.miss_coord_at (Fin.last d)
 
+-- ============================================================
+-- SECTION VII: Full coordinate formula & reconstruction
+-- ============================================================
+-- `last_coord_non_miss`/`last_coord_miss` above only pin the LAST
+-- vertex. Here we give the general per-vertex formula for a
+-- non-miss coordinate at an ARBITRARY vertex, and then the
+-- reconstruction theorem: a `GridSimplex` is uniquely determined
+-- by the triple `(verts 0, miss, incDir)`. This is the arithmetic
+-- backbone making the Phase-1 canonical-representative predicate
+-- well-posed — per-geometry uniqueness reduces to it.
+
+/-- General formula for a non-miss coordinate at an arbitrary
+vertex `m`: coordinate `incDir k` equals its base value, plus one
+exactly when step `k` has already occurred (`k.val < m.val`).
+Specializes to `last_coord_non_miss` at `m = Fin.last d` (where
+`k.val < d` always holds). -/
+theorem GridSimplex.coord_incDir_at (s : GridSimplex d N)
+    (k : Fin d) (m : Fin (d + 1)) :
+    (s.verts m).coords (s.incDir k) =
+    (s.verts 0).coords (s.incDir k) + (if k.val < m.val then 1 else 0) := by
+  by_cases h : k.val < m.val
+  · -- m ≥ k.succ: value = value at k.succ = value at k.castSucc + 1 = base + 1.
+    simp only [h, if_true]
+    have hge : k.succ ≤ m := by
+      rw [Fin.le_def, Fin.val_succ]; omega
+    have hafter := s.incDir_const_after k m hge
+    have hbefore := s.incDir_const_before k k.castSucc le_rfl
+    rw [hafter, s.step_inc k, hbefore]
+  · -- m ≤ k.castSucc: coordinate not yet incremented, value = base.
+    simp only [h, if_false, Nat.add_zero]
+    have hle : m ≤ k.castSucc := by
+      rw [Fin.le_def, Fin.coe_castSucc]; omega
+    exact s.incDir_const_before k m hle
+
+/-- **Reconstruction theorem.** A `GridSimplex` is uniquely
+determined by its base vertex `verts 0`, its `miss` direction, and
+its increment-direction function `incDir`: every coordinate of
+every vertex is fixed by these three (miss coordinate via
+`miss_coord_at`, every other coordinate via `coord_incDir_at`).
+This is what makes the Phase-1 canonical-representative predicate
+well-posed — distinct canonical encodings of the same geometric
+cell are ruled out by reducing to equality of `(verts 0, miss,
+incDir)`. -/
+theorem GridSimplex.eq_of_base_miss_incDir (s t : GridSimplex d N)
+    (hbase : s.verts 0 = t.verts 0)
+    (hmiss : s.miss = t.miss)
+    (hinc : s.incDir = t.incDir) :
+    s = t := by
+  have hverts : s.verts = t.verts := by
+    funext m
+    apply BaryPoint.ext
+    funext j
+    by_cases hj : j = s.miss
+    · -- miss coordinate: determined by `miss_coord_at` + base + miss.
+      subst hj
+      rw [s.miss_coord_at m, hmiss, t.miss_coord_at m, hbase]
+    · -- non-miss coordinate: pick the unique step `k` with `incDir k = j`
+      -- and apply the general formula on both sides.
+      obtain ⟨k, hk⟩ := s.incDir_surj_complement j hj
+      have hL : (s.verts m).coords j
+          = (s.verts 0).coords j + (if k.val < m.val then 1 else 0) := by
+        rw [← hk]; exact s.coord_incDir_at k m
+      have htk : t.incDir k = j := by rw [← hinc]; exact hk
+      have hR : (t.verts m).coords j
+          = (t.verts 0).coords j + (if k.val < m.val then 1 else 0) := by
+        rw [← htk]; exact t.coord_incDir_at k m
+      rw [hL, hR, hbase]
+  cases s; cases t
+  simp only at hverts hmiss hinc
+  subst hverts; subst hmiss; subst hinc; rfl
+
 end SpernerGrid
