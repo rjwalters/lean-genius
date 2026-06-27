@@ -35,13 +35,16 @@
       "maxGenEigenspace_eq_bot_of_not_hasEigenvalue",
       "aeval_linear_factor_pow"
     ],
-    "insights": [],
+    "insights": [
+      "maxGenEigenspaceIndex = monotonicSequenceLimitIndex = sInf{n | chain constant from n}; strictness below it follows from Module.End.ker_pow_constant + Nat.sInf_le. Proven as genEigenspace_lt_succ_of_lt_maxGenEigenspaceIndex (PR #30664).",
+      "Exact nilpotency witness: exists_mem_maxGenEigenspace_pow_pred_ne_zero gives v in maxGenEigenspace with (f-μ)^{e-1} v ≠ 0."
+    ],
     "mathlibGaps": [
       "Explicit Jordan block matrix decomposition with labeled basis indexing (not in Mathlib 4.26.0); needed only for the exactness/reverse direction, not the forward divisibility."
     ],
     "nextSteps": [
-      "Re-run Docker build once host disk pressure relieved to confirm verified status",
-      "Attempt reverse divisibility ∏ ∣ minpoly (needs strictness of genEigenspace chain at maxGenEigenspaceIndex = maxGenEigenspaceIndex_exact)"
+      "Assemble reverse divisibility ∏ (X-μ)^{e_μ} ∣ minpoly from the new exactness lemma: needs primary decomposition V = ⨁ maxGenEigenspace and coprime-factor invertibility on each summand",
+      "Combine forward + reverse to discharge the parent minpoly_product_formula axiom"
     ],
     "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -486,5 +489,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ07OQ01.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-27T00:00:00.000Z"
 }
