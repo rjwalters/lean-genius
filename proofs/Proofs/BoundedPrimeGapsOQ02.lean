@@ -62,6 +62,11 @@ work documented in the sibling `BoundedPrimeGapsOQ04`.
       the level decomposition that licenses dyadic decomposition of the modulus range
 - [x] Subdivided ascent `EHAtLevel_discrepancySum_up_split`: raising the level only needs
       EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure
+- [x] Finite-chain ascent `EHAtLevel_discrepancySum_up_chain` (and its genuine specialization
+      `EHAtLevel_vonMangoldt_up_chain`): iterating the single-band ascent along an arbitrary
+      monotone level chain `L 0 ≤ L 1 ≤ ⋯`, EH at the base plus an EH-type bound on every
+      consecutive band lifts EH to every level `L n` — the arbitrarily-many-blocks form of
+      dyadic decomposition of the modulus range (the `n = 2` case is the split lemma above)
 - [x] Genuine von-Mangoldt instantiation: the concrete weight
       `vonMangoldtWeight q x = max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)|` (built from Mathlib's
       `ArithmeticFunction.vonMangoldt` and `Nat.totient`) is *proved* nonnegative, so the
@@ -417,6 +422,37 @@ theorem EHAtLevel_discrepancySum_up_split (f : ℕ → ℝ → ℝ) {θ₁ θ₂
         linarith [hb₁ x hx, hb₂ x hx]
     _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
 
+/-! ## Finite dyadic chain: ascent over arbitrarily many sub-bands
+
+`EHAtLevel_discrepancySum_up_split` raises the level of distribution across *two*
+consecutive sub-bands.  But the genuine analytic dyadic decomposition splits the modulus
+range `q ≤ x^θ` into `≍ log x` dyadic blocks, not two — so the two-band statement is only
+the first nontrivial instance of the real strategy.  Here we iterate the single-band ascent
+along an arbitrary finite increasing chain of levels `L 0 ≤ L 1 ≤ ⋯ ≤ L n`: an EH bound at
+the base level together with an EH-type bound on every consecutive band raises the level of
+distribution all the way to the top `L n`.  This is the full-strength formal statement that
+Elliott–Halberstam may be attacked by dyadic decomposition of the modulus range into any
+number of blocks. -/
+
+/-- **Finite-chain ascent.**  For a monotone level sequence `L : ℕ → ℝ`, if the canonical
+discrepancy sum satisfies the Elliott–Halberstam bound at the base level `L 0` and each
+consecutive band `L k → L (k+1)` independently satisfies an EH-type bound, then EH holds at
+*every* level `L n` of the chain.  The proof iterates `EHAtLevel_discrepancySum_up` along the
+chain; `n = 1` is exactly the single-band ascent and the `n = 2` case recovers
+`EHAtLevel_discrepancySum_up_split`.  This is the arbitrarily-many-blocks form of dyadic
+decomposition. -/
+theorem EHAtLevel_discrepancySum_up_chain (f : ℕ → ℝ → ℝ) {L : ℕ → ℝ}
+    (hmono : Monotone L)
+    (hlow : EHAtLevel (discrepancySum f) (L 0))
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f (L k) (L (k + 1)) x ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel (discrepancySum f) (L n) := by
+  intro n
+  induction n with
+  | zero => exact hlow
+  | succ k ih =>
+      exact EHAtLevel_discrepancySum_up f (hmono (Nat.le_succ k)) ih (hband k)
+
 /-! ## Grounding the hierarchy in the genuine von-Mangoldt discrepancy
 
 Everything above treats the per-modulus weight `f` abstractly, requiring only
@@ -532,5 +568,18 @@ theorem EHAtLevel_vonMangoldt_up_split {θ₁ θ₂ θ₃ : ℝ} (h₁₂ : θ�
         discrepancyBand vonMangoldtWeight θ₂ θ₃ x ≤ C * x / (Real.log x) ^ A) :
     EHAtLevel vonMangoldtDiscrepancySum θ₃ :=
   EHAtLevel_discrepancySum_up_split vonMangoldtWeight h₁₂ h₂₃ hlow hband₁ hband₂
+
+/-- **Finite dyadic chain for the genuine sum.**  To raise the genuine level of
+distribution from the base of a monotone level chain `L` all the way to any level `L n`, it
+suffices to bound the real worst-case von-Mangoldt discrepancy on each consecutive sub-band
+`L k → L (k+1)`.  This is `EHAtLevel_discrepancySum_up_chain` specialized to the actual
+Elliott–Halberstam weight — the arbitrarily-many-blocks dyadic attack on the genuine
+object, of which `EHAtLevel_vonMangoldt_up_split` is the two-block case. -/
+theorem EHAtLevel_vonMangoldt_up_chain {L : ℕ → ℝ} (hmono : Monotone L)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum (L 0))
+    (hband : ∀ k : ℕ, ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight (L k) (L (k + 1)) x ≤ C * x / (Real.log x) ^ A) :
+    ∀ n : ℕ, EHAtLevel vonMangoldtDiscrepancySum (L n) :=
+  EHAtLevel_discrepancySum_up_chain vonMangoldtWeight hmono hlow hband
 
 end BoundedPrimeGapsOQ02
