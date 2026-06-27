@@ -200,3 +200,45 @@ density floor — at minimum confirm every referenced lemma actually exists in t
 ### Status now
 `proofs/Proofs/CollatzStructuredOQ02OQ03.lean`: 1052 lines, **39 theorems**, 5 defs,
 1 deep axiom (`tao_2019`), 0 sorries. COMPILES. meta.json counts corrected 35→39, 938→1052.
+
+## Session 2026-06-27 (researcher-1, cycle 2) — ORIENT: status sync + Terras de-risk (build unavailable)
+
+**Mode**: ORIENT / metadata-sync (RICH tier). **No build capability this session** — Docker
+down, no real `lake`/`elan` on host (only homebrew `lake` 4.31 vs pinned 4.26), no Mathlib
+oleans cached, so `LAKE_UNSAFE=1 ./bin/lake env lean` (used by the prior session) was *not*
+available. Did not author new Lean: a session that cannot build must not claim a new floor
+(the lesson from the #30735 broken-commit episode), and the documented mod-256 step is
+diminishing returns. No fabricated increment.
+
+### Accurate status confirmed (from source, no build)
+`proofs/Proofs/CollatzStructuredOQ02OQ03.lean`: 1051 lines, 39 theorems, 5 defs, **1 deep
+axiom** (`tao_2019`, line 1047), **0 sorries**. The 115/128 axiom-free density floor (merged
+#30768) is intact: `mod_onetwentyeight_{seven,fifteen,fiftynine}_attainsBelow` (lines 281/312/344)
+and the 8-way packaging (line 408) are all present and referenced consistently. Gallery
+`meta.json` is correct (`axiomatized`, 1052/39/1/0).
+
+### Metadata correction (this session's only file change)
+The research-tracking JSON `src/data/research/problems/collatz-structured-oq-02-oq-03.json`
+had a **grossly stale** `leanFiles` entry for this file: `lineCount 146, theoremCount 7`
+(a pre-#30735 snapshot, when the file was 146 lines). Synced to the audited gallery-meta
+values `1052 / 39` (axiomCount 1, defCount 5, sorryCount 0 unchanged). The other four
+collatz files in that JSON are accurate (off-by-one is the trailing-newline convention).
+
+### Concrete de-risk for the genuine next direction (Terras leading-coefficient law)
+The prior session correctly flags **Terras/Korec finite-stopping-time**, not mod-256, as the
+real path toward Tao's density-1 bound. To make `affine_residue_attainsBelow` a *uniform*
+engine (instead of one hand-computed lemma per residue), the missing ingredient is:
+
+> For an odd `n` whose first `b` Collatz steps realise a fixed parity vector `v ∈ {odd,even}^b`
+> with exactly `a` odd-steps, one has `collatz^[b] n = (3^a · n + C_v) / 2^b`, an **affine map
+> with leading coefficient `3^a / 2^b`**, where `C_v` is a constant determined by `v` alone
+> (independent of `n` within the residue class `mod 2^b` that forces `v`). The step **drops
+> below** (`collatz^[b] n < n`) exactly when `3^a < 2^b` (e.g. the 115/128 lemmas all use
+> `3^4 = 81 < 128 = 2^7`).
+
+So the formalization plan is: (1) a `paritySteps n b : Fin b → Bool` extractor; (2) the affine
+recurrence `c_{i+1}, d_{i+1}` from `(c_i, d_i)` per step (odd: `c·3, d·3+2^i`; even: same `c`,
+`d`, halve); (3) the closed form `collatz^[b] n = c·n + d` once parity is fixed; (4) `c = 3^a/2^b`.
+This turns every `mod 2^b` drop lemma into a corollary of one inductive theorem and is the
+right lever before re-attacking the natural-density stopping-time statement. (Design note only;
+**unverified** — no Lean authored.)
