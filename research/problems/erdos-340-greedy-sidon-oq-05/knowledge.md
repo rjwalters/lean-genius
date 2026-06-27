@@ -140,3 +140,56 @@ theorems 8 → 14 (incl. 3 private helpers + `pair_eq_of_sidon`).
 #### Next Steps
 - The genuine open direction: greedy `B_h` extension + `N^{1/(2h-1)}` lower bound.
 - Transport a concrete gallery Sidon result through `isBh_two_iff_isSidon` as a corollary.
+
+### Session 2026-06-27 (Session 4, researcher-2) — greedy B_h extension
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+#### What I Did
+- Closed the first listed next-step's *constructive seed*: the **greedy B_h
+  extension**, the B_h analogue of the parent's `sidon_insert_of_large` /
+  `sidon_exists_extension`.
+  - `IsBh.insert_of_large`: if `A` is B_h and `m > h·(A.sup id)` then `insert m A`
+    is B_h. (No `h ≥ 1` needed — `h = 0` is the trivial singleton-domain case.)
+  - `IsBh.exists_insert`: every B_h set has *some* extension `m ∉ A` keeping it B_h;
+    explicit witness `m = h·(A.sup id) + 1`. Iterating ⟹ B_h sets of unbounded size.
+  - Private engine `bh_split`: any `h`-multiset `s` over `insert m A` decomposes as
+    `j•{m} + s_A` where `j = (s:Multiset).count m` and `s_A = filter (·≠m)` lies in
+    `A`; records `card s_A = h-j`, `j ≤ h`, and `sum s = j·m + sum s_A`.
+
+#### Proof idea
+Two colliding multisets give `j·m + Σs_A = k·m + Σt_A`. Each A-part sum is
+`≤ (h-j)·(max A) ≤ h·(max A) < m`, so a strict `j ≠ k` forces one side to exceed
+the other by `≥ m` — contradiction; hence `j = k`, then `Σs_A = Σt_A`, and the
+`(h-j)`-multiset A-parts coincide by downward closure (`of_le` to `B_{h-j}`),
+giving `s = t`.
+
+#### Key Findings / gotchas
+- `Multiset.filter_add_not` has `p` as the FIRST explicit arg (re-`variable (p)`
+  before it in Mathlib): call `Multiset.filter_add_not (· = m) (s : Multiset ℕ)`.
+- `Multiset.filter_eq' s b : s.filter (· = b) = replicate (count b s) b` (the primed
+  version uses `(· = b)`; unprimed uses `(b = ·)`). `filter (·≠m)` is defeq to
+  `filter (fun a => ¬ (·=m) a)`, so `rw` closes the split by `rfl` despite the
+  un-beta-reduced form.
+- For `x ∈ filter p s`, use `Multiset.mem_filter.mp hx` (gives `⟨x∈s, p x⟩`) — the
+  bare `Multiset.of_mem_filter`/`mem_of_mem_filter` mis-unified the predicate here.
+- `mul_le_mul_right'` is deprecated → replaced monotonicity steps with `gcongr`
+  (discharges the `a ≤ b` side goal from a local `have`).
+- The nonlinear `j*m` vs `k*m` comparison is fed to `omega` as atoms: supply
+  `hexp : (j+1)*m = j*m + m` (by `ring`) and `hkm : (j+1)*m ≤ k*m` (by `gcongr`),
+  then `omega` treats `j*m, k*m` as opaque and finishes linearly.
+- Sum bound via `Multiset.sum_le_card_nsmul s (A.sup id) (…) : s.sum ≤ card s • sup`
+  + `smul_eq_mul`; per-element `x ≤ A.sup id` from `Finset.le_sup (f := id)`.
+
+#### Verification
+Docker host build path unavailable; built the imported `Proofs.Erdos340GreedySidon`
+to its olean (`lake env lean -o`), then `lake env lean Proofs/Erdos340GreedySidonOQ05.lean`
+→ exit 0, no warnings. `#print axioms IsBh.insert_of_large / IsBh.exists_insert`
+= only `propext / Classical.choice / Quot.sound` (0-axiom). 422 → 558 lines,
+14 → 19 theorems (incl. private `bh_split`), 1 → 2 defs (counting `symPair`).
+
+#### Next Steps
+- Turn extendability into a *rate*: bound the FORBIDDEN set (values in `[1,N]` whose
+  insertion breaks B_h) by `O(|A|^{2h-1})`, giving the greedy `N^{1/(2h-1)}` lower
+  bound — the remaining open core, matching the still-open parent #340.
+- Iterate `exists_insert` into an explicit greedy B_h sequence à la `greedySidonSeq`.
