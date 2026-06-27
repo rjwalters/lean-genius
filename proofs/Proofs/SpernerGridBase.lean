@@ -637,4 +637,136 @@ theorem IsCanon.base_unique {d N : ℕ} {s t : GridSimplex d N}
     rw [← hi]; exact ht i
   exact BaryPoint.lexLE_antisymm h1 h2
 
+-- ============================================================
+-- SECTION IX: Per-geometry uniqueness (miss/incDir recovery)
+-- ============================================================
+-- `IsCanon.base_unique` (SECTION VIII) pinned the base vertex of a
+-- canonical cell from its vertex set. Here we finish per-geometry
+-- uniqueness by recovering the remaining data of the
+-- reconstruction triple `(verts 0, miss, incDir)` from the shared
+-- geometry, then feeding it to `eq_of_base_miss_incDir`:
+--
+--   1. `miss_unique`  — `miss` is the unique coordinate at which
+--      some vertex dips strictly below the base (every non-`miss`
+--      coordinate is non-decreasing along the chain). Needs only
+--      the shared base and vertex set.
+--   2. `verts_eq`     — with `miss` and base fixed, vertex `m` is
+--      the unique cell vertex whose `miss`-coordinate is
+--      `base − m` (the `miss`-coordinate is injective in `m`), so
+--      the whole vertex *function* is forced.
+--   3. `incDir_eq`    — with the vertex function fixed, `incDir k`
+--      is the unique coordinate that strictly increases across
+--      step `k` (`miss` decreases, all others are unchanged).
+--
+-- None of the three needs `IsCanon` itself; canonicality enters
+-- only through `base_unique`, which supplies the shared base. The
+-- payoff `IsCanon.geometry_unique` then says: two canonical cells
+-- with the same vertex set are equal — exactly the orientation-free
+-- "one representative per geometry" the Phase-1 carrier requires.
+
+/-- **Miss recovery.** Any two `GridSimplex`es sharing their base
+vertex and vertex set share their `miss` direction. `miss` is the
+unique coordinate at which some vertex of the cell lies strictly
+below the base vertex: along the chain the `miss` coordinate
+decreases by `d` (down to `base − d`) while every other coordinate
+only ever increases (`coord_incDir_at`). For `d = 0` the claim is
+vacuous (`miss : Fin 1`). -/
+theorem GridSimplex.miss_unique {d N : ℕ} {s t : GridSimplex d N}
+    (hbase : s.verts 0 = t.verts 0)
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s.miss = t.miss := by
+  rcases Nat.eq_zero_or_pos d with hd | hd
+  · -- d = 0: miss lives in `Fin 1`, so both directions are `0`.
+    subst hd
+    have := s.miss.isLt; have := t.miss.isLt
+    exact Fin.ext (by omega)
+  · -- d ≥ 1: the last t-vertex dips below the base at coordinate t.miss.
+    by_contra hne
+    -- t.miss ≠ s.miss, so t.miss = s.incDir k for some step k.
+    obtain ⟨k, hk⟩ := s.incDir_surj_complement t.miss (fun h => hne h.symm)
+    -- The witness vertex t.verts(last) lies in the shared vertex set.
+    have hw : t.verts (Fin.last d) ∈ Set.range s.verts := by
+      rw [hset]; exact ⟨Fin.last d, rfl⟩
+    obtain ⟨m, hm⟩ := hw
+    have hlast : (t.verts (Fin.last d)).coords t.miss
+        = (t.verts 0).coords t.miss - d := t.last_coord_miss
+    have hbge : d ≤ (t.verts 0).coords t.miss := t.base_miss_ge_d
+    -- On the s-side, coordinate s.incDir k = t.miss never drops below base.
+    have hge : (s.verts 0).coords (s.incDir k)
+        ≤ (s.verts m).coords (s.incDir k) := by
+      have hc := s.coord_incDir_at k m
+      split_ifs at hc <;> omega
+    rw [hk, hbase, hm, hlast] at hge
+    omega
+
+/-- **Vertex recovery.** Two `GridSimplex`es sharing their base
+vertex, their `miss` direction, and their vertex set share their
+whole vertex *function*. With `miss` fixed, the `miss`-coordinate
+of vertex `m` is `base − m` (`miss_coord_at`), which is injective
+in `m` (the base coordinate is `≥ d`), so each cell vertex is
+labelled by a unique chain index. -/
+theorem GridSimplex.verts_eq {d N : ℕ} {s t : GridSimplex d N}
+    (hbase : s.verts 0 = t.verts 0)
+    (hmiss : s.miss = t.miss)
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s.verts = t.verts := by
+  funext m
+  -- t.verts m is some s-vertex, say s.verts m'.
+  have hmem : t.verts m ∈ Set.range s.verts := by rw [hset]; exact ⟨m, rfl⟩
+  obtain ⟨m', hm'⟩ := hmem
+  have c1 : (s.verts m').coords s.miss
+      = (s.verts 0).coords s.miss - m'.val := s.miss_coord_at m'
+  have c2 : (t.verts m).coords t.miss
+      = (t.verts 0).coords t.miss - m.val := t.miss_coord_at m
+  -- Rewrite c2 entirely onto the s-side via the shared base/miss/vertex.
+  rw [← hbase, ← hmiss, ← hm', c1] at c2
+  have hbge : d ≤ (s.verts 0).coords s.miss := s.base_miss_ge_d
+  have hm1 : m'.val ≤ d := by have := m'.isLt; omega
+  have hm2 : m.val ≤ d := by have := m.isLt; omega
+  have hval : m.val = m'.val := by omega
+  exact (congrArg s.verts (Fin.ext hval)).trans hm'
+
+/-- **Increment-direction recovery.** Two `GridSimplex`es sharing
+their vertex function share their `incDir`. At step `k`,
+coordinate `incDir k` strictly increases while `miss` decreases and
+every other coordinate is unchanged, so `incDir k` is the unique
+coordinate that goes up across step `k` — and that is determined by
+the (shared) vertices alone (no need to also know `miss` matches:
+the `miss`/`step_same` dichotomy is read off each simplex's own
+fields). -/
+theorem GridSimplex.incDir_eq {d N : ℕ} {s t : GridSimplex d N}
+    (hverts : s.verts = t.verts) :
+    s.incDir = t.incDir := by
+  funext k
+  by_contra hne
+  -- t increases coordinate (t.incDir k) across step k; phrase it via s.verts.
+  have hti := t.step_inc k
+  rw [← hverts] at hti
+  by_cases hm : t.incDir k = s.miss
+  · -- s decreases that coordinate (step_dec) — contradiction.
+    have hsd := s.step_dec k
+    rw [← hm] at hsd
+    omega
+  · -- s leaves it unchanged (step_same: ≠ s.incDir k by hne, ≠ s.miss by hm).
+    have hss := s.step_same k (t.incDir k) (fun h => hne h.symm) hm
+    omega
+
+/-- **Per-geometry uniqueness.** Two canonical `GridSimplex`es with
+the same vertex set are equal. The canonical encoding therefore
+gives exactly one representative per geometric Freudenthal cell —
+the orientation-free carrier the abstract
+`SpernerNDim.SpernerTriangulation` needs. Proof: `base_unique`
+fixes the base, then `miss_unique`/`verts_eq`/`incDir_eq` recover
+the rest of the reconstruction triple, which
+`eq_of_base_miss_incDir` turns into equality. -/
+theorem IsCanon.geometry_unique {d N : ℕ} {s t : GridSimplex d N}
+    (hs : IsCanon s) (ht : IsCanon t)
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s = t := by
+  have hbase : s.verts 0 = t.verts 0 := IsCanon.base_unique hs ht hset
+  have hmiss : s.miss = t.miss := GridSimplex.miss_unique hbase hset
+  have hverts : s.verts = t.verts := GridSimplex.verts_eq hbase hmiss hset
+  have hinc : s.incDir = t.incDir := GridSimplex.incDir_eq hverts
+  exact s.eq_of_base_miss_incDir t hbase hmiss hinc
+
 end SpernerGrid
