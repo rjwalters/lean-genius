@@ -1,41 +1,36 @@
 # Research State: sperner-mathlib4-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
-**Since**: 2026-06-14T21:34:31-07:00
-**Iteration**: 2
+**Since**: 2026-06-27T10:30:00-07:00
+**Iteration**: 3
 
 ## Current Focus
-Assessed whether the parent's abstract `CellComplex` door-counting engine
-(`proofs/Proofs/SpernerMathlib4.lean`) generalizes to Tucker's lemma.
-Verdict: it ports cleanly to the n=1 case (where complementary-edge parity is
-an exact invariant) but NOT to n>=2 Tucker, which needs a path-following
-(Freund-Todd) engine because the complementary-edge count is no longer a
-parity invariant.
+n=1 Tucker milestone SHIPPED and verified (Docker is up — prior blocker cleared).
+New file `proofs/Proofs/SpernerTuckerOneDim.lean` (169 LOC, 0 sorries, 0 axioms)
+proves 1-D Tucker = the combinatorial core of 1-D Borsuk–Ulam via a direct
+sign-change parity (discrete fundamental theorem of calculus over `ZMod 2`).
 
 ## Active Approach
-1. **n=1 (immediate, build-gated)**: Tucker on B^1 IS a direct corollary of a
-   door-count parity over the 2-label set {+1,-1}. Brute force confirms the
-   complementary-edge count is ALWAYS ODD. This is a near-mechanical port of
-   the parent engine restricted to d=1 with a signed 2-label alphabet.
-2. **n>=2 (open infrastructure)**: requires a NEW combinatorial engine
-   (almost-complementary simplex path-following / Freund-Todd 1981), since
-   the direct complementary-edge count is not odd in general (verified n=2).
+Direct sign-change parity, not a `CellComplex` instantiation (the engine's
+panchromatic conclusion diverges from the complementary-edge target — Insight 1).
+- `complementary_count_cast`: #complementary-edges ≡ `lam 0 + lam (last)` (mod 2).
+- `tucker_one_dim`: antipodal boundary ⟹ odd count.
+- `exists_complementary_edge`: 1-D Tucker existence.
 
 ## Attempt Count
-- Total attempts: 1
+- Total attempts: 2
 - Current approach attempts: 1
-- Approaches tried: 1 (direct-parity-port assessment)
+- Approaches tried: 2 (engine-reusability assessment → direct-parity port)
 
 ## Blockers
-- Docker DOWN this session -> no `lake build`; no Lean written (avoid shipping
-  uncompilable .lean). Verification done in Python instead.
+- None for n=1 (done).
 - n>=2 Tucker engine is substantial (~500-1000+ LOC: path-following on
   almost-complementary simplices, antipodal pairing of boundary path-endpoints).
 
 ## Next Action
-- When Docker is up: attempt the n=1 Tucker port as a `CellComplex`-style
-  parity lemma over a 2-label alphabet (small, self-contained first milestone).
-- For n>=2: scope the Freund-Todd path-following engine; decide BUILD vs the
-  Tucker-via-Sperner-doubling reduction. Until then this is ORIENT, not ACT.
+- n>=2: scope/build the Freund-Todd / Prescott-Su path-following engine (the
+  complementary-edge count is NOT a parity invariant for n>=2 — Insight 3), or the
+  Tucker-via-Sperner doubling/quotient reduction on RP^n.
+- Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (separate analytic phase).

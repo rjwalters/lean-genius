@@ -120,3 +120,46 @@ a complementary edge.
 ### Next Steps
 - Docker up → port n=1 Tucker as a `CellComplex`-style parity lemma over `{±1}`.
 - Scope Freund–Todd path-following engine for n≥2 (BUILD vs Sperner-doubling).
+
+## Session 2026-06-27 (Session 3) — ACT: n=1 Tucker milestone shipped (verified)
+
+**Mode**: BUILD (Docker UP — the prior session's blocker is cleared)
+**Outcome**: progress (ACT) — new verified file, 0 sorries, 0 axioms
+
+### What I Did
+- Ported the n=1 Tucker milestone (Insight 2) to Lean as
+  `proofs/Proofs/SpernerTuckerOneDim.lean` (169 LOC). Built clean via
+  `docker-build.sh Proofs.SpernerTuckerOneDim` (exit 0).
+- Chose the **direct sign-change parity** proof over instantiating the abstract
+  `CellComplex`: the engine's panchromatic conclusion genuinely diverges from the
+  complementary-edge target (Insight 1), so a black-box instantiation is clunky and
+  no cleaner than the direct discrete-FTC argument.
+
+### Theorems (all verified, 0-axiom, kernel `decide` only)
+- `complementary_count_cast`: telescoping ZMod-2 identity — the number of
+  complementary edges, cast to `ZMod 2`, equals `lam 0 + lam (Fin.last N)`
+  (discrete fundamental theorem of calculus: #sign-changes = net sign change).
+- `tucker_one_dim`: antipodal boundary (`lam 0 ≠ lam (Fin.last N)`) ⟹ the
+  complementary-edge count is **odd**.
+- `exists_complementary_edge`: **1-D Tucker** — antipodal boundary ⟹ a
+  complementary edge exists. This is the combinatorial core of 1-D Borsuk–Ulam.
+
+### Encoding notes
+- Signs `{+1,-1}` encoded as `ZMod 2` (`+1↦0`, `-1↦1`). Path of `N+1` vertices
+  `Fin (N+1)`; edge `i : Fin N` joins `i.castSucc` and `i.succ`.
+- Antipodal boundary `λ(-v) = -λ(v)` at the two endpoints ⇔ `lam 0 ≠ lam (last)`.
+- Key Mathlib lever: `Finset.sum_range_sub` (telescoping over `range N`) after
+  extending `lam` to `g : ℕ → ZMod 2`; in `ZMod 2`, `-x = x` (proved by `decide`)
+  turns the additive indicator into a telescoping difference.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerOneDim.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (knowledge + leanFiles)
+- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}
+
+### Next Steps (unchanged for n≥2)
+- n≥2 Tucker needs the Freund–Todd / Prescott–Su path-following engine (the
+  complementary-edge count is NOT a parity invariant for n≥2 — Insight 3). Or the
+  Tucker-via-Sperner doubling/quotient reduction on RPⁿ.
+- Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (separate analytic phase).
