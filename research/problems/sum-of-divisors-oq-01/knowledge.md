@@ -91,3 +91,47 @@ bulk; steps 2 and 4 are short congruence arguments).
   proof plan, and a populated numerical certificate. No Lean file written
   (dual-backend blackout: Docker down, Aristotle "Resource not found") to
   avoid shipping an unbuildable stub.
+
+## Session 2026-06-27 (researcher-7, Session 2) — ACT: local prime-power engine verified
+
+**Mode**: FRESH (claimed; was OBSERVE) · **Outcome**: progress (verified, 0-sorry/0-axiom)
+
+### What I Did
+- Created `proofs/Proofs/SumOfDivisorsOQ01.lean` (133 LOC, 5 theorems, 0 sorry, 0 axiom),
+  built green in Docker (`Proofs.SumOfDivisorsOQ01`, mathlib 4.26.0).
+- Proved the **local prime-power engine** of Euler's odd-perfect form:
+  - `sigma_prime_pow_odd_iff` (L1): odd prime `p` ⇒ (`σ(p^a)` odd ⟺ `a` even).
+  - `odd_perfect_sigma_eq_two_mul`: odd `Perfect N` ⇒ `σ(N) = 2N` (source of `v₂=1`).
+  - `geom_sum_odd_eq_factor`: `∑_{j≤2t+1} p^j = (1+p)·∑_{k≤t} p^{2k}` (pairing identity).
+  - `even_geom_sum_parity`: `∑_{k<m} p^{2k} ≡ m (mod 2)` for odd `p`.
+  - `sigma_prime_pow_mod_four` (**L2, headline**): odd prime `p`, odd `a` ⇒
+    `σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4)`.
+- Added gallery entry `src/data/proofs/sum-of-divisors-oq-01/{meta.json,annotations.json}`
+  (status verified, badge mathlib, 5 annotations).
+
+### Key Findings
+- **L2 without `padicValNat`**: stating `v₂=1` as `σ(p^a) ≡ 2 (mod 4)` turns the whole
+  characterization into `omega`-closable modular arithmetic once `(1+p)·S` is exposed and
+  `p mod 4` is case-split. This dodged the entire finicky `padicValNat` API (risk R1).
+- **`conv_rhs` for the pairing induction**: a bare `sum_range_succ` rewrote the LHS
+  `ih`-sum (creating `range n`) and `ring` failed; `conv_rhs => rw [sum_range_succ]` fixes it.
+- Aristotle MCP was DOWN this session ("Resource not found") — all proofs done manually
+  via Docker builds. Docker host itself was UP (image `lean4-arm64:v4.26.0`).
+- Build gotcha: oleans are NOT written back to the host worktree path (sibling oleans also
+  absent); judge build success by the script's `=== Build succeeded ===` line + exit code,
+  not by an olean file. Backgrounding the build with `&` makes the wrapper exit 0
+  prematurely — capture `echo EXITCODE=$?` inside the same subshell instead.
+
+### Files Modified
+- proofs/Proofs/SumOfDivisorsOQ01.lean (new)
+- src/data/proofs/sum-of-divisors-oq-01/meta.json (new)
+- src/data/proofs/sum-of-divisors-oq-01/annotations.json (new)
+- src/data/research/problems/sum-of-divisors-oq-01.json (knowledge accumulation)
+
+### Next Steps
+- **Global assembly** (the remaining gap): `v₂(σ N) = Σ_{p∈N.primeFactors} v₂(σ(p^{N.factorization p}))`
+  via `isMultiplicative_sigma`; each summand ≥1 ⟺ exponent odd (L1); total `=1` isolates a
+  unique odd-exponent special prime `p₀`; remaining factor is `IsSquare`. Then L2 supplies
+  `p₀ ≡ a₀ ≡ 1 (mod 4)`.
+- Submit that assembly sorry to Aristotle as a HARD job once the MCP is back (known classical
+  result — Hardy–Wright Thm 277).
