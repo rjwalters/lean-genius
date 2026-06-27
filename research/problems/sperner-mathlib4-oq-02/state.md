@@ -3,14 +3,26 @@
 ## Current State
 **Phase**: ACT
 **Path**: full
-**Since**: 2026-06-27T10:30:00-07:00
-**Iteration**: 3
+**Since**: 2026-06-27T12:30:00-07:00
+**Iteration**: 4
 
 ## Current Focus
-n=1 Tucker milestone SHIPPED and verified (Docker is up — prior blocker cleared).
-New file `proofs/Proofs/SpernerTuckerOneDim.lean` (169 LOC, 0 sorries, 0 axioms)
-proves 1-D Tucker = the combinatorial core of 1-D Borsuk–Ulam via a direct
-sign-change parity (discrete fundamental theorem of calculus over `ZMod 2`).
+The **n=1 line is now COMPLETE end-to-end**. This session added the *continuous
+capstone*: `proofs/Proofs/SpernerTuckerBorsukUlamOneDim.lean` (117 LOC, 0 sorries,
+0 axioms) carries out the **Tucker ⟹ Borsuk–Ulam** reduction in dimension 1. In
+dim 1 the usual mesh→0/compactness limit collapses to the **Intermediate Value
+Theorem**, giving the genuine *continuous* **1-D Borsuk–Ulam theorem**:
+`borsuk_ulam_circle` — a continuous 1-periodic `f : ℝ → ℝ` (a function on the
+circle) takes **equal values at some antipodal pair** `c`, `c + 1/2`.
+
+Together with the prior `SpernerTuckerOneDim.lean` (discrete combinatorial core,
+merged PR #30823) this gives the full discrete→continuous n=1 story.
+
+## Verification note
+Docker IMAGE build is currently broken (containerd `meta.db` I/O error), but
+`docker ps` works. Verified the new file via the established fallback
+`lake env lean` against the main-repo Mathlib `.olean` cache (0 errors;
+`#print axioms` = only propext/Classical.choice/Quot.sound).
 
 ## Active Approach
 Direct sign-change parity, not a `CellComplex` instantiation (the engine's
@@ -33,4 +45,5 @@ panchromatic conclusion diverges from the complementary-edge target — Insight 
 - n>=2: scope/build the Freund-Todd / Prescott-Su path-following engine (the
   complementary-edge count is NOT a parity invariant for n>=2 — Insight 3), or the
   Tucker-via-Sperner doubling/quotient reduction on RP^n.
-- Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (separate analytic phase).
+- n>=2 Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (the genuine analytic
+  phase; in dim 1 this was discharged this session by IVT).

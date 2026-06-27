@@ -15,20 +15,7 @@
     "open": [],
     "goal": ""
   },
-  "currentState": {
-    "phase": "ACT",
-    "since": "2026-06-27T10:30:00-07:00",
-    "iteration": 3,
-    "focus": "Delivered the n=1 Tucker milestone: 1-D Tucker / combinatorial 1-D Borsuk–Ulam, fully verified (0 sorries, 0 axioms).",
-    "activeApproach": "Direct sign-change parity (discrete FTC over ZMod 2): the count of complementary edges equals the boundary sign sum; antipodal boundary forces it odd, hence ≥ 1.",
-    "blockers": [],
-    "nextAction": "Scope the n≥2 engine: Freund–Todd / Prescott–Su path-following on almost-complementary simplices (the complementary-edge count is NOT a parity invariant for n≥2, so the direct route does not lift).",
-    "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 2
-    }
-  },
+  "currentState": "n=1 Tucker line COMPLETE end-to-end: discrete combinatorial core (SpernerTuckerOneDim, merged) + continuous capstone (SpernerTuckerBorsukUlamOneDim, this session) deriving the genuine 1-D Borsuk-Ulam theorem from IVT. A continuous 1-periodic f:R->R takes equal values at some antipodal pair c, c+1/2. n>=2 Tucker still needs the Freund-Todd / Prescott-Su path-following engine (complementary-edge count is not a parity invariant for n>=2).",
   "knowledge": {
     "progressSummary": "n=1 Tucker milestone shipped as proofs/Proofs/SpernerTuckerOneDim.lean (169 LOC, 0 sorries, 0 axioms, kernel `decide` only). Proves the combinatorial core of 1-D Borsuk–Ulam: any sign labelling of a path that is antipodal on the boundary (endpoints differ) has a complementary edge. Method: a telescoping ZMod-2 identity (`complementary_count_cast`) shows the complementary-edge count ≡ boundary sign sum (mod 2); the antipodal condition pins that to 1, forcing an odd count (`tucker_one_dim`), hence existence (`exists_complementary_edge`). Confirms the OQ's positive direction for n=1 and the negative direction for the general engine: the direct parity route does NOT lift to n≥2.",
     "builtItems": [
@@ -65,8 +52,19 @@
     "mathlib": []
   },
   "started": "2026-06-15T02:22:23.646Z",
-  "lastUpdate": "2026-06-27T17:35:00.000Z",
+  "lastUpdate": "2026-06-27",
   "leanFiles": [
+    {
+      "path": "Proofs/SpernerTuckerBorsukUlamOneDim.lean",
+      "filename": "SpernerTuckerBorsukUlamOneDim.lean",
+      "lineCount": 117,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerTuckerBorsukUlamOneDim.lean"
+    },
     {
       "path": "Proofs/SpernerTuckerOneDim.lean",
       "filename": "SpernerTuckerOneDim.lean",
