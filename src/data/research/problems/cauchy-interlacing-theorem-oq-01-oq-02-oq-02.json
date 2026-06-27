@@ -54,7 +54,8 @@
       "No majorization predicate and no Schur–Horn theorem in Mathlib (only a motivating comment in InnerProductSpace.Spectrum); doublyStochastic + Birkhoff (exists_eq_sum_perm_of_mem_doublyStochastic) are present, so full Schur–Horn is buildable as a separate multi-hundred-line problem."
     ],
     "nextSteps": [
-      "Standalone problem: formalize the full Schur–Horn theorem (forward Hardy–Littlewood–Pólya majorization + Birkhoff converse) — genuinely novel, not a corollary of this interlacing machinery.",
+      "DONE (cauchy-interlacing-theorem-oq-01-oq-02-oq-02-oq-01): forward Schur–Horn (Schur majorization, diag ≺ spec) proved in Karamata convex-function form via doubly-stochastic D i j = ‖⟪v j,e i⟫‖² + Jensen — VERIFIED, 0 axioms/0 sorries. Self-contained, no Birkhoff.",
+      "Remaining: the converse (Horn 1954) realizability direction via Birkhoff to complete full Schur–Horn.",
       "Optional: zero-padded full majorization of the rank-n compression viewed as an operator on all of V (needs the trace-equality case)."
     ]
   },
