@@ -382,17 +382,13 @@ theorem hCong_eq_one_of_all_congruent {n : ℕ}
     (hall : ∀ P Q : PointConfig n, IsOptimal n P → IsOptimal n Q →
       AreCongruent n P Q) :
     hCong n = 1 := by
-  have hsub : Subsingleton (Quotient (OptimalSetoid n)) := by
-    constructor
-    intro a b
-    induction a using Quotient.inductionOn with
-    | _ P =>
-      induction b using Quotient.inductionOn with
-      | _ Q => exact Quotient.sound (hall P.val Q.val P.2 Q.2)
+  have hsub : Subsingleton (Quotient (OptimalSetoid n)) :=
+    ⟨fun a b => Quotient.inductionOn₂ a b
+      (fun P Q => Quotient.sound (hall P.val Q.val P.2 Q.2))⟩
   obtain ⟨P, hP⟩ := hne
   have hnonempty : Nonempty (Quotient (OptimalSetoid n)) :=
     ⟨Quotient.mk (OptimalSetoid n) ⟨P, hP⟩⟩
-  rw [hCong]
+  show Nat.card (Quotient (OptimalSetoid n)) = 1
   exact Nat.card_eq_one_iff_unique.mpr ⟨hsub, hnonempty⟩
 
 /-- **`hCong 0 = 1`, unconditionally.** `PointConfig 0` is the one-point type (the
@@ -401,9 +397,9 @@ theorem hCong_eq_one_of_all_congruent {n : ℕ}
     is the first finiteness-hypothesis-free value of the corrected count. -/
 theorem hCong_zero : hCong 0 = 1 := by
   have hvalid : ∀ R : PointConfig 0, IsValidConfig 0 R := fun R i _ _ => Fin.elim0 i
-  apply hCong_eq_one_of_all_congruent
-  · exact ⟨fun _ => (0, 0),
-      (isOptimal_iff_valid_lt_two (by omega) ⟨_, hvalid _⟩ _).mpr (hvalid _)⟩
+  have hne : ∃ P : PointConfig 0, IsValidConfig 0 P := ⟨fun _ => (0, 0), hvalid _⟩
+  refine hCong_eq_one_of_all_congruent ⟨fun _ => (0, 0), ?_⟩ ?_
+  · exact (isOptimal_iff_valid_lt_two (by omega) hne _).mpr (hvalid _)
   · intro P Q _ _
     have hPQ : P = Q := funext (fun i => Fin.elim0 i)
     rw [hPQ]; exact congruent_refl 0 Q
@@ -415,9 +411,9 @@ theorem hCong_zero : hCong 0 = 1 := by
 theorem hCong_one : hCong 1 = 1 := by
   have hvalid : ∀ R : PointConfig 1, IsValidConfig 1 R := by
     intro R i j hij; exact absurd (Subsingleton.elim i j) hij
-  apply hCong_eq_one_of_all_congruent
-  · exact ⟨fun _ => (0, 0),
-      (isOptimal_iff_valid_lt_two (by omega) ⟨_, hvalid _⟩ _).mpr (hvalid _)⟩
+  have hne : ∃ P : PointConfig 1, IsValidConfig 1 P := ⟨fun _ => (0, 0), hvalid _⟩
+  refine hCong_eq_one_of_all_congruent ⟨fun _ => (0, 0), ?_⟩ ?_
+  · exact (isOptimal_iff_valid_lt_two (by omega) hne _).mpr (hvalid _)
   · intro P Q _ _
     refine ⟨translationIsometry (Q 0 - P 0), fun i => ?_⟩
     have hi : i = 0 := Subsingleton.elim i 0
