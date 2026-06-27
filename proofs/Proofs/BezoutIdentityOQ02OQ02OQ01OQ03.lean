@@ -207,4 +207,93 @@ theorem steps_fib_theta (n : ℕ) (hn : 1 ≤ n) :
   ⟨log_le_steps_fib n hn,
     steps_le_log (Nat.fib (n + 1)) (Nat.fib_pos.mpr (by omega)) (Nat.fib (n + 2))⟩
 
+/-
+## Part VI: The sharp Lamé bound — Fibonacci inputs are the smallest
+
+Parts III–V pin the step count to `Θ(log b)` but only *up to the constant 2*:
+the upper bound is `2⌊log₂ b⌋ + 2`, while the Fibonacci family forces about
+`log_φ b ≈ 1.44 log₂ b`. The classical *sharp* form of Lamé's theorem closes
+this gap from the input side. If the algorithm takes `steps a b = n` divisions
+and `b > 0`, then `b ≥ fib (n+1)`: consecutive Fibonacci numbers are the
+**smallest inputs requiring a given number of steps**. `steps_fib` exhibits the
+attaining family (`b = fib (n+1)`, `a = fib (n+2)`); the bound below shows
+nothing smaller can reach `n` steps.
+
+The proof is a genuine two-step descent. One Euclidean step sends `(a, b)` to
+`(b, r)` with `r = a % b`; a second sends it to `(r, s)` with `s = b % r`. The
+quotient `b / r ≥ 1` forces `r + s ≤ b`, exactly mirroring the Fibonacci
+recurrence `fib (j+3) = fib (j+2) + fib (j+1)` that drives the worst case.
+-/
+
+/-- **Lamé's theorem, sharp form (input lower bound).** Whenever `b > 0`, the
+    Euclidean step count satisfies `fib (steps a b + 1) ≤ b`. Hence consecutive
+    Fibonacci numbers are the *smallest* inputs attaining a given step count
+    (`steps_fib` realizes equality with `b = fib (n+1)`). This is strictly
+    sharper than `steps_le_log`: it is the exact characterization of the worst
+    case rather than a bound up to the factor-of-2 slack in `2⌊log₂ b⌋ + 2`. -/
+theorem fib_succ_le : ∀ b, 0 < b → ∀ a, Nat.fib (steps a b + 1) ≤ b := by
+  intro b
+  induction b using Nat.strongRecOn with
+  | ind b ih =>
+    intro hb a
+    rw [steps_pos _ _ hb]
+    set r := a % b with hr_def
+    have hrb : r < b := Nat.mod_lt a hb
+    rcases Nat.eq_zero_or_pos r with hr0 | hr0
+    · -- one step: `r = 0`, so `steps a b = 1` and `fib 2 = 1 ≤ b`
+      rw [hr0, steps_zero]
+      simpa using hb
+    · -- `r > 0`: descend a second step to `(r, s)` with `s = b % r`
+      have hk : steps b r = steps r (b % r) + 1 := steps_pos b r hr0
+      set s := b % r with hs_def
+      have hsr : s < r := Nat.mod_lt b hr0
+      -- `r + s ≤ b`, the arithmetic shadow of `fib (j+3) = fib (j+2) + fib (j+1)`
+      have hsum : r + s ≤ b := by
+        have hdm : r * (b / r) + s = b := by
+          have h := Nat.div_add_mod b r
+          rwa [← hs_def] at h
+        have hq : 1 ≤ b / r := (Nat.one_le_div_iff hr0).mpr (le_of_lt hrb)
+        have hge : r * 1 ≤ r * (b / r) := Nat.mul_le_mul_left r hq
+        rw [Nat.mul_one] at hge
+        omega
+      rcases Nat.eq_zero_or_pos s with hs0 | hs0
+      · -- two steps: `s = 0`, so `steps a b = 2` and `fib 3 = 2 ≤ b`
+        rw [hk, hs0, steps_zero]
+        have hb2 : 2 ≤ b := by omega
+        calc Nat.fib (0 + 1 + 1 + 1) = 2 := by decide
+          _ ≤ b := hb2
+      · -- general case: `fib (k+2) = fib k + fib (k+1) ≤ s + r ≤ b`
+        have hA : Nat.fib (steps b r + 1) ≤ r := ih r hrb hr0 b
+        have hB : Nat.fib (steps r s + 1) ≤ s := ih s (lt_trans hsr hrb) hs0 r
+        have hBk : Nat.fib (steps b r) ≤ s := by rw [hk]; exact hB
+        have hfib : Nat.fib (steps b r + 1 + 1)
+            = Nat.fib (steps b r) + Nat.fib (steps b r + 1) := Nat.fib_add_two
+        omega
+
+/-- **Contrapositive: small inputs cannot force many steps.** If `b < fib (n+1)`
+    then the Euclidean algorithm on `(a, b)` finishes in fewer than `n` steps.
+    Equivalently, reaching `n` steps *requires* `b ≥ fib (n+1)`. -/
+theorem steps_lt_of_lt_fib (a b n : ℕ) (hb : 0 < b) (h : b < Nat.fib (n + 1)) :
+    steps a b < n := by
+  by_contra hcon
+  push_neg at hcon
+  have hmono : Nat.fib (n + 1) ≤ Nat.fib (steps a b + 1) :=
+    Nat.fib_mono (by omega)
+  have hle := fib_succ_le b hb a
+  omega
+
+/-- **Fibonacci numbers are the exact minimal inputs (the sharp Lamé theorem).**
+    For `n ≥ 1`, `fib (n+1)` is the smallest positive second argument for which
+    some first argument makes the extended Euclidean algorithm take exactly `n`
+    division steps: it is *attained* by `(fib (n+2), fib (n+1))` (`steps_fib`),
+    and no smaller `b > 0` admits any `a` reaching `n` steps (`fib_succ_le`).
+    This upgrades the Θ(log) characterization to an exact worst-case identity. -/
+theorem fib_isLeast_input (n : ℕ) (hn : 1 ≤ n) :
+    steps (Nat.fib (n + 2)) (Nat.fib (n + 1)) = n ∧
+      ∀ a b, 0 < b → steps a b = n → Nat.fib (n + 1) ≤ b := by
+  refine ⟨steps_fib n hn, fun a b hb hstep => ?_⟩
+  have hle := fib_succ_le b hb a
+  rw [hstep] at hle
+  exact hle
+
 end BezoutIdentityOQ02OQ02OQ01OQ03
