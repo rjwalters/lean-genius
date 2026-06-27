@@ -1,5 +1,5 @@
 import Proofs.SpernerNDim
-import Proofs.SpernerGrid
+import Proofs.SpernerGridBase
 
 /-
 # sperner-ndim-oq-02: BaryPoint ≃ Vertex coordinate bridge
