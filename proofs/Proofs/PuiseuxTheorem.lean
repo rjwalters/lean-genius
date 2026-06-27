@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.HahnSeries.Basic
+import Mathlib.RingTheory.HahnSeries.Multiplication
 import Mathlib.RingTheory.PowerSeries.Basic
 import Mathlib.FieldTheory.IsAlgClosed.Basic
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
@@ -68,7 +69,14 @@ the Puiseux series solutions to polynomial equations. It works by:
 - [x] Statement of algebraic closure theorem
 - [x] Connection to Newton polygon explained
 - [x] Newton-Puiseux algorithm outline
-- [ ] Complete formal proof (requires substantial infrastructure)
+- [x] **Ramification lemma** `puiseux_nth_root_of_monomial`: every monomial `x` has an
+      honest `n`-th root `x^(1/n)` as a Puiseux series (genuine `HahnSeries` computation)
+- [x] **Worked examples proved, not asserted**: `square_root_puiseux` (`Y² = x`) and
+      `cusp_parameterization` (`Y² = x³`) now construct the actual Hahn-series root and
+      verify the defining equation, replacing the previous vacuous `True` placeholders
+- [ ] Full algebraic closure (`puiseux_theorem`, `puiseux_is_algebraic_closure`):
+      still open. These require the Newton–Puiseux convergence machinery, which is not
+      yet in Mathlib; they remain stated as placeholders pending that infrastructure.
 
 ## Mathlib Dependencies
 
@@ -243,6 +251,34 @@ section NewtonPuiseux
     For an edge of slope -p/q, roots have leading exponent p/q. -/
 def leadingExponentFromSlope (p q : ℕ) (hq : 0 < q) : ℚ := p / q
 
+/-- **Ramification: every monomial `x` has fractional roots as a Puiseux series.**
+
+This is the algebraic heart of Puiseux's theorem and the reason the field of Laurent
+series `K((x))` (integer exponents) is *not* algebraically closed while the field of
+Puiseux series *is*: for every positive `n`, the Hahn series `x^(1/n) = single (1/n) 1`
+is an honest `n`-th root of the monomial `x = single 1 1`, and it is a genuine Puiseux
+series (all exponents lie in `(1/n)·ℤ`).
+
+Concretely this realizes the single-edge Newton polygon `Yⁿ - x`, whose root is `x^(1/n)`,
+and it is the building block from which the Newton–Puiseux iteration assembles general
+roots term by term. The proof is a direct computation with `HahnSeries.single`:
+`(single (1/n) 1)ⁿ = single (n • (1/n)) (1ⁿ) = single 1 1`. -/
+theorem puiseux_nth_root_of_monomial {K : Type*} [Field K] (n : ℕ+) :
+    IsPuiseuxSeries (HahnSeries.single (1 / (n : ℚ)) (1 : K)) ∧
+      (HahnSeries.single (1 / (n : ℚ)) (1 : K)) ^ (n : ℕ)
+        = HahnSeries.single (1 : ℚ) (1 : K) := by
+  constructor
+  · refine ⟨n, fun q hq => ?_⟩
+    rw [HahnSeries.support_single_of_ne (one_ne_zero)] at hq
+    simp only [Set.mem_singleton_iff] at hq
+    refine ⟨1, ?_⟩
+    rw [hq]; push_cast; ring
+  · rw [HahnSeries.single_pow]
+    have hn : (n : ℚ) ≠ 0 := by exact_mod_cast n.ne_zero
+    congr 1
+    · rw [nsmul_eq_mul]; push_cast; field_simp
+    · rw [one_pow]
+
 /-- The Newton-Puiseux algorithm terminates and produces valid roots.
 
 This is the constructive content of Puiseux's theorem: not only do roots exist,
@@ -364,12 +400,28 @@ Characteristic polynomial: c² = 1, so c = ±1.
 **Solutions**: Y = ±x^(1/2)
 -/
 
-/-- The equation Y² = x has Puiseux series solutions with exponent 1/2. -/
-theorem square_root_puiseux :
-    ∃ exp : ℚ, exp = 1/2 ∧
-      -- The solutions to Y² = x are ±x^exp
-      True :=
-  ⟨1/2, rfl, trivial⟩
+/-- The equation `Y² = x` has a Puiseux series solution `Y = x^(1/2)`.
+
+Unlike the placeholder statement this replaces, the witness here is the *actual* Hahn
+series `single (1/2) 1` representing `x^(1/2)`, and the conclusion `y^2 = single 1 1`
+is the literal equation `Y² = x` (with `x = single 1 1`), verified by computation.
+The series is a genuine Puiseux series and its leading exponent (`orderTop`) is `1/2`. -/
+theorem square_root_puiseux {K : Type*} [Field K] :
+    ∃ y : HahnSeries ℚ K,
+      IsPuiseuxSeries y ∧
+      y.orderTop = ((1 : ℚ) / 2 : ℚ) ∧
+      y ^ 2 = HahnSeries.single (1 : ℚ) (1 : K) := by
+  refine ⟨HahnSeries.single ((1 : ℚ) / 2) 1, ?_, ?_, ?_⟩
+  · refine ⟨2, fun q hq => ?_⟩
+    rw [HahnSeries.support_single_of_ne (one_ne_zero)] at hq
+    simp only [Set.mem_singleton_iff] at hq
+    refine ⟨1, ?_⟩
+    rw [hq]; push_cast; ring
+  · rw [HahnSeries.orderTop_single (one_ne_zero)]
+  · rw [HahnSeries.single_pow]
+    congr 1
+    · norm_num
+    · rw [one_pow]
 
 /-!
 ### Example: Cube Roots with Linear Term
@@ -390,11 +442,28 @@ Solving for y: y = ±x^(3/2)
 This is a Puiseux series with ramification index 2.
 -/
 
-theorem cusp_parameterization :
-    ∃ exp : ℚ, exp = 3/2 ∧
-      -- The cusp y² = x³ has Puiseux expansion y = ±x^exp
-      True :=
-  ⟨3/2, rfl, trivial⟩
+/-- The cusp `y² = x³` is parameterized by the Puiseux series `y = x^(3/2)`.
+
+As with `square_root_puiseux`, the witness is the actual Hahn series `single (3/2) 1`,
+and the conclusion `y^2 = single 3 1` is the literal cusp equation `Y² = x³`
+(with `x³ = single 3 1`), verified by computation. The leading exponent is `3/2`,
+the ramification index is `2`. -/
+theorem cusp_parameterization {K : Type*} [Field K] :
+    ∃ y : HahnSeries ℚ K,
+      IsPuiseuxSeries y ∧
+      y.orderTop = ((3 : ℚ) / 2 : ℚ) ∧
+      y ^ 2 = HahnSeries.single (3 : ℚ) (1 : K) := by
+  refine ⟨HahnSeries.single ((3 : ℚ) / 2) 1, ?_, ?_, ?_⟩
+  · refine ⟨2, fun q hq => ?_⟩
+    rw [HahnSeries.support_single_of_ne (one_ne_zero)] at hq
+    simp only [Set.mem_singleton_iff] at hq
+    refine ⟨3, ?_⟩
+    rw [hq]; push_cast; ring
+  · rw [HahnSeries.orderTop_single (one_ne_zero)]
+  · rw [HahnSeries.single_pow]
+    congr 1
+    · norm_num
+    · rw [one_pow]
 
 end Calculations
 
