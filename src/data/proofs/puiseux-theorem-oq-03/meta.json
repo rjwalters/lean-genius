@@ -58,6 +58,50 @@
       "The Newton–Puiseux algorithm outline (edges → leading exponents → recurse)"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview & Scope",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Module docstring: what the Newton polygon is, the supporting-line approach taken here, what is proved (vertex predicate, seed and existence lemmas, the Y²−x example), and the honest open scope (Newton polygon theorem, termination measure, complexity bound)."
+    },
+    {
+      "id": "support-points",
+      "title": "Support Points and Edge Slopes",
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "SupportPoint := ℕ × ℚ pairing an exponent with a coefficient valuation, and edgeSlope, the rational rise-over-run of the segment joining two support points."
+    },
+    {
+      "id": "lower-vertex",
+      "title": "The Lower-Vertex Predicate",
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "IsLowerVertex: the supporting-line characterization of a lower-hull vertex (a line through p lying weakly below all support points), plus IsLowerVertex.mem that a vertex is a genuine support point."
+    },
+    {
+      "id": "structure-lemmas",
+      "title": "Seed and Existence Lemmas",
+      "startLine": 91,
+      "endLine": 107,
+      "summary": "isLowerVertex_of_minimal (the minimum-valuation point is a vertex via a horizontal line) and exists_lowerVertex (every nonempty support set has a vertex, via List.argmin)."
+    },
+    {
+      "id": "worked-example",
+      "title": "Worked Example: Y² − x",
+      "startLine": 109,
+      "endLine": 130,
+      "summary": "Support {(0,1),(2,0)} of Y²−x; both endpoints proved to be lower vertices using the witnessing edge line y = −½ i + 1 (refine + fin_cases + norm_num)."
+    },
+    {
+      "id": "closing-the-loop",
+      "title": "Edge Slope to Leading Exponent",
+      "startLine": 132,
+      "endLine": 145,
+      "summary": "ysqMinusX_edge_slope = −1/2 and ysqMinusX_leading_exponent: negating the edge slope recovers the parent's leadingExponentFromSlope 1 2 = 1/2, the exponent of the root x^{1/2}."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "IsLowerVertex",

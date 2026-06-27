@@ -1,0 +1,140 @@
+[
+  {
+    "id": "puiseux-oq03-overview",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 1, "endLine": 64 },
+    "type": "context",
+    "title": "The Newton Polygon as the Computational Entry Point",
+    "content": "For a polynomial P(Y) = Σ aᵢ Yⁱ with coefficients in a valued field K((x)), the Newton polygon is the lower convex hull of the support points (i, v(aᵢ)) over the indices with aᵢ ≠ 0. The Newton polygon theorem states that the negatives of its edge slopes are exactly the valuations of the roots of P in any algebraically closed valued extension — this is what feeds the parent's leadingExponentFromSlope. Two prior literature surveys identified the combinatorial Newton polygon (the 'S2-A' deliverable) as the cleanest tractable first step toward the open question of whether Newton–Puiseux can be made efficient at scale, because every modern complexity bound (down to Poteaux–Weimann's quasi-linear Õ(d·δ)) is phrased on the Newton polygon as a data structure. Mathlib 4.26.0 has no Newton polygon API, so this file supplies the combinatorial core from scratch.",
+    "mathContext": "$P(Y) = \\sum_i a_i Y^i,\\; a_i \\in K((x))$. Support $= \\{(i, v(a_i)) : a_i \\neq 0\\}$. Newton polygon theorem: $-\\text{slopes of lower hull} = \\{v(\\rho) : P(\\rho) = 0\\}$ over $\\overline{K((x))}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Newton polygon",
+      "lower convex hull",
+      "valuation",
+      "Newton–Puiseux algorithm",
+      "computational algebraic geometry"
+    ],
+    "prerequisites": [
+      "Puiseux series",
+      "valuations of Laurent series",
+      "convex hulls",
+      "univariate Puiseux's theorem"
+    ]
+  },
+  {
+    "id": "puiseux-oq03-supportpoint",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 70, "endLine": 77 },
+    "type": "definition",
+    "title": "Support Points and Edge Slopes",
+    "content": "A support point (i, v) pairs the exponent i of Y with the valuation v = v(aᵢ) ∈ ℚ of the corresponding coefficient. Indices with aᵢ = 0 (valuation +∞) are simply omitted from the support list, so the type is the finite ℕ × ℚ rather than carrying an explicit infinity. The edgeSlope of the segment joining two support points is the ordinary rise-over-run (q.2 − p.2)/(q.1 − p.1); the negation of this slope is what the Newton polygon theorem identifies with a root valuation. Working over ℚ (not ℝ) keeps every slope and exponent exactly representable, which is exactly what a computational treatment needs.",
+    "mathContext": "$\\text{SupportPoint} := \\mathbb{N} \\times \\mathbb{Q}$. $\\quad \\text{edgeSlope}(p, q) := \\dfrac{q_2 - p_2}{q_1 - p_1}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "support of a polynomial",
+      "rational slope",
+      "valuation",
+      "Laurent series order"
+    ],
+    "prerequisites": ["rational arithmetic", "valuations"]
+  },
+  {
+    "id": "puiseux-oq03-islowervertex",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 79, "endLine": 89 },
+    "type": "definition",
+    "title": "IsLowerVertex: The Supporting-Line Characterization",
+    "content": "Rather than committing to a particular convex-hull construction algorithm, the file defines a vertex of the lower hull by its dual property: p is a lower vertex of pts when some non-vertical line y = m·i + b passes through p and lies weakly below every support point. This is precisely the supporting-line (separating-hyperplane) characterization of an extreme point of a convex set, specialized to the lower hull. Phrasing it as a Prop keeps the API honest about the combinatorial content without needing a verified hull routine — and it is exactly the predicate that downstream termination and complexity statements will quantify over. The companion lemma IsLowerVertex.mem records the trivial-but-essential fact that a vertex is a genuine support point.",
+    "mathContext": "$\\text{IsLowerVertex}(\\text{pts}, p) := p \\in \\text{pts} \\;\\wedge\\; \\exists\\, m, b \\in \\mathbb{Q},\\; p_2 = m\\,p_1 + b \\;\\wedge\\; \\forall q \\in \\text{pts},\\; m\\,q_1 + b \\le q_2.$",
+    "significance": "key",
+    "relatedConcepts": [
+      "supporting hyperplane",
+      "extreme point",
+      "convex hull vertex",
+      "duality",
+      "predicate vs algorithm"
+    ],
+    "prerequisites": [
+      "convex geometry",
+      "supporting lines",
+      "existential quantification in Lean"
+    ]
+  },
+  {
+    "id": "puiseux-oq03-minimal-seed",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 91, "endLine": 98 },
+    "type": "insight",
+    "title": "The Minimum-Valuation Point Seeds the Polygon",
+    "content": "isLowerVertex_of_minimal proves that the support point of least valuation is always a lower vertex, witnessed by the horizontal supporting line m = 0, b = p.2. Under this line the supporting condition 0·q.1 + p.2 ≤ q.2 reduces exactly to the minimality hypothesis p.2 ≤ q.2, so the proof is a one-line simpa. Geometrically the lowest point of any finite set is unavoidably a vertex of its lower hull; algorithmically it gives a constructive starting vertex from which a Newton–Puiseux sweep can begin walking edges of increasing slope.",
+    "mathContext": "If $p \\in \\text{pts}$ and $\\forall q \\in \\text{pts},\\, p_2 \\le q_2$, take $m = 0,\\, b = p_2$: then $0 \\cdot q_1 + p_2 = p_2 \\le q_2$, so $\\text{IsLowerVertex}(\\text{pts}, p)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "minimum valuation",
+      "horizontal supporting line",
+      "constructive vertex",
+      "Newton polygon seed"
+    ],
+    "prerequisites": ["order on ℚ", "supporting lines"]
+  },
+  {
+    "id": "puiseux-oq03-exists-argmin",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 100, "endLine": 107 },
+    "type": "technique",
+    "title": "Existence via List.argmin",
+    "content": "exists_lowerVertex turns the seed lemma into an unconditional existence guarantee for any nonempty support set. The proof extracts the minimum-valuation element with Mathlib's List.argmin (·.2): a case split on the Option result rules out the none case via List.argmin_eq_none (contradicting nonemptiness), and in the some case List.argmin_mem and List.le_of_mem_argmin discharge exactly the two hypotheses of isLowerVertex_of_minimal. This is the existence statement any correct hull-construction must satisfy, obtained here purely from the order structure without building the hull.",
+    "mathContext": "$\\text{pts} \\neq [] \\Rightarrow \\exists p,\\; \\text{IsLowerVertex}(\\text{pts}, p)$, via $p = \\arg\\min_{q \\in \\text{pts}} q_2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "List.argmin",
+      "existence proof",
+      "argmin lemmas",
+      "Option case analysis"
+    ],
+    "prerequisites": [
+      "Mathlib.Data.List.MinMax",
+      "Option types in Lean",
+      "argmin/argmax API"
+    ]
+  },
+  {
+    "id": "puiseux-oq03-ysq-example",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 109, "endLine": 130 },
+    "type": "concept",
+    "title": "Worked Example: The Newton Polygon of Y² − x",
+    "content": "Over K((x)) the polynomial Y² − x has coefficients a₀ = −x (valuation 1), a₁ = 0 (omitted), and a₂ = 1 (valuation 0), so its support is {(0,1), (2,0)}. The Newton polygon is the single edge from (0,1) to (2,0). Both endpoints are proved to be lower vertices using the same witnessing line y = −½ i + 1: ysqMinusX_vertex_const and ysqMinusX_vertex_lead each refine to m = −1/2, b = 1 and discharge the finitely many support points with fin_cases hq <;> norm_num. The line passes through both points with equality, which is exactly the degenerate case where an edge's two endpoints are both vertices.",
+    "mathContext": "$Y^2 - x$: support $\\{(0,1),(2,0)\\}$. Witness line $y = -\\tfrac{1}{2} i + 1$ passes through both: $-\\tfrac12 \\cdot 0 + 1 = 1$ and $-\\tfrac12 \\cdot 2 + 1 = 0$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Newton polygon of a quadratic",
+      "ramified root",
+      "fin_cases",
+      "supporting line with equality"
+    ],
+    "prerequisites": ["valuations", "the IsLowerVertex predicate"]
+  },
+  {
+    "id": "puiseux-oq03-leading-exponent",
+    "proofId": "puiseux-theorem-oq-03",
+    "range": { "startLine": 132, "endLine": 145 },
+    "type": "insight",
+    "title": "Closing the Loop to the Parent's Leading Exponent",
+    "content": "The two final theorems connect the combinatorial object back to the parent gallery entry. ysqMinusX_edge_slope computes edgeSlope (0,1) (2,0) = (0−1)/(2−0) = −1/2 by norm_num. Then ysqMinusX_leading_exponent shows that negating this slope recovers the parent's leadingExponentFromSlope 1 2 = 1/2 — precisely the leading exponent of the root x^{1/2} of Y² − x. This is the instance of the Newton polygon theorem made fully explicit and machine-checked: the geometry of the polygon (edge slope) determines the analysis of the roots (fractional exponent), verifying the file's data layer against the parent's definition rather than leaving the connection informal.",
+    "mathContext": "$\\text{edgeSlope}((0,1),(2,0)) = \\dfrac{0-1}{2-0} = -\\tfrac12$, and $-(-\\tfrac12) = \\tfrac12 = \\text{leadingExponentFromSlope}(1,2)$, the exponent of $x^{1/2}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Newton polygon theorem",
+      "leading exponent",
+      "edge slope to root valuation",
+      "leadingExponentFromSlope"
+    ],
+    "prerequisites": [
+      "parent puiseux-theorem entry",
+      "norm_num",
+      "edge slopes"
+    ]
+  }
+]
