@@ -1307,6 +1307,100 @@ theorem sameProjLine_pascalProjLine_of_pointOnLine
   unfold pascalProjLine
   exact sameProjLine_of_pointOnLine_pointOnLine hP hQ
 
+/-- **Uniqueness capstone — `pascalProjLine` is *the* Pascal line.**  Combining
+    the incidence of PART 4h (all three Pascal points lie on `pascalProjLine`)
+    with the uniqueness of PART 4i (two points determine their line), *any*
+    projective line `l` carrying all three opposite-side intersection points
+    `P, Q, R` is the same projective line as `pascalProjLine hex`.  This is the
+    precise geometric characterisation the descent map descends *to*: the Pascal
+    line of a hexagon is the unique projective line on which its three
+    opposite-side intersections lie. -/
+theorem pascalProjLine_unique
+    {C : Conic} (hex : InscribedHexagon C) {l : ProjLine}
+    (hl : collinearOnLine (pascalP hex) (pascalQ hex) (pascalR hex) l) :
+    sameProjLine l (pascalProjLine hex) :=
+  sameProjLine_pascalProjLine_of_pointOnLine hex hl.1 hl.2.1
+
+-- ============================================================
+-- PART 4j: Geometric Meaning of the Non-Degeneracy Hypothesis `hnd`
+--          (when the spanning line `P ×₃ Q` is genuine)
+-- ============================================================
+
+/- The well-definedness theorems of PART 4g–5b all carry the general-position
+   hypothesis `hnd : ∀ k, pascalProjLine (permuteHexagon hex k) ≠ 0`.  Since
+   `pascalProjLine hex = lineThrough (pascalP hex) (pascalQ hex) =
+   crossProduct (pascalP hex) (pascalQ hex)`, this is a statement purely about
+   the two spanning Pascal points.  The lemmas here unpack `≠ 0` into its
+   concrete coordinate meaning: a cross product of two vectors in `ℝ³` vanishes
+   exactly when all three of their `2×2` minors vanish — i.e. the two points are
+   projectively *equal*.  So `hnd` says no more and no less than "for every
+   relabeling the two opposite-side intersection points `P = AB ∩ DE` and
+   `Q = BC ∩ EF` spanning the line are projectively distinct". -/
+
+/-- **Cross product vanishes iff the three `2×2` minors vanish.**  For `u, v` in
+    `ℝ³`, `u ×₃ v = 0` exactly when each component — a `2×2` minor of the
+    `2×3` matrix `[u; v]` — is zero.  Geometrically this is precisely linear
+    dependence of `u` and `v` (the two vectors are proportional), the honest
+    statement of "`u` and `v` are the same projective point".  Pure coordinate
+    algebra: each direction is the three component equations read off via
+    `cross_apply`. -/
+theorem crossProduct_eq_zero_iff (u v : ProjPoint) :
+    crossProduct u v = 0 ↔
+      u 1 * v 2 = u 2 * v 1 ∧ u 2 * v 0 = u 0 * v 2 ∧ u 0 * v 1 = u 1 * v 0 := by
+  constructor
+  · intro h
+    refine ⟨?_, ?_, ?_⟩
+    · have h0 := congrFun h 0
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue] at h0
+      linarith
+    · have h1 := congrFun h 1
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue] at h1
+      linarith
+    · have h2 := congrFun h 2
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue] at h2
+      linarith
+  · rintro ⟨h0, h1, h2⟩
+    funext i
+    fin_cases i <;>
+      simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+        Matrix.tail_cons, Matrix.head_cons, Pi.zero_apply, Fin.isValue, Fin.reduceFinMk] <;>
+      linarith
+
+/-- **The non-degeneracy hypothesis, made concrete.**  `pascalProjLine hex = 0`
+    — the failure of general position that `hnd` rules out — holds *exactly*
+    when the two spanning Pascal points `P = AB ∩ DE` and `Q = BC ∩ EF` have all
+    three `2×2` minors equal, i.e. are projectively the same point.  Equivalently
+    (contrapositive), `pascalProjLine hex ≠ 0` iff some minor of `P, Q` is
+    nonzero — a genuine, checkable witness that the line is honest. -/
+theorem pascalProjLine_eq_zero_iff {C : Conic} (hex : InscribedHexagon C) :
+    pascalProjLine hex = 0 ↔
+      (pascalP hex) 1 * (pascalQ hex) 2 = (pascalP hex) 2 * (pascalQ hex) 1 ∧
+      (pascalP hex) 2 * (pascalQ hex) 0 = (pascalP hex) 0 * (pascalQ hex) 2 ∧
+      (pascalP hex) 0 * (pascalQ hex) 1 = (pascalP hex) 1 * (pascalQ hex) 0 := by
+  unfold pascalProjLine lineThrough
+  exact crossProduct_eq_zero_iff (pascalP hex) (pascalQ hex)
+
+/-- **A checkable sufficient condition for general position.**  If even one
+    `2×2` minor of the two spanning Pascal points is nonzero, the Pascal line is
+    genuine (`pascalProjLine hex ≠ 0`).  This is the practical handle for
+    discharging the per-relabeling side of `hnd`: one need not verify the full
+    projective distinctness abstractly, only exhibit a single nonvanishing
+    determinant of two coordinates. -/
+theorem pascalProjLine_ne_zero_of_minor {C : Conic} (hex : InscribedHexagon C)
+    (h : (pascalP hex) 0 * (pascalQ hex) 1 ≠ (pascalP hex) 1 * (pascalQ hex) 0 ∨
+         (pascalP hex) 1 * (pascalQ hex) 2 ≠ (pascalP hex) 2 * (pascalQ hex) 1 ∨
+         (pascalP hex) 2 * (pascalQ hex) 0 ≠ (pascalP hex) 0 * (pascalQ hex) 2) :
+    pascalProjLine hex ≠ 0 := by
+  rw [Ne, pascalProjLine_eq_zero_iff]
+  rintro ⟨m12, m20, m01⟩
+  rcases h with h | h | h
+  · exact h m01
+  · exact h m12
+  · exact h m20
+
 -- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
