@@ -1,0 +1,46 @@
+[
+  {
+    "id": "ann-metabelian-is-the-proof",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04",
+    "range": {
+      "startLine": 83,
+      "endLine": 107
+    },
+    "type": "insight",
+    "title": "Metabelianness Made Formal: ker(parity) = range(rotation)",
+    "content": "The entire solvability proof is the single identity `ker(parity) = range(rotation)`. The rotation subgroup `{r i}` is abelian (it is `≅ ℤ/n`) and normal of index 2, with abelian quotient `ℤ/2` — `Dₙ` is **metabelian**. Mathlib's `solvable_of_ker_le_range` consumes exactly this: given `rotation : ℤ/n →* Dₙ`, `parity : Dₙ →* ℤ/2`, both source and target solvable (abelian), and `ker(parity) ≤ range(rotation)`, it concludes `IsSolvable (Dₙ)`. No derived-series computation, no `decide` over the whole group — just two homomorphisms and the observation that the reflections are precisely the non-trivial parity class.",
+    "mathContext": "$1 \\to \\langle r\\rangle \\to D_n \\xrightarrow{\\text{parity}} \\mathbb Z/2 \\to 1$ with $\\langle r\\rangle\\cong\\mathbb Z/n$ abelian. An extension of a solvable group by a solvable group is solvable.",
+    "significance": "key",
+    "relatedConcepts": [
+      "solvable_of_ker_le_range",
+      "metabelian group",
+      "CommGroup.isSolvable",
+      "DihedralGroup"
+    ],
+    "prerequisites": [
+      "abel-ruffini-oq-04-oq-02"
+    ]
+  },
+  {
+    "id": "ann-contrast-with-sn",
+    "proofId": "abel-ruffini-oq-04-oq-02-oq-04",
+    "range": {
+      "startLine": 104,
+      "endLine": 112
+    },
+    "type": "insight",
+    "title": "Why Abel–Ruffini Is Special to Sₙ",
+    "content": "The companion theorem `S5_not_isSolvable_but_dihedral_is` states the contrast bluntly: `Sym (Fin 5)` is **not** solvable (Mathlib's `Equiv.Perm.fin_5_not_solvable`), yet **every** `DihedralGroup n` is. Both Sₙ and Dₙ are infinite families of finite non-abelian groups, and they even agree (both solvable) for n ≤ 4 — but at n = 5 the symmetric group acquires the simple subgroup A₅ and loses solvability, while the dihedral group keeps its index-2 cyclic structure for all n and stays solvable. The Abel–Ruffini obstruction is therefore a feature of the symmetric groups specifically, not a generic consequence of growing an infinite family. The proof also works uniformly at n = 0, so even the infinite dihedral group D∞ is solvable.",
+    "mathContext": "$S_n$ solvable $\\iff n\\le4$; $D_n$ solvable for all $n$ (including $n=0$, $D_\\infty$). The divergence at $n=5$ is exactly the appearance of the simple group $A_5$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "Equiv.Perm.fin_5_not_solvable",
+      "A₅ simple",
+      "infinite dihedral group",
+      "Abel–Ruffini"
+    ],
+    "prerequisites": [
+      "abel-ruffini-oq-04-oq-02-oq-02"
+    ]
+  }
+]
