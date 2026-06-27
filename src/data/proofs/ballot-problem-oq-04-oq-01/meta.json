@@ -60,7 +60,8 @@
     "keyInsights": [
       "**The first crossing is the square's diagonals**: {{0, 2}, {1, 3}} pairs opposite vertices of a 4-gon, so its blocks must cross — the canonical and unique crossing partition at n = 4.",
       "**Crossing = same parity on Fin 4**: the diagonal partition is exactly the kernel of the parity map x ↦ x.val % 2, which makes every required relation a decidable arithmetic fact and the whole discriminator provable by decide.",
-      "**This is the single unit separating Bell from Catalan**: B₄ = 15 counts all partitions, catalan 4 = 14 counts the non-crossing ones, and the difference is precisely this one partition — the concrete obstruction any proof of nonCrossingCount n = catalan n must account for."
+      "**This is the single unit separating Bell from Catalan**: B₄ = 15 counts all partitions, catalan 4 = 14 counts the non-crossing ones, and the difference is precisely this one partition — the concrete obstruction any proof of nonCrossingCount n = catalan n must account for.",
+      "**One of the largest Catalan families**: non-crossing partitions are in bijection with Dyck paths, ballot sequences, binary trees, and polygon triangulations, and form the Kreweras lattice under refinement. The n = 4 crossing {{0, 2}, {1, 3}} is the first place this Catalan world parts from the larger Bell-counted world of all set partitions."
     ],
     "prerequisites": [
       "The parent predicate IsNonCrossing and its reformulation isNonCrossing_iff (ballot-problem-oq-04)",
@@ -96,7 +97,13 @@
     ]
   },
   "crossReferences": [
-    "ballot-problem-oq-04",
-    "ballot-problem-oq-04-oq-02-oq-01"
+    {
+      "proofId": "ballot-problem-oq-04",
+      "relationship": "Parent: defines the IsNonCrossing predicate and the isNonCrossing_iff reformulation, and proves all partitions of Fin n with n ≤ 3 are non-crossing. This entry supplies the explicit n = 4 crossing witness its open questions #1/#2 call for."
+    },
+    {
+      "proofId": "ballot-problem-oq-04-oq-02-oq-01",
+      "relationship": "Sibling toward the Catalan count: reduces nonCrossingCount n = catalan n to the Catalan recurrence; this entry pins the concrete n = 4 crossing that any such count must exclude."
+    }
   ]
 }
