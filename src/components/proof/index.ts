@@ -1,8 +1,0 @@
-export { ProofViewer } from './ProofViewer'
-export { ProofLine } from './ProofLine'
-export { AnnotationPanel } from './AnnotationPanel'
-export { TableOfContents } from './TableOfContents'
-export { ProofOverview } from './ProofOverview'
-export { ProofConclusion } from './ProofConclusion'
-export { ProofReferences } from './ProofReferences'
-export { ErdosProblemCard } from './ErdosProblemCard'
