@@ -305,3 +305,55 @@ as two reusable lemmas, replacing the per-residue `collatz_odd …; ring` /
 - de-risk component (1): `paritySteps n b : Fin b → Bool` + proof that `n mod 2^b`
   forces it, turning per-residue lemmas into corollaries of one inductive theorem.
 - Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).
+
+## Session 2026-06-27 (researcher-2) — ACT: decidable certificate for the parity-vector engine
+
+**Mode**: BUILD (Docker meta.db I/O-corrupt again → offline `LAKE_UNSAFE=1 ./bin/lake env lean`, EXIT 0).
+**Outcome**: progress — axiom-free, build-verified, completes the engine's "turnkey" promise.
+
+### What I Did
+The parity-vector residue-drop engine (`affOrbit_realize` / `parityVector_attainsBelow`,
+merged #30903) was complete but every certificate was a hand-built nested
+`AffValid.odd …/AffValid.even …` term (one constructor per step). Closed that gap with a
+reflection layer:
+- `affValidB : List Bool → ℕ → ℕ → Bool` — computable validity checker mirroring the
+  `AffValid` inductive (odd bit: `c%2==0 && d%2==1 && rec (3c)(3d+1)`; even bit: both even,
+  recurse halved).
+- `affValidB_sound : affValidB v c d = true → AffValid v c d` — induction on `v`, `simp`
+  with `Bool.and_eq_true, beq_iff_eq`. Transports the Bool back to the Prop certificate.
+- `dropCert M r v : Bool` — bundles `0 < v.length`, `affValidB v M r`, and the two drop
+  bounds `(affOrbit v (M,r)).1 < M`, `.2 < r` into a single decidable Boolean.
+- `dropCert_attainsBelow v (h : dropCert M r v = true) (hn : n%M=r) : AttainsBelow n` —
+  the one-shot engine. A new residue family is now literally `dropCert_attainsBelow v (by decide) h`.
+- Replaced the verbose 9-line end-to-end `AffValid` example with the one-liner, and added a
+  second example (`n ≡ 11 (mod 32)`, 8-step vector) showing the SAME single `by decide`
+  scales to longer windows.
+
+### Key Findings
+- `decide` (not `native_decide`) evaluates `affValidB`/`affOrbit`/`leadCoeff` by kernel
+  reduction on small Nats (M ≤ 128, products ≤ few thousand) — fast, and **axiom-free**:
+  `#print axioms affValidB_sound`/`dropCert_attainsBelow` → `[propext, Quot.sound]` only.
+  No `Lean.ofReduceBool` (that would require `native_decide`), no `tao_2019`.
+- `dropCert` uses `decide (0 < v.length)` rather than `!v.isEmpty` so the soundness `simp`
+  unfolds cleanly via `Bool.and_eq_true, decide_eq_true_eq` to a 4-tuple — avoids fragile
+  `List.isEmpty_eq_*` lemma-name guessing.
+
+### Honest status
+- This is the **completion of the engine's usability**, not new Collatz mathematics: the
+  density floor is unchanged (115/128) and the Tao axiom remains BLOCKED. Value: adding any
+  future residue family (mod 256/512/…) is now a one-line decidable certificate instead of a
+  hand-written 8–11-constructor `AffValid` term — the engine is genuinely turnkey for the
+  vector-supplied case.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+2 theorems 48→50, +2 defs 8→10, 1304→1360 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts synced + highlight; meta block counts were stale at 39/5/1107)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts 1304/48/8 → 1360/50/10)
+
+### Next Steps (genuine remaining lever, unchanged)
+- de-risk component (1): auto-DERIVE the parity vector from `(M, r)` so the caller supplies
+  only the modulus and residue, not the vector. Blocker: termination of "simulate while the
+  leading coefficient stays even" is not a clean structural recursion (odd steps don't
+  decrease v2(c)); this is the same difficulty as the drop-below conjecture itself for the
+  m-dependent classes. The decidable certificate here is the right primitive to build that on.
+- Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).
