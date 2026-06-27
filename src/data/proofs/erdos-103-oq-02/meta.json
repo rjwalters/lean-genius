@@ -37,6 +37,9 @@
       "hCong: the corrected count — number of congruence classes of optimal configurations (the quantity Erdős actually asks about)",
       "translate_congruent / translates_same_class: the congruence quotient collapses exactly the translation-infinitude that broke the raw count; all translates share one class",
       "correct_main_implies_weak: the corrected conjecture hierarchy for hCong",
+      "optimalQuotient_nonempty_of_exists: the congruence-class quotient is nonempty whenever an optimal configuration exists (emptiness is never why hCong could vanish)",
+      "hCong_pos_of_finite: given an optimal config and finitely many congruence classes, hCong(n) ≥ 1 — the corrected count is non-degenerate exactly where the raw count h ≡ 0 collapsed; only an infinite quotient could pull it to 0",
+      "hCong_strictly_exceeds_raw: for n ≥ 1 with an optimal config and finitely many classes, h(n) = 0 < 1 ≤ hCong(n), making precise the sense in which the congruence count repairs the formalization",
       "Repaired parent Erdos103Problem.lean: congruent_symm no longer compiled under Lean 4.26.0 (rwa auto-closing + rw target mismatch); fixed to restore the 0-axiom 0-sorry parent build"
     ],
     "mathlibDependencies": [
@@ -63,21 +66,22 @@
     ],
     "historicalContext": "Erdős Problem #103 (1994) asks whether h(n) → ∞, where h(n) counts incongruent sets of n points in ℝ² minimizing diameter with pairwise separation ≥ 1. Even the weak statement h(n) ≥ 2 for all large n is unknown. This investigation does not resolve the open question; instead it audits the existing formalization and discovers that the parent file's literal counting function is degenerate. Because optimality is preserved by the continuous translation group, the set of optimal configurations is closed under translation, hence either empty or infinite — so its Nat.card is 0. The intended quantity is the cardinality of the quotient by congruence, which this file defines as hCong. The fix relocates the open question onto the correct object.",
     "axiomCount": 0,
-    "lineCount": 218,
+    "lineCount": 265,
     "assumptions": "None. 0 axioms, 0 sorries. All results machine-checked from Mathlib and the (repaired) parent file. NOTE: this entry does NOT resolve the open Erdős #103 conjecture; it corrects the formalization so the open question is stated against the congruence count hCong.",
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 4
   },
   "overview": {
     "historicalContext": "Erdős Problem #103, from his 1994 collection \"Some of my favourite unsolved problems,\" asks whether h(n) → ∞, where h(n) counts incongruent n-point configurations in ℝ² that minimize diameter subject to pairwise distances ≥ 1. The weakest meaningful form — h(n) ≥ 2 for all large n — is itself open. The problem sits in the classical theory of optimal point configurations (Fejes Tóth, 1953) and modern extremal packing.",
     "problemStatement": "**Weak conjecture (OPEN):** Is h(n) ≥ 2 for all sufficiently large n?\n\n**Key finding:** The parent formalization defines h(n) := Nat.card {P // IsOptimal n P} — the raw count of optimal configurations with NO quotient by congruence. Since optimality is translation-invariant, that set is empty or infinite, so h(n) = 0 for every n ≥ 1. The parent's literal WeakConjecture is therefore false, and the open question must be restated against the congruence-class count hCong(n). This file proves the degeneracy and supplies hCong; it does NOT resolve the Erdős problem.",
     "text": "A formalization audit of Erdős #103: the literal optimal-configuration count is degenerate (≡ 0) because optimality is translation-invariant; the corrected count is the congruence quotient hCong.",
-    "proofStrategy": "1. Prove pointDist is translation-invariant. 2. Deduce translation preserves min-separation, diameter, and hence optimality. 3. Construct an injection ℝ ↪ {optimal configs} via horizontal translates, giving infinitude when nonempty. 4. Conclude Nat.card = 0 in both the empty and infinite cases, so the raw h ≡ 0 and the literal WeakConjecture is false. 5. Define the congruence setoid on optimal configs and the corrected count hCong. 6. Show all translates collapse to one hCong class, explaining why hCong is the right (finite) object.",
+    "proofStrategy": "1. Prove pointDist is translation-invariant. 2. Deduce translation preserves min-separation, diameter, and hence optimality. 3. Construct an injection ℝ ↪ {optimal configs} via horizontal translates, giving infinitude when nonempty. 4. Conclude Nat.card = 0 in both the empty and infinite cases, so the raw h ≡ 0 and the literal WeakConjecture is false. 5. Define the congruence setoid on optimal configs and the corrected count hCong. 6. Show all translates collapse to one hCong class, explaining why hCong is the right (finite) object. 7. Prove the correction is non-degenerate where the raw count failed: the quotient is nonempty whenever an optimal config exists, so under finitely many congruence classes hCong(n) ≥ 1 and indeed h(n) = 0 < hCong(n).",
     "keyInsights": [
       "**Translation-invariance is the culprit**: IsOptimal is preserved by every translation of ℝ², so the optimal set is a union of full translation-orbits — uncountably infinite whenever nonempty.",
       "**Infinite ⟹ Nat.card = 0**: Mathlib's Nat.card sends infinite types to 0. Combined with the empty case, h(n) = 0 unconditionally for n ≥ 1 — no existence hypothesis needed.",
       "**The literal WeakConjecture is decidably false**: since h(max N 1) = 0 < 2, no threshold N can witness ∀ n ≥ N, h n ≥ 2.",
       "**The quotient repairs the count**: congruence collapses each translation-orbit to a single class, so hCong is finite/meaningful exactly where the raw count collapsed to 0.",
+      "**Non-degeneracy is the right diagnostic**: the quotient is never empty when an optimal config exists, so the *only* way hCong could still read 0 is an infinite quotient. Hence finiteness of the congruence classes — precisely the content of the open question — is exactly what makes hCong well-behaved, and under it h(n) = 0 < 1 ≤ hCong(n).",
       "**Audit, not resolution**: nothing here makes progress on whether hCong(n) ≥ 2 for large n — that remains the open Erdős question. The contribution is relocating the question onto a well-posed definition."
     ],
     "prerequisites": [
@@ -202,9 +206,9 @@
       "Erdos103"
     ],
     "namespace": "Erdos103OQ02",
-    "lineCount": 218,
+    "lineCount": 265,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 13,
     "definitionCount": 4,
     "path": "Proofs/Erdos103OQ02.lean",
     "sorries": 0
