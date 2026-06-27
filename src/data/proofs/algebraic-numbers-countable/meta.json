@@ -2,7 +2,7 @@
   "id": "algebraic-numbers-countable",
   "title": "Countability of Algebraic Numbers",
   "slug": "algebraic-numbers-countable",
-  "description": "A formalization of Cantor's 1874 theorem that the algebraic numbers are countable. Proves countability and cardinality ℵ₀ for algebraic reals and complex numbers, stratification by minimal polynomial degree, the countable union decomposition, and cardinality equality between algebraic numbers and ℚ.",
+  "description": "A formalization of Cantor's 1874 theorem that the algebraic numbers are countable. The core countability and cardinality ℵ₀ results for algebraic reals and complex numbers are obtained directly from Mathlib's `Algebraic.countable` and `Algebraic.cardinalMk_of_countable_of_charZero`; this entry's original contribution is the degree-stratification infrastructure built on top: stratification by minimal polynomial degree, the countable union decomposition, the monotone bounded-degree filtration, and cardinality equality between algebraic numbers and ℚ.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-04-04",
@@ -18,7 +18,7 @@
       "cardinality",
       "field-theory"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
