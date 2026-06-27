@@ -24,7 +24,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 145,
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 1,
     "assumptions": "None beyond Mathlib's first-order model theory. All results are universally quantified over an arbitrary Language L, theory T : L.Theory and sentence φ : L.Sentence; semantic consequence T ⊨ᵇ φ (ModelsBoundedFormula), satisfiability (Theory.IsSatisfiable) and completeness (Theory.IsComplete) are Mathlib's own definitions. #print axioms reports only Lean/Mathlib's foundational propext, Classical.choice, Quot.sound; no sorryAx, no native_decide, no Lean.ofReduceBool.",
     "mathlibDependencies": [
@@ -78,8 +78,8 @@
       "Mathlib"
     ],
     "namespace": "GodelIncompletenessOQ03",
-    "lineCount": 145,
-    "theoremCount": 8,
+    "lineCount": 172,
+    "theoremCount": 11,
     "axiomCount": 0,
     "definitionCount": 1,
     "sorries": 0,
