@@ -2,7 +2,7 @@
   "id": "bezout-identity-oq-02-oq-02-oq-01-oq-03",
   "title": "Lamé's Theorem: Θ(log) Complexity of the Extended Euclidean Algorithm",
   "slug": "bezout-identity-oq-02-oq-02-oq-01-oq-03",
-  "description": "Answers open question 3 of the constructive divisibility algorithm: can the complexity bound O(log min(a,b)) for extGcd be formalized in Lean? Answer: yes, and tightly. Defines a step counter `steps` mirroring the parent's extGcd recursion (a,b+1) ↦ (b+1, a%(b+1)), then proves both sides of a Θ(log) characterization. Upper bound (Lamé, the O direction): steps a b ≤ 2·⌊log₂ b⌋ + 2, from the fact that the remainder more than halves every two steps (2·(a%b) < a when 0<b≤a). Lower bound / tightness: consecutive Fibonacci numbers are the exact worst case, steps (fib (n+2)) (fib (n+1)) = n, and since fib (n+1) ≤ 2ⁿ one gets ⌊log₂ b⌋ ≤ steps, so the algorithm is Θ(log b) and the O(log) bound cannot be improved to o(log). 10 theorems, 1 definition, 0 axioms, 0 sorries.",
+  "description": "Answers open question 3 of the constructive divisibility algorithm: can the complexity bound O(log min(a,b)) for extGcd be formalized in Lean? Answer: yes, and tightly. Defines a step counter `steps` mirroring the parent's extGcd recursion (a,b+1) ↦ (b+1, a%(b+1)), then proves both sides of a Θ(log) characterization. Upper bound (Lamé, the O direction): steps a b ≤ 2·⌊log₂ b⌋ + 2, from the fact that the remainder more than halves every two steps (2·(a%b) < a when 0<b≤a). Lower bound / tightness: consecutive Fibonacci numbers are the exact worst case, steps (fib (n+2)) (fib (n+1)) = n, and since fib (n+1) ≤ 2ⁿ one gets ⌊log₂ b⌋ ≤ steps, so the algorithm is Θ(log b) and the O(log) bound cannot be improved to o(log). Part VI then sharpens this from the input side, proving the classical exact form of Lamé's theorem: fib (steps a b + 1) ≤ b, so consecutive Fibonacci numbers are the SMALLEST inputs forcing a given step count (steps_fib attains equality at b = fib (n+1)). This upgrades the Θ(log) bound — tight only up to the factor 2 — to an exact worst-case characterization. 13 theorems, 1 definition, 0 axioms, 0 sorries.",
   "leanFile": {
     "path": "Proofs/BezoutIdentityOQ02OQ02OQ01OQ03.lean",
     "namespace": "BezoutIdentityOQ02OQ02OQ01OQ03",
@@ -15,8 +15,8 @@
     "opens": [],
     "axiomCount": 0,
     "sorries": 0,
-    "lineCount": 210,
-    "theoremCount": 10,
+    "lineCount": 299,
+    "theoremCount": 13,
     "definitionCount": 1
   },
   "openQuestion": {
@@ -30,7 +30,9 @@
     "Halving lemma: the remainder more than halves every two steps — 2·(a%b) < a when 0 < b ≤ a",
     "Fibonacci worst case: steps (fib (n+2)) (fib (n+1)) = exactly n",
     "Tightness: fib (n+1) ≤ 2ⁿ gives ⌊log₂ b⌋ ≤ steps, so the O(log) bound is order-optimal",
-    "Two-sided sandwich steps_fib_theta: ⌊log₂ b⌋ ≤ steps ≤ 2⌊log₂ b⌋ + 2 for the Fibonacci family"
+    "Two-sided sandwich steps_fib_theta: ⌊log₂ b⌋ ≤ steps ≤ 2⌊log₂ b⌋ + 2 for the Fibonacci family",
+    "Sharp Lamé bound (input lower bound): fib (steps a b + 1) ≤ b for b > 0 — Fibonacci numbers are the exact minimal inputs",
+    "Capstone fib_isLeast_input: fib (n+1) is provably the least b > 0 reaching n steps (attained, and no smaller b works)"
   ],
   "implications": [
     {
@@ -43,6 +45,14 @@
     },
     {
       "statement": "Nat.log 2 (Nat.fib (n+1)) ≤ steps (Nat.fib (n+2)) (Nat.fib (n+1)) (matching lower bound)",
+      "type": "theorem"
+    },
+    {
+      "statement": "fib (steps a b + 1) ≤ b for all a and all b > 0 (sharp Lamé input lower bound)",
+      "type": "theorem"
+    },
+    {
+      "statement": "b < fib (n+1) → steps a b < n (small inputs cannot force n steps)",
       "type": "theorem"
     }
   ],
@@ -108,10 +118,10 @@
     }
   ],
   "conclusion": {
-    "summary": "The complexity of the extended Euclidean algorithm is formalized as a genuine Θ(log) bound. The step counter `steps` reproduces extGcd's recursion exactly; steps_le_log proves the O direction steps a b ≤ 2·⌊log₂ b⌋ + 2 via a two-step halving argument; steps_fib proves consecutive Fibonacci numbers attain exactly n steps; and fib_succ_le_two_pow → log_le_steps_fib supplies the matching ⌊log₂ b⌋ ≤ steps lower bound, sandwiched together in steps_fib_theta. 0 axioms, 0 sorries.",
-    "implications": "This completes the parent's open question 3 not merely with the requested O(log) upper bound but with a tight two-sided characterization, formalizing Lamé's 1844 theorem in full. The Fibonacci family is shown to be the exact extremal input, so the constant in the upper bound is optimal up to a factor of 2.",
+    "summary": "The complexity of the extended Euclidean algorithm is formalized as a genuine Θ(log) bound. The step counter `steps` reproduces extGcd's recursion exactly; steps_le_log proves the O direction steps a b ≤ 2·⌊log₂ b⌋ + 2 via a two-step halving argument; steps_fib proves consecutive Fibonacci numbers attain exactly n steps; and fib_succ_le_two_pow → log_le_steps_fib supplies the matching ⌊log₂ b⌋ ≤ steps lower bound, sandwiched together in steps_fib_theta. Part VI adds the sharp input lower bound fib_succ_le (fib (steps a b + 1) ≤ b), its contrapositive steps_lt_of_lt_fib, and fib_isLeast_input proving fib (n+1) is the exact minimal input for n steps. 0 axioms, 0 sorries.",
+    "implications": "This completes the parent's open question 3 not merely with the requested O(log) upper bound but with a tight two-sided characterization, formalizing Lamé's 1844 theorem in full. The Fibonacci family is shown to be the exact extremal input, so the constant in the upper bound is optimal up to a factor of 2. Part VI sharpens this further: fib (n+1) is the exact minimal input attaining n steps, so the Fibonacci worst case is characterized exactly, not merely up to a constant.",
     "openQuestions": [
-      "Sharpen the upper bound to the exact constant: prove steps a b ≤ ⌊log_φ b⌋ + O(1) with the golden ratio φ, matching the Fibonacci worst case without the factor-of-2 slack.",
+      "Convert the sharp input bound fib (steps a b + 1) ≤ b (now proved, Part VI) into the explicit real-valued constant ⌊log_φ b⌋ + O(1): this requires the analytic lower bound fib (n) ≥ φⁿ⁻² over ℝ, removing the remaining factor-of-2 slack in the integer-only statement.",
       "Bound the bit-complexity (not just the step count) by tracking the cost of each division, giving the classical O(log²) or M(log) total running time.",
       "Formalize the average-case analysis: the expected number of steps on random inputs is (12 ln 2 / π²)·log b (Heilbronn/Dixon), a finer result than the worst-case Θ(log)."
     ]
@@ -147,8 +157,8 @@
     ],
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 210,
-    "theoremCount": 10,
+    "lineCount": 299,
+    "theoremCount": 13,
     "definitionCount": 1,
     "originalContributions": [
       "steps: a step counter mirroring the parent extGcd recursion, with steps_pos uniform unfolding",
@@ -156,11 +166,14 @@
       "steps_le_log: the O(log) upper bound steps a b ≤ 2·⌊log₂ b⌋ + 2 by strong induction",
       "steps_fib: consecutive Fibonacci numbers are the exact worst case (steps = n)",
       "fib_succ_le_two_pow + log_le_steps_fib: the matching ⌊log₂ b⌋ ≤ steps lower bound",
-      "steps_fib_theta: the two-sided Θ(log) sandwich for the Fibonacci family"
+      "steps_fib_theta: the two-sided Θ(log) sandwich for the Fibonacci family",
+      "fib_succ_le: the sharp Lamé input bound fib (steps a b + 1) ≤ b, via a two-step Euclidean descent (r + s ≤ b mirroring fib (j+3) = fib (j+2) + fib (j+1))",
+      "steps_lt_of_lt_fib: contrapositive — b < fib (n+1) forces fewer than n steps",
+      "fib_isLeast_input: fib (n+1) is the exact minimal input for n steps (attained by steps_fib, minimal by fib_succ_le)"
     ],
     "proofStrategy": "Define a step counter mirroring extGcd. Prove the O direction by strong induction on b using a two-step halving lemma and Nat.log bookkeeping. Prove the Ω/tightness direction by showing Fibonacci pairs attain exactly n steps and that fib (n+1) ≤ 2ⁿ, giving a matching logarithmic lower bound, then package both as a two-sided sandwich.",
     "openQuestions": [
-      "Sharpen to the exact golden-ratio constant ⌊log_φ b⌋ + O(1)",
+      "Convert the proved sharp input bound fib (steps a b + 1) ≤ b to the explicit real ⌊log_φ b⌋ + O(1) constant (needs fib (n) ≥ φⁿ⁻² over ℝ)",
       "Bound the total bit-complexity, not just the step count",
       "Formalize the average-case (12 ln 2 / π²)·log b analysis"
     ],
@@ -198,13 +211,24 @@
           "log_le_steps_fib",
           "steps_fib_theta"
         ]
+      },
+      {
+        "title": "The Sharp Lamé Bound — Fibonacci Inputs Are the Smallest",
+        "content": "fib_succ_le (fib (steps a b + 1) ≤ b, the sharp input lower bound by two-step descent), steps_lt_of_lt_fib (contrapositive), and fib_isLeast_input (fib (n+1) is the exact minimal input attaining n steps).",
+        "startLine": 211,
+        "endLine": 297,
+        "theorems": [
+          "fib_succ_le",
+          "steps_lt_of_lt_fib",
+          "fib_isLeast_input"
+        ]
       }
     ],
     "mathContext": {
       "field": "Analysis of Algorithms / Number Theory",
       "keyTheorem": "The extended Euclidean algorithm performs Θ(log b) division steps: steps a b ≤ 2⌊log₂ b⌋ + 2, with consecutive Fibonacci numbers attaining exactly n steps and ⌊log₂ b⌋ ≤ steps, so the bound is tight.",
       "historicalBackground": "Gabriel Lamé (1844) gave the first running-time analysis of any algorithm, bounding Euclidean-algorithm steps by O(log) and identifying Fibonacci numbers as the worst case. The parent entry posed formalizing this complexity bound as open question 3.",
-      "significance": "Formalizes Lamé's theorem as a tight two-sided Θ(log) bound rather than a one-sided O(log) estimate, with the Fibonacci family proved to be the exact extremal input, completing the parent's open question with the constant optimal up to a factor of 2."
+      "significance": "Formalizes Lamé's theorem as a tight two-sided Θ(log) bound rather than a one-sided O(log) estimate, with the Fibonacci family proved to be the exact extremal input, completing the parent's open question with the constant optimal up to a factor of 2. Part VI proves the sharp input form fib (steps a b + 1) ≤ b, identifying consecutive Fibonacci numbers as the exact minimal inputs for any given step count."
     }
   },
   "sorries": 0
