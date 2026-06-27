@@ -32,6 +32,15 @@ upper bound.
 
 * `IsBh.subset` — the `B_h` property is inherited by subsets.
 
+* `IsBh.pred` / `IsBh.of_le` — **downward closure of the hierarchy**: a `B_{h+1}`
+  set is `B_h`, and more generally a `B_k` set is `B_h` for every `h ≤ k`.  So the
+  `B_h` conditions get *stronger* as `h` grows.  Proved by appending a fixed
+  element of `A` to the smaller multisets.
+
+* `IsBh.card_mul_pred_le_of_two_le` — every `B_h` set with `h ≥ 2` already obeys
+  the Sidon bound `|A|(|A|−1) ≤ 4N` (a uniform `O(√N)` ceiling), obtained by
+  combining the downward closure with the `h = 2` case.
+
 * `IsBh.sum_injOn_powersetCard` — a `B_h` set has *distinct subset-sums* across its
   `h`-element subsets.  This is the combinatorial engine behind the counting bound.
 
@@ -98,6 +107,67 @@ theorem isBh_one (A : Finset ℕ) : IsBh 1 A := by
   apply Sym.coe_injective
   simp only [ha, hb, Multiset.sum_singleton] at hst ⊢
   rw [hst]
+
+/-! ## Part 1b: Downward closure of the `B_h` hierarchy -/
+
+/-- **Downward step.**  A `B_{h+1}` set is also a `B_h` set.
+
+If two `h`-multisets `s, t` drawn from `A` had equal sums, then — picking any
+element `a ∈ A` (which exists whenever `h ≥ 1`, taken from `s` itself) — the
+`(h+1)`-multisets `a ::ₛ s` and `a ::ₛ t` would again have equal sums
+(`a + Σs = a + Σt`).  The `B_{h+1}` property forces `a ::ₛ s = a ::ₛ t`, and
+cancelling the common head gives `s = t`.  (For `h = 0` the two `0`-multisets are
+both empty, hence equal.) -/
+theorem IsBh.pred {h : ℕ} {A : Finset ℕ} (hA : IsBh (h + 1) A) : IsBh h A := by
+  intro s hs t ht hsum
+  rw [Finset.mem_coe, Finset.mem_sym_iff] at hs ht
+  cases h with
+  | zero =>
+    -- Both `s` and `t` are the empty `0`-multiset.
+    apply Sym.coe_injective
+    have hs0 : (↑s : Multiset ℕ) = 0 := Multiset.card_eq_zero.mp s.2
+    have ht0 : (↑t : Multiset ℕ) = 0 := Multiset.card_eq_zero.mp t.2
+    rw [hs0, ht0]
+  | succ k =>
+    -- `s` has an element `a`, which lies in `A`.
+    obtain ⟨a, ha_s⟩ : ∃ a, a ∈ s := by
+      obtain ⟨a, s', hs'⟩ := Sym.exists_eq_cons_of_succ s
+      exact ⟨a, hs' ▸ Sym.mem_cons_self a s'⟩
+    have ha : a ∈ A := hs a ha_s
+    -- Append `a` to both; the results stay in `A.sym (k+2)`.
+    have hsa : (a ::ₛ s) ∈ A.sym (k + 1 + 1) := by
+      rw [Finset.mem_sym_iff]; intro x hx
+      rw [Sym.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact ha
+      · exact hs x hx
+    have hta : (a ::ₛ t) ∈ A.sym (k + 1 + 1) := by
+      rw [Finset.mem_sym_iff]; intro x hx
+      rw [Sym.mem_cons] at hx
+      rcases hx with rfl | hx
+      · exact ha
+      · exact ht x hx
+    -- Equal sums are preserved by prepending the same head.
+    have hsumcons :
+        ((a ::ₛ s : Sym ℕ (k + 1 + 1)) : Multiset ℕ).sum
+          = ((a ::ₛ t : Sym ℕ (k + 1 + 1)) : Multiset ℕ).sum := by
+      have hsum' : (↑s : Multiset ℕ).sum = (↑t : Multiset ℕ).sum := hsum
+      rw [Sym.coe_cons, Sym.coe_cons, Multiset.sum_cons, Multiset.sum_cons, hsum']
+    exact (Sym.cons_inj_right a s t).mp
+      (hA (Finset.mem_coe.mpr hsa) (Finset.mem_coe.mpr hta) hsumcons)
+
+/-- **Iterated downward closure.**  A `B_k` set is `B_h` for every `h ≤ k`:
+the `B_h` properties form a *decreasing* hierarchy in `h`. -/
+theorem IsBh.of_le {h k : ℕ} {A : Finset ℕ} (hk : h ≤ k) (hA : IsBh k A) :
+    IsBh h A := by
+  obtain ⟨d, rfl⟩ := Nat.exists_eq_add_of_le hk
+  clear hk
+  induction d with
+  | zero => simpa using hA
+  | succ n ih =>
+    apply ih
+    rw [show h + (n + 1) = (h + n) + 1 from by omega] at hA
+    exact hA.pred
 
 /-! ## Part 2: From `B_h` to distinct subset-sums -/
 
@@ -202,5 +272,15 @@ theorem IsBh.two_card_mul_pred_le {N : ℕ} {A : Finset ℕ}
   rw [Nat.choose_two_right] at h
   have hev : 2 ∣ A.card * (A.card - 1) := (Nat.even_mul_pred_self A.card).two_dvd
   omega
+
+/-- **Every `B_h` set with `h ≥ 2` obeys the Sidon bound.**  Combining the
+downward closure (`IsBh.of_le`, giving `B_h ⟹ B_2`) with the `h = 2`
+specialization shows that the size of *any* `B_h` set in `{1, …, N}` is
+`O(√N)` — a uniform-in-`h` ceiling, complementing the sharper `O(N^{1/h})`
+bound of `IsBh.choose_card_le`. -/
+theorem IsBh.card_mul_pred_le_of_two_le {h N : ℕ} {A : Finset ℕ} (hh : 2 ≤ h)
+    (hAN : A ⊆ Finset.Icc 1 N) (hA : IsBh h A) :
+    A.card * (A.card - 1) ≤ 4 * N :=
+  (hA.of_le hh).two_card_mul_pred_le hAN
 
 end Erdos340Bh

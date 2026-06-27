@@ -45,20 +45,36 @@
       "The sharp B_h upper bound is provable by an h-SUBSET counting argument rather than the full multiset count: the Nat.choose A.card h many h-element SUBSETS of A have pairwise distinct sums (a subset is a repetition-free multiset, so distinctness is inherited from the B_h injectivity), and each such sum lies in [1, h·N]. This injects choose(|A|,h) into an interval of length h·N, giving Nat.choose A.card h ≤ h·N (theorem IsBh.choose_card_le, 0-axiom verified).",
       "At h = 2 the bound reads choose(|A|,2) = |A|·(|A|-1)/2 ≤ 2N, i.e. |A|·(|A|-1) ≤ 4N (theorem IsBh.two_card_mul_pred_le) — exactly the classical Sidon bound |A| = O(√N), confirming B_h genuinely generalizes #340's B_2 case. For general h it gives |A| = O(N^{1/h}), the trivial B_h ceiling that Bose-Chowla constructions meet to within (1-o(1)).",
       "Using h-subsets (powersetCard, card = Nat.choose) instead of all h-multisets (Finset.sym, whose Finset-level cardinality is NOT directly available in Mathlib as a multichoose lemma) is what makes the counting bound clean: Finset.card_powersetCard gives the exact choose count, and Finset.card_image_of_injOn + Nat.card_Icc finish it.",
-      "h=2 omega gotcha: from choose(k,2) = k(k-1)/2 ≤ 2N, deriving k(k-1) ≤ 4N requires the EVENNESS of k(k-1) (else k(k-1)=4N+1 is a spurious omega counterexample). Supply 2 ∣ k(k-1) via (Nat.even_mul_pred_self k).two_dvd before omega."
+      "h=2 omega gotcha: from choose(k,2) = k(k-1)/2 ≤ 2N, deriving k(k-1) ≤ 4N requires the EVENNESS of k(k-1) (else k(k-1)=4N+1 is a spurious omega counterexample). Supply 2 ∣ k(k-1) via (Nat.even_mul_pred_self k).two_dvd before omega.",
+      "The B_h hierarchy is nested DOWNWARD: B_h gets stronger as h grows (B_{h+1} ⊆ B_h). The proof is one append: two equal-sum h-multisets stay equal-sum after prepending a common element, contradicting B_{h+1}. The h=0 base is vacuous (both multisets empty).",
+      "No nonemptiness hypothesis is needed for IsBh.pred: when h≥1 the required element is drawn from the multiset s itself (Sym.exists_eq_cons_of_succ); when h=0 the two 0-multisets are both empty.",
+      "Consequence: the sharp per-h bound choose|A|h ≤ h·N (giving O(N^{1/h})) is complemented by a uniform O(√N) ceiling for ALL h≥2, since every B_h set is also Sidon."
     ],
     "builtItems": [
-      "Erdos340GreedySidonOQ05.lean: def IsBh (h-fold-sum-distinctness via multiset-sum InjOn on A.sym h); IsBh.subset; isBh_one (every set is B_1); IsBh.sum_injOn_powersetCard (distinct h-subset sums); IsBh.choose_card_le (MAIN: Nat.choose |A| h ≤ h·N for B_h A ⊆ [1,N]); IsBh.two_card_mul_pred_le (Sidon recovery |A|(|A|-1) ≤ 4N). 206 lines, 6 theorems, 1 def, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only)."
+      "Erdos340GreedySidonOQ05.lean: def IsBh (h-fold-sum-distinctness via multiset-sum InjOn on A.sym h); IsBh.subset; isBh_one (every set is B_1); IsBh.sum_injOn_powersetCard (distinct h-subset sums); IsBh.choose_card_le (MAIN: Nat.choose |A| h ≤ h·N for B_h A ⊆ [1,N]); IsBh.two_card_mul_pred_le (Sidon recovery |A|(|A|-1) ≤ 4N). 206 lines, 6 theorems, 1 def, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only).",
+      "IsBh.pred in Erdos340GreedySidonOQ05.lean — B_{h+1} ⟹ B_h downward step (Sym.cons + cons_inj_right)",
+      "IsBh.of_le in Erdos340GreedySidonOQ05.lean — iterated downward closure B_k ⟹ B_h (h≤k) by induction",
+      "IsBh.card_mul_pred_le_of_two_le in Erdos340GreedySidonOQ05.lean — uniform Sidon ceiling for all B_h, h≥2"
     ],
     "mathlibGaps": [
       "Mathlib has no B_h-set theory and no Sidon/B_h upper bound; the whole development is original relative to Mathlib.",
       "Finset.sym s n has no direct cardinality (multichoose) lemma in Mathlib — only the Fintype-level Sym.card_sym_eq_choose. This is why the counting bound is routed through h-subsets (powersetCard, which DOES have card_powersetCard) rather than the full multiset family."
     ],
     "nextSteps": [
-      "Prove the explicit B_h ⟹ B_{h-1} downward closure (for nonempty A) by appending a fixed element to (h-1)-multisets — a clean structural theorem now that the multiset-sum formulation is in place.",
-      "Formalize a B_h analogue of the greedy extension lemma (parent file's sidon_exists_extension / nextSidon) to build a greedy B_h sequence and prove its N^{1/(2h-1)} lower bound — the genuine open direction matching the parent #340.",
-      "Optionally prove the exact bridge IsBh 2 A ↔ Erdos340.IsSidon A (Sym ℕ 2 ↔ ordered-pair sums) to formally link the new B_h def to the parent gallery's IsSidon."
+      "Formalize a B_h greedy extension lemma (analogue of nextSidon) to build a greedy B_h sequence and prove its N^{1/(2h-1)} lower bound — the genuine open direction of #340.",
+      "Optionally prove the exact bridge IsBh 2 A ↔ Erdos340.IsSidon A linking the multiset-sum B_2 definition to the parent gallery IsSidon."
     ],
-    "progressSummary": "PROGRESS: Foundational B_h theory + sharp B_h upper bound Nat.choose |A| h ≤ h·N formalized and verified 0-axiom (Erdos340GreedySidonOQ05.lean). Recovers the classical Sidon bound at h=2. The deep open direction (greedy B_h lower bound) remains, as for the parent #340."
+    "progressSummary": "VERIFIED (0 sorries, 0 axioms). Foundational B_h theory + sharp upper bound Nat.choose|A|h ≤ h·N (recovers Sidon at h=2), PLUS the downward closure of the B_h hierarchy: IsBh.pred (B_{h+1}⟹B_h via appending a fixed element) and IsBh.of_le (B_k⟹B_h for h≤k), with the corollary that every B_h set (h≥2) already satisfies the Sidon O(√N) bound. The deep greedy B_h lower bound (N^{1/(2h-1)}) remains open, as for parent #340."
+  },
+  "currentState": {
+    "iteration": 1,
+    "focus": "Added downward closure of the B_h hierarchy (IsBh.pred, IsBh.of_le) + uniform Sidon ceiling for B_h (h≥2). All VERIFIED 0-axiom."
+  },
+  "knownResults": {
+    "proven": [
+      "IsBh.pred: a B_{h+1} set is B_h (append a fixed element of A to the smaller multisets)",
+      "IsBh.of_le: a B_k set is B_h for every h ≤ k — the B_h conditions form a decreasing hierarchy in h",
+      "IsBh.card_mul_pred_le_of_two_le: every B_h set (h≥2) in [1,N] obeys the Sidon bound |A|(|A|-1) ≤ 4N"
+    ]
   }
 }
