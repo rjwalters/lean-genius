@@ -252,3 +252,60 @@ present status — consistent with the parent file's `f(5)=9`, `f(6)=17` axioms.
   flip meta status axiomatized→verified.
 - If Aristotle fails/counterexamples (it won't — statement is TRUE): the hand-proof
   needs the extreme-point/separating-line infra above as a dedicated multi-session build.
+
+## Session 2026-06-26 (researcher-5) — Aristotle proof RETRIEVED and integrated
+
+**Mode**: REVISIT (FRESH claim) · **Outcome**: progress — upper bound discharged, axiom eliminated (build-gated)
+
+### What I Did
+- Session preamble found the lone open axiom's Aristotle job had **COMPLETED**.
+  MCP `prove`/`prove_file` still 404 (down), but the **CLI** works:
+  `aristotle show a1441c24-c444-4cb6-ba78-9c0357beffcf` → `COMPLETE`, and
+  `aristotle download` retrieved a **339-line, axiom-free** proof of
+  `klein_upper_bound : 5 ∈ CardSet 4` (task 49f58f23-...). Aristotle's own
+  verification: no `sorry`/`admit`, no new axioms, `#print axioms` = only
+  `propext / Classical.choice / Quot.sound`.
+- **Integrated** the proof:
+  - Replaced the 1-`sorry` placeholder in
+    `proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean` with the full proof
+    (+ a PROVENANCE header recording project/task IDs and the v4.28.0 origin).
+  - Wired `proofs/Proofs/Erdos107OQ01.lean`: `axiom klein_upper_bound` →
+    `theorem klein_upper_bound := by intro pts hcard hgip; obtain ⟨T,…⟩ :=
+    KleinUpperAristotle.klein_upper_bound pts hcard hgip; exact ⟨T,…⟩`
+    (the two namespaces' defs are definitionally identical, so the transport is
+    a 3-line destructure/reassemble). Added the companion import; updated the
+    file header (no longer "the single remaining axiom").
+  - meta.json: status `axiomatized`→`verified`, badge `axiom`→`verified`,
+    axiomCount 1→0; rewrote description / contributions / insights / sections /
+    conclusion / openQuestions; added the companion to additionalFiles.
+  - Logged the job in `research/aristotle-jobs.json` (status `integrated`,
+    12 theorems_proven); created `src/data/research/problems/erdos-107-oq-01.json`.
+
+### Key Findings
+- The Aristotle proof's architecture matches the roadmap from prior sessions
+  exactly: case split on the number of **extreme points** of the 5-point hull —
+  ≥4 ⇒ four in convex position; ≤2 ⇒ impossible by finite Krein–Milman
+  (`subset_convexHull_extremePoints`) + general position; =3 ⇒ separating linear
+  functional (`exists_line_functional`, `two_same_sign`) puts two vertices on one
+  side with the two interior points (`hasConvexNGon_of_pair`/`_caseB`).
+- **Toolchain gap is the only residual risk**: Aristotle proved against Mathlib
+  v4.28.0; repo pins v4.26.0. The proof uses newer `grind` configs (`grind +qlia`,
+  `grind +suggestions`) and `simp_all +decide` — these may need a port on 4.26.
+  Could not build-verify this session (Docker bind-mount EACCES; MCP prove 404),
+  so the PR is **DRAFT, CI-gated**: the `verified` status lands only on a green
+  build. This keeps code↔meta consistent while never claiming verified pre-build.
+
+### Files Modified
+- proofs/Proofs/Erdos107OQ01KleinUpperAristotle.lean (sorry → 339-line proof + provenance)
+- proofs/Proofs/Erdos107OQ01.lean (axiom → transport theorem; header; import)
+- src/data/proofs/erdos-107-oq-01/meta.json (axiomatized/axiom/1 → verified/verified/0 + prose)
+- research/aristotle-jobs.json (job a1441c24 → integrated)
+- src/data/research/problems/erdos-107-oq-01.json (new knowledge JSON)
+
+### Next Steps
+- **Build-gate**: on a working build or CI, compile `Proofs.Erdos107OQ01KleinUpperAristotle`
+  on v4.26.0. If a tactic fails on version drift, port it (proof structure is sound).
+  On green: confirm `#print axioms f_four_eq_five` = only propext/Choice/Quot, then
+  `gh pr ready` for the deployer.
+- Reuse the extreme-point infra to attack the parent's `f_five_eq : f 5 = 9`.
+- Upstream candidates: `subset_convexHull_extremePoints`, `cross_eq_zero_iff_collinear`.
