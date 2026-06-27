@@ -3913,6 +3913,7 @@ import Proofs.ShannonChannelCodingOQ01OQ01
 import Proofs.ShannonChannelCodingOQ02
 import Proofs.ShannonChannelCodingOQ02OQ01
 import Proofs.ShannonChannelCodingOQ02OQ01Aristotle
+import Proofs.ShannonChannelCodingOQ02OQ02
 import Proofs.ShannonChannelCodingOQ02OQ03
 import Proofs.ShannonChannelCodingOQ02OQ04
 import Proofs.ShannonChannelCodingOQ03
