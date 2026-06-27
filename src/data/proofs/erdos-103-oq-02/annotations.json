@@ -1,0 +1,184 @@
+[
+  {
+    "id": "ann-erdos103oq02-header",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 1,
+      "endLine": 57
+    },
+    "type": "context",
+    "title": "Audit Finding: the Parent's Raw Count is Degenerate",
+    "content": "Documents the open question OQ-02 of Erdős #103 (the parent's `WeakConjecture`: is $h(n) \\geq 2$ for all large $n$?) and the file's actual contribution, which is a formalization audit rather than a resolution. The parent file defines $h(n) := \\text{Nat.card}\\,\\{P \\mathbin{/\\!/} \\text{IsOptimal}\\,n\\,P\\}$ — the raw count of optimal configurations with NO quotient by congruence. Because optimality is invariant under the continuous translation group of $\\mathbb{R}^2$, that set is empty or infinite, so its `Nat.card` is $0$ for every $n \\geq 1$. The header lays out the seven-step plan: prove translation is an optimality-preserving isometry, deduce infinitude, conclude $h \\equiv 0$, refute the literal `WeakConjecture`, supply the corrected congruence count `hCong`, and show it is non-degenerate exactly where the raw count collapsed.",
+    "mathContext": "Parent definition: $h(n) = \\text{Nat.card}\\,\\{P : \\text{IsOptimal}\\,n\\,P\\}$. Open question (OQ-02): $\\exists N,\\ \\forall n \\geq N,\\ h(n) \\geq 2$ — but $h$ must count configurations *up to congruence* for this to be meaningful.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Erdős problems",
+      "optimal point configurations",
+      "formalization audit",
+      "translation invariance"
+    ],
+    "prerequisites": [
+      "metric geometry",
+      "Lean 4 / Mathlib",
+      "cardinal arithmetic"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-translate-isometry",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 63,
+      "endLine": 73
+    },
+    "type": "technique",
+    "title": "Translation is Distance-Preserving",
+    "content": "`Ptranslate v P` shifts every point of the configuration by a fixed vector $v$. The lemma `pointDist_add_right` proves that the Euclidean distance is translation-invariant: under a common shift the coordinate differences $(p_1+v_1)-(q_1+v_1) = p_1 - q_1$ are unchanged, so the distance is identical. The proof unfolds `pointDist`, reduces the goal to the equality of the radicands with `congr 1`, simplifies the product projections, and closes with `ring`. This single lemma is the engine of the entire degeneracy argument: it makes translation an isometry.",
+    "mathContext": "$d(p+v,\\,q+v) = \\sqrt{((p_1+v_1)-(q_1+v_1))^2 + ((p_2+v_2)-(q_2+v_2))^2} = \\sqrt{(p_1-q_1)^2 + (p_2-q_2)^2} = d(p,q)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "isometry",
+      "Euclidean distance",
+      "translation group",
+      "invariance"
+    ],
+    "prerequisites": [
+      "Euclidean geometry",
+      "real arithmetic"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-translate-optimal",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 79,
+      "endLine": 107
+    },
+    "type": "technique",
+    "title": "Translation Preserves Optimality",
+    "content": "Because every pairwise distance is preserved, both ingredients of optimality survive translation. `translate_diameter` shows the diameter — a double supremum of pairwise distances (for $n \\geq 2$) — is unchanged, by `iSup_congr` applied twice over the index pairs; for $n < 2$ both sides take the `dif_neg` branch and are equal definitionally. `translate_valid` shows the minimum-separation constraint $d \\geq 1$ transfers directly via `pointDist_add_right`. Combining the two, `translate_optimal` carries any optimal configuration to an optimal configuration under an arbitrary shift.",
+    "mathContext": "$\\text{diam}(P+v) = \\sup_{i,j} d(P_i+v, P_j+v) = \\sup_{i,j} d(P_i, P_j) = \\text{diam}(P)$, and $d(P_i+v, P_j+v) \\geq 1 \\iff d(P_i, P_j) \\geq 1$. Hence $\\text{IsOptimal}(P) \\Rightarrow \\text{IsOptimal}(P+v)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "diameter",
+      "supremum",
+      "group action",
+      "invariant"
+    ],
+    "prerequisites": [
+      "supremum / iSup",
+      "metric geometry"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-infinitude",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 113,
+      "endLine": 130
+    },
+    "type": "insight",
+    "title": "The Optimal Set is Infinite When Nonempty",
+    "content": "For $n \\geq 1$, if a single optimal configuration $P_0$ exists, then infinitely many do: the map $t \\mapsto P_0 + (t,0)$ embeds $\\mathbb{R}$ into the optimal subtype. Injectivity is proved by evaluating two equal translates at index $0$ (which exists because $n \\geq 1$) and cancelling $P_0(0)$ via `add_right_inj`, forcing $(s,0) = (t,0)$ and hence $s = t$. Since $\\mathbb{R}$ is infinite, `Infinite.of_injective` makes the optimal subtype infinite. This is the structural reason the raw count breaks: a continuous symmetry generates an uncountable orbit of optima.",
+    "mathContext": "The injection $\\iota : \\mathbb{R} \\hookrightarrow \\{P : \\text{IsOptimal}\\,n\\,P\\},\\ \\iota(t) = P_0 + (t,0)$, witnesses $|\\{P : \\text{IsOptimal}\\,n\\,P\\}| \\geq |\\mathbb{R}| = \\aleph_1$ whenever the set is nonempty.",
+    "significance": "key",
+    "relatedConcepts": [
+      "injection",
+      "infinite type",
+      "group orbit",
+      "continuous symmetry"
+    ],
+    "prerequisites": [
+      "cardinality",
+      "injective functions"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-degeneracy",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 136,
+      "endLine": 160
+    },
+    "type": "insight",
+    "title": "The Raw Count h(n) is Identically Zero",
+    "content": "`h_eq_zero` proves $h(n) = 0$ for all $n \\geq 1$ with no existence hypothesis. The optimal subtype is empty or nonempty; in the empty case `Nat.card` is $0$, and in the nonempty case Part 3 makes it infinite, so `Nat.card_eq_zero` again gives $0$. With this, `raw_weak_conjecture_false` refutes the parent's literal `WeakConjecture`: any claimed threshold $N$ would force $h(\\max N\\,1) \\geq 2$, but $\\max N\\,1 \\geq 1$ so that value is $0$, and `omega` closes the contradiction. The literal weak conjecture is not merely unproven — it is *false* under the parent's own definitions.",
+    "mathContext": "$h(n) = \\text{Nat.card}\\,\\{P : \\text{IsOptimal}\\,n\\,P\\} = 0$ for all $n \\geq 1$, because Mathlib's $\\text{Nat.card}$ sends both empty and infinite types to $0$. Hence $\\neg\\,(\\exists N,\\ \\forall n \\geq N,\\ h(n) \\geq 2)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.card",
+      "infinite cardinality convention",
+      "proof by contradiction",
+      "degenerate definition"
+    ],
+    "prerequisites": [
+      "Nat.card semantics",
+      "case analysis"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-quotient",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 162,
+      "endLine": 202
+    },
+    "type": "definition",
+    "title": "The Corrected Count: Congruence Classes",
+    "content": "`OptimalSetoid n` is the setoid on the optimal subtype whose relation is `AreCongruent` (reflexive, symmetric, transitive from the parent's congruence lemmas). `hCong n := Nat.card (Quotient (OptimalSetoid n))` is the corrected count — the number of *incongruent* optimal configurations, which is the quantity Erdős's $h(n)$ was always meant to be. `WeakConjectureCorrect` restates the open question against `hCong`. The lemma `translate_congruent` exhibits the explicit isometry $p \\mapsto p + v$ relating a configuration to its translate, and `translates_same_class` (via `Quotient.sound`) collapses the entire translation orbit into one class — dissolving exactly the infinitude that forced $h \\equiv 0$.",
+    "mathContext": "$h_{\\text{Cong}}(n) = \\text{Nat.card}\\,\\big(\\{P : \\text{IsOptimal}\\,n\\,P\\} / {\\cong}\\big)$. All translates $P + v$ satisfy $P \\cong P + v$, so $[P] = [P+v]$ in the quotient: the orbit is a single point.",
+    "significance": "key",
+    "relatedConcepts": [
+      "setoid",
+      "quotient type",
+      "congruence",
+      "group quotient"
+    ],
+    "prerequisites": [
+      "equivalence relations",
+      "quotient types in Lean"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-nondegeneracy",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 204,
+      "endLine": 253
+    },
+    "type": "insight",
+    "title": "The Correction is Non-Degenerate Where the Raw Count Failed",
+    "content": "Part 6 records that the corrected weak conjecture follows from the corrected main conjecture ($\\forall C,\\ \\exists N,\\ \\forall n \\geq N,\\ h_{\\text{Cong}}(n) > C$) by instantiating $C = 1$. Part 7 establishes the diagnostic contrast with $h \\equiv 0$. `optimalQuotient_nonempty_of_exists` shows the quotient is nonempty as soon as one optimal configuration exists, so emptiness is never why `hCong` could vanish. Under the hypothesis `[Finite (Quotient (OptimalSetoid n))]`, `hCong_pos_of_finite` gives $h_{\\text{Cong}}(n) \\geq 1$ via `Nat.card_pos`, and `hCong_strictly_exceeds_raw` concludes $h(n) = 0 < 1 \\leq h_{\\text{Cong}}(n)$. The only thing that could still pull `hCong` to $0$ is an *infinite* quotient — and finiteness of the congruence classes is precisely the content the open Erdős question concerns.",
+    "mathContext": "Given an optimal configuration and $\\big|\\{P\\}/{\\cong}\\big| < \\infty$: $\\quad h(n) = 0 < 1 \\leq h_{\\text{Cong}}(n)$. The corrected count behaves exactly where the raw count is unconditionally degenerate.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Nat.card_pos",
+      "finiteness hypothesis",
+      "non-degeneracy",
+      "well-posed counting"
+    ],
+    "prerequisites": [
+      "finite types",
+      "quotient cardinality"
+    ]
+  },
+  {
+    "id": "ann-erdos103oq02-exports",
+    "proofId": "erdos-103-oq-02",
+    "range": {
+      "startLine": 257,
+      "endLine": 265
+    },
+    "type": "context",
+    "title": "Exported Headline Results",
+    "content": "The closing `#check` commands export the eight headline results so downstream files and the gallery can reference them by fully-qualified name: `translate_optimal`, `optimal_subtype_infinite_of_nonempty`, `h_eq_zero`, `raw_weak_conjecture_false`, `hCong`, `translates_same_class`, `hCong_pos_of_finite`, and `hCong_strictly_exceeds_raw`. Together they form the audit's logical spine: translation is an optimality-preserving isometry, the optimal set is infinite when nonempty, the raw count is identically zero, the literal weak conjecture is false, the congruence quotient is the corrected count, the translation orbit is one class, and the corrected count is non-degenerate under finiteness.",
+    "mathContext": "The exports certify the chain $\\text{translate\\_optimal} \\Rightarrow \\text{infinitude} \\Rightarrow h \\equiv 0 \\Rightarrow \\neg\\,\\text{WeakConjecture} \\;\\Vert\\; h_{\\text{Cong}} \\text{ corrects it}$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "interface exports",
+      "result reuse"
+    ],
+    "prerequisites": [
+      "Lean module structure"
+    ]
+  }
+]
