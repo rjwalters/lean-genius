@@ -89,6 +89,43 @@
       "**Sharp at n = 4**: For n=4, p=2 the bracket gives 4 ∣ |Gal|, φ(4)=2 ∣ |Gal|, |Gal| ∣ 24. The parent entry's independent ℝ-embedding argument pins |Gal| = 8 inside this bracket — both factors 4 and 2 are achieved, and 8 ∣ 24."
     ]
   },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: the metacyclic divisibility bracket",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Frames the open question: Gal(Xⁿ−p/ℚ) is metacyclic of order n·φ(n), sitting in the split exact sequence 1 → Cₙ → Gal → (ℤ/nℤ)ˣ → 1. This file proves the verified two-sided bracket n ∣ |Gal| ∣ n! plus the cyclotomic lower factor φ(n) ∣ |Gal|, generalizing the parent n=4 lemmas and adding the (ℤ/nℤ)ˣ-quotient witness."
+    },
+    {
+      "id": "part-i-basic-facts",
+      "title": "Part I — Basic facts about Xⁿ − p",
+      "startLine": 44,
+      "endLine": 66,
+      "summary": "Four foundational lemmas about the polynomial Xⁿ − p over ℚ for prime p: irreducibility (Eisenstein at p, reusing the gallery lemma eisenstein_X_pow_sub_prime), degree n, monicity, and separability (irreducible in characteristic 0). These feed all three divisibility results."
+    },
+    {
+      "id": "part-ii-lower-factor",
+      "title": "Part II — The lower factor n ∣ |Gal|",
+      "startLine": 68,
+      "endLine": 84,
+      "summary": "Proves n ∣ |Gal(Xⁿ−p/ℚ)|: card_of_separable turns |Gal| into the splitting-field degree, and the irreducible degree n = [ℚ(ⁿ√p):ℚ] divides that degree via irred_monic_degree_dvd_splitting_finrank. Generalizes the parent's four_dvd_x4_sub_2_gal_card."
+    },
+    {
+      "id": "part-iii-upper-bound",
+      "title": "Part III — The upper bound |Gal| ∣ n!",
+      "startLine": 86,
+      "endLine": 108,
+      "summary": "Proves |Gal| ∣ n!: the Galois action on the n roots is faithful (galActionHom_injective), embedding Gal ↪ Sₙ, whose order is n!. card_rootSet_eq_natDegree supplies the exact root count n. Generalizes the parent's x4_sub_2_gal_card_dvd_24."
+    },
+    {
+      "id": "part-iv-cyclotomic",
+      "title": "Part IV — The cyclotomic factor φ(n) ∣ |Gal|",
+      "startLine": 110,
+      "endLine": 185,
+      "summary": "The new metacyclic ingredient. A primitive n-th root of unity is built from the roots of Xⁿ−p themselves (the ratios β/α of the n roots are the n distinct n-th roots of unity), so ℚ(ζₙ) ⊆ splitting field with [ℚ(ζₙ):ℚ] = φ(n); the tower law forces φ(n) ∣ |Gal|. Witnesses the quotient Gal ↠ (ℤ/nℤ)ˣ."
+    }
+  ],
   "conclusion": {
     "summary": "Verified divisibility skeleton for Gal(Xⁿ−p/ℚ): n ∣ |Gal|, φ(n) ∣ |Gal|, and |Gal| ∣ n!, for every n ≥ 2 and prime p. 7 theorems, 0 sorries, 0 axioms. The cyclotomic factor φ(n) ∣ |Gal| (via a primitive n-th root of unity built from the roots of Xⁿ−p) is the new metacyclic ingredient beyond the parent D₄ entry.",
     "implications": "Generalizes the parent's n=4 divisibility lemmas (four_dvd_x4_sub_2_gal_card, x4_sub_2_gal_card_dvd_24) to all degrees and supplies the cyclotomic-quotient factor, narrowing the order of Gal(Xⁿ−p/ℚ) to a multiple of lcm(n, φ(n)) dividing n!. This is the verified scaffold on which the exact metacyclic computation |Gal| = n·φ(n) can be assembled.",
