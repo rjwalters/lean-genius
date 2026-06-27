@@ -304,7 +304,7 @@ theorem isLowerVertex_of_leftmost {pts : List SupportPoint} {p : SupportPoint}
     · subst hqp; simp
     · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
         List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
-      rw [hempty] at hmem; exact absurd hmem (List.not_mem_nil q)
+      rw [hempty] at hmem; simp at hmem
   · refine ⟨hp, edgeSlope p q₀, p.2 - edgeSlope p q₀ * (p.1 : ℚ), by ring, fun q hq => ?_⟩
     by_cases hqp : q = p
     · subst hqp; linarith
@@ -334,7 +334,7 @@ theorem isLowerVertex_of_rightmost {pts : List SupportPoint} {p : SupportPoint}
     · subst hqp; simp
     · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
         List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
-      rw [hempty] at hmem; exact absurd hmem (List.not_mem_nil q)
+      rw [hempty] at hmem; simp at hmem
   · refine ⟨hp, edgeSlope q₀ p, p.2 - edgeSlope q₀ p * (p.1 : ℚ), by ring, fun q hq => ?_⟩
     by_cases hqp : q = p
     · subst hqp; linarith
@@ -357,5 +357,65 @@ theorem ysqMinusX_endpoints :
     isLowerVertex_of_rightmost (by simp [YsqMinusX]) ?_⟩
   · intro q hq hne; fin_cases hq <;> simp_all
   · intro q hq hne; fin_cases hq <;> simp_all
+
+/-! ### Existence of the first edge
+
+The vertex theorems above identify *corners* of the Newton polygon but never
+produce an actual edge.  `exists_isLowerEdge_of_leftmost` closes that gap: from
+the left endpoint it constructs a genuine `IsLowerEdge`, namely the segment to
+the support point of least edge-slope leaving `p`.  This is the first concrete
+step of a hull-construction (and hence of the Newton–Puiseux recursion, whose
+termination measure `S2-B` reduces the degree one dominant edge at a time):
+unlike `isLowerVertex_of_leftmost`, it returns the right endpoint, not just the
+fact that `p` is a vertex. -/
+
+/-- **The leftmost support point spawns a lower edge.**  If every other support
+point lies strictly to the right of `p`, then joining `p` to the point of least
+edge-slope leaving it (`List.argmin (edgeSlope p)`) yields a genuine lower edge:
+the dominant (least-slope) edge out of the left endpoint of the Newton polygon. -/
+theorem exists_isLowerEdge_of_leftmost {pts : List SupportPoint} {p : SupportPoint}
+    (hp : p ∈ pts) (hother : ∃ q ∈ pts, q ≠ p)
+    (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    ∃ q, IsLowerEdge pts p q := by
+  classical
+  rcases hR : (pts.filter (fun q => decide (q ≠ p))).argmin (edgeSlope p) with _ | q₀
+  · -- the filter is empty, contradicting the existence of some other point
+    obtain ⟨q, hq, hqp⟩ := hother
+    have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
+      List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
+    rw [List.argmin_eq_none.mp hR] at hmem
+    simp at hmem
+  · obtain ⟨hq₀pts, hq₀dec⟩ := List.mem_filter.mp (List.argmin_mem hR)
+    have hq₀ne : q₀ ≠ p := by simpa using hq₀dec
+    have hlt : (p.1 : ℚ) < (q₀.1 : ℚ) := by exact_mod_cast hleft q₀ hq₀pts hq₀ne
+    have hlt' : p.1 < q₀.1 := by exact_mod_cast hlt
+    have hne : (q₀.1 : ℚ) - (p.1 : ℚ) ≠ 0 := sub_ne_zero.mpr (ne_of_lt hlt).symm
+    refine ⟨q₀, hp, hq₀pts, hlt', edgeSlope p q₀,
+      p.2 - edgeSlope p q₀ * (p.1 : ℚ), by ring, ?_, fun r hr => ?_⟩
+    · -- the line of slope `edgeSlope p q₀` through `p` passes through `q₀`
+      have hthis : edgeSlope p q₀ * ((q₀.1 : ℚ) - (p.1 : ℚ)) = q₀.2 - p.2 := by
+        rw [edgeSlope, div_mul_cancel₀ _ hne]
+      linear_combination -hthis
+    · -- that line lies weakly below every support point
+      by_cases hrp : r = p
+      · subst hrp; linarith
+      · have hmem : r ∈ pts.filter (fun q => decide (q ≠ p)) :=
+          List.mem_filter.mpr ⟨hr, by simpa using hrp⟩
+        have hle : edgeSlope p q₀ ≤ edgeSlope p r := List.le_of_mem_argmin hmem hR
+        have hltr : (p.1 : ℚ) < (r.1 : ℚ) := by exact_mod_cast hleft r hr hrp
+        have hpos : (0 : ℚ) < (r.1 : ℚ) - (p.1 : ℚ) := by linarith
+        have key : edgeSlope p q₀ * ((r.1 : ℚ) - (p.1 : ℚ)) ≤ r.2 - p.2 :=
+          (le_div_iff₀ hpos).mp hle
+        have hexp : edgeSlope p q₀ * ((r.1 : ℚ) - (p.1 : ℚ))
+            = edgeSlope p q₀ * (r.1 : ℚ) - edgeSlope p q₀ * (p.1 : ℚ) := by ring
+        linarith [key, hexp]
+
+/-- The worked example `Y² − x` again, now via `exists_isLowerEdge_of_leftmost`:
+the leftmost support point `(0,1)` spawns a lower edge without supplying its right
+endpoint by hand. -/
+theorem ysqMinusX_exists_edge : ∃ q, IsLowerEdge YsqMinusX (0, 1) q :=
+  exists_isLowerEdge_of_leftmost (by simp [YsqMinusX])
+    ⟨(2, 0), by simp [YsqMinusX], by decide⟩
+    (by intro q hq hne; fin_cases hq <;> simp_all)
 
 end PuiseuxTheoremOQ03

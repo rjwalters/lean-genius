@@ -36,11 +36,14 @@
       "edgeSlope_ge_of_supportingLine / edgeSlope_le_of_supportingLine: a vertex's supporting slope m bounds the slope to EVERY other support point (>= m to the right, <= m to the left) — the per-line convexity bounds complementing edgeSlope_mono",
       "IsLowerEdge.interior_slopes: a lower edge is convex from below — for ANY interior support point r (vertex or not), edgeSlope r q <= edgeSlope p r, so the polygon never dips below an edge (sharper than the adjacent-edge edgeSlope_mono)",
       "Worked Y²−x example: both (0,1) and (2,0) are lower vertices, the segment is a genuine lower edge, edge slope = −1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
-      "Parent fix: corrected a dangling /-- doc comment in PuiseuxTheorem.lean that made the file fail to parse"
+      "Parent fix: corrected a dangling /-- doc comment in PuiseuxTheorem.lean that made the file fail to parse",
+      "exists_isLowerEdge_of_leftmost: the leftmost support point spawns a genuine IsLowerEdge (the dominant least-slope edge) — first concrete hull-construction step, returning the right endpoint not just vertex-hood",
+      "ysqMinusX_exists_edge: worked Y^2-x edge existence derived via the new theorem (right endpoint not supplied by hand)",
+      "Maintenance: replaced 3 uses of List.not_mem_nil q (explicit-arg form, removed in current Mathlib cache) with simp — file no longer built against the updated Mathlib until this fix"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 277,
-    "theoremCount": 16,
+    "lineCount": 421,
+    "theoremCount": 21,
     "definitionCount": 4,
     "mathlib_version": "4.26.0"
   },
@@ -213,9 +216,9 @@
       "Mathlib.Data.List.MinMax"
     ],
     "namespace": "PuiseuxTheoremOQ03",
-    "lineCount": 277,
+    "lineCount": 421,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 21,
     "definitionCount": 4,
     "path": "Proofs/PuiseuxTheoremOQ03.lean",
     "sorries": 0
