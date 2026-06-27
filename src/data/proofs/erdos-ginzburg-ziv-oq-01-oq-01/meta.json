@@ -79,6 +79,67 @@
     "theoremCount": 6,
     "definitionCount": 2
   },
+  "overview": {
+    "historicalContext": "The Davenport constant is named after Harold Davenport, who highlighted the invariant at the 1966 Midwestern Conference on Group Theory and Number Theory (Ohio State) in connection with the arithmetic of algebraic number fields: D(G) for the ideal class group G bounds the maximal length of a factorization into irreducibles in the ring of integers, making it a central quantity in non-unique factorization theory (Geroldinger–Halter-Koch). For a finite abelian group, D(G) is the least d forcing every length-d sequence to contain a nonempty zero-sum subsequence. The cyclic value D(ℤ/nℤ) = n is the foundational case — classical folklore established by the prefix-sum pigeonhole — while the general problem (e.g. the rank-2 value D(ℤ/nℤ × ℤ/mℤ) = n + m − 1, proved by Olson) is much harder and open beyond rank 2. The constant sits beside the Erdős–Ginzburg–Ziv constant s(G); for the cyclic group the two are genuinely different numbers, n versus 2n − 1.",
+    "problemStatement": "Compute and formally verify the Davenport constant of the cyclic group: prove D(ℤ/nℤ) = n, i.e. that n is the least length d such that every sequence of d elements of ℤ/nℤ admits a nonempty zero-sum subsequence, packaged as IsLeast (DavenportSet n) n.",
+    "proofStrategy": "Two matching bounds meet at n. Upper bound (n is admissible): given any n elements a₀,…,a_{n−1}, form the n+1 prefix sums P(0),…,P(n) ∈ ℤ/nℤ; by pigeonhole (n+1 values in an n-element group) two coincide, P(u) = P(v) with u < v, and the consecutive block [u,v) is a nonempty subsequence summing to P(v) − P(u) = 0. Lower bound (sharpness): the all-ones sequence of length n−1 (n−1 copies of a generator) has every nonempty sub-block summing to its cardinality c with 1 ≤ c ≤ n−1, never 0 mod n, so no length below n is admissible. Antisymmetry of the two bounds yields the IsLeast statement.",
+    "keyInsights": [
+      "The Davenport constant is the *minimum-definition* invariant: phrasing it as IsLeast (DavenportSet n) n makes 'least admissible length' literal, splitting the proof cleanly into membership (upper bound) and a lower bound on the whole set.",
+      "The upper bound is pure prefix-sum pigeonhole: n+1 partial sums cannot be distinct in an n-element group, and a repeated partial sum exhibits a *consecutive* zero-sum block — no Chevalley–Warning or EGZ machinery is needed, so the proof is independent of the gallery's EGZ entry.",
+      "Sharpness is witnessed by a single extremal sequence: n−1 copies of a generator. Every nonempty sub-block sums to its cardinality, which ranges over 1,…,n−1 and is never divisible by n — the cleanest possible certificate that n−1 lengths fail.",
+      "D(ℤ/nℤ) = n and s(ℤ/nℤ) = 2n−1 are distinct invariants of the same group, separating two notions of 'forced zero-sum': any nonempty zero-sum (Davenport) versus a zero-sum of length exactly |G| (Erdős–Ginzburg–Ziv)."
+    ],
+    "prerequisites": [
+      "Sequences over a finite abelian group and the notion of a (nonempty) zero-sum subsequence",
+      "The pigeonhole principle for maps between finite sets (Finset.exists_ne_map_eq_of_card_lt_of_maps_to)",
+      "Arithmetic in ℤ/nℤ: Fintype.card (ZMod n) = n and (a : ZMod n) = 0 ↔ n ∣ a",
+      "IsLeast and the least-element formulation of a minimum"
+    ]
+  },
+  "sections": [
+    {
+      "id": "statement-context",
+      "title": "Statement and context",
+      "startLine": 1,
+      "endLine": 55,
+      "summary": "Module docstring: defines the Davenport constant D(G) as the least length forcing a nonempty zero-sum subsequence, states the cyclic value D(ℤ/nℤ) = n, contrasts it with the EGZ constant s(ℤ/nℤ) = 2n−1, and notes that neither the constant nor the prefix-sum lemma is in Mathlib. Imports ZMod and Tactic; opens Finset; fixes n with [NeZero n]."
+    },
+    {
+      "id": "definitions",
+      "title": "Definitions: prefix sums and admissible lengths",
+      "startLine": 56,
+      "endLine": 66,
+      "summary": "prefixSum a k = sum of the first k entries of the sequence a; DavenportSet n = the set of lengths d such that every length-d sequence over ℤ/nℤ has a nonempty zero-sum subsequence — the minimum-definition set whose least element is D(ℤ/nℤ)."
+    },
+    {
+      "id": "prefix-split",
+      "title": "The prefix-sum split",
+      "startLine": 68,
+      "endLine": 81,
+      "summary": "prefixSum_split: for u ≤ v, P(v) = P(u) + (sum over the block [u,v)), via Finset.sum_union on the disjoint decomposition of [0,v). This additive split is the engine that turns a coincidence of prefix sums into a zero-sum block."
+    },
+    {
+      "id": "upper-bound",
+      "title": "The crux: prefix-sum pigeonhole (upper bound)",
+      "startLine": 83,
+      "endLine": 108,
+      "summary": "exists_nonempty_zerosum: any n elements of ℤ/nℤ contain a nonempty consecutive zero-sum block. The n+1 prefix sums P(0),…,P(n) map into the n-element ℤ/nℤ, so pigeonhole gives P(u) = P(v) with u < v; prefixSum_split shows the block [u,v) sums to 0."
+    },
+    {
+      "id": "sharpness",
+      "title": "Sharpness and the lower bound",
+      "startLine": 110,
+      "endLine": 147,
+      "summary": "n_mem_DavenportSet records the upper bound as membership; davenport_sharp exhibits the all-ones sequence of length n−1 whose every nonempty sub-block sums to its cardinality 1 ≤ c ≤ n−1 (never 0 mod n); davenport_lower_bound concludes every admissible length is ≥ n."
+    },
+    {
+      "id": "capstone",
+      "title": "The Davenport constant of the cyclic group",
+      "startLine": 149,
+      "endLine": 154,
+      "summary": "davenport_zmod: the headline IsLeast (DavenportSet n) n, i.e. D(ℤ/nℤ) = n, assembled from the upper-bound membership and the lower bound by antisymmetry."
+    }
+  ],
   "conclusion": {
     "summary": "The Davenport constant of the cyclic group is computed and verified: D(ℤ/nℤ) = n, stated as IsLeast (DavenportSet n) n (davenport_zmod). The upper bound (exists_nonempty_zerosum) is the prefix-sum pigeonhole — the n+1 partial sums P(0),…,P(n) cannot be distinct in the n-element group ℤ/nℤ, so a coincidence P(u) = P(v) with u < v exhibits the intervening block as a nonempty zero-sum subsequence. The lower bound (davenport_lower_bound, davenport_sharp) uses the all-ones extremal sequence of length n−1, whose nonempty sub-block sums equal their cardinalities 1,…,n−1, none divisible by n. All results are verified with 0 axioms and 0 sorries.",
     "implications": "Computes the second fundamental zero-sum invariant of ℤ/nℤ, complementing the gallery's Erdős–Ginzburg–Ziv constant s(ℤ/nℤ) = 2n−1 and exhibiting the two as distinct numbers (n vs 2n−1). Directly answers the open question recorded in the EGZ entry (erdos-ginzburg-ziv-oq-01) on whether the Davenport constant admits a packaged formalization. Mathlib has neither the Davenport constant nor the prefix-sum zero-sum lemma; the proof is independent of EGZ (prefix-sum pigeonhole, not Chevalley–Warning).",
