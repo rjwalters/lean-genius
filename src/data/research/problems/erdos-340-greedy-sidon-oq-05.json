@@ -6,14 +6,14 @@
   "tier": "B",
   "tractability": "medium — the foundational B_h theory and the sharp B_h counting upper bound are now formalized and verified (0-axiom). The deep open direction (improving the greedy B_h lower bound toward the N^{1/h} ceiling) remains open, exactly as for the parent #340.",
   "started": "2026-06-27",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-27T13:30:00.000Z",
   "path": "research/problems/erdos-340-greedy-sidon-oq-05",
   "leanFiles": [
     {
       "path": "Proofs/Erdos340GreedySidonOQ05.lean",
       "filename": "Erdos340GreedySidonOQ05.lean",
-      "lineCount": 206,
-      "theoremCount": 6,
+      "lineCount": 258,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -48,14 +48,15 @@
       "h=2 omega gotcha: from choose(k,2) = k(k-1)/2 ≤ 2N, deriving k(k-1) ≤ 4N requires the EVENNESS of k(k-1) (else k(k-1)=4N+1 is a spurious omega counterexample). Supply 2 ∣ k(k-1) via (Nat.even_mul_pred_self k).two_dvd before omega."
     ],
     "builtItems": [
-      "Erdos340GreedySidonOQ05.lean: def IsBh (h-fold-sum-distinctness via multiset-sum InjOn on A.sym h); IsBh.subset; isBh_one (every set is B_1); IsBh.sum_injOn_powersetCard (distinct h-subset sums); IsBh.choose_card_le (MAIN: Nat.choose |A| h ≤ h·N for B_h A ⊆ [1,N]); IsBh.two_card_mul_pred_le (Sidon recovery |A|(|A|-1) ≤ 4N). 206 lines, 6 theorems, 1 def, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only)."
+      "Erdos340GreedySidonOQ05.lean: def IsBh (h-fold-sum-distinctness via multiset-sum InjOn on A.sym h); IsBh.subset; isBh_one (every set is B_1); IsBh.sum_injOn_powersetCard (distinct h-subset sums); IsBh.choose_card_le (MAIN: Nat.choose |A| h ≤ h·N for B_h A ⊆ [1,N]); IsBh.two_card_mul_pred_le (Sidon recovery |A|(|A|-1) ≤ 4N). 206 lines, 6 theorems, 1 def, 0 sorries, 0 axioms (propext/Classical.choice/Quot.sound only).",
+      "IsBh.of_succ: B_{h+1} ⟹ B_h downward closure (append a fixed element, cancel head via Sym.cons_inj_right)",
+      "IsBh.of_le: B_h ⟹ B_k for all k ≤ h (iterates of_succ via Nat.le_induction)"
     ],
     "mathlibGaps": [
       "Mathlib has no B_h-set theory and no Sidon/B_h upper bound; the whole development is original relative to Mathlib.",
       "Finset.sym s n has no direct cardinality (multichoose) lemma in Mathlib — only the Fintype-level Sym.card_sym_eq_choose. This is why the counting bound is routed through h-subsets (powersetCard, which DOES have card_powersetCard) rather than the full multiset family."
     ],
     "nextSteps": [
-      "Prove the explicit B_h ⟹ B_{h-1} downward closure (for nonempty A) by appending a fixed element to (h-1)-multisets — a clean structural theorem now that the multiset-sum formulation is in place.",
       "Formalize a B_h analogue of the greedy extension lemma (parent file's sidon_exists_extension / nextSidon) to build a greedy B_h sequence and prove its N^{1/(2h-1)} lower bound — the genuine open direction matching the parent #340.",
       "Optionally prove the exact bridge IsBh 2 A ↔ Erdos340.IsSidon A (Sym ℕ 2 ↔ ordered-pair sums) to formally link the new B_h def to the parent gallery's IsSidon."
     ],

@@ -99,6 +99,58 @@ theorem isBh_one (A : Finset ℕ) : IsBh 1 A := by
   simp only [ha, hb, Multiset.sum_singleton] at hst ⊢
   rw [hst]
 
+/-! ## Part 1b: Downward closure in `h` -/
+
+/-- **Downward closure (one step).**  A `B_{h+1}` set is also `B_h`.
+
+*Proof.*  If `A` is empty the claim is degenerate (`A.sym h` is a subsingleton for
+`h = 0` and empty for `h ≥ 1`).  Otherwise fix any `a ∈ A`.  Given two `h`-multisets
+`s, t ∈ A.sym h` with equal sums, the `(h+1)`-multisets `a ::ₛ s` and `a ::ₛ t` lie
+in `A.sym (h+1)` and have equal sums (each is the common sum plus `a`); the `B_{h+1}`
+injectivity forces `a ::ₛ s = a ::ₛ t`, and cancelling the head `a`
+(`Sym.cons_inj_right`) gives `s = t`. ∎ -/
+theorem IsBh.of_succ {h : ℕ} {A : Finset ℕ} (hA : IsBh (h + 1) A) : IsBh h A := by
+  rcases A.eq_empty_or_nonempty with rfl | ⟨a, haA⟩
+  · -- `A = ∅`: the domain `∅.sym h` has at most one element.
+    intro s hs t ht _
+    rcases Nat.eq_zero_or_pos h with rfl | hpos
+    · exact Subsingleton.elim s t
+    · obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hpos.ne'
+      rw [Finset.sym_empty] at hs
+      exact absurd hs (Finset.notMem_empty s)
+  · -- Append a fixed `a ∈ A` to reduce to `B_{h+1}` injectivity.
+    intro s hs t ht hsum
+    have hsmem : ∀ x ∈ s, x ∈ A := Finset.mem_sym_iff.mp hs
+    have htmem : ∀ x ∈ t, x ∈ A := Finset.mem_sym_iff.mp ht
+    have hs' : a ::ₛ s ∈ A.sym (h + 1) := by
+      rw [Finset.mem_sym_iff]
+      intro x hx
+      rcases Sym.mem_cons.mp hx with rfl | hxs
+      · exact haA
+      · exact hsmem x hxs
+    have ht' : a ::ₛ t ∈ A.sym (h + 1) := by
+      rw [Finset.mem_sym_iff]
+      intro x hx
+      rcases Sym.mem_cons.mp hx with rfl | hxt
+      · exact haA
+      · exact htmem x hxt
+    have hsum0 : (s : Multiset ℕ).sum = (t : Multiset ℕ).sum := hsum
+    have hsum' :
+        ((a ::ₛ s : Sym ℕ (h + 1)) : Multiset ℕ).sum
+          = ((a ::ₛ t : Sym ℕ (h + 1)) : Multiset ℕ).sum := by
+      rw [Sym.coe_cons, Sym.coe_cons, Multiset.sum_cons, Multiset.sum_cons, hsum0]
+    have hcons : a ::ₛ s = a ::ₛ t := hA hs' ht' hsum'
+    exact (Sym.cons_inj_right a s t).mp hcons
+
+/-- **Downward closure (general).**  A `B_h` set is `B_k` for every `k ≤ h`: all
+shorter sums remain distinct.  Iterates `IsBh.of_succ`. -/
+theorem IsBh.of_le {k h : ℕ} {A : Finset ℕ} (hkh : k ≤ h) (hA : IsBh h A) :
+    IsBh k A := by
+  revert hA
+  induction h, hkh using Nat.le_induction with
+  | base => exact id
+  | succ n _ ih => exact fun hA => ih hA.of_succ
+
 /-! ## Part 2: From `B_h` to distinct subset-sums -/
 
 /-- A small bridge lemma: for a finset `U`, the `Finset.sum` over `id` equals the
