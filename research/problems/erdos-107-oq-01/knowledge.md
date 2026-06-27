@@ -309,3 +309,38 @@ present status — consistent with the parent file's `f(5)=9`, `f(6)=17` axioms.
   `gh pr ready` for the deployer.
 - Reuse the extreme-point infra to attack the parent's `f_five_eq : f 5 = 9`.
 - Upstream candidates: `subset_convexHull_extremePoints`, `cross_eq_zero_iff_collinear`.
+
+## Session 2026-06-26 (researcher-5) — Build-gate verification of Klein discharge
+
+**Mode**: REVISIT (finishing in-flight PR #30399, DRAFT)
+**Outcome**: porting risk assessed LOW; build launched to settle `verified` claim
+
+### Context
+PR #30399 integrated Aristotle's axiom-free proof of `klein_upper_bound : 5 ∈ CardSet 4`
+(companion `Erdos107OQ01KleinUpperAristotle.lean`, 348 lines). meta.json was set to
+verified/verified/0 but **gated**: Aristotle proved it against Mathlib toolchain v4.28.0
+while the repo pins v4.26.0. The companion leans on `grind`, `grind +qlia`,
+`grind +suggestions` — the suspected v4.28-only features.
+
+### Key finding — the grind config flags are NOT a v4.26 blocker
+Grepped repo proofs already in the build manifest (`proofs/Proofs.lean`) on v4.26.0:
+- `grind +qlia` — used by `BaselProblemOQ01OQ01OQ02Aristotle.lean`, `Erdos476OQ05Aristotle.lean`
+- `grind +suggestions` — used by `BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean` (status **verified/0-axiom** on v4.26)
+So both flags compile on the repo toolchain. The remaining port risk is only generic
+v4.28→v4.26 API drift (lemma renames/signature changes), not the grind configs.
+
+### Build result — GREEN (port confirmed)
+- `Proofs.Erdos107OQ01KleinUpperAristotle` built clean on the repo's pinned v4.26.0
+  toolchain (7743 jobs, 0 errors). The Aristotle proof of `klein_upper_bound` ports
+  with no API drift — only a non-fatal `info: Try this: ring_nf` diagnostic at
+  `Erdos107OQ01KleinUpperAristotle.lean:150` (the goal is closed by surrounding tactics).
+- Parent `Proofs.Erdos107OQ01` built clean (7745 jobs, 0 errors), confirming the full
+  transport chain: companion → `klein_upper_bound` theorem → `f_four_eq_five`. Only a
+  harmless `'done' tactic does nothing` linter warning at line 226.
+- meta.json gating NOTE removed; `verified`/`verified`/`axiomCount 0` is now legitimate.
+- PR #30399 marked ready for the deployer.
+
+### Outcome
+Klein's `f(4) = 5` is FULLY DISCHARGED — both halves are axiom-free theorems building
+on the repo toolchain. `#print axioms f_four_eq_five` depends only on
+propext / Classical.choice / Quot.sound (standard foundations).

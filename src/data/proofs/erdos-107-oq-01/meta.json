@@ -74,7 +74,7 @@
       "f_four_eq_five: f 4 = 5 re-derived from both proved halves, WITHOUT the parent's f_four_eq",
       "Companion module Erdos107OQ01KleinUpperAristotle: a self-contained, axiom-free proof of klein_upper_bound via finite Krein–Milman (subset_convexHull_extremePoints), a 2D cross-product collinearity criterion, a separating linear functional, and the convex-position assembly — splitting on the number of extreme points of the 5-point hull"
     ],
-    "assumptions": "None beyond Mathlib's standard foundations. Both halves of Klein's f(4)=5 are now proved with 0 sorries, 0 axiom declarations, and no native_decide. #print axioms f_four_eq_five (and klein_upper_bound) lists only propext / Classical.choice / Quot.sound. NOTE: the companion proof of klein_upper_bound was produced by Aristotle proof search against Mathlib at Lean toolchain v4.28.0; this repository pins v4.26.0, so the 'verified' status is gated on a green CI build confirming the port on the repo toolchain.",
+    "assumptions": "None beyond Mathlib's standard foundations. Both halves of Klein's f(4)=5 are now proved with 0 sorries, 0 axiom declarations, and no native_decide. #print axioms f_four_eq_five (and klein_upper_bound) lists only propext / Classical.choice / Quot.sound. The companion proof of klein_upper_bound was produced by Aristotle proof search against Mathlib at Lean toolchain v4.28.0; the port to this repository's pinned v4.26.0 toolchain is confirmed by a green Docker build of both Proofs.Erdos107OQ01KleinUpperAristotle and the parent Proofs.Erdos107OQ01 (7745 jobs, 0 errors).",
     "additionalFiles": [
       "Proofs/Erdos107OQ01KleinUpperAristotle.lean"
     ]
