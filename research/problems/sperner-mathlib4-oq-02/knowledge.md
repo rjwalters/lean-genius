@@ -62,6 +62,22 @@ boundary path-endpoints, forcing an interior complementary simplex. This is a
 genuinely different parity engine (parity of path endpoints, not of the target
 set itself).
 
+### Insight 4b — n=1 Tucker ⟹ Borsuk–Ulam collapses to IVT (PORTABLE, DONE)
+The general Tucker ⟹ Borsuk–Ulam reduction is an analytic limit (refine the
+triangulation, mesh → 0, extract a convergent subsequence by compactness). In
+**dimension 1** this limit *collapses entirely to the Intermediate Value
+Theorem*: a continuous function with antipodal boundary values (`f a = -f b`)
+has a zero between `a` and `b` — the exact continuous mirror of "an antipodal
+sign boundary forces a complementary edge". From this, the genuine continuous
+**1-D Borsuk–Ulam** follows: for continuous 1-periodic `f`, the antipodal
+difference `g x = f x - f (x + 1/2)` satisfies `g 0 = -g (1/2)` (periodicity),
+so `g` has a zero ⟹ `f c = f (c + 1/2)` for some `c`. Shipped as
+`SpernerTuckerBorsukUlamOneDim.lean` (`exists_zero_of_antipodal`,
+`borsuk_ulam_circle`), 117 LOC, 0 sorries, 0 axioms (IVT only). Mathlib has **no**
+Borsuk–Ulam theorem of its own, so this is a genuinely new artifact, not a
+re-export. NB: the analytic collapse is special to n=1; for n≥2 the mesh→0 /
+compactness argument is the real (still-open) analytic phase.
+
 ### Insight 4 — buildability split
 - **n=1 milestone**: small, self-contained `CellComplex`-style parity over
   `{+1,-1}`. Estimated < 200 LOC. BUILD when Docker is up.
@@ -163,3 +179,40 @@ a complementary edge.
   complementary-edge count is NOT a parity invariant for n≥2 — Insight 3). Or the
   Tucker-via-Sperner doubling/quotient reduction on RPⁿ.
 - Tucker ⟹ Borsuk–Ulam: continuous mesh→0 + compactness (separate analytic phase).
+
+## Session 2026-06-27 (Session 4) — ACT: continuous 1-D Borsuk–Ulam capstone (verified)
+
+**Mode**: BUILD (Docker IMAGE build broken — containerd `meta.db` I/O error; verified
+via `lake env lean` fallback against main-repo Mathlib `.olean` cache)
+**Outcome**: progress (ACT) — new verified file, 0 sorries, 0 axioms
+
+### What I Did
+- Completed the **n=1 line end-to-end** by adding the continuous capstone
+  `proofs/Proofs/SpernerTuckerBorsukUlamOneDim.lean` (117 LOC). It carries out the
+  **Tucker ⟹ Borsuk–Ulam** reduction in dimension 1, where the usual mesh→0 /
+  compactness limit collapses to the **Intermediate Value Theorem** (Insight 4b).
+
+### Theorems (all verified, 0-axiom: propext/Classical.choice/Quot.sound only)
+- `exists_zero_of_antipodal`: continuous `f` with antipodal boundary `f a = -f b`
+  has a zero in `uIcc a b` (continuous analogue of `exists_complementary_edge`).
+  Proof: `intermediate_value_uIcc` at the value `0`, which lies in `uIcc x (-x)`.
+- `borsuk_ulam_circle`: **1-D Borsuk–Ulam** — continuous 1-periodic `f : ℝ → ℝ`
+  has `f c = f (c + 1/2)` for some `c`. Proof: antipodal difference
+  `g x = f x - f (x + 1/2)` has `g 0 = -g (1/2)` by periodicity, then the above.
+
+### Gotchas
+- After `rw [hanti]` the IVT interval is `uIcc (-f b) (f b)`; needed
+  `Set.uIcc_comm` to match the helper `zero_mem_uIcc_neg : 0 ∈ uIcc x (-x)`.
+- Mathlib has NO Borsuk–Ulam theorem (only a passing mention in
+  `Topology/Homotopy/LocallyContractible.lean`) — this is a genuinely new artifact.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerBorsukUlamOneDim.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + currentState)
+- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}
+
+### Next Steps (n≥2 unchanged)
+- n≥2 Tucker: Freund–Todd / Prescott–Su path-following engine (Insight 3), or
+  Tucker-via-Sperner doubling on RPⁿ. The n≥2 Tucker ⟹ Borsuk–Ulam mesh→0 /
+  compactness analytic phase remains the genuine open analytic step.

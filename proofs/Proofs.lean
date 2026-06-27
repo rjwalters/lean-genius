@@ -4009,6 +4009,7 @@ import Proofs.SpernerSimplicialInstanceOQ04
 import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SpernerTuckerOneDim
+import Proofs.SpernerTuckerBorsukUlamOneDim
 import Proofs.SphericalExcessGirard
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ03
