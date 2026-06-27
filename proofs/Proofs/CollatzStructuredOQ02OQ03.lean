@@ -39,17 +39,22 @@ algebraic core and isolated the finite-check residue), this file:
     of starting values already satisfy the "drops below itself" conclusion — the
     even numbers, the powers of two, the odd residue class `n ≡ 1 (mod 4)`
     (`n ≥ 5`), the odd residue class `n ≡ 3 (mod 16)`, and the two odd classes
-    `n ≡ 11, 23 (mod 32)` — so the elementary part of the almost-all picture is real
-    Lean content, not scaffolding on the axiom.  The evens together with `1 + 4ℕ`,
-    `3 + 16ℕ`, `11 + 32ℕ`, and `23 + 32ℕ` cover **seven-eighths** of the integers via
-    elementary residue dynamics (`attainsBelow_density_lower_32`, a machine-checked
-    `≥ 7/8` lower density, sharpening the earlier `≥ 13/16` of
-    `attainsBelow_density_lower_16`), and the `mod 4`/`mod 16`/`mod 32` families exercise
-    the non-trivial `3n+1` branch of the map.  The dyadic refinement is genuine: of the
-    odd classes `n ≡ 3 (mod 4)`, only `n ≡ 3 (mod 16)` drops within its residue-determined
+    `n ≡ 11, 23 (mod 32)`, and the three classes `n ≡ 7, 15, 59 (mod 128)` — so the
+    elementary part of the almost-all picture is real Lean content, not scaffolding on the
+    axiom.  The evens together with `1 + 4ℕ`, `3 + 16ℕ`, `11 + 32ℕ`, `23 + 32ℕ`, and
+    `7, 15, 59 (mod 128)` cover **one hundred fifteen one-hundred-twenty-eighths**
+    (`115/128`) of the integers via elementary residue dynamics
+    (`attainsBelow_density_lower_128`, a machine-checked `≥ 115/128` lower density,
+    sharpening the earlier `≥ 7/8` of `attainsBelow_density_lower_32` and `≥ 13/16` of
+    `attainsBelow_density_lower_16`), and the `mod 4`/`mod 16`/`mod 32`/`mod 128` families
+    exercise the non-trivial `3n+1` branch of the map.  The dyadic refinement is genuine: of
+    the odd classes `n ≡ 3 (mod 4)`, only `n ≡ 3 (mod 16)` drops within its residue-determined
     window at level `16`; passing to level `32` two more half-classes stabilise —
     `11 (mod 32)` (from the unstable `11 (mod 16)`) and `23 (mod 32)` (from `7 (mod 16)`),
-    each in eight forced steps — while `7, 15, 27, 31 (mod 32)` remain `m`-dependent.
+    each in eight forced steps.  Level `64` adds **no** new stable class, but level `128`
+    adds exactly three — `7, 15, 59 (mod 128)`, each dropping in eleven forced steps to
+    `81m + d` (`81 = 3^4 < 2^7 = 128`) — while the remaining refinements of
+    `7, 15, 27, 31 (mod 32)` stay `m`-dependent.
 
 References:
 - Tao, T. (2019). "Almost all orbits of the Collatz map attain almost bounded
@@ -582,6 +587,225 @@ theorem attainsBelow_density_lower_32 (N : ℕ) :
     _ = (E ∪ O1 ∪ O3 ∪ O11 ∪ O23).card := hcard.symm
     _ ≤ _ := Finset.card_le_card hsub
 
+open Classical in
+/-- **Sharpened quantitative density lower bound (`115/128`).**  Adjoining the three new
+residue classes `7 + 128ℕ`, `15 + 128ℕ`, and `59 + 128ℕ` lifts the count further: among the
+integers in `[1, 128N]`, at least `115N - 1` already attain a value below themselves — the
+`64N` evens, the `32N - 1` members of `1 + 4ℕ` that are `≥ 5`, the `8N` members of `3 + 16ℕ`,
+the `4N` members of `11 + 32ℕ`, the `4N` members of `23 + 32ℕ`, and `N` members from each of
+`7 + 128ℕ`, `15 + 128ℕ`, and `59 + 128ℕ` (the three classes that stabilise only at level
+`128`).  The eight families are pairwise disjoint (separated by their residues mod `2`, `4`,
+`16`, and `32`), giving `64N + (32N - 1) + 8N + 4N + 4N + N + N + N = 115N - 1` distinct
+drop-below starts.  Dividing by `128N` and letting `N → ∞`, the drop-below set has **lower
+natural density `≥ 115/128`** — strictly above the previous `7/8 = 112/128` floor. -/
+theorem attainsBelow_density_lower_128 (N : ℕ) :
+    115 * N - 1 ≤
+      ((Finset.Icc 1 (128 * N)).filter (fun n => AttainsBelow n)).card := by
+  classical
+  rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+  · subst hN0; simp
+  set E : Finset ℕ := (Finset.Icc 1 (64 * N)).image (fun j : ℕ => 2 * j) with hE
+  set O1 : Finset ℕ := (Finset.Icc 1 (32 * N - 1)).image (fun j : ℕ => 4 * j + 1) with hO1
+  set O3 : Finset ℕ := (Finset.Icc 0 (8 * N - 1)).image (fun j : ℕ => 16 * j + 3) with hO3
+  set O11 : Finset ℕ := (Finset.Icc 0 (4 * N - 1)).image (fun j : ℕ => 32 * j + 11) with hO11
+  set O23 : Finset ℕ := (Finset.Icc 0 (4 * N - 1)).image (fun j : ℕ => 32 * j + 23) with hO23
+  set O7 : Finset ℕ := (Finset.Icc 0 (N - 1)).image (fun j : ℕ => 128 * j + 7) with hO7
+  set O15 : Finset ℕ := (Finset.Icc 0 (N - 1)).image (fun j : ℕ => 128 * j + 15) with hO15
+  set O59 : Finset ℕ := (Finset.Icc 0 (N - 1)).image (fun j : ℕ => 128 * j + 59) with hO59
+  have hEinj : Function.Injective (fun j : ℕ => 2 * j) :=
+    fun a b h => by have h' : (2 * a) = (2 * b) := h; omega
+  have hO1inj : Function.Injective (fun j : ℕ => 4 * j + 1) :=
+    fun a b h => by have h' : (4 * a + 1) = (4 * b + 1) := h; omega
+  have hO3inj : Function.Injective (fun j : ℕ => 16 * j + 3) :=
+    fun a b h => by have h' : (16 * a + 3) = (16 * b + 3) := h; omega
+  have hO11inj : Function.Injective (fun j : ℕ => 32 * j + 11) :=
+    fun a b h => by have h' : (32 * a + 11) = (32 * b + 11) := h; omega
+  have hO23inj : Function.Injective (fun j : ℕ => 32 * j + 23) :=
+    fun a b h => by have h' : (32 * a + 23) = (32 * b + 23) := h; omega
+  have hO7inj : Function.Injective (fun j : ℕ => 128 * j + 7) :=
+    fun a b h => by have h' : (128 * a + 7) = (128 * b + 7) := h; omega
+  have hO15inj : Function.Injective (fun j : ℕ => 128 * j + 15) :=
+    fun a b h => by have h' : (128 * a + 15) = (128 * b + 15) := h; omega
+  have hO59inj : Function.Injective (fun j : ℕ => 128 * j + 59) :=
+    fun a b h => by have h' : (128 * a + 59) = (128 * b + 59) := h; omega
+  have hEcard : E.card = 64 * N := by
+    rw [hE, Finset.card_image_of_injective _ hEinj, Nat.card_Icc]; omega
+  have hO1card : O1.card = 32 * N - 1 := by
+    rw [hO1, Finset.card_image_of_injective _ hO1inj, Nat.card_Icc]; omega
+  have hO3card : O3.card = 8 * N := by
+    rw [hO3, Finset.card_image_of_injective _ hO3inj, Nat.card_Icc]; omega
+  have hO11card : O11.card = 4 * N := by
+    rw [hO11, Finset.card_image_of_injective _ hO11inj, Nat.card_Icc]; omega
+  have hO23card : O23.card = 4 * N := by
+    rw [hO23, Finset.card_image_of_injective _ hO23inj, Nat.card_Icc]; omega
+  have hO7card : O7.card = N := by
+    rw [hO7, Finset.card_image_of_injective _ hO7inj, Nat.card_Icc]; omega
+  have hO15card : O15.card = N := by
+    rw [hO15, Finset.card_image_of_injective _ hO15inj, Nat.card_Icc]; omega
+  have hO59card : O59.card = N := by
+    rw [hO59, Finset.card_image_of_injective _ hO59inj, Nat.card_Icc]; omega
+  have hEres : ∀ x ∈ E, x % 2 = 0 := by
+    intro x hx; rw [hE, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (2 * i) % 2 = 0; omega
+  have hO1res : ∀ x ∈ O1, x % 4 = 1 := by
+    intro x hx; rw [hO1, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (4 * i + 1) % 4 = 1; omega
+  have hO3res : ∀ x ∈ O3, x % 16 = 3 := by
+    intro x hx; rw [hO3, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (16 * i + 3) % 16 = 3; omega
+  have hO11res : ∀ x ∈ O11, x % 32 = 11 := by
+    intro x hx; rw [hO11, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (32 * i + 11) % 32 = 11; omega
+  have hO23res : ∀ x ∈ O23, x % 32 = 23 := by
+    intro x hx; rw [hO23, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (32 * i + 23) % 32 = 23; omega
+  have hO7res : ∀ x ∈ O7, x % 32 = 7 := by
+    intro x hx; rw [hO7, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (128 * i + 7) % 32 = 7; omega
+  have hO15res : ∀ x ∈ O15, x % 32 = 15 := by
+    intro x hx; rw [hO15, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (128 * i + 15) % 32 = 15; omega
+  have hO59res : ∀ x ∈ O59, x % 32 = 27 := by
+    intro x hx; rw [hO59, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (128 * i + 59) % 32 = 27; omega
+  have hd_E_O1 : Disjoint E O1 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO1res z hb; omega
+  have hd_E_O3 : Disjoint E O3 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO3res z hb; omega
+  have hd_E_O11 : Disjoint E O11 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO11res z hb; omega
+  have hd_E_O23 : Disjoint E O23 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO23res z hb; omega
+  have hd_E_O7 : Disjoint E O7 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO7res z hb; omega
+  have hd_E_O15 : Disjoint E O15 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO15res z hb; omega
+  have hd_E_O59 : Disjoint E O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hEres z ha; have := hO59res z hb; omega
+  have hd_O1_O3 : Disjoint O1 O3 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO1res z ha; have := hO3res z hb; omega
+  have hd_O1_O11 : Disjoint O1 O11 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO1res z ha; have := hO11res z hb; omega
+  have hd_O1_O23 : Disjoint O1 O23 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO1res z ha; have := hO23res z hb; omega
+  have hd_O1_O7 : Disjoint O1 O7 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO1res z ha; have := hO7res z hb; omega
+  have hd_O1_O15 : Disjoint O1 O15 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO1res z ha; have := hO15res z hb; omega
+  have hd_O1_O59 : Disjoint O1 O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO1res z ha; have := hO59res z hb; omega
+  have hd_O3_O11 : Disjoint O3 O11 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO3res z ha; have := hO11res z hb; omega
+  have hd_O3_O23 : Disjoint O3 O23 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO3res z ha; have := hO23res z hb; omega
+  have hd_O3_O7 : Disjoint O3 O7 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO3res z ha; have := hO7res z hb; omega
+  have hd_O3_O15 : Disjoint O3 O15 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO3res z ha; have := hO15res z hb; omega
+  have hd_O3_O59 : Disjoint O3 O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO3res z ha; have := hO59res z hb; omega
+  have hd_O11_O23 : Disjoint O11 O23 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO11res z ha; have := hO23res z hb; omega
+  have hd_O11_O7 : Disjoint O11 O7 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO11res z ha; have := hO7res z hb; omega
+  have hd_O11_O15 : Disjoint O11 O15 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO11res z ha; have := hO15res z hb; omega
+  have hd_O11_O59 : Disjoint O11 O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO11res z ha; have := hO59res z hb; omega
+  have hd_O23_O7 : Disjoint O23 O7 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO23res z ha; have := hO7res z hb; omega
+  have hd_O23_O15 : Disjoint O23 O15 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO23res z ha; have := hO15res z hb; omega
+  have hd_O23_O59 : Disjoint O23 O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO23res z ha; have := hO59res z hb; omega
+  have hd_O7_O15 : Disjoint O7 O15 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO7res z ha; have := hO15res z hb; omega
+  have hd_O7_O59 : Disjoint O7 O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO7res z ha; have := hO59res z hb; omega
+  have hd_O15_O59 : Disjoint O15 O59 :=
+    Finset.disjoint_left.mpr fun z ha hb => by
+      have := hO15res z ha; have := hO59res z hb; omega
+  have hdU1 : Disjoint (E) O1 := hd_E_O1
+  have hdU2 : Disjoint (E ∪ O1) O3 := (Finset.disjoint_union_left.mpr ⟨hd_E_O3, hd_O1_O3⟩)
+  have hdU3 : Disjoint (E ∪ O1 ∪ O3) O11 := (Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨hd_E_O11, hd_O1_O11⟩), hd_O3_O11⟩)
+  have hdU4 : Disjoint (E ∪ O1 ∪ O3 ∪ O11) O23 := (Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨hd_E_O23, hd_O1_O23⟩), hd_O3_O23⟩), hd_O11_O23⟩)
+  have hdU5 : Disjoint (E ∪ O1 ∪ O3 ∪ O11 ∪ O23) O7 := (Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨hd_E_O7, hd_O1_O7⟩), hd_O3_O7⟩), hd_O11_O7⟩), hd_O23_O7⟩)
+  have hdU6 : Disjoint (E ∪ O1 ∪ O3 ∪ O11 ∪ O23 ∪ O7) O15 := (Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨hd_E_O15, hd_O1_O15⟩), hd_O3_O15⟩), hd_O11_O15⟩), hd_O23_O15⟩), hd_O7_O15⟩)
+  have hdU7 : Disjoint (E ∪ O1 ∪ O3 ∪ O11 ∪ O23 ∪ O7 ∪ O15) O59 := (Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨(Finset.disjoint_union_left.mpr ⟨hd_E_O59, hd_O1_O59⟩), hd_O3_O59⟩), hd_O11_O59⟩), hd_O23_O59⟩), hd_O7_O59⟩), hd_O15_O59⟩)
+  have hcard : (E ∪ O1 ∪ O3 ∪ O11 ∪ O23 ∪ O7 ∪ O15 ∪ O59).card =
+      E.card + O1.card + O3.card + O11.card + O23.card + O7.card + O15.card + O59.card := by
+    rw [Finset.card_union_of_disjoint hdU7, Finset.card_union_of_disjoint hdU6, Finset.card_union_of_disjoint hdU5, Finset.card_union_of_disjoint hdU4, Finset.card_union_of_disjoint hdU3, Finset.card_union_of_disjoint hdU2, Finset.card_union_of_disjoint hdU1]
+  have hsub : E ∪ O1 ∪ O3 ∪ O11 ∪ O23 ∪ O7 ∪ O15 ∪ O59 ⊆
+      (Finset.Icc 1 (128 * N)).filter (fun n => AttainsBelow n) := by
+    intro x hx
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    rw [Finset.mem_union, Finset.mem_union, Finset.mem_union, Finset.mem_union, Finset.mem_union, Finset.mem_union, Finset.mem_union] at hx
+    rcases hx with (((((((hxE | hxO1) | hxO3) | hxO11) | hxO23) | hxO7) | hxO15) | hxO59)
+    · rw [hE, Finset.mem_image] at hxE
+      obtain ⟨j, hj, rfl⟩ := hxE; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 2 * j ∧ 2 * j ≤ 128 * N) ∧ AttainsBelow (2 * j)
+      exact ⟨⟨by omega, by omega⟩, even_attainsBelow (by omega) (by omega)⟩
+    · rw [hO1, Finset.mem_image] at hxO1
+      obtain ⟨j, hj, rfl⟩ := hxO1; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 4 * j + 1 ∧ 4 * j + 1 ≤ 128 * N) ∧ AttainsBelow (4 * j + 1)
+      exact ⟨⟨by omega, by omega⟩, mod_four_one_attainsBelow (by omega) (by omega)⟩
+    · rw [hO3, Finset.mem_image] at hxO3
+      obtain ⟨j, hj, rfl⟩ := hxO3; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 16 * j + 3 ∧ 16 * j + 3 ≤ 128 * N) ∧ AttainsBelow (16 * j + 3)
+      exact ⟨⟨by omega, by omega⟩, mod_sixteen_three_attainsBelow (by omega)⟩
+    · rw [hO11, Finset.mem_image] at hxO11
+      obtain ⟨j, hj, rfl⟩ := hxO11; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 32 * j + 11 ∧ 32 * j + 11 ≤ 128 * N) ∧ AttainsBelow (32 * j + 11)
+      exact ⟨⟨by omega, by omega⟩, mod_thirtytwo_eleven_attainsBelow (by omega)⟩
+    · rw [hO23, Finset.mem_image] at hxO23
+      obtain ⟨j, hj, rfl⟩ := hxO23; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 32 * j + 23 ∧ 32 * j + 23 ≤ 128 * N) ∧ AttainsBelow (32 * j + 23)
+      exact ⟨⟨by omega, by omega⟩, mod_thirtytwo_twentythree_attainsBelow (by omega)⟩
+    · rw [hO7, Finset.mem_image] at hxO7
+      obtain ⟨j, hj, rfl⟩ := hxO7; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 128 * j + 7 ∧ 128 * j + 7 ≤ 128 * N) ∧ AttainsBelow (128 * j + 7)
+      exact ⟨⟨by omega, by omega⟩, mod_onetwentyeight_seven_attainsBelow (by omega)⟩
+    · rw [hO15, Finset.mem_image] at hxO15
+      obtain ⟨j, hj, rfl⟩ := hxO15; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 128 * j + 15 ∧ 128 * j + 15 ≤ 128 * N) ∧ AttainsBelow (128 * j + 15)
+      exact ⟨⟨by omega, by omega⟩, mod_onetwentyeight_fifteen_attainsBelow (by omega)⟩
+    · rw [hO59, Finset.mem_image] at hxO59
+      obtain ⟨j, hj, rfl⟩ := hxO59; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 128 * j + 59 ∧ 128 * j + 59 ≤ 128 * N) ∧ AttainsBelow (128 * j + 59)
+      exact ⟨⟨by omega, by omega⟩, mod_onetwentyeight_fiftynine_attainsBelow (by omega)⟩
+  calc 115 * N - 1
+      ≤ E.card + O1.card + O3.card + O11.card + O23.card + O7.card + O15.card + O59.card := by
+        rw [hEcard, hO1card, hO3card, hO11card, hO23card, hO7card, hO15card, hO59card]; omega
+    _ = (E ∪ O1 ∪ O3 ∪ O11 ∪ O23 ∪ O7 ∪ O15 ∪ O59).card := hcard.symm
+    _ ≤ _ := Finset.card_le_card hsub
+
 /-! ## Part III: The orbit minimum and logarithmic density -/
 
 /-- The **orbit minimum** of `n`: the infimum of the values visited by the
@@ -663,6 +887,26 @@ theorem even_or_mod_four_one_or_mod_thirtytwo_colMin_lt {n : ℕ} (hn : 1 ≤ n)
     (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3 ∨ n % 32 = 11 ∨ n % 32 = 23) :
     colMin n < n :=
   attainsBelow_colMin_lt (even_or_mod_four_one_or_mod_thirtytwo_attainsBelow hn h)
+
+/-- The new residue class `7 + 128ℕ` has orbit minimum strictly below its start. -/
+theorem mod_onetwentyeight_seven_colMin_lt {n : ℕ} (h : n % 128 = 7) : colMin n < n :=
+  attainsBelow_colMin_lt (mod_onetwentyeight_seven_attainsBelow h)
+
+/-- The new residue class `15 + 128ℕ` has orbit minimum strictly below its start. -/
+theorem mod_onetwentyeight_fifteen_colMin_lt {n : ℕ} (h : n % 128 = 15) : colMin n < n :=
+  attainsBelow_colMin_lt (mod_onetwentyeight_fifteen_attainsBelow h)
+
+/-- The new residue class `59 + 128ℕ` has orbit minimum strictly below its start. -/
+theorem mod_onetwentyeight_fiftynine_colMin_lt {n : ℕ} (h : n % 128 = 59) : colMin n < n :=
+  attainsBelow_colMin_lt (mod_onetwentyeight_fiftynine_attainsBelow h)
+
+/-- The full `115/128` family — evens, `1 + 4ℕ` (`n ≥ 5`), `3 + 16ℕ`, `11 + 32ℕ`, `23 + 32ℕ`,
+`7 + 128ℕ`, `15 + 128ℕ`, and `59 + 128ℕ` — has orbit minimum strictly below the start,
+unconditionally and without Tao's axiom. -/
+theorem even_or_mod_four_one_or_mod_onetwentyeight_colMin_lt {n : ℕ} (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3 ∨ n % 32 = 11 ∨ n % 32 = 23 ∨
+         n % 128 = 7 ∨ n % 128 = 15 ∨ n % 128 = 59) : colMin n < n :=
+  attainsBelow_colMin_lt (even_or_mod_four_one_or_mod_onetwentyeight_attainsBelow hn h)
 
 /-- The logarithmic-density partial average of a set `S` up to `N`:
 `(∑_{n≤N, n∈S} 1/n) / (∑_{n≤N} 1/n)`. -/
