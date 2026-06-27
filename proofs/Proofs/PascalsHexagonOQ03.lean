@@ -856,6 +856,179 @@ theorem pascalLine_generators_sameProjLine {C : Conic} (hex : InscribedHexagon C
   ⟨pascalLine_hexRot_sameProjLine hex, pascalLine_hexRev_sameProjLine hex⟩
 
 -- ============================================================
+-- PART 4e: `sameProjLine` is a Partial Equivalence Relation
+--          (the algebraic engine for the quotient descent)
+-- ============================================================
+
+/- PART 4d showed each *generator* of the dihedral group fixes the Pascal
+   projective line.  To promote this to invariance under the whole group
+   `⟨hexRot, hexRev⟩` by closure induction, `sameProjLine` must be an
+   equivalence relation along the orbit.  It is reflexive (PART 4d) and we
+   now add the two remaining pieces:
+
+     * **symmetry** — `l ∥ m ⟹ m ∥ l` (the cross product is anti-symmetric);
+     * **transitivity** — `l ∥ m ⟹ m ∥ n ⟹ l ∥ n`, *provided the middle
+       vector `m ≠ 0`*.
+
+   The `m ≠ 0` hypothesis is genuinely necessary: the zero vector is parallel
+   to everything (`0 ×₃ v = 0`), so without it `0 ∥ a` and `0 ∥ b` would force
+   `a ∥ b`.  On the Pascal orbit the middle line is the cross product of two
+   distinct projective points of a non-degenerate conic, hence nonzero, so the
+   hypothesis is satisfied wherever the descent uses it.
+
+   Together these make `sameProjLine` a *partial equivalence relation* (PER):
+   an equivalence relation on the set of nonzero homogeneous line-vectors,
+   exactly the structure a `Quotient`/`Setoid` descent of `pascalLine`
+   requires. -/
+
+/-- **Symmetry of `sameProjLine`.**  `l ∥ m ⟹ m ∥ l`.  The cross product is
+    anti-symmetric (`m ×₃ l = -(l ×₃ m)`), so a vanishing cross product is a
+    symmetric relation.  Proved coordinate-wise to reuse the file's
+    `cross_apply` simp set. -/
+theorem sameProjLine_symm {l m : ProjLine} (h : sameProjLine l m) :
+    sameProjLine m l := by
+  unfold sameProjLine at h ⊢
+  have h0 := congrFun h 0
+  have h1 := congrFun h 1
+  have h2 := congrFun h 2
+  simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Pi.zero_apply, Fin.isValue] at h0 h1 h2
+  funext i
+  fin_cases i
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue]
+    linear_combination -h0
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue]
+    linear_combination -h1
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue]
+    linear_combination -h2
+
+/-- **Transitivity of `sameProjLine` along a nonzero middle vector.**
+    If `l ∥ m` and `m ∥ n` with `m ≠ 0`, then `l ∥ n`.
+
+    *Proof engine.*  For every coordinate `k`, the scaled vector
+    `m k • (l ×₃ n)` vanishes identically: each of its three components is a
+    fixed `ℝ`-linear combination of the (vanishing) components of `l ×₃ m` and
+    `m ×₃ n` (a `linear_combination` certificate, one per coordinate pair).
+    Hence `m k • (l ×₃ n) = 0` for all `k`.  Since `m ≠ 0`, some coordinate
+    `m k ≠ 0`, and `smul_eq_zero` forces `l ×₃ n = 0`.
+
+    This is the projective statement "two lines both proportional to a common
+    nonzero line are proportional to each other", proved without dividing. -/
+theorem sameProjLine_trans {l m n : ProjLine} (hm : m ≠ 0)
+    (h1 : sameProjLine l m) (h2 : sameProjLine m n) :
+    sameProjLine l n := by
+  unfold sameProjLine at h1 h2 ⊢
+  -- Component equations of `l ×₃ m = 0` and `m ×₃ n = 0`.
+  have a0 : l 1 * m 2 - l 2 * m 1 = 0 := by
+    have := congrFun h1 0
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have a1 : l 2 * m 0 - l 0 * m 2 = 0 := by
+    have := congrFun h1 1
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have a2 : l 0 * m 1 - l 1 * m 0 = 0 := by
+    have := congrFun h1 2
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have b0 : m 1 * n 2 - m 2 * n 1 = 0 := by
+    have := congrFun h2 0
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have b1 : m 2 * n 0 - m 0 * n 2 = 0 := by
+    have := congrFun h2 1
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have b2 : m 0 * n 1 - m 1 * n 0 = 0 := by
+    have := congrFun h2 2
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  -- Each coordinate of `m` annihilates `l ×₃ n`.
+  have key0 : m 0 • crossProduct l n = 0 := by
+    funext i
+    fin_cases i
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 0) * b0 - (n 2) * a2 - (n 1) * a1
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 0) * b1 + (n 0) * a1
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 0) * b2 + (n 0) * a2
+  have key1 : m 1 • crossProduct l n = 0 := by
+    funext i
+    fin_cases i
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 1) * b0 + (n 1) * a0
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 1) * b1 - (n 0) * a0 - (n 2) * a2
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 1) * b2 + (n 1) * a2
+  have key2 : m 2 • crossProduct l n = 0 := by
+    funext i
+    fin_cases i
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 2) * b0 + (n 2) * a0
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 2) * b1 + (n 2) * a1
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 2) * b2 - (n 1) * a1 - (n 0) * a0
+  -- `m ≠ 0` ⟹ some coordinate is nonzero ⟹ `l ×₃ n = 0`.
+  obtain ⟨k, hk⟩ := Function.ne_iff.mp hm
+  simp only [Pi.zero_apply] at hk
+  fin_cases k
+  · rcases smul_eq_zero.mp key0 with h | h
+    · exact absurd h hk
+    · exact h
+  · rcases smul_eq_zero.mp key1 with h | h
+    · exact absurd h hk
+    · exact h
+  · rcases smul_eq_zero.mp key2 with h | h
+    · exact absurd h hk
+    · exact h
+
+/-- **`sameProjLine` is a PER on nonzero line-vectors.**  Bundles reflexivity,
+    symmetry, and (nonzero-middle) transitivity — the equivalence-relation
+    structure the quotient descent of `pascalLine` consumes.  Stated as a
+    conjunction rather than a `Setoid` instance because transitivity is only
+    available along nonzero representatives (which is all the descent needs:
+    the Pascal line of a non-degenerate inscribed hexagon is nonzero). -/
+theorem sameProjLine_isPER :
+    (∀ l : ProjLine, sameProjLine l l)
+      ∧ (∀ {l m : ProjLine}, sameProjLine l m → sameProjLine m l)
+      ∧ (∀ {l m n : ProjLine}, m ≠ 0 → sameProjLine l m → sameProjLine m n →
+          sameProjLine l n) :=
+  ⟨sameProjLine_refl, sameProjLine_symm, fun hm => sameProjLine_trans hm⟩
+
+/-- **Both generators agree on a *single* common projective line.**  An
+    immediate consequence of symmetry + transitivity applied to
+    `pascalLine_generators_sameProjLine`: the rotated and reflected Pascal
+    lines are the same projective line as each other (not merely each equal to
+    the original), provided the original line `lineThrough (pascalP hex)
+    (pascalQ hex)` is nonzero.  This is the first nontrivial use of the PER
+    structure and the shape every closure-induction step takes. -/
+theorem pascalLine_hexRot_hexRev_sameProjLine {C : Conic} (hex : InscribedHexagon C)
+    (hne : lineThrough (pascalP hex) (pascalQ hex) ≠ 0) :
+    sameProjLine
+      (lineThrough (pascalP (permuteHexagon hex hexRot))
+                   (pascalQ (permuteHexagon hex hexRot)))
+      (lineThrough (pascalP (permuteHexagon hex hexRev))
+                   (pascalQ (permuteHexagon hex hexRev))) :=
+  sameProjLine_trans hne
+    (sameProjLine_symm (pascalLine_hexRot_sameProjLine hex))
+    (pascalLine_hexRev_sameProjLine hex)
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 

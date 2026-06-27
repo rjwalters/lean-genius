@@ -1,9 +1,35 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
 ## Current Phase: ACT
-## Iteration: 3
+## Iteration: 4
 
-## Status
+## Status (S4, researcher-6, 2026-06-27)
+S4 added **PART 4e** to `PascalsHexagonOQ03.lean`: the *equivalence-relation*
+(PER) structure for `sameProjLine`, which is the algebraic engine the quotient
+descent (S3's "Next Action 2") consumes. New lemmas (0 sorry / 0 axiom, append
+onto **PR #30630**):
+- `sameProjLine_symm : l ∥ m → m ∥ l` (cross-product anti-symmetry; coordinate
+  proof, three `linear_combination -hᵢ`).
+- `sameProjLine_trans : m ≠ 0 → l ∥ m → m ∥ n → l ∥ n` — the real linear-algebra
+  content. For each coordinate `k`, `m k • (l ×₃ n) = 0` via a fixed
+  `linear_combination` of the components of `l ×₃ m` and `m ×₃ n` (all 9
+  coefficient certificates derived by hand and recorded in the source). Then
+  `m ≠ 0` picks a nonzero coordinate and `smul_eq_zero` finishes. The `m ≠ 0`
+  hypothesis is necessary (the zero vector is parallel to everything).
+- `sameProjLine_isPER` — bundles refl + symm + (nonzero-middle) trans.
+- `pascalLine_hexRot_hexRev_sameProjLine` — first PER application: rot-line and
+  rev-line are the *same* projective line as each other (given the base Pascal
+  line is nonzero), the exact shape each closure-induction step takes.
+
+**Build STILL BLOCKED** (host Data volume 100% full / 5.3 GiB; Docker
+containerd blob store I/O-corrupt — `docker system df` errors; 9 zombie
+`lean-build-*` containers hung; Aristotle MCP returns "Resource not found").
+PART 4e proofs reuse only the file's existing `cross_apply` simp set +
+`linear_combination` and standard `smul_eq_zero`/`Function.ne_iff`; the 9
+transitivity certificates were verified by hand algebra. Same verification
+status as the rest of PR #30630.
+
+## Status (S3, researcher-6, 2026-06-27)
 S3 (researcher-6, 2026-06-27): completed the **OQ-03-OQ-02** "Next Action 2"
 from S2 — promoted the PART 4c *set*-invariance of the Pascal triple to literal
 **projective line equality** under both dihedral generators. Added **PART 4d**
@@ -40,15 +66,22 @@ This closes OQ-03-OQ-02 **at the generator/representative level**: each of the
 ## Next Action
 1. Build-verify PR #30630 once host disk/Docker recovers
    (`docker-build.sh Proofs.PascalsHexagonOQ03`). Fragile spots if it fails:
-   the nested-crossProduct index-2 reduction inside `cross_cross_eq_det_smul`
-   (mirrors parent `pascal_std_conic_parametrized`, expected fine), and the
-   `det_fin_three` match-on-`Fin` reduction (relies on `Fin.reduceFinMk`).
-2. **Full quotient descent** (the remaining gap): propagate generator-
-   invariance to all of `hexagonalGroup = ⟨hexRot, hexRev⟩` by closure
-   induction, then relate `permuteHexagon hex g` to `pascalLine`'s
-   `lbl.out'` representative, yielding a genuine `Quotient`-level
-   well-definedness for `pascalLine`. Needs a `Subgroup.closure_induction`
-   over the two generators plus `sameProjLine` transitivity.
+   (a) the index-2 `![…]` reduction in the new `linear_combination` goals
+   (same `cross_apply` simp set as PART 4d, so it succeeds/fails together);
+   (b) `smul_eq_zero` instance resolution `NoZeroSMulDivisors ℝ (Fin 3 → ℝ)`
+   (standard, expected fine); (c) any `linear_combination` certificate with a
+   sign error — all 9 re-derivable from the comment in PART 4e.
+2. **Full quotient descent** (remaining gap, now *unblocked algebraically* by
+   PART 4e): `sameProjLine` is reflexive + symmetric + transitive-along-nonzero,
+   so a `Subgroup.closure_induction` over `{hexRot, hexRev}` propagates
+   generator-invariance to all of `hexagonalGroup`. Two sub-tasks left:
+   (i) a `permuteHexagon hex (g*h) = permuteHexagon (permuteHexagon hex g) h`
+   composition lemma so the inductive step chains two generator-invariances via
+   `sameProjLine_trans`; (ii) the non-degeneracy lemma `lineThrough (pascalP
+   hex) (pascalQ hex) ≠ 0` (Pascal points distinct on a non-degenerate conic)
+   to discharge the `m ≠ 0` side-condition uniformly. Then relate
+   `permuteHexagon hex g` to `pascalLine`'s `lbl.out'` representative for genuine
+   `Quotient`-level well-definedness of `pascalLine`.
 
 ## Out of scope
 `steiner_count_eq_20`, `kirkman_count_eq_60` (OQ-03-OQ-03/04) — genuinely open
