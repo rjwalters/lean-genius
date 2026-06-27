@@ -1,11 +1,11 @@
 {
   "id": "furstenberg-correspondence-oq-03",
-  "title": "Polynomial Szemerédi via Bergelson–Leibman (Furstenberg OQ-03)",
+  "title": "Polynomial Szemerédi Extension via Bergelson–Leibman (Furstenberg OQ-03)",
   "slug": "furstenberg-correspondence-oq-03",
-  "description": "Formalized statement and verified combinatorial backbone for the Bergelson–Leibman polynomial Szemerédi theorem: polynomial configurations, the no-constant-term condition, the divisibility constraint d ∣ pᵢ(d), the linear specialization recovering arithmetic progressions, a nonlinear square example, and a survey of Mathlib's recurrence infrastructure.",
+  "description": "A verified, axiom-free formalization of the algebraic engine behind the Bergelson–Leibman polynomial Szemerédi theorem: the van der Corput finite-difference operator with its strict degree descent (PET induction), the polynomial-configuration framework, and the precise statements of the combinatorial and ergodic forms.",
   "meta": {
-    "author": "Bergelson–Leibman (1996), Furstenberg (1981)",
-    "sourceUrl": "https://en.wikipedia.org/wiki/Szemer%C3%A9di%27s_theorem#Polynomial_Szemer%C3%A9di_theorem",
+    "author": "Bergelson–Leibman (1996), Sárközy (1978), Furstenberg (1981)",
+    "sourceUrl": "https://www.ams.org/journals/jams/1996-09-03/S0894-0347-96-00194-4/",
     "date": "1996",
     "status": "verified",
     "proofRepoPath": "Proofs/FurstenbergCorrespondenceOQ03.lean",
@@ -14,147 +14,169 @@
       "additive-combinatorics",
       "polynomial-szemeredi",
       "bergelson-leibman",
-      "multiple-recurrence",
-      "furstenberg"
+      "pet-induction",
+      "finite-differences",
+      "furstenberg",
+      "szemerédi",
+      "sárközy"
     ],
     "badge": "mathlib",
     "sorries": 0,
     "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.taylor",
+        "description": "Taylor shift p ↦ p(X + r), used to realize the finite-difference operator Δ_h p = taylor h p − p",
+        "module": "Mathlib.Algebra.Polynomial.Taylor"
+      },
+      {
+        "theorem": "Polynomial.degree_taylor / leadingCoeff_taylor",
+        "description": "Taylor shift preserves degree and leading coefficient — the cancellation that forces the strict degree drop",
+        "module": "Mathlib.Algebra.Polynomial.Taylor"
+      },
+      {
+        "theorem": "Polynomial.degree_sub_lt",
+        "description": "If two polynomials share degree and leading coefficient, their difference has strictly smaller degree",
+        "module": "Mathlib.Algebra.Polynomial.Degree.Definitions"
+      },
       {
         "theorem": "Polynomial.X_dvd_iff",
         "description": "X ∣ p ↔ p.coeff 0 = 0 — the algebraic form of the no-constant-term condition",
         "module": "Mathlib.Algebra.Polynomial.Div"
       },
       {
-        "theorem": "Polynomial.coeff_zero_eq_eval_zero",
-        "description": "p.coeff 0 = p.eval 0 — links the constant coefficient to evaluation at 0",
-        "module": "Mathlib.Algebra.Polynomial.Eval"
-      },
-      {
         "theorem": "MeasurePreserving.conservative",
-        "description": "Finite measure-preserving maps are conservative (Poincaré recurrence) — the k=1 base case of polynomial multiple recurrence",
+        "description": "Finite measure-preserving maps are conservative — gives Poincaré recurrence (k=1 base case)",
         "module": "Mathlib.Dynamics.Ergodic.Conservative"
       },
       {
         "theorem": "MeasurePreserving.iterate",
-        "description": "Iterates of a measure-preserving map are measure-preserving, used for polynomial-exponent iterates T^{p(n)}",
+        "description": "Iterates of a measure-preserving map remain measure-preserving (polynomial-exponent iterates T^{p(n)})",
         "module": "Mathlib.Dynamics.Ergodic.MeasurePreserving"
       }
     ],
     "originalContributions": [
-      "Definition of the polynomial configuration object i ↦ x + pᵢ(d) and the no-constant-term predicate",
-      "Verified collapse at d=0: every configuration degenerates to {x}, motivating the d≠0 nondegeneracy requirement",
-      "Verified equivalence pᵢ(0)=0 ↔ X ∣ pᵢ and the divisibility constraint d ∣ pᵢ(d) that all configurations respect",
-      "Linear specialization theorem: configuration with pᵢ = i·X is the arithmetic progression x+i·d, recovering Szemerédi as the degree-one case",
-      "Nonlinear square example {x, x+d²} with verified perfect-square gap",
-      "Precise Prop-statements of both the combinatorial Bergelson–Leibman theorem and the ergodic polynomial multiple recurrence theorem (formalization targets, not asserted)",
-      "Poincaré single recurrence and measure-preservation of polynomial iterates as the verified ergodic base case"
+      "Verified PET differencing engine: the van der Corput operator Δ_h p = p(·+h) − p(·) realized as taylor h p − p, with strict degree descent (fdiff_degree_lt) and PET termination after deg+1 steps (fdiff_iterate_eq_zero) — the algebraic core of polynomial exhaustion, fully axiom-free",
+      "Polynomial-configuration framework (configPoint) with the d=0 collapse lemma proving why the d ≠ 0 hypothesis is essential",
+      "Verified equivalence pᵢ(0)=0 ↔ X ∣ pᵢ and the consequent divisibility constraint d ∣ pᵢ(d) that every configuration respects",
+      "Linear specialization recovering arithmetic progressions (Szemerédi as the degree-one case)",
+      "Worked nonlinear example: the square configuration {x, x+d²} (Sárközy/Furstenberg) with verified degree ladders Δ_h X = h, Δ_h X² = 2hX+h², Δ_h² X² = 2h²",
+      "Precise Prop-statements of both the combinatorial Bergelson–Leibman theorem (PolynomialSzemerediProperty) and its ergodic counterpart (PolynomialMultipleRecurrence), with sanity checks (univ, monotonicity)",
+      "Poincaré single recurrence (k=1) drawn from Mathlib plus measure-preservation of polynomial iterates"
     ],
     "dateAdded": "2026-06-27",
     "axiomCount": 0,
-    "lineCount": 313,
-    "assumptions": "0 axioms. 0 sorries. The deep Bergelson–Leibman theorem is NOT asserted — it is stated as a Prop-valued formalization target. All theorems are the verified elementary backbone (configuration structure, divisibility, linear/square specializations) plus Mathlib's Poincaré recurrence base case.",
+    "lineCount": 428,
+    "assumptions": "0 axioms. 0 sorries. All theorems depend only on the three standard foundational axioms (propext, Classical.choice, Quot.sound); none use sorryAx or Lean.ofReduceBool. The deep Bergelson–Leibman theorem itself is stated as a Prop target, not asserted.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 15,
-    "definitionCount": 6
+    "theoremCount": 22,
+    "definitionCount": 7
   },
   "sections": [
     {
       "title": "Polynomial Configurations — The Combinatorial Object",
       "startLine": 63,
       "endLine": 124,
-      "description": "Defines the polynomial configuration i ↦ x + pᵢ(d) and the no-constant-term predicate, then verifies three structural lemmas: collapse at d=0, the equivalence pᵢ(0)=0 ↔ X ∣ pᵢ, and the divisibility constraint d ∣ pᵢ(d).",
+      "description": "Defines the polynomial configuration i ↦ x + pᵢ(d) and the no-constant-term predicate, then verifies the collapse at d=0, the equivalence pᵢ(0)=0 ↔ X ∣ pᵢ, and the divisibility constraint d ∣ pᵢ(d).",
       "summary": "Polynomial Configurations — The Combinatorial Object",
       "id": "polynomial-configurations"
     },
     {
       "title": "The Linear Specialization — Recovering Szemerédi",
-      "startLine": 126,
+      "startLine": 125,
       "endLine": 157,
-      "description": "Takes pᵢ = i·X to show the configuration is the arithmetic progression x+i·d, exhibiting Bergelson–Leibman as a genuine extension of Szemerédi's theorem (the degree-one case).",
+      "description": "Takes pᵢ(X) = i·X so the configuration becomes the arithmetic progression x + i·d, exhibiting Szemerédi's theorem as the degree-one case of Bergelson–Leibman.",
       "summary": "The Linear Specialization — Recovering Szemerédi",
       "id": "linear-specialization"
     },
     {
       "title": "A Genuinely Nonlinear Example — Squares",
-      "startLine": 159,
+      "startLine": 158,
       "endLine": 188,
-      "description": "The square family p₀=0, p₁=X² gives configurations {x, x+d²} with a verified perfect-square gap — the nonlinear feature absent from arithmetic progressions.",
+      "description": "The square family p₀=0, p₁=X² gives the configuration {x, x+d²} (Sárközy/Furstenberg), with the gap verified to be a perfect square.",
       "summary": "A Genuinely Nonlinear Example — Squares",
       "id": "nonlinear-square-example"
     },
     {
+      "title": "The PET Differencing Engine (verified degree descent)",
+      "startLine": 189,
+      "endLine": 298,
+      "description": "The van der Corput finite-difference operator Δ_h, proved to strictly lower degree on nonzero polynomials and to annihilate any polynomial after deg+1 differencings — the well-founded descent powering PET induction. Worked degree ladders for X, X², X³.",
+      "summary": "The PET Differencing Engine (verified degree descent)",
+      "id": "pet-differencing-engine"
+    },
+    {
       "title": "Statement of the Bergelson–Leibman Theorem",
-      "startLine": 190,
-      "endLine": 223,
-      "description": "Packages the combinatorial conclusion as a Prop on a set A ⊆ ℤ (the polynomial Szemerédi property), with a sanity check on ℤ and a monotonicity lemma. The theorem itself is a formalization target, not asserted.",
+      "startLine": 299,
+      "endLine": 333,
+      "description": "Packages the combinatorial conclusion as PolynomialSzemerediProperty (a Prop target, not asserted), with sanity checks: the whole line satisfies it, and the property is monotone in the set.",
       "summary": "Statement of the Bergelson–Leibman Theorem",
       "id": "statement"
     },
     {
       "title": "The Ergodic Side — Mathlib Recurrence Infrastructure",
-      "startLine": 225,
-      "endLine": 266,
-      "description": "Poincaré single recurrence (the k=1 base case) from Mathlib, measure-preservation of polynomial iterates T^{p(n)}, and the Prop-statement of polynomial multiple recurrence.",
+      "startLine": 334,
+      "endLine": 376,
+      "description": "Poincaré single recurrence (k=1 base case) from Mathlib, measure-preservation of polynomial iterates T^{p(n)}, and the Prop-statement of polynomial multiple recurrence (ergodic form of Bergelson–Leibman).",
       "summary": "The Ergodic Side — Mathlib Recurrence Infrastructure",
       "id": "ergodic-side"
     },
     {
       "title": "Feasibility Assessment",
-      "startLine": 268,
-      "endLine": 313,
-      "description": "What is verified (0 axioms, 0 sorries) versus the open gap: polynomial multiple recurrence for k≥2 needs PET induction and nilsystem characteristic-factor machinery absent from Mathlib.",
+      "startLine": 377,
+      "endLine": 428,
+      "description": "What is verified (0 axioms) versus the remaining gap: with the PET differencing engine now verified, the open part of polynomial multiple recurrence is the characteristic-factor / nilsystem machinery absent from Mathlib.",
       "summary": "Feasibility Assessment",
       "id": "feasibility-assessment"
     }
   ],
   "overview": {
-    "historicalContext": "Szemerédi's theorem (1975) states that every set of integers with positive upper density contains arbitrarily long arithmetic progressions. Furstenberg (1977) gave an ergodic-theoretic proof via the correspondence principle and the multiple recurrence theorem. Bergelson and Leibman (1996) proved a sweeping polynomial generalization: the arithmetic progressions x, x+d, …, x+(k-1)d can be replaced by polynomial configurations x+p₁(d), …, x+p_k(d) for any integer polynomials pᵢ with pᵢ(0)=0. Their proof introduced PET (polynomial exhaustion technique) induction and relied on the deep structure theory of characteristic factors, later identified with nilsystems by Host–Kra and Ziegler.",
-    "problemStatement": "**Polynomial Szemerédi (Bergelson–Leibman, 1996)**: Let A ⊆ ℤ have positive upper Banach density and let p₁, …, p_k ∈ ℤ[X] satisfy pᵢ(0)=0. Then there exist x ∈ ℤ and d ≠ 0 with x+pᵢ(d) ∈ A for all i.\n\n**Ergodic form**: For a measure-preserving system (X, μ, T) and E with μ(E)>0, there exists n ≠ 0 with μ(E ∩ T^{-p₁(n)}E ∩ … ∩ T^{-p_k(n)}E) > 0.\n\nThis file formalizes the precise statements and the verified elementary backbone, surveying the Mathlib infrastructure available for the ergodic proof.",
-    "text": "Formalized statement and verified combinatorial backbone for the polynomial Szemerédi theorem of Bergelson and Leibman.",
-    "proofStrategy": "This is a statement-and-backbone formalization, not a proof of the deep theorem. We:\n\n1. **Define** the polynomial configuration object and the no-constant-term hypothesis\n2. **Verify** the structural constraints any proof must respect: collapse at d=0, pᵢ(0)=0 ↔ X∣pᵢ, and d ∣ pᵢ(d)\n3. **Specialize** to the linear family to recover arithmetic progressions (Szemerédi)\n4. **Exhibit** a genuinely nonlinear instance (squares {x, x+d²})\n5. **State** both the combinatorial and ergodic forms as Prop-valued targets\n6. **Survey** Mathlib's recurrence infrastructure: Poincaré recurrence (k=1 base case) and measure-preservation of polynomial iterates",
+    "historicalContext": "Szemerédi's theorem (1975) states that every set of integers with positive upper density contains arbitrarily long arithmetic progressions; Furstenberg (1977) gave an ergodic-theoretic proof via the correspondence principle and the multiple recurrence theorem. In 1996 Vitaly Bergelson and Alexander Leibman proved a sweeping polynomial generalization: the progressions x, x+d, …, x+(k-1)d can be replaced by polynomial configurations x+p₁(d), …, x+p_k(d) for arbitrary integer polynomials pᵢ with pᵢ(0)=0. This simultaneously generalizes Szemerédi (linear polynomials) and the Sárközy–Furstenberg theorem (p(d)=d², square differences). Their proof introduced PET (Polynomial Exhaustion Technique) induction — organized around the van der Corput finite-difference operator — and relied on the deep structure theory of characteristic factors, later identified with nilsystems by Host–Kra and Ziegler.",
+    "problemStatement": "**Combinatorial Bergelson–Leibman theorem.** Let A ⊆ ℤ have positive upper Banach density and let p₁, …, p_k ∈ ℤ[X] satisfy pᵢ(0)=0. Then there exist x ∈ ℤ and d ≠ 0 with x + pᵢ(d) ∈ A for all i.\n\n**Ergodic form.** For a measure-preserving system (X, μ, T) and E with μ(E)>0, there exists n ≠ 0 with μ(E ∩ T^{-p₁(n)}E ∩ … ∩ T^{-p_k(n)}E) > 0.\n\n**Goal of this entry.** State the theorem precisely as a Prop target, and verify — axiom-free — the algebraic backbone any proof must use: the finite-difference degree-descent engine of PET induction, the configuration framework, and the divisibility/collapse constraints.",
+    "text": "Verified algebraic backbone and precise statement for the polynomial Szemerédi theorem, centered on the PET finite-difference engine.",
+    "proofStrategy": "We do not assert the deep theorem (that would require an axiom). Instead we: (1) define polynomial configurations and prove the d=0 collapse that justifies the d ≠ 0 hypothesis; (2) prove pᵢ(0)=0 ↔ X∣pᵢ and the divisibility d ∣ pᵢ(d); (3) recover arithmetic progressions from the linear family (Szemerédi) and exhibit the square configuration (Sárközy); (4) build and verify the PET differencing engine — Δ_h strictly lowers degree, so deg+1 differencings annihilate any polynomial; (5) state both the combinatorial and ergodic forms as Prop targets with sanity checks; (6) draw Poincaré recurrence (k=1) from Mathlib.",
     "keyInsights": [
-      "**The no-constant-term hypothesis is the divisibility X ∣ pᵢ**: pᵢ(0)=0 ⇔ X ∣ pᵢ ⇔ d ∣ pᵢ(d) for all d. Every polynomial configuration is congruent to its base point modulo d.",
-      "**Nondegeneracy is the whole content**: at d=0 every configuration collapses to {x}, so the trivial solution always exists. The theorem is the assertion of a nontrivial d≠0.",
-      "**Szemerédi is the degree-one case**: the linear family pᵢ = i·X reproduces the arithmetic progression x+i·d exactly, so Bergelson–Leibman strictly extends Szemerédi.",
-      "**Poincaré recurrence is the k=1 base case**: Mathlib's MeasurePreserving.conservative supplies single recurrence; the polynomial generalization to k≥2 is the open part.",
-      "**The hard gap is nilsystem theory**: PET induction plus characteristic-factor/nilsequence machinery — neither currently in Mathlib — is what blocks a full formalization."
+      "**Differencing is a well-founded descent**: Δ_h p = taylor h p − p cancels the shared leading term, so a nonzero polynomial strictly loses degree at each step and is annihilated after deg+1 steps — this is exactly why PET induction terminates",
+      "**The zero-constant-term hypothesis is divisibility**: pᵢ(0)=0 ⟺ X∣pᵢ, which forces d ∣ pᵢ(d); the configuration lives in a residue structure determined by d",
+      "**d ≠ 0 is essential, not cosmetic**: under pᵢ(0)=0 every configuration collapses to the single point x at d=0, so the substance of the theorem is the existence of a nontrivial step",
+      "**One framework, two classical theorems**: linear polynomials give Szemerédi's arithmetic progressions, while p=X² gives Sárközy/Furstenberg square differences",
+      "**The verified gap shrinks**: the PET differencing core is now machine-checked; what remains for full multiple recurrence is the characteristic-factor / nilsystem theory, which Mathlib does not yet have"
     ],
     "prerequisites": [
-      "Polynomial algebra over ℤ (Mathlib.Algebra.Polynomial)",
-      "Upper Banach density and Szemerédi's theorem",
+      "Polynomial algebra (Mathlib.Algebra.Polynomial, Taylor shift, degree)",
+      "Finite differences / van der Corput differencing",
       "Measure-preserving dynamics and Poincaré recurrence (Mathlib.Dynamics.Ergodic)",
-      "The Furstenberg correspondence principle"
+      "Additive combinatorics: Szemerédi's theorem and the Furstenberg correspondence principle"
     ],
     "openQuestions": [
-      "Can PET (polynomial exhaustion) induction be formalized as a standalone scheme in Lean 4?",
-      "What is the minimal nilsystem / characteristic-factor infrastructure Mathlib would need for polynomial multiple recurrence at k=2?"
+      "Can the characteristic-factor / nilsystem structure theory needed for polynomial multiple recurrence (k ≥ 2) be built on top of this PET engine in Mathlib?",
+      "Can the full PET induction scheme (the bookkeeping of the polynomial 'weight' well-ordering) be formalized using the degree-descent lemma proved here?"
     ]
   },
   "conclusion": {
-    "summary": "The polynomial Szemerédi theorem of Bergelson–Leibman has a clean formal statement in Lean 4, and its elementary backbone is fully verifiable today (0 axioms, 0 sorries): the configuration object, the divisibility constraint d ∣ pᵢ(d), the linear specialization recovering Szemerédi, and a nonlinear square example. Mathlib supplies the k=1 ergodic base case (Poincaré recurrence). The deep theorem for k≥2 awaits PET induction and nilsystem characteristic-factor machinery not yet in Mathlib.",
-    "implications": "Pinning down the exact statement and the algebraic constraints (collapse at 0, d ∣ pᵢ(d)) gives a precise target for the polynomial extension of the Furstenberg program and isolates the genuinely hard component (nilsystem theory) from the routine combinatorial scaffolding.",
+    "summary": "This entry pins down the polynomial Szemerédi theorem's exact statement and verifies, with zero axioms, the algebraic engine that drives every known proof: the van der Corput finite-difference operator strictly lowers polynomial degree, so PET induction terminates. Around this engine it assembles the configuration framework (collapse at d=0, divisibility d∣pᵢ(d)), the linear specialization recovering Szemerédi's arithmetic progressions, and the square configuration recovering Sárközy/Furstenberg, together with the ergodic-side Poincaré base case from Mathlib.",
+    "implications": "Turning the previously-listed 'PET induction scheme' gap into verified content brings the Furstenberg program a concrete step closer: the remaining obstacle to polynomial multiple recurrence is the characteristic-factor / nilsystem machinery, isolating exactly what Mathlib still lacks.",
     "openQuestions": [
-      "Can PET induction be formalized as a standalone scheme in Lean 4?",
-      "What minimal nilsystem infrastructure does Mathlib need for k=2 polynomial multiple recurrence?"
+      "Can the degree-descent lemma be lifted to a formalized PET 'weight' well-ordering driving the full induction?",
+      "Does formalizing nilsystem structure theory become the single remaining barrier to a complete Bergelson–Leibman formalization?"
     ]
   },
   "crossReferences": [
     {
-      "relationship": "OQ-03 states the polynomial extension of the multiple recurrence theorem that the base Furstenberg correspondence formalizes for linear configurations",
+      "relationship": "OQ-03 supplies the verified PET differencing engine for the polynomial extension; the parent entry formalizes the Furstenberg correspondence principle linking density to recurrence",
       "sharedConcepts": [
+        "furstenberg-correspondence",
         "multiple-recurrence",
         "szemerédi",
-        "furstenberg-correspondence"
+        "additive-combinatorics"
       ],
       "targetId": "furstenberg-correspondence"
     },
     {
-      "relationship": "OQ-02 surveyed the ergodic decomposition needed to reduce multiple recurrence to the ergodic case; OQ-03 states the polynomial generalization built atop that same recurrence infrastructure",
+      "relationship": "OQ-02 surveyed the ergodic decomposition needed for multiple recurrence; OQ-03 provides the complementary combinatorial/algebraic engine (PET differencing) for the polynomial generalization",
       "sharedConcepts": [
         "ergodic-theory",
         "multiple-recurrence",
-        "poincare-recurrence"
+        "furstenberg-program"
       ],
       "targetId": "furstenberg-correspondence-oq-02"
     }
@@ -170,10 +192,10 @@
       "Set"
     ],
     "namespace": "FurstenbergOQ03",
-    "lineCount": 313,
+    "lineCount": 428,
     "axiomCount": 0,
-    "theoremCount": 15,
-    "definitionCount": 6,
+    "theoremCount": 22,
+    "definitionCount": 7,
     "sorries": 0,
     "path": "Proofs/FurstenbergCorrespondenceOQ03.lean"
   }
