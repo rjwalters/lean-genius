@@ -1,14 +1,60 @@
 # Current State
 
-**Phase**: FORMALIZED (obstruction + sharp converse proved; fixed-dimension question remains open)
+**Phase**: FORMALIZED (obstruction + sharp converse verified; d=1 boundary scoped, d≥3 open)
 **Since**: 2026-06-26
-**Iteration**: 2
+**Iteration**: 3
 
-## Current Focus
+## Current Focus (iteration 3)
 
-Extended `proofs/Proofs/Erdos395OQ02.lean` (now 309 lines, 14 theorems, 7 defs,
-0 sorries, 0 axioms) with the **complementary saturation direction**, closing the
-characterization of the orthonormal case into a sharp 0/1 dichotomy.
+Scoped the *lower boundary* of the open `ReverseLO_fixedDim` Prop. The main file
+proves the dimension-free analogue FALSE and pins the orthonormal threshold at
+`C ~ √n`; it left the genuine fixed-dimension question open for **all** d. This
+iteration establishes (on paper, with a complete Lean proof strategy) that the
+`d = 1` case is **TRUE and elementary**, narrowing the genuinely open region to
+`d ≥ 3` (since `d = 2` is the parent HJNS 2024 result).
+
+### The d=1 reduction (complete mathematical argument)
+
+In `EuclideanSpace ℝ (Fin 1)` a unit vector's single coordinate is `±1`, so
+`‖Σ εᵢ zᵢ‖ = |Σ εᵢ (zᵢ)₀|` is the absolute value of an ordinary `±1` walk.
+The favourable event `|Σ ±1| ≤ 1` is hit by at least `C(m, ⌊m/2⌋)` of the `2ᵐ`
+sign patterns: map a `⌊m/2⌋`-subset `S ⊆ Fin m` to the pattern whose i-th signed
+term is `+1` on `S`, `-1` off `S` — injective, signed sum `= 2⌊m/2⌋ - m ∈ {0,-1}`,
+norm `≤ 1`. Since the middle binomial is the max of `m+1` terms summing to `2ᵐ`,
+`C(m,⌊m/2⌋) ≥ 2ᵐ/(m+1)`, giving
+`P ≥ C(m,⌊m/2⌋)/2ᵐ ≥ 1/(m+1) ≥ (1/2)/m`. Hence `ReverseLO_fixedDim 1` holds with
+`C = 1, c = 1/2`. Key Mathlib lemmas verified present: `Nat.sum_range_choose`,
+`Nat.choose_le_middle`, `Finset.card_powersetCard`, `EuclideanSpace.norm_eq`,
+`Real.sqrt_sq_eq_abs`, `Finset.card_le_card_of_injOn`.
+
+### Artifact
+
+`proofs/Proofs/Erdos395OQ02Aristotle.lean` — companion target file with the five
+proof obligations (binomial bound; coordinate=±1; norm reduction; the counting
+core; the assembly). Self-contained, no axioms. Ready for Aristotle once the
+service returns.
+
+### Verification status (HONEST)
+
+NOT verified this session. Both verification paths were unavailable:
+- **Docker build**: container has no Mathlib cache, rebuilds from scratch →
+  OOM/timeout (persistent infra blocker, see prior iterations).
+- **Aristotle MCP**: every call (`prove`, `prove_file`) returned
+  `"Resource not found"` (404) — consistent with prior sessions' notes that the
+  MCP intermittently 404s; no CLI installed as fallback.
+
+The main verified file `Erdos395OQ02.lean` was left **untouched** (still 0 sorry,
+0 axiom, status `verified`) — the d=1 work lives only in the companion target to
+avoid regressing the verified entry with unverifiable sorries.
+
+## Active Approach (prior, iteration 2 — verified)
+
+The same deterministic identity `‖Σεᵢzᵢ‖ = √n` drives both directions:
+
+1. **Obstruction (iteration 1)** — `C² < n ⟹` favourable set empty `⟹ P = 0`.
+2. **Saturation (NEW, iteration 2)** — `√n ≤ C ⟹` favourable set is all of
+   `{±1}ⁿ ⟹ P = 1`:
+   - `orthonormal_signedSum_le_of_sqrt_le` — every sign sum is within `C`.
 
 ## Active Approach
 
