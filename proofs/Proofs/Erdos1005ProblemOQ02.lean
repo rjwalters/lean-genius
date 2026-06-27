@@ -635,4 +635,111 @@ theorem simOrd_chain_admissible (a b c d k n : ℕ) (hcap : k * b + d ≤ n)
   have : j * b ≤ k * b := Nat.mul_le_mul_right b hjk
   omega
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 9: The three-term Farey neighbour recurrence — the consecutiveness bridge
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 8 produced similarly ordered families from *mediant* chains, but flagged the
+honest gap: those chains are **not consecutive** in `F_n` (e.g. `1/2, 1/3` are
+separated in `F_5`).  The open constant `1/12` is about runs of *consecutive*
+Farey neighbours, so a faithful bridge must use the actual Farey successor.
+
+This section formalises that successor.  If `a/b < c/d` are **consecutive** in
+`F_n`, the fraction `e/f` immediately to the right of `c/d` is given by the
+classical three-term recurrence (Hardy–Wright, *Theory of Numbers*, Thm 28–30)
+
+* `e = k·c − a`,  `f = k·d − b`,  where `k = ⌊(n + b)/d⌋`.
+
+We carry the recurrence in **addition form** `e + a = k·c`, `f + b = k·d`
+(avoiding truncated ℕ subtraction) — these are exactly the relations the floor
+`k = ⌊(n+b)/d⌋` realises.  Four metric facts and the order-side criterion are
+proved, all 0-axiom:
+
+* the successor is **again a Farey neighbour** (`farey_succ_unimodular`): the
+  recurrence preserves unimodularity, so `c/d, e/f` are themselves consecutive;
+* the successor lies strictly to the **right** (`farey_succ_lt`);
+* the **symmetric three-term law** `d·(a+e) = c·(b+f)` (`farey_three_term`):
+  the middle term `c/d` is the exact `k`-section of its two neighbours, the
+  Farey form of `bₖ₋₁ + bₖ₊₁ = k·bₖ`;
+* the **order-`n` cap** `f ≤ n ↔ k·d ≤ n + b` (`farey_succ_denom_le_iff`),
+  which is what selects `k = ⌊(n+b)/d⌋` as the largest admissible step.
+
+The headline is `simOrd_succ_controlling`: a *consecutive* step `c/d → e/f` is
+similarly ordered **iff** `(a + c − k·c)·(b + d − k·d) ≥ 0`.  Unlike § 8 this is
+genuine consecutiveness in `F_n`.  The corollary `simOrd_succ_k_eq_one` shows
+the `k = 1` step is *always* similarly ordered (the product collapses to
+`a·b ≥ 0`).  For `k ≥ 2` the sign of that product is exactly the quantity whose
+control over a consecutive block separates the `1/12` lower bound from the `1/4`
+upper bound — the precise open step is now an explicit arithmetic inequality on
+the successive quotients `k`, not a vague appeal to "consecutiveness".
+-/
+
+/-- **The Farey successor is again a Farey neighbour.**  If `a/b, c/d` are
+consecutive (`Unimodular a b c d`) and `e/f` is produced by the recurrence
+`e + a = k·c`, `f + b = k·d`, then `c/d, e/f` are consecutive too
+(`Unimodular c d e f`, i.e. `d·e = c·f + 1`).  Unimodularity is preserved by the
+three-term step, so iterating it walks along genuinely adjacent fractions. -/
+theorem farey_succ_unimodular {a b c d e f k : ℕ}
+    (h : Unimodular a b c d) (he : e + a = k * c) (hf : f + b = k * d) :
+    Unimodular c d e f := by
+  unfold Unimodular at h ⊢
+  zify at h he hf ⊢
+  linear_combination d * he - c * hf + h
+
+/-- **The successor lies strictly to the right of `c/d`.**  From the preserved
+unimodularity `d·e = c·f + 1` we get `c·f < d·e`, i.e. `c/d < e/f`. -/
+theorem farey_succ_lt {a b c d e f k : ℕ}
+    (h : Unimodular a b c d) (he : e + a = k * c) (hf : f + b = k * d) :
+    c * f < d * e := by
+  have hu := farey_succ_unimodular h he hf
+  unfold Unimodular at hu
+  omega
+
+/-- **Symmetric three-term recurrence.**  The middle fraction `c/d` is the exact
+`k`-section of its two neighbours: `d·(a + e) = c·(b + f)` (both equal `k·c·d`).
+Equivalently `(a + e)/(b + f) = c/d` — the Farey analogue of the denominator
+recurrence `bₖ₋₁ + bₖ₊₁ = k·bₖ`. -/
+theorem farey_three_term {a b c d e f k : ℕ}
+    (he : e + a = k * c) (hf : f + b = k * d) :
+    d * (a + e) = c * (b + f) := by
+  have h1 : a + e = k * c := by omega
+  have h2 : b + f = k * d := by omega
+  rw [h1, h2]; ring
+
+/-- **Order-`n` cap.**  The successor denominator `f` (with `f + b = k·d`) is
+`≤ n` iff `k·d ≤ n + b`.  The largest admissible quotient is therefore
+`k = ⌊(n + b)/d⌋`, which is exactly the value the classical recurrence uses to
+pick the next Farey neighbour of order `n`. -/
+theorem farey_succ_denom_le_iff {b d f k n : ℕ} (hf : f + b = k * d) :
+    f ≤ n ↔ k * d ≤ n + b := by omega
+
+/-- **Per-step similar-ordering criterion (headline).**  For a *consecutive*
+Farey step `c/d → e/f` given by the recurrence `e + a = k·c`, `f + b = k·d`, the
+pair is similarly ordered **iff** `(a + c − k·c)·(b + d − k·d) ≥ 0`.  This is the
+true consecutiveness bridge: the quantity controlling whether a run continues is
+now an explicit arithmetic condition on the successive quotient `k`. -/
+theorem simOrd_succ_controlling {a b c d e f k : ℕ}
+    (he : e + a = k * c) (hf : f + b = k * d) :
+    SimOrd c d e f ↔ ((a : ℤ) + c - k * c) * ((b : ℤ) + d - k * d) ≥ 0 := by
+  have He : (e : ℤ) = k * c - a := by
+    have : (e : ℤ) + a = k * c := by exact_mod_cast he
+    linarith
+  have Hf : (f : ℤ) = k * d - b := by
+    have : (f : ℤ) + b = k * d := by exact_mod_cast hf
+    linarith
+  have key : ((c : ℤ) - e) * ((d : ℤ) - f)
+      = ((a : ℤ) + c - k * c) * ((b : ℤ) + d - k * d) := by
+    rw [He, Hf]; ring
+  rw [simOrd_iff_prod, key]
+
+/-- **The `k = 1` step is always similarly ordered.**  When the successive
+quotient is `1` (so `e + a = c`, `f + b = d`), the controlling product collapses
+to `a·b ≥ 0`, which always holds.  Thus the shortest Farey steps never break a
+similarly ordered run — runs can only be broken at steps with quotient `k ≥ 2`,
+isolating exactly where the `1/12`–`1/4` optimization lives. -/
+theorem simOrd_succ_k_eq_one {a b c d e f : ℕ} (he : e + a = c) (hf : f + b = d) :
+    SimOrd c d e f := by
+  refine Or.inl ⟨?_, ?_⟩ <;> omega
+
 end Erdos1005OQ02
