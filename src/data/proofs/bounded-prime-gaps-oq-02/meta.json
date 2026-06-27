@@ -21,7 +21,7 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "0 axioms, 0 sorries by construction. EH is not axiomatized; the discrepancy functional D and its structural properties (level-monotonicity, pointwise bounds) enter only as per-theorem hypotheses — universally quantified, not global assumptions. The zero-functional theorems exhibit a concrete model satisfying the full hierarchy, proving the predicates are non-vacuous.",
+    "assumptions": "0 axioms, 0 sorries by construction. EH is not axiomatized; the discrepancy functional D and its structural properties enter only as per-theorem hypotheses. Level-monotonicity — previously only a hypothesis — is now PROVED for the canonical concrete functional discrepancySum (a sum of nonnegative per-modulus weights over moduli q ≤ x^θ), giving a generally nonzero model of the full hierarchy beyond the degenerate zero functional.",
     "mathlibDependencies": [
       {
         "theorem": "Real.rpow_pos_of_pos",
@@ -32,6 +32,26 @@
         "theorem": "Real.log_pos",
         "description": "log x > 0 for x > 1",
         "module": "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+      },
+      {
+        "theorem": "Finset.sum_le_sum_of_subset_of_nonneg",
+        "description": "Sum over a subset is ≤ sum over a superset when the extra terms are nonnegative",
+        "module": "Mathlib.Algebra.Order.BigOperators.Group.Finset"
+      },
+      {
+        "theorem": "Real.rpow_le_rpow_of_exponent_le",
+        "description": "x^· is monotone in the exponent for base x ≥ 1",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+      },
+      {
+        "theorem": "Nat.floor_le_floor",
+        "description": "Monotonicity of the natural-number floor",
+        "module": "Mathlib.Algebra.Order.Floor.Semiring"
+      },
+      {
+        "theorem": "Finset.Icc_subset_Icc_right",
+        "description": "Icc a b ⊆ Icc a c when b ≤ c",
+        "module": "Mathlib.Order.Interval.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -43,13 +63,18 @@
       "bombieriVinogradov_of_elliottHalberstam: EH ⟹ BV",
       "bombieriVinogradov_of_EHAtLevel: a level ≥ 1/2 bound already gives BV",
       "elliottHalberstam_iff_levels_near_one: EH is equivalent to its restriction to levels in [1/2, 1)",
-      "EHAtLevel_zero / levelMonotone_zero / elliottHalberstam_zero: zero-functional non-vacuity witnesses"
+      "EHAtLevel_zero / levelMonotone_zero / elliottHalberstam_zero: zero-functional non-vacuity witnesses",
+      "discrepancySum f θ x := Σ_{q ∈ [1, ⌊x^θ⌋]} f(q,x): the canonical concrete discrepancy functional (nonnegative per-modulus weights)",
+      "discrepancySum_mono_level: level-monotonicity of the canonical functional PROVED (not assumed) on the analytic range x ≥ 1",
+      "discrepancySumClamped + discrepancySumClamped_eq: base-clamped variant agreeing with the canonical sum on x ≥ 1",
+      "levelMonotone_discrepancySumClamped: the clamped canonical functional is a (generally nonzero) global model of LevelMonotone",
+      "EHAtLevel_of_le_discrepancySumClamped: the level hierarchy instantiated at the concrete nonzero model"
     ],
-    "lineCount": 157,
+    "lineCount": 226,
     "erdosUrl": null,
     "dateAdded": "2026-06-27",
-    "theoremCount": 9,
-    "definitionCount": 4
+    "theoremCount": 13,
+    "definitionCount": 6
   },
   "overview": {
     "historicalContext": "The Elliott–Halberstam conjecture (1968) strengthens the Bombieri–Vinogradov theorem (1965), which established that primes equidistribute in arithmetic progressions on average over moduli up to √x — a 'Riemann Hypothesis quality' result obtained unconditionally. EH conjectures the same averaged equidistribution up to x^θ for every θ < 1. It is the analytic input that sharpens the Maynard–Tao bounded-gap bound: H ≤ 12 under EH versus H ≤ 246 unconditionally. EH remains open.",
@@ -161,10 +186,10 @@
       "Real"
     ],
     "namespace": "BoundedPrimeGapsOQ02",
-    "lineCount": 157,
+    "lineCount": 226,
     "axiomCount": 0,
-    "theoremCount": 9,
-    "definitionCount": 4,
+    "theoremCount": 13,
+    "definitionCount": 6,
     "path": "Proofs/BoundedPrimeGapsOQ02.lean",
     "sorries": 0
   },

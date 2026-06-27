@@ -44,6 +44,10 @@ work documented in the sibling `BoundedPrimeGapsOQ04`.
 
 ## Status
 - [x] EH statement + level hierarchy + EH ⟹ BV — 0 sorries, 0 axioms
+- [x] Canonical concrete discrepancy functional `Σ_{q ≤ x^θ} f(q,x)` with
+      level-monotonicity *proved* (not assumed) — a generally nonzero model of the
+      hierarchy, upgrading the `LevelMonotone` hypothesis to a theorem for the
+      functional that actually arises in analytic number theory
 - [x] No `axiom`, no `sorry`, no `native_decide`
 -/
 
@@ -153,5 +157,70 @@ theorem levelMonotone_zero : LevelMonotone (fun _ _ => (0 : ℝ)) :=
 witness that the conjunction `ElliottHalberstam ∧ LevelMonotone` is consistent. -/
 theorem elliottHalberstam_zero : ElliottHalberstam (fun _ _ => (0 : ℝ)) :=
   fun θ _ _ => EHAtLevel_zero θ
+
+/-! ## A canonical concrete discrepancy functional
+
+The theorems above treat the discrepancy `D` abstractly, with `LevelMonotone` supplied
+as a hypothesis.  Here we exhibit the **canonical shape** of the Elliott–Halberstam
+sum — a sum of nonnegative per-modulus terms over the moduli `q ≤ x^θ` — and *prove*
+that level-monotonicity, far from being an extra assumption, is an automatic property
+of this functional.  This upgrades the hierarchy's structural hypothesis to a theorem
+for the model that actually arises in analytic number theory, and supplies a generally
+*nonzero* witness for the hierarchy (the zero-functional witness above is degenerate). -/
+
+/-- The **canonical discrepancy functional**: the sum of nonnegative per-modulus
+discrepancy weights `f q x` over all moduli `1 ≤ q ≤ x^θ`.  Instantiating
+`f q x := max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|` recovers the genuine Elliott–Halberstam
+sum; the structural lemmas below hold for any nonnegative weight `f`. -/
+noncomputable def discrepancySum (f : ℕ → ℝ → ℝ) (θ x : ℝ) : ℝ :=
+  ∑ q ∈ Finset.Icc 1 ⌊x ^ θ⌋₊, f q x
+
+/-- **Level-monotonicity of the canonical functional** on the analytically relevant
+range `x ≥ 1`.  A larger level `θ₂` admits more moduli `q ≤ x^θ` (since `x ≥ 1` makes
+`x ^ ·` monotone), and the extra terms are nonnegative, so the discrepancy sum can only
+grow.  This is the structural fact that the abstract `LevelMonotone` hypothesis
+abstracts — here proved outright. -/
+theorem discrepancySum_mono_level (f : ℕ → ℝ → ℝ) (hf : ∀ q x, 0 ≤ f q x)
+    {θ₁ θ₂ x : ℝ} (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    discrepancySum f θ₁ x ≤ discrepancySum f θ₂ x := by
+  unfold discrepancySum
+  refine Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun q _ _ => hf q x)
+  exact Finset.Icc_subset_Icc_right
+    (Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le hx hθ))
+
+/-- The **clamped** canonical functional, with base `max 1 x ≥ 1`.  On the entire
+Elliott–Halberstam regime `x ≥ 1` it coincides with `discrepancySum f`, but the clamp
+forces level-monotonicity to hold for *every* real `x`, so it is a model of the global
+`LevelMonotone` predicate. -/
+noncomputable def discrepancySumClamped (f : ℕ → ℝ → ℝ) (θ x : ℝ) : ℝ :=
+  ∑ q ∈ Finset.Icc 1 ⌊max 1 x ^ θ⌋₊, f q x
+
+/-- On `x ≥ 1` the clamp is inert: the clamped functional equals the canonical one. -/
+theorem discrepancySumClamped_eq (f : ℕ → ℝ → ℝ) {θ x : ℝ} (hx : 1 ≤ x) :
+    discrepancySumClamped f θ x = discrepancySum f θ x := by
+  unfold discrepancySumClamped discrepancySum
+  rw [max_eq_right hx]
+
+/-- **The clamped canonical functional is level-monotone** — for *every* `x`, with no
+domain restriction.  Hence, for any nonnegative weight `f`, `discrepancySumClamped f`
+is a (generally nonzero) model of `LevelMonotone`, so the level hierarchy
+`EHAtLevel_of_le` applies to it non-vacuously. -/
+theorem levelMonotone_discrepancySumClamped (f : ℕ → ℝ → ℝ) (hf : ∀ q x, 0 ≤ f q x) :
+    LevelMonotone (discrepancySumClamped f) := by
+  intro θ₁ θ₂ hθ x
+  unfold discrepancySumClamped
+  refine Finset.sum_le_sum_of_subset_of_nonneg ?_ (fun q _ _ => hf q x)
+  exact Finset.Icc_subset_Icc_right
+    (Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le (le_max_left 1 x) hθ))
+
+/-- **Capstone for the concrete model.**  For any nonnegative per-modulus weight `f`,
+if the clamped canonical discrepancy functional satisfies the Elliott–Halberstam bound
+at some level `θ₂`, then it satisfies it at every lower level `θ₁ ≤ θ₂`.  This is the
+level hierarchy `EHAtLevel_of_le` instantiated at a genuine, generally nonzero model —
+witnessing that the hierarchy is not an empty formalism. -/
+theorem EHAtLevel_of_le_discrepancySumClamped (f : ℕ → ℝ → ℝ) (hf : ∀ q x, 0 ≤ f q x)
+    {θ₁ θ₂ : ℝ} (h : θ₁ ≤ θ₂) (hEH : EHAtLevel (discrepancySumClamped f) θ₂) :
+    EHAtLevel (discrepancySumClamped f) θ₁ :=
+  EHAtLevel_of_le _ (levelMonotone_discrepancySumClamped f hf) h hEH
 
 end BoundedPrimeGapsOQ02
