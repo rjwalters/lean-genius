@@ -32,12 +32,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (Phase-1 carrier + facet combinatorics VERIFIED 0-axiom, Session 11): CanonSimplex now has its full facet combinatorics (facet sets, card=d, facet_injective, not_mem_facet_iff), machine-checked 0-axiom on top of the BaryPoint≃Vertex bridge and geometry-uniqueness. Only the adj pivot function + its 5 compatibility fields + boundary_face remain for a full SpernerTriangulation instance. The open OQ target (boundary_doors_odd / last-face door oddness) is still unsolved.",
+    "progressSummary": "PROGRESS (interior Freudenthal pivot VERIFIED 0-axiom): the chain-interior facet neighbour now EXISTS as an honest GridSimplex (pivotSimplex) that shares the facet (pivot_facet_eq) and is a different cell (pivot_ne/pivot_opposite_ne) — the existence half boundary_face needs. Remaining for full adj: canonicalisation of the pivot into CanonSimplex, the two boundary-chain pivots, and the adj search itself. OQ target (last-face door oddness) still open.",
     "builtItems": [
       "proofs/Proofs/SpernerNDimOQ02.lean (facet combinatorics, VERIFIED 0-axiom Session 11: clean lake env lean build, #print axioms = [propext, Classical.choice, Quot.sound] only): facet s k := (univ.erase k).image (vertices s); mem_facet_iff; vertices_not_mem_facet (deleted vertex is the unique vertex absent from its facet); facet_card (each facet has exactly d vertices); facet_injective (the d+1 facets of a cell are distinct = within-cell half of adj_unique_facet); not_mem_facet_iff (facet+cell determine the removed index). Building blocks for the abstract adj_vertices/adj_unique_facet fields.",
       "proofs/Proofs/SpernerNDimOQ02.lean (Session 3, VERIFIED): baryEquivVertex d N : BaryPoint d N ≃ Vertex d N (toVertex drops last bary coord, toBary appends slack N-∑); coord simp lemmas; onFace_toVertex (face correspondence); isSperner_iff (transports Sperner condition). 0 sorries, 0 new axioms. This is Option C step 0.",
       "SpernerGridBase.lean: factored GridSimplex foundation (structure+DecidableEq+Fintype+verts_injective+coord trackers, SpernerGrid lines 241-513) into clean base — verified 0-axiom",
-      "SpernerGridBase.GridSimplex.incDir_const_before / last_coord_non_miss / last_coord_miss: every vertex = explicit fn of (verts 0, miss, incDir) — verified 0-axiom"
+      "SpernerGridBase.GridSimplex.incDir_const_before / last_coord_non_miss / last_coord_miss: every vertex = explicit fn of (verts 0, miss, incDir) — verified 0-axiom",
+      "proofs/Proofs/SpernerNDimOQ02.lean (VERIFIED 0-axiom): interior Freudenthal pivot — pivotPoint (opposite-corner vertex), pivotSimplex (full GridSimplex with all 5 Kuhn axioms via incDir∘swap a b + Function.update of the one moved vertex), pivot_facet_eq (deleted-vertex facet preserved), pivot_opposite_ne (moved vertex differs at incDir a), pivot_ne (different cell). #print axioms = [propext, Classical.choice, Quot.sound]."
     ],
     "insights": [
       "SpernerNDim.lean is complete (669 lines, 0 sorries): structure SpernerTriangulation (8 fields) + theorem sperner_ndim (line 654) which yields a fully-colored simplex from an odd count of last-face boundary doors. This is the exact finish line for sperner_grid.",
@@ -45,15 +46,17 @@
       "Coordinate bridge: abstract framework uses Vertex d N (Fin d -> N, sum<=N, Kuhn coords); SpernerGrid uses BaryPoint d N (Fin (d+1) -> N, sum=N). They are canonically isomorphic; proving BaryPoint d N ≃ Vertex d N (~30-50 lines, no adjacency) is the cleanest standalone first deliverable and unlocks reuse of the whole framework.",
       "Phase-1 instance must use unoriented Kuhn cells (base point + permutation of increment order, one representative per geometric cell). The Session-1 orientation-doubling bug came from carrying a free miss/orientation flag in GridSimplex; the instance must NOT.",
       "Session 5: representation A (GridSimplex subtype) preferred over Finset for the Phase-1 Simplex type — Finset does not dodge the canonical vertex-ordering obligation; IsCanon s := forall k, lex (s.verts 0) <= s.verts k is a simpler computable canonicality predicate (step_dec fixes chain direction from lex-min base).",
-      "Phase-1 GridSimplex-rep REQUIRES canonicalization: a facet-sharing dual graph over all GridSimplices breaks adj_unique_facet (a cell and its reverse share the same vertex set/facets). Cube-Kuhn lex-min-base uniqueness does NOT transfer (corner-simplex is not a union of full Kuhn cubes), so a separate IsCanon predicate is mandatory."
+      "Phase-1 GridSimplex-rep REQUIRES canonicalization: a facet-sharing dual graph over all GridSimplices breaks adj_unique_facet (a cell and its reverse share the same vertex set/facets). Cube-Kuhn lex-min-base uniqueness does NOT transfer (corner-simplex is not a union of full Kuhn cubes), so a separate IsCanon predicate is mandatory.",
+      "The chain-interior facet (delete vertex a.succ, 0<a.succ<d) always has a neighbour: swap the two consecutive increment steps a,b (b.castSucc=a.succ). Only the middle vertex moves to the opposite corner verts(a.castSucc)+e_{incDir b}-e_miss; the miss coordinate is untouched at every vertex (so step_dec is inherited verbatim), and only steps a,b have a moved endpoint. This is the GridSimplex-level EXISTENCE half of the search-based adj boundary_face obligation (an interior facet must have a partner).",
+      "Pitfall: subst hka with hka:k=a eliminates a (replacing a by k), not k — breaks references to the def binder a. Use rw [hka] (and rw [hka] at hjI ⊢) instead to keep a.",
+      "Pitfall: nat (x+1)+0 is defeq x+1, so rw/simp auto-closes such goals by rfl — a trailing omega then errors with No goals."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "DONE (#30819): CanonSimplex carrier + IsCanon (decidable) + per-geometry uniqueness (canon_eq_of_vertices_range)",
-      "DONE (#30873, VERIFIED 0-axiom Session 11): vertices := toVertex∘verts + vertices_injective; facet combinatorics (facet/facet_card/facet_injective/not_mem_facet_iff)",
-      "adj via finite facet-search over CanonSimplex; discharge 5 adjacency fields + boundary_face (adj_unique_facet from facet_injective+canon_eq_of_vertices_range; boundary_face via onFace_toVertex)",
-      "Phase 2: last-face-door-oddness by induction on d; apply sperner_ndim",
-      "Retire false boundary_doors_odd/boundary_verts_on_face"
+      "Canonicalise the pivot: build a CanonSimplex from any GridSimplex with the same vertex set (re-select lex-min base + reorder chain), so the interior neighbour lands back in the carrier; combine with pivot_facet_eq to get a canonical partner sharing facet (CanonSimplex level).",
+      "Boundary-chain pivots: handle deleted vertex a.succ = 0 (vertex index 0) and = d (Fin.last) — these change the base/miss and are the genuine boundary vs interior dichotomy.",
+      "Define adj by finite facet-search over CanonSimplex; discharge adj_symm/adj_vertices/adj_ne via facet_vertex_injective + pivot existence, boundary_face via (contrapositive) interior⟹pivot-partner.",
+      "Phase 2: last-face door oddness by induction on d; apply sperner_ndim."
     ]
   },
   "tags": [
@@ -72,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-06-27",
+  "lastUpdate": "2026-06-27T22:10:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanVerified": true,
