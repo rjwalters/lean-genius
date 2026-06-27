@@ -918,4 +918,100 @@ theorem simOrd_triple {a b c d e f k : ℕ} (hb : 0 < b) (hd : 0 < d) (hf_pos : 
       ↔ (2 * (a : ℤ) - k * c) * (2 * (b : ℤ) - k * d) ≥ 0 := by
   rw [simOrd_triple_iff_outer hb hd hf_pos hcd he hfb, simOrd_outer_iff he hfb]
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 12: Length-4 runs — two quotients, and the long-range obstruction
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 11 settled the smallest run that can break, a length-3 block governed by a
+*single* successor quotient `k`.  A length-4 block `a/b, c/d, e/f, g/h` is the
+first run driven by **two** quotients: writing the §9 recurrence twice,
+
+  `e = k₁·c − a`,  `f = k₁·d − b`      (first step, quotient `k₁`)
+  `g = k₂·e − c`,  `h = k₂·f − d`      (second step, quotient `k₂`)
+
+Of the six pairs, the three *adjacent* ones are free (§10).  The three
+non-adjacent obstructions split into the two length-3 outer criteria of §11
+(one per consecutive triple) **plus a genuinely new long-range pair** `a/b, g/h`
+spanning the whole block.  Substituting the recurrences collapses the fourth
+term to a closed form in the *first* pair,
+
+  `g = (k₁·k₂ − 1)·c − k₂·a`,   `h = (k₁·k₂ − 1)·d − k₂·b`,
+
+so the long pair is similarly ordered **iff**
+`((k₂+1)·a − (k₁·k₂−1)·c)·((k₂+1)·b − (k₁·k₂−1)·d) ≥ 0` (`simOrd_long_iff`).
+This is the order-side shadow of the Stern–Brocot product `k₁·k₂ − 1`: the
+combined "depth" of the two steps, not either one alone, controls whether the
+endpoints of a length-4 run stay similarly ordered.  The headline `simOrd_quad`
+assembles the run criterion as the conjunction of the two §11 windows and this
+new long-range window.
+-/
+
+/-- **Long-range criterion for a length-4 run.**  Iterating the successor
+recurrence twice (`e + a = k₁·c`, `f + b = k₁·d`, then `g + c = k₂·e`,
+`h + d = k₂·f`) expresses the fourth term as `g = (k₁·k₂−1)·c − k₂·a`,
+`h = (k₁·k₂−1)·d − k₂·b`, so the *endpoints* `a/b, g/h` are similarly ordered
+**iff** `((k₂+1)·a − (k₁·k₂−1)·c)·((k₂+1)·b − (k₁·k₂−1)·d) ≥ 0`.  The controlling
+quantity is the Stern–Brocot product `k₁·k₂ − 1`, the combined depth of the two
+steps. -/
+theorem simOrd_long_iff {a b c d e f g h k₁ k₂ : ℕ}
+    (he : e + a = k₁ * c) (hf : f + b = k₁ * d)
+    (hg : g + c = k₂ * e) (hh : h + d = k₂ * f) :
+    SimOrd a b g h ↔
+      (((k₂ : ℤ) + 1) * a - ((k₁ : ℤ) * k₂ - 1) * c)
+        * (((k₂ : ℤ) + 1) * b - ((k₁ : ℤ) * k₂ - 1) * d) ≥ 0 := by
+  have He : (e : ℤ) = k₁ * c - a := by
+    have : (e : ℤ) + a = k₁ * c := by exact_mod_cast he
+    linarith
+  have Hf : (f : ℤ) = k₁ * d - b := by
+    have : (f : ℤ) + b = k₁ * d := by exact_mod_cast hf
+    linarith
+  have Hg : (g : ℤ) = k₂ * e - c := by
+    have : (g : ℤ) + c = k₂ * e := by exact_mod_cast hg
+    linarith
+  have Hh : (h : ℤ) = k₂ * f - d := by
+    have : (h : ℤ) + d = k₂ * f := by exact_mod_cast hh
+    linarith
+  have key : ((a : ℤ) - g) * ((b : ℤ) - h)
+      = (((k₂ : ℤ) + 1) * a - ((k₁ : ℤ) * k₂ - 1) * c)
+          * (((k₂ : ℤ) + 1) * b - ((k₁ : ℤ) * k₂ - 1) * d) := by
+    rw [Hg, Hh, He, Hf]; ring
+  rw [simOrd_iff_prod, key]
+
+/-- **Length-4 run criterion (headline).**  Four consecutive Farey neighbours
+`a/b, c/d, e/f, g/h` produced by two successor steps (`e + a = k₁·c`,
+`f + b = k₁·d`, `g + c = k₂·e`, `h + d = k₂·f`) form a pairwise similarly ordered
+run **iff** all three non-adjacent windows are nonnegative: the two length-3
+windows of §11 (one per consecutive triple) and the new long-range window of
+`simOrd_long_iff`.  The three adjacent pairs are automatically free (§10), so the
+two quotients `k₁, k₂` interact *only* through these three explicit inequalities —
+and the long-range one is controlled by the combined depth `k₁·k₂ − 1`, the first
+place a run can break for reasons invisible to either single step. -/
+theorem simOrd_quad {a b c d e f g h k₁ k₂ : ℕ}
+    (hb : 0 < b) (hd : 0 < d) (hf_pos : 0 < f) (hh_pos : 0 < h)
+    (hcd : Unimodular a b c d)
+    (he : e + a = k₁ * c) (hfb : f + b = k₁ * d)
+    (hg : g + c = k₂ * e) (hhd : h + d = k₂ * f) :
+    (SimOrd a b c d ∧ SimOrd c d e f ∧ SimOrd e f g h
+        ∧ SimOrd a b e f ∧ SimOrd c d g h ∧ SimOrd a b g h)
+      ↔ ((2 * (a : ℤ) - k₁ * c) * (2 * (b : ℤ) - k₁ * d) ≥ 0
+          ∧ (2 * (c : ℤ) - k₂ * e) * (2 * (d : ℤ) - k₂ * f) ≥ 0
+          ∧ (((k₂ : ℤ) + 1) * a - ((k₁ : ℤ) * k₂ - 1) * c)
+              * (((k₂ : ℤ) + 1) * b - ((k₁ : ℤ) * k₂ - 1) * d) ≥ 0) := by
+  have hcdef : Unimodular c d e f := farey_succ_unimodular hcd he hfb
+  have hefgh : Unimodular e f g h := farey_succ_unimodular hcdef hg hhd
+  have s1 : SimOrd a b c d := unimodular_simOrd hb hd hcd
+  have s2 : SimOrd c d e f := unimodular_simOrd hd hf_pos hcdef
+  have s3 : SimOrd e f g h := unimodular_simOrd hf_pos hh_pos hefgh
+  constructor
+  · rintro ⟨_, _, _, h4, h5, h6⟩
+    exact ⟨(simOrd_outer_iff he hfb).mp h4,
+           (simOrd_outer_iff hg hhd).mp h5,
+           (simOrd_long_iff he hfb hg hhd).mp h6⟩
+  · rintro ⟨c1, c2, c3⟩
+    exact ⟨s1, s2, s3,
+           (simOrd_outer_iff he hfb).mpr c1,
+           (simOrd_outer_iff hg hhd).mpr c2,
+           (simOrd_long_iff he hfb hg hhd).mpr c3⟩
+
 end Erdos1005OQ02

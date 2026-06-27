@@ -40,7 +40,9 @@
       "succ_controlling_nonneg (§10): the §9 controlling product (a+c−kc)(b+d−kd) is unconditionally ≥0",
       "simOrd_outer_iff (§11): non-adjacent outer pair similarly ordered iff (2a−kc)(2b−kd)≥0",
       "simOrd_triple_iff_outer (§11): length-3 run reduces to outer pair (adjacent pairs free by §10)",
-      "simOrd_triple (§11): length-3 run similarly ordered iff (2a−kc)(2b−kd)≥0; break interval (2a/c,2b/d) width 2/(cd)"
+      "simOrd_triple (§11): length-3 run similarly ordered iff (2a−kc)(2b−kd)≥0; break interval (2a/c,2b/d) width 2/(cd)",
+      "simOrd_long_iff: SimOrd a b g h ↔ ((k₂+1)a−(k₁k₂−1)c)((k₂+1)b−(k₁k₂−1)d) ≥ 0, the long-range criterion for the endpoints of a two-step (length-4) Farey run. [verified, 0-axiom]",
+      "simOrd_quad: length-4 run a/b,c/d,e/f,g/h pairwise similarly ordered ↔ conjunction of the two §11 length-3 windows and the simOrd_long_iff long-range window. [verified, 0-axiom]"
     ],
     "insights": [
       "CORRECTION: the roadmap heuristic that the order-n cap forces O(log n) refinement depth is FALSE for arbitrary mediant chains. The one-sided chain 0/1,1/2,1/3,…,1/n fits Θ(n) levels under q≤n with only LINEAR denominator growth (k+1)·b+d.",
@@ -48,12 +50,14 @@
       "Literature pin (van Doorn 2025, arXiv:2509.00121): f(n) ≥ (1/12−o(1))n and f(n) ≤ n/4+5; constant c∈[1/12,1/4] open.",
       "CORRECTION to §9 framing: a single Farey step NEVER breaks a similarly ordered run (any quotient k). Reason: c/d,e/f are again unimodular (farey_succ_unimodular) and adjacent unimodular pairs are always similarly ordered. The per-step controlling product is therefore always ≥0.",
       "Structural reframing: since adjacency alone never breaks similar ordering, the f(n) ≤ n/4 upper bound is purely a NON-ADJACENT effect — isSimOrdered demands similar ordering for every pair j₁<j₂ in a window, and only the j₂>j₁+1 pairs can fail. The open 1/12–1/4 gap lives in controlling long-range (non-adjacent) similar ordering, not per-step quotients.",
-      "The first non-adjacent break is METRIC: a length-3 Farey run breaks iff the successor quotient k falls in (2a/c,2b/d), an interval of width 2(bc−ad)/(cd)=2/(cd). Small cd (large gaps) ⇒ wider break window. This is the bridge from the per-step quotient to the run-length obstruction behind 1/12–1/4."
+      "The first non-adjacent break is METRIC: a length-3 Farey run breaks iff the successor quotient k falls in (2a/c,2b/d), an interval of width 2(bc−ad)/(cd)=2/(cd). Small cd (large gaps) ⇒ wider break window. This is the bridge from the per-step quotient to the run-length obstruction behind 1/12–1/4.",
+      "§12: a length-4 Farey run (two quotients k₁,k₂) breaks ONLY through three explicit non-adjacent windows — the two §11 length-3 windows plus a NEW long-range endpoint window. The three adjacent pairs are always free (§10).",
+      "§12: the long-range endpoint pair a/b,g/h of a length-4 run is controlled by the Stern–Brocot PRODUCT k₁·k₂−1 (combined depth of both steps), not by either quotient alone — the first break invisible to any single Farey step. Closed form g=(k₁k₂−1)c−k₂a, h=(k₁k₂−1)d−k₂b."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Extend to length-4: with two successive quotients k₁,k₂, characterize which of the 3 non-adjacent pairs (skip-1 ×2, skip-2 ×1) can break, in terms of (k₁,k₂).",
-      "Aggregate the width-2/(cd) break windows along a Stern–Brocot path to bound expected run length — the quantitative route toward the 1/12 constant."
+      "Generalize simOrd_quad to length-(m+1) runs: prove the run is similarly ordered iff ALL C(m,2)−m non-adjacent windows are ≥0 (adjacent ones free by §10), with the skip-j window controlled by a Stern–Brocot continuant in the quotients k₁,…,k_{m−1}.",
+      "Aggregate the explicit break windows (length-3 width 2/(cd); length-4 long-range product k₁k₂−1) along a Stern–Brocot path to bound expected run length — the quantitative route toward the open 1/12 constant."
     ]
   },
   "tags": [
