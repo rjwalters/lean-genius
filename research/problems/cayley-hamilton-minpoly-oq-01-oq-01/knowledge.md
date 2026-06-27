@@ -48,35 +48,51 @@ exactness `maxGenEigenspaceIndex_exact`) needs the largest-Jordan-block witness.
   `classical` at the top of the proof supplies it (a field is not `DecidableEq` by
   default).
 
-## Result this session
+## Result — FULL PRODUCT FORMULA PROVED (parent axiom eliminated)
 
-New file `proofs/Proofs/CayleyHamiltonMinpolyOQ01OQ01.lean` proves:
-- `minpoly_dvd_maxGenEigenspace_product` — the forward divisibility above.
-- supporting: `maxGenEigenspace_eq_bot_of_not_hasEigenvalue`,
-  `aeval_linear_factor_pow`.
-0 sorries, 0 axioms by construction.
+`proofs/Proofs/CayleyHamiltonMinpolyOQ01OQ01.lean` now proves the *complete*
+identity that the parent file only axiomatized as `minpoly_product_formula`:
 
-This converts the parent's `minpoly_product_formula` axiom into a one-sided gap:
-only `∏ ∣ minpoly` (the exactness side) remains unproved.
+    minpoly_eq_prod_pow_maxGenEigenspaceIndex :
+      minpoly K f = ∏_{μ eigenvalue} (X - μ)^{maxGenEigenspaceIndex f μ}
+    [IsAlgClosed K] [FiniteDimensional K V].
 
-## BUILD STATUS — verification pending (infrastructure)
+Both divisibilities + monicity:
+- `minpoly_dvd_maxGenEigenspace_product` — forward `minpoly ∣ ∏` (needs alg.closed,
+  from `iSup_maxGenEigenspace_eq_top`).
+- `pow_maxGenEigenspaceIndex_dvd_minpoly` — single-factor reverse `(X-μ)^{e_μ} ∣ minpoly`
+  (needs only `FiniteDimensional`).
+- `prod_pow_maxGenEigenspaceIndex_dvd_minpoly` — full reverse `∏ ∣ minpoly`
+  via pairwise coprimality (`pairwise_coprime_X_sub_C`, `Finset.prod_dvd_of_coprime`).
+- equality via `eq_of_monic_of_associated` + `associated_of_dvd_dvd`.
+0 sorries, 0 axioms.
 
-The first Docker build run reported exactly two file errors (`DecidableEq K`
-synthesis at the `Finset.erase` sites); both fixed by adding `classical`.
-Subsequent build attempts failed at the *infrastructure* level only: the host
-disk is at 100% (`/System/Volumes/Data`, ~2.7 GiB free), which corrupted the
-Mathlib olean cache (`Mathlib/GroupTheory/Perm/Cycle/Basic.olean.private`,
-invalid header) and then prevented Docker from writing its containerd metadata
-DB at all. A clean machine-check is required once disk pressure is relieved.
-The proof is logically complete and the only code-level issue was already
-resolved.
+### Reverse-direction proof skeleton (the genuine new content)
+For an eigenvalue μ with index `e>0`: factor `minpoly = (X-μ)^m·g`,
+`m = rootMultiplicity μ`, `(X-μ) ∤ g` (`exists_eq_pow_rootMultiplicity_mul_and_not_dvd`).
+`X-μ` prime ⇒ `IsCoprime (X-μ) g` (`(prime_X_sub_C μ).coprime_iff_not_dvd`), so
+`IsCoprime ((X-μ)^e) g` (`.pow_left`). Bézout `a·(X-μ)^e + b·g = 1`; take exactness
+witness `v` (`(f-μ)^e v = 0`, `(f-μ)^{e-1} v ≠ 0`); evaluating Bézout at `v` kills the
+first term ⇒ `v = b(f)(g(f) v)`. `minpoly` annihilates ⇒ `(f-μ)^m (g(f) v) = 0`;
+`b(f)` commutes with `(f-μ)^m` ⇒ `(f-μ)^m v = 0`; exactness ⇒ `e ≤ m` ⇒
+`(X-μ)^e ∣ (X-μ)^m ∣ minpoly`.
+
+## BUILD STATUS — VERIFIED offline (0-axiom)
+
+Docker is dead (containerd-corrupt, disk 100% / ~3.7 GiB free), but the file
+machine-checks **green offline** from the main repo:
+`LAKE_UNSAFE=1 ./bin/lake env lean <worktree-file>` → EXIT 0.
+`#print axioms minpoly_eq_prod_pow_maxGenEigenspaceIndex` (and the two divisibility
+lemmas) lists only `[propext, Classical.choice, Quot.sound]` — genuinely 0-axiom,
+no `sorryAx`/`ofReduceBool`. The earlier `DecidableEq K` `Finset.erase` errors were
+already fixed with `classical`.
 
 ---
 
 ## Dead Ends
 
-- None yet. The reverse direction (`∏ ∣ minpoly`) was deliberately not attempted:
-  it requires exhibiting a vector `v` with `(f - μ)^{e_μ - 1} v ≠ 0`
-  (strictness of the generalized-eigenspace chain at the index), which is the
-  genuine content of `maxGenEigenspaceIndex_exact` and likely needs more
-  infrastructure than one session.
+- None. The reverse direction (`∏ ∣ minpoly`) — previously flagged as needing more
+  infrastructure than one session — was completed this session via the per-eigenvalue
+  coprimality + Bézout argument above, requiring only `FiniteDimensional` (no algebraic
+  closure) for each factor. The exactness witness from the prior session was the key
+  enabler.
