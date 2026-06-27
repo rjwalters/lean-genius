@@ -46,9 +46,17 @@ Consequently the parent's literal `WeakConjecture` (and even the assertion
    empty — so the finiteness in the open question is exactly what makes the
    corrected count well-behaved.
 
-This does **not** resolve the open Erdős question (which remains open for `hCong`);
-it corrects the formalization so that the open question is stated about the right
-object.
+8. Discharges the finiteness hypothesis in the concrete small cases by computing
+   the first **unconditional** values of the corrected count:
+   `hCong 0 = hCong 1 = 1` (`hCong_zero`, `hCong_one`), via the criterion that a
+   nonempty single-congruence-class optimal set forces `hCong n = 1` with no
+   `[Finite]` assumption (`hCong_eq_one_of_all_congruent`). For `n < 2` optimality
+   reduces to validity (`isOptimal_iff_valid_lt_two`), so this is the analogue, in
+   the corrected count, of the parent file's informal remark `h(2)=h(3)=1`.
+
+This does **not** resolve the open Erdős question (which remains open for `hCong`
+at large `n`); it corrects the formalization so that the open question is stated
+about the right object, and pins down its first unconditional values.
 
 ## Axioms / Sorries
 None. All results are machine-checked from Mathlib + the parent file only.
@@ -328,6 +336,95 @@ theorem translate_optimal_via_isometry {n : ℕ} (v : ℝ × ℝ) (P : PointConf
   rw [Ptranslate_eq_applyIsometry]
   exact applyIsometry_optimal (translationIsometry v) P hP
 
+-- ============================================================
+-- PART 9: Unconditional small-n values: hCong 0 = hCong 1 = 1
+-- ============================================================
+
+/-- For `n < 2` the diameter is identically `0` — it is the `else` branch of the
+    parent's `diameter` (a diameter is only defined via the supremum once there are
+    at least two points). -/
+theorem diameter_lt_two {n : ℕ} (hn : n < 2) (P : PointConfig n) :
+    diameter n P = 0 := by
+  unfold diameter
+  rw [dif_neg (by omega)]
+
+/-- For `n < 2` the minimum diameter is `0`: every configuration has diameter `0`,
+    and (given any valid configuration to make the infimum non-vacuous) the infimum
+    of the constant `0` is `0`. -/
+theorem minDiameter_lt_two {n : ℕ} (hn : n < 2) (hne : ∃ P, IsValidConfig n P) :
+    minDiameter n = 0 := by
+  obtain ⟨P0, hP0⟩ := hne
+  haveI : Nonempty {P : PointConfig n // IsValidConfig n P} := ⟨⟨P0, hP0⟩⟩
+  unfold minDiameter
+  calc (⨅ P : {P : PointConfig n // IsValidConfig n P}, diameter n P.val)
+      = ⨅ _ : {P : PointConfig n // IsValidConfig n P}, (0 : ℝ) :=
+        iInf_congr (fun P => diameter_lt_two hn P.val)
+    _ = 0 := ciInf_const
+
+/-- For `n < 2`, optimality collapses to validity: the diameter constraint is
+    vacuous because every configuration already realizes the (zero) minimum. -/
+theorem isOptimal_iff_valid_lt_two {n : ℕ} (hn : n < 2)
+    (hne : ∃ P, IsValidConfig n P) (P : PointConfig n) :
+    IsOptimal n P ↔ IsValidConfig n P := by
+  constructor
+  · exact fun h => h.1
+  · intro hv
+    exact ⟨hv, by rw [diameter_lt_two hn, minDiameter_lt_two hn hne]⟩
+
+/-- **Unconditional single-class criterion.** If an optimal configuration exists and
+    every two optimal configurations are congruent, then `hCong n = 1` with **no
+    `[Finite]` hypothesis**: the quotient is a nonempty subsingleton, and the
+    cardinality of a nonempty subsingleton is exactly `1`. This is the lever that
+    discharges the finiteness assumption carried by all the Part 7 results in the
+    concrete cases where the optimal set is a single congruence class. -/
+theorem hCong_eq_one_of_all_congruent {n : ℕ}
+    (hne : ∃ P, IsOptimal n P)
+    (hall : ∀ P Q : PointConfig n, IsOptimal n P → IsOptimal n Q →
+      AreCongruent n P Q) :
+    hCong n = 1 := by
+  have hsub : Subsingleton (Quotient (OptimalSetoid n)) := by
+    constructor
+    intro a b
+    induction a using Quotient.inductionOn with
+    | _ P =>
+      induction b using Quotient.inductionOn with
+      | _ Q => exact Quotient.sound (hall P.val Q.val P.2 Q.2)
+  obtain ⟨P, hP⟩ := hne
+  have hnonempty : Nonempty (Quotient (OptimalSetoid n)) :=
+    ⟨Quotient.mk (OptimalSetoid n) ⟨P, hP⟩⟩
+  rw [hCong]
+  exact Nat.card_eq_one_iff_unique.mpr ⟨hsub, hnonempty⟩
+
+/-- **`hCong 0 = 1`, unconditionally.** `PointConfig 0` is the one-point type (the
+    empty tuple), so there is a single configuration; it is vacuously valid, hence
+    optimal, and equal to every other, hence its own unique congruence class. This
+    is the first finiteness-hypothesis-free value of the corrected count. -/
+theorem hCong_zero : hCong 0 = 1 := by
+  have hvalid : ∀ R : PointConfig 0, IsValidConfig 0 R := fun R i _ _ => Fin.elim0 i
+  apply hCong_eq_one_of_all_congruent
+  · exact ⟨fun _ => (0, 0),
+      (isOptimal_iff_valid_lt_two (by omega) ⟨_, hvalid _⟩ _).mpr (hvalid _)⟩
+  · intro P Q _ _
+    have hPQ : P = Q := funext (fun i => Fin.elim0 i)
+    rw [hPQ]; exact congruent_refl 0 Q
+
+/-- **`hCong 1 = 1`, unconditionally.** Every single-point configuration is valid
+    (no distinct pairs to separate), hence optimal; and any two are related by the
+    translation carrying one point onto the other, so they form a single congruence
+    class. No finiteness hypothesis is needed. -/
+theorem hCong_one : hCong 1 = 1 := by
+  have hvalid : ∀ R : PointConfig 1, IsValidConfig 1 R := by
+    intro R i j hij; exact absurd (Subsingleton.elim i j) hij
+  apply hCong_eq_one_of_all_congruent
+  · exact ⟨fun _ => (0, 0),
+      (isOptimal_iff_valid_lt_two (by omega) ⟨_, hvalid _⟩ _).mpr (hvalid _)⟩
+  · intro P Q _ _
+    refine ⟨translationIsometry (Q 0 - P 0), fun i => ?_⟩
+    have hi : i = 0 := Subsingleton.elim i 0
+    subst hi
+    change Q 0 = P 0 + (Q 0 - P 0)
+    abel
+
 end Erdos103OQ02
 
 -- Export main results
@@ -343,3 +440,7 @@ end Erdos103OQ02
 #check @Erdos103OQ02.applyIsometry_optimal
 #check @Erdos103OQ02.optimal_of_congruent
 #check @Erdos103OQ02.translate_optimal_via_isometry
+#check @Erdos103OQ02.isOptimal_iff_valid_lt_two
+#check @Erdos103OQ02.hCong_eq_one_of_all_congruent
+#check @Erdos103OQ02.hCong_zero
+#check @Erdos103OQ02.hCong_one
