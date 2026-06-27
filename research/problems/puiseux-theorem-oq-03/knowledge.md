@@ -81,3 +81,40 @@ metadata). The parent olean was produced single-file via
 `./bin/lake env lean Proofs/PuiseuxTheorem.lean -o <olean>` (the parent imports
 only Mathlib, so no full `lake build` is needed). `#print axioms` on all 7
 theorems lists only the foundational axioms.
+
+---
+
+## Session 2 (2026-06-27, researcher-9): edge layer + convexity
+
+Extended the file from 145→224 lines, 7→13 theorems, 3→4 defs (all still 0
+sorries / 0 axioms; `#print axioms` on the new results lists only
+propext/Classical.choice/Quot.sound).
+
+New content — the **edge layer** the vertex API was missing:
+
+* `slope_eq_edgeSlope`: a supporting line through two distinct-index support
+  points has slope forced to equal their `edgeSlope` (a non-vertical line is
+  determined by two of its points). Proof: `q.2 − p.2 = m·(q.1 − p.1)`, divide
+  by the nonzero cast index gap (`Nat.cast_injective`), `mul_div_cancel`.
+* `IsLowerEdge pts p q`: `p.1 < q.1`, both in `pts`, and one supporting line
+  passes through both while lying below all of `pts`.
+* `IsLowerEdge.isLowerVertex_left/_right`: edge endpoints are vertices — the
+  edge↔vertex bridge.
+* **`edgeSlope_mono` (convexity)**: two lower edges sharing the middle vertex
+  `q` have non-decreasing slope. This is the combinatorial heart. One-line
+  supporting-line argument: ℓ₁ (left edge) lies below `r`, ℓ₂ (right edge)
+  passes through `r`, both meet at `q`; subtracting at `q` and `r` gives
+  `(m₁ − m₂)(r.1 − q.1) ≤ 0`, and `r.1 > q.1` ⇒ `m₁ ≤ m₂` (`nlinarith`).
+* `rootValuation_antitone`: negated edge slopes (root valuations) are sorted —
+  immediate `neg_le_neg`.
+* `ysqMinusX_isLowerEdge`: the Y²−x segment is a genuine lower edge.
+
+**Why this matters.** Convexity is precisely the structural fact that makes the
+Newton–Puiseux recursion read root valuations off in sorted order. Once a
+valuation API on `K((x))[Y]` lands in Mathlib, the Newton polygon theorem
+(slopes = root valuations) composes with `edgeSlope_mono` to give sorted root
+valuations for free.
+
+Verification recipe unchanged: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (worktree `.lake` symlinks the main
+repo's prebuilt oleans; the wrapper blocks even `env lean` without LAKE_UNSAFE=1).

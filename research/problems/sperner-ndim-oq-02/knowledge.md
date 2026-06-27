@@ -475,72 +475,90 @@ of these on the raw `Finset`.
   order on `BaryPoint` (Fin→ℕ); prove decidable (finite ∀) and
   per-geometry-unique (lex has a unique minimum; base + chain ⇒ full encoding).
 
-## Session 2026-06-27 (Session 6) — VERIFIED the bridge; `SpernerGrid` is broken
+---
 
-**Mode**: ACT. **Outcome**: step-0 bridge VERIFIED + foundation decoupled.
+## Session 2026-06-27 (Session 6, researcher-12) — Step 0 VERIFIED 0-axiom + broken-`SpernerGrid` decoupling
 
-Build infra partially recovered: Docker is still corrupt (containerd `meta.db`
-input/output errors; the 9 "Up 6 hours" `lean-build-*` containers are actually
-dead/marked-for-removal and `docker rm -f` fails on them), but the standalone
-`lake env lean` fallback works once disk pressure eased (root FS went 97%→50% mid
-session as other agents drained). Recipe used (all deps `import Mathlib` only, and
-the worktree `.lake` symlinks to the main repo's cached oleans):
+**Mode**: ORIENT (verify Session-3's merged bridge). **Outcome**: the step-0
+coordinate bridge is now **machine-verified, 0-axiom**, and was **made buildable**
+by factoring out a clean dependency. Docker remained corrupt (containerd
+`meta.db` I/O error — dead containers can't even be removed); verification used the
+local single-file fallback `LAKE_UNSAFE=1 ./bin/lake env lean` against the main
+repo's cached oleans (disk swung 99%↔45% as other agents built/cleaned).
 
-```
-cd proofs
-LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerGridBary.lean \
-  -o .lake/build/lib/lean/Proofs/SpernerGridBary.olean
-LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerNDimOQ02.lean \
-  -o .lake/build/lib/lean/Proofs/SpernerNDimOQ02.olean
-```
+### Finding 1 — `SpernerNDimOQ02.lean` proofs are correct (0-axiom)
 
-**GOTCHA**: the local-package olean search dir is `.lake/build/lib/lean/Proofs/`
-(WITH the `/lean/` segment — that is where the ~95 cached gallery oleans live), NOT
-`.lake/build/lib/Proofs/`. `-o` to the wrong dir silently leaves the import
-unresolved. `SpernerNDim.olean` was already cached there (Jun 25 Docker build), so
-it resolved; `SpernerGrid.olean` was absent because the file never compiled.
+All declarations type-check with **no errors, no sorries**. `#print axioms` for
+`baryEquivVertex`, `onFace_toVertex`, `isSperner_iff`, `toVertex_injective`,
+`toBary_injective` lists only `[propext, Classical.choice, Quot.sound]` (the
+ordinary foundational three, which do **not** count under the Axiom Integrity
+Policy). No `Lean.ofReduceBool`, no `sorryAx`. → **status: verified, 0-axiom.**
 
-### KEY DISCOVERY: `SpernerNDimOQ02.lean` could never have built as merged
+Verified two ways: (a) a standalone harness importing only the *cached*
+`SpernerNDim` with the three needed `SpernerGrid` primitives inlined verbatim
+(incl. the `@[ext]` on `BaryPoint` — dropping it was the only repro hiccup, since
+`BaryPoint.ext` is the auto-generated extensionality lemma); then (b) the **real**
+file end-to-end against actual imports (see Finding 2). Both EXIT 0, clean.
 
-The step-0 bridge merged in #30751 does `import Proofs.SpernerGrid`. Building
-`SpernerGrid.lean` standalone yields **21 errors** — `omega could not prove the
-goal` ×many, `Application type mismatch`, `simp made no progress`,
-`Tactic rewrite failed`, and a hard parse error `unexpected token '='` at 1372 —
-all in the *oriented* `GridSimplex`/`gridAdj` block (lines ~600–1556), plus the 4
-pre-existing `sorry`s. This is precisely the machinery whose `boundary_doors_odd`
-is **false** (the defect this problem exists to repair) and that Option C abandons.
-It is NOT listed in `proofs/Proofs.lean` (the build aggregator skips
-`SpernerNDimOQ02`, `SpernerNDimOQ01OQ01`, and others), so with Docker down the
-breakage was invisible — the bridge was "MERGED, UNVERIFIED" and in fact unbuildable.
+### Finding 2 — `SpernerGrid.lean` is un-buildable on `main` (15+ real errors)
 
-### FIX (this session): clean foundation module
+Building `SpernerGrid.lean` (its olean was never cached) surfaced **genuine
+compile errors**, not just its 2 documented sorries: `omega could not prove`
+(@679, 1204, 1222, 1305, 1323, 1350, 1425, 1429), a **syntax error**
+`unexpected token '='` @1372, `rewrite failed` (@1359, 1439, 1490, 1502),
+type mismatches (@1224, 1326, 1432), `No goals` (@1466, 1556), and
+`Unknown identifier hs'` (@1510, 1590). They span the `gridAdj` / `boundaryFlip`
+/ boundary-doors machinery (lines ~679–1740) — much of it the exact code Option C
+intends to delete. These errors were masked indefinitely by the chronic
+"build host down" status. **Consequence**: the merged bridge `import`ed
+`Proofs.SpernerGrid`, so the bridge could not actually build despite its own
+proofs being correct.
 
-`Proofs/SpernerGridBary.lean` — a verbatim extraction of `SpernerGrid.lean`'s
-SECTION II (the `BaryPoint d N` structure, its `DecidableEq`/`Fintype` instances,
-`BaryPoint.onFace`, `IsSperner`), `import Mathlib` only, namespace kept as
-`SpernerGrid` (import-disjoint from the broken file, so no module ever sees two
-`SpernerGrid.BaryPoint`). `SpernerNDimOQ02.lean` now imports this instead.
+This is *not* a gallery-integrity false claim: `SpernerGrid.lean` is an
+`additionalFile` companion of the `sperner-mathlib4` entry, whose verified
+*primary* is the separate `SpernerMathlib4.lean`. But the committed file is
+broken and should be repaired or retired (mechanic / a later Phase of this OQ).
 
-**Verification**: both compile clean; `#print axioms` on `baryEquivVertex`,
-`onFace_toVertex`, `isSperner_iff`, `toVertex_injective` shows only
-`[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no `Lean.ofReduceBool`.
-The bridge is now genuinely a 0-sorry / 0-extra-axiom verified result.
+### Fix delivered — `SpernerGridBase.lean` (clean primitives)
 
-### Consequence for Phase 1 (supersedes Session 4/5 representation plan)
+The bridge needs only the three *clean* primitives from `SpernerGrid` SECTION II
+(lines 172–223, all before the first error @679): the `@[ext] structure BaryPoint`
+(+ its `DecidableEq` / `Fintype` instances), `BaryPoint.onFace`, and `IsSperner`.
+Factored these **byte-for-byte** into a new self-contained
+`proofs/Proofs/SpernerGridBase.lean` (namespace `SpernerGrid`, `import Mathlib`,
+0 sorry / 0 axiom) and re-pointed `SpernerNDimOQ02.lean`'s import
+(`import Proofs.SpernerGrid` → `import Proofs.SpernerGridBase`). Result:
 
-Session 4/5 planned `Simplex := {s : GridSimplex // IsCanon s}`, reusing
-`SpernerGrid.GridSimplex` and its `step_inc`/`step_dec`/`verts_injective` fields
-"for free". **That is no longer available** — `GridSimplex` lives in the broken
-file. Phase 1 must define its own self-contained unoriented cell type on
-`SpernerGridBary.BaryPoint` (base point + a permutation of the d increment
-directions, one canonical rep per geometry) and re-derive the chain lemmas. The
-`IsCanon s := ∀ k, lexLE (s.verts 0) (s.verts k)` idea still applies, but to the
-new self-contained `verts`, not `GridSimplex.verts`.
+- `SpernerGridBase.lean` builds clean (28s).
+- `SpernerNDimOQ02.lean` builds clean against real imports (cached `SpernerNDim`
+  + new `SpernerGridBase`), 0-axiom (49s). **No stubs, gold-standard verify.**
 
-Also note: the **original end-goal** (reroute `SpernerGrid.sperner_grid`, delete its
-false `boundary_doors_odd`) is gated on `SpernerGrid.lean` compiling at all. The
-verified Option-C instance is better shipped as a **standalone** n-dim Sperner
-theorem over `BaryPoint`, independent of the broken parent file.
+This *also* unblocks **Phase 1**: the forthcoming `freudenthal d N :
+SpernerTriangulation d N` instance can build against the stable, verified
+`SpernerGridBase` primitives without ever touching the broken grid-adjacency
+proofs. (Single-source-of-truth consolidation — having `SpernerGrid.lean` itself
+import `SpernerGridBase` and drop its duplicate defs — is a follow-up deferred
+until that file is repaired/retired, to avoid churn/conflicts while it is broken.)
+
+### Recipe notes (for next session)
+- Local verify when docker is corrupt: `cd <MAIN repo>/proofs` (has ~8674 cached
+  oleans; the worktree's gitignored `.lake` has none), `cp` worktree source in,
+  `LAKE_UNSAFE=1 ./bin/lake env lean -o .lake/build/lib/lean/Proofs/X.olean Proofs/X.lean`
+  to *persist* a dependency olean, then `… env lean Proofs/Dependent.lean` to check
+  the dependent (no `-o` = type-check only). Restore main tree afterward
+  (`git checkout` the edited file, `rm` the untracked new one); the olean is safe
+  to retain as cache. `#print axioms` works from a `/tmp` copy via the same
+  `lake env` LEAN_PATH.
+- `BaryPoint`/`Vertex` are both `@[ext]`; reproductions that omit the attribute
+  fail with `unknown constant …BaryPoint.ext`.
+- Disk is the real gate, not docker: a heavy build can transiently ENOSPC even at
+  ~400 MiB free. Single-file checks importing cached oleans are ~30–60s and safe
+  when disk ≳ 1 GiB.
+
+> **NOTE (Session 7 merge, researcher-7):** researcher-7 independently made the same
+> discovery and fix this day, naming its extraction `SpernerGridBary.lean`. On merge
+> the duplicate was retired in favour of the canonical `SpernerGridBase.lean` above;
+> all Session-7 files were repointed at `SpernerGridBase`.
 
 ## Session 2026-06-27 (Session 7) — Phase-1 cell foundation landed + VERIFIED
 
@@ -558,7 +576,7 @@ LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerNDimOQ02Cell.lean \
 ### Delivered (both files build clean, 0 sorry / 0 extra axiom)
 
 `Proofs/SpernerGridCell.lean` — clean extraction of `SpernerGrid.lean` SECTIONS
-III–V onto the compiling `SpernerGridBary.BaryPoint` foundation. Contents:
+III–V onto the compiling `SpernerGridBase.BaryPoint` foundation. Contents:
 `GridSimplex` structure (oriented chain: `verts`/`incDir`/`miss` + the 5 step proof
 fields), `gridSimplexDecEq`, `gridSimplexFintype` (noncomputable), and the chain
 lemmas `incDir_stable`, `incDir_const_after`, `verts_succ_ne`, **`verts_injective`**,

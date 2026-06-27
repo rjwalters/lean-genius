@@ -9,6 +9,9 @@
 > **Session 7 (2026-06-27, researcher-7): Phase-1 cell machinery landed + VERIFIED.**
 > Built the self-contained, compiling cell foundation the Phase-1 `SpernerTriangulation`
 > instance needs — everything *except* the orientation-free adjacency involution.
+> Rebased onto the canonical clean foundation `Proofs/SpernerGridBase.lean` (the
+> shared `BaryPoint` extraction that landed on main via #30779; my parallel
+> `SpernerGridBary.lean` was retired as a duplicate of it).
 > Two new files (both build clean via `lake env lean`, both 0 sorry / 0 extra axiom,
 > deps only `propext`/`Classical.choice`/`Quot.sound`):
 > - `Proofs/SpernerGridCell.lean` — a clean extraction of `SpernerGrid.lean`'s
@@ -16,7 +19,7 @@
 >   lemmas `verts_injective`/`incDir_const_after`/`miss_coord_at`/`base_miss_ge_d`/
 >   `miss_coord_ge`/`incDir_surj_complement`, and `BaryPoint.transfer` + its 3
 >   coord lemmas), reproduced strictly *before* the broken `gridAdj` block on the
->   compiling `SpernerGridBary.BaryPoint` foundation (namespace `SpernerGrid`,
+>   compiling `SpernerGridBase.BaryPoint` foundation (namespace `SpernerGrid`,
 >   import-disjoint from the broken file).
 > - `Proofs/SpernerNDimOQ02Cell.lean` — the `vertices`-field bridge over cells:
 >   `cellVertices := toVertex ∘ s.verts`, `cellVertices_injective`
@@ -29,38 +32,29 @@
 > fields (`adj_symm`/`adj_vertices`/`adj_ne`/`adj_unique_facet`/`boundary_face`),
 > plus the per-geometry uniqueness of `IsCanon`. See knowledge.md "Session 7".
 
-> **Session 6 (2026-06-27, researcher-7): VERIFIED the step-0 bridge + KEY DISCOVERY.**
-> Build infra recovered enough for the standalone `lake env lean` fallback (Docker
-> containerd still corrupt: `meta.db` I/O errors, zombie containers un-removable).
-> Discovery: `SpernerNDimOQ02.lean` as merged (#30751) `import`s `Proofs.SpernerGrid`,
-> which **does not compile** — 21 errors (omega failures, type mismatches, even a
-> parse error) in the *oriented* `GridSimplex`/`gridAdj` machinery (lines 600–1556),
-> plus 4 pre-existing sorries. That machinery is exactly what Option C **abandons**
-> (its `boundary_doors_odd` is the false theorem this problem replaces), and it is
-> not in `Proofs.lean`'s build aggregator, so the breakage went unnoticed while
-> Docker was down. **Fix**: extracted `SpernerGrid`'s clean SECTION II (the
-> `BaryPoint` API: structure, `DecidableEq`/`Fintype`, `onFace`, `IsSperner`) into a
-> new self-contained module `Proofs/SpernerGridBary.lean` (namespace kept as
-> `SpernerGrid`, import-disjoint from the broken file) and repointed
-> `SpernerNDimOQ02.lean` at it. **Both files now build clean via `lake env lean`;
-> `baryEquivVertex`/`onFace_toVertex`/`isSperner_iff`/`toVertex_injective` depend only
-> on `propext`/`Classical.choice`/`Quot.sound` — 0 sorry, 0 extra axiom.** The bridge
-> is now genuinely VERIFIED on a compiling foundation. See knowledge.md "Session 6".
-
-> Session 5 (2026-06-27, researcher-7): HARD infra outage (disk 99%, bash stdout
-> ENOSPC, 9 hung 6h build containers) — no build/verify possible. Read-only source
-> confirmation of `GridSimplex` fields/instances + one design correction:
-> representation A (subtype) is preferred (Finset route does NOT dodge the
-> vertex-ordering obligation), and `IsCanon s := ∀ k, lex (s.verts 0) ≤ (s.verts k)`
-> is a simpler, computable canonicality predicate than the Session-4 `canonMiss`.
-> See knowledge.md "Session 5". No code written (unverifiable hard proof + host risk).
+> Session 6 (2026-06-27, researcher-12): **VERIFIED the step-0 bridge (0-axiom)**
+> and **decoupled it from broken `SpernerGrid.lean`**. Docker still corrupt
+> (containerd meta.db I/O error) but disk recovered intermittently; used the
+> local `LAKE_UNSAFE=1 ./bin/lake env lean` single-file fallback. Two findings:
+> (1) `SpernerNDimOQ02.lean`'s proofs all type-check, 0 sorry, axioms =
+> `{propext, Classical.choice, Quot.sound}` only → **verified, 0-axiom**.
+> (2) `SpernerGrid.lean` is **un-buildable on main** — 15+ genuine compile errors
+> (omega gaps, a syntax typo @1372, rewrite/type-mismatch, unknown-ident `hs'`)
+> spanning the `gridAdj`/`boundaryFlip`/doors machinery (lines 679–1740), masked
+> for ages by "build host down". Because the merged bridge `import`ed the broken
+> file, it could not actually build. **Fix**: factored the clean coordinate
+> primitives (`BaryPoint`/`onFace`/`IsSperner`, byte-for-byte) into a new
+> `SpernerGridBase.lean` and re-pointed the bridge import at it. Both build clean
+> end-to-end (real imports, no stubs). See knowledge.md "Session 6".
 
 ## Current Focus
 
 Option C in progress. **Session 3 (2026-06-27) delivered step 0**: the
 `BaryPoint d N ≃ Vertex d N` coordinate bridge as
 `proofs/Proofs/SpernerNDimOQ02.lean` (`baryEquivVertex`, `onFace_toVertex`,
-`isSperner_iff`) — now MERGED via PR #30751 (still UNVERIFIED).
+`isSperner_iff`) — MERGED via PR #30751, and **now VERIFIED (0-axiom) and made
+buildable in Session 6** (imports the new clean `SpernerGridBase.lean` instead of
+the broken `SpernerGrid.lean`).
 **Session 4 (2026-06-27, researcher-7) delivered the Phase-1 *design***: a precise
 spec for the *unoriented* `freudenthal d N : SpernerTriangulation d N` instance
 that fixes the `GridSimplex` double-counting — represent cells as canonical
@@ -75,7 +69,7 @@ line.
 
 **Option C: SpernerTriangulation instance + inductive door-oddness**
 - (step 0) ✅ DONE + **VERIFIED** (Session 6) — `BaryPoint d N ≃ Vertex d N` bridge
-  in `SpernerNDimOQ02.lean`, now on the clean `Proofs/SpernerGridBary.lean`
+  in `SpernerNDimOQ02.lean`, now on the clean `Proofs/SpernerGridBase.lean`
   foundation (0 sorry, 0 extra axiom; `lake env lean` clean). The originally
   merged (#30751) version imported the broken `SpernerGrid` and could not build.
 - (Phase 1 design) ✅ DONE (Session 4) — unoriented representation chosen
@@ -103,21 +97,26 @@ line.
   `GridSimplex`/`gridAdj` block). The Session-4 Phase-1 plan assumed it could reuse
   `SpernerGrid.GridSimplex` as the cell representation; that is no longer viable.
   Phase 1 must define its **own** canonical-cell type (on the clean
-  `SpernerGridBary.BaryPoint` foundation) rather than subtyping `SpernerGrid.GridSimplex`.
+  `SpernerGridBase.BaryPoint` foundation) rather than subtyping `SpernerGrid.GridSimplex`.
 - **Infra**: Docker build host still corrupt (containerd `meta.db` I/O errors,
   zombie containers). The standalone `lake env lean` fallback works for single files
   whose deps are cached/clean (used this session to verify the bridge).
 
 ## Next Action
 
-1. ✅ DONE + VERIFIED (Session 6) — bridge on the clean `SpernerGridBary` foundation
-   (0 sorry, 0 extra axiom). Phase-1 design fixed (Session 4).
-2. **(Phase 1 impl)** Define the unoriented cell representation **from scratch** on
-   `SpernerGridBary.BaryPoint` (do NOT subtype `SpernerGrid.GridSimplex` — that file
-   is broken). Self-contained Kuhn cell = base `BaryPoint` + a permutation of the d
-   increment directions, with a canonicality predicate selecting one rep per
-   geometry. `vertices` (= `toVertex ∘ verts`, injective via `toVertex_injective`);
-   discharge the 5 adjacency fields + `boundary_face` (via `onFace_toVertex`).
+0. ✅ DONE + VERIFIED (Session 6) — bridge on the clean `SpernerGridBase` foundation
+   (0 sorry, 0 extra axiom; `SpernerGridBase.lean` landed on main via #30779 so the
+   bridge builds independently of the broken `SpernerGrid.lean`). Phase-1 design
+   fixed (Session 4). Follow-up (mechanic/separate): repair or retire the 15+ errors
+   in `SpernerGrid.lean` itself; Option C deletes most of that machinery anyway.
+1. ✅ DONE + VERIFIED (Session 7) — cell foundation on `SpernerGridBase.BaryPoint`:
+   `SpernerGridCell.lean` (own `GridSimplex` + chain lemmas + `BaryPoint.transfer`)
+   and `SpernerNDimOQ02Cell.lean` (`cellVertices` bridge, `onFace_cellVertices`,
+   `CanonCell` subtype scaffold + `IsCanon`/`lexLe`). 0 sorry, 0 extra axiom.
+2. **(Phase 1 impl, adjacency)** Define the facet-sharing dual-graph `adj` on
+   `CanonCell` and discharge the 5 involution fields + `boundary_face` (via
+   `onFace_cellVertices`), plus per-geometry uniqueness of `IsCanon`; then assemble
+   `freudenthal d N : SpernerTriangulation d N` (8 fields; 3 already in hand).
 3. **(Phase 2)** Last-face-door-oddness by induction on d; feed `sperner_ndim`,
    transport hypothesis with `isSperner_iff`.
 4. **(End-goal caveat)** The original target — rerouting `SpernerGrid.sperner_grid`

@@ -6,32 +6,23 @@ Authors: RJ Walters
 import Mathlib
 
 /-
-# Barycentric Lattice Points on the Subdivided d-Simplex
+# Barycentric Lattice Points for the Freudenthal Grid (clean base)
 
-This is the clean, self-contained foundation of barycentric lattice points
-`BaryPoint d N` on the standard `d`-simplex with subdivision parameter `N`:
-functions `Fin (d+1) → ℕ` whose coordinates sum to `N`.
+This file holds the *coordinate primitives* of the concrete Freudenthal grid —
+the barycentric lattice point type `SpernerGrid.BaryPoint`, its `onFace`
+predicate, and the `IsSperner` boundary condition — factored out of the larger
+`SpernerGrid.lean` so they can be reused without pulling in that file's
+in-progress `GridSimplex`/`gridAdj`/`boundary_doors_odd` machinery.
 
-It is extracted verbatim from `SpernerGrid.lean` (SECTION II) into its own
-module for two reasons:
+The definitions here are byte-for-byte the ones from `SpernerGrid.lean`
+(SECTION II, lines 172-223); they are the stable, fully-proved foundation that
+the `sperner-ndim-oq-02` "Option C" coordinate bridge (`SpernerNDimOQ02.lean`)
+depends on. Keeping them in a dedicated, self-contained file lets the bridge —
+and the forthcoming Phase-1 `SpernerTriangulation` instance — build and be
+machine-verified independently of the unfinished grid-adjacency proofs.
 
-* `SpernerGrid.lean` bundles `BaryPoint` together with the *oriented*
-  `GridSimplex`/`gridAdj` machinery, which is known-incomplete (its
-  `boundary_doors_odd` is *false* as stated — see the design note in that
-  file and `sperner-ndim-oq-02`) and does not currently compile.
-* The Option-C resolution of `sperner-ndim-oq-02` reuses the complete
-  abstract `SpernerNDim` framework over an *unoriented* Freudenthal grid.
-  Both the `BaryPoint ≃ Vertex` coordinate bridge (`SpernerNDimOQ02.lean`)
-  and the future unoriented triangulation instance build on this clean
-  `BaryPoint` API, with no dependence on the abandoned oriented machinery.
-
-Only `Mathlib` is imported. There are no axioms and no sorries. The namespace
-is kept as `SpernerGrid` so downstream references read identically to the
-original; the module is import-disjoint from `SpernerGrid.lean`, so no file
-sees both definitions of `SpernerGrid.BaryPoint` simultaneously.
+No axioms, no sorries.
 -/
-
-set_option maxHeartbeats 400000
 
 open Finset
 

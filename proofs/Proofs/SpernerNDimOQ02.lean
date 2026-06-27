@@ -1,5 +1,5 @@
 import Proofs.SpernerNDim
-import Proofs.SpernerGridBary
+import Proofs.SpernerGridBase
 
 /-
 # sperner-ndim-oq-02: BaryPoint ≃ Vertex coordinate bridge
@@ -24,15 +24,7 @@ bridge of "Option C" for `sperner-ndim-oq-02`: it lets the complete (0-sorry)
 `SpernerNDim` framework be reused over `BaryPoint` without re-deriving it. See
 `research/problems/sperner-ndim-oq-02/` for the full plan.
 
-The `BaryPoint` API is imported from `Proofs.SpernerGridBary`, a clean
-self-contained extraction of `SpernerGrid.lean`'s SECTION II. The parent
-`SpernerGrid.lean` additionally bundles the *oriented* `GridSimplex`/`gridAdj`
-machinery, whose `boundary_doors_odd` is *false* as stated (the motivating
-defect of this problem) and which does not currently compile; Option C
-abandons that machinery, so this bridge depends only on the clean foundation.
-
-No new axioms or sorries are introduced (the key results depend only on the
-standard `propext`/`Classical.choice`/`Quot.sound`).
+No new axioms or sorries are introduced.
 -/
 
 open Finset BigOperators

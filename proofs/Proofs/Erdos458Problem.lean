@@ -194,7 +194,7 @@ between n² and (n+1)².
 def LegendreConjecture : Prop :=
   ∀ n : ℕ, n ≥ 1 → ∃ p : ℕ, p.Prime ∧ n^2 < p ∧ p < (n + 1)^2
 
-/--
+/-
 **Conditional Result**: If Legendre's conjecture holds, the prime gap
 p_{k+1} - p_k is bounded, which helps control the LCM growth.
 -/
@@ -229,7 +229,7 @@ theorem erdos458_conjecture_at_two :
 
 /- ## Asymptotic Perspective -/
 
-/--
+/-
 **Chebyshev's Result**: log(lcm_upto n) ~ n as n → ∞
 
 This means lcm_upto n ≈ e^n asymptotically. The conjecture essentially

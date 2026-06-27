@@ -1,4 +1,4 @@
-import Proofs.SpernerGridBary
+import Proofs.SpernerGridBase
 
 /-
 # sperner-ndim-oq-02: self-contained unoriented Freudenthal cell machinery
@@ -10,7 +10,7 @@ additionally bundles the *oriented* `gridAdj` machinery (lines ~600–1556) whos
 `boundary_doors_odd` is **false** as stated — the motivating defect of this
 problem — and which does not currently compile. Everything reproduced here lives
 strictly *before* that broken block and depends only on the clean `BaryPoint`
-API from `Proofs.SpernerGridBary` (`import Mathlib` only).
+API from `Proofs.SpernerGridBase` (`import Mathlib` only).
 
 Reproducing it on the compiling foundation makes the cell geometry — the
 `d+1`-vertex mass-transfer chain, its `verts_injective`, the `miss`-coordinate

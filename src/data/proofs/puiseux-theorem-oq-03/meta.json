@@ -2,7 +2,7 @@
   "id": "puiseux-theorem-oq-03",
   "title": "Puiseux Theorem OQ-03: A Combinatorial Newton Polygon",
   "slug": "puiseux-theorem-oq-03",
-  "description": "First Lean deliverable for the computational sub-question of Puiseux's theorem (\"Can the Newton–Puiseux algorithm be made efficient enough for computational algebraic geometry at scale?\"). Introduces the Newton polygon of a polynomial over a valued field via the supporting-line characterization of lower-hull vertices (IsLowerVertex), proves the minimum-valuation point is always a vertex (isLowerVertex_of_minimal) and that every nonempty support set has one (exists_lowerVertex via List.argmin), and works the canonical Y²−x example: both support points are vertices, the single edge has slope −1/2, and the leading exponent 1/2 matches the parent's leadingExponentFromSlope. Also fixes a parse error in the parent file (a dangling /-- doc comment).",
+  "description": "Lean deliverable for the computational sub-question of Puiseux's theorem (\"Can the Newton–Puiseux algorithm be made efficient enough for computational algebraic geometry at scale?\"). Introduces the Newton polygon of a polynomial over a valued field via the supporting-line characterization of lower-hull vertices (IsLowerVertex), proves the minimum-valuation point is always a vertex (isLowerVertex_of_minimal) and that every nonempty support set has one (exists_lowerVertex via List.argmin). It then builds the edge layer: a lower-edge predicate (IsLowerEdge), the fact that a supporting line through two distinct-index points has the forced edge slope (slope_eq_edgeSlope), that edge endpoints are vertices, and — the combinatorial heart — convexity of the Newton polygon (edgeSlope_mono): adjacent edge slopes are non-decreasing, hence the root valuations come sorted (rootValuation_antitone). Validated on the canonical Y²−x example: both support points are vertices, the single segment is a genuine lower edge of slope −1/2, and the leading exponent 1/2 matches the parent's leadingExponentFromSlope. Also fixes a parse error in the parent file (a dangling /-- doc comment).",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Newton_polygon",
@@ -21,32 +21,38 @@
     "badge": "infrastructure",
     "sorries": 0,
     "axiomCount": 0,
-    "assumptions": "None. All 7 theorems and 3 definitions are fully verified with 0 sorries and 0 axioms (only the foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms). The Newton polygon theorem proper (edge slopes = root valuations), a Newton–Puiseux termination measure, and the quasi-linear complexity bound remain open — they need valuation API on K((x))[Y] and an arithmetic-complexity model, neither in Mathlib 4.26.0.",
+    "assumptions": "None. All 13 theorems and 4 definitions are fully verified with 0 sorries and 0 axioms (only the foundational propext/Classical.choice/Quot.sound, confirmed via #print axioms). The Newton polygon theorem proper (edge slopes = root valuations), a Newton–Puiseux termination measure, and the quasi-linear complexity bound remain open — they need valuation API on K((x))[Y] and an arithmetic-complexity model, neither in Mathlib 4.26.0.",
     "originalContributions": [
       "IsLowerVertex: supporting-line characterization of a lower-hull (Newton-polygon) vertex, algorithm-independent",
       "isLowerVertex_of_minimal: the minimum-valuation support point is always a lower vertex (horizontal supporting line)",
       "exists_lowerVertex: every nonempty support set has a lower vertex (via List.argmin)",
       "IsLowerVertex.mem: lower vertices are genuine support points",
       "edgeSlope: slope of the segment joining two support points",
-      "Worked Y²−x example: both (0,1) and (2,0) are lower vertices, edge slope = −1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
+      "IsLowerEdge: lower-edge predicate — a supporting line through two strictly-ordered support points lying below all of pts",
+      "slope_eq_edgeSlope: a supporting line through two distinct-index points has slope forced to equal their edgeSlope",
+      "IsLowerEdge.isLowerVertex_left / _right: the endpoints of a lower edge are lower vertices (edge ↔ vertex bridge)",
+      "edgeSlope_mono: CONVEXITY of the Newton polygon — adjacent lower edges sharing a vertex have non-decreasing slope (the one-line supporting-line argument)",
+      "rootValuation_antitone: consequently the root valuations (negated edge slopes) are sorted across the polygon",
+      "Worked Y²−x example: both (0,1) and (2,0) are lower vertices, the segment is a genuine lower edge, edge slope = −1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
       "Parent fix: corrected a dangling /-- doc comment in PuiseuxTheorem.lean that made the file fail to parse"
     ],
     "dateAdded": "2026-06-27",
-    "lineCount": 145,
-    "theoremCount": 7,
-    "definitionCount": 3,
+    "lineCount": 224,
+    "theoremCount": 13,
+    "definitionCount": 4,
     "mathlib_version": "4.26.0"
   },
   "overview": {
     "historicalContext": "Newton (1676) introduced the fractional-exponent root-finding procedure that bears his name; Puiseux (1850) gave the first rigorous proof that it produces all roots. The central combinatorial object is the Newton polygon: for a polynomial P(Y) = Σ aᵢ Yⁱ with coefficients in a valued field K((x)), it is the lower convex hull of the support points (i, v(aᵢ)). The Newton polygon theorem states that the negatives of its edge slopes are exactly the valuations of the roots of P in any algebraically closed valued extension — the fact that feeds the parent's leadingExponentFromSlope.\n\nThe computational story (Chudnovsky–Chudnovsky 1986, Duval 1989, Walsh 2000, Poteaux–Rybowicz 2008–15, Poteaux–Weimann 2021) tightens the cost of computing Puiseux expansions to quasi-linear Õ(d·δ) in the discriminant valuation δ. Every such bound is phrased on the Newton polygon as a data structure, so a computable combinatorial Newton polygon is the natural first formal step.",
     "problemStatement": "**Open Question (OQ-03 from Puiseux's Theorem)**: Can the Newton–Puiseux algorithm be made efficient enough for computational algebraic geometry at scale?\n\n**This deliverable**: Mathlib 4.26.0 has no Newton polygon API. This file supplies the combinatorial core — the lower-hull vertex predicate and its basic structure theory, validated on the canonical Y²−x example — as the foundation on which termination and complexity bounds can later be stated.",
-    "text": "A 145-line, fully-verified Lean file. The Newton polygon is captured not by a hull-construction algorithm but by the standard supporting-line predicate IsLowerVertex: a support point p is a lower vertex when some line y = m·i + b lies weakly below every support point and passes through p. General lemmas (minimum-valuation point is a vertex; existence of a vertex for nonempty supports) plus the worked Y²−x example (both endpoints are vertices, edge slope −1/2, leading exponent 1/2) connect the construction to the parent's leadingExponentFromSlope. The file also repairs a parse error in the parent PuiseuxTheorem.lean.",
+    "text": "A 224-line, fully-verified Lean file. The Newton polygon is captured not by a hull-construction algorithm but by the standard supporting-line predicates: a support point p is a lower vertex (IsLowerVertex) when some line y = m·i + b lies weakly below every support point and passes through p, and a pair (p,q) with p strictly left of q is a lower edge (IsLowerEdge) when one supporting line passes through both. General lemmas (minimum-valuation point is a vertex; existence of a vertex; edge endpoints are vertices; a supporting line's slope is forced by its two distinct points) build up to convexity (edgeSlope_mono): adjacent edge slopes are non-decreasing, so the root valuations come sorted (rootValuation_antitone). The worked Y²−x example (both endpoints are vertices, the segment is a genuine lower edge of slope −1/2, leading exponent 1/2) connects the construction to the parent's leadingExponentFromSlope. The file also repairs a parse error in the parent PuiseuxTheorem.lean.",
     "proofStrategy": "**Predicate, not algorithm**: IsLowerVertex states existence of a supporting line through p below all support points. This is the math definition of a lower-hull vertex and keeps the API independent of any verified convex-hull routine.\n\n**General structure**: isLowerVertex_of_minimal uses the horizontal line y = v(p) — the lowest support point is always a vertex. exists_lowerVertex extracts the argmin of the valuations from a nonempty support list (Mathlib List.argmin + le_of_mem_argmin).\n\n**Example**: For Y²−x the support is {(0,1),(2,0)}; the line y = −½i + 1 passes through both and lies (with equality) below them, so both are vertices. edgeSlope (0,1) (2,0) = −1/2 by norm_num, and −(−1/2) = 1/2 = leadingExponentFromSlope 1 2.",
     "keyInsights": [
       "**Supporting lines beat algorithms**: Phrasing a Newton-polygon vertex as 'some line lies below all points and touches this one' captures the exact mathematical content without forcing a verified convex-hull construction — the API stays honest and small.",
       "**The lowest point seeds the polygon**: The global minimum valuation is always a vertex (horizontal supporting line), giving a constructive starting vertex for any support set.",
       "**List.argmin gives existence for free**: Nonempty support lists have a minimum-valuation element, and Mathlib's argmin lemmas turn that into an immediate existence proof for a lower vertex.",
       "**The example closes the loop to the parent**: Recovering leadingExponentFromSlope 1 2 = 1/2 from the Y²−x Newton polygon's single edge of slope −1/2 ties the combinatorial object directly to the parent's root-exponent definition.",
+      "**Convexity is a one-line supporting-line argument**: Two lower edges sharing a vertex q have non-decreasing slope because the left edge's line lies below the right endpoint while the right edge's line passes through it — subtracting the two relations at q and r and dividing by the positive index gap gives the inequality. This is the combinatorial reason root valuations come sorted, and it needs no convex-hull construction, only the supporting-line predicate.",
       "**Mathlib gaps stay explicit**: The Newton polygon theorem (slopes = root valuations), a termination measure, and the Poteaux–Weimann complexity bound all remain open for stated infrastructural reasons (valuation API on K((x))[Y]; arithmetic-complexity model) rather than being papered over."
     ],
     "prerequisites": [
@@ -58,6 +64,40 @@
       "The Newton–Puiseux algorithm outline (edges → leading exponents → recurse)"
     ]
   },
+  "sections": [
+    {
+      "id": "support-points",
+      "title": "Support Points and Edge Slope",
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "SupportPoint := ℕ × ℚ pairs an exponent i with the valuation v(aᵢ) of the coefficient; zero coefficients (valuation +∞) are omitted. edgeSlope p q is the slope (q.2 − p.2)/(q.1 − p.1) of the segment joining two support points.",
+      "mathContext": "$\\text{support}(P)=\\{(i,v(a_i)):a_i\\neq0\\}$; $\\text{edgeSlope}(p,q)=\\frac{v_q-v_p}{i_q-i_p}$."
+    },
+    {
+      "id": "lower-vertex-predicate",
+      "title": "The Supporting-Line Vertex Predicate",
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "IsLowerVertex pts p: p ∈ pts and some line y = m·i + b passes through p and lies weakly below every support point — the supporting-line characterization of a lower-hull vertex, stated as a Prop to stay algorithm-independent. IsLowerVertex.mem records that a vertex is a genuine support point.",
+      "mathContext": "$\\exists m,b:\\ v_p=m\\,i_p+b\\ \\wedge\\ \\forall q\\in\\text{pts},\\ m\\,i_q+b\\le v_q.$"
+    },
+    {
+      "id": "structure-theory",
+      "title": "Seed Vertex and Existence",
+      "startLine": 91,
+      "endLine": 107,
+      "summary": "isLowerVertex_of_minimal: the minimum-valuation point is a vertex via the horizontal line y = v(p) (m = 0). exists_lowerVertex: every nonempty support list has a vertex, extracted as the List.argmin of the valuations using argmin_mem and le_of_mem_argmin.",
+      "mathContext": "Horizontal supporting line $y=v_p$ when $v_p=\\min_q v_q$; existence via $p=\\arg\\min_q v_q$."
+    },
+    {
+      "id": "worked-example",
+      "title": "Worked Example: Y²−x",
+      "startLine": 109,
+      "endLine": 145,
+      "summary": "Support of Y²−x is {(0,1),(2,0)}; both endpoints are lower vertices via the shared edge line y = −½i + 1 (ysqMinusX_vertex_const / _lead, fin_cases + norm_num). edgeSlope = −1/2, and its negation 1/2 = leadingExponentFromSlope 1 2 recovers the parent's leading exponent of the root x^{1/2}.",
+      "mathContext": "$-\\text{edgeSlope}((0,1),(2,0))=\\tfrac12=\\text{leadingExponentFromSlope}(1,2)$, the exponent of $x^{1/2}$."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "IsLowerVertex",
@@ -81,11 +121,32 @@
       "description": "Take the point of minimum valuation via List.argmin; List.argmin_mem and List.le_of_mem_argmin discharge the hypotheses of isLowerVertex_of_minimal."
     },
     {
-      "name": "ysqMinusX_edge_slope",
+      "name": "slope_eq_edgeSlope",
       "type": "theorem",
-      "statement": "$\\text{edgeSlope}((0,1),(2,0)) = -1/2$",
-      "significance": "The single Newton-polygon edge of Y²−x has slope −1/2, the canonical worked example of the construction.",
-      "description": "Direct norm_num computation of (0 − 1)/(2 − 0)."
+      "statement": "$p_2 = m p_1 + b \\wedge q_2 = m q_1 + b \\wedge p_1 \\ne q_1 \\Rightarrow m = \\text{edgeSlope}(p,q)$",
+      "significance": "A non-vertical line is determined by any two of its points: a supporting line through two distinct-index support points must have slope equal to their edgeSlope. This pins the abstract supporting line of a lower edge to the concrete edge slope.",
+      "description": "q.2 − p.2 = m·(q.1 − p.1); divide by the nonzero index gap (Nat.cast_injective gives the cast gap nonzero)."
+    },
+    {
+      "name": "edgeSlope_mono",
+      "type": "theorem",
+      "statement": "$\\text{IsLowerEdge}(\\text{pts}, p, q) \\wedge \\text{IsLowerEdge}(\\text{pts}, q, r) \\Rightarrow \\text{edgeSlope}(p,q) \\le \\text{edgeSlope}(q,r)$",
+      "significance": "CONVEXITY of the Newton polygon — the combinatorial heart of the construction. Two lower edges sharing a middle vertex have non-decreasing slope. This is exactly why a polynomial's root valuations come out sorted, and what makes the Newton–Puiseux recursion well-founded edge-by-edge.",
+      "description": "The left edge's supporting line ℓ₁ lies weakly below r while the right edge's line ℓ₂ passes through r; both meet at q. Subtracting at q and r gives (slope ℓ₁ − slope ℓ₂)·(r.1 − q.1) ≤ 0, and r.1 > q.1 forces the inequality (nlinarith)."
+    },
+    {
+      "name": "rootValuation_antitone",
+      "type": "theorem",
+      "statement": "$\\text{IsLowerEdge}(\\text{pts}, p, q) \\wedge \\text{IsLowerEdge}(\\text{pts}, q, r) \\Rightarrow -\\text{edgeSlope}(q,r) \\le -\\text{edgeSlope}(p,q)$",
+      "significance": "Root valuations are the negatives of edge slopes, so convexity says they are sorted (non-increasing left-to-right) across the Newton polygon — the structural fact behind reading off root valuations in order.",
+      "description": "Immediate from edgeSlope_mono via neg_le_neg."
+    },
+    {
+      "name": "ysqMinusX_isLowerEdge",
+      "type": "theorem",
+      "statement": "$\\text{IsLowerEdge}(\\text{YsqMinusX}, (0,1), (2,0))$",
+      "significance": "The single segment of Y²−x is a genuine lower edge: the line y = −½i + 1 passes through both endpoints and lies below all support points, instantiating the edge layer on the canonical example.",
+      "description": "refine the IsLowerEdge structure with m = −1/2, b = 1; fin_cases over the two support points, norm_num."
     },
     {
       "name": "ysqMinusX_leading_exponent",
@@ -150,18 +211,18 @@
       "Mathlib.Data.List.MinMax"
     ],
     "namespace": "PuiseuxTheoremOQ03",
-    "lineCount": 145,
+    "lineCount": 224,
     "axiomCount": 0,
-    "theoremCount": 7,
-    "definitionCount": 3,
+    "theoremCount": 13,
+    "definitionCount": 4,
     "path": "Proofs/PuiseuxTheoremOQ03.lean",
     "sorries": 0
   },
   "conclusion": {
-    "summary": "Supplies the combinatorial Newton polygon Mathlib 4.26.0 lacks: the supporting-line vertex predicate IsLowerVertex, the seed lemma that the minimum-valuation point is a vertex, an existence lemma for nonempty supports, and the worked Y²−x example tying the edge slope to the parent's leadingExponentFromSlope. All 7 theorems and 3 definitions verify with 0 sorries and 0 axioms. Also repairs a parse error in the parent file.",
+    "summary": "Supplies the combinatorial Newton polygon Mathlib 4.26.0 lacks: the supporting-line vertex predicate IsLowerVertex, the seed lemma that the minimum-valuation point is a vertex, an existence lemma for nonempty supports, the lower-edge predicate IsLowerEdge with the edge↔vertex bridge and the slope-determination lemma slope_eq_edgeSlope, and — the combinatorial heart — convexity of the polygon (edgeSlope_mono) yielding sorted root valuations (rootValuation_antitone), all validated on the Y²−x example whose single segment is a genuine lower edge tying the slope to the parent's leadingExponentFromSlope. All 13 theorems and 4 definitions verify with 0 sorries and 0 axioms. Also repairs a parse error in the parent file.",
     "implications": "This is the algorithm-independent data layer on which Newton–Puiseux termination measures and the Poteaux–Weimann complexity bounds can later be phrased. With a valuation API on K((x))[Y], the Newton polygon theorem (slopes = root valuations) becomes the next provable target.",
     "openQuestions": [
-      "Prove the Newton polygon theorem: the negatives of the lower-hull edge slopes equal the valuations of the roots in an algebraically closed valued extension (needs a valuation API on K((x))[Y])",
+      "Prove the Newton polygon theorem: the negatives of the lower-hull edge slopes equal the valuations of the roots in an algebraically closed valued extension (needs a valuation API on K((x))[Y]) — the edge layer and its convexity (edgeSlope_mono) are now in place, so the valuations would automatically come out sorted",
       "Define a termination measure for one Newton–Puiseux reduction step and prove the Y-degree strictly decreases (S2-B)",
       "State and bound the arithmetic complexity of the algorithm (Poteaux–Weimann Õ(d·δ)) — blocked on the absence of an arithmetic-complexity model in Mathlib (S2-C, moonshot)"
     ]
