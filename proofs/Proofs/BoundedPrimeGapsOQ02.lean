@@ -48,6 +48,14 @@ work documented in the sibling `BoundedPrimeGapsOQ04`.
       level-monotonicity *proved* (not assumed) — a generally nonzero model of the
       hierarchy, upgrading the `LevelMonotone` hypothesis to a theorem for the
       functional that actually arises in analytic number theory
+- [x] Exact additive decomposition across levels: `discrepancySum f θ₂ = discrepancySum f θ₁
+      + discrepancyBand f θ₁ θ₂`, sharpening monotonicity from inequality to identity and
+      localizing the inter-level growth to the band of new moduli `⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋`
+- [x] The EH-bound functional class at a fixed level is a **convex cone** (closed under
+      addition `EHAtLevel_add` and nonnegative scaling `EHAtLevel_smul`)
+- [x] Quantitative converse `EHAtLevel_discrepancySum_up`: EH at level `θ₁` plus an
+      EH-type bound on the new-moduli band ⟹ EH at the higher level `θ₂` — pinning the
+      band as exactly the extra analytic input needed to raise the level of distribution
 - [x] No `axiom`, no `sorry`, no `native_decide`
 -/
 
@@ -222,5 +230,120 @@ theorem EHAtLevel_of_le_discrepancySumClamped (f : ℕ → ℝ → ℝ) (hf : �
     {θ₁ θ₂ : ℝ} (h : θ₁ ≤ θ₂) (hEH : EHAtLevel (discrepancySumClamped f) θ₂) :
     EHAtLevel (discrepancySumClamped f) θ₁ :=
   EHAtLevel_of_le _ (levelMonotone_discrepancySumClamped f hf) h hEH
+
+/-! ## Sharpening the hierarchy: the exact level increment
+
+The monotonicity lemma `discrepancySum_mono_level` is an *inequality* — the sum can only
+grow with the level.  Here we make it an *equality with explicit defect*: the gain in
+passing from level `θ₁` to a higher level `θ₂` is exactly the discrepancy contributed by
+the **band of new moduli** `⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋` that the larger level admits.  This
+localizes precisely where the growth between levels comes from, and turns the qualitative
+hierarchy into a quantitative one. -/
+
+/-- The **level-increment band**: the discrepancy contributed by the moduli
+`⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋` — exactly the new moduli that level `θ₂` admits over level `θ₁`. -/
+noncomputable def discrepancyBand (f : ℕ → ℝ → ℝ) (θ₁ θ₂ x : ℝ) : ℝ :=
+  ∑ q ∈ Finset.Ioc ⌊x ^ θ₁⌋₊ ⌊x ^ θ₂⌋₊, f q x
+
+/-- **Exact additive decomposition of the discrepancy sum across levels.**  On the
+analytic regime `x ≥ 1`, for `θ₁ ≤ θ₂`,
+`discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x`.
+The level-`θ₂` sum is the level-`θ₁` sum plus exactly the contribution of the new moduli
+band — sharpening `discrepancySum_mono_level` from an inequality to an identity. -/
+theorem discrepancySum_eq_add_band (f : ℕ → ℝ → ℝ) {θ₁ θ₂ x : ℝ}
+    (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x := by
+  have hfloor : ⌊x ^ θ₁⌋₊ ≤ ⌊x ^ θ₂⌋₊ :=
+    Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le hx hθ)
+  have hconv : ∀ m : ℕ, Finset.Icc 1 m = Finset.Ioc 0 m :=
+    fun m => Finset.ext fun k => by simp only [Finset.mem_Icc, Finset.mem_Ioc]; omega
+  unfold discrepancySum discrepancyBand
+  simp only [hconv]
+  exact (Finset.sum_Ioc_consecutive (fun q => f q x) (Nat.zero_le _) hfloor).symm
+
+/-- The level-increment band is nonnegative for a nonnegative weight `f`. -/
+theorem discrepancyBand_nonneg (f : ℕ → ℝ → ℝ) (hf : ∀ q x, 0 ≤ f q x) (θ₁ θ₂ x : ℝ) :
+    0 ≤ discrepancyBand f θ₁ θ₂ x :=
+  Finset.sum_nonneg fun q _ => hf q x
+
+/-- Monotonicity re-derived as a corollary of the exact decomposition: the level-`θ₂` sum
+exceeds the level-`θ₁` sum by the nonnegative band contribution. -/
+theorem discrepancySum_mono_level_of_band (f : ℕ → ℝ → ℝ) (hf : ∀ q x, 0 ≤ f q x)
+    {θ₁ θ₂ x : ℝ} (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    discrepancySum f θ₁ x ≤ discrepancySum f θ₂ x := by
+  rw [discrepancySum_eq_add_band f hx hθ]
+  linarith [discrepancyBand_nonneg f hf θ₁ θ₂ x]
+
+/-! ## The EH-bound class is a convex cone
+
+For a fixed level `θ`, the functionals satisfying the Elliott–Halberstam bound are closed
+under addition and nonnegative scaling — they form a convex cone.  This matters for the
+analytic program: the genuine von-Mangoldt discrepancy is naturally decomposed into pieces
+(major/minor arcs, dyadic ranges of moduli), and these closure lemmas say that bounding
+each piece suffices to bound the whole. -/
+
+/-- **Closed under addition.**  If `D₁` and `D₂` each satisfy the EH bound at level `θ`,
+so does their sum, with constant `C₁ + C₂`. -/
+theorem EHAtLevel_add {D₁ D₂ : ℝ → ℝ → ℝ} {θ : ℝ}
+    (h₁ : EHAtLevel D₁ θ) (h₂ : EHAtLevel D₂ θ) :
+    EHAtLevel (fun θ' x => D₁ θ' x + D₂ θ' x) θ := by
+  intro A hA
+  obtain ⟨C₁, hC₁, hb₁⟩ := h₁ A hA
+  obtain ⟨C₂, hC₂, hb₂⟩ := h₂ A hA
+  refine ⟨C₁ + C₂, by linarith, fun x hx => ?_⟩
+  show D₁ θ x + D₂ θ x ≤ (C₁ + C₂) * x / (Real.log x) ^ A
+  calc D₁ θ x + D₂ θ x
+      ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
+        linarith [hb₁ x hx, hb₂ x hx]
+    _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
+
+/-- **Closed under nonnegative scaling.**  If `D` satisfies the EH bound at level `θ` and
+`0 ≤ c`, then `c · D` does too (the EH-bound class is a cone, not merely a subspace). -/
+theorem EHAtLevel_smul {D : ℝ → ℝ → ℝ} {θ c : ℝ} (hc : 0 ≤ c)
+    (hD : EHAtLevel D θ) : EHAtLevel (fun θ' x => c * D θ' x) θ := by
+  intro A hA
+  obtain ⟨C, hC, hb⟩ := hD A hA
+  refine ⟨c * C + 1, by have := mul_nonneg hc hC.le; linarith, fun x hx => ?_⟩
+  show c * D θ x ≤ (c * C + 1) * x / (Real.log x) ^ A
+  have hlog : 0 < Real.log x := Real.log_pos (by linarith)
+  have hpow : 0 < (Real.log x) ^ A := Real.rpow_pos_of_pos hlog A
+  have hquot : 0 ≤ x / (Real.log x) ^ A := div_nonneg (by linarith) hpow.le
+  have hsplit : (c * C + 1) * x / (Real.log x) ^ A
+      = c * C * x / (Real.log x) ^ A + x / (Real.log x) ^ A := by ring
+  calc c * D θ x
+      ≤ c * (C * x / (Real.log x) ^ A) := mul_le_mul_of_nonneg_left (hb x hx) hc
+    _ = c * C * x / (Real.log x) ^ A := by ring
+    _ ≤ (c * C + 1) * x / (Real.log x) ^ A := by rw [hsplit]; linarith
+
+/-- **Convex-cone closure.**  Any nonnegative linear combination of two functionals each
+satisfying the EH bound at level `θ` again satisfies it — the defining property of a
+convex cone.  Specializing `c₁ = c₂ = 1` recovers `EHAtLevel_add`; `c₂ = 0` recovers
+`EHAtLevel_smul`. -/
+theorem EHAtLevel_nonneg_linear {D₁ D₂ : ℝ → ℝ → ℝ} {θ c₁ c₂ : ℝ}
+    (hc₁ : 0 ≤ c₁) (hc₂ : 0 ≤ c₂) (h₁ : EHAtLevel D₁ θ) (h₂ : EHAtLevel D₂ θ) :
+    EHAtLevel (fun θ' x => c₁ * D₁ θ' x + c₂ * D₂ θ' x) θ :=
+  EHAtLevel_add (EHAtLevel_smul hc₁ h₁) (EHAtLevel_smul hc₂ h₂)
+
+/-- **Quantitative converse: raising the level.**  The hierarchy `EHAtLevel_of_le`
+*descends* a bound (level `θ₂` ⟹ level `θ₁ ≤ θ₂`).  Here is the *ascent*: if the
+discrepancy sum satisfies EH at level `θ₁` **and** the new-moduli band
+`⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋` independently satisfies an EH-type bound, then EH holds at the higher
+level `θ₂`.  Combined with descent this pins the band down as *exactly* the extra analytic
+input needed to raise the level — the structural reason EH beyond Bombieri–Vinogradov
+(`θ = 1/2`) is hard: one must control the discrepancy over ever-larger ranges of moduli. -/
+theorem EHAtLevel_discrepancySum_up (f : ℕ → ℝ → ℝ) {θ₁ θ₂ : ℝ} (hθ : θ₁ ≤ θ₂)
+    (hlow : EHAtLevel (discrepancySum f) θ₁)
+    (hband : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f θ₁ θ₂ x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel (discrepancySum f) θ₂ := by
+  intro A hA
+  obtain ⟨C₁, hC₁, hb₁⟩ := hlow A hA
+  obtain ⟨C₂, hC₂, hb₂⟩ := hband A hA
+  refine ⟨C₁ + C₂, by linarith, fun x hx => ?_⟩
+  rw [discrepancySum_eq_add_band f (by linarith) hθ]
+  calc discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x
+      ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
+        linarith [hb₁ x hx, hb₂ x hx]
+    _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
 
 end BoundedPrimeGapsOQ02

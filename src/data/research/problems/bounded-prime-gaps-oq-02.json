@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: level-monotonicity upgraded from hypothesis to theorem for the canonical concrete discrepancy functional; generally-nonzero model of the full hierarchy added (0 sorry/0 axiom). VERIFIED offline via `lake env lean` (full kernel check vs Mathlib oleans, EXIT 0; axioms = propext/Classical.choice/Quot.sound only); docker-build still blocked by host containerd corruption. EH itself remains OPEN.",
+    "progressSummary": "PROGRESS: sharpened the EH level hierarchy. (1) EXACT additive decomposition discrepancySum_eq_add_band: discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x, localizing inter-level growth to the band of new moduli ⌊x^θ₁⌋<q≤⌊x^θ₂⌋ (monotonicity now a corollary). (2) EH-bound functional class is a CONVEX CONE: EHAtLevel_add, EHAtLevel_smul (0≤c), EHAtLevel_nonneg_linear. (3) Quantitative converse EHAtLevel_discrepancySum_up: EH at θ₁ + EH-type band bound ⟹ EH at θ₂ — the band is exactly the extra analytic input to raise the level. VERIFIED offline via lake env lean (full kernel check vs Mathlib oleans, EXIT 0; axioms = propext/Classical.choice/Quot.sound only); docker-build still host-blocked. 20 thm / 7 def, 0 axiom/0 sorry. EH itself remains OPEN.",
     "builtItems": [
       "EHAtLevel, LevelMonotone (defs) in BoundedPrimeGapsOQ02.lean:68,75",
       "EHAtLevel_of_le (level hierarchy) BoundedPrimeGapsOQ02.lean:81",
@@ -39,7 +39,11 @@
       "EHAtLevel_zero / levelMonotone_zero / elliottHalberstam_zero (non-vacuity) BoundedPrimeGapsOQ02.lean:138,148,153",
       "Gallery entry src/data/proofs/bounded-prime-gaps-oq-02/{meta,annotations}.json",
       "discrepancySum + discrepancySum_mono_level (x≥1) in BoundedPrimeGapsOQ02.lean",
-      "discrepancySumClamped + discrepancySumClamped_eq + levelMonotone_discrepancySumClamped + EHAtLevel_of_le_discrepancySumClamped (concrete nonzero model feeding the hierarchy)"
+      "discrepancySumClamped + discrepancySumClamped_eq + levelMonotone_discrepancySumClamped + EHAtLevel_of_le_discrepancySumClamped (concrete nonzero model feeding the hierarchy)",
+      "discrepancyBand f θ₁ θ₂ x := ∑ q ∈ Finset.Ioc ⌊x^θ₁⌋₊ ⌊x^θ₂⌋₊, f q x — the new-moduli band contribution",
+      "discrepancySum_eq_add_band (hx:1≤x)(hθ:θ₁≤θ₂): discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x — exact decomposition via Finset.sum_Ioc_consecutive after Icc 1 = Ioc 0 conversion",
+      "EHAtLevel_add / EHAtLevel_smul / EHAtLevel_nonneg_linear — EH-bound class is a convex cone (constants C₁+C₂ and c·C+1)",
+      "EHAtLevel_discrepancySum_up: EHAtLevel(discrepancySum f) θ₁ + band EH-bound ⟹ EHAtLevel(discrepancySum f) θ₂ — quantitative ascent converse to the descent hierarchy"
     ],
     "insights": [
       "EH is a conjecture, so formalize it as a logical skeleton over an abstract discrepancy functional D θ x — never axiomatize EH itself.",
@@ -47,7 +51,10 @@
       "EH ⟹ BV is the θ=1/2 instance; more strongly, any level ≥ 1/2 bound already gives BV, and EH is equivalent to its restriction to θ ∈ [1/2,1).",
       "The zero functional witnesses non-vacuity: it satisfies the full hierarchy with C=1, so the predicates are satisfiable, not vacuously empty.",
       "The LevelMonotone structural hypothesis is not an extra assumption: for the canonical discrepancy sum Σ_{q≤x^θ} f(q,x) with f≥0 it is a THEOREM, since x↦x^θ is monotone in θ for base x≥1, growing the modulus range Icc 1 ⌊x^θ⌋.",
-      "A base clamp (max 1 x) makes level-monotonicity hold for ALL real x, yielding a generally nonzero global model of LevelMonotone — strictly stronger non-vacuity than the zero functional."
+      "A base clamp (max 1 x) makes level-monotonicity hold for ALL real x, yielding a generally nonzero global model of LevelMonotone — strictly stronger non-vacuity than the zero functional.",
+      "The inter-level growth in the discrepancy sum is EXACTLY the discrepancy of the band of new moduli ⌊x^θ₁⌋<q≤⌊x^θ₂⌋ — proved by Finset.sum_Ioc_consecutive after rewriting Finset.Icc 1 m = Finset.Ioc 0 m (ext + omega). This turns the qualitative hierarchy into a quantitative one.",
+      "EHAtLevel at a fixed level is closed under +, nonneg scaling, hence a convex cone; the +1 in c·C+1 keeps the constant strictly positive when c=0, avoiding a case split.",
+      "Descent (higher⟹lower level) is free from monotonicity; ASCENT (raise the level) costs exactly an EH-type bound on the new-moduli band — formal statement of why EH beyond Bombieri–Vinogradov (θ=1/2) is hard."
     ],
     "mathlibGaps": [
       "No global Mathlib gap for the skeleton; instantiating D with the genuine von-Mangoldt discrepancy sum and proving its LevelMonotone is the analytic work (depends on Bombieri–Vinogradov, ~12000 lines, tracked in OQ-04)."
