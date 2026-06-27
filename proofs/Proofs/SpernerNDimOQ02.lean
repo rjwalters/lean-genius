@@ -160,4 +160,72 @@ theorem isSperner_iff (c : SpernerNDim.Vertex d N → Fin (d + 1)) :
     simp only [toVertex_toBary] at h2
     exact h2
 
+-- ============================================================
+-- SECTION: Phase-1 carrier skeleton (`CanonSimplex`)
+-- ============================================================
+-- The abstract `SpernerNDim.SpernerTriangulation d N` carrier is the
+-- subtype of *canonical* grid simplices (one representative per
+-- geometric Freudenthal cell).  `SpernerGridBase` already discharges
+-- every geometric obligation of the *easy* triangulation fields:
+--
+--   * `Simplex`               := `CanonSimplex d N` (below)
+--   * `simplex_decidableEq`   := `DecidableEq (GridSimplex)` + `Subtype`
+--   * `simplex_fintype`       := `gridSimplexFintype` + decidable `IsCanon`
+--   * `vertices`              := `toVertex ∘ verts` (the bridge map)
+--   * `vertices_injective`    := `verts_injective` + `toVertex_injective`
+--
+-- and the orientation-free "one representative per cell" property
+-- (`IsCanon.geometry_unique`) lifts across the injective bridge to
+-- `canon_eq_of_vertices_range` below.  The remaining obligations for a
+-- full `SpernerTriangulation` instance are exactly the facet-adjacency
+-- field `adj` and its five compatibility axioms plus `boundary_face`
+-- — none of which this section claims.  This keeps the file 0-sorry,
+-- 0-axiom while pinning down the entire *vertex/geometry* half of the
+-- carrier.
+
+/-- The Phase-1 Freudenthal carrier: canonical grid simplices.  By
+`IsCanon.geometry_unique` each geometric cell has exactly one inhabitant,
+so this subtype is the orientation-free `Simplex` type the abstract
+`SpernerNDim.SpernerTriangulation` requires. -/
+def CanonSimplex (d N : ℕ) := {s : SpernerGrid.GridSimplex d N // SpernerGrid.IsCanon s}
+
+instance (d N : ℕ) : DecidableEq (CanonSimplex d N) :=
+  Subtype.instDecidableEq
+
+noncomputable instance (d N : ℕ) : Fintype (CanonSimplex d N) :=
+  Subtype.fintype _
+
+/-- Vertex map of a canonical cell: the `k`-th grid vertex pushed to Kuhn
+coordinates through the bridge `toVertex`.  This is the `vertices` field
+of the abstract triangulation. -/
+def vertices (s : CanonSimplex d N) (k : Fin (d + 1)) : SpernerNDim.Vertex d N :=
+  toVertex (s.1.verts k)
+
+/-- The `d+1` vertices of a single canonical cell are distinct (the
+`vertices_injective` field).  Combines per-cell vertex injectivity
+(`GridSimplex.verts_injective`) with injectivity of the bridge. -/
+theorem vertices_injective (s : CanonSimplex d N) :
+    Function.Injective (vertices s) := by
+  intro i j h
+  exact s.1.verts_injective (toVertex_injective h)
+
+/-- **One representative per geometry (Kuhn side).** Two canonical cells with
+the same *Kuhn* vertex set are equal.  Lifts `IsCanon.geometry_unique` (stated
+over barycentric `BaryPoint`s) across the injective bridge `toVertex`: equal
+image-sets under an injection have equal pre-image sets, then geometry
+uniqueness gives equality of the underlying grid simplices, and `Subtype.ext`
+finishes.  This is what makes the door-counting adjacency well defined: there
+is no orientation ambiguity in which canonical cell carries a given facet. -/
+theorem canon_eq_of_vertices_range {d N : ℕ} {s t : CanonSimplex d N}
+    (h : Set.range (vertices s) = Set.range (vertices t)) : s = t := by
+  have key : ∀ u : CanonSimplex d N,
+      Set.range (vertices u) = toVertex '' Set.range u.1.verts := by
+    intro u
+    have huc : vertices u = toVertex ∘ u.1.verts := rfl
+    rw [huc, Set.range_comp]
+  rw [key s, key t] at h
+  have hbary : Set.range s.1.verts = Set.range t.1.verts :=
+    Set.image_injective.mpr toVertex_injective h
+  exact Subtype.ext (SpernerGrid.IsCanon.geometry_unique s.2 t.2 hbary)
+
 end SpernerNDimOQ02
