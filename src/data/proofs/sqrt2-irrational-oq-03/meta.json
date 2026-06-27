@@ -41,7 +41,8 @@
     "keyInsights": [
       "The iff is the right object: it subsumes both the irrationality of non-powers and the rationality of powers, where Mathlib and the gallery previously had only the forward half for nth roots.",
       "Bounding the perfect-power test (k ≤ k^n = m) is what makes the characterization decidable, replacing bespoke non-power lemmas with `decide`.",
-      "The rpow inverse identities Real.rpow_inv_natCast_pow and Real.pow_rpow_inv_natCast are exactly what connects m^(1/n) back to m in both directions."
+      "The rpow inverse identities Real.rpow_inv_natCast_pow and Real.pow_rpow_inv_natCast are exactly what connects m^(1/n) back to m in both directions.",
+      "Using kernel `decide` rather than `native_decide` keeps the concrete instances axiom-free: native_decide would pull in Lean.ofReduceBool, whereas the bounded Finset search is small enough for the kernel to evaluate directly, so the entry truthfully reports 0 axioms."
     ],
     "prerequisites": [
       "Irrationality (Irrational) and Mathlib's nth-root irrationality lemma irrational_nrt_of_notint_nrt",
