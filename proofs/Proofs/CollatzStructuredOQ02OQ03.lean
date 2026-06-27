@@ -1357,4 +1357,112 @@ example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
   dropCert_attainsBelow
     [true, false, true, false, false, true, false, false] (by decide) h
 
+/-! ## Part VI: A general residue-class density floor
+
+The four explicit density bounds of Part II.5 (`attainsBelow_density_lower`,
+`_16`, `_32`, `_128`) all instantiate **one** counting pattern: pick a finite set
+of residues modulo `M`, check each is a drop-below class, and read off a lower
+density of `|residues| / M`.  Each of those four theorems re-derives the same
+pairwise-disjointness/injective-image bookkeeping by hand (the `_128` case alone
+runs to roughly two hundred lines of `Disjoint` witnesses).
+
+`attainsBelow_density_of_residues` proves that pattern once, for an **arbitrary**
+modulus `M` and an arbitrary certified residue set `R`.  The disjointness across
+classes is folded into a single injectivity statement: the map `(r, m) ↦ M·m + r`
+is injective on `R ×ˢ [1, N-1]` because `r < M` is exactly the remainder of
+`M·m + r` modulo `M`.  Every later density improvement — including any level the
+decidable engine `dropCert` certifies — is then a one-line corollary: supply `R`
+and a proof that each member drops, with the residue count discharged by `decide`.
+No new disjoint-union argument is ever needed again.  Axiom-free. -/
+
+open Classical in
+/-- **General residue-class density floor.**  Let `R` be a finite set of residues
+modulo `M` (`1 ≤ M`), each of which is a *drop-below class*: every member
+`M·m + r` with `m ≥ 1` attains a value below itself.  Then at least `|R|·(N-1)` of
+the integers in `[1, M·N]` attain a value below themselves.  Distinct residues
+yield disjoint classes (the residue `r < M` is the remainder of `M·m + r`), and
+each contributes the `N-1` in-range members `M·1+r, …, M·(N-1)+r`; so the witness
+set has exactly `|R|·(N-1)` elements.  Dividing by `M·N` and letting `N → ∞` gives
+lower natural density `≥ |R|/M`.  This single lemma subsumes the per-level
+disjoint-union bookkeeping of `attainsBelow_density_lower{,_16,_32,_128}`. -/
+theorem attainsBelow_density_of_residues {M : ℕ} (hM : 1 ≤ M) (R : Finset ℕ)
+    (hR : ∀ r ∈ R, r < M)
+    (hdrop : ∀ r ∈ R, ∀ m : ℕ, 1 ≤ m → AttainsBelow (M * m + r))
+    (N : ℕ) :
+    R.card * (N - 1) ≤
+      ((Finset.Icc 1 (M * N)).filter (fun n => AttainsBelow n)).card := by
+  classical
+  -- Witness set: all `M·m + r` for `r ∈ R` and `m ∈ [1, N-1]`, as one injective image.
+  set S : Finset ℕ :=
+    (R ×ˢ Finset.Icc 1 (N - 1)).image (fun p => M * p.2 + p.1) with hS
+  -- The parametrisation `(r, m) ↦ M·m + r` is injective: `r` is the remainder mod `M`.
+  have hinj : Set.InjOn (fun p : ℕ × ℕ => M * p.2 + p.1)
+      ↑(R ×ˢ Finset.Icc 1 (N - 1)) := by
+    intro p hp q hq hpq
+    rw [Finset.mem_coe, Finset.mem_product] at hp hq
+    have hp1 : p.1 < M := hR p.1 hp.1
+    have hq1 : q.1 < M := hR q.1 hq.1
+    have hpq2 : M * p.2 + p.1 = M * q.2 + q.1 := hpq
+    have e1 : (M * p.2 + p.1) % M = p.1 := by
+      rw [Nat.add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hp1]
+    have e2 : (M * q.2 + q.1) % M = q.1 := by
+      rw [Nat.add_comm, Nat.add_mul_mod_self_left, Nat.mod_eq_of_lt hq1]
+    have hr_eq : p.1 = q.1 := by rw [← e1, hpq2, e2]
+    have hm_eq : p.2 = q.2 := by
+      have hMm : M * p.2 = M * q.2 := by omega
+      exact Nat.eq_of_mul_eq_mul_left hM hMm
+    exact Prod.ext_iff.mpr ⟨hr_eq, hm_eq⟩
+  have hScard : S.card = R.card * (N - 1) := by
+    rw [hS, Finset.card_image_of_injOn hinj, Finset.card_product, Nat.card_Icc,
+        Nat.add_sub_cancel]
+  -- Every witness is an in-range drop-below start.
+  have hsub : S ⊆ (Finset.Icc 1 (M * N)).filter (fun n => AttainsBelow n) := by
+    intro x hx
+    rw [hS, Finset.mem_image] at hx
+    obtain ⟨p, hp, rfl⟩ := hx
+    rw [Finset.mem_product, Finset.mem_Icc] at hp
+    obtain ⟨hpR, hm1, hm2⟩ := hp
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    refine ⟨⟨?_, ?_⟩, hdrop p.1 hpR p.2 hm1⟩
+    · have hge : M * 1 ≤ M * p.2 := Nat.mul_le_mul (le_refl M) hm1
+      omega
+    · have hmle : M * p.2 ≤ M * (N - 1) := Nat.mul_le_mul (le_refl M) hm2
+      have hr : p.1 < M := hR p.1 hpR
+      have hNN : M * (N - 1) + M = M * N := by
+        rw [← Nat.mul_succ]; congr 1; omega
+      omega
+  calc R.card * (N - 1) = S.card := hScard.symm
+    _ ≤ ((Finset.Icc 1 (M * N)).filter (fun n => AttainsBelow n)).card :=
+        Finset.card_le_card hsub
+
+open Classical in
+/-- **The `13/16` density floor, re-derived from the general lemma.**  Instantiate
+`attainsBelow_density_of_residues` at `M = 16` with the thirteen residues that drop
+within their residue-determined window — the eight evens, the four `≡ 1 (mod 4)`
+(`1, 5, 9, 13`), and the one `≡ 3 (mod 16)` (`3`).  The residue count `13` is a
+single kernel `decide`; every drop hypothesis is one of the Part II residue lemmas
+selected by an `omega`-checked congruence.  No bespoke disjoint-union bookkeeping —
+the same call at `M = 128` with the predicate
+`r%2=0 ∨ r%4=1 ∨ r%16=3 ∨ r%32∈{11,23} ∨ r%128∈{7,15,59}` recovers the `115/128`
+floor of `attainsBelow_density_lower_128`. -/
+theorem attainsBelow_density_lower_16_general (N : ℕ) :
+    13 * (N - 1) ≤
+      ((Finset.Icc 1 (16 * N)).filter (fun n => AttainsBelow n)).card := by
+  have hcard :
+      ((Finset.range 16).filter
+        (fun r => r % 2 = 0 ∨ r % 4 = 1 ∨ r % 16 = 3)).card = 13 := by decide
+  have key := attainsBelow_density_of_residues (M := 16) (by norm_num)
+    ((Finset.range 16).filter (fun r => r % 2 = 0 ∨ r % 4 = 1 ∨ r % 16 = 3))
+    (by intro r hr; rw [Finset.mem_filter, Finset.mem_range] at hr; exact hr.1)
+    (by
+      intro r hr m hm
+      rw [Finset.mem_filter, Finset.mem_range] at hr
+      obtain ⟨_, hgood⟩ := hr
+      rcases hgood with h | h | h
+      · exact even_attainsBelow (by omega) (by omega)
+      · exact mod_four_one_attainsBelow (by omega) (by omega)
+      · exact mod_sixteen_three_attainsBelow (by omega))
+    N
+  rwa [hcard] at key
+
 end CollatzStructuredOQ02OQ03
