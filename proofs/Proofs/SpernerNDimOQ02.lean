@@ -668,4 +668,71 @@ theorem pivot_ne (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
   intro h
   exact pivot_opposite_ne s a b hb (by rw [h])
 
+-- ============================================================
+-- SECTION: At most one neighbour across a facet (adj_unique_facet)
+-- ============================================================
+-- The abstract `adj_unique_facet` field requires that two *distinct*
+-- facets of a cell `s` cannot both be glued to the *same* neighbour `t`
+-- — geometrically, two `d`-simplices share at most one common
+-- `(d-1)`-face.  This section proves exactly that, purely from the facet
+-- combinatorics and per-geometry uniqueness already established, so the
+-- eventual `adj` discharge can cite it directly.  The key step is that
+-- the union of two distinct facets of a cell is its *entire* vertex set;
+-- if both facets also lie in a second cell `t`, then `t`'s `d + 1`
+-- vertices contain `s`'s `d + 1` vertices, forcing equal vertex sets and
+-- hence `s = t`.  All 0-sorry, 0-axiom.
+
+/-- **The union of two distinct facets is the full vertex set.**  Facet
+`k₁` omits only vertex `k₁` and facet `k₂` omits only vertex `k₂`; when
+`k₁ ≠ k₂` each omitted vertex is supplied by the other facet, so the
+union recovers all `d + 1` vertices of the cell. -/
+theorem facet_union_facet (s : CanonSimplex d N) {k₁ k₂ : Fin (d + 1)}
+    (h : k₁ ≠ k₂) :
+    facet s k₁ ∪ facet s k₂ = Finset.univ.image (vertices s) := by
+  rw [facet, facet, ← Finset.image_union]
+  congr 1
+  apply Finset.eq_univ_of_forall
+  intro a
+  rw [Finset.mem_union, Finset.mem_erase, Finset.mem_erase]
+  by_cases ha : a = k₁
+  · exact Or.inr ⟨ha ▸ h, Finset.mem_univ _⟩
+  · exact Or.inl ⟨ha, Finset.mem_univ _⟩
+
+/-- A canonical cell has exactly `d + 1` distinct Kuhn vertices: the
+image of `univ` under the injective vertex map. -/
+theorem image_univ_card (s : CanonSimplex d N) :
+    (Finset.univ.image (vertices s)).card = d + 1 := by
+  rw [Finset.card_image_of_injective _ (vertices_injective s), Finset.card_univ,
+    Fintype.card_fin]
+
+/-- **At most one neighbour across a facet (`adj_unique_facet`).**  If a cell
+`s` shares two facets `k₁, k₂` with the *same* other cell `t`
+(`facet s k₁ = facet t l₁`, `facet s k₂ = facet t l₂`, `s ≠ t`), then in fact
+`k₁ = k₂`.  Otherwise the two distinct facets of `s` would union to all of `s`'s
+vertices while both lying inside `t`'s vertex set; equal cardinalities then force
+`s` and `t` to have the same vertex set, so `canon_eq_of_vertices_range` gives
+`s = t`, contradicting `s ≠ t`.  This is exactly the content of the abstract
+`adj_unique_facet` compatibility field: a neighbour is glued across at most one
+facet of `s`. -/
+theorem facet_unique_neighbor {s t : CanonSimplex d N}
+    {k₁ k₂ l₁ l₂ : Fin (d + 1)} (hne : s ≠ t)
+    (h₁ : facet s k₁ = facet t l₁) (h₂ : facet s k₂ = facet t l₂) :
+    k₁ = k₂ := by
+  by_contra hk
+  have hs : Finset.univ.image (vertices s) = facet s k₁ ∪ facet s k₂ :=
+    (facet_union_facet s hk).symm
+  have hsub : Finset.univ.image (vertices s) ⊆ Finset.univ.image (vertices t) := by
+    rw [hs, h₁, h₂]
+    apply Finset.union_subset
+    · rw [facet]; exact Finset.image_subset_image (Finset.erase_subset _ _)
+    · rw [facet]; exact Finset.image_subset_image (Finset.erase_subset _ _)
+  have hcard :
+      (Finset.univ.image (vertices t)).card ≤ (Finset.univ.image (vertices s)).card := by
+    rw [image_univ_card, image_univ_card]
+  have heq : Finset.univ.image (vertices s) = Finset.univ.image (vertices t) :=
+    Finset.eq_of_subset_of_card_le hsub hcard
+  apply hne
+  apply canon_eq_of_vertices_range
+  rw [← coe_image_univ_vertices s, ← coe_image_univ_vertices t, heq]
+
 end SpernerNDimOQ02

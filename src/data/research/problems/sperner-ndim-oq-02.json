@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-06-27T00:00:00.000Z",
-    "iteration": 6,
-    "focus": "Option C, Phase-1 carrier. The facet combinatorics of CanonSimplex in proofs/Proofs/SpernerNDimOQ02.lean (facet def + mem_facet_iff + vertices_not_mem_facet + facet_card[=d] + facet_injective + not_mem_facet_iff) — the within-cell building blocks for the abstract adj_vertices/adj_unique_facet fields — are now VERIFIED 0-axiom (Session 11): clean lake env lean build, #print axioms = [propext, Classical.choice, Quot.sound] only. The entire Phase-1 carrier (CanonSimplex + canon_eq_of_vertices_range + vertices/vertices_injective) and the BaryPoint≃Vertex bridge are likewise 0-axiom. Next is the adj facet-adjacency function (Freudenthal pivot) + its 5 compatibility fields + boundary_face.",
+    "iteration": 7,
+    "focus": "Option C, Phase-1 carrier. This session adds the cross-cell adj_unique_facet uniqueness lemma (facet_unique_neighbor: two distinct facets of a cell cannot both glue to the same neighbour) plus its supports facet_union_facet and image_univ_card, all VERIFIED 0-axiom (clean lake env lean build, #print axioms = [propext, Classical.choice, Quot.sound] only). Together with facet_injective (within-cell), facet_vertex_injective (global), and the concurrently-merged interior-pivot existence (pivotSimplex/pivot_facet_eq/pivot_ne), the adj_unique_facet scaffolding is complete. Remaining for a full SpernerTriangulation instance: the adj search function itself + adj_symm/adj_vertices/adj_ne/boundary_face.",
     "blockers": [
       "The remaining open frontier is the adj field: a facet-adjacency function Simplex → Fin (d+1) → Option (Simplex × Fin (d+1)) realising the Freudenthal pivot, plus its 5 compatibility fields (adj_symm, adj_vertices, adj_ne, adj_unique_facet, boundary_face). facet_injective supplies the within-cell half of adj_unique_facet; the cross-cell half needs canon_eq_of_vertices_range. Estimated ~300-500 lines.",
       "INFRA NOTE: Docker build host containerd metadata DB is corrupt (meta.db I/O error on image inspect/build), so docker-build.sh is unusable; verification this session used the local single-file fallback (lake env lean) after lake exe cache get repaired the host Mathlib olean cache to complete (7382 + root). Do NOT docker-prune while peer builds run."
     ],
-    "nextAction": "Build adj via finite facet-search over CanonSimplex (the unique other canonical cell sharing facet k, or none on the boundary); discharge adj_vertices from facet defs, adj_unique_facet from facet_injective + canon_eq_of_vertices_range, boundary_face via onFace_toVertex. Then Phase 2 (inductive last-face-door oddness), apply sperner_ndim; retire false boundary_doors_odd. (Re-verification of the facet section is DONE — verified 0-axiom Session 11.)",
+    "nextAction": "Build adj via finite facet-search over CanonSimplex; adj_unique_facet now cites facet_unique_neighbor directly (DONE this session), the interior pivot supplies neighbour existence (pivotSimplex), adj_vertices/adj_ne are immediate from the search predicate, adj_symm needs search symmetry, boundary_face via onFace_toVertex. Then Phase 2 (inductive last-face-door oddness), apply sperner_ndim; retire false boundary_doors_odd.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -32,8 +32,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (interior Freudenthal pivot VERIFIED 0-axiom): the chain-interior facet neighbour now EXISTS as an honest GridSimplex (pivotSimplex) that shares the facet (pivot_facet_eq) and is a different cell (pivot_ne/pivot_opposite_ne) — the existence half boundary_face needs. Remaining for full adj: canonicalisation of the pivot into CanonSimplex, the two boundary-chain pivots, and the adj search itself. OQ target (last-face door oddness) still open.",
+    "progressSummary": "PROGRESS (adj_unique_facet cross-cell uniqueness VERIFIED 0-axiom): facet_unique_neighbor (two distinct facets of a cell cannot glue to one neighbour) + supports facet_union_facet and image_univ_card, all machine-checked 0-axiom on top of the facet combinatorics, BaryPoint≃Vertex bridge, and geometry-uniqueness. Combined with the concurrently-merged interior Freudenthal pivot (pivotSimplex, neighbour existence), only the adj search function + adj_symm/adj_vertices/adj_ne/boundary_face remain for a full SpernerTriangulation instance. The open OQ target (boundary_doors_odd / last-face door oddness) is still unsolved.",
     "builtItems": [
+      "proofs/Proofs/SpernerNDimOQ02.lean (adj_unique_facet uniqueness, VERIFIED 0-axiom: clean lake env lean build, #print axioms = [propext, Classical.choice, Quot.sound] only): facet_union_facet (union of two distinct facets = full vertex set); image_univ_card (cell has d+1 distinct Kuhn vertices); facet_unique_neighbor (two distinct facets of a cell cannot both glue to the same neighbour t — the cross-cell content of the abstract adj_unique_facet field, via vertex-set/cardinality + canon_eq_of_vertices_range).",
       "proofs/Proofs/SpernerNDimOQ02.lean (facet combinatorics, VERIFIED 0-axiom Session 11: clean lake env lean build, #print axioms = [propext, Classical.choice, Quot.sound] only): facet s k := (univ.erase k).image (vertices s); mem_facet_iff; vertices_not_mem_facet (deleted vertex is the unique vertex absent from its facet); facet_card (each facet has exactly d vertices); facet_injective (the d+1 facets of a cell are distinct = within-cell half of adj_unique_facet); not_mem_facet_iff (facet+cell determine the removed index). Building blocks for the abstract adj_vertices/adj_unique_facet fields.",
       "proofs/Proofs/SpernerNDimOQ02.lean (Session 3, VERIFIED): baryEquivVertex d N : BaryPoint d N ≃ Vertex d N (toVertex drops last bary coord, toBary appends slack N-∑); coord simp lemmas; onFace_toVertex (face correspondence); isSperner_iff (transports Sperner condition). 0 sorries, 0 new axioms. This is Option C step 0.",
       "SpernerGridBase.lean: factored GridSimplex foundation (structure+DecidableEq+Fintype+verts_injective+coord trackers, SpernerGrid lines 241-513) into clean base — verified 0-axiom",
@@ -53,6 +54,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "DONE (this session, VERIFIED 0-axiom): adj_unique_facet cross-cell uniqueness (facet_unique_neighbor + facet_union_facet + image_univ_card)",
       "Canonicalise the pivot: build a CanonSimplex from any GridSimplex with the same vertex set (re-select lex-min base + reorder chain), so the interior neighbour lands back in the carrier; combine with pivot_facet_eq to get a canonical partner sharing facet (CanonSimplex level).",
       "Boundary-chain pivots: handle deleted vertex a.succ = 0 (vertex index 0) and = d (Fin.last) — these change the base/miss and are the genuine boundary vs interior dichotomy.",
       "Define adj by finite facet-search over CanonSimplex; discharge adj_symm/adj_vertices/adj_ne via facet_vertex_injective + pivot existence, boundary_face via (contrapositive) interior⟹pivot-partner.",
@@ -75,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-06-27T22:10:00.000Z",
+  "lastUpdate": "2026-06-27",
   "significance": 8,
   "tractability": 6,
   "leanVerified": true,
