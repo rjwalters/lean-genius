@@ -53,6 +53,19 @@ upper bound.
   `B_h` property, since every `h`-fold sum increases by the same `h·c`.  This
   justifies normalising a `B_h` set by a translation without loss of generality.
 
+* `IsBh.insert_of_large` / `IsBh.exists_insert` — **greedy extension**.  If `A` is
+  `B_h` and `m > h·(max A)` then `insert m A` is `B_h`; consequently every `B_h` set
+  can be extended by a new element (the explicit witness `m = h·(max A) + 1`).  This
+  is the `B_h` analogue of the parent file's `sidon_insert_of_large` /
+  `sidon_exists_extension`, and the constructive seed for the (open) `B_h` lower
+  bound: it shows `B_h` sets of unbounded size exist, leaving only the *rate*
+  (`N^{1/(2h-1)}` inside `{1,…,N}`) open.
+
+* `greedyBhSet` / `exists_isBh_card` — **explicit greedy family**.  Iterating the
+  extension gives, for every `h ≥ 1` and every `n`, a concrete `B_h` set of
+  cardinality exactly `n`.  This isolates the open content: the *count* of a `B_h`
+  set is unbounded for free; only the size of its *largest element* is hard.
+
 ## Mathematical note
 
 The bound is *sharp in order*: Singer difference sets give `B_2` sets of size
@@ -418,5 +431,180 @@ theorem IsBh.map_add_right {h c : ℕ} {A : Finset ℕ} (hA : IsBh h A) :
   calc s = (s.map (· - c)).map (· + c) := (hrec hs).symm
     _ = (t.map (· - c)).map (· + c) := by rw [hpeq]
     _ = t := hrec ht
+
+/-! ## Part 5: The greedy `B_h` extension
+
+The deep open direction for #340 (and its `B_h` generalization) is the *lower*
+bound: how large a `B_h` set can the greedy algorithm guarantee inside `{1, …, N}`?
+The first ingredient is that a `B_h` set can *always* be extended by one new, very
+large, element.  This is the `B_h` analogue of the parent file's
+`sidon_insert_of_large` / `sidon_exists_extension`. -/
+
+/-- **Decomposition of an `h`-multiset over `insert m A`.**  Every entry of an
+`h`-multiset `s` over `insert m A` is either the new point `m` or lies in `A`, so `s`
+splits as `j` copies of `m` plus a multiset `sA` drawn entirely from `A`, where `j`
+is the multiplicity of `m`.  Records the cardinality and sum bookkeeping used by the
+extension argument. -/
+private theorem bh_split {h m : ℕ} {A : Finset ℕ} {s : Sym ℕ h}
+    (hs : ∀ x ∈ (s : Multiset ℕ), x ∈ insert m A) :
+    ∃ j sA, (s : Multiset ℕ) = Multiset.replicate j m + sA ∧
+      (∀ x ∈ sA, x ∈ A) ∧ Multiset.card sA = h - j ∧ j ≤ h ∧
+      (s : Multiset ℕ).sum = j * m + sA.sum := by
+  classical
+  set j := (s : Multiset ℕ).count m with hj
+  set sA := (s : Multiset ℕ).filter (· ≠ m) with hsA
+  have hcard : Multiset.card (s : Multiset ℕ) = h := s.2
+  -- `s` is its `m`-part (a replicate block) plus its `A`-part.
+  have hsplit : (s : Multiset ℕ) = Multiset.replicate j m + sA := by
+    rw [hj, hsA]
+    conv_lhs => rw [← Multiset.filter_add_not (· = m) (s : Multiset ℕ)]
+    rw [Multiset.filter_eq']
+  refine ⟨j, sA, hsplit, ?_, ?_, ?_, ?_⟩
+  · -- every entry of the `A`-part lies in `A`
+    intro x hx
+    rw [hsA] at hx
+    have hx' : x ∈ (s : Multiset ℕ) := (Multiset.mem_filter.mp hx).1
+    have hxne : x ≠ m := (Multiset.mem_filter.mp hx).2
+    rcases Finset.mem_insert.mp (hs x hx') with h1 | h1
+    · exact absurd h1 hxne
+    · exact h1
+  · -- `card sA = h - j`
+    have hcc := congrArg Multiset.card hsplit
+    rw [Multiset.card_add, Multiset.card_replicate] at hcc
+    omega
+  · -- `j ≤ h`
+    have hle : j ≤ Multiset.card (s : Multiset ℕ) := hj ▸ Multiset.count_le_card m _
+    omega
+  · -- the sum splits as `j·m + (A-part sum)`
+    have hsum := congrArg Multiset.sum hsplit
+    rw [Multiset.sum_add, Multiset.sum_replicate, smul_eq_mul] at hsum
+    exact hsum
+
+/-- **Greedy extension of a `B_h` set.**  If `A` is `B_h` (`h ≥ 1`) and the new point
+`m` exceeds `h · (max A)`, then `insert m A` is again `B_h`.
+
+*Proof.*  Decompose two colliding `h`-multisets over `insert m A` by their
+multiplicity of `m`: `s = j·{m} + s_A`, `t = k·{m} + t_A` with `s_A, t_A ⊆ A`.  Each
+`A`-part has sum at most `h · (max A) < m`, so the collision `j·m + s_A = k·m + t_A`
+forces `j = k` (otherwise the two sides differ by at least `m`).  Then `s_A` and `t_A`
+have equal sums and lie in `A.sym (h-j)`; as `A` is `B_{h-j}` (downward closure) they
+coincide, whence `s = t`. ∎ -/
+theorem IsBh.insert_of_large {h m : ℕ} {A : Finset ℕ}
+    (hA : IsBh h A) (hbig : h * A.sup id < m) : IsBh h (insert m A) := by
+  intro s hs t ht hsum
+  rw [Finset.mem_coe, Finset.mem_sym_iff] at hs ht
+  have hsM : ∀ x ∈ (s : Multiset ℕ), x ∈ insert m A := hs
+  have htM : ∀ x ∈ (t : Multiset ℕ), x ∈ insert m A := ht
+  obtain ⟨j, sA, hsplitS, hmemS, hcardS, hjh, hsumS⟩ := bh_split hsM
+  obtain ⟨k, tA, hsplitT, hmemT, hcardT, hkh, hsumT⟩ := bh_split htM
+  -- The `A`-part sums are bounded by `h · (max A) < m`.
+  have hSbound : sA.sum ≤ h * A.sup id := by
+    have h1 : sA.sum ≤ Multiset.card sA • A.sup id :=
+      Multiset.sum_le_card_nsmul sA (A.sup id)
+        (fun x hx => (Finset.le_sup (f := id) (hmemS x hx)))
+    rw [smul_eq_mul] at h1
+    have h2 : Multiset.card sA * A.sup id ≤ h * A.sup id := by
+      have : Multiset.card sA ≤ h := by omega
+      gcongr
+    omega
+  have hTbound : tA.sum ≤ h * A.sup id := by
+    have h1 : tA.sum ≤ Multiset.card tA • A.sup id :=
+      Multiset.sum_le_card_nsmul tA (A.sup id)
+        (fun x hx => (Finset.le_sup (f := id) (hmemT x hx)))
+    rw [smul_eq_mul] at h1
+    have h2 : Multiset.card tA * A.sup id ≤ h * A.sup id := by
+      have : Multiset.card tA ≤ h := by omega
+      gcongr
+    omega
+  have hsum0 : (s : Multiset ℕ).sum = (t : Multiset ℕ).sum := hsum
+  rw [hsumS, hsumT] at hsum0
+  -- `j = k`: a strict inequality would make the two `m`-blocks differ by ≥ m.
+  have hjk : j = k := by
+    rcases lt_trichotomy j k with hlt | heq | hgt
+    · exfalso
+      have hexp : (j + 1) * m = j * m + m := by ring
+      have hkm : (j + 1) * m ≤ k * m := by
+        have : j + 1 ≤ k := by omega
+        gcongr
+      omega
+    · exact heq
+    · exfalso
+      have hexp : (k + 1) * m = k * m + m := by ring
+      have hkm : (k + 1) * m ≤ j * m := by
+        have : k + 1 ≤ j := by omega
+        gcongr
+      omega
+  subst hjk
+  have hABsum : sA.sum = tA.sum := by omega
+  -- The `A`-parts are equal `(h-j)`-multisets by the `B_{h-j}` property.
+  have hbh : IsBh (h - j) A := hA.of_le (Nat.sub_le h j)
+  let sS : Sym ℕ (h - j) := ⟨sA, hcardS⟩
+  let tS : Sym ℕ (h - j) := ⟨tA, hcardT⟩
+  have memS : sS ∈ A.sym (h - j) := Finset.mem_sym_iff.mpr hmemS
+  have memT : tS ∈ A.sym (h - j) := Finset.mem_sym_iff.mpr hmemT
+  have hsymeq : sS = tS :=
+    hbh (Finset.mem_coe.mpr memS) (Finset.mem_coe.mpr memT) hABsum
+  have hAB : sA = tA := congrArg Subtype.val hsymeq
+  apply Sym.coe_injective
+  rw [hsplitS, hsplitT, hAB]
+
+/-- **Existence of a greedy extension.**  Every `B_h` set (`h ≥ 1`) can be extended
+by a new element: there is some `m ∉ A` with `insert m A` still `B_h`; concretely
+`m = h · (max A) + 1` works.  Iterating produces `B_h` sets of unbounded size — the
+constructive starting point for the `B_h` analogue of #340's greedy lower bound. -/
+theorem IsBh.exists_insert {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA : IsBh h A) :
+    ∃ m, m ∉ A ∧ IsBh h (insert m A) := by
+  refine ⟨h * A.sup id + 1, ?_, hA.insert_of_large (by omega)⟩
+  intro hmem
+  have hle : (h * A.sup id + 1) ≤ A.sup id := Finset.le_sup (f := id) hmem
+  have hpos : A.sup id ≤ h * A.sup id := Nat.le_mul_of_pos_left _ hh
+  omega
+
+/-! ## Part 6: An explicit greedy `B_h` family
+
+Iterating `IsBh.exists_insert` realises the qualitative consequence of the extension
+lemma: `B_h` sets of *every* cardinality exist (the parent's `greedySidonSeq` does the
+same for `B_2`).  This pins down precisely what is — and is not — open: the *count*
+of a `B_h` set is unbounded for free; the hard quantitative question is how small its
+*largest element* can be, i.e. the `N^{1/(2h-1)}` greedy lower bound inside `{1,…,N}`. -/
+
+/-- The empty set is `B_h` for every `h`. -/
+theorem isBh_empty {h : ℕ} : IsBh h (∅ : Finset ℕ) := by
+  intro s hs t _ _
+  rcases Nat.eq_zero_or_pos h with rfl | hpos
+  · exact Subsingleton.elim s t
+  · rw [Finset.mem_coe] at hs
+    obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hpos.ne'
+    rw [Finset.sym_empty] at hs
+    exact absurd hs (Finset.notMem_empty s)
+
+/-- Greedy construction bundled with its invariants.  Starting from `∅`, repeatedly
+adjoin a witness of `IsBh.exists_insert`; stage `n` is a `B_h` set of cardinality `n`. -/
+noncomputable def greedyBhAux (h : ℕ) (hh : 1 ≤ h) :
+    (n : ℕ) → {A : Finset ℕ // IsBh h A ∧ A.card = n}
+  | 0 => ⟨∅, isBh_empty, Finset.card_empty⟩
+  | n + 1 =>
+      let prev := greedyBhAux h hh n
+      let m := Classical.choose (prev.2.1.exists_insert hh)
+      have hm := Classical.choose_spec (prev.2.1.exists_insert hh)
+      ⟨insert m prev.1, hm.2, by rw [Finset.card_insert_of_notMem hm.1, prev.2.2]⟩
+
+/-- The greedy `B_h` set at stage `n` (cardinality `n`). -/
+noncomputable def greedyBhSet (h : ℕ) (hh : 1 ≤ h) (n : ℕ) : Finset ℕ :=
+  (greedyBhAux h hh n).1
+
+theorem greedyBhSet_isBh {h : ℕ} (hh : 1 ≤ h) (n : ℕ) :
+    IsBh h (greedyBhSet h hh n) := (greedyBhAux h hh n).2.1
+
+theorem greedyBhSet_card {h : ℕ} (hh : 1 ≤ h) (n : ℕ) :
+    (greedyBhSet h hh n).card = n := (greedyBhAux h hh n).2.2
+
+/-- **`B_h` sets of every cardinality exist.**  For each `h ≥ 1` and each `n`, the
+greedy construction yields a `B_h` set with exactly `n` elements; in particular the
+cardinality of a `B_h` set is a-priori unbounded.  The open quantitative question is
+how small the largest element can be — the `N^{1/(2h-1)}` greedy lower bound. -/
+theorem exists_isBh_card (h : ℕ) (hh : 1 ≤ h) (n : ℕ) :
+    ∃ A : Finset ℕ, IsBh h A ∧ A.card = n :=
+  ⟨greedyBhSet h hh n, greedyBhSet_isBh hh n, greedyBhSet_card hh n⟩
 
 end Erdos340Bh
