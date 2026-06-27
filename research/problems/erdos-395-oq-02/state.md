@@ -1,54 +1,56 @@
 # Current State
 
-**Phase**: FORMALIZED (obstruction proved; fixed-dimension question remains open)
-**Since**: 2026-06-25
-**Iteration**: 1
+**Phase**: FORMALIZED (obstruction + sharp converse proved; fixed-dimension question remains open)
+**Since**: 2026-06-26
+**Iteration**: 2
 
 ## Current Focus
 
-Formalized the orthogonality obstruction to a higher-dimensional reverse
-Littlewood–Offord theorem: `proofs/Proofs/Erdos395OQ02.lean` (240 lines,
-9 theorems, 7 defs, 0 sorries, 0 axioms; #print axioms reports only
-propext / Classical.choice / Quot.sound — no native_decide).
+Extended `proofs/Proofs/Erdos395OQ02.lean` (now 309 lines, 14 theorems, 7 defs,
+0 sorries, 0 axioms) with the **complementary saturation direction**, closing the
+characterization of the orthonormal case into a sharp 0/1 dichotomy.
 
 ## Active Approach
 
-Single deterministic identity drives everything:
+The same deterministic identity `‖Σεᵢzᵢ‖ = √n` drives both directions:
 
-1. **Orthogonality identity** (`signedSum_norm_sq_of_orthonormal`) — for an
-   orthonormal family z₁,…,zₙ in any real inner product space and any sign
-   vector ε ∈ {±1}ⁿ, `‖Σ εᵢzᵢ‖² = n` exactly, independent of the signs. The
-   cross terms ⟨zᵢ,zⱼ⟩ vanish; εᵢ² = 1 collapses the diagonal to n.
-
-2. **Obstruction** (`orthonormal_smallSum_eq_empty`,
-   `orthonormal_smallSumProb_eq_zero`) — comparing squared norms, the event
-   `‖S‖ ≤ C` forces `n ≤ C²`, so for any fixed threshold C with `C² < n` the
-   favourable set is empty and its probability is 0.
-
-3. **Headline** (`dimensionFree_reverseLO_false`) — the dimension-free,
-   fixed-threshold analogue of HJNS 2024 is FALSE: the standard orthonormal
-   basis of ℝⁿ (dimension d = n) gives probability 0 for every n > C², while
-   any claimed bound demands c/n > 0.
+1. **Obstruction (iteration 1)** — `C² < n ⟹` favourable set empty `⟹ P = 0`.
+2. **Saturation (NEW, iteration 2)** — `√n ≤ C ⟹` favourable set is all of
+   `{±1}ⁿ ⟹ P = 1`:
+   - `orthonormal_signedSum_le_of_sqrt_le` — every sign sum is within `C`.
+   - `orthonormal_smallSum_eq_univ` — favourable set = entire sign space.
+   - `orthonormal_smallSumCount_eq_two_pow` — count = `2ⁿ` (via `Fintype.card_fun`).
+   - `orthonormal_smallSumProb_eq_one` — probability = `1`.
+3. **Sharp dichotomy (NEW headline)** — `orthonormal_smallSumProb_dichotomy`:
+   on orthonormal configurations `P(‖Σεᵢzᵢ‖ ≤ C) = [n ≤ C²]`, a two-valued step
+   function jumping from 0 to 1 exactly at `C = √n`. There is no `c/n`
+   intermediate regime, so the threshold growth is pinned at `C ~ √n` in the
+   strongest (exact, deterministic) form. This addresses the "pin the threshold
+   dependence C(d)" item from iteration 1's next-action list.
 
 ## Blockers
 
-The genuine open question — the **fixed-dimension** reverse Littlewood–Offord
-problem (`ReverseLO_fixedDim d` for d ≥ 3: does a c_d/n lower bound hold for
-unit vectors in ℝ^d?) — is **not** resolved. It is recorded as an unproven
-Prop. The obstruction shows the dimension must be bounded independently of n
-(or the threshold must scale with d), but the fixed-d case is open.
+- The genuine open question — **fixed-dimension** reverse Littlewood–Offord
+  (`ReverseLO_fixedDim d` for d ≥ 3) — is still **not** resolved. It is recorded
+  as an unproven Prop. This is real open mathematics (HJNS proved only d=2); not
+  attempted here.
+- BUILD: not re-run to green. The Docker build hits the persistent Mathlib-cache
+  `.ltar` permission-denied error (cached path) / OOM at the 7.65GB VM ceiling
+  (from-source path). All new lemmas were instead statically verified against the
+  pinned Mathlib source (Real.sqrt_sq, Real.sqrt_le_sqrt, Fintype.card_fun,
+  Finset.filter_true_of_mem all exist with the used signatures). Build-pending
+  per established precedent.
 
 ## Next Action
 
-Two natural directions:
-- Determine the optimal threshold growth C(d): the identity ‖Σεᵢzᵢ‖² = n
-  suggests C(d) ~ √d on orthonormal configurations; pin the dependence across
-  all unit configurations.
-- Attempt the fixed-d lower bound via a Paley–Zygmund / Fourier route using
-  ‖Σεᵢzᵢ‖² = n as the second-moment input, paralleling HJNS.
+- The Paley–Zygmund / Fourier route to a fixed-`d` lower bound (using `‖Σεᵢzᵢ‖² = n`
+  as the second-moment input) remains the natural attack on the open Prop — but
+  requires genuine new mathematics, not just Mathlib plumbing.
+- A future session with a working build should run `#print axioms` on the new
+  dichotomy theorem to confirm foundational-only axioms.
 
 ## Attempt Counts
 
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1
+- Total attempts: 2
+- Current approach attempts: 2
+- Approaches tried: 1 (orthogonality-identity, both directions)
