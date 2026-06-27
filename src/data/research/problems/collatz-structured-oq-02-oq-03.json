@@ -29,11 +29,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "PROGRESS: extended unconditional Part II from {even, powers of two} to also cover odd class n≡1 mod 4 (density 1/4); 3/4 of integers now handled axiom-free. Tao 2019 axiom remains BLOCKED (>>1000 lines, deep analytic).",
+    "builtItems": [
+      "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
+      "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
+      "even_or_mod_four_one_attainsBelow: packaging covering 3/4 of integers axiom-free"
+    ],
+    "insights": [
+      "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
+      "n ≡ 3 (mod 4) does NOT immediately drop: 4m+3 → 12m+10 → 6m+5 → 18m+16 → 9m+8 > 4m+3, confirming these are the genuinely hard residues (consistent with stopping-time theory)."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Consider longer-stopping odd residue classes mod 8/16 (e.g. n≡3 mod 16 chains) for a higher-density axiom-free cover.",
+      "Tao axiom genuinely blocked; no elementary path to logarithmic-density-1."
+    ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],

@@ -72,11 +72,12 @@ theorem collatz_odd {n : ℕ} (h : n % 2 = 1) : collatz n = 3 * n + 1 := by
 theorem collatz_two_mul (n : ℕ) : collatz (2 * n) = n := by
   simp [collatz, Nat.mul_mod_right]
 
-/-! ## Part II: Two explicit families that drop below their start
+/-! ## Part II: Three explicit families that drop below their start
 
 These are the unconditional, axiom-free part of the almost-all picture: whatever
-Tao's analytic argument gives for *almost all* `n`, the even numbers and the
-powers of two are handled by elementary one-line dynamics. -/
+Tao's analytic argument gives for *almost all* `n`, the even numbers, the powers
+of two, and the odd residue class `n ≡ 1 (mod 4)` (`n ≥ 5`) are handled by
+elementary explicit dynamics. -/
 
 /-- `n` *attains a value below itself*: some positive number of Collatz steps
 takes `n` to a strictly smaller value.  This is the "finite stopping time"
