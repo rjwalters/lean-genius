@@ -352,11 +352,33 @@ structure LipschitzQuaternion where
 def LipschitzQuaternion.norm (q : LipschitzQuaternion) : ℕ :=
   (q.a ^ 2 + q.b ^ 2 + q.c ^ 2 + q.d ^ 2).toNat
 
-/-- The norm is multiplicative (this IS Euler's four-square identity!) -/
+/-- Hamilton product of two Lipschitz quaternions:
+`(a₁ + b₁i + c₁j + d₁k)(a₂ + b₂i + c₂j + d₂k)`, expanded via `i²=j²=k²=ijk=-1`. -/
+def LipschitzQuaternion.mul (q₁ q₂ : LipschitzQuaternion) : LipschitzQuaternion where
+  a := q₁.a * q₂.a - q₁.b * q₂.b - q₁.c * q₂.c - q₁.d * q₂.d
+  b := q₁.a * q₂.b + q₁.b * q₂.a + q₁.c * q₂.d - q₁.d * q₂.c
+  c := q₁.a * q₂.c - q₁.b * q₂.d + q₁.c * q₂.a + q₁.d * q₂.b
+  d := q₁.a * q₂.d + q₁.b * q₂.c - q₁.c * q₂.b + q₁.d * q₂.a
+
+/-- The quaternion norm is multiplicative: `N(q₁ · q₂) = N(q₁) · N(q₂)`.
+
+This IS Euler's four-square identity: expanding the Hamilton product and the
+norms, the equality is the polynomial identity
+`(a₁²+b₁²+c₁²+d₁²)(a₂²+b₂²+c₂²+d₂²) = e₁²+e₂²+e₃²+e₄²`
+discharged by `ring`. It is the algebraic engine behind Lagrange's theorem:
+multiplicativity reduces the four-square representation of `n` to the prime case. -/
 theorem lipschitz_norm_multiplicative (q₁ q₂ : LipschitzQuaternion) :
-    -- N(q₁ · q₂) = N(q₁) · N(q₂)
-    -- This is exactly Euler's four-square identity in disguise
-    (1 : ℕ) + 1 = 2 := rfl
+    (q₁.mul q₂).norm = q₁.norm * q₂.norm := by
+  have h₁ : (0:ℤ) ≤ q₁.a ^ 2 + q₁.b ^ 2 + q₁.c ^ 2 + q₁.d ^ 2 := by positivity
+  have h₂ : (0:ℤ) ≤ q₂.a ^ 2 + q₂.b ^ 2 + q₂.c ^ 2 + q₂.d ^ 2 := by positivity
+  have h₃ : (0:ℤ) ≤ (q₁.mul q₂).a ^ 2 + (q₁.mul q₂).b ^ 2
+      + (q₁.mul q₂).c ^ 2 + (q₁.mul q₂).d ^ 2 := by positivity
+  have key : ((q₁.mul q₂).norm : ℤ) = (q₁.norm : ℤ) * (q₂.norm : ℤ) := by
+    unfold LipschitzQuaternion.norm
+    rw [Int.toNat_of_nonneg h₃, Int.toNat_of_nonneg h₁, Int.toNat_of_nonneg h₂]
+    simp only [LipschitzQuaternion.mul]
+    ring
+  exact_mod_cast key
 
 /-- Lagrange's theorem restated: every ℕ is the norm of a Lipschitz quaternion -/
 theorem every_nat_is_quaternion_norm (n : ℕ) :
