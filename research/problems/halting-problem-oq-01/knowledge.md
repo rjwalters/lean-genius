@@ -84,3 +84,63 @@ the zero-import `Proofs.HaltingProblem`).
   genuine non-`Σ⁰₁` statement. ~300–600 lines.
 - Optionally exhibit a *nontrivial sound approximator* (a "run k steps then
   decline" family) to demonstrate the decline-set is the only obstruction.
+
+---
+
+## Session 2026-06-27 (Session 2) — OQ-01c: genuine arithmetical-hierarchy placement
+
+**Mode**: REVISIT (pool empty; follow-up to the SOLVED schematic core)
+**Outcome**: progress — new verified file `HaltingArithmeticalHierarchy.lean`
+(0 sorry, 0 axiom beyond `propext/Classical.choice/Quot.sound`; imports
+`Mathlib.Computability.Halting`).
+
+### What I did
+Converted the *schematic* single-point decline barrier (Session 1) into the
+*genuine* computability statement, the previously-deferred OQ-01c. Using
+`Nat.Partrec.Code` / `eval` / `REPred` / `ComputablePred`, fixed input `n` and
+`Halts n c := (eval c n).Dom` (= the parametrized halting set `K`):
+
+- **Hierarchy placement** (repackaged Mathlib): `halts_re` (`K` is `Σ⁰₁`),
+  `halts_not_computable` (`K ∉ Δ⁰₁`), `halts_compl_not_re` (`Kᶜ ∉ Σ⁰₁`). So `K`
+  is **properly `Σ⁰₁`** and the approximation gap is exactly `Kᶜ ∈ Π⁰₁ ∖ Σ⁰₁`.
+- **Decline-set lemmas** (the genuine new content):
+  - `re_confirmedFalse` — for any *partial computable* `f : Code →. Bool`, the
+    confirmed-non-halting set `{c | false ∈ f c}` is r.e. (it is the domain of
+    `c ↦ (f c) >>= fun b => bif b then none else some ()`, partrec by
+    `Partrec.bind`/`Partrec.cond`, r.e. by `Partrec.dom_re`).
+  - `no_sound_approx_confirms_all_nonhalting` — no sound computable approximator
+    can confirm `false` on *all* of `Kᶜ`; else `{c | false ∈ f c} = Kᶜ` would be
+    r.e., contradicting `halts_compl_not_re`.
+  - `sound_approx_undefined_on_nonhalting` — hence every sound computable
+    approximator is *undefined* (declines) on some genuinely non-halting input.
+
+### Key findings / insights
+- The schematic "declines at the diagonal point" is *not* an artifact of the
+  no-computation-model setting: in the real model it strengthens to "declines on
+  a non-r.e. (hence infinite) set." The obstruction has a precise name — the
+  `Σ⁰₁`/`Π⁰₁` asymmetry: halting is semi-decidable (`K` r.e.: you can confirm a
+  halt by running), non-halting is not (`Kᶜ` not r.e.: no process confirms
+  looping on every looping input). The decline set of any sound semi-decider must
+  contain the non-r.e. set `Kᶜ` minus an r.e. piece.
+- The hierarchy-placement trio is a thin Mathlib wrapper (honest disclosure in
+  the file header); the *bridge* lemmas are the session's real content.
+
+### Files modified
+- `proofs/Proofs/HaltingArithmeticalHierarchy.lean` (new, ~185 lines incl. docs;
+  0 sorry, 0 axiom)
+- `proofs/Proofs.lean` (registered the new module)
+
+### Status of the three OQ-01 readings
+- **OQ-01a structural barrier** — DONE (Session 1, `HaltingApproximation.lean`).
+- **OQ-01c arithmetical-hierarchy placement** — DONE (this session). Came in far
+  under the earlier 300–600-line estimate: Mathlib already packages the three
+  halting theorems, so only the ~60-line approximator bridge was new.
+- **OQ-01b density / generic-case complexity** — STILL OPEN. Encoding-sensitive
+  (Hamkins–Miasnikov 2006 needs a concrete one-tape model + density/measure on
+  `ℕ`); > 1000 lines on infrastructure Mathlib does not package. BLOCKED.
+
+### Next steps
+- (Optional) Strengthen `sound_approx_undefined_on_nonhalting` to "declines on a
+  non-r.e. set" by proving `REPred` is closed under union, then the gap
+  `Kᶜ ∖ {confirmed false}` is non-r.e. (currently only "nonempty" is extracted).
+- OQ-01b remains the only genuinely open sub-question and is infrastructure-blocked.

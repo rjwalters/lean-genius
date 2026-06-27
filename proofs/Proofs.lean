@@ -3880,6 +3880,7 @@ import Proofs.RearrangementChebyshevEqOQ01OQ02
 import Proofs.RearrangementChebyshevStrictOQ01OQ02
 import Proofs.RearrangementChebyshevStrictOQ01OQ02OQ01
 import Proofs.HaltingApproximation
+import Proofs.HaltingArithmeticalHierarchy
 import Proofs.RelativizedHalting
 import Proofs.RelativizedHaltingBridge
 import Proofs.RepunitDivisibilityOQ01
