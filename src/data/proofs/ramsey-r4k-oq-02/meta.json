@@ -1,0 +1,61 @@
+{
+  "id": "ramsey-r4k-oq-02",
+  "title": "Exact Ramsey Number Lower Bound R(4,3) ≥ 9 via the Wagner Coloring",
+  "slug": "ramsey-r4k-oq-02",
+  "description": "Verifies the lower-bound half of the exact off-diagonal Ramsey number R(4,3) = 9: there is a 2-coloring of K₈ with no red 4-clique and no blue 3-clique, hence R(4,3) > 8. The extremal coloring is the Wagner graph V₈ (the 8-cycle with its four long diagonals), the unique triangle-free graph on 8 vertices with independence number 3, taken as the blue color. The two clique-freeness facts are finite decisions over all subsets of Fin 8 discharged by `decide`, so the result is fully kernel-verified with no extra axioms (only propext/Classical.choice/Quot.sound). This is the 'exhibit an extremal coloring on n-1 vertices' direction raised by the parent's OQ-02; the matching exact upper bound R(4,3) ≤ 9 (sharpening the binomial bound 10) remains open.",
+  "meta": {
+    "author": "Lean Genius Researcher",
+    "status": "verified",
+    "proofRepoPath": "Proofs/RamseyR4kOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ramsey-theory",
+      "graph-theory",
+      "exact-ramsey-numbers",
+      "lower-bounds"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 107,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "assumptions": "None. The two clique-freeness lemmas (`wagner_no_red_K4`, `wagner_no_blue_K3`) and the symmetry/irreflexivity facts are proved by `decide` — kernel-checked finite enumeration, not `native_decide` — so `#print axioms r43_lower` lists only the foundational axioms propext, Classical.choice, Quot.sound. No `Lean.ofReduceBool`, no `sorryAx`. `set_option maxRecDepth 4000` is needed for the two existential-over-Finset (Fin 8) decisions.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.decidableBAll",
+        "description": "Decidability of bounded ∀ over a Finset, used so the no-clique existentials over Finset (Fin 8) reduce by `decide`",
+        "module": "Mathlib.Data.Finset.Basic"
+      },
+      {
+        "theorem": "Fintype.decidableExistsFintype",
+        "description": "Decidability of ∃ S : Finset (Fin 8), enabling kernel enumeration of all 2^8 candidate cliques",
+        "module": "Mathlib.Data.Fintype.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Explicit Wagner-graph 2-coloring of K₈ (`wagnerColor`) encoded by cyclic difference (i−j) mod 8 ∈ {1,4,7}",
+      "Fully kernel-verified (0-axiom) proof that this coloring has no red 4-clique (`wagner_no_red_K4`) and no blue 3-clique (`wagner_no_blue_K3`)",
+      "The lower bound R(4,3) ≥ 9 as ¬ RamseyProp 8 4 3 (`r43_lower`), reusing the parent gallery proof's RamseyProp encoding",
+      "A self-contained witness form `r43_lower_witness` packaging the extremal coloring and its two clique-freeness certificates"
+    ],
+    "dateAdded": "2026-06-27",
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "The Ramsey property RamseyProp (from the parent ramsey-r4k proof)",
+      "Wagner graph / Möbius–Kantor structure on 8 vertices",
+      "Decidability of finite Finset quantifiers in Lean 4"
+    ]
+  },
+  "overview": {
+    "historicalContext": "The exact value R(4,3) = R(3,4) = 9 is due to Greenwood and Gleason (1955). Establishing it has two halves: the upper bound R(4,3) ≤ 9 (every 2-coloring of K₉ has a red K₄ or blue K₃) and the lower bound R(4,3) ≥ 9 (some 2-coloring of K₈ avoids both). The lower bound is witnessed by the Wagner graph V₈ — the cycle C₈ together with its four main diagonals — which is the unique triangle-free graph on 8 vertices with independence number 3. The parent gallery proof `ramsey-r4k` formalizes only the classical Erdős–Szekeres binomial upper bounds (R(4,k) ≤ C(k+2,3), giving R(4,3) ≤ 10), never the exact values; the open question OQ-02 asks specifically whether the exact numbers R(4,3)=9, R(4,4)=18, R(4,5)=25 can be verified in Lean 4, noting this needs either SAT-style verification of extremal colorings or an inductive combinatorial argument. This entry settles the smallest case's lower bound by directly exhibiting and checking the extremal coloring.",
+    "problemStatement": "Using the parent encoding `RamseyProp n r s` (every symmetric irreflexive Bool 2-coloring of Fin n × Fin n has a red r-clique or blue s-clique), prove ¬ RamseyProp 8 4 3, i.e. R(4,3) > 8, by exhibiting an explicit coloring of K₈ with no red 4-clique and no blue 3-clique.",
+    "proofStrategy": "Define `wagnerColor i j` to be blue (`false`) exactly when the circular difference (i−j) mod 8 lies in {1,4,7} (the Wagner edges) or i = j (loops), and red (`true`) otherwise. Then: (1) `decide` checks symmetry and irreflexivity over the 64 vertex pairs; (2) since the blue (Wagner) graph is triangle-free, `decide` (with maxRecDepth raised) verifies there is no blue 3-clique by enumerating all subsets of Fin 8; (3) since the Wagner graph has independence number 3, its complement (the red graph) has clique number 3, so `decide` verifies no red 4-clique. Feeding `wagnerColor` together with these certificates into any hypothetical `RamseyProp 8 4 3` yields a contradiction, proving `r43_lower`.",
+    "keyInsights": [
+      "**Extremal coloring as a finite certificate.** Unlike the upper bound (which would require ruling out all 2^36 colorings of K₉), the lower bound only needs one witness coloring of K₈ whose two clique-freeness properties are individually decidable — turning a Ramsey lower bound into a kernel-checkable `decide`.",
+      "**Wagner graph = unique (3,4)-extremal graph on 8 vertices.** Encoding it via the cyclic connection set {±1, 4} makes both triangle-freeness (no blue K₃) and independence number 3 (no red K₄) hold simultaneously, exactly the two conditions a R(4,3)>8 witness must satisfy.",
+      "**0-axiom via `decide` not `native_decide`.** The enumeration is small enough (2^8 subsets, 64 pairs) that the kernel can reduce it directly once `maxRecDepth` is raised, so the proof avoids `Lean.ofReduceBool` and remains genuinely axiom-free — stronger than the parent's numeric bounds, which use `native_decide`.",
+      "**Reuses the gallery's RamseyProp.** By importing the parent file's `RamseyProp`, the lower bound is stated against the exact same definition the gallery uses for upper bounds, so the two results compose into a clean bracket 8 < R(4,3) ≤ 10 with the exact upper bound R(4,3) ≤ 9 left as the remaining open step."
+    ]
+  }
+}
