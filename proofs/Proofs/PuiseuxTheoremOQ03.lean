@@ -221,4 +221,57 @@ theorem ysqMinusX_isLowerEdge : IsLowerEdge YsqMinusX (0, 1) (2, 0) := by
     -1/2, 1, by norm_num, by norm_num, fun r hr => ?_⟩
   fin_cases hr <;> norm_num
 
+/-! ### Supporting-slope bounds and convexity from below
+
+`edgeSlope_mono` above states convexity between two *edges sharing a vertex*.
+The lemmas here give the complementary, finer statement directly from a single
+supporting line: the supporting slope `m` through a vertex `p` bounds the slope
+to **every** other support point — `m` is a lower bound to the right and an upper
+bound to the left.  This yields the sharper convexity certificate
+`interior_slopes`: **no** support point — vertex or not — ever dips below a lower
+edge.  These are stated on the raw supporting-line data, so they apply to any
+vertex/edge regardless of whether the intermediate points happen to be vertices
+of further edges. -/
+
+/-- **Supporting-slope lower bound (rightward).**  If a line of slope `m` passes
+through `p` and lies weakly below every support point, then every support point
+`q` strictly to the right of `p` has `m ≤ edgeSlope p q`.  So the supporting
+slope is the *smallest* slope leaving `p` — the dominant edge of the lower hull. -/
+theorem edgeSlope_ge_of_supportingLine {pts : List SupportPoint} {p q : SupportPoint}
+    {m b : ℚ} (hpe : p.2 = m * (p.1 : ℚ) + b) (hq : q ∈ pts)
+    (hsupp : ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2)
+    (hlt : (p.1 : ℚ) < q.1) : m ≤ edgeSlope p q := by
+  have hpos : (0 : ℚ) < (q.1 : ℚ) - p.1 := by linarith
+  have hq2 : m * (q.1 : ℚ) + b ≤ q.2 := hsupp q hq
+  rw [edgeSlope, le_div_iff₀ hpos]
+  have hexp : m * ((q.1 : ℚ) - p.1) = m * (q.1 : ℚ) - m * (p.1 : ℚ) := by ring
+  rw [hexp]; linarith [hpe, hq2]
+
+/-- **Supporting-slope upper bound (leftward).**  Symmetrically, every support
+point `q` strictly to the left of `p` has `edgeSlope q p ≤ m`. -/
+theorem edgeSlope_le_of_supportingLine {pts : List SupportPoint} {p q : SupportPoint}
+    {m b : ℚ} (hpe : p.2 = m * (p.1 : ℚ) + b) (hq : q ∈ pts)
+    (hsupp : ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2)
+    (hlt : (q.1 : ℚ) < p.1) : edgeSlope q p ≤ m := by
+  have hpos : (0 : ℚ) < (p.1 : ℚ) - q.1 := by linarith
+  have hq2 : m * (q.1 : ℚ) + b ≤ q.2 := hsupp q hq
+  rw [edgeSlope, div_le_iff₀ hpos]
+  have hexp : m * ((p.1 : ℚ) - q.1) = m * (p.1 : ℚ) - m * (q.1 : ℚ) := by ring
+  rw [hexp]; linarith [hpe, hq2]
+
+/-- **A lower edge is convex from below.**  For *any* support point `r` strictly
+between the endpoints `p` and `q` of a lower edge, the right sub-slope is at most
+the left sub-slope: `edgeSlope r q ≤ edgeSlope p r`.  Equivalently, `r` lies on
+or above the edge line — the polygon never dips below an edge.  Unlike
+`edgeSlope_mono`, `r` need not be a vertex of any edge; this is the full
+lower-hull convexity certificate. -/
+theorem IsLowerEdge.interior_slopes {pts : List SupportPoint} {p q r : SupportPoint}
+    (h : IsLowerEdge pts p q) (hr : r ∈ pts)
+    (hpr : (p.1 : ℚ) < r.1) (hrq : (r.1 : ℚ) < q.1) :
+    edgeSlope r q ≤ edgeSlope p r := by
+  obtain ⟨_, _, _, m, b, hpe, hqe, hsupp⟩ := h
+  have h1 : m ≤ edgeSlope p r := edgeSlope_ge_of_supportingLine hpe hr hsupp hpr
+  have h2 : edgeSlope r q ≤ m := edgeSlope_le_of_supportingLine hqe hr hsupp hrq
+  linarith
+
 end PuiseuxTheoremOQ03
