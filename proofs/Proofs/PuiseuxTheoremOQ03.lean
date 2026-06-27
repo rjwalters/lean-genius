@@ -142,4 +142,100 @@ theorem ysqMinusX_leading_exponent :
       = PuiseuxTheorem.leadingExponentFromSlope 1 2 (by norm_num) := by
   norm_num [edgeSlope, PuiseuxTheorem.leadingExponentFromSlope]
 
+/-! ### Lower-hull edges and convexity
+
+The supporting-line predicate `IsLowerVertex` extends to **edges** of the lower
+hull: an edge is a single supporting line that touches two distinct support
+points.  The slope of that line is the `edgeSlope` of its endpoints, and — the
+combinatorial heart of the Newton polygon — that slope bounds the slopes from
+either endpoint to every other support point.  This is the convexity that makes
+the lower hull's edge slopes the candidate root valuations and guarantees the
+polygon never dips below an edge. -/
+
+/-- `p` and `q` span a **lower edge** of the Newton polygon of `pts` when a single
+(non-vertical) line passes through both and lies weakly below every support point.
+Both endpoints are then lower vertices and the line's slope is `edgeSlope p q`. -/
+def IsLowerEdge (pts : List SupportPoint) (p q : SupportPoint) : Prop :=
+  p ∈ pts ∧ q ∈ pts ∧ ∃ m b : ℚ,
+    p.2 = m * (p.1 : ℚ) + b ∧ q.2 = m * (q.1 : ℚ) + b ∧
+    ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2
+
+/-- The left endpoint of a lower edge is a lower vertex (the same supporting line
+witnesses it). -/
+theorem IsLowerEdge.left_isVertex {pts : List SupportPoint} {p q : SupportPoint}
+    (h : IsLowerEdge pts p q) : IsLowerVertex pts p := by
+  obtain ⟨hp, _, m, b, hpe, _, hsupp⟩ := h
+  exact ⟨hp, m, b, hpe, hsupp⟩
+
+/-- The right endpoint of a lower edge is a lower vertex. -/
+theorem IsLowerEdge.right_isVertex {pts : List SupportPoint} {p q : SupportPoint}
+    (h : IsLowerEdge pts p q) : IsLowerVertex pts q := by
+  obtain ⟨_, hq, m, b, _, hqe, hsupp⟩ := h
+  exact ⟨hq, m, b, hqe, hsupp⟩
+
+/-- `IsLowerEdge` is symmetric in its endpoints. -/
+theorem IsLowerEdge.symm {pts : List SupportPoint} {p q : SupportPoint}
+    (h : IsLowerEdge pts p q) : IsLowerEdge pts q p := by
+  obtain ⟨hp, hq, m, b, hpe, hqe, hsupp⟩ := h
+  exact ⟨hq, hp, m, b, hqe, hpe, hsupp⟩
+
+/-- **The slope of a lower edge equals its supporting line's slope.**  When the
+endpoints have distinct `i`-coordinates, `edgeSlope p q` is the unique slope `m`
+of the supporting line through both, and that line still lies below every point. -/
+theorem IsLowerEdge.edgeSlope_eq {pts : List SupportPoint} {p q : SupportPoint}
+    (h : IsLowerEdge pts p q) (hne : (p.1 : ℚ) ≠ q.1) :
+    ∃ m b : ℚ, edgeSlope p q = m ∧
+      p.2 = m * (p.1 : ℚ) + b ∧ q.2 = m * (q.1 : ℚ) + b ∧
+      ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2 := by
+  obtain ⟨_, _, m, b, hpe, hqe, hsupp⟩ := h
+  refine ⟨m, b, ?_, hpe, hqe, hsupp⟩
+  rw [edgeSlope, div_eq_iff (sub_ne_zero.mpr (Ne.symm hne)), hpe, hqe]
+  ring
+
+/-- **Supporting-slope lower bound (rightward).**  If a supporting line of slope
+`m` passes through `p` and lies below every support point, then every point `q`
+strictly to the right of `p` has slope `m ≤ edgeSlope p q`.  Thus the supporting
+slope is the *smallest* slope leaving `p` — the dominant edge of the lower hull. -/
+theorem edgeSlope_ge_of_supportingLine {pts : List SupportPoint} {p q : SupportPoint}
+    {m b : ℚ} (hpe : p.2 = m * (p.1 : ℚ) + b) (hq : q ∈ pts)
+    (hsupp : ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2)
+    (hlt : (p.1 : ℚ) < q.1) : m ≤ edgeSlope p q := by
+  have hpos : (0 : ℚ) < (q.1 : ℚ) - p.1 := by linarith
+  have hq2 : m * (q.1 : ℚ) + b ≤ q.2 := hsupp q hq
+  rw [edgeSlope, le_div_iff₀ hpos]
+  have hexp : m * ((q.1 : ℚ) - p.1) = m * (q.1 : ℚ) - m * (p.1 : ℚ) := by ring
+  rw [hexp]; linarith [hpe, hq2]
+
+/-- **Supporting-slope upper bound (leftward).**  Symmetrically, every support
+point `q` strictly to the left of `p` has slope `edgeSlope q p ≤ m`. -/
+theorem edgeSlope_le_of_supportingLine {pts : List SupportPoint} {p q : SupportPoint}
+    {m b : ℚ} (hpe : p.2 = m * (p.1 : ℚ) + b) (hq : q ∈ pts)
+    (hsupp : ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2)
+    (hlt : (q.1 : ℚ) < p.1) : edgeSlope q p ≤ m := by
+  have hpos : (0 : ℚ) < (p.1 : ℚ) - q.1 := by linarith
+  have hq2 : m * (q.1 : ℚ) + b ≤ q.2 := hsupp q hq
+  rw [edgeSlope, div_le_iff₀ hpos]
+  have hexp : m * ((p.1 : ℚ) - q.1) = m * (p.1 : ℚ) - m * (q.1 : ℚ) := by ring
+  rw [hexp]; linarith [hpe, hq2]
+
+/-- **A lower edge is convex from below.**  For any support point `r` strictly
+between the endpoints `p` and `q` of a lower edge, the right sub-slope is at most
+the left sub-slope: `edgeSlope r q ≤ edgeSlope p r`.  Equivalently the polygon
+never dips below the edge line — the defining property of a lower-hull edge. -/
+theorem IsLowerEdge.interior_slopes {pts : List SupportPoint} {p q r : SupportPoint}
+    (h : IsLowerEdge pts p q) (hr : r ∈ pts)
+    (hpr : (p.1 : ℚ) < r.1) (hrq : (r.1 : ℚ) < q.1) :
+    edgeSlope r q ≤ edgeSlope p r := by
+  obtain ⟨_, _, m, b, hpe, hqe, hsupp⟩ := h
+  have h1 : m ≤ edgeSlope p r := edgeSlope_ge_of_supportingLine hpe hr hsupp hpr
+  have h2 : edgeSlope r q ≤ m := edgeSlope_le_of_supportingLine hqe hr hsupp hrq
+  linarith
+
+/-- The single Newton-polygon edge of `Y² − x` is a genuine lower edge, witnessed
+by the line `y = -½ i + 1` through `(0,1)` and `(2,0)`. -/
+theorem ysqMinusX_isLowerEdge : IsLowerEdge YsqMinusX (0, 1) (2, 0) := by
+  refine ⟨by simp [YsqMinusX], by simp [YsqMinusX], -1/2, 1, by norm_num, by norm_num,
+    fun r hr => ?_⟩
+  fin_cases hr <;> norm_num
+
 end PuiseuxTheoremOQ03

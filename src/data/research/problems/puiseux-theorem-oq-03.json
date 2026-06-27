@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-05-12T13:53:16-07:00",
     "iteration": 2,
-    "focus": "Shipped combinatorial Newton polygon (S2-A): IsLowerVertex predicate + structure lemmas + Y^2-x example, verified 0-sorry 0-axiom.",
+    "focus": "Extended the combinatorial Newton polygon with the lower-hull EDGE/CONVEXITY layer (researcher-2, 2026-06-27): IsLowerEdge predicate, edge-slope = supporting-line slope, endpoints are vertices, supporting-slope bounds (edgeSlope_ge/le_of_supportingLine), and convexity certificate IsLowerEdge.interior_slopes. File now 241 lines, 15 theorems, 4 defs, verified 0-sorry 0-axiom.",
     "blockers": [],
     "nextAction": "S2-A harder half: Newton polygon theorem (edge slopes = root valuations) once a valuation API on K((x))[Y] exists; then S2-B termination measure.",
     "attemptCounts": {
@@ -29,13 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Delivered the first Lean file Proofs/PuiseuxTheoremOQ03.lean (145 lines, 7 theorems, 3 defs, verified, 0 sorries, 0 axioms): a combinatorial Newton polygon via the supporting-line lower-vertex predicate IsLowerVertex, with the seed lemma (min-valuation point is a vertex), an existence lemma (List.argmin), and the worked Y^2-x example tying edge slope -1/2 to the parent leadingExponentFromSlope 1 2. Also fixed a parse error in the parent PuiseuxTheorem.lean (dangling /-- doc comment). PR #30757.",
+    "progressSummary": "S2-A combinatorial Newton polygon now has both a vertex layer (IsLowerVertex, seed + existence) and an edge/convexity layer (IsLowerEdge): an edge's slope equals its supporting line's slope, both endpoints are lower vertices, the supporting slope bounds slopes to all other points (the convexity inequalities), and a lower edge is convex from below (interior_slopes: edgeSlope r q <= edgeSlope p r). Worked Y^2-x example carried through. Verified 0-sorry 0-axiom (#print axioms: only propext/Classical.choice/Quot.sound). The Newton polygon theorem proper (slopes = root valuations) still needs a valuation API on K((x))[Y] absent from Mathlib 4.26.0.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
       "exists_lowerVertex: every nonempty support set has a lower vertex (via List.argmin)",
       "edgeSlope + worked Y^2-x example: both support points are vertices, edge slope -1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
-      "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)"
+      "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)",
+      "Edge/convexity layer in Proofs/PuiseuxTheoremOQ03.lean: IsLowerEdge + left/right_isVertex + symm + edgeSlope_eq + edgeSlope_ge/le_of_supportingLine + interior_slopes + ysqMinusX_isLowerEdge (researcher-2, 2026-06-27)."
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
@@ -48,9 +49,9 @@
       "No arithmetic-complexity model (Bürgisser-Clausen-Shokrollahi style) to state the Poteaux-Weimann Õ(d·δ) bound."
     ],
     "nextSteps": [
-      "Prove the Newton polygon theorem: negatives of lower-hull edge slopes = root valuations in an alg-closed valued extension.",
-      "S2-B: termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases).",
-      "S2-C (moonshot): state and bound arithmetic complexity once an arithmetic-cost model exists."
+      "Prove slope monotonicity across consecutive lower-hull edges (slopes strictly increase left to right) -> finite candidate root-valuation list.",
+      "Newton polygon theorem: negatives of lower-hull edge slopes = root valuations in an alg-closed valued extension (needs valuation API on K((x))[Y]).",
+      "S2-B: termination measure for one Newton-Puiseux reduction step (Y-degree strictly decreases)."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [
