@@ -1029,6 +1029,150 @@ theorem pascalLine_hexRot_hexRev_sameProjLine {C : Conic} (hex : InscribedHexago
     (pascalLine_hexRev_sameProjLine hex)
 
 -- ============================================================
+-- PART 4f: `permuteHexagon` is a Right Group Action
+--          (OQ-03-OQ-02: the composition law the descent consumes)
+-- ============================================================
+
+/- The closure-induction descent of **OQ-03-OQ-02** needs to chain the two
+   single-generator invariances of PART 4d/4e across an arbitrary word in
+   `hexagonalGroup = ⟨hexRot, hexRev⟩`.  The inductive step factors a relabeling
+   by a product `g * h` into a relabeling by `g` followed by one by `h`; the
+   `sameProjLine` transitivity engine of PART 4e then composes the two steps.
+   This part supplies that composition law: `permuteHexagon` is a *right* action
+   of `Equiv.Perm (Fin 6)` on `InscribedHexagon C`. -/
+
+/-- Two inscribed hexagons are equal once their six vertices agree: the
+    conic-membership and validity fields are propositions, so they match
+    automatically by proof irrelevance. -/
+theorem InscribedHexagon.ext {C : Conic} {h1 h2 : InscribedHexagon C}
+    (eA : h1.A = h2.A) (eB : h1.B = h2.B) (eC : h1.C' = h2.C')
+    (eD : h1.D = h2.D) (eE : h1.E = h2.E) (eF : h1.F = h2.F) :
+    h1 = h2 := by
+  cases h1; cases h2
+  subst eA; subst eB; subst eC; subst eD; subst eE; subst eF
+  rfl
+
+/-- The vertices of a relabeled hexagon are the original vertices read off
+    through the permutation: `hexVertex (permuteHexagon hex g) j = hexVertex hex (g j)`.
+    A definitional unfolding, case-split on the six indices. -/
+theorem hexVertex_permuteHexagon {C : Conic} (hex : InscribedHexagon C)
+    (g : Equiv.Perm (Fin 6)) (j : Fin 6) :
+    hexVertex (permuteHexagon hex g) j = hexVertex hex (g j) := by
+  fin_cases j <;> rfl
+
+/-- **Identity law.** Relabeling by the identity permutation is the original
+    hexagon. -/
+theorem permuteHexagon_one {C : Conic} (hex : InscribedHexagon C) :
+    permuteHexagon hex 1 = hex := by
+  refine InscribedHexagon.ext ?_ ?_ ?_ ?_ ?_ ?_ <;>
+    simp only [permuteHexagon, Equiv.Perm.coe_one, id_eq] <;> rfl
+
+/-- **Composition law.** Relabeling by `g` and then by `h` equals relabeling by
+    the product `g * h` (right action: the inner permutation is applied first).
+    This is the algebraic heart of the closure-induction descent — it lets a
+    relabeling by an arbitrary group element be unfolded one generator at a time.
+
+    Proof: each vertex of the doubly-relabeled hexagon is
+    `hexVertex (permuteHexagon hex g) (h k) = hexVertex hex (g (h k)) =
+     hexVertex hex ((g * h) k)`, using `hexVertex_permuteHexagon` and
+    `Equiv.Perm.mul_apply`. -/
+theorem permuteHexagon_mul {C : Conic} (hex : InscribedHexagon C)
+    (g h : Equiv.Perm (Fin 6)) :
+    permuteHexagon (permuteHexagon hex g) h = permuteHexagon hex (g * h) := by
+  have key : ∀ k : Fin 6,
+      hexVertex (permuteHexagon hex g) (h k) = hexVertex hex ((g * h) k) := by
+    intro k
+    rw [hexVertex_permuteHexagon, Equiv.Perm.mul_apply]
+  exact InscribedHexagon.ext (key 0) (key 1) (key 2) (key 3) (key 4) (key 5)
+
+-- ============================================================
+-- PART 4g: Quotient Descent — `D_6`-Invariance of the Pascal Line
+--          (OQ-03-OQ-02: the full closure induction)
+-- ============================================================
+
+/-- The homogeneous Pascal *line* of a hexagon, spanned by its first two Pascal
+    points `P = AB ∩ DE` and `Q = BC ∩ EF`.  The well-definedness content of
+    **OQ-03-OQ-02** is that this is `sameProjLine`-invariant under relabeling by
+    the dihedral group `hexagonalGroup`. -/
+noncomputable def pascalProjLine {C : Conic} (hex : InscribedHexagon C) : ProjLine :=
+  lineThrough (pascalP hex) (pascalQ hex)
+
+/-- **OQ-03-OQ-02 — quotient descent (full).**  For *every* element `g` of the
+    dihedral group `hexagonalGroup = ⟨hexRot, hexRev⟩`, relabeling a hexagon by
+    `g` leaves its Pascal line unchanged as a *projective* line:
+    `pascalProjLine hex ∥ pascalProjLine (permuteHexagon hex g)`.
+
+    This propagates the two single-generator invariances of PART 4d to the whole
+    12-element group by `Subgroup.closure_induction`, with the PER engine of
+    PART 4e composing successive generator steps (`sameProjLine_trans`) and the
+    group-action law of PART 4f (`permuteHexagon_mul`, `permuteHexagon_one`)
+    unfolding products one generator at a time.
+
+    The statement is quantified over *all* hexagons (so the inductive `mul`/`inv`
+    steps can re-instantiate at the partially-relabeled hexagon), carrying the
+    natural **general-position** hypothesis `hnd`: every relabeling of `hex` has
+    a genuine (nonzero) Pascal line.  This is exactly the nondegeneracy needed by
+    `sameProjLine` transitivity, and is the precise hypothesis under which the
+    60 Pascal lines are well-defined. -/
+theorem pascalProjLine_sameProjLine_of_mem
+    {C : Conic} {g : Equiv.Perm (Fin 6)} (hg : g ∈ hexagonalGroup)
+    (hex : InscribedHexagon C)
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalProjLine hex) (pascalProjLine (permuteHexagon hex g)) := by
+  unfold hexagonalGroup at hg
+  induction hg using Subgroup.closure_induction generalizing hex hnd with
+  | mem x hx =>
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+      rcases hx with rfl | rfl
+      · exact pascalLine_hexRot_sameProjLine hex
+      · exact pascalLine_hexRev_sameProjLine hex
+  | one =>
+      rw [permuteHexagon_one]
+      exact sameProjLine_refl _
+  | mul x y _ _ ihx ihy =>
+      have hx' : sameProjLine (pascalProjLine hex)
+          (pascalProjLine (permuteHexagon hex x)) := ihx hex hnd
+      have hnd' : ∀ k : Equiv.Perm (Fin 6),
+          pascalProjLine (permuteHexagon (permuteHexagon hex x) k) ≠ 0 := by
+        intro k
+        rw [permuteHexagon_mul]
+        exact hnd (x * k)
+      have hy' : sameProjLine (pascalProjLine (permuteHexagon hex x))
+          (pascalProjLine (permuteHexagon (permuteHexagon hex x) y)) :=
+        ihy (permuteHexagon hex x) hnd'
+      rw [permuteHexagon_mul] at hy'
+      exact sameProjLine_trans (hnd x) hx' hy'
+  | inv x _ ihx =>
+      have hnd' : ∀ k : Equiv.Perm (Fin 6),
+          pascalProjLine (permuteHexagon (permuteHexagon hex x⁻¹) k) ≠ 0 := by
+        intro k
+        rw [permuteHexagon_mul]
+        exact hnd (x⁻¹ * k)
+      have hxx : sameProjLine (pascalProjLine (permuteHexagon hex x⁻¹))
+          (pascalProjLine (permuteHexagon (permuteHexagon hex x⁻¹) x)) :=
+        ihx (permuteHexagon hex x⁻¹) hnd'
+      rw [permuteHexagon_mul, inv_mul_cancel, permuteHexagon_one] at hxx
+      exact sameProjLine_symm hxx
+
+/-- **OQ-03-OQ-02 — well-definedness corollary.**  Under general position, the
+    Pascal line is invariant under both dihedral generators *and their entire
+    group*: any two representatives `g, h ∈ hexagonalGroup` relabel `hex` to the
+    same projective Pascal line.  This is the descent statement that makes
+    `pascalLine` (PART 5) independent of the coset representative. -/
+theorem pascalProjLine_sameProjLine_of_mem_mem
+    {C : Conic} {g h : Equiv.Perm (Fin 6)}
+    (hg : g ∈ hexagonalGroup) (hh : h ∈ hexagonalGroup)
+    (hex : InscribedHexagon C)
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalProjLine (permuteHexagon hex g))
+                 (pascalProjLine (permuteHexagon hex h)) := by
+  have hhex : pascalProjLine hex ≠ 0 := by
+    have h1 := hnd 1; rwa [permuteHexagon_one] at h1
+  exact sameProjLine_trans hhex
+    (sameProjLine_symm (pascalProjLine_sameProjLine_of_mem hg hex hnd))
+    (pascalProjLine_sameProjLine_of_mem hh hex hnd)
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
