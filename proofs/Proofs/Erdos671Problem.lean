@@ -107,10 +107,10 @@ theorem lagrangeInterp_degree (pts : InterpolationPoints n)
         ≤ ∑ j ∈ Finset.univ.filter (fun k => k ≠ i), 1 := by
           apply Finset.sum_le_sum; intro j _
           apply le_trans Polynomial.natDegree_mul_le
-          simp [Polynomial.natDegree_C, Polynomial.natDegree_X_sub_C]
+          simp [Polynomial.natDegree_C]
       _ = (Finset.univ.filter (fun k => k ≠ i)).card := by simp
       _ = n - 1 := hcard
-  · simp only [lagrangeInterp, Polynomial.eval_sum, Polynomial.eval_mul, Polynomial.eval_C]
+  · simp only [lagrangeInterp, Polynomial.eval_finset_sum, Polynomial.eval_mul, Polynomial.eval_C]
 
 /- ## Part III: The Lebesgue Function -/
 
@@ -130,7 +130,8 @@ private theorem lagrangeBasis_sum_one {n : ℕ} (pts : InterpolationPoints n)
     · intro j _ hji; exact lagrangeBasis_other pts j i hji
   have hQdeg : Q.natDegree ≤ n - 1 := by
     apply le_trans (Polynomial.natDegree_sub_le _ _)
-    simp only [Polynomial.natDegree_C, max_zero_right]
+    rw [Polynomial.natDegree_C]
+    apply max_le _ (Nat.zero_le _)
     apply le_trans (Polynomial.natDegree_sum_le _ _)
     apply Finset.sup_le; intro i _
     unfold lagrangeBasis
@@ -145,7 +146,7 @@ private theorem lagrangeBasis_sum_one {n : ℕ} (pts : InterpolationPoints n)
         ≤ ∑ j ∈ Finset.univ.filter (fun k => k ≠ i), 1 := by
             apply Finset.sum_le_sum; intro j _
             apply le_trans Polynomial.natDegree_mul_le
-            simp [Polynomial.natDegree_C, Polynomial.natDegree_X_sub_C]
+            simp [Polynomial.natDegree_C]
       _ = (Finset.univ.filter (fun k => k ≠ i)).card := by simp
       _ = n - 1 := hcard
   have hQ_zero : Q = 0 := by
@@ -163,7 +164,7 @@ private theorem lagrangeBasis_sum_one {n : ℕ} (pts : InterpolationPoints n)
     have hge : n ≤ Q.natDegree :=
       calc n = (Finset.image (fun i : Fin n => pts.points i) Finset.univ).card := himage_card.symm
         _ ≤ Q.roots.toFinset.card := Finset.card_le_card hsub
-        _ ≤ Multiset.card Q.roots := Multiset.toFinset_card_le
+        _ ≤ Multiset.card Q.roots := Multiset.toFinset_card_le Q.roots
         _ ≤ Q.natDegree := Polynomial.card_roots' Q
     omega
   have heval : Q.eval x = 0 := by rw [hQ_zero]; simp
@@ -203,14 +204,25 @@ theorem lebesgueConstant_ge_one (pts : InterpolationPoints n) (hn : 0 < n) :
     isCompact_Icc.bddAbove_image (lebesgueFunction_continuous pts).continuousOn
   -- 0 ∈ [-1,1], so λ_n(0) lies in that image.
   have h0 : (0 : ℝ) ∈ Set.Icc (-1 : ℝ) 1 := by norm_num [Set.mem_Icc]
-  have hmem : lebesgueFunction pts 0 ∈ lebesgueFunction pts '' Set.Icc (-1 : ℝ) 1 :=
-    ⟨0, h0, rfl⟩
   -- Hence λ_n(0) ≤ Λ_n, while λ_n(0) ≥ 1.
+  have hg1 : (1 : ℝ) ≤ lebesgueFunction pts 0 := lebesgueFunction_ge_one pts hn 0
   have hle : lebesgueFunction pts 0 ≤ lebesgueConstant pts := by
     unfold lebesgueConstant
-    rw [← sSup_image]
-    exact le_csSup hbdd hmem
-  calc (1 : ℝ) ≤ lebesgueFunction pts 0 := lebesgueFunction_ge_one pts hn 0
+    -- ℝ is only conditionally complete, so relate the bounded supremum over the
+    -- compact interval to `sSup` of the (bounded) image via `csSup_image`.
+    have hsne : (Set.Icc (-1 : ℝ) 1).Nonempty := ⟨0, h0⟩
+    have hrange : BddAbove (Set.range fun i : ↥(Set.Icc (-1 : ℝ) 1) =>
+        lebesgueFunction pts ↑i) := by rwa [← Set.image_eq_range]
+    have hsub : lebesgueFunction pts 0 ≤
+        ⨆ i : ↥(Set.Icc (-1 : ℝ) 1), lebesgueFunction pts ↑i := le_ciSup_set hbdd h0
+    have hf' : sSup (∅ : Set ℝ) ≤
+        ⨆ i : ↥(Set.Icc (-1 : ℝ) 1), lebesgueFunction pts ↑i := by
+      rw [Real.sSup_empty]; exact le_trans (le_trans (by norm_num) hg1) hsub
+    calc lebesgueFunction pts 0
+        ≤ ⨆ i : ↥(Set.Icc (-1 : ℝ) 1), lebesgueFunction pts ↑i := hsub
+      _ = ⨆ x ∈ Set.Icc (-1 : ℝ) 1, lebesgueFunction pts x := by
+          rw [← csSup_image hsne hrange hf', sSup_image']
+  calc (1 : ℝ) ≤ lebesgueFunction pts 0 := hg1
     _ ≤ lebesgueConstant pts := hle
 
 /-
@@ -297,21 +309,26 @@ noncomputable def chebyshevNodes (n : ℕ) : InterpolationPoints n where
     have hk_in : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc 0 Real.pi := by
       constructor
       · positivity
-      · rw [div_le_one (by positivity)]
-        have : (k.val : ℝ) < n := by exact_mod_cast k.isLt
+      · rw [div_le_iff₀ (by positivity)]
+        have hk : (k.val : ℝ) + 1 ≤ (n : ℝ) := by
+          have : k.val + 1 ≤ n := k.isLt
+          exact_mod_cast this
         nlinarith [Real.pi_pos]
     have hj_in : (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) ∈ Set.Icc 0 Real.pi := by
       constructor
       · positivity
-      · rw [div_le_one (by positivity)]
-        have : (j.val : ℝ) < n := by exact_mod_cast j.isLt
+      · rw [div_le_iff₀ (by positivity)]
+        have hj : (j.val : ℝ) + 1 ≤ (n : ℝ) := by
+          have : j.val + 1 ≤ n := j.isLt
+          exact_mod_cast this
         nlinarith [Real.pi_pos]
     have h_angle : (2 * (k.val : ℝ) + 1) * Real.pi / (2 * n) =
                   (2 * (j.val : ℝ) + 1) * Real.pi / (2 * n) :=
       Real.strictAntiOn_cos.injOn hk_in hj_in heq
     have h_val : (k.val : ℝ) = j.val := by
       have hpi : Real.pi ≠ 0 := Real.pi_ne_zero
-      field_simp [hpi, hn_pos.ne'] at h_angle
+      have hn0 : (0 : ℝ) < (n : ℝ) := by exact_mod_cast k.pos
+      field_simp [hpi, hn0.ne'] at h_angle
       linarith
     exact Fin.ext (by exact_mod_cast h_val)
 
@@ -327,9 +344,11 @@ noncomputable def equidistantNodes (n : ℕ) (hn : n ≥ 2) : InterpolationPoint
     · have : (0 : ℝ) ≤ 2 * (k.val : ℝ) / ((n : ℝ) - 1) :=
         div_nonneg (by positivity) (le_of_lt hn1_pos)
       linarith
-    · have hklt : (k.val : ℝ) < (n : ℝ) := by exact_mod_cast k.isLt
+    · have hk1 : (k.val : ℝ) + 1 ≤ (n : ℝ) := by
+        have : k.val + 1 ≤ n := k.isLt
+        exact_mod_cast this
       have : 2 * (k.val : ℝ) / ((n : ℝ) - 1) ≤ 2 := by
-        rw [div_le_iff hn1_pos]; linarith
+        rw [div_le_iff₀ hn1_pos]; linarith
       linarith
   distinct := by
     intro k j hkj heq
