@@ -2925,6 +2925,7 @@ import Proofs.EulerPolyhedralOQ01
 import Proofs.EulerPolyhedralOQ01OQ04
 import Proofs.EulerPolyhedralOQ02
 import Proofs.EulerPolyhedralOQ02OQ01
+import Proofs.EulerPolyhedralOQ02OQ02
 import Proofs.EulerTotient
 import Proofs.EulerTotientOQ01
 import Proofs.EulerTotientOQ01OQ01
