@@ -95,6 +95,43 @@
       "description": "Unfolds edgeSlope and the parent definition; both sides equal 1/2 by norm_num."
     }
   ],
+  "sections": [
+    {
+      "id": "scope-header",
+      "title": "Scope and the Newton polygon",
+      "startLine": 1,
+      "endLine": 64,
+      "summary": "Doc header fixing the honest scope: defines the Newton polygon as the lower convex hull of support points (i, v(aᵢ)), states the Newton polygon theorem (negated edge slopes = root valuations), and delimits what this file delivers (the combinatorial core) versus what remains open (the Newton polygon theorem, a termination measure, the Poteaux–Weimann complexity bound)."
+    },
+    {
+      "id": "support-and-slope",
+      "title": "Support points and edge slope",
+      "startLine": 65,
+      "endLine": 77,
+      "summary": "Imports the parent PuiseuxTheorem and List.MinMax, then defines SupportPoint := ℕ × ℚ (exponent paired with coefficient valuation) and edgeSlope as Δv/Δi between two support points."
+    },
+    {
+      "id": "lower-vertex-predicate",
+      "title": "The IsLowerVertex predicate",
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "Defines IsLowerVertex via the supporting-line characterization — a point through which some line lies weakly below all support points — and the projection lemma IsLowerVertex.mem showing a lower vertex is a genuine support point."
+    },
+    {
+      "id": "structure-theory",
+      "title": "Structure theory: seed and existence",
+      "startLine": 91,
+      "endLine": 107,
+      "summary": "isLowerVertex_of_minimal: the minimum-valuation point is always a lower vertex (horizontal supporting line y = v(p)). exists_lowerVertex: every nonempty support set has a lower vertex, extracted from List.argmin."
+    },
+    {
+      "id": "worked-example",
+      "title": "Worked example: Y² − x",
+      "startLine": 109,
+      "endLine": 145,
+      "summary": "The canonical case. Support {(0,1),(2,0)}; both endpoints are lower vertices via the common edge line y = -½i + 1; the edge slope is -1/2; and negating it recovers leadingExponentFromSlope 1 2 = 1/2, the leading exponent of the root x^{1/2}, closing the loop to the parent entry."
+    }
+  ],
   "references": [
     {
       "author": "Newton, I.",
