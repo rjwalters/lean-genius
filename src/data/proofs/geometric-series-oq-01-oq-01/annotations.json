@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-grandi-overview",
+    "proofId": "geometric-series-oq-01-oq-01",
+    "range": { "startLine": 3, "endLine": 30 },
+    "type": "concept",
+    "title": "Grandi's series and the two summation methods",
+    "content": "Grandi's series 1 − 1 + 1 − 1 + ⋯ has partial sums oscillating between 1 and 0, so it diverges in the ordinary sense. Two classical regularization methods nonetheless assign it the value 1/2: Cesàro summation (the limit of the averaged partial sums, treated in a sibling) and Abel summation (the radial limit of the power series ∑(−1)ⁿxⁿ = 1/(1+x) as x → 1⁻, formalized here). Their agreement is not a coincidence — Frobenius's theorem guarantees that any Cesàro-summable series is Abel-summable to the same value. This entry answers the parent's open question by carrying out the Abel route in Lean, 0-sorry and 0-axiom.",
+    "mathContext": "$1 - 1 + 1 - 1 + \\cdots \\;\\overset{A}{=}\\; \\lim_{x\\to 1^-}\\sum_{n} (-1)^n x^n = \\tfrac{1}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Grandi's series 1−1+1−⋯", "divergent series", "Cesàro vs Abel summation", "Frobenius's theorem"],
+    "prerequisites": ["partial sums and divergence", "regularization / summation methods"]
+  },
+  {
     "id": "ann-closed-form",
     "proofId": "geometric-series-oq-01-oq-01",
     "range": {
@@ -46,5 +58,17 @@
       "Tendsto.inv₀",
       "left-neighborhood filter 𝓝[<]"
     ]
+  },
+  {
+    "id": "ann-grandi-value",
+    "proofId": "geometric-series-oq-01-oq-01",
+    "range": { "startLine": 61, "endLine": 63 },
+    "type": "theorem",
+    "title": "The headline result, named",
+    "content": "grandi_abel_value is the clean restatement (definitionally grandi_abel_tendsto) packaging the conclusion: Grandi's series 1 − 1 + 1 − ⋯ is Abel summable to 1/2, matching its Cesàro value. Exposing it under a result-oriented name gives downstream entries a stable handle on the boundary value without depending on the proof-shaped statement.",
+    "mathContext": "$1 - 1 + 1 - 1 + \\cdots \\;\\overset{A}{=}\\; \\tfrac{1}{2}$",
+    "significance": "supporting",
+    "relatedConcepts": ["Abel summability", "named API lemma", "Grandi's series"],
+    "prerequisites": ["grandi_abel_tendsto"]
   }
 ]
