@@ -1,0 +1,131 @@
+{
+  "id": "picks-theorem-oq-03-ext-oq-02",
+  "title": "Hibi's Palindromy Criterion: Algebraic Core (h*-Vector ↔ Self-Reciprocal h*-Polynomial)",
+  "slug": "picks-theorem-oq-03-ext-oq-02",
+  "description": "The dimension-free algebraic heart of Hibi's reflexive-polytope palindromy theorem (1991): an h*-vector (h_0,…,h_d) is palindromic (h_i = h_{d-i}) iff its h*-polynomial H(X) = Σ h_i X^i is self-reciprocal (reflect d H = H), over any commutative semiring. The parent entry verified palindromy only on examples (octahedron (1,3,3,1)); this follow-up proves the general equivalence and recovers the octahedron as a corollary. 7 theorems, 0 sorries, 0 axioms.",
+  "meta": {
+    "author": "Lean Genius PicksOQ03ExtOQ02",
+    "status": "verified",
+    "proofRepoPath": "Proofs/PicksTheoremOQ03ExtOQ02.lean",
+    "tags": [
+      "combinatorics",
+      "ehrhart-theory",
+      "polytopes",
+      "h-star-vector",
+      "reflexive-polytopes",
+      "palindromy",
+      "polynomial-algebra"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 121,
+    "theoremCount": 7,
+    "assumptions": "None for the algebraic core (reflect_eq_iff_palindromic) and the octahedron corollaries — all proved over an arbitrary commutative semiring. The geometric bridge reflexive_hStar_palindromic takes the self-reciprocity of the h*-polynomial as an explicit hypothesis, since the Ehrhart generating-series machinery that derives it from Ehrhart–Macdonald reciprocity is not yet in Mathlib. This is a stated hypothesis on the input, not an axiom declaration.",
+    "mathlibDependencies": [
+      {
+        "theorem": "Polynomial.reflect",
+        "description": "Degree-d reflection of polynomial coefficients via revAt; the primitive expressing self-reciprocity",
+        "module": "Mathlib.Algebra.Polynomial.Reverse"
+      },
+      {
+        "theorem": "Polynomial.coeff_reflect",
+        "description": "Coefficient formula (reflect d p).coeff i = p.coeff (revAt d i), the workhorse of the equivalence proof",
+        "module": "Mathlib.Algebra.Polynomial.Reverse"
+      }
+    ],
+    "dateAdded": "2026-06-26",
+    "mathlib_version": "4.26.0",
+    "definitionCount": 3
+  },
+  "overview": {
+    "historicalContext": "Takayuki Hibi (1991) characterized reflexive lattice polytopes by palindromy of their h*-vectors: a d-polytope P is reflexive (its polar dual P° is again a lattice polytope) iff its h*-vector satisfies h*_i = h*_{d-i} for all i. The combinatorial mechanism behind this is Ehrhart–Macdonald reciprocity (Macdonald 1971), L°(n) = (-1)^d L(-n), which together with the reflexive identity L°(n) = L(n-1) forces the Ehrhart h*-polynomial to equal its own degree-d reflection. The parent entry PicksTheoremOQ03Ext verified this palindromy only on concrete examples (the octahedron h*-vector (1,3,3,1), the cube, the simplex). This follow-up isolates and proves the underlying algebraic equivalence in full generality, free of any fixed dimension or Ehrhart machinery.",
+    "problemStatement": "Prove the general algebraic characterization that the example-level palindromy results instantiate: for any commutative semiring R, any d, and any h : ℕ → R, the h*-polynomial H(X) = Σ_{i≤d} h_i X^i satisfies reflect d H = H iff the h*-vector h is palindromic through d. Then recover the parent octahedron example as a corollary, and record the geometric bridge from reflexivity (taking the reciprocity content as an explicit hypothesis).",
+    "proofStrategy": "Express the h*-polynomial coefficient-wise: coeff_hStarPoly gives (hStarPoly d h).coeff k = h k for k ≤ d and 0 otherwise. The reflection reflect d shifts coefficient k to revAt d k = d - k (for k ≤ d). Equating coefficients of reflect d H and H reduces exactly to h i = h (d-i) for i ≤ d (forward direction via Polynomial.ext_iff and revAt_le; reverse by ext k with a case split on k ≤ d using revAt_eq_self_of_lt for the out-of-range tail). The octahedron corollary follows by interval_cases; the reflexive bridge is the .mp direction applied to the self-reciprocity hypothesis.",
+    "keyInsights": [
+      "**Palindromy is self-reciprocity.** The geometric/combinatorial notion 'h*_i = h*_{d-i}' is exactly the algebraic statement 'the h*-polynomial equals its degree-d reflection', with Polynomial.reflect / revAt as the precise Mathlib primitives.",
+      "**The criterion is dimension-free.** No case analysis on a fixed d and no Ehrhart machinery is needed for the equivalence — it holds over an arbitrary commutative semiring, which is why the parent's octahedron, cube, and simplex examples are all instances of one theorem.",
+      "**Reciprocity is the only geometric input.** Ehrhart–Macdonald reciprocity L°(n) = (-1)^d L(-n) plus the reflexive identity L°(n) = L(n-1) is exactly what produces self-reciprocity of the h*-polynomial; once that is granted, palindromy is pure algebra. The bridge theorem makes the dependence on this reciprocity content explicit and honest.",
+      "**Reflexive normalization.** A palindromic h*-vector has h_0 = h_d; since a lattice polytope always has h_0 = 1, a reflexive polytope has h_d = 1 (the Gorenstein normalization)."
+    ]
+  },
+  "sections": [
+    {
+      "id": "hstar-polynomial",
+      "title": "Section I: The h*-Polynomial and Palindromy",
+      "startLine": 45,
+      "endLine": 59,
+      "summary": "Defines hStarPoly d h = Σ_{i∈range(d+1)} C(h i)·X^i and the predicate Palindromic d h := ∀ i ≤ d, h i = h (d-i). coeff_hStarPoly computes (hStarPoly d h).coeff k = if k ≤ d then h k else 0.",
+      "mathContext": "$H(X) = \\sum_{i=0}^{d} h_i X^i$ over a semiring; palindromy is $h_i = h_{d-i}$ for $i \\le d$."
+    },
+    {
+      "id": "main-equivalence",
+      "title": "Section II: Hibi's Criterion (Algebraic Core)",
+      "startLine": 61,
+      "endLine": 88,
+      "summary": "reflect_eq_iff_palindromic: reflect d (hStarPoly d h) = hStarPoly d h ↔ Palindromic d h, over any commutative semiring. reflexive_hStar_palindromic: the reflexive ⟹ palindromic reduction, taking self-reciprocity as an explicit hypothesis.",
+      "mathContext": "$\\operatorname{reflect}_d H = H \\iff h_i = h_{d-i}$, via $\\operatorname{coeff}(\\operatorname{reflect}_d p, i) = \\operatorname{coeff}(p, \\operatorname{revAt}_d i)$ and $\\operatorname{revAt}_d i = d - i$ for $i \\le d$."
+    },
+    {
+      "id": "normalization-and-octahedron",
+      "title": "Section III: Normalization and the Octahedron Corollary",
+      "startLine": 90,
+      "endLine": 119,
+      "summary": "hStar_constant_eq_leading: palindromic ⟹ h_0 = h_d (Gorenstein normalization). octaH = (1,3,3,1); octaH_palindromic (interval_cases), octaH_self_reciprocal (.mpr of the equivalence), octaH_normalization recover the parent example as corollaries.",
+      "mathContext": "Octahedron $h^* = (1,3,3,1)$: palindromic $\\Rightarrow$ self-reciprocal $\\Rightarrow$ reflexive; $h_0 = h_3 = 1$."
+    }
+  ],
+  "conclusion": {
+    "summary": "The dimension-free algebraic core of Hibi's palindromy criterion is fully formalized: 7 theorems, 0 sorries, 0 axioms. The equivalence reflect d H = H ↔ palindromic holds over any commutative semiring, the octahedron example is recovered as a corollary, and the geometric bridge from reflexivity is recorded with its reciprocity hypothesis made explicit.",
+    "implications": "This abstracts the parent entry's example-level verifications into a single general theorem, isolating exactly the algebraic content (self-reciprocity ↔ palindromy) from the geometric content (Ehrhart–Macdonald reciprocity). It pinpoints the one missing ingredient — Ehrhart generating-series infrastructure in Mathlib — needed for an unconditional reflexive ⟹ palindromic theorem.",
+    "openQuestions": [
+      "Can minimal Ehrhart-series infrastructure (the formal power series H/(1-t)^{d+1}) be built to discharge the self-reciprocity hypothesis and obtain an unconditional reflexive ⟹ palindromic theorem?",
+      "Can the full biconditional reflexive ↔ palindromic be proved once interior-point reciprocity (L°(n) = L(n-1)) is available?"
+    ]
+  },
+  "leanFile": {
+    "imports": [
+      "Mathlib"
+    ],
+    "opens": [
+      "Polynomial",
+      "Finset"
+    ],
+    "namespace": "PicksOQ03ExtOQ02",
+    "lineCount": 121,
+    "axiomCount": 0,
+    "theoremCount": 7,
+    "definitionCount": 3,
+    "path": "Proofs/PicksTheoremOQ03ExtOQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "picks-theorem-oq-03-ext",
+      "relationship": "extends",
+      "description": "Parent entry verifies h*-palindromy on specific reflexive polytopes (octahedron (1,3,3,1), cube, simplex); this follow-up proves the general algebraic equivalence those examples instantiate and recovers the octahedron as a corollary"
+    },
+    {
+      "targetId": "picks-theorem-oq-03-cross-poly",
+      "relationship": "related",
+      "description": "Cross-polytope (octahedron) Ehrhart theory — the octahedron palindromy recovered here is the h*-vector of the polytope formalized there"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "reflect_eq_iff_palindromic",
+      "type": "core",
+      "statement": "reflect d (hStarPoly d h) = hStarPoly d h ↔ Palindromic d h",
+      "description": "The dimension-free algebraic core of Hibi's criterion: an h*-vector is palindromic iff its h*-polynomial is self-reciprocal. Holds over any commutative semiring.",
+      "significance": "Isolates the exact algebraic content of the reflexive-polytope palindromy theorem from its geometric (Ehrhart reciprocity) content"
+    },
+    {
+      "name": "reflexive_hStar_palindromic",
+      "type": "bridge",
+      "statement": "(reflect d (hStarPoly d h) = hStarPoly d h) → Palindromic d h",
+      "description": "The reflexive ⟹ palindromic reduction step in Hibi's theorem, taking self-reciprocity of the h*-polynomial (the Ehrhart–Macdonald reciprocity content) as an explicit hypothesis.",
+      "significance": "Records the geometric bridge honestly, pinpointing the single Mathlib gap (Ehrhart generating series) blocking an unconditional statement"
+    }
+  ],
+  "sorries": 0
+}

@@ -1,0 +1,76 @@
+{
+  "slug": "picks-theorem-oq-03-ext-oq-02",
+  "title": "Reflexive Polytopes and Palindromic h*-Vectors",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "C",
+  "path": "full",
+  "problemStatement": {
+    "formal": "P \\text{ reflexive} \\;\\Longleftrightarrow\\; h^*_i = h^*_{d-i}\\ \\text{for all } i\n\\quad(\\text{the } h^*\\text{-vector of } P \\text{ is palindromic}).",
+    "plain": "For a lattice polytope P, the Ehrhart series encodes the lattice-point counts of its",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-06-25T14:34:12-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETED: Hibis palindromy criterion algebraic core fully verified (reflect d H = H <-> palindromic h*-vector, axiom-free over any commutative semiring); octahedron (1,3,3,1) recovered as corollary. Build verified (7743 jobs). Gallery integration added (meta.json, status=verified, 7 thm/3 def/0 sorry/0 axiom). Full reflexive=>palindromic remains conditional on Ehrhart-series self-reciprocity (Mathlib gap).",
+    "builtItems": [
+      "reflect_eq_iff_palindromic (PicksTheoremOQ03ExtOQ02.lean): general over any Semiring, reflect d (hStarPoly d h) = hStarPoly d h <-> Palindromic d h. The algebraic heart of Hibis criterion.",
+      "reflexive_hStar_palindromic: reflexive (self-reciprocal h*-poly) => palindromic h*-vector, the reduction step of Hibis theorem.",
+      "hStar_constant_eq_leading: palindromic => h_0 = h_d (Gorenstein/reflexive normalization).",
+      "coeff_hStarPoly: (hStarPoly d h).coeff k = if k<=d then h k else 0.",
+      "octaH_palindromic / octaH_self_reciprocal: parent octahedron (1,3,3,1) example recovered as a corollary of the general theorem (both directions of the iff).",
+      "Gallery integration: src/data/proofs/picks-theorem-oq-03-ext-oq-02/meta.json (status=verified, badge=original, 7 thm, 3 def, 0 sorry, 0 axiom, 121 lines)."
+    ],
+    "insights": [
+      "Hibis palindromy theorem (1991): a lattice polytope is reflexive iff its h*-vector is palindromic (h*_i = h*_{d-i}). The parent PicksTheoremOQ03Ext verified this only on examples (octahedron (1,3,3,1)).",
+      "The algebraic core is dimension-free: palindromy of the h*-VECTOR is exactly self-reciprocity of the h*-POLYNOMIAL H(X)=sum h_i X^i, i.e. reflect d H = H, where Polynomial.reflect d reverses coefficients via revAt d.",
+      "Ehrhart-Macdonald reciprocity L*(n)=(-1)^d L(-n) together with the reflexive identity L*(n)=L(n-1) yields tH(t)=t^{d+1}H(1/t) on the Ehrhart series H/(1-t)^{d+1}, i.e. H(t)=t^d H(1/t) -- precisely the self-reciprocity, hence palindromy.",
+      "Build-verified end-to-end via docker-build.sh Proofs.PicksTheoremOQ03ExtOQ02 (only le_or_lt deprecation + unused Semiring var warnings; no errors)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has no Ehrhart polynomial / Ehrhart generating series infrastructure, so the derivation of self-reciprocity of the h*-polynomial FROM Ehrhart-Macdonald reciprocity cannot be formalized end-to-end; reflexive_hStar_palindromic takes the self-reciprocity (reciprocity content) as an explicit hypothesis.",
+      "Mathlib Polynomial.reflect / coeff_reflect / revAt (Mathlib.Algebra.Polynomial.Reverse) are the right primitives for palindromy and were sufficient for the algebraic core."
+    ],
+    "nextSteps": [
+      "Build minimal Ehrhart-series infrastructure (formal power series H/(1-t)^{d+1}) to discharge the self-reciprocity hypothesis and obtain an unconditional reflexive=>palindromic theorem.",
+      "Prove the converse normalization and the full biconditional reflexive <-> palindromic once interior-point reciprocity is available.",
+      "Add evaluation-form reciprocity t^d * H.eval t^{-1} = H.eval t over a field as an alternative characterization."
+    ],
+    "markdown": "# Knowledge Base: picks-theorem-oq-03-ext-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "ehrhart-theory",
+    "polytopes"
+  ],
+  "relatedProofs": [
+    "picks-theorem",
+    "picks-theorem-oq-03",
+    "picks-theorem-oq-03-ext"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-25T22:33:21.379Z",
+  "lastUpdate": "2026-06-26",
+  "id": "picks-theorem-oq-03-ext-oq-02"
+}
