@@ -1,0 +1,55 @@
+{
+  "slug": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-02",
+  "title": "Isometric embedding L^q into (L^p)* extends to full duality",
+  "phase": "ORIENT",
+  "status": "surveyed",
+  "tier": "B",
+  "path": "survey",
+  "problemStatement": {
+    "formal": "The map L^q ∋ g ↦ (f ↦ ∫ f·g) ∈ (L^p)* is a surjective isometry, i.e. (L^p)* ≅ L^q for Hölder-conjugate 1 < p, q < ∞ on a (σ-)finite measure space.",
+    "plain": "Does the norm-preserving embedding of L^q into the dual of L^p hit every bounded functional, giving the full duality (L^p)* ≅ L^q?",
+    "whyMatters": [
+      "Lp duality is foundational for functional analysis and PDE; it is not yet a single packaged theorem in Mathlib."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Embedding L^q → (L^p)* is bounded with ‖Λg‖ ≤ ‖g‖_q (sibling integrationCLM, 0-axiom)",
+      "Isometry lower bound ‖Λg‖ ≥ ‖g‖_q via extremizer h = sign(g)|g|^{q-1} (sibling holder_extremizer_lq_bound, 0-axiom)",
+      "Surjectivity (L^p)* → L^q via Radon–Nikodým (sibling riesz_lp_surjective_from_rn, 0-axiom)",
+      "L2 case as full ≃ₗᵢ via Fréchet–Riesz (parent l2_riesz, 0-axiom)"
+    ],
+    "open": [
+      "Packaging the above into an explicit surjective isometry / Lp ℝ q μ ≃ₗᵢ (Lp ℝ p μ →L[ℝ] ℝ) — not new mathematics, just assembly."
+    ],
+    "goal": "Assemble the verified embedding bound + extremizer lower bound + RN surjectivity into one isometric-isomorphism statement."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-06-27",
+    "iteration": 1,
+    "focus": "Survey: the full machinery is already verified (0-axiom) in sibling oq-01; remaining delta is unverifiable packaging while build infra is down.",
+    "blockers": [
+      "Local Docker build DOWN: containerd blob input/output error, lean4-arm64 image unloadable, host disk 98%.",
+      "Aristotle MCP DOWN: prove returns 'Resource not found'.",
+      "No verification channel available — cannot safely add a new gallery proof file this session."
+    ],
+    "nextAction": "After infra recovers: prove ‖integrationCLM …‖ = (eLpNorm g q μ).toReal (≤ from mkContinuous, ≥ from holder_extremizer_lq_bound), then bundle with riesz_lp_surjective_from_rn into a bijective isometry. Also evaluate folding into sibling vs separate entry.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "SURVEYED: embedding bound, isometry lower bound (extremizer), and surjectivity are all already proven 0-axiom in sibling cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01. This entry reduces to packaging an isometric-isomorphism statement. No verified artifact produced — both Docker and Aristotle verification channels down.",
+    "builtItems": [],
+    "insights": [
+      "The isometry lower bound this OQ nominally targets is already machine-checked: sibling holder_extremizer_lq_bound proves ‖h‖_p = ‖g‖_q^{q/p} and ∫ h·g = ‖g‖_q^q for h = sign(g)|g|^{q-1}.",
+      "Surjectivity is already 0-axiom in the sibling (riesz_lp_surjective_from_rn via Radon–Nikodým); 'full duality' is therefore essentially established.",
+      "Mathlib now ships ContinuousLinearMap.lpPairing (Holder.lean): ((ContinuousLinearMap.mul ℝ ℝ).lpPairing μ p q).flip is the clean built-in embedding L^q → (L^p)*, with norm_holderL_le giving ‖·‖ ≤ 1.",
+      "Mathlib still has no packaged (L^p)* ≅ L^q duality file (no *Duality* under MeasureTheory/Function/Lp), so the surjective-isometry assembly is genuinely not upstream.",
+      "Remaining work is packaging (LinearIsometry / ≃ₗᵢ assembly), not new mathematics; consider folding into the sibling rather than a duplicate gallery entry."
+    ]
+  }
+}
