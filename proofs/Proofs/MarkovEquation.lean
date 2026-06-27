@@ -111,6 +111,43 @@ theorem markov_vieta_lt {x y z : ℤ} (h : IsMarkov x y z)
   -- finally 3xyz = x²+y²+z² < 2z², and z > 0, give 3xy < 2z
   nlinarith [hsq, he, hz]
 
+/-! ## Geometric growth of the maximal coordinate
+
+The descent of `markov_vieta_lt` is *quantitative*: in a sorted Markov triple the
+top coordinate is at least **twice** the middle one. Hence one Vieta-descent move
+(which replaces the top `z` by the smaller root `z' = 3xy − z ≤ y` and re-sorts,
+leaving the old middle `y` as the new maximum) at least **halves** the maximal
+coordinate. Iterating, a Markov triple with maximal coordinate `≤ N` sits at tree
+depth `≤ log₂ N`. This is the elementary quantitative input behind the counting
+function `M(N) := #{markov triples with max ≤ N}`.
+
+*Honest scope note.* The depth bound `O(log N)` is only one half of the classical
+`M(N) ∼ C (log N)²` law (Zagier 1982). Bounding the count by counting tree nodes
+of depth `≤ log₂ N` naïvely gives `O(2^{log₂ N}) = O(N)`, not `O((log N)²)`: the
+`(log N)²` saving comes from the fact that *most* branches of the ternary tree
+already exceed `N` after few steps, an analytic refinement beyond this elementary
+descent. The lemma below is the tractable, axiom-free engine; the sharp constant
+remains the open analytic step. -/
+
+/-- **Geometric growth.** In a sorted Markov triple with `z ≥ 2`, the maximal
+coordinate is at least twice the middle one: `2y ≤ z`. Equivalently, descending
+the Markov tree (Vieta-jumping the top and re-sorting) at least halves the maximal
+coordinate, so a triple with `max ≤ N` lies at depth `≤ log₂ N`. -/
+theorem markov_two_mul_mid_le_top {x y z : ℤ} (h : IsMarkov x y z)
+    (hxy : x ≤ y) (hyz : y ≤ z) (hz2 : 2 ≤ z) : 2 * y ≤ z := by
+  have hyz' : y < z := markov_top_strict h hxy hyz hz2
+  obtain ⟨hx, hy, hz, he⟩ := h
+  have hx1 : (1 : ℤ) ≤ x := hx
+  -- the smaller Vieta root lies below the middle coordinate: `3xy − z ≤ y`
+  have hgy : (y - z) * (y - (3 * x * y - z)) = x ^ 2 + 2 * y ^ 2 - 3 * x * y ^ 2 := by
+    linear_combination -he
+  have hle : x ^ 2 + 2 * y ^ 2 - 3 * x * y ^ 2 ≤ 0 := by
+    nlinarith [mul_nonneg (sub_nonneg.2 hx1) (sq_nonneg y), sq_nonneg (y - x), hx1, hxy]
+  have hprod : (y - z) * (y - (3 * x * y - z)) ≤ 0 := by rw [hgy]; exact hle
+  have hz'y : 3 * x * y - z ≤ y := by nlinarith [hprod, hyz']
+  -- `z = 3xy − z' ≥ 3xy − y = y(3x − 1) ≥ 2y` since `x ≥ 1`
+  nlinarith [hz'y, mul_nonneg (sub_nonneg.2 hx1) hy.le]
+
 /-! ## Reachability in the Markov tree
 
 A *move* is either a coordinate transposition or a Vieta jump. Two triples are
