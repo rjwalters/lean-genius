@@ -2,12 +2,21 @@
 # Chebyshev–PNT Bridge OQ-06: From Chebyshev Θ-order Bounds toward the PNT Limit
 
 > BUILD STATUS (2026-06-27): **UNVERIFIED — pending build.** The host Lean/Docker
-> build toolchain was unavailable when this file was written (corrupted
-> containerd store + a full host disk), so the proofs below could **not** be
-> machine-checked this session. Every lemma name used has been cross-checked
-> against the pinned Mathlib source, but the file must be compiled via
-> `./proofs/scripts/docker-build.sh Proofs.ChebyshevPNTBridgeOQ06` and any
-> tactic glitches fixed before it is treated as verified or added to the gallery.
+> build toolchain remains unavailable (corrupted containerd content store +
+> full host disk), so the proofs below could **not** be machine-checked. A
+> follow-up source audit against the *pinned* Mathlib (`proofs/.lake/packages/
+> mathlib`) re-confirmed every external lemma name/namespace used here and
+> **fixed one namespace error**: `isLittleO_log_rpow_atTop` is a *top-level*
+> declaration (in `Mathlib/Analysis/SpecialFunctions/Pow/Asymptotics.lean`), not
+> in `namespace Real`, so the earlier `Real.`-prefixed reference would have
+> failed to resolve. Confirmed present at the pin: `Chebyshev.{ψ,θ,
+> abs_psi_sub_theta_le_sqrt_mul_log}`, `isLittleO_log_rpow_atTop`,
+> `IsLittleO.tendsto_div_nhds_zero`, `Real.{sqrt_eq_rpow,mul_self_sqrt,
+> norm_eq_abs}`, `squeeze_zero_norm'`, `norm_div`, `div_le_iff₀`. The remaining
+> unverifiable risk is purely tactic-level (the three `field_simp` closes and the
+> `linear_combination` arrangement). The file must still be compiled via
+> `./proofs/scripts/docker-build.sh Proofs.ChebyshevPNTBridgeOQ06` and any tactic
+> glitches fixed before it is treated as verified or added to the gallery.
 
 The Prime Number Theorem (PNT) has three classical, *equivalent* analytic
 normalizations (Apostol, *Introduction to Analytic Number Theory*, Ch. 4):
@@ -58,7 +67,7 @@ of the shape `f(x)/x → L`.
 theorem tendsto_log_div_sqrt_zero :
     Tendsto (fun x : ℝ => Real.log x / Real.sqrt x) atTop (𝓝 0) := by
   have h1 : Tendsto (fun x : ℝ => Real.log x / x ^ (1 / 2 : ℝ)) atTop (𝓝 0) :=
-    (Real.isLittleO_log_rpow_atTop (by norm_num : (0 : ℝ) < 1 / 2)).tendsto_div_nhds_zero
+    (isLittleO_log_rpow_atTop (by norm_num : (0 : ℝ) < 1 / 2)).tendsto_div_nhds_zero
   refine h1.congr' ?_
   filter_upwards [eventually_ge_atTop (0 : ℝ)] with x _
   rw [Real.sqrt_eq_rpow]
