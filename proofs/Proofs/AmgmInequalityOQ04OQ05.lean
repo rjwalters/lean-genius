@@ -45,7 +45,8 @@ Using (1): π²(1-2S)/(4M²) = π, so **π = 4M²/(1-2S)**.
 - [x] Series summability (axiomatized — requires quadratic convergence)
 - [x] **Main theorem proved**: π = 4M²/(1-2S)
 
-Axioms: 5 (ellipticK, ellipticE, K_eq_pi_div_2M, legendre_relation, ellipticE_agm)
+Axioms: 7 (ellipticK, ellipticE, K_eq_pi_div_2M, legendre_relation,
+  ellipticE_agm, bs_summable, S_lt_half)
 Sorries: 0
 
 Note: The OQ04 file axiomatizes K(k) and the Gauss connection. This file
