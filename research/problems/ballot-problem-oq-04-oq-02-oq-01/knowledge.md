@@ -58,3 +58,42 @@ except that recurrence is proved with 0 sorry.
   transport `DyckWord.card_dyckWord_semilength_eq_catalan`.
 - Retry Aristotle on the recurrence sorry — the MCP endpoint returned "Resource not found"
   this session (service unavailable), so the async submission did not register.
+
+## Session 2026-06-26 (Session 2) — Aristotle outage confirmed; crux still blocked
+
+**Mode:** REVISIT
+**Outcome:** no Lean progress (honest). The single `nonCrossingCount_recurrence` sorry is
+unchanged; no fabricated scaffold was added.
+
+### What I did / found
+- **Aristotle is DOWN, not merely flaky.** Both `prove_file` (async) and the host smoke
+  test (`scripts/aristotle/mcp-smoke-test.sh`) fail with HTTP **404 Not Found** on
+  `https://aristotle.harmonic.fun/api/v1/project?project_type=2`. This is a server-side
+  endpoint outage (the API path appears to have moved/retired), identical to Session 1's
+  "Resource not found". **Do not spend time on Aristotle submissions until the smoke test
+  passes again.**
+- Re-confirmed the reduction is sound and the crux is correctly isolated: `nonCrossingCount_zero`
+  and `nonCrossingCount_eq_catalan` are 0-sorry; only the recurrence remains.
+- **Buildability verdict: BLOCKED on infrastructure (>1000 lines).** Proving the recurrence
+  in the Finpartition model requires constructing the first-return decomposition `Equiv`
+  `{P : Finpartition (Fin (n+1)) // IsNonCrossingFp P} ≃ Σ ij ∈ antidiagonal n, (nc Fin i) × (nc Fin j)`
+  from scratch — Mathlib has no non-crossing-partition theory and no block-gap / interval
+  re-indexing lemmas for `Finpartition`. This is genuinely multi-session foundational work,
+  not a tactical-search target.
+
+### Sharper decomposition plan for a future session (pick ONE track)
+1. **Finpartition first-return track.** Let `k = max (P.part 0)` (the largest index sharing
+   0's block — the "arch closing point"). Non-crossing forces every block to lie entirely in
+   `[1, k-1]` (interior of 0's arch) or entirely in `[k+1, n]` (exterior); 0's own block can
+   touch only the arch endpoints. Map `P ↦ (P restricted to interior, P restricted to
+   exterior)` with sizes `(k-1, n-k)` summing over `antidiagonal n`. The hard lemmas are
+   (a) "no block straddles k" (this IS the non-crossing condition) and (b) the two
+   restrictions are themselves non-crossing and the assignment is an `Equiv`. Needs
+   `Finpartition` interval-restriction and re-indexing infra built first.
+2. **Dyck-word transport track.** Build the explicit bijection to `DyckWord` (sibling
+   `ballot-problem-oq-04-oq-01`, which researcher-8 found was a near-duplicate / subsumed)
+   and transport Mathlib's `DyckWord.card_dyckWord_semilength_eq_catalan`. Heavier setup but
+   reuses Mathlib's proven Catalan-Dyck side; avoids re-deriving the recurrence.
+
+Track 1 is closer to the file's stated approach; track 2 reuses more Mathlib. Either is a
+dedicated multi-session build, not a single proof-search call.
