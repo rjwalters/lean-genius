@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ann-definition-endpoints",
+    "proofId": "shannon-source-coding-oq-01-oq-03",
+    "range": {
+      "startLine": 49,
+      "endLine": 60
+    },
+    "type": "theorem",
+    "title": "Definition and Endpoint Values of R(D) = H(p) − H(D)",
+    "content": "rateDistortion p D is defined as binEntropy p − binEntropy D, the explicit binary rate–distortion function for a Bernoulli(p) source under Hamming distortion. The two endpoints are immediate: rateDistortion_zero proves R(p, 0) = H(p) (simp with binEntropy_zero — lossless coding needs the full source entropy rate), and rateDistortion_self proves R(p, p) = 0 (simp with sub_self — at distortion equal to the source bias the required rate drops to zero). These are the two extremes of the rate–distortion curve: keeping all of the source's h(p) bits of entropy versus discarding all of them."
+  },
+  {
+    "id": "ann-structural-properties",
+    "proofId": "shannon-source-coding-oq-01-oq-03",
+    "range": {
+      "startLine": 62,
+      "endLine": 89
+    },
+    "type": "theorem",
+    "title": "Nonnegativity, Monotonicity in D, and the Entropy Bound",
+    "content": "rateDistortion_nonneg (R(p,D) ≥ 0) and rateDistortion_antitone_in_D (R(p,·) decreasing in D) both reduce, after simp only [rateDistortion] and linarith, to a single inequality binEntropy D ≤ binEntropy p (resp. binEntropy D₁ ≤ binEntropy D₂) supplied by binEntropy_strictMonoOn.monotoneOn — binary entropy is increasing on [0, 1/2], and the hypotheses 0 ≤ D ≤ p ≤ 1/2 give the Set.Icc 0 2⁻¹ memberships. Thus the shape of the rate–distortion curve is exactly the monotonicity of binary entropy. rateDistortion_le_binEntropy bounds the rate by the source entropy (since H(D) ≥ 0 via binEntropy_nonneg), and rateDistortion_le_log_two bounds it by one bit (log 2 nats) via binEntropy_le_log_two — a binary source carries at most one bit of entropy per symbol."
+  }
+]
