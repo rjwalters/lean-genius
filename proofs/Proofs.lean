@@ -3798,6 +3798,7 @@ import Proofs.PythagoreanTriplesOQ01Aristotle
 import Proofs.PythagoreanTriplesOQ02
 import Proofs.PythagoreanTriplesOQ03
 import Proofs.PythagoreanTriplesOQ04
+import Proofs.PythagoreanTriplesOQ04OQ01OQ01
 import Proofs.PythagoreanTriplesOQ05
 import Proofs.PythagoreanTriplesOQ06
 import Proofs.PythagoreanTriplesOQ06OQ01
