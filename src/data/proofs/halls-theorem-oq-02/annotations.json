@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-header-context",
+    "proofId": "halls-theorem-oq-02",
+    "range": { "startLine": 1, "endLine": 32 },
+    "type": "context",
+    "title": "Why a One-Sided Condition: Unbundling the Global Hall Hypothesis",
+    "content": "The header docstring frames the contribution. The parent `HallsTheoremOQ01` proves two biconditionals: `hall_marriage` (Hall on $p_1$ $\\iff$ a $p_1$-saturating matching) and `hall_perfect` (the **global** Hall condition over every $s : \\mathrm{Set}\\,V$ $\\iff$ a perfect matching). Mathlib's `exists_isPerfectMatching_of_forall_ncard_le` likewise needs the global condition, which silently forces both $p_1 \\cup p_2 = \\mathrm{univ}$ and $p_1.\\mathrm{ncard} = p_2.\\mathrm{ncard}$. In practice one has a *balanced* bipartition and only checks Hall on **one** side. This file isolates that textbook criterion — absent from both Mathlib and the parent — via a counting argument on top of `hall_marriage`: a $p_1$-saturating matching injects $p_1$ into $p_2$ through the matched-partner map, and balance + finiteness upgrade the injection to a bijection, saturating $p_2$ too.",
+    "mathContext": "Global Hall $\\equiv$ (one-sided Hall on $p_1$) $\\wedge$ ($p_1 \\cup p_2 = V$) $\\wedge$ ($|p_1| = |p_2|$); this entry keeps only the first and adds the latter two explicitly.",
+    "significance": "context",
+    "relatedConcepts": ["Hall's marriage theorem", "global vs one-sided condition", "balanced bipartition", "systems of distinct representatives"],
+    "prerequisites": ["bipartite graphs", "Hall's condition"]
+  },
+  {
     "id": "ann-both-sides",
     "proofId": "halls-theorem-oq-02",
     "range": { "startLine": 44, "endLine": 89 },
