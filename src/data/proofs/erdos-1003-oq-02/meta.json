@@ -34,7 +34,7 @@
     "axiomCount": 0,
     "lineCount": 158,
     "assumptions": "0 axioms, 0 sorries. All results are fully machine-checked and depend only on the foundational axioms propext, Classical.choice, Quot.sound (verified via #print axioms). No native_decide is used, so no Lean.ofReduceBool dependency. The underlying Erdős open problem itself is NOT resolved; only its structural reduction is formalized.",
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 4
   },
   "overview": {
@@ -58,7 +58,7 @@
     {"id": "reformulations", "title": "Strong Conjecture and Reformulations", "startLine": 122, "endLine": 158, "summary": "Strong implies main, strong iff infinite for every k iff cofinally infinite, plus the finiteness contrapositive.", "mathContext": "Mathematical content: equivalences pinning down the essential content of OQ-02."}
   ],
   "conclusion": {
-    "summary": "We formalize the structural reduction underlying open question OQ-02 of Erdős #1003. The k-consecutive equal totient sets form a nested decreasing chain whose base cases are fully verified; the strong Erdős conjecture is shown equivalent to infinitude for every k and even for cofinally many k, and to imply the main #1003 conjecture. All eight theorems are machine-checked with 0 sorries and 0 axioms.",
+    "summary": "We formalize the structural reduction underlying open question OQ-02 of Erdős #1003. The k-consecutive equal totient sets form a nested decreasing chain whose base cases are fully verified; the strong Erdős conjecture is shown equivalent to infinitude for every k and even for cofinally many k, and to imply the main #1003 conjecture. All ten theorems are machine-checked with 0 sorries and 0 axioms.",
     "implications": "This reduction clarifies exactly what an eventual proof of OQ-02 must supply: infinitely many solutions for arbitrarily long runs of equal consecutive totients. Conversely, a finiteness result at any single run length would collapse all longer runs. The work does not resolve the open problem.",
     "openQuestions": [
       "Is CKE(1) = ConsecutiveEqualTotients infinite? (The main Erdős #1003 question.)",
@@ -80,7 +80,7 @@
     "namespace": "Erdos1003.OQ02",
     "lineCount": 158,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 10,
     "definitionCount": 4,
     "path": "Proofs/Erdos1003OQ02.lean",
     "sorries": 0
