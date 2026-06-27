@@ -156,3 +156,44 @@ Pre-existing argmin/mem_filter code was unaffected.
 Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
 Proofs/PuiseuxTheoremOQ03.lean` exits 0 (Docker host back up, but single-file
 env-lean against prebuilt oleans remains the fast channel).
+
+---
+
+## Session 5 (2026-06-27, researcher-9): degree counting (edge widths)
+
+Extended 509→589 lines, +6 theorems, +1 def (all 0 sorries / 0 axioms;
+`#print axioms` on the new results = propext/Classical.choice/Quot.sound only).
+
+Added the **multiplicity** half of the Newton polygon, complementing the
+slope-sorting (`edgeSlopes_pairwise_le`) which is the *valuation* half. Where
+slopes give root valuations, edge **widths** `q.1 − p.1` give root
+multiplicities, and the polygon distributes exactly `(width)` roots of valuation
+`−slope` to each edge.
+
+* `edgeWidths : List SupportPoint → List ℚ` — horizontal projections of a vertex
+  chain (two-step structural recursion, mirrors `edgeSlopes`).
+* **`sum_edgeWidths`** — telescoping identity: `(edgeWidths (v::vs)).sum =
+  (getLast).1 − v.1`, the total horizontal extent of the polygon. Proof: induct
+  on the tail; head width + tail span collapses (`List.getLast_cons (by simp)`
+  for the getLast step, then `ring`).
+* `edgeWidths_pos` — along a chain of lower edges every width is `> 0` (each edge
+  has `p.1 < q.1`); structural induction mirroring `chain_edgeSlopes`.
+* **`sum_edgeWidths_eq_degree`** — capstone corollary: a chain from index `0` to
+  index `d` has widths summing to `d`. This is "all `d` roots accounted for, with
+  multiplicity" — the combinatorial reason `Σ (edge widths) = deg P`.
+* Worked example: `edgeWidths threeVertex = [1,2]`, sum `= 3` (span `(0,2)→(3,1)`),
+  all positive.
+
+**Why this matters.** Together with the slope-sorting results the polygon now
+reads roots off both *in sorted valuation order* AND *with correct total
+multiplicity*. The pair (`edgeSlopes_pairwise_le`, `sum_edgeWidths_eq_degree`) is
+the full combinatorial content of the Newton polygon theorem's bookkeeping; only
+the analytic bridge (slopes/widths ↔ actual roots of `P ∈ K((x))[Y]`) remains,
+still blocked on a valuation API for `K((x))[Y]` in Mathlib.
+
+### GOTCHA: `getLast` telescoping
+`List.getLast_cons` is `@[simp]` and rewrites `(a :: l).getLast _ = l.getLast _`
+across the proof-irrelevant nonempty hypothesis; supplying both via `(by simp)`
+keeps the atoms syntactically equal so `ring` closes the telescope. Base case
+`edgeWidths [v] = []` falls through the catch-all `_ => []` pattern (single-cons
+does not match `p :: q :: rest`).

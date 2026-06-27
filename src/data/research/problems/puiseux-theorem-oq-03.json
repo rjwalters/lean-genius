@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2-B groundwork: added exists_isLowerEdge_of_leftmost (first lower edge from the left endpoint) to PuiseuxTheoremOQ03.lean, the first concrete hull-construction step. File now 421 lines / 21 theorems, still verified 0-sorry 0-axiom. Also repaired 3 List.not_mem_nil sites broken by a Mathlib-cache update. Remaining: full S2-B termination measure on polynomial reductions, and the algebraic Newton-polygon theorem (blocked on missing K((x))[Y] valuation API).",
+    "progressSummary": "S5 degree-counting: added edge-width telescoping (sum_edgeWidths_eq_degree) — the multiplicity half of the Newton polygon, complementing slope-sorting. File 589 lines / 33 theorems / 7 defs, verified 0-sorry 0-axiom. Remaining: hull-construction recursion (chain assembly) and the analytic Newton polygon theorem (blocked on K((x))[Y] valuation API).",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -37,14 +37,16 @@
       "edgeSlope + worked Y^2-x example: both support points are vertices, edge slope -1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
       "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)",
       "exists_isLowerEdge_of_leftmost (PuiseuxTheoremOQ03.lean): leftmost support point -> genuine IsLowerEdge via List.argmin(edgeSlope p); first hull-construction step toward S2-B",
-      "Maintenance: fixed 3 List.not_mem_nil q sites broken by Mathlib cache update (explicit arg removed)"
+      "Maintenance: fixed 3 List.not_mem_nil q sites broken by Mathlib cache update (explicit arg removed)",
+      "edgeWidths/sum_edgeWidths/edgeWidths_pos/sum_edgeWidths_eq_degree in PuiseuxTheoremOQ03.lean (telescoping degree identity; widths sum to index span = degree; all 0-axiom)"
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
       "List.argmin + argmin_mem/le_of_mem_argmin gives vertex existence for nonempty support lists in a few lines.",
       "Model support points as Prod (N x Q), not a custom structure: fin_cases + norm_num then dispatch example goals cleanly.",
       "Edge existence reuses isLowerVertex_of_leftmost machinery verbatim: the argmin-of-edgeSlope supporting line through the leftmost point already passes through its argmin partner, so it is an edge, not merely a vertex witness.",
-      "Mathlib drift hazard: gallery .lean files verified months ago can silently break against an updated local olean cache (List.not_mem_nil dropped its explicit argument); prefer simp over name-specific applications for List membership-in-nil contradictions."
+      "Mathlib drift hazard: gallery .lean files verified months ago can silently break against an updated local olean cache (List.not_mem_nil dropped its explicit argument); prefer simp over name-specific applications for List membership-in-nil contradictions.",
+      "Edge WIDTHS carry root multiplicities, complementing edge SLOPES (valuations): the polygon assigns (q.1-p.1) roots of valuation -edgeSlope p q to each edge. sum_edgeWidths + edgeSlopes_pairwise_le together are the full combinatorial bookkeeping of the Newton polygon theorem."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
@@ -54,7 +56,8 @@
     "nextSteps": [
       "Iterate hull construction: from exists_isLowerEdge_of_leftmost, peel the first edge and recurse on the sub-support to the right of its right endpoint (building the ordered vertex/edge list).",
       "S2-B: define a polynomial Newton-Puiseux reduction step and prove the Y-degree strictly decreases (needs Laurent-series polynomial modeling).",
-      "Newton polygon theorem: negatives of lower-edge slopes = root valuations (blocked on missing valuation API on K((x))[Y] in Mathlib 4.26.0)."
+      "Newton polygon theorem: negatives of lower-edge slopes = root valuations (blocked on missing valuation API on K((x))[Y] in Mathlib 4.26.0).",
+      "Hull construction recursion: from exists_isLowerEdge_of_leftmost peel the first edge and recurse on the sub-support right of its right endpoint, producing a List.IsChain (IsLowerEdge pts) vertex list to feed edgeSlopes/edgeWidths."
     ],
     "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
     "archivedSessions": [

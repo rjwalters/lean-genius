@@ -506,4 +506,84 @@ theorem threeVertex_edgeSlopes : edgeSlopes threeVertex = [-2, 1/2] := by
 theorem threeVertex_sorted : (edgeSlopes threeVertex).Pairwise (· ≤ ·) :=
   edgeSlopes_pairwise_le threeVertex_chain
 
+/-! ### Degree counting: edge widths sum to the index span
+
+The edge slopes carry the *valuations* of the roots; the **widths** carry their
+*multiplicities*.  The horizontal projection (width) of the edge from `p` to `q`
+is `q.1 − p.1`, and the Newton polygon theorem assigns to that edge exactly
+`q.1 − p.1` roots (counted with multiplicity), all of valuation `−edgeSlope p q`.
+So the combinatorial backbone of "every root is accounted for" is the telescoping
+identity proved here: along any vertex chain the edge widths sum to the index
+span `(last index) − (first index)`.  For a degree-`d` polynomial whose hull runs
+from index `0` (constant term) to index `d` (leading term), the widths sum to
+`d` — all `d` roots, with multiplicity, are distributed across the edges.
+
+This is the multiplicity counterpart of the slope-sorting results above
+(`edgeSlopes_pairwise_le`); together they say the Newton polygon reads off the
+roots' valuations *in sorted order* and *with the correct total multiplicity*. -/
+
+/-- The list of edge widths along a chain of support points: the horizontal
+projection `q.1 − p.1` of each consecutive pair.  `edgeWidths [v₀, …, vₙ]
+= [v₁.1 − v₀.1, …, vₙ.1 − vₙ₋₁.1]`. -/
+def edgeWidths : List SupportPoint → List ℚ
+  | p :: q :: rest => ((q.1 : ℚ) - (p.1 : ℚ)) :: edgeWidths (q :: rest)
+  | _ => []
+
+/-- **Telescoping degree identity.**  The edge widths along any vertex chain sum
+to the span of indices from the first vertex to the last — the total horizontal
+extent of the Newton polygon.  Proof is the usual telescoping induction; the head
+width `v₁.1 − v₀.1` plus the tail span `(last).1 − v₁.1` collapses to
+`(last).1 − v₀.1`. -/
+theorem sum_edgeWidths : ∀ (v : SupportPoint) (vs : List SupportPoint),
+    (edgeWidths (v :: vs)).sum = (((v :: vs).getLast (by simp)).1 : ℚ) - (v.1 : ℚ)
+  | _, [] => by simp [edgeWidths]
+  | v, w :: ws => by
+      have ih := sum_edgeWidths w ws
+      have hgl : (v :: w :: ws).getLast (by simp) = (w :: ws).getLast (by simp) :=
+        List.getLast_cons (by simp)
+      simp only [edgeWidths, List.sum_cons]
+      rw [ih, hgl]
+      ring
+
+/-- **All edge widths along a Newton polygon are positive.**  Each lower edge has
+`p.1 < q.1` by definition, so every width in the chain is strictly positive.
+Combined with `sum_edgeWidths` this shows the index span is positive whenever the
+polygon has at least one edge: the hull genuinely moves left-to-right. -/
+theorem edgeWidths_pos {pts : List SupportPoint} :
+    ∀ {vs : List SupportPoint}, List.IsChain (IsLowerEdge pts) vs →
+      ∀ w ∈ edgeWidths vs, 0 < w
+  | [], _ => by simp [edgeWidths]
+  | [_], _ => by simp [edgeWidths]
+  | p :: q :: rest, hc => by
+      intro w hw
+      obtain ⟨hpq, hc'⟩ := List.isChain_cons_cons.mp hc
+      simp only [edgeWidths, List.mem_cons] at hw
+      rcases hw with rfl | hw
+      · obtain ⟨_, _, hlt, _⟩ := hpq
+        have : (p.1 : ℚ) < (q.1 : ℚ) := by exact_mod_cast hlt
+        linarith
+      · exact edgeWidths_pos hc' w hw
+
+/-- **The degree-counting corollary.**  For a Newton polygon whose vertex chain
+runs from the left endpoint at index `0` to the right endpoint at index `d` (the
+`Y`-degree), the edge widths sum to `d`: all `d` roots are distributed, with
+multiplicity, across the edges of the polygon. -/
+theorem sum_edgeWidths_eq_degree {v : SupportPoint} {vs : List SupportPoint}
+    {d : ℕ} (hv : v.1 = 0) (hlast : ((v :: vs).getLast (by simp)).1 = d) :
+    (edgeWidths (v :: vs)).sum = d := by
+  rw [sum_edgeWidths, hlast, hv]; simp
+
+/-- The widths of the worked three-vertex example are `[1, 2]`. -/
+theorem threeVertex_edgeWidths : edgeWidths threeVertex = [1, 2] := by
+  norm_num [edgeWidths, threeVertex]
+
+/-- The example's edge widths sum to `3`, the index span from `(0,2)` to `(3,1)` —
+the polygon accounts for all `3` units of `Y`-degree. -/
+theorem threeVertex_sum_widths : (edgeWidths threeVertex).sum = 3 := by
+  norm_num [edgeWidths, threeVertex]
+
+/-- The example's widths are all positive (it is a genuine left-to-right chain). -/
+theorem threeVertex_widths_pos : ∀ w ∈ edgeWidths threeVertex, 0 < w :=
+  edgeWidths_pos threeVertex_chain
+
 end PuiseuxTheoremOQ03
