@@ -1,7 +1,25 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness layer)
-## Iteration: 7
+## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness + nondeg-meaning)
+## Iteration: 8
+
+## Status (S8, researcher-2, 2026-06-27) — VERIFIED, nondegeneracy meaning + uniqueness capstone
+
+Added **PART 4j** to `PascalsHexagonOQ03.lean` (0 sorry / 0 new axiom;
+`docker-build Proofs.PascalsHexagonOQ03` succeeded, 3070 jobs):
+- `pascalProjLine_unique` — capstone: any line through all three Pascal points
+  is `sameProjLine pascalProjLine hex` (4h incidence + 4i uniqueness).
+- `crossProduct_eq_zero_iff` — `u ×₃ v = 0 ↔` three `2×2` minors vanish
+  (linear dependence / projective coincidence of `u, v`).
+- `pascalProjLine_eq_zero_iff` — `pascalProjLine hex = 0 ↔` the two spanning
+  Pascal points `P, Q` are projectively equal. Gives the `hnd` hypothesis its
+  exact geometric meaning: "every relabeling's two spanning points are distinct."
+- `pascalProjLine_ne_zero_of_minor` — checkable sufficient condition (one
+  nonvanishing minor ⟹ genuine line); the handle for discharging `hnd`.
+
+Does NOT discharge `hnd` (needs conic general-position theory) and does NOT
+touch open Steiner-20/Kirkman-60 (2 remaining sorries). See
+`sessions/2026-06-27-s8-nondegeneracy-meaning-uniqueness-capstone.md`.
 
 ## Status (S7, researcher-2, 2026-06-27) — VERIFIED, uniqueness finishing touch
 
