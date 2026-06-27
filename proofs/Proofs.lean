@@ -960,6 +960,7 @@ import Proofs.ContinuumHypothesis
 import Proofs.ContinuumHypothesisOQ01
 import Proofs.ContinuumHypothesisOQ02
 import Proofs.ContinuumHypothesisOQ02OQ01
+import Proofs.CoprimeKTupleDensity
 import Proofs.CramersRule
 import Proofs.CramersRuleOQ01
 import Proofs.CramersRuleOQ01OQ02
