@@ -3734,6 +3734,7 @@ import Proofs.PicksTheoremOQ02
 import Proofs.PicksTheoremOQ03
 import Proofs.PicksTheoremOQ03CrossPoly
 import Proofs.PicksTheoremOQ03Ext
+import Proofs.PicksTheoremOQ03ExtOQ02
 import Proofs.PicksTheoremOQ03Product
 import Proofs.PiTranscendental
 import Proofs.PlanarGraphDischarging
