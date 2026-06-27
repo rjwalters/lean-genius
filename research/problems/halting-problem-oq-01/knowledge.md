@@ -144,3 +144,64 @@ Converted the *schematic* single-point decline barrier (Session 1) into the
   non-r.e. set" by proving `REPred` is closed under union, then the gap
   `Kᶜ ∖ {confirmed false}` is non-r.e. (currently only "nonempty" is extracted).
 - OQ-01b remains the only genuinely open sub-question and is infrastructure-blocked.
+
+---
+
+## Session 2026-06-27 (Session 3) — Sharp form: the decline set is non-r.e.
+
+**Mode**: REVISIT (executed the Session-2 optional next step)
+**Outcome**: progress — strengthened `HaltingArithmeticalHierarchy.lean`
+(still 0 sorry, 0 `axiom`, builds; imports `Mathlib.Computability.Halting`).
+
+### What I did
+Carried out the previously-deferred strengthening of
+`sound_approx_undefined_on_nonhalting` (which only gave a *nonempty* decline set)
+to the sharp statement that the decline set is **not recursively enumerable**.
+
+- `REPred.or` — **`REPred` is closed under union.** Built from Mathlib's
+  `Partrec.merge'` (dovetailing: the merged partial function halts iff either
+  input halts, so its domain is the union of the two domains). ~12 lines; the
+  helper `key` shows `(Part.assert (r a) fun _ => some ()).Dom ↔ r a`.
+- `decline_set_on_nonhalting_not_re` — the **headline strengthening**: for a sound
+  partial-computable `f`, the set `{c | ¬Halts n c ∧ f declines at c}` is **not
+  r.e.** Proof: at a non-halting code a sound `f` either declines or commits
+  `false` (soundness forbids `true`), so `Kᶜ = {confirmed false} ∪ {decline ∧
+  ¬halts}`; the first piece is r.e. (`re_confirmedFalse`), so if the second were
+  r.e. then `Kᶜ` = union of two r.e. sets would be r.e. (`REPred.or`),
+  contradicting `halts_compl_not_re`.
+- `sound_approx_declines_nonempty` — re-derives the old nonempty statement as a
+  one-line corollary (the empty predicate is r.e., so a non-r.e. set is nonempty),
+  documenting that the new theorem strictly subsumes Session 2's.
+
+### Key findings / insights
+- The Session-2 "declines somewhere" was an under-statement: the obstruction is a
+  genuinely **non-r.e. (hence infinite)** subset of `Kᶜ`, not a finite/diagonal
+  artifact. The decline set of any sound semi-decider must contain `Kᶜ` minus an
+  r.e. piece, and that difference is itself non-r.e.
+- The whole strengthening cost ~50 lines because Mathlib already packages the
+  hard part (`Partrec.merge'`); the only "new" infrastructure was the trivial
+  `REPred.or` wrapper. Earlier sessions over-estimated this as needing bespoke
+  union-closure machinery.
+- GOTCHA: dot notation `(h : REPred _).or` resolves through the `REPred → Partrec
+  → Nat.Partrec` unfolding and looks up `Nat.Partrec.or` (error). Call
+  `REPred.or h₁ h₂` explicitly. (`.of_eq` happens to resolve fine.)
+
+### Files modified
+- `proofs/Proofs/HaltingArithmeticalHierarchy.lean` (+~50 lines: `REPred.or`,
+  `decline_set_on_nonhalting_not_re`, `sound_approx_declines_nonempty`; header
+  updated). Builds clean (`docker-build.sh Proofs.HaltingArithmeticalHierarchy`).
+
+### Status of the three OQ-01 readings
+- **OQ-01a structural barrier** — DONE (Session 1).
+- **OQ-01c arithmetical-hierarchy placement** — DONE (Session 2) and now
+  **sharpened** (Session 3): the gap is the non-r.e. set `Kᶜ`, proven via
+  `REPred.or` + the r.e. confirmed-false set.
+- **OQ-01b density / generic-case complexity** — STILL OPEN / BLOCKED
+  (encoding-sensitive, > 1000 lines of machine-model infrastructure Mathlib does
+  not package).
+
+### Next steps
+- OQ-01b is the sole remaining sub-question and remains infrastructure-blocked.
+  No tractable Lean path without a concrete one-tape model + density measure on `ℕ`.
+- The OQ-01a/OQ-01c line is now complete and sharp; consider this thread DONE
+  pending OQ-01b infrastructure or a Mathlib density-of-RE-sets contribution.
