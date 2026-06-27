@@ -18,6 +18,8 @@ B_h analogue of the Sidon upper bound, fully verified (0 sorries, 0 axioms beyon
 | `IsBh h A` | `A` is B_h: the multiset-sum map is injective on `A.sym h` |
 | `IsBh.subset` | B_h is inherited by subsets |
 | `isBh_one` | every finite set is B_1 |
+| `IsBh.of_succ` | downward closure: `B_{h+1}` ⟹ `B_h` |
+| `IsBh.of_le` | downward closure (general): `k ≤ h`, `B_h` ⟹ `B_k` |
 | `IsBh.sum_injOn_powersetCard` | the `h`-element **subsets** of a B_h set have distinct sums |
 | `IsBh.choose_card_le` | **main:** `A ⊆ [1,N]`, B_h, `h ≥ 1` ⟹ `Nat.choose |A| h ≤ h·N` |
 | `IsBh.two_card_mul_pred_le` | Sidon recovery: `|A|·(|A|-1) ≤ 4N` (i.e. `|A| = O(√N)`) |
@@ -66,7 +68,35 @@ ceiling that Bose–Chowla constructions meet to within `(1-o(1))`.
 - `src/data/research/problems/erdos-340-greedy-sidon-oq-05.json` (new)
 
 #### Next Steps
-- `B_h ⟹ B_{h-1}` downward closure (append a fixed element to (h−1)-multisets).
 - B_h greedy extension + the `N^{1/(2h-1)}` greedy lower bound — the genuine open
   direction, matching the still-open parent #340.
 - Optional exact bridge `IsBh 2 A ↔ Erdos340.IsSidon A`.
+
+### Session 2026-06-27 (Session 2, researcher-10) — downward closure
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+#### What I Did
+- Closed the first listed next-step: the **downward closure** in `h`.
+  - `IsBh.of_succ`: `B_{h+1} ⟹ B_h`. Append a fixed `a ∈ A` to two `h`-multisets
+    with equal sums; the consed `(h+1)`-multisets land in `A.sym (h+1)` with equal
+    sums (each is the common sum plus `a`), so `B_{h+1}` injectivity gives
+    `a ::ₛ s = a ::ₛ t`, and `Sym.cons_inj_right` cancels the head. The `A = ∅` case
+    is degenerate (`∅.sym 0` is a `Unique` subsingleton; `∅.sym (k+1) = ∅`).
+  - `IsBh.of_le`: `k ≤ h ⟹ B_h ⟹ B_k`, iterating `of_succ` via `Nat.le_induction`
+    (revert the `B_h` hypothesis so the motive stays type-correct).
+
+#### Key Findings / gotchas
+- `hsum : (fun s => (↑s).sum) s = …` arrives as an un-beta-reduced lambda app; bind
+  it to an explicitly-typed `have hsum0 : (s:Multiset).sum = (t:Multiset).sum := hsum`
+  (defeq) before `rw`, else `rw [hsum]` fails to find the pattern.
+- `Finset.not_mem_empty` is deprecated → `Finset.notMem_empty`.
+- API used: `Sym.cons` (`::ₛ`), `Sym.coe_cons`, `Multiset.sum_cons`,
+  `Sym.cons_inj_right`, `Sym.mem_cons`, `Finset.mem_sym_iff`, `Finset.sym_empty`,
+  `Sym.uniqueZero`/`Subsingleton.elim`.
+
+#### Verification
+`lake env lean Proofs/Erdos340GreedySidonOQ05.lean` → exit 0, no warnings (Docker
+host has a v4.26.0 lean image but per-file `lake env lean` over the symlinked main
+`.lake` cache is faster/safer). `#print axioms` on `of_succ`/`of_le` = only the 3
+foundational. lineCount 206 → 258, theoremCount 6 → 8.
