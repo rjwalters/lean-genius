@@ -29,25 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: OQ-03-OQ-02 set-invariance upgraded to literal projective line equality under both D6 generators (PART 4d); quotient-level descent remains.",
+    "progressSummary": "PROGRESS (build-blocked verify): OQ-03-OQ-02 generator-invariance + PER engine for descent complete in PR #30630; remaining gap is the closure-induction + non-degeneracy lemma. Counting OQ-03-OQ-03/04 (Steiner 20, Kirkman 60) remain genuinely open.",
     "builtItems": [
       "PART 4c in PascalsHexagonOQ03.lean: 6 generator-action lemmas pascal{P,Q,R}_permuteHexagon_{hexRot,hexRev} (exact vector identities, 0 sorry)",
       "pascalLine made total via lbl.out (Quotient.out), discharging the blocking definition-sorry",
       "PascalsHexagonOQ03.lean PART 4d: cross_cross_eq_det_smul (BAC-CAB, axiom-free ring identity)",
       "PascalsHexagonOQ03.lean PART 4d: sameProjLine_of_collinear (rotation crux, axiom-free)",
-      "PascalsHexagonOQ03.lean PART 4d: pascalLine_hexRot/hexRev_sameProjLine + pascalLine_generators_sameProjLine (Pascal line projectively fixed by both D6 generators)"
+      "PascalsHexagonOQ03.lean PART 4d: pascalLine_hexRot/hexRev_sameProjLine + pascalLine_generators_sameProjLine (Pascal line projectively fixed by both D6 generators)",
+      "sameProjLine_symm + sameProjLine_trans + sameProjLine_isPER + pascalLine_hexRot_hexRev_sameProjLine in PascalsHexagonOQ03.lean PART 4e (PR #30630)",
+      "Transitivity proof: m_k • (l ×₃ n)=0 per coordinate via 9 hand-derived linear_combination certificates of l×₃m, m×₃n components; smul_eq_zero + Function.ne_iff finish."
     ],
     "insights": [
       "hexRot acts as (P,Q,R)->(Q,R,-P); hexRev as (P,Q,R)->(-Q,-P,R); proved exactly. hexRot P/Q by index-reduction+rfl, R by one cross_anticomm; hexRev sign cases by cross_apply+ring (mirrors parent crossProduct_smul proofs)",
       "Both generators permute the SET {[P],[Q],[R]} of projective points; with collinearity (pascal_hexagon_theorem) this fixes the spanned Pascal line, i.e. the D6-descent backbone of OQ-03-OQ-02",
       "BAC-CAB identity (a×b)×(c×d)=[a,b,d]c-[a,b,c]d with a=P,b=Q,c=Q,d=R collapses to (P×Q)×(Q×R)=det(P,Q,R)•Q; collinearity (det=0) is EXACTLY the condition that adjacent-join Pascal lines coincide — the canonicality of the Pascal line.",
-      "Cross-product-zero (parallelism) is the honest hypothesis-free notion of same-projective-line; it proves line-equality without extracting a nonzero scalar (which would need nondegeneracy)."
+      "Cross-product-zero (parallelism) is the honest hypothesis-free notion of same-projective-line; it proves line-equality without extracting a nonzero scalar (which would need nondegeneracy).",
+      "S4: sameProjLine (cross-product vanishing) is a PER on nonzero line-vectors -- refl+symm+(nonzero-middle)trans. The m≠0 hypothesis on transitivity is essential since 0 is parallel to every vector."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Promote set-invariance to literal ProjLine equality: prove P x Q ∝ Q x R for collinear pairwise-independent P,Q,R (Q x R = -alpha (P x Q) when R=alpha P + beta Q), needing a nonzero-scalar line-equivalence + nondegeneracy hypothesis",
       "steiner_count_eq_20 / kirkman_count_eq_60 remain genuinely OPEN (Conway-Ryba concurrence combinatorics) - out of scope",
-      "Full quotient descent: Subgroup.closure_induction over ⟨hexRot,hexRev⟩ + sameProjLine transitivity, then relate permuteHexagon hex g to lbl.out` for genuine Quotient-level pascalLine well-definedness."
+      "Full quotient descent: Subgroup.closure_induction over ⟨hexRot,hexRev⟩ + sameProjLine transitivity, then relate permuteHexagon hex g to lbl.out` for genuine Quotient-level pascalLine well-definedness.",
+      "Quotient descent now algebraically unblocked: Subgroup.closure_induction over {hexRot,hexRev} chained by sameProjLine_trans. Needs (i) permuteHexagon composition lemma permuteHexagon hex (g*h)=permuteHexagon (permuteHexagon hex g) h; (ii) non-degeneracy lineThrough (pascalP hex)(pascalQ hex) ≠ 0 to discharge m≠0."
     ],
     "archivedSessions": [
       {
