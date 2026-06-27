@@ -3379,6 +3379,7 @@ import Proofs.InverseGaloisF20
 import Proofs.InverseGaloisOQ01
 import Proofs.InverseGaloisOQ02
 import Proofs.InverseGaloisOQ02Aristotle
+import Proofs.InverseGaloisOQ03
 import Proofs.InverseGaloisOQ06OQ01
 import Proofs.IsoperimetricTheorem
 import Proofs.IsoperimetricTheoremOQ01
@@ -3797,6 +3798,7 @@ import Proofs.PythagoreanTriplesOQ01Aristotle
 import Proofs.PythagoreanTriplesOQ02
 import Proofs.PythagoreanTriplesOQ03
 import Proofs.PythagoreanTriplesOQ04
+import Proofs.PythagoreanTriplesOQ04OQ01OQ01
 import Proofs.PythagoreanTriplesOQ05
 import Proofs.PythagoreanTriplesOQ06
 import Proofs.PythagoreanTriplesOQ06OQ01
