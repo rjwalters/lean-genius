@@ -18,8 +18,8 @@ This file establishes that `minDiameter n` is a genuine, non-vacuous quantity:
    on a line at unit spacing), so the infimum is taken over a **nonempty** index.
 2. `diameter_nonneg` — `diameter n P ≥ 0` for every configuration, so the value set
    is **bounded below** and `minDiameter` is a true infimum (not a junk `sInf`).
-3. `minDiameter_le_lineDiameter` / `minDiameter_le` — the explicit line configuration
-   gives the upper bound `minDiameter n ≤ n - 1`.
+3. `minDiameter_le` — the explicit line configuration gives `minDiameter n ≤ n - 1`
+   (for `n ≥ 1`).
 4. `one_le_minDiameter` — every valid configuration on `n ≥ 2` points has two points
    at distance `≥ 1`, so `diameter ≥ 1`, hence `minDiameter n ≥ 1`.
 
@@ -52,12 +52,10 @@ namespace Erdos103OQ02Bounds
 theorem pointDist_xaxis (a b : ℝ) :
     pointDist (a, 0) (b, 0) = |a - b| := by
   unfold pointDist
-  simp only [sub_zero]
-  rw [show ((a, 0) : ℝ × ℝ).1 = a from rfl, show ((b, 0) : ℝ × ℝ).1 = b from rfl,
-    show ((a, 0) : ℝ × ℝ).2 = (0 : ℝ) from rfl, show ((b, 0) : ℝ × ℝ).2 = (0 : ℝ) from rfl]
-  rw [sub_zero]
-  rw [show (a - b) ^ 2 + (0 : ℝ) ^ 2 = (a - b) ^ 2 by ring]
-  exact Real.sqrt_sq_eq_abs _
+  have e1 : ((a, 0) : ℝ × ℝ).1 - ((b, 0) : ℝ × ℝ).1 = a - b := rfl
+  have e2 : ((a, 0) : ℝ × ℝ).2 - ((b, 0) : ℝ × ℝ).2 = 0 := by norm_num
+  rw [e1, e2]
+  rw [show (a - b) ^ 2 + (0 : ℝ) ^ 2 = (a - b) ^ 2 by ring, Real.sqrt_sq_eq_abs]
 
 /-- `pointDist` is always nonnegative (it is a square root). -/
 theorem pointDist_nonneg (p q : ℝ × ℝ) : 0 ≤ pointDist p q := by
@@ -67,12 +65,13 @@ theorem pointDist_nonneg (p q : ℝ × ℝ) : 0 ≤ pointDist p q := by
 -- PART 2: diameter is nonnegative (so minDiameter is bounded below)
 -- ============================================================
 
-/-- The double supremum defining the diameter is over a finite (hence bounded)
+/-- The inner supremum defining the diameter ranges over a finite (hence bounded)
     family, so it is `BddAbove`. -/
 theorem diameter_inner_bddAbove {n : ℕ} (P : PointConfig n) (i : Fin n) :
     BddAbove (Set.range (fun j : Fin n => pointDist (P i) (P j))) :=
   Set.Finite.bddAbove (Set.finite_range _)
 
+/-- The outer supremum defining the diameter ranges over a finite family. -/
 theorem diameter_outer_bddAbove {n : ℕ} (P : PointConfig n) :
     BddAbove (Set.range (fun i : Fin n => ⨆ j : Fin n, pointDist (P i) (P j))) :=
   Set.Finite.bddAbove (Set.finite_range _)
@@ -83,12 +82,10 @@ theorem diameter_nonneg {n : ℕ} (P : PointConfig n) : 0 ≤ diameter n P := by
   unfold diameter
   by_cases hn : n ≥ 2
   · rw [dif_pos hn]
-    have hne : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
     have hi : ∀ i : Fin n, (0 : ℝ) ≤ ⨆ j : Fin n, pointDist (P i) (P j) := by
       intro i
-      have h0 : (0 : ℝ) ≤ pointDist (P i) (P i) := pointDist_nonneg _ _
-      exact le_ciSup_of_le (diameter_inner_bddAbove P i) i h0
-    obtain ⟨i0⟩ := hne
+      exact le_ciSup_of_le (diameter_inner_bddAbove P i) i (pointDist_nonneg _ _)
+    have i0 : Fin n := ⟨0, by omega⟩
     exact le_ciSup_of_le (diameter_outer_bddAbove P) i0 (hi i0)
   · rw [dif_neg hn]
 
@@ -112,19 +109,17 @@ theorem abs_sub_coe_ge_one {n : ℕ} {i j : Fin n} (hij : i ≠ j) :
     (1 : ℝ) ≤ |(i : ℝ) - (j : ℝ)| := by
   have hne : (i : ℕ) ≠ (j : ℕ) := fun h => hij (Fin.ext h)
   rcases Nat.lt_or_ge (i : ℕ) (j : ℕ) with h | h
-  · have : (i : ℝ) - (j : ℝ) ≤ -1 := by
-      have : (i : ℝ) + 1 ≤ (j : ℝ) := by exact_mod_cast h
-      linarith
+  · have hle : (i : ℝ) + 1 ≤ (j : ℝ) := by exact_mod_cast h
     rw [abs_of_nonpos (by linarith)]; linarith
   · have hgt : (j : ℕ) < (i : ℕ) := lt_of_le_of_ne h (fun h' => hne h'.symm)
-    have : (j : ℝ) + 1 ≤ (i : ℝ) := by exact_mod_cast hgt
+    have hle : (j : ℝ) + 1 ≤ (i : ℝ) := by exact_mod_cast hgt
     rw [abs_of_nonneg (by linarith)]; linarith
 
 /-- The line configuration is valid (pairwise distances are `≥ 1`). -/
 theorem lineConfig_valid (n : ℕ) : IsValidConfig n (lineConfig n) := by
   intro i j hij
   show pointDist (lineConfig n i) (lineConfig n j) ≥ 1
-  unfold lineConfig
+  simp only [lineConfig]
   rw [pointDist_xaxis]
   exact abs_sub_coe_ge_one hij
 
@@ -142,72 +137,61 @@ instance (n : ℕ) : Nonempty {P : PointConfig n // IsValidConfig n P} :=
 /-- In the line configuration, every pairwise distance is at most `n - 1`. -/
 theorem lineConfig_pointDist_le {n : ℕ} (i j : Fin n) :
     pointDist (lineConfig n i) (lineConfig n j) ≤ (n : ℝ) - 1 := by
-  unfold lineConfig
+  simp only [lineConfig]
   rw [pointDist_xaxis]
-  have hi : (i : ℝ) ≤ (n : ℝ) - 1 := by
-    have : (i : ℕ) ≤ n - 1 := Nat.le_sub_one_of_lt i.isLt
-    have hn1 : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr (by rintro rfl; exact (Nat.not_lt_zero _ i.isLt))
-    have := (Nat.cast_le (α := ℝ)).mpr this
-    rw [Nat.cast_sub hn1] at this; simpa using this
-  have hj : (j : ℝ) ≤ (n : ℝ) - 1 := by
-    have : (j : ℕ) ≤ n - 1 := Nat.le_sub_one_of_lt j.isLt
-    have hn1 : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr (by rintro rfl; exact (Nat.not_lt_zero _ j.isLt))
-    have := (Nat.cast_le (α := ℝ)).mpr this
-    rw [Nat.cast_sub hn1] at this; simpa using this
+  have hi : (i : ℝ) + 1 ≤ (n : ℝ) := by exact_mod_cast i.isLt
+  have hj : (j : ℝ) + 1 ≤ (n : ℝ) := by exact_mod_cast j.isLt
   have hi0 : (0 : ℝ) ≤ (i : ℝ) := Nat.cast_nonneg _
   have hj0 : (0 : ℝ) ≤ (j : ℝ) := Nat.cast_nonneg _
   rw [abs_sub_le_iff]
   constructor <;> linarith
 
-/-- The diameter of the line configuration is at most `n - 1`. -/
-theorem lineConfig_diameter_le (n : ℕ) : diameter n (lineConfig n) ≤ (n : ℝ) - 1 := by
+/-- The diameter of the line configuration is at most `n - 1` (for `n ≥ 1`). -/
+theorem lineConfig_diameter_le {n : ℕ} (hn1 : 1 ≤ n) :
+    diameter n (lineConfig n) ≤ (n : ℝ) - 1 := by
   unfold diameter
   by_cases hn : n ≥ 2
   · rw [dif_pos hn]
-    apply ciSup_le
-    intro i
-    apply ciSup_le
-    intro j
+    haveI : Nonempty (Fin n) := ⟨⟨0, by omega⟩⟩
+    apply ciSup_le; intro i
+    apply ciSup_le; intro j
     exact lineConfig_pointDist_le i j
   · rw [dif_neg hn]
-    have : (1 : ℝ) ≤ (n : ℝ) ∨ n = 0 := by
-      rcases Nat.eq_zero_or_pos n with h | h
-      · right; exact h
-      · left; exact_mod_cast h
-    push_neg at hn
-    interval_cases n <;> simp
+    have hn1' : n = 1 := by omega
+    subst hn1'; norm_num
 
-/-- **Upper bound.** `minDiameter n ≤ n - 1`, witnessed by the line configuration. -/
-theorem minDiameter_le (n : ℕ) : minDiameter n ≤ (n : ℝ) - 1 := by
+/-- **Upper bound.** `minDiameter n ≤ n - 1` (for `n ≥ 1`), witnessed by the line
+    configuration. -/
+theorem minDiameter_le {n : ℕ} (hn1 : 1 ≤ n) : minDiameter n ≤ (n : ℝ) - 1 := by
   unfold minDiameter
   calc ⨅ P : {P : PointConfig n // IsValidConfig n P}, diameter n P.val
       ≤ diameter n (lineConfig n) :=
         ciInf_le (diameter_range_bddBelow n) ⟨lineConfig n, lineConfig_valid n⟩
-    _ ≤ (n : ℝ) - 1 := lineConfig_diameter_le n
+    _ ≤ (n : ℝ) - 1 := lineConfig_diameter_le hn1
 
 -- ============================================================
 -- PART 5: lower bound — 1 ≤ minDiameter n for n ≥ 2
 -- ============================================================
 
 /-- For `n ≥ 2`, every valid configuration has diameter `≥ 1`: the two distinct
-    points `0` and `1` are at distance `≥ 1`, and the diameter dominates that. -/
+    points indexed `0` and `1` are at distance `≥ 1`, and the diameter dominates
+    that distance. -/
 theorem one_le_diameter_of_valid {n : ℕ} (hn : n ≥ 2) {P : PointConfig n}
     (hP : IsValidConfig n P) : (1 : ℝ) ≤ diameter n P := by
   unfold diameter
   rw [dif_pos hn]
-  have h0 : (0 : Fin n) ≠ (1 : Fin n) := by
-    have : (2 : ℕ) ≤ n := hn
+  let i : Fin n := ⟨0, by omega⟩
+  let j : Fin n := ⟨1, by omega⟩
+  have hij : i ≠ j := by
     intro h
-    have := Fin.val_eq_val_of_eq (a := (0 : Fin n)) (b := (1 : Fin n)) h
-    simp [Fin.val_zero, Fin.val_one'] at this
+    have : (0 : ℕ) = 1 := congrArg Fin.val h
     omega
-  have hdist : (1 : ℝ) ≤ pointDist (P 0) (P 1) := hP 0 1 h0
-  -- 1 ≤ pointDist (P 0) (P 1) ≤ ⨆ j, pointDist (P 0) j ≤ ⨆ i ⨆ j, ...
-  have hstep1 : pointDist (P 0) (P 1) ≤ ⨆ j : Fin n, pointDist (P 0) (P j) :=
-    le_ciSup (diameter_inner_bddAbove P 0) 1
-  have hstep2 : (⨆ j : Fin n, pointDist (P 0) (P j))
-      ≤ ⨆ i : Fin n, ⨆ j : Fin n, pointDist (P i) (P j) :=
-    le_ciSup (diameter_outer_bddAbove P) 0
+  have hdist : (1 : ℝ) ≤ pointDist (P i) (P j) := hP i j hij
+  have hstep1 : pointDist (P i) (P j) ≤ ⨆ k : Fin n, pointDist (P i) (P k) :=
+    le_ciSup (diameter_inner_bddAbove P i) j
+  have hstep2 : (⨆ k : Fin n, pointDist (P i) (P k))
+      ≤ ⨆ a : Fin n, ⨆ k : Fin n, pointDist (P a) (P k) :=
+    le_ciSup (diameter_outer_bddAbove P) i
   linarith
 
 /-- **Lower bound.** For `n ≥ 2`, `1 ≤ minDiameter n`. -/
@@ -231,7 +215,7 @@ theorem one_le_minDiameter {n : ℕ} (hn : n ≥ 2) : (1 : ℝ) ≤ minDiameter 
     ones there are) is asked about a well-posed quantity. -/
 theorem minDiameter_mem_Icc {n : ℕ} (hn : n ≥ 2) :
     minDiameter n ∈ Set.Icc (1 : ℝ) ((n : ℝ) - 1) :=
-  ⟨one_le_minDiameter hn, minDiameter_le n⟩
+  ⟨one_le_minDiameter hn, minDiameter_le (by omega)⟩
 
 /-- `minDiameter` is positive for `n ≥ 2`. -/
 theorem minDiameter_pos {n : ℕ} (hn : n ≥ 2) : 0 < minDiameter n :=
