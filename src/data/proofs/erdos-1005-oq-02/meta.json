@@ -5,12 +5,12 @@
   "title": "Mediant Insertion and the Farey Gap Calculus: The Mediant Is the Unique Smallest-Denominator Fraction in a Gap",
   "description": "A self-contained, axiom-free formalization of the exact arithmetic of mediant insertion — the operation that refines the Farey sequence F_n into F_{n+1} by inserting, between adjacent fractions a/b < c/d, their mediant (a+c)/(b+d). Two threads are proved. First, the gap-splitting calculus: a unimodular gap of size 1/(bd) is split by its mediant into a left sub-gap 1/(b(b+d)) and a right sub-gap 1/(d(b+d)); these sum back to 1/(bd), stand in ratio d:b, and each is strictly smaller than the whole. Second, the headline minimal-denominator theorem: any fraction p/q strictly between two unimodular neighbours has denominator q ≥ b+d, and equality forces p/q = (a+c)/(b+d) exactly. Hence the mediant is the unique fraction of smallest denominator inside any Farey gap, and b+d is a hard lower bound on refining it — no construction can introduce a fraction of smaller denominator. The parent entry (Erdős #1005) records the open lower bound f(n) ≥ (1/12−o(1))n on runs of similarly ordered Farey fractions; that constant remains open and is NOT addressed here. This entry formalizes the verified mediant calculus on which such lower-bound constructions are built.",
   "leanFile": {
-    "lineCount": 638,
+    "lineCount": 745,
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ02.lean",
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 39
+    "theoremCount": 45
   },
   "meta": {
     "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot mediant theory)",
@@ -29,7 +29,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-06-25",
-    "lineCount": 389,
+    "lineCount": 745,
     "originalContributions": [
       "denom_ge_of_between: the headline lower bound — if a/b < p/q < c/d and the outer pair is unimodular (bc − ad = 1), then q ≥ b + d. Proved from the identity q = b·(cq − pd) + d·(pb − aq) by reading off pb − aq ≥ 1 and cq − pd ≥ 1 from the strict orders, with no Farey enumeration. The mediant therefore has the smallest denominator of any fraction in the open gap (a/b, c/d)",
       "eq_mediant_of_denom_eq: uniqueness — a strictly-in-gap fraction p/q that attains the minimal denominator q = b + d must be the mediant itself, p = a + c. The two cross-differences pb − aq and cq − pd are each pinned to exactly 1, forcing p·b = (a+c)·b and cancelling b",
@@ -45,7 +45,11 @@
       "§8 SimOrd + simOrd_iff_prod: the first bridge in the file from the metric mediant calculus to the ORDERING relation that defines f(n). SimOrd a b c d is the raw-integer form of the parent's similarlyOrdered (numerator and denominator differences have the same weak sign), proved equivalent to the product form (a−c)(b−d) ≥ 0",
       "simOrd_mediant_left / simOrd_mediant_right: the mediant (a+c)/(b+d) is similarly ordered with BOTH parents a/b and c/d — inserting a mediant never breaks similar ordering (numerator and denominator move together by +c,+d on the left and −a,−b on the right)",
       "simOrd_iterate_left_chain / simOrd_iterate_right_chain: the entire one-sided §6 mediant chain eₖ = (k·a+c)/(k·b+d) is PAIRWISE similarly ordered (deeper terms have larger numerator and larger denominator), so the Θ(n)-long one-sided chain is a similarly ordered family — the order-side engine behind the linear lower bound on f(n). The honest gap to the open constant: chain members are not yet CONSECUTIVE in F_n (e.g. 1/2, 1/3 are separated in F_5); supplying consecutiveness is where the 1/12–1/4 optimization lives",
-      "simOrd_chain_admissible: combines the order-side and metric sides — under the cap k·b+d ≤ n the depth-≤k left-chain terms are pairwise similarly ordered AND all of order ≤ n, so mediant descent yields linearly long similarly ordered families admissible at order n"
+      "simOrd_chain_admissible: combines the order-side and metric sides — under the cap k·b+d ≤ n the depth-≤k left-chain terms are pairwise similarly ordered AND all of order ≤ n, so mediant descent yields linearly long similarly ordered families admissible at order n",
+      "farey_succ_unimodular: the three-term Farey successor (e+a=k·c, f+b=k·d) preserves unimodularity (d·e=c·f+1), so iterating the recurrence walks along genuinely CONSECUTIVE Farey neighbours — the consecutiveness §8 lacked",
+      "farey_three_term: symmetric three-term recurrence d·(a+e)=c·(b+f), i.e. the middle Farey fraction is the exact k-section of its two neighbours (Farey form of bₖ₋₁+bₖ₊₁=k·bₖ)",
+      "simOrd_succ_controlling (headline): a CONSECUTIVE Farey step c/d→e/f is similarly ordered iff (a+c−k·c)·(b+d−k·d)≥0 — converts the vague 'consecutiveness' gap into an explicit arithmetic inequality on the successive quotient k",
+      "simOrd_succ_k_eq_one: every k=1 Farey step is similarly ordered (controlling product collapses to a·b≥0), so a similarly ordered run can only break at a quotient k≥2 — localizing the 1/12–1/4 open optimization"
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for the headline theorems (denom_ge_of_between, eq_mediant_of_denom_eq, mediant_is_min_denominator). No native_decide is used (so no Lean.ofReduceBool). This entry does NOT resolve the open Erdős #1005 lower bound f(n) ≥ (1/12 − o(1))n on runs of similarly ordered Farey fractions; that constant remains open. §8 connects the calculus to the similarlyOrdered relation but explicitly does NOT supply consecutiveness in F_n, which is the open step.",
     "theoremCount": 38,
@@ -136,6 +140,13 @@
       "startLine": 517,
       "endLine": 638,
       "summary": "The first link in the file between the metric mediant calculus (§1–7) and the ORDERING relation that defines f(n). SimOrd a b c d is the raw-integer form of the parent's similarlyOrdered (numerator and denominator differences share a weak sign); simOrd_iff_prod proves it equivalent to (a−c)(b−d) ≥ 0, with simOrd_symm/simOrd_refl. simOrd_mediant_left/_right: the mediant is similarly ordered with BOTH parents — insertion never breaks similar ordering. simOrd_iterate_left_chain/_right_chain (headline): the entire one-sided §6 chain eₖ = (k·a+c)/(k·b+d) is PAIRWISE similarly ordered, so the Θ(n)-long one-sided chain is a similarly ordered family — the order-side engine of the linear lower bound on f(n). simOrd_chain_admissible packages this with the §6 cap: under k·b+d ≤ n the depth-≤k terms are pairwise similarly ordered and all of order ≤ n. Honest boundary: chain members are NOT yet consecutive in F_n (e.g. 1/2, 1/3 separated in F_5); supplying consecutiveness is exactly where the open 1/12–1/4 optimization lives."
+    },
+    {
+      "id": "three-term-farey-successor",
+      "title": "§9 The three-term Farey neighbour recurrence — the consecutiveness bridge",
+      "startLine": 640,
+      "endLine": 745,
+      "summary": "Replaces §8's NON-consecutive mediant chains with the genuine Farey successor: if a/b<c/d are consecutive in F_n, the next fraction e/f is e=k·c−a, f=k·d−b with k=⌊(n+b)/d⌋ (Hardy–Wright Thm 28–30), carried in addition form e+a=k·c, f+b=k·d to avoid ℕ subtraction. farey_succ_unimodular: the recurrence preserves unimodularity, so c/d,e/f are again consecutive (iterating walks along genuinely adjacent fractions). farey_succ_lt: c·f<d·e (successor lies to the right). farey_three_term: the symmetric law d·(a+e)=c·(b+f) — the middle term is the exact k-section, the Farey form of bₖ₋₁+bₖ₊₁=k·bₖ. farey_succ_denom_le_iff: order-n cap f≤n ↔ k·d≤n+b, selecting k=⌊(n+b)/d⌋ as the largest admissible step. Headline simOrd_succ_controlling: a CONSECUTIVE step c/d→e/f is similarly ordered IFF (a+c−k·c)·(b+d−k·d)≥0 — the controlling quantity is now an explicit arithmetic condition on the successive quotient k. Corollary simOrd_succ_k_eq_one: the k=1 step is ALWAYS similarly ordered (product collapses to a·b≥0), so runs can only break at quotients k≥2 — isolating exactly where the 1/12–1/4 optimization lives. All 0-axiom (propext/Classical.choice/Quot.sound only)."
     }
   ],
   "crossReferences": [
