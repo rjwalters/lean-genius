@@ -25,12 +25,19 @@ Since (log N)^(2/3) / log N = 1 / (log N)^(1/3) → 0, the improved rate is
 strictly smaller order than the O(log N / N) bound in OQ-02.
 
 **Proof content**:
-- `totient_sum_walfisz_error`: Walfisz's sharp totient partial sum error (axiom)
-- `rangeTotientSum_walfisz_error`: improved range sum error from Walfisz (sorry — Abel sum)
-- `walfisz_rate_is_o_logN_over_N`: the Walfisz rate is strictly o(log N / N) (proved)
-- `convergence_rate_not_sharp`: main result — O(log N / N) is NOT the tight rate (proved)
+- `totient_sum_walfisz_error`: Walfisz's sharp totient partial sum error (axiom — deep)
+- `rangeTotientSum_walfisz_error`: improved range sum error from Walfisz (axiom — Abel sum)
+- `convergence_rate_sharp`: EST-regime reduction to the range sum (axiom — disjointness)
+- `log_rpow_two_thirds_isLittleO_log`, `walfisz_rate_isLittleO_mertens_rate`,
+  `walfisz_full_rate_isLittleO_mertens_rate`, `sharp_rate_isLittleO_oq02_rate`,
+  `improvement_factor_tends_to_zero`: the asymptotic comparisons (all PROVED, 0 axioms,
+  pure real-analysis rpow/little-o; were sorries, discharged 2026-06-27)
+- `oq02_rate_not_sharp`: main result — O(log N / N) is NOT the tight rate (proved from
+  `convergence_rate_sharp` + the asymptotic comparison)
 
-**Status**: AXIOMATIZED (Walfisz bound) + PROVED (sharpness conclusion from Walfisz)
+**Status**: AXIOMATIZED (3 deep number-theory inputs: Walfisz totient bound, its Abel-sum
+propagation, and the EST-regime reduction; plus the Mertens bound used for context).
+All real-analysis asymptotics are now fully PROVED (0 sorries).
 
 **Related**: Erdos1001OQ02.lean (parent, established O(log N/N) rate)
 -/
@@ -44,6 +51,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.Asymptotics.Defs
 import Mathlib.Analysis.Asymptotics.Lemmas
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Pow.Asymptotics
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 
 open Filter Real Asymptotics
@@ -128,6 +136,19 @@ Before deriving these, we establish the key comparison:
    (log N)^(2/3) / N = o(log N / N)
 -/
 
+/-- Helper: `(log N)^(2/3) =o[atTop] log N`.  The ratio `(log N)^(2/3)/log N`
+equals `(log N)^(-1/3)`, which tends to `0` since `log N → ∞`. -/
+theorem log_rpow_two_thirds_isLittleO_log :
+    (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3)) =o[atTop] (fun N : ℕ => Real.log N) := by
+  have hlogtop : Tendsto (fun N : ℕ => Real.log N) atTop atTop :=
+    tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  rw [isLittleO_iff_tendsto (fun N h => by rw [h]; exact Real.zero_rpow (by norm_num))]
+  refine Tendsto.congr' ?_
+    ((tendsto_rpow_neg_atTop (show (0:ℝ) < 1/3 by norm_num)).comp hlogtop)
+  filter_upwards [hlogtop.eventually_gt_atTop 0] with N hN
+  simp only [Function.comp_apply]
+  rw [show -((1:ℝ)/3) = (2:ℝ)/3 - 1 by ring, Real.rpow_sub hN, Real.rpow_one]
+
 /-- The Walfisz range error rate is strictly smaller order than the Mertens rate.
 
     Key fact: (log N)^(2/3) / N = o(log N / N) since (log N)^(2/3) / log N = 1/(log N)^(1/3) → 0.
@@ -135,17 +156,14 @@ Before deriving these, we establish the key comparison:
     This is a real analysis fact about rpow: for the real-valued function log(x)^(2/3)/x,
     dividing by log(x)/x gives log(x)^(2/3)/log(x) = 1/log(x)^(1/3) → 0.
 
-    Proof strategy: use isLittleO_iff and show |(log N)^(2/3)/N| ≤ c*|log N/N| eventually,
-    i.e., (log N)^(2/3) ≤ c * log N eventually, i.e., 1 ≤ c * (log N)^(1/3) eventually.
-    This holds for all large N since (log N)^(1/3) → ∞.
-
-    Technical sorry: the Lean manipulations of Real.rpow inequalities for this are mechanical
-    but require precise API calls that depend on the Mathlib version. This is an Aristotle
-    candidate — the mathematical content is clear. -/
+    Proof: factor out `1/N` (via `mul_isBigO`) to reduce to `(log N)^(2/3) =o log N`,
+    which is `log_rpow_two_thirds_isLittleO_log`. -/
 theorem walfisz_rate_isLittleO_mertens_rate :
     (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3) / N)
     =o[atTop] (fun N : ℕ => Real.log N / N) := by
-  sorry
+  have h := log_rpow_two_thirds_isLittleO_log.mul_isBigO
+    (isBigO_refl (fun N : ℕ => (N : ℝ)⁻¹) atTop)
+  simpa [div_eq_mul_inv] using h
 
 /-- The Walfisz range error rate with log log factor is also o(log N / N).
 
@@ -159,7 +177,35 @@ theorem walfisz_full_rate_isLittleO_mertens_rate :
     (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3) *
                   (Real.log (Real.log N)) ^ ((4:ℝ)/3) / N)
     =o[atTop] (fun N : ℕ => Real.log N / N) := by
-  sorry
+  have hlogtop : Tendsto (fun N : ℕ => Real.log N) atTop atTop :=
+    tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  -- (log u)^(4/3) =o u^(1/3): raise `log =o u^(1/4)` to the power 4/3.
+  have hbase : Real.log =o[atTop] (fun u : ℝ => u ^ ((1:ℝ)/4)) :=
+    isLittleO_log_rpow_atTop (by norm_num)
+  have hnn : (0 : ℝ → ℝ) ≤ᶠ[atTop] (fun u : ℝ => u ^ ((1:ℝ)/4)) := by
+    filter_upwards [eventually_ge_atTop (0:ℝ)] with u hu using Real.rpow_nonneg hu _
+  have hrpow : (fun u : ℝ => (Real.log u) ^ ((4:ℝ)/3))
+      =o[atTop] (fun u : ℝ => (u ^ ((1:ℝ)/4)) ^ ((4:ℝ)/3)) :=
+    hbase.rpow (show (0:ℝ) < 4/3 by norm_num) hnn
+  have hsimp : (fun u : ℝ => (u ^ ((1:ℝ)/4)) ^ ((4:ℝ)/3))
+      =ᶠ[atTop] (fun u : ℝ => u ^ ((1:ℝ)/3)) := by
+    filter_upwards [eventually_ge_atTop (0:ℝ)] with u hu
+    rw [← Real.rpow_mul hu, show (1:ℝ)/4 * (4/3) = 1/3 by norm_num]
+  have hinner : (fun N : ℕ => (Real.log (Real.log N)) ^ ((4:ℝ)/3))
+      =o[atTop] (fun N : ℕ => (Real.log N) ^ ((1:ℝ)/3)) :=
+    (hrpow.trans_eventuallyEq hsimp).comp_tendsto hlogtop
+  -- multiply by the common factor (log N)^(2/3)
+  have hmul : (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3) * (Real.log (Real.log N)) ^ ((4:ℝ)/3))
+      =o[atTop] (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3) * (Real.log N) ^ ((1:ℝ)/3)) :=
+    (isBigO_refl (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3)) atTop).mul_isLittleO hinner
+  have hcollapse : (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3) * (Real.log N) ^ ((1:ℝ)/3))
+      =ᶠ[atTop] (fun N : ℕ => Real.log N) := by
+    filter_upwards [hlogtop.eventually_gt_atTop 0] with N hN
+    rw [← Real.rpow_add hN, show (2:ℝ)/3 + 1/3 = 1 by norm_num, Real.rpow_one]
+  have hmul2 : (fun N : ℕ => (Real.log N) ^ ((2:ℝ)/3) * (Real.log (Real.log N)) ^ ((4:ℝ)/3))
+      =o[atTop] (fun N : ℕ => Real.log N) := hmul.trans_eventuallyEq hcollapse
+  have h := hmul2.mul_isBigO (isBigO_refl (fun N : ℕ => (N : ℝ)⁻¹) atTop)
+  simpa [div_eq_mul_inv, mul_assoc] using h
 
 /-
 ## Sharp Range Totient Sum Error via Abel Summation
@@ -236,16 +282,13 @@ axiom convergence_rate_sharp (A c : ℝ) (hA : 0 < A) (hc : c > 1)
 
     This is the key provable comparison: A * [Walfisz rate] = o(A * [Mertens rate]).
     Proved by multiplying the scalar comparison by A > 0. -/
-theorem sharp_rate_isLittleO_oq02_rate (A c : ℝ) (hA : 0 < A) (hc : c > 1)
-    (hregime : inESTRegime A c) :
+theorem sharp_rate_isLittleO_oq02_rate (A c : ℝ) (hA : 0 < A) (_hc : c > 1)
+    (_hregime : inESTRegime A c) :
     (fun N : ℕ => A * ((Real.log N) ^ ((2:ℝ)/3) *
                        (Real.log (Real.log N)) ^ ((4:ℝ)/3) / N))
     =o[atTop]
-    (fun N : ℕ => A * (Real.log N / N)) := by
-  -- Follows from walfisz_full_rate_isLittleO_mertens_rate by multiplying by A.
-  -- Technical: (A * f) =o[atTop] (A * g) when f =o g and A ≠ 0, via IsLittleO.const_mul_left.
-  -- The exact API call depends on Mathlib version; leaving as Aristotle candidate.
-  sorry
+    (fun N : ℕ => A * (Real.log N / N)) :=
+  (walfisz_full_rate_isLittleO_mertens_rate.const_mul_left A).const_mul_right hA.ne'
 
 /-- **Main Theorem**: The O(log N / N) rate is not the tight convergence rate.
 
@@ -277,7 +320,11 @@ However, the mathematical fact that the O(log N/N) bound is not tight is definit
     Since log(N) → ∞, we have (log N)^(1/3) → ∞, so its reciprocal → 0. -/
 theorem improvement_factor_tends_to_zero :
     Tendsto (fun N : ℕ => 1 / (Real.log N) ^ ((1:ℝ)/3)) atTop (nhds 0) := by
-  sorry
+  have hlog : Tendsto (fun N : ℕ => Real.log N) atTop atTop :=
+    tendsto_log_atTop.comp tendsto_natCast_atTop_atTop
+  have hpow : Tendsto (fun N : ℕ => (Real.log N) ^ ((1:ℝ)/3)) atTop atTop :=
+    (tendsto_rpow_atTop (by norm_num)).comp hlog
+  simpa [one_div] using hpow.inv_tendsto_atTop
 
 /-
 ## Historical Context
