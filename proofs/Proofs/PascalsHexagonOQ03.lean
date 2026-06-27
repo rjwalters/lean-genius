@@ -64,7 +64,7 @@ Mysticum):
 * `card_hexagon_labelings = 60` — follows from the previous two by
   Lagrange (proved).
 * `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02**: total,
-  defined via the canonical coset representative `lbl.out'` (the
+  defined via the canonical coset representative `lbl.out` (the
   representative-independence / full well-definedness remains future work).
 * `SteinerPoint`, `KirkmanPoint` — structures encoding the
   concurrence-triple data.
@@ -217,6 +217,12 @@ theorem orderOf_hexRot : orderOf hexRot = 6 := by
   apply (orderOf_eq_iff (by norm_num)).mpr
   exact ⟨hexRot_pow_six, hexRot_pow_lt_six_ne_one⟩
 
+/-- `hexRev` is not the identity. (Sanity check: reversal swaps `0` and `5`.) -/
+theorem hexRev_ne_one : hexRev ≠ 1 := by
+  intro h
+  have : hexRev 0 = (1 : Equiv.Perm (Fin 6)) 0 := by rw [h]
+  simp [hexRev, Fin.rev] at this
+
 /-- **`orderOf hexRev = 2`** — the reversal is an involution distinct from 1.
     Uses `hexRev_mul_self` (from `pow_two`) and `hexRev_ne_one`. -/
 theorem orderOf_hexRev : orderOf hexRev = 2 := by
@@ -308,10 +314,9 @@ theorem hexRev_hexRot_pow_hexRev (n : ℕ) :
     S3c homomorphism. -/
 private lemma hexRot_pow_zmod_val_add (i j : ZMod 6) :
     hexRot ^ (i + j).val = hexRot ^ i.val * hexRot ^ j.val := by
-  rw [← pow_add]
-  -- `ZMod.val_add` gives `(i + j).val = (i.val + j.val) % 6`; then
-  -- `pow_mod_orderOf` with `orderOf_hexRot = 6` collapses the `% 6`.
-  rw [ZMod.val_add i j, ← orderOf_hexRot, pow_mod_orderOf]
+  rw [← pow_add, pow_eq_pow_iff_modEq, orderOf_hexRot, ZMod.val_add]
+  -- `(i.val + j.val) % 6 ≡ i.val + j.val [MOD 6]`.
+  exact Nat.mod_modEq _ _
 
 /-- **Negation form**: `(hexRot ^ i.val)⁻¹ = hexRot ^ (-i).val`.
     Equivalent to saying that the map `i ↦ hexRot ^ i.val` respects
@@ -322,7 +327,7 @@ private lemma hexRot_pow_zmod_val_neg (i : ZMod 6) :
   have h := hexRot_pow_zmod_val_add i (-i)
   rw [add_neg_cancel, ZMod.val_zero, pow_zero] at h
   -- `h : 1 = hexRot ^ i.val * hexRot ^ (-i).val`
-  exact (eq_inv_of_mul_eq_one_left h.symm).symm
+  exact mul_eq_one_iff_inv_eq.mp h.symm
 
 /-- **Subtractive form**:
     `(hexRot ^ i.val)⁻¹ * hexRot ^ j.val = hexRot ^ (j - i).val`.
@@ -449,7 +454,7 @@ theorem dihedralHomToSym6_injective :
     -- `hg : hexRev * hexRot ^ i.val = 1` ⇒ contradiction.
     exfalso
     have h1 : hexRev = (hexRot ^ i.val)⁻¹ :=
-      eq_inv_of_mul_eq_one_right hg
+      mul_eq_one_iff_eq_inv.mp hg
     rw [hexRot_pow_zmod_val_neg] at h1
     exact hexRev_ne_hexRot_pow_of_lt (-i).val (ZMod.val_lt _) h1
 
@@ -690,7 +695,7 @@ theorem pascalP_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
   ext i
   fin_cases i <;>
     simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] <;>
     ring
 
 /-- `hexRev` sends the second Pascal point to the negated first: `Q' = -P`. -/
@@ -706,7 +711,7 @@ theorem pascalQ_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
   ext i
   fin_cases i <;>
     simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] <;>
     ring
 
 /-- `hexRev` fixes the third Pascal point: `R' = R`.  The two inner sign flips
@@ -723,7 +728,7 @@ theorem pascalR_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
   ext i
   fin_cases i <;>
     simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
-               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] <;>
     ring
 
 -- ============================================================
@@ -756,7 +761,7 @@ theorem sameProjLine_refl (l : ProjLine) : sameProjLine l l := by
   unfold sameProjLine
   funext i
   fin_cases i <;>
-    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue] <;>
     ring
 
@@ -765,7 +770,7 @@ theorem sameProjLine_neg_right (l : ProjLine) : sameProjLine l (-l) := by
   unfold sameProjLine
   funext i
   fin_cases i <;>
-    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
                Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
     ring
 
@@ -778,7 +783,7 @@ theorem sameProjLine_smul_right (c : ℝ) (l : ProjLine) : sameProjLine l (c •
   funext i
   fin_cases i <;>
     simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-               Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
+               Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
     ring
 
 /-- **BAC–CAB specialisation.** For any three vectors in `ℝ³`,
@@ -792,7 +797,7 @@ theorem cross_cross_eq_det_smul (P Q R : ProjPoint) :
   funext i
   fin_cases i <;>
     simp only [cross_apply, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
-               Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
                Matrix.head_cons, Fin.isValue, Nat.reduceAdd, Fin.reduceFinMk] <;>
     ring
 
@@ -834,7 +839,7 @@ theorem pascalLine_hexRev_sameProjLine {C : Conic} (hex : InscribedHexagon C) :
   unfold sameProjLine lineThrough
   funext i
   fin_cases i <;>
-    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
                Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
     ring
 
@@ -891,17 +896,17 @@ theorem sameProjLine_symm {l m : ProjLine} (h : sameProjLine l m) :
   have h0 := congrFun h 0
   have h1 := congrFun h 1
   have h2 := congrFun h 2
-  simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
              Pi.zero_apply, Fin.isValue] at h0 h1 h2
   funext i
   fin_cases i
-  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue]
     linear_combination -h0
-  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue]
     linear_combination -h1
-  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                Pi.zero_apply, Fin.isValue]
     linear_combination -h2
 
@@ -924,64 +929,64 @@ theorem sameProjLine_trans {l m n : ProjLine} (hm : m ≠ 0)
   -- Component equations of `l ×₃ m = 0` and `m ×₃ n = 0`.
   have a0 : l 1 * m 2 - l 2 * m 1 = 0 := by
     have := congrFun h1 0
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have a1 : l 2 * m 0 - l 0 * m 2 = 0 := by
     have := congrFun h1 1
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have a2 : l 0 * m 1 - l 1 * m 0 = 0 := by
     have := congrFun h1 2
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have b0 : m 1 * n 2 - m 2 * n 1 = 0 := by
     have := congrFun h2 0
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have b1 : m 2 * n 0 - m 0 * n 2 = 0 := by
     have := congrFun h2 1
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   have b2 : m 0 * n 1 - m 1 * n 0 = 0 := by
     have := congrFun h2 2
-    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons,
                 Pi.zero_apply, Fin.isValue] using this
   -- Each coordinate of `m` annihilates `l ×₃ n`.
   have key0 : m 0 • crossProduct l n = 0 := by
     funext i
     fin_cases i
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 0) * b0 - (n 2) * a2 - (n 1) * a1
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 0) * b1 + (n 0) * a1
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 0) * b2 + (n 0) * a2
   have key1 : m 1 • crossProduct l n = 0 := by
     funext i
     fin_cases i
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 1) * b0 + (n 1) * a0
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 1) * b1 - (n 0) * a0 - (n 2) * a2
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 1) * b2 + (n 1) * a2
   have key2 : m 2 • crossProduct l n = 0 := by
     funext i
     fin_cases i
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 2) * b0 + (n 2) * a0
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 2) * b1 + (n 2) * a1
     · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+                 Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
       linear_combination (l 2) * b2 - (n 1) * a1 - (n 0) * a0
   -- `m ≠ 0` ⟹ some coordinate is nonzero ⟹ `l ×₃ n = 0`.
   obtain ⟨k, hk⟩ := Function.ne_iff.mp hm
@@ -1184,7 +1189,7 @@ theorem pascalProjLine_sameProjLine_of_mem_mem
     line through two of those three Pascal points.
 
     The map is made *total* by evaluating it at the canonical coset
-    representative `lbl.out' : Equiv.Perm (Fin 6)` (`Quotient.out'`). The
+    representative `lbl.out : Equiv.Perm (Fin 6)` (`Quotient.out'`). The
     `D_6`-invariance of the resulting projective line — i.e. that the value
     is independent of the choice of representative — is the genuine
     "well-definedness" content of **OQ-03-OQ-02**; its geometric backbone is
@@ -1194,8 +1199,8 @@ theorem pascalProjLine_sameProjLine_of_mem_mem
     a nondegeneracy hypothesis, and is deferred. -/
 noncomputable def pascalLine
     (C : Conic) (hex : InscribedHexagon C) (lbl : HexagonLabeling) : ProjLine :=
-  lineThrough (pascalP (permuteHexagon hex lbl.out'))
-              (pascalQ (permuteHexagon hex lbl.out'))
+  lineThrough (pascalP (permuteHexagon hex lbl.out))
+              (pascalQ (permuteHexagon hex lbl.out))
 
 /-- **Hexagrammum Mysticum (existence statement)**: the assignment
     `HexagonLabeling → ProjLine` from a hexagon labeling to its Pascal
@@ -1209,6 +1214,53 @@ theorem hexagrammum_mysticum_pascal_lines
     (C : Conic) (hex : InscribedHexagon C) :
     ∃ (lines : HexagonLabeling → ProjLine), lines = pascalLine C hex :=
   ⟨pascalLine C hex, rfl⟩
+
+-- ============================================================
+-- PART 5b: Quotient-Level Well-Definedness of the Pascal Line
+--          (OQ-03-OQ-02: descent through the coset representative)
+-- ============================================================
+
+/- PART 4g proved that relabeling `hex` by any element of `hexagonalGroup`
+   leaves its Pascal line projectively unchanged (`…_of_mem`).  `pascalLine`
+   (PART 5) makes the labeling-indexed map total by evaluating at the canonical
+   representative `lbl.out`.  The two theorems below close the gap between these:
+   they show the *value* of `pascalLine` does not depend on the choice of coset
+   representative — the genuine well-definedness content of OQ-03-OQ-02. -/
+
+/-- **OQ-03-OQ-02 — coset well-definedness.**  Two permutations representing the
+    *same* `HexagonLabeling` coset relabel `hex` to the same projective Pascal
+    line (under the general-position hypothesis `hnd`).  This lifts the
+    group-level invariance `pascalProjLine_sameProjLine_of_mem` to the quotient:
+    representatives `π₁, π₂` of one coset differ by `π₁⁻¹ * π₂ ∈ hexagonalGroup`,
+    so the single-coset descent applies at `permuteHexagon hex π₁`. -/
+theorem pascalProjLine_sameProjLine_of_quotient_eq
+    {C : Conic} (hex : InscribedHexagon C) {π₁ π₂ : Equiv.Perm (Fin 6)}
+    (hquot : (π₁ : HexagonLabeling) = (π₂ : HexagonLabeling))
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalProjLine (permuteHexagon hex π₁))
+                 (pascalProjLine (permuteHexagon hex π₂)) := by
+  have hmem : π₁⁻¹ * π₂ ∈ hexagonalGroup := QuotientGroup.eq.mp hquot
+  have hnd' : ∀ k : Equiv.Perm (Fin 6),
+      pascalProjLine (permuteHexagon (permuteHexagon hex π₁) k) ≠ 0 := by
+    intro k; rw [permuteHexagon_mul]; exact hnd (π₁ * k)
+  have hstep := pascalProjLine_sameProjLine_of_mem hmem (permuteHexagon hex π₁) hnd'
+  rwa [permuteHexagon_mul, mul_inv_cancel_left] at hstep
+
+/-- **OQ-03-OQ-02 — `pascalLine` well-definedness.**  The total `pascalLine` map
+    — defined via the canonical representative `lbl.out` — agrees, as a
+    projective line, with the Pascal line computed from *any* representative `π`
+    of `lbl`.  Equivalently, the projective Pascal line of a coset is independent
+    of the representative used to compute it: precisely the well-definedness the
+    `Quotient.out`-based definition leaves implicit. -/
+theorem pascalLine_sameProjLine_rep
+    {C : Conic} (hex : InscribedHexagon C) (lbl : HexagonLabeling)
+    {π : Equiv.Perm (Fin 6)} (hπ : (π : HexagonLabeling) = lbl)
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalLine C hex lbl) (pascalProjLine (permuteHexagon hex π)) := by
+  have hout : ((lbl.out : Equiv.Perm (Fin 6)) : HexagonLabeling) = lbl := Quotient.out_eq lbl
+  have hpl : pascalLine C hex lbl = pascalProjLine (permuteHexagon hex lbl.out) := rfl
+  rw [hpl]
+  exact pascalProjLine_sameProjLine_of_quotient_eq hex (hout.trans hπ.symm) hnd
 
 -- ============================================================
 -- PART 6: Steiner Points
@@ -1272,12 +1324,6 @@ theorem kirkman_count_eq_60
 theorem hexRot_ne_one : hexRot ≠ 1 := by
   intro h
   have : hexRot 0 = (1 : Equiv.Perm (Fin 6)) 0 := by rw [h]
-  simp [hexRot, finRotate] at this
-
-/-- `hexRev` is not the identity. (Sanity check: reversal swaps `0` and `5`.) -/
-theorem hexRev_ne_one : hexRev ≠ 1 := by
-  intro h
-  have : hexRev 0 = (1 : Equiv.Perm (Fin 6)) 0 := by rw [h]
-  simp [hexRev, Fin.rev] at this
+  simp [hexRot, finRotate_succ_apply] at this
 
 end PascalsHexagonOQ03
