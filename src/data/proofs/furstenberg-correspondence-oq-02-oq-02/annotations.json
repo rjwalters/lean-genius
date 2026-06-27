@@ -19,15 +19,30 @@
     "proofId": "furstenberg-correspondence-oq-02-oq-02",
     "range": {
       "startLine": 51,
+      "endLine": 59
+    },
+    "type": "concept",
+    "title": "Ergodic Rigidity: Components Are Mutually Singular",
+    "content": "ergodic_eq_of_absolutelyContinuous (Mathlib's Ergodic.eq_of_absolutelyContinuous) shows an invariant probability measure ν absolutely continuous with respect to an ergodic measure μ must equal it. Contrapositively, two distinct ergodic measures can never be absolutely continuous with respect to one another, so they are mutually singular — the ergodic components of the decomposition occupy disjoint regions of the space and the decomposition is a genuine partition rather than an overlapping cover.",
+    "mathContext": "$\\nu \\ll \\mu,\\ \\mu\\text{ ergodic} \\Rightarrow \\nu = \\mu$ — hence distinct ergodic measures are mutually singular ($\\mu_1 \\perp \\mu_2$).",
+    "significance": "supporting",
+    "relatedConcepts": ["mutual singularity", "absolute continuity", "ergodic rigidity", "partition of the space"],
+    "prerequisites": ["absolute continuity ν ≪ μ", "measure-preserving maps", "Ergodic.eq_of_absolutelyContinuous"]
+  },
+  {
+    "id": "ann-ae-const",
+    "proofId": "furstenberg-correspondence-oq-02-oq-02",
+    "range": {
+      "startLine": 60,
       "endLine": 66
     },
     "type": "concept",
-    "title": "Rigidity and a.e.-Constancy: the Well-Definedness Inputs",
-    "content": "ergodic_eq_of_absolutelyContinuous (Mathlib's Ergodic.eq_of_absolutelyContinuous) shows an invariant probability measure absolutely continuous with respect to an ergodic one must equal it — so distinct ergodic components are mutually singular and the decomposition is a partition into disjoint pieces. ergodic_invariant_ae_const (from PreErgodic.ae_eq_const_of_ae_eq_comp) shows invariant measurable functions are a.e. constant under an ergodic measure, making the decomposition map (point ↦ its ergodic component) well defined because the invariant σ-algebra is a.e. trivial on each component.",
-    "mathContext": "$\\nu \\ll \\mu,\\ \\mu\\text{ ergodic} \\Rightarrow \\nu = \\mu; \\qquad g\\circ f = g \\Rightarrow g =_{\\mu\\text{-a.e.}} \\mathrm{const}$",
+    "title": "Invariant Functions Are a.e. Constant",
+    "content": "ergodic_invariant_ae_const (from PreErgodic.ae_eq_const_of_ae_eq_comp) shows that under an ergodic measure every measurable function g with g ∘ f = g is almost everywhere constant. This is the well-definedness input for the decomposition map sending each point to its ergodic component: the invariant σ-algebra is a.e. trivial on each component, so 'which component a point belongs to' is determined up to a null set. It is the functional restatement of ergodicity (no nonconstant invariants) and the bridge from the measure-level extreme-point picture to the pointwise decomposition kernel.",
+    "mathContext": "$g \\circ f = g \\Rightarrow g =_{\\mu\\text{-a.e.}} \\mathrm{const}$ — the invariant $\\sigma$-algebra is $\\mu$-a.e. trivial.",
     "significance": "supporting",
-    "relatedConcepts": ["mutual singularity", "absolute continuity", "invariant σ-algebra", "almost-everywhere constant functions", "ergodic rigidity"],
-    "prerequisites": ["absolute continuity ν ≪ μ", "invariant functions g∘f = g", "PreErgodic.ae_eq_const_of_ae_eq_comp"]
+    "relatedConcepts": ["invariant σ-algebra", "almost-everywhere constant functions", "ergodicity as triviality of invariants", "decomposition kernel"],
+    "prerequisites": ["invariant functions g∘f = g", "almost-everywhere equality", "PreErgodic.ae_eq_const_of_ae_eq_comp"]
   },
   {
     "id": "ann-answer",
