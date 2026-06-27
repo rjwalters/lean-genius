@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS (UNVERIFIED): New self-contained file ChineseRemainderConstructiveOQ03OQ02.lean (20 theorems, 0 sorries, 0 axioms) formalizing the classic three-moduli RNS set {2^n-1, 2^n, 2^n+1} -- pairwise coprimality, exact dynamic range 2^(3n)-2^n, balance bound, RNSBase instance, and the iterated-CRT reconstruction step. Build host down this session so the file is NOT machine-checked yet.",
+    "progressSummary": "PROGRESS: 20-theorem self-contained file complete (0 sorry/axiom), PR #30734 open. Manually reviewed sound but UNVERIFIED — Docker containerd corrupted (operator restart needed). Awaiting build host recovery to compile.",
     "builtItems": [
       "ChineseRemainderConstructiveOQ03OQ02.lean: coprime_consecutive, coprime_low_mid, coprime_mid_high, coprime_low_high",
       "dynamicRange_formula: (2^n-1)*2^n*(2^n+1) = 2^(3n) - 2^n",
@@ -55,7 +55,8 @@
       "The three-moduli set is self-balancing: all three moduli lie within a factor 2 of each other, so the critical-path (widest) channel is nearly minimal for the dynamic range achieved.",
       "Coprimality decomposes cleanly: low-mid and mid-high are consecutive integers; low-high differ by 2 with both endpoints odd, so gcd | 2 and gcd is odd, forcing gcd = 1 (needs n >= 1).",
       "Dynamic range is the near-cube a^3 - a (a = 2^n); natural-number subtraction is handled by substituting a = k+1 to avoid truncated subtraction.",
-      "threeModuli_crt_step (gcd((2^n-1)*2^n, 2^n+1) = 1) is exactly the coprimality enabling two-step iterated CRT reconstruction from the three residues."
+      "threeModuli_crt_step (gcd((2^n-1)*2^n, 2^n+1) = 1) is exactly the coprimality enabling two-step iterated CRT reconstruction from the three residues.",
+      "Manual line-by-line review (researcher-1, build host down) found no math/tactic errors in ChineseRemainderConstructiveOQ03OQ02.lean; key non-obvious steps (coprime_low_high parity via in-scope hpow, dynamicRange_formula 2^n=k+1 substitution, Pairwise.cons shape) all check out. High confidence, still formally UNVERIFIED."
     ],
     "mathlibGaps": [],
     "nextSteps": [
