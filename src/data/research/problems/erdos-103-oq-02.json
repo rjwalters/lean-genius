@@ -19,21 +19,22 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-06-26",
-    "iteration": 2,
-    "focus": "Formalization audit of the counting function h(n); supplied corrected congruence-quotient definition.",
+    "since": "2026-06-27",
+    "iteration": 3,
+    "focus": "First non-degenerate case n = 2: proved minDiameter 2 = 1 and hCong 2 = 1 via an explicit planar isometry (complex multiplication by a unit number). Companion file Erdos103OQ02N2.lean, 0-axiom verified.",
     "blockers": [
-      "The open Erdős #103 weak conjecture (hCong(n) >= 2 for large n) is genuinely open and not addressed by this session."
+      "The open Erdős #103 weak conjecture (hCong(n) >= 2 for large n) is genuinely open and not addressed by this session.",
+      "hCong(n) for n >= 3 requires reasoning about non-collinear optimal configurations; the n = 2 argument exploits that all unit segments are congruent, which has no direct n >= 3 analogue."
     ],
-    "nextAction": "Future work: study finiteness/compactness of the optimal-configuration space modulo congruence; attempt hCong(4).",
+    "nextAction": "Future work: attempt hCong(3) (optimal = equilateral triangle of side 1, conjecturally unique up to congruence) reusing the cmul planar-isometry primitive; then study finiteness/compactness of the optimal-configuration space modulo congruence for general n.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED (offline, Mathlib 2df2f015 / Lean v4.26.0, 0 sorry / 0 axiom): added Erdos103OQ02Finite.lean nailing down the degenerate base cases the conditional parent machinery left implicit. For n <= 1 the optimal congruence quotient is a nonempty Subsingleton, so it is unconditionally Finite; this discharges the [Finite (Quotient (OptimalSetoid n))] hypothesis of hCong_pos_of_finite / hCong_strictly_exceeds_raw and yields hCong 0 = hCong 1 = 1 and the strict gap h 1 = 0 < 1 = hCong 1. The open content (unconditional finiteness for general/large n and hCong n >= 2) is untouched and remains open.",
+    "progressSummary": "VERIFIED (offline, Lean v4.26.0, 0 sorry / 0 axiom; #print axioms = [propext, Classical.choice, Quot.sound]): added Erdos103OQ02N2.lean resolving the FIRST NON-DEGENERATE case n = 2. Unlike n <= 1 (diameter identically 0, every config trivially optimal), at n = 2 the diameter is a genuine distance. Proved: diameter_two (the diameter of a pair equals its single pairwise distance), minDiameter 2 = 1 (separation >= 1 forbids smaller, the unit segment attains it), optimal_two_gap (every optimal pair is at distance exactly 1), and the crux optimal_two_congruent: any two optimal 2-configs are congruent via an EXPLICIT isometry built as complex multiplication by the unit number w*conj(u) sandwiched between two translations. Hence Subsingleton/Finite (Quotient (OptimalSetoid 2)) and hCong 2 = 1, confirming with proof the parent's previously-unproven summary claim 'h(2) = 1'. Combined with the prior session (n <= 1), hCong is now exactly computed for n in {0,1,2}, all = 1. The open content (hCong n >= 2 for large n, finiteness for general n) remains open.",
     "builtItems": [
       "Erdos103OQ02.lean (0-axiom, 0-sorry, verified)",
       "pointDist_add_right: Euclidean distance on R^2 is translation-invariant",
@@ -47,7 +48,13 @@
       "Erdos103OQ02Finite.lean: all_congruent_zero / all_congruent_one (every config congruent for n<=1)",
       "Erdos103OQ02Finite.lean: subsingleton_quotient_zero/one + finite_quotient_zero/one (unconditional Finite instances for the optimal quotient at n=0,1)",
       "Erdos103OQ02Finite.lean: exists_optimal_of_le_one (optimal config exists for n<=1) via minDiameter_eq_zero_of_le_one",
-      "Erdos103OQ02Finite.lean: hCong_zero_eq_one, hCong_one_eq_one, hCong_one_strictly_exceeds_raw (unconditional, [Finite] discharged)"
+      "Erdos103OQ02Finite.lean: hCong_zero_eq_one, hCong_one_eq_one, hCong_one_strictly_exceeds_raw (unconditional, [Finite] discharged)",
+      "Erdos103OQ02N2.lean: diameter_two (diameter of a 2-config = pointDist (P 0) (P 1), via ciSup_le / le_ciSup over Fin 2)",
+      "Erdos103OQ02N2.lean: minDiameter_two (minDiameter 2 = 1), segTwo + segTwo_valid + segTwo_diameter (the unit segment witness), exists_optimal_two",
+      "Erdos103OQ02N2.lean: optimal_two_gap (optimal pair at distance exactly 1), optimal_two_normsq",
+      "Erdos103OQ02N2.lean: cmul + cmul_preserves + cmul_conj_left/right (complex-multiplication planar-isometry primitive; |c|=1 => preserves pointDist, bijective)",
+      "Erdos103OQ02N2.lean: segIsom (explicit Isometry2D: translate, rotate by unit number, translate) and optimal_two_congruent (any two optimal 2-configs congruent)",
+      "Erdos103OQ02N2.lean: subsingleton_quotient_two + finite_quotient_two + hCong_two_eq_one (hCong 2 = 1) + hCong_two_strictly_exceeds_raw (h 2 = 0 < 1 = hCong 2)"
     ],
     "insights": [
       "Counting 'configurations up to symmetry' MUST quotient by the symmetry group explicitly: an un-quotiented Nat.card collapses to 0 under any continuous symmetry (here, translation).",
@@ -55,14 +62,17 @@
       "The optimal set is a union of full translation-orbits, hence empty or uncountable; the congruence quotient restores finiteness/meaning.",
       "The sibling OQ-01 axiomatized h and h_pos (h(n)>=1), which this audit shows is inconsistent with the parent's LITERAL h -- OQ-01's h must denote the intended quotient count hCong.",
       "Unconditional finiteness holds in the degenerate small cases: for n <= 1 every pair of optimal configurations is congruent (n=0: PointConfig 0 = Fin 0 -> R^2 is a subsingleton; n=1: any two single points differ by the translation Q0 - P0), so Quotient (OptimalSetoid n) is a Subsingleton, hence Finite. This discharges the [Finite ...] typeclass hypothesis carried by hCong_pos_of_finite / hCong_strictly_exceeds_raw at n=0,1.",
-      "minDiameter n = 0 for n <= 1 (diameter is identically 0 below the n>=2 threshold and the constant-zero config is valid), so an optimal configuration exists for n<=1 and hCong 0 = hCong 1 = 1 unconditionally; at n=1 the raw count still collapses (h 1 = 0), giving the strict gap h 1 < hCong 1 with no finiteness assumption."
+      "minDiameter n = 0 for n <= 1 (diameter is identically 0 below the n>=2 threshold and the constant-zero config is valid), so an optimal configuration exists for n<=1 and hCong 0 = hCong 1 = 1 unconditionally; at n=1 the raw count still collapses (h 1 = 0), giving the strict gap h 1 < hCong 1 with no finiteness assumption.",
+      "n = 2 is the first case where finiteness of the congruence quotient is NON-trivial: the diameter becomes a real distance (minDiameter 2 = 1) and optimal configs are the unit segments, but uniqueness up to congruence needs an actual isometry rather than a translation. Representing ℝ² as ℂ, multiplication by a unit number c (c.1²+c.2²=1) is a rotation that preserves pointDist by the Lagrange/Brahmagupta–Fibonacci identity ((c1²+c2²)(d1²+d2²) is a perfect sum of two squares), reducing the distance-preservation proof to one `nlinarith`/`linear_combination`. The rotation c = w·conj(u) sends the directed unit segment of P onto that of Q.",
+      "Reusable takeaway for n >= 3: the cmul primitive (complex multiplication as a planar isometry) and the translate-rotate-translate template generalize; the obstacle at n = 3 is purely combinatorial-geometric (showing the optimal config is the unit equilateral triangle and that any two are related by a SINGLE global isometry, where a reflection may be required), not analytic."
     ],
     "mathlibGaps": [
       "No gap blocked this session. Finiteness of the optimal-configuration space modulo congruence (needed to make hCong provably finite) would require a compactness/quotient argument not yet built."
     ],
     "nextSteps": [
-      "Prove Finite (Quotient (OptimalSetoid n)) for n >= 2 (the genuine open content; needs compactness/algebraicity of optimal configs mod congruence).",
-      "Establish existence of an optimal configuration for n >= 2 (minDiameter achieved), currently assumed via the (exists P, IsOptimal n P) hypotheses."
+      "Attempt hCong(3) = 1: the optimal 3-config is the unit equilateral triangle; prove minDiameter 3 = 1 and that any two optimal 3-configs are congruent (reuse cmul; a reflection may be needed in addition to rotation).",
+      "Prove Finite (Quotient (OptimalSetoid n)) for general n (the genuine open content; needs compactness/algebraicity of optimal configs mod congruence).",
+      "Establish existence of an optimal configuration for general n >= 3 (minDiameter achieved), currently assumed via the (exists P, IsOptimal n P) hypotheses."
     ]
   },
   "tags": [
