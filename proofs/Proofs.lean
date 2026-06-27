@@ -2383,6 +2383,8 @@ import Proofs.Erdos633Aristotle
 import Proofs.Erdos633Problem
 import Proofs.Erdos633ProblemAristotle
 import Proofs.Erdos634Aristotle
+import Proofs.Erdos634MedialCongruence
+import Proofs.Erdos634MedialCongruenceOQ01
 import Proofs.Erdos634Problem
 import Proofs.Erdos635Problem
 import Proofs.Erdos636Aristotle
