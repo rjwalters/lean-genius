@@ -375,4 +375,297 @@ theorem facet_vertex_injective :
   obtain rfl : k = l := facet_injective s hface
   rfl
 
+-- ============================================================
+-- SECTION: Interior Freudenthal pivot (neighbour existence)
+-- ============================================================
+-- The search-based `adj` reads off, for each facet of a canonical
+-- cell, the unique *other* canonical cell glued across it (or
+-- `none` on the geometric boundary).  Its `boundary_face` field is
+-- the contrapositive obligation: an *interior* facet must actually
+-- have a neighbour.  This section supplies the geometric heart of
+-- that existence for the chain-interior facets — the **Freudenthal
+-- pivot**: deleting an interior vertex `a.succ` of a Kuhn cell, the
+-- neighbour glued across the remaining `d`-vertex facet is obtained
+-- by swapping the two consecutive increment steps `a` and `b`
+-- (`b.castSucc = a.succ`).  Only the pivoted vertex changes; it
+-- moves along the "other diagonal" of the local square
+-- `verts a.castSucc → verts a.succ → verts b.succ`.
+--
+-- We build that neighbour as an honest `GridSimplex`
+-- (`pivotSimplex`, all five Kuhn axioms discharged), and prove it
+-- (i) keeps the deleted-vertex facet fixed (`pivot_facet_eq`) and
+-- (ii) genuinely moves the opposite vertex (`pivot_opposite_ne`),
+-- hence is a *different* cell (`pivot_ne`).  This is the
+-- `GridSimplex`-level existence statement; canonicalising the
+-- pivot (re-selecting the lex-min base) to land it back in
+-- `CanonSimplex`, and the two boundary-chain pivots `a.succ ∈ {0,d}`,
+-- remain for the full `adj`.  Everything here is 0-sorry, 0-axiom.
+
+open SpernerGrid
+
+/-- A `Fin` index never equals the successor it casts up to: `x.castSucc ≠ x.succ`. -/
+theorem Fin_castSucc_ne_succ {d : ℕ} (x : Fin d) : x.castSucc ≠ x.succ := by
+  intro h
+  have hv := congrArg Fin.val h
+  simp only [Fin.coe_castSucc, Fin.val_succ] at hv
+  omega
+
+/-- Two consecutive Kuhn steps are distinct: if `a.succ = b.castSucc`
+then `a ≠ b` (else `a.succ = a.castSucc`, impossible). -/
+theorem pivot_ab_ne {a b : Fin d} (hb : a.succ = b.castSucc) : a ≠ b := by
+  rintro rfl
+  exact absurd hb.symm (Fin_castSucc_ne_succ a)
+
+/-- The **pivoted vertex**.  Relative to the deleted vertex
+`s.verts a.succ`, it decrements the coordinate raised at step `a`
+(`incDir a`) and increments the coordinate raised at step `b`
+(`incDir b`) — i.e. it is `verts a.castSucc + e_{incDir b} - e_miss`,
+the opposite corner of the local square.  The total mass is
+preserved (`incDir a` falls by 1, `incDir b` rises by 1), and the
+`incDir a` coordinate is `≥ 1` (step `a` raised it), so the nat
+subtraction is exact. -/
+def pivotPoint (s : SpernerGrid.GridSimplex d N) (a b : Fin d) (hab : a ≠ b) :
+    SpernerGrid.BaryPoint d N where
+  coords := fun j =>
+    if j = s.incDir a then (s.verts a.succ).coords j - 1
+    else if j = s.incDir b then (s.verts a.succ).coords j + 1
+    else (s.verts a.succ).coords j
+  sum_eq := by
+    have hpos : 1 ≤ (s.verts a.succ).coords (s.incDir a) := by
+      have := s.step_inc a; omega
+    have hne : s.incDir a ≠ s.incDir b := fun h => hab (s.inc_injective h)
+    -- Move-one-unit identity: "+[=incDir a]" on the pivot balances "+[=incDir b]" on the original.
+    have key : ∀ j : Fin (d + 1),
+        (if j = s.incDir a then (s.verts a.succ).coords j - 1
+          else if j = s.incDir b then (s.verts a.succ).coords j + 1
+          else (s.verts a.succ).coords j)
+        + (if j = s.incDir a then 1 else 0)
+        = (s.verts a.succ).coords j + (if j = s.incDir b then 1 else 0) := by
+      intro j
+      by_cases h1 : j = s.incDir a
+      · subst h1
+        rw [if_pos rfl, if_pos rfl, if_neg hne]
+        omega
+      · by_cases h2 : j = s.incDir b
+        · subst h2
+          rw [if_neg h1, if_pos rfl, if_neg h1, if_pos rfl]
+        · rw [if_neg h1, if_neg h2, if_neg h1, if_neg h2]
+    have hone_a : (∑ j : Fin (d + 1), (if j = s.incDir a then (1 : ℕ) else 0)) = 1 := by simp
+    have hone_b : (∑ j : Fin (d + 1), (if j = s.incDir b then (1 : ℕ) else 0)) = 1 := by simp
+    have hsum :
+        (∑ j : Fin (d + 1),
+            (if j = s.incDir a then (s.verts a.succ).coords j - 1
+              else if j = s.incDir b then (s.verts a.succ).coords j + 1
+              else (s.verts a.succ).coords j)) + 1
+          = (∑ j : Fin (d + 1), (s.verts a.succ).coords j) + 1 := by
+      calc
+        (∑ j : Fin (d + 1),
+            (if j = s.incDir a then (s.verts a.succ).coords j - 1
+              else if j = s.incDir b then (s.verts a.succ).coords j + 1
+              else (s.verts a.succ).coords j)) + 1
+            = (∑ j : Fin (d + 1),
+                (if j = s.incDir a then (s.verts a.succ).coords j - 1
+                  else if j = s.incDir b then (s.verts a.succ).coords j + 1
+                  else (s.verts a.succ).coords j))
+              + (∑ j : Fin (d + 1), (if j = s.incDir a then (1 : ℕ) else 0)) := by rw [hone_a]
+          _ = ∑ j : Fin (d + 1),
+                ((if j = s.incDir a then (s.verts a.succ).coords j - 1
+                    else if j = s.incDir b then (s.verts a.succ).coords j + 1
+                    else (s.verts a.succ).coords j)
+                  + (if j = s.incDir a then (1 : ℕ) else 0)) := by rw [Finset.sum_add_distrib]
+          _ = ∑ j : Fin (d + 1),
+                ((s.verts a.succ).coords j + (if j = s.incDir b then (1 : ℕ) else 0)) :=
+                Finset.sum_congr rfl (fun j _ => key j)
+          _ = (∑ j : Fin (d + 1), (s.verts a.succ).coords j)
+                + (∑ j : Fin (d + 1), (if j = s.incDir b then (1 : ℕ) else 0)) := by
+                rw [Finset.sum_add_distrib]
+          _ = (∑ j : Fin (d + 1), (s.verts a.succ).coords j) + 1 := by rw [hone_b]
+    rw [(s.verts a.succ).sum_eq] at hsum
+    omega
+
+theorem pivotPoint_coords_eq_incA (s : SpernerGrid.GridSimplex d N)
+    (a b : Fin d) (hab : a ≠ b) :
+    (pivotPoint s a b hab).coords (s.incDir a)
+      = (s.verts a.succ).coords (s.incDir a) - 1 := by
+  have h : (pivotPoint s a b hab).coords (s.incDir a)
+      = if s.incDir a = s.incDir a then (s.verts a.succ).coords (s.incDir a) - 1
+        else if s.incDir a = s.incDir b then (s.verts a.succ).coords (s.incDir a) + 1
+        else (s.verts a.succ).coords (s.incDir a) := rfl
+  rw [h, if_pos rfl]
+
+theorem pivotPoint_coords_eq_incB (s : SpernerGrid.GridSimplex d N)
+    (a b : Fin d) (hab : a ≠ b) :
+    (pivotPoint s a b hab).coords (s.incDir b)
+      = (s.verts a.succ).coords (s.incDir b) + 1 := by
+  have hne : s.incDir b ≠ s.incDir a := fun h => hab (s.inc_injective h).symm
+  have h : (pivotPoint s a b hab).coords (s.incDir b)
+      = if s.incDir b = s.incDir a then (s.verts a.succ).coords (s.incDir b) - 1
+        else if s.incDir b = s.incDir b then (s.verts a.succ).coords (s.incDir b) + 1
+        else (s.verts a.succ).coords (s.incDir b) := rfl
+  rw [h, if_neg hne, if_pos rfl]
+
+theorem pivotPoint_coords_eq_other (s : SpernerGrid.GridSimplex d N)
+    (a b : Fin d) (hab : a ≠ b) (j : Fin (d + 1))
+    (hja : j ≠ s.incDir a) (hjb : j ≠ s.incDir b) :
+    (pivotPoint s a b hab).coords j = (s.verts a.succ).coords j := by
+  have h : (pivotPoint s a b hab).coords j
+      = if j = s.incDir a then (s.verts a.succ).coords j - 1
+        else if j = s.incDir b then (s.verts a.succ).coords j + 1
+        else (s.verts a.succ).coords j := rfl
+  rw [h, if_neg hja, if_neg hjb]
+
+/-- The **interior Freudenthal pivot**.  For consecutive steps `a`, `b`
+(`a.succ = b.castSucc`), the neighbour of `s` glued across the facet
+opposite vertex `a.succ`: same base/`miss`, the two increment steps
+`a`, `b` swapped (`incDir ∘ swap a b`), and the single vertex `a.succ`
+replaced by `pivotPoint`.  All five Kuhn axioms are discharged: the
+`miss` coordinate is untouched everywhere (so `step_dec` is inherited);
+the only steps whose endpoints move are `a` and `b`, handled by the
+local-square computation. -/
+def pivotSimplex (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) : SpernerGrid.GridSimplex d N where
+  verts := Function.update s.verts a.succ (pivotPoint s a b (pivot_ab_ne hb))
+  incDir := s.incDir ∘ Equiv.swap a b
+  miss := s.miss
+  miss_ne_inc := fun k => s.miss_ne_inc (Equiv.swap a b k)
+  inc_injective := s.inc_injective.comp (Equiv.swap a b).injective
+  step_dec := by
+    have hab : a ≠ b := pivot_ab_ne hb
+    -- The `miss` coordinate is unchanged at every vertex.
+    have hconst : ∀ v : Fin (d + 1),
+        (Function.update s.verts a.succ (pivotPoint s a b hab) v).coords s.miss
+          = (s.verts v).coords s.miss := by
+      intro v
+      by_cases hv : v = a.succ
+      · subst hv
+        rw [Function.update_self]
+        exact pivotPoint_coords_eq_other s a b hab s.miss
+          (fun h => s.miss_ne_inc a h.symm) (fun h => s.miss_ne_inc b h.symm)
+      · rw [Function.update_of_ne hv]
+    intro k
+    rw [hconst, hconst]
+    exact s.step_dec k
+  step_inc := by
+    have hab : a ≠ b := pivot_ab_ne hb
+    intro k
+    by_cases hka : k = a
+    · rw [hka]
+      have hIa : (s.incDir ∘ ⇑(Equiv.swap a b)) a = s.incDir b := by
+        simp [Equiv.swap_apply_left]
+      rw [hIa, Function.update_self,
+        Function.update_of_ne (Fin_castSucc_ne_succ a),
+        pivotPoint_coords_eq_incB s a b hab]
+      have hstep : (s.verts a.succ).coords (s.incDir b)
+          = (s.verts a.castSucc).coords (s.incDir b) :=
+        s.step_same a (s.incDir b) (fun h => hab (s.inc_injective h).symm) (s.miss_ne_inc b)
+      omega
+    · by_cases hkb : k = b
+      · rw [hkb]
+        have hIb : (s.incDir ∘ ⇑(Equiv.swap a b)) b = s.incDir a := by
+          simp [Equiv.swap_apply_right]
+        have hbc : b.castSucc = a.succ := hb.symm
+        have hsucc_ne : b.succ ≠ a.succ := fun h => hab (Fin.succ_inj.mp h).symm
+        rw [hIb, Function.update_of_ne hsucc_ne, hbc, Function.update_self,
+          pivotPoint_coords_eq_incA s a b hab]
+        have hpos : 1 ≤ (s.verts a.succ).coords (s.incDir a) := by
+          have := s.step_inc a; omega
+        have hstep : (s.verts b.succ).coords (s.incDir a)
+            = (s.verts a.succ).coords (s.incDir a) := by
+          have h := s.step_same b (s.incDir a) (fun h => hab (s.inc_injective h)) (s.miss_ne_inc a)
+          rwa [hbc] at h
+        omega
+      · have hIk : (s.incDir ∘ ⇑(Equiv.swap a b)) k = s.incDir k := by
+          simp [Equiv.swap_apply_of_ne_of_ne hka hkb]
+        have hcs_ne : k.castSucc ≠ a.succ := by
+          rw [hb]; exact fun h => hkb (Fin.castSucc_inj.mp h)
+        have hsc_ne : k.succ ≠ a.succ := fun h => hka (Fin.succ_inj.mp h)
+        rw [hIk, Function.update_of_ne hsc_ne, Function.update_of_ne hcs_ne]
+        exact s.step_inc k
+  step_same := by
+    have hab : a ≠ b := pivot_ab_ne hb
+    intro k j hjI hjm
+    by_cases hka : k = a
+    · rw [hka] at hjI ⊢
+      have hIa : (s.incDir ∘ ⇑(Equiv.swap a b)) a = s.incDir b := by
+        simp [Equiv.swap_apply_left]
+      rw [hIa] at hjI
+      rw [Function.update_self, Function.update_of_ne (Fin_castSucc_ne_succ a)]
+      by_cases hja : j = s.incDir a
+      · subst hja
+        rw [pivotPoint_coords_eq_incA s a b hab]
+        have := s.step_inc a
+        omega
+      · rw [pivotPoint_coords_eq_other s a b hab j hja hjI]
+        exact s.step_same a j hja hjm
+    · by_cases hkb : k = b
+      · rw [hkb] at hjI ⊢
+        have hIb : (s.incDir ∘ ⇑(Equiv.swap a b)) b = s.incDir a := by
+          simp [Equiv.swap_apply_right]
+        rw [hIb] at hjI
+        have hbc : b.castSucc = a.succ := hb.symm
+        have hsucc_ne : b.succ ≠ a.succ := fun h => hab (Fin.succ_inj.mp h).symm
+        rw [Function.update_of_ne hsucc_ne, hbc, Function.update_self]
+        by_cases hjb : j = s.incDir b
+        · subst hjb
+          rw [pivotPoint_coords_eq_incB s a b hab]
+          have hss := s.step_inc b
+          rw [hbc] at hss
+          omega
+        · rw [pivotPoint_coords_eq_other s a b hab j hjI hjb]
+          have hss := s.step_same b j hjb hjm
+          rw [hbc] at hss
+          exact hss
+      · have hIk : (s.incDir ∘ ⇑(Equiv.swap a b)) k = s.incDir k := by
+          simp [Equiv.swap_apply_of_ne_of_ne hka hkb]
+        rw [hIk] at hjI
+        have hcs_ne : k.castSucc ≠ a.succ := by
+          rw [hb]; exact fun h => hkb (Fin.castSucc_inj.mp h)
+        have hsc_ne : k.succ ≠ a.succ := fun h => hka (Fin.succ_inj.mp h)
+        rw [Function.update_of_ne hsc_ne, Function.update_of_ne hcs_ne]
+        exact s.step_same k j hjI hjm
+
+/-- **The pivot keeps the facet fixed.**  The `d` vertices off the
+deleted vertex `a.succ` are untouched by the pivot, so `s` and its
+pivot share the facet opposite `a.succ` as vertex sets.  This is the
+`adj_vertices`-style common-face equality for the interior pivot. -/
+theorem pivot_facet_eq (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    (Finset.univ.erase a.succ).image (pivotSimplex s a b hb).verts
+      = (Finset.univ.erase a.succ).image s.verts := by
+  apply Finset.image_congr
+  intro j hj
+  have hjne : j ≠ a.succ := by simpa using hj
+  show Function.update s.verts a.succ (pivotPoint s a b (pivot_ab_ne hb)) j = s.verts j
+  rw [Function.update_of_ne hjne]
+
+/-- **The pivot moves the opposite vertex.**  The pivoted vertex
+differs from the deleted vertex at coordinate `incDir a` (it drops by
+one, from a value `≥ 1`).  So the pivot is a genuinely different
+filling of the shared facet. -/
+theorem pivot_opposite_ne (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    (pivotSimplex s a b hb).verts a.succ ≠ s.verts a.succ := by
+  have hab : a ≠ b := pivot_ab_ne hb
+  intro h
+  have hpos : 1 ≤ (s.verts a.succ).coords (s.incDir a) := by
+    have := s.step_inc a; omega
+  have hcoord : ((pivotSimplex s a b hb).verts a.succ).coords (s.incDir a)
+      = (s.verts a.succ).coords (s.incDir a) := by rw [h]
+  have hval : (pivotSimplex s a b hb).verts a.succ = pivotPoint s a b hab := by
+    show Function.update s.verts a.succ (pivotPoint s a b hab) a.succ = _
+    rw [Function.update_self]
+  rw [hval, pivotPoint_coords_eq_incA s a b hab] at hcoord
+  omega
+
+/-- **The interior pivot is a different cell.**  Immediate from
+`pivot_opposite_ne`: equal simplices would have equal vertex
+functions, hence equal opposite vertices.  Together with
+`pivot_facet_eq` this is exactly the `GridSimplex`-level neighbour
+existence the search-based `adj` needs at chain-interior facets. -/
+theorem pivot_ne (s : SpernerGrid.GridSimplex d N) (a b : Fin d)
+    (hb : a.succ = b.castSucc) :
+    pivotSimplex s a b hb ≠ s := by
+  intro h
+  exact pivot_opposite_ne s a b hb (by rw [h])
+
 end SpernerNDimOQ02
