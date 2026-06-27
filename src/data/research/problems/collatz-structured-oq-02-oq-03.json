@@ -29,11 +29,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: extended unconditional Part II from {even, powers of two} to also cover odd class n≡1 mod 4 (density 1/4); 3/4 of integers now handled axiom-free. Tao 2019 axiom remains BLOCKED (>>1000 lines, deep analytic).",
+    "progressSummary": "PROGRESS: raised the unconditional axiom-free density floor from 3/4 to 13/16 by adding the odd residue class n ≡ 3 (mod 16), which drops below itself in exactly 6 residue-determined steps (16m+3 → 48m+10 → 24m+5 → 72m+16 → 36m+8 → 18m+4 → 9m+2 < 16m+3 for all m≥0). New: mod_sixteen_three_attainsBelow, extended packaging, attainsBelow_density_lower_16 (≥13N−1 of [1,16N] via 3 disjoint families: 8N evens + (4N−1) of 1+4ℕ + N of 3+16ℕ), colMin corollaries. Of the odd classes mod 16 (3,7,11,15), only n≡3 drops in its residue-determined window; 7,11,15 have m-dependent stopping times (verified numerically: 27,31 mod do not drop in 40 steps). 22 thm / 5 def, 1 axiom (tao_2019, unchanged). VERIFIED offline lake env lean EXIT 0; new theorems axiom-free (propext/Choice/Quot only, no tao_2019). Tao 2019 axiom remains BLOCKED (deep analytic, >>1000 lines).",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
-      "even_or_mod_four_one_attainsBelow: packaging covering 3/4 of integers axiom-free"
+      "even_or_mod_four_one_attainsBelow: packaging covering 3/4 of integers axiom-free",
+      "mod_sixteen_three_attainsBelow (h : n%16=3) : AttainsBelow n — 6-step residue-determined drop, all parities forced by n mod 16",
+      "attainsBelow_density_lower_16 (N) : 13*N-1 ≤ card (filter AttainsBelow (Icc 1 (16N))) — three disjoint image families (2j, 4j+1, 16j+3), card_union_of_disjoint twice",
+      "even_or_mod_four_one_or_mod_sixteen_three_attainsBelow / _colMin_lt — combined 13/16 packaging"
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
@@ -41,7 +44,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Consider longer-stopping odd residue classes mod 8/16 (e.g. n≡3 mod 16 chains) for a higher-density axiom-free cover.",
+      "Push to mod 32/64: among 7,11,15 mod 16, find which sub-residues mod 32 stabilise (unstopped-residue count grows ~ 3,4,6,9,13,19,27 mod 2^k, OEIS-style), inching the floor toward density 1.",
+      "Formalize the general Terras stopping-time density theorem (density of finite-stopping-time n is 1) as an intermediate milestone short of Tao.",
       "Tao axiom genuinely blocked; no elementary path to logarithmic-density-1."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
