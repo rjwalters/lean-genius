@@ -183,6 +183,36 @@ theorem lebesgueFunction_ge_one (pts : InterpolationPoints n) (hn : 0 < n) (x : 
 noncomputable def lebesgueConstant (pts : InterpolationPoints n) : ℝ :=
   ⨆ x ∈ Set.Icc (-1 : ℝ) 1, lebesgueFunction pts x
 
+/-- The Lebesgue function is continuous: it is a finite sum of `|p_i(x)|`, each of
+which is continuous (the absolute value composed with polynomial evaluation). -/
+theorem lebesgueFunction_continuous (pts : InterpolationPoints n) :
+    Continuous (lebesgueFunction pts) := by
+  unfold lebesgueFunction
+  exact continuous_finset_sum _ (fun i _ => (Polynomial.continuous _).abs)
+
+/-- The Lebesgue constant is always at least 1: Λ_n ≥ 1 for n ≥ 1.
+
+This is a fundamental lower bound in approximation theory. It follows from the
+partition-of-unity bound λ_n(x) ≥ 1 (`lebesgueFunction_ge_one`) together with the
+fact that, by continuity of λ_n on the compact interval [-1,1], the supremum
+defining Λ_n is a genuine supremum of a bounded-above set (not the junk value 0). -/
+theorem lebesgueConstant_ge_one (pts : InterpolationPoints n) (hn : 0 < n) :
+    lebesgueConstant pts ≥ 1 := by
+  -- The image of [-1,1] under the continuous λ_n is bounded above (compactness).
+  have hbdd : BddAbove (lebesgueFunction pts '' Set.Icc (-1 : ℝ) 1) :=
+    isCompact_Icc.bddAbove_image (lebesgueFunction_continuous pts).continuousOn
+  -- 0 ∈ [-1,1], so λ_n(0) lies in that image.
+  have h0 : (0 : ℝ) ∈ Set.Icc (-1 : ℝ) 1 := by norm_num [Set.mem_Icc]
+  have hmem : lebesgueFunction pts 0 ∈ lebesgueFunction pts '' Set.Icc (-1 : ℝ) 1 :=
+    ⟨0, h0, rfl⟩
+  -- Hence λ_n(0) ≤ Λ_n, while λ_n(0) ≥ 1.
+  have hle : lebesgueFunction pts 0 ≤ lebesgueConstant pts := by
+    unfold lebesgueConstant
+    rw [← sSup_image]
+    exact le_csSup hbdd hmem
+  calc (1 : ℝ) ≤ lebesgueFunction pts 0 := lebesgueFunction_ge_one pts hn 0
+    _ ≤ lebesgueConstant pts := hle
+
 /-
 **Error bound**: |L^n f(x) - f(x)| ≤ (1 + Λ_n) · best_approx_n(f).
 This shows Lebesgue constant controls interpolation quality.
