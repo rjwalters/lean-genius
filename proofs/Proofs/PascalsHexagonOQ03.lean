@@ -63,7 +63,9 @@ Mysticum):
   dihedral homomorphism `dihedralHomToSym6`).
 * `card_hexagon_labelings = 60` — follows from the previous two by
   Lagrange (proved).
-* `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02** (sorry).
+* `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02**: total,
+  defined via the canonical coset representative `lbl.out'` (the
+  representative-independence / full well-definedness remains future work).
 * `SteinerPoint`, `KirkmanPoint` — structures encoding the
   concurrence-triple data.
 * `steiner_count_eq_20`, `kirkman_count_eq_60` — main count statements
@@ -617,6 +619,114 @@ def permuteHexagon {C : Conic} (hex : InscribedHexagon C)
   hFvalid := hexVertex_valid hex (π 5)
 
 -- ============================================================
+-- PART 4c: Action of the Dihedral Generators on the Pascal Triple
+--          (OQ-03-OQ-02 well-definedness backbone)
+-- ============================================================
+
+/- The well-definedness of `pascalLine` rests on how the two dihedral
+   generators permute the three Pascal points `(P, Q, R)`.  Working in
+   homogeneous coordinates (`lineThrough = lineIntersection = crossProduct`),
+   antisymmetry of the cross product (`cross_anticomm`) gives the exact signs:
+
+     hexRot : (P, Q, R) ↦ (Q,  R, -P)
+     hexRev : (P, Q, R) ↦ (-Q, -P, R)
+
+   Each generator therefore permutes the set `{[P], [Q], [R]}` of *projective*
+   Pascal points (signs are invisible projectively).  Since `P, Q, R` are
+   collinear (`pascal_hexagon_theorem`), they span a single projective Pascal
+   line, which is consequently fixed by `hexRot`, `hexRev`, and hence by all of
+   `hexagonalGroup = ⟨hexRot, hexRev⟩ ≅ D₆`.  This is the geometric backbone of
+   the descent claim **OQ-03-OQ-02**.  (Promoting set-invariance of the three
+   *projective* points to literal equality of the spanned `ProjLine` value
+   additionally needs a notion of line-equality up to nonzero scalar together
+   with a nondegeneracy hypothesis, and is deferred — see the `pascalLine`
+   docstring below.) -/
+
+/-- `hexRot` sends the first Pascal point to the second: `P' = Q`. -/
+theorem pascalP_permuteHexagon_hexRot {C : Conic} (hex : InscribedHexagon C) :
+    pascalP (permuteHexagon hex hexRot) = pascalQ hex := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRot 0)) (hexVertex hex (hexRot 1)))
+        (lineThrough (hexVertex hex (hexRot 3)) (hexVertex hex (hexRot 4)))
+      = lineIntersection (lineThrough hex.B hex.C') (lineThrough hex.E hex.F)
+  rw [show hexRot 0 = 1 from by decide, show hexRot 1 = 2 from by decide,
+      show hexRot 3 = 4 from by decide, show hexRot 4 = 5 from by decide]
+  rfl
+
+/-- `hexRot` sends the second Pascal point to the third: `Q' = R`. -/
+theorem pascalQ_permuteHexagon_hexRot {C : Conic} (hex : InscribedHexagon C) :
+    pascalQ (permuteHexagon hex hexRot) = pascalR hex := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRot 1)) (hexVertex hex (hexRot 2)))
+        (lineThrough (hexVertex hex (hexRot 4)) (hexVertex hex (hexRot 5)))
+      = lineIntersection (lineThrough hex.C' hex.D) (lineThrough hex.F hex.A)
+  rw [show hexRot 1 = 2 from by decide, show hexRot 2 = 3 from by decide,
+      show hexRot 4 = 5 from by decide, show hexRot 5 = 0 from by decide]
+  rfl
+
+/-- `hexRot` sends the third Pascal point to the negated first: `R' = -P`.
+    The lone sign comes from one `cross_anticomm`. -/
+theorem pascalR_permuteHexagon_hexRot {C : Conic} (hex : InscribedHexagon C) :
+    pascalR (permuteHexagon hex hexRot) = -(pascalP hex) := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRot 2)) (hexVertex hex (hexRot 3)))
+        (lineThrough (hexVertex hex (hexRot 5)) (hexVertex hex (hexRot 0)))
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  rw [show hexRot 2 = 3 from by decide, show hexRot 3 = 4 from by decide,
+      show hexRot 5 = 0 from by decide, show hexRot 0 = 1 from by decide]
+  show lineIntersection (lineThrough hex.D hex.E) (lineThrough hex.A hex.B)
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  exact (cross_anticomm (lineThrough hex.A hex.B) (lineThrough hex.D hex.E)).symm
+
+/-- `hexRev` sends the first Pascal point to the negated second: `P' = -Q`.
+    Both inner factors flip sign (cancelling under bilinearity) and one outer
+    `cross_anticomm` remains; proved by coordinate expansion. -/
+theorem pascalP_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
+    pascalP (permuteHexagon hex hexRev) = -(pascalQ hex) := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRev 0)) (hexVertex hex (hexRev 1)))
+        (lineThrough (hexVertex hex (hexRev 3)) (hexVertex hex (hexRev 4)))
+      = -(lineIntersection (lineThrough hex.B hex.C') (lineThrough hex.E hex.F))
+  rw [show hexRev 0 = 5 from by decide, show hexRev 1 = 4 from by decide,
+      show hexRev 3 = 2 from by decide, show hexRev 4 = 1 from by decide]
+  show lineIntersection (lineThrough hex.F hex.E) (lineThrough hex.C' hex.B)
+      = -(lineIntersection (lineThrough hex.B hex.C') (lineThrough hex.E hex.F))
+  ext i
+  fin_cases i <;>
+    simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+    ring
+
+/-- `hexRev` sends the second Pascal point to the negated first: `Q' = -P`. -/
+theorem pascalQ_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
+    pascalQ (permuteHexagon hex hexRev) = -(pascalP hex) := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRev 1)) (hexVertex hex (hexRev 2)))
+        (lineThrough (hexVertex hex (hexRev 4)) (hexVertex hex (hexRev 5)))
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  rw [show hexRev 1 = 4 from by decide, show hexRev 2 = 3 from by decide,
+      show hexRev 4 = 1 from by decide, show hexRev 5 = 0 from by decide]
+  show lineIntersection (lineThrough hex.E hex.D) (lineThrough hex.B hex.A)
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  ext i
+  fin_cases i <;>
+    simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+    ring
+
+/-- `hexRev` fixes the third Pascal point: `R' = R`.  The two inner sign flips
+    cancel and no outer flip is incurred. -/
+theorem pascalR_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
+    pascalR (permuteHexagon hex hexRev) = pascalR hex := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRev 2)) (hexVertex hex (hexRev 3)))
+        (lineThrough (hexVertex hex (hexRev 5)) (hexVertex hex (hexRev 0)))
+      = lineIntersection (lineThrough hex.C' hex.D) (lineThrough hex.F hex.A)
+  rw [show hexRev 2 = 3 from by decide, show hexRev 3 = 2 from by decide,
+      show hexRev 5 = 0 from by decide, show hexRev 0 = 5 from by decide]
+  show lineIntersection (lineThrough hex.D hex.C') (lineThrough hex.A hex.F)
+      = lineIntersection (lineThrough hex.C' hex.D) (lineThrough hex.F hex.A)
+  ext i
+  fin_cases i <;>
+    simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+    ring
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
@@ -624,13 +734,22 @@ def permuteHexagon {C : Conic} (hex : InscribedHexagon C)
     hexagon `(A, B, C, D, E, F)` and a labeling `lbl ∈ HexagonLabeling`,
     a representative permutation `π : Fin 6 → Fin 6` rearranges the six
     vertices into a new cyclic ordering, whose opposite-side intersections
-    are collinear (by Pascal's theorem). The resulting Pascal line depends
-    only on the `D_6`-orbit of `π`.
+    `P, Q, R` are collinear (by Pascal's theorem). The Pascal line is the
+    line through two of those three Pascal points.
 
-    (Full definition + well-definedness deferred to **OQ-03-OQ-02**.) -/
+    The map is made *total* by evaluating it at the canonical coset
+    representative `lbl.out' : Equiv.Perm (Fin 6)` (`Quotient.out'`). The
+    `D_6`-invariance of the resulting projective line — i.e. that the value
+    is independent of the choice of representative — is the genuine
+    "well-definedness" content of **OQ-03-OQ-02**; its geometric backbone is
+    the generator-action of `hexRot`/`hexRev` on `{±P, ±Q, ±R}` (see the
+    `OQ-03-OQ-02` knowledge notes). Establishing that as a *projective* line
+    equality additionally needs equality of lines up to a nonzero scalar plus
+    a nondegeneracy hypothesis, and is deferred. -/
 noncomputable def pascalLine
     (C : Conic) (hex : InscribedHexagon C) (lbl : HexagonLabeling) : ProjLine :=
-  sorry
+  lineThrough (pascalP (permuteHexagon hex lbl.out'))
+              (pascalQ (permuteHexagon hex lbl.out'))
 
 /-- **Hexagrammum Mysticum (existence statement)**: the assignment
     `HexagonLabeling → ProjLine` from a hexagon labeling to its Pascal

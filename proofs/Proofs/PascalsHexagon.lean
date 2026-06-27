@@ -1150,9 +1150,9 @@ private lemma conicQF_eq_mathlibQF (C : Conic) (p : Fin 3 → ℝ) :
     4. Therefore `(associated Q).SeparatingLeft`. -/
 private lemma mathlibQF_separatingLeft (C : Conic) (hC_sym : C.symmetric)
     (hC_nd : Conic.nondegenerate C) :
-    (associated (R := ℝ) (Matrix.toQuadraticMap' C)).SeparatingLeft := by
+    (QuadraticMap.associated (Matrix.toQuadraticMap' C)).SeparatingLeft := by
   -- Step 1: Show associated Q = Matrix.toLinearMap₂' ℝ C using symmetry of C
-  have h_assoc : associated (R := ℝ) (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
+  have h_assoc : QuadraticMap.associated (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
     unfold Matrix.toQuadraticMap'
     exact QuadraticMap.associated_left_inverse (fun x y => by
       -- Prove: (Matrix.toLinearMap₂' ℝ C) x y = (Matrix.toLinearMap₂' ℝ C) y x
