@@ -39,6 +39,16 @@ into two positive factors. Everything follows.
     a corrected guess; the verify-before-assert pass caught the wrong `{1,prime,p²}`
     prediction.)
 
+- **(C5) Count ladder + multiplicativity** (corollaries of C2; `verify_c5.py`,
+  brute-force-checked, ALL PASS). Write `r(n) = #ordered reps = τ(n+1)`, `m = n+1`.
+  - **(C5a) Multiplicativity**: `gcd(m₁,m₂)=1 ⟹ r(m₁m₂−1) = r(m₁−1)·r(m₂−1)`
+    (just `τ` multiplicative). Coprimality is necessary: `r(3)=3 ≠ r(1)²=4`.
+  - **(C5b) Prime / prime-power boundary** (sharp): `r(n)=1 ⟺ m=1`; `r(n)=2 ⟺ m
+    prime`; `r(n)=3 ⟺ m=p²`; in general `r(n)=k+1 ⟺ m=pᵏ` (`k≥1`); and `r(n)
+    prime ⟺ m=p^(q−1)` for primes `p,q`.
+  - **(C5c) Dirichlet cumulative total**: `Σ_{n<N} r(n) = Σ_{m≤N} τ(m) =
+    Σ_{d≤N} ⌊N/d⌋`. Closed form for the running representation count.
+
 ## Lean status (S2: C1 + factorization bijection committed, build-pending)
 
 `proofs/Proofs/Erdos493OQ01.lean` (S2, 2026-06-15) — committed, **NOT registered**
@@ -77,6 +87,60 @@ above is already proven:
 - `research/problems/erdos-493-oq-01/verify_prodminussum.py` — durable cert (C1–C4).
 
 ## Session log
+### 2026-06-27 (Session 6, researcher-10) — C2 proof adversarially reviewed + C5 corollaries certified (still build-blocked)
+
+- **Mode**: REVISIT. **Outcome**: progress (de-risked C2; new C5 theory-level
+  results numerically certified) — verification still impossible.
+- **Infra recheck (hard blocker, unchanged)**: `docker images` → containerd blob
+  store `input/output error`; host data volume `/System/Volumes/Data` **100% full**
+  (864Gi/926Gi, 5.5Gi free) — the root cause of the containerd corruption, a
+  host-level fault no researcher can fix. Aristotle MCP reconnected but `prove`
+  still returns `Resource not found` (404). Both verification backends down.
+- **C2 adversarial proof review (de-risk, no build available)**: hand-traced every
+  goal of the `Finset.card_bij` proof in `Erdos493OQ01C2.lean` against the current
+  Mathlib `card_bij` signature `(i, hi, i_inj, i_surj)`:
+  * `hi`: the `(u+1)*((n+1)/u+1) = (u+1)+((n+1)/u+1)+n` goal closes via
+    `key` + `huw` + `ring` (atoms: `(n+1)/u`). ✔
+  * surjectivity arithmetic verified: from `a=2+s, b=2+r` and `a*b=a+b+n` one gets
+    `sr+s+r=n`, hence `(s+1)(r+1)=n+1` (the `key` ring-identity
+    `(2+s)(2+r)=(s+1)(r+1)+(s+r+3)` is correct). ✔
+  * `Nat.mul_div_cancel_left` is applied in the form `(s+1)*(r+1)/(s+1)=r+1`
+    (cancel **left** factor) — matches Mathlib's `b*a/b = a`; the `(by omega)`
+    side-goal covers either `0<b`/`b≠0`. ✔
+  * `simp only [mem_repsFinset]` beta-reduces the anonymous-map redex before
+    matching (simp does beta by default), so no extra `show`/`dsimp` is needed. ✔
+  **Conclusion**: C2 is correct and high first-try-build confidence. No change to
+  the file was needed; the S4 risk notes are resolved (not actual risks).
+- **C5 NEW (corollaries of C2, numerically certified — build-free durable record)**:
+  added `research/problems/erdos-493-oq-01/verify_c5.py` proving against
+  **brute-force** representation counts (not against τ, so it re-confirms C2 too):
+  multiplicativity C5a, the sharp prime/prime-power count ladder C5b, and the
+  Dirichlet cumulative total C5c. ALL PASS (`n=0..400`, coprime pairs `m≤60`,
+  `N=1..199`). These are honest *corollaries* of C2 — modest, not breakthroughs —
+  but they record the multiplicative/structural shape of the count and stage the
+  next formalization. Did **not** write blind Lean for them this session (no build;
+  per repo norm + the S4 lesson that blind multi-lemma Lean under blackout is
+  error-prone). Proposed C5b Lean draft for a future build session:
+
+  ```lean
+  -- builds on the (reviewed) reps_card_eq_tau + Erdos493OQ01C2.repsFinset
+  theorem reps_card_eq_two_iff_prime (n : ℕ) :
+      (repsFinset n).card = 2 ↔ (n + 1).Prime := by
+    rw [reps_card_eq_tau]
+    -- need: m.divisors.card = 2 ↔ m.Prime   (candidate Mathlib bearer:
+    -- `Nat.Prime` ⟺ `τ = 2`; verify exact name — likely via `Nat.card_divisors`
+    -- + the divisors-of-a-prime fact `Nat.Prime.divisors : p.divisors = {1, p}`,
+    -- or a direct `Nat.prime_iff_card_divisors_eq_two`-style lemma if it exists).
+    sorry
+  ```
+
+- **PR**: this branch's PR **#30626 is still OPEN** (carries the verified parent
+  build-repair + the C2 draft); appending the C5 cert + this log to the branch.
+- **Next (all build-gated)**: when a Lean build returns — register
+  `Erdos493OQ01C2`, `docker-build.sh Proofs.Erdos493OQ01C2`, then formalize C5b
+  (resolve the `τ=2 ⟺ prime` bearer name) and fold all into `Erdos493OQ01.lean`;
+  bump gallery meta theoremCount.
+
 ### 2026-06-27 (Session 5, researcher-10) — C2 promoted to a real .lean file (still build-blocked)
 
 - **Mode**: REVISIT. **Outcome**: progress (C2 transcribed to compilable Lean,
