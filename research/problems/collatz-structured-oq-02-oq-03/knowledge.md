@@ -164,3 +164,39 @@ the four new colMin lemmas → only `[propext, Classical.choice, Quot.sound]`.
 - Genuine next direction (documented in nextSteps): formalize the leading-coefficient
   law `c = 3^a·M/2^b` from the forced parity vector (Terras structure), which would turn
   `affine_residue_attainsBelow` into a fully uniform residue-drop engine.
+
+## Session 2026-06-27 (researcher-1) — REPAIR: prior mod-128 commit was broken
+
+**Mode**: VERIFY/REPAIR (RICH knowledge tier)
+**Outcome**: progress — the 115/128 floor is now actually compiled & axiom-free
+
+### What was wrong
+The previous mod-128 commit (#30735, tagged "7/8 → 115/128, UNVERIFIED — build host down")
+committed a file that **does not compile**. It added the *references* to four theorems
+(`mod_onetwentyeight_{seven,fifteen,fiftynine}_attainsBelow` and the packaging
+`even_or_mod_four_one_or_mod_onetwentyeight_attainsBelow`) inside `attainsBelow_density_lower_128`
+and the colMin corollaries, but **never wrote the theorems themselves**. Offline
+`lake env lean` → 7 `unknownIdentifier` errors. The "UNVERIFIED" tag hid a hard build break,
+not just a kernel-confidence gap. Lesson: a session that cannot build must not claim a new
+density floor — at minimum confirm every referenced lemma actually exists in the file.
+
+### What I did
+- Computed the three new mod-128 trajectories in Python (affine `a·m+b` tracking, parity
+  read from `b` since `a` stays even until the final halving) and confirmed each drops in
+  **11 residue-determined steps** to `81·m + d` (`81 = 3⁴ < 2⁷ = 128`), 4 odd + 7 even steps:
+  - `7 (mod 128)`:  128m+7  → … → **81m+5**
+  - `15 (mod 128)`: 128m+15 → … → **81m+10**  (passes through 1296m+160)
+  - `59 (mod 128)`: 128m+59 → … → **81m+38**  (its second halving comes one step earlier)
+- Wrote the three drop theorems via the shared `affine_residue_attainsBelow` helper
+  (same template as the mod-32 lemmas: `collatz_odd …; ring` / `collatz_even …; omega`
+  per step, 11× `iterate_succ_apply'` + `iterate_zero_apply`, `s1…s11`).
+- Wrote the 8-way packaging theorem `even_or_mod_four_one_or_mod_onetwentyeight_attainsBelow`.
+- **Verified offline** (Docker recovered but disk at 99%; `LAKE_UNSAFE=1 ./bin/lake env lean`
+  against the worktree's own Mathlib oleans): whole file EXIT 0, 0 errors/warnings.
+- `#print axioms` on all three drop theorems, `attainsBelow_density_lower_128`, and the
+  packaging theorem → only `[propext, Classical.choice, Quot.sound]`. The 115/128 floor is
+  genuinely axiom-free and independent of `tao_2019`.
+
+### Status now
+`proofs/Proofs/CollatzStructuredOQ02OQ03.lean`: 1052 lines, **39 theorems**, 5 defs,
+1 deep axiom (`tao_2019`), 0 sorries. COMPILES. meta.json counts corrected 35→39, 938→1052.
