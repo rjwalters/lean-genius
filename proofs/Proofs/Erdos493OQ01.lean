@@ -201,4 +201,139 @@ theorem reps_card_eq_one_iff (n : ℕ) :
   · rintro rfl
     simp [Nat.divisors_one]
 
+/-! ## Part III: Unordered representation count
+
+The ordered count `reps_card_eq_tau` (C2) overcounts each unordered representation
+`{a, b}` twice, except the diagonal `a = b` (which exists exactly when `n + 1` is a
+perfect square). The swap `(a, b) ↦ (b, a)` is an involution of `repsFinset n`, so a
+standard inclusion–exclusion gives the exact unordered count. This realises the
+`⌈τ(n+1)/2⌉` corollary advertised in the `reps_card_eq_tau` docstring as a verified
+identity, sharpening the *uniqueness* statement (C5) into a full *count*. -/
+
+/-- The `Finset` of **unordered** representations: one canonical ordered pair `(a, b)`
+with `a ≤ b` per unordered representation `{a, b}` of `n = a*b - (a+b)`. -/
+def unorderedRepsFinset (n : ℕ) : Finset (ℕ × ℕ) :=
+  (repsFinset n).filter (fun p => p.1 ≤ p.2)
+
+/-- `repsFinset n` is closed under swapping the two parts (the defining identity
+`a*b = a+b+n` is symmetric). -/
+theorem mem_repsFinset_swap {n a b : ℕ} :
+    (a, b) ∈ repsFinset n ↔ (b, a) ∈ repsFinset n := by
+  simp only [mem_repsFinset]
+  constructor
+  · rintro ⟨ha, hb, h⟩; exact ⟨hb, ha, by rw [Nat.mul_comm]; omega⟩
+  · rintro ⟨hb, ha, h⟩; exact ⟨ha, hb, by rw [Nat.mul_comm]; omega⟩
+
+/-- The number of **diagonal** representations `(a, a)` is `1` if `n + 1` is a perfect
+square and `0` otherwise. A diagonal `a = b` forces `(a-1)² = n+1`. -/
+theorem diag_card (n : ℕ) :
+    ((repsFinset n).filter (fun p => p.1 = p.2)).card
+      = if IsSquare (n + 1) then 1 else 0 := by
+  by_cases hsq : IsSquare (n + 1)
+  · rw [if_pos hsq]
+    obtain ⟨k, hk⟩ := hsq
+    -- hk : n + 1 = k * k
+    have hk1 : 1 ≤ k := by
+      rcases Nat.eq_zero_or_pos k with rfl | hpos
+      · omega
+      · exact hpos
+    rw [Finset.card_eq_one]
+    refine ⟨(k + 1, k + 1), ?_⟩
+    ext ⟨a, b⟩
+    simp only [Finset.mem_filter, mem_repsFinset, Finset.mem_singleton, Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨⟨ha1, _⟩, ⟨_, _⟩, hprod⟩, hab⟩
+      subst hab
+      obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le ha1
+      -- hprod : (2 + c) * (2 + c) = (2 + c) + (2 + c) + n
+      have hn : n + 1 = (c + 1) * (c + 1) := by
+        have hexp : (2 + c) * (2 + c) = (c + 1) * (c + 1) + (2 * c + 3) := by ring
+        have hr : (2 + c) + (2 + c) + n = 2 * c + 4 + n := by ring
+        rw [hexp, hr] at hprod; omega
+      have hsqs : (c + 1) * (c + 1) = k * k := by rw [← hn]; exact hk
+      have hck : c + 1 = k := by
+        rcases lt_trichotomy (c + 1) k with h | h | h
+        · exact absurd hsqs (Nat.mul_self_lt_mul_self h).ne
+        · exact h
+        · exact absurd hsqs (Nat.mul_self_lt_mul_self h).ne'
+      exact ⟨by omega, by omega⟩
+    · rintro ⟨rfl, rfl⟩
+      have hkk : k ≤ k * k := by nlinarith [hk1]
+      refine ⟨⟨⟨by omega, by omega⟩, ⟨by omega, by omega⟩, ?_⟩, rfl⟩
+      have hexp : (k + 1) * (k + 1) = k * k + 2 * k + 1 := by ring
+      rw [hexp, ← hk]; omega
+  · rw [if_neg hsq]
+    rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+    rintro ⟨a, b⟩ hmem hab
+    simp only at hab
+    subst hab
+    rw [mem_repsFinset] at hmem
+    obtain ⟨⟨ha1, _⟩, _, hprod⟩ := hmem
+    obtain ⟨c, rfl⟩ := Nat.exists_eq_add_of_le ha1
+    refine hsq ⟨c + 1, ?_⟩
+    have hexp : (2 + c) * (2 + c) = (c + 1) * (c + 1) + (2 * c + 3) := by ring
+    have hr : (2 + c) + (2 + c) + n = 2 * c + 4 + n := by ring
+    rw [hexp, hr] at hprod; omega
+
+/-- **Involution count.** Twice the number of unordered representations equals the
+ordered count plus the diagonal correction. Proof: the swap `(a,b) ↦ (b,a)` is an
+involution of `repsFinset n`; writing `L = {a ≤ b}`, `G = {b ≤ a}` we have
+`L ∪ G = repsFinset n`, `L ∩ G = {a = b}`, and `|L| = |G|` via the swap, so
+`|s| + |diag| = |L| + |G| = 2|L|`. -/
+theorem two_mul_unordered_card (n : ℕ) :
+    2 * (unorderedRepsFinset n).card
+      = (repsFinset n).card + ((repsFinset n).filter (fun p => p.1 = p.2)).card := by
+  classical
+  have hunion :
+      (repsFinset n).filter (fun p => p.1 ≤ p.2)
+        ∪ (repsFinset n).filter (fun p => p.2 ≤ p.1) = repsFinset n := by
+    ext ⟨x, y⟩
+    simp only [Finset.mem_union, Finset.mem_filter]
+    constructor
+    · rintro (⟨hm, _⟩ | ⟨hm, _⟩) <;> exact hm
+    · intro hm
+      rcases le_total x y with h | h
+      · exact Or.inl ⟨hm, h⟩
+      · exact Or.inr ⟨hm, h⟩
+  have hinter :
+      (repsFinset n).filter (fun p => p.1 ≤ p.2)
+        ∩ (repsFinset n).filter (fun p => p.2 ≤ p.1)
+        = (repsFinset n).filter (fun p => p.1 = p.2) := by
+    ext ⟨x, y⟩
+    simp only [Finset.mem_inter, Finset.mem_filter]
+    constructor
+    · rintro ⟨⟨hm, h1⟩, ⟨_, h2⟩⟩; exact ⟨hm, le_antisymm h1 h2⟩
+    · rintro ⟨hm, h⟩; exact ⟨⟨hm, h.le⟩, ⟨hm, h.ge⟩⟩
+  have himg :
+      (repsFinset n).filter (fun p => p.2 ≤ p.1)
+        = Finset.image Prod.swap ((repsFinset n).filter (fun p => p.1 ≤ p.2)) := by
+    ext ⟨x, y⟩
+    simp only [Finset.mem_filter, Finset.mem_image, Prod.exists, Prod.swap_prod_mk,
+      Prod.mk.injEq]
+    constructor
+    · rintro ⟨hmem, hyx⟩
+      exact ⟨y, x, ⟨mem_repsFinset_swap.mp hmem, hyx⟩, rfl, rfl⟩
+    · rintro ⟨a, b, ⟨hmem, hab⟩, hbx, hay⟩
+      subst hbx; subst hay
+      exact ⟨mem_repsFinset_swap.mp hmem, hab⟩
+  have hcard_eq :
+      ((repsFinset n).filter (fun p => p.2 ≤ p.1)).card
+        = ((repsFinset n).filter (fun p => p.1 ≤ p.2)).card := by
+    rw [himg]; exact Finset.card_image_of_injective _ Prod.swap_injective
+  have key := Finset.card_union_add_card_inter
+      ((repsFinset n).filter (fun p => p.1 ≤ p.2))
+      ((repsFinset n).filter (fun p => p.2 ≤ p.1))
+  rw [hunion, hinter, hcard_eq] at key
+  simp only [unorderedRepsFinset]
+  omega
+
+/-- **Unordered representation count.** The number of *unordered* representations
+`{a, b}` of `n = a*b - (a+b)` (with `a, b ≥ 2`) satisfies
+`2 · (count) = τ(n+1) + [n+1 is a perfect square]`, i.e. the count is `⌈τ(n+1)/2⌉`.
+This is the exact form of the corollary advertised in `reps_card_eq_tau` (C2). -/
+theorem two_mul_unorderedReps_card (n : ℕ) :
+    2 * (unorderedRepsFinset n).card
+      = (n + 1).divisors.card + (if IsSquare (n + 1) then 1 else 0) := by
+  rw [two_mul_unordered_card, reps_card_eq_tau, diag_card]
+
 end Erdos493

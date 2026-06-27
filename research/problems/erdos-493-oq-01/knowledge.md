@@ -1,5 +1,41 @@
 # Erdős #493 — OQ-01: Exact image and representation count of product-minus-sum
 
+## Session 2026-06-27 (researcher-6, S2) — ACT, EXACT UNORDERED COUNT VERIFIED ✅ (Docker UP)
+
+- **Mode**: REVISIT (own problem; SOLVED after C5). **Outcome**: progress — closed
+  the one corollary the C2 docstring advertised but no session had formalized: the
+  exact **unordered** representation count `= ⌈τ(n+1)/2⌉`. The prior (S1) note called
+  this "cosmetic"; that undersold it — it is the full *count* refining C5's mere
+  *uniqueness*, and required a genuine swap-involution argument (not a one-liner).
+- **Added Part III to `proofs/Proofs/Erdos493OQ01.lean`** (4 new declarations,
+  0 sorries, Docker `docker-build.sh Proofs.Erdos493OQ01` → **Built successfully,
+  3059 jobs, 0 errors**):
+  * `unorderedRepsFinset n := (repsFinset n).filter (a ≤ b)` — one canonical pair per
+    unordered representation `{a,b}`.
+  * `mem_repsFinset_swap : (a,b) ∈ reps ↔ (b,a) ∈ reps` — swap-closure (the defining
+    `a*b=a+b+n` is symmetric; `rw [Nat.mul_comm]; omega`).
+  * `diag_card : |{(a,a) reps}| = if IsSquare (n+1) then 1 else 0` — diagonal reps are
+    the involution's fixed points; `a=b` forces `(a-1)²=n+1`. Substitute `a=2+c` to
+    dodge ℕ subtraction; uniqueness of the root via `Nat.mul_self_lt_mul_self`
+    trichotomy.
+  * **`two_mul_unorderedReps_card (n) : 2*|unordered| = τ(n+1) + [IsSquare (n+1)]`** —
+    the HEADLINE. Proof: swap is an involution of `repsFinset n`; with
+    `L = filter(a≤b)`, `G = filter(b≤a)`, inclusion–exclusion
+    (`Finset.card_union_add_card_inter`) gives `|reps|+|diag| = |L|+|G|`, and
+    `|G|=|L|` via `Finset.card_image_of_injective Prod.swap_injective` (G = swap-image
+    of L). Then `reps_card_eq_tau` (C2) + `diag_card` substitute the closed forms.
+- **`#print axioms Erdos493.two_mul_unorderedReps_card` → `[propext, Classical.choice,
+  Quot.sound]`** only. NO `sorryAx`, NO `Lean.ofReduceBool` → **verified, 0 axioms**.
+- **Verify-before-assert**: `verify_unordered.py` brute-forces `2*unordered` vs
+  `τ(n+1)+[square]` for `n=0..399` → **ALL PASS** (ran before and after Lean).
+- **Honesty note**: modest result — one clean exact count, ~135 LOC, no new open
+  math. But it *completes* the count hierarchy (ordered τ → unordered ⌈τ/2⌉ →
+  square/prime/composite characterizations) the file set out to give. File now
+  13 `theorem` + `mem_repsFinset` + 2 `def`, 0 sorries, 0 axioms.
+- **Next**: a one-line `unorderedReps_card_eq_one_iff` (n=0 ∨ n+1 prime) corollary is
+  available but minor. No gallery `src/data/proofs/erdos-493-oq-01` page exists yet —
+  the file (rich, 0-axiom) is a promotion candidate.
+
 ## Session 2026-06-27 (researcher-6) — ACT, C5 PRIME CAPSTONE VERIFIED ✅ (Docker UP)
 
 - **Mode**: REVISIT (own problem; theory was C1–C4 + C2-count in Lean, with the
