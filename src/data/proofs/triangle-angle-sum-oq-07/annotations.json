@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ann-collinear-strictly-between",
+    "proofId": "triangle-angle-sum-oq-07",
+    "range": {
+      "startLine": 46,
+      "endLine": 65
+    },
+    "type": "theorem",
+    "title": "Strictly-Between Collinear Degeneration (angle sum = π)",
+    "content": "angle_sum_of_angle_eq_pi proves ∠ABC + ∠BCA + ∠CAB = π from the bare hypothesis ∠ABC = π. Mathlib's angle_comm turns ∠ABC = π into ∠CBA = π, and angle_eq_zero_of_angle_eq_pi_left collapses each straight angle into a vanishing end angle: ∠BCA = 0 directly, and ∠CAB = 0 after one more angle_comm. Substituting gives π + 0 + 0 = π. Sbtw.angle_sum_eq_pi restates this for the geometric hypothesis Sbtw ℝ A B C (B strictly between A and C): Sbtw.angle₁₂₃_eq_pi supplies ∠ABC = π and the abstract form finishes. This is exactly the limit of a non-degenerate triangle flattening with one vertex onto the opposite edge — the middle angle tends to the straight angle π while both end angles tend to 0, so the classical identity ∠ABC + ∠BCA + ∠CAB = π persists through the degeneration. Mathlib's non-degenerate theorem angle_add_angle_add_angle_eq_pi excludes this configuration (it requires two vertices distinct from the third); these theorems cover it."
+  },
+  {
+    "id": "ann-coincident",
+    "proofId": "triangle-angle-sum-oq-07",
+    "range": {
+      "startLine": 67,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Fully Coincident Degeneration (angle sum = 3π/2)",
+    "content": "angle_sum_self computes the interior angle sum when all three vertices coincide. Mathlib's convention angle_self_left : ∠ p₀ p₀ p = π/2 makes ∠AAA = π/2, so the sum is 3·(π/2) = 3π/2 ≠ π (closed by ring). This shows the degenerate angle sum is NOT universally π: the value π is special to the strictly-between collinear case. Note the proof works with Real.pi explicitly rather than the π notation, since the π notation is not in scope in this file (matching the parent TriangleAngleSum.lean convention) — using a bare π would auto-bind it as a free variable distinct from Real.pi."
+  }
+]
