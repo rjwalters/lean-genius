@@ -1,12 +1,69 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-08T03:50:00Z
-**Iteration**: 3
+**Phase**: SURVEY (obstruction scoped)
+**Since**: 2026-06-26T19:00:00Z
+**Iteration**: 4
 
 ## Current Focus
 
-Discharging the **8 routine cardinal-arithmetic sorries** in the
+Iteration 4 (researcher-4, 2026-06-26): scoped the tractability of the
+two remaining main-file sorries. **Conclusion: both are research-grade
+and blocked on missing Mathlib infrastructure — not a single-iteration
+target.** See "Iteration 4 Findings" below. No Lean changes made; the
+verified entry was deliberately left untouched rather than padded with
+speculative scaffolding sorries.
+
+## Iteration 4 Findings (researcher-4, 2026-06-26)
+
+Verified current ground truth across the three files:
+
+- `Erdos1168Problem.lean` (255 L): **2 real sorries**
+  (`base_case_under_gch`, `stepping_up`), 0 axioms, 14 thm / 9 def.
+  (A `grep sorry` reports 4 — two are `(sorry)` mentions inside the
+  Part V summary comment, not code.)
+- `Erdos1168OQ01.lean` (169 L): **0 sorries, 0 axioms** — the verified
+  ZFC pcf lower bound ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}. This is the
+  achievable, shipped half.
+- `Erdos1168Aristotle.lean` (68 L): **0 sorries** (the 8 routine
+  cardinal-arithmetic helpers were already discharged in iteration 3;
+  the lone `grep` hit is the docstring template line).
+
+**Key obstruction (the reason this is not a single-iteration win):**
+A full-tree search of the bundled Mathlib
+(`proofs/.lake/packages/mathlib`) for partition-relation / Ramsey /
+Sierpiński / Erdős–Rado infrastructure on infinite cardinals returns
+**nothing**. Mathlib has *no* `κ → (α)²_c` notation, no negative
+partition relations, no Sierpiński coloring, no Erdős–Rado theorem.
+Therefore:
+
+- `base_case_under_gch` (under GCH, ℵ_{n+1} ↛ (ℵ_{n+1}, n+3)²) must be
+  built from scratch: the Sierpiński/Erdős–Rado coloring of pairs of
+  2^{ℵ_n}=ℵ_{n+1} via a second (lexicographic) order, plus the counting
+  argument bounding homogeneous sets. Multi-session formalization.
+- `stepping_up` (Galvin–Hajnal cofinality-ω diagonalization assembling
+  the bad ℵ₀-coloring of ℵ_{ω+1} from per-level bad 2-colorings) needs
+  a concrete decomposition of ℵ_{ω+1} along the ℵ_n-filtration and the
+  divergence-index coloring. Also multi-session.
+
+Neither is reachable by Aristotle (the MCP proof-search agent is for
+routine Mathlib-backed lemmas, not research-grade set-theory
+constructions). Adding partial/speculative sorries for these into the
+otherwise-verified parent file would *degrade* the entry, so it was
+left as-is.
+
+**Recommended next attack (for a dedicated multi-session effort):**
+start the Sierpiński base case as a *separate* companion file
+(`Erdos1168SierpinskiAristotle.lean` or similar) so the verified parent
+is never put at risk; first formalize the abstract lemma "if a set
+carries two well-orders of types κ and κ⁺ then the agreement-coloring
+has no homogeneous set of size κ⁺", which is the GCH-free combinatorial
+kernel of `base_case_under_gch`.
+
+## (Iteration 3 record below)
+
+## Earlier Focus (iteration 3)
+
+Discharged the **8 routine cardinal-arithmetic sorries** in the
 Aristotle helper file `Proofs/Erdos1168Aristotle.lean` (Mathlib
 monotonicity, ℵ₀ bounds, cofinality of successor alephs).
 
