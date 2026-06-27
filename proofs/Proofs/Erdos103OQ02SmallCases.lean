@@ -32,6 +32,13 @@ hypothesis of Part 7 hold automatically (`Finite.of_subsingleton`), so the
 conditional results `hCong_pos_of_finite` and `hCong_strictly_exceeds_raw`
 specialize to `n = 1` with no side conditions (`h_one_lt_hCong_one`).
 
+The boundary case `n = 0` is computed too: there the index type is empty, so
+`PointConfig 0` is `Unique`, the optimal set is a single point, and the raw count
+is *not* degenerate — `h 0 = hCong 0 = 1` (`h_zero`, `hCong_zero`,
+`h_zero_eq_hCong_zero`). This pinpoints the threshold: `h n = 0 < hCong n` is a
+strictly `n ≥ 1` phenomenon, caused exactly by the translation freedom that is
+absent when there are no points to translate.
+
 This is a base-case computation, not a resolution: the Erdős question for `hCong`
 remains open for large `n`.
 
@@ -131,6 +138,77 @@ theorem h_one : h 1 = 0 := Erdos103OQ02.h_eq_zero 1 one_pos
 theorem h_one_lt_hCong_one : h 1 < hCong 1 := by
   rw [h_one, hCong_one]; omega
 
+-- ============================================================
+-- The boundary case `n = 0`: where the degeneracy does NOT yet occur
+-- ============================================================
+
+/-
+For `n = 0` there is **no** translation freedom: `PointConfig 0 = Fin 0 → ℝ × ℝ`
+has a *unique* element (it is a function out of the empty type), so the optimal
+set is a single point and the raw count is well-behaved: `h 0 = 1`. The
+congruence count agrees, `hCong 0 = 1`. This pinpoints the threshold — the raw
+count `h` only collapses to `0` once `n ≥ 1`, exactly when translation starts to
+produce infinitely many distinct optimal configurations.
+-/
+
+/-- For zero points the diameter is `0` (the `n < 2` branch again). -/
+theorem diameter_zero (P : PointConfig 0) : diameter 0 P = 0 := by
+  unfold diameter
+  rw [dif_neg (by decide : ¬ (0 : ℕ) ≥ 2)]
+
+/-- Every zero-point configuration is valid: there are no indices at all. -/
+theorem valid_zero (P : PointConfig 0) : IsValidConfig 0 P := by
+  intro i
+  exact i.elim0
+
+/-- The minimum diameter over zero points is `0`. -/
+theorem minDiameter_zero : minDiameter 0 = 0 := by
+  haveI : Nonempty {P : PointConfig 0 // IsValidConfig 0 P} :=
+    ⟨⟨default, valid_zero _⟩⟩
+  have hconst : minDiameter 0 = ⨅ _P : {P : PointConfig 0 // IsValidConfig 0 P}, (0 : ℝ) := by
+    unfold minDiameter
+    exact iInf_congr (fun P => diameter_zero P.val)
+  rw [hconst, ciInf_const]
+
+/-- Every zero-point configuration is optimal. -/
+theorem optimal_zero (P : PointConfig 0) : IsOptimal 0 P :=
+  ⟨valid_zero P, by rw [diameter_zero, minDiameter_zero]⟩
+
+/-- **The raw count is non-degenerate at `n = 0`: `h 0 = 1`.** Unlike every
+    `n ≥ 1`, the optimal subtype is a nonempty subsingleton (`PointConfig 0` is
+    `Unique`), so its cardinality is exactly `1`. -/
+theorem h_zero : h 0 = 1 := by
+  haveI : Nonempty {P : PointConfig 0 // IsOptimal 0 P} :=
+    ⟨⟨default, optimal_zero _⟩⟩
+  unfold h
+  exact Nat.card_unique
+
+/-- Any two zero-point configurations are congruent — indeed equal. -/
+theorem congruent_zero (P Q : PointConfig 0) : AreCongruent 0 P Q := by
+  have hPQ : P = Q := Subsingleton.elim P Q
+  rw [← hPQ]
+  exact congruent_refl 0 P
+
+/-- The optimal congruence quotient for `n = 0` is a subsingleton. -/
+instance optimalQuotient_subsingleton_zero :
+    Subsingleton (Quotient (OptimalSetoid 0)) :=
+  ⟨fun a b => Quotient.inductionOn₂ a b fun P Q =>
+    Quotient.sound (congruent_zero P.val Q.val)⟩
+
+/-- **`hCong 0 = 1`.** -/
+theorem hCong_zero : hCong 0 = 1 := by
+  haveI : Nonempty (Quotient (OptimalSetoid 0)) :=
+    optimalQuotient_nonempty_of_exists 0 ⟨default, optimal_zero _⟩
+  unfold hCong
+  exact Nat.card_unique
+
+/-- **At the boundary `n = 0` the two counts agree:** `h 0 = hCong 0 = 1`. The
+    degeneracy `h n = 0 < hCong n` is therefore a strictly `n ≥ 1` phenomenon —
+    it is precisely the translation freedom, absent when the index type is empty,
+    that breaks the raw count. -/
+theorem h_zero_eq_hCong_zero : h 0 = hCong 0 := by
+  rw [h_zero, hCong_zero]
+
 end Erdos103OQ02SmallCases
 
 -- Export main results
@@ -139,3 +217,6 @@ end Erdos103OQ02SmallCases
 #check @Erdos103OQ02SmallCases.congruent_one
 #check @Erdos103OQ02SmallCases.hCong_one
 #check @Erdos103OQ02SmallCases.h_one_lt_hCong_one
+#check @Erdos103OQ02SmallCases.h_zero
+#check @Erdos103OQ02SmallCases.hCong_zero
+#check @Erdos103OQ02SmallCases.h_zero_eq_hCong_zero
