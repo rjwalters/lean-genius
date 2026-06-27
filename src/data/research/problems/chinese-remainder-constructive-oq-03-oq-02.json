@@ -1,8 +1,8 @@
 {
   "slug": "chinese-remainder-constructive-oq-03-oq-02",
   "title": "The classic three-moduli RNS set {2^n-1, 2^n, 2^n+1} for computer arithmetic",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "VERIFIED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -33,14 +33,15 @@
     "iteration": 1,
     "focus": "Formalized the three-moduli set {2^n-1, 2^n, 2^n+1}: coprimality, exact dynamic range, balance, RNSBase instance, CRT step.",
     "blockers": [
-      "UNVERIFIED: Docker build host down (containerd I/O error + disk ~94% full, only ~815Mi free, no cached Lean image). Could not run lake/docker build. Proof constructed and manually reviewed but NOT machine-checked this session."
+      "None — verified. Earlier Docker/containerd outage resolved by compiling with `lake env lean` against the prebuilt Mathlib oleans."
     ],
-    "nextAction": "Re-run ./proofs/scripts/docker-build.sh Proofs.ChineseRemainderConstructiveOQ03OQ02 once the build host recovers; then add gallery meta.json if verified.",
+    "nextAction": "Done. Verified clean against Mathlib 4.26.0 (lake env lean; #print axioms = propext/Classical.choice/Quot.sound only). Gallery entry upgraded to status=verified, badge=original.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
       "approachesTried": 1
-    }
+    },
+    "progressSummary": "VERIFIED: 20-theorem self-contained file (0 sorry/axiom) compiles clean against Mathlib 4.26.0 via `lake env lean`; #print axioms reports only the three standard foundational axioms. Fixed two pre-existing compile errors before verifying: Nat.dvd_sub' (removed upstream) -> Nat.dvd_sub, and an ambiguous `h2 ▸ hdl` rewrite -> explicit `rw [h2] at hdl`. Gallery entry verified/original."
   },
   "knowledge": {
     "progressSummary": "PROGRESS: 20-theorem self-contained file complete (0 sorry/axiom), PR #30734 open. Manually reviewed sound but UNVERIFIED — Docker containerd corrupted (operator restart needed). Awaiting build host recovery to compile.",

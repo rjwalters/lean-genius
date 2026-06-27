@@ -3,16 +3,16 @@
     "id": "ann-coprime-consecutive",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 72,
-      "endLine": 88
+      "startLine": 73,
+      "endLine": 89
     },
     "type": "insight",
     "title": "Consecutive Integers Are Coprime — Two Channels for Free",
-    "content": "`coprime_consecutive a : Nat.Coprime a (a+1)` proves any two consecutive integers are coprime: `Nat.gcd a (a+1)` divides their difference `(a+1) − a = 1` (via `Nat.dvd_sub'` on the two `Nat.gcd_dvd_*` facts), so by `Nat.dvd_one` the gcd is 1. This single lemma immediately discharges two of the three coprimality obligations: `coprime_low_mid` (2ⁿ−1 and 2ⁿ) and `coprime_mid_high` (2ⁿ and 2ⁿ+1), since each pair is consecutive. `coprime_low_mid` only needs to rewrite `(2ⁿ−1)+1` back to `2ⁿ` using `Nat.sub_add_cancel` with `1 ≤ 2ⁿ`.",
+    "content": "`coprime_consecutive a : Nat.Coprime a (a+1)` proves any two consecutive integers are coprime: `Nat.gcd a (a+1)` divides their difference `(a+1) − a = 1` (via `Nat.dvd_sub` on the two `Nat.gcd_dvd_*` facts), so by `Nat.dvd_one` the gcd is 1. This single lemma immediately discharges two of the three coprimality obligations: `coprime_low_mid` (2ⁿ−1 and 2ⁿ) and `coprime_mid_high` (2ⁿ and 2ⁿ+1), since each pair is consecutive. `coprime_low_mid` only needs to rewrite `(2ⁿ−1)+1` back to `2ⁿ` using `Nat.sub_add_cancel` with `1 ≤ 2ⁿ`.",
     "mathContext": "For the Chinese Remainder Theorem to give a unique residue representative in $[0, M)$ the moduli must be pairwise coprime. In the set $\\{2^n-1, 2^n, 2^n+1\\}$ the middle modulus is consecutive with each neighbor, so $\\gcd(2^n-1, 2^n) = \\gcd(2^n, 2^n+1) = 1$ is automatic — only the two odd ends require a genuine argument.",
     "significance": "key",
     "relatedConcepts": [
-      "Nat.dvd_sub'",
+      "Nat.dvd_sub",
       "Nat.dvd_one",
       "Nat.gcd_dvd_left",
       "Nat.sub_add_cancel"
@@ -26,19 +26,19 @@
     "id": "ann-coprime-low-high",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 90,
-      "endLine": 109
+      "startLine": 91,
+      "endLine": 111
     },
     "type": "insight",
     "title": "The Only Hard Pair: 2ⁿ−1 and 2ⁿ+1",
-    "content": "`coprime_low_high n (hn : 1 ≤ n)` proves `Nat.Coprime (2ⁿ−1) (2ⁿ+1)`, the one nontrivial coprimality. The two moduli differ by 2, so `g = gcd(2ⁿ−1, 2ⁿ+1)` divides 2 (via `Nat.dvd_sub'` on the difference `(2ⁿ+1) − (2ⁿ−1) = 2`). But `g` cannot be 2: since `2 ∣ 2ⁿ` (from `dvd_pow_self`, n ≠ 0), `omega` derives `¬ 2 ∣ (2ⁿ−1)`. With `g ∣ 2` and 2 prime, `Nat.dvd_prime Nat.prime_two` forces `g = 1`. The `n ≥ 1` hypothesis is essential — it makes `2ⁿ` even and `2ⁿ−1` odd.",
+    "content": "`coprime_low_high n (hn : 1 ≤ n)` proves `Nat.Coprime (2ⁿ−1) (2ⁿ+1)`, the one nontrivial coprimality. The two moduli differ by 2, so `g = gcd(2ⁿ−1, 2ⁿ+1)` divides 2 (via `Nat.dvd_sub` on the difference `(2ⁿ+1) − (2ⁿ−1) = 2`). But `g` cannot be 2: since `2 ∣ 2ⁿ` (from `dvd_pow_self`, n ≠ 0), `omega` derives `¬ 2 ∣ (2ⁿ−1)`. With `g ∣ 2` and 2 prime, `Nat.dvd_prime Nat.prime_two` forces `g = 1`. The `n ≥ 1` hypothesis is essential — it makes `2ⁿ` even and `2ⁿ−1` odd.",
     "mathContext": "Two odd numbers differing by 2 (twin-like) share a common divisor only if it divides their difference 2 and is itself odd, hence 1. This is the modular-arithmetic reason the outer two channels of the balanced base never collide, completing pairwise coprimality of the whole triple.",
     "significance": "key",
     "relatedConcepts": [
       "Nat.dvd_prime",
       "Nat.prime_two",
       "dvd_pow_self",
-      "Nat.dvd_sub'"
+      "Nat.dvd_sub"
     ],
     "prerequisites": [
       "coprime_consecutive",
@@ -49,8 +49,8 @@
     "id": "ann-dynamic-range-formula",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 115,
-      "endLine": 129
+      "startLine": 117,
+      "endLine": 131
     },
     "type": "computation",
     "title": "Exact Dynamic Range: 2^(3n) − 2ⁿ",
@@ -72,8 +72,8 @@
     "id": "ann-three-moduli-base",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 135,
-      "endLine": 189
+      "startLine": 137,
+      "endLine": 191
     },
     "type": "definition",
     "title": "threeModuliBase: A Genuine RNS Base",
@@ -95,13 +95,13 @@
     "id": "ann-balance-crt-step",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 195,
-      "endLine": 212
+      "startLine": 197,
+      "endLine": 214
     },
     "type": "insight",
     "title": "Balance and the Two-Modulus CRT Reduction Step",
-    "content": "`threeModuli_balanced n (hn : 2 ≤ n) : 2ⁿ+1 ≤ 2·(2ⁿ−1)` shows the widest channel is below twice the narrowest (closed by `omega` from `4 ≤ 2ⁿ`) — the balance property that minimizes critical-path channel width per unit of dynamic range. `threeModuli_crt_step n (hn : 1 ≤ n) : Nat.Coprime ((2ⁿ−1)·2ⁿ) (2ⁿ+1)` packages the low–high and mid–high facts with `Nat.Coprime.mul`, giving precisely the coprimality needed to fold the first two residues into one modulo `(2ⁿ−1)·2ⁿ` and then reconstruct against `2ⁿ+1` by two-modulus CRT (the kernel of Garner's iterated algorithm).",
-    "mathContext": "Hardware RNS reconstruction proceeds pair-by-pair: combine channels 1 and 2 (coprime, so $\\gcd = 1$ and CRT applies) into a single residue mod $(2^n-1)2^n$, then combine with channel 3. The required hypothesis is $\\gcd((2^n-1)2^n,\\,2^n+1) = 1$, which `Nat.Coprime.mul` derives from the two underlying pair coprimalities. Balance ensures every such step has comparable channel widths, keeping the carry/critical path short.",
+    "content": "`threeModuli_balanced n (hn : 2 ≤ n) : 2ⁿ+1 ≤ 2·(2ⁿ−1)` shows the widest channel is below twice the narrowest (closed by `omega` from `4 ≤ 2ⁿ`) — the balance property that minimizes critical-path channel width per unit of dynamic range. `threeModuli_crt_step n (hn : 1 ≤ n) : Nat.Coprime ((2ⁿ−1)·2ⁿ) (2ⁿ+1)` packages the low–high and mid–high facts with `Nat.Coprime.mul_left`, giving precisely the coprimality needed to fold the first two residues into one modulo `(2ⁿ−1)·2ⁿ` and then reconstruct against `2ⁿ+1` by two-modulus CRT (the kernel of Garner's iterated algorithm).",
+    "mathContext": "Hardware RNS reconstruction proceeds pair-by-pair: combine channels 1 and 2 (coprime, so $\\gcd = 1$ and CRT applies) into a single residue mod $(2^n-1)2^n$, then combine with channel 3. The required hypothesis is $\\gcd((2^n-1)2^n,\\,2^n+1) = 1$, which `Nat.Coprime.mul_left` derives from the two underlying pair coprimalities. Balance ensures every such step has comparable channel widths, keeping the carry/critical path short.",
     "significance": "important",
     "relatedConcepts": [
       "Nat.Coprime.mul",
@@ -118,8 +118,8 @@
     "id": "ann-cross-checks",
     "proofId": "chinese-remainder-constructive-oq-03-oq-02",
     "range": {
-      "startLine": 214,
-      "endLine": 239
+      "startLine": 216,
+      "endLine": 241
     },
     "type": "example",
     "title": "Concrete Instances: {3,4,5}, {7,8,9}, {15,16,17}",
