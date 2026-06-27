@@ -3552,6 +3552,7 @@ import Proofs.LebesgueMeasureOQ06Aristotle
 import Proofs.LegendreFactorialFormulaOQ01
 import Proofs.LegendreGapEquivalence
 import Proofs.LegendrePartial
+import Proofs.LegendrePartialOQ04
 import Proofs.LegendrePrimeGapSqrtBoundSuffices
 import Proofs.LeibnizPi
 import Proofs.LeibnizPiOQ01OQ01
