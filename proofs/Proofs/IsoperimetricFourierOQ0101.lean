@@ -218,4 +218,55 @@ example :
       (fun _ => 0) (fun n => if n = 1 then 1 else 0) {1} = 1 := by
   norm_num [areaFourier, Finset.sum_singleton]
 
+/-!
+## Part VI: The exact equality locus
+
+`equality_implies_circle` (Part IV) records only one direction, and only its
+projection onto the higher modes `n ≥ 2`. The full picture is an *iff*: the
+isoperimetric inequality is saturated **iff every per-mode Hurwitz term
+vanishes**. Because `hurwitzTerm n = (n aₙ − βₙ)² + (n αₙ + bₙ)² + (n²−1)(βₙ²+bₙ²)`
+this pins the equality locus exactly — for the fundamental mode `n = 1` the last
+coefficient `n²−1` is `0`, so equality forces only `a₁ = β₁` and `α₁ = −b₁`
+(the genuine-circle relation), while every higher mode is killed outright.
+-/
+
+/-- **Equality locus (iff).** For Fourier data on modes `n ≥ 1`, the isoperimetric
+inequality is saturated (`E = 2·Ar`) **iff** every per-mode Hurwitz term is zero.
+This is the sharp two-sided form of Wirtinger's inequality; `equality_implies_circle`
+is the easy consequence for modes `n ≥ 2`. -/
+theorem equality_iff_terms_vanish (s : Finset ℕ) (hs : ∀ n ∈ s, 1 ≤ n) :
+    lengthEnergy a α b β s = 2 * areaFourier a α b β s ↔
+      ∀ n ∈ s, hurwitzTerm a α b β n = 0 := by
+  have hdef := hurwitz_deficit_identity a α b β s
+  constructor
+  · intro heq
+    have hsum : ∑ n ∈ s, hurwitzTerm a α b β n = 0 := by rw [← hdef]; linarith
+    exact (Finset.sum_eq_zero_iff_of_nonneg
+      fun n hn => hurwitzTerm_nonneg a α b β n (hs n hn)).mp hsum
+  · intro hz
+    have hsum : ∑ n ∈ s, hurwitzTerm a α b β n = 0 := Finset.sum_eq_zero hz
+    rw [hsum] at hdef; linarith
+
+/-- **The fundamental mode at equality is a circle.** When equality holds and the
+mode `n = 1` is present, its coefficients satisfy the exact circle relations
+`a₁ = β₁` and `α₁ = −b₁` (e.g. `x = a₁ cos s − b₁ sin s`, `y = b₁ cos s + a₁ sin s`,
+a circle of radius `√(a₁²+b₁²)`). Combined with `equality_implies_circle`, every
+mode `n ≥ 2` vanishes, so the saturating curve is exactly a circle. -/
+theorem fundamental_mode_circle_condition (s : Finset ℕ) (hs : ∀ n ∈ s, 1 ≤ n)
+    (heq : lengthEnergy a α b β s = 2 * areaFourier a α b β s) (h1 : 1 ∈ s) :
+    a 1 = β 1 ∧ α 1 = - b 1 := by
+  have hz := (equality_iff_terms_vanish a α b β s hs).mp heq 1 h1
+  have hzero : ((1 : ℝ) * a 1 - β 1) ^ 2 + ((1 : ℝ) * α 1 + b 1) ^ 2 = 0 := by
+    have hexp : hurwitzTerm a α b β 1
+        = ((1 : ℝ) * a 1 - β 1) ^ 2 + ((1 : ℝ) * α 1 + b 1) ^ 2 := by
+      simp only [hurwitzTerm]; norm_num
+    rw [hexp] at hz; exact hz
+  have s1 : ((1 : ℝ) * a 1 - β 1) ^ 2 = 0 :=
+    le_antisymm (by nlinarith [sq_nonneg ((1 : ℝ) * α 1 + b 1)]) (sq_nonneg _)
+  have s2 : ((1 : ℝ) * α 1 + b 1) ^ 2 = 0 :=
+    le_antisymm (by nlinarith [sq_nonneg ((1 : ℝ) * a 1 - β 1)]) (sq_nonneg _)
+  have q1 : (1 : ℝ) * a 1 - β 1 = 0 := (pow_eq_zero_iff (n := 2) (by norm_num)).mp s1
+  have q2 : (1 : ℝ) * α 1 + b 1 = 0 := (pow_eq_zero_iff (n := 2) (by norm_num)).mp s2
+  exact ⟨by linarith, by linarith⟩
+
 end IsoperimetricFourier
