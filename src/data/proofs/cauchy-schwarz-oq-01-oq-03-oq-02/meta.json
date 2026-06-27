@@ -76,7 +76,10 @@
     "summary": "The finite-dimensional Shannon-entropy framework and the maximum-entropy bound H(p) ≤ log n are formalized and fully machine-checked (0 axioms, 0 sorries), built directly on Mathlib's negMulLog concavity and Jensen's inequality. This is the provable entropy half of an entropic uncertainty relation.",
     "implications": "Provides reusable infrastructure for any future formalization of the entropic uncertainty principle. The full Maassen–Uffink bound is documented as blocked on Mathlib's absent interpolation theory (Hausdorff–Young / Riesz–Thorin); Deutsch's interpolation-free bound is the recommended next step once this infrastructure is extended.",
     "openQuestions": [
-      "Can Deutsch's entropic uncertainty bound H(p) + H(q) ≥ -2 ln((1+c)/2) — which avoids interpolation — be formalized on top of this entropy infrastructure?"
+      "Can Deutsch's entropic uncertainty bound H(p) + H(q) ≥ -2 ln((1+c)/2) — which avoids interpolation — be formalized on top of this entropy infrastructure?",
+      "Formalize the equality case of the maximum-entropy bound: prove that H(p) = log n forces p to be the uniform distribution (strict concavity of negMulLog), upgrading the ≤ to a characterization.",
+      "Once Mathlib gains Riesz–Thorin / Hausdorff–Young interpolation, complete the sharp Maassen–Uffink constant -2 ln c, closing the parent's full open question.",
+      "Relate this entropic ceiling to the parent's variance-based Robertson/Heisenberg bound: derive the qubit (n=2) entropic uncertainty relation explicitly and compare its strength to the variance product bound."
     ]
   },
   "leanFile": {
