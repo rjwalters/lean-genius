@@ -18,7 +18,7 @@
       "research"
     ],
     "proofRepoPath": "Proofs/PythagoreanTriplesOQ04OQ01OQ01.lean",
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "mathlibDependencies": [
@@ -54,7 +54,7 @@
     ],
     "dateAdded": "2026-06-26",
     "lineCount": 186,
-    "assumptions": "0 axioms, 0 sorries. Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms; no native_decide / Lean.ofReduceBool). The core biconditional Nat.eq_sq_add_sq_iff is from Mathlib; the all-primes repackaging, the necessity corollary, the prime-case recovery, and the worked composite witnesses are the contribution.",
+    "assumptions": "0 axioms, 0 sorries (core result via Mathlib bridge). Only the foundational axioms propext, Classical.choice, Quot.sound are used (verified via #print axioms; no native_decide / Lean.ofReduceBool). The hard analytic content — the core biconditional Nat.eq_sq_add_sq_iff — is from Mathlib and is obtained here by a direct rewrite (hence badge 'mathlib'); the all-primes repackaging, the necessity corollary, the prime-case recovery, and the worked composite witnesses are the contribution.",
     "theoremCount": 14,
     "definitionCount": 0
   },
