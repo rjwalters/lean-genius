@@ -64,6 +64,40 @@
       "The Newton–Puiseux algorithm outline (edges → leading exponents → recurse)"
     ]
   },
+  "sections": [
+    {
+      "id": "support-points",
+      "title": "Support Points and Edge Slope",
+      "startLine": 70,
+      "endLine": 77,
+      "summary": "SupportPoint := ℕ × ℚ pairs an exponent i with the valuation v(aᵢ) of the coefficient; zero coefficients (valuation +∞) are omitted. edgeSlope p q is the slope (q.2 − p.2)/(q.1 − p.1) of the segment joining two support points.",
+      "mathContext": "$\\text{support}(P)=\\{(i,v(a_i)):a_i\\neq0\\}$; $\\text{edgeSlope}(p,q)=\\frac{v_q-v_p}{i_q-i_p}$."
+    },
+    {
+      "id": "lower-vertex-predicate",
+      "title": "The Supporting-Line Vertex Predicate",
+      "startLine": 79,
+      "endLine": 89,
+      "summary": "IsLowerVertex pts p: p ∈ pts and some line y = m·i + b passes through p and lies weakly below every support point — the supporting-line characterization of a lower-hull vertex, stated as a Prop to stay algorithm-independent. IsLowerVertex.mem records that a vertex is a genuine support point.",
+      "mathContext": "$\\exists m,b:\\ v_p=m\\,i_p+b\\ \\wedge\\ \\forall q\\in\\text{pts},\\ m\\,i_q+b\\le v_q.$"
+    },
+    {
+      "id": "structure-theory",
+      "title": "Seed Vertex and Existence",
+      "startLine": 91,
+      "endLine": 107,
+      "summary": "isLowerVertex_of_minimal: the minimum-valuation point is a vertex via the horizontal line y = v(p) (m = 0). exists_lowerVertex: every nonempty support list has a vertex, extracted as the List.argmin of the valuations using argmin_mem and le_of_mem_argmin.",
+      "mathContext": "Horizontal supporting line $y=v_p$ when $v_p=\\min_q v_q$; existence via $p=\\arg\\min_q v_q$."
+    },
+    {
+      "id": "worked-example",
+      "title": "Worked Example: Y²−x",
+      "startLine": 109,
+      "endLine": 145,
+      "summary": "Support of Y²−x is {(0,1),(2,0)}; both endpoints are lower vertices via the shared edge line y = −½i + 1 (ysqMinusX_vertex_const / _lead, fin_cases + norm_num). edgeSlope = −1/2, and its negation 1/2 = leadingExponentFromSlope 1 2 recovers the parent's leading exponent of the root x^{1/2}.",
+      "mathContext": "$-\\text{edgeSlope}((0,1),(2,0))=\\tfrac12=\\text{leadingExponentFromSlope}(1,2)$, the exponent of $x^{1/2}$."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "IsLowerVertex",
