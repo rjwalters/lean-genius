@@ -64,6 +64,50 @@ self-contained file (imports only `Mathlib`):
 
 ---
 
+## Session 2026-06-27 (researcher-9, s02) — spectral step DISCHARGED
+
+**Mode**: REVISIT (continuation). **Outcome**: progress (verified, 0-axiom).
+
+### Context
+s01 reduced the hard Sylvester half to a single spectral statement: every symmetric conic of
+signature `(2,1)` is *congruent* to an indefinite diagonal. s01's "Next steps" named the exact
+route — `Matrix.IsHermitian.spectral_theorem` at `𝕜=ℝ`. This session executed it.
+
+### What I did (executed approach #2 from state.md)
+- `diagConic_eq_diagonal` — bridge `diagConic (e 0) (e 1) (e 2) = Matrix.diagonal e`
+  (`ext` + `fin_cases`), so the spectral theorem reads off in `Conic` shape.
+- `symm_congr_diagEigenvalues` — **the spectral step itself**: every Hermitian conic `C` satisfies
+  `Mᵀ · diag(λ₀,λ₁,λ₂) · M = C` with `M = Uᵀ` invertible, `λᵢ = C.eigenvalues i`. Proof:
+  `hC.spectral_theorem` gives `C = U·diag(ofReal∘λ)·star U`; over ℝ `RCLike.ofReal_real_eq_id`
+  kills `ofReal` and `conjTranspose_eq_transpose_of_trivial` turns `star U` into `Uᵀ`; take
+  `M := Uᵀ` so `Mᵀ = U`. Invertibility from `Unitary.coe_star_mul_self` ⇒ `det(star U)·det U = 1`.
+- `symm_eigen_indefinite_projEquiv_stdConic` — **capstone**: a symmetric conic with eigenvalues
+  `(+,+,−)` in index order is `projEquiv stdConic`, by chaining the spectral congruence through
+  `projEquiv_of_congr` + `diagConic_indefinite_projEquiv_stdConic'` + `projEquiv_trans`.
+
+### Key findings
+- The hard Sylvester half is now closed **for the ordered signature**. Only residue: the
+  elementary permutation reordering an arbitrary `(2,1)` signature into `(+,+,−)` — a permutation
+  matrix is orthogonal, hence a `projEquiv` (a future, purely bookkeeping session).
+- GOTCHA: `conjStarAlgAut_apply` lives in the `Unitary` namespace
+  (`Unitary.conjStarAlgAut_apply`); the modern `spectral_theorem` is phrased via `conjStarAlgAut`,
+  not a bare matrix product, so unfold it with that simp lemma first.
+- Verified: `docker-build.sh Proofs.PascalsHexagonIncomplete01OQ03OQ01` → `✔ Built`. Still
+  0 sorries, 0 `axiom`, no `native_decide` (rests on `propext`/`Choice`/`Quot.sound` only).
+- Did NOT need Aristotle — the spectral plumbing was tractable by hand in ~2 build cycles.
+
+### Files modified
+- `proofs/Proofs/PascalsHexagonIncomplete01OQ03OQ01.lean` (+3 declarations, docstrings)
+
+### Next steps
+- Permutation-reorder lemma: arbitrary signature `(2,1)` ⟹ `projEquiv stdConic` (drop the index
+  ordering). Build a permutation-matrix congruence; `det` of a permutation matrix is `±1 ≠ 0`.
+- Then connect back to the real open `sylvester_stdConic_of_isotropic` in `PascalsHexagon.lean`
+  (currently bit-rotted under 4.26.0): characterise "signature `(2,1)`" from "isotropic +
+  nondegenerate" (isotropy rules out the definite `(3,0)`/`(0,3)` cases).
+
+---
+
 ## Dead Ends
 
 [Approaches known not to work will be documented here]

@@ -44,9 +44,17 @@ A final section then *generalises off the diagonal*: the congruence pull-back la
 `conicQuadraticForm_projTransform` (`Q_C(M·p) = Q_{Mᵀ C M}(p)`), together with
 `projEquiv_of_congr` and `projEquiv_trans`, shows that the **entire congruence orbit** of an
 indefinite diagonal conic — every `Mᵀ · diag(a,b,c) · M` with `M` invertible — is `stdConic`-
-equivalent (`congrDiag_indefinite_projEquiv_stdConic`). This isolates the *only* remaining open
-part of the hard Sylvester half to a single spectral statement: that every symmetric conic of
+equivalent (`congrDiag_indefinite_projEquiv_stdConic`). This had isolated the remaining open part
+of the hard Sylvester half to a single spectral statement: that every symmetric conic of
 signature `(2,1)` is congruent to such a diagonal.
+
+A closing section now **discharges that spectral statement** via Mathlib's spectral theorem:
+`symm_congr_diagEigenvalues` congruence-diagonalises an arbitrary symmetric conic `C` as
+`Mᵀ · diag(λ₀,λ₁,λ₂) · M = C` (the `λᵢ` are `C`'s eigenvalues, `M = Uᵀ` the transposed
+eigenvector matrix, invertible because unitary). Chaining it through the congruence engine,
+`symm_eigen_indefinite_projEquiv_stdConic` shows a symmetric conic with eigenvalues `(+,+,−)`
+(in index order) is projectively equivalent to `stdConic` — the hard Sylvester half, closed
+modulo the elementary permutation that reorders an arbitrary signature `(2,1)` into `(+,+,−)`.
 
 The conic definitions below mirror the sibling files (reproduced locally because
 `PascalsHexagon.lean` is currently bit-rotted under the 4.26.0 toolchain).
@@ -240,6 +248,71 @@ theorem congrDiag_indefinite_projEquiv_stdConic (M : Conic) (a b c : ℝ)
     (projEquiv_of_congr hdet rfl)
     (diagConic_indefinite_projEquiv_stdConic' a b c ha hb hc)
 
+/-- The conic `diag(e 0, e 1, e 2)` is *exactly* `Matrix.diagonal e` for the eigenvalue vector
+    `e : Fin 3 → ℝ`. A bookkeeping bridge between the file's bespoke `diagConic` and Mathlib's
+    `Matrix.diagonal`, so the spectral theorem can be read off in `Conic` shape. -/
+theorem diagConic_eq_diagonal (e : Fin 3 → ℝ) :
+    diagConic (e 0) (e 1) (e 2) = Matrix.diagonal e := by
+  ext i j
+  fin_cases i <;> fin_cases j <;> simp [diagConic]
+
+/-- **Spectral congruence to the eigenvalue diagonal.** Every Hermitian (real symmetric) conic `C`
+    is congruent to the diagonal conic of its eigenvalues: there is an invertible `M` (the
+    transposed eigenvector matrix, in fact orthogonal) with
+    `Mᵀ · diag(λ₀,λ₁,λ₂) · M = C`, where `λᵢ = C.eigenvalues i`.
+
+    This is Mathlib's spectral theorem `A = U · diag(λ) · Uᵀ` (`U` unitary) repackaged in the
+    `Conic` matrix shape via `M := Uᵀ`. It is the genuine spectral content that was the *only*
+    remaining open part of the hard Sylvester half: combined with the eigenvalue *signs* it
+    diagonalises an arbitrary symmetric conic, precisely the hypothesis consumed by
+    `congrDiag_indefinite_projEquiv_stdConic`. -/
+theorem symm_congr_diagEigenvalues (C : Conic) (hC : C.IsHermitian) :
+    ∃ M : Conic, M.det ≠ 0 ∧
+      Mᵀ * diagConic (hC.eigenvalues 0) (hC.eigenvalues 1) (hC.eigenvalues 2) * M = C := by
+  classical
+  refine ⟨(hC.eigenvectorUnitary : Conic)ᵀ, ?_, ?_⟩
+  · -- the transposed eigenvector matrix is invertible: `det Uᵀ = det U ≠ 0` since `U` is unitary
+    rw [Matrix.det_transpose]
+    have h1 : (star (hC.eigenvectorUnitary : Conic)) * (hC.eigenvectorUnitary : Conic) = 1 :=
+      Unitary.coe_star_mul_self _
+    have h2 : (star (hC.eigenvectorUnitary : Conic)).det * (hC.eigenvectorUnitary : Conic).det = 1 := by
+      have hd := congrArg Matrix.det h1
+      rw [Matrix.det_mul, Matrix.det_one] at hd
+      exact hd
+    intro hzero
+    rw [hzero, mul_zero] at h2
+    exact one_ne_zero h2.symm
+  · -- the spectral identity `C = U · diag(λ) · Uᵀ`, in `Conic` shape with `M := Uᵀ`
+    have hspec := hC.spectral_theorem
+    rw [Unitary.conjStarAlgAut_apply] at hspec
+    have hofReal : (RCLike.ofReal ∘ hC.eigenvalues : Fin 3 → ℝ) = hC.eigenvalues := by
+      rw [RCLike.ofReal_real_eq_id]; rfl
+    rw [hofReal] at hspec
+    simp only [Matrix.star_eq_conjTranspose,
+      Matrix.conjTranspose_eq_transpose_of_trivial] at hspec
+    rw [diagConic_eq_diagonal, Matrix.transpose_transpose]
+    exact hspec.symm
+
+/-- **The hard Sylvester half, closed for ordered signature `(2,1)`.** A symmetric conic `C` whose
+    eigenvalues are positive, positive, negative (in index order `0,1,2`) is projectively equivalent
+    to `stdConic`. This is the full hard half of the Sylvester reduction modulo the elementary
+    reordering of eigenvalues: the spectral theorem (`symm_congr_diagEigenvalues`) congruence-
+    diagonalises `C`, then the constructive rescaling
+    (`diagConic_indefinite_projEquiv_stdConic'`) carries that indefinite diagonal onto `stdConic`,
+    and projective equivalence is transitive.
+
+    The general signature-`(2,1)` case (negative eigenvalue at an arbitrary index) reduces to this
+    by an additional permutation-matrix congruence, which is orthogonal and hence preserves
+    `projEquiv`. -/
+theorem symm_eigen_indefinite_projEquiv_stdConic (C : Conic) (hC : C.IsHermitian)
+    (h0 : 0 < hC.eigenvalues 0) (h1 : 0 < hC.eigenvalues 1) (h2 : hC.eigenvalues 2 < 0) :
+    projEquiv C stdConic := by
+  obtain ⟨M, hdet, hcongr⟩ := symm_congr_diagEigenvalues C hC
+  exact projEquiv_trans
+    (projEquiv_of_congr hdet hcongr)
+    (diagConic_indefinite_projEquiv_stdConic'
+      (hC.eigenvalues 0) (hC.eigenvalues 1) (hC.eigenvalues 2) h0 h1 h2)
+
 end PascalsHexagonIncomplete01OQ03OQ01
 
 /-!
@@ -267,10 +340,25 @@ The algebraic engine then lifts this off the diagonal:
   congruence orbit of an indefinite diagonal is `stdConic`-equivalent — the full generalisation of
   the already-diagonal result.
 
-This is the constructive part of the open Sylvester reduction
-`sylvester_stdConic_of_isotropic`; the remaining open part has been reduced to the single
+This was the constructive part of the open Sylvester reduction
+`sylvester_stdConic_of_isotropic`; the remaining open part had been reduced to the single
 spectral statement that every symmetric conic of signature `(2,1)` is congruent to an indefinite
 diagonal `diag(a,b,c)` (`a,b > 0`, `c < 0`).
+
+The closing section **discharges that spectral statement** through Mathlib's spectral theorem:
+
+- `diagConic_eq_diagonal`: bridges the bespoke `diagConic` to `Matrix.diagonal` of the eigenvalue
+  vector, so the spectral theorem reads off in `Conic` shape.
+- `symm_congr_diagEigenvalues`: every symmetric conic `C` is congruent to the diagonal of its
+  eigenvalues, `Mᵀ · diag(λ₀,λ₁,λ₂) · M = C`, with `M = Uᵀ` invertible (the eigenvector matrix
+  `U` is unitary, so `det Uᵀ = det U ≠ 0`).
+- `symm_eigen_indefinite_projEquiv_stdConic`: chaining the spectral congruence through
+  `projEquiv_of_congr`, `diagConic_indefinite_projEquiv_stdConic'`, and `projEquiv_trans`, a
+  symmetric conic with eigenvalue signature `(+,+,−)` (in index order) is `stdConic`-equivalent.
+
+This closes the hard Sylvester half for the ordered signature; the only residue is the elementary
+permutation carrying an arbitrary `(2,1)` signature into the order `(+,+,−)` (a permutation matrix
+is orthogonal, hence a `projEquiv`).
 
 **Status**: 0 sorries, 0 `axiom` declarations, no `native_decide`.
 -/
