@@ -142,4 +142,31 @@ theorem isComplete_iff_forall_not_independent (hsat : T.IsSatisfiable) :
     push_neg at hcon
     exact h φ ⟨hcon.1, hcon.2⟩
 
+/-! ## A calculus of independence
+
+Two structural lemmas that make `Independent` easy to manipulate: independence
+implies the underlying theory is satisfiable, and independence is symmetric in
+`φ` and `¬φ`. -/
+
+namespace Independent
+
+/-- **Independence implies consistency.**  If some sentence is independent of `T`
+    then `T` has a model.  An *inconsistent* theory entails every sentence
+    vacuously (`T ⊨ᵇ φ` for all `φ`), so it cannot leave anything undecided;
+    contrapositively, leaving `φ` undecided forces `T` to be satisfiable. -/
+theorem isSatisfiable (h : Independent T φ) : T.IsSatisfiable :=
+  h.satisfiable_insert.mono Set.subset_union_left
+
+/-- **A sentence is independent iff its negation is.**  Independence is symmetric
+    in `φ` and `¬φ`: neither is decided exactly when the other is not. -/
+theorem neg_iff : Independent T φ.not ↔ Independent T φ := by
+  rw [independent_iff_satisfiable_both, independent_iff_satisfiable_both,
+      isSatisfiable_insert_not_not_iff]
+  exact and_comm
+
+/-- The negation of an independent sentence is independent. -/
+theorem neg (h : Independent T φ) : Independent T φ.not := neg_iff.mpr h
+
+end Independent
+
 end GodelIncompletenessOQ03
