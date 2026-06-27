@@ -8,7 +8,7 @@
   "tractability": 8,
   "problemStatement": "Prove nonCrossingCount n = catalan n, where nonCrossingCount n (from ballot-problem-oq-04-oq-02) is the cardinality of non-crossing Finpartitions of Fin n. This is openQuestion[2] of the sibling entry: establish the Catalan convolution recurrence directly on the Finpartition model rather than via the full Dyck-word bijection.",
   "knowledge": {
-    "progressSummary": "PROGRESS: reduced the open counting statement to a single combinatorial recurrence. Base case (nonCrossingCount 0 = 1) and the strong-induction reduction (recurrence + base ⟹ nonCrossingCount = catalan) proved with 0 sorry; the recurrence itself remains 1 sorry (HARD, bijection-level).",
+    "progressSummary": "BLOCKED (infra): reduction to nonCrossingCount_recurrence stands (base + strong-induction reduction 0-sorry); the recurrence is the sole sorry and needs a first-return decomposition Equiv over non-crossing Finpartitions that Mathlib lacks (>1000 lines foundational). Session 2 confirmed Aristotle is DOWN (HTTP 404 on /api/v1/project; smoke test fails) — not retryable until the service returns.",
     "builtItems": [
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_zero : nonCrossingCount 0 = 1 (via nonCrossingCount_eq_card_of_n_le_three + Unique (Finpartition ⊥) + Fintype.card_unique). 0 sorry.",
       "BallotProblemOQ04OQ02OQ01.nonCrossingCount_eq_catalan : nonCrossingCount n = catalan n, proved by Nat.strong_induction_on, matching nonCrossingCount_recurrence against Mathlib catalan_succ' term-by-term over antidiagonal n. Depends on the recurrence sorry; reduction itself 0 sorry.",
@@ -18,7 +18,8 @@
       "Mathlib's catalan is defined by exactly the antidiagonal convolution (catalan_succ': catalan (n+1) = ∑ ij ∈ antidiagonal n, catalan ij.1 * catalan ij.2), so proving nonCrossingCount obeys the SAME recurrence + base reduces nonCrossingCount = catalan to a four-line strong induction. The entire difficulty is isolated into the one recurrence lemma.",
       "Base case n=0 is clean: univ : Finset (Fin 0) = ⊥, Finpartition ⊥ is Unique, all partitions are non-crossing for n ≤ 3, so nonCrossingCount 0 = 1 = catalan 0.",
       "The recurrence must be proved INDEPENDENTLY (combinatorially) — one cannot assume nonCrossingCount = catalan to get it, else the induction is circular. It is the genuine block/first-return decomposition of a non-crossing partition of a linearly ordered (n+1)-set.",
-      "This is exactly the path the sibling ballot-problem-oq-04-oq-02 flagged as its openQuestion[2] ('establish the Catalan recurrence directly on the Finpartition model ... without constructing the full bijection')."
+      "This is exactly the path the sibling ballot-problem-oq-04-oq-02 flagged as its openQuestion[2] ('establish the Catalan recurrence directly on the Finpartition model ... without constructing the full bijection').",
+      "Aristotle service outage confirmed 2026-06-26: prove_file and mcp-smoke-test.sh both 404 on https://aristotle.harmonic.fun/api/v1/project. Server-side endpoint retired/moved; skip Aristotle until smoke test passes."
     ],
     "mathlibGaps": [
       "Mathlib has no theory of non-crossing partitions at all (confirmed: no nonCrossing/NonCrossingPartition anywhere in Mathlib source). The recurrence has no Mathlib analogue to transport.",
@@ -484,5 +485,6 @@
     "ballot-problem-oq-04",
     "ballot-problem-oq-04-oq-02",
     "ballot-problem-oq-04-oq-02-oq-01"
-  ]
+  ],
+  "id": "ballot-problem-oq-04-oq-02-oq-01"
 }
