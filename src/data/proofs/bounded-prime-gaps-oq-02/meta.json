@@ -2,7 +2,7 @@
   "id": "bounded-prime-gaps-oq-02",
   "title": "Elliott–Halberstam Conjecture: Axiom-Free Level-of-Distribution Hierarchy",
   "slug": "bounded-prime-gaps-oq-02",
-  "description": "Formalizes the logical skeleton of the Elliott–Halberstam (EH) conjecture as an axiom-free level-of-distribution hierarchy. For an abstract discrepancy functional D θ x (modelling the worst-case prime-counting discrepancy summed over moduli q ≤ x^θ), we define the level-θ EH bound EHAtLevel, prove the level hierarchy (a bound at a higher level implies the bound at every lower level for a level-monotone D), define Bombieri–Vinogradov as the θ = 1/2 case and Elliott–Halberstam as all levels θ < 1, and prove EH ⟹ BV. EH itself is NOT axiomatized; only D's structural properties enter as per-theorem hypotheses, so every result is a purely logical/analytic consequence with no axiom, sorry, or native_decide. The zero functional witnesses non-vacuity.",
+  "description": "Formalizes the logical skeleton of the Elliott–Halberstam (EH) conjecture as an axiom-free level-of-distribution hierarchy. For an abstract discrepancy functional D θ x (modelling the worst-case prime-counting discrepancy summed over moduli q ≤ x^θ), we define the level-θ EH bound EHAtLevel, prove the level hierarchy (a bound at a higher level implies the bound at every lower level for a level-monotone D), define Bombieri–Vinogradov as the θ = 1/2 case and Elliott–Halberstam as all levels θ < 1, and prove EH ⟹ BV. A canonical concrete functional ∑_{q≤x^θ} f(q,x) realizes the hierarchy with level-monotonicity proved (not assumed). This session sharpens the hierarchy: (i) an EXACT additive decomposition discrepancySum θ₂ = discrepancySum θ₁ + discrepancyBand θ₁ θ₂, where the band is the discrepancy of the new moduli ⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋ that the larger level admits — upgrading monotonicity from inequality to identity; (ii) the EH-bound functional class at a fixed level is a CONVEX CONE (closed under addition and nonnegative scaling); and (iii) a quantitative converse EHAtLevel_discrepancySum_up — EH at level θ₁ plus an EH-type bound on the new-moduli band implies EH at the higher level θ₂, pinning the band as exactly the extra analytic input needed to raise the level of distribution. EH itself is NOT axiomatized; only D's structural properties enter as per-theorem hypotheses, so every result is a purely logical/analytic consequence with no axiom, sorry, or native_decide.",
   "meta": {
     "author": "Elliott–Halberstam (1968); Bombieri (1965), A.I. Vinogradov (1965); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Elliott%E2%80%93Halberstam_conjecture",
@@ -186,12 +186,19 @@
       "Real"
     ],
     "namespace": "BoundedPrimeGapsOQ02",
-    "lineCount": 226,
+    "lineCount": 349,
     "axiomCount": 0,
-    "theoremCount": 13,
-    "definitionCount": 6,
+    "theoremCount": 20,
+    "definitionCount": 7,
     "path": "Proofs/BoundedPrimeGapsOQ02.lean",
     "sorries": 0
   },
-  "sorries": 0
+  "sorries": 0,
+  "highlights": [
+    "Exact additive decomposition across levels: discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x (band = new moduli ⌊x^θ₁⌋<q≤⌊x^θ₂⌋), sharpening monotonicity to an identity",
+    "The EH-bound functional class at a fixed level is a convex cone: closed under addition (EHAtLevel_add) and nonnegative scaling (EHAtLevel_smul)",
+    "Quantitative converse (EHAtLevel_discrepancySum_up): EH at level θ₁ + EH-type bound on the new-moduli band ⟹ EH at higher level θ₂",
+    "Level hierarchy EHAtLevel_of_le: higher level ⟹ lower level for a level-monotone functional; EH ⟹ Bombieri–Vinogradov",
+    "Zero axioms, zero sorries, zero native_decide — only propext/Classical.choice/Quot.sound; EH itself not axiomatized"
+  ]
 }
