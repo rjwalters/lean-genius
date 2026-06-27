@@ -197,3 +197,55 @@ across the proof-irrelevant nonempty hypothesis; supplying both via `(by simp)`
 keeps the atoms syntactically equal so `ring` closes the telescope. Base case
 `edgeWidths [v] = []` falls through the catch-all `_ => []` pattern (single-cons
 does not match `p :: q :: rest`).
+
+---
+
+## Session 6 (2026-06-27, researcher-1): slope × width = drop (coupling the two halves)
+
+Extended 589→684 lines, +6 theorems, +1 def (all 0 sorries / 0 axioms;
+`#print axioms` on all 6 new results = propext/Classical.choice/Quot.sound only).
+
+Prior sessions built two *parallel but disjoint* halves: `edgeSlopes_pairwise_le`
+(the **valuation** half — sorted root valuations) and `sum_edgeWidths_eq_degree`
+(the **multiplicity** half — widths sum to the degree). They never met. This
+session **couples** them via the slope×width=drop identity.
+
+* `edgeSlope_mul_width` — per-edge: `edgeSlope p q * ((q.1)−(p.1)) = q.2 − p.2`.
+  The slope's denominator *is* the width, so the product recovers the vertical
+  drop. One line: `rw [edgeSlope, div_mul_cancel₀ _ hd]` with `hd` the nonzero
+  index gap from `sub_ne_zero.mpr (Nat.cast_injective ...)`.
+* `edgeDrops` + **`sum_edgeDrops`** — vertical-drop list of a chain and its
+  telescoping sum to `(getLast).2 − v.2`; exact `.2`-analogue of `sum_edgeWidths`
+  (same `List.getLast_cons (by simp)` + `ring` telescope).
+* **`zipWith_edgeSlopes_edgeWidths`** — along a chain of lower edges the
+  elementwise product `zipWith (·*·) (edgeSlopes vs) (edgeWidths vs) = edgeDrops vs`.
+  Structural induction mirroring `chain_edgeSlopes`/`edgeWidths_pos`; head step is
+  `edgeSlope_mul_width`, tail is the IH. `List.zipWith_cons_cons` lines the two
+  recursions up.
+* **`sum_slope_mul_width`** (capstone) — `Σ (edgeSlopeᵢ · widthᵢ) = (last).2 − v.2`,
+  i.e. the slope-weighted-by-width sum telescopes to the total vertical drop.
+  Two-line proof composing the list coupling with `sum_edgeDrops`.
+* **`neg_sum_slope_mul_width`** — `Σ (valuationᵢ · multiplicityᵢ) = v.2 − (last).2
+  = v(constant) − v(leading)`: the valuation of the product of all roots, read off
+  the two endpoints. The *multiplicative* counterpart of `sum_edgeWidths_eq_degree`
+  (which is the *additive* root count).
+* Worked example: `zipWith` products `[-2, 1]`, sum `-1` = drop `(0,2)→(3,1)`.
+
+**Why this matters.** The polygon now reads off, from the same vertex chain:
+(1) the root valuations *in sorted order* (`edgeSlopes_pairwise_le`),
+(2) the total *multiplicity* (`sum_edgeWidths_eq_degree`), and
+(3) the *sum of valuations with multiplicity* = valuation of the root product
+(`neg_sum_slope_mul_width`). That triple is the complete combinatorial bookkeeping
+of the Newton polygon theorem. Only the analytic bridge (slopes/widths ↔ actual
+roots of `P ∈ K((x))[Y]`) remains, still blocked on a valuation API for `K((x))[Y]`
+in Mathlib (S2-A's harder half).
+
+### GOTCHA: concurrent `git reset --hard` on the assigned worktree
+The `.loom/worktrees/researcher-1` worktree was being `reset --hard`'d to HEAD by a
+concurrent process every ~30s (reflog: "reset: moving to HEAD"), wiping every
+uncommitted edit before commit — and HEAD was *behind* origin/main (509-line
+session-4 file, missing session 5's edgeWidths). Fix: created a *separate* worktree
+`researcher-1-puiseux-oq03` off `origin/main` (the up-to-date 589-line base),
+symlinked its `proofs/.lake` → main repo `.lake` for prebuilt oleans, edited +
+committed there. Verify recipe unchanged otherwise:
+`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/PuiseuxTheoremOQ03.lean`.

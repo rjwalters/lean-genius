@@ -586,4 +586,99 @@ theorem threeVertex_sum_widths : (edgeWidths threeVertex).sum = 3 := by
 theorem threeVertex_widths_pos : ∀ w ∈ edgeWidths threeVertex, 0 < w :=
   edgeWidths_pos threeVertex_chain
 
+/-! ### Slope × width = vertical drop (the "product of roots" bookkeeping)
+
+The two halves built above run in parallel but never meet: `edgeSlopes` carries
+the root **valuations** (sorted, `edgeSlopes_pairwise_le`) and `edgeWidths` carries
+the root **multiplicities** (telescoping to the degree, `sum_edgeWidths_eq_degree`).
+This section couples them.  For each edge, `edgeSlope p q · (width p q)` collapses
+to the **vertical drop** `q.2 − p.2`, and summing along a chain telescopes to the
+total drop `(last).2 − (first).2`.
+
+In Newton–Puiseux terms this is the *multiplicative* counterpart of the
+degree-counting identity.  Each edge contributes `width` roots of valuation
+`−slope`, so `slope · width` is the total valuation those roots carry, and the
+sum over all edges is `Σ (valuationᵢ · multiplicityᵢ)` — the valuation of the
+product of all roots, i.e. `v(constant term) − v(leading term)` read straight off
+the endpoints of the polygon.  Where `sum_edgeWidths_eq_degree` says *how many*
+roots there are, this says *what their valuations sum to with multiplicity*. -/
+
+/-- **Per-edge slope × width identity.**  The edge slope times the horizontal
+width recovers the vertical drop, because the width is exactly the denominator of
+the slope.  Requires distinct indices so the width is nonzero. -/
+theorem edgeSlope_mul_width {p q : SupportPoint} (hne : p.1 ≠ q.1) :
+    edgeSlope p q * ((q.1 : ℚ) - (p.1 : ℚ)) = q.2 - p.2 := by
+  have hd : (q.1 : ℚ) - (p.1 : ℚ) ≠ 0 :=
+    sub_ne_zero.mpr fun h => hne (Nat.cast_injective h).symm
+  rw [edgeSlope, div_mul_cancel₀ _ hd]
+
+/-- The list of vertical drops along a chain of support points: the rise
+`q.2 − p.2` of each consecutive pair.  `edgeDrops [v₀, …, vₙ]
+= [v₁.2 − v₀.2, …, vₙ.2 − vₙ₋₁.2]`. -/
+def edgeDrops : List SupportPoint → List ℚ
+  | p :: q :: rest => (q.2 - p.2) :: edgeDrops (q :: rest)
+  | _ => []
+
+/-- **Telescoping drop identity.**  The vertical drops along any vertex chain sum
+to the total drop from the first vertex to the last.  Same telescoping induction as
+`sum_edgeWidths`, with the `y`-coordinate in place of the `x`-coordinate. -/
+theorem sum_edgeDrops : ∀ (v : SupportPoint) (vs : List SupportPoint),
+    (edgeDrops (v :: vs)).sum = ((v :: vs).getLast (by simp)).2 - v.2
+  | _, [] => by simp [edgeDrops]
+  | v, w :: ws => by
+      have ih := sum_edgeDrops w ws
+      have hgl : (v :: w :: ws).getLast (by simp) = (w :: ws).getLast (by simp) :=
+        List.getLast_cons (by simp)
+      simp only [edgeDrops, List.sum_cons]
+      rw [ih, hgl]
+      ring
+
+/-- **The slope list and width list zip to the drop list.**  Along a chain of
+lower edges (so every edge has distinct indices), the elementwise product of the
+edge slopes and edge widths is exactly the list of vertical drops.  This is the
+list-level statement that couples the valuation data to the multiplicity data. -/
+theorem zipWith_edgeSlopes_edgeWidths {pts : List SupportPoint} :
+    ∀ {vs : List SupportPoint}, List.IsChain (IsLowerEdge pts) vs →
+      List.zipWith (· * ·) (edgeSlopes vs) (edgeWidths vs) = edgeDrops vs
+  | [], _ => by simp [edgeSlopes, edgeWidths, edgeDrops]
+  | [_], _ => by simp [edgeSlopes, edgeWidths, edgeDrops]
+  | p :: q :: rest, hc => by
+      obtain ⟨hpq, hc'⟩ := List.isChain_cons_cons.mp hc
+      have hne : p.1 ≠ q.1 := by
+        obtain ⟨_, _, hlt, _⟩ := hpq; exact ne_of_lt hlt
+      have ih := zipWith_edgeSlopes_edgeWidths hc'
+      simp only [edgeSlopes, edgeWidths, edgeDrops, List.zipWith_cons_cons]
+      rw [edgeSlope_mul_width hne, ih]
+
+/-- **The capstone bookkeeping identity.**  Along a Newton-polygon vertex chain the
+slope-weighted-by-width sum telescopes to the total vertical drop.  Combining the
+list-level coupling with the drop telescope:
+`Σ (edgeSlopeᵢ · widthᵢ) = (last).2 − (first).2`.  Since each edge slope is the
+negated valuation and each width the multiplicity of its roots, the left side is
+`−Σ(valuationᵢ · multiplicityᵢ)`; the right side is the drop in `y`-coordinate
+across the polygon. -/
+theorem sum_slope_mul_width {pts : List SupportPoint} {v : SupportPoint}
+    {vs : List SupportPoint} (hc : List.IsChain (IsLowerEdge pts) (v :: vs)) :
+    (List.zipWith (· * ·) (edgeSlopes (v :: vs)) (edgeWidths (v :: vs))).sum
+      = ((v :: vs).getLast (by simp)).2 - v.2 := by
+  rw [zipWith_edgeSlopes_edgeWidths hc, sum_edgeDrops]
+
+/-- **Sum of root valuations counted with multiplicity.**  Negating the capstone:
+since each root valuation is `−edgeSlope` and the width is its multiplicity,
+`Σ (valuationᵢ · multiplicityᵢ) = (first).2 − (last).2 = v(constant) − v(leading)`.
+This is the valuation of the product of all the roots, read straight off the two
+endpoints of the polygon. -/
+theorem neg_sum_slope_mul_width {pts : List SupportPoint} {v : SupportPoint}
+    {vs : List SupportPoint} (hc : List.IsChain (IsLowerEdge pts) (v :: vs)) :
+    -(List.zipWith (· * ·) (edgeSlopes (v :: vs)) (edgeWidths (v :: vs))).sum
+      = v.2 - ((v :: vs).getLast (by simp)).2 := by
+  rw [sum_slope_mul_width hc]; ring
+
+/-- The example's slope-weighted-by-width products are `[-2, 1]`, summing to `-1`:
+the total vertical drop from `(0,2)` to `(3,1)`. -/
+theorem threeVertex_sum_slope_mul_width :
+    (List.zipWith (· * ·) (edgeSlopes threeVertex) (edgeWidths threeVertex)).sum = -1 := by
+  rw [threeVertex_edgeSlopes, threeVertex_edgeWidths]
+  norm_num [List.zipWith_cons_cons]
+
 end PuiseuxTheoremOQ03
