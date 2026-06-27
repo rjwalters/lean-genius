@@ -61,6 +61,12 @@ theorem card_fin_four : Nat.card (Fin 4) = 4 :=
 theorem v4_normal : (alternatingGroup.kleinFour (Fin 4)).Normal :=
   alternatingGroup.normal_kleinFour card_fin_four
 
+/-- `V₄ ◁ A₄` registered as an instance, so the quotient `A₄ ⧸ V₄` carries its group
+structure in the `≃*` statements below (otherwise `Mul (A₄ ⧸ V₄)` fails to synthesize at
+statement-elaboration time — a body-level `haveI` would be too late). -/
+instance v4_normal_inst : (alternatingGroup.kleinFour (Fin 4)).Normal :=
+  alternatingGroup.normal_kleinFour card_fin_four
+
 /-- `V₄` coincides with the commutator subgroup `[A₄, A₄]`: the displayed series
 `A₄ ⊵ V₄ ⊵ {e}` is exactly the derived series of `A₄`. -/
 theorem v4_eq_commutator :
