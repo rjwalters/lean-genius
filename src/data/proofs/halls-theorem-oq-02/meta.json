@@ -60,6 +60,28 @@
       }
     ]
   },
+  "crossReferences": [
+    {
+      "proofId": "halls-theorem-oq-01",
+      "relationship": "extends",
+      "description": "The parent entry, whose hall_marriage (one-sided Hall ⟺ a p₁-saturating matching) is the entire engine here. This entry strengthens the parent's perfect-matching result hall_perfect by replacing its GLOBAL Hall condition with the explicit, checkable balance + covering + one-sided-Hall hypotheses."
+    },
+    {
+      "proofId": "hall-marriage-theorem-oq-01",
+      "relationship": "related",
+      "description": "The abstract Finset-family formulation of Hall's theorem (systems of distinct representatives). Its descendants develop the defect/deficiency form — exactly the König–Ore generalisation flagged in this entry's open questions, where one-sided Hall failing by at most d still saturates all but d vertices of p₁."
+    }
+  ],
+  "references": [
+    {
+      "text": "Hall, P. (1935). On Representatives of Subsets. J. London Math. Soc. 10(1), 26–30. The marriage theorem and its bipartite/SDR formulations.",
+      "url": "https://en.wikipedia.org/wiki/Hall%27s_marriage_theorem"
+    },
+    {
+      "text": "Mathlib4: SimpleGraph.Hall (exists_isMatching_of_forall_ncard_le, exists_isPerfectMatching_of_forall_ncard_le) and SimpleGraph.Matching (IsMatching.eq_of_adj_right).",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/"
+    }
+  ],
   "overview": {
     "historicalContext": "Hall's 1935 marriage theorem characterizes when a bipartite graph admits a matching saturating one side: exactly when Hall's condition |N(S)| ≥ |S| holds for every subset S of that side. The perfect-matching corollary is usually stated for balanced bipartite graphs (|p₁| = |p₂|), where saturating one side automatically saturates the other. Mathlib, however, only proves the perfect-matching version under a GLOBAL neighbourhood condition quantified over all sets of vertices, which implicitly bundles the balance and covering hypotheses. The parent gallery entry (halls-theorem-oq-01) completes the Set-valued biconditionals but inherits the same global-condition shape. This entry isolates the textbook balanced criterion: check Hall on one side, get both.",
     "problemStatement": "Let G be a locally finite bipartite graph with parts p₁, p₂ (G.IsBipartiteWith p₁ p₂), with p₂ finite and p₁.ncard = p₂.ncard. If Hall's condition holds on p₁ — every s ⊆ p₁ has s.ncard ≤ (⋃ x ∈ s, G.neighborSet x).ncard — then there is a matching M with p₁ ⊆ M.verts and p₂ ⊆ M.verts. If moreover p₁ ∪ p₂ = univ, then G has a perfect matching.",
