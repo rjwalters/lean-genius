@@ -160,6 +160,36 @@
       "description": "Another open-question branch of Dirichlet's theorem in the gallery."
     }
   ],
+  "references": [
+    {
+      "title": "On the least prime in an arithmetic progression",
+      "authors": "Yu. V. Linnik",
+      "year": 1944,
+      "venue": "Rec. Math. (Mat. Sbornik) N.S. 15(57)",
+      "note": "Original existence theorem: there is an absolute constant L with p(a,q) ≤ c·q^L. This is the analytic input the present file isolates as a nonemptiness hypothesis."
+    },
+    {
+      "title": "On Linnik's constant",
+      "authors": "T. Xylouris",
+      "year": 2011,
+      "venue": "Acta Arithmetica 150",
+      "note": "Best known unconditional bound L ≤ 5, via improved zero-free regions for Dirichlet L-functions. Supplies a concrete admissible exponent to discharge the nonemptiness hypothesis."
+    },
+    {
+      "title": "Zero-free regions for Dirichlet L-functions, and the least prime in an arithmetic progression",
+      "authors": "D. R. Heath-Brown",
+      "year": 1992,
+      "venue": "Proc. London Math. Soc. (3) 64",
+      "note": "Earlier landmark bound L ≤ 5.5 and the modern zero-free-region framework underlying subsequent improvements."
+    },
+    {
+      "title": "Conditionally complete lattices and the conditional infimum API",
+      "authors": "Mathlib contributors",
+      "year": 2026,
+      "venue": "Mathlib4 (Order.ConditionallyCompleteLattice)",
+      "note": "Source of csInf_le, le_csInf, exists_lt_of_csInf_lt, csInf_le_csInf — the order-theoretic backbone of every theorem in this file."
+    }
+  ],
   "conclusion": {
     "summary": "Eleven axiom-free, sorry-free theorems establishing that the Linnik constant is a well-defined critical exponent: the admissible-exponent set is an upward-closed, below-bounded ray, its infimum is non-negative and sandwiched between the open and closed rays at that value, and it decreases monotonically under domination of the growth function.",
     "implications": "The development is a reusable blueprint for any infimum-defined exponent in analytic number theory (abscissa of convergence, Landau–Siegel exponent, growth exponents of arithmetic functions): the ray/sandwich/monotonicity package is fully generic and machine-checked. It also cleanly delineates which parts of the parent's Linnik formalization are elementary scaffolding (everything here) and which require genuine analytic input (only nonemptiness, i.e. Linnik's theorem).",
