@@ -228,3 +228,50 @@ the N^{1/(2h-1)} greedy lower bound inside {1,…,N}.
 #### Verification
 `lake env lean` exit 0, no warnings. `#print axioms exists_isBh_card / greedyBhSet_card`
 = 3 foundational only. 558 → 610 lines, 19 → 24 theorems, 2 → 4 defs.
+
+### Session 2026-06-27 (Session 6, researcher-2) — dilation + affine invariance (rebased onto greedy main)
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+#### What I Did
+- Added **Part 6: dilation + affine invariance**, completing the affine-symmetry picture
+  of `B_h` (the natural complement to the existing translation invariance `map_add_right`).
+  - `IsBh.map_mul_right` (`0 < c`): `A.image (· * c)` is `B_h`. Each `h`-fold sum scales
+    by the common factor `c`. Proof mirrors `map_add_right`: pull each dilated `h`-multiset
+    back into `A` by dividing entries by `c` (`Nat.mul_div_cancel _ hc`), recover via
+    `Sym.map_map`/`Sym.map_congr`/`Sym.map_id'`, relate sums with the induction helper
+    `sum_map_mul_const : (m.map (· * c)).sum = m.sum * c`, cancel `c > 0` via
+    `Nat.eq_of_mul_eq_mul_right`, finish with `B_h` injectivity. `c = 0` is sharp (collapses
+    the set to `{0}`), so `0 < c` is necessary, not cosmetic.
+  - `IsBh.map_affine` (`0 < c`): `A.image (fun x => c*x + d)` is `B_h` = dilation then
+    translation, `rw [hfun, ← Finset.image_image]` then `(hA.map_mul_right hc).map_add_right`.
+
+#### Concurrency note (IMPORTANT)
+- This work was first done as PR #31009 against main @3ef2b85 (the 509-line, pre-greedy
+  file). While it was in flight the **greedy-extension** PR merged to main (file → 610
+  lines, `insert_of_large`/`exists_insert`/`greedyBhSet`/`exists_isBh_card`), so #31009
+  went `CONFLICTING`. I **rebased**: reset to new origin/main, re-applied the self-contained
+  Part-6 affine code on top of the greedy version, merged the affine entries into the
+  greedy JSON/knowledge, re-verified, and force-pushed `feature/researcher-2` to update
+  #31009 (now mergeable, contains greedy + affine). The affine Lean code is unchanged from
+  the original verification.
+
+#### Key Findings / gotchas
+- Two uses of `Nat.mul_div_cancel _ hc`: membership (`(x*c)/c = x ∈ A`) and round-trip
+  recovery (`(y*c)/c * c = y*c`). First underscore is the dividend.
+- `map_affine` slope orientation: affine written `c*x + d` but the dilation helper uses
+  `· * c` (`x*c`); bridge with `funext x; simp [Nat.mul_comm]`. `Finset.image_image :
+  (s.image f).image g = s.image (g ∘ f)`, so `←` un-composes.
+- `Nat.eq_of_mul_eq_mul_right : 0 < c → a*c = b*c → a = b` is the multiplicative analogue
+  of the additive `omega` cancellation in `map_add_right`.
+
+#### Verification
+Docker host unreliable. Verified via host `v4.26.0` `lake env lean`: compiled imported
+`Proofs.Erdos340GreedySidon` to a temp olean (`/tmp/oq05build`), prepended to `LEAN_PATH`,
+compiled `Erdos340GreedySidonOQ05.lean` → exit 0, no warnings. `#print axioms
+IsBh.map_mul_right / IsBh.map_affine` = `[propext, Classical.choice, Quot.sound]` (0-axiom).
+704 lines, 27 theorems.
+
+#### Next Steps
+- Unchanged open core: the forbidden-set counting for the `N^{1/(2h-1)}` greedy lower
+  bound. `map_affine` now lets one normalise a `B_h` set (least element 0) as a first step.
