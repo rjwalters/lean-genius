@@ -304,7 +304,7 @@ theorem isLowerVertex_of_leftmost {pts : List SupportPoint} {p : SupportPoint}
     · subst hqp; simp
     · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
         List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
-      rw [hempty] at hmem; exact absurd hmem (List.not_mem_nil q)
+      rw [hempty] at hmem; simp at hmem
   · refine ⟨hp, edgeSlope p q₀, p.2 - edgeSlope p q₀ * (p.1 : ℚ), by ring, fun q hq => ?_⟩
     by_cases hqp : q = p
     · subst hqp; linarith
@@ -334,7 +334,7 @@ theorem isLowerVertex_of_rightmost {pts : List SupportPoint} {p : SupportPoint}
     · subst hqp; simp
     · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
         List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
-      rw [hempty] at hmem; exact absurd hmem (List.not_mem_nil q)
+      rw [hempty] at hmem; simp at hmem
   · refine ⟨hp, edgeSlope q₀ p, p.2 - edgeSlope q₀ p * (p.1 : ℚ), by ring, fun q hq => ?_⟩
     by_cases hqp : q = p
     · subst hqp; linarith
@@ -357,5 +357,51 @@ theorem ysqMinusX_endpoints :
     isLowerVertex_of_rightmost (by simp [YsqMinusX]) ?_⟩
   · intro q hq hne; fin_cases hq <;> simp_all
   · intro q hq hne; fin_cases hq <;> simp_all
+
+/-! ### The Newton polygon is a graph over the index axis
+
+The vertex predicate identifies corners by a supporting line, so *a priori* two
+distinct support points could both qualify as vertices.  The lemmas here show
+this never happens at a shared index.  A lower vertex's valuation is the
+**minimum** over all support points sharing its index
+(`IsLowerVertex.le_of_sameIndex`): the supporting line, evaluated at the common
+index, sits at the vertex and weakly below every competitor.  Consequently at
+most one support point per index can be a vertex (`IsLowerVertex.eq_of_index`),
+so the lower hull is the graph of a well-defined function `i ↦ v`.  This is the
+combinatorial content of "*the* Newton polygon" being a single polygonal arc
+rather than an arbitrary point set, and it is what lets the Newton–Puiseux
+algorithm collapse each index-fiber to its lowest point before tracing edges. -/
+
+/-- **A lower vertex is lowest in its index-fiber.**  If `p` is a lower vertex and
+`q` is any support point with the same index `p.1 = q.1`, then `p.2 ≤ q.2`.  The
+supporting line through `p` agrees with `p` at that index and lies weakly below
+`q`, so `p` cannot be beaten there. -/
+theorem IsLowerVertex.le_of_sameIndex {pts : List SupportPoint} {p q : SupportPoint}
+    (hp : IsLowerVertex pts p) (hq : q ∈ pts) (hidx : p.1 = q.1) : p.2 ≤ q.2 := by
+  obtain ⟨_, m, b, hpe, hsup⟩ := hp
+  have h := hsup q hq
+  rw [← hidx] at h
+  linarith [hpe, h]
+
+/-- **Index-uniqueness of vertices.**  Two lower vertices with the same index are
+equal.  Together with `le_of_sameIndex` this says the lower hull is the graph of
+a function of the index: each `Y`-degree contributes at most one polygon vertex,
+namely the support point of least valuation there. -/
+theorem IsLowerVertex.eq_of_index {pts : List SupportPoint} {p q : SupportPoint}
+    (hp : IsLowerVertex pts p) (hq : IsLowerVertex pts q) (hidx : p.1 = q.1) :
+    p = q := by
+  have h1 : p.2 ≤ q.2 := hp.le_of_sameIndex hq.mem hidx
+  have h2 : q.2 ≤ p.2 := hq.le_of_sameIndex hp.mem hidx.symm
+  exact Prod.ext_iff.mpr ⟨hidx, le_antisymm h1 h2⟩
+
+/-- A support point that is **not lowest at its index** is not a lower vertex.
+Augmenting `Y² − x`'s support with a spurious high point `(0, 5)` directly above
+the constant term: `(0, 5)` fails to be a vertex because the genuine vertex
+`(0, 1)` sits below it at the same index `0`. -/
+theorem ysqMinusX_high_not_vertex :
+    ¬ IsLowerVertex [(0, 1), (2, 0), (0, 5)] (0, 5) := by
+  intro h
+  have hle : (5 : ℚ) ≤ 1 := h.le_of_sameIndex (q := (0, 1)) (by simp) rfl
+  norm_num at hle
 
 end PuiseuxTheoremOQ03
