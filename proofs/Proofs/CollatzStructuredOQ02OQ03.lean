@@ -1272,6 +1272,61 @@ theorem parityVector_attainsBelow {M r : ℕ} (v : List Bool)
     {n : ℕ} (hn : n % M = r) : AttainsBelow n :=
   affine_residue_attainsBelow hk hc hd (fun m => affOrbit_realize hval m) hn
 
+/-! ### Decidable certificates: the engine as a one-shot `by decide`
+
+`AffValid` is a `Prop`-valued inductive, so supplying a certificate still means writing
+a nested `AffValid.odd …/AffValid.even …` term by hand (one constructor per step).  The
+validity condition is, however, a finite computation on the residue data alone, so it
+reflects into a `Bool`.  `affValidB` is that decision procedure and `affValidB_sound`
+transports a `true` result back to the `Prop`.  Bundling it with the two drop
+inequalities and non-emptiness gives `dropCert`, a single `Bool` whose truth — checked by
+`decide` — certifies that a whole residue class drops below itself.  Adding a new
+residue family is then literally one `by decide`, with no trajectory chase and no
+hand-built certificate term. -/
+
+/-- Computable Boolean validity checker mirroring `AffValid`: an odd bit needs the
+leading coefficient even and the constant odd (then recurse on the tripled pair); an
+even bit needs both even (then recurse on the halved pair). -/
+def affValidB : List Bool → ℕ → ℕ → Bool
+  | [],          _, _ => true
+  | true  :: v,  c, d => (c % 2 == 0) && (d % 2 == 1) && affValidB v (3 * c) (3 * d + 1)
+  | false :: v,  c, d => (c % 2 == 0) && (d % 2 == 0) && affValidB v (c / 2) (d / 2)
+
+/-- The Boolean checker is sound for the `Prop`-valued certificate: a `true` evaluation
+of `affValidB` produces an `AffValid` derivation.  This is what lets `decide` discharge a
+parity certificate. -/
+theorem affValidB_sound : ∀ {v : List Bool} {c d : ℕ},
+    affValidB v c d = true → AffValid v c d := by
+  intro v
+  induction v with
+  | nil => intro c d _; exact AffValid.nil
+  | cons b v ih =>
+    intro c d h
+    cases b with
+    | true =>
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq] at h
+      exact AffValid.odd h.1.1 h.1.2 (ih h.2)
+    | false =>
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq] at h
+      exact AffValid.even h.1.1 h.1.2 (ih h.2)
+
+/-- A single Boolean drop-certificate for the residue class `r (mod M)` along the parity
+vector `v`: non-empty, valid for `(M, r)`, and the realized affine iterate `(c_k, d_k)`
+satisfies the drop conditions `c_k < M` and `d_k < r`.  Each conjunct is a finite
+computation, so `dropCert M r v` evaluates by `decide`. -/
+def dropCert (M r : ℕ) (v : List Bool) : Bool :=
+  decide (0 < v.length) && affValidB v M r &&
+    decide ((affOrbit v (M, r)).1 < M) && decide ((affOrbit v (M, r)).2 < r)
+
+/-- **One-shot residue-drop engine.**  A `true` drop-certificate for `(M, r, v)` makes
+every `n ≡ r (mod M)` attain a value below itself.  Combined with `decide` this reduces a
+new residue family to a single line: `dropCert_attainsBelow v (by decide) h`. -/
+theorem dropCert_attainsBelow {M r : ℕ} (v : List Bool)
+    (h : dropCert M r v = true) {n : ℕ} (hn : n % M = r) : AttainsBelow n := by
+  simp only [dropCert, Bool.and_eq_true, decide_eq_true_eq] at h
+  obtain ⟨⟨⟨hk, hval⟩, hc⟩, hd⟩ := h
+  exact parityVector_attainsBelow v hk (affValidB_sound hval) hc hd hn
+
 /-! ### Validation: the engine reproduces the gallery families
 
 The abstract law recovers the concrete leading coefficients of Part II, and the engine
@@ -1289,16 +1344,17 @@ example :
   decide
 
 /-- End-to-end engine demonstration: re-derive the `n ≡ 3 (mod 16)` drop using only the
-parity certificate `[odd, even, odd, even, even, even]` — no manual trajectory chase.
-The certificate's side conditions and the final `9 < 16`, `2 < 3` are all decidable. -/
-example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n := by
-  refine parityVector_attainsBelow [true, false, true, false, false, false]
-    (by decide) ?_ (by decide) (by decide) h
-  exact AffValid.odd (by decide) (by decide)
-    (AffValid.even (by decide) (by decide)
-      (AffValid.odd (by decide) (by decide)
-        (AffValid.even (by decide) (by decide)
-          (AffValid.even (by decide) (by decide)
-            (AffValid.even (by decide) (by decide) AffValid.nil)))))
+parity certificate `[odd, even, odd, even, even, even]` and a single `by decide` — no
+manual trajectory chase and no hand-built `AffValid` term.  The whole drop-certificate
+(validity, `9 < 16`, `2 < 3`, non-emptiness) collapses to one decidable check. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  dropCert_attainsBelow [true, false, true, false, false, false] (by decide) h
+
+/-- The one-shot certificate scales to longer windows with no extra proof effort: the
+`n ≡ 11 (mod 32)` drop (eight steps, parity vector `[odd,even,odd,even,even,odd,even,even]`,
+final affine coefficient `27 = 3^3 < 32`) is the *same* single `by decide`. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  dropCert_attainsBelow
+    [true, false, true, false, false, true, false, false] (by decide) h
 
 end CollatzStructuredOQ02OQ03
