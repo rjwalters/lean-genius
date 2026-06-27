@@ -63,7 +63,9 @@ Mysticum):
   dihedral homomorphism `dihedralHomToSym6`).
 * `card_hexagon_labelings = 60` — follows from the previous two by
   Lagrange (proved).
-* `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02** (sorry).
+* `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02**: total,
+  defined via the canonical coset representative `lbl.out'` (the
+  representative-independence / full well-definedness remains future work).
 * `SteinerPoint`, `KirkmanPoint` — structures encoding the
   concurrence-triple data.
 * `steiner_count_eq_20`, `kirkman_count_eq_60` — main count statements
@@ -617,6 +619,560 @@ def permuteHexagon {C : Conic} (hex : InscribedHexagon C)
   hFvalid := hexVertex_valid hex (π 5)
 
 -- ============================================================
+-- PART 4c: Action of the Dihedral Generators on the Pascal Triple
+--          (OQ-03-OQ-02 well-definedness backbone)
+-- ============================================================
+
+/- The well-definedness of `pascalLine` rests on how the two dihedral
+   generators permute the three Pascal points `(P, Q, R)`.  Working in
+   homogeneous coordinates (`lineThrough = lineIntersection = crossProduct`),
+   antisymmetry of the cross product (`cross_anticomm`) gives the exact signs:
+
+     hexRot : (P, Q, R) ↦ (Q,  R, -P)
+     hexRev : (P, Q, R) ↦ (-Q, -P, R)
+
+   Each generator therefore permutes the set `{[P], [Q], [R]}` of *projective*
+   Pascal points (signs are invisible projectively).  Since `P, Q, R` are
+   collinear (`pascal_hexagon_theorem`), they span a single projective Pascal
+   line, which is consequently fixed by `hexRot`, `hexRev`, and hence by all of
+   `hexagonalGroup = ⟨hexRot, hexRev⟩ ≅ D₆`.  This is the geometric backbone of
+   the descent claim **OQ-03-OQ-02**.  (Promoting set-invariance of the three
+   *projective* points to literal equality of the spanned `ProjLine` value
+   additionally needs a notion of line-equality up to nonzero scalar together
+   with a nondegeneracy hypothesis, and is deferred — see the `pascalLine`
+   docstring below.) -/
+
+/-- `hexRot` sends the first Pascal point to the second: `P' = Q`. -/
+theorem pascalP_permuteHexagon_hexRot {C : Conic} (hex : InscribedHexagon C) :
+    pascalP (permuteHexagon hex hexRot) = pascalQ hex := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRot 0)) (hexVertex hex (hexRot 1)))
+        (lineThrough (hexVertex hex (hexRot 3)) (hexVertex hex (hexRot 4)))
+      = lineIntersection (lineThrough hex.B hex.C') (lineThrough hex.E hex.F)
+  rw [show hexRot 0 = 1 from by decide, show hexRot 1 = 2 from by decide,
+      show hexRot 3 = 4 from by decide, show hexRot 4 = 5 from by decide]
+  rfl
+
+/-- `hexRot` sends the second Pascal point to the third: `Q' = R`. -/
+theorem pascalQ_permuteHexagon_hexRot {C : Conic} (hex : InscribedHexagon C) :
+    pascalQ (permuteHexagon hex hexRot) = pascalR hex := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRot 1)) (hexVertex hex (hexRot 2)))
+        (lineThrough (hexVertex hex (hexRot 4)) (hexVertex hex (hexRot 5)))
+      = lineIntersection (lineThrough hex.C' hex.D) (lineThrough hex.F hex.A)
+  rw [show hexRot 1 = 2 from by decide, show hexRot 2 = 3 from by decide,
+      show hexRot 4 = 5 from by decide, show hexRot 5 = 0 from by decide]
+  rfl
+
+/-- `hexRot` sends the third Pascal point to the negated first: `R' = -P`.
+    The lone sign comes from one `cross_anticomm`. -/
+theorem pascalR_permuteHexagon_hexRot {C : Conic} (hex : InscribedHexagon C) :
+    pascalR (permuteHexagon hex hexRot) = -(pascalP hex) := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRot 2)) (hexVertex hex (hexRot 3)))
+        (lineThrough (hexVertex hex (hexRot 5)) (hexVertex hex (hexRot 0)))
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  rw [show hexRot 2 = 3 from by decide, show hexRot 3 = 4 from by decide,
+      show hexRot 5 = 0 from by decide, show hexRot 0 = 1 from by decide]
+  show lineIntersection (lineThrough hex.D hex.E) (lineThrough hex.A hex.B)
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  exact (cross_anticomm (lineThrough hex.A hex.B) (lineThrough hex.D hex.E)).symm
+
+/-- `hexRev` sends the first Pascal point to the negated second: `P' = -Q`.
+    Both inner factors flip sign (cancelling under bilinearity) and one outer
+    `cross_anticomm` remains; proved by coordinate expansion. -/
+theorem pascalP_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
+    pascalP (permuteHexagon hex hexRev) = -(pascalQ hex) := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRev 0)) (hexVertex hex (hexRev 1)))
+        (lineThrough (hexVertex hex (hexRev 3)) (hexVertex hex (hexRev 4)))
+      = -(lineIntersection (lineThrough hex.B hex.C') (lineThrough hex.E hex.F))
+  rw [show hexRev 0 = 5 from by decide, show hexRev 1 = 4 from by decide,
+      show hexRev 3 = 2 from by decide, show hexRev 4 = 1 from by decide]
+  show lineIntersection (lineThrough hex.F hex.E) (lineThrough hex.C' hex.B)
+      = -(lineIntersection (lineThrough hex.B hex.C') (lineThrough hex.E hex.F))
+  ext i
+  fin_cases i <;>
+    simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+    ring
+
+/-- `hexRev` sends the second Pascal point to the negated first: `Q' = -P`. -/
+theorem pascalQ_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
+    pascalQ (permuteHexagon hex hexRev) = -(pascalP hex) := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRev 1)) (hexVertex hex (hexRev 2)))
+        (lineThrough (hexVertex hex (hexRev 4)) (hexVertex hex (hexRev 5)))
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  rw [show hexRev 1 = 4 from by decide, show hexRev 2 = 3 from by decide,
+      show hexRev 4 = 1 from by decide, show hexRev 5 = 0 from by decide]
+  show lineIntersection (lineThrough hex.E hex.D) (lineThrough hex.B hex.A)
+      = -(lineIntersection (lineThrough hex.A hex.B) (lineThrough hex.D hex.E))
+  ext i
+  fin_cases i <;>
+    simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+    ring
+
+/-- `hexRev` fixes the third Pascal point: `R' = R`.  The two inner sign flips
+    cancel and no outer flip is incurred. -/
+theorem pascalR_permuteHexagon_hexRev {C : Conic} (hex : InscribedHexagon C) :
+    pascalR (permuteHexagon hex hexRev) = pascalR hex := by
+  show lineIntersection (lineThrough (hexVertex hex (hexRev 2)) (hexVertex hex (hexRev 3)))
+        (lineThrough (hexVertex hex (hexRev 5)) (hexVertex hex (hexRev 0)))
+      = lineIntersection (lineThrough hex.C' hex.D) (lineThrough hex.F hex.A)
+  rw [show hexRev 2 = 3 from by decide, show hexRev 3 = 2 from by decide,
+      show hexRev 5 = 0 from by decide, show hexRev 0 = 5 from by decide]
+  show lineIntersection (lineThrough hex.D hex.C') (lineThrough hex.A hex.F)
+      = lineIntersection (lineThrough hex.C' hex.D) (lineThrough hex.F hex.A)
+  ext i
+  fin_cases i <;>
+    simp only [lineIntersection, lineThrough, cross_apply, Pi.neg_apply,
+               Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;>
+    ring
+
+-- ============================================================
+-- PART 4d: Projective Line Equality of the Pascal Line under the Generators
+--          (OQ-03-OQ-02: promoting set-invariance to ProjLine equality)
+-- ============================================================
+
+/- PART 4c established that `hexRot` / `hexRev` permute the *set*
+   `{[P], [Q], [R]}` of projective Pascal points (the signs are invisible
+   projectively).  Here we upgrade that to the literal statement that the
+   spanned projective *line* is unchanged.  The right notion of "same
+   projective line" for homogeneous line-vectors is parallelism, i.e. a
+   vanishing cross product (for nonzero vectors this is equivalence up to a
+   nonzero scalar):
+
+     sameProjLine l m  :⟺  l ×₃ m = 0.
+
+   The crux is the rotation case `P ×₃ Q ∥ Q ×₃ R`, which holds exactly
+   because `P, Q, R` are collinear; the algebraic engine is the `BAC–CAB`
+   identity `(P ×₃ Q) ×₃ (Q ×₃ R) = det(P, Q, R) • Q`. -/
+
+/-- Two homogeneous line-vectors represent the **same projective line** exactly
+    when they are parallel — their cross product vanishes.  For nonzero vectors
+    this is equality of the underlying projective line (proportionality up to a
+    nonzero scalar). -/
+def sameProjLine (l m : ProjLine) : Prop := crossProduct l m = 0
+
+/-- `sameProjLine` is reflexive: every line is parallel to itself. -/
+theorem sameProjLine_refl (l : ProjLine) : sameProjLine l l := by
+  unfold sameProjLine
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue] <;>
+    ring
+
+/-- Negating a line-vector preserves the projective line: `l ∥ -l`. -/
+theorem sameProjLine_neg_right (l : ProjLine) : sameProjLine l (-l) := by
+  unfold sameProjLine
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
+    ring
+
+/-- Scaling a line-vector by any scalar preserves the projective line:
+    `l ∥ c • l`.  (For `c ≠ 0` this is the full "up to nonzero scalar"
+    equivalence; the cross-product characterisation makes even the degenerate
+    `c = 0` case hold.) -/
+theorem sameProjLine_smul_right (c : ℝ) (l : ProjLine) : sameProjLine l (c • l) := by
+  unfold sameProjLine
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+               Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
+    ring
+
+/-- **BAC–CAB specialisation.** For any three vectors in `ℝ³`,
+    `(P ×₃ Q) ×₃ (Q ×₃ R) = det(P, Q, R) • Q`.  This is the vector identity
+    `(a ×₃ b) ×₃ (c ×₃ d) = [a,b,d] c − [a,b,c] d` with `a = P, b = Q,
+    c = Q, d = R`, where the companion term `[P,Q,Q] • R` vanishes.  A pure
+    polynomial identity in the nine coordinates, closed by `ring`. -/
+theorem cross_cross_eq_det_smul (P Q R : ProjPoint) :
+    crossProduct (crossProduct P Q) (crossProduct Q R)
+      = (threeVectorMatrix P Q R).det • Q := by
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
+               Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Matrix.head_cons, Fin.isValue, Nat.reduceAdd, Fin.reduceFinMk] <;>
+    ring
+
+/-- **Rotation crux.** When `P, Q, R` are collinear the two candidate Pascal
+    lines `P ×₃ Q` and `Q ×₃ R` are parallel — they are the *same* projective
+    line.  This is the literal line-equality behind the `hexRot`
+    set-invariance of PART 4c: collinearity forces `det(P,Q,R) = 0`, so the
+    `BAC–CAB` identity collapses the cross of the two lines to zero. -/
+theorem sameProjLine_of_collinear (P Q R : ProjPoint) (h : collinear P Q R) :
+    sameProjLine (crossProduct P Q) (crossProduct Q R) := by
+  unfold sameProjLine
+  rw [cross_cross_eq_det_smul]
+  rw [collinear] at h
+  rw [h, zero_smul]
+
+/-- **`hexRot` fixes the Pascal line projectively.**  The Pascal line of the
+    rotated hexagon — spanned by `pascalP' = Q` and `pascalQ' = R` (PART 4c) —
+    is the same projective line as the Pascal line of `hex` (spanned by
+    `P, Q`).  Reduces to the rotation crux via `pascal_hexagon_theorem`. -/
+theorem pascalLine_hexRot_sameProjLine {C : Conic} (hex : InscribedHexagon C) :
+    sameProjLine
+      (lineThrough (pascalP hex) (pascalQ hex))
+      (lineThrough (pascalP (permuteHexagon hex hexRot))
+                   (pascalQ (permuteHexagon hex hexRot))) := by
+  rw [pascalP_permuteHexagon_hexRot, pascalQ_permuteHexagon_hexRot]
+  unfold lineThrough
+  exact sameProjLine_of_collinear _ _ _ (pascal_hexagon_theorem C hex)
+
+/-- **`hexRev` fixes the Pascal line projectively.**  The reflected Pascal line
+    is spanned by `pascalP' = -Q` and `pascalQ' = -P` (PART 4c), i.e. it equals
+    `(-Q) ×₃ (-P) = -(P ×₃ Q)` up to the cross-product signs, hence the same
+    projective line.  Proved directly by coordinate expansion. -/
+theorem pascalLine_hexRev_sameProjLine {C : Conic} (hex : InscribedHexagon C) :
+    sameProjLine
+      (lineThrough (pascalP hex) (pascalQ hex))
+      (lineThrough (pascalP (permuteHexagon hex hexRev))
+                   (pascalQ (permuteHexagon hex hexRev))) := by
+  rw [pascalP_permuteHexagon_hexRev, pascalQ_permuteHexagon_hexRev]
+  unfold sameProjLine lineThrough
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, Pi.neg_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Matrix.head_cons, Pi.zero_apply, Fin.isValue] <;>
+    ring
+
+/-- **OQ-03-OQ-02 (projective level).**  Both dihedral generators send the
+    Pascal line of `hex` to the *same projective line*.  This is the geometric
+    heart of the descent claim: combined with `card_hexagon_labelings`
+    (`|HexagonLabeling| = 60`) it says each of the 60 cosets has a
+    well-defined Pascal line at the generator level.  The remaining gap to a
+    fully quotient-level `pascalLine` (descent through `Quotient.out'`) is the
+    closure induction propagating this generator-invariance to all of
+    `hexagonalGroup = ⟨hexRot, hexRev⟩`. -/
+theorem pascalLine_generators_sameProjLine {C : Conic} (hex : InscribedHexagon C) :
+    sameProjLine (lineThrough (pascalP hex) (pascalQ hex))
+        (lineThrough (pascalP (permuteHexagon hex hexRot))
+                     (pascalQ (permuteHexagon hex hexRot)))
+      ∧ sameProjLine (lineThrough (pascalP hex) (pascalQ hex))
+        (lineThrough (pascalP (permuteHexagon hex hexRev))
+                     (pascalQ (permuteHexagon hex hexRev))) :=
+  ⟨pascalLine_hexRot_sameProjLine hex, pascalLine_hexRev_sameProjLine hex⟩
+
+-- ============================================================
+-- PART 4e: `sameProjLine` is a Partial Equivalence Relation
+--          (the algebraic engine for the quotient descent)
+-- ============================================================
+
+/- PART 4d showed each *generator* of the dihedral group fixes the Pascal
+   projective line.  To promote this to invariance under the whole group
+   `⟨hexRot, hexRev⟩` by closure induction, `sameProjLine` must be an
+   equivalence relation along the orbit.  It is reflexive (PART 4d) and we
+   now add the two remaining pieces:
+
+     * **symmetry** — `l ∥ m ⟹ m ∥ l` (the cross product is anti-symmetric);
+     * **transitivity** — `l ∥ m ⟹ m ∥ n ⟹ l ∥ n`, *provided the middle
+       vector `m ≠ 0`*.
+
+   The `m ≠ 0` hypothesis is genuinely necessary: the zero vector is parallel
+   to everything (`0 ×₃ v = 0`), so without it `0 ∥ a` and `0 ∥ b` would force
+   `a ∥ b`.  On the Pascal orbit the middle line is the cross product of two
+   distinct projective points of a non-degenerate conic, hence nonzero, so the
+   hypothesis is satisfied wherever the descent uses it.
+
+   Together these make `sameProjLine` a *partial equivalence relation* (PER):
+   an equivalence relation on the set of nonzero homogeneous line-vectors,
+   exactly the structure a `Quotient`/`Setoid` descent of `pascalLine`
+   requires. -/
+
+/-- **Symmetry of `sameProjLine`.**  `l ∥ m ⟹ m ∥ l`.  The cross product is
+    anti-symmetric (`m ×₃ l = -(l ×₃ m)`), so a vanishing cross product is a
+    symmetric relation.  Proved coordinate-wise to reuse the file's
+    `cross_apply` simp set. -/
+theorem sameProjLine_symm {l m : ProjLine} (h : sameProjLine l m) :
+    sameProjLine m l := by
+  unfold sameProjLine at h ⊢
+  have h0 := congrFun h 0
+  have h1 := congrFun h 1
+  have h2 := congrFun h 2
+  simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Pi.zero_apply, Fin.isValue] at h0 h1 h2
+  funext i
+  fin_cases i
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue]
+    linear_combination -h0
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue]
+    linear_combination -h1
+  · simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+               Pi.zero_apply, Fin.isValue]
+    linear_combination -h2
+
+/-- **Transitivity of `sameProjLine` along a nonzero middle vector.**
+    If `l ∥ m` and `m ∥ n` with `m ≠ 0`, then `l ∥ n`.
+
+    *Proof engine.*  For every coordinate `k`, the scaled vector
+    `m k • (l ×₃ n)` vanishes identically: each of its three components is a
+    fixed `ℝ`-linear combination of the (vanishing) components of `l ×₃ m` and
+    `m ×₃ n` (a `linear_combination` certificate, one per coordinate pair).
+    Hence `m k • (l ×₃ n) = 0` for all `k`.  Since `m ≠ 0`, some coordinate
+    `m k ≠ 0`, and `smul_eq_zero` forces `l ×₃ n = 0`.
+
+    This is the projective statement "two lines both proportional to a common
+    nonzero line are proportional to each other", proved without dividing. -/
+theorem sameProjLine_trans {l m n : ProjLine} (hm : m ≠ 0)
+    (h1 : sameProjLine l m) (h2 : sameProjLine m n) :
+    sameProjLine l n := by
+  unfold sameProjLine at h1 h2 ⊢
+  -- Component equations of `l ×₃ m = 0` and `m ×₃ n = 0`.
+  have a0 : l 1 * m 2 - l 2 * m 1 = 0 := by
+    have := congrFun h1 0
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have a1 : l 2 * m 0 - l 0 * m 2 = 0 := by
+    have := congrFun h1 1
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have a2 : l 0 * m 1 - l 1 * m 0 = 0 := by
+    have := congrFun h1 2
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have b0 : m 1 * n 2 - m 2 * n 1 = 0 := by
+    have := congrFun h2 0
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have b1 : m 2 * n 0 - m 0 * n 2 = 0 := by
+    have := congrFun h2 1
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  have b2 : m 0 * n 1 - m 1 * n 0 = 0 := by
+    have := congrFun h2 2
+    simpa only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+                Pi.zero_apply, Fin.isValue] using this
+  -- Each coordinate of `m` annihilates `l ×₃ n`.
+  have key0 : m 0 • crossProduct l n = 0 := by
+    funext i
+    fin_cases i
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 0) * b0 - (n 2) * a2 - (n 1) * a1
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 0) * b1 + (n 0) * a1
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 0) * b2 + (n 0) * a2
+  have key1 : m 1 • crossProduct l n = 0 := by
+    funext i
+    fin_cases i
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 1) * b0 + (n 1) * a0
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 1) * b1 - (n 0) * a0 - (n 2) * a2
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 1) * b2 + (n 1) * a2
+  have key2 : m 2 • crossProduct l n = 0 := by
+    funext i
+    fin_cases i
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 2) * b0 + (n 2) * a0
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 2) * b1 + (n 2) * a1
+    · simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
+                 Matrix.cons_val_one, Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+      linear_combination (l 2) * b2 - (n 1) * a1 - (n 0) * a0
+  -- `m ≠ 0` ⟹ some coordinate is nonzero ⟹ `l ×₃ n = 0`.
+  obtain ⟨k, hk⟩ := Function.ne_iff.mp hm
+  simp only [Pi.zero_apply] at hk
+  fin_cases k
+  · rcases smul_eq_zero.mp key0 with h | h
+    · exact absurd h hk
+    · exact h
+  · rcases smul_eq_zero.mp key1 with h | h
+    · exact absurd h hk
+    · exact h
+  · rcases smul_eq_zero.mp key2 with h | h
+    · exact absurd h hk
+    · exact h
+
+/-- **`sameProjLine` is a PER on nonzero line-vectors.**  Bundles reflexivity,
+    symmetry, and (nonzero-middle) transitivity — the equivalence-relation
+    structure the quotient descent of `pascalLine` consumes.  Stated as a
+    conjunction rather than a `Setoid` instance because transitivity is only
+    available along nonzero representatives (which is all the descent needs:
+    the Pascal line of a non-degenerate inscribed hexagon is nonzero). -/
+theorem sameProjLine_isPER :
+    (∀ l : ProjLine, sameProjLine l l)
+      ∧ (∀ {l m : ProjLine}, sameProjLine l m → sameProjLine m l)
+      ∧ (∀ {l m n : ProjLine}, m ≠ 0 → sameProjLine l m → sameProjLine m n →
+          sameProjLine l n) :=
+  ⟨sameProjLine_refl, sameProjLine_symm, fun hm => sameProjLine_trans hm⟩
+
+/-- **Both generators agree on a *single* common projective line.**  An
+    immediate consequence of symmetry + transitivity applied to
+    `pascalLine_generators_sameProjLine`: the rotated and reflected Pascal
+    lines are the same projective line as each other (not merely each equal to
+    the original), provided the original line `lineThrough (pascalP hex)
+    (pascalQ hex)` is nonzero.  This is the first nontrivial use of the PER
+    structure and the shape every closure-induction step takes. -/
+theorem pascalLine_hexRot_hexRev_sameProjLine {C : Conic} (hex : InscribedHexagon C)
+    (hne : lineThrough (pascalP hex) (pascalQ hex) ≠ 0) :
+    sameProjLine
+      (lineThrough (pascalP (permuteHexagon hex hexRot))
+                   (pascalQ (permuteHexagon hex hexRot)))
+      (lineThrough (pascalP (permuteHexagon hex hexRev))
+                   (pascalQ (permuteHexagon hex hexRev))) :=
+  sameProjLine_trans hne
+    (sameProjLine_symm (pascalLine_hexRot_sameProjLine hex))
+    (pascalLine_hexRev_sameProjLine hex)
+
+-- ============================================================
+-- PART 4f: `permuteHexagon` is a Right Group Action
+--          (OQ-03-OQ-02: the composition law the descent consumes)
+-- ============================================================
+
+/- The closure-induction descent of **OQ-03-OQ-02** needs to chain the two
+   single-generator invariances of PART 4d/4e across an arbitrary word in
+   `hexagonalGroup = ⟨hexRot, hexRev⟩`.  The inductive step factors a relabeling
+   by a product `g * h` into a relabeling by `g` followed by one by `h`; the
+   `sameProjLine` transitivity engine of PART 4e then composes the two steps.
+   This part supplies that composition law: `permuteHexagon` is a *right* action
+   of `Equiv.Perm (Fin 6)` on `InscribedHexagon C`. -/
+
+/-- Two inscribed hexagons are equal once their six vertices agree: the
+    conic-membership and validity fields are propositions, so they match
+    automatically by proof irrelevance. -/
+theorem InscribedHexagon.ext {C : Conic} {h1 h2 : InscribedHexagon C}
+    (eA : h1.A = h2.A) (eB : h1.B = h2.B) (eC : h1.C' = h2.C')
+    (eD : h1.D = h2.D) (eE : h1.E = h2.E) (eF : h1.F = h2.F) :
+    h1 = h2 := by
+  cases h1; cases h2
+  subst eA; subst eB; subst eC; subst eD; subst eE; subst eF
+  rfl
+
+/-- The vertices of a relabeled hexagon are the original vertices read off
+    through the permutation: `hexVertex (permuteHexagon hex g) j = hexVertex hex (g j)`.
+    A definitional unfolding, case-split on the six indices. -/
+theorem hexVertex_permuteHexagon {C : Conic} (hex : InscribedHexagon C)
+    (g : Equiv.Perm (Fin 6)) (j : Fin 6) :
+    hexVertex (permuteHexagon hex g) j = hexVertex hex (g j) := by
+  fin_cases j <;> rfl
+
+/-- **Identity law.** Relabeling by the identity permutation is the original
+    hexagon. -/
+theorem permuteHexagon_one {C : Conic} (hex : InscribedHexagon C) :
+    permuteHexagon hex 1 = hex := by
+  refine InscribedHexagon.ext ?_ ?_ ?_ ?_ ?_ ?_ <;>
+    simp only [permuteHexagon, Equiv.Perm.coe_one, id_eq] <;> rfl
+
+/-- **Composition law.** Relabeling by `g` and then by `h` equals relabeling by
+    the product `g * h` (right action: the inner permutation is applied first).
+    This is the algebraic heart of the closure-induction descent — it lets a
+    relabeling by an arbitrary group element be unfolded one generator at a time.
+
+    Proof: each vertex of the doubly-relabeled hexagon is
+    `hexVertex (permuteHexagon hex g) (h k) = hexVertex hex (g (h k)) =
+     hexVertex hex ((g * h) k)`, using `hexVertex_permuteHexagon` and
+    `Equiv.Perm.mul_apply`. -/
+theorem permuteHexagon_mul {C : Conic} (hex : InscribedHexagon C)
+    (g h : Equiv.Perm (Fin 6)) :
+    permuteHexagon (permuteHexagon hex g) h = permuteHexagon hex (g * h) := by
+  have key : ∀ k : Fin 6,
+      hexVertex (permuteHexagon hex g) (h k) = hexVertex hex ((g * h) k) := by
+    intro k
+    rw [hexVertex_permuteHexagon, Equiv.Perm.mul_apply]
+  exact InscribedHexagon.ext (key 0) (key 1) (key 2) (key 3) (key 4) (key 5)
+
+-- ============================================================
+-- PART 4g: Quotient Descent — `D_6`-Invariance of the Pascal Line
+--          (OQ-03-OQ-02: the full closure induction)
+-- ============================================================
+
+/-- The homogeneous Pascal *line* of a hexagon, spanned by its first two Pascal
+    points `P = AB ∩ DE` and `Q = BC ∩ EF`.  The well-definedness content of
+    **OQ-03-OQ-02** is that this is `sameProjLine`-invariant under relabeling by
+    the dihedral group `hexagonalGroup`. -/
+noncomputable def pascalProjLine {C : Conic} (hex : InscribedHexagon C) : ProjLine :=
+  lineThrough (pascalP hex) (pascalQ hex)
+
+/-- **OQ-03-OQ-02 — quotient descent (full).**  For *every* element `g` of the
+    dihedral group `hexagonalGroup = ⟨hexRot, hexRev⟩`, relabeling a hexagon by
+    `g` leaves its Pascal line unchanged as a *projective* line:
+    `pascalProjLine hex ∥ pascalProjLine (permuteHexagon hex g)`.
+
+    This propagates the two single-generator invariances of PART 4d to the whole
+    12-element group by `Subgroup.closure_induction`, with the PER engine of
+    PART 4e composing successive generator steps (`sameProjLine_trans`) and the
+    group-action law of PART 4f (`permuteHexagon_mul`, `permuteHexagon_one`)
+    unfolding products one generator at a time.
+
+    The statement is quantified over *all* hexagons (so the inductive `mul`/`inv`
+    steps can re-instantiate at the partially-relabeled hexagon), carrying the
+    natural **general-position** hypothesis `hnd`: every relabeling of `hex` has
+    a genuine (nonzero) Pascal line.  This is exactly the nondegeneracy needed by
+    `sameProjLine` transitivity, and is the precise hypothesis under which the
+    60 Pascal lines are well-defined. -/
+theorem pascalProjLine_sameProjLine_of_mem
+    {C : Conic} {g : Equiv.Perm (Fin 6)} (hg : g ∈ hexagonalGroup)
+    (hex : InscribedHexagon C)
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalProjLine hex) (pascalProjLine (permuteHexagon hex g)) := by
+  unfold hexagonalGroup at hg
+  induction hg using Subgroup.closure_induction generalizing hex hnd with
+  | mem x hx =>
+      simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at hx
+      rcases hx with rfl | rfl
+      · exact pascalLine_hexRot_sameProjLine hex
+      · exact pascalLine_hexRev_sameProjLine hex
+  | one =>
+      rw [permuteHexagon_one]
+      exact sameProjLine_refl _
+  | mul x y _ _ ihx ihy =>
+      have hx' : sameProjLine (pascalProjLine hex)
+          (pascalProjLine (permuteHexagon hex x)) := ihx hex hnd
+      have hnd' : ∀ k : Equiv.Perm (Fin 6),
+          pascalProjLine (permuteHexagon (permuteHexagon hex x) k) ≠ 0 := by
+        intro k
+        rw [permuteHexagon_mul]
+        exact hnd (x * k)
+      have hy' : sameProjLine (pascalProjLine (permuteHexagon hex x))
+          (pascalProjLine (permuteHexagon (permuteHexagon hex x) y)) :=
+        ihy (permuteHexagon hex x) hnd'
+      rw [permuteHexagon_mul] at hy'
+      exact sameProjLine_trans (hnd x) hx' hy'
+  | inv x _ ihx =>
+      have hnd' : ∀ k : Equiv.Perm (Fin 6),
+          pascalProjLine (permuteHexagon (permuteHexagon hex x⁻¹) k) ≠ 0 := by
+        intro k
+        rw [permuteHexagon_mul]
+        exact hnd (x⁻¹ * k)
+      have hxx : sameProjLine (pascalProjLine (permuteHexagon hex x⁻¹))
+          (pascalProjLine (permuteHexagon (permuteHexagon hex x⁻¹) x)) :=
+        ihx (permuteHexagon hex x⁻¹) hnd'
+      rw [permuteHexagon_mul, inv_mul_cancel, permuteHexagon_one] at hxx
+      exact sameProjLine_symm hxx
+
+/-- **OQ-03-OQ-02 — well-definedness corollary.**  Under general position, the
+    Pascal line is invariant under both dihedral generators *and their entire
+    group*: any two representatives `g, h ∈ hexagonalGroup` relabel `hex` to the
+    same projective Pascal line.  This is the descent statement that makes
+    `pascalLine` (PART 5) independent of the coset representative. -/
+theorem pascalProjLine_sameProjLine_of_mem_mem
+    {C : Conic} {g h : Equiv.Perm (Fin 6)}
+    (hg : g ∈ hexagonalGroup) (hh : h ∈ hexagonalGroup)
+    (hex : InscribedHexagon C)
+    (hnd : ∀ k : Equiv.Perm (Fin 6), pascalProjLine (permuteHexagon hex k) ≠ 0) :
+    sameProjLine (pascalProjLine (permuteHexagon hex g))
+                 (pascalProjLine (permuteHexagon hex h)) := by
+  have hhex : pascalProjLine hex ≠ 0 := by
+    have h1 := hnd 1; rwa [permuteHexagon_one] at h1
+  exact sameProjLine_trans hhex
+    (sameProjLine_symm (pascalProjLine_sameProjLine_of_mem hg hex hnd))
+    (pascalProjLine_sameProjLine_of_mem hh hex hnd)
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
@@ -624,13 +1180,22 @@ def permuteHexagon {C : Conic} (hex : InscribedHexagon C)
     hexagon `(A, B, C, D, E, F)` and a labeling `lbl ∈ HexagonLabeling`,
     a representative permutation `π : Fin 6 → Fin 6` rearranges the six
     vertices into a new cyclic ordering, whose opposite-side intersections
-    are collinear (by Pascal's theorem). The resulting Pascal line depends
-    only on the `D_6`-orbit of `π`.
+    `P, Q, R` are collinear (by Pascal's theorem). The Pascal line is the
+    line through two of those three Pascal points.
 
-    (Full definition + well-definedness deferred to **OQ-03-OQ-02**.) -/
+    The map is made *total* by evaluating it at the canonical coset
+    representative `lbl.out' : Equiv.Perm (Fin 6)` (`Quotient.out'`). The
+    `D_6`-invariance of the resulting projective line — i.e. that the value
+    is independent of the choice of representative — is the genuine
+    "well-definedness" content of **OQ-03-OQ-02**; its geometric backbone is
+    the generator-action of `hexRot`/`hexRev` on `{±P, ±Q, ±R}` (see the
+    `OQ-03-OQ-02` knowledge notes). Establishing that as a *projective* line
+    equality additionally needs equality of lines up to a nonzero scalar plus
+    a nondegeneracy hypothesis, and is deferred. -/
 noncomputable def pascalLine
     (C : Conic) (hex : InscribedHexagon C) (lbl : HexagonLabeling) : ProjLine :=
-  sorry
+  lineThrough (pascalP (permuteHexagon hex lbl.out'))
+              (pascalQ (permuteHexagon hex lbl.out'))
 
 /-- **Hexagrammum Mysticum (existence statement)**: the assignment
     `HexagonLabeling → ProjLine` from a hexagon labeling to its Pascal
