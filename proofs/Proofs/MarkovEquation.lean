@@ -148,6 +148,76 @@ theorem markov_two_mul_mid_le_top {x y z : ℤ} (h : IsMarkov x y z)
   -- `z = 3xy − z' ≥ 3xy − y = y(3x − 1) ≥ 2y` since `x ≥ 1`
   nlinarith [hz'y, mul_nonneg (sub_nonneg.2 hx1) hy.le]
 
+/-! ## Strict geometric growth and the unique tight case
+
+The bound `2y ≤ z` is tight only at the very first child of the root: the doubling
+`2y = z` happens *exactly* at the triple `(1,1,2)`. For every sorted Markov triple
+deeper in the tree (top coordinate `z ≥ 3`) the growth is **strict**, `2y < z`, so
+each Vieta-descent move strictly more than halves the maximal coordinate. This pins
+down the single exceptional base case of the geometric descent. -/
+
+/-- **Strict geometric growth.** In a sorted Markov triple with `z ≥ 3`, the maximal
+coordinate is strictly more than twice the middle one: `2y < z`. The bound is sharp:
+the non-strict `2y = z` occurs only at `(1,1,2)` (see `markov_growth_tight`). -/
+theorem markov_two_mul_mid_lt_top {x y z : ℤ} (h : IsMarkov x y z)
+    (hxy : x ≤ y) (hyz : y ≤ z) (hz3 : 3 ≤ z) : 2 * y < z := by
+  have h2y : 2 * y ≤ z := markov_two_mul_mid_le_top h hxy hyz (by omega)
+  rcases h2y.lt_or_eq with hlt | heq
+  · exact hlt
+  · exfalso
+    obtain ⟨hx, hy, hz, he⟩ := h
+    have hx1 : (1 : ℤ) ≤ x := hx
+    -- substitute `z = 2y` (the tight case) into the Markov equation: `x² + 5y² = 6xy²`
+    rw [← heq] at he
+    -- `x ≤ y` gives `x² ≤ y²`
+    have hxy2 : x ^ 2 ≤ y ^ 2 := by
+      nlinarith [mul_nonneg hx.le (sub_nonneg.2 hxy), mul_nonneg hy.le (sub_nonneg.2 hxy)]
+    -- and `x² + 5y² = 6xy² ≥ 6y²` (since `x ≥ 1`) gives `y² ≤ x²`
+    have key : y ^ 2 ≤ x ^ 2 := by
+      nlinarith [he, mul_nonneg (sub_nonneg.2 hx1) (sq_nonneg y)]
+    have hxx : x ^ 2 = y ^ 2 := le_antisymm hxy2 key
+    have hfac : (x - y) * (x + y) = 0 := by linear_combination hxx
+    rcases mul_eq_zero.1 hfac with hh | hh
+    · -- `x = y`: then `6y² = 6y³`, forcing `y = 1` and `z = 2`, contradicting `z ≥ 3`
+      have hxeq : x = y := by linarith
+      rw [hxeq] at he
+      have h0 : 6 * (y ^ 2 * (y - 1)) = 0 := by linear_combination -he
+      have h1 : y ^ 2 * (y - 1) = 0 := by linarith
+      rcases mul_eq_zero.1 h1 with hh2 | hh2
+      · nlinarith [hy, hh2, mul_pos hy hy]
+      · have : y = 1 := by linarith
+        omega
+    · -- `x + y = 0` is impossible for positive coordinates
+      linarith [hx, hy, hh]
+
+/-- **Tightness characterization.** In a sorted Markov triple with `z ≥ 2`, the
+geometric-growth bound is exactly tight (`2y = z`) iff the triple is `(1,1,2)`, the
+first Vieta child of the root. Together with `markov_two_mul_mid_lt_top` this shows
+`(1,1,2)` is the unique sorted triple at which the descent merely halves rather than
+strictly more-than-halves the maximal coordinate. -/
+theorem markov_growth_tight {x y z : ℤ} (h : IsMarkov x y z)
+    (hxy : x ≤ y) (hyz : y ≤ z) (hz2 : 2 ≤ z) :
+    2 * y = z ↔ (x = 1 ∧ y = 1 ∧ z = 2) := by
+  have hxpos : 0 < x := h.1
+  constructor
+  · intro heq
+    -- `z ≥ 3` would force the strict bound `2y < z`, contradicting `2y = z`
+    have hzlt3 : z < 3 := by
+      by_contra hge
+      push_neg at hge
+      have := markov_two_mul_mid_lt_top h hxy hyz hge
+      omega
+    refine ⟨?_, ?_, ?_⟩ <;> omega
+  · rintro ⟨hx, hy, hz⟩; omega
+
+/-- **Strict coordinate-sum bound.** For a sorted Markov triple with `z ≥ 3`, the
+two smaller coordinates together fall strictly below the largest: `x + y < z`. A
+direct consequence of strict geometric growth (`x + y ≤ 2y < z`). -/
+theorem markov_sum_lt_top {x y z : ℤ} (h : IsMarkov x y z)
+    (hxy : x ≤ y) (hyz : y ≤ z) (hz3 : 3 ≤ z) : x + y < z := by
+  have h2 := markov_two_mul_mid_lt_top h hxy hyz hz3
+  omega
+
 /-! ## Reachability in the Markov tree
 
 A *move* is either a coordinate transposition or a Vieta jump. Two triples are
