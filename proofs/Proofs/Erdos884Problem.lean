@@ -495,4 +495,90 @@ theorem allPairsSum_le_indexSum (n : ℕ) (hn : n > 1) :
   have ⟨hij, hjτ⟩ := Finset.mem_Ioo.mp hj
   exact reciprocal_gap_index_bound n hn hij hjτ
 
+/- ## Closed Form of the Index Double Sum -/
+
+/-- **Reindexing identity.** The index-based double sum over pairs `0 ≤ i < j < τ`,
+    weighted by the reciprocal of the gap `j - i`, collapses to a single sum over the
+    gap value `k = j - i`. For each gap `k` with `1 ≤ k ≤ τ - 1` there are exactly
+    `τ - k` pairs `(i, j)` with `j - i = k` (namely `i = 0, …, τ-1-k`), so
+
+    `Σ_{0≤i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k`.
+
+    The proof reindexes the inner sum `j ↦ j - i` (turning `Ioo i τ` into a range of
+    gaps), swaps the order of summation with `Finset.sum_comm'`, and counts the `τ - k`
+    constant inner terms. Purely combinatorial: independent of any divisor structure. -/
+theorem indexDoubleSum_closed_form (τ : ℕ) :
+    (∑ i ∈ Finset.range τ, ∑ j ∈ Finset.Ioo i τ, (1 : ℝ) / ((j - i : ℕ) : ℝ))
+      = ∑ k ∈ Finset.Ico 1 τ, ((τ - k : ℕ) : ℝ) / (k : ℝ) := by
+  calc
+    (∑ i ∈ Finset.range τ, ∑ j ∈ Finset.Ioo i τ, (1 : ℝ) / ((j - i : ℕ) : ℝ))
+        = ∑ i ∈ Finset.range τ,
+            ∑ k ∈ Finset.range (τ - i - 1), (1 : ℝ) / ((k + 1 : ℕ) : ℝ) := by
+          -- Inner reindex: `j ↦ j - i` over `Ioo i τ = Ico (i+1) τ`.
+          apply Finset.sum_congr rfl
+          intro i _
+          have hIoo : Finset.Ioo i τ = Finset.Ico (i + 1) τ := by
+            ext x; simp only [Finset.mem_Ioo, Finset.mem_Ico]; omega
+          rw [hIoo, Finset.sum_Ico_eq_sum_range]
+          have hset : τ - (i + 1) = τ - i - 1 := by omega
+          rw [hset]
+          apply Finset.sum_congr rfl
+          intro k _
+          have hsub : i + 1 + k - i = k + 1 := by omega
+          rw [hsub]
+      _ = ∑ k ∈ Finset.range (τ - 1),
+            ∑ _i ∈ Finset.range (τ - 1 - k), (1 : ℝ) / ((k + 1 : ℕ) : ℝ) := by
+          -- Swap the order of the (triangular) summation.
+          apply Finset.sum_comm'
+          intro i k
+          simp only [Finset.mem_range]
+          omega
+      _ = ∑ k ∈ Finset.range (τ - 1), ((τ - 1 - k : ℕ) : ℝ) / ((k + 1 : ℕ) : ℝ) := by
+          -- Inner term is constant in `i`; there are `τ - 1 - k` of them.
+          apply Finset.sum_congr rfl
+          intro k _
+          rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one_div]
+      _ = ∑ k ∈ Finset.Ico 1 τ, ((τ - k : ℕ) : ℝ) / (k : ℝ) := by
+          -- Reindex `k ↦ k + 1`, turning `range (τ-1)` back into `Ico 1 τ`.
+          rw [Finset.sum_Ico_eq_sum_range]
+          apply Finset.sum_congr rfl
+          intro k _
+          have h1 : τ - (1 + k) = τ - 1 - k := by omega
+          have h2 : 1 + k = k + 1 := by omega
+          rw [h1, h2]
+
+/-- **Harmonic decomposition.** The gap sum splits into a harmonic part and a constant:
+    `Σ_{k=1}^{τ-1} (τ-k)/k = Σ_{k=1}^{τ-1} (τ/k - 1) = τ·H_{τ-1} - (τ-1)`.
+    Term-by-term, `(τ-k)/k = τ/k - 1` since `k ≤ τ` and `k ≥ 1 > 0`. This exhibits the
+    `O(τ log τ)` growth of the index double sum explicitly. -/
+theorem gapHarmonicSum_eq (τ : ℕ) :
+    (∑ k ∈ Finset.Ico 1 τ, ((τ - k : ℕ) : ℝ) / (k : ℝ))
+      = ∑ k ∈ Finset.Ico 1 τ, ((τ : ℝ) / (k : ℝ) - 1) := by
+  apply Finset.sum_congr rfl
+  intro k hk
+  rw [Finset.mem_Ico] at hk
+  have hkτ : k ≤ τ := by omega
+  have hk0 : (k : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr (by omega)
+  rw [Nat.cast_sub hkτ, sub_div, div_self hk0]
+
+/-- **Unconditional `O(τ log τ)` bound on the all-pairs sum.** Combining the index-sum
+    upper bound with the reindexing identity and harmonic decomposition gives, for `n > 1`
+    with `τ = τ(n)` divisors,
+    `allPairsSum n ≤ Σ_{k=1}^{τ-1} (τ/k - 1) = τ·H_{τ-1} - (τ-1)`,
+    a bound depending only on the *number* of divisors, not their arithmetic.
+    Companion to `allPairsSum_le_tau_mul_consecutive`; this one is fully unconditional. -/
+theorem allPairsSum_le_harmonic (n : ℕ) (hn : n > 1) :
+    allPairsSum n ≤
+      ∑ k ∈ Finset.Ico 1 (numDivisors n),
+        ((numDivisors n : ℝ) / (k : ℝ) - 1) := by
+  calc allPairsSum n
+      ≤ ∑ i ∈ Finset.range (numDivisors n),
+          ∑ j ∈ Finset.Ioo i (numDivisors n),
+            (1 : ℝ) / ((j - i : ℕ) : ℝ) := allPairsSum_le_indexSum n hn
+    _ = ∑ k ∈ Finset.Ico 1 (numDivisors n),
+          ((numDivisors n - k : ℕ) : ℝ) / (k : ℝ) :=
+        indexDoubleSum_closed_form (numDivisors n)
+    _ = ∑ k ∈ Finset.Ico 1 (numDivisors n), ((numDivisors n : ℝ) / (k : ℝ) - 1) :=
+        gapHarmonicSum_eq (numDivisors n)
+
 end Erdos884

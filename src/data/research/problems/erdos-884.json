@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added allPairsSum_le_indexSum (unconditional index-based double-sum bound, companion to allPairsSum_le_tau_mul_consecutive). 29 theorems, 1 axiom (open conjecture), 0 sorries.",
+    "progressSummary": "PROGRESS: Closed-form reindexing identity for the index double sum (indexDoubleSum_closed_form) + exact harmonic decomposition (gapHarmonicSum_eq) + assembled unconditional bound allPairsSum n ≤ τ·H_{τ-1}−(τ-1) (allPairsSum_le_harmonic). 32 theorems, 1 axiom (open conjecture), 0 sorries. BUILD-PENDING (docker host down).",
     "builtItems": [
       "theorem allPairsSum_nonneg: sum_nonneg + div_nonneg",
       "theorem consecutivePairsSum_nonneg: sum_nonneg + div_nonneg",
@@ -56,7 +56,10 @@
       "consecutiveGap_le_generalGap: any interior consecutive gap ≤ general gap (Erdos884Problem.lean:348)",
       "reciprocal_gap_index_bound: 1/(d_j-d_i) ≤ 1/(j-i) via generalGap_ge_diff + div_le_div_iff (Erdos884Problem.lean:365)",
       "reciprocal_gap_consecutive_bound: 1/(d_j-d_i) ≤ 1/g_i via gap_lower_bound + div_le_div_iff (Erdos884Problem.lean:378)",
-      "allPairsSum_le_indexSum: unconditional bound allPairsSum n ≤ Σ_{i<j<τ} 1/(j-i) via reciprocal_gap_index_bound (Erdos884Problem.lean:482)"
+      "allPairsSum_le_indexSum: unconditional bound allPairsSum n ≤ Σ_{i<j<τ} 1/(j-i) via reciprocal_gap_index_bound (Erdos884Problem.lean:482)",
+      "indexDoubleSum_closed_form (Erdos884Problem.lean): reindexing identity Σ_{0≤i<j<τ}1/(j-i) = Σ_{k=1}^{τ-1}(τ-k)/k, via inner reindex j↦j-i + Finset.sum_comm swap + constant inner count. Purely combinatorial, any τ:ℕ.",
+      "gapHarmonicSum_eq (Erdos884Problem.lean): Σ_{k=1}^{τ-1}(τ-k)/k = Σ(τ/k − 1) = τ·H_{τ-1} − (τ-1), termwise via Nat.cast_sub + sub_div + div_self.",
+      "allPairsSum_le_harmonic (Erdos884Problem.lean): assembled unconditional bound allPairsSum n ≤ Σ_{k=1}^{τ-1}(τ/k − 1) = τ·H_{τ-1} − (τ-1), depends only on τ(n)."
     ],
     "insights": [
       "divisorList is noncomputable (prevents native_decide for concrete values like divisors_6)",
@@ -85,14 +88,18 @@
       "Index bound implies allPairsSum ≤ Σ_{s=1}^{τ-1} (τ-s)/s ≈ τ·H(τ) via rearrangement by offset s=j-i",
       "Consecutive bound implies allPairsSum ≤ (τ-1)·consecutivePairsSum via counting j > i for each fixed i",
       "Tighter bound needs AM-HM/Cauchy-Schwarz: 1/(d_j-d_i) ≤ (1/(j-i)²)·Σ_{k∈[i,j)} 1/g_k — gives O(log τ) factor",
-      "Index-based sum bound is unconditional in consecutivePairsSum: complements the (τ-1)·consecutivePairsSum bound by routing through reciprocal_gap_index_bound rather than reciprocal_gap_consecutive_bound. Closed form Σ_{i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k = τ·H_{τ-1} - (τ-1) gives O(τ log τ)."
+      "Index-based sum bound is unconditional in consecutivePairsSum: complements the (τ-1)·consecutivePairsSum bound by routing through reciprocal_gap_index_bound rather than reciprocal_gap_consecutive_bound. Closed form Σ_{i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k = τ·H_{τ-1} - (τ-1) gives O(τ log τ).",
+      "The index double-sum bound is exactly τ·H_{τ-1} − (τ-1): the O(τ log τ) growth is now explicit and exact (not just an estimate). This is the unconditional ceiling for allPairsSum from the index argument alone — closing the gap to the absolute-constant conjecture requires using divisor arithmetic, not just counting.",
+      "Reindexing key fact: for gap k∈[1,τ-1] there are exactly τ-k pairs (i,j) with j-i=k; Finset.sum_comm handles the triangular swap cleanly given a membership iff dischargeable by omega."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "Prove closed form Σ_{i<j<τ} 1/(j-i) = Σ_{k=1}^{τ-1} (τ-k)/k via reindexing (k = j-i)",
       "Combine with harmonic-sum estimate to get O(τ log τ) unconditional bound on allPairsSum",
       "Formalize AM-HM inequality for finite sums to bridge to absolute-constant conjecture",
-      "Prove conjecture for prime power case n=p^k where geometric series converge"
+      "Prove conjecture for prime power case n=p^k where geometric series converge",
+      "Bound H_{τ-1} ≤ 1 + Real.log τ (Mathlib: Real harmonic vs log) to state allPairsSum n ≤ τ(1+log τ) as a closed analytic ceiling.",
+      "Attack the conjecture gap: the τ·H_{τ-1} bound is loose because it ignores that most divisor gaps d_j-d_i greatly exceed j-i. Quantify Σ 1/(d_j-d_i) using d_j-d_i ≥ d_{i+1}-d_i and multiplicativity for prime-power n=p^k."
     ],
     "markdown": "# Erdős #884 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that, for any $n$, if $d_1<\\cdots <d_t$ are the divisors of $n$, then\\[\\sum_{1\\leq i<j\\leq t}\\frac{1}{d_j-d_i} \\ll 1+\\sum_{1\\leq i<t}\\frac{1}{d_{i+1}-d_i},\\]where the implied constant is absolute?\n\n\n\nSee also [144].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #144\n- Problem #883\n- Problem #885\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er98\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
