@@ -1,40 +1,55 @@
 {
   "slug": "erdos-564-incomplete-01",
   "title": "erdos-564-incomplete-01",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Erdős #564 (OPEN, $500): is there c>0 with R₃(n) ≥ 2^{2^{cn}} for large n? This sub-task delivers the verified tower-growth theory underlying the 'tower height' framing.",
+    "plain": "For the 3-uniform hypergraph Ramsey number R₃(n), the known bounds are 2^{cn²} < R₃(n) < 2^{2^n}: singly-exponential lower, doubly-exponential upper. Erdős asks whether the lower bound can be raised to tower height 2 (2^{2^{cn}}). This file builds the verified theory of the tower function in which the question is phrased.",
+    "whyMatters": ["Makes 'tower height' rigorous (strict monotonicity in height and base)", "Pins down the exact one-tower-level gap (tower_one_lt_tower_two) the open conjecture asks to close"]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": ["tower strictly increasing in height and base", "n ≤ tower k n", "2^n < 2^{2^n} for all n (height-1 < height-2)"],
+    "open": ["the conjecture R₃(n) ≥ 2^{2^{cn}} itself", "parent's bounds_gap_enormous sorry"],
+    "goal": "Verified combinatorial scaffolding for the tower-height framing of Erdős #564 (not the open conjecture)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-03T08:33:50.249Z",
+    "phase": "ACT",
+    "since": "2026-06-27T00:00:00.000Z",
     "iteration": 1,
-    "focus": "",
+    "focus": "Delivered standalone verified 0-axiom tower-growth theory (Erdos564Incomplete01.lean, 11 thms): strict monotonicity in height (tower_lt_succ_height/tower_strictMono_height) and base (tower_strictMono_base), self_le_tower, and the crux tower_one_lt_tower_two (2^n < 2^{2^n}). Also fixed 6 dangling /-- doc comments that made parent Erdos564Problem.lean fail to parse.",
     "blockers": [],
-    "nextAction": "",
+    "nextAction": "Ramsey-property monotonicity lemmas toward a verified R₃ definition (replacing the axiom); prove the parent's bounds_gap_enormous arithmetic sorry. The open conjecture itself is out of reach.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge: erdos-564-incomplete-01\n*No research conducted yet*\n"
+    "progressSummary": "S1 ACT: standalone verified tower-growth theory for Erdős #564 (Erdos564Incomplete01.lean, 110 lines, 11 theorems, 0-sorry 0-axiom). Strict monotonicity in height and base, base lower bound, and the crux 2^n < 2^{2^n} making precise the one-tower-level gap of the open conjecture. Fixed the parent's 6 dangling /-- doc comments (parent did not parse at all on main).",
+    "builtItems": [
+      "Erdos564Incomplete01.lean: tower_succ, tower_lt_succ_height, tower_strictMono_height, self_le_tower, tower_strictMono_base, tower_mono_base, tower_two_eq, tower_one_lt_tower_two, plus 3 concrete checks (all 0-axiom verified)",
+      "Parent fix: 6 dangling /-- doc comments in Erdos564Problem.lean (lines 65/66/153/154/164/186) converted to /- so the file parses"
+    ],
+    "insights": [
+      "Tower height growth needs no positivity hypothesis: m < 2^m holds even at m=0, so tower k n < tower (k+1) n for all n (strengthens the parent's positivity-gated tower_pos framing).",
+      "tower_one_lt_tower_two (2^n < 2^{2^n}) is the formal content of 'the EHR lower bound is one tower level below the upper bound' — the precise gap Erdős #564 asks to close.",
+      "Importing a parent file with axioms + a sorry does NOT taint #print axioms of theorems that don't transitively use them: all 11 results are 0-axiom despite importing Erdos564Problem (which has axiom R + 2 EHR axioms + 1 sorry).",
+      "The parent Erdos564Problem.lean did not parse on main (dangling /-- doc comments before /- blocks) — same bug class as the puiseux-theorem parent fix. Its olean was therefore missing; had to build it single-file to the lean/Proofs libdir (extra lean/ segment)."
+    ],
+    "mathlibGaps": [
+      "No hypergraph Ramsey number API in Mathlib (R₃ is axiomatized in the parent).",
+      "No formal Erdős–Hajnal–Rado bound proofs (axiomatized)."
+    ],
+    "nextSteps": [
+      "Prove monotonicity of HasHypergraphRamseyProperty (more vertices preserve a monochromatic clique) toward a verified R₃.",
+      "Prove the parent's bounds_gap_enormous (2^{2^n}/2^{n²} > 10^100 for n≥10): induction 2^n ≥ n²+924 for n≥10, then rpow_sub + monotonicity; norm_num on 2^924 > 10^100.",
+      "The conjecture R₃(n) ≥ 2^{2^{cn}} is open ($500) — out of reach."
+    ],
+    "markdown": "# Knowledge: erdos-564-incomplete-01\nSee research/problems/erdos-564-incomplete-01/knowledge.md for full session notes.\n"
   },
   "tags": [],
   "relatedProofs": [
