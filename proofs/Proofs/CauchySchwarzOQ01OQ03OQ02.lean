@@ -19,6 +19,9 @@
   nonnegativity, and the **maximum-entropy bound** `H(p) ≤ log n` (Jensen on the concavity
   of `negMulLog`; equality at the uniform distribution). This is the "entropy half" of an
   entropic uncertainty relation, and a reusable building block for the eventual proof.
+
+  This revision adds the **equality case** of the maximum-entropy bound:
+  `H(p) = log n ↔ p` uniform, the strict-concavity refinement of the Jensen inequality.
 -/
 
 import Mathlib
@@ -87,5 +90,63 @@ theorem shannonEntropy_uniform [Nonempty ι] :
   simp only [shannonEntropy, Real.negMulLog, Real.log_inv, Finset.sum_const,
     Finset.card_univ, ← hn, nsmul_eq_mul]
   field_simp
+
+/-- **Equality case of the maximum-entropy bound.** For a probability vector on
+`n = card ι` outcomes, `H(p) = log n` *if and only if* `p` is the uniform distribution.
+
+The reverse implication is `shannonEntropy_uniform`. The forward implication is the
+strict-concavity (uniqueness) refinement of Jensen's inequality: because `negMulLog` is
+*strictly* concave on `[0,∞)`, equality in the maximum-entropy bound forces all the
+weighted points to coincide (`Real.strictConcaveOn_negMulLog.eq_of_map_sum_eq`), and the
+normalization `∑ pᵢ = 1` then pins each entry to `1/n`. This upgrades the inequality
+`shannonEntropy_le_log_card` to a full characterization of the maximizer (and, with it,
+the equality case in any entropic uncertainty relation built on this infrastructure). -/
+theorem shannonEntropy_eq_log_card_iff [Nonempty ι] {p : ι → ℝ}
+    (h0 : ∀ i, 0 ≤ p i) (hsum : ∑ i, p i = 1) :
+    shannonEntropy p = Real.log (Fintype.card ι)
+      ↔ ∀ i, p i = (Fintype.card ι : ℝ)⁻¹ := by
+  set n : ℕ := Fintype.card ι with hn
+  have hnpos : 0 < n := Fintype.card_pos
+  have hnR : (0 : ℝ) < (n : ℝ) := by exact_mod_cast hnpos
+  constructor
+  · intro hH
+    -- Uniform weights `1/n` sum to `1`.
+    have hwsum : (∑ _i : ι, ((n : ℝ)⁻¹)) = 1 := by
+      rw [Finset.sum_const, Finset.card_univ, ← hn, nsmul_eq_mul]
+      field_simp
+    -- The weighted mean of `p` is `1/n` (since `∑ pᵢ = 1`).
+    have hmean : (∑ i : ι, ((n : ℝ)⁻¹) • p i) = (n : ℝ)⁻¹ := by
+      simp only [smul_eq_mul, ← Finset.mul_sum, hsum, mul_one]
+    -- `negMulLog (1/n) = (1/n) * log n`.
+    have hval : Real.negMulLog ((n : ℝ)⁻¹) = (n : ℝ)⁻¹ * Real.log n := by
+      rw [Real.negMulLog, Real.log_inv]; ring
+    -- Equality in Jensen: `negMulLog(mean) = ∑ (1/n)·negMulLog(pᵢ)`.
+    have h_eq : Real.negMulLog (∑ i : ι, ((n : ℝ)⁻¹) • p i)
+        = ∑ i : ι, ((n : ℝ)⁻¹) • Real.negMulLog (p i) := by
+      have hlhs : (∑ i : ι, ((n : ℝ)⁻¹) • Real.negMulLog (p i))
+          = (n : ℝ)⁻¹ * shannonEntropy p := by
+        simp only [smul_eq_mul, shannonEntropy, Finset.mul_sum]
+      rw [hmean, hval, hlhs, hH]
+    -- Strict concavity ⇒ all entries of `p` are equal.
+    have hall : ∀ ⦃j⦄, j ∈ (Finset.univ : Finset ι) → ∀ ⦃k⦄,
+        k ∈ (Finset.univ : Finset ι) → p j = p k :=
+      Real.strictConcaveOn_negMulLog.eq_of_map_sum_eq
+        (t := Finset.univ) (w := fun _ => (n : ℝ)⁻¹) (p := p)
+        (fun i _ => by positivity) hwsum
+        (fun i _ => Set.mem_Ici.mpr (h0 i)) h_eq.le
+    -- All entries equal + normalization ⇒ each equals `1/n`.
+    intro i
+    have hconst : ∀ j, p j = p i := fun j =>
+      hall (Finset.mem_univ j) (Finset.mem_univ i)
+    have hni : (n : ℝ) * p i = 1 := by
+      calc (n : ℝ) * p i = ∑ _j : ι, p i := by
+              rw [Finset.sum_const, Finset.card_univ, ← hn, nsmul_eq_mul]
+        _ = ∑ j : ι, p j := Finset.sum_congr rfl (fun j _ => (hconst j).symm)
+        _ = 1 := hsum
+    exact eq_inv_of_mul_eq_one_right hni
+  · intro hp
+    have hpu : p = (fun _ : ι => (Fintype.card ι : ℝ)⁻¹) := funext hp
+    rw [hpu, hn]
+    exact shannonEntropy_uniform
 
 end CauchySchwarzOQ01OQ03OQ02
