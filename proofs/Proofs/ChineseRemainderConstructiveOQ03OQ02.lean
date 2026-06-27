@@ -20,7 +20,7 @@
   range of about 3n bits, with two of the three moduli admitting trivial
   hardware modular reduction (2^n is a bit-mask, 2^n - 1 is a Mersenne wrap).
 
-  ## What this file delivers (all VERIFIED, 0 axioms, 0 sorries)
+  ## What this file delivers (0 axioms, 0 sorries; NOT YET machine-checked)
 
   * Pairwise coprimality of {2^n - 1, 2^n, 2^n + 1} for n ≥ 1, broken into the
     three constituent facts:
@@ -47,7 +47,7 @@
   remains the open parent question) — it formalizes why this specific, widely
   used base is valid and balanced.
 
-  Status: VERIFIED
+  Status: UNVERIFIED (build host down — containerd I/O error; not compiled)
   Axioms: 0
   Sorries: 0
 
