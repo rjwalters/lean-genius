@@ -4302,6 +4302,7 @@ import Proofs.VandermondeInterpolationOQ01OQ01
 import Proofs.VandermondeInterpolationOQ01OQ02
 import Proofs.VandermondeInterpolationOQ01OQ02OQ01
 import Proofs.VanDerWaerdenFirstMoment
+import Proofs.VanDerWaerdenFirstMomentOQ01
 import Proofs.VarignonTheorem
 import Proofs.VarignonTheoremOQ01OQ01
 import Proofs.VietaGeneralOQ030505OQ01

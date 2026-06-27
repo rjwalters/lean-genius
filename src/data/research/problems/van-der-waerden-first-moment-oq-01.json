@@ -1,0 +1,96 @@
+{
+  "slug": "van-der-waerden-first-moment-oq-01",
+  "title": "Sharpening the van der Waerden First-Moment Family Bound to n²/(k-1)",
+  "phase": "COMPLETED",
+  "status": "completed",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\left| \\mathrm{vdwFamily}(n, k) \\right| \\;\\le\\; n \\cdot \\left\\lfloor \\frac{n-1}{k-1} \\right\\rfloor \\;\\le\\; \\frac{n^2}{k-1}, \\qquad k \\ge 2,",
+    "plain": "How many arithmetic progressions of length $k$ fit inside the interval $\\{0, 1, \\dots, n-1\\}$? Each such progression is fixed by its starting point $a$ and its common difference (step) $d \\ge 1$. There are $n$ choices for $a$, and the existing proof crudely bounds the number of steps by $n$ as well, giving $n^2$. But the fitting constraint $a + (k-1)d < n$ forces $(k-1)d < n$, so the step can be at most $\\lfloor (n-1)/(k-1) \\rfloor$ — there are roughly $n/(k-1)$ admissible steps, not $n$. Counting the $(a,d)$ pairs with this tighter step range gives $n \\cdot \\lfloor (n-1)/(k-1) \\rfloor \\approx n^2/(k-1)$ progressions, an improvement by a factor of $k-1$.",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "COMPLETED",
+    "since": "2026-06-27T11:33:01-07:00",
+    "iteration": 1,
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "blockers": [],
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "COMPLETE (researcher-12, 2026-06-27, VERIFIED 0-axiom): The open question — sharpen the loose n² AP-family count to ~n²/(k-1) — is resolved on two levels in Proofs/VanDerWaerdenFirstMomentOQ01.lean (281 lines, 9 theorems, 0 axioms, 0 sorries). LEVEL 1 (the inequality asked for): card_vdwFamily_le_div gives |family| ≤ n·⌊(n-1)/(k-1)⌋, card_vdwFamily_mul_le gives |family|·(k-1) ≤ n(n-1) < n²/(k-1) (factor-(k-1) improvement), and vdw_lower_bound_sharp feeds this through the verified Property-B engine to widen the threshold from n² < 2^(k-1) to n(n-1) < (k-1)·2^(k-1), giving W(k) ≳ √(k-1)·2^((k-1)/2). LEVEL 2 (new, exact): vdwFamily_param_injOn proves the (a,d)-parametrisation is a bijection onto the family (an AP of length ≥2 determines its first term = least element and step = gap to next), so card_vdwFamily_eq gives |family| = (fitting-pair count) and card_vdwFamily_eq_sum / card_vdwFamily_eq_sum_div give the EXACT closed form |vdwFamily(n,k)| = ∑_{d=1}^{⌊(n-1)/(k-1)⌋} (n-(k-1)d). #print axioms: only propext/Classical.choice/Quot.sound. NOTE: an earlier dead agent had created the LEVEL-1 upper-bound file (untracked); this session rescued it and added the LEVEL-2 exact count + gallery entry.",
+    "builtItems": [
+      "vdwFamily_param_injOn: (a,d) ↦ vdwAP n a d k injective on fitting pairs (k≥2) — the bijection, via mem_vdwAP + Fin.val_cast_of_lt decoding + Nat.dvd_one",
+      "card_vdwFamily_eq: |vdwFamily(n,k)| = (fitting-pair count) via Finset.card_image_of_injOn",
+      "card_fitting_pairs: fitting-pair count = ∑_{d∈Icc 1 n} (n-(k-1)d) via card_filter + sum_product + sum_comm double counting",
+      "card_vdwFamily_eq_sum / card_vdwFamily_eq_sum_div: the EXACT family cardinality, the latter over the admissible step range 1 ≤ d ≤ ⌊(n-1)/(k-1)⌋",
+      "card_vdwFamily_le_div / card_vdwFamily_mul_le / vdw_lower_bound_sharp: the factor-(k-1) inequality and sharpened first-moment threshold (rescued upper-bound layer)"
+    ],
+    "insights": [
+      "The fitting constraint a+(k-1)d < n with a ≥ 0 forces (k-1)d < n, i.e. d ≤ ⌊(n-1)/(k-1)⌋ — the step ranges over only ~n/(k-1) values, which is the entire source of the factor-(k-1) improvement the OQ requests.",
+      "The (a,d)-parametrisation is a BIJECTION, not merely a surjection: a length-≥2 AP viewed as a Finset (Fin n) determines its first term as its least element (index 0) and its step as the gap to the next element (index 1). This upgrades every ≤ in the family count to an =.",
+      "Decoding the bijection in Lean hinges on no-wraparound: every term a+i·d stays below n, so Fin.val_cast_of_lt makes the cast injective and set equality of two APs becomes natural-number equalities a+i·d = a+d that omega + a divisibility step (i·j=1 ⟹ i=1) finish.",
+      "The exact count ∑_{d=1}^{⌊(n-1)/(k-1)⌋}(n-(k-1)d) ≈ n²/(2(k-1)) shows the n·⌊(n-1)/(k-1)⌋ upper bound is tight up to the first-term range, and the base n² bound was loose by a factor of about 2(k-1).",
+      "Sharpening the count improves only the CONSTANT in W(k) ≳ √(k-1)·2^((k-1)/2); the exponential rate is untouched and would require a verified Lovász Local Lemma to lift."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "Express ∑_{d=1}^{D}(n-(k-1)d) in fully closed arithmetic form nD - (k-1)D(D+1)/2 with D=⌊(n-1)/(k-1)⌋ and derive matching ~n²/(2(k-1)) asymptotics.",
+      "A verified symmetric Lovász Local Lemma to lift W(k) from √(k-1)·2^((k-1)/2) toward 2^k/(ek) — the exponent, which the first-moment method cannot reach.",
+      "Extend the exact-count + bijection method to multidimensional or polynomial progressions."
+    ],
+    "markdown": "# Knowledge Base: van-der-waerden-first-moment-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+  },
+  "tags": [
+    "combinatorics",
+    "probabilistic-method",
+    "van-der-waerden",
+    "arithmetic-progressions"
+  ],
+  "relatedProofs": [
+    "van-der-waerden-first-moment"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-06-27T11:33:01-07:00",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/VanDerWaerdenFirstMoment.lean",
+      "filename": "VanDerWaerdenFirstMoment.lean",
+      "lineCount": 138,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanDerWaerdenFirstMoment.lean"
+    },
+    {
+      "path": "Proofs/VanDerWaerdenFirstMomentOQ01.lean",
+      "filename": "VanDerWaerdenFirstMomentOQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VanDerWaerdenFirstMomentOQ01.lean"
+    }
+  ]
+}

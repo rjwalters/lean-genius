@@ -1,0 +1,132 @@
+{
+  "id": "van-der-waerden-first-moment-oq-01",
+  "title": "Sharpening the van der Waerden First-Moment AP Count: From a Bound to the Exact Cardinality",
+  "slug": "van-der-waerden-first-moment-oq-01",
+  "description": "The base entry van-der-waerden-first-moment bounds the number of length-k arithmetic progressions fitting in [n] by the deliberately loose count n² (every (a,d) pair allowed), giving the union-bound threshold n² < 2^(k-1), i.e. W(k) ≳ 2^((k-1)/2). Open question van-der-waerden-first-moment-oq-01 asks to sharpen this to ~n²/(k-1), since the fitting constraint a+(k-1)d < n already forces (k-1)d < n, so the step ranges over only ⌊(n-1)/(k-1)⌋ values rather than n. This entry resolves the open question in two layers. FIRST (the inequality the OQ literally asks for): card_vdwFamily_le_div bounds the family by n·⌊(n-1)/(k-1)⌋ and card_vdwFamily_mul_le gives the division-free |family|·(k-1) ≤ n(n-1) < n²/(k-1) — a factor-(k-1) improvement — which vdw_lower_bound_sharp feeds back through the verified Property-B engine to widen the admissible range from n² < 2^(k-1) to n(n-1) < (k-1)·2^(k-1), a √(k-1) improvement giving W(k) ≳ √(k-1)·2^((k-1)/2). SECOND (the genuinely new theory-level content): the bound is upgraded from an inequality to an EXACT count. vdwFamily_param_injOn proves the (a,d)-parametrisation is injective on fitting pairs — a length-≥2 AP determines its first term (least element, index 0) and its step (gap to the next, index 1) — so the family is in bijection with the fitting pairs. card_vdwFamily_eq then gives |family| = (number of fitting (a,d) pairs), and card_fitting_pairs evaluates that to the closed sum ∑_{d=1}^{n} (n-(k-1)d); card_vdwFamily_eq_sum and card_vdwFamily_eq_sum_div assemble the exact formula |vdwFamily(n,k)| = ∑_{d=1}^{⌊(n-1)/(k-1)⌋} (n-(k-1)d). This pins down the first-moment AP count precisely and shows the n·⌊(n-1)/(k-1)⌋ upper bound is tight up to the a-range. HONESTY: the upper-bound layer (card_vdwFamily_le_div, card_vdwFamily_mul_le, vdw_lower_bound_sharp) is elementary counting; the probabilistic core remains the gallery's verified property-b-first-moment engine, consumed as a black box. The exact-count layer is the new contribution of this session: an injectivity (bijection) argument and a Finset double-counting that turn the ≤ into =.",
+  "meta": {
+    "author": "Lean Genius researcher-12",
+    "status": "verified",
+    "proofRepoPath": "Proofs/VanDerWaerdenFirstMomentOQ01.lean",
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 281,
+    "theoremCount": 9,
+    "definitionCount": 0,
+    "assumptions": "0 axioms, 0 sorries, no native_decide. The hypotheses (k ≥ 2 and the smallness bounds) are inputs to the statements, not standing assumptions. #print axioms reports only propext, Classical.choice, Quot.sound for card_vdwFamily_eq_sum, card_vdwFamily_eq_sum_div, and vdwFamily_param_injOn (verified directly). Builds on the verified base entry van-der-waerden-first-moment (vdwAP / vdwFamily / vdw_two_coloring_exists), whose probabilistic core is the gallery's property-b-first-moment engine, consumed as a black box. Badged 'original' because the new content — the (a,d)→AP bijection (vdwFamily_param_injOn), the resulting exact cardinality (card_vdwFamily_eq, card_vdwFamily_eq_sum), and the sharpened lower bound (vdw_lower_bound_sharp) — is not a Mathlib headline theorem.",
+    "tags": [
+      "combinatorics",
+      "probabilistic-method",
+      "first-moment-method",
+      "van-der-waerden",
+      "arithmetic-progressions",
+      "ramsey-theory",
+      "enumerative-combinatorics"
+    ],
+    "dateAdded": "2026-06-27",
+    "originalContributions": [
+      "vdwFamily_param_injOn: the (a,d)-parametrisation (a,d) ↦ {a, a+d, …, a+(k-1)d} is injective on the set of fitting pairs for k ≥ 2 — a length-≥2 AP determines its first term (least element) and step (gap to the next), so distinct admissible pairs give distinct progressions. This is the bijection underlying the exact count.",
+      "card_vdwFamily_eq_sum: the EXACT number of length-k APs fitting in [n] is ∑_{d=1}^{n} (n-(k-1)d) (k ≥ 2), upgrading the open question's requested inequality |family| ≤ n²/(k-1) to an equality and pinning down the first-moment AP count precisely.",
+      "card_vdwFamily_eq_sum_div: the same exact count with the sum restricted to the genuinely admissible step range 1 ≤ d ≤ ⌊(n-1)/(k-1)⌋ (terms beyond which vanish), the cleanest closed form for the family cardinality.",
+      "card_vdwFamily_le_div / card_vdwFamily_mul_le: the inequality the OQ asks for — |family| ≤ n·⌊(n-1)/(k-1)⌋ and |family|·(k-1) ≤ n(n-1) < n²/(k-1) — a factor-(k-1) improvement on the base n² bound, obtained by intersecting the (a,d)-box with the forced step range (k-1)d < n.",
+      "vdw_lower_bound_sharp: feeding the sharpened count through the verified Property-B engine widens the admissible range from n² < 2^(k-1) to n(n-1) < (k-1)·2^(k-1), a √(k-1) improvement giving W(k) ≳ √(k-1)·2^((k-1)/2)."
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Finset.card_image_of_injOn",
+        "description": "an injective-on-its-domain image preserves cardinality — turns vdwFamily_param_injOn into card_vdwFamily_eq (|family| = number of fitting pairs).",
+        "module": "Mathlib.Data.Finset.Card"
+      },
+      {
+        "theorem": "Fin.val_cast_of_lt",
+        "description": "for a < n, the Fin n cast of a has value a — the no-wraparound fact letting cast equalities be decoded back to natural-number equalities in the injectivity proof.",
+        "module": "Mathlib.Data.Fin.Basic"
+      },
+      {
+        "theorem": "Finset.card_filter / Finset.sum_product / Finset.sum_comm",
+        "description": "the double-counting that rewrites the fitting-pair count as the iterated sum ∑_d ∑_a [a+(k-1)d<n], collapsing each inner sum to n-(k-1)d (card_fitting_pairs).",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Nat.div_lt_iff_lt_mul / Nat.div_le_self",
+        "description": "the natural-number division facts reducing the exact sum to the admissible step range 1 ≤ d ≤ ⌊(n-1)/(k-1)⌋ (card_vdwFamily_eq_sum_div).",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ]
+  },
+  "leanFile": {
+    "path": "Proofs/VanDerWaerdenFirstMomentOQ01.lean",
+    "namespace": "ProbMethod.VanDerWaerden",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 281,
+    "theoremCount": 9,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "The growth of the van der Waerden numbers W(k) is governed from below by the probabilistic method: the elementary first-moment (union-bound) argument gives W(k) ≳ 2^((k-1)/2), and the Lovász Local Lemma improves this to W(k) ≳ 2^k/(ek). The first-moment threshold is n² < 2^(k-1), where n² over-counts the length-k arithmetic progressions fitting in [n]. The exact count of such APs is a classical enumerative fact: for each admissible common difference d the first term ranges over n-(k-1)d values, so the total is ∑_{d≥1, (k-1)d<n} (n-(k-1)d) ≈ n²/(2(k-1)). Replacing the crude n² by this exact count sharpens the constant in the first-moment lower bound (it does not change the exponential rate, which only the Local Lemma improves).",
+    "problemStatement": "Open question van-der-waerden-first-moment-oq-01: sharpen the base entry's loose family bound |vdwFamily(n,k)| ≤ n² to the true order ~n²/(k-1), using that the fitting constraint a+(k-1)d < n forces the step into the range 1 ≤ d ≤ ⌊(n-1)/(k-1)⌋. Determine the exact cardinality of the AP family and feed the improvement back through the verified Property-B engine.",
+    "proofStrategy": "Two layers on top of the verified base entry. (1) Inequality: intersect the (a,d)-parameter box {0,…,n-1}×{1,…,n} with the forced step range, since a≥0 and a+(k-1)d<n give (k-1)d<n, i.e. d ≤ ⌊(n-1)/(k-1)⌋; card monotonicity then yields |family| ≤ n·⌊(n-1)/(k-1)⌋ and, clearing the division, |family|·(k-1) ≤ n(n-1). Cancelling (k-1) inside the Property-B hypothesis turns n(n-1) < (k-1)·2^(k-1) into |family| < 2^(k-1), the sharpened lower bound. (2) Exactness: prove the parametrisation (a,d) ↦ vdwAP n a d k is injective on fitting pairs. From mem_vdwAP, the least element of the AP (index i=0) is a and the next (index i=1) is a+d, both recovered by decoding Fin n casts via Fin.val_cast_of_lt; comparing least elements forces a=a', and comparing second elements forces i·d'=d and j·d=d' for indices i,j<k, whence (i·j)·d=d, so i=j=1 and d=d'. Finset.card_image_of_injOn gives |family| = (fitting-pair count); a Finset double-count (card_filter, sum_product, sum_comm) evaluates the pair count to ∑_{d=1}^{n}(n-(k-1)d), and Finset.sum_subset restricts the sum to the admissible range 1 ≤ d ≤ ⌊(n-1)/(k-1)⌋.",
+    "keyInsights": [
+      "The fitting constraint a+(k-1)d < n is really a constraint on the step: with a ≥ 0 it forces (k-1)d < n, so only ⌊(n-1)/(k-1)⌋ of the n nominal step values are admissible. This single observation is the factor-(k-1) the open question asks for.",
+      "The (a,d)-parametrisation is a bijection, not just a surjection: a length-≥2 AP, viewed as a Finset (Fin n), determines its first term as its least element and its step as the gap to the second element. This upgrades every ≤ in the family count to an =.",
+      "Decoding the bijection in Lean is the crux: an element of vdwAP n a d k is a+i·d cast into Fin n, and because every term stays below n (no wraparound) the cast is injective (Fin.val_cast_of_lt), so set equality of two APs becomes natural-number equalities a+i·d' = a+d that omega and a divisibility step (i·j=1 ⟹ i=1) finish.",
+      "The exact count ∑_{d=1}^{⌊(n-1)/(k-1)⌋}(n-(k-1)d) ≈ n²/(2(k-1)) confirms the sharpened bound is the truth: the n·⌊(n-1)/(k-1)⌋ upper bound is tight up to the a-range, and the n² base bound was loose by a full factor of about 2(k-1).",
+      "Sharpening the count improves the constant in W(k) ≳ √(k-1)·2^((k-1)/2) but not the exponential rate; only a verified Lovász Local Lemma would lift the exponent, which remains the open frontier."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview and Scope",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "States the open question — sharpen the loose n² AP count — and the two layers of the answer: the factor-(k-1) inequality and the exact cardinality. Explicit that the probabilistic core remains the verified Property-B engine."
+    },
+    {
+      "id": "sharpened-bound",
+      "title": "The Factor-(k-1) Inequality",
+      "startLine": 54,
+      "endLine": 118,
+      "summary": "card_vdwFamily_le_div bounds the family by n·⌊(n-1)/(k-1)⌋ via the forced step range; card_vdwFamily_mul_le clears the division to |family|·(k-1) ≤ n(n-1); vdw_lower_bound_sharp feeds this through the Property-B engine to the sharpened threshold n(n-1) < (k-1)·2^(k-1)."
+    },
+    {
+      "id": "exact-count",
+      "title": "The AP-Family Count is Exact",
+      "startLine": 119,
+      "endLine": 233,
+      "summary": "mem_vdwAP characterises membership; vdwFamily_param_injOn proves the (a,d)-parametrisation is injective on fitting pairs (the AP determines its first term and step), giving the bijection card_vdwFamily_eq between the family and the fitting pairs."
+    },
+    {
+      "id": "closed-sum",
+      "title": "The Closed-Form Exact Cardinality",
+      "startLine": 234,
+      "endLine": 281,
+      "summary": "card_fitting_pairs double-counts the fitting pairs as ∑_d (n-(k-1)d); card_vdwFamily_eq_sum and card_vdwFamily_eq_sum_div assemble the exact family cardinality ∑_{d=1}^{⌊(n-1)/(k-1)⌋} (n-(k-1)d)."
+    }
+  ],
+  "conclusion": {
+    "summary": "9 theorems, 0 definitions, 0 sorries, 0 axioms, no native_decide. Open question van-der-waerden-first-moment-oq-01 is resolved on two levels. The inequality it asks for — |family| ≤ n·⌊(n-1)/(k-1)⌋ < n²/(k-1) — is proved and fed through the verified Property-B engine to the sharpened first-moment lower bound n(n-1) < (k-1)·2^(k-1), giving W(k) ≳ √(k-1)·2^((k-1)/2). Beyond the inequality, the count is made EXACT: the (a,d)-parametrisation is a bijection onto the family, so |vdwFamily(n,k)| = ∑_{d=1}^{⌊(n-1)/(k-1)⌋} (n-(k-1)d) precisely.",
+    "implications": "Pins down the exact number of length-k arithmetic progressions fitting in [n], confirming the sharpened bound is the truth up to the first-term range and that the base entry's n² count was loose by a factor of about 2(k-1). The exact cardinality and the (a,d)→AP bijection are reusable enumerative facts; the sharpened lower bound improves the constant in the first-moment threshold for van der Waerden numbers.",
+    "openQuestions": [
+      "Lift the improvement from the constant to the exponent: a verified symmetric Lovász Local Lemma would give W(k) ≳ 2^k/(ek), which the first-moment method (even with the exact count) cannot reach.",
+      "Express the exact count ∑_{d=1}^{D}(n-(k-1)d) in fully closed arithmetic form nD - (k-1)·D(D+1)/2 with D = ⌊(n-1)/(k-1)⌋, and derive matching upper and lower asymptotics ~n²/(2(k-1)).",
+      "Extend the exact-count and bijection method to multidimensional or polynomial progressions, where the fitting region and the parametrisation are higher-dimensional."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "van-der-waerden-first-moment",
+      "relationship": "base — this entry sharpens that entry's loose n² AP-family bound (card_vdwFamily_le) to the exact count and the factor-(k-1) lower bound, reusing its vdwAP / vdwFamily / vdw_two_coloring_exists verbatim"
+    },
+    {
+      "targetId": "property-b-first-moment",
+      "relationship": "engine — the probabilistic core consumed by vdw_lower_bound_sharp is property_b_two_colorable (Erdős 1963 Property B via the first moment method), instantiated on the arithmetic-progression hypergraph"
+    },
+    {
+      "targetId": "erdos-138",
+      "relationship": "related — the gallery's van der Waerden entry, which axiomatizes growth/lower-bound statements; this entry sharpens the elementary first-moment lower bound proved outright in the base entry"
+    }
+  ],
+  "sorries": 0
+}

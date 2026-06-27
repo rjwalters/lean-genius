@@ -1,0 +1,86 @@
+[
+  {
+    "id": "vdw-oq01-ann-header",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 1, "endLine": 53 },
+    "type": "context",
+    "title": "From a Loose Bound to the Exact Count",
+    "content": "The base entry `van-der-waerden-first-moment` counts the length-`k` arithmetic progressions fitting in `[n]` by the loose `n²` (every `(a,d)` pair allowed). This file sharpens that count in two layers built on the base entry's `vdwAP` / `vdwFamily` / `vdw_two_coloring_exists`. First it proves the inequality the open question asks for — a factor-`(k-1)` improvement to `n·⌊(n-1)/(k-1)⌋ < n²/(k-1)` — and feeds it through the verified Property-B engine. Then it goes further: the `(a,d)`-parametrisation is shown to be a *bijection*, so the family count is computed *exactly*.",
+    "mathContext": "Base bound: $|\\mathrm{vdwFamily}(n,k)| \\le n^2$. Target: $|\\mathrm{vdwFamily}(n,k)| \\le n\\lfloor (n-1)/(k-1)\\rfloor \\le n^2/(k-1)$, and exactly $\\sum_{d=1}^{\\lfloor (n-1)/(k-1)\\rfloor} (n-(k-1)d)$.",
+    "significance": "context",
+    "relatedConcepts": ["first-moment method", "van der Waerden numbers", "enumerative combinatorics"],
+    "prerequisites": ["the base entry van-der-waerden-first-moment", "Property B"]
+  },
+  {
+    "id": "vdw-oq01-ann-le-div",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 54, "endLine": 96 },
+    "type": "technique",
+    "title": "The Forced Step Range Gives a Factor-(k-1)",
+    "content": "`card_vdwFamily_le_div` is the inequality the open question requests. The point is that the fitting constraint `a + (k-1)d < n` is secretly a constraint on the *step*: since `a ≥ 0`, it forces `(k-1)d < n`, i.e. `d ≤ ⌊(n-1)/(k-1)⌋`. Intersecting the `(a,d)`-parameter box `{0,…,n-1} × {1,…,n}` with this sharper step range and applying `Finset.card_le_card` bounds the family by `n·⌊(n-1)/(k-1)⌋`. `card_vdwFamily_mul_le` clears the floor division to the clean `|family|·(k-1) ≤ n(n-1)`, exhibiting the full factor-`(k-1)` improvement over the base `n²`.",
+    "mathContext": "$a + (k-1)d < n,\\ a \\ge 0 \\Rightarrow (k-1)d < n \\Rightarrow d \\le \\lfloor (n-1)/(k-1)\\rfloor$, so $|\\mathrm{vdwFamily}(n,k)|\\cdot(k-1) \\le n(n-1) < n^2$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_le_card", "Nat.le_div_iff_mul_le", "step constraint"],
+    "prerequisites": ["Finset cardinality monotonicity", "natural-number division"]
+  },
+  {
+    "id": "vdw-oq01-ann-lower-bound-sharp",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 98, "endLine": 117 },
+    "type": "technique",
+    "title": "Feeding the Sharper Count Back Through Property B",
+    "content": "`vdw_lower_bound_sharp` widens the admissible range of `n` from the base `n² < 2^(k-1)` to `n(n-1) < (k-1)·2^(k-1)`. The mechanism is a single cancellation: from `|family|·(k-1) ≤ n(n-1) < (k-1)·2^(k-1)` one divides by `(k-1)` to get `|family| < 2^(k-1)`, exactly the smallness hypothesis the verified `vdw_two_coloring_exists` (the Property-B engine on the AP-hypergraph) consumes. The resulting witness is `W(k) ≳ √(k-1)·2^((k-1)/2)`, a √(k-1) improvement on the base threshold.",
+    "mathContext": "$n(n-1) < (k-1)2^{k-1} \\Rightarrow |\\mathrm{vdwFamily}(n,k)| < 2^{k-1} \\Rightarrow \\exists$ a 2-colouring of $[n]$ with no monochromatic length-$k$ AP, so $W(k) > n$.",
+    "significance": "key",
+    "relatedConcepts": ["Property B", "first-moment threshold", "lt_of_mul_lt_mul_right"],
+    "prerequisites": ["the base entry's vdw_two_coloring_exists"]
+  },
+  {
+    "id": "vdw-oq01-ann-mem",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 119, "endLine": 144 },
+    "type": "definition",
+    "title": "Decoding Membership in an AP",
+    "content": "`mem_vdwAP` unfolds the image definition of `vdwAP` to the clean characterisation: `x ∈ vdwAP n a d k` iff `x = a + i·d` (cast into `Fin n`) for some index `i < k`. This is the workhorse for the bijection: it lets specific elements of the AP be named by their index — the first term sits at `i = 0`, the second at `i = 1` — which is exactly how the parameters `a` and `d` will be read back off the set.",
+    "mathContext": "$x \\in \\mathrm{vdwAP}(n,a,d,k) \\iff \\exists\\, i < k,\\ x = \\overline{a + i d}$ where $\\overline{(\\cdot)} : \\mathbb{N} \\to \\mathrm{Fin}\\,n$ is reduction mod $n$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Finset.mem_image", "arithmetic progression", "indexing"],
+    "prerequisites": ["Finset.image membership"]
+  },
+  {
+    "id": "vdw-oq01-ann-injon",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 146, "endLine": 223 },
+    "type": "technique",
+    "title": "The Parametrisation is a Bijection",
+    "content": "`vdwFamily_param_injOn` is the mathematical heart of the entry: distinct fitting `(a,d)` pairs give distinct progressions, so the `(a,d)`-parametrisation is injective and `vdwFamily` is in bijection with the fitting pairs. The proof recovers the parameters from the set. Because every term `a+i·d` stays below `n` (no wraparound), `Fin.val_cast_of_lt` makes the `Fin n` cast injective, so set equality of two APs becomes natural-number equalities. Comparing *least* elements (index 0) forces `a = a'`; comparing *second* elements (index 1) yields `i·d' = d` and `j·d = d'` for some `i, j < k`, whence `(i·j)·d = d`, so `i·j = 1`, giving `i = j = 1` and `d = d'`.",
+    "mathContext": "An AP of length $\\ge 2$ is determined as a set by its minimum ($=a$) and the gap to its next element ($=d$). The relation $i d' = d,\\ j d = d'$ forces $ij = 1$ in $\\mathbb{N}$, hence $i = j = 1$.",
+    "significance": "key",
+    "relatedConcepts": ["Set.InjOn", "Fin.val_cast_of_lt", "Nat.dvd_one", "no wraparound", "bijection"],
+    "prerequisites": ["injective casts into Fin n", "natural-number divisibility"]
+  },
+  {
+    "id": "vdw-oq01-ann-card-eq",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 225, "endLine": 233 },
+    "type": "technique",
+    "title": "Cardinality Equals the Pair Count",
+    "content": "`card_vdwFamily_eq` is the immediate payoff of the bijection: since `vdwFamily` is the image of the fitting-pair set under an injective-on-its-domain map, `Finset.card_image_of_injOn` gives `|vdwFamily(n,k)| = (number of fitting (a,d) pairs)`. This is what upgrades every `≤` in the family count to an `=`.",
+    "mathContext": "$|\\mathrm{vdwFamily}(n,k)| = |\\{(a,d) : a<n,\\ 1\\le d\\le n,\\ a+(k-1)d<n\\}|$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_image_of_injOn", "bijection", "exact count"],
+    "prerequisites": ["image cardinality under injectivity"]
+  },
+  {
+    "id": "vdw-oq01-ann-sum",
+    "proofId": "van-der-waerden-first-moment-oq-01",
+    "range": { "startLine": 234, "endLine": 281 },
+    "type": "technique",
+    "title": "The Closed-Form Exact Count",
+    "content": "`card_fitting_pairs` evaluates the pair count by double counting: `Finset.card_filter` turns it into a double sum, `Finset.sum_product` and `Finset.sum_comm` put the step `d` on the outside, and for each fixed `d` the inner filter `{a < n : a+(k-1)d < n}` is exactly `range (n-(k-1)d)`, of size `n-(k-1)d`. So the count is `∑_{d=1}^{n} (n-(k-1)d)`. `card_vdwFamily_eq_sum` combines this with the bijection, and `card_vdwFamily_eq_sum_div` restricts the sum to the admissible range `1 ≤ d ≤ ⌊(n-1)/(k-1)⌋` (terms beyond it vanish, via `Nat.div_lt_iff_lt_mul`), giving the cleanest exact formula.",
+    "mathContext": "$|\\mathrm{vdwFamily}(n,k)| = \\sum_{d=1}^{\\lfloor (n-1)/(k-1)\\rfloor} (n - (k-1)d) \\approx \\frac{n^2}{2(k-1)}$.",
+    "significance": "key",
+    "relatedConcepts": ["Finset.card_filter", "Finset.sum_product", "Finset.sum_comm", "Finset.sum_subset", "double counting"],
+    "prerequisites": ["big operators over Finsets", "natural-number division inequalities"]
+  }
+]
