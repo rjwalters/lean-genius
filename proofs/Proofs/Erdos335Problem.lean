@@ -412,3 +412,48 @@ theorem density_additive_lt_one_right (A B : Set ℕ) (h : DensityAdditive A B)
   have hsum := additive_sum_le_one A B h
   have hpos : 0 < asympDensity A := hA
   linarith
+
+/- ## A Non-Degenerate Witness for Erdős #335 -/
+
+/-- **A positive-density density-additive pair exists.**
+
+    `density_additive_zero_singleton` only produced the *degenerate* witness
+    `({0}, A)`, whose first component has density `0` — explicitly noted there
+    to be "not a witness for Erdős #335 proper." This theorem closes that gap.
+
+    Instantiate the group-rotation construction with the irrational rotation by
+    `√2` and the measurable target `[0, 1/4) ⊆ [0,1)`. Weyl equidistribution
+    (`weyl_equidistribution`) gives the fractional-part set density `1/4 > 0`,
+    and the rotation-additivity axiom (`fractional_part_density_additive`) makes
+    it density-additive with itself. Both components therefore have *positive*
+    density, so the density-additivity relation is non-vacuous in the regime
+    Erdős #335 actually concerns. (Relies on the two stated construction axioms.) -/
+theorem exists_positive_density_additive_pair :
+    ∃ A B : Set ℕ, HasPositiveDensity A ∧ HasPositiveDensity B ∧ DensityAdditive A B := by
+  have hθ : Irrational (Real.sqrt 2) := irrational_sqrt_two
+  obtain ⟨_, hdens⟩ :=
+    weyl_equidistribution (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4)
+      (by norm_num) (by norm_num)
+  refine ⟨FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)),
+          FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)), ?_, ?_, ?_⟩
+  · unfold HasPositiveDensity; rw [hdens]; norm_num
+  · unfold HasPositiveDensity; rw [hdens]; norm_num
+  · exact fractional_part_density_additive (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4))
+      (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4) (1 / 4) (by norm_num)
+
+/-- The concrete `√2`-rotation witness has density exactly `1/4`, so its sumset
+    with itself has density `1/2`. This realizes the `self_additive_density_le_half`
+    bound `d(A) ≤ 1/2` at an interior point with a genuine positive-density set,
+    confirming that bound is attained by feasible configurations (not vacuous). -/
+theorem exists_self_additive_density_quarter :
+    ∃ A : Set ℕ, HasPositiveDensity A ∧ DensityAdditive A A ∧
+      asympDensity A = 1 / 4 ∧ asympDensity (Sumset A A) = 1 / 2 := by
+  have hθ : Irrational (Real.sqrt 2) := irrational_sqrt_two
+  obtain ⟨_, hdens⟩ :=
+    weyl_equidistribution (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4)
+      (by norm_num) (by norm_num)
+  have hadd := fractional_part_density_additive (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4))
+    (Set.Ico (0 : ℝ) (1 / 4)) hθ (1 / 4) (1 / 4) (by norm_num)
+  refine ⟨FractionalPartSet (Real.sqrt 2) (Set.Ico (0 : ℝ) (1 / 4)), ?_, hadd, hdens, ?_⟩
+  · unfold HasPositiveDensity; rw [hdens]; norm_num
+  · rw [hadd.2.2.2, hdens]; norm_num
