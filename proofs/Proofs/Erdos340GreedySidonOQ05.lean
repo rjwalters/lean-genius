@@ -7,6 +7,8 @@ Authors: LeanGenius AI Research
 -- `Finset.card_image_of_injOn`, `Finset.sum_le_card_nsmul`, and `Nat.card_Icc`, which span
 -- several Mathlib namespaces; a single import keeps the development robust.
 import Mathlib
+-- The gallery's classical Sidon definition `Erdos340.IsSidon`, bridged to `IsBh 2` below.
+import Proofs.Erdos340GreedySidon
 
 /-
 # Erdős Problem #340, Open Question OQ-05: B_h Sequences
@@ -150,6 +152,92 @@ theorem IsBh.of_le {k h : ℕ} {A : Finset ℕ} (hkh : k ≤ h) (hA : IsBh h A) 
   induction h, hkh using Nat.le_induction with
   | base => exact id
   | succ n _ ih => exact fun hA => ih hA.of_succ
+
+/-! ## Part 1c: `B_2` is exactly the classical Sidon property -/
+
+/-- The unordered pair `{a, b}` viewed as an element of `Sym ℕ 2`. -/
+private def symPair (a b : ℕ) : Sym ℕ 2 := ⟨{a, b}, by simp⟩
+
+@[simp] private theorem symPair_coe (a b : ℕ) :
+    ((symPair a b : Sym ℕ 2) : Multiset ℕ) = {a, b} := rfl
+
+private theorem symPair_sum (a b : ℕ) :
+    ((symPair a b : Sym ℕ 2) : Multiset ℕ).sum = a + b := by
+  rw [symPair_coe]; simp
+
+private theorem symPair_mem_sym {A : Finset ℕ} {a b : ℕ} (ha : a ∈ A) (hb : b ∈ A) :
+    symPair a b ∈ A.sym 2 := by
+  rw [Finset.mem_sym_iff]
+  intro x hx
+  have hx' : x ∈ ({a, b} : Multiset ℕ) := by rw [← symPair_coe a b]; exact Sym.mem_coe.mpr hx
+  simp only [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton] at hx'
+  rcases hx' with rfl | rfl
+  · exact ha
+  · exact hb
+
+/-- **Forward bridge.**  A `B_2` set (in the multiset-sum sense of `IsBh`) is a Sidon
+set in the gallery's classical sense (`Erdos340.IsSidon`).
+
+*Proof.*  Given `a ≤ b`, `c ≤ d` in `A` with `a + b = c + d`, the unordered pairs
+`{a, b}, {c, d} ∈ A.sym 2` have equal multiset sums, so `B_2` injectivity forces
+`{a, b} = {c, d}` as multisets.  Then `a ∈ {c, d}` and `b ∈ {c, d}`, and the orderings
+pin down `a = c`, `b = d`. ∎ -/
+theorem IsBh.isSidon {A : Finset ℕ} (hA : IsBh 2 A) : Erdos340.IsSidon A := by
+  intro a b c d ha hb hc hd hab hcd hsum
+  have heq : symPair a b = symPair c d :=
+    hA (symPair_mem_sym ha hb) (symPair_mem_sym hc hd) <| by
+      simp only [symPair_sum]; exact hsum
+  have hmul : ({a, b} : Multiset ℕ) = {c, d} := by
+    rw [← symPair_coe a b, ← symPair_coe c d, heq]
+  have ha' : a ∈ ({c, d} : Multiset ℕ) := hmul ▸ (by simp)
+  have hb' : b ∈ ({c, d} : Multiset ℕ) := hmul ▸ (by simp)
+  simp only [Multiset.insert_eq_cons, Multiset.mem_cons, Multiset.mem_singleton] at ha' hb'
+  omega
+
+/-- Helper for the reverse bridge: in a Sidon set, any two unordered pairs drawn from
+`A` with a common sum are equal as multisets.  Handles the four orderings of
+`(a, b)` and `(c, d)` by feeding the correctly-ordered quadruple to `IsSidon`. -/
+private theorem pair_eq_of_sidon {A : Finset ℕ} (hA : Erdos340.IsSidon A)
+    {a b c d : ℕ} (ha : a ∈ A) (hb : b ∈ A) (hc : c ∈ A) (hd : d ∈ A)
+    (hsum : a + b = c + d) : ({a, b} : Multiset ℕ) = {c, d} := by
+  rcases le_total a b with hab | hab <;> rcases le_total c d with hcd | hcd
+  · obtain ⟨h1, h2⟩ := hA a b c d ha hb hc hd hab hcd hsum
+    subst h1; subst h2; rfl
+  · obtain ⟨h1, h2⟩ := hA a b d c ha hb hd hc hab hcd (by omega)
+    subst h1; subst h2; exact Multiset.pair_comm a b
+  · obtain ⟨h1, h2⟩ := hA b a c d hb ha hc hd hab hcd (by omega)
+    subst h1; subst h2; exact Multiset.pair_comm a b
+  · obtain ⟨h1, h2⟩ := hA b a d c hb ha hd hc hab hcd (by omega)
+    subst h1; subst h2; rfl
+
+/-- **Reverse bridge.**  A classical Sidon set is `B_2` in the `IsBh` sense.
+
+*Proof.*  Two elements `s, t ∈ A.sym 2` are unordered pairs `{a, b}`, `{c, d}` of
+elements of `A` (each multiset has card 2).  Equal sums give `a + b = c + d`, and the
+Sidon property forces `{a, b} = {c, d}`, hence `s = t`. ∎ -/
+theorem IsSidon.isBh_two {A : Finset ℕ} (hA : Erdos340.IsSidon A) : IsBh 2 A := by
+  intro s hs t ht hsum
+  rw [Finset.mem_coe, Finset.mem_sym_iff] at hs ht
+  obtain ⟨a, b, hsab⟩ := Multiset.card_eq_two.mp s.2
+  obtain ⟨c, d, htcd⟩ := Multiset.card_eq_two.mp t.2
+  have haA : a ∈ A := hs a (by show a ∈ s.1; rw [hsab]; simp)
+  have hbA : b ∈ A := hs b (by show b ∈ s.1; rw [hsab]; simp)
+  have hcA : c ∈ A := ht c (by show c ∈ t.1; rw [htcd]; simp)
+  have hdA : d ∈ A := ht d (by show d ∈ t.1; rw [htcd]; simp)
+  have hsum0 : s.1.sum = t.1.sum := hsum
+  rw [hsab, htcd] at hsum0
+  have hsum1 : a + b = c + d := by simpa using hsum0
+  have hmul : s.1 = t.1 := by
+    rw [hsab, htcd]; exact pair_eq_of_sidon hA haA hbA hcA hdA hsum1
+  exact Sym.coe_injective hmul
+
+/-- **The bridge.**  In the `h = 2` case the `IsBh` definition coincides exactly with
+the gallery's classical Sidon definition `Erdos340.IsSidon`.  This certifies that the
+`B_h` theory developed here genuinely generalizes Erdős #340's `B_2` (Sidon) case:
+all the gallery's Sidon results are the `h = 2` instance of `IsBh`, and conversely the
+`B_h` counting bound `IsBh.choose_card_le` specializes to the classical Sidon bound. -/
+theorem isBh_two_iff_isSidon {A : Finset ℕ} : IsBh 2 A ↔ Erdos340.IsSidon A :=
+  ⟨IsBh.isSidon, IsSidon.isBh_two⟩
 
 /-! ## Part 2: From `B_h` to distinct subset-sums -/
 
