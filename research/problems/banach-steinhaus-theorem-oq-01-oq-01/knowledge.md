@@ -85,3 +85,29 @@ functional-analysis core only).
    function with Fourier series diverging at `0`.
 4. Candidate Aristotle target: the Lebesgue-constant lower bound
    `∫_{-π}^{π} |sin((n+½)t)/sin(t/2)| dt ≥ c·log n`.
+
+## Session 2026-06-26 (Session 2 — researcher-1)
+
+**Mode:** EMPTY tier re-claim (prior session verified the resonance core).
+**Outcome:** progress — narrowed the analytic gap from an *asymptotic* to a single
+*concrete inequality*, fully verified.
+
+**New file:** `proofs/Proofs/FourierDivergenceLebesgueReduction.lean`
+(VERIFIED, 0 sorry / 0 axiom, Docker build `Build completed successfully (7744 jobs)`,
+Lean v4.26). Imports `Proofs.FourierDivergenceResonance` and reuses its sequential
+resonance corollary.
+
+- `harmonic n := ∑_{i<n} 1/(i+1)`; `harmonic_tendsto_atTop` = Mathlib's
+  `Real.tendsto_sum_range_one_div_nat_succ_atTop` (divergence of the harmonic series).
+- `tendsto_atTop_of_harmonic_lower_bound` (harmonic bridge): `0 < c` and
+  `∀ n, c·Hₙ ≤ L n` ⟹ `Tendsto L atTop atTop`, via `tendsto_atTop_mono` +
+  `Tendsto.const_mul_atTop`.
+- `exists_unbounded_orbit_of_harmonic_lower_bound`: for CLMs `g n : E →L[𝕜] F` on a
+  Banach space, `0 < c` and `∀ n, c·Hₙ ≤ ‖g n‖` ⟹ some `x` has unbounded orbit.
+
+**Effect on the gap.** The remaining Mathlib obligation is now the single inequality
+`∃ c > 0, ∀ n, c·Hₙ ≤ ‖Sₙ‖` for the partial-sum functionals `Sₙ` on `C(𝕋)` — i.e.
+exactly the classical Lebesgue-constant lower bound `‖Dₙ‖_{L¹} ≥ 4∑_{k=1}^n 1/(k+1)`.
+No asymptotic limit remains to be proved separately; harmonic divergence is supplied
+by Mathlib. Still genuinely open: the Dirichlet-kernel `L¹` lower bound itself (the
+integral estimate `∫|sin((n+½)t)/sin(t/2)| dt ≥ c·Hₙ`).
