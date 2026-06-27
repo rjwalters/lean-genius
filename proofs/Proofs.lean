@@ -4015,6 +4015,7 @@ import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
 import Proofs.SpernerTuckerBorsukUlamOneDim
 import Proofs.SpernerTuckerBoundaryParity
+import Proofs.SpernerTuckerDoorGraph
 import Proofs.SpernerTuckerOneDim
 import Proofs.SpernerTuckerPathFollowing
 import Proofs.SphericalExcessGirard
