@@ -1,7 +1,7 @@
 {
   "slug": "bounded-prime-gaps-oq-02",
   "title": "Elliott-Halberstam Conjecture: Axiom-Free Formalization",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -29,11 +29,36 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "PROGRESS: level-monotonicity upgraded from hypothesis to theorem for the canonical concrete discrepancy functional; generally-nonzero model of the full hierarchy added (0 sorry/0 axiom). VERIFIED offline via `lake env lean` (full kernel check vs Mathlib oleans, EXIT 0; axioms = propext/Classical.choice/Quot.sound only); docker-build still blocked by host containerd corruption. EH itself remains OPEN.",
+    "builtItems": [
+      "EHAtLevel, LevelMonotone (defs) in BoundedPrimeGapsOQ02.lean:68,75",
+      "EHAtLevel_of_le (level hierarchy) BoundedPrimeGapsOQ02.lean:81",
+      "EHAtLevel_of_le_functional BoundedPrimeGapsOQ02.lean:89",
+      "BombieriVinogradov, ElliottHalberstam (defs) + bombieriVinogradov_of_elliottHalberstam BoundedPrimeGapsOQ02.lean:97,101,111",
+      "bombieriVinogradov_of_EHAtLevel, elliottHalberstam_iff_levels_near_one BoundedPrimeGapsOQ02.lean:117,124",
+      "EHAtLevel_zero / levelMonotone_zero / elliottHalberstam_zero (non-vacuity) BoundedPrimeGapsOQ02.lean:138,148,153",
+      "Gallery entry src/data/proofs/bounded-prime-gaps-oq-02/{meta,annotations}.json",
+      "discrepancySum + discrepancySum_mono_level (x≥1) in BoundedPrimeGapsOQ02.lean",
+      "discrepancySumClamped + discrepancySumClamped_eq + levelMonotone_discrepancySumClamped + EHAtLevel_of_le_discrepancySumClamped (concrete nonzero model feeding the hierarchy)"
+    ],
+    "insights": [
+      "EH is a conjecture, so formalize it as a logical skeleton over an abstract discrepancy functional D θ x — never axiomatize EH itself.",
+      "The level hierarchy (higher level ⟹ lower level) is a one-line le_trans reusing the SAME constant C, given only that D is level-monotone (more moduli summed ⟹ larger discrepancy).",
+      "EH ⟹ BV is the θ=1/2 instance; more strongly, any level ≥ 1/2 bound already gives BV, and EH is equivalent to its restriction to θ ∈ [1/2,1).",
+      "The zero functional witnesses non-vacuity: it satisfies the full hierarchy with C=1, so the predicates are satisfiable, not vacuously empty.",
+      "The LevelMonotone structural hypothesis is not an extra assumption: for the canonical discrepancy sum Σ_{q≤x^θ} f(q,x) with f≥0 it is a THEOREM, since x↦x^θ is monotone in θ for base x≥1, growing the modulus range Icc 1 ⌊x^θ⌋.",
+      "A base clamp (max 1 x) makes level-monotonicity hold for ALL real x, yielding a generally nonzero global model of LevelMonotone — strictly stronger non-vacuity than the zero functional."
+    ],
+    "mathlibGaps": [
+      "No global Mathlib gap for the skeleton; instantiating D with the genuine von-Mangoldt discrepancy sum and proving its LevelMonotone is the analytic work (depends on Bombieri–Vinogradov, ~12000 lines, tracked in OQ-04)."
+    ],
+    "nextSteps": [
+      "Re-confirm via docker-build.sh once host containerd corruption is repaired (offline `lake env lean` already passes; docker content store currently I/O-corrupt).",
+      "Instantiate D := von-Mangoldt discrepancy sum and prove LevelMonotone for it.",
+      "Formalize a strict/quantitative version of the hierarchy (constant improves as the level drops).",
+      "Instantiate f q x := max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)| using Mathlib von Mangoldt (ArithmeticFunction.vonMangoldt) to connect discrepancySum to the genuine EH sum",
+      "Bridge to the Maynard–Tao bounded-gap consequence (DHL[k,m]) under EHAtLevel — assess Mathlib sieve infrastructure"
+    ]
   },
   "tags": [
     "number-theory",
@@ -311,5 +336,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsTPC.lean"
     }
-  ]
+  ],
+  "id": "bounded-prime-gaps-oq-02"
 }
