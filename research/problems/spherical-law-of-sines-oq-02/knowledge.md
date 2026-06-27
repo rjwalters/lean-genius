@@ -79,12 +79,15 @@ by relabelling the vertices `(A,B,C) ↦ (B,C,A)` / `(A,C,B)`, using
 
 ## Verification status
 
-**UNVERIFIED** as of 2026-06-27. The Docker build host has corrupted containerd
-metadata (`write …/meta.db: input/output error`) — a daemon-level failure
-needing an operator restart, not a disk-space issue. The proof was reviewed
-manually line-by-line against the actual parent / OQ-03 lemma signatures
-(`cos_dihedralAngle_mul`, `sin_dihedralAngle_mul`, `spherical_law_of_cosines_local`,
-`cos_arcLen`, `sin_sq_arcLen`, `normSq_projPerp`, `tripleProduct_sq_swap`,
-`dihedralAngle_comm_last`); every `linear_combination` coefficient and `rw`
-target was checked by hand. Re-run `./proofs/scripts/docker-build.sh
-Proofs.SphericalLawOfSinesOQ02` once the build host recovers.
+**VERIFIED** as of 2026-06-27. All 6 theorems type-check cleanly under the pinned
+Mathlib (Lean v4.26.0). The Docker build host still has corrupted containerd
+metadata (`write …/meta.db: input/output error`), so verification was done with
+the host toolchain directly: `cd proofs && ./bin/lake env lean
+Proofs/SphericalLawOfSinesOQ02.lean` exits 0 with no diagnostics.
+
+`#print axioms` on every theorem
+(`dual_spherical_law_of_cosines`, `dual_spherical_law_of_cosines_A`,
+`dual_spherical_law_of_cosines_B`, `dual_law_of_cosines_polynomial`,
+`tripleProduct_sq_eq`, `tripleProduct_sq_unit`) reports only
+`[propext, Classical.choice, Quot.sound]` — the foundational axioms that do not
+count as assumptions. The file is **axiom-free with 0 sorries**.
