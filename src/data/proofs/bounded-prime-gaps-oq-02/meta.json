@@ -2,7 +2,7 @@
   "id": "bounded-prime-gaps-oq-02",
   "title": "Elliott–Halberstam Conjecture: Axiom-Free Level-of-Distribution Hierarchy",
   "slug": "bounded-prime-gaps-oq-02",
-  "description": "Formalizes the logical skeleton of the Elliott–Halberstam (EH) conjecture as an axiom-free level-of-distribution hierarchy. For an abstract discrepancy functional D θ x (modelling the worst-case prime-counting discrepancy summed over moduli q ≤ x^θ), we define the level-θ EH bound EHAtLevel, prove the level hierarchy (a bound at a higher level implies the bound at every lower level for a level-monotone D), define Bombieri–Vinogradov as the θ = 1/2 case and Elliott–Halberstam as all levels θ < 1, and prove EH ⟹ BV. A canonical concrete functional ∑_{q≤x^θ} f(q,x) realizes the hierarchy with level-monotonicity proved (not assumed). This session sharpens the hierarchy: (i) an EXACT additive decomposition discrepancySum θ₂ = discrepancySum θ₁ + discrepancyBand θ₁ θ₂, where the band is the discrepancy of the new moduli ⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋ that the larger level admits — upgrading monotonicity from inequality to identity; (ii) the EH-bound functional class at a fixed level is a CONVEX CONE (closed under addition and nonnegative scaling); and (iii) a quantitative converse EHAtLevel_discrepancySum_up — EH at level θ₁ plus an EH-type bound on the new-moduli band implies EH at the higher level θ₂, pinning the band as exactly the extra analytic input needed to raise the level of distribution. EH itself is NOT axiomatized; only D's structural properties enter as per-theorem hypotheses, so every result is a purely logical/analytic consequence with no axiom, sorry, or native_decide.",
+  "description": "Formalizes the logical skeleton of the Elliott–Halberstam (EH) conjecture as an axiom-free level-of-distribution hierarchy. For an abstract discrepancy functional D θ x (modelling the worst-case prime-counting discrepancy summed over moduli q ≤ x^θ), we define the level-θ EH bound EHAtLevel, prove the level hierarchy (a bound at a higher level implies the bound at every lower level for a level-monotone D), define Bombieri–Vinogradov as the θ = 1/2 case and Elliott–Halberstam as all levels θ < 1, and prove EH ⟹ BV. A canonical concrete functional ∑_{q≤x^θ} f(q,x) realizes the hierarchy with level-monotonicity proved (not assumed). This session sharpens the hierarchy: (i) an EXACT additive decomposition discrepancySum θ₂ = discrepancySum θ₁ + discrepancyBand θ₁ θ₂, where the band is the discrepancy of the new moduli ⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋ that the larger level admits — upgrading monotonicity from inequality to identity; (ii) the EH-bound functional class at a fixed level is a CONVEX CONE (closed under addition and nonnegative scaling); and (iii) a quantitative converse EHAtLevel_discrepancySum_up — EH at level θ₁ plus an EH-type bound on the new-moduli band implies EH at the higher level θ₂, pinning the band as exactly the extra analytic input needed to raise the level of distribution; and (iv) the BAND COCYCLE (Chasles) identity discrepancyBand θ₁ θ₃ = discrepancyBand θ₁ θ₂ + discrepancyBand θ₂ θ₃, subdividing the new-moduli band at any intermediate level, with subdivided ascent EHAtLevel_discrepancySum_up_split showing the level may be raised using only EH-type bounds on each consecutive sub-band — the formal license for dyadic decomposition of the modulus range. EH itself is NOT axiomatized; only D's structural properties enter as per-theorem hypotheses, so every result is a purely logical/analytic consequence with no axiom, sorry, or native_decide.",
   "meta": {
     "author": "Elliott–Halberstam (1968); Bombieri (1965), A.I. Vinogradov (1965); formalized here",
     "sourceUrl": "https://en.wikipedia.org/wiki/Elliott%E2%80%93Halberstam_conjecture",
@@ -52,6 +52,16 @@
         "theorem": "Finset.Icc_subset_Icc_right",
         "description": "Icc a b ⊆ Icc a c when b ≤ c",
         "module": "Mathlib.Order.Interval.Finset.Basic"
+      },
+      {
+        "theorem": "Finset.sum_Ioc_consecutive",
+        "description": "Additivity of a sum over consecutive half-open integer intervals: ∑ Ioc a b + ∑ Ioc b c = ∑ Ioc a c for a ≤ b ≤ c (the band cocycle / Chasles identity)",
+        "module": "Mathlib.Algebra.BigOperators.Intervals"
+      },
+      {
+        "theorem": "Finset.Ioc_self",
+        "description": "Ioc a a = ∅ — the empty half-open interval, base case for the empty band",
+        "module": "Mathlib.Order.Interval.Finset.Basic"
       }
     ],
     "originalContributions": [
@@ -68,13 +78,16 @@
       "discrepancySum_mono_level: level-monotonicity of the canonical functional PROVED (not assumed) on the analytic range x ≥ 1",
       "discrepancySumClamped + discrepancySumClamped_eq: base-clamped variant agreeing with the canonical sum on x ≥ 1",
       "levelMonotone_discrepancySumClamped: the clamped canonical functional is a (generally nonzero) global model of LevelMonotone",
-      "EHAtLevel_of_le_discrepancySumClamped: the level hierarchy instantiated at the concrete nonzero model"
+      "EHAtLevel_of_le_discrepancySumClamped: the level hierarchy instantiated at the concrete nonzero model",
+      "discrepancyBand_self: the empty band — from a level to itself there are no new moduli, so the band discrepancy vanishes (base case for subdivision)",
+      "discrepancyBand_add_consecutive: the additive cocycle (Chasles) identity for the band — for θ₁≤θ₂≤θ₃ on x≥1, discrepancyBand θ₁ θ₃ = discrepancyBand θ₁ θ₂ + discrepancyBand θ₂ θ₃, subdividing the new-moduli band at any intermediate level",
+      "EHAtLevel_discrepancySum_up_split: subdivided ascent — raising the level from θ₁ to θ₃ needs only EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure; the formal statement that the modulus range may be attacked dyadically"
     ],
-    "lineCount": 226,
+    "lineCount": 414,
     "erdosUrl": null,
     "dateAdded": "2026-06-27",
-    "theoremCount": 13,
-    "definitionCount": 6
+    "theoremCount": 23,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The Elliott–Halberstam conjecture (1968) strengthens the Bombieri–Vinogradov theorem (1965), which established that primes equidistribute in arithmetic progressions on average over moduli up to √x — a 'Riemann Hypothesis quality' result obtained unconditionally. EH conjectures the same averaged equidistribution up to x^θ for every θ < 1. It is the analytic input that sharpens the Maynard–Tao bounded-gap bound: H ≤ 12 under EH versus H ≤ 246 unconditionally. EH remains open.",
@@ -186,15 +199,17 @@
       "Real"
     ],
     "namespace": "BoundedPrimeGapsOQ02",
-    "lineCount": 349,
+    "lineCount": 414,
     "axiomCount": 0,
-    "theoremCount": 20,
+    "theoremCount": 23,
     "definitionCount": 7,
     "path": "Proofs/BoundedPrimeGapsOQ02.lean",
     "sorries": 0
   },
   "sorries": 0,
   "highlights": [
+    "Band cocycle (Chasles) identity discrepancyBand_add_consecutive: discrepancyBand θ₁ θ₃ = discrepancyBand θ₁ θ₂ + discrepancyBand θ₂ θ₃ — the new-moduli band subdivides at any intermediate level, the moduli-range analogue of the level decomposition that licenses dyadic decomposition of the modulus range",
+    "Subdivided ascent EHAtLevel_discrepancySum_up_split: raising the level of distribution only needs EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure — the formal statement that Elliott–Halberstam's modulus range may be attacked dyadically",
     "Exact additive decomposition across levels: discrepancySum f θ₂ x = discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x (band = new moduli ⌊x^θ₁⌋<q≤⌊x^θ₂⌋), sharpening monotonicity to an identity",
     "The EH-bound functional class at a fixed level is a convex cone: closed under addition (EHAtLevel_add) and nonnegative scaling (EHAtLevel_smul)",
     "Quantitative converse (EHAtLevel_discrepancySum_up): EH at level θ₁ + EH-type bound on the new-moduli band ⟹ EH at higher level θ₂",
