@@ -52,10 +52,35 @@ This is the down-payment that converts the Python cert into Lean; the full M1/M2
 theorems must reproduce these exact cofactor values. Note this does NOT touch the
 parent axiom — Cauchy–Binet (M1a) is still the blocking gap.
 
+## Insight 5 — bearer re-survey at Mathlib **v4.26.0** (2026-06-27); the incidence in Mathlib is the WRONG sign
+Re-ran the bearer survey against the project's pinned Mathlib (`v4.26.0`,
+`proofs/.lake/packages/mathlib`). The 2026-06-14 gap **persists unchanged**:
+- **Cauchy-Binet**: still ABSENT (`det_mul_submatrix`, `cauchyBinet`, `sum_det` = 0 hits).
+- **Kirchhoff / Matrix-Tree**: still ABSENT (only tangential hits — `Quiver/Arborescence`,
+  `SimpleGraph/Acyclic` (`IsAcyclic`/`IsTree` *predicates*, no spanning-tree **count**),
+  `FreeGroup/NielsenSchreier`).
+- **`SimpleGraph.lapMatrix`**: still only `det_lapMatrix_eq_zero` — no cofactor/tree theorem.
+
+**New, sharper finding (refines M1a):** Mathlib's `SimpleGraph.incMatrix` is the
+**UNSIGNED** 0/1 incidence matrix. Its product theorem `incMatrix_mul_transpose`
+(+ `incMatrix_mul_transpose_diag`) therefore gives `N Nᵀ = D + A` — the **signless**
+Laplacian — *not* the `B Bᵀ = D − A = lapMatrix` identity the classical Matrix-Tree
+proof rides on. So M1a is really **two** sub-gaps, not one:
+  (M1a-i) define an **oriented** incidence matrix `B` (entries in {−1,0,+1} per an edge
+          orientation) and prove `B Bᵀ = G.lapMatrix` — currently NO oriented incidence
+          object upstream; and
+  (M1a-ii) Cauchy-Binet `det(B_S B_Sᵀ) = Σ …` over that `B`.
+This means even the *substrate* for the undirected proof must be built first; the
+existing unsigned `incMatrix` cannot be reused directly. (M2's directed Laplacian gap
+is unaffected.)
+
 ## Open threads
-- Does a Cauchy-Binet PR exist in the Mathlib queue? (If it lands, M1 trivializes.)
+- Does a Cauchy-Binet PR exist in the Mathlib queue? (If it lands, M1a-ii trivializes;
+  M1a-i — the oriented incidence + `B Bᵀ = L` — is still ours to build.)
 - Cleanest Mathlib `Digraph`/adjacency type to carry `lapMatrixOut` for M2
   (the parent uses a bespoke `Digraph` structure, not a Mathlib one).
+- Could `B` be defined as a signed reweighting of `incMatrix` (reuse its `mul_transpose`
+  bookkeeping) rather than from scratch? Worth a build-time experiment.
 
 ## Links
 - Parent: [[konigsberg-oq-04]] (BEST theorem; axiomatized arborescence count).
