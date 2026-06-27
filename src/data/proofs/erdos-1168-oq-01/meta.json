@@ -190,6 +190,14 @@
       "description": "Original source of the cofinality inequality underlying the lower bound."
     }
   ],
-  "conclusion": "The entry formalizes the elementary, GCH-free brackets on the canonical pcf object ℵ_ω^{ℵ₀}: the ZFC interval ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, the general singular cardinal inequality κ⁺ ≤ κ^{cf κ} it specializes, and the König corollary cf(ℵ_ω^{ℵ₀}) > ℵ₀. All eleven results are machine-checked with 0 axioms and 0 sorries, in a self-contained file using only Mathlib's König cofinality consequences and standard cardinal arithmetic. This is the natural first verifiable brick toward Erdős #1168's open question of encoding pcf theory: it pins the bottom of the interval that Shelah's deep ℵ_ω^{ℵ₀} < ℵ_{ω₄} theorem squeezes from above, and it does so axiom-free where a sibling gallery file had taken the same König fact as an axiom.",
+  "conclusion": {
+    "summary": "The entry formalizes the elementary, GCH-free brackets on the canonical pcf object ℵ_ω^{ℵ₀}: the ZFC interval ℵ_{ω+1} ≤ ℵ_ω^{ℵ₀} ≤ 2^{ℵ_ω}, the general singular cardinal inequality κ⁺ ≤ κ^{cf κ} it specializes, and the König corollary cf(ℵ_ω^{ℵ₀}) > ℵ₀. All eleven results are machine-checked with 0 axioms and 0 sorries, in a self-contained file using only Mathlib's König cofinality consequences and standard cardinal arithmetic.",
+    "implications": "This is the natural first verifiable brick toward Erdős #1168's open question of encoding pcf theory: it pins the bottom of the interval that Shelah's deep ℵ_ω^{ℵ₀} < ℵ_{ω₄} theorem squeezes from above, and it does so axiom-free where a sibling gallery file had taken the same König fact as an axiom.",
+    "openQuestions": [
+      "Can the deep upper end of the sandwich — Shelah's ZFC bound ℵ_ω^{ℵ₀} < ℵ_{ω₄} — be formalized in Lean 4, completing the squeeze that this entry brackets only from the elementary König side?",
+      "Can the formalization of pcf theory proper (possible cofinalities, scales, and the pcf operator) be built on top of this self-contained ℵ_ω infrastructure, fulfilling the broader oq-01 goal?",
+      "Does the general successor bound κ⁺ ≤ κ^{cf κ} extend cleanly to a Lean treatment of other singular cardinals (e.g. ℵ_{ω·2}, ℵ_{ω²}, or singular cardinals of uncountable cofinality), where the cofinality corollary again rules out specific candidate values?"
+    ]
+  },
   "sorries": []
 }

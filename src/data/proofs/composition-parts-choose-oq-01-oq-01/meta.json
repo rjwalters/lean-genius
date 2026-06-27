@@ -107,7 +107,15 @@
       "summary": "The examples specialise total_parts: the compositions of 2 (namely 2 and 1+1) have 1+2 = 3 parts in total, those of 3 have 1+2+2+3 = 8, and those of 4 have 20 — matching (n+1)·2^(n−2). The residual closed Nat arithmetic is discharged by the kernel's decide."
     }
   ],
-  "conclusion": "The first moment of the number of parts of a composition is formalised sorry-free and axiom-free: across all 2^(n−1) compositions of n ≥ 2, the total number of parts is (n+1)·2^(n−2) (total_parts) and the mean is exactly (n+1)/2 (two_mul_total_parts, mean_parts), the midpoint of the range [1, n]. The content beyond Mathlib is the part-count bridge length = (gap-subset).card + 1 — derived here from compositionAsSetEquiv via boundaries_eq and boundaries_card — together with its application to a sum: transporting ∑_c c.length along the gap bijection collapses the expectation to the elementary subset-sum ∑_{s ⊆ [m]} |s| = m·2^(m−1) (sum_finset_card, sum_choose_mul). This extends the parent's fixed-k graded count C(n−1, k−1) to a statistic averaged over all compositions. A natural follow-up is the second moment / variance of the number of parts, or the analogous mean part-size n / (mean number of parts) = 2n/(n+1).",
+  "conclusion": {
+    "summary": "The first moment of the number of parts of a composition is formalised sorry-free and axiom-free: across all 2^(n−1) compositions of n ≥ 2, the total number of parts is (n+1)·2^(n−2) (total_parts) and the mean is exactly (n+1)/2 (two_mul_total_parts, mean_parts), the midpoint of the range [1, n]. The content beyond Mathlib is the part-count bridge length = (gap-subset).card + 1 — derived here from compositionAsSetEquiv via boundaries_eq and boundaries_card — together with its application to a sum: transporting ∑_c c.length along the gap bijection collapses the expectation to the elementary subset-sum ∑_{s ⊆ [m]} |s| = m·2^(m−1) (sum_finset_card, sum_choose_mul).",
+    "implications": "This extends the parent's fixed-k graded count C(n−1, k−1) to a statistic averaged over all compositions: it gives the expectation of the number of parts of a uniformly random composition of n. The result also makes the symmetry of the part-count distribution C(n−1,k−1) = C(n−1,n−k) concrete, the mean landing exactly at the midpoint (n+1)/2 of the achievable range [1, n]. Methodologically, it demonstrates that the gap-bijection bridge developed for fixed-k counts transports cleanly to sums, reducing a moment computation to an elementary subset-sum identity.",
+    "openQuestions": [
+      "What is the second moment, and hence the variance, of the number of parts of a uniformly random composition of n?",
+      "What is the analogous mean part-size, n / (mean number of parts) = 2n/(n+1), and can it be formalised by the same gap-bijection method?",
+      "Do higher moments or the full part-count distribution admit similarly clean closed forms via the gap bijection?"
+    ]
+  },
   "crossReferences": [
     "composition-parts-choose-oq-01",
     "composition-card-2pow-oq-01"

@@ -154,7 +154,15 @@
       "mathContext": "Specialization to ι = Fin 4 makes the content concrete: the tetrahedron's triangular faces carry signed product -1 while its 4-vertex cycle returns +1, illustrating the $(-1)^L$ law."
     }
   ],
-  "conclusion": "Menelaus's theorem is Ceva's with a sign. A hyperplane crossing an n-simplex assigns signed edge ratios m(i,j) = -a_i/a_j that satisfy a TWISTED cocycle m(i,j)·m(j,k) = -m(i,k) and multiply to -1 around every triangular 2-face — the exact negation of the parent's Ceva +1 for concurrent cevians. A transversal hyperplane realizing a nonzero signed assignment exists precisely when the Menelaus product equals -1 on every 2-face, and the hyperplane is reconstructed explicitly as a_i = 1/m(b,i). The closed-walk product (-1)^L unifies the triangle's -1 with the even cycles' +1. This completes the Ceva/Menelaus dual at the algebraic level of the parent's higher-dimensional Ceva entry, fully machine-checked with 0 axioms and 0 sorries.",
+  "conclusion": {
+    "summary": "Menelaus's theorem is Ceva's with a sign. A hyperplane crossing an n-simplex assigns signed edge ratios m(i,j) = -a_i/a_j that satisfy a TWISTED cocycle m(i,j)·m(j,k) = -m(i,k) and multiply to -1 around every triangular 2-face — the exact negation of the parent's Ceva +1 for concurrent cevians. A transversal hyperplane realizing a nonzero signed assignment exists precisely when the Menelaus product equals -1 on every 2-face, and the hyperplane is reconstructed explicitly as a_i = 1/m(b,i). The closed-walk product (-1)^L unifies the triangle's -1 with the even cycles' +1. All results are fully machine-checked with 0 axioms and 0 sorries.",
+    "implications": "This completes the Ceva/Menelaus dual at the algebraic level of the parent's higher-dimensional Ceva entry: concurrency (an honest 1-cocycle, +1) and transversality (a twisted cocycle, -1) are revealed as one identity up to a single orientation-reversing sign on each crossed edge. The signed reformulation extends the classical planar Menelaus equation to every triangular 2-face of an n-simplex and shows realizability is reconstruction — a signed assignment comes from a genuine hyperplane exactly when it is a twisted coboundary m(i,j) = -a_i/a_j. The cube relation m(i,i)³ = -1 over ℝ is the lone nonlinear ingredient that makes the 2-face conditions sufficient.",
+    "openQuestions": [
+      "Does the twisted-cocycle criterion lift from the algebraic edge-ratio level to a fully geometric statement, characterizing exactly which affine hyperplanes (and their incidence configurations) realize a prescribed nonzero signed assignment on an n-simplex?",
+      "Over fields other than ℝ — or over rings — the sufficiency hinges on -1 having a unique cube root; how do the 2-face conditions and the twisted cocycle relate when m(i,i)³ = -1 admits additional roots (e.g. over ℂ or finite fields)?",
+      "Is there a unified higher-cocycle framework on the simplex that simultaneously captures the Ceva (+1) concurrency cocycle, the Menelaus (-1) twisted cocycle, and the (-1)^L closed-walk law as instances of a single cohomological invariant?"
+    ]
+  },
   "crossReferences": [
     {
       "targetId": "cevas-theorem-oq-02-oq-04",
