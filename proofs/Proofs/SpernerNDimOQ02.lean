@@ -106,6 +106,16 @@ def baryEquivVertex (d N : ℕ) : SpernerGrid.BaryPoint d N ≃ SpernerNDim.Vert
 @[simp] theorem baryEquivVertex_symm_apply (v : SpernerNDim.Vertex d N) :
     (baryEquivVertex d N).symm v = toBary v := rfl
 
+/-- `toVertex` is injective (it is the forward map of the bridge `Equiv`).
+    Needed for the `vertices_injective` field of the Phase-1 Freudenthal
+    `SpernerTriangulation` instance, whose vertices are `toVertex ∘ verts`. -/
+theorem toVertex_injective : Function.Injective (toVertex : SpernerGrid.BaryPoint d N → _) :=
+  (baryEquivVertex d N).injective
+
+/-- `toBary` is injective (it is the inverse map of the bridge `Equiv`). -/
+theorem toBary_injective : Function.Injective (toBary : SpernerNDim.Vertex d N → _) :=
+  (baryEquivVertex d N).symm.injective
+
 /-- **Face correspondence.** A barycentric point lies on face `k` of the
     `d`-simplex exactly when its image Kuhn vertex does. For `k < d` both
     conditions say "the `k`-th coordinate is `0`"; for `k = d` (the last face)

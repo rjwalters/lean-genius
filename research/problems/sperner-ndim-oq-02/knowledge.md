@@ -306,3 +306,171 @@ framework over `BaryPoint` without re-deriving it. PR opened (UNVERIFIED).
 - Reroute `sperner_grid`; retire false `boundary_doors_odd`/`boundary_verts_on_face`.
 - **Verify** `SpernerNDimOQ02.lean` once build infra recovers (it is currently
   UNVERIFIED).
+
+---
+
+## Session 2026-06-27 (Session 4) — Phase 1 design: the *unoriented* triangulation
+
+**Mode**: CONTINUE (researcher-7). **Infra**: both verify channels DOWN — build
+host critically degraded (root FS 99%, ~167 MiB free and falling, 9 stale
+`lean-build-*` containers hung "Up 6 hours"); Aristotle jobs expiring
+(`NOT_FOUND`). No build attempted (ENOSPC would crash the host). Deliverable is
+design + two safe `Equiv`-derived lemmas (`toVertex_injective`,
+`toBary_injective` in `SpernerNDimOQ02.lean`) that the Phase-1 `vertices_injective`
+field consumes.
+
+### The crux, restated precisely: why `GridSimplex` double-counts
+
+`SpernerGrid.GridSimplex d N` is an **oriented chain** representation: it stores
+`verts : Fin (d+1) → BaryPoint` *in chain order*, an `incDir : Fin d → Fin (d+1)`,
+and a `miss : Fin (d+1)`. The geometric object it denotes is the **vertex set**
+`{verts 0, …, verts d}`, but a single geometric Freudenthal cell admits *several*
+`(verts, incDir, miss)` encodings.
+
+Worked d=1 case (the one that falsifies `boundary_doors_odd`): a geometric edge
+`{p, q}` with `q = p + e_i − e_j` has **two** `GridSimplex` encodings —
+`(base = p, incDir ≡ i, miss = j)` (chain `p → q`) and
+`(base = q, incDir ≡ j, miss = i)` (chain `q → p`). Both are valid `GridSimplex`
+values with the same vertex set. The oriented `gridAdj` then treats "cannot do a
+boundary flip in *this* orientation" as `adj = none`, so each geometric boundary
+facet is counted with the *wrong multiplicity* (the two encodings disagree on
+which facet is a boundary door). Hence `boundary_doors_odd` is FALSE for the
+`GridSimplex`/`gridAdj` pair, as documented in `SpernerGrid.lean` lines 49–86.
+
+### Phase-1 fix: build the abstract `SpernerTriangulation` over *unordered* cells
+
+`SpernerNDim.SpernerTriangulation d N` (the abstract, 0-sorry framework, line 99)
+asks for: `Simplex` (with `DecidableEq` + `Fintype`), `vertices : Simplex →
+Fin (d+1) → Vertex d N` (injective per simplex), and an adjacency `adj : Simplex →
+Fin (d+1) → Option (Simplex × Fin (d+1))` satisfying `adj_symm`, `adj_vertices`,
+`adj_ne`, `adj_unique_facet`, `boundary_face`. Crucially **the abstract framework
+never assumes an orientation** — adjacency is a partial involution on
+(simplex, dropped-facet) pairs. So the cure is to instantiate it with **one cell
+per geometric simplex** and a **dual-graph** (facet-sharing) adjacency.
+
+**Representation decision — canonical `GridSimplex` representative.**
+Rather than a fresh `Finset (BaryPoint d N)` subtype (which forces re-proving a
+canonical vertex order and a fresh `Fintype`), reuse `GridSimplex` but quotient
+out the encoding redundancy by a **canonicality predicate** `IsCanon`:
+
+```
+def IsCanon (s : GridSimplex d N) : Prop := s.miss = canonMiss s   -- pick ONE rep
+Simplex := { s : GridSimplex d N // IsCanon s }
+```
+
+`canonMiss` must select a single encoding per vertex set. A clean choice: the
+representative whose chain is **monotone for the lex order on `BaryPoint`** — i.e.
+`verts` is strictly increasing in lex, equivalently `miss` is the coordinate that
+is positive at the lex-greatest vertex and `incDir` lists the remaining
+directions in increasing order. Two facts make this well-defined and unique:
+1. A Freudenthal cell's `d+1` vertices are pairwise distinct (`verts_injective`,
+   already proven) and **totally ordered** along the chain, so the lex-minimal
+   vertex is a unique base.
+2. Given the base and the cell's vertex set, `incDir`/`miss` are forced.
+
+(Subtype gives `DecidableEq` for free; `Fintype` for the subtype follows from
+`gridSimplexFintype` via `Subtype.fintype` with `IsCanon` decidable.)
+
+**`vertices` field.** `vertices ⟨s, _⟩ k := SpernerNDimOQ02.toVertex (s.verts k)`.
+`vertices_injective` = `SpernerNDimOQ02.toVertex_injective ∘ s.verts_injective`
+(both now available; `verts_injective` is `GridSimplex.verts_injective`, line 376).
+
+**`adj` field — dual graph (the unoriented core).** For a canonical cell `s` and a
+dropped vertex `k`, the facet `F = (vertices s) '' (univ.erase k)` is a set of `d`
+barycentric points. Define `adj s k` by searching the (finite) `Simplex` type for
+the *unique other* canonical cell `s'` containing `F` as a facet, returning
+`some (s', k')` where `k'` is the vertex of `s'` not in `F`; `none` if no such
+`s'` exists (boundary facet). Because we now have **one cell per geometry**:
+- `adj_symm`: the relation "`s, s'` share facet `F`" is symmetric by construction.
+- `adj_unique_facet`: two distinct dropped facets of `s` are distinct point-sets
+  (vertices injective ⇒ erasing different `k` gives different images), so they
+  cannot both match the same neighbour via the same `s'`. Geometric uniqueness
+  ("two `d`-simplices share ≤ one `(d−1)`-face") holds because a shared `d`-set
+  determines the cell.
+- `adj_ne`: `s ≠ s'` since a non-boundary facet's two cells differ on the dropped
+  vertex (they lie on opposite sides of `F`).
+- `adj_vertices`: immediate — both images equal `F` by the search predicate.
+- `boundary_face`: when no neighbour exists, the `d` retained vertices all lie on
+  one geometric face of `Δ_N`; under the bridge this is the Kuhn `onFace`
+  condition, transported by `SpernerNDimOQ02.onFace_toVertex`.
+
+This makes the **facet-sharing adjacency a genuine partial involution on
+(cell, facet) pairs**, which is exactly what `SpernerNDim`'s parity machinery
+(`even_card_fpf_invol`, `interior_doors_even`, `sperner_parity`) needs — and it is
+*orientation-free*, so the d=1 double-count cannot recur.
+
+### Phase-2 hand-off (unchanged, now well-posed)
+
+With `freudenthal d N : SpernerTriangulation d N` in hand, `boundary_doors_eq_face_d`
+(line 585) already isolates boundary doors to the last face `k = d`. The remaining
+content is last-face-door-oddness by induction on `d` via the
+door ↔ panchromatic-`(d−1)`-simplex bijection (Session-2 plan). Then apply
+`sperner_ndim` (line 654) and transport the Sperner hypothesis across the bridge
+with `SpernerNDimOQ02.isSperner_iff`, retiring the false `boundary_doors_odd` /
+`boundary_verts_on_face`.
+
+### Concrete next-session checklist (build-gated)
+
+1. Define `canonMiss`/`IsCanon` and prove `IsCanon` decidable + a uniqueness lemma
+   (each geometric cell has exactly one canonical encoding).
+2. `Simplex`, `DecidableEq`, `Fintype` (subtype boilerplate).
+3. `vertices` + `vertices_injective` (one-liners from `toVertex_injective`).
+4. `adj` via finite search; discharge the 5 adjacency fields + `boundary_face`.
+5. Verify the whole stack once infra recovers, then wire Phase 2.
+
+### Lean facts banked this session
+- `(e : α ≃ β).injective` / `e.symm.injective` give `toVertex`/`toBary`
+  injectivity with no unfolding (added as named lemmas).
+- `GridSimplex.verts_injective` (line 376) + `gridSimplexFintype` (line 283) +
+  `gridSimplexDecEq` (line 266) are the reusable handles for the `Simplex` subtype.
+- `Subtype.fintype` needs `DecidablePred IsCanon`; keep `canonMiss` computable.
+
+---
+
+## Session 2026-06-27 (Session 5) — design correction from reading `GridSimplex` source
+
+**Mode**: CONTINUE (researcher-7). **Infra**: HARD OUTAGE — root FS at 99%
+(~200 MiB free and fluctuating *down*); 9 hung `lean-build-*` containers "Up 6
+hours" (corrupt containerd, same as Sessions 3–4). The disk is so full that even
+`bash` command **stdout capture** fails with `ENOSPC` — so *no* command that
+produces output can run (neither docker nor the `lean env` local fallback). No
+build/verify attempted; doing so is impossible and risks crashing the host.
+No code written this session (unverifiable hard proofs on a near-full host = false
+progress + host risk). Deliverable is read-only source confirmation + one design
+correction.
+
+### Confirmed against actual source (`SpernerGrid.lean`)
+- `GridSimplex d N` fields are exactly `verts : Fin (d+1) → BaryPoint d N`,
+  `incDir : Fin d → Fin (d+1)`, `miss : Fin (d+1)` (+ proof fields
+  `miss_ne_inc`, `step_inc`, `step_dec`, `step_same`, `inc_injective`).
+  Defn at `SpernerGrid.lean:241`.
+- `gridSimplexDecEq` (`:266`) and `gridSimplexFintype` (`:283`, **noncomputable**,
+  via `Fintype.ofInjective` on `(verts, incDir, miss)`) confirmed present.
+  ⚠️ NOTE: `gridSimplexFintype` is `noncomputable`, so a `Subtype.fintype` built
+  on it is noncomputable too — fine for the abstract framework (which only needs
+  `Fintype`, not `DecidableEq`-driven computation), but the `adj` finite-search
+  must use `Finset.univ.filter`/`Finset.choose` over this `Fintype`, not `decide`.
+
+### Design correction (saves the next session effort)
+The Session-4 plan weighed two `Simplex` representations: (A) `{s : GridSimplex //
+IsCanon s}` subtype, vs (B) a `Finset (BaryPoint d N)` of cell vertex-sets.
+**Reading the source shows the choice does not remove the hard obligation**: both
+representations still owe a *canonical vertex ordering* for the
+`vertices : Simplex → Fin (d+1) → Vertex` field (a `Finset` has no order, and the
+subtype's `verts` order is encoding-dependent). The chain order IS the crux either
+way — there is no free lunch. **Recommendation: keep representation (A)** (subtype),
+because `GridSimplex.verts` already gives the order *and* the Freudenthal proof
+fields (`step_inc`/`step_dec`/`step_same`) for free; (B) would force re-deriving all
+of these on the raw `Finset`.
+- The canonicalization is well-posed because each Freudenthal cell's `d+1`
+  vertices are **totally ordered along the unique mass-transfer chain** from the
+  lex-minimal base: `verts_injective` (`:376`) gives distinctness, and `step_dec`
+  forces the `miss` coordinate to be strictly decreasing along the chain, so the
+  chain direction is geometrically determined once the base is fixed as the
+  lex-minimal vertex. Hence `IsCanon s := (s.verts 0 is lex-≤ every other vertex)`
+  is a clean, computable canonicality predicate — simpler than the Session-4
+  "`miss = canonMiss s`" formulation, and it avoids inverting geometry→`miss`.
+- Concrete next step (build-gated, unchanged priority): define
+  `IsCanon s := ∀ k, lexLE (s.verts 0) (s.verts k)` with `lexLE` the lattice lex
+  order on `BaryPoint` (Fin→ℕ); prove decidable (finite ∀) and
+  per-geometry-unique (lex has a unique minimum; base + chain ⇒ full encoding).

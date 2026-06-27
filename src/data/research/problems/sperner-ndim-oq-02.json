@@ -39,14 +39,16 @@
       "SpernerNDim.lean is complete (669 lines, 0 sorries): structure SpernerTriangulation (8 fields) + theorem sperner_ndim (line 654) which yields a fully-colored simplex from an odd count of last-face boundary doors. This is the exact finish line for sperner_grid.",
       "Last-face boundary doors of the d-grid are in bijection with panchromatic (d-1)-simplices of the induced (d-1)-Freudenthal grid on face d: adj=none + boundary_face puts the facet on face d; the Sperner condition forbids color d there; isDoorAt = all colors {0..d-1} present = IsFC for the (d-1)-grid. Induction + sperner_parity at d-1 gives oddness. Base d=0: count 1.",
       "Coordinate bridge: abstract framework uses Vertex d N (Fin d -> N, sum<=N, Kuhn coords); SpernerGrid uses BaryPoint d N (Fin (d+1) -> N, sum=N). They are canonically isomorphic; proving BaryPoint d N ≃ Vertex d N (~30-50 lines, no adjacency) is the cleanest standalone first deliverable and unlocks reuse of the whole framework.",
-      "Phase-1 instance must use unoriented Kuhn cells (base point + permutation of increment order, one representative per geometric cell). The Session-1 orientation-doubling bug came from carrying a free miss/orientation flag in GridSimplex; the instance must NOT."
+      "Phase-1 instance must use unoriented Kuhn cells (base point + permutation of increment order, one representative per geometric cell). The Session-1 orientation-doubling bug came from carrying a free miss/orientation flag in GridSimplex; the instance must NOT.",
+      "Session 5: representation A (GridSimplex subtype) preferred over Finset for the Phase-1 Simplex type — Finset does not dodge the canonical vertex-ordering obligation; IsCanon s := forall k, lex (s.verts 0) <= s.verts k is a simpler computable canonicality predicate (step_dec fixes chain direction from lex-min base)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
       "DONE (Session 3, UNVERIFIED): BaryPoint d N ≃ Vertex d N bridge in SpernerNDimOQ02.lean. VERIFY once build infra recovers.",
       "Phase 1: define freudenthal d N : SpernerTriangulation d N (unoriented Kuhn cells, vertices via baryEquivVertex/toVertex) and discharge the 8 structure fields (adj_symm/adj_ne/adj_unique_facet/adj_vertices/boundary_face via the standard Kuhn pivot).",
       "Phase 2: prove last-face-door-oddness by induction on d using the door <-> panchromatic-(d-1)-simplex bijection; supply it as hbdry to sperner_ndim.",
-      "Reroute sperner_grid through the instance; delete false boundary_doors_odd / boundary_verts_on_face."
+      "Reroute sperner_grid through the instance; delete false boundary_doors_odd / boundary_verts_on_face.",
+      "Build-gated: define lex IsCanon predicate + decidability + per-geometry uniqueness; gridSimplexFintype is noncomputable so adj must use Finset.filter/choose not decide."
     ]
   },
   "tags": [
