@@ -15,6 +15,27 @@ Can Lagrange interpolation converge pointwise at a point x where the Lebesgue fu
 **Known**: Bernstein (1931): ∃ x₀ with limsup λ_n(x₀) = ∞ for any sequence.
 **Known**: Erdős-Vértesi (1980): ∃ continuous f with |L^n f(x)| → ∞ a.e. for any sequence.
 
+## Session 2026-06-26 (Session 6) — orphan scaffold for the pointwise core; Aristotle backend down
+
+**Mode**: REVISIT. **Outcome**: no sorries eliminated; one piece of reusable groundwork.
+
+- **Aristotle DOWN**: `prove_file` and the MCP smoke test both return HTTP 404
+  (`aristotle.harmonic.fun/api/v1/project`). The sanctioned `prove_file` route for
+  `equidistant_diverges` is unavailable this session.
+- **Build declined**: load avg ≈ 47, many concurrent peer builds — would contend.
+- Created `proofs/Proofs/Erdos671EquidistantOrphan.lean` (UNREGISTERED, not imported
+  by the `Proofs.lean` aggregator → zero gallery/build risk). It isolates the
+  **pointwise** core of `equidistant_diverges` as one sorry:
+  `lebesgueFunction (equidistantNodes n hn) (-1 + 1/(n-1)) ≥ 2^(n-1)/n^2`.
+  This deliberately drops the supremum/`BddAbove` step (handled separately by
+  lower-bounding the constant at any admissible point) so the residual goal is a
+  pure finite product/factorial inequality — the cleanest target for `prove_file`
+  or a manual factorial induction. Numerics already confirm the bound for n=2..25
+  with dominant central index m ≈ ⌊(n-2)/2⌋ (see verify-equidistant-bound.py).
+- Exact closed form recorded for the induction: at x* = -1 + 1/(n-1),
+  `|p_i(x*)| = (∏_{k≠i}|2k-1|) / (2^(n-1) · i! · (n-1-i)!)`, with
+  `∏_{k=0}^{n-1}|2k-1| = (2n-3)!!`; pick i = m to clear the bound.
+
 ## Session 2026-06-25 (Session 5) — numerical confirmation of `equidistant_diverges` + dominant-index refinement
 
 **Mode**: REVISIT (no Lean changes; local build unavailable — Docker down + olean header mismatch vs prebuilt cache, so NO Lean verification possible this session).

@@ -2,7 +2,40 @@
 
 **Phase**: BLOCKED (entry at its natural ceiling; remaining sorries need deep Mathlib infrastructure)
 **Since**: 2026-06-26
-**Iteration**: 1 (assessment)
+**Iteration**: 2 (assessment; orphan scaffold for the lone tractable sorry)
+
+## Session 2026-06-26 (Session 6) — confirm BLOCKED + orphan scaffold for `equidistant_diverges`
+
+**Mode**: REVISIT. **Outcome**: no sorries eliminated (consistent with sessions 1–5).
+
+- Re-confirmed the BLOCKED assessment: 3 axioms are the open conjectures; 6 of 7
+  sorries need approximation-theory infrastructure absent from Mathlib;
+  `equidistant_diverges` is the sole self-contained target.
+- **Aristotle backend is DOWN this session**: both `prove_file` and the MCP smoke
+  test return HTTP 404 (`https://aristotle.harmonic.fun/api/v1/project` not found),
+  so the recommended `prove_file` route for `equidistant_diverges` is unavailable.
+- **Local build unusable**: Docker daemon up but host load avg ≈ 47 with many
+  concurrent peer builds — declined to add a fresh Mathlib build (would contend
+  badly and likely time out; same caution as session 4 at load ≈ 26).
+- **New groundwork**: created `proofs/Proofs/Erdos671EquidistantOrphan.lean`
+  (UNREGISTERED — not imported by `proofs/Proofs.lean`, so zero gallery/build
+  risk). It copies the compiling defs (`InterpolationPoints`, `lagrangeBasis`,
+  `lebesgueFunction`, `equidistantNodes`) and isolates the **pointwise** heart of
+  `equidistant_diverges` as a single sorry:
+  `lebesgueFunction (equidistantNodes n hn) (midPoint n) ≥ 2^(n-1)/n^2`
+  at `midPoint n = -1 + 1/(n-1)`. This avoids the `BddAbove`/supremum step
+  entirely (that step lower-bounds the constant by the value at any admissible
+  point separately) and reduces the goal to a pure finite product/factorial
+  inequality — the right shape for `prove_file` or a manual induction once infra
+  returns. Also proved `midPoint_mem` (routine Icc membership).
+
+### Next Action (unchanged in spirit, now partly staged)
+- When Aristotle is reachable: `prove_file` the orphan file's single sorry.
+- Otherwise: manual induction on the factorial inequality (dominant central index
+  m ≈ ⌊(n-2)/2⌋ per the numerics), then graft the proof + the separate sup-step
+  (`BddAbove` via continuity of `lebesgueFunction` on compact `Icc`) into the
+  registered `equidistant_diverges`.
+- Do NOT re-attempt the other 6 sorries; they remain infrastructure-blocked.
 
 ## Current Focus
 
