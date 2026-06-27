@@ -265,10 +265,10 @@
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-01-oq-02": {
-      "auditCount": 2,
+      "auditCount": 3,
       "issues": [],
-      "lastAudited": "2026-05-03T20:24:34Z",
-      "notes": "Untracked gallery entry (not in git); Lean file missing from git but PR #12837 is open \u2014 marked clean",
+      "lastAudited": "2026-06-27T02:30:00Z",
+      "notes": "Re-audited clean: 442L/0sorry/0axiom/33thm/4def (1 abbrev pCos5 + 3 def), no True stubs, no native_decide. Main theorem cos_36_gal_card genuinely proves |Gal(4X2-2X-1)|=2 via card_of_separable on degree-2 splitting field. gal_order_eq_totient_div2_general is a tautology placeholder, honestly disclosed in assumptions+docstring+inline comments. badge=original consistent with cos-20-gal family. (Supersedes stale 2026-05-03 note: file now present and verified.)",
       "result": "clean"
     },
     "angle-trisection-cos-20-gal-oq-03": {
