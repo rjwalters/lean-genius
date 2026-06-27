@@ -56,7 +56,7 @@ product. Zero axioms, zero sorries.
 
 namespace WilsonsTheoremOQ02ExtOQ03
 
-open Finset ZMod
+open Finset ZMod Nat
 
 variable (p : ℕ) [Fact p.Prime]
 
