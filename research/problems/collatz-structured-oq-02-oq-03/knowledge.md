@@ -242,3 +242,66 @@ recurrence `c_{i+1}, d_{i+1}` from `(c_i, d_i)` per step (odd: `c·3, d·3+2^i`;
 This turns every `mod 2^b` drop lemma into a corollary of one inductive theorem and is the
 right lever before re-attacking the natural-density stopping-time statement. (Design note only;
 **unverified** — no Lean authored.)
+
+## Session 2026-06-27 (researcher-1, cycle 3) — ACT: reusable affine step-composition lemmas (Terras law, components 2+3)
+
+**Mode**: BUILD (Docker UP). **Outcome**: progress — axiom-free, build-verified
+(`docker-build.sh Proofs.CollatzStructuredOQ02OQ03` EXIT 0).
+
+### What I Did
+Implemented the prior session's documented next direction — the **Terras
+leading-coefficient law, components (2) affine recurrence + (3) closed form** —
+as two reusable lemmas, replacing the per-residue `collatz_odd …; ring` /
+`collatz_even …; omega` trajectory boilerplate:
+- `affine_step_even {M r c d c' d' i}` : from `c = 2c'`, `d = 2d'`, and
+  `∀ m, collatz^[i] (M·m+r) = c·m+d`, concludes
+  `∀ m, collatz^[i+1] (M·m+r) = c'·m + d'`. (Even leading coeff ⇒ parity = `d mod 2`,
+  independent of `m`; the step halves.)
+- `affine_step_odd {M r c d c' cn dn i}` : from `c = 2c'`, `d % 2 = 1`,
+  `cn = 3c`, `dn = 3d+1`, same `hi`, concludes
+  `∀ m, collatz^[i+1] (M·m+r) = cn·m + dn`.
+- `mod_sixteen_three_trajectory` : worked template — the 6-step `16m+3 → 9m+2`
+  chase derived purely by chaining the two lemmas (parities odd,even,odd,even,
+  even,even), each step only naming the next `(c,d)` and discharging side
+  conditions by `rfl`. No per-step `ring`/`omega`.
+- Refactored `mod_sixteen_three_attainsBelow` (a density-floor-critical proof) to
+  use `mod_sixteen_three_trajectory` as a **one-line `hiter`**, validating the
+  primitives in load-bearing code.
+
+### Key Findings
+- The step lemmas ARE the Terras affine recurrence made executable: even ⇒
+  `(c,d)↦(c/2,d/2)`, odd ⇒ `(c,d)↦(3c,3d+1)`. The window drops below its start
+  exactly when the accumulated `c < M`, i.e. `3^a < 2^b` (the existing 115/128
+  lemmas all use `3^4 = 81 < 128`).
+- The "even leading coefficient holds parity constant in `m`" invariant is exactly
+  why residue-determined windows work: `c_i = 3^{a_i}·2^{b−e_i}` stays even while
+  `e_i < b` halvings remain, so the parity is read off `d_i` alone.
+
+### Honest status
+- This is **infrastructure**, not new Collatz mathematics: the density floor is
+  unchanged (115/128) and the Tao axiom remains BLOCKED. Value = reusable
+  composition primitives that shorten every future residue-drop proof and realise
+  the de-risk plan's steps (2)+(3). The remaining de-risk piece (1) — a generic
+  `paritySteps` extractor proving the residue forces the parity vector — would make
+  this a fully uniform engine and is the genuine next lever.
+
+### GOTCHAS (build cycles)
+- `2*c'*m` parses as `(2*c')*m`; neither `omega` nor `set X := c'*m` sees the
+  subterm `c'*m`. Must first `rw [show 2*c'*m+… = 2*(c'*m+…) from by ring]` to
+  expose it, THEN `omega` handles the `/2` and `%2` (omega supports div/mod by
+  literal 2). Avoid `Nat.mul_div_cancel_left` (signature-fragile) — `omega` after
+  the ring-normalisation is robust.
+- Chaining step lemmas: pass the desired normalised next `(c,d)` explicitly and
+  discharge `c = 2c'`, `cn = 3c`, `dn = 3d+1` by `rfl` (kernel computes literals);
+  the nested iterate index `0+1+1+…` is defeq to the literal `6`, so the final
+  `exact h6 m` typechecks.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+3 theorems 39→42, 1052→1107 lines; 1 axiom unchanged, 0 sorries)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts + highlight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (leanFiles counts)
+
+### Next Steps (unchanged genuine lever)
+- de-risk component (1): `paritySteps n b : Fin b → Bool` + proof that `n mod 2^b`
+  forces it, turning per-residue lemmas into corollaries of one inductive theorem.
+- Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).

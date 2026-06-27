@@ -190,6 +190,73 @@ theorem affine_residue_attainsBelow {M r k c d : ℕ}
   have hcm : c * m ≤ M * m := Nat.mul_le_mul_right m hc.le
   omega
 
+/-! ### Reusable affine step-composition lemmas (Terras leading-coefficient law)
+
+The per-residue trajectory chases above all share the same skeleton: track the
+orbit of a residue class `M·m + r` as an **affine function** `c·m + d`, and at
+each Collatz step read the parity off the *constant* coefficient `d` because the
+leading coefficient `c` is held **even** (so the parity of `c·m + d` is `d mod 2`,
+independent of `m`).  The two lemmas below package one such step each, turning the
+hand-written `collatz_odd …; ring` / `collatz_even …; omega` boilerplate into a
+reusable composition primitive.
+
+This is exactly the affine recurrence of the Terras parity-vector law
+(`collatz^[b] n = (3^a · n + C_v)/2^b` with leading coefficient `3^a/2^b`): an
+even step halves `(c, d) ↦ (c/2, d/2)`, an odd step maps `(c, d) ↦ (3c, 3d+1)`,
+and the window drops below its start exactly when the accumulated `c < M`, i.e.
+`3^a < 2^b`.  Both lemmas are axiom-free. -/
+
+/-- **Affine even step.**  If after `i` Collatz steps the residue class `M·m + r`
+has reached the affine form `c·m + d` with `c = 2c'` and `d = 2d'` both even, then
+`c·m + d` is even for every `m`, so the next step halves it to `c'·m + d'`. -/
+theorem affine_step_even {M r c d c' d' i : ℕ}
+    (hc : c = 2 * c') (hd : d = 2 * d')
+    (hi : ∀ m : ℕ, collatz^[i] (M * m + r) = c * m + d) :
+    ∀ m : ℕ, collatz^[i + 1] (M * m + r) = c' * m + d' := by
+  subst hc hd
+  intro m
+  rw [Function.iterate_succ_apply', hi m]
+  have he : (2 * c' * m + 2 * d') % 2 = 0 := by
+    rw [show 2 * c' * m + 2 * d' = 2 * (c' * m + d') from by ring]; omega
+  rw [collatz_even he, show 2 * c' * m + 2 * d' = 2 * (c' * m + d') from by ring]
+  omega
+
+/-- **Affine odd step.**  If after `i` Collatz steps the residue class `M·m + r`
+has reached the affine form `c·m + d` with `c = 2c'` even and `d` odd, then
+`c·m + d` is odd for every `m`, so the next step maps it to `(3c)·m + (3d+1)`.
+The caller supplies the normalised next coefficients `cn = 3c`, `dn = 3d + 1`. -/
+theorem affine_step_odd {M r c d c' cn dn i : ℕ}
+    (hc : c = 2 * c') (hd : d % 2 = 1) (hcn : cn = 3 * c) (hdn : dn = 3 * d + 1)
+    (hi : ∀ m : ℕ, collatz^[i] (M * m + r) = c * m + d) :
+    ∀ m : ℕ, collatz^[i + 1] (M * m + r) = cn * m + dn := by
+  subst hc hcn hdn
+  intro m
+  rw [Function.iterate_succ_apply', hi m]
+  have ho : (2 * c' * m + d) % 2 = 1 := by
+    rw [show 2 * c' * m + d = 2 * (c' * m) + d from by ring]; omega
+  rw [collatz_odd ho]
+  ring
+
+/-- **Worked template / validation** for the affine step-composition lemmas: the
+`n ≡ 3 (mod 16)` trajectory `16m+3 ↦ 48m+10 ↦ 24m+5 ↦ 72m+16 ↦ 36m+8 ↦ 18m+4 ↦
+9m+2` derived purely by chaining `affine_step_odd`/`affine_step_even` (parities
+odd, even, odd, even, even, even), with no per-step `ring`/`omega` bookkeeping —
+each step only names the next `(c, d)` and discharges the arithmetic side
+conditions by `rfl`.  Used below to give `mod_sixteen_three_attainsBelow` a
+one-line `hiter`. -/
+theorem mod_sixteen_three_trajectory (m : ℕ) :
+    collatz^[6] (16 * m + 3) = 9 * m + 2 := by
+  have h0 : ∀ m : ℕ, collatz^[0] (16 * m + 3) = 16 * m + 3 := fun _ => rfl
+  have h1 := affine_step_odd  (c := 16) (c' := 8)  (cn := 48) (dn := 10) (d := 3)
+              rfl rfl rfl rfl h0
+  have h2 := affine_step_even (c := 48) (c' := 24) (d := 10) (d' := 5)  rfl rfl h1
+  have h3 := affine_step_odd  (c := 24) (c' := 12) (cn := 72) (dn := 16) (d := 5)
+              rfl rfl rfl rfl h2
+  have h4 := affine_step_even (c := 72) (c' := 36) (d := 16) (d' := 8) rfl rfl h3
+  have h5 := affine_step_even (c := 36) (c' := 18) (d := 8)  (d' := 4) rfl rfl h4
+  have h6 := affine_step_even (c := 18) (c' := 9)  (d := 4)  (d' := 2) rfl rfl h5
+  exact h6 m
+
 /-- Every `n ≡ 3 (mod 16)` drops below itself in exactly six steps:
 `16m+3 ↦ 48m+10 ↦ 24m+5 ↦ 72m+16 ↦ 36m+8 ↦ 18m+4 ↦ 9m+2`, and `9m+2 < 16m+3` for
 every `m ≥ 0`.  All six parities are forced by the residue `mod 16` alone (independent
@@ -204,18 +271,7 @@ theorem mod_sixteen_three_attainsBelow {n : ℕ} (h : n % 16 = 3) : AttainsBelow
   -- and `c = 9 = 3^2 < 16` is `3^2 < 2^4`.
   affine_residue_attainsBelow (M := 16) (r := 3) (k := 6) (c := 9) (d := 2)
     (by norm_num) (by norm_num) (by norm_num)
-    (fun m => by
-      have s1 : collatz (16 * m + 3) = 48 * m + 10 := by rw [collatz_odd (by omega)]; ring
-      have s2 : collatz (48 * m + 10) = 24 * m + 5 := by rw [collatz_even (by omega)]; omega
-      have s3 : collatz (24 * m + 5) = 72 * m + 16 := by rw [collatz_odd (by omega)]; ring
-      have s4 : collatz (72 * m + 16) = 36 * m + 8 := by rw [collatz_even (by omega)]; omega
-      have s5 : collatz (36 * m + 8) = 18 * m + 4 := by rw [collatz_even (by omega)]; omega
-      have s6 : collatz (18 * m + 4) = 9 * m + 2 := by rw [collatz_even (by omega)]; omega
-      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
-          Function.iterate_succ_apply', Function.iterate_succ_apply',
-          Function.iterate_succ_apply', Function.iterate_succ_apply',
-          Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6])
-    h
+    mod_sixteen_three_trajectory h
 
 /-- Every `n ≡ 11 (mod 32)` drops below itself in exactly eight residue-determined steps:
 `32m+11 ↦ 96m+34 ↦ 48m+17 ↦ 144m+52 ↦ 72m+26 ↦ 36m+13 ↦ 108m+40 ↦ 54m+20 ↦ 27m+10`,
