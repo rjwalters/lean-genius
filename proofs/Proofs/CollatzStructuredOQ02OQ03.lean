@@ -272,6 +272,100 @@ theorem mod_thirtytwo_twentythree_attainsBelow {n : ℕ} (h : n % 32 = 23) : Att
           Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8])
     h
 
+/-- Every `n ≡ 7 (mod 128)` drops below itself in exactly eleven residue-determined steps:
+`128m+7 ↦ 384m+22 ↦ 192m+11 ↦ 576m+34 ↦ 288m+17 ↦ 864m+52 ↦ 432m+26 ↦ 216m+13 ↦ 648m+40
+↦ 324m+20 ↦ 162m+10 ↦ 81m+5`, and `81m+5 < 128m+7` for every `m ≥ 0`.  All eleven parities
+are forced by the residue `mod 128` alone.  This is the first of *three* new residues that
+stabilise only at level `128`: its class `7 (mod 32)` was unstable at level `32` (and stayed
+unstable at level `64`), but the finer split at level `128` isolates the stable half `7`. -/
+theorem mod_onetwentyeight_seven_attainsBelow {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
+  -- M = 128, r = 7, k = 11, c = 81, d = 5; here a = 4 odd steps, b = 7 halvings,
+  -- and `c = 81 = 3^4 < 128` is `3^4 < 2^7`.
+  affine_residue_attainsBelow (M := 128) (r := 7) (k := 11) (c := 81) (d := 5)
+    (by norm_num) (by norm_num) (by norm_num)
+    (fun m => by
+      have s1 : collatz (128 * m + 7) = 384 * m + 22 := by rw [collatz_odd (by omega)]; ring
+      have s2 : collatz (384 * m + 22) = 192 * m + 11 := by rw [collatz_even (by omega)]; omega
+      have s3 : collatz (192 * m + 11) = 576 * m + 34 := by rw [collatz_odd (by omega)]; ring
+      have s4 : collatz (576 * m + 34) = 288 * m + 17 := by rw [collatz_even (by omega)]; omega
+      have s5 : collatz (288 * m + 17) = 864 * m + 52 := by rw [collatz_odd (by omega)]; ring
+      have s6 : collatz (864 * m + 52) = 432 * m + 26 := by rw [collatz_even (by omega)]; omega
+      have s7 : collatz (432 * m + 26) = 216 * m + 13 := by rw [collatz_even (by omega)]; omega
+      have s8 : collatz (216 * m + 13) = 648 * m + 40 := by rw [collatz_odd (by omega)]; ring
+      have s9 : collatz (648 * m + 40) = 324 * m + 20 := by rw [collatz_even (by omega)]; omega
+      have s10 : collatz (324 * m + 20) = 162 * m + 10 := by rw [collatz_even (by omega)]; omega
+      have s11 : collatz (162 * m + 10) = 81 * m + 5 := by rw [collatz_even (by omega)]; omega
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_zero_apply,
+          s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11])
+    h
+
+/-- Every `n ≡ 15 (mod 128)` drops below itself in exactly eleven residue-determined steps:
+`128m+15 ↦ 384m+46 ↦ 192m+23 ↦ 576m+70 ↦ 288m+35 ↦ 864m+106 ↦ 432m+53 ↦ 1296m+160 ↦ 648m+80
+↦ 324m+40 ↦ 162m+20 ↦ 81m+10`, and `81m+10 < 128m+15` for every `m ≥ 0`.  All eleven parities
+are forced by the residue `mod 128` alone.  This is the second new residue stabilising only at
+level `128`: its class `15 (mod 32)` was unstable at levels `32` and `64`. -/
+theorem mod_onetwentyeight_fifteen_attainsBelow {n : ℕ} (h : n % 128 = 15) : AttainsBelow n :=
+  -- M = 128, r = 15, k = 11, c = 81, d = 10; a = 4 odd steps, b = 7 halvings, `3^4 < 2^7`.
+  affine_residue_attainsBelow (M := 128) (r := 15) (k := 11) (c := 81) (d := 10)
+    (by norm_num) (by norm_num) (by norm_num)
+    (fun m => by
+      have s1 : collatz (128 * m + 15) = 384 * m + 46 := by rw [collatz_odd (by omega)]; ring
+      have s2 : collatz (384 * m + 46) = 192 * m + 23 := by rw [collatz_even (by omega)]; omega
+      have s3 : collatz (192 * m + 23) = 576 * m + 70 := by rw [collatz_odd (by omega)]; ring
+      have s4 : collatz (576 * m + 70) = 288 * m + 35 := by rw [collatz_even (by omega)]; omega
+      have s5 : collatz (288 * m + 35) = 864 * m + 106 := by rw [collatz_odd (by omega)]; ring
+      have s6 : collatz (864 * m + 106) = 432 * m + 53 := by rw [collatz_even (by omega)]; omega
+      have s7 : collatz (432 * m + 53) = 1296 * m + 160 := by rw [collatz_odd (by omega)]; ring
+      have s8 : collatz (1296 * m + 160) = 648 * m + 80 := by rw [collatz_even (by omega)]; omega
+      have s9 : collatz (648 * m + 80) = 324 * m + 40 := by rw [collatz_even (by omega)]; omega
+      have s10 : collatz (324 * m + 40) = 162 * m + 20 := by rw [collatz_even (by omega)]; omega
+      have s11 : collatz (162 * m + 20) = 81 * m + 10 := by rw [collatz_even (by omega)]; omega
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_zero_apply,
+          s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11])
+    h
+
+/-- Every `n ≡ 59 (mod 128)` drops below itself in exactly eleven residue-determined steps:
+`128m+59 ↦ 384m+178 ↦ 192m+89 ↦ 576m+268 ↦ 288m+134 ↦ 144m+67 ↦ 432m+202 ↦ 216m+101 ↦ 648m+304
+↦ 324m+152 ↦ 162m+76 ↦ 81m+38`, and `81m+38 < 128m+59` for every `m ≥ 0`.  All eleven parities
+are forced by the residue `mod 128` alone.  This is the third new residue stabilising only at
+level `128`: its class `27 (mod 32)` was unstable at levels `32` and `64`.  The remaining odd
+classes mod `128` that refine `{7, 15, 27, 31} (mod 32)` still have `m`-dependent stopping
+times and need a finer modulus. -/
+theorem mod_onetwentyeight_fiftynine_attainsBelow {n : ℕ} (h : n % 128 = 59) : AttainsBelow n :=
+  -- M = 128, r = 59, k = 11, c = 81, d = 38; a = 4 odd steps, b = 7 halvings, `3^4 < 2^7`.
+  affine_residue_attainsBelow (M := 128) (r := 59) (k := 11) (c := 81) (d := 38)
+    (by norm_num) (by norm_num) (by norm_num)
+    (fun m => by
+      have s1 : collatz (128 * m + 59) = 384 * m + 178 := by rw [collatz_odd (by omega)]; ring
+      have s2 : collatz (384 * m + 178) = 192 * m + 89 := by rw [collatz_even (by omega)]; omega
+      have s3 : collatz (192 * m + 89) = 576 * m + 268 := by rw [collatz_odd (by omega)]; ring
+      have s4 : collatz (576 * m + 268) = 288 * m + 134 := by rw [collatz_even (by omega)]; omega
+      have s5 : collatz (288 * m + 134) = 144 * m + 67 := by rw [collatz_even (by omega)]; omega
+      have s6 : collatz (144 * m + 67) = 432 * m + 202 := by rw [collatz_odd (by omega)]; ring
+      have s7 : collatz (432 * m + 202) = 216 * m + 101 := by rw [collatz_even (by omega)]; omega
+      have s8 : collatz (216 * m + 101) = 648 * m + 304 := by rw [collatz_odd (by omega)]; ring
+      have s9 : collatz (648 * m + 304) = 324 * m + 152 := by rw [collatz_even (by omega)]; omega
+      have s10 : collatz (324 * m + 152) = 162 * m + 76 := by rw [collatz_even (by omega)]; omega
+      have s11 : collatz (162 * m + 76) = 81 * m + 38 := by rw [collatz_even (by omega)]; omega
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_zero_apply,
+          s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11])
+    h
+
 /-- Packaging: every positive `n` that is **even** or lies in `1 + 4ℕ` (with `n ≥ 5`)
 attains a value below itself.  Together these cover three-quarters of the integers,
 all handled by elementary dynamics with no appeal to Tao's axiom. -/
@@ -305,6 +399,25 @@ theorem even_or_mod_four_one_or_mod_thirtytwo_attainsBelow {n : ℕ} (hn : 1 ≤
   · exact mod_sixteen_three_attainsBelow h3
   · exact mod_thirtytwo_eleven_attainsBelow h11
   · exact mod_thirtytwo_twentythree_attainsBelow h23
+
+/-- Maximally extended packaging: every positive `n` that is **even**, lies in `1 + 4ℕ`
+(`n ≥ 5`), `3 + 16ℕ`, `11 + 32ℕ`, `23 + 32ℕ`, `7 + 128ℕ`, `15 + 128ℕ`, or `59 + 128ℕ`
+attains a value below itself.  These eight elementary families together cover
+`115/128` of the integers — the current unconditional floor beneath Tao's density-one
+theorem, with no appeal to the axiom. -/
+theorem even_or_mod_four_one_or_mod_onetwentyeight_attainsBelow {n : ℕ} (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3 ∨ n % 32 = 11 ∨ n % 32 = 23 ∨
+         n % 128 = 7 ∨ n % 128 = 15 ∨ n % 128 = 59) :
+    AttainsBelow n := by
+  rcases h with he | h1 | h3 | h11 | h23 | h7 | h15 | h59
+  · exact even_attainsBelow hn he
+  · exact mod_four_one_attainsBelow h1.1 h1.2
+  · exact mod_sixteen_three_attainsBelow h3
+  · exact mod_thirtytwo_eleven_attainsBelow h11
+  · exact mod_thirtytwo_twentythree_attainsBelow h23
+  · exact mod_onetwentyeight_seven_attainsBelow h7
+  · exact mod_onetwentyeight_fifteen_attainsBelow h15
+  · exact mod_onetwentyeight_fiftynine_attainsBelow h59
 
 /-! ## Part II.5: A quantitative density floor of 3/4
 
