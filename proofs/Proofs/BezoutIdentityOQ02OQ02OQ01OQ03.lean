@@ -76,7 +76,7 @@ which forces the remainder strictly below half of `a`.
     Either `b ≤ a/2`, so `a % b < b ≤ a/2`; or `a/2 < b ≤ a`, so the quotient
     is `1` and `a % b = a - b < a/2`. -/
 theorem two_mul_mod_lt {a b : ℕ} (hb : 0 < b) (hab : b ≤ a) : 2 * (a % b) < a := by
-  rcases le_or_lt (2 * b) a with h | h
+  rcases le_or_gt (2 * b) a with h | h
   · have hlt : a % b < b := Nat.mod_lt a hb
     omega
   · have hmod : a % b = a - b := by
@@ -153,5 +153,58 @@ theorem steps_fib : ∀ n, 1 ≤ n → steps (Nat.fib (n + 2)) (Nat.fib (n + 1))
       have h2 : Nat.fib (n + 2) = Nat.fib n + Nat.fib (n + 1) := Nat.fib_add_two
       omega
     rw [key, Nat.add_mod_right, Nat.mod_eq_of_lt hlt, ih]
+
+/-
+## Part V: Tightness of Lamé's bound (the Θ characterization)
+
+Parts III and IV give the two halves of a complexity result but do not yet
+*meet*: Part III bounds every input from above by `2 log₂ b + 2`, and Part IV
+exhibits a family attaining `n` steps. To conclude the bound is genuinely
+`Θ(log b)` — and in particular cannot be improved to `o(log b)` — we need a
+matching *lower* bound on the worst case in terms of `log₂ b`. The missing
+ingredient is that Fibonacci numbers grow no faster than powers of two, so
+`log₂ (fib (n+1)) ≤ n`; combined with `steps_fib` this lower-bounds the step
+count by `log₂ b`.
+-/
+
+/-- `fib (n+1) ≤ 2 ^ n`: Fibonacci numbers grow no faster than powers of two.
+    A two-step induction (`fib (n+3) = fib (n+1) + fib (n+2) ≤ 2ⁿ + 2ⁿ⁺¹ ≤
+    2ⁿ⁺²`). This is what converts the Fibonacci worst case into a logarithmic
+    lower bound on the step count. -/
+theorem fib_succ_le_two_pow : ∀ n, Nat.fib (n + 1) ≤ 2 ^ n := by
+  intro n
+  induction n using Nat.twoStepInduction with
+  | zero => decide
+  | one => decide
+  | more n ih1 ih2 =>
+    -- bridge `ih2`'s `fib (n+1+1)` to the `fib (n+2)` shape omega sees in the goal
+    have ih2' : Nat.fib (n + 2) ≤ 2 ^ (n + 1) := ih2
+    have hfib : Nat.fib (n + 1 + 2) = Nat.fib (n + 1) + Nat.fib (n + 2) := Nat.fib_add_two
+    have hstep : (2 : ℕ) ^ n ≤ 2 ^ (n + 1) := Nat.pow_le_pow_right (by norm_num) (by omega)
+    have hpow : (2 : ℕ) ^ (n + 2) = 2 ^ (n + 1) + 2 ^ (n + 1) := by rw [pow_succ]; ring
+    rw [show n + 2 + 1 = n + 1 + 2 from by omega, hfib]
+    omega
+
+/-- **Lamé's bound is tight: the lower half of the Θ(log) characterization.**
+    On the Fibonacci worst case `(fib (n+2), fib (n+1))` the step count is at
+    least `⌊log₂ b⌋` where `b = fib (n+1)` is the controlling input. Together
+    with `steps_le_log` (the `O` direction) this shows the Euclidean algorithm
+    runs in `Θ(log b)` steps and the logarithmic upper bound cannot be improved
+    to `o(log b)`. -/
+theorem log_le_steps_fib (n : ℕ) (hn : 1 ≤ n) :
+    Nat.log 2 (Nat.fib (n + 1)) ≤ steps (Nat.fib (n + 2)) (Nat.fib (n + 1)) := by
+  rw [steps_fib n hn]
+  calc Nat.log 2 (Nat.fib (n + 1))
+      ≤ Nat.log 2 (2 ^ n) := Nat.log_mono_right (fib_succ_le_two_pow n)
+    _ = n := Nat.log_pow (by norm_num) n
+
+/-- **The two-sided sandwich.** For the Fibonacci worst case the step count is
+    pinned between `⌊log₂ b⌋` and `2⌊log₂ b⌋ + 2`, with `b = fib (n+1)`. This is
+    the precise sense in which the extended Euclidean algorithm is `Θ(log b)`. -/
+theorem steps_fib_theta (n : ℕ) (hn : 1 ≤ n) :
+    Nat.log 2 (Nat.fib (n + 1)) ≤ steps (Nat.fib (n + 2)) (Nat.fib (n + 1)) ∧
+      steps (Nat.fib (n + 2)) (Nat.fib (n + 1)) ≤ 2 * Nat.log 2 (Nat.fib (n + 1)) + 2 :=
+  ⟨log_le_steps_fib n hn,
+    steps_le_log (Nat.fib (n + 1)) (Nat.fib_pos.mpr (by omega)) (Nat.fib (n + 2))⟩
 
 end BezoutIdentityOQ02OQ02OQ01OQ03
