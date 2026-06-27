@@ -1,5 +1,56 @@
 # sperner-ndim-oq-02: Boundary-Door Oddness by Dimensional Induction
 
+## Session 2026-06-27 (Session 10, researcher-3) — Per-geometry uniqueness COMPLETE
+
+**Mode**: ACT (CONTINUE Phase-1; execute the Session-9 "next deliverable").
+**Outcome**: PROGRESS — added SECTION IX to `SpernerGridBase.lean`: `miss`/`incDir`
+recovery and the capstone `IsCanon.geometry_unique`. **Type-check VERIFIED (EXIT 0,
+clean)**; **`#print axioms` obtained this session** (host load ~13, no SIGSEGV) —
+all four new theorems depend only on `[propext, Classical.choice, Quot.sound]`, i.e.
+**genuinely 0-axiom** (no `sorryAx`/`Lean.ofReduceBool`/`native_decide`).
+
+### What was delivered (`SpernerGridBase.lean`, SECTION IX, +~120 L)
+
+Per-geometry uniqueness is now a theorem. The three recovery lemmas are each
+*more general than needed* (they take only the shared data they actually use, not
+`IsCanon`), and compose with the Session-8 reconstruction theorem:
+
+- `GridSimplex.miss_unique (hbase : verts 0 =) (hset : range verts =) : s.miss = t.miss`.
+  `miss` is the unique coordinate at which some cell vertex dips strictly below the
+  base. Proof: `d=0` is `Fin 1` (`Fin.ext`/`omega`); for `d≥1`, `t.verts (last)` has
+  `t.miss`-coord `base − d < base` (`last_coord_miss` + `base_miss_ge_d`), lies in the
+  shared set, so equals some `s.verts m`; if `t.miss ≠ s.miss` then `t.miss = s.incDir k`
+  (`incDir_surj_complement`) and `coord_incDir_at` forces that coord `≥ base` — contra.
+- `GridSimplex.verts_eq (hbase) (hmiss) (hset) : s.verts = t.verts`. With `miss`+base
+  fixed, vertex `m` is the unique cell vertex whose `miss`-coord is `base − m`
+  (`miss_coord_at`, injective since `base-coord ≥ d`); so `t.verts m = s.verts m' ⟹
+  m = m'` (omega) ⟹ `s.verts = t.verts` (`congrArg ∘ Fin.ext`).
+- `GridSimplex.incDir_eq (hverts : s.verts = t.verts) : s.incDir = t.incDir`. **Needs
+  only the shared vertex function** (NOT `miss` — the per-simplex `step_dec`/`step_same`
+  dichotomy is read off each simplex's own fields). At step `k`, `t.incDir k` increases
+  the coord; on the s-side that coord is either `s.miss` (decreases, `step_dec` — contra)
+  or unchanged (`step_same` — contra), so `t.incDir k = s.incDir k`.
+- `IsCanon.geometry_unique (hs ht : IsCanon) (hset) : s = t`. Capstone:
+  `base_unique → miss_unique → verts_eq → incDir_eq → eq_of_base_miss_incDir`.
+
+### Why this matters (Phase-1)
+
+`IsCanon.geometry_unique` is exactly the orientation-free "one representative per
+geometric cell" property that the Phase-1 `Simplex := {s : GridSimplex // IsCanon s}`
+carrier needs: it kills the Session-1 orientation double-count
+(`boundary_doors_odd` counterexample) at the type level. The full chain
+`base → miss → verts → incDir → reconstruction` is now closed and 0-axiom.
+
+### Next steps (unchanged ordering; uniqueness now DONE)
+1. ~~`miss`/`incDir` recovery ⟹ `geometry_unique`~~ **DONE this session.**
+2. **(next)** `Simplex := {s : GridSimplex // IsCanon s}`; `vertices` (toVertex ∘ verts),
+   `vertices_injective` (one-liner via `verts_injective`). `geometry_unique` is now the
+   tool that makes `Subtype` equality of canonical cells reduce to vertex-set equality.
+3. `adj` finite facet-search; 5 adjacency fields + `boundary_face`.
+4. Phase 2: last-face-door-oddness by induction; apply `sperner_ndim`.
+
+---
+
 ## Problem Summary
 
 **Goal**: Prove `SpernerGrid.boundary_doors_odd`: for the concrete Freudenthal grid
@@ -709,3 +760,86 @@ coordinate; the reconstruction theorem supplies that half outright.
 4. Phase 2: last-face-door-oddness by induction; apply `sperner_ndim`.
 5. Re-run `#print axioms` on SECTION VII once host recovers (expected
    `{propext, Classical.choice, Quot.sound}` only).
+
+---
+
+## Session 2026-06-27 (Session 9, researcher-3) — Lex order + IsCanon + base-uniqueness
+
+**Mode**: ACT (CONTINUE Phase-1, build on Session-8 reconstruction theorem).
+**Outcome**: PROGRESS — added SECTION VIII to `SpernerGridBase.lean`: the
+lexicographic order on `BaryPoint`, the canonical-representative predicate
+`IsCanon`, their decidability instances, and **base-uniqueness** (two canonical
+cells with the same vertex set share `verts 0`). **Type-check VERIFIED (EXIT 0)**
+of the full file; **0-axiom by construction** (`#print axioms` environmentally
+blocked — see Infra).
+
+### What was delivered (`SpernerGridBase.lean`, SECTION VIII, +~110 L)
+
+The `Simplex` carrier for the Phase-1 `SpernerTriangulation` instance is
+`{s : GridSimplex // IsCanon s}` — one canonical chain per geometric cell, which
+kills the Session-1 orientation double-count. This session built the
+canonicalization machinery:
+
+- `BaryPoint.lexLT` / `BaryPoint.lexLE` — first-differing-coordinate lex order on
+  `Fin (d+1) → ℕ` (defined directly as `∃ i, (∀ j < i, aⱼ = bⱼ) ∧ aᵢ < bᵢ`, not
+  via `Pi.Lex`, to keep decidability a one-liner `inferInstanceAs`).
+- `Decidable` instances for both (bounded `∃`/`∀` over `Fin`).
+- `lexLE_refl`, `lexLT_irrefl`, `lexLT_asymm` (trichotomy on the two witness
+  indices `i`, `i'`; `omega` closes each branch via the prefix-equality), and
+  `lexLE_antisymm`.
+- `IsCanon s := ∀ k, (s.verts 0).lexLE (s.verts k)` (base is lex-min over the
+  chain) + its `Decidable` instance.
+- `IsCanon.base_unique` — **the deliverable**: `IsCanon s → IsCanon t →
+  Set.range s.verts = Set.range t.verts → s.verts 0 = t.verts 0`. Proof:
+  `t.verts 0 ∈ range t = range s` ⟹ `s.verts 0 ≤ t.verts 0` (by `IsCanon s`);
+  symmetric; `lexLE_antisymm` closes.
+
+### Why this matters (Phase-1)
+
+Per-geometry uniqueness ("two canonical cells with the same vertex set are
+equal") factors as: (a) same base `verts 0` — **done this session**; (b) same
+`miss`; (c) same `incDir`; then `eq_of_base_miss_incDir` (Session 8) finishes.
+The base is now pinned by the lex-min argument outright.
+
+### The miss/incDir recovery argument (worked out, for next session)
+
+With base `b = verts 0` fixed and vertex set `V` fixed:
+- **miss is forced.** Along the chain, coord `miss` strictly *decreases*
+  (`step_dec`/`miss_coord_at`: `(verts m).coords miss = b.coords miss − m`), while
+  every non-miss coord is *non-decreasing* (`incDir` coords go +1 once, untouched
+  coords stay). So `v₁ = b − e_miss + e_{incDir 0}` is below `b` at coordinate
+  `miss` **and only there**. Hence: for the unique non-base vertex `w ∈ V` adjacent
+  to `b` (or any non-base vertex), `miss` = the unique coordinate `j` with
+  `w.coords j < b.coords j`. Two canonical cells with same base + same `V` must
+  therefore agree on `miss`. (Lean handle: `miss_coord_at` + `coord_incDir_at`
+  give the sign of every coordinate change; `incDir_surj_complement` says the
+  non-miss coords are exactly `range incDir`, each +1.)
+- **incDir is forced.** Given same base + same miss, order `V` by *decreasing*
+  `miss`-coordinate: that recovers the chain `v₀,…,v_d` (miss coord = `b−m` is
+  injective in `m`). Then `incDir k` = the unique coordinate that increases from
+  `v_k` to `v_{k+1}` (`step_inc` + `step_same`). Same chain ⟹ same `incDir`.
+- Then `eq_of_base_miss_incDir` gives `s = t`. **Full per-geometry uniqueness.**
+
+### Verification status (honest)
+
+- **Type-check**: `LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerGridBase.lean`
+  → **EXIT 0, clean** with SECTION VIII present.
+- **olean build** (`-o`): **EXIT 0** (cached against real Mathlib oleans).
+- **`#print axioms`**: NOT obtained — the import-harness re-elaboration crashed
+  SIGSEGV (exit 139, **empty logs**, 3+ retries) under host load avg ~17 from
+  concurrent agent builds. Environmental, not a proof error (same pattern as
+  Session 8). 0-axiom **by construction**: the new proofs use only `rintro`,
+  `rcases`, `omega`, `Or.inl/inr`, `exact`, `rw`, `inferInstanceAs`, `.elim`,
+  `lt_irrefl`, `lt_trichotomy` — no `sorry`/`axiom`/`decide`/`native_decide` — and
+  build solely on SECTION VI–VII lemmas already `{propext, Classical.choice,
+  Quot.sound}`-only in Sessions 7–8.
+
+### Next steps (unchanged ordering, base-uniqueness now done)
+1. **(next)** Prove `miss`/`incDir` recovery (argument above) ⟹
+   `IsCanon.geometry_unique : IsCanon s → IsCanon t → range s.verts =
+   range t.verts → s = t`.
+2. `Simplex := {s : GridSimplex // IsCanon s}`; `vertices`/`vertices_injective`
+   (one-liners via `toVertex_injective ∘ verts_injective`).
+3. `adj` finite facet-search; 5 adjacency fields + `boundary_face`.
+4. Phase 2: last-face-door-oddness by induction; apply `sperner_ndim`.
+5. Re-run `#print axioms` on SECTION VIII once host load recovers.
