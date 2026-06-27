@@ -1,24 +1,103 @@
 [
   {
-    "id": "ann-definition-endpoints",
+    "id": "ann-context",
     "proofId": "shannon-source-coding-oq-01-oq-03",
-    "range": {
-      "startLine": 49,
-      "endLine": 60
-    },
-    "type": "theorem",
-    "title": "Definition and Endpoint Values of R(D) = H(p) − H(D)",
-    "content": "rateDistortion p D is defined as binEntropy p − binEntropy D, the explicit binary rate–distortion function for a Bernoulli(p) source under Hamming distortion. The two endpoints are immediate: rateDistortion_zero proves R(p, 0) = H(p) (simp with binEntropy_zero — lossless coding needs the full source entropy rate), and rateDistortion_self proves R(p, p) = 0 (simp with sub_self — at distortion equal to the source bias the required rate drops to zero). These are the two extremes of the rate–distortion curve: keeping all of the source's h(p) bits of entropy versus discarding all of them."
+    "range": { "startLine": 4, "endLine": 47 },
+    "type": "concept",
+    "title": "The binary rate–distortion function, from comment to verified object",
+    "content": "The docstring frames the entry. The parent (shannon-source-coding-oq-01, Rate–Distortion Theory) records the binary rate–distortion function only as a comment: for a Bernoulli(p) source under Hamming distortion, R(D) = h(p) − h(D) for 0 ≤ D ≤ min(p, 1−p). Its open question #3 asks to formalize this explicit formula. This file gives it a concrete, fully verified object built on Mathlib's Real.binEntropy and proves the endpoint, sign, monotonicity, and boundedness behaviour the rate–distortion curve must have. It works in the regime 0 ≤ D ≤ p ≤ 1/2 (so min(p,1−p) = p); p ≥ 1/2 follows by the symmetry binEntropy (1−p) = binEntropy p. Entropy is in nats (binEntropy uses natural log); the formula is base-independent.",
+    "mathContext": "Rate–distortion: $R(D)$ is the least rate (bits/symbol) needed to encode a source within average distortion $D$. For a $\\mathrm{Bernoulli}(p)$ source under Hamming distortion, Shannon's theory gives $R(D) = h(p) - h(D)$ on $0\\le D\\le \\min(p,1-p)$, where $h(x) = -x\\log x - (1-x)\\log(1-x)$ is the binary entropy.",
+    "significance": "key",
+    "relatedConcepts": [
+      "rate–distortion theory",
+      "binary entropy function h(p)",
+      "Bernoulli source",
+      "Hamming distortion",
+      "Real.binEntropy"
+    ],
+    "prerequisites": [
+      "Shannon source coding / rate–distortion",
+      "entropy in nats vs bits",
+      "the binary entropy symmetry h(1−p) = h(p)"
+    ]
   },
   {
-    "id": "ann-structural-properties",
+    "id": "ann-definition",
     "proofId": "shannon-source-coding-oq-01-oq-03",
-    "range": {
-      "startLine": 62,
-      "endLine": 89
-    },
+    "range": { "startLine": 41, "endLine": 43 },
+    "type": "definition",
+    "title": "R(p, D) = H(p) − H(D)",
+    "content": "rateDistortion p D is the noncomputable definition binEntropy p − binEntropy D — the explicit binary rate–distortion function. It is noncomputable because Real.binEntropy is built from Real.log. Giving the formula a named object (rather than leaving it in a comment) is exactly what the parent's open question #3 requested: a concrete handle on which the structural theorems below can be stated and proved.",
+    "mathContext": "$R(p,D) := h(p) - h(D)$ with $h = $ `Real.binEntropy`. The source contributes $h(p)$ bits of uncertainty; allowing distortion $D$ lets the encoder discard $h(D)$ of them, leaving the residual rate $h(p) - h(D)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "noncomputable definition",
+      "binary entropy difference",
+      "explicit rate formula"
+    ],
+    "prerequisites": [
+      "Real.binEntropy",
+      "noncomputability of real-log-based definitions"
+    ]
+  },
+  {
+    "id": "ann-endpoints",
+    "proofId": "shannon-source-coding-oq-01-oq-03",
+    "range": { "startLine": 45, "endLine": 51 },
     "type": "theorem",
-    "title": "Nonnegativity, Monotonicity in D, and the Entropy Bound",
-    "content": "rateDistortion_nonneg (R(p,D) ≥ 0) and rateDistortion_antitone_in_D (R(p,·) decreasing in D) both reduce, after simp only [rateDistortion] and linarith, to a single inequality binEntropy D ≤ binEntropy p (resp. binEntropy D₁ ≤ binEntropy D₂) supplied by binEntropy_strictMonoOn.monotoneOn — binary entropy is increasing on [0, 1/2], and the hypotheses 0 ≤ D ≤ p ≤ 1/2 give the Set.Icc 0 2⁻¹ memberships. Thus the shape of the rate–distortion curve is exactly the monotonicity of binary entropy. rateDistortion_le_binEntropy bounds the rate by the source entropy (since H(D) ≥ 0 via binEntropy_nonneg), and rateDistortion_le_log_two bounds it by one bit (log 2 nats) via binEntropy_le_log_two — a binary source carries at most one bit of entropy per symbol."
+    "title": "Endpoint values: R(p,0) = H(p) and R(p,p) = 0",
+    "content": "The two extremes of the rate–distortion curve are immediate. rateDistortion_zero proves R(p, 0) = H(p) (simp with binEntropy_zero) — lossless coding (zero distortion) requires the full source entropy rate. rateDistortion_self proves R(p, p) = 0 (simp via sub_self) — at distortion equal to the source bias the required rate drops to zero. These bracket the curve: keeping all of the source's h(p) bits versus discarding all of them.",
+    "mathContext": "$R(p,0) = h(p) - h(0) = h(p)$ (since $h(0)=0$); $R(p,p) = h(p)-h(p) = 0$. The first is the lossless rate (Shannon source coding theorem), the second the trivial-rate boundary.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binEntropy_zero",
+      "lossless source coding",
+      "boundary of the rate–distortion curve"
+    ],
+    "prerequisites": [
+      "h(0) = 0",
+      "the definition of rateDistortion"
+    ]
+  },
+  {
+    "id": "ann-monotonicity",
+    "proofId": "shannon-source-coding-oq-01-oq-03",
+    "range": { "startLine": 53, "endLine": 79 },
+    "type": "theorem",
+    "title": "Sign and shape: nonnegativity and antitonicity from entropy monotonicity",
+    "content": "rateDistortion_nonneg (R(p,D) ≥ 0) and rateDistortion_antitone_in_D (R(p,·) decreasing in D) both reduce, after simp only [rateDistortion] and linarith, to a single inequality on binary entropy — binEntropy D ≤ binEntropy p (resp. binEntropy D₁ ≤ binEntropy D₂) — supplied by binEntropy_strictMonoOn.monotoneOn. Binary entropy is strictly increasing on [0, 1/2], and the hypotheses 0 ≤ D ≤ p ≤ 1/2 provide the Set.Icc 0 2⁻¹ memberships. So the entire shape of the rate–distortion curve (nonnegative, decreasing) is exactly the monotonicity of binary entropy on [0, 1/2]: more allowed distortion ⇒ less required rate.",
+    "mathContext": "On $[0,\\tfrac12]$, $h$ is strictly increasing, so $0\\le D\\le p \\Rightarrow h(D)\\le h(p) \\Rightarrow R(p,D)\\ge 0$; and $D_1\\le D_2 \\Rightarrow h(D_1)\\le h(D_2) \\Rightarrow R(p,D_2)\\le R(p,D_1)$. The decreasing rate–distortion curve is the shadow of entropy's monotonicity.",
+    "significance": "key",
+    "relatedConcepts": [
+      "binEntropy_strictMonoOn",
+      "MonotoneOn",
+      "Set.Icc membership",
+      "antitone (order-reversing) functions",
+      "linarith"
+    ],
+    "prerequisites": [
+      "binary entropy is increasing on [0, 1/2]",
+      "monotonicity ⇒ inequality on differences"
+    ]
+  },
+  {
+    "id": "ann-bounds",
+    "proofId": "shannon-source-coding-oq-01-oq-03",
+    "range": { "startLine": 81, "endLine": 89 },
+    "type": "theorem",
+    "title": "Boundedness: R(p,D) ≤ H(p) ≤ log 2 (one bit)",
+    "content": "rateDistortion_le_binEntropy bounds the rate by the source entropy (R(p,D) ≤ H(p)), using binEntropy_nonneg to get H(D) ≥ 0 so subtracting it can only lower the value. rateDistortion_le_log_two then chains this with binEntropy_le_log_two to bound the rate by log 2 nats = one bit. Information-theoretically: a binary source carries at most one bit of entropy per symbol, so its rate–distortion function never exceeds one bit — the rate is squeezed between 0 and log 2.",
+    "mathContext": "$R(p,D) = h(p) - h(D) \\le h(p)$ since $h(D)\\ge 0$; and $h(p)\\le \\log 2$ (maximum entropy of a binary source, attained at $p=\\tfrac12$). Hence $0 \\le R(p,D) \\le \\log 2$ (one bit in nats).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "binEntropy_nonneg",
+      "binEntropy_le_log_two",
+      "maximum entropy (uniform binary source)",
+      "one bit = log 2 nats"
+    ],
+    "prerequisites": [
+      "h(D) ≥ 0 and h(p) ≤ log 2",
+      "transitivity of ≤"
+    ]
   }
 ]
