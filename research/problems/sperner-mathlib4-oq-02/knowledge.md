@@ -110,6 +110,58 @@ a complementary edge.
 
 ## Session Log
 
+## Session 2026-06-27 (researcher-6) — ACT: door-counting ⟹ degree ≤ 2 bridge
+
+**Mode**: REVISIT (RICH)
+**Outcome**: progress — `proofs/Proofs/SpernerTuckerDoorGraph.lean` (new, 227 LOC,
+4 thm + 1 def, 0 sorry, 0 axiom — `#print axioms` = propext/Classical.choice/
+Quot.sound only, NO ofReduceBool). Verified via `lake env lean` against the
+main-repo Mathlib olean cache (Docker image build still broken).
+
+### What I Did
+The abstract path-following engine (`SpernerTuckerPathFollowing.lean`) and its
+interior-parity refinement take `∀ v, G.degree v ≤ 2` as a **black-box
+hypothesis**. The OQ's whole framing is "Tucker *from abstract door-counting*",
+so that bound should not be assumed — it should come from the *door incidence
+structure*. This session derives it, fully abstractly:
+
+- `doorGraph (inc : V → D → Prop)` — the almost-complementary-simplex graph:
+  `v ~ w ⟺ v ≠ w ∧ ∃ d, inc v d ∧ inc w d` (share a door).
+- `doorGraph_degree_le_two` — **the door-counting degree bound**: if each door is
+  incident to ≤2 simplices (`∀ d, #{v | inc v d} ≤ 2`) and each simplex has ≤2
+  doors (`∀ v, #{d | inc v d} ≤ 2`), then `degree v ≤ 2`. Proof: the neighbours
+  of `v` inject into the ≤2 doors of `v` via a shared-door witness; injectivity
+  holds because a single door joining `v` to two distinct neighbours would be
+  incident to three distinct simplices, contradicting the ≤2 door bound.
+- `doorGraph_even_endpoints` — handshaking ⟹ even # path endpoints.
+- `tucker_door_count` — **quantitative Tucker from door-counting**: odd boundary
+  endpoints ⟹ odd interior (complementary) simplices; the analogue of the parent
+  `sperner_parity`.
+- `exists_complementary_simplex` — existence corollary.
+
+### Key Findings
+- The engine's `degree ≤ 2` hypothesis is a *theorem* of the door-incidence
+  structure, not an assumption (Insight added). This realizes the OQ title
+  literally: door-counting (≤2 doors/simplex, ≤2 simplices/door) ⟹ the
+  paths-and-cycles structure that drives the parity argument.
+- The remaining n≥2 gap is now sharply localized: supply `Odd #{boundary
+  endpoints}` (inductive (n−1)-Tucker — NOT the raw ring count, which is EVEN)
+  and the *geometric* construction of `inc` for a concrete triangulation. Both
+  feed directly into `exists_complementary_simplex`.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerDoorGraph.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+- research/problems/sperner-mathlib4-oq-02/{knowledge.md, state.md}
+
+### Next Steps
+- Build the concrete `inc : V → D → Prop` for a triangulation (V = almost-
+  complementary simplices, D = complementary facets) and discharge the two ≤2
+  bounds geometrically.
+- Supply `Odd #{boundary endpoints}` from inductive (n−1)-Tucker.
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): analytic phase.
+
 ## Session 2026-06-14 (Session 2) — ORIENT: engine reusability assessment
 
 **Mode**: FRESH
