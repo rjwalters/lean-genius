@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "VERIFIED: 145-line GodelIncompletenessOQ03.lean (8 thm, 1 def, 0 sorry, 0 axiom) — defines Independent over Mathlib semantic consequence and proves independence⇒incompleteness, the satisfiable-both characterization, and completeness⇔no-independent-sentence. Offline-verified via lake env lean (EXIT 0). Concrete PA-independence left open.",
+    "progressSummary": "VERIFIED + EXTENDED: GodelIncompletenessOQ03.lean now 13 thm / 1 def, 0 sorry / 0 axiom (#30648 merged 8 thm; a sibling PR then added Independent.isSatisfiable/neg_iff/neg). This session adds Independent.mono (independence descends to subtheories: T₀⊆T₁, indep over T₁ ⟹ indep over T₀) and not_independent_of_not_isSatisfiable (inconsistent theory has no independent sentences). Offline-verified lake env lean EXIT 0; new theorems axiom-free (propext/Choice/Quot only). Concrete PA-independence (Goodstein/Paris–Harrington/Con(PA)) still OPEN — needs PA arithmetization absent from Mathlib.",
     "builtItems": [
       "GodelIncompletenessOQ03.lean: Independent def + 8 theorems on Mathlib FirstOrder model theory (offline-verified)",
       "Independent.not_isComplete — independence forces incompleteness",
@@ -48,7 +48,11 @@
       "No Goodstein / Paris-Harrington formalization",
       "No syntactic proof system for first-order logic (only semantic consequence ⊨ᵇ)"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "Concrete PA-independence remains blocked: requires PA syntax, ε₀-induction, fast-growing hierarchies (thousands of lines absent from Mathlib).",
+      "Possible abstract increment: independence transfer under semantic equivalence (T ⊨ φ.iff ψ ⟹ Independent T φ ↔ Independent T ψ).",
+      "Possible: from one independent sentence, construct infinitely many pairwise-inequivalent independent sentences."
+    ]
   },
   "tags": [
     "logic",

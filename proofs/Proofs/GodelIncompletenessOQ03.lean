@@ -37,6 +37,10 @@ are all sentences `φ` with `PA ⊭ φ` and `PA ⊭ ¬φ`.
 * `independent_iff_satisfiable_both` — the model-theoretic characterization of
   independence via the Completeness Theorem (`models_iff_not_satisfiable`):
   `φ` is independent of `T` iff both `T ∪ {¬φ}` and `T ∪ {φ}` have models.
+* `Independent.isSatisfiable` / `Independent.neg_iff` / `Independent.neg` /
+  `Independent.mono` / `not_independent_of_not_isSatisfiable` — the structural calculus
+  of the relation: independence implies consistency, is symmetric under negation,
+  descends to subtheories, and holds for some sentence iff `T` is consistent.
 
 ## What remains genuinely open / out of scope
 
@@ -144,9 +148,9 @@ theorem isComplete_iff_forall_not_independent (hsat : T.IsSatisfiable) :
 
 /-! ## A calculus of independence
 
-Two structural lemmas that make `Independent` easy to manipulate: independence
-implies the underlying theory is satisfiable, and independence is symmetric in
-`φ` and `¬φ`. -/
+Structural lemmas that make `Independent` easy to manipulate: independence implies
+the underlying theory is satisfiable, is symmetric in `φ` and `¬φ`, and descends to
+subtheories. -/
 
 namespace Independent
 
@@ -167,6 +171,23 @@ theorem neg_iff : Independent T φ.not ↔ Independent T φ := by
 /-- The negation of an independent sentence is independent. -/
 theorem neg (h : Independent T φ) : Independent T φ.not := neg_iff.mpr h
 
+/-- **Independence descends to subtheories.**  If `φ` is independent of a theory `T₁`
+    and `T₀ ⊆ T₁`, then `φ` is independent of the weaker theory `T₀`: a weaker theory
+    has even fewer consequences, so it still cannot decide `φ`.  (E.g. a sentence
+    independent of PA is independent of every subtheory of PA.) -/
+theorem mono {T₀ T₁ : L.Theory} {φ : L.Sentence}
+    (h : Independent T₁ φ) (hsub : T₀ ⊆ T₁) : Independent T₀ φ := by
+  rw [independent_iff_satisfiable_both] at h ⊢
+  exact ⟨h.1.mono (Set.union_subset_union_left _ hsub),
+         h.2.mono (Set.union_subset_union_left _ hsub)⟩
+
 end Independent
+
+/-- **An inconsistent theory has no independent sentences.**  The contrapositive of
+`Independent.isSatisfiable`: if `T` is unsatisfiable it proves everything (vacuously),
+so it decides every sentence and none is independent. -/
+theorem not_independent_of_not_isSatisfiable {T : L.Theory} {φ : L.Sentence}
+    (h : ¬ T.IsSatisfiable) : ¬ Independent T φ :=
+  fun hind => h hind.isSatisfiable
 
 end GodelIncompletenessOQ03
