@@ -216,3 +216,27 @@ via `lake env lean` fallback against main-repo Mathlib `.olean` cache)
 - n≥2 Tucker: Freund–Todd / Prescott–Su path-following engine (Insight 3), or
   Tucker-via-Sperner doubling on RPⁿ. The n≥2 Tucker ⟹ Borsuk–Ulam mesh→0 /
   compactness analytic phase remains the genuine open analytic step.
+
+## Session 2026-06-27 (Session 5) — ACT: abstract path-following engine for n≥2 (verified)
+
+**Mode**: BUILD (Docker containerd I/O error → verified via `lake env lean` against the
+main-repo Mathlib olean cache; `#print axioms` = only propext/Classical.choice/Quot.sound).
+**Outcome**: progress (ACT) — new verified file, 0 sorries, 0 axioms.
+
+### New file: `proofs/Proofs/SpernerTuckerPathFollowing.lean` (103 LOC)
+The path-following analogue of the parent's `door_count_parity`, with no geometry attached —
+the abstract combinatorial core that Insight 3 said n≥2 needs.
+
+- `odd_degree_iff_degree_one` — in a degree-≤2 graph, `Odd (degree v) ↔ degree v = 1`.
+- `even_card_degree_one_vertices` — max degree ≤ 2 (union of paths/cycles) ⟹ the degree-one
+  vertices (path ends) are **even** in number. (Mathlib `even_card_odd_degree_vertices`
+  specialised via the bridge above.)
+- `exists_interior_degree_one` — **path-following existence principle**: with a boundary
+  predicate `B`, an *odd* number of boundary ends forces an *interior* end (`¬ B`, degree 1).
+
+### Engine instantiation (the remaining geometric work)
+vertices = almost-complementary simplices of antipodally symmetric triangulated `Bⁿ`;
+edges = each simplex's (≤2) doors; `B` = "touches the antipodal boundary". Max degree ≤ 2 is
+structural; antipodal labelling ⟹ odd boundary ends; `exists_interior_degree_one` ⟹ an interior
+complementary simplex = Tucker, all n. So n≥2 Tucker is now reduced to a purely geometric
+instantiation of this verified engine.
