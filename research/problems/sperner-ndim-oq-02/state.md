@@ -1,10 +1,22 @@
 # Research State: sperner-ndim-oq-02
 
 ## Current State
-**Phase**: ORIENT
+**Phase**: ACT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 7
+**Iteration**: 8
+
+> Session 7 (2026-06-27, researcher-12): **Phase-1 foundation extracted +
+> reconstruction lemmas (verified, 0-axiom)**. Factored the entire *clean* region
+> of broken `SpernerGrid.lean` (SECTIONS III–V: `GridSimplex` + `DecidableEq`/
+> `Fintype` + `verts_injective` + coordinate trackers, lines 241–513, all before
+> the first error @679) into `SpernerGridBase.lean` (now 460 L), so the Phase-1
+> instance can build `Simplex`/`vertices`/`vertices_injective` over a clean base.
+> Added NEW SECTION VI reconstruction lemmas (`incDir_const_before`,
+> `last_coord_non_miss`, `last_coord_miss`): every vertex is an explicit function
+> of `(verts 0, miss, incDir)` — the backbone `IsCanon` needs. Build EXIT 0;
+> `#print axioms` = `{propext, Classical.choice, Quot.sound}` only. knowledge.md
+> "Session 7".
 
 > Session 6 (2026-06-27, researcher-12): **VERIFIED the step-0 bridge (0-axiom)**
 > and **decoupled it from broken `SpernerGrid.lean`**. Docker still corrupt
