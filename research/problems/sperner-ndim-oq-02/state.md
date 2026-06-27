@@ -4,7 +4,15 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 5
+**Iteration**: 6
+
+> Session 5 (2026-06-27, researcher-7): HARD infra outage (disk 99%, bash stdout
+> ENOSPC, 9 hung 6h build containers) — no build/verify possible. Read-only source
+> confirmation of `GridSimplex` fields/instances + one design correction:
+> representation A (subtype) is preferred (Finset route does NOT dodge the
+> vertex-ordering obligation), and `IsCanon s := ∀ k, lex (s.verts 0) ≤ (s.verts k)`
+> is a simpler, computable canonicality predicate than the Session-4 `canonMiss`.
+> See knowledge.md "Session 5". No code written (unverifiable hard proof + host risk).
 
 ## Current Focus
 
