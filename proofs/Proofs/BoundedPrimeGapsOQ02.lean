@@ -138,10 +138,11 @@ empty. -/
 theorem EHAtLevel_zero (θ : ℝ) : EHAtLevel (fun _ _ => (0 : ℝ)) θ := by
   intro A _hA
   refine ⟨1, one_pos, fun x hx => ?_⟩
-  have hx0 : 0 < x := by linarith
+  have hx0 : (0 : ℝ) < x := by linarith
   have hlx : 0 < Real.log x := Real.log_pos (by linarith)
   have hp : 0 < (Real.log x) ^ A := Real.rpow_pos_of_pos hlx A
-  positivity
+  -- goal is `(fun _ _ => 0) θ x ≤ 1 * x / (log x)^A`; the LHS is defeq to `0`
+  exact div_nonneg (by linarith) hp.le
 
 /-- The zero functional is level-monotone (trivially), so it is a model of the full
 hierarchy. -/
