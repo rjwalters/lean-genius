@@ -66,6 +66,13 @@ upper bound.
   cardinality exactly `n`.  This isolates the open content: the *count* of a `B_h`
   set is unbounded for free; only the size of its *largest element* is hard.
 
+* `IsBh.map_mul_right` / `IsBh.map_affine` — **dilation and affine invariance**.
+  Multiplying a `B_h` set by a positive constant `c` (`A ↦ A.image (· * c)`) preserves
+  `B_h` (every `h`-fold sum scales by `c`); composing with the translation
+  `IsBh.map_add_right` shows any affine map `x ↦ c·x + d` with `c ≥ 1` preserves `B_h`.
+  The positive-slope affine group is thus the symmetry group of the `B_h` upper bound,
+  letting one normalise a `B_h` set by an affine change of variable before counting.
+
 ## Mathematical note
 
 The bound is *sharp in order*: Singer difference sets give `B_2` sets of size
@@ -606,5 +613,92 @@ how small the largest element can be — the `N^{1/(2h-1)}` greedy lower bound. 
 theorem exists_isBh_card (h : ℕ) (hh : 1 ≤ h) (n : ℕ) :
     ∃ A : Finset ℕ, IsBh h A ∧ A.card = n :=
   ⟨greedyBhSet h hh n, greedyBhSet_isBh hh n, greedyBhSet_card hh n⟩
+
+/-! ## Part 6: Dilation and affine invariance -/
+
+/-- Summing after multiplying every entry of a multiset by a fixed constant `c`
+scales the total by `c`. -/
+private theorem sum_map_mul_const (c : ℕ) (m : Multiset ℕ) :
+    (m.map (· * c)).sum = m.sum * c := by
+  induction m using Multiset.induction with
+  | empty => simp
+  | cons a s ih =>
+      simp only [Multiset.map_cons, Multiset.sum_cons, ih]
+      ring
+
+/-- **Dilation invariance of `B_h`.**  Multiplying every element of a `B_h` set by a
+fixed *positive* constant `c` preserves the `B_h` property: each `h`-fold sum scales by
+the same factor `c`, so distinct sums stay distinct.
+
+Together with `IsBh.map_add_right` (translation invariance) this shows that the affine
+group with positive slope acts on `B_h` sets — the natural symmetry group under which
+the `B_h` upper bound `IsBh.choose_card_le` is invariant. -/
+theorem IsBh.map_mul_right {h c : ℕ} {A : Finset ℕ} (hc : 0 < c) (hA : IsBh h A) :
+    IsBh h (A.image (· * c)) := by
+  intro s hs t ht hsum
+  rw [Finset.mem_coe, Finset.mem_sym_iff] at hs ht
+  have hsum2 : (s : Multiset ℕ).sum = (t : Multiset ℕ).sum := hsum
+  -- An `h`-multiset over the dilated set pulls back into `A` by dividing by `c`.
+  have hpre : ∀ {u : Sym ℕ h}, (∀ a ∈ u, a ∈ A.image (· * c)) →
+      u.map (· / c) ∈ A.sym h := by
+    intro u hu
+    rw [Finset.mem_sym_iff]
+    intro a ha
+    rw [Sym.mem_map] at ha
+    obtain ⟨b, hb, rfl⟩ := ha
+    obtain ⟨x, hx, hxb⟩ := Finset.mem_image.mp (hu b hb)
+    have hbx : b / c = x := by rw [← hxb, Nat.mul_div_cancel _ hc]
+    rwa [hbx]
+  -- Multiplying back by `c` recovers the original multiset, since every entry is a
+  -- multiple of `c`.
+  have hrec : ∀ {u : Sym ℕ h}, (∀ a ∈ u, a ∈ A.image (· * c)) →
+      (u.map (· / c)).map (· * c) = u := by
+    intro u hu
+    rw [Sym.map_map]
+    refine (Sym.map_congr ?_).trans (Sym.map_id' u)
+    intro x hx
+    obtain ⟨y, hy, hyx⟩ := Finset.mem_image.mp (hu x hx)
+    simp only [Function.comp_apply]
+    rw [← hyx, Nat.mul_div_cancel _ hc]
+  -- Pulling back scales every total down by exactly the factor `c`.
+  have hsumshift : ∀ {u : Sym ℕ h}, (∀ a ∈ u, a ∈ A.image (· * c)) →
+      (u : Multiset ℕ).sum = ((u.map (· / c)) : Multiset ℕ).sum * c := by
+    intro u hu
+    set M : Multiset ℕ := ((u.map (· / c) : Sym ℕ h) : Multiset ℕ) with hM
+    have hkey := sum_map_mul_const c M
+    have hMmap : M.map (· * c) = (u : Multiset ℕ) := by
+      rw [hM, ← Sym.coe_map, hrec hu]
+    rw [hMmap] at hkey
+    exact hkey
+  -- Equal dilated sums ⟹ equal pulled-back sums (cancel `c > 0`) ⟹ equal pullbacks.
+  have hs' : s.map (· / c) ∈ A.sym h := hpre hs
+  have ht' : t.map (· / c) ∈ A.sym h := hpre ht
+  have hsum' :
+      ((s.map (· / c)) : Multiset ℕ).sum = ((t.map (· / c)) : Multiset ℕ).sum := by
+    have e1 := hsumshift hs
+    have e2 := hsumshift ht
+    have hmul :
+        ((s.map (· / c)) : Multiset ℕ).sum * c
+          = ((t.map (· / c)) : Multiset ℕ).sum * c := by rw [← e1, ← e2]; exact hsum2
+    exact Nat.eq_of_mul_eq_mul_right hc hmul
+  have hpeq : s.map (· / c) = t.map (· / c) := hA hs' ht' hsum'
+  calc s = (s.map (· / c)).map (· * c) := (hrec hs).symm
+    _ = (t.map (· / c)).map (· * c) := by rw [hpeq]
+    _ = t := hrec ht
+
+/-- **Affine invariance of `B_h`.**  Applying an affine map `x ↦ c·x + d` with positive
+slope `c` to every element of a `B_h` set preserves the `B_h` property.  The affine image
+factors as a dilation `· * c` followed by a translation `· + d`, so this is the
+composition of `IsBh.map_mul_right` and `IsBh.map_add_right`.
+
+Consequently the affine group `{x ↦ c·x + d : c ≥ 1}` acts on `B_h` sets, the natural
+symmetry group of the `B_h` upper bound: one may freely normalise a `B_h` set by an
+affine change of variable before applying the counting bound. -/
+theorem IsBh.map_affine {h c d : ℕ} {A : Finset ℕ} (hc : 0 < c) (hA : IsBh h A) :
+    IsBh h (A.image (fun x => c * x + d)) := by
+  have hfun : (fun x => c * x + d) = (fun y => y + d) ∘ (fun x => x * c) := by
+    funext x; simp [Nat.mul_comm]
+  rw [hfun, ← Finset.image_image]
+  exact (hA.map_mul_right hc).map_add_right
 
 end Erdos340Bh
