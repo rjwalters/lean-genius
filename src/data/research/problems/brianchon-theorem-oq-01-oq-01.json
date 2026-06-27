@@ -1,0 +1,61 @@
+{
+  "slug": "brianchon-theorem-oq-01-oq-01",
+  "title": "Discharging the Pascal axiom: the standard-conic case",
+  "phase": "ACT",
+  "status": "in-progress",
+  "tier": "A",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Open question OQ-01 of brianchon-theorem-oq-01: eliminate the shared axiom conic_implies_pascal by proving Pascal's hexagon theorem in the projective ℝ³ model — six points on a symmetric conic make the three opposite-side intersections of the inscribed hexagon collinear (det(AB∩DE, BC∩EF, CD∩FA) = 0).",
+    "plain": "Remove the one assumption that the parent Brianchon proof still relies on, by actually proving Pascal's hexagon theorem (the dual statement) instead of taking it as given.",
+    "whyMatters": [
+      "The axiom conic_implies_pascal is the only assumption left in both the Brianchon and Pascal gallery entries; discharging it makes both unconditional",
+      "The parent established the conclusion is a genuine polynomial identity (ideal membership in the six conic equations), so it is provable in principle",
+      "Exercises the projective ℝ³ model's cross-product/determinant algebra toward a fully axiom-free incidence theorem"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "pascal_std_conic: Pascal's hexagon theorem for the standard conic y² = x z, via the rational normal curve t ↦ (1,t,t²), reducing collinearity to a ring-closable polynomial identity in six parameters (axiom-free, sorry-free as written; BUILD-PENDING).",
+      "Supporting: threeVectorMatrix_det (explicit 3×3 row determinant), stdConic_symmetric, rncPoint_on_stdConic (the curve lies on the conic)."
+    ],
+    "open": [
+      "The general conic_implies_pascal for an arbitrary symmetric conic is not yet discharged: the PGL₃-equivalence reduction (standard conic → arbitrary nondegenerate conic) and the degenerate (rank < 3) cases remain.",
+      "The direct linear_combination / polyrith ideal-membership discharge (the parent's preferred route) is still pending an available Aristotle service."
+    ],
+    "goal": "Eliminate conic_implies_pascal, making Brianchon's theorem unconditional in the gallery."
+  },
+  "currentState": {
+    "phase": "ACT",
+    "since": "2026-06-26",
+    "iteration": 1,
+    "focus": "Wrote proofs/Proofs/BrianchonTheoremOQ01OQ01.lean proving Pascal for the standard conic via the rational normal curve. BUILD-PENDING: host disk full → Docker content store corrupted (containerd I/O errors), so the proof could not be machine-verified this session. Aristotle MCP is down (404), and Mathlib has no Pascal/Cayley–Bacharach theory, so the direct ideal-membership route is unavailable. The math is the classical Pascal configuration (a true polynomial identity); tactics mirror the verified sibling BrianchonTheoremOQ01OQ02.lean."
+  },
+  "knowledge": {
+    "progressSummary": "IN-PROGRESS, iteration 1. Reduced the axiom to its standard-conic instance and proved that instance via the rational normal curve (ring-closable). Build not yet verified (host disk full, Docker broken). Remaining gap: projective-equivalence reduction to arbitrary conics + degenerate cases; or the direct ideal-membership discharge via Aristotle.",
+    "builtItems": [
+      "proofs/Proofs/BrianchonTheoremOQ01OQ01.lean (self-contained, mirrors the companion model up to defeq; BUILD-PENDING)",
+      "pascal_std_conic / pascal_std_conic_full: Pascal's hexagon theorem for the standard conic y² = x z",
+      "threeVectorMatrix_det: explicit 3×3 determinant of three row vectors",
+      "stdConic, stdConic_symmetric, rncPoint, rncPoint_on_stdConic"
+    ],
+    "insights": [
+      "The rational normal curve t ↦ (1,t,t²) turns the Pascal ideal-membership problem into a literal polynomial identity in six scalar parameters: the cross-product algebra factors and ring closes the collinearity determinant — no nondegeneracy hypothesis and no Aristotle needed for the standard conic.",
+      "The standard-conic case is the substantive computational core of the classical Pascal proof; the remaining work is the (separate) projective-equivalence reduction, for which the sibling's det_threeVectorMatrix_mulMatrix already supplies collinearity-equivariance under a fixed matrix.",
+      "Mathlib contains no projective-conic / Pascal / Cayley–Bacharach theory, so any discharge must be built in-project."
+    ],
+    "mathlibGaps": [
+      "No Pascal's hexagon theorem, Cayley–Bacharach theorem, or projective conic incidence theory in Mathlib (only Pascal's triangle and convex cones).",
+      "PascalsHexagon.lean's Sylvester-reduction section is broken on main; the rational-normal-curve route avoids it entirely."
+    ],
+    "blockers": [
+      "ENVIRONMENT (shared, blocks all researchers): host disk is 100% full (123 Mi free), corrupting Docker's containerd content store — docker images / builder prune / docker-build.sh all fail with input/output errors. No Lean build can be verified until disk space is freed.",
+      "Aristotle MCP returns 404 (service down), blocking the direct ideal-membership discharge."
+    ]
+  },
+  "tags": ["geometry", "projective", "conic", "pascal", "axiom-elimination", "incidence-theorem"],
+  "started": "2026-06-26",
+  "lastUpdate": "2026-06-26",
+  "leanFiles": ["proofs/Proofs/BrianchonTheoremOQ01OQ01.lean"],
+  "relatedProofs": ["brianchon-theorem-oq-01", "brianchon-theorem-oq-01-oq-02", "pascals-hexagon"]
+}
