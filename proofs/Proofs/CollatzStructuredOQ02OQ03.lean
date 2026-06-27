@@ -154,6 +154,67 @@ theorem even_or_mod_four_one_attainsBelow {n : ℕ} (hn : 1 ≤ n)
   · exact even_attainsBelow hn he
   · exact mod_four_one_attainsBelow h5 h1
 
+/-! ## Part II.5: A quantitative density floor of 3/4
+
+The prose "these families cover three-quarters of the integers" is upgraded here to
+a machine-checked counting bound: among the first `4N` positive integers, at least
+`3N - 1` already attain a value below themselves (the `2N` evens together with the
+`N - 1` members of `1 + 4ℕ` that are `≥ 5`).  Dividing by `4N` and letting `N → ∞`,
+the drop-below set has **lower natural density `≥ 3/4`** — the unconditional,
+axiom-free floor underneath Tao's density-one theorem. -/
+
+open Classical in
+/-- **Quantitative density lower bound.**  At least `3N - 1` of the integers in
+`[1, 4N]` attain a value below themselves.  The witnesses are the evens (an
+injective image of `[1, 2N]` under `j ↦ 2j`) and the class `1 + 4ℕ` with value `≥ 5`
+(an injective image of `[1, N-1]` under `j ↦ 4j+1`); these are disjoint by parity,
+giving `2N + (N-1) = 3N - 1` distinct drop-below starts. -/
+theorem attainsBelow_density_lower (N : ℕ) :
+    3 * N - 1 ≤
+      ((Finset.Icc 1 (4 * N)).filter (fun n => AttainsBelow n)).card := by
+  classical
+  -- The evens `2, 4, …, 4N`, as an injective image of `[1, 2N]`.
+  set E : Finset ℕ := (Finset.Icc 1 (2 * N)).image (fun j => 2 * j) with hE
+  -- The class `1 + 4ℕ` with value `≥ 5`: `5, 9, …, 4N-3`, an image of `[1, N-1]`.
+  set O : Finset ℕ := (Finset.Icc 1 (N - 1)).image (fun j => 4 * j + 1) with hO
+  have hEinj : Function.Injective (fun j : ℕ => 2 * j) :=
+    fun a b h => by have h' : 2 * a = 2 * b := h; omega
+  have hOinj : Function.Injective (fun j : ℕ => 4 * j + 1) :=
+    fun a b h => by have h' : 4 * a + 1 = 4 * b + 1 := h; omega
+  have hEcard : E.card = 2 * N := by
+    rw [hE, Finset.card_image_of_injective _ hEinj, Nat.card_Icc]; omega
+  have hOcard : O.card = N - 1 := by
+    rw [hO, Finset.card_image_of_injective _ hOinj, Nat.card_Icc]; omega
+  -- Parity separates the two families.
+  have hEeven : ∀ x ∈ E, x % 2 = 0 := by
+    intro x hx; rw [hE, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show 2 * i % 2 = 0; omega
+  have hOodd : ∀ x ∈ O, x % 2 = 1 := by
+    intro x hx; rw [hO, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (4 * i + 1) % 2 = 1; omega
+  have hdisj : Disjoint E O :=
+    Finset.disjoint_left.mpr fun a haE haO => by
+      have h1 := hEeven a haE; have h2 := hOodd a haO; omega
+  -- Both families consist of drop-below starts in range.
+  have hsub : E ∪ O ⊆ (Finset.Icc 1 (4 * N)).filter (fun n => AttainsBelow n) := by
+    intro x hx
+    rw [Finset.mem_union] at hx
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    rcases hx with hxE | hxO
+    · rw [hE, Finset.mem_image] at hxE
+      obtain ⟨j, hj, rfl⟩ := hxE
+      rw [Finset.mem_Icc] at hj
+      show (1 ≤ 2 * j ∧ 2 * j ≤ 4 * N) ∧ AttainsBelow (2 * j)
+      exact ⟨⟨by omega, by omega⟩, even_attainsBelow (by omega) (by omega)⟩
+    · rw [hO, Finset.mem_image] at hxO
+      obtain ⟨j, hj, rfl⟩ := hxO
+      rw [Finset.mem_Icc] at hj
+      show (1 ≤ 4 * j + 1 ∧ 4 * j + 1 ≤ 4 * N) ∧ AttainsBelow (4 * j + 1)
+      exact ⟨⟨by omega, by omega⟩, mod_four_one_attainsBelow (by omega) (by omega)⟩
+  calc 3 * N - 1 ≤ E.card + O.card := by rw [hEcard, hOcard]; omega
+    _ = (E ∪ O).card := (Finset.card_union_of_disjoint hdisj).symm
+    _ ≤ _ := Finset.card_le_card hsub
+
 /-! ## Part III: The orbit minimum and logarithmic density -/
 
 /-- The **orbit minimum** of `n`: the infimum of the values visited by the
