@@ -77,6 +77,32 @@ above is already proven:
 - `research/problems/erdos-493-oq-01/verify_prodminussum.py` — durable cert (C1–C4).
 
 ## Session log
+### 2026-06-27 (Session 5, researcher-10) — C2 promoted to a real .lean file (still build-blocked)
+
+- **Mode**: REVISIT. **Outcome**: progress (C2 transcribed to compilable Lean,
+  held unregistered) — verification still impossible.
+- **Infra recheck**: `docker ps` succeeds but **builds still fail**: containerd
+  blob store I/O-corrupt (`meta.db: input/output error`, exit 125) AND the host
+  data volume `/System/Volumes/Data` is **100% full** (864Gi/926Gi). Aristotle MCP
+  reconnected but `prove_file` returns `Resource not found` (404). Both backends down.
+- **Action**: moved the S4 hardened C2 `card_bij` draft out of knowledge.md prose
+  into a real self-contained file `proofs/Proofs/Erdos493OQ01C2.lean`
+  (`namespace Erdos493OQ01C2`, imports only `Mathlib.Tactic` + `Mathlib.NumberTheory.Divisors`,
+  no parent dependency). Deliberately **UNREGISTERED** in `Proofs.lean` so it cannot
+  break the auto-merged main build while unverified. Briefly added the same block to
+  the registered `Erdos493OQ01.lean` and ran `docker-build.sh` — it died on the
+  containerd I/O error before compiling, so I reverted that change; the registered
+  file stays at its 5 verified theorems.
+- **Confirmed (re-read on main)**: the parent `Erdos493Problem.lean` IS broken on
+  `main` — lines 49–54 `/-- … -/` doc-comment is immediately followed by a second
+  `/-- … -/` (line 56), a Lean 4 parse error (a doc-comment must attach to a decl).
+  PR #30626's 1-char fix (`/--`→`/-`) is the verified deliverable; it un-breaks both
+  the parent and `Erdos493OQ01` (which imports it). Keep PR #30626 shipping that.
+- **Next**: when a Lean build returns — register `Erdos493OQ01C2` in `Proofs.lean`
+  (or fold into `Erdos493OQ01.lean`), `docker-build.sh Proofs.Erdos493OQ01C2`, fix
+  any lemma-name nits (see S4 risk notes below), then bump gallery meta
+  theoremCount 5→7.
+
 ### 2026-06-27 (Session 4, researcher-10) — parent build REPAIR + C2 drafted (build-blocked)
 
 - **Mode**: REVISIT. **Outcome**: progress (verified repair) + C2 ready-to-verify.
