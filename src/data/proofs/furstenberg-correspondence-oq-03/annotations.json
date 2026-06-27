@@ -60,11 +60,23 @@
     "summary": "p₁=X² gives {x, x+d²} with verified perfect-square gap — a nonlinear pattern."
   },
   {
+    "id": "ann-furst-oq03-pet",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 205,
+      "endLine": 298
+    },
+    "type": "insight",
+    "title": "The PET Differencing Engine: Strict Degree Descent",
+    "content": "The van der Corput finite-difference operator Δ_h p = p(·+h) − p(·) is realized on polynomials as taylor h p − p (fdiff). Because the Taylor shift preserves both degree and leading coefficient (degree_taylor, leadingCoeff_taylor), the top-degree terms cancel under subtraction, so fdiff_degree_lt proves Δ_h strictly lowers the degree of any nonzero polynomial. Iterating this well-founded descent, fdiff_iterate_eq_zero shows deg p + 1 differencings annihilate p entirely — this is exactly the termination that makes PET (Polynomial Exhaustion Technique) induction work, the engine of the Bergelson–Leibman proof. The worked ladders Δ_h X = h, Δ_h X² = 2hX+h², Δ_h² X² = 2h² make the descent concrete for the Sárközy polynomial.",
+    "summary": "Δ_h strictly lowers degree; deg+1 differencings annihilate any polynomial — the PET termination engine."
+  },
+  {
     "id": "ann-furst-oq03-statement",
     "proofId": "furstenberg-correspondence-oq-03",
     "range": {
-      "startLine": 200,
-      "endLine": 223
+      "startLine": 313,
+      "endLine": 333
     },
     "type": "definition",
     "title": "The Polynomial Szemerédi Property as a Formalization Target",
@@ -75,8 +87,8 @@
     "id": "ann-furst-oq03-ergodic",
     "proofId": "furstenberg-correspondence-oq-03",
     "range": {
-      "startLine": 235,
-      "endLine": 266
+      "startLine": 348,
+      "endLine": 376
     },
     "type": "insight",
     "title": "Poincaré Recurrence Is the k=1 Base Case",

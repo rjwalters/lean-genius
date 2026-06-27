@@ -187,7 +187,117 @@ theorem squareConfig_gap_isSquare (x d : ℤ) :
   simp [configPoint, squareFamily]
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
-PART IV: STATEMENT OF THE BERGELSON–LEIBMAN THEOREM
+PART IV: THE PET DIFFERENCING ENGINE (verified degree descent)
+═══════════════════════════════════════════════════════════════════════════════ -/
+
+/-!
+The Bergelson–Leibman proof reduces polynomial averages to linear ones by the
+**van der Corput finite-difference operator** `(Δ_h p)(n) = p(n + h) − p(n)`,
+the engine of *PET induction* (Polynomial Exhaustion Technique). The decisive
+algebraic fact — verified below with **0 axioms** — is that differencing
+*strictly lowers the degree* of a nonzero polynomial, so iterating it `deg p + 1`
+times annihilates the polynomial. This well-founded descent is exactly what
+makes PET induction terminate. We realize `Δ_h` on polynomials as the Taylor
+shift `taylor h p − p`, reusing Mathlib's `taylor` API.
+-/
+
+section PET
+
+variable {R : Type*} [CommRing R]
+
+/-- The forward finite-difference operator `(Δ_h p)(n) = p(n + h) − p(n)`,
+realized via the Taylor shift `taylor h p − p`. -/
+noncomputable def fdiff (h : R) (p : R[X]) : R[X] := taylor h p - p
+
+@[simp] theorem fdiff_eval (h : R) (p : R[X]) (s : R) :
+    (fdiff h p).eval s = p.eval (s + h) - p.eval s := by
+  simp [fdiff, taylor_eval]
+
+@[simp] theorem fdiff_zero (h : R) : fdiff h (0 : R[X]) = 0 := by
+  simp [fdiff]
+
+/-- `Δ_h` annihilates constants — the base of the descent. -/
+@[simp] theorem fdiff_C (h : R) (c : R) : fdiff h (C c) = 0 := by
+  simp [fdiff, taylor_C]
+
+/-- **PET descent, core step.** Differencing a nonzero polynomial *strictly*
+lowers its degree: `taylor h p` and `p` share the same leading term, which
+cancels under subtraction. -/
+theorem fdiff_degree_lt (h : R) {p : R[X]} (hp : p ≠ 0) :
+    (fdiff h p).degree < p.degree := by
+  have hd : (taylor h p).degree = p.degree := degree_taylor p h
+  have hne : taylor h p ≠ 0 := by rw [ne_eq, taylor_eq_zero]; exact hp
+  have hlc : (taylor h p).leadingCoeff = p.leadingCoeff := leadingCoeff_taylor h p
+  have hsub : (taylor h p - p).degree < (taylor h p).degree := degree_sub_lt hd hne hlc
+  rw [hd] at hsub
+  simpa [fdiff] using hsub
+
+/-- Either differencing kills the polynomial, or it strictly drops `natDegree`. -/
+theorem fdiff_eq_zero_or_natDegree_lt (h : R) (p : R[X]) :
+    fdiff h p = 0 ∨ (fdiff h p).natDegree < p.natDegree := by
+  rcases eq_or_ne p 0 with rfl | hp
+  · exact Or.inl (by simp)
+  · rcases eq_or_ne (fdiff h p) 0 with h0 | h0
+    · exact Or.inl h0
+    · exact Or.inr (natDegree_lt_natDegree h0 (fdiff_degree_lt h hp))
+
+/-- **PET termination.** Applying `Δ_h` more than `deg p` times annihilates `p`.
+This is the well-founded descent that makes PET induction terminate. -/
+theorem fdiff_iterate_eq_zero (h : R) :
+    ∀ (k : ℕ) (p : R[X]), p.natDegree ≤ k → (fdiff h)^[k + 1] p = 0 := by
+  intro k
+  induction k with
+  | zero =>
+    intro p hp
+    have hpc : p.natDegree = 0 := Nat.le_zero.mp hp
+    have hC : p = C (p.coeff 0) := eq_C_of_natDegree_eq_zero hpc
+    show (fdiff h)^[1] p = 0
+    rw [Function.iterate_one, hC, fdiff_C]
+  | succ k ih =>
+    intro p hp
+    rw [Function.iterate_succ_apply]
+    rcases eq_or_ne (fdiff h p) 0 with h0 | h0
+    · rw [h0]; exact Function.iterate_fixed (fdiff_zero h) (k + 1)
+    · apply ih
+      have hlt : (fdiff h p).natDegree < p.natDegree := by
+        rcases fdiff_eq_zero_or_natDegree_lt h p with h1 | h1
+        · exact absurd h1 h0
+        · exact h1
+      omega
+
+/-- Headline corollary: a degree-`d` polynomial is killed by `d + 1` differencings. -/
+theorem fdiff_iterate_natDegree_succ (h : R) (p : R[X]) :
+    (fdiff h)^[p.natDegree + 1] p = 0 :=
+  fdiff_iterate_eq_zero h p.natDegree p le_rfl
+
+end PET
+
+/-! ### Worked degree ladders over `ℤ` -/
+
+/-- `Δ_h X = h`: the first difference of the identity is constant. -/
+theorem fdiff_X_eval (h s : ℤ) : (fdiff h (X : ℤ[X])).eval s = h := by
+  simp only [fdiff_eval, eval_X]; ring
+
+/-- First difference of the **square** (the Sárközy polynomial): `Δ_h X² = 2hX + h²`. -/
+theorem fdiff_Xsq_eval (h s : ℤ) :
+    (fdiff h (X ^ 2 : ℤ[X])).eval s = 2 * h * s + h ^ 2 := by
+  simp only [fdiff_eval, eval_pow, eval_X]; ring
+
+/-- Second difference of the square is the constant `2h²` — degree drops 2 → 0
+in two steps, the PET ladder underlying Sárközy's theorem. -/
+theorem fdiff_fdiff_Xsq_eval (h s : ℤ) :
+    (fdiff h (fdiff h (X ^ 2 : ℤ[X]))).eval s = 2 * h ^ 2 := by
+  simp only [fdiff_eval, eval_pow, eval_X]; ring
+
+/-- PET termination, concretely: three differencings annihilate `X²`. -/
+theorem fdiff_iterate_Xsq (h : ℤ) : (fdiff h)^[3] (X ^ 2 : ℤ[X]) = 0 := by
+  have hd : ((X : ℤ[X]) ^ 2).natDegree = 2 := natDegree_X_pow 2
+  have h3 : (fdiff h)^[2 + 1] (X ^ 2 : ℤ[X]) = 0 :=
+    fdiff_iterate_eq_zero h 2 (X ^ 2) (le_of_eq hd)
+  exact h3
+
+/-! ═══════════════════════════════════════════════════════════════════════════════
+PART V: STATEMENT OF THE BERGELSON–LEIBMAN THEOREM
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-!
@@ -222,7 +332,7 @@ theorem PolynomialSzemerediProperty.mono {A B : Set ℤ} (hAB : A ⊆ B)
   exact ⟨x, d, hd, fun i => hAB (hmem i)⟩
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
-PART V: THE ERGODIC SIDE — MATHLIB RECURRENCE INFRASTRUCTURE
+PART VI: THE ERGODIC SIDE — MATHLIB RECURRENCE INFRASTRUCTURE
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-!
@@ -265,7 +375,7 @@ def PolynomialMultipleRecurrence {α : Type*} [MeasurableSpace α]
         μ (⋂ i, T^[(p i).eval n |>.toNat] ⁻¹' E) ≠ 0
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
-PART VI: FEASIBILITY ASSESSMENT
+PART VII: FEASIBILITY ASSESSMENT
 ═══════════════════════════════════════════════════════════════════════════════ -/
 
 /-!
@@ -280,11 +390,14 @@ PART VI: FEASIBILITY ASSESSMENT
    theorem and its ergodic (polynomial multiple recurrence) counterpart.
 6. Poincaré single recurrence (the `k = 1` base case) from Mathlib, plus the
    measure-preservation of polynomial iterates.
+7. The **PET differencing engine**: the van der Corput operator `Δ_h`, its
+   strict degree descent (`fdiff_degree_lt`), and PET termination
+   (`fdiff_iterate_eq_zero`) — the algebraic core of polynomial exhaustion.
 
 **The gap (open formalization targets):**
-- Polynomial multiple recurrence for `k ≥ 2`. The Bergelson–Leibman proof uses
-  PET induction (polynomial exhaustion) and the structure theory of
-  characteristic factors (nilsystems). Mathlib has neither.
+- Polynomial multiple recurrence for `k ≥ 2`. The PET *differencing engine* is
+  verified here, but the full induction scheme also needs the structure theory
+  of characteristic factors (nilsystems), which Mathlib lacks.
 - The Furstenberg correspondence linking density to the ergodic side is
   available in this gallery only as an axiom (`FurstenbergCorrespondence.lean`).
 
@@ -309,5 +422,7 @@ extension's exact statement and verifying the algebraic constraints
 #check @PolynomialSzemerediProperty
 #check @poincare_single_recurrence
 #check @PolynomialMultipleRecurrence
+#check @fdiff_degree_lt
+#check @fdiff_iterate_eq_zero
 
 end FurstenbergOQ03
