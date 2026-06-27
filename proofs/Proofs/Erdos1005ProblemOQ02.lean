@@ -1014,4 +1014,133 @@ theorem simOrd_quad {a b c d e f g h k₁ k₂ : ℕ}
            (simOrd_outer_iff hg hhd).mpr c2,
            (simOrd_long_iff he hfb hg hhd).mpr c3⟩
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 13: Length-5 runs — three quotients, and the continuant Kₘ
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 12 found that a length-4 run's long-range obstruction is governed by the
+Stern–Brocot product `k₁·k₂ − 1`, the combined depth of its *two* steps.  A
+length-5 block `a/b, c/d, e/f, g/h, i/j` is the first run driven by **three**
+quotients: writing the §9 recurrence three times,
+
+  `e = k₁·c − a`,  `f = k₁·d − b`      (step 1, quotient `k₁`)
+  `g = k₂·e − c`,  `h = k₂·f − d`      (step 2, quotient `k₂`)
+  `i = k₃·g − e`,  `j = k₃·h − f`      (step 3, quotient `k₃`)
+
+Substituting the three recurrences collapses the *fifth* term to a closed form in
+the *first* pair `a/b, c/d`,
+
+  `i = (k₁·k₂·k₃ − k₁ − k₃)·c − (k₂·k₃ − 1)·a`,
+  `j = (k₁·k₂·k₃ − k₁ − k₃)·d − (k₂·k₃ − 1)·b`,
+
+so the long pair `a/b, i/j` is similarly ordered **iff**
+`(k₂·k₃·a − (k₁·k₂·k₃ − k₁ − k₃)·c)·(k₂·k₃·b − (k₁·k₂·k₃ − k₁ − k₃)·d) ≥ 0`
+(`simOrd_long3_iff`).  The coefficient of `c` here is the **continuant**
+`K(k₁,k₂,k₃) = k₁·k₂·k₃ − k₁ − k₃` and the coefficient of `a` is the trailing
+continuant `K(k₂,k₃) = k₂·k₃ − 1`.  This is the order-side shadow of the very
+recurrence (`xₘ₊₁ = kₘ·xₘ − xₘ₋₁`) that generates Farey numerators and
+denominators: the controlling quantity for the endpoints of a run is the full
+**continuant of all its intervening quotients**, not any single step.  The
+pattern across §11/§12/§13 is exactly the continuant ladder
+`K() = 1, K(k) = k, K(k₁,k₂) = k₁k₂−1, K(k₁,k₂,k₃) = k₁k₂k₃−k₁−k₃`.
+
+The headline `simOrd_quint` assembles the full length-5 run criterion as the
+conjunction of the six non-adjacent windows: the three length-3 windows of §11
+(one per consecutive triple), the two length-4 long windows of §12 (one per
+consecutive quadruple), and the new length-5 continuant window of
+`simOrd_long3_iff`.  The four adjacent pairs are free (§10).
+-/
+
+/-- **Three-quotient long-range criterion (length-5 run).**  Iterating the
+successor recurrence three times expresses the fifth term as
+`i = (k₁·k₂·k₃ − k₁ − k₃)·c − (k₂·k₃ − 1)·a`,
+`j = (k₁·k₂·k₃ − k₁ − k₃)·d − (k₂·k₃ − 1)·b`, so the *endpoints* `a/b, i/j` are
+similarly ordered **iff**
+`(k₂·k₃·a − (k₁·k₂·k₃−k₁−k₃)·c)·(k₂·k₃·b − (k₁·k₂·k₃−k₁−k₃)·d) ≥ 0`.  The
+controlling quantity is the continuant `K(k₁,k₂,k₃) = k₁·k₂·k₃ − k₁ − k₃`, the
+combined depth of all three steps — the order-side counterpart of the
+numerator/denominator continuant recurrence `xₘ₊₁ = kₘ·xₘ − xₘ₋₁`. -/
+theorem simOrd_long3_iff {a b c d e f g h i j k₁ k₂ k₃ : ℕ}
+    (he : e + a = k₁ * c) (hf : f + b = k₁ * d)
+    (hg : g + c = k₂ * e) (hh : h + d = k₂ * f)
+    (hi : i + e = k₃ * g) (hj : j + f = k₃ * h) :
+    SimOrd a b i j ↔
+      (((k₂ : ℤ) * k₃) * a - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * c)
+        * (((k₂ : ℤ) * k₃) * b - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * d) ≥ 0 := by
+  have He : (e : ℤ) = k₁ * c - a := by
+    have : (e : ℤ) + a = k₁ * c := by exact_mod_cast he
+    linarith
+  have Hf : (f : ℤ) = k₁ * d - b := by
+    have : (f : ℤ) + b = k₁ * d := by exact_mod_cast hf
+    linarith
+  have Hg : (g : ℤ) = k₂ * e - c := by
+    have : (g : ℤ) + c = k₂ * e := by exact_mod_cast hg
+    linarith
+  have Hh : (h : ℤ) = k₂ * f - d := by
+    have : (h : ℤ) + d = k₂ * f := by exact_mod_cast hh
+    linarith
+  have Hi : (i : ℤ) = k₃ * g - e := by
+    have : (i : ℤ) + e = k₃ * g := by exact_mod_cast hi
+    linarith
+  have Hj : (j : ℤ) = k₃ * h - f := by
+    have : (j : ℤ) + f = k₃ * h := by exact_mod_cast hj
+    linarith
+  have key : ((a : ℤ) - i) * ((b : ℤ) - j)
+      = (((k₂ : ℤ) * k₃) * a - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * c)
+          * (((k₂ : ℤ) * k₃) * b - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * d) := by
+    rw [Hi, Hj, Hg, Hh, He, Hf]; ring
+  rw [simOrd_iff_prod, key]
+
+/-- **Length-5 run criterion (headline).**  Five consecutive Farey neighbours
+`a/b, c/d, e/f, g/h, i/j` produced by three successor steps form a pairwise
+similarly ordered run **iff** all six non-adjacent windows are nonnegative: the
+three length-3 windows of §11 (one per consecutive triple), the two length-4
+long windows of §12 (one per consecutive quadruple), and the new length-5
+continuant window of `simOrd_long3_iff`.  The four adjacent pairs are free (§10),
+so the three quotients `k₁, k₂, k₃` interact *only* through these six explicit
+inequalities — and the longest-range one is controlled by the full continuant
+`K(k₁,k₂,k₃) = k₁·k₂·k₃ − k₁ − k₃`. -/
+theorem simOrd_quint {a b c d e f g h i j k₁ k₂ k₃ : ℕ}
+    (hb : 0 < b) (hd : 0 < d) (hf_pos : 0 < f) (hh_pos : 0 < h) (hj_pos : 0 < j)
+    (hcd : Unimodular a b c d)
+    (he : e + a = k₁ * c) (hfb : f + b = k₁ * d)
+    (hg : g + c = k₂ * e) (hhd : h + d = k₂ * f)
+    (hi : i + e = k₃ * g) (hjf : j + f = k₃ * h) :
+    (SimOrd a b c d ∧ SimOrd c d e f ∧ SimOrd e f g h ∧ SimOrd g h i j
+        ∧ SimOrd a b e f ∧ SimOrd c d g h ∧ SimOrd e f i j
+        ∧ SimOrd a b g h ∧ SimOrd c d i j ∧ SimOrd a b i j)
+      ↔ ((2 * (a : ℤ) - k₁ * c) * (2 * (b : ℤ) - k₁ * d) ≥ 0
+          ∧ (2 * (c : ℤ) - k₂ * e) * (2 * (d : ℤ) - k₂ * f) ≥ 0
+          ∧ (2 * (e : ℤ) - k₃ * g) * (2 * (f : ℤ) - k₃ * h) ≥ 0
+          ∧ (((k₂ : ℤ) + 1) * a - ((k₁ : ℤ) * k₂ - 1) * c)
+              * (((k₂ : ℤ) + 1) * b - ((k₁ : ℤ) * k₂ - 1) * d) ≥ 0
+          ∧ (((k₃ : ℤ) + 1) * c - ((k₂ : ℤ) * k₃ - 1) * e)
+              * (((k₃ : ℤ) + 1) * d - ((k₂ : ℤ) * k₃ - 1) * f) ≥ 0
+          ∧ (((k₂ : ℤ) * k₃) * a - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * c)
+              * (((k₂ : ℤ) * k₃) * b - ((k₁ : ℤ) * k₂ * k₃ - k₁ - k₃) * d) ≥ 0) := by
+  have hcdef : Unimodular c d e f := farey_succ_unimodular hcd he hfb
+  have hefgh : Unimodular e f g h := farey_succ_unimodular hcdef hg hhd
+  have hghij : Unimodular g h i j := farey_succ_unimodular hefgh hi hjf
+  have s1 : SimOrd a b c d := unimodular_simOrd hb hd hcd
+  have s2 : SimOrd c d e f := unimodular_simOrd hd hf_pos hcdef
+  have s3 : SimOrd e f g h := unimodular_simOrd hf_pos hh_pos hefgh
+  have s4 : SimOrd g h i j := unimodular_simOrd hh_pos hj_pos hghij
+  constructor
+  · rintro ⟨_, _, _, _, w1, w2, w3, w4, w5, w6⟩
+    exact ⟨(simOrd_outer_iff he hfb).mp w1,
+           (simOrd_outer_iff hg hhd).mp w2,
+           (simOrd_outer_iff hi hjf).mp w3,
+           (simOrd_long_iff he hfb hg hhd).mp w4,
+           (simOrd_long_iff hg hhd hi hjf).mp w5,
+           (simOrd_long3_iff he hfb hg hhd hi hjf).mp w6⟩
+  · rintro ⟨c1, c2, c3, c4, c5, c6⟩
+    exact ⟨s1, s2, s3, s4,
+           (simOrd_outer_iff he hfb).mpr c1,
+           (simOrd_outer_iff hg hhd).mpr c2,
+           (simOrd_outer_iff hi hjf).mpr c3,
+           (simOrd_long_iff he hfb hg hhd).mpr c4,
+           (simOrd_long_iff hg hhd hi hjf).mpr c5,
+           (simOrd_long3_iff he hfb hg hhd hi hjf).mpr c6⟩
+
 end Erdos1005OQ02
