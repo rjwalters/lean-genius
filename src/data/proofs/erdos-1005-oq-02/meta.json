@@ -5,12 +5,12 @@
   "title": "Mediant Insertion and the Farey Gap Calculus: The Mediant Is the Unique Smallest-Denominator Fraction in a Gap",
   "description": "A self-contained, axiom-free formalization of the exact arithmetic of mediant insertion — the operation that refines the Farey sequence F_n into F_{n+1} by inserting, between adjacent fractions a/b < c/d, their mediant (a+c)/(b+d). Two threads are proved. First, the gap-splitting calculus: a unimodular gap of size 1/(bd) is split by its mediant into a left sub-gap 1/(b(b+d)) and a right sub-gap 1/(d(b+d)); these sum back to 1/(bd), stand in ratio d:b, and each is strictly smaller than the whole. Second, the headline minimal-denominator theorem: any fraction p/q strictly between two unimodular neighbours has denominator q ≥ b+d, and equality forces p/q = (a+c)/(b+d) exactly. Hence the mediant is the unique fraction of smallest denominator inside any Farey gap, and b+d is a hard lower bound on refining it — no construction can introduce a fraction of smaller denominator. The parent entry (Erdős #1005) records the open lower bound f(n) ≥ (1/12−o(1))n on runs of similarly ordered Farey fractions; that constant remains open and is NOT addressed here. This entry formalizes the verified mediant calculus on which such lower-bound constructions are built.",
   "leanFile": {
-    "lineCount": 317,
+    "lineCount": 389,
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ02.lean",
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 19
+    "theoremCount": 24
   },
   "meta": {
     "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot mediant theory)",
@@ -29,7 +29,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-06-25",
-    "lineCount": 256,
+    "lineCount": 389,
     "originalContributions": [
       "denom_ge_of_between: the headline lower bound — if a/b < p/q < c/d and the outer pair is unimodular (bc − ad = 1), then q ≥ b + d. Proved from the identity q = b·(cq − pd) + d·(pb − aq) by reading off pb − aq ≥ 1 and cq − pd ≥ 1 from the strict orders, with no Farey enumeration. The mediant therefore has the smallest denominator of any fraction in the open gap (a/b, c/d)",
       "eq_mediant_of_denom_eq: uniqueness — a strictly-in-gap fraction p/q that attains the minimal denominator q = b + d must be the mediant itself, p = a + c. The two cross-differences pb − aq and cq − pd are each pinned to exactly 1, forcing p·b = (a+c)·b and cancelling b",
@@ -39,10 +39,12 @@
       "mediant_gap_left_lt: strict refinement — each sub-gap 1/(b(b+d)) is strictly smaller than the full gap 1/(bd), so mediant insertion genuinely refines the partition",
       "unimodular_left / unimodular_right: the mediant forms a unimodular pair with each endpoint (b(a+c) − a(b+d) = 1 and (b+d)c − (a+c)d = 1), so the two halves of a split gap are themselves Farey-adjacent and can be split again — the recursive engine of the Stern–Brocot tree",
       "denom_identity: the algebraic kernel over ℤ — q = b·(cq − pd) + d·(pb − aq), an unconditional identity once bc − ad = 1, verified by linear_combination",
-      "mediant_is_min_denominator: a packaged statement — the mediant lies strictly inside the gap and every in-gap fraction has denominator ≥ b + d"
+      "mediant_is_min_denominator: a packaged statement — the mediant lies strictly inside the gap and every in-gap fraction has denominator ≥ b + d",
+      "unimodular_iterate_left / unimodular_iterate_right: iterating one-sided insertion k times stays unimodular — a/b < c/d becomes a/b < (k·a+c)/(k·b+d) (and symmetrically on the right), with no induction needed since b·c = a·d+1 is invariant under c ↦ k·a+c, d ↦ k·b+d",
+      "denom_ge_iterate_left / denom_ge_iterate_right: the depth-k denominator bound — every fraction inside the k-fold one-sided sub-gap has q ≥ (k+1)·b+d (resp. b+(k+1)·d), LINEAR in the depth k. This corrects a tempting false heuristic: the order-n cap does NOT force O(log n) refinement depth; the one-sided chain 0/1, 1/2, 1/3, …, 1/n already fits Θ(n) levels. Exponential φ^k growth (hence O(log n) depth) is special to balanced/alternating chains, the opposite extreme from this linear worst case"
     ],
     "assumptions": "None. The file is fully machine-checked with 0 sorries and 0 axiom declarations; #print axioms reports only the foundational propext / Classical.choice / Quot.sound for the headline theorems (denom_ge_of_between, eq_mediant_of_denom_eq, mediant_is_min_denominator). No native_decide is used (so no Lean.ofReduceBool). This entry does NOT resolve the open Erdős #1005 lower bound f(n) ≥ (1/12 − o(1))n on runs of similarly ordered Farey fractions; that constant remains open.",
-    "theoremCount": 13,
+    "theoremCount": 24,
     "definitionCount": 1
   },
   "overview": {
@@ -58,12 +60,12 @@
     ]
   },
   "conclusion": {
-    "summary": "A self-contained, 0-axiom, 0-sorry formalization (256 lines, 13 theorems, 1 definition) of mediant insertion on Farey gaps. The mediant splits a unimodular gap 1/(bd) into 1/(b(b+d)) and 1/(d(b+d)) — summing back to the whole, in ratio d:b, each strictly smaller — and, as the headline result, is the unique fraction of smallest denominator b + d inside the gap: every strictly-in-between p/q has q ≥ b + d, with equality forcing p/q = (a+c)/(b+d).",
+    "summary": "A self-contained, 0-axiom, 0-sorry formalization (389 lines, 24 theorems, 1 definition) of mediant insertion on Farey gaps. The mediant splits a unimodular gap 1/(bd) into 1/(b(b+d)) and 1/(d(b+d)) — summing back to the whole, in ratio d:b, each strictly smaller — and, as the headline result, is the unique fraction of smallest denominator b + d inside the gap: every strictly-in-between p/q has q ≥ b + d, with equality forcing p/q = (a+c)/(b+d). A final section iterates one-sided insertion to arbitrary depth (unimodular_iterate_left/right, denom_ge_iterate_left/right), proving the depth-k interior denominator bound is LINEAR, (k+1)·b+d, which corrects a tempting false heuristic: the order-n cap admits Θ(n) one-sided refinement levels (e.g. 0/1, 1/2, …, 1/n), not O(log n) — exponential growth is special to balanced chains.",
     "implications": "The minimal-denominator theorem (denom_ge_of_between together with eq_mediant_of_denom_eq) is the exact optimality statement behind Stern–Brocot/continued-fraction best approximation: the same q ≥ b + d bound governs convergent denominators and the 'no better approximation with smaller denominator' property. The gap-splitting identities are reusable infrastructure for any quantitative Farey argument, including the constructions that establish the known lower bound on runs in Erdős #1005.",
     "openQuestions": [
       "Erdős #1005 itself: can iterated mediant insertion plus a counting argument recover, or improve, the known lower bound (1/12 − o(1))n on the longest run of similarly ordered Farey fractions? The constant in [1/12, 1/4] is open and is not addressed by this entry.",
       "Best-approximation corollary: formalize that two consecutive continued-fraction convergents form a unimodular pair, so the minimal-denominator theorem yields the classical statement that no fraction with smaller denominator approximates better — connecting this entry to Diophantine approximation.",
-      "Quantitative refinement depth: bound how many mediant insertions are needed to drive every gap of F_n below a target size, using the strict-refinement and ratio identities proved here."
+      "Refinement depth, balanced case: §6 settles the one-sided extreme (linear denominator growth, Θ(n) admissible levels). The complementary balanced/alternating extreme — where denominators follow the Fibonacci recurrence and grow like φ^k, giving O(log n) depth — remains to be formalized (track the alternating mediant chain against Nat.fib). The gap between these two extremes is exactly what a sharp run-length count toward the 1/12 constant must navigate."
     ]
   },
   "sections": [
@@ -108,6 +110,13 @@
       "startLine": 255,
       "endLine": 316,
       "summary": "mediant_denom_gt_left/_right (b < b+d, d < b+d); interior_denom_gt_max (every in-gap fraction has q > max b d, so refinement strictly raises the smallest denominator); denom_ge_left_subgap/denom_ge_right_subgap (the two sub-gaps are themselves unimodular, giving depth-two bounds q ≥ 2b+d and q ≥ b+2d); denom_ge_of_between_ne_mediant (every in-gap fraction other than the mediant has q ≥ (b+d)+min b d — the mediant is the unique denominator-(b+d) point, and the next admissible denominator jumps by at least min b d)."
+    },
+    {
+      "id": "iterated-insertion",
+      "title": "§6 Iterated one-sided insertion — exact linear denominator growth",
+      "startLine": 317,
+      "endLine": 388,
+      "summary": "Generalises §5 to arbitrary depth and corrects a false heuristic. unimodular_iterate_left/_right: iterating mediant insertion into one sub-gap k times keeps the pair unimodular, a/b < (k·a+c)/(k·b+d). denom_ge_iterate_left/_right: every interior fraction of the k-fold one-sided sub-gap has q ≥ (k+1)·b+d — LINEAR in depth k. iterate_left_denom_linear records the exact denominator (k+1)·b+d. Consequence: a one-sided chain (e.g. 0/1, 1/2, 1/3, …, 1/n) fits Θ(n) refinement levels under the order-n cap, NOT O(log n); exponential φ^k growth and the O(log n) depth bound are special to balanced/alternating chains. Any run-length count toward the 1/12 constant must distinguish these two extremes."
     }
   ],
   "crossReferences": [

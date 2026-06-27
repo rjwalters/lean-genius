@@ -314,4 +314,76 @@ theorem denom_ge_of_between_ne_mediant {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 
     have hsub := denom_ge_right_subgap hb hd hq h hM hhi
     omega
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 6: Iterated one-sided insertion — exact linear denominator growth
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+This section generalises the depth-two bounds of § 5 to arbitrary depth and, in
+doing so, **corrects a tempting but false heuristic**: that the order-`n`
+denominator cap forces only `O(log n)` mediant-refinement levels (a "Fibonacci /
+golden-ratio" depth bound).  Exponential `φ^k` denominator growth is special to
+*balanced* (alternating left/right) chains.  The *worst case* is the one-sided
+chain `a/b, (a+c)/(b+d), (2a+c)/(2b+d), …`, whose `k`-th mediant has denominator
+exactly `(k+1)·b + d` — **linear** in the depth `k`.  Concretely, the all-left
+chain from the root gap `0/1 < 1/1` is `0/1, 1/2, 1/3, …, 1/n`, giving `Θ(n)`
+refinement levels under the cap `q ≤ n`, not `O(log n)`.  Any genuine run-length
+count must therefore distinguish balanced from one-sided descent — the two
+extremes differ by an exponential factor in admissible depth.
+-/
+
+/-- **Iterated left insertion stays unimodular.**  Inserting the mediant into the
+*left* sub-gap `k` times turns the unimodular pair `a/b < c/d` into
+`a/b < (k·a + c)/(k·b + d)`, which is again unimodular.  No induction is needed:
+the relation `b·c = a·d + 1` is invariant under `c ↦ k·a + c`, `d ↦ k·b + d`
+(the added `k·a·b` cancels). -/
+theorem unimodular_iterate_left (k : ℕ) {a b c d : ℕ} (h : Unimodular a b c d) :
+    Unimodular a b (k * a + c) (k * b + d) := by
+  unfold Unimodular at h ⊢
+  have h' : (b : ℤ) * c = a * d + 1 := by exact_mod_cast h
+  have : (b : ℤ) * (k * a + c) = a * (k * b + d) + 1 := by linear_combination h'
+  exact_mod_cast this
+
+/-- **Iterated right insertion stays unimodular.**  Symmetrically, inserting the
+mediant into the *right* sub-gap `k` times turns `a/b < c/d` into
+`(a + k·c)/(b + k·d) < c/d`, again unimodular. -/
+theorem unimodular_iterate_right (k : ℕ) {a b c d : ℕ} (h : Unimodular a b c d) :
+    Unimodular (a + k * c) (b + k * d) c d := by
+  unfold Unimodular at h ⊢
+  have h' : (b : ℤ) * c = a * d + 1 := by exact_mod_cast h
+  have : ((b : ℤ) + k * d) * c = (a + k * c) * d + 1 := by linear_combination h'
+  exact_mod_cast this
+
+/-- **Depth-`k` denominator bound, left chain.**  The `k`-fold left sub-gap
+`(a/b, (k·a+c)/(k·b+d))` is unimodular, so every fraction strictly inside it has
+denominator `q ≥ b + (k·b + d) = (k+1)·b + d`.  The bound is **linear** in `k`:
+each extra refinement level along a one-sided chain costs only `b` in
+denominator, so up to `Θ(n)` such levels fit under the order-`n` cap. -/
+theorem denom_ge_iterate_left (k : ℕ) {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (a : ℚ) / b < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (↑(k * a + c) : ℚ) / ↑(k * b + d)) :
+    b + (k * b + d) ≤ q := by
+  have hbd : 0 < k * b + d := by omega
+  exact denom_ge_of_between hb hbd hq (unimodular_iterate_left k h) hlo hhi
+
+/-- **Depth-`k` denominator bound, right chain.**  Symmetric to
+`denom_ge_iterate_left`: every fraction strictly inside the `k`-fold right
+sub-gap `((a+k·c)/(b+k·d), c/d)` has denominator `q ≥ (b + k·d) + d`. -/
+theorem denom_ge_iterate_right (k : ℕ) {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (↑(a + k * c) : ℚ) / ↑(b + k * d) < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (c : ℚ) / d) :
+    (b + k * d) + d ≤ q := by
+  have hbd : 0 < b + k * d := by omega
+  exact denom_ge_of_between hbd hd hq (unimodular_iterate_right k h) hlo hhi
+
+/-- **The one-sided mediant denominator is exactly linear in depth.**  Reading
+`denom_ge_iterate_left` at the successor depth, the mediant produced by `k+1`
+left insertions sits at denominator `b + (k·b + d) = (k+1)·b + d`.  This exact
+identity is the witness that one-sided descent grows denominators *linearly*, so
+the number of admissible refinement levels under `q ≤ n` is `Θ(n)`. -/
+theorem iterate_left_denom_linear (k b d : ℕ) :
+    b + (k * b + d) = (k + 1) * b + d := by ring
+
 end Erdos1005OQ02
