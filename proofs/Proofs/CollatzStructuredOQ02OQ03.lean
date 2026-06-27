@@ -35,10 +35,14 @@ algebraic core and isolated the finite-check residue), this file:
   * gives a **precise, machine-checkable statement** of Tao's theorem
     (`tao_2019`) so the open question is no longer informal, and the
     "logarithmic density 1" target is pinned down as `HasLogDensityOne`;
-  * proves, **unconditionally and axiom-free**, that two large explicit families
+  * proves, **unconditionally and axiom-free**, that three large explicit families
     of starting values already satisfy the "drops below itself" conclusion — the
-    even numbers and the powers of two — so the elementary part of the
-    almost-all picture is real Lean content, not scaffolding on the axiom.
+    even numbers, the powers of two, and the odd residue class `n ≡ 1 (mod 4)`
+    (`n ≥ 5`) — so the elementary part of the almost-all picture is real Lean
+    content, not scaffolding on the axiom.  The even numbers and the class
+    `1 + 4ℕ` together already cover three-quarters of the integers via elementary
+    dynamics, and the `mod 4` family is the first that exercises the non-trivial
+    `3n+1` branch of the map.
 
 References:
 - Tao, T. (2019). "Almost all orbits of the Collatz map attain almost bounded
@@ -60,6 +64,10 @@ def collatz (n : ℕ) : ℕ :=
 
 theorem collatz_even {n : ℕ} (h : n % 2 = 0) : collatz n = n / 2 := by
   simp [collatz, h]
+
+theorem collatz_odd {n : ℕ} (h : n % 2 = 1) : collatz n = 3 * n + 1 := by
+  unfold collatz
+  rw [if_neg (by omega)]
 
 theorem collatz_two_mul (n : ℕ) : collatz (2 * n) = n := by
   simp [collatz, Nat.mul_mod_right]
@@ -100,6 +108,35 @@ theorem pow_two_attainsBelow {k : ℕ} (hk : 1 ≤ k) : AttainsBelow (2 ^ k) := 
   have h2 : (2 : ℕ) ≤ 2 ^ k := by
     simpa using Nat.pow_le_pow_right (by norm_num : 1 ≤ 2) hk
   omega
+
+/-- Every `n ≡ 1 (mod 4)` with `n ≥ 5` drops below itself in exactly three steps:
+`4m+1 ↦ 12m+4 ↦ 6m+2 ↦ 3m+1`, and `3m+1 < 4m+1` once `m ≥ 1`.  Unlike the even
+numbers and the powers of two, this is a *positive-density* (one-quarter) family of
+genuinely **odd** starting values, so it adds new unconditional content beyond the
+trivially-even cases: the first Collatz step here is the non-trivial `3n+1` branch. -/
+theorem mod_four_one_attainsBelow {n : ℕ} (hn : 5 ≤ n) (h : n % 4 = 1) :
+    AttainsBelow n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = 4 * m + 1 := ⟨n / 4, by omega⟩
+  refine ⟨3, by norm_num, ?_⟩
+  have step1 : collatz (4 * m + 1) = 12 * m + 4 := by
+    rw [collatz_odd (by omega)]; ring
+  have step2 : collatz (12 * m + 4) = 6 * m + 2 := by
+    rw [collatz_even (by omega)]; omega
+  have step3 : collatz (6 * m + 2) = 3 * m + 1 := by
+    rw [collatz_even (by omega)]; omega
+  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_zero_apply,
+      step1, step2, step3]
+  omega
+
+/-- Packaging: every positive `n` that is **even** or lies in `1 + 4ℕ` (with `n ≥ 5`)
+attains a value below itself.  Together these cover three-quarters of the integers,
+all handled by elementary dynamics with no appeal to Tao's axiom. -/
+theorem even_or_mod_four_one_attainsBelow {n : ℕ} (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1)) : AttainsBelow n := by
+  rcases h with he | ⟨h5, h1⟩
+  · exact even_attainsBelow hn he
+  · exact mod_four_one_attainsBelow h5 h1
 
 /-! ## Part III: The orbit minimum and logarithmic density -/
 
