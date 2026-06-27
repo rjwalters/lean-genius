@@ -853,4 +853,69 @@ theorem succ_controlling_nonneg {a b c d e f k : ℕ} (hd : 0 < d) (hf_pos : 0 <
     ((a : ℤ) + c - k * c) * ((b : ℤ) + d - k * d) ≥ 0 :=
   (simOrd_succ_controlling he hfb).mp (farey_succ_simOrd hd hf_pos h he hfb)
 
+-- ══════════════════════════════════════════════════════════════════
+-- § 11: The first NON-adjacent obstruction — length-3 runs
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 10 showed every *adjacent* Farey pair is similarly ordered, so the smallest
+place a run can break is a length-3 block `a/b, c/d, e/f` of three *consecutive*
+neighbours: its two adjacent pairs are free, and the only constraint is the
+**outer (non-adjacent) pair** `a/b, e/f`.
+
+Writing the successor via the §9 recurrence `e = k·c − a`, `f = k·d − b`, the
+outer pair is similarly ordered **iff** `(2a − k·c)·(2b − k·d) ≥ 0`
+(`simOrd_outer_iff`).  So a length-3 run is similarly ordered iff that single
+arithmetic inequality on the quotient `k` holds (`simOrd_triple`).
+
+Contrast §9/§10: the *adjacent* product `(a − (k−1)c)(b − (k−1)d)` is always
+`≥ 0`, whereas the *outer* product `(2a − k·c)(2b − k·d) = (a − (k·c−a))(b − (k·d−b))`
+can be negative — precisely when `k` lies strictly between `2a/c` and `2b/d`.
+That interval has width `2b/d − 2a/c = 2·(b·c − a·d)/(c·d) = 2/(c·d)`, so a
+length-3 break requires the successor quotient `k` to fall in an interval of
+width `2/(c·d)` — the first explicit, *metric*, criterion for a run to break.
+-/
+
+/-- **Outer-pair criterion.**  With the successor recurrence `e + a = k·c`,
+`f + b = k·d`, the *non-adjacent* pair `a/b, e/f` is similarly ordered **iff**
+`(2a − k·c)·(2b − k·d) ≥ 0`.  (Compare `simOrd_succ_controlling` for the adjacent
+pair; the `2`s are what make this product able to go negative.) -/
+theorem simOrd_outer_iff {a b c d e f k : ℕ} (he : e + a = k * c) (hf : f + b = k * d) :
+    SimOrd a b e f ↔ (2 * (a : ℤ) - k * c) * (2 * (b : ℤ) - k * d) ≥ 0 := by
+  have He : (e : ℤ) = k * c - a := by
+    have : (e : ℤ) + a = k * c := by exact_mod_cast he
+    linarith
+  have Hf : (f : ℤ) = k * d - b := by
+    have : (f : ℤ) + b = k * d := by exact_mod_cast hf
+    linarith
+  have key : ((a : ℤ) - e) * ((b : ℤ) - f)
+      = (2 * (a : ℤ) - k * c) * (2 * (b : ℤ) - k * d) := by
+    rw [He, Hf]; ring
+  rw [simOrd_iff_prod, key]
+
+/-- **A length-3 run reduces to its outer pair.**  For three consecutive Farey
+neighbours `a/b, c/d, e/f` the two adjacent pairs are *automatically* similarly
+ordered (§10), so the whole block is pairwise similarly ordered iff the outer
+(non-adjacent) pair `a/b, e/f` is.  This is the first point at which
+non-adjacency can break a run. -/
+theorem simOrd_triple_iff_outer {a b c d e f k : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hf_pos : 0 < f) (hcd : Unimodular a b c d)
+    (he : e + a = k * c) (hfb : f + b = k * d) :
+    (SimOrd a b c d ∧ SimOrd c d e f ∧ SimOrd a b e f) ↔ SimOrd a b e f := by
+  have h1 := unimodular_simOrd hb hd hcd
+  have h2 := unimodular_simOrd hd hf_pos (farey_succ_unimodular hcd he hfb)
+  exact ⟨fun h => h.2.2, fun h => ⟨h1, h2, h⟩⟩
+
+/-- **Length-3 run criterion (headline).**  Three consecutive Farey neighbours
+`a/b, c/d, e/f` (with `e + a = k·c`, `f + b = k·d`) form a similarly ordered run
+**iff** `(2a − k·c)·(2b − k·d) ≥ 0`.  Since the adjacent pairs are free (§10),
+the only obstruction is this explicit inequality on the successor quotient `k` —
+the first non-adjacent break condition, controlled by an interval of width
+`2/(c·d)`. -/
+theorem simOrd_triple {a b c d e f k : ℕ} (hb : 0 < b) (hd : 0 < d) (hf_pos : 0 < f)
+    (hcd : Unimodular a b c d) (he : e + a = k * c) (hfb : f + b = k * d) :
+    (SimOrd a b c d ∧ SimOrd c d e f ∧ SimOrd a b e f)
+      ↔ (2 * (a : ℤ) - k * c) * (2 * (b : ℤ) - k * d) ≥ 0 := by
+  rw [simOrd_triple_iff_outer hb hd hf_pos hcd he hfb, simOrd_outer_iff he hfb]
+
 end Erdos1005OQ02
