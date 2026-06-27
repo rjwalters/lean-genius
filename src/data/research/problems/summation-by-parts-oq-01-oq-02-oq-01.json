@@ -43,9 +43,97 @@
   },
   "leanFiles": [
     {
+      "path": "Proofs/SummationByPartsOQ01.lean",
+      "filename": "SummationByPartsOQ01.lean",
+      "lineCount": 84,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ01.lean",
+      "filename": "SummationByPartsOQ01OQ01.lean",
+      "lineCount": 104,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ01OQ01.lean",
+      "filename": "SummationByPartsOQ01OQ01OQ01.lean",
+      "lineCount": 153,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ01OQ01OQ02.lean",
+      "filename": "SummationByPartsOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 127,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ01OQ01OQ02OQ01.lean",
+      "filename": "SummationByPartsOQ01OQ01OQ01OQ02OQ01.lean",
+      "lineCount": 171,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ01OQ01OQ02OQ02.lean",
+      "filename": "SummationByPartsOQ01OQ01OQ01OQ02OQ02.lean",
+      "lineCount": 145,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ01OQ01OQ02OQ02OQ01.lean",
+      "filename": "SummationByPartsOQ01OQ01OQ01OQ02OQ02OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ01OQ01OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/SummationByPartsOQ01OQ02.lean",
+      "filename": "SummationByPartsOQ01OQ02.lean",
+      "lineCount": 68,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SummationByPartsOQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/SummationByPartsOQ01OQ02OQ01.lean",
       "filename": "SummationByPartsOQ01OQ02OQ01.lean",
-      "lineCount": 118,
+      "lineCount": 119,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -55,10 +143,16 @@
     }
   ],
   "relatedProofs": [
+    "geometric-series-oq-06",
     "summation-by-parts-oq-01",
+    "summation-by-parts-oq-01-oq-01",
+    "summation-by-parts-oq-01-oq-01-oq-01",
+    "summation-by-parts-oq-01-oq-01-oq-01-oq-02",
+    "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-02",
+    "summation-by-parts-oq-01-oq-01-oq-01-oq-02-oq-02-oq-01",
     "summation-by-parts-oq-01-oq-02",
-    "summation-by-parts-oq-01-oq-02-oq-01",
-    "geometric-series-oq-06"
+    "summation-by-parts-oq-01-oq-02-oq-01"
   ],
   "references": {
     "papers": [],

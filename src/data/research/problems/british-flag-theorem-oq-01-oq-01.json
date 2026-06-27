@@ -55,7 +55,9 @@
     "euclidean"
   ],
   "relatedProofs": [
-    "british-flag-theorem-oq-01"
+    "british-flag-theorem-oq-01",
+    "british-flag-theorem-oq-01-oq-01",
+    "british-flag-theorem-oq-01-oq-03"
   ],
   "references": {
     "papers": [],
@@ -75,6 +77,28 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagTheorem.lean"
+    },
+    {
+      "path": "Proofs/BritishFlagTheoremOQ0103.lean",
+      "filename": "BritishFlagTheoremOQ0103.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagTheoremOQ0103.lean"
+    },
+    {
+      "path": "Proofs/BritishFlagTheoremOQ01OQ01.lean",
+      "filename": "BritishFlagTheoremOQ01OQ01.lean",
+      "lineCount": 80,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagTheoremOQ01OQ01.lean"
     }
   ]
 }

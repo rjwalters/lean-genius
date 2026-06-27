@@ -8,7 +8,9 @@
   "problemStatement": {
     "formal": "\\text{Gal}(\\mathbb{C}/\\mathbb{R}) \\cong \\mathbb{Z}/2\\mathbb{Z}; \\ \\text{IntermediateField } \\mathbb{R}\\,\\mathbb{C} \\simeq \\text{Subgroup}(\\text{Gal}(\\mathbb{C}/\\mathbb{R}))^{op}",
     "plain": "Prove the Galois correspondence for C/R: intermediate fields correspond bijectively to subgroups of Gal(C/R), which is cyclic of order 2. Since a prime-order group has only two subgroups, there are no intermediate fields other than R and C. This is the Galois-theoretic alternative to the parent entry's tower-law proof.",
-    "whyMatters": ["Answers open question 3 of fundamental-theorem-algebra-oq-04 with a structurally different proof technique."]
+    "whyMatters": [
+      "Answers open question 3 of fundamental-theorem-algebra-oq-04 with a structurally different proof technique."
+    ]
   },
   "knownResults": {
     "proven": [
@@ -43,8 +45,131 @@
     ],
     "markdown": ""
   },
-  "tags": ["galois-theory", "field-extensions", "complex-numbers", "cyclic-groups"],
-  "relatedProofs": ["fundamental-theorem-algebra-oq-04", "fundamental-theorem-algebra"],
-  "references": {"papers": [], "urls": [], "mathlib": ["IsGalois.intermediateFieldEquivSubgroup", "IsGalois.card_aut_eq_finrank", "isCyclic_of_prime_card"]},
-  "lastUpdate": "2026-06-25T00:00:00.000Z"
+  "tags": [
+    "galois-theory",
+    "field-extensions",
+    "complex-numbers",
+    "cyclic-groups"
+  ],
+  "relatedProofs": [
+    "fundamental-theorem-algebra",
+    "fundamental-theorem-algebra-oq-04",
+    "fundamental-theorem-algebra-oq-04-oq-03",
+    "fundamental-theorem-algebra-oq-04-oq-03-oq-01",
+    "fundamental-theorem-algebra-oq-04-oq-03-oq-01-oq-02",
+    "fundamental-theorem-algebra-oq-04-oq-04",
+    "fundamental-theorem-algebra-oq-06",
+    "fundamental-theorem-algebra-oq-06-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "IsGalois.intermediateFieldEquivSubgroup",
+      "IsGalois.card_aut_eq_finrank",
+      "isCyclic_of_prime_card"
+    ]
+  },
+  "lastUpdate": "2026-06-25T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/FundamentalTheoremAlgebra.lean",
+      "filename": "FundamentalTheoremAlgebra.lean",
+      "lineCount": 215,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebra.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
+      "filename": "FundamentalTheoremAlgebraOQ02.lean",
+      "lineCount": 126,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ02.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04.lean",
+      "lineCount": 208,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04OQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04OQ03OQ01.lean",
+      "lineCount": 165,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean",
+      "lineCount": 112,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04OQ04.lean",
+      "lineCount": 215,
+      "theoremCount": 14,
+      "axiomCount": 2,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04OQ04.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ06.lean",
+      "filename": "FundamentalTheoremAlgebraOQ06.lean",
+      "lineCount": 125,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ06.lean"
+    },
+    {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ06OQ01.lean",
+      "filename": "FundamentalTheoremAlgebraOQ06OQ01.lean",
+      "lineCount": 208,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ06OQ01.lean"
+    }
+  ]
 }

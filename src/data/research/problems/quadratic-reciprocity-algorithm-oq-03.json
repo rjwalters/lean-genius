@@ -57,7 +57,8 @@
     "quadratic-reciprocity-algorithm-oq-01",
     "quadratic-reciprocity-algorithm-oq-02",
     "quadratic-reciprocity-algorithm-oq-02-oq-01",
-    "quadratic-reciprocity-algorithm-oq-03"
+    "quadratic-reciprocity-algorithm-oq-03",
+    "quadratic-reciprocity-algorithm-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -114,24 +115,46 @@
     {
       "path": "Proofs/QuadraticReciprocityAlgorithmOQ03FieldBridge.lean",
       "filename": "QuadraticReciprocityAlgorithmOQ03FieldBridge.lean",
-      "lineCount": 133,
+      "lineCount": 135,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03FieldBridge.lean"
     },
     {
       "path": "Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean",
       "filename": "QuadraticReciprocityAlgorithmOQ03M2.lean",
-      "lineCount": 271,
+      "lineCount": 272,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ03M2Capstone.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ03M2Capstone.lean",
+      "lineCount": 73,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03M2Capstone.lean"
+    },
+    {
+      "path": "Proofs/QuadraticReciprocityAlgorithmOQ03Zolotarev.lean",
+      "filename": "QuadraticReciprocityAlgorithmOQ03Zolotarev.lean",
+      "lineCount": 136,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/QuadraticReciprocityAlgorithmOQ03Zolotarev.lean"
     }
   ],
   "nextSteps": [

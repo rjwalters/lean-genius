@@ -71,9 +71,11 @@
   "relatedProofs": [
     "taylor-sincos-convergence",
     "taylor-theorem",
+    "taylor-theorem-oq-01",
     "taylor-theorem-oq-02",
     "taylor-theorem-oq-03",
-    "taylor-theorem-oq-03-oq-01"
+    "taylor-theorem-oq-03-oq-01",
+    "taylor-theorem-oq-03-oq-02"
   ],
   "references": {
     "papers": [],
@@ -101,6 +103,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ01.lean",
+      "filename": "TaylorTheoremOQ01.lean",
+      "lineCount": 136,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ01.lean"
     },
     {
       "path": "Proofs/TaylorTheoremOQ02.lean",
@@ -134,6 +147,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/TaylorTheoremOQ03OQ02.lean",
+      "filename": "TaylorTheoremOQ03OQ02.lean",
+      "lineCount": 231,
+      "theoremCount": 14,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ03OQ02.lean"
     }
   ]
 }

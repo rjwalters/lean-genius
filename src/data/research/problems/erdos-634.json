@@ -14,7 +14,11 @@
     "focus": "Formalized the k=2 base case of the square reptiling (medial subdivision) with genuine isometry-congruence, and audited the pre-existing axiomatized entry.",
     "blockers": [],
     "nextAction": "A full dissection formalization needs a covering/disjointness predicate (Mathlib lacks a tiling API). Separately, the pre-existing Erdos634Problem.lean has a soundness issue (area-only Dissection makes IsDissectable trivially true for every n, contradicting its seven/eleven_not_dissectable axioms) — flagged for a Mechanic/peer-review follow-up.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "COMPLETED: Formalized the medial reptiling — the base case k=2 of the square reptiling central to Erdős #634 — fully and unconditionally over an arbitrary real normed space. The four medial triangles of any triangle A B C are proved pairwise congruent (genuine isometry-congruence, via explicit translations and one point reflection), with side lengths exactly half the original, exhibiting 4 = 2^2 congruent half-copies. New verified entry erdos-634-medial-congruence (Proofs/Erdos634MedialCongruence.lean), 0 axioms, 0 sorries. Also identified a latent soundness issue in the pre-existing axiomatized entry.",
@@ -36,8 +40,20 @@
       "No tiling/dissection API in Mathlib (covering + disjoint-interiors of polygonal pieces), so the full geometric dissection of #634 cannot yet be formalized; only the congruence of the pieces is captured here."
     ]
   },
-  "tags": ["geometry", "erdos", "dissection", "congruence", "isometry", "reptile"],
-  "relatedProofs": ["erdos-634", "erdos-634-medial-congruence"],
+  "tags": [
+    "geometry",
+    "erdos",
+    "dissection",
+    "congruence",
+    "isometry",
+    "reptile"
+  ],
+  "relatedProofs": [
+    "erdos-6",
+    "erdos-63",
+    "erdos-634",
+    "erdos-634-medial-congruence"
+  ],
   "references": [
     "Erdős Problem #634, https://www.erdosproblems.com/634",
     "Solution of Erdős Problem 633, arXiv:2604.03609.",
@@ -50,15 +66,37 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos634Aristotle.lean",
+      "filename": "Erdos634Aristotle.lean",
+      "lineCount": 159,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos634MedialCongruence.lean",
       "filename": "Erdos634MedialCongruence.lean",
-      "lineCount": 194,
+      "lineCount": 195,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634MedialCongruence.lean"
+    },
+    {
+      "path": "Proofs/Erdos634Problem.lean",
+      "filename": "Erdos634Problem.lean",
+      "lineCount": 332,
+      "theoremCount": 16,
+      "axiomCount": 3,
+      "defCount": 17,
+      "sorryCount": 6,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos634Problem.lean"
     }
   ]
 }

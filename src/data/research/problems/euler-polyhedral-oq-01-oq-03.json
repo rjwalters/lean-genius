@@ -62,5 +62,106 @@
   "started": "2026-06-25T00:00:00Z",
   "lastUpdate": "2026-06-25T00:00:00Z",
   "significance": 6,
-  "tractability": 8
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/EulerPolyhedralDescartes.lean",
+      "filename": "EulerPolyhedralDescartes.lean",
+      "lineCount": 162,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralDescartes.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralFormula.lean",
+      "filename": "EulerPolyhedralFormula.lean",
+      "lineCount": 1093,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormula.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralFormulaOQ01OQ02.lean",
+      "filename": "EulerPolyhedralFormulaOQ01OQ02.lean",
+      "lineCount": 142,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralFormulaOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralOQ01.lean",
+      "filename": "EulerPolyhedralOQ01.lean",
+      "lineCount": 904,
+      "theoremCount": 60,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralOQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralOQ01OQ03.lean",
+      "filename": "EulerPolyhedralOQ01OQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralOQ01OQ04.lean",
+      "filename": "EulerPolyhedralOQ01OQ04.lean",
+      "lineCount": 402,
+      "theoremCount": 29,
+      "axiomCount": 12,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralOQ02.lean",
+      "filename": "EulerPolyhedralOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 52,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralOQ02.lean"
+    },
+    {
+      "path": "Proofs/EulerPolyhedralOQ02OQ01.lean",
+      "filename": "EulerPolyhedralOQ02OQ01.lean",
+      "lineCount": 811,
+      "theoremCount": 61,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerPolyhedralOQ02OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "euler-polyhedral-formula",
+    "euler-polyhedral-formula-oq-01",
+    "euler-polyhedral-formula-oq-01-oq-02",
+    "euler-polyhedral-formula-oq-01-oq-02-oq-01",
+    "euler-polyhedral-formula-oq-02",
+    "euler-polyhedral-formula-oq-02-oq-01",
+    "euler-polyhedral-oq-01",
+    "euler-polyhedral-oq-01-oq-03",
+    "euler-polyhedral-oq-02-oq-01"
+  ]
 }

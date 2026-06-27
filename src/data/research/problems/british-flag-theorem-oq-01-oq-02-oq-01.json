@@ -48,5 +48,47 @@
       "Higher moments: ‖X − vertex‖^{2k} is degree 2k in the indicators, so the defect should vanish for n ≥ 2k+1 with an explicit top-degree defect (sum over pairings) at n = 2k.",
       "Relate the n = 2 defect 2⟪u₀,u₁⟫ to the deviation of the parallelogram from a rectangle and to the mixed second difference of the squared-distance field over the cube."
     ]
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/BritishFlagTheorem.lean",
+      "filename": "BritishFlagTheorem.lean",
+      "lineCount": 62,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagTheorem.lean"
+    },
+    {
+      "path": "Proofs/BritishFlagTheoremOQ0103.lean",
+      "filename": "BritishFlagTheoremOQ0103.lean",
+      "lineCount": 139,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagTheoremOQ0103.lean"
+    },
+    {
+      "path": "Proofs/BritishFlagTheoremOQ01OQ01.lean",
+      "filename": "BritishFlagTheoremOQ01OQ01.lean",
+      "lineCount": 80,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BritishFlagTheoremOQ01OQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "british-flag-theorem-oq-01",
+    "british-flag-theorem-oq-01-oq-01",
+    "british-flag-theorem-oq-01-oq-02",
+    "british-flag-theorem-oq-01-oq-02-oq-01",
+    "british-flag-theorem-oq-01-oq-03"
+  ]
 }

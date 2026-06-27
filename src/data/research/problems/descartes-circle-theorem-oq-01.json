@@ -46,7 +46,9 @@
     "research"
   ],
   "relatedProofs": [
-    "descartes-circle-theorem-oq-01"
+    "descartes-circle-theorem-oq-01",
+    "descartes-circle-theorem-oq-01-oq-02",
+    "descartes-circle-theorem-oq-01-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -69,6 +71,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesCircleTheorem.lean"
+    },
+    {
+      "path": "Proofs/DescartesCircleTheoremOQ01OQ02.lean",
+      "filename": "DescartesCircleTheoremOQ01OQ02.lean",
+      "lineCount": 141,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DescartesCircleTheoremOQ01OQ02.lean"
     }
   ]
 }

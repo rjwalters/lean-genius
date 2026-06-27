@@ -66,8 +66,11 @@
     "liouville-numbers"
   ],
   "relatedProofs": [
+    "erdos-2",
+    "erdos-24",
     "erdos-247",
-    "erdos-247-oq-01"
+    "erdos-247-oq-01",
+    "erdos-247-oq-01-oq-02"
   ],
   "references": {
     "papers": [
@@ -88,10 +91,32 @@
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos247Aristotle.lean",
+      "filename": "Erdos247Aristotle.lean",
+      "lineCount": 2,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos247Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos247Problem.lean",
+      "filename": "Erdos247Problem.lean",
+      "lineCount": 507,
+      "theoremCount": 22,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos247Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos247RatioGrowth.lean",
       "filename": "Erdos247RatioGrowth.lean",
-      "lineCount": 317,
-      "theoremCount": 19,
+      "lineCount": 318,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,

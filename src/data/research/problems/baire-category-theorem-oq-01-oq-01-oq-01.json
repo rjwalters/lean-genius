@@ -22,5 +22,80 @@
       "Bundle a continuous linear bijection between Banach spaces into an E ≃L[𝕜] F and characterise injective bounded operators with closed range via a bounded left inverse (follow-up oq-01-oq-01-oq-01-oq-01)."
     ],
     "progressSummary": "COMPLETE: 5 theorems, 0 axioms, 0 sorries, Docker build-verified. Open mapping, inverse mapping and closed graph theorems derived from the gallery Baire category theorem."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01.lean",
+      "filename": "BaireCategoryTheoremOQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ01.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ01OQ01.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 257,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ01OQ02.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ02.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ02.lean",
+      "lineCount": 107,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BaireCategoryTheoremOQ01OQ03.lean",
+      "filename": "BaireCategoryTheoremOQ01OQ03.lean",
+      "lineCount": 96,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaireCategoryTheoremOQ01OQ03.lean"
+    }
+  ],
+  "relatedProofs": [
+    "baire-category-theorem-oq-01",
+    "baire-category-theorem-oq-01-oq-01",
+    "baire-category-theorem-oq-01-oq-01-oq-01",
+    "baire-category-theorem-oq-01-oq-01-oq-02",
+    "baire-category-theorem-oq-01-oq-03"
+  ]
 }
