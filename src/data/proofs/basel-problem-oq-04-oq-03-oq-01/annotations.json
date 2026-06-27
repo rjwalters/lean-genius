@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 1, "endLine": 100 },
+    "type": "concept",
+    "title": "Proof Architecture and the Floor-Ratio Limit",
+    "content": "The header documents a three-step strategy that is a faithful k-dimensional lift of the k=2 coprime-pair proof: (1) a combinatorial Möbius decomposition countCoprimeTuples(k,N) = Σ μ(d)⌊N/d⌋ᵏ, (2) the Dirichlet-series identity Σ μ(d)/dᵏ = 1/ζ(k), and (3) a density limit via Tannery's dominated-convergence theorem. The private helper nat_div_div_tendsto proves the k-independent floor-ratio limit ⌊N/d⌋/N → 1/d through an explicit ε-N estimate using N = ⌊N/d⌋·d + (N mod d).",
+    "mathContext": "$\\lim_{N\\to\\infty} \\frac{|\\{a\\in[N]^k:\\gcd(a)=1\\}|}{N^k} = \\frac{1}{\\zeta(k)}$ for every integer $k\\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Möbius function", "natural density", "Dirichlet series", "Tannery's theorem"],
+    "prerequisites": ["Riemann zeta function", "Möbius inversion formula", "natural density"]
+  },
+  {
+    "id": "ann-real-zeta",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 101, "endLine": 143 },
+    "type": "definition",
+    "title": "Carrying ζ(k) Symbolically as rZeta k",
+    "content": "rZeta k = Σ' n, 1/nᵏ is the real ζ(k) value. The section proves it is summable (k ≥ 2), strictly positive, equal to the complex riemannZeta(k) via zeta_nat_eq_tsum_of_gt_one, and strictly greater than 1 (the n=1,2 terms already exceed 1). Carrying ζ(k) symbolically — with no closed form — is what makes the whole argument k-uniform; only ζ(2) = π²/6 is special, and that is deferred to the consistency cross-check.",
+    "mathContext": "$\\zeta(k) = \\sum_{n\\ge 1} 1/n^k > 1$ for $k\\ge 2$, matching the complex $\\texttt{riemannZeta}(k)$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Riemann zeta function", "p-series convergence", "complex analysis bridge"],
+    "prerequisites": ["tsum / HasSum", "summable_one_div_nat_pow"]
+  },
+  {
+    "id": "ann-mobius-inversion",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 145, "endLine": 187 },
+    "type": "theorem",
+    "title": "Möbius Inversion: Σ_{d|n} μ(d) = [n=1]",
+    "content": "moebius_sum_divisors establishes the fundamental identity Σ_{d|n} μ(d) = [n=1] by recognizing it as the Dirichlet convolution μ * ζ = 1 (moebius_mul_coe_zeta) and reindexing the divisor antidiagonal onto the divisor set. This is the coprimality-detection engine: applied to n = gcd(a), it turns the indicator [gcd(a)=1] into a tractable divisor sum. The lemma is entirely k-independent.",
+    "mathContext": "$\\sum_{d\\mid n} \\mu(d) = [n=1]$ — the Dirichlet convolution $\\mu * \\zeta = 1$.",
+    "significance": "important",
+    "relatedConcepts": ["Möbius function", "Dirichlet convolution", "arithmetic functions"],
+    "prerequisites": ["divisor antidiagonal", "moebius_mul_coe_zeta"]
+  },
+  {
+    "id": "ann-counting-tuples",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 188, "endLine": 232 },
+    "type": "theorem",
+    "title": "Counting d-Divisible k-Tuples as ⌊N/d⌋ᵏ",
+    "content": "card_multiples counts the multiples of d in [1,N] as ⌊N/d⌋ (via an explicit bijection with range(N/d)), and card_tuples_divisible lifts this to k dimensions: the d-divisible k-tuples in [1,N]ᵏ form a constant piFinset, so Fintype.card_piFinset_const gives the count ⌊N/d⌋ᵏ. The passage from the square to the k-th power is the single structural change from the pair case.",
+    "mathContext": "$|\\{a\\in[N]^k : \\forall i,\\, d\\mid a_i\\}| = \\lfloor N/d\\rfloor^k$.",
+    "significance": "important",
+    "relatedConcepts": ["counting multiples", "piFinset", "product of independent conditions"],
+    "prerequisites": ["Fintype.card_piFinset_const", "Finset.card_image_of_injective"]
+  },
+  {
+    "id": "ann-mobius-decomposition",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 233, "endLine": 307 },
+    "type": "theorem",
+    "title": "The Möbius Decomposition (Central Combinatorial Identity)",
+    "content": "countCoprimeTuples_moebius proves countCoprimeTuples(k,N) = Σ_{d≤N} μ(d)⌊N/d⌋ᵏ. Each coprimality indicator is expanded by Möbius inversion, the inner divisor sum is rewritten as a sum over e ∈ [1,N] with e dividing every coordinate, and a finite Fubini exchange (Finset.sum_comm) swaps the order; card_tuples_divisible then evaluates the inner count. Notably this exchange — left as a sorry in the k=2 gallery entry — is fully discharged here.",
+    "mathContext": "$|\\{a\\in[N]^k:\\gcd(a)=1\\}| = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^k$.",
+    "significance": "critical",
+    "relatedConcepts": ["Möbius inversion", "finite Fubini exchange", "double counting"],
+    "prerequisites": ["Finset.sum_comm", "Finset.sum_filter", "moebius_sum_divisors"]
+  },
+  {
+    "id": "ann-dirichlet-series",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 308, "endLine": 359 },
+    "type": "theorem",
+    "title": "The Möbius Dirichlet Series Σ μ(d)/dᵏ = 1/ζ(k)",
+    "content": "moebius_dirichlet_series is the key analytic identity, proved for all k ≥ 2. At s = k the complex L-series identity L(ζ,k)·L(μ,k) = 1 (LSeries_zeta_mul_Lseries_moebius) combines with L(ζ,k) = ζ(k) to give L(μ,k) = 1/ζ(k); this is transferred to a real HasSum on μ(d)/dᵏ via Complex.hasSum_ofReal and the term-formula for the Möbius L-series. tsum_moebius_div_pow restates it as a tsum.",
+    "mathContext": "$\\sum_{d\\ge 1} \\frac{\\mu(d)}{d^k} = \\frac{1}{\\zeta(k)}$, the L-series form of $\\mu * \\zeta = 1$ evaluated at $s=k$.",
+    "significance": "critical",
+    "relatedConcepts": ["Dirichlet series", "L-functions", "Riemann zeta function"],
+    "prerequisites": ["LSeries_zeta_mul_Lseries_moebius", "LSeriesSummable_moebius_iff", "Complex.hasSum_ofReal"]
+  },
+  {
+    "id": "ann-density-limit",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 360, "endLine": 436 },
+    "type": "theorem",
+    "title": "Main Theorem: the Density Limit (Nymann 1972)",
+    "content": "coprime_tuple_density_limit proves lim_{N→∞} countCoprimeTuples(k,N)/Nᵏ = 1/ζ(k) for all k ≥ 2. The Möbius decomposition rewrites the normalized count as Σ_d μ(d)·(⌊N/d⌋/N)ᵏ; each summand tends to μ(d)/dᵏ (using nat_div_div_tendsto), the family is dominated by the summable 1/dᵏ (|μ| ≤ 1 and ⌊N/d⌋/N ≤ 1/d), and Tannery's tendsto_tsum_of_dominated_convergence delivers the limit series 1/ζ(k).",
+    "mathContext": "$\\lim_{N\\to\\infty}\\frac{\\mathrm{countCoprimeTuples}(k,N)}{N^k} = \\frac{1}{\\zeta(k)}$.",
+    "significance": "critical",
+    "relatedConcepts": ["natural density", "dominated convergence", "Tannery's theorem"],
+    "prerequisites": ["tendsto_tsum_of_dominated_convergence", "abs_moebius_le_one", "summable_one_div_nat_pow"]
+  },
+  {
+    "id": "ann-consequences",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 437, "endLine": 455 },
+    "type": "theorem",
+    "title": "The Density is a Genuine Probability in (0,1)",
+    "content": "density_pos, density_lt_one, and density_in_unit_interval show 0 < 1/ζ(k) < 1 for every k ≥ 2 (using ζ(k) > 1 from one_lt_rZeta). Hence setwise coprimality of a random k-tuple is a non-degenerate event for all k ≥ 2, and the density increases toward 1 as k grows.",
+    "mathContext": "$0 < \\frac{1}{\\zeta(k)} < 1$ for $k\\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["probability", "density bounds"],
+    "prerequisites": ["one_lt_rZeta"]
+  },
+  {
+    "id": "ann-k2-consistency",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 456, "endLine": 472 },
+    "type": "theorem",
+    "title": "Consistency with the Coprime-Pair Case",
+    "content": "rZeta_two_eq proves ζ(2) = π²/6 from Mathlib's riemannZeta_two, and density_two_eq derives the k=2 density 1/ζ(2) = 6/π². This recovers the gallery's coprime-pair density (basel-problem-oq-04-oq-03) as the base case, confirming the general 1/ζ(k) law specializes correctly.",
+    "mathContext": "$\\zeta(2)=\\pi^2/6$, so the $k=2$ density is $1/\\zeta(2)=6/\\pi^2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Basel problem", "ζ(2) = π²/6", "base case consistency"],
+    "prerequisites": ["riemannZeta_two"]
+  },
+  {
+    "id": "ann-summary",
+    "proofId": "basel-problem-oq-04-oq-03-oq-01",
+    "range": { "startLine": 473, "endLine": 497 },
+    "type": "concept",
+    "title": "Summary and Final Tally",
+    "content": "The closing block records the Nymann 1972 statement, the three-step architecture (Möbius decomposition → Dirichlet series → density limit via Tannery), the k=2 specialization to 6/π², and the verification tally: 0 axioms, 0 sorries. The entire k-uniform argument depends only on the single Dirichlet-series identity plus finite combinatorics and one dominated-convergence limit.",
+    "mathContext": "$\\sum_{d\\ge 1}\\mu(d)/d^k = 1/\\zeta(k)$ and $\\lim_N \\mathrm{countCoprimeTuples}(k,N)/N^k = 1/\\zeta(k)$, fully formalized for all $k\\ge 2$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Nymann 1972", "natural density", "Euler product"],
+    "prerequisites": []
+  }
+]

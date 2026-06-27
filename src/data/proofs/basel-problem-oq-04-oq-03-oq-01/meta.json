@@ -1,0 +1,230 @@
+{
+  "id": "basel-problem-oq-04-oq-03-oq-01",
+  "title": "Coprime k-Tuple Density: Pr[gcd(a₁,…,a_k)=1] = 1/ζ(k)",
+  "slug": "basel-problem-oq-04-oq-03-oq-01",
+  "description": "The natural density of coprime k-tuples of positive integers equals 1/ζ(k) for every integer k ≥ 2. This generalizes the classical Cesàro coprime-pair result (k=2, density 6/π² = 1/ζ(2)) to arbitrary dimension, with the floor square ⌊N/d⌋² replaced by the k-th power ⌊N/d⌋ᵏ.",
+  "meta": {
+    "author": "Lean Genius",
+    "date": "2026-06-26",
+    "status": "verified",
+    "note": "Fully machine-checked: 0 sorries, 0 axioms, no native_decide. The entire pipeline (Möbius decomposition, the Dirichlet-series identity Σ μ(d)/dᵏ = 1/ζ(k), and the density limit via Tannery's dominated-convergence theorem) is proved symbolically. The k-dimensional generalization of the gallery's k=2 coprime-pair density (basel-problem-oq-04-oq-03).",
+    "proofRepoPath": "Proofs/CoprimeKTupleDensity.lean",
+    "tags": [
+      "number-theory",
+      "probability",
+      "zeta-function",
+      "mobius-function",
+      "natural-density",
+      "coprimality",
+      "basel-problem",
+      "dirichlet-series"
+    ],
+    "badge": "verified",
+    "sorries": 0,
+    "dateAdded": "2026-06-26",
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.moebius_mul_coe_zeta",
+        "description": "Dirichlet convolution μ * ζ = 1 (identity arithmetic function)",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction"
+      },
+      {
+        "theorem": "LSeries_zeta_mul_Lseries_moebius",
+        "description": "L(ζ,s)·L(μ,s) = 1 for Re(s) > 1 — the L-series form of μ * ζ = 1",
+        "module": "Mathlib.NumberTheory.EulerProduct.DirichletLSeries"
+      },
+      {
+        "theorem": "zeta_nat_eq_tsum_of_gt_one",
+        "description": "ζ(k) = Σ' n, 1/nᵏ as a complex value for integer k > 1",
+        "module": "Mathlib.NumberTheory.LSeries.RiemannZeta"
+      },
+      {
+        "theorem": "tendsto_tsum_of_dominated_convergence",
+        "description": "Tannery's dominated-convergence theorem for series (limit of tsum under a summable dominator)",
+        "module": "Mathlib.Analysis.Normed.Group.Tannery"
+      },
+      {
+        "theorem": "summable_one_div_nat_pow",
+        "description": "Σ 1/dᵏ converges iff k > 1 — the dominator's summability (valid for k ≥ 2)",
+        "module": "Mathlib.Analysis.PSeries"
+      },
+      {
+        "theorem": "Fintype.card_piFinset_const",
+        "description": "|piFinset (fun _ => s)| = |s|ᵏ — factors the count of d-divisible k-tuples as ⌊N/d⌋ᵏ",
+        "module": "Mathlib.Data.Fintype.Pi"
+      }
+    ],
+    "originalContributions": [
+      "Möbius decomposition in arbitrary dimension: countCoprimeTuples(k,N) = Σ_{d≤N} μ(d)⌊N/d⌋ᵏ (countCoprimeTuples_moebius), via a finite Fubini exchange and Fintype.card_piFinset_const",
+      "moebius_sum_divisors: Σ_{d|n} μ(d) = [n=1] derived from the Dirichlet convolution μ * ζ = 1",
+      "card_tuples_divisible: |{a ∈ [1,N]ᵏ : ∀ i, d|aᵢ}| = ⌊N/d⌋ᵏ (k-dimensional counting lemma via piFinset)",
+      "moebius_dirichlet_series: HasSum proof for Σ μ(d)/dᵏ = 1/ζ(k) for all k ≥ 2 via the complex L-series bridge, carrying ζ(k) symbolically as rZeta k = Σ' n, 1/nᵏ (no closed form for ζ(k) needed)",
+      "coprime_tuple_density_limit: the density limit for all k ≥ 2 via Tannery's theorem with dominator 1/dᵏ and pointwise limit ⌊N/d⌋/N → 1/d",
+      "density_in_unit_interval: the density 1/ζ(k) is a genuine probability in (0,1) (since ζ(k) > 1 for k ≥ 2)",
+      "Consistency cross-check: rZeta_two_eq (ζ(2) = π²/6) and density_two_eq (k=2 density = 6/π²) recover the gallery's coprime-pair result"
+    ],
+    "axiomCount": 0,
+    "lineCount": 501,
+    "theoremCount": 17,
+    "definitionCount": 2
+  },
+  "overview": {
+    "historicalContext": "Ernesto Cesàro (1885) showed that two randomly chosen positive integers are coprime with probability 6/π² = 1/ζ(2). The k-dimensional generalization — that k randomly chosen positive integers share no common factor with probability 1/ζ(k) = ∏_p (1 − p⁻ᵏ) — is classical folklore made precise by James Nymann, 'On the probability that k positive integers are relatively prime' (J. Number Theory 4, 1972, 469–473). Nymann established the density together with an O(N^{k-1}) error term for k ≥ 3 (and the logarithmic error for k = 2).\n\nThe heuristic is transparent: for each prime p, the probability that p divides all k coordinates is p⁻ᵏ, so the probability that p does not divide their gcd is (1 − p⁻ᵏ). By the Chinese Remainder Theorem these events are independent across primes, giving ∏_p (1 − p⁻ᵏ) = 1/ζ(k). For k ≥ 2 the product converges absolutely, and the larger k is, the closer the density is to 1 (it is harder for many integers to share a common factor).\n\nThis entry formalizes the full statement for every integer k ≥ 2 as a faithful k-dimensional lift of the gallery's k = 2 Basel development, replacing each ⌊N/d⌋² by ⌊N/d⌋ᵏ throughout.",
+    "problemStatement": "Prove that for every integer k ≥ 2 the natural density of coprime k-tuples equals 1/ζ(k): lim_{N→∞} |{a ∈ [1,N]ᵏ : gcd(a₁,…,a_k)=1}| / Nᵏ = 1/ζ(k).",
+    "text": "The probability that k randomly chosen positive integers are setwise coprime equals 1/ζ(k), for every integer k ≥ 2.",
+    "proofStrategy": "Three steps, generalizing the k=2 case dimension by dimension:\n1. Möbius decomposition: 1_{gcd(a)=1} = Σ_{d|gcd(a)} μ(d), then a finite Fubini exchange gives countCoprimeTuples(k,N) = Σ_{d≤N} μ(d)·⌊N/d⌋ᵏ. The k-tuple count of d-divisible tuples factors as ⌊N/d⌋ᵏ (a product over the k coordinates).\n2. Dirichlet series: Σ_{d≥1} μ(d)/dᵏ = 1/ζ(k), proved at s = k from the L-series identity L(ζ,k)·L(μ,k) = 1 together with ζ(k) = Σ 1/nᵏ. The value ζ(k) is carried symbolically as the real number rZeta k = Σ' n, 1/nᵏ; no closed form is required.\n3. Density limit: Tannery's dominated-convergence theorem with summable dominator 1/dᵏ (valid for k ≥ 2) and pointwise limit ⌊N/d⌋/N → 1/d upgrades the finite Möbius sum to the infinite series, yielding 1/ζ(k).",
+    "keyInsights": [
+      "The k=2 proof skeleton lifts verbatim to all k ≥ 2: every ⌊N/d⌋² becomes ⌊N/d⌋ᵏ, and the k-fold product structure is captured by Fintype.card_piFinset_const.",
+      "ζ(k) need not have a closed form: carrying it symbolically as rZeta k = Σ' n, 1/nᵏ and bridging to riemannZeta via zeta_nat_eq_tsum_of_gt_one keeps the whole argument elementary in the unknown constant.",
+      "The Dirichlet series Σ μ(d)/dᵏ = 1/ζ(k) is the single analytic input; everything else is finite combinatorics plus a dominated-convergence limit.",
+      "Summability of the dominator 1/dᵏ requires exactly k ≥ 2 — the hypothesis is sharp, since k = 1 gives the harmonic (divergent) series and the density 1/ζ(1) collapses to 0.",
+      "The density lands strictly in (0,1): ζ(k) > 1 forces 0 < 1/ζ(k) < 1, so setwise coprimality is a non-degenerate event for every k ≥ 2."
+    ],
+    "prerequisites": [
+      "Number theory: Möbius function, arithmetic functions, Dirichlet convolution, natural density",
+      "Analysis: Riemann zeta function, Dirichlet/L-series, Tannery's dominated convergence theorem, p-series convergence",
+      "Combinatorics: finite Fubini exchange, counting multiples and divisible tuples via piFinset"
+    ]
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview and Limit Infrastructure",
+      "startLine": 1,
+      "endLine": 100,
+      "summary": "Proof architecture (the three-step Möbius decomposition → Dirichlet series → density limit skeleton), imports, opens, and the private helper lemma nat_div_div_tendsto establishing that the floor ratio ⌊N/d⌋/N converges to 1/d as N → ∞ for any fixed d. This limit is k-independent and identical to the k=2 development.",
+      "mathContext": "For fixed $d$, $\\lfloor N/d\\rfloor / N \\to 1/d$ as $N\\to\\infty$, proved via an explicit $\\varepsilon$-$N$ bound using $N = \\lfloor N/d\\rfloor\\, d + (N \\bmod d)$ with $N\\bmod d < d$."
+    },
+    {
+      "id": "real-zeta",
+      "title": "The Real ζ(k) Value",
+      "startLine": 101,
+      "endLine": 143,
+      "summary": "Defines rZeta k = Σ' n, 1/nᵏ and proves it is summable (rZeta_summable), positive (rZeta_pos), bridges to the complex Riemann zeta (riemannZeta_nat_eq_ofReal_rZeta), and exceeds 1 (one_lt_rZeta), all for k ≥ 2. Carrying ζ(k) symbolically avoids needing any closed form.",
+      "mathContext": "$\\zeta(k) = \\sum_{n\\ge 1} 1/n^k$ converges for $k\\ge 2$, is $>1$ (the $n=1,2$ terms already give $1 + 2^{-k} > 1$), and matches the complex $\\texttt{riemannZeta}(k)$ via $\\texttt{zeta\\_nat\\_eq\\_tsum\\_of\\_gt\\_one}$."
+    },
+    {
+      "id": "mobius-inversion",
+      "title": "Möbius Inversion Foundation",
+      "startLine": 145,
+      "endLine": 187,
+      "summary": "Proves moebius_sum_divisors: Σ_{d|n} μ(d) = [n=1] for n ≥ 1, derived from the Dirichlet convolution μ * ζ = 1 (moebius_mul_coe_zeta) by reindexing the divisor antidiagonal. This is the k-independent coprimality-detection engine.",
+      "mathContext": "$\\sum_{d|n} \\mu(d) = [n=1]$ — the fundamental Möbius inversion identity, the Dirichlet convolution $\\mu * \\zeta = 1$. Applied to $n = \\gcd(a)$ it detects setwise coprimality."
+    },
+    {
+      "id": "counting-tuples",
+      "title": "Counting Multiples and Divisible Tuples",
+      "startLine": 188,
+      "endLine": 232,
+      "summary": "Proves card_multiples (|{m∈[N] : d|m}| = ⌊N/d⌋) and its k-dimensional analogue card_tuples_divisible (|{a∈[N]ᵏ : ∀ i, d|aᵢ}| = ⌊N/d⌋ᵏ) via Fintype.card_piFinset_const. The k-fold product is the only structural change from the pair case.",
+      "mathContext": "The count of multiples of $d$ in $[1,N]$ is $\\lfloor N/d\\rfloor$. Independence of the $k$ divisibility conditions gives $|\\{a : \\forall i,\\, d|a_i\\}| = \\lfloor N/d\\rfloor^k$."
+    },
+    {
+      "id": "mobius-decomposition",
+      "title": "The Coprime Tuple Count and Möbius Decomposition",
+      "startLine": 233,
+      "endLine": 307,
+      "summary": "Defines countCoprimeTuples(k,N) = |{a ∈ [1,N]ᵏ : gcd(a)=1}| and proves the central identity countCoprimeTuples_moebius: countCoprimeTuples(k,N) = Σ_{d≤N} μ(d)⌊N/d⌋ᵏ via Möbius inversion, a finite Fubini exchange (Finset.sum_comm), and card_tuples_divisible. Fully proved — no sorry (the k=2 entry left this exchange as a sorry).",
+      "mathContext": "$|\\{a\\in[N]^k:\\gcd(a)=1\\}| = \\sum_{d=1}^N \\mu(d)\\lfloor N/d\\rfloor^k$ — the combinatorial heart, counting triples $(a,d)$ with $a\\in[1,N]^k$ and $d\\mid\\gcd(a)$."
+    },
+    {
+      "id": "dirichlet-series",
+      "title": "The Möbius Dirichlet Series Σ μ(d)/dᵏ = 1/ζ(k)",
+      "startLine": 308,
+      "endLine": 359,
+      "summary": "Proves the key analytic identity moebius_dirichlet_series: HasSum (μ(d)/dᵏ) (1/ζ(k)) for all k ≥ 2, by transferring the complex L-series identity L(ζ,k)·L(μ,k) = 1 (LSeries_zeta_mul_Lseries_moebius) to a real HasSum, with ζ(k) carried as rZeta k. Corollary tsum_moebius_div_pow restates it as a tsum.",
+      "mathContext": "$\\sum_{d\\ge 1} \\mu(d)/d^k = 1/\\zeta(k)$. At $s=k$ the identity $L(\\zeta,k)\\,L(\\mu,k)=1$ combined with $L(\\zeta,k)=\\zeta(k)$ gives $L(\\mu,k)=1/\\zeta(k)$, transferred to a real HasSum."
+    },
+    {
+      "id": "density-limit",
+      "title": "The Density Limit (Nymann 1972)",
+      "startLine": 360,
+      "endLine": 436,
+      "summary": "Main theorem coprime_tuple_density_limit: lim_{N→∞} countCoprimeTuples(k,N)/Nᵏ = 1/ζ(k) for all k ≥ 2. The Möbius decomposition rewrites the count as Σ_d μ(d)·(⌊N/d⌋/N)ᵏ; each term tends to μ(d)/dᵏ, the family is dominated by the summable 1/dᵏ, and Tannery's theorem delivers the limit series 1/ζ(k).",
+      "mathContext": "$\\lim_{N\\to\\infty}\\mathrm{countCoprimeTuples}(k,N)/N^k = 1/\\zeta(k)$, via $\\texttt{tendsto\\_tsum\\_of\\_dominated\\_convergence}$ with dominator $1/d^k$ and pointwise limit $(\\lfloor N/d\\rfloor/N)^k \\to 1/d^k$."
+    },
+    {
+      "id": "consequences",
+      "title": "Consequences: the Density is a Probability",
+      "startLine": 437,
+      "endLine": 455,
+      "summary": "Proves density_pos (1/ζ(k) > 0), density_lt_one (1/ζ(k) < 1, since ζ(k) > 1), and density_in_unit_interval (the density lies in the open interval (0,1)) — confirming setwise coprimality is a genuine, non-degenerate event for every k ≥ 2.",
+      "mathContext": "$0 < 1/\\zeta(k) < 1$ for $k\\ge 2$ — a bona fide probability, since $\\zeta(k)>1$."
+    },
+    {
+      "id": "k2-consistency",
+      "title": "Consistency with the Pair Case (k = 2)",
+      "startLine": 456,
+      "endLine": 472,
+      "summary": "Cross-checks against the gallery's coprime-pair entry: rZeta_two_eq proves ζ(2) = π²/6 (from riemannZeta_two), and density_two_eq derives the k=2 density 1/ζ(2) = 6/π², matching basel-problem-oq-04-oq-03.",
+      "mathContext": "$\\zeta(2)=\\pi^2/6$ and the $k=2$ density $1/\\zeta(2)=6/\\pi^2$, recovering Cesàro 1885 as the base case."
+    },
+    {
+      "id": "summary",
+      "title": "Summary",
+      "startLine": 473,
+      "endLine": 497,
+      "summary": "Closing comment block recording the Nymann 1972 statement, the three-step architecture (Möbius decomposition → Dirichlet series Σ μ(d)/dᵏ = 1/ζ(k) → density limit via Tannery), the k=2 specialization to 6/π², and the final tally: 0 axioms, 0 sorries.",
+      "mathContext": "Final tally: $\\sum_{d\\ge 1}\\mu(d)/d^k = 1/\\zeta(k)$ and $\\lim_N \\mathrm{countCoprimeTuples}(k,N)/N^k = 1/\\zeta(k)$, fully formalized for all $k\\ge 2$ with no axioms or sorries."
+    }
+  ],
+  "conclusion": {
+    "summary": "A fully machine-checked proof (0 sorries, 0 axioms, no native_decide) that the natural density of coprime k-tuples equals 1/ζ(k) for every integer k ≥ 2. The Möbius decomposition is established combinatorially in arbitrary dimension via Fintype.card_piFinset_const; the Dirichlet-series identity Σ μ(d)/dᵏ = 1/ζ(k) is proved through Mathlib's complex L-series machinery with ζ(k) carried symbolically; and the density limit follows from Tannery's dominated-convergence theorem with dominator 1/dᵏ. The k=2 specialization recovers the gallery's coprime-pair density 6/π².",
+    "openQuestions": [
+      "Quantitative error term: bound |countCoprimeTuples(k,N) − Nᵏ/ζ(k)| by O(N^{k-1}) for k ≥ 3 (Nymann's sharp rate), upgrading the qualitative limit to an effective estimate.",
+      "Number-field generalization: does the coprime-k-tuple density over the ring of integers O_K equal 1/ζ_K(k), with the Dedekind zeta function replacing ζ?",
+      "Package the Möbius-decomposition + Tannery template as a reusable Mathlib lemma about natural densities of multiplicative arithmetic conditions."
+    ],
+    "implications": "This result completes the dimensional picture of setwise coprimality: the Basel constant 6/π² = 1/ζ(2) is the k=2 instance of a uniform 1/ζ(k) law. As k grows the density tends to 1, quantifying the intuition that many integers rarely share a common factor. The symbolic treatment of ζ(k) shows the argument is genuinely k-uniform and depends only on the single Dirichlet-series identity."
+  },
+  "crossReferences": [
+    {
+      "proofId": "basel-problem-oq-04-oq-03",
+      "relationship": "parent",
+      "description": "Parent: the k=2 coprime-pair density 6/π² = 1/ζ(2); this entry is its k-dimensional generalization (density_two_eq recovers it exactly)"
+    },
+    {
+      "targetId": "basel-problem",
+      "relationship": "foundational-for",
+      "description": "The Basel identity ζ(2) = π²/6 is the k=2 analytic ingredient; here it is one case of the general ζ(k) constant"
+    },
+    {
+      "targetId": "basel-problem-oq-04",
+      "relationship": "related",
+      "description": "Euler product ∏_p (1−p⁻ᵏ) = 1/ζ(k) gives the probabilistic 'independence over primes' reading of the density"
+    }
+  ],
+  "sorries": 0,
+  "leanFile": {
+    "imports": [
+      "Mathlib.NumberTheory.ArithmeticFunction",
+      "Mathlib.NumberTheory.LSeries.RiemannZeta",
+      "Mathlib.NumberTheory.LSeries.HurwitzZetaValues",
+      "Mathlib.NumberTheory.EulerProduct.DirichletLSeries",
+      "Mathlib.Algebra.GCDMonoid.Finset",
+      "Mathlib.Data.Fintype.Pi",
+      "Mathlib.Data.Fintype.BigOperators",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Analysis.PSeries",
+      "Mathlib.Topology.Algebra.InfiniteSum.Order",
+      "Mathlib.Analysis.SpecificLimits.Basic",
+      "Mathlib.Analysis.Normed.Group.Tannery",
+      "Mathlib.Tactic"
+    ],
+    "opens": [
+      "Filter",
+      "Finset",
+      "BigOperators",
+      "Real",
+      "Nat",
+      "ArithmeticFunction"
+    ],
+    "namespace": "CoprimeKTupleDensity",
+    "lineCount": 501,
+    "axiomCount": 0,
+    "theoremCount": 17,
+    "definitionCount": 2,
+    "sorries": 0,
+    "path": "Proofs/CoprimeKTupleDensity.lean"
+  }
+}
