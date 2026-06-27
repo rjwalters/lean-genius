@@ -44,6 +44,15 @@
   * `cherryCount_ge_density_sq` — the same supersaturation bound divided through
     by `|α|`, giving the explicit hypothesis-free lower bound
     `d²·|α|·(|β|·|γ|)² ≤ cherryCount(H)`.
+  * `card_mul_cherryCount_sub_edgeCount_sq` — **the Cauchy–Schwarz defect is the
+    degree variance**: the gap in the cherry inequality is an exact sum of squares,
+    `|α|·cherryCount(H) − e(H)² = ½·∑_{a,b} (deg a − deg b)²` (Lagrange's identity
+    `sum_sq_sub_eq_two_mul_defect` for the degree sequence). This upgrades the
+    second-moment *inequality* to an *equality*.
+  * `card_mul_cherryCount_eq_edgeCount_sq_iff` — **tightness characterizes
+    regularity**: the cherry bound `e(H)² ≤ |α|·cherryCount(H)` is an equality iff
+    all first-part degrees are equal, pinning down exactly why "regularity" is the
+    hypothesis the full counting lemma needs.
 
   ## What remains open (the genuine NRS content)
 
@@ -345,6 +354,91 @@ theorem cherryCount_ge_density_sq (H : Tri3Graph α β γ) :
           = H.density ^ 2 * (vertexTriples α β γ : ℚ) ^ 2 := by rw [hvt]; ring
         _ ≤ (Fintype.card α : ℚ) * (H.cherryCount : ℚ) := key
     exact le_of_mul_le_mul_left hmul hca
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VII: THE CAUCHY–SCHWARZ DEFECT IS THE DEGREE VARIANCE
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- **Lagrange's identity.** For any `f : α → ℚ`, the symmetric sum of squared
+    pairwise differences equals twice the Cauchy–Schwarz defect:
+
+    `∑_{a,b} (f a − f b)² = 2·(|α|·∑_a f a² − (∑_a f a)²)`.
+
+    This is the equality underlying the Cauchy–Schwarz inequality
+    `(∑ f)² ≤ |α|·∑ f²`: the right-hand side is manifestly `≥ 0`, and it vanishes
+    exactly when all the `f a` agree. -/
+theorem sum_sq_sub_eq_two_mul_defect (f : α → ℚ) :
+    ∑ a : α, ∑ b : α, (f a - f b) ^ 2
+      = 2 * ((Fintype.card α : ℚ) * (∑ a, f a ^ 2) - (∑ a, f a) ^ 2) := by
+  have h1 : ∀ a : α, ∑ b : α, (f a - f b) ^ 2
+      = (Fintype.card α : ℚ) * f a ^ 2 - 2 * (f a * ∑ b, f b) + ∑ b, f b ^ 2 := by
+    intro a
+    rw [Finset.sum_congr rfl (g := fun b => f a ^ 2 - 2 * (f a * f b) + f b ^ 2)
+          (fun b _ => by ring),
+      Finset.sum_add_distrib, Finset.sum_sub_distrib, Finset.sum_const,
+      Finset.card_univ, nsmul_eq_mul, ← Finset.mul_sum, ← Finset.mul_sum]
+  rw [Finset.sum_congr rfl (fun a _ => h1 a), Finset.sum_add_distrib,
+    Finset.sum_sub_distrib, ← Finset.mul_sum, Finset.sum_const, Finset.card_univ,
+    nsmul_eq_mul]
+  have h2 : ∑ a : α, 2 * (f a * ∑ b, f b) = 2 * (∑ a, f a) ^ 2 := by
+    rw [← Finset.mul_sum]; congr 1; rw [← Finset.sum_mul]; ring
+  rw [h2]; ring
+
+/-- **The Cauchy–Schwarz defect is the degree variance.** The gap in the cherry
+    inequality `e(H)² ≤ |α|·cherryCount(H)` is exactly half the symmetric sum of
+    squared degree differences:
+
+    `|α|·cherryCount(H) − e(H)² = ½·∑_{a,b} (deg a − deg b)²`.
+
+    Since `cherryCount = ∑_a deg(a)²` and `e(H) = ∑_a deg(a)`, this is Lagrange's
+    identity for the degree sequence. It promotes the second-moment *inequality*
+    that drives every regularity-based counting argument to an *equality*: the
+    deficit is a manifest sum of squares, so the inequality is tight precisely when
+    the first-coordinate degrees are constant — i.e. when `H` is first-coordinate
+    regular. -/
+theorem card_mul_cherryCount_sub_edgeCount_sq (H : Tri3Graph α β γ) :
+    (Fintype.card α : ℚ) * (H.cherryCount : ℚ) - (H.edgeCount : ℚ) ^ 2
+      = (1 / 2) * ∑ a : α, ∑ b : α, ((H.degA a : ℚ) - (H.degA b : ℚ)) ^ 2 := by
+  have hc : (H.cherryCount : ℚ) = ∑ a : α, (H.degA a : ℚ) ^ 2 := by
+    rw [cherryCount_eq_sum_sq_degA, Nat.cast_sum]; push_cast; rfl
+  have he : (H.edgeCount : ℚ) = ∑ a : α, (H.degA a : ℚ) := by
+    rw [← sum_degA, Nat.cast_sum]
+  rw [hc, he, sum_sq_sub_eq_two_mul_defect (fun a => (H.degA a : ℚ))]
+  ring
+
+/-- **Tightness of the cherry inequality characterizes first-coordinate
+    regularity.** The Cauchy–Schwarz cherry bound `e(H)² ≤ |α|·cherryCount(H)`
+    holds with equality if and only if every first-part vertex has the same degree:
+
+    `|α|·cherryCount(H) = e(H)² ↔ ∀ a b, deg a = deg b`.
+
+    This pins down exactly why "regularity" is the hypothesis the full counting
+    lemma needs: the deterministic second-moment engine is lossless precisely on
+    degree-regular 3-graphs, and the loss away from regularity is the degree
+    variance measured by `card_mul_cherryCount_sub_edgeCount_sq`. -/
+theorem card_mul_cherryCount_eq_edgeCount_sq_iff (H : Tri3Graph α β γ) :
+    (Fintype.card α : ℚ) * (H.cherryCount : ℚ) = (H.edgeCount : ℚ) ^ 2
+      ↔ ∀ a b : α, H.degA a = H.degA b := by
+  rw [← sub_eq_zero, card_mul_cherryCount_sub_edgeCount_sq]
+  constructor
+  · intro h a b
+    have hX : ∑ a : α, ∑ b : α, ((H.degA a : ℚ) - (H.degA b : ℚ)) ^ 2 = 0 := by
+      have h2 : (1 / 2 : ℚ) ≠ 0 := by norm_num
+      exact (mul_eq_zero.mp h).resolve_left h2
+    have hinner :=
+      (Finset.sum_eq_zero_iff_of_nonneg
+        (fun a _ => Finset.sum_nonneg (fun b _ => sq_nonneg _))).mp hX a (Finset.mem_univ a)
+    have hzero :=
+      (Finset.sum_eq_zero_iff_of_nonneg (fun b _ => sq_nonneg _)).mp hinner b (Finset.mem_univ b)
+    have hsub : (H.degA a : ℚ) - (H.degA b : ℚ) = 0 := by
+      have := pow_eq_zero_iff (n := 2) (by norm_num) |>.mp hzero
+      exact this
+    have : (H.degA a : ℚ) = (H.degA b : ℚ) := by linarith
+    exact_mod_cast this
+  · intro h
+    have : ∀ a : α, ∑ b : α, ((H.degA a : ℚ) - (H.degA b : ℚ)) ^ 2 = 0 := by
+      intro a; exact Finset.sum_eq_zero (fun b _ => by rw [h a b]; ring)
+    simp [this]
 
 end Tri3Graph
 
