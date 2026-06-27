@@ -132,22 +132,52 @@ theorems:
 
 File: 638 → 745 lines, 39 → 45 theorems, 2 defs (no new def).
 
+## Iterations 8–12 (verified, 0-axiom — `lake env lean`)
+
+§10–§12 advanced the run criterion from single steps to length-4 blocks:
+- **§10** `unimodular_simOrd` — EVERY Farey-adjacent pair is similarly ordered
+  (the §9 controlling product is *unconditionally* ≥ 0). So a single step never
+  breaks a run; the obstruction is entirely NON-ADJACENT.
+- **§11** `simOrd_triple` — a length-3 run breaks iff the outer window
+  `(2a−k·c)(2b−k·d) ≥ 0` fails (break interval width `2/(c·d)`).
+- **§12** `simOrd_long_iff` / `simOrd_quad` — a length-4 run's long-range pair
+  is governed by the Stern–Brocot product `k₁·k₂−1`; the full run criterion is
+  the conjunction of two §11 windows and this one.
+
+## Iteration 13 addition (verified, 0-axiom — `lake env lean`, Docker down)
+
+Added **§13 (length-5 runs — three quotients and the continuant Kₘ)**,
+0-sorry / 0-axiom (`#print axioms` reports only propext / Classical.choice /
+Quot.sound on both new theorems; verified by `lake env lean` against the
+worktree Mathlib `.olean` cache — Docker `docker info` hangs). Two theorems:
+
+- `simOrd_long3_iff` — iterating the §9 successor *three* times collapses the
+  fifth term to `i = (k₁k₂k₃−k₁−k₃)·c − (k₂k₃−1)·a` (and parallel for `j`), so
+  the endpoints `a/b, i/j` are similarly ordered **iff**
+  `(k₂k₃·a − (k₁k₂k₃−k₁−k₃)·c)·(k₂k₃·b − (k₁k₂k₃−k₁−k₃)·d) ≥ 0`. The controlling
+  quantity is the **continuant** `K(k₁,k₂,k₃) = k₁k₂k₃−k₁−k₃` — the order-side
+  shadow of the very recurrence `xₘ₊₁ = kₘ·xₘ − xₘ₋₁` that generates Farey
+  numerators/denominators. The §11/§12/§13 windows are exactly the continuant
+  ladder `K()=1, K(k)=k, K(k₁,k₂)=k₁k₂−1, K(k₁,k₂,k₃)=k₁k₂k₃−k₁−k₃`.
+- `simOrd_quint` (headline) — a length-5 run is pairwise similarly ordered iff
+  all SIX non-adjacent windows hold: three §11 (triples) + two §12 (quadruples)
+  + the new §13 continuant window. Four adjacent pairs free (§10).
+
+File: 1017 → 1146 lines, 55 → 57 theorems, 2 defs (no new def).
+
 ## Next Action
 
-Aggregate the per-step criterion over a *consecutive block*. With the successive
-quotients `k₁, k₂, …` (the continued-fraction-like data of the Farey walk),
-`simOrd_succ_controlling` makes each step's similar ordering the inequality
-`(aᵢ+cᵢ−kᵢ·cᵢ)(bᵢ+dᵢ−kᵢ·dᵢ) ≥ 0`. The lower bound `f(n) ≥ (1/12−o(1))n`
-is a statement that a *positive density* of consecutive steps can be kept
-`k=1` (hence automatically similarly ordered, by `simOrd_succ_k_eq_one`).
-Concrete Lean target: a **chained successor lemma** — given a finite list of
-quotients all equal to `1`, the resulting consecutive Farey block of that length
-is step-wise similarly ordered, with denominators bounded `≤ n` via
-`farey_succ_denom_le_iff`. That converts §9's single-step criterion into a
-*run-length* statement, the last formal step before a constant.
+Generalize the continuant pattern to arbitrary run length by induction over a
+list of quotients `[k₁,…,kₘ]`: the §11/§12/§13 ladder shows the m-th term is
+`tₘ = K(k₁,…,k_{m−1})·c − K(k₂,…,k_{m−1})·a` (continuant coefficients), so the
+endpoint window is `((1+K(k₂..))·a − K(k₁..)·c)·(…) ≥ 0`. A Lean `Continuant`
+definition with the recurrence `K(k :: ks) = k·K(ks) − K(ks.tail)` plus the
+matrix-product identity would convert the per-length explicit lemmas into ONE
+general statement — the run-length criterion as a continuant positivity
+condition, the structural form needed before bounding the `1/12` density.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 3
+- Total attempts: 4
+- Current approach attempts: 4
 - Approaches tried: 1
