@@ -1,0 +1,78 @@
+{
+  "id": "sum-of-divisors-oq-01",
+  "title": "Euler's Odd-Perfect Form: The Local Prime-Power Theory of the Special Prime",
+  "slug": "sum-of-divisors-oq-01",
+  "description": "Euler's 1747 structural theorem says an odd perfect number must have the form N = p^a·m² with the special prime p ≡ a ≡ 1 (mod 4). This entry formalizes the local prime-power engine of that theorem — the parity and mod-4 facts about σ on prime powers that pin the special prime — fully verified with 0 axioms. L1: σ(p^a) is odd ⟺ a is even. The perfect equation σ(N)=2N (source of v₂(σ(N))=1). The pairing identity ∑_{j≤a} p^j = (1+p)·∑ p^{2k} for odd a. L2 (the headline): σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4) — the mod-4 characterization of the special prime, the step 'most at risk of an off-by-one' in the classical proof. The result is conditional and assumes nothing about the existence of odd perfect numbers (open).",
+  "meta": {
+    "author": "classical (Euler 1747; formalized in Lean 4 with Mathlib)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Perfect_number#Odd_perfect_numbers",
+    "date": "1747",
+    "status": "verified",
+    "tags": [
+      "number-theory",
+      "divisor-function",
+      "sigma",
+      "perfect-numbers",
+      "odd-perfect-numbers",
+      "euler",
+      "special-prime",
+      "prime-powers",
+      "2-adic-valuation",
+      "research"
+    ],
+    "proofRepoPath": "Proofs/SumOfDivisorsOQ01.lean",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "mathlibDependencies": [
+      {
+        "theorem": "ArithmeticFunction.sigma_one_apply_prime_pow",
+        "description": "σ₁(pⁱ) = ∑_{k<i+1} pᵏ — the open geometric sum on a prime power, the entry point for both the parity (L1) and mod-4 (L2) analyses",
+        "module": "Mathlib.NumberTheory.ArithmeticFunction.Misc"
+      },
+      {
+        "theorem": "Nat.perfect_iff_sum_divisors_eq_two_mul",
+        "description": "0 < n → (Perfect n ↔ ∑_{d∣n} d = 2n) — converts perfection into the σ(N)=2N equation that forces v₂(σ(N))=1 for odd N",
+        "module": "Mathlib.NumberTheory.Divisors"
+      },
+      {
+        "theorem": "Finset.sum_nat_mod",
+        "description": "(∑ i in s, f i) % n = (∑ i in s, f i % n) % n — pushes the modulus inside the geometric sum for the parity computations",
+        "module": "Mathlib.Algebra.BigOperators.Basic"
+      },
+      {
+        "theorem": "Odd.pow",
+        "description": "Odd m → Odd (mⁿ) — every power of an odd prime is odd, so each summand pᵏ ≡ 1 (mod 2)",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      },
+      {
+        "theorem": "Nat.mul_mod",
+        "description": "a * b % n = (a % n) * (b % n) % n — reduces (1+p)·S mod 4 to a finite case analysis on p mod 4 and S mod 2",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "Nat.mod_mod_of_dvd",
+        "description": "m ∣ k → n % k % m = n % m — links S mod 4 back to S mod 2 so the omega case analysis closes",
+        "module": "Mathlib.Data.Nat.Defs"
+      }
+    ],
+    "originalContributions": [
+      "sigma_prime_pow_odd_iff (L1): for an odd prime p, σ(p^a) is odd ⟺ a is even",
+      "odd_perfect_sigma_eq_two_mul: an odd perfect N satisfies σ(N) = 2N (source of v₂(σ(N)) = 1)",
+      "geom_sum_odd_eq_factor: the pairing identity ∑_{j≤2t+1} p^j = (1+p)·∑_{k≤t} p^{2k}",
+      "even_geom_sum_parity: ∑_{k<m} p^{2k} has the parity of m for odd p",
+      "sigma_prime_pow_mod_four (L2): σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4), the mod-4 characterization of Euler's special prime"
+    ],
+    "dateAdded": "2026-06-27",
+    "lineCount": 133,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The results are conditional structure theorems; they assume nothing about whether any odd perfect number exists (that question remains open).",
+    "mathlib_version": "4.26.0",
+    "theoremCount": 5,
+    "definitionCount": 0
+  },
+  "overview": {
+    "historicalContext": "Whether any odd perfect number exists is one of the oldest open problems in mathematics. Euler, around 1747, proved a strong necessary condition on their shape: if an odd N is perfect (σ(N) = 2N), then N = p^a·m² where p is a prime with p ≡ 1 (mod 4), the exponent a ≡ 1 (mod 4), and p ∤ m. The prime p is called the special (or Euler) prime; every other prime divides N to an even power. The proof is a parity-and-2-adic-valuation analysis of σ across the prime factorization: σ is multiplicative, so v₂(σ(N)) = Σ v₂(σ(pᵢ^{aᵢ})); for an odd perfect N this total equals v₂(2N) = 1, which forces exactly one prime power to contribute, and a finer mod-4 analysis on that prime power pins down the p ≡ a ≡ 1 (mod 4) conditions.",
+    "problemStatement": "**Open Question (sum-of-divisors-oq-01)**: Formalize Euler's prime-factor constraint on odd perfect numbers — if N is odd and perfect then N = p^a·m² with p prime, p ≡ a ≡ 1 (mod 4), p ∤ m.\n\n**This entry's result**: the verified *local* prime-power engine that drives the theorem. The mod-4 valuation characterization of the special prime (`sigma_prime_pow_mod_four`) and the parity law (`sigma_prime_pow_odd_iff`) — the two facts whose mod-4/parity bookkeeping is the part of the classical proof most prone to an off-by-one — are machine-checked, together with the perfect-equation reduction and the pairing identity that connects them. The remaining global step (summing v₂ over the factorization to isolate the unique odd-exponent special prime and package the rest as a square) is documented as follow-up.",
+    "text": "For an odd prime p: σ(p^a) is odd ⟺ a is even (L1); and for odd a, σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4) (L2). An odd perfect N has σ(N) = 2N, whose 2-adic valuation 1 is exactly what these prime-power facts decode into Euler's special-prime structure."
+  }
+}
