@@ -736,10 +736,121 @@ theorem simOrd_succ_controlling {a b c d e f k : ℕ}
 /-- **The `k = 1` step is always similarly ordered.**  When the successive
 quotient is `1` (so `e + a = c`, `f + b = d`), the controlling product collapses
 to `a·b ≥ 0`, which always holds.  Thus the shortest Farey steps never break a
-similarly ordered run — runs can only be broken at steps with quotient `k ≥ 2`,
-isolating exactly where the `1/12`–`1/4` optimization lives. -/
+similarly ordered run.  (§ 10 strengthens this: in fact *no* quotient `k` can
+break it — every adjacent step is similarly ordered.) -/
 theorem simOrd_succ_k_eq_one {a b c d e f : ℕ} (he : e + a = c) (hf : f + b = d) :
     SimOrd c d e f := by
   refine Or.inl ⟨?_, ?_⟩ <;> omega
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 10: Every Farey-adjacent pair is similarly ordered — runs break
+--        only across NON-adjacent pairs
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+§ 9 reduced a *single* consecutive step `c/d → e/f` to the sign of the
+controlling product `(a + c − k·c)·(b + d − k·d)`, and showed the `k = 1` step is
+always similarly ordered.  This section settles the sign in **full generality**:
+the product is *always* `≥ 0`, because **every** unimodular (Farey-adjacent) pair
+is similarly ordered — not only the `k = 1` ones.
+
+The headline `unimodular_simOrd` proves this directly from `b·c = a·d + 1`.  A
+pair can fail similar ordering in exactly two ways, and unimodularity excludes
+both (each needing only `0 < b`, `0 < d`):
+
+* `a < c ∧ d < b`  is excluded because it forces
+  `b·c ≥ (a+1)·(d+1) = a·d + a + d + 1 > a·d + 1`  (`unimodular_excl_cross_left`);
+* `c < a ∧ b < d`  is excluded because it forces
+  `a·d ≥ (c+1)·(b+1) = b·c + b + c + 1 > b·c − 1 = a·d`  (`unimodular_excl_cross_right`),
+  i.e. it would make `a/b > c/d`, contradicting adjacency.
+
+This is a genuine **correction** to the §9 preamble, which suggested that
+`k ≥ 2` steps are where runs break.  They are not: a single Farey step **never**
+breaks a similarly ordered run, for any quotient `k` (`farey_succ_simOrd`), so
+the §9 controlling product is unconditionally `≥ 0` (`succ_controlling_nonneg`).
+The entire `1/12`–`1/4` gap therefore lives in the **non-adjacent** pairs of a
+window: `isSimOrdered` (in `Erdos1005ProblemProvable.lean`) demands similar
+ordering for *every* pair `j₁ < j₂` of the block, and it is precisely the
+`j₂ > j₁ + 1` pairs — never the adjacent `j₂ = j₁ + 1` ones — that can fail.
+-/
+
+/-- **No "small-num / large-denom" inversion.**  For a unimodular pair
+`a/b < c/d`, one cannot have `a < c` together with `d < b`: that would give
+`b·c ≥ (a+1)(d+1) = a·d + a + d + 1`, contradicting `b·c = a·d + 1` (as
+`a + d ≥ d ≥ 1`). -/
+theorem unimodular_excl_cross_left {a b c d : ℕ} (hd : 0 < d)
+    (h : Unimodular a b c d) : ¬ ((a : ℤ) < c ∧ (d : ℤ) < b) := by
+  unfold Unimodular at h
+  rintro ⟨h1, h2⟩
+  have hz : (b : ℤ) * c = (a : ℤ) * d + 1 := by exact_mod_cast h
+  have hd' : (1 : ℤ) ≤ d := by exact_mod_cast hd
+  have ha' : (0 : ℤ) ≤ a := by positivity
+  have hc' : (0 : ℤ) ≤ c := by positivity
+  nlinarith [mul_le_mul (show (a : ℤ) + 1 ≤ c by linarith)
+              (show (d : ℤ) + 1 ≤ b by linarith) (by linarith) (by linarith),
+             hz, hd', ha']
+
+/-- **No "large-num / small-denom" inversion.**  For a unimodular pair
+`a/b < c/d`, one cannot have `c < a` together with `b < d`: that would give
+`a·d ≥ (c+1)(b+1) = b·c + b + c + 1`, contradicting `a·d = b·c − 1`.  (This is
+the case that would make `a/b > c/d`, breaking the order.) -/
+theorem unimodular_excl_cross_right {a b c d : ℕ} (hb : 0 < b)
+    (h : Unimodular a b c d) : ¬ ((c : ℤ) < a ∧ (b : ℤ) < d) := by
+  unfold Unimodular at h
+  rintro ⟨h1, h2⟩
+  have hz : (b : ℤ) * c = (a : ℤ) * d + 1 := by exact_mod_cast h
+  have hb' : (1 : ℤ) ≤ b := by exact_mod_cast hb
+  have ha' : (0 : ℤ) ≤ a := by positivity
+  have hc' : (0 : ℤ) ≤ c := by positivity
+  nlinarith [mul_le_mul (show (c : ℤ) + 1 ≤ a by linarith)
+              (show (b : ℤ) + 1 ≤ d by linarith) (by linarith) (by linarith),
+             hz, hb', hc']
+
+/-- **Every Farey-adjacent pair is similarly ordered.**  A unimodular pair
+`a/b < c/d` (`b·c = a·d + 1`, positive denominators) always satisfies
+`SimOrd a b c d`: numerator and denominator never move in opposite directions
+across a single Farey step.  This generalises `simOrd_succ_k_eq_one` (the
+`k = 1` case) to *all* adjacent pairs, and is the order-side analogue of
+`unimodular_lt`. -/
+theorem unimodular_simOrd {a b c d : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (h : Unimodular a b c d) : SimOrd a b c d := by
+  rcases le_total (a : ℤ) c with hac | hca
+  · rcases le_total (d : ℤ) b with hdb | hbd
+    · -- `a ≤ c` and `d ≤ b`: opposite weak signs, so a factor must vanish.
+      rcases lt_or_eq_of_le hac with hlt | heq
+      · rcases lt_or_eq_of_le hdb with hlt2 | heq2
+        · exact absurd ⟨hlt, hlt2⟩ (unimodular_excl_cross_left hd h)
+        · exact Or.inr ⟨by linarith, by linarith⟩      -- d = b
+      · exact Or.inl ⟨by linarith, by linarith⟩          -- a = c
+    · exact Or.inr ⟨by linarith, by linarith⟩            -- a ≤ c, b ≤ d
+  · rcases le_total (b : ℤ) d with hbd | hdb
+    · -- `c ≤ a` and `b ≤ d`: opposite weak signs, so a factor must vanish.
+      rcases lt_or_eq_of_le hca with hlt | heq
+      · rcases lt_or_eq_of_le hbd with hlt2 | heq2
+        · exact absurd ⟨hlt, hlt2⟩ (unimodular_excl_cross_right hb h)
+        · exact Or.inl ⟨by linarith, by linarith⟩        -- b = d
+      · exact Or.inr ⟨by linarith, by linarith⟩          -- c = a
+    · exact Or.inl ⟨by linarith, by linarith⟩            -- c ≤ a, d ≤ b
+
+/-- **A consecutive Farey step is always similarly ordered.**  Given a
+Farey-neighbour pair `a/b, c/d` and its successor `e/f` from the three-term
+recurrence (`e + a = k·c`, `f + b = k·d`), the step `c/d → e/f` satisfies
+`SimOrd c d e f` for *every* quotient `k`: the successor is again a Farey
+neighbour (`farey_succ_unimodular`), and adjacent pairs are always similarly
+ordered (`unimodular_simOrd`).  Adjacency alone can never break a run. -/
+theorem farey_succ_simOrd {a b c d e f k : ℕ} (hd : 0 < d) (hf_pos : 0 < f)
+    (h : Unimodular a b c d) (he : e + a = k * c) (hfb : f + b = k * d) :
+    SimOrd c d e f :=
+  unimodular_simOrd hd hf_pos (farey_succ_unimodular h he hfb)
+
+/-- **The §9 controlling product is unconditionally nonnegative.**  Combining
+`simOrd_succ_controlling` with `farey_succ_simOrd`: for any genuine consecutive
+step the product `(a + c − k·c)·(b + d − k·d)` is always `≥ 0`.  So the per-step
+criterion of §9 is *always* satisfied — the run-length obstruction behind the
+`1/12`–`1/4` gap is entirely a non-adjacent phenomenon, not a per-step one. -/
+theorem succ_controlling_nonneg {a b c d e f k : ℕ} (hd : 0 < d) (hf_pos : 0 < f)
+    (h : Unimodular a b c d) (he : e + a = k * c) (hfb : f + b = k * d) :
+    ((a : ℤ) + c - k * c) * ((b : ℤ) + d - k * d) ≥ 0 :=
+  (simOrd_succ_controlling he hfb).mp (farey_succ_simOrd hd hf_pos h he hfb)
 
 end Erdos1005OQ02
