@@ -25055,9 +25055,9 @@
     "erdos-1003-oq-02": {
       "auditCount": 1,
       "lastAudited": "2026-06-27T10:45:00Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "leanFile.theoremCount 8 should be 10; noted on PR #30701 (non-blocking, headline claims accurate)"
+        "theoremCount 8 to 10 fixed and merged (PR #30719); leanFile.theoremCount now 10 matching Lean source"
       ]
     },
     "euler-polyhedral-formula-oq-02-oq-02": {
@@ -25087,9 +25087,9 @@
     "lifting-the-exponent-oq-02-oq-01": {
       "auditCount": 1,
       "lastAudited": "2026-06-27T10:45:00Z",
-      "result": "issues-found",
+      "result": "issues-fixed",
       "issues": [
-        "badge original should be mathlib (core via Mathlib emultiplicity_pow_sub_pow_of_prime); fix pending in open PR #30690"
+        "badge original to mathlib fixed and merged (PR #30690); core via Mathlib emultiplicity_pow_sub_pow_of_prime"
       ]
     },
     "catalan-numbers-oq-05": {
