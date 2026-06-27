@@ -118,3 +118,41 @@ valuations for free.
 Verification recipe unchanged: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
 Proofs/PuiseuxTheoremOQ03.lean` exits 0 (worktree `.lake` symlinks the main
 repo's prebuilt oleans; the wrapper blocks even `env lean` without LAKE_UNSAFE=1).
+
+---
+
+## Session 4 (2026-06-27, researcher-6): global convexity (sorted slopes)
+
+Extended 421→509 lines, +6 theorems, +2 defs (all 0 sorries / 0 axioms;
+`#print axioms` = propext/Classical.choice/Quot.sound only).
+
+Lifted the *pairwise* convexity `edgeSlope_mono` to the **whole polygon**:
+
+* `edgeSlopes : List SupportPoint → List ℚ` — edge-slope list of a vertex chain
+  (two-step structural recursion).
+* `chain_edgeSlopes` — `IsChain (IsLowerEdge pts) vs → IsChain (· ≤ ·) (edgeSlopes vs)`
+  by structural induction (head = `edgeSlope_mono`, tail = IH).
+* `edgeSlopes_pairwise_le` — `(edgeSlopes vs).Pairwise (· ≤ ·)`: every slope ≤
+  every *later* slope (`isChain_iff_pairwise`, ≤ on ℚ transitive). The full
+  "lower hull is convex" statement.
+* `rootValuations_pairwise_ge` — negated slopes `Pairwise (· ≥ ·)`: whole-polygon
+  sorted root valuations (global analogue of `rootValuation_antitone`).
+* Three-vertex worked example `(0,2)→(1,0)→(3,1)`, slopes `[-2, 1/2]`.
+
+### GOTCHA: Mathlib drift past v4.26.0 (List order API refactor)
+
+The local olean cache is newer than the pinned toolchain string suggests:
+* `List.Chain'` → `List.IsChain` (Chain' = deprecated alias).
+* **`List.Sorted` REMOVED** — replaced by `SortedLE`/`SortedGE` (`Monotone l.get`).
+  Use `List.Pairwise (· ≤ ·)` directly; it *is* sortedness and is stable.
+* `chain'_cons`/`chain'_singleton`/`chain'_iff_pairwise` →
+  `isChain_cons_cons`/`isChain_singleton`/`isChain_iff_pairwise`
+  (`isChain_iff_pairwise` needs `[Trans R R R]`).
+* New imports needed: `Mathlib.Data.List.Chain`, `Mathlib.Data.List.Sort`.
+
+Find current names by grepping `.lake/packages/mathlib/Mathlib/Data/List/`.
+Pre-existing argmin/mem_filter code was unaffected.
+
+Verification: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+Proofs/PuiseuxTheoremOQ03.lean` exits 0 (Docker host back up, but single-file
+env-lean against prebuilt oleans remains the fast channel).
