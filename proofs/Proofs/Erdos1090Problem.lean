@@ -229,15 +229,35 @@ What is the minimum |A| such that A has the Ramsey property for k?
 Let R(k) denote this minimum.
 -/
 noncomputable def ramseyNumber (k : ℕ) : ℕ :=
-  Nat.find (hunter_observation k (by omega : k ≥ 3) |>.choose_spec ▸ ⟨_, rfl⟩ : ∃ n : ℕ, True)
-  -- Simplified; actual definition would minimize over all valid sets
+  sInf {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}
+
+/--
+**Ramsey Property Forces Size ≥ k:**
+Any finite set with the Ramsey property for `k` must contain at least `k`
+points. Indeed, applying the property to the constant coloring already yields
+a monochromatic `k`-collinear subset `S ⊆ A`, so `k ≤ |S| ≤ |A|`.
+-/
+theorem hasRamseyProperty_card_ge (A : Finset Point) (k : ℕ)
+    (h : HasRamseyProperty A k) : k ≤ A.card := by
+  obtain ⟨S, hSA, ⟨hSk, _⟩, _⟩ := h (fun _ => true)
+  exact le_trans hSk (Finset.card_le_card hSA)
 
 /--
 **Trivial Lower Bound:**
 R(k) ≥ k since we need at least k points to have k collinear.
+
+For `k ≥ 3` the existence of a witnessing set (`hunter_observation`) makes the
+defining set nonempty, so its infimum is attained by some set `A`, and that
+set has at least `k` points by `hasRamseyProperty_card_ge`.
 -/
 theorem ramsey_lower_bound (k : ℕ) (hk : k ≥ 3) : ramseyNumber k ≥ k := by
-  sorry
+  unfold ramseyNumber
+  have hne : {n : ℕ | ∃ A : Finset Point, A.card = n ∧ HasRamseyProperty A k}.Nonempty := by
+    obtain ⟨A, hA⟩ := hunter_observation k hk
+    exact ⟨A.card, A, rfl, hA⟩
+  obtain ⟨A, hcard, hA⟩ := Nat.sInf_mem hne
+  rw [ge_iff_le, ← hcard]
+  exact hasRamseyProperty_card_ge A k hA
 
 /--
 **R(3) is Small:**
