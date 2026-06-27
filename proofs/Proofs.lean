@@ -3288,6 +3288,7 @@ import Proofs.Hilbert11OQ01OQ01
 import Proofs.Hilbert11OQ01OQ01Aristotle
 import Proofs.Hilbert11OQ02
 import Proofs.Hilbert13GeneralSpaces
+import Proofs.Hilbert13OQ03
 import Proofs.Hilbert13Superposition
 import Proofs.Hilbert14Invariants
 import Proofs.Hilbert14InvariantsOQ01
