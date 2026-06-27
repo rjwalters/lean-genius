@@ -77,7 +77,12 @@
   ],
   "relatedProofs": [
     "spectral-trace-det-eigenvalues-oq-01",
-    "spectral-trace-det-eigenvalues-oq-02"
+    "spectral-trace-det-eigenvalues-oq-01-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-01",
+    "spectral-trace-det-eigenvalues-oq-01-oq-01-oq-02-oq-02",
+    "spectral-trace-det-eigenvalues-oq-02",
+    "spectral-trace-det-eigenvalues-oq-02-oq-01"
   ],
   "references": {
     "papers": [],
@@ -95,15 +100,81 @@
   "tractability": 7,
   "leanFiles": [
     {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01.lean",
+      "lineCount": 133,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01.lean"
+    },
+    {
       "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean",
       "filename": "SpectralTraceDetEigenvaluesOQ01OQ01.lean",
-      "lineCount": 155,
+      "lineCount": 156,
       "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean",
+      "lineCount": 172,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 251,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 178,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ01OQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ02.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ02.lean"
+    },
+    {
+      "path": "Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+      "filename": "SpectralTraceDetEigenvaluesOQ02OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpectralTraceDetEigenvaluesOQ02OQ01.lean"
     }
   ]
 }

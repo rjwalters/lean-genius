@@ -7,7 +7,14 @@
   "status": "completed",
   "phase": "COMPLETED",
   "tier": "EMPTY",
-  "tags": ["geometry", "projective", "conic", "duality", "converse", "equivalence"],
+  "tags": [
+    "geometry",
+    "projective",
+    "conic",
+    "duality",
+    "converse",
+    "equivalence"
+  ],
   "tractability": "Tractable via the parent's diag_eq reduction plus Matrix.det_smul; resolved in one session.",
   "currentState": "Solved and verified (axiom-free, sorry-free). The converse of the duality bridge and the full equivalence are proved for nondegenerate conics; the classical Braikenridge–Maclaurin converse (contact points lie on a conic) remains a stated open follow-up.",
   "knownResults": "Parent entry proved the forward bridge concurrent_brianchon_of_collinear_pascal. Classically Pascal and Brianchon are dual hence equivalent under projective duality.",
@@ -32,5 +39,44 @@
     "progressSummary": "COMPLETE: converse duality bridge + full Pascal⟺Brianchon equivalence (det C ≠ 0) proved axiom-free and sorry-free via the scalar identity det(diag) = (det C)^4 · det(pascal); 13 theorems, 12 definitions, 0 axioms."
   },
   "started": "2026-06-25",
-  "lastUpdate": "2026-06-25"
+  "lastUpdate": "2026-06-25",
+  "leanFiles": [
+    {
+      "path": "Proofs/BrianchonTheorem.lean",
+      "filename": "BrianchonTheorem.lean",
+      "lineCount": 373,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 15,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheorem.lean"
+    },
+    {
+      "path": "Proofs/BrianchonTheoremAristotle.lean",
+      "filename": "BrianchonTheoremAristotle.lean",
+      "lineCount": 138,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 3,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheoremAristotle.lean"
+    },
+    {
+      "path": "Proofs/BrianchonTheoremOQ01OQ02.lean",
+      "filename": "BrianchonTheoremOQ01OQ02.lean",
+      "lineCount": 324,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrianchonTheoremOQ01OQ02.lean"
+    }
+  ],
+  "relatedProofs": [
+    "brianchon-theorem-oq-01",
+    "brianchon-theorem-oq-01-oq-02"
+  ]
 }

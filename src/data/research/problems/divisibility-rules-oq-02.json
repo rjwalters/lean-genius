@@ -58,8 +58,12 @@
     "divisibility-rules-oq-01",
     "divisibility-rules-oq-01-oq-01",
     "divisibility-rules-oq-01-oq-01-oq-01",
+    "divisibility-rules-oq-01-oq-01-oq-02",
+    "divisibility-rules-oq-01-oq-02",
+    "divisibility-rules-oq-01-oq-02-oq-01",
     "divisibility-rules-oq-02",
-    "divisibility-rules-oq-04"
+    "divisibility-rules-oq-04",
+    "divisibility-rules-oq-04-oq-01"
   ],
   "references": {
     "papers": [],
@@ -116,6 +120,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/DivisibilityRulesOQ01OQ01OQ02.lean",
+      "filename": "DivisibilityRulesOQ01OQ01OQ02.lean",
+      "lineCount": 133,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ01OQ02.lean",
+      "filename": "DivisibilityRulesOQ01OQ02.lean",
+      "lineCount": 181,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ01OQ02OQ01.lean",
+      "filename": "DivisibilityRulesOQ01OQ02OQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ01OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/DivisibilityRulesOQ02.lean",
       "filename": "DivisibilityRulesOQ02.lean",
       "lineCount": 143,
@@ -136,6 +173,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ04.lean"
+    },
+    {
+      "path": "Proofs/DivisibilityRulesOQ04OQ01.lean",
+      "filename": "DivisibilityRulesOQ04OQ01.lean",
+      "lineCount": 106,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityRulesOQ04OQ01.lean"
     }
   ]
 }

@@ -48,7 +48,12 @@
   "relatedProofs": [
     "gamma-reflection-formula",
     "gamma-reflection-formula-oq-01",
-    "gamma-reflection-formula-oq-01-oq-01"
+    "gamma-reflection-formula-oq-01-oq-01",
+    "gamma-reflection-formula-oq-01-oq-01-oq-01",
+    "gamma-reflection-formula-oq-01-oq-02",
+    "gamma-reflection-formula-oq-01-oq-03",
+    "gamma-reflection-formula-oq-01-oq-03-oq-01",
+    "gamma-reflection-formula-oq-01-oq-03-oq-01-oq-01"
   ],
   "references": {
     "papers": [
@@ -69,5 +74,83 @@
   "lastUpdate": "2026-06-24T00:00:00Z",
   "significance": 6,
   "tractability": 6,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01.lean",
+      "filename": "GammaReflectionFormulaOQ01.lean",
+      "lineCount": 109,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01.lean"
+    },
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ01.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ01OQ01.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ01OQ01.lean",
+      "lineCount": 96,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ02.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ02.lean",
+      "lineCount": 148,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ03.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ03.lean",
+      "lineCount": 126,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ03OQ01.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ03OQ01.lean",
+      "lineCount": 120,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean",
+      "filename": "GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean",
+      "lineCount": 195,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GammaReflectionFormulaOQ01OQ03OQ01OQ01.lean"
+    }
+  ]
 }

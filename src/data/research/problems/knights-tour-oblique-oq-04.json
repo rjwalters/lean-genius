@@ -11,12 +11,91 @@
   "lastUpdate": "2026-06-24T00:00:00.000Z",
   "path": "src/data/proofs/knights-tour-oblique-oq-04",
   "leanFiles": [
-    "proofs/Proofs/KnightsTourObliqueOQ04.lean"
+    {
+      "path": "Proofs/KnightsTourOblique.lean",
+      "filename": "KnightsTourOblique.lean",
+      "lineCount": 2342,
+      "theoremCount": 101,
+      "axiomCount": 1,
+      "defCount": 42,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourOblique.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ01.lean",
+      "filename": "KnightsTourObliqueOQ01.lean",
+      "lineCount": 562,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ01OQ02.lean",
+      "filename": "KnightsTourObliqueOQ01OQ02.lean",
+      "lineCount": 568,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ02.lean",
+      "filename": "KnightsTourObliqueOQ02.lean",
+      "lineCount": 696,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ02.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ02Reverse.lean",
+      "filename": "KnightsTourObliqueOQ02Reverse.lean",
+      "lineCount": 172,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ02Reverse.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ03.lean",
+      "filename": "KnightsTourObliqueOQ03.lean",
+      "lineCount": 97,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ03.lean"
+    },
+    {
+      "path": "Proofs/KnightsTourObliqueOQ04.lean",
+      "filename": "KnightsTourObliqueOQ04.lean",
+      "lineCount": 149,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KnightsTourObliqueOQ04.lean"
+    }
   ],
   "relatedProofs": [
     "knights-tour-oblique",
     "knights-tour-oblique-oq-01",
-    "knights-tour-oblique-oq-02"
+    "knights-tour-oblique-oq-01-oq-02",
+    "knights-tour-oblique-oq-02",
+    "knights-tour-oblique-oq-03",
+    "knights-tour-oblique-oq-04"
   ],
   "tags": [
     "knights-tour",

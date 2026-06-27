@@ -28,7 +28,11 @@
     "focus": "Gallery proof verified — 150 lines, 0 sorries, 0 axioms (only propext/Classical.choice/Quot.sound), 10 theorems + 1 def",
     "blockers": [],
     "nextAction": "None — proof complete and verified.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "Created SophieGermainOQ01OQ02.lean (150 lines, 0 sorries, 0 axioms). Proves the main bridge safe_prime_dvd_mersenne: for p ≡ 3 (mod 4) with 2p+1 prime, the safe prime 2p+1 divides the Mersenne number 2^p − 1. Route: omega shows q = 2p+1 ≡ 7 (mod 8); ZMod.exists_sq_eq_two_iff makes 2 a quadratic residue mod q; ZMod.euler_criterion gives 2^((q−1)/2) = 1 in ZMod q with (q−1)/2 = p (omega), i.e. 2^p ≡ 1 (mod q), transported to q ∣ 2^p − 1 via natCast_eq_natCast_iff + Nat.modEq_iff_dvd'. Adds compositeness (mersenne_not_prime, p ≥ 5) using the growth bound 2p+2 < 2^p, plus explicit factor witnesses 23 ∣ 2¹¹−1 and 47 ∣ 2²³−1. Self-contained (Mathlib only); the Sophie Germain ⟹ Mersenne arithmetic is absent from Mathlib.",
@@ -67,6 +71,89 @@
   "relatedProofs": [
     "sophie-germain",
     "sophie-germain-oq-01",
+    "sophie-germain-oq-01-oq-02",
+    "sophie-germain-oq-01-oq-03",
+    "sophie-germain-oq-02",
+    "sophie-germain-oq-03",
     "sophie-germain-oq-04"
+  ],
+  "leanFiles": [
+    {
+      "path": "Proofs/SophieGermain.lean",
+      "filename": "SophieGermain.lean",
+      "lineCount": 297,
+      "theoremCount": 31,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermain.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ01.lean",
+      "filename": "SophieGermainOQ01.lean",
+      "lineCount": 197,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ01.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ0103.lean",
+      "filename": "SophieGermainOQ0103.lean",
+      "lineCount": 178,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ0103.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ01OQ02.lean",
+      "filename": "SophieGermainOQ01OQ02.lean",
+      "lineCount": 151,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ02.lean",
+      "filename": "SophieGermainOQ02.lean",
+      "lineCount": 157,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ02.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ03.lean",
+      "filename": "SophieGermainOQ03.lean",
+      "lineCount": 190,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ03.lean"
+    },
+    {
+      "path": "Proofs/SophieGermainOQ04.lean",
+      "filename": "SophieGermainOQ04.lean",
+      "lineCount": 72,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SophieGermainOQ04.lean"
+    }
   ]
 }

@@ -57,7 +57,9 @@
     "lattice-paths"
   ],
   "relatedProofs": [
-    "schroder-numbers-oq-01"
+    "schroder-numbers-oq-01",
+    "schroder-numbers-oq-01-oq-01",
+    "schroder-numbers-oq-01-oq-01-oq-02"
   ],
   "references": {
     "papers": [],
@@ -68,15 +70,37 @@
   "lastUpdate": "2026-06-24T23:41:29Z",
   "leanFiles": [
     {
+      "path": "Proofs/SchroderNumbersOQ01.lean",
+      "filename": "SchroderNumbersOQ01.lean",
+      "lineCount": 124,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroderNumbersOQ01.lean"
+    },
+    {
       "path": "Proofs/SchroderNumbersOQ0101.lean",
       "filename": "SchroderNumbersOQ0101.lean",
-      "lineCount": 111,
+      "lineCount": 112,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroderNumbersOQ0101.lean"
+    },
+    {
+      "path": "Proofs/SchroderNumbersOQ010102.lean",
+      "filename": "SchroderNumbersOQ010102.lean",
+      "lineCount": 106,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroderNumbersOQ010102.lean"
     }
   ]
 }

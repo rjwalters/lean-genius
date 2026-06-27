@@ -26,11 +26,71 @@
       "Derive the ⌊n/p⌋ size bound for the smallest prime p ∤ m toward the (1/2)·n/log n leading constant."
     ]
   },
-  "tags": ["additive-combinatorics", "number-theory", "erdos", "subset-sums", "primes"],
-  "relatedProofs": ["erdos-771", "erdos-771-construction"],
-  "references": ["Erdős–Graham (1980)", "Alon–Freiman (1988)"],
+  "tags": [
+    "additive-combinatorics",
+    "number-theory",
+    "erdos",
+    "subset-sums",
+    "primes"
+  ],
+  "relatedProofs": [
+    "erdos-7",
+    "erdos-77",
+    "erdos-771",
+    "erdos-771-construction"
+  ],
+  "references": [
+    "Erdős–Graham (1980)",
+    "Alon–Freiman (1988)"
+  ],
   "started": "2026-06-25T00:00:00.000Z",
   "lastUpdate": "2026-06-25T00:00:00.000Z",
   "significance": "Verifies the combinatorial core of the Erdős–Graham lower bound for f(n).",
-  "tractability": "verified-construction-open-asymptotics"
+  "tractability": "verified-construction-open-asymptotics",
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos771Aristotle.lean",
+      "filename": "Erdos771Aristotle.lean",
+      "lineCount": 82,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos771Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos771Construction.lean",
+      "filename": "Erdos771Construction.lean",
+      "lineCount": 141,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos771Construction.lean"
+    },
+    {
+      "path": "Proofs/Erdos771Problem.lean",
+      "filename": "Erdos771Problem.lean",
+      "lineCount": 245,
+      "theoremCount": 11,
+      "axiomCount": 2,
+      "defCount": 16,
+      "sorryCount": 7,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos771Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos771ProblemAristotle.lean",
+      "filename": "Erdos771ProblemAristotle.lean",
+      "lineCount": 50,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos771ProblemAristotle.lean"
+    }
+  ]
 }

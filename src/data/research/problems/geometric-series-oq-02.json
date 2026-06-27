@@ -60,6 +60,7 @@
     "geometric-series",
     "geometric-series-oq-01",
     "geometric-series-oq-01-oq-01",
+    "geometric-series-oq-01-oq-01-oq-02",
     "geometric-series-oq-01-oq-02",
     "geometric-series-oq-01-oq-03",
     "geometric-series-oq-01-oq-03-oq-01",
@@ -74,7 +75,11 @@
     "geometric-series-oq-07-oq-01-oq-01",
     "geometric-series-oq-07-oq-01-oq-01-oq-01",
     "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01",
+    "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-01",
+    "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-01-oq-03-oq-02",
     "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02",
+    "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-01",
+    "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-02-oq-02",
     "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03",
     "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-03-oq-01",
     "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-04",
@@ -83,6 +88,7 @@
     "geometric-series-oq-07-oq-01-oq-01-oq-01-oq-06-oq-01",
     "geometric-series-oq-07-oq-01-oq-01-oq-02",
     "geometric-series-oq-07-oq-01-oq-01-oq-03",
+    "geometric-series-oq-07-oq-02",
     "geometric-series-oq-08",
     "geometric-series-oq-08-oq-01",
     "geometric-series-oq-08-oq-01-oq-01",
@@ -155,6 +161,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01OQ01OQ01.lean",
+      "filename": "GeometricSeriesOQ01OQ01OQ01.lean",
+      "lineCount": 158,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ01OQ01OQ02.lean",
+      "filename": "GeometricSeriesOQ01OQ01OQ02.lean",
+      "lineCount": 102,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ01OQ01OQ02.lean"
     },
     {
       "path": "Proofs/GeometricSeriesOQ01OQ02.lean",
@@ -311,6 +339,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01.lean"
     },
     {
+      "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01.lean",
+      "filename": "GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01.lean",
+      "lineCount": 213,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ03OQ02.lean",
+      "filename": "GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ03OQ02.lean",
+      "lineCount": 81,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ01OQ03OQ02.lean"
+    },
+    {
       "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02.lean",
       "filename": "GeometricSeriesOQ07OQ01OQ01OQ01OQ02.lean",
       "lineCount": 247,
@@ -320,6 +370,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ01.lean",
+      "filename": "GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ01.lean",
+      "lineCount": 128,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ02.lean",
+      "filename": "GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ02.lean",
+      "lineCount": 181,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ02OQ02.lean"
     },
     {
       "path": "Proofs/GeometricSeriesOQ07OQ01OQ01OQ01OQ03.lean",
@@ -408,6 +480,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GeometricSeriesOQ07OQ02.lean",
+      "filename": "GeometricSeriesOQ07OQ02.lean",
+      "lineCount": 141,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeometricSeriesOQ07OQ02.lean"
     },
     {
       "path": "Proofs/GeometricSeriesOQ08.lean",

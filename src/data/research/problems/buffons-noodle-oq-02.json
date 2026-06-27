@@ -50,7 +50,10 @@
   "relatedProofs": [
     "buffons-noodle",
     "buffons-noodle-oq-01",
-    "buffons-noodle-oq-03"
+    "buffons-noodle-oq-01-oq-01",
+    "buffons-noodle-oq-01-oq-02",
+    "buffons-noodle-oq-03",
+    "buffons-noodle-oq-03-oq-01"
   ],
   "references": {
     "papers": [],
@@ -84,6 +87,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01.lean"
     },
     {
+      "path": "Proofs/BuffonsNoodleOQ01OQ01.lean",
+      "filename": "BuffonsNoodleOQ01OQ01.lean",
+      "lineCount": 205,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ01OQ02.lean",
+      "filename": "BuffonsNoodleOQ01OQ02.lean",
+      "lineCount": 180,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/BuffonsNoodleOQ02.lean",
       "filename": "BuffonsNoodleOQ02.lean",
       "lineCount": 102,
@@ -104,6 +129,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ03.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNoodleOQ03OQ01.lean",
+      "filename": "BuffonsNoodleOQ03OQ01.lean",
+      "lineCount": 234,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNoodleOQ03OQ01.lean"
     }
   ]
 }

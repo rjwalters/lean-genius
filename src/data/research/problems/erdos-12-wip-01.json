@@ -29,7 +29,11 @@
     "focus": "Shipped a self-contained 0-axiom gallery entry isolating the local divisibility obstruction of Erdős #12 divisibility-free sets.",
     "blockers": [],
     "nextAction": "None — entry complete and verified. The open density/reciprocal-sum questions are far deeper, separate problems.",
-    "attemptCounts": { "total": 1, "currentApproach": 1, "approachesTried": 1 }
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
     "progressSummary": "Created Erdos12WIP01.lean (90 lines, 6 theorems, 1 definition), a 0-axiom/0-sorry self-contained gallery entry isolating the elementary LOCAL obstruction behind the sparsity of Erdős #12 divisibility-free sets: for any a ∈ A, at most one larger element of A is a multiple of a, and no two larger elements are antipodal mod a. All theorems depend only on the standard foundational axioms (propext, Quot.sound). The parent Erdos12Problem.lean (which imports all of Mathlib) currently has its own Mathlib-v4.26.0 drift errors, so the predicate was reproduced locally to keep the leaf self-contained and decoupled.",
@@ -60,7 +64,19 @@
     ],
     "markdown": "## Local divisibility obstruction (Erdős #12)\n\nA set `A ⊆ ℕ` is **divisibility-free** when no distinct `a, b, c ∈ A` with `b, c > a` satisfy `a ∣ (b + c)`. This leaf isolates the elementary LOCAL reason such sets are sparse, decoupled from the (hard) global density theorems:\n\n- **`no_two_larger_multiples`** — for `a ∈ A`, two distinct larger elements cannot both be multiples of `a` (else `a ∣ b + c`).\n- **`unique_larger_multiple` / `largerMultiples_subsingleton`** — hence each `a` has at most one larger multiple in `A`.\n- **`no_antipodal_pair`** — no two distinct larger elements sum to `0 mod a`: the residue picture of the obstruction.\n- **`divFree_456`** — `{4, 5, 6}` is a concrete witness.\n\nEverything is a one-line consequence of `dvd_add`; the value is in naming and packaging the local structure that seeds Erdős–Sárközy density-zero and the 2026 density resolutions. The reciprocal-sum question (iii) remains open."
   },
-  "tags": ["erdos", "number-theory", "combinatorics", "divisibility", "additive-combinatorics"],
-  "relatedProofs": ["erdos-12", "erdos-12-wip-01"],
-  "references": ["https://erdosproblems.com/12"]
+  "tags": [
+    "erdos",
+    "number-theory",
+    "combinatorics",
+    "divisibility",
+    "additive-combinatorics"
+  ],
+  "relatedProofs": [
+    "erdos-1",
+    "erdos-12",
+    "erdos-12-wip-01"
+  ],
+  "references": [
+    "https://erdosproblems.com/12"
+  ]
 }

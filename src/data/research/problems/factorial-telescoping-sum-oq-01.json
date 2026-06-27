@@ -24,5 +24,21 @@
       "Formalize the factoradic (factorial number system) representation that ∑_{k=1}^{n} k·k! = (n+1)! − 1 underlies, and related rising/falling-factorial telescoping sums."
     ],
     "progressSummary": "COMPLETE: ∑_{k=1}^{n} k·k! = (n+1)! − 1 formalized and verified — 5 theorems, 0 sorries, 0 axioms, no native_decide (#print axioms = [propext, Classical.choice, Quot.sound]). Compiled against Mathlib v4.26.0. Elementary/classical identity; routine difficulty. PR opened."
-  }
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/FactorialTelescopingSumOQ01.lean",
+      "filename": "FactorialTelescopingSumOQ01.lean",
+      "lineCount": 88,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FactorialTelescopingSumOQ01.lean"
+    }
+  ],
+  "relatedProofs": [
+    "factorial-telescoping-sum-oq-01"
+  ]
 }

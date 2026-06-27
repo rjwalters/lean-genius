@@ -67,7 +67,10 @@
   "relatedProofs": [
     "dini-theorem",
     "dini-theorem-oq-01",
-    "dini-theorem-oq-01-oq-01"
+    "dini-theorem-oq-01-oq-01",
+    "dini-theorem-oq-01-oq-02",
+    "dini-theorem-oq-01-oq-02-oq-01",
+    "dini-theorem-oq-01-oq-02-oq-01-oq-01"
   ],
   "references": {
     "papers": [
@@ -90,8 +93,8 @@
     {
       "path": "Proofs/DiniTheorem.lean",
       "filename": "DiniTheorem.lean",
-      "lineCount": 180,
-      "theoremCount": 12,
+      "lineCount": 181,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -99,15 +102,59 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DiniTheorem.lean"
     },
     {
+      "path": "Proofs/DiniTheoremOQ01.lean",
+      "filename": "DiniTheoremOQ01.lean",
+      "lineCount": 160,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DiniTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DiniTheoremOQ01OQ01.lean",
+      "filename": "DiniTheoremOQ01OQ01.lean",
+      "lineCount": 183,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DiniTheoremOQ01OQ01.lean"
+    },
+    {
       "path": "Proofs/DiniTheoremOQ01OQ02.lean",
       "filename": "DiniTheoremOQ01OQ02.lean",
-      "lineCount": 172,
+      "lineCount": 173,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DiniTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/DiniTheoremOQ01OQ02OQ01.lean",
+      "filename": "DiniTheoremOQ01OQ02OQ01.lean",
+      "lineCount": 195,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DiniTheoremOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean",
+      "filename": "DiniTheoremOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 187,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DiniTheoremOQ01OQ02OQ01OQ01.lean"
     }
   ]
 }

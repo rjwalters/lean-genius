@@ -46,9 +46,11 @@
     "konigsberg",
     "konigsberg-oq-01",
     "konigsberg-oq-01-oq-02",
+    "konigsberg-oq-01-oq-02-incomplete-01",
     "konigsberg-oq-02",
     "konigsberg-oq-02-oq-01",
     "konigsberg-oq-03",
+    "konigsberg-oq-03-oq-01",
     "konigsberg-oq-03-oq-02",
     "konigsberg-oq-04"
   ],
@@ -92,6 +94,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ01OQ02Incomplete01.lean",
+      "filename": "KonigsbergOQ01OQ02Incomplete01.lean",
+      "lineCount": 240,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ01OQ02Incomplete01.lean"
     },
     {
       "path": "Proofs/KonigsbergOQ01OQ02Recipe.lean",
@@ -147,6 +160,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03.lean"
+    },
+    {
+      "path": "Proofs/KonigsbergOQ03OQ01.lean",
+      "filename": "KonigsbergOQ03OQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KonigsbergOQ03OQ01.lean"
     },
     {
       "path": "Proofs/KonigsbergOQ03OQ02.lean",

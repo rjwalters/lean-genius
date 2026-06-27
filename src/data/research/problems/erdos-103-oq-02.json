@@ -61,7 +61,8 @@
     "erdos-1036-oq-01",
     "erdos-1037",
     "erdos-1038",
-    "erdos-1039"
+    "erdos-1039",
+    "erdos-1039-oq-03"
   ],
   "references": {
     "papers": [],
@@ -248,6 +249,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039Aristotle.lean"
+    },
+    {
+      "path": "Proofs/Erdos1039Conformal.lean",
+      "filename": "Erdos1039Conformal.lean",
+      "lineCount": 165,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1039Conformal.lean"
     },
     {
       "path": "Proofs/Erdos1039Problem.lean",
