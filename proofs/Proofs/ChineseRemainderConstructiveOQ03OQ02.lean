@@ -72,7 +72,7 @@ open Nat
 /-- Consecutive integers are coprime: gcd divides their difference, which is 1. -/
 theorem coprime_consecutive (a : ℕ) : Nat.Coprime a (a + 1) := by
   have hsub : Nat.gcd a (a + 1) ∣ (a + 1) - a :=
-    Nat.dvd_sub' (Nat.gcd_dvd_right a (a + 1)) (Nat.gcd_dvd_left a (a + 1))
+    Nat.dvd_sub (Nat.gcd_dvd_right a (a + 1)) (Nat.gcd_dvd_left a (a + 1))
   have he : (a + 1) - a = 1 := by omega
   rw [he] at hsub
   exact Nat.dvd_one.mp hsub
@@ -98,7 +98,7 @@ theorem coprime_low_high (n : ℕ) (hn : 1 ≤ n) :
   have hdl : Nat.gcd (2 ^ n - 1) (2 ^ n + 1) ∣ 2 ^ n - 1 := Nat.gcd_dvd_left _ _
   have hdr : Nat.gcd (2 ^ n - 1) (2 ^ n + 1) ∣ 2 ^ n + 1 := Nat.gcd_dvd_right _ _
   have hd2 : Nat.gcd (2 ^ n - 1) (2 ^ n + 1) ∣ 2 := by
-    have hsub := Nat.dvd_sub' hdr hdl
+    have hsub := Nat.dvd_sub hdr hdl
     have he : (2 ^ n + 1) - (2 ^ n - 1) = 2 := by omega
     rwa [he] at hsub
   have hodd : ¬ (2 ∣ (2 ^ n - 1)) := by
@@ -106,7 +106,8 @@ theorem coprime_low_high (n : ℕ) (hn : 1 ≤ n) :
     omega
   rcases (Nat.dvd_prime Nat.prime_two).mp hd2 with h1 | h2
   · exact h1
-  · exact absurd (h2 ▸ hdl) hodd
+  · rw [h2] at hdl
+    exact absurd hdl hodd
 
 -- ============================================================
 -- SECTION II: Dynamic range of the three-moduli set
@@ -209,7 +210,7 @@ theorem threeModuli_balanced (n : ℕ) (hn : 2 ≤ n) :
     then apply two-modulus CRT against `2^n + 1`. -/
 theorem threeModuli_crt_step (n : ℕ) (hn : 1 ≤ n) :
     Nat.Coprime ((2 ^ n - 1) * 2 ^ n) (2 ^ n + 1) :=
-  Nat.Coprime.mul (coprime_low_high n hn) (coprime_mid_high n)
+  Nat.Coprime.mul_left (coprime_low_high n hn) (coprime_mid_high n)
 
 -- ============================================================
 -- SECTION V: Concrete cross-checks (n = 2, 3, 4)
