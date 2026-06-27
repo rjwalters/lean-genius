@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1020-oq-02",
   "title": "Close gap between small n and large n regimes for hypergraph matching",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,10 +16,10 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T21:46:38.106Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Regime-transition structure formalized & verified; open gap closure remains.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,11 +29,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "VERIFIED (0-axiom). Created gallery entry erdos-1020-oq-02 + Proofs/Erdos1020OQ02.lean. Did NOT resolve the open gap (Erdős Matching Conjecture, OPEN r≥4); instead formalized the unconditional structure of the small-n/large-n regime transition of the conjectured value max(construction1, construction2): construction2 monotone in n (Pascal telescoping), dominance region upward-closed (single threshold), conjecturedValue monotone, collapse on each side. Worked instance r=4,k=2 crossover at n=8 by kernel decide.",
+    "builtItems": [
+      "Proofs/Erdos1020OQ02.lean (165 lines, 0 axioms, 0 sorries, verified): construction2_mono_step, construction2_mono, construction2_dominant_up, conjecturedValue_mono, conjecturedValue_large, conjecturedValue_small + 5 kernel-decide crossover examples.",
+      "Gallery entry src/data/proofs/erdos-1020-oq-02/ (meta.json + annotations.json)."
+    ],
+    "insights": [
+      "construction1 r k = C(rk-1,r) is constant in n; construction2 n r k = C(n,r)-C(n-k+1,r) is monotone nondecreasing in n. The gap is the band around their crossover.",
+      "construction2(n+1)-construction2(n) = C(n,r-1)-C(n-k+1,r-1) ≥ 0 (two Pascal identities + Nat.choose_le_choose); this is the heart of the monotonicity.",
+      "Monotonicity ⇒ the construction2-dominant region is upward-closed: a SINGLE threshold separates small-n and large-n regimes (no interleaving).",
+      "conjecturedValue = max(const, monotone) is monotone in n; collapses to construction1 below threshold, construction2 at/above (max_eq_left/right).",
+      "OQ-02 framed: regime boundary is a well-defined single threshold; the open difficulty is whether f attains the conjectured value across the gap band kr+... < n < 3kr² for r≥4."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Open: prove the Erdős Matching Conjecture across the middle band (r≥4) — the actual gap closure.",
+      "Characterize the exact crossover threshold n₀(r,k) in closed form.",
+      "Decide whether extremal hypergraphs interpolate between the two constructions inside the gap."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -52,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.106Z",
-  "lastUpdate": "2026-03-30T21:46:38.106Z",
+  "lastUpdate": "2026-06-27",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
