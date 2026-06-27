@@ -20,12 +20,12 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1107,
+    "lineCount": 1396,
     "assumptions": "1 axiom: tao_2019 — the precise statement of Tao (2019, Forum Math. Pi), that for every f : ℕ → ℝ with f n → ∞ the set {n : 0 < n ∧ Col_min(n) < f n} has logarithmic density one. This is the deep analytic result the open question asks about; it is recorded, not proved, because its proof (3-adic transport/concentration estimates plus a Fourier-analytic input) is far beyond current Mathlib. No theorem in the file is derived from this axiom — the proven Parts II–III are independently machine-verified and depend only on the standard foundational axioms propext / Classical.choice / Quot.sound.",
     "dateAdded": "2026-06-25",
     "mathlib_version": "4.26.0",
-    "theoremCount": 39,
-    "definitionCount": 5
+    "theoremCount": 52,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "The Collatz conjecture asserts every positive integer's orbit reaches 1. Short of the full conjecture, 'almost all' results bound the orbit for density-one sets of starting values. Terras (1976) and Korec (1994) showed almost all n (in natural density) have finite stopping time — their orbit drops below the starting value. Tao (2019, Forum Math. Pi) gave a dramatically stronger statement: for any f → ∞, almost all n (in the finer logarithmic density) have orbit minimum below f(n), i.e. orbits attain almost bounded values. OQ-03 asks whether this analytic landmark can be formalized in Lean.",
@@ -36,7 +36,8 @@
       "The open question is upgraded from informal prose to a precise, machine-checkable statement: 'logarithmic density 1' is the predicate HasLogDensityOne, and Tao's theorem is the single axiom tao_2019 quantified over all f → ∞.",
       "The elementary half of the almost-all phenomenon needs no analysis: every positive even number drops below itself in one Collatz step (n/2 < n), and every power of two collapses to 1 — both proved axiom-free.",
       "collatz (2·m) = m makes the dyadic collapse collatz^[k] (2^k) = 1 a clean induction, witnessing colMin(2^k) ≤ 1.",
-      "What resists formalization is exactly the analytic core: Tao runs the Syracuse dynamics against tuned measures on the 3-adics and controls their concentration — machinery not present in Mathlib, so a direct proof is BLOCKED (>> 1000 lines)."
+      "What resists formalization is exactly the analytic core: Tao runs the Syracuse dynamics against tuned measures on the 3-adics and controls their concentration — machinery not present in Mathlib, so a direct proof is BLOCKED (>> 1000 lines).",
+      "The residue-drop engine is now mechanized: a Boolean fold affValidB decides the inductive parity certificate AffValid (proved sound AND complete, affValid_iff), giving a Decidable instance — so a residue class drop discharges from a single `by decide` (parityVector_attainsBelow_dec). The hand-written six-step AffValid proof tree for n≡3 (mod 16), and the eight-/eleven-step chases for n≡11 (mod 32) and n≡7 (mod 128), each collapse to one decide. Axiom-free (propext/Quot.sound only)."
     ],
     "prerequisites": [
       "The Collatz / Syracuse map",

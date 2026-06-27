@@ -1272,6 +1272,76 @@ theorem parityVector_attainsBelow {M r : ℕ} (v : List Bool)
     {n : ℕ} (hn : n % M = r) : AttainsBelow n :=
   affine_residue_attainsBelow hk hc hd (fun m => affOrbit_realize hval m) hn
 
+/-! ### Mechanizing the certificate: a sound-and-complete Boolean decision procedure
+
+The `AffValid` certificate above is an *inductive* predicate, so every application of
+the engine had to spell out the proof tree by hand (`AffValid.odd (by decide) (by decide)
+(AffValid.even …)`).  The Boolean fold `affValidB` below decides `AffValid` outright:
+each step just checks the two parity side conditions and recurses on the stepped
+coefficients.  `affValidB_sound` and `affValidB_complete` give `affValid_iff`, hence a
+`Decidable (AffValid v M r)` instance — so the whole certificate now discharges by a
+single `decide`.  This is the certificate-checking half of the "mechanize certificate
+generation" programme: a new residue family needs only its parity vector `v`, with
+validity and the two drop inequalities all settled by `decide`.  Everything is
+axiom-free (the procedure is a structural recursion on `v`, the soundness/completeness
+proofs are inductions matching `AffValid`'s constructors). -/
+
+/-- Boolean decision procedure for the affine parity certificate `AffValid`: at an odd
+step demand `c` even and `d` odd, at an even step demand both even, and recurse on the
+affine-stepped coefficients.  Mirrors `affStep` on the coefficient pair. -/
+def affValidB : List Bool → ℕ → ℕ → Bool
+  | [],          _, _ => true
+  | true  :: v,  c, d => (c % 2 == 0) && (d % 2 == 1) && affValidB v (3 * c) (3 * d + 1)
+  | false :: v,  c, d => (c % 2 == 0) && (d % 2 == 0) && affValidB v (c / 2) (d / 2)
+
+/-- **Soundness.**  Whenever the Boolean checker accepts, the inductive certificate
+holds. -/
+theorem affValidB_sound : ∀ {v : List Bool} {c d : ℕ}, affValidB v c d = true →
+    AffValid v c d := by
+  intro v
+  induction v with
+  | nil => intro c d _; exact AffValid.nil
+  | cons b v ih =>
+    intro c d h
+    cases b with
+    | true =>
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq] at h
+      exact AffValid.odd h.1.1 h.1.2 (ih h.2)
+    | false =>
+      simp only [affValidB, Bool.and_eq_true, beq_iff_eq] at h
+      exact AffValid.even h.1.1 h.1.2 (ih h.2)
+
+/-- **Completeness.**  Whenever the inductive certificate holds, the Boolean checker
+accepts.  Together with `affValidB_sound` this makes `affValidB` a faithful decision
+procedure for `AffValid`. -/
+theorem affValidB_complete : ∀ {v : List Bool} {c d : ℕ}, AffValid v c d →
+    affValidB v c d = true := by
+  intro v c d h
+  induction h with
+  | nil => rfl
+  | odd hc hd _ ih => simp only [affValidB, Bool.and_eq_true, beq_iff_eq]; exact ⟨⟨hc, hd⟩, ih⟩
+  | even hc hd _ ih => simp only [affValidB, Bool.and_eq_true, beq_iff_eq]; exact ⟨⟨hc, hd⟩, ih⟩
+
+/-- The inductive certificate and its Boolean decision procedure agree. -/
+theorem affValid_iff {v : List Bool} {c d : ℕ} : AffValid v c d ↔ affValidB v c d = true :=
+  ⟨affValidB_complete, affValidB_sound⟩
+
+/-- `AffValid` is therefore decidable: validity of any concrete parity certificate is
+settled by `decide`. -/
+instance (v : List Bool) (c d : ℕ) : Decidable (AffValid v c d) :=
+  decidable_of_iff _ affValid_iff.symm
+
+/-- **Fully decidable residue-drop engine.**  A residue class `n ≡ r (mod M)` drops
+below itself as soon as the four side conditions — non-empty vector, valid parity
+certificate (now `Decidable`), and the two drop inequalities `c_k < M`, `d_k < r` —
+all hold.  Bundled as one hypothesis so the entire engine fires from a single `by
+decide`: see the validation block below. -/
+theorem parityVector_attainsBelow_dec {M r : ℕ} (v : List Bool)
+    (h : 0 < v.length ∧ AffValid v M r ∧
+        (affOrbit v (M, r)).1 < M ∧ (affOrbit v (M, r)).2 < r)
+    {n : ℕ} (hn : n % M = r) : AttainsBelow n :=
+  parityVector_attainsBelow v h.1 h.2.1 h.2.2.1 h.2.2.2 hn
+
 /-! ### Validation: the engine reproduces the gallery families
 
 The abstract law recovers the concrete leading coefficients of Part II, and the engine
@@ -1300,5 +1370,27 @@ example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n := by
         (AffValid.even (by decide) (by decide)
           (AffValid.even (by decide) (by decide)
             (AffValid.even (by decide) (by decide) AffValid.nil)))))
+
+/-- The same `n ≡ 3 (mod 16)` drop, now via the **mechanized** engine: the six-step
+hand-written `AffValid` proof tree above collapses to a single `by decide`, since
+`AffValid` is now `Decidable`.  This is the certificate-checking automation in action. -/
+example {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  parityVector_attainsBelow_dec [true, false, true, false, false, false] (by decide) h
+
+/-- The decision procedure also fires on the deeper residue-determined windows that
+previously needed long hand chases.  `n ≡ 11 (mod 32)` drops in eight steps via the
+parity vector `[odd, even, odd, even, even, odd, even, even]` (leading coefficient
+`27 = 3^3 < 32`), discharged entirely by `decide`. -/
+example {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  parityVector_attainsBelow_dec
+    [true, false, true, false, false, true, false, false] (by decide) h
+
+/-- And `n ≡ 7 (mod 128)`, one of the three classes that only stabilise at level `128`
+(eleven steps, leading coefficient `81 = 3^4 < 128`), likewise drops by a single
+`decide` through the mechanized engine — no `iterate_succ_apply'` bookkeeping. -/
+example {n : ℕ} (h : n % 128 = 7) : AttainsBelow n :=
+  parityVector_attainsBelow_dec
+    [true, false, true, false, true, false, false, true, false, false, false]
+    (by decide) h
 
 end CollatzStructuredOQ02OQ03

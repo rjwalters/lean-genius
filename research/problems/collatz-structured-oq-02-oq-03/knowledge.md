@@ -305,3 +305,30 @@ as two reusable lemmas, replacing the per-residue `collatz_odd …; ring` /
 - de-risk component (1): `paritySteps n b : Fin b → Bool` + proof that `n mod 2^b`
   forces it, turning per-residue lemmas into corollaries of one inductive theorem.
 - Then re-attack Terras/Korec natural-density-1 stopping time (Tao axiom stays BLOCKED).
+
+## Session 2026-06-27 (Session 6) - Mechanizing the certificate (decision procedure for AffValid)
+
+**Mode**: REVISIT (RICH, depth-first)
+**Outcome**: progress
+
+### What I Did
+- Built a Boolean decision procedure `affValidB : List Bool → ℕ → ℕ → Bool` mirroring `affStep`: at an odd bit demand `c%2=0 ∧ d%2=1`, at an even bit demand both even, recurse on the affine-stepped coefficients.
+- Proved it **sound** (`affValidB_sound`) and **complete** (`affValidB_complete`) — straightforward inductions matching `AffValid`'s constructors — giving `affValid_iff : AffValid v c d ↔ affValidB v c d = true`.
+- Derived `instance : Decidable (AffValid v c d)` via `decidable_of_iff`, and a bundled `parityVector_attainsBelow_dec` that fires the whole residue-drop engine from a single decidable hypothesis.
+- Replaced the hand demonstration: the six-step `AffValid.odd (by decide) … AffValid.nil` proof tree for `n≡3 (mod 16)` now collapses to `parityVector_attainsBelow_dec [..] (by decide) h`. Added the same one-liner for `n≡11 (mod 32)` (8 steps) and `n≡7 (mod 128)` (11 steps) as validation that the `decide` engine handles the deeper windows.
+
+### Key Findings
+- The inductive parity certificate is genuinely decidable; the only thing still supplied by hand is the parity *vector* `v` itself — its validity is now machine-checked.
+- `decide` (not `native_decide`) suffices: the new declarations keep to `propext`/`Quot.sound`, no `Lean.ofReduceBool`, no `tao_2019`.
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (1304 → 1396 L; +1 def affValidB, +4 thm, +1 Decidable instance, +3 decide-driven validation examples)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (counts + keyInsight)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (knowledge)
+
+### Verification
+- `LAKE_UNSAFE=1 lake env lean Proofs/CollatzStructuredOQ02OQ03.lean` → exit 0 (Docker containerd corrupt; host lean v4.26.0 against prebuilt Mathlib oleans).
+- `#print axioms` on affValidB_sound / affValidB_complete / parityVector_attainsBelow_dec → `[propext, Quot.sound]` only. File-level axiom count unchanged at 1 (tao_2019, untouched, no theorem depends on it). 0 sorries.
+
+### Next Steps
+- The certificate-CHECKING half of next-step #1 is done. The remaining half is GENERATION: a tactic/decision procedure that, given `r mod 2^b`, computes the forced parity vector `v` automatically. With `v` computable end-to-end, batch-prove the stable residue classes at level 256 and push the 115/128 density floor.
