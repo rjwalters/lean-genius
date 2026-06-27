@@ -528,4 +528,113 @@ theorem GridSimplex.eq_of_base_miss_incDir (s t : GridSimplex d N)
   simp only at hverts hmiss hinc
   subst hverts; subst hmiss; subst hinc; rfl
 
+-- ============================================================
+-- SECTION VIII: Lexicographic order & canonical representatives
+-- ============================================================
+-- The `GridSimplex` encoding double-counts each geometric cell:
+-- the same vertex *set* admits several `(verts, incDir, miss)`
+-- chains (Session-1 d=1 counterexample to `boundary_doors_odd`).
+-- To get one representative per geometry — the orientation-free
+-- carrier the abstract `SpernerNDim.SpernerTriangulation` needs —
+-- we single out the chain whose base vertex `verts 0` is
+-- lexicographically minimal among the cell's vertices.
+--
+-- This section builds the lex order on `BaryPoint`, the
+-- canonicality predicate `IsCanon`, their decidability, and the
+-- first half of per-geometry uniqueness: two canonical cells with
+-- the same vertex set share the same base `verts 0` (the lex
+-- order has a unique minimum). With the reconstruction theorem
+-- (`eq_of_base_miss_incDir`) above, full uniqueness then reduces
+-- to recovering `miss`/`incDir` from `(base, vertex set)` — the
+-- next deliverable.
+
+/-- Strict lexicographic order on barycentric points: there is a
+coordinate `i` at which `a < b`, with all earlier coordinates
+(indices `j < i`) equal. -/
+def BaryPoint.lexLT {d N : ℕ} (a b : BaryPoint d N) : Prop :=
+  ∃ i : Fin (d + 1),
+    (∀ j : Fin (d + 1), j < i → a.coords j = b.coords j) ∧
+    a.coords i < b.coords i
+
+/-- Non-strict lexicographic order: equal, or strictly less. -/
+def BaryPoint.lexLE {d N : ℕ} (a b : BaryPoint d N) : Prop :=
+  a = b ∨ a.lexLT b
+
+instance {d N : ℕ} (a b : BaryPoint d N) : Decidable (a.lexLT b) :=
+  inferInstanceAs (Decidable (∃ _, _ ∧ _))
+
+instance {d N : ℕ} (a b : BaryPoint d N) : Decidable (a.lexLE b) :=
+  inferInstanceAs (Decidable (_ ∨ _))
+
+/-- Reflexivity of the non-strict lex order. -/
+theorem BaryPoint.lexLE_refl {d N : ℕ} (a : BaryPoint d N) :
+    a.lexLE a := Or.inl rfl
+
+/-- The strict lex order is irreflexive. -/
+theorem BaryPoint.lexLT_irrefl {d N : ℕ} (a : BaryPoint d N) :
+    ¬ a.lexLT a := by
+  rintro ⟨i, _, hlt⟩
+  exact lt_irrefl _ hlt
+
+/-- The strict lex order is asymmetric: `a < b` and `b < a` is
+impossible. (First-differing-coordinate comparison.) -/
+theorem BaryPoint.lexLT_asymm {d N : ℕ} {a b : BaryPoint d N}
+    (hab : a.lexLT b) (hba : b.lexLT a) : False := by
+  obtain ⟨i, hi_eq, hi_lt⟩ := hab
+  obtain ⟨i', hi'_eq, hi'_lt⟩ := hba
+  rcases lt_trichotomy i i' with h | h | h
+  · -- i < i': b's prefix-equality at i contradicts a.coords i < b.coords i
+    have := hi'_eq i h
+    omega
+  · -- i = i': a i < b i and b i < a i
+    subst h; omega
+  · -- i' < i: a's prefix-equality at i' contradicts b.coords i' < a.coords i'
+    have := hi_eq i' h
+    omega
+
+/-- Antisymmetry of the non-strict lex order. -/
+theorem BaryPoint.lexLE_antisymm {d N : ℕ} {a b : BaryPoint d N}
+    (hab : a.lexLE b) (hba : b.lexLE a) : a = b := by
+  rcases hab with h | h
+  · exact h
+  · rcases hba with h' | h'
+    · exact h'.symm
+    · exact (BaryPoint.lexLT_asymm h h').elim
+
+/-- A `GridSimplex` is *canonical* when its base vertex `verts 0`
+is lexicographically minimal among its `d+1` vertices. Each
+geometric Freudenthal cell has exactly one canonical encoding (the
+lex order has a unique minimum), so the canonical simplices give
+one orientation-free representative per cell. -/
+def IsCanon {d N : ℕ} (s : GridSimplex d N) : Prop :=
+  ∀ k : Fin (d + 1), (s.verts 0).lexLE (s.verts k)
+
+instance {d N : ℕ} (s : GridSimplex d N) : Decidable (IsCanon s) :=
+  inferInstanceAs (Decidable (∀ _, _))
+
+/-- **Base uniqueness.** Two canonical `GridSimplex`es with the
+same vertex set have the same base vertex. The base is the unique
+lex-minimum of the (shared) vertex set, so it is determined by the
+geometry alone. This is the first half of per-geometry uniqueness;
+combined with the forthcoming `miss`/`incDir` recovery and the
+reconstruction theorem `eq_of_base_miss_incDir`, it will show the
+canonical encoding is unique per cell. -/
+theorem IsCanon.base_unique {d N : ℕ} {s t : GridSimplex d N}
+    (hs : IsCanon s) (ht : IsCanon t)
+    (hset : Set.range s.verts = Set.range t.verts) :
+    s.verts 0 = t.verts 0 := by
+  -- t.verts 0 lies in range s.verts, so s.verts 0 ≤ t.verts 0.
+  have ht0 : t.verts 0 ∈ Set.range s.verts := by
+    rw [hset]; exact ⟨0, rfl⟩
+  obtain ⟨j, hj⟩ := ht0
+  have h1 : (s.verts 0).lexLE (t.verts 0) := by
+    rw [← hj]; exact hs j
+  -- s.verts 0 lies in range t.verts, so t.verts 0 ≤ s.verts 0.
+  have hs0 : s.verts 0 ∈ Set.range t.verts := by
+    rw [← hset]; exact ⟨0, rfl⟩
+  obtain ⟨i, hi⟩ := hs0
+  have h2 : (t.verts 0).lexLE (s.verts 0) := by
+    rw [← hi]; exact ht i
+  exact BaryPoint.lexLE_antisymm h1 h2
+
 end SpernerGrid
