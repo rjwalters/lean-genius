@@ -274,4 +274,88 @@ theorem IsLowerEdge.interior_slopes {pts : List SupportPoint} {p q r : SupportPo
   have h2 : edgeSlope r q ≤ m := edgeSlope_le_of_supportingLine hqe hr hsupp hrq
   linarith
 
+/-! ### Endpoints of the Newton polygon
+
+`exists_lowerVertex` produces *a* vertex — the point of minimum *valuation*.  The
+two theorems here pin down the polygon's horizontal extent: the minimum-*index*
+and maximum-*index* support points are always lower vertices.  Concretely, the
+polygon's lower hull stretches across the whole `Y`-degree range `[iₘᵢₙ, iₘₐₓ]`,
+which is the combinatorial reason the edge widths sum to the degree and hence
+every root (counted with ramification) is accounted for.
+
+Unlike `isLowerVertex_of_minimal`, the supporting line here is *not* horizontal:
+through the leftmost point we take the least of the edge slopes leaving it (via
+`List.argmin`), and through the rightmost point the greatest of the edge slopes
+arriving at it (via `List.argmax`). -/
+
+/-- **The minimum-index support point is a lower vertex** (the left endpoint of
+the Newton polygon).  If every other support point lies strictly to the right of
+`p`, the supporting line of least edge-slope leaving `p` lies weakly below all of
+them. -/
+theorem isLowerVertex_of_leftmost {pts : List SupportPoint} {p : SupportPoint}
+    (hp : p ∈ pts) (hleft : ∀ q ∈ pts, q ≠ p → p.1 < q.1) :
+    IsLowerVertex pts p := by
+  classical
+  rcases hR : (pts.filter (fun q => decide (q ≠ p))).argmin (edgeSlope p) with _ | q₀
+  · -- the filtered list is empty: every support point equals `p`
+    have hempty : pts.filter (fun q => decide (q ≠ p)) = [] := List.argmin_eq_none.mp hR
+    refine ⟨hp, 0, p.2, by ring, fun q hq => ?_⟩
+    by_cases hqp : q = p
+    · subst hqp; simp
+    · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
+        List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
+      rw [hempty] at hmem; exact absurd hmem (List.not_mem_nil q)
+  · refine ⟨hp, edgeSlope p q₀, p.2 - edgeSlope p q₀ * (p.1 : ℚ), by ring, fun q hq => ?_⟩
+    by_cases hqp : q = p
+    · subst hqp; linarith
+    · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
+        List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
+      have hle : edgeSlope p q₀ ≤ edgeSlope p q := List.le_of_mem_argmin hmem hR
+      have hlt : (p.1 : ℚ) < (q.1 : ℚ) := by exact_mod_cast hleft q hq hqp
+      have hpos : (0 : ℚ) < (q.1 : ℚ) - (p.1 : ℚ) := by linarith
+      have key : edgeSlope p q₀ * ((q.1 : ℚ) - (p.1 : ℚ)) ≤ q.2 - p.2 :=
+        (le_div_iff₀ hpos).mp hle
+      have hdist : edgeSlope p q₀ * ((q.1 : ℚ) - (p.1 : ℚ))
+          = edgeSlope p q₀ * (q.1 : ℚ) - edgeSlope p q₀ * (p.1 : ℚ) := by ring
+      linarith [key, hdist]
+
+/-- **The maximum-index support point is a lower vertex** (the right endpoint of
+the Newton polygon).  Symmetric to `isLowerVertex_of_leftmost`: the supporting
+line of greatest edge-slope arriving at `p` lies weakly below every support
+point. -/
+theorem isLowerVertex_of_rightmost {pts : List SupportPoint} {p : SupportPoint}
+    (hp : p ∈ pts) (hright : ∀ q ∈ pts, q ≠ p → q.1 < p.1) :
+    IsLowerVertex pts p := by
+  classical
+  rcases hR : (pts.filter (fun q => decide (q ≠ p))).argmax (edgeSlope · p) with _ | q₀
+  · have hempty : pts.filter (fun q => decide (q ≠ p)) = [] := List.argmax_eq_none.mp hR
+    refine ⟨hp, 0, p.2, by ring, fun q hq => ?_⟩
+    by_cases hqp : q = p
+    · subst hqp; simp
+    · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
+        List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
+      rw [hempty] at hmem; exact absurd hmem (List.not_mem_nil q)
+  · refine ⟨hp, edgeSlope q₀ p, p.2 - edgeSlope q₀ p * (p.1 : ℚ), by ring, fun q hq => ?_⟩
+    by_cases hqp : q = p
+    · subst hqp; linarith
+    · have hmem : q ∈ pts.filter (fun q => decide (q ≠ p)) :=
+        List.mem_filter.mpr ⟨hq, by simpa using hqp⟩
+      have hge : edgeSlope q p ≤ edgeSlope q₀ p := List.le_of_mem_argmax hmem hR
+      have hlt : (q.1 : ℚ) < (p.1 : ℚ) := by exact_mod_cast hright q hq hqp
+      have hpos : (0 : ℚ) < (p.1 : ℚ) - (q.1 : ℚ) := by linarith
+      have key : p.2 - q.2 ≤ edgeSlope q₀ p * ((p.1 : ℚ) - (q.1 : ℚ)) :=
+        (div_le_iff₀ hpos).mp hge
+      have hdist : edgeSlope q₀ p * ((p.1 : ℚ) - (q.1 : ℚ))
+          = edgeSlope q₀ p * (p.1 : ℚ) - edgeSlope q₀ p * (q.1 : ℚ) := by ring
+      linarith [key, hdist]
+
+/-- Both endpoints of the worked example `Y² − x` are recovered as lower vertices
+by the endpoint theorems: `(0,1)` is leftmost and `(2,0)` is rightmost. -/
+theorem ysqMinusX_endpoints :
+    IsLowerVertex YsqMinusX (0, 1) ∧ IsLowerVertex YsqMinusX (2, 0) := by
+  refine ⟨isLowerVertex_of_leftmost (by simp [YsqMinusX]) ?_,
+    isLowerVertex_of_rightmost (by simp [YsqMinusX]) ?_⟩
+  · intro q hq hne; fin_cases hq <;> simp_all
+  · intro q hq hne; fin_cases hq <;> simp_all
+
 end PuiseuxTheoremOQ03
