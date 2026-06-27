@@ -1178,6 +1178,85 @@ theorem pascalProjLine_sameProjLine_of_mem_mem
     (pascalProjLine_sameProjLine_of_mem hh hex hnd)
 
 -- ============================================================
+-- PART 4h: Incidence — the three Pascal points lie on `pascalProjLine`
+--          (the geometric meaning of the line we descend to the quotient)
+-- ============================================================
+
+/- The well-definedness theorems above establish that `pascalProjLine` is a
+   `D₆`-invariant *projective line*.  The lemmas in this part identify *which*
+   line it is: the one through all three Pascal points `P = AB ∩ DE`,
+   `Q = BC ∩ EF`, `R = CD ∩ FA`.  Incidence `pointOnLine p l` is the scalar
+   triple product `∑ᵢ pᵢ lᵢ`; for `l = p ×₃ q` it is `[p, p, q] = 0` (P, Q on
+   the line, unconditional) and `[r, p, q] = det(p, q, r)` (R on the line iff
+   `P, Q, R` collinear — exactly Pascal's theorem).  These are pure polynomial
+   identities in the nine coordinates, closed by `ring` / `linear_combination`. -/
+
+/-- A spanning point lies on the line it spans: `p · (p ×₃ q) = 0`.
+    The scalar triple product `[p, p, q]` has a repeated argument, so vanishes. -/
+theorem pointOnLine_cross_left (p q : ProjPoint) :
+    pointOnLine p (crossProduct p q) := by
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue]
+  ring
+
+/-- The other spanning point lies on the line it spans: `q · (p ×₃ q) = 0`. -/
+theorem pointOnLine_cross_right (p q : ProjPoint) :
+    pointOnLine q (crossProduct p q) := by
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue]
+  ring
+
+/-- A point collinear with `p, q` lies on the line `p ×₃ q` they span:
+    `collinear p q r → r · (p ×₃ q) = 0`.  The scalar triple product
+    `r · (p ×₃ q)` equals `det(p, q, r)` (the same monomials, by the cyclic
+    symmetry of the determinant), so it vanishes exactly when `p, q, r` are
+    collinear. -/
+theorem pointOnLine_cross_of_collinear (p q r : ProjPoint)
+    (h : collinear p q r) : pointOnLine r (crossProduct p q) := by
+  simp only [collinear, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons,
+    Fin.reduceFinMk, Matrix.head_cons, Fin.isValue] at h
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue]
+  linear_combination h
+
+/-- The first Pascal point `P = AB ∩ DE` lies on `pascalProjLine`. -/
+theorem pascalP_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    pointOnLine (pascalP hex) (pascalProjLine hex) := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_left (pascalP hex) (pascalQ hex)
+
+/-- The second Pascal point `Q = BC ∩ EF` lies on `pascalProjLine`. -/
+theorem pascalQ_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    pointOnLine (pascalQ hex) (pascalProjLine hex) := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_right (pascalP hex) (pascalQ hex)
+
+/-- The third Pascal point `R = CD ∩ FA` lies on `pascalProjLine`.  This is the
+    geometric content of Pascal's theorem: the three opposite-side intersection
+    points are collinear, so `R` lies on the line spanned by `P` and `Q`. -/
+theorem pascalR_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    pointOnLine (pascalR hex) (pascalProjLine hex) := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_of_collinear (pascalP hex) (pascalQ hex) (pascalR hex)
+    (pascal_hexagon_theorem C hex)
+
+/-- **Geometric meaning of `pascalProjLine`.**  All three Pascal points
+    `P = AB ∩ DE`, `Q = BC ∩ EF`, `R = CD ∩ FA` lie on the single projective
+    line `pascalProjLine hex`.  Together with the `D₆`-invariance established in
+    PART 4g this pins down `pascalProjLine` as *the* Pascal line of the hexagon —
+    the common line of its three opposite-side intersections — and thereby gives
+    the descended quotient map `pascalLine` (PART 5) its intended geometric
+    value rather than just an abstract representative-independent vector. -/
+theorem pascal_points_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
+    collinearOnLine (pascalP hex) (pascalQ hex) (pascalR hex) (pascalProjLine hex) :=
+  ⟨pascalP_on_pascalProjLine hex, pascalQ_on_pascalProjLine hex,
+   pascalR_on_pascalProjLine hex⟩
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 

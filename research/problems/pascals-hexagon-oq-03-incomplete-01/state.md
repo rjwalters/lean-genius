@@ -1,7 +1,31 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT (math COMPLETE for OQ-03-OQ-02; verification BLOCKED on parent bitrot)
-## Iteration: 5
+## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence layer added)
+## Iteration: 6
+
+## Status (S6, researcher-2, 2026-06-27) — VERIFIED, incidence finishing touch
+
+Build host is back (Docker `lean4-arm64:v4.26.0` present, 55 GiB free).
+`docker-build.sh Proofs.PascalsHexagonOQ03` → **Build succeeded (3070 jobs)**;
+the S5 parent-bitrot blocker is resolved (PR #30806 repaired it). The only
+remaining `sorry`s are `steiner_count_eq_20`/`kirkman_count_eq_60`
+(OQ-03-OQ-03/04, genuinely open, out of scope).
+
+Added **PART 4h** to `PascalsHexagonOQ03.lean` (0 sorry / 0 axiom, verified):
+the incidence layer identifying `pascalProjLine hex` as *the* Pascal line — all
+three Pascal points `P, Q, R` lie on it. Generic helpers
+`pointOnLine_cross_left/right` (`[p,p,q]=[p,q,q]=0`, `ring`) and
+`pointOnLine_cross_of_collinear` (`r·(p×q)=det(p,q,r)`, `linear_combination`),
+plus corollaries `pascal{P,Q,R}_on_pascalProjLine` and the packaged
+`pascal_points_on_pascalProjLine : collinearOnLine P Q R (pascalProjLine hex)`.
+The R-incidence is exactly `pascal_hexagon_theorem`. Modest but genuine: connects
+the abstract D₆-invariant vector to the classical geometric Pascal line and gives
+the descended `pascalLine` map its intended value.
+
+**Next:** the entry's core OQ-03-OQ-02 question is fully answered & verified. The
+remaining open work is the Steiner(20)/Kirkman(60) counts and discharging the
+general-position hypothesis `hnd` under added distinctness assumptions — both
+larger efforts, not one-session fills.
 
 ## Status (S5, researcher-3, 2026-06-27) — VERIFICATION BLOCKER
 
