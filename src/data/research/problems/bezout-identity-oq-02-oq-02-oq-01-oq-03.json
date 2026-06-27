@@ -1,0 +1,47 @@
+{
+  "slug": "bezout-identity-oq-02-oq-02-oq-01-oq-03",
+  "title": "Lamé's theorem: O(log) complexity bound for the extended Euclidean algorithm",
+  "phase": "ACT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "**Open Question (bezout-identity-oq-02-oq-02-oq-01, Q3)**: Can the complexity bound O(log min(a,b)) for extGcd be formalized in Lean?\n\n**Result**: steps_le_log (steps a b ≤ 2·log₂ b + 2, the Lamé upper bound / O direction), steps_le_log_min (the O(log min(a,b)) form), and steps_fib (steps (fib(n+2)) (fib(n+1)) = n, the Fibonacci worst case / Ω direction), driven by two_mul_mod_lt (the remainder more-than-halves: 0<b≤a → 2·(a%b)<a).",
+    "plain": "The extended Euclidean algorithm extGcd of the parent entry recurses via (a, b+1) ↦ (b+1, a % (b+1)). Counting its division steps with `steps a b`, both sides of the Θ(log) characterization are proved: the Lamé upper bound steps a b ≤ 2·⌊log₂ b⌋ + 2 (O direction), via the halving lemma 2·(a%b)<a establishing that the controlling argument more-than-halves every two steps; and the Fibonacci worst case steps(fib(n+2))(fib(n+1)) = n (Ω direction), making the logarithmic bound tight up to a constant. This is Gabriel Lamé's 1844 theorem — historically the first complexity bound proved for any algorithm.",
+    "whyMatters": []
+  },
+  "knowledge": {
+    "progressSummary": "ACT (2026-06-27): Complete 0-sorry/0-axiom proof in proofs/Proofs/BezoutIdentityOQ02OQ02OQ01OQ03.lean (157 lines, 6 theorems + 1 def), already in Proofs.lean build target. DRAFT PR #30622. NOT machine-verified: host Docker corrupted (meta.db I/O error) AND Aristotle backend down (Resource not found on every request). researcher-9 source-level verification pass (2026-06-27): all 13 Mathlib/core lemma signatures confirmed against project's actual Mathlib v4.26.0 + Lean v4.26.0 core; induction case names (strongRecOn→ind, le_induction→base/succ) confirmed; simp-unfold-of-inline-WF-def pattern shown to build via parent OQ01 precedent (BezoutIdentityOQ02OQ02OQ01OQ01, imported in Proofs.lean). High confidence of first-try build; held as draft pending kernel check per honesty policy.",
+    "builtItems": [
+      "steps : ℕ → ℕ → ℕ — division-step counter mirroring extGcd's recursion (a,b+1)↦(b+1,a%(b+1))",
+      "two_mul_mod_lt {a b} (hb : 0 < b) (hab : b ≤ a) : 2 * (a % b) < a — the remainder more-than-halves; two-case split on 2*b ≤ a vs a/2 < b",
+      "steps_le_log : ∀ b, 0 < b → ∀ a, steps a b ≤ 2 * Nat.log 2 b + 2 — Lamé upper bound (O direction), strong induction + two-step descent",
+      "steps_le_log_min (a b) (hb : 0 < b) (hab : b ≤ a) : steps a b ≤ 2 * Nat.log 2 (min a b) + 2 — O(log min(a,b)) form",
+      "steps_fib : ∀ n, 1 ≤ n → steps (Nat.fib (n+2)) (Nat.fib (n+1)) = n — Fibonacci worst case (Ω direction), via fib(n+3)%fib(n+2)=fib(n+1)"
+    ],
+    "insights": [
+      "The remainder more-than-halves every two steps, not every step: a single step can leave a%b just below b, but two steps force 2·(a%b)<a (two_mul_mod_lt). This is why the Lamé constant is 2·log₂ b, not log₂ b.",
+      "Nat.log_mul_base (log b (n*b) = log b n + 1) + Nat.log_mono_right turn the arithmetic halving 2·r''<b into the logarithmic decrement log₂ r'' + 1 ≤ log₂ b that drives the induction.",
+      "Consecutive Fibonacci numbers reduce to the previous pair in exactly one step (fib(n+3)%fib(n+2)=fib(n+1) since fib(n+3)=fib(n+1)+fib(n+2) and fib(n+1)<fib(n+2)), giving the sharp Ω-direction worst case with a clean Nat.le_induction.",
+      "The inline well-founded `steps` def (termination via `have : a%(b+1)<b+1`) unfolds cleanly under `simp [steps]` — the same pattern the verified parent entry BezoutIdentityOQ02OQ02OQ01OQ01 uses for `extGcd` with `simp [extGcd]`."
+    ],
+    "mathlibGaps": [
+      "Mathlib has Nat.gcd, the Euclidean recursion, and Nat.log, but no formalized complexity/step-count bound for the Euclidean algorithm (Lamé's theorem); this entry supplies steps_le_log and the Fibonacci worst case."
+    ],
+    "nextSteps": [
+      "When Docker is healthy: ./proofs/scripts/docker-build.sh Proofs.BezoutIdentityOQ02OQ02OQ01OQ03, then gh pr ready 30622 and create the gallery entry src/data/proofs/bezout-identity-oq-02-oq-02-oq-01-oq-03 (status verified, badge original, axiomCount 0).",
+      "Possible follow-up OQ: tighten the constant from 2·log₂ b to the sharp log_φ b = log₂ b / log₂ φ via a Fibonacci-indexed lower envelope on `steps`."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "euclidean-algorithm",
+    "complexity",
+    "lame-theorem",
+    "fibonacci",
+    "bezout",
+    "logarithm",
+    "algorithm-analysis",
+    "research"
+  ]
+}
