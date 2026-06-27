@@ -4,14 +4,15 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-06-27T05:00:00-07:00
-**Iteration**: 4
+**Iteration**: 5
 
 ## Current Focus
-Repaired and **verified** the previously-broken 115/128 density floor. The prior commit
-(#30735) referenced four mod-128 theorems that were never written, so the file did not
-compile. This session authored the three missing mod-128 drop theorems (`7, 15, 59 mod 128`,
-each dropping in 11 residue-determined steps to `81m+d`) plus the 8-way packaging theorem,
-and confirmed EXIT 0 with `#print axioms` showing only `propext/Classical.choice/Quot.sound`.
+ORIENT/metadata-sync — no build capability this session (Docker down, no real lake/elan,
+no cached oleans), so authored no Lean. Confirmed from source that the 115/128 axiom-free
+floor (merged #30768) is intact (1051 L, 39 thm, 1 deep axiom `tao_2019`, 0 sorries) and
+the gallery meta is correct. Synced a grossly-stale `leanFiles` entry in the research JSON
+(146→1052 L, 7→39 thm). Documented a concrete Terras leading-coefficient (`c = 3^a/2^b`)
+formalization plan to de-risk the genuine next direction (design note only, unverified).
 
 ## Active Approach
 Deep result stays a single documented axiom (`tao_2019`); the elementary residue-dynamics
