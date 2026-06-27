@@ -18,7 +18,7 @@
       "tiling-theory"
     ],
     "badge": "wip",
-    "sorries": 5,
+    "sorries": 4,
     "erdosNumber": 633,
     "erdosUrl": "https://erdosproblems.com/633",
     "erdosProblemStatus": "open",
@@ -57,10 +57,10 @@
       "SoiferFamily generalization to (√p, √q, √r) triangles"
     ],
     "axiomCount": 0,
-    "lineCount": 438,
-    "assumptions": "0 axiom(s) and 5 sorry(s). Fully verified: the area-homogeneity engine (Triangle.area_scale), the area-compatibility dissection theorems (universal_square_dissection, equilateral_dissects_to_3, right_isoceles_dissects_to_2), and the model-collapse results added this session (all_counts_achievable, dissectionCounts_eq, no_square_only_in_model) which prove DissectionCounts T = {n | n ≥ 1} for every triangle and hence that NO triangle has the square-only property in the simplified area+similarity model. The 5 remaining sorries are the genuinely open/hard geometric content of Erdős #633 (soifer_square_only, integral_independence_implies_square_only, similar_dissection_characterization, exceptional_similar_cases, soifer_family_square_only); they are now known to be *model-false* (refuted by no_square_only_in_model) and dischargeable only after CongruentDissection is replaced by a faithful tiling predicate. See the Lean source for details.",
+    "lineCount": 491,
+    "assumptions": "0 axiom(s) and 4 sorry(s). Fully verified: the area-homogeneity engine (Triangle.area_scale), the area-compatibility dissection theorems (universal_square_dissection, equilateral_dissects_to_3, right_isoceles_dissects_to_2), and the model-collapse results (all_counts_achievable, dissectionCounts_eq, no_square_only_in_model) which prove DissectionCounts T = {n | n ≥ 1} for every triangle and hence that NO triangle has the square-only property in the simplified area+similarity model. This session extended the model-inadequacy diagnosis to the SIMILAR-dissection predicate, correcting an earlier mischaracterization: CanDissectIntoSimilar is also area-only and over-counts identically — canDissectIntoSimilar_of_one_le proves it holds for every n ≥ 1 (witness T.scale(1/√n)). Consequently similar_dissection_characterization (n ∉ {2,3,5} → dissectable) is now a proved but vacuous model-fact (sorry removed; the n ∉ {2,3,5} hypothesis is unused), and exceptional_similar_cases is shown model-FALSE by the new no_exceptional_similar_in_model. The 4 remaining sorries are genuine geometric statements that are *model-false* in the area+similarity model (soifer_square_only, integral_independence_implies_square_only, exceptional_similar_cases, soifer_family_square_only); they are dischargeable only after CongruentDissection/CanDissectIntoSimilar is replaced by a faithful tiling predicate. BUILD-PENDING: new proofs mirror the already-verified all_counts_achievable rewrite chain and use only standard Mathlib lemmas (mul_div_mul_left, Triangle.area_scale, Real.sq_sqrt); Docker build blocked by the persistent Mathlib-cache .ltar permission/OOM infra issue.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 18,
     "additionalFiles": [
       "Proofs/Erdos633Aristotle.lean"
@@ -156,8 +156,8 @@
       "title": "Similar vs Congruent Dissections",
       "startLine": 181,
       "endLine": 198,
-      "summary": "Defines CanDissectIntoSimilar (dissection into n similar — not necessarily congruent — pieces) and states the related Problem #634 results: similar_dissection_characterization (every triangle dissects into n similar copies for n ∉ {2,3,5}) and exceptional_similar_cases (some triangle resists n = 2,3,5), both sorry.",
-      "mathContext": "For *similar* dissections the answer is known (Problem #634): every triangle is cuttable into $n$ similar copies for all $n \\notin \\{2,3,5\\}$, with genuine exceptions at $2,3,5$. This contrasts with the still-open *congruent* case of #633."
+      "summary": "Defines CanDissectIntoSimilar (dissection into n similar — not necessarily congruent — pieces). canDissectIntoSimilar_of_one_le proves this predicate OVER-counts (holds for every n ≥ 1 via T.scale(1/√n)), exactly like the congruent model. Hence similar_dissection_characterization (n ∉ {2,3,5} → dissectable) is a proved-but-vacuous model-fact, and the genuine #634 exceptions are erased: no_exceptional_similar_in_model proves every triangle has counts 2,3,5, refuting exceptional_similar_cases (retained as a model-false aspirational sorry).",
+      "mathContext": "For *similar* dissections the genuine geometric answer is known (Problem #634): every triangle is cuttable into $n$ similar copies for all $n \\notin \\{2,3,5\\}$, with genuine exceptions at $2,3,5$. The area+similarity model used here cannot see this — it over-counts, making every $n \\ge 1$ trivially 'dissectable' and erasing the exceptions. Capturing the real #634 statement (like the still-open *congruent* case of #633) requires a faithful tiling predicate."
     },
     {
       "id": "classification-problem",
@@ -215,11 +215,11 @@
     "imports": [],
     "opens": [],
     "namespace": null,
-    "lineCount": 438,
+    "lineCount": 491,
     "axiomCount": 0,
-    "theoremCount": 16,
+    "theoremCount": 18,
     "definitionCount": 18,
-    "sorries": 5,
+    "sorries": 4,
     "path": "Proofs/Erdos633Problem.lean",
     "additionalFiles": [
       "Proofs/Erdos633Aristotle.lean"
@@ -261,5 +261,5 @@
       "description": "Related Erdős problem sharing themes: dissection, geometry"
     }
   ],
-  "sorries": 5
+  "sorries": 4
 }

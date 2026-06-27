@@ -376,17 +376,70 @@ theorem right_isoceles_dissects_to_2 : ∃ T : Triangle,
 
 /-! ## Similar vs Congruent Dissections -/
 
-/-- For similar (not congruent) dissections, the situation is different -/
+/-- For similar (not congruent) dissections, the situation is different.
+
+    NOTE (model adequacy): like `CongruentDissection`, this predicate encodes
+    only *necessary numeric* conditions — equal side ratios (`S` similar to `T`)
+    and area compatibility (`T.area = n · S.area`). It does NOT encode a real
+    geometric tiling into similar pieces. As `canDissectIntoSimilar_of_one_le`
+    proves below, it therefore OVER-counts exactly as the congruent model does:
+    the scaled copy `T.scale (1/√n)` is similar to `T` and has area `T.area / n`,
+    so it witnesses `CanDissectIntoSimilar T n` for *every* `n ≥ 1`. Hence the
+    two statements below are model-artifacts, not the hard #634 geometric content
+    (correcting an earlier classification of them as "hard"). -/
 def CanDissectIntoSimilar (T : Triangle) (n : ℕ) : Prop :=
   ∃ S : Triangle, S.a / S.b = T.a / T.b ∧ S.b / S.c = T.b / T.c ∧
     T.area = n * S.area
 
-/-- Every triangle can be dissected into n similar triangles for n ≠ 2, 3, 5 -/
-theorem similar_dissection_characterization (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
-    n ∉ ({2, 3, 5} : Set ℕ) → CanDissectIntoSimilar T n := by
-  sorry
+/-- **Over-counting of the similar model.** The scaled copy `T.scale (1/√n)` is
+    similar to `T` (same side ratios) and, by `Triangle.area_scale`, has area
+    `T.area / n`; so `CanDissectIntoSimilar T n` holds for *every* `n ≥ 1`,
+    independent of any geometric realizability. This is the similar-dissection
+    analogue of `all_counts_achievable`, and it shows the area+similarity model
+    is inadequate for the similar problem too. -/
+theorem canDissectIntoSimilar_of_one_le (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
+    CanDissectIntoSimilar T n := by
+  have hnR : (0:ℝ) < (n:ℝ) := by exact_mod_cast hn
+  have hsq : (0:ℝ) < Real.sqrt n := Real.sqrt_pos.mpr hnR
+  have hne : (1 / Real.sqrt n) ≠ 0 := ne_of_gt (one_div_pos.mpr hsq)
+  refine ⟨T.scale (1 / Real.sqrt n) (one_div_pos.mpr hsq), ?_, ?_, ?_⟩
+  · simp only [Triangle.scale]
+    exact mul_div_mul_left T.a T.b hne
+  · simp only [Triangle.scale]
+    exact mul_div_mul_left T.b T.c hne
+  · rw [Triangle.area_scale, div_pow, one_pow, Real.sq_sqrt (le_of_lt hnR),
+        ← mul_assoc, mul_one_div, div_self (ne_of_gt hnR), one_mul]
 
-/-- Some triangles cannot be dissected into 2, 3, or 5 similar triangles -/
+/-- Every triangle can be dissected into n similar triangles for n ≠ 2, 3, 5.
+
+    NOTE (model adequacy): in the area+similarity model this is a *weaker* and
+    vacuous consequence of `canDissectIntoSimilar_of_one_le` — the hypothesis
+    `n ∉ {2,3,5}` is unused because the over-counting witness `T.scale (1/√n)`
+    works for *all* `n ≥ 1`. The genuine #634 geometric statement (an actual
+    tiling into similar pieces) is what the model cannot see; this proof is the
+    honest model-content only. -/
+theorem similar_dissection_characterization (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
+    n ∉ ({2, 3, 5} : Set ℕ) → CanDissectIntoSimilar T n :=
+  fun _ => canDissectIntoSimilar_of_one_le T n hn
+
+/-- **The exceptional cases vanish in the model.** Every triangle satisfies
+    `CanDissectIntoSimilar T n` for `n = 2, 3, 5`, so no triangle is exceptional
+    in the area+similarity model — the existence claim `exceptional_similar_cases`
+    is model-FALSE (this is its direct refutation, the similar analogue of
+    `no_square_only_in_model`). -/
+theorem no_exceptional_similar_in_model (T : Triangle) :
+    CanDissectIntoSimilar T 2 ∧ CanDissectIntoSimilar T 3 ∧ CanDissectIntoSimilar T 5 :=
+  ⟨canDissectIntoSimilar_of_one_le T 2 (by norm_num),
+   canDissectIntoSimilar_of_one_le T 3 (by norm_num),
+   canDissectIntoSimilar_of_one_le T 5 (by norm_num)⟩
+
+/-- Some triangles cannot be dissected into 2, 3, or 5 similar triangles.
+
+    NOTE (model adequacy): this is *model-false* — `no_exceptional_similar_in_model`
+    proves every triangle has all three counts in the area+similarity model. It is
+    retained as an aspirational restatement of the genuine #634 geometric fact
+    (real exceptional similar dissections exist), dischargeable only after
+    `CanDissectIntoSimilar` is replaced by a faithful tiling predicate. -/
 theorem exceptional_similar_cases :
     ∃ T : Triangle, ¬CanDissectIntoSimilar T 2 ∧
       ¬CanDissectIntoSimilar T 3 ∧ ¬CanDissectIntoSimilar T 5 := by
