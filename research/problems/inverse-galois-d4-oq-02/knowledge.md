@@ -81,3 +81,21 @@ Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03/`. Same single-file
 - Non-coprime case (n=4): recover the full `n·φ(n)` beyond `lcm(n,φ(n))` via an independent kernel×quotient
   product witness.
 - Identify the semidirect-product structure `Gal ≅ ℤ/n ⋊ (ℤ/n)ˣ` explicitly.
+
+## Session 2026-06-27 (follow-up child oq-03-oq-01) — sharp degree boundary
+
+`Proofs/InverseGaloisD4OQ02OQ03OQ01.lean` (3 theorems, 0 sorries, 0 axioms; `#print axioms` =
+propext/Classical.choice/Quot.sound only) resolves the **first open question** of the cubic-pinning
+entry oq-03 ("characterize all n with n·φ(n) = n!"):
+
+- `totient_mul_eq_factorial_iff (hn : 2 ≤ n) : n·φ(n) = n! ↔ n = 2 ∨ n = 3`. Forward: write n = m+2,
+  use `Nat.totient_lt` (φ(n) ≤ n−1 ⟹ n·φ(n) ≤ n(n−1)) and `(m+2)! = (m+2)(m+1)·m!` with m! ≥ 2
+  (`Nat.factorial_le`), so n! ≥ 2·n(n−1) > n·φ(n) for n ≥ 4 — contradiction (nlinarith).
+- `gal_card_eq_factorial_of_pin` : n·φ(n) = n! ⟹ |Gal(Xⁿ−p)| = n!, with **no coprimality hypothesis**
+  — the only boundary degrees n ∈ {2,3} are automatically coprime, so the parent coprime bound applies.
+- `gal_card_quadratic_eq_two : |Gal(X²−p/ℚ)| = 2` for every prime p — the quadratic companion of
+  oq-03's cubic |Gal(X³−p)| = 6. (2·φ(2) = 2 = 2!.)
+
+**Upshot**: the elementary bracket pins |Gal(Xⁿ−p)| exactly at n = 2 (→ 2 = |C₂|) and n = 3 (→ 6 = |S₃|),
+and nowhere else; n ≥ 4 (starting with the base entry's n = 4, where 4·φ(4) = 8 ≠ 24) has genuine slack.
+Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03-oq-01/`. Same single-file `lake env lean` recipe.
