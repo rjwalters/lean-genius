@@ -3327,6 +3327,7 @@ import Proofs.Hilbert22Uniformization
 import Proofs.Hilbert23CalculusVariations
 import Proofs.Hilbert23CalculusVariationsOQ01
 import Proofs.Hilbert3OQ02
+import Proofs.Hilbert3OQ04NivenTetrahedron
 import Proofs.Hilbert3ScissorsCongruence
 import Proofs.Hilbert4Geodesics
 import Proofs.Hilbert5LieGroups
