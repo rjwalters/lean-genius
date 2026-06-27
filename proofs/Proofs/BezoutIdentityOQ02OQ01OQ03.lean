@@ -1,0 +1,122 @@
+/-
+  Bézout Identity — OQ-02-OQ-01-OQ-03:
+  Constructive Bézout coefficients via the extended Euclidean algorithm,
+  and their uniqueness modulo the homogeneous lattice.
+
+  ## Question
+  The parent line develops Bézout's identity and its consequences (Euclid's
+  Lemma, the Fundamental Theorem of Arithmetic). Bézout's identity asserts the
+  *existence* of integers s, t with  a · s + b · t = gcd(a, b).
+
+  Mathlib's extended Euclidean algorithm (`Nat.gcdA`, `Nat.gcdB`) produces one
+  concrete such pair. But the coefficients are NOT unique: if (s, t) works, so
+  does (s + k·(b/g), t − k·(a/g)) for every integer k. This file settles the
+  converse — the *uniqueness* / classification: those are the ONLY pairs, so the
+  solution set of a·x + b·y = g is exactly one coset of the lattice ℤ·(b/g, −a/g).
+
+  ## What this file delivers (0 axioms, 0 sorries)
+  * `bezout_identity` — extended-gcd Bézout identity over ℤ (from `Nat.gcd_eq_gcd_ab`).
+  * `coprime_homogeneous` — core lemma: for coprime a, b (b ≠ 0), every solution
+    of a·u + b·v = 0 is u = k·b, v = −(k·a).
+  * `coprime_bezout_unique` — uniqueness: two solutions of a·x + b·y = c differ by
+    one lattice step (k·b, −k·a).
+  * `coprime_bezout_param` — converse: every lattice step is again a solution.
+  * `gcdA_gcdB_unique` — the extended-Euclid coefficients (gcdA, gcdB) are unique
+    modulo (b, −a) for coprime a, b.
+  * Concrete worked instances for the coprime pair (3, 5).
+
+  References:
+  [Bez1779]  Bézout, "Théorie générale des équations algébriques" (1779)
+  [Knuth2]   Knuth, TAOCP Vol. 2, §4.5.2 (extended Euclidean algorithm)
+
+  Tags: number-theory, bezout, euclidean-algorithm, diophantine, classical
+-/
+
+import Mathlib
+
+namespace BezoutExtGcdUnique
+
+-- ============================================================
+-- SECTION I: Existence — the extended-Euclid Bézout identity
+-- ============================================================
+
+/-- Bézout's identity from Mathlib's extended Euclidean coefficients
+    `Nat.gcdA`, `Nat.gcdB`: over ℤ, `gcd a b = a · gcdA a b + b · gcdB a b`. -/
+theorem bezout_identity (a b : ℕ) :
+    (Nat.gcd a b : ℤ) = a * Nat.gcdA a b + b * Nat.gcdB a b :=
+  Nat.gcd_eq_gcd_ab a b
+
+-- ============================================================
+-- SECTION II: Homogeneous solutions for coprime a, b
+-- ============================================================
+
+/-- **Core lemma.** For coprime integers `a, b` with `b ≠ 0`, every solution of
+    the homogeneous equation `a·u + b·v = 0` is a lattice multiple of `(b, −a)`. -/
+theorem coprime_homogeneous {a b u v : ℤ} (hab : IsCoprime a b) (hb : b ≠ 0)
+    (h : a * u + b * v = 0) : ∃ k : ℤ, u = k * b ∧ v = -(k * a) := by
+  have hbav : b ∣ a * u := ⟨-v, by linear_combination h⟩
+  have hbu : b ∣ u := (hab.symm).dvd_of_dvd_mul_left hbav
+  obtain ⟨k, hk⟩ := hbu
+  refine ⟨k, by rw [hk]; ring, ?_⟩
+  have hz : b * (a * k + v) = 0 := by rw [hk] at h; linear_combination h
+  have hzero : a * k + v = 0 := (mul_eq_zero.mp hz).resolve_left hb
+  linear_combination hzero
+
+-- ============================================================
+-- SECTION III: Uniqueness and parametrization
+-- ============================================================
+
+/-- **Uniqueness.** For coprime `a, b` with `b ≠ 0`, any two solutions of
+    `a·x + b·y = c` differ by exactly one lattice step `(k·b, −k·a)`. -/
+theorem coprime_bezout_unique {a b x₁ y₁ x₂ y₂ : ℤ} (hab : IsCoprime a b)
+    (hb : b ≠ 0) (h : a * x₁ + b * y₁ = a * x₂ + b * y₂) :
+    ∃ k : ℤ, x₂ - x₁ = k * b ∧ y₂ - y₁ = -(k * a) := by
+  have h0 : a * (x₂ - x₁) + b * (y₂ - y₁) = 0 := by linear_combination -h
+  exact coprime_homogeneous hab hb h0
+
+/-- **Parametrization (converse).** Every lattice step from a solution is again
+    a solution: `a·(x + k·b) + b·(y − k·a) = a·x + b·y`. -/
+theorem coprime_bezout_param (a b x y k : ℤ) :
+    a * (x + k * b) + b * (y - k * a) = a * x + b * y := by ring
+
+-- ============================================================
+-- SECTION IV: Specialization to the extended-Euclid coefficients
+-- ============================================================
+
+/-- For coprime naturals `a, b` with `b ≠ 0`, the extended-Euclid coefficients
+    `(gcdA a b, gcdB a b)` are unique modulo `(b, −a)`. -/
+theorem gcdA_gcdB_unique {a b : ℕ} (hab : Nat.Coprime a b) (hb : b ≠ 0)
+    {x y : ℤ} (h : (a : ℤ) * x + b * y = 1) :
+    ∃ k : ℤ, x - Nat.gcdA a b = k * b ∧ y - Nat.gcdB a b = -(k * a) := by
+  have hcop : IsCoprime (a : ℤ) (b : ℤ) := Nat.isCoprime_iff_coprime.mpr hab
+  have hb' : (b : ℤ) ≠ 0 := by exact_mod_cast hb
+  have hg : (a : ℤ) * Nat.gcdA a b + b * Nat.gcdB a b = 1 := by
+    have hbez := Nat.gcd_eq_gcd_ab a b
+    rw [hab.gcd_eq_one] at hbez
+    exact_mod_cast hbez.symm
+  exact coprime_bezout_unique hcop hb' (by rw [hg, h])
+
+-- ============================================================
+-- SECTION V: Concrete worked instances (coprime pair 3, 5)
+-- ============================================================
+
+/-- `(2, −1)` is a Bézout pair for `(3, 5)`: `3·2 + 5·(−1) = 1`. -/
+theorem ex35_a : (3 : ℤ) * 2 + 5 * (-1) = 1 := by norm_num
+
+/-- `(−3, 2)` is another Bézout pair for `(3, 5)`: `3·(−3) + 5·2 = 1`. -/
+theorem ex35_b : (3 : ℤ) * (-3) + 5 * 2 = 1 := by norm_num
+
+/-- The two pairs differ by exactly one lattice step `k = −1`. -/
+theorem ex35_step : ((-3 : ℤ) = 2 + (-1) * 5) ∧ ((2 : ℤ) = -1 - (-1) * 3) := by
+  constructor <;> norm_num
+
+/-- The whole one-parameter family for `(3, 5)`: every `k` gives a solution. -/
+theorem ex35_family (k : ℤ) : (3 : ℤ) * (2 + k * 5) + 5 * (-1 - k * 3) = 1 := by
+  ring
+
+#check @coprime_homogeneous
+#check @coprime_bezout_unique
+#check @coprime_bezout_param
+#check @gcdA_gcdB_unique
+
+end BezoutExtGcdUnique
