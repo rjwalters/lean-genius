@@ -23,12 +23,16 @@
   commute (the product lives in the commutative ring K[X]) the whole product
   annihilates f. Hence the product is a multiple of the minimal polynomial.
 
-  This converts the parent's `minpoly_product_formula` axiom into a one-sided
-  gap: only the reverse divisibility (`∏ ∣ minpoly`) still requires assembling the
-  primary decomposition.
+  This file then closes the gap entirely, proving the parent's axiomatized
+  identity `minpoly_product_formula` as a theorem
+  (`minpoly_eq_prod_pow_maxGenEigenspaceIndex`):
 
-  This file additionally supplies the **exactness** ingredient that reverse
-  divisibility needs (previously the documented blocker `maxGenEigenspaceIndex_exact`):
+      minpoly K f = ∏_{μ eigenvalue} (X - μ)^{maxGenEigenspaceIndex f μ}.
+
+  The reverse divisibility `∏ ∣ minpoly` is supplied **without** assembling a
+  primary decomposition and, notably, needs only `FiniteDimensional` (no
+  algebraic closure): it argues one eigenvalue at a time via the **exactness** of
+  the generalized-eigenspace index.
 
     * `genEigenspace_lt_succ_of_lt_maxGenEigenspaceIndex` — below the limit index the
       generalized-eigenspace chain strictly increases, so `maxGenEigenspaceIndex` is
@@ -37,8 +41,16 @@
       of `maxGenEigenspaceIndex` (= `monotonicSequenceLimitIndex`).
     * `exists_mem_maxGenEigenspace_pow_pred_ne_zero` — the concrete witness: a vector
       in the maximal generalized eigenspace not killed by `(f - μ)^{e-1}`.
+    * `pow_maxGenEigenspaceIndex_dvd_minpoly` — single-factor reverse divisibility
+      `(X - μ)^{e_μ} ∣ minpoly`, via the witness, the root-multiplicity
+      factorisation `minpoly = (X-μ)^m·g`, and `(X-μ)`–`g` coprimality (Bézout).
+    * `prod_pow_maxGenEigenspaceIndex_dvd_minpoly` — the full product divides, by
+      pairwise coprimality of the distinct linear-power factors.
+    * `minpoly_eq_prod_pow_maxGenEigenspaceIndex` — the two divisibilities and
+      monicity of both sides give the exact identity.
 
-  Status: 0 sorries, 0 axioms. Fully verified against Mathlib 4.26.0.
+  Status: 0 sorries, 0 axioms. Fully verified against Mathlib 4.26.0
+  (`#print axioms` lists only `propext`, `Classical.choice`, `Quot.sound`).
 
   References:
   - Axler, "Linear Algebra Done Right", Lemma 8.21 (generalized eigenspaces span)
@@ -192,5 +204,125 @@ theorem exists_mem_maxGenEigenspace_pow_pred_ne_zero [FiniteDimensional K V]
   · rw [maxGenEigenspace_eq]; exact hv_mem
   · rw [genEigenspace_nat, LinearMap.mem_ker] at hv_not
     exact hv_not
+
+/-- **Reverse divisibility, one factor at a time.**
+
+    For *every* scalar `μ` the maximal-generalized-eigenspace power
+    `(X - μ)^{e_μ}` divides the minimal polynomial of `f`
+    (`e_μ = maxGenEigenspaceIndex f μ`).
+
+    This is the genuine reverse direction of the JCF product formula and the
+    previously-documented blocker: it needs the *exactness* of the index, i.e.
+    that no smaller exponent kills the whole `μ`-summand.  Notably it requires
+    only `FiniteDimensional` — **no algebraic closure** — since it argues one
+    eigenvalue at a time.
+
+    Proof.  If `e_μ = 0` it is trivial.  Otherwise write
+    `minpoly = (X - μ)^m · g` with `m = rootMultiplicity μ (minpoly)` and
+    `(X - μ) ∤ g`.  Since `X - μ` is prime and does not divide `g`, the factors
+    `(X - μ)^{e_μ}` and `g` are coprime; Bézout gives `a, b` with
+    `a·(X-μ)^{e_μ} + b·g = 1`.  Take the exactness witness `v` with
+    `(f-μ)^{e_μ} v = 0` but `(f-μ)^{e_μ-1} v ≠ 0`.  Evaluating Bézout at `v`
+    kills the first term and yields `v = b(f)·(g(f) v)`.  Because `minpoly`
+    annihilates `f`, `(f-μ)^m (g(f) v) = 0`; as `b(f)` commutes with `(f-μ)^m`
+    this forces `(f-μ)^m v = 0`.  Exactness (`(f-μ)^{e_μ-1} v ≠ 0`) then forces
+    `e_μ ≤ m`, so `(X-μ)^{e_μ} ∣ (X-μ)^m ∣ minpoly`. -/
+theorem pow_maxGenEigenspaceIndex_dvd_minpoly [FiniteDimensional K V]
+    (f : Module.End K V) (μ : K) :
+    (X - C μ) ^ f.maxGenEigenspaceIndex μ ∣ minpoly K f := by
+  set e := f.maxGenEigenspaceIndex μ with he
+  rcases Nat.eq_zero_or_pos e with he0 | hpos
+  · simp [he0]
+  -- `minpoly` factorisation at the root `μ`.
+  have hint : IsIntegral K f := Algebra.IsIntegral.isIntegral f
+  have hmp0 : minpoly K f ≠ 0 := minpoly.ne_zero hint
+  set m := (minpoly K f).rootMultiplicity μ with hm
+  obtain ⟨g, hg_eq, hg_not_dvd⟩ :=
+    (minpoly K f).exists_eq_pow_rootMultiplicity_mul_and_not_dvd hmp0 μ
+  -- `(X - μ)^e` and `g` are coprime: `X - μ` is prime and `∤ g`.
+  have hcop : IsCoprime ((X - C μ) ^ e) g :=
+    ((prime_X_sub_C μ).coprime_iff_not_dvd.2 hg_not_dvd).pow_left
+  -- Exactness witness.
+  obtain ⟨v, hv_mem, hv_ne⟩ := exists_mem_maxGenEigenspace_pow_pred_ne_zero f μ hpos
+  have hv_e : ((f - μ • 1) ^ e) v = 0 := by
+    have hmem : v ∈ f.genEigenspace μ (e : ℕ∞) := by rw [← maxGenEigenspace_eq]; exact hv_mem
+    rwa [genEigenspace_nat, LinearMap.mem_ker] at hmem
+  -- Bézout, evaluated at `v`: the `(X-μ)^e` term dies, leaving `v = b(f)(g(f) v)`.
+  obtain ⟨a, b, hab⟩ := hcop
+  have key : (aeval f b) ((aeval f g) v) = v := by
+    have h1 : (aeval f a) * (aeval f ((X - C μ) ^ e)) + (aeval f b) * (aeval f g)
+        = (1 : Module.End K V) := by
+      rw [← map_mul, ← map_mul, ← map_add, hab, map_one]
+    have key0 := congrArg (fun T : Module.End K V => T v) h1
+    simp only [LinearMap.add_apply, Module.End.mul_apply, Module.End.one_apply] at key0
+    rwa [aeval_linear_factor_pow, hv_e, map_zero, zero_add] at key0
+  -- `minpoly` annihilates `f`, so `(f-μ)^m (g(f) v) = 0`.
+  have hmg : ((f - μ • 1) ^ m) ((aeval f g) v) = 0 := by
+    have hz : aeval f (minpoly K f) = 0 := minpoly.aeval K f
+    rw [hg_eq, map_mul, aeval_linear_factor_pow] at hz
+    have := congrArg (fun T : Module.End K V => T v) hz
+    simpa [Module.End.mul_apply] using this
+  -- `b(f)` commutes with `(f-μ)^m`, so `(f-μ)^m v = b(f)((f-μ)^m (g(f) v)) = 0`.
+  have hcomm : Commute ((f - μ • 1) ^ m) (aeval f b) := by
+    have : Commute (aeval f ((X - C μ) ^ m)) (aeval f b) :=
+      (Commute.all ((X - C μ) ^ m) b).map (aeval f)
+    rwa [aeval_linear_factor_pow] at this
+  have hmv : ((f - μ • 1) ^ m) v = 0 := by
+    calc ((f - μ • 1) ^ m) v
+        = ((f - μ • 1) ^ m) ((aeval f b) ((aeval f g) v)) := by rw [key]
+      _ = (aeval f b) (((f - μ • 1) ^ m) ((aeval f g) v)) := by
+            rw [← Module.End.mul_apply, hcomm.eq, Module.End.mul_apply]
+      _ = (aeval f b) 0 := by rw [hmg]
+      _ = 0 := map_zero _
+  -- Exactness forces `e ≤ m`.
+  have hme : e ≤ m := by
+    by_contra hlt
+    push_neg at hlt
+    apply hv_ne
+    have hsplit : e - 1 = (e - 1 - m) + m := by omega
+    rw [hsplit, pow_add, Module.End.mul_apply, hmv, map_zero]
+  calc (X - C μ) ^ e ∣ (X - C μ) ^ m := pow_dvd_pow _ hme
+    _ ∣ minpoly K f := pow_rootMultiplicity_dvd _ _
+
+/-- **Reverse divisibility of the JCF product formula.**
+
+    The full eigenvalue product `∏ (X - μ)^{e_μ}` divides `minpoly K f`.
+    The single factors are pairwise coprime (distinct `μ`), so divisibility of
+    the product follows from divisibility of each factor
+    (`pow_maxGenEigenspaceIndex_dvd_minpoly`).  Like the per-factor statement
+    this needs only `FiniteDimensional`. -/
+theorem prod_pow_maxGenEigenspaceIndex_dvd_minpoly [FiniteDimensional K V]
+    (f : Module.End K V) :
+    (∏ μ ∈ (finite_hasEigenvalue f).toFinset, (X - C μ) ^ f.maxGenEigenspaceIndex μ)
+      ∣ minpoly K f := by
+  refine Finset.prod_dvd_of_coprime (fun a _ b _ hab => ?_)
+    (fun μ _ => pow_maxGenEigenspaceIndex_dvd_minpoly f μ)
+  exact (pairwise_coprime_X_sub_C Function.injective_id hab).pow
+
+/-- **The Jordan-canonical-form minimal-polynomial product formula.**
+
+    Over an algebraically closed field, in finite dimensions,
+
+        `minpoly K f = ∏_{μ eigenvalue} (X - μ)^{maxGenEigenspaceIndex f μ}`.
+
+    This is the exact identity that the parent file (`cayley-hamilton-minpoly-oq-01`)
+    only *axiomatized* as `minpoly_product_formula`.  It is obtained here with no
+    Jordan-block matrix infrastructure, purely from generalized-eigenspace theory:
+
+      * forward divisibility `minpoly ∣ ∏` from `iSup_maxGenEigenspace_eq_top`
+        (`minpoly_dvd_maxGenEigenspace_product`);
+      * reverse divisibility `∏ ∣ minpoly` from index exactness
+        (`prod_pow_maxGenEigenspaceIndex_dvd_minpoly`);
+      * both sides are monic, so the two divisibilities upgrade to equality. -/
+theorem minpoly_eq_prod_pow_maxGenEigenspaceIndex [IsAlgClosed K] [FiniteDimensional K V]
+    (f : Module.End K V) :
+    minpoly K f
+      = ∏ μ ∈ (finite_hasEigenvalue f).toFinset, (X - C μ) ^ f.maxGenEigenspaceIndex μ := by
+  have hint : IsIntegral K f := Algebra.IsIntegral.isIntegral f
+  refine eq_of_monic_of_associated (minpoly.monic hint)
+    (monic_prod_of_monic _ _ (fun μ _ => (monic_X_sub_C μ).pow _)) ?_
+  exact associated_of_dvd_dvd
+    (minpoly_dvd_maxGenEigenspace_product f)
+    (prod_pow_maxGenEigenspaceIndex_dvd_minpoly f)
 
 end JordanMinpolyOQ01OQ01
