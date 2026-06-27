@@ -72,6 +72,48 @@
       "Formalize the projective-invariance of Pascal collinearity under arbitrary invertible projective maps as a reusable lemma, completing the Sylvester reduction"
     ]
   },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Overview: Discharging the Pascal Axiom on the Rational-Normal Conic",
+      "startLine": 5,
+      "endLine": 55,
+      "summary": "Module docstring. Both the Brianchon and Pascal gallery entries rest on the single geometric axiom conic_implies_pascal (six points on a conic make the three meets of opposite hexagon sides collinear). This file removes the axiom on the computational core: the rational-normal conic xz = y² parametrized by t ↦ (t², t, 1). The only ingredient still separating this from a full discharge of the abstract axiom is the projective-normalization / Sylvester transfer (carrying a nondegenerate symmetric C onto the standard conic), documented as the next step.",
+      "mathContext": "$xz = y^2,\\quad t \\mapsto (t^2, t, 1)$ — the rational normal (Veronese) conic."
+    },
+    {
+      "id": "model",
+      "title": "The Homogeneous ℝ³ Model",
+      "startLine": 59,
+      "endLine": 88,
+      "summary": "Explicit component formulas (chosen so the whole Pascal identity reduces to one ring call): cross is the cross product, serving as both the join of two projective points and the meet of two projective lines; det3 is the scalar triple product / 3×3 determinant; Collinear p q r := det3 p q r = 0. conicPt t := (t², t, 1) is a point of the conic, and conicPt_mem verifies it satisfies xz − y² = 0.",
+      "mathContext": "$\\mathrm{Collinear}(p,q,r) \\iff \\det[p\\;q\\;r] = 0;\\quad u \\wedge v = u \\times v.$"
+    },
+    {
+      "id": "pascal-main",
+      "title": "Pascal's Theorem for the Parametrized Conic",
+      "startLine": 90,
+      "endLine": 117,
+      "summary": "pascalX/Y/Z define the three Pascal points X = (AB)∧(DE), Y = (BC)∧(EF), Z = (CD)∧(FA) as nested cross products. pascal_parametrized is the headline: for ANY six parameters a…f, the Pascal points of the inscribed hexagon are collinear — proved by unfolding all definitions and closing with a single ring call. This is exactly conic_implies_pascal, unconditional for the parametrized conic.",
+      "mathContext": "$X=(AB)\\wedge(DE),\\ Y=(BC)\\wedge(EF),\\ Z=(CD)\\wedge(FA);\\quad \\det[X\\;Y\\;Z]=0.$"
+    },
+    {
+      "id": "infinity",
+      "title": "The Point at Infinity",
+      "startLine": 119,
+      "endLine": 145,
+      "summary": "The parametrization t ↦ (t², t, 1) misses the single conic point (1,0,0) (the limit t → ∞). conicInf := (1,0,0) with conicInf_mem on the conic, and pascal_with_infinity proves Pascal collinearity for the hexagon ∞ B C D E F — again a pure ring identity — so the theorem covers the full conic, not just the affine chart.",
+      "mathContext": "$\\infty = (1,0,0) = \\lim_{t\\to\\infty}(1, 1/t, 1/t^2)$ on $xz = y^2$."
+    },
+    {
+      "id": "sanity",
+      "title": "Sanity Checks",
+      "startLine": 147,
+      "endLine": 159,
+      "summary": "pascal_example instantiates the parameters 0,1,2,3,4,5 as a concrete witness. The degenerate-collapse remark records that the identity is not an artifact of genericity: coincident opposite vertices leave the Pascal line well defined (collinearity vacuous/automatic).",
+      "mathContext": "Concrete instance: parameters $0,1,2,3,4,5$."
+    }
+  ],
   "crossReferences": [
     {
       "relationship": "Discharges, for the rational-normal conic, the conic_implies_pascal axiom that the Brianchon entry takes as its single assumption; uses the identical homogeneous ℝ³ cross-product / determinant model",
