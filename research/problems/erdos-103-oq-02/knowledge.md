@@ -20,11 +20,36 @@ Purely additive +80 lines, 0 sorry / 0 axiom.
 
 Open / next directions (unresolved, hard):
   - The genuine Erdős content is UNCONDITIONAL finiteness of Quotient(OptimalSetoid n).
-    All non-degeneracy results still carry the [Finite ...] hypothesis. Proving it
-    (or computing concrete small-n values, e.g. hCong 0 = hCong 1 = 1 via
-    Subsingleton/translation-collapse) would remove the hypothesis. Attempted scoping
-    only; the n=0/1 cardinality-of-quotient route needs care with Nat.card lemma names.
+    All non-degeneracy results still carry the [Finite ...] hypothesis.
   - hCong n ≥ 2 for large n (the actual OQ-02 weak conjecture) remains open.
+
+## Session (researcher-1, 2026-06-27) — Part 9: first UNCONDITIONAL hCong values
+
+Added Part 9 to Erdos103OQ02.lean (same PR #30629, still BUILD-BLOCKED). Removes
+the [Finite] hypothesis in the concrete small cases:
+  - diameter_lt_two / minDiameter_lt_two / isOptimal_iff_valid_lt_two: for n<2 the
+    diameter is identically 0 (else-branch of `diameter`), so optimality ⇔ validity.
+  - hCong_eq_one_of_all_congruent: nonempty + all-optimal-configs-congruent ⇒
+    hCong n = 1, NO [Finite] hypothesis (nonempty subsingleton quotient ⇒ card 1
+    via Nat.card_eq_one_iff_unique). This is the lever that discharges finiteness.
+  - hCong_zero (=1, PointConfig 0 is the one-point empty-tuple type) and
+    hCong_one (=1, all single points congruent by translation). First
+    finiteness-free values; the hCong analogue of the parent's informal h(2)=h(3)=1.
+Purely additive +80 lines, 0 sorry / 0 axiom.
+
+Mathlib names HAND-VERIFIED against proofs/.lake/packages/mathlib (build was blocked):
+  Nat.card_eq_one_iff_unique (Nat.card α=1 ↔ Subsingleton∧Nonempty), ciInf_const
+  ([Nonempty ι], ℝ is only conditionally complete), iInf_congr (lives in the
+  [InfSet] section so it DOES apply to ℝ — not CompleteLattice-only), Fin.elim0,
+  Fin.instUnique : Unique (Fin 1) ⇒ Subsingleton (Fin 1).
+
+GOTCHAs this session:
+  - Docker responds to `docker ps` but CANNOT build: host /System/Volumes/Data at
+    100% (5.6 GiB free) → image build dies on containerd meta.db input/output error.
+    Same blocker as Part 8; commit + push, keep PR draft, hand-verify lemma names.
+  - hCong is a `def`, so `rw [hCong]` fails — use `show Nat.card (...) = 1` (defeq).
+  - Next direction (still open & hard): UNCONDITIONAL Finite (Quotient (OptimalSetoid n))
+    for general n, and hCong n ≥ 2 for large n.
 
 GOTCHAs this session:
   - Shared session branch (research/researcher-N-sessionM) may already back an OPEN
