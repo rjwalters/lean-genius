@@ -1,0 +1,99 @@
+{
+  "id": "cauchy-schwarz-oq-01-oq-03-oq-02",
+  "title": "Shannon Entropy: Maximum-Entropy Bound (toward Entropic Uncertainty)",
+  "slug": "cauchy-schwarz-oq-01-oq-03-oq-02",
+  "description": "Builds the finite-dimensional Shannon-entropy infrastructure needed for an entropic uncertainty relation: entropy of a probability vector via Mathlib's negMulLog, its nonnegativity, and the maximum-entropy bound H(p) ≤ log n via Jensen's inequality (with equality at the uniform distribution). The full Maassen–Uffink entropic uncertainty principle remains blocked on Mathlib's missing interpolation theory.",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "verified",
+    "proofRepoPath": "Proofs/CauchySchwarzOQ01OQ03OQ02.lean",
+    "tags": [
+      "analysis",
+      "information theory",
+      "entropy",
+      "quantum mechanics",
+      "uncertainty principle",
+      "convexity"
+    ],
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 91,
+    "assumptions": "Uses Mathlib's Real.negMulLog (Shannon entropy term) with its concavity (concaveOn_negMulLog) and the finite Jensen inequality (ConcaveOn.le_map_sum). No additional axioms or assumptions.",
+    "theoremCount": 3,
+    "mathlib_version": "4.26.0",
+    "definitionCount": 1
+  },
+  "overview": {
+    "problemStatement": "Parent open question: can the entropic uncertainty principle (Maassen–Uffink 1988), $H(p) + H(q) \\geq -2\\ln c$ for the outcome distributions of two orthonormal bases with maximal overlap $c$, be formalized in Lean 4? This entry establishes the provable entropy half of that relation — the maximum-entropy bound $H(p) \\leq \\log n$ — and documents the precise obstruction to the full theorem.",
+    "historicalContext": "Shannon introduced the entropy $H(p) = -\\sum_i p_i \\log p_i$ in 1948. The principle that the uniform distribution maximizes entropy ($H(p) \\leq \\log n$) is a foundational maximum-entropy fact, provable directly from the concavity of $t \\mapsto -t\\log t$ via Jensen's inequality. The entropic formulation of the uncertainty principle was conjectured by Hirschman (1957), with the sharp finite-dimensional form proved by Deutsch (1983) and improved to the optimal constant by Maassen and Uffink (1988). The Maassen–Uffink bound is a strictly stronger, basis-independent statement than the Robertson/Heisenberg variance bound of the parent entry.",
+    "proofStrategy": "Shannon entropy of a finite probability vector is defined as a sum of Mathlib's negMulLog terms. Nonnegativity follows termwise from negMulLog_nonneg on [0,1]. The maximum-entropy bound is the concave Jensen inequality (ConcaveOn.le_map_sum) applied to negMulLog with uniform weights 1/n: this gives (1/n)·H(p) ≤ negMulLog(1/n) = (1/n)·log n, and cancelling 1/n yields H(p) ≤ log n. The uniform distribution is shown to attain the bound by direct computation.",
+    "keyInsights": [
+      "The maximum-entropy bound H(p) ≤ log n is precisely the concavity of negMulLog plus Jensen with uniform weights — no information-theoretic machinery beyond Mathlib's Real.negMulLog is required.",
+      "This is the 'entropy ceiling' that bounds either marginal in an entropic uncertainty relation; the genuinely hard content of Maassen–Uffink is the lower bound on the sum H(p) + H(q).",
+      "The sharp Maassen–Uffink constant -2 ln c follows from the Hausdorff–Young inequality (a (2→∞) operator-norm / Riesz–Thorin interpolation argument), which Mathlib v4.26.0 does not yet provide — making the full theorem genuinely blocked rather than merely unattempted.",
+      "Deutsch's interpolation-free precursor H(p) + H(q) ≥ -2 ln((1+c)/2) is the natural next target once finite-dimensional entropy infrastructure (this entry) is in place."
+    ]
+  },
+  "sections": [
+    {
+      "id": "background",
+      "title": "Background and Blocker",
+      "startLine": 1,
+      "endLine": 24,
+      "summary": "Documents the entropic uncertainty principle (Maassen–Uffink), records that the sharp form is blocked on Mathlib's missing Hausdorff–Young / Riesz–Thorin interpolation, and scopes this entry to the provable finite-dimensional entropy infrastructure."
+    },
+    {
+      "id": "definition",
+      "title": "Shannon Entropy of a Probability Vector",
+      "startLine": 28,
+      "endLine": 37,
+      "summary": "Defines shannonEntropy p as the sum of Mathlib's Real.negMulLog over the finite index type."
+    },
+    {
+      "id": "nonneg",
+      "title": "Nonnegativity",
+      "startLine": 38,
+      "endLine": 44,
+      "summary": "Entropy of a vector with entries in [0,1] is nonnegative, termwise from negMulLog_nonneg."
+    },
+    {
+      "id": "max-entropy",
+      "title": "Maximum-Entropy Bound",
+      "startLine": 46,
+      "endLine": 80,
+      "summary": "H(p) ≤ log n for a probability vector on n outcomes, via the concave Jensen inequality applied to negMulLog with uniform weights 1/n."
+    },
+    {
+      "id": "uniform",
+      "title": "Uniform Distribution Attains the Bound",
+      "startLine": 82,
+      "endLine": 91,
+      "summary": "The uniform distribution has entropy exactly log n, confirming the bound is sharp."
+    }
+  ],
+  "conclusion": {
+    "summary": "The finite-dimensional Shannon-entropy framework and the maximum-entropy bound H(p) ≤ log n are formalized and fully machine-checked (0 axioms, 0 sorries), built directly on Mathlib's negMulLog concavity and Jensen's inequality. This is the provable entropy half of an entropic uncertainty relation.",
+    "implications": "Provides reusable infrastructure for any future formalization of the entropic uncertainty principle. The full Maassen–Uffink bound is documented as blocked on Mathlib's absent interpolation theory (Hausdorff–Young / Riesz–Thorin); Deutsch's interpolation-free bound is the recommended next step once this infrastructure is extended.",
+    "openQuestions": [
+      "Can Deutsch's entropic uncertainty bound H(p) + H(q) ≥ -2 ln((1+c)/2) — which avoids interpolation — be formalized on top of this entropy infrastructure?"
+    ]
+  },
+  "leanFile": {
+    "namespace": "CauchySchwarzOQ01OQ03OQ02",
+    "lineCount": 91,
+    "axiomCount": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "path": "Proofs/CauchySchwarzOQ01OQ03OQ02.lean",
+    "sorries": 0
+  },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Parent entry derives the Heisenberg/Robertson variance uncertainty bound; this entry builds the entropy infrastructure toward the strictly stronger entropic uncertainty principle posed as its open question."
+    }
+  ],
+  "sorries": 0
+}
