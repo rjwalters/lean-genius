@@ -178,3 +178,46 @@ returns `=== Build succeeded ===`.** Risk spots if it fails: the `simp only
 L2 pins `p ≡ a ≡ 1 (mod 4)`. Approach: two even σ-factors would put `4 ∣ σ(N)`,
 contradicting `σ(N) = 2·odd ≡ 2 (mod 4)`; combine with theorem (2) "at least one"
 to get exactly one. Then `Nat.factorization_prod_pow_eq_self` packages the rest.
+
+## Session 2026-06-27 (researcher-4) — COMPLETE: global assembly + verified square-packing
+
+**Mode**: REVISIT (claimed; was ACT) · **Outcome**: COMPLETE (verified, 0-sorry/0-axiom)
+
+### What I Did
+- **Verified the previously BUILD-PENDING `SumOfDivisorsOQ01SquarePacking.lean`** by fixing
+  5 real errors that had never been machine-checked:
+  `rw[← key]; ring` self-referential rewrite → `rw[pow_two] at key; exact key.symm`;
+  `(σ 1).multiplicative_factorization` (ZeroHom dot, no such lemma) →
+  `ArithmeticFunction.IsMultiplicative.multiplicative_factorization (σ 1) …`;
+  `even_zero` → `⟨0, rfl⟩`; `not_odd_iff_even` → `Nat.not_odd_iff_even`;
+  `not_even_iff_odd` → `Nat.not_even_iff_odd`.
+- **Wrote and verified the global assembly** `proofs/Proofs/SumOfDivisorsOQ01Assembly.lean`:
+  `odd_perfect_euler_form` — the COMPLETE Euler theorem: odd `Perfect N` ⇒
+  `∃ p a m, p.Prime ∧ p%4=1 ∧ a%4=1 ∧ ¬p∣m ∧ N = p^a * m^2`.
+- All three files compile 0-sorry; `#print axioms odd_perfect_euler_form` = only
+  `[propext, Classical.choice, Quot.sound]` ⇒ **0-axiom** per policy.
+
+### Key Findings
+- **Two-factor mod-4 split** avoids the general "exactly one odd-exponent prime" v₂ count:
+  split `N = p₀^e · m` with `m = ordCompl[p₀] N` (the special prime p₀ has odd exponent
+  because N is not a square). `σ(N)=σ(p₀^e)·σ(m)` (multiplicativity, coprime).
+  `σ(p₀^e)` even (L1, e odd) and `σ(N)≡2 (mod 4)` (N odd) ⇒ `σ(m)` odd ⇒ m a square
+  (SquarePacking) ⇒ residue 2 (mod 4) transfers to `σ(p₀^e)` ⇒ L2 gives p₀≡e≡1 (mod 4).
+- **omega gotcha**: omega abstracts nonlinear products as opaque atoms but does NOT
+  ring-normalize. Had to `have hexp : (u+u)*(2*w+1) = 4*(u*w)+2*u := by ring; rw [hexp]`
+  BEFORE omega so that `4*(u*w)` reads as linear in the atom `u*w`.
+- **Build infra**: Docker daemon up but host disk 100% (6 GiB free) → avoided Docker.
+  Verified via **direct host lean v4.26.0** with hand-built `LEAN_PATH` over the cached
+  package oleans in `/Users/rwalters/GitHub/lean-genius/proofs/.lake/packages/*/.lake/build/lib/lean`
+  (compile main → olean in /tmp, add to LEAN_PATH, compile companions). Mathlib aggregate
+  olean present; each file compiles in ~15s.
+
+### Files Modified
+- proofs/Proofs/SumOfDivisorsOQ01SquarePacking.lean (fixed → verified)
+- proofs/Proofs/SumOfDivisorsOQ01Assembly.lean (new — completes the theorem)
+- src/data/proofs/sum-of-divisors-oq-01/meta.json (title/description/contributions/conclusion)
+- src/data/research/problems/sum-of-divisors-oq-01.json (knowledge)
+
+### Next Steps
+COMPLETE. Follow-ups (optional): characterize the special prime vs the count of distinct
+prime factors; recover the further known constraints (N > 10^1500, ≥ k distinct primes).

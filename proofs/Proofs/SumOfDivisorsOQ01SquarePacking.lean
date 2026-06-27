@@ -63,7 +63,7 @@ theorem isSquare_iff_even_factorization {N : ℕ} (hN : N ≠ 0) :
       congr 1
       obtain ⟨k, hk⟩ := h p
       omega
-    rw [← key]; ring
+    rw [pow_two] at key; exact key.symm
 
 /-- For an odd `N`, `σ(N)` is odd iff every prime in its factorization appears to
 an even power.  Multiplicativity of `σ` (`isMultiplicative_sigma`) turns the
@@ -71,9 +71,10 @@ prime-power parity law L1 (`sigma_prime_pow_odd_iff`) into a statement about the
 whole factorization. -/
 theorem odd_sigma_iff_even_factorization {N : ℕ} (hodd : Odd N) (hN : N ≠ 0) :
     Odd (σ 1 N) ↔ ∀ p ∈ N.primeFactors, Even (N.factorization p) := by
-  rw [(σ 1).multiplicative_factorization isMultiplicative_sigma hN]
+  rw [ArithmeticFunction.IsMultiplicative.multiplicative_factorization (σ 1)
+      isMultiplicative_sigma hN]
   simp only [Finsupp.prod, Nat.support_factorization]
-  rw [← not_even_iff_odd, even_iff_two_dvd,
+  rw [← Nat.not_even_iff_odd, even_iff_two_dvd,
     Nat.prime_two.prime.dvd_finset_prod_iff]
   push_neg
   refine forall_congr' fun p => imp_congr_right fun hp => ?_
@@ -82,9 +83,9 @@ theorem odd_sigma_iff_even_factorization {N : ℕ} (hodd : Odd N) (hN : N ≠ 0)
   have hp_odd : Odd p := by
     rcases Nat.even_or_odd p with he | ho
     · exact absurd (even_iff_two_dvd.mpr (he.two_dvd.trans hpd))
-        (not_even_iff_odd.mpr hodd)
+        (Nat.not_even_iff_odd.mpr hodd)
     · exact ho
-  rw [← even_iff_two_dvd, not_even_iff_odd]
+  rw [← even_iff_two_dvd, Nat.not_even_iff_odd]
   exact sigma_prime_pow_odd_iff hp_prime hp_odd _
 
 /-- **σ-parity detects squares (odd case).**  For an odd `N`, `σ(N)` is odd ⟺ `N`
@@ -101,8 +102,8 @@ theorem odd_sigma_odd_iff_isSquare {N : ℕ} (hodd : Odd N) (hN : N ≠ 0) :
     · exact h p hp
     · have hz : N.factorization p = 0 := by
         rw [← Nat.support_factorization] at hp
-        exact Finsupp.not_mem_support_iff.mp hp
-      rw [hz]; exact even_zero
+        exact Finsupp.notMem_support_iff.mp hp
+      rw [hz]; exact ⟨0, rfl⟩
   · intro h p _; exact h p
 
 /-- **An odd perfect number is never a perfect square.**  From `σ(N) = 2N` the
@@ -113,6 +114,6 @@ theorem odd_perfect_not_isSquare {N : ℕ} (hodd : Odd N) (hperf : Nat.Perfect N
     ¬ IsSquare N := by
   have hN : N ≠ 0 := hperf.2.ne'
   rw [← odd_sigma_odd_iff_isSquare hodd hN, odd_perfect_sigma_eq_two_mul hperf]
-  exact not_odd_iff_even.mpr ⟨N, by ring⟩
+  exact Nat.not_odd_iff_even.mpr ⟨N, by ring⟩
 
 end SumOfDivisorsOQ01
