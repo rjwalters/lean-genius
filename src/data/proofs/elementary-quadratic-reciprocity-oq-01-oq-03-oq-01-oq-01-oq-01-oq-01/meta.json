@@ -43,20 +43,34 @@
   },
   "sections": [
     {
+      "title": "A monoid's units are its IsUnit subtype",
+      "startLine": 63,
+      "endLine": 76,
+      "content": "PART 0 (generic bookkeeping). unitsEquivIsUnit: the equivalence Mˣ ≃ {x : M // IsUnit x} for any monoid M. This isomorphism lets the units block of the sign factorization — phrased over the predicate IsUnit on the whole ring ℤ/pⁿ — be transported to the parent's left-regular-representation lemma, which lives on the unit group (ℤ/pⁿ)ˣ."
+    },
+    {
       "title": "The p-multiplication bridge on ℤ/pⁿ⁺¹",
-      "content": "mul_p_eq_zero_iff: p·z = 0 in ℤ/pⁿ⁺¹ iff z reduces to 0 in ℤ/pⁿ (both express pⁿ ∣ z.val), via ZMod.natCast_eq_zero_iff and cancelling one factor of p (Nat.mul_dvd_mul_iff_left). mul_p_of_castHom_eq and castHom_eq_of_mul_p_eq promote this to p·u = p·v ⟺ castHom u = castHom v — the single fact behind both the non-unit isomorphism and its intertwining."
+      "startLine": 77,
+      "endLine": 112,
+      "content": "PART I. mul_p_eq_zero_iff: p·z = 0 in ℤ/pⁿ⁺¹ iff z reduces to 0 in ℤ/pⁿ (both express pⁿ ∣ z.val), via ZMod.natCast_eq_zero_iff and cancelling one factor of p (Nat.mul_dvd_mul_iff_left). mul_p_of_castHom_eq and castHom_eq_of_mul_p_eq promote this to p·u = p·v ⟺ castHom u = castHom v — the single fact behind both the non-unit isomorphism and its intertwining."
     },
     {
       "title": "The non-unit block is ℤ/pⁿ⁻¹",
-      "content": "not_isUnit_mul_p: p·z is never a unit (ZMod.isUnit_iff_coprime). nonUnitsFun / nonUnitsFun_bijective / nonUnitsEquiv: y ↦ p·(lift y) is a bijection ℤ/pⁿ ≃ {non-units of ℤ/pⁿ⁺¹}, injective by the bridge and surjective by counting (pⁿ⁺¹ − φ(pⁿ⁺¹) = pⁿ)."
+      "startLine": 113,
+      "endLine": 172,
+      "content": "PART II. not_isUnit_mul_p: p·z is never a unit (ZMod.isUnit_iff_coprime). nonUnitsFun / nonUnitsFun_bijective / nonUnitsEquiv: y ↦ p·(lift y) is a bijection ℤ/pⁿ ≃ {non-units of ℤ/pⁿ⁺¹}, injective by the bridge and surjective by counting (pⁿ⁺¹ − φ(pⁿ⁺¹) = pⁿ)."
     },
     {
       "title": "The prime-power recursion for the whole-ring sign",
-      "content": "sign_ringMulPerm_succ: for a unit a : (ℤ/pⁿ⁺¹)ˣ, sign(ringMulPerm a) = legendreSym p (a mod p) · sign(ringMulPerm ā on ℤ/pⁿ). Proof: sign_subtypeCongr factors the sign over the units / non-units partition; the units block is sign(Equiv.mulLeft a) = legendreSym p (a mod p) (parent lemma, transported via units↔IsUnit-subtype equiv); the non-unit block is sign(ringMulPerm ā) (transported via the μ-bijection, intertwining from the bridge)."
+      "startLine": 173,
+      "endLine": 260,
+      "content": "PART III. sign_ringMulPerm_succ: for a unit a : (ℤ/pⁿ⁺¹)ˣ, sign(ringMulPerm a) = legendreSym p (a mod p) · sign(ringMulPerm ā on ℤ/pⁿ). Proof: sign_subtypeCongr factors the sign over the units / non-units partition; the units block is sign(Equiv.mulLeft a) = legendreSym p (a mod p) (parent lemma, transported via units↔IsUnit-subtype equiv); the non-unit block is sign(ringMulPerm ā) (transported via the μ-bijection, intertwining from the bridge)."
     },
     {
       "title": "The prime-power Zolotarev–Frobenius identity",
-      "content": "sign_ringMulPerm_eq_legendre_pow: iterating the recursion, sign(ringMulPerm a on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ. jacobiSym_prime_pow + sign_ringMulPerm_eq_jacobiSym: J(A | pⁿ) = (legendreSym p A)ⁿ (jacobiSym.mul_right), so the sign equals the Jacobi symbol J(a | pⁿ) — closing the prime-power case."
+      "startLine": 261,
+      "endLine": 318,
+      "content": "PART IV. sign_ringMulPerm_eq_legendre_pow: iterating the recursion, sign(ringMulPerm a on ℤ/pⁿ) = legendreSym p (a mod p)ⁿ. jacobiSym_prime_pow + sign_ringMulPerm_eq_jacobiSym: J(A | pⁿ) = (legendreSym p A)ⁿ (jacobiSym.mul_right), so the sign equals the Jacobi symbol J(a | pⁿ) — closing the prime-power case."
     }
   ],
   "meta": {
