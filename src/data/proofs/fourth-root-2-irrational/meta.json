@@ -77,10 +77,26 @@
     }
   ],
   "crossReferences": [
-    "sqrt2-irrational",
-    "cube-root-2-irrational",
-    "cube-root-3-irrational-oq-03",
-    "nth-root-irrational"
+    {
+      "targetId": "sqrt2-irrational",
+      "relationship": "depends-on",
+      "description": "The degree-2 base case. √2 ∉ ℚ is the single arithmetic seed here: no_rat_fourth_two reduces a rational fourth root of 2 to a rational square root of 2, and [ℚ(√2):ℚ] = 2 is the bottom of the quadratic tower ℚ ⊂ ℚ(√2) ⊂ ℚ(⁴√2)."
+    },
+    {
+      "targetId": "cube-root-2-irrational",
+      "relationship": "related",
+      "description": "Sibling root-irrationality entry. ∛2 has degree 3 via X³ − 2, the odd-exponent case Mathlib's Kummer lemmas DO handle — a direct contrast with the 4 = 2² case this entry must route through Eisenstein + Gauss precisely because those lemmas exclude it."
+    },
+    {
+      "targetId": "cube-root-3-irrational-oq-03",
+      "relationship": "related",
+      "description": "Companion Eisenstein-based irrationality result (∛3 via X³ − 3 irreducible at the prime 3), sharing the Eisenstein-then-Gauss descent pattern used here at the prime 2."
+    },
+    {
+      "targetId": "nth-root-irrational",
+      "relationship": "generalizes",
+      "description": "The general framework for irrationality of nth roots; this entry is the sharp degree-exact refinement for ⁴√2, the 2-power exponent that the generic X^n − C irreducibility API leaves open."
+    }
   ],
   "sections": [
     {
