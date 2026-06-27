@@ -55,10 +55,29 @@ Gallery entry `src/data/proofs/inverse-galois-d4-oq-02/`.
 
 ---
 
+## Child entry: coprime sharpness (inverse-galois-d4-oq-02-oq-03)
+
+`Proofs/InverseGaloisD4OQ02OQ03.lean` (4 theorems, 0 sorries, 0 axioms; `#print axioms` =
+propext/Classical.choice/Quot.sound only) completes the "lcm + sharpness" next step below:
+
+- `lcm_dvd_gal_card : lcm(n, φ(n)) ∣ |Gal(Xⁿ−p)|` — combines the two lower factors via `Nat.lcm_dvd`.
+  Must be the **lcm, not the product**, since `n` and `φ(n)` may overlap (n=4: lcm(4,2)=4).
+- `mul_totient_dvd_gal_card_of_coprime : gcd(n,φ(n))=1 ⟹ n·φ(n) ∣ |Gal|` — `Nat.Coprime.lcm_eq_mul`
+  upgrades the lcm to the full metacyclic order, with **no genericity hypothesis** on the lower half.
+- `gal_card_cubic_eq_six : |Gal(X³−p/ℚ)| = 6` for every prime `p`. Coprime (gcd(3,2)=1) gives 6 ∣ |Gal|;
+  parent's `gal_card_dvd_factorial` gives |Gal| ∣ 3! = 6; `Nat.dvd_antisymm` squeezes. Cubic analogue of
+  the base |Gal(X⁴−2)| = 8, but uniform in `p` and argument-free.
+
+**Why n=4 is outside this regime**: gcd(4, φ(4)=2) = 2 ≠ 1, so lcm(4,2) = 4 ≠ 8 — the bracket alone
+cannot pin |Gal| = 8; that's exactly why the base D₄ entry needed a separate ℝ-embedding argument.
+
+Gallery entry `src/data/proofs/inverse-galois-d4-oq-02-oq-03/`. Same single-file `lake env lean` recipe.
+
 ## Next Steps
 
 - Exact order `|Gal| = n·φ(n)` under genericity: prove the upper bound `|Gal| ≤ n·φ(n)` via the tower
   `SF = ℚ(ζₙ)(ⁿ√p)`, i.e. `[SF:ℚ(ζₙ)] ≤ n` (root of `Xⁿ−p` over `ℚ(ζₙ)`) and `[ℚ(ζₙ):ℚ] = φ(n)`.
   The hard formalization step is `splittingField (Xⁿ−p) = ℚ(ζₙ, ⁿ√p)` (all roots are `ⁿ√p · ζₙᵏ`).
-- `lcm(n, φ(n)) ∣ |Gal|` by combining the two lower factors; sharp when `gcd(n, φ(n)) = 1`.
+- Non-coprime case (n=4): recover the full `n·φ(n)` beyond `lcm(n,φ(n))` via an independent kernel×quotient
+  product witness.
 - Identify the semidirect-product structure `Gal ≅ ℤ/n ⋊ (ℤ/n)ˣ` explicitly.
