@@ -216,3 +216,53 @@ via `lake env lean` fallback against main-repo Mathlib `.olean` cache)
 - n≥2 Tucker: Freund–Todd / Prescott–Su path-following engine (Insight 3), or
   Tucker-via-Sperner doubling on RPⁿ. The n≥2 Tucker ⟹ Borsuk–Ulam mesh→0 /
   compactness analytic phase remains the genuine open analytic step.
+
+## Session 2026-06-27 (Session 5) — ACT: boundary-parity correction (verified)
+
+**Mode**: REVISIT (n=1 line + abstract n≥2 engine already done; this advances n≥2)
+**Outcome**: progress (ACT) — new verified file, 0 sorries, 0 axioms (decide/kernel)
+
+**Collision note**: a concurrent agent independently landed the n=2 Tucker
+hexagon `decide` instance as `proofs/Proofs/SpernerTuckerHexagon.lean`
+(PR #30917, `hexagon_tucker` + `count_parity_not_invariant`). To avoid
+duplicating that artifact, this session contributes the **complementary**
+boundary-parity result in a separate file rather than a competing same-name PR.
+
+### What I Did
+- Built `proofs/Proofs/SpernerTuckerBoundaryParity.lean` (84 LOC). Verified via
+  `lake env lean` against the main-repo Mathlib `.olean` cache (Docker has no Lean
+  image). `#print axioms`: only propext / Classical.choice / Quot.sound —
+  **no `Lean.ofReduceBool`** (plain `decide`, not `native_decide`), no `sorryAx`.
+  Genuinely 0-axiom.
+
+### Theorems (all verified, kernel `decide`)
+- `ring_complementary_count_even`: **negative parity result** — the
+  complementary-edge count on the antipodal hexagon *boundary ring* is **always
+  even** (distribution `{0,2,6}` over 64 antipodal ring labellings).
+- `ring_complementary_count_not_odd`: contrapositive reading — the circle-parity
+  shortcut is provably unavailable.
+- `lneg_involutive`: label negation is an involution.
+
+### Key correction (saves the next session a wrong turn)
+The abstract engine `SpernerTuckerPathFollowing.exists_interior_degree_one`
+requires `Odd #{boundary ends}`. The tempting shortcut — feed it the boundary
+**circle's** complementary-edge count — **cannot work**: that count is always
+EVEN (now proved in Lean). (The spoke count is mixed-parity
+`{0:32,1:96,2:96,3:32}`, no shortcut either — see Python probe.) The engine's odd
+boundary parity must come from the refined *almost-complementary* simplex
+structure (equivalently the inductive (n−1)-Tucker on the boundary sphere), not
+from raw circle/spoke parity. Consistent with Insight 3 (no single-set parity
+invariant for n≥2), and complements PR #30917's `count_parity_not_invariant`
+(full-triangulation count is mixed) with the sharper *universal* ring statement.
+
+### Files Modified
+- proofs/Proofs/SpernerTuckerBoundaryParity.lean (new)
+- proofs/Proofs.lean (registered the module)
+- src/data/research/problems/sperner-mathlib4-oq-02.json (leanFiles + knowledge)
+- research/problems/sperner-mathlib4-oq-02/knowledge.md
+
+### Next Steps (n≥2 instantiation, crux is boundary parity)
+- Geometric instantiation of the path-following engine: almost-complementary
+  graph, degree ≤ 2, and `Odd #{boundary ends}` via inductive (n−1)-Tucker
+  (NOT raw ring parity).
+- Continuous n≥2 Tucker ⟹ Borsuk–Ulam (mesh→0 + compactness): separate analytic phase.
