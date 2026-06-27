@@ -692,4 +692,120 @@ theorem d4Mul_inv_right (g : Bool × Fin 4) :
       Prod.mk.injEq, Fin.ext_iff, Fin.val_mk, true_and] <;>
     omega
 
+/-!
+## D4 as a group and the sharp orbit-divisibility headline (S10)
+
+The five algebraic laws above (`d4Mul_assoc`, `d4Mul_one_left`,
+`d4Mul_one_right`, `d4Mul_inv_left`, `d4Mul_inv_right`) exhibit the triple
+`(d4Mul, (false, 0), d4Inv)` as a genuine group structure — the dihedral
+group `D₄` of order 8. We package them into a bona-fide `Group` instance
+carried by a dedicated **type synonym** `D4 := Bool × Fin 4`.
+
+A synonym is mathematically necessary, not cosmetic: Mathlib already
+equips `Bool × Fin 4` with the *componentwise boolean-ring* multiplication
+(`Bool`'s `Mul` is `and`, unit `true`; `Fin 4`'s is `(· * ·) mod 4`),
+whose unit `(true, 1)` is **not** our dihedral unit `(false, 0)`.
+Declaring the group directly on `Bool × Fin 4` would collide with those
+pre-existing `Mul`/`One` instances. The synonym (semireducible, so
+typeclass resolution does not unfold it to the boolean-ring structure)
+isolates the dihedral group cleanly while remaining definitionally equal
+to `Bool × Fin 4`, so every lemma proved above transports for free.
+
+With the group in hand, `applyD4Tour` is a genuine `MulAction D4
+ClosedTour`, and the **orbit-stabilizer theorem** upgrades the earlier
+*cardinality bound* `d4Orbit_card_le_eight` (`(d4Orbit t).card ≤ 8`) to
+the sharp *divisibility* `(d4Orbit t).card ∣ 8`. This is the actual
+group-theoretic content: every orbit length divides the group order, so
+each oblique-distribution level set decomposes into D4-blocks of size
+exactly `1`, `2`, `4`, or `8` — far stronger than the bare `≤ 8` bound.
+-/
+
+/-- Type synonym carrying the order-8 dihedral group structure of the D4
+    chessboard symmetries. A synonym is required because `Bool × Fin 4`
+    already carries Mathlib's componentwise boolean-ring `Mul`/`One`
+    (unit `(true, 1)`), which is a *different* algebraic structure from
+    the dihedral one (unit `(false, 0)`). -/
+def D4 : Type := Bool × Fin 4
+
+namespace D4
+
+instance : DecidableEq D4 := inferInstanceAs (DecidableEq (Bool × Fin 4))
+instance : Fintype D4 := inferInstanceAs (Fintype (Bool × Fin 4))
+instance : Mul D4 := ⟨d4Mul⟩
+instance : One D4 := ⟨(false, 0)⟩
+instance : Inv D4 := ⟨d4Inv⟩
+
+/-- `D4` is a group: associativity, two-sided identity `(false, 0)`, and
+    left inverse `d4Inv` are exactly the five laws proved above. -/
+instance : Group D4 where
+  mul_assoc a b c := d4Mul_assoc a b c
+  one_mul a := d4Mul_one_left a
+  mul_one a := d4Mul_one_right a
+  inv_mul_cancel a := d4Mul_inv_left a
+
+/-- The dihedral group has order `|D₄| = 8`. -/
+@[simp] theorem card_D4 : Fintype.card D4 = 8 := by
+  show Fintype.card (Bool × Fin 4) = 8
+  simp [Fintype.card_prod, Fintype.card_bool, Fintype.card_fin]
+
+end D4
+
+/-- `D4` acts on closed tours via `applyD4Tour`: `one_smul` is
+    `applyD4Tour_id` and `mul_smul` is the composition law
+    `applyD4Tour_mul`. -/
+instance : MulAction D4 ClosedTour where
+  smul g t := applyD4Tour g t
+  one_smul t := applyD4Tour_id t
+  mul_smul g₂ g₁ t := applyD4Tour_mul g₂ g₁ t
+
+@[simp] theorem d4_smul_def (g : D4) (t : ClosedTour) :
+    g • t = applyD4Tour g t := rfl
+
+/-- The `Finset`-valued orbit `d4Orbit t` coincides, as a finite set,
+    with Mathlib's `MulAction.orbit D4 t`: both are the set of tours
+    reachable from `t` by a single D4 transformation. -/
+theorem d4Orbit_eq_orbit_toFinset (t : ClosedTour)
+    [Fintype (MulAction.orbit D4 t)] :
+    d4Orbit t = (MulAction.orbit D4 t).toFinset := by
+  ext u
+  rw [Set.mem_toFinset, MulAction.mem_orbit_iff]
+  constructor
+  · intro hu
+    simp only [d4Orbit, Finset.mem_image, Finset.mem_univ, true_and] at hu
+    obtain ⟨g, hg⟩ := hu
+    exact ⟨g, hg⟩
+  · rintro ⟨g, hg⟩
+    simp only [d4Orbit, Finset.mem_image, Finset.mem_univ, true_and]
+    exact ⟨g, hg⟩
+
+/-- **Sharp D4-orbit divisibility (S10 headline)**. Every D4 orbit of
+    closed tours has cardinality *dividing* `|D₄| = 8`. This is the
+    orbit-stabilizer theorem applied to the `MulAction D4 ClosedTour`
+    built from the dihedral group `D4`, and it strictly sharpens the
+    earlier bound `d4Orbit_card_le_eight`. -/
+theorem d4Orbit_card_dvd_eight (t : ClosedTour) : (d4Orbit t).card ∣ 8 := by
+  classical
+  haveI : Fintype (MulAction.orbit D4 t) := Set.fintypeRange (fun g : D4 => g • t)
+  calc (d4Orbit t).card
+      = Fintype.card (MulAction.orbit D4 t) := by
+        rw [d4Orbit_eq_orbit_toFinset, Set.toFinset_card]
+    _ ∣ Fintype.card D4 :=
+        ⟨Fintype.card (MulAction.stabilizer D4 t),
+          (MulAction.card_orbit_mul_card_stabilizer_eq_card_group D4 t).symm⟩
+    _ = 8 := D4.card_D4
+
+/-- **Block-size enumeration**. Combining `d4Orbit_card_dvd_eight` with
+    nonemptiness (`tour_mem_d4Orbit_self`), every D4 orbit has cardinality
+    exactly one of `1, 2, 4, 8` — the divisor lattice of `8`. -/
+theorem d4Orbit_card_eq_one_two_four_or_eight (t : ClosedTour) :
+    (d4Orbit t).card = 1 ∨ (d4Orbit t).card = 2 ∨
+      (d4Orbit t).card = 4 ∨ (d4Orbit t).card = 8 := by
+  have hd : (d4Orbit t).card ∣ 8 := d4Orbit_card_dvd_eight t
+  have hpos : 1 ≤ (d4Orbit t).card :=
+    Finset.card_pos.mpr ⟨t, tour_mem_d4Orbit_self t⟩
+  have hle : (d4Orbit t).card ≤ 8 := Nat.le_of_dvd (by norm_num) hd
+  set n := (d4Orbit t).card with hn
+  clear_value n
+  interval_cases n <;> revert hd <;> decide
+
 end KnightsTourOblique
