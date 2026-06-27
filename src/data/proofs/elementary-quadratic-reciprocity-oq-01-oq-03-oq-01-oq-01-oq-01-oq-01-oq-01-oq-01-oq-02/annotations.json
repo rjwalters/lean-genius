@@ -67,7 +67,7 @@
     "title": "Per-line Zolotarev sign: sign(x ↦ a·x + b on ℤ/p) = (A/p)",
     "content": "sign_affineLine_eq_legendreSym: for an odd prime p, unit a, translation b, and integer A ≡ a (mod p), the sign of the affine permutation is the Legendre symbol (A/p). Combines sign_addLeft_odd (translation is even) with the parent's Zolotarev/Frobenius identity sign(x ↦ a·x on ℤ/n) = J(A|n). This is the sign of a single residue line of the CRT transitions.",
     "mathContext": "$\\mathrm{sgn}(x\\mapsto ax+b) = \\mathrm{sgn}(x\\mapsto ax)\\cdot\\mathrm{sgn}(x\\mapsto x+b) = \\big(\\tfrac{A}{p}\\big)\\cdot 1 = \\big(\\tfrac{A}{p}\\big)$ — Zolotarev's lemma: multiplication by $a$ is even iff $a$ is a quadratic residue mod $p$.",
-    "significance": "important",
+    "significance": "key",
     "relatedConcepts": ["Zolotarev's lemma", "affine group of ℤ/p", "Legendre symbol as a sign", "Frobenius / multiplication permutation"],
     "prerequisites": ["sign_addLeft_odd", "parent identity sign(mulLeft a) = Jacobi/Legendre symbol", "factoring an affine map into linear ∘ translation"]
   },
