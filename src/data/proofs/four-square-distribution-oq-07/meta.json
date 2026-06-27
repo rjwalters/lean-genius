@@ -139,6 +139,34 @@
       "targetId": "four-square-distribution-oq-06"
     }
   ],
+  "references": [
+    {
+      "authors": ["C. G. J. Jacobi"],
+      "title": "Fundamenta nova theoriae functionum ellipticarum",
+      "year": 1829,
+      "note": "Origin of the four-square formula r₄(n) = 8·Σ_{4∤d|n} d (1834 in published form), the d = 4 base case generalized here to sums of 2k squares."
+    },
+    {
+      "authors": ["M. Bhargava", "J. Hanke"],
+      "title": "Universal quaternary quadratic forms and the 290-theorem",
+      "year": 2005,
+      "note": "Broader quaternary-form context for the open question on extending the hyperoctahedral symmetry beyond x²+y²+z²+w², where the symmetry group is no longer the full B_d."
+    },
+    {
+      "authors": ["G. E. Andrews", "R. Askey", "R. Roy"],
+      "title": "Special Functions",
+      "venue": "Cambridge University Press, Encyclopedia of Mathematics and its Applications 71",
+      "year": 1999,
+      "note": "Standard reference for sums-of-squares representation functions r_k(n) and the underlying theta-function identities (Jacobi, Liouville, Glaisher)."
+    },
+    {
+      "authors": ["N. Bourbaki"],
+      "title": "Groupes et algèbres de Lie, Chapitres 4–6 (Coxeter group B_d / type C_d)",
+      "venue": "Hermann / Springer",
+      "year": 1968,
+      "note": "Structure of the hyperoctahedral group B_d = S_d ⋉ (ℤ/2)^d as the Weyl group of type B_d/C_d, the symmetry group acting on the d signed coordinates."
+    }
+  ],
   "sorries": 0,
   "leanFile": {
     "imports": [
