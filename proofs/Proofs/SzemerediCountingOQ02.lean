@@ -34,6 +34,16 @@
     explicit two-edge count: `e(H)² ≤ |α| · cherryCount(H)`.
   * `edgeCount_mono`, `edgeCount_complete`, `edgeCount_empty`,
     `density_empty` — structural sanity lemmas.
+  * `cherryCount_ge_edgeCount` — the trivial second-moment lower bound
+    `e(H) ≤ cherryCount(H)` (every edge is its own degenerate cherry).
+  * `density_mul_le_edgeCount` — the base-case identity as a hypothesis-free
+    inequality `d·|α|·|β|·|γ| ≤ e(H)`.
+  * `cherry_supersaturation` — **supersaturation**: density `d` forces
+    `d²·(|α|·|β|·|γ|)² ≤ |α|·cherryCount(H)` cherries, the density engine of
+    regularity-based counting, with zero positivity side conditions.
+  * `cherryCount_ge_density_sq` — the same supersaturation bound divided through
+    by `|α|`, giving the explicit hypothesis-free lower bound
+    `d²·|α|·(|β|·|γ|)² ≤ cherryCount(H)`.
 
   ## What remains open (the genuine NRS content)
 
@@ -246,6 +256,95 @@ theorem edgeCount_empty :
 theorem density_empty :
     (empty α β γ).density = 0 := by
   rw [density, edgeCount_empty]; simp
+
+-- ═══════════════════════════════════════════════════════════════════
+-- PART VI: SUPERSATURATION — DENSITY FORCES CHERRIES
+-- ═══════════════════════════════════════════════════════════════════
+
+/-- Every hyperedge is the centre of its own (degenerate) cherry, so there are
+    at least as many cherries as edges: `e(H) ≤ cherryCount(H)`. Combinatorially,
+    `cherryCount = ∑_a deg(a)² ≥ ∑_a deg(a) = e(H)` because `n ≤ n²` for naturals.
+    This is the trivial lower bound on the second moment; the content of the
+    cherry inequality is the *sharper* `e(H)²/|α| ≤ cherryCount(H)`. -/
+theorem cherryCount_ge_edgeCount (H : Tri3Graph α β γ) :
+    H.edgeCount ≤ H.cherryCount := by
+  rw [cherryCount_eq_sum_sq_degA, ← sum_degA]
+  apply Finset.sum_le_sum
+  intro a _
+  exact Nat.le_self_pow (by norm_num) _
+
+/-- The main-term identity in inequality form, valid with **no** positivity
+    hypothesis on the vertex count: `d(H) · |α|·|β|·|γ| ≤ e(H)`. When there is at
+    least one vertex triple this is the exact base-case identity
+    `edgeCount_eq_density_mul`; when `|α|·|β|·|γ| = 0` both sides collapse and the
+    left side is `0 ≤ e(H)`. Stating it as an inequality lets the supersaturation
+    bound below dispense with the `0 < vertexTriples` side condition. -/
+theorem density_mul_le_edgeCount (H : Tri3Graph α β γ) :
+    H.density * (vertexTriples α β γ : ℚ) ≤ (H.edgeCount : ℚ) := by
+  rcases Nat.eq_zero_or_pos (vertexTriples α β γ) with h | h
+  · rw [h]; simp
+  · exact le_of_eq (edgeCount_eq_density_mul H h).symm
+
+/-- **Supersaturation for cherries.** A tripartite 3-graph of density `d` has at
+    least `d² · |α|·|β|²·|γ|²` cherries (in the normalized form below, the
+    squared density times the squared vertex count is bounded by `|α|` times the
+    cherry count):
+
+    `d(H)² · (|α|·|β|·|γ|)² ≤ |α| · cherryCount(H)`.
+
+    This is the genuine density statement behind regularity-based counting: a
+    fixed positive density forces a quadratically large number of two-edge
+    configurations, even though the `e(F) = 2` *copy-count* itself stays open in
+    the ε-regular regime. It is obtained by feeding the exact base-case identity
+    `e(H) = d·|α|·|β|·|γ|` into the Cauchy–Schwarz cherry bound
+    `e(H)² ≤ |α|·cherryCount(H)`. -/
+theorem cherry_supersaturation (H : Tri3Graph α β γ) :
+    H.density ^ 2 * (vertexTriples α β γ : ℚ) ^ 2
+      ≤ (Fintype.card α : ℚ) * (H.cherryCount : ℚ) := by
+  have hnn : 0 ≤ H.density * (vertexTriples α β γ : ℚ) :=
+    mul_nonneg H.density_nonneg (by positivity)
+  have he : 0 ≤ (H.edgeCount : ℚ) := by positivity
+  have h1 : (H.density * (vertexTriples α β γ : ℚ)) ^ 2 ≤ (H.edgeCount : ℚ) ^ 2 := by
+    rw [pow_two, pow_two]
+    exact mul_le_mul H.density_mul_le_edgeCount H.density_mul_le_edgeCount hnn he
+  calc H.density ^ 2 * (vertexTriples α β γ : ℚ) ^ 2
+      = (H.density * (vertexTriples α β γ : ℚ)) ^ 2 := by ring
+    _ ≤ (H.edgeCount : ℚ) ^ 2 := h1
+    _ ≤ (Fintype.card α : ℚ) * (H.cherryCount : ℚ) := H.edgeCount_sq_le_cherryCount
+
+/-- **Explicit cherry lower bound.** Dividing the normalized supersaturation
+    bound through by `|α|` makes the quadratic growth of the cherry count in the
+    density explicit:
+
+    `d(H)² · |α| · (|β|·|γ|)² ≤ cherryCount(H)`.
+
+    No positivity hypothesis is needed: when `|α| = 0` the left side carries an
+    `|α|` factor and collapses to `0 ≤ cherryCount`, and when `|α| > 0` it is
+    `cherry_supersaturation` divided by `|α|`. This is the sharpest form of
+    "positive density forces many cherries": a fixed density `d` guarantees a
+    number of two-edge configurations growing like `d²` and quadratically in the
+    sizes of the second and third parts. -/
+theorem cherryCount_ge_density_sq (H : Tri3Graph α β γ) :
+    H.density ^ 2 * (Fintype.card α : ℚ)
+        * ((Fintype.card β : ℚ) * (Fintype.card γ : ℚ)) ^ 2
+      ≤ (H.cherryCount : ℚ) := by
+  have hvt : (vertexTriples α β γ : ℚ)
+      = (Fintype.card α : ℚ) * (Fintype.card β : ℚ) * (Fintype.card γ : ℚ) := by
+    unfold vertexTriples; push_cast; ring
+  rcases Nat.eq_zero_or_pos (Fintype.card α) with h | h
+  · simp [h]
+  · have hca : (0 : ℚ) < (Fintype.card α : ℚ) := by exact_mod_cast h
+    have key := H.cherry_supersaturation
+    have hmul : (Fintype.card α : ℚ)
+          * (H.density ^ 2 * (Fintype.card α : ℚ)
+              * ((Fintype.card β : ℚ) * (Fintype.card γ : ℚ)) ^ 2)
+        ≤ (Fintype.card α : ℚ) * (H.cherryCount : ℚ) := by
+      calc (Fintype.card α : ℚ)
+            * (H.density ^ 2 * (Fintype.card α : ℚ)
+                * ((Fintype.card β : ℚ) * (Fintype.card γ : ℚ)) ^ 2)
+          = H.density ^ 2 * (vertexTriples α β γ : ℚ) ^ 2 := by rw [hvt]; ring
+        _ ≤ (Fintype.card α : ℚ) * (H.cherryCount : ℚ) := key
+    exact le_of_mul_le_mul_left hmul hca
 
 end Tri3Graph
 
