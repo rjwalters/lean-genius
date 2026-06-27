@@ -72,6 +72,21 @@ theorem collatz_odd {n : ℕ} (h : n % 2 = 1) : collatz n = 3 * n + 1 := by
 theorem collatz_two_mul (n : ℕ) : collatz (2 * n) = n := by
   simp [collatz, Nat.mul_mod_right]
 
+/-- The Collatz map sends positive numbers to positive numbers: `n/2 ≥ 1` for a
+positive even `n` and `3n+1 ≥ 1` always.  This keeps `0` out of every orbit. -/
+theorem collatz_pos {n : ℕ} (hn : 0 < n) : 0 < collatz n := by
+  unfold collatz
+  split <;> omega
+
+/-- Positivity propagates along the whole orbit: no iterate of a positive start
+is ever `0`. -/
+theorem collatz_iterate_pos {n : ℕ} (hn : 0 < n) (k : ℕ) : 0 < collatz^[k] n := by
+  induction k with
+  | zero => simpa using hn
+  | succ k ih =>
+    rw [Function.iterate_succ_apply']
+    exact collatz_pos ih
+
 /-! ## Part II: Three explicit families that drop below their start
 
 These are the unconditional, axiom-free part of the almost-all picture: whatever
@@ -152,6 +167,47 @@ theorem colMin_le_self (n : ℕ) : colMin n ≤ n :=
 /-- The orbit of a power of two reaches `1`, so its orbit minimum is `≤ 1`. -/
 theorem colMin_pow_two_le_one (k : ℕ) : colMin (2 ^ k) ≤ 1 :=
   Nat.sInf_le ⟨k, pow_two_reaches_one k⟩
+
+/-- The orbit minimum of a positive start is itself positive: `0` never occurs in
+the orbit (`collatz_iterate_pos`), and the orbit is non-empty, so its infimum is
+`≥ 1`. -/
+theorem colMin_pos {n : ℕ} (hn : 0 < n) : 0 < colMin n := by
+  unfold colMin
+  rw [Nat.pos_iff_ne_zero]
+  intro h
+  rw [Nat.sInf_eq_zero] at h
+  rcases h with h0 | hempty
+  · obtain ⟨k, hk⟩ := h0
+    have := collatz_iterate_pos hn k
+    rw [hk] at this
+    exact absurd this (lt_irrefl 0)
+  · have hmem : n ∈ {m | ∃ k, collatz^[k] n = m} :=
+      ⟨0, Function.iterate_zero_apply collatz n⟩
+    rw [hempty] at hmem
+    exact hmem
+
+/-- Sharpening `colMin_pow_two_le_one`: the orbit minimum of `2^k` is **exactly**
+`1` (the orbit hits `1` and, being positive, never goes lower). -/
+theorem colMin_pow_two_eq_one (k : ℕ) : colMin (2 ^ k) = 1 := by
+  have hle := colMin_pow_two_le_one k
+  have hpos := colMin_pos (n := 2 ^ k) (by positivity)
+  omega
+
+/-- **Bridge between Parts II and III.**  Any number that attains a value below
+itself has orbit minimum strictly below its start: `colMin n < n`.  This connects
+the explicit drop-below families to Tao's `Col_min` predicate (the `f n = n`
+specialisation). -/
+theorem attainsBelow_colMin_lt {n : ℕ} (h : AttainsBelow n) : colMin n < n := by
+  obtain ⟨k, _, hlt⟩ := h
+  refine lt_of_le_of_lt ?_ hlt
+  exact Nat.sInf_le ⟨k, rfl⟩
+
+/-- Consequently the entire three-quarters family of Part II — the even numbers
+and the odd class `1 + 4ℕ` (`n ≥ 5`) — has orbit minimum strictly below the start,
+unconditionally and without Tao's axiom. -/
+theorem even_or_mod_four_one_colMin_lt {n : ℕ} (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1)) : colMin n < n :=
+  attainsBelow_colMin_lt (even_or_mod_four_one_attainsBelow hn h)
 
 /-- The logarithmic-density partial average of a set `S` up to `N`:
 `(∑_{n≤N, n∈S} 1/n) / (∑_{n≤N} 1/n)`. -/
