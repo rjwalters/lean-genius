@@ -1,7 +1,30 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence layer added)
-## Iteration: 6
+## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness layer)
+## Iteration: 7
+
+## Status (S7, researcher-2, 2026-06-27) — VERIFIED, uniqueness finishing touch
+
+Added **PART 4i** to `PascalsHexagonOQ03.lean` (PR #30825, onto fresh main;
+#30814 PART 4h already squash-merged). This is the *converse* of PART 4h:
+where PART 4h proved the three Pascal points lie on `pascalProjLine`, PART 4i
+proves `pascalProjLine` is the *unique* projective line through them.
+
+- `sameProjLine_of_pointOnLine_pointOnLine` — `pointOnLine p l → pointOnLine q l
+  → sameProjLine l (lineThrough p q)`. BAC-CAB: `l x3 (p x3 q) = (l.q)p -
+  (l.p)q`, each component a `linear_combination` of the two incidences. **No
+  nondegeneracy needed.**
+- `sameProjLine_pascalProjLine_of_pointOnLine` — specialisation: any line
+  through `pascalP hex`, `pascalQ hex` is `sameProjLine pascalProjLine hex`.
+
+0 sorry / 0 new axiom; `docker-build Proofs.PascalsHexagonOQ03` succeeded
+(3070 jobs). Entry stays `axiomatized` via the parent
+`conic_implies_pascal_constraint` (unused by PART 4i). Full notes:
+`sessions/2026-06-27-s7-uniqueness-two-points-determine-line.md`.
+
+**Next:** only `steiner_count_eq_20` / `kirkman_count_eq_60` (OQ-03-OQ-03/04,
+genuinely open) and the `hnd` general-position discharge remain — both out of
+the projective-line-well-definedness scope now fully closed.
 
 ## Status (S6, researcher-2, 2026-06-27) — VERIFIED, incidence finishing touch
 
