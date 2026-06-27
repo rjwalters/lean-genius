@@ -56,6 +56,12 @@ work documented in the sibling `BoundedPrimeGapsOQ04`.
 - [x] Quantitative converse `EHAtLevel_discrepancySum_up`: EH at level `θ₁` plus an
       EH-type bound on the new-moduli band ⟹ EH at the higher level `θ₂` — pinning the
       band as exactly the extra analytic input needed to raise the level of distribution
+- [x] Band cocycle (Chasles) identity `discrepancyBand_add_consecutive`: the new-moduli
+      band subdivides at any intermediate level, `band θ₁ θ₃ = band θ₁ θ₂ + band θ₂ θ₃`,
+      with `discrepancyBand_self` the empty-band base case — the moduli-range analogue of
+      the level decomposition that licenses dyadic decomposition of the modulus range
+- [x] Subdivided ascent `EHAtLevel_discrepancySum_up_split`: raising the level only needs
+      EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure
 - [x] No `axiom`, no `sorry`, no `native_decide`
 -/
 
@@ -342,6 +348,65 @@ theorem EHAtLevel_discrepancySum_up (f : ℕ → ℝ → ℝ) {θ₁ θ₂ : ℝ
   refine ⟨C₁ + C₂, by linarith, fun x hx => ?_⟩
   rw [discrepancySum_eq_add_band f (by linarith) hθ]
   calc discrepancySum f θ₁ x + discrepancyBand f θ₁ θ₂ x
+      ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
+        linarith [hb₁ x hx, hb₂ x hx]
+    _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
+
+/-! ## Subdividing the level-increment band
+
+The exact decomposition `discrepancySum_eq_add_band` localizes the inter-level growth to
+the new-moduli band `⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋`.  That band is itself additive: at any
+intermediate level `θ₂` it splits into two consecutive sub-bands.  This is the additive
+cocycle (Chasles) identity for the band — the moduli-range analogue of the level
+decomposition — and it is exactly what licenses the *dyadic decomposition of the modulus
+range* used in the analytic treatment of Elliott–Halberstam: control the discrepancy on
+each dyadic block of moduli separately and recombine. -/
+
+/-- The **empty band**: from a level to itself there are no new moduli, so the band
+discrepancy vanishes. -/
+theorem discrepancyBand_self (f : ℕ → ℝ → ℝ) (θ x : ℝ) :
+    discrepancyBand f θ θ x = 0 := by
+  unfold discrepancyBand
+  rw [Finset.Ioc_self, Finset.sum_empty]
+
+/-- **Cocycle / Chasles identity for the band.**  For `θ₁ ≤ θ₂ ≤ θ₃` on the analytic
+regime `x ≥ 1`, the new-moduli band from level `θ₁` to `θ₃` is the disjoint union of the
+`θ₁ → θ₂` and `θ₂ → θ₃` sub-bands, so its discrepancy is the sum of theirs:
+`discrepancyBand f θ₁ θ₃ x = discrepancyBand f θ₁ θ₂ x + discrepancyBand f θ₂ θ₃ x`.
+This subdivides the level increment at any intermediate level. -/
+theorem discrepancyBand_add_consecutive (f : ℕ → ℝ → ℝ) {θ₁ θ₂ θ₃ x : ℝ}
+    (hx : 1 ≤ x) (h₁₂ : θ₁ ≤ θ₂) (h₂₃ : θ₂ ≤ θ₃) :
+    discrepancyBand f θ₁ θ₃ x
+      = discrepancyBand f θ₁ θ₂ x + discrepancyBand f θ₂ θ₃ x := by
+  have hf12 : ⌊x ^ θ₁⌋₊ ≤ ⌊x ^ θ₂⌋₊ :=
+    Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le hx h₁₂)
+  have hf23 : ⌊x ^ θ₂⌋₊ ≤ ⌊x ^ θ₃⌋₊ :=
+    Nat.floor_le_floor (Real.rpow_le_rpow_of_exponent_le hx h₂₃)
+  unfold discrepancyBand
+  exact (Finset.sum_Ioc_consecutive (fun q => f q x) hf12 hf23).symm
+
+/-- **Subdivided ascent.**  Strengthening `EHAtLevel_discrepancySum_up`: to raise the
+level of distribution from `θ₁` to `θ₃` it suffices to bound the discrepancy on each of
+the two consecutive sub-bands `θ₁ → θ₂` and `θ₂ → θ₃` separately.  The band cocycle
+identity splits the full `θ₁ → θ₃` band into these pieces, and the EH-bound class being a
+convex cone (`EHAtLevel_add`) recombines the two sub-band bounds into one.  This is the
+formal statement that the modulus range may be attacked dyadically — the standard
+analytic strategy for Elliott–Halberstam. -/
+theorem EHAtLevel_discrepancySum_up_split (f : ℕ → ℝ → ℝ) {θ₁ θ₂ θ₃ : ℝ}
+    (h₁₂ : θ₁ ≤ θ₂) (h₂₃ : θ₂ ≤ θ₃)
+    (hlow : EHAtLevel (discrepancySum f) θ₁)
+    (hband₁ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f θ₁ θ₂ x ≤ C * x / (Real.log x) ^ A)
+    (hband₂ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand f θ₂ θ₃ x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel (discrepancySum f) θ₃ := by
+  refine EHAtLevel_discrepancySum_up f (le_trans h₁₂ h₂₃) hlow ?_
+  intro A hA
+  obtain ⟨C₁, hC₁, hb₁⟩ := hband₁ A hA
+  obtain ⟨C₂, hC₂, hb₂⟩ := hband₂ A hA
+  refine ⟨C₁ + C₂, by linarith, fun x hx => ?_⟩
+  rw [discrepancyBand_add_consecutive f (by linarith) h₁₂ h₂₃]
+  calc discrepancyBand f θ₁ θ₂ x + discrepancyBand f θ₂ θ₃ x
       ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
         linarith [hb₁ x hx, hb₂ x hx]
     _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
