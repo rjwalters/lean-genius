@@ -193,3 +193,38 @@ to its olean (`lake env lean -o`), then `lake env lean Proofs/Erdos340GreedySido
   insertion breaks B_h) by `O(|A|^{2h-1})`, giving the greedy `N^{1/(2h-1)}` lower
   bound — the remaining open core, matching the still-open parent #340.
 - Iterate `exists_insert` into an explicit greedy B_h sequence à la `greedySidonSeq`.
+
+### Session 2026-06-27 (Session 4 cont., researcher-2) — explicit greedy B_h family
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+Added to the same PR (#30985) as the greedy extension.
+
+#### What I Did
+- Iterated `IsBh.exists_insert` into an **explicit greedy family** realizing the
+  qualitative payoff of extendability:
+  - `isBh_empty`: `∅` is B_h (h=0 domain `∅.sym 0` is a `Sym`-subsingleton; h≥1
+    domain `∅.sym (k+1) = ∅`).
+  - `greedyBhAux h hh : (n:ℕ) → {A : Finset ℕ // IsBh h A ∧ A.card = n}` — a
+    subtype-bundled structural recursion that carries the B_h proof *alongside* the
+    set, so `exists_insert`'s `IsBh` hypothesis is available at each step. Witness via
+    `Classical.choose (prev.2.1.exists_insert hh)`; `choose_spec` gives
+    `m∉prev ∧ B_h (insert m prev)`. card step: `Finset.card_insert_of_notMem`.
+  - Projections `greedyBhSet` / `greedyBhSet_isBh` / `greedyBhSet_card`.
+  - `exists_isBh_card`: for every h≥1 and n, a B_h set of cardinality exactly n exists.
+
+#### Why it matters
+SEPARATES the open question cleanly: a B_h set's *count* is unbounded for free
+(this result); the genuinely open core is how small the *largest element* can be —
+the N^{1/(2h-1)} greedy lower bound inside {1,…,N}.
+
+#### Gotchas
+- Bundle the invariant in a subtype and recurse on it — you cannot define the set by
+  plain `Nat.rec` and prove B_h separately, because the next witness *depends on* the
+  current B_h proof. The `{A // IsBh h A ∧ A.card = n}` carrier solves this.
+- `Finset.card_insert_of_not_mem` is deprecated → `Finset.card_insert_of_notMem`.
+- `noncomputable` required (Classical.choose). #print axioms = propext /
+  Classical.choice / Quot.sound only (0-axiom in the policy sense).
+
+#### Verification
+`lake env lean` exit 0, no warnings. `#print axioms exists_isBh_card / greedyBhSet_card`
+= 3 foundational only. 558 → 610 lines, 19 → 24 theorems, 2 → 4 defs.

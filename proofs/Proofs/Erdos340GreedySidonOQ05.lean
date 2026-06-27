@@ -61,6 +61,11 @@ upper bound.
   bound: it shows `B_h` sets of unbounded size exist, leaving only the *rate*
   (`N^{1/(2h-1)}` inside `{1,…,N}`) open.
 
+* `greedyBhSet` / `exists_isBh_card` — **explicit greedy family**.  Iterating the
+  extension gives, for every `h ≥ 1` and every `n`, a concrete `B_h` set of
+  cardinality exactly `n`.  This isolates the open content: the *count* of a `B_h`
+  set is unbounded for free; only the size of its *largest element* is hard.
+
 ## Mathematical note
 
 The bound is *sharp in order*: Singer difference sets give `B_2` sets of size
@@ -554,5 +559,52 @@ theorem IsBh.exists_insert {h : ℕ} {A : Finset ℕ} (hh : 1 ≤ h) (hA : IsBh 
   have hle : (h * A.sup id + 1) ≤ A.sup id := Finset.le_sup (f := id) hmem
   have hpos : A.sup id ≤ h * A.sup id := Nat.le_mul_of_pos_left _ hh
   omega
+
+/-! ## Part 6: An explicit greedy `B_h` family
+
+Iterating `IsBh.exists_insert` realises the qualitative consequence of the extension
+lemma: `B_h` sets of *every* cardinality exist (the parent's `greedySidonSeq` does the
+same for `B_2`).  This pins down precisely what is — and is not — open: the *count*
+of a `B_h` set is unbounded for free; the hard quantitative question is how small its
+*largest element* can be, i.e. the `N^{1/(2h-1)}` greedy lower bound inside `{1,…,N}`. -/
+
+/-- The empty set is `B_h` for every `h`. -/
+theorem isBh_empty {h : ℕ} : IsBh h (∅ : Finset ℕ) := by
+  intro s hs t _ _
+  rcases Nat.eq_zero_or_pos h with rfl | hpos
+  · exact Subsingleton.elim s t
+  · rw [Finset.mem_coe] at hs
+    obtain ⟨k, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hpos.ne'
+    rw [Finset.sym_empty] at hs
+    exact absurd hs (Finset.notMem_empty s)
+
+/-- Greedy construction bundled with its invariants.  Starting from `∅`, repeatedly
+adjoin a witness of `IsBh.exists_insert`; stage `n` is a `B_h` set of cardinality `n`. -/
+noncomputable def greedyBhAux (h : ℕ) (hh : 1 ≤ h) :
+    (n : ℕ) → {A : Finset ℕ // IsBh h A ∧ A.card = n}
+  | 0 => ⟨∅, isBh_empty, Finset.card_empty⟩
+  | n + 1 =>
+      let prev := greedyBhAux h hh n
+      let m := Classical.choose (prev.2.1.exists_insert hh)
+      have hm := Classical.choose_spec (prev.2.1.exists_insert hh)
+      ⟨insert m prev.1, hm.2, by rw [Finset.card_insert_of_notMem hm.1, prev.2.2]⟩
+
+/-- The greedy `B_h` set at stage `n` (cardinality `n`). -/
+noncomputable def greedyBhSet (h : ℕ) (hh : 1 ≤ h) (n : ℕ) : Finset ℕ :=
+  (greedyBhAux h hh n).1
+
+theorem greedyBhSet_isBh {h : ℕ} (hh : 1 ≤ h) (n : ℕ) :
+    IsBh h (greedyBhSet h hh n) := (greedyBhAux h hh n).2.1
+
+theorem greedyBhSet_card {h : ℕ} (hh : 1 ≤ h) (n : ℕ) :
+    (greedyBhSet h hh n).card = n := (greedyBhAux h hh n).2.2
+
+/-- **`B_h` sets of every cardinality exist.**  For each `h ≥ 1` and each `n`, the
+greedy construction yields a `B_h` set with exactly `n` elements; in particular the
+cardinality of a `B_h` set is a-priori unbounded.  The open quantitative question is
+how small the largest element can be — the `N^{1/(2h-1)}` greedy lower bound. -/
+theorem exists_isBh_card (h : ℕ) (hh : 1 ≤ h) (n : ℕ) :
+    ∃ A : Finset ℕ, IsBh h A ∧ A.card = n :=
+  ⟨greedyBhSet h hh n, greedyBhSet_isBh hh n, greedyBhSet_card hh n⟩
 
 end Erdos340Bh
