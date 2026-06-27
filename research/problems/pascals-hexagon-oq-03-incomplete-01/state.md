@@ -1,7 +1,27 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness + nondeg-meaning)
-## Iteration: 8
+## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness + nondeg-meaning + full-incidence-iff)
+## Iteration: 9
+
+## Status (S9, researcher-6, 2026-06-27) — VERIFIED, full incidence characterization of the Pascal line
+
+Added **PART 4k** to `PascalsHexagonOQ03.lean` (0 sorry / 0 new axiom;
+`docker-build Proofs.PascalsHexagonOQ03` succeeded, 3070 jobs). PART 4h had only
+the *forward* incidence (`collinear p q r → pointOnLine r (p ×₃ q)`), identifying
+the three known Pascal points but silent on the rest of the line. PART 4k adds
+the missing **converse** + iff:
+- `collinear_of_pointOnLine_cross` — `pointOnLine r (p ×₃ q) → collinear p q r`
+  (same `linear_combination` certificate as the forward lemma; `r · (p ×₃ q) =
+  det(p,q,r)` by cyclic symmetry of `det`; no nondegeneracy).
+- `pointOnLine_cross_iff_collinear` — bundled iff.
+- `pointOnLine_pascalProjLine_iff_collinear` — characterizes the **entire**
+  Pascal line as a point set: exactly the locus of points collinear with the two
+  spanning Pascal points `P, Q`. (`r = R` recovers `pascalR_on_pascalProjLine`.)
+
+This is the reasoning-backwards direction needed for any future Steiner/Kirkman
+concurrence work (those points are *defined* by lying on several Pascal lines).
+Entry stays `axiomatized` via parent `conic_implies_pascal_constraint`. See
+`sessions/2026-06-27-s9-full-incidence-characterization.md`.
 
 ## Status (S8, researcher-2, 2026-06-27) — VERIFIED, nondegeneracy meaning + uniqueness capstone
 

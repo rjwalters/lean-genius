@@ -1402,6 +1402,64 @@ theorem pascalProjLine_ne_zero_of_minor {C : Conic} (hex : InscribedHexagon C)
   · exact h m20
 
 -- ============================================================
+-- PART 4k: Full Incidence Characterization of the Pascal Line
+--          (a point lies on `pascalProjLine` iff it is collinear with P, Q)
+-- ============================================================
+
+/- PART 4h established the *three* incidences `P, Q, R ∈ pascalProjLine` via the
+   one-directional `pointOnLine_cross_of_collinear : collinear p q r →
+   pointOnLine r (p ×₃ q)`.  That direction alone identifies the three known
+   Pascal points but says nothing about the rest of the line.  This part proves
+   the missing **converse** and packages the resulting *iff*: a point `r` lies on
+   the join `p ×₃ q` of two points **exactly when** `p, q, r` are collinear.
+   Both directions are the single identity `r · (p ×₃ q) = det(p, q, r)` (the
+   scalar triple product equals the determinant, by the cyclic symmetry of
+   `det`), so the converse is the *same* `linear_combination` certificate read
+   the other way — no nondegeneracy is needed.  Specialised to the Pascal points
+   this gives the complete geometric description of the Pascal line as a point
+   set: `pascalProjLine hex` is *precisely* the locus of points collinear with
+   the two spanning Pascal points `P` and `Q`, strengthening the three-point
+   incidence of PART 4h to an exhaustive characterization. -/
+
+/-- **Converse of `pointOnLine_cross_of_collinear`.**  If `r` lies on the line
+    `p ×₃ q` spanned by `p` and `q`, then `p, q, r` are collinear.  The incidence
+    `r · (p ×₃ q) = 0` is, monomial-for-monomial, the determinant
+    `det(p, q, r) = 0` (same `linear_combination` certificate as the forward
+    direction), so no general-position hypothesis is required. -/
+theorem collinear_of_pointOnLine_cross (p q r : ProjPoint)
+    (h : pointOnLine r (crossProduct p q)) : collinear p q r := by
+  simp only [pointOnLine, Fin.sum_univ_three, cross_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+    Matrix.head_cons, Fin.isValue] at h
+  simp only [collinear, threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply,
+    Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two, Matrix.tail_cons,
+    Fin.isValue]
+  linear_combination h
+
+/-- **Incidence on a join is collinearity.**  A point `r` lies on the projective
+    line `p ×₃ q` through `p` and `q` *iff* the three points `p, q, r` are
+    collinear.  This is the exhaustive form of the one-directional incidence
+    lemmas of PART 4h: it characterizes the *entire* line `p ×₃ q` as a point
+    set, not merely the two spanning points.  Pure coordinate algebra — the
+    scalar triple product `r · (p ×₃ q)` is the determinant `det(p, q, r)`. -/
+theorem pointOnLine_cross_iff_collinear (p q r : ProjPoint) :
+    pointOnLine r (crossProduct p q) ↔ collinear p q r :=
+  ⟨collinear_of_pointOnLine_cross p q r, pointOnLine_cross_of_collinear p q r⟩
+
+/-- **Complete geometric description of the Pascal line.**  A point `r` lies on
+    `pascalProjLine hex` *iff* it is collinear with the two spanning Pascal
+    points `P = AB ∩ DE` and `Q = BC ∩ EF`.  Where PART 4h recorded the three
+    individual incidences `P, Q, R ∈ pascalProjLine`, this pins down the Pascal
+    line as a point set: it is *exactly* the locus of points collinear with `P`
+    and `Q`.  (Taking `r = R` recovers `pascalR_on_pascalProjLine` via Pascal's
+    theorem.)  Unconditional — no non-degeneracy hypothesis. -/
+theorem pointOnLine_pascalProjLine_iff_collinear {C : Conic}
+    (hex : InscribedHexagon C) (r : ProjPoint) :
+    pointOnLine r (pascalProjLine hex) ↔ collinear (pascalP hex) (pascalQ hex) r := by
+  unfold pascalProjLine lineThrough
+  exact pointOnLine_cross_iff_collinear (pascalP hex) (pascalQ hex) r
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
