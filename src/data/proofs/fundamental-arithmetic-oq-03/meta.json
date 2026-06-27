@@ -109,6 +109,21 @@
       "proofId": "fundamental-arithmetic-oq-02",
       "relationship": "Sibling open question",
       "description": "Where oq-02 exhibits the FAILURE of unique factorization in Z[√-5], this entry exploits its SUCCESS in Z to derive the Euler product and Euler's prime-product evaluations."
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "Supplies the special value",
+      "description": "The headline identity rewrites the Euler product at s=2 with ζ(2)=π²/6 — exactly the Basel value formalized there. The Basel problem provides the right-hand side; this entry provides the prime-product left-hand side that Euler equated to it in 1737."
+    },
+    {
+      "proofId": "prime-number-theorem",
+      "relationship": "Downstream consequence",
+      "description": "The non-vanishing of ζ for Re s > 1 recorded here (basel_value_ne_zero, via riemannZeta_ne_zero_of_one_lt_re) is the Euler-product seed of the analytic input to PNT: pushing non-vanishing to the boundary line Re s = 1 is what yields the asymptotic π(x) ~ x/log x."
+    },
+    {
+      "proofId": "infinitude-primes",
+      "relationship": "Euler's analytic refinement",
+      "description": "Euler's product diverges at s=1 (the harmonic series), which gives an analytic proof that there are infinitely many primes — strengthened to the divergence of ∑ 1/p. This entry's first open question asks to formalize that boundary behaviour; infinitude-primes records the elementary (Euclid) counterpart."
     }
   ],
   "sorries": 0,
