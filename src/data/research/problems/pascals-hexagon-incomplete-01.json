@@ -40,10 +40,16 @@
   },
   "knowledge": {
     "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "builtItems": [
+      "PascalsHexagonIncomplete01OQ03OQ01.lean (181L, 0-sorry/0-axiom, verified): qform_stdConic_rescale, det_rescale_ne_zero, diagConic_indefinite_projEquiv_stdConic, stdConic_projEquiv_stdConic. PR #30818."
+    ],
+    "insights": [
+      "OQ-03-OQ-01 (sufficiency converse) SOLVED: an indefinite diagonal conic diag(a,b,c) with a,b>0,c<0 IS projectively equivalent to stdConic, via the explicit rescaling diag(√a,√b,√(-c)). With posDef_not_projEquiv_stdConic this pins the equivalence boundary exactly at the (2,1)-signature for diagonal conics."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Hard half of Sylvester reduction remains open: diagonalise an arbitrary symmetric conic carrying a real point (sylvester_stdConic_of_isotropic in PascalsHexagon.lean), then feed into this rescaling to handle non-diagonal indefinite conics."
+    ],
     "markdown": "# Knowledge Base: pascals-hexagon-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
