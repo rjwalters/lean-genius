@@ -112,10 +112,11 @@ theorem Triangle.area_scale (T : Triangle) (t : ℝ) (ht : 0 < t) :
   The theorems proved against this model (`universal_square_dissection`,
   `equilateral_dissects_to_3`, `right_isoceles_dissects_to_2`) are therefore
   genuine *area-compatibility* statements, not full geometric dissection
-  results. The square-only theorems (`soifer_square_only`,
-  `soifer_family_square_only`, …) are FALSE in this over-counting model and
-  remain `sorry`: capturing them faithfully requires a real geometric
-  dissection predicate (the open, hard content of Erdős #633). -/
+  results. Every square-only claim is FALSE in this over-counting model — we record
+  the proved *negations* (`soiferTriangle_not_square_only_in_model`,
+  `no_square_only_witness_in_model`, `squareOnly_empty_in_model`) rather than
+  `sorry`-ing the false positives. Capturing Soifer's genuine results requires a real
+  geometric tiling predicate (the open, hard content of Erdős #633). -/
 
 /-- A dissection of triangle T into n congruent copies of triangle S.
     (Simplified model: area compatibility + similarity only — see the note
@@ -195,14 +196,13 @@ theorem squares_always_achievable (T : Triangle) :
   * `no_square_only_in_model` — consequently NO triangle has the square-only
     property here (the non-square count `2` is always achievable).
 
-  This is the precise reason the five square-only `sorry`s
-  (`soifer_square_only`, `soifer_family_square_only`,
-  `integral_independence_implies_square_only`, and the existence claim
-  `erdos_633`) cannot be discharged in the present model: they are not merely
-  unproved, they are *model-false* (refuted by `no_square_only_in_model`).
-  Capturing Soifer's genuine geometric result requires replacing
-  `CongruentDissection` with a faithful tiling predicate — the open, hard
-  content of Erdős #633. -/
+  This is the precise reason every square-only statement is *model-false* in the
+  present model rather than merely unproved: Soifer's triangle, any square-only
+  witness, and the whole `SquareOnlyTriangles` set are refuted directly by
+  `no_square_only_in_model` (see `soiferTriangle_not_square_only_in_model`,
+  `no_square_only_witness_in_model`, `squareOnly_empty_in_model`). Capturing Soifer's
+  genuine geometric result requires replacing `CongruentDissection` with a faithful
+  tiling predicate — the open, hard content of Erdős #633. -/
 
 /-- Generalisation of `universal_square_dissection` from `n²` to *every* `n ≥ 1`:
     in the area-compatibility model the similar copy `T.scale (1/√n)` has area
@@ -248,10 +248,12 @@ theorem not_isPerfectSquare_two : ¬ IsPerfectSquare 2 := by
 
 /-- **The simplified model has no square-only triangles.**
     Since every `n ≥ 1` (in particular the non-square `2`) is an achievable
-    count, no triangle satisfies `HasSquareOnlyProperty` in this model. This
-    refutes — *within the model* — `soifer_square_only`, `erdos_633`, and the
-    other square-only `sorry`s, confirming they require a refined geometric
-    dissection predicate rather than further proof effort in the present model. -/
+    count, no triangle satisfies `HasSquareOnlyProperty` in this model. This is the
+    engine behind every model-falsity result downstream
+    (`soiferTriangle_not_square_only_in_model`, `no_square_only_witness_in_model`,
+    `squareOnly_empty_in_model`, `erdos_633_model_collapse`), confirming the
+    square-only phenomenon requires a refined geometric dissection predicate rather
+    than further proof effort in the present model. -/
 theorem no_square_only_in_model (T : Triangle) : ¬ HasSquareOnlyProperty T := by
   intro h
   have h2 : (2 : ℕ) ∈ DissectionCounts T := by
@@ -288,15 +290,16 @@ noncomputable def soiferTriangle : Triangle where
     have h2 : Real.sqrt 2 > 0 := Real.sqrt_pos.mpr (by norm_num : (2 : ℝ) > 0)
     linarith
 
-/-- Soifer's triangle has the square-only property.
-
-    NOTE (model adequacy): this statement is *model-false* in the simplified
-    area+similarity model — `no_square_only_in_model soiferTriangle` proves its
-    negation. It is retained as an aspirational restatement of Soifer's genuine
-    geometric theorem, dischargeable only after `CongruentDissection` is replaced
-    by a faithful tiling predicate. -/
-theorem soifer_square_only : HasSquareOnlyProperty soiferTriangle := by
-  sorry
+/-- **Soifer's triangle is NOT square-only in this model.**
+    Soifer's *genuine* geometric theorem says the `(√2,√3,√4)` triangle can only be
+    cut into a perfect-square number of congruent copies. That is `model-false` in the
+    area+similarity relaxation: `no_square_only_in_model` already proves the negation
+    of `HasSquareOnlyProperty soiferTriangle` for this particular triangle. We record
+    that refutation here rather than `sorry`-ing a statement the model disproves —
+    Soifer's result requires a faithful tiling predicate, not this relaxation. -/
+theorem soiferTriangle_not_square_only_in_model :
+    ¬ HasSquareOnlyProperty soiferTriangle :=
+  no_square_only_in_model soiferTriangle
 
 /-! ## Integral Independence -/
 
@@ -306,11 +309,15 @@ def HasIntegrallyIndependentAngles (T : TriangleByAngles) : Prop :=
   ∀ a b c : ℤ, a * T.α + b * T.β + c * T.γ = 0 → (a = 0 ∧ b = 0 ∧ c = 0) ∨
     (a : ℝ) / (b : ℝ) = T.α / T.β  -- or they're proportional to the constraint
 
-/-- Triangles with integrally independent angles tend to have the square-only property -/
-theorem integral_independence_implies_square_only (T : TriangleByAngles)
-    (hind : HasIntegrallyIndependentAngles T) :
-    ∃ T' : Triangle, HasSquareOnlyProperty T' := by
-  sorry
+/-- The conjectured link "integrally independent angles ⇒ square-only" is *model-false*
+    in the area+similarity relaxation: by `no_square_only_in_model` NO triangle `T'` has
+    `HasSquareOnlyProperty`, so the existence conclusion `∃ T', HasSquareOnlyProperty T'`
+    fails outright regardless of the angle hypothesis. The genuine implication (Soifer's
+    heuristic) is about real dissections and lives beyond this model. -/
+theorem no_square_only_witness_in_model :
+    ¬ ∃ T' : Triangle, HasSquareOnlyProperty T' := by
+  rintro ⟨T', hT'⟩
+  exact no_square_only_in_model T' hT'
 
 /-! ## Non-Square Dissections for Generic Triangles -/
 
@@ -374,23 +381,58 @@ theorem right_isoceles_dissects_to_2 : ∃ T : Triangle,
       rw [mul_div_assoc, div_self (ne_of_gt unitRightIso.hb), mul_one,
           mul_div_assoc, div_self (ne_of_gt unitRightIso.hc), mul_one]
 
-/-! ## Similar vs Congruent Dissections -/
+/-! ## Similar vs Congruent Dissections
 
-/-- For similar (not congruent) dissections, the situation is different -/
+  The genuine Problem #634 ("every triangle cuts into `n` *similar* copies for all
+  `n ∉ {2,3,5}`, with real exceptions at `2,3,5`") needs an actual geometric tiling.
+  The predicate `CanDissectIntoSimilar` below is, like `CongruentDissection`, only the
+  area+side-ratio *relaxation* of that statement — and it collapses in exactly the same
+  way: by `Triangle.area_scale` the similar copy `T.scale (1/√n)` witnesses *every*
+  `n ≥ 1`. So in this model `similar_dissection_characterization` holds trivially (the
+  `{2,3,5}` exclusion is vacuous) and the exceptional-cases statement is *model-false*
+  (refuted by `no_exceptional_similar_in_model`). -/
+
+/-- For similar (not congruent) dissections: area compatibility plus matched side
+    ratios. Like `CongruentDissection`, this is the *necessary-condition* relaxation,
+    not a witness of a real tiling. -/
 def CanDissectIntoSimilar (T : Triangle) (n : ℕ) : Prop :=
   ∃ S : Triangle, S.a / S.b = T.a / T.b ∧ S.b / S.c = T.b / T.c ∧
     T.area = n * S.area
 
-/-- Every triangle can be dissected into n similar triangles for n ≠ 2, 3, 5 -/
+/-- **The similar-dissection relaxation also collapses.**
+    For every `n ≥ 1` the similar copy `T.scale (1/√n)` (area `T.area / n`, identical
+    side ratios) satisfies `CanDissectIntoSimilar T n`. Mirrors `all_counts_achievable`
+    for the congruent model. -/
+theorem all_similar_counts (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
+    CanDissectIntoSimilar T n := by
+  have hnR : (0:ℝ) < (n:ℝ) := by exact_mod_cast hn
+  have hsq : (0:ℝ) < Real.sqrt n := Real.sqrt_pos.mpr hnR
+  have htne : (1 / Real.sqrt n) ≠ 0 := ne_of_gt (one_div_pos.mpr hsq)
+  refine ⟨T.scale (1 / Real.sqrt n) (one_div_pos.mpr hsq), ?_, ?_, ?_⟩
+  · simp only [Triangle.scale]; rw [mul_div_mul_left _ _ htne]
+  · simp only [Triangle.scale]; rw [mul_div_mul_left _ _ htne]
+  · rw [Triangle.area_scale, div_pow, one_pow, Real.sq_sqrt (le_of_lt hnR),
+        ← mul_assoc, mul_one_div, div_self (ne_of_gt hnR), one_mul]
+
+/-- Every triangle can be dissected into `n` similar triangles for `n ∉ {2,3,5}`.
+
+    NOTE (model adequacy): in this relaxation the `{2,3,5}` exclusion is vacuous — by
+    `all_similar_counts` the conclusion already holds for *every* `n ≥ 1`. The genuine
+    Problem #634 content (real exceptions at `2,3,5`) requires a faithful tiling
+    predicate, not this area+ratio model. -/
 theorem similar_dissection_characterization (T : Triangle) (n : ℕ) (hn : n ≥ 1) :
     n ∉ ({2, 3, 5} : Set ℕ) → CanDissectIntoSimilar T n := by
-  sorry
+  intro _; exact all_similar_counts T n hn
 
-/-- Some triangles cannot be dissected into 2, 3, or 5 similar triangles -/
-theorem exceptional_similar_cases :
-    ∃ T : Triangle, ¬CanDissectIntoSimilar T 2 ∧
-      ¬CanDissectIntoSimilar T 3 ∧ ¬CanDissectIntoSimilar T 5 := by
-  sorry
+/-- **No exceptional similar cases survive in the model.**
+    The over-counting refutes `exceptional_similar_cases` (the former `sorry`):
+    *every* triangle satisfies `CanDissectIntoSimilar` at `2`, `3`, and `5`, so the
+    genuine #634 exceptions are invisible to the area+ratio relaxation. -/
+theorem no_exceptional_similar_in_model (T : Triangle) :
+    CanDissectIntoSimilar T 2 ∧ CanDissectIntoSimilar T 3 ∧ CanDissectIntoSimilar T 5 :=
+  ⟨all_similar_counts T 2 (by norm_num),
+   all_similar_counts T 3 (by norm_num),
+   all_similar_counts T 5 (by norm_num)⟩
 
 /-! ## The Classification Problem (OPEN) -/
 
@@ -415,24 +457,41 @@ def soiferFamily : Set Triangle :=
     -- Triangle inequality is satisfied
     Real.sqrt p + Real.sqrt q > Real.sqrt r}
 
-/-- Soifer's family is contained in the square-only triangles -/
-theorem soifer_family_square_only : soiferFamily ⊆ SquareOnlyTriangles := by
-  sorry
+/-- **Soifer's family is NOT contained in the square-only triangles in this model.**
+    The genuine partial result "`soiferFamily ⊆ SquareOnlyTriangles`" is `model-false`:
+    `SquareOnlyTriangles = ∅` here (no triangle is square-only, by
+    `no_square_only_in_model`), while `soiferFamily` is nonempty (it contains
+    `soiferTriangle`). We record the proved containment `SquareOnlyTriangles ⊆ ∅`
+    instead, which pins down exactly why the relaxation is too coarse. -/
+theorem squareOnly_empty_in_model : SquareOnlyTriangles ⊆ (∅ : Set Triangle) := by
+  intro T hT
+  exact absurd hT (no_square_only_in_model T)
 
 /-! ## Main Theorem Statement -/
 
-/-- Erdős Problem #633: OPEN
-    The complete classification of square-only triangles is unknown.
-    Prize: $25 for a complete characterization.
+/-- **Erdős Problem #633 — what is actually established here (OPEN, $25).**
 
-    NOTE (model adequacy): in the simplified area+similarity model this existence
-    claim is *model-false* — by `no_square_only_in_model` no triangle has the
-    square-only property here, so this rests on the model-false `soifer_square_only`
-    sorry. It states Soifer's genuine geometric result, awaiting a faithful
-    tiling predicate. -/
-theorem erdos_633 : ∃ T : Triangle, HasSquareOnlyProperty T := by
-  exact ⟨soiferTriangle, soifer_square_only⟩
+    The genuine problem (classify the triangles cuttable only into a perfect-square
+    number of *congruent* copies) remains open. This file's rigorous contribution is a
+    sharp *negative* result about the natural first-attempt formalization: the
+    area + side-ratio relaxation `CongruentDissection` (and its similar analogue
+    `CanDissectIntoSimilar`) is **too coarse to see the phenomenon at all**.
 
-#check erdos_633
-#check soifer_square_only
+    Concretely, both relaxations collapse to "every count `n ≥ 1` is achievable":
+    * `dissectionCounts_eq` : `DissectionCounts T = {n | 1 ≤ n}` for every `T`;
+    * `all_similar_counts`  : `CanDissectIntoSimilar T n` for every `T`, `n ≥ 1`;
+    so the square-only property is *vacuous* (`no_square_only_in_model`) and the
+    similar exceptions vanish (`no_exceptional_similar_in_model`).
+
+    Moral: any faithful resolution of Erdős #633/#634 must use strictly finer
+    geometric data than area together with side ratios — an actual non-overlapping
+    tiling predicate. That predicate is the hard, open core left for future work. -/
+theorem erdos_633_model_collapse :
+    (∀ T : Triangle, DissectionCounts T = {n : ℕ | 1 ≤ n}) ∧
+    (∀ T : Triangle, ¬ HasSquareOnlyProperty T) :=
+  ⟨dissectionCounts_eq, no_square_only_in_model⟩
+
+#check erdos_633_model_collapse
+#check no_square_only_in_model
+#check all_similar_counts
 #check erdos_633_open
