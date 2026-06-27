@@ -135,3 +135,46 @@ bulk; steps 2 and 4 are short congruence arguments).
   `p₀ ≡ a₀ ≡ 1 (mod 4)`.
 - Submit that assembly sorry to Aristotle as a HARD job once the MCP is back (known classical
   result — Hardy–Wright Thm 277).
+
+## Session 2026-06-27 (researcher-2) — square-packaging half drafted [BUILD-PENDING]
+
+**State on entry:** local prime-power engine (L1, L2, pairing, parity) merged &
+verified (PR #30852, 0-sorry/0-axiom). SOLVED-with-followup: the global assembly
+is the open gap. Picked the **square-packaging half** of that assembly.
+
+**New work** — `proofs/Proofs/SumOfDivisorsOQ01SquarePacking.lean` (4 theorems,
+isolated companion that `import Proofs.SumOfDivisorsOQ01` so it CANNOT regress the
+verified main entry):
+
+1. `isSquare_iff_even_factorization {N} (hN : N ≠ 0) : IsSquare N ↔ ∀ p, Even (N.factorization p)`
+   — pure factorization fact. Reverse builds the witness `∏ p^(e_p/2)` and shows
+   its square is `N` via `Nat.factorization_prod_pow_eq_self` + `Finset.prod_pow`.
+2. `odd_sigma_iff_even_factorization {N} (hodd) (hN) : Odd (σ 1 N) ↔ ∀ p ∈ N.primeFactors, Even (N.factorization p)`
+   — L1 spread by `isMultiplicative_sigma` over the factorization product; parity
+   of a product handled by `Nat.prime_two.prime.dvd_finset_prod_iff` + `push_neg`.
+3. `odd_sigma_odd_iff_isSquare {N} (hodd) (hN) : Odd (σ 1 N) ↔ IsSquare N`
+   — **headline**: odd case of "σ(n) odd ⟺ n is a square or twice a square".
+   This is exactly the `m²` packaging: the part of `N` where `σ` stays odd is a
+   square. Bridges (1)↔(2) via `factorization = 0` off `primeFactors`.
+4. `odd_perfect_not_isSquare {N} (hodd) (hperf) : ¬ IsSquare N`
+   — corollary: an odd perfect number is never a square (`σ N = 2N` is even).
+
+**Status: BUILD-PENDING (NOT machine-verified).** Docker was hard-down all
+session: host disk `/System/Volumes/Data` at 100% (≤8 GiB free of 926 GiB, ~6
+concurrent agent Mathlib builds) and `containerd` `meta.db` throwing
+`input/output error` on every new image/container build. 4 build attempts all
+failed at the Docker daemon layer (never reached Lean). Every Mathlib lemma name
+WAS statically checked against the local checkout `proofs/.lake/packages/mathlib`
+(e.g. `even_iff_two_dvd`, `not_even_iff_odd`, `Nat.factorization_mul`,
+`Prime.dvd_finset_prod_iff`, `Finset.prod_pow`, `multiplicative_factorization`),
+but tactic-level success is unconfirmed. **Do not promote to `verified` or update
+the gallery meta until a Docker-up build of `Proofs.SumOfDivisorsOQ01SquarePacking`
+returns `=== Build succeeded ===`.** Risk spots if it fails: the `simp only
+[Finsupp.prod]` unfolds, the `forall_congr'`/`imp_congr_right` shape after
+`push_neg`, and the `dvd_finset_prod_iff` rewrite unification.
+
+**Remaining gap (the harder half):** the mod-4 *counting* that `σ(N)=2N` forces
+*exactly one* odd-exponent prime (so the non-special part is the `m²` above), then
+L2 pins `p ≡ a ≡ 1 (mod 4)`. Approach: two even σ-factors would put `4 ∣ σ(N)`,
+contradicting `σ(N) = 2·odd ≡ 2 (mod 4)`; combine with theorem (2) "at least one"
+to get exactly one. Then `Nat.factorization_prod_pow_eq_self` packages the rest.
