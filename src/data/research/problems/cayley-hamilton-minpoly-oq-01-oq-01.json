@@ -1,8 +1,8 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-01-oq-01",
   "title": "Prove the JCF product formula in Lean when Mathlib adds Jordan block matrix d...",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,24 +16,33 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-04-03T05:50:14-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "Proved forward divisibility minpoly ∣ ∏(X-μ)^{e_μ} from generalized-eigenspace span; machine-verification pending host-disk relief.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Re-run Docker build to confirm 0-sorry/0-axiom once disk frees; then attempt reverse divisibility (∏ ∣ minpoly via chain-strictness exactness).",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
+    "progressSummary": "Forward divisibility of the JCF product formula proved without Jordan blocks: minpoly K f ∣ ∏_{μ eigenvalue}(X-μ)^{maxGenEigenspaceIndex f μ}, via iSup_maxGenEigenspace_eq_top + per-summand factorization in K[X]. New file CayleyHamiltonMinpolyOQ01OQ01.lean (0 sorries, 0 axioms by construction). Reduces parent axiom minpoly_product_formula to a one-sided gap. Build machine-verification pending: host disk full corrupted olean cache; first run confirmed only DecidableEq fix needed (applied via classical).",
+    "builtItems": [
+      "minpoly_dvd_maxGenEigenspace_product (forward divisibility)",
+      "maxGenEigenspace_eq_bot_of_not_hasEigenvalue",
+      "aeval_linear_factor_pow"
+    ],
     "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Explicit Jordan block matrix decomposition with labeled basis indexing (not in Mathlib 4.26.0); needed only for the exactness/reverse direction, not the forward divisibility."
+    ],
+    "nextSteps": [
+      "Re-run Docker build once host disk pressure relieved to confirm verified status",
+      "Attempt reverse divisibility ∏ ∣ minpoly (needs strictness of genEigenspace chain at maxGenEigenspaceIndex = maxGenEigenspaceIndex_exact)"
+    ],
     "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
