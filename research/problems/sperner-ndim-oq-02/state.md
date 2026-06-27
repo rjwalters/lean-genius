@@ -4,22 +4,31 @@
 **Phase**: ORIENT
 **Path**: full
 **Since**: 2026-04-23T00:00:00Z
-**Iteration**: 6
+**Iteration**: 7
 
-> Session 5 (2026-06-27, researcher-7): HARD infra outage (disk 99%, bash stdout
-> ENOSPC, 9 hung 6h build containers) — no build/verify possible. Read-only source
-> confirmation of `GridSimplex` fields/instances + one design correction:
-> representation A (subtype) is preferred (Finset route does NOT dodge the
-> vertex-ordering obligation), and `IsCanon s := ∀ k, lex (s.verts 0) ≤ (s.verts k)`
-> is a simpler, computable canonicality predicate than the Session-4 `canonMiss`.
-> See knowledge.md "Session 5". No code written (unverifiable hard proof + host risk).
+> Session 6 (2026-06-27, researcher-12): **VERIFIED the step-0 bridge (0-axiom)**
+> and **decoupled it from broken `SpernerGrid.lean`**. Docker still corrupt
+> (containerd meta.db I/O error) but disk recovered intermittently; used the
+> local `LAKE_UNSAFE=1 ./bin/lake env lean` single-file fallback. Two findings:
+> (1) `SpernerNDimOQ02.lean`'s proofs all type-check, 0 sorry, axioms =
+> `{propext, Classical.choice, Quot.sound}` only → **verified, 0-axiom**.
+> (2) `SpernerGrid.lean` is **un-buildable on main** — 15+ genuine compile errors
+> (omega gaps, a syntax typo @1372, rewrite/type-mismatch, unknown-ident `hs'`)
+> spanning the `gridAdj`/`boundaryFlip`/doors machinery (lines 679–1740), masked
+> for ages by "build host down". Because the merged bridge `import`ed the broken
+> file, it could not actually build. **Fix**: factored the clean coordinate
+> primitives (`BaryPoint`/`onFace`/`IsSperner`, byte-for-byte) into a new
+> `SpernerGridBase.lean` and re-pointed the bridge import at it. Both build clean
+> end-to-end (real imports, no stubs). See knowledge.md "Session 6".
 
 ## Current Focus
 
 Option C in progress. **Session 3 (2026-06-27) delivered step 0**: the
 `BaryPoint d N ≃ Vertex d N` coordinate bridge as
 `proofs/Proofs/SpernerNDimOQ02.lean` (`baryEquivVertex`, `onFace_toVertex`,
-`isSperner_iff`) — now MERGED via PR #30751 (still UNVERIFIED).
+`isSperner_iff`) — MERGED via PR #30751, and **now VERIFIED (0-axiom) and made
+buildable in Session 6** (imports the new clean `SpernerGridBase.lean` instead of
+the broken `SpernerGrid.lean`).
 **Session 4 (2026-06-27, researcher-7) delivered the Phase-1 *design***: a precise
 spec for the *unoriented* `freudenthal d N : SpernerTriangulation d N` instance
 that fixes the `GridSimplex` double-counting — represent cells as canonical
@@ -57,8 +66,14 @@ line.
 
 ## Next Action
 
+0. ✅ DONE (Session 6) — bridge VERIFIED 0-axiom; `SpernerGridBase.lean` created
+   so the bridge builds independently of the broken `SpernerGrid.lean`.
+   **Phase 1 can now build its instance against the clean `SpernerGridBase`
+   primitives** (`BaryPoint`/`onFace`/`IsSperner` are stable & verified there).
+   Follow-up (mechanic/separate): repair or retire the 15+ errors in
+   `SpernerGrid.lean` itself; Option C will delete most of that machinery anyway.
 1. ✅ DONE — bridge written + merged (#30751); Phase-1 design fixed (Session 4).
-2. **(Phase 1 impl, build-gated)** Per the Session-4 checklist in knowledge.md:
+2. **(Phase 1 impl)** Per the Session-4 checklist in knowledge.md:
    define `canonMiss`/`IsCanon` (+ decidability + per-geometry uniqueness),
    `Simplex := {s : GridSimplex // IsCanon s}`, `vertices` (=`toVertex ∘ verts`,
    injective via `toVertex_injective`), and the dual-graph `adj`; discharge the
