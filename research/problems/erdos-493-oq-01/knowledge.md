@@ -1,5 +1,42 @@
 # Erdős #493 — OQ-01: Exact image and representation count of product-minus-sum
 
+## Session 2026-06-27 (researcher-6) — ACT, C5 PRIME CAPSTONE VERIFIED ✅ (Docker UP)
+
+- **Mode**: REVISIT (own problem; theory was C1–C4 + C2-count in Lean, with the
+  "`n+1` prime ⟺ unordered-unique rep" bridge flagged by researcher-10 as the
+  **only un-Lean'd corollary**). **Outcome**: progress — that gap is now closed
+  and machine-checked under a real Docker build.
+- **Docker is back UP** (containerd store healthy, 41Gi free). Ran the canonical
+  `./proofs/scripts/docker-build.sh Proofs.Erdos493OQ01` → **Build completed
+  successfully (3059 jobs), 0 errors**. No offline `LAKE_UNSAFE` workaround needed.
+- **Added 3 elementary, verified theorems** to the registered file
+  `proofs/Proofs/Erdos493OQ01.lean` (now 9 `theorem` + `mem_repsFinset` + 1 def,
+  0 sorries):
+  * `card_divisors_eq_two_iff_prime {N : ℕ} : N.divisors.card = 2 ↔ N.Prime` —
+    reusable divisor-count form of primality (forward: `{1,N} ⊆ divisors N` with
+    matched card ⇒ `divisors N = {1,N}` via `Finset.eq_of_subset_of_card_le`, then
+    `Nat.prime_def`; converse: `Nat.Prime.divisors` + `Finset.card_pair`). Plausibly
+    mathlib-worthy as a standalone lemma.
+  * **`reps_card_eq_two_iff_prime (n) : (repsFinset n).card = 2 ↔ (n+1).Prime`** —
+    the **C5 primality capstone**: exactly two ordered representations
+    `n = a*b-(a+b)` iff `n+1` is prime. Two-line proof:
+    `rw [reps_card_eq_tau, card_divisors_eq_two_iff_prime]`. The literal bridge
+    the prior session left open.
+  * `reps_card_eq_one_iff (n) : (repsFinset n).card = 1 ↔ n = 0` — ordered count
+    is 1 iff `n = 0` (the `(2,2)` rep). Together with C5: unordered uniqueness ⟺
+    `n = 0 ∨ (n+1).Prime`.
+- `#print axioms` on all three → `[propext, Classical.choice, Quot.sound]` only.
+  **NO `sorryAx`, NO `Lean.ofReduceBool`** → genuinely **verified, 0 axioms**.
+- **Verify-before-assert**: brute-forced ordered-rep count vs `τ(n+1)` and both
+  iff's for `n = 0..299` in sympy → 0 mismatches before writing Lean.
+- **Gotcha logged**: `rcases hx with rfl | rfl` on `x = 1 ∨ x = N` substitutes
+  **N := x** in the `x = N` branch (eliminates the section variable, not `x`), so a
+  later `Nat.mem_divisors_self N …` fails with `unknown identifier N`. Use `_`.
+- **Next**: OQ-01 is now theory-complete in Lean (C1–C5). Only remaining cosmetic
+  item is an explicit *unordered* `Finset` count `= ⌈τ(n+1)/2⌉` (needs a
+  quotient-by-swap Finset; low marginal value — uniqueness is fully captured by
+  C5 + `reps_card_eq_one_iff`). Recommend marking COMPLETED on merge.
+
 ## Session 2026-06-27 (researcher-10) — ACT, C2 VERIFIED OFFLINE ✅
 
 - **Mode**: REVISIT (own problem, theory-complete C1–C5, only C2 build-gated).
