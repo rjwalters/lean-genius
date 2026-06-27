@@ -38,14 +38,18 @@ algebraic core and isolated the finite-check residue), this file:
   * proves, **unconditionally and axiom-free**, that several large explicit families
     of starting values already satisfy the "drops below itself" conclusion — the
     even numbers, the powers of two, the odd residue class `n ≡ 1 (mod 4)`
-    (`n ≥ 5`), and the odd residue class `n ≡ 3 (mod 16)` — so the elementary part of
-    the almost-all picture is real Lean content, not scaffolding on the axiom.  The
-    evens together with `1 + 4ℕ` and `3 + 16ℕ` cover **thirteen-sixteenths** of the
-    integers via elementary residue dynamics (`attainsBelow_density_lower_16`, a
-    machine-checked `≥ 13/16` lower density), and the `mod 4`/`mod 16` families
-    exercise the non-trivial `3n+1` branch of the map.  Of the odd classes
-    `n ≡ 3 (mod 4)`, `n ≡ 3 (mod 16)` is precisely the one that drops within its
-    residue-determined window; `7, 11, 15 (mod 16)` have `m`-dependent stopping times.
+    (`n ≥ 5`), the odd residue class `n ≡ 3 (mod 16)`, and the two odd residue classes
+    `n ≡ 11, 23 (mod 32)` — so the elementary part of the almost-all picture is real
+    Lean content, not scaffolding on the axiom.  The evens together with `1 + 4ℕ`,
+    `3 + 16ℕ`, `11 + 32ℕ`, and `23 + 32ℕ` cover **seven-eighths** of the integers via
+    elementary residue dynamics (`attainsBelow_density_lower_32`, a machine-checked
+    `≥ 7/8` lower density, sharpening the earlier `≥ 13/16` floor
+    `attainsBelow_density_lower_16`), and the `mod 4`/`mod 16`/`mod 32` families
+    exercise the non-trivial `3n+1` branch of the map.  The residue-determined drop
+    stabilises modulus-by-modulus: of the odd classes `n ≡ 3 (mod 4)`, exactly
+    `n ≡ 3 (mod 16)` drops at level `16`, and exactly the lifts `n ≡ 11, 23 (mod 32)`
+    become newly determined at level `32`; the classes `7, 15, 27, 31 (mod 32)` still
+    have `m`-dependent stopping times and need a finer modulus.
 
 References:
 - Tao, T. (2019). "Almost all orbits of the Collatz map attain almost bounded
@@ -172,6 +176,57 @@ theorem mod_sixteen_three_attainsBelow {n : ℕ} (h : n % 16 = 3) : AttainsBelow
       Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6]
   omega
 
+/-- Every `n ≡ 11 (mod 32)` drops below itself in exactly eight steps:
+`32m+11 ↦ 96m+34 ↦ 48m+17 ↦ 144m+52 ↦ 72m+26 ↦ 36m+13 ↦ 108m+40 ↦ 54m+20 ↦ 27m+10`,
+and `27m+10 < 32m+11` for every `m ≥ 0`.  All eight parities are forced by the residue
+`mod 32` alone (each intermediate `am+b` has `a` even at the decision point), so this is a
+genuine residue-class drop.  Together with `n ≡ 23 (mod 32)` it captures the *new* residues
+that first stabilise at level `32`: among the odd classes `n ≡ 3 (mod 4)`, the lifts
+`11, 23 (mod 32)` drop within their residue-determined windows, whereas `7, 15, 27, 31
+(mod 32)` still have `m`-dependent stopping times.  (The classes `3, 19 (mod 32)` are already
+covered by `n ≡ 3 (mod 16)`.)  Adjoining `11, 23 (mod 32)` lifts the unconditional density
+floor from `13/16` to `7/8`. -/
+theorem mod_thirtytwo_eleven_attainsBelow {n : ℕ} (h : n % 32 = 11) : AttainsBelow n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = 32 * m + 11 := ⟨n / 32, by omega⟩
+  refine ⟨8, by norm_num, ?_⟩
+  have s1 : collatz (32 * m + 11) = 96 * m + 34 := by rw [collatz_odd (by omega)]; ring
+  have s2 : collatz (96 * m + 34) = 48 * m + 17 := by rw [collatz_even (by omega)]; omega
+  have s3 : collatz (48 * m + 17) = 144 * m + 52 := by rw [collatz_odd (by omega)]; ring
+  have s4 : collatz (144 * m + 52) = 72 * m + 26 := by rw [collatz_even (by omega)]; omega
+  have s5 : collatz (72 * m + 26) = 36 * m + 13 := by rw [collatz_even (by omega)]; omega
+  have s6 : collatz (36 * m + 13) = 108 * m + 40 := by rw [collatz_odd (by omega)]; ring
+  have s7 : collatz (108 * m + 40) = 54 * m + 20 := by rw [collatz_even (by omega)]; omega
+  have s8 : collatz (54 * m + 20) = 27 * m + 10 := by rw [collatz_even (by omega)]; omega
+  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8]
+  omega
+
+/-- Every `n ≡ 23 (mod 32)` drops below itself in exactly eight steps:
+`32m+23 ↦ 96m+70 ↦ 48m+35 ↦ 144m+106 ↦ 72m+53 ↦ 216m+160 ↦ 108m+80 ↦ 54m+40 ↦ 27m+20`,
+and `27m+20 < 32m+23` for every `m ≥ 0`.  As with `n ≡ 11 (mod 32)`, all eight parities are
+forced by the residue `mod 32`, and this is the second new residue first stabilising at level
+`32`. -/
+theorem mod_thirtytwo_twentythree_attainsBelow {n : ℕ} (h : n % 32 = 23) : AttainsBelow n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = 32 * m + 23 := ⟨n / 32, by omega⟩
+  refine ⟨8, by norm_num, ?_⟩
+  have s1 : collatz (32 * m + 23) = 96 * m + 70 := by rw [collatz_odd (by omega)]; ring
+  have s2 : collatz (96 * m + 70) = 48 * m + 35 := by rw [collatz_even (by omega)]; omega
+  have s3 : collatz (48 * m + 35) = 144 * m + 106 := by rw [collatz_odd (by omega)]; ring
+  have s4 : collatz (144 * m + 106) = 72 * m + 53 := by rw [collatz_even (by omega)]; omega
+  have s5 : collatz (72 * m + 53) = 216 * m + 160 := by rw [collatz_odd (by omega)]; ring
+  have s6 : collatz (216 * m + 160) = 108 * m + 80 := by rw [collatz_even (by omega)]; omega
+  have s7 : collatz (108 * m + 80) = 54 * m + 40 := by rw [collatz_even (by omega)]; omega
+  have s8 : collatz (54 * m + 40) = 27 * m + 20 := by rw [collatz_even (by omega)]; omega
+  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_succ_apply', Function.iterate_succ_apply',
+      Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8]
+  omega
+
 /-- Packaging: every positive `n` that is **even** or lies in `1 + 4ℕ` (with `n ≥ 5`)
 attains a value below itself.  Together these cover three-quarters of the integers,
 all handled by elementary dynamics with no appeal to Tao's axiom. -/
@@ -191,6 +246,21 @@ theorem even_or_mod_four_one_or_mod_sixteen_three_attainsBelow {n : ℕ} (hn : 1
   · exact even_attainsBelow hn he
   · exact mod_four_one_attainsBelow h1.1 h1.2
   · exact mod_sixteen_three_attainsBelow h3
+
+/-- Full packaging at level `32`: every positive `n` that is **even**, lies in `1 + 4ℕ`
+(`n ≥ 5`), `3 + 16ℕ`, `11 + 32ℕ`, or `23 + 32ℕ` attains a value below itself.  These five
+elementary families together cover **seven-eighths** of the integers — the current
+unconditional floor beneath Tao's density-one theorem, with no appeal to the axiom. -/
+theorem even_or_mod_four_one_or_mod_sixteen_three_or_mod_thirtytwo_attainsBelow {n : ℕ}
+    (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3 ∨ n % 32 = 11 ∨ n % 32 = 23) :
+    AttainsBelow n := by
+  rcases h with he | h1 | h3 | h11 | h23
+  · exact even_attainsBelow hn he
+  · exact mod_four_one_attainsBelow h1.1 h1.2
+  · exact mod_sixteen_three_attainsBelow h3
+  · exact mod_thirtytwo_eleven_attainsBelow h11
+  · exact mod_thirtytwo_twentythree_attainsBelow h23
 
 /-! ## Part II.5: A quantitative density floor of 3/4
 
@@ -331,6 +401,135 @@ theorem attainsBelow_density_lower_16 (N : ℕ) :
     _ = (E ∪ O1 ∪ O3).card := hcard.symm
     _ ≤ _ := Finset.card_le_card hsub
 
+open Classical in
+/-- **Sharpened quantitative density lower bound (`7/8`).**  Adjoining the residue classes
+`11 + 32ℕ` and `23 + 32ℕ` to the evens, `1 + 4ℕ`, and `3 + 16ℕ` lifts the count: among the
+integers in `[1, 32N]`, at least `28N - 1` already attain a value below themselves — the
+`16N` evens, the `8N - 1` members of `1 + 4ℕ` that are `≥ 5`, the `2N` members of `3 + 16ℕ`,
+the `N` members of `11 + 32ℕ`, and the `N` members of `23 + 32ℕ`.  The five families are
+pairwise disjoint (evens by parity; `1 + 4ℕ` by residue `1` mod `4`; the remaining three by
+their distinct residues `3, 11, 23` mod `32`), giving
+`16N + (8N - 1) + 2N + N + N = 28N - 1` distinct drop-below starts.  Dividing by `32N` and
+letting `N → ∞`, the drop-below set has **lower natural density `≥ 7/8`** — strictly above the
+previous `13/16` floor. -/
+theorem attainsBelow_density_lower_32 (N : ℕ) :
+    28 * N - 1 ≤
+      ((Finset.Icc 1 (32 * N)).filter (fun n => AttainsBelow n)).card := by
+  classical
+  rcases Nat.eq_zero_or_pos N with hN0 | hNpos
+  · subst hN0; simp
+  -- The five residue families, as injective images of intervals.
+  set E : Finset ℕ := (Finset.Icc 1 (16 * N)).image (fun j => 2 * j) with hE
+  set O1 : Finset ℕ := (Finset.Icc 1 (8 * N - 1)).image (fun j => 4 * j + 1) with hO1
+  set O3 : Finset ℕ := (Finset.Icc 0 (2 * N - 1)).image (fun j => 16 * j + 3) with hO3
+  set O11 : Finset ℕ := (Finset.Icc 0 (N - 1)).image (fun j => 32 * j + 11) with hO11
+  set O23 : Finset ℕ := (Finset.Icc 0 (N - 1)).image (fun j => 32 * j + 23) with hO23
+  have hEinj : Function.Injective (fun j : ℕ => 2 * j) :=
+    fun a b h => by have h' : 2 * a = 2 * b := h; omega
+  have hO1inj : Function.Injective (fun j : ℕ => 4 * j + 1) :=
+    fun a b h => by have h' : 4 * a + 1 = 4 * b + 1 := h; omega
+  have hO3inj : Function.Injective (fun j : ℕ => 16 * j + 3) :=
+    fun a b h => by have h' : 16 * a + 3 = 16 * b + 3 := h; omega
+  have hO11inj : Function.Injective (fun j : ℕ => 32 * j + 11) :=
+    fun a b h => by have h' : 32 * a + 11 = 32 * b + 11 := h; omega
+  have hO23inj : Function.Injective (fun j : ℕ => 32 * j + 23) :=
+    fun a b h => by have h' : 32 * a + 23 = 32 * b + 23 := h; omega
+  have hEcard : E.card = 16 * N := by
+    rw [hE, Finset.card_image_of_injective _ hEinj, Nat.card_Icc]; omega
+  have hO1card : O1.card = 8 * N - 1 := by
+    rw [hO1, Finset.card_image_of_injective _ hO1inj, Nat.card_Icc]; omega
+  have hO3card : O3.card = 2 * N := by
+    rw [hO3, Finset.card_image_of_injective _ hO3inj, Nat.card_Icc]; omega
+  have hO11card : O11.card = N := by
+    rw [hO11, Finset.card_image_of_injective _ hO11inj, Nat.card_Icc]; omega
+  have hO23card : O23.card = N := by
+    rw [hO23, Finset.card_image_of_injective _ hO23inj, Nat.card_Icc]; omega
+  -- Residues separate the five families.
+  have hEeven : ∀ x ∈ E, x % 2 = 0 := by
+    intro x hx; rw [hE, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show 2 * i % 2 = 0; omega
+  have hO1mod4 : ∀ x ∈ O1, x % 4 = 1 := by
+    intro x hx; rw [hO1, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (4 * i + 1) % 4 = 1; omega
+  have hO3mod16 : ∀ x ∈ O3, x % 16 = 3 := by
+    intro x hx; rw [hO3, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (16 * i + 3) % 16 = 3; omega
+  have hO11mod32 : ∀ x ∈ O11, x % 32 = 11 := by
+    intro x hx; rw [hO11, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (32 * i + 11) % 32 = 11; omega
+  have hO23mod32 : ∀ x ∈ O23, x % 32 = 23 := by
+    intro x hx; rw [hO23, Finset.mem_image] at hx
+    obtain ⟨i, -, rfl⟩ := hx; show (32 * i + 23) % 32 = 23; omega
+  -- The ten pairwise disjointnesses.
+  have dE_O1 : Disjoint E O1 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hEeven a ha; have := hO1mod4 a hb; omega
+  have dE_O3 : Disjoint E O3 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hEeven a ha; have := hO3mod16 a hb; omega
+  have dE_O11 : Disjoint E O11 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hEeven a ha; have := hO11mod32 a hb; omega
+  have dE_O23 : Disjoint E O23 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hEeven a ha; have := hO23mod32 a hb; omega
+  have dO1_O3 : Disjoint O1 O3 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hO1mod4 a ha; have := hO3mod16 a hb; omega
+  have dO1_O11 : Disjoint O1 O11 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hO1mod4 a ha; have := hO11mod32 a hb; omega
+  have dO1_O23 : Disjoint O1 O23 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hO1mod4 a ha; have := hO23mod32 a hb; omega
+  have dO3_O11 : Disjoint O3 O11 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hO3mod16 a ha; have := hO11mod32 a hb; omega
+  have dO3_O23 : Disjoint O3 O23 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hO3mod16 a ha; have := hO23mod32 a hb; omega
+  have dO11_O23 : Disjoint O11 O23 := Finset.disjoint_left.mpr fun a ha hb => by
+    have := hO11mod32 a ha; have := hO23mod32 a hb; omega
+  -- Assemble disjointness of the growing unions.
+  have dEO1_O3 : Disjoint (E ∪ O1) O3 := Finset.disjoint_union_left.mpr ⟨dE_O3, dO1_O3⟩
+  have dEO1_O11 : Disjoint (E ∪ O1) O11 := Finset.disjoint_union_left.mpr ⟨dE_O11, dO1_O11⟩
+  have dEO1O3_O11 : Disjoint (E ∪ O1 ∪ O3) O11 :=
+    Finset.disjoint_union_left.mpr ⟨dEO1_O11, dO3_O11⟩
+  have dEO1_O23 : Disjoint (E ∪ O1) O23 := Finset.disjoint_union_left.mpr ⟨dE_O23, dO1_O23⟩
+  have dEO1O3_O23 : Disjoint (E ∪ O1 ∪ O3) O23 :=
+    Finset.disjoint_union_left.mpr ⟨dEO1_O23, dO3_O23⟩
+  have dEO1O3O11_O23 : Disjoint (E ∪ O1 ∪ O3 ∪ O11) O23 :=
+    Finset.disjoint_union_left.mpr ⟨dEO1O3_O23, dO11_O23⟩
+  have hcard : (E ∪ O1 ∪ O3 ∪ O11 ∪ O23).card =
+      E.card + O1.card + O3.card + O11.card + O23.card := by
+    rw [Finset.card_union_of_disjoint dEO1O3O11_O23,
+        Finset.card_union_of_disjoint dEO1O3_O11,
+        Finset.card_union_of_disjoint dEO1_O3,
+        Finset.card_union_of_disjoint dE_O1]
+  -- All five families consist of drop-below starts in range.
+  have hsub : E ∪ O1 ∪ O3 ∪ O11 ∪ O23 ⊆
+      (Finset.Icc 1 (32 * N)).filter (fun n => AttainsBelow n) := by
+    intro x hx
+    rw [Finset.mem_filter, Finset.mem_Icc]
+    rw [Finset.mem_union, Finset.mem_union, Finset.mem_union, Finset.mem_union] at hx
+    rcases hx with ((((hxE | hxO1) | hxO3) | hxO11) | hxO23)
+    · rw [hE, Finset.mem_image] at hxE
+      obtain ⟨j, hj, rfl⟩ := hxE; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 2 * j ∧ 2 * j ≤ 32 * N) ∧ AttainsBelow (2 * j)
+      exact ⟨⟨by omega, by omega⟩, even_attainsBelow (by omega) (by omega)⟩
+    · rw [hO1, Finset.mem_image] at hxO1
+      obtain ⟨j, hj, rfl⟩ := hxO1; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 4 * j + 1 ∧ 4 * j + 1 ≤ 32 * N) ∧ AttainsBelow (4 * j + 1)
+      exact ⟨⟨by omega, by omega⟩, mod_four_one_attainsBelow (by omega) (by omega)⟩
+    · rw [hO3, Finset.mem_image] at hxO3
+      obtain ⟨j, hj, rfl⟩ := hxO3; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 16 * j + 3 ∧ 16 * j + 3 ≤ 32 * N) ∧ AttainsBelow (16 * j + 3)
+      exact ⟨⟨by omega, by omega⟩, mod_sixteen_three_attainsBelow (by omega)⟩
+    · rw [hO11, Finset.mem_image] at hxO11
+      obtain ⟨j, hj, rfl⟩ := hxO11; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 32 * j + 11 ∧ 32 * j + 11 ≤ 32 * N) ∧ AttainsBelow (32 * j + 11)
+      exact ⟨⟨by omega, by omega⟩, mod_thirtytwo_eleven_attainsBelow (by omega)⟩
+    · rw [hO23, Finset.mem_image] at hxO23
+      obtain ⟨j, hj, rfl⟩ := hxO23; rw [Finset.mem_Icc] at hj
+      show (1 ≤ 32 * j + 23 ∧ 32 * j + 23 ≤ 32 * N) ∧ AttainsBelow (32 * j + 23)
+      exact ⟨⟨by omega, by omega⟩, mod_thirtytwo_twentythree_attainsBelow (by omega)⟩
+  calc 28 * N - 1
+      ≤ E.card + O1.card + O3.card + O11.card + O23.card := by
+        rw [hEcard, hO1card, hO3card, hO11card, hO23card]; omega
+    _ = (E ∪ O1 ∪ O3 ∪ O11 ∪ O23).card := hcard.symm
+    _ ≤ _ := Finset.card_le_card hsub
+
 /-! ## Part III: The orbit minimum and logarithmic density -/
 
 /-- The **orbit minimum** of `n`: the infimum of the values visited by the
@@ -396,6 +595,22 @@ has orbit minimum strictly below the start. -/
 theorem even_or_mod_four_one_or_mod_sixteen_three_colMin_lt {n : ℕ} (hn : 1 ≤ n)
     (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3) : colMin n < n :=
   attainsBelow_colMin_lt (even_or_mod_four_one_or_mod_sixteen_three_attainsBelow hn h)
+
+/-- The two new residue classes `11 + 32ℕ` and `23 + 32ℕ` likewise have orbit minimum
+strictly below their start, unconditionally and without Tao's axiom. -/
+theorem mod_thirtytwo_colMin_lt {n : ℕ} (h : n % 32 = 11 ∨ n % 32 = 23) : colMin n < n := by
+  rcases h with h11 | h23
+  · exact attainsBelow_colMin_lt (mod_thirtytwo_eleven_attainsBelow h11)
+  · exact attainsBelow_colMin_lt (mod_thirtytwo_twentythree_attainsBelow h23)
+
+/-- The full seven-eighths family — evens, `1 + 4ℕ` (`n ≥ 5`), `3 + 16ℕ`, `11 + 32ℕ`, and
+`23 + 32ℕ` — has orbit minimum strictly below the start. -/
+theorem even_or_mod_four_one_or_mod_sixteen_three_or_mod_thirtytwo_colMin_lt {n : ℕ}
+    (hn : 1 ≤ n)
+    (h : n % 2 = 0 ∨ (5 ≤ n ∧ n % 4 = 1) ∨ n % 16 = 3 ∨ n % 32 = 11 ∨ n % 32 = 23) :
+    colMin n < n :=
+  attainsBelow_colMin_lt
+    (even_or_mod_four_one_or_mod_sixteen_three_or_mod_thirtytwo_attainsBelow hn h)
 
 /-- The logarithmic-density partial average of a set `S` up to `N`:
 `(∑_{n≤N, n∈S} 1/n) / (∑_{n≤N} 1/n)`. -/

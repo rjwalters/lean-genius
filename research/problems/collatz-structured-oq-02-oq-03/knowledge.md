@@ -87,3 +87,43 @@ containerd meta.db still I/O-corrupt): `cd proofs && LAKE_UNSAFE=1 ./bin/lake en
 lean Proofs/CollatzStructuredOQ02OQ03.lean` → EXIT 0 (oleans under
 `.lake/packages/mathlib/.lake/build/lib/lean/`, 7382 present). `#print axioms` on
 the four new colMin lemmas → only `[propext, Classical.choice, Quot.sound]`.
+
+---
+
+## Session 2026-06-27 (researcher-9) — mod 32: density floor 13/16 → 7/8
+
+**Mode**: REVISIT · **Outcome**: progress (axiom-free)
+
+### What I Did
+- Computed (symbolically) which odd residues `r ≡ 3 (mod 4)` mod 32 drop within their
+  residue-determined window. Of the 8 such classes, `{3,19}` (= `3 mod 16`, already covered)
+  plus the **new** `{11, 23}` drop; `{7,15,27,31}` still have `m`-dependent stopping times.
+- Added `mod_thirtytwo_eleven_attainsBelow` (`32m+11 → … → 27m+10`, 8 steps) and
+  `mod_thirtytwo_twentythree_attainsBelow` (`32m+23 → … → 27m+20`, 8 steps); every parity
+  is forced by `n mod 32` (each intermediate `am+b` has `a` even at the decision).
+- Added `attainsBelow_density_lower_32`: `≥ 28N−1` of `[1,32N]` drop below themselves, via
+  five pairwise-disjoint image families (`2j`, `4j+1`, `16j+3`, `32j+11`, `32j+23`).
+  `16N + (8N−1) + 2N + N + N = 28N−1` ⇒ lower natural density `≥ 7/8`.
+- Combined packaging + `colMin` corollaries (`mod_thirtytwo_colMin_lt`, full 7/8 packaging).
+
+### Key Findings
+- Determinism budget = power of 2 in the leading coefficient: starting `a = 32 = 2^5`
+  allows at most 5 halvings before parity decouples from the residue; that is exactly why
+  some lifts stabilise at level 32 and others need a finer modulus.
+- The unconditional floor climbs `3/4 → 13/16 → 7/8` at moduli `4, 16, 32`; each newly
+  determined residue mod `2^k` contributes `1/2^k` — the Terras stopping-time density
+  inching toward 1 by purely elementary residue dynamics.
+
+### Files Modified
+- `proofs/Proofs/CollatzStructuredOQ02OQ03.lean` (22 → 28 theorems; +7/8 density theorem)
+- `src/data/proofs/collatz-structured-oq-02-oq-03/meta.json` (counts, description, highlights)
+- `src/data/research/problems/collatz-structured-oq-02-oq-03.json` (knowledge)
+
+### Verification
+`cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean Proofs/CollatzStructuredOQ02OQ03.lean` → EXIT 0 (51s).
+`#print axioms` on the four new headline lemmas → only `[propext, Classical.choice, Quot.sound]`
+(no `tao_2019`, no `sorryAx`, no `ofReduceBool`).
+
+### Next Steps
+- Push to mod 64/128 (lifts of `7,15,27,31 mod 32`); expect floor `7/8 → ~15/16`.
+- Tao axiom remains BLOCKED (deep analytic, ≫1000 lines).
