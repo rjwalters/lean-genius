@@ -2,7 +2,7 @@
   "id": "cauchy-schwarz-oq-01-oq-03-oq-02",
   "title": "Shannon Entropy: Maximum-Entropy Bound (toward Entropic Uncertainty)",
   "slug": "cauchy-schwarz-oq-01-oq-03-oq-02",
-  "description": "Builds the finite-dimensional Shannon-entropy infrastructure needed for an entropic uncertainty relation: entropy of a probability vector via Mathlib's negMulLog, its nonnegativity, the maximum-entropy bound H(p) ≤ log n via Jensen's inequality, and the equality case H(p) = log n ↔ p uniform via the strict-concavity refinement of Jensen. The full Maassen–Uffink entropic uncertainty principle remains blocked on Mathlib's missing interpolation theory.",
+  "description": "Builds the finite-dimensional Shannon-entropy infrastructure needed for an entropic uncertainty relation: entropy of a probability vector via Mathlib's negMulLog, its nonnegativity, the maximum-entropy bound H(p) ≤ log n via Jensen's inequality, the equality case H(p) = log n ↔ p uniform via the strict-concavity refinement of Jensen, and the discrete relative entropy (Kullback–Leibler divergence) together with Gibbs' inequality D(p‖q) ≥ 0 — the positivity statement that underlies the maximum-entropy bound and any entropic uncertainty relation. The full Maassen–Uffink entropic uncertainty principle remains blocked on Mathlib's missing interpolation theory.",
   "meta": {
     "author": "Lean Genius",
     "status": "verified",
@@ -18,11 +18,11 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 152,
-    "assumptions": "Uses Mathlib's Real.negMulLog (Shannon entropy term) with its concavity (concaveOn_negMulLog), strict concavity (strictConcaveOn_negMulLog), the finite Jensen inequality (ConcaveOn.le_map_sum), and its equality case (StrictConcaveOn.eq_of_map_sum_eq). No additional axioms or assumptions.",
-    "theoremCount": 4,
+    "lineCount": 211,
+    "assumptions": "Uses Mathlib's Real.negMulLog (Shannon entropy term) with its concavity (concaveOn_negMulLog), strict concavity (strictConcaveOn_negMulLog), the finite Jensen inequality (ConcaveOn.le_map_sum), and its equality case (StrictConcaveOn.eq_of_map_sum_eq); Gibbs' inequality uses the elementary log bound Real.log_le_sub_one_of_pos. No additional axioms or assumptions.",
+    "theoremCount": 6,
     "mathlib_version": "4.26.0",
-    "definitionCount": 1
+    "definitionCount": 2
   },
   "overview": {
     "problemStatement": "Parent open question: can the entropic uncertainty principle (Maassen–Uffink 1988), $H(p) + H(q) \\geq -2\\ln c$ for the outcome distributions of two orthonormal bases with maximal overlap $c$, be formalized in Lean 4? This entry establishes the provable entropy half of that relation — the maximum-entropy bound $H(p) \\leq \\log n$ — and documents the precise obstruction to the full theorem.",
@@ -33,7 +33,8 @@
       "This is the 'entropy ceiling' that bounds either marginal in an entropic uncertainty relation; the genuinely hard content of Maassen–Uffink is the lower bound on the sum H(p) + H(q).",
       "The sharp Maassen–Uffink constant -2 ln c follows from the Hausdorff–Young inequality (a (2→∞) operator-norm / Riesz–Thorin interpolation argument), which Mathlib v4.26.0 does not yet provide — making the full theorem genuinely blocked rather than merely unattempted.",
       "Deutsch's interpolation-free precursor H(p) + H(q) ≥ -2 ln((1+c)/2) is the natural next target once finite-dimensional entropy infrastructure (this entry) is in place.",
-      "The maximizer is unique: H(p) = log n forces p to be the uniform distribution. This is the equality case of Jensen for the strictly concave negMulLog (StrictConcaveOn.eq_of_map_sum_eq) — strict concavity collapses the inequality to an equality only when all sampled points coincide, and ∑ pᵢ = 1 then pins each entry to 1/n."
+      "The maximizer is unique: H(p) = log n forces p to be the uniform distribution. This is the equality case of Jensen for the strictly concave negMulLog (StrictConcaveOn.eq_of_map_sum_eq) — strict concavity collapses the inequality to an equality only when all sampled points coincide, and ∑ pᵢ = 1 then pins each entry to 1/n.",
+      "Gibbs' inequality D(p‖q) = ∑ᵢ pᵢ(log pᵢ − log qᵢ) ≥ 0 is the single positivity statement from which the entropy ceiling follows: it reduces termwise to log(qᵢ/pᵢ) ≤ qᵢ/pᵢ − 1 (the elementary log x ≤ x − 1), summing to ∑(qᵢ − pᵢ) = 0. Taking q uniform recovers H(p) ≤ log n, so the maximum-entropy bound and Gibbs positivity are two faces of the same inequality."
     ]
   },
   "sections": [
@@ -78,11 +79,18 @@
       "startLine": 94,
       "endLine": 151,
       "summary": "H(p) = log n ↔ p is uniform. The forward direction is the strict-concavity refinement of Jensen (StrictConcaveOn.eq_of_map_sum_eq): equality forces all sampled points to coincide, and ∑ pᵢ = 1 pins each entry to 1/n; the reverse is shannonEntropy_uniform."
+    },
+    {
+      "id": "kl-gibbs",
+      "title": "Relative Entropy and Gibbs' Inequality",
+      "startLine": 153,
+      "endLine": 210,
+      "summary": "Defines the discrete Kullback–Leibler divergence D(p‖q) = ∑ᵢ pᵢ(log pᵢ − log qᵢ) and proves Gibbs' inequality D(p‖q) ≥ 0 for probability vectors with q absolutely continuous w.r.t. p, via the termwise bound pᵢ log(qᵢ/pᵢ) ≤ qᵢ − pᵢ from Real.log_le_sub_one_of_pos. Also records D(p‖p) = 0. Gibbs positivity is the engine behind the maximum-entropy bound (q uniform) and the foundational positivity statement for entropic uncertainty."
     }
   ],
   "conclusion": {
-    "summary": "The finite-dimensional Shannon-entropy framework, the maximum-entropy bound H(p) ≤ log n, and its equality case (H(p) = log n ↔ p uniform) are formalized and fully machine-checked (0 axioms, 0 sorries), built directly on Mathlib's negMulLog concavity / strict concavity and the Jensen inequality with its equality case. This is the provable entropy half of an entropic uncertainty relation, now including a full characterization of the maximizer.",
-    "implications": "Provides reusable infrastructure for any future formalization of the entropic uncertainty principle. The equality case identifies the unique maximizer, which is the equality condition for either marginal of an eventual entropic uncertainty relation. The full Maassen–Uffink bound is documented as blocked on Mathlib's absent interpolation theory (Hausdorff–Young / Riesz–Thorin); Deutsch's interpolation-free bound is the recommended next step once this infrastructure is extended.",
+    "summary": "The finite-dimensional Shannon-entropy framework, the maximum-entropy bound H(p) ≤ log n, its equality case (H(p) = log n ↔ p uniform), and the discrete relative entropy with Gibbs' inequality (D(p‖q) ≥ 0, D(p‖p) = 0) are formalized and fully machine-checked (0 axioms, 0 sorries), built directly on Mathlib's negMulLog concavity / strict concavity, the Jensen inequality with its equality case, and the elementary log bound log x ≤ x − 1. This is the provable entropy half of an entropic uncertainty relation, including a full characterization of the maximizer and the underlying Gibbs positivity statement.",
+    "implications": "Provides reusable infrastructure for any future formalization of the entropic uncertainty principle. Gibbs' inequality D(p‖q) ≥ 0 is the foundational positivity result of information theory: it implies the maximum-entropy bound (take q uniform) and is the natural building block for the entropic uncertainty lower bound on H(p) + H(q). The equality case identifies the unique maximizer, which is the equality condition for either marginal of an eventual entropic uncertainty relation. The full Maassen–Uffink bound is documented as blocked on Mathlib's absent interpolation theory (Hausdorff–Young / Riesz–Thorin); Deutsch's interpolation-free bound is the recommended next step once this infrastructure is extended.",
     "openQuestions": [
       "Can Deutsch's entropic uncertainty bound H(p) + H(q) ≥ -2 ln((1+c)/2) — which avoids interpolation — be formalized on top of this entropy infrastructure?",
       "Once Mathlib gains Riesz–Thorin / Hausdorff–Young interpolation, complete the sharp Maassen–Uffink constant -2 ln c, closing the parent's full open question.",
@@ -91,10 +99,10 @@
   },
   "leanFile": {
     "namespace": "CauchySchwarzOQ01OQ03OQ02",
-    "lineCount": 152,
+    "lineCount": 211,
     "axiomCount": 0,
-    "theoremCount": 4,
-    "definitionCount": 1,
+    "theoremCount": 6,
+    "definitionCount": 2,
     "path": "Proofs/CauchySchwarzOQ01OQ03OQ02.lean",
     "sorries": 0
   },

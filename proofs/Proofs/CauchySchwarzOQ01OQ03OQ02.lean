@@ -149,4 +149,63 @@ theorem shannonEntropy_eq_log_card_iff [Nonempty ι] {p : ι → ℝ}
     rw [hpu, hn]
     exact shannonEntropy_uniform
 
+/-- Relative entropy (Kullback–Leibler divergence) of two finite probability vectors,
+`D(p ‖ q) = ∑ᵢ pᵢ (log pᵢ − log qᵢ)`. This is the discrete counterpart of the continuous
+KL divergence; it measures the information lost when `q` is used to approximate `p`. -/
+noncomputable def klDivergence (p q : ι → ℝ) : ℝ :=
+  ∑ i, p i * (Real.log (p i) - Real.log (q i))
+
+/-- **Gibbs' inequality** (discrete relative-entropy nonnegativity). For probability
+vectors `p, q` with `q` absolutely continuous with respect to `p` (`qᵢ > 0` whenever
+`pᵢ > 0`), the Kullback–Leibler divergence is nonnegative: `D(p ‖ q) ≥ 0`.
+
+Proof: it suffices to bound `−D(p ‖ q) = ∑ᵢ pᵢ (log qᵢ − log pᵢ)` above by `0`. Termwise,
+`pᵢ log(qᵢ/pᵢ) ≤ pᵢ (qᵢ/pᵢ − 1) = qᵢ − pᵢ` using the elementary inequality
+`log x ≤ x − 1` (`Real.log_le_sub_one_of_pos`); the degenerate terms `pᵢ = 0` give
+`0 ≤ qᵢ`. Summing, `−D ≤ ∑ᵢ (qᵢ − pᵢ) = 1 − 1 = 0`.
+
+Gibbs' inequality is the engine behind the maximum-entropy bound (`q` uniform recovers
+`H(p) ≤ log n`) and is the foundational positivity statement underlying any
+information-theoretic uncertainty relation. -/
+theorem klDivergence_nonneg {p q : ι → ℝ}
+    (hp0 : ∀ i, 0 ≤ p i) (hq0 : ∀ i, 0 ≤ q i)
+    (hpsum : ∑ i, p i = 1) (hqsum : ∑ i, q i = 1)
+    (hac : ∀ i, 0 < p i → 0 < q i) :
+    0 ≤ klDivergence p q := by
+  -- Termwise bound on the *negated* summand: `pᵢ (log qᵢ − log pᵢ) ≤ qᵢ − pᵢ`.
+  have hkey : ∀ i, p i * (Real.log (q i) - Real.log (p i)) ≤ q i - p i := by
+    intro i
+    rcases eq_or_lt_of_le (hp0 i) with hpi | hpi
+    · -- `pᵢ = 0`: the summand is `0`, and `qᵢ − 0 = qᵢ ≥ 0`.
+      rw [← hpi]; simpa using hq0 i
+    · -- `0 < pᵢ`, hence `0 < qᵢ` by absolute continuity.
+      have hqi : 0 < q i := hac i hpi
+      have hlog : Real.log (q i) - Real.log (p i) = Real.log (q i / p i) := by
+        rw [Real.log_div (ne_of_gt hqi) (ne_of_gt hpi)]
+      rw [hlog]
+      have hbound : Real.log (q i / p i) ≤ q i / p i - 1 :=
+        Real.log_le_sub_one_of_pos (div_pos hqi hpi)
+      calc p i * Real.log (q i / p i)
+          ≤ p i * (q i / p i - 1) := mul_le_mul_of_nonneg_left hbound (le_of_lt hpi)
+        _ = q i - p i := by field_simp
+  -- Sum the bound: `∑ pᵢ (log qᵢ − log pᵢ) ≤ ∑ (qᵢ − pᵢ) = 0`.
+  have hsum_le : (∑ i, p i * (Real.log (q i) - Real.log (p i))) ≤ ∑ i, (q i - p i) :=
+    Finset.sum_le_sum (fun i _ => hkey i)
+  have hsum_zero : (∑ i, (q i - p i)) = 0 := by
+    rw [Finset.sum_sub_distrib, hqsum, hpsum, sub_self]
+  -- The negated sum and `D(p ‖ q)` cancel termwise.
+  have hcancel :
+      klDivergence p q + (∑ i, p i * (Real.log (q i) - Real.log (p i))) = 0 := by
+    unfold klDivergence
+    rw [← Finset.sum_add_distrib]
+    exact Finset.sum_eq_zero (fun i _ => by ring)
+  linarith [hsum_le.trans hsum_zero.le]
+
+/-- `D(p ‖ p) = 0`: the relative entropy of a probability vector with itself vanishes
+(no information is lost). Combined with `klDivergence_nonneg`, `p` is the unique
+minimizer of `D(· ‖ p)`. -/
+theorem klDivergence_self (p : ι → ℝ) : klDivergence p p = 0 := by
+  unfold klDivergence
+  exact Finset.sum_eq_zero (fun i _ => by ring)
+
 end CauchySchwarzOQ01OQ03OQ02
