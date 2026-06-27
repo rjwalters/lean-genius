@@ -1003,6 +1003,7 @@ import Proofs.CubeRoot3IrrationalOQ03OQ02
 import Proofs.CubeRoot3IrrationalOQ04
 import Proofs.CubeRoot3IrrationalOQ04A12
 import Proofs.CubeRoot3IrrationalOQ04Helpers
+import Proofs.CubeRoot3IrrationalOQ04Mobius
 import Proofs.CubeRoot3IrrationalOQ04NotQuadratic
 import Proofs.CubeRoot3IrrationalOQ04Stream
 import Proofs.CubeRoot3IrrationalOQ04StreamCanonical
