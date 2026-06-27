@@ -1,8 +1,8 @@
 {
   "id": "sum-of-divisors-oq-01",
-  "title": "Euler's Odd-Perfect Form: The Local Prime-Power Theory of the Special Prime",
+  "title": "Euler's Odd-Perfect Form: Complete Structural Theorem N = p^a·m²",
   "slug": "sum-of-divisors-oq-01",
-  "description": "Euler's 1747 structural theorem says an odd perfect number must have the form N = p^a·m² with the special prime p ≡ a ≡ 1 (mod 4). This entry formalizes the local prime-power engine of that theorem — the parity and mod-4 facts about σ on prime powers that pin the special prime — fully verified with 0 axioms. L1: σ(p^a) is odd ⟺ a is even. The perfect equation σ(N)=2N (source of v₂(σ(N))=1). The pairing identity ∑_{j≤a} p^j = (1+p)·∑ p^{2k} for odd a. L2 (the headline): σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4) — the mod-4 characterization of the special prime, the step 'most at risk of an off-by-one' in the classical proof. The result is conditional and assumes nothing about the existence of odd perfect numbers (open).",
+  "description": "Euler's 1747 structural theorem says an odd perfect number must have the form N = p^a·m² with the special prime p ≡ a ≡ 1 (mod 4) and p ∤ m. This entry formalizes the FULL theorem in Lean 4 with 0 axioms and 0 sorries, across three files. (1) The local prime-power engine (SumOfDivisorsOQ01.lean): L1 σ(p^a) odd ⟺ a even; the perfect equation σ(N)=2N; the pairing identity ∑_{j≤a} p^j = (1+p)·∑ p^{2k}; and L2 (the headline) σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4). (2) The square-packaging half (SumOfDivisorsOQ01SquarePacking.lean): for odd N, σ(N) odd ⟺ N is a perfect square, so an odd perfect number is never a square. (3) The global assembly (SumOfDivisorsOQ01Assembly.lean): odd_perfect_euler_form, which splits off the special prime via ordCompl and a two-factor mod-4 argument to derive N = p^a·m² with p ≡ a ≡ 1 (mod 4) and p ∤ m. The result is conditional and assumes nothing about the existence of odd perfect numbers (open).",
   "meta": {
     "author": "classical (Euler 1747; formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Perfect_number#Odd_perfect_numbers",
@@ -61,7 +61,10 @@
       "odd_perfect_sigma_eq_two_mul: an odd perfect N satisfies σ(N) = 2N (source of v₂(σ(N)) = 1)",
       "geom_sum_odd_eq_factor: the pairing identity ∑_{j≤2t+1} p^j = (1+p)·∑_{k≤t} p^{2k}",
       "even_geom_sum_parity: ∑_{k<m} p^{2k} has the parity of m for odd p",
-      "sigma_prime_pow_mod_four (L2): σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4), the mod-4 characterization of Euler's special prime"
+      "sigma_prime_pow_mod_four (L2): σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4), the mod-4 characterization of Euler's special prime",
+      "isSquare_iff_even_factorization / odd_sigma_iff_even_factorization / odd_sigma_odd_iff_isSquare (SquarePacking): the square-packaging half — for odd N, σ(N) is odd ⟺ N is a perfect square (L1 spread over the factorization by multiplicativity of σ)",
+      "odd_perfect_not_isSquare (SquarePacking): an odd perfect number is never a perfect square (its σ = 2N is even)",
+      "odd_perfect_euler_form (Assembly): the COMPLETE Euler theorem — odd Perfect N ⇒ ∃ p a m, p prime ∧ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4) ∧ p ∤ m ∧ N = p^a·m². Proved by splitting off the special prime's full power via ordCompl and a two-factor mod-4 argument that localises the v₂ count, avoiding the general 'exactly one odd-exponent prime' bookkeeping"
     ],
     "dateAdded": "2026-06-27",
     "lineCount": 133,
@@ -150,12 +153,12 @@
     }
   ],
   "conclusion": {
-    "summary": "This entry machine-checks, with 0 axioms and 0 sorries, the local prime-power engine of Euler's odd-perfect-number form: the parity law σ(p^a) odd ⟺ a even (L1), the reduction of perfection to σ(N) = 2N, the pairing identity ∑_{j≤2t+1} p^j = (1+p)·∑ p^{2k}, the parity of the even-index geometric sum, and the headline mod-4 characterization σ(p^a) ≡ 2 (mod 4) ⟺ p ≡ a ≡ 1 (mod 4) (L2) that pins Euler's special prime.",
-    "implications": "These are exactly the parity/mod-4 lemmas Hardy–Wright (Thm 277) flag as most prone to an off-by-one, now verified in a padicValNat-free, omega-closable form. They form a reusable basis for the global assembly — summing v₂(σ(p^{a_p})) over the factorization to isolate the unique odd-exponent special prime and package the rest as a square m² — which would complete a full formalization of Euler's theorem.",
+    "summary": "This entry machine-checks, with 0 axioms and 0 sorries, the COMPLETE Euler structural theorem for odd perfect numbers. The local prime-power engine (L1 parity, the σ(N)=2N reduction, the pairing identity, L2's mod-4 characterization) feeds the square-packaging half (for odd N, σ(N) odd ⟺ N a perfect square), and the global assembly odd_perfect_euler_form splits off the special prime to derive N = p^a·m² with p ≡ a ≡ 1 (mod 4) and p ∤ m.",
+    "implications": "The headline obstruction in the classical proof (Hardy–Wright Thm 277) is the parity/mod-4 bookkeeping, here done in a padicValNat-free, omega-closable form. The global assembly sidesteps the general 'exactly one odd-exponent prime' v₂ count with a sharper two-factor mod-4 argument: peel off the special prime's full power p^a via ordCompl, observe σ(p^a) is even and σ(N) ≡ 2 (mod 4), conclude σ of the complementary factor is odd hence that factor is a square, and transfer the residue 2 (mod 4) onto σ(p^a) to invoke L2. The full theorem is now a reusable basis for the further known odd-perfect constraints.",
     "openQuestions": [
       "Do any odd perfect numbers exist at all? This is the central open question; the present results are unconditional structural constraints and assume nothing about existence.",
-      "Can the global v₂-summation assembly be formalized to derive the full N = p^a·m² form from these local lemmas?",
-      "Can the mod-4 analysis be extended to recover the further known constraints on odd perfect numbers (e.g. lower bounds on the number of distinct prime factors, or N > 10^1500)?"
+      "Can the mod-4 analysis be extended to recover the further known constraints on odd perfect numbers (e.g. lower bounds on the number of distinct prime factors, or N > 10^1500)?",
+      "Can Euler's special prime p (the unique odd-exponent prime) be characterized further — e.g. bounds relating p to the total number of prime factors of N?"
     ]
   }
 }
