@@ -1,5 +1,28 @@
 [
   {
+    "id": "ann-header-two-decompositions",
+    "proofId": "subset-count-oq-02-oq-02",
+    "range": {
+      "startLine": 3,
+      "endLine": 44
+    },
+    "type": "context",
+    "title": "Two Powerset Decompositions, Two Identities",
+    "content": "The module docstring frames the open question inherited from the parent: the parent counted distinct submultisets via the product formula ∏_a (mₐ+1); can the *binomial* recurrences be recovered the same way — combinatorially, from the structure of the powerset — rather than by unfolding the recursive `Nat.choose`? The file answers YES through the two canonical ways to organize a powerset: (1) **fix an element** x, partitioning subsets by whether they contain x (→ Pascal), and (2) **fix the size** k, partitioning the powerset into its cardinality layers (→ row sum). Mathlib already has `Nat.choose_succ_succ` and `Nat.sum_range_choose`, but those are proved by recursion on `choose`; the point here is to derive the *same* identities bijectively, off `powersetCard_cons`, `powersetCard_succ_insert`, and `powerset_card_disjiUnion`.",
+    "mathContext": "One finite family $\\mathcal{P}(S)$, two organizations: by membership of a fixed $x$ ($\\to \\binom{n+1}{k+1} = \\binom{n}{k+1} + \\binom{n}{k}$) and by cardinality ($\\to \\sum_k \\binom{n}{k} = 2^n$). Arithmetic read off structure, never off $\\mathrm{Nat.rec}$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "powerset",
+      "bijective proof",
+      "Pascal's recurrence",
+      "binomial row sum"
+    ],
+    "prerequisites": [
+      "binomial coefficients as subset counts",
+      "the parent submultiset product formula"
+    ]
+  },
+  {
     "id": "ann-powersetcard-cons-is-pascal",
     "proofId": "subset-count-oq-02-oq-02",
     "range": {
@@ -51,7 +74,7 @@
     "id": "ann-fix-size-row-sum",
     "proofId": "subset-count-oq-02-oq-02",
     "range": {
-      "startLine": 121,
+      "startLine": 125,
       "endLine": 144
     },
     "type": "insight",
@@ -69,6 +92,29 @@
       "Finsets",
       "Disjoint unions over an index",
       "Cardinality of the powerset"
+    ]
+  },
+  {
+    "id": "ann-sanity-rebuild-triangle",
+    "proofId": "subset-count-oq-02-oq-02",
+    "range": {
+      "startLine": 151,
+      "endLine": 161
+    },
+    "type": "example",
+    "title": "Sanity Checks: Rebuilding Pascal's Triangle",
+    "content": "The closing examples confirm the combinatorial lemmas reproduce the familiar arithmetic. Two interior triangle entries are recomputed through the derived recurrence — `(4).choose 2 = 3 + 3` and `(5).choose 3 = 6 + 4` via `choose_succ_succ_comb` — rather than by evaluation. The n = 4 row sum `∑_{k<5} (4).choose k = 16` is checked by kernel `decide` (note: ordinary `decide`, not `native_decide`, so no `Lean.ofReduceBool` enters the axiom set). Finally the two boundary edges `(0).choose (k+1) = 0` and `m.choose 0 = 1` are recorded, since together with Pascal they generate the entire triangle — making explicit that the recurrence proved here is exactly the rule that builds the triangle.",
+    "mathContext": "$\\binom{4}{2} = 3+3$, $\\binom{5}{3} = 6+4$, $\\sum_{k=0}^{4}\\binom{4}{k} = 16$; boundary edges $\\binom{0}{k+1} = 0$, $\\binom{m}{0} = 1$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Pascal's triangle",
+      "kernel decide vs native_decide",
+      "boundary conditions",
+      "recurrence as triangle-builder"
+    ],
+    "prerequisites": [
+      "the derived Pascal recurrence",
+      "decidable evaluation of choose"
     ]
   }
 ]
