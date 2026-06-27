@@ -329,6 +329,7 @@ import Proofs.BaselProblemOQ04
 import Proofs.BaselProblemOQ04OQ03
 import Proofs.BaselProblemOQ05
 import Proofs.BaselProblemOQ05OQ03
+import Proofs.BaselProblemOQ06OQ01
 import Proofs.BaselProblemOQ08
 import Proofs.BaselProblemOQ08OQ02
 import Proofs.BaselProblemOQ08OQ02OQ01
