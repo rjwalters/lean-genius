@@ -75,6 +75,36 @@
       "**Quadratic and cubic are the only argument-free pins**: $|\\mathrm{Gal}(X^2-p)| = 2 = |C_2|$ and $|\\mathrm{Gal}(X^3-p)| = 6 = |S_3|$ fall straight out of the bracket, uniform in the prime $p$. For $n = 4$ the bracket gives only $4 \\mid |\\mathrm{Gal}| \\mid 24$ (here $4\\varphi(4) = 8 \\ne 24$), which is exactly why the base $D_4$ entry $|\\mathrm{Gal}(X^4-2)| = 8$ required a separate $\\mathbb{R}$-embedding/resolvent argument."
     ]
   },
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview: the bracket squeeze and the boundary question",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Header docstring and imports. Recalls the parent's divisibility bracket n·φ(n) ∣ |Gal(Xⁿ−p)| ∣ n! and frames the boundary question: for which degrees n does the squeeze close (n·φ(n) = n!) and pin the Galois order exactly? Imports the verified parent lemmas mul_totient_dvd_gal_card_of_coprime and gal_card_dvd_factorial."
+    },
+    {
+      "id": "boundary-count",
+      "title": "Part I — The sharp degree boundary n·φ(n) = n! ⟺ n ∈ {2,3}",
+      "startLine": 49,
+      "endLine": 86,
+      "summary": "Proves totient_mul_eq_factorial_iff. Reverse direction by decide; forward direction by contradiction: writing n = m+2 (m ≥ 2), the totient bound φ(n) ≤ n−1 caps n·φ(n) ≤ n(n−1) while (m+2)! = (m+2)(m+1)·m! with m! ≥ 2 gives n! ≥ 2n(n−1), and nlinarith closes the gap."
+    },
+    {
+      "id": "pin-theorem",
+      "title": "Part II — The pin theorem with automatic coprimality",
+      "startLine": 88,
+      "endLine": 104,
+      "summary": "Proves gal_card_eq_factorial_of_pin: n·φ(n) = n! forces |Gal(Xⁿ−p)| = n! with no coprimality hypothesis. The boundary solutions n ∈ {2,3} are automatically coprime to their totient, so the parent coprime lower bound applies and Nat.dvd_antisymm squeezes equality against |Gal| ∣ n!."
+    },
+    {
+      "id": "quadratic-witness",
+      "title": "Part III — The quadratic companion |Gal(X²−p)| = 2",
+      "startLine": 106,
+      "endLine": 118,
+      "summary": "Proves gal_card_quadratic_eq_two by instantiating the pin theorem at n = 2 (2·φ(2) = 2 = 2!), yielding |Gal(X²−p/ℚ)| = 2 = |C₂| for every prime p — the quadratic companion of the parent's cubic witness |Gal(X³−p)| = 6."
+    }
+  ],
   "conclusion": {
     "summary": "Pinned the sharp degree boundary of the metacyclic divisibility bracket: for n ≥ 2 the squeeze n·φ(n) ∣ |Gal(Xⁿ−p/ℚ)| ∣ n! determines the order exactly iff n·φ(n) = n!, which holds precisely for n ∈ {2,3}. The pin theorem requires no coprimality hypothesis (the boundary degrees are automatically coprime), and the quadratic companion |Gal(X²−p/ℚ)| = 2 joins the parent's cubic |Gal(X³−p/ℚ)| = 6 as the only two argument-free, prime-uniform pins. 3 theorems, 0 sorries, 0 axioms.",
     "implications": "Delimits exactly what the verified elementary bracket can decide on its own: it pins the Galois order of Xⁿ−p in exactly two degrees (n = 2, 3) and never for n ≥ 4. This both completes the small-degree picture (X²−p and X³−p have Galois group C₂ and S₃ uniformly in p) and explains structurally why every larger radical degree — starting with the base entry's own n = 4 — requires genericity/linear-disjointness or an explicit resolvent beyond the bracket.",
