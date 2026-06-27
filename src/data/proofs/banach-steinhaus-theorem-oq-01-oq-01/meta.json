@@ -18,7 +18,7 @@
       "analysis",
       "open-question"
     ],
-    "badge": "original",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None — every declaration is machine-checked with 0 axioms and 0 sorries (foundational propext/Classical.choice/Quot.sound only), built on Mathlib's banach_steinhaus. SCOPE: this entry proves only the functional-analysis CORE (the resonance principle / contrapositive of uniform boundedness), not the full Fourier-divergence theorem. The analytic input it consumes — the divergence of the Lebesgue constants ‖Sₙ‖ = ‖Dₙ‖_L¹ → ∞, together with the Dirichlet kernel and the partial-sum operators on C(𝕋) — is not present in Mathlib v4.26.0 and is documented as the remaining gap in research/problems/banach-steinhaus-theorem-oq-01-oq-01/knowledge.md.",
