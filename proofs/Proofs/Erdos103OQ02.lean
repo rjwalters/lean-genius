@@ -33,6 +33,12 @@ Consequently the parent's literal `WeakConjecture` (and even the assertion
 6. Shows the corrected quotient collapses exactly the translation-infinitude that
    breaks the raw count: all translates of a configuration share one class
    (`translates_same_class`).
+7. Proves the correction is **non-degenerate where the raw count failed**: given an
+   optimal configuration and finitely many congruence classes, `hCong n ≥ 1`
+   (`hCong_pos_of_finite`) and indeed `h n < hCong n` (`hCong_strictly_exceeds_raw`).
+   The only way `hCong` could still vanish is the quotient being infinite — never
+   empty — so the finiteness in the open question is exactly what makes the
+   corrected count well-behaved.
 
 This does **not** resolve the open Erdős question (which remains open for `hCong`);
 it corrects the formalization so that the open question is stated about the right
@@ -207,6 +213,45 @@ theorem correct_main_implies_weak
   obtain ⟨N, hN⟩ := hmain 1
   exact ⟨N, fun n hn => hN n hn⟩
 
+-- ============================================================
+-- PART 7: The correction is non-degenerate where the raw count failed
+-- ============================================================
+
+/-- The optimal congruence-class quotient is **nonempty** whenever any optimal
+    configuration exists — the class of that configuration witnesses it. This is
+    the first half of the contrast with the raw count: emptiness is never the
+    reason `hCong` could vanish. -/
+theorem optimalQuotient_nonempty_of_exists (n : ℕ) (hne : ∃ P, IsOptimal n P) :
+    Nonempty (Quotient (OptimalSetoid n)) := by
+  obtain ⟨P, hP⟩ := hne
+  exact ⟨Quotient.mk (OptimalSetoid n) ⟨P, hP⟩⟩
+
+/-- **The corrected count is non-degenerate.** Whenever an optimal configuration
+    exists *and there are only finitely many congruence classes*, `hCong n ≥ 1`.
+    Contrast this with `h_eq_zero`, where the raw count is unconditionally `0`:
+    the only thing that can drag `Nat.card (Quotient …)` down to `0` is the
+    quotient being infinite, never empty. The finiteness hypothesis is exactly the
+    content the open Erdős question is about — *given* it, the congruence count
+    behaves, which is precisely why it, and not the raw cardinality, is the right
+    object. -/
+theorem hCong_pos_of_finite (n : ℕ) [Finite (Quotient (OptimalSetoid n))]
+    (hne : ∃ P, IsOptimal n P) : 1 ≤ hCong n := by
+  have : Nonempty (Quotient (OptimalSetoid n)) :=
+    optimalQuotient_nonempty_of_exists n hne
+  exact Nat.card_pos
+
+/-- **The correction strictly exceeds the raw count where it matters.** For `n ≥ 1`
+    with an optimal configuration present and finitely many congruence classes, the
+    corrected count is *strictly larger* than the degenerate raw count:
+    `h n = 0 < 1 ≤ hCong n`. This is the precise sense in which moving from `h` to
+    `hCong` repairs the formalization: the infinitely many translates that forced
+    `h n = 0` collapse to congruence classes that `hCong` actually counts. -/
+theorem hCong_strictly_exceeds_raw (n : ℕ) (hn : 0 < n)
+    [Finite (Quotient (OptimalSetoid n))] (hne : ∃ P, IsOptimal n P) :
+    h n < hCong n := by
+  rw [h_eq_zero n hn]
+  exact hCong_pos_of_finite n hne
+
 end Erdos103OQ02
 
 -- Export main results
@@ -216,3 +261,5 @@ end Erdos103OQ02
 #check @Erdos103OQ02.raw_weak_conjecture_false
 #check @Erdos103OQ02.hCong
 #check @Erdos103OQ02.translates_same_class
+#check @Erdos103OQ02.hCong_pos_of_finite
+#check @Erdos103OQ02.hCong_strictly_exceeds_raw
