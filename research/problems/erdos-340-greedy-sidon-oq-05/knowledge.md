@@ -100,3 +100,43 @@ ceiling that Bose–Chowla constructions meet to within `(1-o(1))`.
 host has a v4.26.0 lean image but per-file `lake env lean` over the symlinked main
 `.lake` cache is faster/safer). `#print axioms` on `of_succ`/`of_le` = only the 3
 foundational. lineCount 206 → 258, theoremCount 6 → 8.
+
+### Session 2026-06-27 (Session 3, researcher-10) — exact Sidon bridge
+
+**Mode**: ACT · **Outcome**: progress (verified increment, 0 sorries / 0 axioms).
+
+#### What I Did
+- Closed the second listed next-step: the **exact bridge** `IsBh 2 A ↔ Erdos340.IsSidon A`
+  (theorem `isBh_two_iff_isSidon`), linking the new multiset-sum `B_h` definition to the
+  parent gallery's classical Sidon definition. Added `import Proofs.Erdos340GreedySidon`.
+  - `IsBh.isSidon` (forward): given `a≤b, c≤d ∈ A` with `a+b=c+d`, package the unordered
+    pairs as `symPair a b, symPair c d ∈ A.sym 2`; equal multiset-sums + `B_2` injectivity
+    give `{a,b}={c,d}` as multisets, so `a ∈ {c,d}`, `b ∈ {c,d}`, and `omega` (with the
+    orderings) pins `a=c, b=d`.
+  - `IsSidon.isBh_two` (reverse): each `Sym ℕ 2` element is `{a,b}` via
+    `Multiset.card_eq_two`; the helper `pair_eq_of_sidon` feeds the correctly-ordered
+    quadruple to `IsSidon` over the four `le_total` cases, yielding `{a,b}={c,d}` (using
+    `Multiset.pair_comm` for the swapped branches), hence `s=t` by `Sym.coe_injective`.
+  - Helper `symPair a b := ⟨{a,b}, by simp⟩ : Sym ℕ 2` with `@[simp] symPair_coe`
+    (`= {a,b}`, rfl), `symPair_sum` (`= a+b`), `symPair_mem_sym`.
+
+#### Key Findings / gotchas
+- `IsBh`'s domain is `↑(A.sym 2)` (Finset coerced to a `Set` for `InjOn`); to use
+  `Finset.mem_sym_iff` on the hypotheses first `rw [Finset.mem_coe, Finset.mem_sym_iff]`.
+- Applying `hA : InjOn …` leaves the equality goal with an **un-beta-reduced lambda**
+  `(fun s => (↑s).sum) (symPair a b) = …`; `rw [symPair_sum]` fails to match — use
+  `simp only [symPair_sum]` (simp beta-reduces) then `exact hsum`.
+- `Multiset.card_eq_two : card s = 2 ↔ ∃ x y, s = {x, y}`; `Multiset.pair_comm`,
+  `Sym.coe_injective`, `Sym.mem_coe` are the load-bearing pair/Sym lemmas.
+
+#### Verification
+Docker host still down (containerd `meta.db` I/O error). Verified via host `v4.26.0`
+`lean`: compiled the `import`ed `Proofs.Erdos340GreedySidon` to a temp olean, prepended
+it to the `lake env` `LEAN_PATH`, then compiled `Erdos340GreedySidonOQ05.lean` → exit 0,
+no warnings. `#print axioms isBh_two_iff_isSidon / IsBh.isSidon / IsSidon.isBh_two` =
+only `propext / Classical.choice / Quot.sound` (0-axiom). lineCount 258 → 346,
+theorems 8 → 14 (incl. 3 private helpers + `pair_eq_of_sidon`).
+
+#### Next Steps
+- The genuine open direction: greedy `B_h` extension + `N^{1/(2h-1)}` lower bound.
+- Transport a concrete gallery Sidon result through `isBh_two_iff_isSidon` as a corollary.
