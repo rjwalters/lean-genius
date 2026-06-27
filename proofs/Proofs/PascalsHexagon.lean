@@ -365,7 +365,8 @@ theorem pascal_std_conic_parametrized (a b c d e f : ℝ) :
   -- Unfold to cross products and determinant (same pattern as DesarguesTheorem.lean)
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   -- The resulting degree-12 polynomial in 6 variables is identically 0
   -- (verified independently via sympy: ~3500 terms cancel)
@@ -477,7 +478,8 @@ theorem crossProduct_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v : Fin 3
   fin_cases i <;>
   simp only [cross_apply, Matrix.mulVec, dotProduct, Fin.sum_univ_three, Fin.isValue,
              Matrix.adjugate_fin_three, Matrix.transpose_apply, Matrix.of_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons,
              Nat.reduceAdd, Fin.reduceFinMk] <;>
   ring
 
@@ -542,10 +544,11 @@ theorem stdConicInfinity_on_conic : pointOnConic stdConicInfinity stdConic := by
 theorem stdConic_infinity_char (p : ProjPoint) (hp : pointOnConic p stdConic)
     (h02 : p 0 + p 2 = 0) : p 1 = 0 := by
   unfold pointOnConic conicQuadraticForm stdConic at hp
-  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply, mul_comm, mul_one,
+  simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply, one_mul, neg_mul,
              zero_mul, mul_zero, add_zero, zero_add] at hp
   have h : p 2 = -(p 0) := by linarith
-  nlinarith [sq_nonneg (p 1), sq_nonneg (p 0), mul_self_nonneg (p 1)]
+  rw [h] at hp
+  nlinarith [sq_nonneg (p 1), hp]
 
 /-- **Parametric coverage**: Every point on stdConic with p₀+p₂ ≠ 0 is a scalar
     multiple of stdConicPoint(p₁/(p₀+p₂)).
@@ -559,7 +562,16 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
     unfold pointOnConic conicQuadraticForm stdConic at hp
     simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply] at hp
     nlinarith
-  intro i; fin_cases i <;> simp only [stdConicPoint] <;> field_simp <;> nlinarith [hconic]
+  have h0 : p 0 = (p 0 + p 2) / 2 * stdConicPoint (p 1 / (p 0 + p 2)) 0 := by
+    simp only [stdConicPoint, Fin.isValue]; field_simp; nlinarith [hconic]
+  have h1 : p 1 = (p 0 + p 2) / 2 * stdConicPoint (p 1 / (p 0 + p 2)) 1 := by
+    simp only [stdConicPoint, Fin.isValue]; field_simp
+  have h2 : p 2 = (p 0 + p 2) / 2 * stdConicPoint (p 1 / (p 0 + p 2)) 2 := by
+    simp only [stdConicPoint, Fin.isValue]; field_simp; nlinarith [hconic]
+  intro i; fin_cases i
+  · exact h0
+  · exact h1
+  · exact h2
 
 /-
 ### Roadmap for Full Axiom Elimination
@@ -598,15 +610,11 @@ theorem stdConicPoint_covers (p : ProjPoint) (hp : pointOnConic p stdConic)
 
 theorem crossProduct_smul_left (c : ℝ) (u v : Fin 3 → ℝ) :
     crossProduct (c • u) v = c • crossProduct u v := by
-  ext i; fin_cases i <;>
-    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-               Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;> ring
+  rw [map_smul, LinearMap.smul_apply]
 
 theorem crossProduct_smul_right (c : ℝ) (u v : Fin 3 → ℝ) :
     crossProduct u (c • v) = c • crossProduct u v := by
-  ext i; fin_cases i <;>
-    simp only [cross_apply, Pi.smul_apply, smul_eq_mul, Matrix.cons_val_zero,
-               Matrix.cons_val_one, Matrix.head_cons, Fin.isValue] <;> ring
+  rw [map_smul]
 
 -- ============================================================
 -- PART 15: Pascal's Theorem — Point at Infinity Cases
@@ -628,7 +636,8 @@ theorem pascal_std_conic_infinity_F (a b c d e : ℝ) :
       (stdConicPoint d) (stdConicPoint e) stdConicInfinity := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -638,7 +647,8 @@ theorem pascal_std_conic_infinity_A (b c d e f : ℝ) :
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -648,7 +658,8 @@ theorem pascal_std_conic_infinity_B (a c d e f : ℝ) :
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -658,7 +669,8 @@ theorem pascal_std_conic_infinity_C (a b d e f : ℝ) :
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -668,7 +680,8 @@ theorem pascal_std_conic_infinity_D (a b c e f : ℝ) :
       stdConicInfinity (stdConicPoint e) (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -678,7 +691,8 @@ theorem pascal_std_conic_infinity_E (a b c d f : ℝ) :
       (stdConicPoint d) stdConicInfinity (stdConicPoint f) := by
   unfold pascalConstraint lineIntersection lineThrough stdConicPoint stdConicInfinity
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -717,13 +731,9 @@ theorem pascalConstraint_smul
   rw [det_threeVectorMatrix_smul]
   constructor
   · intro h
-    have hprod : k₁ * k₂ * (k₄ * k₅) * (k₂ * k₃ * (k₅ * k₆)) *
-      (k₃ * k₄ * (k₆ * k₁)) ≠ 0 := by
-      apply mul_ne_zero; apply mul_ne_zero
-      · exact mul_ne_zero (mul_ne_zero h1 h2) (mul_ne_zero h4 h5)
-      · exact mul_ne_zero (mul_ne_zero h2 h3) (mul_ne_zero h5 h6)
-      · exact mul_ne_zero (mul_ne_zero h3 h4) (mul_ne_zero h6 h1)
-    exact (mul_eq_zero.mp h).resolve_left hprod
+    refine (mul_eq_zero.mp h).resolve_left ?_
+    simp only [mul_eq_zero, not_or, ne_eq]
+    tauto
   · intro h; rw [h, mul_zero]
 
 -- ============================================================
@@ -774,9 +784,17 @@ theorem stdConic_point_classification (p : ProjPoint) (hp : pointOnConic p stdCo
       intro h0
       apply hv
       ext i; fin_cases i <;> simp_all
-    exact ⟨p 0, hp0_ne, fun i => by fin_cases i <;>
-      simp only [stdConicInfinity, Fin.isValue, mul_one, mul_zero, mul_neg] <;>
-      linarith⟩
+    have e0 : p 0 = p 0 * stdConicInfinity 0 := by
+      simp only [stdConicInfinity, Fin.isValue, mul_one]
+    have e1 : p 1 = p 0 * stdConicInfinity 1 := by
+      simp only [stdConicInfinity, Fin.isValue, mul_zero]; exact hp1
+    have e2 : p 2 = p 0 * stdConicInfinity 2 := by
+      simp only [stdConicInfinity, Fin.isValue, mul_neg, mul_one]; linarith [hp2]
+    refine ⟨p 0, hp0_ne, fun i => ?_⟩
+    fin_cases i
+    · exact e0
+    · exact e1
+    · exact e2
   · left; exact stdConicPoint_covers p hp h02
 
 /-- **Pascal for stdConic (all finite vertices)**: When all 6 points have
@@ -828,7 +846,8 @@ private theorem pascalConstraint_A_eq_D (A B C E F : ProjPoint) :
     pascalConstraint A B C A E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -836,7 +855,8 @@ private theorem pascalConstraint_B_eq_E (A B C D F : ProjPoint) :
     pascalConstraint A B C D B F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -844,7 +864,8 @@ private theorem pascalConstraint_C_eq_F (A B C D E : ProjPoint) :
     pascalConstraint A B C D E C := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -853,7 +874,8 @@ private theorem pascalConstraint_A_eq_B (A C D E F : ProjPoint) :
     pascalConstraint A A C D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -861,7 +883,8 @@ private theorem pascalConstraint_B_eq_C (A B D E F : ProjPoint) :
     pascalConstraint A B B D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -869,7 +892,8 @@ private theorem pascalConstraint_C_eq_D (A B C E F : ProjPoint) :
     pascalConstraint A B C C E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -877,7 +901,8 @@ private theorem pascalConstraint_D_eq_E (A B C D F : ProjPoint) :
     pascalConstraint A B C D D F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -885,7 +910,8 @@ private theorem pascalConstraint_E_eq_F (A B C D E : ProjPoint) :
     pascalConstraint A B C D E E := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -893,7 +919,8 @@ private theorem pascalConstraint_F_eq_A (A B C D E : ProjPoint) :
     pascalConstraint A B C D E A := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -902,7 +929,8 @@ private theorem pascalConstraint_A_eq_C (A B D E F : ProjPoint) :
     pascalConstraint A B A D E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -910,7 +938,8 @@ private theorem pascalConstraint_B_eq_D (A B C E F : ProjPoint) :
     pascalConstraint A B C B E F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -918,7 +947,8 @@ private theorem pascalConstraint_C_eq_E (A B C D F : ProjPoint) :
     pascalConstraint A B C D C F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -926,7 +956,8 @@ private theorem pascalConstraint_D_eq_F (A B C D E : ProjPoint) :
     pascalConstraint A B C D E D := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -934,7 +965,8 @@ private theorem pascalConstraint_E_eq_A (A B C D F : ProjPoint) :
     pascalConstraint A B C D A F := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -942,7 +974,8 @@ private theorem pascalConstraint_F_eq_B (A B C D E : ProjPoint) :
     pascalConstraint A B C D E B := by
   unfold pascalConstraint lineIntersection lineThrough
   simp only [threeVectorMatrix, Matrix.det_fin_three, Matrix.of_apply, cross_apply,
-             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons, Fin.isValue,
+             Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+             Matrix.head_cons, Matrix.tail_cons, Fin.isValue,
              Nat.reduceAdd, Fin.reduceFinMk]
   ring
 
@@ -1154,7 +1187,7 @@ private lemma mathlibQF_separatingLeft (C : Conic) (hC_sym : C.symmetric)
   -- Step 1: Show associated Q = Matrix.toLinearMap₂' ℝ C using symmetry of C
   have h_assoc : QuadraticMap.associated (Matrix.toQuadraticMap' C) = Matrix.toLinearMap₂' ℝ C := by
     unfold Matrix.toQuadraticMap'
-    exact QuadraticMap.associated_left_inverse (fun x y => by
+    exact QuadraticMap.associated_left_inverse ℝ (fun x y => by
       -- Prove: (Matrix.toLinearMap₂' ℝ C) x y = (Matrix.toLinearMap₂' ℝ C) y x
       -- i.e., x ⬝ᵥ (C *ᵥ y) = y ⬝ᵥ (C *ᵥ x), using symmetry of C
       simp only [Matrix.toLinearMap₂'_apply', dotProduct, Matrix.mulVec]
