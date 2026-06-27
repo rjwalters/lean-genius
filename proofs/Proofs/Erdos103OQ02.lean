@@ -33,6 +33,12 @@ Consequently the parent's literal `WeakConjecture` (and even the assertion
 6. Shows the corrected quotient collapses exactly the translation-infinitude that
    breaks the raw count: all translates of a configuration share one class
    (`translates_same_class`).
+7. Proves the structural backbone the quotient rests on: **optimality is a full
+   congruence invariant** (`optimal_of_congruent`), via the fact that every
+   isometry — not just translations — preserves diameter, validity, and hence
+   optimality (`isometry_diameter`, `isometry_valid`, `applyIsometry_optimal`).
+   The translation results of Parts 1–3 are recovered as the
+   `translationIsometry` special case (`translate_optimal_via_isometry`).
 7. Proves the correction is **non-degenerate where the raw count failed**: given an
    optimal configuration and finitely many congruence classes, `hCong n ≥ 1`
    (`hCong_pos_of_finite`) and indeed `h n < hCong n` (`hCong_strictly_exceeds_raw`).
@@ -252,6 +258,76 @@ theorem hCong_strictly_exceeds_raw (n : ℕ) (hn : 0 < n)
   rw [h_eq_zero n hn]
   exact hCong_pos_of_finite n hne
 
+-- ============================================================
+-- PART 8: Optimality is a full congruence invariant
+-- ============================================================
+
+/-- **Any isometry preserves the diameter** of a configuration. This generalizes
+    `translate_diameter` (Part 2) from the translation subgroup to the entire
+    isometry group `Isometry2D` used to define congruence. -/
+theorem isometry_diameter {n : ℕ} (σ : Isometry2D) (P : PointConfig n) :
+    diameter n (applyIsometry n σ P) = diameter n P := by
+  unfold diameter
+  by_cases hn : n ≥ 2
+  · rw [dif_pos hn, dif_pos hn]
+    apply iSup_congr; intro i
+    apply iSup_congr; intro j
+    show pointDist (σ.toFun (P i)) (σ.toFun (P j)) = pointDist (P i) (P j)
+    exact σ.preserves_dist (P i) (P j)
+  · rw [dif_neg hn, dif_neg hn]
+
+/-- **Any isometry preserves validity** (the minimum-separation constraint).
+    Generalizes `translate_valid` (Part 2) to the full isometry group. -/
+theorem isometry_valid {n : ℕ} (σ : Isometry2D) (P : PointConfig n)
+    (hP : IsValidConfig n P) : IsValidConfig n (applyIsometry n σ P) := by
+  intro i j hij
+  show pointDist (σ.toFun (P i)) (σ.toFun (P j)) ≥ 1
+  rw [σ.preserves_dist]
+  exact hP i j hij
+
+/-- **Any isometry preserves optimality.** The full-group generalization of
+    `translate_optimal` (Part 2): translation is just one isometry, so the
+    translation infinitude of Part 3 is a single slice of this invariance. -/
+theorem applyIsometry_optimal {n : ℕ} (σ : Isometry2D) (P : PointConfig n)
+    (hP : IsOptimal n P) : IsOptimal n (applyIsometry n σ P) := by
+  obtain ⟨hvalid, hdiam⟩ := hP
+  refine ⟨isometry_valid σ P hvalid, ?_⟩
+  rw [isometry_diameter]
+  exact hdiam
+
+/-- **Optimality is a congruence invariant.** If `P` is optimal and `Q` is
+    congruent to `P`, then `Q` is optimal too. This is the structural backbone of
+    `hCong`: the congruence quotient of the *optimal* subtype is well-posed
+    precisely because being optimal is constant on each congruence class. Without
+    this fact, "incongruent optimal configurations" would not even be well-defined
+    as a quotient of optimal configurations. -/
+theorem optimal_of_congruent {n : ℕ} (P Q : PointConfig n)
+    (hP : IsOptimal n P) (hcong : AreCongruent n P Q) : IsOptimal n Q := by
+  obtain ⟨σ, hσ⟩ := hcong
+  have hQ : Q = applyIsometry n σ P := funext hσ
+  rw [hQ]
+  exact applyIsometry_optimal σ P hP
+
+/-- Translation by `v`, packaged as an element of the isometry group. -/
+def translationIsometry (v : ℝ × ℝ) : Isometry2D where
+  toFun := fun p => p + v
+  preserves_dist := fun p q => pointDist_add_right p q v
+  bijective := (Equiv.addRight v).bijective
+
+/-- The translation results of Parts 1–3 are exactly the `translationIsometry v`
+    instances of the isometry invariance of Part 8: `Ptranslate v` is the
+    application of the corresponding isometry. -/
+theorem Ptranslate_eq_applyIsometry {n : ℕ} (v : ℝ × ℝ) (P : PointConfig n) :
+    Ptranslate v P = applyIsometry n (translationIsometry v) P := rfl
+
+/-- `translate_optimal` (Part 2) recovered as the translation special case of the
+    full-group `applyIsometry_optimal`, confirming the generalization subsumes the
+    earlier translation-only result. -/
+theorem translate_optimal_via_isometry {n : ℕ} (v : ℝ × ℝ) (P : PointConfig n)
+    (hP : IsOptimal n P) : IsOptimal n (Ptranslate v P) := by
+  rw [Ptranslate_eq_applyIsometry]
+  exact applyIsometry_optimal (translationIsometry v) P hP
+
 end Erdos103OQ02
 
 -- Export main results
@@ -263,3 +339,7 @@ end Erdos103OQ02
 #check @Erdos103OQ02.translates_same_class
 #check @Erdos103OQ02.hCong_pos_of_finite
 #check @Erdos103OQ02.hCong_strictly_exceeds_raw
+#check @Erdos103OQ02.isometry_diameter
+#check @Erdos103OQ02.applyIsometry_optimal
+#check @Erdos103OQ02.optimal_of_congruent
+#check @Erdos103OQ02.translate_optimal_via_isometry
