@@ -5,12 +5,12 @@
   "title": "Mediant Insertion and the Farey Gap Calculus: The Mediant Is the Unique Smallest-Denominator Fraction in a Gap",
   "description": "A self-contained, axiom-free formalization of the exact arithmetic of mediant insertion — the operation that refines the Farey sequence F_n into F_{n+1} by inserting, between adjacent fractions a/b < c/d, their mediant (a+c)/(b+d). Two threads are proved. First, the gap-splitting calculus: a unimodular gap of size 1/(bd) is split by its mediant into a left sub-gap 1/(b(b+d)) and a right sub-gap 1/(d(b+d)); these sum back to 1/(bd), stand in ratio d:b, and each is strictly smaller than the whole. Second, the headline minimal-denominator theorem: any fraction p/q strictly between two unimodular neighbours has denominator q ≥ b+d, and equality forces p/q = (a+c)/(b+d) exactly. Hence the mediant is the unique fraction of smallest denominator inside any Farey gap, and b+d is a hard lower bound on refining it — no construction can introduce a fraction of smaller denominator. The parent entry (Erdős #1005) records the open lower bound f(n) ≥ (1/12−o(1))n on runs of similarly ordered Farey fractions; that constant remains open and is NOT addressed here. This entry formalizes the verified mediant calculus on which such lower-bound constructions are built.",
   "leanFile": {
-    "lineCount": 389,
+    "lineCount": 517,
     "axiomCount": 0,
     "path": "Proofs/Erdos1005ProblemOQ02.lean",
     "sorries": 0,
     "definitionCount": 1,
-    "theoremCount": 24
+    "theoremCount": 31
   },
   "meta": {
     "author": "Formalization original to Lean Genius (classical Farey/Stern–Brocot mediant theory)",
@@ -117,6 +117,13 @@
       "startLine": 317,
       "endLine": 388,
       "summary": "Generalises §5 to arbitrary depth and corrects a false heuristic. unimodular_iterate_left/_right: iterating mediant insertion into one sub-gap k times keeps the pair unimodular, a/b < (k·a+c)/(k·b+d). denom_ge_iterate_left/_right: every interior fraction of the k-fold one-sided sub-gap has q ≥ (k+1)·b+d — LINEAR in depth k. iterate_left_denom_linear records the exact denominator (k+1)·b+d. Consequence: a one-sided chain (e.g. 0/1, 1/2, 1/3, …, 1/n) fits Θ(n) refinement levels under the order-n cap, NOT O(log n); exponential φ^k growth and the O(log n) depth bound are special to balanced/alternating chains. Any run-length count toward the 1/12 constant must distinguish these two extremes."
+    },
+    {
+      "id": "balanced-insertion",
+      "title": "§7 Balanced (alternating) insertion — exponential denominator growth",
+      "startLine": 390,
+      "endLine": 517,
+      "summary": "Establishes the OTHER extreme of the §6 dichotomy: the balanced Stern–Brocot path (alternating left/right) grows denominators EXPONENTIALLY, not linearly. fib_cassini proves Cassini's identity F_{n+1}² − F_n·F_{n+2} = (−1)ⁿ over ℤ by one-step induction. unimodular_fib_even reads it at even index to certify the consecutive Fibonacci fractions F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2} as genuine unimodular (adjacent Farey) pairs, so the minimal-denominator machinery of §4 applies. fib_two_step_double: 2·F_k ≤ F_{k+2} (two levels at least double the denominator). fib_pow_lower: 2ʲ ≤ F_{2j+1} (exponential lower bound). balanced_mediant_denom: the balanced mediant has denominator F_{2k+1}+F_{2k+2} = F_{2k+3}, the Fibonacci recurrence. denom_ge_balanced specialises denom_ge_of_between to the Fibonacci pair. balanced_depth_log: if F_{2j+1} ≤ n then 2ʲ ≤ n, so only O(log n) balanced levels fit under the order cap — an EXPONENTIAL separation from the Θ(n) one-sided levels of §6. Any run-length count toward the 1/12 constant must distinguish the two descent regimes."
     }
   ],
   "crossReferences": [
@@ -167,6 +174,12 @@
       "type": "headline",
       "description": "Second-smallest interior denominator: every fraction p/q strictly inside a unimodular gap a/b < c/d that is NOT the mediant (a+c)/(b+d) lies in one of the two (again unimodular) sub-gaps, hence has q ≥ (b+d)+min b d. So the mediant is the unique fraction of denominator b+d in the gap, and the next admissible denominator is at least min b d larger — the strict-growth step underlying any depth/counting argument toward the 1/12 run bound.",
       "leanType": "∀ {a b c d p q : ℕ}, 0 < b → 0 < d → 0 < q → Unimodular a b c d → (a:ℚ)/b < (p:ℚ)/q → (p:ℚ)/q < (c:ℚ)/d → (p:ℚ)/q ≠ (↑(a+c):ℚ)/↑(b+d) → (b+d)+min b d ≤ q"
+    },
+    {
+      "name": "balanced_depth_log",
+      "type": "headline",
+      "description": "Quantified depth dichotomy. If the depth-2j balanced bounding fraction F_{2j+1} fits under the order-n cap (F_{2j+1} ≤ n) then 2ʲ ≤ n, i.e. j ≤ log₂ n. Combined with the §6 linear bound (one-sided chains admit Θ(n) levels), this is an EXPONENTIAL separation between the two extreme mediant-descent strategies: balanced chains exhaust the order cap in O(log n) levels, one-sided chains in Θ(n). Cassini's identity (fib_cassini) certifies the balanced bounding pairs as genuine Farey neighbours, so both bounds live in the same unimodular gap calculus.",
+      "leanType": "∀ (j n : ℕ), Nat.fib (2*j+1) ≤ n → 2^j ≤ n"
     }
   ]
 }

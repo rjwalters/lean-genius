@@ -30,6 +30,13 @@ which any such argument is built:
   rational `p/q` with `a/b < p/q < c/d` has `q ≥ b + d`, with equality forcing
   `p/q = (a+c)/(b+d)`.  Thus *no* refinement of a Farey gap can do better than
   mediant insertion — the denominator `b + d` is a hard lower bound.
+* **Depth dichotomy (§ 6–7).** Iterating insertion shows the two extreme descent
+  regimes differ exponentially: a *one-sided* chain grows denominators linearly
+  (`(k+1)·b + d`), admitting `Θ(n)` levels under the order cap, while a
+  *balanced* (alternating) chain follows the Fibonacci recurrence — denominators
+  `F_{2k+3}` doubling every two levels — admitting only `O(log n)` levels.
+  Cassini's identity certifies the balanced bounding pairs as genuine Farey
+  neighbours.
 
 Every theorem below is fully machine-checked: 0 sorries, 0 axioms (the file is
 self-contained and does **not** import the `axiom longestSimilarRun` of the
@@ -385,5 +392,126 @@ identity is the witness that one-sided descent grows denominators *linearly*, so
 the number of admissible refinement levels under `q ≤ n` is `Θ(n)`. -/
 theorem iterate_left_denom_linear (k b d : ℕ) :
     b + (k * b + d) = (k + 1) * b + d := by ring
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 7: Balanced (alternating) insertion — exponential denominator growth
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+This section establishes the **other extreme** of the dichotomy announced in § 6.
+Where the one-sided chain grows denominators *linearly* (`(k+1)·b + d`), the
+*balanced* chain — the path through the Stern–Brocot tree that alternates left
+and right at every level — grows them *exponentially*.
+
+The balanced path from the root gap `0/1 < 1/1` produces the mediants
+`1/2, 2/3, 3/5, 5/8, 8/13, …`: consecutive ratios of Fibonacci numbers.  The
+bounding pairs along this path are exactly the consecutive Fibonacci fractions
+`F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2}`, which we show below are genuine unimodular
+(adjacent Farey) pairs, so they really do arise from mediant insertion.  Their
+mediant has denominator `F_{2k+1} + F_{2k+2} = F_{2k+3}`, so the denominator
+obeys the Fibonacci recurrence and therefore **at least doubles every two
+levels**.  Consequently only `O(log n)` balanced levels fit under the cap
+`q ≤ n`, versus the `Θ(n)` one-sided levels of § 6 — an exponential separation
+between the two descent strategies, and the precise content of the heuristic
+that § 6 warned must *not* be applied to the worst case.
+-/
+
+/-- **Cassini's identity** (over `ℤ`).  `F_{n+1}² − F_n·F_{n+2} = (−1)ⁿ`.
+This is the signed version of unimodularity for consecutive Fibonacci fractions:
+the determinant of `[[F_n, F_{n+1}], [F_{n+1}, F_{n+2}]]` is `(−1)ⁿ`.  The proof
+is a one-step induction: expanding `F_{n+3}` and `F_{n+2}` via the recurrence
+turns the successor determinant into the negative of its predecessor. -/
+theorem fib_cassini (n : ℕ) :
+    (Nat.fib (n + 1) : ℤ) ^ 2 - Nat.fib n * Nat.fib (n + 2) = (-1) ^ n := by
+  induction n with
+  | zero => norm_num [Nat.fib_zero, Nat.fib_one, Nat.fib_two]
+  | succ k ih =>
+    have e2 : (Nat.fib (k + 2) : ℤ) = Nat.fib k + Nat.fib (k + 1) := by
+      exact_mod_cast Nat.fib_add_two
+    have e3 : (Nat.fib (k + 3) : ℤ) = Nat.fib (k + 1) + Nat.fib (k + 2) := by
+      exact_mod_cast Nat.fib_add_two
+    have hkey :
+        (Nat.fib (k + 1 + 1) : ℤ) ^ 2 - Nat.fib (k + 1) * Nat.fib (k + 1 + 2)
+          = -((Nat.fib (k + 1) : ℤ) ^ 2 - Nat.fib k * Nat.fib (k + 2)) := by
+      have i1 : k + 1 + 1 = k + 2 := rfl
+      have i2 : k + 1 + 2 = k + 3 := rfl
+      rw [i1, i2, e3, e2]; ring
+    rw [hkey, ih, pow_succ]; ring
+
+/-- **Consecutive Fibonacci fractions are a unimodular (Farey) pair.**  Reading
+Cassini at the *even* index `n = 2k` gives `F_{2k+1}² = F_{2k}·F_{2k+2} + 1`,
+which is exactly `Unimodular F_{2k} F_{2k+1} F_{2k+1} F_{2k+2}`.  Thus the
+balanced Stern–Brocot path consists of genuine adjacent Farey pairs, and the
+minimal-denominator machinery of § 4 applies to it verbatim. -/
+theorem unimodular_fib_even (k : ℕ) :
+    Unimodular (Nat.fib (2 * k)) (Nat.fib (2 * k + 1))
+               (Nat.fib (2 * k + 1)) (Nat.fib (2 * k + 2)) := by
+  unfold Unimodular
+  have hc := fib_cassini (2 * k)
+  have hsign : ((-1 : ℤ)) ^ (2 * k) = 1 := by rw [pow_mul]; norm_num
+  rw [hsign] at hc
+  have h2 : (Nat.fib (2 * k + 1) : ℤ) * Nat.fib (2 * k + 1)
+      = Nat.fib (2 * k) * Nat.fib (2 * k + 2) + 1 := by linear_combination hc
+  exact_mod_cast h2
+
+/-- **Two levels at least double the denominator.**  `2·F_k ≤ F_{k+2}`, because
+`F_{k+2} = F_k + F_{k+1} ≥ F_k + F_k`.  This is the engine of exponential
+growth: each pair of balanced refinement levels multiplies the denominator by at
+least `2`, in sharp contrast to the additive `+b` cost of a one-sided level. -/
+theorem fib_two_step_double (k : ℕ) : 2 * Nat.fib k ≤ Nat.fib (k + 2) := by
+  rw [Nat.fib_add_two]
+  have := Nat.fib_le_fib_succ (n := k)
+  omega
+
+/-- **Exponential lower bound on the balanced denominator.**  `2ʲ ≤ F_{2j+1}`.
+The depth-`2j` balanced bounding fraction already has denominator at least `2ʲ`,
+so it grows at least as fast as `2^{depth/2} = (√2)^{depth}`.  (The true rate is
+`φ^{depth}`; `√2` is the clean integer floor.) -/
+theorem fib_pow_lower (j : ℕ) : 2 ^ j ≤ Nat.fib (2 * j + 1) := by
+  induction j with
+  | zero => simp
+  | succ k ih =>
+    have h2 : 2 * 2 ^ k ≤ 2 * Nat.fib (2 * k + 1) := by omega
+    have hd : 2 * Nat.fib (2 * k + 1) ≤ Nat.fib (2 * k + 1 + 2) :=
+      fib_two_step_double (2 * k + 1)
+    have hpow : 2 ^ (k + 1) = 2 * 2 ^ k := by ring
+    have hidx : 2 * (k + 1) + 1 = 2 * k + 1 + 2 := by ring
+    rw [hpow, hidx]
+    omega
+
+/-- **The balanced mediant obeys the Fibonacci recurrence.**  The mediant of the
+unimodular pair `F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2}` has denominator
+`F_{2k+1} + F_{2k+2} = F_{2k+3}`: the next Fibonacci number.  So one balanced
+refinement step advances the denominator index by two — the exponential
+counterpart of `iterate_left_denom_linear`. -/
+theorem balanced_mediant_denom (k : ℕ) :
+    Nat.fib (2 * k + 1) + Nat.fib (2 * k + 2) = Nat.fib (2 * k + 3) := by
+  have h : Nat.fib (2 * k + 1 + 2) = Nat.fib (2 * k + 1) + Nat.fib (2 * k + 1 + 1) :=
+    Nat.fib_add_two
+  simpa [show 2 * k + 1 + 2 = 2 * k + 3 from rfl,
+         show 2 * k + 1 + 1 = 2 * k + 2 from rfl] using h.symm
+
+/-- **Minimal denominator in a balanced gap.**  Specialising `denom_ge_of_between`
+to the Fibonacci pair: every fraction strictly between `F_{2k}/F_{2k+1}` and
+`F_{2k+1}/F_{2k+2}` has denominator `q ≥ F_{2k+3}`.  Combined with
+`fib_pow_lower` this forces `q` to grow exponentially with the balanced depth. -/
+theorem denom_ge_balanced (k : ℕ) {p q : ℕ} (hq : 0 < q)
+    (hlo : (Nat.fib (2 * k) : ℚ) / Nat.fib (2 * k + 1) < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (Nat.fib (2 * k + 1) : ℚ) / Nat.fib (2 * k + 2)) :
+    Nat.fib (2 * k + 3) ≤ q := by
+  have hb : 0 < Nat.fib (2 * k + 1) := by rw [Nat.fib_pos]; omega
+  have hd : 0 < Nat.fib (2 * k + 2) := by rw [Nat.fib_pos]; omega
+  have hge := denom_ge_of_between hb hd hq (unimodular_fib_even k) hlo hhi
+  rwa [balanced_mediant_denom] at hge
+
+/-- **The dichotomy, quantified.**  If the depth-`2j` balanced bounding fraction
+`F_{2j+1}` fits under the order cap `n` (i.e. `F_{2j+1} ≤ n`), then `2ʲ ≤ n`, so
+`j ≤ log₂ n`.  Only `O(log n)` balanced levels are admissible — an *exponential*
+separation from § 6, where `iterate_left_denom_linear` admits `Θ(n)` one-sided
+levels under the same cap.  Any honest run-length count for `f(n)` must therefore
+distinguish these two descent regimes. -/
+theorem balanced_depth_log (j n : ℕ) (hcap : Nat.fib (2 * j + 1) ≤ n) :
+    2 ^ j ≤ n :=
+  le_trans (fib_pow_lower j) hcap
 
 end Erdos1005OQ02
