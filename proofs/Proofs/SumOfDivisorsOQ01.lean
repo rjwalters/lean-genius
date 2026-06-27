@@ -28,8 +28,13 @@ facts plus a parity reduction of the perfect equation:
 * **`geom_sum_odd_eq_factor`.**  For odd `a`, `∑_{j≤a} p^j = (1 + p)·∑_{k} p^{2k}`,
   the pairing identity underlying the mod-4 refinement on the special prime.
 
-* **L2 — `sigma_prime_pow_two_adic_eq_one_iff`.**  For an odd prime `p` and
-  odd `a`, `v₂(σ(p^a)) = 1 ⟺ p ≡ 1 (mod 4) ∧ a ≡ 1 (mod 4)`.
+* **`even_geom_sum_parity`.**  For odd `p`, `∑_{k<m} p^{2k}` has the parity
+  of `m` — the parity bookkeeping for the right factor above.
+
+* **L2 — `sigma_prime_pow_mod_four`.**  For an odd prime `p` and odd `a`,
+  `σ(p^a) ≡ 2 (mod 4)` — equivalently `v₂(σ(p^a)) = 1` — exactly when
+  `p ≡ 1 (mod 4)` and `a ≡ 1 (mod 4)`.  (Phrased via `mod 4` rather than the
+  2-adic valuation to keep the proof `omega`-closable and `padicValNat`-free.)
 
 These are exactly the lemmas whose mod-4 / parity bookkeeping is "most at risk
 of an off-by-one" in the classical proof (Hardy–Wright Thm 277); they are
@@ -87,5 +92,42 @@ theorem geom_sum_odd_eq_factor (p t : ℕ) :
       Finset.sum_range_succ, Finset.sum_range_succ, ih]
     conv_rhs => rw [Finset.sum_range_succ]
     ring
+
+/-- Parity of the "even-index" geometric sum `∑_{k<m} p^{2k}` for odd `p`:
+it has the parity of its number of terms `m` (each summand `p^{2k}` is odd). -/
+theorem even_geom_sum_parity {p : ℕ} (hodd : Odd p) (m : ℕ) :
+    (∑ k ∈ Finset.range m, p ^ (2 * k)) % 2 = m % 2 := by
+  rw [Finset.sum_nat_mod]
+  have hk : ∀ k ∈ Finset.range m, p ^ (2 * k) % 2 = 1 := by
+    intro k _; exact Nat.odd_iff.mp hodd.pow
+  rw [Finset.sum_congr rfl hk, Finset.sum_const, Finset.card_range, smul_eq_mul, mul_one]
+
+/-- **L2 (mod-4 refinement on the special prime), valuation-free form.**
+For an odd prime `p` and an *odd* exponent `a`, `σ(p^a) ≡ 2 (mod 4)` — i.e.
+`v₂(σ(p^a)) = 1` — exactly when `p ≡ 1 (mod 4)` and `a ≡ 1 (mod 4)`.
+
+Proof: with `a = 2t+1`, the pairing identity gives `σ(p^a) = (1+p)·S` with
+`S = ∑_{k≤t} p^{2k}`.  Modulo 4, `1+p ≡ 2` (if `p≡1`) or `≡ 0` (if `p≡3`), and
+`S` has the parity of `t+1`; a finite `omega` case analysis closes the iff. -/
+theorem sigma_prime_pow_mod_four {p : ℕ} (hp : p.Prime) (hodd : Odd p) {a : ℕ}
+    (ha : Odd a) :
+    sigma 1 (p ^ a) % 4 = 2 ↔ p % 4 = 1 ∧ a % 4 = 1 := by
+  obtain ⟨t, rfl⟩ := ha
+  rw [sigma_one_apply_prime_pow hp, show 2 * t + 1 + 1 = 2 * t + 2 by ring,
+    geom_sum_odd_eq_factor]
+  have hSpar : (∑ k ∈ Finset.range (t + 1), p ^ (2 * k)) % 2 = (t + 1) % 2 :=
+    even_geom_sum_parity hodd (t + 1)
+  set S := ∑ k ∈ Finset.range (t + 1), p ^ (2 * k) with hS
+  have hp4 : p % 4 = 1 ∨ p % 4 = 3 := by
+    have := Nat.odd_iff.mp hodd; omega
+  rw [Nat.mul_mod]
+  rcases hp4 with h1 | h3
+  · have hu : (1 + p) % 4 = 2 := by omega
+    rw [hu]
+    have hv : S % 4 % 2 = S % 2 := Nat.mod_mod_of_dvd S (by norm_num)
+    omega
+  · have hu : (1 + p) % 4 = 0 := by omega
+    rw [hu]
+    omega
 
 end SumOfDivisorsOQ01
