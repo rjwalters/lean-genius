@@ -1,38 +1,54 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
 ## Current Phase: ACT
-## Iteration: 2
+## Iteration: 3
 
 ## Status
-S2 (researcher-6, 2026-06-27): implemented the **OQ-03-OQ-02** well-definedness
-backbone proposed by S1. Added PART 4c to `PascalsHexagonOQ03.lean` — the six
-exact generator-action identities — and made `pascalLine` total. Shipped as
-**PR #30630** (branch `research/pascals-hexagon-oq03-oq02-generator-action`).
+S3 (researcher-6, 2026-06-27): completed the **OQ-03-OQ-02** "Next Action 2"
+from S2 — promoted the PART 4c *set*-invariance of the Pascal triple to literal
+**projective line equality** under both dihedral generators. Added **PART 4d**
+to `PascalsHexagonOQ03.lean`. Pushed onto the existing PR branch
+`research/pascals-hexagon-oq03-oq02-generator-action` (updates **PR #30630**).
 
-**Local build verification BLOCKED** (host Data volume 100% full, 5.7 GiB free;
-`lean4-arm64` Docker image absent → `docker-build.sh` failed at image build with
-a containerd I/O error; direct `lake build` prohibited). Proofs are hand-verified
-and reuse tactic patterns already compiled in the parent file; PR is flagged for
-build-gating before merge.
+**Local build verification STILL BLOCKED** (host Data volume 100% full, 5.2 GiB
+free; `lean4-arm64:v4.26.0` Docker image absent and `docker-build.sh` *builds*
+it locally → guaranteed to fail / risk containerd corruption on a full disk;
+direct `lake build` prohibited). New lemmas reuse only `cross_apply` + `ring`
+and the `det_fin_three`/`of_apply` simp set already compiled in the parent
+`PascalsHexagon.lean`; hand-verified.
 
-## What was established (now machine-targeted, build pending)
-- `pascalP/Q/R_permuteHexagon_hexRot` — `(P,Q,R) ↦ (Q, R, -P)`. P/Q by index
-  reduction (`decide`) + `rfl`; R by one `cross_anticomm`.
-- `pascalP/Q/R_permuteHexagon_hexRev` — `(P,Q,R) ↦ (-Q, -P, R)`. All three sign
-  cases proved by coordinate expansion (`cross_apply` + `ring`) — the three S1
-  `sorry` sketches are now real proofs.
-- `pascalLine` total via `lbl.out'` (`Quotient.out'`): the blocking
-  definition-`sorry` is gone; `SteinerPoint`/`KirkmanPoint` typecheck.
+## What was established this session (PART 4d, build pending)
+- `sameProjLine l m := crossProduct l m = 0` — the parallelism / "same
+  projective line up to nonzero scalar" predicate for homogeneous line-vectors.
+- `sameProjLine_refl`, `sameProjLine_neg_right`, `sameProjLine_smul_right` —
+  basic invariances (`l ∥ l`, `l ∥ -l`, `l ∥ c•l`); cross_apply + ring.
+- `cross_cross_eq_det_smul : (P×₃Q) ×₃ (Q×₃R) = det(P,Q,R) • Q` — the BAC–CAB
+  specialisation; pure 9-variable polynomial identity (ring). **No axiom.**
+- `sameProjLine_of_collinear` — collinear `P,Q,R` ⟹ `P×₃Q ∥ Q×₃R` (the
+  rotation crux). Collapses via `cross_cross_eq_det_smul` + `det = 0`.
+  **No axiom.**
+- `pascalLine_hexRot_sameProjLine` / `pascalLine_hexRev_sameProjLine` — the
+  Pascal line of `permuteHexagon hex hexRot` / `hexRev` is the **same
+  projective line** as that of `hex`. (hexRot via the crux + `pascal_hexagon_
+  theorem`; hexRev directly, the `-(P×₃Q)` case.) These inherit the parent's
+  `conic_implies_pascal_constraint` axiom (expected — entry is axiomatized).
+- `pascalLine_generators_sameProjLine` — both generators bundled.
+
+This closes OQ-03-OQ-02 **at the generator/representative level**: each of the
+60 cosets has a well-defined Pascal projective line under the two generators.
 
 ## Next Action
-1. Build-verify PR #30630 once the host has disk/Docker (`docker-build.sh
-   Proofs.PascalsHexagonOQ03`). Likely-fragile spots if it fails: numeral
-   reduction `hexVertex hex (n : Fin 6) ≡ hex.<field>` (the `rfl`/`show` steps),
-   and the `cons_val` simp set on nested cross products.
-2. Promote set-invariance to a literal `ProjLine` equality: prove `P×Q ∝ Q×R`
-   for collinear, pairwise-independent `P,Q,R` (`Q×R = -α(P×Q)` when
-   `R = αP + βQ`), with a nonzero-scalar line-equivalence + nondegeneracy
-   hypothesis. This closes OQ-03-OQ-02 at the quotient level.
+1. Build-verify PR #30630 once host disk/Docker recovers
+   (`docker-build.sh Proofs.PascalsHexagonOQ03`). Fragile spots if it fails:
+   the nested-crossProduct index-2 reduction inside `cross_cross_eq_det_smul`
+   (mirrors parent `pascal_std_conic_parametrized`, expected fine), and the
+   `det_fin_three` match-on-`Fin` reduction (relies on `Fin.reduceFinMk`).
+2. **Full quotient descent** (the remaining gap): propagate generator-
+   invariance to all of `hexagonalGroup = ⟨hexRot, hexRev⟩` by closure
+   induction, then relate `permuteHexagon hex g` to `pascalLine`'s
+   `lbl.out'` representative, yielding a genuine `Quotient`-level
+   well-definedness for `pascalLine`. Needs a `Subgroup.closure_induction`
+   over the two generators plus `sameProjLine` transitivity.
 
 ## Out of scope
 `steiner_count_eq_20`, `kirkman_count_eq_60` (OQ-03-OQ-03/04) — genuinely open
