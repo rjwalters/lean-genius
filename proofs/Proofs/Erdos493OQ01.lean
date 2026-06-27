@@ -140,4 +140,65 @@ theorem reps_card_eq_tau (n : ℕ) :
       rw [← hst]; exact Nat.mul_div_cancel_left _ (by omega)
     simp only [Prod.mk.injEq, hdiv]; omega
 
+/-- A natural number has **exactly two divisors iff it is prime** — the two
+divisors being `1` and the number itself. This is the divisor-count form of
+primality; it lets us read primality directly off the representation count. -/
+theorem card_divisors_eq_two_iff_prime {N : ℕ} : N.divisors.card = 2 ↔ N.Prime := by
+  constructor
+  · intro h
+    have hN0 : N ≠ 0 := by rintro rfl; simp [Nat.divisors_zero] at h
+    have hN1 : N ≠ 1 := by rintro rfl; simp [Nat.divisors_one] at h
+    have h2 : 2 ≤ N := by omega
+    have hsub : ({1, N} : Finset ℕ) ⊆ N.divisors := by
+      intro x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact Nat.one_mem_divisors.mpr hN0
+      · exact Nat.mem_divisors_self _ hN0
+    have hpair : ({1, N} : Finset ℕ).card = 2 := Finset.card_pair (Ne.symm hN1)
+    have heq : N.divisors = {1, N} :=
+      (Finset.eq_of_subset_of_card_le hsub (by rw [hpair]; omega)).symm
+    rw [Nat.prime_def]
+    refine ⟨h2, fun m hm => ?_⟩
+    have hmem : m ∈ N.divisors := Nat.mem_divisors.mpr ⟨hm, hN0⟩
+    rw [heq, Finset.mem_insert, Finset.mem_singleton] at hmem
+    exact hmem
+  · intro hp
+    rw [Nat.Prime.divisors hp, Finset.card_pair hp.one_lt.ne]
+
+/-- **(C5) Primality capstone.** There are **exactly two** ordered
+representations `n = a*b - (a+b)` (with `a, b ≥ 2`) **iff** `n + 1` is prime.
+For prime `n + 1 = p` the two representations are `(2, n+2)` and `(n+2, 2)` — the
+single *unordered* representation `{2, n+2}` counted in both orders — so the
+representation is unordered-unique exactly when `n + 1` is prime. This is the
+quantitative reading of `hasNontrivialRep_iff_factor` (C4): no representation with
+both parts `≥ 3` exists iff `n + 1` has no nontrivial factorization. The proof is
+immediate from `reps_card_eq_tau` (C2): the ordered count is `τ(n+1)`, which equals
+`2` iff `n + 1` is prime. -/
+theorem reps_card_eq_two_iff_prime (n : ℕ) :
+    (repsFinset n).card = 2 ↔ (n + 1).Prime := by
+  rw [reps_card_eq_tau, card_divisors_eq_two_iff_prime]
+
+/-- The representation is *ordered-unique* (exactly one ordered pair) **iff**
+`n = 0`, the lone representation being `(2, 2)` since `n + 1 = 1` has the single
+divisor `1`. Together with `reps_card_eq_two_iff_prime`, the unordered
+representation of `n` is unique exactly when `n = 0` or `n + 1` is prime. -/
+theorem reps_card_eq_one_iff (n : ℕ) :
+    (repsFinset n).card = 1 ↔ n = 0 := by
+  rw [reps_card_eq_tau]
+  constructor
+  · intro h
+    by_contra hne
+    have hsub : ({1, n + 1} : Finset ℕ) ⊆ (n + 1).divisors := by
+      intro x hx
+      rw [Finset.mem_insert, Finset.mem_singleton] at hx
+      rcases hx with rfl | rfl
+      · exact Nat.one_mem_divisors.mpr (by omega)
+      · exact Nat.mem_divisors_self _ (by omega)
+    have hpair : ({1, n + 1} : Finset ℕ).card = 2 := Finset.card_pair (by omega)
+    have hge : 2 ≤ (n + 1).divisors.card := hpair ▸ Finset.card_le_card hsub
+    omega
+  · rintro rfl
+    simp [Nat.divisors_one]
+
 end Erdos493
