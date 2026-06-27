@@ -2,7 +2,7 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 5
+**Iteration**: 7
 
 ## Current Focus
 
@@ -102,14 +102,49 @@ consecutive in `F_n` (e.g. `1/2, 1/3` separated in `F_5`), so this does **not**
 prove `f(n) ≳ n`. Supplying consecutiveness is exactly the open `1/12`–`1/4`
 step.
 
+## Iteration 7 addition (verified, 0-axiom — `lake env lean`, Docker contended)
+
+Added **§9 (the three-term Farey neighbour recurrence — the consecutiveness
+bridge)**, 0-sorry / 0-axiom (verified by `lake env lean` against the main-repo
+Mathlib `.olean` cache; `#print axioms` reports only propext / Classical.choice /
+Quot.sound on every new theorem). This **closes the §8 honest gap**: §8's
+mediant chains were similarly ordered but *not consecutive* in `F_n`; §9 uses the
+actual Farey successor `e = k·c − a`, `f = k·d − b` with `k = ⌊(n+b)/d⌋`
+(Hardy–Wright Thm 28–30), carried in addition form `e+a=k·c`, `f+b=k·d`. Six
+theorems:
+
+- `farey_succ_unimodular` — the recurrence **preserves unimodularity**
+  (`d·e = c·f + 1`), so `c/d, e/f` are again *consecutive*: iterating walks along
+  genuinely adjacent Farey fractions (`linear_combination d·he − c·hf + h` after
+  `zify`).
+- `farey_succ_lt` — `c·f < d·e` (the successor lies strictly to the right).
+- `farey_three_term` — symmetric law `d·(a+e) = c·(b+f)`: the middle term is the
+  exact `k`-section, the Farey form of `b_{k−1}+b_{k+1} = k·b_k`.
+- `farey_succ_denom_le_iff` — order-`n` cap `f ≤ n ↔ k·d ≤ n+b`, which selects
+  `k = ⌊(n+b)/d⌋` as the largest admissible step.
+- `simOrd_succ_controlling` (**headline**) — a *consecutive* step `c/d → e/f` is
+  similarly ordered **iff** `(a+c−k·c)·(b+d−k·d) ≥ 0`. The open-problem quantity
+  is now an explicit arithmetic inequality on the successive quotient `k`, not a
+  vague appeal to "consecutiveness".
+- `simOrd_succ_k_eq_one` — the `k=1` step is *always* similarly ordered (product
+  collapses to `a·b ≥ 0`); runs can break **only** at quotients `k ≥ 2`,
+  localizing exactly where the `1/12`–`1/4` optimization lives.
+
+File: 638 → 745 lines, 39 → 45 theorems, 2 defs (no new def).
+
 ## Next Action
 
-Bridge similar ordering to **consecutiveness**: formalize the three-term Farey
-denominator recurrence `b_{k+1} = ⌊(n+b_{k−1})/b_k⌋·b_k − b_{k−1}` and analyse
-when `(a_{k+1}−a_k)(b_{k+1}−b_k) ≥ 0` over a consecutive block — the concrete
-route to van Doorn's `(1/12−o(1))n` lower bound. (Likely needs a Farey-sequence
-indexing layer; assess buildability vs. reuse of `fareyList` in
-`Erdos1005ProblemProvable.lean`.)
+Aggregate the per-step criterion over a *consecutive block*. With the successive
+quotients `k₁, k₂, …` (the continued-fraction-like data of the Farey walk),
+`simOrd_succ_controlling` makes each step's similar ordering the inequality
+`(aᵢ+cᵢ−kᵢ·cᵢ)(bᵢ+dᵢ−kᵢ·dᵢ) ≥ 0`. The lower bound `f(n) ≥ (1/12−o(1))n`
+is a statement that a *positive density* of consecutive steps can be kept
+`k=1` (hence automatically similarly ordered, by `simOrd_succ_k_eq_one`).
+Concrete Lean target: a **chained successor lemma** — given a finite list of
+quotients all equal to `1`, the resulting consecutive Farey block of that length
+is step-wise similarly ordered, with denominators bounded `≤ n` via
+`farey_succ_denom_le_iff`. That converts §9's single-step criterion into a
+*run-length* statement, the last formal step before a constant.
 
 ## Attempt Counts
 
