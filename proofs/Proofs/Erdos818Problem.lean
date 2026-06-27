@@ -109,14 +109,20 @@ theorem productSet_upper_bound (A : Finset ℤ) :
 /--
 **Erdős Conjecture #818:**
 If |A + A| ≤ K · |A| for some constant K, then
-|A · A| ≥ |A|² / (log |A|)^C for some constant C.
+|A · A| ≫ |A|² / (log |A|)^C for some constants C, c > 0.
+
+The absolute constant `c > 0` is essential and faithful to the `≫` in the
+original statement: without it the claim is false on small sets. For example
+A = {1, 2} has |A+A| = 3 ≤ 2·|A| (small sumset) and |A·A| = 3, but
+|A|²/(log|A|)^C = 4/(log 2)^C > 4 for every C > 0 (since log 2 < 1). The
+constant `c` absorbs these boundary effects, exactly as `≫` intends.
 -/
 def ErdosConjecture818 : Prop :=
-  ∃ C : ℝ, C > 0 ∧
+  ∃ C : ℝ, C > 0 ∧ ∃ c : ℝ, c > 0 ∧
     ∀ K : ℝ, K > 0 →
       ∀ A : Finset ℤ, A.card ≥ 2 →
         hasSmallSumset A K →
-        ((productSet A).card : ℝ) ≥ (A.card : ℝ)^2 / (log A.card)^C
+        ((productSet A).card : ℝ) ≥ c * (A.card : ℝ)^2 / (log A.card)^C
 
 /-
 ## Part IV: Solymosi's Theorem (2009)
@@ -142,15 +148,13 @@ Solymosi's theorem implies Erdős's conjecture.
 -/
 theorem erdos_818_proved : ErdosConjecture818 := by
   obtain ⟨c, hc_pos, hc_bound⟩ := solymosi_theorem
-  use 1
-  constructor
-  · norm_num
-  · intro K hK A hA_card hA_small
-    have hSoly := hc_bound K hK A hA_card hA_small
-    calc ((productSet A).card : ℝ)
-        ≥ c * (A.card : ℝ)^2 / log A.card := hSoly
-      _ ≥ (A.card : ℝ)^2 / (log A.card)^1 := by
-          sorry  -- Follows if c ≥ 1 or by adjusting constants
+  -- Take C = 1 and the same absolute constant c as Solymosi's theorem.
+  refine ⟨1, by norm_num, c, hc_pos, ?_⟩
+  intro K hK A hA_card hA_small
+  have hSoly := hc_bound K hK A hA_card hA_small
+  -- (log |A|)^(1 : ℝ) = log |A|, so the goal is exactly Solymosi's bound.
+  rw [Real.rpow_one]
+  exact hSoly
 
 /-
 ## Part V: Multiplicative Energy
@@ -197,7 +201,16 @@ Bounds multiplicative energy in terms of sumset size.
 -/
 /-- The energy bounds combine to give Solymosi's result:
     From E×(A) ≥ |A|⁴/|AA| and E×(A) ≤ |A|²·|A+A|·log|A|,
-    we get |AA| ≥ |A|²/(K·log|A|) when |A+A| ≤ K|A|. -/
+    we get |AA| ≥ |A|²/(K·log|A|) when |A+A| ≤ K|A|.
+
+    REMAINING GAP (sorry): this is the genuine energy argument and is the one
+    open formalization target left in this file. It is *not* a consequence of
+    `solymosi_theorem`: that axiom supplies an absolute constant `c > 0` with
+    bound `c·|A|²/log|A|`, whereas this K-dependent bound `|A|²/(K·log|A|)`
+    would require `c·K ≥ 1`, which the axiom does not provide. Proving it from
+    scratch needs the Cauchy–Schwarz lower bound (`cauchy_schwarz_energy`) and
+    Solymosi's multiplicative-energy upper bound, neither of which is yet
+    formalized in Mathlib. -/
 theorem proof_outline (A : Finset ℤ) (hA : A.card ≥ 2) (hne : A.Nonempty)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
     ((productSet A).card : ℝ) ≥
@@ -284,11 +297,15 @@ theorem erdos_818_summary :
   · exact solymosi_theorem
 
 /-- Small additive doubling forces large multiplicative expansion:
-    the sum-product phenomenon quantified. -/
+    the sum-product phenomenon quantified. For an absolute constant `c > 0`,
+    a set with small sumset has product set of size `≥ c·|A|²/log|A|`. The
+    constant is necessary (see the discussion on `ErdosConjecture818`), so we
+    state the bound with it explicitly rather than the unsound `c = 1` form. -/
 theorem key_insight (A : Finset ℤ) (hA : A.card ≥ 2)
     (K : ℝ) (hK : K > 0) (hsmall : hasSmallSumset A K) :
-    ((productSet A).card : ℝ) ≥ (A.card : ℝ)^2 / (log A.card)^1 := by
-  have ⟨_, _, _⟩ := erdos_818_proved
-  sorry
+    ∃ c : ℝ, c > 0 ∧
+      ((productSet A).card : ℝ) ≥ c * (A.card : ℝ)^2 / log A.card := by
+  obtain ⟨c, hc_pos, hc_bound⟩ := solymosi_theorem
+  exact ⟨c, hc_pos, hc_bound K hK A hA hsmall⟩
 
 end Erdos818
