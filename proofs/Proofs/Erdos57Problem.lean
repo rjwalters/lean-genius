@@ -158,14 +158,32 @@ lemma noOddCycles_of_boolColoring {G : SimpleGraph V} (c : G.Coloring Bool) :
   exact (Nat.not_even_iff_odd.mpr hodd) hEven
 
 /--
+**Crux lemma (classical, Mathlib gap):** every odd closed walk contains an odd cycle.
+
+This is the only genuinely nonelementary ingredient of the bipartite characterization.
+The standard proof is induction on the walk length: a minimal odd closed walk must be a
+cycle, because any repeated interior vertex splits it into two strictly shorter closed
+walks whose lengths sum to the original — one of which is therefore odd. Mathlib provides
+the closed-walk decomposition API (`Walk.takeUntil`/`Walk.dropUntil`, `rotate`,
+`IsTrail`/`IsCycle`, `cons_isCycle_iff`) but not this statement.
+-/
+theorem exists_odd_cycle_of_odd_closed_walk {G : SimpleGraph V} {u : V}
+    (w : G.Walk u u) (hodd : Odd w.length) :
+    ∃ (x : V) (c : G.Walk x x), c.IsCycle ∧ Odd c.length := by
+  sorry
+
+/--
 A graph is bipartite iff it has no odd cycles.
 
-The forward direction is the elementary parity argument (a proper 2-coloring forces
-every closed walk to have even length). The reverse direction (no odd cycle ⟹
-2-colorable) is the hard classical direction; for arbitrary, possibly infinite, `V`
-it requires building a 2-coloring component-by-component from the parity of distances
-to chosen base vertices. Mathlib lists this exact characterization as future work
-(`Mathlib.Combinatorics.SimpleGraph.Bipartite`), so it is left as the sole open goal.
+The forward direction is the elementary parity argument (a proper 2-coloring forces every
+closed walk to have even length). The reverse direction is the classical direction. Rather
+than rebuild a component-wise distance-parity coloring by hand, we route through Mathlib's
+`two_colorable_iff_forall_loop_even` (which already supplies that construction): bipartite is
+equivalent to "every closed walk has even length", and the contrapositive of that is exactly
+`exists_odd_cycle_of_odd_closed_walk` — an odd loop would yield an odd cycle, contradicting
+`oddCycleLengths G = ∅`. The whole reverse direction is therefore reduced to the single
+classical walk lemma above (Mathlib lists this characterization as future work,
+`Mathlib.Combinatorics.SimpleGraph.Bipartite`).
 -/
 theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :
     G.IsBipartite ↔ oddCycleLengths G = ∅ := by
@@ -173,8 +191,15 @@ theorem bipartite_iff_no_odd_cycles (G : SimpleGraph V) :
   · intro hbip
     obtain ⟨c⟩ := hbip
     exact noOddCycles_of_boolColoring (G.recolorOfEquiv finTwoEquiv c)
-  · intro _hno
-    sorry
+  · intro hno
+    refine SimpleGraph.two_colorable_iff_forall_loop_even.mpr ?_
+    intro x w
+    by_contra hne
+    rw [Nat.not_even_iff_odd] at hne
+    obtain ⟨y, c, hcyc, hcodd⟩ := exists_odd_cycle_of_odd_closed_walk w hne
+    have hmem : c.length ∈ oddCycleLengths G := ⟨⟨y, c, hcyc, rfl⟩, hcodd⟩
+    rw [hno] at hmem
+    exact hmem
 
 /-- 2-colorable graphs have no odd cycles. -/
 theorem colorable_two_no_odd_cycles (G : SimpleGraph V)
