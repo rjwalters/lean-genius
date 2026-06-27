@@ -228,4 +228,83 @@ theorem canon_eq_of_vertices_range {d N : ℕ} {s t : CanonSimplex d N}
     Set.image_injective.mpr toVertex_injective h
   exact Subtype.ext (SpernerGrid.IsCanon.geometry_unique s.2 t.2 hbary)
 
+-- ============================================================
+-- SECTION: Facet structure of a canonical cell
+-- ============================================================
+-- The abstract `adj` field of a `SpernerTriangulation` is a *facet*
+-- adjacency: `adj s k` names the neighbour glued to `s` across the
+-- `(d-1)`-face obtained by deleting vertex `k`.  Two of its compatibility
+-- obligations are phrased directly in terms of that deleted-vertex set:
+--
+--   * `adj_vertices` equates the deleted-vertex *images* of glued cells,
+--     `(univ.erase k).image (vertices s) = (univ.erase k').image (vertices s')`;
+--   * `adj_unique_facet` needs the `d + 1` facets of a *single* cell to be
+--     distinct, so that a neighbour can be glued across at most one of them.
+--
+-- This section pins down that facet combinatorics for `CanonSimplex`
+-- independently of how `adj` is eventually defined: each cell has `d + 1`
+-- facets, each a `d`-vertex set, the deleted vertex is the unique vertex
+-- absent from its own facet, and the facet map `k ↦ facet s k` is injective.
+-- None of this depends on the adjacency geometry, so it stays 0-sorry,
+-- 0-axiom while supplying the exact lemmas the `adj` discharge will cite.
+
+/-- The `k`-th **facet** of a canonical cell: the `d`-vertex set obtained by
+deleting vertex `k` and pushing the rest through the Kuhn bridge.  This is the
+common-face vertex set that the abstract `adj_vertices` field equates across a
+glued pair of cells. -/
+def facet (s : CanonSimplex d N) (k : Fin (d + 1)) : Finset (SpernerNDim.Vertex d N) :=
+  (Finset.univ.erase k).image (vertices s)
+
+/-- Membership in a facet: a Kuhn vertex lies on facet `k` exactly when it is
+the image of some vertex `j ≠ k`. -/
+theorem mem_facet_iff (s : CanonSimplex d N) (k : Fin (d + 1))
+    (v : SpernerNDim.Vertex d N) :
+    v ∈ facet s k ↔ ∃ j : Fin (d + 1), j ≠ k ∧ vertices s j = v := by
+  simp only [facet, Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true]
+
+/-- The deleted vertex is the unique vertex of the cell **absent** from its own
+facet: `vertices s k ∉ facet s k`.  (Were it present, two distinct vertices of
+the cell would coincide, contradicting `vertices_injective`.) -/
+theorem vertices_not_mem_facet (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    vertices s k ∉ facet s k := by
+  rw [mem_facet_iff]
+  rintro ⟨j, hjk, hj⟩
+  exact hjk (vertices_injective s hj)
+
+/-- Each facet carries exactly `d` vertices (the cell's `d + 1` vertices minus
+the deleted one).  Uses per-cell vertex injectivity to count the image. -/
+theorem facet_card (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    (facet s k).card = d := by
+  rw [facet, Finset.card_image_of_injective _ (vertices_injective s),
+    Finset.card_erase_of_mem (Finset.mem_univ k), Finset.card_univ,
+    Fintype.card_fin]
+  omega
+
+/-- **The `d + 1` facets of a single cell are distinct.**  If `facet s k₁ =
+facet s k₂` then `k₁ = k₂`: otherwise `vertices s k₁` would lie in
+`facet s k₂ = facet s k₁`, contradicting `vertices_not_mem_facet`.  This is the
+within-cell half of `adj_unique_facet` — a neighbour can be glued across at most
+one facet of `s`. -/
+theorem facet_injective (s : CanonSimplex d N) :
+    Function.Injective (facet s) := by
+  intro k₁ k₂ h
+  by_contra hne
+  have hmem : vertices s k₁ ∈ facet s k₂ :=
+    (mem_facet_iff s k₂ _).mpr ⟨k₁, hne, rfl⟩
+  rw [← h] at hmem
+  exact vertices_not_mem_facet s k₁ hmem
+
+/-- Reconstructing the deleted index from the facet: vertex `j` lies off
+facet `k` (i.e. `vertices s j ∉ facet s k`) exactly when `j = k`.  Together with
+`facet_injective` this says the facet set and the cell together determine which
+vertex was removed — the data `adj` must keep coherent. -/
+theorem not_mem_facet_iff (s : CanonSimplex d N) (k j : Fin (d + 1)) :
+    vertices s j ∉ facet s k ↔ j = k := by
+  constructor
+  · intro hj
+    by_contra hne
+    exact hj ((mem_facet_iff s k _).mpr ⟨j, hne, rfl⟩)
+  · rintro rfl
+    exact vertices_not_mem_facet s _
+
 end SpernerNDimOQ02

@@ -18,12 +18,13 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-06-27T00:00:00.000Z",
-    "iteration": 4,
-    "focus": "Option C in progress. Session 3 delivered step 0: the BaryPoint d N ≃ Vertex d N coordinate bridge as proofs/Proofs/SpernerNDimOQ02.lean (baryEquivVertex + onFace_toVertex + isSperner_iff). UNVERIFIED (build host down, FS 98%). Next is Phase 1: the unoriented Freudenthal SpernerTriangulation instance, whose vertices field can land in Vertex d N via toVertex.",
+    "iteration": 5,
+    "focus": "Option C, Phase-1 carrier. Session 8 added the facet combinatorics of CanonSimplex to proofs/Proofs/SpernerNDimOQ02.lean (facet def + mem_facet_iff + vertices_not_mem_facet + facet_card[=d] + facet_injective + not_mem_facet_iff), the within-cell building blocks for the abstract adj_vertices/adj_unique_facet fields. 0-axiom by construction (only simp/rw/omega/rintro/by_contra/exact on already-verified foundations, no sorry/axiom/decide). Session 9 RE-VERIFICATION BLOCKED: Docker build host failed on disk/I/O exhaustion (containerd metadata DB write error decompressing 7727 Mathlib oleans; 1.7 GiB free, 6 concurrent agent builds). Increment awaits a clean machine-check + #print axioms once infra recovers. Next is the adj facet-adjacency function itself (pivot operation) + its 5 compatibility fields + boundary_face.",
     "blockers": [
-      "Infra-gated: build host down at session 3 (root FS 98%, ~324 MiB free and dropping, stale lean-build containers, SpernerGrid.olean not cached). SpernerNDimOQ02.lean is UNVERIFIED and must be machine-checked once infra recovers. The remaining Phase 1+2 build is ~400-650 lines."
+      "INFRA: Docker build host disk/I/O exhausted at Session 9 (containerd metadata DB write I/O error during Mathlib olean decompress; root FS 1.7 GiB free, 6 concurrent lean-build containers, local Mathlib olean cache incomplete so no safe single-file fallback). SpernerNDimOQ02.lean facet section is UNVERIFIED this session; must be machine-checked (build + #print axioms) once infra recovers. Do NOT docker-prune while peer builds run.",
+      "The remaining open frontier is the adj field: a facet-adjacency function Simplex → Fin (d+1) → Option (Simplex × Fin (d+1)) realising the Freudenthal pivot, plus its 5 compatibility fields (adj_symm, adj_vertices, adj_ne, adj_unique_facet, boundary_face). facet_injective supplies the within-cell half of adj_unique_facet; the cross-cell half needs canon_eq_of_vertices_range. Estimated ~300-500 lines."
     ],
-    "nextAction": "Verify SpernerNDimOQ02.lean once infra recovers. Then Phase 1 (freudenthal d N : SpernerTriangulation d N, 8 fields; use baryEquivVertex/toVertex for vertices), Phase 2 (inductive last-face-door oddness), apply sperner_ndim; retire false boundary_doors_odd.",
+    "nextAction": "FIRST re-run ./proofs/scripts/docker-build.sh Proofs.SpernerNDimOQ02 + #print axioms once disk/Docker infra recovers to confirm the facet section is 0-axiom (Session 9 build host I/O-failed). Then build adj via finite facet-search over CanonSimplex (the unique neighbour sharing facet k, or none on the boundary); discharge adj_vertices from facet defs, adj_unique_facet from facet_injective + canon_eq_of_vertices_range, boundary_face via onFace_toVertex. Then Phase 2 (inductive last-face-door oddness), apply sperner_ndim; retire false boundary_doors_odd.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -31,9 +32,10 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Phase-1 foundation (GridSimplex carrier + vertices_injective + coordinate-reconstruction lemmas) verified 0-axiom in clean SpernerGridBase; instance/adjacency still to build",
+    "progressSummary": "PROGRESS (re-verification infra-blocked): Phase-1 carrier CanonSimplex now has its full facet combinatorics (facet sets, card=d, facet_injective), 0-axiom by construction on top of the BaryPoint≃Vertex bridge and geometry-uniqueness; only the adj pivot function + its compatibility fields remain for a full SpernerTriangulation instance. Session-9 Docker re-verification failed on host disk/I/O exhaustion; awaits clean machine-check.",
     "builtItems": [
-      "proofs/Proofs/SpernerNDimOQ02.lean (Session 3, UNVERIFIED): baryEquivVertex d N : BaryPoint d N ≃ Vertex d N (toVertex drops last bary coord, toBary appends slack N-∑); coord simp lemmas; onFace_toVertex (face correspondence); isSperner_iff (transports Sperner condition). 0 sorries, 0 new axioms. This is Option C step 0.",
+      "proofs/Proofs/SpernerNDimOQ02.lean (Session 8, UNVERIFIED — Session-9 Docker re-check blocked by host I/O exhaustion; 0-axiom by construction): facet combinatorics of CanonSimplex — facet s k := (univ.erase k).image (vertices s); mem_facet_iff; vertices_not_mem_facet (deleted vertex is the unique vertex absent from its facet); facet_card (each facet has exactly d vertices); facet_injective (the d+1 facets of a cell are distinct = within-cell half of adj_unique_facet); not_mem_facet_iff (facet+cell determine the removed index). Building blocks for the abstract adj_vertices/adj_unique_facet fields.",
+      "proofs/Proofs/SpernerNDimOQ02.lean (Session 3, VERIFIED): baryEquivVertex d N : BaryPoint d N ≃ Vertex d N (toVertex drops last bary coord, toBary appends slack N-∑); coord simp lemmas; onFace_toVertex (face correspondence); isSperner_iff (transports Sperner condition). 0 sorries, 0 new axioms. This is Option C step 0.",
       "SpernerGridBase.lean: factored GridSimplex foundation (structure+DecidableEq+Fintype+verts_injective+coord trackers, SpernerGrid lines 241-513) into clean base — verified 0-axiom",
       "SpernerGridBase.GridSimplex.incDir_const_before / last_coord_non_miss / last_coord_miss: every vertex = explicit fn of (verts 0, miss, incDir) — verified 0-axiom"
     ],
@@ -47,9 +49,10 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define canonMiss/IsCanon (decidable) + per-geometry uniqueness, using last_coord_non_miss/last_coord_miss + verts_injective",
-      "Simplex := {s : GridSimplex // IsCanon s}; vertices := toVertex∘verts; vertices_injective from toVertex_injective∘verts_injective",
-      "adj via finite facet-search; discharge 5 adjacency fields + boundary_face (transport onFace via SpernerNDimOQ02.onFace_toVertex)",
+      "DONE (#30819): CanonSimplex carrier + IsCanon (decidable) + per-geometry uniqueness (canon_eq_of_vertices_range)",
+      "DONE (Session 8, pending re-verification): vertices := toVertex∘verts + vertices_injective; facet combinatorics (facet/facet_card/facet_injective/not_mem_facet_iff)",
+      "RE-VERIFY (Session 9 blocked on infra): docker-build + #print axioms on SpernerNDimOQ02.lean once host disk recovers",
+      "adj via finite facet-search over CanonSimplex; discharge 5 adjacency fields + boundary_face (adj_unique_facet from facet_injective+canon_eq_of_vertices_range; boundary_face via onFace_toVertex)",
       "Phase 2: last-face-door-oddness by induction on d; apply sperner_ndim",
       "Retire false boundary_doors_odd/boundary_verts_on_face"
     ]
@@ -70,7 +73,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-06-27T00:00:00.000Z",
+  "lastUpdate": "2026-06-27T19:00:00.000Z",
   "significance": 8,
   "tractability": 6
 }
