@@ -1,0 +1,50 @@
+[
+  {
+    "id": "baseloq0601-header",
+    "proofId": "basel-problem-oq-06-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 55
+    },
+    "type": "concept",
+    "title": "Module Header and Setup",
+    "content": "The open question asks for the odd-integer restriction of the Basel sum: $\\sum_{k=0}^\\infty 1/(2k+1)^2 = \\pi^2/8$. The strategy is an even/odd split of the same series Euler summed. The base summand is $f(n) = 1/n^2$, and the only analytic input is Mathlib's `hasSum_zeta_two`, the Basel identity $\\sum 1/n^2 = \\pi^2/6$.",
+    "mathContext": "Target: $\\sum_{k\\ge 0} 1/(2k+1)^2 = \\pi^2/8$, the value $\\lambda(2) = (1-2^{-2})\\zeta(2)$."
+  },
+  {
+    "id": "baseloq0601-even",
+    "proofId": "basel-problem-oq-06-oq-01",
+    "range": {
+      "startLine": 56,
+      "endLine": 74
+    },
+    "type": "technique",
+    "title": "Basel Identity and the Even Part",
+    "content": "`basel_hasSum` re-exports `hasSum_zeta_two`. The even subsequence is the Basel series rescaled by $1/4$: since $(2k)^2 = 4k^2$, we have $1/(2k)^2 = \\tfrac14\\cdot 1/k^2$ (valid even at $k=0$, where both sides are $0$). Applying `HasSum.mul_left (1/4)` to the Basel identity gives `hasSum_even`: $\\sum_k 1/(2k)^2 = \\tfrac14\\cdot\\tfrac{\\pi^2}{6} = \\tfrac{\\pi^2}{24}$. The pointwise identity is discharged by `push_cast` and `one_div_mul_one_div`.",
+    "mathContext": "$\\sum_k 1/(2k)^2 = \\tfrac14\\sum_k 1/k^2 = \\tfrac{\\pi^2}{24}$."
+  },
+  {
+    "id": "baseloq0601-odd",
+    "proofId": "basel-problem-oq-06-oq-01",
+    "range": {
+      "startLine": 76,
+      "endLine": 95
+    },
+    "type": "key-step",
+    "title": "Summability and Value of the Odd Part",
+    "content": "`summable_odd` makes the odd subsequence summable: the reindexing $k\\mapsto 2k+1$ is injective, so `Summable.comp_injective` applies. The value is pinned without computing it directly: let $b$ be the unknown odd sum. `HasSum.even_add_odd` reassembles the even part ($\\pi^2/24$) and the odd part ($b$) into the full Basel series, giving $\\mathrm{HasSum}\\,f\\,(\\pi^2/24 + b)$. Since the full series also sums to $\\pi^2/6$, `HasSum.unique` forces $\\pi^2/6 = \\pi^2/24 + b$, hence $b = \\pi^2/8$ (`linarith`).",
+    "mathContext": "$\\tfrac{\\pi^2}{24} + b = \\tfrac{\\pi^2}{6} \\Rightarrow b = \\tfrac{\\pi^2}{8}$."
+  },
+  {
+    "id": "baseloq0601-main",
+    "proofId": "basel-problem-oq-06-oq-01",
+    "range": {
+      "startLine": 97,
+      "endLine": 118
+    },
+    "type": "concept",
+    "title": "Main Theorem and Corollaries",
+    "content": "`odd_squares_hasSum` and `odd_squares_tsum` present the result in the natural $(2k+1 : \\mathbb{R})$ form (a `push_cast`/`ring` reindexing of `hasSum_odd`): $\\mathrm{HasSum}\\,(k\\mapsto 1/(2k+1)^2)\\,(\\pi^2/8)$ and $\\sum' k,\\,1/(2k+1)^2 = \\pi^2/8$. `odd_squares_pos` records positivity, and `even_add_odd_eq_basel` verifies the consistency identity $\\pi^2/24 + \\pi^2/8 = \\pi^2/6$.",
+    "mathContext": "$\\sum_{k=0}^\\infty 1/(2k+1)^2 = \\pi^2/8$, with $\\pi^2/24 + \\pi^2/8 = \\pi^2/6$."
+  }
+]
