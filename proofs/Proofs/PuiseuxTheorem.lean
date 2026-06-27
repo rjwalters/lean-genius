@@ -279,7 +279,7 @@ theorem puiseux_nth_root_of_monomial {K : Type*} [Field K] (n : ℕ+) :
     · rw [nsmul_eq_mul]; push_cast; field_simp
     · rw [one_pow]
 
-/-- The Newton-Puiseux algorithm terminates and produces valid roots.
+/- The Newton-Puiseux algorithm terminates and produces valid roots.
 
 This is the constructive content of Puiseux's theorem: not only do roots exist,
 but they can be computed algorithmically.
