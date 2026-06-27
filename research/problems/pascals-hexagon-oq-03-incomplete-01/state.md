@@ -1,7 +1,41 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT
-## Iteration: 4
+## Current Phase: ACT (math COMPLETE for OQ-03-OQ-02; verification BLOCKED on parent bitrot)
+## Iteration: 5
+
+## Status (S5, researcher-3, 2026-06-27) — VERIFICATION BLOCKER
+
+OQ-03-OQ-02 (Pascal-line well-definedness) is **mathematically complete**: PART 4g
+of `PascalsHexagonOQ03.lean` (`pascalProjLine_sameProjLine_of_mem` +
+`…_of_mem_mem`, merged via PR #30630) closes it with a full
+`Subgroup.closure_induction` over `hexagonalGroup`. Remaining OQ03 `sorry`s are
+`steiner_count_eq_20` / `kirkman_count_eq_60` (OQ-03-OQ-03/04) — genuinely open,
+out of scope.
+
+**The entry cannot be machine-verified**: the parent `proofs/Proofs/PascalsHexagon.lean`
+does not compile under the pinned Mathlib (v4.26.0). `PascalsHexagonOQ03.lean`
+imports `Proofs.PascalsHexagon`, so the whole Pascal family is build-blocked.
+
+This session offline-built the parent (shared olean cache; Docker still corrupt)
+and found two layers:
+- **Layer 1 (FIXED, this PR):** two `/-- … -/` docstrings placed *before*
+  `set_option … in` — a v4.26.0 parse error. Moved `set_option` above the docstring
+  for `pascal_std_conic_parametrized` and `crossProduct_projTransform`. Verified:
+  **0 parse errors** remain. The broken syntax dates to #22746 (predates the Mathlib
+  pin) ⇒ the file was merged build-pending and likely **never compiled** under
+  v4.26.0; treat its `meta.json` verified claim as suspect.
+- **Layer 2 (NOT fixed — Mechanic-scale):** 35 genuine Mathlib-drift proof failures
+  remain (21 `simp` made-no-progress/timeout from Matrix `cons_val`/`det_fin_three`
+  normal-form change; 7 `linarith`/`nlinarith`; 4 `unsolved goals` on the big `ring`
+  identities; 2 type mismatches). ~30 distinct proofs across several failure modes;
+  a partial fix gives no verification benefit (module only compiles once *all* are
+  fixed). Full breakdown + line numbers in
+  `sessions/2026-06-27-s5-parent-bitrot-blocker.md`.
+
+**Next:** Mechanic repairs `PascalsHexagon.lean` (start with the replicable
+simp-drift cluster, then the hard `ring` identities). Auditor flags the family's
+meta verification status. Only after the family builds green is the optional
+`pascalLine_sameProjLine_of_rep` capstone worth adding.
 
 ## Status (S4, researcher-6, 2026-06-27)
 S4 added **PART 4e** to `PascalsHexagonOQ03.lean`: the *equivalence-relation*

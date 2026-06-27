@@ -351,6 +351,7 @@ theorem stdConicPoint_on_conic (t : ℝ) : pointOnConic (stdConicPoint t) stdCon
   simp only [Fin.sum_univ_three, Fin.isValue, Matrix.of_apply]
   ring
 
+set_option maxHeartbeats 2000000 in
 /-- **Pascal's theorem for the standard conic** — proved by polynomial identity.
 
     When all 6 points are rationally parametrized on x₀² + x₁² = x₂², the
@@ -358,7 +359,6 @@ theorem stdConicPoint_on_conic (t : ℝ) : pointOnConic (stdConicPoint t) stdCon
     Verified computationally: ~3500 terms cancel to 0 via `ring`.
 
     This is the core computational step for eliminating `conic_implies_pascal_constraint`. -/
-set_option maxHeartbeats 2000000 in
 theorem pascal_std_conic_parametrized (a b c d e f : ℝ) :
     pascalConstraint (stdConicPoint a) (stdConicPoint b) (stdConicPoint c)
       (stdConicPoint d) (stdConicPoint e) (stdConicPoint f) := by
@@ -458,14 +458,14 @@ theorem collinear_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (hM : M.det ≠
   · intro h; exact (mul_eq_zero.mp h).resolve_left hM
   · intro h; rw [h, mul_zero]
 
+-- The cross product identity is a degree-3 polynomial in 15 variables; needs extra heartbeats.
+set_option maxHeartbeats 2000000 in
 /-- **Cross product transformation law (adjugate form):**
     cross(M·u, M·v) = adj(M)ᵀ · cross(u, v)
 
     Equivalently, cross(M·u, M·v) = det(M) · M⁻ᵀ · cross(u, v) when M is invertible.
     This identity says cross products transform contravariantly under linear maps.
     Verified computationally: degree-3 polynomial identity in 15 variables. -/
--- The cross product identity is a degree-3 polynomial in 15 variables; needs extra heartbeats.
-set_option maxHeartbeats 2000000 in
 theorem crossProduct_projTransform (M : Matrix (Fin 3) (Fin 3) ℝ) (u v : Fin 3 → ℝ) :
     crossProduct (projTransform M u) (projTransform M v) =
     projTransform M.adjugate.transpose (crossProduct u v) := by
