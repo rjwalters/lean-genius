@@ -126,3 +126,41 @@ the four new colMin lemmas → only `[propext, Classical.choice, Quot.sound]`.
 ### Next Steps
 - Push to mod 64/128 (which of 7,15,27,31 mod 32 stabilise mod 64?) — diminishing returns,
   the real milestone is formalizing Terras natural-density-1. Tao axiom remains BLOCKED.
+
+## Session 2026-06-27 (researcher-9) - General residue-drop lemma (structural, not enumeration)
+
+**Mode**: REVISIT (RICH knowledge tier, score 17)
+**Outcome**: progress (structural infrastructure; axiom-free; offline-verified EXIT 0, no warnings)
+
+### What I Did
+- Added `affine_residue_attainsBelow`, a **general residue-determined-drop lemma**:
+  from `hiter : ∀ m, collatz^[k] (M*m+r) = c*m+d` together with `c < M` (leading
+  coefficient below modulus) and `d < r`, it concludes `AttainsBelow n` for every
+  `n ≡ r (mod M)`. Proof: `Nat.div_add_mod` to write `n = M*(n/M)+r`, then
+  `Nat.mul_le_mul_right` (`c*m ≤ M*m`) and `omega`. Axiom-free
+  (`#print axioms` → `propext, Quot.sound` only).
+- Refactored the three "clean" families (`mod16/3`, `mod32/11`, `mod32/23`) to route
+  through the lemma: each call now supplies only the class-specific trajectory chase
+  (the proof of `hiter`) plus the explicit affine data `(M, r, k, c, d)`; the descent
+  bookkeeping is shared. `mod4/1` is deliberately **not** refactored — its `d = r`
+  boundary case (`3m+1` vs `4m+1`, needing `n ≥ 5`) is the sharp illustration that the
+  strict `d < r` is exactly what buys the unconditional `m ≥ 0` drop.
+
+### Key Findings
+- **The drop criterion `c < M` is exactly `3^a < 2^b`.** Over a residue-determined
+  `k`-step window with `a` triplings (`3n+1`) and `b = k-a` halvings, the leading
+  coefficient is `c = 3^a · M / 2^b`, so `c < M ⟺ 3^a < 2^b` — the classical Collatz
+  "`3/2` on odd, `1/2` on even; you need enough halvings" heuristic, made *exact* per
+  residue class. Confirmed on the gallery families: `mod16/3` (`a=2, b=4`: `9=3^2<16`);
+  `mod32/11`, `mod32/23` (`a=3, b=5`: `27=3^3<32`).
+- This is **infrastructure / structural packaging**, deliberately *not* another
+  density-floor residue (the prior session already flagged mod-64 pushing as
+  diminishing-returns / equivalent to the open conjecture). Density floor stays at 7/8.
+
+### Honest status
+- No new mathematical content beyond the abstraction + the `3^a<2^b` observation; the
+  per-residue chases are unchanged (they prove `hiter`). The lemma's value is reuse and
+  making the affine structure explicit, not a new theorem about Collatz.
+- Genuine next direction (documented in nextSteps): formalize the leading-coefficient
+  law `c = 3^a·M/2^b` from the forced parity vector (Terras structure), which would turn
+  `affine_residue_attainsBelow` into a fully uniform residue-drop engine.

@@ -152,6 +152,39 @@ theorem mod_four_one_attainsBelow {n : ℕ} (hn : 5 ≤ n) (h : n % 4 = 1) :
       step1, step2, step3]
   omega
 
+/-- **General residue-determined drop.**  Suppose that on the residue class
+`n ≡ r (mod M)` the `k`-step Collatz iterate is the affine value `c·m + d`, where
+`n = M·m + r`.  If the leading coefficient `c` is strictly below the modulus `M`
+*and* the additive constant `d` is strictly below the residue `r`, then **every**
+member of the class drops below itself within `k` steps.
+
+This packages the common shape of every residue-class family below.  Each such family
+is a trajectory whose parities are forced by `n mod M`, ending in an affine map whose
+leading coefficient is `c = 3^a · M / 2^b` where `a` is the number of `3n+1` steps and
+`b = k - a` the number of halvings.  The drop criterion `c < M` is then **exactly**
+`3^a < 2^b`: there are enough halvings to overcome the triplings.  Only the
+class-specific affine-iterate identity `hiter` (the trajectory chase) is supplied by the
+caller; the descent bookkeeping — rewriting `n = M·m + r`, monotonicity of `c·m ≤ M·m`,
+and the final comparison — is shared here.
+
+The strict hypothesis `d < r` covers the residue classes whose drop holds for **all**
+`m ≥ 0`.  The boundary case `d = r` (e.g. `n ≡ 1 (mod 4)`, where `c·m + d = 3m+1` only
+beats `4m+1` once `m ≥ 1`) genuinely needs the extra lower bound `n ≥ M + r` and is
+handled separately. -/
+theorem affine_residue_attainsBelow {M r k c d : ℕ}
+    (hk : 0 < k) (hc : c < M) (hd : d < r)
+    (hiter : ∀ m : ℕ, collatz^[k] (M * m + r) = c * m + d)
+    {n : ℕ} (hn : n % M = r) : AttainsBelow n := by
+  obtain ⟨m, rfl⟩ : ∃ m, n = M * m + r := by
+    refine ⟨n / M, ?_⟩
+    have hdm := Nat.div_add_mod n M
+    rw [hn] at hdm
+    omega
+  refine ⟨k, hk, ?_⟩
+  rw [hiter]
+  have hcm : c * m ≤ M * m := Nat.mul_le_mul_right m hc.le
+  omega
+
 /-- Every `n ≡ 3 (mod 16)` drops below itself in exactly six steps:
 `16m+3 ↦ 48m+10 ↦ 24m+5 ↦ 72m+16 ↦ 36m+8 ↦ 18m+4 ↦ 9m+2`, and `9m+2 < 16m+3` for
 every `m ≥ 0`.  All six parities are forced by the residue `mod 16` alone (independent
@@ -161,20 +194,23 @@ of `m`), so this is a genuine residue-class drop, not a per-number accident.  It
 window — the classes `7, 11, 15 (mod 16)` have `m`-dependent stopping times and require
 a finer modulus.  Adding this class lifts the unconditional density floor from `3/4` to
 `13/16`. -/
-theorem mod_sixteen_three_attainsBelow {n : ℕ} (h : n % 16 = 3) : AttainsBelow n := by
-  obtain ⟨m, rfl⟩ : ∃ m, n = 16 * m + 3 := ⟨n / 16, by omega⟩
-  refine ⟨6, by norm_num, ?_⟩
-  have s1 : collatz (16 * m + 3) = 48 * m + 10 := by rw [collatz_odd (by omega)]; ring
-  have s2 : collatz (48 * m + 10) = 24 * m + 5 := by rw [collatz_even (by omega)]; omega
-  have s3 : collatz (24 * m + 5) = 72 * m + 16 := by rw [collatz_odd (by omega)]; ring
-  have s4 : collatz (72 * m + 16) = 36 * m + 8 := by rw [collatz_even (by omega)]; omega
-  have s5 : collatz (36 * m + 8) = 18 * m + 4 := by rw [collatz_even (by omega)]; omega
-  have s6 : collatz (18 * m + 4) = 9 * m + 2 := by rw [collatz_even (by omega)]; omega
-  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6]
-  omega
+theorem mod_sixteen_three_attainsBelow {n : ℕ} (h : n % 16 = 3) : AttainsBelow n :=
+  -- M = 16, r = 3, k = 6, c = 9, d = 2; here a = 2 odd steps, b = 4 halvings,
+  -- and `c = 9 = 3^2 < 16` is `3^2 < 2^4`.
+  affine_residue_attainsBelow (M := 16) (r := 3) (k := 6) (c := 9) (d := 2)
+    (by norm_num) (by norm_num) (by norm_num)
+    (fun m => by
+      have s1 : collatz (16 * m + 3) = 48 * m + 10 := by rw [collatz_odd (by omega)]; ring
+      have s2 : collatz (48 * m + 10) = 24 * m + 5 := by rw [collatz_even (by omega)]; omega
+      have s3 : collatz (24 * m + 5) = 72 * m + 16 := by rw [collatz_odd (by omega)]; ring
+      have s4 : collatz (72 * m + 16) = 36 * m + 8 := by rw [collatz_even (by omega)]; omega
+      have s5 : collatz (36 * m + 8) = 18 * m + 4 := by rw [collatz_even (by omega)]; omega
+      have s6 : collatz (18 * m + 4) = 9 * m + 2 := by rw [collatz_even (by omega)]; omega
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6])
+    h
 
 /-- Every `n ≡ 11 (mod 32)` drops below itself in exactly eight residue-determined steps:
 `32m+11 ↦ 96m+34 ↦ 48m+17 ↦ 144m+52 ↦ 72m+26 ↦ 36m+13 ↦ 108m+40 ↦ 54m+20 ↦ 27m+10`,
@@ -182,23 +218,26 @@ and `27m+10 < 32m+11` for every `m ≥ 0`.  All eight parities are forced by the
 `mod 32` alone.  This is one of the *two* new residues that stabilise only at level `32`:
 its class `11 (mod 16)` had an `m`-dependent stopping time at level `16`, but the finer
 split `{11, 27} (mod 32)` separates the stable half (`11`) from the unstable half (`27`). -/
-theorem mod_thirtytwo_eleven_attainsBelow {n : ℕ} (h : n % 32 = 11) : AttainsBelow n := by
-  obtain ⟨m, rfl⟩ : ∃ m, n = 32 * m + 11 := ⟨n / 32, by omega⟩
-  refine ⟨8, by norm_num, ?_⟩
-  have s1 : collatz (32 * m + 11) = 96 * m + 34 := by rw [collatz_odd (by omega)]; ring
-  have s2 : collatz (96 * m + 34) = 48 * m + 17 := by rw [collatz_even (by omega)]; omega
-  have s3 : collatz (48 * m + 17) = 144 * m + 52 := by rw [collatz_odd (by omega)]; ring
-  have s4 : collatz (144 * m + 52) = 72 * m + 26 := by rw [collatz_even (by omega)]; omega
-  have s5 : collatz (72 * m + 26) = 36 * m + 13 := by rw [collatz_even (by omega)]; omega
-  have s6 : collatz (36 * m + 13) = 108 * m + 40 := by rw [collatz_odd (by omega)]; ring
-  have s7 : collatz (108 * m + 40) = 54 * m + 20 := by rw [collatz_even (by omega)]; omega
-  have s8 : collatz (54 * m + 20) = 27 * m + 10 := by rw [collatz_even (by omega)]; omega
-  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8]
-  omega
+theorem mod_thirtytwo_eleven_attainsBelow {n : ℕ} (h : n % 32 = 11) : AttainsBelow n :=
+  -- M = 32, r = 11, k = 8, c = 27, d = 10; here a = 3 odd steps, b = 5 halvings,
+  -- and `c = 27 = 3^3 < 32` is `3^3 < 2^5`.
+  affine_residue_attainsBelow (M := 32) (r := 11) (k := 8) (c := 27) (d := 10)
+    (by norm_num) (by norm_num) (by norm_num)
+    (fun m => by
+      have s1 : collatz (32 * m + 11) = 96 * m + 34 := by rw [collatz_odd (by omega)]; ring
+      have s2 : collatz (96 * m + 34) = 48 * m + 17 := by rw [collatz_even (by omega)]; omega
+      have s3 : collatz (48 * m + 17) = 144 * m + 52 := by rw [collatz_odd (by omega)]; ring
+      have s4 : collatz (144 * m + 52) = 72 * m + 26 := by rw [collatz_even (by omega)]; omega
+      have s5 : collatz (72 * m + 26) = 36 * m + 13 := by rw [collatz_even (by omega)]; omega
+      have s6 : collatz (36 * m + 13) = 108 * m + 40 := by rw [collatz_odd (by omega)]; ring
+      have s7 : collatz (108 * m + 40) = 54 * m + 20 := by rw [collatz_even (by omega)]; omega
+      have s8 : collatz (54 * m + 20) = 27 * m + 10 := by rw [collatz_even (by omega)]; omega
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8])
+    h
 
 /-- Every `n ≡ 23 (mod 32)` drops below itself in exactly eight residue-determined steps:
 `32m+23 ↦ 96m+70 ↦ 48m+35 ↦ 144m+106 ↦ 72m+53 ↦ 216m+160 ↦ 108m+80 ↦ 54m+40 ↦ 27m+20`,
@@ -207,23 +246,26 @@ and `27m+20 < 32m+23` for every `m ≥ 0`.  All eight parities are forced by the
 `7 (mod 16)` was unstable at level `16`, and the split `{7, 23} (mod 32)` isolates the
 stable half (`23`) from the unstable half (`7`).  The remaining unstable classes
 `7, 15, 27, 31 (mod 32)` still have `m`-dependent stopping times and need a finer modulus. -/
-theorem mod_thirtytwo_twentythree_attainsBelow {n : ℕ} (h : n % 32 = 23) : AttainsBelow n := by
-  obtain ⟨m, rfl⟩ : ∃ m, n = 32 * m + 23 := ⟨n / 32, by omega⟩
-  refine ⟨8, by norm_num, ?_⟩
-  have s1 : collatz (32 * m + 23) = 96 * m + 70 := by rw [collatz_odd (by omega)]; ring
-  have s2 : collatz (96 * m + 70) = 48 * m + 35 := by rw [collatz_even (by omega)]; omega
-  have s3 : collatz (48 * m + 35) = 144 * m + 106 := by rw [collatz_odd (by omega)]; ring
-  have s4 : collatz (144 * m + 106) = 72 * m + 53 := by rw [collatz_even (by omega)]; omega
-  have s5 : collatz (72 * m + 53) = 216 * m + 160 := by rw [collatz_odd (by omega)]; ring
-  have s6 : collatz (216 * m + 160) = 108 * m + 80 := by rw [collatz_even (by omega)]; omega
-  have s7 : collatz (108 * m + 80) = 54 * m + 40 := by rw [collatz_even (by omega)]; omega
-  have s8 : collatz (54 * m + 40) = 27 * m + 20 := by rw [collatz_even (by omega)]; omega
-  rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_succ_apply', Function.iterate_succ_apply',
-      Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8]
-  omega
+theorem mod_thirtytwo_twentythree_attainsBelow {n : ℕ} (h : n % 32 = 23) : AttainsBelow n :=
+  -- M = 32, r = 23, k = 8, c = 27, d = 20; here a = 3 odd steps, b = 5 halvings,
+  -- and `c = 27 = 3^3 < 32` is `3^3 < 2^5`.
+  affine_residue_attainsBelow (M := 32) (r := 23) (k := 8) (c := 27) (d := 20)
+    (by norm_num) (by norm_num) (by norm_num)
+    (fun m => by
+      have s1 : collatz (32 * m + 23) = 96 * m + 70 := by rw [collatz_odd (by omega)]; ring
+      have s2 : collatz (96 * m + 70) = 48 * m + 35 := by rw [collatz_even (by omega)]; omega
+      have s3 : collatz (48 * m + 35) = 144 * m + 106 := by rw [collatz_odd (by omega)]; ring
+      have s4 : collatz (144 * m + 106) = 72 * m + 53 := by rw [collatz_even (by omega)]; omega
+      have s5 : collatz (72 * m + 53) = 216 * m + 160 := by rw [collatz_odd (by omega)]; ring
+      have s6 : collatz (216 * m + 160) = 108 * m + 80 := by rw [collatz_even (by omega)]; omega
+      have s7 : collatz (108 * m + 80) = 54 * m + 40 := by rw [collatz_even (by omega)]; omega
+      have s8 : collatz (54 * m + 40) = 27 * m + 20 := by rw [collatz_even (by omega)]; omega
+      rw [Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_succ_apply', Function.iterate_succ_apply',
+          Function.iterate_zero_apply, s1, s2, s3, s4, s5, s6, s7, s8])
+    h
 
 /-- Packaging: every positive `n` that is **even** or lies in `1 + 4ℕ` (with `n ≥ 5`)
 attains a value below itself.  Together these cover three-quarters of the integers,
