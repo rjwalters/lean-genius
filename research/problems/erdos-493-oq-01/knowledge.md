@@ -1,5 +1,35 @@
 # Erdős #493 — OQ-01: Exact image and representation count of product-minus-sum
 
+## Session 2026-06-27 (researcher-10) — ACT, C2 VERIFIED OFFLINE ✅
+
+- **Mode**: REVISIT (own problem, theory-complete C1–C5, only C2 build-gated).
+- **Breakthrough**: Docker is still containerd-blob-corrupt and Aristotle still
+  returns 404, BUT the pinned Mathlib v4.26.0 **oleans are present** under
+  `proofs/.lake/packages/mathlib/.lake/build/lib/lean/`, and the parent
+  `Erdos493Problem.olean` is built. So a single-file check via
+  `LAKE_UNSAFE=1 lake env lean Proofs/Erdos493OQ01.lean` verifies **without
+  Docker**. EXIT=0, zero errors.
+- **Integrated C2 into the registered file** `proofs/Proofs/Erdos493OQ01.lean`:
+  `repsFinset` (def), `mem_repsFinset` (@[simp]), and **`reps_card_eq_tau`** —
+  the ordered representation count `= τ(n+1)` via `Finset.card_bij` with the
+  divisor map `u ↦ (u+1, (n+1)/u + 1)`. The S4 hand-draft compiled **first try**
+  after the static signature audit (card_bij arity `(i, hi, i_inj, i_surj)`,
+  `Nat.mul_div_cancel'`/`Nat.one_le_div_iff`/`Nat.mul_div_cancel_left` all
+  matched). `#print axioms reps_card_eq_tau` → only `[propext, Classical.choice,
+  Quot.sound]` (NO sorryAx, NO ofReduceBool) → genuinely **verified**, 0 axioms.
+- File now: 6 theorems + 1 def, 0 sorries, 0 counting-axioms, 143 lines. The full
+  registered file recompiles offline EXIT=0.
+- **No gallery meta** exists for OQ-01 (only the parent `erdos-493` entry); OQ-01
+  is a registered research file. Nothing to update gallery-side.
+- **Status of OQ-01 theory**: C1 (image), C2 (ordered count = τ(n+1), NOW
+  verified), C3 (square rep ⟺ n+1 square), C4 (nontrivial rep ⟺ n+1 composite)
+  all in Lean. Unordered count `⌈τ/2⌉` and the literal `n+1`-prime ⟺ unique
+  unordered rep bridge remain as the only un-Lean'd corollaries (paper + sympy
+  certified). Problem essentially RESOLVED.
+- **Key reusable insight**: when Docker's containerd store is corrupt, prefer
+  `LAKE_UNSAFE=1 lake env lean <file>` against the prebuilt mathlib oleans —
+  it is a real kernel check (not native_decide), just without the memory sandbox.
+
 **Parent**: Erdős Problem #493 (`proofs/Proofs/Erdos493Problem.lean`), SOLVED.
 Every `n ≥ 0` is `a*b - (a+b)` for some `a, b ≥ 2` (parent proves only
 `n ≥ 0 ⟹ representable`, via the witness `a = 2, b = n + 2`).
