@@ -23,8 +23,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 145,
-    "theoremCount": 11,
+    "lineCount": 240,
+    "theoremCount": 12,
     "definitionCount": 1,
     "assumptions": "None beyond Mathlib's first-order model theory. All results are universally quantified over an arbitrary Language L, theory T : L.Theory and sentence φ : L.Sentence; semantic consequence T ⊨ᵇ φ (ModelsBoundedFormula), satisfiability (Theory.IsSatisfiable) and completeness (Theory.IsComplete) are Mathlib's own definitions. #print axioms reports only Lean/Mathlib's foundational propext, Classical.choice, Quot.sound; no sorryAx, no native_decide, no Lean.ofReduceBool.",
     "mathlibDependencies": [
@@ -60,7 +60,8 @@
       "isSatisfiable_insert_not_not_iff: IsSatisfiable (T ∪ {¬¬φ}) ↔ IsSatisfiable (T ∪ {φ}). Proved by a reusable model-transfer: a semantic implication M ⊨ ψ → M ⊨ χ holding in every structure lifts a model of T ∪ {ψ} to a model of T ∪ {χ}; instantiated both ways at the realize-equivalence ¬¬φ ↔ φ. This is the bookkeeping needed to phrase the characterization in terms of T ∪ {φ} rather than the syntactic ¬¬φ produced by the Completeness Theorem.",
       "Independent.satisfiable_insert_not and Independent.satisfiable_insert: independence yields two genuinely different model classes — a model of T refuting φ (T ∪ {¬φ} satisfiable) and a model of T satisfying φ (T ∪ {φ} satisfiable). These are the two 'witnesses' that make φ undecidable in T.",
       "independent_iff_satisfiable_both: φ is independent of T iff both T ∪ {¬φ} and T ∪ {φ} are satisfiable — the clean model-theoretic characterization of independence, obtained from the Completeness Theorem plus the double-negation bridge.",
-      "isComplete_iff_forall_not_independent: for a satisfiable theory T, T.IsComplete ↔ ∀ φ, ¬ Independent T φ. Packages the contrapositive of not_isComplete as an equivalence, exhibiting completeness as exactly the absence of independent sentences."
+      "isComplete_iff_forall_not_independent: for a satisfiable theory T, T.IsComplete ↔ ∀ φ, ¬ Independent T φ. Packages the contrapositive of not_isComplete as an equivalence, exhibiting completeness as exactly the absence of independent sentences.",
+      "Independent.exists_isComplete_extensions: an independent sentence φ splits T into two disagreeing completions — there exist complete theories T₁,T₂ ⊇ T with T₁ ⊨ᵇ φ, T₂ ⊨ᵇ ¬φ, and T₁ ≠ T₂. Built constructively (no Zorn/Lindenbaum) as the complete theories Th(M), Th(N) of explicit models of the satisfiable extensions T ∪ {φ} and T ∪ {¬φ}, using that the complete theory of a model is automatically maximal (completeTheory.isComplete). This is the converse face of not_isComplete: completeness is the absence of independent sentences, and independence is exactly the existence of two completions that split on φ."
     ],
     "prerequisites": [
       "godel-incompleteness (parent: the conceptual incompleteness theorems and the placeholder this entry replaces with real model theory)",
@@ -79,7 +80,7 @@
     ],
     "namespace": "GodelIncompletenessOQ03",
     "lineCount": 193,
-    "theoremCount": 13,
+    "theoremCount": 14,
     "axiomCount": 0,
     "definitionCount": 1,
     "sorries": 0,
