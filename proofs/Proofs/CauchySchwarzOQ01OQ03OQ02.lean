@@ -208,4 +208,43 @@ theorem klDivergence_self (p : ι → ℝ) : klDivergence p p = 0 := by
   unfold klDivergence
   exact Finset.sum_eq_zero (fun i _ => by ring)
 
+/-- **KL-to-uniform is the entropy gap.** For any probability vector `p` on `n = card ι`
+outcomes, the relative entropy to the *uniform* distribution equals the shortfall of the
+entropy from its ceiling:
+`D(p ‖ uniform) = log n − H(p)`.
+
+This is a pure algebraic identity (only `∑ pᵢ = 1` is needed): writing the uniform entry
+`1/n`, each KL summand `pᵢ (log pᵢ − log(1/n)) = pᵢ log n − negMulLog pᵢ`, and summing uses
+`∑ pᵢ = 1` on the first piece and the definition of `shannonEntropy` on the second. -/
+theorem klDivergence_uniform {p : ι → ℝ} (hsum : ∑ i, p i = 1) :
+    klDivergence p (fun _ : ι => (Fintype.card ι : ℝ)⁻¹)
+      = Real.log (Fintype.card ι) - shannonEntropy p := by
+  have hexpand : ∀ i : ι,
+      p i * (Real.log (p i) - Real.log ((Fintype.card ι : ℝ)⁻¹))
+        = p i * Real.log (Fintype.card ι) - Real.negMulLog (p i) := by
+    intro i; rw [Real.log_inv, Real.negMulLog]; ring
+  unfold klDivergence
+  rw [Finset.sum_congr rfl (fun i _ => hexpand i), Finset.sum_sub_distrib,
+    ← Finset.sum_mul, hsum, one_mul]
+  rfl
+
+/-- **Maximum-entropy bound, re-derived from Gibbs' inequality.** Applying
+`klDivergence_nonneg` with `q` the uniform distribution and rewriting through
+`klDivergence_uniform` gives `0 ≤ log n − H(p)`, i.e. `H(p) ≤ log n`.
+
+This makes precise the claim (in the `klDivergence_nonneg` docstring) that Gibbs'
+inequality is the *engine* behind the maximum-entropy bound `shannonEntropy_le_log_card`:
+the two are the same statement, viewed through `D(p ‖ uniform) = log n − H(p)`. -/
+theorem shannonEntropy_le_log_card_of_gibbs [Nonempty ι] {p : ι → ℝ}
+    (h0 : ∀ i, 0 ≤ p i) (hsum : ∑ i, p i = 1) :
+    shannonEntropy p ≤ Real.log (Fintype.card ι) := by
+  have hnR : (0 : ℝ) < (Fintype.card ι : ℝ) := by exact_mod_cast Fintype.card_pos
+  have hu0 : ∀ i : ι, (0 : ℝ) ≤ (Fintype.card ι : ℝ)⁻¹ := fun _ => by positivity
+  have husum : (∑ _i : ι, (Fintype.card ι : ℝ)⁻¹) = 1 := by
+    rw [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]; field_simp
+  have hac : ∀ i, 0 < p i → 0 < (Fintype.card ι : ℝ)⁻¹ := fun _ _ => by positivity
+  have hgibbs := klDivergence_nonneg h0 hu0 hsum husum hac
+  rw [klDivergence_uniform hsum] at hgibbs
+  linarith
+
 end CauchySchwarzOQ01OQ03OQ02

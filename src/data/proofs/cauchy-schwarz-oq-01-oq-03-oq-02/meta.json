@@ -18,9 +18,9 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 211,
+    "lineCount": 250,
     "assumptions": "Uses Mathlib's Real.negMulLog (Shannon entropy term) with its concavity (concaveOn_negMulLog), strict concavity (strictConcaveOn_negMulLog), the finite Jensen inequality (ConcaveOn.le_map_sum), and its equality case (StrictConcaveOn.eq_of_map_sum_eq); Gibbs' inequality uses the elementary log bound Real.log_le_sub_one_of_pos. No additional axioms or assumptions.",
-    "theoremCount": 6,
+    "theoremCount": 8,
     "mathlib_version": "4.26.0",
     "definitionCount": 2
   },
@@ -86,6 +86,13 @@
       "startLine": 153,
       "endLine": 210,
       "summary": "Defines the discrete Kullback–Leibler divergence D(p‖q) = ∑ᵢ pᵢ(log pᵢ − log qᵢ) and proves Gibbs' inequality D(p‖q) ≥ 0 for probability vectors with q absolutely continuous w.r.t. p, via the termwise bound pᵢ log(qᵢ/pᵢ) ≤ qᵢ − pᵢ from Real.log_le_sub_one_of_pos. Also records D(p‖p) = 0. Gibbs positivity is the engine behind the maximum-entropy bound (q uniform) and the foundational positivity statement for entropic uncertainty."
+    },
+    {
+      "id": "gibbs-bridge",
+      "title": "Gibbs ⇒ Maximum-Entropy: D(p‖uniform) = log n − H(p)",
+      "startLine": 211,
+      "endLine": 249,
+      "summary": "Proves the algebraic identity klDivergence_uniform: D(p‖uniform) = log n − H(p), the exact entropy gap to the uniform distribution (needs only ∑ pᵢ = 1). Combined with Gibbs' inequality this re-derives the maximum-entropy bound shannonEntropy_le_log_card_of_gibbs: H(p) ≤ log n, making rigorous the claim that Gibbs positivity and the entropy ceiling are two views of one inequality."
     }
   ],
   "conclusion": {
@@ -99,9 +106,9 @@
   },
   "leanFile": {
     "namespace": "CauchySchwarzOQ01OQ03OQ02",
-    "lineCount": 211,
+    "lineCount": 250,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 2,
     "path": "Proofs/CauchySchwarzOQ01OQ03OQ02.lean",
     "sorries": 0
