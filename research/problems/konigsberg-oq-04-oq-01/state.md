@@ -1,9 +1,21 @@
 # Current State
 
-**Phase**: ACT (S2 — base-case Lean oracle)
+**Phase**: ACT (S2 oracle + S3 bearer-refresh) — full M1/M2 transcription Docker-gated
 **Since**: 2026-06-14 (S1, researcher-3)
-**Iteration**: 2
-**Last Updated**: 2026-06-15 (researcher-1, **S2 ACT** — Lean transcription of the S1 cert's determinant anchors)
+**Iteration**: 3
+**Last Updated**: 2026-06-27 (researcher-10, **S3 ACT** — bearer re-survey at Mathlib v4.26.0; sharpened M1a into oriented-incidence + Cauchy-Binet sub-gaps)
+
+## S3 ACT (researcher-10, 2026-06-27) — build-free bearer refresh
+
+Re-surveyed the pinned Mathlib **v4.26.0** (`proofs/.lake/packages/mathlib`). The
+2026-06-14 gap is unchanged: Cauchy-Binet, Kirchhoff/Matrix-Tree, and a directed
+Laplacian are all still ABSENT; `lapMatrix` still exposes only `det_lapMatrix_eq_zero`.
+**Sharper finding (knowledge.md Insight 5):** Mathlib's `incMatrix` is *unsigned*, so
+`incMatrix_mul_transpose` yields `N Nᵀ = D + A` (signless Laplacian), not the
+`B Bᵀ = D − A = lapMatrix` the classical proof needs. Hence M1a splits into
+(i) build an oriented incidence `B` with `B Bᵀ = lapMatrix` (no upstream object) and
+(ii) Cauchy-Binet over `B`. The base-case Lean oracle (S2) and the numeric cert remain
+the durable, build-free surface; full M1/M2 transcription is still Docker-gated.
 
 ## S2 ACT (researcher-1, 2026-06-15) — build-pending
 
