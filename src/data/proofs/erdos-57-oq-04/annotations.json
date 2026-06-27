@@ -1,0 +1,34 @@
+[
+  {
+    "id": "ann-57oq04-rotate",
+    "proofId": "erdos-57-oq-04",
+    "range": { "startLine": 160, "endLine": 169 },
+    "type": "technique",
+    "title": "Rotation preserves walk length",
+    "content": "`aux_length_rotate` proves `(c.rotate h).length = c.length`. Mathlib's `rotate` re-bases a closed walk `c : Walk y y` at any vertex `z` of its support as `(c.dropUntil z h).append (c.takeUntil z h)`. Using `take_spec` (the take/drop pieces recombine to `c`) and `length_append`, both arrangements have the same total length. Mathlib provides `support_rotate` but no length lemma; this one is needed so that rotating before splitting does not disturb the strong-induction measure (the walk length)."
+  },
+  {
+    "id": "ann-57oq04-edge-case",
+    "proofId": "erdos-57-oq-04",
+    "range": { "startLine": 170, "endLine": 192 },
+    "type": "technique",
+    "title": "Ruling out the closing-edge degenerate case",
+    "content": "`isPath_length_one_of_mem_edges`: if a path from v to u contains the edge s(u,v) joining its own endpoints, it must be the single-edge path. The proof case-splits on the first edge. If the first edge IS s(u,v), the remainder is a path-loop (`isPath_iff_eq_nil`), hence `nil`, so the walk has length 1. Otherwise s(u,v) lies deeper, so `snd_mem_support_of_mem_edges` puts the start vertex v back in the interior support, contradicting the path's `Nodup` support. This eliminates the `cons_isCycle_iff` failure mode where the closing edge already occurs in the tail — so for an odd non-cycle walk only the genuine repeated-vertex case survives."
+  },
+  {
+    "id": "ann-57oq04-induction",
+    "proofId": "erdos-57-oq-04",
+    "range": { "startLine": 193, "endLine": 287 },
+    "type": "technique",
+    "title": "Strong induction: rotate to a repeated vertex and split",
+    "content": "`exists_odd_cycle_aux` runs strong induction on `n = w.length`. If `w.IsCycle`, it is the desired odd cycle. Otherwise, being odd, `w = cons h p` is not a cycle, so by `cons_isCycle_iff` (after discharging the edge case) `p` is not a path: its support repeats a vertex `z`. Rotating `w` to base at `z` and writing the result as `cons e r'`, the vertex `z` occurs at least twice in `r'.support`. Splitting `r'` at the first occurrence of `z` (`takeUntil`/`dropUntil`, recombined by `take_spec`) gives two closed walks at `z` whose lengths sum to `n`. `count_support_takeUntil_eq_one` (the prefix meets `z` exactly once) forces the suffix to be non-trivial, so BOTH pieces are strictly shorter than `n`. Since `n` is odd, `Nat.odd_add` makes exactly one piece odd, and the induction hypothesis applies to it."
+  },
+  {
+    "id": "ann-57oq04-crux",
+    "proofId": "erdos-57-oq-04",
+    "range": { "startLine": 288, "endLine": 330 },
+    "type": "concept",
+    "title": "Crux lemma and the completed bipartite characterization",
+    "content": "`exists_odd_cycle_of_odd_closed_walk` is the auxiliary specialized to `n = w.length` (with `classical` supplying `DecidableEq V`). It is precisely the combinatorial step Mathlib's `SimpleGraph.Bipartite` lists as a TODO: every odd closed walk contains an odd cycle. With it, the parent's `bipartite_iff_no_odd_cycles` reverse direction completes — route through `two_colorable_iff_forall_loop_even`, and an odd loop would yield an odd cycle contradicting `oddCycleLengths G = ∅` — and `colorable_two_no_odd_cycles` follows. Both are now sorry-free; `#print axioms` on the crux lemma and on `bipartite_iff_no_odd_cycles` reports only `propext`, `Classical.choice`, `Quot.sound`. This drops `Erdos57Problem.lean` from 1 sorry to 0 (it remains `axiomatized` only because of the deep open axiom `erdos_57`)."
+  }
+]
