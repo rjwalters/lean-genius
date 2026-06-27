@@ -540,6 +540,7 @@ import Proofs.BoundedPrimeGapsSieve
 import Proofs.BoundedPrimeGapsTPC
 import Proofs.BrianchonTheorem
 import Proofs.BrianchonTheoremAristotle
+import Proofs.BrianchonTheoremOQ01OQ01OQ01
 import Proofs.BrianchonTheoremOQ01OQ02
 import Proofs.BritishFlagDefect
 import Proofs.BritishFlagTheorem
