@@ -357,4 +357,22 @@ theorem canon_eq_of_facet_and_vertex {s t : CanonSimplex d N}
     image_univ_eq_insert_facet s k, image_univ_eq_insert_facet t l,
     hface, hvert]
 
+/-- **Global facet/opposite-vertex coherence.**  The pair `(facet s k, vertices s k)` — a
+facet of a canonical cell together with its opposite (deleted) vertex — identifies both the
+cell `s` and the index `k` uniquely across the *entire* carrier.  This packages the two
+halves of the facet section into the single injectivity fact the door-counting adjacency
+reasons with: the cross-cell direction `canon_eq_of_facet_and_vertex` collapses the cell
+(`s = t`), then the within-cell direction `facet_injective` collapses the index (`k = l`).
+The consequence is that the `(facet, opposite-vertex)` payload an `adj` entry stores can
+name at most one `(cell, facet)` slot — there is no orientation or gluing ambiguity. -/
+theorem facet_vertex_injective :
+    Function.Injective
+      (fun p : CanonSimplex d N × Fin (d + 1) => (facet p.1 p.2, vertices p.1 p.2)) := by
+  rintro ⟨s, k⟩ ⟨t, l⟩ h
+  simp only [Prod.mk.injEq] at h
+  obtain ⟨hface, hvert⟩ := h
+  obtain rfl : s = t := canon_eq_of_facet_and_vertex hface hvert
+  obtain rfl : k = l := facet_injective s hface
+  rfl
+
 end SpernerNDimOQ02
