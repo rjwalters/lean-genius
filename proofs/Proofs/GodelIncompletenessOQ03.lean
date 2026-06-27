@@ -41,6 +41,10 @@ are all sentences `φ` with `PA ⊭ φ` and `PA ⊭ ¬φ`.
   `Independent.mono` / `not_independent_of_not_isSatisfiable` — the structural calculus
   of the relation: independence implies consistency, is symmetric under negation,
   descends to subtheories, and holds for some sentence iff `T` is consistent.
+* `Independent.exists_isComplete_extensions` — an independent sentence **splits `T` into
+  two disagreeing completions**: there are complete theories `T₁, T₂ ⊇ T` with `T₁ ⊨ φ`,
+  `T₂ ⊨ ¬φ`, `T₁ ≠ T₂`, built constructively as the complete theories of explicit models
+  (no Zorn/Lindenbaum).  This is the converse face of `Independent.not_isComplete`.
 
 ## What remains genuinely open / out of scope
 
@@ -189,5 +193,48 @@ so it decides every sentence and none is independent. -/
 theorem not_independent_of_not_isSatisfiable {T : L.Theory} {φ : L.Sentence}
     (h : ¬ T.IsSatisfiable) : ¬ Independent T φ :=
   fun hind => h hind.isSatisfiable
+
+/-- **Independence splits `T` into two disagreeing completions.**  If `φ` is independent
+of `T`, then `T` has (at least) two *complete* extensions that decide `φ` oppositely:
+there exist complete theories `T₁ ⊇ T` and `T₂ ⊇ T` with `T₁ ⊨ᵇ φ`, `T₂ ⊨ᵇ ¬φ`, and
+hence `T₁ ≠ T₂`.
+
+This is the model-theoretic substance of "`φ` is undecided": the two one-sentence
+extensions `T ∪ {φ}` and `T ∪ {¬φ}` (both satisfiable, by
+`independent_iff_satisfiable_both`) each have a model `M`, `N`, whose *complete theories*
+`Th(M) = L.completeTheory M` and `Th(N)` are maximal consistent extensions of `T` that
+sit on opposite sides of `φ`.  Conversely a *complete* theory leaves nothing
+independent (`Independent.not_isComplete`), so the existence of two splitting
+completions is exactly what independence buys.
+
+The completions are produced *constructively* as the theories of explicit models, with
+no appeal to Zorn/Lindenbaum: every satisfiable theory already has a model, and the
+complete theory of a model is automatically maximal (`completeTheory.isComplete`). -/
+theorem Independent.exists_isComplete_extensions (h : Independent T φ) :
+    ∃ T₁ T₂ : L.Theory,
+      T ⊆ T₁ ∧ T ⊆ T₂ ∧ T₁.IsComplete ∧ T₂.IsComplete ∧
+        T₁ ⊨ᵇ φ ∧ T₂ ⊨ᵇ φ.not ∧ T₁ ≠ T₂ := by
+  -- A model `M` of `T ∪ {φ}` and a model `N` of `T ∪ {¬φ}`.
+  obtain ⟨M⟩ := h.satisfiable_insert
+  obtain ⟨N⟩ := h.satisfiable_insert_not
+  -- Split each bundled model's `⊨ (T ∪ {…})` into the `T` part and the sentence part.
+  have hM := M.is_model; have hN := N.is_model
+  rw [Theory.model_union_iff, Theory.model_singleton_iff] at hM hN
+  haveI : (M : Type _) ⊨ T := hM.1
+  haveI : (N : Type _) ⊨ T := hN.1
+  have hc1 : (L.completeTheory M).IsComplete := completeTheory.isComplete L M
+  refine ⟨L.completeTheory M, L.completeTheory N,
+    Theory.completeTheory.subset, Theory.completeTheory.subset,
+    hc1, completeTheory.isComplete L N,
+    Theory.models_sentence_of_mem (mem_completeTheory.2 hM.2),
+    Theory.models_sentence_of_mem (mem_completeTheory.2 hN.2), ?_⟩
+  -- Distinctness: `Th(M) ⊨ φ` while `Th(N) ⊨ ¬φ`; were they equal, the (complete, hence
+  -- consistent) theory `Th(M)` would entail both `φ` and `¬φ`.
+  intro heq
+  have hφ : (L.completeTheory M) ⊨ᵇ φ :=
+    Theory.models_sentence_of_mem (mem_completeTheory.2 hM.2)
+  have hnφ : (L.completeTheory M) ⊨ᵇ φ.not := by
+    rw [heq]; exact Theory.models_sentence_of_mem (mem_completeTheory.2 hN.2)
+  exact (hc1.models_not_iff φ).1 hnφ hφ
 
 end GodelIncompletenessOQ03
