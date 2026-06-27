@@ -23,7 +23,7 @@
     "axiomCount": 0,
     "assumptions": "None (purely algebraic). The main theorem four_oblique_corners_rect is complete for all m, n ≥ 5: it exhibits 4 distinct tour positions (the board corners) where the turn is oblique. No native_decide, no enumeration. The argument never uses m = n.",
     "dateAdded": "2026-06-26",
-    "lineCount": 562,
+    "lineCount": 567,
     "mathlibDependencies": [
       {
         "theorem": "SimpleGraph.Basic",
@@ -97,7 +97,7 @@
       "id": "main",
       "title": "Main Theorem: Four Oblique Corners (Rectangular)",
       "startLine": 384,
-      "endLine": 562,
+      "endLine": 567,
       "summary": "four_oblique_corners_rect: every closed tour on an m×n board (m, n ≥ 5) has four distinct positions with oblique turns. The corner squares occur at tour indices iTL, iTR, iBL, iBR (pairwise distinct via nodup and corners_distinct); the cyclic predecessor/successor at each index are the corner's two neighbors (distinct), so corner_forces_oblique applies. Modular-index bookkeeping (hcyc, hpn, hsqcong) mirrors the square proof with n·n replaced by m·n."
     }
   ],
@@ -123,7 +123,7 @@
   ],
   "leanFile": {
     "path": "Proofs/KnightsTourObliqueOQ01OQ02.lean",
-    "lineCount": 562,
+    "lineCount": 567,
     "axiomCount": 0,
     "sorries": 0,
     "theoremCount": 15,
