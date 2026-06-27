@@ -146,10 +146,10 @@ import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01
 import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05
 import Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01OQ05OQ02
 import Proofs.AngleTrisectionOQ02OQ01OQ02
-import Proofs.AngleTrisectionOQ02OQ01OQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ01OQ02Aristotle
 import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01
 import Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle
+import Proofs.AngleTrisectionOQ02OQ01OQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ02OQ02
 import Proofs.AngleTrisectionOQ02OQ02OQ03
@@ -524,9 +524,9 @@ import Proofs.BorsukUlamOQ03OQ04
 import Proofs.BorsukUlamOQ04
 import Proofs.BoundedPrimeGaps
 import Proofs.BoundedPrimeGapsOQ01
-import Proofs.BoundedPrimeGapsOQ02
 import Proofs.BoundedPrimeGapsOQ01OQ02
 import Proofs.BoundedPrimeGapsOQ01OQ03
+import Proofs.BoundedPrimeGapsOQ02
 import Proofs.BoundedPrimeGapsOQ03
 import Proofs.BoundedPrimeGapsOQ03OQ01
 import Proofs.BoundedPrimeGapsOQ03OQ01ChebyshevLower
@@ -3255,6 +3255,8 @@ import Proofs.HallsTheoremOQ01
 import Proofs.HallsTheoremOQ01OQ01
 import Proofs.HallsTheoremOQ01OQ03
 import Proofs.HallsTheoremOQ02
+import Proofs.HaltingApproximation
+import Proofs.HaltingArithmeticalHierarchy
 import Proofs.HaltingProblem
 import Proofs.HappyNumberOQ01
 import Proofs.HarmonicDivergence
@@ -3880,8 +3882,6 @@ import Proofs.RearrangementChebyshevEqOQ01
 import Proofs.RearrangementChebyshevEqOQ01OQ02
 import Proofs.RearrangementChebyshevStrictOQ01OQ02
 import Proofs.RearrangementChebyshevStrictOQ01OQ02OQ01
-import Proofs.HaltingApproximation
-import Proofs.HaltingArithmeticalHierarchy
 import Proofs.RelativizedHalting
 import Proofs.RelativizedHaltingBridge
 import Proofs.RepunitDivisibilityOQ01
@@ -4009,9 +4009,10 @@ import Proofs.SpernerSimplicialInstanceOQ03Tower
 import Proofs.SpernerSimplicialInstanceOQ04
 import Proofs.SpernerSimplicialInstanceOQ05
 import Proofs.SpernerSimplicialInstanceOQ05Scarf1d
-import Proofs.SpernerTuckerOneDim
 import Proofs.SpernerTuckerBorsukUlamOneDim
 import Proofs.SpernerTuckerBoundaryParity
+import Proofs.SpernerTuckerOneDim
+import Proofs.SpernerTuckerPathFollowing
 import Proofs.SphericalExcessGirard
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ03
