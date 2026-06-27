@@ -1,8 +1,8 @@
 {
   "slug": "sperner-ndim-oq-02",
   "title": "n-Dimensional Sperner: Boundary-Door Oddness by Dimensional Induction",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "ORIENT",
+  "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,24 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-22T13:03:46.382Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ORIENT",
+    "since": "2026-06-27T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Option C locked: build an unoriented Freudenthal SpernerTriangulation instance and supply odd last-face doors to the complete abstract sperner_ndim. Session 2 produced the inductive door-oddness decomposition and a field-by-field instance plan.",
+    "blockers": [
+      "Infra-gated: the full Option C build is ~400-650 lines and must be machine-checked; at session 2 the root FS was at 97% (~420 MiB free) with stale lean-build containers, so a fresh Mathlib docker build was unsafe."
+    ],
+    "nextAction": "Step 1 (small/verifiable first): prove BaryPoint d N ≃ Vertex d N bridge and build it. Then Phase 1 (instance, 8 fields), Phase 2 (inductive last-face-door oddness), apply sperner_ndim.",
     "attemptCounts": {
-      "total": 0,
+      "total": 2,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "boundary_doors_odd (the OQ target) is provably FALSE as stated: the oriented GridSimplex double-counts each geometric cell by orientation, forcing all door/panchromatic counts even (Session 1 counterexample d=1,N=1 -> count 2). Resolution is Option C: instantiate the complete (0-sorry) abstract SpernerNDim.SpernerTriangulation framework with an UNORIENTED Freudenthal grid (one cell per geometric simplex) and feed odd last-face doors to sperner_ndim. Session 2 worked out the inductive oddness and an instance build plan.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "SpernerNDim.lean is complete (669 lines, 0 sorries): structure SpernerTriangulation (8 fields) + theorem sperner_ndim (line 654) which yields a fully-colored simplex from an odd count of last-face boundary doors. This is the exact finish line for sperner_grid.",
+      "Last-face boundary doors of the d-grid are in bijection with panchromatic (d-1)-simplices of the induced (d-1)-Freudenthal grid on face d: adj=none + boundary_face puts the facet on face d; the Sperner condition forbids color d there; isDoorAt = all colors {0..d-1} present = IsFC for the (d-1)-grid. Induction + sperner_parity at d-1 gives oddness. Base d=0: count 1.",
+      "Coordinate bridge: abstract framework uses Vertex d N (Fin d -> N, sum<=N, Kuhn coords); SpernerGrid uses BaryPoint d N (Fin (d+1) -> N, sum=N). They are canonically isomorphic; proving BaryPoint d N ≃ Vertex d N (~30-50 lines, no adjacency) is the cleanest standalone first deliverable and unlocks reuse of the whole framework.",
+      "Phase-1 instance must use unoriented Kuhn cells (base point + permutation of increment order, one representative per geometric cell). The Session-1 orientation-doubling bug came from carrying a free miss/orientation flag in GridSimplex; the instance must NOT."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove BaryPoint d N ≃ Vertex d N in a bridge file and build it (small, verifiable).",
+      "Phase 1: define freudenthal d N : SpernerTriangulation d N (unoriented Kuhn cells) and discharge the 8 structure fields (adj_symm/adj_ne/adj_unique_facet/adj_vertices/boundary_face via the standard Kuhn pivot).",
+      "Phase 2: prove last-face-door-oddness by induction on d using the door <-> panchromatic-(d-1)-simplex bijection; supply it as hbdry to sperner_ndim.",
+      "Reroute sperner_grid through the instance; delete false boundary_doors_odd / boundary_verts_on_face."
+    ]
   },
   "tags": [
     "combinatorics",
@@ -51,7 +63,7 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-04-22T13:03:46.382Z",
+  "lastUpdate": "2026-06-27T00:00:00.000Z",
   "significance": 8,
   "tractability": 6
 }
