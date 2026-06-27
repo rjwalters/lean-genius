@@ -24,7 +24,8 @@
       "TuckerOneDim.tucker_one_dim — antipodal boundary ⟹ odd #complementary-edges",
       "TuckerOneDim.exists_complementary_edge — 1-D Tucker existence statement",
       "Proofs/SpernerTuckerHexagon.lean (114 LOC, 0 sorries, 0 axioms; decide/kernel only -- propext/Classical.choice/Quot.sound, NO ofReduceBool): tucker_hexagon, ring_complementary_count_even, tucker_hexagon_exists.",
-      "Proofs/SpernerTuckerBoundaryParity.lean (84 LOC, 0 sorries, 0 axioms; decide/kernel -- propext/Classical.choice/Quot.sound, NO ofReduceBool): ring_complementary_count_even, ring_complementary_count_not_odd, lneg_involutive."
+      "Proofs/SpernerTuckerBoundaryParity.lean (84 LOC, 0 sorries, 0 axioms; decide/kernel -- propext/Classical.choice/Quot.sound, NO ofReduceBool): ring_complementary_count_even, ring_complementary_count_not_odd, lneg_involutive.",
+      "proofs/Proofs/SpernerDoorCountingParity.lean (149 LOC, 6 thm, 0 sorry, 0 axiom): dimension-independent abstract door-counting parity engine (handshake ⇒ even door-terminals; a known door forces another; odd boundary door count ⇒ interior door; degree-≤2 path specialization). Separates the transferable engine from the n≥2-specific labelling obstruction."
     ],
     "insights": [
       "n=1 Tucker is provable directly as a discrete fundamental-theorem-of-calculus / sign-change-parity statement over ZMod 2 — cleaner than instantiating the abstract CellComplex (whose panchromatic conclusion genuinely diverges from the complementary-edge target, Insight 1).",
