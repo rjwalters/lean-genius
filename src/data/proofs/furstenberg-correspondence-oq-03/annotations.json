@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ann-furst-oq03-header",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 61
+    },
+    "type": "concept",
+    "title": "Polynomial Szemerédi: Statement and Verified Backbone",
+    "content": "This file formalizes the Bergelson–Leibman polynomial Szemerédi theorem (1996), the polynomial extension of Szemerédi's theorem. It does NOT assert the deep theorem — that remains an open formalization target stated here as a Prop. Everything proved is machine-checked (0 axioms, 0 sorries): the configuration object, its algebraic constraints, the linear specialization to arithmetic progressions, a nonlinear square example, and Mathlib's recurrence base case. The combinatorial form: if A ⊆ ℤ has positive upper Banach density and p₁,…,p_k ∈ ℤ[X] have pᵢ(0)=0, then some x and d≠0 give x+pᵢ(d) ∈ A for all i.",
+    "summary": "Statement and verified backbone for the polynomial Szemerédi theorem."
+  },
+  {
+    "id": "ann-furst-oq03-config",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 76,
+      "endLine": 96
+    },
+    "type": "definition",
+    "title": "The Polynomial Configuration and Its Collapse at d=0",
+    "content": "configPoint p x d i := x + (p i).eval d is the i-th point of the configuration. The no-constant-term predicate NoConstantTerm p says every pᵢ(0)=0. The lemma config_collapses_at_zero verifies that under this hypothesis the configuration degenerates to the single point {x} when d=0. This is exactly why the theorem must demand a nontrivial d≠0: the d=0 solution is always present and carries no information.",
+    "summary": "Configuration object; collapse to {x} at d=0 motivates the d≠0 requirement."
+  },
+  {
+    "id": "ann-furst-oq03-divisibility",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 99,
+      "endLine": 124
+    },
+    "type": "insight",
+    "title": "No Constant Term = Divisibility by X = d ∣ pᵢ(d)",
+    "content": "Three equivalent faces of the hypothesis. eval_zero_iff_X_dvd proves pᵢ(0)=0 ↔ X ∣ pᵢ via Mathlib's X_dvd_iff and coeff_zero_eq_eval_zero. dvd_eval_of_noConstantTerm then factors pᵢ = X·q and concludes d ∣ pᵢ(d) for every d. Consequently (configPoint_sub_dvd) every configuration point is congruent to the base point modulo d: the configuration always lives inside the residue-class structure determined by d. This elementary obstruction is one any proof of the full theorem must respect.",
+    "summary": "pᵢ(0)=0 ⇔ X∣pᵢ ⇒ d∣pᵢ(d): every configuration point ≡ x (mod d)."
+  },
+  {
+    "id": "ann-furst-oq03-linear",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 136,
+      "endLine": 157
+    },
+    "type": "insight",
+    "title": "Szemerédi Is the Degree-One Case",
+    "content": "Taking pᵢ = i·X (linearPoly), configPoint_linear shows the configuration is exactly x + i·d — the arithmetic progression x, x+d, …, x+(k-1)d. So Bergelson–Leibman applied to the linear family reproduces Szemerédi's theorem on length-k arithmetic progressions. This makes precise the sense in which the polynomial theorem is an extension: AP-Szemerédi is the degree-one instance.",
+    "summary": "Linear family pᵢ=i·X yields the AP x+i·d, recovering Szemerédi."
+  },
+  {
+    "id": "ann-furst-oq03-square",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 169,
+      "endLine": 188
+    },
+    "type": "concept",
+    "title": "A Genuinely Nonlinear Configuration: Squares",
+    "content": "The square family p₀=0, p₁=X² gives the two-point configuration {x, x+d²}. squareConfig_gap_isSquare verifies the gap is a perfect square d². This is the simplest configuration outside the reach of Szemerédi's theorem — Bergelson–Leibman asserts every positive-density set contains such a pair with d≠0, a result with no linear analogue.",
+    "summary": "p₁=X² gives {x, x+d²} with verified perfect-square gap — a nonlinear pattern."
+  },
+  {
+    "id": "ann-furst-oq03-statement",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 200,
+      "endLine": 223
+    },
+    "type": "definition",
+    "title": "The Polynomial Szemerédi Property as a Formalization Target",
+    "content": "PolynomialSzemerediProperty A packages the combinatorial conclusion as a Prop on A ⊆ ℤ. It is stated, not asserted: a future proof would derive it for every positive-density A via the Furstenberg correspondence and polynomial multiple recurrence. univ_polynomialSzemerediProperty certifies the statement is not vacuously false (ℤ satisfies it), and the .mono lemma shows it transfers up to supersets.",
+    "summary": "Prop-valued target for the combinatorial theorem, with sanity and monotonicity lemmas."
+  },
+  {
+    "id": "ann-furst-oq03-ergodic",
+    "proofId": "furstenberg-correspondence-oq-03",
+    "range": {
+      "startLine": 235,
+      "endLine": 266
+    },
+    "type": "insight",
+    "title": "Poincaré Recurrence Is the k=1 Base Case",
+    "content": "The ergodic proof proceeds through polynomial multiple recurrence. poincare_single_recurrence derives single recurrence from Mathlib's MeasurePreserving.conservative — this is k=1, p₁(n)=n. measurePreserving_iterate_eval verifies that polynomial-exponent iterates T^{p(n)} stay measure-preserving, the elementary fact underlying the averages (1/N)Σ μ(E ∩ T^{-p(n)}E). PolynomialMultipleRecurrence states the full k≥2 conclusion as a target. The gap to k≥2 is PET induction plus nilsystem characteristic-factor theory, neither in Mathlib.",
+    "summary": "Mathlib supplies the k=1 base case (Poincaré); k≥2 needs nilsystem machinery."
+  }
+]
