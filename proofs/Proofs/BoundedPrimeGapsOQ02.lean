@@ -62,6 +62,12 @@ work documented in the sibling `BoundedPrimeGapsOQ04`.
       the level decomposition that licenses dyadic decomposition of the modulus range
 - [x] Subdivided ascent `EHAtLevel_discrepancySum_up_split`: raising the level only needs
       EH-type bounds on each consecutive sub-band, recombined via the convex-cone closure
+- [x] Genuine von-Mangoldt instantiation: the concrete weight
+      `vonMangoldtWeight q x = max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)|` (built from Mathlib's
+      `ArithmeticFunction.vonMangoldt` and `Nat.totient`) is *proved* nonnegative, so the
+      entire hierarchy — level monotonicity, exact band decomposition, EH ⟹ BV, and dyadic
+      ascent — specializes with no further hypotheses to the **actual** Elliott–Halberstam
+      sum `vonMangoldtDiscrepancySum θ x = Σ_{q ≤ x^θ} max_{(a,q)=1} |ψ(x;q,a) − x/φ(q)|`
 - [x] No `axiom`, no `sorry`, no `native_decide`
 -/
 
@@ -410,5 +416,121 @@ theorem EHAtLevel_discrepancySum_up_split (f : ℕ → ℝ → ℝ) {θ₁ θ₂
       ≤ C₁ * x / (Real.log x) ^ A + C₂ * x / (Real.log x) ^ A := by
         linarith [hb₁ x hx, hb₂ x hx]
     _ = (C₁ + C₂) * x / (Real.log x) ^ A := by ring
+
+/-! ## Grounding the hierarchy in the genuine von-Mangoldt discrepancy
+
+Everything above treats the per-modulus weight `f` abstractly, requiring only
+nonnegativity.  Here we instantiate `f` with the **genuine** Elliott–Halberstam weight
+
+  `f q x = max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|`,   `ψ(x; q, a) = Σ_{n ≤ x, n ≡ a (q)} Λ(n)`,
+
+built from Mathlib's von-Mangoldt function `ArithmeticFunction.vonMangoldt` and Euler
+totient `Nat.totient`.  The maximum of absolute values is automatically nonnegative, so
+the single structural hypothesis the whole framework needs is discharged outright — and
+the level hierarchy, the exact band decomposition, the convex-cone closure and the dyadic
+ascent all specialize, with no further work, to the *actual* Elliott–Halberstam sum.  This
+converts the abstract skeleton into statements about the genuine object of the conjecture. -/
+
+open scoped ArithmeticFunction in
+/-- The **Chebyshev ψ in an arithmetic progression** at a real cutoff `x`:
+`ψ(x; q, a) = Σ_{1 ≤ n ≤ ⌊x⌋, n ≡ a (q)} Λ(n)`, with `Λ` the von-Mangoldt function. -/
+noncomputable def psiAP (q a : ℕ) (x : ℝ) : ℝ :=
+  ∑ n ∈ (Finset.Icc 1 ⌊x⌋₊).filter (fun n => n % q = a % q),
+    ArithmeticFunction.vonMangoldt n
+
+/-- The **per-residue discrepancy** `|ψ(x; q, a) − x/φ(q)|` of the progression `a mod q`
+against its expected main term `x/φ(q)`.  Nonnegative by construction (an absolute value). -/
+noncomputable def apDiscrepancy (q a : ℕ) (x : ℝ) : ℝ :=
+  |psiAP q a x - x / (Nat.totient q : ℝ)|
+
+/-- The **genuine Elliott–Halberstam per-modulus weight**: the worst-case discrepancy
+`max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|` over residues `a` coprime to `q` (and `0` for the
+degenerate empty range `q = 0`).  This is exactly the summand of the real EH sum. -/
+noncomputable def vonMangoldtWeight (q : ℕ) (x : ℝ) : ℝ :=
+  if h : ((Finset.range q).filter (fun a => Nat.Coprime a q)).Nonempty then
+    ((Finset.range q).filter (fun a => Nat.Coprime a q)).sup' h
+      (fun a => apDiscrepancy q a x)
+  else 0
+
+/-- The genuine weight is nonnegative — the sole structural hypothesis the abstract
+hierarchy requires — because it is a maximum (or `0`) of absolute values. -/
+theorem vonMangoldtWeight_nonneg (q : ℕ) (x : ℝ) : 0 ≤ vonMangoldtWeight q x := by
+  unfold vonMangoldtWeight
+  split
+  · next h =>
+    obtain ⟨a, ha⟩ := h
+    have h0 : 0 ≤ apDiscrepancy q a x := abs_nonneg _
+    exact le_trans h0 (Finset.le_sup' (fun a => apDiscrepancy q a x) ha)
+  · exact le_refl 0
+
+/-- The **genuine Elliott–Halberstam discrepancy sum** at level `θ`:
+`Σ_{q ≤ x^θ} max_{(a,q)=1} |ψ(x; q, a) − x/φ(q)|`, the object whose `≪_A x/(log x)^A`
+bound *is* the level-of-distribution statement. -/
+noncomputable def vonMangoldtDiscrepancySum (θ x : ℝ) : ℝ :=
+  discrepancySum vonMangoldtWeight θ x
+
+/-- The clamped genuine sum (base `max 1 x`), level-monotone for *every* real `x`. -/
+noncomputable def vonMangoldtDiscrepancySumClamped (θ x : ℝ) : ℝ :=
+  discrepancySumClamped vonMangoldtWeight θ x
+
+/-- On the analytic regime `x ≥ 1` the clamp is inert. -/
+theorem vonMangoldtDiscrepancySumClamped_eq {θ x : ℝ} (hx : 1 ≤ x) :
+    vonMangoldtDiscrepancySumClamped θ x = vonMangoldtDiscrepancySum θ x :=
+  discrepancySumClamped_eq vonMangoldtWeight hx
+
+/-- **The genuine EH sum is level-monotone on `x ≥ 1`** — proved, not assumed.  Larger
+levels admit more moduli `q ≤ x^θ`, and each new worst-case discrepancy is nonnegative. -/
+theorem vonMangoldtDiscrepancySum_mono_level {θ₁ θ₂ x : ℝ} (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    vonMangoldtDiscrepancySum θ₁ x ≤ vonMangoldtDiscrepancySum θ₂ x :=
+  discrepancySum_mono_level vonMangoldtWeight vonMangoldtWeight_nonneg hx hθ
+
+/-- The clamped genuine functional is globally level-monotone, hence a genuine (generally
+nonzero) model of `LevelMonotone` to which the level hierarchy `EHAtLevel_of_le` applies. -/
+theorem levelMonotone_vonMangoldtDiscrepancySumClamped :
+    LevelMonotone vonMangoldtDiscrepancySumClamped :=
+  levelMonotone_discrepancySumClamped vonMangoldtWeight vonMangoldtWeight_nonneg
+
+/-- **The level hierarchy for the genuine EH sum.**  If the real von-Mangoldt discrepancy
+sum satisfies the Elliott–Halberstam bound at some level `θ₂`, it satisfies it at every
+lower level `θ₁ ≤ θ₂`.  This is `EHAtLevel_of_le` at the actual object of the conjecture. -/
+theorem EHAtLevel_of_le_vonMangoldt {θ₁ θ₂ : ℝ} (h : θ₁ ≤ θ₂)
+    (hEH : EHAtLevel vonMangoldtDiscrepancySumClamped θ₂) :
+    EHAtLevel vonMangoldtDiscrepancySumClamped θ₁ :=
+  EHAtLevel_of_le _ levelMonotone_vonMangoldtDiscrepancySumClamped h hEH
+
+/-- **Elliott–Halberstam ⟹ Bombieri–Vinogradov, for the genuine functional.**  The full
+conjecture for the real von-Mangoldt discrepancy sum implies its proved `θ = 1/2` case. -/
+theorem bombieriVinogradov_of_EH_vonMangoldt
+    (hEH : ElliottHalberstam vonMangoldtDiscrepancySumClamped) :
+    BombieriVinogradov vonMangoldtDiscrepancySumClamped :=
+  bombieriVinogradov_of_elliottHalberstam _ hEH
+
+/-- For the genuine functional, the EH bound at **any** level `θ ≥ 1/2` already yields
+Bombieri–Vinogradov, via the hierarchy. -/
+theorem bombieriVinogradov_of_EHAtLevel_vonMangoldt {θ : ℝ} (hθ : 1 / 2 ≤ θ)
+    (hEH : EHAtLevel vonMangoldtDiscrepancySumClamped θ) :
+    BombieriVinogradov vonMangoldtDiscrepancySumClamped :=
+  bombieriVinogradov_of_EHAtLevel _ levelMonotone_vonMangoldtDiscrepancySumClamped hθ hEH
+
+/-- **Exact level increment for the genuine sum.**  On `x ≥ 1`, the real EH sum at level
+`θ₂` is its level-`θ₁` value plus exactly the worst-case discrepancy of the new moduli
+`⌊x^θ₁⌋ < q ≤ ⌊x^θ₂⌋` — the genuine instance of `discrepancySum_eq_add_band`. -/
+theorem vonMangoldtDiscrepancySum_eq_add_band {θ₁ θ₂ x : ℝ} (hx : 1 ≤ x) (hθ : θ₁ ≤ θ₂) :
+    vonMangoldtDiscrepancySum θ₂ x
+      = vonMangoldtDiscrepancySum θ₁ x + discrepancyBand vonMangoldtWeight θ₁ θ₂ x :=
+  discrepancySum_eq_add_band vonMangoldtWeight hx hθ
+
+/-- **Dyadic ascent for the genuine sum.**  To raise the genuine level of distribution
+from `θ₁` to `θ₃` it suffices to bound the real worst-case discrepancy on each consecutive
+sub-band of moduli `θ₁ → θ₂` and `θ₂ → θ₃` — the formal license for the dyadic attack on
+Elliott–Halberstam, now stated for the actual von-Mangoldt weight. -/
+theorem EHAtLevel_vonMangoldt_up_split {θ₁ θ₂ θ₃ : ℝ} (h₁₂ : θ₁ ≤ θ₂) (h₂₃ : θ₂ ≤ θ₃)
+    (hlow : EHAtLevel vonMangoldtDiscrepancySum θ₁)
+    (hband₁ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight θ₁ θ₂ x ≤ C * x / (Real.log x) ^ A)
+    (hband₂ : ∀ A : ℝ, 0 < A → ∃ C : ℝ, 0 < C ∧ ∀ x : ℝ, 2 ≤ x →
+        discrepancyBand vonMangoldtWeight θ₂ θ₃ x ≤ C * x / (Real.log x) ^ A) :
+    EHAtLevel vonMangoldtDiscrepancySum θ₃ :=
+  EHAtLevel_discrepancySum_up_split vonMangoldtWeight h₁₂ h₂₃ hlow hband₁ hband₂
 
 end BoundedPrimeGapsOQ02
