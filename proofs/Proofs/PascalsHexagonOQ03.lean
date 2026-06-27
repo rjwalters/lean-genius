@@ -1402,6 +1402,104 @@ theorem pascalProjLine_ne_zero_of_minor {C : Conic} (hex : InscribedHexagon C)
   · exact h m20
 
 -- ============================================================
+-- PART 4k: Non-Vacuity Witness — a concrete inscribed hexagon
+--          with a genuine (nonzero) Pascal line
+-- ============================================================
+
+/- Every well-definedness theorem of PART 4g–5b carries the general-position
+   hypothesis `hnd : ∀ k, pascalProjLine (permuteHexagon hex k) ≠ 0` (or its
+   single-relabeling instances).  An honest reader should ask: *is that
+   hypothesis ever satisfiable?*  If `pascalProjLine hex` were `0` for every
+   inscribed hexagon, the entire conditional development would be vacuous.
+
+   This part rules that out.  We exhibit an explicit hexagon inscribed in the
+   standard non-degenerate conic `x₀² + x₁² = x₂²` and show — by the concrete
+   minor witness of PART 4j — that its Pascal line is genuinely nonzero.  The
+   six vertices are the rational conic points
+     A = (1,0,1),  B = (0,1,1),  C = (-1,0,1),
+     D = (0,-1,1), E = (3,4,5),  F = (4,3,5),
+   for which `pascalP = (-6,-6,-12)` and `pascalQ = (2,12,10)`, so the
+   `(0,1)`-minor `P₀Q₁ - P₁Q₀ = -72 - (-12) = -60 ≠ 0`.  Hence
+   `pascalProjLine ≠ 0`: the conditional theory has at least one model. -/
+
+/-- The standard conic `x₀² + x₁² = x₂²` is non-degenerate (`det = -1 ≠ 0`). -/
+theorem stdConic_nondegenerate : stdConic.nondegenerate := by
+  unfold Conic.nondegenerate stdConic
+  rw [Matrix.det_fin_three]
+  simp only [Matrix.of_apply]
+  norm_num
+
+/-- A point `![a, b, c]` with `a² + b² = c²` lies on the standard conic. -/
+private theorem mem_stdConic (a b c : ℝ) (h : a ^ 2 + b ^ 2 = c ^ 2) :
+    pointOnConic ![a, b, c] stdConic := by
+  unfold pointOnConic conicQuadraticForm stdConic
+  simp only [Fin.sum_univ_three, Matrix.of_apply, Matrix.cons_val_zero,
+    Matrix.cons_val_one, Matrix.cons_val_two, Matrix.head_cons, Matrix.tail_cons,
+    Fin.isValue]
+  linear_combination h
+
+/-- A point `![a, b, c]` with nonzero last coordinate is a valid (nonzero)
+    projective point. -/
+private theorem valid_of_last (a b c : ℝ) (hc : c ≠ 0) :
+    ProjPoint.valid ![a, b, c] := by
+  intro hzero
+  apply hc
+  have := congrFun hzero 2
+  simpa using this
+
+/-- A concrete hexagon inscribed in the standard conic `x₀² + x₁² = x₂²`, with
+    six distinct rational vertices `A=(1,0,1), B=(0,1,1), C=(-1,0,1),
+    D=(0,-1,1), E=(3,4,5), F=(4,3,5)`.  Witnesses that `InscribedHexagon` of a
+    non-degenerate conic is inhabited. -/
+noncomputable def witnessHexagon : InscribedHexagon stdConic where
+  A := ![1, 0, 1]
+  B := ![0, 1, 1]
+  C' := ![-1, 0, 1]
+  D := ![0, -1, 1]
+  E := ![3, 4, 5]
+  F := ![4, 3, 5]
+  hA := mem_stdConic 1 0 1 (by norm_num)
+  hB := mem_stdConic 0 1 1 (by norm_num)
+  hC := mem_stdConic (-1) 0 1 (by norm_num)
+  hD := mem_stdConic 0 (-1) 1 (by norm_num)
+  hE := mem_stdConic 3 4 5 (by norm_num)
+  hF := mem_stdConic 4 3 5 (by norm_num)
+  hAvalid := valid_of_last 1 0 1 (by norm_num)
+  hBvalid := valid_of_last 0 1 1 (by norm_num)
+  hCvalid := valid_of_last (-1) 0 1 (by norm_num)
+  hDvalid := valid_of_last 0 (-1) 1 (by norm_num)
+  hEvalid := valid_of_last 3 4 5 (by norm_num)
+  hFvalid := valid_of_last 4 3 5 (by norm_num)
+
+/-- **Non-vacuity of the OQ-03-OQ-02 well-definedness theory.**  The
+    general-position hypothesis `pascalProjLine hex ≠ 0`, on which every descent
+    theorem of PART 4g–5b is conditioned, is *satisfiable*: the explicit
+    inscribed hexagon `witnessHexagon` (six rational points on the
+    non-degenerate conic `x₀²+x₁²=x₂²`) has a genuine, nonzero Pascal line.
+    Proved by the concrete minor witness of PART 4j — the `(0,1)`-minor of the
+    two spanning Pascal points `P = (-6,-6,-12)`, `Q = (2,12,10)` is
+    `P₀Q₁ - P₁Q₀ = -60 ≠ 0`.  Consequently the conditional well-definedness
+    results are not empty statements: at least one hexagon satisfies their
+    hypotheses. -/
+theorem pascalProjLine_witnessHexagon_ne_zero :
+    pascalProjLine witnessHexagon ≠ 0 := by
+  apply pascalProjLine_ne_zero_of_minor
+  left
+  simp only [pascalP, pascalQ, lineIntersection, lineThrough, witnessHexagon,
+    cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.cons_val_two,
+    Matrix.head_cons, Matrix.tail_cons, Fin.isValue]
+  norm_num
+
+/-- **The conditional theory is inhabited.**  Packages `witnessHexagon` and its
+    non-degeneracy: there exists a non-degenerate conic carrying an inscribed
+    hexagon whose Pascal line is genuine.  This is the existence statement
+    underlying the well-definedness results of PART 4g–5b. -/
+theorem exists_inscribedHexagon_pascalProjLine_ne_zero :
+    ∃ (C : Conic), C.nondegenerate ∧
+      ∃ (hex : InscribedHexagon C), pascalProjLine hex ≠ 0 :=
+  ⟨stdConic, stdConic_nondegenerate, witnessHexagon, pascalProjLine_witnessHexagon_ne_zero⟩
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 

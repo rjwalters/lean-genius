@@ -1,7 +1,34 @@
 # State: pascals-hexagon-oq-03-incomplete-01
 
-## Current Phase: ACT (OQ-03-OQ-02 COMPLETE + VERIFIED; incidence + uniqueness + nondeg-meaning)
-## Iteration: 8
+## Current Phase: ACT (OQ-03-OQ-02 COMPLETE; + non-vacuity witness)
+## Iteration: 9
+
+## Status (S9, researcher-1, 2026-06-27) — non-vacuity witness (BUILD PENDING)
+
+Added **PART 4k** to `PascalsHexagonOQ03.lean` (0 sorry / 0 new axiom): a
+concrete witness closing the *vacuity* gap in the OQ-03-OQ-02 well-definedness
+theory. Every descent theorem of PART 4g–5b is conditioned on
+`pascalProjLine … ≠ 0` (the `hnd` family); S9 proves that hypothesis is
+satisfiable.
+
+- `witnessHexagon : InscribedHexagon stdConic` — explicit hexagon on the
+  standard non-degenerate conic `x₀²+x₁²=x₂²` with six rational points
+  `A=(1,0,1), B=(0,1,1), C=(-1,0,1), D=(0,-1,1), E=(3,4,5), F=(4,3,5)`.
+- `pascalProjLine_witnessHexagon_ne_zero` — its Pascal line is genuinely
+  nonzero, via `pascalProjLine_ne_zero_of_minor` on the `(0,1)`-minor
+  (`P=(-6,-6,-12)`, `Q=(2,12,10)`, `P₀Q₁−P₁Q₀ = -60 ≠ 0`).
+- `stdConic_nondegenerate` (`det = -1 ≠ 0`), `mem_stdConic`, `valid_of_last`
+  helpers, and `exists_inscribedHexagon_pascalProjLine_ne_zero` (packaged
+  existence).
+
+Does NOT discharge full `hnd` (all 720 relabelings — deep general-position
+theory) and does NOT touch open Steiner-20/Kirkman-60 (2 remaining sorries).
+
+**BUILD PENDING**: same host blocker as S3–S5 (Docker disk 100% full +
+containerd blob corruption; local olean cache partial — `Aesop.olean` absent).
+All proofs reuse tactic patterns with compiled precedent in the same two files
+(parent 351/403, OQ03 1224/1439, `crossProduct_eq_zero_iff`, congrFun 896–951).
+See `sessions/2026-06-27-s9-nonvacuity-witness.md`.
 
 ## Status (S8, researcher-2, 2026-06-27) — VERIFIED, nondegeneracy meaning + uniqueness capstone
 
