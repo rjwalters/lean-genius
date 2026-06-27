@@ -586,4 +586,93 @@ theorem threeVertex_sum_widths : (edgeWidths threeVertex).sum = 3 := by
 theorem threeVertex_widths_pos : ∀ w ∈ edgeWidths threeVertex, 0 < w :=
   edgeWidths_pos threeVertex_chain
 
+/-! ### Newton's valuation relation: width × slope telescopes to the valuation drop
+
+The two preceding sections isolate the two halves of the Newton polygon theorem:
+`edgeSlopes` carries the *valuations* of the roots (sorted, by convexity), and
+`edgeWidths` carries their *multiplicities* (summing to the `Y`-degree).  This
+section multiplies them together.
+
+On an edge from `p` to `q` the polygon contributes `q.1 − p.1` roots (the width),
+each of valuation `−edgeSlope p q`.  The valuation those roots contribute to the
+total is therefore `(q.1 − p.1) · edgeSlope p q`, which — because the slope is the
+rise over the run — is exactly the *vertical drop* `q.2 − p.2`.  Summing across a
+vertex chain telescopes to `(last vertex).2 − (first vertex).2`.
+
+Negating gives the classical relation: the sum of the valuations of all roots
+(with multiplicity) equals `v(a₀) − v(a_d)`, the valuation of the constant term
+minus that of the leading term — i.e. the valuation of `±a₀/a_d`, the product of
+the roots.  This is the synthesis the slope-sorting and width-counting results
+were each only half of. -/
+
+/-- On a non-degenerate edge the product width × slope is the vertical drop:
+`(q.1 − p.1) · edgeSlope p q = q.2 − p.2`.  This is just `edgeSlope`'s definition
+(rise over run) cancelled against the run, valid whenever the indices differ. -/
+theorem width_mul_edgeSlope {p q : SupportPoint} (h : (p.1 : ℚ) ≠ (q.1 : ℚ)) :
+    ((q.1 : ℚ) - (p.1 : ℚ)) * edgeSlope p q = q.2 - p.2 := by
+  have hne : (q.1 : ℚ) - (p.1 : ℚ) ≠ 0 := sub_ne_zero.mpr (Ne.symm h)
+  rw [edgeSlope, mul_div_cancel₀ _ hne]
+
+/-- The list of per-edge valuation drops along a chain of support points: the
+product width × slope `(q.1 − p.1) · edgeSlope p q` of each consecutive pair.
+On a genuine vertex chain each entry equals the vertical drop `q.2 − p.2`
+(`width_mul_edgeSlope`). -/
+def edgeDrops : List SupportPoint → List ℚ
+  | p :: q :: rest => ((q.1 : ℚ) - (p.1 : ℚ)) * edgeSlope p q :: edgeDrops (q :: rest)
+  | _ => []
+
+/-- **Telescoping valuation identity.**  Along any vertex chain the per-edge
+valuation drops (width × slope) sum to the total vertical drop from the first
+vertex to the last, `(last).2 − (first).2`.  The chain hypothesis is what makes
+each edge non-degenerate (`p.1 < q.1`), so `width_mul_edgeSlope` turns every term
+into a genuine drop `q.2 − p.2` and the sum telescopes. -/
+theorem sum_edgeDrops {pts : List SupportPoint} :
+    ∀ {v : SupportPoint} {vs : List SupportPoint},
+      List.IsChain (IsLowerEdge pts) (v :: vs) →
+      (edgeDrops (v :: vs)).sum = (((v :: vs).getLast (by simp)).2) - v.2
+  | _, [], _ => by simp [edgeDrops]
+  | v, w :: ws, hc => by
+      obtain ⟨hvw, hc'⟩ := List.isChain_cons_cons.mp hc
+      have ih := sum_edgeDrops hc'
+      obtain ⟨_, _, hlt, _⟩ := hvw
+      have hne : (v.1 : ℚ) ≠ (w.1 : ℚ) := by exact_mod_cast Nat.ne_of_lt hlt
+      have hdrop : ((w.1 : ℚ) - (v.1 : ℚ)) * edgeSlope v w = w.2 - v.2 :=
+        width_mul_edgeSlope hne
+      have hgl : (v :: w :: ws).getLast (by simp) = (w :: ws).getLast (by simp) :=
+        List.getLast_cons (by simp)
+      simp only [edgeDrops, List.sum_cons]
+      rw [ih, hdrop, hgl]
+      ring
+
+/-- **Newton's valuation relation.**  The sum of the valuations of all roots
+(counted with multiplicity) equals `v(a₀) − v(a_d)`: the valuation of the constant
+term minus that of the leading term.  Each edge contributes `width` roots of
+valuation `−slope`, so the total root-valuation sum is `−∑ (width · slope)`, which
+by `sum_edgeDrops` collapses to `(first).2 − (last).2`.  For a hull running from
+index `0` (constant term) to index `d` (leading term) the right-hand side is
+`v(a₀) − v(a_d)` — the valuation of the product of the roots. -/
+theorem sum_rootValuations {pts : List SupportPoint} {v : SupportPoint}
+    {vs : List SupportPoint} (hc : List.IsChain (IsLowerEdge pts) (v :: vs)) :
+    -((edgeDrops (v :: vs)).sum) = v.2 - (((v :: vs).getLast (by simp)).2) := by
+  rw [sum_edgeDrops hc]
+  ring
+
+/-- The per-edge valuation drops of the worked three-vertex example are
+`[-2, 1]`: edge `(0,2)→(1,0)` drops by `−2` (width `1`, slope `−2`) and edge
+`(1,0)→(3,1)` rises by `1` (width `2`, slope `1/2`). -/
+theorem threeVertex_edgeDrops : edgeDrops threeVertex = [-2, 1] := by
+  norm_num [edgeDrops, threeVertex, edgeSlope]
+
+/-- The drops of the example telescope to `1 − 2 = −1`, the vertical drop from the
+first vertex `(0,2)` to the last `(3,1)`. -/
+theorem threeVertex_sum_drops : (edgeDrops threeVertex).sum = -1 := by
+  norm_num [edgeDrops, threeVertex, edgeSlope]
+
+/-- The example's root valuations sum to `2 − 1 = 1 = v(a₀) − v(a_d)`: one root of
+valuation `2` (from the width-`1` edge) plus two roots of valuation `−1/2` (from
+the width-`2` edge) give `2 + 2·(−1/2) = 1`, matching `v(a₀) − v(a_d) = 2 − 1`. -/
+theorem threeVertex_sum_rootValuations :
+    -((edgeDrops threeVertex).sum) = 1 := by
+  norm_num [edgeDrops, threeVertex, edgeSlope]
+
 end PuiseuxTheoremOQ03

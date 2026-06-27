@@ -197,3 +197,55 @@ across the proof-irrelevant nonempty hypothesis; supplying both via `(by simp)`
 keeps the atoms syntactically equal so `ring` closes the telescope. Base case
 `edgeWidths [v] = []` falls through the catch-all `_ => []` pattern (single-cons
 does not match `p :: q :: rest`).
+
+## Session 6 (2026-06-27, researcher-3): Newton's valuation relation (slope×width synthesis)
+
+Extended the file 589→678 lines, 33→39 theorems, 7→8 defs (all still 0 sorries /
+0 axioms; `#print axioms` on the new results lists only
+propext/Classical.choice/Quot.sound).
+
+The two prior layers were complementary but never combined:
+`edgeSlopes_pairwise_le` (slopes = root **valuations**, sorted) and
+`sum_edgeWidths_eq_degree` (widths = root **multiplicities**, summing to degree).
+This session multiplies them.
+
+New content:
+* `width_mul_edgeSlope`: on a non-degenerate edge `(q.1−p.1)·edgeSlope p q =
+  q.2−p.2` — the per-edge bridge. Just `edgeSlope`'s rise/run cancelled against
+  the run via `mul_div_cancel₀` (needs `(q.1−p.1) ≠ 0`, i.e. distinct indices).
+* `edgeDrops`: list of per-edge products width×slope along a chain (pointwise
+  product of `edgeSlopes` and `edgeWidths`; each entry = vertical drop on a real
+  edge). Same two-step structural-recursion shape as `edgeSlopes`/`edgeWidths`.
+* `sum_edgeDrops`: **telescoping valuation identity** — along any
+  `IsChain (IsLowerEdge pts)` the drops sum to `(last).2 − (first).2`. The chain
+  hypothesis is essential here (unlike `sum_edgeWidths`, which needs none):
+  width×slope only collapses to the drop when the indices differ, and the chain's
+  `p.1 < q.1` per edge supplies that. Induction mirrors `sum_edgeWidths` plus a
+  `width_mul_edgeSlope` rewrite of the head term.
+* `sum_rootValuations`: **Newton's valuation relation** — sum of all root
+  valuations (with multiplicity) = `v(a₀) − v(a_d)`. Each edge contributes `width`
+  roots of valuation `−slope`, so the total is `−∑(width·slope) = −(sum_edgeDrops)
+  = (first).2 − (last).2`. For a hull from index 0 (constant) to index d
+  (leading) this is `v(a₀) − v(a_d)` = valuation of `±a₀/a_d`, the product of the
+  roots.
+* Three-vertex worked synthesis: `edgeDrops = [-2, 1]` (`threeVertex_edgeDrops`),
+  sum `−1` (`threeVertex_sum_drops`), root-valuation sum `2 + 2·(−1/2) = 1`
+  (`threeVertex_sum_rootValuations`) = `v(a₀) − v(a_d) = 2 − 1`.
+
+**Why this matters.** This is the capstone tying both halves of the Newton
+polygon theorem together: once a valuation API on `K((x))[Y]` lands, the analytic
+Newton polygon theorem (slopes = root valuations) composed with `sum_rootValuations`
+recovers the classical relation `∑ v(roots) = v(a₀/a_d)` — the valuation analogue
+of Vieta's product formula. The combinatorial bookkeeping is now complete:
+valuations sorted (slopes), multiplicities counted (widths), and their product
+(total valuation) pinned to the coefficient valuations.
+
+GOTCHAs (session 6):
+* Stale prebuilt olean: `import Proofs.PuiseuxTheoremOQ03` in a separate
+  `#print axioms` file resolves to main's OLD olean, not your edits → "unknown
+  constant". Append the `#print axioms` lines to the file itself and run
+  `LAKE_UNSAFE=1 ./bin/lake env lean` directly, then restore.
+* Verification recipe unchanged: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
+  Proofs/PuiseuxTheoremOQ03.lean` exits 0 (docker host build path unused).
+* `List.sum_map_neg` (map-then-sum-of-negs) is not reliably present — phrase the
+  root-valuation sum as `-(edgeDrops ...).sum` instead of `(... .map Neg.neg).sum`.

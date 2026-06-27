@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T13:53:16-07:00",
-    "iteration": 2,
-    "focus": "Shipped combinatorial Newton polygon (S2-A): IsLowerVertex predicate + structure lemmas + Y^2-x example, verified 0-sorry 0-axiom.",
+    "iteration": 3,
+    "focus": "S6 synthesis: Newton's valuation relation — width_mul_edgeSlope + edgeDrops + sum_edgeDrops (telescoping) + sum_rootValuations (sum of root valuations = v(a0)-v(ad)), fusing the slope (valuation) and width (multiplicity) layers. 678 lines / 39 theorems / 8 defs, 0-sorry 0-axiom.",
     "blockers": [],
-    "nextAction": "S2-A harder half: Newton polygon theorem (edge slopes = root valuations) once a valuation API on K((x))[Y] exists; then S2-B termination measure.",
+    "nextAction": "Hull-construction recursion (assemble the IsChain vertex list by peeling edges) and the analytic Newton polygon theorem (edge slopes = root valuations), the latter blocked on a valuation API on K((x))[Y] in Mathlib.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S5 degree-counting: added edge-width telescoping (sum_edgeWidths_eq_degree) — the multiplicity half of the Newton polygon, complementing slope-sorting. File 589 lines / 33 theorems / 7 defs, verified 0-sorry 0-axiom. Remaining: hull-construction recursion (chain assembly) and the analytic Newton polygon theorem (blocked on K((x))[Y] valuation API).",
+    "progressSummary": "S6 synthesis: Newton's valuation relation — fused the slope (valuation) and width (multiplicity) layers. width_mul_edgeSlope (width*slope = vertical drop), edgeDrops, sum_edgeDrops (telescoping to (last).2-(first).2), sum_rootValuations (sum of all root valuations = v(a0)-v(ad), the constant-over-leading valuation = valuation of the product of roots). File 678 lines / 39 theorems / 8 defs, verified 0-sorry 0-axiom. Remaining: hull-construction recursion (chain assembly) and the analytic Newton polygon theorem (blocked on K((x))[Y] valuation API).",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -38,7 +38,8 @@
       "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)",
       "exists_isLowerEdge_of_leftmost (PuiseuxTheoremOQ03.lean): leftmost support point -> genuine IsLowerEdge via List.argmin(edgeSlope p); first hull-construction step toward S2-B",
       "Maintenance: fixed 3 List.not_mem_nil q sites broken by Mathlib cache update (explicit arg removed)",
-      "edgeWidths/sum_edgeWidths/edgeWidths_pos/sum_edgeWidths_eq_degree in PuiseuxTheoremOQ03.lean (telescoping degree identity; widths sum to index span = degree; all 0-axiom)"
+      "edgeWidths/sum_edgeWidths/edgeWidths_pos/sum_edgeWidths_eq_degree in PuiseuxTheoremOQ03.lean (telescoping degree identity; widths sum to index span = degree; all 0-axiom)",
+      "width_mul_edgeSlope/edgeDrops/sum_edgeDrops/sum_rootValuations in PuiseuxTheoremOQ03.lean (Newton's valuation relation: width*slope = vertical drop, telescoping to (last).2-(first).2; sum of root valuations = v(a0)-v(ad); all 0-axiom)"
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
@@ -46,7 +47,9 @@
       "Model support points as Prod (N x Q), not a custom structure: fin_cases + norm_num then dispatch example goals cleanly.",
       "Edge existence reuses isLowerVertex_of_leftmost machinery verbatim: the argmin-of-edgeSlope supporting line through the leftmost point already passes through its argmin partner, so it is an edge, not merely a vertex witness.",
       "Mathlib drift hazard: gallery .lean files verified months ago can silently break against an updated local olean cache (List.not_mem_nil dropped its explicit argument); prefer simp over name-specific applications for List membership-in-nil contradictions.",
-      "Edge WIDTHS carry root multiplicities, complementing edge SLOPES (valuations): the polygon assigns (q.1-p.1) roots of valuation -edgeSlope p q to each edge. sum_edgeWidths + edgeSlopes_pairwise_le together are the full combinatorial bookkeeping of the Newton polygon theorem."
+      "Edge WIDTHS carry root multiplicities, complementing edge SLOPES (valuations): the polygon assigns (q.1-p.1) roots of valuation -edgeSlope p q to each edge. sum_edgeWidths + edgeSlopes_pairwise_le together are the full combinatorial bookkeeping of the Newton polygon theorem.",
+      "Multiplying the two layers gives Newton's valuation relation: width*slope per edge = the vertical drop q.2-p.2 (width_mul_edgeSlope), so the per-edge valuation contributions telescope (sum_edgeDrops) and the sum of all root valuations = v(a0)-v(ad). Note sum_edgeDrops NEEDS the chain hypothesis (unlike sum_edgeWidths) because width*slope only collapses to the drop on a non-degenerate edge (distinct indices).",
+      "Stale-olean gotcha: a separate file importing PuiseuxTheoremOQ03 to run #print axioms picks up main's OLD olean, not in-worktree edits (unknown-constant errors). Append #print axioms to the file itself and run lake env lean directly. Also: List.sum_map_neg is unreliable; phrase root-valuation sum as -(edgeDrops).sum."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
