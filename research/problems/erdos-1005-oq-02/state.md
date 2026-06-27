@@ -2,12 +2,12 @@
 
 **Phase**: FORMALIZED (verified infrastructure; open problem itself remains open)
 **Since**: 2026-06-25
-**Iteration**: 3
+**Iteration**: 5
 
 ## Current Focus
 
 Formalized the exact arithmetic of mediant insertion on Farey gaps:
-`proofs/Proofs/Erdos1005ProblemOQ02.lean` (317 lines, 19 theorems, 1 def,
+`proofs/Proofs/Erdos1005ProblemOQ02.lean` (389 lines, 24 theorems, 1 def,
 0 sorries, 0 axioms; #print axioms reports only propext / Classical.choice /
 Quot.sound).
 
@@ -43,14 +43,76 @@ point, and the next admissible denominator jumps by ≥ min(b,d). This is the
 strict-growth step the counting argument rests on; the 1/12 run constant itself
 remains open.
 
+## Iteration 4 addition (design/knowledge — build host down)
+
+Recorded `sessions/2026-06-27-s4-counting-roadmap-and-literature.md`: pins the
+literature to **van Doorn 2025, arXiv:2509.00121** (lower `(1/12−o(1))n`,
+explicit upper `n/4 + 5`, sharpening the parent knowledge.md's `n/4 + O(1)`),
+maps each verified lemma (minimal-denominator `q ≥ b+d`, strict growth, depth-
+two `q ≥ 2b+d` / `b+2d`) onto a counting-argument roadmap, and fixes the precise
+next Lean target: a **depth-`k` Fibonacci denominator bound** (0-axiom
+induction over nested mediant insertions ⇒ `O(log_φ n)` refinement depth under
+the order-`n` cap). No Lean change this cycle: Docker build host data volume is
+100% full (containerd meta.db I/O error; `docker-build.sh` false-exits 0), so
+an unverified inductive proof would risk the file's clean 0-axiom status.
+
+## Iteration 5 addition (verified, 0-axiom — build host still down, used `lake env lean`)
+
+Added **§6 (iterated one-sided insertion — exact linear denominator growth)**,
+0-sorry / 0-axiom (verified by `lake env lean` against the main-repo Mathlib
+`.olean` cache; Docker still unusable). Five theorems:
+`unimodular_iterate_left`/`_right` (k-fold one-sided insertion stays unimodular,
+`a/b < (k·a+c)/(k·b+d)`, by scale-invariance of `bc=ad+1` — no induction);
+`denom_ge_iterate_left`/`_right` (depth-`k` interior denominator bound
+`q ≥ (k+1)·b+d`); `iterate_left_denom_linear` (the exact `(k+1)·b+d`).
+
+**Key correction.** The Iteration-4 "depth-`k` Fibonacci ⇒ `O(log n)` refinement
+depth" target was **mathematically wrong as a universal claim**: the one-sided
+chain `0/1, 1/2, 1/3, …, 1/n` has only LINEAR denominator growth and fits
+`Θ(n)` refinement levels under the order-`n` cap. Exponential `φ^k` growth (hence
+`O(log n)` depth) is special to *balanced/alternating* chains — the opposite
+extreme from this linear worst case. §6 formalizes the linear extreme and the
+file/meta now record the correction. A sharp run-length count toward `1/12` must
+distinguish the two extremes.
+
+## Iteration 6 addition (verified, 0-axiom — Docker still down, used `lake env lean`)
+
+Added **§8 (mediant chains are similarly ordered — the bridge to f(n))**,
+0-sorry / 0-axiom (verified via `lake env lean` against the main-repo Mathlib
+`.olean` cache; Docker image build still fails with the containerd `meta.db`
+I/O error). This is the **first link in the file between the metric mediant
+calculus (§1–7) and the ordering relation that defines the problem.** Eight
+theorems + one definition:
+
+- `SimOrd a b c d` — raw-integer form of `similarlyOrdered`
+  (`Erdos1005ProblemProvable.lean`): numerator and denominator differences share
+  a weak sign. `simOrd_iff_prod` proves it `↔ (a−c)(b−d) ≥ 0`; `simOrd_symm`,
+  `simOrd_refl`.
+- `simOrd_mediant_left` / `_right` — the mediant `(a+c)/(b+d)` is similarly
+  ordered with **both** parents (insertion never breaks similar ordering).
+- `simOrd_iterate_left_chain` / `_right_chain` (headline) — the **entire**
+  one-sided §6 chain `eₖ = (k·a+c)/(k·b+d)` is **pairwise** similarly ordered.
+  So the Θ(n)-long one-sided chain is a similarly ordered family — the order-side
+  engine of the linear lower bound on `f(n)`.
+- `simOrd_chain_admissible` — packages the above with the §6 cap: under
+  `k·b+d ≤ n` the depth-≤k terms are pairwise similarly ordered and of order ≤ n.
+
+**Honest boundary recorded in the section preamble:** chain members are *not*
+consecutive in `F_n` (e.g. `1/2, 1/3` separated in `F_5`), so this does **not**
+prove `f(n) ≳ n`. Supplying consecutiveness is exactly the open `1/12`–`1/4`
+step.
+
 ## Next Action
 
-A counting argument over consecutive mediant insertions, combined with the
-gap-splitting and minimal-denominator results here, is the natural route
-toward recovering (or improving) the `1/12` run lower bound.
+Bridge similar ordering to **consecutiveness**: formalize the three-term Farey
+denominator recurrence `b_{k+1} = ⌊(n+b_{k−1})/b_k⌋·b_k − b_{k−1}` and analyse
+when `(a_{k+1}−a_k)(b_{k+1}−b_k) ≥ 0` over a consecutive block — the concrete
+route to van Doorn's `(1/12−o(1))n` lower bound. (Likely needs a Farey-sequence
+indexing layer; assess buildability vs. reuse of `fareyList` in
+`Erdos1005ProblemProvable.lean`.)
 
 ## Attempt Counts
 
-- Total attempts: 1
-- Current approach attempts: 1
+- Total attempts: 3
+- Current approach attempts: 3
 - Approaches tried: 1

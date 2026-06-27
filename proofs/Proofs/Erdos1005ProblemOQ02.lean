@@ -30,6 +30,13 @@ which any such argument is built:
   rational `p/q` with `a/b < p/q < c/d` has `q ≥ b + d`, with equality forcing
   `p/q = (a+c)/(b+d)`.  Thus *no* refinement of a Farey gap can do better than
   mediant insertion — the denominator `b + d` is a hard lower bound.
+* **Depth dichotomy (§ 6–7).** Iterating insertion shows the two extreme descent
+  regimes differ exponentially: a *one-sided* chain grows denominators linearly
+  (`(k+1)·b + d`), admitting `Θ(n)` levels under the order cap, while a
+  *balanced* (alternating) chain follows the Fibonacci recurrence — denominators
+  `F_{2k+3}` doubling every two levels — admitting only `O(log n)` levels.
+  Cassini's identity certifies the balanced bounding pairs as genuine Farey
+  neighbours.
 
 Every theorem below is fully machine-checked: 0 sorries, 0 axioms (the file is
 self-contained and does **not** import the `axiom longestSimilarRun` of the
@@ -313,5 +320,319 @@ theorem denom_ge_of_between_ne_mediant {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 
   · -- p/q lies strictly above the mediant ⇒ inside the right sub-gap
     have hsub := denom_ge_right_subgap hb hd hq h hM hhi
     omega
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 6: Iterated one-sided insertion — exact linear denominator growth
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+This section generalises the depth-two bounds of § 5 to arbitrary depth and, in
+doing so, **corrects a tempting but false heuristic**: that the order-`n`
+denominator cap forces only `O(log n)` mediant-refinement levels (a "Fibonacci /
+golden-ratio" depth bound).  Exponential `φ^k` denominator growth is special to
+*balanced* (alternating left/right) chains.  The *worst case* is the one-sided
+chain `a/b, (a+c)/(b+d), (2a+c)/(2b+d), …`, whose `k`-th mediant has denominator
+exactly `(k+1)·b + d` — **linear** in the depth `k`.  Concretely, the all-left
+chain from the root gap `0/1 < 1/1` is `0/1, 1/2, 1/3, …, 1/n`, giving `Θ(n)`
+refinement levels under the cap `q ≤ n`, not `O(log n)`.  Any genuine run-length
+count must therefore distinguish balanced from one-sided descent — the two
+extremes differ by an exponential factor in admissible depth.
+-/
+
+/-- **Iterated left insertion stays unimodular.**  Inserting the mediant into the
+*left* sub-gap `k` times turns the unimodular pair `a/b < c/d` into
+`a/b < (k·a + c)/(k·b + d)`, which is again unimodular.  No induction is needed:
+the relation `b·c = a·d + 1` is invariant under `c ↦ k·a + c`, `d ↦ k·b + d`
+(the added `k·a·b` cancels). -/
+theorem unimodular_iterate_left (k : ℕ) {a b c d : ℕ} (h : Unimodular a b c d) :
+    Unimodular a b (k * a + c) (k * b + d) := by
+  unfold Unimodular at h ⊢
+  have h' : (b : ℤ) * c = a * d + 1 := by exact_mod_cast h
+  have : (b : ℤ) * (k * a + c) = a * (k * b + d) + 1 := by linear_combination h'
+  exact_mod_cast this
+
+/-- **Iterated right insertion stays unimodular.**  Symmetrically, inserting the
+mediant into the *right* sub-gap `k` times turns `a/b < c/d` into
+`(a + k·c)/(b + k·d) < c/d`, again unimodular. -/
+theorem unimodular_iterate_right (k : ℕ) {a b c d : ℕ} (h : Unimodular a b c d) :
+    Unimodular (a + k * c) (b + k * d) c d := by
+  unfold Unimodular at h ⊢
+  have h' : (b : ℤ) * c = a * d + 1 := by exact_mod_cast h
+  have : ((b : ℤ) + k * d) * c = (a + k * c) * d + 1 := by linear_combination h'
+  exact_mod_cast this
+
+/-- **Depth-`k` denominator bound, left chain.**  The `k`-fold left sub-gap
+`(a/b, (k·a+c)/(k·b+d))` is unimodular, so every fraction strictly inside it has
+denominator `q ≥ b + (k·b + d) = (k+1)·b + d`.  The bound is **linear** in `k`:
+each extra refinement level along a one-sided chain costs only `b` in
+denominator, so up to `Θ(n)` such levels fit under the order-`n` cap. -/
+theorem denom_ge_iterate_left (k : ℕ) {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (a : ℚ) / b < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (↑(k * a + c) : ℚ) / ↑(k * b + d)) :
+    b + (k * b + d) ≤ q := by
+  have hbd : 0 < k * b + d := by omega
+  exact denom_ge_of_between hb hbd hq (unimodular_iterate_left k h) hlo hhi
+
+/-- **Depth-`k` denominator bound, right chain.**  Symmetric to
+`denom_ge_iterate_left`: every fraction strictly inside the `k`-fold right
+sub-gap `((a+k·c)/(b+k·d), c/d)` has denominator `q ≥ (b + k·d) + d`. -/
+theorem denom_ge_iterate_right (k : ℕ) {a b c d p q : ℕ} (hb : 0 < b) (hd : 0 < d)
+    (hq : 0 < q) (h : Unimodular a b c d)
+    (hlo : (↑(a + k * c) : ℚ) / ↑(b + k * d) < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (c : ℚ) / d) :
+    (b + k * d) + d ≤ q := by
+  have hbd : 0 < b + k * d := by omega
+  exact denom_ge_of_between hbd hd hq (unimodular_iterate_right k h) hlo hhi
+
+/-- **The one-sided mediant denominator is exactly linear in depth.**  Reading
+`denom_ge_iterate_left` at the successor depth, the mediant produced by `k+1`
+left insertions sits at denominator `b + (k·b + d) = (k+1)·b + d`.  This exact
+identity is the witness that one-sided descent grows denominators *linearly*, so
+the number of admissible refinement levels under `q ≤ n` is `Θ(n)`. -/
+theorem iterate_left_denom_linear (k b d : ℕ) :
+    b + (k * b + d) = (k + 1) * b + d := by ring
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 7: Balanced (alternating) insertion — exponential denominator growth
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+This section establishes the **other extreme** of the dichotomy announced in § 6.
+Where the one-sided chain grows denominators *linearly* (`(k+1)·b + d`), the
+*balanced* chain — the path through the Stern–Brocot tree that alternates left
+and right at every level — grows them *exponentially*.
+
+The balanced path from the root gap `0/1 < 1/1` produces the mediants
+`1/2, 2/3, 3/5, 5/8, 8/13, …`: consecutive ratios of Fibonacci numbers.  The
+bounding pairs along this path are exactly the consecutive Fibonacci fractions
+`F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2}`, which we show below are genuine unimodular
+(adjacent Farey) pairs, so they really do arise from mediant insertion.  Their
+mediant has denominator `F_{2k+1} + F_{2k+2} = F_{2k+3}`, so the denominator
+obeys the Fibonacci recurrence and therefore **at least doubles every two
+levels**.  Consequently only `O(log n)` balanced levels fit under the cap
+`q ≤ n`, versus the `Θ(n)` one-sided levels of § 6 — an exponential separation
+between the two descent strategies, and the precise content of the heuristic
+that § 6 warned must *not* be applied to the worst case.
+-/
+
+/-- **Cassini's identity** (over `ℤ`).  `F_{n+1}² − F_n·F_{n+2} = (−1)ⁿ`.
+This is the signed version of unimodularity for consecutive Fibonacci fractions:
+the determinant of `[[F_n, F_{n+1}], [F_{n+1}, F_{n+2}]]` is `(−1)ⁿ`.  The proof
+is a one-step induction: expanding `F_{n+3}` and `F_{n+2}` via the recurrence
+turns the successor determinant into the negative of its predecessor. -/
+theorem fib_cassini (n : ℕ) :
+    (Nat.fib (n + 1) : ℤ) ^ 2 - Nat.fib n * Nat.fib (n + 2) = (-1) ^ n := by
+  induction n with
+  | zero => norm_num [Nat.fib_zero, Nat.fib_one, Nat.fib_two]
+  | succ k ih =>
+    have e2 : (Nat.fib (k + 2) : ℤ) = Nat.fib k + Nat.fib (k + 1) := by
+      exact_mod_cast Nat.fib_add_two
+    have e3 : (Nat.fib (k + 3) : ℤ) = Nat.fib (k + 1) + Nat.fib (k + 2) := by
+      exact_mod_cast Nat.fib_add_two
+    have hkey :
+        (Nat.fib (k + 1 + 1) : ℤ) ^ 2 - Nat.fib (k + 1) * Nat.fib (k + 1 + 2)
+          = -((Nat.fib (k + 1) : ℤ) ^ 2 - Nat.fib k * Nat.fib (k + 2)) := by
+      have i1 : k + 1 + 1 = k + 2 := rfl
+      have i2 : k + 1 + 2 = k + 3 := rfl
+      rw [i1, i2, e3, e2]; ring
+    rw [hkey, ih, pow_succ]; ring
+
+/-- **Consecutive Fibonacci fractions are a unimodular (Farey) pair.**  Reading
+Cassini at the *even* index `n = 2k` gives `F_{2k+1}² = F_{2k}·F_{2k+2} + 1`,
+which is exactly `Unimodular F_{2k} F_{2k+1} F_{2k+1} F_{2k+2}`.  Thus the
+balanced Stern–Brocot path consists of genuine adjacent Farey pairs, and the
+minimal-denominator machinery of § 4 applies to it verbatim. -/
+theorem unimodular_fib_even (k : ℕ) :
+    Unimodular (Nat.fib (2 * k)) (Nat.fib (2 * k + 1))
+               (Nat.fib (2 * k + 1)) (Nat.fib (2 * k + 2)) := by
+  unfold Unimodular
+  have hc := fib_cassini (2 * k)
+  have hsign : ((-1 : ℤ)) ^ (2 * k) = 1 := by rw [pow_mul]; norm_num
+  rw [hsign] at hc
+  have h2 : (Nat.fib (2 * k + 1) : ℤ) * Nat.fib (2 * k + 1)
+      = Nat.fib (2 * k) * Nat.fib (2 * k + 2) + 1 := by linear_combination hc
+  exact_mod_cast h2
+
+/-- **Two levels at least double the denominator.**  `2·F_k ≤ F_{k+2}`, because
+`F_{k+2} = F_k + F_{k+1} ≥ F_k + F_k`.  This is the engine of exponential
+growth: each pair of balanced refinement levels multiplies the denominator by at
+least `2`, in sharp contrast to the additive `+b` cost of a one-sided level. -/
+theorem fib_two_step_double (k : ℕ) : 2 * Nat.fib k ≤ Nat.fib (k + 2) := by
+  rw [Nat.fib_add_two]
+  have := Nat.fib_le_fib_succ (n := k)
+  omega
+
+/-- **Exponential lower bound on the balanced denominator.**  `2ʲ ≤ F_{2j+1}`.
+The depth-`2j` balanced bounding fraction already has denominator at least `2ʲ`,
+so it grows at least as fast as `2^{depth/2} = (√2)^{depth}`.  (The true rate is
+`φ^{depth}`; `√2` is the clean integer floor.) -/
+theorem fib_pow_lower (j : ℕ) : 2 ^ j ≤ Nat.fib (2 * j + 1) := by
+  induction j with
+  | zero => simp
+  | succ k ih =>
+    have h2 : 2 * 2 ^ k ≤ 2 * Nat.fib (2 * k + 1) := by omega
+    have hd : 2 * Nat.fib (2 * k + 1) ≤ Nat.fib (2 * k + 1 + 2) :=
+      fib_two_step_double (2 * k + 1)
+    have hpow : 2 ^ (k + 1) = 2 * 2 ^ k := by ring
+    have hidx : 2 * (k + 1) + 1 = 2 * k + 1 + 2 := by ring
+    rw [hpow, hidx]
+    omega
+
+/-- **The balanced mediant obeys the Fibonacci recurrence.**  The mediant of the
+unimodular pair `F_{2k}/F_{2k+1} < F_{2k+1}/F_{2k+2}` has denominator
+`F_{2k+1} + F_{2k+2} = F_{2k+3}`: the next Fibonacci number.  So one balanced
+refinement step advances the denominator index by two — the exponential
+counterpart of `iterate_left_denom_linear`. -/
+theorem balanced_mediant_denom (k : ℕ) :
+    Nat.fib (2 * k + 1) + Nat.fib (2 * k + 2) = Nat.fib (2 * k + 3) := by
+  have h : Nat.fib (2 * k + 1 + 2) = Nat.fib (2 * k + 1) + Nat.fib (2 * k + 1 + 1) :=
+    Nat.fib_add_two
+  simpa [show 2 * k + 1 + 2 = 2 * k + 3 from rfl,
+         show 2 * k + 1 + 1 = 2 * k + 2 from rfl] using h.symm
+
+/-- **Minimal denominator in a balanced gap.**  Specialising `denom_ge_of_between`
+to the Fibonacci pair: every fraction strictly between `F_{2k}/F_{2k+1}` and
+`F_{2k+1}/F_{2k+2}` has denominator `q ≥ F_{2k+3}`.  Combined with
+`fib_pow_lower` this forces `q` to grow exponentially with the balanced depth. -/
+theorem denom_ge_balanced (k : ℕ) {p q : ℕ} (hq : 0 < q)
+    (hlo : (Nat.fib (2 * k) : ℚ) / Nat.fib (2 * k + 1) < (p : ℚ) / q)
+    (hhi : (p : ℚ) / q < (Nat.fib (2 * k + 1) : ℚ) / Nat.fib (2 * k + 2)) :
+    Nat.fib (2 * k + 3) ≤ q := by
+  have hb : 0 < Nat.fib (2 * k + 1) := by rw [Nat.fib_pos]; omega
+  have hd : 0 < Nat.fib (2 * k + 2) := by rw [Nat.fib_pos]; omega
+  have hge := denom_ge_of_between hb hd hq (unimodular_fib_even k) hlo hhi
+  rwa [balanced_mediant_denom] at hge
+
+/-- **The dichotomy, quantified.**  If the depth-`2j` balanced bounding fraction
+`F_{2j+1}` fits under the order cap `n` (i.e. `F_{2j+1} ≤ n`), then `2ʲ ≤ n`, so
+`j ≤ log₂ n`.  Only `O(log n)` balanced levels are admissible — an *exponential*
+separation from § 6, where `iterate_left_denom_linear` admits `Θ(n)` one-sided
+levels under the same cap.  Any honest run-length count for `f(n)` must therefore
+distinguish these two descent regimes. -/
+theorem balanced_depth_log (j n : ℕ) (hcap : Nat.fib (2 * j + 1) ≤ n) :
+    2 ^ j ≤ n :=
+  le_trans (fib_pow_lower j) hcap
+
+-- ══════════════════════════════════════════════════════════════════
+-- § 8: Mediant chains are similarly ordered — the bridge to f(n)
+-- ══════════════════════════════════════════════════════════════════
+
+/-
+Sections 1–7 develop the *metric* side of mediant insertion (gap sizes,
+denominators, depth). The open problem, however, is about the *ordering* side:
+`f(n)` counts the longest run of consecutive **similarly ordered** Farey
+fractions, where `a/b` and `c/d` are similarly ordered iff
+`(a − c)·(b − d) ≥ 0` (numerator and denominator move the same way).  This
+section is the first link in the file between the two: it shows that mediant
+insertion *automatically produces* similarly ordered families.
+
+The headline is `simOrd_iterate_left_chain` / `_right_chain`: the entire
+one-sided mediant chain of § 6 — of length `Θ(n)` under the order cap (§ 6) —
+is **pairwise** similarly ordered.  This is exactly the combinatorial engine
+behind the linear lower bound `f(n) ≥ c·n`: monotone mediant descent never
+breaks similar ordering.
+
+What this does **not** do — and the honest gap to the open constant — is supply
+*consecutiveness*.  The chain `0/1, 1/2, 1/3, …, 1/n` is similarly ordered but
+its members are **not** adjacent in `F_n` (e.g. `1/2, 1/3` are separated in
+`F_5`).  Turning a similarly ordered mediant chain into a similarly ordered run
+of *consecutive* Farey fractions is precisely where the `1/12`–`1/4` optimization
+lives.  The predicate `SimOrd` below matches `similarlyOrdered` of
+`Erdos1005ProblemProvable.lean` verbatim, so these lemmas plug directly into the
+run definition there.
+-/
+
+/-- **Similar ordering** of `a/b` and `c/d`, as a predicate on the raw integer
+data: the numerator and denominator differences have the same (weak) sign.  This
+is definitionally the `similarlyOrdered` relation of
+`Erdos1005ProblemProvable.lean`. -/
+def SimOrd (a b c d : ℕ) : Prop :=
+  ((a : ℤ) - c ≥ 0 ∧ (b : ℤ) - d ≥ 0) ∨ ((a : ℤ) - c ≤ 0 ∧ (b : ℤ) - d ≤ 0)
+
+/-- Similar ordering is symmetric (swap the two fractions). -/
+theorem simOrd_symm {a b c d : ℕ} (h : SimOrd a b c d) : SimOrd c d a b := by
+  rcases h with ⟨h1, h2⟩ | ⟨h1, h2⟩
+  · exact Or.inr ⟨by linarith, by linarith⟩
+  · exact Or.inl ⟨by linarith, by linarith⟩
+
+/-- Similar ordering is reflexive. -/
+theorem simOrd_refl (a b : ℕ) : SimOrd a b a b := Or.inl ⟨by simp, by simp⟩
+
+/-- **Product characterization.**  `SimOrd` holds iff the product of the two
+differences is nonnegative, `(a − c)·(b − d) ≥ 0`.  This is the form most
+convenient for arithmetic and shows `SimOrd` is exactly "same sign". -/
+theorem simOrd_iff_prod {a b c d : ℕ} :
+    SimOrd a b c d ↔ ((a : ℤ) - c) * ((b : ℤ) - d) ≥ 0 := by
+  constructor
+  · rintro (⟨h1, h2⟩ | ⟨h1, h2⟩)
+    · exact mul_nonneg h1 h2
+    · nlinarith [h1, h2]
+  · intro h
+    rcases le_or_gt 0 ((a : ℤ) - c) with ha | ha
+    · rcases le_or_gt 0 ((b : ℤ) - d) with hb | hb
+      · exact Or.inl ⟨ha, hb⟩
+      · -- `(a-c) ≥ 0` and `(b-d) < 0` force `(a-c) = 0` (else product < 0)
+        have : (a : ℤ) - c ≤ 0 := by nlinarith
+        exact Or.inr ⟨this, by linarith⟩
+    · rcases le_or_gt 0 ((b : ℤ) - d) with hb | hb
+      · have : (b : ℤ) - d ≤ 0 := by nlinarith
+        exact Or.inr ⟨by linarith, this⟩
+      · exact Or.inr ⟨by linarith, by linarith⟩
+
+/-- **The mediant is similarly ordered with its left parent.**  Going from `a/b`
+to its mediant `(a+c)/(b+d)` increases both numerator (by `c`) and denominator
+(by `d`), so the two are similarly ordered. -/
+theorem simOrd_mediant_left (a b c d : ℕ) : SimOrd (a + c) (b + d) a b :=
+  Or.inl ⟨by push_cast; linarith, by push_cast; linarith⟩
+
+/-- **The mediant is similarly ordered with its right parent.**  Going from the
+mediant `(a+c)/(b+d)` to `c/d` decreases both numerator (by `a`) and denominator
+(by `b`), so the two are similarly ordered. -/
+theorem simOrd_mediant_right (a b c d : ℕ) : SimOrd (a + c) (b + d) c d :=
+  Or.inl ⟨by push_cast; linarith, by push_cast; linarith⟩
+
+/-- **The one-sided (left) mediant chain is pairwise similarly ordered.**  Along
+the § 6 left chain `eₖ = (k·a + c)/(k·b + d)`, deeper terms have larger numerator
+*and* larger denominator (both grow linearly in the depth `k`), so any two terms
+`eₖ` (`j ≤ k`) are similarly ordered.  Hence the **whole chain is a similarly
+ordered family** — the order-side counterpart of the metric depth bounds of § 6,
+and the engine of the linear lower bound on `f(n)`. -/
+theorem simOrd_iterate_left_chain (a b c d j k : ℕ) (hjk : j ≤ k) :
+    SimOrd (k * a + c) (k * b + d) (j * a + c) (j * b + d) := by
+  have hk : (j : ℤ) ≤ k := by exact_mod_cast hjk
+  refine Or.inl ⟨?_, ?_⟩
+  · have : ((k : ℤ) - j) * a ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+  · have : ((k : ℤ) - j) * b ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+
+/-- **The one-sided (right) mediant chain is pairwise similarly ordered.**
+Symmetric to `simOrd_iterate_left_chain` for the § 6 right chain
+`eₖ = (a + k·c)/(b + k·d)`. -/
+theorem simOrd_iterate_right_chain (a b c d j k : ℕ) (hjk : j ≤ k) :
+    SimOrd (a + k * c) (b + k * d) (a + j * c) (b + j * d) := by
+  have hk : (j : ℤ) ≤ k := by exact_mod_cast hjk
+  refine Or.inl ⟨?_, ?_⟩
+  · have : ((k : ℤ) - j) * c ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+  · have : ((k : ℤ) - j) * d ≥ 0 := mul_nonneg (by linarith) (by positivity)
+    push_cast; nlinarith
+
+/-- **Similarly ordered chain under the order cap.**  Combining the order-side
+fact (`simOrd_iterate_left_chain`) with the metric admissibility from § 6: every
+term `eⱼ = (j·a + c)/(j·b + d)` of the left chain with depth `j ≤ k` has
+denominator `≤ k·b + d`, and all such terms are pairwise similarly ordered.  So
+if `k·b + d ≤ n`, the chain supplies `k + 1` pairwise similarly ordered fractions
+all of order `≤ n`.  Since `k` can be taken `≈ (n − d)/b = Θ(n)`, mediant descent
+produces *linearly long* similarly ordered families under the order-`n` cap.
+(That these are not yet *consecutive* in `F_n` is the remaining open step — see
+the section preamble.) -/
+theorem simOrd_chain_admissible (a b c d k n : ℕ) (hcap : k * b + d ≤ n)
+    {i j : ℕ} (hij : i ≤ j) (hjk : j ≤ k) :
+    SimOrd (j * a + c) (j * b + d) (i * a + c) (i * b + d) ∧ j * b + d ≤ n := by
+  refine ⟨simOrd_iterate_left_chain a b c d i j hij, ?_⟩
+  have : j * b ≤ k * b := Nat.mul_le_mul_right b hjk
+  omega
 
 end Erdos1005OQ02
