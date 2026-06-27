@@ -474,3 +474,70 @@ of these on the raw `Finset`.
   `IsCanon s := ∀ k, lexLE (s.verts 0) (s.verts k)` with `lexLE` the lattice lex
   order on `BaryPoint` (Fin→ℕ); prove decidable (finite ∀) and
   per-geometry-unique (lex has a unique minimum; base + chain ⇒ full encoding).
+
+## Session 2026-06-27 (Session 6) — VERIFIED the bridge; `SpernerGrid` is broken
+
+**Mode**: ACT. **Outcome**: step-0 bridge VERIFIED + foundation decoupled.
+
+Build infra partially recovered: Docker is still corrupt (containerd `meta.db`
+input/output errors; the 9 "Up 6 hours" `lean-build-*` containers are actually
+dead/marked-for-removal and `docker rm -f` fails on them), but the standalone
+`lake env lean` fallback works once disk pressure eased (root FS went 97%→50% mid
+session as other agents drained). Recipe used (all deps `import Mathlib` only, and
+the worktree `.lake` symlinks to the main repo's cached oleans):
+
+```
+cd proofs
+LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerGridBary.lean \
+  -o .lake/build/lib/lean/Proofs/SpernerGridBary.olean
+LAKE_UNSAFE=1 ./bin/lake env lean Proofs/SpernerNDimOQ02.lean \
+  -o .lake/build/lib/lean/Proofs/SpernerNDimOQ02.olean
+```
+
+**GOTCHA**: the local-package olean search dir is `.lake/build/lib/lean/Proofs/`
+(WITH the `/lean/` segment — that is where the ~95 cached gallery oleans live), NOT
+`.lake/build/lib/Proofs/`. `-o` to the wrong dir silently leaves the import
+unresolved. `SpernerNDim.olean` was already cached there (Jun 25 Docker build), so
+it resolved; `SpernerGrid.olean` was absent because the file never compiled.
+
+### KEY DISCOVERY: `SpernerNDimOQ02.lean` could never have built as merged
+
+The step-0 bridge merged in #30751 does `import Proofs.SpernerGrid`. Building
+`SpernerGrid.lean` standalone yields **21 errors** — `omega could not prove the
+goal` ×many, `Application type mismatch`, `simp made no progress`,
+`Tactic rewrite failed`, and a hard parse error `unexpected token '='` at 1372 —
+all in the *oriented* `GridSimplex`/`gridAdj` block (lines ~600–1556), plus the 4
+pre-existing `sorry`s. This is precisely the machinery whose `boundary_doors_odd`
+is **false** (the defect this problem exists to repair) and that Option C abandons.
+It is NOT listed in `proofs/Proofs.lean` (the build aggregator skips
+`SpernerNDimOQ02`, `SpernerNDimOQ01OQ01`, and others), so with Docker down the
+breakage was invisible — the bridge was "MERGED, UNVERIFIED" and in fact unbuildable.
+
+### FIX (this session): clean foundation module
+
+`Proofs/SpernerGridBary.lean` — a verbatim extraction of `SpernerGrid.lean`'s
+SECTION II (the `BaryPoint d N` structure, its `DecidableEq`/`Fintype` instances,
+`BaryPoint.onFace`, `IsSperner`), `import Mathlib` only, namespace kept as
+`SpernerGrid` (import-disjoint from the broken file, so no module ever sees two
+`SpernerGrid.BaryPoint`). `SpernerNDimOQ02.lean` now imports this instead.
+
+**Verification**: both compile clean; `#print axioms` on `baryEquivVertex`,
+`onFace_toVertex`, `isSperner_iff`, `toVertex_injective` shows only
+`[propext, Classical.choice, Quot.sound]` — no `sorryAx`, no `Lean.ofReduceBool`.
+The bridge is now genuinely a 0-sorry / 0-extra-axiom verified result.
+
+### Consequence for Phase 1 (supersedes Session 4/5 representation plan)
+
+Session 4/5 planned `Simplex := {s : GridSimplex // IsCanon s}`, reusing
+`SpernerGrid.GridSimplex` and its `step_inc`/`step_dec`/`verts_injective` fields
+"for free". **That is no longer available** — `GridSimplex` lives in the broken
+file. Phase 1 must define its own self-contained unoriented cell type on
+`SpernerGridBary.BaryPoint` (base point + a permutation of the d increment
+directions, one canonical rep per geometry) and re-derive the chain lemmas. The
+`IsCanon s := ∀ k, lexLE (s.verts 0) (s.verts k)` idea still applies, but to the
+new self-contained `verts`, not `GridSimplex.verts`.
+
+Also note: the **original end-goal** (reroute `SpernerGrid.sperner_grid`, delete its
+false `boundary_doors_odd`) is gated on `SpernerGrid.lean` compiling at all. The
+verified Option-C instance is better shipped as a **standalone** n-dim Sperner
+theorem over `BaryPoint`, independent of the broken parent file.
