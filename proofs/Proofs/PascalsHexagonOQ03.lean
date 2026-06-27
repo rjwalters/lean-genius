@@ -1257,6 +1257,57 @@ theorem pascal_points_on_pascalProjLine {C : Conic} (hex : InscribedHexagon C) :
    pascalR_on_pascalProjLine hex⟩
 
 -- ============================================================
+-- PART 4i: Uniqueness — two points determine the projective line
+--          (the converse of PART 4h: pinning down *the* Pascal line)
+-- ============================================================
+
+/- PART 4h showed the three Pascal points lie on `pascalProjLine`.  This part
+   proves the converse half of "two points determine a line": *any* projective
+   line through two given points `p, q` is the same projective line as the one
+   they span, `lineThrough p q = p ×₃ q`.  The engine is the vector triple
+   product (BAC–CAB) identity
+       l ×₃ (p ×₃ q) = (l · q) p − (l · p) q,
+   whose right side vanishes precisely because `p` and `q` lie on `l`
+   (`pointOnLine p l : l · p = 0`).  No nondegeneracy is needed for this
+   direction; the result holds for every line through the two points. -/
+
+/-- **Two points determine their line.**  If both `p` and `q` lie on a line `l`,
+    then `l` is the same projective line as `lineThrough p q = p ×₃ q`.  The proof
+    is the BAC–CAB identity `l ×₃ (p ×₃ q) = (l · q) p − (l · p) q`: each
+    component is a fixed linear combination of the two incidence hypotheses
+    `l · p = 0` and `l · q = 0`.  Pure polynomial algebra in the nine
+    coordinates — no axiom, no nondegeneracy. -/
+theorem sameProjLine_of_pointOnLine_pointOnLine
+    {l : ProjLine} {p q : ProjPoint}
+    (hp : pointOnLine p l) (hq : pointOnLine q l) :
+    sameProjLine l (lineThrough p q) := by
+  simp only [pointOnLine, Fin.sum_univ_three] at hp hq
+  unfold sameProjLine lineThrough
+  funext i
+  fin_cases i <;>
+    simp only [cross_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
+               Matrix.cons_val_two, Matrix.tail_cons, Fin.reduceFinMk,
+               Matrix.head_cons, Pi.zero_apply, Fin.isValue]
+  · linear_combination (p 0) * hq - (q 0) * hp
+  · linear_combination (p 1) * hq - (q 1) * hp
+  · linear_combination (p 2) * hq - (q 2) * hp
+
+/-- **Uniqueness of the Pascal line.**  Any projective line `l` through the first
+    two Pascal points `P = AB ∩ DE` and `Q = BC ∩ EF` is the same projective line
+    as `pascalProjLine hex`.  Combined with the incidence of PART 4h
+    (`pascalP_on_pascalProjLine` / `pascalQ_on_pascalProjLine`), this pins down
+    `pascalProjLine hex` as *the* Pascal line: the unique projective line carrying
+    the opposite-side intersection points.  When `P ≠ Q` projectively this is
+    genuine uniqueness; the cross-product characterisation makes the statement
+    hold unconditionally. -/
+theorem sameProjLine_pascalProjLine_of_pointOnLine
+    {C : Conic} (hex : InscribedHexagon C) {l : ProjLine}
+    (hP : pointOnLine (pascalP hex) l) (hQ : pointOnLine (pascalQ hex) l) :
+    sameProjLine l (pascalProjLine hex) := by
+  unfold pascalProjLine
+  exact sameProjLine_of_pointOnLine_pointOnLine hP hQ
+
+-- ============================================================
 -- PART 5: Pascal-Line Map
 -- ============================================================
 
