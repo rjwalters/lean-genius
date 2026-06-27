@@ -54,7 +54,9 @@
     "keyInsights": [
       "Lamé's theorem is fundamentally a statement about minimal inputs: the smallest b that forces n steps is a Fibonacci number, not a halving-style bound.",
       "The golden ratio enters because φ and the Fibonacci sequence are the two canonical solutions of the same linear recurrence xₙ₊₂ = xₙ₊₁ + xₙ; the identity φ² = φ + 1 is all that is needed to compare them.",
-      "Sharpening from 'base 2' to 'base φ' is exactly the content the parent's halving argument cannot see — it requires the converse (input lower) bound, not the forward (step upper) bound."
+      "Sharpening from 'base 2' to 'base φ' is exactly the content the parent's halving argument cannot see — it requires the converse (input lower) bound, not the forward (step upper) bound.",
+      "The whole proof is two parallel two-step inductions on the same recurrence: lame_fib_lower descends the Euclidean recursion two steps at a time so the remainders line up with fib(n+2) and fib(n+3), and golden_pow_le_fib climbs powers of φ two at a time using φ² = φ + 1 — the structural echo between them is why the golden ratio appears at all.",
+      "Optimality is not an afterthought but the point: the parent's Fibonacci family steps (fib (n+2)) (fib (n+1)) = n with fib(n+1) ≤ φⁿ shows the bound is attained, so steps a b ≤ log_φ b + 1 cannot be improved to any larger base — the constant in front of log is genuinely 1, not merely O(1)."
     ],
     "prerequisites": [
       "The Euclidean algorithm and its remainder recurrence a % b",
