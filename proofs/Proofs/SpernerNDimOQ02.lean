@@ -357,4 +357,108 @@ theorem canon_eq_of_facet_and_vertex {s t : CanonSimplex d N}
     image_univ_eq_insert_facet s k, image_univ_eq_insert_facet t l,
     hface, hvert]
 
+-- ============================================================
+-- SECTION: Barycentric facet algebra
+-- ============================================================
+-- The Kuhn-side `facet`/`adj_vertices` data above is the shape the
+-- *abstract* `SpernerTriangulation` field demands.  But the eventual
+-- `adj` (the Freudenthal pivot) is naturally defined on the concrete
+-- `GridSimplex` in *barycentric* coordinates: pivoting across the
+-- `k`-th facet replaces vertex `k` by a neighbour obtained by swapping
+-- two consecutive `incDir` increments, an operation phrased over
+-- `BaryPoint`s, not their Kuhn images.  To discharge `adj_vertices`
+-- (`facet s k = facet s' k'`) and the cross-cell half of
+-- `adj_unique_facet` it is therefore convenient to compute facet
+-- equalities on the barycentric side and transport them across the
+-- injective bridge `toVertex`.
+--
+-- This section sets up that transport: the *barycentric facet*
+-- `baryFacet s k := (univ.erase k).image s.verts`, its image under
+-- `toVertex` is exactly the Kuhn `facet s k`, and (because `toVertex`
+-- is injective) Kuhn-facet equality is *equivalent* to barycentric-facet
+-- equality.  The membership/cardinality/injectivity lemmas mirror the
+-- Kuhn side verbatim, and `canon_eq_of_baryFacet_and_vertex` restates
+-- the cell-recovery coherence entirely in barycentric data — the form
+-- the pivot discharge will cite.  All 0-sorry, 0-axiom.
+
+/-- The barycentric `k`-th **facet** of a canonical cell: the `d`-vertex
+set of `BaryPoint`s obtained by deleting vertex `k`, *before* pushing
+through the Kuhn bridge.  The Freudenthal pivot acts on these. -/
+def baryFacet (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    Finset (SpernerGrid.BaryPoint d N) :=
+  (Finset.univ.erase k).image s.1.verts
+
+/-- Membership in a barycentric facet: a `BaryPoint` lies on `baryFacet s k`
+exactly when it is one of the cell's vertices other than vertex `k`. -/
+theorem mem_baryFacet_iff (s : CanonSimplex d N) (k : Fin (d + 1))
+    (b : SpernerGrid.BaryPoint d N) :
+    b ∈ baryFacet s k ↔ ∃ j : Fin (d + 1), j ≠ k ∧ s.1.verts j = b := by
+  simp only [baryFacet, Finset.mem_image, Finset.mem_erase, Finset.mem_univ, and_true]
+
+/-- **The Kuhn facet is the image of the barycentric facet.**  Pushing
+`baryFacet s k` through the bridge `toVertex` yields exactly the Kuhn-side
+`facet s k`, since `vertices = toVertex ∘ verts`. -/
+theorem facet_eq_image_baryFacet (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    facet s k = (baryFacet s k).image toVertex := by
+  rw [facet, baryFacet, Finset.image_image]
+  rfl
+
+/-- Each barycentric facet carries exactly `d` vertices.  (Mirrors
+`facet_card`, using per-cell barycentric vertex injectivity.) -/
+theorem baryFacet_card (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    (baryFacet s k).card = d := by
+  rw [baryFacet, Finset.card_image_of_injective _ s.1.verts_injective,
+    Finset.card_erase_of_mem (Finset.mem_univ k), Finset.card_univ,
+    Fintype.card_fin]
+  omega
+
+/-- The deleted vertex is absent from its own barycentric facet. -/
+theorem verts_not_mem_baryFacet (s : CanonSimplex d N) (k : Fin (d + 1)) :
+    s.1.verts k ∉ baryFacet s k := by
+  rw [mem_baryFacet_iff]
+  rintro ⟨j, hjk, hj⟩
+  exact hjk (s.1.verts_injective hj)
+
+/-- **The `d + 1` barycentric facets of a single cell are distinct.**
+The within-cell uniqueness underlying `adj_unique_facet`, stated on the
+barycentric side. -/
+theorem baryFacet_injective (s : CanonSimplex d N) :
+    Function.Injective (baryFacet s) := by
+  intro k₁ k₂ h
+  by_contra hne
+  have hmem : s.1.verts k₁ ∈ baryFacet s k₂ :=
+    (mem_baryFacet_iff s k₂ _).mpr ⟨k₁, hne, rfl⟩
+  rw [← h] at hmem
+  exact verts_not_mem_baryFacet s k₁ hmem
+
+/-- **Kuhn-facet equality ⇔ barycentric-facet equality.**  Because the
+bridge `toVertex` is injective, the Kuhn facets of two (possibly
+different) cells coincide exactly when their barycentric facets do.  This
+is what lets the pivot's barycentric facet-sharing computation discharge
+the abstract `adj_vertices` obligation (`facet s k = facet s' k'`). -/
+theorem facet_eq_iff_baryFacet_eq (s t : CanonSimplex d N) (k l : Fin (d + 1)) :
+    facet s k = facet t l ↔ baryFacet s k = baryFacet t l := by
+  rw [facet_eq_image_baryFacet, facet_eq_image_baryFacet]
+  constructor
+  · intro h
+    exact Finset.image_injective toVertex_injective h
+  · intro h
+    rw [h]
+
+/-- **A canonical cell is determined by one barycentric facet and its
+opposite vertex.**  The barycentric restatement of
+`canon_eq_of_facet_and_vertex`: if two canonical cells share a barycentric
+facet (`baryFacet s k = baryFacet t l`) together with the matching deleted
+barycentric vertex (`verts k = verts l`), they are equal.  This is the
+coherence the Freudenthal pivot needs in its own (barycentric) language:
+the (facet, opposite-vertex) pair pins the cell down with no orientation
+ambiguity. -/
+theorem canon_eq_of_baryFacet_and_vertex {s t : CanonSimplex d N}
+    {k l : Fin (d + 1)}
+    (hface : baryFacet s k = baryFacet t l)
+    (hvert : s.1.verts k = t.1.verts l) : s = t := by
+  apply canon_eq_of_facet_and_vertex
+  · rw [facet_eq_image_baryFacet, facet_eq_image_baryFacet, hface]
+  · simp only [vertices, hvert]
+
 end SpernerNDimOQ02
