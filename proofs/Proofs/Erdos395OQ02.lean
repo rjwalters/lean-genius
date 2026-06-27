@@ -121,6 +121,34 @@ theorem orthonormal_smallSum_eq_empty (z : Fin n → E) (hz : Orthonormal ℝ z)
   linarith
 
 /-!
+## Part III½: Saturation (the complementary threshold)
+
+The obstruction shows the favourable event is *empty* once `C² < n`.  The exact
+identity `‖Σεᵢzᵢ‖ = √n` also gives the complementary fact: once the threshold
+reaches `√n`, the favourable event is *everything* — every sign choice lands
+within `C`.  Together these pin the threshold for orthonormal configurations
+sharply at `C = √n`.
+-/
+
+/-- Above the threshold: if `√n ≤ C`, then *every* sign sum of an orthonormal
+family lands within distance `C`. -/
+theorem orthonormal_signedSum_le_of_sqrt_le (z : Fin n → E) (hz : Orthonormal ℝ z)
+    {C : ℝ} (hC : Real.sqrt n ≤ C) (ε : Fin n → ℝ) (hε : IsSign ε) :
+    ‖signedSum z ε‖ ≤ C := by
+  rw [signedSum_norm_of_orthonormal z hz ε hε]; exact hC
+
+/-- **Saturation (set form).** For an orthonormal family and a threshold `C`
+with `√n ≤ C`, the set of sign vectors whose signed sum has norm `≤ C` is the
+*entire* set of sign vectors. -/
+theorem orthonormal_smallSum_eq_univ (z : Fin n → E) (hz : Orthonormal ℝ z)
+    {C : ℝ} (hC : Real.sqrt n ≤ C) :
+    {ε : Fin n → ℝ | IsSign ε ∧ ‖signedSum z ε‖ ≤ C} = {ε : Fin n → ℝ | IsSign ε} := by
+  ext ε
+  simp only [Set.mem_setOf_eq]
+  exact ⟨fun h => h.1,
+    fun hε => ⟨hε, orthonormal_signedSum_le_of_sqrt_le z hz hC ε hε⟩⟩
+
+/-!
 ## Part IV: Probability formulation and falsity of the dimension-free analogue
 
 We now phrase the counting/probability version in `EuclideanSpace ℝ (Fin d)`,
@@ -166,6 +194,42 @@ theorem orthonormal_smallSumProb_eq_zero (z : Fin n → EuclideanSpace ℝ (Fin 
     (hz : Orthonormal ℝ z) (C : ℝ) (hC : C ^ 2 < (n : ℝ)) :
     smallSumProb z C = 0 := by
   rw [smallSumProb, orthonormal_smallSumCount_eq_zero z hz C hC]; simp
+
+/-- Saturation (count form): for `√n ≤ C` *all* `2ⁿ` sign choices are favourable. -/
+theorem orthonormal_smallSumCount_eq_two_pow (z : Fin n → EuclideanSpace ℝ (Fin d))
+    (hz : Orthonormal ℝ z) {C : ℝ} (hC : Real.sqrt n ≤ C) :
+    smallSumCount z C = 2 ^ n := by
+  rw [smallSumCount, Finset.filter_true_of_mem
+    (fun s _ => orthonormal_signedSum_le_of_sqrt_le z hz hC (signOf s) (isSign_signOf s))]
+  simp [Finset.card_univ, Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
+
+/-- Hence for `√n ≤ C` the probability is exactly `1`. -/
+theorem orthonormal_smallSumProb_eq_one (z : Fin n → EuclideanSpace ℝ (Fin d))
+    (hz : Orthonormal ℝ z) {C : ℝ} (hC : Real.sqrt n ≤ C) :
+    smallSumProb z C = 1 := by
+  rw [smallSumProb, orthonormal_smallSumCount_eq_two_pow z hz hC]
+  have h2 : ((2 ^ n : ℕ) : ℝ) = (2 : ℝ) ^ n := by push_cast; ring
+  rw [h2, div_self (by positivity : (2 : ℝ) ^ n ≠ 0)]
+
+/-- **Sharp dichotomy.** For an orthonormal family in `EuclideanSpace ℝ (Fin d)`
+and any threshold `C ≥ 0`, the probability `smallSumProb z C` is a *step
+function*: it is `1` when `n ≤ C²` and `0` when `C² < n`.  The jump occurs
+exactly at `C = √n`, with no intermediate values — the deterministic identity
+`‖Σεᵢzᵢ‖ = √n` leaves no room for a `c/n`-type rate on orthonormal
+configurations.  This pins the threshold growth at `C(d) ~ √n` in the strongest
+(exact, two-valued) form. -/
+theorem orthonormal_smallSumProb_dichotomy (z : Fin n → EuclideanSpace ℝ (Fin d))
+    (hz : Orthonormal ℝ z) (C : ℝ) (hC : 0 ≤ C) :
+    smallSumProb z C = if (n : ℝ) ≤ C ^ 2 then 1 else 0 := by
+  by_cases h : (n : ℝ) ≤ C ^ 2
+  · rw [if_pos h]
+    have hsqrt : Real.sqrt n ≤ C := by
+      have hle : Real.sqrt n ≤ Real.sqrt (C ^ 2) := Real.sqrt_le_sqrt h
+      rwa [Real.sqrt_sq hC] at hle
+    exact orthonormal_smallSumProb_eq_one z hz hsqrt
+  · rw [if_neg h]
+    push_neg at h
+    exact orthonormal_smallSumProb_eq_zero z hz C h
 
 /-- The standard basis of `EuclideanSpace ℝ (Fin n)` is orthonormal; it realizes
 the obstruction in ambient dimension `d = n`. -/
@@ -233,6 +297,11 @@ def ReverseLO_fixedDim (d : ℕ) : Prop :=
   fixed-threshold analogue is FALSE (`dimensionFree_reverseLO_false`): any
   correct higher-dimensional statement must bound the dimension `d`
   independently of `n` (or grow the threshold with `d`).
+- **Sharp threshold** (`orthonormal_smallSumProb_dichotomy`): on orthonormal
+  configurations the probability is the two-valued step function
+  `P(‖Σεᵢzᵢ‖ ≤ C) = [n ≤ C²]` — exactly `0` below `C = √n` and exactly `1` at or
+  above it, with no `c/n`-type intermediate regime.  This pins the threshold
+  growth at `C ~ √n`.
 - The **fixed-dimension** question `ReverseLO_fixedDim d` (d ≥ 3) is recorded as
   an open `Prop` and remains unresolved.
 -/
