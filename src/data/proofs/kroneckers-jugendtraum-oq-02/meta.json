@@ -74,6 +74,13 @@
   },
   "sections": [
     {
+      "id": "context-hilbert-12-stark",
+      "title": "Hilbert's 12th & the Rank-One Stark Setting",
+      "startLine": 4,
+      "endLine": 41,
+      "summary": "The module docstring frames Hilbert's 12th problem (Kronecker's Jugendtraum) — explicit generators of abelian extensions, solved for ℚ (Kronecker–Weber) and imaginary quadratic fields (complex multiplication) — and the Stark conjectures' rank-one instance, where L'(0, χ) is predicted to be a rational multiple of a single log|ε| of a Stark unit. It scopes the file to the provable structural regulator-collapse fact, explicitly excluding the open problem of computing Stark units effectively, and lists the two main theorems and the proof strategy (Dirichlet rank characterization + Matrix.det_unique)."
+    },
+    {
       "id": "rank-characterization",
       "title": "Rank One ⟺ Two Infinite Places",
       "startLine": 50,
