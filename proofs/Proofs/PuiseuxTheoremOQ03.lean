@@ -418,4 +418,48 @@ theorem ysqMinusX_exists_edge : ∃ q, IsLowerEdge YsqMinusX (0, 1) q :=
     ⟨(2, 0), by simp [YsqMinusX], by decide⟩
     (by intro q hq hne; fin_cases hq <;> simp_all)
 
+/-! ### The dominant edge slope is canonical
+
+`exists_isLowerEdge_of_leftmost` builds *a* lower edge out of the left endpoint by
+choosing the right endpoint of least slope.  The lemmas here show that this choice
+does not matter for the *slope*: every lower edge out of a fixed left endpoint `p`
+realizes the **same**, minimal, slope.  Consequently the leading root valuation the
+parent reads off the first edge (`leadingExponentFromSlope`) is well-defined — it is
+a property of the vertex `p`, not of the particular right endpoint used to name the
+edge.  This is the structural fact that makes "*the* dominant slope" meaningful and
+is a prerequisite for any hull-construction recursion: each recursion step is allowed
+to pick any valid right endpoint and still computes the canonical slope sequence. -/
+
+/-- **A lower edge realizes the least slope leaving its left endpoint.**  For a lower
+edge `(p, q)` and any support point `r` strictly to the right of `p`,
+`edgeSlope p q ≤ edgeSlope p r`.  The dominant edge out of `p` is the steepest
+descent of the lower hull. -/
+theorem IsLowerEdge.edgeSlope_le_right {pts : List SupportPoint} {p q r : SupportPoint}
+    (h : IsLowerEdge pts p q) (hr : r ∈ pts) (hpr : (p.1 : ℚ) < r.1) :
+    edgeSlope p q ≤ edgeSlope p r := by
+  obtain ⟨_, _, hlt, m, b, hpe, hqe, hsupp⟩ := h
+  have e1 : m = edgeSlope p q := slope_eq_edgeSlope hpe hqe (ne_of_lt hlt)
+  have hge := edgeSlope_ge_of_supportingLine hpe hr hsupp hpr
+  rwa [e1] at hge
+
+/-- **The dominant edge slope out of a vertex is well-defined.**  Any two lower edges
+sharing the same left endpoint `p` have equal slope: each is the minimal slope leaving
+`p`, so they bound each other. -/
+theorem lowerEdge_slope_unique {pts : List SupportPoint} {p q q' : SupportPoint}
+    (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p q') :
+    edgeSlope p q = edgeSlope p q' := by
+  have hpr : (p.1 : ℚ) < q.1 := by exact_mod_cast h.2.2.1
+  have hpr' : (p.1 : ℚ) < q'.1 := by exact_mod_cast h'.2.2.1
+  have le1 : edgeSlope p q ≤ edgeSlope p q' := h.edgeSlope_le_right h'.2.1 hpr'
+  have le2 : edgeSlope p q' ≤ edgeSlope p q := h'.edgeSlope_le_right h.2.1 hpr
+  linarith
+
+/-- **The leading root valuation is well-defined.**  Since the root valuation is the
+negative of the edge slope, `lowerEdge_slope_unique` says the valuation the parent
+reads off the dominant edge does not depend on the chosen right endpoint. -/
+theorem leadingRootValuation_well_defined {pts : List SupportPoint} {p q q' : SupportPoint}
+    (h : IsLowerEdge pts p q) (h' : IsLowerEdge pts p q') :
+    -edgeSlope p q = -edgeSlope p q' := by
+  rw [lowerEdge_slope_unique h h']
+
 end PuiseuxTheoremOQ03

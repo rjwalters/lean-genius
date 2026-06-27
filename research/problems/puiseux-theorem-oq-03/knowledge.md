@@ -118,3 +118,20 @@ valuations for free.
 Verification recipe unchanged: `cd proofs && LAKE_UNSAFE=1 ./bin/lake env lean
 Proofs/PuiseuxTheoremOQ03.lean` exits 0 (worktree `.lake` symlinks the main
 repo's prebuilt oleans; the wrapper blocks even `env lean` without LAKE_UNSAFE=1).
+
+## Session 2026-06-27 (researcher-3) — ACT: dominant-edge-slope canonicity (verified)
+
+**Mode**: BUILD (Docker containerd I/O error → `lake env lean`; 0-axiom).
+**Outcome**: progress (ACT) — +3 theorems, PuiseuxTheoremOQ03.lean now 465 LOC, 0 sorry, 0 axiom.
+
+- `IsLowerEdge.edgeSlope_le_right` — a lower edge realizes the **least** slope leaving its
+  left endpoint (`edgeSlope p q ≤ edgeSlope p r` for all support points `r` to the right).
+- `lowerEdge_slope_unique` — **the dominant edge slope out of a vertex is well-defined**: any
+  two lower edges sharing a left endpoint have equal slope.
+- `leadingRootValuation_well_defined` — the leading root valuation (−edge slope) is
+  independent of the chosen right endpoint.
+
+These make "the dominant slope" a property of the vertex, not of the named edge endpoint —
+the structural prerequisite for a hull-construction recursion. Next: peel-and-recurse hull
+builder + termination; algebraic Newton-polygon theorem still blocked on missing K((x))[Y]
+valuation API.

@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2-B groundwork: added exists_isLowerEdge_of_leftmost (first lower edge from the left endpoint) to PuiseuxTheoremOQ03.lean, the first concrete hull-construction step. File now 421 lines / 21 theorems, still verified 0-sorry 0-axiom. Also repaired 3 List.not_mem_nil sites broken by a Mathlib-cache update. Remaining: full S2-B termination measure on polynomial reductions, and the algebraic Newton-polygon theorem (blocked on missing K((x))[Y] valuation API).",
+    "progressSummary": "S2-B groundwork continued. Newton-polygon file PuiseuxTheoremOQ03.lean now 465 lines / 24 theorems, still verified 0-sorry 0-axiom. Added the canonicity layer for the dominant edge: IsLowerEdge.edgeSlope_le_right (an edge realizes the minimal slope leaving its left endpoint), lowerEdge_slope_unique (any two lower edges from a fixed left endpoint have equal slope — 'the dominant slope' is well-defined), and leadingRootValuation_well_defined (the parent's leadingExponentFromSlope reads a canonical value independent of the chosen right endpoint). This is the structural prerequisite for a hull-construction recursion. Remaining: peel-and-recurse hull builder + S2-B polynomial reduction termination; algebraic Newton-polygon theorem still blocked on missing K((x))[Y] valuation API in Mathlib v4.26.0.",
     "builtItems": [
       "IsLowerVertex: supporting-line characterization of a Newton-polygon lower-hull vertex (algorithm-independent Prop)",
       "isLowerVertex_of_minimal: the min-valuation support point is always a lower vertex (horizontal supporting line)",
@@ -37,14 +37,18 @@
       "edgeSlope + worked Y^2-x example: both support points are vertices, edge slope -1/2, leading exponent 1/2 = leadingExponentFromSlope 1 2",
       "Parent fix: corrected dangling /-- doc comment in PuiseuxTheorem.lean (file did not parse on main)",
       "exists_isLowerEdge_of_leftmost (PuiseuxTheoremOQ03.lean): leftmost support point -> genuine IsLowerEdge via List.argmin(edgeSlope p); first hull-construction step toward S2-B",
-      "Maintenance: fixed 3 List.not_mem_nil q sites broken by Mathlib cache update (explicit arg removed)"
+      "Maintenance: fixed 3 List.not_mem_nil q sites broken by Mathlib cache update (explicit arg removed)",
+      "PuiseuxTheoremOQ03.IsLowerEdge.edgeSlope_le_right — a lower edge realizes the least slope leaving its left endpoint",
+      "PuiseuxTheoremOQ03.lowerEdge_slope_unique — the dominant edge slope out of a vertex is well-defined (any two lower edges sharing a left endpoint have equal slope)",
+      "PuiseuxTheoremOQ03.leadingRootValuation_well_defined — the leading root valuation (−edge slope) is independent of the chosen right endpoint"
     ],
     "insights": [
       "Supporting-line predicate beats a verified convex-hull construction: same downstream value, far less proof burden, algorithm-agnostic.",
       "List.argmin + argmin_mem/le_of_mem_argmin gives vertex existence for nonempty support lists in a few lines.",
       "Model support points as Prod (N x Q), not a custom structure: fin_cases + norm_num then dispatch example goals cleanly.",
       "Edge existence reuses isLowerVertex_of_leftmost machinery verbatim: the argmin-of-edgeSlope supporting line through the leftmost point already passes through its argmin partner, so it is an edge, not merely a vertex witness.",
-      "Mathlib drift hazard: gallery .lean files verified months ago can silently break against an updated local olean cache (List.not_mem_nil dropped its explicit argument); prefer simp over name-specific applications for List membership-in-nil contradictions."
+      "Mathlib drift hazard: gallery .lean files verified months ago can silently break against an updated local olean cache (List.not_mem_nil dropped its explicit argument); prefer simp over name-specific applications for List membership-in-nil contradictions.",
+      "The dominant edge slope out of a vertex p is canonical: every lower edge from p realizes the SAME (minimal) slope, because the supporting line through p has the least slope leaving p (edgeSlope_ge_of_supportingLine). This means 'the dominant slope' / leading root valuation is a property of the vertex, not of the named right endpoint — a prerequisite for a hull-construction recursion that is free to pick any valid right endpoint."
     ],
     "mathlibGaps": [
       "No Newton polygon API in Mathlib 4.26.0 (no Polynomial.newtonPolygon / lowerConvexHull as combinatorial vertex data).",
@@ -52,11 +56,11 @@
       "No arithmetic-complexity model (Bürgisser-Clausen-Shokrollahi style) to state the Poteaux-Weimann Õ(d·δ) bound."
     ],
     "nextSteps": [
-      "Iterate hull construction: from exists_isLowerEdge_of_leftmost, peel the first edge and recurse on the sub-support to the right of its right endpoint (building the ordered vertex/edge list).",
-      "S2-B: define a polynomial Newton-Puiseux reduction step and prove the Y-degree strictly decreases (needs Laurent-series polynomial modeling).",
+      "Hull-construction recursion: from exists_isLowerEdge_of_leftmost peel the first edge and recurse on the sub-support right of its right endpoint, using lowerEdge_slope_unique to certify the slope sequence is canonical; prove the recursion terminates (support strictly shrinks).",
+      "S2-B: define a polynomial Newton–Puiseux reduction step and prove the Y-degree strictly decreases (needs Laurent-series polynomial modeling).",
       "Newton polygon theorem: negatives of lower-edge slopes = root valuations (blocked on missing valuation API on K((x))[Y] in Mathlib 4.26.0)."
     ],
-    "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n",
+    "markdown": "# Knowledge Base: puiseux-theorem-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n\n\n## Session 2026-06-27 (researcher-3) — ACT: dominant-edge-slope canonicity (verified)\n\n**Mode**: BUILD (Docker containerd I/O error → verified via `lake env lean`; `#print axioms`\n= only propext/Classical.choice/Quot.sound, i.e. 0-axiom).\n**Outcome**: progress (ACT) — +3 theorems on PuiseuxTheoremOQ03.lean (465 LOC, 0 sorry, 0 axiom).\n\n### What I added\n- `IsLowerEdge.edgeSlope_le_right` — a lower edge `(p,q)` realizes the **least** slope\n  leaving `p`: `edgeSlope p q ≤ edgeSlope p r` for every support point `r` to the right.\n  (One line from `edgeSlope_ge_of_supportingLine` plus `slope_eq_edgeSlope`.)\n- `lowerEdge_slope_unique` — **the dominant edge slope out of a vertex is well-defined**:\n  any two lower edges sharing the left endpoint `p` have equal slope (each is minimal, so\n  they bound each other).\n- `leadingRootValuation_well_defined` — the leading root valuation `−edgeSlope` the parent\n  reads off the first edge is independent of the chosen right endpoint.\n\n### Why it matters\nMakes \"*the* dominant slope\" / leading exponent a property of the vertex rather than of the\narbitrarily-named edge endpoint — the structural prerequisite for a hull-construction\nrecursion that picks any valid right endpoint and still computes the canonical slope sequence.\n\n### Next\n- Peel-and-recurse hull builder (recurse on sub-support right of the edge's right endpoint),\n  using `lowerEdge_slope_unique` to certify canonicity; prove termination.\n",
     "archivedSessions": [
       {
         "filename": "2026-05-12-s01-galois-scoping.md",
@@ -117,6 +121,18 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PuiseuxTheoremOQ03.lean",
+      "filename": "PuiseuxTheoremOQ03.lean",
+      "lineCount": 465,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PuiseuxTheoremOQ03.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-06-27"
 }
