@@ -29,23 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: raised the unconditional axiom-free density floor from 3/4 to 13/16 by adding the odd residue class n ≡ 3 (mod 16), which drops below itself in exactly 6 residue-determined steps (16m+3 → 48m+10 → 24m+5 → 72m+16 → 36m+8 → 18m+4 → 9m+2 < 16m+3 for all m≥0). New: mod_sixteen_three_attainsBelow, extended packaging, attainsBelow_density_lower_16 (≥13N−1 of [1,16N] via 3 disjoint families: 8N evens + (4N−1) of 1+4ℕ + N of 3+16ℕ), colMin corollaries. Of the odd classes mod 16 (3,7,11,15), only n≡3 drops in its residue-determined window; 7,11,15 have m-dependent stopping times (verified numerically: 27,31 mod do not drop in 40 steps). 22 thm / 5 def, 1 axiom (tao_2019, unchanged). VERIFIED offline lake env lean EXIT 0; new theorems axiom-free (propext/Choice/Quot only, no tao_2019). Tao 2019 axiom remains BLOCKED (deep analytic, >>1000 lines).",
+    "progressSummary": "PROGRESS: raised the unconditional axiom-free density floor from 13/16 to 7/8 by adding the two odd residue classes n ≡ 11 (mod 32) and n ≡ 23 (mod 32), each dropping below itself in exactly 8 residue-determined steps (11+32ℕ: 32m+11→…→27m+10<32m+11; 23+32ℕ: 32m+23→…→27m+20<32m+23, all parities forced by n mod 32). New: mod_thirtytwo_eleven_attainsBelow, mod_thirtytwo_twentythree_attainsBelow, attainsBelow_density_lower_32 (≥28N−1 of [1,32N] via 5 disjoint families: 16N evens + (8N−1) of 1+4ℕ + 2N of 3+16ℕ + N of 11+32ℕ + N of 23+32ℕ), colMin corollaries + combined packaging. Dyadic dissection: among the unstable mod-16 classes 7,11,15, splitting mod 32 stabilises exactly the half-classes 23 (from 7) and 11 (from 11); 7,15,27,31 (mod 32) keep m-dependent stopping times (Python-verified: do not drop within their determined window). 29 thm / 5 def, 1 axiom (tao_2019, unchanged). VERIFIED offline lake env lean EXIT 0; 4 sampled new theorems axiom-free (#print axioms = propext/Choice/Quot only, no tao_2019). Tao 2019 axiom remains BLOCKED (deep analytic, >>1000 lines).",
     "builtItems": [
       "collatz_odd helper (collatz n = 3n+1 for odd n) in CollatzStructuredOQ02OQ03.lean",
       "mod_four_one_attainsBelow: n≡1 mod 4, n≥5 ⇒ AttainsBelow n (axiom-free)",
       "even_or_mod_four_one_attainsBelow: packaging covering 3/4 of integers axiom-free",
       "mod_sixteen_three_attainsBelow (h : n%16=3) : AttainsBelow n — 6-step residue-determined drop, all parities forced by n mod 16",
       "attainsBelow_density_lower_16 (N) : 13*N-1 ≤ card (filter AttainsBelow (Icc 1 (16N))) — three disjoint image families (2j, 4j+1, 16j+3), card_union_of_disjoint twice",
-      "even_or_mod_four_one_or_mod_sixteen_three_attainsBelow / _colMin_lt — combined 13/16 packaging"
+      "even_or_mod_four_one_or_mod_sixteen_three_attainsBelow / _colMin_lt — combined 13/16 packaging",
+      "mod_thirtytwo_eleven_attainsBelow (h : n%32=11) : AttainsBelow n — 8-step residue-determined drop (…→27m+10<32m+11), CollatzStructuredOQ02OQ03.lean",
+      "mod_thirtytwo_twentythree_attainsBelow (h : n%32=23) : AttainsBelow n — 8-step residue-determined drop (…→27m+20<32m+23)",
+      "attainsBelow_density_lower_32 (N) : 28*N−1 ≤ card (filter AttainsBelow (Icc 1 (32N))) — five disjoint image families (2j, 4j+1, 16j+3, 32j+11, 32j+23), pairwise Disjoint via residues mod 2/4/16, nested card_union_of_disjoint",
+      "even_or_mod_four_one_or_mod_thirtytwo_attainsBelow / _colMin_lt — combined 7/8 packaging; mod_thirtytwo_{eleven,twentythree}_colMin_lt corollaries"
     ],
     "insights": [
       "The odd residue class n ≡ 1 (mod 4), n ≥ 5, deterministically drops below itself in 3 Collatz steps: 4m+1 → 12m+4 → 6m+2 → 3m+1, with 3m+1 < 4m+1 iff m ≥ 1. First elementary family exercising the 3n+1 branch (even/powers-of-two only touch the n/2 branch).",
-      "n ≡ 3 (mod 4) does NOT immediately drop: 4m+3 → 12m+10 → 6m+5 → 18m+16 → 9m+8 > 4m+3, confirming these are the genuinely hard residues (consistent with stopping-time theory)."
+      "n ≡ 3 (mod 4) does NOT immediately drop: 4m+3 → 12m+10 → 6m+5 → 18m+16 → 9m+8 > 4m+3, confirming these are the genuinely hard residues (consistent with stopping-time theory).",
+      "Dyadic refinement of the drop-below picture is genuine but the stable fraction does NOT double each level: at level 16 only 3 (mod 16) stabilises among {3,7,11,15}; at level 32 exactly two of the six odd ≡3 mod 4 residues stabilise (11 and 23 mod 32), lifting density 13/16→7/8. The newly stable classes both terminate at coefficient 27 (27m+10 and 27m+20) after 8 forced steps — three 3n+1 ascents interleaved with five halvings.",
+      "Within an unstable mod-16 class, the mod-32 split can stabilise the high half: 7 (mod16) stabilises at 23 (mod32) not 7; 11 (mod16) stabilises at 11 (mod32) not 27. The all-ones residue 31 (mod32) climbs fastest (→243m+242 after 10 steps) and never drops in its window — the genuinely hardest residues."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Push to mod 32/64: among 7,11,15 mod 16, find which sub-residues mod 32 stabilise (unstopped-residue count grows ~ 3,4,6,9,13,19,27 mod 2^k, OEIS-style), inching the floor toward density 1.",
-      "Formalize the general Terras stopping-time density theorem (density of finite-stopping-time n is 1) as an intermediate milestone short of Tao.",
+      "Push to mod 64/128: among the still-unstable 7,15,27,31 (mod 32), find which sub-residues mod 64 acquire a residue-determined drop window (the stable count grows ~ 1,2,4,... slower than 2^k, so density →1 only in the limit — this is the Terras finite-stopping-time density-1 statement, the natural intermediate milestone short of Tao).",
+      "Formalize the general Terras stopping-time density theorem (natural density of finite-stopping-time n is 1) as the milestone between these finite residue floors and Tao's logarithmic-density-1.",
       "Tao axiom genuinely blocked; no elementary path to logarithmic-density-1."
     ],
     "markdown": "# Knowledge Base: collatz-structured-oq-02-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"

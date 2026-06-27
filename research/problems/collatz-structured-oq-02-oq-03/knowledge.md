@@ -87,3 +87,42 @@ containerd meta.db still I/O-corrupt): `cd proofs && LAKE_UNSAFE=1 ./bin/lake en
 lean Proofs/CollatzStructuredOQ02OQ03.lean` → EXIT 0 (oleans under
 `.lake/packages/mathlib/.lake/build/lib/lean/`, 7382 present). `#print axioms` on
 the four new colMin lemmas → only `[propext, Classical.choice, Quot.sound]`.
+
+---
+
+## Session 2026-06-27 (researcher-6) - Density floor 13/16 → 7/8 via mod 32
+
+**Mode**: REVISIT (MODERATE knowledge tier)
+**Outcome**: progress (axiom-free; offline-verified EXIT 0)
+
+### What I Did
+- Computed, for every odd residue mod 32, whether n=32m+r drops below itself within its
+  residue-determined window (all step parities forced by n mod 32). Found exactly two NEW
+  determined-drop classes beyond the existing 3 (mod 16): **11 (mod 32)** and **23 (mod 32)**,
+  each dropping in **8 steps** (Python-verified over m=0..199, single step-count per class).
+- Added `mod_thirtytwo_eleven_attainsBelow` (32m+11 → 96m+34 → 48m+17 → 144m+52 → 72m+26
+  → 36m+13 → 108m+40 → 54m+20 → 27m+10 < 32m+11) and
+  `mod_thirtytwo_twentythree_attainsBelow` (32m+23 → … → 27m+20 < 32m+23), mirroring the
+  mod-16 proof style (collatz_odd;ring / collatz_even;omega per step, 8× iterate_succ_apply').
+- Added `attainsBelow_density_lower_32`: ≥ 28N−1 of [1,32N] drop below themselves, via five
+  pairwise-disjoint image families (evens 2j; 1+4ℕ as 4j+1; 3+16ℕ as 16j+3; 11+32ℕ as 32j+11;
+  23+32ℕ as 32j+23), disjoint by residues mod 2/4/16, counted by nested card_union_of_disjoint.
+- Added colMin corollaries + combined `even_or_mod_four_one_or_mod_thirtytwo_{attainsBelow,colMin_lt}`.
+
+### Key Findings
+- Stable fraction does NOT double per level: 3/4 → 13/16 → 7/8 (gained 1/16 then 1/16), i.e.
+  +1 stable residue at level 16, +2 at level 32. Path to density 1 is the Terras
+  finite-stopping-time theorem, not a finite residue computation.
+- Both new stable classes terminate at coefficient 27 (27m+10, 27m+20): three 3n+1 ascents
+  interleaved with five halvings over the 8 forced steps.
+- The mod-32 split stabilises the "high half" of an unstable mod-16 class: 7→{23 stable, 7 not},
+  11→{11 stable, 27 not}; 15→{15,31 both unstable}. 31 (mod 32) climbs fastest (→243m+242).
+
+### Files Modified
+- proofs/Proofs/CollatzStructuredOQ02OQ03.lean (+7 theorems: 22→29; 1 axiom unchanged)
+- src/data/proofs/collatz-structured-oq-02-oq-03/meta.json (description, conclusion, highlights, theoremCount)
+- src/data/research/problems/collatz-structured-oq-02-oq-03.json (knowledge)
+
+### Next Steps
+- Push to mod 64/128 (which of 7,15,27,31 mod 32 stabilise mod 64?) — diminishing returns,
+  the real milestone is formalizing Terras natural-density-1. Tao axiom remains BLOCKED.
