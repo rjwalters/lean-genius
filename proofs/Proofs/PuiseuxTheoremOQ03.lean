@@ -64,6 +64,8 @@ See `research/problems/puiseux-theorem-oq-03/` for the session notes.
 -/
 import Proofs.PuiseuxTheorem
 import Mathlib.Data.List.MinMax
+import Mathlib.Data.List.Chain
+import Mathlib.Data.List.Sort
 
 namespace PuiseuxTheoremOQ03
 
@@ -417,5 +419,91 @@ theorem ysqMinusX_exists_edge : ∃ q, IsLowerEdge YsqMinusX (0, 1) q :=
   exists_isLowerEdge_of_leftmost (by simp [YsqMinusX])
     ⟨(2, 0), by simp [YsqMinusX], by decide⟩
     (by intro q hq hne; fin_cases hq <;> simp_all)
+
+/-! ### Global convexity: the whole edge-slope sequence is sorted
+
+`edgeSlope_mono` proves convexity for *two* adjacent edges sharing a vertex.  The
+Newton polygon is a *chain* of such edges `v₀ → v₁ → … → vₙ`, and its defining
+structural property is that **all** the edge slopes are non-decreasing along the
+chain — equivalently, the negated slopes (the root valuations) are sorted.  This
+section lifts the pairwise statement to the entire chain.
+
+We model a polygon as a list of vertices `vs` whose consecutive pairs are lower
+edges (`List.IsChain (IsLowerEdge pts) vs`), read off its edge slopes with
+`edgeSlopes`, and prove that list is `Pairwise (· ≤ ·)` — i.e. sorted: every
+slope is `≤` every later one.  The proof is a clean structural induction whose
+only arithmetic input is `edgeSlope_mono`. -/
+
+/-- The list of edge slopes along a chain of support points: the slope of each
+consecutive pair.  `edgeSlopes [v₀, v₁, …, vₙ] = [edgeSlope v₀ v₁, …,
+edgeSlope vₙ₋₁ vₙ]`. -/
+def edgeSlopes : List SupportPoint → List ℚ
+  | p :: q :: rest => edgeSlope p q :: edgeSlopes (q :: rest)
+  | _ => []
+
+/-- **Global convexity (chain form).**  Along any chain of lower edges the edge
+slopes are non-decreasing between consecutive entries.  Structural induction:
+the head step `edgeSlope p q ≤ edgeSlope q r` is `edgeSlope_mono`, the tail is the
+induction hypothesis. -/
+theorem chain_edgeSlopes {pts : List SupportPoint} :
+    ∀ {vs : List SupportPoint}, List.IsChain (IsLowerEdge pts) vs →
+      List.IsChain (· ≤ ·) (edgeSlopes vs)
+  | [], _ => by simp only [edgeSlopes]; exact List.isChain_nil
+  | [_], _ => by simp only [edgeSlopes]; exact List.isChain_nil
+  | p :: q :: rest, hc => by
+      cases rest with
+      | nil => simp only [edgeSlopes]; exact List.isChain_singleton _
+      | cons r rest' =>
+        obtain ⟨hpq, hc'⟩ := List.isChain_cons_cons.mp hc
+        obtain ⟨hqr, _⟩ := List.isChain_cons_cons.mp hc'
+        have ih := chain_edgeSlopes hc'
+        simp only [edgeSlopes] at ih ⊢
+        exact List.isChain_cons_cons.mpr ⟨edgeSlope_mono hpq hqr, ih⟩
+
+/-- **Global convexity (sorted form).**  The edge slopes of a Newton polygon are
+`Pairwise (· ≤ ·)`: every slope is `≤` every later slope, not merely the next
+one.  This is the full statement that the lower hull is convex.  (`IsChain`
+upgrades to `Pairwise` because `≤` on `ℚ` is transitive.) -/
+theorem edgeSlopes_pairwise_le {pts vs : List SupportPoint}
+    (hc : List.IsChain (IsLowerEdge pts) vs) : (edgeSlopes vs).Pairwise (· ≤ ·) :=
+  List.isChain_iff_pairwise.mp (chain_edgeSlopes hc)
+
+/-- **The root valuations of the whole polygon are sorted.**  Since each root
+valuation is the negative of an edge slope, global convexity says the valuations
+read off left-to-right are non-increasing — the sorted list of root valuations
+that the Newton–Puiseux recursion consumes one dominant edge at a time. -/
+theorem rootValuations_pairwise_ge {pts vs : List SupportPoint}
+    (hc : List.IsChain (IsLowerEdge pts) vs) :
+    ((edgeSlopes vs).map (fun s => -s)).Pairwise (· ≥ ·) := by
+  rw [List.pairwise_map]
+  exact (edgeSlopes_pairwise_le hc).imp fun h => neg_le_neg h
+
+/-! ### Worked three-vertex example
+
+A genuine convex chain `(0,2) → (1,0) → (3,1)` with two edges of slopes `-2` and
+`1/2`.  Both segments are real lower edges (each supporting line lies weakly
+below all three points), so the chain theorems apply and produce the sorted slope
+list `[-2, 1/2]`. -/
+
+/-- Support points of a polynomial whose Newton polygon has two edges. -/
+def threeVertex : List SupportPoint := [(0, 2), (1, 0), (3, 1)]
+
+/-- The three vertices form a genuine chain of lower edges. -/
+theorem threeVertex_chain : List.IsChain (IsLowerEdge threeVertex) threeVertex := by
+  refine List.isChain_cons_cons.mpr ⟨?_, List.isChain_cons_cons.mpr ⟨?_, List.isChain_singleton _⟩⟩
+  · refine ⟨by simp [threeVertex], by simp [threeVertex], by norm_num,
+      -2, 2, by norm_num, by norm_num, fun r hr => ?_⟩
+    fin_cases hr <;> norm_num
+  · refine ⟨by simp [threeVertex], by simp [threeVertex], by norm_num,
+      1/2, -1/2, by norm_num, by norm_num, fun r hr => ?_⟩
+    fin_cases hr <;> norm_num
+
+/-- The edge slopes of the example are `[-2, 1/2]`. -/
+theorem threeVertex_edgeSlopes : edgeSlopes threeVertex = [-2, 1/2] := by
+  norm_num [edgeSlopes, threeVertex, edgeSlope]
+
+/-- The example's edge slopes are sorted — global convexity in action. -/
+theorem threeVertex_sorted : (edgeSlopes threeVertex).Pairwise (· ≤ ·) :=
+  edgeSlopes_pairwise_le threeVertex_chain
 
 end PuiseuxTheoremOQ03
