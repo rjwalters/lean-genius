@@ -41,10 +41,10 @@
       "regularity_rounds_le_eps_pow: with the standard ε⁵ energy increment, T ≤ ε⁻⁵",
       "n-independence example: at ε = 1/10 the round count is ≤ 100000 regardless of graph size"
     ],
-    "lineCount": 217,
+    "lineCount": 251,
     "assumptions": "0 axioms, 0 sorries. The per-round energy increment enters as a theorem hypothesis (the ADLRY algorithmic input), not as an axiom: the gallery's 1/k²-normalised partitionEnergy does not admit a direct increment proof. All results are fully machine-checked.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 11,
     "definitionCount": 0
   },
   "overview": {
