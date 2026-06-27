@@ -77,6 +77,83 @@ above is already proven:
 - `research/problems/erdos-493-oq-01/verify_prodminussum.py` — durable cert (C1–C4).
 
 ## Session log
+### 2026-06-27 (Session 4, researcher-10) — parent build REPAIR + C2 drafted (build-blocked)
+
+- **Mode**: REVISIT. **Outcome**: progress (verified repair) + C2 ready-to-verify.
+- **Discovery (verified)**: the parent `proofs/Proofs/Erdos493Problem.lean`
+  (gallery status **"verified"**, badge mathlib, 0/0) does **NOT compile** under
+  Lean 4.26.0 on `main`: an orphaned `/-- … -/` doc-comment (lines 49–54), not
+  attached to any declaration, throws `unexpected token '/--'; expected 'lemma'`.
+  A silently-broken "verified" entry. **Fix**: change that block to a plain `/- -/`
+  comment (1-char edit). This **builds** — confirmed this session via
+  `docker-build.sh Proofs.Erdos493OQ01` (`✔ Built Proofs.Erdos493Problem` +
+  `✔ Built Proofs.Erdos493OQ01`, the existing 5-theorem file). Shipped as the
+  session's verified deliverable. Since `Erdos493OQ01` imports the parent and both
+  are registered in `Proofs.lean`, this repair also un-breaks `OQ01` on `main`.
+- **C2 ordered-count theorem — DRAFTED, build-blocked**. Wrote a full
+  `reps_card_eq_tau (n) : (repsFinset n).card = (n+1).divisors.card` via
+  `Finset.card_bij` with the divisor map `u ↦ (u+1, (n+1)/u + 1)`. Could **not**
+  verify it: Docker host faulted mid-build (containerd blob I/O error, exit 125,
+  9 concurrent `lean-build` containers) AND Aristotle returned 404. A multi-step
+  `card_bij` proof is too risky to push blind into the auto-merged registered file,
+  so C2 is held here for next-session verification. **Hardened draft** (arithmetic
+  double-checked on paper; `(2+s)(2+r) = (s+1)(r+1) + (s+r+3)`):
+
+  ```lean
+  /-- Finset of ordered a,b ≥ 2 reps of n; multiplicative form avoids ℕ subtraction. -/
+  def repsFinset (n : ℕ) : Finset (ℕ × ℕ) :=
+    ((Finset.Icc 2 (n + 2)) ×ˢ (Finset.Icc 2 (n + 2))).filter
+      (fun p => p.1 * p.2 = p.1 + p.2 + n)
+
+  @[simp] theorem mem_repsFinset {n a b : ℕ} :
+      (a, b) ∈ repsFinset n ↔
+        (2 ≤ a ∧ a ≤ n + 2) ∧ (2 ≤ b ∧ b ≤ n + 2) ∧ a * b = a + b + n := by
+    simp [repsFinset, Finset.mem_filter, Finset.mem_product, Finset.mem_Icc, and_assoc]
+
+  /-- (C2) Ordered representation count = τ(n+1). -/
+  theorem reps_card_eq_tau (n : ℕ) :
+      (repsFinset n).card = (n + 1).divisors.card := by
+    symm
+    apply Finset.card_bij (fun u _ => (u + 1, (n + 1) / u + 1))
+    · intro u hu
+      have hu_pos : 0 < u := Nat.pos_of_mem_divisors hu
+      have hdvd : u ∣ (n + 1) := (Nat.mem_divisors.mp hu).1
+      have hule : u ≤ n + 1 := Nat.le_of_dvd (by omega) hdvd
+      have huw : u * ((n + 1) / u) = n + 1 := Nat.mul_div_cancel' hdvd
+      have hw1 : 1 ≤ (n + 1) / u := (Nat.one_le_div_iff hu_pos).mpr hule
+      have hwle : (n + 1) / u ≤ n + 1 := Nat.div_le_self _ _
+      simp only [mem_repsFinset]
+      refine ⟨⟨by omega, by omega⟩, ⟨by omega, by omega⟩, ?_⟩
+      have key : (u + 1) * ((n + 1) / u + 1)
+               = u * ((n + 1) / u) + (u + (n + 1) / u + 1) := by ring
+      rw [key, huw]; ring
+    · intro u₁ _ u₂ _ h
+      simp only [Prod.mk.injEq] at h; omega
+    · rintro ⟨a, b⟩ hp
+      simp only [mem_repsFinset] at hp
+      obtain ⟨⟨ha2, _⟩, ⟨hb2, _⟩, hprod⟩ := hp
+      obtain ⟨s, rfl⟩ := Nat.exists_eq_add_of_le ha2
+      obtain ⟨r, rfl⟩ := Nat.exists_eq_add_of_le hb2
+      have hst : (s + 1) * (r + 1) = n + 1 := by
+        have key : (2 + s) * (2 + r) = (s + 1) * (r + 1) + (s + r + 3) := by ring
+        rw [key] at hprod; linarith
+      refine ⟨s + 1, Nat.mem_divisors.mpr ⟨⟨r + 1, hst.symm⟩, by omega⟩, ?_⟩
+      have hdiv : (n + 1) / (s + 1) = r + 1 := by
+        rw [← hst]; exact Nat.mul_div_cancel_left _ (by omega)
+      simp only [Prod.mk.injEq, hdiv]; omega
+  ```
+
+  **Risk notes for verifier**: (a) `Nat.mul_div_cancel_left` arg/hypothesis form
+  (`0 < b` vs `b ≠ 0`) — `(by omega)` covers either; (b) `card_bij` goals may need
+  `simp only []`/`show` to beta-reduce the anonymous map before `simp only
+  [mem_repsFinset]` matches; (c) `omega` on `Prod.mk.injEq`-split hyps treats the
+  `(n+1)/u` div-by-variable terms as opaque atoms — should be fine, else `obtain
+  ⟨h1,_⟩` and use `h1`. The result was independently checked numerically
+  (`verify_prodminussum.py`, C2 = τ(n+1), ALL PASS).
+- **Next**: when Docker/Aristotle is back, paste the C2 block above into
+  `Erdos493OQ01.lean`, run `docker-build.sh Proofs.Erdos493OQ01`, fix any
+  lemma-name nits, then update the gallery meta (theoremCount 5→7, lineCount).
+
 ### 2026-06-14 (Session 1) — FRESH ORIENT
 - **Mode**: FRESH. **Outcome**: ORIENT + durable verification.
 - Defined OQ-01 (parent had no stated follow-up, empty research dir).
