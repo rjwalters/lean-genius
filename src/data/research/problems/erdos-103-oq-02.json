@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Audited the parent Erdős #103 formalization and found its counting function degenerate: h(n) := Nat.card {P // IsOptimal n P} counts ALL optimal configurations with no quotient by congruence. Since optimality is translation-invariant, that set is empty or infinite, so Nat.card = 0 for every n >= 1. Proved this rigorously (translate_optimal, optimal_subtype_infinite_of_nonempty, h_eq_zero), concluded the parent's literal WeakConjecture is FALSE (raw_weak_conjecture_false), and supplied the corrected congruence-quotient count hCong(n) := Nat.card (Quotient OptimalSetoid). Showed all translates of a config collapse to one hCong class. Also repaired the parent file Erdos103Problem.lean, whose congruent_symm proof no longer compiled under Lean 4.26.0. New file Erdos103OQ02.lean: 0 axioms, 0 sorries, 10 theorems, 4 defs, 218 lines. The Erdős problem itself remains OPEN; this is a correction of the formalization, not a resolution.",
+    "progressSummary": "VERIFIED (offline, Mathlib 2df2f015 / Lean v4.26.0, 0 sorry / 0 axiom): added Erdos103OQ02Finite.lean nailing down the degenerate base cases the conditional parent machinery left implicit. For n <= 1 the optimal congruence quotient is a nonempty Subsingleton, so it is unconditionally Finite; this discharges the [Finite (Quotient (OptimalSetoid n))] hypothesis of hCong_pos_of_finite / hCong_strictly_exceeds_raw and yields hCong 0 = hCong 1 = 1 and the strict gap h 1 = 0 < 1 = hCong 1. The open content (unconditional finiteness for general/large n and hCong n >= 2) is untouched and remains open.",
     "builtItems": [
       "Erdos103OQ02.lean (0-axiom, 0-sorry, verified)",
       "pointDist_add_right: Euclidean distance on R^2 is translation-invariant",
@@ -43,21 +43,26 @@
       "raw_weak_conjecture_false: parent's literal WeakConjecture is false",
       "hCong / OptimalSetoid: corrected congruence-class count (the intended h)",
       "translates_same_class: the quotient collapses the translation-infinitude",
-      "Repaired parent Erdos103Problem.lean congruent_symm (Lean 4.26.0 regression: rwa auto-close + rw target mismatch)"
+      "Repaired parent Erdos103Problem.lean congruent_symm (Lean 4.26.0 regression: rwa auto-close + rw target mismatch)",
+      "Erdos103OQ02Finite.lean: all_congruent_zero / all_congruent_one (every config congruent for n<=1)",
+      "Erdos103OQ02Finite.lean: subsingleton_quotient_zero/one + finite_quotient_zero/one (unconditional Finite instances for the optimal quotient at n=0,1)",
+      "Erdos103OQ02Finite.lean: exists_optimal_of_le_one (optimal config exists for n<=1) via minDiameter_eq_zero_of_le_one",
+      "Erdos103OQ02Finite.lean: hCong_zero_eq_one, hCong_one_eq_one, hCong_one_strictly_exceeds_raw (unconditional, [Finite] discharged)"
     ],
     "insights": [
       "Counting 'configurations up to symmetry' MUST quotient by the symmetry group explicitly: an un-quotiented Nat.card collapses to 0 under any continuous symmetry (here, translation).",
       "Nat.card sends infinite types to 0 in Mathlib; combined with the empty case this yields h(n)=0 with NO existence hypothesis.",
       "The optimal set is a union of full translation-orbits, hence empty or uncountable; the congruence quotient restores finiteness/meaning.",
-      "The sibling OQ-01 axiomatized h and h_pos (h(n)>=1), which this audit shows is inconsistent with the parent's LITERAL h -- OQ-01's h must denote the intended quotient count hCong."
+      "The sibling OQ-01 axiomatized h and h_pos (h(n)>=1), which this audit shows is inconsistent with the parent's LITERAL h -- OQ-01's h must denote the intended quotient count hCong.",
+      "Unconditional finiteness holds in the degenerate small cases: for n <= 1 every pair of optimal configurations is congruent (n=0: PointConfig 0 = Fin 0 -> R^2 is a subsingleton; n=1: any two single points differ by the translation Q0 - P0), so Quotient (OptimalSetoid n) is a Subsingleton, hence Finite. This discharges the [Finite ...] typeclass hypothesis carried by hCong_pos_of_finite / hCong_strictly_exceeds_raw at n=0,1.",
+      "minDiameter n = 0 for n <= 1 (diameter is identically 0 below the n>=2 threshold and the constant-zero config is valid), so an optimal configuration exists for n<=1 and hCong 0 = hCong 1 = 1 unconditionally; at n=1 the raw count still collapses (h 1 = 0), giving the strict gap h 1 < hCong 1 with no finiteness assumption."
     ],
     "mathlibGaps": [
       "No gap blocked this session. Finiteness of the optimal-configuration space modulo congruence (needed to make hCong provably finite) would require a compactness/quotient argument not yet built."
     ],
     "nextSteps": [
-      "Prove hCong(n) is finite for each n (compactness of optimal configs modulo congruence).",
-      "Attempt to compute hCong(4) from the known optimal 4-point configuration.",
-      "Restate and connect OQ-01's results (h -> infinity) to hCong rather than the degenerate raw h."
+      "Prove Finite (Quotient (OptimalSetoid n)) for n >= 2 (the genuine open content; needs compactness/algebraicity of optimal configs mod congruence).",
+      "Establish existence of an optimal configuration for n >= 2 (minDiameter achieved), currently assumed via the (exists P, IsOptimal n P) hypotheses."
     ]
   },
   "tags": [
@@ -93,7 +98,7 @@
     "mathlib": []
   },
   "started": "2026-05-29T19:14:09.203Z",
-  "lastUpdate": "2026-06-26",
+  "lastUpdate": "2026-06-27",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
