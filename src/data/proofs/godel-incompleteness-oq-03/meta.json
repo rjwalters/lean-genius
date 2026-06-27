@@ -78,8 +78,8 @@
       "Mathlib"
     ],
     "namespace": "GodelIncompletenessOQ03",
-    "lineCount": 172,
-    "theoremCount": 11,
+    "lineCount": 193,
+    "theoremCount": 13,
     "axiomCount": 0,
     "definitionCount": 1,
     "sorries": 0,
@@ -203,5 +203,12 @@
       "significance": "medium"
     }
   ],
-  "sorries": 0
+  "sorries": 0,
+  "highlights": [
+    "Structural calculus of the independence relation on Mathlib first-order model theory (0 axioms, 0 sorries)",
+    "Independent.mono: independence descends to subtheories (T₀ ⊆ T₁, independent over T₁ ⟹ independent over T₀) — e.g. independent of PA ⟹ independent of every subtheory of PA",
+    "not_independent_of_not_isSatisfiable: an inconsistent theory has no independent sentences (it decides everything vacuously) — contrapositive of Independent.isSatisfiable",
+    "Independent.neg_iff / Independent.isSatisfiable: independence is symmetric under negation, and a sentence is independent only of a consistent theory",
+    "Concrete PA-independence (Goodstein/Paris–Harrington/Con(PA)) remains out of scope — needs PA arithmetization absent from Mathlib"
+  ]
 }
