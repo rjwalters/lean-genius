@@ -46,7 +46,8 @@
       "**The family is decreasing, not increasing**: requiring a longer run of equal totients is a strictly stronger condition, so CKE(k+1) ⊆ CKE(k). This makes infinitude monotone — easy cases are implied by hard ones.",
       "**The hardest direction is k → ∞**: by the cofinal equivalence, proving the strong conjecture is equivalent to exhibiting infinitely many solutions for arbitrarily long runs; no separate argument per k is needed once that is achieved.",
       "**k = 1 is the main problem**: CKE(1) is literally the main #1003 set, so the strong conjecture subsumes the original infinitude question.",
-      "**k = 0 is trivial**: CKE(0) = univ because the only constraint `∀ i ≤ 0` is `φ n = φ(n+0)`, which always holds; this anchors the chain and the 'infinite for every k' reformulation."
+      "**k = 0 is trivial**: CKE(0) = univ because the only constraint `∀ i ≤ 0` is `φ n = φ(n+0)`, which always holds; this anchors the chain and the 'infinite for every k' reformulation.",
+      "**Finiteness propagates the other way**: the chain is monotone in both directions — infinitude flows down to shorter runs, while finiteness flows up to longer runs. A single finiteness result at any run length k would collapse every longer run CKE(l), l ≥ k, to a finite set."
     ],
     "prerequisites": ["Euler's totient function", "Basic set theory (infinite/finite sets, monotonicity)", "Number theory"]
   },
