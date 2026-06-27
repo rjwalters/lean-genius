@@ -48,6 +48,11 @@ upper bound.
   `A.card * (A.card - 1) ≤ 4 * N`, demonstrating concretely that the `B_h`
   bound recovers the Sidon bound.
 
+* `IsBh.map_add_right` — **translation invariance**.  Shifting every element of a
+  `B_h` set by a fixed constant `c` (i.e. `A ↦ A.image (· + c)`) preserves the
+  `B_h` property, since every `h`-fold sum increases by the same `h·c`.  This
+  justifies normalising a `B_h` set by a translation without loss of generality.
+
 ## Mathematical note
 
 The bound is *sharp in order*: Singer difference sets give `B_2` sets of size
@@ -342,5 +347,76 @@ theorem IsBh.two_card_mul_pred_le {N : ℕ} {A : Finset ℕ}
   rw [Nat.choose_two_right] at h
   have hev : 2 ∣ A.card * (A.card - 1) := (Nat.even_mul_pred_self A.card).two_dvd
   omega
+
+/-! ## Part 4: Translation invariance -/
+
+/-- Summing after adding a fixed constant `c` to every entry of a multiset increases
+the total by `(card)·c`. -/
+private theorem sum_map_add_const (c : ℕ) (m : Multiset ℕ) :
+    (m.map (· + c)).sum = m.sum + Multiset.card m * c := by
+  induction m using Multiset.induction with
+  | empty => simp
+  | cons a s ih =>
+      simp only [Multiset.map_cons, Multiset.sum_cons, Multiset.card_cons, ih]
+      ring
+
+/-- **Translation invariance of `B_h`.**  Shifting every element of a `B_h` set by a
+fixed constant `c` preserves the `B_h` property: each `h`-fold sum increases by the
+same amount `h·c`, so distinct sums stay distinct.
+
+This justifies normalising a `B_h` set by a translation — e.g. so that its least
+element is `0`, or so that it lies in `{0, …, N}` rather than `{1, …, N}` — without
+loss of generality, a standard first step when building `B_h` sets and reasoning
+about the `B_h` analogue of #340's greedy lower bound. -/
+theorem IsBh.map_add_right {h c : ℕ} {A : Finset ℕ} (hA : IsBh h A) :
+    IsBh h (A.image (· + c)) := by
+  intro s hs t ht hsum
+  rw [Finset.mem_coe, Finset.mem_sym_iff] at hs ht
+  have hsum2 : (s : Multiset ℕ).sum = (t : Multiset ℕ).sum := hsum
+  -- An `h`-multiset over the shifted set pulls back into `A` by subtracting `c`.
+  have hpre : ∀ {u : Sym ℕ h}, (∀ a ∈ u, a ∈ A.image (· + c)) →
+      u.map (· - c) ∈ A.sym h := by
+    intro u hu
+    rw [Finset.mem_sym_iff]
+    intro a ha
+    rw [Sym.mem_map] at ha
+    obtain ⟨b, hb, rfl⟩ := ha
+    obtain ⟨x, hx, hxb⟩ := Finset.mem_image.mp (hu b hb)
+    have hbx : b - c = x := by omega
+    rwa [hbx]
+  -- Adding `c` back recovers the original multiset, since every entry is ≥ c.
+  have hrec : ∀ {u : Sym ℕ h}, (∀ a ∈ u, a ∈ A.image (· + c)) →
+      (u.map (· - c)).map (· + c) = u := by
+    intro u hu
+    rw [Sym.map_map]
+    refine (Sym.map_congr ?_).trans (Sym.map_id' u)
+    intro x hx
+    obtain ⟨y, hy, hyx⟩ := Finset.mem_image.mp (hu x hx)
+    simp only [Function.comp_apply]
+    omega
+  -- Pulling back drops every total by exactly `h·c`.
+  have hsumshift : ∀ {u : Sym ℕ h}, (∀ a ∈ u, a ∈ A.image (· + c)) →
+      (u : Multiset ℕ).sum = ((u.map (· - c)) : Multiset ℕ).sum + h * c := by
+    intro u hu
+    set M : Multiset ℕ := ((u.map (· - c) : Sym ℕ h) : Multiset ℕ) with hM
+    have hcard : Multiset.card M = h := by rw [hM]; exact Sym.card_coe
+    have hkey := sum_map_add_const c M
+    rw [hcard] at hkey
+    have hMmap : M.map (· + c) = (u : Multiset ℕ) := by
+      rw [hM, ← Sym.coe_map, hrec hu]
+    rw [hMmap] at hkey
+    exact hkey
+  -- Equal shifted sums ⟹ equal pulled-back sums ⟹ (by `B_h`) equal pullbacks.
+  have hs' : s.map (· - c) ∈ A.sym h := hpre hs
+  have ht' : t.map (· - c) ∈ A.sym h := hpre ht
+  have hsum' :
+      ((s.map (· - c)) : Multiset ℕ).sum = ((t.map (· - c)) : Multiset ℕ).sum := by
+    have e1 := hsumshift hs
+    have e2 := hsumshift ht
+    omega
+  have hpeq : s.map (· - c) = t.map (· - c) := hA hs' ht' hsum'
+  calc s = (s.map (· - c)).map (· + c) := (hrec hs).symm
+    _ = (t.map (· - c)).map (· + c) := by rw [hpeq]
+    _ = t := hrec ht
 
 end Erdos340Bh
