@@ -36,6 +36,22 @@
   },
   "sections": [
     {
+      "id": "module-framing",
+      "title": "Overview: Upgrading the Bound to a Sharp Equality",
+      "startLine": 4,
+      "endLine": 40,
+      "summary": "Module docstring. The parent entry builds the Tietze extension as a convergent series G = ∑' n, gₙ with the crude bound ‖G‖ ≤ M for any ambient bound M. This entry tracks the sup-norm through the series (via partialSum_norm_le) to specialise M = ‖f‖ and recover the sharp norm-preserving form ‖G‖ = ‖f‖, never invoking Mathlib's TietzeExtension machinery.",
+      "mathContext": "$\\|G\\| \\le M \\ \\leadsto\\ \\|G\\| = \\|f\\|$ by setting $M = \\|f\\|$."
+    },
+    {
+      "id": "setup-variables",
+      "title": "Ambient Setup and Hypotheses",
+      "startLine": 42,
+      "endLine": 47,
+      "summary": "The TietzeTsum namespace fixes a normal space X, a closed set s ⊆ X, a continuous f : C(s, ℝ), and a nonnegative bound M with |f x| ≤ M on s. Normality is the separation strength Urysohn's lemma needs to build each correction term; the bound hypothesis hf is later instantiated at M = ‖f‖.",
+      "mathContext": "$X$ normal, $s$ closed, $f \\in C(s,\\mathbb{R}),\\ 0 \\le M,\\ \\forall x,\\ |f\\,x| \\le M.$"
+    },
+    {
       "id": "partial-sum-tracking",
       "title": "Tracking the Sup-Norm of the Partial Sums",
       "startLine": 51,
