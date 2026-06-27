@@ -142,4 +142,83 @@ theorem ysqMinusX_leading_exponent :
       = PuiseuxTheorem.leadingExponentFromSlope 1 2 (by norm_num) := by
   norm_num [edgeSlope, PuiseuxTheorem.leadingExponentFromSlope]
 
+/-! ### Edges and convexity of the lower hull
+
+The vertex API above identifies the *corners* of the Newton polygon.  Its edges
+carry the arithmetic: the negative of an edge slope is the valuation of a root.
+We now give the edge predicate and prove the polygon is **convex** — adjacent
+edge slopes are non-decreasing — which is the combinatorial reason a
+polynomial's root valuations form a sorted list. -/
+
+/-- The slope of a supporting line through two support points of **distinct**
+index is forced to equal their `edgeSlope`.  (A non-vertical line is determined
+by any two of its points.) -/
+theorem slope_eq_edgeSlope {p q : SupportPoint} {m b : ℚ}
+    (hp : p.2 = m * (p.1 : ℚ) + b) (hq : q.2 = m * (q.1 : ℚ) + b)
+    (hne : p.1 ≠ q.1) : m = edgeSlope p q := by
+  have hd : (q.1 : ℚ) - (p.1 : ℚ) ≠ 0 :=
+    sub_ne_zero.mpr fun h => hne (Nat.cast_injective h).symm
+  have hnum : q.2 - p.2 = m * ((q.1 : ℚ) - (p.1 : ℚ)) := by rw [hp, hq]; ring
+  rw [edgeSlope, hnum, mul_div_assoc, div_self hd, mul_one]
+
+/-- `(p, q)` is a **lower edge** of the Newton polygon of `pts`: `p` lies
+strictly left of `q`, and a single supporting line passes through both `p` and
+`q` while lying weakly below every support point.  By `slope_eq_edgeSlope` that
+line necessarily has slope `edgeSlope p q`. -/
+def IsLowerEdge (pts : List SupportPoint) (p q : SupportPoint) : Prop :=
+  p ∈ pts ∧ q ∈ pts ∧ p.1 < q.1 ∧
+    ∃ m b : ℚ, p.2 = m * (p.1 : ℚ) + b ∧ q.2 = m * (q.1 : ℚ) + b ∧
+      ∀ r ∈ pts, m * (r.1 : ℚ) + b ≤ r.2
+
+/-- The left endpoint of a lower edge is a lower vertex. -/
+theorem IsLowerEdge.isLowerVertex_left {pts : List SupportPoint}
+    {p q : SupportPoint} (h : IsLowerEdge pts p q) : IsLowerVertex pts p := by
+  obtain ⟨hp, _, _, m, b, hp1, _, hsup⟩ := h
+  exact ⟨hp, m, b, hp1, hsup⟩
+
+/-- The right endpoint of a lower edge is a lower vertex. -/
+theorem IsLowerEdge.isLowerVertex_right {pts : List SupportPoint}
+    {p q : SupportPoint} (h : IsLowerEdge pts p q) : IsLowerVertex pts q := by
+  obtain ⟨_, hq, _, m, b, _, hq1, hsup⟩ := h
+  exact ⟨hq, m, b, hq1, hsup⟩
+
+/-- **Convexity of the Newton polygon.**  Two lower edges sharing the middle
+vertex `q` have non-decreasing slope: the left edge `p → q` is no steeper than
+the right edge `q → r`.
+
+The proof is the textbook one-line convexity argument.  The left edge's
+supporting line `ℓ₁` lies weakly below `r`, while the right edge's line `ℓ₂`
+passes through `r`; both lines meet at `q`.  Subtracting the two relations at the
+points `q` and `r` gives `(slope ℓ₁ − slope ℓ₂)·(r.1 − q.1) ≤ 0`, and
+`r.1 > q.1` forces `slope ℓ₁ ≤ slope ℓ₂`. -/
+theorem edgeSlope_mono {pts : List SupportPoint} {p q r : SupportPoint}
+    (hpq : IsLowerEdge pts p q) (hqr : IsLowerEdge pts q r) :
+    edgeSlope p q ≤ edgeSlope q r := by
+  obtain ⟨_, _, hpq_lt, m₁, b₁, hp1, hq1, hsup1⟩ := hpq
+  obtain ⟨_, hr_mem, hqr_lt, m₂, b₂, hq2, hr2, _⟩ := hqr
+  have e1 : m₁ = edgeSlope p q := slope_eq_edgeSlope hp1 hq1 (ne_of_lt hpq_lt)
+  have e2 : m₂ = edgeSlope q r := slope_eq_edgeSlope hq2 hr2 (ne_of_lt hqr_lt)
+  rw [← e1, ← e2]
+  -- ℓ₁ supports r; ℓ₂ passes through r
+  have hbelow : m₁ * (r.1 : ℚ) + b₁ ≤ m₂ * (r.1 : ℚ) + b₂ := by
+    have h := hsup1 r hr_mem; rwa [hr2] at h
+  -- both lines meet at q
+  have hq_eq : m₁ * (q.1 : ℚ) + b₁ = m₂ * (q.1 : ℚ) + b₂ := by rw [← hq1, ← hq2]
+  have hgt : (q.1 : ℚ) < (r.1 : ℚ) := by exact_mod_cast hqr_lt
+  nlinarith [hbelow, hq_eq, hgt]
+
+/-- The **root valuations are sorted**: since valuations are the negatives of
+edge slopes, convexity (`edgeSlope_mono`) says the valuation read off the left
+edge is at least the one read off the right edge. -/
+theorem rootValuation_antitone {pts : List SupportPoint} {p q r : SupportPoint}
+    (hpq : IsLowerEdge pts p q) (hqr : IsLowerEdge pts q r) :
+    -edgeSlope q r ≤ -edgeSlope p q :=
+  neg_le_neg (edgeSlope_mono hpq hqr)
+
+/-- The single segment of `Y² − x` is a genuine lower edge. -/
+theorem ysqMinusX_isLowerEdge : IsLowerEdge YsqMinusX (0, 1) (2, 0) := by
+  refine ⟨by simp [YsqMinusX], by simp [YsqMinusX], by norm_num,
+    -1/2, 1, by norm_num, by norm_num, fun r hr => ?_⟩
+  fin_cases hr <;> norm_num
+
 end PuiseuxTheoremOQ03
