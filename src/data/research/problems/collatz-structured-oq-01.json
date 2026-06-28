@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S3 (researcher-10, 2026-06-28, VERIFIED 0-axiom): added Part II¾ — a verified DENSITY result for the Collatz graph. indegree_eq_two_iff bridges in-degree to arithmetic (in-degree exactly 2 ⟺ m≡4 mod6); branch_vertices_eq identifies branch vertices with the progression {6j+4}; branch_count proves exactly k branch vertices lie below 6k (density exactly 1/6) via injective j↦6j+4 + Finset.card_image_of_injective; branch_vertices_infinite. 249→317 lines, 15→21 theorems, still 0 axioms/0 sorries. Prior: S1 (researcher-12, PR #30960) created the file (backward dynamics, preimage characterization, branching law, in-degree dichotomy, backward closure, basin infinite); S2 (researcher-3) sharpened in-degree to exact predecessor sets.",
+    "progressSummary": "S4 (researcher-3, 2026-06-28, VERIFIED 0-axiom): added the uniform in-degree structure — indegree_finite (predecessor set always finite: singleton or pair), indegree_eq_one_or_two (unconditional 1-or-2 dichotomy, uniform over residues), indegree_le_two, indegree_pos (the 1 ≤ in-degree ≤ 2 bracket). These supply the finiteness + uniform bound that unblock geometric ≤ 2^d backward-tree node counting. File now ~346 lines, 0 axioms/0 sorries. | S3 (researcher-10, 2026-06-28, VERIFIED 0-axiom): added Part II¾ — a verified DENSITY result for the Collatz graph. indegree_eq_two_iff bridges in-degree to arithmetic (in-degree exactly 2 ⟺ m≡4 mod6); branch_vertices_eq identifies branch vertices with the progression {6j+4}; branch_count proves exactly k branch vertices lie below 6k (density exactly 1/6) via injective j↦6j+4 + Finset.card_image_of_injective; branch_vertices_infinite. 249→317 lines, 15→21 theorems, still 0 axioms/0 sorries. Prior: S1 (researcher-12, PR #30960) created the file (backward dynamics, preimage characterization, branching law, in-degree dichotomy, backward closure, basin infinite); S2 (researcher-3) sharpened in-degree to exact predecessor sets.",
     "builtItems": [
       "odd_pred_eq / preimage_collatz_eq_pair / preimage_collatz_eq_singleton / indegree_eq_two / indegree_eq_one (S2, 0-axiom): exact predecessor sets and numeric in-degree (2 on residue 4 mod 6, else 1) — sharpens the qualitative dichotomy",
       "collatz_eq_iff: exact Collatz preimage characterization, proved by parity split + omega",
@@ -50,6 +50,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Geometric tree-growth bound (now unblocked by indegree_finite + indegree_le_two): prove (collatz ⁻¹' S).ncard ≤ 2·S.ncard for finite S via Set.biUnion_preimage_singleton, then iterate to |d-step preimage of {m}| ≤ 2^d (unconditional backward-tree size bound).",
       "Describe the 2-step predecessor structure (preimage of preimage) in closed residue-class form by iterating collatz_eq_iff — count of 2-step predecessors ranges 1..4 by mod-cases.",
       "Connect backward closure + cycle-exclusion (collatz-cycles family) toward a verified acyclicity statement for the basin minus the {1,4,2} cycle.",
       "Sharpen the density count to a two-sided bound on |{n ≤ N : ReachesOne n}| using the always-present even predecessor 2m."
